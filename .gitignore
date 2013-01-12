@@ -20,3 +20,6 @@ local.properties
 .project
 
 .metadata
+
+# Mac files
+.DS_STORE
