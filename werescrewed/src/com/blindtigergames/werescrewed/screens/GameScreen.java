@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.GL10;
@@ -116,7 +117,7 @@ public class GameScreen implements com.badlogic.gdx.Screen {
         player = new Player(world, new Vector2(100.0f *PIXEL_TO_BOX, 100.0f *PIXEL_TO_BOX), name);
 
         cam = new Camera(w, h, player);
-        tp = new TiledPlatform("plat", new Vector2(200.0f, 25.0f), null, 1, 2, world);
+        tp = new TiledPlatform("plat", new Vector2(200.0f, 100.0f), null, 1, 2, world);
         //BOX_TO_PIXEL, PIXEL_TO_BOX
         BodyDef groundBodyDef =new BodyDef();  
         groundBodyDef.position.set(new Vector2(0*PIXEL_TO_BOX, 0*PIXEL_TO_BOX));  
@@ -150,7 +151,9 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 		if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)){
 	        ScreenManager.getInstance().show(Screen.PAUSE);			
 		}
-
+		if (Gdx.input.isKeyPressed(Input.Keys.P)){
+	        System.exit(0);
+		}
 
 		player.update();
 		tp.update();
