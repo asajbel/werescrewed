@@ -1,5 +1,7 @@
 package com.blindtigergames.werescrewed.platforms;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -12,7 +14,8 @@ import com.blindtigergames.werescrewed.screens.GameScreen;
 public class TiledPlatform extends Platform
 {
 	private World world;
-	private final int tileConstant = 32;
+	private final int tileConstant = 16;
+	private boolean dynamicType = false;
 
 	public TiledPlatform(String n, Vector2 pos, Texture tex, int width, int height, World world) {
 		super(n, pos, tex);
@@ -39,8 +42,37 @@ public class TiledPlatform extends Platform
 	
 	public void update()
 	{
+		body.setActive(true);
 		Vector2 pos = body.getPosition();
 		this.position = pos;
+		if(Gdx.input.isKeyPressed(Keys.T))
+		{
+			rotate();
+		}
+		if(Gdx.input.isKeyPressed(Keys.O))
+		{
+			changeType();
+		}
+		
 	}
+	
+	private void rotate()
+	{
+		body.setAngularVelocity(10f);
+	}
+	
+	private void changeType()
+	{
+		dynamicType = !dynamicType;
+		if(dynamicType)
+		{
+			body.setType(BodyType.DynamicBody);
+		}
+		else
+			body.setType(BodyType.KinematicBody);
+		
+		body.setActive(false);
+	}
+	
 	
 }
