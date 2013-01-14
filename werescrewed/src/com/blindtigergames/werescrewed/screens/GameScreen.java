@@ -48,6 +48,7 @@ import com.blindtigergames.werescrewed.camera.Camera;
 import com.blindtigergames.werescrewed.gui.Button;
 import com.blindtigergames.werescrewed.gui.Label;
 import com.blindtigergames.werescrewed.gui.Button.ButtonHandler;
+import com.blindtigergames.werescrewed.platforms.TiledPlatform;
 import com.blindtigergames.werescrewed.screens.ScreenSwitchHandler;
 
 import com.blindtigergames.werescrewed.entity.Entity;
@@ -77,11 +78,12 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 	Texture texture;
 	Texture playerTexture;
 	Sprite sprite;
-	World world;
+    World world;
 	SBox2DDebugRenderer debugRenderer;
 	Body playerBody;
 	Entity playerEntity;
 	Player player;
+	TiledPlatform tp;
 
 	FPSLogger logger;
 
@@ -114,7 +116,7 @@ public class GameScreen implements com.badlogic.gdx.Screen {
         player = new Player(world, new Vector2(100.0f *PIXEL_TO_BOX, 100.0f *PIXEL_TO_BOX), name);
 
         cam = new Camera(w, h, player);
-        
+        tp = new TiledPlatform("plat", new Vector2(200.0f, 25.0f), null, 1, 2, world);
         //BOX_TO_PIXEL, PIXEL_TO_BOX
         BodyDef groundBodyDef =new BodyDef();  
         groundBodyDef.position.set(new Vector2(0*PIXEL_TO_BOX, 0*PIXEL_TO_BOX));  
@@ -151,6 +153,7 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 
 
 		player.update();
+		tp.update();
 		
 		batch.setProjectionMatrix(cam.combined());
 		//batch.setProjectionMatrix(camera.combined);
@@ -160,6 +163,7 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 		//Drawing the player here
 		//playerEntity.draw(batch);
 		//player.draw(batch);
+		//tp.draw(batch);
 		
 		batch.end();
 

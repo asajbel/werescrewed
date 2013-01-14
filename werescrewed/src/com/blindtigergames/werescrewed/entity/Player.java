@@ -162,6 +162,11 @@ public class Player extends Entity {
 
 	}
 	
+	private void stop()
+	{
+		body.setLinearVelocity(0, 0);
+	}
+	
 	public void draw(SpriteBatch batch)
 	{
 
@@ -190,7 +195,10 @@ public class Player extends Entity {
 		{
 			moveRight();
 		}
-		
+		if(Gdx.input.isKeyPressed(Keys.S))
+		{
+			stop();
+		}
 		
 /*		
  * This example is found at a blog, i couldn't get it to work right away

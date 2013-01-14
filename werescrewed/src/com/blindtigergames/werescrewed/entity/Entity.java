@@ -35,5 +35,10 @@ public class Entity
     {
     	batch.draw(this.texture, this.position.x, this.position.y);
     }
+    
+
+	public void update()
+	{
+	}
 
 }
