@@ -6,11 +6,11 @@ import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 public class Main {
 	public static void main(String[] args) {
 		LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
-		cfg.title = "werescrewed";
+		cfg.title = "WereScrewed";
 		cfg.useGL20 = true;
 		cfg.width = 1280;
 		cfg.height = 720;
 		
-		new LwjglApplication(new WereScrewed(), cfg);
+		new LwjglApplication(new WereScrewedGame(), cfg);
 	}
 }
