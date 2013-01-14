@@ -1,8 +1,5 @@
 package com.blindtigergames.werescrewed.platforms;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -16,7 +13,6 @@ public class TiledPlatform extends Platform
 {
 	private World world;
 	private final int tileConstant = 32;
-	private boolean dynamicType = false;
 
 	public TiledPlatform(String n, Vector2 pos, Texture tex, int width, int height, World world) {
 		super(n, pos, tex);
@@ -41,48 +37,10 @@ public class TiledPlatform extends Platform
         body.getFixtureList().get(0).setFriction(0.5f);
 	}
 	
-	/* The following box2d things do not work with kinematic bodies:
-	 *  body.applyAngularImpulse
-	 *  body.applyTorque
-	 *  body.applylinearImpulse
-	 * 
-	 * The only thing you can do is setAngularVelo and SetLinearVelo
-	 */
-	
-	@Override
 	public void update()
 	{
-		body.setActive(true);
 		Vector2 pos = body.getPosition();
 		this.position = pos;
-		
-		if(Gdx.input.isKeyPressed(Input.Keys.O))
-		{
-			rotate();
-		}
-		if(Gdx.input.isKeyPressed(Input.Keys.T))
-		{
-			changeType();
-		}
-	}
-	
-	private void rotate()
-	{
-		body.setAngularVelocity(10f);
-	}
-
-	private void changeType()
-	{
-		dynamicType = !dynamicType;	
-		if(dynamicType)
-		{
-			body.setType(BodyType.DynamicBody);
-		}
-		else
-		{
-			body.setType(BodyType.KinematicBody);
-		}
-		body.setActive(false);
 	}
 	
 }
