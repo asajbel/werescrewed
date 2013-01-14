@@ -1,6 +1,6 @@
 package com.blindtiger.werescrewed.client;
 
-import com.blindtiger.werescrewed.WereScrewed;
+import com.blindtiger.werescrewed.WereScrewedGame;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.backends.gwt.GwtApplication;
 import com.badlogic.gdx.backends.gwt.GwtApplicationConfiguration;
@@ -14,6 +14,6 @@ public class GwtLauncher extends GwtApplication {
 
 	@Override
 	public ApplicationListener getApplicationListener () {
-		return new WereScrewed();
+		return new WereScrewedGame();
 	}
 }
