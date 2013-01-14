@@ -1,4 +1,4 @@
-package com.blindtigergames.werescrewed;
+package com.blindtiger.werescrewed;
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
