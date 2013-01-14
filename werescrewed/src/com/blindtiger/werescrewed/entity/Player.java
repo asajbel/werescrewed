@@ -33,7 +33,6 @@ public class Player extends Entity {
 	float stillTime = 0;
 	long lastGroundTime = 0;
 	static Texture player = new Texture(Gdx.files.internal("data/libgdx.png"));
-	int prevKey;
 	
 	//private Camera cam;
 
@@ -130,11 +129,11 @@ public class Player extends Entity {
 	
 	public void moveRight()
 	{
-		if (body.getLinearVelocity().x<2.0f) {
-			body.applyLinearImpulse(new Vector2(.004f, 0.0f), body.getWorldCenter());
+		if (body.getLinearVelocity().x<0.4f) {
+			body.applyLinearImpulse(new Vector2(.001f, 0.0f), body.getWorldCenter());
 		}
-		//body.applyLinearImpulse(new Vector2(0.004f, 0.0f), 
-		//		body.getWorldCenter());
+		body.applyLinearImpulse(new Vector2(0.001f, 0.0f), 
+				body.getWorldCenter());
 		
 		// Following three lines update the texture
 		// doesn't belong here, I learned
@@ -145,11 +144,11 @@ public class Player extends Entity {
 	
 	public void moveLeft()
 	{
-		if (body.getLinearVelocity().x>-2.0f) {
-			body.applyLinearImpulse(new Vector2(-0.004f, 0.0f), body.getWorldCenter());
+		if (body.getLinearVelocity().x>-0.4f) {
+			body.applyLinearImpulse(new Vector2(-0.001f, 0.0f), body.getWorldCenter());
 		}
-		//body.applyLinearImpulse(new Vector2(-0.004f, 0.0f), 
-		//		body.getWorldCenter());
+		body.applyLinearImpulse(new Vector2(-0.001f, 0.0f), 
+				body.getWorldCenter());
 		//Gdx.app.debug("Physics:", "Applying Left Impulse to player at "+playerBody.getWorldCenter());
 
 	}
@@ -157,7 +156,7 @@ public class Player extends Entity {
 	public void jump()
 	{
 		if (Math.abs(body.getLinearVelocity().y) < 1e-5) {
-			body.applyLinearImpulse(new Vector2(0.0f, 0.2f),
+			body.applyLinearImpulse(new Vector2(0.0f, .1f),
 					body.getWorldCenter());
 		}
 
@@ -165,18 +164,7 @@ public class Player extends Entity {
 	
 	private void stop()
 	{
-		float velocity = body.getLinearVelocity().x;
-		
-		if (velocity != 0.0f) {
-			if (velocity < - 0.1f) 
-				body.applyLinearImpulse(new Vector2(0.010f, 0.0f), body.getWorldCenter());
-			else if (velocity > 0.1f)
-				body.applyLinearImpulse(new Vector2(-0.010f, 0.0f), body.getWorldCenter());
-			else if (velocity > -0.1 && velocity < 0.1f)
-				body.setLinearVelocity(0.0f, 0.0f);
-		}
-		
-		
+		body.setLinearVelocity(0, 0);
 	}
 	
 	public void draw(SpriteBatch batch)
@@ -190,39 +178,27 @@ public class Player extends Entity {
 	{
 		Vector2 pos = body.getPosition();
 		Vector2 vel = body.getLinearVelocity();
-		
 
 		this.position = pos;
 		
 		
-		if (Gdx.input.isKeyPressed(Keys.W) || Gdx.input.isKeyPressed(Keys.SPACE))
+		if (Gdx.input.isKeyPressed(Keys.W))
 		{
 			jump();
 		}
 		if (Gdx.input.isKeyPressed(Keys.A))
 		{
 			moveLeft();
-			prevKey = Keys.A;
 		}
 
 		if (Gdx.input.isKeyPressed(Keys.D))
 		{
 			moveRight();
-			prevKey = Keys.D;
 		}
 		if(Gdx.input.isKeyPressed(Keys.S))
 		{
 			stop();
 		}
-		
-		if ((!Gdx.input.isKeyPressed(Keys.D) && !Gdx.input.isKeyPressed(Keys.A)) 
-				&& (prevKey == Keys.D || prevKey == Keys.A)) {
-			stop(); 
-		}
-		
-		if (Gdx.input.isTouched()) {
-			jump();
-		} 
 		
 /*		
  * This example is found at a blog, i couldn't get it to work right away
