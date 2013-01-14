@@ -1,7 +1,11 @@
 package com.blindtigergames.werescrewed.client;
 
+<<<<<<< HEAD:werescrewed-html/src/com/blindtigergames/werescrewed/client/GwtLauncher.java
 <<<<<<< HEAD:werescrewed-html/src/com/blindtiger/werescrewed/client/GwtLauncher.java
 import com.blindtiger.werescrewed.WereScrewedGame;
+=======
+import com.blindtigergames.werescrewed.WereScrewed;
+>>>>>>> parent of 9c60e0d... Shortened package name to blindtiger:werescrewed-html/src/com/blindtigergames/werescrewed/client/GwtLauncher.java
 =======
 import com.blindtigergames.werescrewed.WereScrewed;
 >>>>>>> parent of 9c60e0d... Shortened package name to blindtiger:werescrewed-html/src/com/blindtigergames/werescrewed/client/GwtLauncher.java
