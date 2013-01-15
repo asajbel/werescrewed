@@ -1,61 +1,26 @@
 package com.blindtigergames.werescrewed.screens;
 
-import java.util.ArrayList;
-
-
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input.Keys;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.FPSLogger;
-import com.badlogic.gdx.graphics.GL10;
-import com.badlogic.gdx.graphics.Mesh;
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.VertexAttribute;
-import com.badlogic.gdx.graphics.VertexAttributes;
-import com.badlogic.gdx.graphics.VertexAttributes.Usage;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShaderProgram;
-import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Vector2;
-
-import javax.swing.JTextField;
-
 import com.badlogic.gdx.Application;
-import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.GL10;
+import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Mesh;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
-import com.badlogic.gdx.physics.box2d.CircleShape;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
-import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
-
 import com.blindtigergames.werescrewed.camera.Camera;
-import com.blindtigergames.werescrewed.gui.Button;
-import com.blindtigergames.werescrewed.gui.Label;
-import com.blindtigergames.werescrewed.gui.Button.ButtonHandler;
-import com.blindtigergames.werescrewed.platforms.TiledPlatform;
-import com.blindtigergames.werescrewed.screens.ScreenSwitchHandler;
-
+import com.blindtigergames.werescrewed.debug.SBox2DDebugRenderer;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.Player;
-
-import com.blindtigergames.werescrewed.debug.SBox2DDebugRenderer;
+import com.blindtigergames.werescrewed.entity.mover.TimelineMover;
+import com.blindtigergames.werescrewed.platforms.TiledPlatform;
 
 
 
@@ -94,8 +59,6 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 	private final Vector2 dec = new Vector2(.5f,0);
 	private final Vector2 acc = new Vector2(.3f,0);
 	private final Vector2 max = new Vector2(1f,0);
-	//static final float WORLD_TO_BOX = 0.01666667f;
-	//static final float BOX_TO_WORLD = 60f;
 
 
 
@@ -119,9 +82,14 @@ public class GameScreen implements com.badlogic.gdx.Screen {
         player = new Player(world, new Vector2(100.0f, 100.0f), name);
 
         cam = new Camera(w, h, player);
+<<<<<<< HEAD
         tp = new TiledPlatform("plat", new Vector2(200.0f, 100.0f), texture, 1, 2, world);
         
         
+=======
+        tp = new TiledPlatform("plat", new Vector2(200.0f, 100.0f), null, 1, 2, world);
+        tp.setMover(new TimelineMover());
+>>>>>>> Added beginnings of steering behaviors which can be applied to bodies
         //BOX_TO_PIXEL, PIXEL_TO_BOX
         BodyDef groundBodyDef =new BodyDef();  
         groundBodyDef.position.set(new Vector2(0*PIXEL_TO_BOX, 0*PIXEL_TO_BOX));  

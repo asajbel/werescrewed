@@ -85,6 +85,7 @@ public class TiledPlatform extends Platform
 		{
 			changeType();
 		}
+<<<<<<< HEAD
 
 		if(Gdx.input.isKeyPressed(Keys.N))
 		{
@@ -109,6 +110,9 @@ public class TiledPlatform extends Platform
 			body.applyAngularImpulse(impulse);
 		}
 		*/
+=======
+		mover.move(this.body);
+>>>>>>> Added beginnings of steering behaviors which can be applied to bodies
 	}
 	
 	private void rotate()
