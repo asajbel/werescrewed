@@ -3,13 +3,17 @@ package com.blindtigergames.werescrewed.entity.mover;
 import com.badlogic.gdx.physics.box2d.Body;
 
 /*****************************************************
- * StaticMover.java
- * This class doesn't apply any movement to a body,
- * rather it exists for code clarity.
+ * Doesn't calculate any new movement, but can apply
+ * a movement passed in to it's move.
  * @author Stew
  *****************************************************/
-
 public class StaticMover implements IMover {
+
+	@Override
+	public void move(Body body, SteeringOutput steering) {
+		body.setLinearVelocity(steering.velocity);
+		body.setAngularVelocity(steering.rotation);
+	}
 
 	@Override
 	public void move(Body body) {
