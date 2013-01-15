@@ -72,6 +72,7 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 		float w = Gdx.graphics.getWidth();
 		float h = Gdx.graphics.getHeight();
 
+		
 
 		texture = new Texture(Gdx.files.internal("data/rletter.png"));
 		//takes in width, height
