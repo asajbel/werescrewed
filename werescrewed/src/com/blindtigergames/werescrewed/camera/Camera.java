@@ -32,7 +32,7 @@ public class Camera {
 		camera = new OrthographicCamera(1, viewportHeight/viewportWidth);
 		this.viewportHeight = Gdx.graphics.getHeight();
 		this.viewportWidth = Gdx.graphics.getWidth();
-		camera.viewportWidth = this.viewportWidth;nn
+		camera.viewportWidth = this.viewportWidth;
 		camera.viewportHeight = this.viewportHeight;
 		camera.position.set(this.viewportWidth * .5f, this.viewportHeight * .5f, 0f);  
 		position = camera.position;
