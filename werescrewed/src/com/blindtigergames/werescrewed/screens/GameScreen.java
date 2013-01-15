@@ -72,6 +72,8 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 	 */
 	public static final float BOX_TO_PIXEL = 256f;
 	public static final float PIXEL_TO_BOX = 1/BOX_TO_PIXEL;
+	public static final float DEGTORAD = 0.0174532925199432957f;
+	public static final float RADTODEG = 57.295779513082320876f;
 	
 	OrthographicCamera camera;
 	Camera cam;
@@ -84,7 +86,7 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 	Body playerBody;
 	Entity playerEntity;
 	Player player;
-	TiledPlatform tp;
+	TiledPlatform tp, tp2;
 
 	FPSLogger logger;
 
@@ -104,7 +106,7 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 		float h = Gdx.graphics.getHeight();
 
 
-		
+		texture = new Texture(Gdx.files.internal("data/rletter.png"));
 		//takes in width, height
         //cam = new Camera(w, h);
         batch = new SpriteBatch();
@@ -114,10 +116,12 @@ public class GameScreen implements com.badlogic.gdx.Screen {
         //world.setContactListener(mcl);
         String name = "player";
 
-        player = new Player(world, new Vector2(100.0f *PIXEL_TO_BOX, 100.0f *PIXEL_TO_BOX), name);
+        player = new Player(world, new Vector2(100.0f, 100.0f), name);
 
         cam = new Camera(w, h, player);
-        tp = new TiledPlatform("plat", new Vector2(200.0f, 100.0f), null, 1, 2, world);
+        tp = new TiledPlatform("plat", new Vector2(200.0f, 100.0f), texture, 1, 2, world);
+        
+        
         //BOX_TO_PIXEL, PIXEL_TO_BOX
         BodyDef groundBodyDef =new BodyDef();  
         groundBodyDef.position.set(new Vector2(0*PIXEL_TO_BOX, 0*PIXEL_TO_BOX));  
@@ -167,6 +171,8 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 		//Drawing the player here
 		//playerEntity.draw(batch);
 		//player.draw(batch);
+		
+		// test drawing the texture by uncommenting the next line:
 		//tp.draw(batch);
 		
 		batch.end();

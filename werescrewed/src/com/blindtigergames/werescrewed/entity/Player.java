@@ -32,7 +32,7 @@ public class Player extends Entity {
 	final static float MAX_VELOCITY = 300f;
 	float stillTime = 0;
 	long lastGroundTime = 0;
-	static Texture player = new Texture(Gdx.files.internal("data/libgdx.png"));
+	static Texture player = new Texture(Gdx.files.internal("data/rletter.png"));
 	
 	//private Camera cam;
 
@@ -109,7 +109,7 @@ public class Player extends Entity {
 
 		BodyDef playerBodyDef = new BodyDef();
 		playerBodyDef.type = BodyType.DynamicBody;
-		playerBodyDef.position.set(x, y);
+		playerBodyDef.position.set(this.position);
 		body = world.createBody(playerBodyDef);
 		CircleShape playerfeetShape = new CircleShape();
 		playerfeetShape.setRadius(10f * GameScreen.PIXEL_TO_BOX);
