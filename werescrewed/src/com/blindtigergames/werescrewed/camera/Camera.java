@@ -53,6 +53,8 @@ public class Camera {
 		camera.position.set(this.viewportWidth * .5f *GameScreen.PIXEL_TO_BOX , this.viewportHeight * .5f*GameScreen.PIXEL_TO_BOX, 0f);  
 		position = camera.position;
 		
+		this.anchorArray = new Anchor[MAX_ANCHORS];
+		this.anchorArraySize = 0;
         camera.update();  
 	}
 	
