@@ -20,6 +20,7 @@ import com.blindtigergames.werescrewed.debug.SBox2DDebugRenderer;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.Player;
 import com.blindtigergames.werescrewed.entity.mover.TimelineMover;
+import com.blindtigergames.werescrewed.platforms.ComplexPlatform;
 import com.blindtigergames.werescrewed.platforms.RoomPlatform;
 import com.blindtigergames.werescrewed.platforms.TiledPlatform;
 
@@ -54,6 +55,7 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 	Player player;
 	TiledPlatform tp, tp2;
 	RoomPlatform rp;
+	ComplexPlatform cp;
 
 	FPSLogger logger;
 
@@ -66,7 +68,7 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 
 	
 	public GameScreen() {
-		System.out.println("GameSCreen starting");
+		System.out.println("GameScreen starting");
 		float w = Gdx.graphics.getWidth();
 		float h = Gdx.graphics.getHeight();
 
@@ -76,16 +78,17 @@ public class GameScreen implements com.badlogic.gdx.Screen {
         //cam = new Camera(w, h);
         batch = new SpriteBatch();
       
-        world = new World(new Vector2(0, -100), true);
+        world = new World( new Vector2(0, -100), true );
        // mcl = new MyContactListener();
         //world.setContactListener(mcl);
         String name = "player";
 
-        player = new Player(world, new Vector2(100.0f, 100.0f), name);
+        player = new Player( world, new Vector2(100.0f, 100.0f), name );
 
-        cam = new Camera(w, h, player);
-        tp = new TiledPlatform("plat", new Vector2(200.0f, 100.0f), texture, 1, 2, world);
-        rp = new RoomPlatform("room", new Vector2(-100.0f, 100.0f), texture, 1, 15, world);
+        cam = new Camera( w, h, player );
+        tp = new TiledPlatform( "plat", new Vector2(200.0f, 100.0f), texture, 1, 2, world );
+        rp = new RoomPlatform( "room", new Vector2(-100.0f, 100.0f), texture, 1, 5, world );
+        cp = new ComplexPlatform( "bottle", new Vector2(0.0f, 300.0f), texture, 1, 1, world );
         
         //tp = new TiledPlatform("plat", new Vector2(200.0f, 100.0f), null, 1, 2, world);
         tp.setMover(new TimelineMover());
@@ -102,7 +105,7 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 
         //make sure you uncomment the next two lines        debugRenderer = new SBox2DDebugRenderer(BOX_TO_PIXEL); for physics world        
         //debugRenderer = new Box2DDebugRenderer();
-       debugRenderer = new SBox2DDebugRenderer(BOX_TO_PIXEL);
+        debugRenderer = new SBox2DDebugRenderer(BOX_TO_PIXEL);
         Gdx.app.setLogLevel(Application.LOG_DEBUG);
         
         logger = new FPSLogger();
@@ -122,14 +125,14 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 		if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)){
 	        ScreenManager.getInstance().show(Screen.PAUSE);			
 		}
-		if(Gdx.input.isKeyPressed(Keys.P))
-		{
+		if(Gdx.input.isKeyPressed(Keys.P)){
 			System.exit(0);
 		}
 
 		player.update();
 		tp.update();
 		rp.update();
+		cp.update();
 		
 		batch.setProjectionMatrix(cam.combined());
 		//batch.setProjectionMatrix(camera.combined);

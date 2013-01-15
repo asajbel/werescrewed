@@ -15,25 +15,21 @@ import com.blindtigergames.werescrewed.screens.GameScreen;
 
 
 
-public class RoomPlatform extends Platform
-{
-	protected World world;
+public class RoomPlatform extends Platform{
 	protected final int tileConstant = 16;
 	protected boolean rotate = false;
 	protected int tileHeight, tileWidth;
 	
-	public RoomPlatform(String n, Vector2 pos, Texture tex, int width, int height, World world) {
-		super(n, pos, tex);
+	public RoomPlatform( String n, Vector2 pos, Texture tex, int width, int height, World world ) {
+		super( n, pos, tex, world );
 		this.tileHeight = height;
 		this.tileWidth = width;
 		this.width = width * tileConstant;
 		this.height = height * tileConstant;
-		this.world = world;
-		constructBody(width, height);
+		constructBody( width, height );
 	}
 	
-	private void constructBody(int width, int height)
-	{
+	private void constructBody( int width, int height ){
 		PolygonShape ps = new PolygonShape();
 		FixtureDef fd = new FixtureDef();
 		fd.density = 1f;
@@ -48,56 +44,50 @@ public class RoomPlatform extends Platform
 
         Vector2 z = new Vector2();
 
-        ps.setAsBox(hx, hy, z, 0);
+        ps.setAsBox( hx, hy, z, 0 );
         fd.shape = ps;
         body.createFixture(fd);
         
-        ps.setAsBox(hx, hy, new Vector2(2*(hx*(height-1)), 0f), 0);
+        ps.setAsBox( hx, hy, new Vector2( 2*(hx*(height-1)), 0f ), 0 );
         fd.shape = ps;
         body.createFixture(fd);
         
-        ps.setAsBox(hy, hx, new Vector2(hx*(height-1), -(hy - hy/height)), 0);
+        ps.setAsBox( hy, hx, new Vector2( hx*(height-1), -(hy - hy/height) ), 0 );
         fd.shape = ps;
         body.createFixture(fd);
 	
         
-        ps.setAsBox(hy, hx, new Vector2(hx*(height-1), (hy - hy/height)), 0);
+        ps.setAsBox( hy, hx, new Vector2( hx*(height-1), (hy - hy/height) ), 0 );
         fd.shape = ps;
         body.createFixture(fd);
 	}
 	
-	public void draw(SpriteBatch sb)
-	{
+	public void draw(SpriteBatch sb){
 		//Use tileHeight and tileWidth here
 		sb.draw(this.texture, this.position.x, this.position.y);
 	}
-	public void update()
-	{
+	public void update(){
 		body.setActive(true);
 		Vector2 pos = body.getPosition();
 		this.position = pos;
-		if(Gdx.input.isKeyPressed(Keys.T))
-		{
+		
+		if( Gdx.input.isKeyPressed(Keys.T) ){
 			rotate();
 		}
-		if(Gdx.input.isKeyPressed(Keys.Y))
-		{
+		if( Gdx.input.isKeyPressed(Keys.Y) ){
 			body.setAngularVelocity(0);
 		}
-		if(Gdx.input.isKeyPressed(Keys.O))
-		{
+		if( Gdx.input.isKeyPressed(Keys.O) ){
 			changeType();
 		}
 
-		if(Gdx.input.isKeyPressed(Keys.N))
-		{
+		if( Gdx.input.isKeyPressed(Keys.N) ){
 			//rotateBy90();
 			rotate = !rotate;
 			System.out.println(rotate);
 			System.out.println(body.getAngle());
 		}
-		if(Gdx.input.isKeyPressed(Keys.L))
-		{
+		if( Gdx.input.isKeyPressed(Keys.L) ){
 			setHorizontal();
 		}
 		
