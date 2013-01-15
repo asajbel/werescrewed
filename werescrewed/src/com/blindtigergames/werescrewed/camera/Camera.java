@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Matrix4;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 import com.blindtigergames.werescrewed.entity.Player;
 import com.blindtigergames.werescrewed.screens.GameScreen;
@@ -74,7 +75,7 @@ public class Camera {
                     camera.zoom -= 0.02;
             }
             if(Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-                    if (camera.position.x > 0)
+                    if (cnamera.position.x > 0)
                             camera.translate(-3, 0, 0);
             }
             if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
@@ -91,4 +92,18 @@ public class Camera {
             }
 
     }
+    
+    // Anchor class
+	public class Anchor {
+		public Vector3 position;
+		public float weight;
+		public float priority;
+		public Rectangle buffer;
+		
+		public Anchor(Vector3 setPosition, float setWeight, Rectangle setBuffer) {
+			this.position = setPosition;
+			this.weight = setWeight;
+			this.buffer = setBuffer;
+		}
+	}
 }
