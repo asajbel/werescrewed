@@ -7,12 +7,24 @@
 package com.blindtigergames.werescrewed.input;
 
 import com.badlogic.gdx.Input.*;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 
 public class InputHandler implements InputProcessor {
 
 	public enum player_t { ONE, TWO}
 	
+	/*
+	 * Hooks up the InputProcessor to the input class, so events can be reported
+	 */
+	public void create(){
+		Gdx.input.setInputProcessor(this);
+	}
+	
+	/*
+	 * Returns whether the move left key is pressed
+	 * @param player - Selector to poll for the proper player
+	 */
 	public boolean leftPressed ( player_t player ){
 		switch ( player ){
 			default: return false;
@@ -23,6 +35,10 @@ public class InputHandler implements InputProcessor {
 		}
 	}
 	
+	/*
+	 * Returns whether the move right key is pressed
+	 * @param player - Selector to poll for the proper player
+	 */
 	public boolean rightPressed ( player_t player ){
 		switch ( player ){
 			default: return false;
@@ -33,6 +49,10 @@ public class InputHandler implements InputProcessor {
 		}
 	}
 	
+	/*
+	 * Returns whether the jump key is pressed
+	 * @param player - Selector to poll for the proper player
+	 */
 	public boolean jumpPressed ( player_t player ){
 		switch ( player ){
 			default: return false;
@@ -43,6 +63,10 @@ public class InputHandler implements InputProcessor {
 		}
 	}
 	
+	/*
+	 * Returns whether the move down key is pressed
+	 * @param player - Selector to poll for the proper player
+	 */
 	public boolean downPressed ( player_t player ){
 		switch ( player ){
 			default: return false;
@@ -53,6 +77,10 @@ public class InputHandler implements InputProcessor {
 		}
 	}
 	
+	/*
+	 * Returns whether the screw key is pressed
+	 * @param player - Selector to poll for the proper player
+	 */
 	public boolean screwPressed ( player_t player ){
 		switch ( player ){
 			default: return false;
