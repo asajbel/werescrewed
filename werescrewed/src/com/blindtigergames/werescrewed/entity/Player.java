@@ -117,8 +117,8 @@ public class Player extends Entity {
 		//playerBody.createFixture(playerPolygonShape, 1.0f);
 		playerFixtureDef.shape = playerfeetShape;
 		playerFixtureDef.density = 9.9f;
-		playerFixtureDef.friction = 0f;
-		playerFixtureDef.restitution = 0.0f;
+		playerFixtureDef.friction = 0.05f;
+		playerFixtureDef.restitution = 0.5f;
 		body.createFixture(playerFixtureDef);
 		body.setGravityScale(.1f);
 		body.setFixedRotation(true);
