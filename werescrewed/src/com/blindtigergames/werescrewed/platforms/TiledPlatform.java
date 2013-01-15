@@ -22,10 +22,10 @@ import java.lang.Math;
 
 public class TiledPlatform extends Platform
 {
-	private World world;
-	private final int tileConstant = 16;
-	private boolean dynamicType = false, rotate = false;
-	private int tileHeight, tileWidth;
+	protected World world;
+	protected final int tileConstant = 16;
+	protected boolean rotate = false;
+	protected int tileHeight, tileWidth;
 
 	public TiledPlatform(String n, Vector2 pos, Texture tex, int width, int height, World world) {
 		super(n, pos, tex);
@@ -35,8 +35,10 @@ public class TiledPlatform extends Platform
 		this.height = height * tileConstant;
 		this.world = world;
 		constructBody(width, height);
+		
 	}
 	
+
 	private void constructBody(int width, int height)
 	{
 
@@ -49,7 +51,7 @@ public class TiledPlatform extends Platform
         groundBox.setAsBox((width * tileConstant) * GameScreen.PIXEL_TO_BOX, 
         		(height * tileConstant) * GameScreen.PIXEL_TO_BOX);
         
-        FixtureDef platformFixtureDef = new FixtureDef();;
+        FixtureDef platformFixtureDef = new FixtureDef();
 		platformFixtureDef.shape = groundBox;
 		platformFixtureDef.density = 1.9f;
 		platformFixtureDef.friction = 0.5f;
@@ -58,6 +60,7 @@ public class TiledPlatform extends Platform
 		body.createFixture(platformFixtureDef);
 
 	}
+
 	
 	public void draw(SpriteBatch sb)
 	{
@@ -94,6 +97,11 @@ public class TiledPlatform extends Platform
 			System.out.println(rotate);
 			System.out.println(body.getAngle());
 		}
+		if(Gdx.input.isKeyPressed(Keys.L))
+		{
+			setHorizontal();
+		}
+		
 		/*
 		 * Doesn't work, I figure its more Imover stuff anyways
 		if(rotate)
@@ -111,28 +119,6 @@ public class TiledPlatform extends Platform
 		}
 		*/
 		mover.move(this.body);
-	}
-	
-	private void rotate()
-	{
-		body.setAngularVelocity(10f);
-	}
-	private void rotateBy90()
-	{
-		float bodyAngle = body.getAngle();
-		body.setTransform(body.getPosition(), bodyAngle + 90);
-	}
-	private void changeType()
-	{
-		dynamicType = !dynamicType;
-		if(dynamicType)
-		{
-			body.setType(BodyType.DynamicBody);
-		}
-		else
-			body.setType(BodyType.KinematicBody);
-		
-		body.setActive(false);
 	}
 	
 	

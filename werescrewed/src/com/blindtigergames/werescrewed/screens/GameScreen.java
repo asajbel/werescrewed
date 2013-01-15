@@ -20,6 +20,7 @@ import com.blindtigergames.werescrewed.debug.SBox2DDebugRenderer;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.Player;
 import com.blindtigergames.werescrewed.entity.mover.TimelineMover;
+import com.blindtigergames.werescrewed.platforms.RoomPlatform;
 import com.blindtigergames.werescrewed.platforms.TiledPlatform;
 
 
@@ -52,6 +53,7 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 	Entity playerEntity;
 	Player player;
 	TiledPlatform tp, tp2;
+	RoomPlatform rp;
 
 	FPSLogger logger;
 
@@ -83,6 +85,7 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 
         cam = new Camera(w, h, player);
         tp = new TiledPlatform("plat", new Vector2(200.0f, 100.0f), texture, 1, 2, world);
+        rp = new RoomPlatform("room", new Vector2(-100.0f, 100.0f), texture, 1, 15, world);
         
         //tp = new TiledPlatform("plat", new Vector2(200.0f, 100.0f), null, 1, 2, world);
         tp.setMover(new TimelineMover());
@@ -126,6 +129,7 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 
 		player.update();
 		tp.update();
+		rp.update();
 		
 		batch.setProjectionMatrix(cam.combined());
 		//batch.setProjectionMatrix(camera.combined);
