@@ -167,13 +167,6 @@ public class Player extends Entity {
 		body.setLinearVelocity(0, 0);
 	}
 	
-	public void draw(SpriteBatch batch)
-	{
-
-		batch.draw(this.texture, this.position.x, this.position.y);
-	
-	}
-	
 	public void update()
 	{
 		Vector2 pos = body.getPosition();

@@ -9,6 +9,7 @@ import com.badlogic.gdx.physics.box2d.Body;
 public class Entity
 {
 	public String name;
+	public EntityDef type;
 	public Vector2 position;
 	public Texture texture;
 	public Body body;
@@ -41,4 +42,7 @@ public class Entity
 	{
 	}
 
+	protected String generateName(){
+		return type.name;
+	}
 }
