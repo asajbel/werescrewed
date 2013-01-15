@@ -9,13 +9,22 @@ import com.badlogic.gdx.math.Vector3;
 import com.blindtigergames.werescrewed.entity.Player;
 import com.blindtigergames.werescrewed.screens.GameScreen;
 
+/*******************************************************************************
+ * Camera class. Zooms and translates based on anchors. Max 30 anchors.
+ * @author Edward Ramirez
+ ******************************************************************************/
 public class Camera {
+	public static final int MAX_ANCHORS = 30;
 	public OrthographicCamera camera;
 	public float viewportHeight;
 	public float viewportWidth;
 	public Vector3 position;
+	public Vector3 center;
 	
 	public Player player;
+	
+	private Anchor[] anchorArray;
+	private int anchorArraySize;
 	
 	public Camera(float viewportWidth, float viewportHeight)
 	{
@@ -23,10 +32,13 @@ public class Camera {
 		camera = new OrthographicCamera(1, viewportHeight/viewportWidth);
 		this.viewportHeight = Gdx.graphics.getHeight();
 		this.viewportWidth = Gdx.graphics.getWidth();
-		camera.viewportWidth = this.viewportWidth;
+		camera.viewportWidth = this.viewportWidth;nn
 		camera.viewportHeight = this.viewportHeight;
 		camera.position.set(this.viewportWidth * .5f, this.viewportHeight * .5f, 0f);  
 		position = camera.position;
+		
+		this.anchorArray = new Anchor[MAX_ANCHORS];
+		this.anchorArraySize = 0;
         camera.update();  
 	}
 	
@@ -92,18 +104,4 @@ public class Camera {
             }
 
     }
-    
-    // Anchor class
-	public class Anchor {
-		public Vector3 position;
-		public float weight;
-		public float priority;
-		public Rectangle buffer;
-		
-		public Anchor(Vector3 setPosition, float setWeight, Rectangle setBuffer) {
-			this.position = setPosition;
-			this.weight = setWeight;
-			this.buffer = setBuffer;
-		}
-	}
 }
