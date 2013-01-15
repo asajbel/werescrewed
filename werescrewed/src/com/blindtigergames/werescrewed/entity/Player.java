@@ -49,7 +49,9 @@ public class Player extends Entity {
 		world = w;
 		//createPlayerBody(posX, posY);
 		createPlayerBodyOLD(pos.x, pos.y);
-		sprite.setScale(40f * GameScreen.PIXEL_TO_BOX);
+		sprite.setScale(100f * GameScreen.PIXEL_TO_BOX);
+		offset.x = -64f;
+		offset.y = -50f;
 	}
 	
 	public Player(World world, float posX, float posY, String n, Texture tex)

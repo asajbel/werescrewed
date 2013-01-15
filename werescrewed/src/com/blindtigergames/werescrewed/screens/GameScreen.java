@@ -100,7 +100,7 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 	
 	public GameScreen() {
 		System.out.println("GameSCreen starting");
-		float zoom = 5.0f;
+		float zoom = 2.0f;
 		float w = Gdx.graphics.getWidth()/zoom;
 		float h = Gdx.graphics.getHeight()/zoom;
 

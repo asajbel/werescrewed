@@ -15,6 +15,7 @@ public class Entity
 	public String name;
 	public EntityDef type;
 	public Sprite sprite;
+	public Vector2 offset;
 	public Body body;
 	protected World world;
 	
@@ -24,6 +25,7 @@ public class Entity
 		sprite = null;
 		body = null;
 		world = null;
+		offset = new Vector2(0f,0f);
 		name = "I AM ERROR.";
 	}
 	
@@ -91,9 +93,9 @@ public class Entity
 	public void update()
 	{
 		if (body != null && sprite != null){
-			Vector2 bodyPos = body.getPosition().mul(GameScreen.BOX_TO_PIXEL);
-			sprite.setPosition(bodyPos.x, bodyPos.y);
-			System.out.println(name+":"+bodyPos.x+","+bodyPos.y);
+			Vector2 spritePos = body.getPosition().mul(GameScreen.BOX_TO_PIXEL).add(offset);
+			sprite.setPosition(spritePos.x, spritePos.y);
+			System.out.println(name+":"+spritePos.x+","+spritePos.y);
 		}
 	}
 
