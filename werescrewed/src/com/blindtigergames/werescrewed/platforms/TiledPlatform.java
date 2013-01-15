@@ -10,6 +10,12 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.blindtigergames.werescrewed.screens.GameScreen;
 
+/**
+ * @param name blah blah
+ * 
+ * @author Ranveer
+ *
+ */
 
 public class TiledPlatform extends Platform
 {
