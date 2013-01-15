@@ -92,8 +92,8 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 	private final Vector2 dec = new Vector2(.5f,0);
 	private final Vector2 acc = new Vector2(.3f,0);
 	private final Vector2 max = new Vector2(1f,0);
-	static final float WORLD_TO_BOX = 0.01666667f;
-	static final float BOX_TO_WORLD = 60f;
+	//static final float WORLD_TO_BOX = 0.01666667f;
+	//static final float BOX_TO_WORLD = 60f;
 
 
 
