@@ -28,16 +28,16 @@ public class TiledPlatform extends Platform
 		this.width = width;
 		this.height = height;
 		this.world = world;
-		constructBody(width, height);
+		constructBody(pos.x, pos.y, width, height);
 	}
 	
-	private void constructBody(int width, int height)
+	private void constructBody(float x, float y, int width, int height)
 	{
 
         BodyDef groundBodyDef =new BodyDef();  
         groundBodyDef.type = BodyType.KinematicBody;
-        groundBodyDef.position.set(new Vector2(this.position.x * GameScreen.PIXEL_TO_BOX, 
-        		this.position.y * GameScreen.PIXEL_TO_BOX));  
+        groundBodyDef.position.set(new Vector2(x * GameScreen.PIXEL_TO_BOX, 
+        		                               y * GameScreen.PIXEL_TO_BOX));  
         body = world.createBody(groundBodyDef);  
         PolygonShape groundBox = new PolygonShape();  
         groundBox.setAsBox((width * tileConstant) * GameScreen.PIXEL_TO_BOX, 
@@ -48,9 +48,8 @@ public class TiledPlatform extends Platform
 	
 	public void update()
 	{
+		super.update();
 		body.setActive(true);
-		Vector2 pos = body.getPosition();
-		this.position = pos;
 		if(Gdx.input.isKeyPressed(Keys.T))
 		{
 			rotate();

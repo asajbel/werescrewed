@@ -11,6 +11,6 @@ public class Platform extends Entity{
 	int width, height;
 	public Platform(String n, Vector2 pos, Texture tex)
 	{
-		super(n, pos, tex);
+		super(n, pos, tex, null);
 	}
 }

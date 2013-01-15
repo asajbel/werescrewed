@@ -117,7 +117,7 @@ public class GameScreen implements com.badlogic.gdx.Screen {
         player = new Player(world, new Vector2(100.0f *PIXEL_TO_BOX, 100.0f *PIXEL_TO_BOX), name);
 
         cam = new Camera(w, h, player);
-        tp = new TiledPlatform("plat", new Vector2(200.0f, 100.0f), null, 1, 2, world);
+        tp = new TiledPlatform("plat", new Vector2(200.0f, 100.0f), null, 1, 3, world);
         //BOX_TO_PIXEL, PIXEL_TO_BOX
         BodyDef groundBodyDef =new BodyDef();  
         groundBodyDef.position.set(new Vector2(0*PIXEL_TO_BOX, 0*PIXEL_TO_BOX));  

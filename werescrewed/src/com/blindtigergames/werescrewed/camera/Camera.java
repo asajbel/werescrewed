@@ -64,7 +64,7 @@ public class Camera {
 	private void followPlayer()
 	{
 		//camera.position = new Vector3(player.position.x, player.position.y, 0);
-		camera.translate(player.position);
+		camera.translate(player.getPosition());
 	}
     private void handleInput() {
             if(Gdx.input.isKeyPressed(Input.Keys.E)) {

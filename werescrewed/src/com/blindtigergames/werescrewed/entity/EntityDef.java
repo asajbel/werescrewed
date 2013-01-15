@@ -16,7 +16,7 @@ public class EntityDef {
 	
 	//Methods
 		@SuppressWarnings("unchecked")
-		protected EntityDef(String n, Texture t, String iA, ArrayList<FixtureDef> fixes){
+		protected EntityDef(String n, Texture t, String iA, BodyDef bDef, ArrayList<FixtureDef> fixes){
 			//Sprite Data
 			texture = t;
 			initialAnim = iA;
@@ -25,6 +25,7 @@ public class EntityDef {
 			tint = new Color(1.0f,1.0f,1.0f,1.0f);
 			
 			//Body Data
+			bodyDef = bDef;
 			fixtureDefs = (ArrayList<FixtureDef>) fixes.clone();
 			
 			//Misc Data
@@ -59,12 +60,14 @@ public class EntityDef {
 		//Since the XML loader isn't done yet, create default entity definitions here, and put them in the hashmap.
 
 		//Player
+			BodyDef bDef = new BodyDef();
 			ArrayList<FixtureDef> fixes = new ArrayList<FixtureDef>();
-	        PolygonShape bodyBox = new PolygonShape();
-	        bodyBox.setAsBox(25f,25f);
 	        
 	        //Add the box forming the upper part of the player's body.
-	        FixtureDef fixtureDef = new FixtureDef();  
+			PolygonShape bodyBox = new PolygonShape();
+	        bodyBox.setAsBox(25f,25f);
+	        
+			FixtureDef fixtureDef = new FixtureDef();  
 	        fixtureDef.shape = bodyBox;  
 	        fixtureDef.density = 1.0f;  
 	        fixtureDef.friction = 0.0f;  
@@ -85,11 +88,11 @@ public class EntityDef {
 			
 	        fixes.add(fixtureDef);
 	        
-			EntityDef playerDef = new EntityDef("player", new Texture(Gdx.files.internal("data/libgdx.png")), "", fixes);
+			EntityDef playerDef = new EntityDef("player", new Texture(Gdx.files.internal("data/libgdx.png")), "", bDef, fixes);
 			definitions.put("player", playerDef);
     }
 	
-	public EntityDef getDefinition(String id){
+	public static EntityDef getDefinition(String id){
 		if (definitions.containsKey(id)){
 			return definitions.get(id); //If we already have a definition, use it.
 		} else {

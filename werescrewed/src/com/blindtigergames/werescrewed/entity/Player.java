@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.Fixture;
@@ -42,29 +43,28 @@ public class Player extends Entity {
 
 	PlayerState playerState = PlayerState.Standing;
 
-	//needs to be rewritten!!!!!!!!!!!!!!!!!!
+	public Player(World w, Vector2 pos, String n, Texture tex)
+	{
+		super(n, pos, tex, null);
+		world = w;
+		//createPlayerBody(posX, posY);
+		createPlayerBodyOLD(pos.x, pos.y);
+	}
+	
 	public Player(World world, float posX, float posY, String n, Texture tex)
 	{
-		super(n, new Vector2(posX, posY), tex);
-		this.world = world;
+		this(world, new Vector2(posX,posY), n, tex);
 		//createPlayerBody(posX, posY);
-		createPlayerBodyOLD(posX, posY);
+		//createPlayerBodyOLD(posX, posY);
 	}
 
-	public Player(World world, Vector2 pos, String n, Texture tex)
-	{
-		super(n, pos, player);
-		this.world = world;
-		//createPlayerBody(posX, posY);
-		createPlayerBodyOLD(pos.x, pos.y);
-	}
 	public Player(World world, Vector2 pos, String n)
 	{
-		super(n, pos, player);
-		this.world = world;
+		this(world, pos, n, player);
 		//createPlayerBody(posX, posY);
-		createPlayerBodyOLD(pos.x, pos.y);
+		//createPlayerBodyOLD(pos.x, pos.y);
 	}
+	
 	//I tried some weird stuff in this constructor
 	private void createPlayerBody(float x, float y) {
 
@@ -169,11 +169,10 @@ public class Player extends Entity {
 	
 	public void update()
 	{
-		Vector2 pos = body.getPosition();
-		Vector2 vel = body.getLinearVelocity();
-
-		this.position = pos;
+		super.update();
 		
+		//Vector2 pos = body.getPosition();
+		//Vector2 vel = body.getLinearVelocity();		
 		
 		if (Gdx.input.isKeyPressed(Keys.W))
 		{
