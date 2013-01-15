@@ -37,7 +37,7 @@ public class RoomPlatform extends Platform
 		PolygonShape ps = new PolygonShape();
 		FixtureDef fd = new FixtureDef();
 		fd.density = 1f;
-		fd.restitution = 0.5f;
+		fd.restitution = 0.0f;
 		
 		BodyDef groundBodyDef =new BodyDef();  
         groundBodyDef.type = BodyType.KinematicBody; 
