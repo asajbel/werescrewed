@@ -75,7 +75,7 @@ public class Camera {
                     camera.zoom -= 0.02;
             }
             if(Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-                    if (cnamera.position.x > 0)
+                    if (camera.position.x > 0)
                             camera.translate(-3, 0, 0);
             }
             if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
