@@ -20,8 +20,8 @@ public class Camera {
 	{
 		//this.player = player;
 		camera = new OrthographicCamera(1, viewportHeight/viewportWidth);
-		this.viewportHeight = Gdx.graphics.getHeight();
-		this.viewportWidth = Gdx.graphics.getWidth();
+		this.viewportHeight = viewportHeight;
+		this.viewportWidth = viewportWidth;
 		camera.viewportWidth = this.viewportWidth;
 		camera.viewportHeight = this.viewportHeight;
 		camera.position.set(this.viewportWidth * .5f, this.viewportHeight * .5f, 0f);  
@@ -33,8 +33,8 @@ public class Camera {
 	{
 		this.player = player;
 		camera = new OrthographicCamera(1, viewportHeight/viewportWidth);
-		this.viewportHeight = Gdx.graphics.getHeight();
-		this.viewportWidth = Gdx.graphics.getWidth();
+		this.viewportHeight = viewportHeight;
+		this.viewportWidth = viewportWidth;
 		camera.viewportWidth = this.viewportWidth;
 		camera.viewportHeight = this.viewportHeight;
 		camera.position.set(this.viewportWidth * .5f *GameScreen.PIXEL_TO_BOX , this.viewportHeight * .5f*GameScreen.PIXEL_TO_BOX, 0f);  
@@ -66,6 +66,7 @@ public class Camera {
 		//camera.position = new Vector3(player.position.x, player.position.y, 0);
 		camera.translate(player.getPosition());
 	}
+	
     private void handleInput() {
             if(Gdx.input.isKeyPressed(Input.Keys.E)) {
                     camera.zoom += 0.02;

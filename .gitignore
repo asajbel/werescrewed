@@ -9,7 +9,7 @@
 *.class
 
 # generated files
-bin/
+bin/com/
 gen/
 
 # Local configuration file (sdk path, etc)

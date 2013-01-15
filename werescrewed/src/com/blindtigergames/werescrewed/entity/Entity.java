@@ -7,6 +7,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
+import com.blindtigergames.werescrewed.screens.GameScreen;
 
 //an Entity is anything that can exist, it has a position and a texture
 public class Entity
@@ -44,13 +45,16 @@ public class Entity
 		name = n;
 		sprite = spr;
 		body = bod;
-		if (bod != null)
+		if (bod != null){
 			world = bod.getWorld();
+			sprite.setScale(GameScreen.PIXEL_TO_BOX);
+		}
+
 	}
 	
 	public Entity(String n, Vector2 pos, Texture tex, Body bod)
 	{
-		this(n, tex == null ? null:new Sprite(tex), bod);
+		this(n, tex == null ? null: generateSprite(tex), bod);
 		setPosition(pos);
 	}
 	
@@ -87,12 +91,19 @@ public class Entity
 	public void update()
 	{
 		if (body != null && sprite != null){
-			Vector2 bodyPos = body.getPosition();
+			Vector2 bodyPos = body.getPosition().mul(GameScreen.BOX_TO_PIXEL);
 			sprite.setPosition(bodyPos.x, bodyPos.y);
+			System.out.println(name+":"+bodyPos.x+","+bodyPos.y);
 		}
 	}
 
 	protected String generateName(){
 		return type.name;
+	}
+	
+	protected static Sprite generateSprite(Texture tex){
+		Sprite out = new Sprite(tex);
+		out.setOrigin(tex.getWidth()/2, tex.getHeight()/2);
+		return out;
 	}
 }

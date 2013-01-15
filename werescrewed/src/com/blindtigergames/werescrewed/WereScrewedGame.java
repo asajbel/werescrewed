@@ -3,6 +3,7 @@ package com.blindtigergames.werescrewed;
 
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
 import com.blindtigergames.werescrewed.screens.Screen;
 import com.blindtigergames.werescrewed.screens.ScreenManager;
 
@@ -24,4 +25,12 @@ public class WereScrewedGame extends Game {
         ScreenManager.getInstance().dispose();
 	}
 	
+	@Override
+	public void render () {
+		update(0);
+		super.render();
+	}
+	
+	public void update(float dT) {
+	}
 }

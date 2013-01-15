@@ -100,8 +100,9 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 	
 	public GameScreen() {
 		System.out.println("GameSCreen starting");
-		float w = Gdx.graphics.getWidth();
-		float h = Gdx.graphics.getHeight();
+		float zoom = 5.0f;
+		float w = Gdx.graphics.getWidth()/zoom;
+		float h = Gdx.graphics.getHeight()/zoom;
 
 
 		
@@ -123,7 +124,7 @@ public class GameScreen implements com.badlogic.gdx.Screen {
         groundBodyDef.position.set(new Vector2(0*PIXEL_TO_BOX, 0*PIXEL_TO_BOX));  
         Body groundBody = world.createBody(groundBodyDef);  
         PolygonShape groundBox = new PolygonShape();  
-        groundBox.setAsBox(cam.viewportWidth*PIXEL_TO_BOX, 1f*PIXEL_TO_BOX);  
+        groundBox.setAsBox(Gdx.graphics.getWidth()*PIXEL_TO_BOX, 1f*PIXEL_TO_BOX);  
         groundBody.createFixture(groundBox, 0.0f);
         groundBody.getFixtureList().get(0).setFriction(0.5f);
         
@@ -168,6 +169,7 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 		//playerEntity.draw(batch);
 		//player.draw(batch);
 		//tp.draw(batch);
+		player.draw(batch);
 		
 		batch.end();
 

@@ -33,7 +33,7 @@ public class Player extends Entity {
 	final static float MAX_VELOCITY = 300f;
 	float stillTime = 0;
 	long lastGroundTime = 0;
-	static Texture player = new Texture(Gdx.files.internal("data/libgdx.png"));
+	static Texture player = new Texture(Gdx.files.internal("data/player_r_m.png"));
 	
 	//private Camera cam;
 
@@ -49,6 +49,7 @@ public class Player extends Entity {
 		world = w;
 		//createPlayerBody(posX, posY);
 		createPlayerBodyOLD(pos.x, pos.y);
+		sprite.setScale(40f * GameScreen.PIXEL_TO_BOX);
 	}
 	
 	public Player(World world, float posX, float posY, String n, Texture tex)
