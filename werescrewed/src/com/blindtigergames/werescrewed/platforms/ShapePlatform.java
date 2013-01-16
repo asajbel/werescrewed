@@ -66,16 +66,22 @@ public class ShapePlatform extends Platform{
         body = world.createBody( groundBodyDef );  
 
 		Vector2[] vertices = new Vector2[4];
+		
 		Vector2 point1 = new Vector2( 0.0f, 0.0f );
 		Vector2 point2 = new Vector2( 1.0f, 0.0f );
 		Vector2 point3 = new Vector2( 1.5f, 1.0f );
 		Vector2 point4 = new Vector2( 0.5f, 1.0f );
+		
 		vertices[0] = point1.mul(scale);
 		vertices[1] = point2.mul(scale);
 		vertices[2] = point3.mul(scale);
 		vertices[3] = point4.mul(scale);
-
-		Vector2 z = new Vector2();
+		
+		//vertices[0] = new Vector2( 0.0f, 0.0f );
+		//vertices[1] = new Vector2( 1.0f, 0.0f );
+		//vertices[2] = new Vector2( 1.5f, 1.0f );
+		//vertices[3] = new Vector2( 0.5f, 1.0f );
+		//Vector2 z = new Vector2();
 
 		PolygonShape polygon = new PolygonShape();
 		polygon.set(vertices);
