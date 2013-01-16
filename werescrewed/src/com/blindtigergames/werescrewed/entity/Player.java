@@ -112,10 +112,10 @@ public class Player extends Entity {
 
 		BodyDef playerBodyDef = new BodyDef();
 		playerBodyDef.type = BodyType.DynamicBody;
-		playerBodyDef.position.set(this.position);
+		playerBodyDef.position.set(x,y);
 		body = world.createBody(playerBodyDef);
 		CircleShape playerfeetShape = new CircleShape();
-		playerfeetShape.setRadius(10f * GameScreen.PIXEL_TO_BOX);
+		playerfeetShape.setRadius(1f * GameScreen.PIXEL_TO_BOX);
 		FixtureDef playerFixtureDef = new FixtureDef();
 		//playerBody.createFixture(playerPolygonShape, 1.0f);
 		playerFixtureDef.shape = playerfeetShape;

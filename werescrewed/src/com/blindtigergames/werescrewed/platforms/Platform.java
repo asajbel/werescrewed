@@ -19,7 +19,7 @@ public class Platform extends Entity{
 	protected boolean dynamicType = false;
 
 	public Platform( String n, Vector2 pos, Texture tex, World world ){
-		super( n, pos, tex );
+		super( n, pos, tex , null);
 		this.world = world;
 	}
 	

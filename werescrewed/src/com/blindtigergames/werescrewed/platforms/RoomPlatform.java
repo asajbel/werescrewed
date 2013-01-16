@@ -26,10 +26,10 @@ public class RoomPlatform extends Platform{
 		this.tileWidth = width;
 		this.width = width * tileConstant;
 		this.height = height * tileConstant;
-		constructBody( width, height );
+		constructBody(pos.x, pos.y, width, height );
 	}
 	
-	private void constructBody( int width, int height ){
+	private void constructBody(float x, float y, int width, int height ){
 		PolygonShape ps = new PolygonShape();
 		FixtureDef fd = new FixtureDef();
 		fd.density = 1f;
@@ -37,7 +37,7 @@ public class RoomPlatform extends Platform{
 		
 		BodyDef groundBodyDef =new BodyDef();  
         groundBodyDef.type = BodyType.KinematicBody; 
-        groundBodyDef.position.set(this.position);
+        groundBodyDef.position.set(x,y);
         body = world.createBody(groundBodyDef);  
         float hx = width * tileConstant * GameScreen.PIXEL_TO_BOX;
         float hy = height * tileConstant *  GameScreen.PIXEL_TO_BOX;
@@ -62,14 +62,9 @@ public class RoomPlatform extends Platform{
         body.createFixture(fd);
 	}
 	
-	public void draw(SpriteBatch sb){
-		//Use tileHeight and tileWidth here
-		sb.draw(this.texture, this.position.x, this.position.y);
-	}
 	public void update(){
 		body.setActive(true);
-		Vector2 pos = body.getPosition();
-		this.position = pos;
+		super.update();
 		
 		if( Gdx.input.isKeyPressed(Keys.T) ){
 			rotate();

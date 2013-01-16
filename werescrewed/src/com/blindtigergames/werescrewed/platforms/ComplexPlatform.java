@@ -25,13 +25,13 @@ public class ComplexPlatform extends Platform{
 		super(n, pos, tex, world);
 		this.width = width;
 		this.height = height;
-		constructBody(width, height);
+		constructBody(pos.x, pos.y, width, height);
 	}
 	
-	private void constructBody( int width, int height ){
+	private void constructBody(float x, float y, int width, int height ){
 		BodyEditorLoader loader = new BodyEditorLoader( Gdx.files.internal("data/bottle.json") );
 		BodyDef bd = new BodyDef();
-		bd.position.set( this.position);
+		bd.position.set(x,y);
 		bd.type = BodyType.DynamicBody;
 		
 		FixtureDef fd = new FixtureDef();
@@ -45,15 +45,9 @@ public class ComplexPlatform extends Platform{
 		loader.attachFixture( body, "bottle", fd, 1 );
 	}
 	
-	public void draw( SpriteBatch sb ){
-		//Use tileHeight and tileWidth here
-		sb.draw( this.texture, this.position.x, this.position.y );
-	}
-	
 	public void update(){
 		body.setActive(true);
-		Vector2 pos = body.getPosition();
-		this.position = pos;
+		super.update();
 		if( Gdx.input.isKeyPressed(Keys.T) ){
 			rotate();
 		}

@@ -24,21 +24,17 @@ public class TiledPlatform extends Platform{
 	protected final int tileConstant = 16;
 	protected boolean rotate = false;
 	protected int tileHeight, tileWidth;
-
+	
 	public TiledPlatform( String n, Vector2 pos, Texture tex, int width, int height, World world ) {
 		super( n, pos, tex, world );
 		this.tileHeight = height;
 		this.tileWidth = width;
 		this.width = width * tileConstant;
 		this.height = height * tileConstant;
-		constructBody( width, height );
-		
+		constructBody(pos.x, pos.y, width, height );
 	}
 	
-	private void constructBody(float x, float y, int width, int height)
-	{
-
-	private void constructBody( int width, int height ){
+	private void constructBody(float x, float y, int width, int height){
 
         BodyDef groundBodyDef =new BodyDef();  
         groundBodyDef.type = BodyType.KinematicBody;
@@ -58,12 +54,6 @@ public class TiledPlatform extends Platform{
 		body.setGravityScale(.1f);
 		body.createFixture(platformFixtureDef);
 
-	}
-
-	
-	public void draw(SpriteBatch sb){
-		//Use tileHeight and tileWidth here
-		sb.draw(this.texture, this.position.x, this.position.y);
 	}
 	
 	public void update(){
