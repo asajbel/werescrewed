@@ -64,17 +64,20 @@ public class Camera {
 	public Camera(float viewportWidth, float viewportHeight, Player player)
 	{
 //		this.player = player;
-		addAnchor(new Anchor(player.position));
 		initializeVars(viewportWidth, viewportHeight);
+		Anchor newAnchor = new Anchor(player.position);
+		addAnchor(newAnchor);
         camera.update();  
 	}
 	
 	public Camera(float viewportWidth, float viewportHeight, Player player1, Player player2)
 	{
 //		this.player = player;
-		addAnchor(new Anchor(player1.position));
-		addAnchor(new Anchor(player2.position));
 		initializeVars(viewportWidth, viewportHeight);
+		Anchor player1Ancher = new Anchor(player1.position);
+		addAnchor(player1Ancher);
+		Anchor player2Ancher = new Anchor(player2.position);
+		addAnchor(player2Ancher);
         camera.update();  
 	}
 	
@@ -138,7 +141,9 @@ public class Camera {
      * @Anchor newAnchor: the new anchor to be added
      */    
     public void addAnchor(Anchor newAnchor) {
-    	this.anchorList.add(newAnchor);
+    	if (newAnchor != null) {
+    		this.anchorList.add(newAnchor);
+    	}
     }
     
     /*
