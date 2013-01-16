@@ -34,10 +34,10 @@ public class ComplexPlatform extends Platform{
 		//this.width = width;
 		//this.height = height;
 		this.scale = scale;
-		constructBody(pos.x, pos.y, scale, bodyName);
+		constructComplexBody( pos.x, pos.y, scale, bodyName );
 	}
 	
-	private void constructBody( float x, float y, int scale, String bodyName ){
+	private void constructComplexBody( float x, float y, int scale, String bodyName ){
 		String filename = "data/" + bodyName + ".json";
 		BodyEditorLoader loader = new BodyEditorLoader( Gdx.files.internal(filename) );
 		BodyDef bd = new BodyDef();
