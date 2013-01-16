@@ -2,10 +2,14 @@ package com.blindtigergames.werescrewed.screws;
 
 import com.blindtigergames.werescrewed.entity.Entity;
 
+/**
+ * @param name blah blah
+ * 
+ * @author Dennis
+ *
+ */
+
 public class Screw extends Entity {
-	private int rotation;
-	private int depth;
-	
 	public void update(){
 		
 	}
@@ -30,6 +34,7 @@ public class Screw extends Entity {
 		return depth;
 	}
 	
-	
+	protected int rotation;
+	protected int depth;
 	
 }
