@@ -29,6 +29,7 @@ public class Camera {
 	private static final int LISTEN_BUFFER = 300;
 	private Rectangle anchorListenRectangle;
 	private Vector2 focus;
+	private Vector3 focus3D;
 	private Vector2 prevFocus;
 		
 //	public Player player;
@@ -52,6 +53,7 @@ public class Camera {
 													this.viewportHeight * .5f + LISTEN_BUFFER);
 		
 		this.focus = new Vector2(center2D);
+		this.focus3D = new Vector3(focus.x, focus.y, 0f);
 		this.prevFocus = new Vector2(focus);
 	}
 	
@@ -90,7 +92,10 @@ public class Camera {
 	{
 		handleInput();
 		setFocus();
-		camera.translate(prevFocus.sub(focus));
+		focus3D.x = focus.x;
+		focus3D.y = focus.y;
+//		camera.translate(prevFocus.sub(focus));
+		camera.position.set(focus3D);
 		camera.update();
 		position = camera.position;
 		center2D.x = position.x;
