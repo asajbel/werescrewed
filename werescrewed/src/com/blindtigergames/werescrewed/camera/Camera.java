@@ -32,8 +32,6 @@ public class Camera {
 	private Vector3 focus3D;
 	private Vector2 prevFocus;
 		
-//	public Player player;
-	
 	private LinkedList<Anchor> anchorList;
 	
 	private void initializeVars (float viewportWidth, float viewportHeight) {
@@ -65,21 +63,16 @@ public class Camera {
 	
 	public Camera(float viewportWidth, float viewportHeight, Player player)
 	{
-//		this.player = player;
 		initializeVars(viewportWidth, viewportHeight);
-		Anchor newAnchor = new Anchor(player.position);
-		addAnchor(newAnchor);
+		addAnchor(new Anchor(player.position));
         camera.update();  
 	}
 	
 	public Camera(float viewportWidth, float viewportHeight, Player player1, Player player2)
 	{
-//		this.player = player;
 		initializeVars(viewportWidth, viewportHeight);
-		Anchor player1Ancher = new Anchor(player1.position);
-		addAnchor(player1Ancher);
-		Anchor player2Ancher = new Anchor(player2.position);
-		addAnchor(player2Ancher);
+		addAnchor(new Anchor(player1.position));
+		addAnchor(new Anchor(player2.position));
         camera.update();  
 	}
 	
@@ -109,12 +102,6 @@ public class Camera {
 		*/
 	}
 
-	private void followPlayer()
-	{
-		//camera.position = new Vector3(player.position.x, player.position.y, 0);
-		//camera.translate(player.position);
-	}
-	
     private void handleInput() {
             if(Gdx.input.isKeyPressed(Input.Keys.E)) {
                     camera.zoom += 0.02;
