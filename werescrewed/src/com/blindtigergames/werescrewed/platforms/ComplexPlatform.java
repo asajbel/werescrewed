@@ -25,16 +25,21 @@ import com.blindtigergames.werescrewed.screens.GameScreen;
 public class ComplexPlatform extends Platform{
 
 	protected boolean rotate = false;
+	private int scale;
 
-	public ComplexPlatform( String n, Vector2 pos, Texture tex, int width, int height, World world ) {
+	//String object would be like "bottle" then we will load that particular body (precompiled)
+	public ComplexPlatform( String n, Vector2 pos, Texture tex, int scale, 
+			World world, String bodyName ) {
 		super(n, pos, tex, world);
-		this.width = width;
-		this.height = height;
-		constructBody(pos.x, pos.y, width, height);
+		//this.width = width;
+		//this.height = height;
+		this.scale = scale;
+		constructBody(pos.x, pos.y, scale, bodyName);
 	}
 	
-	private void constructBody(float x, float y, int width, int height ){
-		BodyEditorLoader loader = new BodyEditorLoader( Gdx.files.internal("data/bottle.json") );
+	private void constructBody( float x, float y, int scale, String bodyName ){
+		String filename = "data/" + bodyName + ".json";
+		BodyEditorLoader loader = new BodyEditorLoader( Gdx.files.internal(filename) );
 		BodyDef bd = new BodyDef();
 		bd.position.set(x,y);
 		bd.type = BodyType.DynamicBody;
@@ -47,7 +52,9 @@ public class ComplexPlatform extends Platform{
 		
 		body = world.createBody(bd);
 		
-		loader.attachFixture( body, "bottle", fd, 1 );
+		loader.attachFixture( body, bodyName, fd, scale );
+		
+		
 	}
 	
 	public void update(){
