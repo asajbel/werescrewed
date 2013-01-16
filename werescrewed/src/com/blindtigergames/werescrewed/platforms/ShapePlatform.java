@@ -23,13 +23,13 @@ public class ShapePlatform extends Platform{
 	
 	
 	
-	public ShapePlatform(String n, Vector2 pos, Texture tex, World world, Shapes shape ){
+	public ShapePlatform(String n, Vector2 pos, Texture tex, World world, Shapes shape, float scale ){
 		super( n, pos, tex , null);
 		this.world = world;
 		
 		switch(shape){
 		case trapezoid:
-			constructTrapezoid(pos );
+			constructTrapezoid( pos, scale );
 			break;
 		case cross:
 			System.out.println("trap");
@@ -56,7 +56,7 @@ public class ShapePlatform extends Platform{
 	//constuct bodies for each shape
 	//trapezoid, cross, plus, rhombus, Lshaped, Tshaped, dumbbell
 	
-	public void constructTrapezoid(Vector2 pos){
+	public void constructTrapezoid(Vector2 pos, float scale){
 		//ArrayList<Vector2> vectices = new ArrayList<Vector2>();
 		
 		BodyDef groundBodyDef =new BodyDef();  
@@ -66,12 +66,17 @@ public class ShapePlatform extends Platform{
         body = world.createBody( groundBodyDef );  
 
 		Vector2[] vertices = new Vector2[4];
-		vertices[0] = new Vector2( 0.0f, 0.0f );
-		vertices[1] = new Vector2( 1.0f, 0.0f );
-		vertices[2] = new Vector2( 1.5f, 1.0f );
-		vertices[3] = new Vector2( 0.5f, 1.0f );
+		Vector2 point1 = new Vector2( 0.0f, 0.0f );
+		Vector2 point2 = new Vector2( 1.0f, 0.0f );
+		Vector2 point3 = new Vector2( 1.5f, 1.0f );
+		Vector2 point4 = new Vector2( 0.5f, 1.0f );
+		vertices[0] = point1.mul(scale);
+		vertices[1] = point2.mul(scale);
+		vertices[2] = point3.mul(scale);
+		vertices[3] = point4.mul(scale);
 
-		
+		Vector2 z = new Vector2();
+
 		PolygonShape polygon = new PolygonShape();
 		polygon.set(vertices);
 		

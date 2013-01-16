@@ -93,7 +93,7 @@ public class GameScreen implements com.badlogic.gdx.Screen {
         tp = new TiledPlatform( "plat", new Vector2(5.0f, 40.0f), texture, 1, 2, world );
         rp = new RoomPlatform( "room", new Vector2(-1.0f, 1.0f), texture, 1, 10, world );
         cp = new ComplexPlatform( "bottle", new Vector2(0.0f, 3.0f), texture, 1, world, "bottle" );
-        //sp = new ShapePlatform( "trap", new Vector2( 15.0f, 100.0f), texture, world, Shapes.trapezoid);
+        //sp = new ShapePlatform( "trap", new Vector2( 15.0f, 100.0f), texture, world, Shapes.trapezoid, 1.0f);
         
         //tp = new TiledPlatform("plat", new Vector2(200.0f, 100.0f), null, 1, 2, world);
         tp.setMover(new TimelineMover());
