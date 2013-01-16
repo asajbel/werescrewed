@@ -61,8 +61,7 @@ public class ShapePlatform extends Platform{
 		
 		BodyDef groundBodyDef =new BodyDef();  
         groundBodyDef.type = BodyType.KinematicBody;
-        groundBodyDef.position.set(new Vector2(pos.x * GameScreen.PIXEL_TO_BOX, 
-	        		              pos.y * GameScreen.PIXEL_TO_BOX));  
+        groundBodyDef.position.set(new Vector2( pos.x ,pos.y ));  
         body = world.createBody( groundBodyDef );  
 
 		Vector2[] vertices = new Vector2[4];
