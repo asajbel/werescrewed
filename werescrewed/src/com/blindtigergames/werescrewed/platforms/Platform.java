@@ -7,6 +7,14 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.mover.IMover;
 
+
+/**
+ * @param name blah blah
+ * 
+ * @author Ranveer
+ *
+ */
+
 public class Platform extends Entity{
 	
 	//List of Structural Screws

@@ -15,7 +15,12 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.blindtigergames.werescrewed.screens.GameScreen;
 
 
-
+/**
+ * @param name blah blah
+ * 
+ * @author Ranveer
+ *
+ */
 
 public class ComplexPlatform extends Platform{
 

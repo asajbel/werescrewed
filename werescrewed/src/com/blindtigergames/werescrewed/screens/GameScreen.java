@@ -90,9 +90,9 @@ public class GameScreen implements com.badlogic.gdx.Screen {
         player = new Player( world, new Vector2(1.0f, 1.0f), name );
 
         cam = new Camera( w, h, player );
-        tp = new TiledPlatform( "plat", new Vector2(200.0f, 100.0f), texture, 1, 2, world );
-        rp = new RoomPlatform( "room", new Vector2(-100.0f, 100.0f), texture, 1, 5, world );
-        cp = new ComplexPlatform( "bottle", new Vector2(0.0f, 300.0f), texture, 1, 1, world );
+        tp = new TiledPlatform( "plat", new Vector2(5.0f, 40.0f), texture, 1, 2, world );
+        rp = new RoomPlatform( "room", new Vector2(-1.0f, 1.0f), texture, 1, 10, world );
+        cp = new ComplexPlatform( "bottle", new Vector2(0.0f, 3.0f), texture, 1, 1, world );
         
         //tp = new TiledPlatform("plat", new Vector2(200.0f, 100.0f), null, 1, 2, world);
         tp.setMover(new TimelineMover());
