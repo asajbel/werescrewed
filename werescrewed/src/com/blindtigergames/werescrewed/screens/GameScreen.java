@@ -72,7 +72,7 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 	
 	public GameScreen() {
 		System.out.println("GameScreen starting");
-		float zoom = 2.0f;
+		float zoom = 1.0f;
 		float w = Gdx.graphics.getWidth()/zoom;
 		float h = Gdx.graphics.getHeight()/zoom;
 
@@ -87,7 +87,7 @@ public class GameScreen implements com.badlogic.gdx.Screen {
         //world.setContactListener(mcl);
         String name = "player";
 
-        player = new Player( world, new Vector2(100.0f, 100.0f), name );
+        player = new Player( world, new Vector2(1.0f, 1.0f), name );
 
         cam = new Camera( w, h, player );
         tp = new TiledPlatform( "plat", new Vector2(200.0f, 100.0f), texture, 1, 2, world );
