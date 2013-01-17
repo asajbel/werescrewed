@@ -4,8 +4,12 @@ import java.util.ArrayList;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Joint;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.blindtigergames.werescrewed.entity.*;
 
 /**
@@ -27,6 +31,11 @@ public class Skeleton extends Entity{
 		super( n, pos, tex , null);
 		this.world = world;
 		this.boneAndJoints = new ArrayList<BoneAndJoints>();
+		
+	    BodyDef skelDef = new BodyDef();
+	    skelDef.type = BodyType.StaticBody;
+	    skelDef.position.set(pos);
+	    body = world.createBody(skelDef);
 
 	}
 	

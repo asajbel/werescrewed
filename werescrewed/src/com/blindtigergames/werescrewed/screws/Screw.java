@@ -47,7 +47,7 @@ public class Screw extends Entity {
 	
 	protected int rotation;
 	protected int depth;
-	protected final short CATEGORY_SCREWS = 0x0000;
+	protected final short CATEGORY_SCREWS = 0x0008;
 	protected int screwStep;
 	
 }
