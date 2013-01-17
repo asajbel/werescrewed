@@ -4,10 +4,13 @@ package com.blindtigergames.werescrewed;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
 import com.blindtigergames.werescrewed.screens.Screen;
 import com.blindtigergames.werescrewed.screens.ScreenManager;
 
 public class WereScrewedGame extends Game {
+	
+	public AssetManager manager =  new AssetManager();
 	
 	@Override
 	public void create() {
@@ -33,4 +36,5 @@ public class WereScrewedGame extends Game {
 	
 	public void update(float dT) {
 	}
+	
 }
