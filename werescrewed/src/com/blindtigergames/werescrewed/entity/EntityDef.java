@@ -124,7 +124,7 @@ public class EntityDef {
 	        	        
 			CircleShape playerfeetShape = new CircleShape();
 			playerfeetShape.setRadius(10f * GameScreen.PIXEL_TO_BOX);
-			FixtureDef playerFixtureDef = makeFixtureDef(9.9f, 0.05f, 0.5f, playerfeetShape);			
+			FixtureDef playerFixtureDef = makeFixtureDef(9.9f, 0.05f, 0.01f, playerfeetShape);			
 	        fixes.add(playerFixtureDef);
 	        
 			EntityDef playerDef = new EntityDef("player", new Texture(Gdx.files.internal("data/player_r_m.png")), "", playerBodyDef, fixes);
