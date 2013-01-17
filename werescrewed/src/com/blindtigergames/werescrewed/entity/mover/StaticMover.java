@@ -17,6 +17,7 @@ public class StaticMover implements IMover {
 
 	@Override
 	public void move(Body body) {
+		//Intentionally returns immediately
 		return;
 	}
 	

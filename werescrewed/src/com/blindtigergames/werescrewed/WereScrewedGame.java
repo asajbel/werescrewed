@@ -7,7 +7,7 @@ import com.blindtigergames.werescrewed.screens.Screen;
 import com.blindtigergames.werescrewed.screens.ScreenManager;
 
 public class WereScrewedGame extends Game {
-	
+
 	@Override
 	public void create() {
 		ScreenManager.getInstance().initialize(this);
@@ -15,7 +15,7 @@ public class WereScrewedGame extends Game {
        // ScreenManager.getInstance().show(Screen.INTRO);
         
         //uncomment next line to bypass intro
-		ScreenManager.getInstance().show(Screen.GAME);
+		ScreenManager.getInstance().show(Screen.STRESSTEST);
 	}
 
 	@Override
@@ -23,5 +23,4 @@ public class WereScrewedGame extends Game {
 		super.dispose();
         ScreenManager.getInstance().dispose();
 	}
-	
 }

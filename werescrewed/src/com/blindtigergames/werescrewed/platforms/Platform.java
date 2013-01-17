@@ -27,16 +27,9 @@ public class Platform extends Entity{
 	public void setMover(IMover _mover){
 		this.mover = _mover;
 	}
-<<<<<<< HEAD
-
-	
-	public void update(){
-=======
-	
 
 	public void update()
 	{
->>>>>>> Beginning to get Universal Tween Engine working
 		body.setActive(true);
 	}
 	public void setDensity( float d ){
