@@ -29,7 +29,7 @@ public class Player extends Entity {
 
 	private World world;
 	//public Body body = null;
-	//Being has a Body body variable
+	//Entity has a Body body variable
 	public Fixture playerPhysicsFixture;
 	public Fixture playerSensorFixture;
 	final static float MAX_VELOCITY = 300f;
