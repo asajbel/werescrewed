@@ -19,6 +19,8 @@ import com.blindtigergames.werescrewed.entity.Player;
  * @author Edward Ramirez
  ******************************************************************************/
 public class Camera {
+	public static final float BOX_TO_PIXEL = 256f;
+	public static final float PIXEL_TO_BOX = 1/BOX_TO_PIXEL;
 	public OrthographicCamera camera;
 	public float viewportHeight;
 	public float viewportWidth;
@@ -35,12 +37,9 @@ public class Camera {
 	private Player player2;
 	private int player1Anchor;
 	private int player2Anchor;
-	public AnchorList anchorList;
-//	private Vector2 prevFocus;
-//	private Vector2 temp;
+	private boolean debugMode;
 		
 	private void initializeVars (float viewportWidth, float viewportHeight) {
-		anchorList = new AnchorList();
 		camera = new OrthographicCamera(1, viewportHeight/viewportWidth);
 		this.viewportHeight = Gdx.graphics.getHeight();
 		this.viewportWidth = Gdx.graphics.getWidth();
@@ -57,11 +56,10 @@ public class Camera {
 		
 		this.focus = new Vector2(center2D);
 		this.focus3D = new Vector3(focus.x, focus.y, 0f);
-//		this.prevFocus = new Vector2(focus);
-//		this.temp = new Vector2(0f, 0f);
 		
 		player1Anchor = -1;
 		player2Anchor = -1;
+		debugMode = false;
 	}
 	
 	public Camera(float viewportWidth, float viewportHeight)
@@ -95,31 +93,20 @@ public class Camera {
 	
 	public void update()
 	{
+		// update player anchors
+		if (player1Anchor > -1) {
+			AnchorList.setAnchorPos(player1Anchor, player1.position.mul(BOX_TO_PIXEL));
+		}
+		if (player2Anchor > -1) {
+			AnchorList.setAnchorPos(player2Anchor, player2.position.mul(BOX_TO_PIXEL));
+		}
+		
 		handleInput();
 		setFocus();
-//		temp.x = focus.x - prevFocus.x;
-//		temp.y = focus.y - prevFocus.y;
-//		camera.translate(0f, 0f);
-//		if (player1 != null) {
-//			focus3D.x = player1.position.x;
-//			focus3D.y = player1.position.y;
-//			focus3D.z = 0f;
-//		}
 		camera.position.set(focus3D);
-//		camera.translate(focus3D);
 		position = camera.position;
 		center2D.x = position.x;
 		center2D.y = position.y;
-//		prevFocus.x = camera.position.x;
-//		prevFocus.y = camera.position.y;
-		
-		// update player anchors
-		if (player1Anchor > -1) {
-			AnchorList.setAnchorPos(player1Anchor, player1.position);
-		}
-		if (player2Anchor > -1) {
-			AnchorList.setAnchorPos(player2Anchor, player2.position);
-		}
 		
 		camera.update();
 		
