@@ -19,6 +19,7 @@ public class InputHandler implements InputProcessor {
 	 */
 	public void create(){
 		Gdx.input.setInputProcessor(this);
+		Gdx.input.setOnscreenKeyboardVisible(true);
 	}
 	
 	public void update(){
