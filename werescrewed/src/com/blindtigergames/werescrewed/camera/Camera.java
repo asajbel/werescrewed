@@ -5,6 +5,7 @@ import java.util.LinkedList;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Rectangle;
@@ -93,6 +94,12 @@ public class Camera {
 	
 	public void update()
 	{
+		debugMode = false;
+		// check debug
+		if (Gdx.input.isKeyPressed(Keys.Z)) {
+			debugMode = true;
+		}
+		
 		// update player anchors
 		if (player1Anchor > -1) {
 			AnchorList.setAnchorPos(player1Anchor, player1.position.mul(BOX_TO_PIXEL));
@@ -101,9 +108,12 @@ public class Camera {
 			AnchorList.setAnchorPos(player2Anchor, player2.position.mul(BOX_TO_PIXEL));
 		}
 		
-		handleInput();
-		setFocus();
-		camera.position.set(focus3D);
+		if (debugMode) {
+			handleInput();
+		} else {
+			setFocus();
+			camera.position.set(focus3D);
+		}
 		position = camera.position;
 		center2D.x = position.x;
 		center2D.y = position.y;
