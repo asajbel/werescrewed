@@ -55,7 +55,7 @@ public class EntityDef {
 		}
 
 		protected void loadComplexBody(float density, float friction, float restitution, int scale, String bodyName ){
-			String filename = "data/" + bodyName + ".json";			
+			String filename = "data/bodies/" + bodyName + ".json";			
 			BodyEditorLoader loader = new BodyEditorLoader( Gdx.files.internal(filename) );
 			Vector2 origin = new Vector2(0f,0f);
 			RigidBodyModel rbModel = loader.getInternalModel().rigidBodies.get(name);
