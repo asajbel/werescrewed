@@ -102,7 +102,7 @@ public class GameScreen implements com.badlogic.gdx.Screen {
         player = new Player( world, new Vector2(1.0f, 1.0f), name );
 
         cam = new Camera( w, h, player );
-        tp = new TiledPlatform( "plat", new Vector2(5.0f, 40.0f), texture, 1, 1, world );
+        tp = new TiledPlatform( "plat", new Vector2(370.0f, 200.0f), texture, 10, 1, world );
         rp = new RoomPlatform( "room", new Vector2(-1.0f, 1.0f), texture, 1, 10, world );
         cp = new ComplexPlatform( "bottle", new Vector2(0.0f, 3.0f), texture, 1, world, "bottle" );
         sp = new ShapePlatform( "rhom", new Vector2( 1.0f, 1.0f), texture, world, 
@@ -111,7 +111,7 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 
 		//testing screws
 		screwTex = new Texture(Gdx.files.internal("data/screw.png"));
-		structScrew = new StructureScrew( "", sp.body.getPosition(), screwTex, 25, sp.body, world);
+		structScrew = new StructureScrew( "", tp.body.getPosition(), screwTex, 25, tp.body, world);
 		
 		
         //tp = new TiledPlatform("plat", new Vector2(200.0f, 100.0f), null, 1, 2, world);

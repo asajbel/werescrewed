@@ -28,8 +28,11 @@ public class StructureScrew extends Screw {
 		this.world = world;
 		maxDepth = max;
 		depth = max;
+		rotation = 1080;
 		
-		sprite.setScale(GameScreen.PIXEL_TO_BOX);
+		sprite.setScale(1.85f);
+		offset.x = -16f;
+		offset.y = -16f;
 		
 		//create the screw body
 	    BodyDef screwBodyDef = new BodyDef();
@@ -38,6 +41,10 @@ public class StructureScrew extends Screw {
 	    body = world.createBody(screwBodyDef);
 	    CircleShape screwShape = new CircleShape();
 	    screwShape.setRadius(sprite.getWidth()*GameScreen.PIXEL_TO_BOX);
+	    FixtureDef screwFixture = new FixtureDef();
+	    screwFixture.isSensor = true;
+	    screwFixture.filter.categoryBits = 0x0008;
+	    screwFixture.filter.maskBits = -1;
 	    body.createFixture(screwShape,0.0f);
 	    screwShape.dispose();
 	    
@@ -66,12 +73,13 @@ public class StructureScrew extends Screw {
 	    revoluteJointDef.initialize(platform, jointBody, platform.getPosition());  
 	    revoluteJointDef.enableMotor = true;
 	    revoluteJointDef.maxMotorTorque = 5000.0f;
-	    revoluteJointDef.motorSpeed = 50f;
+	    revoluteJointDef.motorSpeed = 0f;
 	    screwJoint = (RevoluteJoint) world.createJoint(revoluteJointDef);
 	}
 
 	public void update(){
 		super.update();
+		sprite.setRotation(rotation);
 		if ( depth != screwStep ){
 			screwStep--;
 		}

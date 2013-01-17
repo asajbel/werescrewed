@@ -26,8 +26,9 @@ public class Screw extends Entity {
 	
 	public void screwLeft(){
 		//body.applyAngularImpulse(-100);
-		body.setAngularVelocity(-15);
+		body.setAngularVelocity(15);
 		depth--;		
+		rotation += 10;
 		screwStep = depth + 5;
 	}
 	
@@ -46,7 +47,7 @@ public class Screw extends Entity {
 	
 	protected int rotation;
 	protected int depth;
-	protected final short CATEGORY_SCREWS = 0x0003;
+	protected final short CATEGORY_SCREWS = 0x0000;
 	protected int screwStep;
 	
 }
