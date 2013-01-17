@@ -9,8 +9,7 @@ public class TimelineMover implements IMover {
 
 	//kinematic can't collide with kinematic or static bodies
 	//kinematic bodies have infinite mass
-	
-	
+
 	boolean loop;
 	SteeringOutput movement;
 	
@@ -31,6 +30,4 @@ public class TimelineMover implements IMover {
 		body.setAngularVelocity(movement.rotation);
 		body.setLinearVelocity(movement.velocity);
 	}
-
-
 }

@@ -17,6 +17,8 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.WorldManifold;
+import com.blindtigergames.werescrewed.input.InputHandler;
+import com.blindtigergames.werescrewed.input.InputHandler.player_t;
 import com.blindtigergames.werescrewed.screens.GameScreen;
 
 public class Player extends Entity {
@@ -31,6 +33,7 @@ public class Player extends Entity {
 	long lastGroundTime = 0;
 	static Texture player = new Texture(Gdx.files.internal("data/player_r_m.png"));
 	int prevKey;
+	public InputHandler inputHandler;
 	
 	//private Camera cam;
 
@@ -42,18 +45,22 @@ public class Player extends Entity {
 
 	public Player(World w, Vector2 pos, String n, Texture tex)
 	{
-		super(n, pos, tex, null);
-		world = w;
+		super(n, EntityDef.getDefinition("player"), w, pos, 0.0f, new Vector2(1f,1f));
+		body.setGravityScale(.1f);
+		body.setFixedRotation(true);
+		//world = w;
 		//createPlayerBody(posX, posY);
-		createPlayerBodyOLD(pos.x, pos.y);
+		//createPlayerBodyOLD(pos.x, pos.y);
 		sprite.setScale(100f * GameScreen.PIXEL_TO_BOX);
 		offset.x = -64f;
 		offset.y = -50f;
+		inputHandler = new InputHandler();
 	}
 	
 	public Player(World world, float posX, float posY, String n, Texture tex)
 	{
 		this(world, new Vector2(posX,posY), n, tex);
+		inputHandler = new InputHandler();
 		//createPlayerBody(posX, posY);
 		//createPlayerBodyOLD(posX, posY);
 	}
@@ -61,6 +68,7 @@ public class Player extends Entity {
 	public Player(World world, Vector2 pos, String n)
 	{
 		this(world, pos, n, player);
+		inputHandler = new InputHandler();
 		//createPlayerBody(posX, posY);
 		//createPlayerBodyOLD(pos.x, pos.y);
 	}
@@ -104,7 +112,7 @@ public class Player extends Entity {
 		*/
 	}
 	
-	//works normally
+	//functionality has been moved to EntityDef
 	private void createPlayerBodyOLD( float x, float y) {
 
 		BodyDef playerBodyDef = new BodyDef();
@@ -177,31 +185,32 @@ public class Player extends Entity {
 	public void update()
 	{
 		super.update();
+		inputHandler.update();
 		
 		//Vector2 pos = body.getPosition();
 		//Vector2 vel = body.getLinearVelocity();		
 		
-		if (Gdx.input.isKeyPressed(Keys.W))
+		if ( inputHandler.jumpPressed( player_t.ONE ) )
 		{
 			jump();
 		}
-		if (Gdx.input.isKeyPressed(Keys.A))
+		if ( inputHandler.leftPressed( player_t.ONE ) )
 		{
 			moveLeft();
 			prevKey = Keys.A; 
 		}
 
-		if (Gdx.input.isKeyPressed(Keys.D))
+		if ( inputHandler.rightPressed( player_t.ONE ) )
 		{
 			moveRight();
 			prevKey = Keys.D; 
 		}
-		if(Gdx.input.isKeyPressed(Keys.S))
+		if( inputHandler.downPressed( player_t.ONE ) )
 		{
 			stop();
 		}
 		
-		if((!Gdx.input.isKeyPressed(Keys.D) && !Gdx.input.isKeyPressed(Keys.A))
+		if((!inputHandler.leftPressed( player_t.ONE ) && !inputHandler.rightPressed( player_t.ONE ))
 				&& (prevKey == Keys.D || prevKey == Keys.A)) {
 			stop();
 		}

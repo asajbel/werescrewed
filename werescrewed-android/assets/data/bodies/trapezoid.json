@@ -1,0 +1,1 @@
+{"rigidBodies":[{"name":"trapezoid","imagePath":null,"origin":{"x":0,"y":0},"polygons":[[{"x":0.20000000298023224,"y":0},{"x":0.800000011920929,"y":0},{"x":1,"y":0.5},{"x":0,"y":0.5}]],"circles":[],"shapes":[{"type":"POLYGON","vertices":[{"x":0,"y":0.5},{"x":1,"y":0.5},{"x":0.800000011920929,"y":0},{"x":0.20000000298023224,"y":0}]}]}],"dynamicObjects":[]}

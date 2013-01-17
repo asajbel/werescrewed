@@ -7,11 +7,13 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+import com.blindtigergames.werescrewed.entity.EntityDef;
 import com.blindtigergames.werescrewed.screens.GameScreen;
 
 
@@ -29,15 +31,16 @@ public class ComplexPlatform extends Platform{
 	//String object would be like "bottle" then we will load that particular body (precompiled)
 	public ComplexPlatform( String n, Vector2 pos, Texture tex, int scale, 
 			World world, String bodyName ) {
-		super(n, pos, tex, world);
+		super(n, pos, tex, null);
+		this.world = world;
 		//this.width = width;
 		//this.height = height;
-		this.scale = scale;
 		constructComplexBody( pos.x, pos.y, scale, bodyName );
+		this.scale = scale;
 	}
 	
 	private void constructComplexBody( float x, float y, int scale, String bodyName ){
-		String filename = "data/" + bodyName + ".json";
+		String filename = "data/bodies/" + bodyName + ".json";
 		BodyEditorLoader loader = new BodyEditorLoader( Gdx.files.internal(filename) );
 		BodyDef bd = new BodyDef();
 		bd.position.set(x,y);
@@ -50,6 +53,7 @@ public class ComplexPlatform extends Platform{
 		
 		
 		body = world.createBody(bd);
+		body.setGravityScale(.1f);
 		
 		loader.attachFixture( body, bodyName, fd, scale );
 		

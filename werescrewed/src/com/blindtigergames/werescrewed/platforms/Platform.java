@@ -7,6 +7,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.blindtigergames.werescrewed.entity.Entity;
+import com.blindtigergames.werescrewed.entity.EntityDef;
 import com.blindtigergames.werescrewed.entity.mover.IMover;
 
 
@@ -34,6 +35,11 @@ public class Platform extends Entity{
 		this.world = world;
 	}
 	
+
+	public Platform(String n, EntityDef d, World w, Vector2 pos, float rot, Vector2 sca) {
+		super(n, d, w, pos, rot, sca);
+	}
+
 
 	public void setMover(IMover _mover){
 		this.mover = _mover;

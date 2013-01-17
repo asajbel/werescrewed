@@ -127,7 +127,7 @@ public class IMoverGameScreen implements com.badlogic.gdx.Screen {
       platforms = new ArrayList<Body>();
        
        Iterator<Joint> joints = world.getJoints(); 
-       for( int i = 0; i < 5; ++i ){
+       /*for( int i = 0; i < 5; ++i ){
        	for ( int j = 0; j < 5; ++j ){
 		        BodyDef bDef = new BodyDef();
 		        bDef.position.set(new Vector2( ( 250*i+200 )*PIXEL_TO_BOX,( 25*j+200 )*PIXEL_TO_BOX ) );
@@ -150,7 +150,7 @@ public class IMoverGameScreen implements com.badlogic.gdx.Screen {
 		        platforms.add(b);
 		        skeleton.addBoneAndJoint( new Entity("b"+i, b), world.createJoint(jointDef) );
        	}
-       }
+       }*/
        
 	}
 
