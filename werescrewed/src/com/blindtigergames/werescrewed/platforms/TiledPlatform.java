@@ -24,26 +24,27 @@ public class TiledPlatform extends Platform{
 	protected final int tileConstant = 16;
 	protected boolean rotate = false;
 	protected int tileHeight, tileWidth;
-
+	
 	public TiledPlatform( String n, Vector2 pos, Texture tex, int width, int height, World world ) {
 		super( n, pos, tex, world );
 		this.tileHeight = height;
 		this.tileWidth = width;
 		this.width = width * tileConstant;
 		this.height = height * tileConstant;
-		constructBody( width, height );
-		
+		constructTileBody( pos.x, pos.y, width, height );
 	}
 	
-
-	private void constructBody( int width, int height ){
+	private void constructTileBody( float x, float y, int width, int height ){
 
         BodyDef groundBodyDef =new BodyDef();  
-        groundBodyDef.type = BodyType.KinematicBody; 
-        groundBodyDef.position.set(this.position);
-        body = world.createBody(groundBodyDef);  
+        groundBodyDef.type = BodyType.KinematicBody;
+        groundBodyDef.position.set(new Vector2(x * GameScreen.PIXEL_TO_BOX, 
+        		                               y * GameScreen.PIXEL_TO_BOX));  
+        body = world.createBody( groundBodyDef );  
         
         PolygonShape groundBox = new PolygonShape();  
+        if ( width == 0 ) width = 1;
+        if ( height == 0 ) height = 1;
         groundBox.setAsBox((width * tileConstant) * GameScreen.PIXEL_TO_BOX, 
         		(height * tileConstant) * GameScreen.PIXEL_TO_BOX);
         
@@ -56,43 +57,9 @@ public class TiledPlatform extends Platform{
 		body.createFixture(platformFixtureDef);
 
 	}
-
-	
-	public void draw(SpriteBatch sb){
-		//Use tileHeight and tileWidth here
-		sb.draw(this.texture, this.position.x, this.position.y);
-	}
 	
 	public void update(){
-		body.setActive(true);
-		Vector2 pos = body.getPosition();
-		//Vector2 pos = this.body.getWorldCenter();
-		//this.position = new Vector2(pos.x * GameScreen.PIXEL_TO_BOX, 
-		//       		pos.y * GameScreen.PIXEL_TO_BOX);
-		//this.position = new Vector2(pos.x - (width/2), pos.y - (height/2));
-		this.position = pos;
-		
-		if( Gdx.input.isKeyPressed(Keys.T) ){
-			rotate();
-		}
-		if( Gdx.input.isKeyPressed(Keys.Y) ){
-			body.setAngularVelocity(0);
-		}
-		if( Gdx.input.isKeyPressed(Keys.O) ){
-			changeType();
-		}
-
-
-		if( Gdx.input.isKeyPressed(Keys.N) ){
-			//rotateBy90();
-			rotate = !rotate;
-			System.out.println(rotate);
-			System.out.println(body.getAngle());
-		}
-		if( Gdx.input.isKeyPressed(Keys.L) ){
-			setHorizontal();
-		}
-		
+		super.update();
 		/*
 		 * Doesn't work, I figure its more Imover stuff anyways
 		if(rotate)
@@ -109,7 +76,6 @@ public class TiledPlatform extends Platform{
 			body.applyAngularImpulse(impulse);
 		}
 		*/
-		mover.move(this.body);
 	}
 	
 	

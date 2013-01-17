@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.Fixture;
@@ -16,6 +17,8 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.WorldManifold;
+import com.blindtigergames.werescrewed.input.InputHandler;
+import com.blindtigergames.werescrewed.input.InputHandler.player_t;
 import com.blindtigergames.werescrewed.screens.GameScreen;
 
 
@@ -32,7 +35,9 @@ public class Player extends Entity {
 	final static float MAX_VELOCITY = 300f;
 	float stillTime = 0;
 	long lastGroundTime = 0;
-	static Texture player = new Texture(Gdx.files.internal("data/rletter.png"));
+	static Texture player = new Texture(Gdx.files.internal("data/player_r_m.png"));
+	int prevKey;
+	public InputHandler inputHandler;
 	
 	//private Camera cam;
 
@@ -42,29 +47,37 @@ public class Player extends Entity {
 
 	PlayerState playerState = PlayerState.Standing;
 
-	//needs to be rewritten!!!!!!!!!!!!!!!!!!
+	public Player(World w, Vector2 pos, String n, Texture tex)
+	{
+		super(n, EntityDef.getDefinition("player"), w, pos, 0.0f, new Vector2(1f,1f));
+		body.setGravityScale(.1f);
+		body.setFixedRotation(true);
+		//world = w;
+		//createPlayerBody(posX, posY);
+		//createPlayerBodyOLD(pos.x, pos.y);
+		sprite.setScale(100f * GameScreen.PIXEL_TO_BOX);
+		offset.x = -64f;
+		offset.y = -50f;
+		body.setUserData(this);
+		inputHandler = new InputHandler();
+	}
+	
 	public Player(World world, float posX, float posY, String n, Texture tex)
 	{
-		super(n, new Vector2(posX, posY), tex);
-		this.world = world;
+		this(world, new Vector2(posX,posY), n, tex);
+		inputHandler = new InputHandler();
 		//createPlayerBody(posX, posY);
-		createPlayerBodyOLD(posX, posY);
+		//createPlayerBodyOLD(posX, posY);
 	}
 
-	public Player(World world, Vector2 pos, String n, Texture tex)
-	{
-		super(n, pos, player);
-		this.world = world;
-		//createPlayerBody(posX, posY);
-		createPlayerBodyOLD(pos.x, pos.y);
-	}
 	public Player(World world, Vector2 pos, String n)
 	{
-		super(n, pos, player);
-		this.world = world;
+		this(world, pos, n, player);
+		inputHandler = new InputHandler();
 		//createPlayerBody(posX, posY);
-		createPlayerBodyOLD(pos.x, pos.y);
+		//createPlayerBodyOLD(pos.x, pos.y);
 	}
+	
 	//I tried some weird stuff in this constructor
 	private void createPlayerBody(float x, float y) {
 
@@ -104,12 +117,12 @@ public class Player extends Entity {
 		*/
 	}
 	
-	//works normally
+	//functionality has been moved to EntityDef
 	private void createPlayerBodyOLD( float x, float y) {
 
 		BodyDef playerBodyDef = new BodyDef();
 		playerBodyDef.type = BodyType.DynamicBody;
-		playerBodyDef.position.set(this.position);
+		playerBodyDef.position.set(x,y);
 		body = world.createBody(playerBodyDef);
 		CircleShape playerfeetShape = new CircleShape();
 		playerfeetShape.setRadius(10f * GameScreen.PIXEL_TO_BOX);
@@ -117,38 +130,35 @@ public class Player extends Entity {
 		//playerBody.createFixture(playerPolygonShape, 1.0f);
 		playerFixtureDef.shape = playerfeetShape;
 		playerFixtureDef.density = 9.9f;
-		playerFixtureDef.friction = 0f;
-		playerFixtureDef.restitution = 0.0f;
+		playerFixtureDef.friction = 0.05f;
+		playerFixtureDef.restitution = 0.5f;
 		body.createFixture(playerFixtureDef);
 		body.setGravityScale(.1f);
 		body.setFixedRotation(true);
-		//playerBody.
 		playerfeetShape.dispose();
 
 	}
 	
 	public void moveRight()
 	{
-		if (body.getLinearVelocity().x<0.4f) {
-			body.applyLinearImpulse(new Vector2(.001f, 0.0f), body.getWorldCenter());
+		if (body.getLinearVelocity().x<2.0f) {
+			body.applyLinearImpulse(new Vector2(0.01f, 0.0f), body.getWorldCenter());
 		}
-		body.applyLinearImpulse(new Vector2(0.001f, 0.0f), 
-				body.getWorldCenter());
+		//body.applyLinearImpulse(new Vector2(0.001f, 0.0f), body.getWorldCenter());
 		
 		// Following three lines update the texture
 		// doesn't belong here, I learned
 		//Vector2 pos = playerBody.getPosition();
 		//this.positionX = pos.x;
-		//this.positionY = pos.y;
+		//this.positionY = pos.y;dd
 	}
 	
 	public void moveLeft()
 	{
-		if (body.getLinearVelocity().x>-0.4f) {
-			body.applyLinearImpulse(new Vector2(-0.001f, 0.0f), body.getWorldCenter());
+		if (body.getLinearVelocity().x>-2.0f) {
+			body.applyLinearImpulse(new Vector2(-0.01f, 0.0f), body.getWorldCenter());
 		}
-		body.applyLinearImpulse(new Vector2(-0.001f, 0.0f), 
-				body.getWorldCenter());
+		//body.applyLinearImpulse(new Vector2(-0.001f, 0.0f), body.getWorldCenter());
 		//Gdx.app.debug("Physics:", "Applying Left Impulse to player at "+playerBody.getWorldCenter());
 
 	}
@@ -156,7 +166,7 @@ public class Player extends Entity {
 	public void jump()
 	{
 		if (Math.abs(body.getLinearVelocity().y) < 1e-5) {
-			body.applyLinearImpulse(new Vector2(0.0f, .1f),
+			body.applyLinearImpulse(new Vector2(0.0f, 0.2f),
 					body.getWorldCenter());
 		}
 
@@ -164,39 +174,48 @@ public class Player extends Entity {
 	
 	private void stop()
 	{
-		body.setLinearVelocity(0, 0);
-	}
-	
-	public void draw(SpriteBatch batch)
-	{
-
-		batch.draw(this.texture, this.position.x, this.position.y);
-	
+		float velocity = body.getLinearVelocity().x;
+		
+		if (velocity != 0.0f) {
+			if (velocity < - 0.1f) 
+				body.applyLinearImpulse(new Vector2(0.010f, 0.0f), body.getWorldCenter());
+			else if (velocity > 0.1f)
+				body.applyLinearImpulse(new Vector2(-0.010f, 0.0f), body.getWorldCenter());
+			else if (velocity > -0.1 && velocity < 0.1f)
+				body.setLinearVelocity(0.0f, 0.0f);
+		}
 	}
 	
 	public void update()
 	{
-		Vector2 pos = body.getPosition();
-		Vector2 vel = body.getLinearVelocity();
-
-		this.position = pos;
+		super.update();
+		inputHandler.update();
 		
+		//Vector2 pos = body.getPosition();
+		//Vector2 vel = body.getLinearVelocity();		
 		
-		if (Gdx.input.isKeyPressed(Keys.W))
+		if ( inputHandler.jumpPressed( player_t.ONE ) )
 		{
 			jump();
 		}
-		if (Gdx.input.isKeyPressed(Keys.A))
+		if ( inputHandler.leftPressed( player_t.ONE ) )
 		{
 			moveLeft();
+			prevKey = Keys.A; 
 		}
 
-		if (Gdx.input.isKeyPressed(Keys.D))
+		if ( inputHandler.rightPressed( player_t.ONE ) )
 		{
 			moveRight();
+			prevKey = Keys.D; 
 		}
-		if(Gdx.input.isKeyPressed(Keys.S))
+		if( inputHandler.downPressed( player_t.ONE ) )
 		{
+			stop();
+		}
+		
+		if((!inputHandler.leftPressed( player_t.ONE ) && !inputHandler.rightPressed( player_t.ONE ))
+				&& (prevKey == Keys.D || prevKey == Keys.A)) {
 			stop();
 		}
 		

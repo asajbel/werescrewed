@@ -7,31 +7,43 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+import com.blindtigergames.werescrewed.entity.EntityDef;
 import com.blindtigergames.werescrewed.screens.GameScreen;
 
 
-
+/**
+ * @param name blah blah
+ * 
+ * @author Ranveer
+ *
+ */
 
 public class ComplexPlatform extends Platform{
 
-	protected boolean rotate = false;
+	private int scale;
 
-	public ComplexPlatform( String n, Vector2 pos, Texture tex, int width, int height, World world ) {
-		super(n, pos, tex, world);
-		this.width = width;
-		this.height = height;
-		constructBody(width, height);
+	//String object would be like "bottle" then we will load that particular body (precompiled)
+	public ComplexPlatform( String n, Vector2 pos, Texture tex, int scale, 
+			World world, String bodyName ) {
+		super(n, pos, tex, null);
+		this.world = world;
+		//this.width = width;
+		//this.height = height;
+		constructComplexBody( pos.x, pos.y, scale, bodyName );
+		this.scale = scale;
 	}
 	
-	private void constructBody( int width, int height ){
-		BodyEditorLoader loader = new BodyEditorLoader( Gdx.files.internal("data/bottle.json") );
+	private void constructComplexBody( float x, float y, int scale, String bodyName ){
+		String filename = "data/bodies/" + bodyName + ".json";
+		BodyEditorLoader loader = new BodyEditorLoader( Gdx.files.internal(filename) );
 		BodyDef bd = new BodyDef();
-		bd.position.set( this.position);
+		bd.position.set(x,y);
 		bd.type = BodyType.DynamicBody;
 		
 		FixtureDef fd = new FixtureDef();
@@ -41,39 +53,14 @@ public class ComplexPlatform extends Platform{
 		
 		
 		body = world.createBody(bd);
+		body.setGravityScale(.1f);
 		
-		loader.attachFixture( body, "bottle", fd, 1 );
-	}
-	
-	public void draw( SpriteBatch sb ){
-		//Use tileHeight and tileWidth here
-		sb.draw( this.texture, this.position.x, this.position.y );
+		loader.attachFixture( body, bodyName, fd, scale );
+		
+		
 	}
 	
 	public void update(){
-		body.setActive(true);
-		Vector2 pos = body.getPosition();
-		this.position = pos;
-		if( Gdx.input.isKeyPressed(Keys.T) ){
-			rotate();
-		}
-		
-		if( Gdx.input.isKeyPressed(Keys.Y) ){
-			body.setAngularVelocity(0);
-		}
-		if( Gdx.input.isKeyPressed(Keys.O) ){
-			changeType();
-		}
-
-		if( Gdx.input.isKeyPressed(Keys.N) ){
-			//rotateBy90();
-			rotate = !rotate;
-			System.out.println(rotate);
-			System.out.println(body.getAngle());
-		}
-		if( Gdx.input.isKeyPressed(Keys.L) ){
-			setHorizontal();
-		}
-		
+		super.update();
 	}
 }
