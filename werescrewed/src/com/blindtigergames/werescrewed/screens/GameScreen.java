@@ -13,6 +13,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.blindtigergames.werescrewed.camera.Camera;
@@ -22,7 +23,12 @@ import com.blindtigergames.werescrewed.entity.Player;
 import com.blindtigergames.werescrewed.entity.mover.TimelineMover;
 import com.blindtigergames.werescrewed.input.InputHandler;
 import com.blindtigergames.werescrewed.input.InputHandler.player_t;
-import com.blindtigergames.werescrewed.platforms.*;
+import com.blindtigergames.werescrewed.platforms.ComplexPlatform;
+import com.blindtigergames.werescrewed.platforms.RoomPlatform;
+import com.blindtigergames.werescrewed.platforms.ShapePlatform;
+import com.blindtigergames.werescrewed.platforms.Shapes;
+import com.blindtigergames.werescrewed.platforms.TiledPlatform;
+import com.blindtigergames.werescrewed.screws.StructureScrew;
 
 
 
@@ -59,6 +65,10 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 	ComplexPlatform cp;
 	ShapePlatform sp;
 
+	//testing screw
+	Texture screwTex;
+	StructureScrew structScrew;
+	InputHandler inputHandler; 
 
 	FPSLogger logger;
 
@@ -76,8 +86,8 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 		float w = Gdx.graphics.getWidth()/zoom;
 		float h = Gdx.graphics.getHeight()/zoom;
 
+		inputHandler = new InputHandler();
 		
-
 		texture = new Texture(Gdx.files.internal("data/rletter.png"));
 		//takes in width, height
         //cam = new Camera(w, h);
@@ -97,6 +107,12 @@ public class GameScreen implements com.badlogic.gdx.Screen {
         sp = new ShapePlatform( "rhom", new Vector2( 1.0f, 1.0f), texture, world, 
         		Shapes.rhombus, 1.0f, false);
         
+
+		//testing screws
+		screwTex = new Texture(Gdx.files.internal("data/screw.png"));
+		structScrew = new StructureScrew( "", sp.body.getPosition(), screwTex, 25, sp.body, world);
+		
+		
         //tp = new TiledPlatform("plat", new Vector2(200.0f, 100.0f), null, 1, 2, world);
         tp.setMover(new TimelineMover());
         //BOX_TO_PIXEL, PIXEL_TO_BOX
@@ -126,6 +142,8 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 		Gdx.gl20.glClearColor(0.0f, 0f, 0.0f, 1.0f);
 		Gdx.gl20.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
+		inputHandler.update();
+		
 		cam.update();
 		
 		if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)){
@@ -140,6 +158,17 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 		rp.update();
 		cp.update();
 		sp.update();
+
+		structScrew.update();
+		 
+		if(inputHandler.screwPressed( player_t.ONE )){
+			/*for (Fixture f: structScrew.body.getFixtureList()){
+				f.contactListener();
+			}*/
+			//if(inputHandler.leftPressed( player_t.ONE )){
+				structScrew.screwLeft(); 
+			//}
+		}
 		
 		batch.setProjectionMatrix(cam.combined());
 		//batch.setProjectionMatrix(camera.combined);
@@ -151,8 +180,10 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 		//player.draw(batch);
 		
 		// test drawing the texture by uncommenting the next line:
-		//tp.draw(batch);
+		tp.draw(batch);
 		player.draw(batch);
+		
+		structScrew.draw(batch);
 		
 		batch.end();
 
