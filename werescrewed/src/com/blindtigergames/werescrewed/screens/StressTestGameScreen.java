@@ -104,7 +104,7 @@ public class StressTestGameScreen implements com.badlogic.gdx.Screen {
         //tp.setMover(new TimelineMover());
         //BOX_TO_PIXEL, PIXEL_TO_BOX
         BodyDef groundBodyDef =new BodyDef();  
-        groundBodyDef.type = BodyType.DynamicBody;
+        groundBodyDef.type = BodyType.KinematicBody;
         groundBodyDef.position.set(new Vector2(0*PIXEL_TO_BOX, 0*PIXEL_TO_BOX));  
         groundBody = world.createBody(groundBodyDef);  
         //PolygonShape groundBox = new PolygonShape();  
@@ -128,7 +128,7 @@ public class StressTestGameScreen implements com.badlogic.gdx.Screen {
 		        bDef.position.set(new Vector2((250*i+200)*PIXEL_TO_BOX,(25*j+200)*PIXEL_TO_BOX));
 		        bDef.type = BodyType.DynamicBody;
 		        Body b = world.createBody(bDef);
-		        PolygonShape bBox = new PolygonShape(); 
+		        PolygonShape bBox = new PolygonShape();
 		        bBox.setAsBox(100*PIXEL_TO_BOX, 5*PIXEL_TO_BOX);
 		        b.createFixture(bBox,1.0f);
 		        platforms.add(b);
@@ -170,7 +170,8 @@ public class StressTestGameScreen implements com.badlogic.gdx.Screen {
 		cp.update();
 		
 		if ( Gdx.input.isKeyPressed(Input.Keys.X) ){
-			groundBody.setTransform(groundBody.getTransform().getPosition().add(0f,0.1f),0);
+			groundBody.setTransform(groundBody.getTransform().getPosition().add(0f,0.1f),groundBody.getTransform().getRotation());
+			
 			//groundBody.setTransform(0f, -0.01f, 0);
 			//Gdx.app.log("dude", "DUDE!");
 			for ( Body b: platforms ){
@@ -180,7 +181,7 @@ public class StressTestGameScreen implements com.badlogic.gdx.Screen {
 		
 		if ( Gdx.input.isKeyPressed(Input.Keys.Z) ){
 			//groundBody.setTransform(0f, 0.01f, 0);
-			groundBody.setTransform(groundBody.getTransform().getPosition().add(0f,-0.1f),0);
+			groundBody.setTransform(groundBody.getTransform().getPosition().add(0f,-0.1f),groundBody.getTransform().getRotation());
 			//Gdx.app.log("dude", "DUDE!");
 			for ( Body b: platforms ){
 				b.setActive(true);
