@@ -106,7 +106,6 @@ public class GameScreen implements com.badlogic.gdx.Screen {
         groundBody.createFixture(groundBox, 0.0f);
         groundBody.getFixtureList().get(0).setFriction(0.5f);
         
-      
 
         //make sure you uncomment the next two lines        debugRenderer = new SBox2DDebugRenderer(BOX_TO_PIXEL); for physics world        
         //debugRenderer = new Box2DDebugRenderer();
