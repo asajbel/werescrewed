@@ -57,7 +57,7 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 	TiledPlatform tp, tp2;
 	RoomPlatform rp;
 	ComplexPlatform cp;
-	//ShapePlatform sp;
+	ShapePlatform sp;
 
 
 	FPSLogger logger;
@@ -90,10 +90,11 @@ public class GameScreen implements com.badlogic.gdx.Screen {
         player = new Player( world, new Vector2(1.0f, 1.0f), name );
 
         cam = new Camera( w, h, player );
-        tp = new TiledPlatform( "plat", new Vector2(5.0f, 40.0f), texture, 1, 2, world );
+        tp = new TiledPlatform( "plat", new Vector2(5.0f, 40.0f), texture, 1, 1, world );
         rp = new RoomPlatform( "room", new Vector2(-1.0f, 1.0f), texture, 1, 10, world );
         cp = new ComplexPlatform( "bottle", new Vector2(0.0f, 3.0f), texture, 1, world, "bottle" );
-        //sp = new ShapePlatform( "trap", new Vector2( 1.0f, 1.0f), texture, world, Shapes.trapezoid, 0.5f);
+        sp = new ShapePlatform( "rhom", new Vector2( 1.0f, 1.0f), texture, world, 
+        		Shapes.rhombus, 1.0f, false);
         
         //tp = new TiledPlatform("plat", new Vector2(200.0f, 100.0f), null, 1, 2, world);
         tp.setMover(new TimelineMover());
@@ -137,7 +138,7 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 		tp.update();
 		rp.update();
 		cp.update();
-		//sp.update();
+		sp.update();
 		
 		batch.setProjectionMatrix(cam.combined());
 		//batch.setProjectionMatrix(camera.combined);

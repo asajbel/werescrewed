@@ -14,6 +14,12 @@ public enum Screen {
             return new PauseScreen();
         }
     },
+    LOADING {
+        @Override
+        protected com.badlogic.gdx.Screen getScreenInstance() {
+            return new LoadingScreen();
+        }
+    },
     MAIN_MENU {
         @Override
         protected com.badlogic.gdx.Screen getScreenInstance() {

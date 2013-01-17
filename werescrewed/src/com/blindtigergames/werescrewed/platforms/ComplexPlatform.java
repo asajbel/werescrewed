@@ -26,7 +26,6 @@ import com.blindtigergames.werescrewed.screens.GameScreen;
 
 public class ComplexPlatform extends Platform{
 
-	protected boolean rotate = false;
 	private int scale;
 
 	//String object would be like "bottle" then we will load that particular body (precompiled)
@@ -41,7 +40,7 @@ public class ComplexPlatform extends Platform{
 	}
 	
 	private void constructComplexBody( float x, float y, int scale, String bodyName ){
-		String filename = "data/" + bodyName + ".json";
+		String filename = "data/bodies/" + bodyName + ".json";
 		BodyEditorLoader loader = new BodyEditorLoader( Gdx.files.internal(filename) );
 		BodyDef bd = new BodyDef();
 		bd.position.set(x,y);
@@ -54,6 +53,7 @@ public class ComplexPlatform extends Platform{
 		
 		
 		body = world.createBody(bd);
+		body.setGravityScale(.1f);
 		
 		loader.attachFixture( body, bodyName, fd, scale );
 		
@@ -61,28 +61,6 @@ public class ComplexPlatform extends Platform{
 	}
 	
 	public void update(){
-		body.setActive(true);
 		super.update();
-		if( Gdx.input.isKeyPressed(Keys.T) ){
-			rotate();
-		}
-		
-		if( Gdx.input.isKeyPressed(Keys.Y) ){
-			body.setAngularVelocity(0);
-		}
-		if( Gdx.input.isKeyPressed(Keys.O) ){
-			changeType();
-		}
-
-		if( Gdx.input.isKeyPressed(Keys.N) ){
-			//rotateBy90();
-			rotate = !rotate;
-			System.out.println(rotate);
-			System.out.println(body.getAngle());
-		}
-		if( Gdx.input.isKeyPressed(Keys.L) ){
-			setHorizontal();
-		}
-		
 	}
 }
