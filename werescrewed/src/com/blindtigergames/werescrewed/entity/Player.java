@@ -58,6 +58,7 @@ public class Player extends Entity {
 		sprite.setScale(100f * GameScreen.PIXEL_TO_BOX);
 		offset.x = -64f;
 		offset.y = -50f;
+		body.setUserData(this);
 		inputHandler = new InputHandler();
 	}
 	
