@@ -11,15 +11,14 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.blindtigergames.werescrewed.entity.Player;
-import com.blindtigergames.werescrewed.screens.GameScreen;
-import com.sun.xml.internal.bind.v2.runtime.reflect.ListIterator;
+//import com.blindtigergames.werescrewed.screens.GameScreen;
+//import com.sun.xml.internal.bind.v2.runtime.reflect.ListIterator;
 
 /*******************************************************************************
  * Camera class. Zooms and translates based on anchors. Max 30 anchors.
  * @author Edward Ramirez
  ******************************************************************************/
 public class Camera {
-	public static final int MAX_ANCHORS = 30;
 	public OrthographicCamera camera;
 	public float viewportHeight;
 	public float viewportWidth;
@@ -27,13 +26,13 @@ public class Camera {
 	public Vector2 center2D;
 	
 	private static final int LISTEN_BUFFER = 300;
+	private Player player1;
+	private Player player2;
 	private Rectangle anchorListenRectangle;
 	private Vector2 focus;
 	private Vector3 focus3D;
 	private Vector2 prevFocus;
 		
-	private LinkedList<Anchor> anchorList;
-	
 	private void initializeVars (float viewportWidth, float viewportHeight) {
 		camera = new OrthographicCamera(1, viewportHeight/viewportWidth);
 		this.viewportHeight = Gdx.graphics.getHeight();
@@ -44,7 +43,6 @@ public class Camera {
 		position = camera.position;
 		center2D = new Vector2(position.x, position.y); 
 		
-		this.anchorList = new LinkedList<Anchor>();
 		this.anchorListenRectangle = new Rectangle((camera.position.x - this.viewportWidth * .5f) - LISTEN_BUFFER,
 													(camera.position.y - this.viewportHeight * .5f) - LISTEN_BUFFER,
 													this.viewportWidth * .5f + LISTEN_BUFFER,
@@ -64,15 +62,18 @@ public class Camera {
 	public Camera(float viewportWidth, float viewportHeight, Player player)
 	{
 		initializeVars(viewportWidth, viewportHeight);
-		addAnchor(new Anchor(player.position));
+		player1 = player;
+		AnchorList.addAnchor(player.position);
         camera.update();  
 	}
 	
 	public Camera(float viewportWidth, float viewportHeight, Player player1, Player player2)
 	{
 		initializeVars(viewportWidth, viewportHeight);
-		addAnchor(new Anchor(player1.position));
-		addAnchor(new Anchor(player2.position));
+		this.player1 = player1;
+		this.player2 = player2;
+		AnchorList.addAnchor(player1.position);
+		AnchorList.addAnchor(player2.position);
         camera.update();  
 	}
 	
@@ -94,6 +95,11 @@ public class Camera {
 		center2D.x = position.x;
 		center2D.y = position.y;
 		prevFocus = focus;
+		
+		if (player1 != null) {
+			
+		}
+		
 		/*float lerp = 0.1f;
 		Vector3 position = camera.position;
 		position.x += (player.positionX - position.x) * lerp;
@@ -127,29 +133,7 @@ public class Camera {
             }
 
     }
-    
-    /*
-     * adds an anchor to the anchor list
-     * @Anchor newAnchor: the new anchor to be added
-     */    
-    public void addAnchor(Anchor newAnchor) {
-    	if (newAnchor != null) {
-    		this.anchorList.add(newAnchor);
-    	}
-    }
-    
-    /*
-     * removes an anchor from the anchor list
-     * this shouldn't ever be needed
-     * @Anchor exAnchor: an anchor to compare with other anchors for removal
-     */
-    public void removeAnchor(Anchor exAnchor) {
-    	Iterator<Anchor> it = this.anchorList.listIterator(0);
-    	while (it.hasNext()) {
-    		if(exAnchor == it.next())
-    			it.remove();
-    	}
-    }
+
     
     /*
      * set focus of camera to the midpoint of all anchors
