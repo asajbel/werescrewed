@@ -6,8 +6,8 @@ import com.badlogic.gdx.math.Vector2;
 	/**
 	 * Simple 2d kinematic movement storage class.
 	 * 
-	 * @param velocity - Vector2 storage for velocity
-	 * @param rotation - float storage for angular velocity
+	 * @param velocity - Vector2 storage for velocity / linear impulse
+	 * @param rotation - float storage for angular velocity / angular impulse
 	 * 
 	 * @author stew
 	 *

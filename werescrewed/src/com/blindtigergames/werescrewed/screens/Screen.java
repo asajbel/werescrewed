@@ -33,6 +33,13 @@ public enum Screen {
         protected com.badlogic.gdx.Screen getScreenInstance() {
              return new CreditsScreen();
         }
+    },
+
+    IMOVER {
+        @Override
+        protected com.badlogic.gdx.Screen getScreenInstance() {
+             return new IMoverGameScreen();
+        }
     };
  
     protected abstract com.badlogic.gdx.Screen getScreenInstance();

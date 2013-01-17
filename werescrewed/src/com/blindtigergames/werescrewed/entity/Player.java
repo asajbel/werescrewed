@@ -1,4 +1,4 @@
-package com.blindtigergames.werescrewed.entity;
+ package com.blindtigergames.werescrewed.entity;
 
 import java.util.List;
 
@@ -18,10 +18,6 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.WorldManifold;
 import com.blindtigergames.werescrewed.screens.GameScreen;
-
-
-
-
 
 public class Player extends Entity {
 

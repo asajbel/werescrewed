@@ -10,8 +10,7 @@ import com.blindtigergames.werescrewed.entity.*;
 
 /**
  * Bone is an entity which is placed onto the Skeleton
- * then when the Skeleton moves, the Bones should follow 
- * @param name blah blah
+ * then when the Skeleton moves, the Bones should follow
  * 
  * @author Ranveer/Stewart
  *

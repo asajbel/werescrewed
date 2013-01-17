@@ -43,6 +43,11 @@ public class Entity
 		}
 	}
 	
+	public Entity(String n, Body _body){
+		name = n;
+		body = _body;
+	}
+	
 	public Entity(String n, Sprite spr, Body bod)
 	{
 		this();
@@ -51,6 +56,9 @@ public class Entity
 		body = bod;
 		if (bod != null){
 			world = bod.getWorld();
+			
+		}
+		if ( spr != null ){
 			sprite.setScale(GameScreen.PIXEL_TO_BOX);
 		}
 
@@ -98,10 +106,10 @@ public class Entity
 			Vector2 bodyPos = body.getPosition();
 			Vector2 spritePos = bodyPos.mul(GameScreen.BOX_TO_PIXEL).add(offset);
 			sprite.setPosition(spritePos.x, spritePos.y);
-			System.out.println(name+":"+bodyPos.x+","+bodyPos.y);
-			if(mover != null)
-				mover.move(body);
+			//System.out.println(name+":"+bodyPos.x+","+bodyPos.y);
 		}
+		if(mover != null)
+			mover.move(body);
 	}
 
 	protected String generateName(){
