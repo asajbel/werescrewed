@@ -88,7 +88,6 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 		float h = Gdx.graphics.getHeight()/zoom;
 
 		inputHandler = new InputHandler();
-		
 		texture = new Texture(Gdx.files.internal("data/rletter.png"));
 		//takes in width, height
         //cam = new Camera(w, h);
@@ -107,13 +106,16 @@ public class GameScreen implements com.badlogic.gdx.Screen {
         cp = new ComplexPlatform( "bottle", new Vector2(0.0f, 3.0f), texture, 1, world, "bottle" );
         sp = new ShapePlatform( "rhom", new Vector2( 1.0f, 1.0f), texture, world, 
         		Shapes.rhombus, 1.0f, false);
-        
 
 		//testing screws
 		screwTex = new Texture(Gdx.files.internal("data/screw.png"));
+<<<<<<< HEAD
 		structScrew = new StructureScrew( "", tp.body.getPosition(), screwTex, 25, tp.body, world);
 		
 		
+=======
+		structScrew = new StructureScrew( "", sp.body.getPosition(), screwTex, 25, sp.body, world);
+>>>>>>> f62455d31fafca90516ced6d2afde5897dee00bf
         //tp = new TiledPlatform("plat", new Vector2(200.0f, 100.0f), null, 1, 2, world);
         tp.setMover(new TimelineMover());
         //BOX_TO_PIXEL, PIXEL_TO_BOX
@@ -144,7 +146,6 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 		Gdx.gl20.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
 		inputHandler.update();
-		
 		cam.update();
 		
 		if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)){
@@ -188,7 +189,6 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 		player.draw(batch);
 		
 		structScrew.draw(batch);
-		
 		batch.end();
 
 		

@@ -116,6 +116,30 @@ public class InputHandler implements InputProcessor {
 		}
 	}
 	
+	public boolean screwing ( player_t player ) {
+		switch ( player ){
+			default: return false;
+			case ONE:
+				return ( ( p1LastKeyPressed == Keys.W && rightPressed ( player_t.ONE ) )
+						|| ( p1LastKeyPressed == Keys.D && jumpPressed ( player_t.ONE ) ) );
+			case TWO:
+				return ( ( p2LastKeyPressed == Keys.I && rightPressed ( player_t.TWO ) )
+						|| ( p2LastKeyPressed == Keys.L && jumpPressed ( player_t.TWO ) ) );
+		}
+	}
+	
+	public boolean unscrewing ( player_t player ) {
+		switch ( player ){
+			default: return false;
+			case ONE:
+				return ( ( p1LastKeyPressed == Keys.W && leftPressed ( player_t.ONE ) )
+						|| ( p1LastKeyPressed == Keys.A && jumpPressed ( player_t.ONE ) ) );
+			case TWO:
+				return ( ( p2LastKeyPressed == Keys.I && leftPressed ( player_t.TWO ) )
+						|| ( p2LastKeyPressed == Keys.J && jumpPressed ( player_t.TWO ) ) );
+		}
+	}
+	
 	
 	@Override
 	public boolean keyDown( int keycode ) {
@@ -126,34 +150,44 @@ public class InputHandler implements InputProcessor {
 		
 		if ( keycode == Keys.W ) {
 			p1JumpPressed = true;
+			p1LastKeyPressed = keycode;
 		}
 		if ( keycode == Keys.A ) {
 			p1LeftPressed = true;
+			p1LastKeyPressed = keycode;
 		}
 		if ( keycode == Keys.S ) {
 			p1DownPressed = true;
+			p1LastKeyPressed = keycode;
 		}
 		if ( keycode == Keys.D ) {
 			p1RightPressed = true;
+			p1LastKeyPressed = keycode;
 		}
 		if ( keycode == Keys.Q ) {
 			p1ScrewPressed = true;
+			p1LastKeyPressed = keycode;
 		}
 		
 		if ( keycode == Keys.I ) {
 			p2JumpPressed = true;
+			p2LastKeyPressed = keycode;
 		}
 		if ( keycode == Keys.J ) {
 			p2LeftPressed = true;
+			p2LastKeyPressed = keycode;
 		}
 		if ( keycode == Keys.K ) {
 			p2DownPressed = true;
+			p2LastKeyPressed = keycode;
 		}
 		if ( keycode == Keys.L ) {
 			p2RightPressed = true;
+			p2LastKeyPressed = keycode;
 		}
 		if ( keycode == Keys.U ) {
 			p2ScrewPressed = true;
+			p2LastKeyPressed = keycode;
 		}
 		
 		return true;
