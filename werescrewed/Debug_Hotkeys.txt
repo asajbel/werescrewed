@@ -1,0 +1,8 @@
+Debug Hotkeys!!
+---------------
+Add your debug hotkeys here so everyone's aware of them.
+
+Camera
+------
+debug mode: hold 'Z'
+	- allows control of the camera with arrow keys and 'E' and 'Q'
