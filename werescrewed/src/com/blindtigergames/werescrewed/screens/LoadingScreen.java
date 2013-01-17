@@ -3,6 +3,7 @@ package com.blindtigergames.werescrewed.screens;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -76,9 +77,30 @@ public class LoadingScreen implements com.badlogic.gdx.Screen {
 	
 	@Override
 	public void render(float delta) {
-		// TODO Auto-generated method stub
-		
-	}
+		/*
+		// Clear the screen
+        Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
+
+        if (game.manager.update()) { // Load some, will return true if done loading
+            if (Gdx.input.isTouched()) { // If the screen is touched after the game is done loading, go to the main menu screen
+                game.setScreen(new MainMenuScreen(game));
+            }
+        }
+
+        // Interpolate the percentage to make it more smooth
+        percent = Interpolation.linear.apply(percent, game.manager.getProgress(), 0.1f);
+
+        // Update positions (and size) to match the percentage
+        loadingBarHidden.setX(startX + endX * percent);
+        loadingBg.setX(loadingBarHidden.getX() + 30);
+        loadingBg.setWidth(450 - 450 * percent);
+        loadingBg.invalidate();
+
+        // Show the loading screen
+        stage.act();
+        stage.draw();
+        */
+    }
 
 	@Override
 	public void resize(int width, int height) {
@@ -94,8 +116,7 @@ public class LoadingScreen implements com.badlogic.gdx.Screen {
 
 	@Override
 	public void hide() {
-		// TODO Auto-generated method stub
-		
+		// game.manager.unload("data/loading.pack");
 	}
 
 	@Override
