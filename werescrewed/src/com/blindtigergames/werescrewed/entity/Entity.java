@@ -22,7 +22,6 @@ public class Entity
 	public IMover mover;
 	
 	public Entity(){
-		System.err.println("Warning: Entity is being created without a definition.");
 		type = null;
 		sprite = null;
 		body = null;
@@ -31,16 +30,14 @@ public class Entity
 		name = "I AM ERROR.";
 	}
 	
-	public Entity(String n, EntityDef d, World w, Vector2 pos, float rot)
+	public Entity(String n, EntityDef d, World w, Vector2 pos, float rot, Vector2 sca)
 	{
+		this();
 		name = n;
 		type = d;
 		world = w;
-		sprite = new Sprite(d.texture);
-		body = w.createBody(d.bodyDef);
-		for (FixtureDef fix : d.fixtureDefs){
-			body.createFixture(fix);
-		}
+		constructSprite();
+		constructBody(pos.x, pos.y, sca.x, sca.y);
 	}
 	
 	public Entity(String n, Sprite spr, Body bod)
@@ -112,5 +109,20 @@ public class Entity
 		Sprite out = new Sprite(tex);
 		out.setOrigin(tex.getWidth()/2, tex.getHeight()/2);
 		return out;
+	}
+	
+	protected void constructSprite(){
+		if (type != null && type.texture != null)
+			sprite = new Sprite(type.texture);
+	}
+	
+	protected void constructBody( float x, float y, float width, float height ){
+		if (type != null){
+			body = world.createBody(type.bodyDef);
+			for (FixtureDef fix : type.fixtureDefs){
+				body.createFixture(fix);
+			}
+			setPosition(x,y);
+		}
 	}
 }

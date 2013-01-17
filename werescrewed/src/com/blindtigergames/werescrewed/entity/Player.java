@@ -33,7 +33,7 @@ public class Player extends Entity {
 	final static float MAX_VELOCITY = 300f;
 	float stillTime = 0;
 	long lastGroundTime = 0;
-	static Texture player = new Texture(Gdx.files.internal("data/libgdx.png"));
+	static Texture player = new Texture(Gdx.files.internal("data/player_r_m.png"));
 	int prevKey;
 	
 	//private Camera cam;
@@ -46,10 +46,12 @@ public class Player extends Entity {
 
 	public Player(World w, Vector2 pos, String n, Texture tex)
 	{
-		super(n, pos, tex, null);
-		world = w;
+		super(n, EntityDef.getDefinition("player"), w, pos, 0.0f, new Vector2(1f,1f));
+		body.setGravityScale(.1f);
+		body.setFixedRotation(true);
+		//world = w;
 		//createPlayerBody(posX, posY);
-		createPlayerBodyOLD(pos.x, pos.y);
+		//createPlayerBodyOLD(pos.x, pos.y);
 		sprite.setScale(100f * GameScreen.PIXEL_TO_BOX);
 		offset.x = -64f;
 		offset.y = -50f;
@@ -108,7 +110,7 @@ public class Player extends Entity {
 		*/
 	}
 	
-	//works normally
+	//functionality has been moved to EntityDef
 	private void createPlayerBodyOLD( float x, float y) {
 
 		BodyDef playerBodyDef = new BodyDef();
