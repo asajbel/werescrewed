@@ -269,6 +269,8 @@ public class InputHandler implements InputProcessor {
 		// TODO Auto-generated method stub
 		return false;
 	}
+	private int p1LastKeyPressed;
+	private int p2LastKeyPressed;
 
 	private boolean pauseKeyPressed;
 	
