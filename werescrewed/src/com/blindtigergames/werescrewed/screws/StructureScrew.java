@@ -18,5 +18,8 @@ public class StructureScrew extends Screw {
 		if ( depth > maxDepth ) {
 			depth = maxDepth;
 		}
+		if ( depth <= 0 ) {
+			remove();
+		}
 	}
 }

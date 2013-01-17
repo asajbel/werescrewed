@@ -15,7 +15,7 @@ public class Screw extends Entity {
 	}
 	
 	public void remove(){
-		
+		world.destroyBody(body);
 	}
 	
 	public void screwLeft(){
