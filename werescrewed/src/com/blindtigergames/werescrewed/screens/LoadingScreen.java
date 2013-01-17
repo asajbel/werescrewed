@@ -1,6 +1,8 @@
 package com.blindtigergames.werescrewed.screens;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Interpolation;
@@ -35,16 +37,16 @@ public class LoadingScreen implements com.badlogic.gdx.Screen {
     	
     	//WereScrewedGame.manager.load("data/loading.pack", TextureAtlas.class);
     	  // Tell the manager to load assets for the loading screen
-    	/*
-    	Game game = ScreenManager.getInstance().game;
-        game.manager.load("data/loading.pack", TextureAtlas.class);
+    	
+    	
+    	WereScrewedGame.manager.load("data/loading.pack", TextureAtlas.class);
         // Wait until they are finished loading
-        game.manager.finishLoading();
+    	WereScrewedGame.manager.finishLoading();
         // Initialize the stage where we will place everything
         stage = new Stage();
 
         // Get our textureatlas from the manager
-        TextureAtlas atlas = game.manager.get("data/loading.pack", TextureAtlas.class);
+        TextureAtlas atlas = WereScrewedGame.manager.get("data/loading.pack", TextureAtlas.class);
 
         // Grab the regions from the atlas and create some images
         logo = new Image(atlas.findRegion("libgdx-logo"));
@@ -74,24 +76,25 @@ public class LoadingScreen implements com.badlogic.gdx.Screen {
         // game.manager.load("data/assets2.pack", TextureAtlas.class);
         // game.manager.load("data/assets3.pack", TextureAtlas.class);
     
-    */
+    
     }
 	
 	
 	@Override
 	public void render(float delta) {
-		/*
+		
 		// Clear the screen
-        Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
+		Gdx.gl20.glClearColor(0.0f, 0f, 0.0f, 1.0f);
+		Gdx.gl20.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        if (game.manager.update()) { // Load some, will return true if done loading
+        if (WereScrewedGame.manager.update()) { // Load some, will return true if done loading
             if (Gdx.input.isTouched()) { // If the screen is touched after the game is done loading, go to the main menu screen
-                game.setScreen(new MainMenuScreen(game));
+            	ScreenManager.getInstance().show(Screen.GAME);
             }
         }
 
         // Interpolate the percentage to make it more smooth
-        percent = Interpolation.linear.apply(percent, game.manager.getProgress(), 0.1f);
+        percent = Interpolation.linear.apply(percent, WereScrewedGame.manager.getProgress(), 0.1f);
 
         // Update positions (and size) to match the percentage
         loadingBarHidden.setX(startX + endX * percent);
@@ -102,7 +105,7 @@ public class LoadingScreen implements com.badlogic.gdx.Screen {
         // Show the loading screen
         stage.act();
         stage.draw();
-        */
+        
     }
 
 	@Override
@@ -119,7 +122,7 @@ public class LoadingScreen implements com.badlogic.gdx.Screen {
 
 	@Override
 	public void hide() {
-		// game.manager.unload("data/loading.pack");
+		 //WereScrewedGame.manager.unload("data/loading.pack");
 	}
 
 	@Override
@@ -136,7 +139,7 @@ public class LoadingScreen implements com.badlogic.gdx.Screen {
 
 	@Override
 	public void dispose() {
-		// TODO Auto-generated method stub
+		WereScrewedGame.manager.unload("data/loading.pack");
 		
 	}
 

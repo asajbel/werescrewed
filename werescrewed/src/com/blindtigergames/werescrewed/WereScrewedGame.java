@@ -16,7 +16,9 @@ public class WereScrewedGame extends Game {
 	public void create() {
 		ScreenManager.getInstance().initialize(this);
 
-       // ScreenManager.getInstance().show(Screen.INTRO);
+        //ScreenManager.getInstance().show(Screen.INTRO);
+		
+		//ScreenManager.getInstance().show(Screen.LOADING);
         
         //uncomment next line to bypass intro
 		ScreenManager.getInstance().show(Screen.GAME);
