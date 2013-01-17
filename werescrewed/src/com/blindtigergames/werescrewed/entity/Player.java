@@ -33,7 +33,7 @@ public class Player extends Entity {
 	final static float MAX_VELOCITY = 300f;
 	float stillTime = 0;
 	long lastGroundTime = 0;
-	static Texture player = new Texture(Gdx.files.internal("data/libgdx.png"));
+	static Texture player = new Texture(Gdx.files.internal("data/player_r_m.png"));
 	int prevKey;
 	
 	//private Camera cam;
