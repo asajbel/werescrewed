@@ -57,7 +57,6 @@ public class TiledPlatform extends Platform{
 	}
 	
 	public void update(){
-		super.update();
 		body.setActive(true);
 		
 		if( Gdx.input.isKeyPressed(Keys.T) ){
@@ -98,6 +97,7 @@ public class TiledPlatform extends Platform{
 		}
 		*/
 		mover.move(this.body);
+		super.update();
 	}
 	
 	
