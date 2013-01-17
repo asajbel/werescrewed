@@ -1,5 +1,7 @@
 package com.blindtigergames.werescrewed.screws;
 
+import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+
 /**
  * @param name blah blah
  * 
@@ -17,6 +19,9 @@ public class BossScrew extends Screw {
 	public void update(){
 		if ( depth > maxDepth ) {
 			depth = maxDepth;
+		}
+		if ( depth <= 0 ) {
+			body.setType(BodyType.DynamicBody);
 		}
 	}
 }

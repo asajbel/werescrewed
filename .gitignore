@@ -9,8 +9,8 @@
 *.class
 
 # generated files
-bin/com/
 gen/
+bin/
 
 # Local configuration file (sdk path, etc)
 local.properties

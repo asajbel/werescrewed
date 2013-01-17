@@ -31,16 +31,16 @@ public class TiledPlatform extends Platform{
 		this.tileWidth = width;
 		this.width = width * tileConstant;
 		this.height = height * tileConstant;
-		constructBody(pos.x, pos.y, width, height );
+		constructTileBody( pos.x, pos.y, width, height );
 	}
 	
-	private void constructBody(float x, float y, int width, int height){
+	private void constructTileBody( float x, float y, int width, int height ){
 
         BodyDef groundBodyDef =new BodyDef();  
         groundBodyDef.type = BodyType.KinematicBody;
         groundBodyDef.position.set(new Vector2(x * GameScreen.PIXEL_TO_BOX, 
         		                               y * GameScreen.PIXEL_TO_BOX));  
-        body = world.createBody(groundBodyDef);  
+        body = world.createBody( groundBodyDef );  
         
         PolygonShape groundBox = new PolygonShape();  
         groundBox.setAsBox((width * tileConstant) * GameScreen.PIXEL_TO_BOX, 

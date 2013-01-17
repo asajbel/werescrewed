@@ -15,14 +15,16 @@ public class Screw extends Entity {
 	}
 	
 	public void remove(){
-		
+		world.destroyBody(body);
 	}
 	
 	public void screwLeft(){
+		body.applyAngularImpulse(-1);
 		depth--;		
 	}
 	
 	public void screwRight(){
+		body.applyAngularImpulse(1);
 		depth++;
 	}
 	

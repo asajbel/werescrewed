@@ -33,7 +33,8 @@ public class Player extends Entity {
 	final static float MAX_VELOCITY = 300f;
 	float stillTime = 0;
 	long lastGroundTime = 0;
-	static Texture player = new Texture(Gdx.files.internal("data/player_r_m.png"));
+	static Texture player = new Texture(Gdx.files.internal("data/libgdx.png"));
+	int prevKey;
 	
 	//private Camera cam;
 
@@ -131,26 +132,24 @@ public class Player extends Entity {
 	
 	public void moveRight()
 	{
-		if (body.getLinearVelocity().x<0.4f) {
-			body.applyLinearImpulse(new Vector2(.001f, 0.0f), body.getWorldCenter());
+		if (body.getLinearVelocity().x<2.0f) {
+			body.applyLinearImpulse(new Vector2(0.01f, 0.0f), body.getWorldCenter());
 		}
-		body.applyLinearImpulse(new Vector2(0.001f, 0.0f), 
-				body.getWorldCenter());
+		//body.applyLinearImpulse(new Vector2(0.001f, 0.0f), body.getWorldCenter());
 		
 		// Following three lines update the texture
 		// doesn't belong here, I learned
 		//Vector2 pos = playerBody.getPosition();
 		//this.positionX = pos.x;
-		//this.positionY = pos.y;
+		//this.positionY = pos.y;dd
 	}
 	
 	public void moveLeft()
 	{
-		if (body.getLinearVelocity().x>-0.4f) {
-			body.applyLinearImpulse(new Vector2(-0.001f, 0.0f), body.getWorldCenter());
+		if (body.getLinearVelocity().x>-2.0f) {
+			body.applyLinearImpulse(new Vector2(-0.01f, 0.0f), body.getWorldCenter());
 		}
-		body.applyLinearImpulse(new Vector2(-0.001f, 0.0f), 
-				body.getWorldCenter());
+		//body.applyLinearImpulse(new Vector2(-0.001f, 0.0f), body.getWorldCenter());
 		//Gdx.app.debug("Physics:", "Applying Left Impulse to player at "+playerBody.getWorldCenter());
 
 	}
@@ -158,7 +157,7 @@ public class Player extends Entity {
 	public void jump()
 	{
 		if (Math.abs(body.getLinearVelocity().y) < 1e-5) {
-			body.applyLinearImpulse(new Vector2(0.0f, .1f),
+			body.applyLinearImpulse(new Vector2(0.0f, 0.2f),
 					body.getWorldCenter());
 		}
 
@@ -166,7 +165,16 @@ public class Player extends Entity {
 	
 	private void stop()
 	{
-		body.setLinearVelocity(0, 0);
+		float velocity = body.getLinearVelocity().x;
+		
+		if (velocity != 0.0f) {
+			if (velocity < - 0.1f) 
+				body.applyLinearImpulse(new Vector2(0.010f, 0.0f), body.getWorldCenter());
+			else if (velocity > 0.1f)
+				body.applyLinearImpulse(new Vector2(-0.010f, 0.0f), body.getWorldCenter());
+			else if (velocity > -0.1 && velocity < 0.1f)
+				body.setLinearVelocity(0.0f, 0.0f);
+		}
 	}
 	
 	public void update()
@@ -183,14 +191,21 @@ public class Player extends Entity {
 		if (Gdx.input.isKeyPressed(Keys.A))
 		{
 			moveLeft();
+			prevKey = Keys.A; 
 		}
 
 		if (Gdx.input.isKeyPressed(Keys.D))
 		{
 			moveRight();
+			prevKey = Keys.D; 
 		}
 		if(Gdx.input.isKeyPressed(Keys.S))
 		{
+			stop();
+		}
+		
+		if((!Gdx.input.isKeyPressed(Keys.D) && !Gdx.input.isKeyPressed(Keys.A))
+				&& (prevKey == Keys.D || prevKey == Keys.A)) {
 			stop();
 		}
 		

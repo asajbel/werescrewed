@@ -7,6 +7,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
+import com.blindtigergames.werescrewed.entity.mover.IMover;
 import com.blindtigergames.werescrewed.screens.GameScreen;
 
 //an Entity is anything that can exist, it has a position and a texture
@@ -18,6 +19,7 @@ public class Entity
 	public Vector2 offset;
 	public Body body;
 	protected World world;
+	public IMover mover;
 	
 	public Entity(){
 		System.err.println("Warning: Entity is being created without a definition.");
@@ -97,6 +99,8 @@ public class Entity
 			Vector2 spritePos = bodyPos.mul(GameScreen.BOX_TO_PIXEL).add(offset);
 			sprite.setPosition(spritePos.x, spritePos.y);
 			System.out.println(name+":"+bodyPos.x+","+bodyPos.y);
+			if(mover != null)
+				mover.move(body);
 		}
 	}
 

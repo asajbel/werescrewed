@@ -12,7 +12,12 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.blindtigergames.werescrewed.screens.GameScreen;
 
-
+/**
+ * @param name blah blah
+ * 
+ * @author Ranveer
+ *
+ */
 
 
 public class RoomPlatform extends Platform{
@@ -26,10 +31,10 @@ public class RoomPlatform extends Platform{
 		this.tileWidth = width;
 		this.width = width * tileConstant;
 		this.height = height * tileConstant;
-		constructBody(pos.x, pos.y, width, height );
+		constructRoomBody( pos.x, pos.y, width, height );
 	}
 	
-	private void constructBody(float x, float y, int width, int height ){
+	private void constructRoomBody( float x, float y, int width, int height ){
 		PolygonShape ps = new PolygonShape();
 		FixtureDef fd = new FixtureDef();
 		fd.density = 1f;
@@ -60,6 +65,8 @@ public class RoomPlatform extends Platform{
         ps.setAsBox( hy, hx, new Vector2( hx*(height-1), (hy - hy/height) ), 0 );
         fd.shape = ps;
         body.createFixture(fd);
+        
+        
 	}
 	
 	public void update(){
