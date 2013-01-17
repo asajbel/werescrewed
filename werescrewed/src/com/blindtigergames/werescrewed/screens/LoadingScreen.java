@@ -7,6 +7,7 @@ import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.gui.LoadingBar;
 
 /*
@@ -31,6 +32,8 @@ public class LoadingScreen implements com.badlogic.gdx.Screen {
     private Actor loadingBar;
 
     public LoadingScreen() {
+    	
+    	//WereScrewedGame.manager.load("data/loading.pack", TextureAtlas.class);
     	  // Tell the manager to load assets for the loading screen
     	/*
     	Game game = ScreenManager.getInstance().game;

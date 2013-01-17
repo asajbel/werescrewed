@@ -10,7 +10,7 @@ import com.blindtigergames.werescrewed.screens.ScreenManager;
 
 public class WereScrewedGame extends Game {
 	
-	public AssetManager manager =  new AssetManager();
+	public static AssetManager manager =  new AssetManager();
 	
 	@Override
 	public void create() {

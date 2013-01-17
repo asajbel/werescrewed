@@ -23,13 +23,14 @@ public class ShapePlatform extends Platform{
 	
 	
 	
-	public ShapePlatform(String n, Vector2 pos, Texture tex, World world, Shapes shape, float scale ){
+	public ShapePlatform(String n, Vector2 pos, Texture tex, World world, Shapes shape, 
+			float scale, boolean flip ){
 		super( n, pos, tex , null);
 		this.world = world;
 		
 		switch(shape){
 		case rhombus:
-			constructRhombus( pos, scale );
+			constructRhombus( pos, scale, flip );
 			break;
 		case cross:
 			System.out.println("trap");
@@ -56,7 +57,7 @@ public class ShapePlatform extends Platform{
 	//constuct bodies for each shape
 	//trapezoid, cross, plus, rhombus, Lshaped, Tshaped, dumbbell
 	
-	public void constructRhombus(Vector2 pos, float scale){
+	public void constructRhombus(Vector2 pos, float scale, boolean flip){
 		
 		
 		BodyDef groundBodyDef =new BodyDef();  
@@ -65,11 +66,26 @@ public class ShapePlatform extends Platform{
         body = world.createBody( groundBodyDef );  
 
 		Vector2[] vertices = new Vector2[4];
+		Vector2 point1;
+		Vector2 point2;
+		Vector2 point3;
+		Vector2 point4;
+		float ptb = GameScreen.PIXEL_TO_BOX;
+		point1 = new Vector2( 0.0f, 0.0f );
+		point2 = new Vector2( 32.0f * ptb, 0.0f );
+		if(!flip){
+			point3 = new Vector2( 48.0f * ptb, 32.0f * ptb );
+			point4 = new Vector2( 16.0f * ptb, 32.0f * ptb );
+		} else {
+			point3 = new Vector2( 16.0f * ptb, 32.0f * ptb );
+			point4 = new Vector2( -16.0f * ptb, 32.0f * ptb );
+		}
 		
-		Vector2 point1 = new Vector2( 0.0f, 0.0f );
+		/*		Vector2 point1 = new Vector2( 0.0f, 0.0f );
 		Vector2 point2 = new Vector2( 1.0f, 0.0f );
 		Vector2 point3 = new Vector2( 1.5f, 1.0f );
 		Vector2 point4 = new Vector2( 0.5f, 1.0f );
+		*/
 		
 		vertices[0] = point1.mul(scale);
 		vertices[1] = point2.mul(scale);
