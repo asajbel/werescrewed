@@ -28,6 +28,7 @@ import com.blindtigergames.werescrewed.platforms.ComplexPlatform;
 import com.blindtigergames.werescrewed.platforms.RoomPlatform;
 import com.blindtigergames.werescrewed.platforms.ShapePlatform;
 import com.blindtigergames.werescrewed.platforms.Shapes;
+import com.blindtigergames.werescrewed.platforms.Skeleton;
 import com.blindtigergames.werescrewed.platforms.TiledPlatform;
 import com.blindtigergames.werescrewed.screws.StructureScrew;
 
@@ -65,6 +66,8 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 	RoomPlatform rp;
 	ComplexPlatform cp;
 	ShapePlatform sp;
+	
+	Skeleton skeleton;
 
 	//testing screw
 	Texture screwTex;
@@ -106,6 +109,8 @@ public class GameScreen implements com.badlogic.gdx.Screen {
         cp = new ComplexPlatform( "bottle", new Vector2(0.0f, 3.0f), texture, 1, world, "bottle" );
         sp = new ShapePlatform( "rhom", new Vector2( 1.0f, 1.0f), texture, world, 
         		Shapes.rhombus, 1.0f, false);
+        
+        skeleton = new Skeleton("skeleton1", new Vector2(), null, world);
 
 		//testing screws
 		screwTex = new Texture(Gdx.files.internal("data/screw.png"));
@@ -120,6 +125,9 @@ public class GameScreen implements com.badlogic.gdx.Screen {
         groundBox.setAsBox(Gdx.graphics.getWidth()*PIXEL_TO_BOX, 1f*PIXEL_TO_BOX);  
         groundBody.createFixture(groundBox, 0.0f);
         groundBody.getFixtureList().get(0).setFriction(0.5f);
+        
+        
+        
         
 
         //make sure you uncomment the next two lines        debugRenderer = new SBox2DDebugRenderer(BOX_TO_PIXEL); for physics world        
@@ -149,7 +157,7 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 			System.exit(0);
 		}
 		if (Gdx.input.isKeyPressed(Input.Keys.F12)){
-	        ScreenManager.getInstance().show(Screen.PHYSICS);			
+	        //ScreenManager.getInstance().show(Screen.PHYSICS);			
 		}
 
 		player.update();
@@ -169,19 +177,14 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 			//}
 		}
 		
+		
+		
 		batch.setProjectionMatrix(cam.combined());
 		//batch.setProjectionMatrix(camera.combined);
 		batch.begin();
-		
-		//sprite.draw(batch);
-		//Drawing the player here
-		//playerEntity.draw(batch);
-		//player.draw(batch);
-		
 		// test drawing the texture by uncommenting the next line:
 		tp.draw(batch);
 		player.draw(batch);
-		
 		structScrew.draw(batch);
 		batch.end();
 
