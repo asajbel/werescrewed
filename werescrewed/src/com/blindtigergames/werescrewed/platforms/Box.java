@@ -7,7 +7,6 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
-import com.blindtigergames.werescrewed.entity.ContactTypes;
 import com.blindtigergames.werescrewed.screens.GameScreen;
 
 public class Box extends Platform{
