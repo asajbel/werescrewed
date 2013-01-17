@@ -9,11 +9,7 @@ import com.badlogic.gdx.physics.box2d.Body;
  *****************************************************/
 public class StaticMover implements IMover {
 
-	@Override
-	public void move(Body body, SteeringOutput steering) {
-		body.setLinearVelocity(steering.velocity);
-		body.setAngularVelocity(steering.rotation);
-	}
+
 
 	@Override
 	public void move(Body body) {
@@ -23,8 +19,8 @@ public class StaticMover implements IMover {
 
 	@Override
 	public void move(Body body, SteeringOutput steering) {
-		// TODO Auto-generated method stub
-		
+		body.setLinearVelocity(steering.velocity);
+		body.setAngularVelocity(steering.rotation);
 	}
 	
 }

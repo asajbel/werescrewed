@@ -12,7 +12,7 @@ public interface IMover {
 	 * Calculates movement then applies to body
 	 * @param Body - The body to apply the movement to
 	 */
-	void move(Body body, SteeringOutput steering);
+	void move(Body body);
 	
 	
 	/**
@@ -20,7 +20,7 @@ public interface IMover {
 	 * @param Body - The body to apply the movement to
 	 * @param SteeringOutput - Optional additional movement to apply to body
 	 */
-	void move(Body body);
+	
 	
 	void move(Body body, SteeringOutput steering);
 }

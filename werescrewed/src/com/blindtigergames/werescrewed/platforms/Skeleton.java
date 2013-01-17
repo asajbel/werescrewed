@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.Joint;
@@ -40,6 +41,9 @@ public class Skeleton extends Entity{
 		BodyDef skeletonBodyDef = new BodyDef();
         //groundBodyDef.type = BodyType.KinematicBody;
 		skeletonBodyDef.position.set( pos.mul( GameScreen.PIXEL_TO_BOX ) );  
+		PolygonShape boxPolygonShape = new PolygonShape();
+		boxPolygonShape.setAsBox(0.001f, 0.001f);
+		
         body = world.createBody( skeletonBodyDef );
         
 	}
@@ -57,14 +61,16 @@ public class Skeleton extends Entity{
 	public void sleepSkeleton(){
 		body.setActive(false);
 		for(BoneAndJoints boneJoint : boneAndJoints){
-			boneJoint.bone.body.setActive(false);
+			//boneJoint.bone.body.setActive(false);
+			boneJoint.bone.body.setAwake(false);
 		}
 	}
 
 	public void wakeSkeleton(){
 		body.setActive(true);
 		for(BoneAndJoints boneJoint : boneAndJoints){
-			boneJoint.bone.body.setActive(true);
+			//boneJoint.bone.body.setActive(true);
+			boneJoint.bone.body.setAwake(true);
 		}
 	}
 	

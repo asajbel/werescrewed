@@ -154,11 +154,7 @@ public class Player extends Entity {
 	public void jump()
 	{
 		if (Math.abs(body.getLinearVelocity().y) < 1e-5) {
-<<<<<<< HEAD
-			body.applyLinearImpulse(new Vector2(0.0f, 0.2f),
-=======
 			body.applyLinearImpulse(new Vector2(0.0f, .3f),
->>>>>>> stress-test2
 					body.getWorldCenter());
 		}
 

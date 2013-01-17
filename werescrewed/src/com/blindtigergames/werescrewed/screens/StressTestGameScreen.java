@@ -13,6 +13,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g3d.model.skeleton.Skeleton;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -98,7 +99,7 @@ public class StressTestGameScreen implements com.badlogic.gdx.Screen {
         cam = new Camera( w, h, player );
         //tp = new TiledPlatform( "plat", new Vector2(200.0f, 100.0f), texture, 1, 2, world );
         rp = new RoomPlatform( "room", new Vector2(-100.0f, 100.0f), texture, 1, 5, world );
-        cp = new ComplexPlatform( "bottle", new Vector2(-200.0f, 300.0f), texture, 1, 1, world );
+        //cp = new ComplexPlatform( "bottle", new Vector2(-200.0f, 300.0f), texture, 1, 1, world );
         
         //tp = new TiledPlatform("plat", new Vector2(200.0f, 100.0f), null, 1, 2, world);
         //tp.setMover(new TimelineMover());
@@ -117,6 +118,7 @@ public class StressTestGameScreen implements com.badlogic.gdx.Screen {
         debugRenderer = new SBox2DDebugRenderer(BOX_TO_PIXEL);
         debugRenderer.setDrawJoints(false);
         Gdx.app.setLogLevel(Application.LOG_DEBUG);
+        
         
         logger = new FPSLogger();
         
@@ -167,7 +169,7 @@ public class StressTestGameScreen implements com.badlogic.gdx.Screen {
 		player.update();
 		//tp.update();
 		rp.update();
-		cp.update();
+		//cp.update();
 		
 		if ( Gdx.input.isKeyPressed(Input.Keys.X) ){
 			groundBody.setTransform(groundBody.getTransform().getPosition().add(0f,0.1f),groundBody.getTransform().getRotation());

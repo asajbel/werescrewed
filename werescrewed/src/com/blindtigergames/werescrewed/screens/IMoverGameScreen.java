@@ -1,5 +1,6 @@
 package com.blindtigergames.werescrewed.screens;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 
 import com.badlogic.gdx.Application;
@@ -65,7 +66,8 @@ public class IMoverGameScreen implements com.badlogic.gdx.Screen {
 	Skeleton skeleton;
 	//ShapePlatform sp;
 
-
+	ArrayList<Body> platforms;
+	
 	FPSLogger logger;
 
 	
@@ -122,18 +124,21 @@ public class IMoverGameScreen implements com.badlogic.gdx.Screen {
         
        skeleton = new Skeleton("skeleton1", new Vector2(), null, world);
        skeleton.mover = new TimelineMover();
-      
+      platforms = new ArrayList<Body>();
+       
        Iterator<Joint> joints = world.getJoints(); 
        for( int i = 0; i < 5; ++i ){
        	for ( int j = 0; j < 5; ++j ){
 		        BodyDef bDef = new BodyDef();
 		        bDef.position.set(new Vector2( ( 250*i+200 )*PIXEL_TO_BOX,( 25*j+200 )*PIXEL_TO_BOX ) );
-		        bDef.type = BodyType.KinematicBody;
+		        bDef.type = BodyType.DynamicBody;
 		        Body b = world.createBody( bDef );
 		        PolygonShape bBox = new PolygonShape(); 
 		        bBox.setAsBox( 100*PIXEL_TO_BOX, 5*PIXEL_TO_BOX );
 		        b.createFixture( bBox,1.0f );
 		        //platforms.add(b);
+		        
+		        
 		        
 		        RevoluteJointDef jointDef = new RevoluteJointDef();
 		        //jointDef.initialize(b, groundBody, b.getWorldCenter());
@@ -142,7 +147,7 @@ public class IMoverGameScreen implements com.badlogic.gdx.Screen {
 		        jointDef.collideConnected = false;
 		        jointDef.localAnchorA.set( new Vector2()); //attach joint to center to platform
 		        jointDef.localAnchorB.set( new Vector2((250*i+200)*PIXEL_TO_BOX,(25*j+200)*PIXEL_TO_BOX));//attach to center of platform
-		        
+		        platforms.add(b);
 		        skeleton.addBoneAndJoint( new Entity("b"+i, b), world.createJoint(jointDef) );
        	}
        }
@@ -162,6 +167,36 @@ public class IMoverGameScreen implements com.badlogic.gdx.Screen {
 		if(Gdx.input.isKeyPressed(Keys.P)){
 			System.exit(0);
 		}
+		
+		
+		if ( Gdx.input.isKeyPressed(Input.Keys.X) ){
+			skeleton.body.setTransform(skeleton.body.getTransform().getPosition().add(0f,0.01f),skeleton.body.getTransform().getRotation());
+			skeleton.wakeSkeleton();
+			//groundBody.setTransform(0f, -0.01f, 0);
+			//Gdx.app.log("dude", "DUDE!");
+			
+		}
+		
+		if ( Gdx.input.isKeyPressed(Input.Keys.Z) ){
+			//groundBody.setTransform(0f, 0.01f, 0);
+			skeleton.body.setTransform(skeleton.body.getTransform().getPosition().add(0f,-0.01f),skeleton.body.getTransform().getRotation());
+			skeleton.wakeSkeleton();
+		}
+		
+		if ( Gdx.input.isKeyPressed(Input.Keys.C) ){
+			skeleton.body.setTransform(skeleton.body.getTransform().getPosition(),skeleton.body.getTransform().getRotation()+0.01f);
+			//groundBody.setTransform(0f, -0.01f, 0);
+			//Gdx.app.log("dude", "DUDE!");
+			skeleton.wakeSkeleton();
+		}
+		
+		if ( Gdx.input.isKeyPressed(Input.Keys.V) ){
+			//groundBody.setTransform(0f, 0.01f, 0);
+			skeleton.body.setTransform(skeleton.body.getTransform().getPosition(),skeleton.body.getTransform().getRotation()-0.01f);
+			//Gdx.app.log("dude", "DUDE!");
+			skeleton.wakeSkeleton();
+		}
+		
 
 		player.update();
 		tp.update();
