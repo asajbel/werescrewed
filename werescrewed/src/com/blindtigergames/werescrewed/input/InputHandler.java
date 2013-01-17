@@ -143,7 +143,6 @@ public class InputHandler implements InputProcessor {
 	
 	@Override
 	public boolean keyDown( int keycode ) {
-		
 		if ( keycode == Keys.ESCAPE) {
 			pauseKeyPressed = true;
 		}
@@ -271,10 +270,6 @@ public class InputHandler implements InputProcessor {
 		return false;
 	}
 
-	private int p1LastKeyPressed;
-	private int p2LastKeyPressed;
-
-	
 	private boolean pauseKeyPressed;
 	
 	private boolean p1LeftPressed;
