@@ -1,5 +1,4 @@
-import java.util.Iterator;
-import java.util.LinkedList;
+package com.blindtigergames.werescrewed.camera;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -71,7 +70,7 @@ public class Camera {
 	{
 		initializeVars(viewportWidth, viewportHeight);
 		player1 = player;
-		player1Anchor = AnchorList.addAnchor(player.position);
+		player1Anchor = AnchorList.addAnchor(player.getPosition());
         camera.update();  
 	}
 	
@@ -80,8 +79,8 @@ public class Camera {
 		initializeVars(viewportWidth, viewportHeight);
 		this.player1 = player1;
 		this.player2 = player2;
-		player1Anchor = AnchorList.addAnchor(player1.position);
-		player2Anchor = AnchorList.addAnchor(player2.position);
+		player1Anchor = AnchorList.addAnchor(player1.getPosition());
+		player2Anchor = AnchorList.addAnchor(player2.getPosition());
         camera.update();  
 	}
 	
@@ -100,10 +99,10 @@ public class Camera {
 		
 		// update player anchors
 		if (player1Anchor > -1) {
-			AnchorList.setAnchorPos(player1Anchor, player1.position.mul(BOX_TO_PIXEL));
+			AnchorList.setAnchorPos(player1Anchor, player1.getPosition().mul(BOX_TO_PIXEL));
 		}
 		if (player2Anchor > -1) {
-			AnchorList.setAnchorPos(player2Anchor, player2.position.mul(BOX_TO_PIXEL));
+			AnchorList.setAnchorPos(player2Anchor, player2.getPosition().mul(BOX_TO_PIXEL));
 		}
 		
 		if (debugMode) {
