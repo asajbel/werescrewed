@@ -23,3 +23,5 @@ local.properties
 .DS_STORE
 
 werescrewed-html/.gwt/.gwt-log
+
+.DS_Store

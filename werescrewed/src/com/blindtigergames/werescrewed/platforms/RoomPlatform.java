@@ -49,6 +49,7 @@ public class RoomPlatform extends Platform{
 
         Vector2 z = new Vector2();
 
+        // Creating 4 fixtures to make a box/room form
         ps.setAsBox( hx, hy, z, 0 );
         fd.shape = ps;
         body.createFixture(fd);

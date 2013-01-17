@@ -25,7 +25,7 @@ public class Player extends Entity {
 
 	private World world;
 	//public Body body = null;
-	//Being has a Body body variable
+	//Entity has a Body body variable
 	public Fixture playerPhysicsFixture;
 	public Fixture playerSensorFixture;
 	final static float MAX_VELOCITY = 300f;
@@ -54,6 +54,7 @@ public class Player extends Entity {
 		sprite.setScale(100f * GameScreen.PIXEL_TO_BOX);
 		offset.x = -64f;
 		offset.y = -50f;
+		body.setUserData(this);
 		inputHandler = new InputHandler();
 	}
 	

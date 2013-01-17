@@ -8,6 +8,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
+import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJoint;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
 import com.blindtigergames.werescrewed.screens.GameScreen;
@@ -22,33 +23,34 @@ import com.blindtigergames.werescrewed.screens.GameScreen;
 public class StructureScrew extends Screw {
 	public RevoluteJoint screwJoint;
 	
-	public StructureScrew( String n, Vector2 pos, Texture tex, int max, Body platform ){
+	public StructureScrew( String n, Vector2 pos, Texture tex, int max, Body platform, World world){
 		super( n, pos, tex );
+		this.world = world;
 		maxDepth = max;
 		depth = max;
+		rotation = 1080;
+		
+		sprite.setScale(1.85f);
+		offset.x = -16f;
+		offset.y = -16f;
 		
 		//create the screw body
 	    BodyDef screwBodyDef = new BodyDef();
-	    screwBodyDef.type = BodyType.DynamicBody;
+	    screwBodyDef.type = BodyType.KinematicBody;
 	    screwBodyDef.position.set(pos);
 	    body = world.createBody(screwBodyDef);
 	    CircleShape screwShape = new CircleShape();
-	    screwShape.setRadius(sprite.getWidth());
+	    screwShape.setRadius(sprite.getWidth()*GameScreen.PIXEL_TO_BOX);
+	    FixtureDef screwFixture = new FixtureDef();
+	    screwFixture.isSensor = true;
+	    screwFixture.filter.categoryBits = 0x0008;
+	    screwFixture.filter.maskBits = -1;
 	    body.createFixture(screwShape,0.0f);
 	    screwShape.dispose();
-		sprite.setScale(GameScreen.PIXEL_TO_BOX);
-	    
-		//connect the screw to the platform;
-	    RevoluteJointDef revoluteJointDef = new RevoluteJointDef();
-	    revoluteJointDef.initialize(body, platform, body.getPosition());  
-	    revoluteJointDef.enableMotor = true;
-	    revoluteJointDef.maxMotorTorque = 5000.0f;
-	    revoluteJointDef.motorSpeed = 50f;
-	    platformToScrew = (RevoluteJoint) world.createJoint(revoluteJointDef);
 	    
 		//add radar sensor to screw
 		CircleShape radarShape = new CircleShape();
-		radarShape.setRadius(sprite.getWidth()*2);
+		radarShape.setRadius(sprite.getWidth()*2*GameScreen.PIXEL_TO_BOX);
 	    FixtureDef radarFixture = new FixtureDef();
 	    radarFixture.shape = radarShape;
 	    radarFixture.isSensor = true;
@@ -67,23 +69,31 @@ public class StructureScrew extends Screw {
 	    jointPolygonShape.dispose();
 	    
 	    //connect the platform to the screw and the skeleton
-	    revoluteJointDef = new RevoluteJointDef();
+	    RevoluteJointDef revoluteJointDef = new RevoluteJointDef();
 	    revoluteJointDef.initialize(platform, jointBody, platform.getPosition());  
 	    revoluteJointDef.enableMotor = true;
 	    revoluteJointDef.maxMotorTorque = 5000.0f;
-	    revoluteJointDef.motorSpeed = 50f;
+	    revoluteJointDef.motorSpeed = 0f;
 	    screwJoint = (RevoluteJoint) world.createJoint(revoluteJointDef);
 	}
 
 	public void update(){
+		super.update();
+		sprite.setRotation(rotation);
+		if ( depth != screwStep ){
+			screwStep--;
+		}
+		if( depth == screwStep ){
+			body.setAngularVelocity(0);
+		}
 		if ( depth > maxDepth ) {
 			depth = maxDepth;
 		}
-		if ( depth <= 0 ) {
-			world.destroyJoint(platformToScrew);
+		if ( depth == 0 ) {
+			body.setType(BodyType.DynamicBody);
 			world.destroyJoint(screwJoint);
+			depth = -1;
 		}
 	}
 	private int maxDepth;
-	private RevoluteJoint platformToScrew;
 }
