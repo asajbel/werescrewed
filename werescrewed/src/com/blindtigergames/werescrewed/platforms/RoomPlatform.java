@@ -70,29 +70,6 @@ public class RoomPlatform extends Platform{
 	}
 	
 	public void update(){
-		body.setActive(true);
 		super.update();
-		
-		if( Gdx.input.isKeyPressed(Keys.T) ){
-			rotate();
-		}
-		if( Gdx.input.isKeyPressed(Keys.Y) ){
-			body.setAngularVelocity(0);
-		}
-		if( Gdx.input.isKeyPressed(Keys.O) ){
-			changeType();
-		}
-
-		if( Gdx.input.isKeyPressed(Keys.N) ){
-			//rotateBy90();
-			rotate = !rotate;
-			System.out.println(rotate);
-			System.out.println(body.getAngle());
-		}
-		if( Gdx.input.isKeyPressed(Keys.L) ){
-			setHorizontal();
-		}
-		
-
 	}
 }

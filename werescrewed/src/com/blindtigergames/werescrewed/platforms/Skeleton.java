@@ -13,7 +13,7 @@ import com.blindtigergames.werescrewed.entity.*;
  * then when the Skeleton moves, the Bones should follow 
  * @param name blah blah
  * 
- * @author Ranveer
+ * @author Ranveer/Stewart
  *
  *
  */

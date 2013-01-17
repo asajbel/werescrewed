@@ -93,4 +93,8 @@ public class ShapePlatform extends Platform{
 		body.setGravityScale(.1f);
 		body.createFixture(platformFixtureDef);
 	}
+	
+	public void update(){
+		super.update();
+	}
 }
