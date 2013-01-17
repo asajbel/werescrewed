@@ -28,8 +28,8 @@ public class ShapePlatform extends Platform{
 		this.world = world;
 		
 		switch(shape){
-		case trapezoid:
-			constructTrapezoid( pos, scale );
+		case rhombus:
+			constructRhombus( pos, scale );
 			break;
 		case cross:
 			System.out.println("trap");
@@ -37,7 +37,7 @@ public class ShapePlatform extends Platform{
 		case plus:
 			System.out.println("trap");
 			break;
-		case rhombus:
+		case trapezoid:
 			System.out.println("trap");
 			break;
 		case Lshaped:
@@ -56,8 +56,8 @@ public class ShapePlatform extends Platform{
 	//constuct bodies for each shape
 	//trapezoid, cross, plus, rhombus, Lshaped, Tshaped, dumbbell
 	
-	public void constructTrapezoid(Vector2 pos, float scale){
-		//ArrayList<Vector2> vectices = new ArrayList<Vector2>();
+	public void constructRhombus(Vector2 pos, float scale){
+		
 		
 		BodyDef groundBodyDef =new BodyDef();  
         groundBodyDef.type = BodyType.KinematicBody;
@@ -92,6 +92,7 @@ public class ShapePlatform extends Platform{
 		platformFixtureDef.restitution = 0.0f;
 		body.setGravityScale(.1f);
 		body.createFixture(platformFixtureDef);
+		
 	}
 	
 	public void update(){

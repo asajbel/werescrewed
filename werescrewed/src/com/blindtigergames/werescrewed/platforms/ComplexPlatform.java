@@ -37,7 +37,7 @@ public class ComplexPlatform extends Platform{
 	}
 	
 	private void constructComplexBody( float x, float y, int scale, String bodyName ){
-		String filename = "data/" + bodyName + ".json";
+		String filename = "data/bodies/" + bodyName + ".json";
 		BodyEditorLoader loader = new BodyEditorLoader( Gdx.files.internal(filename) );
 		BodyDef bd = new BodyDef();
 		bd.position.set(x,y);
@@ -50,6 +50,7 @@ public class ComplexPlatform extends Platform{
 		
 		
 		body = world.createBody(bd);
+		body.setGravityScale(.1f);
 		
 		loader.attachFixture( body, bodyName, fd, scale );
 		
