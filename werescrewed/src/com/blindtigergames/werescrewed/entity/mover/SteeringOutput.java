@@ -3,6 +3,8 @@ package com.blindtigergames.werescrewed.entity.mover;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 	/**
 	 * Simple 2d kinematic movement storage class.
 	 * 
@@ -34,5 +36,19 @@ public class SteeringOutput {
 			rotation += s.rotation;
 		}
 		return this;
+	}
+	
+	public void applySteering(Body body){
+		//For Kinematic & Static bodies, we set the velocity
+		BodyType type = body.getType();
+		if ( type == BodyType.KinematicBody ||
+			 type == BodyType.StaticBody ){
+			body.setLinearVelocity(velocity);
+			body.setAngularVelocity(rotation);
+		}else {
+			//body is dynamic, so we apply an impulse
+			body.applyLinearImpulse(velocity, body.getWorldCenter());
+			body.applyAngularImpulse(rotation);
+		}
 	}
 }

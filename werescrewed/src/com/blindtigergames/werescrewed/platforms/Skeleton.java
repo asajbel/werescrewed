@@ -4,9 +4,15 @@ import java.util.ArrayList;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.Joint;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.blindtigergames.werescrewed.entity.*;
+import com.blindtigergames.werescrewed.screens.GameScreen;
+import com.sun.tools.javac.util.Position;
 
 /**
  * Bone is an entity which is placed onto the Skeleton
@@ -22,15 +28,20 @@ public class Skeleton extends Entity{
 	public ArrayList<BoneAndJoints> boneAndJoints;
 	
 	
-	public Skeleton(String n, Vector2 pos, Texture tex, World world ){
-		super( n, pos, tex , null);
+	public Skeleton( String n, Vector2 pos, Texture tex, World world ){
+		super( n, pos, tex , null); //not constructing body class
 		this.world = world;
 		this.boneAndJoints = new ArrayList<BoneAndJoints>();
-
+		constructSkeleton(pos);
 	}
 	
-	public void constructSkeleton(){
-		
+	public void constructSkeleton(Vector2 pos){
+		//Skeletons have no fixtures!!
+		BodyDef skeletonBodyDef = new BodyDef();
+        //groundBodyDef.type = BodyType.KinematicBody;
+		skeletonBodyDef.position.set( pos.mul( GameScreen.PIXEL_TO_BOX ) );  
+        body = world.createBody( skeletonBodyDef );
+        
 	}
 	
 	public void addBoneAndJoint( Entity bone, Joint joint ){
@@ -59,7 +70,7 @@ public class Skeleton extends Entity{
 	
 	@Override
 	public void update(){
-		
+		mover.move(body);
 	}
 	
 	protected class BoneAndJoints{

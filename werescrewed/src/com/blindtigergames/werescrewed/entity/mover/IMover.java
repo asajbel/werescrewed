@@ -15,4 +15,6 @@ public interface IMover {
 	 *  a movement to a Box2D body.
 	 */
 	void move(Body body);
+	
+	void move(Body body, SteeringOutput steering);
 }

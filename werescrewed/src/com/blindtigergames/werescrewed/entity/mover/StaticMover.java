@@ -15,5 +15,11 @@ public class StaticMover implements IMover {
 	public void move(Body body) {
 		return;
 	}
+
+	@Override
+	public void move(Body body, SteeringOutput steering) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 }

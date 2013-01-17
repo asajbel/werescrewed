@@ -121,30 +121,29 @@ public class IMoverGameScreen implements com.badlogic.gdx.Screen {
         logger = new FPSLogger();
         
        skeleton = new Skeleton("skeleton1", new Vector2(), null, world);
+       skeleton.mover = new TimelineMover();
       
        Iterator<Joint> joints = world.getJoints(); 
        for( int i = 0; i < 5; ++i ){
        	for ( int j = 0; j < 5; ++j ){
 		        BodyDef bDef = new BodyDef();
-		        bDef.position.set(new Vector2((250*i+200)*PIXEL_TO_BOX,(25*j+200)*PIXEL_TO_BOX));
-		        bDef.type = BodyType.DynamicBody;
-		        Body b = world.createBody(bDef);
+		        bDef.position.set(new Vector2( ( 250*i+200 )*PIXEL_TO_BOX,( 25*j+200 )*PIXEL_TO_BOX ) );
+		        bDef.type = BodyType.KinematicBody;
+		        Body b = world.createBody( bDef );
 		        PolygonShape bBox = new PolygonShape(); 
-		        bBox.setAsBox(100*PIXEL_TO_BOX, 5*PIXEL_TO_BOX);
-		        b.createFixture(bBox,1.0f);
+		        bBox.setAsBox( 100*PIXEL_TO_BOX, 5*PIXEL_TO_BOX );
+		        b.createFixture( bBox,1.0f );
 		        //platforms.add(b);
 		        
 		        RevoluteJointDef jointDef = new RevoluteJointDef();
 		        //jointDef.initialize(b, groundBody, b.getWorldCenter());
 		        jointDef.bodyA = b;
-		        jointDef.bodyB = groundBody;
+		        jointDef.bodyB = skeleton.body;
 		        jointDef.collideConnected = false;
-		        jointDef.localAnchorA.set(new Vector2()); //attack joint to center to platform
-		        jointDef.localAnchorB.set(new Vector2((250*i+200)*PIXEL_TO_BOX,(25*j+200)*PIXEL_TO_BOX));//attach to center of platform
-		        world.createJoint(jointDef);
+		        jointDef.localAnchorA.set( new Vector2()); //attach joint to center to platform
+		        jointDef.localAnchorB.set( new Vector2((250*i+200)*PIXEL_TO_BOX,(25*j+200)*PIXEL_TO_BOX));//attach to center of platform
 		        
-		        
-		        skeleton.addBoneAndJoint(new Entity("b"+i, b), joints.next());
+		        skeleton.addBoneAndJoint( new Entity("b"+i, b), world.createJoint(jointDef) );
        	}
        }
        
@@ -169,15 +168,12 @@ public class IMoverGameScreen implements com.badlogic.gdx.Screen {
 		rp.update();
 		cp.update();
 		//sp.update();
+		skeleton.update();
 		
 		batch.setProjectionMatrix(cam.combined());
 		//batch.setProjectionMatrix(camera.combined);
 		batch.begin();
 		
-		//sprite.draw(batch);
-		//Drawing the player here
-		//playerEntity.draw(batch);
-		//player.draw(batch);
 		
 		// test drawing the texture by uncommenting the next line:
 		//tp.draw(batch);
