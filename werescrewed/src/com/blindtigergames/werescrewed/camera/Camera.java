@@ -26,14 +26,21 @@ public class Camera {
 	public Vector2 center2D;
 	
 	private static final int LISTEN_BUFFER = 300;
-	private Player player1;
-	private Player player2;
 	private Rectangle anchorListenRectangle;
 	private Vector2 focus;
 	private Vector3 focus3D;
-	private Vector2 prevFocus;
+	
+	// might take these out when no longer required
+	private Player player1;
+	private Player player2;
+	private int player1Anchor;
+	private int player2Anchor;
+	public AnchorList anchorList;
+//	private Vector2 prevFocus;
+//	private Vector2 temp;
 		
 	private void initializeVars (float viewportWidth, float viewportHeight) {
+		anchorList = new AnchorList();
 		camera = new OrthographicCamera(1, viewportHeight/viewportWidth);
 		this.viewportHeight = Gdx.graphics.getHeight();
 		this.viewportWidth = Gdx.graphics.getWidth();
@@ -50,7 +57,11 @@ public class Camera {
 		
 		this.focus = new Vector2(center2D);
 		this.focus3D = new Vector3(focus.x, focus.y, 0f);
-		this.prevFocus = new Vector2(focus);
+//		this.prevFocus = new Vector2(focus);
+//		this.temp = new Vector2(0f, 0f);
+		
+		player1Anchor = -1;
+		player2Anchor = -1;
 	}
 	
 	public Camera(float viewportWidth, float viewportHeight)
@@ -63,7 +74,7 @@ public class Camera {
 	{
 		initializeVars(viewportWidth, viewportHeight);
 		player1 = player;
-		AnchorList.addAnchor(player.position);
+		player1Anchor = AnchorList.addAnchor(player.position);
         camera.update();  
 	}
 	
@@ -72,8 +83,8 @@ public class Camera {
 		initializeVars(viewportWidth, viewportHeight);
 		this.player1 = player1;
 		this.player2 = player2;
-		AnchorList.addAnchor(player1.position);
-		AnchorList.addAnchor(player2.position);
+		player1Anchor = AnchorList.addAnchor(player1.position);
+		player2Anchor = AnchorList.addAnchor(player2.position);
         camera.update();  
 	}
 	
@@ -86,19 +97,31 @@ public class Camera {
 	{
 		handleInput();
 		setFocus();
-		focus3D.x = focus.x;
-		focus3D.y = focus.y;
-//		camera.translate(prevFocus.sub(focus));
+//		temp.x = focus.x - prevFocus.x;
+//		temp.y = focus.y - prevFocus.y;
+//		camera.translate(0f, 0f);
+//		if (player1 != null) {
+//			focus3D.x = player1.position.x;
+//			focus3D.y = player1.position.y;
+//			focus3D.z = 0f;
+//		}
 		camera.position.set(focus3D);
-		camera.update();
+//		camera.translate(focus3D);
 		position = camera.position;
 		center2D.x = position.x;
 		center2D.y = position.y;
-		prevFocus = focus;
+//		prevFocus.x = camera.position.x;
+//		prevFocus.y = camera.position.y;
 		
-		if (player1 != null) {
-			
+		// update player anchors
+		if (player1Anchor > -1) {
+			AnchorList.setAnchorPos(player1Anchor, player1.position);
 		}
+		if (player2Anchor > -1) {
+			AnchorList.setAnchorPos(player2Anchor, player2.position);
+		}
+		
+		camera.update();
 		
 		/*float lerp = 0.1f;
 		Vector3 position = camera.position;
@@ -139,16 +162,10 @@ public class Camera {
      * set focus of camera to the midpoint of all anchors
      */
     private Vector2 setFocus(){
-    	// TO DO: discriminate based on distance
-    	
-    	int count = 0;
-    	Vector2 vMid = new Vector2(0f, 0f);
-    	Iterator<Anchor> it = this.anchorList.listIterator(0);
-    	while (it.hasNext()) {
-    		vMid.add((it.next()).position);
-    		count++;
-    	}
-    	this.focus = vMid.div((float) count);
+    	this.focus = AnchorList.midpoint();
+		focus3D.x = focus.x;
+		focus3D.y = focus.y;
+		focus3D.z = 0f;
     	return this.focus;
     }
     

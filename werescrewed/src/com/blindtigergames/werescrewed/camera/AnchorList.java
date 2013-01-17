@@ -44,10 +44,10 @@ public class AnchorList {
 		anchorList.clear();
 	}
 	
-	public static void setAnchorPos (int id, Vector2 pos) {
+	public static void setAnchorPos (int id, Vector2 position) {
 		// assuming pass by value, try pass by reference later
 		Anchor temp = anchorList.get(id);
-		temp.setPosition(pos);
+		temp.setPosition(position);
 		anchorList.set(id, temp);
 	}
 	
@@ -64,6 +64,8 @@ public class AnchorList {
 	}
 	
 	public static void setMidpoint () {
+		//TO DO: discriminate by distance
+		
     	int count = 0;
     	sum.x = 0f;
     	sum.y = 0f;
@@ -87,5 +89,15 @@ public class AnchorList {
 	
 	public static Vector3 getMidpoint3 () {
 		return midpoint3;
+	}
+	
+	public static Vector2 midpoint() {
+		setMidpoint();
+		return getMidpoint();
+	}
+	
+	public static Vector3 midpoint3() {
+		setMidpoint();
+		return getMidpoint3();
 	}
 }
