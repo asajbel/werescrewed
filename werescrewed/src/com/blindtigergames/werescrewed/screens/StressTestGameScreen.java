@@ -1,6 +1,7 @@
 package com.blindtigergames.werescrewed.screens;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
@@ -15,6 +16,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.Joint;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
@@ -109,8 +111,6 @@ public class StressTestGameScreen implements com.badlogic.gdx.Screen {
         //groundBox.setAsBox(cam.viewportWidth*4*PIXEL_TO_BOX, 1f*PIXEL_TO_BOX);  
         //groundBody.createFixture(groundBox, 0.0f);
         //groundBody.getFixtureList().get(0).setFriction(0.5f);
-        
-      
 
         //make sure you uncomment the next two lines        debugRenderer = new SBox2DDebugRenderer(BOX_TO_PIXEL); for physics world        
         //debugRenderer = new Box2DDebugRenderer();
@@ -143,7 +143,8 @@ public class StressTestGameScreen implements com.badlogic.gdx.Screen {
 		        //jointDef.localAnchorA = b.getWorldCenter().sub(-80*PIXEL_TO_BOX,0);
 		        world.createJoint(jointDef);
 		        
-		        b.setSleepingAllowed(false);
+		        
+		        //b.setSleepingAllowed(false);
         	}
         }
        
