@@ -43,6 +43,8 @@ public class TiledPlatform extends Platform{
         body = world.createBody( groundBodyDef );  
         
         PolygonShape groundBox = new PolygonShape();  
+        if ( width == 0 ) width = 1;
+        if ( height == 0 ) height = 1;
         groundBox.setAsBox((width * tileConstant) * GameScreen.PIXEL_TO_BOX, 
         		(height * tileConstant) * GameScreen.PIXEL_TO_BOX);
         
