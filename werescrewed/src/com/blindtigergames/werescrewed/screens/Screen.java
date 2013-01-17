@@ -39,6 +39,12 @@ public enum Screen {
         @Override
         protected com.badlogic.gdx.Screen getScreenInstance() {
              return new IMoverGameScreen();
+=======
+    
+    STRESSTEST {
+        @Override
+        protected com.badlogic.gdx.Screen getScreenInstance() {
+             return new StressTestGameScreen();
         }
     };
  

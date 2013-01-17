@@ -39,8 +39,8 @@ public class Platform extends Entity{
 		this.mover = _mover;
 	}
 
-	
-	public void update(){
+	public void update()
+	{
 		body.setActive(true);
 		super.update();
 		

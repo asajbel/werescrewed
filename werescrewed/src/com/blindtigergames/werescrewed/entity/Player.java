@@ -116,9 +116,10 @@ public class Player extends Entity {
 		FixtureDef playerFixtureDef = new FixtureDef();
 		//playerBody.createFixture(playerPolygonShape, 1.0f);
 		playerFixtureDef.shape = playerfeetShape;
-		playerFixtureDef.density = 9.9f;
-		playerFixtureDef.friction = 0.05f;
-		playerFixtureDef.restitution = 0.5f;
+		playerFixtureDef.density = 1f;
+		playerFixtureDef.friction = 0f;
+		playerFixtureDef.restitution = 0.0f;
+		
 		body.createFixture(playerFixtureDef);
 		body.setGravityScale(.1f);
 		body.setFixedRotation(true);
@@ -153,7 +154,11 @@ public class Player extends Entity {
 	public void jump()
 	{
 		if (Math.abs(body.getLinearVelocity().y) < 1e-5) {
+<<<<<<< HEAD
 			body.applyLinearImpulse(new Vector2(0.0f, 0.2f),
+=======
+			body.applyLinearImpulse(new Vector2(0.0f, .3f),
+>>>>>>> stress-test2
 					body.getWorldCenter());
 		}
 

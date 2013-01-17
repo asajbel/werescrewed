@@ -1,5 +1,7 @@
 package com.blindtigergames.werescrewed.entity.mover;
 
+import aurelienribon.tweenengine.Tween;
+
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 
@@ -26,6 +28,9 @@ public class TimelineMover implements IMover {
 	public void move(Body body, SteeringOutput steering) {
 		// TODO Auto-generated method stub
 		movement.add(steering).applySteering(body);
+		body.setAngularVelocity(movement.rotation);
+		body.setLinearVelocity(movement.velocity);
 	}
+
 
 }
