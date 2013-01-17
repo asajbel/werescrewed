@@ -106,6 +106,7 @@ public class GameScreen implements com.badlogic.gdx.Screen {
         cp = new ComplexPlatform( "bottle", new Vector2(0.0f, 3.0f), texture, 1, world, "bottle" );
         sp = new ShapePlatform( "rhom", new Vector2( 1.0f, 1.0f), texture, world, 
         		Shapes.rhombus, 1.0f, false);
+<<<<<<< HEAD
 
 		//testing screws
 		screwTex = new Texture(Gdx.files.internal("data/screw.png"));
@@ -138,6 +139,40 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 	public void render(float delta) {
 		Gdx.gl20.glClearColor(0.0f, 0f, 0.0f, 1.0f);
 		Gdx.gl20.glClear(GL20.GL_COLOR_BUFFER_BIT);
+=======
+
+		//testing screws
+		screwTex = new Texture(Gdx.files.internal("data/screw.png"));
+		structScrew = new StructureScrew( "", sp.body.getPosition(), screwTex, 25, sp.body, world);
+        //tp = new TiledPlatform("plat", new Vector2(200.0f, 100.0f), null, 1, 2, world);
+        tp.setMover(new TimelineMover());
+        //BOX_TO_PIXEL, PIXEL_TO_BOX
+        BodyDef groundBodyDef =new BodyDef();  
+        groundBodyDef.position.set(new Vector2(0*PIXEL_TO_BOX, 0*PIXEL_TO_BOX));  
+        Body groundBody = world.createBody(groundBodyDef);  
+        PolygonShape groundBox = new PolygonShape();  
+        groundBox.setAsBox(Gdx.graphics.getWidth()*PIXEL_TO_BOX, 1f*PIXEL_TO_BOX);  
+        groundBody.createFixture(groundBox, 0.0f);
+        groundBody.getFixtureList().get(0).setFriction(0.5f);
+        
+
+        //make sure you uncomment the next two lines        debugRenderer = new SBox2DDebugRenderer(BOX_TO_PIXEL); for physics world        
+        //debugRenderer = new Box2DDebugRenderer();
+        debugRenderer = new SBox2DDebugRenderer(BOX_TO_PIXEL);
+        Gdx.app.setLogLevel(Application.LOG_DEBUG);
+        
+        logger = new FPSLogger();
+        
+       
+      
+       
+	}
+
+	@Override
+	public void render(float delta) {
+		Gdx.gl20.glClearColor(0.0f, 0f, 0.0f, 1.0f);
+		Gdx.gl20.glClear(GL20.GL_COLOR_BUFFER_BIT);
+>>>>>>> 95a3959a53db6538faa6162b1a3704faba0cdb64
 		
 		inputHandler.update();
 		cam.update();
