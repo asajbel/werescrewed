@@ -7,6 +7,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
+import com.blindtigergames.werescrewed.entity.mover.IMover;
 import com.blindtigergames.werescrewed.screens.GameScreen;
 
 //an Entity is anything that can exist, it has a position and a texture
@@ -18,9 +19,9 @@ public class Entity
 	public Vector2 offset;
 	public Body body;
 	protected World world;
+	public IMover mover;
 	
 	public Entity(){
-		System.err.println("Warning: Entity is being created without a definition.");
 		type = null;
 		sprite = null;
 		body = null;
@@ -29,16 +30,14 @@ public class Entity
 		name = "I AM ERROR.";
 	}
 	
-	public Entity(String n, EntityDef d, World w, Vector2 pos, float rot)
+	public Entity(String n, EntityDef d, World w, Vector2 pos, float rot, Vector2 sca)
 	{
+		this();
 		name = n;
 		type = d;
 		world = w;
-		sprite = new Sprite(d.texture);
-		body = w.createBody(d.bodyDef);
-		for (FixtureDef fix : d.fixtureDefs){
-			body.createFixture(fix);
-		}
+		constructSprite();
+		constructBody(pos.x, pos.y, sca.x, sca.y);
 	}
 	
 	public Entity(String n, Sprite spr, Body bod)
@@ -97,6 +96,8 @@ public class Entity
 			Vector2 spritePos = bodyPos.mul(GameScreen.BOX_TO_PIXEL).add(offset);
 			sprite.setPosition(spritePos.x, spritePos.y);
 			System.out.println(name+":"+bodyPos.x+","+bodyPos.y);
+			if(mover != null)
+				mover.move(body);
 		}
 	}
 
@@ -108,5 +109,20 @@ public class Entity
 		Sprite out = new Sprite(tex);
 		out.setOrigin(tex.getWidth()/2, tex.getHeight()/2);
 		return out;
+	}
+	
+	protected void constructSprite(){
+		if (type != null && type.texture != null)
+			sprite = new Sprite(type.texture);
+	}
+	
+	protected void constructBody( float x, float y, float width, float height ){
+		if (type != null){
+			body = world.createBody(type.bodyDef);
+			for (FixtureDef fix : type.fixtureDefs){
+				body.createFixture(fix);
+			}
+			setPosition(x,y);
+		}
 	}
 }

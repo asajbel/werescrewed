@@ -1,10 +1,13 @@
 package com.blindtigergames.werescrewed.platforms;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.blindtigergames.werescrewed.entity.Entity;
+import com.blindtigergames.werescrewed.entity.EntityDef;
 import com.blindtigergames.werescrewed.entity.mover.IMover;
 
 
@@ -25,6 +28,7 @@ public class Platform extends Entity{
 	protected World world;
 	protected int width, height;
 	protected boolean dynamicType = false;
+	protected boolean rotate = false;
 
 	public Platform( String n, Vector2 pos, Texture tex, World world ){
 		super( n, pos, tex , null);
@@ -32,13 +36,40 @@ public class Platform extends Entity{
 	}
 	
 
+	public Platform(String n, EntityDef d, World w, Vector2 pos, float rot, Vector2 sca) {
+		super(n, d, w, pos, rot, sca);
+	}
+
+
 	public void setMover(IMover _mover){
 		this.mover = _mover;
 	}
 
-	
-	public void update(){
+	public void update()
+	{
 		body.setActive(true);
+		super.update();
+		
+		if( Gdx.input.isKeyPressed(Keys.T) ){
+			rotate();
+		}
+		
+		if( Gdx.input.isKeyPressed(Keys.Y) ){
+			body.setAngularVelocity(0);
+		}
+		if( Gdx.input.isKeyPressed(Keys.O) ){
+			changeType();
+		}
+
+		if( Gdx.input.isKeyPressed(Keys.N) ){
+			//rotateBy90();
+			rotate = !rotate;
+			System.out.println(rotate);
+			System.out.println(body.getAngle());
+		}
+		if( Gdx.input.isKeyPressed(Keys.L) ){
+			setHorizontal();
+		}
 	}
 	public void setDensity( float d ){
 		body.getFixtureList().get(0).setDensity(d);

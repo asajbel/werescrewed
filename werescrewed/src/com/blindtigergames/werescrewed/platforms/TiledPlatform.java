@@ -58,29 +58,6 @@ public class TiledPlatform extends Platform{
 	
 	public void update(){
 		super.update();
-		body.setActive(true);
-		
-		if( Gdx.input.isKeyPressed(Keys.T) ){
-			rotate();
-		}
-		if( Gdx.input.isKeyPressed(Keys.Y) ){
-			body.setAngularVelocity(0);
-		}
-		if( Gdx.input.isKeyPressed(Keys.O) ){
-			changeType();
-		}
-
-
-		if( Gdx.input.isKeyPressed(Keys.N) ){
-			//rotateBy90();
-			rotate = !rotate;
-			System.out.println(rotate);
-			System.out.println(body.getAngle());
-		}
-		if( Gdx.input.isKeyPressed(Keys.L) ){
-			setHorizontal();
-		}
-		
 		/*
 		 * Doesn't work, I figure its more Imover stuff anyways
 		if(rotate)
@@ -97,7 +74,6 @@ public class TiledPlatform extends Platform{
 			body.applyAngularImpulse(impulse);
 		}
 		*/
-		mover.move(this.body);
 	}
 	
 	
