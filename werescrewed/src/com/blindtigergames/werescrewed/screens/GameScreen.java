@@ -109,13 +109,7 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 
 		//testing screws
 		screwTex = new Texture(Gdx.files.internal("data/screw.png"));
-<<<<<<< HEAD
-		structScrew = new StructureScrew( "", tp.body.getPosition(), screwTex, 25, tp.body, world);
-		
-		
-=======
 		structScrew = new StructureScrew( "", sp.body.getPosition(), screwTex, 25, sp.body, world);
->>>>>>> f62455d31fafca90516ced6d2afde5897dee00bf
         //tp = new TiledPlatform("plat", new Vector2(200.0f, 100.0f), null, 1, 2, world);
         tp.setMover(new TimelineMover());
         //BOX_TO_PIXEL, PIXEL_TO_BOX
