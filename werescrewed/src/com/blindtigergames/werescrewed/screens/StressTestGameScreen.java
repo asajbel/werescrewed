@@ -102,7 +102,7 @@ public class StressTestGameScreen implements com.badlogic.gdx.Screen {
         //tp.setMover(new TimelineMover());
         //BOX_TO_PIXEL, PIXEL_TO_BOX
         BodyDef groundBodyDef =new BodyDef();  
-        groundBodyDef.type = BodyType.KinematicBody;
+        groundBodyDef.type = BodyType.DynamicBody;
         groundBodyDef.position.set(new Vector2(0*PIXEL_TO_BOX, 0*PIXEL_TO_BOX));  
         groundBody = world.createBody(groundBodyDef);  
         //PolygonShape groundBox = new PolygonShape();  
@@ -122,8 +122,8 @@ public class StressTestGameScreen implements com.badlogic.gdx.Screen {
         
         platforms = new ArrayList<Body>();
         
-        for( int i = 0; i < 10; ++i ){
-        	for ( int j = 0; j < 10; ++j ){
+        for( int i = 0; i < 2; ++i ){
+        	for ( int j = 0; j < 2; ++j ){
 		        BodyDef bDef = new BodyDef();
 		        bDef.position.set(new Vector2((250*i+200)*PIXEL_TO_BOX,(25*j+200)*PIXEL_TO_BOX));
 		        bDef.type = BodyType.DynamicBody;
