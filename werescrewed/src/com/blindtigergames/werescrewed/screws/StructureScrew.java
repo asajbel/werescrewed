@@ -25,7 +25,7 @@ public class StructureScrew extends Screw {
 	public RevoluteJoint screwJoint;
 	
 	public StructureScrew( String n, Vector2 pos, Texture tex, 
-			int max, Entity platform, Skeleton skeleton, World world){
+			int max, Entity platform, Skeleton skeleton, World world ){
 		super( n, pos, tex );
 		maxDepth = max;
 		depth = max;
@@ -46,6 +46,7 @@ public class StructureScrew extends Screw {
 	    screwShape.dispose();
 		offset.x = -16f;
 		offset.y = -16f;
+		body.setUserData( this );
 	    
 		//add radar sensor to screw
 		CircleShape radarShape = new CircleShape();

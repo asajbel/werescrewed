@@ -20,10 +20,12 @@ import com.blindtigergames.werescrewed.collisionManager.MyContactListener;
 import com.blindtigergames.werescrewed.debug.SBox2DDebugRenderer;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.Player;
-import com.blindtigergames.werescrewed.entity.mover.TimelineMover;
-import com.blindtigergames.werescrewed.input.InputHandler;
-import com.blindtigergames.werescrewed.input.InputHandler.player_t;
-import com.blindtigergames.werescrewed.platforms.*;
+import com.blindtigergames.werescrewed.platforms.Box;
+import com.blindtigergames.werescrewed.platforms.ComplexPlatform;
+import com.blindtigergames.werescrewed.platforms.RoomPlatform;
+import com.blindtigergames.werescrewed.platforms.Skeleton;
+import com.blindtigergames.werescrewed.platforms.TiledPlatform;
+import com.blindtigergames.werescrewed.screws.StructureScrew;
 
 
 
@@ -62,6 +64,10 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 	//ShapePlatform sp;
 	Box box;
 
+	Texture screwTex;
+	Texture background;
+	StructureScrew structScrew;
+	Skeleton skeleton;
 
 	FPSLogger logger;
 
@@ -91,6 +97,15 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
         String name = "player";
 
         player = new Player( world, new Vector2(1.0f, 1.0f), name );
+
+		texture = new Texture(Gdx.files.internal("data/rletter.png"));
+
+        tp = new TiledPlatform( "plat", new Vector2(370.0f, 200.0f), texture, 10, 1, world );
+        
+		screwTex = new Texture(Gdx.files.internal("data/screw.png"));
+		background = new Texture(Gdx.files.internal("data/libgdx.png"));
+        skeleton = new Skeleton( "", Vector2.Zero, background, world );
+		structScrew = new StructureScrew( "", tp.body.getPosition(), screwTex, 25, tp, skeleton, world);
 
         cam = new Camera( w, h, player );
         //tp = new TiledPlatform( "plat", new Vector2(5.0f, 40.0f), texture, 1, 2, world );
@@ -142,6 +157,10 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		}
 
 		player.update();
+		
+		structScrew.update();
+		
+		
 		//
 		//tp.update();
 		rp.update();
@@ -152,7 +171,8 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		batch.setProjectionMatrix(cam.combined());
 		//batch.setProjectionMatrix(camera.combined);
 		batch.begin();
-		
+
+		structScrew.draw(batch);
 		//sprite.draw(batch);
 		//Drawing the player here
 		//playerEntity.draw(batch);

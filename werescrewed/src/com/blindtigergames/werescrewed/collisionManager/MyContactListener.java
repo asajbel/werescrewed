@@ -1,7 +1,5 @@
 package com.blindtigergames.werescrewed.collisionManager;
 
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
@@ -9,6 +7,7 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.Manifold;
 import com.blindtigergames.werescrewed.entity.Player;
 import com.blindtigergames.werescrewed.platforms.Box;
+import com.blindtigergames.werescrewed.screws.StructureScrew;
 
 /*
  *
@@ -39,6 +38,12 @@ public class MyContactListener implements ContactListener{
             }
         	if (objectFix.getBody().getUserData() instanceof Box){
         		Box example = (Box) objectFix.getBody().getUserData();
+        		example.exampleCollide();
+        		Player asshole = (Player) playerFix.getBody().getUserData();
+        		asshole.jump();
+        	}
+        	if (objectFix.getBody().getUserData() instanceof StructureScrew){
+        		StructureScrew example = (StructureScrew) objectFix.getBody().getUserData();
         		example.exampleCollide();
         		Player asshole = (Player) playerFix.getBody().getUserData();
         		asshole.jump();
