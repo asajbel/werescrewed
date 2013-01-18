@@ -220,7 +220,7 @@ public class Player extends Entity {
 			stop( );
 		}
 
-		isGrounded( 0 );
+		//isGrounded( 0 );
 		/*
 		 * This example is found at a blog, i couldn't get it to work right away
 		 * boolean grounded = isPlayerGrounded(Gdx.graphics.getDeltaTime());
