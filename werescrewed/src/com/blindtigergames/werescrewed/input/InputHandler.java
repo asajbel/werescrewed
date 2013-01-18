@@ -109,9 +109,20 @@ public class InputHandler implements InputProcessor {
 		switch ( player ){
 			default: return false;
 			case ONE:
-				return p1ScrewPressed;
+				return Gdx.input.isKeyPressed( Keys.X );
 			case TWO:
-				return p2ScrewPressed;
+				return Gdx.input.isKeyPressed( Keys.M );
+		}
+	}
+	
+	public boolean unscrewPressed ( player_t player ){
+		switch ( player ){
+			default: return false;
+			case ONE:
+				return Gdx.input.isKeyPressed ( Keys.Z );
+			case TWO:
+				return Gdx.input.isKeyPressed ( Keys.N );
+		
 		}
 	}
 	
