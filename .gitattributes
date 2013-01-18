@@ -9,14 +9,6 @@
 # These files are text and should be normalized (Convert crlf => lf)
 *.gitattributes text
 
-# Explicitly declare text files we want to always be normalized and converted 
-# to native line endings on checkout.
-*.java text
-*.h text
-
-# Declare files that will always have CRLF line endings on checkout.
-*.sln text eol=crlf
-
 # Denote all files that are truly binary and should not be modified.
 *.png binary
 *.jpg binary
