@@ -23,9 +23,7 @@ import com.blindtigergames.werescrewed.screens.GameScreen;
 
 public class Player extends Entity {
 
-	private World world;
-	// public Body body = null;
-	// Entity has a Body body variable
+	private World world; // Reference to the world in which the player exists
 	public Fixture playerPhysicsFixture;
 	public Fixture playerSensorFixture;
 	public float stillTime = 0;
