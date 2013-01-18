@@ -60,10 +60,10 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 	Body playerBody;
 	Entity playerEntity;
 	Player player;
-	TiledPlatform tp, tp2;
-	RoomPlatform rp;
-	ComplexPlatform cp;
-	ShapePlatform sp;
+	TiledPlatform tiledPlatform, tiledPlatform2;
+	RoomPlatform roomPlatform;
+	ComplexPlatform complexPlatform;
+	ShapePlatform shapePlatform;
 
 	//testing screw
 	Texture screwTex;
@@ -102,20 +102,20 @@ public class GameScreen implements com.badlogic.gdx.Screen {
         player = new Player( world, new Vector2(1.0f, 1.0f), name );
 
         cam = new Camera( w, h, player );
-        tp = new TiledPlatform( "plat", new Vector2(370.0f, 200.0f), texture, 10, 1, world );
-        rp = new RoomPlatform( "room", new Vector2(-1.0f, 1.0f), texture, 1, 10, world );
-        cp = new ComplexPlatform( "bottle", new Vector2(0.0f, 3.0f), texture, 1, world, "bottle" );
-        sp = new ShapePlatform( "rhom", new Vector2( 1.0f, 1.0f), texture, world, 
+        tiledPlatform = new TiledPlatform( "plat", new Vector2(370.0f, 200.0f), texture, 10, 1, world );
+        roomPlatform = new RoomPlatform( "room", new Vector2(-1.0f, 1.0f), texture, 1, 10, world );
+        complexPlatform = new ComplexPlatform( "bottle", new Vector2(0.0f, 3.0f), texture, 1, world, "bottle" );
+        shapePlatform = new ShapePlatform( "rhom", new Vector2( 1.0f, 1.0f), texture, world, 
         		Shapes.rhombus, 1.0f, false);
 
 		//testing screws
 		screwTex = new Texture(Gdx.files.internal("data/screw.png"));
 		background = new Texture(Gdx.files.internal("data/libgdx.png"));
         skeleton = new Skeleton( "", Vector2.Zero, background, world );
-		structScrew = new StructureScrew( "", tp.body.getPosition(), screwTex, 25, tp, skeleton, world);
+		structScrew = new StructureScrew( "", tiledPlatform.body.getPosition(), screwTex, 25, tiledPlatform, skeleton, world);
 		
         //tp = new TiledPlatform("plat", new Vector2(200.0f, 100.0f), null, 1, 2, world);
-        tp.setMover(new TimelineMover());
+        tiledPlatform.setMover(new TimelineMover());
         //BOX_TO_PIXEL, PIXEL_TO_BOX
         BodyDef groundBodyDef =new BodyDef();  
         groundBodyDef.position.set(new Vector2(0*PIXEL_TO_BOX, 0*PIXEL_TO_BOX));  
@@ -157,10 +157,10 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 		}
 
 		player.update();
-		tp.update();
-		rp.update();
-		cp.update();
-		sp.update();
+		tiledPlatform.update();
+		roomPlatform.update();
+		complexPlatform.update();
+		shapePlatform.update();
 
 		structScrew.update();
 		 
@@ -183,7 +183,7 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 		//player.draw(batch);
 		
 		// test drawing the texture by uncommenting the next line:
-		tp.draw(batch);
+		tiledPlatform.draw(batch);
 		player.draw(batch);
 		
 		structScrew.draw(batch);
