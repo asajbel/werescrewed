@@ -1,6 +1,6 @@
 package com.blindtigergames.werescrewed.platforms;
 
-import aurelienribon.bodyeditor.BodyEditorLoader;
+//import aurelienribon.bodyeditor.BodyEditorLoader;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
@@ -13,6 +13,7 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+import com.blindtigergames.werescrewed.entity.BodyEditorLoader;
 import com.blindtigergames.werescrewed.entity.EntityDef;
 import com.blindtigergames.werescrewed.screens.GameScreen;
 
@@ -31,6 +32,7 @@ public class ComplexPlatform extends Platform{
 	//String object would be like "bottle" then we will load that particular body (precompiled)
 	public ComplexPlatform( String n, Vector2 pos, Texture tex, int scale, 
 			World world, String bodyName ) {
+		//super(n, EntityDef.getDefinition(bodyName), world, pos, 0.0f, new Vector2(1f,1f));
 		super(n, pos, tex, null);
 		this.world = world;
 		//this.width = width;
