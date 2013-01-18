@@ -61,7 +61,7 @@ public class ShapePlatform extends Platform{
 		
 		
 		BodyDef groundBodyDef =new BodyDef();  
-        groundBodyDef.type = BodyType.KinematicBody;
+        groundBodyDef.type = BodyType.DynamicBody;
         groundBodyDef.position.set(new Vector2( pos.x ,pos.y ));  
         body = world.createBody( groundBodyDef );  
 

@@ -77,7 +77,9 @@ public class Skeleton extends Entity{
 	
 	@Override
 	public void update(){
-		mover.move(body);
+		if (mover!=null){
+			mover.move(body);
+		}
 	}
 	
 	protected class BoneAndJoints{

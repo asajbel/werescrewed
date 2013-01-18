@@ -16,6 +16,8 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.physics.box2d.joints.PrismaticJoint;
+import com.badlogic.gdx.physics.box2d.joints.PrismaticJointDef;
 import com.blindtigergames.werescrewed.camera.Camera;
 import com.blindtigergames.werescrewed.collisionManager.MyContactListener;
 import com.blindtigergames.werescrewed.debug.SBox2DDebugRenderer;
@@ -110,7 +112,9 @@ public class GameScreen implements com.badlogic.gdx.Screen {
         sp = new ShapePlatform( "rhom", new Vector2( 1.0f, 1.0f), texture, world, 
         		Shapes.rhombus, 1.0f, false);
         
-        skeleton = new Skeleton("skeleton1", new Vector2(), null, world);
+       
+        
+        
 
 		//testing screws
 		screwTex = new Texture(Gdx.files.internal("data/screw.png"));

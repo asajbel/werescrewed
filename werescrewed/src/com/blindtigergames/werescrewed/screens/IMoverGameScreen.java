@@ -20,6 +20,7 @@ import com.badlogic.gdx.physics.box2d.Joint;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.physics.box2d.joints.PrismaticJointDef;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
 import com.blindtigergames.werescrewed.camera.Camera;
 import com.blindtigergames.werescrewed.debug.SBox2DDebugRenderer;
@@ -29,6 +30,7 @@ import com.blindtigergames.werescrewed.entity.mover.TimelineMover;
 import com.blindtigergames.werescrewed.input.InputHandler;
 import com.blindtigergames.werescrewed.input.InputHandler.player_t;
 import com.blindtigergames.werescrewed.platforms.*;
+import com.blindtigergames.werescrewed.screws.StructureScrew;
 
 
 
@@ -64,11 +66,15 @@ public class IMoverGameScreen implements com.badlogic.gdx.Screen {
 	RoomPlatform rp;
 	ComplexPlatform cp;
 	Skeleton skeleton;
-	//ShapePlatform sp;
+	ShapePlatform sp;
 
 	ArrayList<Body> platforms;
 	
 	FPSLogger logger;
+	
+	Texture screwTex;
+	StructureScrew structScrew;
+	InputHandler inputHandler; 
 
 	
 	private final Vector2 dec = new Vector2(.5f,0);
@@ -84,7 +90,8 @@ public class IMoverGameScreen implements com.badlogic.gdx.Screen {
 		float w = Gdx.graphics.getWidth()/zoom;
 		float h = Gdx.graphics.getHeight()/zoom;
 
-
+		
+		inputHandler = new InputHandler();
 		texture = new Texture(Gdx.files.internal("data/rletter.png"));
 		//takes in width, height
         //cam = new Camera(w, h);
@@ -96,12 +103,16 @@ public class IMoverGameScreen implements com.badlogic.gdx.Screen {
         String name = "player";
 
         player = new Player( world, new Vector2(1.0f, 1.0f), name );
-
         cam = new Camera( w, h, player );
-        tp = new TiledPlatform( "plat", new Vector2(5.0f, 40.0f), texture, 1, 2, world );
+        
+        tp = new TiledPlatform( "plat", new Vector2(370.0f, 200.0f), texture, 10, 1, world );
         rp = new RoomPlatform( "room", new Vector2(-1.0f, 1.0f), texture, 1, 10, world );
         cp = new ComplexPlatform( "bottle", new Vector2(0.0f, 3.0f), texture, 1, world, "bottle" );
-        //sp = new ShapePlatform( "trap", new Vector2( 1.0f, 1.0f), texture, world, Shapes.trapezoid, 0.5f);
+        sp = new ShapePlatform( "rhom", new Vector2( 1.0f, 1.0f), texture, world, 
+        		Shapes.rhombus, 1.0f, false);
+        
+        screwTex = new Texture(Gdx.files.internal("data/screw.png"));
+		structScrew = new StructureScrew( "", sp.body.getPosition(), screwTex, 25, sp.body, world);
         
         //tp = new TiledPlatform("plat", new Vector2(200.0f, 100.0f), null, 1, 2, world);
         tp.setMover(new TimelineMover());
@@ -126,6 +137,16 @@ public class IMoverGameScreen implements com.badlogic.gdx.Screen {
        skeleton.mover = new TimelineMover();
       platforms = new ArrayList<Body>();
        
+      sp = new ShapePlatform( "rhom", new Vector2( 1.0f, 2.0f), texture, world, 
+      		Shapes.rhombus, 1.0f, false);
+      
+      skeleton = new Skeleton("skeleton1", new Vector2(), null, world);
+      
+      PrismaticJointDef prismaticJointDef = new PrismaticJointDef();
+      prismaticJointDef.initialize(skeleton.body, sp.body, sp.body.getWorldCenter(), new Vector2(1,0));
+      skeleton.addBoneAndJoint(sp, world.createJoint(prismaticJointDef));
+      
+      
        Iterator<Joint> joints = world.getJoints(); 
        /*for( int i = 0; i < 5; ++i ){
        	for ( int j = 0; j < 5; ++j ){
@@ -159,6 +180,7 @@ public class IMoverGameScreen implements com.badlogic.gdx.Screen {
 		Gdx.gl20.glClearColor(0.0f, 0f, 0.0f, 1.0f);
 		Gdx.gl20.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
+		inputHandler.update();
 		cam.update();
 		
 		if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)){
@@ -197,17 +219,30 @@ public class IMoverGameScreen implements com.badlogic.gdx.Screen {
 			skeleton.wakeSkeleton();
 		}
 		
+		if(inputHandler.screwPressed( player_t.ONE )){
+			/*for (Fixture f: structScrew.body.getFixtureList()){
+				f.contactListener();
+			}*/
+			//if(inputHandler.leftPressed( player_t.ONE )){
+				structScrew.screwLeft(); 
+			//}
+		}
 
 		player.update();
 		tp.update();
 		rp.update();
 		cp.update();
-		//sp.update();
+		sp.update();
 		skeleton.update();
 		
 		batch.setProjectionMatrix(cam.combined());
 		//batch.setProjectionMatrix(camera.combined);
 		batch.begin();
+		// test drawing the texture by uncommenting the next line:
+		tp.draw(batch);
+		player.draw(batch);
+		structScrew.draw(batch);
+
 		
 		
 		// test drawing the texture by uncommenting the next line:
