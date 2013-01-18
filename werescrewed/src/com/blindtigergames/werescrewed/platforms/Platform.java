@@ -64,8 +64,6 @@ public class Platform extends Entity{
 		if( Gdx.input.isKeyPressed(Keys.N) ){
 			//rotateBy90();
 			rotate = !rotate;
-			System.out.println(rotate);
-			System.out.println(body.getAngle());
 		}
 		if( Gdx.input.isKeyPressed(Keys.L) ){
 			setHorizontal();
