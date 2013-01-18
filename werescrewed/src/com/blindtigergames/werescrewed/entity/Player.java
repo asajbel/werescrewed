@@ -21,6 +21,13 @@ import com.blindtigergames.werescrewed.input.InputHandler;
 import com.blindtigergames.werescrewed.input.InputHandler.player_t;
 import com.blindtigergames.werescrewed.screens.GameScreen;
 
+
+/**
+ * 
+ * A respresentation of a player in the game world.
+ * @author Blind Tiger Games
+ *
+ */
 public class Player extends Entity {
 
 	private World world; // Reference to the world in which the player exists
@@ -38,6 +45,11 @@ public class Player extends Entity {
 
 	// private Camera cam;
 
+	/**
+	 * 
+	 * One of Standing, Jumping, and Falling.
+	 *
+	 */
 	public enum PlayerState {
 		Standing, Jumping, Falling
 	}
