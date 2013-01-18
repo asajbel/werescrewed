@@ -9,6 +9,7 @@ package com.blindtigergames.werescrewed.input;
 import com.badlogic.gdx.Input.*;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.controllers.*;
 
 public class InputHandler implements InputProcessor {
 
