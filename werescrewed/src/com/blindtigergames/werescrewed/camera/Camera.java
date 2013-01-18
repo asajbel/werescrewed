@@ -19,6 +19,8 @@ import com.blindtigergames.werescrewed.entity.Player;
 public class Camera {
 	public static final float BOX_TO_PIXEL = 256f;
 	public static final float PIXEL_TO_BOX = 1/BOX_TO_PIXEL;
+	public static final float DEGTORAD = 0.0174532925199432957f;
+	public static final float RADTODEG = 57.295779513082320876f;
 	public OrthographicCamera camera;
 	public float viewportHeight;
 	public float viewportWidth;
@@ -33,9 +35,13 @@ public class Camera {
 	// might take these out when no longer required
 	private Player player1;
 	private Player player2;
+	private AnchorList anchorList;
 	private int player1Anchor;
 	private int player2Anchor;
 	private boolean debugMode;
+	
+	//steering stuff
+	private Vector2  velocity; // (magnitude, direction);
 		
 	private void initializeVars (float viewportWidth, float viewportHeight) {
 		camera = new OrthographicCamera(1, viewportHeight/viewportWidth);
@@ -58,20 +64,17 @@ public class Camera {
 		player1Anchor = -1;
 		player2Anchor = -1;
 		debugMode = false;
+		anchorList = AnchorList.getInstance();
 	}
 	
 	public Camera(float viewportWidth, float viewportHeight)
 	{
-		initializeVars(viewportWidth, viewportHeight);
-        camera.update();  
+		this(viewportWidth, viewportHeight, null, null);  
 	}
 	
 	public Camera(float viewportWidth, float viewportHeight, Player player)
 	{
-		initializeVars(viewportWidth, viewportHeight);
-		player1 = player;
-		player1Anchor = AnchorList.addAnchor(player.getPosition());
-        camera.update();  
+		this(viewportWidth, viewportHeight, player, null);
 	}
 	
 	public Camera(float viewportWidth, float viewportHeight, Player player1, Player player2)
@@ -79,8 +82,14 @@ public class Camera {
 		initializeVars(viewportWidth, viewportHeight);
 		this.player1 = player1;
 		this.player2 = player2;
-		player1Anchor = AnchorList.addAnchor(player1.getPosition());
-		player2Anchor = AnchorList.addAnchor(player2.getPosition());
+		
+		if (player1 != null) {
+			player1Anchor = anchorList.addAnchor(player1.getPosition());
+		}
+		
+		if (player2 != null) {
+			player2Anchor = anchorList.addAnchor(player2.getPosition());
+		}
         camera.update();  
 	}
 	
@@ -99,10 +108,10 @@ public class Camera {
 		
 		// update player anchors
 		if (player1Anchor > -1) {
-			AnchorList.setAnchorPos(player1Anchor, player1.getPosition().mul(BOX_TO_PIXEL));
+			anchorList.setAnchorPos(player1Anchor, player1.getPosition().mul(BOX_TO_PIXEL));
 		}
 		if (player2Anchor > -1) {
-			AnchorList.setAnchorPos(player2Anchor, player2.getPosition().mul(BOX_TO_PIXEL));
+			anchorList.setAnchorPos(player2Anchor, player2.getPosition().mul(BOX_TO_PIXEL));
 		}
 		
 		if (debugMode) {
@@ -152,21 +161,25 @@ public class Camera {
     }
 
     
-    /*
+    /**
      * set focus of camera to the midpoint of all anchors
      */
     private Vector2 setFocus(){
-    	this.focus = AnchorList.midpoint();
+    	this.focus = anchorList.midpoint();
 		focus3D.x = focus.x;
 		focus3D.y = focus.y;
 		focus3D.z = 0f;
     	return this.focus;
     }
     
-    /*
+    /**
      * set the focus of camera to the weighted midpoint of all anchors
      */
     private Vector2 setFocusWeighted(){
     	return this.focus;
+    }
+    
+    private Vector2 steerFocus() {
+    	return null;
     }
 }
