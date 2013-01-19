@@ -171,7 +171,7 @@ public class Player extends Entity {
 	public void jump( ) {
 		if ( Math.abs( body.getLinearVelocity( ).y ) < 1e-5 ) {
 			body.applyLinearImpulse( new Vector2( 0.0f, 0.2f ),
-					body.getWorldCenter( ) );
+					body.getWorldCenter( ) ); 
 		}
 
 	}
