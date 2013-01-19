@@ -6,6 +6,7 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
+import com.badlogic.gdx.physics.box2d.Shape;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.OrderedMap;
@@ -138,12 +139,11 @@ public class BodyEditorLoader {
 	 * @param fd The fixture parameters to apply to the created body fixture.
 	 * @param scale The desired scale of the body. The default width is 1.
 	 */
-	public void attachFixture(EntityDef def, String name, float scale, float density, float friction, float restitution) {
+	public void attachFixture(EntityDef def, String name, float den, float fri, float res, float scale) {
 		RigidBodyModel rbModel = model.rigidBodies.get(name);
 		if (rbModel == null) throw new RuntimeException("Name '" + name + "' was not found.");
-
+		PolygonShape polygonShape; CircleShape circleShape;
 		Vector2 origin = vec.set(rbModel.origin).mul(scale);
-
 		for (int i=0, n=rbModel.polygons.size(); i<n; i++) {
 			PolygonModel polygon = rbModel.polygons.get(i);
 			Vector2[] vertices = polygon.buffer;
@@ -153,8 +153,9 @@ public class BodyEditorLoader {
 				vertices[ii].sub(origin);
 			}
 
+			polygonShape = new PolygonShape();
 			polygonShape.set(vertices);
-			def.fixtureDefs.add(EntityDef.makeFixtureDef(density, friction, restitution, polygonShape));
+			def.fixtureDefs.add(makeFixtureDef(den, fri, res, polygonShape));
 
 			for (int ii=0, nn=vertices.length; ii<nn; ii++) {
 				free(vertices[ii]);
@@ -165,15 +166,38 @@ public class BodyEditorLoader {
 			CircleModel circle = rbModel.circles.get(i);
 			Vector2 center = newVec().set(circle.center).mul(scale);
 			float radius = circle.radius * scale;
-
+			
+			circleShape = new CircleShape();
 			circleShape.setPosition(center);
 			circleShape.setRadius(radius);
-			def.fixtureDefs.add(EntityDef.makeFixtureDef(density, friction, restitution, circleShape));
+			def.fixtureDefs.add(makeFixtureDef(den, fri, res, circleShape));
 
 
 			free(center);
 		}
 	}
+	
+	protected static FixtureDef makeFixtureDef(float den, float fri, float res, Shape shape){
+		FixtureDef out = new FixtureDef();
+		out.density = den;
+		out.friction = fri;
+		out.restitution = res;
+		out.shape = shape;
+		return out;
+	}
+	
+	protected static PolygonShape clonePolygon(PolygonShape in){
+		PolygonShape out = new PolygonShape();
+		ArrayList<Vector2> vertices = new ArrayList<Vector2>();
+		Vector2 v = null;
+		for (int i = 0; i < in.getVertexCount( ); i++){
+			in.getVertex(i, v);
+			vertices.add(v);
+		}
+		out.set( vertices.toArray( new Vector2[0] ) );
+		return out;
+	}
+	
 	/**
 	 * Gets the image path attached to the given name.
 	 */

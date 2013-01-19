@@ -1,5 +1,6 @@
 package com.blindtigergames.werescrewed.entity;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -120,6 +121,7 @@ public class Entity
 			body = world.createBody(type.bodyDef);
 			for (FixtureDef fix : type.fixtureDefs){
 				body.createFixture(fix);
+				Gdx.app.log( "Entity", fix.toString());
 			}
 			setPosition(x,y);
 		}

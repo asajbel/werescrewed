@@ -52,7 +52,8 @@ public class EntityDef {
 		protected void loadComplexBody(float density, float friction, float restitution, int scale, String bodyName ){
 			String filename = "data/bodies/" + bodyName + ".json";		
 			BodyEditorLoader loader = new BodyEditorLoader( Gdx.files.internal(filename));
-			loader.attachFixture(this, filename, scale, density, friction, restitution);
+						
+			loader.attachFixture( this, bodyName, density, friction, restitution, scale );
 		}
 				
 	//Sprite Fields (i.e. everything needed to define just the sprite half)
