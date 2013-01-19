@@ -40,7 +40,7 @@ public class Skeleton extends Entity{
 	public void constructSkeleton(Vector2 pos){
 		//Skeletons have no fixtures!!
 		BodyDef skeletonBodyDef = new BodyDef();
-        //groundBodyDef.type = BodyType.KinematicBody;
+		skeletonBodyDef.type = BodyType.KinematicBody;
 		skeletonBodyDef.position.set( pos.mul( GameScreen.PIXEL_TO_BOX ) );  
 		PolygonShape boxPolygonShape = new PolygonShape();
 		boxPolygonShape.setAsBox(0.001f, 0.001f);

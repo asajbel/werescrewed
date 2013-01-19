@@ -20,12 +20,14 @@ import com.badlogic.gdx.physics.box2d.Joint;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.physics.box2d.joints.PrismaticJoint;
 import com.badlogic.gdx.physics.box2d.joints.PrismaticJointDef;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
 import com.blindtigergames.werescrewed.camera.Camera;
 import com.blindtigergames.werescrewed.debug.SBox2DDebugRenderer;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.Player;
+import com.blindtigergames.werescrewed.entity.mover.PrismaticMover;
 import com.blindtigergames.werescrewed.entity.mover.TimelineMover;
 import com.blindtigergames.werescrewed.input.InputHandler;
 import com.blindtigergames.werescrewed.input.InputHandler.player_t;
@@ -144,7 +146,19 @@ public class IMoverGameScreen implements com.badlogic.gdx.Screen {
       
       PrismaticJointDef prismaticJointDef = new PrismaticJointDef();
       prismaticJointDef.initialize(skeleton.body, sp.body, sp.body.getWorldCenter(), new Vector2(1,0));
-      skeleton.addBoneAndJoint(sp, world.createJoint(prismaticJointDef));
+      prismaticJointDef.enableLimit = true;
+      prismaticJointDef.lowerTranslation = 0;
+      prismaticJointDef.upperTranslation = 1.0f;
+      prismaticJointDef.enableMotor = true;
+      prismaticJointDef.maxMotorForce = 500;//high max motor force yields a very strong motor
+      prismaticJointDef.motorSpeed = .1f;// lower mmotor speed means a slowly moving motor
+      //bool atLowerLimit = joint->GetJointTranslation() <= joint->GetLowerLimit();
+      //bool atUpperLimit = joint->GetJointTranslation() >= joint->GetUpperLimit();
+      PrismaticJoint j = (PrismaticJoint) world.createJoint(prismaticJointDef);
+      skeleton.addBoneAndJoint(sp, j );
+      //sp.setMover(new PrismaticMover(j));
+      
+      //skeleton.body.setLinearVelocity(new Vector2(0.01f,0));
       
       
        Iterator<Joint> joints = world.getJoints(); 

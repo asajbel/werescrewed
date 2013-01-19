@@ -41,9 +41,7 @@ public class Platform extends Entity{
 	}
 
 
-	public void setMover(IMover _mover){
-		this.mover = _mover;
-	}
+	
 
 	public void update()
 	{

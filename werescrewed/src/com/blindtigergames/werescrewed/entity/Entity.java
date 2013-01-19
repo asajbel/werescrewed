@@ -108,7 +108,12 @@ public class Entity
 		if(mover != null)
 			mover.move(body);
 	}
+	
+	public void setMover(IMover _mover){
+		this.mover = _mover;
+	}
 
+	//TODO: Should the generated name have an int attached to it as well?
 	protected String generateName(){
 		return type.name;
 	}
