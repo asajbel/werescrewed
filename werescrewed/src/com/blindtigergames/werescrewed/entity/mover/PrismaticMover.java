@@ -5,17 +5,24 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Joint;
 import com.badlogic.gdx.physics.box2d.joints.PrismaticJoint;
 
+/**
+ * Can be used for sliding platforms, pistons, elevators
+ * @author stew
+ *
+ */
 public class PrismaticMover implements IMover{
 	
+	PuzzleType type;
 	protected PrismaticJoint joint;
 	protected boolean loop;	//takes priority over loopOnce
 	protected boolean loopOnce; //will allow joint to go the full joint length and back once
 
-	public PrismaticMover( PrismaticJoint _joint ) {
+	public PrismaticMover( PuzzleType _type, PrismaticJoint _joint ) {
 		// TODO Auto-generated constructor stub
 		joint = _joint;
 		loop = false;
 		loopOnce = true;
+		type = _type;
 	}
 	
 	@Override
@@ -23,8 +30,9 @@ public class PrismaticMover implements IMover{
 		// TODO Auto-generated method stub\
 		boolean atLowerLimit = joint.getJointTranslation() <= joint.getLowerLimit();
 		boolean atUpperLimit = joint.getJointTranslation() >= joint.getUpperLimit();
+		Gdx.app.log("PrismaticMover", "Current translation: "+joint.getJointTranslation());
 		if ( atLowerLimit || atLowerLimit ){
-			//joint.setMotorSpeed(-joint.getMotorSpeed());
+			joint.setMotorSpeed(-joint.getMotorSpeed());
 		}
 		
 	}

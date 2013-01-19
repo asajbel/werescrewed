@@ -26,6 +26,7 @@ import com.sun.tools.javac.util.Position;
 
 public class Skeleton extends Entity{
 	
+	ArrayList<Skeleton> subSkeletons; 
 	public ArrayList<BoneAndJoints> boneAndJoints;
 	
 	//private Skeleton(){};
@@ -35,6 +36,7 @@ public class Skeleton extends Entity{
 		this.world = world;
 		this.boneAndJoints = new ArrayList<BoneAndJoints>();
 		constructSkeleton(pos);
+		subSkeletons = new ArrayList<Skeleton>();
 	}
 	
 	public void constructSkeleton(Vector2 pos){
@@ -58,9 +60,18 @@ public class Skeleton extends Entity{
 		this.boneAndJoints.add( new BoneAndJoints(bone, joints) );
 	}
 	
+	/**
+	 * Add a skeleton to the sub skeleton list of this one.
+	 */
+	public void addSkeleton(Skeleton skeleton){
+		this.subSkeletons.add(skeleton);
+	}
 
 	public void sleepSkeleton(){
 		body.setActive(false);
+		for( Skeleton skeleton : subSkeletons ){
+			skeleton.sleepSkeleton();
+		}
 		for(BoneAndJoints boneJoint : boneAndJoints){
 			//boneJoint.bone.body.setActive(false);
 			boneJoint.bone.body.setAwake(false);
@@ -69,8 +80,10 @@ public class Skeleton extends Entity{
 
 	public void wakeSkeleton(){
 		body.setActive(true);
-		for(BoneAndJoints boneJoint : boneAndJoints){
-			//boneJoint.bone.body.setActive(true);
+		for( Skeleton skeleton : subSkeletons ){
+			skeleton.wakeSkeleton();
+		}
+		for( BoneAndJoints boneJoint : boneAndJoints ){
 			boneJoint.bone.body.setAwake(true);
 		}
 	}
@@ -80,6 +93,20 @@ public class Skeleton extends Entity{
 		if (mover!=null){
 			mover.move(body);
 		}
+		//update sub skeleton and bones
+		for( Skeleton skeleton : subSkeletons ){
+			skeleton.update();
+		}
+		for( BoneAndJoints boneJoint : boneAndJoints ){
+			boneJoint.bone.update();
+		}
+	}
+	
+	/****
+	 * Update all sub-skeleton and bones on this skeleton
+	 */
+	private void updateChildren(){
+		
 	}
 	
 	protected class BoneAndJoints{

@@ -28,6 +28,7 @@ import com.blindtigergames.werescrewed.debug.SBox2DDebugRenderer;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.Player;
 import com.blindtigergames.werescrewed.entity.mover.PrismaticMover;
+import com.blindtigergames.werescrewed.entity.mover.PuzzleType;
 import com.blindtigergames.werescrewed.entity.mover.TimelineMover;
 import com.blindtigergames.werescrewed.input.InputHandler;
 import com.blindtigergames.werescrewed.input.InputHandler.player_t;
@@ -117,7 +118,7 @@ public class IMoverGameScreen implements com.badlogic.gdx.Screen {
 		structScrew = new StructureScrew( "", sp.body.getPosition(), screwTex, 25, sp.body, world);
         
         //tp = new TiledPlatform("plat", new Vector2(200.0f, 100.0f), null, 1, 2, world);
-        tp.setMover(new TimelineMover());
+        //tp.setMover(new TimelineMover());
         //BOX_TO_PIXEL, PIXEL_TO_BOX
         BodyDef groundBodyDef =new BodyDef();  
         groundBodyDef.position.set(new Vector2(0*PIXEL_TO_BOX, 0*PIXEL_TO_BOX));  
@@ -136,14 +137,9 @@ public class IMoverGameScreen implements com.badlogic.gdx.Screen {
         logger = new FPSLogger();
         
        skeleton = new Skeleton("skeleton1", new Vector2(), null, world);
-       skeleton.mover = new TimelineMover();
+       //skeleton.mover = new TimelineMover();
       platforms = new ArrayList<Body>();
-       
-      sp = new ShapePlatform( "rhom", new Vector2( 1.0f, 2.0f), texture, world, 
-      		Shapes.rhombus, 1.0f, false);
-      
-      skeleton = new Skeleton("skeleton1", new Vector2(), null, world);
-      
+
       PrismaticJointDef prismaticJointDef = new PrismaticJointDef();
       prismaticJointDef.initialize(skeleton.body, sp.body, sp.body.getWorldCenter(), new Vector2(1,0));
       prismaticJointDef.enableLimit = true;
@@ -157,6 +153,7 @@ public class IMoverGameScreen implements com.badlogic.gdx.Screen {
       PrismaticJoint j = (PrismaticJoint) world.createJoint(prismaticJointDef);
       skeleton.addBoneAndJoint(sp, j );
       //sp.setMover(new PrismaticMover(j));
+      sp.setMover(new PrismaticMover(PuzzleType.PRISMATIC_SLIDER, j));
       
       //skeleton.body.setLinearVelocity(new Vector2(0.01f,0));
       
@@ -242,11 +239,13 @@ public class IMoverGameScreen implements com.badlogic.gdx.Screen {
 			//}
 		}
 
+		
+		
 		player.update();
 		tp.update();
 		rp.update();
 		cp.update();
-		sp.update();
+		//sp.update();
 		skeleton.update();
 		
 		batch.setProjectionMatrix(cam.combined());
