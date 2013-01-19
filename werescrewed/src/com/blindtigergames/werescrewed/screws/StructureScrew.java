@@ -22,7 +22,6 @@ import com.blindtigergames.werescrewed.screens.GameScreen;
  */
 
 public class StructureScrew extends Screw {
-	public RevoluteJoint screwJoint;
 	
 	public StructureScrew( String n, Vector2 pos, Texture tex, 
 			int max, Entity platform, Skeleton skeleton, World world){
@@ -93,5 +92,6 @@ public class StructureScrew extends Screw {
 			depth = -1;
 		}
 	}
+	private RevoluteJoint screwJoint;
 	private int maxDepth;
 }
