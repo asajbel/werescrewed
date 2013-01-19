@@ -45,6 +45,10 @@ public class Screw extends Entity {
 		return depth;
 	}
 	
+	public void exampleCollide(){
+		System.out.println("Hello from screw");
+	}
+	
 	protected int rotation;
 	protected int depth;
 	protected final short CATEGORY_SCREWS = 0x0008;
