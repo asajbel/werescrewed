@@ -30,6 +30,7 @@ public class Camera {
 	public Vector2 center2D;
 	
 	// translation
+	private static final float PORT_TO_BUFFER = .5f;
 	private Vector2  translateVelocity; // (magnitude, direction);
 	private Rectangle translateBuffer;
 	private static final int LISTEN_BUFFER = 300;
@@ -59,8 +60,8 @@ public class Camera {
 		
 		this.translateBuffer = new Rectangle(camera.position.x,
 											camera.position.y,
-											this.viewportWidth * .5f,
-											this.viewportHeight * .5f);
+											this.viewportWidth * PORT_TO_BUFFER,
+											this.viewportHeight * PORT_TO_BUFFER);
 		
 		this.translateTarget = new Vector2(center2D);
 		this.translateTarget3D = new Vector3(translateTarget.x, translateTarget.y, 0f);
@@ -126,10 +127,6 @@ public class Camera {
 		center2D.x = position.x;
 		center2D.y = position.y;
 		
-		camera.update();
-		
-//		float width = 512;
-//		float height = 256;
 		translateBuffer.x = position.x - translateBuffer.width * .5f;
 		translateBuffer.y = position.y - translateBuffer.height * .5f;
 		shapeRenderer.setProjectionMatrix(camera.combined);
@@ -137,6 +134,12 @@ public class Camera {
 		shapeRenderer.identity();
 		shapeRenderer.rect(translateBuffer.x, translateBuffer.y, translateBuffer.width, translateBuffer.height);
 		shapeRenderer.end();
+		
+		camera.update();
+
+		if (debugMode) {
+			System.out.println("Zoom: " + camera.zoom);
+		}
 		
 		/*float lerp = 0.1f;
 		Vector3 position = camera.position;
@@ -149,13 +152,13 @@ public class Camera {
     private void handleInput() {
             if(Gdx.input.isKeyPressed(Input.Keys.E)) {
                     camera.zoom += 0.02;
-            		translateBuffer.width *= camera.zoom;
-            		translateBuffer.height *= camera.zoom;
+            		translateBuffer.width = camera.zoom * viewportWidth * PORT_TO_BUFFER;
+            		translateBuffer.height = camera.zoom * viewportHeight * PORT_TO_BUFFER;
             }
             if(Gdx.input.isKeyPressed(Input.Keys.Q)) {
                     camera.zoom -= 0.02;
-            		translateBuffer.width *= camera.zoom;
-            		translateBuffer.height *= camera.zoom;
+            		translateBuffer.width = camera.zoom * viewportWidth * PORT_TO_BUFFER;
+            		translateBuffer.height = camera.zoom * viewportHeight * PORT_TO_BUFFER;
             }
             if(Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
                     if (camera.position.x > 0)
@@ -173,7 +176,15 @@ public class Camera {
                     if (camera.position.y < 1024)
                             camera.translate(0, 3, 0);
             }
-
+            if(Gdx.input.isKeyPressed(Input.Keys.NUM_0)) {
+                camera.zoom = .5f;
+            }
+            if(Gdx.input.isKeyPressed(Input.Keys.NUM_1)) {
+                camera.zoom = 1f;
+            }
+            if(Gdx.input.isKeyPressed(Input.Keys.NUM_2)) {
+                camera.zoom = 2f;
+            }
     }
     
     /**
@@ -196,10 +207,13 @@ public class Camera {
     
     private void translate() {
     	setTranslateTarget();
-		if (debugMode) {
-			handleInput();
-		} else {
-			camera.position.set(translateTarget3D);
+    	
+		if (!translateBuffer.contains(translateTarget.x, translateTarget.y)) {
+			if (debugMode) {
+				handleInput();
+			} else {
+				camera.position.set(translateTarget3D);
+			}
 		}
     }
 }
