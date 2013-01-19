@@ -6,11 +6,11 @@ import com.badlogic.gdx.physics.box2d.joints.PrismaticJointDef;
 
 public class JointFactory {
 
-    public static PrismaticJointDef constructSlidingJointDef( Body bodyA,
+    public static PrismaticJointDef constructSlidingJointDef( Body skeletonBody,
             Body bodyB, Vector2 bodyBAnchor, Vector2 axis,
             float upperTranslation, float motorSpeed ) {
         PrismaticJointDef prismaticJointDef = new PrismaticJointDef();
-        prismaticJointDef.initialize( bodyA, bodyB, bodyBAnchor, axis );
+        prismaticJointDef.initialize( skeletonBody, bodyB, bodyBAnchor, axis );
         prismaticJointDef.enableLimit = true;
         prismaticJointDef.lowerTranslation = 0;
         prismaticJointDef.upperTranslation = upperTranslation;

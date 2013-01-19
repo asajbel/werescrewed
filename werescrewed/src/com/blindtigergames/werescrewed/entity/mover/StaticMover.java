@@ -10,13 +10,13 @@ import com.badlogic.gdx.physics.box2d.Body;
 public class StaticMover implements IMover {
 
 	@Override
-	public void move(Body body) {
+	public void move(float deltaTime, Body body) {
 		//Intentionally returns immediately
 		return;
 	}
 
 	@Override
-	public void move(Body body, SteeringOutput steering) {
+	public void move(float deltaTime, Body body, SteeringOutput steering) {
 		body.setLinearVelocity(steering.velocity);
 		body.setAngularVelocity(steering.rotation);
 	}

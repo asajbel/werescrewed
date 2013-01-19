@@ -183,9 +183,9 @@ public class Player extends Entity {
 		}
 	}
 	
-	public void update()
+	public void update(float deltaTime)
 	{
-		super.update();
+		super.update( deltaTime );
 		inputHandler.update();
 		
 		//Vector2 pos = body.getPosition();

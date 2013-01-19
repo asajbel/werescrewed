@@ -16,13 +16,13 @@ public class TimelineMover implements IMover {
     }
 
     @Override
-    public void move( Body body ) {
+    public void move( float deltaTime, Body body ) {
         // TODO Auto-generated method stub
         movement.applySteering( body );
     }
 
     @Override
-    public void move( Body body, SteeringOutput steering ) {
+    public void move( float deltaTime, Body body, SteeringOutput steering ) {
         // TODO Auto-generated method stub
         movement.add( steering ).applySteering( body );
         body.setAngularVelocity( movement.rotation );

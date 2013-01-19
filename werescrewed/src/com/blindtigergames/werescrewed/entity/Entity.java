@@ -97,7 +97,7 @@ public class Entity
     }
     
 
-	public void update()
+	public void update(float deltaTime )
 	{
 		if (body != null && sprite != null){
 			Vector2 bodyPos = body.getPosition();
@@ -106,7 +106,7 @@ public class Entity
 			//System.out.println(name+":"+bodyPos.x+","+bodyPos.y);
 		}
 		if(mover != null)
-			mover.move(body);
+			mover.move(deltaTime,body);
 	}
 	
 	public void setMover(IMover _mover){

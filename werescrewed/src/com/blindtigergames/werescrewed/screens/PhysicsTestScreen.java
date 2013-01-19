@@ -132,6 +132,8 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		Gdx.gl20.glClearColor(0.0f, 0f, 0.0f, 1.0f);
 		Gdx.gl20.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
+		float deltaTime = Gdx.graphics.getDeltaTime();
+		
 		cam.update();
 		
 		if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)){
@@ -141,13 +143,13 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 			System.exit(0);
 		}
 
-		player.update();
+		player.update(deltaTime);
 		//
 		//tp.update();
-		rp.update();
+		rp.update(deltaTime);
 		//cp.update();
 		//sp.update();
-		box.update();
+		box.update(deltaTime);
 		
 		batch.setProjectionMatrix(cam.combined());
 		//batch.setProjectionMatrix(camera.combined);

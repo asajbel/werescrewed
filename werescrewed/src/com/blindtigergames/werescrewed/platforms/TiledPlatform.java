@@ -58,8 +58,8 @@ public class TiledPlatform extends Platform{
 
 	}
 	
-	public void update(){
-		super.update();
+	public void update(float deltaTime){
+		super.update(deltaTime);
 		/*
 		 * Doesn't work, I figure its more Imover stuff anyways
 		if(rotate)

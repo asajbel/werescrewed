@@ -17,7 +17,7 @@ public class Screw extends Entity {
 	}
 	
 	public void update(){
-		super.update();
+		super.update(0f);
 	}
 	
 	public void remove(){

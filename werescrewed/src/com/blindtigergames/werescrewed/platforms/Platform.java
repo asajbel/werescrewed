@@ -43,10 +43,10 @@ public class Platform extends Entity{
 
 	
 
-	public void update()
+	public void update(float deltaTime )
 	{
 		body.setActive(true);
-		super.update();
+		super.update(deltaTime);
 		
 		if( Gdx.input.isKeyPressed(Keys.T) ){
 			rotate();

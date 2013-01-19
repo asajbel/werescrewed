@@ -15,7 +15,7 @@ public interface IMover {
 	 * @param Body - The body to apply the movement to
 	 * @param SteeringOutput - Optional additional movement to apply to body
 	 */
-	void move(Body body);
+	void move(float deltaTime, Body body);
 	
 	
 	/**
@@ -25,5 +25,5 @@ public interface IMover {
 	 */
 	
 	
-	void move(Body body, SteeringOutput steering);
+	void move(float deltaTime, Body body, SteeringOutput steering);
 }

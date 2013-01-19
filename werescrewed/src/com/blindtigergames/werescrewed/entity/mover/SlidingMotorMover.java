@@ -9,15 +9,17 @@ import com.badlogic.gdx.physics.box2d.joints.PrismaticJointDef;
 
 /**
  * Can be used for sliding platforms, pistons, elevators
+ * 
  * @author stew
- *
+ * 
  */
-public class SlidingMotorMover implements IMover{
+public class SlidingMotorMover implements IMover {
 
     PuzzleType type;
     protected PrismaticJoint joint;
-    protected boolean loop;	//takes priority over loopOnce
-    protected boolean loopOnce; //will allow joint to go the full joint length and back once
+    protected boolean loop; // takes priority over loopOnce
+    protected boolean loopOnce; // will allow joint to go the full joint length
+                                // and back once
     boolean recentlyFlipped;
 
     public SlidingMotorMover( PuzzleType _type, PrismaticJoint _joint ) {
@@ -30,32 +32,33 @@ public class SlidingMotorMover implements IMover{
     }
 
     @Override
-    public void move(Body body) {
+    public void move( float deltaTime, Body body ) {
         // TODO Auto-generated method stub\
-        boolean atLowerLimit = joint.getJointTranslation() <= joint.getLowerLimit();
-        boolean atUpperLimit = joint.getJointTranslation() >= joint.getUpperLimit();
-        //Gdx.app.log("PrismaticMover", "Current translation: "+joint.getJointTranslation()+
-        //		", lower: "+joint.getLowerLimit()+"("+atLowerLimit+")"+", upper: "+joint.getUpperLimit()+"("+atUpperLimit+")");
-        if ( atLowerLimit || atUpperLimit ){
-            //Gdx.app.log("PrismaticMover", "at upper/lower limit, recently flipped="+recentlyFlipped);
-            if ( !recentlyFlipped ){
+        boolean atLowerLimit = joint.getJointTranslation() <= joint
+                .getLowerLimit();
+        boolean atUpperLimit = joint.getJointTranslation() >= joint
+                .getUpperLimit();
+        // Gdx.app.log("PrismaticMover",
+        // "Current translation: "+joint.getJointTranslation()+
+        // ", lower: "+joint.getLowerLimit()+"("+atLowerLimit+")"+", upper: "+joint.getUpperLimit()+"("+atUpperLimit+")");
+        if ( atLowerLimit || atUpperLimit ) {
+            // Gdx.app.log("PrismaticMover",
+            // "at upper/lower limit, recently flipped="+recentlyFlipped);
+            if ( !recentlyFlipped ) {
                 recentlyFlipped = true;
                 joint.setMotorSpeed( -joint.getMotorSpeed() );
-                //Gdx.app.log("PrismaticMover", "flipping motor speed");
+                // Gdx.app.log("PrismaticMover", "flipping motor speed");
             }
-        }else {
+        } else {
             recentlyFlipped = false;
         }
     }
 
     @Override
-    public void move(Body body, SteeringOutput steering) {
+    public void move( float deltaTime, Body body, SteeringOutput steering ) {
         // TODO Auto-generated method stub
-        Gdx.app.error("PrismaticMoverError", "This method isn't supported yet. Don't use it.");
+        Gdx.app.error( "PrismaticMoverError",
+                "This method isn't supported yet. Don't use it." );
     }
-
-
-
-
 
 }

@@ -151,6 +151,8 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 		Gdx.gl20.glClearColor(0.0f, 0f, 0.0f, 1.0f);
 		Gdx.gl20.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
+		float deltaTime = Gdx.graphics.getDeltaTime();
+		
 		inputHandler.update();
 		cam.update();
 		
@@ -164,11 +166,11 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 	        //ScreenManager.getInstance().show(Screen.PHYSICS);			
 		}
 
-		player.update();
-		tp.update();
-		rp.update();
-		cp.update();
-		sp.update();
+		player.update(deltaTime);
+		tp.update(deltaTime);
+		rp.update(deltaTime);
+		cp.update(deltaTime);
+		sp.update(deltaTime);
 
 		structScrew.update();
 		 
