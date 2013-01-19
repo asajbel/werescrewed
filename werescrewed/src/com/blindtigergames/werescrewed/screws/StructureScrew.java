@@ -7,6 +7,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJoint;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
@@ -25,14 +26,15 @@ public class StructureScrew extends Screw {
 	
 	public StructureScrew( String n, Vector2 pos, Texture tex, 
 			int max, Entity platform, Skeleton skeleton, World world ){
-		super( n, pos, tex );
+		super( n, pos, tex, null);
+		this.world = world;
 		maxDepth = max;
 		depth = max;
-		rotation = 1080;
+		rotation = 0;
 		
 		//create the screw body
 	    BodyDef screwBodyDef = new BodyDef();
-	    screwBodyDef.type = BodyType.KinematicBody;
+	    screwBodyDef.type = BodyType.DynamicBody;
 	    screwBodyDef.position.set(pos);
 	    body = world.createBody(screwBodyDef);
 	    CircleShape screwShape = new CircleShape();
@@ -49,27 +51,33 @@ public class StructureScrew extends Screw {
 	    
 		//add radar sensor to screw
 		CircleShape radarShape = new CircleShape();
-		radarShape.setRadius(sprite.getWidth()*GameScreen.PIXEL_TO_BOX);
+		radarShape.setRadius(sprite.getWidth()*1.5f*GameScreen.PIXEL_TO_BOX);
 	    FixtureDef radarFixture = new FixtureDef();
 	    radarFixture.shape = radarShape;
 	    radarFixture.isSensor = true;
 	    radarFixture.filter.categoryBits = CATEGORY_SCREWS; // category of Screw Radar...
 	    radarFixture.filter.maskBits = 0x0001;//radar only collides with player (player category bits 0x0001)
 		body.createFixture(radarFixture);
-		radarShape.dispose();
-		  	    
-	    BodyDef skelDef = new BodyDef();
-	    skelDef.type = BodyType.StaticBody;
-	    skelDef.position.set(pos);
-	    Body skelBody = world.createBody(skelDef);
+		
+	    BodyDef jointBodyDef = new BodyDef();
+	    jointBodyDef.type = BodyType.StaticBody;
+	    jointBodyDef.position.set(platform.getPosition().x,platform.getPosition().y+100);
+	    Body jointBody = world.createBody(jointBodyDef);
+	    PolygonShape jointPolygonShape = new PolygonShape();
+	    jointPolygonShape.setAsBox(0, 0);
+	    jointBody.createFixture(jointPolygonShape,0.0f);
+	    jointPolygonShape.dispose();
 	    
-		//skeleton.addBoneAndJoint(platform, screwJoint);
-	    //connect the platform to the screw and the skeleton
+		//connect the screw to the skeleton;
 	    RevoluteJointDef revoluteJointDef = new RevoluteJointDef();
-	    revoluteJointDef.initialize(platform.body, skelBody, platform.getPosition());  
-	    revoluteJointDef.enableMotor = true;
-	    revoluteJointDef.maxMotorTorque = 5000.0f;
-	    revoluteJointDef.motorSpeed = 0f;
+	    revoluteJointDef.initialize(body, jointBody, body.getPosition());  
+	    revoluteJointDef.enableMotor = false;
+	    platformToScrew = (RevoluteJoint) world.createJoint(revoluteJointDef);
+	    
+	    //connect the platform to the skeleton
+	    revoluteJointDef = new RevoluteJointDef();
+	    revoluteJointDef.initialize(platform.body, jointBody, platform.getPosition());  
+	    revoluteJointDef.enableMotor = false;
 	    screwJoint = (RevoluteJoint) world.createJoint(revoluteJointDef);
 	}
 
@@ -86,13 +94,12 @@ public class StructureScrew extends Screw {
 			depth = maxDepth;
 		}
 		if ( depth == 0 ) {
-			body.setType(BodyType.DynamicBody);
-			if(body.getJointList().size() > 0){
-				world.destroyJoint(screwJoint);
-			}
+			world.destroyJoint( platformToScrew );
+			world.destroyJoint( screwJoint );
 			depth = -1;
 		}
 	}
 	private RevoluteJoint screwJoint;
+	private RevoluteJoint platformToScrew;
 	private int maxDepth;
 }

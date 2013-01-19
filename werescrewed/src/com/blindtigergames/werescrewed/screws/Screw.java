@@ -2,6 +2,7 @@ package com.blindtigergames.werescrewed.screws;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
 import com.blindtigergames.werescrewed.entity.Entity;
 
 /**
@@ -12,8 +13,8 @@ import com.blindtigergames.werescrewed.entity.Entity;
  */
 
 public class Screw extends Entity {
-	public Screw(String n, Vector2 pos, Texture tex){
-		super( n, pos, tex , null);
+	public Screw(String n, Vector2 pos, Texture tex, Body bod){
+		super( n, pos, tex , bod);
 	}
 	
 	public void update(){

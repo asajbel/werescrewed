@@ -164,13 +164,8 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 
 		structScrew.update();
 		 
-		if(inputHandler.screwPressed( player_t.ONE )){
-			/*for (Fixture f: structScrew.body.getFixtureList()){
-				f.contactListener();
-			}*/
-			//if(inputHandler.leftPressed( player_t.ONE )){
-				structScrew.screwLeft(); 
-			//}
+		if(inputHandler.unscrewPressed( player_t.ONE )){
+			structScrew.screwLeft(); 
 		}
 		
 		batch.setProjectionMatrix(cam.combined());
