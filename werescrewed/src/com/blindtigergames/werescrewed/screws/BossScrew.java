@@ -14,63 +14,67 @@ import com.blindtigergames.werescrewed.platforms.Skeleton;
  * @descrip: blah blah
  * 
  * @author Dennis
- *
+ * 
  */
 
 public class BossScrew extends Screw {
 	public RevoluteJoint screwJoint;
-	
-	public BossScrew( String n, Vector2 pos, Texture tex, int max, Body bod, 
-			Entity platform, Skeleton skeleton ){
-		super( n, pos, tex, bod);
+
+	public BossScrew( String n, Vector2 pos, Texture tex, int max, Body bod,
+			Entity platform, Skeleton skeleton ) {
+		super( n, pos, tex, bod );
 		maxDepth = max;
-		depth = max;	
-	    
-		//add radar sensor to screw
-		CircleShape radarShape = new CircleShape();
-		radarShape.setRadius(sprite.getWidth()*2);
-	    FixtureDef radarFixture = new FixtureDef();
-	    radarFixture.shape = radarShape;
-	    radarFixture.isSensor = true;
-	    radarFixture.filter.categoryBits = CATEGORY_SCREWS; // category of Screw Radar...
-	    radarFixture.filter.maskBits = 0x0001;//radar only collides with player (player category bits 0x0001)
-		body.createFixture(radarFixture);
-	    
-		//connect the screw to the platform;
-	    RevoluteJointDef revoluteJointDef = new RevoluteJointDef();
-	    revoluteJointDef.initialize(body, skeleton.body, body.getPosition());  
-	    revoluteJointDef.enableMotor = true;
-	    revoluteJointDef.maxMotorTorque = 5000.0f;
-	    revoluteJointDef.motorSpeed = 50f;
-	    platformToScrew = (RevoluteJoint) world.createJoint(revoluteJointDef);
-	    
-	    revoluteJointDef = new RevoluteJointDef();
-	    revoluteJointDef.initialize(platform.body, skeleton.body, platform.getPosition());  
-	    revoluteJointDef.enableMotor = true;
-	    revoluteJointDef.maxMotorTorque = 5000.0f;
-	    revoluteJointDef.motorSpeed = 50f;
-	    screwJoint = (RevoluteJoint) world.createJoint(revoluteJointDef);
-	    
-	    //connect the entities to the skeleton
-	    skeleton.addBoneAndJoint( this, platformToScrew );
-	    skeleton.addBoneAndJoint( platform, screwJoint );
+		depth = max;
+
+		// add radar sensor to screw
+		CircleShape radarShape = new CircleShape( );
+		radarShape.setRadius( sprite.getWidth( ) * 2 );
+		FixtureDef radarFixture = new FixtureDef( );
+		radarFixture.shape = radarShape;
+		radarFixture.isSensor = true;
+		radarFixture.filter.categoryBits = CATEGORY_SCREWS; // category of Screw
+															// Radar...
+		radarFixture.filter.maskBits = 0x0001;// radar only collides with player
+												// (player category bits 0x0001)
+		body.createFixture( radarFixture );
+
+		// connect the screw to the platform;
+		RevoluteJointDef revoluteJointDef = new RevoluteJointDef( );
+		revoluteJointDef.initialize( body, skeleton.body, body.getPosition( ) );
+		revoluteJointDef.enableMotor = true;
+		revoluteJointDef.maxMotorTorque = 5000.0f;
+		revoluteJointDef.motorSpeed = 50f;
+		platformToScrew = ( RevoluteJoint ) world
+				.createJoint( revoluteJointDef );
+
+		revoluteJointDef = new RevoluteJointDef( );
+		revoluteJointDef.initialize( platform.body, skeleton.body,
+				platform.getPosition( ) );
+		revoluteJointDef.enableMotor = true;
+		revoluteJointDef.maxMotorTorque = 5000.0f;
+		revoluteJointDef.motorSpeed = 50f;
+		screwJoint = ( RevoluteJoint ) world.createJoint( revoluteJointDef );
+
+		// connect the entities to the skeleton
+		skeleton.addBoneAndJoint( this, platformToScrew );
+		skeleton.addBoneAndJoint( platform, screwJoint );
 	}
 
-	public void update(){		
-		super.update();
-		sprite.setRotation(rotation);
-		if ( depth != screwStep ){
+	public void update( ) {
+		super.update( );
+		sprite.setRotation( rotation );
+		if ( depth != screwStep ) {
 			screwStep--;
 		}
-		if( depth == screwStep ){
-			body.setAngularVelocity(0);
+		if ( depth == screwStep ) {
+			body.setAngularVelocity( 0 );
 		}
 		if ( depth > maxDepth ) {
 			depth = maxDepth;
 		}
 		if ( depth == 0 ) {
-			world.destroyJoint(platformToScrew);
-			world.destroyJoint(screwJoint);
+			world.destroyJoint( platformToScrew );
+			world.destroyJoint( screwJoint );
 			depth = -1;
 		}
 	}
