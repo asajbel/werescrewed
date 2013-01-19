@@ -26,7 +26,6 @@ public class Screw extends Entity {
 	}
 
 	public void screwLeft( ) {
-		// body.applyAngularImpulse(-100);
 		body.setAngularVelocity( 15 );
 		depth--;
 		rotation += 10;
@@ -34,8 +33,10 @@ public class Screw extends Entity {
 	}
 
 	public void screwRight( ) {
-		body.applyAngularImpulse( 1 );
+		body.setAngularVelocity( -15 );
 		depth++;
+		rotation -= 10;
+		screwStep = depth + 5;
 	}
 
 	public int getRotation( ) {

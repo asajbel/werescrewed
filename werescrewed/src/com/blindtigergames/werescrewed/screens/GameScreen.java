@@ -145,7 +145,7 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 		if ( Gdx.input.isKeyPressed( Keys.P ) ) {
 			System.exit( 0 );
 		}
-		if ( Gdx.input.isKeyPressed( Input.Keys.BACKSLASH ) ) {
+		if ( Gdx.input.isKeyPressed( Input.Keys.M ) ) {
 			ScreenManager.getInstance( ).show( Screen.PHYSICS );
 		}
 
