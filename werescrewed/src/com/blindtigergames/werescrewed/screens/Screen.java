@@ -39,7 +39,15 @@ public enum Screen {
         protected com.badlogic.gdx.Screen getScreenInstance() {
              return new CreditsScreen();
         }
+    },
+    
+    PHYSICS {
+        @Override
+        protected com.badlogic.gdx.Screen getScreenInstance() {
+             return new PhysicsTestScreen();
+        }
     };
+    
  
     protected abstract com.badlogic.gdx.Screen getScreenInstance();
  

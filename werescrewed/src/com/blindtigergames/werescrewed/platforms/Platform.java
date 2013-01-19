@@ -45,8 +45,8 @@ public class Platform extends Entity{
 		this.mover = _mover;
 	}
 
-	
-	public void update(){
+	public void update()
+	{
 		body.setActive(true);
 		super.update();
 		
@@ -64,8 +64,6 @@ public class Platform extends Entity{
 		if( Gdx.input.isKeyPressed(Keys.N) ){
 			//rotateBy90();
 			rotate = !rotate;
-			System.out.println(rotate);
-			System.out.println(body.getAngle());
 		}
 		if( Gdx.input.isKeyPressed(Keys.L) ){
 			setHorizontal();

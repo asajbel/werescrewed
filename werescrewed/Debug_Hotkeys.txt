@@ -1,0 +1,17 @@
+Debug Hotkeys!!
+===============
+Record any debug hotkeys you've created here,
+so that everyone knows about them!
+
+Camera
+------
+'Z' - Hold to allow control of camera with
+	  arrow keys and 'Q' & 'E'
+
+'O' - Changes all platform from dynamic to kinematic and back again
+
+'T' - rotates all platforms
+
+'Y' - stops rotating platforms
+
+'P' - exit game
