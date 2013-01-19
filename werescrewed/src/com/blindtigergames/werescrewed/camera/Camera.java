@@ -9,8 +9,10 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.blindtigergames.werescrewed.entity.Player;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 //import com.blindtigergames.werescrewed.screens.GameScreen;
 //import com.sun.xml.internal.bind.v2.runtime.reflect.ListIterator;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 
 /*******************************************************************************
  * Camera class. Zooms and translates based on anchors. Max 30 anchors.
@@ -27,10 +29,12 @@ public class Camera {
 	public Vector3 position;
 	public Vector2 center2D;
 	
+	// translation
+	private Vector2  translateVelocity; // (magnitude, direction);
+	private Rectangle translateBuffer;
 	private static final int LISTEN_BUFFER = 300;
-	private Rectangle anchorListenRectangle;
-	private Vector2 focus;
-	private Vector3 focus3D;
+	private Vector2 translateTarget;
+	private Vector3 translateTarget3D;
 	
 	// might take these out when no longer required
 	private Player player1;
@@ -40,9 +44,9 @@ public class Camera {
 	private int player2Anchor;
 	private boolean debugMode;
 	
-	//steering stuff
-	private Vector2  velocity; // (magnitude, direction);
-		
+	// debug
+	private ShapeRenderer shapeRenderer;
+	
 	private void initializeVars (float viewportWidth, float viewportHeight) {
 		camera = new OrthographicCamera(1, viewportHeight/viewportWidth);
 		this.viewportHeight = Gdx.graphics.getHeight();
@@ -53,18 +57,21 @@ public class Camera {
 		position = camera.position;
 		center2D = new Vector2(position.x, position.y); 
 		
-		this.anchorListenRectangle = new Rectangle((camera.position.x - this.viewportWidth * .5f) - LISTEN_BUFFER,
-													(camera.position.y - this.viewportHeight * .5f) - LISTEN_BUFFER,
-													this.viewportWidth * .5f + LISTEN_BUFFER,
-													this.viewportHeight * .5f + LISTEN_BUFFER);
+		this.translateBuffer = new Rectangle(camera.position.x,
+											camera.position.y,
+											this.viewportWidth * .5f,
+											this.viewportHeight * .5f);
 		
-		this.focus = new Vector2(center2D);
-		this.focus3D = new Vector3(focus.x, focus.y, 0f);
+		this.translateTarget = new Vector2(center2D);
+		this.translateTarget3D = new Vector3(translateTarget.x, translateTarget.y, 0f);
 		
 		player1Anchor = -1;
 		player2Anchor = -1;
 		debugMode = false;
 		anchorList = AnchorList.getInstance();
+		
+		// debug
+		shapeRenderer = new ShapeRenderer();
 	}
 	
 	public Camera(float viewportWidth, float viewportHeight)
@@ -114,17 +121,22 @@ public class Camera {
 			anchorList.setAnchorPos(player2Anchor, player2.getPosition().mul(BOX_TO_PIXEL));
 		}
 		
-		if (debugMode) {
-			handleInput();
-		} else {
-			setFocus();
-			camera.position.set(focus3D);
-		}
+		translate();
 		position = camera.position;
 		center2D.x = position.x;
 		center2D.y = position.y;
 		
 		camera.update();
+		
+//		float width = 512;
+//		float height = 256;
+		translateBuffer.x = position.x - translateBuffer.width * .5f;
+		translateBuffer.y = position.y - translateBuffer.height * .5f;
+		shapeRenderer.setProjectionMatrix(camera.combined);
+		shapeRenderer.begin(ShapeType.Rectangle);
+		shapeRenderer.identity();
+		shapeRenderer.rect(translateBuffer.x, translateBuffer.y, translateBuffer.width, translateBuffer.height);
+		shapeRenderer.end();
 		
 		/*float lerp = 0.1f;
 		Vector3 position = camera.position;
@@ -137,9 +149,13 @@ public class Camera {
     private void handleInput() {
             if(Gdx.input.isKeyPressed(Input.Keys.E)) {
                     camera.zoom += 0.02;
+            		translateBuffer.width *= camera.zoom;
+            		translateBuffer.height *= camera.zoom;
             }
             if(Gdx.input.isKeyPressed(Input.Keys.Q)) {
                     camera.zoom -= 0.02;
+            		translateBuffer.width *= camera.zoom;
+            		translateBuffer.height *= camera.zoom;
             }
             if(Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
                     if (camera.position.x > 0)
@@ -159,27 +175,31 @@ public class Camera {
             }
 
     }
-
     
     /**
      * set focus of camera to the midpoint of all anchors
      */
-    private Vector2 setFocus(){
-    	this.focus = anchorList.midpoint();
-		focus3D.x = focus.x;
-		focus3D.y = focus.y;
-		focus3D.z = 0f;
-    	return this.focus;
+    private Vector2 setTranslateTarget(){
+    	this.translateTarget = anchorList.midpoint();
+		translateTarget3D.x = translateTarget.x;
+		translateTarget3D.y = translateTarget.y;
+		translateTarget3D.z = 0f;
+    	return this.translateTarget;
     }
     
     /**
      * set the focus of camera to the weighted midpoint of all anchors
      */
-    private Vector2 setFocusWeighted(){
-    	return this.focus;
+    private Vector2 setFocusWeighted() {
+    	return this.translateTarget;
     }
     
-    private Vector2 steerFocus() {
-    	return null;
+    private void translate() {
+    	setTranslateTarget();
+		if (debugMode) {
+			handleInput();
+		} else {
+			camera.position.set(translateTarget3D);
+		}
     }
 }
