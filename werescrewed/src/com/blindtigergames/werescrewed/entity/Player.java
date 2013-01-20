@@ -5,11 +5,9 @@ import java.util.List;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
-import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.Fixture;
@@ -17,6 +15,7 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.WorldManifold;
+import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
 import com.blindtigergames.werescrewed.input.InputHandler;
 import com.blindtigergames.werescrewed.input.InputHandler.player_t;
 import com.blindtigergames.werescrewed.screens.GameScreen;
@@ -51,7 +50,7 @@ public class Player extends Entity {
 	 * 
 	 */
 	public enum PlayerState {
-		Standing, Jumping, Falling
+		Standing, Jumping, Falling, Screwing
 	}
 
 	public Player( World w, Vector2 pos, String n, Texture tex ) {
@@ -171,8 +170,16 @@ public class Player extends Entity {
 	public void jump( ) {
 		if ( Math.abs( body.getLinearVelocity( ).y ) < 1e-5 ) {
 			body.applyLinearImpulse( new Vector2( 0.0f, 0.2f ),
-					body.getWorldCenter( ) ); 
+					body.getWorldCenter( ) );
 		}
+
+	}
+
+	/* is called from contatListener 
+	 * worldLocked is true because contact happens in the 
+	 * middle of the world step
+	 */
+	public void screw( Vector2 center, Boolean worldLocked ) {
 
 	}
 
@@ -220,7 +227,7 @@ public class Player extends Entity {
 			stop( );
 		}
 
-		//isGrounded( 0 );
+		// isGrounded( 0 );
 		/*
 		 * This example is found at a blog, i couldn't get it to work right away
 		 * boolean grounded = isPlayerGrounded(Gdx.graphics.getDeltaTime());
