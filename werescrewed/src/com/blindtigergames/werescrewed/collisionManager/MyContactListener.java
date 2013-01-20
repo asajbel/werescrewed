@@ -46,7 +46,7 @@ public class MyContactListener implements ContactListener{
         		StructureScrew example = (StructureScrew) objectFix.getBody().getUserData();
         		example.exampleCollide();
         		Player asshole = (Player) playerFix.getBody().getUserData();
-        		asshole.jump();
+        		asshole.screw( example.getPosition( ), true );
         	}
         	
         }
