@@ -95,7 +95,7 @@ public class Entity
 			Vector2 bodyPos = body.getPosition();
 			Vector2 spritePos = bodyPos.mul(GameScreen.BOX_TO_PIXEL).add(offset);
 			sprite.setPosition(spritePos.x, spritePos.y);
-			System.out.println(name+":"+bodyPos.x+","+bodyPos.y);
+//			System.out.println(name+":"+bodyPos.x+","+bodyPos.y);
 			if(mover != null)
 				mover.move(body);
 		}

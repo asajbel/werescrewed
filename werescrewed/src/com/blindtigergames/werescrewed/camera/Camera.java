@@ -30,12 +30,20 @@ public class Camera {
 	public Vector2 center2D;
 	
 	// translation
-	private static final float PORT_TO_BUFFER = .5f;
-	private Vector2  translateVelocity; // (magnitude, direction);
+	private static final float BUFFER_RATIO = .33f;
+//	private static final int LISTEN_BUFFER = 300;
+	private static final float ACCELERATION_RATIO = .005f;
+	private static final float TARGET_BUFFER_RATIO = .1f;
+	private static final float MINIMUM_FOLLOW_SPEED = 1f;
+	private static final float MAX_ANGLE_DIFF = 90f;
+	private Vector2  translateVelocity;
+	private float translateSpeed;
+	private float translateAcceleration;
 	private Rectangle translateBuffer;
-	private static final int LISTEN_BUFFER = 300;
 	private Vector2 translateTarget;
 	private Vector3 translateTarget3D;
+	private float targetBuffer;
+	private boolean translateState;
 	
 	// might take these out when no longer required
 	private Player player1;
@@ -43,9 +51,10 @@ public class Camera {
 	private AnchorList anchorList;
 	private int player1Anchor;
 	private int player2Anchor;
-	private boolean debugMode;
 	
 	// debug
+	private boolean debugInput;
+	private boolean debugRender;
 	private ShapeRenderer shapeRenderer;
 	
 	private void initializeVars (float viewportWidth, float viewportHeight) {
@@ -60,18 +69,24 @@ public class Camera {
 		
 		this.translateBuffer = new Rectangle(camera.position.x,
 											camera.position.y,
-											this.viewportWidth * PORT_TO_BUFFER,
-											this.viewportHeight * PORT_TO_BUFFER);
+											this.viewportWidth * BUFFER_RATIO,
+											this.viewportHeight * BUFFER_RATIO);
 		
 		this.translateTarget = new Vector2(center2D);
 		this.translateTarget3D = new Vector3(translateTarget.x, translateTarget.y, 0f);
-		
+		translateVelocity = new Vector2(0f, 0f);
+		translateSpeed = 0f;
+		translateAcceleration = 0f;
+		targetBuffer =  ( ( translateBuffer.width + translateBuffer.height ) / 2 ) * TARGET_BUFFER_RATIO;
+		translateState = true;
+				
 		player1Anchor = -1;
 		player2Anchor = -1;
-		debugMode = false;
 		anchorList = AnchorList.getInstance();
 		
 		// debug
+		debugInput = false;
+		debugRender = false;
 		shapeRenderer = new ShapeRenderer();
 	}
 	
@@ -108,11 +123,18 @@ public class Camera {
 	
 	public void update()
 	{
-		debugMode = false;
+		debugInput = false;
+		debugRender = false;
+//		debugMode = true;
 		// check debug
-		if (Gdx.input.isKeyPressed(Keys.Z)) {
-			debugMode = true;
+		if (Gdx.input.isKeyPressed(Keys.M)) {
+			debugInput = true;
 		}
+		if (Gdx.input.isKeyPressed(Keys.N)) {
+			debugRender = true;
+		}
+		if (debugInput)
+			handleInput();
 		
 		// update player anchors
 		if (player1Anchor > -1) {
@@ -121,25 +143,58 @@ public class Camera {
 		if (player2Anchor > -1) {
 			anchorList.setAnchorPos(player2Anchor, player2.getPosition().mul(BOX_TO_PIXEL));
 		}
-		
-		translate();
+				
 		position = camera.position;
 		center2D.x = position.x;
 		center2D.y = position.y;
 		
-		translateBuffer.x = position.x - translateBuffer.width * .5f;
-		translateBuffer.y = position.y - translateBuffer.height * .5f;
-		shapeRenderer.setProjectionMatrix(camera.combined);
-		shapeRenderer.begin(ShapeType.Rectangle);
-		shapeRenderer.identity();
-		shapeRenderer.rect(translateBuffer.x, translateBuffer.y, translateBuffer.width, translateBuffer.height);
-		shapeRenderer.end();
+    	setTranslateTarget();
+		
+//    	player1.moveRight();
+		if (!debugInput && translateState) {
+			if (center2D.dst(translateTarget) < targetBuffer) {
+				float tempAngle = 0f;
+				tempAngle = anchorList.getMidpointVelocity().angle() - translateVelocity.angle();
+				tempAngle = Math.abs(tempAngle);
+				if (anchorList.getMidpointVelocity().len() > MINIMUM_FOLLOW_SPEED &&
+						tempAngle < MAX_ANGLE_DIFF )
+					camera.position.set(translateTarget3D);
+				else
+					translateState = false;
+			}
+			else
+				translate();
+		} else if(!translateState) {
+			translateVelocity.x = 0f;
+			translateVelocity.y = 0f;
+			translateAcceleration = 0f;
+			translateSpeed = 0f;
+			if (!translateBuffer.contains(translateTarget.x, translateTarget.y))
+				translateState = true;
+		}
+		
+		if (debugRender) {
+			translateBuffer.x = position.x - translateBuffer.width * .5f;
+			translateBuffer.y = position.y - translateBuffer.height * .5f;
+			shapeRenderer.setProjectionMatrix(camera.combined);
+			shapeRenderer.begin(ShapeType.Rectangle);
+			shapeRenderer.identity();
+			shapeRenderer.rect(translateBuffer.x, translateBuffer.y, translateBuffer.width, translateBuffer.height);
+			shapeRenderer.end();
+			shapeRenderer.setProjectionMatrix(camera.combined);
+			shapeRenderer.begin(ShapeType.Circle);
+			shapeRenderer.identity();
+			shapeRenderer.circle(translateTarget.x, translateTarget.y, targetBuffer);
+			shapeRenderer.end();
+		}
 		
 		camera.update();
 
-		if (debugMode) {
+		if (debugInput) {
 			System.out.println("Zoom: " + camera.zoom);
 		}
+		
+		anchorList.updateVelocity();
 		
 		/*float lerp = 0.1f;
 		Vector3 position = camera.position;
@@ -152,13 +207,13 @@ public class Camera {
     private void handleInput() {
             if(Gdx.input.isKeyPressed(Input.Keys.E)) {
                     camera.zoom += 0.02;
-            		translateBuffer.width = camera.zoom * viewportWidth * PORT_TO_BUFFER;
-            		translateBuffer.height = camera.zoom * viewportHeight * PORT_TO_BUFFER;
+            		translateBuffer.width = camera.zoom * viewportWidth * BUFFER_RATIO;
+            		translateBuffer.height = camera.zoom * viewportHeight * BUFFER_RATIO;
             }
             if(Gdx.input.isKeyPressed(Input.Keys.Q)) {
                     camera.zoom -= 0.02;
-            		translateBuffer.width = camera.zoom * viewportWidth * PORT_TO_BUFFER;
-            		translateBuffer.height = camera.zoom * viewportHeight * PORT_TO_BUFFER;
+            		translateBuffer.width = camera.zoom * viewportWidth * BUFFER_RATIO;
+            		translateBuffer.height = camera.zoom * viewportHeight * BUFFER_RATIO;
             }
             if(Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
                     if (camera.position.x > 0)
@@ -206,14 +261,13 @@ public class Camera {
     }
     
     private void translate() {
-    	setTranslateTarget();
-    	
-		if (!translateBuffer.contains(translateTarget.x, translateTarget.y)) {
-			if (debugMode) {
-				handleInput();
-			} else {
-				camera.position.set(translateTarget3D);
-			}
-		}
+//    	camera.position.set(translateTarget3D);
+    	translateVelocity = translateTarget.cpy();
+    	translateVelocity.sub(center2D);
+    	translateAcceleration = translateVelocity.len() * ACCELERATION_RATIO;
+    	translateSpeed += translateAcceleration;
+    	translateVelocity.nor();
+    	translateVelocity.mul(translateSpeed);
+    	camera.translate(translateVelocity);
     }
 }

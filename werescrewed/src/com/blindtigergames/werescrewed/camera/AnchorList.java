@@ -14,14 +14,23 @@ public class AnchorList {
 	private ArrayList<Anchor> anchorList;
 	private Vector2 sum;
 	private Vector2 midpoint2;
+	private Vector2 prevMidpoint;
 	private Vector3 midpoint3;
+	private Vector2 midpointVelocity;
+//	private int stepNum;
+//	private int prevStepNum;
+//	private static final int MAX_STEP_NUM;
 	private static AnchorList instance;
 	
 	private AnchorList() {
 		anchorList = new ArrayList<Anchor>();
 		sum = new Vector2(0f, 0f);
 		midpoint2 = new Vector2(0f, 0f);
+		prevMidpoint = new Vector2(0f, 0f);
 		midpoint3 = new Vector3(0f, 0f, 0f);
+		midpointVelocity = new Vector2(0f, 0f);
+//		stepNum = 0;
+//		prevStepNum = 0;
 	}
 	
 	public static AnchorList getInstance() {
@@ -29,6 +38,21 @@ public class AnchorList {
 			instance = new AnchorList();
 		}
 		return instance;
+	}
+	
+	public void updateVelocity() {
+//		stepNum += 1;
+//		if (stepNum > MAX_STEP_NUM) {
+//			stepNum = 0;
+//		}
+		
+		// update velocity of midpoint
+		midpointVelocity.x = midpoint2.x;
+		midpointVelocity.y = midpoint2.y;
+		midpointVelocity.sub(prevMidpoint);
+		
+		prevMidpoint.x = midpoint2.x;
+		prevMidpoint.y = midpoint2.y;
 	}
 	
 	public int addAnchor(Vector2 position) {
@@ -80,7 +104,6 @@ public class AnchorList {
 	
 	public void setMidpoint () {
 		//TO DO: discriminate by distance
-		
     	int count = 0;
     	sum.x = 0f;
     	sum.y = 0f;
@@ -114,5 +137,9 @@ public class AnchorList {
 	public Vector3 midpoint3() {
 		setMidpoint();
 		return getMidpoint3();
+	}
+	
+	public Vector2 getMidpointVelocity() {
+		return midpointVelocity;
 	}
 }
