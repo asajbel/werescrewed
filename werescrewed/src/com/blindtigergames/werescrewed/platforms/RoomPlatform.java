@@ -21,7 +21,6 @@ import com.blindtigergames.werescrewed.screens.GameScreen;
  */
 
 public class RoomPlatform extends Platform {
-	protected final int tileConstant = 16;
 	protected boolean rotate = false;
 	protected int tileHeight, tileWidth;
 

@@ -29,6 +29,7 @@ public class Platform extends Entity {
 	protected int width, height;
 	protected boolean dynamicType = false;
 	protected boolean rotate = false;
+	protected final int tileConstant = 16;
 
 	public Platform( String n, Vector2 pos, Texture tex, World world ) {
 		super( n, pos, tex, null );

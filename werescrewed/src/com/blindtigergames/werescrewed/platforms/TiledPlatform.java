@@ -22,7 +22,6 @@ import java.lang.Math;
  */
 
 public class TiledPlatform extends Platform {
-	protected final int tileConstant = 16;
 	protected boolean rotate = false;
 	protected int tileHeight, tileWidth;
 
@@ -40,8 +39,7 @@ public class TiledPlatform extends Platform {
 
 		BodyDef groundBodyDef = new BodyDef( );
 		groundBodyDef.type = BodyType.KinematicBody;
-		groundBodyDef.position.set( new Vector2( x * GameScreen.PIXEL_TO_BOX, y
-				* GameScreen.PIXEL_TO_BOX ) );
+		groundBodyDef.position.set( new Vector2( x , y ) );
 		body = world.createBody( groundBodyDef );
 
 		PolygonShape groundBox = new PolygonShape( );
@@ -65,5 +63,6 @@ public class TiledPlatform extends Platform {
 	public void update( ) {
 		super.update( );
 	}
+	
 
 }

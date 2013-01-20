@@ -23,19 +23,19 @@ import com.blindtigergames.werescrewed.screens.GameScreen;
 public class ShapePlatform extends Platform {
 
 	public ShapePlatform( String n, Vector2 pos, Texture tex, World world,
-			Shapes shape, float scale, boolean flip ) {
+			Shapes shape, float width, float height, boolean flip ) {
 		super( n, pos, tex, null );
 		this.world = world;
 
 		switch ( shape ) {
 		case rhombus:
-			constructRhombus( pos, scale, flip );
+			constructRhombus( pos, width, height, flip );
 			break;
 		case cross:
 			System.out.println( "trap" );
 			break;
 		case plus:
-			System.out.println( "trap" );
+			constructPlus( pos, width, height, 1.0f, 1.0f );
 			break;
 		case trapezoid:
 			System.out.println( "trap" );
@@ -53,10 +53,12 @@ public class ShapePlatform extends Platform {
 		}
 	}
 
-	// constuct bodies for each shape
+	// TODO: constuct bodies for each shape
 	// trapezoid, cross, plus, rhombus, Lshaped, Tshaped, dumbbell
 
-	public void constructRhombus( Vector2 pos, float scale, boolean flip ) {
+	//The vertices used in this function specifically create a rhombus
+	//there is also a scale factor for both x and y direction
+	public void constructRhombus( Vector2 pos, float width, float height, boolean flip ) {
 
 		BodyDef groundBodyDef = new BodyDef( );
 		groundBodyDef.type = BodyType.KinematicBody;
@@ -70,31 +72,19 @@ public class ShapePlatform extends Platform {
 		Vector2 point4;
 		float ptb = GameScreen.PIXEL_TO_BOX;
 		point1 = new Vector2( 0.0f, 0.0f );
-		point2 = new Vector2( 32.0f * ptb, 0.0f );
+		point2 = new Vector2( 32.0f * ptb * width, 0.0f );
 		if ( !flip ) {
-			point3 = new Vector2( 48.0f * ptb, 32.0f * ptb );
-			point4 = new Vector2( 16.0f * ptb, 32.0f * ptb );
+			point3 = new Vector2( 48.0f * ptb * width, 32.0f * ptb * height );
+			point4 = new Vector2( 16.0f * ptb * width, 32.0f * ptb * height );
 		} else {
-			point3 = new Vector2( 16.0f * ptb, 32.0f * ptb );
-			point4 = new Vector2( -16.0f * ptb, 32.0f * ptb );
+			point3 = new Vector2( 16.0f * ptb * width, 32.0f * ptb * height );
+			point4 = new Vector2( -16.0f * ptb * width, 32.0f * ptb * height );
 		}
 
-		/*
-		 * Vector2 point1 = new Vector2( 0.0f, 0.0f ); Vector2 point2 = new
-		 * Vector2( 1.0f, 0.0f ); Vector2 point3 = new Vector2( 1.5f, 1.0f );
-		 * Vector2 point4 = new Vector2( 0.5f, 1.0f );
-		 */
-
-		vertices[ 0 ] = point1.mul( scale );
-		vertices[ 1 ] = point2.mul( scale );
-		vertices[ 2 ] = point3.mul( scale );
-		vertices[ 3 ] = point4.mul( scale );
-
-		// vertices[0] = new Vector2( 0.0f, 0.0f );
-		// vertices[1] = new Vector2( 1.0f, 0.0f );
-		// vertices[2] = new Vector2( 1.5f, 1.0f );
-		// vertices[3] = new Vector2( 0.5f, 1.0f );
-		// Vector2 z = new Vector2();
+		vertices[ 0 ] = point1;
+		vertices[ 1 ] = point2;
+		vertices[ 2 ] = point3;
+		vertices[ 3 ] = point4;
 
 		PolygonShape polygon = new PolygonShape( );
 		polygon.set( vertices );
@@ -107,6 +97,39 @@ public class ShapePlatform extends Platform {
 		body.setGravityScale( .1f );
 		body.createFixture( platformFixtureDef );
 
+	}
+	
+	public void constructPlus( Vector2 pos, float width, float height, float thickX, float thickY ) {
+		BodyDef groundBodyDef = new BodyDef( );
+		groundBodyDef.type = BodyType.KinematicBody;
+		groundBodyDef.position.set( new Vector2( pos.x, pos.y ) );
+		body = world.createBody( groundBodyDef );
+		
+		PolygonShape ps = new PolygonShape( );
+		FixtureDef fd = new FixtureDef( );
+		fd.density = 1f;
+		fd.restitution = 0.0f;
+
+		// Smallest Plus should be 3x3
+		if ( width < 2.0f )
+			width = 3.0f;
+		if ( height < 2.0f )
+			height = 3.0f;
+		
+		float hori = width * tileConstant * GameScreen.PIXEL_TO_BOX;
+		float vert = height * tileConstant * GameScreen.PIXEL_TO_BOX;
+		Vector2 z = new Vector2( );
+
+		// Creating 2 fixtures to make a plus 
+		ps.setAsBox( hori, thickY * tileConstant * GameScreen.PIXEL_TO_BOX , z, 0 );
+		fd.shape = ps;
+		body.createFixture( fd );
+		
+		ps.setAsBox( thickX * tileConstant * GameScreen.PIXEL_TO_BOX, vert, z, 0 );
+		fd.shape = ps;
+		body.createFixture( fd );
+
+		
 	}
 
 	public void update( ) {
