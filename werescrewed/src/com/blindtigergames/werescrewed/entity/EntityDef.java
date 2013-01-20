@@ -1,5 +1,6 @@
 package com.blindtigergames.werescrewed.entity;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -14,32 +15,42 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.Shape;
+import com.badlogic.gdx.utils.JsonReader;
+import com.badlogic.gdx.utils.XmlReader;
 import com.blindtigergames.werescrewed.screens.GameScreen;
 
 public class EntityDef {
 	
 	//Methods
-		@SuppressWarnings("unchecked")
-		protected EntityDef(String n, Texture t, String iA, BodyDef bDef, ArrayList<FixtureDef> fixes){
+		protected EntityDef(String n){
 			//Sprite Data
-			texture = t;
-			initialAnim = iA;
+			texture = null;
+			initialAnim = "";
 			origin = new Vector2(0,0);
 			spriteScale = new Vector2(1,1);
 			tint = new Color(1.0f,1.0f,1.0f,1.0f);
-			
 			//Body Data
-			bodyDef = bDef;
-			if (fixes == null){
-				fixtureDefs = new ArrayList<FixtureDef>();
-			} else {
-				fixtureDefs = (ArrayList<FixtureDef>) fixes.clone();
-			}
+			bodyDef = new BodyDef();
+			bodyDef.type = BodyType.DynamicBody;
+			fixtureDefs = new ArrayList<FixtureDef>();
 			gravityScale = 1.0f;
 			fixedRotation = false;
 			
 			//Misc Data
 			name = n;
+		}
+	
+		protected EntityDef(String n, Texture t, String iA, BodyDef bDef, ArrayList<FixtureDef> fixes){
+			this(n);
+			//Sprite Data
+			texture = t;
+			initialAnim = iA;
+			
+			//Body Data
+			bodyDef = bDef;
+			if (fixes != null){
+				fixtureDefs.addAll( fixes );
+			}
 		}
 		
 		@Override
@@ -49,7 +60,7 @@ public class EntityDef {
 			super.finalize();
 		}
 
-		protected void loadComplexBody(float density, float friction, float restitution, int scale, String bodyName ){
+		protected void loadComplexBody(float density, float friction, float restitution, float scale, String bodyName ){
 			String filename = "data/bodies/" + bodyName + ".json";		
 			BodyEditorLoader loader = new BodyEditorLoader( Gdx.files.internal(filename));
 						
@@ -68,9 +79,6 @@ public class EntityDef {
 		protected ArrayList<FixtureDef> fixtureDefs;
 		protected float gravityScale;
 		protected boolean fixedRotation;
-		protected float defaultDensity;
-		protected float defaultFriction;
-		protected float defaultRestitution;
 	
 	//Miscellaneous Fields
 		protected String name;
@@ -119,6 +127,35 @@ public class EntityDef {
 	 * TODO Fill with XML loading code
 	 */
 	protected static EntityDef loadDefinition(String id) {
+		String filename = "data/entities/" + id + ".xml";
+		try {
+			XmlReader reader = new XmlReader();
+			XmlReader.Element xml = reader.parse( Gdx.files.internal( filename ) );
+			EntityDef out = new EntityDef(id);
+			
+			//Sprite Data
+			String texName = xml.get( "texture" );
+			out.texture = new Texture ( Gdx.files.internal( texName ));
+			out.initialAnim = xml.get("initialAnim");
+			out.origin.x = xml.getFloat( "originX" ); out.origin.y = xml.getFloat( "originY" );
+			out.spriteScale.x = xml.getFloat( "spriteScaleX" ); out.spriteScale.y = xml.getFloat( "spriteScaleY" );
+			out.tint = new Color(xml.getFloat( "tintRed" ),xml.getFloat( "tintGreen" ), xml.getFloat( "tintBlue" ), xml.getFloat( "tintAlpha" ));
+			
+			//Body Data;
+			String bodyName = xml.get( "body" );
+			float density = xml.getFloat( "density" );
+			float friction = xml.getFloat( "friction" );
+			float restitution = xml.getFloat( "restitution" );
+			float scale = xml.getFloat("bodyScale");
+			
+			out.loadComplexBody( density, friction, restitution, scale, bodyName );
+			
+			return out;
+		} catch ( IOException e ) {
+			// TODO Auto-generated catch block
+			Gdx.app.log( "Error", "Loading entity definition " + id + " ", e );
+		}
+		
 		return null;
 	}
 	
