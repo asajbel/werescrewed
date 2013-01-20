@@ -1,0 +1,18 @@
+<entity>
+	<texture>data/player_r_m.png</texture>
+	<initialAnim>default</initialAnim>
+	<originX>0.0f</originX>
+	<originY>0.0f</originY>
+	<spriteScaleX>100.0f</spriteScaleX>
+	<spriteScaleY>100.0f</spriteScaleY>
+	<tintRed>1.0f</tintRed>
+	<tintGreen>1.0f</tintGreen>
+	<tintBlue>1.0f</tintBlue>
+	<tintAlpha>1.0f</tintAlpha>
+	
+	<body>playerTest</body>
+	<density>1.0f</density>
+	<friction>0.5f</friction>
+	<restitution>0.1f</restitution>
+	<bodyScale>0.2f</bodyScale>
+</entity>
