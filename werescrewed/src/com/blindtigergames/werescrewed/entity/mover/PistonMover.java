@@ -19,6 +19,7 @@ public class PistonMover implements IMover {
     boolean isExploding;
     float motorSpeed;
     float restTime, time;
+    boolean isPuzzlePiston;
     
     public PistonMover( PrismaticJoint _joint, float _restTime ) {
         this.joint = _joint;
@@ -26,11 +27,26 @@ public class PistonMover implements IMover {
         motorSpeed = this.joint.getMotorSpeed();
         restTime = _restTime;
         time = 0;
+        isPuzzlePiston = false;
+    }
+    
+    public PistonMover( PrismaticJoint _joint ) {
+        this.joint = _joint;
+        isExploding = false;
+        motorSpeed = this.joint.getMotorSpeed();
+        restTime = -1;
+        time = 0;
+        isPuzzlePiston = true;
+    }
+    
+    public void explodePiston(){
+        
     }
 
     @Override
     public void move( float deltaTime, Body body ) {
         time += deltaTime;
+        
         
         boolean atLowerLimit = joint.getJointTranslation() <= joint
                 .getLowerLimit();
