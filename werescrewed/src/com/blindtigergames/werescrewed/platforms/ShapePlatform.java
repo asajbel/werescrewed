@@ -29,7 +29,7 @@ public class ShapePlatform extends Platform {
 
 		switch ( shape ) {
 		case rhombus:
-			constructRhombus( pos, width, height, flip );
+			constructRhombus( pos, width, height, flip, 1.0f );
 			break;
 		case cross:
 			constructCross( pos, width, height, width, height, 1.0f );
@@ -58,27 +58,29 @@ public class ShapePlatform extends Platform {
 
 	//The vertices used in this function specifically create a rhombus
 	//there is also a scale factor for both x and y direction
-	public void constructRhombus( Vector2 pos, float width, float height, boolean flip ) {
+	public void constructRhombus( Vector2 pos, float width, float height, 
+			boolean flip, float scale ) {
 
 		BodyDef groundBodyDef = new BodyDef( );
 		groundBodyDef.type = BodyType.KinematicBody;
 		groundBodyDef.position.set( new Vector2( pos.x, pos.y ) );
 		body = world.createBody( groundBodyDef );
 
+		
+		float horizontal  = width * tileConstant*2 * GameScreen.PIXEL_TO_BOX * scale;
+		float vertical = height * tileConstant*2 * GameScreen.PIXEL_TO_BOX * scale;
 		Vector2[ ] vertices = new Vector2[ 4 ];
-		Vector2 point1;
-		Vector2 point2;
-		Vector2 point3;
+		Vector2 point1 = new Vector2( );
+		Vector2 point2 = new Vector2( horizontal, 0.0f );
+		Vector2 point3; 
 		Vector2 point4;
-		float ptb = GameScreen.PIXEL_TO_BOX;
-		point1 = new Vector2( 0.0f, 0.0f );
-		point2 = new Vector2( 32.0f * ptb * width, 0.0f );
-		if ( !flip ) {
-			point3 = new Vector2( 48.0f * ptb * width, 32.0f * ptb * height );
-			point4 = new Vector2( 16.0f * ptb * width, 32.0f * ptb * height );
+
+		if ( flip ) {
+			point3 = new Vector2(-(horizontal * 1.5f), vertical ); 
+			point4 = new Vector2(-(horizontal / 2), vertical );
 		} else {
-			point3 = new Vector2( 16.0f * ptb * width, 32.0f * ptb * height );
-			point4 = new Vector2( -16.0f * ptb * width, 32.0f * ptb * height );
+			point3 = new Vector2(horizontal * 1.5f, vertical ); 
+			point4 = new Vector2(horizontal / 2, vertical );
 		}
 
 		vertices[ 0 ] = point1;
