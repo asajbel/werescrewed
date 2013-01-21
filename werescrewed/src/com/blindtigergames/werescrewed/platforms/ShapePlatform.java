@@ -32,7 +32,7 @@ public class ShapePlatform extends Platform {
 			constructRhombus( pos, width, height, flip );
 			break;
 		case cross:
-			System.out.println( "trap" );
+			constructCross( pos, width, height, width, height, 1.0f );
 			break;
 		case plus:
 			constructPlus( pos, width, height, 1.0f, 1.0f );
@@ -54,6 +54,7 @@ public class ShapePlatform extends Platform {
 
 	// TODO: constuct bodies for each shape
 	// trapezoid, cross, plus, rhombus, Lshaped, Tshaped, dumbbell
+	// I figure the level loader stuff can use the following functions
 
 	//The vertices used in this function specifically create a rhombus
 	//there is also a scale factor for both x and y direction
@@ -98,11 +99,65 @@ public class ShapePlatform extends Platform {
 
 	}
 	
+	public void constructCross( Vector2 pos, float innerWidth, float innerHeight, 
+			float outerWidth, float outerHeight, float scale ) {
+		BodyDef groundBodyDef = new BodyDef( );
+		groundBodyDef.type = BodyType.KinematicBody;
+		groundBodyDef.position.set( new Vector2( pos.x, pos.y ) );
+		body = world.createBody( groundBodyDef );
+		body.setGravityScale( .1f );
+		
+		PolygonShape ps = new PolygonShape( );
+		FixtureDef fd = new FixtureDef( );
+		fd.density = 1f;
+		fd.restitution = 0.0f;
+
+		// Smallest width/height should be 1
+		//if ( width < 2.0f )
+		//	width = 3.0f;
+		//if ( height < 2.0f )
+		//	height = 3.0f;
+		
+		float iW = innerWidth * tileConstant * GameScreen.PIXEL_TO_BOX * scale;
+		float iH = innerHeight * tileConstant * GameScreen.PIXEL_TO_BOX * scale;
+		float oW = outerWidth * tileConstant * GameScreen.PIXEL_TO_BOX * scale;
+		float oH = outerHeight * tileConstant * GameScreen.PIXEL_TO_BOX * scale;
+		
+		Vector2 z = new Vector2( );
+		Vector2 p1 = new Vector2( -(iW + oW), -(iH + oH) );
+		Vector2 p2 = new Vector2( -(iW + oW), (iH + oH) );
+		Vector2 p3 = new Vector2( (iW + oW), (iH + oH) );
+		Vector2 p4 = new Vector2( (iW + oW), -(iH + oH) );
+		 
+		
+		ps.setAsBox( iW, iH , z, 0 );
+		fd.shape = ps;
+		body.createFixture( fd );
+		
+		ps.setAsBox( oW, oH, p1, 0 );
+		fd.shape = ps;
+		body.createFixture( fd );
+		
+		ps.setAsBox( oW, oH, p2, 0 );
+		fd.shape = ps;
+		body.createFixture( fd );
+		
+		ps.setAsBox( oW, oH, p3, 0 );
+		fd.shape = ps;
+		body.createFixture( fd );
+		
+		ps.setAsBox( oW, oH, p4, 0 );
+		fd.shape = ps;
+		body.createFixture( fd );
+		
+	}
+	
 	public void constructPlus( Vector2 pos, float width, float height, float thickX, float thickY ) {
 		BodyDef groundBodyDef = new BodyDef( );
 		groundBodyDef.type = BodyType.KinematicBody;
 		groundBodyDef.position.set( new Vector2( pos.x, pos.y ) );
 		body = world.createBody( groundBodyDef );
+		body.setGravityScale( .1f );
 		
 		PolygonShape ps = new PolygonShape( );
 		FixtureDef fd = new FixtureDef( );
@@ -115,16 +170,16 @@ public class ShapePlatform extends Platform {
 		if ( height < 2.0f )
 			height = 3.0f;
 		
-		float hori = width * tileConstant * GameScreen.PIXEL_TO_BOX;
-		float vert = height * tileConstant * GameScreen.PIXEL_TO_BOX;
+		float horizontal = width * tileConstant * GameScreen.PIXEL_TO_BOX;
+		float vertical = height * tileConstant * GameScreen.PIXEL_TO_BOX;
 		Vector2 z = new Vector2( );
 
 		// Creating 2 fixtures to make a plus 
-		ps.setAsBox( hori, thickY * tileConstant * GameScreen.PIXEL_TO_BOX , z, 0 );
+		ps.setAsBox( horizontal, thickY * tileConstant * GameScreen.PIXEL_TO_BOX , z, 0 );
 		fd.shape = ps;
 		body.createFixture( fd );
 		
-		ps.setAsBox( thickX * tileConstant * GameScreen.PIXEL_TO_BOX, vert, z, 0 );
+		ps.setAsBox( thickX * tileConstant * GameScreen.PIXEL_TO_BOX, vertical, z, 0 );
 		fd.shape = ps;
 		body.createFixture( fd );
 
