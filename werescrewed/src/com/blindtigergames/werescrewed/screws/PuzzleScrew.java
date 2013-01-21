@@ -19,24 +19,31 @@ import com.blindtigergames.werescrewed.screens.GameScreen;
  */
 
 public class PuzzleScrew extends Screw {
-	private int maxDepth;
 
 	public PuzzleScrew( String n, Vector2 pos, Texture tex, int max,
 			Skeleton skeleton ) {
 		super( n, pos, tex, null );
 		maxDepth = max;
 		depth = max;
+		radius = sprite.getWidth( ) * GameScreen.PIXEL_TO_BOX * 1.6f;
 
 		// create the screw body
 		BodyDef screwBodyDef = new BodyDef( );
-		screwBodyDef.type = BodyType.StaticBody;
+		screwBodyDef.type = BodyType.DynamicBody;
 		screwBodyDef.position.set( pos );
+		screwBodyDef.gravityScale = 0.07f;
 		body = world.createBody( screwBodyDef );
 		CircleShape screwShape = new CircleShape( );
-		screwShape.setRadius( sprite.getWidth( ) );
-		body.createFixture( screwShape, 0.0f );
+		screwShape.setRadius( ( sprite.getWidth( ) / 2.0f )
+				* GameScreen.PIXEL_TO_BOX );
+		FixtureDef screwFixture = new FixtureDef( );
+		screwFixture.shape = screwShape;
+		screwFixture.isSensor = true;
+		body.createFixture( screwFixture );
 		screwShape.dispose( );
-		sprite.setScale( GameScreen.PIXEL_TO_BOX );
+		offset.x = (float)(-sprite.getWidth( )/2.0f);
+		offset.y = (float)(-sprite.getWidth( )/2.0f);		
+		body.setUserData( this );
 
 		// add radar sensor to screw
 		CircleShape radarShape = new CircleShape( );

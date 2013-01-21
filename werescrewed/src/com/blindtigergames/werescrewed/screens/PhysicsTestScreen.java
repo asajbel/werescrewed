@@ -90,7 +90,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 
 		texture = new Texture( Gdx.files.internal( "data/rletter.png" ) );
 
-		tp = new TiledPlatform( "plat", new Vector2( 370.0f, 200.0f ), texture,
+		tp = new TiledPlatform( "plat", new Vector2( 2.0f, 0.5f ), texture,
 				10, 1, world );
 
 		screwTex = new Texture( Gdx.files.internal( "data/screw.png" ) );
