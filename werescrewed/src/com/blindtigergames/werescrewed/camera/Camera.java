@@ -30,12 +30,13 @@ public class Camera {
 	public Vector2 center2D;
 	
 	// translation
+//	private static final float SPEED_TARGET_MODIFIER = 5f;
 	private static final float BUFFER_RATIO = .33f;
 //	private static final int LISTEN_BUFFER = 300;
 	private static final float ACCELERATION_RATIO = .005f;
 	private static final float TARGET_BUFFER_RATIO = .1f;
 	private static final float MINIMUM_FOLLOW_SPEED = 1f;
-	private static final float MAX_ANGLE_DIFF = 90f;
+	private static final float MAX_ANGLE_DIFF = 45f;
 	private Vector2  translateVelocity;
 	private float translateSpeed;
 	private float translateAcceleration;
@@ -246,7 +247,11 @@ public class Camera {
      * set focus of camera to the midpoint of all anchors
      */
     private Vector2 setTranslateTarget(){
-    	this.translateTarget = anchorList.midpoint();
+    	translateTarget.x = anchorList.midpoint().x;
+    	translateTarget.y = anchorList.midpoint().y;
+//    	translateTarget.x += anchorList.getMidpointVelocity().x * SPEED_TARGET_MODIFIER; 
+//    	translateTarget.y += anchorList.getMidpointVelocity().y * SPEED_TARGET_MODIFIER; 
+    	
 		translateTarget3D.x = translateTarget.x;
 		translateTarget3D.y = translateTarget.y;
 		translateTarget3D.z = 0f;
