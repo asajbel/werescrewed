@@ -34,7 +34,7 @@ public class Camera {
 	private static final float BUFFER_RATIO = .33f;
 //	private static final int LISTEN_BUFFER = 300;
 	private static final float ACCELERATION_RATIO = .005f;
-	private static final float TARGET_BUFFER_RATIO = .1f;
+	private static final float TARGET_BUFFER_RATIO = .05f;
 	private static final float MINIMUM_FOLLOW_SPEED = 1f;
 	private static final float MAX_ANGLE_DIFF = 45f;
 	private Vector2  translateVelocity;
@@ -149,6 +149,8 @@ public class Camera {
 		center2D.x = position.x;
 		center2D.y = position.y;
 		
+		translateBuffer.x = position.x - translateBuffer.width * .5f;
+		translateBuffer.y = position.y - translateBuffer.height * .5f;
     	setTranslateTarget();
 		
 //    	player1.moveRight();
@@ -175,8 +177,6 @@ public class Camera {
 		}
 		
 		if (debugRender) {
-			translateBuffer.x = position.x - translateBuffer.width * .5f;
-			translateBuffer.y = position.y - translateBuffer.height * .5f;
 			shapeRenderer.setProjectionMatrix(camera.combined);
 			shapeRenderer.begin(ShapeType.Rectangle);
 			shapeRenderer.identity();
