@@ -189,6 +189,10 @@ public class Player extends Entity {
 		hitScrew = true;
 		currentScrew = screw;
 	}
+	
+	public void grounding(boolean setValue){
+		grounded = setValue;
+	}
 
 	private void attachToScrew( ) {
 		for ( Fixture f : body.getFixtureList( ) ) {
@@ -332,6 +336,7 @@ public class Player extends Entity {
 	private Screw currentScrew;
 	private RevoluteJoint playerToScrew;
 	private boolean hitScrew;
+	private boolean grounded;
 
 	/**
 	 * 

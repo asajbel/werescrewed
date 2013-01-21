@@ -33,6 +33,7 @@ public class TiledPlatform extends Platform {
 		this.width = width * tileConstant;
 		this.height = height * tileConstant;
 		constructTileBody( pos.x, pos.y, width, height );
+		body.setUserData(this);
 	}
 
 	private void constructTileBody( float x, float y, int width, int height ) {
@@ -58,6 +59,14 @@ public class TiledPlatform extends Platform {
 		body.setGravityScale( .1f );
 		body.createFixture( platformFixtureDef );
 
+	}
+	
+	public int getActualHeight(){
+	    return height * 32;
+	}
+	
+	public int getActualWidth(){
+	    return width * 32;
 	}
 
 	public void update( ) {
