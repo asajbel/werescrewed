@@ -38,7 +38,7 @@ public class ShapePlatform extends Platform {
 			constructPlus( pos, width, height, 1.0f, 1.0f );
 			break;
 		case trapezoid:
-			System.out.println( "trap" );
+			constructTrapezoid( pos, width, height );
 			break;
 		case Lshaped:
 			System.out.println( "trap" );
@@ -49,7 +49,6 @@ public class ShapePlatform extends Platform {
 		case dumbbell:
 			System.out.println( "trap" );
 			break;
-
 		}
 	}
 
@@ -129,6 +128,43 @@ public class ShapePlatform extends Platform {
 		fd.shape = ps;
 		body.createFixture( fd );
 
+		
+	}
+	
+	public void constructTrapezoid( Vector2 pos, float width, float height ){
+
+		BodyDef groundBodyDef = new BodyDef( );
+		groundBodyDef.type = BodyType.KinematicBody;
+		groundBodyDef.position.set( new Vector2( pos.x, pos.y ) );
+		body = world.createBody( groundBodyDef );
+
+		Vector2[ ] vertices = new Vector2[ 4 ];
+		Vector2 point1;
+		Vector2 point2;
+		Vector2 point3;
+		Vector2 point4;
+		float ptb = GameScreen.PIXEL_TO_BOX;
+		point1 = new Vector2( 0.0f, 0.0f );
+		point2 = new Vector2( 32.0f * ptb * width, 0.0f );
+		point3 = new Vector2( 64.0f * ptb * width, 32.0f * ptb * height );
+		point4 = new Vector2( -32.0f * ptb * width, 32.0f * ptb * height );
+
+
+		vertices[ 0 ] = point1;
+		vertices[ 1 ] = point2;
+		vertices[ 2 ] = point3;
+		vertices[ 3 ] = point4;
+
+		PolygonShape polygon = new PolygonShape( );
+		polygon.set( vertices );
+
+		FixtureDef platformFixtureDef = new FixtureDef( );
+		platformFixtureDef.shape = polygon;
+		platformFixtureDef.density = 1.9f;
+		platformFixtureDef.friction = 0.5f;
+		platformFixtureDef.restitution = 0.0f;
+		body.setGravityScale( .1f );
+		body.createFixture( platformFixtureDef );
 		
 	}
 
