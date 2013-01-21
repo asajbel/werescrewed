@@ -30,11 +30,13 @@ public class StructureScrew extends Screw {
 		maxDepth = max;
 		depth = max;
 		rotation = 0;
+		radius = sprite.getWidth( ) * GameScreen.PIXEL_TO_BOX * 1.6f;
 
 		// create the screw body
 		BodyDef screwBodyDef = new BodyDef( );
 		screwBodyDef.type = BodyType.DynamicBody;
 		screwBodyDef.position.set( pos );
+		screwBodyDef.gravityScale = 0.07f;
 		body = world.createBody( screwBodyDef );
 		CircleShape screwShape = new CircleShape( );
 		screwShape.setRadius( ( sprite.getWidth( ) / 2.0f )
@@ -45,7 +47,7 @@ public class StructureScrew extends Screw {
 		body.createFixture( screwFixture );
 		screwShape.dispose( );
 		offset.x = (float)(-sprite.getWidth( )/2.0f);
-		offset.y = (float)(-sprite.getWidth( )/2.0f);
+		offset.y = (float)(-sprite.getWidth( )/2.0f);		
 		body.setUserData( this );
 
 		// add radar sensor to screw
@@ -86,9 +88,6 @@ public class StructureScrew extends Screw {
 		if ( depth == screwStep ) {
 			body.setAngularVelocity( 0 );
 		}
-		if ( depth > maxDepth ) {
-			depth = maxDepth;
-		}
 		if ( depth == 0 ) {
 			world.destroyJoint( platformToScrew );
 			world.destroyJoint( screwJoint );
@@ -99,5 +98,4 @@ public class StructureScrew extends Screw {
 	private Skeleton skeleton;
 	private RevoluteJoint screwJoint;
 	private RevoluteJoint platformToScrew;
-	private int maxDepth;
 }

@@ -9,6 +9,7 @@ import com.badlogic.gdx.physics.box2d.joints.RevoluteJoint;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.platforms.Skeleton;
+import com.blindtigergames.werescrewed.screens.GameScreen;
 
 /**
  * @descrip: blah blah
@@ -25,6 +26,7 @@ public class BossScrew extends Screw {
 		super( n, pos, tex, bod );
 		maxDepth = max;
 		depth = max;
+		radius = sprite.getWidth( ) * GameScreen.PIXEL_TO_BOX * 1.6f;
 
 		// add radar sensor to screw
 		CircleShape radarShape = new CircleShape( );
@@ -69,9 +71,6 @@ public class BossScrew extends Screw {
 		if ( depth == screwStep ) {
 			body.setAngularVelocity( 0 );
 		}
-		if ( depth > maxDepth ) {
-			depth = maxDepth;
-		}
 		if ( depth == 0 ) {
 			world.destroyJoint( platformToScrew );
 			world.destroyJoint( screwJoint );
@@ -79,6 +78,5 @@ public class BossScrew extends Screw {
 		}
 	}
 
-	private int maxDepth;
 	private RevoluteJoint platformToScrew;
 }

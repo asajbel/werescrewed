@@ -29,6 +29,9 @@ public class Platform extends Entity {
 	protected int width, height;
 	protected boolean dynamicType = false;
 	protected boolean rotate = false;
+	// tileConstant is 16 for setasbox function which uses half width/height
+	// creates 32x32 objects
+	protected final int tileConstant = 16;
 
 	public Platform( String n, Vector2 pos, Texture tex, World world ) {
 		super( n, pos, tex, null );

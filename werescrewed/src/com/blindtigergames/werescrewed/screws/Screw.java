@@ -33,10 +33,12 @@ public class Screw extends Entity {
 	}
 
 	public void screwRight( ) {
-		body.setAngularVelocity( -15 );
-		depth++;
-		rotation -= 10;
-		screwStep = depth + 5;
+		if ( depth < maxDepth ) {
+			body.setAngularVelocity( -15 );
+			depth++;
+			rotation -= 10;
+			screwStep = depth + 5;
+		}
 	}
 
 	public int getRotation( ) {
@@ -51,9 +53,21 @@ public class Screw extends Entity {
 		System.out.println( "Hello from screw" );
 	}
 
+	public boolean collisionCheck( Vector2 pos ) {
+		float dx = pos.x - body.getPosition( ).x;
+		float dy = pos.y - body.getPosition( ).y;
+		float magnitude = dx*dx + dy*dy;
+		if( magnitude < radius*radius ) {
+			return true;
+		}
+		return false;
+	}
+	
+	protected float radius;
 	protected int rotation;
 	protected int depth;
-	protected final short CATEGORY_SCREWS = 0x0008;
+	protected int maxDepth;
 	protected int screwStep;
+	protected final short CATEGORY_SCREWS = 0x0008;
 
 }

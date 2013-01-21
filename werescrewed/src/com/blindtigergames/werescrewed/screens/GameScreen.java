@@ -19,6 +19,7 @@ import com.blindtigergames.werescrewed.camera.Camera;
 import com.blindtigergames.werescrewed.debug.SBox2DDebugRenderer;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.Player;
+import com.blindtigergames.werescrewed.entity.Player.PlayerState;
 import com.blindtigergames.werescrewed.entity.mover.TimelineMover;
 import com.blindtigergames.werescrewed.input.InputHandler;
 import com.blindtigergames.werescrewed.input.InputHandler.player_t;
@@ -91,14 +92,14 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 		player = new Player( world, new Vector2( 1.0f, 1.0f ), name );
 
 		cam = new Camera( w, h, player );
-		tp = new TiledPlatform( "plat", new Vector2( 370.0f, 200.0f ), texture,
+		tp = new TiledPlatform( "plat", new Vector2( 2.0f, 0.5f ), texture,
 				10, 1, world );
 		rp = new RoomPlatform( "room", new Vector2( -1.0f, 1.0f ), texture, 1,
 				10, world );
-		cp = new ComplexPlatform( "bottle", new Vector2( 0.0f, 3.0f ), texture,
+		cp = new ComplexPlatform( "bottle", new Vector2( -1.0f, 3.0f ), texture,
 				1, world, "bottle" );
 		sp = new ShapePlatform( "rhom", new Vector2( 1.0f, 1.0f ), texture,
-				world, Shapes.rhombus, 1.0f, false );
+				world, Shapes.trapezoid, 2.0f, 1.0f, false );
 
 		// testing screws
 		screwTex = new Texture( Gdx.files.internal( "data/screw.png" ) );
