@@ -193,15 +193,11 @@ public class Player extends Entity {
 	}
 
 	public void jump( ) {
-<<<<<<< HEAD
-		if ( isGrounded( ) ) {
-=======
 		if ( playerState == PlayerState.Screwing ) {
 			world.destroyJoint( playerToScrew );
 			playerState = PlayerState.JumpingOffScrew;
 		}
 		if ( Math.abs( body.getLinearVelocity( ).y ) < 1e-5 ) {
->>>>>>> 7e72029ea626e689280ad1389a0f1695e101c58e
 			body.applyLinearImpulse( new Vector2( 0.0f, 0.2f ),
 					body.getWorldCenter( ) );
 		}
@@ -284,9 +280,6 @@ public class Player extends Entity {
 			stop( );
 		}
 
-<<<<<<< HEAD
-		isGrounded( );
-=======
 		if ( inputHandler.screwPressed( player_t.ONE ) && hitScrew
 				&& playerState != PlayerState.Screwing ) {
 			if ( currentScrew.collisionCheck( body.getPosition( ) ) ) {
@@ -319,7 +312,6 @@ public class Player extends Entity {
 		}
 
 		// isGrounded( 0 );
->>>>>>> 7e72029ea626e689280ad1389a0f1695e101c58e
 		/*
 		 * This example is found at a blog, i couldn't get it to work right away
 		 * boolean grounded = isPlayerGrounded(Gdx.graphics.getDeltaTime());

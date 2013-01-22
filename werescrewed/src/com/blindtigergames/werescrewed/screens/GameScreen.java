@@ -54,10 +54,10 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 	Body playerBody;
 	Entity playerEntity;
 	Player player;
-	TiledPlatform tiledPlatform, tiledPlatform2;
-	RoomPlatform roomPlatform;
-	ComplexPlatform complexPlatform;
-	ShapePlatform shapePlatform;
+	TiledPlatform tp, tp2;
+	RoomPlatform rp;
+	ComplexPlatform cp;
+	ShapePlatform sp;
 
 	// testing screw
 	Texture screwTex;
@@ -75,59 +75,6 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 	public GameScreen( ) {
 		System.out.println( "GameScreen starting" );
 		float zoom = 1.0f;
-<<<<<<< HEAD
-		float w = Gdx.graphics.getWidth()/zoom;
-		float h = Gdx.graphics.getHeight()/zoom;
-
-		inputHandler = new InputHandler();
-		texture = new Texture(Gdx.files.internal("data/rletter.png"));
-		//takes in width, height
-        //cam = new Camera(w, h);
-        batch = new SpriteBatch();
-      
-        world = new World( new Vector2(0, -100), true );
-        //MCL = new MyContactListener();
-        //world.setContactListener(MCL);
-        String name = "player";
-
-        player = new Player( world, new Vector2(1.0f, 1.0f), name );
-
-        cam = new Camera( w, h, player );
-        tiledPlatform = new TiledPlatform( "plat", new Vector2(370.0f, 200.0f), texture, 10, 1, world );
-        roomPlatform = new RoomPlatform( "room", new Vector2(-1.0f, 1.0f), texture, 1, 10, world );
-        complexPlatform = new ComplexPlatform( "bottle", new Vector2(0.0f, 3.0f), texture, 1, world, "bottle" );
-        shapePlatform = new ShapePlatform( "rhom", new Vector2( 1.0f, 1.0f), texture, world, 
-        		Shapes.rhombus, 1.0f, false);
-
-		//testing screws
-		screwTex = new Texture(Gdx.files.internal("data/screw.png"));
-		background = new Texture(Gdx.files.internal("data/libgdx.png"));
-        skeleton = new Skeleton( "", Vector2.Zero, background, world );
-		structScrew = new StructureScrew( "", tiledPlatform.body.getPosition(), screwTex, 25, tiledPlatform, skeleton, world);
-		
-        //tp = new TiledPlatform("plat", new Vector2(200.0f, 100.0f), null, 1, 2, world);
-        tiledPlatform.setMover(new TimelineMover());
-        //BOX_TO_PIXEL, PIXEL_TO_BOX
-        BodyDef groundBodyDef =new BodyDef();  
-        groundBodyDef.position.set(new Vector2(0*PIXEL_TO_BOX, 0*PIXEL_TO_BOX));  
-        Body groundBody = world.createBody(groundBodyDef);  
-        PolygonShape groundBox = new PolygonShape();  
-        groundBox.setAsBox(Gdx.graphics.getWidth()*PIXEL_TO_BOX, 1f*PIXEL_TO_BOX);  
-        groundBody.createFixture(groundBox, 0.0f);
-        groundBody.getFixtureList().get(0).setFriction(0.5f);
-        
-
-        //make sure you uncomment the next two lines        debugRenderer = new SBox2DDebugRenderer(BOX_TO_PIXEL); for physics world        
-        //debugRenderer = new Box2DDebugRenderer();
-        debugRenderer = new SBox2DDebugRenderer(BOX_TO_PIXEL);
-        Gdx.app.setLogLevel(Application.LOG_DEBUG);
-        
-        logger = new FPSLogger();
-        
-       
-      
-       
-=======
 		float w = Gdx.graphics.getWidth( ) / zoom;
 		float h = Gdx.graphics.getHeight( ) / zoom;
 
@@ -183,7 +130,6 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 
 		logger = new FPSLogger( );
 
->>>>>>> 7e72029ea626e689280ad1389a0f1695e101c58e
 	}
 
 	@Override
@@ -204,23 +150,7 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 			ScreenManager.getInstance( ).show( Screen.PHYSICS );
 		}
 
-<<<<<<< HEAD
-		player.update();
-		tiledPlatform.update();
-		roomPlatform.update();
-		complexPlatform.update();
-		shapePlatform.update();
 
-		structScrew.update();
-		 
-		if(inputHandler.screwPressed( player_t.ONE )){
-			/*for (Fixture f: structScrew.body.getFixtureList()){
-				f.contactListener();
-			}*/
-			//if(inputHandler.leftPressed( player_t.ONE )){
-				structScrew.screwLeft(); 
-			//}
-=======
 		player.update( );
 		tp.update( );
 		rp.update( );
@@ -231,7 +161,6 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 
 		if ( inputHandler.unscrewPressed( player_t.ONE ) ) {
 			structScrew.screwLeft( );
->>>>>>> 7e72029ea626e689280ad1389a0f1695e101c58e
 		}
 
 		batch.setProjectionMatrix( cam.combined( ) );
@@ -244,16 +173,8 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 		// player.draw(batch);
 
 		// test drawing the texture by uncommenting the next line:
-<<<<<<< HEAD
-		tiledPlatform.draw(batch);
-		player.draw(batch);
-		
-		structScrew.draw(batch);
-		batch.end();
-=======
 		tp.draw( batch );
 		player.draw( batch );
->>>>>>> 7e72029ea626e689280ad1389a0f1695e101c58e
 
 		structScrew.draw( batch );
 		batch.end( );
