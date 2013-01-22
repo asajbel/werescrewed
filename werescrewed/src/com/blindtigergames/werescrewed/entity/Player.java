@@ -32,7 +32,9 @@ import com.blindtigergames.werescrewed.screws.Screw;
  */
 public class Player extends Entity {
 
-	private World world; // Reference to the world in which the player exists
+	// FIELDS
+
+	// Variables
 	public Fixture playerPhysicsFixture;
 	public Fixture playerSensorFixture;
 	public float stillTime = 0;
@@ -41,7 +43,16 @@ public class Player extends Entity {
 	public InputHandler inputHandler;
 	public PlayerState playerState;
 
+	// Constants
+	private final float GROUND_THRESHOLD = 1.5f; // Minimum distance below
+													// players' centers that a
+													// touching surface must be
+													// to qualify as "ground"
+
+	// Static constants
 	public final static float MAX_VELOCITY = 300f;
+
+	// Static variables
 	public static Texture texture = new Texture(
 			Gdx.files.internal( "data/player_r_m.png" ) );
 
@@ -59,6 +70,7 @@ public class Player extends Entity {
 	public Player( World w, Vector2 pos, String n, Texture tex ) {
 		super( n, EntityDef.getDefinition( "player" ), w, pos, 0.0f,
 				new Vector2( 1f, 1f ) );
+		// Encompasses:
 		// world = w;
 		// createPlayerBody(posX, posY);
 		// createPlayerBodyOLD(pos.x, pos.y);
@@ -190,7 +202,7 @@ public class Player extends Entity {
 			body.applyLinearImpulse( new Vector2( 0.0f, 0.2f ),
 					body.getWorldCenter( ) );
 		}
-
+		/* Math.abs( body.getLinearVelocity( ).y ) < 1e-5 */
 	}
 
 	/*
@@ -354,11 +366,10 @@ public class Player extends Entity {
 
 	/**
 	 * 
-	 * @param deltaTime
 	 * @return A boolean that indicates if the player is on ground.
 	 * 
 	 */
-	private boolean isGrounded( float deltaTime ) {
+	private boolean isGrounded( ) {
 
 		// A list of all instances of contact in the world
 		List< Contact > contactList = world.getContactList( );
@@ -373,12 +384,12 @@ public class Player extends Entity {
 				Vector2 playerPos = body.getPosition( );
 				WorldManifold manifold = contact.getWorldManifold( );
 
-				// Tracks whether every point is "below" the character
+				// Tracks whether every point is "below" the character 
 				boolean below = true;
 
 				// Loop through all contact points in current contact
 				for ( Vector2 contactPoint : manifold.getPoints( ) ) {
-					below &= ( contactPoint.y < playerPos.y - 1.5f );
+					below &= ( contactPoint.y < playerPos.y - GROUND_THRESHOLD );
 				}
 
 				if ( below ) {
