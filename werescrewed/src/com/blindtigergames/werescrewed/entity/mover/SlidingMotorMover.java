@@ -1,15 +1,12 @@
 package com.blindtigergames.werescrewed.entity.mover;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.Joint;
 import com.badlogic.gdx.physics.box2d.joints.PrismaticJoint;
-import com.badlogic.gdx.physics.box2d.joints.PrismaticJointDef;
 
 /**
  * Can be used for sliding platforms, pistons, elevators
- * 
+ * This should be attached to an Entity, not used for puzzles
  * @author stew
  * 
  */
@@ -18,6 +15,7 @@ public class SlidingMotorMover implements IMover {
     PuzzleType type;
     protected PrismaticJoint joint;
     protected boolean loop; // takes priority over loopOnce
+    // TODO: finish loop once functionality
     protected boolean loopOnce; // will allow joint to go the full joint length
                                 // and back once
     boolean recentlyFlipped;
@@ -38,16 +36,10 @@ public class SlidingMotorMover implements IMover {
                 .getLowerLimit();
         boolean atUpperLimit = joint.getJointTranslation() >= joint
                 .getUpperLimit();
-        // Gdx.app.log("PrismaticMover",
-        // "Current translation: "+joint.getJointTranslation()+
-        // ", lower: "+joint.getLowerLimit()+"("+atLowerLimit+")"+", upper: "+joint.getUpperLimit()+"("+atUpperLimit+")");
         if ( atLowerLimit || atUpperLimit ) {
-            // Gdx.app.log("PrismaticMover",
-            // "at upper/lower limit, recently flipped="+recentlyFlipped);
             if ( !recentlyFlipped ) {
                 recentlyFlipped = true;
                 joint.setMotorSpeed( -joint.getMotorSpeed() );
-                // Gdx.app.log("PrismaticMover", "flipping motor speed");
             }
         } else {
             recentlyFlipped = false;

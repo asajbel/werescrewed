@@ -4,6 +4,11 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.joints.PrismaticJointDef;
 
+/**
+ * This is deprecated for now, but I'm leaving it in in case I use it for the future.
+ * @author stew
+ *
+ */
 public class JointFactory {
 
     public static PrismaticJointDef constructSlidingJointDef( Body skeletonBody,
