@@ -219,9 +219,7 @@ public class Player extends Entity {
 				f.setSensor( true );
 			}
 			body.setTransform(
-					currentScrew.getPosition( ),
-					( float ) Math.acos( body.getPosition( ).x
-							- currentScrew.getPosition( ).x ) );
+					currentScrew.getPosition( ), 0.0f);
 			// connect the screw to the skeleton;
 			RevoluteJointDef revoluteJointDef = new RevoluteJointDef( );
 			revoluteJointDef.initialize( body, currentScrew.body,
