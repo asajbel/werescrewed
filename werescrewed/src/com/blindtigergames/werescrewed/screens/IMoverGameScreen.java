@@ -157,6 +157,7 @@ public class IMoverGameScreen implements com.badlogic.gdx.Screen {
 
         piston.body.setType( BodyType.DynamicBody );
         
+        //TODO: ability to add platform to skeleton and it joints it in place
         PrismaticJoint pistonJoint = new PrismaticJointBuilder( world )
                                     .skeleton( skeleton )
                                     .bodyB( (Entity)piston )
