@@ -19,12 +19,6 @@ public class PistonMover implements IMover {
     float motorSpeed;
     float restTime, time;
     boolean isPuzzlePiston;
-    boolean hasBeenExploded;
-
-    public PistonMover( PrismaticJoint _joint ) {
-        this( _joint, -1 );
-        isPuzzlePiston = true;
-    }
 
     public PistonMover( PrismaticJoint _joint, float _restTime ) {
         this.joint = _joint;
@@ -32,53 +26,39 @@ public class PistonMover implements IMover {
         motorSpeed = this.joint.getMotorSpeed();
         restTime = _restTime;
         time = 0;
-        isPuzzlePiston = false;
-        hasBeenExploded = false;
     }
-
-    public void explode() {
-        hasBeenExploded = true;
+    
+    public PistonMover( PrismaticJoint _joint ) {
+        this.joint = _joint;
+        isExploding = false;
+        motorSpeed = this.joint.getMotorSpeed();
+        restTime = -1;
+        time = 0;
+        isPuzzlePiston = true;
     }
 
     @Override
     public void move( float deltaTime, Body body ) {
-
+        time += deltaTime;
+        
+        
+        boolean atLowerLimit = joint.getJointTranslation() <= joint
+                .getLowerLimit();
         boolean atUpperLimit = joint.getJointTranslation() >= joint
                 .getUpperLimit();
 
-        if ( isPuzzlePiston ) {
-            if ( hasBeenExploded ) {
-                joint.setMotorSpeed( -joint.getMotorSpeed() ); // flip speed of
-                                                               // motor so it
-                                                               // pops.
-                hasBeenExploded = false;
-            }
-            if ( atUpperLimit ) {
+        if ( atLowerLimit ) {
+            if ( time >= restTime ) {
+                isExploding = true;
                 joint.setMotorSpeed( -joint.getMotorSpeed() );
+                time = 0;
             }
-
-        } else {
-            time += deltaTime; // if it's a puzzle piston, we don't need to
-                               // manage time.
-
-            boolean atLowerLimit = joint.getJointTranslation() <= joint
-                    .getLowerLimit();
-
-            // Gdx.app.log("PrismaticMover",
-            // "Current translation: "+joint.getJointTranslation()+
-            // ", lower: "+joint.getLowerLimit()+"("+atLowerLimit+")"+", upper: "+joint.getUpperLimit()+"("+atUpperLimit+")");
-            if ( atLowerLimit ) {
-                if ( time >= restTime ) {
-                    isExploding = true;
-                    joint.setMotorSpeed( -joint.getMotorSpeed() );
-                    time = 0;
-                }
-            } else if ( atUpperLimit ) {
-                isExploding = false;
-                joint.setMotorSpeed( -joint.getMotorSpeed() );
-            }
+        } else if ( atUpperLimit ) {
+            isExploding = false;
+            joint.setMotorSpeed( -joint.getMotorSpeed() );
         }
     }
+    
 
     @Override
     public void move( float deltaTime, Body body, SteeringOutput steering ) {
