@@ -20,10 +20,10 @@ import com.blindtigergames.werescrewed.screens.GameScreen;
 
 public class RoomPlatform extends Platform {
 	protected boolean rotate = false;
-	protected int tileHeight, tileWidth;
+	protected float tileHeight, tileWidth;
 
-	public RoomPlatform( String n, Vector2 pos, Texture tex, int width,
-			int height, World world ) {
+	public RoomPlatform( String n, Vector2 pos, Texture tex, float width,
+			float height, World world ) {
 		super( n, pos, tex, world );
 		this.tileHeight = height;
 		this.tileWidth = width;
@@ -32,40 +32,40 @@ public class RoomPlatform extends Platform {
 		constructRoomBody( pos.x, pos.y, width, height );
 	}
 
-	private void constructRoomBody( float x, float y, int width, int height ) {
+	public void constructRoomBody( float x, float y, float width, float height ) {
 		PolygonShape ps = new PolygonShape( );
 		FixtureDef fd = new FixtureDef( );
-		fd.density = 1f;
-		fd.restitution = 0.0f;
 
-		BodyDef groundBodyDef = new BodyDef( );
-		groundBodyDef.type = BodyType.KinematicBody;
-		groundBodyDef.position.set( x, y );
-		body = world.createBody( groundBodyDef );
+		BodyDef bodyDef = new BodyDef( );
+		bodyDef.type = BodyType.KinematicBody;
+		bodyDef.position.set( x, y );
+		body = world.createBody( bodyDef );
 		float hx = width * tileConstant * GameScreen.PIXEL_TO_BOX;
 		float hy = height * tileConstant * GameScreen.PIXEL_TO_BOX;
 
-		Vector2 z = new Vector2( );
+		Vector2 p1 = new Vector2( 0, -hy + hx );
+		Vector2 p2 = new Vector2( -hy + hx,  0 );
+		Vector2 p3 = new Vector2( 0, hy - hx );
+		Vector2 p4 = new Vector2( hy - hx, 0 );
 
-		// Creating 4 fixtures to make a box/room form
-		ps.setAsBox( hx, hy, z, 0 );
+		ps.setAsBox( hy, hx, p1, 0 );
 		fd.shape = ps;
 		body.createFixture( fd );
-
-		ps.setAsBox( hx, hy, new Vector2( 2 * ( hx * ( height - 1 ) ), 0f ), 0 );
+		
+		ps.setAsBox( hx, hy, p2, 0 );
 		fd.shape = ps;
 		body.createFixture( fd );
-
-		ps.setAsBox( hy, hx, new Vector2( hx * ( height - 1 ), -( hy - hy
-				/ height ) ), 0 );
+		
+		ps.setAsBox( hy, hx, p3, 0 );
 		fd.shape = ps;
 		body.createFixture( fd );
-
-		ps.setAsBox( hy, hx, new Vector2( hx * ( height - 1 ), ( hy - hy
-				/ height ) ), 0 );
+		
+		ps.setAsBox( hx, hy, p4, 0 );
 		fd.shape = ps;
 		body.createFixture( fd );
-
+		
+		ps.dispose( );
+		
 	}
 
 	public void update( ) {

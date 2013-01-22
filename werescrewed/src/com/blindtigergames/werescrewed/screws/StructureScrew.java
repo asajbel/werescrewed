@@ -6,6 +6,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.JointEdge;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJoint;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
@@ -30,7 +31,6 @@ public class StructureScrew extends Screw {
 		maxDepth = max;
 		depth = max;
 		rotation = 0;
-		radius = sprite.getWidth( ) * GameScreen.PIXEL_TO_BOX * 1.6f;
 
 		// create the screw body
 		BodyDef screwBodyDef = new BodyDef( );
@@ -52,7 +52,7 @@ public class StructureScrew extends Screw {
 
 		// add radar sensor to screw
 		CircleShape radarShape = new CircleShape( );
-		radarShape.setRadius( sprite.getWidth( ) * 1.5f
+		radarShape.setRadius( sprite.getWidth( ) * 1.25f
 				* GameScreen.PIXEL_TO_BOX );
 		FixtureDef radarFixture = new FixtureDef( );
 		radarFixture.shape = radarShape;
@@ -79,19 +79,47 @@ public class StructureScrew extends Screw {
 		screwJoint = ( RevoluteJoint ) world.createJoint( revoluteJointDef );
 	}
 
+	public void screwLeft( ) {
+		body.setAngularVelocity( 15 );
+		depth--;
+		rotation += 10;
+		screwStep = depth + 5;
+		if ( depth == 0 && screwJoint != null ) {
+			world.destroyJoint( platformToScrew );
+			world.destroyJoint( screwJoint );
+			depth = -1;
+		}
+	}
+
+	public void screwRight( ) {
+		if ( depth < maxDepth ) {
+			body.setAngularVelocity( -15 );
+			depth++;
+			rotation -= 10;
+			screwStep = depth + 6;
+		}
+	}
+	
 	public void update( ) {
 		super.update( );
+<<<<<<< HEAD
+=======
+		sprite.setPosition(
+				sprite.getX( )
+						+ ( .25f * ( float ) ( ( maxDepth - depth ) * ( Math
+								.cos( body.getAngle( ) ) ) ) ),
+				sprite.getY( )
+						+ ( .25f * ( float ) ( ( maxDepth - depth ) * ( Math
+								.sin( body.getAngle( ) ) ) ) ) );
+		sprite.setRotation( rotation );
+>>>>>>> master
 		if ( depth != screwStep ) {
 			screwStep--;
 		}
 		if ( depth == screwStep ) {
 			body.setAngularVelocity( 0 );
 		}
-		if ( depth == 0 ) {
-			world.destroyJoint( platformToScrew );
-			world.destroyJoint( screwJoint );
-			depth = -1;
-		}
+
 	}
 
 	private Skeleton skeleton;

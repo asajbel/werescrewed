@@ -26,7 +26,7 @@ public class Platform extends Entity {
 	IMover mover;
 
 	protected World world;
-	protected int width, height;
+	protected float width, height;
 	protected boolean dynamicType = false;
 	protected boolean rotate = true;
 	// tileConstant is 16 for setasbox function which uses half width/height
@@ -72,17 +72,24 @@ public class Platform extends Entity {
 	}
 
 	public void setDensity( float d ) {
-		body.getFixtureList( ).get( 0 ).setDensity( d );
+		for(int i = 0; i < body.getFixtureList( ).size( ); ++i)
+			body.getFixtureList( ).get( i ).setDensity( d );
+			
 	}
 
 	public void setFriction( float f ) {
-		body.getFixtureList( ).get( 0 ).setFriction( f );
+		for(int i = 0; i < body.getFixtureList( ).size( ); ++i)
+			body.getFixtureList( ).get( i ).setFriction( f );
 	}
 
 	public void setRestitution( float r ) {
-		body.getFixtureList( ).get( 0 ).setRestitution( r );
+		for(int i = 0; i < body.getFixtureList( ).size( ); ++i)
+			body.getFixtureList( ).get( i ).setRestitution( r );
 	}
 
+	public void setGravScale( float g ){
+		body.setGravityScale( g );
+	}
 	public void changeType( ) {
 		dynamicType = !dynamicType;
 		if ( dynamicType ) {
