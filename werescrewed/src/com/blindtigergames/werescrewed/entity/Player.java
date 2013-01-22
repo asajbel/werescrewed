@@ -86,13 +86,10 @@ public class Player extends Entity {
 		// createPlayerBodyOLD(pos.x, pos.y);
 		body.setGravityScale( 0.25f );
 		body.setFixedRotation( true );
-<<<<<<< HEAD
 		sprite.setScale( 100f * GameScreen.PIXEL_TO_BOX );
 		offset.x = -15f;
 		offset.y = -7.5f;
 		body.setUserData( this );
-=======
->>>>>>> master
 		playerState = PlayerState.Standing;
 		inputHandler = new InputHandler( );
 	}

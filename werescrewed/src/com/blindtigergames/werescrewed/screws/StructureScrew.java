@@ -102,8 +102,6 @@ public class StructureScrew extends Screw {
 	
 	public void update( ) {
 		super.update( );
-<<<<<<< HEAD
-=======
 		sprite.setPosition(
 				sprite.getX( )
 						+ ( .25f * ( float ) ( ( maxDepth - depth ) * ( Math
@@ -112,7 +110,6 @@ public class StructureScrew extends Screw {
 						+ ( .25f * ( float ) ( ( maxDepth - depth ) * ( Math
 								.sin( body.getAngle( ) ) ) ) ) );
 		sprite.setRotation( rotation );
->>>>>>> master
 		if ( depth != screwStep ) {
 			screwStep--;
 		}

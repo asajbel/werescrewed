@@ -5,6 +5,7 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
@@ -27,14 +28,10 @@ import java.util.Vector;
 //Need to fix widht/height storage
 public class TiledPlatform extends Platform {
 	protected boolean rotate = false;
-<<<<<<< HEAD
-	protected int tileHeight, tileWidth;
+	protected float tileHeight, tileWidth;
 	protected float tileSize;
 	protected Vector<Sprite> tiles;
 	protected float posx, posy; 
-=======
-	protected float tileHeight, tileWidth;
->>>>>>> master
 
 	public TiledPlatform( String n, Vector2 pos, Texture tex, float width,
 			float height, World world ) {
@@ -45,15 +42,12 @@ public class TiledPlatform extends Platform {
 		this.width = width * tileConstant;
 		this.height = height * tileConstant;
 		constructTileBody( pos.x, pos.y, width, height );
-<<<<<<< HEAD
 		tiles = new Vector<Sprite>();
 		for (int i = 0; i < width; i++ ){
 			
 			tiles.add( this.sprite );
 		}
-=======
 		body.setUserData(this);
->>>>>>> master
 	}
 
 	private void constructTileBody( float x, float y, float width, float height ) {
@@ -87,22 +81,23 @@ public class TiledPlatform extends Platform {
 
 	public void update( ) {
 		super.update( );
-//		sprite.setOrigin( body.getWorldCenter( ).x, body.getWorldCenter( ).y);
-//		Iterator<Sprite> v = tiles.listIterator( ); 
-//		while (v.hasNext( )) {
-//			posx = body.getPosition( ).x - 
-//			v.next( ).setPosition( posx, posy );
-//		}
+		sprite.setOrigin( body.getWorldCenter( ).x, body.getWorldCenter( ).y);
+		Iterator<Sprite> v = tiles.listIterator( ); 
+		for ( int i = -MathUtils.floor( width / 2 ); i < width / 2; i++) {
+			posx = (body.getPosition( ).x + i ) * tileSize * MathUtils.cos( body.getAngle() );
+			posy = body.getPosition( ).y * tileSize * MathUtils.sin( body.getAngle() );
+			v.next( ).setPosition( posx, posy );
+		}
 	}
 	
-//	@Override 
-//	public void draw(SpriteBatch batch ) {
-//		Iterator<Sprite> v = tiles.listIterator( ); 
-//		while (v.hasNext( )) {
-//			v.next( ).draw( batch );
-//		}
-//		
-//	}
+	@Override 
+	public void draw(SpriteBatch batch ) {
+		Iterator<Sprite> v = tiles.listIterator( ); 
+		while (v.hasNext( )) {
+			v.next( ).draw( batch );
+		}
+		
+	}
 	
 
 }

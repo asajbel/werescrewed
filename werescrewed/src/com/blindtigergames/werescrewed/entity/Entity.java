@@ -80,7 +80,6 @@ public class Entity {
 	public Vector2 getPosition( ) {
 		return body.getPosition( );
 	}
-<<<<<<< HEAD
 	
     public void Move(Vector2 vector)
     {
@@ -105,27 +104,6 @@ public class Entity {
 			sprite.setRotation( MathUtils.radiansToDegrees * body.getAngle( ) );
 			if(mover != null)
 				mover.move(body);
-=======
-
-	public void Move( Vector2 vector ) {
-		Vector2 pos = body.getPosition( ).add( vector );
-		setPosition( pos );
-	}
-
-	public void draw( SpriteBatch batch ) {
-		if ( sprite != null )
-			sprite.draw( batch );
-	}
-
-	public void update( ) {
-		if ( body != null && sprite != null ) {
-			Vector2 bodyPos = body.getPosition( );
-			Vector2 spritePos = bodyPos.mul( GameScreen.BOX_TO_PIXEL ).add(
-					offset );
-			sprite.setPosition( spritePos.x, spritePos.y );
-			if ( mover != null )
-				mover.move( body );
->>>>>>> master
 		}
 	}
 
