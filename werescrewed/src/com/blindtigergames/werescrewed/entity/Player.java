@@ -144,6 +144,11 @@ public class Player extends Entity {
 	}
 
 	public void moveRight( ) {
+		if ( playerState == PlayerState.Screwing ) {
+			world.destroyJoint( playerToScrew );
+			playerState = PlayerState.JumpingOffScrew;
+			jump( );
+		}
 		if ( body.getLinearVelocity( ).x < 2.0f ) {
 			body.applyLinearImpulse( new Vector2( 0.01f, 0.0f ),
 					body.getWorldCenter( ) );
@@ -159,6 +164,11 @@ public class Player extends Entity {
 	}
 
 	public void moveLeft( ) {
+		if ( playerState == PlayerState.Screwing ) {
+			world.destroyJoint( playerToScrew );
+			playerState = PlayerState.JumpingOffScrew;
+			jump( );
+		}
 		if ( body.getLinearVelocity( ).x > -2.0f ) {
 			body.applyLinearImpulse( new Vector2( -0.01f, 0.0f ),
 					body.getWorldCenter( ) );
@@ -189,26 +199,29 @@ public class Player extends Entity {
 		hitScrew = true;
 		currentScrew = screw;
 	}
-	
-	public void grounding(boolean setValue){
+
+	public void grounding( boolean setValue ) {
 		grounded = setValue;
 	}
 
 	private void attachToScrew( ) {
-		for ( Fixture f : body.getFixtureList( ) ) {
-			f.setSensor( true );
+		if ( currentScrew.body.getJointList( ).size( ) > 0 ) {
+			for ( Fixture f : body.getFixtureList( ) ) {
+				f.setSensor( true );
+			}
+			body.setTransform(
+					currentScrew.getPosition( ),
+					( float ) Math.acos( body.getPosition( ).x
+							- currentScrew.getPosition( ).x ) );
+			// connect the screw to the skeleton;
+			RevoluteJointDef revoluteJointDef = new RevoluteJointDef( );
+			revoluteJointDef.initialize( body, currentScrew.body,
+					currentScrew.getPosition( ) );
+			revoluteJointDef.enableMotor = false;
+			playerToScrew = ( RevoluteJoint ) world
+					.createJoint( revoluteJointDef );
+			playerState = PlayerState.Screwing;
 		}
-		body.setTransform(
-				currentScrew.getPosition( ),
-				( float ) Math.acos( body.getPosition( ).x
-						- currentScrew.getPosition( ).x ) );
-		// connect the screw to the skeleton;
-		RevoluteJointDef revoluteJointDef = new RevoluteJointDef( );
-		revoluteJointDef.initialize( body, currentScrew.body,
-				currentScrew.getPosition( ) );
-		revoluteJointDef.enableMotor = false;
-		playerToScrew = ( RevoluteJoint ) world.createJoint( revoluteJointDef );
-		playerState = PlayerState.Screwing;
 	}
 
 	private void stop( ) {
@@ -272,7 +285,7 @@ public class Player extends Entity {
 			}
 			if ( currentScrew.body.getJointList( ).size( ) == 1 ) {
 				jump( );
-				for ( Fixture f: body.getFixtureList( ) ) {
+				for ( Fixture f : body.getFixtureList( ) ) {
 					f.setSensor( false );
 				}
 			}
@@ -280,12 +293,12 @@ public class Player extends Entity {
 
 		if ( playerState == PlayerState.JumpingOffScrew ) {
 			if ( Math.abs( body.getLinearVelocity( ).y ) < 0.05 ) {
-				for ( Fixture f: body.getFixtureList( ) ) {
+				for ( Fixture f : body.getFixtureList( ) ) {
 					f.setSensor( false );
 				}
 			}
 		}
-		
+
 		// isGrounded( 0 );
 		/*
 		 * This example is found at a blog, i couldn't get it to work right away
