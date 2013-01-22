@@ -61,7 +61,7 @@ public class MyContactListener implements ContactListener {
                     Vector2 platformPos = collider.getPosition();
                     Vector2 playerPos = player.getPosition();
                     if ( platformPos.y < playerPos.y ) {
-                        player.grounding( true );
+                        player.setGrounded( true );
                         System.out.println("hey there good looking");
                     }
                 }
@@ -94,7 +94,7 @@ public class MyContactListener implements ContactListener {
 			if ( playerInvolved ) {
 				if ( objectFix.getBody( ).getUserData( ) instanceof TiledPlatform ){
 					Player player = ( Player ) playerFix.getBody( ).getUserData( );
-					player.grounding(false);
+					player.setGrounded(false);
 					System.out.println( "not interested" );
 					contact.setEnabled( true );
 				}
