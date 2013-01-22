@@ -150,6 +150,7 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 			ScreenManager.getInstance( ).show( Screen.PHYSICS );
 		}
 
+
 		player.update( );
 		tp.update( );
 		rp.update( );
