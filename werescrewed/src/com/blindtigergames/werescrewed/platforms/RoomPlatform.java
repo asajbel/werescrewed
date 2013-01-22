@@ -35,8 +35,6 @@ public class RoomPlatform extends Platform {
 	public void constructRoomBody( float x, float y, float width, float height ) {
 		PolygonShape ps = new PolygonShape( );
 		FixtureDef fd = new FixtureDef( );
-		fd.density = 1f;
-		fd.restitution = 0.0f;
 
 		BodyDef groundBodyDef = new BodyDef( );
 		groundBodyDef.type = BodyType.KinematicBody;

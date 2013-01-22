@@ -45,19 +45,11 @@ public class TiledPlatform extends Platform {
 		body = world.createBody( groundBodyDef );
 
 		PolygonShape groundBox = new PolygonShape( );
-		if ( width == 0 )
-			width = 1;
-		if ( height == 0 )
-			height = 1;
 		groundBox.setAsBox( ( width * tileConstant ) * GameScreen.PIXEL_TO_BOX,
 				( height * tileConstant ) * GameScreen.PIXEL_TO_BOX );
 
 		FixtureDef platformFixtureDef = new FixtureDef( );
 		platformFixtureDef.shape = groundBox;
-		platformFixtureDef.density = 1.9f;
-		platformFixtureDef.friction = 0.5f;
-		platformFixtureDef.restitution = 0.0f;
-		body.setGravityScale( .1f );
 		body.createFixture( platformFixtureDef );
 
 	}

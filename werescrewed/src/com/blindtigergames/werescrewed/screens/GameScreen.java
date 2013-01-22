@@ -95,7 +95,7 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 		cam = new Camera( w, h, player );
 		
 		tp = new PlatformBuilder()
-				.setPosition( 2.0f, 0.5f )
+				.setPosition( 2.0f, 0.2f )
 				.setDimensions( 10, 1 )
 				.setTexture( texture )
 				.buildTilePlatform( world );
@@ -119,8 +119,7 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 		structScrew = new StructureScrew( "", tp.body.getPosition( ), screwTex,
 				25, tp, skeleton, world );
 
-		// tp = new TiledPlatform("plat", new Vector2(200.0f, 100.0f), null, 1,
-		// 2, world);
+
 		tp.setMover( new TimelineMover( ) );
 		// BOX_TO_PIXEL, PIXEL_TO_BOX
 		BodyDef groundBodyDef = new BodyDef( );

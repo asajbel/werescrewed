@@ -91,10 +91,6 @@ public class ShapePlatform extends Platform {
 
 		FixtureDef platformFixtureDef = new FixtureDef( );
 		platformFixtureDef.shape = polygon;
-		platformFixtureDef.density = 1.9f;
-		platformFixtureDef.friction = 0.5f;
-		platformFixtureDef.restitution = 0.0f;
-		body.setGravityScale( .1f );
 		body.createFixture( platformFixtureDef );
 
 	}
@@ -105,12 +101,9 @@ public class ShapePlatform extends Platform {
 		groundBodyDef.type = BodyType.KinematicBody;
 		groundBodyDef.position.set( new Vector2( pos.x, pos.y ) );
 		body = world.createBody( groundBodyDef );
-		body.setGravityScale( .1f );
 
 		PolygonShape ps = new PolygonShape( );
 		FixtureDef fd = new FixtureDef( );
-		fd.density = 1f;
-		fd.restitution = 0.0f;
 
 		// Smallest width/height should be 1
 		// if ( width < 2.0f )
@@ -157,12 +150,9 @@ public class ShapePlatform extends Platform {
 		groundBodyDef.type = BodyType.KinematicBody;
 		groundBodyDef.position.set( new Vector2( pos.x, pos.y ) );
 		body = world.createBody( groundBodyDef );
-		body.setGravityScale( .1f );
 
 		PolygonShape ps = new PolygonShape( );
 		FixtureDef fd = new FixtureDef( );
-		fd.density = 1f;
-		fd.restitution = 0.0f;
 
 		// Smallest Plus should be 3x3
 		if ( width < 2.0f )
@@ -221,10 +211,6 @@ public class ShapePlatform extends Platform {
 
 		FixtureDef platformFixtureDef = new FixtureDef( );
 		platformFixtureDef.shape = polygon;
-		platformFixtureDef.density = 1.9f;
-		platformFixtureDef.friction = 0.5f;
-		platformFixtureDef.restitution = 0.0f;
-		body.setGravityScale( .1f );
 		body.createFixture( platformFixtureDef );
 
 	}
