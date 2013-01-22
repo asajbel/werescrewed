@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
@@ -94,8 +95,10 @@ public class Entity
 	{
 		if (body != null && sprite != null){
 			Vector2 bodyPos = body.getPosition();
-			Vector2 spritePos = bodyPos.mul(GameScreen.BOX_TO_PIXEL).add(offset);
-			sprite.setPosition(spritePos.x, spritePos.y);
+			bodyPos = bodyPos.mul( GameScreen.BOX_TO_PIXEL );
+			sprite.setPosition( bodyPos.x-sprite.getWidth()/2, bodyPos.y-sprite.getHeight()/2 );
+			sprite.setOrigin(sprite.getWidth()/2, sprite.getHeight()/2);
+			sprite.setRotation( MathUtils.radiansToDegrees * body.getAngle( ) );
 			if(mover != null)
 				mover.move(body);
 		}

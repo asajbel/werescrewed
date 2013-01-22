@@ -184,6 +184,7 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 		world.step( 1 / 60f, 6, 2 ); // step our physics calculations
 		// Gdx.app.debug("Physics",
 		// "delta = "+Gdx.app.getGraphics().getDeltaTime());
+		logger.log( );
 	}
 
 	@Override

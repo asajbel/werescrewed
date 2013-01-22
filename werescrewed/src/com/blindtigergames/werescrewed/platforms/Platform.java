@@ -28,7 +28,7 @@ public class Platform extends Entity {
 	protected World world;
 	protected int width, height;
 	protected boolean dynamicType = false;
-	protected boolean rotate = false;
+	protected boolean rotate = true;
 	// tileConstant is 16 for setasbox function which uses half width/height
 	// creates 32x32 objects
 	protected final int tileConstant = 16;

@@ -81,7 +81,6 @@ public class StructureScrew extends Screw {
 
 	public void update( ) {
 		super.update( );
-		sprite.setRotation( rotation );
 		if ( depth != screwStep ) {
 			screwStep--;
 		}

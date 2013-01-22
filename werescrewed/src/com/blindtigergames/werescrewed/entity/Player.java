@@ -64,8 +64,8 @@ public class Player extends Entity {
 		body.setGravityScale( .1f );
 		body.setFixedRotation( true );
 		sprite.setScale( 100f * GameScreen.PIXEL_TO_BOX );
-		offset.x = -64f;
-		offset.y = -50f;
+		offset.x = -15f;
+		offset.y = -7.5f;
 		body.setUserData( this );
 		playerState = PlayerState.Standing;
 		inputHandler = new InputHandler( );
@@ -225,7 +225,9 @@ public class Player extends Entity {
 	public void update( ) {
 		super.update( );
 		inputHandler.update( );
-
+		sprite.setY( sprite.getY( ) + sprite.getHeight( ) / 8);
+		//sprite.setPosition( body.getPosition( ).x, body.getPosition( ).y);
+		//sprite.setOrigin( offset.x, offset.y );
 		// Vector2 pos = body.getPosition();
 		// Vector2 vel = body.getLinearVelocity();
 
