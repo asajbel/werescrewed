@@ -156,7 +156,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		structScrew.update( );
 
 		//
-		// tp.update();
+	    tp.update();
 		rp.update( );
 		// cp.update();
 		// sp.update();

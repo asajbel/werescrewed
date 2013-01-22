@@ -94,7 +94,7 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 		cam = new Camera( w, h, player );
 		tp = new TiledPlatform( "plat", new Vector2( 2.0f, 0.5f ), texture,
 				10, 1, world );
-		rp = new RoomPlatform( "room", new Vector2( -1.0f, 1.0f ), texture, 1,
+		rp = new RoomPlatform( "room", new Vector2( -1.0f, 0.4f ), texture, 1,
 				10, world );
 		cp = new ComplexPlatform( "bottle", new Vector2( -1.0f, 3.0f ), texture,
 				1, world, "bottle" );

@@ -32,7 +32,7 @@ public class RoomPlatform extends Platform {
 		constructRoomBody( pos.x, pos.y, width, height );
 	}
 
-	private void constructRoomBody( float x, float y, int width, int height ) {
+	public void constructRoomBody( float x, float y, int width, int height ) {
 		PolygonShape ps = new PolygonShape( );
 		FixtureDef fd = new FixtureDef( );
 		fd.density = 1f;
@@ -45,27 +45,27 @@ public class RoomPlatform extends Platform {
 		float hx = width * tileConstant * GameScreen.PIXEL_TO_BOX;
 		float hy = height * tileConstant * GameScreen.PIXEL_TO_BOX;
 
-		Vector2 z = new Vector2( );
+		Vector2 p1 = new Vector2( 0, -hy + hx );
+		Vector2 p2 = new Vector2( -hy + hx,  0 );
+		Vector2 p3 = new Vector2( 0, hy - hx );
+		Vector2 p4 = new Vector2( hy - hx, 0 );
 
-		// Creating 4 fixtures to make a box/room form
-		ps.setAsBox( hx, hy, z, 0 );
+		ps.setAsBox( hy, hx, p1, 0 );
 		fd.shape = ps;
 		body.createFixture( fd );
-
-		ps.setAsBox( hx, hy, new Vector2( 2 * ( hx * ( height - 1 ) ), 0f ), 0 );
+		
+		ps.setAsBox( hx, hy, p2, 0 );
 		fd.shape = ps;
 		body.createFixture( fd );
-
-		ps.setAsBox( hy, hx, new Vector2( hx * ( height - 1 ), -( hy - hy
-				/ height ) ), 0 );
+		
+		ps.setAsBox( hy, hx, p3, 0 );
 		fd.shape = ps;
 		body.createFixture( fd );
-
-		ps.setAsBox( hy, hx, new Vector2( hx * ( height - 1 ), ( hy - hy
-				/ height ) ), 0 );
+		
+		ps.setAsBox( hx, hy, p4, 0 );
 		fd.shape = ps;
 		body.createFixture( fd );
-
+		
 	}
 
 	public void update( ) {
