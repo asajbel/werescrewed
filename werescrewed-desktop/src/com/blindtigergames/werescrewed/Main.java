@@ -7,7 +7,7 @@ public class Main {
 	public static void main(String[] args) {
 		LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
 		cfg.title = "WereScrewed";
-		cfg.useGL20 = true;
+		cfg.useGL20 = false;
 		cfg.width = 1280;
 		cfg.height = 720;
 		

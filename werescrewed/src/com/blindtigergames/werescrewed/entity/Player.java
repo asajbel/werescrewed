@@ -71,6 +71,7 @@ public class Player extends Entity {
 		Standing, Jumping, Falling, Screwing, JumpingOffScrew
 	}
 
+<<<<<<< HEAD
 	// CONSTRUCTORS
 	
 	/**
@@ -82,17 +83,17 @@ public class Player extends Entity {
 	 */
 	public Player( World world, Vector2 pos, String name, Texture tex ) {
 		super( name, EntityDef.getDefinition( "player" ), world, pos, 0.0f,
+=======
+	public Player( World w, Vector2 pos, String n, Texture tex ) {
+		super( n, EntityDef.getDefinition( "playerTest" ), w, pos, 0.0f,
+>>>>>>> 4d5d609dc881326a78f286c2b51767eb32fe623b
 				new Vector2( 1f, 1f ) );
 		// Encompasses:
 		// world = w;
 		// createPlayerBody(posX, posY);
 		// createPlayerBodyOLD(pos.x, pos.y);
-		body.setGravityScale( .1f );
+		body.setGravityScale( 0.25f );
 		body.setFixedRotation( true );
-		sprite.setScale( 100f * GameScreen.PIXEL_TO_BOX );
-		offset.x = -64f;
-		offset.y = -50f;
-		body.setUserData( this );
 		playerState = PlayerState.Standing;
 		inputHandler = new InputHandler( );
 	}
