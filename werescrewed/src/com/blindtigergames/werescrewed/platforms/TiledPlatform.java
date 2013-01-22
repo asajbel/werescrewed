@@ -21,12 +21,13 @@ import java.lang.Math;
  * 
  */
 
+//Need to fix widht/height storage
 public class TiledPlatform extends Platform {
 	protected boolean rotate = false;
-	protected int tileHeight, tileWidth;
+	protected float tileHeight, tileWidth;
 
-	public TiledPlatform( String n, Vector2 pos, Texture tex, int width,
-			int height, World world ) {
+	public TiledPlatform( String n, Vector2 pos, Texture tex, float width,
+			float height, World world ) {
 		super( n, pos, tex, world );
 		this.tileHeight = height;
 		this.tileWidth = width;
@@ -36,7 +37,7 @@ public class TiledPlatform extends Platform {
 		body.setUserData(this);
 	}
 
-	private void constructTileBody( float x, float y, int width, int height ) {
+	private void constructTileBody( float x, float y, float width, float height ) {
 
 		BodyDef groundBodyDef = new BodyDef( );
 		groundBodyDef.type = BodyType.KinematicBody;
@@ -44,28 +45,20 @@ public class TiledPlatform extends Platform {
 		body = world.createBody( groundBodyDef );
 
 		PolygonShape groundBox = new PolygonShape( );
-		if ( width == 0 )
-			width = 1;
-		if ( height == 0 )
-			height = 1;
 		groundBox.setAsBox( ( width * tileConstant ) * GameScreen.PIXEL_TO_BOX,
 				( height * tileConstant ) * GameScreen.PIXEL_TO_BOX );
 
 		FixtureDef platformFixtureDef = new FixtureDef( );
 		platformFixtureDef.shape = groundBox;
-		platformFixtureDef.density = 1.9f;
-		platformFixtureDef.friction = 0.5f;
-		platformFixtureDef.restitution = 0.0f;
-		body.setGravityScale( .1f );
 		body.createFixture( platformFixtureDef );
 
 	}
 	
-	public int getActualHeight(){
+	public float getActualHeight(){
 	    return height * 32;
 	}
 	
-	public int getActualWidth(){
+	public float getActualWidth(){
 	    return width * 32;
 	}
 

@@ -97,7 +97,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		background = new Texture( Gdx.files.internal( "data/libgdx.png" ) );
 		skeleton = new Skeleton( "", Vector2.Zero, background, world );
 		structScrew = new StructureScrew( "", tp.body.getPosition( ), screwTex,
-				25, tp, skeleton, world );
+				50, tp, skeleton, world );
 
 		cam = new Camera( w, h, player );
 		// tp = new TiledPlatform( "plat", new Vector2(5.0f, 40.0f), texture, 1,
@@ -156,7 +156,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		structScrew.update( );
 
 		//
-		// tp.update();
+	    tp.update();
 		rp.update( );
 		// cp.update();
 		// sp.update();

@@ -25,7 +25,6 @@ public class PuzzleScrew extends Screw {
 		super( n, pos, tex, null );
 		maxDepth = max;
 		depth = max;
-		radius = sprite.getWidth( ) * GameScreen.PIXEL_TO_BOX * 1.6f;
 
 		// create the screw body
 		BodyDef screwBodyDef = new BodyDef( );
@@ -69,19 +68,26 @@ public class PuzzleScrew extends Screw {
 		skeleton.addBoneAndJoint( this, platformToScrew );
 	}
 
+	public void screwLeft( ) {
+		if ( depth > 0 ){
+			body.setAngularVelocity( 15 );
+			depth--;
+			rotation += 10;
+			screwStep = depth + 5;
+		}
+	}
+
+	public void screwRight( ) {
+		if ( depth < maxDepth ) {
+			body.setAngularVelocity( -15 );
+			depth++;
+			rotation -= 10;
+			screwStep = depth + 6;
+		}
+	}
+	
 	public void update( ) {
 		super.update( );
-		if ( depth <= 0 ) {
-			depth = 0;
-			screwStep = depth;
-			rotation = ( int ) sprite.getRotation( );
-		} else if ( depth >= maxDepth ) {
-			depth = maxDepth;
-			screwStep = depth;
-			rotation = ( int ) sprite.getRotation( );
-		} else {
-			sprite.setRotation( rotation );
-		}
 		if ( depth != screwStep ) {
 			screwStep--;
 		}

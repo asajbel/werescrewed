@@ -21,7 +21,6 @@ import com.blindtigergames.werescrewed.screens.GameScreen;
 public class StrippedScrew extends Screw {
 	public StrippedScrew( String n, Vector2 pos, Texture tex, Skeleton skeleton ) {
 		super( n, pos, tex, null );
-		radius = sprite.getWidth( ) * GameScreen.PIXEL_TO_BOX * 1.6f;
 
 		// create the screw body
 		BodyDef screwBodyDef = new BodyDef( );
