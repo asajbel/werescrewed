@@ -20,75 +20,77 @@ class MainMenuScreen implements com.badlogic.gdx.Screen {
 	private Button creditsButton = null;
 	private Button exitButton = null;
 	private int lineHeight = 0;
-	
-	public MainMenuScreen() {
-		batch = new SpriteBatch();
-		font = new BitmapFont();
-		lineHeight = Math.round(2.5f * font.getCapHeight());
-		headingLabel = new Label("Screen Manager Demo", font);
-		playButton = new Button("Play", font, new ScreenSwitchHandler(Screen.GAME));
-		creditsButton = new Button("Credits", font, new ScreenSwitchHandler(Screen.CREDITS));
-		exitButton = new Button("Exit", font, new ButtonHandler() {
+
+	public MainMenuScreen( ) {
+		batch = new SpriteBatch( );
+		font = new BitmapFont( );
+		lineHeight = Math.round( 2.5f * font.getCapHeight( ) );
+		headingLabel = new Label( "Screen Manager Demo", font );
+		playButton = new Button( "Play", font, new ScreenSwitchHandler(
+				Screen.GAME ) );
+		creditsButton = new Button( "Credits", font, new ScreenSwitchHandler(
+				Screen.CREDITS ) );
+		exitButton = new Button( "Exit", font, new ButtonHandler( ) {
 			@Override
-			public void onClick() {
-				Gdx.app.exit();
+			public void onClick( ) {
+				Gdx.app.exit( );
 			}
-		});
+		} );
 	}
 
 	@Override
-	public void render(float delta) {
-		Gdx.gl.glClearColor(0.5f, 0.5f, 0.5f, 1f);
-		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
-		batch.begin();
-		headingLabel.draw(batch);
-		playButton.draw(batch, camera);
-		creditsButton.draw(batch, camera);
-		exitButton.draw(batch, camera);
-		batch.end();
+	public void render( float delta ) {
+		Gdx.gl.glClearColor( 0.5f, 0.5f, 0.5f, 1f );
+		Gdx.gl.glClear( GL10.GL_COLOR_BUFFER_BIT );
+		batch.begin( );
+		headingLabel.draw( batch );
+		playButton.draw( batch, camera );
+		creditsButton.draw( batch, camera );
+		exitButton.draw( batch, camera );
+		batch.end( );
 	}
 
 	@Override
-	public void resize(int width, int height) {
-		camera = new OrthographicCamera();
-		camera.setToOrtho(false, width, height);
-		batch.setProjectionMatrix(camera.combined);
+	public void resize( int width, int height ) {
+		camera = new OrthographicCamera( );
+		camera.setToOrtho( false, width, height );
+		batch.setProjectionMatrix( camera.combined );
 		int centerX = width / 2;
 		int centerY = height / 2;
-		headingLabel.setX(centerX - headingLabel.getWidth() / 2);
-		headingLabel.setY(centerY + 2 * lineHeight);
-		playButton.setX(centerX - playButton.getWidth() / 2);
-		playButton.setY(centerY + lineHeight);
-		creditsButton.setX(centerX - creditsButton.getWidth() / 2);
-		creditsButton.setY(centerY);
-		exitButton.setX(centerX - exitButton.getWidth() / 2);
-		exitButton.setY(centerY - lineHeight); 
+		headingLabel.setX( centerX - headingLabel.getWidth( ) / 2 );
+		headingLabel.setY( centerY + 2 * lineHeight );
+		playButton.setX( centerX - playButton.getWidth( ) / 2 );
+		playButton.setY( centerY + lineHeight );
+		creditsButton.setX( centerX - creditsButton.getWidth( ) / 2 );
+		creditsButton.setY( centerY );
+		exitButton.setX( centerX - exitButton.getWidth( ) / 2 );
+		exitButton.setY( centerY - lineHeight );
 	}
 
 	@Override
-	public void show() {
-		
+	public void show( ) {
+
 	}
 
 	@Override
-	public void hide() {
-		
+	public void hide( ) {
+
 	}
 
 	@Override
-	public void pause() {
-		
+	public void pause( ) {
+
 	}
 
 	@Override
-	public void resume() {
-		
+	public void resume( ) {
+
 	}
 
 	@Override
-	public void dispose() {
-		font.dispose();
-		batch.dispose();
+	public void dispose( ) {
+		font.dispose( );
+		batch.dispose( );
 	}
 
 }

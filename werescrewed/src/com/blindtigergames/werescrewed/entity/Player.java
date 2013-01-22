@@ -5,11 +5,9 @@ import java.util.List;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
-import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.Fixture;
@@ -17,9 +15,12 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.WorldManifold;
+import com.badlogic.gdx.physics.box2d.joints.RevoluteJoint;
+import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
 import com.blindtigergames.werescrewed.input.InputHandler;
 import com.blindtigergames.werescrewed.input.InputHandler.player_t;
 import com.blindtigergames.werescrewed.screens.GameScreen;
+import com.blindtigergames.werescrewed.screws.Screw;
 
 /**
  * 
@@ -62,7 +63,7 @@ public class Player extends Entity {
 	 * 
 	 */
 	public enum PlayerState {
-		Standing, Jumping, Falling
+		Standing, Jumping, Falling, Screwing, JumpingOffScrew
 	}
 
 	public Player( World w, Vector2 pos, String n, Texture tex ) {
@@ -92,6 +93,7 @@ public class Player extends Entity {
 	public Player( World world, Vector2 pos, String n ) {
 		this( world, pos, n, texture );
 		inputHandler = new InputHandler( );
+		this.world = world;
 		// createPlayerBody(posX, posY);
 		// createPlayerBodyOLD(pos.x, pos.y);
 	}
@@ -154,6 +156,11 @@ public class Player extends Entity {
 	}
 
 	public void moveRight( ) {
+		if ( playerState == PlayerState.Screwing ) {
+			world.destroyJoint( playerToScrew );
+			playerState = PlayerState.JumpingOffScrew;
+			jump( );
+		}
 		if ( body.getLinearVelocity( ).x < 2.0f ) {
 			body.applyLinearImpulse( new Vector2( 0.01f, 0.0f ),
 					body.getWorldCenter( ) );
@@ -169,6 +176,11 @@ public class Player extends Entity {
 	}
 
 	public void moveLeft( ) {
+		if ( playerState == PlayerState.Screwing ) {
+			world.destroyJoint( playerToScrew );
+			playerState = PlayerState.JumpingOffScrew;
+			jump( );
+		}
 		if ( body.getLinearVelocity( ).x > -2.0f ) {
 			body.applyLinearImpulse( new Vector2( -0.01f, 0.0f ),
 					body.getWorldCenter( ) );
@@ -181,11 +193,51 @@ public class Player extends Entity {
 	}
 
 	public void jump( ) {
+<<<<<<< HEAD
 		if ( isGrounded( ) ) {
+=======
+		if ( playerState == PlayerState.Screwing ) {
+			world.destroyJoint( playerToScrew );
+			playerState = PlayerState.JumpingOffScrew;
+		}
+		if ( Math.abs( body.getLinearVelocity( ).y ) < 1e-5 ) {
+>>>>>>> 7e72029ea626e689280ad1389a0f1695e101c58e
 			body.applyLinearImpulse( new Vector2( 0.0f, 0.2f ),
 					body.getWorldCenter( ) );
 		}
 		/* Math.abs( body.getLinearVelocity( ).y ) < 1e-5 */
+	}
+
+	/*
+	 * is called from contatListener sets the current screw
+	 */
+	public void hitScrew( Screw screw ) {
+		hitScrew = true;
+		currentScrew = screw;
+	}
+
+	public void grounding( boolean setValue ) {
+		grounded = setValue;
+	}
+
+	private void attachToScrew( ) {
+		if ( currentScrew.body.getJointList( ).size( ) > 0 ) {
+			for ( Fixture f : body.getFixtureList( ) ) {
+				f.setSensor( true );
+			}
+			body.setTransform(
+					currentScrew.getPosition( ),
+					( float ) Math.acos( body.getPosition( ).x
+							- currentScrew.getPosition( ).x ) );
+			// connect the screw to the skeleton;
+			RevoluteJointDef revoluteJointDef = new RevoluteJointDef( );
+			revoluteJointDef.initialize( body, currentScrew.body,
+					currentScrew.getPosition( ) );
+			revoluteJointDef.enableMotor = false;
+			playerToScrew = ( RevoluteJoint ) world
+					.createJoint( revoluteJointDef );
+			playerState = PlayerState.Screwing;
+		}
 	}
 
 	private void stop( ) {
@@ -232,7 +284,42 @@ public class Player extends Entity {
 			stop( );
 		}
 
+<<<<<<< HEAD
 		isGrounded( );
+=======
+		if ( inputHandler.screwPressed( player_t.ONE ) && hitScrew
+				&& playerState != PlayerState.Screwing ) {
+			if ( currentScrew.collisionCheck( body.getPosition( ) ) ) {
+				attachToScrew( );
+			} else {
+				hitScrew = false;
+			}
+		}
+
+		if ( playerState == PlayerState.Screwing ) {
+			if ( inputHandler.unscrewPressed( player_t.ONE ) ) {
+				currentScrew.screwLeft( );
+			} else if ( inputHandler.screwPressed( player_t.ONE ) ) {
+				currentScrew.screwRight( );
+			}
+			if ( currentScrew.body.getJointList( ).size( ) == 1 ) {
+				jump( );
+				for ( Fixture f : body.getFixtureList( ) ) {
+					f.setSensor( false );
+				}
+			}
+		}
+
+		if ( playerState == PlayerState.JumpingOffScrew ) {
+			if ( Math.abs( body.getLinearVelocity( ).y ) < 0.05 ) {
+				for ( Fixture f : body.getFixtureList( ) ) {
+					f.setSensor( false );
+				}
+			}
+		}
+
+		// isGrounded( 0 );
+>>>>>>> 7e72029ea626e689280ad1389a0f1695e101c58e
 		/*
 		 * This example is found at a blog, i couldn't get it to work right away
 		 * boolean grounded = isPlayerGrounded(Gdx.graphics.getDeltaTime());
@@ -278,6 +365,11 @@ public class Player extends Entity {
 		 * //System.out.println("jump, " + player.getLinearVelocity()); } }
 		 */
 	}
+
+	private Screw currentScrew;
+	private RevoluteJoint playerToScrew;
+	private boolean hitScrew;
+	private boolean grounded;
 
 	/**
 	 * 

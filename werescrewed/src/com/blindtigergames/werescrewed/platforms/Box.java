@@ -39,11 +39,15 @@ public class Box extends Platform{
     }
     
     public void startContact(){
-    	body.applyLinearImpulse(new Vector2(0.000f, 1.0f), body.getWorldCenter());
     	colliding = true;
     }
     
     public void endContact(){
     	colliding = false;
+    }
+    
+    public void exampleCollide(){
+    	System.out.println("hmmmmmmmmmmmmmm.");
+    	body.applyLinearImpulse(new Vector2(0.000f, .03f), body.getWorldCenter());
     }
 }
