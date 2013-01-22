@@ -56,7 +56,14 @@ public class Entity
 	
 	public Entity(String n, Vector2 pos, Texture tex, Body bod)
 	{
-		this(n, tex == null ? null: generateSprite(tex), bod);
+		this();
+		name = n;
+		constructSprite(tex);
+		body = bod;
+		if (bod != null){
+			world = bod.getWorld();
+			sprite.setScale(GameScreen.PIXEL_TO_BOX);
+		}
 		setPosition(pos);
 	}
 	
@@ -105,23 +112,24 @@ public class Entity
 		return type.name;
 	}
 	
-	protected static Sprite generateSprite(Texture tex){
-		Sprite out = new Sprite(tex);
-		out.setOrigin(tex.getWidth()/2, tex.getHeight()/2);
-		return out;
-	}
-	
 	protected void constructSprite(){
-		if (type != null && type.texture != null)
+		if (type != null && type.texture != null){
 			sprite = new Sprite(type.texture);
+			sprite.setOrigin( type.origin.x, type.origin.y );
+			sprite.setScale(GameScreen.PIXEL_TO_BOX * type.spriteScale.x, GameScreen.PIXEL_TO_BOX * type.spriteScale.y);
+		}
 	}
 	
+	protected void constructSprite(Texture tex){
+		sprite = new Sprite(tex);
+		sprite.setOrigin(tex.getWidth()/2, tex.getHeight()/2);
+	}
 	protected void constructBody( float x, float y, float width, float height ){
 		if (type != null){
 			body = world.createBody(type.bodyDef);
+			body.setUserData( this );
 			for (FixtureDef fix : type.fixtureDefs){
 				body.createFixture(fix);
-				Gdx.app.log( "Entity", fix.toString());
 			}
 			setPosition(x,y);
 		}
