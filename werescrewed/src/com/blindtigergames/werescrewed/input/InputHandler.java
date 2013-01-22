@@ -25,10 +25,10 @@ public class InputHandler implements InputProcessor {
 	public void update(){
 		pauseKeyPressed = Gdx.input.isKeyPressed( Keys.ESCAPE );
 		
-		p1LeftPressed = Gdx.input.isKeyPressed( Keys.A );
-		p1RightPressed = Gdx.input.isKeyPressed( Keys.D );
-		p1JumpPressed = Gdx.input.isKeyPressed( Keys.W );
-		p1DownPressed = Gdx.input.isKeyPressed( Keys.S );
+		p1LeftPressed = Gdx.input.isKeyPressed( Keys.DPAD_LEFT );
+		p1RightPressed = Gdx.input.isKeyPressed( Keys.DPAD_RIGHT );
+		p1JumpPressed = Gdx.input.isKeyPressed( Keys.DPAD_UP );
+		p1DownPressed = Gdx.input.isKeyPressed( Keys.DPAD_DOWN );
 		p1ScrewPressed = Gdx.input.isKeyPressed( Keys.Q );
 		
 		p2LeftPressed = Gdx.input.isKeyPressed( Keys.J );
