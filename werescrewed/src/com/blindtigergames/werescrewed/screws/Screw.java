@@ -32,7 +32,7 @@ public class Screw extends Entity {
 
 	public void screwRight( ) {
 	}
-
+	
 	public int getRotation( ) {
 		return rotation;
 	}

@@ -152,13 +152,15 @@ public class MyContactListener implements ContactListener {
             if (playerInvolved) {
                 if(objectFix.getBody().getUserData() instanceof TiledPlatform){
                     Player player = (Player) playerFix.getBody().getUserData();
-                    TiledPlatform oneSidedPlat = (TiledPlatform) objectFix.getBody().getUserData();
-                    Vector2 platformPos = oneSidedPlat.getPosition();
+                    TiledPlatform tilePlat = (TiledPlatform) objectFix.getBody().getUserData();
+                    Vector2 platformPos = tilePlat.getPosition();
                     Vector2 playerPos = player.getPosition();
-                    if(platformPos.y > playerPos.y){
-                        //System.out.println("setting");
-                        contact.setEnabled( false );
-                    } 
+                    if (tilePlat.getOneSided()){
+	                    if(platformPos.y > playerPos.y){
+	                        //System.out.println("setting");
+	                        contact.setEnabled( false );
+	                    }
+                	}
                 }
             }
         }

@@ -38,6 +38,7 @@ public class BossScrew extends Screw {
 		radarFixture.filter.maskBits = 0x0001;// radar only collides with player
 												// (player category bits 0x0001)
 		body.createFixture( radarFixture );
+		body.setUserData( this );
 
 		// connect the screw to the platform;
 		RevoluteJointDef revoluteJointDef = new RevoluteJointDef( );
