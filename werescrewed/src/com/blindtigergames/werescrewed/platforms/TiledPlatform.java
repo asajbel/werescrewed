@@ -39,19 +39,20 @@ public class TiledPlatform extends Platform {
 
 	private void constructTileBody( float x, float y, float width, float height ) {
 
-		BodyDef groundBodyDef = new BodyDef( );
-		groundBodyDef.type = BodyType.KinematicBody;
-		groundBodyDef.position.set( new Vector2( x , y ) );
-		body = world.createBody( groundBodyDef );
+		BodyDef bodyDef = new BodyDef( );
+		bodyDef.type = BodyType.KinematicBody;
+		bodyDef.position.set( new Vector2( x , y ) );
+		body = world.createBody( bodyDef );
 
-		PolygonShape groundBox = new PolygonShape( );
-		groundBox.setAsBox( ( width * tileConstant ) * GameScreen.PIXEL_TO_BOX,
+		PolygonShape polygon = new PolygonShape( );
+		polygon.setAsBox( ( width * tileConstant ) * GameScreen.PIXEL_TO_BOX,
 				( height * tileConstant ) * GameScreen.PIXEL_TO_BOX );
 
 		FixtureDef platformFixtureDef = new FixtureDef( );
-		platformFixtureDef.shape = groundBox;
+		platformFixtureDef.shape = polygon;
 		body.createFixture( platformFixtureDef );
 
+		polygon.dispose( );
 	}
 	
 	public float getActualHeight(){

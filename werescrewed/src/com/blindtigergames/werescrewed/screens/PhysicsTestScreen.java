@@ -22,6 +22,7 @@ import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.Player;
 import com.blindtigergames.werescrewed.platforms.Box;
 import com.blindtigergames.werescrewed.platforms.ComplexPlatform;
+import com.blindtigergames.werescrewed.platforms.PlatformBuilder;
 import com.blindtigergames.werescrewed.platforms.RoomPlatform;
 import com.blindtigergames.werescrewed.platforms.Skeleton;
 import com.blindtigergames.werescrewed.platforms.TiledPlatform;
@@ -113,19 +114,12 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 			System.out.print( "worked" );
 		} else
 			System.out.print( "nope" );
-		// tp = new TiledPlatform("plat", new Vector2(200.0f, 100.0f), null, 1,
-		// 2, world);
-		// tp.setMover(new TimelineMover());
-		// BOX_TO_PIXEL, PIXEL_TO_BOX
-		BodyDef groundBodyDef = new BodyDef( );
-		groundBodyDef.position.set( new Vector2( 0 * PIXEL_TO_BOX,
-				0 * PIXEL_TO_BOX ) );
-		Body groundBody = world.createBody( groundBodyDef );
-		PolygonShape groundBox = new PolygonShape( );
-		groundBox.setAsBox( Gdx.graphics.getWidth( ) * PIXEL_TO_BOX,
-				1f * PIXEL_TO_BOX );
-		groundBody.createFixture( groundBox, 0.0f );
-		groundBody.getFixtureList( ).get( 0 ).setFriction( 0.5f );
+		tp2 = new PlatformBuilder()
+			.setPosition( 0.0f, 0.0f )
+			.setDimensions( 100, 1 )
+			.setTexture( texture )
+			.buildTilePlatform( world );
+
 
 		// make sure you uncomment the next two lines debugRenderer = new
 		// SBox2DDebugRenderer(BOX_TO_PIXEL); for physics world
