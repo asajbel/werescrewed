@@ -36,10 +36,10 @@ public class RoomPlatform extends Platform {
 		PolygonShape ps = new PolygonShape( );
 		FixtureDef fd = new FixtureDef( );
 
-		BodyDef groundBodyDef = new BodyDef( );
-		groundBodyDef.type = BodyType.KinematicBody;
-		groundBodyDef.position.set( x, y );
-		body = world.createBody( groundBodyDef );
+		BodyDef bodyDef = new BodyDef( );
+		bodyDef.type = BodyType.KinematicBody;
+		bodyDef.position.set( x, y );
+		body = world.createBody( bodyDef );
 		float hx = width * tileConstant * GameScreen.PIXEL_TO_BOX;
 		float hy = height * tileConstant * GameScreen.PIXEL_TO_BOX;
 
@@ -63,6 +63,8 @@ public class RoomPlatform extends Platform {
 		ps.setAsBox( hx, hy, p4, 0 );
 		fd.shape = ps;
 		body.createFixture( fd );
+		
+		ps.dispose( );
 		
 	}
 

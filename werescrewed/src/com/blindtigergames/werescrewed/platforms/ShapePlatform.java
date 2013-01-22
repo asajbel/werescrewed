@@ -58,10 +58,10 @@ public class ShapePlatform extends Platform {
 	public void constructRhombus( Vector2 pos, float width, float height,
 			boolean flip, float scale ) {
 
-		BodyDef groundBodyDef = new BodyDef( );
-		groundBodyDef.type = BodyType.KinematicBody;
-		groundBodyDef.position.set( new Vector2( pos.x, pos.y ) );
-		body = world.createBody( groundBodyDef );
+		BodyDef bodyDef = new BodyDef( );
+		bodyDef.type = BodyType.KinematicBody;
+		bodyDef.position.set( new Vector2( pos.x, pos.y ) );
+		body = world.createBody( bodyDef );
 
 		float horizontal = width * tileConstant * 2 * GameScreen.PIXEL_TO_BOX
 				* scale;
@@ -92,15 +92,17 @@ public class ShapePlatform extends Platform {
 		FixtureDef platformFixtureDef = new FixtureDef( );
 		platformFixtureDef.shape = polygon;
 		body.createFixture( platformFixtureDef );
+		
+		polygon.dispose( );
 
 	}
 
 	public void constructCross( Vector2 pos, float innerWidth,
 			float innerHeight, float outerWidth, float outerHeight, float scale ) {
-		BodyDef groundBodyDef = new BodyDef( );
-		groundBodyDef.type = BodyType.KinematicBody;
-		groundBodyDef.position.set( new Vector2( pos.x, pos.y ) );
-		body = world.createBody( groundBodyDef );
+		BodyDef bodyDef = new BodyDef( );
+		bodyDef.type = BodyType.KinematicBody;
+		bodyDef.position.set( new Vector2( pos.x, pos.y ) );
+		body = world.createBody( bodyDef );
 
 		PolygonShape ps = new PolygonShape( );
 		FixtureDef fd = new FixtureDef( );
@@ -141,15 +143,17 @@ public class ShapePlatform extends Platform {
 		ps.setAsBox( oW, oH, p4, 0 );
 		fd.shape = ps;
 		body.createFixture( fd );
+		
+		ps.dispose( );
 
 	}
 
 	public void constructPlus( Vector2 pos, float width, float height,
 			float thickX, float thickY ) {
-		BodyDef groundBodyDef = new BodyDef( );
-		groundBodyDef.type = BodyType.KinematicBody;
-		groundBodyDef.position.set( new Vector2( pos.x, pos.y ) );
-		body = world.createBody( groundBodyDef );
+		BodyDef bodyDef = new BodyDef( );
+		bodyDef.type = BodyType.KinematicBody;
+		bodyDef.position.set( new Vector2( pos.x, pos.y ) );
+		body = world.createBody( bodyDef );
 
 		PolygonShape ps = new PolygonShape( );
 		FixtureDef fd = new FixtureDef( );
@@ -174,16 +178,18 @@ public class ShapePlatform extends Platform {
 				z, 0 );
 		fd.shape = ps;
 		body.createFixture( fd );
+		
+		ps.dispose( );
 
 	}
 
 	public void constructTrapezoid( Vector2 pos, float width, float height,
 			float scale ) {
 
-		BodyDef groundBodyDef = new BodyDef( );
-		groundBodyDef.type = BodyType.KinematicBody;
-		groundBodyDef.position.set( new Vector2( pos.x, pos.y ) );
-		body = world.createBody( groundBodyDef );
+		BodyDef bodyDef = new BodyDef( );
+		bodyDef.type = BodyType.KinematicBody;
+		bodyDef.position.set( new Vector2( pos.x, pos.y ) );
+		body = world.createBody( bodyDef );
 
 		float horizontal = width * tileConstant * 2 * GameScreen.PIXEL_TO_BOX
 				* scale;
@@ -213,6 +219,7 @@ public class ShapePlatform extends Platform {
 		platformFixtureDef.shape = polygon;
 		body.createFixture( platformFixtureDef );
 
+		polygon.dispose( );
 	}
 
 	public void update( ) {
