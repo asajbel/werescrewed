@@ -11,16 +11,13 @@ import com.badlogic.gdx.math.Vector2;
 public class Anchor {
 	public boolean special;
 	protected Vector2 position;
-	protected int weight;
 	protected Vector2 buffer;
 	
-	static protected final int DEFAULT_WEIGHT = 50;
-	static protected final Vector2 DEFAULT_BUFFER = new Vector2(256f, 256f);
+	static protected final Vector2 DEFAULT_BUFFER = new Vector2(128f, 128f);
 
-	public Anchor(boolean setSpecial, Vector2 setPosition, int setWeight, Vector2 setBuffer) {
+	public Anchor(boolean setSpecial, Vector2 setPosition, Vector2 setBuffer) {
 		this.special = setSpecial;
 		this.position = setPosition;
-		this.weight = setWeight;
 		this.buffer = setBuffer;
 	}
 	
@@ -32,10 +29,6 @@ public class Anchor {
 	
 	public void setPosition(Vector2 newPosition) {
 		this.position = newPosition;
-	}
-	
-	public void setWeight(int weight) {
-		this.weight = weight;
 	}
 	
 	public void setBuffer(Vector2 buffer) {

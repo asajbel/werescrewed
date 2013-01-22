@@ -19,6 +19,9 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
  * @author Edward Ramirez
  ******************************************************************************/
 public class Camera {
+	private static final boolean ANCHOR_TEST_MODE = false;
+//	private static final boolean ANCHOR_TEST_RENDER = true;
+	
 	public static final float BOX_TO_PIXEL = 256f;
 	public static final float PIXEL_TO_BOX = 1/BOX_TO_PIXEL;
 	public static final float DEGTORAD = 0.0174532925199432957f;
@@ -111,7 +114,12 @@ public class Camera {
 				
 		player1Anchor = -1;
 		player2Anchor = -1;
-		anchorList = AnchorList.getInstance();
+//		anchorList = AnchorList.getInstance();
+		anchorList = AnchorList.getInstance( camera );
+		anchorList.clear();
+		if (ANCHOR_TEST_MODE) {
+			createTestAnchors();
+		}
 		
 		// debug
 		debugInput = false;
@@ -187,16 +195,30 @@ public class Camera {
 		}
 		
 		if (debugRender) {
+			
+			// render the translation buffer
 			shapeRenderer.setProjectionMatrix(camera.combined);
 			shapeRenderer.begin(ShapeType.Rectangle);
 			shapeRenderer.identity();
 			shapeRenderer.rect(translateBuffer.x, translateBuffer.y, translateBuffer.width, translateBuffer.height);
 			shapeRenderer.end();
-			shapeRenderer.setProjectionMatrix(camera.combined);
+			shapeRenderer.begin(ShapeType.Line);
+			shapeRenderer.line(translateBuffer.x, translateBuffer.y,
+								translateBuffer.x + translateBuffer.width,
+								translateBuffer.y + translateBuffer.height);
+			shapeRenderer.line(translateBuffer.x, translateBuffer.y + translateBuffer.height,
+					translateBuffer.x + translateBuffer.width, translateBuffer.y);
+			shapeRenderer.end();
+			
+			// render the translation target buffer
 			shapeRenderer.begin(ShapeType.Circle);
 			shapeRenderer.identity();
 			shapeRenderer.circle(translateTarget.x, translateTarget.y, targetBuffer);
 			shapeRenderer.end();
+//			shapeRenderer.begin(ShapeType.Rectangle);
+//			shapeRenderer.identity();
+//			shapeRenderer.rect(translateBuffer.x, translateBuffer.y, translateBuffer.width, translateBuffer.height);
+//			shapeRenderer.end();
 		}
 		
 		camera.update();
@@ -205,7 +227,7 @@ public class Camera {
 			System.out.println("Zoom: " + camera.zoom);
 		}
 		
-		anchorList.updateVelocity();
+		anchorList.update(debugRender);
 		
 		/*float lerp = 0.1f;
 		Vector3 position = camera.position;
@@ -268,13 +290,6 @@ public class Camera {
     	return this.translateTarget;
     }
     
-    /**
-     * set the focus of camera to the weighted midpoint of all anchors
-     */
-    private Vector2 setFocusWeighted() {
-    	return this.translateTarget;
-    }
-    
     private void translate() {
 //    	camera.position.set(translateTarget3D);
     	translateVelocity = translateTarget.cpy();
@@ -284,5 +299,10 @@ public class Camera {
     	translateVelocity.nor();
     	translateVelocity.mul(translateSpeed);
     	camera.translate(translateVelocity);
+    }
+    
+    private void createTestAnchors() {
+//    	anchorList.addAnchor( false, new Vector2(0f, 0f) );
+    	anchorList.addAnchor( false, new Vector2(-128f, 128f) );
     }
 }
