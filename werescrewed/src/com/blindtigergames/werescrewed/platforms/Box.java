@@ -36,6 +36,8 @@ public class Box extends Platform{
     	fixtureDef.friction = 0.8f;
     	fixtureDef.restitution = 0f;
     	body.createFixture(fixtureDef);
+    	
+    	groundBox.dispose( );
     }
     
     public void startContact(){

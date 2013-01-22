@@ -24,6 +24,7 @@ import com.blindtigergames.werescrewed.entity.mover.TimelineMover;
 import com.blindtigergames.werescrewed.input.InputHandler;
 import com.blindtigergames.werescrewed.input.InputHandler.player_t;
 import com.blindtigergames.werescrewed.platforms.ComplexPlatform;
+import com.blindtigergames.werescrewed.platforms.PlatformBuilder;
 import com.blindtigergames.werescrewed.platforms.RoomPlatform;
 import com.blindtigergames.werescrewed.platforms.ShapePlatform;
 import com.blindtigergames.werescrewed.platforms.Shapes;
@@ -92,14 +93,24 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 		player = new Player( world, new Vector2( 1.0f, 1.0f ), name );
 
 		cam = new Camera( w, h, player );
-		tp = new TiledPlatform( "plat", new Vector2( 2.0f, 0.5f ), texture,
-				10, 1, world );
-		rp = new RoomPlatform( "room", new Vector2( -1.0f, 1.0f ), texture, 1,
-				10, world );
+		
+		tp = new PlatformBuilder()
+				.setPosition( 2.0f, 0.2f )
+				.setDimensions( 10, 1 )
+				.setTexture( texture )
+				.buildTilePlatform( world );
+		
+		
+		rp = new PlatformBuilder()
+				.setPosition( -1.0f, 0.4f )
+				.setDimensions( 1, 10 )
+				.setTexture( texture )
+				.buildRoomPlatform( world );
+		
 		cp = new ComplexPlatform( "bottle", new Vector2( -1.0f, 3.0f ), texture,
 				1, world, "bottle" );
 		sp = new ShapePlatform( "rhom", new Vector2( 1.0f, 1.0f ), texture,
-				world, Shapes.trapezoid, 2.0f, 1.0f, false );
+				world, Shapes.plus, 1.0f, 1.0f, false );
 
 		// testing screws
 		screwTex = new Texture( Gdx.files.internal( "data/screw.png" ) );
@@ -108,19 +119,15 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 		structScrew = new StructureScrew( "", tp.body.getPosition( ), screwTex,
 				25, tp, skeleton, world );
 
-		// tp = new TiledPlatform("plat", new Vector2(200.0f, 100.0f), null, 1,
-		// 2, world);
+
 		tp.setMover( new TimelineMover( ) );
-		// BOX_TO_PIXEL, PIXEL_TO_BOX
-		BodyDef groundBodyDef = new BodyDef( );
-		groundBodyDef.position.set( new Vector2( 0 * PIXEL_TO_BOX,
-				0 * PIXEL_TO_BOX ) );
-		Body groundBody = world.createBody( groundBodyDef );
-		PolygonShape groundBox = new PolygonShape( );
-		groundBox.setAsBox( Gdx.graphics.getWidth( ) * PIXEL_TO_BOX,
-				1f * PIXEL_TO_BOX );
-		groundBody.createFixture( groundBox, 0.0f );
-		groundBody.getFixtureList( ).get( 0 ).setFriction( 0.5f );
+		
+		tp2 = new PlatformBuilder()
+				.setPosition( 0.0f, 0.0f )
+				.setDimensions( 100, 1 )
+				.setTexture( texture )
+				.buildTilePlatform( world );
+		
 
 		// make sure you uncomment the next two lines debugRenderer = new
 		// SBox2DDebugRenderer(BOX_TO_PIXEL); for physics world

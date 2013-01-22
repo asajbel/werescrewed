@@ -3,7 +3,9 @@ package com.blindtigergames.werescrewed.screws;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.JointEdge;
 import com.blindtigergames.werescrewed.entity.Entity;
+import com.blindtigergames.werescrewed.screens.GameScreen;
 
 /**
  * @descrip: holds general methods for screws
@@ -26,19 +28,9 @@ public class Screw extends Entity {
 	}
 
 	public void screwLeft( ) {
-		body.setAngularVelocity( 15 );
-		depth--;
-		rotation += 10;
-		screwStep = depth + 5;
 	}
 
 	public void screwRight( ) {
-		if ( depth < maxDepth ) {
-			body.setAngularVelocity( -15 );
-			depth++;
-			rotation -= 10;
-			screwStep = depth + 5;
-		}
 	}
 
 	public int getRotation( ) {
@@ -49,21 +41,10 @@ public class Screw extends Entity {
 		return depth;
 	}
 
-	public void exampleCollide( ) {
-		System.out.println( "Hello from screw" );
+	public void exampleCollide( String str ) {
+		System.out.println( str );
 	}
 
-	public boolean collisionCheck( Vector2 pos ) {
-		float dx = pos.x - body.getPosition( ).x;
-		float dy = pos.y - body.getPosition( ).y;
-		float magnitude = dx*dx + dy*dy;
-		if( magnitude < radius*radius ) {
-			return true;
-		}
-		return false;
-	}
-	
-	protected float radius;
 	protected int rotation;
 	protected int depth;
 	protected int maxDepth;
