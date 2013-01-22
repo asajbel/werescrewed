@@ -19,6 +19,7 @@ import com.blindtigergames.werescrewed.camera.Camera;
 import com.blindtigergames.werescrewed.collisionManager.MyContactListener;
 import com.blindtigergames.werescrewed.debug.SBox2DDebugRenderer;
 import com.blindtigergames.werescrewed.entity.Entity;
+import com.blindtigergames.werescrewed.entity.EntityManager;
 import com.blindtigergames.werescrewed.entity.Player;
 import com.blindtigergames.werescrewed.platforms.Box;
 import com.blindtigergames.werescrewed.platforms.ComplexPlatform;
@@ -52,6 +53,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 	SBox2DDebugRenderer debugRenderer;
 	Body playerBody;
 	Entity playerEntity;
+	EntityManager entityManager;
 	Player player;
 	TiledPlatform tp, tp2;
 	RoomPlatform rp;
@@ -113,6 +115,9 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 			System.out.print( "worked" );
 		} else
 			System.out.print( "nope" );
+
+		entityManager = new EntityManager();
+		entityManager.addEntity( "box", box );
 		// tp = new TiledPlatform("plat", new Vector2(200.0f, 100.0f), null, 1,
 		// 2, world);
 		// tp.setMover(new TimelineMover());
@@ -154,13 +159,13 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		player.update( );
 
 		structScrew.update( );
-
+		entityManager.updateEntity( );
 		//
 		// tp.update();
 		rp.update( );
 		// cp.update();
 		// sp.update();
-		box.update( );
+		// box.update( );
 
 		batch.setProjectionMatrix( cam.combined( ) );
 		// batch.setProjectionMatrix(camera.combined);
