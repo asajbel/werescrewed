@@ -26,7 +26,6 @@ public class BossScrew extends Screw {
 		super( n, pos, tex, bod );
 		maxDepth = max;
 		depth = max;
-		radius = sprite.getWidth( ) * GameScreen.PIXEL_TO_BOX * 1.6f;
 
 		// add radar sensor to screw
 		CircleShape radarShape = new CircleShape( );

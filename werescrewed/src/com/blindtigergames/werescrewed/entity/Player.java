@@ -1,25 +1,15 @@
 package com.blindtigergames.werescrewed.entity;
 
-import java.util.List;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
-import com.badlogic.gdx.physics.box2d.CircleShape;
-import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.Fixture;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.physics.box2d.WorldManifold;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJoint;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
 import com.blindtigergames.werescrewed.input.InputHandler;
 import com.blindtigergames.werescrewed.input.InputHandler.player_t;
-import com.blindtigergames.werescrewed.screens.GameScreen;
 import com.blindtigergames.werescrewed.screws.Screw;
 
 /**
@@ -41,7 +31,7 @@ public class Player extends Entity {
 	private int prevKey;
 	private InputHandler inputHandler;
 	private PlayerState playerState;
-	
+
 	private Screw currentScrew;
 	private RevoluteJoint playerToScrew;
 	private boolean hitScrew;
@@ -72,13 +62,16 @@ public class Player extends Entity {
 	}
 
 	// CONSTRUCTORS
-	
+
 	/**
 	 * 
-	 * @param world in which the player exists
-	 * @param pos ition of the player in the world
+	 * @param world
+	 *            in which the player exists
+	 * @param pos
+	 *            ition of the player in the world
 	 * @param name
-	 * @param tex ture of the player sprite
+	 * @param tex
+	 *            ture of the player sprite
 	 */
 	public Player( World world, Vector2 pos, String name, Texture tex ) {
 		super( name, EntityDef.getDefinition( "player" ), world, pos, 0.0f,
@@ -95,11 +88,15 @@ public class Player extends Entity {
 
 	/**
 	 * 
-	 * @param world in which the player exists
-	 * @param posX of the player
-	 * @param posY of the player
+	 * @param world
+	 *            in which the player exists
+	 * @param posX
+	 *            of the player
+	 * @param posY
+	 *            of the player
 	 * @param name
-	 * @param tex ture of the player sprite
+	 * @param tex
+	 *            ture of the player sprite
 	 */
 	public Player( World world, float posX, float posY, String name, Texture tex ) {
 		this( world, new Vector2( posX, posY ), name, tex );
@@ -109,8 +106,10 @@ public class Player extends Entity {
 
 	/**
 	 * 
-	 * @param world in which the player exists
-	 * @param pos ition of the player in the world
+	 * @param world
+	 *            in which the player exists
+	 * @param pos
+	 *            ition of the player in the world
 	 * @param name
 	 */
 	public Player( World world, Vector2 pos, String name ) {
@@ -119,7 +118,7 @@ public class Player extends Entity {
 		// createPlayerBody(posX, posY);
 		// createPlayerBodyOLD(pos.x, pos.y);
 	}
-	
+
 	// METHODS
 
 	/**
@@ -129,9 +128,9 @@ public class Player extends Entity {
 		if ( playerState == PlayerState.Screwing ) {
 			world.destroyJoint( playerToScrew );
 			playerState = PlayerState.JumpingOffScrew;
-			jump( );
-		}
-		if ( body.getLinearVelocity( ).x < 2.0f ) {
+			body.applyLinearImpulse( new Vector2( 0.05f, 0.2f ),
+					body.getWorldCenter( ) );
+		} else if ( body.getLinearVelocity( ).x < 2.0f ) {
 			body.applyLinearImpulse( new Vector2( 0.01f, 0.0f ),
 					body.getWorldCenter( ) );
 		}
@@ -152,9 +151,9 @@ public class Player extends Entity {
 		if ( playerState == PlayerState.Screwing ) {
 			world.destroyJoint( playerToScrew );
 			playerState = PlayerState.JumpingOffScrew;
-			jump( );
-		}
-		if ( body.getLinearVelocity( ).x > -2.0f ) {
+			body.applyLinearImpulse( new Vector2( -0.05f, 0.2f ),
+					body.getWorldCenter( ) );
+		} else if ( body.getLinearVelocity( ).x > -2.0f ) {
 			body.applyLinearImpulse( new Vector2( -0.01f, 0.0f ),
 					body.getWorldCenter( ) );
 		}
@@ -189,6 +188,13 @@ public class Player extends Entity {
 	}
 
 	/**
+	 * Sets the current screw to null
+	 */
+	public void endHitScrew( ) {
+		hitScrew = false;
+	}
+
+	/**
 	 * Sets whether or not the player is grounded
 	 * 
 	 * @param grounded
@@ -203,12 +209,9 @@ public class Player extends Entity {
 	private void attachToScrew( ) {
 		if ( currentScrew.body.getJointList( ).size( ) > 0 ) {
 			for ( Fixture f : body.getFixtureList( ) ) {
-				f.setSensor( true );
+				f.getFilterData( ).maskBits = 0x0008;
 			}
-			body.setTransform(
-					currentScrew.getPosition( ),
-					( float ) Math.acos( body.getPosition( ).x
-							- currentScrew.getPosition( ).x ) );
+			body.setTransform( currentScrew.getPosition( ), 0.0f );
 			// connect the screw to the skeleton;
 			RevoluteJointDef revoluteJointDef = new RevoluteJointDef( );
 			revoluteJointDef.initialize( body, currentScrew.body,
@@ -225,7 +228,6 @@ public class Player extends Entity {
 	 */
 	private void stop( ) {
 		float velocity = body.getLinearVelocity( ).x;
-
 		if ( velocity != 0.0f ) {
 			if ( velocity < -0.1f )
 				body.applyLinearImpulse( new Vector2( 0.010f, 0.0f ),
@@ -272,11 +274,7 @@ public class Player extends Entity {
 
 		if ( inputHandler.screwPressed( player_t.ONE ) && hitScrew
 				&& playerState != PlayerState.Screwing ) {
-			if ( currentScrew.collisionCheck( body.getPosition( ) ) ) {
-				attachToScrew( );
-			} else {
-				hitScrew = false;
-			}
+			attachToScrew( );
 		}
 
 		if ( playerState == PlayerState.Screwing ) {
@@ -288,15 +286,15 @@ public class Player extends Entity {
 			if ( currentScrew.body.getJointList( ).size( ) == 1 ) {
 				jump( );
 				for ( Fixture f : body.getFixtureList( ) ) {
-					f.setSensor( false );
+					f.getFilterData( ).maskBits = 0x0008;
 				}
 			}
 		}
 
 		if ( playerState == PlayerState.JumpingOffScrew ) {
-			if ( Math.abs( body.getLinearVelocity( ).y ) < 0.05 ) {
+			if ( body.getLinearVelocity( ).y < 0 ) {
 				for ( Fixture f : body.getFixtureList( ) ) {
-					f.setSensor( false );
+					f.getFilterData( ).maskBits = 0x0001;
 				}
 			}
 		}
@@ -443,4 +441,4 @@ public class Player extends Entity {
 // player.getLinearVelocity()); playerBody.setTransform(pos.x, pos.y +
 // 0.01f, 0); playerBody.applyLinearImpulse(0, 30, pos.x, pos.y);
 // //System.out.println("jump, " + player.getLinearVelocity()); } }
-// 
+//

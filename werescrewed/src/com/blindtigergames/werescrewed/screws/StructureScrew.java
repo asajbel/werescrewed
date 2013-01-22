@@ -30,7 +30,6 @@ public class StructureScrew extends Screw {
 		maxDepth = max;
 		depth = max;
 		rotation = 0;
-		radius = sprite.getWidth( ) * GameScreen.PIXEL_TO_BOX * 1.6f;
 
 		// create the screw body
 		BodyDef screwBodyDef = new BodyDef( );
@@ -52,7 +51,7 @@ public class StructureScrew extends Screw {
 
 		// add radar sensor to screw
 		CircleShape radarShape = new CircleShape( );
-		radarShape.setRadius( sprite.getWidth( ) * 1.5f
+		radarShape.setRadius( sprite.getWidth( ) * 1.25f
 				* GameScreen.PIXEL_TO_BOX );
 		FixtureDef radarFixture = new FixtureDef( );
 		radarFixture.shape = radarShape;

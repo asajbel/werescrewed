@@ -49,21 +49,10 @@ public class Screw extends Entity {
 		return depth;
 	}
 
-	public void exampleCollide( ) {
-		System.out.println( "Hello from screw" );
-	}
-
-	public boolean collisionCheck( Vector2 pos ) {
-		float dx = pos.x - body.getPosition( ).x;
-		float dy = pos.y - body.getPosition( ).y;
-		float magnitude = dx*dx + dy*dy;
-		if( magnitude < radius*radius ) {
-			return true;
-		}
-		return false;
+	public void exampleCollide( String str ) {
+		System.out.println( str );
 	}
 	
-	protected float radius;
 	protected int rotation;
 	protected int depth;
 	protected int maxDepth;

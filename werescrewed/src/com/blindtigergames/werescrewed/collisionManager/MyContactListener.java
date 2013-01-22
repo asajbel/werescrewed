@@ -51,7 +51,7 @@ public class MyContactListener implements ContactListener {
                 }
                 if ( objectFix.getBody().getUserData() instanceof StructureScrew ) {
                     StructureScrew example = (StructureScrew) objectFix.getBody().getUserData();
-                    example.exampleCollide();
+                    example.exampleCollide( "begin collision with screw ");
                     Player asshole = (Player) playerFix.getBody().getUserData();
                     asshole.hitScrew( example );
                 }
@@ -98,6 +98,12 @@ public class MyContactListener implements ContactListener {
 					System.out.println( "not interested" );
 					contact.setEnabled( true );
 				}
+                if ( objectFix.getBody().getUserData() instanceof StructureScrew ) {
+                    StructureScrew example = (StructureScrew) objectFix.getBody().getUserData();
+                    example.exampleCollide( "end collision with screw ");
+                    Player asshole = (Player) playerFix.getBody().getUserData();
+                    asshole.endHitScrew( );
+                }
 			}
 		}
 

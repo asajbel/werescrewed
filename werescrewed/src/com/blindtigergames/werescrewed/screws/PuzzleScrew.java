@@ -25,7 +25,6 @@ public class PuzzleScrew extends Screw {
 		super( n, pos, tex, null );
 		maxDepth = max;
 		depth = max;
-		radius = sprite.getWidth( ) * GameScreen.PIXEL_TO_BOX * 1.6f;
 
 		// create the screw body
 		BodyDef screwBodyDef = new BodyDef( );
