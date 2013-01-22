@@ -1,5 +1,7 @@
 package com.blindtigergames.werescrewed.screens;
 
+import java.util.ArrayList;
+
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -12,8 +14,6 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.blindtigergames.werescrewed.camera.Camera;
 import com.blindtigergames.werescrewed.collisionManager.MyContactListener;
@@ -26,6 +26,8 @@ import com.blindtigergames.werescrewed.platforms.PlatformBuilder;
 import com.blindtigergames.werescrewed.platforms.RoomPlatform;
 import com.blindtigergames.werescrewed.platforms.Skeleton;
 import com.blindtigergames.werescrewed.platforms.TiledPlatform;
+import com.blindtigergames.werescrewed.screws.PuzzleScrew;
+import com.blindtigergames.werescrewed.screws.StrippedScrew;
 import com.blindtigergames.werescrewed.screws.StructureScrew;
 
 public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
@@ -63,7 +65,9 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 	Texture screwTex;
 	Texture background;
 	StructureScrew structScrew;
+	PuzzleScrew puzzleScrew;
 	Skeleton skeleton;
+	ArrayList<StrippedScrew> climbingScrews = new ArrayList<StrippedScrew>();
 
 	FPSLogger logger;
 
@@ -99,7 +103,24 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		skeleton = new Skeleton( "", Vector2.Zero, background, world );
 		structScrew = new StructureScrew( "", tp.body.getPosition( ), screwTex,
 				50, tp, skeleton, world );
+		puzzleScrew = new PuzzleScrew( "", new Vector2(1.0f, 0.2f), screwTex,
+				50, skeleton, world );
 
+		float x1 = 1.75f;
+		float x2 = 2.25f;
+		float y1 = 0.6f;
+		float dy = 0.4f;
+		for(int i=0; i < 10; i++ ){
+			if( i % 2 == 0) {
+				climbingScrews.add( new StrippedScrew("", 
+						new Vector2(x1, y1), screwTex, skeleton, world ) );
+			} else {
+				climbingScrews.add( new StrippedScrew("", 
+						new Vector2(x2, y1), screwTex, skeleton, world ) );				
+			}
+			y1 += dy;
+		}
+		
 		cam = new Camera( w, h, player );
 		// tp = new TiledPlatform( "plat", new Vector2(5.0f, 40.0f), texture, 1,
 		// 2, world );
@@ -148,6 +169,10 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		player.update( );
 
 		structScrew.update( );
+		puzzleScrew.update( );
+		for(StrippedScrew s: climbingScrews){
+			s.update( );
+		}
 
 		//
 	    tp.update();
@@ -160,6 +185,11 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		// batch.setProjectionMatrix(camera.combined);
 		batch.begin( );
 
+		for (StrippedScrew s: climbingScrews){
+			s.draw( batch );
+		}
+		
+		puzzleScrew.draw( batch );
 		structScrew.draw( batch );
 		// sprite.draw(batch);
 		// Drawing the player here
