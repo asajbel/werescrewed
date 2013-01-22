@@ -61,7 +61,7 @@ public class Player extends Entity {
 		// world = w;
 		// createPlayerBody(posX, posY);
 		// createPlayerBodyOLD(pos.x, pos.y);
-		body.setGravityScale( 0.4f );
+		body.setGravityScale( 0.25f );
 		body.setFixedRotation( true );
 		playerState = PlayerState.Standing;
 		inputHandler = new InputHandler( );
