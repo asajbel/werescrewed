@@ -73,7 +73,6 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 	private final Vector2 max = new Vector2( 1f, 0 );
 
 	public GameScreen( ) {
-		System.out.println( "GameScreen starting" );
 		float zoom = 1.0f;
 		float w = Gdx.graphics.getWidth( ) / zoom;
 		float h = Gdx.graphics.getHeight( ) / zoom;
@@ -102,7 +101,7 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 				world, Shapes.trapezoid, 2.0f, 1.0f, false );
 
 		// testing screws
-		screwTex = new Texture( Gdx.files.internal( "data/screw.png" ) );
+		screwTex = new Texture( Gdx.files.internal( "data/screw1.png" ) );
 		background = new Texture( Gdx.files.internal( "data/libgdx.png" ) );
 		skeleton = new Skeleton( "", Vector2.Zero, background, world );
 		structScrew = new StructureScrew( "", tp.body.getPosition( ), screwTex,
@@ -134,8 +133,8 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 
 	@Override
 	public void render( float delta ) {
-		Gdx.gl20.glClearColor( 0.0f, 0f, 0.0f, 1.0f );
-		Gdx.gl20.glClear( GL20.GL_COLOR_BUFFER_BIT );
+		Gdx.gl10.glClearColor( 0.0f, 0f, 0.0f, 1.0f );
+		Gdx.gl10.glClear( GL20.GL_COLOR_BUFFER_BIT );
 
 		inputHandler.update( );
 		cam.update( );

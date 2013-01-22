@@ -63,7 +63,7 @@ public class EntityDef {
 		protected void loadComplexBody(float density, float friction, float restitution, float scale, String bodyName ){
 			String filename = "data/bodies/" + bodyName + ".json";		
 			BodyEditorLoader loader = new BodyEditorLoader( Gdx.files.internal(filename));
-						
+			this.origin = loader.getOrigin( bodyName, scale );			
 			loader.attachFixture( this, bodyName, density, friction, restitution, scale );
 		}
 				

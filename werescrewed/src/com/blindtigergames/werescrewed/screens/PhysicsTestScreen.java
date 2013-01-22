@@ -71,7 +71,6 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 	private final Vector2 max = new Vector2( 1f, 0 );
 
 	public PhysicsTestScreen( ) {
-		System.out.println( "GameScreen starting" );
 		float zoom = 1.0f;
 		float w = Gdx.graphics.getWidth( ) / zoom;
 		float h = Gdx.graphics.getHeight( ) / zoom;
@@ -110,9 +109,9 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		// world, Shapes.trapezoid, 0.5f);
 		box = new Box( "box", new Vector2( 80.0f, 0.0f ), texture, world );
 		if ( box.body.getUserData( ) instanceof Box ) {
-			System.out.print( "worked" );
+			System.out.println( "worked" );
 		} else
-			System.out.print( "nope" );
+			System.out.println( "nope" );
 		// tp = new TiledPlatform("plat", new Vector2(200.0f, 100.0f), null, 1,
 		// 2, world);
 		// tp.setMover(new TimelineMover());
@@ -139,8 +138,8 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 
 	@Override
 	public void render( float delta ) {
-		Gdx.gl20.glClearColor( 0.0f, 0f, 0.0f, 1.0f );
-		Gdx.gl20.glClear( GL20.GL_COLOR_BUFFER_BIT );
+		Gdx.gl10.glClearColor( 0.0f, 0f, 0.0f, 1.0f );
+		Gdx.gl10.glClear( GL20.GL_COLOR_BUFFER_BIT );
 
 		cam.update( );
 

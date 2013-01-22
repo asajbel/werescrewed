@@ -37,8 +37,10 @@ public class Entity
 		name = n;
 		type = d;
 		world = w;
-		constructSprite();
 		constructBody(pos.x, pos.y, sca.x, sca.y);
+		constructSprite();
+		if (sprite != null)
+			Gdx.app.log( "Entity Construction", n + " origin:" + sprite.getOriginX( ) + "," + sprite.getOriginY( ) );
 	}
 	
 	public Entity(String n, Sprite spr, Body bod)
@@ -103,6 +105,7 @@ public class Entity
 			Vector2 bodyPos = body.getPosition();
 			Vector2 spritePos = bodyPos.mul(GameScreen.BOX_TO_PIXEL).add(offset);
 			sprite.setPosition(spritePos.x, spritePos.y);
+			sprite.setRotation( (float)(body.getAngle( ) * 180.0 / Math.PI) );
 			if(mover != null)
 				mover.move(body);
 		}
@@ -122,7 +125,12 @@ public class Entity
 	
 	protected void constructSprite(Texture tex){
 		sprite = new Sprite(tex);
-		sprite.setOrigin(tex.getWidth()/2, tex.getHeight()/2);
+		if (body != null){
+			Vector2 newOrigin = body.getLocalCenter( );
+			sprite.setOrigin(newOrigin.x, newOrigin.y);
+		} else {
+			sprite.setOrigin(tex.getWidth()/2, tex.getHeight()/2);
+		}
 	}
 	protected void constructBody( float x, float y, float width, float height ){
 		if (type != null){

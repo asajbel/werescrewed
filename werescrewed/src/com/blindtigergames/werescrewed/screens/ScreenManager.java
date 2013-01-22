@@ -1,6 +1,7 @@
 package com.blindtigergames.werescrewed.screens;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.IntMap;
 
 public final class ScreenManager {
@@ -33,6 +34,7 @@ public final class ScreenManager {
 			screens.put( screen.ordinal( ), screen.getScreenInstance( ) );
 		}
 		game.setScreen( screens.get( screen.ordinal( ) ) );
+		Gdx.app.log( "ScreenManager", screens.get( screen.ordinal( ) ).getClass( ).getSimpleName( )+" starting");
 	}
 
 	public void dispose( Screen screen ) {
