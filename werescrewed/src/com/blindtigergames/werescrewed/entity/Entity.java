@@ -95,16 +95,17 @@ public class Entity {
     }
     
 
-	public void update()
+	public void update(float deltaTime)
 	{
 		if (body != null && sprite != null){
 			Vector2 bodyPos = body.getPosition();
 			bodyPos = bodyPos.mul( GameScreen.BOX_TO_PIXEL );
 			sprite.setPosition( bodyPos.x-sprite.getWidth()/2, bodyPos.y-sprite.getHeight()/2 );
-			sprite.setOrigin(sprite.getWidth()/2, sprite.getHeight()/2);
+//			sprite.setOrigin(sprite.getWidth()/2, sprite.getHeight()/2);
 			sprite.setRotation( MathUtils.radiansToDegrees * body.getAngle( ) );
+			
 			if(mover != null)
-				mover.move(body);
+				mover.move(deltaTime, body);
 		}
 	}
 
@@ -115,7 +116,7 @@ public class Entity {
 	protected void constructSprite( ) {
 		if ( type != null && type.texture != null ) {
 			sprite = new Sprite( type.texture );
-			sprite.setOrigin( type.origin.x, type.origin.y );
+			//sprite.setOrigin( type.origin.x, type.origin.y );
 			sprite.setScale( GameScreen.PIXEL_TO_BOX * type.spriteScale.x,
 					GameScreen.PIXEL_TO_BOX * type.spriteScale.y );
 		}

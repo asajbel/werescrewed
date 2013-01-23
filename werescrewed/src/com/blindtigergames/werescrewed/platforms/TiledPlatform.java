@@ -33,6 +33,7 @@ public class TiledPlatform extends Platform {
 	protected float tileSize;
 	protected Vector<Sprite> tiles;
 	protected float posx, posy; 
+	protected Vector2 bodypos;
 
 	public TiledPlatform( String n, Vector2 pos, Texture tex, float width,
 			float height, boolean isOneSided, World world ) {
@@ -44,9 +45,11 @@ public class TiledPlatform extends Platform {
 		this.height = height * tileConstant;
 		constructTileBody( pos.x, pos.y, width, height );
 		tiles = new Vector<Sprite>();
+		Sprite temp;
 		for (int i = 0; i < width; i++ ){
-			
-			tiles.add( this.sprite );
+			temp = new Sprite(sprite);
+			tiles.add( temp );
+			tiles.get( i ).setOrigin( (i - tileWidth/2) * tileConstant * 2, tileConstant );
 		}
 		body.setUserData(this);
 		setOneSided( isOneSided );
@@ -95,12 +98,21 @@ public class TiledPlatform extends Platform {
 		if ( Gdx.input.isKeyPressed( Keys.B ) ) {
 			setOneSided(!getOneSided());
 			System.out.println(getOneSided());
-		sprite.setOrigin( body.getWorldCenter( ).x, body.getWorldCenter( ).y);
-		Iterator<Sprite> v = tiles.listIterator( ); 
-		for ( int i = -MathUtils.floor( tileWidth / 2 ); i < tileWidth / 2; i++) {
-			posx = body.getPosition( ).x * GameScreen.BOX_TO_PIXEL + i * tileSize * MathUtils.cos( body.getAngle() );
-			posy = body.getPosition( ).y * GameScreen.BOX_TO_PIXEL + tileSize * MathUtils.sin( body.getAngle() );
-			v.next( ).setPosition( posx, posy );
+		}
+//		sprite.setOrigin( body.getWorldCenter( ).x, body.getWorldCenter( ).y);
+//		Iterator<Sprite> v = tiles.listIterator( ); 
+//		for ( int i = -MathUtils.floor( tileWidth / 2 ); i < tileWidth / 2; i++) {
+//			posx = body.getPosition( ).x * GameScreen.BOX_TO_PIXEL + i * tileSize * MathUtils.cos( body.getAngle() );
+//			posy = body.getPosition( ).y * GameScreen.BOX_TO_PIXEL + tileSize * MathUtils.sin( body.getAngle() );
+//			v.next( ).setPosition( posx, posy );
+//		}
+		
+		for ( int i = 0; i < tileWidth; i++ ) {
+			bodypos = body.getPosition().mul( GameScreen.BOX_TO_PIXEL );
+//			Gdx.app.log( "TiledPlaterform: " + i, String.valueOf( bodypos.x ) );
+			tiles.get( i ).setPosition( bodypos.x - tileConstant * (i - tileWidth/2) * 2, bodypos.y - tileConstant );
+			tiles.get( i ).setRotation( MathUtils.radiansToDegrees * body.getAngle( ) );
+//			Gdx.app.log( "TiledPlaterform: " + i, String.valueOf( tiles.get( i ).getX( ) ) );
 		}
 	}
 	
@@ -111,12 +123,13 @@ public class TiledPlatform extends Platform {
 		while (v.hasNext( )) {
 			d = v.next( );
 			d.draw( batch );
-			Gdx.app.log( "TiledPlatform Draw", String.valueOf( d.getX( ) ));
+			//Gdx.app.log( "TiledPlatform Draw", String.valueOf( d.getX( ) ));
 		}
 		
 		for (int i = 0; i < tileWidth; i++) {
 			tiles.elementAt( i ).draw( batch );
-			Gdx.app.log( "TiledPlatform Draw", String.valueOf( tiles.elementAt( i ).getX( ) ));
+//			Gdx.app.log( "TiledPlatform Draw", String.valueOf( tiles.elementAt( i ).getX( ) ));
+//			Gdx.app.log( "TiledPlatform: " + String.valueOf( i ), String.valueOf( tiles.elementAt( i ).getOriginX( ) ) );
 		}
 		
 	}
