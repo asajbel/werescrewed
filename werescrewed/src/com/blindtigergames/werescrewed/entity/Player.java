@@ -251,8 +251,8 @@ public class Player extends Entity {
 	/**
 	 * Updates information about the player every step
 	 */
-	public void update( ) {
-		super.update( );
+	public void update( float deltaTime ) {
+		super.update( deltaTime );
 		inputHandler.update( );
 		sprite.setY( sprite.getY( ) + sprite.getHeight( ) / 8);
 		//sprite.setPosition( body.getPosition( ).x, body.getPosition( ).y);

@@ -28,13 +28,14 @@ import java.util.Vector;
 //Need to fix widht/height storage
 public class TiledPlatform extends Platform {
 	protected boolean rotate = false;
+	protected boolean oneSided;
 	protected float tileHeight, tileWidth;
 	protected float tileSize;
 	protected Vector<Sprite> tiles;
 	protected float posx, posy; 
 
 	public TiledPlatform( String n, Vector2 pos, Texture tex, float width,
-			float height, World world ) {
+			float height, boolean isOneSided, World world ) {
 		super( n, pos, tex, world );
 		this.tileHeight = height;
 		this.tileWidth = width;
@@ -48,6 +49,7 @@ public class TiledPlatform extends Platform {
 			tiles.add( this.sprite );
 		}
 		body.setUserData(this);
+		setOneSided( isOneSided );
 	}
 
 	private void constructTileBody( float x, float y, float width, float height ) {
@@ -71,6 +73,14 @@ public class TiledPlatform extends Platform {
 		polygon.dispose( );
 	}
 	
+	public void setOneSided( boolean value ){
+		oneSided = value;
+	}
+	
+	public boolean getOneSided(){
+		return oneSided;
+	}
+	
 	public float getActualHeight(){
 	    return height * 32;
 	}
@@ -79,8 +89,12 @@ public class TiledPlatform extends Platform {
 	    return width * 32;
 	}
 
-	public void update( ) {
-		super.update( );
+	@Override
+	public void update( float deltaTime ) {
+		super.update( deltaTime );
+		if ( Gdx.input.isKeyPressed( Keys.B ) ) {
+			setOneSided(!getOneSided());
+			System.out.println(getOneSided());
 		sprite.setOrigin( body.getWorldCenter( ).x, body.getWorldCenter( ).y);
 		Iterator<Sprite> v = tiles.listIterator( ); 
 		for ( int i = -MathUtils.floor( tileWidth / 2 ); i < tileWidth / 2; i++) {

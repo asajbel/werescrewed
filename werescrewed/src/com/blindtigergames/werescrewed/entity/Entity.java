@@ -56,7 +56,8 @@ public class Entity {
 	public Entity( String n, Vector2 pos, Texture tex, Body bod ) {
 		this( );
 		name = n;
-		constructSprite( tex );
+		if ( tex != null )
+			constructSprite( tex );
 		body = bod;
 		if ( bod != null ) {
 			world = bod.getWorld( );

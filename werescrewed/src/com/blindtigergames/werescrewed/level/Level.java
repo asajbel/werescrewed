@@ -70,12 +70,12 @@ public class Level{
 		
 	}
 	
-	public void update( float delta){
+	public void update( float deltaTime ){
 		camera.update( );
 		
-		player.update( );
-		tp.update( );
-		rp.update( );
+		player.update( deltaTime );
+		tp.update( deltaTime );
+		rp.update( deltaTime );
 	}
 	
 	public void draw ( SpriteBatch sb, SBox2DDebugRenderer dr){

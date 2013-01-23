@@ -46,10 +46,13 @@ public class Platform extends Entity {
 	public void setMover( IMover _mover ) {
 		this.mover = _mover;
 	}
-
-	public void update( ) {
+	
+	@Override
+	public void update( float deltaTime ) {
+		//TODO: is this necessary?
 		body.setActive( true );
-		super.update( );
+		
+		super.update( deltaTime );
 
 		if ( Gdx.input.isKeyPressed( Keys.T ) ) {
 			rotate( );
