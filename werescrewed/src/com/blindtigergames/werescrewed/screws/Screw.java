@@ -17,8 +17,9 @@ public class Screw extends Entity {
 		super( n, pos, tex, bod );
 	}
 
-	public void update( ) {
-		super.update( );
+	@Override
+	public void update( float deltaTime ) {
+		super.update( deltaTime );
 	}
 
 	public void remove( ) {

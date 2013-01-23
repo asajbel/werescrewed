@@ -55,7 +55,8 @@ public class Entity {
 	public Entity( String n, Vector2 pos, Texture tex, Body bod ) {
 		this( );
 		name = n;
-		constructSprite( tex );
+		if ( tex != null )
+			constructSprite( tex );
 		body = bod;
 		if ( bod != null ) {
 			world = bod.getWorld( );
@@ -90,15 +91,16 @@ public class Entity {
 			sprite.draw( batch );
 	}
 
-	public void update( ) {
+	
+	public void update( float deltaTime ) {
 		if ( body != null && sprite != null ) {
 			Vector2 bodyPos = body.getPosition( );
 			Vector2 spritePos = bodyPos.mul( GameScreen.BOX_TO_PIXEL ).add(
 					offset );
 			sprite.setPosition( spritePos.x, spritePos.y );
-			if ( mover != null )
-				mover.move( body );
 		}
+		if ( mover != null )
+			mover.move( deltaTime, body );
 	}
 
 	protected String generateName( ) {

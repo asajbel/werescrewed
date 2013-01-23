@@ -68,7 +68,8 @@ public class RoomPlatform extends Platform {
 		
 	}
 
-	public void update( ) {
-		super.update( );
+	public void update( float deltaTime ) {
+		super.update( deltaTime );
 	}
+
 }

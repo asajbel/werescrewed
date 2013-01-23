@@ -8,7 +8,7 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJoint;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
 import com.blindtigergames.werescrewed.entity.Entity;
-import com.blindtigergames.werescrewed.platforms.Skeleton;
+import com.blindtigergames.werescrewed.entity.Skeleton;
 
 /**
  * @descrip: blah blah
@@ -18,7 +18,6 @@ import com.blindtigergames.werescrewed.platforms.Skeleton;
  */
 
 public class BossScrew extends Screw {
-	public RevoluteJoint screwJoint;
 
 	public BossScrew( String n, Vector2 pos, Texture tex, int max, Body bod,
 			Entity platform, Skeleton skeleton ) {
@@ -57,8 +56,8 @@ public class BossScrew extends Screw {
 		screwJoint = ( RevoluteJoint ) world.createJoint( revoluteJointDef );
 
 		// connect the entities to the skeleton
-		skeleton.addBoneAndJoint( this, platformToScrew );
-		skeleton.addBoneAndJoint( platform, screwJoint );
+		//skeleton.addBoneAndJoint( this, platformToScrew );
+		//skeleton.addBoneAndJoint( platform, screwJoint );
 	}
 
 	public void screwLeft( ) {
@@ -82,8 +81,8 @@ public class BossScrew extends Screw {
 		}
 	}
 	
-	public void update( ) {
-		super.update( );
+	public void update( float deltaTime ) {
+		super.update( deltaTime );
 		sprite.setRotation( rotation );
 		if ( depth != screwStep ) {
 			screwStep--;
@@ -93,5 +92,6 @@ public class BossScrew extends Screw {
 		}
 	}
 
+	private RevoluteJoint screwJoint;
 	private RevoluteJoint platformToScrew;
 }
