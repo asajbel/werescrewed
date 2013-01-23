@@ -36,3 +36,4 @@ gwt-unitCache/
 WEB-INF/
 
 war/
+*.orig
