@@ -55,7 +55,7 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 	Body playerBody;
 	Entity playerEntity;
 	Player player;
-	TiledPlatform tp, tp2;
+	TiledPlatform tp, ground;
 	RoomPlatform rp;
 	ComplexPlatform cp;
 	ShapePlatform sp;
@@ -124,7 +124,7 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 
 		tp.setMover( new TimelineMover( ) );
 		
-		tp2 = new PlatformBuilder()
+		ground = new PlatformBuilder()
 				.setPosition( 0.0f, 0.0f )
 				.setDimensions( 100, 1 )
 				.setTexture( texture )
