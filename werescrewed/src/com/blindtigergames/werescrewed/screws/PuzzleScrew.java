@@ -50,7 +50,7 @@ public class PuzzleScrew extends Screw {
 
 		// add radar sensor to screw
 		CircleShape radarShape = new CircleShape( );
-		radarShape.setRadius( sprite.getWidth( ) * 2 
+		radarShape.setRadius( sprite.getWidth( ) * 1.25f 
 				* GameScreen.PIXEL_TO_BOX );
 		FixtureDef radarFixture = new FixtureDef( );
 		radarFixture.shape = radarShape;
@@ -93,6 +93,7 @@ public class PuzzleScrew extends Screw {
 	
 	public void update( ) {
 		super.update( );
+		sprite.setRotation( rotation );
 		if ( depth != screwStep ) {
 			screwStep--;
 		}

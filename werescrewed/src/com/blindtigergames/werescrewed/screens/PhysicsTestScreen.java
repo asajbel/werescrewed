@@ -110,7 +110,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		float x1 = 1.75f;
 		float x2 = 2.25f;
 		float y1 = 0.6f;
-		float dy = 0.4f;
+		float dy = 0.7f;
 		for(int i=0; i < 10; i++ ){
 			if( i % 2 == 0) {
 				climbingScrews.add( new StrippedScrew("", 
