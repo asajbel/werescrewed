@@ -24,10 +24,11 @@ import java.lang.Math;
 //Need to fix widht/height storage
 public class TiledPlatform extends Platform {
 	protected boolean rotate = false;
+	protected boolean oneSided;
 	protected float tileHeight, tileWidth;
 
 	public TiledPlatform( String n, Vector2 pos, Texture tex, float width,
-			float height, World world ) {
+			float height, boolean isOneSided, World world ) {
 		super( n, pos, tex, world );
 		this.tileHeight = height;
 		this.tileWidth = width;
@@ -35,6 +36,7 @@ public class TiledPlatform extends Platform {
 		this.height = height * tileConstant;
 		constructTileBody( pos.x, pos.y, width, height );
 		body.setUserData(this);
+		setOneSided( isOneSided );
 	}
 
 	private void constructTileBody( float x, float y, float width, float height ) {
@@ -55,6 +57,14 @@ public class TiledPlatform extends Platform {
 		polygon.dispose( );
 	}
 	
+	public void setOneSided( boolean value ){
+		oneSided = value;
+	}
+	
+	public boolean getOneSided(){
+		return oneSided;
+	}
+	
 	public float getActualHeight(){
 	    return height * 32;
 	}
@@ -63,8 +73,13 @@ public class TiledPlatform extends Platform {
 	    return width * 32;
 	}
 
-	public void update( ) {
-		super.update( );
+	@Override
+	public void update( float deltaTime ) {
+		super.update( deltaTime );
+		if ( Gdx.input.isKeyPressed( Keys.B ) ) {
+			setOneSided(!getOneSided());
+			System.out.println(getOneSided());
+		}
 	}
 	
 

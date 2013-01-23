@@ -28,7 +28,7 @@ import com.blindtigergames.werescrewed.platforms.PlatformBuilder;
 import com.blindtigergames.werescrewed.platforms.RoomPlatform;
 import com.blindtigergames.werescrewed.platforms.ShapePlatform;
 import com.blindtigergames.werescrewed.platforms.Shapes;
-import com.blindtigergames.werescrewed.platforms.Skeleton;
+import com.blindtigergames.werescrewed.entity.Skeleton;
 import com.blindtigergames.werescrewed.platforms.TiledPlatform;
 import com.blindtigergames.werescrewed.screws.StructureScrew;
 
@@ -98,6 +98,7 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 				.setPosition( 2.0f, 0.2f )
 				.setDimensions( 10, 1 )
 				.setTexture( texture )
+				.setResitituion( 0.0f )
 				.buildTilePlatform( world );
 		
 		
@@ -105,6 +106,7 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 				.setPosition( -1.0f, 0.4f )
 				.setDimensions( 1, 10 )
 				.setTexture( texture )
+				.setResitituion( 0.0f )
 				.buildRoomPlatform( world );
 		
 		cp = new ComplexPlatform( "bottle", new Vector2( -1.0f, 3.0f ), texture,
@@ -126,6 +128,7 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 				.setPosition( 0.0f, 0.0f )
 				.setDimensions( 100, 1 )
 				.setTexture( texture )
+				.setResitituion( 0.0f )
 				.buildTilePlatform( world );
 		
 
@@ -140,10 +143,12 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 	}
 
 	@Override
-	public void render( float delta ) {
+	public void render( float deltaTime ) {
 		Gdx.gl20.glClearColor( 0.0f, 0f, 0.0f, 1.0f );
 		Gdx.gl20.glClear( GL20.GL_COLOR_BUFFER_BIT );
 
+		//float deltaTime = Gdx.graphics.getDeltaTime( );
+		
 		inputHandler.update( );
 		cam.update( );
 
@@ -158,13 +163,13 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 		}
 
 
-		player.update( );
-		tp.update( );
-		rp.update( );
-		cp.update( );
-		sp.update( );
+		player.update( deltaTime );
+		tp.update( deltaTime );
+		rp.update( deltaTime);
+		cp.update( deltaTime );
+		sp.update( deltaTime );
 
-		structScrew.update( );
+		structScrew.update( deltaTime );
 
 		if ( inputHandler.unscrewPressed( player_t.ONE ) ) {
 			structScrew.screwLeft( );
@@ -220,3 +225,4 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 	}
 
 }
+

@@ -222,7 +222,8 @@ public class ShapePlatform extends Platform {
 		polygon.dispose( );
 	}
 
-	public void update( ) {
-		super.update( );
+	public void update(float deltaTime ) {
+		super.update( deltaTime );
 	}
+
 }
