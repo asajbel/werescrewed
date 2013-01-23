@@ -71,7 +71,7 @@ public class RevoluteJointBuilder {
                 .createJoint( revoluteJointDef );
         
         //Take this line out if you don't want skeleton to keep track of children
-        skeleton.addBoneAndJoint( bodyB, joint );
+        //skeleton.addBoneAndJoint( bodyB, joint );
         
         return joint;
     }

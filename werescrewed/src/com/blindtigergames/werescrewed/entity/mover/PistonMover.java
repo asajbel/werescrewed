@@ -59,7 +59,7 @@ public class PistonMover implements IMover {
                 .getUpperLimit();
 
         if ( atLowerLimit ) {
-            if ( time + delay >= restTime ) {
+            if ( time >= restTime + delay  ) {
                 if ( delay != 0.0 ) delay = 0.0f; //Only use delay on the very first round
                 joint.setMotorSpeed( -joint.getMotorSpeed() );
                 time = 0;

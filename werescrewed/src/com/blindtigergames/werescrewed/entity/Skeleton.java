@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+import com.badlogic.gdx.physics.box2d.joints.RevoluteJoint;
 import com.badlogic.gdx.physics.box2d.Joint;
 import com.badlogic.gdx.physics.box2d.World;
 import com.blindtigergames.werescrewed.joint.RevoluteJointBuilder;
@@ -54,8 +55,10 @@ public class Skeleton extends Entity {
     public void addPlatformRotatingCenter( Platform platform ) {
         // Default values of the builder will allow rotation with anchor at
         // center of platform
-        new RevoluteJointBuilder( world ).skeleton( this ).bodyB( platform )
+        RevoluteJoint joint = new RevoluteJointBuilder( world ).skeleton( this ).bodyB( platform )
                 .build();
+        
+        addBoneAndJoint( platform, joint );
     }
 
     /**
@@ -64,8 +67,9 @@ public class Skeleton extends Entity {
      * @param platform
      */
     public void addPlatformFixed( Platform platform ) {
-        new RevoluteJointBuilder( world ).skeleton( this ).bodyB( platform )
+        RevoluteJoint joint = new RevoluteJointBuilder( world ).skeleton( this ).bodyB( platform )
                 .limit( true ).lower( 0 ).upper( 0 ).build();
+        addBoneAndJoint( platform, joint );
     }
 
     public void addBoneAndJoint( Entity bone, Joint joint ) {

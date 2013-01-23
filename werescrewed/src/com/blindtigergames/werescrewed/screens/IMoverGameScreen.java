@@ -150,6 +150,7 @@ public class IMoverGameScreen implements com.badlogic.gdx.Screen {
         // skeleton.mover = new TimelineMover();
         platforms = new ArrayList<Body>();
 
+        
         PrismaticJointDef prismaticJointDef = JointFactory
                 .constructSlidingJointDef( skeleton.body, slidingPlatform.body,
                         slidingPlatform.body.getWorldCenter(), new Vector2( 1,
@@ -157,9 +158,9 @@ public class IMoverGameScreen implements com.badlogic.gdx.Screen {
         PrismaticJoint j = (PrismaticJoint) world
                 .createJoint( prismaticJointDef );
         skeleton.addBoneAndJoint( slidingPlatform, j );
-        // sp.setMover(new PrismaticMover(j));
         slidingPlatform.setMover( new SlidingMotorMover(
                 PuzzleType.PRISMATIC_SLIDER, j ) );
+        
         
         TiledPlatform skeletonTest1 = new TiledPlatform( "prismaticplat2", new Vector2(
                 -300.0f, -200.0f ), null, 10, 1, world );
@@ -185,72 +186,16 @@ public class IMoverGameScreen implements com.badlogic.gdx.Screen {
                                         .anchor( piston.body.getWorldCenter() )
                                         .axis( 0, 1 )
                                         .motor( true )
+                                        .limit( true )
                                         .upper( 1 )
-                                        .motorSpeed( 10 )
+                                        .motorSpeed( 1 )
                                         .build();
-            piston.setMover( new PistonMover( pistonJoint, 3f, i ) );
+            //Something is still not quite right with this, try replacing 3 with 0.
+            piston.setMover( new PistonMover( pistonJoint, 3f, i * 1.0f / 10 ) );
+            
+            skeleton.addBoneAndJoint( piston, pistonJoint );
+            
         }
-        
-        
-        /*
-        piston.body.setType( BodyType.DynamicBody );
-        PrismaticJointDef pistonJointDef = JointFactory
-                .constructSlidingJointDef( skeleton.body, piston.body,
-                        piston.body.getWorldCenter(), new Vector2( 0, 1 ), 1,
-                        2 );
-        // skeleton.body.setLinearVelocity(new Vector2(0.01f,0));
-        PrismaticJoint pistonJoint = (PrismaticJoint) world
-                .createJoint( pistonJointDef );
-        skeleton.addBoneAndJoint( piston, pistonJoint );*/
-        
-        
-        
-
-        /*
-         * Iterator<Joint> joints = world.getJoints(); for( int i = 0; i < 5;
-         * ++i ){ for ( int j = 0; j < 5; ++j ){ BodyDef bDef = new BodyDef();
-         * bDef.position.set(new Vector2( ( 250*i+200 )*PIXEL_TO_BOX,( 25*j+200
-         * )*PIXEL_TO_BOX ) ); bDef.type = BodyType.DynamicBody; Body b =
-         * world.createBody( bDef ); PolygonShape bBox = new PolygonShape();
-         * bBox.setAsBox( 100*PIXEL_TO_BOX, 5*PIXEL_TO_BOX ); b.createFixture(
-         * bBox,1.0f ); //platforms.add(b);
-=======
-        piston.body.setBullet( true );
-        piston.body.setType( BodyType.DynamicBody );
-        
-        PrismaticJointDef pistonJointDef = JointFactory
-                .constructSlidingJointDef( skeleton.body, piston.body,
-                        piston.body.getWorldCenter(), new Vector2( 0, 1 ), 4,
-                        10 );
-        
-        // skeleton.body.setLinearVelocity(new Vector2(0.01f,0));
-        PrismaticJoint pistonJoint = (PrismaticJoint) world
-                .createJoint( pistonJointDef );
-        skeleton.addBoneAndJoint( piston, pistonJoint );
-        piston.setMover( new PistonMover( pistonJoint, 3f ) );
-
-        Iterator<Joint> joints = world.getJoints();
-        /*
-         * for( int i = 0; i < 5; ++i ){ for ( int j = 0; j < 5; ++j ){ BodyDef
-         * bDef = new BodyDef(); bDef.position.set(new Vector2( ( 250*i+200
-         * )*PIXEL_TO_BOX,( 25*j+200 )*PIXEL_TO_BOX ) ); bDef.type =
-         * BodyType.DynamicBody; Body b = world.createBody( bDef ); PolygonShape
-         * bBox = new PolygonShape(); bBox.setAsBox( 100*PIXEL_TO_BOX,
-         * 5*PIXEL_TO_BOX ); b.createFixture( bBox,1.0f ); //platforms.add(b);
->>>>>>> master
-         * 
-         * 
-         * 
-         * RevoluteJointDef jointDef = new RevoluteJointDef();
-         * //jointDef.initialize(b, groundBody, b.getWorldCenter());
-         * jointDef.bodyA = b; jointDef.bodyB = skeleton.body;
-         * jointDef.collideConnected = false; jointDef.localAnchorA.set( new
-         * Vector2()); //attach joint to center to platform
-         * jointDef.localAnchorB.set( new
-         * Vector2((250*i+200)*PIXEL_TO_BOX,(25*j+200)*PIXEL_TO_BOX));//attach
-         * to center of platform platforms.add(b); skeleton.addBoneAndJoint( new
-         * Entity("b"+i, b), world.createJoint(jointDef) ); } }
-         */
 
     }
 

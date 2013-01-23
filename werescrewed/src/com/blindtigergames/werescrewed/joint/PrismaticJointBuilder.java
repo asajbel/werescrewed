@@ -75,7 +75,7 @@ public class PrismaticJointBuilder {
         PrismaticJoint joint = (PrismaticJoint) world
                 .createJoint( prismaticJointDef );
         
-        skeleton.addBoneAndJoint( bodyB, joint );
+        
         
         return joint;
     }
