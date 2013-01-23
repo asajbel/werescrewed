@@ -195,7 +195,7 @@ public class IMoverGameScreen implements com.badlogic.gdx.Screen {
                                         .motorSpeed( 1 )
                                         .build();
             //Something is still not quite right with this, try replacing 3 with 0.
-            piston.setMover( new PistonMover( pistonJoint, 3f, i * 1.0f / 10 ) );
+            piston.setMover( new PistonMover( pistonJoint, 0f, i * 1.0f / 10 ) );
             
             skeleton.addBoneAndJoint( piston, pistonJoint );
             

@@ -75,8 +75,6 @@ public class PrismaticJointBuilder {
         PrismaticJoint joint = (PrismaticJoint) world
                 .createJoint( prismaticJointDef );
         
-        
-        
         return joint;
     }
 
