@@ -254,7 +254,7 @@ public class Player extends Entity {
 	public void update( float deltaTime ) {
 		super.update( deltaTime );
 		inputHandler.update( );
-		sprite.setY( sprite.getY( ) + sprite.getHeight( ) / 8);
+		//sprite.setY( sprite.getY( ) + sprite.getHeight( ) / 8);
 		//sprite.setPosition( body.getPosition( ).x, body.getPosition( ).y);
 		//sprite.setOrigin( offset.x, offset.y );
 		// Vector2 pos = body.getPosition();

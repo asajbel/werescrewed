@@ -49,7 +49,7 @@ public class TiledPlatform extends Platform {
 		for (int i = 0; i < width; i++ ){
 			temp = new Sprite(sprite);
 			tiles.add( temp );
-			tiles.get( i ).setOrigin( (i - tileWidth/2) * tileConstant * 2, tileConstant );
+			tiles.get( i ).setOrigin( (i - tileWidth/2 + 1) * tileConstant * 2, tileConstant );
 		}
 		body.setUserData(this);
 		setOneSided( isOneSided );
@@ -110,7 +110,7 @@ public class TiledPlatform extends Platform {
 		for ( int i = 0; i < tileWidth; i++ ) {
 			bodypos = body.getPosition().mul( GameScreen.BOX_TO_PIXEL );
 //			Gdx.app.log( "TiledPlaterform: " + i, String.valueOf( bodypos.x ) );
-			tiles.get( i ).setPosition( bodypos.x - tileConstant * (i - tileWidth/2) * 2, bodypos.y - tileConstant );
+			tiles.get( i ).setPosition( bodypos.x - tileConstant * (i - tileWidth/2 + 1) * 2, bodypos.y - tileConstant );
 			tiles.get( i ).setRotation( MathUtils.radiansToDegrees * body.getAngle( ) );
 //			Gdx.app.log( "TiledPlaterform: " + i, String.valueOf( tiles.get( i ).getX( ) ) );
 		}

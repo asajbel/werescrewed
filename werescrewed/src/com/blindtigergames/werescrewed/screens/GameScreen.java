@@ -96,7 +96,7 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 		
 		tp = new PlatformBuilder()
 				.setPosition( 2.0f, 0.2f )
-				.setDimensions( 9, 1 )
+				.setDimensions( 10, 1 )
 				.setTexture( texture )
 				.setResitituion( 0.0f )
 				.buildTilePlatform( world );
@@ -109,7 +109,7 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 				.setResitituion( 0.0f )
 				.buildRoomPlatform( world );
 		
-		cp = new ComplexPlatform( "bottle", new Vector2( -1.0f, 3.0f ), texture,
+		cp = new ComplexPlatform( "bottle", new Vector2( -1.0f, 3.0f ), new Texture(Gdx.files.internal( "data/bodies/test01.png")),
 				1, world, "bottle" );
 		sp = new ShapePlatform( "rhom", new Vector2( 1.0f, 1.0f ), texture,
 				world, Shapes.plus, 1.0f, 1.0f, false );
@@ -186,6 +186,7 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 
 		// test drawing the texture by uncommenting the next line:
 		tp.draw( batch );
+		cp.draw( batch );
 		player.draw( batch );
 
 		structScrew.draw( batch );

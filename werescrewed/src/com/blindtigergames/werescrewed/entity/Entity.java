@@ -41,6 +41,19 @@ public class Entity {
 		constructBody( pos.x, pos.y, sca.x, sca.y );
 	}
 
+	public Entity( String n, EntityDef d, World w, Vector2 pos, float rot,
+			Vector2 sca, Texture tex ) {
+		this( );
+		name = n;
+		type = d;
+		world = w;
+		if ( tex != null )
+			constructSprite( tex );
+		else
+			constructSprite( );
+		constructBody( pos.x, pos.y, sca.x, sca.y );
+	}
+	
 	public Entity( String n, Sprite spr, Body bod ) {
 		this( );
 		name = n;
@@ -90,18 +103,18 @@ public class Entity {
     
     public void draw(SpriteBatch batch)
     {
-    	if (sprite != null)
+    	if (sprite != null) {
     		sprite.draw(batch);
+    	}
     }
     
 
 	public void update(float deltaTime)
 	{
 		if (body != null && sprite != null){
-			Vector2 bodyPos = body.getPosition();
-			bodyPos = bodyPos.mul( GameScreen.BOX_TO_PIXEL );
-			sprite.setPosition( bodyPos.x-sprite.getWidth()/2, bodyPos.y-sprite.getHeight()/2 );
-//			sprite.setOrigin(sprite.getWidth()/2, sprite.getHeight()/2);
+			Vector2 bodyPos = body.getPosition().mul( GameScreen.BOX_TO_PIXEL );
+			sprite.setPosition( bodyPos.x, bodyPos.y);
+			//sprite.setOrigin(sprite.getWidth()/2, sprite.getHeight()/2);
 			sprite.setRotation( MathUtils.radiansToDegrees * body.getAngle( ) );
 			
 			if(mover != null)
