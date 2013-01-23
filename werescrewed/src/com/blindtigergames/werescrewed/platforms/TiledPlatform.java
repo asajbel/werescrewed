@@ -28,7 +28,7 @@ public class TiledPlatform extends Platform {
 	protected float tileHeight, tileWidth;
 
 	public TiledPlatform( String n, Vector2 pos, Texture tex, float width,
-			float height, World world ) {
+			float height, boolean isOneSided, World world ) {
 		super( n, pos, tex, world );
 		this.tileHeight = height;
 		this.tileWidth = width;
@@ -36,7 +36,7 @@ public class TiledPlatform extends Platform {
 		this.height = height * tileConstant;
 		constructTileBody( pos.x, pos.y, width, height );
 		body.setUserData(this);
-		setOneSided( false );
+		setOneSided( isOneSided );
 	}
 
 	private void constructTileBody( float x, float y, float width, float height ) {
