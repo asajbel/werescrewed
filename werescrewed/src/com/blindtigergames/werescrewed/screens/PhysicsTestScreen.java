@@ -97,7 +97,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		texture = new Texture( Gdx.files.internal( "data/rletter.png" ) );
 		
 		tp = new PlatformBuilder()
-		.setPosition( 2.0f, 0.2f )
+		.setPosition( 2.0f, 0.5f )
 		.setDimensions( 10, 1 )
 		.setTexture( texture )
 		.setResitituion( 0.0f )
@@ -129,7 +129,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		// tp = new TiledPlatform( "plat", new Vector2(5.0f, 40.0f), texture, 1,
 		// 2, world );
 		rp = new PlatformBuilder()
-		.setPosition( -1.0f, 0.4f )
+		.setPosition( -1.0f, 1.01f )
 		.setDimensions( 1, 10 )
 		.setTexture( texture )
 		.setResitituion( 0.0f )

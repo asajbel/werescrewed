@@ -8,6 +8,7 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.Manifold;
 import com.blindtigergames.werescrewed.entity.Player;
 import com.blindtigergames.werescrewed.platforms.Box;
+import com.blindtigergames.werescrewed.platforms.RoomPlatform;
 import com.blindtigergames.werescrewed.platforms.TiledPlatform;
 import com.blindtigergames.werescrewed.screws.PuzzleScrew;
 import com.blindtigergames.werescrewed.screws.StrippedScrew;
@@ -102,21 +103,28 @@ public class MyContactListener implements ContactListener {
 				playerInvolved = true;
 			}
 			if ( playerInvolved ) {
+				// Everything in this if statement are collisions with player
 				if ( objectFix.getBody( ).getUserData( ) instanceof TiledPlatform ){
 					Player player = ( Player ) playerFix.getBody( ).getUserData( );
 					player.setGrounded(false);
-					//System.out.println( "not interested" );
-					contact.setEnabled( true );
+				} else if ( objectFix.getBody( ).getUserData( ) instanceof RoomPlatform ){
+					Player player = ( Player ) playerFix.getBody( ).getUserData( );
+					player.setGrounded(false);
+					RoomPlatform rp = (RoomPlatform) objectFix.getBody().getUserData();
+					rp.setOneSided( false );
+						
 				} else if ( objectFix.getBody().getUserData() instanceof StructureScrew ) {
                     StructureScrew example = (StructureScrew) objectFix.getBody().getUserData();
                     example.exampleCollide( "end collision with screw ");
                     Player asshole = (Player) playerFix.getBody().getUserData();
                     asshole.endHitScrew( );
+                    
                 } else if ( objectFix.getBody().getUserData() instanceof StrippedScrew ) {
                 	StrippedScrew example = (StrippedScrew) objectFix.getBody().getUserData();
                     example.exampleCollide( "end collision with screw ");
                     Player asshole = (Player) playerFix.getBody().getUserData();
                     asshole.endHitScrew( );
+                    
                 } else if ( objectFix.getBody().getUserData() instanceof PuzzleScrew ) {
                 	PuzzleScrew example = (PuzzleScrew) objectFix.getBody().getUserData();
                     example.exampleCollide( "end collision with screw ");
@@ -150,14 +158,23 @@ public class MyContactListener implements ContactListener {
                 playerInvolved = true;
             }
             if (playerInvolved) {
+            	Player player = (Player) playerFix.getBody().getUserData();
                 if(objectFix.getBody().getUserData() instanceof TiledPlatform){
-                    Player player = (Player) playerFix.getBody().getUserData();
                     TiledPlatform tilePlat = (TiledPlatform) objectFix.getBody().getUserData();
                     Vector2 platformPos = tilePlat.getPosition();
                     Vector2 playerPos = player.getPosition();
                     if (tilePlat.getOneSided()){
 	                    if(platformPos.y > playerPos.y){
-	                        //System.out.println("setting");
+	                        contact.setEnabled( false );
+	                    }
+                	}
+                }
+                if(objectFix.getBody().getUserData() instanceof RoomPlatform){
+                    RoomPlatform roomPlat = (RoomPlatform) objectFix.getBody().getUserData();
+                    Vector2 platformPos = roomPlat.getPosition();
+                    Vector2 playerPos = player.getPosition();
+                    if (roomPlat.getOneSided()){
+	                    if(platformPos.y > playerPos.y){
 	                        contact.setEnabled( false );
 	                    }
                 	}
