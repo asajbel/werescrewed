@@ -21,9 +21,18 @@ local.properties
 
 # Mac files
 .DS_STORE
+.DS_Store
 
 werescrewed-html/.gwt/.gwt-log
 
-.DS_Store
+werescrewed-html/war/WEB-INF/classes/com/blindtigergames/werescrewed/GwtDefinition.gwt.xml
+
+werescrewed-html/war/WEB-INF/classes/com/blindtigergames/werescrewed/GwtDefinition.gwt.xml
+
+gwt-unitCache/
 
 *.log
+
+WEB-INF/
+
+war/
