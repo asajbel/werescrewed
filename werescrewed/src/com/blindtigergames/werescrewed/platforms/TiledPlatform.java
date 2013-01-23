@@ -38,7 +38,7 @@ public class TiledPlatform extends Platform {
 		super( n, pos, tex, world );
 		this.tileHeight = height;
 		this.tileWidth = width;
-		this.tileSize = tileConstant * 2 * GameScreen.BOX_TO_PIXEL; 
+		this.tileSize = tileConstant * 2; 
 		this.width = width * tileConstant;
 		this.height = height * tileConstant;
 		constructTileBody( pos.x, pos.y, width, height );
@@ -83,18 +83,26 @@ public class TiledPlatform extends Platform {
 		super.update( );
 		sprite.setOrigin( body.getWorldCenter( ).x, body.getWorldCenter( ).y);
 		Iterator<Sprite> v = tiles.listIterator( ); 
-		for ( int i = -MathUtils.floor( width / 2 ); i < width / 2; i++) {
-			posx = (body.getPosition( ).x + i ) * tileSize * MathUtils.cos( body.getAngle() );
-			posy = body.getPosition( ).y * tileSize * MathUtils.sin( body.getAngle() );
+		for ( int i = -MathUtils.floor( tileWidth / 2 ); i < tileWidth / 2; i++) {
+			posx = body.getPosition( ).x * GameScreen.BOX_TO_PIXEL + i * tileSize * MathUtils.cos( body.getAngle() );
+			posy = body.getPosition( ).y * GameScreen.BOX_TO_PIXEL + tileSize * MathUtils.sin( body.getAngle() );
 			v.next( ).setPosition( posx, posy );
 		}
 	}
 	
 	@Override 
 	public void draw(SpriteBatch batch ) {
+		Sprite d;
 		Iterator<Sprite> v = tiles.listIterator( ); 
 		while (v.hasNext( )) {
-			v.next( ).draw( batch );
+			d = v.next( );
+			d.draw( batch );
+			Gdx.app.log( "TiledPlatform Draw", String.valueOf( d.getX( ) ));
+		}
+		
+		for (int i = 0; i < tileWidth; i++) {
+			tiles.elementAt( i ).draw( batch );
+			Gdx.app.log( "TiledPlatform Draw", String.valueOf( tiles.elementAt( i ).getX( ) ));
 		}
 		
 	}

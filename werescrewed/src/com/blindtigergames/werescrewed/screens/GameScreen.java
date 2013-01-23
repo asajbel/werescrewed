@@ -96,7 +96,7 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 		
 		tp = new PlatformBuilder()
 				.setPosition( 2.0f, 0.2f )
-				.setDimensions( 10, 1 )
+				.setDimensions( 9, 1 )
 				.setTexture( texture )
 				.buildTilePlatform( world );
 		
