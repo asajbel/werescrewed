@@ -95,9 +95,13 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		player = new Player( world, new Vector2( 1.0f, 1.0f ), name );
 
 		texture = new Texture( Gdx.files.internal( "data/rletter.png" ) );
-
-		tp = new TiledPlatform( "plat", new Vector2( 2.0f, 0.5f ), texture,
-				10, 1, world );
+		
+		tp = new PlatformBuilder()
+		.setPosition( 2.0f, 0.2f )
+		.setDimensions( 10, 1 )
+		.setTexture( texture )
+		.setResitituion( 0.0f )
+		.buildTilePlatform( world );
 
 		screwTex = new Texture( Gdx.files.internal( "data/screw.png" ) );
 		background = new Texture( Gdx.files.internal( "data/libgdx.png" ) );
@@ -124,8 +128,13 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		cam = new Camera( w, h, player );
 		// tp = new TiledPlatform( "plat", new Vector2(5.0f, 40.0f), texture, 1,
 		// 2, world );
-		rp = new RoomPlatform( "room", new Vector2( -1.0f, 1.0f ), texture, 1,
-				10, world );
+		rp = new PlatformBuilder()
+		.setPosition( -1.0f, 0.4f )
+		.setDimensions( 1, 10 )
+		.setTexture( texture )
+		.setResitituion( 0.0f )
+		.buildRoomPlatform( world );
+		
 		// cp = new ComplexPlatform( "bottle", new Vector2(0.0f, 3.0f), texture,
 		// 1, world, "bottle" );
 		// sp = new ShapePlatform( "trap", new Vector2( 1.0f, 1.0f), texture,
@@ -135,10 +144,12 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 			System.out.print( "worked" );
 		} else
 			System.out.print( "nope" );
+		
 		tp2 = new PlatformBuilder()
 			.setPosition( 0.0f, 0.0f )
 			.setDimensions( 100, 1 )
 			.setTexture( texture )
+			.setResitituion( 0.0f )
 			.buildTilePlatform( world );
 
 

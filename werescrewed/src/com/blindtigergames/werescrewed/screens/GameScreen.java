@@ -98,6 +98,7 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 				.setPosition( 2.0f, 0.2f )
 				.setDimensions( 10, 1 )
 				.setTexture( texture )
+				.setResitituion( 0.0f )
 				.buildTilePlatform( world );
 		
 		
@@ -105,6 +106,7 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 				.setPosition( -1.0f, 0.4f )
 				.setDimensions( 1, 10 )
 				.setTexture( texture )
+				.setResitituion( 0.0f )
 				.buildRoomPlatform( world );
 		
 		cp = new ComplexPlatform( "bottle", new Vector2( -1.0f, 3.0f ), texture,
@@ -126,6 +128,7 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 				.setPosition( 0.0f, 0.0f )
 				.setDimensions( 100, 1 )
 				.setTexture( texture )
+				.setResitituion( 0.0f )
 				.buildTilePlatform( world );
 		
 
