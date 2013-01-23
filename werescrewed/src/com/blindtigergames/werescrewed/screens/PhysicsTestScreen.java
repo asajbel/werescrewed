@@ -34,7 +34,7 @@ import com.blindtigergames.werescrewed.screws.StructureScrew;
 public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 
 	/***
-	 * Box2D to pixels conversion *************
+	 * Box2D to pixels conversion.
 	 * 
 	 * This number means 1 meter equals 256 pixels. That means the biggest
 	 * in-game object (10 meters) we can use is 2560 pixels wide, which is much
@@ -42,8 +42,8 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 	 */
 	public static final float BOX_TO_PIXEL = 256f;
 	public static final float PIXEL_TO_BOX = 1 / BOX_TO_PIXEL;
-	public static final float DEGTORAD = 0.0174532925199432957f;
-	public static final float RADTODEG = 57.295779513082320876f;
+	public static final float DEG_TO_RAD = 0.0174532925199432957f;
+	public static final float RAD_TO_DEG = 57.295779513082320876f;
 
 	OrthographicCamera camera;
 	Camera cam;
@@ -87,7 +87,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		// cam = new Camera(w, h);
 		batch = new SpriteBatch( );
 
-		world = new World( new Vector2( 0, -100 ), true );
+		world = new World( new Vector2( 0, -45 ), true );
 		MCL = new MyContactListener( );
 		world.setContactListener( MCL );
 		String name = "player";
