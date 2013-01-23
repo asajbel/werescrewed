@@ -5,8 +5,8 @@ so that everyone knows about them!
 
 Camera
 ------
-'M' - Hold to allow control of camera with
-	  arrow keys and 'Q' & 'E' (Disabled for now because it breaks the game some how)
+'B' - Hold to allow control of camera with
+	  arrow keys and 'Q' & 'E'
 	  
 'N' - Show buffer rectangle and circle around camera target
 
