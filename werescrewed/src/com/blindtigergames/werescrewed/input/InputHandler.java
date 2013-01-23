@@ -109,9 +109,20 @@ public class InputHandler implements InputProcessor {
 		switch ( player ){
 			default: return false;
 			case ONE:
-				return p1ScrewPressed;
+				return Gdx.input.isKeyPressed( Keys.X );
 			case TWO:
-				return p2ScrewPressed;
+				return Gdx.input.isKeyPressed( Keys.M );
+		}
+	}
+	
+	public boolean unscrewPressed ( player_t player ){
+		switch ( player ){
+			default: return false;
+			case ONE:
+				return Gdx.input.isKeyPressed ( Keys.Z );
+			case TWO:
+				return Gdx.input.isKeyPressed ( Keys.N );
+		
 		}
 	}
 	
@@ -119,11 +130,9 @@ public class InputHandler implements InputProcessor {
 		switch ( player ){
 			default: return false;
 			case ONE:
-				return ( ( p1LastKeyPressed == Keys.W && rightPressed ( player_t.ONE ) )
-						|| ( p1LastKeyPressed == Keys.D && jumpPressed ( player_t.ONE ) ) );
+				return rightPressed ( player_t.ONE );
 			case TWO:
-				return ( ( p2LastKeyPressed == Keys.I && rightPressed ( player_t.TWO ) )
-						|| ( p2LastKeyPressed == Keys.L && jumpPressed ( player_t.TWO ) ) );
+				return rightPressed ( player_t.TWO );
 		}
 	}
 	
@@ -131,11 +140,9 @@ public class InputHandler implements InputProcessor {
 		switch ( player ){
 			default: return false;
 			case ONE:
-				return ( ( p1LastKeyPressed == Keys.W && leftPressed ( player_t.ONE ) )
-						|| ( p1LastKeyPressed == Keys.A && jumpPressed ( player_t.ONE ) ) );
+				return leftPressed ( player_t.ONE );
 			case TWO:
-				return ( ( p2LastKeyPressed == Keys.I && leftPressed ( player_t.TWO ) )
-						|| ( p2LastKeyPressed == Keys.J && jumpPressed ( player_t.TWO ) ) );
+				return leftPressed ( player_t.TWO );
 		}
 	}
 	

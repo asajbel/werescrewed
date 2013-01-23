@@ -10,102 +10,116 @@ import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityDef;
 import com.blindtigergames.werescrewed.entity.mover.IMover;
 
-
 /**
- * @param name blah blah
+ * @param name
+ *            blah blah
  * 
  * @author Ranveer
- *
+ * 
  */
 
-public class Platform extends Entity{
-	
-	//List of Structural Screws
-	//List of joints
+public class Platform extends Entity {
+
+	// List of Structural Screws
+	// List of joints
 
 	IMover mover;
-	
+
 	protected World world;
-	protected int width, height;
+	protected float width, height;
 	protected boolean dynamicType = false;
 	protected boolean rotate = false;
+	// tileConstant is 16 for setasbox function which uses half width/height
+	// creates 32x32 objects
+	protected final int tileConstant = 16;
 
-	public Platform( String n, Vector2 pos, Texture tex, World world ){
-		super( n, pos, tex , null);
+	public Platform( String n, Vector2 pos, Texture tex, World world ) {
+		super( n, pos, tex, null );
 		this.world = world;
 	}
-	
 
-	public Platform(String n, EntityDef d, World w, Vector2 pos, float rot, Vector2 sca) {
-		super(n, d, w, pos, rot, sca);
+	public Platform( String n, EntityDef d, World w, Vector2 pos, float rot,
+			Vector2 sca ) {
+		super( n, d, w, pos, rot, sca );
 	}
 
-
+	public void setMover( IMover _mover ) {
+		this.mover = _mover;
+	}
 	
+	@Override
+	public void update( float deltaTime ) {
+		//TODO: is this necessary?
+		body.setActive( true );
+		
+		super.update( deltaTime );
 
-	public void update(float deltaTime )
-	{
-		body.setActive(true);
-		super.update(deltaTime);
-		
-		if( Gdx.input.isKeyPressed(Keys.T) ){
-			rotate();
-		}
-		
-		if( Gdx.input.isKeyPressed(Keys.Y) ){
-			body.setAngularVelocity(0);
-		}
-		if( Gdx.input.isKeyPressed(Keys.O) ){
-			changeType();
+		if ( Gdx.input.isKeyPressed( Keys.T ) ) {
+			rotate( );
 		}
 
-		if( Gdx.input.isKeyPressed(Keys.N) ){
-			//rotateBy90();
+		if ( Gdx.input.isKeyPressed( Keys.Y ) ) {
+			body.setAngularVelocity( 0 );
+		}
+		if ( Gdx.input.isKeyPressed( Keys.O ) ) {
+			changeType( );
+		}
+
+		if ( Gdx.input.isKeyPressed( Keys.N ) ) {
+			// rotateBy90();
 			rotate = !rotate;
-			System.out.println(rotate);
-			System.out.println(body.getAngle());
 		}
-		if( Gdx.input.isKeyPressed(Keys.L) ){
-			setHorizontal();
+		if ( Gdx.input.isKeyPressed( Keys.L ) ) {
+			setHorizontal( );
 		}
 	}
-	public void setDensity( float d ){
-		body.getFixtureList().get(0).setDensity(d);
+
+	public void setDensity( float d ) {
+		for(int i = 0; i < body.getFixtureList( ).size( ); ++i)
+			body.getFixtureList( ).get( i ).setDensity( d );
+			
 	}
-	public void setFriction( float f ){
-		body.getFixtureList().get(0).setFriction(f);
+
+	public void setFriction( float f ) {
+		for(int i = 0; i < body.getFixtureList( ).size( ); ++i)
+			body.getFixtureList( ).get( i ).setFriction( f );
 	}
-	public void setRestitution( float r ){
-		body.getFixtureList().get(0).setRestitution(r);
+
+	public void setRestitution( float r ) {
+		for(int i = 0; i < body.getFixtureList( ).size( ); ++i)
+			body.getFixtureList( ).get( i ).setRestitution( r );
 	}
-	
-	public void changeType(){
+
+	public void setGravScale( float g ){
+		body.setGravityScale( g );
+	}
+	public void changeType( ) {
 		dynamicType = !dynamicType;
-		if( dynamicType ){
+		if ( dynamicType ) {
 			body.setType( BodyType.DynamicBody );
-		}
-		else
+		} else
 			body.setType( BodyType.KinematicBody );
-		
-		body.setActive(false);
+
+		body.setActive( false );
 	}
-	
-	//This function sets the platform to 180* no matter what angle it currently is
-	public void setHorizontal(){
-		body.setTransform( body.getPosition(), (float) Math.toRadians(90) );
+
+	// This function sets the platform to 180* no matter what angle it currently
+	// is
+	public void setHorizontal( ) {
+		body.setTransform( body.getPosition( ), ( float ) Math.toRadians( 90 ) );
 	}
-	
-	//This function sets platform to 90*
-	public void setVertical(){
-		body.setTransform( body.getPosition(), (float) Math.toRadians(180) );
+
+	// This function sets platform to 90*
+	public void setVertical( ) {
+		body.setTransform( body.getPosition( ), ( float ) Math.toRadians( 180 ) );
 	}
-	
-	protected void rotate(){
-		body.setAngularVelocity(1f);
+
+	protected void rotate( ) {
+		body.setAngularVelocity( 1f );
 	}
-	
-	protected void rotateBy90(){
-		float bodyAngle = body.getAngle();
-		body.setTransform( body.getPosition(), bodyAngle + 90 );
+
+	protected void rotateBy90( ) {
+		float bodyAngle = body.getAngle( );
+		body.setTransform( body.getPosition( ), bodyAngle + 90 );
 	}
 }

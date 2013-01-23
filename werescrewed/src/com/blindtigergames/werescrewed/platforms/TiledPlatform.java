@@ -14,69 +14,73 @@ import com.blindtigergames.werescrewed.screens.GameScreen;
 import java.lang.Math;
 
 /**
- * @param name blah blah
+ * @param name
+ *            blah blah
  * 
  * @author Ranveer
- *
+ * 
  */
 
-public class TiledPlatform extends Platform{
-	protected final int tileConstant = 16;
+//Need to fix widht/height storage
+public class TiledPlatform extends Platform {
 	protected boolean rotate = false;
-	protected int tileHeight, tileWidth;
-	
-	public TiledPlatform( String n, Vector2 pos, Texture tex, int width, int height, World world ) {
+	protected boolean oneSided;
+	protected float tileHeight, tileWidth;
+
+	public TiledPlatform( String n, Vector2 pos, Texture tex, float width,
+			float height, boolean isOneSided, World world ) {
 		super( n, pos, tex, world );
 		this.tileHeight = height;
 		this.tileWidth = width;
 		this.width = width * tileConstant;
 		this.height = height * tileConstant;
 		constructTileBody( pos.x, pos.y, width, height );
+		body.setUserData(this);
+		setOneSided( isOneSided );
+	}
+
+	private void constructTileBody( float x, float y, float width, float height ) {
+
+		BodyDef bodyDef = new BodyDef( );
+		bodyDef.type = BodyType.KinematicBody;
+		bodyDef.position.set( new Vector2( x , y ) );
+		body = world.createBody( bodyDef );
+
+		PolygonShape polygon = new PolygonShape( );
+		polygon.setAsBox( ( width * tileConstant ) * GameScreen.PIXEL_TO_BOX,
+				( height * tileConstant ) * GameScreen.PIXEL_TO_BOX );
+
+		FixtureDef platformFixtureDef = new FixtureDef( );
+		platformFixtureDef.shape = polygon;
+		body.createFixture( platformFixtureDef );
+
+		polygon.dispose( );
 	}
 	
-	private void constructTileBody( float x, float y, int width, int height ){
-
-        BodyDef groundBodyDef =new BodyDef();  
-        groundBodyDef.type = BodyType.KinematicBody;
-        groundBodyDef.position.set(new Vector2(x * GameScreen.PIXEL_TO_BOX, 
-        		                               y * GameScreen.PIXEL_TO_BOX));  
-        body = world.createBody( groundBodyDef );  
-        
-        PolygonShape groundBox = new PolygonShape();  
-        if ( width == 0 ) width = 1;
-        if ( height == 0 ) height = 1;
-        groundBox.setAsBox((width * tileConstant) * GameScreen.PIXEL_TO_BOX, 
-        		(height * tileConstant) * GameScreen.PIXEL_TO_BOX);
-        
-        FixtureDef platformFixtureDef = new FixtureDef();
-		platformFixtureDef.shape = groundBox;
-		platformFixtureDef.density = 1.9f;
-		platformFixtureDef.friction = 0.5f;
-		platformFixtureDef.restitution = 0.0f;
-		body.setGravityScale(.1f);
-		body.createFixture(platformFixtureDef);
-
+	public void setOneSided( boolean value ){
+		oneSided = value;
 	}
 	
-	public void update(float deltaTime){
-		super.update(deltaTime);
-		/*
-		 * Doesn't work, I figure its more Imover stuff anyways
-		if(rotate)
-		{
-			System.out.println("rotating");
-			float nextAngle =  (body.getAngle() + body.getAngularVelocity() / 60.0f);
-			float totalRotation = 180.0f - nextAngle;
-			while (totalRotation < -180 * GameScreen.DEGTORAD) totalRotation += 360 * GameScreen.DEGTORAD;
-			while (totalRotation > 180 * GameScreen.DEGTORAD) totalRotation -= 360 * GameScreen.DEGTORAD;
-			float desiredAngularVelocity = totalRotation * 60f;
-			float change = 10 * GameScreen.DEGTORAD;
-			desiredAngularVelocity  = Math.min(change, Math.max(-change, desiredAngularVelocity));
-			float impulse = body.getInertia() * desiredAngularVelocity;
-			body.applyAngularImpulse(impulse);
+	public boolean getOneSided(){
+		return oneSided;
+	}
+	
+	public float getActualHeight(){
+	    return height * 32;
+	}
+	
+	public float getActualWidth(){
+	    return width * 32;
+	}
+
+	@Override
+	public void update( float deltaTime ) {
+		super.update( deltaTime );
+		if ( Gdx.input.isKeyPressed( Keys.B ) ) {
+			setOneSided(!getOneSided());
+			System.out.println(getOneSided());
 		}
-		*/
 	}
 	
-	
+
 }

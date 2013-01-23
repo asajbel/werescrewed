@@ -23,7 +23,7 @@ public class Box extends Platform{
     
     private void createBoxBody(float x, float y){
     	BodyDef bodyDef = new BodyDef();
-    	bodyDef.type = BodyType.DynamicBody;
+    	bodyDef.type = BodyType.StaticBody;
     	bodyDef.position.set(x * GameScreen.PIXEL_TO_BOX, y * GameScreen.PIXEL_TO_BOX);
     	body = world.createBody(bodyDef);
     	
@@ -34,16 +34,21 @@ public class Box extends Platform{
     	fixtureDef.shape = groundBox;
     	fixtureDef.density = .3f;
     	fixtureDef.friction = 0.8f;
-    	fixtureDef.restitution = 0f;
+    	fixtureDef.restitution = .8f;
     	body.createFixture(fixtureDef);
+    	
+    	groundBox.dispose( );
     }
     
     public void startContact(){
-    	body.applyLinearImpulse(new Vector2(0.000f, 1.0f), body.getWorldCenter());
     	colliding = true;
     }
     
     public void endContact(){
     	colliding = false;
+    }
+    
+    public void exampleCollide(){
+    	System.out.println("Oi, Im standing here - box");
     }
 }
