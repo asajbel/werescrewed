@@ -11,6 +11,16 @@ import com.badlogic.gdx.physics.box2d.joints.PrismaticJointDef;
  */
 public class JointFactory {
 
+    /**
+     * Use PrismaticJointBuilder instead of this
+     * @param skeletonBody
+     * @param bodyB
+     * @param bodyBAnchor
+     * @param axis
+     * @param upperTranslation
+     * @param motorSpeed
+     * @return
+     */
     public static PrismaticJointDef constructSlidingJointDef( Body skeletonBody,
             Body bodyB, Vector2 bodyBAnchor, Vector2 axis,
             float upperTranslation, float motorSpeed ) {
@@ -25,4 +35,5 @@ public class JointFactory {
         prismaticJointDef.motorSpeed = motorSpeed;
         return prismaticJointDef;
     }
+    
 }

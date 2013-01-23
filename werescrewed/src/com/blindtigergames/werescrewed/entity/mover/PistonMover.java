@@ -4,43 +4,54 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.joints.PrismaticJoint;
 
 /**
- * Applies an impulse to an object to give it a one time push Can be looped if
- * given a time
- * 
+ * Moves an entity on a prismatic joint using a motor FOREVER. Will not stop
+ * This mover assumes you have created a prismatic joint already
  * @author stew
  * 
  */
 public class PistonMover implements IMover {
 
-    // create a sliding joint
-
     protected PrismaticJoint joint;
-    boolean isExploding;
-    float motorSpeed;
-    float restTime, time;
-    boolean isPuzzlePiston;
+    private float motorSpeed;
+    private float restTime;
+    private float time;
+    private float delay;
 
-    public PistonMover( PrismaticJoint _joint, float _restTime ) {
+    /**
+     * Construct a PistonMover with rest & delay
+     * @param _joint
+     * @param _restTime
+     * @param _delay
+     */
+    public PistonMover( PrismaticJoint _joint, float _restTime, float _delay ){
         this.joint = _joint;
-        isExploding = false;
         motorSpeed = this.joint.getMotorSpeed();
         restTime = _restTime;
-        time = 0;
+        delay = _delay;
+        time = 0.0f;
     }
     
+    /**
+     * Use this if you want a rest but no delay
+     * @param _joint
+     * @param _restTime
+     */
+    public PistonMover( PrismaticJoint _joint, float _restTime ) {
+        this( _joint, _restTime, 0.0f );
+    }
+    
+    /**
+     * Use this constructor if you want the piston to not have any rest/delay
+     * @param _joint
+     */
     public PistonMover( PrismaticJoint _joint ) {
-        this.joint = _joint;
-        isExploding = false;
-        motorSpeed = this.joint.getMotorSpeed();
-        restTime = -1;
-        time = 0;
-        isPuzzlePiston = true;
+        this( _joint, -1.0f, 0.0f );
     }
 
+    //TODO: Make the piston movement look nicer
     @Override
     public void move( float deltaTime, Body body ) {
         time += deltaTime;
-        
         
         boolean atLowerLimit = joint.getJointTranslation() <= joint
                 .getLowerLimit();
@@ -48,13 +59,12 @@ public class PistonMover implements IMover {
                 .getUpperLimit();
 
         if ( atLowerLimit ) {
-            if ( time >= restTime ) {
-                isExploding = true;
+            if ( time + delay >= restTime ) {
+                if ( delay != 0.0 ) delay = 0.0f; //Only use delay on the very first round
                 joint.setMotorSpeed( -joint.getMotorSpeed() );
                 time = 0;
             }
         } else if ( atUpperLimit ) {
-            isExploding = false;
             joint.setMotorSpeed( -joint.getMotorSpeed() );
         }
     }

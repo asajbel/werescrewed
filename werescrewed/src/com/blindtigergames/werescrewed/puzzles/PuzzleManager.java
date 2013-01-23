@@ -27,8 +27,8 @@ public class PuzzleManager {
 		while ( puzzleEntities.containsKey( elementID )
 				&& puzzleMovers.containsKey( elementID ) ) {
 
-			puzzleMovers.get( elementID ).move(
-					puzzleEntities.get( elementID ).body );
+			//puzzleMovers.get( elementID ).move(
+			//		puzzleEntities.get( elementID ).body );
 			num++;
 			elementID = screwID + '_' + num;
 		}

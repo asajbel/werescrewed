@@ -2,14 +2,14 @@ package com.blindtigergames.werescrewed.joint;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.physics.box2d.joints.PrismaticJoint;
-import com.badlogic.gdx.physics.box2d.joints.PrismaticJointDef;
+import com.badlogic.gdx.physics.box2d.joints.RevoluteJoint;
+import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.Skeleton;
+import com.blindtigergames.werescrewed.util.Util;
 
-public class PrismaticJointBuilder {
+public class RevoluteJointBuilder {
 
     /**
      * Required parameters
@@ -18,30 +18,28 @@ public class PrismaticJointBuilder {
     Skeleton skeleton;
     Entity bodyB;
     Vector2 anchor;
-    Vector2 axis;
 
     // Default parameter values
     boolean enableLimit = false;
-    float lowerTranslation = 0.0f;
-    float upperTranslation = 1.0f;
+    float lowerAngle = 0.0f;
+    float upperAngle = 90 * Util.DEGTORAD;
     boolean enableMotor = false;
-
-    float maxMotorForce = 500;// high max motor force yields a
-                              // very strong motor
-    float motorSpeed = 1; // 1 is reletively slow
+    float maxMotorTorque = 500;// high max motor force yields a very strong motor
+    float motorSpeed = 1; // 1 is relatively slow
 
     /**
      * empty constructor is private to force passing in world when building this
      * joint
      */
-    private PrismaticJointBuilder() {
+    @SuppressWarnings("unused")
+    private RevoluteJointBuilder() {
         
     };
 
     /**
      * These are the required parameters for a prismatic joint
      */
-    public PrismaticJointBuilder( World _world ) {
+    public RevoluteJointBuilder( World _world ) {
         // TODO Auto-generated constructor stub
         this.world = _world;
     }
@@ -50,31 +48,29 @@ public class PrismaticJointBuilder {
      * Creates prismatic joint, adds it to world, and to the skeleton
      * @return
      */
-    public PrismaticJoint build() {
+    public RevoluteJoint build() {
         if ( bodyB == null || skeleton == null ) {
-            Gdx.app.error( "PrismaticJointBuilder",
+            Gdx.app.error( "RevoluteJointBuilder",
                     "You didn't initialize bodyB and/or skeleton, you doofus!" );
         }
         if ( anchor == null ) {
             anchor = bodyB.body.getWorldCenter();
         }
-        if ( axis == null ) {
-            axis = new Vector2( 1, 0 ); // default value if axis isn't specified
-        }
-        PrismaticJointDef prismaticJointDef = new PrismaticJointDef();
-        prismaticJointDef.initialize( skeleton.body, bodyB.body, anchor, axis );
-        prismaticJointDef.enableLimit = enableLimit;
-        prismaticJointDef.lowerTranslation = lowerTranslation;
-        prismaticJointDef.upperTranslation = upperTranslation;
-        prismaticJointDef.enableMotor = enableMotor;
-        prismaticJointDef.maxMotorForce = maxMotorForce;// high max motor force
+        RevoluteJointDef revoluteJointDef = new RevoluteJointDef();
+        revoluteJointDef.initialize( skeleton.body, bodyB.body, anchor );
+        revoluteJointDef.enableLimit = enableLimit;
+        revoluteJointDef.lowerAngle = lowerAngle;
+        revoluteJointDef.upperAngle = upperAngle;
+        revoluteJointDef.enableMotor = enableMotor;
+        revoluteJointDef.maxMotorTorque = maxMotorTorque;// high max motor force
                                                         // yields a
         // very strong motor
-        prismaticJointDef.motorSpeed = motorSpeed;
+        revoluteJointDef.motorSpeed = motorSpeed;
 
-        PrismaticJoint joint = (PrismaticJoint) world
-                .createJoint( prismaticJointDef );
+        RevoluteJoint joint = (RevoluteJoint) world
+                .createJoint( revoluteJointDef );
         
+        //Take this line out if you don't want skeleton to keep track of children
         skeleton.addBoneAndJoint( bodyB, joint );
         
         return joint;
@@ -86,7 +82,7 @@ public class PrismaticJointBuilder {
      * 
      * @param _skeleton
      */
-    public PrismaticJointBuilder skeleton( Skeleton _skeleton ) {
+    public RevoluteJointBuilder skeleton( Skeleton _skeleton ) {
         this.skeleton = _skeleton;
         return this;
     }
@@ -94,7 +90,7 @@ public class PrismaticJointBuilder {
     /**
      * bodyB is required to properly build this joint
      */
-    public PrismaticJointBuilder bodyB( Entity _bodyB ) {
+    public RevoluteJointBuilder bodyB( Entity _bodyB ) {
         this.bodyB = _bodyB;
         return this;
     }
@@ -104,7 +100,7 @@ public class PrismaticJointBuilder {
      * 
      * @param _anchor
      */
-    public PrismaticJointBuilder anchor( Vector2 _anchor ) {
+    public RevoluteJointBuilder anchor( Vector2 _anchor ) {
         this.anchor = _anchor;
         return this;
     }
@@ -112,7 +108,7 @@ public class PrismaticJointBuilder {
     /**
      * Optional, default is no limit
      */
-    public PrismaticJointBuilder limit( boolean hasLimit ) {
+    public RevoluteJointBuilder limit( boolean hasLimit ) {
         this.enableLimit = hasLimit;
         return this;
     }
@@ -122,8 +118,8 @@ public class PrismaticJointBuilder {
      * 
      * @param limit
      */
-    public PrismaticJointBuilder lower( float limit ) {
-        this.lowerTranslation = limit;
+    public RevoluteJointBuilder lower( float angle ) {
+        this.lowerAngle = angle;
         return this;
     }
 
@@ -132,8 +128,8 @@ public class PrismaticJointBuilder {
      * 
      * @param limit
      */
-    public PrismaticJointBuilder upper( float limit ) {
-        this.upperTranslation = limit;
+    public RevoluteJointBuilder upper( float angle ) {
+        this.upperAngle = angle;
         return this;
     }
 
@@ -142,29 +138,8 @@ public class PrismaticJointBuilder {
      * 
      * @param hasMotor
      */
-    public PrismaticJointBuilder motor( boolean hasMotor ) {
+    public RevoluteJointBuilder motor( boolean hasMotor ) {
         this.enableMotor = hasMotor;
-        return this;
-    }
-
-    /**
-     * Optional, default axis is (1,0)
-     * 
-     * @param _axis
-     */
-    public PrismaticJointBuilder axis( Vector2 _axis ) {
-        this.axis = _axis;
-        return this;
-    }
-
-    /**
-     * Optional, default axis is (1,0)
-     * 
-     * @param x
-     * @param y
-     */
-    public PrismaticJointBuilder axis( float x, float y ) {
-        this.axis = new Vector2( x, y );
         return this;
     }
 
@@ -173,12 +148,12 @@ public class PrismaticJointBuilder {
      * 
      * @param _maxMotorForce
      */
-    public PrismaticJointBuilder maxMotor( float _maxMotorForce ) {
-        this.maxMotorForce = _maxMotorForce;
+    public RevoluteJointBuilder maxTorque( float _torque ) {
+        this.maxMotorTorque = _torque;
         return this;
     }
 
-    public PrismaticJointBuilder motorSpeed( float _motorSpeed ) {
+    public RevoluteJointBuilder motorSpeed( float _motorSpeed ) {
         this.motorSpeed = _motorSpeed;
         return this;
     }

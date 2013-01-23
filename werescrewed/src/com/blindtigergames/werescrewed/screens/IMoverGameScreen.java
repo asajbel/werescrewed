@@ -24,6 +24,7 @@ import com.blindtigergames.werescrewed.camera.Camera;
 import com.blindtigergames.werescrewed.debug.SBox2DDebugRenderer;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.Player;
+import com.blindtigergames.werescrewed.entity.Skeleton;
 import com.blindtigergames.werescrewed.entity.mover.PistonMover;
 import com.blindtigergames.werescrewed.entity.mover.PuzzleType;
 import com.blindtigergames.werescrewed.entity.mover.SlidingMotorMover;
@@ -33,12 +34,23 @@ import com.blindtigergames.werescrewed.joint.JointFactory;
 import com.blindtigergames.werescrewed.joint.PrismaticJointBuilder;
 import com.blindtigergames.werescrewed.platforms.ShapePlatform;
 import com.blindtigergames.werescrewed.platforms.Shapes;
-import com.blindtigergames.werescrewed.platforms.Skeleton;
 import com.blindtigergames.werescrewed.platforms.TiledPlatform;
 import com.blindtigergames.werescrewed.screws.StructureScrew;
 
+/**
+ * Screen to test out moving platforms and skeletons
+ * 
+ * Debug Keys in use:
+ * z - move skeleton down
+ * x - move skeleton up
+ * c - rotate skeleton left
+ * v - rotate skeleton right
+ * 
+ * @author stew
+ *
+ */
 public class IMoverGameScreen implements com.badlogic.gdx.Screen {
-
+    
     /***
      * Box2D to pixels conversion *************
      * 
@@ -148,26 +160,37 @@ public class IMoverGameScreen implements com.badlogic.gdx.Screen {
         // sp.setMover(new PrismaticMover(j));
         slidingPlatform.setMover( new SlidingMotorMover(
                 PuzzleType.PRISMATIC_SLIDER, j ) );
+        
+        TiledPlatform skeletonTest1 = new TiledPlatform( "prismaticplat2", new Vector2(
+                -300.0f, -200.0f ), null, 10, 1, world );
+        skeletonTest1.body.setType( BodyType.DynamicBody );
+        skeleton.addPlatformFixed( skeletonTest1 );
+        
+        TiledPlatform skeletonTest2 = new TiledPlatform( "prismaticplat3", new Vector2(
+                300.0f, 300.0f ), null, 10, 1, world );
+        skeletonTest2.body.setType( BodyType.DynamicBody );
+        skeleton.addPlatformRotatingCenter( skeletonTest2 );
 
         /*
          * TODO: FIX PLATFORM DENSITY
          */
-        piston = new TiledPlatform( "piston", new Vector2( -500f, 150f ), null,
-                3, 5, world );
-
-        piston.body.setType( BodyType.DynamicBody );
         
-        //TODO: ability to add platform to skeleton and it joints it in place
-        PrismaticJoint pistonJoint = new PrismaticJointBuilder( world )
-                                    .skeleton( skeleton )
-                                    .bodyB( (Entity)piston )
-                                    .anchor( piston.body.getWorldCenter() )
-                                    .axis( 0, 1 )
-                                    .motor( true )
-                                    .upper( 1 )
-                                    .motorSpeed( 1 )
-                                    .build();
-        piston.setMover( new PistonMover( pistonJoint, 3f ) );
+        for ( int i = 0; i < 10; ++i ){
+            piston = new TiledPlatform( "piston"+i, new Vector2( -500f-i*40, 150f ), null,
+                    1, 3, world );
+            piston.body.setType( BodyType.DynamicBody );
+            PrismaticJoint pistonJoint = new PrismaticJointBuilder( world )
+                                        .skeleton( skeleton )
+                                        .bodyB( (Entity)piston )
+                                        .anchor( piston.body.getWorldCenter() )
+                                        .axis( 0, 1 )
+                                        .motor( true )
+                                        .upper( 1 )
+                                        .motorSpeed( 10 )
+                                        .build();
+            piston.setMover( new PistonMover( pistonJoint, 3f, i ) );
+        }
+        
         
         /*
         piston.body.setType( BodyType.DynamicBody );
