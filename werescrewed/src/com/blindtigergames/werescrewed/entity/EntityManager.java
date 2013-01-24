@@ -22,6 +22,20 @@ public class EntityManager extends Entity{
 	
 	//Updates Entities and Skeletons stored in the HashMap
 	public void updateEntity( float deltaTime ) {		
+		Iterator< Map.Entry< String,Entity > > it = entityList.entrySet( ).iterator( );
+		Map.Entry< String, Entity > entityToUpdate;
+		while ( it.hasNext( ) ) {
+			entityToUpdate = it.next( );
+			entityToUpdate.getValue( ).update( deltaTime );
+		}
+		
+		Iterator< Map.Entry< String, Skeleton> > jit = skeletonList.entrySet( ).iterator( );
+		Map.Entry< String, Skeleton > skeletonToUpdate;
+		while ( jit.hasNext( ) ) {
+			skeletonToUpdate = jit.next( );
+			skeletonToUpdate.getValue( ).update( deltaTime );
+		}
+		
 		Iterator < Map.Entry < String, Entity > > itAdd = entitiesToAdd.entrySet( ).iterator( );
 		Map.Entry < String, Entity > entityToAdd;
 		while ( itAdd.hasNext( ) ) {
@@ -43,8 +57,9 @@ public class EntityManager extends Entity{
 		while ( itRemove.hasNext( ) ) {
 			entryToRemove = itRemove.next( );
 			Entity entityToRemove = entryToRemove.getValue( );
-			entityToRemove.world.destroyBody ( entityToRemove.body );
 			entityList.remove( entryToRemove.getKey( ) );
+	//		entityToRemove.world.destroyBody ( entityToRemove.body );
+			System.out.println("DESTROYING BODY");
 		}
 		entitiesToRemove.clear( );
 		
@@ -53,24 +68,11 @@ public class EntityManager extends Entity{
 		while ( jitRemove.hasNext( ) ) {
 			entrySkelToRemove = jitRemove.next( );
 			Skeleton skeletonToRemove = entrySkelToRemove.getValue();
-			skeletonToRemove.world.destroyBody ( skeletonToRemove.body );
+	//		skeletonToRemove.world.destroyBody ( skeletonToRemove.body );
 			skeletonList.remove( entrySkelToRemove.getKey( ) );
 		}
 		skeletonsToRemove.clear( );
 		
-		Iterator< Map.Entry< String,Entity > > it = entityList.entrySet( ).iterator( );
-		Map.Entry< String, Entity > entityToUpdate;
-		while ( it.hasNext( ) ) {
-			entityToUpdate = it.next( );
-			entityToUpdate.getValue( ).update( deltaTime );
-		}
-		
-		Iterator< Map.Entry< String, Skeleton> > jit = skeletonList.entrySet( ).iterator( );
-		Map.Entry< String, Skeleton > skeletonToUpdate;
-		while ( jit.hasNext( ) ) {
-			skeletonToUpdate = jit.next( );
-			skeletonToUpdate.getValue( ).update( deltaTime );
-		}
 	}
 	
 	//Adds an Entity to the HashMap
@@ -85,6 +87,7 @@ public class EntityManager extends Entity{
 	
 	//Removes an Entity from the HashMap
 	public void removeEntity ( String name, Entity type ) {
+		System.out.println ("ADDING TO REMOVE LIST");
 		entitiesToRemove.put( name,  type );
 	//	entityList.remove( name );
 	}

@@ -184,7 +184,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 			System.out.print( "worked" );
 		} else
 			System.out.print( "nope" );
-
+		
 		
 		ground = new PlatformBuilder( ).setPosition( 0.0f, 0.0f )
 				.setDimensions( 100, 1 ).setTexture( texture )
