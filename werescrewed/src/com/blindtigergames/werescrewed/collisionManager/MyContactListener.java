@@ -47,10 +47,10 @@ public class MyContactListener implements ContactListener {
 				objectFix = x1;
 				playerInvolved = true;
 			}
-			if ( playerFix != null
+			/*if ( playerFix != null
 					&& !( playerFix.getShape( ) instanceof CircleShape ) ) {
 				playerInvolved = false;
-			}
+			}*/
 			if ( playerInvolved ) {
 				Player player = ( Player ) playerFix.getBody( ).getUserData( );
 				if ( objectFix.getBody( ).getUserData( ) instanceof Box ) {
@@ -73,13 +73,16 @@ public class MyContactListener implements ContactListener {
 					example.exampleCollide( "begin collision with screw " );
 					player.hitScrew( example );
 				} else if ( objectFix.getBody( ).getUserData( ) instanceof TiledPlatform ) {
+					
 					TiledPlatform collider = ( TiledPlatform ) objectFix
 							.getBody( ).getUserData( );
 					Vector2 platformPos = collider.getPosition( );
 					Vector2 playerPos = player.getPosition( );
 					if ( platformPos.y < playerPos.y ) {
-						player.setGrounded( true );
-						System.out.println( "hey there good looking" );
+						if( playerFix.getShape( ) instanceof CircleShape ) { 
+							player.setGrounded( true );
+						}
+						//System.out.println( "hey there good looking" );
 					}
 				}
 			}
@@ -124,7 +127,7 @@ public class MyContactListener implements ContactListener {
 					Vector2 playerPos = player.getPosition( );
 					if ( platformPos.y < playerPos.y ) {
 						player.setGrounded( false );
-						System.out.println( "not interested" );
+						//System.out.println( "not interested" );
 						contact.setEnabled( true );
 					}
 				} else if ( objectFix.getBody( ).getUserData( ) instanceof RoomPlatform ) {
