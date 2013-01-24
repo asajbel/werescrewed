@@ -5,6 +5,13 @@ import java.util.Map;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.mover.IMover;
 
+/**
+ * @descrip: blah blah
+ * 
+ * @author Dennis
+ * 
+ */
+
 public class PuzzleManager {
 
 	public void addEntity( String screwID, Entity puzzlePiece ) {

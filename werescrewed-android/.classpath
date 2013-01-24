@@ -10,6 +10,6 @@
 	<classpathentry exported="true" kind="lib" path="/werescrewed/libs/tween-engine-api.jar" sourcepath="/werescrewed/libs/tween-engine-api-sources.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="src" path="gen"/>
-	<classpathentry kind="lib" path="/Users/Anders/Documents/werescrewed/werescrewed-android/libs/gdx-controllers-android.jar"/>
+	<classpathentry kind="lib" path="libs/gdx-controllers-android.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>
