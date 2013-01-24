@@ -46,7 +46,7 @@ public class StructureScrew extends Screw {
 		body.createFixture( screwFixture );
 		screwShape.dispose( );
 		offset.x = (float)(-sprite.getWidth( )/2.0f);
-		offset.y = (float)(-sprite.getWidth( )/2.0f);		
+		offset.y = (float)(-sprite.getHeight( )/2.0f);		
 		body.setUserData( this );
 
 		// add radar sensor to screw
@@ -102,14 +102,14 @@ public class StructureScrew extends Screw {
 	@Override
 	public void update( float deltaTime ) {
 		super.update( deltaTime );
-		sprite.setPosition(
-				sprite.getX( )
-						+ ( .25f * ( float ) ( ( maxDepth - depth ) * ( Math
-								.cos( body.getAngle( ) ) ) ) ),
-				sprite.getY( )
-						+ ( .25f * ( float ) ( ( maxDepth - depth ) * ( Math
-								.sin( body.getAngle( ) ) ) ) ) );
-		sprite.setRotation( rotation );
+//		sprite.setPosition(
+//				sprite.getX( )
+//						+ ( .25f * ( float ) ( ( maxDepth - depth ) * ( Math
+//								.cos( body.getAngle( ) ) ) ) ),
+//				sprite.getY( )
+//						+ ( .25f * ( float ) ( ( maxDepth - depth ) * ( Math
+//								.sin( body.getAngle( ) ) ) ) ) );
+//		sprite.setRotation( rotation );
 		if ( depth != screwStep ) {
 			screwStep--;
 		}

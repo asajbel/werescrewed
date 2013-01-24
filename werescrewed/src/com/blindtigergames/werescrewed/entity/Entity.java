@@ -113,7 +113,7 @@ public class Entity {
 	{
 		if (body != null && sprite != null){
 			Vector2 bodyPos = body.getPosition().mul( GameScreen.BOX_TO_PIXEL );
-			sprite.setPosition( bodyPos.x, bodyPos.y);
+			sprite.setPosition( bodyPos.x + offset.x, bodyPos.y + offset.y);
 			//sprite.setOrigin(sprite.getWidth()/2, sprite.getHeight()/2);
 			sprite.setRotation( MathUtils.radiansToDegrees * body.getAngle( ) );
 			
@@ -129,15 +129,15 @@ public class Entity {
 	protected void constructSprite( ) {
 		if ( type != null && type.texture != null ) {
 			sprite = new Sprite( type.texture );
-			//sprite.setOrigin( type.origin.x, type.origin.y );
-			sprite.setScale( GameScreen.PIXEL_TO_BOX * type.spriteScale.x,
-					GameScreen.PIXEL_TO_BOX * type.spriteScale.y );
+			sprite.setOrigin( type.origin.x, type.origin.y );
+			sprite.setScale( type.spriteScale.x,
+					type.spriteScale.y );
 		}
 	}
 
 	protected void constructSprite( Texture tex ) {
 		sprite = new Sprite( tex );
-		sprite.setOrigin( tex.getWidth( ) / 2, tex.getHeight( ) / 2 );
+		sprite.setOrigin( sprite.getWidth( ) / 2, sprite.getHeight( ) / 2 );
 	}
 
 	protected void constructBody( float x, float y, float width, float height ) {

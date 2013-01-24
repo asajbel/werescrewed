@@ -110,7 +110,7 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 				.buildRoomPlatform( world );
 		
 		cp = new ComplexPlatform( "bottle", new Vector2( -1.0f, 3.0f ), new Texture(Gdx.files.internal( "data/bodies/test01.png")),
-				1, world, "bottle" );
+				1, world, "complexTest" );
 		sp = new ShapePlatform( "rhom", new Vector2( 1.0f, 1.0f ), texture,
 				world, Shapes.plus, 1.0f, 1.0f, false );
 

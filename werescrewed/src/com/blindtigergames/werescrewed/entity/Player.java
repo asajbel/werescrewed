@@ -86,9 +86,9 @@ public class Player extends Entity {
 		// createPlayerBodyOLD(pos.x, pos.y);
 		body.setGravityScale( 0.25f );
 		body.setFixedRotation( true );
-		sprite.setScale( 100f * GameScreen.PIXEL_TO_BOX );
-		offset.x = -15f;
-		offset.y = -7.5f;
+		//sprite.setScale( 100f * GameScreen.PIXEL_TO_BOX );
+		//offset.x = -15f;
+		//offset.y = -7.5f;
 		body.setUserData( this );
 		playerState = PlayerState.Standing;
 		inputHandler = new InputHandler( );
@@ -288,7 +288,7 @@ public class Player extends Entity {
 		}
 
 		if ( playerState == PlayerState.Screwing ) {
-			sprite.setPosition( currentScrew.sprite.getX( ), currentScrew.sprite.getY( ) );
+//			sprite.setPosition( currentScrew.sprite.getX( ), currentScrew.sprite.getY( ) );
 			if ( inputHandler.unscrewPressed( player_t.ONE ) ) {
 				currentScrew.screwLeft( );
 			} else if ( inputHandler.screwPressed( player_t.ONE ) ) {
