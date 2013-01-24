@@ -13,17 +13,20 @@ import com.badlogic.gdx.physics.box2d.World;
 
 public class PlatformBuilder {
 	float width = 1.0f, height = 1.0f;
-	float outerWidth, outerHeight;
-	float thickX, thickY;
+	float outerWidth = 1.0f, outerHeight = 1.0f;
+	float thickX = 1.0f, thickY = 1.0f;
 	float scale = 1.0f;
 	float density = 1.0f, friction = 0.5f, restitution = 0.1f,
 			gravScale = 0.1f;
 	float positionX = 0.0f, positionY = 0.0f;
 	boolean flipHorizonal = false, flipVertical = false, isOneSided = false;
 	Shapes shape = null;
-	Texture texture;
+	Texture texture = null;
+	World world = null;
+	String name = "No name";
 
-	public PlatformBuilder( ) {
+	public PlatformBuilder( World world ) {
+		this.world = world;
 	}
 
 	public PlatformBuilder setShape( Shapes shape ) {
@@ -48,6 +51,11 @@ public class PlatformBuilder {
 		return this;
 	}
 
+	public PlatformBuilder setName( String name ){
+		this.name = name;
+		return this;
+	}
+	
 	public PlatformBuilder setPosition( float posX, float posY ) {
 		this.positionX = posX;
 		this.positionY = posY;
@@ -114,7 +122,7 @@ public class PlatformBuilder {
 		return this;
 	}
 
-	public RoomPlatform buildRoomPlatform( World world ) {
+	public RoomPlatform buildRoomPlatform( ) {
 		RoomPlatform rp = new RoomPlatform( "room", new Vector2( positionX,
 				positionY ), this.texture, this.width, this.height, world );
 
@@ -125,7 +133,7 @@ public class PlatformBuilder {
 		return rp;
 	}
 
-	public TiledPlatform buildTilePlatform( World world ) {
+	public TiledPlatform buildTilePlatform( ) {
 		TiledPlatform tp = new TiledPlatform( "tile", new Vector2( positionX,
 				positionY ), this.texture, this.width, this.height, this.isOneSided, world );
 
@@ -136,7 +144,7 @@ public class PlatformBuilder {
 		return tp;
 	}
 
-	public ShapePlatform buildShapePlatform( World world ) {
+	public ShapePlatform buildShapePlatform( ) {
 		ShapePlatform sp = new ShapePlatform( "shape", new Vector2( positionX,
 				positionY ), this.texture, world, this.shape, this.width,
 				this.height, this.flipHorizonal );

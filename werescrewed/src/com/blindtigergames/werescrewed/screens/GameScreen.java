@@ -93,20 +93,20 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 
 		cam = new Camera( w, h, player );
  
-		tp = new PlatformBuilder()
+		tp = new PlatformBuilder( world )
 				.setPosition( 2.0f, 0.2f )
 				.setDimensions( 10, 1 )
 				.setTexture( texture )
 				.setResitituion( 0.0f )
-				.buildTilePlatform( world );
+				.buildTilePlatform( );
 		
 		
-		rp = new PlatformBuilder()
+		rp = new PlatformBuilder( world )
 				.setPosition( -1.0f, 0.4f )
 				.setDimensions( 1, 10 )
 				.setTexture( texture )
 				.setResitituion( 0.0f )
-				.buildRoomPlatform( world );
+				.buildRoomPlatform( );
 		
 		cp = new ComplexPlatform( "bottle", new Vector2( -1.0f, 3.0f ), new Texture(Gdx.files.internal( "data/bodies/test01.png")),
 				1, world, "complexTest" );
@@ -123,12 +123,12 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 
 		tp.setMover( new TimelineMover( ) );
 		
-		ground = new PlatformBuilder()
+		ground = new PlatformBuilder( world )
 				.setPosition( 0.0f, 0.0f )
 				.setDimensions( 100, 1 )
 				.setTexture( texture )
 				.setResitituion( 0.0f )
-				.buildTilePlatform( world );
+				.buildTilePlatform( );
 		
 		//skeleton.addPlatformFixed(ground);
 		skeleton.addPlatformFixed(tp);
