@@ -94,6 +94,7 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 		cam = new Camera( w, h, player );
  
 		tp = new PlatformBuilder( world )
+				.setName( "tp" )
 				.setPosition( 2.0f, 0.2f )
 				.setDimensions( 10, 1 )
 				.setTexture( texture )
@@ -103,6 +104,7 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 		
 		rp = new PlatformBuilder( world )
 				.setPosition( -1.0f, 0.4f )
+				.setName( "rp" )
 				.setDimensions( 1, 10 )
 				.setTexture( texture )
 				.setResitituion( 0.0f )
@@ -125,6 +127,7 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 		
 		ground = new PlatformBuilder( world )
 				.setPosition( 0.0f, 0.0f )
+				.setName( "ground" )
 				.setDimensions( 100, 1 )
 				.setTexture( texture )
 				.setResitituion( 0.0f )

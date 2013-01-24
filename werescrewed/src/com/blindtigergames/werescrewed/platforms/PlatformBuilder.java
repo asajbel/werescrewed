@@ -144,7 +144,7 @@ public class PlatformBuilder {
 		this.name = "No name";
 	}
 	public RoomPlatform buildRoomPlatform( ) {
-		RoomPlatform rp = new RoomPlatform( "room", new Vector2( positionX,
+		RoomPlatform rp = new RoomPlatform( this.name, new Vector2( positionX,
 				positionY ), this.texture, this.width, this.height, world );
 
 		rp.setDensity( this.density );
@@ -155,7 +155,7 @@ public class PlatformBuilder {
 	}
 
 	public TiledPlatform buildTilePlatform( ) {
-		TiledPlatform tp = new TiledPlatform( "tile", new Vector2( positionX,
+		TiledPlatform tp = new TiledPlatform( this.name, new Vector2( positionX,
 				positionY ), this.texture, this.width, this.height, this.isOneSided, world );
 
 		tp.setDensity( this.density );
@@ -166,7 +166,7 @@ public class PlatformBuilder {
 	}
 
 	public ShapePlatform buildShapePlatform( ) {
-		ShapePlatform sp = new ShapePlatform( "shape", new Vector2( positionX,
+		ShapePlatform sp = new ShapePlatform( this.name, new Vector2( positionX,
 				positionY ), this.texture, world, this.shape, this.width,
 				this.height, this.flipHorizonal );
 
