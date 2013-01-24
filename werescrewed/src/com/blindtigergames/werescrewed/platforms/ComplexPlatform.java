@@ -13,6 +13,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 
 import com.blindtigergames.werescrewed.entity.BodyEditorLoader;
 import com.blindtigergames.werescrewed.entity.EntityDef;
+import com.blindtigergames.werescrewed.screens.GameScreen;
 
 /**
  * @param name
@@ -44,7 +45,7 @@ public class ComplexPlatform extends Platform {
 		BodyEditorLoader loader = new BodyEditorLoader(
 				Gdx.files.internal( filename ) );
 		BodyDef bd = new BodyDef( );
-		bd.position.set( x, y );
+		bd.position.set( x * GameScreen.PIXEL_TO_BOX, y * GameScreen.PIXEL_TO_BOX );
 		bd.type = BodyType.DynamicBody;
 
 		FixtureDef fd = new FixtureDef( );

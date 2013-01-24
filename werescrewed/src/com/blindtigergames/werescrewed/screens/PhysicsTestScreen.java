@@ -70,6 +70,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 	Box box;
 	SlidingMotorMover sm;
 	PuzzleManager pm;
+	PlatformBuilder platBuilder;
 	
 	Texture screwTex;
 	Texture background;
@@ -103,21 +104,22 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		skeleton = new Skeleton( "", Vector2.Zero, background, world );
 		pm = new PuzzleManager();
 		String name = "player";
+		platBuilder = new PlatformBuilder( world );
 		
 		player = new Player( world, new Vector2( 1.0f, 1.0f ), name );
 
 		texture = new Texture( Gdx.files.internal( "data/rletter.png" ) );
 
-		tp = new PlatformBuilder( world )
-				.setPosition( 2.0f, 0.5f )
+		tp = platBuilder
+				.setPosition( 400.0f, 100.0f )
 				.setDimensions( 10, 1 )
 				.setTexture( texture )
 				.setName( "tp" )
 				.setResitituion( 0.0f )
 				.buildTilePlatform(  );
 
-		movingTP = new PlatformBuilder( world )
-				.setPosition( 2.0f, 1.1f )
+		movingTP = platBuilder
+				.setPosition( 400.0f, 150.0f )
 				.setDimensions( 10, 1 )
 				.setTexture( texture )
 				.setName( "movingTP" )
@@ -167,8 +169,8 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		cam = new Camera( w, h, player );
 		// tp = new TiledPlatform( "plat", new Vector2(5.0f, 40.0f), texture, 1,
 		// 2, world );
-		rp = new PlatformBuilder( world )
-				.setPosition( -1.0f, 1.01f )
+		rp = platBuilder
+				.setPosition( -200.0f, 101.0f )
 				.setName( "rp" )
 				.setDimensions( 1, 10 )
 				.setTexture( texture )
@@ -187,7 +189,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 			System.out.print( "nope" );
 		
 		
-		ground = new PlatformBuilder( world )
+		ground = platBuilder
 				.setPosition( 0.0f, 0.0f )
 				.setName( "ground" )
 				.setDimensions( 100, 1 )
