@@ -48,10 +48,6 @@ public class Platform extends Entity {
 			Vector2 sca, Texture tex ) {
 		super( n, d, w, pos, rot, sca, tex );
 	}
-
-	public void setMover( IMover _mover ) {
-		this.mover = _mover;
-	}
 	
 	@Override
 	public void update( float deltaTime ) {
