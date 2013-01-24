@@ -58,6 +58,7 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 	RoomPlatform rp;
 	ComplexPlatform cp;
 	ShapePlatform sp;
+	PlatformBuilder platBuilder;
 
 	// testing screw
 	Texture screwTex;
@@ -92,8 +93,8 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 		player = new Player( world, new Vector2( 1.0f, 1.0f ), name );
 
 		cam = new Camera( w, h, player );
- 
-		tp = new PlatformBuilder( world )
+		platBuilder = new PlatformBuilder( world );
+		tp = platBuilder
 				.setName( "tp" )
 				.setPosition( 200.0f, 100.0f )
 				.setDimensions( 10, 1 )
@@ -102,7 +103,7 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 				.buildTilePlatform( );
 		
 		
-		rp = new PlatformBuilder( world )
+		rp = platBuilder
 				.setPosition( -200.0f, 100.0f )
 				.setName( "rp" )
 				.setDimensions( 1, 10 )
