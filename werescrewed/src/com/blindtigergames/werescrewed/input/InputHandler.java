@@ -12,148 +12,182 @@ import com.badlogic.gdx.InputProcessor;
 
 public class InputHandler implements InputProcessor {
 
-	public enum player_t { ONE, TWO}
-	
+	private int p1LastKeyPressed;
+	private int p2LastKeyPressed;
+
+	private boolean pauseKeyPressed;
+
+	private boolean p1LeftPressed;
+	private boolean p1RightPressed;
+	private boolean p1JumpPressed;
+	private boolean p1DownPressed;
+	private boolean p1ScrewPressed;
+	private boolean p1ScrewingClockwise;
+	private boolean p1ScrewingCounterClockwise;
+
+	private boolean p2LeftPressed;
+	private boolean p2RightPressed;
+	private boolean p2JumpPressed;
+	private boolean p2DownPressed;
+	private boolean p2ScrewPressed;
+	private boolean p2ScrewingClockwise;
+	private boolean p2ScrewingCounterClockwise;
+
+	public enum player_t {
+		ONE, TWO
+	}
+
 	/*
 	 * Hooks up the InputProcessor to the input class, so events can be reported
 	 */
-	public InputHandler (){
-		Gdx.input.setInputProcessor(this);
+	public InputHandler( ) {
+		Gdx.input.setInputProcessor( this );
 	}
-	
-	public void update(){
+
+	public void update( ) {
 		pauseKeyPressed = Gdx.input.isKeyPressed( Keys.ESCAPE );
-		
+
 		p1LeftPressed = Gdx.input.isKeyPressed( Keys.A );
 		p1RightPressed = Gdx.input.isKeyPressed( Keys.D );
 		p1JumpPressed = Gdx.input.isKeyPressed( Keys.W );
 		p1DownPressed = Gdx.input.isKeyPressed( Keys.S );
 		p1ScrewPressed = Gdx.input.isKeyPressed( Keys.Q );
-		
+
 		p2LeftPressed = Gdx.input.isKeyPressed( Keys.J );
 		p2RightPressed = Gdx.input.isKeyPressed( Keys.L );
 		p2JumpPressed = Gdx.input.isKeyPressed( Keys.I );
 		p2DownPressed = Gdx.input.isKeyPressed( Keys.K );
 		p2ScrewPressed = Gdx.input.isKeyPressed( Keys.U );
-		
+
 	}
-	
+
 	/*
 	 * Returns whether the pause key is pressed.
 	 */
-	public boolean pausePressed () {
+	public boolean pausePressed( ) {
 		return pauseKeyPressed;
 	}
-	
+
 	/*
 	 * Returns whether the move left key is pressed
+	 * 
 	 * @param player - Selector to poll for the proper player
 	 */
-	public boolean leftPressed ( player_t player ){
-		switch ( player ){
-			default: return false;
-			case ONE:
-				return p1LeftPressed;
-			case TWO:
-				return p2LeftPressed;
+	public boolean leftPressed( player_t player ) {
+		switch ( player ) {
+		default:
+			return false;
+		case ONE:
+			return p1LeftPressed;
+		case TWO:
+			return p2LeftPressed;
 		}
 	}
-	
+
 	/*
 	 * Returns whether the move right key is pressed
+	 * 
 	 * @param player - Selector to poll for the proper player
 	 */
-	public boolean rightPressed ( player_t player ){
-		switch ( player ){
-			default: return false;
-			case ONE:
-				return p1RightPressed;
-			case TWO:
-				return p2RightPressed;
+	public boolean rightPressed( player_t player ) {
+		switch ( player ) {
+		default:
+			return false;
+		case ONE:
+			return p1RightPressed;
+		case TWO:
+			return p2RightPressed;
 		}
 	}
-	
+
 	/*
 	 * Returns whether the jump key is pressed
+	 * 
 	 * @param player - Selector to poll for the proper player
 	 */
-	public boolean jumpPressed ( player_t player ){
-		switch ( player ){
-			default: return false;
-			case ONE:
-				return p1JumpPressed;
-			case TWO:
-				return p2JumpPressed;
+	public boolean jumpPressed( player_t player ) {
+		switch ( player ) {
+		default:
+			return false;
+		case ONE:
+			return p1JumpPressed;
+		case TWO:
+			return p2JumpPressed;
 		}
 	}
-	
+
 	/*
 	 * Returns whether the move down key is pressed
+	 * 
 	 * @param player - Selector to poll for the proper player
 	 */
-	public boolean downPressed ( player_t player ){
-		switch ( player ){
-			default: return false;
-			case ONE:
-				return p1DownPressed;
-			case TWO:
-				return p2DownPressed;
+	public boolean downPressed( player_t player ) {
+		switch ( player ) {
+		default:
+			return false;
+		case ONE:
+			return p1DownPressed;
+		case TWO:
+			return p2DownPressed;
 		}
 	}
-	
+
 	/*
 	 * Returns whether the screw key is pressed
+	 * 
 	 * @param player - Selector to poll for the proper player
 	 */
-	public boolean screwPressed ( player_t player ){
-		switch ( player ){
-			default: return false;
-			case ONE:
-				return Gdx.input.isKeyPressed( Keys.X );
-			case TWO:
-				return Gdx.input.isKeyPressed( Keys.M );
+	public boolean screwPressed( player_t player ) {
+		switch ( player ) {
+		default:
+			return false;
+		case ONE:
+			return Gdx.input.isKeyPressed( Keys.X );
+		case TWO:
+			return Gdx.input.isKeyPressed( Keys.M );
 		}
 	}
-	
-	public boolean unscrewPressed ( player_t player ){
-		switch ( player ){
-			default: return false;
-			case ONE:
-				return Gdx.input.isKeyPressed ( Keys.Z );
-			case TWO:
-				return Gdx.input.isKeyPressed ( Keys.N );
-		
+
+	public boolean unscrewPressed( player_t player ) {
+		switch ( player ) {
+		default:
+			return false;
+		case ONE:
+			return Gdx.input.isKeyPressed( Keys.Z );
+		case TWO:
+			return Gdx.input.isKeyPressed( Keys.N );
+
 		}
 	}
-	
-	public boolean screwing ( player_t player ) {
-		switch ( player ){
-			default: return false;
-			case ONE:
-				return rightPressed ( player_t.ONE );
-			case TWO:
-				return rightPressed ( player_t.TWO );
+
+	public boolean screwing( player_t player ) {
+		switch ( player ) {
+		default:
+			return false;
+		case ONE:
+			return rightPressed( player_t.ONE );
+		case TWO:
+			return rightPressed( player_t.TWO );
 		}
 	}
-	
-	public boolean unscrewing ( player_t player ) {
-		switch ( player ){
-			default: return false;
-			case ONE:
-				return leftPressed ( player_t.ONE );
-			case TWO:
-				return leftPressed ( player_t.TWO );
+
+	public boolean unscrewing( player_t player ) {
+		switch ( player ) {
+		default:
+			return false;
+		case ONE:
+			return leftPressed( player_t.ONE );
+		case TWO:
+			return leftPressed( player_t.TWO );
 		}
 	}
-	
-	
+
 	@Override
 	public boolean keyDown( int keycode ) {
-		if ( keycode == Keys.ESCAPE) {
+		if ( keycode == Keys.ESCAPE ) {
 			pauseKeyPressed = true;
 		}
-		
-		
+
 		if ( keycode == Keys.W ) {
 			p1JumpPressed = true;
 			p1LastKeyPressed = keycode;
@@ -174,7 +208,7 @@ public class InputHandler implements InputProcessor {
 			p1ScrewPressed = true;
 			p1LastKeyPressed = keycode;
 		}
-		
+
 		if ( keycode == Keys.I ) {
 			p2JumpPressed = true;
 			p2LastKeyPressed = keycode;
@@ -195,16 +229,16 @@ public class InputHandler implements InputProcessor {
 			p2ScrewPressed = true;
 			p2LastKeyPressed = keycode;
 		}
-		
+
 		return true;
 	}
 
 	@Override
-	public boolean keyUp ( int keycode ) {
-		if ( keycode == Keys.ESCAPE) {
+	public boolean keyUp( int keycode ) {
+		if ( keycode == Keys.ESCAPE ) {
 			pauseKeyPressed = false;
 		}
-		
+
 		if ( keycode == Keys.W ) {
 			p1JumpPressed = false;
 		}
@@ -220,7 +254,7 @@ public class InputHandler implements InputProcessor {
 		if ( keycode == Keys.Q ) {
 			p1ScrewPressed = false;
 		}
-		
+
 		if ( keycode == Keys.I ) {
 			p2JumpPressed = false;
 		}
@@ -236,64 +270,44 @@ public class InputHandler implements InputProcessor {
 		if ( keycode == Keys.U ) {
 			p2ScrewPressed = false;
 		}
-		
+
 		return true;
 	}
 
 	@Override
-	public boolean keyTyped(char character) {
+	public boolean keyTyped( char character ) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
-	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+	public boolean touchDown( int screenX, int screenY, int pointer, int button ) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
-	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+	public boolean touchUp( int screenX, int screenY, int pointer, int button ) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
-	public boolean touchDragged(int screenX, int screenY, int pointer) {
+	public boolean touchDragged( int screenX, int screenY, int pointer ) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
-	public boolean mouseMoved(int screenX, int screenY) {
+	public boolean mouseMoved( int screenX, int screenY ) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
-	public boolean scrolled(int amount) {
+	public boolean scrolled( int amount ) {
 		// TODO Auto-generated method stub
 		return false;
 	}
-	private int p1LastKeyPressed;
-	private int p2LastKeyPressed;
 
-	private boolean pauseKeyPressed;
-	
-	private boolean p1LeftPressed;
-	private boolean p1RightPressed;
-	private boolean p1JumpPressed;
-	private boolean p1DownPressed;
-	private boolean p1ScrewPressed;
-	private boolean p1ScrewingClockwise;
-	private boolean p1ScrewingCounterClockwise;
-	
-	private boolean p2LeftPressed;
-	private boolean p2RightPressed;
-	private boolean p2JumpPressed;
-	private boolean p2DownPressed;
-	private boolean p2ScrewPressed;
-	private boolean p2ScrewingClockwise;
-	private boolean p2ScrewingCounterClockwise;
-	
 }

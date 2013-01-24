@@ -182,6 +182,8 @@ public class Player extends Entity {
 		if ( playerState == PlayerState.Screwing ) {
 			world.destroyJoint( playerToScrew );
 			playerState = PlayerState.JumpingOffScrew;
+			body.applyLinearImpulse( new Vector2( 0.0f, 0.15f ),
+					body.getWorldCenter( ) );
 		}
 		if ( isGrounded( ) ) {
 			body.applyLinearImpulse( new Vector2( 0.0f, 0.15f ),

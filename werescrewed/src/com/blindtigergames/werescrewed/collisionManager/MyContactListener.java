@@ -56,7 +56,7 @@ public class MyContactListener implements ContactListener {
 				if ( objectFix.getBody( ).getUserData( ) instanceof Box ) {
 					Box example = ( Box ) objectFix.getBody( ).getUserData( );
 					example.exampleCollide( );
-					player.jump( );
+					// player.jump( );
 				} else if ( objectFix.getBody( ).getUserData( ) instanceof StructureScrew ) {
 					StructureScrew example = ( StructureScrew ) objectFix
 							.getBody( ).getUserData( );
@@ -81,14 +81,8 @@ public class MyContactListener implements ContactListener {
 						player.setGrounded( true );
 						System.out.println( "hey there good looking" );
 					}
-				} else {
-					System.out.println( "Called" );
 				}
-			} else {
-				System.out.println( "Player not involved, I guess." );
 			}
-		} else {
-			System.out.println( "NULL?!" );
 		}
 	}
 
@@ -133,16 +127,16 @@ public class MyContactListener implements ContactListener {
 						System.out.println( "not interested" );
 						contact.setEnabled( true );
 					}
+				} else if ( objectFix.getBody( ).getUserData( ) instanceof RoomPlatform ) {
+					player.setGrounded( false );
+					RoomPlatform rp = ( RoomPlatform ) objectFix.getBody( )
+							.getUserData( );
+					rp.setOneSided( false );
 				} else if ( objectFix.getBody( ).getUserData( ) instanceof StructureScrew ) {
 					StructureScrew example = ( StructureScrew ) objectFix
 							.getBody( ).getUserData( );
 					example.exampleCollide( "end collision with screw " );
 					player.endHitScrew( );
-				} else if ( objectFix.getBody( ).getUserData( ) instanceof RoomPlatform ){
-					player.setGrounded(false);
-					RoomPlatform rp = (RoomPlatform) objectFix.getBody().getUserData();
-					rp.setOneSided( false );
-						
 				} else if ( objectFix.getBody( ).getUserData( ) instanceof StrippedScrew ) {
 					StrippedScrew example = ( StrippedScrew ) objectFix
 							.getBody( ).getUserData( );
@@ -164,49 +158,51 @@ public class MyContactListener implements ContactListener {
 	 */
 	@Override
 	public void preSolve( Contact contact, Manifold oldManifold ) {
-	    final Fixture x1 = contact.getFixtureA( );
-        final Fixture x2 = contact.getFixtureB( );
+		final Fixture x1 = contact.getFixtureA( );
+		final Fixture x2 = contact.getFixtureB( );
 
-        Fixture playerFix = null;
-        Fixture objectFix = null;
+		Fixture playerFix = null;
+		Fixture objectFix = null;
 
-        boolean playerInvolved = false;
+		boolean playerInvolved = false;
 
-        if ( x1.getBody( ).getUserData( ) != null
-                && x2.getBody( ).getUserData( ) != null ) {
-            if ( x1.getBody( ).getUserData( ) instanceof Player ) {
-                playerFix = x1;
-                objectFix = x2;
-                playerInvolved = true;
-            } else if ( x2.getBody( ).getUserData( ) instanceof Player ) {
-                playerFix = x2;
-                objectFix = x1;
-                playerInvolved = true;
-            }
-            if (playerInvolved) {
-            	Player player = (Player) playerFix.getBody().getUserData();
-                if(objectFix.getBody().getUserData() instanceof TiledPlatform){
-                    TiledPlatform tilePlat = (TiledPlatform) objectFix.getBody().getUserData();
-                    Vector2 platformPos = tilePlat.getPosition();
-                    Vector2 playerPos = player.getPosition();
-                    if (tilePlat.getOneSided()){
-	                    if(platformPos.y > playerPos.y){
-	                        contact.setEnabled( false );
-	                    }
-                	}
-                }
-                if(objectFix.getBody().getUserData() instanceof RoomPlatform){
-                    RoomPlatform roomPlat = (RoomPlatform) objectFix.getBody().getUserData();
-                    Vector2 platformPos = roomPlat.getPosition();
-                    Vector2 playerPos = player.getPosition();
-                    if (roomPlat.getOneSided()){
-	                    if(platformPos.y > playerPos.y){
-	                        contact.setEnabled( false );
-	                    }
-                	}
-                }
-            }
-        }
+		if ( x1.getBody( ).getUserData( ) != null
+				&& x2.getBody( ).getUserData( ) != null ) {
+			if ( x1.getBody( ).getUserData( ) instanceof Player ) {
+				playerFix = x1;
+				objectFix = x2;
+				playerInvolved = true;
+			} else if ( x2.getBody( ).getUserData( ) instanceof Player ) {
+				playerFix = x2;
+				objectFix = x1;
+				playerInvolved = true;
+			}
+			if ( playerInvolved ) {
+				Player player = ( Player ) playerFix.getBody( ).getUserData( );
+				if ( objectFix.getBody( ).getUserData( ) instanceof TiledPlatform ) {
+					TiledPlatform tilePlat = ( TiledPlatform ) objectFix
+							.getBody( ).getUserData( );
+					Vector2 platformPos = tilePlat.getPosition( );
+					Vector2 playerPos = player.getPosition( );
+					if ( tilePlat.getOneSided( ) ) {
+						if ( platformPos.y > playerPos.y ) {
+							contact.setEnabled( false );
+						}
+					}
+				}
+				if ( objectFix.getBody( ).getUserData( ) instanceof RoomPlatform ) {
+					RoomPlatform roomPlat = ( RoomPlatform ) objectFix
+							.getBody( ).getUserData( );
+					Vector2 platformPos = roomPlat.getPosition( );
+					Vector2 playerPos = player.getPosition( );
+					if ( roomPlat.getOneSided( ) ) {
+						if ( platformPos.y > playerPos.y ) {
+							contact.setEnabled( false );
+						}
+					}
+				}
+			}
+		}
 	}
 
 	/**
