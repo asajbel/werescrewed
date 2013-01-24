@@ -5,8 +5,10 @@ so that everyone knows about them!
 
 Camera
 ------
-'Z' - Hold to allow control of camera with
+'B' - Hold to allow control of camera with
 	  arrow keys and 'Q' & 'E'
+	  
+'N' - Show buffer rectangle and circle around camera target
 
 'O' - Changes all platform from dynamic to kinematic and back again
 

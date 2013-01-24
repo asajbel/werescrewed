@@ -21,47 +21,52 @@ import java.lang.Math;
  * 
  */
 
+//Need to fix widht/height storage
 public class TiledPlatform extends Platform {
 	protected boolean rotate = false;
-	protected int tileHeight, tileWidth;
+	protected float tileHeight, tileWidth;
 
-	public TiledPlatform( String n, Vector2 pos, Texture tex, int width,
-			int height, World world ) {
+	public TiledPlatform( String n, Vector2 pos, Texture tex, float width,
+			float height, boolean isOneSided, World world ) {
 		super( n, pos, tex, world );
 		this.tileHeight = height;
 		this.tileWidth = width;
 		this.width = width * tileConstant;
 		this.height = height * tileConstant;
 		constructTileBody( pos.x, pos.y, width, height );
+		body.setUserData(this);
+		setOneSided( isOneSided );
 	}
 
-	private void constructTileBody( float x, float y, int width, int height ) {
+	private void constructTileBody( float x, float y, float width, float height ) {
 
-		BodyDef groundBodyDef = new BodyDef( );
-		groundBodyDef.type = BodyType.KinematicBody;
-		groundBodyDef.position.set( new Vector2( x , y ) );
-		body = world.createBody( groundBodyDef );
+		BodyDef bodyDef = new BodyDef( );
+		bodyDef.type = BodyType.KinematicBody;
+		bodyDef.position.set( new Vector2( x , y ) );
+		body = world.createBody( bodyDef );
 
-		PolygonShape groundBox = new PolygonShape( );
-		if ( width == 0 )
-			width = 1;
-		if ( height == 0 )
-			height = 1;
-		groundBox.setAsBox( ( width * tileConstant ) * GameScreen.PIXEL_TO_BOX,
+		PolygonShape polygon = new PolygonShape( );
+		polygon.setAsBox( ( width * tileConstant ) * GameScreen.PIXEL_TO_BOX,
 				( height * tileConstant ) * GameScreen.PIXEL_TO_BOX );
 
 		FixtureDef platformFixtureDef = new FixtureDef( );
-		platformFixtureDef.shape = groundBox;
-		platformFixtureDef.density = 1.9f;
-		platformFixtureDef.friction = 0.5f;
-		platformFixtureDef.restitution = 0.0f;
-		body.setGravityScale( .1f );
+		platformFixtureDef.shape = polygon;
 		body.createFixture( platformFixtureDef );
 
+		polygon.dispose( );
+	}
+	
+	public float getActualHeight(){
+	    return height * 32;
+	}
+	
+	public float getActualWidth(){
+	    return width * 32;
 	}
 
-	public void update( ) {
-		super.update( );
+	@Override
+	public void update( float deltaTime ) {
+		super.update( deltaTime );
 	}
 	
 

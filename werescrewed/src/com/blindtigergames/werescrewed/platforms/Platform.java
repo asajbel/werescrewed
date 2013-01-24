@@ -12,7 +12,7 @@ import com.blindtigergames.werescrewed.entity.mover.IMover;
 
 /**
  * @param name
- *            blah blah
+ * 
  * 
  * @author Ranveer
  * 
@@ -26,9 +26,12 @@ public class Platform extends Entity {
 	IMover mover;
 
 	protected World world;
-	protected int width, height;
+	protected float width, height;
 	protected boolean dynamicType = false;
 	protected boolean rotate = false;
+	protected boolean oneSided = false;
+	// tileConstant is 16 for setasbox function which uses half width/height
+	// creates 32x32 objects
 	protected final int tileConstant = 16;
 
 	public Platform( String n, Vector2 pos, Texture tex, World world ) {
@@ -44,10 +47,13 @@ public class Platform extends Entity {
 	public void setMover( IMover _mover ) {
 		this.mover = _mover;
 	}
-
-	public void update( ) {
+	
+	@Override
+	public void update( float deltaTime ) {
+		
 		body.setActive( true );
-		super.update( );
+		
+		super.update( deltaTime );
 
 		if ( Gdx.input.isKeyPressed( Keys.T ) ) {
 			rotate( );
@@ -67,20 +73,31 @@ public class Platform extends Entity {
 		if ( Gdx.input.isKeyPressed( Keys.L ) ) {
 			setHorizontal( );
 		}
+		if ( Gdx.input.isKeyPressed( Keys.B ) ) {
+			setOneSided(!getOneSided());
+			System.out.println(getOneSided());
+		}
 	}
 
 	public void setDensity( float d ) {
-		body.getFixtureList( ).get( 0 ).setDensity( d );
+		for(int i = 0; i < body.getFixtureList( ).size( ); ++i)
+			body.getFixtureList( ).get( i ).setDensity( d );
+			
 	}
 
 	public void setFriction( float f ) {
-		body.getFixtureList( ).get( 0 ).setFriction( f );
+		for(int i = 0; i < body.getFixtureList( ).size( ); ++i)
+			body.getFixtureList( ).get( i ).setFriction( f );
 	}
 
 	public void setRestitution( float r ) {
-		body.getFixtureList( ).get( 0 ).setRestitution( r );
+		for(int i = 0; i < body.getFixtureList( ).size( ); ++i)
+			body.getFixtureList( ).get( i ).setRestitution( r );
 	}
 
+	public void setGravScale( float g ){
+		body.setGravityScale( g );
+	}
 	public void changeType( ) {
 		dynamicType = !dynamicType;
 		if ( dynamicType ) {
@@ -100,6 +117,14 @@ public class Platform extends Entity {
 	// This function sets platform to 90*
 	public void setVertical( ) {
 		body.setTransform( body.getPosition( ), ( float ) Math.toRadians( 180 ) );
+	}
+	
+	public boolean getOneSided(){
+		return oneSided;
+	}
+	
+	public void setOneSided(boolean value){
+		oneSided = value;
 	}
 
 	protected void rotate( ) {
