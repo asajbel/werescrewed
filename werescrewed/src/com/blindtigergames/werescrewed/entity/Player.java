@@ -139,7 +139,7 @@ public class Player extends Entity {
 		if ( playerState == PlayerState.Screwing ) {
 			world.destroyJoint( playerToScrew );
 			playerState = PlayerState.JumpingOffScrew;
-			body.applyLinearImpulse( new Vector2( 0.05f, 0.2f ),
+			body.applyLinearImpulse( new Vector2( 0.05f, 0.15f ),
 					body.getWorldCenter( ) );
 		} else if ( body.getLinearVelocity( ).x < 2.0f ) {
 			body.applyLinearImpulse( new Vector2( 0.01f, 0.0f ),
@@ -162,7 +162,7 @@ public class Player extends Entity {
 		if ( playerState == PlayerState.Screwing ) {
 			world.destroyJoint( playerToScrew );
 			playerState = PlayerState.JumpingOffScrew;
-			body.applyLinearImpulse( new Vector2( -0.05f, 0.2f ),
+			body.applyLinearImpulse( new Vector2( -0.05f, 0.15f ),
 					body.getWorldCenter( ) );
 		} else if ( body.getLinearVelocity( ).x > -2.0f ) {
 			body.applyLinearImpulse( new Vector2( -0.01f, 0.0f ),
