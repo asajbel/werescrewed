@@ -39,18 +39,22 @@ public class EntityManager extends Entity{
 		skeletonsToAdd.clear( );
 		
 		Iterator < Map.Entry < String, Entity > > itRemove = entitiesToRemove.entrySet( ). iterator( );
-		Map.Entry < String, Entity > entityToRemove;
+		Map.Entry < String, Entity > entryToRemove;
 		while ( itRemove.hasNext( ) ) {
-			entityToRemove = itRemove.next( );
-			entityList.remove( entityToRemove.getKey( ) );
+			entryToRemove = itRemove.next( );
+			Entity entityToRemove = entryToRemove.getValue( );
+			entityToRemove.world.destroyBody ( entityToRemove.body );
+			entityList.remove( entryToRemove.getKey( ) );
 		}
 		entitiesToRemove.clear( );
 		
 		Iterator < Map.Entry < String, Skeleton > > jitRemove = skeletonsToRemove.entrySet( ). iterator( );
-		Map.Entry < String, Skeleton > skeletonToRemove;
+		Map.Entry < String, Skeleton > entrySkelToRemove;
 		while ( jitRemove.hasNext( ) ) {
-			skeletonToRemove = jitRemove.next( );
-			skeletonList.remove( skeletonToRemove.getKey( ) );
+			entrySkelToRemove = jitRemove.next( );
+			Skeleton skeletonToRemove = entrySkelToRemove.getValue();
+			skeletonToRemove.world.destroyBody ( skeletonToRemove.body );
+			skeletonList.remove( entrySkelToRemove.getKey( ) );
 		}
 		skeletonsToRemove.clear( );
 		

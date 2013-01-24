@@ -21,6 +21,7 @@ import com.blindtigergames.werescrewed.camera.Camera;
 import com.blindtigergames.werescrewed.collisionManager.MyContactListener;
 import com.blindtigergames.werescrewed.debug.SBox2DDebugRenderer;
 import com.blindtigergames.werescrewed.entity.Entity;
+import com.blindtigergames.werescrewed.entity.EntityManager;
 import com.blindtigergames.werescrewed.entity.Player;
 import com.blindtigergames.werescrewed.entity.Skeleton;
 import com.blindtigergames.werescrewed.entity.mover.PuzzleType;
@@ -88,12 +89,14 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		float zoom = 1.0f;
 		float w = Gdx.graphics.getWidth( ) / zoom;
 		float h = Gdx.graphics.getHeight( ) / zoom;
+		
+
 
 		texture = new Texture( Gdx.files.internal( "data/rletter.png" ) );
 		// takes in width, height
 		// cam = new Camera(w, h);
 		batch = new SpriteBatch( );
-
+		
 		world = new World( new Vector2( 0, -45 ), true );
 		MCL = new MyContactListener( );
 		world.setContactListener( MCL );
@@ -175,13 +178,14 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		// 1, world, "bottle" );
 		// sp = new ShapePlatform( "trap", new Vector2( 1.0f, 1.0f), texture,
 		// world, Shapes.trapezoid, 0.5f);
-		box = new Box( "box", new Vector2( 80.0f, 0.0f ), texture, world );
+		box = new Box( "box", new Vector2( 120.0f, 160.0f ), texture, world );
 		box.setRestitution( 0.0f );
 		if ( box.body.getUserData( ) instanceof Box ) {
 			System.out.print( "worked" );
 		} else
 			System.out.print( "nope" );
 
+		
 		ground = new PlatformBuilder( ).setPosition( 0.0f, 0.0f )
 				.setDimensions( 100, 1 ).setTexture( texture )
 				.setResitituion( 0.0f ).buildTilePlatform( world );
@@ -227,7 +231,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		rp.update( deltaTime );
 		// cp.update();
 		// sp.update();
-		box.update( deltaTime );
+	//	box.update( deltaTime );
 
 		batch.setProjectionMatrix( cam.combined( ) );
 		// batch.setProjectionMatrix(camera.combined);
