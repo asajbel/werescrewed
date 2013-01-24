@@ -11,6 +11,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJoint;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
 import com.blindtigergames.werescrewed.entity.Skeleton;
+import com.blindtigergames.werescrewed.puzzles.PuzzleManager;
 import com.blindtigergames.werescrewed.screens.GameScreen;
 
 /**
@@ -23,11 +24,12 @@ import com.blindtigergames.werescrewed.screens.GameScreen;
 public class PuzzleScrew extends Screw {
 
 	public PuzzleScrew( String n, Vector2 pos, Texture tex, int max,
-			Skeleton skeleton, World world ) {
+			Skeleton skeleton, World world, PuzzleManager pm ) {
 		super( n, pos, tex, null );
 		this.world = world;
 		maxDepth = max;
 		depth = max;
+		puzzleManager = pm;
 
 		sprite.setColor( Color.GREEN );
 		// create the screw body
@@ -44,13 +46,13 @@ public class PuzzleScrew extends Screw {
 		screwFixture.isSensor = true;
 		body.createFixture( screwFixture );
 		screwShape.dispose( );
-		offset.x = (float)(-sprite.getWidth( )/2.0f);
-		offset.y = (float)(-sprite.getWidth( )/2.0f);		
+		offset.x = ( float ) ( -sprite.getWidth( ) / 2.0f );
+		offset.y = ( float ) ( -sprite.getWidth( ) / 2.0f );
 		body.setUserData( this );
 
 		// add radar sensor to screw
 		CircleShape radarShape = new CircleShape( );
-		radarShape.setRadius( sprite.getWidth( ) * 1.25f 
+		radarShape.setRadius( sprite.getWidth( ) * 1.25f
 				* GameScreen.PIXEL_TO_BOX );
 		FixtureDef radarFixture = new FixtureDef( );
 		radarFixture.shape = radarShape;
@@ -74,11 +76,12 @@ public class PuzzleScrew extends Screw {
 	}
 
 	public void screwLeft( ) {
-		if ( depth > 0 ){
+		if ( depth > 0 ) {
 			body.setAngularVelocity( 15 );
 			depth--;
 			rotation += 10;
 			screwStep = depth + 5;
+			puzzleManager.runElement( this );
 		}
 	}
 
@@ -88,9 +91,10 @@ public class PuzzleScrew extends Screw {
 			depth++;
 			rotation -= 10;
 			screwStep = depth + 6;
+			puzzleManager.runElement( this );
 		}
 	}
-	
+
 	public void update( float deltaTime ) {
 		super.update( deltaTime );
 		sprite.setRotation( rotation );
@@ -102,10 +106,11 @@ public class PuzzleScrew extends Screw {
 		}
 	}
 
-	public int getMaxDepth( ){
+	public int getMaxDepth( ) {
 		return maxDepth;
 	}
-	
+
 	private RevoluteJoint platformToScrew;
+	private PuzzleManager puzzleManager;
 
 }

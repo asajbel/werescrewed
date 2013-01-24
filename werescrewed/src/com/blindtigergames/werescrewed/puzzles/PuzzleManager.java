@@ -3,6 +3,7 @@ package com.blindtigergames.werescrewed.puzzles;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.badlogic.gdx.physics.box2d.JointDef;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.mover.IMover;
 import com.blindtigergames.werescrewed.screws.PuzzleScrew;
@@ -16,15 +17,9 @@ import com.blindtigergames.werescrewed.screws.PuzzleScrew;
 
 public class PuzzleManager {
 
-	public PuzzleManager () {
+	public PuzzleManager( ) {
 		puzzleEntities = new HashMap< String, Entity >( );
 		puzzleMovers = new HashMap< String, IMover >( );
-	}
-	
-	public void update ( Float deltatime ) {
-		if( screw1 != null ) {
-			runElement ( deltatime );
-		}
 	}
 
 	public void addEntity( String screwID, Entity puzzlePiece ) {
@@ -41,25 +36,24 @@ public class PuzzleManager {
 		puzzleMovers = movers;
 	}
 
-	public void runElement( Float deltaTime ) {
-		System.out.println( screw1.name);
-		if ( screw1.getDepth( ) == screw1.getMaxDepth( ) ) {
+	public void runElement( PuzzleScrew screw1 ) {
+		if ( screw1.getDepth( ) != screw1.getMaxDepth( ) ) {
 			int num = 0;
 			String elementID = screw1.name + '_' + num;
-			System.out.println( screw1.name + " " +  elementID );
 			while ( puzzleEntities.containsKey( elementID )
 					&& puzzleMovers.containsKey( elementID ) ) {
 
-				puzzleMovers.get( elementID ).move( deltaTime,
-						puzzleEntities.get( elementID ).body );
+				System.out.println( screw1.name + " " + elementID );
+				puzzleEntities.get( elementID ).setMover(
+						puzzleMovers.get( elementID ) );
 				num++;
 				elementID = screw1.name + '_' + num;
 			}
 		}
 	}
 
-	private PuzzleScrew screw1;
 	private Map< String, Entity > puzzleEntities;
 	private Map< String, IMover > puzzleMovers;
+	private Map< String, JointDef > puzzleJoints;
 
 }

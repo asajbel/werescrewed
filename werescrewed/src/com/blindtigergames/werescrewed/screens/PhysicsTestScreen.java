@@ -125,18 +125,6 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 				.buildTilePlatform( );
 		
 		movingTP.body.setType( BodyType.DynamicBody );
-        PrismaticJoint pistonJoint = new PrismaticJointBuilder( world )
-        .skeleton( skeleton )
-        .bodyB( (Entity)movingTP )
-        .anchor( movingTP.body.getWorldCenter() )
-        .axis( 0, 1 )
-        .motor( true )
-        .limit( true )
-        .upper( 0.5f )
-        .motorSpeed( 1 )
-        .build();
-		
-		movingTP.setMover( new SlidingMotorMover( PuzzleType.PRISMATIC_SLIDER, pistonJoint ) );
 		
         PrismaticJoint puzzleJoint = new PrismaticJointBuilder( world )
         .skeleton( skeleton )
@@ -145,10 +133,11 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
         .axis( 1, 0 )
         .motor( true )
         .limit( true )
+        .lower( 0.0f )
         .upper( 0.5f )
         .motorSpeed( 1 )
         .build();
-        
+  
 		sm = new SlidingMotorMover ( PuzzleType.PRISMATIC_SLIDER, puzzleJoint );
 		
 		pm.addEntity( "001_0", movingTP );
@@ -159,7 +148,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		structScrew = new StructureScrew( "", tp.body.getPosition( ), screwTex,
 				50, tp, skeleton, world );
 		puzzleScrew = new PuzzleScrew( "001", new Vector2( 1.0f, 0.2f ), screwTex,
-				50, skeleton, world );
+				50, skeleton, world, pm );
 
 		float x1 = 1.75f;
 		float x2 = 2.25f;
@@ -231,7 +220,6 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 			System.exit( 0 );
 		}
 
-		pm.update( deltaTime );
 		
 		player.update( deltaTime );
 
