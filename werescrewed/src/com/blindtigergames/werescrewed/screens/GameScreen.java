@@ -21,8 +21,7 @@ import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.Player;
 import com.blindtigergames.werescrewed.entity.Player.PlayerState;
 import com.blindtigergames.werescrewed.entity.mover.TimelineMover;
-import com.blindtigergames.werescrewed.input.InputHandler;
-import com.blindtigergames.werescrewed.input.InputHandler.player_t;
+import com.blindtigergames.werescrewed.input.InputHandlerPlayer1;
 import com.blindtigergames.werescrewed.platforms.ComplexPlatform;
 import com.blindtigergames.werescrewed.platforms.PlatformBuilder;
 import com.blindtigergames.werescrewed.platforms.RoomPlatform;
@@ -64,7 +63,7 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 	Texture screwTex;
 	Texture background;
 	StructureScrew structScrew;
-	InputHandler inputHandler;
+	InputHandlerPlayer1 inputHandler;
 	Skeleton skeleton;
 
 	FPSLogger logger;
@@ -79,7 +78,7 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 		float w = Gdx.graphics.getWidth( ) / zoom;
 		float h = Gdx.graphics.getHeight( ) / zoom;
 
-		inputHandler = new InputHandler( );
+		inputHandler = new InputHandlerPlayer1( );
 		texture = new Texture( Gdx.files.internal( "data/rletter.png" ) );
 		// takes in width, height
 		// cam = new Camera(w, h);
@@ -175,7 +174,7 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 
 		structScrew.update( deltaTime );
 
-		if ( inputHandler.unscrewPressed( player_t.ONE ) ) {
+		if ( inputHandler.unscrewPressed(  ) ) {
 			structScrew.screwLeft( );
 		}
 

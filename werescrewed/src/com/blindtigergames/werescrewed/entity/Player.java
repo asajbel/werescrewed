@@ -15,8 +15,7 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJoint;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
-import com.blindtigergames.werescrewed.input.InputHandler;
-import com.blindtigergames.werescrewed.input.InputHandler.player_t;
+import com.blindtigergames.werescrewed.input.InputHandlerPlayer1;
 import com.blindtigergames.werescrewed.screens.GameScreen;
 import com.blindtigergames.werescrewed.screws.Screw;
 
@@ -37,7 +36,7 @@ public class Player extends Entity {
 	private float stillTime = 0;
 	private long lastGroundTime = 0;
 	private int prevKey;
-	private InputHandler inputHandler;
+	private InputHandlerPlayer1 inputHandler;
 	private PlayerState playerState;
 	public ArrayList< Contact > contacts;
 
@@ -97,7 +96,7 @@ public class Player extends Entity {
 		//offset.y = -7.5f;
 		body.setUserData( this );
 		playerState = PlayerState.Standing;
-		inputHandler = new InputHandler( );
+		inputHandler = new InputHandlerPlayer1( );
 		contacts = new ArrayList< Contact >( );
 	}
 
@@ -278,44 +277,44 @@ public class Player extends Entity {
 		// Vector2 pos = body.getPosition();
 		// Vector2 vel = body.getLinearVelocity();
 
-		if ( inputHandler.jumpPressed( player_t.ONE ) ) {
+		if ( inputHandler.jumpPressed(  ) ) {
 			if ( !jumpPressed ) {
 				jump( );
 				jumpPressed = true;
 			}
 		}
-		if ( !inputHandler.jumpPressed( player_t.ONE ) ) {
+		if ( !inputHandler.jumpPressed(  ) ) {
 			jumpPressed = false;
 		}
-		if ( inputHandler.leftPressed( player_t.ONE ) ) {
+		if ( inputHandler.leftPressed(  ) ) {
 			moveLeft( );
 			prevKey = Keys.A;
 		}
 
-		if ( inputHandler.rightPressed( player_t.ONE ) ) {
+		if ( inputHandler.rightPressed(  ) ) {
 			moveRight( );
 			prevKey = Keys.D;
 		}
-		if ( inputHandler.downPressed( player_t.ONE ) ) {
+		if ( inputHandler.downPressed(  ) ) {
 			stop( );
 		}
 
-		if ( ( !inputHandler.leftPressed( player_t.ONE ) && !inputHandler
-				.rightPressed( player_t.ONE ) )
+		if ( ( !inputHandler.leftPressed(  ) && !inputHandler
+				.rightPressed(  ) )
 				&& ( prevKey == Keys.D || prevKey == Keys.A ) ) {
 			stop( );
 		}
 
-		if ( inputHandler.screwPressed( player_t.ONE ) && hitScrew
+		if ( inputHandler.screwPressed(  ) && hitScrew
 				&& playerState != PlayerState.Screwing ) {
 			attachToScrew( );
 		}
 
 		if ( playerState == PlayerState.Screwing ) {
 //			sprite.setPosition( currentScrew.sprite.getX( ), currentScrew.sprite.getY( ) );
-			if ( inputHandler.unscrewPressed( player_t.ONE ) ) {
+			if ( inputHandler.unscrewPressed(  ) ) {
 				currentScrew.screwLeft( );
-			} else if ( inputHandler.screwPressed( player_t.ONE ) ) {
+			} else if ( inputHandler.screwPressed(  ) ) {
 				currentScrew.screwRight( );
 			}
 			if ( currentScrew.body.getJointList( ).size( ) == 1 ) {
