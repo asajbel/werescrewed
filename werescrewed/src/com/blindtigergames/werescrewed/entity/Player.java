@@ -44,13 +44,9 @@ public class Player extends Entity {
 	private RevoluteJoint playerToScrew;
 	private boolean hitScrew;
 	private boolean grounded;
+	private boolean jumpPressed;
 
 	// Constants
-	private final float GROUND_THRESHOLD = 1.5f; // Minimum distance below
-													// players' centers that a
-													// touching surface must be
-													// to qualify as "ground"
-	private boolean jumpPressed;
 
 	// Static constants
 	public final static float MAX_VELOCITY = 300f;
@@ -91,9 +87,9 @@ public class Player extends Entity {
 		// createPlayerBodyOLD(pos.x, pos.y);
 		body.setGravityScale( 0.25f );
 		body.setFixedRotation( true );
-		//sprite.setScale( 100f * GameScreen.PIXEL_TO_BOX );
-		//offset.x = -15f;
-		//offset.y = -7.5f;
+		// sprite.setScale( 100f * GameScreen.PIXEL_TO_BOX );
+		// offset.x = -15f;
+		// offset.y = -7.5f;
 		body.setUserData( this );
 		playerState = PlayerState.Standing;
 		inputHandler = new InputHandlerPlayer1( );
@@ -187,8 +183,7 @@ public class Player extends Entity {
 			playerState = PlayerState.JumpingOffScrew;
 			body.applyLinearImpulse( new Vector2( 0.0f, 0.15f ),
 					body.getWorldCenter( ) );
-		}
-		if ( isGrounded( ) ) {
+		} else if ( isGrounded( ) ) {
 			body.applyLinearImpulse( new Vector2( 0.0f, 0.15f ),
 					body.getWorldCenter( ) );
 		}
@@ -271,64 +266,64 @@ public class Player extends Entity {
 	public void update( float deltaTime ) {
 		super.update( deltaTime );
 		inputHandler.update( );
-		//sprite.setY( sprite.getY( ) + sprite.getHeight( ) / 8);
-		//sprite.setPosition( body.getPosition( ).x, body.getPosition( ).y);
-		//sprite.setOrigin( offset.x, offset.y );
+		// sprite.setY( sprite.getY( ) + sprite.getHeight( ) / 8);
+		// sprite.setPosition( body.getPosition( ).x, body.getPosition( ).y);
+		// sprite.setOrigin( offset.x, offset.y );
 		// Vector2 pos = body.getPosition();
 		// Vector2 vel = body.getLinearVelocity();
 
-		if ( inputHandler.jumpPressed(  ) ) {
+		if ( inputHandler.jumpPressed( ) ) {
 			if ( !jumpPressed ) {
 				jump( );
 				jumpPressed = true;
 			}
 		}
-		if ( !inputHandler.jumpPressed(  ) ) {
+		if ( !inputHandler.jumpPressed( ) ) {
 			jumpPressed = false;
 		}
-		if ( inputHandler.leftPressed(  ) ) {
+		if ( inputHandler.leftPressed( ) ) {
 			moveLeft( );
 			prevKey = Keys.A;
 		}
 
-		if ( inputHandler.rightPressed(  ) ) {
+		if ( inputHandler.rightPressed( ) ) {
 			moveRight( );
 			prevKey = Keys.D;
 		}
-		if ( inputHandler.downPressed(  ) ) {
+		if ( inputHandler.downPressed( ) ) {
 			stop( );
 		}
 
-		if ( ( !inputHandler.leftPressed(  ) && !inputHandler
-				.rightPressed(  ) )
+		if ( ( !inputHandler.leftPressed( ) && !inputHandler.rightPressed( ) )
 				&& ( prevKey == Keys.D || prevKey == Keys.A ) ) {
 			stop( );
 		}
 
-		if ( inputHandler.screwPressed(  ) && hitScrew
+		if ( inputHandler.screwPressed( ) && hitScrew
 				&& playerState != PlayerState.Screwing ) {
 			attachToScrew( );
 		}
 
 		if ( playerState == PlayerState.Screwing ) {
-//			sprite.setPosition( currentScrew.sprite.getX( ), currentScrew.sprite.getY( ) );
-			if ( inputHandler.unscrewPressed(  ) ) {
+			// sprite.setPosition( currentScrew.sprite.getX( ),
+			// currentScrew.sprite.getY( ) );
+			if ( inputHandler.unscrewPressed( ) ) {
 				currentScrew.screwLeft( );
-			} else if ( inputHandler.screwPressed(  ) ) {
+			} else if ( inputHandler.screwPressed( ) ) {
 				currentScrew.screwRight( );
 			}
 			if ( currentScrew.body.getJointList( ).size( ) == 1 ) {
 				jump( );
-				for ( Fixture f : body.getFixtureList( ) ) {
-					f.getFilterData( ).maskBits = 0x0008;
+				for ( Fixture fix : body.getFixtureList( ) ) {
+					fix.getFilterData( ).maskBits = 0x0008;
 				}
 			}
 		}
 
 		if ( playerState == PlayerState.JumpingOffScrew ) {
 			if ( body.getLinearVelocity( ).y < 0 ) {
-				for ( Fixture f : body.getFixtureList( ) ) {
-					f.getFilterData( ).maskBits = 0x0001;
+				for ( Fixture fix : body.getFixtureList( ) ) {
+					fix.getFilterData( ).maskBits = 0x0001;
 				}
 			}
 		}

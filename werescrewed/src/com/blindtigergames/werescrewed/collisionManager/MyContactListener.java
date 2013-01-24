@@ -54,8 +54,14 @@ public class MyContactListener implements ContactListener {
 			if ( playerInvolved ) {
 				Player player = ( Player ) playerFix.getBody( ).getUserData( );
 				if ( objectFix.getBody( ).getUserData( ) instanceof Box ) {
-					Box example = ( Box ) objectFix.getBody( ).getUserData( );
-					example.exampleCollide( );
+					Box box = ( Box ) objectFix.getBody( ).getUserData( );
+					box.exampleCollide( );
+					Vector2 boxPos = box.getPosition( );
+					Vector2 playerPos = player.getPosition( );
+					if ( boxPos.y < playerPos.y ) {
+						player.setGrounded( true );
+						System.out.println( "hey there good looking" );
+					}
 					// player.jump( );
 				} else if ( objectFix.getBody( ).getUserData( ) instanceof StructureScrew ) {
 					StructureScrew example = ( StructureScrew ) objectFix
