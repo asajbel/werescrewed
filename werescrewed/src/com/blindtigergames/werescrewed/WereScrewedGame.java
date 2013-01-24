@@ -18,10 +18,14 @@ public class WereScrewedGame extends Game {
 
         //ScreenManager.getInstance().show(Screen.INTRO);
 		
-		//ScreenManager.getInstance().show(Screen.LOADING);
+		//ScreenManager.getInstance().show(Screen.LEVELTEST);
         
         //uncomment next line to bypass intro
+
+		//ScreenManager.getInstance().show(Screen.GAME);
 		ScreenManager.getInstance().show(Screen.GAME);
+		//ScreenManager.getInstance().show(Screen.IMOVER);
+		
 	}
 
 	@Override

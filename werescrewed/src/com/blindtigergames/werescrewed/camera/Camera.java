@@ -141,10 +141,10 @@ public class Camera {
 		debugInput = false;
 		debugRender = false;
 //		debugMode = true;
-		// check debug
-//		if (Gdx.input.isKeyPressed(Keys.M)) {
-//			debugInput = true;
-//		}
+		//check debug
+		if (Gdx.input.isKeyPressed(Keys.B)) {
+			debugInput = true;
+		}
 		if (Gdx.input.isKeyPressed(Keys.N)) {
 			debugRender = true;
 		}

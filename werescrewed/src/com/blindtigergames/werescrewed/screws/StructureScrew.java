@@ -10,7 +10,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJoint;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
 import com.blindtigergames.werescrewed.entity.Entity;
-import com.blindtigergames.werescrewed.platforms.Skeleton;
+import com.blindtigergames.werescrewed.entity.Skeleton;
 import com.blindtigergames.werescrewed.screens.GameScreen;
 
 /**
@@ -30,7 +30,6 @@ public class StructureScrew extends Screw {
 		maxDepth = max;
 		depth = max;
 		rotation = 0;
-		radius = sprite.getWidth( ) * GameScreen.PIXEL_TO_BOX * 1.6f;
 
 		// create the screw body
 		BodyDef screwBodyDef = new BodyDef( );
@@ -47,12 +46,12 @@ public class StructureScrew extends Screw {
 		body.createFixture( screwFixture );
 		screwShape.dispose( );
 		offset.x = (float)(-sprite.getWidth( )/2.0f);
-		offset.y = (float)(-sprite.getWidth( )/2.0f);		
+		offset.y = (float)(-sprite.getHeight( )/2.0f);		
 		body.setUserData( this );
 
 		// add radar sensor to screw
 		CircleShape radarShape = new CircleShape( );
-		radarShape.setRadius( sprite.getWidth( ) * 1.5f
+		radarShape.setRadius( sprite.getWidth( ) * 1.25f
 				* GameScreen.PIXEL_TO_BOX );
 		FixtureDef radarFixture = new FixtureDef( );
 		radarFixture.shape = radarShape;
@@ -79,8 +78,39 @@ public class StructureScrew extends Screw {
 		screwJoint = ( RevoluteJoint ) world.createJoint( revoluteJointDef );
 	}
 
-	public void update( ) {
-		super.update( );
+	@Override
+	public void screwLeft( ) {
+		body.setAngularVelocity( 15 );
+		depth--;
+		rotation += 10;
+		screwStep = depth + 5;
+		if ( depth == 0 && screwJoint != null ) {
+			world.destroyJoint( platformToScrew );
+			world.destroyJoint( screwJoint );
+			depth = -1;
+		}
+	}
+
+	@Override
+	public void screwRight( ) {
+		if ( depth < maxDepth ) {
+			body.setAngularVelocity( -15 );
+			depth++;
+			rotation -= 10;
+			screwStep = depth + 6;
+		}
+	}
+	
+	@Override
+	public void update( float deltaTime ) {
+		super.update( deltaTime );
+		sprite.setPosition(
+				sprite.getX( )
+						+ ( .25f * ( float ) ( ( maxDepth - depth ) * ( Math
+								.cos( body.getAngle( ) ) ) ) ),
+				sprite.getY( )
+						+ ( .25f * ( float ) ( ( maxDepth - depth ) * ( Math
+								.sin( body.getAngle( ) ) ) ) ) );
 		sprite.setRotation( rotation );
 		if ( depth != screwStep ) {
 			screwStep--;
@@ -88,11 +118,7 @@ public class StructureScrew extends Screw {
 		if ( depth == screwStep ) {
 			body.setAngularVelocity( 0 );
 		}
-		if ( depth == 0 ) {
-			world.destroyJoint( platformToScrew );
-			world.destroyJoint( screwJoint );
-			depth = -1;
-		}
+
 	}
 
 	private Skeleton skeleton;

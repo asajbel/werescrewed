@@ -17,8 +17,9 @@ public class Screw extends Entity {
 		super( n, pos, tex, bod );
 	}
 
-	public void update( ) {
-		super.update( );
+	@Override
+	public void update( float deltaTime ) {
+		super.update( deltaTime );
 	}
 
 	public void remove( ) {
@@ -26,21 +27,11 @@ public class Screw extends Entity {
 	}
 
 	public void screwLeft( ) {
-		body.setAngularVelocity( 15 );
-		depth--;
-		rotation += 10;
-		screwStep = depth + 5;
 	}
 
 	public void screwRight( ) {
-		if ( depth < maxDepth ) {
-			body.setAngularVelocity( -15 );
-			depth++;
-			rotation -= 10;
-			screwStep = depth + 5;
-		}
 	}
-
+	
 	public int getRotation( ) {
 		return rotation;
 	}
@@ -49,21 +40,10 @@ public class Screw extends Entity {
 		return depth;
 	}
 
-	public void exampleCollide( ) {
-		System.out.println( "Hello from screw" );
+	public void exampleCollide( String str ) {
+		System.out.println( str );
 	}
 
-	public boolean collisionCheck( Vector2 pos ) {
-		float dx = pos.x - body.getPosition( ).x;
-		float dy = pos.y - body.getPosition( ).y;
-		float magnitude = dx*dx + dy*dy;
-		if( magnitude < radius*radius ) {
-			return true;
-		}
-		return false;
-	}
-	
-	protected float radius;
 	protected int rotation;
 	protected int depth;
 	protected int maxDepth;

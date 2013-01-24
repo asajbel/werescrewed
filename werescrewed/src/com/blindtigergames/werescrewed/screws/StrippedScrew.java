@@ -1,14 +1,16 @@
 package com.blindtigergames.werescrewed.screws;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJoint;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
-import com.blindtigergames.werescrewed.platforms.Skeleton;
+import com.blindtigergames.werescrewed.entity.Skeleton;
 import com.blindtigergames.werescrewed.screens.GameScreen;
 
 /**
@@ -19,10 +21,11 @@ import com.blindtigergames.werescrewed.screens.GameScreen;
  */
 
 public class StrippedScrew extends Screw {
-	public StrippedScrew( String n, Vector2 pos, Texture tex, Skeleton skeleton ) {
+	public StrippedScrew( String n, Vector2 pos, Texture tex, Skeleton skeleton, World world) {
 		super( n, pos, tex, null );
-		radius = sprite.getWidth( ) * GameScreen.PIXEL_TO_BOX * 1.6f;
+		this.world = world;
 
+		sprite.setColor( Color.ORANGE );
 		// create the screw body
 		BodyDef screwBodyDef = new BodyDef( );
 		screwBodyDef.type = BodyType.DynamicBody;
@@ -33,6 +36,8 @@ public class StrippedScrew extends Screw {
 		screwShape.setRadius( ( sprite.getWidth( ) / 2.0f )
 				* GameScreen.PIXEL_TO_BOX );
 		FixtureDef screwFixture = new FixtureDef( );
+		screwFixture.filter.categoryBits = CATEGORY_SCREWS;
+		screwFixture.filter.maskBits = 0x0001 | 0x0002;
 		screwFixture.shape = screwShape;
 		screwFixture.isSensor = true;
 		body.createFixture( screwFixture );
@@ -43,13 +48,14 @@ public class StrippedScrew extends Screw {
 
 		// add radar sensor to screw
 		CircleShape radarShape = new CircleShape( );
-		radarShape.setRadius( sprite.getWidth( ) * 2 );
+		radarShape.setRadius( sprite.getWidth( ) * 1.25f
+				* GameScreen.PIXEL_TO_BOX  );
 		FixtureDef radarFixture = new FixtureDef( );
 		radarFixture.shape = radarShape;
 		radarFixture.isSensor = true;
 		radarFixture.filter.categoryBits = CATEGORY_SCREWS; // category of Screw
 															// Radar...
-		radarFixture.filter.maskBits = 0x0001;// radar only collides with player
+		radarFixture.filter.maskBits = 0x0001 | 0x0002;// radar collides with player 1 & 2
 												// (player category bits 0x0001)
 		body.createFixture( radarFixture );
 
@@ -62,7 +68,7 @@ public class StrippedScrew extends Screw {
 		platformToScrew = ( RevoluteJoint ) world
 				.createJoint( revoluteJointDef );
 
-		skeleton.addBoneAndJoint( this, platformToScrew );
+		//skeleton.addBoneAndJoint( this, platformToScrew );
 	}
 
 	public void screwLeft( ) {

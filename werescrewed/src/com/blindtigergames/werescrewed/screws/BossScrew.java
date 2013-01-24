@@ -8,8 +8,7 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJoint;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
 import com.blindtigergames.werescrewed.entity.Entity;
-import com.blindtigergames.werescrewed.platforms.Skeleton;
-import com.blindtigergames.werescrewed.screens.GameScreen;
+import com.blindtigergames.werescrewed.entity.Skeleton;
 
 /**
  * @descrip: blah blah
@@ -19,14 +18,12 @@ import com.blindtigergames.werescrewed.screens.GameScreen;
  */
 
 public class BossScrew extends Screw {
-	public RevoluteJoint screwJoint;
 
 	public BossScrew( String n, Vector2 pos, Texture tex, int max, Body bod,
 			Entity platform, Skeleton skeleton ) {
 		super( n, pos, tex, bod );
 		maxDepth = max;
 		depth = max;
-		radius = sprite.getWidth( ) * GameScreen.PIXEL_TO_BOX * 1.6f;
 
 		// add radar sensor to screw
 		CircleShape radarShape = new CircleShape( );
@@ -39,6 +36,7 @@ public class BossScrew extends Screw {
 		radarFixture.filter.maskBits = 0x0001;// radar only collides with player
 												// (player category bits 0x0001)
 		body.createFixture( radarFixture );
+		body.setUserData( this );
 
 		// connect the screw to the platform;
 		RevoluteJointDef revoluteJointDef = new RevoluteJointDef( );
@@ -58,12 +56,33 @@ public class BossScrew extends Screw {
 		screwJoint = ( RevoluteJoint ) world.createJoint( revoluteJointDef );
 
 		// connect the entities to the skeleton
-		skeleton.addBoneAndJoint( this, platformToScrew );
-		skeleton.addBoneAndJoint( platform, screwJoint );
+		//skeleton.addBoneAndJoint( this, platformToScrew );
+		//skeleton.addBoneAndJoint( platform, screwJoint );
 	}
 
-	public void update( ) {
-		super.update( );
+	public void screwLeft( ) {
+		body.setAngularVelocity( 15 );
+		depth--;
+		rotation += 10;
+		screwStep = depth + 5;
+		if ( depth == 0 && screwJoint != null ) {
+			world.destroyJoint( platformToScrew );
+			world.destroyJoint( screwJoint );
+			depth = -1;
+		}
+	}
+
+	public void screwRight( ) {
+		if ( depth < maxDepth ) {
+			body.setAngularVelocity( -15 );
+			depth++;
+			rotation -= 10;
+			screwStep = depth + 6;
+		}
+	}
+	
+	public void update( float deltaTime ) {
+		super.update( deltaTime );
 		sprite.setRotation( rotation );
 		if ( depth != screwStep ) {
 			screwStep--;
@@ -71,12 +90,8 @@ public class BossScrew extends Screw {
 		if ( depth == screwStep ) {
 			body.setAngularVelocity( 0 );
 		}
-		if ( depth == 0 ) {
-			world.destroyJoint( platformToScrew );
-			world.destroyJoint( screwJoint );
-			depth = -1;
-		}
 	}
 
+	private RevoluteJoint screwJoint;
 	private RevoluteJoint platformToScrew;
 }
