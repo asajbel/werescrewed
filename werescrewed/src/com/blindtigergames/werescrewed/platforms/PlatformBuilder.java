@@ -19,7 +19,7 @@ public class PlatformBuilder {
 	float density = 1.0f, friction = 0.5f, restitution = 0.1f,
 			gravScale = 0.1f;
 	float positionX = 0.0f, positionY = 0.0f;
-	boolean flipHorizonal = false, flipVertical = false;
+	boolean flipHorizonal = false, flipVertical = false, isOneSided = false;
 	Shapes shape = null;
 	Texture texture;
 
@@ -108,6 +108,11 @@ public class PlatformBuilder {
 		this.flipVertical = flipVert;
 		return this;
 	}
+	
+	public PlatformBuilder setOneSided( boolean oneSide ) {
+		this.isOneSided = oneSide;
+		return this;
+	}
 
 	public RoomPlatform buildRoomPlatform( World world ) {
 		RoomPlatform rp = new RoomPlatform( "room", new Vector2( positionX,
@@ -122,7 +127,7 @@ public class PlatformBuilder {
 
 	public TiledPlatform buildTilePlatform( World world ) {
 		TiledPlatform tp = new TiledPlatform( "tile", new Vector2( positionX,
-				positionY ), this.texture, this.width, this.height, world );
+				positionY ), this.texture, this.width, this.height, this.isOneSided, world );
 
 		tp.setDensity( this.density );
 		tp.setFriction( this.friction );

@@ -30,6 +30,7 @@ public class RoomPlatform extends Platform {
 		this.width = width * tileConstant;
 		this.height = height * tileConstant;
 		constructRoomBody( pos.x, pos.y, width, height );
+		body.setUserData( this );
 	}
 
 	public void constructRoomBody( float x, float y, float width, float height ) {
@@ -68,7 +69,8 @@ public class RoomPlatform extends Platform {
 		
 	}
 
-	public void update( ) {
-		super.update( );
+	public void update( float deltaTime ) {
+		super.update( deltaTime );
 	}
+
 }

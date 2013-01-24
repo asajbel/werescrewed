@@ -28,7 +28,7 @@ import com.blindtigergames.werescrewed.platforms.PlatformBuilder;
 import com.blindtigergames.werescrewed.platforms.RoomPlatform;
 import com.blindtigergames.werescrewed.platforms.ShapePlatform;
 import com.blindtigergames.werescrewed.platforms.Shapes;
-import com.blindtigergames.werescrewed.platforms.Skeleton;
+import com.blindtigergames.werescrewed.entity.Skeleton;
 import com.blindtigergames.werescrewed.platforms.TiledPlatform;
 import com.blindtigergames.werescrewed.screws.StructureScrew;
 
@@ -55,7 +55,7 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 	Body playerBody;
 	Entity playerEntity;
 	Player player;
-	TiledPlatform tp, tp2;
+	TiledPlatform tp, ground;
 	RoomPlatform rp;
 	ComplexPlatform cp;
 	ShapePlatform sp;
@@ -92,11 +92,12 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 		player = new Player( world, new Vector2( 1.0f, 1.0f ), name );
 
 		cam = new Camera( w, h, player );
-		
+ 
 		tp = new PlatformBuilder()
 				.setPosition( 2.0f, 0.2f )
 				.setDimensions( 10, 1 )
 				.setTexture( texture )
+				.setResitituion( 0.0f )
 				.buildTilePlatform( world );
 		
 		
@@ -104,10 +105,11 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 				.setPosition( -1.0f, 0.4f )
 				.setDimensions( 1, 10 )
 				.setTexture( texture )
+				.setResitituion( 0.0f )
 				.buildRoomPlatform( world );
 		
-		cp = new ComplexPlatform( "bottle", new Vector2( -1.0f, 3.0f ), texture,
-				1, world, "bottle" );
+		cp = new ComplexPlatform( "bottle", new Vector2( -1.0f, 3.0f ), new Texture(Gdx.files.internal( "data/bodies/test01.png")),
+				1, world, "complexTest" );
 		sp = new ShapePlatform( "rhom", new Vector2( 1.0f, 1.0f ), texture,
 				world, Shapes.plus, 1.0f, 1.0f, false );
 
@@ -121,13 +123,18 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 
 		tp.setMover( new TimelineMover( ) );
 		
-		tp2 = new PlatformBuilder()
+		ground = new PlatformBuilder()
 				.setPosition( 0.0f, 0.0f )
 				.setDimensions( 100, 1 )
 				.setTexture( texture )
+				.setResitituion( 0.0f )
 				.buildTilePlatform( world );
 		
-
+		//skeleton.addPlatformFixed(ground);
+		skeleton.addPlatformFixed(tp);
+		skeleton.addPlatformFixed(sp);
+		skeleton.addPlatformFixed(cp);
+		skeleton.addPlatformFixed(rp);
 		// make sure you uncomment the next two lines debugRenderer = new
 		// SBox2DDebugRenderer(BOX_TO_PIXEL); for physics world
 		// debugRenderer = new Box2DDebugRenderer();
@@ -139,10 +146,12 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 	}
 
 	@Override
-	public void render( float delta ) {
+	public void render( float deltaTime ) {
 		Gdx.gl10.glClearColor( 0.0f, 0f, 0.0f, 1.0f );
 		Gdx.gl10.glClear( GL20.GL_COLOR_BUFFER_BIT );
 
+		//float deltaTime = Gdx.graphics.getDeltaTime( );
+		
 		inputHandler.update( );
 		cam.update( );
 
@@ -156,14 +165,14 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 			ScreenManager.getInstance( ).show( Screen.PHYSICS );
 		}
 
+		skeleton.update( deltaTime );
+		player.update( deltaTime );
+		tp.update( deltaTime );
+		rp.update( deltaTime);
+		cp.update( deltaTime );
+		sp.update( deltaTime );
 
-		player.update( );
-		tp.update( );
-		rp.update( );
-		cp.update( );
-		sp.update( );
-
-		structScrew.update( );
+		structScrew.update( deltaTime );
 
 		if ( inputHandler.unscrewPressed( player_t.ONE ) ) {
 			structScrew.screwLeft( );
@@ -180,6 +189,7 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 
 		// test drawing the texture by uncommenting the next line:
 		tp.draw( batch );
+		cp.draw( batch );
 		player.draw( batch );
 
 		structScrew.draw( batch );
@@ -191,6 +201,7 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 		world.step( 1 / 60f, 6, 2 ); // step our physics calculations
 		// Gdx.app.debug("Physics",
 		// "delta = "+Gdx.app.getGraphics().getDeltaTime());
+		logger.log( );
 	}
 
 	@Override
@@ -219,3 +230,4 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 	}
 
 }
+

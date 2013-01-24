@@ -6,12 +6,11 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.JointEdge;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJoint;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
 import com.blindtigergames.werescrewed.entity.Entity;
-import com.blindtigergames.werescrewed.platforms.Skeleton;
+import com.blindtigergames.werescrewed.entity.Skeleton;
 import com.blindtigergames.werescrewed.screens.GameScreen;
 
 /**
@@ -47,7 +46,7 @@ public class StructureScrew extends Screw {
 		body.createFixture( screwFixture );
 		screwShape.dispose( );
 		offset.x = (float)(-sprite.getWidth( )/2.0f);
-		offset.y = (float)(-sprite.getWidth( )/2.0f);		
+		offset.y = (float)(-sprite.getHeight( )/2.0f);		
 		body.setUserData( this );
 
 		// add radar sensor to screw
@@ -79,6 +78,7 @@ public class StructureScrew extends Screw {
 		screwJoint = ( RevoluteJoint ) world.createJoint( revoluteJointDef );
 	}
 
+	@Override
 	public void screwLeft( ) {
 		body.setAngularVelocity( 15 );
 		depth--;
@@ -91,6 +91,7 @@ public class StructureScrew extends Screw {
 		}
 	}
 
+	@Override
 	public void screwRight( ) {
 		if ( depth < maxDepth ) {
 			body.setAngularVelocity( -15 );
@@ -100,8 +101,9 @@ public class StructureScrew extends Screw {
 		}
 	}
 	
-	public void update( ) {
-		super.update( );
+	@Override
+	public void update( float deltaTime ) {
+		super.update( deltaTime );
 		sprite.setPosition(
 				sprite.getX( )
 						+ ( .25f * ( float ) ( ( maxDepth - depth ) * ( Math

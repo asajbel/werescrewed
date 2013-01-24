@@ -4,6 +4,7 @@ package com.blindtigergames.werescrewed.platforms;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
@@ -26,8 +27,8 @@ public class ComplexPlatform extends Platform {
 	// String object would be like "bottle" then we will load that particular
 	// body (precompiled)
 	public ComplexPlatform( String n, Vector2 pos, Texture tex, int scale,
-			World world, String bodyName ) {
-		super( n, EntityDef.getDefinition( bodyName ), world, pos, 0.0f,
+			World world, String definitionName ) {
+		super( n, EntityDef.getDefinition( definitionName ), world, pos, 0.0f,
 				new Vector2( 1f, 1f ) );
 		// super(n, pos, tex, null);
 		// this.world = world;
@@ -58,7 +59,8 @@ public class ComplexPlatform extends Platform {
 
 	}
 
-	public void update( ) {
-		super.update( );
+	public void update( float deltaTime ) {
+		super.update( deltaTime );
 	}
+	
 }

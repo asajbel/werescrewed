@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
@@ -42,6 +43,19 @@ public class Entity {
 			Gdx.app.log( "Entity Construction", n + " origin:" + sprite.getOriginX( ) + "," + sprite.getOriginY( ) );
 	}
 
+	public Entity( String n, EntityDef d, World w, Vector2 pos, float rot,
+			Vector2 sca, Texture tex ) {
+		this( );
+		name = n;
+		type = d;
+		world = w;
+		if ( tex != null )
+			constructSprite( tex );
+		else
+			constructSprite( );
+		constructBody( pos.x, pos.y, sca.x, sca.y );
+	}
+	
 	public Entity( String n, Sprite spr, Body bod ) {
 		this( );
 		name = n;
@@ -57,7 +71,8 @@ public class Entity {
 	public Entity( String n, Vector2 pos, Texture tex, Body bod ) {
 		this( );
 		name = n;
-		constructSprite( tex );
+		if ( tex != null )
+			constructSprite( tex );
 		body = bod;
 		if ( bod != null ) {
 			world = bod.getWorld( );
@@ -81,16 +96,31 @@ public class Entity {
 	public Vector2 getPosition( ) {
 		return body.getPosition( );
 	}
+	
+    public void Move(Vector2 vector)
+    {
+    	Vector2 pos = body.getPosition().add(vector);
+    	setPosition(pos);
+    }
+    
+    public void draw(SpriteBatch batch)
+    {
+    	if (sprite != null) {
+    		sprite.draw(batch);
+    	}
+    }
+    
 
-	public void update()
+	public void update(float deltaTime)
 	{
 		if (body != null && sprite != null){
-			Vector2 bodyPos = body.getPosition();
-			Vector2 spritePos = bodyPos.mul(GameScreen.BOX_TO_PIXEL).add(offset);
-			sprite.setPosition(spritePos.x, spritePos.y);
-			sprite.setRotation( (float)(body.getAngle( ) * 180.0 / Math.PI) );
+			Vector2 bodyPos = body.getPosition().mul( GameScreen.BOX_TO_PIXEL );
+			sprite.setPosition( bodyPos.x + offset.x, bodyPos.y + offset.y);
+			//sprite.setOrigin(sprite.getWidth()/2, sprite.getHeight()/2);
+			sprite.setRotation( MathUtils.radiansToDegrees * body.getAngle( ) );
+			
 			if(mover != null)
-				mover.move(body);
+				mover.move(deltaTime, body);
 		}
 	}
 
@@ -107,19 +137,14 @@ public class Entity {
 		if ( type != null && type.texture != null ) {
 			sprite = new Sprite( type.texture );
 			sprite.setOrigin( type.origin.x, type.origin.y );
-			sprite.setScale( GameScreen.PIXEL_TO_BOX * type.spriteScale.x,
-					GameScreen.PIXEL_TO_BOX * type.spriteScale.y );
+			sprite.setScale( type.spriteScale.x,
+					type.spriteScale.y );
 		}
 	}
-	
-	protected void constructSprite(Texture tex){
-		sprite = new Sprite(tex);
-		if (body != null){
-			Vector2 newOrigin = body.getLocalCenter( );
-			sprite.setOrigin(newOrigin.x, newOrigin.y);
-		} else {
-			sprite.setOrigin(tex.getWidth()/2, tex.getHeight()/2);
-		}
+
+	protected void constructSprite( Texture tex ) {
+		sprite = new Sprite( tex );
+		sprite.setOrigin( sprite.getWidth( ) / 2, sprite.getHeight( ) / 2 );
 	}
 
 	protected void constructBody( float x, float y, float width, float height ) {

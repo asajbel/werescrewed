@@ -84,6 +84,7 @@ public class Camera {
 		player1Anchor = -1;
 		player2Anchor = -1;
 		anchorList = AnchorList.getInstance();
+		anchorList.clear( );
 		
 		// debug
 		debugInput = false;
@@ -127,10 +128,10 @@ public class Camera {
 		debugInput = false;
 		debugRender = false;
 //		debugMode = true;
-		// check debug
-//		if (Gdx.input.isKeyPressed(Keys.M)) {
-//			debugInput = true;
-//		}
+		//check debug
+		if (Gdx.input.isKeyPressed(Keys.B)) {
+			debugInput = true;
+		}
 		if (Gdx.input.isKeyPressed(Keys.N)) {
 			debugRender = true;
 		}
