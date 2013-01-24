@@ -153,6 +153,7 @@ public class IMoverGameScreen implements com.badlogic.gdx.Screen {
         					.setHeight( 1 )
         					.setOneSided( true )
         					.setPosition( -300*PIXEL_TO_BOX, 200*PIXEL_TO_BOX )
+        					.setTexture( texture )
         					.buildTilePlatform( world );
         slidingPlatform.body.setType( BodyType.DynamicBody );
 
@@ -172,13 +173,24 @@ public class IMoverGameScreen implements com.badlogic.gdx.Screen {
                 PuzzleType.PRISMATIC_SLIDER, j ) );
         
         
-        TiledPlatform skeletonTest1 = new TiledPlatform( "prismaticplat2", new Vector2(
-                -300.0f*PIXEL_TO_BOX, -200.0f*PIXEL_TO_BOX ), null, 10, 1, false, world );
+        TiledPlatform skeletonTest1 = new PlatformBuilder()
+										.setWidth( 10 )
+										.setHeight( 1 )
+										.setOneSided( false )
+										.setPosition( -300*PIXEL_TO_BOX, -200*PIXEL_TO_BOX )
+										.setTexture( texture )
+										.buildTilePlatform( world );
+        			
         skeletonTest1.body.setType( BodyType.DynamicBody );
         skeleton.addPlatformFixed( skeletonTest1 );
         
-        TiledPlatform skeletonTest2 = new TiledPlatform( "prismaticplat3", new Vector2(
-                300.0f*PIXEL_TO_BOX, 300.0f*PIXEL_TO_BOX ), null, 10, 1, false, world );
+        TiledPlatform skeletonTest2 = new PlatformBuilder()
+										.setWidth( 10 )
+										.setHeight( 1 )
+										.setOneSided( false )
+										.setPosition( 300*PIXEL_TO_BOX, 300*PIXEL_TO_BOX )
+										.setTexture( texture )
+										.buildTilePlatform( world );
         skeletonTest2.body.setType( BodyType.DynamicBody );
         skeleton.addPlatformRotatingCenter( skeletonTest2 );
 
@@ -187,8 +199,14 @@ public class IMoverGameScreen implements com.badlogic.gdx.Screen {
          */
         
         for ( int i = 0; i < 10; ++i ){
-            piston = new TiledPlatform( "piston"+i, new Vector2( (-500f-i*40)*PIXEL_TO_BOX, 150f*PIXEL_TO_BOX ), null,
-                    1, 3, false, world );
+            TiledPlatform piston = new PlatformBuilder()
+									.setWidth( 1 )
+									.setHeight( 3 )
+									.setOneSided( false )
+									.setPosition( (-500f-i*40)*PIXEL_TO_BOX, 150f*PIXEL_TO_BOX )
+									.setTexture( texture )
+									.buildTilePlatform( world );
+
             piston.body.setType( BodyType.DynamicBody );
             PrismaticJoint pistonJoint = new PrismaticJointBuilder( world )
                                         .skeleton( skeleton )
