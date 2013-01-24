@@ -58,7 +58,7 @@ public class TiledPlatform extends Platform {
 
 		BodyDef bodyDef = new BodyDef( );
 		bodyDef.type = BodyType.KinematicBody;
-		bodyDef.position.set( new Vector2( x , y ) );
+		bodyDef.position.set( new Vector2( x * GameScreen.PIXEL_TO_BOX , y * GameScreen.PIXEL_TO_BOX ) );
 		body = world.createBody( bodyDef );
 
 		PolygonShape polygon = new PolygonShape( );
