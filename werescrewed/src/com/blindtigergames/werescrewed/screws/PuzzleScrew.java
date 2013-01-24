@@ -102,6 +102,10 @@ public class PuzzleScrew extends Screw {
 		}
 	}
 
+	public int getMaxDepth( ){
+		return maxDepth;
+	}
+	
 	private RevoluteJoint platformToScrew;
 
 }

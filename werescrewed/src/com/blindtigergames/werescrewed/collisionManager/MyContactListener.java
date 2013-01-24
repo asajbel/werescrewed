@@ -73,7 +73,6 @@ public class MyContactListener implements ContactListener {
 					example.exampleCollide( "begin collision with screw " );
 					player.hitScrew( example );
 				} else if ( objectFix.getBody( ).getUserData( ) instanceof TiledPlatform ) {
-					
 					TiledPlatform collider = ( TiledPlatform ) objectFix
 							.getBody( ).getUserData( );
 					Vector2 platformPos = collider.getPosition( );
