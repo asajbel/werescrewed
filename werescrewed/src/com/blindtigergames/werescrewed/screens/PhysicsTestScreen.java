@@ -14,20 +14,25 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.World;
-import com.blindtigergames.werescrewed.camera.AnchorList;
+import com.badlogic.gdx.physics.box2d.joints.PrismaticJoint;
 import com.blindtigergames.werescrewed.camera.Camera;
 import com.blindtigergames.werescrewed.collisionManager.MyContactListener;
 import com.blindtigergames.werescrewed.debug.SBox2DDebugRenderer;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityManager;
 import com.blindtigergames.werescrewed.entity.Player;
+import com.blindtigergames.werescrewed.entity.Skeleton;
+import com.blindtigergames.werescrewed.entity.mover.PuzzleType;
+import com.blindtigergames.werescrewed.entity.mover.SlidingMotorMover;
+import com.blindtigergames.werescrewed.joint.PrismaticJointBuilder;
 import com.blindtigergames.werescrewed.platforms.Box;
 import com.blindtigergames.werescrewed.platforms.ComplexPlatform;
 import com.blindtigergames.werescrewed.platforms.PlatformBuilder;
 import com.blindtigergames.werescrewed.platforms.RoomPlatform;
-import com.blindtigergames.werescrewed.entity.Skeleton;
 import com.blindtigergames.werescrewed.platforms.TiledPlatform;
+import com.blindtigergames.werescrewed.puzzles.PuzzleManager;
 import com.blindtigergames.werescrewed.screws.PuzzleScrew;
 import com.blindtigergames.werescrewed.screws.StrippedScrew;
 import com.blindtigergames.werescrewed.screws.StructureScrew;
@@ -58,12 +63,14 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 	Body playerBody;
 	Entity playerEntity;
 	Player player;
-	TiledPlatform tp, ground;
+	TiledPlatform tp, ground, movingTP;
 	RoomPlatform rp;
 	ComplexPlatform cp;
 	// ShapePlatform sp;
 	Box box;
-
+	SlidingMotorMover sm;
+	PuzzleManager pm;
+	
 	Texture screwTex;
 	Texture background;
 	StructureScrew structScrew;
@@ -93,8 +100,10 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		world = new World( new Vector2( 0, -45 ), true );
 		MCL = new MyContactListener( );
 		world.setContactListener( MCL );
+		skeleton = new Skeleton( "", Vector2.Zero, background, world );
+		pm = new PuzzleManager();
 		String name = "player";
-
+		
 		player = new Player( world, new Vector2( 1.0f, 1.0f ), name );
 
 		texture = new Texture( Gdx.files.internal( "data/rletter.png" ) );
@@ -103,12 +112,45 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 				.setDimensions( 10, 1 ).setTexture( texture )
 				.setResitituion( 0.0f ).buildTilePlatform( world );
 
+		movingTP = new PlatformBuilder( ).setPosition( 2.0f, 1.1f )
+				.setDimensions( 10, 1 ).setTexture( texture )
+				.setResitituion( 0.0f ).buildTilePlatform( world );
+		
+		movingTP.body.setType( BodyType.DynamicBody );
+        PrismaticJoint pistonJoint = new PrismaticJointBuilder( world )
+        .skeleton( skeleton )
+        .bodyB( (Entity)movingTP )
+        .anchor( movingTP.body.getWorldCenter() )
+        .axis( 0, 1 )
+        .motor( true )
+        .limit( true )
+        .upper( 0.5f )
+        .motorSpeed( 1 )
+        .build();
+		
+		movingTP.setMover( new SlidingMotorMover( PuzzleType.PRISMATIC_SLIDER, pistonJoint ) );
+		
+        PrismaticJoint puzzleJoint = new PrismaticJointBuilder( world )
+        .skeleton( skeleton )
+        .bodyB( (Entity)movingTP )
+        .anchor( movingTP.body.getWorldCenter() )
+        .axis( 1, 0 )
+        .motor( true )
+        .limit( true )
+        .upper( 0.5f )
+        .motorSpeed( 1 )
+        .build();
+        
+		sm = new SlidingMotorMover ( PuzzleType.PRISMATIC_SLIDER, puzzleJoint );
+		
+		pm.addEntity( "001_0", movingTP );
+		pm.addMover( "001_0", sm );
+
 		screwTex = new Texture( Gdx.files.internal( "data/screw.png" ) );
 		background = new Texture( Gdx.files.internal( "data/libgdx.png" ) );
-		skeleton = new Skeleton( "", Vector2.Zero, background, world );
 		structScrew = new StructureScrew( "", tp.body.getPosition( ), screwTex,
 				50, tp, skeleton, world );
-		puzzleScrew = new PuzzleScrew( "", new Vector2( 1.0f, 0.2f ), screwTex,
+		puzzleScrew = new PuzzleScrew( "001", new Vector2( 1.0f, 0.2f ), screwTex,
 				50, skeleton, world );
 
 		float x1 = 1.75f;
@@ -142,7 +184,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 			System.out.print( "worked" );
 		} else
 			System.out.print( "nope" );
-
+		
 		
 		ground = new PlatformBuilder( ).setPosition( 0.0f, 0.0f )
 				.setDimensions( 100, 1 ).setTexture( texture )
@@ -152,6 +194,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		// SBox2DDebugRenderer(BOX_TO_PIXEL); for physics world
 		// debugRenderer = new Box2DDebugRenderer();
 		debugRenderer = new SBox2DDebugRenderer( BOX_TO_PIXEL );
+		debugRenderer.setDrawJoints( false );
 		Gdx.app.setLogLevel( Application.LOG_DEBUG );
 
 		logger = new FPSLogger( );
@@ -172,6 +215,8 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 			System.exit( 0 );
 		}
 
+		pm.update( deltaTime );
+		
 		player.update( deltaTime );
 
 		structScrew.update( deltaTime );
@@ -180,6 +225,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 			s.update( deltaTime );
 		}
 
+		movingTP.update( deltaTime );
 		//
 		tp.update( deltaTime );
 		rp.update( deltaTime );

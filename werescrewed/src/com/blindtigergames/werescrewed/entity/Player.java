@@ -183,7 +183,13 @@ public class Player extends Entity {
 			playerState = PlayerState.JumpingOffScrew;
 			body.applyLinearImpulse( new Vector2( 0.0f, 0.15f ),
 					body.getWorldCenter( ) );
+<<<<<<< HEAD
 		} else if ( isGrounded( ) ) {
+=======
+			setGrounded( false );
+		}
+		if ( isGrounded( ) ) {
+>>>>>>> 87b585ec22997cce386c75df04fe7ca05cc6db16
 			body.applyLinearImpulse( new Vector2( 0.0f, 0.15f ),
 					body.getWorldCenter( ) );
 		}
