@@ -1,9 +1,13 @@
 package com.blindtigergames.werescrewed.entity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.JointEdge;
@@ -35,6 +39,7 @@ public class Player extends Entity {
 	private int prevKey;
 	private InputHandler inputHandler;
 	private PlayerState playerState;
+	public ArrayList< Contact > contacts;
 
 	private Screw currentScrew;
 	private RevoluteJoint playerToScrew;
@@ -46,6 +51,7 @@ public class Player extends Entity {
 													// players' centers that a
 													// touching surface must be
 													// to qualify as "ground"
+	private boolean jumpPressed;
 
 	// Static constants
 	public final static float MAX_VELOCITY = 300f;
@@ -92,6 +98,7 @@ public class Player extends Entity {
 		body.setUserData( this );
 		playerState = PlayerState.Standing;
 		inputHandler = new InputHandler( );
+		contacts = new ArrayList< Contact >( );
 	}
 
 	/**
@@ -136,7 +143,7 @@ public class Player extends Entity {
 		if ( playerState == PlayerState.Screwing ) {
 			world.destroyJoint( playerToScrew );
 			playerState = PlayerState.JumpingOffScrew;
-			body.applyLinearImpulse( new Vector2( 0.05f, 0.2f ),
+			body.applyLinearImpulse( new Vector2( 0.05f, 0.15f ),
 					body.getWorldCenter( ) );
 		} else if ( body.getLinearVelocity( ).x < 2.0f ) {
 			body.applyLinearImpulse( new Vector2( 0.01f, 0.0f ),
@@ -159,7 +166,7 @@ public class Player extends Entity {
 		if ( playerState == PlayerState.Screwing ) {
 			world.destroyJoint( playerToScrew );
 			playerState = PlayerState.JumpingOffScrew;
-			body.applyLinearImpulse( new Vector2( -0.05f, 0.2f ),
+			body.applyLinearImpulse( new Vector2( -0.05f, 0.15f ),
 					body.getWorldCenter( ) );
 		} else if ( body.getLinearVelocity( ).x > -2.0f ) {
 			body.applyLinearImpulse( new Vector2( -0.01f, 0.0f ),
@@ -179,9 +186,11 @@ public class Player extends Entity {
 		if ( playerState == PlayerState.Screwing ) {
 			world.destroyJoint( playerToScrew );
 			playerState = PlayerState.JumpingOffScrew;
+			body.applyLinearImpulse( new Vector2( 0.0f, 0.15f ),
+					body.getWorldCenter( ) );
 		}
-		if ( Math.abs( body.getLinearVelocity( ).y ) < 1e-5 ) {
-			body.applyLinearImpulse( new Vector2( 0.0f, 0.2f ),
+		if ( isGrounded( ) ) {
+			body.applyLinearImpulse( new Vector2( 0.0f, 0.15f ),
 					body.getWorldCenter( ) );
 		}
 		/* Math.abs( body.getLinearVelocity( ).y ) < 1e-5 */
@@ -209,6 +218,15 @@ public class Player extends Entity {
 	 */
 	public void setGrounded( boolean grounded ) {
 		this.grounded = grounded;
+	}
+
+	/**
+	 * Checks if the player is grounded
+	 * 
+	 * @return a boolean representing whether or not the player is "grounded"
+	 */
+	public boolean isGrounded( ) {
+		return grounded;
 	}
 
 	/**
@@ -261,7 +279,13 @@ public class Player extends Entity {
 		// Vector2 vel = body.getLinearVelocity();
 
 		if ( inputHandler.jumpPressed( player_t.ONE ) ) {
-			jump( );
+			if ( !jumpPressed ) {
+				jump( );
+				jumpPressed = true;
+			}
+		}
+		if ( !inputHandler.jumpPressed( player_t.ONE ) ) {
+			jumpPressed = false;
 		}
 		if ( inputHandler.leftPressed( player_t.ONE ) ) {
 			moveLeft( );

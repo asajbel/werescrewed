@@ -55,7 +55,7 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 	Body playerBody;
 	Entity playerEntity;
 	Player player;
-	TiledPlatform tp, tp2;
+	TiledPlatform tp, ground;
 	RoomPlatform rp;
 	ComplexPlatform cp;
 	ShapePlatform sp;
@@ -93,7 +93,7 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 		player = new Player( world, new Vector2( 1.0f, 1.0f ), name );
 
 		cam = new Camera( w, h, player );
-		
+ 
 		tp = new PlatformBuilder()
 				.setPosition( 2.0f, 0.2f )
 				.setDimensions( 10, 1 )
@@ -124,14 +124,18 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 
 		tp.setMover( new TimelineMover( ) );
 		
-		tp2 = new PlatformBuilder()
+		ground = new PlatformBuilder()
 				.setPosition( 0.0f, 0.0f )
 				.setDimensions( 100, 1 )
 				.setTexture( texture )
 				.setResitituion( 0.0f )
 				.buildTilePlatform( world );
 		
-
+		//skeleton.addPlatformFixed(ground);
+		skeleton.addPlatformFixed(tp);
+		skeleton.addPlatformFixed(sp);
+		skeleton.addPlatformFixed(cp);
+		skeleton.addPlatformFixed(rp);
 		// make sure you uncomment the next two lines debugRenderer = new
 		// SBox2DDebugRenderer(BOX_TO_PIXEL); for physics world
 		// debugRenderer = new Box2DDebugRenderer();
@@ -162,7 +166,7 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 			ScreenManager.getInstance( ).show( Screen.PHYSICS );
 		}
 
-
+		skeleton.update( deltaTime );
 		player.update( deltaTime );
 		tp.update( deltaTime );
 		rp.update( deltaTime);

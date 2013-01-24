@@ -12,7 +12,7 @@ import com.blindtigergames.werescrewed.entity.mover.IMover;
 
 /**
  * @param name
- *            blah blah
+ * 
  * 
  * @author Ranveer
  * 
@@ -28,7 +28,8 @@ public class Platform extends Entity {
 	protected World world;
 	protected float width, height;
 	protected boolean dynamicType = false;
-	protected boolean rotate = true;
+	protected boolean rotate = false;
+	protected boolean oneSided = false;
 	// tileConstant is 16 for setasbox function which uses half width/height
 	// creates 32x32 objects
 	protected final int tileConstant = 16;
@@ -54,7 +55,7 @@ public class Platform extends Entity {
 	
 	@Override
 	public void update( float deltaTime ) {
-		//TODO: is this necessary?
+		
 		body.setActive( true );
 		
 		super.update( deltaTime );
@@ -76,6 +77,10 @@ public class Platform extends Entity {
 		}
 		if ( Gdx.input.isKeyPressed( Keys.L ) ) {
 			setHorizontal( );
+		}
+		if ( Gdx.input.isKeyPressed( Keys.B ) ) {
+			setOneSided(!getOneSided());
+			System.out.println(getOneSided());
 		}
 	}
 
@@ -117,6 +122,14 @@ public class Platform extends Entity {
 	// This function sets platform to 90*
 	public void setVertical( ) {
 		body.setTransform( body.getPosition( ), ( float ) Math.toRadians( 180 ) );
+	}
+	
+	public boolean getOneSided(){
+		return oneSided;
+	}
+	
+	public void setOneSided(boolean value){
+		oneSided = value;
 	}
 
 	protected void rotate( ) {

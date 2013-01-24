@@ -28,7 +28,6 @@ import java.util.Vector;
 //Need to fix widht/height storage
 public class TiledPlatform extends Platform {
 	protected boolean rotate = false;
-	protected boolean oneSided;
 	protected float tileHeight, tileWidth;
 	protected float tileSize;
 	protected Vector<Sprite> tiles;
@@ -74,14 +73,6 @@ public class TiledPlatform extends Platform {
 		body.createFixture( platformFixtureDef );
 
 		polygon.dispose( );
-	}
-	
-	public void setOneSided( boolean value ){
-		oneSided = value;
-	}
-	
-	public boolean getOneSided(){
-		return oneSided;
 	}
 	
 	public float getActualHeight(){

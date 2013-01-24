@@ -78,6 +78,7 @@ public class StructureScrew extends Screw {
 		screwJoint = ( RevoluteJoint ) world.createJoint( revoluteJointDef );
 	}
 
+	@Override
 	public void screwLeft( ) {
 		body.setAngularVelocity( 15 );
 		depth--;
@@ -90,6 +91,7 @@ public class StructureScrew extends Screw {
 		}
 	}
 
+	@Override
 	public void screwRight( ) {
 		if ( depth < maxDepth ) {
 			body.setAngularVelocity( -15 );
