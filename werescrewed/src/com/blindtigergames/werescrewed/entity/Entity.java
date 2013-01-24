@@ -94,6 +94,11 @@ public class Entity {
 		}
 	}
 
+	public void draw(SpriteBatch batch){
+		if (sprite != null)
+			sprite.draw( batch );
+	}
+	
 	protected String generateName( ) {
 		return type.name;
 	}

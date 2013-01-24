@@ -28,7 +28,7 @@ public class LevelTestScreen implements com.badlogic.gdx.Screen {
 	
 	public LevelTestScreen( ){
 		inputHandler = new InputHandler( );
-		level = new Level( );
+		level = Level.getDefaultLevel( );
 		batch = new SpriteBatch( );
 		debugRenderer = new SBox2DDebugRenderer( BOX_TO_PIXEL );
 		

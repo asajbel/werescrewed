@@ -1,5 +1,7 @@
 package com.blindtigergames.werescrewed.level;
 
+import java.util.ArrayList;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Keys;
@@ -28,11 +30,8 @@ import com.blindtigergames.werescrewed.screens.ScreenManager;
 public class Level{
 	Camera camera;
 	World world;
-	Texture texture;
 	Player player;
-	TiledPlatform tp, ground;
-	RoomPlatform rp;
-	ShapePlatform sp;
+	ArrayList<Platform> platforms;
 	// When the entityManager is done these objects
 	// will go inside the manager instead of 
 	// just hanging outside here
@@ -46,26 +45,6 @@ public class Level{
 		world = new World( new Vector2 ( 0, -100 ), true);
 		player = new Player( world, new Vector2( 1.0f, 1.0f ), "player");
 		camera = new Camera( w, h, player);
-		
-		texture = new Texture( Gdx.files.internal( "data/rletter.png" ) );
-		
-		tp = new PlatformBuilder()
-		.setPosition( 2.0f, 0.2f )
-		.setDimensions( 10, 1 )
-		.setTexture( texture )
-		.buildTilePlatform( world );
-
-		rp = new PlatformBuilder()
-		.setPosition( -1.0f, 0.4f )
-		.setDimensions( 1, 10 )
-		.setTexture( texture )
-		.buildRoomPlatform( world );
-		
-		ground = new PlatformBuilder()
-		.setPosition( 0.0f, 0.0f )
-		.setDimensions( 100, 1 )
-		.setTexture( texture )
-		.buildTilePlatform( world );
 
 		
 	}
@@ -74,22 +53,56 @@ public class Level{
 		camera.update( );
 		
 		player.update( );
-		tp.update( );
-		rp.update( );
+		for (Platform p: platforms)
+			p.update( );
 	}
 	
 	public void draw ( SpriteBatch sb, SBox2DDebugRenderer dr){
 		sb.setProjectionMatrix( camera.combined() );
 		sb.begin( );
 		
-		tp.draw( sb );
+		for (Platform p: platforms)
+			p.draw( sb );
+		
 		player.draw( sb );
-		rp.draw( sb );
 		
 		sb.end( );
 		
 		dr.render( world, camera.combined( ) );
 		world.step( 1 / 60f, 6, 2 );
 
+	}
+	
+	public static Level getDefaultLevel(){
+		Level out = new Level();
+		TiledPlatform tp, ground;
+		RoomPlatform rp;
+		//ShapePlatform sp;
+		Texture texture = new Texture( Gdx.files.internal( "data/rletter.png" ) );
+		
+		tp = new PlatformBuilder()
+		.setPosition( 2.0f, 0.2f )
+		.setDimensions( 10, 1 )
+		.setTexture( texture )
+		.buildTilePlatform( out.world );
+
+		rp = new PlatformBuilder()
+		.setPosition( -1.0f, 0.4f )
+		.setDimensions( 1, 10 )
+		.setTexture( texture )
+		.buildRoomPlatform( out.world );
+		
+		ground = new PlatformBuilder()
+		.setPosition( 0.0f, 0.0f )
+		.setDimensions( 100, 1 )
+		.setTexture( texture )
+		.buildTilePlatform( out.world );
+		
+		out.platforms.add( ground );
+		out.platforms.add( rp );
+		out.platforms.add( tp );
+		
+		
+		return out;
 	}
 }
