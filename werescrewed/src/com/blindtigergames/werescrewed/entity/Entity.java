@@ -128,8 +128,8 @@ public class Entity
 		if (type != null){
 			body = world.createBody(type.bodyDef);
 			body.setUserData( this );
-			for (FixtureDef fix : type.fixtureDefs){
-				body.createFixture(fix);
+			for (FixtureDef fDef : type.fixtureDefs){
+				body.createFixture(fDef);
 			}
 			setPosition(x,y);
 		}
