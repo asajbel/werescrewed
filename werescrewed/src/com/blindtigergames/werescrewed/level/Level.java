@@ -49,23 +49,23 @@ public class Level{
 		
 		texture = new Texture( Gdx.files.internal( "data/rletter.png" ) );
 		
-		tp = new PlatformBuilder()
+		tp = new PlatformBuilder( world )
 		.setPosition( 2.0f, 0.2f )
 		.setDimensions( 10, 1 )
 		.setTexture( texture )
-		.buildTilePlatform( world );
+		.buildTilePlatform( );
 
-		rp = new PlatformBuilder()
+		rp = new PlatformBuilder( world )
 		.setPosition( -1.0f, 0.4f )
 		.setDimensions( 1, 10 )
 		.setTexture( texture )
-		.buildRoomPlatform( world );
+		.buildRoomPlatform( );
 		
-		ground = new PlatformBuilder()
+		ground = new PlatformBuilder( world )
 		.setPosition( 0.0f, 0.0f )
 		.setDimensions( 100, 1 )
 		.setTexture( texture )
-		.buildTilePlatform( world );
+		.buildTilePlatform( );
 
 		
 	}

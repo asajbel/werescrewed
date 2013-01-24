@@ -108,13 +108,13 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 
 		texture = new Texture( Gdx.files.internal( "data/rletter.png" ) );
 
-		tp = new PlatformBuilder( ).setPosition( 2.0f, 0.5f )
+		tp = new PlatformBuilder( world ).setPosition( 2.0f, 0.5f )
 				.setDimensions( 10, 1 ).setTexture( texture )
-				.setResitituion( 0.0f ).buildTilePlatform( world );
+				.setResitituion( 0.0f ).buildTilePlatform(  );
 
-		movingTP = new PlatformBuilder( ).setPosition( 2.0f, 1.1f )
+		movingTP = new PlatformBuilder( world ).setPosition( 2.0f, 1.1f )
 				.setDimensions( 10, 1 ).setTexture( texture )
-				.setResitituion( 0.0f ).buildTilePlatform( world );
+				.setResitituion( 0.0f ).buildTilePlatform( );
 		
 		movingTP.body.setType( BodyType.DynamicBody );
         PrismaticJoint pistonJoint = new PrismaticJointBuilder( world )
@@ -170,9 +170,9 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		cam = new Camera( w, h, player );
 		// tp = new TiledPlatform( "plat", new Vector2(5.0f, 40.0f), texture, 1,
 		// 2, world );
-		rp = new PlatformBuilder( ).setPosition( -1.0f, 1.01f )
+		rp = new PlatformBuilder( world ).setPosition( -1.0f, 1.01f )
 				.setDimensions( 1, 10 ).setTexture( texture )
-				.setResitituion( 0.0f ).buildRoomPlatform( world );
+				.setResitituion( 0.0f ).buildRoomPlatform( );
 
 		// cp = new ComplexPlatform( "bottle", new Vector2(0.0f, 3.0f), texture,
 		// 1, world, "bottle" );
@@ -186,9 +186,9 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 			System.out.print( "nope" );
 		
 		
-		ground = new PlatformBuilder( ).setPosition( 0.0f, 0.0f )
+		ground = new PlatformBuilder( world ).setPosition( 0.0f, 0.0f )
 				.setDimensions( 100, 1 ).setTexture( texture )
-				.setResitituion( 0.0f ).buildTilePlatform( world );
+				.setResitituion( 0.0f ).buildTilePlatform( );
 
 		// make sure you uncomment the next two lines debugRenderer = new
 		// SBox2DDebugRenderer(BOX_TO_PIXEL); for physics world
