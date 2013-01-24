@@ -150,4 +150,12 @@ public class Entity {
 			setPosition( x, y );
 		}
 	}
+	
+	/**
+	 * Set the mover of this entity!
+	 * @param _mover
+	 */
+	public void setMover( IMover _mover ) {
+		this.mover = _mover;
+	}
 }
