@@ -5,6 +5,6 @@
 	<classpathentry exported="true" kind="lib" path="libs/gdx.jar" sourcepath="libs/gdx-sources.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/bodyeditor-loader.jar" sourcepath="libs/bodyeditor-loader-sources.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/tween-engine-api.jar" sourcepath="libs/tween-engine-api-sources.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Dan/Documents/GitHub/werescrewed/werescrewed/libs/gdx-controllers.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/Users/Dan/Documents/GitHub/werescrewed/werescrewed/libs/gdx-controllers.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
