@@ -122,6 +122,27 @@ public class PlatformBuilder {
 		return this;
 	}
 
+	public void reset(){
+		this.width = 1.0f;
+		this.height = 1.0f;
+		this.outerWidth = 1.0f;
+		this.outerHeight = 1.0f;
+		this.thickX = 1.0f;
+		this.thickY = 1.0f;
+		this.scale = 1.0f;
+		this.density = 1.0f;
+		this.friction = 0.5f;
+		this.restitution = 0.1f;
+		this.gravScale = 0.1f;
+		this.positionX = 0.0f;
+		this.positionY = 0.0f;
+		this.flipHorizonal = false;
+		this.flipVertical = false;
+		this.isOneSided = false;
+		this.shape = null;
+		this.texture = null;
+		this.name = "No name";
+	}
 	public RoomPlatform buildRoomPlatform( ) {
 		RoomPlatform rp = new RoomPlatform( "room", new Vector2( positionX,
 				positionY ), this.texture, this.width, this.height, world );
