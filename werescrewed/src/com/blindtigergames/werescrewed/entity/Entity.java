@@ -113,7 +113,7 @@ public class Entity {
 	{
 		if (body != null && sprite != null){
 			Vector2 bodyPos = body.getPosition().mul( GameScreen.BOX_TO_PIXEL );
-			sprite.setPosition( bodyPos.x + offset.x, bodyPos.y + offset.y);
+			sprite.setPosition( bodyPos.x - offset.x, bodyPos.y - offset.y);
 			//sprite.setOrigin(sprite.getWidth()/2, sprite.getHeight()/2);
 			sprite.setRotation( MathUtils.radiansToDegrees * body.getAngle( ) );
 			
@@ -138,6 +138,7 @@ public class Entity {
 	protected void constructSprite( Texture tex ) {
 		sprite = new Sprite( tex );
 		sprite.setOrigin( sprite.getWidth( ) / 2, sprite.getHeight( ) / 2 );
+		offset.set( sprite.getWidth( ) / 2, sprite.getHeight(  ) / 2 );
 	}
 
 	protected void constructBody( float x, float y, float width, float height ) {
