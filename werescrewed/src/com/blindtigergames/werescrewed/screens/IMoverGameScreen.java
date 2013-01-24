@@ -28,8 +28,7 @@ import com.blindtigergames.werescrewed.entity.Skeleton;
 import com.blindtigergames.werescrewed.entity.mover.PistonMover;
 import com.blindtigergames.werescrewed.entity.mover.PuzzleType;
 import com.blindtigergames.werescrewed.entity.mover.SlidingMotorMover;
-import com.blindtigergames.werescrewed.input.InputHandler;
-import com.blindtigergames.werescrewed.input.InputHandler.player_t;
+import com.blindtigergames.werescrewed.input.InputHandlerPlayer1;
 import com.blindtigergames.werescrewed.joint.JointFactory;
 import com.blindtigergames.werescrewed.joint.PrismaticJointBuilder;
 import com.blindtigergames.werescrewed.platforms.ShapePlatform;
@@ -86,7 +85,7 @@ public class IMoverGameScreen implements com.badlogic.gdx.Screen {
 
     Texture screwTex;
     StructureScrew structScrew;
-    InputHandler inputHandler;
+    InputHandlerPlayer1 inputHandler;
 
     public IMoverGameScreen() {
 
@@ -97,7 +96,7 @@ public class IMoverGameScreen implements com.badlogic.gdx.Screen {
 
         
         
-        inputHandler = new InputHandler();
+        inputHandler = new InputHandlerPlayer1();
         texture = new Texture( Gdx.files.internal( "data/rletter.png" ) );
         // takes in width, height
         // cam = new Camera(w, h);
@@ -256,7 +255,7 @@ public class IMoverGameScreen implements com.badlogic.gdx.Screen {
             skeleton.wakeSkeleton();
         }
 
-        if ( inputHandler.screwPressed( player_t.ONE ) ) {
+        if ( inputHandler.screwPressed(  ) ) {
             /*
              * for (Fixture f: structScrew.body.getFixtureList()){
              * f.contactListener(); }
