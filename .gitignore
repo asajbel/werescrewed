@@ -26,5 +26,3 @@ local.properties
 werescrewed-html/.gwt/.gwt-log
 
 werescrewed-html/war/WEB-INF/classes/com/blindtigergames/werescrewed/GwtDefinition.gwt.xml
-
-werescrewed-html/war/WEB-INF/classes/com/blindtigergames/werescrewed/GwtDefinition.gwt.xml
