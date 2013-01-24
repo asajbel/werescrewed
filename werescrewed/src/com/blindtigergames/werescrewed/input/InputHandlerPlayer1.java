@@ -1,5 +1,5 @@
 /********************************************************
- * InputHandler.java, meant to capture and parse player input
+ * InputHandlerPlayer1.java, meant to capture and parse player input
  * Author: Edward Boning
  * 
  ********************************************************/
@@ -11,10 +11,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.controllers.*;
 
-public class InputHandler implements InputProcessor {
+public class InputHandlerPlayer1 implements InputProcessor {
 
 	private int p1LastKeyPressed;
-	private int p2LastKeyPressed;
 
 	private boolean pauseKeyPressed;
 
@@ -26,22 +25,11 @@ public class InputHandler implements InputProcessor {
 	private boolean p1ScrewingClockwise;
 	private boolean p1ScrewingCounterClockwise;
 
-	private boolean p2LeftPressed;
-	private boolean p2RightPressed;
-	private boolean p2JumpPressed;
-	private boolean p2DownPressed;
-	private boolean p2ScrewPressed;
-	private boolean p2ScrewingClockwise;
-	private boolean p2ScrewingCounterClockwise;
-
-	public enum player_t {
-		ONE, TWO
-	}
 
 	/*
 	 * Hooks up the InputProcessor to the input class, so events can be reported
 	 */
-	public InputHandler( ) {
+	public InputHandlerPlayer1( ) {
 		Gdx.input.setInputProcessor( this );
 	}
 
@@ -59,12 +47,6 @@ public class InputHandler implements InputProcessor {
 		p1DownPressed = Gdx.input.isKeyPressed( Keys.S );
 		p1ScrewPressed = Gdx.input.isKeyPressed( Keys.Q );
 
-		p2LeftPressed = Gdx.input.isKeyPressed( Keys.J );
-		p2RightPressed = Gdx.input.isKeyPressed( Keys.L );
-		p2JumpPressed = Gdx.input.isKeyPressed( Keys.I );
-		p2DownPressed = Gdx.input.isKeyPressed( Keys.K );
-		p2ScrewPressed = Gdx.input.isKeyPressed( Keys.U );
-
 	}
 
 	/*
@@ -79,15 +61,8 @@ public class InputHandler implements InputProcessor {
 	 * 
 	 * @param player - Selector to poll for the proper player
 	 */
-	public boolean leftPressed( player_t player ) {
-		switch ( player ) {
-		default:
-			return false;
-		case ONE:
-			return p1LeftPressed;
-		case TWO:
-			return p2LeftPressed;
-		}
+	public boolean leftPressed() {
+		return p1LeftPressed;
 	}
 
 	/*
@@ -95,15 +70,8 @@ public class InputHandler implements InputProcessor {
 	 * 
 	 * @param player - Selector to poll for the proper player
 	 */
-	public boolean rightPressed( player_t player ) {
-		switch ( player ) {
-		default:
-			return false;
-		case ONE:
-			return p1RightPressed;
-		case TWO:
-			return p2RightPressed;
-		}
+	public boolean rightPressed() {
+		return p1RightPressed;
 	}
 
 	/*
@@ -111,15 +79,8 @@ public class InputHandler implements InputProcessor {
 	 * 
 	 * @param player - Selector to poll for the proper player
 	 */
-	public boolean jumpPressed( player_t player ) {
-		switch ( player ) {
-		default:
-			return false;
-		case ONE:
-			return p1JumpPressed;
-		case TWO:
-			return p2JumpPressed;
-		}
+	public boolean jumpPressed( ) {
+		return p1JumpPressed;
 	}
 
 	/*
@@ -127,15 +88,8 @@ public class InputHandler implements InputProcessor {
 	 * 
 	 * @param player - Selector to poll for the proper player
 	 */
-	public boolean downPressed( player_t player ) {
-		switch ( player ) {
-		default:
-			return false;
-		case ONE:
-			return p1DownPressed;
-		case TWO:
-			return p2DownPressed;
-		}
+	public boolean downPressed( ) {
+		return p1DownPressed;
 	}
 
 	/*
@@ -143,49 +97,20 @@ public class InputHandler implements InputProcessor {
 	 * 
 	 * @param player - Selector to poll for the proper player
 	 */
-	public boolean screwPressed( player_t player ) {
-		switch ( player ) {
-		default:
-			return false;
-		case ONE:
-			return Gdx.input.isKeyPressed( Keys.X );
-		case TWO:
-			return Gdx.input.isKeyPressed( Keys.M );
-		}
+	public boolean screwPressed( ) {
+		return Gdx.input.isKeyPressed( Keys.X );
 	}
 
-	public boolean unscrewPressed( player_t player ) {
-		switch ( player ) {
-		default:
-			return false;
-		case ONE:
-			return Gdx.input.isKeyPressed( Keys.Z );
-		case TWO:
-			return Gdx.input.isKeyPressed( Keys.N );
-
-		}
+	public boolean unscrewPressed( ) {
+		return Gdx.input.isKeyPressed( Keys.Z );
 	}
 
-	public boolean screwing( player_t player ) {
-		switch ( player ) {
-		default:
-			return false;
-		case ONE:
-			return rightPressed( player_t.ONE );
-		case TWO:
-			return rightPressed( player_t.TWO );
-		}
+	public boolean screwing( ) {
+		return rightPressed( );
 	}
 
-	public boolean unscrewing( player_t player ) {
-		switch ( player ) {
-		default:
-			return false;
-		case ONE:
-			return leftPressed( player_t.ONE );
-		case TWO:
-			return leftPressed( player_t.TWO );
-		}
+	public boolean unscrewing( ) {
+		return leftPressed( );
 	}
 
 	@Override
@@ -215,27 +140,6 @@ public class InputHandler implements InputProcessor {
 			p1LastKeyPressed = keycode;
 		}
 
-		if ( keycode == Keys.I ) {
-			p2JumpPressed = true;
-			p2LastKeyPressed = keycode;
-		}
-		if ( keycode == Keys.J ) {
-			p2LeftPressed = true;
-			p2LastKeyPressed = keycode;
-		}
-		if ( keycode == Keys.K ) {
-			p2DownPressed = true;
-			p2LastKeyPressed = keycode;
-		}
-		if ( keycode == Keys.L ) {
-			p2RightPressed = true;
-			p2LastKeyPressed = keycode;
-		}
-		if ( keycode == Keys.U ) {
-			p2ScrewPressed = true;
-			p2LastKeyPressed = keycode;
-		}
-
 		return true;
 	}
 
@@ -259,22 +163,6 @@ public class InputHandler implements InputProcessor {
 		}
 		if ( keycode == Keys.Q ) {
 			p1ScrewPressed = false;
-		}
-
-		if ( keycode == Keys.I ) {
-			p2JumpPressed = false;
-		}
-		if ( keycode == Keys.J ) {
-			p2LeftPressed = false;
-		}
-		if ( keycode == Keys.K ) {
-			p2DownPressed = false;
-		}
-		if ( keycode == Keys.L ) {
-			p2RightPressed = false;
-		}
-		if ( keycode == Keys.U ) {
-			p2ScrewPressed = false;
 		}
 
 		return true;

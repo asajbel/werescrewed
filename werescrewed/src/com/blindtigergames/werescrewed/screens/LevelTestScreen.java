@@ -6,7 +6,7 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.blindtigergames.werescrewed.debug.SBox2DDebugRenderer;
-import com.blindtigergames.werescrewed.input.InputHandler;
+import com.blindtigergames.werescrewed.input.InputHandlerPlayer1;
 import com.blindtigergames.werescrewed.level.Level;
 
 public class LevelTestScreen implements com.badlogic.gdx.Screen {
@@ -21,13 +21,13 @@ public class LevelTestScreen implements com.badlogic.gdx.Screen {
 	public static final float BOX_TO_PIXEL = 256f;
 	public static final float PIXEL_TO_BOX = 1 / BOX_TO_PIXEL;
 
-	InputHandler inputHandler;
+	InputHandlerPlayer1 inputHandler;
 	SpriteBatch batch;
 	SBox2DDebugRenderer debugRenderer;
 	Level level;
 	
 	public LevelTestScreen( ){
-		inputHandler = new InputHandler( );
+		inputHandler = new InputHandlerPlayer1( );
 		level = new Level( );
 		batch = new SpriteBatch( );
 		debugRenderer = new SBox2DDebugRenderer( BOX_TO_PIXEL );
