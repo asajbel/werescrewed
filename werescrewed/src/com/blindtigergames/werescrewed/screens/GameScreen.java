@@ -95,7 +95,7 @@ public class GameScreen implements com.badlogic.gdx.Screen {
  
 		tp = new PlatformBuilder()
 				.setPosition( 2.0f, 0.2f )
-				.setDimensions( 10, 1 )
+				.setDimensions( 1, 10 )
 				.setTexture( texture )
 				.setResitituion( 0.0f )
 				.buildTilePlatform( world );
@@ -108,7 +108,7 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 				.setResitituion( 0.0f )
 				.buildRoomPlatform( world );
 		
-		cp = new ComplexPlatform( "bottle", new Vector2( -1.0f, 3.0f ), new Texture(Gdx.files.internal( "data/bodies/test01.png")),
+		cp = new ComplexPlatform( "bottle", new Vector2( -0.8f, 1.3f ), new Texture(Gdx.files.internal( "data/bodies/test01.png")),
 				1, world, "complexTest" );
 		sp = new ShapePlatform( "rhom", new Vector2( 1.0f, 1.0f ), texture,
 				world, Shapes.plus, 1.0f, 1.0f, false );
@@ -136,7 +136,7 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 		skeleton.addPlatformFixed(cp);
 		skeleton.addPlatformFixed(rp);
 		// make sure you uncomment the next two lines debugRenderer = new
-		// SBox2DDebugRenderer(BOX_TO_PIXEL); for physics world
+		//SBox2DDebugRenderer(BOX_TO_PIXEL); //for physics world
 		// debugRenderer = new Box2DDebugRenderer();
 		debugRenderer = new SBox2DDebugRenderer( BOX_TO_PIXEL );
 		Gdx.app.setLogLevel( Application.LOG_DEBUG );
@@ -190,6 +190,7 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 		// test drawing the texture by uncommenting the next line:
 		tp.draw( batch );
 		cp.draw( batch );
+		ground.draw( batch );
 		player.draw( batch );
 
 		structScrew.draw( batch );
