@@ -59,11 +59,11 @@ public class PistonMover implements IMover {
 	@Override
 	public void move( float deltaTime, Body body ) {
 		if ( delay >= 0 ) {
-			Gdx.app.log( "PistonMover:", "yerp" );
+			//Gdx.app.log( "PistonMover:", "yerp" );
 			delay -= deltaTime;
 			if ( delay < 0 ){
 				joint.setMotorSpeed( -motorSpeed );
-				Gdx.app.log( "PistonMover:", "flipping motor speed after delay" );
+				//Gdx.app.log( "PistonMover:", "flipping motor speed after delay" );
 			}
 		} else {
 			time += deltaTime;

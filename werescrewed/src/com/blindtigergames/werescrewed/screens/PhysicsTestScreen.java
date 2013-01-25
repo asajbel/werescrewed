@@ -67,7 +67,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 	Entity playerEntity;
 	Player player;
 	TiledPlatform tp, ground, movingTP;
-	RoomPlatform rp;
+	//RoomPlatform rp;
 	ComplexPlatform cp;
 	// ShapePlatform sp;
 	Box box;
@@ -172,13 +172,13 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		cam = new Camera( w, h, player );
 		// tp = new TiledPlatform( "plat", new Vector2(5.0f, 40.0f), texture, 1,
 		// 2, world );
-		rp = platBuilder
-				.setPosition( -200.0f, 101.0f )
-				.setName( "rp" )
-				.setDimensions( 1, 10 )
-				.setTexture( texture )
-				.setResitituion( 0.0f )
-				.buildRoomPlatform( );
+//		rp = platBuilder
+//				.setPosition( -200.0f, 101.0f )
+//				.setName( "rp" )
+//				.setDimensions( 1, 10 )
+//				.setTexture( texture )
+//				.setResitituion( 0.0f )
+//				.buildRoomPlatform( );
 
 		// cp = new ComplexPlatform( "bottle", new Vector2(0.0f, 3.0f), texture,
 		// 1, world, "bottle" );
@@ -199,6 +199,14 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 				.setTexture( texture )
 				.setResitituion( 0.0f )
 				.buildTilePlatform( );
+		
+		
+		/**
+		 * Uncomment if you don't want stew's moving platforms in your way!
+		 */
+		buildMoverPlatforms( );
+		
+		
 
 		// make sure you uncomment the next two lines debugRenderer = new
 		// SBox2DDebugRenderer(BOX_TO_PIXEL); for physics world
@@ -216,7 +224,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 				.setWidth( 10 )
 				.setHeight( 1 )
 				.setOneSided( true )
-				.setPosition( -1000*PIXEL_TO_BOX, 200*PIXEL_TO_BOX )
+				.setPosition( -1000, 200 )
 				.setTexture( texture )
 				.setFriction( 1f )
 				.buildTilePlatform(  );
@@ -238,7 +246,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 							.setHeight( 1 )
 							.setFriction( 1f )
 							.setOneSided( false )
-							.setPosition( -500*PIXEL_TO_BOX, -200*PIXEL_TO_BOX )
+							.setPosition( -500, -200 )
 							.setTexture( texture )
 							.buildTilePlatform(  );
 		skeletonTest1.body.setType( BodyType.DynamicBody );
@@ -248,7 +256,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 							.setWidth( 10 )
 							.setHeight( 1 )
 							.setOneSided( false )
-							.setPosition( 500*PIXEL_TO_BOX, 300*PIXEL_TO_BOX )
+							.setPosition( 500, 300 )
 							.setTexture( texture )
 							.setFriction( 1f )
 							.buildTilePlatform(  );
@@ -277,7 +285,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 									        .motorSpeed( 1 );
 		for ( int i = 0; i < 10; ++i ){
 			TiledPlatform piston = builder
-							.setPosition( (-100f-i*40)*PIXEL_TO_BOX, 220f*PIXEL_TO_BOX )
+							.setPosition( (-100f-i*40), 220f )
 							.buildTilePlatform(  );
 			
 			piston.body.setType( BodyType.DynamicBody );
