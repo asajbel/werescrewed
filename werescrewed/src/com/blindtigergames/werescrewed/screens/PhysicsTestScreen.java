@@ -71,7 +71,6 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 	ComplexPlatform cp;
 	// ShapePlatform sp;
 	Box box;
-	SlidingMotorMover sm;
 	PuzzleManager pm;
 	PlatformBuilder platBuilder;
 	
@@ -105,7 +104,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		MCL = new MyContactListener( );
 		world.setContactListener( MCL );
 		skeleton = new Skeleton( "", Vector2.Zero, background, world );
-		pm = new PuzzleManager();
+		pm = new PuzzleManager( world );
 		String name = "player";
 		platBuilder = new PlatformBuilder( world );
 		
@@ -122,7 +121,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 				.buildTilePlatform(  );
 
 		movingTP = platBuilder
-				.setPosition( 400.0f, 150.0f )
+				.setPosition( 350.0f, 170.0f )
 				.setDimensions( 10, 1 )
 				.setTexture( texture )
 				.setName( "movingTP" )
@@ -131,28 +130,29 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		
 		movingTP.body.setType( BodyType.DynamicBody );
 		
-        PrismaticJoint puzzleJoint = new PrismaticJointBuilder( world )
-        .skeleton( skeleton )
-        .bodyB( (Entity)movingTP )
-        .anchor( movingTP.body.getWorldCenter() )
-        .axis( 1, 0 )
-        .motor( true )
-        .limit( true )
-        .lower( 0.0f )
-        .upper( 0.5f )
-        .motorSpeed( 1 )
-        .build();
-  
-		sm = new SlidingMotorMover ( PuzzleType.PRISMATIC_SLIDER, puzzleJoint );
+        Vector2 axis = new Vector2(1, 0);
+        PrismaticJointDef jointDef = new PrismaticJointDef();
+        jointDef.initialize( movingTP.body, skeleton.body, movingTP.body.getPosition( ), axis);
+        jointDef.enableMotor = true;
+        jointDef.enableLimit = true;
+        jointDef.lowerTranslation = 0.0f;
+        jointDef.upperTranslation = 1.0f;
+        jointDef.motorSpeed = 7.0f; 
+
+		//PrismaticJoint j = ( PrismaticJoint ) world
+		//		.createJoint( jointDef );
 		
 		pm.addEntity( "001_0", movingTP );
-		pm.addMover( "001_0", sm );
+		/*pm.addMover( "001_0",  
+				new SlidingMotorMover(
+						PuzzleType.PRISMATIC_SLIDER, j ) );*/
+		pm.addJointDef( "001_0", jointDef);
 
 		screwTex = new Texture( Gdx.files.internal( "data/screw.png" ) );
 		background = new Texture( Gdx.files.internal( "data/libgdx.png" ) );
 		structScrew = new StructureScrew( "", tp.body.getPosition( ), screwTex,
 				50, tp, skeleton, world );
-		puzzleScrew = new PuzzleScrew( "001", new Vector2( 1.0f, 0.2f ), screwTex,
+		puzzleScrew = new PuzzleScrew( "001", new Vector2( 0.0f, 0.2f ), screwTex,
 				50, skeleton, world, pm );
 
 		float x1 = 1.75f;
@@ -184,7 +184,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		// 1, world, "bottle" );
 		// sp = new ShapePlatform( "trap", new Vector2( 1.0f, 1.0f), texture,
 		// world, Shapes.trapezoid, 0.5f);
-		box = new Box( "box", new Vector2( 120.0f, 160.0f ), texture, world );
+		box = new Box( "box", new Vector2( 120.0f, 130.0f ), texture, world );
 		box.setRestitution( 0.0f );
 		if ( box.body.getUserData( ) instanceof Box ) {
 			System.out.print( "worked" );

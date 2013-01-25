@@ -46,8 +46,6 @@ public class PuzzleScrew extends Screw {
 		screwFixture.isSensor = true;
 		body.createFixture( screwFixture );
 		screwShape.dispose( );
-		offset.x = ( float ) ( -sprite.getWidth( ) / 2.0f );
-		offset.y = ( float ) ( -sprite.getWidth( ) / 2.0f );
 		body.setUserData( this );
 
 		// add radar sensor to screw

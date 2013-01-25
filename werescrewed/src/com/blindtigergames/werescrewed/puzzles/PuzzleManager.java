@@ -3,9 +3,14 @@ package com.blindtigergames.werescrewed.puzzles;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.JointDef;
+import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.physics.box2d.joints.PrismaticJoint;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.mover.IMover;
+import com.blindtigergames.werescrewed.entity.mover.PuzzleType;
+import com.blindtigergames.werescrewed.entity.mover.SlidingMotorMover;
 import com.blindtigergames.werescrewed.screws.PuzzleScrew;
 
 /**
@@ -17,9 +22,11 @@ import com.blindtigergames.werescrewed.screws.PuzzleScrew;
 
 public class PuzzleManager {
 
-	public PuzzleManager( ) {
+	public PuzzleManager( World world ) {
 		puzzleEntities = new HashMap< String, Entity >( );
 		puzzleMovers = new HashMap< String, IMover >( );
+		puzzleJoints = new HashMap< String, JointDef >( );
+		this.world = world;
 	}
 
 	public void addEntity( String screwID, Entity puzzlePiece ) {
@@ -28,6 +35,10 @@ public class PuzzleManager {
 
 	public void addMover( String screwID, IMover puzzlePiece ) {
 		puzzleMovers.put( screwID, puzzlePiece );
+	}
+
+	public void addJointDef( String screwID, JointDef puzzlePiece ) {
+		puzzleJoints.put( screwID, puzzlePiece );
 	}
 
 	public void createMaps( Map< String, Entity > pEs,
@@ -40,19 +51,37 @@ public class PuzzleManager {
 		if ( screw1.getDepth( ) != screw1.getMaxDepth( ) ) {
 			int num = 0;
 			String elementID = screw1.name + '_' + num;
-			while ( puzzleEntities.containsKey( elementID )
-					&& puzzleMovers.containsKey( elementID ) ) {
-
-				System.out.println( screw1.name + " " + elementID );
-				puzzleEntities.get( elementID ).setMover(
-						puzzleMovers.get( elementID ) );
+			while ( puzzleEntities.containsKey( elementID ) ) {
+				// System.out.println( "the puzzle entity exists" );
+				if ( puzzleMovers.containsKey( elementID ) ) {
+					puzzleEntities.get( elementID ).setMover(
+							puzzleMovers.get( elementID ) );
+				} else if ( puzzleJoints.containsKey( elementID ) ) {
+					if ( puzzleEntities.get( elementID ).body.getJointList( )
+							.size( ) < 1 ) {
+						System.out.println( "the joint is created" );
+						PrismaticJoint j = ( PrismaticJoint ) world
+								.createJoint( puzzleJoints.get( elementID ) );
+						puzzleEntities.get( elementID ).setMover(
+								new SlidingMotorMover(
+										PuzzleType.PRISMATIC_SLIDER, j ) );
+						puzzleEntities.get( elementID ).body.setAwake( true );
+					} else {
+						// puzzleMovers.get( elementID ).move(
+						// ( float ) screw1.getDepth( ) / (float)
+						// screw1.getMaxDepth( ),
+						// puzzleEntities.get( elementID ).body );
+						puzzleEntities.get( elementID ).body
+								.setLinearVelocity( new Vector2( -1.0f, 0.0f ) );
+					}
+				}
 				num++;
 				elementID = screw1.name + '_' + num;
 			}
 		}
 	}
 
-	private PuzzleScrew screw1;
+	private World world;
 	private Map< String, Entity > puzzleEntities;
 	private Map< String, IMover > puzzleMovers;
 	private Map< String, JointDef > puzzleJoints;
