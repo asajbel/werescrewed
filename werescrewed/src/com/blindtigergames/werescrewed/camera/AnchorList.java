@@ -136,6 +136,13 @@ public class AnchorList {
 		anchorList.set(id, temp);
 	}
 	
+	public void setAnchorPosBox (int id, Vector2 position) {
+		// assuming pass by value, try pass by reference later
+		Anchor temp = anchorList.get(id);
+		temp.setPositionBox(position);
+		anchorList.set(id, temp);
+	}
+	
 	public void setAnchorBuffer (int id, Vector2 buffer) {
 		Anchor temp = anchorList.get(id);
 		temp.setBuffer(buffer);

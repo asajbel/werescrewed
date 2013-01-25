@@ -92,6 +92,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		
 
 
+		cam = new Camera( w, h );
 		texture = new Texture( Gdx.files.internal( "data/rletter.png" ) );
 		// takes in width, height
 		// cam = new Camera(w, h);
@@ -175,7 +176,6 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 			}
 			y1 += dy;
 		}
-		cam = new Camera( w, h, player );
 		// tp = new TiledPlatform( "plat", new Vector2(5.0f, 40.0f), texture, 1,
 		// 2, world );
 		rp = new PlatformBuilder( world )

@@ -15,6 +15,8 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJoint;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
+import com.blindtigergames.werescrewed.camera.Anchor;
+import com.blindtigergames.werescrewed.camera.AnchorList;
 import com.blindtigergames.werescrewed.input.InputHandlerPlayer1;
 import com.blindtigergames.werescrewed.screens.GameScreen;
 import com.blindtigergames.werescrewed.screws.Screw;
@@ -45,6 +47,8 @@ public class Player extends Entity {
 	private boolean hitScrew;
 	private boolean grounded;
 	private boolean jumpPressed;
+	private int anchorID;
+	private AnchorList anchorList;
 
 	// Constants
 
@@ -94,6 +98,8 @@ public class Player extends Entity {
 		playerState = PlayerState.Standing;
 		inputHandler = new InputHandlerPlayer1( );
 		contacts = new ArrayList< Contact >( );
+		anchorList = AnchorList.getInstance( );
+		anchorID = anchorList.addAnchor( true, pos );
 	}
 
 	/**
@@ -266,6 +272,7 @@ public class Player extends Entity {
 	public void update( float deltaTime ) {
 		super.update( deltaTime );
 		inputHandler.update( );
+		anchorList.setAnchorPosBox( anchorID, getPosition() );
 		// sprite.setY( sprite.getY( ) + sprite.getHeight( ) / 8);
 		// sprite.setPosition( body.getPosition( ).x, body.getPosition( ).y);
 		// sprite.setOrigin( offset.x, offset.y );

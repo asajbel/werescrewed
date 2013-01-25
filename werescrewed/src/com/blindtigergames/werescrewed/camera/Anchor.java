@@ -31,6 +31,11 @@ public class Anchor {
 		this.position = newPosition;
 	}
 	
+	public void setPositionBox(Vector2 newPosition) {
+		this.position.x = newPosition.x * Camera.BOX_TO_PIXEL;
+		this.position.y = newPosition.y * Camera.BOX_TO_PIXEL;
+	}
+	
 	public void setBuffer(Vector2 buffer) {
 		this.buffer = buffer;
 	}

@@ -39,7 +39,9 @@ public class Camera {
 //	private static final int LISTEN_BUFFER = 300;
 	private static final float ACCELERATION_RATIO = .005f;
 	private static final float TARGET_BUFFER_RATIO = .05f;
-	private static final float MINIMUM_FOLLOW_SPEED = 1f;
+	private static final float MINIMUM_FOLLOW_SPEED = 3f;
+	private static final float MAXIMUM_TRANSLATION_SPEED = 50f;
+	private static final float DECELERATE = 1f;
 	private static final float MAX_ANGLE_DIFF = 45f;
 	private Vector2  translateVelocity;
 	private float translateSpeed;
@@ -153,10 +155,10 @@ public class Camera {
 		
 		// update player anchors
 		if (player1Anchor > -1) {
-			anchorList.setAnchorPos(player1Anchor, player1.getPosition().mul(BOX_TO_PIXEL));
+			anchorList.setAnchorPos(player1Anchor, player1.getPosition());
 		}
 		if (player2Anchor > -1) {
-			anchorList.setAnchorPos(player2Anchor, player2.getPosition().mul(BOX_TO_PIXEL));
+			anchorList.setAnchorPos(player2Anchor, player2.getPosition());
 		}
 				
 		position = camera.position;
@@ -171,6 +173,11 @@ public class Camera {
 		translateBuffer.y = position.y - translateBuffer.height * .5f;
     	setTranslateTarget();
 		
+//    	if (anchorList.getMidpointVelocity( ).len( ) < MINIMUM_FOLLOW_SPEED && 
+//    			translateBuffer.contains(translateTarget.x, translateTarget.y)) {
+//    		translateState = false;
+//    	}
+    	
 //    	player1.moveRight();
 		if (!debugInput && translateState) {
 			if (center2D.dst(translateTarget) < targetBuffer) {
@@ -180,8 +187,14 @@ public class Camera {
 				if (anchorList.getMidpointVelocity().len() > MINIMUM_FOLLOW_SPEED &&
 						tempAngle < MAX_ANGLE_DIFF )
 					camera.position.set(translateTarget3D);
-				else
+				else {
+					camera.position.set(translateTarget3D);
 					translateState = false;
+					translateVelocity.x = 0f;
+					translateVelocity.y = 0f;
+					translateAcceleration = 0f;
+					translateSpeed = 0f;
+				}
 			}
 			else
 				translate();
@@ -292,11 +305,17 @@ public class Camera {
     
     private void translate() {
 //    	camera.position.set(translateTarget3D);
-    	translateVelocity = translateTarget.cpy();
-    	translateVelocity.sub(center2D);
-    	translateAcceleration = translateVelocity.len() * ACCELERATION_RATIO;
-    	translateSpeed += translateAcceleration;
-    	translateVelocity.nor();
+    	Vector2.tmp.x = translateTarget.x;
+    	Vector2.tmp.y = translateTarget.y;
+    	Vector2.tmp.sub(center2D);
+    	translateAcceleration = Vector2.tmp.len() * ACCELERATION_RATIO;
+    	if ((translateSpeed + translateAcceleration) < (Vector2.tmp.len() - 5f))
+    		translateSpeed += translateAcceleration;
+    	else
+    		translateSpeed -= DECELERATE;
+    	Vector2.tmp.nor( );
+    	translateVelocity.x = Vector2.tmp.x;
+    	translateVelocity.y = Vector2.tmp.y;
     	translateVelocity.mul(translateSpeed);
     	camera.translate(translateVelocity);
     }
