@@ -11,6 +11,7 @@ import com.badlogic.gdx.math.Vector2;
 public class Anchor {
 	public boolean special;
 	protected Vector2 position;
+	protected Vector2 positionBox;
 	protected Vector2 buffer;
 	
 	static protected final Vector2 DEFAULT_BUFFER = new Vector2(128f, 128f);
@@ -29,9 +30,12 @@ public class Anchor {
 	
 	public void setPosition(Vector2 newPosition) {
 		this.position = newPosition;
+		this.positionBox.x = newPosition.x * Camera.PIXEL_TO_BOX;
+		this.positionBox.y = newPosition.y * Camera.PIXEL_TO_BOX;
 	}
 	
 	public void setPositionBox(Vector2 newPosition) {
+		this.positionBox = newPosition;
 		this.position.x = newPosition.x * Camera.BOX_TO_PIXEL;
 		this.position.y = newPosition.y * Camera.BOX_TO_PIXEL;
 	}
