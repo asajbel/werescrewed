@@ -269,8 +269,6 @@ public class Player extends Entity {
 		}
 
 		if ( playerState == PlayerState.Screwing ) {
-			sprite.setPosition( currentScrew.sprite.getX( ),
-					currentScrew.sprite.getY( ) );
 			if ( inputHandler.unscrewPressed( ) ) {
 				currentScrew.screwLeft( );
 			} else if ( inputHandler.screwPressed( ) ) {
