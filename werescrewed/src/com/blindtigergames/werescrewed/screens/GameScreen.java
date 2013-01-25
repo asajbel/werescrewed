@@ -16,6 +16,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.blindtigergames.werescrewed.camera.Camera;
+import com.blindtigergames.werescrewed.collisionManager.MyContactListener;
 import com.blindtigergames.werescrewed.debug.SBox2DDebugRenderer;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.Player;
@@ -51,6 +52,7 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 	Sprite sprite;
 	World world;
 	SBox2DDebugRenderer debugRenderer;
+	MyContactListener MCL;
 	Body playerBody;
 	Entity playerEntity;
 	Player player;
@@ -147,6 +149,8 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 
 		logger = new FPSLogger( );
 
+		MCL = new MyContactListener();
+		world.setContactListener( MCL );
 	}
 
 	@Override
