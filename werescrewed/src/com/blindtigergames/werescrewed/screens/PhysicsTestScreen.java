@@ -177,10 +177,10 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		// world, Shapes.trapezoid, 0.5f);
 		box = new Box( "box", new Vector2( 120.0f, 130.0f ), texture, world );
 		box.setRestitution( 0.0f );
-		if ( box.body.getUserData( ) instanceof Box ) {
-			System.out.print( "worked" );
-		} else
-			System.out.print( "nope" );
+//		if ( box.body.getUserData( ) instanceof Box ) {
+//			System.out.print( "worked" );
+//		} else
+//			System.out.print( "nope" );
 		
 		
 		ground = platBuilder

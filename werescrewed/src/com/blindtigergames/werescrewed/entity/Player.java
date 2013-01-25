@@ -232,12 +232,12 @@ public class Player extends Entity {
 		if ( inputHandler.jumpPressed( ) ) {
 			if ( !jumpPressed ) {
 				System.out.println( grounded );
-				System.out.println( body.getLinearVelocity( ) );
 				if ( playerState == PlayerState.Screwing ) {
 					world.destroyJoint( playerToScrew );
 					playerState = PlayerState.JumpingOffScrew;
 					jump( );
 				} else if ( isGrounded( ) ) {
+					playerState = PlayerState.Jumping;
 					jump( );
 				}
 				jumpPressed = true;

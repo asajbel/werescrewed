@@ -21,6 +21,7 @@ public class Entity {
 	public Body body;
 	protected World world;
 	public IMover mover;
+	protected boolean solid;
 
 	public Entity( ) {
 		type = null;
@@ -29,6 +30,7 @@ public class Entity {
 		world = null;
 		offset = new Vector2( 0.0f, 0.0f );
 		name = "I AM ERROR.";
+		solid = false;
 	}
 
 	public Entity( String n, EntityDef d, World w, Vector2 pos, float rot,
@@ -53,7 +55,7 @@ public class Entity {
 			constructSprite( );
 		constructBody( pos.x, pos.y, sca.x, sca.y );
 	}
-	
+
 	public Entity( String n, Sprite spr, Body bod ) {
 		this( );
 		name = n;
@@ -94,31 +96,27 @@ public class Entity {
 	public Vector2 getPosition( ) {
 		return body.getPosition( );
 	}
-	
-    public void Move(Vector2 vector)
-    {
-    	Vector2 pos = body.getPosition().add(vector);
-    	setPosition(pos);
-    }
-    
-    public void draw(SpriteBatch batch)
-    {
-    	if (sprite != null) {
-    		sprite.draw(batch);
-    	}
-    }
-    
 
-	public void update(float deltaTime)
-	{
-		if (body != null && sprite != null){
-			Vector2 bodyPos = body.getPosition().mul( GameScreen.BOX_TO_PIXEL );
-			sprite.setPosition( bodyPos.x - offset.x, bodyPos.y - offset.y);
-			//sprite.setOrigin(sprite.getWidth()/2, sprite.getHeight()/2);
+	public void Move( Vector2 vector ) {
+		Vector2 pos = body.getPosition( ).add( vector );
+		setPosition( pos );
+	}
+
+	public void draw( SpriteBatch batch ) {
+		if ( sprite != null ) {
+			sprite.draw( batch );
+		}
+	}
+
+	public void update( float deltaTime ) {
+		if ( body != null && sprite != null ) {
+			Vector2 bodyPos = body.getPosition( ).mul( GameScreen.BOX_TO_PIXEL );
+			sprite.setPosition( bodyPos.x - offset.x, bodyPos.y - offset.y );
+			// sprite.setOrigin(sprite.getWidth()/2, sprite.getHeight()/2);
 			sprite.setRotation( MathUtils.radiansToDegrees * body.getAngle( ) );
-			
-			if(mover != null)
-				mover.move(deltaTime, body);
+
+			if ( mover != null )
+				mover.move( deltaTime, body );
 		}
 	}
 
@@ -130,15 +128,14 @@ public class Entity {
 		if ( type != null && type.texture != null ) {
 			sprite = new Sprite( type.texture );
 			sprite.setOrigin( type.origin.x, type.origin.y );
-			sprite.setScale( type.spriteScale.x,
-					type.spriteScale.y );
+			sprite.setScale( type.spriteScale.x, type.spriteScale.y );
 		}
 	}
 
 	protected void constructSprite( Texture tex ) {
 		sprite = new Sprite( tex );
 		sprite.setOrigin( sprite.getWidth( ) / 2, sprite.getHeight( ) / 2 );
-		offset.set( sprite.getWidth( ) / 2, sprite.getHeight(  ) / 2 );
+		offset.set( sprite.getWidth( ) / 2, sprite.getHeight( ) / 2 );
 	}
 
 	protected void constructBody( float x, float y, float width, float height ) {
@@ -151,12 +148,30 @@ public class Entity {
 			setPosition( x, y );
 		}
 	}
-	
+
 	/**
 	 * Set the mover of this entity!
+	 * 
 	 * @param _mover
 	 */
 	public void setMover( IMover _mover ) {
 		this.mover = _mover;
+	}
+
+	/**
+	 * 
+	 * @return whether or not the player can jump off of the Entity
+	 */
+	public boolean isSolid( ) {
+		return solid;
+	}
+
+	/**
+	 * Sets whether or not the player can jump off of the Entity
+	 * 
+	 * @param solid
+	 */
+	public void setSolid( boolean solid ) {
+		this.solid = solid;
 	}
 }

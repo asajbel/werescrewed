@@ -37,16 +37,19 @@ public class Platform extends Entity {
 	public Platform( String n, Vector2 pos, Texture tex, World world ) {
 		super( n, pos, tex, null );
 		this.world = world;
+		solid = true;
 	}
 
 	public Platform( String n, EntityDef d, World w, Vector2 pos, float rot,
 			Vector2 sca ) {
 		super( n, d, w, pos, rot, sca );
+		solid = true;
 	}
 	
 	public Platform( String n, EntityDef d, World w, Vector2 pos, float rot,
 			Vector2 sca, Texture tex ) {
 		super( n, d, w, pos, rot, sca, tex );
+		solid = true;
 	}
 	
 	@Override
