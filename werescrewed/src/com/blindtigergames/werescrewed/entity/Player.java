@@ -1,22 +1,15 @@
 package com.blindtigergames.werescrewed.entity;
 
-import java.util.ArrayList;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJoint;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
 import com.blindtigergames.werescrewed.input.InputHandlerPlayer1;
-import com.blindtigergames.werescrewed.screws.BossScrew;
-import com.blindtigergames.werescrewed.screws.PuzzleScrew;
 import com.blindtigergames.werescrewed.screws.Screw;
-import com.blindtigergames.werescrewed.screws.StrippedScrew;
-import com.blindtigergames.werescrewed.screws.StructureScrew;
 
 /**
  * 
@@ -29,23 +22,18 @@ public class Player extends Entity {
 
 	// FIELDS
 
+	// Constants
+
 	// Variables
-	private Fixture playerPhysicsFixture;
-	private Fixture playerSensorFixture;
-	private float stillTime = 0;
-	private long lastGroundTime = 0;
 	private int prevKey;
 	private InputHandlerPlayer1 inputHandler;
 	private PlayerState playerState;
-	public ArrayList< Contact > contacts;
 
 	private Screw currentScrew;
 	private RevoluteJoint playerToScrew;
 	private boolean hitScrew;
 	private boolean grounded;
 	private boolean jumpPressed;
-
-	// Constants
 
 	// Static constants
 	public final static float MAX_VELOCITY = 300f;
@@ -54,12 +42,18 @@ public class Player extends Entity {
 	public static Texture texture = new Texture(
 			Gdx.files.internal( "data/player_r_m.png" ) );
 
-	// private Camera cam;
-
+	// Enums
 	/**
-	 * 
-	 * One of Standing, Jumping, and Falling.
-	 * 
+	 * <p>
+	 * <b>Values:</b>
+	 * </p>
+	 * <Ul>
+	 * <Li>Standing</Li>
+	 * <Li>Jumping</Li>
+	 * <Li>Falling</Li>
+	 * <Li>Screwing</Li>
+	 * <Li>JumpingOffScrew</Li>
+	 * </Ul>
 	 */
 	public enum PlayerState {
 		Standing, Jumping, Falling, Screwing, JumpingOffScrew
@@ -80,37 +74,12 @@ public class Player extends Entity {
 	public Player( World world, Vector2 pos, String name, Texture tex ) {
 		super( name, EntityDef.getDefinition( "playerTest" ), world, pos, 0.0f,
 				new Vector2( 1f, 1f ) );
-		// Encompasses:
-		// world = w;
-		// createPlayerBody(posX, posY);
-		// createPlayerBodyOLD(pos.x, pos.y);
 		body.setGravityScale( 0.25f );
 		body.setFixedRotation( true );
-		// sprite.setScale( 100f * GameScreen.PIXEL_TO_BOX );
-		// offset.x = -15f;
-		// offset.y = -7.5f;
+		this.world = world;
 		body.setUserData( this );
 		playerState = PlayerState.Standing;
 		inputHandler = new InputHandlerPlayer1( );
-		contacts = new ArrayList< Contact >( );
-	}
-
-	/**
-	 * 
-	 * @param world
-	 *            in which the player exists
-	 * @param posX
-	 *            of the player
-	 * @param posY
-	 *            of the player
-	 * @param name
-	 * @param tex
-	 *            ture of the player sprite
-	 */
-	public Player( World world, float posX, float posY, String name, Texture tex ) {
-		this( world, new Vector2( posX, posY ), name, tex );
-		// createPlayerBody(posX, posY);
-		// createPlayerBodyOLD(posX, posY);
 	}
 
 	/**
@@ -123,9 +92,6 @@ public class Player extends Entity {
 	 */
 	public Player( World world, Vector2 pos, String name ) {
 		this( world, pos, name, texture );
-		this.world = world;
-		// createPlayerBody(posX, posY);
-		// createPlayerBodyOLD(pos.x, pos.y);
 	}
 
 	// METHODS
@@ -144,14 +110,6 @@ public class Player extends Entity {
 			body.applyLinearImpulse( new Vector2( 0.01f, 0.0f ),
 					body.getWorldCenter( ) );
 		}
-		// body.applyLinearImpulse(new Vector2(0.001f, 0.0f),
-		// body.getWorldCenter());
-
-		// Following three lines update the texture
-		// doesn't belong here, I learned
-		// Vector2 pos = playerBody.getPosition();
-		// this.positionX = pos.x;
-		// this.positionY = pos.y;
 	}
 
 	/**
@@ -168,11 +126,6 @@ public class Player extends Entity {
 			body.applyLinearImpulse( new Vector2( -0.01f, 0.0f ),
 					body.getWorldCenter( ) );
 		}
-		// body.applyLinearImpulse(new Vector2(-0.001f, 0.0f),
-		// body.getWorldCenter());
-		// Gdx.app.debug("Physics:",
-		// "Applying Left Impulse to player at "+playerBody.getWorldCenter());
-
 	}
 
 	/**
@@ -182,16 +135,15 @@ public class Player extends Entity {
 		body.setLinearVelocity( new Vector2( body.getLinearVelocity( ).x, 0.0f ) );
 		body.applyLinearImpulse( new Vector2( 0.0f, 0.15f ),
 				body.getWorldCenter( ) );
-		/* Math.abs( body.getLinearVelocity( ).y ) < 1e-5 */
 	}
 
 	/**
 	 * Sets the current screw
 	 */
 	public void hitScrew( Screw screw ) {
-		if( playerState != PlayerState.Screwing ) {
+		if ( playerState != PlayerState.Screwing ) {
 			hitScrew = true;
-			currentScrew =  screw;
+			currentScrew = screw;
 		}
 	}
 
@@ -263,12 +215,8 @@ public class Player extends Entity {
 	public void update( float deltaTime ) {
 		super.update( deltaTime );
 		inputHandler.update( );
-		// sprite.setY( sprite.getY( ) + sprite.getHeight( ) / 8);
-		// sprite.setPosition( body.getPosition( ).x, body.getPosition( ).y);
-		// sprite.setOrigin( offset.x, offset.y );
-		// Vector2 pos = body.getPosition();
-		// Vector2 vel = body.getLinearVelocity();
-		if ( playerState != PlayerState.Screwing && playerState != PlayerState.Standing && isGrounded( ) ) {
+		if ( playerState != PlayerState.Screwing
+				&& playerState != PlayerState.Standing && isGrounded( ) ) {
 			playerState = PlayerState.Standing;
 			System.out.println( "Standing" );
 		}
@@ -315,7 +263,7 @@ public class Player extends Entity {
 
 		if ( playerState == PlayerState.Screwing ) {
 			sprite.setPosition( currentScrew.sprite.getX( ),
-			 currentScrew.sprite.getY( ) );
+					currentScrew.sprite.getY( ) );
 			if ( inputHandler.unscrewPressed( ) ) {
 				currentScrew.screwLeft( );
 			} else if ( inputHandler.screwPressed( ) ) {
