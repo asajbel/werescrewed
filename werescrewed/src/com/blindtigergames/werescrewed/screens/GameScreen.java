@@ -142,7 +142,7 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 		skeleton.addPlatformFixed(cp);
 		skeleton.addPlatformFixed(rp);
 		// make sure you uncomment the next two lines debugRenderer = new
-		// SBox2DDebugRenderer(BOX_TO_PIXEL); for physics world
+		//SBox2DDebugRenderer(BOX_TO_PIXEL); //for physics world
 		// debugRenderer = new Box2DDebugRenderer();
 		debugRenderer = new SBox2DDebugRenderer( BOX_TO_PIXEL );
 		Gdx.app.setLogLevel( Application.LOG_DEBUG );
@@ -198,6 +198,7 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 		// test drawing the texture by uncommenting the next line:
 		tp.draw( batch );
 		cp.draw( batch );
+		ground.draw( batch );
 		player.draw( batch );
 
 		structScrew.draw( batch );

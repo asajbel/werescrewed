@@ -41,9 +41,7 @@ public class StrippedScrew extends Screw {
 		screwFixture.shape = screwShape;
 		screwFixture.isSensor = true;
 		body.createFixture( screwFixture );
-		screwShape.dispose( );
-		offset.x = (float)(-sprite.getWidth( )/2.0f);
-		offset.y = (float)(-sprite.getWidth( )/2.0f);		
+		screwShape.dispose( );	
 		body.setUserData( this );
 
 		// add radar sensor to screw

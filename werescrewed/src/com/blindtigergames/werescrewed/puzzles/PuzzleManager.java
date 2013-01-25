@@ -52,6 +52,7 @@ public class PuzzleManager {
 		}
 	}
 
+	private PuzzleScrew screw1;
 	private Map< String, Entity > puzzleEntities;
 	private Map< String, IMover > puzzleMovers;
 	private Map< String, JointDef > puzzleJoints;
