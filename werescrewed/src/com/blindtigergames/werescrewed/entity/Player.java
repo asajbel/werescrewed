@@ -82,6 +82,7 @@ public class Player extends Entity {
 		body.setFixedRotation( true );
 		this.world = world;
 		body.setUserData( this );
+		body.setBullet( true );
 		playerState = PlayerState.Standing;
 		inputHandler = new InputHandlerPlayer1( );
 		anchorList = AnchorList.getInstance( );
