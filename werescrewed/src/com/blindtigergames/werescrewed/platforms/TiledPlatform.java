@@ -63,7 +63,7 @@ public class TiledPlatform extends Platform {
 	private void constructTileBody( float x, float y, float width, float height ) {
 
 		BodyDef bodyDef = new BodyDef( );
-		bodyDef.type = BodyType.KinematicBody;
+		bodyDef.type = BodyType.DynamicBody;
 		bodyDef.position.set( new Vector2( x * GameScreen.PIXEL_TO_BOX , y * GameScreen.PIXEL_TO_BOX ) );
 		body = world.createBody( bodyDef );
 

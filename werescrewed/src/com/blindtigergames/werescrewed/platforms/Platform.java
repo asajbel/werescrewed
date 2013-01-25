@@ -57,7 +57,8 @@ public class Platform extends Entity {
 		super.update( deltaTime );
 
 		if ( Gdx.input.isKeyPressed( Keys.T ) ) {
-			rotate( );
+			// Turned off because ground will fall
+			//rotate( );
 		}
 
 		if ( Gdx.input.isKeyPressed( Keys.Y ) ) {
