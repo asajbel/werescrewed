@@ -11,6 +11,7 @@ import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
 import com.blindtigergames.werescrewed.camera.Anchor;
 import com.blindtigergames.werescrewed.camera.AnchorList;
 import com.blindtigergames.werescrewed.input.InputHandlerPlayer1;
+import com.blindtigergames.werescrewed.screens.GameScreen;
 import com.blindtigergames.werescrewed.screws.Screw;
 
 /**
@@ -187,7 +188,7 @@ public class Player extends Entity {
 			for ( Fixture f : body.getFixtureList( ) ) {
 				f.getFilterData( ).maskBits = 0x0008;
 			}
-			body.setTransform( currentScrew.getPosition( ), 0.0f );
+			body.setTransform( currentScrew.getPosition( ).add( -sprite.getWidth( ) / 3.5f / 256f, -sprite.getWidth( ) / 4 / 256f ), 0.0f );
 			// connect the screw to the skeleton;
 			RevoluteJointDef revoluteJointDef = new RevoluteJointDef( );
 			revoluteJointDef.initialize( body, currentScrew.body,
