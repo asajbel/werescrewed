@@ -60,7 +60,7 @@ public class ShapePlatform extends Platform {
 
 		BodyDef bodyDef = new BodyDef( );
 		bodyDef.type = BodyType.KinematicBody;
-		bodyDef.position.set( new Vector2( pos.x, pos.y ) );
+		bodyDef.position.set( new Vector2( pos.x * GameScreen.PIXEL_TO_BOX , pos.y * GameScreen.PIXEL_TO_BOX ) );
 		body = world.createBody( bodyDef );
 
 		float horizontal = width * tileConstant * 2 * GameScreen.PIXEL_TO_BOX
@@ -101,7 +101,7 @@ public class ShapePlatform extends Platform {
 			float innerHeight, float outerWidth, float outerHeight, float scale ) {
 		BodyDef bodyDef = new BodyDef( );
 		bodyDef.type = BodyType.KinematicBody;
-		bodyDef.position.set( new Vector2( pos.x, pos.y ) );
+		bodyDef.position.set( pos.x * GameScreen.PIXEL_TO_BOX, pos.y * GameScreen.PIXEL_TO_BOX  );
 		body = world.createBody( bodyDef );
 
 		PolygonShape ps = new PolygonShape( );
@@ -152,7 +152,7 @@ public class ShapePlatform extends Platform {
 			float thickX, float thickY ) {
 		BodyDef bodyDef = new BodyDef( );
 		bodyDef.type = BodyType.KinematicBody;
-		bodyDef.position.set( new Vector2( pos.x, pos.y ) );
+		bodyDef.position.set( pos.x * GameScreen.PIXEL_TO_BOX, pos.y * GameScreen.PIXEL_TO_BOX );
 		body = world.createBody( bodyDef );
 
 		PolygonShape ps = new PolygonShape( );
@@ -188,7 +188,7 @@ public class ShapePlatform extends Platform {
 
 		BodyDef bodyDef = new BodyDef( );
 		bodyDef.type = BodyType.KinematicBody;
-		bodyDef.position.set( new Vector2( pos.x, pos.y ) );
+		bodyDef.position.set( pos.x * GameScreen.PIXEL_TO_BOX, pos.y * GameScreen.PIXEL_TO_BOX );
 		body = world.createBody( bodyDef );
 
 		float horizontal = width * tileConstant * 2 * GameScreen.PIXEL_TO_BOX

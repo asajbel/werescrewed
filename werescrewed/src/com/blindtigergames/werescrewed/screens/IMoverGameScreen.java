@@ -148,13 +148,13 @@ public class IMoverGameScreen implements com.badlogic.gdx.Screen {
 
         //slidingPlatform = new TiledPlatform( "prismaticplat", new Vector2(
         //        -300.0f*PIXEL_TO_BOX, 200.0f*PIXEL_TO_BOX ), null, 10, 1, false, world );
-        slidingPlatform = new PlatformBuilder()
+        slidingPlatform = new PlatformBuilder( world )
         					.setWidth( 10 )
         					.setHeight( 1 )
+        					.setName( "sliding" )
         					.setOneSided( true )
         					.setPosition( -300*PIXEL_TO_BOX, 200*PIXEL_TO_BOX )
-        					.setTexture( texture )
-        					.buildTilePlatform( world );
+        					.buildTilePlatform( );
         slidingPlatform.body.setType( BodyType.DynamicBody );
 
         

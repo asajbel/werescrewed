@@ -37,3 +37,11 @@ WEB-INF/
 
 war/
 *.orig
+
+*.BACKUP.*
+
+*.BASE.*
+
+*.LOCAL.*
+
+*.REMOTE.*
