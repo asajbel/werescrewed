@@ -84,30 +84,8 @@ public class Player extends Entity {
 		body.setUserData( this );
 		playerState = PlayerState.Standing;
 		inputHandler = new InputHandlerPlayer1( );
-<<<<<<< HEAD
-=======
-		contacts = new ArrayList< Contact >( );
 		anchorList = AnchorList.getInstance( );
 		anchorID = anchorList.addAnchor( true, pos );
-	}
-
-	/**
-	 * 
-	 * @param world
-	 *            in which the player exists
-	 * @param posX
-	 *            of the player
-	 * @param posY
-	 *            of the player
-	 * @param name
-	 * @param tex
-	 *            ture of the player sprite
-	 */
-	public Player( World world, float posX, float posY, String name, Texture tex ) {
-		this( world, new Vector2( posX, posY ), name, tex );
-		// createPlayerBody(posX, posY);
-		// createPlayerBodyOLD(posX, posY);
->>>>>>> 127434170d4334d07577c7d5e2673ac982749dee
 	}
 
 	/**
@@ -243,18 +221,9 @@ public class Player extends Entity {
 	public void update( float deltaTime ) {
 		super.update( deltaTime );
 		inputHandler.update( );
-<<<<<<< HEAD
+		anchorList.setAnchorPosBox( anchorID, getPosition( ) );
 		if ( playerState != PlayerState.Screwing
 				&& playerState != PlayerState.Standing && isGrounded( ) ) {
-=======
-		anchorList.setAnchorPosBox( anchorID, getPosition() );
-		// sprite.setY( sprite.getY( ) + sprite.getHeight( ) / 8);
-		// sprite.setPosition( body.getPosition( ).x, body.getPosition( ).y);
-		// sprite.setOrigin( offset.x, offset.y );
-		// Vector2 pos = body.getPosition();
-		// Vector2 vel = body.getLinearVelocity();
-		if ( playerState != PlayerState.Screwing && playerState != PlayerState.Standing && isGrounded( ) ) {
->>>>>>> 127434170d4334d07577c7d5e2673ac982749dee
 			playerState = PlayerState.Standing;
 			System.out.println( "Standing" );
 		}
