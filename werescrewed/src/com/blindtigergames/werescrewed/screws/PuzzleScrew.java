@@ -22,14 +22,15 @@ import com.blindtigergames.werescrewed.screens.GameScreen;
  */
 
 public class PuzzleScrew extends Screw {
-
+	public PuzzleManager puzzleManager;
+	
 	public PuzzleScrew( String n, Vector2 pos, Texture tex, int max,
-			Skeleton skeleton, World world, PuzzleManager pm ) {
+			Skeleton skeleton, World world ) {
 		super( n, pos, tex, null );
 		this.world = world;
 		maxDepth = max;
 		depth = max;
-		puzzleManager = pm;
+		puzzleManager = new PuzzleManager( world );
 
 		sprite.setColor( Color.GREEN );
 		// create the screw body
@@ -95,6 +96,7 @@ public class PuzzleScrew extends Screw {
 
 	public void update( float deltaTime ) {
 		super.update( deltaTime );
+		puzzleManager.update( deltaTime );
 		sprite.setRotation( rotation );
 		if ( depth != screwStep ) {
 			screwStep--;
@@ -109,6 +111,5 @@ public class PuzzleScrew extends Screw {
 	}
 
 	private RevoluteJoint platformToScrew;
-	private PuzzleManager puzzleManager;
 
 }

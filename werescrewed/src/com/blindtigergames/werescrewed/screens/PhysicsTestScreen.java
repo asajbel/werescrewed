@@ -71,7 +71,6 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 	ComplexPlatform cp;
 	// ShapePlatform sp;
 	Box box;
-	PuzzleManager pm;
 	PlatformBuilder platBuilder;
 	
 	Texture screwTex;
@@ -104,7 +103,6 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		MCL = new MyContactListener( );
 		world.setContactListener( MCL );
 		skeleton = new Skeleton( "", Vector2.Zero, background, world );
-		pm = new PuzzleManager( world );
 		String name = "player";
 		platBuilder = new PlatformBuilder( world );
 		
@@ -129,31 +127,25 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 				.buildTilePlatform( );
 		
 		movingTP.body.setType( BodyType.DynamicBody );
-		
-        Vector2 axis = new Vector2(1, 0);
-        PrismaticJointDef jointDef = new PrismaticJointDef();
-        jointDef.initialize( movingTP.body, skeleton.body, movingTP.body.getPosition( ), axis);
-        jointDef.enableMotor = true;
-        jointDef.enableLimit = true;
-        jointDef.lowerTranslation = 0.0f;
-        jointDef.upperTranslation = 1.0f;
-        jointDef.motorSpeed = 7.0f; 
-
-		//PrismaticJoint j = ( PrismaticJoint ) world
-		//		.createJoint( jointDef );
-		
-		pm.addEntity( "001_0", movingTP );
-		/*pm.addMover( "001_0",  
-				new SlidingMotorMover(
-						PuzzleType.PRISMATIC_SLIDER, j ) );*/
-		pm.addJointDef( "001_0", jointDef);
 
 		screwTex = new Texture( Gdx.files.internal( "data/screw.png" ) );
 		background = new Texture( Gdx.files.internal( "data/libgdx.png" ) );
 		structScrew = new StructureScrew( "", tp.body.getPosition( ), screwTex,
 				50, tp, skeleton, world );
 		puzzleScrew = new PuzzleScrew( "001", new Vector2( 0.0f, 0.2f ), screwTex,
-				50, skeleton, world, pm );
+				50, skeleton, world );
+		
+        Vector2 axis = new Vector2(1, 0);
+        PrismaticJointDef jointDef = new PrismaticJointDef();
+        jointDef.initialize( movingTP.body, skeleton.body, movingTP.body.getPosition( ), axis);
+        jointDef.enableMotor = true;
+        jointDef.enableLimit = true;
+        jointDef.lowerTranslation = -1.5f;
+        jointDef.upperTranslation = 1.0f;
+        jointDef.motorSpeed = 7.0f; 
+
+        puzzleScrew.puzzleManager.addEntity( movingTP );
+        puzzleScrew.puzzleManager.addJointDef( jointDef );
 
 		float x1 = 1.75f;
 		float x2 = 2.25f;
