@@ -40,8 +40,6 @@ public class Camera {
 	private static final float ACCELERATION_RATIO = .005f;
 	private static final float TARGET_BUFFER_RATIO = .05f;
 	private static final float MINIMUM_FOLLOW_SPEED = 3f;
-	private static final float MAXIMUM_TRANSLATION_SPEED = 50f;
-	private static final float DECELERATE = 1f;
 	private static final float MAX_ANGLE_DIFF = 45f;
 	private Vector2  translateVelocity;
 	private float translateSpeed;
