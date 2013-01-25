@@ -19,7 +19,8 @@ import com.blindtigergames.werescrewed.screens.GameScreen;
  * 
  * @author Ranveer/Stewart
  * 
- * 
+ * TODO: Perhaps change skeleton name, make skeleton more like a tree
+ * It should have a list of non-jointed entities too.
  */
 
 public class Skeleton extends Entity {
@@ -57,6 +58,24 @@ public class Skeleton extends Entity {
         // center of platform
         RevoluteJoint joint = new RevoluteJointBuilder( world ).skeleton( this ).bodyB( platform )
                 .build();
+        
+        addBoneAndJoint( platform, joint );
+    }
+    
+    /**
+     * Attach a platform to this skeleton that rotates with a motor
+     * 
+     * @param platform
+     */
+    public void addPlatformRotatingCenterWithRot( Platform platform, float rotSpeedInMeters ) {
+        // Default values of the builder will allow rotation with anchor at
+        // center of platform
+        RevoluteJoint joint = new RevoluteJointBuilder( world )
+        						.skeleton( this )
+        						.bodyB( platform )
+        						.motor( true )
+        						.motorSpeed( rotSpeedInMeters )
+        						.build();
         
         addBoneAndJoint( platform, joint );
     }

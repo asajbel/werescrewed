@@ -1,7 +1,6 @@
 package com.blindtigergames.werescrewed.entity;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
@@ -9,17 +8,17 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.Fixture;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.JointEdge;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJoint;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
 import com.blindtigergames.werescrewed.camera.Anchor;
 import com.blindtigergames.werescrewed.camera.AnchorList;
 import com.blindtigergames.werescrewed.input.InputHandlerPlayer1;
-import com.blindtigergames.werescrewed.screens.GameScreen;
+import com.blindtigergames.werescrewed.screws.BossScrew;
+import com.blindtigergames.werescrewed.screws.PuzzleScrew;
 import com.blindtigergames.werescrewed.screws.Screw;
+import com.blindtigergames.werescrewed.screws.StrippedScrew;
+import com.blindtigergames.werescrewed.screws.StructureScrew;
 
 /**
  * 
@@ -144,8 +143,9 @@ public class Player extends Entity {
 		if ( playerState == PlayerState.Screwing ) {
 			world.destroyJoint( playerToScrew );
 			playerState = PlayerState.JumpingOffScrew;
-			body.applyLinearImpulse( new Vector2( 0.05f, 0.15f ),
+			body.applyLinearImpulse( new Vector2( 0.05f, 0.0f ),
 					body.getWorldCenter( ) );
+			jump( );
 		} else if ( body.getLinearVelocity( ).x < 2.0f ) {
 			body.applyLinearImpulse( new Vector2( 0.01f, 0.0f ),
 					body.getWorldCenter( ) );
@@ -167,8 +167,9 @@ public class Player extends Entity {
 		if ( playerState == PlayerState.Screwing ) {
 			world.destroyJoint( playerToScrew );
 			playerState = PlayerState.JumpingOffScrew;
-			body.applyLinearImpulse( new Vector2( -0.05f, 0.15f ),
+			body.applyLinearImpulse( new Vector2( -0.05f, 0.0f ),
 					body.getWorldCenter( ) );
+			jump( );
 		} else if ( body.getLinearVelocity( ).x > -2.0f ) {
 			body.applyLinearImpulse( new Vector2( -0.01f, 0.0f ),
 					body.getWorldCenter( ) );
@@ -184,15 +185,9 @@ public class Player extends Entity {
 	 * Causes the player to jump
 	 */
 	public void jump( ) {
-		if ( playerState == PlayerState.Screwing ) {
-			world.destroyJoint( playerToScrew );
-			playerState = PlayerState.JumpingOffScrew;
-			body.applyLinearImpulse( new Vector2( 0.0f, 0.15f ),
-					body.getWorldCenter( ) );
-		} else if ( isGrounded( ) ) {
-			body.applyLinearImpulse( new Vector2( 0.0f, 0.15f ),
-					body.getWorldCenter( ) );
-		}
+		body.setLinearVelocity( new Vector2( body.getLinearVelocity( ).x, 0.0f ) );
+		body.applyLinearImpulse( new Vector2( 0.0f, 0.15f ),
+				body.getWorldCenter( ) );
 		/* Math.abs( body.getLinearVelocity( ).y ) < 1e-5 */
 	}
 
@@ -200,8 +195,10 @@ public class Player extends Entity {
 	 * Sets the current screw
 	 */
 	public void hitScrew( Screw screw ) {
-		hitScrew = true;
-		currentScrew = screw;
+		if( playerState != PlayerState.Screwing ) {
+			hitScrew = true;
+			currentScrew =  screw;
+		}
 	}
 
 	/**
@@ -278,10 +275,22 @@ public class Player extends Entity {
 		// sprite.setOrigin( offset.x, offset.y );
 		// Vector2 pos = body.getPosition();
 		// Vector2 vel = body.getLinearVelocity();
+		if ( playerState != PlayerState.Screwing && playerState != PlayerState.Standing && isGrounded( ) ) {
+			playerState = PlayerState.Standing;
+			System.out.println( "Standing" );
+		}
 
 		if ( inputHandler.jumpPressed( ) ) {
 			if ( !jumpPressed ) {
-				jump( );
+				System.out.println( grounded );
+				System.out.println( body.getLinearVelocity( ) );
+				if ( playerState == PlayerState.Screwing ) {
+					world.destroyJoint( playerToScrew );
+					playerState = PlayerState.JumpingOffScrew;
+					jump( );
+				} else if ( isGrounded( ) ) {
+					jump( );
+				}
 				jumpPressed = true;
 			}
 		}
@@ -312,14 +321,14 @@ public class Player extends Entity {
 		}
 
 		if ( playerState == PlayerState.Screwing ) {
-			// sprite.setPosition( currentScrew.sprite.getX( ),
-			// currentScrew.sprite.getY( ) );
+			sprite.setPosition( currentScrew.sprite.getX( ),
+			 currentScrew.sprite.getY( ) );
 			if ( inputHandler.unscrewPressed( ) ) {
 				currentScrew.screwLeft( );
 			} else if ( inputHandler.screwPressed( ) ) {
 				currentScrew.screwRight( );
 			}
-			if ( currentScrew.body.getJointList( ).size( ) == 1 ) {
+			if ( currentScrew.body.getJointList( ).size( ) <= 1 ) {
 				jump( );
 				for ( Fixture fix : body.getFixtureList( ) ) {
 					fix.getFilterData( ).maskBits = 0x0008;
@@ -338,143 +347,3 @@ public class Player extends Entity {
 	}
 
 }
-
-// /**
-// *
-// * @return A boolean that indicates if the player is on ground.
-// *
-// */
-// private boolean isGrounded( ) {
-//
-// // A list of all instances of contact in the world
-// List< Contact > contactList = world.getContactList( );
-//
-// // Loop through all contacts
-// for ( Contact contact : contactList ) {
-// // If the current contact is touching and involves a player
-// if ( contact.isTouching( )
-// && ( contact.getFixtureA( ) == playerSensorFixture || contact
-// .getFixtureB( ) == playerSensorFixture ) ) {
-//
-// Vector2 playerPos = body.getPosition( );
-// WorldManifold manifold = contact.getWorldManifold( );
-//
-// // Tracks whether every point is "below" the character
-// boolean below = true;
-//
-// // Loop through all contact points in current contact
-// for ( Vector2 contactPoint : manifold.getPoints( ) ) {
-// below &= ( contactPoint.y < playerPos.y - GROUND_THRESHOLD );
-// }
-//
-// if ( below ) {
-// return true;
-// }
-//
-// return false;
-// }
-// }
-// return false;
-// }
-//
-
-// I tried some weird stuff in this constructor
-// private void createPlayerBody( float x, float y ) {
-//
-// BodyDef playerBodyDef = new BodyDef( );
-// playerBodyDef.type = BodyType.DynamicBody;
-// playerBodyDef.position.set( x, y );
-// body = world.createBody( playerBodyDef );
-//
-// PolygonShape poly = new PolygonShape( );
-// poly.setAsBox( 25f, 25f );
-// playerPhysicsFixture = body.createFixture( poly, 1 );
-// poly.dispose( );
-//
-// CircleShape circle = new CircleShape( );
-// circle.setRadius( 25f );
-// circle.setPosition( new Vector2( 0, -25f ) );
-// playerSensorFixture = body.createFixture( circle, 0 );
-//
-// circle.dispose( );
-//
-// body.setBullet( true );
-// /*
-// * CircleShape playerfeetShape = new CircleShape();
-// * playerfeetShape.setRadius(7f);
-// *
-// * FixtureDef playerFixtureDef = new FixtureDef();
-// * //playerBody.createFixture(playerPolygonShape, 1.0f);
-// * playerFixtureDef.shape = playerfeetShape; playerFixtureDef.density =
-// * 0.9f; playerFixtureDef.friction = 0f; playerFixtureDef.restitution =
-// * 0.0f; playerBody.createFixture(playerFixtureDef);
-// * playerBody.setGravityScale(1f); playerBody.setFixedRotation(true);
-// * //playerBody. playerfeetShape.dispose();
-// */
-// }
-
-// // functionality has been moved to EntityDef
-// private void createPlayerBodyOLD( float x, float y ) {
-//
-// BodyDef playerBodyDef = new BodyDef( );
-// playerBodyDef.type = BodyType.DynamicBody;
-// playerBodyDef.position.set( x, y );
-// body = world.createBody( playerBodyDef );
-// CircleShape playerfeetShape = new CircleShape( );
-// playerfeetShape.setRadius( 10f * GameScreen.PIXEL_TO_BOX );
-// FixtureDef playerFixtureDef = new FixtureDef( );
-// // playerBody.createFixture(playerPolygonShape, 1.0f);
-// playerFixtureDef.shape = playerfeetShape;
-// playerFixtureDef.density = 9.9f;
-// playerFixtureDef.friction = 0.05f;
-// playerFixtureDef.restitution = 0.5f;
-// body.createFixture( playerFixtureDef );
-// body.setGravityScale( .1f );
-// body.setFixedRotation( true );
-// playerfeetShape.dispose( );
-//
-// }
-
-// This example is found at a blog, i couldn't get it to work right away
-// boolean grounded = isPlayerGrounded(Gdx.graphics.getDeltaTime());
-// if(grounded) { lastGroundTime = System.nanoTime(); } else {
-// if(System.nanoTime() - lastGroundTime < 100000000) { grounded = true;
-// } }
-//
-// // cap max velocity on x if(Math.abs(vel.x) > MAX_VELOCITY) { vel.x =
-// Math.signum(vel.x) * MAX_VELOCITY;
-// playerBody.setLinearVelocity(vel.x, vel.y); }
-//
-// // calculate stilltime & damp if(!Gdx.input.isKeyPressed(Keys.A) &&
-// !Gdx.input.isKeyPressed(Keys.D)) { stillTime +=
-// Gdx.graphics.getDeltaTime(); playerBody.setLinearVelocity(vel.x *
-// 0.9f, vel.y); } else { stillTime = 0; }
-//
-// // disable friction while jumping if(!grounded) {
-// playerPhysicsFixture.setFriction(0f);
-// playerSensorFixture.setFriction(0f); } else {
-// if(!Gdx.input.isKeyPressed(Keys.A) && !Gdx.input.isKeyPressed(Keys.D)
-// && stillTime > 0.2) { playerPhysicsFixture.setFriction(100f);
-// playerSensorFixture.setFriction(100f); } else {
-// playerPhysicsFixture.setFriction(0.2f);
-// playerSensorFixture.setFriction(0.2f); }
-//
-// //if(groundedPlatform != null && groundedPlatform.dist == 0) { //
-// playerBody.applyLinearImpulse(0, -24, pos.x, pos.y); //} }
-//
-// // apply left impulse, but only if max velocity is not reached yet
-//
-// if(Gdx.input.isKeyPressed(Keys.A) && vel.x > -MAX_VELOCITY) {
-// //playerBody.applyLinearImpulse(-2f, 0, pos.x, pos.y); moveLeft(); }
-//
-// // apply right impulse, but only if max velocity is not reached yet
-// if(Gdx.input.isKeyPressed(Keys.D) && vel.x < MAX_VELOCITY) {
-// //playerBody.applyLinearImpulse(2f, 0, pos.x, pos.y); moveRight(); }
-//
-// // jump, but only when grounded if(Gdx.input.isKeyPressed(Keys.W)) {
-// //jump = false; if(grounded) { playerBody.setLinearVelocity(vel.x,
-// 0); //System.out.println("jump before: " +
-// player.getLinearVelocity()); playerBody.setTransform(pos.x, pos.y +
-// 0.01f, 0); playerBody.applyLinearImpulse(0, 30, pos.x, pos.y);
-// //System.out.println("jump, " + player.getLinearVelocity()); } }
-//
