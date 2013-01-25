@@ -58,6 +58,7 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 	RoomPlatform rp;
 	ComplexPlatform cp;
 	ShapePlatform sp;
+	PlatformBuilder platBuilder;
 
 	// testing screw
 	Texture screwTex;
@@ -92,25 +93,31 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 		player = new Player( world, new Vector2( 1.0f, 1.0f ), name );
 
 		cam = new Camera( w, h, player );
- 
-		tp = new PlatformBuilder()
-				.setPosition( 2.0f, 0.2f )
-				.setDimensions( 9, 2 )
+		platBuilder = new PlatformBuilder( world );
+		tp = platBuilder
+				.setName( "tp" )
+				.setPosition( 200.0f, 100.0f )
+				.setDimensions( 10, 1 )
 				.setTexture( texture )
 				.setResitituion( 0.0f )
-				.buildTilePlatform( world );
+				.buildTilePlatform( );
 		
 		
-		rp = new PlatformBuilder()
-				.setPosition( -1.0f, 0.4f )
+		rp = platBuilder
+				.setPosition( -200.0f, 100.0f )
+				.setName( "rp" )
 				.setDimensions( 1, 10 )
 				.setTexture( texture )
 				.setResitituion( 0.0f )
-				.buildRoomPlatform( world );
+				.buildRoomPlatform( );
 		
+<<<<<<< HEAD
 		cp = new ComplexPlatform( "bottle", new Vector2( -0.8f, 1.3f ), new Texture(Gdx.files.internal( "data/bodies/test01.png")),
+=======
+		cp = new ComplexPlatform( "bottle", new Vector2( -100.0f, 100.0f ), new Texture(Gdx.files.internal( "data/bodies/test01.png")),
+>>>>>>> 2af0aa3e5b2ac9ea718f9fe001f5de786058e160
 				1, world, "complexTest" );
-		sp = new ShapePlatform( "rhom", new Vector2( 1.0f, 1.0f ), texture,
+		sp = new ShapePlatform( "rhom", new Vector2( 100.0f, 300.0f ), texture,
 				world, Shapes.plus, 1.0f, 1.0f, false );
 
 		// testing screws
@@ -123,12 +130,13 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 
 		tp.setMover( new TimelineMover( ) );
 		
-		ground = new PlatformBuilder()
+		ground = new PlatformBuilder( world )
 				.setPosition( 0.0f, 0.0f )
+				.setName( "ground" )
 				.setDimensions( 100, 1 )
 				.setTexture( texture )
 				.setResitituion( 0.0f )
-				.buildTilePlatform( world );
+				.buildTilePlatform( );
 		
 		//skeleton.addPlatformFixed(ground);
 		skeleton.addPlatformFixed(tp);

@@ -31,6 +31,7 @@ import com.blindtigergames.werescrewed.entity.mover.SlidingMotorMover;
 import com.blindtigergames.werescrewed.input.InputHandlerPlayer1;
 import com.blindtigergames.werescrewed.joint.JointFactory;
 import com.blindtigergames.werescrewed.joint.PrismaticJointBuilder;
+import com.blindtigergames.werescrewed.platforms.PlatformBuilder;
 import com.blindtigergames.werescrewed.platforms.ShapePlatform;
 import com.blindtigergames.werescrewed.platforms.Shapes;
 import com.blindtigergames.werescrewed.platforms.TiledPlatform;
@@ -145,8 +146,15 @@ public class IMoverGameScreen implements com.badlogic.gdx.Screen {
 
         logger = new FPSLogger();
 
-        slidingPlatform = new TiledPlatform( "prismaticplat", new Vector2(
-                -300.0f*PIXEL_TO_BOX, 200.0f*PIXEL_TO_BOX ), null, 10, 1, false, world );
+        //slidingPlatform = new TiledPlatform( "prismaticplat", new Vector2(
+        //        -300.0f*PIXEL_TO_BOX, 200.0f*PIXEL_TO_BOX ), null, 10, 1, false, world );
+        slidingPlatform = new PlatformBuilder( world )
+        					.setWidth( 10 )
+        					.setHeight( 1 )
+        					.setName( "sliding" )
+        					.setOneSided( true )
+        					.setPosition( -300*PIXEL_TO_BOX, 200*PIXEL_TO_BOX )
+        					.buildTilePlatform( );
         slidingPlatform.body.setType( BodyType.DynamicBody );
 
         
