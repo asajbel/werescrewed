@@ -312,7 +312,7 @@ public class Camera {
     	if ((translateSpeed + translateAcceleration) < (Vector2.tmp.len() - 5f))
     		translateSpeed += translateAcceleration;
     	else
-    		translateSpeed -= DECELERATE;
+    		translateSpeed = Vector2.tmp.len() - 5f;
     	Vector2.tmp.nor( );
     	translateVelocity.x = Vector2.tmp.x;
     	translateVelocity.y = Vector2.tmp.y;
