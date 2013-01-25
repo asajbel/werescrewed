@@ -75,6 +75,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 	StructureScrew structScrew;
 	PuzzleScrew puzzleScrew;
 	Skeleton skeleton;
+	Skeleton rootSkeleon;
 	ArrayList< StrippedScrew > climbingScrews = new ArrayList< StrippedScrew >( );
 
 	FPSLogger logger;
@@ -101,6 +102,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		MCL = new MyContactListener( );
 		world.setContactListener( MCL );
 		skeleton = new Skeleton( "", Vector2.Zero, background, world );
+		rootSkeleon = new Skeleton( "", Vector2.Zero, null, world);
 		String name = "player";
 		platBuilder = new PlatformBuilder( world );
 		
@@ -188,13 +190,15 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 				.setTexture( texture )
 				.setResitituion( 0.0f )
 				.buildTilePlatform( );
+		skeleton.addPlatformFixed( ground );
+		//skeleton.addPlatformFixed( tp );
 		
 		
 		/**
 		 * Uncomment if you don't want stew's moving platforms in your way!
 		 */
 		buildMoverPlatforms( );
-		
+		rootSkeleon.addSkeleton( skeleton );
 		
 
 		// make sure you uncomment the next two lines debugRenderer = new
@@ -317,8 +321,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 			s.update( deltaTime );
 		}
 		
-		skeleton.update( deltaTime );
-
+		rootSkeleon.update( deltaTime );
 		movingTP.update( deltaTime );
 		//
 		tp.update( deltaTime );
