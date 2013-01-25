@@ -153,11 +153,11 @@ public class MyContactListener implements ContactListener {
 							.getBody( ).getUserData( );
 					Vector2 platformPos = collider.getPosition( );
 					Vector2 playerPos = player.getPosition( );
-					if ( platformPos.y < playerPos.y ) {
-						player.setGrounded( false );
-						// System.out.println( "Not grounded." );
-						contact.setEnabled( true );
-					}
+					// if ( platformPos.y < playerPos.y ) {
+					player.setGrounded( false );
+					// System.out.println( "Not grounded." );
+					contact.setEnabled( true );
+					// }
 				} else if ( objectFix.getBody( ).getUserData( ) instanceof RoomPlatform ) {
 					// System.out
 					// .println( "RoomPlatform collision end. Not grounded." );
