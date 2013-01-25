@@ -1,7 +1,6 @@
 package com.blindtigergames.werescrewed.puzzles;
 
 import java.util.ArrayList;
-import java.util.Map;
 
 import com.badlogic.gdx.physics.box2d.JointDef;
 import com.badlogic.gdx.physics.box2d.World;
