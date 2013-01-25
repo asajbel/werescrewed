@@ -59,7 +59,7 @@ public class ShapePlatform extends Platform {
 			boolean flip, float scale ) {
 
 		BodyDef bodyDef = new BodyDef( );
-		bodyDef.type = BodyType.KinematicBody;
+		bodyDef.type = BodyType.DynamicBody;
 		bodyDef.position.set( new Vector2( pos.x * GameScreen.PIXEL_TO_BOX , pos.y * GameScreen.PIXEL_TO_BOX ) );
 		body = world.createBody( bodyDef );
 
@@ -100,7 +100,7 @@ public class ShapePlatform extends Platform {
 	public void constructCross( Vector2 pos, float innerWidth,
 			float innerHeight, float outerWidth, float outerHeight, float scale ) {
 		BodyDef bodyDef = new BodyDef( );
-		bodyDef.type = BodyType.KinematicBody;
+		bodyDef.type = BodyType.DynamicBody;
 		bodyDef.position.set( pos.x * GameScreen.PIXEL_TO_BOX, pos.y * GameScreen.PIXEL_TO_BOX  );
 		body = world.createBody( bodyDef );
 
@@ -151,7 +151,7 @@ public class ShapePlatform extends Platform {
 	public void constructPlus( Vector2 pos, float width, float height,
 			float thickX, float thickY ) {
 		BodyDef bodyDef = new BodyDef( );
-		bodyDef.type = BodyType.KinematicBody;
+		bodyDef.type = BodyType.DynamicBody;
 		bodyDef.position.set( pos.x * GameScreen.PIXEL_TO_BOX, pos.y * GameScreen.PIXEL_TO_BOX );
 		body = world.createBody( bodyDef );
 
@@ -187,7 +187,7 @@ public class ShapePlatform extends Platform {
 			float scale ) {
 
 		BodyDef bodyDef = new BodyDef( );
-		bodyDef.type = BodyType.KinematicBody;
+		bodyDef.type = BodyType.DynamicBody;
 		bodyDef.position.set( pos.x * GameScreen.PIXEL_TO_BOX, pos.y * GameScreen.PIXEL_TO_BOX );
 		body = world.createBody( bodyDef );
 

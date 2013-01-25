@@ -3,6 +3,7 @@ package com.blindtigergames.werescrewed.entity;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
@@ -148,7 +149,21 @@ public class Skeleton extends Entity {
             boneJoint.bone.update( deltaTime );
         }
     }
-
+    
+    @Override
+    public void draw( SpriteBatch batch ){
+    	super.draw( batch );
+    	drawChildren( batch );
+    }
+    
+    private void drawChildren( SpriteBatch batch ){
+        for ( Skeleton skeleton : subSkeletons ) {
+            skeleton.draw( batch );
+        }
+        for ( BoneAndJoints boneJoint : boneAndJoints ) {
+            boneJoint.bone.draw( batch );
+        }
+    }
     protected class BoneAndJoints {
         protected ArrayList<Joint> joints;
         protected Entity bone;
