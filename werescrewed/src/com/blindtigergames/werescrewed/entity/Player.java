@@ -138,8 +138,9 @@ public class Player extends Entity {
 		if ( playerState == PlayerState.Screwing ) {
 			world.destroyJoint( playerToScrew );
 			playerState = PlayerState.JumpingOffScrew;
-			body.applyLinearImpulse( new Vector2( 0.05f, 0.15f ),
+			body.applyLinearImpulse( new Vector2( 0.05f, 0.0f ),
 					body.getWorldCenter( ) );
+			jump( );
 		} else if ( body.getLinearVelocity( ).x < 2.0f ) {
 			body.applyLinearImpulse( new Vector2( 0.01f, 0.0f ),
 					body.getWorldCenter( ) );
@@ -161,8 +162,9 @@ public class Player extends Entity {
 		if ( playerState == PlayerState.Screwing ) {
 			world.destroyJoint( playerToScrew );
 			playerState = PlayerState.JumpingOffScrew;
-			body.applyLinearImpulse( new Vector2( -0.05f, 0.15f ),
+			body.applyLinearImpulse( new Vector2( -0.05f, 0.0f ),
 					body.getWorldCenter( ) );
+			jump( );
 		} else if ( body.getLinearVelocity( ).x > -2.0f ) {
 			body.applyLinearImpulse( new Vector2( -0.01f, 0.0f ),
 					body.getWorldCenter( ) );
@@ -178,15 +180,9 @@ public class Player extends Entity {
 	 * Causes the player to jump
 	 */
 	public void jump( ) {
-		if ( playerState == PlayerState.Screwing ) {
-			world.destroyJoint( playerToScrew );
-			playerState = PlayerState.JumpingOffScrew;
-			body.applyLinearImpulse( new Vector2( 0.0f, 0.15f ),
-					body.getWorldCenter( ) );
-		} else if ( isGrounded( ) ) {
-			body.applyLinearImpulse( new Vector2( 0.0f, 0.15f ),
-					body.getWorldCenter( ) );
-		}
+		body.setLinearVelocity( new Vector2( body.getLinearVelocity( ).x, 0.0f ) );
+		body.applyLinearImpulse( new Vector2( 0.0f, 0.15f ),
+				body.getWorldCenter( ) );
 		/* Math.abs( body.getLinearVelocity( ).y ) < 1e-5 */
 	}
 
@@ -271,10 +267,22 @@ public class Player extends Entity {
 		// sprite.setOrigin( offset.x, offset.y );
 		// Vector2 pos = body.getPosition();
 		// Vector2 vel = body.getLinearVelocity();
+		if ( playerState != PlayerState.Screwing && playerState != PlayerState.Standing && isGrounded( ) ) {
+			playerState = PlayerState.Standing;
+			System.out.println( "Standing" );
+		}
 
 		if ( inputHandler.jumpPressed( ) ) {
 			if ( !jumpPressed ) {
-				jump( );
+				System.out.println( grounded );
+				System.out.println( body.getLinearVelocity( ) );
+				if ( playerState == PlayerState.Screwing ) {
+					world.destroyJoint( playerToScrew );
+					playerState = PlayerState.JumpingOffScrew;
+					jump( );
+				} else if ( isGrounded( ) ) {
+					jump( );
+				}
 				jumpPressed = true;
 			}
 		}
