@@ -173,24 +173,24 @@ public class IMoverGameScreen implements com.badlogic.gdx.Screen {
                 PuzzleType.PRISMATIC_SLIDER, j ) );
         
         
-        TiledPlatform skeletonTest1 = new PlatformBuilder()
+        TiledPlatform skeletonTest1 = new PlatformBuilder(world)
 										.setWidth( 10 )
 										.setHeight( 1 )
 										.setOneSided( false )
 										.setPosition( -300*PIXEL_TO_BOX, -200*PIXEL_TO_BOX )
 										.setTexture( texture )
-										.buildTilePlatform( world );
+										.buildTilePlatform(  );
         			
         skeletonTest1.body.setType( BodyType.DynamicBody );
         skeleton.addPlatformFixed( skeletonTest1 );
         
-        TiledPlatform skeletonTest2 = new PlatformBuilder()
+        TiledPlatform skeletonTest2 = new PlatformBuilder(world)
 										.setWidth( 10 )
 										.setHeight( 1 )
 										.setOneSided( false )
 										.setPosition( 300*PIXEL_TO_BOX, 300*PIXEL_TO_BOX )
 										.setTexture( texture )
-										.buildTilePlatform( world );
+										.buildTilePlatform(  );
         skeletonTest2.body.setType( BodyType.DynamicBody );
         skeleton.addPlatformRotatingCenter( skeletonTest2 );
 
@@ -199,13 +199,13 @@ public class IMoverGameScreen implements com.badlogic.gdx.Screen {
          */
         
         for ( int i = 0; i < 10; ++i ){
-            TiledPlatform piston = new PlatformBuilder()
+            TiledPlatform piston = new PlatformBuilder(world)
 									.setWidth( 1 )
 									.setHeight( 3 )
 									.setOneSided( false )
 									.setPosition( (-500f-i*40)*PIXEL_TO_BOX, 150f*PIXEL_TO_BOX )
 									.setTexture( texture )
-									.buildTilePlatform( world );
+									.buildTilePlatform(  );
 
             piston.body.setType( BodyType.DynamicBody );
             PrismaticJoint pistonJoint = new PrismaticJointBuilder( world )

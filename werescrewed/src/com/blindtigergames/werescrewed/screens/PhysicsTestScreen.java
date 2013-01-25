@@ -17,6 +17,7 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.joints.PrismaticJoint;
+import com.badlogic.gdx.physics.box2d.joints.PrismaticJointDef;
 import com.blindtigergames.werescrewed.camera.Camera;
 import com.blindtigergames.werescrewed.collisionManager.MyContactListener;
 import com.blindtigergames.werescrewed.debug.SBox2DDebugRenderer;
@@ -24,8 +25,10 @@ import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityManager;
 import com.blindtigergames.werescrewed.entity.Player;
 import com.blindtigergames.werescrewed.entity.Skeleton;
+import com.blindtigergames.werescrewed.entity.mover.PistonMover;
 import com.blindtigergames.werescrewed.entity.mover.PuzzleType;
 import com.blindtigergames.werescrewed.entity.mover.SlidingMotorMover;
+import com.blindtigergames.werescrewed.joint.JointFactory;
 import com.blindtigergames.werescrewed.joint.PrismaticJointBuilder;
 import com.blindtigergames.werescrewed.platforms.Box;
 import com.blindtigergames.werescrewed.platforms.ComplexPlatform;
@@ -209,14 +212,14 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 	}
 	
 	void buildMoverPlatforms(){
-		TiledPlatform slidingPlatform = new PlatformBuilder()
+		TiledPlatform slidingPlatform = new PlatformBuilder(world)
 				.setWidth( 10 )
 				.setHeight( 1 )
 				.setOneSided( true )
 				.setPosition( -1000*PIXEL_TO_BOX, 200*PIXEL_TO_BOX )
 				.setTexture( texture )
 				.setFriction( 1f )
-				.buildTilePlatform( world );
+				.buildTilePlatform(  );
 		slidingPlatform.body.setType( BodyType.DynamicBody );
 		
 		PrismaticJointDef prismaticJointDef = JointFactory
@@ -230,25 +233,25 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		PuzzleType.PRISMATIC_SLIDER, j ) );
 		
 		
-		TiledPlatform skeletonTest1 = new PlatformBuilder()
+		TiledPlatform skeletonTest1 = new PlatformBuilder(world)
 							.setWidth( 10 )
 							.setHeight( 1 )
 							.setFriction( 1f )
 							.setOneSided( false )
 							.setPosition( -500*PIXEL_TO_BOX, -200*PIXEL_TO_BOX )
 							.setTexture( texture )
-							.buildTilePlatform( world );
+							.buildTilePlatform(  );
 		skeletonTest1.body.setType( BodyType.DynamicBody );
 		skeleton.addPlatformFixed( skeletonTest1 );
 		
-		TiledPlatform skeletonTest2 = new PlatformBuilder()
+		TiledPlatform skeletonTest2 = new PlatformBuilder(world)
 							.setWidth( 10 )
 							.setHeight( 1 )
 							.setOneSided( false )
 							.setPosition( 500*PIXEL_TO_BOX, 300*PIXEL_TO_BOX )
 							.setTexture( texture )
 							.setFriction( 1f )
-							.buildTilePlatform( world );
+							.buildTilePlatform(  );
 		skeletonTest2.body.setType( BodyType.DynamicBody );
 		skeleton.addPlatformRotatingCenter( skeletonTest2 );
 		
@@ -256,7 +259,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		* TODO: FIX PLATFORM DENSITY
 		*/
 		
-		PlatformBuilder builder = new PlatformBuilder()
+		PlatformBuilder builder = new PlatformBuilder(world)
 		.setWidth( 1 )
 		.setHeight( 3 )
 		.setOneSided( false )
@@ -275,7 +278,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		for ( int i = 0; i < 10; ++i ){
 			TiledPlatform piston = builder
 							.setPosition( (-100f-i*40)*PIXEL_TO_BOX, 220f*PIXEL_TO_BOX )
-							.buildTilePlatform( world );
+							.buildTilePlatform(  );
 			
 			piston.body.setType( BodyType.DynamicBody );
 			PrismaticJoint pistonJoint = jointBuilder
