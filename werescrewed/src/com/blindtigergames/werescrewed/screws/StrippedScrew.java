@@ -69,9 +69,11 @@ public class StrippedScrew extends Screw {
 		//skeleton.addBoneAndJoint( this, platformToScrew );
 	}
 
+	@Override
 	public void screwLeft( ) {
 	}
 
+	@Override
 	public void screwRight( ) {
 	}
 

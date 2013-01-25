@@ -277,6 +277,8 @@ public class Player extends Entity {
 				currentScrew.screwRight( );
 			}
 			if ( currentScrew.body.getJointList( ).size( ) <= 1 ) {
+				world.destroyJoint( playerToScrew );
+				playerState = PlayerState.JumpingOffScrew;
 				jump( );
 				for ( Fixture fix : body.getFixtureList( ) ) {
 					fix.getFilterData( ).maskBits = 0x0008;
