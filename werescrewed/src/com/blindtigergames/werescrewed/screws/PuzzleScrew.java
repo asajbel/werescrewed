@@ -74,6 +74,7 @@ public class PuzzleScrew extends Screw {
 		skeleton.addBoneAndJoint( this, platformToScrew );
 	}
 
+	@Override
 	public void screwLeft( ) {
 		if ( depth > 0 ) {
 			body.setAngularVelocity( 15 );
@@ -84,6 +85,7 @@ public class PuzzleScrew extends Screw {
 		}
 	}
 
+	@Override
 	public void screwRight( ) {
 		if ( depth < maxDepth ) {
 			body.setAngularVelocity( -15 );
@@ -94,6 +96,7 @@ public class PuzzleScrew extends Screw {
 		}
 	}
 
+	@Override
 	public void update( float deltaTime ) {
 		super.update( deltaTime );
 		puzzleManager.update( deltaTime );

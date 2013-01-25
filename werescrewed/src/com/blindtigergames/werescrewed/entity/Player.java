@@ -1,7 +1,6 @@
 package com.blindtigergames.werescrewed.entity;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
@@ -9,15 +8,15 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.Fixture;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.JointEdge;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJoint;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
 import com.blindtigergames.werescrewed.input.InputHandlerPlayer1;
-import com.blindtigergames.werescrewed.screens.GameScreen;
+import com.blindtigergames.werescrewed.screws.BossScrew;
+import com.blindtigergames.werescrewed.screws.PuzzleScrew;
 import com.blindtigergames.werescrewed.screws.Screw;
+import com.blindtigergames.werescrewed.screws.StrippedScrew;
+import com.blindtigergames.werescrewed.screws.StructureScrew;
 
 /**
  * 
@@ -190,8 +189,10 @@ public class Player extends Entity {
 	 * Sets the current screw
 	 */
 	public void hitScrew( Screw screw ) {
-		hitScrew = true;
-		currentScrew = screw;
+		if( playerState != PlayerState.Screwing ) {
+			hitScrew = true;
+			currentScrew =  screw;
+		}
 	}
 
 	/**
@@ -313,14 +314,14 @@ public class Player extends Entity {
 		}
 
 		if ( playerState == PlayerState.Screwing ) {
-			// sprite.setPosition( currentScrew.sprite.getX( ),
-			// currentScrew.sprite.getY( ) );
+			sprite.setPosition( currentScrew.sprite.getX( ),
+			 currentScrew.sprite.getY( ) );
 			if ( inputHandler.unscrewPressed( ) ) {
 				currentScrew.screwLeft( );
 			} else if ( inputHandler.screwPressed( ) ) {
 				currentScrew.screwRight( );
 			}
-			if ( currentScrew.body.getJointList( ).size( ) == 1 ) {
+			if ( currentScrew.body.getJointList( ).size( ) <= 1 ) {
 				jump( );
 				for ( Fixture fix : body.getFixtureList( ) ) {
 					fix.getFilterData( ).maskBits = 0x0008;

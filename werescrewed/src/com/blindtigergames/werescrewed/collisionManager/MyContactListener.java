@@ -75,14 +75,14 @@ public class MyContactListener implements ContactListener {
 				} else if ( objectFix.getBody( ).getUserData( ) instanceof StructureScrew ) {
 					StructureScrew example = ( StructureScrew ) objectFix
 							.getBody( ).getUserData( );
-					// example.exampleCollide( "StructureScrew collision start."
-					// );
+					 //example.exampleCollide( "StructureScrew collision start."
+					 //);
 					player.hitScrew( example );
 				} else if ( objectFix.getBody( ).getUserData( ) instanceof StrippedScrew ) {
 					StrippedScrew example = ( StrippedScrew ) objectFix
 							.getBody( ).getUserData( );
-					// example.exampleCollide( "StrippedScrew collision start."
-					// );
+					 //example.exampleCollide( "StrippedScrew collision start."
+					 //);
 					player.hitScrew( example );
 				} else if ( objectFix.getBody( ).getUserData( ) instanceof PuzzleScrew ) {
 					PuzzleScrew example = ( PuzzleScrew ) objectFix.getBody( )
@@ -168,13 +168,13 @@ public class MyContactListener implements ContactListener {
 				} else if ( objectFix.getBody( ).getUserData( ) instanceof StructureScrew ) {
 					StructureScrew example = ( StructureScrew ) objectFix
 							.getBody( ).getUserData( );
-					// example.exampleCollide( "StructureScrew collision end."
-					// );
+					 //example.exampleCollide( "StructureScrew collision end."
+					 //);
 					player.endHitScrew( );
 				} else if ( objectFix.getBody( ).getUserData( ) instanceof StrippedScrew ) {
 					StrippedScrew example = ( StrippedScrew ) objectFix
 							.getBody( ).getUserData( );
-					// example.exampleCollide( "StrippedScrew collision end." );
+					 //example.exampleCollide( "StrippedScrew collision end." );
 					player.endHitScrew( );
 				} else if ( objectFix.getBody( ).getUserData( ) instanceof PuzzleScrew ) {
 					PuzzleScrew example = ( PuzzleScrew ) objectFix.getBody( )
