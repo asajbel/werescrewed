@@ -31,7 +31,6 @@ public class SlidingMotorMover implements IMover {
 
     @Override
     public void move( float deltaTime, Body body ) {
-        // TODO Auto-generated method stub\
         boolean atLowerLimit = joint.getJointTranslation() <= joint
                 .getLowerLimit();
         boolean atUpperLimit = joint.getJointTranslation() >= joint
