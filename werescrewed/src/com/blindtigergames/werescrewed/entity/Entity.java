@@ -1,6 +1,5 @@
 package com.blindtigergames.werescrewed.entity;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -12,85 +11,67 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.blindtigergames.werescrewed.entity.mover.IMover;
 import com.blindtigergames.werescrewed.screens.GameScreen;
 
-//an Entity is anything that can exist, it has a position and a texture
+/**
+ * Anything that exists in the game world.
+ * 
+ * @author Blind Tiger Games
+ * 
+ */
 public class Entity {
 	public String name;
 	public EntityDef type;
 	public Sprite sprite;
-	public Vector2 offset;
 	public Body body;
 	protected World world;
 	public IMover mover;
 	protected boolean solid;
 
+	/**
+	 * Generic constructor. Should not be used without subsequent modification
+	 * (or probably at all).
+	 */
 	public Entity( ) {
-		type = null;
-		sprite = null;
-		body = null;
-		world = null;
-		offset = new Vector2( 0.0f, 0.0f );
-		name = "I AM ERROR.";
-		solid = false;
+		this( "I AM ERROR", null, null, false, new Vector2( 0.0f, 0.0f ), 0.0f,
+				new Vector2( 1.0f, 1.0f ), null );
 	}
 
-	public Entity( String n, EntityDef d, World w, Vector2 pos, float rot,
-			Vector2 sca ) {
-		this( );
-		name = n;
-		type = d;
-		world = w;
-		constructSprite( );
-		constructBody( pos.x, pos.y, sca.x, sca.y );
-	}
-
-	public Entity( String n, EntityDef d, World w, Vector2 pos, float rot,
-			Vector2 sca, Texture tex ) {
-		this( );
-		name = n;
-		type = d;
-		world = w;
-		if ( tex != null )
-			constructSprite( tex );
-		else
-			constructSprite( );
-		constructBody( pos.x, pos.y, sca.x, sca.y );
-	}
-
-	public Entity( String n, Sprite spr, Body bod ) {
-		this( );
-		name = n;
-		sprite = spr;
-		body = bod;
-		if ( bod != null ) {
-			world = bod.getWorld( );
-			sprite.setScale( GameScreen.PIXEL_TO_BOX );
-		}
-
-	}
-
-	public Entity( String n, Vector2 pos, Texture tex, Body bod ) {
-		this( );
-		name = n;
-		if ( tex != null )
-			constructSprite( tex );
-		body = bod;
-		if ( bod != null ) {
-			world = bod.getWorld( );
-			sprite.setScale( GameScreen.PIXEL_TO_BOX );
-		}
-		setPosition( pos );
-	}
-
-	public void setPosition( float x, float y ) {
-		if ( body != null ) {
-			body.setTransform( x, y, body.getAngle( ) );
-		} else if ( sprite != null ) {
-			sprite.setPosition( x, y );
-		}
+	/**
+	 * Constructor with all available variables.
+	 * 
+	 * @param name
+	 *            of Entity for loading purposes
+	 * @param def
+	 *            inition of the Entity as an EntityDef
+	 * @param world
+	 *            in which the Entity exists
+	 * @param solid
+	 *            a boolean that represents whether or not a player can jump off
+	 *            of the Entity
+	 * @param pos
+	 *            ition of the Entity in the world
+	 * @param rot
+	 *            ation of the Entity initially
+	 * @param scale
+	 *            of the Entity sprite
+	 * @param tex
+	 *            ture of the Entity (null if undefined)
+	 */
+	public Entity( String name, EntityDef def, World world, boolean solid,
+			Vector2 pos, float rot, Vector2 scale, Texture tex ) {
+		this.name = name;
+		this.type = def;
+		this.world = world;
+		this.solid = solid;
+		this.sprite = constructSprite( tex, pos, scale );
+		this.body = constructBody( pos );
 	}
 
 	public void setPosition( Vector2 pos ) {
-		setPosition( pos.x, pos.y );
+		if ( body != null ) {
+			body.setTransform( pos.x, pos.y, body.getAngle( ) );
+		} else if ( sprite != null ) {
+			sprite.setPosition( pos.x, pos.y );
+		}
 	}
 
 	public Vector2 getPosition( ) {
@@ -111,9 +92,9 @@ public class Entity {
 	public void update( float deltaTime ) {
 		if ( body != null && sprite != null ) {
 			Vector2 bodyPos = body.getPosition( ).mul( GameScreen.BOX_TO_PIXEL );
-			sprite.setPosition( bodyPos.x - offset.x, bodyPos.y - offset.y );
-			// sprite.setOrigin(sprite.getWidth()/2, sprite.getHeight()/2);
 			sprite.setRotation( MathUtils.radiansToDegrees * body.getAngle( ) );
+			sprite.setPosition( bodyPos.x - sprite.getWidth( ) / 2, bodyPos.y
+					- sprite.getHeight( ) / 2 );
 
 			if ( mover != null )
 				mover.move( deltaTime, body );
@@ -124,38 +105,46 @@ public class Entity {
 		return type.name;
 	}
 
-	protected void constructSprite( ) {
-		if ( type != null && type.texture != null ) {
-			sprite = new Sprite( type.texture );
-			sprite.setOrigin( type.origin.x, type.origin.y );
-			sprite.setScale( type.spriteScale.x, type.spriteScale.y );
+	protected Sprite constructSprite( Texture tex, Vector2 pos, Vector2 scale ) {
+		Sprite sprite;
+		if ( tex == null ) {
+			if ( type != null && type.texture != null ) {
+				sprite = new Sprite( type.texture );
+				sprite.setScale( type.spriteScale.x, type.spriteScale.y );
+				sprite.setOrigin( type.origin.x, type.origin.y );
+			} else {
+				return null;
+			}
+		} else {
+			sprite = new Sprite( tex );
+			sprite.setScale( scale.x, scale.y );
+			sprite.setOrigin( sprite.getWidth( ) / 2, sprite.getHeight( ) / 2 );
 		}
+		sprite.setPosition( pos.x, pos.y );
+		return sprite;
 	}
 
-	protected void constructSprite( Texture tex ) {
-		sprite = new Sprite( tex );
-		sprite.setOrigin( sprite.getWidth( ) / 2, sprite.getHeight( ) / 2 );
-		offset.set( sprite.getWidth( ) / 2, sprite.getHeight( ) / 2 );
-	}
-
-	protected void constructBody( float x, float y, float width, float height ) {
+	protected Body constructBody( Vector2 pos ) {
+		Body body = null;
 		if ( type != null ) {
 			body = world.createBody( type.bodyDef );
 			body.setUserData( this );
 			for ( FixtureDef fix : type.fixtureDefs ) {
 				body.createFixture( fix );
 			}
-			setPosition( x, y );
+			body.setTransform( pos.x, pos.y, body.getAngle( ) );
 		}
+		return body;
+
 	}
 
 	/**
 	 * Set the mover of this entity!
 	 * 
-	 * @param _mover
+	 * @param mover
 	 */
-	public void setMover( IMover _mover ) {
-		this.mover = _mover;
+	public void setMover( IMover mover ) {
+		this.mover = mover;
 	}
 
 	/**

@@ -68,17 +68,17 @@ public class Player extends Entity {
 
 	/**
 	 * 
+	 * @param name
 	 * @param world
 	 *            in which the player exists
 	 * @param pos
 	 *            ition of the player in the world
-	 * @param name
 	 * @param tex
 	 *            ture of the player sprite
 	 */
-	public Player( World world, Vector2 pos, String name, Texture tex ) {
-		super( name, EntityDef.getDefinition( "playerTest" ), world, pos, 0.0f,
-				new Vector2( 1f, 1f ) );
+	public Player( String name, World world, Vector2 pos, Texture tex ) {
+		super( name, EntityDef.getDefinition( "playerTest" ), world, true, pos,
+				0.0f, new Vector2( 1.0f, 1.0f ), tex );
 		body.setGravityScale( 0.25f );
 		body.setFixedRotation( true );
 		this.world = world;
@@ -92,14 +92,14 @@ public class Player extends Entity {
 
 	/**
 	 * 
+	 * @param name
 	 * @param world
 	 *            in which the player exists
 	 * @param pos
 	 *            ition of the player in the world
-	 * @param name
 	 */
 	public Player( World world, Vector2 pos, String name ) {
-		this( world, pos, name, texture );
+		this( name, world, pos, texture );
 	}
 
 	// METHODS
@@ -188,7 +188,10 @@ public class Player extends Entity {
 			for ( Fixture f : body.getFixtureList( ) ) {
 				f.getFilterData( ).maskBits = 0x0008;
 			}
-			body.setTransform( currentScrew.getPosition( ).add( -sprite.getWidth( ) / 3.5f / 256f, -sprite.getWidth( ) / 4 / 256f ), 0.0f );
+			body.setTransform(
+					currentScrew.getPosition( ).add(
+							-sprite.getWidth( ) / 3.5f / 256f,
+							-sprite.getWidth( ) / 4 / 256f ), 0.0f );
 			// connect the screw to the skeleton;
 			RevoluteJointDef revoluteJointDef = new RevoluteJointDef( );
 			revoluteJointDef.initialize( body, currentScrew.body,

@@ -31,9 +31,8 @@ public class Skeleton extends Entity {
 
     // private Skeleton(){};
 
-    public Skeleton( String n, Vector2 pos, Texture tex, World world ) {
-        super( n, pos, tex, null ); // not constructing body class
-        this.world = world;
+    public Skeleton( String name, Vector2 pos, Texture tex, World world ) {
+        super( name, null, world, false, pos, 0.0f, new Vector2(1.0f, 1.0f), tex ); // not constructing body class
         this.boneAndJoints = new ArrayList<BoneAndJoints>();
         constructSkeleton( pos );
         subSkeletons = new ArrayList<Skeleton>();
