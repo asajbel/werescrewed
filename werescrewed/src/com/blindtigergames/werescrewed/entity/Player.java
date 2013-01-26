@@ -8,6 +8,7 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJoint;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
+import com.blindtigergames.werescrewed.camera.Anchor;
 import com.blindtigergames.werescrewed.camera.AnchorList;
 import com.blindtigergames.werescrewed.input.InputHandlerPlayer1;
 import com.blindtigergames.werescrewed.screws.Screw;
@@ -66,31 +67,38 @@ public class Player extends Entity {
 
 	/**
 	 * 
-	 * @param name
 	 * @param world
 	 *            in which the player exists
 	 * @param pos
 	 *            ition of the player in the world
+	 * @param name
 	 * @param tex
 	 *            ture of the player sprite
 	 */
-<<<<<<< HEAD
 	public Player( World world, Vector2 pos, String name, Texture tex ) {
 		super( name, EntityDef.getDefinition( "playerTest" ), world, pos, 0.0f,
 				new Vector2( 1f, 1f ), null, true);
-=======
-	public Player( String name, World world, Vector2 pos, Texture tex ) {
-		super( name, EntityDef.getDefinition( "playerTest" ), world, true, pos,
-				0.0f, null, tex );
->>>>>>> 7ea9392a83464bbd1e547df5b3ec94a7a78e51f9
 		body.setGravityScale( 0.25f );
 		body.setFixedRotation( true );
+		this.world = world;
 		body.setUserData( this );
 		body.setBullet( true );
 		playerState = PlayerState.Standing;
 		inputHandler = new InputHandlerPlayer1( );
 		anchorList = AnchorList.getInstance( );
 		anchorID = anchorList.addAnchor( true, pos );
+	}
+
+	/**
+	 * 
+	 * @param world
+	 *            in which the player exists
+	 * @param pos
+	 *            ition of the player in the world
+	 * @param name
+	 */
+	public Player( World world, Vector2 pos, String name ) {
+		this( world, pos, name, texture );
 	}
 
 	// METHODS
@@ -179,10 +187,7 @@ public class Player extends Entity {
 			for ( Fixture f : body.getFixtureList( ) ) {
 				f.getFilterData( ).maskBits = 0x0008;
 			}
-			body.setTransform(
-					currentScrew.getPosition( ).add(
-							-sprite.getWidth( ) / 3.5f / 256f,
-							-sprite.getWidth( ) / 4 / 256f ), 0.0f );
+			body.setTransform( currentScrew.getPosition( ), 0.0f );
 			// connect the screw to the skeleton;
 			RevoluteJointDef revoluteJointDef = new RevoluteJointDef( );
 			revoluteJointDef.initialize( body, currentScrew.body,
@@ -227,12 +232,12 @@ public class Player extends Entity {
 		if ( inputHandler.jumpPressed( ) ) {
 			if ( !jumpPressed ) {
 				System.out.println( grounded );
+				System.out.println( body.getLinearVelocity( ) );
 				if ( playerState == PlayerState.Screwing ) {
 					world.destroyJoint( playerToScrew );
 					playerState = PlayerState.JumpingOffScrew;
 					jump( );
 				} else if ( isGrounded( ) ) {
-					playerState = PlayerState.Jumping;
 					jump( );
 				}
 				jumpPressed = true;
