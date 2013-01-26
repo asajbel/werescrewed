@@ -1,6 +1,5 @@
 package com.blindtigergames.werescrewed.entity;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -21,53 +20,25 @@ public class Entity {
 	public Body body;
 	protected World world;
 	public IMover mover;
+	private boolean solid;
 
-	public Entity( ) {
-		type = null;
-		sprite = null;
-		body = null;
-		world = null;
-		offset = new Vector2( 0.0f, 0.0f );
-		name = "I AM ERROR.";
-	}
-
-	public Entity( String n, EntityDef d, World w, Vector2 pos, float rot,
-			Vector2 sca ) {
-		this( );
-		name = n;
-		type = d;
-		world = w;
-		constructSprite( );
-		constructBody( pos.x, pos.y, sca.x, sca.y );
-	}
-
-	public Entity( String n, EntityDef d, World w, Vector2 pos, float rot,
-			Vector2 sca, Texture tex ) {
-		this( );
-		name = n;
-		type = d;
-		world = w;
-		if ( tex != null )
-			constructSprite( tex );
+	public Entity( String name, EntityDef type, World world, Vector2 pos,
+			float rot, Vector2 scale, Texture texture, boolean solid ) {
+		this.name = name;
+		this.type = type;
+		this.world = world;
+		this.offset = new Vector2( 0.0f, 0.0f );
+		this.solid = solid;
+		if ( texture != null )
+			constructSprite( texture );
 		else
 			constructSprite( );
-		constructBody( pos.x, pos.y, sca.x, sca.y );
-	}
-	
-	public Entity( String n, Sprite spr, Body bod ) {
-		this( );
-		name = n;
-		sprite = spr;
-		body = bod;
-		if ( bod != null ) {
-			world = bod.getWorld( );
-			sprite.setScale( GameScreen.PIXEL_TO_BOX );
-		}
-
+		constructBody( pos.x, pos.y, scale.x, scale.y );
 	}
 
-	public Entity( String n, Vector2 pos, Texture tex, Body bod ) {
-		this( );
+	public Entity( String n, Vector2 pos, Texture tex, Body bod, boolean solid ) {
+		this.offset = new Vector2( 0.0f, 0.0f );
+		this.solid = solid;
 		name = n;
 		if ( tex != null )
 			constructSprite( tex );
@@ -94,31 +65,27 @@ public class Entity {
 	public Vector2 getPosition( ) {
 		return body.getPosition( );
 	}
-	
-    public void Move(Vector2 vector)
-    {
-    	Vector2 pos = body.getPosition().add(vector);
-    	setPosition(pos);
-    }
-    
-    public void draw(SpriteBatch batch)
-    {
-    	if (sprite != null) {
-    		sprite.draw(batch);
-    	}
-    }
-    
 
-	public void update(float deltaTime)
-	{
-		if (body != null && sprite != null){
-			Vector2 bodyPos = body.getPosition().mul( GameScreen.BOX_TO_PIXEL );
-			sprite.setPosition( bodyPos.x - offset.x, bodyPos.y - offset.y);
-			//sprite.setOrigin(sprite.getWidth()/2, sprite.getHeight()/2);
+	public void Move( Vector2 vector ) {
+		Vector2 pos = body.getPosition( ).add( vector );
+		setPosition( pos );
+	}
+
+	public void draw( SpriteBatch batch ) {
+		if ( sprite != null ) {
+			sprite.draw( batch );
+		}
+	}
+
+	public void update( float deltaTime ) {
+		if ( body != null && sprite != null ) {
+			Vector2 bodyPos = body.getPosition( ).mul( GameScreen.BOX_TO_PIXEL );
+			sprite.setPosition( bodyPos.x - offset.x, bodyPos.y - offset.y );
+			// sprite.setOrigin(sprite.getWidth()/2, sprite.getHeight()/2);
 			sprite.setRotation( MathUtils.radiansToDegrees * body.getAngle( ) );
-			
-			if(mover != null)
-				mover.move(deltaTime, body);
+
+			if ( mover != null )
+				mover.move( deltaTime, body );
 		}
 	}
 
@@ -130,15 +97,14 @@ public class Entity {
 		if ( type != null && type.texture != null ) {
 			sprite = new Sprite( type.texture );
 			sprite.setOrigin( type.origin.x, type.origin.y );
-			sprite.setScale( type.spriteScale.x,
-					type.spriteScale.y );
+			sprite.setScale( type.spriteScale.x, type.spriteScale.y );
 		}
 	}
 
 	protected void constructSprite( Texture tex ) {
 		sprite = new Sprite( tex );
 		sprite.setOrigin( sprite.getWidth( ) / 2, sprite.getHeight( ) / 2 );
-		offset.set( sprite.getWidth( ) / 2, sprite.getHeight(  ) / 2 );
+		offset.set( sprite.getWidth( ) / 2, sprite.getHeight( ) / 2 );
 	}
 
 	protected void constructBody( float x, float y, float width, float height ) {
@@ -151,12 +117,21 @@ public class Entity {
 			setPosition( x, y );
 		}
 	}
-	
+
 	/**
 	 * Set the mover of this entity!
+	 * 
 	 * @param _mover
 	 */
 	public void setMover( IMover _mover ) {
 		this.mover = _mover;
+	}
+
+	public boolean isSolid( ) {
+		return this.solid;
+	}
+
+	public void setSolid( boolean solid ) {
+		this.solid = solid;
 	}
 }

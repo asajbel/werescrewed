@@ -14,7 +14,7 @@ import com.blindtigergames.werescrewed.entity.Entity;
 
 public class Screw extends Entity {
 	public Screw( String n, Vector2 pos, Texture tex, Body bod ) {
-		super( n, pos, tex, bod );
+		super( n, pos, tex, bod, false );
 	}
 
 	@Override

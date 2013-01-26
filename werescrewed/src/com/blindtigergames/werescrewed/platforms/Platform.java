@@ -25,7 +25,6 @@ public class Platform extends Entity {
 
 	IMover mover;
 
-	protected World world;
 	protected float width, height;
 	protected boolean dynamicType = false;
 	protected boolean rotate = false;
@@ -35,18 +34,18 @@ public class Platform extends Entity {
 	protected final int tileConstant = 16;
 
 	public Platform( String n, Vector2 pos, Texture tex, World world ) {
-		super( n, pos, tex, null );
+		super( n, pos, tex, null, true );
 		this.world = world;
 	}
 
 	public Platform( String n, EntityDef d, World w, Vector2 pos, float rot,
 			Vector2 sca ) {
-		super( n, d, w, pos, rot, sca );
+		super( n, d, w, pos, rot, sca, null, true );
 	}
 	
 	public Platform( String n, EntityDef d, World w, Vector2 pos, float rot,
 			Vector2 sca, Texture tex ) {
-		super( n, d, w, pos, rot, sca, tex );
+		super( n, d, w, pos, rot, sca, tex, true );
 	}
 	
 	@Override

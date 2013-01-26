@@ -32,7 +32,7 @@ public class Skeleton extends Entity {
     // private Skeleton(){};
 
     public Skeleton( String n, Vector2 pos, Texture tex, World world ) {
-        super( n, pos, tex, null ); // not constructing body class
+        super( n, pos, tex, null, false); // not constructing body class
         this.world = world;
         this.boneAndJoints = new ArrayList<BoneAndJoints>();
         constructSkeleton( pos );

@@ -1,13 +1,10 @@
 package com.blindtigergames.werescrewed.entity;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import com.blindtigergames.werescrewed.entity.Skeleton;
-
-public class EntityManager extends Entity{
+public class EntityManager {
 
 	protected static HashMap< String, Entity > entityList = new HashMap< String, Entity >( );
 	protected static HashMap< String, Skeleton > skeletonList = new HashMap< String, Skeleton >( );

@@ -77,7 +77,7 @@ public class Player extends Entity {
 	 */
 	public Player( World world, Vector2 pos, String name, Texture tex ) {
 		super( name, EntityDef.getDefinition( "playerTest" ), world, pos, 0.0f,
-				new Vector2( 1f, 1f ) );
+				new Vector2( 1f, 1f ), null, true);
 		body.setGravityScale( 0.25f );
 		body.setFixedRotation( true );
 		this.world = world;
