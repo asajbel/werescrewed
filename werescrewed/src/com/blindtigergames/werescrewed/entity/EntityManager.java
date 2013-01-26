@@ -76,10 +76,6 @@ public class EntityManager extends Entity{
 		
 	}
 	
-	//Adds an Entity to the HashMap
-	public void addEntity ( String name, Entity type ) {
-		entitiesToAdd.put( name,  type );
-	
 	@Override
 	public void draw(SpriteBatch batch){
 		Iterator< Map.Entry< String, Entity > > eit = entityList.entrySet( )

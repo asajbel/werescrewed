@@ -84,12 +84,6 @@ public class Entity {
 		setPosition( pos );
 	}
 
-	public void draw( SpriteBatch batch ) {
-		if ( sprite != null ) {
-			sprite.draw( batch );
-		}
-	}
-
 	public void update( float deltaTime ) {
 		if ( body != null && sprite != null ) {
 			Vector2 bodyPos = body.getPosition( ).mul( GameScreen.BOX_TO_PIXEL );

@@ -81,23 +81,23 @@ public class Level {
 		//ShapePlatform sp;
 		Texture texture = new Texture( Gdx.files.internal( "data/rletter.png" ) );
 		
-		tp = new PlatformBuilder()
+		tp = new PlatformBuilder(out.world)
 		.setPosition( 2.0f, 0.2f )
 		.setDimensions( 10, 1 )
 		.setTexture( texture )
-		.buildTilePlatform( out.world );
+		.buildTilePlatform( );
 
-		rp = new PlatformBuilder()
+		rp = new PlatformBuilder(out.world)
 		.setPosition( -1.0f, 0.4f )
 		.setDimensions( 1, 10 )
 		.setTexture( texture )
-		.buildRoomPlatform( out.world );
+		.buildRoomPlatform( );
 		
-		ground = new PlatformBuilder()
+		ground = new PlatformBuilder(out.world)
 		.setPosition( 0.0f, 0.0f )
 		.setDimensions( 100, 1 )
 		.setTexture( texture )
-		.buildTilePlatform( out.world );
+		.buildTilePlatform( );
 		
 		out.platforms.add( ground );
 		out.platforms.add( rp );

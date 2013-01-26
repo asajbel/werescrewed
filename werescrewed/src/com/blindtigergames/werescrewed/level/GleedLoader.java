@@ -80,16 +80,16 @@ public class GleedLoader {
 					int w = Integer.decode(props.get("TileWidth"));
 					int h = Integer.decode(props.get("TileHeight"));
 					
-					TiledPlatform tp = new PlatformBuilder()
+					TiledPlatform tp = new PlatformBuilder(world)
 					.setPosition( pos.x, pos.y )
 					.setDimensions( w, h )
 					.setTexture( tileTex )
 					.setResitituion( 0.0f )
-					.buildTilePlatform( world );
+					.buildTilePlatform( );
 					Gdx.app.log("GleedLoader", "Platform loaded:"+tp.name);
 					return tp;
 				} else {
-					Entity e = new Entity(name, EntityDef.getDefinition(def), world, pos, rot, sca);
+					Entity e = new Entity(name, EntityDef.getDefinition(def), world, false, pos, rot, sca, tileTex);
 					Gdx.app.log("GleedLoader", "Entity loaded:"+e.name);
 					return e;
 				}
