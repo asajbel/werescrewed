@@ -9,6 +9,7 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.Manifold;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.Player;
+<<<<<<< HEAD
 import com.blindtigergames.werescrewed.platforms.Box;
 import com.blindtigergames.werescrewed.platforms.RoomPlatform;
 import com.blindtigergames.werescrewed.platforms.TiledPlatform;
@@ -16,6 +17,10 @@ import com.blindtigergames.werescrewed.screws.PuzzleScrew;
 import com.blindtigergames.werescrewed.screws.Screw;
 import com.blindtigergames.werescrewed.screws.StrippedScrew;
 import com.blindtigergames.werescrewed.screws.StructureScrew;
+=======
+import com.blindtigergames.werescrewed.platforms.Platform;
+import com.blindtigergames.werescrewed.screws.Screw;
+>>>>>>> 7ea9392a83464bbd1e547df5b3ec94a7a78e51f9
 
 /**
  * 
@@ -65,9 +70,14 @@ public class MyContactListener implements ContactListener {
 					if ( object.isSolid( ) ) {
 						NUM_PLAYER_CONTACTS++;
 						player.setGrounded( true );
+<<<<<<< HEAD
 					} else if ( objectFix.getBody( ).getUserData( ) instanceof Screw ) {
 						Screw screw = ( Screw ) objectFix.getBody( )
 								.getUserData( );
+=======
+					} else if ( object instanceof Screw ) {
+						Screw screw = ( Screw ) object;
+>>>>>>> 7ea9392a83464bbd1e547df5b3ec94a7a78e51f9
 						player.hitScrew( screw );
 					}
 				}
@@ -114,8 +124,12 @@ public class MyContactListener implements ContactListener {
 						if ( NUM_PLAYER_CONTACTS <= 0 ) {
 							player.setGrounded( false );
 						}
+<<<<<<< HEAD
 						contact.setEnabled( true );
 					} else if ( objectFix.getBody( ).getUserData( ) instanceof Screw ) {
+=======
+					} else if ( object instanceof Screw ) {
+>>>>>>> 7ea9392a83464bbd1e547df5b3ec94a7a78e51f9
 						player.endHitScrew( );
 					}
 				}
@@ -149,23 +163,12 @@ public class MyContactListener implements ContactListener {
 			}
 			if ( playerInvolved ) {
 				Player player = ( Player ) playerFix.getBody( ).getUserData( );
-				if ( objectFix.getBody( ).getUserData( ) instanceof TiledPlatform ) {
-					TiledPlatform tilePlat = ( TiledPlatform ) objectFix
-							.getBody( ).getUserData( );
+				if ( objectFix.getBody( ).getUserData( ) instanceof Platform ) {
+					Platform tilePlat = ( Platform ) objectFix.getBody( )
+							.getUserData( );
 					Vector2 platformPos = tilePlat.getPosition( );
 					Vector2 playerPos = player.getPosition( );
 					if ( tilePlat.getOneSided( ) ) {
-						if ( platformPos.y > playerPos.y ) {
-							contact.setEnabled( false );
-						}
-					}
-				}
-				if ( objectFix.getBody( ).getUserData( ) instanceof RoomPlatform ) {
-					RoomPlatform roomPlat = ( RoomPlatform ) objectFix
-							.getBody( ).getUserData( );
-					Vector2 platformPos = roomPlat.getPosition( );
-					Vector2 playerPos = player.getPosition( );
-					if ( roomPlat.getOneSided( ) ) {
 						if ( platformPos.y > playerPos.y ) {
 							contact.setEnabled( false );
 						}

@@ -56,16 +56,16 @@ public class StrippedScrew extends Screw {
 		radarFixture.filter.maskBits = 0x0001 | 0x0002;// radar collides with player 1 & 2
 												// (player category bits 0x0001)
 		body.createFixture( radarFixture );
-
+/*
 		// connect the screw to the skeleton;
 		RevoluteJointDef revoluteJointDef = new RevoluteJointDef( );
 		revoluteJointDef.initialize( body, skeleton.body, body.getPosition( ) );
 		revoluteJointDef.enableMotor = false;
 		revoluteJointDef.maxMotorTorque = 5000.0f;
 		revoluteJointDef.motorSpeed = 0f;
-		platformToScrew = ( RevoluteJoint ) world
-				.createJoint( revoluteJointDef );
-
+		//platformToScrew = ( RevoluteJoint ) 
+				world.createJoint( revoluteJointDef );
+*/
 		//skeleton.addBoneAndJoint( this, platformToScrew );
 	}
 

@@ -108,7 +108,7 @@ public class IMoverGameScreen implements com.badlogic.gdx.Screen {
         // world.setContactListener(mcl);
         String name = "player";
 
-        player = new Player( world, new Vector2( -2.0f, 1.0f ), name );
+        player = new Player( name, world, new Vector2( -2.0f, 1.0f ), null );
         cam = new Camera( w, h, player );
 
         skeleton = new Skeleton( "skeleton1", new Vector2(), null, world );

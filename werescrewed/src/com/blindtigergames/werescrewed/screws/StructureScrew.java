@@ -11,6 +11,7 @@ import com.badlogic.gdx.physics.box2d.joints.RevoluteJoint;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.Skeleton;
+import com.blindtigergames.werescrewed.platforms.Platform;
 import com.blindtigergames.werescrewed.screens.GameScreen;
 
 /**
@@ -23,7 +24,7 @@ import com.blindtigergames.werescrewed.screens.GameScreen;
 public class StructureScrew extends Screw {
 
 	public StructureScrew( String n, Vector2 pos, Texture tex, int max,
-			Entity platform, Skeleton skeleton, World world ) {
+			Platform platform, Skeleton skeleton, World world ) {
 		super( n, pos, tex, null );
 		this.world = world;
 		this.skeleton = skeleton;
@@ -74,6 +75,8 @@ public class StructureScrew extends Screw {
 				platform.getPosition( ) );
 		revoluteJointDef.enableMotor = false;
 		screwJoint = ( RevoluteJoint ) world.createJoint( revoluteJointDef );
+		
+		platform.addScrew(this);
 	}
 
 	@Override

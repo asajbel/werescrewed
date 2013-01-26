@@ -22,9 +22,9 @@ public class RoomPlatform extends Platform {
 	protected boolean rotate = false;
 	protected float tileHeight, tileWidth;
 
-	public RoomPlatform( String n, Vector2 pos, Texture tex, float width,
+	public RoomPlatform( String name, Vector2 pos, Texture tex, float width,
 			float height, World world ) {
-		super( n, pos, tex, world );
+		super( name, world, pos, tex );
 		this.tileHeight = height;
 		this.tileWidth = width;
 		this.width = width * tileConstant;

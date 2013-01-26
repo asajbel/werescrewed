@@ -12,23 +12,19 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.blindtigergames.werescrewed.camera.Camera;
 import com.blindtigergames.werescrewed.collisionManager.MyContactListener;
 import com.blindtigergames.werescrewed.debug.SBox2DDebugRenderer;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.Player;
-import com.blindtigergames.werescrewed.entity.Player.PlayerState;
-import com.blindtigergames.werescrewed.entity.mover.TimelineMover;
+import com.blindtigergames.werescrewed.entity.Skeleton;
 import com.blindtigergames.werescrewed.input.InputHandlerPlayer1;
 import com.blindtigergames.werescrewed.platforms.ComplexPlatform;
 import com.blindtigergames.werescrewed.platforms.PlatformBuilder;
 import com.blindtigergames.werescrewed.platforms.RoomPlatform;
 import com.blindtigergames.werescrewed.platforms.ShapePlatform;
 import com.blindtigergames.werescrewed.platforms.Shapes;
-import com.blindtigergames.werescrewed.entity.Skeleton;
 import com.blindtigergames.werescrewed.platforms.TiledPlatform;
 import com.blindtigergames.werescrewed.screws.StructureScrew;
 
@@ -72,10 +68,6 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 
 	FPSLogger logger;
 
-	private final Vector2 dec = new Vector2( .5f, 0 );
-	private final Vector2 acc = new Vector2( .3f, 0 );
-	private final Vector2 max = new Vector2( 1f, 0 );
-
 	public GameScreen( ) {
 		System.out.println( "GameScreen starting" );
 		float zoom = 1.0f;
@@ -93,28 +85,20 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 		// world.setContactListener(MCL);
 		String name = "player";
 
-		player = new Player( world, new Vector2( 1.0f, 1.0f ), name );
+		player = new Player( name, world, new Vector2( 1.0f, 1.0f ), null );
 
 		cam = new Camera( w, h, player );
 		platBuilder = new PlatformBuilder( world );
-		tp = platBuilder
-				.setName( "tp" )
-				.setPosition( 200.0f, 100.0f )
-				.setDimensions( 10, 1 )
-				.setTexture( texture )
-				.setResitituion( 0.0f )
-				.buildTilePlatform( );
-		
-		
-		rp = platBuilder
-				.setPosition( -200.0f, 100.0f )
-				.setName( "rp" )
-				.setDimensions( 1, 10 )
-				.setTexture( texture )
-				.setResitituion( 0.0f )
-				.buildRoomPlatform( );
-		
-		cp = new ComplexPlatform( "bottle", new Vector2( -100.0f, 100.0f ), new Texture(Gdx.files.internal( "data/bodies/test01.png")),
+		tp = platBuilder.setName( "tp" ).setPosition( 200.0f, 100.0f )
+				.setDimensions( 10, 1 ).setTexture( texture )
+				.setResitituion( 0.0f ).buildTilePlatform( );
+
+		rp = platBuilder.setPosition( -200.0f, 100.0f ).setName( "rp" )
+				.setDimensions( 1, 10 ).setTexture( texture )
+				.setResitituion( 0.0f ).buildRoomPlatform( );
+
+		cp = new ComplexPlatform( "bottle", new Vector2( -100.0f, 100.0f ),
+				new Texture( Gdx.files.internal( "data/bodies/test01.png" ) ),
 				1, world, "complexTest" );
 		sp = new ShapePlatform( "rhom", new Vector2( 100.0f, 300.0f ), texture,
 				world, Shapes.plus, 1.0f, 1.0f, false );
@@ -122,39 +106,35 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 		// testing screws
 		screwTex = new Texture( Gdx.files.internal( "data/screw.png" ) );
 		background = new Texture( Gdx.files.internal( "data/libgdx.png" ) );
-		
+
 		skeleton = new Skeleton( "", Vector2.Zero, null, world );
 		rootSkeleton = new Skeleton( "root", Vector2.Zero, null, world );
 		structScrew = new StructureScrew( "", tp.body.getPosition( ), screwTex,
 				25, tp, skeleton, world );
 
+		// tp.setMover( new TimelineMover( ) );
 
-		//tp.setMover( new TimelineMover( ) );
-		
-		ground = new PlatformBuilder( world )
-				.setPosition( 0.0f, 0.0f )
-				.setName( "ground" )
-				.setDimensions( 100, 1 )
-				.setTexture( texture )
-				.setResitituion( 0.0f )
+		ground = new PlatformBuilder( world ).setPosition( 0.0f, 0.0f )
+				.setName( "ground" ).setDimensions( 100, 1 )
+				.setTexture( texture ).setResitituion( 0.0f )
 				.buildTilePlatform( );
-		
-		skeleton.addPlatformFixed(ground);
-		skeleton.addPlatformFixed(tp);
-		skeleton.addPlatformFixed(sp);
-		skeleton.addPlatformFixed(cp);
-		skeleton.addPlatformFixed(rp);
-		
+
+		skeleton.addPlatformFixed( ground );
+		skeleton.addPlatformFixed( tp );
+		skeleton.addPlatformFixed( sp );
+		skeleton.addPlatformFixed( cp );
+		skeleton.addPlatformFixed( rp );
+
 		rootSkeleton.addSkeleton( skeleton );
 		// make sure you uncomment the next two lines debugRenderer = new
-		//SBox2DDebugRenderer(BOX_TO_PIXEL); //for physics world
+		// SBox2DDebugRenderer(BOX_TO_PIXEL); //for physics world
 		// debugRenderer = new Box2DDebugRenderer();
 		debugRenderer = new SBox2DDebugRenderer( BOX_TO_PIXEL );
 		Gdx.app.setLogLevel( Application.LOG_DEBUG );
 
 		logger = new FPSLogger( );
 
-		MCL = new MyContactListener();
+		MCL = new MyContactListener( );
 		world.setContactListener( MCL );
 	}
 
@@ -163,8 +143,8 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 		Gdx.gl20.glClearColor( 0.0f, 0f, 0.0f, 1.0f );
 		Gdx.gl20.glClear( GL20.GL_COLOR_BUFFER_BIT );
 
-		//float deltaTime = Gdx.graphics.getDeltaTime( );
-		
+		// float deltaTime = Gdx.graphics.getDeltaTime( );
+
 		inputHandler.update( );
 		cam.update( );
 
@@ -183,7 +163,7 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 
 		structScrew.update( deltaTime );
 
-		if ( inputHandler.unscrewPressed(  ) ) {
+		if ( inputHandler.unscrewPressed( ) ) {
 			structScrew.screwLeft( );
 		}
 
@@ -197,9 +177,9 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 		// player.draw(batch);
 
 		rootSkeleton.draw( batch );
-		//tp.draw( batch );
-		//cp.draw( batch );
-		//ground.draw( batch );
+		// tp.draw( batch );
+		// cp.draw( batch );
+		// ground.draw( batch );
 		player.draw( batch );
 
 		structScrew.draw( batch );
@@ -240,4 +220,3 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 	}
 
 }
-

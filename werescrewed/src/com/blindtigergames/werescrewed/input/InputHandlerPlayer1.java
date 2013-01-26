@@ -1,16 +1,15 @@
-/********************************************************
- * InputHandlerPlayer1.java, meant to capture and parse player input
- * Author: Edward Boning
- * 
- ********************************************************/
+
 
 package com.blindtigergames.werescrewed.input;
 
-import com.badlogic.gdx.Input.*;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.controllers.*;
 
+/**
+ * A class for capturing and parsing player input
+ * Author: Edward Boning
+*/
 public class InputHandlerPlayer1 implements InputProcessor {
 
 	private int p1LastKeyPressed;
@@ -25,8 +24,7 @@ public class InputHandlerPlayer1 implements InputProcessor {
 	private boolean p1ScrewingClockwise;
 	private boolean p1ScrewingCounterClockwise;
 
-
-	/*
+	/**
 	 * Hooks up the InputProcessor to the input class, so events can be reported
 	 */
 	public InputHandlerPlayer1( ) {
@@ -35,7 +33,7 @@ public class InputHandlerPlayer1 implements InputProcessor {
 
 	public void update( ) {
 		pauseKeyPressed = Gdx.input.isKeyPressed( Keys.ESCAPE );
-		
+
 		p1LeftPressed = Gdx.input.isKeyPressed( Keys.DPAD_LEFT );
 		p1RightPressed = Gdx.input.isKeyPressed( Keys.DPAD_RIGHT );
 		p1JumpPressed = Gdx.input.isKeyPressed( Keys.DPAD_UP );
@@ -49,68 +47,51 @@ public class InputHandlerPlayer1 implements InputProcessor {
 
 	}
 
-	/*
+	/**
 	 * Returns whether the pause key is pressed.
 	 */
 	public boolean pausePressed( ) {
 		return pauseKeyPressed;
 	}
 
-	/*
+	/**
 	 * Returns whether the move left key is pressed
-	 * 
-	 * @param player - Selector to poll for the proper player
 	 */
-	public boolean leftPressed() {
+	public boolean leftPressed( ) {
 		return p1LeftPressed;
 	}
 
-	/*
+	/**
 	 * Returns whether the move right key is pressed
-	 * 
-	 * @param player - Selector to poll for the proper player
 	 */
-	public boolean rightPressed() {
+	public boolean rightPressed( ) {
 		return p1RightPressed;
 	}
 
-	/*
+	/**
 	 * Returns whether the jump key is pressed
-	 * 
-	 * @param player - Selector to poll for the proper player
 	 */
 	public boolean jumpPressed( ) {
 		return p1JumpPressed;
 	}
 
-	/*
+	/**
 	 * Returns whether the move down key is pressed
-	 * 
-	 * @param player - Selector to poll for the proper player
 	 */
 	public boolean downPressed( ) {
 		return p1DownPressed;
 	}
 
-	/*
+	/**
 	 * Returns whether the screw key is pressed
-	 * 
-	 * @param player - Selector to poll for the proper player
 	 */
 	public boolean screwPressed( ) {
-		return Gdx.input.isKeyPressed( Keys.X );
+		return ( Gdx.input.isKeyPressed( Keys.F ) || Gdx.input
+				.isKeyPressed( Keys.X ) );
 	}
 
 	public boolean unscrewPressed( ) {
 		return Gdx.input.isKeyPressed( Keys.Z );
-	}
-
-	public boolean screwing( ) {
-		return rightPressed( );
-	}
-
-	public boolean unscrewing( ) {
-		return leftPressed( );
 	}
 
 	@Override
