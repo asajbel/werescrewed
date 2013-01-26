@@ -112,7 +112,7 @@ public class Entity {
 			if ( type != null && type.texture != null ) {
 				sprite = new Sprite( type.texture );
 				sprite.setScale( type.spriteScale.x, type.spriteScale.y );
-				sprite.setOrigin( sprite.getWidth( ), sprite.getHeight( ) );
+				sprite.setOrigin( sprite.getWidth( ) / 2, sprite.getHeight( ) / 2 );
 			} else {
 				return null;
 			}
