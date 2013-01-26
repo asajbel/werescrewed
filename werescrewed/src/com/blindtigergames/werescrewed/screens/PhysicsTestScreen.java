@@ -64,9 +64,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 	Entity playerEntity;
 	Player player;
 	TiledPlatform tp, ground, movingTP;
-	// RoomPlatform rp;
 	ComplexPlatform cp;
-	// ShapePlatform sp;
 	Box box;
 	PlatformBuilder platBuilder;
 
@@ -75,7 +73,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 	StructureScrew structScrew;
 	PuzzleScrew puzzleScrew;
 	Skeleton skeleton;
-	Skeleton rootSkeleon;
+	Skeleton rootSkeleton;
 	ArrayList< StrippedScrew > climbingScrews = new ArrayList< StrippedScrew >( );
 
 	FPSLogger logger;
@@ -96,7 +94,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		MCL = new MyContactListener( );
 		world.setContactListener( MCL );
 		skeleton = new Skeleton( "", Vector2.Zero, background, world );
-		rootSkeleon = new Skeleton( "", Vector2.Zero, null, world );
+		rootSkeleton = new Skeleton( "", Vector2.Zero, null, world );
 		String name = "player";
 		platBuilder = new PlatformBuilder( world );
 
@@ -149,42 +147,25 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 			}
 			y1 += dy;
 		}
-		// tp = new TiledPlatform( "plat", new Vector2(5.0f, 40.0f), texture, 1,
-		// 2, world );
-		// rp = platBuilder
-		// .setPosition( -200.0f, 101.0f )
-		// .setName( "rp" )
-		// .setDimensions( 1, 10 )
-		// .setTexture( texture )
-		// .setResitituion( 0.0f )
-		// .buildRoomPlatform( );
-
-		// cp = new ComplexPlatform( "bottle", new Vector2(0.0f, 3.0f), texture,
-		// 1, world, "bottle" );
-		// sp = new ShapePlatform( "trap", new Vector2( 1.0f, 1.0f), texture,
-		// world, Shapes.trapezoid, 0.5f);
-		box = new Box( "box", new Vector2( 120.0f, 130.0f ), texture, world );
-		box.setRestitution( 0.0f );
-		// if ( box.body.getUserData( ) instanceof Box ) {
-		// System.out.print( "worked" );
-		// } else
-		// System.out.print( "nope" );
+		for ( StrippedScrew ss : climbingScrews ){
+			skeleton.addStrippedScrew( ss );
+		}
 
 		ground = platBuilder.setPosition( 0.0f, 0.0f ).setName( "ground" )
 				.setDimensions( 100, 1 ).setTexture( texture )
 				.setResitituion( 0.0f ).buildTilePlatform( );
+		
 		skeleton.addPlatformFixed( ground );
-		// skeleton.addPlatformFixed( tp );
+		skeleton.addPlatform( tp ); //Tp already has a structureScrew holding it up
 
 		/**
 		 * Uncomment if you don't want stew's moving platforms in your way!
 		 */
 		buildMoverPlatforms( );
-		rootSkeleon.addSkeleton( skeleton );
+		
+		
+		rootSkeleton.addSkeleton( skeleton );
 
-		// make sure you uncomment the next two lines debugRenderer = new
-		// SBox2DDebugRenderer(BOX_TO_PIXEL); for physics world
-		// debugRenderer = new Box2DDebugRenderer();
 		debugRenderer = new SBox2DDebugRenderer( BOX_TO_PIXEL );
 		debugRenderer.setDrawJoints( false );
 		Gdx.app.setLogLevel( Application.LOG_DEBUG );
@@ -274,39 +255,33 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		}
 
 		player.update( deltaTime );
-
 		structScrew.update( deltaTime );
 		puzzleScrew.update( deltaTime );
-		for ( StrippedScrew s : climbingScrews ) {
-			s.update( deltaTime );
-		}
-
-		rootSkeleon.update( deltaTime );
+		rootSkeleton.update( deltaTime );
 		movingTP.update( deltaTime );
-		//
-		tp.update( deltaTime );
-		// rp.update( deltaTime );
-		// cp.update();
-		// sp.update();
-		// box.update( deltaTime );
 
+
+		//ONLY FOR TESTING, EVERYTHING IN WORLD IS IN A SKELETON (THEREFORE CAN MOVE)
+		 if ( Gdx.input.isKeyPressed( Input.Keys.U) ) {
+	            skeleton.body.setTransform( skeleton.body.getTransform()
+	                    .getPosition().add( 0f, 0.01f ), skeleton.body
+	                    .getTransform().getRotation() );
+	            skeleton.wakeSkeleton();
+	        }
+		 
+		 if ( Gdx.input.isKeyPressed( Input.Keys.J ) ) {
+	            skeleton.body.setTransform( skeleton.body.getTransform()
+	                    .getPosition().add( 0f, -0.01f ), skeleton.body
+	                    .getTransform().getRotation() );
+	            skeleton.wakeSkeleton();
+	        }
+		
+		 
 		batch.setProjectionMatrix( cam.combined( ) );
-		// batch.setProjectionMatrix(camera.combined);
 		batch.begin( );
 
-		for ( StrippedScrew s : climbingScrews ) {
-			s.draw( batch );
-		}
-
 		puzzleScrew.draw( batch );
-		structScrew.draw( batch );
-		// sprite.draw(batch);
-		// Drawing the player here
-		// playerEntity.draw(batch);
-		// player.draw(batch);
-
-		// test drawing the texture by uncommenting the next line:
-		// tp.draw(batch);
+		rootSkeleton.draw( batch );
 		player.draw( batch );
 
 		batch.end( );
@@ -315,8 +290,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		debugRenderer.render( world, cam.combined( ) );
 
 		world.step( 1 / 60f, 6, 2 ); // step our physics calculations
-		// Gdx.app.debug("Physics",
-		// "delta = "+Gdx.app.getGraphics().getDeltaTime());
+
 	}
 
 	@Override

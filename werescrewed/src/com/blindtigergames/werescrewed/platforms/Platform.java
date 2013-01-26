@@ -1,5 +1,7 @@
 package com.blindtigergames.werescrewed.platforms;
 
+import java.util.ArrayList;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Texture;
@@ -9,6 +11,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityDef;
 import com.blindtigergames.werescrewed.entity.mover.IMover;
+import com.blindtigergames.werescrewed.screws.Screw;
 
 /**
  * @param name
@@ -29,19 +32,32 @@ public class Platform extends Entity {
 	protected boolean dynamicType = false;
 	protected boolean rotate = false;
 	protected boolean oneSided = false;
+	protected ArrayList<Screw> screws;
 	// tileConstant is 16 for setasbox function which uses half width/height
 	// creates 32x32 objects
 	protected final int tileConstant = 16;
 
 	public Platform( String name, World world, Vector2 pos, Texture tex ) {
 		this( name, null, world, pos, 0.0f, new Vector2( 1.0f, 1.0f ), tex );
+		screws = new ArrayList<Screw>();
 	}
 
 	public Platform( String name, EntityDef def, World world, Vector2 pos,
 			float rot, Vector2 scale, Texture tex ) {
 		super( name, def, world, true, pos, rot, scale, tex );
+		screws = new ArrayList<Screw>();
 	}
 
+	public void addScrew( Screw s ){
+		screws.add( s );
+	}
+
+	@Override
+	public void setAwake(){
+		body.setAwake( true );
+		for(Screw s : screws)
+			s.body.setAwake( true );
+	}
 	@Override
 	public void update( float deltaTime ) {
 

@@ -13,6 +13,9 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.blindtigergames.werescrewed.screens.GameScreen;
+import com.blindtigergames.werescrewed.screws.Screw;
+
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Vector;
 
@@ -28,6 +31,7 @@ import java.util.Vector;
 public class TiledPlatform extends Platform {
 	protected float tileHeight, tileWidth;
 	protected Vector2 bodypos;
+	
 
 	protected class Tile {
 		public float xOffset, yOffset;
@@ -59,6 +63,7 @@ public class TiledPlatform extends Platform {
 		body.setUserData( this );
 		setOneSided( isOneSided );
 		tileBody( );
+		
 	}
 
 	private void constructTileBody( float x, float y, float width, float height ) {
@@ -111,6 +116,7 @@ public class TiledPlatform extends Platform {
 	public float getActualWidth( ) {
 		return width * 32;
 	}
+	
 
 	@Override
 	public void update( float deltaTime ) {

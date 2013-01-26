@@ -162,4 +162,12 @@ public class Entity {
 	public void setSolid( boolean solid ) {
 		this.solid = solid;
 	}
+	/**
+	 * Sets body awake, used in
+	 * 
+	 * @param solid
+	 */
+	public void setAwake(){
+		body.setAwake( true );
+	}
 }

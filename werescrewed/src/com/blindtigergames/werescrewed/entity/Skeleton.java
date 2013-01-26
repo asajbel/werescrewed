@@ -8,11 +8,13 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJoint;
+import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
 import com.badlogic.gdx.physics.box2d.Joint;
 import com.badlogic.gdx.physics.box2d.World;
 import com.blindtigergames.werescrewed.joint.RevoluteJointBuilder;
 import com.blindtigergames.werescrewed.platforms.Platform;
 import com.blindtigergames.werescrewed.screens.GameScreen;
+import com.blindtigergames.werescrewed.screws.StrippedScrew;
 
 /**
  * Bone is an entity which is placed onto the Skeleton then when the Skeleton
@@ -91,6 +93,16 @@ public class Skeleton extends Entity {
         addBoneAndJoint( platform, joint );
     }
 
+    public void addPlatform( Platform platform ){
+    	addBoneAndJoint( platform, null );
+    }
+    
+    public void addStrippedScrew ( StrippedScrew ss ){
+       RevoluteJoint joint = new RevoluteJointBuilder( world ).skeleton( this ).bodyB( ss )
+                .limit( true ).lower( 0 ).upper( 0 ).build();
+    	addBoneAndJoint( ss, joint );
+    }
+    
     public void addBoneAndJoint( Entity bone, Joint joint ) {
         this.boneAndJoints.add( new BoneAndJoints( bone, joint ) );
 
@@ -124,7 +136,7 @@ public class Skeleton extends Entity {
             skeleton.wakeSkeleton();
         }
         for ( BoneAndJoints boneJoint : boneAndJoints ) {
-            boneJoint.bone.body.setAwake( true );
+            boneJoint.bone.setAwake( );
         }
     }
 
