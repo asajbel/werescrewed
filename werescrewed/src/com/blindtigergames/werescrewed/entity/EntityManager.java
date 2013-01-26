@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.blindtigergames.werescrewed.entity.Skeleton;
 
 public class EntityManager extends Entity {
@@ -16,21 +17,41 @@ public class EntityManager extends Entity {
 	}
 
 	// Updates Entities and Skeletons stored in the HashMap
-	public void updateEntity( float deltaTime ) {
-		Iterator< Map.Entry< String, Entity > > it = entityList.entrySet( )
+	@Override
+	public void update( float deltaTime ) {
+		Iterator< Map.Entry< String, Entity > > eit = entityList.entrySet( )
 				.iterator( );
-		Map.Entry< String, Entity > derp;
-		while ( it.hasNext( ) ) {
-			derp = it.next( );
-			derp.getValue( ).update( deltaTime );
+		Map.Entry< String, Entity > eEntry;
+		while ( eit.hasNext( ) ) {
+			eEntry = eit.next( );
+			eEntry.getValue( ).update( deltaTime );
 		}
 
-		Iterator< Map.Entry< String, Skeleton > > jit = skeletonList.entrySet( )
+		Iterator< Map.Entry< String, Skeleton > > sit = skeletonList.entrySet( )
 				.iterator( );
-		Map.Entry< String, Skeleton > herp;
-		while ( jit.hasNext( ) ) {
-			herp = jit.next( );
-			herp.getValue( ).update( deltaTime );
+		Map.Entry< String, Skeleton > sEntry;
+		while ( sit.hasNext( ) ) {
+			sEntry = sit.next( );
+			sEntry.getValue( ).update( deltaTime );
+		}
+	}
+	
+	@Override
+	public void draw(SpriteBatch batch){
+		Iterator< Map.Entry< String, Entity > > eit = entityList.entrySet( )
+				.iterator( );
+		Map.Entry< String, Entity > eEntry;
+		while ( eit.hasNext( ) ) {
+			eEntry = eit.next( );
+			eEntry.getValue( ).draw( batch );
+		}
+
+		Iterator< Map.Entry< String, Skeleton > > sit = skeletonList.entrySet( )
+				.iterator( );
+		Map.Entry< String, Skeleton > sEntry;
+		while ( sit.hasNext( ) ) {
+			sEntry = sit.next( );
+			sEntry.getValue( ).draw( batch );
 		}
 	}
 

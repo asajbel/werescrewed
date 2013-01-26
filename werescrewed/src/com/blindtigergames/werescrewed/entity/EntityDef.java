@@ -155,6 +155,7 @@ public class EntityDef {
 			float friction = xml.getFloat( "friction" );
 			float restitution = xml.getFloat( "restitution" );
 			float scale = xml.getFloat( "bodyScale" );
+			out.fixedRotation = xml.getBoolean( "fixedRotation" );
 
 			out.loadComplexBody( density, friction, restitution, scale,
 					bodyName );

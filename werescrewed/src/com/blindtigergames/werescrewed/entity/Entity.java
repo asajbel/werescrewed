@@ -102,14 +102,6 @@ public class Entity {
     	Vector2 pos = body.getPosition().add(vector);
     	setPosition(pos);
     }
-    
-    public void draw(SpriteBatch batch)
-    {
-    	if (sprite != null) {
-    		sprite.draw(batch);
-    	}
-    }
-    
 
 	public void update(float deltaTime)
 	{
@@ -155,6 +147,7 @@ public class Entity {
 				body.createFixture( fix );
 			}
 			setPosition( x, y );
+			body.setFixedRotation( type.fixedRotation );
 		}
 	}
 }

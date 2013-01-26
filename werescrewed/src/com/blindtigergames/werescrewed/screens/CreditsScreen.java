@@ -29,7 +29,7 @@ class CreditsScreen implements com.badlogic.gdx.Screen {
 		licenseLabel = new Label( "License: Apache License 2.0", font );
 		versionLabel = new Label( "LibGDX version: " + Version.VERSION, font );
 		backButton = new Button( "Back", font, new ScreenSwitchHandler(
-				Screen.MAIN_MENU ) );
+				ScreenType.MAIN_MENU ) );
 	}
 
 	@Override

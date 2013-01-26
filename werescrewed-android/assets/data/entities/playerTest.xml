@@ -13,6 +13,6 @@
 	<body>playerTest</body>
 	<density>1.0f</density>
 	<friction>0.25f</friction>
-	<restitution>0.01f</restitution>
+	<restitution>0.0f</restitution>
 	<bodyScale>0.3f</bodyScale>
-</entity>
+	<fixedRotation>true</fixedRotation></entity>

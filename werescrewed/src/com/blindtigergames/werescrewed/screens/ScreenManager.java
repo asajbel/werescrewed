@@ -27,7 +27,7 @@ public final class ScreenManager {
 		this.game = game;
 	}
 
-	public void show( Screen screen ) {
+	public void show( ScreenType screen ) {
 		if ( null == game )
 			return;
 		if ( !screens.containsKey( screen.ordinal( ) ) ) {
@@ -37,7 +37,7 @@ public final class ScreenManager {
 		Gdx.app.log( "ScreenManager", screens.get( screen.ordinal( ) ).getClass( ).getSimpleName( )+" starting");
 	}
 
-	public void dispose( Screen screen ) {
+	public void dispose( ScreenType screen ) {
 		if ( !screens.containsKey( screen.ordinal( ) ) )
 			return;
 		screens.remove( screen.ordinal( ) ).dispose( );

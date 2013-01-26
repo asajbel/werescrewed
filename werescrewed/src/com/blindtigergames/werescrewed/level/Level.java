@@ -3,19 +3,16 @@ package com.blindtigergames.werescrewed.level;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.blindtigergames.werescrewed.camera.Camera;
 import com.blindtigergames.werescrewed.debug.SBox2DDebugRenderer;
+import com.blindtigergames.werescrewed.entity.Entity;
+import com.blindtigergames.werescrewed.entity.EntityManager;
 import com.blindtigergames.werescrewed.entity.Player;
 import com.blindtigergames.werescrewed.platforms.*;
-import com.blindtigergames.werescrewed.screens.GameScreen;
-import com.blindtigergames.werescrewed.screens.Screen;
-import com.blindtigergames.werescrewed.screens.ScreenManager;
 
 
 /**
@@ -28,9 +25,10 @@ import com.blindtigergames.werescrewed.screens.ScreenManager;
  */
 
 public class Level{
-	Camera camera;
-	World world;
+	public Camera camera;
+	public World world;
 	Player player;
+	EntityManager entities;
 	ArrayList<Platform> platforms;
 	// When the entityManager is done these objects
 	// will go inside the manager instead of 
@@ -45,7 +43,9 @@ public class Level{
 		world = new World( new Vector2 ( 0, -100 ), true);
 		player = new Player( world, new Vector2( 1.0f, 1.0f ), "player");
 		camera = new Camera( w, h, player);
-
+		
+		entities = new EntityManager();
+		platforms = new ArrayList<Platform>();
 		
 	}
 	
@@ -53,6 +53,7 @@ public class Level{
 		camera.update( );
 		
 		player.update( deltaTime );
+		entities.update( deltaTime );
 		for (Platform p: platforms)
 			p.update( deltaTime );
 	}
@@ -61,6 +62,7 @@ public class Level{
 		sb.setProjectionMatrix( camera.combined() );
 		sb.begin( );
 		
+		entities.draw( sb );
 		for (Platform p: platforms)
 			p.draw( sb );
 		

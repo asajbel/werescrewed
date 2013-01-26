@@ -214,7 +214,7 @@ public class IMoverGameScreen implements com.badlogic.gdx.Screen {
         cam.update();
 
         if ( Gdx.input.isKeyPressed( Input.Keys.ESCAPE ) ) {
-            ScreenManager.getInstance().show( Screen.PAUSE );
+            ScreenManager.getInstance().show( ScreenType.PAUSE );
         }
         if ( Gdx.input.isKeyPressed( Keys.P ) ) {
             System.exit( 0 );
