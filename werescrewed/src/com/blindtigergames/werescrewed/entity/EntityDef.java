@@ -107,8 +107,8 @@ public class EntityDef {
 
 				CircleShape playerfeetShape = new CircleShape( );
 				playerfeetShape.setRadius( 10f * GameScreen.PIXEL_TO_BOX );
-				FixtureDef playerFixtureDef = makeFixtureDef( 9.9f, 0.0f,
-						0.0f, playerfeetShape );
+				FixtureDef playerFixtureDef = makeFixtureDef( 9.9f, 0.0f, 0.0f,
+						playerfeetShape );
 				fixes.add( playerFixtureDef );
 
 				out = new EntityDef( "player", new Texture(
@@ -130,8 +130,8 @@ public class EntityDef {
 		}
 	}
 
-	/*
-	 * Loads an entity definition from XML. TODO Fill with XML loading code
+	/**
+	 * Loads an entity definition from XML.
 	 */
 	protected static EntityDef loadDefinition( String id ) {
 		String filename = "data/entities/" + id + ".xml";

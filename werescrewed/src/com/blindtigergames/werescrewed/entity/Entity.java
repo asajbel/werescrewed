@@ -62,13 +62,14 @@ public class Entity {
 		this.type = def;
 		this.world = world;
 		this.solid = solid;
-		this.sprite = constructSprite( tex, pos, scale );
-		this.body = constructBody( pos );
+		this.sprite = constructSprite( tex, scale );
+		this.body = constructBody( );
+		setPosition( pos );
 	}
 
 	public void setPosition( Vector2 pos ) {
 		if ( body != null ) {
-			body.setTransform( pos.x, pos.y, body.getAngle( ) );
+			this.body.setTransform( pos.x, pos.y, body.getAngle( ) );
 		} else if ( sprite != null ) {
 			sprite.setPosition( pos.x, pos.y );
 		}
@@ -105,13 +106,13 @@ public class Entity {
 		return type.name;
 	}
 
-	protected Sprite constructSprite( Texture tex, Vector2 pos, Vector2 scale ) {
+	protected Sprite constructSprite( Texture tex, Vector2 scale ) {
 		Sprite sprite;
 		if ( tex == null ) {
 			if ( type != null && type.texture != null ) {
 				sprite = new Sprite( type.texture );
 				sprite.setScale( type.spriteScale.x, type.spriteScale.y );
-				sprite.setOrigin( type.origin.x, type.origin.y );
+				sprite.setOrigin( sprite.getWidth( ), sprite.getHeight( ) );
 			} else {
 				return null;
 			}
@@ -120,11 +121,10 @@ public class Entity {
 			sprite.setScale( scale.x, scale.y );
 			sprite.setOrigin( sprite.getWidth( ) / 2, sprite.getHeight( ) / 2 );
 		}
-		sprite.setPosition( pos.x, pos.y );
 		return sprite;
 	}
 
-	protected Body constructBody( Vector2 pos ) {
+	protected Body constructBody( ) {
 		Body body = null;
 		if ( type != null ) {
 			body = world.createBody( type.bodyDef );
@@ -132,7 +132,6 @@ public class Entity {
 			for ( FixtureDef fix : type.fixtureDefs ) {
 				body.createFixture( fix );
 			}
-			body.setTransform( pos.x, pos.y, body.getAngle( ) );
 		}
 		return body;
 

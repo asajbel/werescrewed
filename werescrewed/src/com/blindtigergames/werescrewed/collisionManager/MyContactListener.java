@@ -49,30 +49,23 @@ public class MyContactListener implements ContactListener {
 			// Ensure the collision involves the player's feet
 			if ( playerInvolved
 					&& !( playerFix.getShape( ) instanceof CircleShape ) ) {
-				// System.out.println( "Body collision start." );
 				playerInvolved = false;
 			}
 
 			if ( playerInvolved ) {
-				// System.out.print( "Player - " );
 				Player player = ( Player ) playerFix.getBody( ).getUserData( );
 				if ( objectFix.getBody( ).getUserData( ) instanceof Entity ) {
 					Entity object = ( Entity ) objectFix.getBody( )
 							.getUserData( );
 					if ( object.isSolid( ) ) {
 						NUM_PLAYER_CONTACTS++;
-						System.out.println( NUM_PLAYER_CONTACTS );
 						player.setGrounded( true );
 					} else if ( object instanceof Screw ) {
 						Screw screw = ( Screw ) object;
 						player.hitScrew( screw );
 					}
 				}
-			} else {
-				// System.out.println( "Non-player collision start." );
 			}
-		} else {
-			// System.out.println( "Null" );
 		}
 	}
 

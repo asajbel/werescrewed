@@ -8,10 +8,8 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJoint;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
-import com.blindtigergames.werescrewed.camera.Anchor;
 import com.blindtigergames.werescrewed.camera.AnchorList;
 import com.blindtigergames.werescrewed.input.InputHandlerPlayer1;
-import com.blindtigergames.werescrewed.screens.GameScreen;
 import com.blindtigergames.werescrewed.screws.Screw;
 
 /**
@@ -78,28 +76,15 @@ public class Player extends Entity {
 	 */
 	public Player( String name, World world, Vector2 pos, Texture tex ) {
 		super( name, EntityDef.getDefinition( "playerTest" ), world, true, pos,
-				0.0f, new Vector2( 1.0f, 1.0f ), tex );
+				0.0f, null, tex );
 		body.setGravityScale( 0.25f );
 		body.setFixedRotation( true );
-		this.world = world;
 		body.setUserData( this );
 		body.setBullet( true );
 		playerState = PlayerState.Standing;
 		inputHandler = new InputHandlerPlayer1( );
 		anchorList = AnchorList.getInstance( );
 		anchorID = anchorList.addAnchor( true, pos );
-	}
-
-	/**
-	 * 
-	 * @param name
-	 * @param world
-	 *            in which the player exists
-	 * @param pos
-	 *            ition of the player in the world
-	 */
-	public Player( World world, Vector2 pos, String name ) {
-		this( name, world, pos, texture );
 	}
 
 	// METHODS
