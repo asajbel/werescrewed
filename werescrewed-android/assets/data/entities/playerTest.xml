@@ -9,10 +9,10 @@
 	<tintGreen>1.0f</tintGreen>
 	<tintBlue>1.0f</tintBlue>
 	<tintAlpha>1.0f</tintAlpha>
-	
+
 	<body>playerTest</body>
 	<density>1.0f</density>
-	<friction>0.25f</friction>
+	<friction>0.0f</friction>
 	<restitution>0.0f</restitution>
 	<bodyScale>0.3f</bodyScale>
 	<fixedRotation>true</fixedRotation></entity>

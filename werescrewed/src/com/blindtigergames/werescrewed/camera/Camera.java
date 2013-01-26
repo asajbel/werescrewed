@@ -19,6 +19,9 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
  * @author Edward Ramirez
  ******************************************************************************/
 public class Camera {
+	private static final boolean ANCHOR_TEST_MODE = false;
+//	private static final boolean ANCHOR_TEST_RENDER = true;
+	
 	public static final float BOX_TO_PIXEL = 256f;
 	public static final float PIXEL_TO_BOX = 1/BOX_TO_PIXEL;
 	public static final float DEGTORAD = 0.0174532925199432957f;
@@ -27,15 +30,16 @@ public class Camera {
 	public float viewportHeight;
 	public float viewportWidth;
 	public Vector3 position;
-	public Vector2 center2D;
+	private Vector2 center2D;
+	private Rectangle screenBounds;
 	
 	// translation
 //	private static final float SPEED_TARGET_MODIFIER = 5f;
-	private static final float BUFFER_RATIO = .33f;
+	private static final float BUFFER_RATIO = .5f;
 //	private static final int LISTEN_BUFFER = 300;
-	private static final float ACCELERATION_RATIO = .005f;
+	private static final float ACCELERATION_RATIO = .003f;
 	private static final float TARGET_BUFFER_RATIO = .05f;
-	private static final float MINIMUM_FOLLOW_SPEED = 1f;
+	private static final float MINIMUM_FOLLOW_SPEED = 3f;
 	private static final float MAX_ANGLE_DIFF = 45f;
 	private Vector2  translateVelocity;
 	private float translateSpeed;
@@ -58,40 +62,6 @@ public class Camera {
 	private boolean debugRender;
 	private ShapeRenderer shapeRenderer;
 	
-	private void initializeVars (float viewportWidth, float viewportHeight) {
-		camera = new OrthographicCamera(1, viewportHeight/viewportWidth);
-		this.viewportHeight = Gdx.graphics.getHeight();
-		this.viewportWidth = Gdx.graphics.getWidth();
-		camera.viewportWidth = this.viewportWidth;
-		camera.viewportHeight = this.viewportHeight;
-		camera.position.set(this.viewportWidth * .5f, this.viewportHeight * .5f, 0f);  
-		position = camera.position;
-		center2D = new Vector2(position.x, position.y); 
-		
-		this.translateBuffer = new Rectangle(camera.position.x,
-											camera.position.y,
-											this.viewportWidth * BUFFER_RATIO,
-											this.viewportHeight * BUFFER_RATIO);
-		
-		this.translateTarget = new Vector2(center2D);
-		this.translateTarget3D = new Vector3(translateTarget.x, translateTarget.y, 0f);
-		translateVelocity = new Vector2(0f, 0f);
-		translateSpeed = 0f;
-		translateAcceleration = 0f;
-		targetBuffer =  ( ( translateBuffer.width + translateBuffer.height ) / 2 ) * TARGET_BUFFER_RATIO;
-		translateState = true;
-				
-		player1Anchor = -1;
-		player2Anchor = -1;
-		anchorList = AnchorList.getInstance();
-		anchorList.clear( );
-		
-		// debug
-		debugInput = false;
-		debugRender = false;
-		shapeRenderer = new ShapeRenderer();
-	}
-	
 	public Camera(float viewportWidth, float viewportHeight)
 	{
 		this(viewportWidth, viewportHeight, null, null);  
@@ -109,13 +79,56 @@ public class Camera {
 		this.player2 = player2;
 		
 		if (player1 != null) {
-			player1Anchor = anchorList.addAnchor(player1.getPosition());
+			player1Anchor = anchorList.addAnchor(true, player1.getPosition());
 		}
 		
 		if (player2 != null) {
-			player2Anchor = anchorList.addAnchor(player2.getPosition());
+			player2Anchor = anchorList.addAnchor(true, player2.getPosition());
 		}
         camera.update();  
+	}
+	
+	private void initializeVars (float viewportWidth, float viewportHeight) {
+		camera = new OrthographicCamera(1, viewportHeight/viewportWidth);
+		this.viewportHeight = Gdx.graphics.getHeight();
+		this.viewportWidth = Gdx.graphics.getWidth();
+		camera.viewportWidth = this.viewportWidth;
+		camera.viewportHeight = this.viewportHeight;
+		camera.position.set(this.viewportWidth * .5f, this.viewportHeight * .5f, 0f);  
+		position = camera.position;
+		center2D = new Vector2(position.x, position.y);
+		screenBounds = new Rectangle(position.x, position.y, viewportHeight, viewportWidth);
+		
+		this.translateBuffer = new Rectangle(camera.position.x,
+											camera.position.y,
+											this.viewportWidth * BUFFER_RATIO,
+											this.viewportHeight * BUFFER_RATIO);
+		
+		this.translateTarget = new Vector2(center2D);
+		this.translateTarget3D = new Vector3(translateTarget.x, translateTarget.y, 0f);
+		translateVelocity = new Vector2(0f, 0f);
+		translateSpeed = 0f;
+		translateAcceleration = 0f;
+		targetBuffer =  ( ( translateBuffer.width + translateBuffer.height ) / 2 ) * TARGET_BUFFER_RATIO;
+		translateState = true;
+				
+		player1Anchor = -1;
+		player2Anchor = -1;
+//		anchorList = AnchorList.getInstance();
+		anchorList = AnchorList.getInstance( camera );
+		anchorList.clear();
+		if (ANCHOR_TEST_MODE) {
+			createTestAnchors();
+		}
+		
+		// debug
+		debugInput = false;
+		debugRender = false;
+		shapeRenderer = new ShapeRenderer();
+	}
+	
+	public Rectangle getBounds() {
+		return screenBounds;
 	}
 	
 	public Matrix4 combined()
@@ -140,20 +153,29 @@ public class Camera {
 		
 		// update player anchors
 		if (player1Anchor > -1) {
-			anchorList.setAnchorPos(player1Anchor, player1.getPosition().mul(BOX_TO_PIXEL));
+			anchorList.setAnchorPos(player1Anchor, player1.getPosition());
 		}
 		if (player2Anchor > -1) {
-			anchorList.setAnchorPos(player2Anchor, player2.getPosition().mul(BOX_TO_PIXEL));
+			anchorList.setAnchorPos(player2Anchor, player2.getPosition());
 		}
 				
 		position = camera.position;
 		center2D.x = position.x;
 		center2D.y = position.y;
+		screenBounds.x = position.x;
+		screenBounds.y = position.y;
+		screenBounds.width = camera.zoom * viewportWidth;
+		screenBounds.height = camera.zoom * viewportHeight;
 		
 		translateBuffer.x = position.x - translateBuffer.width * .5f;
 		translateBuffer.y = position.y - translateBuffer.height * .5f;
     	setTranslateTarget();
 		
+//    	if (anchorList.getMidpointVelocity( ).len( ) < MINIMUM_FOLLOW_SPEED && 
+//    			translateBuffer.contains(translateTarget.x, translateTarget.y)) {
+//    		translateState = false;
+//    	}
+    	
 //    	player1.moveRight();
 		if (!debugInput && translateState) {
 			if (center2D.dst(translateTarget) < targetBuffer) {
@@ -163,8 +185,14 @@ public class Camera {
 				if (anchorList.getMidpointVelocity().len() > MINIMUM_FOLLOW_SPEED &&
 						tempAngle < MAX_ANGLE_DIFF )
 					camera.position.set(translateTarget3D);
-				else
+				else {
+					camera.position.set(translateTarget3D);
 					translateState = false;
+					translateVelocity.x = 0f;
+					translateVelocity.y = 0f;
+					translateAcceleration = 0f;
+					translateSpeed = 0f;
+				}
 			}
 			else
 				translate();
@@ -178,16 +206,30 @@ public class Camera {
 		}
 		
 		if (debugRender) {
+			
+			// render the translation buffer
 			shapeRenderer.setProjectionMatrix(camera.combined);
 			shapeRenderer.begin(ShapeType.Rectangle);
 			shapeRenderer.identity();
 			shapeRenderer.rect(translateBuffer.x, translateBuffer.y, translateBuffer.width, translateBuffer.height);
 			shapeRenderer.end();
-			shapeRenderer.setProjectionMatrix(camera.combined);
+			shapeRenderer.begin(ShapeType.Line);
+			shapeRenderer.line(translateBuffer.x, translateBuffer.y,
+								translateBuffer.x + translateBuffer.width,
+								translateBuffer.y + translateBuffer.height);
+			shapeRenderer.line(translateBuffer.x, translateBuffer.y + translateBuffer.height,
+					translateBuffer.x + translateBuffer.width, translateBuffer.y);
+			shapeRenderer.end();
+			
+			// render the translation target buffer
 			shapeRenderer.begin(ShapeType.Circle);
 			shapeRenderer.identity();
 			shapeRenderer.circle(translateTarget.x, translateTarget.y, targetBuffer);
 			shapeRenderer.end();
+//			shapeRenderer.begin(ShapeType.Rectangle);
+//			shapeRenderer.identity();
+//			shapeRenderer.rect(translateBuffer.x, translateBuffer.y, translateBuffer.width, translateBuffer.height);
+//			shapeRenderer.end();
 		}
 		
 		camera.update();
@@ -196,7 +238,7 @@ public class Camera {
 			System.out.println("Zoom: " + camera.zoom);
 		}
 		
-		anchorList.updateVelocity();
+		anchorList.update(debugRender);
 		
 		/*float lerp = 0.1f;
 		Vector3 position = camera.position;
@@ -209,8 +251,8 @@ public class Camera {
     private void handleInput() {
             if(Gdx.input.isKeyPressed(Input.Keys.E)) {
                     camera.zoom += 0.02;
-            		translateBuffer.width = camera.zoom * viewportWidth * BUFFER_RATIO;
-            		translateBuffer.height = camera.zoom * viewportHeight * BUFFER_RATIO;
+            		translateBuffer.width = screenBounds.width * BUFFER_RATIO;
+            		translateBuffer.height = screenBounds.height * BUFFER_RATIO;
             }
             if(Gdx.input.isKeyPressed(Input.Keys.Q)) {
                     camera.zoom -= 0.02;
@@ -259,21 +301,25 @@ public class Camera {
     	return this.translateTarget;
     }
     
-    /**
-     * set the focus of camera to the weighted midpoint of all anchors
-     */
-    private Vector2 setFocusWeighted() {
-    	return this.translateTarget;
-    }
-    
     private void translate() {
 //    	camera.position.set(translateTarget3D);
-    	translateVelocity = translateTarget.cpy();
-    	translateVelocity.sub(center2D);
-    	translateAcceleration = translateVelocity.len() * ACCELERATION_RATIO;
-    	translateSpeed += translateAcceleration;
-    	translateVelocity.nor();
+    	Vector2.tmp.x = translateTarget.x;
+    	Vector2.tmp.y = translateTarget.y;
+    	Vector2.tmp.sub(center2D);
+    	translateAcceleration = Vector2.tmp.len() * ACCELERATION_RATIO;
+    	if ((translateSpeed + translateAcceleration) < (Vector2.tmp.len() - 5f))
+    		translateSpeed += translateAcceleration;
+    	else
+    		translateSpeed = Vector2.tmp.len() - 5f;
+    	Vector2.tmp.nor( );
+    	translateVelocity.x = Vector2.tmp.x;
+    	translateVelocity.y = Vector2.tmp.y;
     	translateVelocity.mul(translateSpeed);
     	camera.translate(translateVelocity);
+    }
+    
+    private void createTestAnchors() {
+//    	anchorList.addAnchor( false, new Vector2(0f, 0f) );
+    	anchorList.addAnchor( false, new Vector2(-128f, 128f) );
     }
 }

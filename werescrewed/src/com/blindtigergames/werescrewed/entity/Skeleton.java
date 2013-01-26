@@ -3,6 +3,7 @@ package com.blindtigergames.werescrewed.entity;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
@@ -19,7 +20,8 @@ import com.blindtigergames.werescrewed.screens.GameScreen;
  * 
  * @author Ranveer/Stewart
  * 
- * 
+ * TODO: Perhaps change skeleton name, make skeleton more like a tree
+ * It should have a list of non-jointed entities too.
  */
 
 public class Skeleton extends Entity {
@@ -29,9 +31,8 @@ public class Skeleton extends Entity {
 
     // private Skeleton(){};
 
-    public Skeleton( String n, Vector2 pos, Texture tex, World world ) {
-        super( n, pos, tex, null ); // not constructing body class
-        this.world = world;
+    public Skeleton( String name, Vector2 pos, Texture tex, World world ) {
+        super( name, null, world, false, pos, 0.0f, new Vector2(1.0f, 1.0f), tex ); // not constructing body class
         this.boneAndJoints = new ArrayList<BoneAndJoints>();
         constructSkeleton( pos );
         subSkeletons = new ArrayList<Skeleton>();
@@ -57,6 +58,24 @@ public class Skeleton extends Entity {
         // center of platform
         RevoluteJoint joint = new RevoluteJointBuilder( world ).skeleton( this ).bodyB( platform )
                 .build();
+        
+        addBoneAndJoint( platform, joint );
+    }
+    
+    /**
+     * Attach a platform to this skeleton that rotates with a motor
+     * 
+     * @param platform
+     */
+    public void addPlatformRotatingCenterWithRot( Platform platform, float rotSpeedInMeters ) {
+        // Default values of the builder will allow rotation with anchor at
+        // center of platform
+        RevoluteJoint joint = new RevoluteJointBuilder( world )
+        						.skeleton( this )
+        						.bodyB( platform )
+        						.motor( true )
+        						.motorSpeed( rotSpeedInMeters )
+        						.build();
         
         addBoneAndJoint( platform, joint );
     }
@@ -129,7 +148,21 @@ public class Skeleton extends Entity {
             boneJoint.bone.update( deltaTime );
         }
     }
-
+    
+    @Override
+    public void draw( SpriteBatch batch ){
+    	super.draw( batch );
+    	drawChildren( batch );
+    }
+    
+    private void drawChildren( SpriteBatch batch ){
+        for ( Skeleton skeleton : subSkeletons ) {
+            skeleton.draw( batch );
+        }
+        for ( BoneAndJoints boneJoint : boneAndJoints ) {
+            boneJoint.bone.draw( batch );
+        }
+    }
     protected class BoneAndJoints {
         protected ArrayList<Joint> joints;
         protected Entity bone;

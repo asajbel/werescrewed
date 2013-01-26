@@ -9,34 +9,15 @@ import com.badlogic.gdx.math.Vector2;
  * @author Edward Ramirez
  ******************************************************************************/
 public class Anchor {
+	public boolean special;
 	protected Vector2 position;
-	protected int weight;
 	protected Vector2 buffer;
 	
-	static private final int DEFAULT_WEIGHT = 50;
-	static private final Vector2 DEFAULT_BUFFER = new Vector2(256f, 256f);
+	static protected final Vector2 DEFAULT_BUFFER = new Vector2(128f, 128f);
 
-	public Anchor(Vector2 setPosition) {
+	public Anchor(boolean setSpecial, Vector2 setPosition, Vector2 setBuffer) {
+		this.special = setSpecial;
 		this.position = setPosition;
-		this.weight = DEFAULT_WEIGHT;
-		this.buffer = DEFAULT_BUFFER;
-	}
-	
-	public Anchor(Vector2 setPosition, int setWeight) {
-		this.position = setPosition;
-		this.weight = setWeight;
-		this.buffer = DEFAULT_BUFFER;
-	}
-	
-	public Anchor(Vector2 setPosition, int setWeight, int setBufferWidth) {
-		this.position = setPosition;
-		this.weight = setWeight;
-		this.buffer = new Vector2(setBufferWidth, setBufferWidth);
-	}
-	
-	public Anchor(Vector2 setPosition, int setWeight, Vector2 setBuffer) {
-		this.position = setPosition;
-		this.weight = setWeight;
 		this.buffer = setBuffer;
 	}
 	
@@ -50,8 +31,9 @@ public class Anchor {
 		this.position = newPosition;
 	}
 	
-	public void setWeight(int weight) {
-		this.weight = weight;
+	public void setPositionBox(Vector2 newPosition) {
+		this.position.x = newPosition.x * Camera.BOX_TO_PIXEL;
+		this.position.y = newPosition.y * Camera.BOX_TO_PIXEL;
 	}
 	
 	public void setBuffer(Vector2 buffer) {

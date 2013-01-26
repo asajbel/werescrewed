@@ -18,8 +18,24 @@ import com.blindtigergames.werescrewed.screens.GameScreen;
 
 public class EntityDef {
 
+	// Sprite Fields (i.e. everything needed to define just the sprite half)
+	protected Texture texture;
+	protected String initialAnim;
+	protected Vector2 origin;
+	protected Vector2 spriteScale;
+	protected Color tint;
+
+	// Body Fields (i.e. everything needed to define just the body half)
+	protected BodyDef bodyDef;
+	protected ArrayList< FixtureDef > fixtureDefs;
+	protected float gravityScale;
+	protected boolean fixedRotation;
+
+	// Miscellaneous Fields
+	protected String name;
+
 	// Methods
-	protected EntityDef( String n ) {
+	protected EntityDef( String name ) {
 		// Sprite Data
 		texture = null;
 		initialAnim = "";
@@ -34,14 +50,14 @@ public class EntityDef {
 		fixedRotation = false;
 
 		// Misc Data
-		name = n;
+		this.name = name;
 	}
 
-	protected EntityDef( String n, Texture t, String iA, BodyDef bDef,
+	protected EntityDef( String name, Texture tex, String iA, BodyDef bDef,
 			ArrayList< FixtureDef > fixes ) {
-		this( n );
+		this( name );
 		// Sprite Data
-		texture = t;
+		texture = tex;
 		initialAnim = iA;
 
 		// Body Data
@@ -57,31 +73,19 @@ public class EntityDef {
 			definitions.remove( this );
 		super.finalize( );
 	}
-		protected void loadComplexBody(float density, float friction, float restitution, float scale, String bodyName ){
-			String filename = "data/bodies/" + bodyName + ".json";		
-			BodyEditorLoader loader = new BodyEditorLoader( Gdx.files.internal(filename));
-			this.origin = loader.getOrigin( bodyName, scale );			
-			loader.attachFixture( this, bodyName, density, friction, restitution, scale );
-		}
-				
-	//Sprite Fields (i.e. everything needed to define just the sprite half)
-		protected Texture texture;
-		protected String initialAnim;
-		protected Vector2 origin;
-		protected Vector2 spriteScale;
-		protected Color tint;
-	
-	//Body Fields (i.e. everything needed to define just the body half)
-		protected BodyDef bodyDef;
-		protected ArrayList<FixtureDef> fixtureDefs;
-		protected float gravityScale;
-		protected boolean fixedRotation;
-	
-	//Miscellaneous Fields
-		protected String name;
-	
-	//Static Methods and Fields
-	protected static HashMap<String, EntityDef> definitions;
+
+	protected void loadComplexBody( float density, float friction,
+			float restitution, float scale, String bodyName ) {
+		String filename = "data/bodies/" + bodyName + ".json";
+		BodyEditorLoader loader = new BodyEditorLoader(
+				Gdx.files.internal( filename ) );
+
+		loader.attachFixture( this, bodyName, density, friction, restitution,
+				scale );
+	}
+
+	// Static Methods and Fields
+	protected static HashMap< String, EntityDef > definitions;
 	static {
 		definitions = new HashMap< String, EntityDef >( );
 	}
@@ -103,8 +107,8 @@ public class EntityDef {
 
 				CircleShape playerfeetShape = new CircleShape( );
 				playerfeetShape.setRadius( 10f * GameScreen.PIXEL_TO_BOX );
-				FixtureDef playerFixtureDef = makeFixtureDef( 9.9f, 0.05f,
-						0.5f, playerfeetShape );
+				FixtureDef playerFixtureDef = makeFixtureDef( 9.9f, 0.0f, 0.0f,
+						playerfeetShape );
 				fixes.add( playerFixtureDef );
 
 				out = new EntityDef( "player", new Texture(
@@ -126,8 +130,8 @@ public class EntityDef {
 		}
 	}
 
-	/*
-	 * Loads an entity definition from XML. TODO Fill with XML loading code
+	/**
+	 * Loads an entity definition from XML.
 	 */
 	protected static EntityDef loadDefinition( String id ) {
 		String filename = "data/entities/" + id + ".xml";
@@ -162,7 +166,6 @@ public class EntityDef {
 
 			return out;
 		} catch ( IOException e ) {
-			// TODO Auto-generated catch block
 			Gdx.app.log( "Error", "Loading entity definition " + id + " ", e );
 		}
 

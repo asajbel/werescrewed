@@ -13,9 +13,8 @@ public class Box extends Platform{
 	
 	boolean colliding;
 
-    public Box( String n, Vector2 pos, Texture tex, World world ){
-		super( n, pos, tex , null);
-		this.world = world;
+    public Box( String name, Vector2 pos, Texture tex, World world ){
+		super( name, world, pos, tex);
 		createBoxBody(pos.x, pos.y);
 		colliding = false;
 		body.setUserData(this);

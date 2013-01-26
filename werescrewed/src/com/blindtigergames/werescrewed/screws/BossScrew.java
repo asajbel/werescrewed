@@ -60,6 +60,7 @@ public class BossScrew extends Screw {
 		//skeleton.addBoneAndJoint( platform, screwJoint );
 	}
 
+	@Override
 	public void screwLeft( ) {
 		body.setAngularVelocity( 15 );
 		depth--;
@@ -72,6 +73,7 @@ public class BossScrew extends Screw {
 		}
 	}
 
+	@Override
 	public void screwRight( ) {
 		if ( depth < maxDepth ) {
 			body.setAngularVelocity( -15 );
@@ -80,7 +82,8 @@ public class BossScrew extends Screw {
 			screwStep = depth + 6;
 		}
 	}
-	
+
+	@Override
 	public void update( float deltaTime ) {
 		super.update( deltaTime );
 		sprite.setRotation( rotation );
