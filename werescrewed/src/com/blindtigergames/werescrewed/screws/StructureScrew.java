@@ -23,6 +23,11 @@ import com.blindtigergames.werescrewed.screens.GameScreen;
 
 public class StructureScrew extends Screw {
 
+
+	private Skeleton skeleton;
+	private RevoluteJoint screwJoint;
+	private RevoluteJoint platformToScrew;
+	
 	public StructureScrew( String n, Vector2 pos, Texture tex, int max,
 			Platform platform, Skeleton skeleton, World world ) {
 		super( n, pos, tex, null );
@@ -62,20 +67,11 @@ public class StructureScrew extends Screw {
 		body.createFixture( radarFixture );
 		radarShape.dispose( );
 
-		// connect the screw to the skeleton;
-		RevoluteJointDef revoluteJointDef = new RevoluteJointDef( );
-		revoluteJointDef.initialize( body, skeleton.body, body.getPosition( ) );
-		revoluteJointDef.enableMotor = false;
-		platformToScrew = ( RevoluteJoint ) world
-				.createJoint( revoluteJointDef );
+		attachToSkeleton();
 
-		// connect the platform to the skeleton
-		revoluteJointDef = new RevoluteJointDef( );
-		revoluteJointDef.initialize( platform.body, skeleton.body,
-				platform.getPosition( ) );
-		revoluteJointDef.enableMotor = false;
-		screwJoint = ( RevoluteJoint ) world.createJoint( revoluteJointDef );
-		platform.addScrew( this ); // Heh heh, "screw this"
+		attachPlatToSkeleton( platform );
+		
+		platform.addScrew( this ); 
 	}
 
 	@Override
@@ -120,8 +116,21 @@ public class StructureScrew extends Screw {
 		}
 
 	}
+	
+	private void attachToSkeleton(){
+		RevoluteJointDef revoluteJointDef = new RevoluteJointDef( );
+		revoluteJointDef.initialize( body, skeleton.body, body.getPosition( ) );
+		revoluteJointDef.enableMotor = false;
+		platformToScrew = ( RevoluteJoint ) world
+				.createJoint( revoluteJointDef );
+	}
 
-	private Skeleton skeleton;
-	private RevoluteJoint screwJoint;
-	private RevoluteJoint platformToScrew;
+	private void attachPlatToSkeleton(Platform platform){
+		// connect the platform to the skeleton
+		RevoluteJointDef revoluteJointDef = new RevoluteJointDef( );
+		revoluteJointDef.initialize( platform.body, skeleton.body,
+				platform.getPosition( ) );
+		revoluteJointDef.enableMotor = false;
+		screwJoint = ( RevoluteJoint ) world.createJoint( revoluteJointDef );
+	}
 }
