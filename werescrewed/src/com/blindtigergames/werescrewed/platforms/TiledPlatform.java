@@ -24,7 +24,7 @@ import java.util.Vector;
  * 
  */
 
-//Need to fix widht/height storage
+
 public class TiledPlatform extends Platform {
 	protected float tileHeight, tileWidth;
 	protected Vector2 bodypos;

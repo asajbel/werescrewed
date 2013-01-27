@@ -39,7 +39,7 @@ public class Player extends Entity {
 	private AnchorList anchorList;
 
 	// Static constants
-	public final static float MAX_VELOCITY = 300f;
+	public final static float MAX_VELOCITY = 1.8f;
 
 	// Static variables
 	public static Texture texture = new Texture(
@@ -106,13 +106,16 @@ public class Player extends Entity {
 	 * Moves the player right, or jumps them off of a screw to the right
 	 */
 	public void moveRight( ) {
+		/*
 		if ( playerState == PlayerState.Screwing ) {
 			world.destroyJoint( playerToScrew );
 			playerState = PlayerState.JumpingOffScrew;
 			body.applyLinearImpulse( new Vector2( 0.05f, 0.0f ),
 					body.getWorldCenter( ) );
 			jump( );
-		} else if ( body.getLinearVelocity( ).x < 2.0f ) {
+		} else 
+		*/
+		if ( body.getLinearVelocity( ).x < MAX_VELOCITY ) {
 			body.applyLinearImpulse( new Vector2( 0.01f, 0.0f ),
 					body.getWorldCenter( ) );
 		}
@@ -122,13 +125,16 @@ public class Player extends Entity {
 	 * Moves the player left, or jumps them off of a screw to the left
 	 */
 	public void moveLeft( ) {
+		/*
 		if ( playerState == PlayerState.Screwing ) {
 			world.destroyJoint( playerToScrew );
 			playerState = PlayerState.JumpingOffScrew;
 			body.applyLinearImpulse( new Vector2( -0.05f, 0.0f ),
 					body.getWorldCenter( ) );
 			jump( );
-		} else if ( body.getLinearVelocity( ).x > -2.0f ) {
+		} else 
+		*/
+		if ( body.getLinearVelocity( ).x > -MAX_VELOCITY ) {
 			body.applyLinearImpulse( new Vector2( -0.01f, 0.0f ),
 					body.getWorldCenter( ) );
 		}
@@ -266,9 +272,9 @@ public class Player extends Entity {
 		}
 
 		if ( playerState == PlayerState.Screwing ) {
-			if ( inputHandler.unscrewPressed( ) ) {
+			if ( inputHandler.unscrewing( ) ) {
 				currentScrew.screwLeft( );
-			} else if ( inputHandler.screwPressed( ) ) {
+			} else if ( inputHandler.screwing( ) ) {
 				currentScrew.screwRight( );
 			}
 			if ( currentScrew.body.getJointList( ).size( ) <= 1 ) {
