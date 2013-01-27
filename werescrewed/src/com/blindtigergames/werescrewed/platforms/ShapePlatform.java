@@ -21,7 +21,8 @@ public class ShapePlatform extends Platform {
 
 	public ShapePlatform( String n, Vector2 pos, Texture tex, World world,
 			Shapes shape, float width, float height, boolean flip ) {
-		super( n, world, pos, tex );
+		super( n, pos, tex, null );
+		this.world = world;
 
 		switch ( shape ) {
 		case rhombus:
@@ -59,8 +60,7 @@ public class ShapePlatform extends Platform {
 
 		BodyDef bodyDef = new BodyDef( );
 		bodyDef.type = BodyType.DynamicBody;
-		bodyDef.position.set( new Vector2( pos.x * GameScreen.PIXEL_TO_BOX,
-				pos.y * GameScreen.PIXEL_TO_BOX ) );
+		bodyDef.position.set( new Vector2( pos.x * GameScreen.PIXEL_TO_BOX , pos.y * GameScreen.PIXEL_TO_BOX ) );
 		body = world.createBody( bodyDef );
 
 		float horizontal = width * tileConstant * 2 * GameScreen.PIXEL_TO_BOX
@@ -92,7 +92,7 @@ public class ShapePlatform extends Platform {
 		FixtureDef platformFixtureDef = new FixtureDef( );
 		platformFixtureDef.shape = polygon;
 		body.createFixture( platformFixtureDef );
-
+		
 		polygon.dispose( );
 
 	}
@@ -101,8 +101,7 @@ public class ShapePlatform extends Platform {
 			float innerHeight, float outerWidth, float outerHeight, float scale ) {
 		BodyDef bodyDef = new BodyDef( );
 		bodyDef.type = BodyType.DynamicBody;
-		bodyDef.position.set( pos.x * GameScreen.PIXEL_TO_BOX, pos.y
-				* GameScreen.PIXEL_TO_BOX );
+		bodyDef.position.set( pos.x * GameScreen.PIXEL_TO_BOX, pos.y * GameScreen.PIXEL_TO_BOX  );
 		body = world.createBody( bodyDef );
 
 		PolygonShape ps = new PolygonShape( );
@@ -144,7 +143,7 @@ public class ShapePlatform extends Platform {
 		ps.setAsBox( oW, oH, p4, 0 );
 		fd.shape = ps;
 		body.createFixture( fd );
-
+		
 		ps.dispose( );
 
 	}
@@ -153,8 +152,7 @@ public class ShapePlatform extends Platform {
 			float thickX, float thickY ) {
 		BodyDef bodyDef = new BodyDef( );
 		bodyDef.type = BodyType.DynamicBody;
-		bodyDef.position.set( pos.x * GameScreen.PIXEL_TO_BOX, pos.y
-				* GameScreen.PIXEL_TO_BOX );
+		bodyDef.position.set( pos.x * GameScreen.PIXEL_TO_BOX, pos.y * GameScreen.PIXEL_TO_BOX );
 		body = world.createBody( bodyDef );
 
 		PolygonShape ps = new PolygonShape( );
@@ -180,7 +178,7 @@ public class ShapePlatform extends Platform {
 				z, 0 );
 		fd.shape = ps;
 		body.createFixture( fd );
-
+		
 		ps.dispose( );
 
 	}
@@ -190,8 +188,7 @@ public class ShapePlatform extends Platform {
 
 		BodyDef bodyDef = new BodyDef( );
 		bodyDef.type = BodyType.DynamicBody;
-		bodyDef.position.set( pos.x * GameScreen.PIXEL_TO_BOX, pos.y
-				* GameScreen.PIXEL_TO_BOX );
+		bodyDef.position.set( pos.x * GameScreen.PIXEL_TO_BOX, pos.y * GameScreen.PIXEL_TO_BOX );
 		body = world.createBody( bodyDef );
 
 		float horizontal = width * tileConstant * 2 * GameScreen.PIXEL_TO_BOX
@@ -225,7 +222,7 @@ public class ShapePlatform extends Platform {
 		polygon.dispose( );
 	}
 
-	public void update( float deltaTime ) {
+	public void update(float deltaTime ) {
 		super.update( deltaTime );
 	}
 

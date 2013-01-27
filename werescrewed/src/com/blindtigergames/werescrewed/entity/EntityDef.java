@@ -18,24 +18,8 @@ import com.blindtigergames.werescrewed.screens.GameScreen;
 
 public class EntityDef {
 
-	// Sprite Fields (i.e. everything needed to define just the sprite half)
-	protected Texture texture;
-	protected String initialAnim;
-	protected Vector2 origin;
-	protected Vector2 spriteScale;
-	protected Color tint;
-
-	// Body Fields (i.e. everything needed to define just the body half)
-	protected BodyDef bodyDef;
-	protected ArrayList< FixtureDef > fixtureDefs;
-	protected float gravityScale;
-	protected boolean fixedRotation;
-
-	// Miscellaneous Fields
-	protected String name;
-
 	// Methods
-	protected EntityDef( String name ) {
+	protected EntityDef( String n ) {
 		// Sprite Data
 		texture = null;
 		initialAnim = "";
@@ -50,14 +34,14 @@ public class EntityDef {
 		fixedRotation = false;
 
 		// Misc Data
-		this.name = name;
+		name = n;
 	}
 
-	protected EntityDef( String name, Texture tex, String iA, BodyDef bDef,
+	protected EntityDef( String n, Texture t, String iA, BodyDef bDef,
 			ArrayList< FixtureDef > fixes ) {
-		this( name );
+		this( n );
 		// Sprite Data
-		texture = tex;
+		texture = t;
 		initialAnim = iA;
 
 		// Body Data
@@ -84,6 +68,22 @@ public class EntityDef {
 				scale );
 	}
 
+	// Sprite Fields (i.e. everything needed to define just the sprite half)
+	protected Texture texture;
+	protected String initialAnim;
+	protected Vector2 origin;
+	protected Vector2 spriteScale;
+	protected Color tint;
+
+	// Body Fields (i.e. everything needed to define just the body half)
+	protected BodyDef bodyDef;
+	protected ArrayList< FixtureDef > fixtureDefs;
+	protected float gravityScale;
+	protected boolean fixedRotation;
+
+	// Miscellaneous Fields
+	protected String name;
+
 	// Static Methods and Fields
 	protected static HashMap< String, EntityDef > definitions;
 	static {
@@ -107,8 +107,8 @@ public class EntityDef {
 
 				CircleShape playerfeetShape = new CircleShape( );
 				playerfeetShape.setRadius( 10f * GameScreen.PIXEL_TO_BOX );
-				FixtureDef playerFixtureDef = makeFixtureDef( 9.9f, 0.0f, 0.0f,
-						playerfeetShape );
+				FixtureDef playerFixtureDef = makeFixtureDef( 9.9f, 0.0f,
+						0.0f, playerfeetShape );
 				fixes.add( playerFixtureDef );
 
 				out = new EntityDef( "player", new Texture(
@@ -130,8 +130,8 @@ public class EntityDef {
 		}
 	}
 
-	/**
-	 * Loads an entity definition from XML.
+	/*
+	 * Loads an entity definition from XML. TODO Fill with XML loading code
 	 */
 	protected static EntityDef loadDefinition( String id ) {
 		String filename = "data/entities/" + id + ".xml";
@@ -166,6 +166,7 @@ public class EntityDef {
 
 			return out;
 		} catch ( IOException e ) {
+			// TODO Auto-generated catch block
 			Gdx.app.log( "Error", "Loading entity definition " + id + " ", e );
 		}
 

@@ -1,5 +1,7 @@
 package com.blindtigergames.werescrewed.platforms;
 
+import java.util.ArrayList;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Texture;
@@ -9,6 +11,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityDef;
 import com.blindtigergames.werescrewed.entity.mover.IMover;
+import com.blindtigergames.werescrewed.screws.Screw;
 
 /**
  * @param name
@@ -20,26 +23,44 @@ import com.blindtigergames.werescrewed.entity.mover.IMover;
 
 public class Platform extends Entity {
 
-	// List of Structural Screws
-	// List of joints
-
 	IMover mover;
 
 	protected float width, height;
 	protected boolean dynamicType = false;
 	protected boolean rotate = false;
 	protected boolean oneSided = false;
+	protected ArrayList< Screw > screws;
 	// tileConstant is 16 for setasbox function which uses half width/height
 	// creates 32x32 objects
 	protected final int tileConstant = 16;
 
-	public Platform( String name, World world, Vector2 pos, Texture tex ) {
-		this( name, null, world, pos, 0.0f, new Vector2( 1.0f, 1.0f ), tex );
+	public Platform( String n, Vector2 pos, Texture tex, World world ) {
+		super( n, pos, tex, null, true );
+		this.world = world;
+		screws = new ArrayList< Screw >( );
 	}
 
-	public Platform( String name, EntityDef def, World world, Vector2 pos,
-			float rot, Vector2 scale, Texture tex ) {
-		super( name, def, world, true, pos, rot, scale, tex );
+	public Platform( String n, EntityDef d, World w, Vector2 pos, float rot,
+			Vector2 sca ) {
+		super( n, d, w, pos, rot, sca, null, true );
+		screws = new ArrayList< Screw >( );
+	}
+
+	public Platform( String n, EntityDef d, World w, Vector2 pos, float rot,
+			Vector2 sca, Texture tex ) {
+		super( n, d, w, pos, rot, sca, tex, true );
+		screws = new ArrayList< Screw >( );
+	}
+
+	public void addScrew( Screw s ) {
+		screws.add( s );
+	}
+
+	@Override
+	public void setAwake( ) {
+		body.setAwake( true );
+		for ( Screw s : screws )
+			s.body.setAwake( true );
 	}
 
 	@Override

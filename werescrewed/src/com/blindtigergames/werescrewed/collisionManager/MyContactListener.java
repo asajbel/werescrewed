@@ -9,7 +9,8 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.Manifold;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.Player;
-import com.blindtigergames.werescrewed.platforms.Platform;
+import com.blindtigergames.werescrewed.platforms.RoomPlatform;
+import com.blindtigergames.werescrewed.platforms.TiledPlatform;
 import com.blindtigergames.werescrewed.screws.Screw;
 
 /**
@@ -60,8 +61,9 @@ public class MyContactListener implements ContactListener {
 					if ( object.isSolid( ) ) {
 						NUM_PLAYER_CONTACTS++;
 						player.setGrounded( true );
-					} else if ( object instanceof Screw ) {
-						Screw screw = ( Screw ) object;
+					} else if ( objectFix.getBody( ).getUserData( ) instanceof Screw ) {
+						Screw screw = ( Screw ) objectFix.getBody( )
+								.getUserData( );
 						player.hitScrew( screw );
 					}
 				}
@@ -108,7 +110,8 @@ public class MyContactListener implements ContactListener {
 						if ( NUM_PLAYER_CONTACTS <= 0 ) {
 							player.setGrounded( false );
 						}
-					} else if ( object instanceof Screw ) {
+						contact.setEnabled( true );
+					} else if ( objectFix.getBody( ).getUserData( ) instanceof Screw ) {
 						player.endHitScrew( );
 					}
 				}
@@ -117,7 +120,7 @@ public class MyContactListener implements ContactListener {
 	}
 
 	/**
-	 * What to do with each contact before physics is calculated each step
+	 * Before physics is calculated each step
 	 */
 	@Override
 	public void preSolve( Contact contact, Manifold oldManifold ) {
@@ -142,12 +145,23 @@ public class MyContactListener implements ContactListener {
 			}
 			if ( playerInvolved ) {
 				Player player = ( Player ) playerFix.getBody( ).getUserData( );
-				if ( objectFix.getBody( ).getUserData( ) instanceof Platform ) {
-					Platform tilePlat = ( Platform ) objectFix.getBody( )
-							.getUserData( );
+				if ( objectFix.getBody( ).getUserData( ) instanceof TiledPlatform ) {
+					TiledPlatform tilePlat = ( TiledPlatform ) objectFix
+							.getBody( ).getUserData( );
 					Vector2 platformPos = tilePlat.getPosition( );
 					Vector2 playerPos = player.getPosition( );
 					if ( tilePlat.getOneSided( ) ) {
+						if ( platformPos.y > playerPos.y ) {
+							contact.setEnabled( false );
+						}
+					}
+				}
+				if ( objectFix.getBody( ).getUserData( ) instanceof RoomPlatform ) {
+					RoomPlatform roomPlat = ( RoomPlatform ) objectFix
+							.getBody( ).getUserData( );
+					Vector2 platformPos = roomPlat.getPosition( );
+					Vector2 playerPos = player.getPosition( );
+					if ( roomPlat.getOneSided( ) ) {
 						if ( platformPos.y > playerPos.y ) {
 							contact.setEnabled( false );
 						}
@@ -158,7 +172,7 @@ public class MyContactListener implements ContactListener {
 	}
 
 	/**
-	 * What to do with each contact after physics is calculated each step
+	 * After physics is calculated each step
 	 */
 	@Override
 	public void postSolve( Contact contact, ContactImpulse impulse ) {

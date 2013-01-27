@@ -66,25 +66,38 @@ public class Player extends Entity {
 
 	/**
 	 * 
-	 * @param name
 	 * @param world
 	 *            in which the player exists
 	 * @param pos
 	 *            ition of the player in the world
+	 * @param name
 	 * @param tex
 	 *            ture of the player sprite
 	 */
-	public Player( String name, World world, Vector2 pos, Texture tex ) {
-		super( name, EntityDef.getDefinition( "playerTest" ), world, true, pos,
-				0.0f, null, tex );
+	public Player( World world, Vector2 pos, String name, Texture tex ) {
+		super( name, EntityDef.getDefinition( "playerTest" ), world, pos, 0.0f,
+				new Vector2( 1f, 1f ), null, true);
 		body.setGravityScale( 0.25f );
 		body.setFixedRotation( true );
+		this.world = world;
 		body.setUserData( this );
 		body.setBullet( true );
 		playerState = PlayerState.Standing;
 		inputHandler = new InputHandlerPlayer1( );
 		anchorList = AnchorList.getInstance( );
 		anchorID = anchorList.addAnchor( true, pos );
+	}
+
+	/**
+	 * 
+	 * @param world
+	 *            in which the player exists
+	 * @param pos
+	 *            ition of the player in the world
+	 * @param name
+	 */
+	public Player( World world, Vector2 pos, String name ) {
+		this( world, pos, name, texture );
 	}
 
 	// METHODS
@@ -173,10 +186,7 @@ public class Player extends Entity {
 			for ( Fixture f : body.getFixtureList( ) ) {
 				f.getFilterData( ).maskBits = 0x0008;
 			}
-			body.setTransform(
-					currentScrew.getPosition( ).add(
-							-sprite.getWidth( ) / 3.5f / 256f,
-							-sprite.getWidth( ) / 4 / 256f ), 0.0f );
+			body.setTransform( currentScrew.getPosition( ), 0.0f );
 			// connect the screw to the skeleton;
 			RevoluteJointDef revoluteJointDef = new RevoluteJointDef( );
 			revoluteJointDef.initialize( body, currentScrew.body,
@@ -215,18 +225,15 @@ public class Player extends Entity {
 		if ( playerState != PlayerState.Screwing
 				&& playerState != PlayerState.Standing && isGrounded( ) ) {
 			playerState = PlayerState.Standing;
-			System.out.println( "Standing" );
 		}
 
 		if ( inputHandler.jumpPressed( ) ) {
 			if ( !jumpPressed ) {
-				System.out.println( grounded );
 				if ( playerState == PlayerState.Screwing ) {
 					world.destroyJoint( playerToScrew );
 					playerState = PlayerState.JumpingOffScrew;
 					jump( );
 				} else if ( isGrounded( ) ) {
-					playerState = PlayerState.Jumping;
 					jump( );
 				}
 				jumpPressed = true;

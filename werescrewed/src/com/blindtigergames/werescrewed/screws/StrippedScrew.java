@@ -14,15 +14,16 @@ import com.blindtigergames.werescrewed.entity.Skeleton;
 import com.blindtigergames.werescrewed.screens.GameScreen;
 
 /**
- * @descrip: blah blah
+ * blah blah
  * 
  * @author Dennis
  * 
  */
 
 public class StrippedScrew extends Screw {
-	public StrippedScrew( String n, Vector2 pos, Texture tex, Skeleton skeleton, World world) {
-		super( n, pos, tex, null );
+	public StrippedScrew( String name, Vector2 pos, Texture tex,
+			Skeleton skeleton, World world ) {
+		super( name, pos, tex, null );
 		this.world = world;
 
 		sprite.setColor( Color.ORANGE );
@@ -41,32 +42,39 @@ public class StrippedScrew extends Screw {
 		screwFixture.shape = screwShape;
 		screwFixture.isSensor = true;
 		body.createFixture( screwFixture );
-		screwShape.dispose( );	
+		screwShape.dispose( );
 		body.setUserData( this );
 
 		// add radar sensor to screw
 		CircleShape radarShape = new CircleShape( );
 		radarShape.setRadius( sprite.getWidth( ) * 1.25f
-				* GameScreen.PIXEL_TO_BOX  );
+				* GameScreen.PIXEL_TO_BOX );
 		FixtureDef radarFixture = new FixtureDef( );
 		radarFixture.shape = radarShape;
 		radarFixture.isSensor = true;
 		radarFixture.filter.categoryBits = CATEGORY_SCREWS; // category of Screw
 															// Radar...
-		radarFixture.filter.maskBits = 0x0001 | 0x0002;// radar collides with player 1 & 2
-												// (player category bits 0x0001)
+		radarFixture.filter.maskBits = 0x0001 | 0x0002;// radar collides with
+														// player 1 & 2
 		body.createFixture( radarFixture );
+		System.out.print( this.getClass( ) + ": " );
+		if ( body != null )
+			System.out.print( "Body center - " + this.body.getWorldCenter( )
+					+ ", " );
+		else
+			System.out.print( "No body, " );
+		if ( sprite != null ) {
+			float centerX = this.sprite.getOriginX( );
+			centerX *= GameScreen.PIXEL_TO_BOX;
+			centerX += this.sprite.getX( );
 
-		// connect the screw to the skeleton;
-		RevoluteJointDef revoluteJointDef = new RevoluteJointDef( );
-		revoluteJointDef.initialize( body, skeleton.body, body.getPosition( ) );
-		revoluteJointDef.enableMotor = false;
-		revoluteJointDef.maxMotorTorque = 5000.0f;
-		revoluteJointDef.motorSpeed = 0f;
-		platformToScrew = ( RevoluteJoint ) world
-				.createJoint( revoluteJointDef );
-
-		//skeleton.addBoneAndJoint( this, platformToScrew );
+			float centerY = this.sprite.getOriginY( );
+			centerY *= GameScreen.PIXEL_TO_BOX;
+			centerY += this.sprite.getY( );
+			System.out.println( "Sprite center - " + "[" + centerX + ":"
+					+ centerY + "]" );
+		} else
+			System.out.println( "No sprite" );
 	}
 
 	@Override

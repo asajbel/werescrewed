@@ -89,7 +89,7 @@ public class GleedLoader {
 					Gdx.app.log("GleedLoader", "Platform loaded:"+tp.name);
 					return tp;
 				} else {
-					Entity e = new Entity(name, EntityDef.getDefinition(def), world, false, pos, rot, sca, tileTex);
+					Entity e = new Entity(name, EntityDef.getDefinition( def ), world, pos, rot, sca, null, true); 
 					Gdx.app.log("GleedLoader", "Entity loaded:"+e.name);
 					return e;
 				}

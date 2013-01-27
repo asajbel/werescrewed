@@ -1,6 +1,5 @@
 package com.blindtigergames.werescrewed.entity;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -8,8 +7,10 @@ import java.util.Map;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.blindtigergames.werescrewed.entity.Skeleton;
 
-public class EntityManager extends Entity{
 
+public class EntityManager {
+
+	//Dear god, too many HashMaps!
 	protected static HashMap< String, Entity > entityList = new HashMap< String, Entity >( );
 	protected static HashMap< String, Skeleton > skeletonList = new HashMap< String, Skeleton >( );
 	protected static HashMap< String, Entity > entitiesToAdd = new HashMap < String, Entity >( );
@@ -19,7 +20,6 @@ public class EntityManager extends Entity{
 
 
 	// Updates Entities and Skeletons stored in the HashMap
-	@Override
 	public void update( float deltaTime ) {
 		Iterator< Map.Entry< String, Entity > > eit = entityList.entrySet( )
 				.iterator( );
@@ -76,7 +76,6 @@ public class EntityManager extends Entity{
 		
 	}
 	
-	@Override
 	public void draw(SpriteBatch batch){
 		Iterator< Map.Entry< String, Entity > > eit = entityList.entrySet( )
 				.iterator( );

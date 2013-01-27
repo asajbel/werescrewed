@@ -6,7 +6,7 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.blindtigergames.werescrewed.entity.Entity;
 
 /**
- * Holds general methods for screws
+ * holds general methods for screws
  * 
  * @author Dennis
  * 
@@ -14,8 +14,7 @@ import com.blindtigergames.werescrewed.entity.Entity;
 
 public class Screw extends Entity {
 	public Screw( String name, Vector2 pos, Texture tex, Body body ) {
-		super( name, null, ( body == null ? null : body.getWorld( ) ), false,
-				pos, 0.0f, new Vector2( 1.0f, 1.0f ), tex );
+		super( name, pos, tex, body, false );
 	}
 
 	@Override
@@ -32,7 +31,7 @@ public class Screw extends Entity {
 
 	public void screwRight( ) {
 	}
-
+	
 	public int getRotation( ) {
 		return rotation;
 	}
