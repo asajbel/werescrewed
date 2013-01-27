@@ -38,8 +38,8 @@ public class RoomPlatform extends Platform {
 		FixtureDef fd = new FixtureDef( );
 
 		BodyDef bodyDef = new BodyDef( );
-		bodyDef.type = BodyType.KinematicBody;
-		bodyDef.position.set( x, y );
+		bodyDef.type = BodyType.DynamicBody;
+		bodyDef.position.set( x * GameScreen.PIXEL_TO_BOX, y * GameScreen.PIXEL_TO_BOX);
 		body = world.createBody( bodyDef );
 		float hx = width * tileConstant * GameScreen.PIXEL_TO_BOX;
 		float hy = height * tileConstant * GameScreen.PIXEL_TO_BOX;

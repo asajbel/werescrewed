@@ -1,14 +1,14 @@
 package com.blindtigergames.werescrewed.screens;
 
 import com.blindtigergames.werescrewed.gui.Button.ButtonHandler;
-import com.blindtigergames.werescrewed.screens.Screen;
+import com.blindtigergames.werescrewed.screens.ScreenType;
 import com.blindtigergames.werescrewed.screens.ScreenManager;
 
 public class ScreenSwitchHandler implements ButtonHandler {
 
-	private Screen screen = null;
+	private ScreenType screen = null;
 
-	public ScreenSwitchHandler( Screen screen ) {
+	public ScreenSwitchHandler( ScreenType screen ) {
 		this.screen = screen;
 	}
 

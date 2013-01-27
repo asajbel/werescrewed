@@ -5,7 +5,7 @@ package com.blindtigergames.werescrewed;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
-import com.blindtigergames.werescrewed.screens.Screen;
+import com.blindtigergames.werescrewed.screens.ScreenType;
 import com.blindtigergames.werescrewed.screens.ScreenManager;
 
 public class WereScrewedGame extends Game {
@@ -21,7 +21,7 @@ public class WereScrewedGame extends Game {
 		//ScreenManager.getInstance().show(Screen.LEVELTEST);
         
         //uncomment next line to bypass intro
-		ScreenManager.getInstance().show(Screen.GAME);
+		ScreenManager.getInstance().show(ScreenType.GAME);
 		//ScreenManager.getInstance().show(Screen.IMOVER);
 		
 	}

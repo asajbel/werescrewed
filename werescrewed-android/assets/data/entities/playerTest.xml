@@ -3,8 +3,8 @@
 	<initialAnim>default</initialAnim>
 	<originX>0.0f</originX>
 	<originY>0.0f</originY>
-	<spriteScaleX>150.0f</spriteScaleX>
-	<spriteScaleY>150.0f</spriteScaleY>
+	<spriteScaleX>0.6f</spriteScaleX>
+	<spriteScaleY>0.6f</spriteScaleY>
 	<tintRed>1.0f</tintRed>
 	<tintGreen>1.0f</tintGreen>
 	<tintBlue>1.0f</tintBlue>
@@ -12,7 +12,7 @@
 	
 	<body>playerTest</body>
 	<density>1.0f</density>
-	<friction>0.25f</friction>
-	<restitution>0.01f</restitution>
+	<friction>0.0f</friction>
+	<restitution>0.0f</restitution>
 	<bodyScale>0.3f</bodyScale>
-</entity>
+	<fixedRotation>true</fixedRotation></entity>

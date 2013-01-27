@@ -3,6 +3,7 @@ package com.blindtigergames.werescrewed.entity;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
@@ -12,6 +13,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.blindtigergames.werescrewed.joint.RevoluteJointBuilder;
 import com.blindtigergames.werescrewed.platforms.Platform;
 import com.blindtigergames.werescrewed.screens.GameScreen;
+import com.blindtigergames.werescrewed.screws.StrippedScrew;
 
 /**
  * Bone is an entity which is placed onto the Skeleton then when the Skeleton
@@ -19,7 +21,8 @@ import com.blindtigergames.werescrewed.screens.GameScreen;
  * 
  * @author Ranveer/Stewart
  * 
- * 
+ * TODO: Perhaps change skeleton name, make skeleton more like a tree
+ * It should have a list of non-jointed entities too.
  */
 
 public class Skeleton extends Entity {
@@ -30,7 +33,7 @@ public class Skeleton extends Entity {
     // private Skeleton(){};
 
     public Skeleton( String n, Vector2 pos, Texture tex, World world ) {
-        super( n, pos, tex, null ); // not constructing body class
+        super( n, pos, tex, null, false); // not constructing body class
         this.world = world;
         this.boneAndJoints = new ArrayList<BoneAndJoints>();
         constructSkeleton( pos );
@@ -60,6 +63,24 @@ public class Skeleton extends Entity {
         
         addBoneAndJoint( platform, joint );
     }
+    
+    /**
+     * Attach a platform to this skeleton that rotates with a motor
+     * 
+     * @param platform
+     */
+    public void addPlatformRotatingCenterWithRot( Platform platform, float rotSpeedInMeters ) {
+        // Default values of the builder will allow rotation with anchor at
+        // center of platform
+        RevoluteJoint joint = new RevoluteJointBuilder( world )
+        						.skeleton( this )
+        						.bodyB( platform )
+        						.motor( true )
+        						.motorSpeed( rotSpeedInMeters )
+        						.build();
+        
+        addBoneAndJoint( platform, joint );
+    }
 
     /**
      * Add a platform that will only move / rotate with skeleton
@@ -71,6 +92,18 @@ public class Skeleton extends Entity {
                 .limit( true ).lower( 0 ).upper( 0 ).build();
         addBoneAndJoint( platform, joint );
     }
+    
+    
+     public void addPlatform( Platform platform ){
+     	addBoneAndJoint( platform, null );
+     }
+     
+     public void addStrippedScrew ( StrippedScrew ss ){
+        RevoluteJoint joint = new RevoluteJointBuilder( world ).skeleton( this ).bodyB( ss )
+                 .limit( true ).lower( 0 ).upper( 0 ).build();
+     	addBoneAndJoint( ss, joint );
+    }
+
 
     public void addBoneAndJoint( Entity bone, Joint joint ) {
         this.boneAndJoints.add( new BoneAndJoints( bone, joint ) );
@@ -105,8 +138,18 @@ public class Skeleton extends Entity {
             skeleton.wakeSkeleton();
         }
         for ( BoneAndJoints boneJoint : boneAndJoints ) {
-            boneJoint.bone.body.setAwake( true );
+           boneJoint.bone.setAwake( );
         }
+    }
+    
+    public void translate( float x, float y ){
+    	body.setTransform( body.getTransform( )
+				.getPosition( ).add( x, y ), body
+				.getTransform( ).getRotation( ) );
+		wakeSkeleton( );
+		
+		for( Skeleton s: subSkeletons )
+			s.translate( x, y );
     }
 
     @Override
@@ -129,7 +172,21 @@ public class Skeleton extends Entity {
             boneJoint.bone.update( deltaTime );
         }
     }
-
+    
+    @Override
+    public void draw( SpriteBatch batch ){
+    	super.draw( batch );
+    	drawChildren( batch );
+    }
+    
+    private void drawChildren( SpriteBatch batch ){
+        for ( Skeleton skeleton : subSkeletons ) {
+            skeleton.draw( batch );
+        }
+        for ( BoneAndJoints boneJoint : boneAndJoints ) {
+            boneJoint.bone.draw( batch );
+        }
+    }
     protected class BoneAndJoints {
         protected ArrayList<Joint> joints;
         protected Entity bone;

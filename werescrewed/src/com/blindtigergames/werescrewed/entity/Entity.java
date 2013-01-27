@@ -1,9 +1,9 @@
 package com.blindtigergames.werescrewed.entity;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
@@ -16,53 +16,58 @@ public class Entity {
 	public String name;
 	public EntityDef type;
 	public Sprite sprite;
-	public Vector2 offset;
+	// public Vector2 offset;
 	public Body body;
 	protected World world;
 	public IMover mover;
+	private boolean solid;
 
-	public Entity( ) {
-		type = null;
-		sprite = null;
-		body = null;
-		world = null;
-		offset = new Vector2( 0.0f, 0.0f );
-		name = "I AM ERROR.";
+	public Entity( String name, EntityDef type, World world, Vector2 pos,
+			float rot, Vector2 scale, Texture texture, boolean solid ) {
+		this.name = name;
+		this.type = type;
+		this.world = world;
+		// this.offset = new Vector2( 0.0f, 0.0f );
+		this.solid = solid;
+		constructSprite( texture );
+		constructBody( pos );
+//		System.out.print( this.getClass( ) + ": " );
+//		if ( body != null )
+//			System.out.print( "Body position - " + this.body.getPosition( )
+//					+ ", " );
+//		else
+//			System.out.print( "No body, " );
+//		if ( sprite != null )
+//			System.out.println( "Sprite position - " + "[" + this.sprite.getX( )
+//					+ ", " + this.sprite.getY( ) + "]" );
+//		else
+//			System.out.println( "No sprite" );
 	}
 
-	public Entity( String n, EntityDef d, World w, Vector2 pos, float rot,
-			Vector2 sca ) {
-		this( );
-		name = n;
-		type = d;
-		world = w;
-		constructSprite( );
-		constructBody( pos.x, pos.y, sca.x, sca.y );
-	}
-
-	public Entity( String n, Sprite spr, Body bod ) {
-		this( );
-		name = n;
-		sprite = spr;
-		body = bod;
-		if ( bod != null ) {
-			world = bod.getWorld( );
-			sprite.setScale( GameScreen.PIXEL_TO_BOX );
-		}
-
-	}
-
-	public Entity( String n, Vector2 pos, Texture tex, Body bod ) {
-		this( );
-		name = n;
-		if ( tex != null )
-			constructSprite( tex );
-		body = bod;
-		if ( bod != null ) {
-			world = bod.getWorld( );
+	public Entity( String name, Vector2 pos, Texture texture, Body body,
+			boolean solid ) {
+		// this.offset = new Vector2( 0.0f, 0.0f );
+		this.solid = solid;
+		this.name = name;
+		if ( texture != null )
+			constructSprite( texture );
+		this.body = body;
+		if ( body != null ) {
+			world = body.getWorld( );
 			sprite.setScale( GameScreen.PIXEL_TO_BOX );
 		}
 		setPosition( pos );
+//		System.out.print( this.getClass( ) + ": " );
+//		if ( body != null )
+//			System.out.print( "Body position - " + this.body.getPosition( )
+//					+ ", " );
+//		else
+//			System.out.print( "No body, " );
+//		if ( sprite != null )
+//			System.out.println( "Sprite position - " + "[" + this.sprite.getX( )
+//					+ ", " + this.sprite.getY( ) + "]" );
+//		else
+//			System.out.println( "No sprite" );
 	}
 
 	public void setPosition( float x, float y ) {
@@ -81,54 +86,101 @@ public class Entity {
 		return body.getPosition( );
 	}
 
-	public void Move( Vector2 vector ) {
+	public void move( Vector2 vector ) {
 		Vector2 pos = body.getPosition( ).add( vector );
 		setPosition( pos );
 	}
 
-	public void draw( SpriteBatch batch ) {
-		if ( sprite != null )
-			sprite.draw( batch );
-	}
-
-	
 	public void update( float deltaTime ) {
 		if ( body != null && sprite != null ) {
-			Vector2 bodyPos = body.getPosition( );
-			Vector2 spritePos = bodyPos.mul( GameScreen.BOX_TO_PIXEL ).add(
-					offset );
-			sprite.setPosition( spritePos.x, spritePos.y );
+			Vector2 bodyPos = body.getPosition( ).mul( GameScreen.BOX_TO_PIXEL );
+			sprite.setPosition( bodyPos.x /*- offset.x*/, bodyPos.y /*- offset.y*/);
+			sprite.setRotation( MathUtils.radiansToDegrees * body.getAngle( ) );
+
+			if ( mover != null )
+				mover.move( deltaTime, body );
 		}
-		if ( mover != null )
-			mover.move( deltaTime, body );
 	}
 
+	public void draw(SpriteBatch batch){
+		if (sprite != null)
+			sprite.draw( batch );
+	}
+	
 	protected String generateName( ) {
 		return type.name;
 	}
 
-	protected void constructSprite( ) {
-		if ( type != null && type.texture != null ) {
-			sprite = new Sprite( type.texture );
-			sprite.setOrigin( type.origin.x, type.origin.y );
-			sprite.setScale( GameScreen.PIXEL_TO_BOX * type.spriteScale.x,
-					GameScreen.PIXEL_TO_BOX * type.spriteScale.y );
+	/**
+	 * Builds a sprite from a texture. If the texture is null, it attempts to
+	 * load one from the XML definitions
+	 */
+	protected void constructSprite( Texture texture ) {
+		// What the hell is going on in here?
+
+		// I have plans to make this a return value
+		// Sprite sprite;
+		Vector2 origin;
+		boolean loadTex;
+		boolean nullTex;
+
+		nullTex = ( texture == null );
+		loadTex = ( nullTex && type != null && type.texture != null );
+
+		if ( loadTex ) {
+			texture = type.texture;
+		} else if ( nullTex ) {
+			return;
 		}
+		this.sprite = new Sprite( texture );
+		if ( loadTex ) {
+			origin = new Vector2( type.origin.x, type.origin.y );
+			this.sprite.setScale( type.spriteScale.x, type.spriteScale.y );
+		} else {
+			origin = new Vector2( this.sprite.getWidth( ) / 2,
+					this.sprite.getHeight( ) / 2 );
+			// this.offset.set( this.sprite.getWidth( ) / 2,
+			// this.sprite.getHeight( ) / 2 );
+		}
+		this.sprite.setOrigin( origin.x, origin.y );
 	}
 
-	protected void constructSprite( Texture tex ) {
-		sprite = new Sprite( tex );
-		sprite.setOrigin( tex.getWidth( ) / 2, tex.getHeight( ) / 2 );
-	}
-
-	protected void constructBody( float x, float y, float width, float height ) {
+	protected void constructBody( Vector2 pos ) {
 		if ( type != null ) {
 			body = world.createBody( type.bodyDef );
 			body.setUserData( this );
 			for (FixtureDef fDef : type.fixtureDefs){
 				body.createFixture(fDef);
 			}
-			setPosition( x, y );
+			body.setFixedRotation( type.fixedRotation );
+			setPosition( pos.x, pos.y );
 		}
 	}
+
+	/**
+	 * Set the mover of this entity!
+	 * 
+	 * @param mover
+	 */
+	public void setMover( IMover mover ) {
+		this.mover = mover;
+	}
+
+	public boolean isSolid( ) {
+		return this.solid;
+	}
+
+	public void setSolid( boolean solid ) {
+		this.solid = solid;
+	}
+
+	/**
+	 * Sets body awake, used in
+	 * 
+	 * @param solid
+	 */
+	public void setAwake( ) {
+		body.setAwake( true );
+	}
+
 }

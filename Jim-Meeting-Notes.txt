@@ -1,0 +1,5 @@
+Meeting with Jim:
+- Give feedback to the player in a cool way when they doo something, like camera zooms over to robot as he roars.
+- Manage entities better than just huge lists
+- possibly change screws to be from the same class with that strategy he mentions i forgot the name of
+- Cool boss AI, not simple stuff. It's got to be rewarding and exciting to player

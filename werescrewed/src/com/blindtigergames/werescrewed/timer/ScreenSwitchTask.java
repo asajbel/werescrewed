@@ -1,14 +1,14 @@
 package com.blindtigergames.werescrewed.timer;
 
 import com.badlogic.gdx.utils.Timer.Task;
-import com.blindtigergames.werescrewed.screens.Screen;
+import com.blindtigergames.werescrewed.screens.ScreenType;
 import com.blindtigergames.werescrewed.screens.ScreenManager;
 
 public class ScreenSwitchTask extends Task {
 	
-	private Screen screen = null;
+	private ScreenType screen = null;
 	
-	public ScreenSwitchTask(Screen screen) {
+	public ScreenSwitchTask(ScreenType screen) {
 		this.screen = screen;
 	}
 

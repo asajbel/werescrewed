@@ -1,5 +1,7 @@
 package com.blindtigergames.werescrewed.platforms;
 
+import java.util.ArrayList;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Texture;
@@ -9,6 +11,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityDef;
 import com.blindtigergames.werescrewed.entity.mover.IMover;
+import com.blindtigergames.werescrewed.screws.Screw;
 
 /**
  * @param name
@@ -20,43 +23,56 @@ import com.blindtigergames.werescrewed.entity.mover.IMover;
 
 public class Platform extends Entity {
 
-	// List of Structural Screws
-	// List of joints
-
 	IMover mover;
 
-	protected World world;
 	protected float width, height;
 	protected boolean dynamicType = false;
 	protected boolean rotate = false;
 	protected boolean oneSided = false;
+	protected ArrayList< Screw > screws;
 	// tileConstant is 16 for setasbox function which uses half width/height
 	// creates 32x32 objects
 	protected final int tileConstant = 16;
 
 	public Platform( String n, Vector2 pos, Texture tex, World world ) {
-		super( n, pos, tex, null );
+		super( n, pos, tex, null, true );
 		this.world = world;
+		screws = new ArrayList< Screw >( );
 	}
 
 	public Platform( String n, EntityDef d, World w, Vector2 pos, float rot,
 			Vector2 sca ) {
-		super( n, d, w, pos, rot, sca );
+		super( n, d, w, pos, rot, sca, null, true );
+		screws = new ArrayList< Screw >( );
 	}
 
-	public void setMover( IMover _mover ) {
-		this.mover = _mover;
+	public Platform( String n, EntityDef d, World w, Vector2 pos, float rot,
+			Vector2 sca, Texture tex ) {
+		super( n, d, w, pos, rot, sca, tex, true );
+		screws = new ArrayList< Screw >( );
 	}
-	
+
+	public void addScrew( Screw s ) {
+		screws.add( s );
+	}
+
+	@Override
+	public void setAwake( ) {
+		body.setAwake( true );
+		for ( Screw s : screws )
+			s.body.setAwake( true );
+	}
+
 	@Override
 	public void update( float deltaTime ) {
-		
+
 		body.setActive( true );
-		
+
 		super.update( deltaTime );
 
 		if ( Gdx.input.isKeyPressed( Keys.T ) ) {
-			rotate( );
+			// Turned off because ground will fall
+			// rotate( );
 		}
 
 		if ( Gdx.input.isKeyPressed( Keys.Y ) ) {
@@ -74,30 +90,31 @@ public class Platform extends Entity {
 			setHorizontal( );
 		}
 		if ( Gdx.input.isKeyPressed( Keys.B ) ) {
-			setOneSided(!getOneSided());
-			System.out.println(getOneSided());
+			setOneSided( !getOneSided( ) );
+			System.out.println( getOneSided( ) );
 		}
 	}
 
 	public void setDensity( float d ) {
-		for(int i = 0; i < body.getFixtureList( ).size( ); ++i)
+		for ( int i = 0; i < body.getFixtureList( ).size( ); ++i )
 			body.getFixtureList( ).get( i ).setDensity( d );
-			
+
 	}
 
 	public void setFriction( float f ) {
-		for(int i = 0; i < body.getFixtureList( ).size( ); ++i)
+		for ( int i = 0; i < body.getFixtureList( ).size( ); ++i )
 			body.getFixtureList( ).get( i ).setFriction( f );
 	}
 
 	public void setRestitution( float r ) {
-		for(int i = 0; i < body.getFixtureList( ).size( ); ++i)
+		for ( int i = 0; i < body.getFixtureList( ).size( ); ++i )
 			body.getFixtureList( ).get( i ).setRestitution( r );
 	}
 
-	public void setGravScale( float g ){
+	public void setGravScale( float g ) {
 		body.setGravityScale( g );
 	}
+
 	public void changeType( ) {
 		dynamicType = !dynamicType;
 		if ( dynamicType ) {
@@ -118,12 +135,12 @@ public class Platform extends Entity {
 	public void setVertical( ) {
 		body.setTransform( body.getPosition( ), ( float ) Math.toRadians( 180 ) );
 	}
-	
-	public boolean getOneSided(){
+
+	public boolean getOneSided( ) {
 		return oneSided;
 	}
-	
-	public void setOneSided(boolean value){
+
+	public void setOneSided( boolean value ) {
 		oneSided = value;
 	}
 
