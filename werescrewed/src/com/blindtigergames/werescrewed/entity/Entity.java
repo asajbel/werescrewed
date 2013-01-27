@@ -16,7 +16,7 @@ public class Entity {
 	public String name;
 	public EntityDef type;
 	public Sprite sprite;
-	public Vector2 offset;
+	// public Vector2 offset;
 	public Body body;
 	protected World world;
 	public IMover mover;
@@ -27,15 +27,26 @@ public class Entity {
 		this.name = name;
 		this.type = type;
 		this.world = world;
-		this.offset = new Vector2( 0.0f, 0.0f );
+		// this.offset = new Vector2( 0.0f, 0.0f );
 		this.solid = solid;
 		constructSprite( texture );
 		constructBody( pos );
+//		System.out.print( this.getClass( ) + ": " );
+//		if ( body != null )
+//			System.out.print( "Body position - " + this.body.getPosition( )
+//					+ ", " );
+//		else
+//			System.out.print( "No body, " );
+//		if ( sprite != null )
+//			System.out.println( "Sprite position - " + "[" + this.sprite.getX( )
+//					+ ", " + this.sprite.getY( ) + "]" );
+//		else
+//			System.out.println( "No sprite" );
 	}
 
 	public Entity( String name, Vector2 pos, Texture texture, Body body,
 			boolean solid ) {
-		this.offset = new Vector2( 0.0f, 0.0f );
+		// this.offset = new Vector2( 0.0f, 0.0f );
 		this.solid = solid;
 		this.name = name;
 		if ( texture != null )
@@ -46,6 +57,17 @@ public class Entity {
 			sprite.setScale( GameScreen.PIXEL_TO_BOX );
 		}
 		setPosition( pos );
+//		System.out.print( this.getClass( ) + ": " );
+//		if ( body != null )
+//			System.out.print( "Body position - " + this.body.getPosition( )
+//					+ ", " );
+//		else
+//			System.out.print( "No body, " );
+//		if ( sprite != null )
+//			System.out.println( "Sprite position - " + "[" + this.sprite.getX( )
+//					+ ", " + this.sprite.getY( ) + "]" );
+//		else
+//			System.out.println( "No sprite" );
 	}
 
 	public void setPosition( float x, float y ) {
@@ -64,7 +86,7 @@ public class Entity {
 		return body.getPosition( );
 	}
 
-	public void Move( Vector2 vector ) {
+	public void move( Vector2 vector ) {
 		Vector2 pos = body.getPosition( ).add( vector );
 		setPosition( pos );
 	}
@@ -78,8 +100,7 @@ public class Entity {
 	public void update( float deltaTime ) {
 		if ( body != null && sprite != null ) {
 			Vector2 bodyPos = body.getPosition( ).mul( GameScreen.BOX_TO_PIXEL );
-			sprite.setPosition( bodyPos.x - offset.x, bodyPos.y - offset.y );
-			// sprite.setOrigin(sprite.getWidth()/2, sprite.getHeight()/2);
+			sprite.setPosition( bodyPos.x /*- offset.x*/, bodyPos.y /*- offset.y*/);
 			sprite.setRotation( MathUtils.radiansToDegrees * body.getAngle( ) );
 
 			if ( mover != null )
@@ -96,15 +117,21 @@ public class Entity {
 	 * load one from the XML definitions
 	 */
 	protected void constructSprite( Texture texture ) {
+		// What the hell is going on in here?
+
 		// I have plans to make this a return value
 		// Sprite sprite;
 		Vector2 origin;
 		boolean loadTex;
+		boolean nullTex;
 
-		loadTex = ( texture == null && type != null && type.texture != null );
+		nullTex = ( texture == null );
+		loadTex = ( nullTex && type != null && type.texture != null );
 
 		if ( loadTex ) {
 			texture = type.texture;
+		} else if ( nullTex ) {
+			return;
 		}
 		this.sprite = new Sprite( texture );
 		if ( loadTex ) {
@@ -113,8 +140,8 @@ public class Entity {
 		} else {
 			origin = new Vector2( this.sprite.getWidth( ) / 2,
 					this.sprite.getHeight( ) / 2 );
-			this.offset.set( this.sprite.getWidth( ) / 2,
-					this.sprite.getHeight( ) / 2 );
+			// this.offset.set( this.sprite.getWidth( ) / 2,
+			// this.sprite.getHeight( ) / 2 );
 		}
 		this.sprite.setOrigin( origin.x, origin.y );
 	}
