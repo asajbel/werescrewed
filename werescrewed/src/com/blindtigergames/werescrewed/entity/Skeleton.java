@@ -94,14 +94,14 @@ public class Skeleton extends Entity {
     }
     
     
-         public void addPlatform( Platform platform ){
-         	addBoneAndJoint( platform, null );
-         }
-         
-         public void addStrippedScrew ( StrippedScrew ss ){
-            RevoluteJoint joint = new RevoluteJointBuilder( world ).skeleton( this ).bodyB( ss )
-                     .limit( true ).lower( 0 ).upper( 0 ).build();
-         	addBoneAndJoint( ss, joint );
+     public void addPlatform( Platform platform ){
+     	addBoneAndJoint( platform, null );
+     }
+     
+     public void addStrippedScrew ( StrippedScrew ss ){
+        RevoluteJoint joint = new RevoluteJointBuilder( world ).skeleton( this ).bodyB( ss )
+                 .limit( true ).lower( 0 ).upper( 0 ).build();
+     	addBoneAndJoint( ss, joint );
     }
 
 
@@ -140,6 +140,16 @@ public class Skeleton extends Entity {
         for ( BoneAndJoints boneJoint : boneAndJoints ) {
            boneJoint.bone.setAwake( );
         }
+    }
+    
+    public void translate( float x, float y ){
+    	body.setTransform( body.getTransform( )
+				.getPosition( ).add( x, y ), body
+				.getTransform( ).getRotation( ) );
+		wakeSkeleton( );
+		
+		for( Skeleton s: subSkeletons )
+			s.translate( x, y );
     }
 
     @Override

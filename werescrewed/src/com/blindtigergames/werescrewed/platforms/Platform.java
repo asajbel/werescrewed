@@ -23,9 +23,6 @@ import com.blindtigergames.werescrewed.screws.Screw;
 
 public class Platform extends Entity {
 
-	// List of Structural Screws
-	// List of joints
-
 	IMover mover;
 
 	protected float width, height;
