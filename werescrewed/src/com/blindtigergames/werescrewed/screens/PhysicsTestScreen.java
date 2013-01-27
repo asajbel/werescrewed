@@ -78,10 +78,6 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 
 	FPSLogger logger;
 
-	private final Vector2 dec = new Vector2( .5f, 0 );
-	private final Vector2 acc = new Vector2( .3f, 0 );
-	private final Vector2 max = new Vector2( 1f, 0 );
-
 	public PhysicsTestScreen( ) {
 		System.out.println( "GameScreen starting" );
 		float zoom = 1.0f;
@@ -266,17 +262,11 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		// ONLY FOR TESTING, EVERYTHING IN WORLD IS IN A SKELETON (THEREFORE CAN
 		// MOVE)
 		if ( Gdx.input.isKeyPressed( Input.Keys.U ) ) {
-			skeleton.body.setTransform( skeleton.body.getTransform( )
-					.getPosition( ).add( 0f, 0.01f ), skeleton.body
-					.getTransform( ).getRotation( ) );
-			skeleton.wakeSkeleton( );
+			rootSkeleton.translate( 0.0f, 0.01f );
 		}
 
 		if ( Gdx.input.isKeyPressed( Input.Keys.J ) ) {
-			skeleton.body.setTransform( skeleton.body.getTransform( )
-					.getPosition( ).add( 0f, -0.01f ), skeleton.body
-					.getTransform( ).getRotation( ) );
-			skeleton.wakeSkeleton( );
+			rootSkeleton.translate( 0.0f, -0.01f );
 		}
 
 		batch.setProjectionMatrix( cam.combined( ) );
