@@ -11,6 +11,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.XmlReader;
 import com.badlogic.gdx.utils.XmlReader.Element;
 import com.blindtigergames.werescrewed.entity.Entity;
+import com.blindtigergames.werescrewed.entity.EntityBuilder;
 import com.blindtigergames.werescrewed.entity.EntityDef;
 import com.blindtigergames.werescrewed.platforms.PlatformBuilder;
 import com.blindtigergames.werescrewed.platforms.TiledPlatform;
@@ -89,7 +90,12 @@ public class GleedLoader {
 					Gdx.app.log("GleedLoader", "Platform loaded:"+tp.name);
 					return tp;
 				} else {
-					Entity e = new Entity(name, EntityDef.getDefinition( def ), world, pos, rot, sca, null, true); 
+					Entity e = new EntityBuilder()
+							.name(name)
+							.type(def)
+							.world(world)
+							.position(pos)
+							.build();
 					Gdx.app.log("GleedLoader", "Entity loaded:"+e.name);
 					return e;
 				}

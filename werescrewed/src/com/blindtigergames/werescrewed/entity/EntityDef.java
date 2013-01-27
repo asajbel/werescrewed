@@ -83,13 +83,15 @@ public class EntityDef {
 
 	// Miscellaneous Fields
 	protected String name;
+	protected String category;
 
 	// Static Methods and Fields
 	protected static HashMap< String, EntityDef > definitions;
 	static {
 		definitions = new HashMap< String, EntityDef >( );
 	}
-
+	public static final String NO_CATEGORY = "Entity";
+	
 	public static EntityDef getDefinition( String id ) {
 		if ( definitions.containsKey( id ) ) {
 			return definitions.get( id ); // If we already have a definition,
@@ -141,6 +143,8 @@ public class EntityDef {
 					.parse( Gdx.files.internal( filename ) );
 			EntityDef out = new EntityDef( id );
 
+			// Category Data
+			out.category = xml.get( "Category", NO_CATEGORY);
 			// Sprite Data
 			String texName = xml.get( "texture" );
 			out.texture = new Texture( Gdx.files.internal( texName ) );
