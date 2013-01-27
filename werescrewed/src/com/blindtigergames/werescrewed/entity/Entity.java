@@ -91,29 +91,32 @@ public class Entity {
 		return type.name;
 	}
 
-	protected void constructSprite( ) {
-		if ( type != null && type.texture != null ) {
-			sprite = new Sprite( type.texture );
-			sprite.setOrigin( type.origin.x, type.origin.y );
-			sprite.setScale( type.spriteScale.x, type.spriteScale.y );
-		}
-	}
-
+	/**
+	 * Builds a sprite from a texture. If the texture is null, it attempts to
+	 * load one from the XML definitions
+	 */
 	protected void constructSprite( Texture texture ) {
-		Sprite sprite;
-		if ( texture == null ) {
-			if ( type != null && type.texture != null ) {
-				this.sprite = new Sprite( type.texture );
-				this.sprite.setOrigin( type.origin.x, type.origin.y );
-				this.sprite.setScale( type.spriteScale.x, type.spriteScale.y );
-			}
+		// I have plans to make this a return value
+		// Sprite sprite;
+		Vector2 origin;
+		boolean loadTex;
+
+		loadTex = ( texture == null && type != null && type.texture != null );
+
+		if ( loadTex ) {
+			texture = type.texture;
+		}
+		this.sprite = new Sprite( texture );
+		if ( loadTex ) {
+			origin = new Vector2( type.origin.x, type.origin.y );
+			this.sprite.setScale( type.spriteScale.x, type.spriteScale.y );
 		} else {
-			this.sprite = new Sprite( texture );
-			this.sprite.setOrigin( this.sprite.getWidth( ) / 2,
+			origin = new Vector2( this.sprite.getWidth( ) / 2,
 					this.sprite.getHeight( ) / 2 );
 			this.offset.set( this.sprite.getWidth( ) / 2,
 					this.sprite.getHeight( ) / 2 );
 		}
+		this.sprite.setOrigin( origin.x, origin.y );
 	}
 
 	protected void constructBody( Vector2 pos ) {
@@ -130,10 +133,10 @@ public class Entity {
 	/**
 	 * Set the mover of this entity!
 	 * 
-	 * @param _mover
+	 * @param mover
 	 */
-	public void setMover( IMover _mover ) {
-		this.mover = _mover;
+	public void setMover( IMover mover ) {
+		this.mover = mover;
 	}
 
 	public boolean isSolid( ) {
