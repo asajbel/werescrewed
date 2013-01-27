@@ -21,7 +21,8 @@ import com.blindtigergames.werescrewed.screens.GameScreen;
  */
 
 public class StrippedScrew extends Screw {
-	public StrippedScrew( String n, Vector2 pos, Texture tex, Skeleton skeleton, World world) {
+	public StrippedScrew( String n, Vector2 pos, Texture tex,
+			Skeleton skeleton, World world ) {
 		super( n, pos, tex, null );
 		this.world = world;
 
@@ -41,32 +42,33 @@ public class StrippedScrew extends Screw {
 		screwFixture.shape = screwShape;
 		screwFixture.isSensor = true;
 		body.createFixture( screwFixture );
-		screwShape.dispose( );	
+		screwShape.dispose( );
 		body.setUserData( this );
 
 		// add radar sensor to screw
 		CircleShape radarShape = new CircleShape( );
 		radarShape.setRadius( sprite.getWidth( ) * 1.25f
-				* GameScreen.PIXEL_TO_BOX  );
+				* GameScreen.PIXEL_TO_BOX );
 		FixtureDef radarFixture = new FixtureDef( );
 		radarFixture.shape = radarShape;
 		radarFixture.isSensor = true;
 		radarFixture.filter.categoryBits = CATEGORY_SCREWS; // category of Screw
 															// Radar...
-		radarFixture.filter.maskBits = 0x0001 | 0x0002;// radar collides with player 1 & 2
-												// (player category bits 0x0001)
+		radarFixture.filter.maskBits = 0x0001 | 0x0002;// radar collides with
+														// player 1 & 2
+		// (player category bits 0x0001)
 		body.createFixture( radarFixture );
+		/*
+		 * // connect the screw to the skeleton; RevoluteJointDef
+		 * revoluteJointDef = new RevoluteJointDef( );
+		 * revoluteJointDef.initialize( body, skeleton.body, body.getPosition( )
+		 * ); revoluteJointDef.enableMotor = false;
+		 * revoluteJointDef.maxMotorTorque = 5000.0f;
+		 * revoluteJointDef.motorSpeed = 0f; platformToScrew = ( RevoluteJoint )
+		 * world .createJoint( revoluteJointDef );
+		 */
 
-		// connect the screw to the skeleton;
-		RevoluteJointDef revoluteJointDef = new RevoluteJointDef( );
-		revoluteJointDef.initialize( body, skeleton.body, body.getPosition( ) );
-		revoluteJointDef.enableMotor = false;
-		revoluteJointDef.maxMotorTorque = 5000.0f;
-		revoluteJointDef.motorSpeed = 0f;
-		platformToScrew = ( RevoluteJoint ) world
-				.createJoint( revoluteJointDef );
-
-		//skeleton.addBoneAndJoint( this, platformToScrew );
+		// skeleton.addBoneAndJoint( this, platformToScrew );
 	}
 
 	@Override

@@ -29,22 +29,20 @@ public class Entity {
 		this.world = world;
 		this.offset = new Vector2( 0.0f, 0.0f );
 		this.solid = solid;
-		if ( texture != null )
-			constructSprite( texture );
-		else
-			constructSprite( );
-		constructBody( pos.x, pos.y, scale.x, scale.y );
+		constructSprite( texture );
+		constructBody( pos );
 	}
 
-	public Entity( String n, Vector2 pos, Texture tex, Body bod, boolean solid ) {
+	public Entity( String name, Vector2 pos, Texture texture, Body body,
+			boolean solid ) {
 		this.offset = new Vector2( 0.0f, 0.0f );
 		this.solid = solid;
-		name = n;
-		if ( tex != null )
-			constructSprite( tex );
-		body = bod;
-		if ( bod != null ) {
-			world = bod.getWorld( );
+		this.name = name;
+		if ( texture != null )
+			constructSprite( texture );
+		this.body = body;
+		if ( body != null ) {
+			world = body.getWorld( );
 			sprite.setScale( GameScreen.PIXEL_TO_BOX );
 		}
 		setPosition( pos );
@@ -101,20 +99,31 @@ public class Entity {
 		}
 	}
 
-	protected void constructSprite( Texture tex ) {
-		sprite = new Sprite( tex );
-		sprite.setOrigin( sprite.getWidth( ) / 2, sprite.getHeight( ) / 2 );
-		offset.set( sprite.getWidth( ) / 2, sprite.getHeight( ) / 2 );
+	protected void constructSprite( Texture texture ) {
+		Sprite sprite;
+		if ( texture == null ) {
+			if ( type != null && type.texture != null ) {
+				this.sprite = new Sprite( type.texture );
+				this.sprite.setOrigin( type.origin.x, type.origin.y );
+				this.sprite.setScale( type.spriteScale.x, type.spriteScale.y );
+			}
+		} else {
+			this.sprite = new Sprite( texture );
+			this.sprite.setOrigin( this.sprite.getWidth( ) / 2,
+					this.sprite.getHeight( ) / 2 );
+			this.offset.set( this.sprite.getWidth( ) / 2,
+					this.sprite.getHeight( ) / 2 );
+		}
 	}
 
-	protected void constructBody( float x, float y, float width, float height ) {
+	protected void constructBody( Vector2 pos ) {
 		if ( type != null ) {
 			body = world.createBody( type.bodyDef );
 			body.setUserData( this );
 			for ( FixtureDef fix : type.fixtureDefs ) {
 				body.createFixture( fix );
 			}
-			setPosition( x, y );
+			setPosition( pos.x, pos.y );
 		}
 	}
 
@@ -134,4 +143,14 @@ public class Entity {
 	public void setSolid( boolean solid ) {
 		this.solid = solid;
 	}
+
+	/**
+	 * Sets body awake, used in
+	 * 
+	 * @param solid
+	 */
+	public void setAwake( ) {
+		body.setAwake( true );
+	}
+
 }
