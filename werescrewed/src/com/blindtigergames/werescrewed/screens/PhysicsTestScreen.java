@@ -8,12 +8,9 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.joints.PrismaticJoint;
@@ -29,7 +26,6 @@ import com.blindtigergames.werescrewed.entity.mover.PuzzleType;
 import com.blindtigergames.werescrewed.entity.mover.SlidingMotorMover;
 import com.blindtigergames.werescrewed.joint.JointFactory;
 import com.blindtigergames.werescrewed.joint.PrismaticJointBuilder;
-import com.blindtigergames.werescrewed.platforms.Box;
 import com.blindtigergames.werescrewed.platforms.ComplexPlatform;
 import com.blindtigergames.werescrewed.platforms.PlatformBuilder;
 import com.blindtigergames.werescrewed.platforms.TiledPlatform;
@@ -51,54 +47,41 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 	public static final float DEG_TO_RAD = 0.0174532925199432957f;
 	public static final float RAD_TO_DEG = 57.295779513082320876f;
 
-	OrthographicCamera camera;
-	Camera cam;
-	SpriteBatch batch;
-	Texture texture;
-	Texture playerTexture;
-	Sprite sprite;
-	World world;
-	MyContactListener MCL;
-	SBox2DDebugRenderer debugRenderer;
-	Body playerBody;
-	Entity playerEntity;
-	Player player;
-	TiledPlatform tp, ground, movingTP;
-	ComplexPlatform cp;
-	Box box;
-	PlatformBuilder platBuilder;
+	private Camera cam;
+	private SpriteBatch batch;
+	private Texture texture;
+	private World world;
+	private MyContactListener mcl;
+	private SBox2DDebugRenderer debugRenderer;
+	private Player player;
+	private TiledPlatform tp, ground, movingTP;
+	private PlatformBuilder platBuilder;
 
-	Texture screwTex;
-	Texture background;
-	StructureScrew structScrew;
-	PuzzleScrew puzzleScrew;
-	Skeleton skeleton;
-	Skeleton rootSkeleton;
-	ArrayList< StrippedScrew > climbingScrews = new ArrayList< StrippedScrew >( );
-
-	FPSLogger logger;
+	private Texture background;
+	private StructureScrew structScrew;
+	private PuzzleScrew puzzleScrew;
+	private Skeleton skeleton;
+	private Skeleton rootSkeleton;
+	private ArrayList< StrippedScrew > climbingScrews = new ArrayList< StrippedScrew >( );
 
 	public PhysicsTestScreen( ) {
-		System.out.println( "GameScreen starting" );
+		System.out.println( "Physics Test Screen starting" );
 		float zoom = 1.0f;
-		float w = Gdx.graphics.getWidth( ) / zoom;
-		float h = Gdx.graphics.getHeight( ) / zoom;
+		float width = Gdx.graphics.getWidth( ) / zoom;
+		float height = Gdx.graphics.getHeight( ) / zoom;
 
-		cam = new Camera( w, h );
+		cam = new Camera( width, height );
 		texture = new Texture( Gdx.files.internal( "data/rletter.png" ) );
-		// takes in width, height
-		// cam = new Camera(w, h);
 		batch = new SpriteBatch( );
 
 		world = new World( new Vector2( 0, -45 ), true );
-		MCL = new MyContactListener( );
-		world.setContactListener( MCL );
+		mcl = new MyContactListener( );
+		world.setContactListener( mcl );
 		skeleton = new Skeleton( "", Vector2.Zero, background, world );
 		rootSkeleton = new Skeleton( "", Vector2.Zero, null, world );
-		String name = "player";
 		platBuilder = new PlatformBuilder( world );
 
-		player = new Player( world, new Vector2( 1.0f, 1.0f ), name );
+		player = new Player( world, new Vector2( 1.0f, 1.0f ), "player" );
 
 		texture = new Texture( Gdx.files.internal( "data/rletter.png" ) );
 
@@ -113,12 +96,11 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 
 		movingTP.body.setType( BodyType.DynamicBody );
 
-		screwTex = new Texture( Gdx.files.internal( "data/screw.png" ) );
 		background = new Texture( Gdx.files.internal( "data/libgdx.png" ) );
-		structScrew = new StructureScrew( "", tp.body.getPosition( ), screwTex,
-				50, tp, skeleton, world );
-		puzzleScrew = new PuzzleScrew( "001", new Vector2( 0.0f, 0.2f ),
-				screwTex, 50, skeleton, world );
+		structScrew = new StructureScrew( "", tp.body.getPosition( ), 50, tp,
+				skeleton, world );
+		puzzleScrew = new PuzzleScrew( "001", new Vector2( 0.0f, 0.2f ), 50,
+				skeleton, world );
 
 		Vector2 axis = new Vector2( 1, 0 );
 		PrismaticJointDef jointDef = new PrismaticJointDef( );
@@ -140,10 +122,10 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		for ( int i = 0; i < 10; i++ ) {
 			if ( i % 2 == 0 ) {
 				climbingScrews.add( new StrippedScrew( "",
-						new Vector2( x1, y1 ), screwTex, skeleton, world ) );
+						new Vector2( x1, y1 ), skeleton, world ) );
 			} else {
 				climbingScrews.add( new StrippedScrew( "",
-						new Vector2( x2, y1 ), screwTex, skeleton, world ) );
+						new Vector2( x2, y1 ), skeleton, world ) );
 			}
 			y1 += dy;
 		}
@@ -160,7 +142,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 									// it up
 
 		/*
-		 * Uncomment if you don't want stew's moving platforms in your way!
+		 * Comment if you don't want stew's moving platforms in your way!
 		 */
 		buildMoverPlatforms( );
 		rootSkeleton.addSkeleton( skeleton );
@@ -169,7 +151,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		debugRenderer.setDrawJoints( false );
 		Gdx.app.setLogLevel( Application.LOG_DEBUG );
 
-		logger = new FPSLogger( );
+		new FPSLogger( );
 
 	}
 

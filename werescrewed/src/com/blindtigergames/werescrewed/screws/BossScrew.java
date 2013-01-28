@@ -1,6 +1,5 @@
 package com.blindtigergames.werescrewed.screws;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.CircleShape;
@@ -19,9 +18,9 @@ import com.blindtigergames.werescrewed.entity.Skeleton;
 
 public class BossScrew extends Screw {
 
-	public BossScrew( String n, Vector2 pos, Texture tex, int max, Body bod,
+	public BossScrew( String n, Vector2 pos, int max, Body bod,
 			Entity platform, Skeleton skeleton ) {
-		super( n, pos, tex, bod );
+		super( n, pos, bod );
 		maxDepth = max;
 		depth = max;
 

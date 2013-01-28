@@ -31,17 +31,17 @@ public class Entity {
 		this.solid = solid;
 		constructSprite( texture );
 		constructBody( pos );
-//		System.out.print( this.getClass( ) + ": " );
-//		if ( body != null )
-//			System.out.print( "Body position - " + this.body.getPosition( )
-//					+ ", " );
-//		else
-//			System.out.print( "No body, " );
-//		if ( sprite != null )
-//			System.out.println( "Sprite position - " + "[" + this.sprite.getX( )
-//					+ ", " + this.sprite.getY( ) + "]" );
-//		else
-//			System.out.println( "No sprite" );
+		System.out.print( this.getClass( ) + ": " );
+		if ( body != null )
+			System.out.print( "Body position - " + this.body.getPosition( )
+					+ ", " );
+		else
+			System.out.print( "No body, " );
+		if ( sprite != null )
+			System.out.println( "Sprite position - " + "[" + this.sprite.getX( )
+					+ ", " + this.sprite.getY( ) + "]" );
+		else
+			System.out.println( "No sprite" );
 	}
 
 	public Entity( String name, Vector2 pos, Texture texture, Body body,
@@ -57,17 +57,17 @@ public class Entity {
 			sprite.setScale( GameScreen.PIXEL_TO_BOX );
 		}
 		setPosition( pos );
-//		System.out.print( this.getClass( ) + ": " );
-//		if ( body != null )
-//			System.out.print( "Body position - " + this.body.getPosition( )
-//					+ ", " );
-//		else
-//			System.out.print( "No body, " );
-//		if ( sprite != null )
-//			System.out.println( "Sprite position - " + "[" + this.sprite.getX( )
-//					+ ", " + this.sprite.getY( ) + "]" );
-//		else
-//			System.out.println( "No sprite" );
+		// System.out.print( this.getClass( ) + ": " );
+		// if ( body != null )
+		// System.out.print( "Body position - " + this.body.getPosition( )
+		// + ", " );
+		// else
+		// System.out.print( "No body, " );
+		// if ( sprite != null )
+		// System.out.println( "Sprite position - " + "[" + this.sprite.getX( )
+		// + ", " + this.sprite.getY( ) + "]" );
+		// else
+		// System.out.println( "No sprite" );
 	}
 
 	public void setPosition( float x, float y ) {
@@ -138,10 +138,11 @@ public class Entity {
 			origin = new Vector2( type.origin.x, type.origin.y );
 			this.sprite.setScale( type.spriteScale.x, type.spriteScale.y );
 		} else {
-			origin = new Vector2( this.sprite.getWidth( ) / 2,
-					this.sprite.getHeight( ) / 2 );
+			// origin = new Vector2( this.sprite.getWidth( ) / 2,
+			// this.sprite.getHeight( ) / 2 );
 			// this.offset.set( this.sprite.getWidth( ) / 2,
 			// this.sprite.getHeight( ) / 2 );
+			origin = new Vector2( 0.0f, 0.0f );
 		}
 		this.sprite.setOrigin( origin.x, origin.y );
 	}

@@ -21,12 +21,13 @@ import com.blindtigergames.werescrewed.screens.GameScreen;
  */
 
 public class StrippedScrew extends Screw {
-	public StrippedScrew( String name, Vector2 pos, Texture tex,
-			Skeleton skeleton, World world ) {
-		super( name, pos, tex, null );
+	public StrippedScrew( String name, Vector2 pos, Skeleton skeleton,
+			World world ) {
+		super( name, pos, null );
 		this.world = world;
 
 		sprite.setColor( Color.ORANGE );
+		sprite.setOrigin( 0.0f, 0.0f );
 		// create the screw body
 		BodyDef screwBodyDef = new BodyDef( );
 		screwBodyDef.type = BodyType.DynamicBody;

@@ -1,5 +1,6 @@
 package com.blindtigergames.werescrewed.screws;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -13,8 +14,10 @@ import com.blindtigergames.werescrewed.entity.Entity;
  */
 
 public class Screw extends Entity {
-	public Screw( String name, Vector2 pos, Texture tex, Body body ) {
-		super( name, pos, tex, body, false );
+	public Screw( String name, Vector2 pos, Body body ) {
+		super( name, pos,
+				new Texture( Gdx.files.internal( "data/screw.png" ) ), body,
+				false );
 	}
 
 	@Override
@@ -31,7 +34,7 @@ public class Screw extends Entity {
 
 	public void screwRight( ) {
 	}
-	
+
 	public int getRotation( ) {
 		return rotation;
 	}

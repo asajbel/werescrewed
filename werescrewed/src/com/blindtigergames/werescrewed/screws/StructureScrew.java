@@ -1,6 +1,5 @@
 package com.blindtigergames.werescrewed.screws;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
@@ -22,14 +21,13 @@ import com.blindtigergames.werescrewed.screens.GameScreen;
 
 public class StructureScrew extends Screw {
 
-
 	private Skeleton skeleton;
 	private RevoluteJoint screwJoint;
 	private RevoluteJoint platformToScrew;
-	
-	public StructureScrew( String n, Vector2 pos, Texture tex, int max,
-			Platform platform, Skeleton skeleton, World world ) {
-		super( n, pos, tex, null );
+
+	public StructureScrew( String n, Vector2 pos, int max, Platform platform,
+			Skeleton skeleton, World world ) {
+		super( n, pos, null );
 		this.world = world;
 		this.skeleton = skeleton;
 		maxDepth = max;
@@ -66,11 +64,11 @@ public class StructureScrew extends Screw {
 		body.createFixture( radarFixture );
 		radarShape.dispose( );
 
-		attachToSkeleton();
+		attachToSkeleton( );
 
 		attachPlatToSkeleton( platform );
-		
-		platform.addScrew( this ); 
+
+		platform.addScrew( this );
 	}
 
 	@Override
@@ -115,8 +113,8 @@ public class StructureScrew extends Screw {
 		}
 
 	}
-	
-	private void attachToSkeleton(){
+
+	private void attachToSkeleton( ) {
 		RevoluteJointDef revoluteJointDef = new RevoluteJointDef( );
 		revoluteJointDef.initialize( body, skeleton.body, body.getPosition( ) );
 		revoluteJointDef.enableMotor = false;
@@ -124,7 +122,7 @@ public class StructureScrew extends Screw {
 				.createJoint( revoluteJointDef );
 	}
 
-	private void attachPlatToSkeleton(Platform platform){
+	private void attachPlatToSkeleton( Platform platform ) {
 		// connect the platform to the skeleton
 		RevoluteJointDef revoluteJointDef = new RevoluteJointDef( );
 		revoluteJointDef.initialize( platform.body, skeleton.body,
