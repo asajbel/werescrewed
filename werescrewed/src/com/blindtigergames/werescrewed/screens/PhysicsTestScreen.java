@@ -156,8 +156,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 	}
 
 	void buildMoverPlatforms( ) {
-		TiledPlatform slidingPlatform = new PlatformBuilder( world )
-				.setWidth( 10 ).setHeight( 1 ).setOneSided( true )
+		TiledPlatform slidingPlatform = platBuilder.setWidth( 10 ).setHeight( 1 ).setOneSided( true )
 				.setPosition( -1000, 200 ).setTexture( texture )
 				.setFriction( 1f ).buildTilePlatform( );
 		slidingPlatform.body.setType( BodyType.DynamicBody );
@@ -172,14 +171,14 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		slidingPlatform.setMover( new SlidingMotorMover(
 				PuzzleType.PRISMATIC_SLIDER, j ) );
 
-		TiledPlatform skeletonTest1 = new PlatformBuilder( world )
+		TiledPlatform skeletonTest1 = platBuilder
 				.setWidth( 10 ).setHeight( 1 ).setFriction( 1f )
 				.setOneSided( false ).setPosition( -500, -200 )
 				.setTexture( texture ).buildTilePlatform( );
 		skeletonTest1.body.setType( BodyType.DynamicBody );
 		skeleton.addPlatformFixed( skeletonTest1 );
 
-		TiledPlatform skeletonTest2 = new PlatformBuilder( world )
+		TiledPlatform skeletonTest2 = platBuilder
 				.setWidth( 10 ).setHeight( 1 ).setOneSided( false )
 				.setPosition( 500, 300 ).setTexture( texture ).setFriction( 1f )
 				.buildTilePlatform( );
@@ -189,8 +188,10 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		/*
 		 * TODO: FIX PLATFORM DENSITY
 		 */
+		
+		platBuilder.reset();
 
-		PlatformBuilder builder = new PlatformBuilder( world ).setWidth( 1 )
+		PlatformBuilder builder = platBuilder.setWidth( 1 )
 				.setHeight( 3 ).setOneSided( false )
 				// .setPosition( (-500f-i*40)*PIXEL_TO_BOX, 150f*PIXEL_TO_BOX )
 				.setTexture( texture ).setFriction( 1f );
