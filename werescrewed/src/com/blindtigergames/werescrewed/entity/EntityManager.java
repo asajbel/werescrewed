@@ -55,7 +55,7 @@ public class EntityManager {
 			entryToRemove = itRemove.next( );
 			Entity entityToRemove = entryToRemove.getValue( );
 			entityList.remove( entryToRemove.getKey( ) );
-			System.out.println("class com.blindtigergames.werescrewed.entity.EntityManager: DESTROYING BODY");
+			System.out.println("class com.blindtigergames.werescrewed.entity.EntityManager: DESTROYING ENTITY BODY");
 			entityToRemove.world.destroyBody ( entityToRemove.body );
 		}
 		entitiesToRemove.clear( );
@@ -66,6 +66,7 @@ public class EntityManager {
 			entrySkelToRemove = jitRemove.next( );
 			Skeleton skeletonToRemove = entrySkelToRemove.getValue();
 			skeletonToRemove.world.destroyBody ( skeletonToRemove.body );
+			System.out.println("class com.blindtigergames.werescrewed.entity.EntityManager: DESTROYING SKELETON BODY");
 			skeletonList.remove( entrySkelToRemove.getKey( ) );
 		}
 		skeletonsToRemove.clear( );
@@ -91,6 +92,7 @@ public class EntityManager {
 	
 	//Removes a Skeleton from the HashMap
 	public void removeSkeleton ( String name, Skeleton type ) {
+		System.out.println("class com.blindtigergames.werescrewed.entity.EntityManager: adding skeleton " + name + " to remove list");
 		skeletonsToRemove.put( name,  type );
 	//	skeletonList.remove( name );
 	}
