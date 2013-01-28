@@ -70,7 +70,6 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 	Skeleton rootSkeleton;
 	Skeleton skeleton;
 
-	FPSLogger logger;
 
 	public GameScreen( ) {
 		System.out.println( "GameScreen starting" );
@@ -136,8 +135,6 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 		debugRenderer = new SBox2DDebugRenderer( BOX_TO_PIXEL );
 		Gdx.app.setLogLevel( Application.LOG_DEBUG );
 
-		logger = new FPSLogger( );
-
 		MCL = new MyContactListener( );
 		world.setContactListener( MCL );
 	}
@@ -195,7 +192,6 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 		world.step( 1 / 60f, 6, 2 ); // step our physics calculations
 		// Gdx.app.debug("Physics",
 		// "delta = "+Gdx.app.getGraphics().getDeltaTime());
-		logger.log( );
 	}
 
 	@Override

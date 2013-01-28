@@ -7,13 +7,17 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.blindtigergames.werescrewed.entity.Entity;
 
 /**
- * holds general methods for screws
+ * @descrip: holds general methods for screws
  * 
  * @author Dennis
  * 
  */
 
 public class Screw extends Entity {
+	public Screw( String n, Vector2 pos, Texture tex, Body bod ) {
+		super( n, pos, tex, bod, false );
+	}
+	
 	public Screw( String name, Vector2 pos, Body body ) {
 		super( name, pos,
 				new Texture( Gdx.files.internal( "data/screw.png" ) ), body,
