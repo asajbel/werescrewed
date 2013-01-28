@@ -1,7 +1,6 @@
 package com.blindtigergames.werescrewed.screws;
 
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
@@ -24,9 +23,9 @@ import com.blindtigergames.werescrewed.screens.GameScreen;
 public class PuzzleScrew extends Screw {
 	public PuzzleManager puzzleManager;
 	
-	public PuzzleScrew( String n, Vector2 pos, Texture tex, int max,
+	public PuzzleScrew( String n, Vector2 pos, int max,
 			Skeleton skeleton, World world ) {
-		super( n, pos, tex, null );
+		super( n, pos, null );
 		this.world = world;
 		maxDepth = max;
 		depth = max;

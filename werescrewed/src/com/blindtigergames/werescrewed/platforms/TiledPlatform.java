@@ -13,18 +13,18 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.blindtigergames.werescrewed.screens.GameScreen;
+import com.blindtigergames.werescrewed.screws.Screw;
+
 import java.util.Iterator;
 import java.util.Vector;
 
 /**
- * @param name
- *            blah blah
  * 
  * @author Ranveer
  * 
  */
 
-//Need to fix widht/height storage
+
 public class TiledPlatform extends Platform {
 	protected float tileHeight, tileWidth;
 	protected Vector2 bodypos;
@@ -63,7 +63,7 @@ public class TiledPlatform extends Platform {
 	private void constructTileBody( float x, float y, float width, float height ) {
 
 		BodyDef bodyDef = new BodyDef( );
-		bodyDef.type = BodyType.KinematicBody;
+		bodyDef.type = BodyType.DynamicBody;
 		bodyDef.position.set( new Vector2( x * GameScreen.PIXEL_TO_BOX , y * GameScreen.PIXEL_TO_BOX ) );
 		body = world.createBody( bodyDef );
 
@@ -129,7 +129,8 @@ public class TiledPlatform extends Platform {
 			d.tileSprite.setRotation( MathUtils.radiansToDegrees * body.getAngle( ) );
 			d.tileSprite.draw( batch );
 		}
-		
+//		for( Screw s : screws)
+//			s.draw( batch );
 	}
 	
 

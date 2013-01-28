@@ -1,18 +1,22 @@
 package com.blindtigergames.werescrewed.entity;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import com.blindtigergames.werescrewed.entity.Skeleton;
+/*
+ *EntityManager.java, meant to hold and store a list of entities and skeletons
+ * for purposes of updating and deleting them.
+ *Authors: Edward Boning, Jennifer Makaiwi
+ * 
+ */
 
-public class EntityManager extends Entity{
+public class EntityManager {
 
-	protected static HashMap< String, Entity > entityList = new HashMap< String, Entity >( );
-	protected static HashMap< String, Skeleton > skeletonList = new HashMap< String, Skeleton >( );
-	protected static HashMap< String, Entity > entitiesToAdd = new HashMap < String, Entity >( );
-	protected static HashMap< String, Skeleton > skeletonsToAdd = new HashMap < String, Skeleton >( );
+	protected static HashMap < String, Entity > entityList = new HashMap< String, Entity >( );
+	protected static HashMap < String, Skeleton > skeletonList = new HashMap< String, Skeleton >( );
+	protected static HashMap < String, Entity > entitiesToAdd = new HashMap < String, Entity >( );
+	protected static HashMap < String, Skeleton > skeletonsToAdd = new HashMap < String, Skeleton >( );
 	protected static HashMap < String, Entity > entitiesToRemove = new HashMap < String, Entity >( );
 	protected static HashMap < String, Skeleton > skeletonsToRemove = new HashMap < String, Skeleton >( );
 
@@ -58,8 +62,8 @@ public class EntityManager extends Entity{
 			entryToRemove = itRemove.next( );
 			Entity entityToRemove = entryToRemove.getValue( );
 			entityList.remove( entryToRemove.getKey( ) );
-	//		entityToRemove.world.destroyBody ( entityToRemove.body );
-			System.out.println("DESTROYING BODY");
+			System.out.println("class com.blindtigergames.werescrewed.entity.EntityManager: DESTROYING ENTITY BODY");
+			entityToRemove.world.destroyBody ( entityToRemove.body );
 		}
 		entitiesToRemove.clear( );
 		
@@ -68,7 +72,8 @@ public class EntityManager extends Entity{
 		while ( jitRemove.hasNext( ) ) {
 			entrySkelToRemove = jitRemove.next( );
 			Skeleton skeletonToRemove = entrySkelToRemove.getValue();
-	//		skeletonToRemove.world.destroyBody ( skeletonToRemove.body );
+			skeletonToRemove.world.destroyBody ( skeletonToRemove.body );
+			System.out.println("class com.blindtigergames.werescrewed.entity.EntityManager: DESTROYING SKELETON BODY");
 			skeletonList.remove( entrySkelToRemove.getKey( ) );
 		}
 		skeletonsToRemove.clear( );
@@ -87,13 +92,14 @@ public class EntityManager extends Entity{
 	
 	//Removes an Entity from the HashMap
 	public void removeEntity ( String name, Entity type ) {
-		System.out.println ("ADDING TO REMOVE LIST");
+		System.out.println("class com.blindtigergames.werescrewed.entity.EntityManager: adding entity " + name + " to remove list");
 		entitiesToRemove.put( name,  type );
 	//	entityList.remove( name );
 	}
 	
 	//Removes a Skeleton from the HashMap
 	public void removeSkeleton ( String name, Skeleton type ) {
+		System.out.println("class com.blindtigergames.werescrewed.entity.EntityManager: adding skeleton " + name + " to remove list");
 		skeletonsToRemove.put( name,  type );
 	//	skeletonList.remove( name );
 	}

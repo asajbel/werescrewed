@@ -58,6 +58,15 @@ public class EntityDef {
 		super.finalize( );
 	}
 
+	/**
+	 * Loads the body elements for the current Entity
+	 * 
+	 * @param density
+	 * @param friction
+	 * @param restitution
+	 * @param scale
+	 * @param bodyName .json file name for the body
+	 */
 	protected void loadComplexBody( float density, float friction,
 			float restitution, float scale, String bodyName ) {
 		String filename = "data/bodies/" + bodyName + ".json";

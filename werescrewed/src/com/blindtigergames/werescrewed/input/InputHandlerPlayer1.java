@@ -98,7 +98,7 @@ public class InputHandlerPlayer1 implements InputProcessor {
 	 * @param player - Selector to poll for the proper player
 	 */
 	public boolean screwPressed( ) {
-		return Gdx.input.isKeyPressed( Keys.X );
+		return Gdx.input.isKeyPressed( Keys.SPACE );
 	}
 
 	public boolean unscrewPressed( ) {

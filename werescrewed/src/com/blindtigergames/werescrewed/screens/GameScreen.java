@@ -67,13 +67,9 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 	Texture background;
 	StructureScrew structScrew;
 	InputHandlerPlayer1 inputHandler;
+	Skeleton rootSkeleton;
 	Skeleton skeleton;
 
-	FPSLogger logger;
-
-	private final Vector2 dec = new Vector2( .5f, 0 );
-	private final Vector2 acc = new Vector2( .3f, 0 );
-	private final Vector2 max = new Vector2( 1f, 0 );
 
 	public GameScreen( ) {
 		System.out.println( "GameScreen starting" );
@@ -87,7 +83,7 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 		// cam = new Camera(w, h);
 		batch = new SpriteBatch( );
 
-		world = new World( new Vector2( 0, -100 ), true );
+		world = new World( new Vector2( 0, -55 ), true );
 		// MCL = new MyContactListener();
 		// world.setContactListener(MCL);
 		String name = "player";
@@ -96,24 +92,16 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 
 		cam = new Camera( w, h );
 		platBuilder = new PlatformBuilder( world );
-		tp = platBuilder
-				.setName( "tp" )
-				.setPosition( 200.0f, 100.0f )
-				.setDimensions( 10, 1 )
-				.setTexture( texture )
-				.setResitituion( 0.0f )
-				.buildTilePlatform( );
-		
-		
-		rp = platBuilder
-				.setPosition( -200.0f, 100.0f )
-				.setName( "rp" )
-				.setDimensions( 1, 10 )
-				.setTexture( texture )
-				.setResitituion( 0.0f )
-				.buildRoomPlatform( );
-		
-		cp = new ComplexPlatform( "bottle", new Vector2( -100.0f, 100.0f ), new Texture(Gdx.files.internal( "data/bodies/test01.png")),
+		tp = platBuilder.setName( "tp" ).setPosition( 200.0f, 100.0f )
+				.setDimensions( 10, 1 ).setTexture( texture )
+				.setResitituion( 0.0f ).buildTilePlatform( );
+
+		rp = platBuilder.setPosition( -200.0f, 100.0f ).setName( "rp" )
+				.setDimensions( 1, 10 ).setTexture( texture )
+				.setResitituion( 0.0f ).buildRoomPlatform( );
+
+		cp = new ComplexPlatform( "bottle", new Vector2( -100.0f, 100.0f ),
+				new Texture( Gdx.files.internal( "data/bodies/test01.png" ) ),
 				1, world, "complexTest" );
 		sp = new ShapePlatform( "rhom", new Vector2( 100.0f, 300.0f ), texture,
 				world, Shapes.plus, 1.0f, 1.0f, false );
@@ -121,35 +109,33 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 		// testing screws
 		screwTex = new Texture( Gdx.files.internal( "data/screw.png" ) );
 		background = new Texture( Gdx.files.internal( "data/libgdx.png" ) );
-		skeleton = new Skeleton( "", Vector2.Zero, background, world );
-		structScrew = new StructureScrew( "", tp.body.getPosition( ), screwTex,
-				25, tp, skeleton, world );
 
+		skeleton = new Skeleton( "", Vector2.Zero, null, world );
+		rootSkeleton = new Skeleton( "root", Vector2.Zero, null, world );
+		structScrew = new StructureScrew( "", tp.body.getPosition( ), 25, tp,
+				skeleton, world );
 
-		tp.setMover( new TimelineMover( ) );
-		
-		ground = new PlatformBuilder( world )
-				.setPosition( 0.0f, 0.0f )
-				.setName( "ground" )
-				.setDimensions( 100, 1 )
-				.setTexture( texture )
-				.setResitituion( 0.0f )
+		// tp.setMover( new TimelineMover( ) );
+
+		ground = new PlatformBuilder( world ).setPosition( 0.0f, 0.0f )
+				.setName( "ground" ).setDimensions( 100, 1 )
+				.setTexture( texture ).setResitituion( 0.0f )
 				.buildTilePlatform( );
-		
-		//skeleton.addPlatformFixed(ground);
-		skeleton.addPlatformFixed(tp);
-		skeleton.addPlatformFixed(sp);
-		skeleton.addPlatformFixed(cp);
-		skeleton.addPlatformFixed(rp);
+
+		skeleton.addPlatformFixed( ground );
+		skeleton.addPlatformFixed( tp );
+		skeleton.addPlatformFixed( sp );
+		skeleton.addPlatformFixed( cp );
+		skeleton.addPlatformFixed( rp );
+
+		rootSkeleton.addSkeleton( skeleton );
 		// make sure you uncomment the next two lines debugRenderer = new
-		//SBox2DDebugRenderer(BOX_TO_PIXEL); //for physics world
+		// SBox2DDebugRenderer(BOX_TO_PIXEL); //for physics world
 		// debugRenderer = new Box2DDebugRenderer();
 		debugRenderer = new SBox2DDebugRenderer( BOX_TO_PIXEL );
 		Gdx.app.setLogLevel( Application.LOG_DEBUG );
 
-		logger = new FPSLogger( );
-
-		MCL = new MyContactListener();
+		MCL = new MyContactListener( );
 		world.setContactListener( MCL );
 	}
 
@@ -158,8 +144,8 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 		Gdx.gl20.glClearColor( 0.0f, 0f, 0.0f, 1.0f );
 		Gdx.gl20.glClear( GL20.GL_COLOR_BUFFER_BIT );
 
-		//float deltaTime = Gdx.graphics.getDeltaTime( );
-		
+		// float deltaTime = Gdx.graphics.getDeltaTime( );
+
 		inputHandler.update( );
 		cam.update( );
 
@@ -173,16 +159,12 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 			ScreenManager.getInstance( ).show( Screen.PHYSICS );
 		}
 
-		skeleton.update( deltaTime );
+		rootSkeleton.update( deltaTime );
 		player.update( deltaTime );
-		tp.update( deltaTime );
-		rp.update( deltaTime);
-		cp.update( deltaTime );
-		sp.update( deltaTime );
 
 		structScrew.update( deltaTime );
 
-		if ( inputHandler.unscrewPressed(  ) ) {
+		if ( inputHandler.unscrewPressed( ) ) {
 			structScrew.screwLeft( );
 		}
 
@@ -195,10 +177,10 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 		// playerEntity.draw(batch);
 		// player.draw(batch);
 
-		// test drawing the texture by uncommenting the next line:
-		tp.draw( batch );
-		cp.draw( batch );
-		ground.draw( batch );
+		rootSkeleton.draw( batch );
+		// tp.draw( batch );
+		// cp.draw( batch );
+		// ground.draw( batch );
 		player.draw( batch );
 
 		structScrew.draw( batch );
@@ -210,7 +192,6 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 		world.step( 1 / 60f, 6, 2 ); // step our physics calculations
 		// Gdx.app.debug("Physics",
 		// "delta = "+Gdx.app.getGraphics().getDeltaTime());
-		logger.log( );
 	}
 
 	@Override
@@ -239,4 +220,3 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 	}
 
 }
-
