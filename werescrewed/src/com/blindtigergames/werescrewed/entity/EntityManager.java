@@ -6,10 +6,10 @@ import java.util.Map;
 
 public class EntityManager {
 
-	protected static HashMap< String, Entity > entityList = new HashMap< String, Entity >( );
-	protected static HashMap< String, Skeleton > skeletonList = new HashMap< String, Skeleton >( );
-	protected static HashMap< String, Entity > entitiesToAdd = new HashMap < String, Entity >( );
-	protected static HashMap< String, Skeleton > skeletonsToAdd = new HashMap < String, Skeleton >( );
+	protected static HashMap < String, Entity > entityList = new HashMap< String, Entity >( );
+	protected static HashMap < String, Skeleton > skeletonList = new HashMap< String, Skeleton >( );
+	protected static HashMap < String, Entity > entitiesToAdd = new HashMap < String, Entity >( );
+	protected static HashMap < String, Skeleton > skeletonsToAdd = new HashMap < String, Skeleton >( );
 	protected static HashMap < String, Entity > entitiesToRemove = new HashMap < String, Entity >( );
 	protected static HashMap < String, Skeleton > skeletonsToRemove = new HashMap < String, Skeleton >( );
 
