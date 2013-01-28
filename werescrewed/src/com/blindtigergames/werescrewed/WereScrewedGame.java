@@ -5,12 +5,15 @@ package com.blindtigergames.werescrewed;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.FPSLogger;
 import com.blindtigergames.werescrewed.screens.Screen;
 import com.blindtigergames.werescrewed.screens.ScreenManager;
 
 public class WereScrewedGame extends Game {
 	
 	public static AssetManager manager =  new AssetManager();
+
+	FPSLogger logger;
 	
 	@Override
 	public void create() {
@@ -25,6 +28,8 @@ public class WereScrewedGame extends Game {
 		//ScreenManager.getInstance().show(Screen.GAME);
 		ScreenManager.getInstance().show(Screen.PHYSICS);
 		//ScreenManager.getInstance().show(Screen.IMOVER);
+
+		logger = new FPSLogger( );
 		
 	}
 
@@ -38,6 +43,7 @@ public class WereScrewedGame extends Game {
 	public void render () {
 		update(0);
 		super.render();
+		logger.log( );
 	}
 	
 	public void update(float dT) {

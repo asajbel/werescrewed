@@ -14,16 +14,16 @@ import com.blindtigergames.werescrewed.entity.Skeleton;
 import com.blindtigergames.werescrewed.screens.GameScreen;
 
 /**
- * blah blah
+ * @descrip: blah blah
  * 
  * @author Dennis
  * 
  */
 
 public class StrippedScrew extends Screw {
-	public StrippedScrew( String name, Vector2 pos, Skeleton skeleton,
-			World world ) {
-		super( name, pos, null );
+	public StrippedScrew( String n, Vector2 pos, 
+			Skeleton skeleton, World world ) {
+		super( n, pos, null );
 		this.world = world;
 
 		sprite.setColor( Color.ORANGE );
@@ -58,24 +58,7 @@ public class StrippedScrew extends Screw {
 		radarFixture.filter.maskBits = 0x0001 | 0x0002;// radar collides with
 														// player 1 & 2
 		body.createFixture( radarFixture );
-		System.out.print( this.getClass( ) + ": " );
-		if ( body != null )
-			System.out.print( "Body center - " + this.body.getWorldCenter( )
-					+ ", " );
-		else
-			System.out.print( "No body, " );
-		if ( sprite != null ) {
-			float centerX = this.sprite.getOriginX( );
-			centerX *= GameScreen.PIXEL_TO_BOX;
-			centerX += this.sprite.getX( );
 
-			float centerY = this.sprite.getOriginY( );
-			centerY *= GameScreen.PIXEL_TO_BOX;
-			centerY += this.sprite.getY( );
-			System.out.println( "Sprite center - " + "[" + centerX + ":"
-					+ centerY + "]" );
-		} else
-			System.out.println( "No sprite" );
 	}
 
 	@Override

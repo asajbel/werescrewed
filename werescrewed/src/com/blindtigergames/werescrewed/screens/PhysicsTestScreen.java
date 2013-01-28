@@ -19,6 +19,7 @@ import com.blindtigergames.werescrewed.camera.Camera;
 import com.blindtigergames.werescrewed.collisionManager.MyContactListener;
 import com.blindtigergames.werescrewed.debug.SBox2DDebugRenderer;
 import com.blindtigergames.werescrewed.entity.Entity;
+import com.blindtigergames.werescrewed.entity.EntityManager;
 import com.blindtigergames.werescrewed.entity.Player;
 import com.blindtigergames.werescrewed.entity.Skeleton;
 import com.blindtigergames.werescrewed.entity.mover.PistonMover;
@@ -56,6 +57,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 	private Player player;
 	private TiledPlatform tp, ground, movingTP;
 	private PlatformBuilder platBuilder;
+	private EntityManager entityManager;
 
 	private Texture background;
 	private StructureScrew structScrew;
@@ -73,6 +75,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		cam = new Camera( width, height );
 		texture = new Texture( Gdx.files.internal( "data/rletter.png" ) );
 		batch = new SpriteBatch( );
+		entityManager = new EntityManager();
 
 		world = new World( new Vector2( 0, -45 ), true );
 		mcl = new MyContactListener( );
@@ -80,6 +83,8 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		skeleton = new Skeleton( "", Vector2.Zero, background, world );
 		rootSkeleton = new Skeleton( "", Vector2.Zero, null, world );
 		platBuilder = new PlatformBuilder( world );
+		entityManager.addSkeleton( rootSkeleton.name, rootSkeleton );
+		
 
 		player = new Player( world, new Vector2( 1.0f, 1.0f ), "player" );
 
@@ -95,6 +100,9 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 				.buildTilePlatform( );
 
 		movingTP.body.setType( BodyType.DynamicBody );
+		
+		entityManager.addEntity( movingTP.name, movingTP );
+		entityManager.removeEntity( movingTP.name, movingTP );
 
 		background = new Texture( Gdx.files.internal( "data/libgdx.png" ) );
 		structScrew = new StructureScrew( "", tp.body.getPosition( ), 50, tp,
@@ -239,8 +247,9 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		player.update( deltaTime );
 		structScrew.update( deltaTime );
 		puzzleScrew.update( deltaTime );
-		rootSkeleton.update( deltaTime );
-		movingTP.update( deltaTime );
+//		rootSkeleton.update( deltaTime );
+//		movingTP.update( deltaTime );
+		entityManager.updateEntity( deltaTime );
 
 		// ONLY FOR TESTING, EVERYTHING IN WORLD IS IN A SKELETON (THEREFORE CAN
 		// MOVE)
@@ -251,7 +260,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		if ( Gdx.input.isKeyPressed( Input.Keys.J ) ) {
 			rootSkeleton.translate( 0.0f, -0.01f );
 		}
-
+		
 
 		batch.setProjectionMatrix( cam.combined( ) );
 		batch.begin( );
