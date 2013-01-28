@@ -85,7 +85,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 
 		texture = new Texture( Gdx.files.internal( "data/rletter.png" ) );
 
-		tp = platBuilder.setPosition( 400.0f, 100.0f ).setDimensions( 10, 1 )
+		tp = platBuilder.setPosition( 350.0f, 100.0f ).setDimensions( 10, 1 )
 				.setTexture( texture ).setName( "tp" ).setResitituion( 0.0f )
 				.buildTilePlatform( );
 
@@ -250,6 +250,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		if ( Gdx.input.isKeyPressed( Input.Keys.J ) ) {
 			rootSkeleton.translate( 0.0f, -0.01f );
 		}
+
 
 		batch.setProjectionMatrix( cam.combined( ) );
 		batch.begin( );
