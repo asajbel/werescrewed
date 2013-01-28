@@ -4,6 +4,13 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+/*
+ *EntityManager.java, meant to hold and store a list of entities and skeletons
+ * for purposes of updating and deleting them.
+ *Authors: Edward Boning, Jennifer Makaiwi
+ * 
+ */
+
 public class EntityManager {
 
 	protected static HashMap < String, Entity > entityList = new HashMap< String, Entity >( );
