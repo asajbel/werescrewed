@@ -38,7 +38,7 @@ public class Camera {
 	private static final float BUFFER_RATIO = .5f;
 //	private static final int LISTEN_BUFFER = 300;
 	private static final float ACCELERATION_RATIO = .005f;
-	private static final float DECELERATION_RATIO = .005f;
+	private static final float DECELERATION_RATIO = .03f;
 	private static final float ACCELERATION_BUFFER_RATIO = .5f;
 	private static final float TARGET_BUFFER_RATIO = .05f;
 	private static final float MINIMUM_FOLLOW_SPEED = 3f;
@@ -191,13 +191,6 @@ public class Camera {
 		
 		// also render anchors if debugRender == true
 		anchorList.update(debugRender);
-		
-		/*float lerp = 0.1f;
-		Vector3 position = camera.position;
-		position.x += (player.positionX - position.x) * lerp;
-		position.y += (player.positionY - position.y) * lerp;
-		camera.position.add(position);
-		*/
 	}
     
     /**
@@ -206,8 +199,6 @@ public class Camera {
     private Vector2 setTranslateTarget(){
     	translateTarget.x = anchorList.midpoint().x;
     	translateTarget.y = anchorList.midpoint().y;
-//    	translateTarget.x += anchorList.getMidpointVelocity().x * SPEED_TARGET_MODIFIER; 
-//    	translateTarget.y += anchorList.getMidpointVelocity().y * SPEED_TARGET_MODIFIER; 
     	
 		translateTarget3D.x = translateTarget.x;
 		translateTarget3D.y = translateTarget.y;
@@ -216,7 +207,7 @@ public class Camera {
     }
 
 	/**
-	 * 
+	 * Adjust the camera by translating and zooming when necessary
 	 */
 	private void adjustCamera( ) {
 		translateLogic();
@@ -265,11 +256,11 @@ public class Camera {
     	Vector2.tmp.y = translateTarget.y;
     	Vector2.tmp.sub(center2D);
     	
-    	if (center2D.len( ) > accelerationBuffer) {
+    	if (Vector2.tmp.len( ) > accelerationBuffer) {
     		translateAcceleration = (Vector2.tmp.len() * ACCELERATION_RATIO);
     	}
     	else {
-    		translateAcceleration = (targetBuffer - center2D.len( )) * DECELERATION_RATIO;
+    		translateAcceleration = -1f * Vector2.tmp.len( ) * DECELERATION_RATIO;
     	}
     	
     	if ((translateSpeed + translateAcceleration) < (Vector2.tmp.len() - 5f))
@@ -342,10 +333,6 @@ public class Camera {
 		shapeRenderer.identity();
 		shapeRenderer.circle(translateTarget.x, translateTarget.y, accelerationBuffer);
 		shapeRenderer.end();
-//			shapeRenderer.begin(ShapeType.Rectangle);
-//			shapeRenderer.identity();
-//			shapeRenderer.rect(translateBuffer.x, translateBuffer.y, translateBuffer.width, translateBuffer.height);
-//			shapeRenderer.end();
 	}
 
     private void handleInput() {

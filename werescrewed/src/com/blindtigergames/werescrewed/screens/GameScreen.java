@@ -94,7 +94,7 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 
 		player = new Player( world, new Vector2( 1.0f, 1.0f ), name );
 
-		cam = new Camera( w, h, player );
+		cam = new Camera( w, h );
 		platBuilder = new PlatformBuilder( world );
 		tp = platBuilder
 				.setName( "tp" )
