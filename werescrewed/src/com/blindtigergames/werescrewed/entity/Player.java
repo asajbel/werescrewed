@@ -258,6 +258,10 @@ public class Player extends Entity {
 			prevKey = Keys.D;
 		}
 		if ( inputHandler.downPressed( ) ) {
+			if ( playerState == PlayerState.Screwing ) {
+				world.destroyJoint( playerToScrew );
+				playerState = PlayerState.JumpingOffScrew;
+			}
 			stop( );
 		}
 
