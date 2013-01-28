@@ -58,6 +58,12 @@ public enum ScreenType {
         protected com.badlogic.gdx.Screen getScreenInstance() {
              return new IMoverGameScreen();
         }
+    },
+	GLEED {
+        @Override
+        protected com.badlogic.gdx.Screen getScreenInstance() {
+             return new GleedTestScreen("testLevel");
+        }
     };
 
 	protected abstract com.badlogic.gdx.Screen getScreenInstance( );
