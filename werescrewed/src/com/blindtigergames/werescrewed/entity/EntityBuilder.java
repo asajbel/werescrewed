@@ -57,7 +57,7 @@ public class EntityBuilder{
 
 	public EntityBuilder type(EntityDef def){
 		type = def;
-		if (type.category.equals( "Player" )){
+		if (type.getCategory().equals( "Player" )){
 			return new PlayerBuilder().copy(this);
 		}
 		return this;
@@ -123,7 +123,6 @@ public class EntityBuilder{
 	public Entity build(){
 		Entity out = null;
 		if (canBuild()){
-			if (name.equals(""))
 			if (type != null){
 				out = new Entity(name, type, world, pos, rot, sca, tex, solid);
 			} else {

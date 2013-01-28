@@ -18,94 +18,91 @@ import com.blindtigergames.werescrewed.platforms.TiledPlatform;
 import com.blindtigergames.werescrewed.screens.GameScreen;
 import com.blindtigergames.werescrewed.screens.Screen;
 
-public class GleedLoader {
+public class GleedLoader {	
+	protected XmlReader reader;
+	protected Level level;
 	
-	protected static XmlReader reader;
-	protected static Texture tileTex;
-	static{
+	public GleedLoader(){
 		reader = new XmlReader();
-		tileTex = new Texture( Gdx.files.internal( "data/rletter.png" ) );
+		level = null;
 	}
-
-	public static Level loadLevelFromFile(String filename){
-		Level out = new Level();
+	
+	public Level load(String filename){
+		level = new Level();
 		Element root;
 		try {
 			root = reader.parse(Gdx.files.internal( filename ));
 			Element rootLayer = root.getChildByNameRecursive( "Layer" );
-			Array<Entity> entities = loadLayer(rootLayer, out.world);
-			for (Entity e : entities){
-				if (e != null)
-					out.entities.addEntity( e.name, e );
-			}
+			loadLayer(rootLayer);
 		} catch ( IOException e1 ) {
 			Gdx.app.log("GleedLoader", "Error: could not load file "+filename, e1);
 			e1.printStackTrace();
 		}
-		return out;
+		return level;
 	}
 	
-	protected static Array<Entity> loadLayer(Element element, World world) {
-		Array<Entity> out = new Array<Entity>();
+	protected void loadLayer(Element element) {
 		Gdx.app.log("GleedLoader", "loading layer " + element.getAttribute("Name", ""));
 		Array<Element> items = element.getChildByName("Items").getChildrenByName("Item");
 		Gdx.app.log("GleedLoader", "Entities Found:"+items.size);
-		Entity e; String def;
 		for (Element item: items) {
-			def = getDefinition(item);
-			if (def != null){
-				if (def.equals( playerTag )){
-					
-				} else {
-					e = loadEntity(item,world);
-					if (e != null)
-						out.add(e);
-				}
-			}
+			loadEntity(item);
 		}
-		return out;
 	}
 	
-	protected static Entity loadEntity(Element item, World world) {
-			HashMap<String,String> props = getCustomProperties(item);
-			String name = item.getAttribute("Name");
-			Element posElem = item.getChildByName("Position");
-			Vector2 pos = new Vector2(posElem.getFloat("X"), posElem.getFloat("Y")).mul( Screen.PIXEL_TO_BOX );
-			//Vector2 pos = new Vector2(0.0f, posElem.getFloat("Y")).mul( Screen.PIXEL_TO_BOX );
-			float rot = 0.0f;
-			Vector2 sca = new Vector2(1,1);
-			
-			if (props.containsKey( defTag )){
-				String def = props.get( defTag );
-				if (def.equals("tiledPlatform")){ //Insert special cases here.\
+	protected void loadEntity(Element item) {
+		HashMap<String,String> props = getCustomProperties(item);
+		String name = item.getAttribute("Name");		
+		Element posElem = item.getChildByName("Position");
+		Vector2 pos = new Vector2(posElem.getFloat("X"), posElem.getFloat("Y")).mul( Screen.PIXEL_TO_BOX );
+		float rot = 0.0f;
+		
+		if (props.containsKey( defTag )){
+			String defName = props.get( defTag );
+			EntityDef def = EntityDef.getDefinition( defName );
+			if (def != null){
+				if (def.getCategory( ).equals( tileCat )){ //Insert special cases here.\
 					int w = Integer.decode(props.get("TileWidth"));
 					int h = Integer.decode(props.get("TileHeight"));
 					
-					TiledPlatform tp = new PlatformBuilder(world)
+					TiledPlatform tp = new PlatformBuilder(level.world)
+					.setName( name )
 					.setPosition( pos.x, pos.y )
 					.setDimensions( w, h )
-					.setTexture( tileTex )
+					.setTexture( def.getTexture() )
 					.setResitituion( 0.0f )
 					.buildTilePlatform( );
 					Gdx.app.log("GleedLoader", "Platform loaded:"+tp.name);
-					return tp;
+					//level.entities.addEntity( name, tp );
+					level.platforms.add( tp );
 				} else {
-					Entity e = new EntityBuilder()
-							.name(name)
-							.type(def)
-							.world(world)
-							.position(pos)
-							.build();
-					Gdx.app.log("GleedLoader", "Entity loaded:"+e.name);
-					return e;
+					if (def.getCategory( ).equals( playerCat )){
+						level.player.setPosition( pos );
+					} else {
+						Entity e = new EntityBuilder()
+								.name(name)
+								.type(def)
+								.world(level.world)
+								.position(pos)
+								.rotation( rot )
+								.build();
+						Gdx.app.log("GleedLoader", "Entity loaded:"+name);
+						level.entities.addEntity( name, e );
+					}
 				}
+			} else {
+				Gdx.app.log("GleedLoader", "Warning: "+name+"'s listed definition, '"+defName+"' is not a known EntityDef.");
 			}
-		return null;
+		} else {
+			Gdx.app.log("GleedLoader", "Warning: "+name+" does not have a valid '"+defTag+"' tag.");
+		}
 	}
 	
-	protected static String getDefinition(Element item){
+	public Level getLevel(){return level;}
+	
+	protected static EntityDef getDefinition(Element item){
 		HashMap<String,String> props = getCustomProperties(item);
-		return props.get( defTag );
+		return EntityDef.getDefinition(props.get( defTag ));
 	}
 	
 	protected static HashMap<String,String> getCustomProperties(Element e){
@@ -119,8 +116,9 @@ public class GleedLoader {
 		}
 		return out;
 	}
+
 	protected static final String defTag = "Definition";
-	protected static final String playerTag = "playerTest";
-	protected static final String tileTag = "tiledPlatform";
+	protected static final String playerCat = "Player";
+	protected static final String tileCat = "TiledPlatform";
 	
 }

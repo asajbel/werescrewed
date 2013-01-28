@@ -21,7 +21,7 @@ public class EntityDef {
 	// Methods
 	protected EntityDef( String n ) {
 		// Sprite Data
-		texture = null;
+		setTexture( null );
 		initialAnim = "";
 		origin = new Vector2( 0, 0 );
 		spriteScale = new Vector2( 1, 1 );
@@ -34,14 +34,14 @@ public class EntityDef {
 		fixedRotation = false;
 
 		// Misc Data
-		name = n;
+		setName( n );
 	}
 
 	protected EntityDef( String n, Texture t, String iA, BodyDef bDef,
 			ArrayList< FixtureDef > fixes ) {
 		this( n );
 		// Sprite Data
-		texture = t;
+		setTexture( t );
 		initialAnim = iA;
 
 		// Body Data
@@ -58,6 +58,30 @@ public class EntityDef {
 		super.finalize( );
 	}
 
+	public String getName( ) {
+		return name;
+	}
+
+	public void setName( String name ) {
+		this.name = name;
+	}
+
+	public String getCategory( ) {
+		return category;
+	}
+
+	public void setCategory( String category ) {
+		this.category = category;
+	}
+
+	public Texture getTexture( ) {
+		return texture;
+	}
+
+	public void setTexture( Texture texture ) {
+		this.texture = texture;
+	}
+
 	protected void loadComplexBody( float density, float friction,
 			float restitution, float scale, String bodyName ) {
 		String filename = "data/bodies/" + bodyName + ".json";
@@ -69,7 +93,7 @@ public class EntityDef {
 	}
 
 	// Sprite Fields (i.e. everything needed to define just the sprite half)
-	protected Texture texture;
+	private Texture texture;
 	protected String initialAnim;
 	protected Vector2 origin;
 	protected Vector2 spriteScale;
@@ -83,7 +107,7 @@ public class EntityDef {
 
 	// Miscellaneous Fields
 	protected String name;
-	protected String category;
+	private String category;
 
 	// Static Methods and Fields
 	protected static HashMap< String, EntityDef > definitions;
@@ -144,10 +168,10 @@ public class EntityDef {
 			EntityDef out = new EntityDef( id );
 
 			// Category Data
-			out.category = xml.get( "Category", NO_CATEGORY);
+			out.setCategory( xml.get( "category", NO_CATEGORY) );
 			// Sprite Data
 			String texName = xml.get( "texture" );
-			out.texture = new Texture( Gdx.files.internal( texName ) );
+			out.setTexture( new Texture( Gdx.files.internal( texName ) ) );
 			out.initialAnim = xml.get( "initialAnim" );
 			out.origin.x = xml.getFloat( "originX" );
 			out.origin.y = xml.getFloat( "originY" );
@@ -163,7 +187,7 @@ public class EntityDef {
 			float friction = xml.getFloat( "friction" );
 			float restitution = xml.getFloat( "restitution" );
 			float scale = xml.getFloat( "bodyScale" );
-			out.fixedRotation = xml.getBoolean( "fixedRotation" );
+			out.fixedRotation = xml.getBoolean( "fixedRotation", false);
 
 			out.loadComplexBody( density, friction, restitution, scale,
 					bodyName );

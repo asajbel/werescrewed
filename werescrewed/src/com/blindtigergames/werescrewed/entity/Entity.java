@@ -108,7 +108,7 @@ public class Entity {
 	}
 	
 	protected String generateName( ) {
-		return type.name;
+		return type.getName();
 	}
 
 	/**
@@ -125,10 +125,10 @@ public class Entity {
 		boolean nullTex;
 
 		nullTex = ( texture == null );
-		loadTex = ( nullTex && type != null && type.texture != null );
+		loadTex = ( nullTex && type != null && type.getTexture() != null );
 
 		if ( loadTex ) {
-			texture = type.texture;
+			texture = type.getTexture();
 		} else if ( nullTex ) {
 			return;
 		}
