@@ -129,8 +129,8 @@ public class TiledPlatform extends Platform {
 			d.tileSprite.setRotation( MathUtils.radiansToDegrees * body.getAngle( ) );
 			d.tileSprite.draw( batch );
 		}
-//		for( Screw s : screws)
-//			s.draw( batch );
+		for( Screw s : screws)
+			s.draw( batch );
 	}
 	
 
