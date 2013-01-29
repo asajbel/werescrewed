@@ -24,7 +24,7 @@ public class WereScrewedGame extends Game {
 
 		// ScreenManager.getInstance().show(Screen.GAME);
 		ScreenManager.getInstance( ).show( Screen.PHYSICS );
-		// ScreenManager.getInstance().show(Screen.IMOVER);
+		//ScreenManager.getInstance().show(Screen.IMOVER);
 
 		logger = new FPSLogger( );
 
