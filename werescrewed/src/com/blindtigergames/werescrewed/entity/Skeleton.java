@@ -166,6 +166,8 @@ public class Skeleton extends Entity {
 
     @Override
     public void update( float deltaTime ) {
+    	//apply mover stuff to all children
+    	//apply normal update to movers
         if ( mover != null ) {
             mover.move( deltaTime, body );
         }
