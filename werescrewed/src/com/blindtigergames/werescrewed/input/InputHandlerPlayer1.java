@@ -49,53 +49,48 @@ public class InputHandlerPlayer1 implements InputProcessor {
 
 	}
 
-	/*
+	/**
 	 * Returns whether the pause key is pressed.
 	 */
 	public boolean pausePressed( ) {
 		return pauseKeyPressed;
 	}
 
-	/*
+	/**
 	 * Returns whether the move left key is pressed
 	 * 
-	 * @param player - Selector to poll for the proper player
 	 */
 	public boolean leftPressed() {
 		return p1LeftPressed;
 	}
 
-	/*
+	/**
 	 * Returns whether the move right key is pressed
 	 * 
-	 * @param player - Selector to poll for the proper player
 	 */
 	public boolean rightPressed() {
 		return p1RightPressed;
 	}
 
-	/*
+	/**
 	 * Returns whether the jump key is pressed
 	 * 
-	 * @param player - Selector to poll for the proper player
 	 */
 	public boolean jumpPressed( ) {
 		return p1JumpPressed;
 	}
 
-	/*
+	/**
 	 * Returns whether the move down key is pressed
 	 * 
-	 * @param player - Selector to poll for the proper player
 	 */
 	public boolean downPressed( ) {
 		return p1DownPressed;
 	}
 
-	/*
-	 * Returns whether the screw key is pressed
+	/**
+	 * Returns whether the attach to screw key is pressed
 	 * 
-	 * @param player - Selector to poll for the proper player
 	 */
 	public boolean screwPressed( ) {
 		return Gdx.input.isKeyPressed( Keys.SPACE );
