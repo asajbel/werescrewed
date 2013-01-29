@@ -20,7 +20,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
  ******************************************************************************/
 public class Camera {
 	private static final boolean ANCHOR_TEST_MODE = false;
-//	private static final boolean ANCHOR_TEST_RENDER = true;
+//	private static final boolean ANCHOR_TEST_MODE= true;
 	
 	public static final float BOX_TO_PIXEL = 256f;
 	public static final float PIXEL_TO_BOX = 1/BOX_TO_PIXEL;
@@ -37,10 +37,13 @@ public class Camera {
 //	private static final float SPEED_TARGET_MODIFIER = 5f;
 	private static final float BUFFER_RATIO = .5f;
 //	private static final int LISTEN_BUFFER = 300;
-	private static final float ACCELERATION_RATIO = .003f;
+	private static final float ACCELERATION_RATIO = .005f;
+	private static final float DECELERATION_RATIO = .03f;
+	private static final float ACCELERATION_BUFFER_RATIO = .5f;
 	private static final float TARGET_BUFFER_RATIO = .05f;
 	private static final float MINIMUM_FOLLOW_SPEED = 3f;
 	private static final float MAX_ANGLE_DIFF = 45f;
+	private float accelerationBuffer;
 	private Vector2  translateVelocity;
 	private float translateSpeed;
 	private float translateAcceleration;
@@ -110,11 +113,11 @@ public class Camera {
 		translateSpeed = 0f;
 		translateAcceleration = 0f;
 		targetBuffer =  ( ( translateBuffer.width + translateBuffer.height ) / 2 ) * TARGET_BUFFER_RATIO;
+		accelerationBuffer =  ( ( translateBuffer.width/2 + translateBuffer.height/2 ) / 2 ) * ACCELERATION_BUFFER_RATIO;
 		translateState = true;
 				
 		player1Anchor = -1;
 		player2Anchor = -1;
-//		anchorList = AnchorList.getInstance();
 		anchorList = AnchorList.getInstance( camera );
 		anchorList.clear();
 		if (ANCHOR_TEST_MODE) {
@@ -158,7 +161,8 @@ public class Camera {
 		if (player2Anchor > -1) {
 			anchorList.setAnchorPos(player2Anchor, player2.getPosition());
 		}
-				
+		
+		// update all positions and dimensions
 		position = camera.position;
 		center2D.x = position.x;
 		center2D.y = position.y;
@@ -171,22 +175,59 @@ public class Camera {
 		translateBuffer.y = position.y - translateBuffer.height * .5f;
     	setTranslateTarget();
 		
-//    	if (anchorList.getMidpointVelocity( ).len( ) < MINIMUM_FOLLOW_SPEED && 
-//    			translateBuffer.contains(translateTarget.x, translateTarget.y)) {
-//    		translateState = false;
-//    	}
+    	// Do the actual translation and zooming
+    	adjustCamera( );
+		
+		// render buffers areas anchors
+		if (debugRender) {
+			renderBuffers( );
+		}
+		
+		camera.update();
+
+		if (debugInput) {
+			System.out.println("Zoom: " + camera.zoom);
+		}
+		
+		// also render anchors if debugRender == true
+		anchorList.update(debugRender);
+	}
+    
+    /**
+     * set focus of camera to the midpoint of all anchors
+     */
+    private Vector2 setTranslateTarget(){
+    	translateTarget.x = anchorList.midpoint().x;
+    	translateTarget.y = anchorList.midpoint().y;
     	
-//    	player1.moveRight();
+		translateTarget3D.x = translateTarget.x;
+		translateTarget3D.y = translateTarget.y;
+		translateTarget3D.z = 0f;
+    	return this.translateTarget;
+    }
+
+	/**
+	 * Adjust the camera by translating and zooming when necessary
+	 */
+	private void adjustCamera( ) {
+		translateLogic();
+	}
+
+	/**
+	 * Either translate, lock, or do nothing based on various buffers and positions
+	 */
+	private void translateLogic( ) {
+		// determine whether to translate, lock, or do nothing
 		if (!debugInput && translateState) {
 			if (center2D.dst(translateTarget) < targetBuffer) {
+				
+				// center of camera is inside of buffer circle around target
 				float tempAngle = 0f;
 				tempAngle = anchorList.getMidpointVelocity().angle() - translateVelocity.angle();
 				tempAngle = Math.abs(tempAngle);
-				if (anchorList.getMidpointVelocity().len() > MINIMUM_FOLLOW_SPEED &&
-						tempAngle < MAX_ANGLE_DIFF )
-					camera.position.set(translateTarget3D);
-				else {
-					camera.position.set(translateTarget3D);
+				translate();
+				if (anchorList.getMidpointVelocity().len() < MINIMUM_FOLLOW_SPEED ||
+						tempAngle > MAX_ANGLE_DIFF ) {
 					translateState = false;
 					translateVelocity.x = 0f;
 					translateVelocity.y = 0f;
@@ -204,48 +245,94 @@ public class Camera {
 			if (!translateBuffer.contains(translateTarget.x, translateTarget.y))
 				translateState = true;
 		}
+	}
+    
+    /**
+     * 
+     */
+    private void translate() {
+//    	camera.position.set(translateTarget3D);
+    	Vector2.tmp.x = translateTarget.x;
+    	Vector2.tmp.y = translateTarget.y;
+    	Vector2.tmp.sub(center2D);
+    	
+    	if (Vector2.tmp.len( ) > accelerationBuffer) {
+    		translateAcceleration = (Vector2.tmp.len() * ACCELERATION_RATIO);
+    	}
+    	else {
+    		translateAcceleration = -1f * Vector2.tmp.len( ) * DECELERATION_RATIO;
+    	}
+    	
+    	if ((translateSpeed + translateAcceleration) < (Vector2.tmp.len() - 5f))
+    		translateSpeed += translateAcceleration;
+    	else
+    		translateSpeed = Vector2.tmp.len() - 5f;
+    	
+    	if (translateSpeed < anchorList.getMidpointVelocity().len())
+    		translateSpeed = anchorList.getMidpointVelocity().len();
+    	
+    	Vector2.tmp.nor( );
+    	translateVelocity.x = Vector2.tmp.x;
+    	translateVelocity.y = Vector2.tmp.y;
+    	translateVelocity.mul(translateSpeed);
+    	camera.translate(translateVelocity);
+    }
+    
+    /**
+     * zoom camera to keep anchors on screen
+     */
+    private void zoom() {
+    	
+    }
+    
+    /**
+     * determine if any part of rect1 is outside of rect2
+     * @param rect1 inner Rectangle
+     * @param rect2 outer Rectangle
+     * @return true if any part of rect1 is outside of rect2, false otherwise
+     */
+    private boolean rectOutsideRect(Rectangle rect1, Rectangle rect2) {
+    	boolean returnValue = false;
+    	
+    	
+    	
+    	return returnValue;
+    }
+    
+    private void createTestAnchors() {
+//    	anchorList.addAnchor( false, new Vector2(0f, 0f) );
+    	anchorList.addAnchor( false, new Vector2(-128f, 128f) );
+    }
+    
+	/**
+	 * Render rectangles and circles representing various buffers. Use for camera debugging.
+	 */
+	private void renderBuffers( ) {
+		// render the translation buffer
+		shapeRenderer.setProjectionMatrix(camera.combined);
+		shapeRenderer.begin(ShapeType.Rectangle);
+		shapeRenderer.identity();
+		shapeRenderer.rect(translateBuffer.x, translateBuffer.y, translateBuffer.width, translateBuffer.height);
+		shapeRenderer.end();
+		shapeRenderer.begin(ShapeType.Line);
+		shapeRenderer.line(translateBuffer.x, translateBuffer.y,
+							translateBuffer.x + translateBuffer.width,
+							translateBuffer.y + translateBuffer.height);
+		shapeRenderer.line(translateBuffer.x, translateBuffer.y + translateBuffer.height,
+				translateBuffer.x + translateBuffer.width, translateBuffer.y);
+		shapeRenderer.end();
 		
-		if (debugRender) {
-			
-			// render the translation buffer
-			shapeRenderer.setProjectionMatrix(camera.combined);
-			shapeRenderer.begin(ShapeType.Rectangle);
-			shapeRenderer.identity();
-			shapeRenderer.rect(translateBuffer.x, translateBuffer.y, translateBuffer.width, translateBuffer.height);
-			shapeRenderer.end();
-			shapeRenderer.begin(ShapeType.Line);
-			shapeRenderer.line(translateBuffer.x, translateBuffer.y,
-								translateBuffer.x + translateBuffer.width,
-								translateBuffer.y + translateBuffer.height);
-			shapeRenderer.line(translateBuffer.x, translateBuffer.y + translateBuffer.height,
-					translateBuffer.x + translateBuffer.width, translateBuffer.y);
-			shapeRenderer.end();
-			
-			// render the translation target buffer
-			shapeRenderer.begin(ShapeType.Circle);
-			shapeRenderer.identity();
-			shapeRenderer.circle(translateTarget.x, translateTarget.y, targetBuffer);
-			shapeRenderer.end();
-//			shapeRenderer.begin(ShapeType.Rectangle);
-//			shapeRenderer.identity();
-//			shapeRenderer.rect(translateBuffer.x, translateBuffer.y, translateBuffer.width, translateBuffer.height);
-//			shapeRenderer.end();
-		}
+		// render the translation target buffer
+		shapeRenderer.begin(ShapeType.Circle);
+		shapeRenderer.identity();
+		shapeRenderer.circle(translateTarget.x, translateTarget.y, targetBuffer);
+		shapeRenderer.end();
 		
-		camera.update();
-
-		if (debugInput) {
-			System.out.println("Zoom: " + camera.zoom);
-		}
-		
-		anchorList.update(debugRender);
-		
-		/*float lerp = 0.1f;
-		Vector3 position = camera.position;
-		position.x += (player.positionX - position.x) * lerp;
-		position.y += (player.positionY - position.y) * lerp;
-		camera.position.add(position);
-		*/
+		// render the acceleration target buffer
+		shapeRenderer.begin(ShapeType.Circle);
+		shapeRenderer.identity();
+		shapeRenderer.circle(translateTarget.x, translateTarget.y, accelerationBuffer);
+		shapeRenderer.end();
 	}
 
     private void handleInput() {
@@ -284,42 +371,5 @@ public class Camera {
             if(Gdx.input.isKeyPressed(Input.Keys.NUM_2)) {
                 camera.zoom = 2f;
             }
-    }
-    
-    /**
-     * set focus of camera to the midpoint of all anchors
-     */
-    private Vector2 setTranslateTarget(){
-    	translateTarget.x = anchorList.midpoint().x;
-    	translateTarget.y = anchorList.midpoint().y;
-//    	translateTarget.x += anchorList.getMidpointVelocity().x * SPEED_TARGET_MODIFIER; 
-//    	translateTarget.y += anchorList.getMidpointVelocity().y * SPEED_TARGET_MODIFIER; 
-    	
-		translateTarget3D.x = translateTarget.x;
-		translateTarget3D.y = translateTarget.y;
-		translateTarget3D.z = 0f;
-    	return this.translateTarget;
-    }
-    
-    private void translate() {
-//    	camera.position.set(translateTarget3D);
-    	Vector2.tmp.x = translateTarget.x;
-    	Vector2.tmp.y = translateTarget.y;
-    	Vector2.tmp.sub(center2D);
-    	translateAcceleration = Vector2.tmp.len() * ACCELERATION_RATIO;
-    	if ((translateSpeed + translateAcceleration) < (Vector2.tmp.len() - 5f))
-    		translateSpeed += translateAcceleration;
-    	else
-    		translateSpeed = Vector2.tmp.len() - 5f;
-    	Vector2.tmp.nor( );
-    	translateVelocity.x = Vector2.tmp.x;
-    	translateVelocity.y = Vector2.tmp.y;
-    	translateVelocity.mul(translateSpeed);
-    	camera.translate(translateVelocity);
-    }
-    
-    private void createTestAnchors() {
-//    	anchorList.addAnchor( false, new Vector2(0f, 0f) );
-    	anchorList.addAnchor( false, new Vector2(-128f, 128f) );
     }
 }
