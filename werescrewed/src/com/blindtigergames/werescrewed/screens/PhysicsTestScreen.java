@@ -101,6 +101,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		movingTP.body.setType( BodyType.DynamicBody );
 
 		entityManager.addEntity( movingTP.name, movingTP );
+		entityManager.addEntity( tp.name, tp );
 		entityManager.removeEntity( movingTP.name, movingTP );
 
 		background = new Texture( Gdx.files.internal( "data/libgdx.png" ) );
@@ -108,6 +109,10 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 				skeleton, world );
 		puzzleScrew = new PuzzleScrew( "001", new Vector2( 0.0f, 0.2f ), 50,
 				skeleton, world );
+		
+	
+		entityManager.addEntity( structScrew.name, structScrew );
+
 
 		Vector2 axis = new Vector2( 1, 0 );
 		PrismaticJointDef jointDef = new PrismaticJointDef( );
@@ -245,8 +250,6 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		player.update( deltaTime );
 		structScrew.update( deltaTime );
 		puzzleScrew.update( deltaTime );
-		// rootSkeleton.update( deltaTime );
-		// movingTP.update( deltaTime );
 		entityManager.updateEntity( deltaTime );
 
 		// ONLY FOR TESTING, EVERYTHING IN WORLD IS IN A SKELETON (THEREFORE CAN
