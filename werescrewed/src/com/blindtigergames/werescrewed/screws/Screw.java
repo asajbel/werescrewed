@@ -26,9 +26,8 @@ public class Screw extends Entity {
 	}
 
 	public Screw( String name, Vector2 pos, Body body ) {
-		super( name, pos,
-				new Texture( Gdx.files.internal( "data/screw.png" ) ), body,
-				false );
+		this( name, pos, new Texture( Gdx.files.internal( "data/screw.png" ) ),
+				body );
 	}
 
 	@Override
@@ -54,6 +53,7 @@ public class Screw extends Entity {
 		return depth;
 	}
 
+	
 	public void exampleCollide( String str ) {
 		System.out.println( str );
 	}
