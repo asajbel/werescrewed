@@ -14,7 +14,7 @@ import com.blindtigergames.werescrewed.puzzles.PuzzleManager;
 import com.blindtigergames.werescrewed.screens.GameScreen;
 
 /**
- * @descrip: blah blah
+ * blah blah
  * 
  * @author Dennis
  * 
@@ -23,9 +23,9 @@ import com.blindtigergames.werescrewed.screens.GameScreen;
 public class PuzzleScrew extends Screw {
 	public PuzzleManager puzzleManager;
 	
-	public PuzzleScrew( String n, Vector2 pos, int max,
+	public PuzzleScrew( String name, Vector2 pos, int max,
 			Skeleton skeleton, World world ) {
-		super( n, pos, null );
+		super( name, pos, null );
 		this.world = world;
 		maxDepth = max;
 		depth = max;

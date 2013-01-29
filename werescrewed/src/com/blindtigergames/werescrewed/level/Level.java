@@ -44,7 +44,7 @@ public class Level{
 		float h = Gdx.graphics.getHeight( ) / zoom;
 
 		world = new World( new Vector2 ( 0, -100 ), true);
-		player = new Player( world, new Vector2( 1.0f, 1.0f ), "player");
+		player = new Player( "player", world, new Vector2( 1.0f, 1.0f ));
 		camera = new Camera( w, h, player);
 		
 		texture = new Texture( Gdx.files.internal( "data/rletter.png" ) );

@@ -13,7 +13,7 @@ import com.blindtigergames.werescrewed.platforms.Platform;
 import com.blindtigergames.werescrewed.screens.GameScreen;
 
 /**
- * @descrip: blah blah
+ * blah blah
  * 
  * @author Dennis
  * 
@@ -25,9 +25,9 @@ public class StructureScrew extends Screw {
 	private RevoluteJoint screwJoint;
 	private RevoluteJoint platformToScrew;
 
-	public StructureScrew( String n, Vector2 pos, int max, Platform platform,
+	public StructureScrew( String name, Vector2 pos, int max, Platform platform,
 			Skeleton skeleton, World world ) {
-		super( n, pos, null );
+		super( name, pos, null );
 		this.world = world;
 		this.skeleton = skeleton;
 		maxDepth = max;

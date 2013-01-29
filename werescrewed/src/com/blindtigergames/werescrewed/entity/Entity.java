@@ -11,7 +11,12 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.blindtigergames.werescrewed.entity.mover.IMover;
 import com.blindtigergames.werescrewed.screens.GameScreen;
 
-//an Entity is anything that can exist, it has a position and a texture
+/**
+ * Anything that can exist. Contains a physics body, and a sprite which may or may not be animated.
+ * 
+ * @author Blind Tiger Games
+ * 
+ */
 public class Entity {
 	public String name;
 	public EntityDef type;
@@ -35,9 +40,9 @@ public class Entity {
 
 	public Entity( String name, Vector2 pos, Texture texture, Body body,
 			boolean solid ) {
-		this.offset = new Vector2( 0.0f, 0.0f );
-		this.solid = solid;
 		this.name = name;
+		this.solid = solid;
+		this.offset = new Vector2( 0.0f, 0.0f );
 		if ( texture != null )
 			constructSprite( texture );
 		this.body = body;

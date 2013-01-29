@@ -88,7 +88,7 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 		// world.setContactListener(MCL);
 		String name = "player";
 
-		player = new Player( world, new Vector2( 1.0f, 1.0f ), name );
+		player = new Player( name, world, new Vector2( 1.0f, 1.0f ) );
 
 		cam = new Camera( w, h, player );
 		platBuilder = new PlatformBuilder( world );
