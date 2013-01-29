@@ -22,12 +22,8 @@ public class Screw extends Entity {
 	protected final short CATEGORY_SCREWS = 0x0008;
 
 	public Screw( String name, Vector2 pos, Texture tex, Body body ) {
-		super( name, pos, tex, body, false );
-	}
-
-	public Screw( String name, Vector2 pos, Body body ) {
-		this( name, pos, new Texture( Gdx.files.internal( "data/screw.png" ) ),
-				body );
+		super( name, pos, ( tex == null ? new Texture(
+				Gdx.files.internal( "data/screw.png" ) ) : tex ), body, false );
 	}
 
 	@Override
@@ -53,7 +49,6 @@ public class Screw extends Entity {
 		return depth;
 	}
 
-	
 	public void exampleCollide( String str ) {
 		System.out.println( str );
 	}

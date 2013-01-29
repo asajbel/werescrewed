@@ -235,7 +235,7 @@ public class Player extends Entity {
 		}
 
 		if ( ( !inputHandler.leftPressed( ) && !inputHandler.rightPressed( ) )
-				&& ( prevKey == Keys.D || prevKey == Keys.A ) && grounded ) {
+				&& ( prevKey == Keys.D || prevKey == Keys.A ) ) {
 			stop( );
 		}
 

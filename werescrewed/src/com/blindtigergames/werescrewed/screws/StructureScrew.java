@@ -28,7 +28,7 @@ public class StructureScrew extends Screw {
 
 	public StructureScrew( String name, Vector2 pos, int max,
 			Platform platform, Skeleton skeleton, World world ) {
-		super( name, pos, null );
+		super( name, pos, null, null );
 		this.world = world;
 		this.skeleton = skeleton;
 		maxDepth = max;

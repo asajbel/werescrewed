@@ -28,24 +28,55 @@ public class Entity {
 	public IMover mover;
 	private boolean solid;
 
+	/**
+	 * Create entity by definition
+	 * 
+	 * @param name
+	 * @param type
+	 * @param world
+	 *            in which the entity exists
+	 * @param pos
+	 *            ition of the entity in the world
+	 * @param rot
+	 *            ation of the entity
+	 * @param scale
+	 *            of the entity
+	 * @param texture
+	 *            (null if defined elsewhere)
+	 * @param solid
+	 *            boolean determining whether or not the player can stand on it
+	 */
 	public Entity( String name, EntityDef type, World world, Vector2 pos,
 			float rot, Vector2 scale, Texture texture, boolean solid ) {
 		this.name = name;
 		this.type = type;
 		this.world = world;
-		this.offset = new Vector2( 0.0f, 0.0f );
 		this.solid = solid;
+		this.offset = new Vector2( 0.0f, 0.0f );
 		constructSprite( texture );
-		constructBody( pos );
+		this.body = constructBody( );
+		setPosition( pos );
 	}
 
+	/**
+	 * Create entity by body
+	 * 
+	 * @param name
+	 * @param pos
+	 *            ition of the entity in the world
+	 * @param texture
+	 *            (null if defined elsewhere)
+	 * @param body
+	 *            defined body of the entity
+	 * @param solid
+	 *            boolean determining whether or not the player can stand on it
+	 */
 	public Entity( String name, Vector2 pos, Texture texture, Body body,
 			boolean solid ) {
 		this.name = name;
 		this.solid = solid;
 		this.offset = new Vector2( 0.0f, 0.0f );
-		if ( texture != null )
-			constructSprite( texture );
+		constructSprite( texture );
 		this.body = body;
 		if ( body != null ) {
 			world = body.getWorld( );
@@ -137,15 +168,18 @@ public class Entity {
 		this.sprite.setOrigin( origin.x, origin.y );
 	}
 
-	protected void constructBody( Vector2 pos ) {
+	protected Body constructBody( ) {
+		Body body;
 		if ( type != null ) {
 			body = world.createBody( type.bodyDef );
 			body.setUserData( this );
 			for ( FixtureDef fix : type.fixtureDefs ) {
 				body.createFixture( fix );
 			}
-			setPosition( pos.x, pos.y );
+		} else {
+			return null;
 		}
+		return body;
 	}
 
 	/**

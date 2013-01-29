@@ -25,7 +25,7 @@ public class PuzzleScrew extends Screw {
 	
 	public PuzzleScrew( String name, Vector2 pos, int max,
 			Skeleton skeleton, World world ) {
-		super( name, pos, null );
+		super( name, pos, null, null );
 		this.world = world;
 		maxDepth = max;
 		depth = max;

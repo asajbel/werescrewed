@@ -20,7 +20,7 @@ public class BossScrew extends Screw {
 
 	public BossScrew( String name, Vector2 pos, int max, Body body,
 			Entity platform, Skeleton skeleton ) {
-		super( name, pos, body );
+		super( name, pos, null, body );
 
 		maxDepth = max;
 		depth = max;
