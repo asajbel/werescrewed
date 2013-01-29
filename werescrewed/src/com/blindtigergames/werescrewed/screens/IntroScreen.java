@@ -4,24 +4,15 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.BitmapFont.TextBounds;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.utils.Timer;
-import com.blindtigergames.werescrewed.timer.ScreenSwitchTask;
 
 class IntroScreen implements com.badlogic.gdx.Screen {
 
-	private static final String LIB = "lib";
-	private static final String GDX = "GDX";
-
 	private SpriteBatch batch = null;
 	private BitmapFont font = null;
-	private float captionX1 = 0;
-	private float captionX2 = 0;
-	private float captionY = 0;
 	static Texture player = new Texture( Gdx.files.internal( "data/libgdx.png" ) );
 
 	Stage stage;
@@ -29,10 +20,6 @@ class IntroScreen implements com.badlogic.gdx.Screen {
 	public IntroScreen( ) {
 		batch = new SpriteBatch( );
 		font = new BitmapFont( );
-		TextBounds wholeCaptionBounds = font.getBounds( LIB + GDX );
-		captionX1 = -wholeCaptionBounds.width / 2;
-		captionY = wholeCaptionBounds.height / 2;
-		captionX2 = captionX1 + font.getBounds( LIB ).width + 1f;
 	}
 
 	@Override

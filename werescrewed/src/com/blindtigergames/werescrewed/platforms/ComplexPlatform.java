@@ -1,22 +1,13 @@
 package com.blindtigergames.werescrewed.platforms;
 
-//import aurelienribon.bodyeditor.BodyEditorLoader;
-
-//import com.badlogic.gdx.Gdx;
 import aurelienribon.bodyeditor.BodyEditorLoader;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
-//import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
-//import com.badlogic.gdx.physics.box2d.BodyDef;
-//import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
-//import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
-
-//import com.blindtigergames.werescrewed.entity.BodyEditorLoader;
 import com.blindtigergames.werescrewed.entity.EntityDef;
 import com.blindtigergames.werescrewed.screens.GameScreen;
 
@@ -44,17 +35,19 @@ public class ComplexPlatform extends Platform {
 		// this.scale = scale;
 	}
 
+	@SuppressWarnings( "unused" )
 	private void constructComplexBody( float x, float y, int scale,
 			String bodyName ) {
 		String filename = "data/bodies/" + bodyName + ".json";
 		BodyEditorLoader loader = new BodyEditorLoader(
 				Gdx.files.internal( filename ) );
 		BodyDef bd = new BodyDef( );
-		bd.position.set( x * GameScreen.PIXEL_TO_BOX, y * GameScreen.PIXEL_TO_BOX );
+		bd.position.set( x * GameScreen.PIXEL_TO_BOX, y
+				* GameScreen.PIXEL_TO_BOX );
 		bd.type = BodyType.DynamicBody;
 
-//	public void update( float deltaTime ) {
-//		super.update( deltaTime );
-//	}
+		// public void update( float deltaTime ) {
+		// super.update( deltaTime );
+		// }
 	}
 }

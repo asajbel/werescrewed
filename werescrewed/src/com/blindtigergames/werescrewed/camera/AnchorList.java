@@ -24,8 +24,6 @@ public class AnchorList {
 	private static AnchorList instance;
 	private ShapeRenderer shapeRenderer;
 	private OrthographicCamera camera;
-	private int[] anchorPair;
-	
 	private AnchorList() {
 		this(null);
 	}
