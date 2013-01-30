@@ -93,16 +93,16 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 				.setTexture( texture ).setName( "tp" ).setResitituion( 0.0f )
 				.buildTilePlatform( );
 
-		movingTP = platBuilder.setPosition( 350.0f, 170.0f )
+		movingTP = platBuilder.setPosition( 100.0f, 70.0f )
 				.setDimensions( 10, 1 ).setTexture( texture )
 				.setName( "movingTP" ).setResitituion( 0.0f )
 				.buildTilePlatform( );
 
-		movingTP.body.setType( BodyType.DynamicBody );
+		movingTP.body.setType( BodyType.KinematicBody );
 
 		entityManager.addEntity( movingTP.name, movingTP );
 		entityManager.addEntity( tp.name, tp );
-		entityManager.removeEntity( movingTP.name, movingTP );
+		//entityManager.removeEntity( movingTP.name, movingTP );
 
 		background = new Texture( Gdx.files.internal( "data/libgdx.png" ) );
 		structScrew = new StructureScrew( "", tp.body.getPosition( ), 50, tp,
@@ -120,8 +120,8 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 				movingTP.body.getPosition( ), axis );
 		jointDef.enableMotor = true;
 		jointDef.enableLimit = true;
-		jointDef.lowerTranslation = -1.5f;
-		jointDef.upperTranslation = 1.0f;
+		jointDef.lowerTranslation = -2.5f;
+		jointDef.upperTranslation = 3.0f;
 		jointDef.motorSpeed = 7.0f;
 
 		puzzleScrew.puzzleManager.addEntity( movingTP );
