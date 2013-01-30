@@ -6,6 +6,8 @@ import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.controllers.Controller;
+import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
@@ -25,6 +27,7 @@ import com.blindtigergames.werescrewed.entity.Skeleton;
 import com.blindtigergames.werescrewed.entity.mover.PistonMover;
 import com.blindtigergames.werescrewed.entity.mover.PuzzleType;
 import com.blindtigergames.werescrewed.entity.mover.SlidingMotorMover;
+import com.blindtigergames.werescrewed.input.MyControllerListener;
 import com.blindtigergames.werescrewed.joint.JointFactory;
 import com.blindtigergames.werescrewed.joint.PrismaticJointBuilder;
 import com.blindtigergames.werescrewed.platforms.ComplexPlatform;
@@ -53,6 +56,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 	private Texture texture;
 	private World world;
 	private MyContactListener mcl;
+	private MyControllerListener myconlis;
 	private SBox2DDebugRenderer debugRenderer;
 	private Player player;
 	private TiledPlatform tp, ground, movingTP;
@@ -82,6 +86,9 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		world = new World( new Vector2( 0, -45 ), true );
 		mcl = new MyContactListener( );
 		world.setContactListener( mcl );
+		myconlis = new MyControllerListener();
+		Controllers.addListener(myconlis);
+ 
 		skeleton = new Skeleton( "", Vector2.Zero, background, world );
 		rootSkeleton = new Skeleton( "", Vector2.Zero, null, world );
 		platBuilder = new PlatformBuilder( world );
@@ -239,6 +246,13 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		Gdx.gl20.glClearColor( 0.0f, 0f, 0.0f, 1.0f );
 		Gdx.gl20.glClear( GL20.GL_COLOR_BUFFER_BIT );
 
+	
+		for(Controller controller: Controllers.getControllers()) {
+			   //Gdx.app.log("ok", controller.getName());
+			   if(controller.getButton(0))
+				   player.jump( );
+			}
+	
 		cam.update( );
 
 		if ( Gdx.input.isKeyPressed( Input.Keys.ESCAPE ) ) {
