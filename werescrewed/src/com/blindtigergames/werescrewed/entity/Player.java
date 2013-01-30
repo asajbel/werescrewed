@@ -184,7 +184,21 @@ public class Player extends Entity {
 						body.getWorldCenter( ) );
 			else if ( velocity >= -0.1 && velocity <= 0.1f && velocity != 0.0f )
 				body.setLinearVelocity( 0.0f, 0.0f );
-			System.out.println( velocity );
+			}
+	}
+	
+	private void slow( ) {
+		float velocity = body.getLinearVelocity( ).x;
+		if ( velocity != 0.0f ) {
+			if ( velocity < -0.1f )
+				body.applyLinearImpulse( new Vector2( 0.001f, 0.0f ),
+						body.getWorldCenter( ) );
+			else if ( velocity > 0.1f )
+				body.applyLinearImpulse( new Vector2( -0.001f, 0.0f ),
+						body.getWorldCenter( ) );
+			else if ( velocity >= -0.1 && velocity <= 0.1f && velocity != 0.0f )
+				body.setLinearVelocity( 0.0f, 0.0f );
+			System.out.println("player velocity: " + velocity );
 		}
 	}
 
@@ -236,7 +250,8 @@ public class Player extends Entity {
 
 		if ( ( !inputHandler.leftPressed( ) && !inputHandler.rightPressed( ) )
 				&& ( prevKey == Keys.D || prevKey == Keys.A ) ) {
-			stop( );
+			if(grounded) stop();
+			else slow( );
 		}
 
 		if ( inputHandler.screwPressed( ) && hitScrew
