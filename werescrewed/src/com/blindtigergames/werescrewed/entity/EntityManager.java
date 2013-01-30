@@ -4,12 +4,19 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+/*
+ *EntityManager.java, meant to hold and store a list of entities and skeletons
+ * for purposes of updating and deleting them.
+ *Authors: Edward Boning, Jennifer Makaiwi
+ * 
+ */
+
 public class EntityManager {
 
-	protected static HashMap< String, Entity > entityList = new HashMap< String, Entity >( );
-	protected static HashMap< String, Skeleton > skeletonList = new HashMap< String, Skeleton >( );
-	protected static HashMap< String, Entity > entitiesToAdd = new HashMap < String, Entity >( );
-	protected static HashMap< String, Skeleton > skeletonsToAdd = new HashMap < String, Skeleton >( );
+	protected static HashMap < String, Entity > entityList = new HashMap< String, Entity >( );
+	protected static HashMap < String, Skeleton > skeletonList = new HashMap< String, Skeleton >( );
+	protected static HashMap < String, Entity > entitiesToAdd = new HashMap < String, Entity >( );
+	protected static HashMap < String, Skeleton > skeletonsToAdd = new HashMap < String, Skeleton >( );
 	protected static HashMap < String, Entity > entitiesToRemove = new HashMap < String, Entity >( );
 	protected static HashMap < String, Skeleton > skeletonsToRemove = new HashMap < String, Skeleton >( );
 
@@ -17,7 +24,10 @@ public class EntityManager {
 	
 	public EntityManager ( ) { }
 	
-	//Updates Entities and Skeletons stored in the HashMap
+	/**
+	 * Updates Entities and Skeletons stored in the HashMap
+	 * @param deltaTime - variable tracing the change in time between ticks
+	 */
 	public void updateEntity( float deltaTime ) {		
 		Iterator< Map.Entry< String,Entity > > it = entityList.entrySet( ).iterator( );
 		Map.Entry< String, Entity > entityToUpdate;
@@ -73,24 +83,40 @@ public class EntityManager {
 		
 	}
 	
-	//Adds an Entity to the HashMap
+	/**Adds an Entity to the HashMap
+	 * 
+	 * @param name - name added as a key to the HashMap
+	 * @param type - Object added as a value to the HashMap
+	 */
 	public void addEntity ( String name, Entity type ) {
 		entitiesToAdd.put( name,  type );
 	}
 	
-	//Adds a Skeleton to the HashMap
+	/**
+	 * Adds a Skeleton to the HashMap
+	 * @param name - name added as a key to the HashMap
+	 * @param type - Object added as a value to the HashMap
+	 */
 	public void addSkeleton ( String name, Skeleton type ) {
 		skeletonsToAdd.put( name, type );
 	}
 	
-	//Removes an Entity from the HashMap
+	/**
+	 * Removes an Entity from the HashMap
+	 * @param name - name removed from the HashMap
+	 * @param type - Object value removed from the HashMap
+	 */
 	public void removeEntity ( String name, Entity type ) {
 		System.out.println("class com.blindtigergames.werescrewed.entity.EntityManager: adding entity " + name + " to remove list");
 		entitiesToRemove.put( name,  type );
 	//	entityList.remove( name );
 	}
 	
-	//Removes a Skeleton from the HashMap
+	/**
+	 * Removes a Skeleton from the HashMap
+	 * @param name - name removed from the HashMap
+	 * @param type - Object value removed from the HashMap
+	 */
 	public void removeSkeleton ( String name, Skeleton type ) {
 		System.out.println("class com.blindtigergames.werescrewed.entity.EntityManager: adding skeleton " + name + " to remove list");
 		skeletonsToRemove.put( name,  type );

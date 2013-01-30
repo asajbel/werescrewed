@@ -1,5 +1,6 @@
 package com.blindtigergames.werescrewed.screws;
 
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
@@ -13,7 +14,7 @@ import com.blindtigergames.werescrewed.platforms.Platform;
 import com.blindtigergames.werescrewed.screens.GameScreen;
 
 /**
- * @descrip: blah blah
+ * blah blah
  * 
  * @author Dennis
  * 
@@ -24,15 +25,20 @@ public class StructureScrew extends Screw {
 	private Skeleton skeleton;
 	private RevoluteJoint screwJoint;
 	private RevoluteJoint platformToScrew;
+	private int fallTimeout;
+	private boolean lerpUp = true;
+	private float alpha = 0.0f;
 
-	public StructureScrew( String n, Vector2 pos, int max, Platform platform,
-			Skeleton skeleton, World world ) {
-		super( n, pos, null );
+	public StructureScrew( String name, Vector2 pos, int max,
+			Platform platform, Skeleton skeleton, World world ) {
+		super( name, pos, null, null );
 		this.world = world;
 		this.skeleton = skeleton;
 		maxDepth = max;
 		depth = max;
 		rotation = 0;
+		fallTimeout = max * 4;
+
 
 		// create the screw body
 		BodyDef screwBodyDef = new BodyDef( );
@@ -73,14 +79,11 @@ public class StructureScrew extends Screw {
 
 	@Override
 	public void screwLeft( ) {
-		body.setAngularVelocity( 15 );
-		depth--;
-		rotation += 10;
-		screwStep = depth + 5;
-		if ( depth == 0 && screwJoint != null ) {
-			world.destroyJoint( platformToScrew );
-			world.destroyJoint( screwJoint );
-			depth = -1;
+		if ( depth > 0 ) {
+			body.setAngularVelocity( 15 );
+			depth--;
+			rotation += 10;
+			screwStep = depth + 5;
 		}
 	}
 
@@ -97,13 +100,44 @@ public class StructureScrew extends Screw {
 	@Override
 	public void update( float deltaTime ) {
 		super.update( deltaTime );
-		sprite.setPosition(
-				sprite.getX( )
-						+ ( .25f * ( float ) ( ( maxDepth - depth ) * ( Math
-								.cos( body.getAngle( ) ) ) ) ),
-				sprite.getY( )
-						+ ( .25f * ( float ) ( ( maxDepth - depth ) * ( Math
-								.sin( body.getAngle( ) ) ) ) ) );
+		Vector2 bodyPos = body.getPosition( ).mul( GameScreen.BOX_TO_PIXEL );
+		sprite.setPosition( bodyPos.x - offset.x, bodyPos.y - offset.y );
+		if ( depth == 0 ) {
+			if ( fallTimeout == 0 && screwJoint != null ) {
+				world.destroyJoint( platformToScrew );
+				world.destroyJoint( screwJoint );
+			}
+			fallTimeout--;
+		} else {
+			fallTimeout = maxDepth * 4;
+		}
+		if ( depth > 0 ) {
+			sprite.setPosition(
+					sprite.getX( )
+							+ ( .25f * ( float ) ( ( maxDepth - depth ) * ( Math
+									.cos( body.getAngle( ) ) ) ) ),
+					sprite.getY( )
+							+ ( .25f * ( float ) ( ( maxDepth - depth ) * ( Math
+									.sin( body.getAngle( ) ) ) ) ) );
+		} else if ( fallTimeout > 0 ){
+			sprite.setPosition( sprite.getX( ) - 8f, sprite.getY( ) );
+			Vector2 spritePos = new Vector2( sprite.getX( ), sprite.getY( ) );
+			Vector2 target1 = new Vector2( sprite.getX( ) + 8f, sprite.getY( ) );
+			if (fallTimeout % (maxDepth/5.0f) == 0 ){
+				if( lerpUp ){
+					lerpUp = false;
+				} else {
+					lerpUp = true;
+				}
+			}
+			if( lerpUp ){
+				alpha += 1f/(maxDepth/5.0f);
+			} else {
+				alpha -= 1f/(maxDepth/5.0f);
+			}
+			spritePos.lerp( target1, alpha );
+			sprite.setPosition( spritePos.x, spritePos.y );
+		}
 		sprite.setRotation( rotation );
 		if ( depth != screwStep ) {
 			screwStep--;
@@ -112,6 +146,13 @@ public class StructureScrew extends Screw {
 			body.setAngularVelocity( 0 );
 		}
 
+	}
+
+	@Override
+	public void draw( SpriteBatch batch ) {
+		if ( sprite != null ) {
+			sprite.draw( batch );
+		}
 	}
 
 	private void attachToSkeleton( ) {

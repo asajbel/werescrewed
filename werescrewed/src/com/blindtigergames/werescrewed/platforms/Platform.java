@@ -6,6 +6,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.blindtigergames.werescrewed.entity.Entity;
@@ -33,6 +34,11 @@ public class Platform extends Entity {
 	// tileConstant is 16 for setasbox function which uses half width/height
 	// creates 32x32 objects
 	protected final int tileConstant = 16;
+	
+	/**
+	 * Used for kinematic movement connected to skeleton
+	 */
+	protected Vector2 origin;
 
 	public Platform( String n, Vector2 pos, Texture tex, World world ) {
 		super( n, pos, tex, null, true );

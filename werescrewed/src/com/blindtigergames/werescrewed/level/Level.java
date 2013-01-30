@@ -1,8 +1,6 @@
 package com.blindtigergames.werescrewed.level;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
@@ -10,10 +8,10 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.blindtigergames.werescrewed.camera.Camera;
 import com.blindtigergames.werescrewed.debug.SBox2DDebugRenderer;
 import com.blindtigergames.werescrewed.entity.Player;
-import com.blindtigergames.werescrewed.platforms.*;
-import com.blindtigergames.werescrewed.screens.GameScreen;
-import com.blindtigergames.werescrewed.screens.Screen;
-import com.blindtigergames.werescrewed.screens.ScreenManager;
+import com.blindtigergames.werescrewed.platforms.PlatformBuilder;
+import com.blindtigergames.werescrewed.platforms.RoomPlatform;
+import com.blindtigergames.werescrewed.platforms.ShapePlatform;
+import com.blindtigergames.werescrewed.platforms.TiledPlatform;
 
 
 /**
@@ -44,7 +42,7 @@ public class Level{
 		float h = Gdx.graphics.getHeight( ) / zoom;
 
 		world = new World( new Vector2 ( 0, -100 ), true);
-		player = new Player( world, new Vector2( 1.0f, 1.0f ), "player");
+		player = new Player( "player", world, new Vector2( 1.0f, 1.0f ));
 		camera = new Camera( w, h, player);
 		
 		texture = new Texture( Gdx.files.internal( "data/rletter.png" ) );

@@ -6,14 +6,11 @@
 
 package com.blindtigergames.werescrewed.input;
 
-import com.badlogic.gdx.Input.*;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.controllers.*;
 
 public class InputHandlerPlayer1 implements InputProcessor {
-
-	private int p1LastKeyPressed;
 
 	private boolean pauseKeyPressed;
 
@@ -21,11 +18,6 @@ public class InputHandlerPlayer1 implements InputProcessor {
 	private boolean p1RightPressed;
 	private boolean p1JumpPressed;
 	private boolean p1DownPressed;
-	private boolean p1ScrewPressed;
-	private boolean p1ScrewingClockwise;
-	private boolean p1ScrewingCounterClockwise;
-
-
 	/*
 	 * Hooks up the InputProcessor to the input class, so events can be reported
 	 */
@@ -45,57 +37,52 @@ public class InputHandlerPlayer1 implements InputProcessor {
 		p1RightPressed = Gdx.input.isKeyPressed( Keys.D );
 		p1JumpPressed = Gdx.input.isKeyPressed( Keys.W );
 		p1DownPressed = Gdx.input.isKeyPressed( Keys.S );
-		p1ScrewPressed = Gdx.input.isKeyPressed( Keys.Q );
+		Gdx.input.isKeyPressed( Keys.Q );
 
 	}
 
-	/*
+	/**
 	 * Returns whether the pause key is pressed.
 	 */
 	public boolean pausePressed( ) {
 		return pauseKeyPressed;
 	}
 
-	/*
+	/**
 	 * Returns whether the move left key is pressed
 	 * 
-	 * @param player - Selector to poll for the proper player
 	 */
 	public boolean leftPressed() {
 		return p1LeftPressed;
 	}
 
-	/*
+	/**
 	 * Returns whether the move right key is pressed
 	 * 
-	 * @param player - Selector to poll for the proper player
 	 */
 	public boolean rightPressed() {
 		return p1RightPressed;
 	}
 
-	/*
+	/**
 	 * Returns whether the jump key is pressed
 	 * 
-	 * @param player - Selector to poll for the proper player
 	 */
 	public boolean jumpPressed( ) {
 		return p1JumpPressed;
 	}
 
-	/*
+	/**
 	 * Returns whether the move down key is pressed
 	 * 
-	 * @param player - Selector to poll for the proper player
 	 */
 	public boolean downPressed( ) {
 		return p1DownPressed;
 	}
 
-	/*
-	 * Returns whether the screw key is pressed
+	/**
+	 * Returns whether the attach to screw key is pressed
 	 * 
-	 * @param player - Selector to poll for the proper player
 	 */
 	public boolean screwPressed( ) {
 		return Gdx.input.isKeyPressed( Keys.SPACE );
@@ -121,23 +108,17 @@ public class InputHandlerPlayer1 implements InputProcessor {
 
 		if ( keycode == Keys.W ) {
 			p1JumpPressed = true;
-			p1LastKeyPressed = keycode;
 		}
 		if ( keycode == Keys.A ) {
 			p1LeftPressed = true;
-			p1LastKeyPressed = keycode;
 		}
 		if ( keycode == Keys.S ) {
 			p1DownPressed = true;
-			p1LastKeyPressed = keycode;
 		}
 		if ( keycode == Keys.D ) {
 			p1RightPressed = true;
-			p1LastKeyPressed = keycode;
 		}
 		if ( keycode == Keys.Q ) {
-			p1ScrewPressed = true;
-			p1LastKeyPressed = keycode;
 		}
 
 		return true;
@@ -162,7 +143,6 @@ public class InputHandlerPlayer1 implements InputProcessor {
 			p1RightPressed = false;
 		}
 		if ( keycode == Keys.Q ) {
-			p1ScrewPressed = false;
 		}
 
 		return true;
