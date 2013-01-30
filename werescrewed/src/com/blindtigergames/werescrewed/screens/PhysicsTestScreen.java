@@ -65,6 +65,8 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 	private Skeleton skeleton;
 	private Skeleton rootSkeleton;
 	private ArrayList< StrippedScrew > climbingScrews = new ArrayList< StrippedScrew >( );
+	private boolean debug;
+	private boolean debugTest;
 
 	public PhysicsTestScreen( ) {
 		System.out.println( "Physics Test Screen starting" );
@@ -163,6 +165,66 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 
 	}
 
+	@Override
+	public void render( float deltaTime ) {
+		Gdx.gl20.glClearColor( 0.0f, 0f, 0.0f, 1.0f );
+		Gdx.gl20.glClear( GL20.GL_COLOR_BUFFER_BIT );
+
+		cam.update( );
+
+		if ( Gdx.input.isKeyPressed( Input.Keys.ESCAPE ) ) {
+			ScreenManager.getInstance( ).show( Screen.PAUSE );
+		}
+		if ( Gdx.input.isKeyPressed( Keys.P ) ) {
+			System.exit( 0 );
+		}
+
+		player.update( deltaTime );
+		structScrew.update( deltaTime );
+		puzzleScrew.update( deltaTime );
+//		rootSkeleton.update( deltaTime );
+//		movingTP.update( deltaTime );
+		entityManager.updateEntity( deltaTime );
+
+		// ONLY FOR TESTING, EVERYTHING IN WORLD IS IN A SKELETON (THEREFORE CAN
+		// MOVE)
+		if ( Gdx.input.isKeyPressed( Input.Keys.U ) ) {
+			rootSkeleton.translate( 0.0f, 0.01f );
+		}
+
+		if ( Gdx.input.isKeyPressed( Input.Keys.J ) ) {
+			rootSkeleton.translate( 0.0f, -0.01f );
+		}
+		
+
+		batch.setProjectionMatrix( cam.combined( ) );
+		batch.begin( );
+
+		puzzleScrew.draw( batch );
+		rootSkeleton.draw( batch );
+		player.draw( batch );
+
+		batch.end( );
+
+		// logger.log();
+		if(Gdx.input.isKeyPressed(Keys.NUM_0)){
+			if(debugTest){
+				debug = !debug;
+				debugTest = false;
+			}
+		}
+		else{
+			debugTest = true;
+		}
+
+		if(debug){
+			debugRenderer.render( world, cam.combined( ) );
+		}
+
+		world.step( 1 / 60f, 6, 2 ); // step our physics calculations
+
+	}
+	
 	void buildMoverPlatforms( ) {
 		TiledPlatform slidingPlatform = platBuilder.setWidth( 10 ).setHeight( 1 ).setOneSided( true )
 				.setPosition( -1000, 200 ).setTexture( texture )
@@ -227,55 +289,6 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 				"gearSmall" );
 		gear.body.setType( BodyType.DynamicBody );
 		skeleton.addPlatformRotatingCenterWithRot( gear, 1f );
-
-	}
-
-	@Override
-	public void render( float deltaTime ) {
-		Gdx.gl20.glClearColor( 0.0f, 0f, 0.0f, 1.0f );
-		Gdx.gl20.glClear( GL20.GL_COLOR_BUFFER_BIT );
-
-		cam.update( );
-
-		if ( Gdx.input.isKeyPressed( Input.Keys.ESCAPE ) ) {
-			ScreenManager.getInstance( ).show( Screen.PAUSE );
-		}
-		if ( Gdx.input.isKeyPressed( Keys.P ) ) {
-			System.exit( 0 );
-		}
-
-		player.update( deltaTime );
-		structScrew.update( deltaTime );
-		puzzleScrew.update( deltaTime );
-//		rootSkeleton.update( deltaTime );
-//		movingTP.update( deltaTime );
-		entityManager.updateEntity( deltaTime );
-
-		// ONLY FOR TESTING, EVERYTHING IN WORLD IS IN A SKELETON (THEREFORE CAN
-		// MOVE)
-		if ( Gdx.input.isKeyPressed( Input.Keys.U ) ) {
-			rootSkeleton.translate( 0.0f, 0.01f );
-		}
-
-		if ( Gdx.input.isKeyPressed( Input.Keys.J ) ) {
-			rootSkeleton.translate( 0.0f, -0.01f );
-		}
-		
-
-		batch.setProjectionMatrix( cam.combined( ) );
-		batch.begin( );
-
-		puzzleScrew.draw( batch );
-		rootSkeleton.draw( batch );
-		player.draw( batch );
-
-		batch.end( );
-
-		// logger.log();
-		debugRenderer.render( world, cam.combined( ) );
-
-		world.step( 1 / 60f, 6, 2 ); // step our physics calculations
-
 	}
 
 	@Override
