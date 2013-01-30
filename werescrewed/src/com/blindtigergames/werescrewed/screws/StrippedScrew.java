@@ -21,7 +21,7 @@ public class StrippedScrew extends Screw {
 
 	public StrippedScrew( String name, World world, Vector2 pos,
 			Skeleton skeleton ) {
-		super( name, pos, null );
+		super( name, pos, null, null );
 		this.world = world;
 
 		sprite.setColor( Color.ORANGE );

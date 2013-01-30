@@ -22,13 +22,8 @@ public class Screw extends Entity {
 	protected final short CATEGORY_SCREWS = 0x0008;
 
 	public Screw( String name, Vector2 pos, Texture tex, Body body ) {
-		super( name, pos, tex, body, false );
-	}
-
-	public Screw( String name, Vector2 pos, Body body ) {
-		super( name, pos,
-				new Texture( Gdx.files.internal( "data/screw.png" ) ), body,
-				false );
+		super( name, pos, ( tex == null ? new Texture(
+				Gdx.files.internal( "data/screw.png" ) ) : tex ), body, false );
 	}
 
 	@Override

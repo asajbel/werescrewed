@@ -73,7 +73,7 @@ public class Player extends Entity {
 	 */
 	public Player( String name, World world, Vector2 pos ) {
 		super( name, EntityDef.getDefinition( "playerTest" ), world, pos, 0.0f,
-				new Vector2( 1f, 1f ), null, true);
+				new Vector2( 1f, 1f ), null, true );
 		body.setGravityScale( 0.25f );
 		body.setFixedRotation( true );
 		this.world = world;
@@ -177,13 +177,28 @@ public class Player extends Entity {
 		float velocity = body.getLinearVelocity( ).x;
 		if ( velocity != 0.0f ) {
 			if ( velocity < -0.1f )
-				body.applyLinearImpulse( new Vector2( 0.010f, 0.0f ),
+				body.applyLinearImpulse( new Vector2( 0.005f, 0.0f ),
 						body.getWorldCenter( ) );
 			else if ( velocity > 0.1f )
-				body.applyLinearImpulse( new Vector2( -0.010f, 0.0f ),
+				body.applyLinearImpulse( new Vector2( -0.005f, 0.0f ),
 						body.getWorldCenter( ) );
-			else if ( velocity > -0.1 && velocity < 0.1f )
+			else if ( velocity >= -0.1 && velocity <= 0.1f && velocity != 0.0f )
 				body.setLinearVelocity( 0.0f, 0.0f );
+			}
+	}
+	
+	private void slow( ) {
+		float velocity = body.getLinearVelocity( ).x;
+		if ( velocity != 0.0f ) {
+			if ( velocity < -0.1f )
+				body.applyLinearImpulse( new Vector2( 0.001f, 0.0f ),
+						body.getWorldCenter( ) );
+			else if ( velocity > 0.1f )
+				body.applyLinearImpulse( new Vector2( -0.001f, 0.0f ),
+						body.getWorldCenter( ) );
+			else if ( velocity >= -0.1 && velocity <= 0.1f && velocity != 0.0f )
+				body.setLinearVelocity( 0.0f, 0.0f );
+			System.out.println("player velocity: " + velocity );
 		}
 	}
 
@@ -197,7 +212,6 @@ public class Player extends Entity {
 		if ( playerState != PlayerState.Screwing
 				&& playerState != PlayerState.Standing && isGrounded( ) ) {
 			playerState = PlayerState.Standing;
-			System.out.println( "Standing" );
 		}
 
 		if ( inputHandler.jumpPressed( ) ) {
@@ -236,7 +250,8 @@ public class Player extends Entity {
 
 		if ( ( !inputHandler.leftPressed( ) && !inputHandler.rightPressed( ) )
 				&& ( prevKey == Keys.D || prevKey == Keys.A ) ) {
-			stop( );
+			if(grounded) stop();
+			else slow( );
 		}
 
 		if ( inputHandler.screwPressed( ) && hitScrew

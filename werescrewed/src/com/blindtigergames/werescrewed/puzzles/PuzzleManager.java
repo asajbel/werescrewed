@@ -31,7 +31,7 @@ public class PuzzleManager {
 		for ( Entity e : puzzleEntities ) {
 			e.update( deltaTime );
 			if ( e.mover != null ) {
-				//e.mover.move( deltaTime, e.body );
+				e.mover.move( deltaTime, e.body );
 			}
 		}
 	}

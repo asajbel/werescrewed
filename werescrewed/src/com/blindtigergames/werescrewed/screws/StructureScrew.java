@@ -25,15 +25,20 @@ public class StructureScrew extends Screw {
 	private Skeleton skeleton;
 	private RevoluteJoint screwJoint;
 	private RevoluteJoint platformToScrew;
+	private int fallTimeout;
+	private boolean lerpUp = true;
+	private float alpha = 0.0f;
 
 	public StructureScrew( String name, Vector2 pos, int max,
 			Platform platform, Skeleton skeleton, World world ) {
-		super( name, pos, null );
+		super( name, pos, null, null );
 		this.world = world;
 		this.skeleton = skeleton;
 		maxDepth = max;
 		depth = max;
 		rotation = 0;
+		fallTimeout = max * 4;
+
 
 		// create the screw body
 		BodyDef screwBodyDef = new BodyDef( );
@@ -74,14 +79,11 @@ public class StructureScrew extends Screw {
 
 	@Override
 	public void screwLeft( ) {
-		body.setAngularVelocity( 15 );
-		depth--;
-		rotation += 10;
-		screwStep = depth + 5;
-		if ( depth == 0 && screwJoint != null ) {
-			world.destroyJoint( platformToScrew );
-			world.destroyJoint( screwJoint );
-			depth = -1;
+		if ( depth > 0 ) {
+			body.setAngularVelocity( 15 );
+			depth--;
+			rotation += 10;
+			screwStep = depth + 5;
 		}
 	}
 
@@ -100,7 +102,16 @@ public class StructureScrew extends Screw {
 		super.update( deltaTime );
 		Vector2 bodyPos = body.getPosition( ).mul( GameScreen.BOX_TO_PIXEL );
 		sprite.setPosition( bodyPos.x - offset.x, bodyPos.y - offset.y );
-		if ( depth >= 0 ) {
+		if ( depth == 0 ) {
+			if ( fallTimeout == 0 && screwJoint != null ) {
+				world.destroyJoint( platformToScrew );
+				world.destroyJoint( screwJoint );
+			}
+			fallTimeout--;
+		} else {
+			fallTimeout = maxDepth * 4;
+		}
+		if ( depth > 0 ) {
 			sprite.setPosition(
 					sprite.getX( )
 							+ ( .25f * ( float ) ( ( maxDepth - depth ) * ( Math
@@ -108,6 +119,24 @@ public class StructureScrew extends Screw {
 					sprite.getY( )
 							+ ( .25f * ( float ) ( ( maxDepth - depth ) * ( Math
 									.sin( body.getAngle( ) ) ) ) ) );
+		} else if ( fallTimeout > 0 ){
+			sprite.setPosition( sprite.getX( ) - 8f, sprite.getY( ) );
+			Vector2 spritePos = new Vector2( sprite.getX( ), sprite.getY( ) );
+			Vector2 target1 = new Vector2( sprite.getX( ) + 8f, sprite.getY( ) );
+			if (fallTimeout % (maxDepth/5.0f) == 0 ){
+				if( lerpUp ){
+					lerpUp = false;
+				} else {
+					lerpUp = true;
+				}
+			}
+			if( lerpUp ){
+				alpha += 1f/(maxDepth/5.0f);
+			} else {
+				alpha -= 1f/(maxDepth/5.0f);
+			}
+			spritePos.lerp( target1, alpha );
+			sprite.setPosition( spritePos.x, spritePos.y );
 		}
 		sprite.setRotation( rotation );
 		if ( depth != screwStep ) {

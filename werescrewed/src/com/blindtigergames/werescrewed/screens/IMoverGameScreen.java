@@ -21,8 +21,10 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.joints.PrismaticJoint;
 import com.badlogic.gdx.physics.box2d.joints.PrismaticJointDef;
 import com.blindtigergames.werescrewed.camera.Camera;
+import com.blindtigergames.werescrewed.collisionManager.MyContactListener;
 import com.blindtigergames.werescrewed.debug.SBox2DDebugRenderer;
 import com.blindtigergames.werescrewed.entity.Entity;
+import com.blindtigergames.werescrewed.entity.EntityManager;
 import com.blindtigergames.werescrewed.entity.Player;
 import com.blindtigergames.werescrewed.entity.Skeleton;
 import com.blindtigergames.werescrewed.entity.mover.PistonMover;
@@ -31,10 +33,13 @@ import com.blindtigergames.werescrewed.entity.mover.SlidingMotorMover;
 import com.blindtigergames.werescrewed.input.InputHandlerPlayer1;
 import com.blindtigergames.werescrewed.joint.JointFactory;
 import com.blindtigergames.werescrewed.joint.PrismaticJointBuilder;
+import com.blindtigergames.werescrewed.platforms.ComplexPlatform;
 import com.blindtigergames.werescrewed.platforms.PlatformBuilder;
 import com.blindtigergames.werescrewed.platforms.ShapePlatform;
 import com.blindtigergames.werescrewed.platforms.Shapes;
 import com.blindtigergames.werescrewed.platforms.TiledPlatform;
+import com.blindtigergames.werescrewed.screws.PuzzleScrew;
+import com.blindtigergames.werescrewed.screws.StrippedScrew;
 import com.blindtigergames.werescrewed.screws.StructureScrew;
 
 /**
@@ -47,7 +52,7 @@ import com.blindtigergames.werescrewed.screws.StructureScrew;
  * v - rotate skeleton right
  * 
  * @author stew
- *
+ * 
  */
 public class IMoverGameScreen implements com.badlogic.gdx.Screen {
 
@@ -60,108 +65,133 @@ public class IMoverGameScreen implements com.badlogic.gdx.Screen {
 	 */
 	public static final float BOX_TO_PIXEL = 256f;
 	public static final float PIXEL_TO_BOX = 1 / BOX_TO_PIXEL;
-	public static final float DEGTORAD = 0.0174532925199432957f;
-	public static final float RADTODEG = 57.295779513082320876f;
+	public static final float DEG_TO_RAD = 0.0174532925199432957f;
+	public static final float RAD_TO_DEG = 57.295779513082320876f;
 
-	OrthographicCamera camera;
-	Camera cam;
-	SpriteBatch batch;
-	Texture texture;
-	Texture playerTexture;
-	Sprite sprite;
-	World world;
-	SBox2DDebugRenderer debugRenderer;
-	Body playerBody;
-	Entity playerEntity;
-	Player player;
-	TiledPlatform tp, tp2, slidingPlatform;
-	// ComplexPlatform cp;
-	Skeleton skeleton;
-	ShapePlatform sp;
-	TiledPlatform piston;
-	ArrayList<Body> platforms;
+	private Camera cam;
+	private SpriteBatch batch;
+	private Texture texture;
+	private World world;
+	private MyContactListener mcl;
+	private SBox2DDebugRenderer debugRenderer;
+	private Player player;
+	private TiledPlatform tp, ground, movingTP;
+	private PlatformBuilder platBuilder;
+	private EntityManager entityManager;
 
-    FPSLogger logger;
+	private Texture background;
+	private StructureScrew structScrew;
+	private PuzzleScrew puzzleScrew;
+	private Skeleton skeleton;
+	private Skeleton rootSkeleton;
+	private ArrayList< StrippedScrew > climbingScrews = new ArrayList< StrippedScrew >( );
 
-    Texture screwTex;
-    StructureScrew structScrew;
-    InputHandlerPlayer1 inputHandler;
+	public IMoverGameScreen( ) {
+		System.out.println( "Physics Test Screen starting" );
+		float zoom = 1.0f;
+		float width = Gdx.graphics.getWidth( ) / zoom;
+		float height = Gdx.graphics.getHeight( ) / zoom;
 
-    public IMoverGameScreen() {
-
-        System.out.println( "GameScreen starting" );
-        float zoom = 1.0f;
-        float w = Gdx.graphics.getWidth() / zoom;
-        float h = Gdx.graphics.getHeight() / zoom;
-
-        
-        
-        inputHandler = new InputHandlerPlayer1();
-        texture = new Texture( Gdx.files.internal( "data/rletter.png" ) );
-        // takes in width, height
-        // cam = new Camera(w, h);
-        batch = new SpriteBatch();
-
-		inputHandler = new InputHandlerPlayer1( );
+		cam = new Camera( width, height );
 		texture = new Texture( Gdx.files.internal( "data/rletter.png" ) );
-		// takes in width, height
-		// cam = new Camera(w, h);
 		batch = new SpriteBatch( );
+		entityManager = new EntityManager( );
 
-		world = new World( new Vector2( 0, -100 ), true );
-		// mcl = new MyContactListener();
-		// world.setContactListener(mcl);
-		String name = "player";
+		world = new World( new Vector2( 0, -45 ), true );
+		mcl = new MyContactListener( );
+		world.setContactListener( mcl );
+		skeleton = new Skeleton( "", Vector2.Zero, background, world );
+		rootSkeleton = new Skeleton( "", Vector2.Zero, null, world );
+		platBuilder = new PlatformBuilder( world );
+		entityManager.addSkeleton( rootSkeleton.name, rootSkeleton );
 
-		player = new Player( name, world, new Vector2( -2.0f, 1.0f ) );
-		cam = new Camera( w, h, player );
+		player = new Player( "player", world, new Vector2( 1.0f, 1.0f ) );
 
-		skeleton = new Skeleton( "skeleton1", new Vector2( ), null, world );
+		texture = new Texture( Gdx.files.internal( "data/rletter.png" ) );
 
-		tp = new TiledPlatform( "plat", new Vector2( 370.0f, 200.0f ), texture,
-				10, 1, false, world );
-		// cp = new ComplexPlatform( "bottle", new Vector2(0.0f, 3.0f), texture,
-		// 1, world, "bottle" );
-		sp = new ShapePlatform( "rhom", new Vector2( 1.0f, 1.0f ), texture,
-				world, Shapes.rhombus, 1.0f, 1, false );
+		tp = platBuilder.setPosition( 350.0f, 100.0f ).setDimensions( 10, 1 )
+				.setTexture( texture ).setName( "tp" ).setResitituion( 0.0f )
+				.buildTilePlatform( );
 
-		screwTex = new Texture( Gdx.files.internal( "data/screw.png" ) );
-		structScrew = new StructureScrew( "", sp.body.getPosition( ), 25, sp,
+		movingTP = platBuilder.setPosition( 350.0f, 170.0f )
+				.setDimensions( 10, 1 ).setTexture( texture )
+				.setName( "movingTP" ).setResitituion( 0.0f )
+				.buildTilePlatform( );
+
+		movingTP.body.setType( BodyType.DynamicBody );
+
+		entityManager.addEntity( movingTP.name, movingTP );
+		entityManager.addEntity( tp.name, tp );
+		entityManager.removeEntity( movingTP.name, movingTP );
+
+		background = new Texture( Gdx.files.internal( "data/libgdx.png" ) );
+		structScrew = new StructureScrew( "", tp.body.getPosition( ), 50, tp,
 				skeleton, world );
+		puzzleScrew = new PuzzleScrew( "001", new Vector2( 0.0f, 0.2f ), 50,
+				skeleton, world );
+		
+	
+		entityManager.addEntity( structScrew.name, structScrew );
 
-		// tp = new TiledPlatform("plat", new Vector2(200.0f, 100.0f), null, 1,
-		// 2, world);
-		// tp.setMover(new TimelineMover());
-		// BOX_TO_PIXEL, PIXEL_TO_BOX
-		BodyDef groundBodyDef = new BodyDef( );
-		groundBodyDef.position.set( new Vector2( 0 * PIXEL_TO_BOX,
-				0 * PIXEL_TO_BOX ) );
-		Body groundBody = world.createBody( groundBodyDef );
-		PolygonShape groundBox = new PolygonShape( );
-		groundBox.setAsBox( Gdx.graphics.getWidth( ) * PIXEL_TO_BOX,
-				1f * PIXEL_TO_BOX );
-		groundBody.createFixture( groundBox, 0.0f );
-		groundBody.getFixtureList( ).get( 0 ).setFriction( 0.5f );
 
-		// make sure you uncomment the next two lines debugRenderer = new
-		// SBox2DDebugRenderer(BOX_TO_PIXEL); for physics world
-		// debugRenderer = new Box2DDebugRenderer();
+		Vector2 axis = new Vector2( 1, 0 );
+		PrismaticJointDef jointDef = new PrismaticJointDef( );
+		jointDef.initialize( movingTP.body, skeleton.body,
+				movingTP.body.getPosition( ), axis );
+		jointDef.enableMotor = true;
+		jointDef.enableLimit = true;
+		jointDef.lowerTranslation = -1.5f;
+		jointDef.upperTranslation = 1.0f;
+		jointDef.motorSpeed = 7.0f;
+
+		puzzleScrew.puzzleManager.addEntity( movingTP );
+		puzzleScrew.puzzleManager.addJointDef( jointDef );
+
+		float x1 = 1.75f;
+		float x2 = 2.25f;
+		float y1 = 0.6f;
+		float dy = 0.7f;
+		for ( int i = 0; i < 10; i++ ) {
+			if ( i % 2 == 0 ) {
+				climbingScrews.add( new StrippedScrew( "", world, new Vector2(
+						x1, y1 ), skeleton ) );
+			} else {
+				climbingScrews.add( new StrippedScrew( "", world, new Vector2(
+						x2, y1 ), skeleton ) );
+			}
+			y1 += dy;
+		}
+
+		for ( StrippedScrew ss : climbingScrews ) {
+			skeleton.addStrippedScrew( ss );
+		}
+
+		ground = platBuilder.setPosition( 0.0f, 0.0f ).setName( "ground" )
+				.setDimensions( 100, 1 ).setTexture( texture )
+				.setResitituion( 0.0f ).buildTilePlatform( );
+		skeleton.addPlatformFixed( ground );
+		skeleton.addPlatform( tp ); // Tp already has a structureScrew holding
+									// it up
+
+		/*
+		 * Comment if you don't want stew's moving platforms in your way!
+		 */
+		buildMoverPlatforms( );
+		rootSkeleton.addSkeleton( skeleton );
+
 		debugRenderer = new SBox2DDebugRenderer( BOX_TO_PIXEL );
+		debugRenderer.setDrawJoints( false );
 		Gdx.app.setLogLevel( Application.LOG_DEBUG );
 
-		logger = new FPSLogger( );
+		new FPSLogger( );
 
-		// slidingPlatform = new TiledPlatform( "prismaticplat", new Vector2(
-		// -300.0f*PIXEL_TO_BOX, 200.0f*PIXEL_TO_BOX ), null, 10, 1, false,
-		// world );
-		slidingPlatform = new PlatformBuilder( world ).setWidth( 10 )
-				.setHeight( 1 ).setName( "sliding" ).setOneSided( true )
-				.setPosition( -300 * PIXEL_TO_BOX, 200 * PIXEL_TO_BOX )
-				.buildTilePlatform( );
+	}
+
+	void buildMoverPlatforms( ) {
+		TiledPlatform slidingPlatform = platBuilder.setWidth( 10 )
+				.setHeight( 1 ).setOneSided( true ).setPosition( -1000, 200 )
+				.setTexture( texture ).setFriction( 1f ).buildTilePlatform( );
 		slidingPlatform.body.setType( BodyType.DynamicBody );
-
-		// skeleton.mover = new TimelineMover();
-		platforms = new ArrayList< Body >( );
 
 		PrismaticJointDef prismaticJointDef = JointFactory
 				.constructSlidingJointDef( skeleton.body, slidingPlatform.body,
@@ -173,18 +203,16 @@ public class IMoverGameScreen implements com.badlogic.gdx.Screen {
 		slidingPlatform.setMover( new SlidingMotorMover(
 				PuzzleType.PRISMATIC_SLIDER, j ) );
 
-		TiledPlatform skeletonTest1 = new PlatformBuilder( world )
-				.setWidth( 10 ).setHeight( 1 ).setOneSided( false )
-				.setPosition( -300 * PIXEL_TO_BOX, -200 * PIXEL_TO_BOX )
-				.setTexture( texture ).buildTilePlatform( );
-
+		TiledPlatform skeletonTest1 = platBuilder.setWidth( 10 ).setHeight( 1 )
+				.setFriction( 1f ).setOneSided( false )
+				.setPosition( -500, -200 ).setTexture( texture )
+				.buildTilePlatform( );
 		skeletonTest1.body.setType( BodyType.DynamicBody );
 		skeleton.addPlatformFixed( skeletonTest1 );
 
-		TiledPlatform skeletonTest2 = new PlatformBuilder( world )
-				.setWidth( 10 ).setHeight( 1 ).setOneSided( false )
-				.setPosition( 300 * PIXEL_TO_BOX, 300 * PIXEL_TO_BOX )
-				.setTexture( texture ).buildTilePlatform( );
+		TiledPlatform skeletonTest2 = platBuilder.setWidth( 10 ).setHeight( 1 )
+				.setOneSided( false ).setPosition( 500, 300 )
+				.setTexture( texture ).setFriction( 1f ).buildTilePlatform( );
 		skeletonTest2.body.setType( BodyType.DynamicBody );
 		skeleton.addPlatformRotatingCenter( skeletonTest2 );
 
@@ -192,39 +220,44 @@ public class IMoverGameScreen implements com.badlogic.gdx.Screen {
 		 * TODO: FIX PLATFORM DENSITY
 		 */
 
+		platBuilder.reset( );
+
+		PlatformBuilder builder = platBuilder.setWidth( 1 ).setHeight( 3 )
+				.setOneSided( false )
+				// .setPosition( (-500f-i*40)*PIXEL_TO_BOX, 150f*PIXEL_TO_BOX )
+				.setTexture( texture ).setFriction( 1f );
+		// .buildTilePlatform( world );
+
+		PrismaticJointBuilder jointBuilder = new PrismaticJointBuilder( world )
+				.skeleton( skeleton ).axis( 0, 1 ).motor( true ).limit( true )
+				.upper( 1 ).motorSpeed( 1 );
 		for ( int i = 0; i < 10; ++i ) {
-			TiledPlatform piston = new PlatformBuilder( world )
-					.setWidth( 1 )
-					.setHeight( 3 )
-					.setOneSided( false )
-					.setPosition( ( -500f - i * 40 ) * PIXEL_TO_BOX,
-							150f * PIXEL_TO_BOX ).setTexture( texture )
-					.buildTilePlatform( );
+			TiledPlatform piston = builder.setPosition( ( -100f - i * 40 ),
+					220f ).buildTilePlatform( );
 
 			piston.body.setType( BodyType.DynamicBody );
-			PrismaticJoint pistonJoint = new PrismaticJointBuilder( world )
-					.skeleton( skeleton ).bodyB( ( Entity ) piston )
-					.anchor( piston.body.getWorldCenter( ) ).axis( 0, 1 )
-					.motor( true ).limit( true ).upper( 1 ).motorSpeed( 1 )
-					.build( );
+			PrismaticJoint pistonJoint = jointBuilder.bodyB( ( Entity ) piston )
+					.anchor( piston.body.getWorldCenter( ) ).build( );
 			// Something is still not quite right with this, try replacing 3
 			// with 0.
-			piston.setMover( new PistonMover( pistonJoint, 0f, i * 1.0f / 10 ) );
-
+			piston.setMover( new PistonMover( pistonJoint, 0f, i / 10.0f + 2f ) );
+			piston.body.setSleepingAllowed( false );
 			skeleton.addBoneAndJoint( piston, pistonJoint );
-
 		}
+
+		ComplexPlatform gear = new ComplexPlatform( "gear", new Vector2(
+				1000 * PIXEL_TO_BOX, 300 * PIXEL_TO_BOX ), null, 3, world,
+				"gearSmall" );
+		gear.body.setType( BodyType.DynamicBody );
+		skeleton.addPlatformRotatingCenterWithRot( gear, 1f );
 
 	}
 
 	@Override
-	public void render( float delta ) {
+	public void render( float deltaTime ) {
 		Gdx.gl20.glClearColor( 0.0f, 0f, 0.0f, 1.0f );
 		Gdx.gl20.glClear( GL20.GL_COLOR_BUFFER_BIT );
 
-		float deltaTime = Gdx.graphics.getDeltaTime( );
-
-		inputHandler.update( );
 		cam.update( );
 
 		if ( Gdx.input.isKeyPressed( Input.Keys.ESCAPE ) ) {
@@ -234,69 +267,26 @@ public class IMoverGameScreen implements com.badlogic.gdx.Screen {
 			System.exit( 0 );
 		}
 
-		if ( Gdx.input.isKeyPressed( Input.Keys.X ) ) {
-			skeleton.body.setTransform( skeleton.body.getTransform( )
-					.getPosition( ).add( 0f, 0.01f ), skeleton.body
-					.getTransform( ).getRotation( ) );
-			skeleton.wakeSkeleton( );
-			// groundBody.setTransform(0f, -0.01f, 0);
-			// Gdx.app.log("dude", "DUDE!");
-
-		}
-
-		/*
-		 * if ( Gdx.input.isKeyPressed( Input.Keys.Z ) ) { //
-		 * groundBody.setTransform(0f, 0.01f, 0); skeleton.body.setTransform(
-		 * skeleton.body.getTransform() .getPosition().add( 0f, -0.01f ),
-		 * skeleton.body .getTransform().getRotation() );
-		 * skeleton.wakeSkeleton(); }
-		 */
-
-		if ( Gdx.input.isKeyPressed( Input.Keys.C ) ) {
-			skeleton.body.setTransform( skeleton.body.getTransform( )
-					.getPosition( ), skeleton.body.getTransform( )
-					.getRotation( ) + 0.01f );
-			// groundBody.setTransform(0f, -0.01f, 0);
-			// Gdx.app.log("dude", "DUDE!");
-			skeleton.wakeSkeleton( );
-		}
-
-		if ( Gdx.input.isKeyPressed( Input.Keys.V ) ) {
-			// groundBody.setTransform(0f, 0.01f, 0);
-			skeleton.body.setTransform( skeleton.body.getTransform( )
-					.getPosition( ), skeleton.body.getTransform( )
-					.getRotation( ) - 0.01f );
-			// Gdx.app.log("dude", "DUDE!");
-			skeleton.wakeSkeleton( );
-		}
-
-		if ( inputHandler.screwPressed( ) ) {
-			/*
-			 * for (Fixture f: structScrew.body.getFixtureList()){
-			 * f.contactListener(); }
-			 */
-			// if(inputHandler.leftPressed( player_t.ONE )){
-			structScrew.screwLeft( );
-			// }
-		}
-
 		player.update( deltaTime );
-		skeleton.update( deltaTime );
-		tp.update( deltaTime );
-		// cp.update();
-		sp.update( deltaTime );
+		structScrew.update( deltaTime );
+		puzzleScrew.update( deltaTime );
+		entityManager.update( deltaTime );
+
+		// ONLY FOR TESTING, EVERYTHING IN WORLD IS IN A SKELETON (THEREFORE CAN
+		// MOVE)
+		if ( Gdx.input.isKeyPressed( Input.Keys.U ) ) {
+			rootSkeleton.translate( 0.0f, 0.01f );
+		}
+
+		if ( Gdx.input.isKeyPressed( Input.Keys.J ) ) {
+			rootSkeleton.translate( 0.0f, -0.01f );
+		}
 
 		batch.setProjectionMatrix( cam.combined( ) );
-		// batch.setProjectionMatrix(camera.combined);
 		batch.begin( );
-		// test drawing the texture by uncommenting the next line:
-		tp.draw( batch );
-		slidingPlatform.draw( batch );
-		player.draw( batch );
-		structScrew.draw( batch );
 
-		// test drawing the texture by uncommenting the next line:
-		// tp.draw(batch);
+		puzzleScrew.draw( batch );
+		rootSkeleton.draw( batch );
 		player.draw( batch );
 
 		batch.end( );
@@ -305,8 +295,6 @@ public class IMoverGameScreen implements com.badlogic.gdx.Screen {
 		debugRenderer.render( world, cam.combined( ) );
 
 		world.step( 1 / 60f, 6, 2 ); // step our physics calculations
-		// Gdx.app.debug("Physics",
-		// "delta = "+Gdx.app.getGraphics().getDeltaTime());
 	}
 
 	@Override

@@ -12,7 +12,8 @@ import com.blindtigergames.werescrewed.entity.mover.IMover;
 import com.blindtigergames.werescrewed.screens.GameScreen;
 
 /**
- * Anything that can exist. Contains a physics body, and a sprite which may or may not be animated.
+ * Anything that can exist. Contains a physics body, and a sprite which may or
+ * may not be animated.
  * 
  * @author Blind Tiger Games
  * 
@@ -27,24 +28,55 @@ public class Entity {
 	public IMover mover;
 	private boolean solid;
 
+	/**
+	 * Create entity by definition
+	 * 
+	 * @param name
+	 * @param type
+	 * @param world
+	 *            in which the entity exists
+	 * @param pos
+	 *            ition of the entity in the world
+	 * @param rot
+	 *            ation of the entity
+	 * @param scale
+	 *            of the entity
+	 * @param texture
+	 *            (null if defined elsewhere)
+	 * @param solid
+	 *            boolean determining whether or not the player can stand on it
+	 */
 	public Entity( String name, EntityDef type, World world, Vector2 pos,
 			float rot, Vector2 scale, Texture texture, boolean solid ) {
 		this.name = name;
 		this.type = type;
 		this.world = world;
-		this.offset = new Vector2( 0.0f, 0.0f );
 		this.solid = solid;
+		this.offset = new Vector2( 0.0f, 0.0f );
 		constructSprite( texture );
-		constructBody( pos );
+		this.body = constructBody( );
+		setPosition( pos );
 	}
 
+	/**
+	 * Create entity by body
+	 * 
+	 * @param name
+	 * @param pos
+	 *            ition of the entity in the world
+	 * @param texture
+	 *            (null if defined elsewhere)
+	 * @param body
+	 *            defined body of the entity
+	 * @param solid
+	 *            boolean determining whether or not the player can stand on it
+	 */
 	public Entity( String name, Vector2 pos, Texture texture, Body body,
 			boolean solid ) {
 		this.name = name;
 		this.solid = solid;
 		this.offset = new Vector2( 0.0f, 0.0f );
-		if ( texture != null )
-			constructSprite( texture );
+		constructSprite( texture );
 		this.body = body;
 		if ( body != null ) {
 			world = body.getWorld( );
@@ -69,7 +101,7 @@ public class Entity {
 		return body.getPosition( );
 	}
 
-	public void move( Vector2 vector ) {
+	public void Move( Vector2 vector ) {
 		Vector2 pos = body.getPosition( ).add( vector );
 		setPosition( pos );
 	}
@@ -102,17 +134,32 @@ public class Entity {
 		// Sprite sprite;
 		Vector2 origin;
 		boolean loadTex;
+		boolean nullTex;
 
-		loadTex = ( texture == null && type != null && type.texture != null );
+		// Check if the passed texture is null
+		nullTex = texture == null;
+
+		// Check if we're loading texture
+		loadTex = ( nullTex && type != null && type.texture != null );
 
 		if ( loadTex ) {
-			texture = type.getTexture();
+			// If we are, load it up
+			texture = type.texture;
+		} else if ( nullTex ) {
+			// If we aren't, but the texture is still null, return before error
+			// occurs at Sprite constructor (can't take null)
+			return;
 		}
+
+		// Either the passed in or loaded texture defines a new Sprite
 		this.sprite = new Sprite( texture );
+
 		if ( loadTex ) {
+			// Definitions for loaded sprites
 			origin = new Vector2( type.origin.x, type.origin.y );
 			this.sprite.setScale( type.spriteScale.x, type.spriteScale.y );
 		} else {
+			// Definitions for non-loaded sprites
 			origin = new Vector2( this.sprite.getWidth( ) / 2,
 					this.sprite.getHeight( ) / 2 );
 			this.offset.set( this.sprite.getWidth( ) / 2,
@@ -121,16 +168,18 @@ public class Entity {
 		this.sprite.setOrigin( origin.x, origin.y );
 	}
 
-	protected void constructBody( Vector2 pos ) {
+	protected Body constructBody( ) {
+		Body body;
 		if ( type != null ) {
 			body = world.createBody( type.bodyDef );
 			body.setUserData( this );
-			for (FixtureDef fDef : type.fixtureDefs){
-				body.createFixture(fDef);
+			for ( FixtureDef fix : type.fixtureDefs ) {
+				body.createFixture( fix );
 			}
-			body.setFixedRotation( type.fixedRotation );
-			setPosition( pos.x, pos.y );
+		} else {
+			return null;
 		}
+		return body;
 	}
 
 	/**
