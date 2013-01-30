@@ -36,10 +36,9 @@ public class Player extends Entity {
 	private boolean grounded;
 	private boolean jumpPressed;
 	private int anchorID;
-	private AnchorList anchorList;
 
 	// Static constants
-	public final static float MAX_VELOCITY = 300f;
+	public final static float MAX_VELOCITY = 1.8f;
 
 	// Static variables
 	public static Texture texture = new Texture(
@@ -51,11 +50,11 @@ public class Player extends Entity {
 	 * <b>Values:</b>
 	 * </p>
 	 * <Ul>
-	 * <Li>Standing</Li>
-	 * <Li>Jumping</Li>
-	 * <Li>Falling</Li>
-	 * <Li>Screwing</Li>
-	 * <Li>JumpingOffScrew</Li>
+	 * Standing <br />
+	 * Jumping <br />
+	 * Falling <br />
+	 * Screwing <br />
+	 * JumpingOffScrew
 	 * </Ul>
 	 */
 	public enum PlayerState {
@@ -71,10 +70,8 @@ public class Player extends Entity {
 	 * @param pos
 	 *            ition of the player in the world
 	 * @param name
-	 * @param tex
-	 *            ture of the player sprite
 	 */
-	public Player( World world, Vector2 pos, String name, Texture tex ) {
+	public Player( String name, World world, Vector2 pos ) {
 		super( name, EntityDef.getDefinition( "playerTest" ), world, pos, 0.0f,
 				new Vector2( 1f, 1f ), null, true);
 		body.setGravityScale( 0.25f );
@@ -84,20 +81,7 @@ public class Player extends Entity {
 		body.setBullet( true );
 		playerState = PlayerState.Standing;
 		inputHandler = new InputHandlerPlayer1( );
-		anchorList = AnchorList.getInstance( );
-		anchorID = anchorList.addAnchor( true, pos );
-	}
-
-	/**
-	 * 
-	 * @param world
-	 *            in which the player exists
-	 * @param pos
-	 *            ition of the player in the world
-	 * @param name
-	 */
-	public Player( World world, Vector2 pos, String name ) {
-		this( world, pos, name, texture );
+		anchorID = AnchorList.getInstance( ).addAnchor( true, pos );
 	}
 
 	// METHODS
@@ -106,13 +90,7 @@ public class Player extends Entity {
 	 * Moves the player right, or jumps them off of a screw to the right
 	 */
 	public void moveRight( ) {
-		if ( playerState == PlayerState.Screwing ) {
-			world.destroyJoint( playerToScrew );
-			playerState = PlayerState.JumpingOffScrew;
-			body.applyLinearImpulse( new Vector2( 0.05f, 0.0f ),
-					body.getWorldCenter( ) );
-			jump( );
-		} else if ( body.getLinearVelocity( ).x < 2.0f ) {
+		if ( body.getLinearVelocity( ).x < MAX_VELOCITY ) {
 			body.applyLinearImpulse( new Vector2( 0.01f, 0.0f ),
 					body.getWorldCenter( ) );
 		}
@@ -122,13 +100,7 @@ public class Player extends Entity {
 	 * Moves the player left, or jumps them off of a screw to the left
 	 */
 	public void moveLeft( ) {
-		if ( playerState == PlayerState.Screwing ) {
-			world.destroyJoint( playerToScrew );
-			playerState = PlayerState.JumpingOffScrew;
-			body.applyLinearImpulse( new Vector2( -0.05f, 0.0f ),
-					body.getWorldCenter( ) );
-			jump( );
-		} else if ( body.getLinearVelocity( ).x > -2.0f ) {
+		if ( body.getLinearVelocity( ).x > -MAX_VELOCITY ) {
 			body.applyLinearImpulse( new Vector2( -0.01f, 0.0f ),
 					body.getWorldCenter( ) );
 		}
@@ -221,14 +193,17 @@ public class Player extends Entity {
 	public void update( float deltaTime ) {
 		super.update( deltaTime );
 		inputHandler.update( );
-		anchorList.setAnchorPosBox( anchorID, getPosition( ) );
+		AnchorList.getInstance( ).setAnchorPosBox( anchorID, getPosition( ) );
 		if ( playerState != PlayerState.Screwing
 				&& playerState != PlayerState.Standing && isGrounded( ) ) {
 			playerState = PlayerState.Standing;
+			System.out.println( "Standing" );
 		}
 
 		if ( inputHandler.jumpPressed( ) ) {
 			if ( !jumpPressed ) {
+				System.out.println( grounded );
+				System.out.println( body.getLinearVelocity( ) );
 				if ( playerState == PlayerState.Screwing ) {
 					world.destroyJoint( playerToScrew );
 					playerState = PlayerState.JumpingOffScrew;
@@ -252,6 +227,10 @@ public class Player extends Entity {
 			prevKey = Keys.D;
 		}
 		if ( inputHandler.downPressed( ) ) {
+			if ( playerState == PlayerState.Screwing ) {
+				world.destroyJoint( playerToScrew );
+				playerState = PlayerState.JumpingOffScrew;
+			}
 			stop( );
 		}
 
@@ -266,9 +245,9 @@ public class Player extends Entity {
 		}
 
 		if ( playerState == PlayerState.Screwing ) {
-			if ( inputHandler.unscrewPressed( ) ) {
+			if ( inputHandler.unscrewing( ) ) {
 				currentScrew.screwLeft( );
-			} else if ( inputHandler.screwPressed( ) ) {
+			} else if ( inputHandler.screwing( ) ) {
 				currentScrew.screwRight( );
 			}
 			if ( currentScrew.body.getJointList( ).size( ) <= 1 ) {

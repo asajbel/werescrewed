@@ -3,6 +3,8 @@ package com.blindtigergames.werescrewed.level;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
@@ -12,7 +14,12 @@ import com.blindtigergames.werescrewed.debug.SBox2DDebugRenderer;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityManager;
 import com.blindtigergames.werescrewed.entity.Player;
+import com.blindtigergames.werescrewed.entity.PlayerBuilder;
+import com.blindtigergames.werescrewed.entity.Skeleton;
 import com.blindtigergames.werescrewed.platforms.*;
+import com.blindtigergames.werescrewed.screens.GameScreen;
+import com.blindtigergames.werescrewed.screens.Screen;
+import com.blindtigergames.werescrewed.screens.ScreenManager;
 
 
 /**
@@ -30,6 +37,7 @@ public class Level {
 	Player player;
 	EntityManager entities;
 	ArrayList<Platform> platforms;
+	Skeleton root;
 	
 	public Level( ){
 		
@@ -38,17 +46,23 @@ public class Level {
 		float h = Gdx.graphics.getHeight( ) / zoom;
 
 		world = new World( new Vector2( 0, -100 ), true );
-		player = new Player(world, new Vector2( 1.0f, 1.0f ), "player", null);
-		camera = new Camera( w, h, player );
+		camera = new Camera( w, h);
+		player = (Player)new PlayerBuilder()
+					.name("Player")
+					.world( world )
+					.position( new Vector2(0.0f,0.0f) )
+					.build();
 
 		entities = new EntityManager();
 		platforms = new ArrayList<Platform>();
+		root = new Skeleton("root", new Vector2(0,0), null, world);
 	}
 	
 	public void update( float deltaTime ){
 		camera.update( );
 		
 		player.update( deltaTime );
+		root.update( deltaTime );
 		entities.update( deltaTime );
 		for (Platform p: platforms)
 			p.update( deltaTime );
@@ -58,6 +72,7 @@ public class Level {
 		sb.setProjectionMatrix( camera.combined() );
 		sb.begin();
 		entities.draw( sb );
+		root.draw( sb );
 		for (Platform p: platforms)
 			p.draw( sb );
 		

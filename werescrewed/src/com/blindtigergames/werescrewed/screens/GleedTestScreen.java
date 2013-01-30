@@ -1,10 +1,6 @@
 package com.blindtigergames.werescrewed.screens;
 
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.blindtigergames.werescrewed.debug.SBox2DDebugRenderer;
-import com.blindtigergames.werescrewed.input.InputHandlerPlayer1;
 import com.blindtigergames.werescrewed.level.GleedLoader;
-import com.blindtigergames.werescrewed.level.Level;
 
 public class GleedTestScreen extends Screen {
 	

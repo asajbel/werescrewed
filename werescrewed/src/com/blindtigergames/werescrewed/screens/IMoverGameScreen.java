@@ -50,37 +50,36 @@ import com.blindtigergames.werescrewed.screws.StructureScrew;
  *
  */
 public class IMoverGameScreen implements com.badlogic.gdx.Screen {
-    
-    /***
-     * Box2D to pixels conversion *************
-     * 
-     * This number means 1 meter equals 256 pixels. That means the biggest
-     * in-game object (10 meters) we can use is 2560 pixels wide, which is much
-     * bigger than our max screen resolution so it should be enough.
-     */
-    public static final float BOX_TO_PIXEL = 256f;
-    public static final float PIXEL_TO_BOX = 1 / BOX_TO_PIXEL;
-    public static final float DEGTORAD = 0.0174532925199432957f;
-    public static final float RADTODEG = 57.295779513082320876f;
 
-    OrthographicCamera camera;
-    Camera cam;
-    SpriteBatch batch;
-    Texture texture;
-    Texture playerTexture;
-    Sprite sprite;
-    World world;
-    SBox2DDebugRenderer debugRenderer;
-    Body playerBody;
-    Entity playerEntity;
-    Player player;
-    TiledPlatform tp, tp2, slidingPlatform;
-    // ComplexPlatform cp;
-    Skeleton skeleton;
-    ShapePlatform sp;
-    TiledPlatform piston;
+	/***
+	 * Box2D to pixels conversion *************
+	 * 
+	 * This number means 1 meter equals 256 pixels. That means the biggest
+	 * in-game object (10 meters) we can use is 2560 pixels wide, which is much
+	 * bigger than our max screen resolution so it should be enough.
+	 */
+	public static final float BOX_TO_PIXEL = 256f;
+	public static final float PIXEL_TO_BOX = 1 / BOX_TO_PIXEL;
+	public static final float DEGTORAD = 0.0174532925199432957f;
+	public static final float RADTODEG = 57.295779513082320876f;
 
-    ArrayList<Body> platforms;
+	OrthographicCamera camera;
+	Camera cam;
+	SpriteBatch batch;
+	Texture texture;
+	Texture playerTexture;
+	Sprite sprite;
+	World world;
+	SBox2DDebugRenderer debugRenderer;
+	Body playerBody;
+	Entity playerEntity;
+	Player player;
+	TiledPlatform tp, tp2, slidingPlatform;
+	// ComplexPlatform cp;
+	Skeleton skeleton;
+	ShapePlatform sp;
+	TiledPlatform piston;
+	ArrayList<Body> platforms;
 
     FPSLogger logger;
 
@@ -103,246 +102,236 @@ public class IMoverGameScreen implements com.badlogic.gdx.Screen {
         // cam = new Camera(w, h);
         batch = new SpriteBatch();
 
-        world = new World( new Vector2( 0, -100 ), true );
-        // mcl = new MyContactListener();
-        // world.setContactListener(mcl);
-        String name = "player";
+		inputHandler = new InputHandlerPlayer1( );
+		texture = new Texture( Gdx.files.internal( "data/rletter.png" ) );
+		// takes in width, height
+		// cam = new Camera(w, h);
+		batch = new SpriteBatch( );
 
-        player = new Player( world, new Vector2( -2.0f, 1.0f ), name );
-        cam = new Camera( w, h, player );
+		world = new World( new Vector2( 0, -100 ), true );
+		// mcl = new MyContactListener();
+		// world.setContactListener(mcl);
+		String name = "player";
 
-        skeleton = new Skeleton( "skeleton1", new Vector2(), null, world );
-        
-        tp = new TiledPlatform( "plat", new Vector2( 370.0f, 200.0f ), texture,
-                10, 1, false, world );
-        // cp = new ComplexPlatform( "bottle", new Vector2(0.0f, 3.0f), texture,
-        // 1, world, "bottle" );
-        sp = new ShapePlatform( "rhom", new Vector2( 1.0f, 1.0f ), texture,
-                world, Shapes.rhombus, 1.0f, 1, false );
+		player = new Player( name, world, new Vector2( -2.0f, 1.0f ) );
+		cam = new Camera( w, h, player );
 
-        screwTex = new Texture( Gdx.files.internal( "data/screw.png" ) );
-        structScrew = new StructureScrew( "", sp.body.getPosition(), screwTex,
-                25, sp, skeleton, world );
+		skeleton = new Skeleton( "skeleton1", new Vector2( ), null, world );
 
-        // tp = new TiledPlatform("plat", new Vector2(200.0f, 100.0f), null, 1,
-        // 2, world);
-        // tp.setMover(new TimelineMover());
-        // BOX_TO_PIXEL, PIXEL_TO_BOX
-        BodyDef groundBodyDef = new BodyDef();
-        groundBodyDef.position.set( new Vector2( 0 * PIXEL_TO_BOX,
-                0 * PIXEL_TO_BOX ) );
-        Body groundBody = world.createBody( groundBodyDef );
-        PolygonShape groundBox = new PolygonShape();
-        groundBox.setAsBox( Gdx.graphics.getWidth() * PIXEL_TO_BOX,
-                1f * PIXEL_TO_BOX );
-        groundBody.createFixture( groundBox, 0.0f );
-        groundBody.getFixtureList().get( 0 ).setFriction( 0.5f );
+		tp = new TiledPlatform( "plat", new Vector2( 370.0f, 200.0f ), texture,
+				10, 1, false, world );
+		// cp = new ComplexPlatform( "bottle", new Vector2(0.0f, 3.0f), texture,
+		// 1, world, "bottle" );
+		sp = new ShapePlatform( "rhom", new Vector2( 1.0f, 1.0f ), texture,
+				world, Shapes.rhombus, 1.0f, 1, false );
 
-        // make sure you uncomment the next two lines debugRenderer = new
-        // SBox2DDebugRenderer(BOX_TO_PIXEL); for physics world
-        // debugRenderer = new Box2DDebugRenderer();
-        debugRenderer = new SBox2DDebugRenderer( BOX_TO_PIXEL );
-        Gdx.app.setLogLevel( Application.LOG_DEBUG );
+		screwTex = new Texture( Gdx.files.internal( "data/screw.png" ) );
+		structScrew = new StructureScrew( "", sp.body.getPosition( ), 25, sp,
+				skeleton, world );
 
-        logger = new FPSLogger();
+		// tp = new TiledPlatform("plat", new Vector2(200.0f, 100.0f), null, 1,
+		// 2, world);
+		// tp.setMover(new TimelineMover());
+		// BOX_TO_PIXEL, PIXEL_TO_BOX
+		BodyDef groundBodyDef = new BodyDef( );
+		groundBodyDef.position.set( new Vector2( 0 * PIXEL_TO_BOX,
+				0 * PIXEL_TO_BOX ) );
+		Body groundBody = world.createBody( groundBodyDef );
+		PolygonShape groundBox = new PolygonShape( );
+		groundBox.setAsBox( Gdx.graphics.getWidth( ) * PIXEL_TO_BOX,
+				1f * PIXEL_TO_BOX );
+		groundBody.createFixture( groundBox, 0.0f );
+		groundBody.getFixtureList( ).get( 0 ).setFriction( 0.5f );
 
-        //slidingPlatform = new TiledPlatform( "prismaticplat", new Vector2(
-        //        -300.0f*PIXEL_TO_BOX, 200.0f*PIXEL_TO_BOX ), null, 10, 1, false, world );
-        slidingPlatform = new PlatformBuilder( world )
-        					.setWidth( 10 )
-        					.setHeight( 1 )
-        					.setName( "sliding" )
-        					.setOneSided( true )
-        					.setPosition( -300*PIXEL_TO_BOX, 200*PIXEL_TO_BOX )
-        					.buildTilePlatform( );
-        slidingPlatform.body.setType( BodyType.DynamicBody );
+		// make sure you uncomment the next two lines debugRenderer = new
+		// SBox2DDebugRenderer(BOX_TO_PIXEL); for physics world
+		// debugRenderer = new Box2DDebugRenderer();
+		debugRenderer = new SBox2DDebugRenderer( BOX_TO_PIXEL );
+		Gdx.app.setLogLevel( Application.LOG_DEBUG );
 
-        
-        // skeleton.mover = new TimelineMover();
-        platforms = new ArrayList<Body>();
+		logger = new FPSLogger( );
 
-        
-        PrismaticJointDef prismaticJointDef = JointFactory
-                .constructSlidingJointDef( skeleton.body, slidingPlatform.body,
-                        slidingPlatform.body.getWorldCenter(), new Vector2( 1,
-                                0 ), 1.0f, 1f );
-        PrismaticJoint j = (PrismaticJoint) world
-                .createJoint( prismaticJointDef );
-        skeleton.addBoneAndJoint( slidingPlatform, j );
-        slidingPlatform.setMover( new SlidingMotorMover(
-                PuzzleType.PRISMATIC_SLIDER, j ) );
-        
-        
-        TiledPlatform skeletonTest1 = new PlatformBuilder(world)
-										.setWidth( 10 )
-										.setHeight( 1 )
-										.setOneSided( false )
-										.setPosition( -300*PIXEL_TO_BOX, -200*PIXEL_TO_BOX )
-										.setTexture( texture )
-										.buildTilePlatform(  );
-        			
-        skeletonTest1.body.setType( BodyType.DynamicBody );
-        skeleton.addPlatformFixed( skeletonTest1 );
-        
-        TiledPlatform skeletonTest2 = new PlatformBuilder(world)
-										.setWidth( 10 )
-										.setHeight( 1 )
-										.setOneSided( false )
-										.setPosition( 300*PIXEL_TO_BOX, 300*PIXEL_TO_BOX )
-										.setTexture( texture )
-										.buildTilePlatform(  );
-        skeletonTest2.body.setType( BodyType.DynamicBody );
-        skeleton.addPlatformRotatingCenter( skeletonTest2 );
+		// slidingPlatform = new TiledPlatform( "prismaticplat", new Vector2(
+		// -300.0f*PIXEL_TO_BOX, 200.0f*PIXEL_TO_BOX ), null, 10, 1, false,
+		// world );
+		slidingPlatform = new PlatformBuilder( world ).setWidth( 10 )
+				.setHeight( 1 ).setName( "sliding" ).setOneSided( true )
+				.setPosition( -300 * PIXEL_TO_BOX, 200 * PIXEL_TO_BOX )
+				.buildTilePlatform( );
+		slidingPlatform.body.setType( BodyType.DynamicBody );
 
-        /*
-         * TODO: FIX PLATFORM DENSITY
-         */
-        
-        for ( int i = 0; i < 10; ++i ){
-            TiledPlatform piston = new PlatformBuilder(world)
-									.setWidth( 1 )
-									.setHeight( 3 )
-									.setOneSided( false )
-									.setPosition( (-500f-i*40)*PIXEL_TO_BOX, 150f*PIXEL_TO_BOX )
-									.setTexture( texture )
-									.buildTilePlatform(  );
+		// skeleton.mover = new TimelineMover();
+		platforms = new ArrayList< Body >( );
 
-            piston.body.setType( BodyType.DynamicBody );
-            PrismaticJoint pistonJoint = new PrismaticJointBuilder( world )
-                                        .skeleton( skeleton )
-                                        .bodyB( (Entity)piston )
-                                        .anchor( piston.body.getWorldCenter() )
-                                        .axis( 0, 1 )
-                                        .motor( true )
-                                        .limit( true )
-                                        .upper( 1 )
-                                        .motorSpeed( 1 )
-                                        .build();
-            //Something is still not quite right with this, try replacing 3 with 0.
-            piston.setMover( new PistonMover( pistonJoint, 0f, i * 1.0f / 10 ) );
-            
-            skeleton.addBoneAndJoint( piston, pistonJoint );
-            
-        }
+		PrismaticJointDef prismaticJointDef = JointFactory
+				.constructSlidingJointDef( skeleton.body, slidingPlatform.body,
+						slidingPlatform.body.getWorldCenter( ), new Vector2( 1,
+								0 ), 1.0f, 1f );
+		PrismaticJoint j = ( PrismaticJoint ) world
+				.createJoint( prismaticJointDef );
+		skeleton.addBoneAndJoint( slidingPlatform, j );
+		slidingPlatform.setMover( new SlidingMotorMover(
+				PuzzleType.PRISMATIC_SLIDER, j ) );
 
-    }
+		TiledPlatform skeletonTest1 = new PlatformBuilder( world )
+				.setWidth( 10 ).setHeight( 1 ).setOneSided( false )
+				.setPosition( -300 * PIXEL_TO_BOX, -200 * PIXEL_TO_BOX )
+				.setTexture( texture ).buildTilePlatform( );
 
-    @Override
-    public void render( float delta ) {
-        Gdx.gl20.glClearColor( 0.0f, 0f, 0.0f, 1.0f );
-        Gdx.gl20.glClear( GL20.GL_COLOR_BUFFER_BIT );
+		skeletonTest1.body.setType( BodyType.DynamicBody );
+		skeleton.addPlatformFixed( skeletonTest1 );
 
-        float deltaTime = Gdx.graphics.getDeltaTime();
+		TiledPlatform skeletonTest2 = new PlatformBuilder( world )
+				.setWidth( 10 ).setHeight( 1 ).setOneSided( false )
+				.setPosition( 300 * PIXEL_TO_BOX, 300 * PIXEL_TO_BOX )
+				.setTexture( texture ).buildTilePlatform( );
+		skeletonTest2.body.setType( BodyType.DynamicBody );
+		skeleton.addPlatformRotatingCenter( skeletonTest2 );
 
-        inputHandler.update();
-        cam.update();
+		/*
+		 * TODO: FIX PLATFORM DENSITY
+		 */
 
-        if ( Gdx.input.isKeyPressed( Input.Keys.ESCAPE ) ) {
-            ScreenManager.getInstance().show( ScreenType.PAUSE );
-        }
-        if ( Gdx.input.isKeyPressed( Keys.P ) ) {
-            System.exit( 0 );
-        }
+		for ( int i = 0; i < 10; ++i ) {
+			TiledPlatform piston = new PlatformBuilder( world )
+					.setWidth( 1 )
+					.setHeight( 3 )
+					.setOneSided( false )
+					.setPosition( ( -500f - i * 40 ) * PIXEL_TO_BOX,
+							150f * PIXEL_TO_BOX ).setTexture( texture )
+					.buildTilePlatform( );
 
-        if ( Gdx.input.isKeyPressed( Input.Keys.X ) ) {
-            skeleton.body.setTransform( skeleton.body.getTransform()
-                    .getPosition().add( 0f, 0.01f ), skeleton.body
-                    .getTransform().getRotation() );
-            skeleton.wakeSkeleton();
-            // groundBody.setTransform(0f, -0.01f, 0);
-            // Gdx.app.log("dude", "DUDE!");
+			piston.body.setType( BodyType.DynamicBody );
+			PrismaticJoint pistonJoint = new PrismaticJointBuilder( world )
+					.skeleton( skeleton ).bodyB( ( Entity ) piston )
+					.anchor( piston.body.getWorldCenter( ) ).axis( 0, 1 )
+					.motor( true ).limit( true ).upper( 1 ).motorSpeed( 1 )
+					.build( );
+			// Something is still not quite right with this, try replacing 3
+			// with 0.
+			piston.setMover( new PistonMover( pistonJoint, 0f, i * 1.0f / 10 ) );
 
-        }
+			skeleton.addBoneAndJoint( piston, pistonJoint );
 
-       /* if ( Gdx.input.isKeyPressed( Input.Keys.Z ) ) {
-            // groundBody.setTransform(0f, 0.01f, 0);
-            skeleton.body.setTransform( skeleton.body.getTransform()
-                    .getPosition().add( 0f, -0.01f ), skeleton.body
-                    .getTransform().getRotation() );
-            skeleton.wakeSkeleton();
-        }*/
+		}
 
-        if ( Gdx.input.isKeyPressed( Input.Keys.C ) ) {
-            skeleton.body.setTransform( skeleton.body.getTransform()
-                    .getPosition(),
-                    skeleton.body.getTransform().getRotation() + 0.01f );
-            // groundBody.setTransform(0f, -0.01f, 0);
-            // Gdx.app.log("dude", "DUDE!");
-            skeleton.wakeSkeleton();
-        }
+	}
 
-        if ( Gdx.input.isKeyPressed( Input.Keys.V ) ) {
-            // groundBody.setTransform(0f, 0.01f, 0);
-            skeleton.body.setTransform( skeleton.body.getTransform()
-                    .getPosition(),
-                    skeleton.body.getTransform().getRotation() - 0.01f );
-            // Gdx.app.log("dude", "DUDE!");
-            skeleton.wakeSkeleton();
-        }
+	@Override
+	public void render( float delta ) {
+		Gdx.gl20.glClearColor( 0.0f, 0f, 0.0f, 1.0f );
+		Gdx.gl20.glClear( GL20.GL_COLOR_BUFFER_BIT );
 
-        if ( inputHandler.screwPressed(  ) ) {
-            /*
-             * for (Fixture f: structScrew.body.getFixtureList()){
-             * f.contactListener(); }
-             */
-            // if(inputHandler.leftPressed( player_t.ONE )){
-            structScrew.screwLeft();
-            // }
-        }
+		float deltaTime = Gdx.graphics.getDeltaTime( );
 
-        player.update( deltaTime );
-        skeleton.update( deltaTime );
-        tp.update( deltaTime );
-        // cp.update();
-        sp.update( deltaTime );
-        
+		inputHandler.update( );
+		cam.update( );
 
-        batch.setProjectionMatrix( cam.combined() );
-        // batch.setProjectionMatrix(camera.combined);
-        batch.begin();
-        // test drawing the texture by uncommenting the next line:
-        tp.draw( batch );
-        slidingPlatform.draw( batch );
-        player.draw( batch );
-        structScrew.draw( batch );
+		if ( Gdx.input.isKeyPressed( Input.Keys.ESCAPE ) ) {
+			ScreenManager.getInstance( ).show( ScreenType.PAUSE );
+		}
+		if ( Gdx.input.isKeyPressed( Keys.P ) ) {
+			System.exit( 0 );
+		}
 
-        // test drawing the texture by uncommenting the next line:
-        // tp.draw(batch);
-        player.draw( batch );
+		if ( Gdx.input.isKeyPressed( Input.Keys.X ) ) {
+			skeleton.body.setTransform( skeleton.body.getTransform( )
+					.getPosition( ).add( 0f, 0.01f ), skeleton.body
+					.getTransform( ).getRotation( ) );
+			skeleton.wakeSkeleton( );
+			// groundBody.setTransform(0f, -0.01f, 0);
+			// Gdx.app.log("dude", "DUDE!");
 
-        batch.end();
+		}
 
-        // logger.log();
-        debugRenderer.render( world, cam.combined() );
+		/*
+		 * if ( Gdx.input.isKeyPressed( Input.Keys.Z ) ) { //
+		 * groundBody.setTransform(0f, 0.01f, 0); skeleton.body.setTransform(
+		 * skeleton.body.getTransform() .getPosition().add( 0f, -0.01f ),
+		 * skeleton.body .getTransform().getRotation() );
+		 * skeleton.wakeSkeleton(); }
+		 */
 
-        world.step( 1 / 60f, 6, 2 ); // step our physics calculations
-        // Gdx.app.debug("Physics",
-        // "delta = "+Gdx.app.getGraphics().getDeltaTime());
-    }
+		if ( Gdx.input.isKeyPressed( Input.Keys.C ) ) {
+			skeleton.body.setTransform( skeleton.body.getTransform( )
+					.getPosition( ), skeleton.body.getTransform( )
+					.getRotation( ) + 0.01f );
+			// groundBody.setTransform(0f, -0.01f, 0);
+			// Gdx.app.log("dude", "DUDE!");
+			skeleton.wakeSkeleton( );
+		}
 
-    @Override
-    public void resize( int width, int height ) {
-    }
+		if ( Gdx.input.isKeyPressed( Input.Keys.V ) ) {
+			// groundBody.setTransform(0f, 0.01f, 0);
+			skeleton.body.setTransform( skeleton.body.getTransform( )
+					.getPosition( ), skeleton.body.getTransform( )
+					.getRotation( ) - 0.01f );
+			// Gdx.app.log("dude", "DUDE!");
+			skeleton.wakeSkeleton( );
+		}
 
-    @Override
-    public void show() {
+		if ( inputHandler.screwPressed( ) ) {
+			/*
+			 * for (Fixture f: structScrew.body.getFixtureList()){
+			 * f.contactListener(); }
+			 */
+			// if(inputHandler.leftPressed( player_t.ONE )){
+			structScrew.screwLeft( );
+			// }
+		}
 
-    }
+		player.update( deltaTime );
+		skeleton.update( deltaTime );
+		tp.update( deltaTime );
+		// cp.update();
+		sp.update( deltaTime );
 
-    @Override
-    public void hide() {
-    }
+		batch.setProjectionMatrix( cam.combined( ) );
+		// batch.setProjectionMatrix(camera.combined);
+		batch.begin( );
+		// test drawing the texture by uncommenting the next line:
+		tp.draw( batch );
+		slidingPlatform.draw( batch );
+		player.draw( batch );
+		structScrew.draw( batch );
 
-    @Override
-    public void pause() {
-    }
+		// test drawing the texture by uncommenting the next line:
+		// tp.draw(batch);
+		player.draw( batch );
 
-    @Override
-    public void resume() {
-    }
+		batch.end( );
 
-    @Override
-    public void dispose() {
-    }
+		// logger.log();
+		debugRenderer.render( world, cam.combined( ) );
+
+		world.step( 1 / 60f, 6, 2 ); // step our physics calculations
+		// Gdx.app.debug("Physics",
+		// "delta = "+Gdx.app.getGraphics().getDeltaTime());
+	}
+
+	@Override
+	public void resize( int width, int height ) {
+	}
+
+	@Override
+	public void show( ) {
+
+	}
+
+	@Override
+	public void hide( ) {
+	}
+
+	@Override
+	public void pause( ) {
+	}
+
+	@Override
+	public void resume( ) {
+	}
+
+	@Override
+	public void dispose( ) {
+	}
 
 }

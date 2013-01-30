@@ -1,6 +1,5 @@
 package com.blindtigergames.werescrewed.screws;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.CircleShape;
@@ -19,9 +18,10 @@ import com.blindtigergames.werescrewed.entity.Skeleton;
 
 public class BossScrew extends Screw {
 
-	public BossScrew( String n, Vector2 pos, Texture tex, int max, Body bod,
+	public BossScrew( String name, Vector2 pos, int max, Body body,
 			Entity platform, Skeleton skeleton ) {
-		super( n, pos, tex, bod );
+		super( name, pos, body );
+
 		maxDepth = max;
 		depth = max;
 
@@ -35,12 +35,13 @@ public class BossScrew extends Screw {
 															// Radar...
 		radarFixture.filter.maskBits = 0x0001;// radar only collides with player
 												// (player category bits 0x0001)
-		body.createFixture( radarFixture );
-		body.setUserData( this );
+		this.body.createFixture( radarFixture );
+		this.body.setUserData( this );
 
 		// connect the screw to the platform;
 		RevoluteJointDef revoluteJointDef = new RevoluteJointDef( );
-		revoluteJointDef.initialize( body, skeleton.body, body.getPosition( ) );
+		revoluteJointDef.initialize( this.body, skeleton.body,
+				this.body.getPosition( ) );
 		revoluteJointDef.enableMotor = true;
 		revoluteJointDef.maxMotorTorque = 5000.0f;
 		revoluteJointDef.motorSpeed = 50f;
@@ -56,8 +57,8 @@ public class BossScrew extends Screw {
 		screwJoint = ( RevoluteJoint ) world.createJoint( revoluteJointDef );
 
 		// connect the entities to the skeleton
-		//skeleton.addBoneAndJoint( this, platformToScrew );
-		//skeleton.addBoneAndJoint( platform, screwJoint );
+		// skeleton.addBoneAndJoint( this, platformToScrew );
+		// skeleton.addBoneAndJoint( platform, screwJoint );
 	}
 
 	@Override

@@ -1,5 +1,7 @@
 package com.blindtigergames.werescrewed.entity;
 
+import java.util.HashMap;
+
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -86,7 +88,16 @@ public class EntityBuilder{
 	}
 	
 	public EntityBuilder position(Vector2 p){
-		pos = p;
+		return positionX(p.x).positionY(p.y);
+	}
+	
+	public EntityBuilder positionX(float x){
+		pos.x = x;
+		return this;
+	}
+	
+	public EntityBuilder positionY(float y){
+		pos.y = y;
 		return this;
 	}
 	
@@ -97,6 +108,13 @@ public class EntityBuilder{
 	
 	public EntityBuilder solid(boolean s){
 		solid = s;
+		return this;
+	}
+	/**
+	 * Loads an entity's special properties from a hashmap.
+	 * For generic entities, this does nothing. This is basically a placeholder for subclasses to inherit.
+	 */
+	public EntityBuilder properties(HashMap<String,String> props){
 		return this;
 	}
 	
@@ -134,4 +152,10 @@ public class EntityBuilder{
 		}
 		return out;
 	}
+	protected static final String nameTag = "Name";
+	protected static final String typeTag = "Definition";
+	protected static final String xTag = "X";
+	protected static final String yTag = "Y";
+	protected static final String aTag = "Angle";	
+
 }

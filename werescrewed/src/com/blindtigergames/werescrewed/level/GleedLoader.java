@@ -52,7 +52,7 @@ public class GleedLoader {
 	
 	protected void loadEntity(Element item) {
 		HashMap<String,String> props = getCustomProperties(item);
-		String name = item.getAttribute("Name");		
+		String name = item.getAttribute("Name");
 		Element posElem = item.getChildByName("Position");
 		Vector2 pos = new Vector2(posElem.getFloat("X"), posElem.getFloat("Y")).mul( Screen.PIXEL_TO_BOX );
 		float rot = 0.0f;
@@ -62,6 +62,7 @@ public class GleedLoader {
 			EntityDef def = EntityDef.getDefinition( defName );
 			if (def != null){
 				if (def.getCategory( ).equals( tileCat )){ //Insert special cases here.\
+					
 					int w = Integer.decode(props.get("TileWidth"));
 					int h = Integer.decode(props.get("TileHeight"));
 					
@@ -73,18 +74,18 @@ public class GleedLoader {
 					.setResitituion( 0.0f )
 					.buildTilePlatform( );
 					Gdx.app.log("GleedLoader", "Platform loaded:"+tp.name);
-					//level.entities.addEntity( name, tp );
-					level.platforms.add( tp );
+					level.entities.addEntity( name, tp );
+					level.root.addPlatformFixed( tp );
 				} else {
 					if (def.getCategory( ).equals( playerCat )){
 						level.player.setPosition( pos );
 					} else {
 						Entity e = new EntityBuilder()
-								.name(name)
 								.type(def)
+								.name(name)
 								.world(level.world)
 								.position(pos)
-								.rotation( rot )
+								.properties(props)
 								.build();
 						Gdx.app.log("GleedLoader", "Entity loaded:"+name);
 						level.entities.addEntity( name, e );
@@ -119,6 +120,5 @@ public class GleedLoader {
 
 	protected static final String defTag = "Definition";
 	protected static final String playerCat = "Player";
-	protected static final String tileCat = "TiledPlatform";
-	
+	protected static final String tileCat = "TiledPlatform";	
 }

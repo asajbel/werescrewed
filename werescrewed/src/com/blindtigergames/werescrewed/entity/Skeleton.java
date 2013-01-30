@@ -93,11 +93,18 @@ public class Skeleton extends Entity {
         addBoneAndJoint( platform, joint );
     }
     
-    
+    /**
+     * 
+     * @param platform - add platform that has structure screws already
+     */
      public void addPlatform( Platform platform ){
      	addBoneAndJoint( platform, null );
      }
      
+     /**
+      * 
+      * @param ss -  add stripped screw onto the skeleton
+      */
      public void addStrippedScrew ( StrippedScrew ss ){
         RevoluteJoint joint = new RevoluteJointBuilder( world ).skeleton( this ).bodyB( ss )
                  .limit( true ).lower( 0 ).upper( 0 ).build();
@@ -142,6 +149,11 @@ public class Skeleton extends Entity {
         }
     }
     
+    /**
+     * translate the skeletons with specified values
+     * @param x - float in X axis
+     * @param y - float in Y axis
+     */
     public void translate( float x, float y ){
     	body.setTransform( body.getTransform( )
 				.getPosition( ).add( x, y ), body

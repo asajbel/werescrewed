@@ -24,7 +24,6 @@ public class AnchorList {
 	private static AnchorList instance;
 	private ShapeRenderer shapeRenderer;
 	private OrthographicCamera camera;
-	
 	private AnchorList() {
 		this(null);
 	}
@@ -81,9 +80,16 @@ public class AnchorList {
 				shapeRenderer.end();
 				
 				if (curAnchor.special) {
-					shapeRenderer.begin(ShapeType.Circle);
-					shapeRenderer.identity();
-					shapeRenderer.circle(curAnchor.position.x, curAnchor.position.y, curAnchor.buffer.x);
+
+					shapeRenderer.begin(ShapeType.Line);
+					shapeRenderer.line(curAnchor.position.x - curAnchor.buffer.x,
+										curAnchor.position.y - curAnchor.buffer.y,
+										curAnchor.position.x + curAnchor.buffer.x,
+										curAnchor.position.y + curAnchor.buffer.y);
+					shapeRenderer.line(curAnchor.position.x - curAnchor.buffer.x,
+							curAnchor.position.y + curAnchor.buffer.y,
+							curAnchor.position.x + curAnchor.buffer.x,
+							curAnchor.position.y - curAnchor.buffer.y);
 					shapeRenderer.end();
 				}
 			}
@@ -129,6 +135,11 @@ public class AnchorList {
 		anchorList.clear();
 	}
 	
+	/**
+	 * set an anchor's position  in pixels
+	 * @param id the int ID of the anchor
+	 * @param position the new position  in pixels for the anchor
+	 */
 	public void setAnchorPos (int id, Vector2 position) {
 		// assuming pass by value, try pass by reference later
 		Anchor temp = anchorList.get(id);
@@ -136,6 +147,11 @@ public class AnchorList {
 		anchorList.set(id, temp);
 	}
 	
+	/**
+	 * set the anchor's position in box2D units
+	 * @param id the int ID of the anchor
+	 * @param position the new position in box2D units for the anchor
+	 */
 	public void setAnchorPosBox (int id, Vector2 position) {
 		// assuming pass by value, try pass by reference later
 		Anchor temp = anchorList.get(id);
@@ -143,10 +159,40 @@ public class AnchorList {
 		anchorList.set(id, temp);
 	}
 	
+	/**
+	 * set anchor's buffer 
+	 * @param id the int ID of the anchor
+	 * @param buffer vecter2(width, height) of new buffer
+	 */
 	public void setAnchorBuffer (int id, Vector2 buffer) {
 		Anchor temp = anchorList.get(id);
 		temp.setBuffer(buffer);
 		anchorList.set(id, temp);
+	}
+
+	/**
+	 * get an anchor's position in pixels
+	 * @param id the int ID of the anchor
+	 * @return anchor's position in pixels
+	 */
+	public Vector2 getAnchorPos (int id) {
+		return anchorList.get( id ).position;
+	}
+	
+	/**
+	 * get the anchor's position in box2D units
+	 * @param id the int ID of the anchor
+	 */
+	public Vector2 getAnchorPosBox (int id) {
+		return anchorList.get( id ).positionBox;
+	}
+	
+	/**
+	 * get anchor's buffer 
+	 * @param id the int ID of the anchor
+	 */
+	public Vector2 getAnchorBuffer (int id) {
+		return anchorList.get( id ).buffer;
 	}
 	
 	public void setMidpoint () {

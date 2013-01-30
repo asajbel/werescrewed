@@ -1,20 +1,34 @@
 package com.blindtigergames.werescrewed.screws;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.blindtigergames.werescrewed.entity.Entity;
 
 /**
- * holds general methods for screws
+ * Base class for the various types of screws. Defines basic behavior.
  * 
  * @author Dennis
  * 
  */
 
 public class Screw extends Entity {
+
+	protected int rotation;
+	protected int depth;
+	protected int maxDepth;
+	protected int screwStep;
+	protected final short CATEGORY_SCREWS = 0x0008;
+
 	public Screw( String name, Vector2 pos, Texture tex, Body body ) {
 		super( name, pos, tex, body, false );
+	}
+
+	public Screw( String name, Vector2 pos, Body body ) {
+		super( name, pos,
+				new Texture( Gdx.files.internal( "data/screw.png" ) ), body,
+				false );
 	}
 
 	@Override
@@ -31,7 +45,7 @@ public class Screw extends Entity {
 
 	public void screwRight( ) {
 	}
-	
+
 	public int getRotation( ) {
 		return rotation;
 	}
@@ -43,11 +57,5 @@ public class Screw extends Entity {
 	public void exampleCollide( String str ) {
 		System.out.println( str );
 	}
-
-	protected int rotation;
-	protected int depth;
-	protected int maxDepth;
-	protected int screwStep;
-	protected final short CATEGORY_SCREWS = 0x0008;
 
 }
