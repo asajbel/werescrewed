@@ -39,6 +39,7 @@ public class AnchorList {
 		midpointVelocity = new Vector2(0f, 0f);
 		specialMidpoint = new Vector2(0f, 0f);
 		shapeRenderer = new ShapeRenderer();
+		anchorPair = new int[2];
 		this.camera = camera;
 	}
 	
