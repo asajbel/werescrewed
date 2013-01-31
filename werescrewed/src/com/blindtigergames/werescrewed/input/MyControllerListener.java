@@ -29,7 +29,7 @@ public class MyControllerListener implements ControllerListener {
 	@Override
 	public boolean axisMoved( Controller controller, int buttonIndex,
 			float axisPoint ) {
-
+		//System.out.println( indexOf(controller) + ":" + " button: " + buttonIndex+ ", axis: " + axisPoint );
 		/*
 		 * for control sticks left stick button 0 - vertical - top is -1.0,
 		 * bottom is 1.0 button 1 - horizontal - left is -1.0, right is 1.0

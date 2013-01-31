@@ -43,6 +43,8 @@ public class Player extends Entity {
 
 	// Static constants
 	public final static float MAX_VELOCITY = 1.8f;
+	public final static float MOVEMENT_IMPLUSE = 0.01f;
+	public final static float JUMP_IMPLUSE = 0.15f;
 
 	// Static variables
 	public static Texture texture = new Texture(
@@ -95,7 +97,7 @@ public class Player extends Entity {
 	 */
 	public void moveRight( ) {
 		if ( body.getLinearVelocity( ).x < MAX_VELOCITY ) {
-			body.applyLinearImpulse( new Vector2( 0.01f, 0.0f ),
+			body.applyLinearImpulse( new Vector2( MOVEMENT_IMPLUSE, 0.0f ),
 					body.getWorldCenter( ) );
 		}
 	}
@@ -105,7 +107,7 @@ public class Player extends Entity {
 	 */
 	public void moveLeft( ) {
 		if ( body.getLinearVelocity( ).x > -MAX_VELOCITY ) {
-			body.applyLinearImpulse( new Vector2( -0.01f, 0.0f ),
+			body.applyLinearImpulse( new Vector2( -MOVEMENT_IMPLUSE, 0.0f ),
 					body.getWorldCenter( ) );
 		}
 	}
@@ -115,7 +117,7 @@ public class Player extends Entity {
 	 */
 	public void jump( ) {
 		body.setLinearVelocity( new Vector2( body.getLinearVelocity( ).x, 0.0f ) );
-		body.applyLinearImpulse( new Vector2( 0.0f, 0.15f ),
+		body.applyLinearImpulse( new Vector2( 0.0f, JUMP_IMPLUSE ),
 				body.getWorldCenter( ) );
 	}
 

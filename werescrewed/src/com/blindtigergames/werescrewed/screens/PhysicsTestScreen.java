@@ -166,7 +166,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		}
 
 		ground = platBuilder.setPosition( 0.0f, 0.0f ).setName( "ground" )
-				.setDimensions( 100, 1 ).setTexture( testTexture )
+				.setDimensions( 200, 1 ).setTexture( testTexture )
 				.setResitituion( 0.0f ).buildTilePlatform( );
 		skeleton.addPlatformFixed( ground );
 		skeleton.addPlatform( tiledPlat ); // Tp already has a structureScrew
