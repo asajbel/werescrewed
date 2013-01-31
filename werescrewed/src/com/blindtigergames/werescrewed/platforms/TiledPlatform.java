@@ -1,5 +1,8 @@
 package com.blindtigergames.werescrewed.platforms;
 
+import java.util.Iterator;
+import java.util.Vector;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Texture;
@@ -12,11 +15,8 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
-import com.blindtigergames.werescrewed.screens.GameScreen;
 import com.blindtigergames.werescrewed.screws.Screw;
-
-import java.util.Iterator;
-import java.util.Vector;
+import com.blindtigergames.werescrewed.util.Util;
 
 /**
  * 
@@ -64,12 +64,12 @@ public class TiledPlatform extends Platform {
 
 		BodyDef bodyDef = new BodyDef( );
 		bodyDef.type = BodyType.DynamicBody;
-		bodyDef.position.set( new Vector2( x * GameScreen.PIXEL_TO_BOX , y * GameScreen.PIXEL_TO_BOX ) );
+		bodyDef.position.set( new Vector2( x * Util.PIXEL_TO_BOX , y * Util.PIXEL_TO_BOX ) );
 		body = world.createBody( bodyDef );
 
 		PolygonShape polygon = new PolygonShape( );
-		polygon.setAsBox( ( width * tileConstant ) * GameScreen.PIXEL_TO_BOX,
-				( height * tileConstant ) * GameScreen.PIXEL_TO_BOX );
+		polygon.setAsBox( ( width * tileConstant ) * Util.PIXEL_TO_BOX,
+				( height * tileConstant ) * Util.PIXEL_TO_BOX );
 //
 //		sprite.setPosition( body.getPosition( ).x - sprite.getWidth( ) / 2, body.getPosition( ).y - sprite.getHeight( ) / 2);
 //		sprite.setOrigin( sprite.getWidth( ) / 2 , sprite.getHeight( ) / 2);
@@ -82,7 +82,7 @@ public class TiledPlatform extends Platform {
 	}
 	
 	private void tileBody ( ) {
-		bodypos = body.getPosition().mul( GameScreen.BOX_TO_PIXEL );
+		bodypos = body.getPosition().mul( Util.BOX_TO_PIXEL );
 		tiles = new Vector<Tile>( (int) (tileHeight * tileWidth) );
 		Sprite temp;
 		Tile insub; 
@@ -116,7 +116,7 @@ public class TiledPlatform extends Platform {
 			setOneSided(!getOneSided());
 			System.out.println(getOneSided());
 		}
-		bodypos = body.getPosition().mul( GameScreen.BOX_TO_PIXEL );
+		bodypos = body.getPosition().mul( Util.BOX_TO_PIXEL );
 	}
 	
 	@Override 

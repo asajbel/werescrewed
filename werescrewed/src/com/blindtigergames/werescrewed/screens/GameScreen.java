@@ -26,18 +26,9 @@ import com.blindtigergames.werescrewed.platforms.ShapePlatform;
 import com.blindtigergames.werescrewed.platforms.Shapes;
 import com.blindtigergames.werescrewed.platforms.TiledPlatform;
 import com.blindtigergames.werescrewed.screws.StructureScrew;
+import com.blindtigergames.werescrewed.util.Util;
 
 public class GameScreen implements com.badlogic.gdx.Screen {
-
-	/***
-	 * Box2D to pixels conversion *************
-	 * 
-	 * This number means 1 meter equals 256 pixels. That means the biggest
-	 * in-game object (10 meters) we can use is 2560 pixels wide, which is much
-	 * bigger than our max screen resolution so it should be enough.
-	 */
-	public static final float BOX_TO_PIXEL = 256f;
-	public static final float PIXEL_TO_BOX = 1 / BOX_TO_PIXEL;
 
 	OrthographicCamera camera;
 	Camera cam;
@@ -126,7 +117,7 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 		// make sure you uncomment the next two lines debugRenderer = new
 		// SBox2DDebugRenderer(BOX_TO_PIXEL); //for physics world
 		// debugRenderer = new Box2DDebugRenderer();
-		debugRenderer = new SBox2DDebugRenderer( BOX_TO_PIXEL );
+		debugRenderer = new SBox2DDebugRenderer( Util.BOX_TO_PIXEL );
 		Gdx.app.setLogLevel( Application.LOG_DEBUG );
 
 		MCL = new MyContactListener( );

@@ -1,10 +1,8 @@
 package com.blindtigergames.werescrewed;
 
 import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.FPSLogger;
-import com.blindtigergames.werescrewed.screens.Screen;
 import com.blindtigergames.werescrewed.screens.ScreenManager;
 import com.blindtigergames.werescrewed.screens.ScreenType;
 
@@ -12,7 +10,7 @@ public class WereScrewedGame extends Game {
 
 	public static AssetManager manager = new AssetManager( );
 
-	FPSLogger logger;
+	public FPSLogger logger;
 
 	@Override
 	public void create( ) {

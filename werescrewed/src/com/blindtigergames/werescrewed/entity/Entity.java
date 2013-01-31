@@ -9,7 +9,7 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.blindtigergames.werescrewed.entity.mover.IMover;
-import com.blindtigergames.werescrewed.screens.GameScreen;
+import com.blindtigergames.werescrewed.util.Util;
 
 /**
  * Anything that can exist. Contains a physics body, and a sprite which may or
@@ -80,7 +80,7 @@ public class Entity {
 		this.body = body;
 		if ( body != null ) {
 			world = body.getWorld( );
-			sprite.setScale( GameScreen.PIXEL_TO_BOX );
+			sprite.setScale( Util.PIXEL_TO_BOX );
 		}
 		setPosition( pos );
 	}
@@ -108,7 +108,7 @@ public class Entity {
 
 	public void draw( SpriteBatch batch ) {
 		if ( sprite != null ) {
-			Vector2 bodyPos = body.getPosition( ).mul( GameScreen.BOX_TO_PIXEL );
+			Vector2 bodyPos = body.getPosition( ).mul( Util.BOX_TO_PIXEL );
 			sprite.setPosition( bodyPos.x - offset.x, bodyPos.y - offset.y );
 			sprite.setRotation( MathUtils.radiansToDegrees * body.getAngle( ) );
 			sprite.draw( batch );

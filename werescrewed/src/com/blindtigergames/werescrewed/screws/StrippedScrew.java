@@ -8,7 +8,7 @@ import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.blindtigergames.werescrewed.entity.Skeleton;
-import com.blindtigergames.werescrewed.screens.GameScreen;
+import com.blindtigergames.werescrewed.util.Util;
 
 /**
  * blah blah
@@ -33,8 +33,8 @@ public class StrippedScrew extends Screw {
 		screwBodyDef.gravityScale = 0.07f;
 		body = world.createBody( screwBodyDef );
 		CircleShape screwShape = new CircleShape( );
-		screwShape.setRadius( ( sprite.getWidth( ) / 2.0f )
-				* GameScreen.PIXEL_TO_BOX );
+		screwShape
+				.setRadius( ( sprite.getWidth( ) / 2.0f ) * Util.PIXEL_TO_BOX );
 		FixtureDef screwFixture = new FixtureDef( );
 		screwFixture.filter.categoryBits = CATEGORY_SCREWS;
 		screwFixture.filter.maskBits = 0x0001 | 0x0002;
@@ -46,8 +46,7 @@ public class StrippedScrew extends Screw {
 
 		// add radar sensor to screw
 		CircleShape radarShape = new CircleShape( );
-		radarShape.setRadius( sprite.getWidth( ) * 1.25f
-				* GameScreen.PIXEL_TO_BOX );
+		radarShape.setRadius( sprite.getWidth( ) * 1.25f * Util.PIXEL_TO_BOX );
 		FixtureDef radarFixture = new FixtureDef( );
 		radarFixture.shape = radarShape;
 		radarFixture.isSensor = true;

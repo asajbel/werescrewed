@@ -11,7 +11,7 @@ import com.badlogic.gdx.physics.box2d.joints.RevoluteJoint;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
 import com.blindtigergames.werescrewed.entity.Skeleton;
 import com.blindtigergames.werescrewed.platforms.Platform;
-import com.blindtigergames.werescrewed.screens.GameScreen;
+import com.blindtigergames.werescrewed.util.Util;
 
 /**
  * blah blah
@@ -48,7 +48,7 @@ public class StructureScrew extends Screw {
 		body = world.createBody( screwBodyDef );
 		CircleShape screwShape = new CircleShape( );
 		screwShape.setRadius( ( sprite.getWidth( ) / 2.0f )
-				* GameScreen.PIXEL_TO_BOX );
+				* Util.PIXEL_TO_BOX );
 		FixtureDef screwFixture = new FixtureDef( );
 		screwFixture.shape = screwShape;
 		screwFixture.isSensor = true;
@@ -59,7 +59,7 @@ public class StructureScrew extends Screw {
 		// add radar sensor to screw
 		CircleShape radarShape = new CircleShape( );
 		radarShape.setRadius( sprite.getWidth( ) * 1.25f
-				* GameScreen.PIXEL_TO_BOX );
+				* Util.PIXEL_TO_BOX );
 		FixtureDef radarFixture = new FixtureDef( );
 		radarFixture.shape = radarShape;
 		radarFixture.isSensor = true;
@@ -100,7 +100,7 @@ public class StructureScrew extends Screw {
 	@Override
 	public void update( float deltaTime ) {
 		super.update( deltaTime );
-		Vector2 bodyPos = body.getPosition( ).mul( GameScreen.BOX_TO_PIXEL );
+		Vector2 bodyPos = body.getPosition( ).mul( Util.BOX_TO_PIXEL );
 		sprite.setPosition( bodyPos.x - offset.x, bodyPos.y - offset.y );
 		if ( depth == 0 ) {
 			if ( fallTimeout == 0 && screwJoint != null ) {
