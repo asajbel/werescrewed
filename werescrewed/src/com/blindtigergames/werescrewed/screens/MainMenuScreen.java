@@ -27,9 +27,9 @@ class MainMenuScreen implements com.badlogic.gdx.Screen {
 		lineHeight = Math.round( 2.5f * font.getCapHeight( ) );
 		headingLabel = new Label( "Screen Manager Demo", font );
 		playButton = new Button( "Play", font, new ScreenSwitchHandler(
-				Screen.GAME ) );
+				ScreenType.GAME ) );
 		creditsButton = new Button( "Credits", font, new ScreenSwitchHandler(
-				Screen.CREDITS ) );
+				ScreenType.CREDITS ) );
 		exitButton = new Button( "Exit", font, new ButtonHandler( ) {
 			@Override
 			public void onClick( ) {

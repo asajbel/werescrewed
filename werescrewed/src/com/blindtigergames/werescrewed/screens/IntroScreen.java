@@ -67,7 +67,7 @@ class IntroScreen implements com.badlogic.gdx.Screen {
 		public void run( ) {
 			// TODO Auto-generated method stub
 			// game.setScreen(new MainMenuScreen(game));
-			ScreenManager.getInstance( ).show( Screen.MAIN_MENU );
+			ScreenManager.getInstance( ).show( ScreenType.MAIN_MENU );
 
 		}
 	};
@@ -75,7 +75,7 @@ class IntroScreen implements com.badlogic.gdx.Screen {
 	@Override
 	public void hide( ) {
 		/* dispose intro screen because it won't be needed anymore */
-		ScreenManager.getInstance( ).dispose( Screen.INTRO );
+		ScreenManager.getInstance( ).dispose( ScreenType.INTRO );
 	}
 
 	@Override

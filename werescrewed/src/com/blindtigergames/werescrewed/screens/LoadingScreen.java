@@ -89,7 +89,7 @@ public class LoadingScreen implements com.badlogic.gdx.Screen {
 			if ( Gdx.input.isTouched( ) ) { // If the screen is touched after
 											// the game is done loading, go to
 											// the main menu screen
-				ScreenManager.getInstance( ).show( Screen.GAME );
+				ScreenManager.getInstance( ).show( ScreenType.GAME );
 			}
 		}
 

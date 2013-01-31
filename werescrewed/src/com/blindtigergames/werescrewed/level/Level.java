@@ -1,17 +1,25 @@
 package com.blindtigergames.werescrewed.level;
 
+import java.util.ArrayList;
+
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.blindtigergames.werescrewed.camera.Camera;
 import com.blindtigergames.werescrewed.debug.SBox2DDebugRenderer;
+import com.blindtigergames.werescrewed.entity.Entity;
+import com.blindtigergames.werescrewed.entity.EntityManager;
 import com.blindtigergames.werescrewed.entity.Player;
-import com.blindtigergames.werescrewed.platforms.PlatformBuilder;
-import com.blindtigergames.werescrewed.platforms.RoomPlatform;
-import com.blindtigergames.werescrewed.platforms.ShapePlatform;
-import com.blindtigergames.werescrewed.platforms.TiledPlatform;
+import com.blindtigergames.werescrewed.entity.PlayerBuilder;
+import com.blindtigergames.werescrewed.entity.Skeleton;
+import com.blindtigergames.werescrewed.platforms.*;
+import com.blindtigergames.werescrewed.screens.GameScreen;
+import com.blindtigergames.werescrewed.screens.Screen;
+import com.blindtigergames.werescrewed.screens.ScreenManager;
 
 
 /**
@@ -23,17 +31,13 @@ import com.blindtigergames.werescrewed.platforms.TiledPlatform;
  * 
  */
 
-public class Level{
-	Camera camera;
-	World world;
-	Texture texture;
+public class Level {
+	public Camera camera;
+	public World world;
 	Player player;
-	TiledPlatform tp, ground;
-	RoomPlatform rp;
-	ShapePlatform sp;
-	// When the entityManager is done these objects
-	// will go inside the manager instead of 
-	// just hanging outside here
+	EntityManager entities;
+	ArrayList<Platform> platforms;
+	Skeleton root;
 	
 	public Level( ){
 		
@@ -41,53 +45,74 @@ public class Level{
 		float w = Gdx.graphics.getWidth( ) / zoom;
 		float h = Gdx.graphics.getHeight( ) / zoom;
 
-		world = new World( new Vector2 ( 0, -100 ), true);
-		player = new Player( "player", world, new Vector2( 1.0f, 1.0f ));
-		camera = new Camera( w, h, player);
-		
-		texture = new Texture( Gdx.files.internal( "data/rletter.png" ) );
-		
-		tp = new PlatformBuilder( world )
-		.setPosition( 2.0f, 0.2f )
-		.setDimensions( 10, 1 )
-		.setTexture( texture )
-		.buildTilePlatform( );
+		world = new World( new Vector2( 0, -100 ), true );
+		camera = new Camera( w, h);
+		player = (Player)new PlayerBuilder()
+					.name("Player")
+					.world( world )
+					.position( new Vector2(0.0f,0.0f) )
+					.build();
 
-		rp = new PlatformBuilder( world )
-		.setPosition( -1.0f, 0.4f )
-		.setDimensions( 1, 10 )
-		.setTexture( texture )
-		.buildRoomPlatform( );
-		
-		ground = new PlatformBuilder( world )
-		.setPosition( 0.0f, 0.0f )
-		.setDimensions( 100, 1 )
-		.setTexture( texture )
-		.buildTilePlatform( );
-
-		
+		entities = new EntityManager();
+		platforms = new ArrayList<Platform>();
+		root = new Skeleton("root", new Vector2(0,0), null, world);
 	}
 	
 	public void update( float deltaTime ){
 		camera.update( );
 		
 		player.update( deltaTime );
-		tp.update( deltaTime );
-		rp.update( deltaTime );
+		root.update( deltaTime );
+		entities.update( deltaTime );
+		for (Platform p: platforms)
+			p.update( deltaTime );
 	}
 	
 	public void draw ( SpriteBatch sb, SBox2DDebugRenderer dr){
 		sb.setProjectionMatrix( camera.combined() );
-		sb.begin( );
+		sb.begin();
+		entities.draw( sb );
+		root.draw( sb );
+		for (Platform p: platforms)
+			p.draw( sb );
 		
-		tp.draw( sb );
 		player.draw( sb );
-		rp.draw( sb );
-		
-		sb.end( );
-		
+		sb.end();
 		dr.render( world, camera.combined( ) );
 		world.step( 1 / 60f, 6, 2 );
 
+	}
+	
+	public static Level getDefaultLevel(){
+		Level out = new Level();
+		TiledPlatform tp, ground;
+		RoomPlatform rp;
+		//ShapePlatform sp;
+		Texture texture = new Texture( Gdx.files.internal( "data/rletter.png" ) );
+		
+		tp = new PlatformBuilder(out.world)
+		.setPosition( 2.0f, 0.2f )
+		.setDimensions( 10, 1 )
+		.setTexture( texture )
+		.buildTilePlatform( );
+
+		rp = new PlatformBuilder(out.world)
+		.setPosition( -1.0f, 0.4f )
+		.setDimensions( 1, 10 )
+		.setTexture( texture )
+		.buildRoomPlatform( );
+		
+		ground = new PlatformBuilder(out.world)
+		.setPosition( 0.0f, 0.0f )
+		.setDimensions( 100, 1 )
+		.setTexture( texture )
+		.buildTilePlatform( );
+		
+		out.platforms.add( ground );
+		out.platforms.add( rp );
+		out.platforms.add( tp );
+		
+		
+		return out;
 	}
 }

@@ -1,10 +1,12 @@
 package com.blindtigergames.werescrewed;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.FPSLogger;
 import com.blindtigergames.werescrewed.screens.Screen;
 import com.blindtigergames.werescrewed.screens.ScreenManager;
+import com.blindtigergames.werescrewed.screens.ScreenType;
 
 public class WereScrewedGame extends Game {
 
@@ -23,8 +25,8 @@ public class WereScrewedGame extends Game {
 		// uncomment next line to bypass intro
 
 		// ScreenManager.getInstance().show(Screen.GAME);
-		ScreenManager.getInstance( ).show( Screen.PHYSICS );
-		//ScreenManager.getInstance().show(Screen.IMOVER);
+		ScreenManager.getInstance( ).show( ScreenType.PHYSICS );
+		// ScreenManager.getInstance().show(Screen.IMOVER);
 
 		logger = new FPSLogger( );
 

@@ -8,10 +8,15 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.joints.PrismaticJoint;
 import com.badlogic.gdx.physics.box2d.joints.PrismaticJointDef;
@@ -25,19 +30,34 @@ import com.blindtigergames.werescrewed.entity.Skeleton;
 import com.blindtigergames.werescrewed.entity.mover.PistonMover;
 import com.blindtigergames.werescrewed.entity.mover.PuzzleType;
 import com.blindtigergames.werescrewed.entity.mover.SlidingMotorMover;
+import com.blindtigergames.werescrewed.input.InputHandlerPlayer1;
 import com.blindtigergames.werescrewed.joint.JointFactory;
 import com.blindtigergames.werescrewed.joint.PrismaticJointBuilder;
 import com.blindtigergames.werescrewed.platforms.ComplexPlatform;
 import com.blindtigergames.werescrewed.platforms.PlatformBuilder;
+import com.blindtigergames.werescrewed.platforms.ShapePlatform;
+import com.blindtigergames.werescrewed.platforms.Shapes;
 import com.blindtigergames.werescrewed.platforms.TiledPlatform;
 import com.blindtigergames.werescrewed.screws.PuzzleScrew;
 import com.blindtigergames.werescrewed.screws.StrippedScrew;
 import com.blindtigergames.werescrewed.screws.StructureScrew;
 
+/**
+ * Screen to test out moving platforms and skeletons
+ * 
+ * Debug Keys in use:
+ * z - move skeleton down
+ * x - move skeleton up
+ * c - rotate skeleton left
+ * v - rotate skeleton right
+ * 
+ * @author stew
+ * 
+ */
 public class IMoverGameScreen implements com.badlogic.gdx.Screen {
 
 	/***
-	 * Box2D to pixels conversion.
+	 * Box2D to pixels conversion *************
 	 * 
 	 * This number means 1 meter equals 256 pixels. That means the biggest
 	 * in-game object (10 meters) we can use is 2560 pixels wide, which is much
@@ -241,7 +261,7 @@ public class IMoverGameScreen implements com.badlogic.gdx.Screen {
 		cam.update( );
 
 		if ( Gdx.input.isKeyPressed( Input.Keys.ESCAPE ) ) {
-			ScreenManager.getInstance( ).show( Screen.PAUSE );
+			ScreenManager.getInstance( ).show( ScreenType.PAUSE );
 		}
 		if ( Gdx.input.isKeyPressed( Keys.P ) ) {
 			System.exit( 0 );
@@ -250,7 +270,7 @@ public class IMoverGameScreen implements com.badlogic.gdx.Screen {
 		player.update( deltaTime );
 		structScrew.update( deltaTime );
 		puzzleScrew.update( deltaTime );
-		entityManager.updateEntity( deltaTime );
+		entityManager.update( deltaTime );
 
 		// ONLY FOR TESTING, EVERYTHING IN WORLD IS IN A SKELETON (THEREFORE CAN
 		// MOVE)
@@ -275,7 +295,6 @@ public class IMoverGameScreen implements com.badlogic.gdx.Screen {
 		debugRenderer.render( world, cam.combined( ) );
 
 		world.step( 1 / 60f, 6, 2 ); // step our physics calculations
-
 	}
 
 	@Override

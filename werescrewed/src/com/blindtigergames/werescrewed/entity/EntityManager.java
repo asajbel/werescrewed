@@ -4,6 +4,10 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.blindtigergames.werescrewed.entity.Skeleton;
+
 /*
  *EntityManager.java, meant to hold and store a list of entities and skeletons
  * for purposes of updating and deleting them.
@@ -12,7 +16,7 @@ import java.util.Map;
  */
 
 public class EntityManager {
-
+	//Dear god, too many HashMaps!
 	protected static HashMap < String, Entity > entityList = new HashMap< String, Entity >( );
 	protected static HashMap < String, Skeleton > skeletonList = new HashMap< String, Skeleton >( );
 	protected static HashMap < String, Entity > entitiesToAdd = new HashMap < String, Entity >( );
@@ -28,7 +32,7 @@ public class EntityManager {
 	 * Updates Entities and Skeletons stored in the HashMap
 	 * @param deltaTime - variable tracing the change in time between ticks
 	 */
-	public void updateEntity( float deltaTime ) {		
+	public void update( float deltaTime ) {		
 		Iterator< Map.Entry< String,Entity > > it = entityList.entrySet( ).iterator( );
 		Map.Entry< String, Entity > entityToUpdate;
 		while ( it.hasNext( ) ) {
@@ -65,7 +69,7 @@ public class EntityManager {
 			entryToRemove = itRemove.next( );
 			Entity entityToRemove = entryToRemove.getValue( );
 			entityList.remove( entryToRemove.getKey( ) );
-			System.out.println("class com.blindtigergames.werescrewed.entity.EntityManager: DESTROYING ENTITY BODY");
+			Gdx.app.log("EntityManager", "class com.blindtigergames.werescrewed.entity.EntityManager: DESTROYING ENTITY BODY");
 			entityToRemove.world.destroyBody ( entityToRemove.body );
 		}
 		entitiesToRemove.clear( );
@@ -76,13 +80,30 @@ public class EntityManager {
 			entrySkelToRemove = jitRemove.next( );
 			Skeleton skeletonToRemove = entrySkelToRemove.getValue();
 			skeletonToRemove.world.destroyBody ( skeletonToRemove.body );
-			System.out.println("class com.blindtigergames.werescrewed.entity.EntityManager: DESTROYING SKELETON BODY");
+			Gdx.app.log("EntityManager","class com.blindtigergames.werescrewed.entity.EntityManager: DESTROYING SKELETON BODY");
 			skeletonList.remove( entrySkelToRemove.getKey( ) );
 		}
 		skeletonsToRemove.clear( );
 		
 	}
-	
+	public void draw(SpriteBatch batch){
+		Iterator< Map.Entry< String, Entity > > eit = entityList.entrySet( )
+				.iterator( );
+		Map.Entry< String, Entity > eEntry;
+		while ( eit.hasNext( ) ) {
+			eEntry = eit.next( );
+			eEntry.getValue( ).draw( batch );
+		}
+
+		Iterator< Map.Entry< String, Skeleton > > sit = skeletonList.entrySet( )
+				.iterator( );
+		Map.Entry< String, Skeleton > sEntry;
+		while ( sit.hasNext( ) ) {
+			sEntry = sit.next( );
+			sEntry.getValue( ).draw( batch );
+		}
+	}
+
 	/**Adds an Entity to the HashMap
 	 * 
 	 * @param name - name added as a key to the HashMap
@@ -107,7 +128,7 @@ public class EntityManager {
 	 * @param type - Object value removed from the HashMap
 	 */
 	public void removeEntity ( String name, Entity type ) {
-		System.out.println("class com.blindtigergames.werescrewed.entity.EntityManager: adding entity " + name + " to remove list");
+		Gdx.app.log("EntityManager", "ADDING TO REMOVE LIST");
 		entitiesToRemove.put( name,  type );
 	//	entityList.remove( name );
 	}
@@ -118,7 +139,7 @@ public class EntityManager {
 	 * @param type - Object value removed from the HashMap
 	 */
 	public void removeSkeleton ( String name, Skeleton type ) {
-		System.out.println("class com.blindtigergames.werescrewed.entity.EntityManager: adding skeleton " + name + " to remove list");
+		Gdx.app.log("EntityManager", "class com.blindtigergames.werescrewed.entity.EntityManager: adding skeleton " + name + " to remove list");
 		skeletonsToRemove.put( name,  type );
 	//	skeletonList.remove( name );
 	}

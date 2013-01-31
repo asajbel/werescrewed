@@ -122,7 +122,7 @@ public class Entity {
 	}
 
 	protected String generateName( ) {
-		return type.name;
+		return type.getName();
 	}
 
 	/**

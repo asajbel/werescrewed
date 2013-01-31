@@ -28,7 +28,7 @@ public class LevelTestScreen implements com.badlogic.gdx.Screen {
 	
 	public LevelTestScreen( ){
 		inputHandler = new InputHandlerPlayer1( );
-		level = new Level( );
+		level = Level.getDefaultLevel( );
 		batch = new SpriteBatch( );
 		debugRenderer = new SBox2DDebugRenderer( BOX_TO_PIXEL );
 		
@@ -41,7 +41,7 @@ public class LevelTestScreen implements com.badlogic.gdx.Screen {
 		Gdx.gl20.glClear( GL20.GL_COLOR_BUFFER_BIT );
 
 		if ( Gdx.input.isKeyPressed( Input.Keys.ESCAPE ) ) {
-			ScreenManager.getInstance( ).show( Screen.PAUSE );
+			ScreenManager.getInstance( ).show( ScreenType.PAUSE );
 		}
 		if ( Gdx.input.isKeyPressed( Keys.P ) ) {
 			System.exit( 0 );

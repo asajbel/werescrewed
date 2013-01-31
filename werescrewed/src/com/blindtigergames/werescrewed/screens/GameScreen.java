@@ -67,7 +67,6 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 
 
 	public GameScreen( ) {
-		System.out.println( "GameScreen starting" );
 		float zoom = 1.0f;
 		float w = Gdx.graphics.getWidth( ) / zoom;
 		float h = Gdx.graphics.getHeight( ) / zoom;
@@ -102,7 +101,7 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 				world, Shapes.plus, 1.0f, 1.0f, false );
 
 		// testing screws
-		screwTex = new Texture( Gdx.files.internal( "data/screw.png" ) );
+		screwTex = new Texture( Gdx.files.internal( "data/screw1.png" ) );
 		background = new Texture( Gdx.files.internal( "data/libgdx.png" ) );
 
 		skeleton = new Skeleton( "", Vector2.Zero, null, world );
@@ -136,8 +135,8 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 
 	@Override
 	public void render( float deltaTime ) {
-		Gdx.gl20.glClearColor( 0.0f, 0f, 0.0f, 1.0f );
-		Gdx.gl20.glClear( GL20.GL_COLOR_BUFFER_BIT );
+		Gdx.gl10.glClearColor( 0.0f, 0f, 0.0f, 1.0f );
+		Gdx.gl10.glClear( GL20.GL_COLOR_BUFFER_BIT );
 
 		// float deltaTime = Gdx.graphics.getDeltaTime( );
 
@@ -145,13 +144,13 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 		cam.update( );
 
 		if ( Gdx.input.isKeyPressed( Input.Keys.ESCAPE ) ) {
-			ScreenManager.getInstance( ).show( Screen.PAUSE );
+			ScreenManager.getInstance( ).show( ScreenType.PAUSE );
 		}
 		if ( Gdx.input.isKeyPressed( Keys.P ) ) {
 			System.exit( 0 );
 		}
 		if ( Gdx.input.isKeyPressed( Input.Keys.M ) ) {
-			ScreenManager.getInstance( ).show( Screen.PHYSICS );
+			ScreenManager.getInstance( ).show( ScreenType.PHYSICS );
 		}
 
 		rootSkeleton.update( deltaTime );

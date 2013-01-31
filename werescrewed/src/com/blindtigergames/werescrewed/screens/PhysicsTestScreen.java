@@ -244,9 +244,13 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 
 	@Override
 	public void render( float deltaTime ) {
-		Gdx.gl20.glClearColor( 0.0f, 0f, 0.0f, 1.0f );
-		Gdx.gl20.glClear( GL20.GL_COLOR_BUFFER_BIT );
-
+		if(Gdx.gl20 != null){
+			Gdx.gl20.glClearColor( 0.0f, 0f, 0.0f, 1.0f );
+			Gdx.gl20.glClear( GL20.GL_COLOR_BUFFER_BIT );
+		} else {
+			Gdx.gl10.glClearColor( 0.0f, 0f, 0.0f, 1.0f );
+			Gdx.gl10.glClear( GL20.GL_COLOR_BUFFER_BIT );
+		}
 	
 		for(Controller controller: Controllers.getControllers()) {
 			   //Gdx.app.log("ok", controller.getName());
@@ -257,7 +261,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		cam.update( );
 
 		if ( Gdx.input.isKeyPressed( Input.Keys.ESCAPE ) ) {
-			ScreenManager.getInstance( ).show( Screen.PAUSE );
+			ScreenManager.getInstance( ).show( ScreenType.PAUSE );
 		}
 		if ( Gdx.input.isKeyPressed( Keys.P ) ) {
 			System.exit( 0 );
@@ -271,7 +275,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		player.update( deltaTime );
 		structScrew.update( deltaTime );
 		puzzleScrew.update( deltaTime );
-		entityManager.updateEntity( deltaTime );
+		entityManager.update( deltaTime );
 
 		// ONLY FOR TESTING, EVERYTHING IN WORLD IS IN A SKELETON (THEREFORE CAN
 		// MOVE)
