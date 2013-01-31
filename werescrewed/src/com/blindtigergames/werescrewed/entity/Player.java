@@ -20,6 +20,8 @@ import com.blindtigergames.werescrewed.screws.Screw;
  * 
  */
 public class Player extends Entity {
+	
+	int check = 0;
 
 	// FIELDS
 
@@ -36,6 +38,8 @@ public class Player extends Entity {
 	private boolean grounded;
 	private boolean jumpPressed;
 	private int anchorID;
+	int veloTest  = 5;
+	
 
 	// Static constants
 	public final static float MAX_VELOCITY = 1.8f;
@@ -184,9 +188,14 @@ public class Player extends Entity {
 						body.getWorldCenter( ) );
 			else if ( velocity >= -0.1 && velocity <= 0.1f && velocity != 0.0f )
 				body.setLinearVelocity( 0.0f, 0.0f );
-			}
+		}
 	}
 	
+	/**
+	 * @author Bryan Pacini
+	 * @return void
+	 * slows player
+	 */
 	private void slow( ) {
 		float velocity = body.getLinearVelocity( ).x;
 		if ( velocity != 0.0f ) {
@@ -198,7 +207,6 @@ public class Player extends Entity {
 						body.getWorldCenter( ) );
 			else if ( velocity >= -0.1 && velocity <= 0.1f && velocity != 0.0f )
 				body.setLinearVelocity( 0.0f, 0.0f );
-			System.out.println("player velocity: " + velocity );
 		}
 	}
 
@@ -216,8 +224,6 @@ public class Player extends Entity {
 
 		if ( inputHandler.jumpPressed( ) ) {
 			if ( !jumpPressed ) {
-				System.out.println( grounded );
-				System.out.println( body.getLinearVelocity( ) );
 				if ( playerState == PlayerState.Screwing ) {
 					world.destroyJoint( playerToScrew );
 					playerState = PlayerState.JumpingOffScrew;
@@ -282,7 +288,22 @@ public class Player extends Entity {
 				}
 			}
 		}
-
+		terminalVelocityCheck(6.0f);
+	}
+	
+	/**
+	 * Checks player's vertical velocity and resets to be within bounds
+	 * 
+	 * @param terminal -float
+	 * 		whatever you want terminal velocity to be
+	 *	
+	 * @author Bryan Pacini
+	 */
+	private void terminalVelocityCheck(float terminal){
+		if( body.getLinearVelocity( ).y < -(terminal))
+			body.setLinearVelocity( body.getLinearVelocity().x, - (terminal) );
+		else if (body.getLinearVelocity().y > terminal)
+			body.setLinearVelocity( body.getLinearVelocity().x, terminal );
 	}
 
 }

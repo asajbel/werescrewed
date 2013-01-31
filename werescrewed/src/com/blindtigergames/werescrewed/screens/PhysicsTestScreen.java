@@ -69,8 +69,8 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 	private Skeleton skeleton;
 	private Skeleton rootSkeleton;
 	private ArrayList< StrippedScrew > climbingScrews = new ArrayList< StrippedScrew >( );
-	private boolean debug;
-	private boolean debugTest;
+	private boolean debug = true;
+	private boolean debugTest = true;
 
 	public PhysicsTestScreen( ) {
 		System.out.println( "Physics Test Screen starting" );
@@ -98,7 +98,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 
 		texture = new Texture( Gdx.files.internal( "data/rletter.png" ) );
 
-		tp = platBuilder.setPosition( 350.0f, 100.0f ).setDimensions( 10, 1 )
+		tp = platBuilder.setPosition( 500.0f, 100.0f ).setDimensions( 10, 1 )
 				.setTexture( texture ).setName( "tp" ).setResitituion( 0.0f )
 				.buildTilePlatform( );
 
@@ -202,6 +202,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		TiledPlatform skeletonTest2 = platBuilder.setWidth( 10 ).setHeight( 1 )
 				.setOneSided( false ).setPosition( 500, 300 )
 				.setTexture( texture ).setFriction( 1f ).buildTilePlatform( );
+		skeletonTest2.setOneSided( true );
 		skeletonTest2.body.setType( BodyType.DynamicBody );
 		skeleton.addPlatformRotatingCenter( skeletonTest2 );
 
@@ -261,6 +262,11 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		if ( Gdx.input.isKeyPressed( Keys.P ) ) {
 			System.exit( 0 );
 		}
+		
+		if ( Gdx.input.isKeyPressed( Keys.NUM_0 ) ) {
+			if(debugTest) debug = !debug;
+			debugTest = false;
+		} else debugTest = true;
 
 		player.update( deltaTime );
 		structScrew.update( deltaTime );
@@ -287,7 +293,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		batch.end( );
 
 		// logger.log();
-		debugRenderer.render( world, cam.combined( ) );
+		if(debug)debugRenderer.render( world, cam.combined( ) );
 
 		world.step( 1 / 60f, 6, 2 ); // step our physics calculations
 	}
