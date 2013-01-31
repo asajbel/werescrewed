@@ -9,11 +9,13 @@ import com.badlogic.gdx.physics.box2d.Body;
  ******************************************************************************/
 public interface IMover {
 
+	
 	/**
 	 * Calculates movement then applies to body
 	 * @param Body - The body to apply the movement to
+	 * @param SteeringOutput - Optional additional movement to apply to body
 	 */
-	void move(Body body, SteeringOutput steering);
+	void move(float deltaTime, Body body);
 	
 	
 	/**
@@ -21,5 +23,7 @@ public interface IMover {
 	 * @param Body - The body to apply the movement to
 	 * @param SteeringOutput - Optional additional movement to apply to body
 	 */
-	void move(Body body);
+	
+	
+	void move(float deltaTime, Body body, SteeringOutput steering);
 }

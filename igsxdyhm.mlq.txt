@@ -1,0 +1,36 @@
+Revert "Discard"
+
+This reverts commit 7eda13c2f7f1c12b90ee18007b431c9b6b6ab716, reversing
+changes made to 459179f00c595c20c488b674887e0becf7a91733.
+
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+# On branch master
+# You are currently rebasing.
+#   (all conflicts fixed: run "git rebase --continue")
+#
+# Changes to be committed:
+#   (use "git reset HEAD <file>..." to unstage)
+#
+#	modified:   werescrewed-android/assets/data/entities/playerTest.xml
+#	modified:   werescrewed/src/com/blindtigergames/werescrewed/collisionManager/MyContactListener.java
+#	modified:   werescrewed/src/com/blindtigergames/werescrewed/entity/Entity.java
+#	modified:   werescrewed/src/com/blindtigergames/werescrewed/entity/EntityDef.java
+#	modified:   werescrewed/src/com/blindtigergames/werescrewed/entity/Player.java
+#	modified:   werescrewed/src/com/blindtigergames/werescrewed/entity/Skeleton.java
+#	modified:   werescrewed/src/com/blindtigergames/werescrewed/input/InputHandlerPlayer1.java
+#	modified:   werescrewed/src/com/blindtigergames/werescrewed/level/Level.java
+#	modified:   werescrewed/src/com/blindtigergames/werescrewed/platforms/Box.java
+#	modified:   werescrewed/src/com/blindtigergames/werescrewed/platforms/ComplexPlatform.java
+#	modified:   werescrewed/src/com/blindtigergames/werescrewed/platforms/Platform.java
+#	modified:   werescrewed/src/com/blindtigergames/werescrewed/platforms/RoomPlatform.java
+#	modified:   werescrewed/src/com/blindtigergames/werescrewed/platforms/ShapePlatform.java
+#	modified:   werescrewed/src/com/blindtigergames/werescrewed/platforms/TiledPlatform.java
+#	modified:   werescrewed/src/com/blindtigergames/werescrewed/screens/GameScreen.java
+#	modified:   werescrewed/src/com/blindtigergames/werescrewed/screens/IMoverGameScreen.java
+#	modified:   werescrewed/src/com/blindtigergames/werescrewed/screens/PhysicsTestScreen.java
+#	modified:   werescrewed/src/com/blindtigergames/werescrewed/screws/Screw.java
+#	modified:   werescrewed/src/com/blindtigergames/werescrewed/screws/StrippedScrew.java
+#	modified:   werescrewed/src/com/blindtigergames/werescrewed/screws/StructureScrew.java
+#
+
