@@ -1,13 +1,16 @@
 package com.blindtigergames.werescrewed.screws;
 
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJoint;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.Skeleton;
+import com.blindtigergames.werescrewed.util.Util;
 
 /**
  * @descrip: blah blah
@@ -18,13 +21,28 @@ import com.blindtigergames.werescrewed.entity.Skeleton;
 
 public class BossScrew extends Screw {
 
-	public BossScrew( String name, Vector2 pos, int max, Body body,
+	public BossScrew( String name, Vector2 pos, int max, Texture tex,
 			Entity platform, Skeleton skeleton ) {
-		super( name, pos, null, body );
-
+		super( name, pos, tex);
 		maxDepth = max;
 		depth = max;
 
+		// create the screw body
+		BodyDef screwBodyDef = new BodyDef( );
+		screwBodyDef.type = BodyType.DynamicBody;
+		screwBodyDef.position.set( pos );
+		screwBodyDef.gravityScale = 0.07f;
+		body = world.createBody( screwBodyDef );
+		CircleShape screwShape = new CircleShape( );
+		screwShape.setRadius( ( sprite.getWidth( ) / 2.0f )
+				* Util.PIXEL_TO_BOX );
+		FixtureDef screwFixture = new FixtureDef( );
+		screwFixture.shape = screwShape;
+		screwFixture.isSensor = true;
+		body.createFixture( screwFixture );
+		screwShape.dispose( );
+		body.setUserData( this );
+		
 		// add radar sensor to screw
 		CircleShape radarShape = new CircleShape( );
 		radarShape.setRadius( sprite.getWidth( ) * 2 );
@@ -45,7 +63,7 @@ public class BossScrew extends Screw {
 		revoluteJointDef.enableMotor = true;
 		revoluteJointDef.maxMotorTorque = 5000.0f;
 		revoluteJointDef.motorSpeed = 50f;
-		platformToScrew = ( RevoluteJoint ) world
+		platformJoint = ( RevoluteJoint ) world
 				.createJoint( revoluteJointDef );
 
 		revoluteJointDef = new RevoluteJointDef( );
@@ -54,7 +72,7 @@ public class BossScrew extends Screw {
 		revoluteJointDef.enableMotor = true;
 		revoluteJointDef.maxMotorTorque = 5000.0f;
 		revoluteJointDef.motorSpeed = 50f;
-		screwJoint = ( RevoluteJoint ) world.createJoint( revoluteJointDef );
+		screwToSkel = ( RevoluteJoint ) world.createJoint( revoluteJointDef );
 
 		// connect the entities to the skeleton
 		// skeleton.addBoneAndJoint( this, platformToScrew );
@@ -67,9 +85,9 @@ public class BossScrew extends Screw {
 		depth--;
 		rotation += 10;
 		screwStep = depth + 5;
-		if ( depth == 0 && screwJoint != null ) {
-			world.destroyJoint( platformToScrew );
-			world.destroyJoint( screwJoint );
+		if ( depth == 0 && screwToSkel != null ) {
+			world.destroyJoint( platformJoint );
+			world.destroyJoint( screwToSkel );
 			depth = -1;
 		}
 	}
@@ -96,6 +114,7 @@ public class BossScrew extends Screw {
 		}
 	}
 
-	private RevoluteJoint screwJoint;
-	private RevoluteJoint platformToScrew;
+	
+	private RevoluteJoint screwToSkel;
+	private RevoluteJoint platformJoint;
 }

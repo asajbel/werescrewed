@@ -25,7 +25,7 @@ public class PuzzleScrew extends Screw {
 	
 	public PuzzleScrew( String name, Vector2 pos, int max,
 			Skeleton skeleton, World world ) {
-		super( name, pos, null, null );
+		super( name, pos, null );
 		this.world = world;
 		maxDepth = max;
 		depth = max;
@@ -67,10 +67,10 @@ public class PuzzleScrew extends Screw {
 		revoluteJointDef.enableMotor = false;
 		revoluteJointDef.maxMotorTorque = 5000.0f;
 		revoluteJointDef.motorSpeed = 0f;
-		platformToScrew = ( RevoluteJoint ) world
+		screwToSkel = ( RevoluteJoint ) world
 				.createJoint( revoluteJointDef );
 
-		skeleton.addBoneAndJoint( this, platformToScrew );
+		skeleton.addBoneAndJoint( this, screwToSkel );
 	}
 
 	@Override
@@ -112,6 +112,6 @@ public class PuzzleScrew extends Screw {
 		return maxDepth;
 	}
 
-	private RevoluteJoint platformToScrew;
+	private RevoluteJoint screwToSkel;
 
 }

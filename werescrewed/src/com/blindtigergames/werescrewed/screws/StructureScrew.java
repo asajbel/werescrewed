@@ -22,23 +22,14 @@ import com.blindtigergames.werescrewed.util.Util;
 
 public class StructureScrew extends Screw {
 
-	private Skeleton skeleton;
-	private RevoluteJoint screwJoint;
-	private RevoluteJoint platformToScrew;
-	private int fallTimeout;
-	private boolean lerpUp = true;
-	private float alpha = 0.0f;
-
 	public StructureScrew( String name, Vector2 pos, int max,
 			Platform platform, Skeleton skeleton, World world ) {
-		super( name, pos, null, null );
+		super( name, pos, null );
 		this.world = world;
-		this.skeleton = skeleton;
 		maxDepth = max;
 		depth = max;
 		rotation = 0;
 		fallTimeout = max * 4;
-
 
 		// create the screw body
 		BodyDef screwBodyDef = new BodyDef( );
@@ -47,8 +38,8 @@ public class StructureScrew extends Screw {
 		screwBodyDef.gravityScale = 0.07f;
 		body = world.createBody( screwBodyDef );
 		CircleShape screwShape = new CircleShape( );
-		screwShape.setRadius( ( sprite.getWidth( ) / 2.0f )
-				* Util.PIXEL_TO_BOX );
+		screwShape
+				.setRadius( ( sprite.getWidth( ) / 2.0f ) * Util.PIXEL_TO_BOX );
 		FixtureDef screwFixture = new FixtureDef( );
 		screwFixture.shape = screwShape;
 		screwFixture.isSensor = true;
@@ -58,8 +49,7 @@ public class StructureScrew extends Screw {
 
 		// add radar sensor to screw
 		CircleShape radarShape = new CircleShape( );
-		radarShape.setRadius( sprite.getWidth( ) * 1.25f
-				* Util.PIXEL_TO_BOX );
+		radarShape.setRadius( sprite.getWidth( ) * 1.25f * Util.PIXEL_TO_BOX );
 		FixtureDef radarFixture = new FixtureDef( );
 		radarFixture.shape = radarShape;
 		radarFixture.isSensor = true;
@@ -70,9 +60,18 @@ public class StructureScrew extends Screw {
 		body.createFixture( radarFixture );
 		radarShape.dispose( );
 
-		attachToSkeleton( );
+		//connect the screw to the skeleton
+		RevoluteJointDef revoluteJointDef = new RevoluteJointDef( );
+		revoluteJointDef.initialize( body, skeleton.body, body.getPosition( ) );
+		revoluteJointDef.enableMotor = false;
+		screwToSkel = ( RevoluteJoint ) world.createJoint( revoluteJointDef );
 
-		attachPlatToSkeleton( platform );
+		// connect the platform to the skeleton
+		revoluteJointDef = new RevoluteJointDef( );
+		revoluteJointDef.initialize( platform.body, skeleton.body,
+				platform.getPosition( ) );
+		revoluteJointDef.enableMotor = false;
+		platformJoint = ( RevoluteJoint ) world.createJoint( revoluteJointDef );
 
 		platform.addScrew( this );
 	}
@@ -103,9 +102,9 @@ public class StructureScrew extends Screw {
 		Vector2 bodyPos = body.getPosition( ).mul( Util.BOX_TO_PIXEL );
 		sprite.setPosition( bodyPos.x - offset.x, bodyPos.y - offset.y );
 		if ( depth == 0 ) {
-			if ( fallTimeout == 0 && screwJoint != null ) {
-				world.destroyJoint( platformToScrew );
-				world.destroyJoint( screwJoint );
+			if ( fallTimeout == 0 && screwToSkel != null ) {
+				world.destroyJoint( screwToSkel );
+				world.destroyJoint( platformJoint );
 			}
 			fallTimeout--;
 		} else {
@@ -119,21 +118,21 @@ public class StructureScrew extends Screw {
 					sprite.getY( )
 							+ ( .25f * ( float ) ( ( maxDepth - depth ) * ( Math
 									.sin( body.getAngle( ) ) ) ) ) );
-		} else if ( fallTimeout > 0 ){
+		} else if ( fallTimeout > 0 ) {
 			sprite.setPosition( sprite.getX( ) - 8f, sprite.getY( ) );
 			Vector2 spritePos = new Vector2( sprite.getX( ), sprite.getY( ) );
 			Vector2 target1 = new Vector2( sprite.getX( ) + 8f, sprite.getY( ) );
-			if (fallTimeout % (maxDepth/5.0f) == 0 ){
-				if( lerpUp ){
+			if ( fallTimeout % ( maxDepth / 5.0f ) == 0 ) {
+				if ( lerpUp ) {
 					lerpUp = false;
 				} else {
 					lerpUp = true;
 				}
 			}
-			if( lerpUp ){
-				alpha += 1f/(maxDepth/5.0f);
+			if ( lerpUp ) {
+				alpha += 1f / ( maxDepth / 5.0f );
 			} else {
-				alpha -= 1f/(maxDepth/5.0f);
+				alpha -= 1f / ( maxDepth / 5.0f );
 			}
 			spritePos.lerp( target1, alpha );
 			sprite.setPosition( spritePos.x, spritePos.y );
@@ -155,20 +154,10 @@ public class StructureScrew extends Screw {
 		}
 	}
 
-	private void attachToSkeleton( ) {
-		RevoluteJointDef revoluteJointDef = new RevoluteJointDef( );
-		revoluteJointDef.initialize( body, skeleton.body, body.getPosition( ) );
-		revoluteJointDef.enableMotor = false;
-		platformToScrew = ( RevoluteJoint ) world
-				.createJoint( revoluteJointDef );
-	}
-
-	private void attachPlatToSkeleton( Platform platform ) {
-		// connect the platform to the skeleton
-		RevoluteJointDef revoluteJointDef = new RevoluteJointDef( );
-		revoluteJointDef.initialize( platform.body, skeleton.body,
-				platform.getPosition( ) );
-		revoluteJointDef.enableMotor = false;
-		screwJoint = ( RevoluteJoint ) world.createJoint( revoluteJointDef );
-	}
+	private RevoluteJoint platformJoint;
+	private RevoluteJoint screwToSkel;
+	private int fallTimeout;
+	private boolean lerpUp = true;
+	private float alpha = 0.0f;
+	
 }

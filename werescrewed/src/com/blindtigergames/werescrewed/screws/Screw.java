@@ -7,7 +7,11 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.blindtigergames.werescrewed.entity.Entity;
 
 /**
- * Base class for the various types of screws. Defines basic behavior.
+ * @descrip Base class for the various types of screws. Defines basic behavior.
+ * 
+ * @param name - id of screw
+ * @param pos - position in the world of the screw
+ * @param tex - texture applied to the screw
  * 
  * @author Dennis
  * 
@@ -21,9 +25,9 @@ public class Screw extends Entity {
 	protected int screwStep;
 	protected final short CATEGORY_SCREWS = 0x0008;
 
-	public Screw( String name, Vector2 pos, Texture tex, Body body ) {
+	public Screw( String name, Vector2 pos, Texture tex ) {
 		super( name, pos, ( tex == null ? new Texture(
-				Gdx.files.internal( "data/screw.png" ) ) : tex ), body, false );
+				Gdx.files.internal( "data/screw.png" ) ) : tex ), null, false );
 	}
 
 	@Override
@@ -31,26 +35,36 @@ public class Screw extends Entity {
 		super.update( deltaTime );
 	}
 
+	/*
+	 * destroys everything contained within the screw instance
+	 */
 	public void remove( ) {
 		world.destroyBody( body );
 	}
 
+	/*
+	 * Turns structural and puzzle screws to the left
+	 * which decreases depth
+	 * structural screws will eventually fall out
+	 * @param
+	 */
 	public void screwLeft( ) {
 	}
-
+	
+	/*
+	 * Turns structural and puzzle screws to the right
+	 * which increases depth and tightens structural screws
+	 * @param
+	 */
 	public void screwRight( ) {
 	}
-
-	public int getRotation( ) {
-		return rotation;
-	}
-
+	/*
+	 * Turns structural and puzzle screws to the left
+	 * structural screws will eventually fall out
+	 * @param
+	 */
 	public int getDepth( ) {
 		return depth;
-	}
-
-	public void exampleCollide( String str ) {
-		System.out.println( str );
 	}
 
 }
