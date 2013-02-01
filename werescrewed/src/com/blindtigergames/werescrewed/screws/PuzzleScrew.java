@@ -4,12 +4,11 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.physics.box2d.joints.RevoluteJoint;
-import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
-import com.blindtigergames.werescrewed.entity.Skeleton;
+import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.puzzles.PuzzleManager;
 import com.blindtigergames.werescrewed.util.Util;
 
@@ -24,7 +23,7 @@ public class PuzzleScrew extends Screw {
 	public PuzzleManager puzzleManager;
 	
 	public PuzzleScrew( String name, Vector2 pos, int max,
-			Skeleton skeleton, World world ) {
+			Entity entity, World world ) {
 		super( name, pos, null );
 		this.world = world;
 		maxDepth = max;
@@ -61,16 +60,11 @@ public class PuzzleScrew extends Screw {
 												// (player category bits 0x0001)
 		body.createFixture( radarFixture );
 
-		// connect the screw to the skeleton;
+		// connect the screw to the entity;
 		RevoluteJointDef revoluteJointDef = new RevoluteJointDef( );
-		revoluteJointDef.initialize( body, skeleton.body, body.getPosition( ) );
+		revoluteJointDef.initialize( body, entity.body, body.getPosition( ) );
 		revoluteJointDef.enableMotor = false;
-		revoluteJointDef.maxMotorTorque = 5000.0f;
-		revoluteJointDef.motorSpeed = 0f;
-		screwToSkel = ( RevoluteJoint ) world
-				.createJoint( revoluteJointDef );
-
-		skeleton.addBoneAndJoint( this, screwToSkel );
+		world.createJoint( revoluteJointDef );
 	}
 
 	@Override
@@ -112,6 +106,6 @@ public class PuzzleScrew extends Screw {
 		return maxDepth;
 	}
 
-	private RevoluteJoint screwToSkel;
+	//private RevoluteJoint screwToSkel;
 
 }

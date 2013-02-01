@@ -123,6 +123,7 @@ public class Player extends Entity {
 
 	/**
 	 * Sets the current screw
+	 * @author dennis
 	 */
 	public void hitScrew( Screw screw ) {
 		if ( playerState != PlayerState.Screwing ) {
@@ -133,6 +134,7 @@ public class Player extends Entity {
 
 	/**
 	 * Sets the current screw to null
+	 * @author dennis
 	 */
 	public void endHitScrew( ) {
 		hitScrew = false;
@@ -158,6 +160,7 @@ public class Player extends Entity {
 
 	/**
 	 * Attaches a player to the current screw
+	 * @author dennis
 	 */
 	private void attachToScrew( ) {
 		if ( currentScrew.body.getJointList( ).size( ) > 0 ) {

@@ -8,7 +8,7 @@ import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
-import com.blindtigergames.werescrewed.entity.Skeleton;
+import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.util.Util;
 
 /**
@@ -20,10 +20,8 @@ import com.blindtigergames.werescrewed.util.Util;
 
 public class StrippedScrew extends Screw {
 
-	// private RevoluteJoint screwToSkel;
-
 	public StrippedScrew( String name, World world, Vector2 pos,
-			Skeleton skeleton ) {
+			Entity entity ) {
 		super( name, pos, null );
 		this.world = world;
 
@@ -59,13 +57,11 @@ public class StrippedScrew extends Screw {
 														// player 1 & 2
 		body.createFixture( radarFixture );
 
-		// connect the screw to the skeleton
+		// connect the screw to the entity
 		RevoluteJointDef revoluteJointDef = new RevoluteJointDef( );
-		revoluteJointDef.initialize( body, skeleton.body, body.getPosition( ) );
+		revoluteJointDef.initialize( body, entity.body, body.getPosition( ) );
 		revoluteJointDef.enableMotor = false;
-		// screwToSkel = ( RevoluteJoint ) world.createJoint( revoluteJointDef
-		// );
-
+		world.createJoint( revoluteJointDef );
 	}
 
 	@Override

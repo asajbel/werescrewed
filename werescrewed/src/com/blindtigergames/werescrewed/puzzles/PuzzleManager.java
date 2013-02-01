@@ -12,7 +12,7 @@ import com.blindtigergames.werescrewed.entity.mover.SlidingMotorMover;
 import com.blindtigergames.werescrewed.screws.PuzzleScrew;
 
 /**
- * @descrip  puzzle screw class for moving puzzle pieces
+ * puzzle screw class for moving puzzle pieces
  * 
  * @author Dennis
  * 
@@ -36,22 +36,24 @@ public class PuzzleManager {
 		}
 	}
 
-	/*
-	 * @descrip adds an entity to be manipulated by the puzzle screw
+	/**
+	 * adds an entity to be manipulated by the puzzle screw
+	 * @param Entity puzzlePiece
 	 */
 	public void addEntity( Entity puzzlePiece ) {
 		puzzleEntities.add( puzzlePiece );
 	}
 	
-	/*
-	 * @descrip adds a mover to manipulate the specific entity
+	/**
+	 * adds a mover to manipulate the specific entity
+	 * @param IMover puzzlePiece
 	 */
 	public void addMover( IMover puzzlePiece ) {
 		puzzleMovers.add( puzzlePiece );
 	}
 	
-	/*
-	 * @descrip obsolete if using kinimatic entities
+	/**
+	 * obsolete if using kinimatic entities
 	 */
 	public void addJointDef( JointDef puzzlePiece ) {
 		puzzleJoints.add( puzzlePiece );
@@ -62,8 +64,8 @@ public class PuzzleManager {
 		puzzleMovers = movers;
 	}
 	
-	/*
-	 * @descrip applies movement to an entity
+	/**
+	 * applies movement to an entity
 	 * or turns on/off movement for an entities mover
 	 * by using Entity.applyPuzzleMovement ( puzzleScrew.depth / puzzleScrew.maxDepth )
 	 * puzzleScrew.depth / puzzleScrew.maxDepth can either be a percentage 

@@ -6,7 +6,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.blindtigergames.werescrewed.entity.Entity;
 
 /**
- * @descrip Base class for the various types of screws. Defines basic behavior.
+ * Base class for the various types of screws. Defines basic behavior.
  * 
  * @param name - id of screw
  * @param pos - position in the world of the screw
@@ -34,14 +34,14 @@ public class Screw extends Entity {
 		super.update( deltaTime );
 	}
 
-	/*
+	/**
 	 * destroys everything contained within the screw instance
 	 */
 	public void remove( ) {
 		world.destroyBody( body );
 	}
 
-	/*
+	/**
 	 * Turns structural and puzzle screws to the left
 	 * which decreases depth
 	 * structural screws will eventually fall out
@@ -50,14 +50,14 @@ public class Screw extends Entity {
 	public void screwLeft( ) {
 	}
 	
-	/*
+	/**
 	 * Turns structural and puzzle screws to the right
 	 * which increases depth and tightens structural screws
 	 * @param
 	 */
 	public void screwRight( ) {
 	}
-	/*
+	/**
 	 * Turns structural and puzzle screws to the left
 	 * structural screws will eventually fall out
 	 * @param
