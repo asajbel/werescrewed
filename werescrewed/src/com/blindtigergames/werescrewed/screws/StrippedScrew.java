@@ -4,11 +4,10 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
-import com.badlogic.gdx.physics.box2d.joints.RevoluteJoint;
-import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
 import com.blindtigergames.werescrewed.entity.Skeleton;
 import com.blindtigergames.werescrewed.util.Util;
 
@@ -20,6 +19,8 @@ import com.blindtigergames.werescrewed.util.Util;
  */
 
 public class StrippedScrew extends Screw {
+
+	// private RevoluteJoint screwToSkel;
 
 	public StrippedScrew( String name, World world, Vector2 pos,
 			Skeleton skeleton ) {
@@ -57,12 +58,13 @@ public class StrippedScrew extends Screw {
 		radarFixture.filter.maskBits = 0x0001 | 0x0002;// radar collides with
 														// player 1 & 2
 		body.createFixture( radarFixture );
-		
-		//connect the screw to the skeleton
+
+		// connect the screw to the skeleton
 		RevoluteJointDef revoluteJointDef = new RevoluteJointDef( );
 		revoluteJointDef.initialize( body, skeleton.body, body.getPosition( ) );
 		revoluteJointDef.enableMotor = false;
-		screwToSkel = ( RevoluteJoint ) world.createJoint( revoluteJointDef );
+		// screwToSkel = ( RevoluteJoint ) world.createJoint( revoluteJointDef
+		// );
 
 	}
 
@@ -73,8 +75,5 @@ public class StrippedScrew extends Screw {
 	@Override
 	public void screwRight( ) {
 	}
-	
-
-	private RevoluteJoint screwToSkel;
 
 }
