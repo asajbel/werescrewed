@@ -1,6 +1,7 @@
 package com.blindtigergames.werescrewed.camera;
 
 import java.util.ArrayList;
+import java.util.PriorityQueue;
 
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -14,6 +15,11 @@ import com.badlogic.gdx.math.Vector3;
  * @author Edward Ramirez
  ******************************************************************************/
 public class AnchorList {
+	private class AnchorPair {
+		public int firstAnchorID;
+		public int secondAnchorID;
+	}
+	
 	private ArrayList<Anchor> anchorList;
 	private Vector2 sum;
 	private Vector2 midpoint2;
@@ -24,7 +30,7 @@ public class AnchorList {
 	private static AnchorList instance;
 	private ShapeRenderer shapeRenderer;
 	private OrthographicCamera camera;
-	private int[] anchorPair;
+	private PriorityQueue anchorDistanceQue;
 	
 	private AnchorList() {
 		this(null);
@@ -39,7 +45,6 @@ public class AnchorList {
 		midpointVelocity = new Vector2(0f, 0f);
 		specialMidpoint = new Vector2(0f, 0f);
 		shapeRenderer = new ShapeRenderer();
-		anchorPair = new int[2];
 		this.camera = camera;
 	}
 	
