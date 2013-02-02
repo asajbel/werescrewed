@@ -47,9 +47,8 @@ public class StructureScrew extends Screw {
 		screwFixture.shape = screwShape;
 		screwFixture.isSensor = true;
 		screwFixture.filter.categoryBits = Util.CATEGORY_SCREWS; // category of
-																	// Screw
-		// Radar...
-		screwFixture.filter.maskBits = 0x0000;// radar only collides with player
+																	// Screws
+		screwFixture.filter.maskBits = 0x0000;// screw collides with nothing
 		// (player category bits 0x0001)
 		body.createFixture( screwFixture );
 		screwShape.dispose( );
@@ -72,17 +71,13 @@ public class StructureScrew extends Screw {
 		// connect the screw to the skeleton
 		RevoluteJointDef revoluteJointDef = new RevoluteJointDef( );
 		revoluteJointDef.initialize( body, entity.body, pos );
-		revoluteJointDef.enableMotor = true;
-		revoluteJointDef.maxMotorTorque = 5000.0f;
-		revoluteJointDef.motorSpeed = 50f;
+		revoluteJointDef.enableMotor = false;
 		screwToSkel = ( RevoluteJoint ) world.createJoint( revoluteJointDef );
 
 		// connect the platform to the skeleton
 		revoluteJointDef = new RevoluteJointDef( );
 		revoluteJointDef.initialize( entity.body, skeleton.body, pos );
-		revoluteJointDef.enableMotor = true;
-		revoluteJointDef.maxMotorTorque = 5000.0f;
-		revoluteJointDef.motorSpeed = 50f;
+		revoluteJointDef.enableMotor = false;
 		platformJoint = ( RevoluteJoint ) world.createJoint( revoluteJointDef );
 
 	}

@@ -5,12 +5,14 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Fixture;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJoint;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
 import com.blindtigergames.werescrewed.camera.AnchorList;
 import com.blindtigergames.werescrewed.input.InputHandlerPlayer1;
 import com.blindtigergames.werescrewed.screws.Screw;
+import com.blindtigergames.werescrewed.util.Util;
 
 /**
  * 
@@ -164,8 +166,13 @@ public class Player extends Entity {
 	 */
 	private void attachToScrew( ) {
 		if ( currentScrew.body.getJointList( ).size( ) > 0 ) {
+			FixtureDef fix = new FixtureDef( );
+			// move player to another category so other objects stop colliding 
+			fix.filter.categoryBits = Util.CATEGORY_SUBPLAYER;      
+			// player still collides with sensor of screw
+			fix.filter.maskBits = 0x0008;          
 			for ( Fixture f : body.getFixtureList( ) ) {
-				f.getFilterData( ).maskBits = 0x0008;
+				f.setFilterData( fix.filter );
 			}
 			body.setTransform( currentScrew.getPosition( ), 0.0f );
 			// connect the screw to the skeleton;
@@ -280,16 +287,22 @@ public class Player extends Entity {
 				world.destroyJoint( playerToScrew );
 				playerState = PlayerState.JumpingOffScrew;
 				jump( );
-				for ( Fixture fix : body.getFixtureList( ) ) {
-					fix.getFilterData( ).maskBits = 0x0008;
+				FixtureDef fix = new FixtureDef( );
+				fix.filter.categoryBits = Util.CATEGORY_PLAYER; 
+				fix.filter.maskBits = -1;
+				for ( Fixture f : body.getFixtureList( ) ) {
+					f.setFilterData( fix.filter );
 				}
 			}
 		}
 
 		if ( playerState == PlayerState.JumpingOffScrew ) {
 			if ( body.getLinearVelocity( ).y < 0 ) {
-				for ( Fixture fix : body.getFixtureList( ) ) {
-					fix.getFilterData( ).maskBits = 0x0001;
+				FixtureDef fix = new FixtureDef( );
+				fix.filter.categoryBits = Util.CATEGORY_PLAYER; 
+				fix.filter.maskBits = -1;
+				for ( Fixture f : body.getFixtureList( ) ) {
+					f.setFilterData( fix.filter );
 				}
 			}
 		}

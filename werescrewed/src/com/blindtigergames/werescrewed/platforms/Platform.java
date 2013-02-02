@@ -7,11 +7,13 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.World;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityDef;
 import com.blindtigergames.werescrewed.entity.mover.IMover;
 import com.blindtigergames.werescrewed.screws.Screw;
+import com.blindtigergames.werescrewed.util.Util;
 
 /**
  * @param name
@@ -33,7 +35,7 @@ public class Platform extends Entity {
 	// tileConstant is 16 for setasbox function which uses half width/height
 	// creates 32x32 objects
 	protected final int tileConstant = 16;
-	
+
 	/**
 	 * Used for kinematic movement connected to skeleton
 	 */
@@ -98,7 +100,7 @@ public class Platform extends Entity {
 			setOneSided( !getOneSided( ) );
 			System.out.println( getOneSided( ) );
 		}
-		for( Screw s: screws){
+		for ( Screw s : screws ) {
 			s.update( deltaTime );
 		}
 	}
@@ -127,8 +129,15 @@ public class Platform extends Entity {
 		dynamicType = !dynamicType;
 		if ( dynamicType ) {
 			body.setType( BodyType.DynamicBody );
-		} else
+			for ( Fixture f : body.getFixtureList( ) ) {
+				f.getFilterData( ).categoryBits = Util.DYNAMIC_OBJECTS;
+			}
+		} else {
 			body.setType( BodyType.KinematicBody );
+			for ( Fixture f : body.getFixtureList( ) ) {
+				f.getFilterData( ).categoryBits = Util.KINEMATIC_OBJECTS;
+			}
+		}
 
 		body.setActive( false );
 	}
