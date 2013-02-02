@@ -36,7 +36,7 @@ public class Camera {
 
 	// translation
 	// private static final float SPEED_TARGET_MODIFIER = 5f;
-	private static final float BUFFER_RATIO = .9f;
+	private static final float BUFFER_RATIO = .5f;
 	// private static final int LISTEN_BUFFER = 300;
 	private static final float ACCELERATION_RATIO = .005f;
 	private static final float DECELERATION_RATIO = .03f;
