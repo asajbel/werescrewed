@@ -68,7 +68,6 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 	private Player player;
 	private TiledPlatform tiledPlat, ground, movingTP;
 	private PlatformBuilder platBuilder;
-	private StructureScrew structScrew;
 	private PuzzleScrew puzzleScrew;
 	private Skeleton skeleton;
 	private Skeleton rootSkeleton;
@@ -106,7 +105,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		Controllers.addListener( controllerListener );
 
 		// Initialize platforms
-		tiledPlat = platBuilder.setPosition( 500.0f, 100.0f )
+		tiledPlat = platBuilder.setPosition( 700.0f, 100.0f )
 				.setDimensions( 10, 1 ).setTexture( testTexture )
 				.setName( "tp" ).setResitituion( 0.0f ).buildTilePlatform( );
 		movingTP = platBuilder.setPosition( 100.0f, 70.0f )
@@ -115,8 +114,20 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 				.buildTilePlatform( );
 
 		// Initialize screws
-		structScrew = new StructureScrew( "", tiledPlat.body.getPosition( ),
-				50, tiledPlat, skeleton, world );
+		
+		StructureScrew structScrew = new StructureScrew( "", new Vector2(
+				tiledPlat.body.getPosition( ).x - 0.5f,
+				tiledPlat.body.getPosition( ).y ), 50, tiledPlat, skeleton,
+				world );
+		tiledPlat.addScrew( structScrew );
+		structScrew = new StructureScrew( "", new Vector2(
+				tiledPlat.body.getPosition( ).x + 0.5f,
+				tiledPlat.body.getPosition( ).y ), 50, tiledPlat, skeleton,
+				world );
+		tiledPlat.addScrew( structScrew );
+		tiledPlat.body.setType( BodyType.DynamicBody );
+		tiledPlat.body.setFixedRotation( false );
+		
 		puzzleScrew = new PuzzleScrew( "001", new Vector2( 0.0f, 0.2f ), 50,
 				skeleton, world );
 		climbingScrews = new ArrayList< StrippedScrew >( );
@@ -288,7 +299,6 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 			debugTest = true;
 
 		player.update( deltaTime );
-		structScrew.update( deltaTime );
 		puzzleScrew.update( deltaTime );
 		entityManager.update( deltaTime );
 

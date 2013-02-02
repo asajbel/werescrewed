@@ -20,4 +20,13 @@ public class Util {
 	public static final float PIXEL_TO_BOX = 1 / BOX_TO_PIXEL;
 	public static final float DEG_TO_RAD = 0.0174532925199432957f;
 	public static final float RAD_TO_DEG = 57.295779513082320876f;
+	
+	/**
+	 * Collision Categories and masks for every 
+	 * object that needs them
+	 */
+	public static final short CATEGORY_SCREWS = 0x0008;
+	public static final short CATEGORY_PLAYER = 0x0001;
+	public static final short DYNAMIC_OBJECTS = 0x0004;
+	public static final short KINEMATIC_OBJECTS = 0x0005;
 }

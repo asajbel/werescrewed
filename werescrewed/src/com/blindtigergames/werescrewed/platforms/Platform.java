@@ -98,6 +98,9 @@ public class Platform extends Entity {
 			setOneSided( !getOneSided( ) );
 			System.out.println( getOneSided( ) );
 		}
+		for( Screw s: screws){
+			s.update( deltaTime );
+		}
 	}
 
 	public void setDensity( float d ) {

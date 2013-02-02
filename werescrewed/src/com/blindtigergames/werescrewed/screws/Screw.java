@@ -22,7 +22,6 @@ public class Screw extends Entity {
 	protected int depth;
 	protected int maxDepth;
 	protected int screwStep;
-	protected final short CATEGORY_SCREWS = 0x0008;
 
 	public Screw( String name, Vector2 pos, Texture tex ) {
 		super( name, pos, ( tex == null ? new Texture(

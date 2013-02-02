@@ -1,5 +1,7 @@
 package com.blindtigergames.werescrewed.screws;
 
+import java.util.ArrayList;
+
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -9,8 +11,8 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJoint;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
+import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.Skeleton;
-import com.blindtigergames.werescrewed.platforms.Platform;
 import com.blindtigergames.werescrewed.util.Util;
 
 /**
@@ -22,14 +24,15 @@ import com.blindtigergames.werescrewed.util.Util;
 
 public class StructureScrew extends Screw {
 
-	public StructureScrew( String name, Vector2 pos, int max,
-			Platform platform, Skeleton skeleton, World world ) {
+	public StructureScrew( String name, Vector2 pos, int max, Entity entity,
+			Skeleton skeleton, World world ) {
 		super( name, pos, null );
 		this.world = world;
 		maxDepth = max;
 		depth = max;
 		rotation = 0;
 		fallTimeout = max * 4;
+		extraJoints = new ArrayList< RevoluteJoint >( );
 
 		// create the screw body
 		BodyDef screwBodyDef = new BodyDef( );
@@ -43,6 +46,11 @@ public class StructureScrew extends Screw {
 		FixtureDef screwFixture = new FixtureDef( );
 		screwFixture.shape = screwShape;
 		screwFixture.isSensor = true;
+		screwFixture.filter.categoryBits = Util.CATEGORY_SCREWS; // category of
+																	// Screw
+		// Radar...
+		screwFixture.filter.maskBits = 0x0000;// radar only collides with player
+		// (player category bits 0x0001)
 		body.createFixture( screwFixture );
 		screwShape.dispose( );
 		body.setUserData( this );
@@ -53,27 +61,46 @@ public class StructureScrew extends Screw {
 		FixtureDef radarFixture = new FixtureDef( );
 		radarFixture.shape = radarShape;
 		radarFixture.isSensor = true;
-		radarFixture.filter.categoryBits = CATEGORY_SCREWS; // category of Screw
-															// Radar...
+		radarFixture.filter.categoryBits = Util.CATEGORY_SCREWS; // category of
+																	// Screw
+		// Radar...
 		radarFixture.filter.maskBits = 0x0001;// radar only collides with player
 												// (player category bits 0x0001)
 		body.createFixture( radarFixture );
 		radarShape.dispose( );
 
-		//connect the screw to the skeleton
+		// connect the screw to the skeleton
 		RevoluteJointDef revoluteJointDef = new RevoluteJointDef( );
-		revoluteJointDef.initialize( body, skeleton.body, body.getPosition( ) );
-		revoluteJointDef.enableMotor = false;
+		revoluteJointDef.initialize( body, entity.body, pos );
+		revoluteJointDef.enableMotor = true;
+		revoluteJointDef.maxMotorTorque = 5000.0f;
+		revoluteJointDef.motorSpeed = 50f;
 		screwToSkel = ( RevoluteJoint ) world.createJoint( revoluteJointDef );
 
 		// connect the platform to the skeleton
 		revoluteJointDef = new RevoluteJointDef( );
-		revoluteJointDef.initialize( platform.body, skeleton.body,
-				platform.getPosition( ) );
-		revoluteJointDef.enableMotor = false;
+		revoluteJointDef.initialize( entity.body, skeleton.body, pos );
+		revoluteJointDef.enableMotor = true;
+		revoluteJointDef.maxMotorTorque = 5000.0f;
+		revoluteJointDef.motorSpeed = 50f;
 		platformJoint = ( RevoluteJoint ) world.createJoint( revoluteJointDef );
 
-		platform.addScrew( this );
+	}
+
+	/**
+	 * attaches any other object between this screw and the main entity that
+	 * this screw is attached
+	 * 
+	 * @param entity
+	 */
+	public void addStructureJoint( Entity entity ) {
+		// connect other structure to structure screw
+		RevoluteJointDef revoluteJointDef = new RevoluteJointDef( );
+		revoluteJointDef.initialize( body, entity.body, body.getPosition( ) );
+		revoluteJointDef.enableMotor = false;
+		RevoluteJoint screwJoint = ( RevoluteJoint ) world
+				.createJoint( revoluteJointDef );
+		extraJoints.add( screwJoint );
 	}
 
 	@Override
@@ -105,6 +132,9 @@ public class StructureScrew extends Screw {
 			if ( fallTimeout == 0 && screwToSkel != null ) {
 				world.destroyJoint( screwToSkel );
 				world.destroyJoint( platformJoint );
+				for ( RevoluteJoint j : extraJoints ) {
+					world.destroyJoint( j );
+				}
 			}
 			fallTimeout--;
 		} else {
@@ -156,8 +186,9 @@ public class StructureScrew extends Screw {
 
 	private RevoluteJoint platformJoint;
 	private RevoluteJoint screwToSkel;
+	private ArrayList< RevoluteJoint > extraJoints;
 	private int fallTimeout;
 	private boolean lerpUp = true;
 	private float alpha = 0.0f;
-	
+
 }

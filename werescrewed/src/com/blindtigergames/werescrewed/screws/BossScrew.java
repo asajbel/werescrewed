@@ -49,7 +49,7 @@ public class BossScrew extends Screw {
 		FixtureDef radarFixture = new FixtureDef( );
 		radarFixture.shape = radarShape;
 		radarFixture.isSensor = true;
-		radarFixture.filter.categoryBits = CATEGORY_SCREWS; // category of Screw
+		radarFixture.filter.categoryBits = Util.CATEGORY_SCREWS; // category of Screw
 															// Radar...
 		radarFixture.filter.maskBits = 0x0001;// radar only collides with player
 												// (player category bits 0x0001)
