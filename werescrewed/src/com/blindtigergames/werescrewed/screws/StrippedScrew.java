@@ -38,7 +38,7 @@ public class StrippedScrew extends Screw {
 				.setRadius( ( sprite.getWidth( ) / 2.0f ) * Util.PIXEL_TO_BOX );
 		FixtureDef screwFixture = new FixtureDef( );
 		screwFixture.filter.categoryBits = Util.CATEGORY_SCREWS;
-		screwFixture.filter.maskBits = 0x0001 | 0x0002;
+		screwFixture.filter.maskBits = Util.CATEGORY_PLAYER | Util.CATEGORY_SUBPLAYER;
 		screwFixture.shape = screwShape;
 		screwFixture.isSensor = true;
 		body.createFixture( screwFixture );
@@ -51,10 +51,8 @@ public class StrippedScrew extends Screw {
 		FixtureDef radarFixture = new FixtureDef( );
 		radarFixture.shape = radarShape;
 		radarFixture.isSensor = true;
-		radarFixture.filter.categoryBits = Util.CATEGORY_SCREWS; // category of Screw
-															// Radar...
-		radarFixture.filter.maskBits = 0x0001 | 0x0002;// radar collides with
-														// player 1 & 2
+		radarFixture.filter.categoryBits = Util.CATEGORY_SCREWS; 
+		radarFixture.filter.maskBits = Util.CATEGORY_PLAYER | Util.CATEGORY_SUBPLAYER;
 		body.createFixture( radarFixture );
 
 		// connect the screw to the entity

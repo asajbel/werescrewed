@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.Fixture;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityDef;
@@ -129,13 +130,19 @@ public class Platform extends Entity {
 		dynamicType = !dynamicType;
 		if ( dynamicType ) {
 			body.setType( BodyType.DynamicBody );
+			FixtureDef fix = new FixtureDef( );
+			fix.filter.categoryBits = Util.DYNAMIC_OBJECTS; 
+			fix.filter.maskBits = -1;
 			for ( Fixture f : body.getFixtureList( ) ) {
-				f.getFilterData( ).categoryBits = Util.DYNAMIC_OBJECTS;
+				f.setFilterData( fix.filter );
 			}
 		} else {
 			body.setType( BodyType.KinematicBody );
+			FixtureDef fix = new FixtureDef( );
+			fix.filter.categoryBits = Util.KINEMATIC_OBJECTS; 
+			fix.filter.maskBits = -1;
 			for ( Fixture f : body.getFixtureList( ) ) {
-				f.getFilterData( ).categoryBits = Util.KINEMATIC_OBJECTS;
+				f.setFilterData( fix.filter );
 			}
 		}
 

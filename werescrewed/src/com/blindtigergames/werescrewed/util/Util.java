@@ -30,4 +30,7 @@ public class Util {
 	public static final short CATEGORY_SUBPLAYER = 0x0010;
 	public static final short DYNAMIC_OBJECTS = 0x0004;
 	public static final short KINEMATIC_OBJECTS = 0x0005;
+	public static final short CATEGORY_NOTHING = 0x0000;
+	public static final short CATEGORY_EVERYTHING = -1;
+	
 }
