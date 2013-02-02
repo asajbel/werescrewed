@@ -65,7 +65,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 	private MyContactListener contactListener;
 	private MyControllerListener controllerListener;
 	private SBox2DDebugRenderer debugRenderer;
-	private Player player;
+	private Player player1, player2;
 	private TiledPlatform tiledPlat, ground, movingTP;
 	private PlatformBuilder platBuilder;
 	private PuzzleScrew puzzleScrew;
@@ -135,7 +135,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		// Add player(s)
 		// first player has to have the name "player1"
 		// second player has to have the name "player2" otherwise input handler breaks
-		player = new Player( "player1", world, new Vector2( 1.0f, 1.0f ) );
+		player1 = new Player( "player1", world, new Vector2( 1.0f, 1.0f ) );
 
 		// Add platforms
 		movingTP.body.setType( BodyType.KinematicBody );
@@ -281,7 +281,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		for ( Controller controller : Controllers.getControllers( ) ) {
 			// Gdx.app.log("ok", controller.getName());
 			if ( controller.getButton( 0 ) )
-				player.jump( );
+				player1.jump( );
 		}
 
 		cam.update( );
@@ -300,7 +300,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		} else
 			debugTest = true;
 
-		player.update( deltaTime );
+		player1.update( deltaTime );
 		puzzleScrew.update( deltaTime );
 		entityManager.update( deltaTime );
 
@@ -309,8 +309,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 
 		puzzleScrew.draw( batch );
 		rootSkeleton.draw( batch );
-		player.draw( batch );
-
+		player1.draw( batch );
 		batch.end( );
 
 		// logger.log();
