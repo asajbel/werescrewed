@@ -61,7 +61,7 @@ public class StrippedScrew extends Screw {
 		revoluteJointDef.enableMotor = false;
 		world.createJoint( revoluteJointDef );
 	}
-
+	
 	@Override
 	public void screwLeft( ) {
 	}

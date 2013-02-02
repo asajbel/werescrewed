@@ -3,6 +3,7 @@ package com.blindtigergames.werescrewed.screws;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
 import com.blindtigergames.werescrewed.entity.Entity;
 
 /**
@@ -63,6 +64,20 @@ public class Screw extends Entity {
 	 */
 	public int getDepth( ) {
 		return depth;
+	}
+	
+	/**
+	 * attaches any other object between this screw and the main entity that
+	 * this screw is attached
+	 * 
+	 * @param entity
+	 */
+	public void addStructureJoint( Entity entity ) {
+		// connect other structure to structure screw
+		RevoluteJointDef revoluteJointDef = new RevoluteJointDef( );
+		revoluteJointDef.initialize( body, entity.body, body.getPosition( ) );
+		revoluteJointDef.enableMotor = false;
+		world.createJoint( revoluteJointDef );
 	}
 
 }

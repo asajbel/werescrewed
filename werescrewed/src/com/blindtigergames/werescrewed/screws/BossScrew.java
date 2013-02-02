@@ -1,5 +1,7 @@
 package com.blindtigergames.werescrewed.screws;
 
+import java.util.ArrayList;
+
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -71,12 +73,24 @@ public class BossScrew extends Screw {
 		revoluteJointDef.maxMotorTorque = 5000.0f;
 		revoluteJointDef.motorSpeed = 50f;
 		screwToSkel = ( RevoluteJoint ) world.createJoint( revoluteJointDef );
-
-		// connect the entities to the skeleton
-		// skeleton.addBoneAndJoint( this, platformToScrew );
-		// skeleton.addBoneAndJoint( platform, screwJoint );
 	}
 
+	/**
+	 * attaches any other object between this screw and the main entity that
+	 * this screw is attached
+	 * 
+	 * @param entity
+	 */
+	public void addStructureJoint( Entity entity ) {
+		// connect other structure to structure screw
+		RevoluteJointDef revoluteJointDef = new RevoluteJointDef( );
+		revoluteJointDef.initialize( body, entity.body, body.getPosition( ) );
+		revoluteJointDef.enableMotor = false;
+		RevoluteJoint screwJoint = ( RevoluteJoint ) world
+				.createJoint( revoluteJointDef );
+		extraJoints.add( screwJoint );
+	}
+	
 	@Override
 	public void screwLeft( ) {
 		body.setAngularVelocity( 15 );
@@ -112,7 +126,7 @@ public class BossScrew extends Screw {
 		}
 	}
 
-	
+	private ArrayList< RevoluteJoint > extraJoints;
 	private RevoluteJoint screwToSkel;
 	private RevoluteJoint platformJoint;
 }

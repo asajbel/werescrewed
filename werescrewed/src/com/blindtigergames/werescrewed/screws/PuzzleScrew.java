@@ -64,7 +64,7 @@ public class PuzzleScrew extends Screw {
 		revoluteJointDef.enableMotor = false;
 		world.createJoint( revoluteJointDef );
 	}
-
+	
 	@Override
 	public void screwLeft( ) {
 		if ( depth > 0 ) {
