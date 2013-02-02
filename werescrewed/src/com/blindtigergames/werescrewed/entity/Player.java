@@ -10,7 +10,6 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJoint;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
 import com.blindtigergames.werescrewed.camera.AnchorList;
-import com.blindtigergames.werescrewed.input.InputHandler;
 import com.blindtigergames.werescrewed.input.PlayerInputHandler;
 import com.blindtigergames.werescrewed.screws.Screw;
 import com.blindtigergames.werescrewed.util.Util;
@@ -26,11 +25,6 @@ public class Player extends Entity {
 	
 	int check = 0;
 
-	// FIELDS
-
-	// Constants
-
-	// Variables
 	private int prevKey;
 	private PlayerInputHandler inputHandler;
 	private PlayerState playerState;

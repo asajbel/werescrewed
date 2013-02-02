@@ -65,7 +65,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 	private MyContactListener contactListener;
 	private MyControllerListener controllerListener;
 	private SBox2DDebugRenderer debugRenderer;
-	private Player player1, player2;
+	private Player player1;
 	private TiledPlatform tiledPlat, ground, movingTP;
 	private PlatformBuilder platBuilder;
 	private PuzzleScrew puzzleScrew;
@@ -114,7 +114,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 				.buildTilePlatform( );
 
 		// Initialize screws
-		
+
 		StructureScrew structScrew = new StructureScrew( "", new Vector2(
 				tiledPlat.body.getPosition( ).x - 0.5f,
 				tiledPlat.body.getPosition( ).y ), 50, tiledPlat, skeleton,
@@ -127,14 +127,15 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		tiledPlat.addScrew( structScrew );
 		tiledPlat.body.setType( BodyType.DynamicBody );
 		tiledPlat.body.setFixedRotation( false );
-		
+
 		puzzleScrew = new PuzzleScrew( "001", new Vector2( 0.0f, 0.2f ), 50,
 				skeleton, world );
 		climbingScrews = new ArrayList< StrippedScrew >( );
 
 		// Add player(s)
 		// first player has to have the name "player1"
-		// second player has to have the name "player2" otherwise input handler breaks
+		// second player has to have the name "player2" otherwise input handler
+		// breaks
 		player1 = new Player( "player1", world, new Vector2( 1.0f, 1.0f ) );
 
 		// Add platforms
@@ -182,9 +183,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 				.setDimensions( 200, 1 ).setTexture( testTexture )
 				.setResitituion( 0.0f ).buildTilePlatform( );
 		skeleton.addPlatformFixed( ground );
-		skeleton.addPlatform( tiledPlat ); // Tp already has a structureScrew
-											// holding
-		// it up
+		skeleton.addPlatform( tiledPlat ); 
 
 		/*
 		 * Comment if you don't want stew's moving platforms in your way!
@@ -312,11 +311,10 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		player1.draw( batch );
 		batch.end( );
 
-		// logger.log();
 		if ( debug )
 			debugRenderer.render( world, cam.combined( ) );
 
-		world.step( 1 / 60f, 6, 2 ); // step our physics calculations
+		world.step( 1 / 60f, 6, 2 );
 	}
 
 	@Override

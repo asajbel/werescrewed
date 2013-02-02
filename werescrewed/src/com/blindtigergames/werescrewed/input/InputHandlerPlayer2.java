@@ -20,7 +20,7 @@ public class InputHandlerPlayer2 implements InputProcessor {
 	private boolean downPressed;
 	
 	private boolean attachScrewPressed;
-	private boolean deattachScrewPressed;
+
 	/*
 	 * Hooks up the InputProcessor to the input class, so events can be reported
 	 */

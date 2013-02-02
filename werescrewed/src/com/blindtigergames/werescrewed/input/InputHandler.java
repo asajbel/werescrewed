@@ -20,7 +20,6 @@ public class InputHandler implements InputProcessor {
 	private boolean downPressed;
 	
 	private boolean attachScrewPressed;
-	private boolean deattachScrewPressed;
 	
 	private int up, down, left, right, screw;
 	/*
