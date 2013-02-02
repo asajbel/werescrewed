@@ -2,6 +2,9 @@ package com.blindtigergames.werescrewed.entity;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.controllers.Controller;
+import com.badlogic.gdx.controllers.Controllers;
+import com.badlogic.gdx.controllers.PovDirection;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Fixture;
@@ -10,6 +13,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJoint;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
 import com.blindtigergames.werescrewed.camera.AnchorList;
+import com.blindtigergames.werescrewed.input.MyControllerListener;
 import com.blindtigergames.werescrewed.input.PlayerInputHandler;
 import com.blindtigergames.werescrewed.screws.Screw;
 import com.blindtigergames.werescrewed.util.Util;
@@ -26,14 +30,18 @@ public class Player extends Entity {
 	int check = 0;
 
 	private int prevKey;
+	private PovDirection prevButton;
 	private PlayerInputHandler inputHandler;
+	private MyControllerListener controllerListener;
 	private PlayerState playerState;
+	private Controller controller;
 
 	private Screw currentScrew;
 	private RevoluteJoint playerToScrew;
 	private boolean hitScrew;
 	private boolean grounded;
-	private boolean jumpPressed;
+	private boolean jumpPressedKeyboard;
+	private boolean jumpPressedController;
 	private int anchorID;
 	int veloTest  = 5;
 	
@@ -85,6 +93,28 @@ public class Player extends Entity {
 		playerState = PlayerState.Standing;
 		inputHandler = new PlayerInputHandler( this.name );
 		anchorID = AnchorList.getInstance( ).addAnchor( true, pos );
+		
+		controllerListener = new MyControllerListener( );
+		
+		if(Controllers.getControllers().size == 1) {
+			if(this.name.equals( "player1" )){
+				controller = Controllers.getControllers().get( 0 );
+				controller.addListener( controllerListener );
+			}
+		}
+		if(Controllers.getControllers().size == 2){
+			if(this.name.equals( "player2" )){
+				controller = Controllers.getControllers().get( 1 );
+				controller.addListener( controllerListener );
+			}
+		}
+			
+		
+		
+		for ( Controller controller2 : Controllers.getControllers( ) ) {
+		    Gdx.app.log("ok", controller2.getName());
+		}
+		
 	}
 
 	// METHODS
@@ -222,15 +252,24 @@ public class Player extends Entity {
 	 */
 	public void update( float deltaTime ) {
 		super.update( deltaTime );
-		inputHandler.update( );
+		
+
+
 		AnchorList.getInstance( ).setAnchorPosBox( anchorID, getPosition( ) );
+
+
+		updateKeyboard( deltaTime );
+		updateController( deltaTime );
+	}
+	
+	private void updateKeyboard( float deltaTime ){
+		inputHandler.update( );
 		if ( playerState != PlayerState.Screwing
 				&& playerState != PlayerState.Standing && isGrounded( ) ) {
 			playerState = PlayerState.Standing;
 		}
-
-		if ( inputHandler.jumpPressed( ) ) {
-			if ( !jumpPressed ) {
+		if ( inputHandler.jumpPressed( )  ) {
+			if ( !jumpPressedKeyboard ) {
 				if ( playerState == PlayerState.Screwing ) {
 					world.destroyJoint( playerToScrew );
 					playerState = PlayerState.JumpingOffScrew;
@@ -238,22 +277,22 @@ public class Player extends Entity {
 				} else if ( isGrounded( ) ) {
 					jump( );
 				}
-				jumpPressed = true;
+				jumpPressedKeyboard = true;
 			}
 		}
 		if ( !inputHandler.jumpPressed( ) ) {
-			jumpPressed = false;
+			jumpPressedKeyboard = false;
 		}
 		if ( inputHandler.leftPressed( ) ) {
 			moveLeft( );
 			prevKey = Keys.A;
 		}
 
-		if ( inputHandler.rightPressed( ) ) {
+		if ( inputHandler.rightPressed( )) {
 			moveRight( );
 			prevKey = Keys.D;
 		}
-		if ( inputHandler.downPressed( ) ) {
+		if ( inputHandler.downPressed( )) {
 			if ( playerState == PlayerState.Screwing ) {
 				world.destroyJoint( playerToScrew );
 				playerState = PlayerState.JumpingOffScrew;
@@ -267,15 +306,16 @@ public class Player extends Entity {
 			else slow( );
 		}
 
-		if ( inputHandler.screwPressed( ) && hitScrew
+		
+		if ( inputHandler.screwPressed( )  && hitScrew
 				&& playerState != PlayerState.Screwing ) {
 			attachToScrew( );
 		}
 
 		if ( playerState == PlayerState.Screwing ) {
-			if ( inputHandler.unscrewing( ) ) {
+			if ( inputHandler.unscrewing( )  ) {
 				currentScrew.screwLeft( );
-			} else if ( inputHandler.screwing( ) ) {
+			} else if ( inputHandler.screwing( )  ) {
 				currentScrew.screwRight( );
 			}
 			if ( currentScrew.body.getJointList( ).size( ) <= 1 ) {
@@ -304,6 +344,81 @@ public class Player extends Entity {
 		terminalVelocityCheck(6.0f);
 	}
 	
+	private void updateController( float deltaTime ){
+		if ( controllerListener.jumpPressed( ) ) {
+			if ( !jumpPressedController ) {
+				if ( playerState == PlayerState.Screwing ) {
+					world.destroyJoint( playerToScrew );
+					playerState = PlayerState.JumpingOffScrew;
+					jump( );
+				} else if ( isGrounded( ) ) {
+					jump( );
+				}
+				jumpPressedController = true;
+			}
+		}
+		if ( !controllerListener.jumpPressed( )) {
+			jumpPressedController = false;
+		}
+		if ( controllerListener.leftPressed( )) {
+			moveLeft( );
+			prevButton = PovDirection.west;
+		}
+
+		if ( controllerListener.rightPressed( )) {
+			moveRight( );
+			prevButton = PovDirection.east;
+		}
+		if ( controllerListener.downPressed( ) ) {
+			if ( playerState == PlayerState.Screwing ) {
+				world.destroyJoint( playerToScrew );
+				playerState = PlayerState.JumpingOffScrew;
+			}
+			stop( );
+		}
+
+		if ( ( !controllerListener.leftPressed( ) && !controllerListener.rightPressed( ) )
+				&& ( prevButton == PovDirection.east || prevButton == PovDirection.west ) ) {
+			if(grounded) stop();
+			else slow( );
+		}
+		
+		if ( controllerListener.screwPressed( ) && hitScrew
+				&& playerState != PlayerState.Screwing ) {
+			attachToScrew( );
+		}
+
+		if ( playerState == PlayerState.Screwing ) {
+			if ( controllerListener.unscrewing( ) ) {
+				currentScrew.screwLeft( );
+			} else if ( controllerListener.screwing( ) ) {
+				currentScrew.screwRight( );
+			}
+			if ( currentScrew.body.getJointList( ).size( ) <= 1 ) {
+				world.destroyJoint( playerToScrew );
+				playerState = PlayerState.JumpingOffScrew;
+				jump( );
+				FixtureDef fix = new FixtureDef( );
+				fix.filter.categoryBits = Util.CATEGORY_PLAYER; 
+				fix.filter.maskBits = -1;
+				for ( Fixture f : body.getFixtureList( ) ) {
+					f.setFilterData( fix.filter );
+				}
+			}
+		}
+
+		if ( playerState == PlayerState.JumpingOffScrew ) {
+			if ( body.getLinearVelocity( ).y < 0 ) {
+				FixtureDef fix = new FixtureDef( );
+				fix.filter.categoryBits = Util.CATEGORY_PLAYER; 
+				fix.filter.maskBits = -1;
+				for ( Fixture f : body.getFixtureList( ) ) {
+					f.setFilterData( fix.filter );
+				}
+			}
+		}
+		terminalVelocityCheck(6.0f);
+	}
 	/**
 	 * Checks player's vertical velocity and resets to be within bounds
 	 * 

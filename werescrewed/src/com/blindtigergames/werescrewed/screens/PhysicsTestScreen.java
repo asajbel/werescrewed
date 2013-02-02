@@ -6,8 +6,6 @@ import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Keys;
-import com.badlogic.gdx.controllers.Controller;
-import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
@@ -27,7 +25,6 @@ import com.blindtigergames.werescrewed.entity.Skeleton;
 import com.blindtigergames.werescrewed.entity.mover.PistonMover;
 import com.blindtigergames.werescrewed.entity.mover.PuzzleType;
 import com.blindtigergames.werescrewed.entity.mover.SlidingMotorMover;
-import com.blindtigergames.werescrewed.input.MyControllerListener;
 import com.blindtigergames.werescrewed.joint.JointFactory;
 import com.blindtigergames.werescrewed.joint.PrismaticJointBuilder;
 import com.blindtigergames.werescrewed.platforms.ComplexPlatform;
@@ -63,7 +60,6 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 	private EntityManager entityManager;
 	private World world;
 	private MyContactListener contactListener;
-	private MyControllerListener controllerListener;
 	private SBox2DDebugRenderer debugRenderer;
 	private Player player1;
 	private TiledPlatform tiledPlat, ground, movingTP;
@@ -101,8 +97,8 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		// Initialize listeners
 		contactListener = new MyContactListener( );
 		world.setContactListener( contactListener );
-		controllerListener = new MyControllerListener( );
-		Controllers.addListener( controllerListener );
+		// controllerListener = new MyControllerListener( );
+		// Controllers.addListener( controllerListener );
 
 		// Initialize platforms
 		tiledPlat = platBuilder.setPosition( 700.0f, 100.0f )
@@ -183,7 +179,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 				.setDimensions( 200, 1 ).setTexture( testTexture )
 				.setResitituion( 0.0f ).buildTilePlatform( );
 		skeleton.addPlatformFixed( ground );
-		skeleton.addPlatform( tiledPlat ); 
+		skeleton.addPlatform( tiledPlat );
 
 		/*
 		 * Comment if you don't want stew's moving platforms in your way!
@@ -275,12 +271,6 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		} else {
 			Gdx.gl10.glClearColor( 0.0f, 0f, 0.0f, 1.0f );
 			Gdx.gl10.glClear( GL20.GL_COLOR_BUFFER_BIT );
-		}
-
-		for ( Controller controller : Controllers.getControllers( ) ) {
-			// Gdx.app.log("ok", controller.getName());
-			if ( controller.getButton( 0 ) )
-				player1.jump( );
 		}
 
 		cam.update( );
