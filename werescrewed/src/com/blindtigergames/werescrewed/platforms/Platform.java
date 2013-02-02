@@ -78,25 +78,6 @@ public class Platform extends Entity {
 
 		super.update( deltaTime );
 
-		if ( Gdx.input.isKeyPressed( Keys.T ) ) {
-			// Turned off because ground will fall
-			// rotate( );
-		}
-
-		if ( Gdx.input.isKeyPressed( Keys.Y ) ) {
-			body.setAngularVelocity( 0 );
-		}
-		if ( Gdx.input.isKeyPressed( Keys.O ) ) {
-			changeType( );
-		}
-
-		if ( Gdx.input.isKeyPressed( Keys.N ) ) {
-			// rotateBy90();
-			rotate = !rotate;
-		}
-		if ( Gdx.input.isKeyPressed( Keys.L ) ) {
-			setHorizontal( );
-		}
 		if ( Gdx.input.isKeyPressed( Keys.B ) ) {
 			setOneSided( !getOneSided( ) );
 			System.out.println( getOneSided( ) );

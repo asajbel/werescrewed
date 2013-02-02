@@ -133,7 +133,9 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		climbingScrews = new ArrayList< StrippedScrew >( );
 
 		// Add player(s)
-		player = new Player( "player", world, new Vector2( 1.0f, 1.0f ) );
+		// first player has to have the name "player1"
+		// second player has to have the name "player2" otherwise input handler breaks
+		player = new Player( "player1", world, new Vector2( 1.0f, 1.0f ) );
 
 		// Add platforms
 		movingTP.body.setType( BodyType.KinematicBody );
@@ -301,16 +303,6 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		player.update( deltaTime );
 		puzzleScrew.update( deltaTime );
 		entityManager.update( deltaTime );
-
-		// ONLY FOR TESTING, EVERYTHING IN WORLD IS IN A SKELETON (THEREFORE CAN
-		// MOVE)
-		if ( Gdx.input.isKeyPressed( Input.Keys.U ) ) {
-			rootSkeleton.translate( 0.0f, 0.01f );
-		}
-
-		if ( Gdx.input.isKeyPressed( Input.Keys.J ) ) {
-			rootSkeleton.translate( 0.0f, -0.01f );
-		}
 
 		batch.setProjectionMatrix( cam.combined( ) );
 		batch.begin( );

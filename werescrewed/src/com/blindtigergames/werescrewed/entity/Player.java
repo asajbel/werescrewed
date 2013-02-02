@@ -10,7 +10,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJoint;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
 import com.blindtigergames.werescrewed.camera.AnchorList;
-import com.blindtigergames.werescrewed.input.InputHandlerPlayer1;
+import com.blindtigergames.werescrewed.input.InputHandler;
 import com.blindtigergames.werescrewed.screws.Screw;
 import com.blindtigergames.werescrewed.util.Util;
 
@@ -31,7 +31,7 @@ public class Player extends Entity {
 
 	// Variables
 	private int prevKey;
-	private InputHandlerPlayer1 inputHandler;
+	private InputHandler inputHandler;
 	private PlayerState playerState;
 
 	private Screw currentScrew;
@@ -88,7 +88,7 @@ public class Player extends Entity {
 		body.setUserData( this );
 		body.setBullet( true );
 		playerState = PlayerState.Standing;
-		inputHandler = new InputHandlerPlayer1( );
+		inputHandler = new InputHandler( this.name );
 		anchorID = AnchorList.getInstance( ).addAnchor( true, pos );
 	}
 
@@ -227,7 +227,7 @@ public class Player extends Entity {
 	 */
 	public void update( float deltaTime ) {
 		super.update( deltaTime );
-		inputHandler.update( );
+		//inputHandler.update( );
 		AnchorList.getInstance( ).setAnchorPosBox( anchorID, getPosition( ) );
 		if ( playerState != PlayerState.Screwing
 				&& playerState != PlayerState.Standing && isGrounded( ) ) {

@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.blindtigergames.werescrewed.collisionManager.MyContactListener;
 import com.blindtigergames.werescrewed.debug.SBox2DDebugRenderer;
-import com.blindtigergames.werescrewed.input.InputHandlerPlayer1;
+import com.blindtigergames.werescrewed.input.InputHandler;
 import com.blindtigergames.werescrewed.level.Level;
 
 public class Screen implements com.badlogic.gdx.Screen {
@@ -16,14 +16,14 @@ public class Screen implements com.badlogic.gdx.Screen {
 	public static final float PIXEL_TO_BOX = 1 / BOX_TO_PIXEL;
 	
 	protected Level level;
-	protected InputHandlerPlayer1 inputHandler;
+	protected InputHandler inputHandler;
 	protected SpriteBatch batch;
 	protected SBox2DDebugRenderer debugRenderer;
 	MyContactListener MCL;
 
 	
 	public Screen( ){
-		inputHandler = new InputHandlerPlayer1( );
+		inputHandler = new InputHandler( "player1" );
 		batch = new SpriteBatch( );
 		debugRenderer = new SBox2DDebugRenderer( BOX_TO_PIXEL );
 		MCL = new MyContactListener( );

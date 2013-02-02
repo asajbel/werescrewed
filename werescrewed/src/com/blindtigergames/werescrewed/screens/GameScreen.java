@@ -18,7 +18,7 @@ import com.blindtigergames.werescrewed.debug.SBox2DDebugRenderer;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.Player;
 import com.blindtigergames.werescrewed.entity.Skeleton;
-import com.blindtigergames.werescrewed.input.InputHandlerPlayer1;
+import com.blindtigergames.werescrewed.input.InputHandler;
 import com.blindtigergames.werescrewed.platforms.ComplexPlatform;
 import com.blindtigergames.werescrewed.platforms.PlatformBuilder;
 import com.blindtigergames.werescrewed.platforms.RoomPlatform;
@@ -52,7 +52,7 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 	Texture screwTex;
 	Texture background;
 	StructureScrew structScrew;
-	InputHandlerPlayer1 inputHandler;
+	InputHandler inputHandler;
 	Skeleton rootSkeleton;
 	Skeleton skeleton;
 
@@ -62,7 +62,7 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 		float w = Gdx.graphics.getWidth( ) / zoom;
 		float h = Gdx.graphics.getHeight( ) / zoom;
 
-		inputHandler = new InputHandlerPlayer1( );
+		inputHandler = new InputHandler( "player1" );
 		texture = new Texture( Gdx.files.internal( "data/rletter.png" ) );
 		// takes in width, height
 		// cam = new Camera(w, h);

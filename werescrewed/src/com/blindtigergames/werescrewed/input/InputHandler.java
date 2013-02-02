@@ -10,33 +10,55 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
 
-public class InputHandlerPlayer1 implements InputProcessor {
+public class InputHandler implements InputProcessor {
 
 	private boolean pauseKeyPressed;
 
-	private boolean p1LeftPressed;
-	private boolean p1RightPressed;
-	private boolean p1JumpPressed;
-	private boolean p1DownPressed;
+	private boolean leftPressed;
+	private boolean rightPressed;
+	private boolean jumpPressed;
+	private boolean downPressed;
+	
+	private boolean attachScrewPressed;
+	private boolean deattachScrewPressed;
+	
+	private int up, down, left, right, screw;
 	/*
 	 * Hooks up the InputProcessor to the input class, so events can be reported
 	 */
-	public InputHandlerPlayer1( ) {
+	public InputHandler( String playerNumber ) {
+		
+		if (playerNumber.equals( "player1" ) ){
+			up = Keys.W;
+			down = Keys.S;
+			left = Keys.A;
+			right = Keys.D;
+			screw = Keys.F;
+		} else if (playerNumber.equals( "player2" ) ){
+			up = Keys.I;
+			down = Keys.K;
+			left = Keys.J;
+			right = Keys.L;
+			screw = Keys.H;
+		}
+		
+			
 		Gdx.input.setInputProcessor( this );
 	}
+
 
 	public void update( ) {
 		pauseKeyPressed = Gdx.input.isKeyPressed( Keys.ESCAPE );
 		
-		p1LeftPressed = Gdx.input.isKeyPressed( Keys.DPAD_LEFT );
-		p1RightPressed = Gdx.input.isKeyPressed( Keys.DPAD_RIGHT );
-		p1JumpPressed = Gdx.input.isKeyPressed( Keys.DPAD_UP );
-		p1DownPressed = Gdx.input.isKeyPressed( Keys.DPAD_DOWN );
+		leftPressed = Gdx.input.isKeyPressed( Keys.DPAD_LEFT );
+		rightPressed = Gdx.input.isKeyPressed( Keys.DPAD_RIGHT );
+		jumpPressed = Gdx.input.isKeyPressed( Keys.DPAD_UP );
+		downPressed = Gdx.input.isKeyPressed( Keys.DPAD_DOWN );
 
-		p1LeftPressed = Gdx.input.isKeyPressed( Keys.A );
-		p1RightPressed = Gdx.input.isKeyPressed( Keys.D );
-		p1JumpPressed = Gdx.input.isKeyPressed( Keys.W );
-		p1DownPressed = Gdx.input.isKeyPressed( Keys.S );
+		leftPressed = Gdx.input.isKeyPressed( Keys.A );
+		rightPressed = Gdx.input.isKeyPressed( Keys.D );
+		jumpPressed = Gdx.input.isKeyPressed( Keys.W );
+		downPressed = Gdx.input.isKeyPressed( Keys.S );
 		Gdx.input.isKeyPressed( Keys.Q );
 
 	}
@@ -53,7 +75,7 @@ public class InputHandlerPlayer1 implements InputProcessor {
 	 * 
 	 */
 	public boolean leftPressed() {
-		return p1LeftPressed;
+		return leftPressed;
 	}
 
 	/**
@@ -61,7 +83,7 @@ public class InputHandlerPlayer1 implements InputProcessor {
 	 * 
 	 */
 	public boolean rightPressed() {
-		return p1RightPressed;
+		return rightPressed;
 	}
 
 	/**
@@ -69,7 +91,7 @@ public class InputHandlerPlayer1 implements InputProcessor {
 	 * 
 	 */
 	public boolean jumpPressed( ) {
-		return p1JumpPressed;
+		return jumpPressed;
 	}
 
 	/**
@@ -77,7 +99,7 @@ public class InputHandlerPlayer1 implements InputProcessor {
 	 * 
 	 */
 	public boolean downPressed( ) {
-		return p1DownPressed;
+		return downPressed;
 	}
 
 	/**
@@ -85,7 +107,8 @@ public class InputHandlerPlayer1 implements InputProcessor {
 	 * 
 	 */
 	public boolean screwPressed( ) {
-		return Gdx.input.isKeyPressed( Keys.SPACE );
+		//return Gdx.input.isKeyPressed( Keys.SPACE );
+		return attachScrewPressed;
 	}
 
 	public boolean unscrewPressed( ) {
@@ -105,22 +128,21 @@ public class InputHandlerPlayer1 implements InputProcessor {
 		if ( keycode == Keys.ESCAPE ) {
 			pauseKeyPressed = true;
 		}
-
-		if ( keycode == Keys.W ) {
-			p1JumpPressed = true;
+		if ( keycode == up) {
+			jumpPressed = true;
 		}
-		if ( keycode == Keys.A ) {
-			p1LeftPressed = true;
+		if ( keycode == left ) {
+			leftPressed = true;
 		}
-		if ( keycode == Keys.S ) {
-			p1DownPressed = true;
+		if ( keycode == down ) {
+			downPressed = true;
 		}
-		if ( keycode == Keys.D ) {
-			p1RightPressed = true;
+		if ( keycode == right ) {
+			rightPressed = true;
 		}
-		if ( keycode == Keys.Q ) {
+		if ( keycode == screw ) {
+			attachScrewPressed = true;
 		}
-
 		return true;
 	}
 
@@ -130,19 +152,20 @@ public class InputHandlerPlayer1 implements InputProcessor {
 			pauseKeyPressed = false;
 		}
 
-		if ( keycode == Keys.W ) {
-			p1JumpPressed = false;
+		if ( keycode == up ) {
+			jumpPressed = false;
 		}
-		if ( keycode == Keys.A ) {
-			p1LeftPressed = false;
+		if ( keycode == left ) {
+			leftPressed = false;
 		}
-		if ( keycode == Keys.S ) {
-			p1DownPressed = false;
+		if ( keycode == down ) {
+			downPressed = false;
 		}
-		if ( keycode == Keys.D ) {
-			p1RightPressed = false;
+		if ( keycode == right ) {
+			rightPressed = false;
 		}
-		if ( keycode == Keys.Q ) {
+		if ( keycode == screw ) {
+			attachScrewPressed = false;
 		}
 
 		return true;
