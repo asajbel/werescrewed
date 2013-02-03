@@ -67,13 +67,13 @@ public class StructureScrew extends Screw {
 		body.createFixture( radarFixture );
 		radarShape.dispose( );
 
-		// connect the screw to the skeleton
+		// connect the screw to the entity
 		RevoluteJointDef revoluteJointDef = new RevoluteJointDef( );
 		revoluteJointDef.initialize( body, entity.body, pos );
 		revoluteJointDef.enableMotor = false;
 		screwToSkel = ( RevoluteJoint ) world.createJoint( revoluteJointDef );
 
-		// connect the platform to the skeleton
+		// connect the entity to the skeleton
 		revoluteJointDef = new RevoluteJointDef( );
 		revoluteJointDef.initialize( entity.body, skeleton.body, pos );
 		revoluteJointDef.enableMotor = false;
