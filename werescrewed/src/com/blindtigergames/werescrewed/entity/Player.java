@@ -35,9 +35,11 @@ public class Player extends Entity {
 	private MyControllerListener controllerListener;
 	private PlayerState playerState;
 	private Controller controller;
+	private boolean controllerIsActive, controllerDebug;
 
 	private Screw currentScrew;
 	private RevoluteJoint playerToScrew;
+	private boolean isDead = false;
 	private boolean hitScrew;
 	private boolean grounded;
 	private boolean jumpPressedKeyboard;
@@ -69,7 +71,7 @@ public class Player extends Entity {
 	 * </Ul>
 	 */
 	public enum PlayerState {
-		Standing, Jumping, Falling, Screwing, JumpingOffScrew
+		Standing, Jumping, Falling, Screwing, JumpingOffScrew, Dead
 	}
 
 	// CONSTRUCTORS
@@ -127,18 +129,38 @@ public class Player extends Entity {
 		
 		AnchorList.getInstance( ).setAnchorPosBox( anchorID, getPosition( ) );
 
-		if ( playerState != PlayerState.Screwing
-				&& playerState != PlayerState.Standing && isGrounded( ) ) {
-			playerState = PlayerState.Standing;
-		}
 
-		updateKeyboard( deltaTime );
-		if(controller != null)
-			updateController( deltaTime );
+		if(isDead){
+			// TODO: do stuff here
+			// playerState = playerState.Dead;
+			body.setLinearVelocity( Vector2.Zero );
+		} else {
+			updateKeyboard( deltaTime );
+			if(controller != null){
+				if(controllerIsActive)
+					updateController( deltaTime );
+			}
+		}
+		if(Gdx.input.isKeyPressed( Keys.BACKSPACE )){
+				isDead = !isDead;
+		}
+		if(Gdx.input.isKeyPressed( Keys.ENTER )){
+			if(controllerDebug)
+				controllerIsActive = !controllerIsActive;
+			controllerDebug = false;
+		} else
+			controllerDebug = true;
+		
+
 	}
 	
 	private void updateKeyboard( float deltaTime ){
 		inputHandler.update( );
+		
+		if ( playerState != PlayerState.Screwing
+				&& playerState != PlayerState.Standing && isGrounded( ) ) {
+			playerState = PlayerState.Standing;
+		}
 		
 		if ( inputHandler.jumpPressed( )  ) {
 			if ( !jumpPressedKeyboard ) {
@@ -217,6 +239,10 @@ public class Player extends Entity {
 	}
 	
 	private void updateController( float deltaTime ){
+		if ( playerState != PlayerState.Screwing
+				&& playerState != PlayerState.Standing && isGrounded( ) ) {
+			playerState = PlayerState.Standing;
+		}
 		if ( controllerListener.jumpPressed( ) ) {
 			if ( !jumpPressedController ) {
 				if ( playerState == PlayerState.Screwing ) {
@@ -254,17 +280,19 @@ public class Player extends Entity {
 			if(grounded) stop();
 			else slow( );
 		}
-		
+
+		// If player hits the screw button and is in distance
+		// then attach the player to the screw
 		if ( controllerListener.screwPressed( ) && hitScrew
 				&& playerState != PlayerState.Screwing ) {
 			attachToScrew( );
-			System.out.println( "attached!" );
 		} 
+		// If the button is let go, then the player is dropped
+		// Basically you have to hold attach button to stick to screw
 		if ( !controllerListener.screwPressed( )
 				&& playerState == PlayerState.Screwing ) {
 			world.destroyJoint( playerToScrew );
 			playerState = PlayerState.JumpingOffScrew;
-			System.out.println( "should be deattached" );
 		} 
 		if ( playerState == PlayerState.Screwing ) {
 			if ( controllerListener.unscrewing( ) ) {
@@ -299,6 +327,27 @@ public class Player extends Entity {
 	}
 	
 
+	/**
+	 * This function sets player in dead state
+	 */
+	public void killPlayer(){
+		isDead = true;
+	}
+	
+	/**
+	 * This function sets player in alive state
+	 */
+	public void respawnPlayer(){
+		isDead = false;
+	}
+	
+	/**
+	 * This function returns whether the player is dead
+	 * @return boolean
+	 */
+	public boolean isPlayerDead(){
+		return isDead;
+	}
 	/**
 	 * Moves the player right, or jumps them off of a screw to the right
 	 */
