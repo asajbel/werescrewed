@@ -27,14 +27,16 @@ public class MyControllerListener implements ControllerListener {
 	private boolean upPressed;
 
 	private boolean attachScrewPressed;
-
+	
 	// Using xbox face button names. B, X, Y are unused for now
 	private final static int buttonA = 0;
 	// private final static int buttonB = 1;
 	// private final static int buttonX = 2;
 	// private final static int buttonY = 3;
 	private final static int bumperR = 5;
+	// private final static int trigger = 4;
 	private final static int pause = 7;
+	
 
 	/**
 	 * This function checks the analog sticks to see if they moved
@@ -49,14 +51,39 @@ public class MyControllerListener implements ControllerListener {
 	@Override
 	public boolean axisMoved( Controller controller, int buttonIndex,
 			float axisPoint ) {
-		// System.out.println( indexOf(controller) + ":" + " button: " +
-		// buttonIndex+ ", axis: " + axisPoint );
+		// System.out.println( indexOf(controller) + ":" + " button: " + buttonIndex+ ", axis: " + axisPoint );
 		/*
 		 * for control sticks left stick button 0 - vertical - top is -1.0,
 		 * bottom is 1.0 button 1 - horizontal - left is -1.0, right is 1.0
 		 * 
 		 * right stick button 2 - vertical button 3 - horizontal
+		 * 
+		 * trigger is button 4: left is positive, right is negative
 		 */
+		//System.out.println( controller.getAxis( 0 ) ); // 0 = vertical, 1 = horizontal
+		if( buttonIndex == 4 ){
+			if( axisPoint < -0.3f || axisPoint > 0.3f)
+				attachScrewPressed = true;
+			else 
+				attachScrewPressed = false;
+		}
+
+		if ( axisPoint < 0.2f ) {
+			rightPressed = false;
+			leftPressed = false;
+			upPressed = false;
+			downPressed = false;
+		} else {
+			if( buttonIndex == 1 && axisPoint > 0.5f)
+				rightPressed = true;
+			if( buttonIndex == 1 && axisPoint < -0.5f)
+				leftPressed = true;
+			if( buttonIndex == 0 && axisPoint > 0.5f)
+				downPressed = true;
+			if( buttonIndex == 0 && axisPoint < -0.5f)
+				upPressed = true;
+		}
+		
 		return false;
 	}
 
@@ -71,8 +98,8 @@ public class MyControllerListener implements ControllerListener {
 
 		if ( buttonIndex == buttonA )
 			jumpPressed = true;
-		if ( buttonIndex == bumperR )
-			attachScrewPressed = true;
+		// if ( buttonIndex == bumperR )
+		//	 attachScrewPressed = true;
 		if ( buttonIndex == pause )
 			pausePressed = true;
 		return false;

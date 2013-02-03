@@ -1,6 +1,5 @@
 package com.blindtigergames.werescrewed.collisionManager;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.Contact;
@@ -65,7 +64,6 @@ public class MyContactListener implements ContactListener {
 					} else if ( objectFix.getBody( ).getUserData( ) instanceof Screw ) {
 						Screw screw = ( Screw ) objectFix.getBody( )
 								.getUserData( );
-						Gdx.app.log( "Contact Listener:", "Hit screw" );
 						player.hitScrew( screw );
 					}
 				}
@@ -114,7 +112,6 @@ public class MyContactListener implements ContactListener {
 						}
 						contact.setEnabled( true );
 					} else if ( objectFix.getBody( ).getUserData( ) instanceof Screw ) {
-						Gdx.app.log( "Contact Listener:", "End hit screw" );
 						player.endHitScrew( );
 					}
 				}

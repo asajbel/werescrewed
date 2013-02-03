@@ -41,7 +41,7 @@ public class Player extends Entity {
 
 	private Screw currentScrew;
 	private RevoluteJoint playerToScrew;
-	private boolean isDead = false;
+	private boolean isDead = false, deadDebug;
 	private boolean hitScrew;
 	private int screwJumpTimeout;
 	private boolean grounded;
@@ -98,24 +98,7 @@ public class Player extends Entity {
 		inputHandler = new PlayerInputHandler( this.name );
 		anchorID = AnchorList.getInstance( ).addAnchor( true, pos );
 
-		controllerListener = new MyControllerListener( );
-
-		if ( Controllers.getControllers( ).size == 1 ) {
-			if ( this.name.equals( "player1" ) ) {
-				controller = Controllers.getControllers( ).get( 0 );
-				controller.addListener( controllerListener );
-			}
-		}
-		if ( Controllers.getControllers( ).size == 2 ) {
-			if ( this.name.equals( "player2" ) ) {
-				controller = Controllers.getControllers( ).get( 1 );
-				controller.addListener( controllerListener );
-			}
-		}
-
-		for ( Controller controller2 : Controllers.getControllers( ) ) {
-			Gdx.app.log( "ok", controller2.getName( ) );
-		}
+		setUpController();
 
 	}
 
@@ -128,7 +111,6 @@ public class Player extends Entity {
 		super.update( deltaTime );
 
 		AnchorList.getInstance( ).setAnchorPosBox( anchorID, getPosition( ) );
-
 		if ( isDead ) {
 			// TODO: do stuff here
 			// playerState = playerState.Dead;
@@ -136,19 +118,33 @@ public class Player extends Entity {
 		} else {
 			updateKeyboard( deltaTime );
 			if ( controller != null ) {
-				if ( controllerIsActive )
+				if ( controllerIsActive ) {
 					updateController( deltaTime );
+					
+				}
+			} else {
+				// Look to see if controller was inserted
 			}
 		}
+		
+		// Hit backspace to kill the player or respawn him
 		if ( Gdx.input.isKeyPressed( Keys.BACKSPACE ) ) {
-			isDead = !isDead;
-		}
+			if( deadDebug ) {
+				isDead = !isDead;
+			}
+			deadDebug = false;
+		} else
+			deadDebug = true;
+		
+		// Hit Enter to active the controller
 		if ( Gdx.input.isKeyPressed( Keys.ENTER ) ) {
 			if ( controllerDebug )
 				controllerIsActive = !controllerIsActive;
 			controllerDebug = false;
 		} else
 			controllerDebug = true;
+		
+		
 
 	}
 
@@ -531,4 +527,30 @@ public class Player extends Entity {
 			body.setLinearVelocity( body.getLinearVelocity( ).x, terminal );
 	}
 
+	/**
+	 * This function creates a new controllerListener and sets the active controller
+	 * depending on which player is being created
+	 * 
+	 * @author Ranveer
+	 */
+	private void setUpController(){
+		controllerListener = new MyControllerListener( );
+
+		if ( Controllers.getControllers( ).size == 1 ) {
+			if ( this.name.equals( "player1" ) ) {
+				controller = Controllers.getControllers( ).get( 0 );
+				controller.addListener( controllerListener );
+			}
+		}
+		if ( Controllers.getControllers( ).size == 2 ) {
+			if ( this.name.equals( "player2" ) ) {
+				controller = Controllers.getControllers( ).get( 1 );
+				controller.addListener( controllerListener );
+			}
+		}
+
+		for ( Controller controller2 : Controllers.getControllers( ) ) {
+			Gdx.app.log( "ok", controller2.getName( ) );
+		}
+	}
 }

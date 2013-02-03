@@ -157,7 +157,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		puzzleScrew.puzzleManager.addJointDef( jointDef );
 
 		float x1 = 1.75f;
-		float x2 = 2.25f;
+		float x2 = 2.75f;
 		float y1 = 0.6f;
 		float dy = 0.7f;
 		for ( int i = 0; i < 10; i++ ) {
