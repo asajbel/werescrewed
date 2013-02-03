@@ -120,6 +120,186 @@ public class Player extends Entity {
 	// METHODS
 
 	/**
+	 * Updates information about the player every step
+	 */
+	public void update( float deltaTime ) {
+		super.update( deltaTime );
+		
+		AnchorList.getInstance( ).setAnchorPosBox( anchorID, getPosition( ) );
+
+		if ( playerState != PlayerState.Screwing
+				&& playerState != PlayerState.Standing && isGrounded( ) ) {
+			playerState = PlayerState.Standing;
+		}
+
+		updateKeyboard( deltaTime );
+		if(controller != null)
+			updateController( deltaTime );
+	}
+	
+	private void updateKeyboard( float deltaTime ){
+		inputHandler.update( );
+		
+		if ( inputHandler.jumpPressed( )  ) {
+			if ( !jumpPressedKeyboard ) {
+				if ( playerState == PlayerState.Screwing ) {
+					world.destroyJoint( playerToScrew );
+					playerState = PlayerState.JumpingOffScrew;
+					jump( );
+				} else if ( isGrounded( ) ) {
+					jump( );
+				}
+				jumpPressedKeyboard = true;
+			}
+		}
+		if ( !inputHandler.jumpPressed( ) ) {
+			jumpPressedKeyboard = false;
+		}
+		if ( inputHandler.leftPressed( ) ) {
+			moveLeft( );
+			prevKey = Keys.A;
+		}
+
+		if ( inputHandler.rightPressed( )) {
+			moveRight( );
+			prevKey = Keys.D;
+		}
+		if ( inputHandler.downPressed( )) {
+			if ( playerState == PlayerState.Screwing ) {
+				world.destroyJoint( playerToScrew );
+				playerState = PlayerState.JumpingOffScrew;
+			}
+			stop( );
+		}
+
+		if ( ( !inputHandler.leftPressed( ) && !inputHandler.rightPressed( ) )
+				&& ( prevKey == Keys.D || prevKey == Keys.A ) ) {
+			if(grounded) stop();
+			else slow( );
+		}
+
+		
+		if ( inputHandler.screwPressed( )  && hitScrew
+				&& playerState != PlayerState.Screwing ) {
+			attachToScrew( );
+		}
+
+		if ( playerState == PlayerState.Screwing ) {
+			if ( inputHandler.unscrewing( )  ) {
+				currentScrew.screwLeft( );
+			} else if ( inputHandler.screwing( )  ) {
+				currentScrew.screwRight( );
+			}
+			if ( currentScrew.body.getJointList( ).size( ) <= 1 ) {
+				world.destroyJoint( playerToScrew );
+				playerState = PlayerState.JumpingOffScrew;
+				jump( );
+				FixtureDef fix = new FixtureDef( );
+				fix.filter.categoryBits = Util.CATEGORY_PLAYER; 
+				fix.filter.maskBits = -1;
+				for ( Fixture f : body.getFixtureList( ) ) {
+					f.setFilterData( fix.filter );
+				}
+			}
+		}
+
+		if ( playerState == PlayerState.JumpingOffScrew ) {
+			if ( body.getLinearVelocity( ).y < 0 ) {
+				FixtureDef fix = new FixtureDef( );
+				fix.filter.categoryBits = Util.CATEGORY_PLAYER; 
+				fix.filter.maskBits = -1;
+				for ( Fixture f : body.getFixtureList( ) ) {
+					f.setFilterData( fix.filter );
+				}
+			}
+		}
+		terminalVelocityCheck(6.0f);
+	}
+	
+	private void updateController( float deltaTime ){
+		if ( controllerListener.jumpPressed( ) ) {
+			if ( !jumpPressedController ) {
+				if ( playerState == PlayerState.Screwing ) {
+					world.destroyJoint( playerToScrew );
+					playerState = PlayerState.JumpingOffScrew;
+					jump( );
+				} else if ( isGrounded( ) ) {
+					jump( );
+				}
+				jumpPressedController = true;
+			}
+		}
+		if ( !controllerListener.jumpPressed( )) {
+			jumpPressedController = false;
+		}
+		if ( controllerListener.leftPressed( )) {
+			moveLeft( );
+			prevButton = PovDirection.west;
+		}
+
+		if ( controllerListener.rightPressed( )) {
+			moveRight( );
+			prevButton = PovDirection.east;
+		}
+		if ( controllerListener.downPressed( ) ) {
+			if ( playerState == PlayerState.Screwing ) {
+				world.destroyJoint( playerToScrew );
+				playerState = PlayerState.JumpingOffScrew;
+			}
+			stop( );
+		}
+
+		if ( ( !controllerListener.leftPressed( ) && !controllerListener.rightPressed( ) )
+				&& ( prevButton == PovDirection.east || prevButton == PovDirection.west ) ) {
+			if(grounded) stop();
+			else slow( );
+		}
+		
+		if ( controllerListener.screwPressed( ) && hitScrew
+				&& playerState != PlayerState.Screwing ) {
+			attachToScrew( );
+			System.out.println( "attached!" );
+		} 
+		if ( !controllerListener.screwPressed( )
+				&& playerState == PlayerState.Screwing ) {
+			world.destroyJoint( playerToScrew );
+			playerState = PlayerState.JumpingOffScrew;
+			System.out.println( "should be deattached" );
+		} 
+		if ( playerState == PlayerState.Screwing ) {
+			if ( controllerListener.unscrewing( ) ) {
+				currentScrew.screwLeft( );
+			} else if ( controllerListener.screwing( ) ) {
+				currentScrew.screwRight( );
+			}
+			if ( currentScrew.body.getJointList( ).size( ) <= 1 ) {
+				world.destroyJoint( playerToScrew );
+				playerState = PlayerState.JumpingOffScrew;
+				jump( );
+				FixtureDef fix = new FixtureDef( );
+				fix.filter.categoryBits = Util.CATEGORY_PLAYER; 
+				fix.filter.maskBits = -1;
+				for ( Fixture f : body.getFixtureList( ) ) {
+					f.setFilterData( fix.filter );
+				}
+			}
+		}
+
+		if ( playerState == PlayerState.JumpingOffScrew ) {
+			if ( body.getLinearVelocity( ).y < 0 ) {
+				FixtureDef fix = new FixtureDef( );
+				fix.filter.categoryBits = Util.CATEGORY_PLAYER; 
+				fix.filter.maskBits = -1;
+				for ( Fixture f : body.getFixtureList( ) ) {
+					f.setFilterData( fix.filter );
+				}
+			}
+		}
+		terminalVelocityCheck(6.0f);
+	}
+	
+
+	/**
 	 * Moves the player right, or jumps them off of a screw to the right
 	 */
 	public void moveRight( ) {
@@ -247,178 +427,6 @@ public class Player extends Entity {
 		}
 	}
 
-	/**
-	 * Updates information about the player every step
-	 */
-	public void update( float deltaTime ) {
-		super.update( deltaTime );
-		
-
-
-		AnchorList.getInstance( ).setAnchorPosBox( anchorID, getPosition( ) );
-
-
-		updateKeyboard( deltaTime );
-		updateController( deltaTime );
-	}
-	
-	private void updateKeyboard( float deltaTime ){
-		inputHandler.update( );
-		if ( playerState != PlayerState.Screwing
-				&& playerState != PlayerState.Standing && isGrounded( ) ) {
-			playerState = PlayerState.Standing;
-		}
-		if ( inputHandler.jumpPressed( )  ) {
-			if ( !jumpPressedKeyboard ) {
-				if ( playerState == PlayerState.Screwing ) {
-					world.destroyJoint( playerToScrew );
-					playerState = PlayerState.JumpingOffScrew;
-					jump( );
-				} else if ( isGrounded( ) ) {
-					jump( );
-				}
-				jumpPressedKeyboard = true;
-			}
-		}
-		if ( !inputHandler.jumpPressed( ) ) {
-			jumpPressedKeyboard = false;
-		}
-		if ( inputHandler.leftPressed( ) ) {
-			moveLeft( );
-			prevKey = Keys.A;
-		}
-
-		if ( inputHandler.rightPressed( )) {
-			moveRight( );
-			prevKey = Keys.D;
-		}
-		if ( inputHandler.downPressed( )) {
-			if ( playerState == PlayerState.Screwing ) {
-				world.destroyJoint( playerToScrew );
-				playerState = PlayerState.JumpingOffScrew;
-			}
-			stop( );
-		}
-
-		if ( ( !inputHandler.leftPressed( ) && !inputHandler.rightPressed( ) )
-				&& ( prevKey == Keys.D || prevKey == Keys.A ) ) {
-			if(grounded) stop();
-			else slow( );
-		}
-
-		
-		if ( inputHandler.screwPressed( )  && hitScrew
-				&& playerState != PlayerState.Screwing ) {
-			attachToScrew( );
-		}
-
-		if ( playerState == PlayerState.Screwing ) {
-			if ( inputHandler.unscrewing( )  ) {
-				currentScrew.screwLeft( );
-			} else if ( inputHandler.screwing( )  ) {
-				currentScrew.screwRight( );
-			}
-			if ( currentScrew.body.getJointList( ).size( ) <= 1 ) {
-				world.destroyJoint( playerToScrew );
-				playerState = PlayerState.JumpingOffScrew;
-				jump( );
-				FixtureDef fix = new FixtureDef( );
-				fix.filter.categoryBits = Util.CATEGORY_PLAYER; 
-				fix.filter.maskBits = -1;
-				for ( Fixture f : body.getFixtureList( ) ) {
-					f.setFilterData( fix.filter );
-				}
-			}
-		}
-
-		if ( playerState == PlayerState.JumpingOffScrew ) {
-			if ( body.getLinearVelocity( ).y < 0 ) {
-				FixtureDef fix = new FixtureDef( );
-				fix.filter.categoryBits = Util.CATEGORY_PLAYER; 
-				fix.filter.maskBits = -1;
-				for ( Fixture f : body.getFixtureList( ) ) {
-					f.setFilterData( fix.filter );
-				}
-			}
-		}
-		terminalVelocityCheck(6.0f);
-	}
-	
-	private void updateController( float deltaTime ){
-		if ( controllerListener.jumpPressed( ) ) {
-			if ( !jumpPressedController ) {
-				if ( playerState == PlayerState.Screwing ) {
-					world.destroyJoint( playerToScrew );
-					playerState = PlayerState.JumpingOffScrew;
-					jump( );
-				} else if ( isGrounded( ) ) {
-					jump( );
-				}
-				jumpPressedController = true;
-			}
-		}
-		if ( !controllerListener.jumpPressed( )) {
-			jumpPressedController = false;
-		}
-		if ( controllerListener.leftPressed( )) {
-			moveLeft( );
-			prevButton = PovDirection.west;
-		}
-
-		if ( controllerListener.rightPressed( )) {
-			moveRight( );
-			prevButton = PovDirection.east;
-		}
-		if ( controllerListener.downPressed( ) ) {
-			if ( playerState == PlayerState.Screwing ) {
-				world.destroyJoint( playerToScrew );
-				playerState = PlayerState.JumpingOffScrew;
-			}
-			stop( );
-		}
-
-		if ( ( !controllerListener.leftPressed( ) && !controllerListener.rightPressed( ) )
-				&& ( prevButton == PovDirection.east || prevButton == PovDirection.west ) ) {
-			if(grounded) stop();
-			else slow( );
-		}
-		
-		if ( controllerListener.screwPressed( ) && hitScrew
-				&& playerState != PlayerState.Screwing ) {
-			attachToScrew( );
-		}
-
-		if ( playerState == PlayerState.Screwing ) {
-			if ( controllerListener.unscrewing( ) ) {
-				currentScrew.screwLeft( );
-			} else if ( controllerListener.screwing( ) ) {
-				currentScrew.screwRight( );
-			}
-			if ( currentScrew.body.getJointList( ).size( ) <= 1 ) {
-				world.destroyJoint( playerToScrew );
-				playerState = PlayerState.JumpingOffScrew;
-				jump( );
-				FixtureDef fix = new FixtureDef( );
-				fix.filter.categoryBits = Util.CATEGORY_PLAYER; 
-				fix.filter.maskBits = -1;
-				for ( Fixture f : body.getFixtureList( ) ) {
-					f.setFilterData( fix.filter );
-				}
-			}
-		}
-
-		if ( playerState == PlayerState.JumpingOffScrew ) {
-			if ( body.getLinearVelocity( ).y < 0 ) {
-				FixtureDef fix = new FixtureDef( );
-				fix.filter.categoryBits = Util.CATEGORY_PLAYER; 
-				fix.filter.maskBits = -1;
-				for ( Fixture f : body.getFixtureList( ) ) {
-					f.setFilterData( fix.filter );
-				}
-			}
-		}
-		terminalVelocityCheck(6.0f);
-	}
 	/**
 	 * Checks player's vertical velocity and resets to be within bounds
 	 * 

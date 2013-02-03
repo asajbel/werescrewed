@@ -1,5 +1,6 @@
 package com.blindtigergames.werescrewed.input;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.ControllerListener;
 import com.badlogic.gdx.controllers.Controllers;
@@ -16,8 +17,9 @@ import com.badlogic.gdx.math.Vector3;
 
 public class MyControllerListener implements ControllerListener {
 
-	private boolean pausePressed;
+	private boolean isConnected;
 
+	private boolean pausePressed;
 	private boolean leftPressed;
 	private boolean rightPressed;
 	private boolean jumpPressed;
@@ -26,7 +28,7 @@ public class MyControllerListener implements ControllerListener {
 
 	private boolean attachScrewPressed;
 
-	// Using xbox face button names
+	// Using xbox face button names. B, X, Y are unused for now
 	private final static int buttonA = 0;
 	// private final static int buttonB = 1;
 	// private final static int buttonX = 2;
@@ -98,7 +100,7 @@ public class MyControllerListener implements ControllerListener {
 	 */
 	@Override
 	public void connected( Controller controller ) {
-		// TODO Auto-generated method stub
+		isConnected = true;
 
 	}
 
@@ -107,7 +109,8 @@ public class MyControllerListener implements ControllerListener {
 	 */
 	@Override
 	public void disconnected( Controller controller ) {
-		// TODO Auto-generated method stub
+		isConnected = false;
+		Gdx.app.log( null, "A CONTROLLER WAS DISCONNECTED" );
 
 	}
 
@@ -157,6 +160,16 @@ public class MyControllerListener implements ControllerListener {
 			int accelerometerCode, Vector3 value ) {
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+	/**
+	 * Returns if controller is connected
+	 * 
+	 * @return boolean
+	 */
+
+	public boolean isConnected( ) {
+		return isConnected;
 	}
 
 	/**
