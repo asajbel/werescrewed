@@ -54,8 +54,11 @@ public class Player extends Entity {
 
 	// Static constants
 	public final static float MAX_VELOCITY = 1.8f;
+	public final static float MIN_VELOCITY = 0.1f;
 	public final static float MOVEMENT_IMPLUSE = 0.01f;
 	public final static float JUMP_IMPLUSE = 0.15f;
+	public final static float ANALOG_DEADZONE = 0.3f;
+	public final static float ANALOG_MAX_RANGE = 1.0f;
 
 	// Static variables
 	public static Texture texture = new Texture(
@@ -271,23 +274,20 @@ public class Player extends Entity {
 		}
 		if ( controllerListener.leftPressed( ) ) {
 			if ( controllerListener.analogUsed( ) )
-				// moveAnalogLeft();
+				moveAnalogLeft( );
+			else
 				moveLeft( );
 			prevButton = PovDirection.west;
 		}
 
 		if ( controllerListener.rightPressed( ) ) {
 			if ( controllerListener.analogUsed( ) )
-				// moveAnalogRight();
+				moveAnalogRight( );
+			else
 				moveRight( );
 			prevButton = PovDirection.east;
 		}
 		if ( controllerListener.downPressed( ) ) {
-			if ( playerState == PlayerState.Screwing ) {
-				world.destroyJoint( playerToScrew );
-				playerState = PlayerState.JumpingOffScrew;
-				screwJumpTimeout = 6;
-			}
 			stop( );
 		}
 
@@ -409,6 +409,12 @@ public class Player extends Entity {
 	 */
 	public void moveAnalogRight( ) {
 		axisX = controllerListener.analogAxisX( );
+		float temp = ( ( ( axisX - ANALOG_DEADZONE ) / ( ANALOG_MAX_RANGE - ANALOG_DEADZONE ) ) * ( MAX_VELOCITY - MIN_VELOCITY ) )
+				+ MIN_VELOCITY;
+		if ( body.getLinearVelocity( ).x < temp ) {
+			body.applyLinearImpulse( new Vector2( MOVEMENT_IMPLUSE, 0.0f ),
+					body.getWorldCenter( ) );
+		}
 	}
 
 	/**
@@ -418,6 +424,12 @@ public class Player extends Entity {
 	 */
 	public void moveAnalogLeft( ) {
 		axisX = controllerListener.analogAxisX( );
+		float temp = ( ( ( axisX + ANALOG_DEADZONE ) / ( ANALOG_MAX_RANGE - ANALOG_DEADZONE ) ) * ( MAX_VELOCITY - MIN_VELOCITY ) )
+				- MIN_VELOCITY;
+		if ( body.getLinearVelocity( ).x > temp ) {
+			body.applyLinearImpulse( new Vector2( -MOVEMENT_IMPLUSE, 0.0f ),
+					body.getWorldCenter( ) );
+		}
 	}
 
 	/**
@@ -557,22 +569,23 @@ public class Player extends Entity {
 	 */
 	private void setUpController( ) {
 		controllerListener = new MyControllerListener( );
-
-		if ( Controllers.getControllers( ).size == 1 ) {
+		for ( Controller controller2 : Controllers.getControllers( ) ) {
+			Gdx.app.log( "ok", controller2.getName( ) );
+		}
+		if ( Controllers.getControllers( ).size >= 1 ) {
 			if ( this.name.equals( "player1" ) ) {
 				controller = Controllers.getControllers( ).get( 0 );
 				controller.addListener( controllerListener );
+				System.out.println( "player1 " + controller.getName( ) );
 			}
 		}
 		if ( Controllers.getControllers( ).size == 2 ) {
 			if ( this.name.equals( "player2" ) ) {
 				controller = Controllers.getControllers( ).get( 1 );
 				controller.addListener( controllerListener );
+				System.out.println( "player2 " + controller.getName( ) );
 			}
 		}
 
-		for ( Controller controller2 : Controllers.getControllers( ) ) {
-			Gdx.app.log( "ok", controller2.getName( ) );
-		}
 	}
 }

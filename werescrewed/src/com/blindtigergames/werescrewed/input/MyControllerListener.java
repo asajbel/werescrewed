@@ -101,7 +101,6 @@ public class MyControllerListener implements ControllerListener {
 			upPressed = true;
 			analogUsed = true;
 		}
-
 		return false;
 	}
 
@@ -116,8 +115,8 @@ public class MyControllerListener implements ControllerListener {
 
 		if ( buttonIndex == buttonA )
 			jumpPressed = true;
-		// if ( buttonIndex == bumperR )
-		// attachScrewPressed = true;
+		if ( buttonIndex == bumperR )
+			attachScrewPressed = true;
 		if ( buttonIndex == pause )
 			pausePressed = true;
 		return false;
