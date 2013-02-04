@@ -151,6 +151,10 @@ public class Player extends Entity {
 
 	}
 
+	/**
+	 * This function updates the keyboard state which the player checks to do stuff
+	 * @param deltaTime
+	 */
 	private void updateKeyboard( float deltaTime ) {
 		inputHandler.update( );
 
@@ -251,6 +255,12 @@ public class Player extends Entity {
 		terminalVelocityCheck( 6.0f );
 	}
 
+	/**
+	 * This function updates the player based off the Controller's state
+	 * 
+	 * @param deltaTime
+	 * @author Ranveer
+	 */
 	private void updateController( float deltaTime ) {
 		if ( playerState != PlayerState.Screwing
 				&& playerState != PlayerState.Standing && isGrounded( ) ) {
@@ -563,7 +573,7 @@ public class Player extends Entity {
 
 	/**
 	 * This function creates a new controllerListener and sets the active
-	 * controller depending on which player is being created
+	 * controller depending on how many players is being created
 	 * 
 	 * @author Ranveer
 	 */
@@ -576,14 +586,12 @@ public class Player extends Entity {
 			if ( this.name.equals( "player1" ) ) {
 				controller = Controllers.getControllers( ).get( 0 );
 				controller.addListener( controllerListener );
-				System.out.println( "player1 " + controller.getName( ) );
 			}
 		}
 		if ( Controllers.getControllers( ).size == 2 ) {
 			if ( this.name.equals( "player2" ) ) {
 				controller = Controllers.getControllers( ).get( 1 );
 				controller.addListener( controllerListener );
-				System.out.println( "player2 " + controller.getName( ) );
 			}
 		}
 
