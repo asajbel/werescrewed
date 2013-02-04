@@ -19,7 +19,7 @@ import com.blindtigergames.werescrewed.screws.Screw;
  * 
  */
 public class MyContactListener implements ContactListener {
-
+	
 	private static int NUM_PLAYER_CONTACTS = 0;
 
 	/**
@@ -58,7 +58,7 @@ public class MyContactListener implements ContactListener {
 				if ( objectFix.getBody( ).getUserData( ) instanceof Entity ) {
 					Entity object = ( Entity ) objectFix.getBody( )
 							.getUserData( );
-					if ( object.isSolid( ) ) {
+					if ( object.isSolid( )) {
 						NUM_PLAYER_CONTACTS++;
 						player.setGrounded( true );
 					} else if ( objectFix.getBody( ).getUserData( ) instanceof Screw ) {

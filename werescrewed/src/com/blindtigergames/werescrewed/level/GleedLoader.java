@@ -4,9 +4,7 @@ import java.io.IOException;
 import java.util.HashMap;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.XmlReader;
 import com.badlogic.gdx.utils.XmlReader.Element;
@@ -15,7 +13,6 @@ import com.blindtigergames.werescrewed.entity.EntityBuilder;
 import com.blindtigergames.werescrewed.entity.EntityDef;
 import com.blindtigergames.werescrewed.platforms.PlatformBuilder;
 import com.blindtigergames.werescrewed.platforms.TiledPlatform;
-import com.blindtigergames.werescrewed.screens.GameScreen;
 import com.blindtigergames.werescrewed.screens.Screen;
 
 public class GleedLoader {	
@@ -55,8 +52,6 @@ public class GleedLoader {
 		String name = item.getAttribute("Name");
 		Element posElem = item.getChildByName("Position");
 		Vector2 pos = new Vector2(posElem.getFloat("X"), posElem.getFloat("Y")).mul( Screen.PIXEL_TO_BOX );
-		float rot = 0.0f;
-		
 		if (props.containsKey( defTag )){
 			String defName = props.get( defTag );
 			EntityDef def = EntityDef.getDefinition( defName );

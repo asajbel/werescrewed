@@ -4,11 +4,11 @@ package com.blindtigergames.werescrewed.platforms;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
-import com.blindtigergames.werescrewed.screens.GameScreen;
+import com.blindtigergames.werescrewed.util.Util;
 
 /**
  * @param name
@@ -39,10 +39,10 @@ public class RoomPlatform extends Platform {
 
 		BodyDef bodyDef = new BodyDef( );
 		bodyDef.type = BodyType.DynamicBody;
-		bodyDef.position.set( x * GameScreen.PIXEL_TO_BOX, y * GameScreen.PIXEL_TO_BOX);
+		bodyDef.position.set( x * Util.PIXEL_TO_BOX, y * Util.PIXEL_TO_BOX);
 		body = world.createBody( bodyDef );
-		float hx = width * tileConstant * GameScreen.PIXEL_TO_BOX;
-		float hy = height * tileConstant * GameScreen.PIXEL_TO_BOX;
+		float hx = width * tileConstant * Util.PIXEL_TO_BOX;
+		float hy = height * tileConstant * Util.PIXEL_TO_BOX;
 
 		Vector2 p1 = new Vector2( 0, -hy + hx );
 		Vector2 p2 = new Vector2( -hy + hx,  0 );

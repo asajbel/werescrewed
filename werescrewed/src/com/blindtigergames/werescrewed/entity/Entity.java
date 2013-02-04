@@ -9,7 +9,7 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.blindtigergames.werescrewed.entity.mover.IMover;
-import com.blindtigergames.werescrewed.screens.GameScreen;
+import com.blindtigergames.werescrewed.util.Util;
 
 /**
  * Anything that can exist. Contains a physics body, and a sprite which may or
@@ -53,13 +53,13 @@ public class Entity {
 		this.world = world;
 		this.solid = solid;
 		this.offset = new Vector2( 0.0f, 0.0f );
-		constructSprite( texture );
+		this.sprite = constructSprite( texture );
 		this.body = constructBody( );
 		setPosition( pos );
 	}
 
 	/**
-	 * Create entity by body
+	 * Create entity by body. Debug constructor: Should be removed eventually.
 	 * 
 	 * @param name
 	 * @param pos
@@ -76,39 +76,35 @@ public class Entity {
 		this.name = name;
 		this.solid = solid;
 		this.offset = new Vector2( 0.0f, 0.0f );
-		constructSprite( texture );
+		this.sprite = constructSprite( texture );
 		this.body = body;
 		if ( body != null ) {
 			world = body.getWorld( );
-			sprite.setScale( GameScreen.PIXEL_TO_BOX );
+			sprite.setScale( Util.PIXEL_TO_BOX );
 		}
 		setPosition( pos );
 	}
 
-	public void setPosition( float x, float y ) {
-		if ( body != null ) {
-			body.setTransform( x, y, body.getAngle( ) );
-		} else if ( sprite != null ) {
-			sprite.setPosition( x, y );
-		}
-	}
-
 	public void setPosition( Vector2 pos ) {
-		setPosition( pos.x, pos.y );
+		if ( body != null ) {
+			body.setTransform( pos.x, pos.y, body.getAngle( ) );
+		} else if ( sprite != null ) {
+			sprite.setPosition( pos.x, pos.y );
+		}
 	}
 
 	public Vector2 getPosition( ) {
 		return body.getPosition( );
 	}
 
-	public void Move( Vector2 vector ) {
+	public void move( Vector2 vector ) {
 		Vector2 pos = body.getPosition( ).add( vector );
 		setPosition( pos );
 	}
 
 	public void draw( SpriteBatch batch ) {
 		if ( sprite != null ) {
-			Vector2 bodyPos = body.getPosition( ).mul( GameScreen.BOX_TO_PIXEL );
+			Vector2 bodyPos = body.getPosition( ).mul( Util.BOX_TO_PIXEL );
 			sprite.setPosition( bodyPos.x - offset.x, bodyPos.y - offset.y );
 			sprite.setRotation( MathUtils.radiansToDegrees * body.getAngle( ) );
 			sprite.draw( batch );
@@ -122,16 +118,19 @@ public class Entity {
 	}
 
 	protected String generateName( ) {
-		return type.getName();
+		return type.getName( );
 	}
 
 	/**
 	 * Builds a sprite from a texture. If the texture is null, it attempts to
 	 * load one from the XML definitions
+	 * 
+	 * @param texture from which a sprite can be generated, or null, if loading 
+	 * @return the loaded/generated sprite, or null if neither applies
 	 */
-	protected void constructSprite( Texture texture ) {
+	protected Sprite constructSprite( Texture texture ) {
 		// I have plans to make this a return value
-		// Sprite sprite;
+		Sprite sprite;
 		Vector2 origin;
 		boolean loadTex;
 		boolean nullTex;
@@ -146,28 +145,35 @@ public class Entity {
 			// If we are, load it up
 			texture = type.texture;
 		} else if ( nullTex ) {
-			// If we aren't, but the texture is still null, return before error
-			// occurs at Sprite constructor (can't take null)
-			return;
+			// If we aren't, but the texture is still null, return null before
+			// error occurs at Sprite constructor (can't pass in null)
+			return null;
 		}
 
 		// Either the passed in or loaded texture defines a new Sprite
-		this.sprite = new Sprite( texture );
+		sprite = new Sprite( texture );
 
 		if ( loadTex ) {
 			// Definitions for loaded sprites
 			origin = new Vector2( type.origin.x, type.origin.y );
-			this.sprite.setScale( type.spriteScale.x, type.spriteScale.y );
+			sprite.setScale( type.spriteScale.x, type.spriteScale.y );
 		} else {
 			// Definitions for non-loaded sprites
-			origin = new Vector2( this.sprite.getWidth( ) / 2,
-					this.sprite.getHeight( ) / 2 );
-			this.offset.set( this.sprite.getWidth( ) / 2,
-					this.sprite.getHeight( ) / 2 );
+			origin = new Vector2( sprite.getWidth( ) / 2,
+					sprite.getHeight( ) / 2 );
+
+			// Arbitrary offset :(
+			this.offset.set( sprite.getWidth( ) / 2, sprite.getHeight( ) / 2 );
 		}
-		this.sprite.setOrigin( origin.x, origin.y );
+		sprite.setOrigin( origin.x, origin.y );
+		return sprite;
 	}
 
+	/**
+	 * Builds the body associated with the entity's type.
+	 * 
+	 * @return the loaded body, or null, if type is null
+	 */
 	protected Body constructBody( ) {
 		Body body;
 		if ( type != null ) {

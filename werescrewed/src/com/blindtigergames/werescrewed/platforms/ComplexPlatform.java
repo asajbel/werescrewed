@@ -9,7 +9,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.World;
 import com.blindtigergames.werescrewed.entity.EntityDef;
-import com.blindtigergames.werescrewed.screens.GameScreen;
+import com.blindtigergames.werescrewed.util.Util;
 
 /**
  * @param name
@@ -42,8 +42,7 @@ public class ComplexPlatform extends Platform {
 		BodyEditorLoader loader = new BodyEditorLoader(
 				Gdx.files.internal( filename ) );
 		BodyDef bd = new BodyDef( );
-		bd.position.set( x * GameScreen.PIXEL_TO_BOX, y
-				* GameScreen.PIXEL_TO_BOX );
+		bd.position.set( x * Util.PIXEL_TO_BOX, y * Util.PIXEL_TO_BOX );
 		bd.type = BodyType.DynamicBody;
 
 		// public void update( float deltaTime ) {

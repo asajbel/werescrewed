@@ -18,7 +18,7 @@ import com.blindtigergames.werescrewed.debug.SBox2DDebugRenderer;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.Player;
 import com.blindtigergames.werescrewed.entity.Skeleton;
-import com.blindtigergames.werescrewed.input.InputHandlerPlayer1;
+import com.blindtigergames.werescrewed.input.InputHandler;
 import com.blindtigergames.werescrewed.platforms.ComplexPlatform;
 import com.blindtigergames.werescrewed.platforms.PlatformBuilder;
 import com.blindtigergames.werescrewed.platforms.RoomPlatform;
@@ -26,18 +26,9 @@ import com.blindtigergames.werescrewed.platforms.ShapePlatform;
 import com.blindtigergames.werescrewed.platforms.Shapes;
 import com.blindtigergames.werescrewed.platforms.TiledPlatform;
 import com.blindtigergames.werescrewed.screws.StructureScrew;
+import com.blindtigergames.werescrewed.util.Util;
 
 public class GameScreen implements com.badlogic.gdx.Screen {
-
-	/***
-	 * Box2D to pixels conversion *************
-	 * 
-	 * This number means 1 meter equals 256 pixels. That means the biggest
-	 * in-game object (10 meters) we can use is 2560 pixels wide, which is much
-	 * bigger than our max screen resolution so it should be enough.
-	 */
-	public static final float BOX_TO_PIXEL = 256f;
-	public static final float PIXEL_TO_BOX = 1 / BOX_TO_PIXEL;
 
 	OrthographicCamera camera;
 	Camera cam;
@@ -61,7 +52,7 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 	Texture screwTex;
 	Texture background;
 	StructureScrew structScrew;
-	InputHandlerPlayer1 inputHandler;
+	InputHandler inputHandler;
 	Skeleton rootSkeleton;
 	Skeleton skeleton;
 
@@ -71,7 +62,7 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 		float w = Gdx.graphics.getWidth( ) / zoom;
 		float h = Gdx.graphics.getHeight( ) / zoom;
 
-		inputHandler = new InputHandlerPlayer1( );
+		inputHandler = new InputHandler( "player1" );
 		texture = new Texture( Gdx.files.internal( "data/rletter.png" ) );
 		// takes in width, height
 		// cam = new Camera(w, h);
@@ -126,7 +117,7 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 		// make sure you uncomment the next two lines debugRenderer = new
 		// SBox2DDebugRenderer(BOX_TO_PIXEL); //for physics world
 		// debugRenderer = new Box2DDebugRenderer();
-		debugRenderer = new SBox2DDebugRenderer( BOX_TO_PIXEL );
+		debugRenderer = new SBox2DDebugRenderer( Util.BOX_TO_PIXEL );
 		Gdx.app.setLogLevel( Application.LOG_DEBUG );
 
 		MCL = new MyContactListener( );

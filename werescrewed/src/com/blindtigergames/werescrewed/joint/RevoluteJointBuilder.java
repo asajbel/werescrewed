@@ -22,7 +22,7 @@ public class RevoluteJointBuilder {
     // Default parameter values
     boolean enableLimit = false;
     float lowerAngle = 0.0f;
-    float upperAngle = 90 * Util.DEGTORAD;
+    float upperAngle = 90 * Util.DEG_TO_RAD;
     boolean enableMotor = false;
     float maxMotorTorque = 500;// high max motor force yields a very strong motor
     float motorSpeed = 1; // 1 is relatively slow

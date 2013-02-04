@@ -1,13 +1,18 @@
 package com.blindtigergames.werescrewed.screws;
 
+import java.util.ArrayList;
+
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJoint;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.Skeleton;
+import com.blindtigergames.werescrewed.util.Util;
 
 /**
  * @descrip: blah blah
@@ -18,23 +23,36 @@ import com.blindtigergames.werescrewed.entity.Skeleton;
 
 public class BossScrew extends Screw {
 
-	public BossScrew( String name, Vector2 pos, int max, Body body,
+	public BossScrew( String name, Vector2 pos, int max, Texture tex,
 			Entity platform, Skeleton skeleton ) {
-		super( name, pos, null, body );
-
+		super( name, pos, tex);
 		maxDepth = max;
 		depth = max;
 
+		// create the screw body
+		BodyDef screwBodyDef = new BodyDef( );
+		screwBodyDef.type = BodyType.DynamicBody;
+		screwBodyDef.position.set( pos );
+		screwBodyDef.gravityScale = 0.07f;
+		body = world.createBody( screwBodyDef );
+		CircleShape screwShape = new CircleShape( );
+		screwShape.setRadius( ( sprite.getWidth( ) / 2.0f )
+				* Util.PIXEL_TO_BOX );
+		FixtureDef screwFixture = new FixtureDef( );
+		screwFixture.shape = screwShape;
+		screwFixture.isSensor = true;
+		body.createFixture( screwFixture );
+		screwShape.dispose( );
+		body.setUserData( this );
+		
 		// add radar sensor to screw
 		CircleShape radarShape = new CircleShape( );
 		radarShape.setRadius( sprite.getWidth( ) * 2 );
 		FixtureDef radarFixture = new FixtureDef( );
 		radarFixture.shape = radarShape;
 		radarFixture.isSensor = true;
-		radarFixture.filter.categoryBits = CATEGORY_SCREWS; // category of Screw
-															// Radar...
-		radarFixture.filter.maskBits = 0x0001;// radar only collides with player
-												// (player category bits 0x0001)
+		radarFixture.filter.categoryBits = Util.CATEGORY_SCREWS; 
+		radarFixture.filter.maskBits = Util.CATEGORY_PLAYER | Util.CATEGORY_SUBPLAYER;
 		this.body.createFixture( radarFixture );
 		this.body.setUserData( this );
 
@@ -45,7 +63,7 @@ public class BossScrew extends Screw {
 		revoluteJointDef.enableMotor = true;
 		revoluteJointDef.maxMotorTorque = 5000.0f;
 		revoluteJointDef.motorSpeed = 50f;
-		platformToScrew = ( RevoluteJoint ) world
+		platformJoint = ( RevoluteJoint ) world
 				.createJoint( revoluteJointDef );
 
 		revoluteJointDef = new RevoluteJointDef( );
@@ -54,22 +72,34 @@ public class BossScrew extends Screw {
 		revoluteJointDef.enableMotor = true;
 		revoluteJointDef.maxMotorTorque = 5000.0f;
 		revoluteJointDef.motorSpeed = 50f;
-		screwJoint = ( RevoluteJoint ) world.createJoint( revoluteJointDef );
-
-		// connect the entities to the skeleton
-		// skeleton.addBoneAndJoint( this, platformToScrew );
-		// skeleton.addBoneAndJoint( platform, screwJoint );
+		screwToSkel = ( RevoluteJoint ) world.createJoint( revoluteJointDef );
 	}
 
+	/**
+	 * attaches any other object between this screw and the main entity that
+	 * this screw is attached
+	 * 
+	 * @param entity
+	 */
+	public void addStructureJoint( Entity entity ) {
+		// connect other structure to structure screw
+		RevoluteJointDef revoluteJointDef = new RevoluteJointDef( );
+		revoluteJointDef.initialize( body, entity.body, body.getPosition( ) );
+		revoluteJointDef.enableMotor = false;
+		RevoluteJoint screwJoint = ( RevoluteJoint ) world
+				.createJoint( revoluteJointDef );
+		extraJoints.add( screwJoint );
+	}
+	
 	@Override
 	public void screwLeft( ) {
 		body.setAngularVelocity( 15 );
 		depth--;
 		rotation += 10;
 		screwStep = depth + 5;
-		if ( depth == 0 && screwJoint != null ) {
-			world.destroyJoint( platformToScrew );
-			world.destroyJoint( screwJoint );
+		if ( depth == 0 && screwToSkel != null ) {
+			world.destroyJoint( platformJoint );
+			world.destroyJoint( screwToSkel );
 			depth = -1;
 		}
 	}
@@ -96,6 +126,7 @@ public class BossScrew extends Screw {
 		}
 	}
 
-	private RevoluteJoint screwJoint;
-	private RevoluteJoint platformToScrew;
+	private ArrayList< RevoluteJoint > extraJoints;
+	private RevoluteJoint screwToSkel;
+	private RevoluteJoint platformJoint;
 }

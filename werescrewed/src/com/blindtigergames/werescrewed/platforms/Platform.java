@@ -6,13 +6,15 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+import com.badlogic.gdx.physics.box2d.Fixture;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.World;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityDef;
 import com.blindtigergames.werescrewed.entity.mover.IMover;
 import com.blindtigergames.werescrewed.screws.Screw;
+import com.blindtigergames.werescrewed.util.Util;
 
 /**
  * @param name
@@ -34,7 +36,7 @@ public class Platform extends Entity {
 	// tileConstant is 16 for setasbox function which uses half width/height
 	// creates 32x32 objects
 	protected final int tileConstant = 16;
-	
+
 	/**
 	 * Used for kinematic movement connected to skeleton
 	 */
@@ -76,28 +78,12 @@ public class Platform extends Entity {
 
 		super.update( deltaTime );
 
-		if ( Gdx.input.isKeyPressed( Keys.T ) ) {
-			// Turned off because ground will fall
-			// rotate( );
-		}
-
-		if ( Gdx.input.isKeyPressed( Keys.Y ) ) {
-			body.setAngularVelocity( 0 );
-		}
-		if ( Gdx.input.isKeyPressed( Keys.O ) ) {
-			changeType( );
-		}
-
-		if ( Gdx.input.isKeyPressed( Keys.N ) ) {
-			// rotateBy90();
-			rotate = !rotate;
-		}
-		if ( Gdx.input.isKeyPressed( Keys.L ) ) {
-			setHorizontal( );
-		}
 		if ( Gdx.input.isKeyPressed( Keys.B ) ) {
 			setOneSided( !getOneSided( ) );
 			System.out.println( getOneSided( ) );
+		}
+		for ( Screw s : screws ) {
+			s.update( deltaTime );
 		}
 	}
 
@@ -125,8 +111,21 @@ public class Platform extends Entity {
 		dynamicType = !dynamicType;
 		if ( dynamicType ) {
 			body.setType( BodyType.DynamicBody );
-		} else
+			FixtureDef fix = new FixtureDef( );
+			fix.filter.categoryBits = Util.DYNAMIC_OBJECTS; 
+			fix.filter.maskBits = -1;
+			for ( Fixture f : body.getFixtureList( ) ) {
+				f.setFilterData( fix.filter );
+			}
+		} else {
 			body.setType( BodyType.KinematicBody );
+			FixtureDef fix = new FixtureDef( );
+			fix.filter.categoryBits = Util.KINEMATIC_OBJECTS; 
+			fix.filter.maskBits = -1;
+			for ( Fixture f : body.getFixtureList( ) ) {
+				f.setFilterData( fix.filter );
+			}
+		}
 
 		body.setActive( false );
 	}

@@ -3,11 +3,11 @@ package com.blindtigergames.werescrewed.platforms;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
-import com.blindtigergames.werescrewed.screens.GameScreen;
+import com.blindtigergames.werescrewed.util.Util;
 
 /**
  * @param name
@@ -60,13 +60,12 @@ public class ShapePlatform extends Platform {
 
 		BodyDef bodyDef = new BodyDef( );
 		bodyDef.type = BodyType.DynamicBody;
-		bodyDef.position.set( new Vector2( pos.x * GameScreen.PIXEL_TO_BOX , pos.y * GameScreen.PIXEL_TO_BOX ) );
+		bodyDef.position.set( new Vector2( pos.x * Util.PIXEL_TO_BOX, pos.y
+				* Util.PIXEL_TO_BOX ) );
 		body = world.createBody( bodyDef );
 
-		float horizontal = width * tileConstant * 2 * GameScreen.PIXEL_TO_BOX
-				* scale;
-		float vertical = height * tileConstant * 2 * GameScreen.PIXEL_TO_BOX
-				* scale;
+		float horizontal = width * tileConstant * 2 * Util.PIXEL_TO_BOX * scale;
+		float vertical = height * tileConstant * 2 * Util.PIXEL_TO_BOX * scale;
 		Vector2[ ] vertices = new Vector2[ 4 ];
 		Vector2 point1 = new Vector2( );
 		Vector2 point2 = new Vector2( horizontal, 0.0f );
@@ -92,7 +91,7 @@ public class ShapePlatform extends Platform {
 		FixtureDef platformFixtureDef = new FixtureDef( );
 		platformFixtureDef.shape = polygon;
 		body.createFixture( platformFixtureDef );
-		
+
 		polygon.dispose( );
 
 	}
@@ -101,7 +100,8 @@ public class ShapePlatform extends Platform {
 			float innerHeight, float outerWidth, float outerHeight, float scale ) {
 		BodyDef bodyDef = new BodyDef( );
 		bodyDef.type = BodyType.DynamicBody;
-		bodyDef.position.set( pos.x * GameScreen.PIXEL_TO_BOX, pos.y * GameScreen.PIXEL_TO_BOX  );
+		bodyDef.position.set( pos.x * Util.PIXEL_TO_BOX, pos.y
+				* Util.PIXEL_TO_BOX );
 		body = world.createBody( bodyDef );
 
 		PolygonShape ps = new PolygonShape( );
@@ -113,10 +113,10 @@ public class ShapePlatform extends Platform {
 		// if ( height < 2.0f )
 		// height = 3.0f;
 
-		float iW = innerWidth * tileConstant * GameScreen.PIXEL_TO_BOX * scale;
-		float iH = innerHeight * tileConstant * GameScreen.PIXEL_TO_BOX * scale;
-		float oW = outerWidth * tileConstant * GameScreen.PIXEL_TO_BOX * scale;
-		float oH = outerHeight * tileConstant * GameScreen.PIXEL_TO_BOX * scale;
+		float iW = innerWidth * tileConstant * Util.PIXEL_TO_BOX * scale;
+		float iH = innerHeight * tileConstant * Util.PIXEL_TO_BOX * scale;
+		float oW = outerWidth * tileConstant * Util.PIXEL_TO_BOX * scale;
+		float oH = outerHeight * tileConstant * Util.PIXEL_TO_BOX * scale;
 
 		Vector2 z = new Vector2( );
 		Vector2 p1 = new Vector2( -( iW + oW ), -( iH + oH ) );
@@ -143,7 +143,7 @@ public class ShapePlatform extends Platform {
 		ps.setAsBox( oW, oH, p4, 0 );
 		fd.shape = ps;
 		body.createFixture( fd );
-		
+
 		ps.dispose( );
 
 	}
@@ -152,7 +152,8 @@ public class ShapePlatform extends Platform {
 			float thickX, float thickY ) {
 		BodyDef bodyDef = new BodyDef( );
 		bodyDef.type = BodyType.DynamicBody;
-		bodyDef.position.set( pos.x * GameScreen.PIXEL_TO_BOX, pos.y * GameScreen.PIXEL_TO_BOX );
+		bodyDef.position.set( pos.x * Util.PIXEL_TO_BOX, pos.y
+				* Util.PIXEL_TO_BOX );
 		body = world.createBody( bodyDef );
 
 		PolygonShape ps = new PolygonShape( );
@@ -164,21 +165,20 @@ public class ShapePlatform extends Platform {
 		if ( height < 2.0f )
 			height = 3.0f;
 
-		float horizontal = width * tileConstant * GameScreen.PIXEL_TO_BOX;
-		float vertical = height * tileConstant * GameScreen.PIXEL_TO_BOX;
+		float horizontal = width * tileConstant * Util.PIXEL_TO_BOX;
+		float vertical = height * tileConstant * Util.PIXEL_TO_BOX;
 		Vector2 z = new Vector2( );
 
 		// Creating 2 fixtures to make a plus
-		ps.setAsBox( horizontal, thickY * tileConstant
-				* GameScreen.PIXEL_TO_BOX, z, 0 );
+		ps.setAsBox( horizontal, thickY * tileConstant * Util.PIXEL_TO_BOX, z,
+				0 );
 		fd.shape = ps;
 		body.createFixture( fd );
 
-		ps.setAsBox( thickX * tileConstant * GameScreen.PIXEL_TO_BOX, vertical,
-				z, 0 );
+		ps.setAsBox( thickX * tileConstant * Util.PIXEL_TO_BOX, vertical, z, 0 );
 		fd.shape = ps;
 		body.createFixture( fd );
-		
+
 		ps.dispose( );
 
 	}
@@ -188,13 +188,12 @@ public class ShapePlatform extends Platform {
 
 		BodyDef bodyDef = new BodyDef( );
 		bodyDef.type = BodyType.DynamicBody;
-		bodyDef.position.set( pos.x * GameScreen.PIXEL_TO_BOX, pos.y * GameScreen.PIXEL_TO_BOX );
+		bodyDef.position.set( pos.x * Util.PIXEL_TO_BOX, pos.y
+				* Util.PIXEL_TO_BOX );
 		body = world.createBody( bodyDef );
 
-		float horizontal = width * tileConstant * 2 * GameScreen.PIXEL_TO_BOX
-				* scale;
-		float vertical = height * tileConstant * 2 * GameScreen.PIXEL_TO_BOX
-				* scale;
+		float horizontal = width * tileConstant * 2 * Util.PIXEL_TO_BOX * scale;
+		float vertical = height * tileConstant * 2 * Util.PIXEL_TO_BOX * scale;
 
 		Vector2[ ] vertices = new Vector2[ 4 ];
 		Vector2 point1;
@@ -222,7 +221,7 @@ public class ShapePlatform extends Platform {
 		polygon.dispose( );
 	}
 
-	public void update(float deltaTime ) {
+	public void update( float deltaTime ) {
 		super.update( deltaTime );
 	}
 
