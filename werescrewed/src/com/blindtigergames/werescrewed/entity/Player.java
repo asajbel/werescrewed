@@ -120,7 +120,12 @@ public class Player extends Entity {
 			// TODO: do stuff here
 			// playerState = playerState.Dead;
 			body.setLinearVelocity( Vector2.Zero );
+			body.setFixedRotation( false );
+			body.setAngularVelocity( 0.1f );
+			
 		} else {
+			body.setFixedRotation( true );
+			body.setTransform( body.getPosition( ).x, body.getPosition().y, 0 );
 			updateKeyboard( deltaTime );
 			if ( controller != null ) {
 				if ( controllerIsActive ) {
