@@ -25,9 +25,13 @@ public class MyControllerListener implements ControllerListener {
 	private boolean jumpPressed;
 	private boolean downPressed;
 	private boolean upPressed;
+	private boolean analogUsed;
 
 	private boolean attachScrewPressed;
-	
+
+	// axisX and axisY represent the point where the analog stick is
+	private float axisX, axisY;
+
 	// Using xbox face button names. B, X, Y are unused for now
 	private final static int buttonA = 0;
 	// private final static int buttonB = 1;
@@ -36,7 +40,6 @@ public class MyControllerListener implements ControllerListener {
 	private final static int bumperR = 5;
 	// private final static int trigger = 4;
 	private final static int pause = 7;
-	
 
 	/**
 	 * This function checks the analog sticks to see if they moved
@@ -51,7 +54,8 @@ public class MyControllerListener implements ControllerListener {
 	@Override
 	public boolean axisMoved( Controller controller, int buttonIndex,
 			float axisPoint ) {
-		// System.out.println( indexOf(controller) + ":" + " button: " + buttonIndex+ ", axis: " + axisPoint );
+		// System.out.println( indexOf(controller) + ":" + " button: " +
+		// buttonIndex+ ", axis: " + axisPoint );
 		/*
 		 * for control sticks left stick button 0 - vertical - top is -1.0,
 		 * bottom is 1.0 button 1 - horizontal - left is -1.0, right is 1.0
@@ -60,30 +64,44 @@ public class MyControllerListener implements ControllerListener {
 		 * 
 		 * trigger is button 4: left is positive, right is negative
 		 */
-		//System.out.println( controller.getAxis( 0 ) ); // 0 = vertical, 1 = horizontal
-		if( buttonIndex == 4 ){
-			if( axisPoint < -0.3f || axisPoint > 0.3f)
+		// System.out.println( controller.getAxis( 0 ) ); // 0 = vertical, 1 =
+		// horizontal
+		if ( buttonIndex == 4 ) {
+			if ( axisPoint < -0.3f || axisPoint > 0.3f )
 				attachScrewPressed = true;
-			else 
+			else
 				attachScrewPressed = false;
 		}
+		axisY = controller.getAxis( 0 );
+		axisX = controller.getAxis( 1 );
 
-		if ( axisPoint < 0.2f ) {
-			rightPressed = false;
-			leftPressed = false;
+		if ( axisY < 0.2f && axisY > -0.2f ) {
 			upPressed = false;
 			downPressed = false;
-		} else {
-			if( buttonIndex == 1 && axisPoint > 0.5f)
-				rightPressed = true;
-			if( buttonIndex == 1 && axisPoint < -0.5f)
-				leftPressed = true;
-			if( buttonIndex == 0 && axisPoint > 0.5f)
-				downPressed = true;
-			if( buttonIndex == 0 && axisPoint < -0.5f)
-				upPressed = true;
+			analogUsed = false;
 		}
-		
+		if ( axisX < 0.2f && axisX > -0.2f ) {
+			rightPressed = false;
+			leftPressed = false;
+			analogUsed = false;
+		}
+		if ( axisX > 0.2f ) {
+			rightPressed = true;
+			analogUsed = true;
+		}
+		if ( axisX < -0.2f ) {
+			leftPressed = true;
+			analogUsed = true;
+		}
+		if ( axisY > 0.2f ) {
+			downPressed = true;
+			analogUsed = true;
+		}
+		if ( axisY < -0.2f ) {
+			upPressed = true;
+			analogUsed = true;
+		}
+
 		return false;
 	}
 
@@ -99,7 +117,7 @@ public class MyControllerListener implements ControllerListener {
 		if ( buttonIndex == buttonA )
 			jumpPressed = true;
 		// if ( buttonIndex == bumperR )
-		//	 attachScrewPressed = true;
+		// attachScrewPressed = true;
 		if ( buttonIndex == pause )
 			pausePressed = true;
 		return false;
@@ -193,6 +211,7 @@ public class MyControllerListener implements ControllerListener {
 	 * Returns if controller is connected
 	 * 
 	 * @return boolean
+	 * @author Ranveer
 	 */
 
 	public boolean isConnected( ) {
@@ -200,9 +219,40 @@ public class MyControllerListener implements ControllerListener {
 	}
 
 	/**
+	 * Checks to see if player is using analog
+	 * 
+	 * @return boolean
+	 * @author Ranveer
+	 */
+	public boolean analogUsed( ) {
+		return analogUsed;
+	}
+
+	/**
+	 * Returns the x point of the analog stick
+	 * 
+	 * @return float
+	 * @author Ranveer
+	 */
+	public float analogAxisX( ) {
+		return axisX;
+	}
+
+	/**
+	 * Returns the y point of the analog stick
+	 * 
+	 * @return float
+	 * @author Ranveer
+	 */
+	public float analogAxisY( ) {
+		return axisY;
+	}
+
+	/**
 	 * Returns whether the pause button is pressed.
 	 * 
 	 * @return boolean
+	 * @author Ranveer
 	 */
 	public boolean pausePressed( ) {
 		return pausePressed;
@@ -212,6 +262,7 @@ public class MyControllerListener implements ControllerListener {
 	 * Returns whether the move left button is pressed
 	 * 
 	 * @return boolean
+	 * @author Ranveer
 	 */
 	public boolean leftPressed( ) {
 		return leftPressed;
@@ -221,6 +272,7 @@ public class MyControllerListener implements ControllerListener {
 	 * Returns whether the move right button is pressed
 	 * 
 	 * @return boolean
+	 * @author Ranveer
 	 */
 	public boolean rightPressed( ) {
 		return rightPressed;
@@ -230,6 +282,7 @@ public class MyControllerListener implements ControllerListener {
 	 * Returns whether the jump button is pressed
 	 * 
 	 * @return boolean
+	 * @author Ranveer
 	 */
 	public boolean jumpPressed( ) {
 		return jumpPressed;
@@ -239,6 +292,7 @@ public class MyControllerListener implements ControllerListener {
 	 * Returns whether the move down button is pressed
 	 * 
 	 * @return boolean
+	 * @author Ranveer
 	 */
 	public boolean downPressed( ) {
 		return downPressed;
@@ -248,6 +302,7 @@ public class MyControllerListener implements ControllerListener {
 	 * Returns whether the up button is pressed
 	 * 
 	 * @return boolean
+	 * @author Ranveer
 	 */
 	public boolean upPressed( ) {
 		return upPressed;
@@ -257,6 +312,7 @@ public class MyControllerListener implements ControllerListener {
 	 * Returns whether the attach to screw button is pressed
 	 * 
 	 * @return boolean
+	 * @author Ranveer
 	 */
 	public boolean screwPressed( ) {
 		return attachScrewPressed;
@@ -266,6 +322,7 @@ public class MyControllerListener implements ControllerListener {
 	 * Returns whether trying to screw clockwise (righty tighty)
 	 * 
 	 * @return boolean
+	 * @author Ranveer
 	 */
 	public boolean screwing( ) {
 		return rightPressed;
@@ -275,6 +332,7 @@ public class MyControllerListener implements ControllerListener {
 	 * Returns whether trying to screw counter-clockwise (lefty loosely)
 	 * 
 	 * @return boolean
+	 * @author Ranveer
 	 */
 	public boolean unscrewing( ) {
 		return leftPressed;
@@ -283,7 +341,6 @@ public class MyControllerListener implements ControllerListener {
 	/**
 	 * Function returns the what index the controller is (player 1 or player 2)
 	 * 
-	 * @author Ranveer
 	 * @param controller
 	 * @return int
 	 */

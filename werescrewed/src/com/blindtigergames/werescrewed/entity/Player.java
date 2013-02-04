@@ -38,6 +38,8 @@ public class Player extends Entity {
 	private PlayerState playerState;
 	private Controller controller;
 	private boolean controllerIsActive, controllerDebug;
+	@SuppressWarnings( "unused" )
+	private float axisX, axisY;
 
 	private Screw currentScrew;
 	private RevoluteJoint playerToScrew;
@@ -98,7 +100,7 @@ public class Player extends Entity {
 		inputHandler = new PlayerInputHandler( this.name );
 		anchorID = AnchorList.getInstance( ).addAnchor( true, pos );
 
-		setUpController();
+		setUpController( );
 
 	}
 
@@ -120,22 +122,22 @@ public class Player extends Entity {
 			if ( controller != null ) {
 				if ( controllerIsActive ) {
 					updateController( deltaTime );
-					
+
 				}
 			} else {
 				// Look to see if controller was inserted
 			}
 		}
-		
+
 		// Hit backspace to kill the player or respawn him
 		if ( Gdx.input.isKeyPressed( Keys.BACKSPACE ) ) {
-			if( deadDebug ) {
+			if ( deadDebug ) {
 				isDead = !isDead;
 			}
 			deadDebug = false;
 		} else
 			deadDebug = true;
-		
+
 		// Hit Enter to active the controller
 		if ( Gdx.input.isKeyPressed( Keys.ENTER ) ) {
 			if ( controllerDebug )
@@ -143,8 +145,6 @@ public class Player extends Entity {
 			controllerDebug = false;
 		} else
 			controllerDebug = true;
-		
-		
 
 	}
 
@@ -198,10 +198,10 @@ public class Player extends Entity {
 				slow( );
 		}
 
-		if ( inputHandler.screwPressed( ) && hitScrew
-				&& playerState != PlayerState.Screwing 
-				&& (playerState != PlayerState.JumpingOffScrew
-				|| screwJumpTimeout < 2 ) ) {
+		if ( inputHandler.screwPressed( )
+				&& hitScrew
+				&& playerState != PlayerState.Screwing
+				&& ( playerState != PlayerState.JumpingOffScrew || screwJumpTimeout < 2 ) ) {
 			attachToScrew( );
 		}
 
@@ -270,12 +270,16 @@ public class Player extends Entity {
 			jumpPressedController = false;
 		}
 		if ( controllerListener.leftPressed( ) ) {
-			moveLeft( );
+			if ( controllerListener.analogUsed( ) )
+				// moveAnalogLeft();
+				moveLeft( );
 			prevButton = PovDirection.west;
 		}
 
 		if ( controllerListener.rightPressed( ) ) {
-			moveRight( );
+			if ( controllerListener.analogUsed( ) )
+				// moveAnalogRight();
+				moveRight( );
 			prevButton = PovDirection.east;
 		}
 		if ( controllerListener.downPressed( ) ) {
@@ -298,10 +302,10 @@ public class Player extends Entity {
 
 		// If player hits the screw button and is in distance
 		// then attach the player to the screw
-		if ( controllerListener.screwPressed( ) && hitScrew
+		if ( controllerListener.screwPressed( )
+				&& hitScrew
 				&& playerState != PlayerState.Screwing
-				&& (playerState != PlayerState.JumpingOffScrew
-					|| screwJumpTimeout < 2 ) ) {
+				&& ( playerState != PlayerState.JumpingOffScrew || screwJumpTimeout < 2 ) ) {
 			attachToScrew( );
 		}
 		// If the button is let go, then the player is dropped
@@ -396,6 +400,24 @@ public class Player extends Entity {
 			body.applyLinearImpulse( new Vector2( -MOVEMENT_IMPLUSE, 0.0f ),
 					body.getWorldCenter( ) );
 		}
+	}
+
+	/**
+	 * Moves the player right, based off how far analog stick is pushed right
+	 * 
+	 * @author Ranveer
+	 */
+	public void moveAnalogRight( ) {
+		axisX = controllerListener.analogAxisX( );
+	}
+
+	/**
+	 * Moves the player left, based off how far analog stick is pushed left
+	 * 
+	 * @author Ranveer
+	 */
+	public void moveAnalogLeft( ) {
+		axisX = controllerListener.analogAxisX( );
 	}
 
 	/**
@@ -528,12 +550,12 @@ public class Player extends Entity {
 	}
 
 	/**
-	 * This function creates a new controllerListener and sets the active controller
-	 * depending on which player is being created
+	 * This function creates a new controllerListener and sets the active
+	 * controller depending on which player is being created
 	 * 
 	 * @author Ranveer
 	 */
-	private void setUpController(){
+	private void setUpController( ) {
 		controllerListener = new MyControllerListener( );
 
 		if ( Controllers.getControllers( ).size == 1 ) {
