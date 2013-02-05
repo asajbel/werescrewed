@@ -3,23 +3,20 @@ package com.blindtigergames.werescrewed.level;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.blindtigergames.werescrewed.camera.Camera;
 import com.blindtigergames.werescrewed.debug.SBox2DDebugRenderer;
-import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityManager;
 import com.blindtigergames.werescrewed.entity.Player;
 import com.blindtigergames.werescrewed.entity.PlayerBuilder;
 import com.blindtigergames.werescrewed.entity.Skeleton;
-import com.blindtigergames.werescrewed.platforms.*;
-import com.blindtigergames.werescrewed.screens.GameScreen;
-import com.blindtigergames.werescrewed.screens.Screen;
-import com.blindtigergames.werescrewed.screens.ScreenManager;
+import com.blindtigergames.werescrewed.platforms.Platform;
+import com.blindtigergames.werescrewed.platforms.PlatformBuilder;
+import com.blindtigergames.werescrewed.platforms.RoomPlatform;
+import com.blindtigergames.werescrewed.platforms.TiledPlatform;
 
 
 /**

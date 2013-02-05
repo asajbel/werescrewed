@@ -9,6 +9,6 @@
 	<classpathentry kind="lib" path="libs/gdx-natives.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/gdx-controllers-desktop-natives.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/gdx-controllers-desktop.jar" sourcepath="libs/gdx-controllers-desktop-sources.jar"/>
-	<classpathentry kind="lib" path="libs/gdx-controllers.jar" sourcepath="libs/gdx-controllers-sources.jar"/>
+	<classpathentry kind="lib" path="/werescrewed/libs/gdx-controllers.jar" sourcepath="/werescrewed/libs/gdx-controllers-sources.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

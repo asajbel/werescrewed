@@ -14,7 +14,7 @@ import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.Shape;
 import com.badlogic.gdx.utils.XmlReader;
-import com.blindtigergames.werescrewed.screens.GameScreen;
+import com.blindtigergames.werescrewed.util.Util;
 
 public class EntityDef {
 
@@ -140,7 +140,7 @@ public class EntityDef {
 				ArrayList< FixtureDef > fixes = new ArrayList< FixtureDef >( );
 
 				CircleShape playerfeetShape = new CircleShape( );
-				playerfeetShape.setRadius( 10f * GameScreen.PIXEL_TO_BOX );
+				playerfeetShape.setRadius( 10f * Util.PIXEL_TO_BOX );
 				FixtureDef playerFixtureDef = makeFixtureDef( 9.9f, 0.0f,
 						0.0f, playerfeetShape );
 				fixes.add( playerFixtureDef );

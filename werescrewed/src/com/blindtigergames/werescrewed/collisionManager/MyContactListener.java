@@ -1,5 +1,6 @@
 package com.blindtigergames.werescrewed.collisionManager;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.Contact;
@@ -20,7 +21,9 @@ import com.blindtigergames.werescrewed.screws.Screw;
  */
 public class MyContactListener implements ContactListener {
 
-	private static int NUM_PLAYER_CONTACTS = 0;
+	private static int NUM_PLAYER1_CONTACTS = 0;
+	private static int NUM_PLAYER2_CONTACTS = 0;
+	private Player p1;
 
 	/**
 	 * When two new objects start to touch
@@ -59,7 +62,14 @@ public class MyContactListener implements ContactListener {
 					Entity object = ( Entity ) objectFix.getBody( )
 							.getUserData( );
 					if ( object.isSolid( ) ) {
-						NUM_PLAYER_CONTACTS++;
+						if ( p1 == null || p1 == player ) {
+							p1 = player;
+							NUM_PLAYER1_CONTACTS++;
+							Gdx.app.log( "contact", "begin contact p1" );
+						} else if ( p1 != player ) {
+							NUM_PLAYER2_CONTACTS++;
+							Gdx.app.log( "contact", "begin contact p2" );
+						}
 						player.setGrounded( true );
 					} else if ( objectFix.getBody( ).getUserData( ) instanceof Screw ) {
 						Screw screw = ( Screw ) objectFix.getBody( )
@@ -106,9 +116,19 @@ public class MyContactListener implements ContactListener {
 					Entity object = ( Entity ) objectFix.getBody( )
 							.getUserData( );
 					if ( object.isSolid( ) ) {
-						NUM_PLAYER_CONTACTS--;
-						if ( NUM_PLAYER_CONTACTS <= 0 ) {
-							player.setGrounded( false );
+						if ( p1 == null || p1 == player ) {
+							p1 = player;
+							NUM_PLAYER1_CONTACTS--;
+							if ( NUM_PLAYER1_CONTACTS <= 0 ) {
+								Gdx.app.log( "contact", "end contact p1" );
+								player.setGrounded( false );
+							}
+						} else if ( p1 != player ) {
+							NUM_PLAYER2_CONTACTS--;
+							if ( NUM_PLAYER2_CONTACTS <= 0 ) {
+								Gdx.app.log( "contact", "end contact p2" );
+								player.setGrounded( false );
+							}
 						}
 						contact.setEnabled( true );
 					} else if ( objectFix.getBody( ).getUserData( ) instanceof Screw ) {
