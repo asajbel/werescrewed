@@ -162,7 +162,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		puzzleScrew.puzzleManager.addMover( lm );
 
 		float x1 = 1.75f;
-		float x2 = 2.75f;
+		float x2 = 2.0f;
 		float y1 = 0.6f;
 		float dy = 0.7f;
 		for ( int i = 0; i < 10; i++ ) {
