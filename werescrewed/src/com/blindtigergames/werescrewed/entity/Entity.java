@@ -57,6 +57,17 @@ public class Entity {
 		this.body = constructBody( );
 		setPosition( pos );
 	}
+	
+	/*public Entity(String n, EntityDef d, World w, Vector2 pos,
+			float rot, Vector2 sca)
+	{
+		this();
+		name = n;
+		type = d;
+		world = w;
+		constructSprite();
+		constructBody(pos.x, pos.y, sca.x, sca.y);
+	}*/
 
 	/**
 	 * Create entity by body. Debug constructor: Should be removed eventually.
@@ -108,6 +119,14 @@ public class Entity {
 			sprite.setPosition( bodyPos.x - offset.x, bodyPos.y - offset.y );
 			sprite.setRotation( MathUtils.radiansToDegrees * body.getAngle( ) );
 			sprite.draw( batch );
+		}
+	}
+	
+	public void setPosition(float x, float y){
+		if (body != null){
+			body.setTransform(x, y, body.getAngle());
+		} else if (sprite != null){
+			sprite.setPosition(x, y);
 		}
 	}
 
@@ -168,6 +187,13 @@ public class Entity {
 		sprite.setOrigin( origin.x, origin.y );
 		return sprite;
 	}
+	
+    public void Move(Vector2 vector)
+    {
+    	Vector2 pos = body.getPosition().add(vector);
+    	setPosition(pos);
+    }
+
 
 	/**
 	 * Builds the body associated with the entity's type.
@@ -214,4 +240,14 @@ public class Entity {
 		body.setAwake( true );
 	}
 
+	
+	/**
+	 * Change the sprite to be displayed on the entity
+	 * 
+	 * @param newSprite
+	 * 		The new sprite that will be displayed on top of the entity
+	 */
+	public void changeSprite(Sprite newSprite){
+		this.sprite = newSprite;
+	}
 }
