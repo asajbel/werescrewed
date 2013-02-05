@@ -42,21 +42,21 @@ public class Platform extends Entity {
 	 */
 	protected Vector2 origin;
 
-	public Platform( String n, Vector2 pos, Texture tex, World world ) {
-		super( n, pos, tex, null, true );
+	public Platform( String name, Vector2 pos, Texture tex, World world ) {
+		super( name, pos, tex, null, true );
 		this.world = world;
 		screws = new ArrayList< Screw >( );
 	}
 
-	public Platform( String n, EntityDef d, World w, Vector2 pos, float rot,
-			Vector2 sca ) {
-		super( n, d, w, pos, rot, sca, null, true );
+	public Platform( String name, EntityDef type, World world, Vector2 pos, float rot,
+			Vector2 scale ) {
+		super( name, type, world, pos, rot, scale, null, true );
 		screws = new ArrayList< Screw >( );
 	}
 
-	public Platform( String n, EntityDef d, World w, Vector2 pos, float rot,
-			Vector2 sca, Texture tex ) {
-		super( n, d, w, pos, rot, sca, tex, true );
+	public Platform( String name, EntityDef type, World world, Vector2 pos, float rot,
+			Vector2 scale, Texture tex ) {
+		super( name, type, world, pos, rot, scale, tex, true );
 		screws = new ArrayList< Screw >( );
 	}
 
