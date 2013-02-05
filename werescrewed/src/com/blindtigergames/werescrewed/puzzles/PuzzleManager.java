@@ -7,7 +7,6 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.mover.IMover;
 import com.blindtigergames.werescrewed.entity.mover.LerpMover;
-import com.blindtigergames.werescrewed.screws.PuzzleScrew;
 
 /**
  * puzzle screw class for moving puzzle pieces
@@ -72,27 +71,22 @@ public class PuzzleManager {
 	 * either be a percentage of movement or it can be a boolean < 0.5f is yes >
 	 * 0.5f is no
 	 */
-	public void runElement( PuzzleScrew screw1 ) {
-		if ( screw1.getDepth( ) != screw1.getMaxDepth( ) ) {
-			for ( int i = 0; i < puzzleEntities.size( ); i++ ) {
-				if ( puzzleEntities.get( i ).mover == null ) {
-					if ( i <= puzzleMovers.size( ) ) {
-						LerpMover lm = (LerpMover)puzzleMovers.get( i );
-						lm.runPuzzleMovement(
-								( ( float ) screw1.getDepth( ) )
-										/ ( float ) ( screw1.getMaxDepth( ) ),
-								puzzleEntities.get( i ).body );
-					}
-					/*
-					 * if ( e.body.getJointList( ).size( ) < 1 ) {
-					 * System.out.println( "the joint is created" );
-					 * PrismaticJoint j = ( PrismaticJoint ) world .createJoint(
-					 * puzzleJoints.get( index ) ); SlidingMotorMover sm = new
-					 * SlidingMotorMover( PuzzleType.PRISMATIC_SLIDER, j );
-					 * e.setMover( sm ); e.body.setAwake( true );
-					 * puzzleMovers.add( sm ); }
-					 */
+	public void runElement( float screwVal ) {
+		for ( int i = 0; i < puzzleEntities.size( ); i++ ) {
+			if ( puzzleEntities.get( i ).mover == null ) {
+				if ( i <= puzzleMovers.size( ) ) {
+					LerpMover lm = ( LerpMover ) puzzleMovers.get( i );
+					lm.runPuzzleMovement( screwVal,
+							puzzleEntities.get( i ).body );
 				}
+				/*
+				 * if ( e.body.getJointList( ).size( ) < 1 ) {
+				 * System.out.println( "the joint is created" ); PrismaticJoint
+				 * j = ( PrismaticJoint ) world .createJoint( puzzleJoints.get(
+				 * index ) ); SlidingMotorMover sm = new SlidingMotorMover(
+				 * PuzzleType.PRISMATIC_SLIDER, j ); e.setMover( sm );
+				 * e.body.setAwake( true ); puzzleMovers.add( sm ); }
+				 */
 			}
 		}
 	}

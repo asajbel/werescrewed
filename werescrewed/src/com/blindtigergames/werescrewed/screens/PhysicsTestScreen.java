@@ -105,7 +105,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		tiledPlat = platBuilder.setPosition( 700.0f, 100.0f )
 				.setDimensions( 10, 1 ).setTexture( testTexture )
 				.setName( "tp" ).setResitituion( 0.0f ).buildTilePlatform( );
-		movingTP = platBuilder.setPosition( 70.0f, 120.0f )
+		movingTP = platBuilder.setPosition( 0.0f, 120.0f )
 				.setDimensions( 10, 1 ).setTexture( testTexture )
 				.setName( "movingTP" ).setResitituion( 0.0f )
 				.buildTilePlatform( );
@@ -155,9 +155,9 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		jointDef.motorSpeed = 7.0f;
 
 		puzzleScrew.puzzleManager.addEntity( movingTP );
-		LerpMover lm = new LerpMover(new Vector2(movingTP.body.getPosition( ).x-1, 
+		LerpMover lm = new LerpMover(new Vector2(movingTP.body.getPosition( ).x, 
 				movingTP.body.getPosition( ).y), 
-				new Vector2(movingTP.body.getPosition( ).x+1, 
+				new Vector2(movingTP.body.getPosition( ).x+1.75f, 
 						movingTP.body.getPosition( ).y), 1f);
 		puzzleScrew.puzzleManager.addMover( lm );
 
