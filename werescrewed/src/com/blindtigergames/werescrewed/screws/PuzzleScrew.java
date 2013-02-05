@@ -56,8 +56,8 @@ public class PuzzleScrew extends Screw {
 		radarFixture.filter.categoryBits = Util.CATEGORY_SCREWS;
 		radarFixture.filter.maskBits = Util.CATEGORY_PLAYER
 				| Util.CATEGORY_SUBPLAYER;
-		radarShape.dispose( );
 		body.createFixture( radarFixture );
+		radarShape.dispose( );
 
 		// connect the screw to the entity;
 		RevoluteJointDef revoluteJointDef = new RevoluteJointDef( );
