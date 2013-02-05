@@ -1,6 +1,5 @@
 package com.blindtigergames.werescrewed.collisionManager;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.Contact;
@@ -10,7 +9,7 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.Manifold;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.Player;
-import com.blindtigergames.werescrewed.platforms.RoomPlatform;
+import com.blindtigergames.werescrewed.platforms.Platform;
 import com.blindtigergames.werescrewed.platforms.TiledPlatform;
 import com.blindtigergames.werescrewed.screws.Screw;
 
@@ -163,7 +162,13 @@ public class MyContactListener implements ContactListener {
 				Player player = ( Player ) playerFix.getBody( ).getUserData( );
 				if ( objectFix.getBody( ).getUserData( ) instanceof TiledPlatform ) {
 					TiledPlatform tilePlat = ( TiledPlatform ) objectFix
-							.getBody( ).getUserData( );
+							.getBody( ).getUserData( );	
+					if( tilePlat.body.getLinearVelocity( ).x != 0 ) {
+						player.body.getFixtureList( ).get( 1 ).setFriction( 0.7f );
+						tilePlat.body.getFixtureList( ).get( 0 ).setFriction( 1f );
+					} else {
+						player.body.getFixtureList( ).get( 1 ).setFriction( 0f );
+					}
 					Vector2 platformPos = tilePlat.getPosition( );
 					Vector2 playerPos = player.getPosition( );
 					if ( tilePlat.getOneSided( ) ) {
@@ -172,9 +177,15 @@ public class MyContactListener implements ContactListener {
 						}
 					}
 				}
-				if ( objectFix.getBody( ).getUserData( ) instanceof RoomPlatform ) {
-					RoomPlatform roomPlat = ( RoomPlatform ) objectFix
-							.getBody( ).getUserData( );
+				if ( objectFix.getBody( ).getUserData( ) instanceof Platform ) {
+					Platform roomPlat = ( Platform ) objectFix
+							.getBody( ).getUserData( );				
+					if( roomPlat.body.getLinearVelocity( ).x != 0 ) {
+						player.body.getFixtureList( ).get( 1 ).setFriction( 0.7f );
+						roomPlat.body.getFixtureList( ).get( 0 ).setFriction( 1f );
+					} else {
+						player.body.getFixtureList( ).get( 1 ).setFriction( 0f );
+					}
 					Vector2 platformPos = roomPlat.getPosition( );
 					Vector2 playerPos = player.getPosition( );
 					if ( roomPlat.getOneSided( ) ) {
@@ -192,7 +203,62 @@ public class MyContactListener implements ContactListener {
 	 */
 	@Override
 	public void postSolve( Contact contact, ContactImpulse impulse ) {
-		// TODO Auto-generated method stub
+		final Fixture x1 = contact.getFixtureA( );
+		final Fixture x2 = contact.getFixtureB( );
 
+		Fixture playerFix = null;
+		Fixture objectFix = null;
+
+		boolean playerInvolved = false;
+
+		if ( x1.getBody( ).getUserData( ) != null
+				&& x2.getBody( ).getUserData( ) != null ) {
+			if ( x1.getBody( ).getUserData( ) instanceof Player ) {
+				playerFix = x1;
+				objectFix = x2;
+				playerInvolved = true;
+			} else if ( x2.getBody( ).getUserData( ) instanceof Player ) {
+				playerFix = x2;
+				objectFix = x1;
+				playerInvolved = true;
+			}
+			if ( playerInvolved ) {
+				Player player = ( Player ) playerFix.getBody( ).getUserData( );
+				if ( objectFix.getBody( ).getUserData( ) instanceof TiledPlatform ) {
+					TiledPlatform tilePlat = ( TiledPlatform ) objectFix
+							.getBody( ).getUserData( );	
+					if( tilePlat.body.getLinearVelocity( ).x != 0 ) {
+						player.body.getFixtureList( ).get( 1 ).setFriction( 0.7f );
+						tilePlat.body.getFixtureList( ).get( 0 ).setFriction( 1f );
+					} else {
+						player.body.getFixtureList( ).get( 1 ).setFriction( 0f );
+					}
+					Vector2 platformPos = tilePlat.getPosition( );
+					Vector2 playerPos = player.getPosition( );
+					if ( tilePlat.getOneSided( ) ) {
+						if ( platformPos.y > playerPos.y ) {
+							contact.setEnabled( false );
+						}
+					}
+				}
+				if ( objectFix.getBody( ).getUserData( ) instanceof Platform ) {
+					Platform roomPlat = ( Platform ) objectFix
+							.getBody( ).getUserData( );				
+					if( roomPlat.body.getLinearVelocity( ).x != 0 ) {
+						player.body.getFixtureList( ).get( 1 ).setFriction( 0.7f );
+						roomPlat.body.getFixtureList( ).get( 0 ).setFriction( 1f );
+					} else {
+						player.body.getFixtureList( ).get( 1 ).setFriction( 0f );
+					}
+					Vector2 platformPos = roomPlat.getPosition( );
+					Vector2 playerPos = player.getPosition( );
+					if ( roomPlat.getOneSided( ) ) {
+						if ( platformPos.y > playerPos.y ) {
+							contact.setEnabled( false );
+						}
+					}
+				}
+			}
+		}
 	}
 }

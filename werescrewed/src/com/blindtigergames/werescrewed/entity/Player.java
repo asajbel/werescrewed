@@ -262,10 +262,9 @@ public class Player extends Entity {
 			}
 		}
 		terminalVelocityCheck( 6.0f );
-		//the jump doesn't work the first time on dynamic bodies so do it twice
-		if( playerState == PlayerState.Jumping 
-				&& isGrounded( ) ) {
-			jump();
+		// the jump doesn't work the first time on dynamic bodies so do it twice
+		if ( playerState == PlayerState.Jumping && isGrounded( ) ) {
+			jump( );
 		}
 	}
 
@@ -389,12 +388,11 @@ public class Player extends Entity {
 			} else if ( !hitScrew ) {
 				screwJumpTimeout--;
 			}
-		}		
+		}
 		terminalVelocityCheck( 6.0f );
-		//the jump doesn't work the first time on dynamic bodies so do it twice
-		if( playerState == PlayerState.Jumping 
-				&& isGrounded( ) ) {
-			jump();
+		// the jump doesn't work the first time on dynamic bodies so do it twice
+		if ( playerState == PlayerState.Jumping && isGrounded( ) ) {
+			jump( );
 		}
 	}
 
@@ -454,7 +452,7 @@ public class Player extends Entity {
 			body.applyLinearImpulse( new Vector2( MOVEMENT_IMPLUSE, 0.0f ),
 					body.getWorldCenter( ) );
 		}
-			
+
 	}
 
 	/**
@@ -470,7 +468,7 @@ public class Player extends Entity {
 			body.applyLinearImpulse( new Vector2( -MOVEMENT_IMPLUSE, 0.0f ),
 					body.getWorldCenter( ) );
 		}
-				
+
 	}
 
 	/**
@@ -566,16 +564,19 @@ public class Player extends Entity {
 	 * Stops the player
 	 */
 	private void stop( ) {
-		float velocity = body.getLinearVelocity( ).x;
-		if ( velocity != 0.0f ) {
-			if ( velocity < -0.1f )
-				body.applyLinearImpulse( new Vector2( 0.005f, 0.0f ),
-						body.getWorldCenter( ) );
-			else if ( velocity > 0.1f )
-				body.applyLinearImpulse( new Vector2( -0.005f, 0.0f ),
-						body.getWorldCenter( ) );
-			else if ( velocity >= -0.1 && velocity <= 0.1f && velocity != 0.0f )
-				body.setLinearVelocity( 0.0f, body.getLinearVelocity( ).y );
+		if ( body.getFixtureList( ).get( 1 ).getFriction( ) == 0 ) {
+			float velocity = body.getLinearVelocity( ).x;
+			if ( velocity != 0.0f ) {
+				if ( velocity < -0.1f )
+					body.applyLinearImpulse( new Vector2( 0.005f, 0.0f ),
+							body.getWorldCenter( ) );
+				else if ( velocity > 0.1f )
+					body.applyLinearImpulse( new Vector2( -0.005f, 0.0f ),
+							body.getWorldCenter( ) );
+				else if ( velocity >= -0.1 && velocity <= 0.1f
+						&& velocity != 0.0f )
+					body.setLinearVelocity( 0.0f, body.getLinearVelocity( ).y );
+			}
 		}
 	}
 
