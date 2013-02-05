@@ -21,9 +21,9 @@ import com.blindtigergames.werescrewed.util.Util;
 
 public class PuzzleScrew extends Screw {
 	public PuzzleManager puzzleManager;
-	
-	public PuzzleScrew( String name, Vector2 pos, int max,
-			Entity entity, World world ) {
+
+	public PuzzleScrew( String name, Vector2 pos, int max, Entity entity,
+			World world ) {
 		super( name, pos, null );
 		this.world = world;
 		maxDepth = max;
@@ -38,8 +38,8 @@ public class PuzzleScrew extends Screw {
 		screwBodyDef.gravityScale = 0.07f;
 		body = world.createBody( screwBodyDef );
 		CircleShape screwShape = new CircleShape( );
-		screwShape.setRadius( ( sprite.getWidth( ) / 2.0f )
-				* Util.PIXEL_TO_BOX );
+		screwShape
+				.setRadius( ( sprite.getWidth( ) / 2.0f ) * Util.PIXEL_TO_BOX );
 		FixtureDef screwFixture = new FixtureDef( );
 		screwFixture.shape = screwShape;
 		screwFixture.isSensor = true;
@@ -49,13 +49,14 @@ public class PuzzleScrew extends Screw {
 
 		// add radar sensor to screw
 		CircleShape radarShape = new CircleShape( );
-		radarShape.setRadius( sprite.getWidth( ) * 1.25f
-				* Util.PIXEL_TO_BOX );
+		radarShape.setRadius( sprite.getWidth( ) * 1.25f * Util.PIXEL_TO_BOX );
 		FixtureDef radarFixture = new FixtureDef( );
 		radarFixture.shape = radarShape;
 		radarFixture.isSensor = true;
-		radarFixture.filter.categoryBits = Util.CATEGORY_SCREWS; 
-		radarFixture.filter.maskBits = Util.CATEGORY_PLAYER | Util.CATEGORY_SUBPLAYER;
+		radarFixture.filter.categoryBits = Util.CATEGORY_SCREWS;
+		radarFixture.filter.maskBits = Util.CATEGORY_PLAYER
+				| Util.CATEGORY_SUBPLAYER;
+		radarShape.dispose( );
 		body.createFixture( radarFixture );
 
 		// connect the screw to the entity;
@@ -64,7 +65,7 @@ public class PuzzleScrew extends Screw {
 		revoluteJointDef.enableMotor = false;
 		world.createJoint( revoluteJointDef );
 	}
-	
+
 	@Override
 	public void screwLeft( ) {
 		if ( depth > 0 ) {
@@ -72,7 +73,8 @@ public class PuzzleScrew extends Screw {
 			depth--;
 			rotation += 10;
 			screwStep = depth + 5;
-			puzzleManager.runElement( this );
+			puzzleManager
+					.runElement( 1f - ( ( float ) depth / ( ( float ) maxDepth ) ) );
 		}
 	}
 
@@ -83,7 +85,8 @@ public class PuzzleScrew extends Screw {
 			depth++;
 			rotation -= 10;
 			screwStep = depth + 6;
-			puzzleManager.runElement( this );
+			puzzleManager
+			.runElement( 1f - ( ( float ) depth / ( ( float ) maxDepth ) ) );
 		}
 	}
 
@@ -104,6 +107,6 @@ public class PuzzleScrew extends Screw {
 		return maxDepth;
 	}
 
-	//private RevoluteJoint screwToSkel;
+	// private RevoluteJoint screwToSkel;
 
 }

@@ -41,6 +41,8 @@ public class BossScrew extends Screw {
 		FixtureDef screwFixture = new FixtureDef( );
 		screwFixture.shape = screwShape;
 		screwFixture.isSensor = true;
+		screwFixture.filter.categoryBits = Util.CATEGORY_SCREWS; 
+		screwFixture.filter.maskBits = Util.CATEGORY_PLAYER | Util.CATEGORY_SUBPLAYER;
 		body.createFixture( screwFixture );
 		screwShape.dispose( );
 		body.setUserData( this );
@@ -53,25 +55,21 @@ public class BossScrew extends Screw {
 		radarFixture.isSensor = true;
 		radarFixture.filter.categoryBits = Util.CATEGORY_SCREWS; 
 		radarFixture.filter.maskBits = Util.CATEGORY_PLAYER | Util.CATEGORY_SUBPLAYER;
-		this.body.createFixture( radarFixture );
-		this.body.setUserData( this );
+		radarShape.dispose( );
+		body.createFixture( radarFixture );
 
 		// connect the screw to the platform;
 		RevoluteJointDef revoluteJointDef = new RevoluteJointDef( );
 		revoluteJointDef.initialize( this.body, skeleton.body,
 				this.body.getPosition( ) );
-		revoluteJointDef.enableMotor = true;
-		revoluteJointDef.maxMotorTorque = 5000.0f;
-		revoluteJointDef.motorSpeed = 50f;
+		revoluteJointDef.enableMotor = false;
 		platformJoint = ( RevoluteJoint ) world
 				.createJoint( revoluteJointDef );
 
 		revoluteJointDef = new RevoluteJointDef( );
 		revoluteJointDef.initialize( platform.body, skeleton.body,
 				platform.getPosition( ) );
-		revoluteJointDef.enableMotor = true;
-		revoluteJointDef.maxMotorTorque = 5000.0f;
-		revoluteJointDef.motorSpeed = 50f;
+		revoluteJointDef.enableMotor = false;
 		screwToSkel = ( RevoluteJoint ) world.createJoint( revoluteJointDef );
 	}
 

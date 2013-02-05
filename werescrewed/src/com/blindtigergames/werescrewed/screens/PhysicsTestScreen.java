@@ -22,6 +22,7 @@ import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityManager;
 import com.blindtigergames.werescrewed.entity.Player;
 import com.blindtigergames.werescrewed.entity.Skeleton;
+import com.blindtigergames.werescrewed.entity.mover.LerpMover;
 import com.blindtigergames.werescrewed.entity.mover.PistonMover;
 import com.blindtigergames.werescrewed.entity.mover.PuzzleType;
 import com.blindtigergames.werescrewed.entity.mover.SlidingMotorMover;
@@ -145,7 +146,11 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		tiledPlat.addScrew( rightPlatScrew );
 
 		puzzleScrew.puzzleManager.addEntity( movingTP );
-		puzzleScrew.puzzleManager.addJointDef( jointDef );
+		LerpMover lm = new LerpMover(new Vector2(movingTP.body.getPosition( ).x, 
+				movingTP.body.getPosition( ).y), 
+				new Vector2(movingTP.body.getPosition( ).x+1.75f, 
+						movingTP.body.getPosition( ).y), 1f);
+		puzzleScrew.puzzleManager.addMover( lm );
 
 		float x1 = 1.75f;
 		float x2 = 2.75f;
@@ -190,10 +195,10 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 	 * Initializes Moving Platform Settings, and adds it to the EntityManager
 	 */
 	private void initMovingPlatform( ) {
-		movingTP = platBuilder.setPosition( 100.0f, 70.0f )
-				.setDimensions( 10, 1 ).setTexture( testTexture )
-				.setName( "movingTP" ).setResitituion( 0.0f )
-				.buildTilePlatform( );
+		movingTP = platBuilder.setPosition( 0.0f, 120.0f )
+			.setDimensions( 10, 1 ).setTexture( testTexture )
+			.setName( "movingTP" ).setResitituion( 0.0f )
+			.buildTilePlatform( );
 		movingTP.body.setType( BodyType.KinematicBody );
 		entityManager.addEntity( movingTP.name, movingTP );
 	}

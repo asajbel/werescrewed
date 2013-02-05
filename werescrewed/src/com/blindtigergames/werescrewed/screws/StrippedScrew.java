@@ -53,6 +53,7 @@ public class StrippedScrew extends Screw {
 		radarFixture.isSensor = true;
 		radarFixture.filter.categoryBits = Util.CATEGORY_SCREWS; 
 		radarFixture.filter.maskBits = Util.CATEGORY_PLAYER | Util.CATEGORY_SUBPLAYER;
+		radarShape.dispose( );
 		body.createFixture( radarFixture );
 
 		// connect the screw to the entity

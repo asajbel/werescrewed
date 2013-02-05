@@ -24,7 +24,7 @@ public class LerpMover implements IMover {
 		} else if ( alpha <= 0 ) {
 			speed *= -1;
 		}
-		Vector2 temp = beginningPoint.cpy( );
+		Vector2 temp = new Vector2( beginningPoint.x, beginningPoint.y);
 		beginningPoint.lerp( endPoint, alpha );
 		body.setTransform( beginningPoint, 0.0f );
 		beginningPoint = temp;
@@ -35,7 +35,7 @@ public class LerpMover implements IMover {
 	}
 	
 	public void runPuzzleMovement( float screwVal, Body body ) {
-		Vector2 temp = beginningPoint.cpy( );
+		Vector2 temp = new Vector2( beginningPoint.x, beginningPoint.y);
 		beginningPoint.lerp( endPoint, screwVal );
 		body.setTransform( beginningPoint, 0.0f );
 		beginningPoint = temp;
