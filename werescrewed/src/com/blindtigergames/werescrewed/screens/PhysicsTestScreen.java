@@ -88,6 +88,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		platBuilder = new PlatformBuilder( world );
 		testTexture = new Texture( Gdx.files.internal( "data/rletter.png" ) );
 
+		System.out.println( " after worl " );
 		// Initialize camera
 		initCamera( );
 
@@ -95,9 +96,10 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		contactListener = new MyContactListener( );
 		world.setContactListener( contactListener );
 
+		System.out.println( " after cam " );
 		// Initialize platforms
 		initTiledPlatforms( );
-
+		System.out.println( " after plats " );
 		// Initialize screws
 		initStructureScrews( );
 		initPuzzleScrews( );
@@ -109,9 +111,9 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		// Otherwise input handler breaks
 		player1 = new Player( "player1", world, new Vector2( 1.0f, 1.0f ) );
 		player2 = new Player( "player2", world, new Vector2( 1.5f, 1.5f ) );
+		System.out.println( " players" );
 
-
-
+		System.out.println( "after joints " );
 		// Add screws
 
 		rootSkeleton.addSkeleton( skeleton );
@@ -123,7 +125,6 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		new FPSLogger( );
 
 	}
-
 
 	/**
 	 * Initializes camera settings
@@ -179,12 +180,12 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		tiledPlat.addScrew( leftPlatScrew );
 		tiledPlat.addScrew( rightPlatScrew );
 	}
-	
+
 	/**
 	 * Initializes settings for puzzle screws
 	 */
 	private void initPuzzleScrews( ) {
-		
+
 		Vector2 axis = new Vector2( 1, 0 );
 		PrismaticJointDef jointDef = new PrismaticJointDef( );
 		jointDef.initialize( movingTP.body, skeleton.body,
