@@ -31,7 +31,8 @@ public class Entity
 		name = "I AM ERROR.";
 	}
 	
-	public Entity(String n, EntityDef d, World w, Vector2 pos, float rot, Vector2 sca)
+	public Entity(String n, EntityDef d, World w, Vector2 pos,
+			float rot, Vector2 sca)
 	{
 		this();
 		name = n;
@@ -60,7 +61,6 @@ public class Entity
 		setPosition(pos);
 	}
 	
-	
 	public void setPosition(float x, float y){
 		if (body != null){
 			body.setTransform(x, y, body.getAngle());
@@ -88,7 +88,6 @@ public class Entity
     	if (sprite != null)
     		sprite.draw(batch);
     }
-    
 
 	public void update()
 	{
@@ -125,5 +124,15 @@ public class Entity
 			}
 			setPosition(x,y);
 		}
+	}
+	
+	/**
+	 * Change the sprite to be displayed on the entity
+	 * 
+	 * @param newSprite
+	 * 		The new sprite that will be displayed on top of the entity
+	 */
+	public void changeSprite(Sprite newSprite){
+		this.sprite = newSprite;
 	}
 }

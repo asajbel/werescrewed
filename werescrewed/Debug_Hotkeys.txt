@@ -15,3 +15,5 @@ Camera
 'Y' - stops rotating platforms
 
 'P' - exit game
+
+'B' - swap sprite
