@@ -89,7 +89,8 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		entityManager.addSkeleton( rootSkeleton.name, rootSkeleton );
 		platBuilder = new PlatformBuilder( world );
 		testTexture = new Texture( Gdx.files.internal( "data/rletter.png" ) );
-
+		
+		System.out.println( " after worl " );
 		// Initialize camera
 		initCamera( );
 
@@ -99,12 +100,13 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		// controllerListener = new MyControllerListener( );
 		// Controllers.addListener( controllerListener );
 
+		System.out.println( " after cam " );
 		// Initialize platforms
 		initTiledPlatform( );
 		initMovingPlatform( );
 		initGround( );
 		buildMoverPlatforms( );
-
+		System.out.println( " after plats "); 
 		// Initialize screws
 		StructureScrew leftPlatScrew = new StructureScrew( "", new Vector2(
 				tiledPlat.body.getPosition( ).x - 0.5f,
@@ -127,6 +129,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		player1 = new Player( "player1", world, new Vector2( 1.0f, 1.0f ) );
 		player2 = new Player( "player2", world, new Vector2( 1.5f, 1.5f ) );
 
+		System.out.println( " players" );
 		// entityManager.removeEntity( movingTP.name, movingTP );
 
 		Vector2 axis = new Vector2( 1, 0 );
@@ -139,6 +142,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		jointDef.upperTranslation = 3.0f;
 		jointDef.motorSpeed = 7.0f;
 
+		System.out.println( "after joints " );
 		// Add screws
 		entityManager.addEntity( leftPlatScrew.name, leftPlatScrew );
 		entityManager.addEntity( rightPlatScrew.name, rightPlatScrew );

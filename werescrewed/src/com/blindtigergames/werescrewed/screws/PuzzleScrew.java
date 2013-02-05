@@ -44,7 +44,6 @@ public class PuzzleScrew extends Screw {
 		screwFixture.shape = screwShape;
 		screwFixture.isSensor = true;
 		body.createFixture( screwFixture );
-		screwShape.dispose( );
 		body.setUserData( this );
 
 		// add radar sensor to screw
@@ -56,9 +55,9 @@ public class PuzzleScrew extends Screw {
 		radarFixture.filter.categoryBits = Util.CATEGORY_SCREWS;
 		radarFixture.filter.maskBits = Util.CATEGORY_PLAYER
 				| Util.CATEGORY_SUBPLAYER;
-		radarShape.dispose( );
 		body.createFixture( radarFixture );
-
+		
+		
 		// connect the screw to the entity;
 		RevoluteJointDef revoluteJointDef = new RevoluteJointDef( );
 		revoluteJointDef.initialize( body, entity.body, body.getPosition( ) );
