@@ -65,10 +65,8 @@ public class MyContactListener implements ContactListener {
 						if ( p1 == null || p1 == player ) {
 							p1 = player;
 							NUM_PLAYER1_CONTACTS++;
-							Gdx.app.log( "contact", "begin contact p1" );
 						} else if ( p1 != player ) {
 							NUM_PLAYER2_CONTACTS++;
-							Gdx.app.log( "contact", "begin contact p2" );
 						}
 						player.setGrounded( true );
 					} else if ( objectFix.getBody( ).getUserData( ) instanceof Screw ) {
@@ -120,13 +118,11 @@ public class MyContactListener implements ContactListener {
 							p1 = player;
 							NUM_PLAYER1_CONTACTS--;
 							if ( NUM_PLAYER1_CONTACTS <= 0 ) {
-								Gdx.app.log( "contact", "end contact p1" );
 								player.setGrounded( false );
 							}
 						} else if ( p1 != player ) {
 							NUM_PLAYER2_CONTACTS--;
 							if ( NUM_PLAYER2_CONTACTS <= 0 ) {
-								Gdx.app.log( "contact", "end contact p2" );
 								player.setGrounded( false );
 							}
 						}
