@@ -22,6 +22,7 @@ import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityManager;
 import com.blindtigergames.werescrewed.entity.Player;
 import com.blindtigergames.werescrewed.entity.Skeleton;
+import com.blindtigergames.werescrewed.entity.mover.LerpMover;
 import com.blindtigergames.werescrewed.entity.mover.PistonMover;
 import com.blindtigergames.werescrewed.entity.mover.PuzzleType;
 import com.blindtigergames.werescrewed.entity.mover.SlidingMotorMover;
@@ -104,7 +105,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		tiledPlat = platBuilder.setPosition( 700.0f, 100.0f )
 				.setDimensions( 10, 1 ).setTexture( testTexture )
 				.setName( "tp" ).setResitituion( 0.0f ).buildTilePlatform( );
-		movingTP = platBuilder.setPosition( 100.0f, 70.0f )
+		movingTP = platBuilder.setPosition( 70.0f, 120.0f )
 				.setDimensions( 10, 1 ).setTexture( testTexture )
 				.setName( "movingTP" ).setResitituion( 0.0f )
 				.buildTilePlatform( );
@@ -154,7 +155,11 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		jointDef.motorSpeed = 7.0f;
 
 		puzzleScrew.puzzleManager.addEntity( movingTP );
-		puzzleScrew.puzzleManager.addJointDef( jointDef );
+		LerpMover lm = new LerpMover(new Vector2(movingTP.body.getPosition( ).x-1, 
+				movingTP.body.getPosition( ).y), 
+				new Vector2(movingTP.body.getPosition( ).x+1, 
+						movingTP.body.getPosition( ).y), 1f);
+		puzzleScrew.puzzleManager.addMover( lm );
 
 		float x1 = 1.75f;
 		float x2 = 2.75f;
