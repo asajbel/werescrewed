@@ -153,7 +153,6 @@ public class Player extends Entity {
 			controllerDebug = false;
 		} else
 			controllerDebug = true;
-
 	}
 
 	/**
@@ -179,6 +178,7 @@ public class Player extends Entity {
 					screwJumpTimeout = 7;
 					jump( );
 				} else if ( isGrounded( ) ) {
+					playerState = PlayerState.Jumping;
 					jump( );
 				}
 				jumpPressedKeyboard = true;
@@ -262,6 +262,11 @@ public class Player extends Entity {
 			}
 		}
 		terminalVelocityCheck( 6.0f );
+		//the jump doesn't work the first time on dynamic bodies so do it twice
+		if( playerState == PlayerState.Jumping 
+				&& isGrounded( ) ) {
+			jump();
+		}
 	}
 
 	/**
@@ -384,8 +389,13 @@ public class Player extends Entity {
 			} else if ( !hitScrew ) {
 				screwJumpTimeout--;
 			}
-		}
+		}		
 		terminalVelocityCheck( 6.0f );
+		//the jump doesn't work the first time on dynamic bodies so do it twice
+		if( playerState == PlayerState.Jumping 
+				&& isGrounded( ) ) {
+			jump();
+		}
 	}
 
 	/**
@@ -468,7 +478,6 @@ public class Player extends Entity {
 		body.setLinearVelocity( new Vector2( body.getLinearVelocity( ).x, 0.0f ) );
 		body.applyLinearImpulse( new Vector2( 0.0f, JUMP_IMPLUSE ),
 				body.getWorldCenter( ) );
-		setGrounded( false );
 	}
 
 	/**
@@ -564,7 +573,7 @@ public class Player extends Entity {
 				body.applyLinearImpulse( new Vector2( -0.005f, 0.0f ),
 						body.getWorldCenter( ) );
 			else if ( velocity >= -0.1 && velocity <= 0.1f && velocity != 0.0f )
-				body.setLinearVelocity( 0.0f, 0.0f );
+				body.setLinearVelocity( 0.0f, body.getLinearVelocity( ).y );
 		}
 	}
 
@@ -582,7 +591,7 @@ public class Player extends Entity {
 				body.applyLinearImpulse( new Vector2( -0.001f, 0.0f ),
 						body.getWorldCenter( ) );
 			else if ( velocity >= -0.1 && velocity <= 0.1f && velocity != 0.0f )
-				body.setLinearVelocity( 0.0f, 0.0f );
+				body.setLinearVelocity( 0.0f, body.getLinearVelocity( ).y );
 		}
 	}
 
