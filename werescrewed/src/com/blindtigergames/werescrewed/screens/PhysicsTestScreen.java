@@ -78,8 +78,6 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 	 * physics-related mechanics
 	 */
 	public PhysicsTestScreen( ) {
-		System.out.println( "Physics Test Screen starting" );
-
 		// Initialize world and variables to allow adding entities
 		batch = new SpriteBatch( );
 		world = new World( new Vector2( 0, -45 ), true );
@@ -96,16 +94,79 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		// Initialize listeners
 		contactListener = new MyContactListener( );
 		world.setContactListener( contactListener );
-		// controllerListener = new MyControllerListener( );
-		// Controllers.addListener( controllerListener );
 
 		// Initialize platforms
-		initTiledPlatform( );
-		initMovingPlatform( );
-		initGround( );
-		buildMoverPlatforms( );
+		initTiledPlatforms( );
 
 		// Initialize screws
+		initStructureScrews( );
+		initPuzzleScrews( );
+		initClimbingScrews( );
+
+		// Add players
+		// First player has to have the name "player1"
+		// Second player has to have the name "player2"
+		// Otherwise input handler breaks
+		player1 = new Player( "player1", world, new Vector2( 1.0f, 1.0f ) );
+		player2 = new Player( "player2", world, new Vector2( 1.5f, 1.5f ) );
+
+
+
+		// Add screws
+
+		rootSkeleton.addSkeleton( skeleton );
+
+		debugRenderer = new SBox2DDebugRenderer( Util.BOX_TO_PIXEL );
+		debugRenderer.setDrawJoints( false );
+		Gdx.app.setLogLevel( Application.LOG_DEBUG );
+
+		new FPSLogger( );
+
+	}
+
+
+	/**
+	 * Initializes camera settings
+	 */
+	private void initCamera( ) {
+		float zoom = 1.0f;
+		float width = Gdx.graphics.getWidth( ) / zoom;
+		float height = Gdx.graphics.getHeight( ) / zoom;
+		cam = new Camera( width, height );
+	}
+
+	/**
+	 * Initializes tiled platforms' settings, and adds them to the skeleton
+	 */
+	private void initTiledPlatforms( ) {
+		// Tiled Platform
+		tiledPlat = platBuilder.setPosition( 700.0f, 100.0f )
+				.setDimensions( 10, 1 ).setTexture( testTexture )
+				.setName( "tp" ).setResitituion( 0.0f ).buildTilePlatform( );
+		tiledPlat.body.setType( BodyType.DynamicBody );
+		tiledPlat.body.setFixedRotation( false );
+		skeleton.addPlatform( tiledPlat );
+
+		// Moving platform
+		movingTP = platBuilder.setPosition( 0.0f, 120.0f )
+				.setDimensions( 10, 1 ).setTexture( testTexture )
+				.setName( "movingTP" ).setResitituion( 0.0f )
+				.buildTilePlatform( );
+		movingTP.body.setType( BodyType.KinematicBody );
+		buildMoverPlatforms( );
+
+		// Ground
+		ground = platBuilder.setPosition( 0.0f, 0.0f ).setName( "ground" )
+				.setDimensions( 200, 1 ).setTexture( testTexture )
+				.setResitituion( 0.0f ).buildTilePlatform( );
+		skeleton.addPlatformFixed( ground );
+	}
+
+	/**
+	 * Initialize the platform screws' settings and add them to the entity
+	 * manager and skeleton
+	 */
+	private void initStructureScrews( ) {
 		StructureScrew leftPlatScrew = new StructureScrew( "", new Vector2(
 				tiledPlat.body.getPosition( ).x - 0.5f,
 				tiledPlat.body.getPosition( ).y ), 50, tiledPlat, skeleton,
@@ -115,20 +176,15 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 				tiledPlat.body.getPosition( ).x + 0.5f,
 				tiledPlat.body.getPosition( ).y ), 50, tiledPlat, skeleton,
 				world );
-
-		puzzleScrew = new PuzzleScrew( "001", new Vector2( 0.0f, 0.2f ), 50,
-				skeleton, world );
-		climbingScrews = new ArrayList< StrippedScrew >( );
-
-		// Add players
-		// First player has to have the name "player1"
-		// Second player has to have the name "player2"
-		// Otherwise input handler breaks
-		player1 = new Player( "player1", world, new Vector2( 1.0f, 1.0f ) );
-		player2 = new Player( "player2", world, new Vector2( 1.5f, 1.5f ) );
-
-		// entityManager.removeEntity( movingTP.name, movingTP );
-
+		tiledPlat.addScrew( leftPlatScrew );
+		tiledPlat.addScrew( rightPlatScrew );
+	}
+	
+	/**
+	 * Initializes settings for puzzle screws
+	 */
+	private void initPuzzleScrews( ) {
+		
 		Vector2 axis = new Vector2( 1, 0 );
 		PrismaticJointDef jointDef = new PrismaticJointDef( );
 		jointDef.initialize( movingTP.body, skeleton.body,
@@ -138,20 +194,22 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		jointDef.lowerTranslation = -2.5f;
 		jointDef.upperTranslation = 3.0f;
 		jointDef.motorSpeed = 7.0f;
-
-		// Add screws
-		entityManager.addEntity( leftPlatScrew.name, leftPlatScrew );
-		entityManager.addEntity( rightPlatScrew.name, rightPlatScrew );
-		tiledPlat.addScrew( leftPlatScrew );
-		tiledPlat.addScrew( rightPlatScrew );
-
+		puzzleScrew = new PuzzleScrew( "001", new Vector2( 0.0f, 0.2f ), 50,
+				skeleton, world );
 		puzzleScrew.puzzleManager.addEntity( movingTP );
-		LerpMover lm = new LerpMover(new Vector2(movingTP.body.getPosition( ).x, 
-				movingTP.body.getPosition( ).y), 
-				new Vector2(movingTP.body.getPosition( ).x+1.75f, 
-						movingTP.body.getPosition( ).y), 1f);
+		LerpMover lm = new LerpMover(
+				new Vector2( movingTP.body.getPosition( ).x,
+						movingTP.body.getPosition( ).y ), new Vector2(
+						movingTP.body.getPosition( ).x + 1.75f,
+						movingTP.body.getPosition( ).y ), 1f );
 		puzzleScrew.puzzleManager.addMover( lm );
+	}
 
+	/**
+	 * Initializes stripped screws for climbing, and adds them to the skeleton.
+	 */
+	private void initClimbingScrews( ) {
+		climbingScrews = new ArrayList< StrippedScrew >( );
 		float x1 = 1.75f;
 		float x2 = 2.75f;
 		float y1 = 0.6f;
@@ -170,61 +228,6 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		for ( StrippedScrew climbingScrew : climbingScrews ) {
 			skeleton.addStrippedScrew( climbingScrew );
 		}
-
-		/*
-		 * Comment if you don't want Stew's moving platforms in your way!
-		 */
-		rootSkeleton.addSkeleton( skeleton );
-
-		debugRenderer = new SBox2DDebugRenderer( Util.BOX_TO_PIXEL );
-		debugRenderer.setDrawJoints( false );
-		Gdx.app.setLogLevel( Application.LOG_DEBUG );
-
-		new FPSLogger( );
-
-	}
-
-	private void initGround( ) {
-		ground = platBuilder.setPosition( 0.0f, 0.0f ).setName( "ground" )
-				.setDimensions( 200, 1 ).setTexture( testTexture )
-				.setResitituion( 0.0f ).buildTilePlatform( );
-		skeleton.addPlatformFixed( ground );
-	}
-
-	/**
-	 * Initializes Moving Platform Settings, and adds it to the EntityManager
-	 */
-	private void initMovingPlatform( ) {
-		movingTP = platBuilder.setPosition( 0.0f, 120.0f )
-			.setDimensions( 10, 1 ).setTexture( testTexture )
-			.setName( "movingTP" ).setResitituion( 0.0f )
-			.buildTilePlatform( );
-		movingTP.body.setType( BodyType.KinematicBody );
-		entityManager.addEntity( movingTP.name, movingTP );
-	}
-
-	/**
-	 * Initializes Tiled Platform settings, and adds it to the EntityManager and
-	 * Skeleton
-	 */
-	private void initTiledPlatform( ) {
-		tiledPlat = platBuilder.setPosition( 700.0f, 100.0f )
-				.setDimensions( 10, 1 ).setTexture( testTexture )
-				.setName( "tp" ).setResitituion( 0.0f ).buildTilePlatform( );
-		tiledPlat.body.setType( BodyType.DynamicBody );
-		tiledPlat.body.setFixedRotation( false );
-		entityManager.addEntity( tiledPlat.name, tiledPlat );
-		skeleton.addPlatform( tiledPlat );
-	}
-
-	/**
-	 * Initializes camera settings
-	 */
-	private void initCamera( ) {
-		float zoom = 1.0f;
-		float width = Gdx.graphics.getWidth( ) / zoom;
-		float height = Gdx.graphics.getHeight( ) / zoom;
-		cam = new Camera( width, height );
 	}
 
 	void buildMoverPlatforms( ) {
@@ -347,7 +350,6 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 
 	@Override
 	public void show( ) {
-
 	}
 
 	@Override
