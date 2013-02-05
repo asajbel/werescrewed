@@ -7,8 +7,8 @@ public class Main {
 	public static void main(String[] args) {
 		LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
 		cfg.title = "WereScrewed";
-		cfg.useGL20 = false; //Compatibility option for OpenGL 1.0
-		//cfg.useGL20 = true;
+		//cfg.useGL20 = false; //Compatibility option for OpenGL 1.0
+		cfg.useGL20 = true;
 		cfg.width = 1280;
 		cfg.height = 720;
 		
