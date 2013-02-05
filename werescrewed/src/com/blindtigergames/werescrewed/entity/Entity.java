@@ -1,19 +1,24 @@
 package com.blindtigergames.werescrewed.entity;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.blindtigergames.werescrewed.entity.mover.IMover;
-import com.blindtigergames.werescrewed.screens.GameScreen;
+import com.blindtigergames.werescrewed.util.Util;
 
-//an Entity is anything that can exist, it has a position and a texture
-public class Entity
-{
+/**
+ * Anything that can exist. Contains a physics body, and a sprite which may or
+ * may not be animated.
+ * 
+ * @author Blind Tiger Games
+ * 
+ */
+public class Entity {
 	public String name;
 	public EntityDef type;
 	public Sprite sprite;
@@ -21,17 +26,39 @@ public class Entity
 	public Body body;
 	protected World world;
 	public IMover mover;
-	
-	public Entity(){
-		type = null;
-		sprite = null;
-		body = null;
-		world = null;
-		offset = new Vector2(0.0f,0.0f);
-		name = "I AM ERROR.";
+	private boolean solid;
+
+	/**
+	 * Create entity by definition
+	 * 
+	 * @param name
+	 * @param type
+	 * @param world
+	 *            in which the entity exists
+	 * @param pos
+	 *            ition of the entity in the world
+	 * @param rot
+	 *            ation of the entity
+	 * @param scale
+	 *            of the entity
+	 * @param texture
+	 *            (null if defined elsewhere)
+	 * @param solid
+	 *            boolean determining whether or not the player can stand on it
+	 */
+	public Entity( String name, EntityDef type, World world, Vector2 pos,
+			float rot, Vector2 scale, Texture texture, boolean solid ) {
+		this.name = name;
+		this.type = type;
+		this.world = world;
+		this.solid = solid;
+		this.offset = new Vector2( 0.0f, 0.0f );
+		this.sprite = constructSprite( texture );
+		this.body = constructBody( );
+		setPosition( pos );
 	}
 	
-	public Entity(String n, EntityDef d, World w, Vector2 pos,
+	/*public Entity(String n, EntityDef d, World w, Vector2 pos,
 			float rot, Vector2 sca)
 	{
 		this();
@@ -40,25 +67,59 @@ public class Entity
 		world = w;
 		constructSprite();
 		constructBody(pos.x, pos.y, sca.x, sca.y);
-	}
-	
-	public Entity(String n, Sprite spr, Body bod)
-	{
-		this();
-		name = n;
-		sprite = spr;
-		body = bod;
-		if (bod != null){
-			world = bod.getWorld();
-			sprite.setScale(GameScreen.PIXEL_TO_BOX);
-		}
+	}*/
 
+	/**
+	 * Create entity by body. Debug constructor: Should be removed eventually.
+	 * 
+	 * @param name
+	 * @param pos
+	 *            ition of the entity in the world
+	 * @param texture
+	 *            (null if defined elsewhere)
+	 * @param body
+	 *            defined body of the entity
+	 * @param solid
+	 *            boolean determining whether or not the player can stand on it
+	 */
+	public Entity( String name, Vector2 pos, Texture texture, Body body,
+			boolean solid ) {
+		this.name = name;
+		this.solid = solid;
+		this.offset = new Vector2( 0.0f, 0.0f );
+		this.sprite = constructSprite( texture );
+		this.body = body;
+		if ( body != null ) {
+			world = body.getWorld( );
+			sprite.setScale( Util.PIXEL_TO_BOX );
+		}
+		setPosition( pos );
 	}
-	
-	public Entity(String n, Vector2 pos, Texture tex, Body bod)
-	{
-		this(n, tex == null ? null: generateSprite(tex), bod);
-		setPosition(pos);
+
+	public void setPosition( Vector2 pos ) {
+		if ( body != null ) {
+			body.setTransform( pos.x, pos.y, body.getAngle( ) );
+		} else if ( sprite != null ) {
+			sprite.setPosition( pos.x, pos.y );
+		}
+	}
+
+	public Vector2 getPosition( ) {
+		return body.getPosition( );
+	}
+
+	public void move( Vector2 vector ) {
+		Vector2 pos = body.getPosition( ).add( vector );
+		setPosition( pos );
+	}
+
+	public void draw( SpriteBatch batch ) {
+		if ( sprite != null ) {
+			Vector2 bodyPos = body.getPosition( ).mul( Util.BOX_TO_PIXEL );
+			sprite.setPosition( bodyPos.x - offset.x, bodyPos.y - offset.y );
+			sprite.setRotation( MathUtils.radiansToDegrees * body.getAngle( ) );
+			sprite.draw( batch );
+		}
 	}
 	
 	public void setPosition(float x, float y){
@@ -68,13 +129,63 @@ public class Entity
 			sprite.setPosition(x, y);
 		}
 	}
-	
-	public void setPosition(Vector2 pos){
-		setPosition(pos.x,pos.y);
+
+	public void update( float deltaTime ) {
+		if ( body != null && mover != null ) {
+			mover.move( deltaTime, body );
+		}
 	}
-	
-	public Vector2 getPosition(){
-		return body.getPosition();
+
+	protected String generateName( ) {
+		return type.getName( );
+	}
+
+	/**
+	 * Builds a sprite from a texture. If the texture is null, it attempts to
+	 * load one from the XML definitions
+	 * 
+	 * @param texture from which a sprite can be generated, or null, if loading 
+	 * @return the loaded/generated sprite, or null if neither applies
+	 */
+	protected Sprite constructSprite( Texture texture ) {
+		// I have plans to make this a return value
+		Sprite sprite;
+		Vector2 origin;
+		boolean loadTex;
+		boolean nullTex;
+
+		// Check if the passed texture is null
+		nullTex = texture == null;
+
+		// Check if we're loading texture
+		loadTex = ( nullTex && type != null && type.texture != null );
+
+		if ( loadTex ) {
+			// If we are, load it up
+			texture = type.texture;
+		} else if ( nullTex ) {
+			// If we aren't, but the texture is still null, return null before
+			// error occurs at Sprite constructor (can't pass in null)
+			return null;
+		}
+
+		// Either the passed in or loaded texture defines a new Sprite
+		sprite = new Sprite( texture );
+
+		if ( loadTex ) {
+			// Definitions for loaded sprites
+			origin = new Vector2( type.origin.x, type.origin.y );
+			sprite.setScale( type.spriteScale.x, type.spriteScale.y );
+		} else {
+			// Definitions for non-loaded sprites
+			origin = new Vector2( sprite.getWidth( ) / 2,
+					sprite.getHeight( ) / 2 );
+
+			// Arbitrary offset :(
+			this.offset.set( sprite.getWidth( ) / 2, sprite.getHeight( ) / 2 );
+		}
+		sprite.setOrigin( origin.x, origin.y );
+		return sprite;
 	}
 	
     public void Move(Vector2 vector)
@@ -82,49 +193,53 @@ public class Entity
     	Vector2 pos = body.getPosition().add(vector);
     	setPosition(pos);
     }
-    
-    public void draw(SpriteBatch batch)
-    {
-    	if (sprite != null)
-    		sprite.draw(batch);
-    }
 
-	public void update()
-	{
-		if (body != null && sprite != null){
-			Vector2 bodyPos = body.getPosition();
-			Vector2 spritePos = bodyPos.mul(GameScreen.BOX_TO_PIXEL).add(offset);
-			sprite.setPosition(spritePos.x, spritePos.y);
-			if(mover != null)
-				mover.move(body);
-		}
-	}
 
-	protected String generateName(){
-		return type.name;
-	}
-	
-	protected static Sprite generateSprite(Texture tex){
-		Sprite out = new Sprite(tex);
-		out.setOrigin(tex.getWidth()/2, tex.getHeight()/2);
-		return out;
-	}
-	
-	protected void constructSprite(){
-		if (type != null && type.texture != null)
-			sprite = new Sprite(type.texture);
-	}
-	
-	protected void constructBody( float x, float y, float width, float height ){
-		if (type != null){
-			body = world.createBody(type.bodyDef);
-			for (FixtureDef fix : type.fixtureDefs){
-				body.createFixture(fix);
-				Gdx.app.log( "Entity", fix.toString());
+	/**
+	 * Builds the body associated with the entity's type.
+	 * 
+	 * @return the loaded body, or null, if type is null
+	 */
+	protected Body constructBody( ) {
+		Body body;
+		if ( type != null ) {
+			body = world.createBody( type.bodyDef );
+			body.setUserData( this );
+			for ( FixtureDef fix : type.fixtureDefs ) {
+				body.createFixture( fix );
 			}
-			setPosition(x,y);
+		} else {
+			return null;
 		}
+		return body;
 	}
+
+	/**
+	 * Set the mover of this entity!
+	 * 
+	 * @param mover
+	 */
+	public void setMover( IMover mover ) {
+		this.mover = mover;
+	}
+
+	public boolean isSolid( ) {
+		return this.solid;
+	}
+
+	public void setSolid( boolean solid ) {
+		this.solid = solid;
+	}
+
+	/**
+	 * Sets body awake, used in
+	 * 
+	 * @param solid
+	 */
+	public void setAwake( ) {
+		body.setAwake( true );
+	}
+
 	
 	/**
 	 * Change the sprite to be displayed on the entity

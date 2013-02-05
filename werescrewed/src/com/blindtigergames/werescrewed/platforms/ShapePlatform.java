@@ -3,11 +3,11 @@ package com.blindtigergames.werescrewed.platforms;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
-import com.blindtigergames.werescrewed.screens.GameScreen;
+import com.blindtigergames.werescrewed.util.Util;
 
 /**
  * @param name
@@ -58,15 +58,14 @@ public class ShapePlatform extends Platform {
 	public void constructRhombus( Vector2 pos, float width, float height,
 			boolean flip, float scale ) {
 
-		BodyDef groundBodyDef = new BodyDef( );
-		groundBodyDef.type = BodyType.KinematicBody;
-		groundBodyDef.position.set( new Vector2( pos.x, pos.y ) );
-		body = world.createBody( groundBodyDef );
+		BodyDef bodyDef = new BodyDef( );
+		bodyDef.type = BodyType.DynamicBody;
+		bodyDef.position.set( new Vector2( pos.x * Util.PIXEL_TO_BOX, pos.y
+				* Util.PIXEL_TO_BOX ) );
+		body = world.createBody( bodyDef );
 
-		float horizontal = width * tileConstant * 2 * GameScreen.PIXEL_TO_BOX
-				* scale;
-		float vertical = height * tileConstant * 2 * GameScreen.PIXEL_TO_BOX
-				* scale;
+		float horizontal = width * tileConstant * 2 * Util.PIXEL_TO_BOX * scale;
+		float vertical = height * tileConstant * 2 * Util.PIXEL_TO_BOX * scale;
 		Vector2[ ] vertices = new Vector2[ 4 ];
 		Vector2 point1 = new Vector2( );
 		Vector2 point2 = new Vector2( horizontal, 0.0f );
@@ -91,26 +90,22 @@ public class ShapePlatform extends Platform {
 
 		FixtureDef platformFixtureDef = new FixtureDef( );
 		platformFixtureDef.shape = polygon;
-		platformFixtureDef.density = 1.9f;
-		platformFixtureDef.friction = 0.5f;
-		platformFixtureDef.restitution = 0.0f;
-		body.setGravityScale( .1f );
 		body.createFixture( platformFixtureDef );
+
+		polygon.dispose( );
 
 	}
 
 	public void constructCross( Vector2 pos, float innerWidth,
 			float innerHeight, float outerWidth, float outerHeight, float scale ) {
-		BodyDef groundBodyDef = new BodyDef( );
-		groundBodyDef.type = BodyType.KinematicBody;
-		groundBodyDef.position.set( new Vector2( pos.x, pos.y ) );
-		body = world.createBody( groundBodyDef );
-		body.setGravityScale( .1f );
+		BodyDef bodyDef = new BodyDef( );
+		bodyDef.type = BodyType.DynamicBody;
+		bodyDef.position.set( pos.x * Util.PIXEL_TO_BOX, pos.y
+				* Util.PIXEL_TO_BOX );
+		body = world.createBody( bodyDef );
 
 		PolygonShape ps = new PolygonShape( );
 		FixtureDef fd = new FixtureDef( );
-		fd.density = 1f;
-		fd.restitution = 0.0f;
 
 		// Smallest width/height should be 1
 		// if ( width < 2.0f )
@@ -118,10 +113,10 @@ public class ShapePlatform extends Platform {
 		// if ( height < 2.0f )
 		// height = 3.0f;
 
-		float iW = innerWidth * tileConstant * GameScreen.PIXEL_TO_BOX * scale;
-		float iH = innerHeight * tileConstant * GameScreen.PIXEL_TO_BOX * scale;
-		float oW = outerWidth * tileConstant * GameScreen.PIXEL_TO_BOX * scale;
-		float oH = outerHeight * tileConstant * GameScreen.PIXEL_TO_BOX * scale;
+		float iW = innerWidth * tileConstant * Util.PIXEL_TO_BOX * scale;
+		float iH = innerHeight * tileConstant * Util.PIXEL_TO_BOX * scale;
+		float oW = outerWidth * tileConstant * Util.PIXEL_TO_BOX * scale;
+		float oH = outerHeight * tileConstant * Util.PIXEL_TO_BOX * scale;
 
 		Vector2 z = new Vector2( );
 		Vector2 p1 = new Vector2( -( iW + oW ), -( iH + oH ) );
@@ -149,20 +144,20 @@ public class ShapePlatform extends Platform {
 		fd.shape = ps;
 		body.createFixture( fd );
 
+		ps.dispose( );
+
 	}
 
 	public void constructPlus( Vector2 pos, float width, float height,
 			float thickX, float thickY ) {
-		BodyDef groundBodyDef = new BodyDef( );
-		groundBodyDef.type = BodyType.KinematicBody;
-		groundBodyDef.position.set( new Vector2( pos.x, pos.y ) );
-		body = world.createBody( groundBodyDef );
-		body.setGravityScale( .1f );
+		BodyDef bodyDef = new BodyDef( );
+		bodyDef.type = BodyType.DynamicBody;
+		bodyDef.position.set( pos.x * Util.PIXEL_TO_BOX, pos.y
+				* Util.PIXEL_TO_BOX );
+		body = world.createBody( bodyDef );
 
 		PolygonShape ps = new PolygonShape( );
 		FixtureDef fd = new FixtureDef( );
-		fd.density = 1f;
-		fd.restitution = 0.0f;
 
 		// Smallest Plus should be 3x3
 		if ( width < 2.0f )
@@ -170,35 +165,35 @@ public class ShapePlatform extends Platform {
 		if ( height < 2.0f )
 			height = 3.0f;
 
-		float horizontal = width * tileConstant * GameScreen.PIXEL_TO_BOX;
-		float vertical = height * tileConstant * GameScreen.PIXEL_TO_BOX;
+		float horizontal = width * tileConstant * Util.PIXEL_TO_BOX;
+		float vertical = height * tileConstant * Util.PIXEL_TO_BOX;
 		Vector2 z = new Vector2( );
 
 		// Creating 2 fixtures to make a plus
-		ps.setAsBox( horizontal, thickY * tileConstant
-				* GameScreen.PIXEL_TO_BOX, z, 0 );
+		ps.setAsBox( horizontal, thickY * tileConstant * Util.PIXEL_TO_BOX, z,
+				0 );
 		fd.shape = ps;
 		body.createFixture( fd );
 
-		ps.setAsBox( thickX * tileConstant * GameScreen.PIXEL_TO_BOX, vertical,
-				z, 0 );
+		ps.setAsBox( thickX * tileConstant * Util.PIXEL_TO_BOX, vertical, z, 0 );
 		fd.shape = ps;
 		body.createFixture( fd );
+
+		ps.dispose( );
 
 	}
 
 	public void constructTrapezoid( Vector2 pos, float width, float height,
 			float scale ) {
 
-		BodyDef groundBodyDef = new BodyDef( );
-		groundBodyDef.type = BodyType.KinematicBody;
-		groundBodyDef.position.set( new Vector2( pos.x, pos.y ) );
-		body = world.createBody( groundBodyDef );
+		BodyDef bodyDef = new BodyDef( );
+		bodyDef.type = BodyType.DynamicBody;
+		bodyDef.position.set( pos.x * Util.PIXEL_TO_BOX, pos.y
+				* Util.PIXEL_TO_BOX );
+		body = world.createBody( bodyDef );
 
-		float horizontal = width * tileConstant * 2 * GameScreen.PIXEL_TO_BOX
-				* scale;
-		float vertical = height * tileConstant * 2 * GameScreen.PIXEL_TO_BOX
-				* scale;
+		float horizontal = width * tileConstant * 2 * Util.PIXEL_TO_BOX * scale;
+		float vertical = height * tileConstant * 2 * Util.PIXEL_TO_BOX * scale;
 
 		Vector2[ ] vertices = new Vector2[ 4 ];
 		Vector2 point1;
@@ -221,15 +216,13 @@ public class ShapePlatform extends Platform {
 
 		FixtureDef platformFixtureDef = new FixtureDef( );
 		platformFixtureDef.shape = polygon;
-		platformFixtureDef.density = 1.9f;
-		platformFixtureDef.friction = 0.5f;
-		platformFixtureDef.restitution = 0.0f;
-		body.setGravityScale( .1f );
 		body.createFixture( platformFixtureDef );
 
+		polygon.dispose( );
 	}
 
-	public void update( ) {
-		super.update( );
+	public void update( float deltaTime ) {
+		super.update( deltaTime );
 	}
+
 }

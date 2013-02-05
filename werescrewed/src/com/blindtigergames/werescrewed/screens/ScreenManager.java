@@ -1,6 +1,7 @@
 package com.blindtigergames.werescrewed.screens;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.IntMap;
 
 public final class ScreenManager {
@@ -26,16 +27,17 @@ public final class ScreenManager {
 		this.game = game;
 	}
 
-	public void show( Screen screen ) {
+	public void show( ScreenType screen ) {
 		if ( null == game )
 			return;
 		if ( !screens.containsKey( screen.ordinal( ) ) ) {
 			screens.put( screen.ordinal( ), screen.getScreenInstance( ) );
 		}
 		game.setScreen( screens.get( screen.ordinal( ) ) );
+		Gdx.app.log( "ScreenManager", screens.get( screen.ordinal( ) ).getClass( ).getSimpleName( )+" starting");
 	}
 
-	public void dispose( Screen screen ) {
+	public void dispose( ScreenType screen ) {
 		if ( !screens.containsKey( screen.ordinal( ) ) )
 			return;
 		screens.remove( screen.ordinal( ) ).dispose( );
