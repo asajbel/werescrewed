@@ -64,7 +64,7 @@ public class MyControllerListener implements ControllerListener {
 		 * 
 		 * trigger is button 4: left is positive, right is negative
 		 */
-		// System.out.println( controller.getAxis( 0 ) ); // 0 = vertical, 1 =
+		//System.out.println("axis: " + controller.getAxis( 1 ) ); // 0 = vertical, 1 =
 		// horizontal
 		if ( buttonIndex == 4 ) {
 			if ( axisPoint < -0.3f || axisPoint > 0.3f )

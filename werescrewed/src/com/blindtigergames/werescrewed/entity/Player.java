@@ -54,10 +54,10 @@ public class Player extends Entity {
 
 	// Static constants
 	public final static float MAX_VELOCITY = 1.8f;
-	public final static float MIN_VELOCITY = 0.1f;
+	public final static float MIN_VELOCITY = 0.05f;
 	public final static float MOVEMENT_IMPLUSE = 0.01f;
 	public final static float JUMP_IMPLUSE = 0.15f;
-	public final static float ANALOG_DEADZONE = 0.3f;
+	public final static float ANALOG_DEADZONE = 0.2f;
 	public final static float ANALOG_MAX_RANGE = 1.0f;
 
 	// Static variables
@@ -454,6 +454,7 @@ public class Player extends Entity {
 			body.applyLinearImpulse( new Vector2( MOVEMENT_IMPLUSE, 0.0f ),
 					body.getWorldCenter( ) );
 		}
+			
 	}
 
 	/**
@@ -469,6 +470,7 @@ public class Player extends Entity {
 			body.applyLinearImpulse( new Vector2( -MOVEMENT_IMPLUSE, 0.0f ),
 					body.getWorldCenter( ) );
 		}
+				
 	}
 
 	/**
