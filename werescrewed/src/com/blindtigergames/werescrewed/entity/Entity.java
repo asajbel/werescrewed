@@ -129,7 +129,6 @@ public class Entity {
 	 * @return the loaded/generated sprite, or null if neither applies
 	 */
 	protected Sprite constructSprite( Texture texture ) {
-		// I have plans to make this a return value
 		Sprite sprite;
 		Vector2 origin;
 		boolean loadTex;
