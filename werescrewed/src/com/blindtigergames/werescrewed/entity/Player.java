@@ -45,7 +45,7 @@ public class Player extends Entity {
 	private RevoluteJoint playerToScrew;
 	private boolean isDead = false, deadDebug;
 	private boolean hitScrew;
-	private int screwJumpTimeout;
+	private int screwJumpTimeout = 0;
 	private boolean grounded;
 	private boolean jumpPressedKeyboard;
 	private boolean jumpPressedController;
@@ -54,8 +54,11 @@ public class Player extends Entity {
 
 	// Static constants
 	public final static float MAX_VELOCITY = 1.8f;
+	public final static float MIN_VELOCITY = 0.1f;
 	public final static float MOVEMENT_IMPLUSE = 0.01f;
 	public final static float JUMP_IMPLUSE = 0.15f;
+	public final static float ANALOG_DEADZONE = 0.3f;
+	public final static float ANALOG_MAX_RANGE = 1.0f;
 
 	// Static variables
 	public static Texture texture = new Texture(
@@ -117,7 +120,12 @@ public class Player extends Entity {
 			// TODO: do stuff here
 			// playerState = playerState.Dead;
 			body.setLinearVelocity( Vector2.Zero );
+			body.setFixedRotation( false );
+			body.setAngularVelocity( 0.1f );
+
 		} else {
+			body.setFixedRotation( true );
+			body.setTransform( body.getPosition( ).x, body.getPosition( ).y, 0 );
 			updateKeyboard( deltaTime );
 			if ( controller != null ) {
 				if ( controllerIsActive ) {
@@ -148,10 +156,17 @@ public class Player extends Entity {
 
 	}
 
+	/**
+	 * This function updates the keyboard state which the player checks to do
+	 * stuff
+	 * 
+	 * @param deltaTime
+	 */
 	private void updateKeyboard( float deltaTime ) {
 		inputHandler.update( );
 
 		if ( playerState != PlayerState.Screwing
+				&& playerState != PlayerState.JumpingOffScrew
 				&& playerState != PlayerState.Standing && isGrounded( ) ) {
 			playerState = PlayerState.Standing;
 		}
@@ -229,6 +244,7 @@ public class Player extends Entity {
 				for ( Fixture f : body.getFixtureList( ) ) {
 					f.setFilterData( filter );
 				}
+				playerState = PlayerState.Standing;
 			} else if ( screwJumpTimeout == 7 ) {
 				boolean platformInWay = false;
 				for ( JointEdge j : currentScrew.body.getJointList( ) ) {
@@ -248,8 +264,15 @@ public class Player extends Entity {
 		terminalVelocityCheck( 6.0f );
 	}
 
+	/**
+	 * This function updates the player based off the Controller's state
+	 * 
+	 * @param deltaTime
+	 * @author Ranveer
+	 */
 	private void updateController( float deltaTime ) {
 		if ( playerState != PlayerState.Screwing
+				&& playerState != PlayerState.JumpingOffScrew
 				&& playerState != PlayerState.Standing && isGrounded( ) ) {
 			playerState = PlayerState.Standing;
 		}
@@ -271,23 +294,20 @@ public class Player extends Entity {
 		}
 		if ( controllerListener.leftPressed( ) ) {
 			if ( controllerListener.analogUsed( ) )
-				// moveAnalogLeft();
+				moveAnalogLeft( );
+			else
 				moveLeft( );
 			prevButton = PovDirection.west;
 		}
 
 		if ( controllerListener.rightPressed( ) ) {
 			if ( controllerListener.analogUsed( ) )
-				// moveAnalogRight();
+				moveAnalogRight( );
+			else
 				moveRight( );
 			prevButton = PovDirection.east;
 		}
 		if ( controllerListener.downPressed( ) ) {
-			if ( playerState == PlayerState.Screwing ) {
-				world.destroyJoint( playerToScrew );
-				playerState = PlayerState.JumpingOffScrew;
-				screwJumpTimeout = 6;
-			}
 			stop( );
 		}
 
@@ -315,6 +335,14 @@ public class Player extends Entity {
 			world.destroyJoint( playerToScrew );
 			playerState = PlayerState.JumpingOffScrew;
 			screwJumpTimeout = 7;
+			Filter filter = new Filter( );
+			// move player back to original category
+			filter.categoryBits = Util.CATEGORY_PLAYER;
+			// player now collides with everything
+			filter.maskBits = Util.CATEGORY_EVERYTHING;
+			for ( Fixture f : body.getFixtureList( ) ) {
+				f.setFilterData( filter );
+			}
 		}
 		if ( playerState == PlayerState.Screwing ) {
 			if ( controllerListener.unscrewing( ) ) {
@@ -340,6 +368,7 @@ public class Player extends Entity {
 				for ( Fixture f : body.getFixtureList( ) ) {
 					f.setFilterData( filter );
 				}
+				playerState = PlayerState.Standing;
 			} else if ( screwJumpTimeout == 7 ) {
 				boolean platformInWay = false;
 				for ( JointEdge j : currentScrew.body.getJointList( ) ) {
@@ -409,6 +438,12 @@ public class Player extends Entity {
 	 */
 	public void moveAnalogRight( ) {
 		axisX = controllerListener.analogAxisX( );
+		float temp = ( ( ( axisX - ANALOG_DEADZONE ) / ( ANALOG_MAX_RANGE - ANALOG_DEADZONE ) ) * ( MAX_VELOCITY - MIN_VELOCITY ) )
+				+ MIN_VELOCITY;
+		if ( body.getLinearVelocity( ).x < temp ) {
+			body.applyLinearImpulse( new Vector2( MOVEMENT_IMPLUSE, 0.0f ),
+					body.getWorldCenter( ) );
+		}
 	}
 
 	/**
@@ -418,6 +453,12 @@ public class Player extends Entity {
 	 */
 	public void moveAnalogLeft( ) {
 		axisX = controllerListener.analogAxisX( );
+		float temp = ( ( ( axisX + ANALOG_DEADZONE ) / ( ANALOG_MAX_RANGE - ANALOG_DEADZONE ) ) * ( MAX_VELOCITY - MIN_VELOCITY ) )
+				- MIN_VELOCITY;
+		if ( body.getLinearVelocity( ).x > temp ) {
+			body.applyLinearImpulse( new Vector2( -MOVEMENT_IMPLUSE, 0.0f ),
+					body.getWorldCenter( ) );
+		}
 	}
 
 	/**
@@ -427,6 +468,7 @@ public class Player extends Entity {
 		body.setLinearVelocity( new Vector2( body.getLinearVelocity( ).x, 0.0f ) );
 		body.applyLinearImpulse( new Vector2( 0.0f, JUMP_IMPLUSE ),
 				body.getWorldCenter( ) );
+		setGrounded( false );
 	}
 
 	/**
@@ -455,8 +497,8 @@ public class Player extends Entity {
 	 * 
 	 * @param grounded
 	 */
-	public void setGrounded( boolean grounded ) {
-		this.grounded = grounded;
+	public void setGrounded( boolean newVal ) {
+		this.grounded = newVal;
 	}
 
 	/**
@@ -475,27 +517,37 @@ public class Player extends Entity {
 	 */
 	private void attachToScrew( ) {
 		if ( currentScrew.body.getJointList( ).size( ) > 0 ) {
-			Filter filter = new Filter( );
-			// move player to another category so other objects stop colliding
-			filter.categoryBits = Util.CATEGORY_SUBPLAYER;
-			// player still collides with sensor of screw
-			filter.maskBits = Util.CATEGORY_SCREWS;
-			for ( Fixture f : body.getFixtureList( ) ) {
-				f.setFilterData( filter );
+			boolean screwOccupied = false;
+			for ( JointEdge j : currentScrew.body.getJointList( ) ) {
+				if ( j.joint.getBodyA( ).getUserData( ) instanceof Player ) {
+					screwOccupied = true;
+					Gdx.app.log( "Player attach to screw", "screw is occupied" );
+				}
 			}
-			body.setTransform( new Vector2( currentScrew.getPosition( ).x
-					- ( sprite.getWidth( ) / 4.0f ) * Util.PIXEL_TO_BOX,
-					currentScrew.getPosition( ).y
-							- ( sprite.getHeight( ) / 4.0f )
-							* Util.PIXEL_TO_BOX ), 0.0f );
-			// connect the screw to the skeleton;
-			RevoluteJointDef revoluteJointDef = new RevoluteJointDef( );
-			revoluteJointDef.initialize( body, currentScrew.body,
-					currentScrew.getPosition( ) );
-			revoluteJointDef.enableMotor = false;
-			playerToScrew = ( RevoluteJoint ) world
-					.createJoint( revoluteJointDef );
-			playerState = PlayerState.Screwing;
+			if ( !screwOccupied ) {
+				Filter filter = new Filter( );
+				// move player to another category so other objects stop
+				// colliding
+				filter.categoryBits = Util.CATEGORY_SUBPLAYER;
+				// player still collides with sensor of screw
+				filter.maskBits = Util.CATEGORY_SCREWS;
+				for ( Fixture f : body.getFixtureList( ) ) {
+					f.setFilterData( filter );
+				}
+				body.setTransform( new Vector2( currentScrew.getPosition( ).x
+						- ( sprite.getWidth( ) / 4.0f ) * Util.PIXEL_TO_BOX,
+						currentScrew.getPosition( ).y
+								- ( sprite.getHeight( ) / 4.0f )
+								* Util.PIXEL_TO_BOX ), 0.0f );
+				// connect the screw to the skeleton;
+				RevoluteJointDef revoluteJointDef = new RevoluteJointDef( );
+				revoluteJointDef.initialize( body, currentScrew.body,
+						currentScrew.getPosition( ) );
+				revoluteJointDef.enableMotor = false;
+				playerToScrew = ( RevoluteJoint ) world
+						.createJoint( revoluteJointDef );
+				playerState = PlayerState.Screwing;
+			}
 		}
 	}
 
@@ -551,14 +603,16 @@ public class Player extends Entity {
 
 	/**
 	 * This function creates a new controllerListener and sets the active
-	 * controller depending on which player is being created
+	 * controller depending on how many players is being created
 	 * 
 	 * @author Ranveer
 	 */
 	private void setUpController( ) {
 		controllerListener = new MyControllerListener( );
-
-		if ( Controllers.getControllers( ).size == 1 ) {
+		for ( Controller controller2 : Controllers.getControllers( ) ) {
+			Gdx.app.log( "ok", controller2.getName( ) );
+		}
+		if ( Controllers.getControllers( ).size >= 1 ) {
 			if ( this.name.equals( "player1" ) ) {
 				controller = Controllers.getControllers( ).get( 0 );
 				controller.addListener( controllerListener );
@@ -571,8 +625,5 @@ public class Player extends Entity {
 			}
 		}
 
-		for ( Controller controller2 : Controllers.getControllers( ) ) {
-			Gdx.app.log( "ok", controller2.getName( ) );
-		}
 	}
 }

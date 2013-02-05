@@ -4,17 +4,21 @@ import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.blindtigergames.werescrewed.camera.Camera;
 import com.blindtigergames.werescrewed.collisionManager.MyContactListener;
 import com.blindtigergames.werescrewed.debug.SBox2DDebugRenderer;
+import com.blindtigergames.werescrewed.entity.AnimatedSprite;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.Player;
 import com.blindtigergames.werescrewed.entity.Skeleton;
@@ -55,7 +59,23 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 	InputHandler inputHandler;
 	Skeleton rootSkeleton;
 	Skeleton skeleton;
+	
+	//testing animations
+	//testing animating sprites in here!
+	//creating the physics body
+	BodyDef animSpriteBDef;
+	Body animatingSpriteBody;
+	AnimatedSprite animatedSprite;
+	AnimatedSprite anotherAnimatedSprite;
+	Entity animatingEntity;
 
+
+	FPSLogger logger;
+	
+
+	private final Vector2 dec = new Vector2( .5f, 0 );
+	private final Vector2 acc = new Vector2( .3f, 0 );
+	private final Vector2 max = new Vector2( 1f, 0 );
 
 	public GameScreen( ) {
 		float zoom = 1.0f;
@@ -94,6 +114,33 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 		// testing screws
 		screwTex = new Texture( Gdx.files.internal( "data/screw1.png" ) );
 		background = new Texture( Gdx.files.internal( "data/libgdx.png" ) );
+		skeleton = new Skeleton( "", Vector2.Zero, background, world );
+		
+		//testing animating sprites in here!
+		//creating the physics body
+		animSpriteBDef 				= new BodyDef();
+		animSpriteBDef.awake 		= true;
+		animSpriteBDef.active 		= false;
+		animatingSpriteBody 		= world.createBody(animSpriteBDef);
+		
+		//defining animated sprite
+		int asFrames  = 4;
+		int asRows    = 1;
+		int asColumns = 4;
+		float asSpeed = 0.25f;
+		animatedSprite = new AnimatedSprite(asFrames, asRows,
+				asColumns, asSpeed, "player_walking.png", Animation.NORMAL);
+		
+		float aasSpeed = 0.05f;
+		anotherAnimatedSprite = new AnimatedSprite(asFrames, asRows,
+				asColumns, aasSpeed, "jumping_man.png", Animation.LOOP_REVERSED);
+		
+		//here's the animating entity!
+		//animatingEntity = new Entity("animatingSprite", animatedSprite, animatingSpriteBody);
+		
+		
+		// make sure you un-comment the next two lines debugRenderer = new
+		// SBox2DDebugRenderer(BOX_TO_PIXEL); for physics world
 
 		skeleton = new Skeleton( "", Vector2.Zero, null, world );
 		rootSkeleton = new Skeleton( "root", Vector2.Zero, null, world );
@@ -143,6 +190,15 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 		if ( Gdx.input.isKeyPressed( Input.Keys.M ) ) {
 			ScreenManager.getInstance( ).show( ScreenType.PHYSICS );
 		}
+		// testing the swapping of animations
+		if ( Gdx.input.isKeyPressed( Input.Keys.B ) ) {
+			if(animatingEntity.sprite == animatedSprite)
+				animatingEntity.changeSprite(anotherAnimatedSprite);
+			else{
+				( ( AnimatedSprite ) animatingEntity.sprite ).reset();
+				animatingEntity.changeSprite(animatedSprite);
+			}
+		}
 
 		rootSkeleton.update( deltaTime );
 		player.update( deltaTime );
@@ -169,6 +225,7 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 		player.draw( batch );
 
 		structScrew.draw( batch );
+		animatingEntity.draw( batch );
 		batch.end( );
 
 		// logger.log();
