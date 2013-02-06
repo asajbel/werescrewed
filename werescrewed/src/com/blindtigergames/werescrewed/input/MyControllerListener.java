@@ -30,7 +30,9 @@ public class MyControllerListener implements ControllerListener {
 	private boolean attachScrewPressed;
 
 	// axisX and axisY represent the point where the analog stick is
-	private float axisX, axisY;
+	private float axisX, axisY, axisRX, axisRY;
+
+	double angle;
 
 	// Using xbox face button names. B, X, Y are unused for now
 	private final static int buttonA = 0;
@@ -101,6 +103,8 @@ public class MyControllerListener implements ControllerListener {
 			upPressed = true;
 			analogUsed = true;
 		}
+		
+		rightStickScrew(controller);
 		return false;
 	}
 
@@ -349,4 +353,12 @@ public class MyControllerListener implements ControllerListener {
 		return Controllers.getControllers( ).indexOf( controller, true );
 	}
 
+	private void rightStickScrew(Controller controller){
+		axisRX = controller.getAxis( 2 );
+		axisRY = controller.getAxis( 3 );
+		
+		angle = Math.atan2( axisRY, axisRX );
+		
+		System.out.println("angle: " + angle);
+	}
 }
