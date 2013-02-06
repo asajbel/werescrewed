@@ -36,7 +36,6 @@ public class Player extends Entity {
 	private boolean hitScrew;
 	private boolean grounded;
 	private boolean jumpPressed;
-	private int anchorID;
 
 	// Static constants
 	public final static float MAX_VELOCITY = 1.8f;
@@ -84,7 +83,9 @@ public class Player extends Entity {
 		body.setBullet( true );
 		playerState = PlayerState.Standing;
 		inputHandler = new InputHandlerPlayer1( );
-		anchorID = AnchorList.getInstance( ).addAnchor( true, pos );
+		anchor = new Anchor(getPosition( ));
+		AnchorList.getInstance( ).addAnchor( anchor );
+		anchor.activate( );
 	}
 
 	/**
@@ -219,14 +220,18 @@ public class Player extends Entity {
 				body.setLinearVelocity( 0.0f, 0.0f );
 		}
 	}
+	
+	private void updateAnchor() {
+		anchor.setPosition( getPosition() );
+	}
 
 	/**
 	 * Updates information about the player every step
 	 */
 	public void update( float deltaTime ) {
+		updateAnchor();
 		super.update( deltaTime );
 		inputHandler.update( );
-		AnchorList.getInstance( ).setAnchorPosBox( anchorID, getPosition( ) );
 		if ( playerState != PlayerState.Screwing
 				&& playerState != PlayerState.Standing && isGrounded( ) ) {
 			playerState = PlayerState.Standing;

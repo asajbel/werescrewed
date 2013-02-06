@@ -197,8 +197,8 @@ public class Camera {
      * set focus of camera to the midpoint of all anchors
      */
     private Vector2 setTranslateTarget(){
-    	translateTarget.x = anchorList.midpoint().x;
-    	translateTarget.y = anchorList.midpoint().y;
+    	translateTarget.x = anchorList.getMidpoint().x;
+    	translateTarget.y = anchorList.getMidpoint().y;
     	
 		translateTarget3D.x = translateTarget.x;
 		translateTarget3D.y = translateTarget.y;

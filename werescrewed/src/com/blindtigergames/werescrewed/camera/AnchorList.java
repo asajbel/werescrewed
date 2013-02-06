@@ -102,6 +102,8 @@ public class AnchorList {
 				}
 			}
 		}
+		
+		setMidpoint();
 	}
 	
 	/**
@@ -135,8 +137,12 @@ public class AnchorList {
 	
 	public int addAnchor(boolean special, Vector2 position, Vector2 buffer) {
 		int id = anchorList.size();
-		anchorList.add(new Anchor(special, position, buffer));
+		addAnchor(new Anchor(special, position, buffer));
 		return id;
+	}
+	
+	public void addAnchor(Anchor newAnchor) {
+		anchorList.add( newAnchor );
 	}
 	
 	public void clear() {
@@ -203,7 +209,19 @@ public class AnchorList {
 		return anchorList.get( id ).buffer;
 	}
 	
-	public void setMidpoint () {
+	public Vector2 getSepcialMidpoint() {
+     	return specialMidpoint;
+	}
+	
+	public Vector2 getMidpoint () {
+		return midpoint2;
+	}
+	
+	public Vector2 getMidpointVelocity() {
+		return midpointVelocity;
+	}
+	
+	private void setMidpoint () {
 		//TO DO: discriminate by distance
     	int count = 0;
     	sum.x = 0f;
@@ -215,10 +233,9 @@ public class AnchorList {
     	midpoint2 = sum.div((float) count);
     	midpoint3.x = midpoint2.x;
     	midpoint3.y = midpoint2.y;
-	}
-	
-	public Vector2 sepcialMidpoint() {
-    	int count = 0;
+    	
+    	// set special midpoint
+    	count = 0;
     	sum.x = 0f;
     	sum.y = 0f;
     	
@@ -230,28 +247,5 @@ public class AnchorList {
     	}
     	
     	midpoint2 = sum.div((float) count);
-     	return specialMidpoint;
-	}
-	
-	public Vector2 getMidpoint () {
-		return midpoint2;
-	}
-	
-	public Vector3 getMidpoint3 () {
-		return midpoint3;
-	}
-	
-	public Vector2 midpoint() {
-		setMidpoint();
-		return getMidpoint();
-	}
-	
-	public Vector3 midpoint3() {
-		setMidpoint();
-		return getMidpoint3();
-	}
-	
-	public Vector2 getMidpointVelocity() {
-		return midpointVelocity;
 	}
 }
