@@ -10,7 +10,7 @@ import com.badlogic.gdx.utils.XmlReader;
 import com.badlogic.gdx.utils.XmlReader.Element;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityDef;
-import com.blindtigergames.werescrewed.entity.builders.GenericEntityBuilder;
+import com.blindtigergames.werescrewed.entity.builders.EntityBuilder;
 import com.blindtigergames.werescrewed.entity.builders.PlatformBuilder;
 import com.blindtigergames.werescrewed.platforms.TiledPlatform;
 import com.blindtigergames.werescrewed.screens.Screen;
@@ -75,7 +75,7 @@ public class GleedLoader {
 					if (def.getCategory( ).equals( playerCat )){
 						level.player.setPosition( pos );
 					} else {
-						Entity e = new GenericEntityBuilder<GenericEntityBuilder<?>>()
+						Entity e = new EntityBuilder()
 								.type(def)
 								.name(name)
 								.world(level.world)
