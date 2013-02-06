@@ -40,7 +40,7 @@ public class WereScrewedGame extends Game {
 	public void render( ) {
 		update( 0 );
 		super.render( );
-//		logger.log( );
+		//logger.log( );
 	}
 
 	public void update( float dT ) {

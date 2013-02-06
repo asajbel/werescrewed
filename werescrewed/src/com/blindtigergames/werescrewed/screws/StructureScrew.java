@@ -46,10 +46,8 @@ public class StructureScrew extends Screw {
 		FixtureDef screwFixture = new FixtureDef( );
 		screwFixture.shape = screwShape;
 		screwFixture.isSensor = true;
-		screwFixture.filter.categoryBits = Util.CATEGORY_SCREWS; // category of
-																	// Screws
+		screwFixture.filter.categoryBits = Util.CATEGORY_SCREWS; 
 		screwFixture.filter.maskBits = Util.CATEGORY_PLAYER | Util.CATEGORY_SUBPLAYER;
-		// (player category bits 0x0001)
 		body.createFixture( screwFixture );
 		screwShape.dispose( );
 		body.setUserData( this );
@@ -60,9 +58,7 @@ public class StructureScrew extends Screw {
 		FixtureDef radarFixture = new FixtureDef( );
 		radarFixture.shape = radarShape;
 		radarFixture.isSensor = true;
-		radarFixture.filter.categoryBits = Util.CATEGORY_SCREWS; // category of
-																	// Screw
-		// Radar...
+		radarFixture.filter.categoryBits = Util.CATEGORY_SCREWS; 
 		radarFixture.filter.maskBits = Util.CATEGORY_PLAYER | Util.CATEGORY_SUBPLAYER;
 		body.createFixture( radarFixture );
 		radarShape.dispose( );
