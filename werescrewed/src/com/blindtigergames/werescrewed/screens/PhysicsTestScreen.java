@@ -303,7 +303,22 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 			piston.body.setSleepingAllowed( false );
 			skeleton.addBoneAndJoint( piston, pistonJoint );
 		}
+		
+		builder = platBuilder.setWidth( 20 ).setHeight( 1 )
+				.setOneSided( true )
+				// .setPosition( (-500f-i*40)*PIXEL_TO_BOX, 150f*PIXEL_TO_BOX )
+				.setTexture( testTexture ).setFriction( 1f );
+		// .buildTilePlatform( world );
 
+		TiledPlatform elevator = builder.setPosition( -1500, 150 ).buildTilePlatform( );
+		elevator.body.setType( BodyType.DynamicBody );
+		PrismaticJoint pistonJ =  jointBuilder.bodyB( ( Entity ) elevator )
+				.anchor( elevator.body.getWorldCenter( ) ).build( );
+		
+		elevator.setMover( new PistonMover( pistonJ, 0f,  2f ) );
+		elevator.body.setSleepingAllowed( false );
+		skeleton.addBoneAndJoint( elevator, pistonJ );
+		
 		ComplexPlatform gear = new ComplexPlatform( "gear", new Vector2(
 				1000 * Util.PIXEL_TO_BOX, 300 * Util.PIXEL_TO_BOX ), null, 3,
 				world, "gearSmall" );
