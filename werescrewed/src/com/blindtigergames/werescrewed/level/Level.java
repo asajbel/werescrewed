@@ -10,13 +10,13 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.blindtigergames.werescrewed.camera.Camera;
 import com.blindtigergames.werescrewed.debug.SBox2DDebugRenderer;
 import com.blindtigergames.werescrewed.entity.EntityManager;
-import com.blindtigergames.werescrewed.entity.Player;
-import com.blindtigergames.werescrewed.entity.PlayerBuilder;
-import com.blindtigergames.werescrewed.entity.Skeleton;
+import com.blindtigergames.werescrewed.entity.builders.PlatformBuilder;
+import com.blindtigergames.werescrewed.entity.builders.PlayerBuilder;
 import com.blindtigergames.werescrewed.platforms.Platform;
-import com.blindtigergames.werescrewed.platforms.PlatformBuilder;
 import com.blindtigergames.werescrewed.platforms.RoomPlatform;
 import com.blindtigergames.werescrewed.platforms.TiledPlatform;
+import com.blindtigergames.werescrewed.player.Player;
+import com.blindtigergames.werescrewed.skeleton.Skeleton;
 
 
 /**
@@ -88,20 +88,20 @@ public class Level {
 		Texture texture = new Texture( Gdx.files.internal( "data/rletter.png" ) );
 		
 		tp = new PlatformBuilder(out.world)
-		.setPosition( 2.0f, 0.2f )
-		.setDimensions( 10, 1 )
+		.position( 2.0f, 0.2f )
+		.dimensions( 10, 1 )
 		.setTexture( texture )
 		.buildTilePlatform( );
 
 		rp = new PlatformBuilder(out.world)
-		.setPosition( -1.0f, 0.4f )
-		.setDimensions( 1, 10 )
+		.position( -1.0f, 0.4f )
+		.dimensions( 1, 10 )
 		.setTexture( texture )
 		.buildRoomPlatform( );
 		
 		ground = new PlatformBuilder(out.world)
-		.setPosition( 0.0f, 0.0f )
-		.setDimensions( 100, 1 )
+		.position( 0.0f, 0.0f )
+		.dimensions( 100, 1 )
 		.setTexture( texture )
 		.buildTilePlatform( );
 		

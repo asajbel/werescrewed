@@ -20,16 +20,16 @@ import com.blindtigergames.werescrewed.collisionManager.MyContactListener;
 import com.blindtigergames.werescrewed.debug.SBox2DDebugRenderer;
 import com.blindtigergames.werescrewed.entity.AnimatedSprite;
 import com.blindtigergames.werescrewed.entity.Entity;
-import com.blindtigergames.werescrewed.entity.Player;
-import com.blindtigergames.werescrewed.entity.Skeleton;
+import com.blindtigergames.werescrewed.entity.builders.PlatformBuilder;
 import com.blindtigergames.werescrewed.input.InputHandler;
 import com.blindtigergames.werescrewed.platforms.ComplexPlatform;
-import com.blindtigergames.werescrewed.platforms.PlatformBuilder;
 import com.blindtigergames.werescrewed.platforms.RoomPlatform;
 import com.blindtigergames.werescrewed.platforms.ShapePlatform;
 import com.blindtigergames.werescrewed.platforms.Shapes;
 import com.blindtigergames.werescrewed.platforms.TiledPlatform;
+import com.blindtigergames.werescrewed.player.Player;
 import com.blindtigergames.werescrewed.screws.StructureScrew;
+import com.blindtigergames.werescrewed.skeleton.Skeleton;
 import com.blindtigergames.werescrewed.util.Util;
 
 public class GameScreen implements com.badlogic.gdx.Screen {
@@ -98,12 +98,12 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 
 		cam = new Camera( w, h );
 		platBuilder = new PlatformBuilder( world );
-		tp = platBuilder.setName( "tp" ).setPosition( 200.0f, 100.0f )
-				.setDimensions( 10, 1 ).setTexture( texture )
+		tp = platBuilder.name( "tp" ).position( 200.0f, 100.0f )
+				.dimensions( 10, 1 ).setTexture( texture )
 				.setResitituion( 0.0f ).buildTilePlatform( );
 
-		rp = platBuilder.setPosition( -200.0f, 100.0f ).setName( "rp" )
-				.setDimensions( 1, 10 ).setTexture( texture )
+		rp = platBuilder.position( -200.0f, 100.0f ).name( "rp" )
+				.dimensions( 1, 10 ).setTexture( texture )
 				.setResitituion( 0.0f ).buildRoomPlatform( );
 
 		cp = new ComplexPlatform( "bottle", new Vector2( -100.0f, 100.0f ),
@@ -150,8 +150,8 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 
 		// tp.setMover( new TimelineMover( ) );
 
-		ground = new PlatformBuilder( world ).setPosition( 0.0f, 0.0f )
-				.setName( "ground" ).setDimensions( 100, 1 )
+		ground = new PlatformBuilder( world ).position( 0.0f, 0.0f )
+				.name( "ground" ).dimensions( 100, 1 )
 				.setTexture( texture ).setResitituion( 0.0f )
 				.buildTilePlatform( );
 

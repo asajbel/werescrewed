@@ -1,8 +1,12 @@
-package com.blindtigergames.werescrewed.platforms;
+package com.blindtigergames.werescrewed.entity.builders;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
+import com.blindtigergames.werescrewed.platforms.RoomPlatform;
+import com.blindtigergames.werescrewed.platforms.ShapePlatform;
+import com.blindtigergames.werescrewed.platforms.Shapes;
+import com.blindtigergames.werescrewed.platforms.TiledPlatform;
 
 /**
  * PlatformBuilder should make building platforms a lot simpler and clearer
@@ -12,8 +16,8 @@ import com.badlogic.gdx.physics.box2d.World;
  */
 
 // Later should be loaded in by file
-public class PlatformBuilder {
-	float width = 1.0f;
+public class PlatformBuilder extends GenericEntityBuilder<PlatformBuilder> {
+	protected float width = 1.0f;
 	float height = 1.0f;
 	float outerWidth = 1.0f;
 	float outerHeight = 1.0f;
@@ -24,15 +28,10 @@ public class PlatformBuilder {
 	float friction = 0.5f;
 	float restitution = 0.1f;
 	float gravScale = 0.1f;
-	float positionX = 0.0f;
-	float positionY = 0.0f;
 	boolean flipHorizonal = false;
 	boolean flipVertical = false;
 	boolean isOneSided = false;
 	Shapes shape = null;
-	Texture texture = null;
-	World world = null;
-	String name = "No name";
 	
 /**
  * 
@@ -41,7 +40,8 @@ public class PlatformBuilder {
  */
 	
 	public PlatformBuilder( World world ) {
-		this.world = world;
+		super();
+		super.world(world);
 	}
 	
 /**
@@ -50,7 +50,7 @@ public class PlatformBuilder {
  * 	Default is null
  * @return PlatformBuilder
  */
-	public PlatformBuilder setShape( Shapes shape ) {
+	public PlatformBuilder shape( Shapes shape ) {
 		this.shape = shape;
 		return this;
 	}
@@ -66,13 +66,29 @@ public class PlatformBuilder {
 	
 /**
  * 
+ * @param w - set width with a float, default is 1
+ * @return PlatformBuilder
+ */	
+	public PlatformBuilder width( float w ) {
+		this.width = w;
+		return this;
+	}
+/**
+ * 
+ * @param h - set height with a float, default is 1
+ * @return PlatformBuilder
+ */		
+	public PlatformBuilder height( float h ) {
+		this.height = h;
+		return this;
+	}
+/**
+ * 
  * @param dimension - set width/height with Vector2, default is (1,1)
  * @return PlatformBuilder
  */
-	public PlatformBuilder setDimensions( Vector2 dimension ) {
-		this.width = dimension.x;
-		this.height = dimension.y;
-		return this;
+	public PlatformBuilder dimensions( Vector2 dimension ) {
+		return this.width( dimension.x ).height( dimension.y );
 	}
 	
 /**
@@ -81,52 +97,8 @@ public class PlatformBuilder {
  * @param height - float height of platform
  * @return PlatformBuilder
  */
-	public PlatformBuilder setDimensions( float width, float height ) {
-		this.width = width;
-		this.height = height;
-		return this;
-	}
-
-/**
- * 
- * @param name - String name of platform, default is "noname"
- * @return PlatformBuilder
- */
-	public PlatformBuilder setName( String name ){
-		this.name = name;
-		return this;
-	}
-	
-/**
- * 
- * @param posX - float position X, default is 0
- * @param posY - float position Y, default is 0
- * @return PlatformBuilder
- */
-	public PlatformBuilder setPosition( float posX, float posY ) {
-		this.positionX = posX;
-		this.positionY = posY;
-		return this;
-	}
-
-/**
- * 
- * @param width - float width, default 1
- * @return PlatformBuilder
- */
-	public PlatformBuilder setWidth( float width ) {
-		this.width = width;
-		return this;
-	}
-
-/**
- * 
- * @param height - float height, default 1
- * @return PlatformBuilder
- */
-	public PlatformBuilder setHeight( float height ) {
-		this.height = height;
-		return this;
+	public PlatformBuilder dimensions( float width, float height ) {
+		return this.width( width ).height( height );
 	}
 
 /**
@@ -195,7 +167,7 @@ public class PlatformBuilder {
  * @return
  */
 	public PlatformBuilder setTexture( Texture tex ) {
-		this.texture = tex;
+		this.tex = tex;
 		return this;
 	}
 
@@ -222,7 +194,9 @@ public class PlatformBuilder {
 	/**
 	 * resets all the values to its default, use between builds
 	 */
-	public void reset(){
+	@Override
+	public PlatformBuilder reset(){
+		super.resetInternal();
 		this.width = 1.0f;
 		this.height = 1.0f;
 		this.outerWidth = 1.0f;
@@ -234,14 +208,13 @@ public class PlatformBuilder {
 		this.friction = 0.5f;
 		this.restitution = 0.1f;
 		this.gravScale = 0.1f;
-		this.positionX = 0.0f;
-		this.positionY = 0.0f;
 		this.flipHorizonal = false;
 		this.flipVertical = false;
 		this.isOneSided = false;
 		this.shape = null;
-		this.texture = null;
+		this.tex = null;
 		this.name = "No name";
+		return this;
 	}
 	
 /**
@@ -249,8 +222,7 @@ public class PlatformBuilder {
  * @return RoomPlatform
  */
 	public RoomPlatform buildRoomPlatform( ) {
-		RoomPlatform rp = new RoomPlatform( this.name, new Vector2( positionX,
-				positionY ), this.texture, this.width, this.height, world );
+		RoomPlatform rp = new RoomPlatform( this.name, this.pos, this.tex, this.width, this.height, world );
 
 		rp.setDensity( this.density );
 		rp.setFriction( this.friction );
@@ -264,8 +236,7 @@ public class PlatformBuilder {
  * @return TiledPlatform
  */
 	public TiledPlatform buildTilePlatform( ) {
-		TiledPlatform tp = new TiledPlatform( this.name, new Vector2( positionX,
-				positionY ), this.texture, this.width, this.height, this.isOneSided, world );
+		TiledPlatform tp = new TiledPlatform( this.name, this.pos, this.tex, this.width, this.height, this.isOneSided, world );
 
 		tp.setDensity( this.density );
 		tp.setFriction( this.friction );
@@ -279,8 +250,7 @@ public class PlatformBuilder {
 	 * @return ShapePlatform
 	 */
 	public ShapePlatform buildShapePlatform( ) {
-		ShapePlatform sp = new ShapePlatform( this.name, new Vector2( positionX,
-				positionY ), this.texture, world, this.shape, this.width,
+		ShapePlatform sp = new ShapePlatform( this.name, this.pos, this.tex, world, this.shape, this.width,
 				this.height, this.flipHorizonal );
 
 		sp.setDensity( this.density );

@@ -9,9 +9,9 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.XmlReader;
 import com.badlogic.gdx.utils.XmlReader.Element;
 import com.blindtigergames.werescrewed.entity.Entity;
-import com.blindtigergames.werescrewed.entity.EntityBuilder;
 import com.blindtigergames.werescrewed.entity.EntityDef;
-import com.blindtigergames.werescrewed.platforms.PlatformBuilder;
+import com.blindtigergames.werescrewed.entity.builders.GenericEntityBuilder;
+import com.blindtigergames.werescrewed.entity.builders.PlatformBuilder;
 import com.blindtigergames.werescrewed.platforms.TiledPlatform;
 import com.blindtigergames.werescrewed.screens.Screen;
 
@@ -62,9 +62,9 @@ public class GleedLoader {
 					int h = Integer.decode(props.get("TileHeight"));
 					
 					TiledPlatform tp = new PlatformBuilder(level.world)
-					.setName( name )
-					.setPosition( pos.x, pos.y )
-					.setDimensions( w, h )
+					.name( name )
+					.position( pos.x, pos.y )
+					.dimensions( w, h )
 					.setTexture( def.getTexture() )
 					.setResitituion( 0.0f )
 					.buildTilePlatform( );
@@ -75,7 +75,7 @@ public class GleedLoader {
 					if (def.getCategory( ).equals( playerCat )){
 						level.player.setPosition( pos );
 					} else {
-						Entity e = new EntityBuilder()
+						Entity e = new GenericEntityBuilder<GenericEntityBuilder<?>>()
 								.type(def)
 								.name(name)
 								.world(level.world)

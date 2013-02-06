@@ -1,7 +1,11 @@
-package com.blindtigergames.werescrewed.entity;
+package com.blindtigergames.werescrewed.entity.builders;
+
+import com.blindtigergames.werescrewed.entity.Entity;
+import com.blindtigergames.werescrewed.entity.EntityDef;
+import com.blindtigergames.werescrewed.player.Player;
 
 
-public class PlayerBuilder extends EntityBuilder {
+public class PlayerBuilder extends GenericEntityBuilder<PlayerBuilder> {
 	protected int number;
 	
 	public PlayerBuilder( ) {

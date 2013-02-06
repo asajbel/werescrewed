@@ -8,7 +8,7 @@ import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
-import com.blindtigergames.werescrewed.entity.Player;
+import com.blindtigergames.werescrewed.player.Player;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 //import com.blindtigergames.werescrewed.screens.GameScreen;
 //import com.sun.xml.internal.bind.v2.runtime.reflect.ListIterator;

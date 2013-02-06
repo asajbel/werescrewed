@@ -20,19 +20,19 @@ import com.blindtigergames.werescrewed.collisionManager.MyContactListener;
 import com.blindtigergames.werescrewed.debug.SBox2DDebugRenderer;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityManager;
-import com.blindtigergames.werescrewed.entity.Player;
-import com.blindtigergames.werescrewed.entity.Skeleton;
+import com.blindtigergames.werescrewed.entity.builders.PlatformBuilder;
 import com.blindtigergames.werescrewed.entity.mover.PistonMover;
 import com.blindtigergames.werescrewed.entity.mover.PuzzleType;
 import com.blindtigergames.werescrewed.entity.mover.SlidingMotorMover;
 import com.blindtigergames.werescrewed.joint.JointFactory;
 import com.blindtigergames.werescrewed.joint.PrismaticJointBuilder;
 import com.blindtigergames.werescrewed.platforms.ComplexPlatform;
-import com.blindtigergames.werescrewed.platforms.PlatformBuilder;
 import com.blindtigergames.werescrewed.platforms.TiledPlatform;
+import com.blindtigergames.werescrewed.player.Player;
 import com.blindtigergames.werescrewed.screws.PuzzleScrew;
 import com.blindtigergames.werescrewed.screws.StrippedScrew;
 import com.blindtigergames.werescrewed.screws.StructureScrew;
+import com.blindtigergames.werescrewed.skeleton.Skeleton;
 
 /**
  * Screen to test out moving platforms and skeletons
@@ -101,13 +101,13 @@ public class IMoverGameScreen implements com.badlogic.gdx.Screen {
 
 		texture = new Texture( Gdx.files.internal( "data/rletter.png" ) );
 
-		tp = platBuilder.setPosition( 350.0f, 100.0f ).setDimensions( 10, 1 )
-				.setTexture( texture ).setName( "tp" ).setResitituion( 0.0f )
+		tp = platBuilder.position( 350.0f, 100.0f ).dimensions( 10, 1 )
+				.setTexture( texture ).name( "tp" ).setResitituion( 0.0f )
 				.buildTilePlatform( );
 
-		movingTP = platBuilder.setPosition( 350.0f, 170.0f )
-				.setDimensions( 10, 1 ).setTexture( texture )
-				.setName( "movingTP" ).setResitituion( 0.0f )
+		movingTP = platBuilder.position( 350.0f, 170.0f )
+				.dimensions( 10, 1 ).setTexture( texture )
+				.name( "movingTP" ).setResitituion( 0.0f )
 				.buildTilePlatform( );
 
 		movingTP.body.setType( BodyType.DynamicBody );
@@ -158,8 +158,8 @@ public class IMoverGameScreen implements com.badlogic.gdx.Screen {
 			skeleton.addStrippedScrew( ss );
 		}
 
-		ground = platBuilder.setPosition( 0.0f, 0.0f ).setName( "ground" )
-				.setDimensions( 100, 1 ).setTexture( texture )
+		ground = platBuilder.position( 0.0f, 0.0f ).name( "ground" )
+				.dimensions( 100, 1 ).setTexture( texture )
 				.setResitituion( 0.0f ).buildTilePlatform( );
 		skeleton.addPlatformFixed( ground );
 		skeleton.addPlatform( tp ); // Tp already has a structureScrew holding
@@ -180,8 +180,8 @@ public class IMoverGameScreen implements com.badlogic.gdx.Screen {
 	}
 
 	void buildMoverPlatforms( ) {
-		TiledPlatform slidingPlatform = platBuilder.setWidth( 10 )
-				.setHeight( 1 ).setOneSided( true ).setPosition( -1000, 200 )
+		TiledPlatform slidingPlatform = platBuilder.width( 10 )
+				.height( 1 ).setOneSided( true ).position( -1000, 200 )
 				.setTexture( texture ).setFriction( 1f ).buildTilePlatform( );
 		slidingPlatform.body.setType( BodyType.DynamicBody );
 
@@ -195,15 +195,15 @@ public class IMoverGameScreen implements com.badlogic.gdx.Screen {
 		slidingPlatform.setMover( new SlidingMotorMover(
 				PuzzleType.PRISMATIC_SLIDER, j ) );
 
-		TiledPlatform skeletonTest1 = platBuilder.setWidth( 10 ).setHeight( 1 )
+		TiledPlatform skeletonTest1 = platBuilder.width( 10 ).height( 1 )
 				.setFriction( 1f ).setOneSided( false )
-				.setPosition( -500, -200 ).setTexture( texture )
+				.position( -500, -200 ).setTexture( texture )
 				.buildTilePlatform( );
 		skeletonTest1.body.setType( BodyType.DynamicBody );
 		skeleton.addPlatformFixed( skeletonTest1 );
 
-		TiledPlatform skeletonTest2 = platBuilder.setWidth( 10 ).setHeight( 1 )
-				.setOneSided( false ).setPosition( 500, 300 )
+		TiledPlatform skeletonTest2 = platBuilder.width( 10 ).height( 1 )
+				.setOneSided( false ).position( 500, 300 )
 				.setTexture( texture ).setFriction( 1f ).buildTilePlatform( );
 		skeletonTest2.body.setType( BodyType.DynamicBody );
 		skeleton.addPlatformRotatingCenter( skeletonTest2 );
@@ -214,7 +214,7 @@ public class IMoverGameScreen implements com.badlogic.gdx.Screen {
 
 		platBuilder.reset( );
 
-		PlatformBuilder builder = platBuilder.setWidth( 1 ).setHeight( 3 )
+		PlatformBuilder builder = platBuilder.width( 1 ).height( 3 )
 				.setOneSided( false )
 				// .setPosition( (-500f-i*40)*PIXEL_TO_BOX, 150f*PIXEL_TO_BOX )
 				.setTexture( texture ).setFriction( 1f );
@@ -224,7 +224,7 @@ public class IMoverGameScreen implements com.badlogic.gdx.Screen {
 				.skeleton( skeleton ).axis( 0, 1 ).motor( true ).limit( true )
 				.upper( 1 ).motorSpeed( 1 );
 		for ( int i = 0; i < 10; ++i ) {
-			TiledPlatform piston = builder.setPosition( ( -100f - i * 40 ),
+			TiledPlatform piston = builder.position( ( -100f - i * 40 ),
 					220f ).buildTilePlatform( );
 
 			piston.body.setType( BodyType.DynamicBody );

@@ -1,4 +1,4 @@
-package com.blindtigergames.werescrewed.entity;
+package com.blindtigergames.werescrewed.skeleton;
 
 import java.util.ArrayList;
 
@@ -10,6 +10,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.Joint;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJoint;
+import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.joint.RevoluteJointBuilder;
 import com.blindtigergames.werescrewed.platforms.Platform;
 import com.blindtigergames.werescrewed.screws.StrippedScrew;
