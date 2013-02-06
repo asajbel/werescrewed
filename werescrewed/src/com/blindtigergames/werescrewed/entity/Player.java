@@ -229,7 +229,6 @@ public class Player extends Entity {
 	 * Updates information about the player every step
 	 */
 	public void update( float deltaTime ) {
-		updateAnchor();
 		super.update( deltaTime );
 		inputHandler.update( );
 		if ( playerState != PlayerState.Screwing
@@ -305,7 +304,7 @@ public class Player extends Entity {
 				}
 			}
 		}
-
+		updateAnchor();
 	}
 
 }
