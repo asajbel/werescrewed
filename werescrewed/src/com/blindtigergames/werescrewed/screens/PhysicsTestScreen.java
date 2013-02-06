@@ -155,8 +155,9 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		// Ground
 		ground = platBuilder.setPosition( 0.0f, 0.0f ).setName( "ground" )
 				.setDimensions( 200, 1 ).setTexture( testTexture )
+				.setKinematic( )
 				.setResitituion( 0.0f ).buildTilePlatform( );
-		skeleton.addPlatformFixed( ground );
+		skeleton.addKinematicPlatform( ground );
 	}
 
 	/**
@@ -240,16 +241,16 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 								0 ), 1.0f, 1f );
 		PrismaticJoint j = ( PrismaticJoint ) world
 				.createJoint( prismaticJointDef );
-		skeleton.addBoneAndJoint( slidingPlatform, j );
 		slidingPlatform.setMover( new SlidingMotorMover(
 				PuzzleType.PRISMATIC_SLIDER, j ) );
+		skeleton.addDynamicPlatform( slidingPlatform );
 
 		TiledPlatform skeletonTest1 = platBuilder.setWidth( 10 ).setHeight( 1 )
 				.setFriction( 1f ).setOneSided( false )
 				.setPosition( -500, -200 ).setTexture( testTexture )
+				.setKinematic()
 				.buildTilePlatform( );
-		skeletonTest1.body.setType( BodyType.DynamicBody );
-		skeleton.addPlatformFixed( skeletonTest1 );
+		skeleton.addKinematicPlatform( skeletonTest1 );
 
 		TiledPlatform skeletonTest2 = platBuilder.setWidth( 10 ).setHeight( 1 )
 				.setOneSided( false ).setPosition( 500, 300 )
@@ -285,14 +286,14 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 			// with 0.
 			piston.setMover( new PistonMover( pistonJoint, 0f, i / 10.0f + 2f ) );
 			piston.body.setSleepingAllowed( false );
-			skeleton.addBoneAndJoint( piston, pistonJoint );
+			skeleton.addDynamicPlatform( piston );
 		}
 
 		ComplexPlatform gear = new ComplexPlatform( "gear", new Vector2(
 				1000 * Util.PIXEL_TO_BOX, 300 * Util.PIXEL_TO_BOX ), null, 3,
 				world, "gearSmall" );
 		gear.body.setType( BodyType.DynamicBody );
-		skeleton.addPlatformRotatingCenterWithRot( gear, 1f );
+		skeleton.addPlatformRotatingCenterWithMot( gear, 1f );
 	}
 
 	@Override

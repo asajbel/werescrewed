@@ -131,6 +131,15 @@ public class Entity {
 	}
 
 	public void update( float deltaTime ) {
+		//animation stuff may go here
+	}
+	
+	/**
+	 * Update the mover of this entity, if it exists.
+	 * Now separated from update() so that it can be called whenever skeleton wants.
+	 * @param deltaTime
+	 */
+	public void updateMover( float deltaTime ){
 		if ( body != null && mover != null ) {
 			mover.move( deltaTime, body );
 		}

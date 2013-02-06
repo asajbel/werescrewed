@@ -67,10 +67,12 @@ public class GleedLoader {
 					.setDimensions( w, h )
 					.setTexture( def.getTexture() )
 					.setResitituion( 0.0f )
+					.setKinematic( )
 					.buildTilePlatform( );
 					Gdx.app.log("GleedLoader", "Platform loaded:"+tp.name);
 					level.entities.addEntity( name, tp );
-					level.root.addPlatformFixed( tp );
+					
+					level.root.addKinematicPlatform( tp );
 				} else {
 					if (def.getCategory( ).equals( playerCat )){
 						level.player.setPosition( pos );

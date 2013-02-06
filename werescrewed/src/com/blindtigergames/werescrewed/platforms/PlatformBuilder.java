@@ -2,6 +2,7 @@ package com.blindtigergames.werescrewed.platforms;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.World;
 
 /**
@@ -33,6 +34,8 @@ public class PlatformBuilder {
 	Texture texture = null;
 	World world = null;
 	String name = "No name";
+
+	BodyType bodyType = BodyType.DynamicBody;
 	
 /**
  * 
@@ -209,6 +212,24 @@ public class PlatformBuilder {
 		return this;
 	}
 	
+	
+	public PlatformBuilder setKinematic( ) {
+		this.bodyType = BodyType.KinematicBody;
+		return this;
+	}
+
+	public PlatformBuilder setDynamic( ) {
+		this.bodyType = BodyType.DynamicBody;
+		return this;
+	}
+
+	public PlatformBuilder setStatic( ) {
+		this.bodyType = BodyType.StaticBody;
+		return this;
+	}
+	
+	
+	
 /**
  * 
  * @param oneSide - boolean set platform to oneside, default false
@@ -242,6 +263,7 @@ public class PlatformBuilder {
 		this.shape = null;
 		this.texture = null;
 		this.name = "No name";
+		BodyType bodyType = BodyType.DynamicBody;
 	}
 	
 /**
@@ -256,6 +278,8 @@ public class PlatformBuilder {
 		rp.setFriction( this.friction );
 		rp.setRestitution( this.restitution );
 		rp.setGravScale( this.gravScale );
+		rp.body.setType( bodyType );
+		bodyType = BodyType.DynamicBody; // reset so not to break anything else
 		return rp;
 	}
 
@@ -271,6 +295,8 @@ public class PlatformBuilder {
 		tp.setFriction( this.friction );
 		tp.setRestitution( this.restitution );
 		tp.setGravScale( this.gravScale );
+		tp.body.setType( bodyType );
+		bodyType = BodyType.DynamicBody; // reset so not to break anything else
 		return tp;
 	}
 
@@ -287,6 +313,8 @@ public class PlatformBuilder {
 		sp.setFriction( this.friction );
 		sp.setRestitution( this.restitution );
 		sp.setGravScale( this.gravScale );
+		sp.body.setType( bodyType );
+		bodyType = BodyType.DynamicBody; // reset so not to break anything else
 		return sp;
 	}
 

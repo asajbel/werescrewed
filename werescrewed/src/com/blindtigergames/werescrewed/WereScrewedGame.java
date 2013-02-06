@@ -23,8 +23,8 @@ public class WereScrewedGame extends Game {
 		// uncomment next line to bypass intro
 
 		// ScreenManager.getInstance().show(Screen.GAME);
-		ScreenManager.getInstance( ).show( ScreenType.PHYSICS );
-		// ScreenManager.getInstance().show(Screen.IMOVER);
+		//ScreenManager.getInstance( ).show( ScreenType.PHYSICS );
+		ScreenManager.getInstance().show(ScreenType.IMOVER);
 
 		logger = new FPSLogger( );
 

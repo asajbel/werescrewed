@@ -12,6 +12,7 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityDef;
+import com.blindtigergames.werescrewed.entity.Skeleton;
 import com.blindtigergames.werescrewed.entity.mover.IMover;
 import com.blindtigergames.werescrewed.screws.Screw;
 import com.blindtigergames.werescrewed.util.Util;
@@ -26,6 +27,8 @@ import com.blindtigergames.werescrewed.util.Util;
 
 public class Platform extends Entity {
 
+	protected enum PlatformType{PLATFORM,TILED,COMPLEX,SHAPE};
+	
 	IMover mover;
 
 	protected float width, height;
@@ -36,28 +39,44 @@ public class Platform extends Entity {
 	// tileConstant is 16 for setasbox function which uses half width/height
 	// creates 32x32 objects
 	protected final int tileConstant = 16;
+	
+	protected PlatformType platType;
 
 	/**
 	 * Used for kinematic movement connected to skeleton
 	 */
 	protected Vector2 origin;
+	
+	/**
+	 * Used for kinematic movement connected to skeleton
+	 */
+	protected Vector2 localPosition;
+	protected float localRotation; // in radians
 
 	public Platform( String name, Vector2 pos, Texture tex, World world ) {
 		super( name, pos, tex, null, true );
 		this.world = world;
 		screws = new ArrayList< Screw >( );
+		init(pos);
 	}
 
 	public Platform( String name, EntityDef type, World world, Vector2 pos, float rot,
 			Vector2 scale ) {
 		super( name, type, world, pos, rot, scale, null, true );
 		screws = new ArrayList< Screw >( );
+		init(pos);
 	}
 
 	public Platform( String name, EntityDef type, World world, Vector2 pos, float rot,
 			Vector2 scale, Texture tex ) {
 		super( name, type, world, pos, rot, scale, tex, true );
 		screws = new ArrayList< Screw >( );
+		init(pos);
+	}
+	
+	void init(Vector2 pos){
+		localPosition = pos.mul( Util.PIXEL_TO_BOX );
+		localRotation = 0;
 	}
 
 	public void addScrew( Screw s ) {
@@ -156,5 +175,25 @@ public class Platform extends Entity {
 	protected void rotateBy90( ) {
 		float bodyAngle = body.getAngle( );
 		body.setTransform( body.getPosition( ), bodyAngle + 90 );
+	}
+	
+	/**
+	 * Set the position and angle of the kinematic platform based on the parent
+	 * skeleton's pos/rot. Use originPos & originalLocalRot
+	 * 
+	 * @param skeleton
+	 * @author stew
+	 */
+	public void setPosRotFromSkeleton( Skeleton skeleton ) {
+		// originPos has already been updated by it's IMover by this point
+		// TODO: modify this if imover uses pixels or box2d meters
+		float radiusFromSkeleton = localPosition.len( );
+		// update angle between platform and skeleton
+		float newAngleFromSkeleton = skeleton.body.getAngle( )
+				+ Util.angleBetweenPoints( Vector2.Zero, localPosition );
+		Vector2 skeleOrigin = skeleton.body.getPosition( );
+		float newRotation = localRotation + skeleton.body.getAngle( );
+		body.setTransform( Util.PointOnCircle( radiusFromSkeleton,
+				newAngleFromSkeleton, skeleOrigin ), newRotation );
 	}
 }

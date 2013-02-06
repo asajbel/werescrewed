@@ -14,6 +14,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.World;
 import com.blindtigergames.werescrewed.camera.Camera;
 import com.blindtigergames.werescrewed.collisionManager.MyContactListener;
@@ -100,6 +101,7 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 		platBuilder = new PlatformBuilder( world );
 		tp = platBuilder.setName( "tp" ).setPosition( 200.0f, 100.0f )
 				.setDimensions( 10, 1 ).setTexture( texture )
+				.setKinematic( )
 				.setResitituion( 0.0f ).buildTilePlatform( );
 
 		rp = platBuilder.setPosition( -200.0f, 100.0f ).setName( "rp" )
@@ -111,6 +113,7 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 				1, world, "complexTest" );
 		sp = new ShapePlatform( "rhom", new Vector2( 100.0f, 300.0f ), texture,
 				world, Shapes.plus, 1.0f, 1.0f, false );
+		sp.body.setType(BodyType.KinematicBody);
 
 		// testing screws
 		screwTex = new Texture( Gdx.files.internal( "data/screw1.png" ) );
@@ -153,13 +156,14 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 		ground = new PlatformBuilder( world ).setPosition( 0.0f, 0.0f )
 				.setName( "ground" ).setDimensions( 100, 1 )
 				.setTexture( texture ).setResitituion( 0.0f )
+				.setKinematic( )
 				.buildTilePlatform( );
 
-		skeleton.addPlatformFixed( ground );
-		skeleton.addPlatformFixed( tp );
-		skeleton.addPlatformFixed( sp );
-		skeleton.addPlatformFixed( cp );
-		skeleton.addPlatformFixed( rp );
+		skeleton.addKinematicPlatform( ground );
+		skeleton.addKinematicPlatform( tp );
+		skeleton.addKinematicPlatform( sp );
+		skeleton.addKinematicPlatform( cp );
+		skeleton.addKinematicPlatform( rp );
 
 		rootSkeleton.addSkeleton( skeleton );
 		// make sure you uncomment the next two lines debugRenderer = new
