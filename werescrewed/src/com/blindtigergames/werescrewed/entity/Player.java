@@ -104,7 +104,6 @@ public class Player extends Entity {
 		anchorID = AnchorList.getInstance( ).addAnchor( true, pos );
 
 		setUpController( );
-
 	}
 
 	// METHODS
