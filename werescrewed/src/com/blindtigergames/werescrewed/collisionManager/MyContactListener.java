@@ -1,5 +1,6 @@
 package com.blindtigergames.werescrewed.collisionManager;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.Contact;
@@ -10,7 +11,6 @@ import com.badlogic.gdx.physics.box2d.JointEdge;
 import com.badlogic.gdx.physics.box2d.Manifold;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.Player;
-import com.blindtigergames.werescrewed.platforms.Platform;
 import com.blindtigergames.werescrewed.platforms.TiledPlatform;
 import com.blindtigergames.werescrewed.screws.Screw;
 import com.blindtigergames.werescrewed.screws.StructureScrew;
@@ -172,43 +172,15 @@ public class MyContactListener implements ContactListener {
 						}
 					}
 					if ( !isScrew ) {
-						player.body.getFixtureList( ).get( 1 )
-								.setFriction( 0.7f );
+						player.maxFriction( );
 						tilePlat.body.getFixtureList( ).get( 0 )
 								.setFriction( 1f );
 					} else {
-						player.body.getFixtureList( ).get( 1 )
-						.setFriction( 0f );								
-					} 
+						player.noFriction( );
+					}
 					Vector2 platformPos = tilePlat.getPosition( );
 					Vector2 playerPos = player.getPosition( );
 					if ( tilePlat.getOneSided( ) ) {
-						if ( platformPos.y > playerPos.y ) {
-							contact.setEnabled( false );
-						}
-					}
-				}
-				if ( objectFix.getBody( ).getUserData( ) instanceof Platform ) {
-					Platform roomPlat = ( Platform ) objectFix.getBody( )
-							.getUserData( );
-					boolean isScrew = false;
-					for ( JointEdge j : roomPlat.body.getJointList( ) ) {
-						if ( j.joint.getBodyB( ).getUserData( ) instanceof StructureScrew ) {
-							isScrew = true;
-						}
-					}
-					if ( !isScrew ) {
-						player.body.getFixtureList( ).get( 1 )
-								.setFriction( 0.7f );
-						roomPlat.body.getFixtureList( ).get( 0 )
-								.setFriction( 1f );
-					} else {
-						player.body.getFixtureList( ).get( 1 )
-						.setFriction( 0f );								
-					} 
-					Vector2 platformPos = roomPlat.getPosition( );
-					Vector2 playerPos = player.getPosition( );
-					if ( roomPlat.getOneSided( ) ) {
 						if ( platformPos.y > playerPos.y ) {
 							contact.setEnabled( false );
 						}
@@ -254,43 +226,15 @@ public class MyContactListener implements ContactListener {
 						}
 					}
 					if ( !isScrew ) {
-						player.body.getFixtureList( ).get( 1 )
-								.setFriction( 0.7f );
+						player.maxFriction( );
 						tilePlat.body.getFixtureList( ).get( 0 )
 								.setFriction( 1f );
 					} else {
-						player.body.getFixtureList( ).get( 1 )
-						.setFriction( 0f );								
-					} 
+						player.noFriction( );
+					}
 					Vector2 platformPos = tilePlat.getPosition( );
 					Vector2 playerPos = player.getPosition( );
 					if ( tilePlat.getOneSided( ) ) {
-						if ( platformPos.y > playerPos.y ) {
-							contact.setEnabled( false );
-						}
-					}
-				}
-				if ( objectFix.getBody( ).getUserData( ) instanceof Platform ) {
-					Platform roomPlat = ( Platform ) objectFix.getBody( )
-							.getUserData( );
-					boolean isScrew = false;
-					for ( JointEdge j : roomPlat.body.getJointList( ) ) {
-						if ( j.joint.getBodyB( ).getUserData( ) instanceof StructureScrew ) {
-							isScrew = true;
-						}
-					}
-					if ( !isScrew ) {
-						player.body.getFixtureList( ).get( 1 )
-								.setFriction( 0.7f );
-						roomPlat.body.getFixtureList( ).get( 0 )
-								.setFriction( 1f );
-					} else {
-						player.body.getFixtureList( ).get( 1 )
-						.setFriction( 0f );								
-					} 
-					Vector2 platformPos = roomPlat.getPosition( );
-					Vector2 playerPos = player.getPosition( );
-					if ( roomPlat.getOneSided( ) ) {
 						if ( platformPos.y > playerPos.y ) {
 							contact.setEnabled( false );
 						}

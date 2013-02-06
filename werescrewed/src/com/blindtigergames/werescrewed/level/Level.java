@@ -15,7 +15,6 @@ import com.blindtigergames.werescrewed.entity.PlayerBuilder;
 import com.blindtigergames.werescrewed.entity.Skeleton;
 import com.blindtigergames.werescrewed.platforms.Platform;
 import com.blindtigergames.werescrewed.platforms.PlatformBuilder;
-import com.blindtigergames.werescrewed.platforms.RoomPlatform;
 import com.blindtigergames.werescrewed.platforms.TiledPlatform;
 
 
@@ -83,8 +82,6 @@ public class Level {
 	public static Level getDefaultLevel(){
 		Level out = new Level();
 		TiledPlatform tp, ground;
-		RoomPlatform rp;
-		//ShapePlatform sp;
 		Texture texture = new Texture( Gdx.files.internal( "data/rletter.png" ) );
 		
 		tp = new PlatformBuilder(out.world)
@@ -92,12 +89,6 @@ public class Level {
 		.setDimensions( 10, 1 )
 		.setTexture( texture )
 		.buildTilePlatform( );
-
-		rp = new PlatformBuilder(out.world)
-		.setPosition( -1.0f, 0.4f )
-		.setDimensions( 1, 10 )
-		.setTexture( texture )
-		.buildRoomPlatform( );
 		
 		ground = new PlatformBuilder(out.world)
 		.setPosition( 0.0f, 0.0f )
@@ -106,7 +97,6 @@ public class Level {
 		.buildTilePlatform( );
 		
 		out.platforms.add( ground );
-		out.platforms.add( rp );
 		out.platforms.add( tp );
 		
 		

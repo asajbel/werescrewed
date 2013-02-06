@@ -145,12 +145,14 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		skeleton.addPlatform( tiledPlat );
 		
 		// Tiled Rectangle Platform
+		/*
 		rectile = platBuilder.setPosition( -200.0f, 600.f )
 				.setDimensions( 20,3 ).setTexture( testTexture )
 				.setName( "rectangle tiled" ).setResitituion( 0.0f ).buildTilePlatform( );
 		rectile.body.setType( BodyType.DynamicBody );
 		rectile.body.setFixedRotation( false );
 		skeleton.addPlatform( rectile );
+		*/
 		
 		// Tiled Single Platform
 		singTile = platBuilder.setPosition( -1.0f, 1000.0f )
@@ -246,7 +248,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 	void buildMoverPlatforms( ) {
 		TiledPlatform slidingPlatform = platBuilder.setWidth( 10 )
 				.setHeight( 1 ).setOneSided( true ).setPosition( -1000, 200 )
-				.setTexture( testTexture ).setFriction( 1f )
+				.setTexture( testTexture ).setFriction( 1f ).setMoveable( true )
 				.buildTilePlatform( );
 		slidingPlatform.body.setType( BodyType.DynamicBody );
 
@@ -292,7 +294,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 				.upper( 1 ).motorSpeed( 1 );
 		for ( int i = 0; i < 10; ++i ) {
 			TiledPlatform piston = builder.setPosition( ( -100f - i * 40 ),
-					220f ).setHeight( 2 + i ).buildTilePlatform( );
+					220f ).setHeight( 2 + i ).setMoveable( true ).buildTilePlatform( );
 
 			piston.body.setType( BodyType.DynamicBody );
 			PrismaticJoint pistonJoint = jointBuilder.bodyB( ( Entity ) piston )
@@ -311,10 +313,11 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 				.setTexture( testTexture ).setFriction( 1f );
 		// .buildTilePlatform( world );
 
-		TiledPlatform elevator = builder.setPosition( -1500, 150 ).buildTilePlatform( );
+		TiledPlatform elevator = builder.setPosition( -1500, 150 )
+				.setMoveable( true ).buildTilePlatform( );
 		elevator.body.setType( BodyType.DynamicBody );
-		PrismaticJoint pistonJ =  jointBuilder.bodyB( ( Entity ) elevator )
-				.anchor( elevator.body.getWorldCenter( ) ).build( );
+		PrismaticJoint pistonJ = jointBuilder.bodyB( ( Entity ) elevator )
+		.anchor( elevator.body.getWorldCenter( ) ).build( );
 		
 		elevator.setMover( new PistonMover( pistonJ, 0f,  2f ) );
 		elevator.body.setSleepingAllowed( false );
