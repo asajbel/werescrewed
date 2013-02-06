@@ -222,7 +222,7 @@ public class Player extends Entity {
 	}
 	
 	private void updateAnchor() {
-		anchor.setPosition( getPosition() );
+		anchor.setPositionBox( getPosition() );
 	}
 
 	/**

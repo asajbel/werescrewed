@@ -24,7 +24,6 @@ public class AnchorList {
 	private Vector2 sum;
 	private Vector2 midpoint2;
 	private Vector2 prevMidpoint;
-	private Vector3 midpoint3;
 	private Vector2 midpointVelocity;
 	private Vector2 specialMidpoint;
 	private static AnchorList instance;
@@ -41,7 +40,6 @@ public class AnchorList {
 		sum = new Vector2(0f, 0f);
 		midpoint2 = new Vector2(0f, 0f);
 		prevMidpoint = new Vector2(0f, 0f);
-		midpoint3 = new Vector3(0f, 0f, 0f);
 		midpointVelocity = new Vector2(0f, 0f);
 		specialMidpoint = new Vector2(0f, 0f);
 		shapeRenderer = new ShapeRenderer();
@@ -69,6 +67,7 @@ public class AnchorList {
 	public void update(boolean debugRender) {
 		
 		// update velocity of midpoint
+		setMidpoint();
 		midpointVelocity.x = midpoint2.x;
 		midpointVelocity.y = midpoint2.y;
 		midpointVelocity.sub(prevMidpoint);
@@ -102,8 +101,6 @@ public class AnchorList {
 				}
 			}
 		}
-		
-		setMidpoint();
 	}
 	
 	/**
@@ -230,9 +227,9 @@ public class AnchorList {
     		sum.add(curAnchor.position);
     		count++;
     	}
-    	midpoint2 = sum.div((float) count);
-    	midpoint3.x = midpoint2.x;
-    	midpoint3.y = midpoint2.y;
+    	sum.div((float) count);
+    	midpoint2.x = sum.x;
+    	midpoint2.y = sum.y;
     	
     	// set special midpoint
     	count = 0;
@@ -246,6 +243,8 @@ public class AnchorList {
     		}
     	}
     	
-    	midpoint2 = sum.div((float) count);
+    	sum.div((float) count);
+    	specialMidpoint.x = sum.y;
+    	specialMidpoint.y =  sum.y;
 	}
 }
