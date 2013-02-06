@@ -3,25 +3,30 @@ package com.blindtigergames.werescrewed.screws;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
 import com.blindtigergames.werescrewed.entity.Entity;
 
 /**
- * @descrip: holds general methods for screws
+ * Base class for the various types of screws. Defines basic behavior.
+ * 
+ * @param name - id of screw
+ * @param pos - position in the world of the screw
+ * @param tex - texture applied to the screw
  * 
  * @author Dennis
  * 
  */
 
 public class Screw extends Entity {
-	public Screw( String n, Vector2 pos, Texture tex, Body bod ) {
-		super( n, pos, tex, bod, false );
-	}
-	
-	public Screw( String name, Vector2 pos, Body body ) {
-		super( name, pos,
-				new Texture( Gdx.files.internal( "data/screw.png" ) ), body,
-				false );
+
+	protected int rotation;
+	protected int depth;
+	protected int maxDepth;
+	protected int screwStep;
+
+	public Screw( String name, Vector2 pos, Texture tex ) {
+		super( name, pos, ( tex == null ? new Texture(
+				Gdx.files.internal( "data/screw.png" ) ) : tex ), null, false );
 	}
 
 	@Override
@@ -29,32 +34,50 @@ public class Screw extends Entity {
 		super.update( deltaTime );
 	}
 
+	/**
+	 * destroys everything contained within the screw instance
+	 */
 	public void remove( ) {
 		world.destroyBody( body );
 	}
 
+	/**
+	 * Turns structural and puzzle screws to the left
+	 * which decreases depth
+	 * structural screws will eventually fall out
+	 * @param
+	 */
 	public void screwLeft( ) {
 	}
-
+	
+	/**
+	 * Turns structural and puzzle screws to the right
+	 * which increases depth and tightens structural screws
+	 * @param
+	 */
 	public void screwRight( ) {
 	}
-
-	public int getRotation( ) {
-		return rotation;
-	}
-
+	/**
+	 * Turns structural and puzzle screws to the left
+	 * structural screws will eventually fall out
+	 * @param
+	 */
 	public int getDepth( ) {
 		return depth;
 	}
-
-	public void exampleCollide( String str ) {
-		System.out.println( str );
+	
+	/**
+	 * attaches any other object between this screw and the main entity that
+	 * this screw is attached
+	 * 
+	 * @param entity
+	 */
+	public void addStructureJoint( Entity entity ) {
+		// connect other structure to structure screw
+		RevoluteJointDef revoluteJointDef = new RevoluteJointDef( );
+		revoluteJointDef.initialize( body, entity.body, body.getPosition( ) );
+		revoluteJointDef.enableMotor = false;
+		world.createJoint( revoluteJointDef );
 	}
-
-	protected int rotation;
-	protected int depth;
-	protected int maxDepth;
-	protected int screwStep;
-	protected final short CATEGORY_SCREWS = 0x0008;
 
 }

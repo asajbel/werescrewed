@@ -14,14 +14,14 @@ import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.Shape;
 import com.badlogic.gdx.utils.XmlReader;
-import com.blindtigergames.werescrewed.screens.GameScreen;
+import com.blindtigergames.werescrewed.util.Util;
 
 public class EntityDef {
 
 	// Methods
 	protected EntityDef( String n ) {
 		// Sprite Data
-		texture = null;
+		setTexture( null );
 		initialAnim = "";
 		origin = new Vector2( 0, 0 );
 		spriteScale = new Vector2( 1, 1 );
@@ -34,14 +34,14 @@ public class EntityDef {
 		fixedRotation = false;
 
 		// Misc Data
-		name = n;
+		setName( n );
 	}
 
 	protected EntityDef( String n, Texture t, String iA, BodyDef bDef,
 			ArrayList< FixtureDef > fixes ) {
 		this( n );
 		// Sprite Data
-		texture = t;
+		setTexture( t );
 		initialAnim = iA;
 
 		// Body Data
@@ -58,6 +58,29 @@ public class EntityDef {
 		super.finalize( );
 	}
 
+	public String getName( ) {
+		return name;
+	}
+
+	public void setName( String name ) {
+		this.name = name;
+	}
+
+	public String getCategory( ) {
+		return category;
+	}
+
+	public void setCategory( String category ) {
+		this.category = category;
+	}
+
+	public Texture getTexture( ) {
+		return texture;
+	}
+
+	public void setTexture( Texture texture ) {
+		this.texture = texture;
+	}
 	/**
 	 * Loads the body elements for the current Entity
 	 * 
@@ -92,13 +115,15 @@ public class EntityDef {
 
 	// Miscellaneous Fields
 	protected String name;
+	private String category;
 
 	// Static Methods and Fields
 	protected static HashMap< String, EntityDef > definitions;
 	static {
 		definitions = new HashMap< String, EntityDef >( );
 	}
-
+	public static final String NO_CATEGORY = "Entity";
+	
 	public static EntityDef getDefinition( String id ) {
 		if ( definitions.containsKey( id ) ) {
 			return definitions.get( id ); // If we already have a definition,
@@ -115,7 +140,7 @@ public class EntityDef {
 				ArrayList< FixtureDef > fixes = new ArrayList< FixtureDef >( );
 
 				CircleShape playerfeetShape = new CircleShape( );
-				playerfeetShape.setRadius( 10f * GameScreen.PIXEL_TO_BOX );
+				playerfeetShape.setRadius( 10f * Util.PIXEL_TO_BOX );
 				FixtureDef playerFixtureDef = makeFixtureDef( 9.9f, 0.0f,
 						0.0f, playerfeetShape );
 				fixes.add( playerFixtureDef );
@@ -150,9 +175,11 @@ public class EntityDef {
 					.parse( Gdx.files.internal( filename ) );
 			EntityDef out = new EntityDef( id );
 
+			// Category Data
+			out.setCategory( xml.get( "category", NO_CATEGORY) );
 			// Sprite Data
 			String texName = xml.get( "texture" );
-			out.texture = new Texture( Gdx.files.internal( texName ) );
+			out.setTexture( new Texture( Gdx.files.internal( texName ) ) );
 			out.initialAnim = xml.get( "initialAnim" );
 			out.origin.x = xml.getFloat( "originX" );
 			out.origin.y = xml.getFloat( "originY" );
@@ -168,6 +195,7 @@ public class EntityDef {
 			float friction = xml.getFloat( "friction" );
 			float restitution = xml.getFloat( "restitution" );
 			float scale = xml.getFloat( "bodyScale" );
+			out.fixedRotation = xml.getBoolean( "fixedRotation", false);
 
 			out.loadComplexBody( density, friction, restitution, scale,
 					bodyName );

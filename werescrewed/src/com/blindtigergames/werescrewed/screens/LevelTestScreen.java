@@ -6,7 +6,7 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.blindtigergames.werescrewed.debug.SBox2DDebugRenderer;
-import com.blindtigergames.werescrewed.input.InputHandlerPlayer1;
+import com.blindtigergames.werescrewed.input.InputHandler;
 import com.blindtigergames.werescrewed.level.Level;
 
 public class LevelTestScreen implements com.badlogic.gdx.Screen {
@@ -21,14 +21,14 @@ public class LevelTestScreen implements com.badlogic.gdx.Screen {
 	public static final float BOX_TO_PIXEL = 256f;
 	public static final float PIXEL_TO_BOX = 1 / BOX_TO_PIXEL;
 
-	InputHandlerPlayer1 inputHandler;
+	InputHandler inputHandler;
 	SpriteBatch batch;
 	SBox2DDebugRenderer debugRenderer;
 	Level level;
 	
 	public LevelTestScreen( ){
-		inputHandler = new InputHandlerPlayer1( );
-		level = new Level( );
+		inputHandler = new InputHandler( "player1" );
+		level = Level.getDefaultLevel( );
 		batch = new SpriteBatch( );
 		debugRenderer = new SBox2DDebugRenderer( BOX_TO_PIXEL );
 		
@@ -41,7 +41,7 @@ public class LevelTestScreen implements com.badlogic.gdx.Screen {
 		Gdx.gl20.glClear( GL20.GL_COLOR_BUFFER_BIT );
 
 		if ( Gdx.input.isKeyPressed( Input.Keys.ESCAPE ) ) {
-			ScreenManager.getInstance( ).show( Screen.PAUSE );
+			ScreenManager.getInstance( ).show( ScreenType.PAUSE );
 		}
 		if ( Gdx.input.isKeyPressed( Keys.P ) ) {
 			System.exit( 0 );

@@ -1,4 +1,5 @@
 <entity>
+   	<category>Player</category>
 	<texture>data/player_r_m.png</texture>
 	<initialAnim>default</initialAnim>
 	<originX>0.0f</originX>
@@ -15,4 +16,5 @@
 	<friction>0.0f</friction>
 	<restitution>0.0f</restitution>
 	<bodyScale>0.3f</bodyScale>
+	<fixedRotation>true</fixedRotation>
 </entity>

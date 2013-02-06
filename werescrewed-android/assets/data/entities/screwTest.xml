@@ -11,7 +11,7 @@
 	<tintBlue>0.1f</tintBlue>
 	<tintAlpha>1.0f</tintAlpha>
 	
-	<body>playerTest</body>
+	<body>screwTest</body>
 	<density>1.0f</density>
 	<friction>0.0f</friction>
 	<restitution>0.0f</restitution>

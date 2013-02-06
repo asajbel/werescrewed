@@ -1,65 +1,89 @@
 package com.blindtigergames.werescrewed.screens;
 
-public enum Screen {
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.blindtigergames.werescrewed.collisionManager.MyContactListener;
+import com.blindtigergames.werescrewed.debug.SBox2DDebugRenderer;
+import com.blindtigergames.werescrewed.input.InputHandler;
+import com.blindtigergames.werescrewed.level.Level;
 
-	INTRO {
-		@Override
-		protected com.badlogic.gdx.Screen getScreenInstance( ) {
-			return new IntroScreen( );
-		}
-	},
-	PAUSE {
-		@Override
-		protected com.badlogic.gdx.Screen getScreenInstance( ) {
-			return new PauseScreen( );
-		}
-	},
-	LEVELTEST {
-		@Override
-		protected com.badlogic.gdx.Screen getScreenInstance( ) {
-			return new LevelTestScreen( );
-		}
-	},
-	LOADING {
-		@Override
-		protected com.badlogic.gdx.Screen getScreenInstance( ) {
-			return new LoadingScreen( );
-		}
-	},
-	MAIN_MENU {
-		@Override
-		protected com.badlogic.gdx.Screen getScreenInstance( ) {
-			return new MainMenuScreen( );
-		}
-	},
+public class Screen implements com.badlogic.gdx.Screen {
 
-	GAME {
-		@Override
-		protected com.badlogic.gdx.Screen getScreenInstance( ) {
-			return new GameScreen( );
-		}
-	},
+	public static final float BOX_TO_PIXEL = 256f;
+	public static final float PIXEL_TO_BOX = 1 / BOX_TO_PIXEL;
+	
+	protected Level level;
+	protected InputHandler inputHandler;
+	protected SpriteBatch batch;
+	protected SBox2DDebugRenderer debugRenderer;
+	MyContactListener MCL;
 
-	CREDITS {
-		@Override
-		protected com.badlogic.gdx.Screen getScreenInstance( ) {
-			return new CreditsScreen( );
+	
+	public Screen( ){
+		inputHandler = new InputHandler( "player1" );
+		batch = new SpriteBatch( );
+		debugRenderer = new SBox2DDebugRenderer( BOX_TO_PIXEL );
+		MCL = new MyContactListener( );
+		level = null;
+	}
+	
+	@Override
+	public void render( float delta ) {
+		if(Gdx.gl20 != null){
+			Gdx.gl20.glClearColor( 0.0f, 0f, 0.0f, 1.0f );
+			Gdx.gl20.glClear( GL20.GL_COLOR_BUFFER_BIT );
+		} else {
+			Gdx.gl10.glClearColor( 0.0f, 0f, 0.0f, 1.0f );
+			Gdx.gl10.glClear( GL20.GL_COLOR_BUFFER_BIT );
 		}
-	},
 
-	PHYSICS {
-		@Override
-		protected com.badlogic.gdx.Screen getScreenInstance( ) {
-			return new PhysicsTestScreen( );
+		if ( Gdx.input.isKeyPressed( Input.Keys.ESCAPE ) ) {
+			ScreenManager.getInstance( ).show( ScreenType.PAUSE );
 		}
-	},
-	IMOVER {
-        @Override
-        protected com.badlogic.gdx.Screen getScreenInstance() {
-             return new IMoverGameScreen();
-        }
-    };
+		if ( Gdx.input.isKeyPressed( Keys.P ) ) {
+			System.exit( 0 );
+		}
+		level.update( delta );
+		level.draw( batch, debugRenderer );
+	}
 
-	protected abstract com.badlogic.gdx.Screen getScreenInstance( );
+	@Override
+	public void resize( int width, int height ) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void show( ) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void hide( ) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void pause( ) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void resume( ) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void dispose( ) {
+		// TODO Auto-generated method stub
+		
+	}
 
 }

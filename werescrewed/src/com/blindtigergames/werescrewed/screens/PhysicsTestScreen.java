@@ -22,6 +22,7 @@ import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityManager;
 import com.blindtigergames.werescrewed.entity.Player;
 import com.blindtigergames.werescrewed.entity.Skeleton;
+import com.blindtigergames.werescrewed.entity.mover.LerpMover;
 import com.blindtigergames.werescrewed.entity.mover.PistonMover;
 import com.blindtigergames.werescrewed.entity.mover.PuzzleType;
 import com.blindtigergames.werescrewed.entity.mover.SlidingMotorMover;
@@ -33,8 +34,13 @@ import com.blindtigergames.werescrewed.platforms.TiledPlatform;
 import com.blindtigergames.werescrewed.screws.PuzzleScrew;
 import com.blindtigergames.werescrewed.screws.StrippedScrew;
 import com.blindtigergames.werescrewed.screws.StructureScrew;
+import com.blindtigergames.werescrewed.util.Util;
 
 public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
+
+	// FIELDS
+
+	// Static Constants
 
 	/***
 	 * Box2D to pixels conversion.
@@ -43,119 +49,72 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 	 * in-game object (10 meters) we can use is 2560 pixels wide, which is much
 	 * bigger than our max screen resolution so it should be enough.
 	 */
-	public static final float BOX_TO_PIXEL = 256f;
-	public static final float PIXEL_TO_BOX = 1 / BOX_TO_PIXEL;
-	public static final float DEG_TO_RAD = 0.0174532925199432957f;
-	public static final float RAD_TO_DEG = 57.295779513082320876f;
+	// public static final float BOX_TO_PIXEL = 256f;
+	// public static final float PIXEL_TO_BOX = 1 / BOX_TO_PIXEL;
+	// public static final float DEG_TO_RAD = 0.0174532925199432957f;
+	// public static final float RAD_TO_DEG = 57.295779513082320876f;
+
+	// Variables
 
 	private Camera cam;
 	private SpriteBatch batch;
-	private Texture texture;
-	private World world;
-	private MyContactListener mcl;
-	private SBox2DDebugRenderer debugRenderer;
-	private Player player;
-	private TiledPlatform tp, ground, movingTP;
-	private PlatformBuilder platBuilder;
+	private Texture testTexture;
 	private EntityManager entityManager;
-
-	private Texture background;
-	private StructureScrew structScrew;
+	private World world;
+	private MyContactListener contactListener;
+	private SBox2DDebugRenderer debugRenderer;
+	private Player player1, player2;
+	private TiledPlatform tiledPlat, ground, movingTP, singTile, rectile;
+	private PlatformBuilder platBuilder;
 	private PuzzleScrew puzzleScrew;
 	private Skeleton skeleton;
 	private Skeleton rootSkeleton;
-	private ArrayList< StrippedScrew > climbingScrews = new ArrayList< StrippedScrew >( );
+	private ArrayList< StrippedScrew > climbingScrews;
+	private boolean debug = true;
+	private boolean debugTest = true;
 
+	/**
+	 * Defines all necessary components in a screen for testing different
+	 * physics-related mechanics
+	 */
 	public PhysicsTestScreen( ) {
-		System.out.println( "Physics Test Screen starting" );
-		float zoom = 1.0f;
-		float width = Gdx.graphics.getWidth( ) / zoom;
-		float height = Gdx.graphics.getHeight( ) / zoom;
-
-		cam = new Camera( width, height );
-		texture = new Texture( Gdx.files.internal( "data/rletter.png" ) );
+		// Initialize world and variables to allow adding entities
 		batch = new SpriteBatch( );
-		entityManager = new EntityManager();
-
 		world = new World( new Vector2( 0, -45 ), true );
-		mcl = new MyContactListener( );
-		world.setContactListener( mcl );
-		skeleton = new Skeleton( "", Vector2.Zero, background, world );
+		entityManager = new EntityManager( );
+		skeleton = new Skeleton( "", Vector2.Zero, null, world );
 		rootSkeleton = new Skeleton( "", Vector2.Zero, null, world );
-		platBuilder = new PlatformBuilder( world );
 		entityManager.addSkeleton( rootSkeleton.name, rootSkeleton );
-		
+		platBuilder = new PlatformBuilder( world );
+		testTexture = new Texture( Gdx.files.internal( "data/TilesetTest.png" ) );
 
-		player = new Player( world, new Vector2( 1.0f, 1.0f ), "player" );
+		// Initialize camera
+		initCamera( );
 
-		texture = new Texture( Gdx.files.internal( "data/rletter.png" ) );
+		// Initialize listeners
+		contactListener = new MyContactListener( );
+		world.setContactListener( contactListener );
 
-		tp = platBuilder.setPosition( 350.0f, 100.0f ).setDimensions( 10, 1 )
-				.setTexture( texture ).setName( "tp" ).setResitituion( 0.0f )
-				.buildTilePlatform( );
+		// Initialize platforms
+		initTiledPlatforms( );
 
-		movingTP = platBuilder.setPosition( 350.0f, 170.0f )
-				.setDimensions( 10, 1 ).setTexture( texture )
-				.setName( "movingTP" ).setResitituion( 0.0f )
-				.buildTilePlatform( );
+		// Initialize screws
+		initStructureScrews( );
+		initPuzzleScrews( );
+		initClimbingScrews( );
 
-		movingTP.body.setType( BodyType.DynamicBody );
-		
-		entityManager.addEntity( movingTP.name, movingTP );
-		entityManager.removeEntity( movingTP.name, movingTP );
+		// Add players
+		// First player has to have the name "player1"
+		// Second player has to have the name "player2"
+		// Otherwise input handler breaks
+		player1 = new Player( "player1", world, new Vector2( 1.0f, 1.0f ) );
+		player2 = new Player( "player2", world, new Vector2( 1.5f, 1.5f ) );
 
-		background = new Texture( Gdx.files.internal( "data/libgdx.png" ) );
-		structScrew = new StructureScrew( "", tp.body.getPosition( ), 50, tp,
-				skeleton, world );
-		puzzleScrew = new PuzzleScrew( "001", new Vector2( 0.0f, 0.2f ), 50,
-				skeleton, world );
+		// Add screws
 
-		Vector2 axis = new Vector2( 1, 0 );
-		PrismaticJointDef jointDef = new PrismaticJointDef( );
-		jointDef.initialize( movingTP.body, skeleton.body,
-				movingTP.body.getPosition( ), axis );
-		jointDef.enableMotor = true;
-		jointDef.enableLimit = true;
-		jointDef.lowerTranslation = -1.5f;
-		jointDef.upperTranslation = 1.0f;
-		jointDef.motorSpeed = 7.0f;
-
-		puzzleScrew.puzzleManager.addEntity( movingTP );
-		puzzleScrew.puzzleManager.addJointDef( jointDef );
-
-		float x1 = 1.75f;
-		float x2 = 2.25f;
-		float y1 = 0.6f;
-		float dy = 0.7f;
-		for ( int i = 0; i < 10; i++ ) {
-			if ( i % 2 == 0 ) {
-				climbingScrews.add( new StrippedScrew( "",
-						new Vector2( x1, y1 ), skeleton, world ) );
-			} else {
-				climbingScrews.add( new StrippedScrew( "",
-						new Vector2( x2, y1 ), skeleton, world ) );
-			}
-			y1 += dy;
-		}
-
-		for ( StrippedScrew ss : climbingScrews ) {
-			skeleton.addStrippedScrew( ss );
-		}
-
-		ground = platBuilder.setPosition( 0.0f, 0.0f ).setName( "ground" )
-				.setDimensions( 100, 1 ).setTexture( texture )
-				.setResitituion( 0.0f ).buildTilePlatform( );
-		skeleton.addPlatformFixed( ground );
-		skeleton.addPlatform( tp ); // Tp already has a structureScrew holding
-									// it up
-
-		/*
-		 * Comment if you don't want stew's moving platforms in your way!
-		 */
-		buildMoverPlatforms( );
 		rootSkeleton.addSkeleton( skeleton );
 
-		debugRenderer = new SBox2DDebugRenderer( BOX_TO_PIXEL );
+		debugRenderer = new SBox2DDebugRenderer( Util.BOX_TO_PIXEL );
 		debugRenderer.setDrawJoints( false );
 		Gdx.app.setLogLevel( Application.LOG_DEBUG );
 
@@ -163,10 +122,132 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 
 	}
 
+	/**
+	 * Initializes camera settings
+	 */
+	private void initCamera( ) {
+		float zoom = 1.0f;
+		float width = Gdx.graphics.getWidth( ) / zoom;
+		float height = Gdx.graphics.getHeight( ) / zoom;
+		cam = new Camera( width, height );
+	}
+
+	/**
+	 * Initializes tiled platforms' settings, and adds them to the skeleton
+	 */
+	private void initTiledPlatforms( ) {
+		// Tiled Platform
+		tiledPlat = platBuilder.setPosition( 700.0f, 100.0f )
+				.setDimensions( 10, 1 ).setTexture( testTexture )
+				.setName( "tp" ).setResitituion( 0.0f ).buildTilePlatform( );
+		tiledPlat.body.setType( BodyType.DynamicBody );
+		tiledPlat.body.setFixedRotation( false );
+		skeleton.addPlatform( tiledPlat );
+		
+		// Tiled Rectangle Platform
+		rectile = platBuilder.setPosition( -200.0f, 600.f )
+				.setDimensions( 20,3 ).setTexture( testTexture )
+				.setName( "rectangle tiled" ).setResitituion( 0.0f ).buildTilePlatform( );
+		rectile.body.setType( BodyType.DynamicBody );
+		rectile.body.setFixedRotation( false );
+		skeleton.addPlatform( rectile );
+		
+		// Tiled Single Platform
+		singTile = platBuilder.setPosition( -1.0f, 1000.0f )
+				.setDimensions( 1, 1 ).setTexture( testTexture )
+				.setName( "Single Tiled" ).setResitituion( 0.0f ).buildTilePlatform( );
+		singTile.body.setType( BodyType.DynamicBody );
+		singTile.body.setFixedRotation( false );
+		skeleton.addPlatform( singTile ); 
+
+		// Moving platform
+		movingTP = platBuilder.setPosition( 0.0f, 120.0f )
+				.setDimensions( 10, 1 ).setTexture( testTexture )
+				.setName( "movingTP" ).setResitituion( 0.0f )
+				.buildTilePlatform( );
+		movingTP.body.setType( BodyType.KinematicBody );
+		buildMoverPlatforms( );
+
+		// Ground
+		ground = platBuilder.setPosition( 0.0f, 0.0f ).setName( "ground" )
+				.setDimensions( 200, 1 ).setTexture( testTexture )
+				.setResitituion( 0.0f ).buildTilePlatform( );
+		skeleton.addPlatformFixed( ground );
+	}
+
+	/**
+	 * Initialize the platform screws' settings and add them to the entity
+	 * manager and skeleton
+	 */
+	private void initStructureScrews( ) {
+		StructureScrew leftPlatScrew = new StructureScrew( "", new Vector2(
+				tiledPlat.body.getPosition( ).x - 0.5f,
+				tiledPlat.body.getPosition( ).y ), 50, tiledPlat, skeleton,
+				world );
+
+		StructureScrew rightPlatScrew = new StructureScrew( "", new Vector2(
+				tiledPlat.body.getPosition( ).x + 0.5f,
+				tiledPlat.body.getPosition( ).y ), 50, tiledPlat, skeleton,
+				world );
+		tiledPlat.addScrew( leftPlatScrew );
+		tiledPlat.addScrew( rightPlatScrew );
+	}
+
+	/**
+	 * Initializes settings for puzzle screws
+	 */
+	private void initPuzzleScrews( ) {
+
+		Vector2 axis = new Vector2( 1, 0 );
+		PrismaticJointDef jointDef = new PrismaticJointDef( );
+		jointDef.initialize( movingTP.body, skeleton.body,
+				movingTP.body.getPosition( ), axis );
+		jointDef.enableMotor = true;
+		jointDef.enableLimit = true;
+		jointDef.lowerTranslation = -2.5f;
+		jointDef.upperTranslation = 3.0f;
+		jointDef.motorSpeed = 7.0f;
+		puzzleScrew = new PuzzleScrew( "001", new Vector2( 0.0f, 0.2f ), 50,
+				skeleton, world );
+		puzzleScrew.puzzleManager.addEntity( movingTP );
+		LerpMover lm = new LerpMover(
+				new Vector2( movingTP.body.getPosition( ).x,
+						movingTP.body.getPosition( ).y ), new Vector2(
+						movingTP.body.getPosition( ).x + 1.75f,
+						movingTP.body.getPosition( ).y ), 1f );
+		puzzleScrew.puzzleManager.addMover( lm );
+	}
+
+	/**
+	 * Initializes stripped screws for climbing, and adds them to the skeleton.
+	 */
+	private void initClimbingScrews( ) {
+		climbingScrews = new ArrayList< StrippedScrew >( );
+		float x1 = 1.75f;
+		float x2 = 2.0f;
+		float y1 = 0.6f;
+		float dy = 0.7f;
+		for ( int i = 0; i < 10; i++ ) {
+			if ( i % 2 == 0 ) {
+				climbingScrews.add( new StrippedScrew( "", world, new Vector2(
+						x1, y1 ), skeleton ) );
+			} else {
+				climbingScrews.add( new StrippedScrew( "", world, new Vector2(
+						x2, y1 ), skeleton ) );
+			}
+			y1 += dy;
+		}
+
+		for ( StrippedScrew climbingScrew : climbingScrews ) {
+			skeleton.addStrippedScrew( climbingScrew );
+		}
+	}
+
 	void buildMoverPlatforms( ) {
-		TiledPlatform slidingPlatform = platBuilder.setWidth( 10 ).setHeight( 1 ).setOneSided( true )
-				.setPosition( -1000, 200 ).setTexture( texture )
-				.setFriction( 1f ).buildTilePlatform( );
+		TiledPlatform slidingPlatform = platBuilder.setWidth( 10 )
+				.setHeight( 1 ).setOneSided( true ).setPosition( -1000, 200 )
+				.setTexture( testTexture ).setFriction( 1f )
+				.buildTilePlatform( );
 		slidingPlatform.body.setType( BodyType.DynamicBody );
 
 		PrismaticJointDef prismaticJointDef = JointFactory
@@ -179,30 +260,31 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		slidingPlatform.setMover( new SlidingMotorMover(
 				PuzzleType.PRISMATIC_SLIDER, j ) );
 
-		TiledPlatform skeletonTest1 = platBuilder
-				.setWidth( 10 ).setHeight( 1 ).setFriction( 1f )
-				.setOneSided( false ).setPosition( -500, -200 )
-				.setTexture( texture ).buildTilePlatform( );
+		TiledPlatform skeletonTest1 = platBuilder.setWidth( 10 ).setHeight( 1 )
+				.setFriction( 1f ).setOneSided( false )
+				.setPosition( -500, -200 ).setTexture( testTexture )
+				.buildTilePlatform( );
 		skeletonTest1.body.setType( BodyType.DynamicBody );
 		skeleton.addPlatformFixed( skeletonTest1 );
 
-		TiledPlatform skeletonTest2 = platBuilder
-				.setWidth( 10 ).setHeight( 1 ).setOneSided( false )
-				.setPosition( 500, 300 ).setTexture( texture ).setFriction( 1f )
+		TiledPlatform skeletonTest2 = platBuilder.setWidth( 10 ).setHeight( 1 )
+				.setOneSided( false ).setPosition( 500, 300 )
+				.setTexture( testTexture ).setFriction( 1f )
 				.buildTilePlatform( );
+		skeletonTest2.setOneSided( true );
 		skeletonTest2.body.setType( BodyType.DynamicBody );
 		skeleton.addPlatformRotatingCenter( skeletonTest2 );
 
 		/*
 		 * TODO: FIX PLATFORM DENSITY
 		 */
-		
-		platBuilder.reset();
 
-		PlatformBuilder builder = platBuilder.setWidth( 1 )
-				.setHeight( 3 ).setOneSided( false )
+		platBuilder.reset( );
+
+		PlatformBuilder builder = platBuilder.setWidth( 1 ).setHeight( 2 )
+				.setOneSided( false )
 				// .setPosition( (-500f-i*40)*PIXEL_TO_BOX, 150f*PIXEL_TO_BOX )
-				.setTexture( texture ).setFriction( 1f );
+				.setTexture( testTexture ).setFriction( 1f );
 		// .buildTilePlatform( world );
 
 		PrismaticJointBuilder jointBuilder = new PrismaticJointBuilder( world )
@@ -210,7 +292,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 				.upper( 1 ).motorSpeed( 1 );
 		for ( int i = 0; i < 10; ++i ) {
 			TiledPlatform piston = builder.setPosition( ( -100f - i * 40 ),
-					220f ).buildTilePlatform( );
+					220f ).setHeight( 2 + i ).buildTilePlatform( );
 
 			piston.body.setType( BodyType.DynamicBody );
 			PrismaticJoint pistonJoint = jointBuilder.bodyB( ( Entity ) piston )
@@ -222,60 +304,73 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 			skeleton.addBoneAndJoint( piston, pistonJoint );
 		}
 
+		
+		builder = platBuilder.setWidth( 20 ).setHeight( 1 )
+				.setOneSided( true )
+				// .setPosition( (-500f-i*40)*PIXEL_TO_BOX, 150f*PIXEL_TO_BOX )
+				.setTexture( testTexture ).setFriction( 1f );
+		// .buildTilePlatform( world );
+
+		TiledPlatform elevator = builder.setPosition( -1500, 150 ).buildTilePlatform( );
+		elevator.body.setType( BodyType.DynamicBody );
+		PrismaticJoint pistonJ =  jointBuilder.bodyB( ( Entity ) elevator )
+				.anchor( elevator.body.getWorldCenter( ) ).build( );
+		
+		elevator.setMover( new PistonMover( pistonJ, 0f,  2f ) );
+		elevator.body.setSleepingAllowed( false );
+		skeleton.addBoneAndJoint( elevator, pistonJ );
+		
 		ComplexPlatform gear = new ComplexPlatform( "gear", new Vector2(
-				1000 * PIXEL_TO_BOX, 300 * PIXEL_TO_BOX ), null, 3, world,
-				"gearSmall" );
+				1000 * Util.PIXEL_TO_BOX, 300 * Util.PIXEL_TO_BOX ), null, 3,
+				world, "gearSmall" );
 		gear.body.setType( BodyType.DynamicBody );
 		skeleton.addPlatformRotatingCenterWithRot( gear, 1f );
-
 	}
 
 	@Override
 	public void render( float deltaTime ) {
-		Gdx.gl20.glClearColor( 0.0f, 0f, 0.0f, 1.0f );
-		Gdx.gl20.glClear( GL20.GL_COLOR_BUFFER_BIT );
+		if ( Gdx.gl20 != null ) {
+			Gdx.gl20.glClearColor( 0.0f, 0f, 0.0f, 1.0f );
+			Gdx.gl20.glClear( GL20.GL_COLOR_BUFFER_BIT );
+		} else {
+			Gdx.gl10.glClearColor( 0.0f, 0f, 0.0f, 1.0f );
+			Gdx.gl10.glClear( GL20.GL_COLOR_BUFFER_BIT );
+		}
 
 		cam.update( );
 
 		if ( Gdx.input.isKeyPressed( Input.Keys.ESCAPE ) ) {
-			ScreenManager.getInstance( ).show( Screen.PAUSE );
+			ScreenManager.getInstance( ).show( ScreenType.PAUSE );
 		}
 		if ( Gdx.input.isKeyPressed( Keys.P ) ) {
 			System.exit( 0 );
 		}
 
-		player.update( deltaTime );
-		structScrew.update( deltaTime );
+		if ( Gdx.input.isKeyPressed( Keys.NUM_0 ) ) {
+			if ( debugTest )
+				debug = !debug;
+			debugTest = false;
+		} else
+			debugTest = true;
+
+		player1.update( deltaTime );
+		player2.update( deltaTime );
 		puzzleScrew.update( deltaTime );
-//		rootSkeleton.update( deltaTime );
-//		movingTP.update( deltaTime );
-		entityManager.updateEntity( deltaTime );
-
-		// ONLY FOR TESTING, EVERYTHING IN WORLD IS IN A SKELETON (THEREFORE CAN
-		// MOVE)
-		if ( Gdx.input.isKeyPressed( Input.Keys.U ) ) {
-			rootSkeleton.translate( 0.0f, 0.01f );
-		}
-
-		if ( Gdx.input.isKeyPressed( Input.Keys.J ) ) {
-			rootSkeleton.translate( 0.0f, -0.01f );
-		}
-		
+		entityManager.update( deltaTime );
 
 		batch.setProjectionMatrix( cam.combined( ) );
 		batch.begin( );
 
 		puzzleScrew.draw( batch );
 		rootSkeleton.draw( batch );
-		player.draw( batch );
-
+		player1.draw( batch );
+		player2.draw( batch );
 		batch.end( );
 
-		// logger.log();
-		debugRenderer.render( world, cam.combined( ) );
+		if ( debug )
+			debugRenderer.render( world, cam.combined( ) );
 
-		world.step( 1 / 60f, 6, 2 ); // step our physics calculations
-
+		world.step( 1 / 60f, 6, 2 );
 	}
 
 	@Override
@@ -284,7 +379,6 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 
 	@Override
 	public void show( ) {
-
 	}
 
 	@Override

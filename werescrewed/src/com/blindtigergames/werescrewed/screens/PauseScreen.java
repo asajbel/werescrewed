@@ -30,7 +30,7 @@ class PauseScreen implements com.badlogic.gdx.Screen {
 		licenseLabel = new Label( "License: Apache License 2.0", font );
 		versionLabel = new Label( "LibGDX version: " + Version.VERSION, font );
 		backButton = new Button( "Back", font, new ScreenSwitchHandler(
-				Screen.GAME ) );
+				ScreenType.GAME ) );
 	}
 
 	@Override
@@ -39,7 +39,7 @@ class PauseScreen implements com.badlogic.gdx.Screen {
 		Gdx.gl.glClear( GL10.GL_COLOR_BUFFER_BIT );
 
 		if ( Gdx.input.isKeyPressed( Input.Keys.ESCAPE ) ) {
-			ScreenManager.getInstance( ).show( Screen.GAME );
+			ScreenManager.getInstance( ).show( ScreenType.GAME );
 		}
 		batch.begin( );
 		authorLabel.draw( batch );

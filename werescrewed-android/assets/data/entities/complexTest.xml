@@ -15,4 +15,4 @@
 	<friction>0.25f</friction>
 	<restitution>0.00f</restitution>
 	<bodyScale>1.0f</bodyScale>
-</entity>
+	<fixedRotation>false</fixedRotation></entity>
