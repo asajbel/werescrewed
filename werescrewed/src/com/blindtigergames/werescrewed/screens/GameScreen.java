@@ -25,7 +25,6 @@ import com.blindtigergames.werescrewed.entity.Skeleton;
 import com.blindtigergames.werescrewed.input.InputHandler;
 import com.blindtigergames.werescrewed.platforms.ComplexPlatform;
 import com.blindtigergames.werescrewed.platforms.PlatformBuilder;
-import com.blindtigergames.werescrewed.platforms.RoomPlatform;
 import com.blindtigergames.werescrewed.platforms.ShapePlatform;
 import com.blindtigergames.werescrewed.platforms.Shapes;
 import com.blindtigergames.werescrewed.platforms.TiledPlatform;
@@ -47,7 +46,6 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 	Entity playerEntity;
 	Player player;
 	TiledPlatform tp, ground;
-	RoomPlatform rp;
 	ComplexPlatform cp;
 	ShapePlatform sp;
 	PlatformBuilder platBuilder;
@@ -102,10 +100,6 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 				.setDimensions( 10, 1 ).setTexture( texture )
 				.setResitituion( 0.0f ).buildTilePlatform( );
 
-		rp = platBuilder.setPosition( -200.0f, 100.0f ).setName( "rp" )
-				.setDimensions( 1, 10 ).setTexture( texture )
-				.setResitituion( 0.0f ).buildRoomPlatform( );
-
 		cp = new ComplexPlatform( "bottle", new Vector2( -100.0f, 100.0f ),
 				new Texture( Gdx.files.internal( "data/bodies/test01.png" ) ),
 				1, world, "complexTest" );
@@ -159,7 +153,6 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 		skeleton.addPlatformFixed( tp );
 		skeleton.addPlatformFixed( sp );
 		skeleton.addPlatformFixed( cp );
-		skeleton.addPlatformFixed( rp );
 
 		rootSkeleton.addSkeleton( skeleton );
 		// make sure you uncomment the next two lines debugRenderer = new

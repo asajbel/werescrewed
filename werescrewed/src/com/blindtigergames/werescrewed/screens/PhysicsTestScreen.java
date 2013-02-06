@@ -246,7 +246,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 	void buildMoverPlatforms( ) {
 		TiledPlatform slidingPlatform = platBuilder.setWidth( 10 )
 				.setHeight( 1 ).setOneSided( true ).setPosition( -1000, 200 )
-				.setTexture( testTexture ).setFriction( 1f )
+				.setTexture( testTexture ).setFriction( 1f ).setMoveable( true )
 				.buildTilePlatform( );
 		slidingPlatform.body.setType( BodyType.DynamicBody );
 
@@ -292,7 +292,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 				.upper( 1 ).motorSpeed( 1 );
 		for ( int i = 0; i < 10; ++i ) {
 			TiledPlatform piston = builder.setPosition( ( -100f - i * 40 ),
-					220f ).setHeight( 2 + i ).buildTilePlatform( );
+					220f ).setHeight( 2 + i ).setMoveable( true ).buildTilePlatform( );
 
 			piston.body.setType( BodyType.DynamicBody );
 			PrismaticJoint pistonJoint = jointBuilder.bodyB( ( Entity ) piston )
@@ -311,10 +311,11 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 				.setTexture( testTexture ).setFriction( 1f );
 		// .buildTilePlatform( world );
 
-		TiledPlatform elevator = builder.setPosition( -1500, 150 ).buildTilePlatform( );
+		TiledPlatform elevator = builder.setPosition( -1500, 150 )
+				.setMoveable( true ).buildTilePlatform( );
 		elevator.body.setType( BodyType.DynamicBody );
-		PrismaticJoint pistonJ =  jointBuilder.bodyB( ( Entity ) elevator )
-				.anchor( elevator.body.getWorldCenter( ) ).build( );
+		PrismaticJoint pistonJ = jointBuilder.bodyB( ( Entity ) elevator )
+		.anchor( elevator.body.getWorldCenter( ) ).build( );
 		
 		elevator.setMover( new PistonMover( pistonJ, 0f,  2f ) );
 		elevator.body.setSleepingAllowed( false );

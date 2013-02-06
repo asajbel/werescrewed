@@ -11,7 +11,6 @@ import com.badlogic.gdx.physics.box2d.JointEdge;
 import com.badlogic.gdx.physics.box2d.Manifold;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.Player;
-import com.blindtigergames.werescrewed.platforms.Platform;
 import com.blindtigergames.werescrewed.platforms.TiledPlatform;
 import com.blindtigergames.werescrewed.screws.Screw;
 import com.blindtigergames.werescrewed.screws.StructureScrew;
@@ -177,7 +176,6 @@ public class MyContactListener implements ContactListener {
 						tilePlat.body.getFixtureList( ).get( 0 )
 								.setFriction( 1f );
 					} else {
-						Gdx.app.log( player.name + ": " , "none" );
 						player.noFriction( );
 					}
 					Vector2 platformPos = tilePlat.getPosition( );
@@ -232,7 +230,6 @@ public class MyContactListener implements ContactListener {
 						tilePlat.body.getFixtureList( ).get( 0 )
 								.setFriction( 1f );
 					} else {
-						Gdx.app.log( player.name + ": " , "none" );
 						player.noFriction( );
 					}
 					Vector2 platformPos = tilePlat.getPosition( );

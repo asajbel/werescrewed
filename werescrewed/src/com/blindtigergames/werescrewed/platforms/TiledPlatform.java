@@ -55,7 +55,7 @@ public class TiledPlatform extends Platform {
 	protected Vector< Tile > tiles;
 
 	public TiledPlatform( String n, Vector2 pos, Texture tex, float width,
-			float height, boolean isOneSided, World world ) {
+			float height, boolean isOneSided, boolean isMoveable, World world ) {
 		super( n, pos, tex, world );
 		this.tileSet = new TileSet( tex );
 		this.tileHeight = height;
@@ -80,6 +80,7 @@ public class TiledPlatform extends Platform {
 		constructTileBody( pos.x, pos.y, width, height );
 		body.setUserData( this );
 		setOneSided( isOneSided );
+		this.moveable = isMoveable;
 		tileBody( );
 	}
 

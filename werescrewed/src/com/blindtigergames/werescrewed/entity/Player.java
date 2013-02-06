@@ -209,7 +209,6 @@ public class Player extends Entity {
 				playerState = PlayerState.JumpingOffScrew;
 				screwJumpTimeout = 6;
 			}
-			stop( );
 		}
 
 		if ( ( !inputHandler.leftPressed( ) && !inputHandler.rightPressed( ) )

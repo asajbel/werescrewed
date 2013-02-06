@@ -29,6 +29,7 @@ public class PlatformBuilder {
 	boolean flipHorizonal = false;
 	boolean flipVertical = false;
 	boolean isOneSided = false;
+	boolean moveable = false;
 	Shapes shape = null;
 	Texture texture = null;
 	World world = null;
@@ -219,6 +220,17 @@ public class PlatformBuilder {
 		return this;
 	}
 
+/**
+ * 
+ * @param moving - boolean tells if platform could move, default false
+ * @return PlatformBuilder
+ */
+	
+	public PlatformBuilder setMoveable( boolean moving ) {
+		this.moveable = moving;
+		return this;
+	}
+
 	/**
 	 * resets all the values to its default, use between builds
 	 */
@@ -239,24 +251,10 @@ public class PlatformBuilder {
 		this.flipHorizonal = false;
 		this.flipVertical = false;
 		this.isOneSided = false;
+		this.moveable = false;
 		this.shape = null;
 		this.texture = null;
 		this.name = "No name";
-	}
-	
-/**
- * builds room platform according to specs	
- * @return RoomPlatform
- */
-	public RoomPlatform buildRoomPlatform( ) {
-		RoomPlatform rp = new RoomPlatform( this.name, new Vector2( positionX,
-				positionY ), this.texture, this.width, this.height, world );
-
-		rp.setDensity( this.density );
-		rp.setFriction( this.friction );
-		rp.setRestitution( this.restitution );
-		rp.setGravScale( this.gravScale );
-		return rp;
 	}
 
 /**
@@ -264,8 +262,9 @@ public class PlatformBuilder {
  * @return TiledPlatform
  */
 	public TiledPlatform buildTilePlatform( ) {
-		TiledPlatform tp = new TiledPlatform( this.name, new Vector2( positionX,
-				positionY ), this.texture, this.width, this.height, this.isOneSided, world );
+		TiledPlatform tp = new TiledPlatform( this.name, new Vector2(
+				positionX, positionY ), this.texture, this.width, this.height,
+				this.isOneSided, this.moveable, world );
 
 		tp.setDensity( this.density );
 		tp.setFriction( this.friction );
