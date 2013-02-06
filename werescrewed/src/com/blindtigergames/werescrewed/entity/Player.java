@@ -29,6 +29,8 @@ import com.blindtigergames.werescrewed.util.Util;
  */
 public class Player extends Entity {
 
+	public Fixture feet;
+	public Fixture torso;
 	int check = 0;
 
 	private int prevKey;
@@ -59,6 +61,7 @@ public class Player extends Entity {
 	public final static float JUMP_IMPLUSE = 0.15f;
 	public final static float ANALOG_DEADZONE = 0.2f;
 	public final static float ANALOG_MAX_RANGE = 1.0f;
+	public final static float PLAYER_FRICTION = 0.7f;
 
 	// Static variables
 	public static Texture texture = new Texture(
@@ -102,6 +105,11 @@ public class Player extends Entity {
 		playerState = PlayerState.Standing;
 		inputHandler = new PlayerInputHandler( this.name );
 		anchorID = AnchorList.getInstance( ).addAnchor( true, pos );
+
+		torso = body.getFixtureList( ).get( 0 );
+		feet = body.getFixtureList( ).get( 1 );
+
+		maxFriction( );
 
 		setUpController( );
 	}
@@ -509,6 +517,14 @@ public class Player extends Entity {
 		this.grounded = newVal;
 	}
 
+	public void maxFriction( ) {
+		feet.setFriction( PLAYER_FRICTION );
+	}
+
+	public void noFriction( ) {
+		feet.setFriction( 0.0f );
+	}
+
 	/**
 	 * Checks if the player is grounded
 	 * 
@@ -563,7 +579,7 @@ public class Player extends Entity {
 	 * Stops the player
 	 */
 	private void stop( ) {
-		if ( body.getFixtureList( ).get( 1 ).getFriction( ) == 0 ) {
+		if ( feet.getFriction( ) == 0 ) {
 			float velocity = body.getLinearVelocity( ).x;
 			if ( velocity != 0.0f ) {
 				if ( velocity < -0.1f )
