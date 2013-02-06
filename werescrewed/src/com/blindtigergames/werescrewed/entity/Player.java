@@ -40,8 +40,7 @@ public class Player extends Entity {
 	private PlayerState playerState;
 	private Controller controller;
 	private boolean controllerIsActive, controllerDebug;
-	@SuppressWarnings( "unused" )
-	private float axisX, axisY;
+	private float axisX;
 
 	private Screw currentScrew;
 	private RevoluteJoint playerToScrew;

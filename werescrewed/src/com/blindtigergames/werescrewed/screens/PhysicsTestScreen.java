@@ -145,12 +145,14 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		skeleton.addPlatform( tiledPlat );
 		
 		// Tiled Rectangle Platform
+		/*
 		rectile = platBuilder.setPosition( -200.0f, 600.f )
 				.setDimensions( 20,3 ).setTexture( testTexture )
 				.setName( "rectangle tiled" ).setResitituion( 0.0f ).buildTilePlatform( );
 		rectile.body.setType( BodyType.DynamicBody );
 		rectile.body.setFixedRotation( false );
 		skeleton.addPlatform( rectile );
+		*/
 		
 		// Tiled Single Platform
 		singTile = platBuilder.setPosition( -1.0f, 1000.0f )
