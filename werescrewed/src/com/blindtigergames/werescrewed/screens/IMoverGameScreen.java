@@ -99,9 +99,9 @@ public class IMoverGameScreen implements com.badlogic.gdx.Screen {
 		initTiledPlatforms( );
 
 		// Initialize screws
-		initStructureScrews( );
-		initPuzzleScrews( );
-		initClimbingScrews( );
+		//initStructureScrews( );
+		//initPuzzleScrews( );
+		//initClimbingScrews( );
 
 		// Add players
 		// First player has to have the name "player1"
@@ -139,18 +139,31 @@ public class IMoverGameScreen implements com.badlogic.gdx.Screen {
 		// Tiled Platform
 		tiledPlat = platBuilder.setPosition( 700.0f, 100.0f )
 				.setDimensions( 10, 1 ).setTexture( testTexture )
+				.setKinematic( )
 				.setName( "tp" ).setResitituion( 0.0f ).buildTilePlatform( );
-		tiledPlat.body.setType( BodyType.DynamicBody );
 		tiledPlat.body.setFixedRotation( false );
-		skeleton.addPlatform( tiledPlat );
+		skeleton.addKinematicPlatform( tiledPlat );
 
 		// Moving platform
-		movingTP = platBuilder.setPosition( 0.0f, 120.0f )
+		movingTP = platBuilder.setPosition( 0.0f, 350.0f )
 				.setDimensions( 10, 1 ).setTexture( testTexture )
 				.setName( "movingTP" ).setResitituion( 0.0f )
 				.buildTilePlatform( );
 		movingTP.body.setType( BodyType.KinematicBody );
-		buildMoverPlatforms( );
+		skeleton.addKinematicPlatform( movingTP );
+		
+		//buildMoverPlatforms( );
+		TiledPlatform skeletonTest2 = platBuilder.setWidth( 10 ).setHeight( 1 )
+				.setOneSided( false ).setPosition( 500, 300 )
+				.setTexture( testTexture ).setFriction( 1f )
+				.setDynamic( )
+				
+				//.setOneSided( true )
+				.setName( "dynamicTiledPlat1" )
+				.buildTilePlatform( );
+		skeleton.addDynamicPlatform( skeletonTest2 );
+		skeletonTest2.body.setFixedRotation( false );//WHY!?
+		
 
 		// Ground
 		ground = platBuilder.setPosition( 0.0f, 0.0f ).setName( "ground" )
@@ -232,8 +245,8 @@ public class IMoverGameScreen implements com.badlogic.gdx.Screen {
 		TiledPlatform slidingPlatform = platBuilder.setWidth( 10 )
 				.setHeight( 1 ).setOneSided( true ).setPosition( -1000, 200 )
 				.setTexture( testTexture ).setFriction( 1f )
+				.setDynamic( )
 				.buildTilePlatform( );
-		slidingPlatform.body.setType( BodyType.DynamicBody );
 
 		PrismaticJointDef prismaticJointDef = JointFactory
 				.constructSlidingJointDef( skeleton.body, slidingPlatform.body,
@@ -252,13 +265,7 @@ public class IMoverGameScreen implements com.badlogic.gdx.Screen {
 				.buildTilePlatform( );
 		skeleton.addKinematicPlatform( skeletonTest1 );
 
-		TiledPlatform skeletonTest2 = platBuilder.setWidth( 10 ).setHeight( 1 )
-				.setOneSided( false ).setPosition( 500, 300 )
-				.setTexture( testTexture ).setFriction( 1f )
-				.buildTilePlatform( );
-		skeletonTest2.setOneSided( true );
-		skeletonTest2.body.setType( BodyType.DynamicBody );
-		skeleton.addPlatformRotatingCenter( skeletonTest2 );
+		
 
 		/*
 		 * TODO: FIX PLATFORM DENSITY
@@ -340,13 +347,14 @@ public class IMoverGameScreen implements com.badlogic.gdx.Screen {
 
 		player1.update( deltaTime );
 		player2.update( deltaTime );
-		puzzleScrew.update( deltaTime );
-		entityManager.update( deltaTime );
+		//puzzleScrew.update( deltaTime );
+		//entityManager.update( deltaTime );
+		rootSkeleton.update( deltaTime );
 
 		batch.setProjectionMatrix( cam.combined( ) );
 		batch.begin( );
 
-		puzzleScrew.draw( batch );
+		//puzzleScrew.draw( batch );
 		rootSkeleton.draw( batch );
 		player1.draw( batch );
 		player2.draw( batch );

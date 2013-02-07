@@ -258,4 +258,33 @@ public class Entity {
 	public void changeSprite(Sprite newSprite){
 		this.sprite = newSprite;
 	}
+	
+	
+	public void setDensity( float d ) {
+		if ( body != null ){
+		for ( int i = 0; i < body.getFixtureList( ).size( ); ++i )
+			body.getFixtureList( ).get( i ).setDensity( d );
+		}
+
+	}
+
+	public void setFriction( float f ) {
+		if ( body != null ){
+		for ( int i = 0; i < body.getFixtureList( ).size( ); ++i )
+			body.getFixtureList( ).get( i ).setFriction( f );
+		}
+	}
+
+	public void setRestitution( float r ) {
+		if ( body != null ){
+		for ( int i = 0; i < body.getFixtureList( ).size( ); ++i )
+			body.getFixtureList( ).get( i ).setRestitution( r );
+		}
+	}
+
+	public void setGravScale( float g ) {
+		if ( body != null ){
+			body.setGravityScale( g );
+		}
+	}
 }

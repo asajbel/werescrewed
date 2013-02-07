@@ -112,7 +112,10 @@ public class Skeleton extends Entity {
      * @param platform - add platform that has structure screws already
      */
      public void addPlatform( Platform platform ){
-     	addDynamicPlatform( platform );
+    	 if ( platform.body.getType( ) == BodyType.DynamicBody )
+    		 addDynamicPlatform( platform );
+    	 else 
+    		 addKinematicPlatform( platform );
      }
      
      /**
@@ -169,8 +172,8 @@ public class Skeleton extends Entity {
         for ( Skeleton skeleton : childSkeletons ) {
             skeleton.wakeSkeleton();
         }
-        for ( Entity e : dynamicPlatforms ) {
-           e.body.setAwake( true );
+        for ( Platform p : dynamicPlatforms ) {
+           p.body.setAwake( true );
         }
     }
     

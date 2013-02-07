@@ -106,26 +106,6 @@ public class Platform extends Entity {
 		}
 	}
 
-	public void setDensity( float d ) {
-		for ( int i = 0; i < body.getFixtureList( ).size( ); ++i )
-			body.getFixtureList( ).get( i ).setDensity( d );
-
-	}
-
-	public void setFriction( float f ) {
-		for ( int i = 0; i < body.getFixtureList( ).size( ); ++i )
-			body.getFixtureList( ).get( i ).setFriction( f );
-	}
-
-	public void setRestitution( float r ) {
-		for ( int i = 0; i < body.getFixtureList( ).size( ); ++i )
-			body.getFixtureList( ).get( i ).setRestitution( r );
-	}
-
-	public void setGravScale( float g ) {
-		body.setGravityScale( g );
-	}
-
 	public void changeType( ) {
 		dynamicType = !dynamicType;
 		if ( dynamicType ) {
@@ -193,6 +173,7 @@ public class Platform extends Entity {
 				+ Util.angleBetweenPoints( Vector2.Zero, localPosition );
 		Vector2 skeleOrigin = skeleton.body.getPosition( );
 		float newRotation = localRotation + skeleton.body.getAngle( );
+		
 		body.setTransform( Util.PointOnCircle( radiusFromSkeleton,
 				newAngleFromSkeleton, skeleOrigin ), newRotation );
 	}
