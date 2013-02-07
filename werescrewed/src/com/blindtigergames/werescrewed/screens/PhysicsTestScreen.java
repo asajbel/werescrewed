@@ -148,8 +148,8 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 	private void initTiledPlatforms( ) {
 		// Tiled Platform
 		tiledPlat = platBuilder.position( 700.0f, 100.0f )
-				.dimensions( 10, 1 ).setTexture( testTexture )
-				.name( "tp" ).setResitituion( 0.0f ).buildTilePlatform( );
+				.dimensions( 10, 1 ).texture( testTexture )
+				.name( "tp" ).resitituion( 0.0f ).buildTilePlatform( );
 		tiledPlat.body.setType( BodyType.DynamicBody );
 		tiledPlat.body.setFixedRotation( false );
 		skeleton.addPlatform( tiledPlat );
@@ -166,24 +166,24 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		
 		// Tiled Single Platform
 		singTile = platBuilder.position( -1.0f, 1000.0f )
-				.dimensions( 1, 1 ).setTexture( testTexture )
-				.name( "Single Tiled" ).setResitituion( 0.0f ).buildTilePlatform( );
+				.dimensions( 1, 1 ).texture( testTexture )
+				.name( "Single Tiled" ).resitituion( 0.0f ).buildTilePlatform( );
 		singTile.body.setType( BodyType.DynamicBody );
 		singTile.body.setFixedRotation( false );
 		skeleton.addPlatform( singTile ); 
 
 		// Moving platform
 		movingTP = platBuilder.position( 0.0f, 120.0f )
-				.dimensions( 10, 1 ).setTexture( testTexture )
-				.name( "movingTP" ).setResitituion( 0.0f )
+				.dimensions( 10, 1 ).texture( testTexture )
+				.name( "movingTP" ).resitituion( 0.0f )
 				.buildTilePlatform( );
 		movingTP.body.setType( BodyType.KinematicBody );
 		buildMoverPlatforms( );
 
 		// Ground
 		ground = platBuilder.position( 0.0f, 0.0f ).name( "ground" )
-				.dimensions( 200, 1 ).setTexture( testTexture )
-				.setResitituion( 0.0f ).buildTilePlatform( );
+				.dimensions( 200, 1 ).texture( testTexture )
+				.resitituion( 0.0f ).buildTilePlatform( );
 		skeleton.addPlatformFixed( ground );
 	}
 
@@ -257,8 +257,8 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 
 	void buildMoverPlatforms( ) {
 		TiledPlatform slidingPlatform = platBuilder.width( 10 )
-				.height( 1 ).setOneSided( true ).position( -1000, 200 )
-				.setTexture( testTexture ).setFriction( 1f )
+				.height( 1 ).oneSided( true ).position( -1000, 200 )
+				.texture( testTexture ).friction( 1f )
 				.buildTilePlatform( );
 		slidingPlatform.body.setType( BodyType.DynamicBody );
 
@@ -273,15 +273,15 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 				PuzzleType.PRISMATIC_SLIDER, j ) );
 
 		TiledPlatform skeletonTest1 = platBuilder.width( 10 ).height( 1 )
-				.setFriction( 1f ).setOneSided( false )
-				.position( -500, -200 ).setTexture( testTexture )
+				.friction( 1f ).oneSided( false )
+				.position( -500, -200 ).texture( testTexture )
 				.buildTilePlatform( );
 		skeletonTest1.body.setType( BodyType.DynamicBody );
 		skeleton.addPlatformFixed( skeletonTest1 );
 
 		TiledPlatform skeletonTest2 = platBuilder.width( 10 ).height( 1 )
-				.setOneSided( false ).position( 500, 300 )
-				.setTexture( testTexture ).setFriction( 1f )
+				.oneSided( false ).position( 500, 300 )
+				.texture( testTexture ).friction( 1f )
 				.buildTilePlatform( );
 		skeletonTest2.setOneSided( true );
 		skeletonTest2.body.setType( BodyType.DynamicBody );
@@ -294,9 +294,9 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		platBuilder.reset( );
 
 		PlatformBuilder builder = platBuilder.width( 1 ).height( 3 )
-				.setOneSided( false )
+				.oneSided( false )
 				// .setPosition( (-500f-i*40)*PIXEL_TO_BOX, 150f*PIXEL_TO_BOX )
-				.setTexture( testTexture ).setFriction( 1f );
+				.texture( testTexture ).friction( 1f );
 		// .buildTilePlatform( world );
 
 		PrismaticJointBuilder jointBuilder = new PrismaticJointBuilder( world )
@@ -318,13 +318,13 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 
 		
 		builder = platBuilder.width( 20 ).height( 1 )
-				.setOneSided( true )
+				.oneSided( true )
 				// .setPosition( (-500f-i*40)*PIXEL_TO_BOX, 150f*PIXEL_TO_BOX )
-				.setTexture( testTexture ).setFriction( 1f );
+				.texture( testTexture ).friction( 1f );
 		// .buildTilePlatform( world );
 
 		TiledPlatform elevator = builder.position( -1500, 150 )
-				.setMoveable( true ).buildTilePlatform( );
+				.moveable( true ).buildTilePlatform( );
 		elevator.body.setType( BodyType.DynamicBody );
 		PrismaticJoint pistonJ = jointBuilder.bodyB( ( Entity ) elevator )
 		.anchor( elevator.body.getWorldCenter( ) ).build( );

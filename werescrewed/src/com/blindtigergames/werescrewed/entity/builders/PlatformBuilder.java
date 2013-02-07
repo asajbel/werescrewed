@@ -5,6 +5,7 @@ import java.util.HashMap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
+import com.blindtigergames.werescrewed.platforms.ComplexPlatform;
 import com.blindtigergames.werescrewed.platforms.Platform;
 import com.blindtigergames.werescrewed.platforms.PlatformType;
 import com.blindtigergames.werescrewed.platforms.ShapePlatform;
@@ -34,7 +35,7 @@ public class PlatformBuilder extends GenericEntityBuilder<PlatformBuilder> {
 	protected boolean flipHorizonal = false;
 	protected boolean flipVertical = false;
 	protected boolean isOneSided = false;
-	protected PlatformType pType = PlatformType.SHAPE;
+	protected PlatformType pType = PlatformType.COMPLEX;
 	protected boolean moveable = false;
 	protected Shapes shape = null;
 	
@@ -59,6 +60,18 @@ public class PlatformBuilder extends GenericEntityBuilder<PlatformBuilder> {
 		this.shape = shape;
 		return this;
 	}
+/**
+	 * 
+	 * @param pT - Pick a platform type to create when using build()
+	 * 	Default is a complex platform.
+	 * 	Default is null
+	 * @return PlatformBuilder
+	 */
+		public PlatformBuilder platformType( PlatformType pT ) {
+			this.pType = pT;
+			return this;
+		}
+
 /**
  * 
  * @param scale - set scale of the whole platform, default is 1
@@ -113,7 +126,7 @@ public class PlatformBuilder extends GenericEntityBuilder<PlatformBuilder> {
  * @param outerWidth - float used for cross shape
  * @return PlatformBuilder
  */
-	public PlatformBuilder setOuterWidth( float outerWidth ) {
+	public PlatformBuilder outerWidth( float outerWidth ) {
 		this.outerWidth = outerWidth;
 		return this;
 	}
@@ -123,7 +136,7 @@ public class PlatformBuilder extends GenericEntityBuilder<PlatformBuilder> {
 	 * @param outerHeight - float used for cross shape
 	 * @return PlatformBuilder
 	 */
-	public PlatformBuilder setOuterHeight( float outerHeight ) {
+	public PlatformBuilder outerHeight( float outerHeight ) {
 		this.outerHeight = outerHeight;
 		return this;
 	}
@@ -133,7 +146,7 @@ public class PlatformBuilder extends GenericEntityBuilder<PlatformBuilder> {
  * @param density - float used for density, default is 1.0f
  * @return PlatformBuilder
  */
-	public PlatformBuilder setDensity( float density ) {
+	public PlatformBuilder density( float density ) {
 		this.density = density;
 		return this;
 	}
@@ -143,7 +156,7 @@ public class PlatformBuilder extends GenericEntityBuilder<PlatformBuilder> {
  * @param friction - float friction, default is 0.5f
  * @return PlatformBuilder
  */
-	public PlatformBuilder setFriction( float friction ) {
+	public PlatformBuilder friction( float friction ) {
 		this.friction = friction;
 		return this;
 	}
@@ -153,7 +166,7 @@ public class PlatformBuilder extends GenericEntityBuilder<PlatformBuilder> {
  * @param restitution - float restitution, default is 0.0f
  * @return PlatformBuilder
  */
-	public PlatformBuilder setResitituion( float restitution ) {
+	public PlatformBuilder resitituion( float restitution ) {
 		this.restitution = restitution;
 		return this;
 	}
@@ -163,27 +176,17 @@ public class PlatformBuilder extends GenericEntityBuilder<PlatformBuilder> {
  * @param gravscale - float gravity scale, default is 0.1f
  * @return PlatformBuilder
  */
-	public PlatformBuilder setGravScale( float gravscale ) {
+	public PlatformBuilder gravityScale( float gravscale ) {
 		this.gravScale = gravscale;
 		return this;
 	}
 
-/**
- * 	
- * @param tex - Texture for the platform, default is null
- * @return
- */
-	public PlatformBuilder setTexture( Texture tex ) {
-		this.tex = tex;
-		return this;
-	}
-
-	public PlatformBuilder setFlipHorizontal( boolean flipHori ) {
+	public PlatformBuilder flipHorizontal( boolean flipHori ) {
 		this.flipHorizonal = flipHori;
 		return this;
 	}
 
-	public PlatformBuilder setFlipVertical( boolean flipVert ) {
+	public PlatformBuilder flipVertical( boolean flipVert ) {
 		this.flipVertical = flipVert;
 		return this;
 	}
@@ -193,7 +196,7 @@ public class PlatformBuilder extends GenericEntityBuilder<PlatformBuilder> {
  * @param oneSide - boolean set platform to oneside, default false
  * @return PlatformBuilder
  */
-	public PlatformBuilder setOneSided( boolean oneSide ) {
+	public PlatformBuilder oneSided( boolean oneSide ) {
 		this.isOneSided = oneSide;
 		return this;
 	}
@@ -204,7 +207,7 @@ public class PlatformBuilder extends GenericEntityBuilder<PlatformBuilder> {
  * @return PlatformBuilder
  */
 	
-	public PlatformBuilder setMoveable( boolean moving ) {
+	public PlatformBuilder moveable( boolean moving ) {
 		this.moveable = moving;
 		return this;
 	}
@@ -248,14 +251,21 @@ public class PlatformBuilder extends GenericEntityBuilder<PlatformBuilder> {
 		if (pType == PlatformType.TILED){
 			return buildTilePlatform();
 		}
-		return buildShapePlatform();
+		return buildComplexPlatform();
 	}
 /**
  * builds tile platform with specified numbers
  * @return TiledPlatform
  */
 	public TiledPlatform buildTilePlatform( ) {
-		TiledPlatform tp = new TiledPlatform( this.name, this.pos, this.tex, this.width, this.height, this.isOneSided, this.moveable, world );
+		TiledPlatform tp = new TiledPlatform( this.name, 
+				                              this.pos, 
+				                              this.tex, 
+				                              this.width, 
+				                              this.height, 
+				                              this.isOneSided, 
+				                              this.moveable, 
+				                              this.world);
 
 		tp.setDensity( this.density );
 		tp.setFriction( this.friction );
@@ -263,9 +273,29 @@ public class PlatformBuilder extends GenericEntityBuilder<PlatformBuilder> {
 		tp.setGravScale( this.gravScale );
 		return tp;
 	}
+	/**
+	 * builds complex platform from available data.
+	 * @return ComplexPlatform
+	 */
+	public ComplexPlatform buildComplexPlatform( ) {
+		ComplexPlatform cp = new ComplexPlatform( this.name, 
+												  this.pos,
+												  this.tex, 
+												  this.scale,
+												  this.world,
+												  this.type);
 
+		cp.setDensity( this.density );
+		cp.setFriction( this.friction );
+		cp.setRestitution( this.restitution );
+		cp.setGravScale( this.gravScale );
+		return cp;
+	}
+	
 	/**
 	 * builds shape platform
+	 * Note from Kevin: This is a holdover from Ranveer's code.
+	 * If we don't plan on keeping shapes, this should become deprecated.
 	 * @return ShapePlatform
 	 */
 	public ShapePlatform buildShapePlatform( ) {

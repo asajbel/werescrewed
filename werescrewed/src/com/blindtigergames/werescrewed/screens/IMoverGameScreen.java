@@ -102,12 +102,12 @@ public class IMoverGameScreen implements com.badlogic.gdx.Screen {
 		texture = new Texture( Gdx.files.internal( "data/rletter.png" ) );
 
 		tp = platBuilder.position( 350.0f, 100.0f ).dimensions( 10, 1 )
-				.setTexture( texture ).name( "tp" ).setResitituion( 0.0f )
+				.texture( texture ).name( "tp" ).resitituion( 0.0f )
 				.buildTilePlatform( );
 
 		movingTP = platBuilder.position( 350.0f, 170.0f )
-				.dimensions( 10, 1 ).setTexture( texture )
-				.name( "movingTP" ).setResitituion( 0.0f )
+				.dimensions( 10, 1 ).texture( texture )
+				.name( "movingTP" ).resitituion( 0.0f )
 				.buildTilePlatform( );
 
 		movingTP.body.setType( BodyType.DynamicBody );
@@ -159,8 +159,8 @@ public class IMoverGameScreen implements com.badlogic.gdx.Screen {
 		}
 
 		ground = platBuilder.position( 0.0f, 0.0f ).name( "ground" )
-				.dimensions( 100, 1 ).setTexture( texture )
-				.setResitituion( 0.0f ).buildTilePlatform( );
+				.dimensions( 100, 1 ).texture( texture )
+				.resitituion( 0.0f ).buildTilePlatform( );
 		skeleton.addPlatformFixed( ground );
 		skeleton.addPlatform( tp ); // Tp already has a structureScrew holding
 									// it up
@@ -181,8 +181,8 @@ public class IMoverGameScreen implements com.badlogic.gdx.Screen {
 
 	void buildMoverPlatforms( ) {
 		TiledPlatform slidingPlatform = platBuilder.width( 10 )
-				.height( 1 ).setOneSided( true ).position( -1000, 200 )
-				.setTexture( texture ).setFriction( 1f ).buildTilePlatform( );
+				.height( 1 ).oneSided( true ).position( -1000, 200 )
+				.texture( texture ).friction( 1f ).buildTilePlatform( );
 		slidingPlatform.body.setType( BodyType.DynamicBody );
 
 		PrismaticJointDef prismaticJointDef = JointFactory
@@ -196,15 +196,15 @@ public class IMoverGameScreen implements com.badlogic.gdx.Screen {
 				PuzzleType.PRISMATIC_SLIDER, j ) );
 
 		TiledPlatform skeletonTest1 = platBuilder.width( 10 ).height( 1 )
-				.setFriction( 1f ).setOneSided( false )
-				.position( -500, -200 ).setTexture( texture )
+				.friction( 1f ).oneSided( false )
+				.position( -500, -200 ).texture( texture )
 				.buildTilePlatform( );
 		skeletonTest1.body.setType( BodyType.DynamicBody );
 		skeleton.addPlatformFixed( skeletonTest1 );
 
 		TiledPlatform skeletonTest2 = platBuilder.width( 10 ).height( 1 )
-				.setOneSided( false ).position( 500, 300 )
-				.setTexture( texture ).setFriction( 1f ).buildTilePlatform( );
+				.oneSided( false ).position( 500, 300 )
+				.texture( texture ).friction( 1f ).buildTilePlatform( );
 		skeletonTest2.body.setType( BodyType.DynamicBody );
 		skeleton.addPlatformRotatingCenter( skeletonTest2 );
 
@@ -215,9 +215,9 @@ public class IMoverGameScreen implements com.badlogic.gdx.Screen {
 		platBuilder.reset( );
 
 		PlatformBuilder builder = platBuilder.width( 1 ).height( 3 )
-				.setOneSided( false )
+				.oneSided( false )
 				// .setPosition( (-500f-i*40)*PIXEL_TO_BOX, 150f*PIXEL_TO_BOX )
-				.setTexture( texture ).setFriction( 1f );
+				.texture( texture ).friction( 1f );
 		// .buildTilePlatform( world );
 
 		PrismaticJointBuilder jointBuilder = new PrismaticJointBuilder( world )

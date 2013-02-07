@@ -99,8 +99,8 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 		cam = new Camera( w, h );
 		platBuilder = new PlatformBuilder( world );
 		tp = platBuilder.name( "tp" ).position( 200.0f, 100.0f )
-				.dimensions( 10, 1 ).setTexture( texture )
-				.setResitituion( 0.0f ).buildTilePlatform( );
+				.dimensions( 10, 1 ).texture( texture )
+				.resitituion( 0.0f ).buildTilePlatform( );
 		
 		cp = new ComplexPlatform( "bottle", new Vector2( -100.0f, 100.0f ),
 				new Texture( Gdx.files.internal( "data/bodies/test01.png" ) ),
@@ -148,7 +148,7 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 
 		ground = new PlatformBuilder( world ).position( 0.0f, 0.0f )
 				.name( "ground" ).dimensions( 100, 1 )
-				.setTexture( texture ).setResitituion( 0.0f )
+				.texture( texture ).resitituion( 0.0f )
 				.buildTilePlatform( );
 
 		skeleton.addPlatformFixed( ground );

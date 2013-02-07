@@ -90,14 +90,14 @@ public class Level {
 		tp = new PlatformBuilder(out.world)
 		.position( 2.0f, 0.2f )
 		.dimensions( 10, 1 )
-		.setTexture( texture )
+		.texture( texture )
 		.buildTilePlatform( );
 
 		
 		ground = new PlatformBuilder(out.world)
 		.position( 0.0f, 0.0f )
 		.dimensions( 100, 1 )
-		.setTexture( texture )
+		.texture( texture )
 		.buildTilePlatform( );
 		
 		out.platforms.add( ground );
