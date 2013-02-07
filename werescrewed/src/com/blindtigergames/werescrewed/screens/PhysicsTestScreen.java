@@ -327,7 +327,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 
 		elevator.setMover( new PistonMover( pistonJ, 0f, 2f ) );
 		elevator.body.setSleepingAllowed( false );
-		skeleton.addBoneAndJoint( elevator, pistonJ );
+		//skeleton.addBoneAndJoint( elevator, pistonJ );
 
 		ComplexPlatform gear = new ComplexPlatform( "gear", new Vector2(
 				1000 * Util.PIXEL_TO_BOX, 300 * Util.PIXEL_TO_BOX ), null, 3,

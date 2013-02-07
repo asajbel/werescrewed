@@ -136,7 +136,7 @@ public class IMoverGameScreen implements com.badlogic.gdx.Screen {
 		
 		//buildMoverPlatforms( );
 		TiledPlatform skeletonTest2 = platBuilder.setWidth( 10 ).setHeight( 1 )
-				.setOneSided( false ).setPosition( 128000, 76800 )
+				.setOneSided( false ).setPosition( 500, 300 )
 				.setTexture( testTexture ).setFriction( 1f )
 				.setDynamic( )
 				
@@ -223,10 +223,11 @@ public class IMoverGameScreen implements com.badlogic.gdx.Screen {
 		}
 
 		ground = platBuilder.setPosition( 0.0f, 0.0f ).setName( "ground" )
-				.setDimensions( 100, 1 ).setTexture( texture )
+				.setDimensions( 100, 1 ).setTexture( testTexture )
+				.setKinematic( )
 				.setResitituion( 0.0f ).buildTilePlatform( );
-		skeleton.addPlatformFixed( ground );
-		skeleton.addPlatform( tp ); // Tp already has a structureScrew holding
+		skeleton.addKinematicPlatform( ground );
+		//skeleton.addPlatform( tp ); // Tp already has a structureScrew holding
 									// it up
 
 		/*

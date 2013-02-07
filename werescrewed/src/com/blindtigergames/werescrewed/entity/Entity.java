@@ -1,5 +1,6 @@
 package com.blindtigergames.werescrewed.entity;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -128,6 +129,7 @@ public class Entity {
 		} else if (sprite != null){
 			sprite.setPosition(x, y);
 		}
+		Gdx.app.log(name,"("+x+", "+y+"");
 	}
 
 	public void update( float deltaTime ) {
