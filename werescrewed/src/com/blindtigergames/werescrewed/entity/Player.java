@@ -43,7 +43,9 @@ public class Player extends Entity {
 	private float axisX;
 
 	private Screw currentScrew;
+	private Player otherPlayer;
 	private RevoluteJoint playerToScrew;
+	private RevoluteJoint playerToPlayer;
 	private boolean isDead = false, deadDebug;
 	private boolean hitScrew;
 	private int screwJumpTimeout = 0;
@@ -80,7 +82,7 @@ public class Player extends Entity {
 	 * </Ul>
 	 */
 	public enum PlayerState {
-		Standing, Jumping, Falling, Screwing, JumpingOffScrew, Dead
+		Standing, Jumping, Falling, Screwing, JumpingOffScrew, Dead, GrabMode, HeadStand
 	}
 
 	// CONSTRUCTORS
@@ -184,8 +186,15 @@ public class Player extends Entity {
 					screwJumpTimeout = 7;
 					jump( );
 				} else if ( isGrounded( ) ) {
+					if( playerToPlayer != null ) {
+						world.destroyJoint( playerToPlayer );
+						playerToPlayer = null;
+					}
 					playerState = PlayerState.Jumping;
 					jump( );
+				} else if( playerToPlayer != null ) {
+					world.destroyJoint( playerToPlayer );
+					playerToPlayer = null;
 				}
 				jumpPressedKeyboard = true;
 			}
@@ -219,10 +228,13 @@ public class Player extends Entity {
 		}
 
 		if ( inputHandler.screwPressed( )
-				&& hitScrew
 				&& playerState != PlayerState.Screwing
 				&& ( playerState != PlayerState.JumpingOffScrew || screwJumpTimeout < 2 ) ) {
-			attachToScrew( );
+			if ( hitScrew ) {
+				attachToScrew( );
+			} else if ( otherPlayer != null ) {
+				setHeadStand( );
+			}
 		}
 
 		if ( playerState == PlayerState.Screwing ) {
@@ -240,7 +252,7 @@ public class Player extends Entity {
 		}
 
 		if ( playerState == PlayerState.JumpingOffScrew ) {
-			if ( screwJumpTimeout == 0 && !hitScrew ) {
+			if ( screwJumpTimeout == 0 ) {
 				Filter filter = new Filter( );
 				for ( Fixture f : body.getFixtureList( ) ) {
 					filter = f.getFilterData( );
@@ -358,10 +370,12 @@ public class Player extends Entity {
 		body.applyLinearImpulse( new Vector2( 0.0f, JUMP_IMPLUSE ),
 				body.getWorldCenter( ) );
 		if ( playerState != PlayerState.JumpingOffScrew ) {
-			Filter filter;
+			Filter filter = new Filter( );
 			for ( Fixture f : body.getFixtureList( ) ) {
 				filter = f.getFilterData( );
+				// move player back to original category
 				filter.categoryBits = Util.CATEGORY_PLAYER;
+				// player now collides with everything
 				filter.maskBits = ~Util.CATEGORY_PLAYER;
 				f.setFilterData( filter );
 			}
@@ -375,18 +389,77 @@ public class Player extends Entity {
 	 */
 	public void hitScrew( Screw screw ) {
 		if ( playerState != PlayerState.Screwing ) {
-			hitScrew = true;
+			if ( screw != null ) {
+				hitScrew = true;
+			} else {
+				hitScrew = false;
+			}
 			currentScrew = screw;
 		}
 	}
 
 	/**
-	 * Sets the current screw to null
+	 * Sets the other player if in grab mode
+	 * 
+	 * @param otherPlayer
+	 *            the other player
+	 */
+	public void hitPlayer( Player otherPlayer ) {
+		if ( playerState != PlayerState.Screwing ) {
+			this.otherPlayer = otherPlayer;
+		}
+	}
+
+	/**
+	 * sets the players state to head stand mode for double jumping
+	 */
+	public void setHandStandState( ) {
+		playerState = PlayerState.HeadStand;
+	}
+
+	/**
+	 * joints one players feet to the others head which is the position of the
+	 * players before they attempt double jumping
 	 * 
 	 * @author dennis
 	 */
-	public void endHitScrew( ) {
-		hitScrew = false;
+	public void setHeadStand( ) {
+		if ( otherPlayer.body.getPosition( ).y > body.getPosition( ).y ) {
+			otherPlayer.setPosition( body.getPosition( ).x,
+					body.getPosition( ).y + ( sprite.getHeight( ) / 2.0f )
+							* Util.PIXEL_TO_BOX );
+			// connect the players together with a joint
+			RevoluteJointDef revoluteJointDef = new RevoluteJointDef( );
+			revoluteJointDef.initialize( otherPlayer.body, body,
+					new Vector2( body.getPosition( ).x, body.getPosition( ).y
+							- ( sprite.getHeight( ) ) * Util.PIXEL_TO_BOX ) );
+			revoluteJointDef.enableMotor = false;
+			playerToPlayer = ( RevoluteJoint ) world
+					.createJoint( revoluteJointDef );
+			playerState = PlayerState.HeadStand;
+			otherPlayer.setHandStandState( );
+			// set the mass of the two players less so they can double jump
+		} else {
+			this.setPosition(
+					otherPlayer.body.getPosition( ).x,
+					otherPlayer.body.getPosition( ).y
+							+ ( otherPlayer.sprite.getHeight( ) / 2.0f )
+							* Util.PIXEL_TO_BOX );
+			// connect the players together with a joint
+			RevoluteJointDef revoluteJointDef = new RevoluteJointDef( );
+			revoluteJointDef.initialize(
+					body,
+					otherPlayer.body,
+					new Vector2( otherPlayer.body.getPosition( ).x,
+							otherPlayer.body.getPosition( ).y
+									- ( sprite.getHeight( ) )
+									* Util.PIXEL_TO_BOX ) );
+			revoluteJointDef.enableMotor = false;
+			playerToPlayer = ( RevoluteJoint ) world
+					.createJoint( revoluteJointDef );
+			playerState = PlayerState.HeadStand;
+			otherPlayer.setHandStandState( );
+		}
 	}
 
 	/**
@@ -397,10 +470,12 @@ public class Player extends Entity {
 	public void setGrounded( boolean newVal ) {
 		this.grounded = newVal;
 		if ( newVal && playerState != PlayerState.Screwing ) {
-			Filter filter;
+			Filter filter = new Filter( );
 			for ( Fixture f : body.getFixtureList( ) ) {
 				filter = f.getFilterData( );
+				// move player back to original category
 				filter.categoryBits = Util.CATEGORY_PLAYER;
+				// player now collides with everything
 				filter.maskBits = -1;
 				f.setFilterData( filter );
 			}
@@ -543,7 +618,7 @@ public class Player extends Entity {
 		}
 
 	}
-	
+
 	/**
 	 * This function updates the player based off the Controller's state
 	 * 
