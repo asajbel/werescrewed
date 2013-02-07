@@ -34,16 +34,23 @@ public class MyControllerListener implements ControllerListener {
 	// axisX and axisY represent the point where the analog stick is
 	private float axisX, axisY, axisRX, axisRY;
 	int angleInt, prevAngle, currAngle;
+	int prevDir, currDir;
 	double angle;
 
 	// Using xbox face button names. B, X, Y are unused for now
-	private final static int buttonA = 0;
+	private final static int BUTTON_A = 0;
 	// private final static int buttonB = 1;
 	// private final static int buttonX = 2;
 	// private final static int buttonY = 3;
-	private final static int bumperR = 5;
+	private final static int BUMPER_R = 5;
 	// private final static int trigger = 4;
-	private final static int pause = 7;
+	private final static int PAUSE = 7;
+	
+	private final static int SCREW_UP = 1;
+	private final static int SCREW_RIGHT = 2;
+	private final static int SCREW_DOWN = 3;
+	private final static int SCREW_LEFT = 4;
+	
 
 	/**
 	 * This function checks the analog sticks to see if they moved
@@ -116,7 +123,7 @@ public class MyControllerListener implements ControllerListener {
 			unscrewingPressed = false;
 		}
 		
-		System.out.println("sc: " + screwing() + ", unsc: " + unscrewing() );
+		//System.out.println("sc: " + screwing() + ", unsc: " + unscrewing() );
 		return false;
 	}
 
@@ -129,11 +136,11 @@ public class MyControllerListener implements ControllerListener {
 		// System.out.println("#" + indexOf(controller) + ", button " +
 		// buttonIndex + " down");
 
-		if ( buttonIndex == buttonA )
+		if ( buttonIndex == BUTTON_A )
 			jumpPressed = true;
-		if ( buttonIndex == bumperR )
+		if ( buttonIndex == BUMPER_R )
 			attachScrewPressed = true;
-		if ( buttonIndex == pause )
+		if ( buttonIndex == PAUSE )
 			pausePressed = true;
 		return false;
 	}
@@ -145,11 +152,11 @@ public class MyControllerListener implements ControllerListener {
 
 	@Override
 	public boolean buttonUp( Controller controller, int buttonIndex ) {
-		if ( buttonIndex == buttonA )
+		if ( buttonIndex == BUTTON_A )
 			jumpPressed = false;
-		if ( buttonIndex == bumperR )
+		if ( buttonIndex == BUMPER_R )
 			attachScrewPressed = false;
-		if ( buttonIndex == pause )
+		if ( buttonIndex == PAUSE )
 			pausePressed = false;
 
 		return false;
@@ -366,6 +373,7 @@ public class MyControllerListener implements ControllerListener {
 	}
 
 	private void rightStickScrew(Controller controller){
+		/*
 		prevAngle = currAngle;
 		angleInt = (int) Math.toDegrees(Math.atan2( -axisRX, -axisRY )) + 180;
 		currAngle = angleInt;
@@ -380,6 +388,38 @@ public class MyControllerListener implements ControllerListener {
 			unscrewingPressed = true;
 			screwingPressed = false;
 		}
-	
+		*/
+		prevDir = currDir;
+		
+		System.out.println( "rx: " + axisRX + " ry: " + axisRY);
+		if(axisRX == 1.0f && axisRY == 0.0f){
+			currDir = SCREW_RIGHT;
+			System.out.println( "right");
+		}
+		if(axisRX == -1.0f && axisRY == 0.0f){
+			currDir = SCREW_LEFT;
+			System.out.println( "left");
+		}
+		if(axisRX == 0.0f && axisRY == 1.0f){
+			currDir = SCREW_DOWN;
+			System.out.println( "down");
+		}
+		if(axisRX == 0.0f && axisRY == -1.0f){
+			currDir = SCREW_UP;
+			System.out.println( "up");
+		}
+		
+		if(currDir == SCREW_UP){
+			if(prevDir == SCREW_LEFT){
+				unscrewingPressed = true;
+				screwingPressed = false;
+			}
+			if(prevDir == SCREW_RIGHT){
+				unscrewingPressed = false;
+				screwingPressed = true;
+			}
+
+		}
+		
 	}
 }
