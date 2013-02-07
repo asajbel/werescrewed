@@ -53,7 +53,6 @@ public class Player extends Entity {
 	private boolean jumpPressedKeyboard;
 	private boolean jumpPressedController;
 	private int anchorID;
-	int veloTest = 5;
 
 	// Static constants
 	public final static float MAX_VELOCITY = 1.8f;
@@ -62,7 +61,7 @@ public class Player extends Entity {
 	public final static float JUMP_IMPLUSE = 0.15f;
 	public final static float ANALOG_DEADZONE = 0.2f;
 	public final static float ANALOG_MAX_RANGE = 1.0f;
-	public final static float PLAYER_FRICTION = 0.7f;
+	public final static float PLAYER_FRICTION = 0.6f;
 
 	// Static variables
 	public static Texture texture = new Texture(
@@ -221,9 +220,7 @@ public class Player extends Entity {
 
 		if ( ( !inputHandler.leftPressed( ) && !inputHandler.rightPressed( ) )
 				&& ( prevKey == Keys.D || prevKey == Keys.A ) ) {
-			if ( grounded )
-				stop( );
-			else
+			if ( !grounded )
 				slow( );
 		}
 
@@ -553,22 +550,6 @@ public class Player extends Entity {
 	/**
 	 * Stops the player
 	 */
-	private void stop( ) {
-		if ( feet.getFriction( ) == 0 ) {
-			float velocity = body.getLinearVelocity( ).x;
-			if ( velocity != 0.0f ) {
-				if ( velocity < -0.1f )
-					body.applyLinearImpulse( new Vector2( 0.005f, 0.0f ),
-							body.getWorldCenter( ) );
-				else if ( velocity > 0.1f )
-					body.applyLinearImpulse( new Vector2( -0.005f, 0.0f ),
-							body.getWorldCenter( ) );
-				else if ( velocity >= -0.1 && velocity <= 0.1f
-						&& velocity != 0.0f )
-					body.setLinearVelocity( 0.0f, body.getLinearVelocity( ).y );
-			}
-		}
-	}
 
 	/**
 	 * @author Bryan Pacini
@@ -692,9 +673,7 @@ public class Player extends Entity {
 		if ( ( !controllerListener.leftPressed( ) && !controllerListener
 				.rightPressed( ) )
 				&& ( prevButton == PovDirection.east || prevButton == PovDirection.west ) ) {
-			if ( grounded )
-				stop( );
-			else
+			if ( !grounded )
 				slow( );
 		}
 
@@ -774,6 +753,22 @@ public class Player extends Entity {
 		// the jump doesn't work the first time on dynamic bodies so do it twice
 		if ( playerState == PlayerState.Jumping && isGrounded( ) ) {
 			jump( );
+		}
+	}
+	private void stop( ) {
+		if ( feet.getFriction( ) == 0 ) {
+			float velocity = body.getLinearVelocity( ).x;
+			if ( velocity != 0.0f ) {
+				if ( velocity < -0.1f )
+					body.applyLinearImpulse( new Vector2( 0.005f, 0.0f ),
+							body.getWorldCenter( ) );
+				else if ( velocity > 0.1f )
+					body.applyLinearImpulse( new Vector2( -0.005f, 0.0f ),
+							body.getWorldCenter( ) );
+				else if ( velocity >= -0.1 && velocity <= 0.1f
+						&& velocity != 0.0f )
+					body.setLinearVelocity( 0.0f, body.getLinearVelocity( ).y );
+			}
 		}
 	}
 }
