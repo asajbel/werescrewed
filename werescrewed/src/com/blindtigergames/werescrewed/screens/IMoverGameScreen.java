@@ -33,6 +33,7 @@ import com.blindtigergames.werescrewed.platforms.TiledPlatform;
 import com.blindtigergames.werescrewed.screws.PuzzleScrew;
 import com.blindtigergames.werescrewed.screws.StrippedScrew;
 import com.blindtigergames.werescrewed.screws.StructureScrew;
+import com.blindtigergames.werescrewed.util.Util;
 
 /**
  * Screen to test out moving platforms and skeletons
@@ -47,18 +48,6 @@ import com.blindtigergames.werescrewed.screws.StructureScrew;
  * 
  */
 public class IMoverGameScreen implements com.badlogic.gdx.Screen {
-
-	/***
-	 * Box2D to pixels conversion *************
-	 * 
-	 * This number means 1 meter equals 256 pixels. That means the biggest
-	 * in-game object (10 meters) we can use is 2560 pixels wide, which is much
-	 * bigger than our max screen resolution so it should be enough.
-	 */
-	public static final float BOX_TO_PIXEL = 256f;
-	public static final float PIXEL_TO_BOX = 1 / BOX_TO_PIXEL;
-	public static final float DEG_TO_RAD = 0.0174532925199432957f;
-	public static final float RAD_TO_DEG = 57.295779513082320876f;
 
 	private Camera cam;
 	private SpriteBatch batch;
@@ -171,7 +160,7 @@ public class IMoverGameScreen implements com.badlogic.gdx.Screen {
 		buildMoverPlatforms( );
 		rootSkeleton.addSkeleton( skeleton );
 
-		debugRenderer = new SBox2DDebugRenderer( BOX_TO_PIXEL );
+		debugRenderer = new SBox2DDebugRenderer( Util.BOX_TO_PIXEL );
 		debugRenderer.setDrawJoints( false );
 		Gdx.app.setLogLevel( Application.LOG_DEBUG );
 
@@ -238,7 +227,7 @@ public class IMoverGameScreen implements com.badlogic.gdx.Screen {
 		}
 
 		ComplexPlatform gear = new ComplexPlatform( "gear", new Vector2(
-				1000 * PIXEL_TO_BOX, 300 * PIXEL_TO_BOX ), null, 3, world,
+				1000 * Util.PIXEL_TO_BOX, 300 * Util.PIXEL_TO_BOX ), null, 3, world,
 				"gearSmall" );
 		gear.body.setType( BodyType.DynamicBody );
 		skeleton.addPlatformRotatingCenterWithRot( gear, 1f );

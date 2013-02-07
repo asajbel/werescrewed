@@ -8,18 +8,9 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.blindtigergames.werescrewed.debug.SBox2DDebugRenderer;
 import com.blindtigergames.werescrewed.input.InputHandler;
 import com.blindtigergames.werescrewed.level.Level;
+import com.blindtigergames.werescrewed.util.Util;
 
 public class LevelTestScreen implements com.badlogic.gdx.Screen {
-
-	/***
-	 * Box2D to pixels conversion *************
-	 * 
-	 * This number means 1 meter equals 256 pixels. That means the biggest
-	 * in-game object (10 meters) we can use is 2560 pixels wide, which is much
-	 * bigger than our max screen resolution so it should be enough.
-	 */
-	public static final float BOX_TO_PIXEL = 256f;
-	public static final float PIXEL_TO_BOX = 1 / BOX_TO_PIXEL;
 
 	InputHandler inputHandler;
 	SpriteBatch batch;
@@ -30,7 +21,7 @@ public class LevelTestScreen implements com.badlogic.gdx.Screen {
 		inputHandler = new InputHandler( "player1" );
 		level = Level.getDefaultLevel( );
 		batch = new SpriteBatch( );
-		debugRenderer = new SBox2DDebugRenderer( BOX_TO_PIXEL );
+		debugRenderer = new SBox2DDebugRenderer( Util.BOX_TO_PIXEL );
 		
 	}
 	

@@ -55,8 +55,11 @@ public class MyControllerListener implements ControllerListener {
 
 	// Using xbox button names. B, X, Y are unused for now
 	private final static int BUTTON_A = 0;
+	@SuppressWarnings( "unused" )
 	private final static int BUTTON_B = 1;
+	@SuppressWarnings( "unused" )
 	private final static int BUTTON_X = 2;
+	@SuppressWarnings( "unused" )
 	private final static int BUTTON_Y = 3;
 	private final static int TRIGGER = 4;
 	private final static int BUMPER_RIGHT = 5;
