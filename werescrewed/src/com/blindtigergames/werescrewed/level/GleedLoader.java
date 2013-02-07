@@ -13,7 +13,7 @@ import com.blindtigergames.werescrewed.entity.EntityBuilder;
 import com.blindtigergames.werescrewed.entity.EntityDef;
 import com.blindtigergames.werescrewed.platforms.PlatformBuilder;
 import com.blindtigergames.werescrewed.platforms.TiledPlatform;
-import com.blindtigergames.werescrewed.screens.Screen;
+import com.blindtigergames.werescrewed.util.Util;
 
 public class GleedLoader {	
 	protected XmlReader reader;
@@ -51,7 +51,7 @@ public class GleedLoader {
 		HashMap<String,String> props = getCustomProperties(item);
 		String name = item.getAttribute("Name");
 		Element posElem = item.getChildByName("Position");
-		Vector2 pos = new Vector2(posElem.getFloat("X"), posElem.getFloat("Y")).mul( Screen.PIXEL_TO_BOX );
+		Vector2 pos = new Vector2(posElem.getFloat("X"), posElem.getFloat("Y")).mul( Util.PIXEL_TO_BOX );
 		if (props.containsKey( defTag )){
 			String defName = props.get( defTag );
 			EntityDef def = EntityDef.getDefinition( defName );
