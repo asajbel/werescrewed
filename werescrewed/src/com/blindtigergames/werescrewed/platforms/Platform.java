@@ -7,8 +7,8 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+import com.badlogic.gdx.physics.box2d.Filter;
 import com.badlogic.gdx.physics.box2d.Fixture;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityDef;
@@ -49,14 +49,14 @@ public class Platform extends Entity {
 		screws = new ArrayList< Screw >( );
 	}
 
-	public Platform( String name, EntityDef type, World world, Vector2 pos, float rot,
-			Vector2 scale ) {
+	public Platform( String name, EntityDef type, World world, Vector2 pos,
+			float rot, Vector2 scale ) {
 		super( name, type, world, pos, rot, scale, null, true );
 		screws = new ArrayList< Screw >( );
 	}
 
-	public Platform( String name, EntityDef type, World world, Vector2 pos, float rot,
-			Vector2 scale, Texture tex ) {
+	public Platform( String name, EntityDef type, World world, Vector2 pos,
+			float rot, Vector2 scale, Texture tex ) {
 		super( name, type, world, pos, rot, scale, tex, true );
 		screws = new ArrayList< Screw >( );
 	}
@@ -112,19 +112,25 @@ public class Platform extends Entity {
 		dynamicType = !dynamicType;
 		if ( dynamicType ) {
 			body.setType( BodyType.DynamicBody );
-			FixtureDef fix = new FixtureDef( );
-			fix.filter.categoryBits = Util.DYNAMIC_OBJECTS; 
-			fix.filter.maskBits = -1;
+			Filter filter = new Filter( );
 			for ( Fixture f : body.getFixtureList( ) ) {
-				f.setFilterData( fix.filter );
+				filter = f.getFilterData( );
+				// move player back to original category
+				filter.categoryBits = Util.DYNAMIC_OBJECTS;
+				// player now collides with everything
+				filter.maskBits = Util.CATEGORY_EVERYTHING;
+				f.setFilterData( filter );
 			}
 		} else {
 			body.setType( BodyType.KinematicBody );
-			FixtureDef fix = new FixtureDef( );
-			fix.filter.categoryBits = Util.KINEMATIC_OBJECTS; 
-			fix.filter.maskBits = -1;
+			Filter filter = new Filter( );
 			for ( Fixture f : body.getFixtureList( ) ) {
-				f.setFilterData( fix.filter );
+				filter = f.getFilterData( );
+				// move player back to original category
+				filter.categoryBits = Util.KINEMATIC_OBJECTS;
+				// player now collides with everything
+				filter.maskBits = Util.CATEGORY_EVERYTHING;
+				f.setFilterData( filter );
 			}
 		}
 

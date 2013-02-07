@@ -215,7 +215,7 @@ public class Player extends Entity {
 			if ( playerState == PlayerState.Screwing ) {
 				world.destroyJoint( playerToScrew );
 				playerState = PlayerState.JumpingOffScrew;
-				screwJumpTimeout = 6;
+				screwJumpTimeout = 7;
 			}
 		}
 
@@ -271,9 +271,19 @@ public class Player extends Entity {
 					}
 				}
 				if ( platformInWay ) {
-					// body.applyLinearImpulse( new Vector2( 0.0f, JUMP_IMPLUSE
-					// ),
-					// body.getWorldCenter( ) );
+					if ( inputHandler.downPressed( ) ) {
+						screwJumpTimeout = 2;
+					} 
+				} else {
+					Filter filter = new Filter( );
+					for ( Fixture f : body.getFixtureList( ) ) {
+						filter = f.getFilterData( );
+						// move player back to original category
+						filter.categoryBits = Util.CATEGORY_PLAYER;
+						// player now collides with everything
+						filter.maskBits = Util.CATEGORY_EVERYTHING;
+						f.setFilterData( filter );
+					}
 				}
 				screwJumpTimeout--;
 			} else if ( !hitScrew ) {
@@ -639,7 +649,15 @@ public class Player extends Entity {
 					screwJumpTimeout = 7;
 					jump( );
 				} else if ( isGrounded( ) ) {
+					if( playerToPlayer != null ) {
+						world.destroyJoint( playerToPlayer );
+						playerToPlayer = null;
+					}
+					playerState = PlayerState.Jumping;
 					jump( );
+				} else if( playerToPlayer != null ) {
+					world.destroyJoint( playerToPlayer );
+					playerToPlayer = null;
 				}
 				jumpPressedController = true;
 			}
@@ -663,7 +681,12 @@ public class Player extends Entity {
 			prevButton = PovDirection.east;
 		}
 		if ( controllerListener.downPressed( ) ) {
-			stop( );
+			stop( );			
+			if ( playerState == PlayerState.Screwing ) {
+				world.destroyJoint( playerToScrew );
+				playerState = PlayerState.JumpingOffScrew;
+				screwJumpTimeout = 1;
+			}
 		}
 
 		if ( ( !controllerListener.leftPressed( ) && !controllerListener
@@ -677,11 +700,14 @@ public class Player extends Entity {
 
 		// If player hits the screw button and is in distance
 		// then attach the player to the screw
-		if ( controllerListener.screwPressed( )
-				&& hitScrew
+		if ( inputHandler.screwPressed( )
 				&& playerState != PlayerState.Screwing
 				&& ( playerState != PlayerState.JumpingOffScrew || screwJumpTimeout < 2 ) ) {
-			attachToScrew( );
+			if ( hitScrew ) {
+				attachToScrew( );
+			} else if ( otherPlayer != null ) {
+				setHeadStand( );
+			}
 		}
 		// If the button is let go, then the player is dropped
 		// Basically you have to hold attach button to stick to screw
@@ -725,9 +751,19 @@ public class Player extends Entity {
 					}
 				}
 				if ( platformInWay ) {
-					// body.applyLinearImpulse( new Vector2( 0.0f, JUMP_IMPLUSE
-					// ),
-					// body.getWorldCenter( ) );
+					if ( inputHandler.downPressed( ) ) {
+						screwJumpTimeout = 2;
+					} 
+				} else {
+					Filter filter = new Filter( );
+					for ( Fixture f : body.getFixtureList( ) ) {
+						filter = f.getFilterData( );
+						// move player back to original category
+						filter.categoryBits = Util.CATEGORY_PLAYER;
+						// player now collides with everything
+						filter.maskBits = Util.CATEGORY_EVERYTHING;
+						f.setFilterData( filter );
+					}
 				}
 				screwJumpTimeout--;
 			} else if ( !hitScrew ) {
