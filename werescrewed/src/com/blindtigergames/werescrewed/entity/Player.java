@@ -262,7 +262,7 @@ public class Player extends Entity {
 					filter.maskBits = Util.CATEGORY_EVERYTHING;
 					f.setFilterData( filter );
 				}
-				playerState = PlayerState.Standing;
+				playerState = PlayerState.Jumping;
 			} else if ( screwJumpTimeout == 7 ) {
 				boolean platformInWay = false;
 				for ( JointEdge j : currentScrew.body.getJointList( ) ) {
@@ -486,7 +486,7 @@ public class Player extends Entity {
 				// move player back to original category
 				filter.categoryBits = Util.CATEGORY_PLAYER;
 				// player now collides with everything
-				filter.maskBits = -1;
+				filter.maskBits = Util.CATEGORY_EVERYTHING;
 				f.setFilterData( filter );
 			}
 		}

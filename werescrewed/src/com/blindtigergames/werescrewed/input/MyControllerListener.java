@@ -177,8 +177,8 @@ public class MyControllerListener implements ControllerListener {
 				debugScrewMode3 = false;
 				debugScrewMode1 = true;
 			}
-			//Gdx.app.log( "debug", "1: " + debugScrewMode1 + "2: "
-			//		+ debugScrewMode2 + "3: " + debugScrewMode3 );
+			Gdx.app.log( "debug", "1: " + debugScrewMode1 + "2: "
+					+ debugScrewMode2 + "3: " + debugScrewMode3 );
 		}
 
 		// Setting jump/pause/bumper
@@ -453,11 +453,11 @@ public class MyControllerListener implements ControllerListener {
 		if ( debugScrewMode1 ) {
 			if ( prevAngle == 0 )
 				prevAngle = currAngle;
-			if ( currAngle - prevAngle > SCREW_ANGLE_DIFF ) {
+			if ( currAngle - prevAngle < SCREW_ANGLE_DIFF ) {
 				screwingPressed = true;
 				unscrewingPressed = false;
 				prevAngle = currAngle;
-			} else if ( prevAngle - currAngle > SCREW_ANGLE_DIFF ) {
+			} else if ( prevAngle - currAngle < SCREW_ANGLE_DIFF ) {
 				unscrewingPressed = true;
 				screwingPressed = false;
 				prevAngle = currAngle;
@@ -470,11 +470,11 @@ public class MyControllerListener implements ControllerListener {
 			if ( prevAngle == 0 )
 				prevAngle = currAngle;
 
-			if ( currAngle > prevAngle ) {
+			if ( currAngle < prevAngle ) {
 				screwingPressed = true;
 				unscrewingPressed = false;
 				prevAngle = currAngle;
-			} else if ( prevAngle > currAngle ) {
+			} else if ( prevAngle < currAngle ) {
 				unscrewingPressed = true;
 				screwingPressed = false;
 				prevAngle = currAngle;
