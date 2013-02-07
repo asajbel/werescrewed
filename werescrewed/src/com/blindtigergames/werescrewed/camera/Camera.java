@@ -212,6 +212,7 @@ public class Camera {
 	 */
 	private void adjustCamera( ) {
 		translateLogic( );
+		zoom();
 	}
 
 	/**
@@ -286,7 +287,9 @@ public class Camera {
 	 */
 	@SuppressWarnings( "unused" )
 	private void zoom( ) {
-
+		camera.zoom = AnchorList.getInstance( ).specialDistance( ) / viewportHeight;
+		translateBuffer.width = screenBounds.width * BUFFER_RATIO;
+		translateBuffer.height = screenBounds.height * BUFFER_RATIO;
 	}
 
 	/**
