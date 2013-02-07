@@ -49,7 +49,7 @@ public class StructureScrew extends Screw {
 		screwFixture.filter.categoryBits = Util.CATEGORY_SCREWS; 
 		screwFixture.filter.maskBits = Util.CATEGORY_PLAYER | Util.CATEGORY_SUBPLAYER;
 		body.createFixture( screwFixture );
-		screwShape.dispose( );
+		//screwShape.dispose( );
 		body.setUserData( this );
 
 		// add radar sensor to screw
@@ -61,7 +61,7 @@ public class StructureScrew extends Screw {
 		radarFixture.filter.categoryBits = Util.CATEGORY_SCREWS; 
 		radarFixture.filter.maskBits = Util.CATEGORY_PLAYER | Util.CATEGORY_SUBPLAYER;
 		body.createFixture( radarFixture );
-		radarShape.dispose( );
+		//radarShape.dispose( );
 
 		
 		// connect the screw to the entity
