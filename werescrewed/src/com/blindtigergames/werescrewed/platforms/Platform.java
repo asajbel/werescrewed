@@ -172,9 +172,12 @@ public class Platform extends Entity {
 		float newAngleFromSkeleton = skeleton.body.getAngle( )
 				+ Util.angleBetweenPoints( Vector2.Zero, localPosition );
 		Vector2 skeleOrigin = skeleton.body.getPosition( );
-		float newRotation = localRotation + skeleton.body.getAngle( );
 		
-		body.setTransform( Util.PointOnCircle( radiusFromSkeleton,
-				newAngleFromSkeleton, skeleOrigin ), newRotation );
+		float newRotation = localRotation + skeleton.body.getAngle( );
+		Vector2 newPos = Util.PointOnCircle( radiusFromSkeleton,
+				newAngleFromSkeleton, skeleOrigin );
+		
+		body.setTransform( newPos, newRotation );
+		//Gdx.app.log( "Platform['"+name+"']", "newPos: "+newPos );
 	}
 }

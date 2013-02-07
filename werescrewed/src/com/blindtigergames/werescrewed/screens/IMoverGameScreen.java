@@ -154,7 +154,7 @@ public class IMoverGameScreen implements com.badlogic.gdx.Screen {
 		
 		//buildMoverPlatforms( );
 		TiledPlatform skeletonTest2 = platBuilder.setWidth( 10 ).setHeight( 1 )
-				.setOneSided( false ).setPosition( 500, 300 )
+				.setOneSided( false ).setPosition( 128000, 76800 )
 				.setTexture( testTexture ).setFriction( 1f )
 				.setDynamic( )
 				
