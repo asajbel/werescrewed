@@ -1,8 +1,12 @@
 package com.blindtigergames.werescrewed.entity.builders;
 
+import java.util.HashMap;
+
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
+import com.blindtigergames.werescrewed.platforms.Platform;
+import com.blindtigergames.werescrewed.platforms.PlatformType;
 import com.blindtigergames.werescrewed.platforms.RoomPlatform;
 import com.blindtigergames.werescrewed.platforms.ShapePlatform;
 import com.blindtigergames.werescrewed.platforms.Shapes;
@@ -31,6 +35,7 @@ public class PlatformBuilder extends GenericEntityBuilder<PlatformBuilder> {
 	boolean flipHorizonal = false;
 	boolean flipVertical = false;
 	boolean isOneSided = false;
+	protected PlatformType pType = PlatformType.SHAPE;
 	Shapes shape = null;
 	
 /**
@@ -217,6 +222,18 @@ public class PlatformBuilder extends GenericEntityBuilder<PlatformBuilder> {
 		return this;
 	}
 	
+	@Override
+	public PlatformBuilder properties(HashMap<String,String> props){
+		super.properties( props );
+		
+		return this;
+	}
+	
+	@Override
+	public Platform build(){
+		return null;
+	}
+
 /**
  * builds room platform according to specs	
  * @return RoomPlatform
