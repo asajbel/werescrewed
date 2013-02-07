@@ -285,7 +285,7 @@ public class Camera {
 	/**
 	 * zoom camera to keep anchors on screen
 	 */
-	@SuppressWarnings( "unused" )
+	//@SuppressWarnings( "unused" )
 	private void zoom( ) {
 		camera.zoom = AnchorList.getInstance( ).specialDistance( ) / viewportHeight;
 		translateBuffer.width = screenBounds.width * BUFFER_RATIO;
