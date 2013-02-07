@@ -129,7 +129,6 @@ public class Entity {
 		} else if (sprite != null){
 			sprite.setPosition(x, y);
 		}
-		Gdx.app.log(name,"("+x+", "+y+"");
 	}
 
 	public void update( float deltaTime ) {
