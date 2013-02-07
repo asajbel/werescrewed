@@ -287,7 +287,8 @@ public class Camera {
 	 */
 	//@SuppressWarnings( "unused" )
 	private void zoom( ) {
-		camera.zoom = AnchorList.getInstance( ).specialDistance( ) / viewportHeight;
+		float temp = AnchorList.getInstance( ).specialDistance( ) / viewportHeight;
+		if (temp > 1f) camera.zoom = temp;
 		translateBuffer.width = screenBounds.width * BUFFER_RATIO;
 		translateBuffer.height = screenBounds.height * BUFFER_RATIO;
 	}
