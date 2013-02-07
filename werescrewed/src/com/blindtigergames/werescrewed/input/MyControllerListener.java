@@ -85,8 +85,8 @@ public class MyControllerListener implements ControllerListener {
 		}
 		axisY = controller.getAxis( 0 );
 		axisX = controller.getAxis( 1 );
-		axisRX = controller.getAxis( 2 );
-		axisRY = controller.getAxis( 3 );
+		axisRX = controller.getAxis( 3 );
+		axisRY = controller.getAxis( 2 );
 		
 		if ( axisY < 0.2f && axisY > -0.2f ) {
 			upPressed = false;
@@ -392,19 +392,19 @@ public class MyControllerListener implements ControllerListener {
 		prevDir = currDir;
 		
 		System.out.println( "rx: " + axisRX + " ry: " + axisRY);
-		if(axisRX == 1.0f && axisRY == 0.0f){
+		if(axisRX == 1.0f){
 			currDir = SCREW_RIGHT;
 			System.out.println( "right");
 		}
-		if(axisRX == -1.0f && axisRY == 0.0f){
+		if(axisRX == -1.0f){
 			currDir = SCREW_LEFT;
 			System.out.println( "left");
 		}
-		if(axisRX == 0.0f && axisRY == 1.0f){
+		if(axisRY == 1.0f ){
 			currDir = SCREW_DOWN;
 			System.out.println( "down");
 		}
-		if(axisRX == 0.0f && axisRY == -1.0f){
+		if(axisRY == -1.0f ){
 			currDir = SCREW_UP;
 			System.out.println( "up");
 		}
