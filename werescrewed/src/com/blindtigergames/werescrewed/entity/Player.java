@@ -679,7 +679,7 @@ public class Player extends Entity {
 
 		// If player hits the screw button and is in distance
 		// then attach the player to the screw
-		if ( inputHandler.screwPressed( )
+		if ( controllerListener.screwPressed( )
 				&& playerState != PlayerState.Screwing
 				&& ( playerState != PlayerState.JumpingOffScrew || screwJumpTimeout < 2 ) ) {
 			if ( hitScrew ) {
