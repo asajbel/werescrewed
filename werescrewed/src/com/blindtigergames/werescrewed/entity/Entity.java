@@ -93,7 +93,7 @@ public class Entity {
 			world = body.getWorld( );
 			sprite.setScale( Util.PIXEL_TO_BOX );
 		}
-		setPosition( pos );
+		setPosition( pos );		
 	}
 
 	public void setPosition( Vector2 pos ) {
