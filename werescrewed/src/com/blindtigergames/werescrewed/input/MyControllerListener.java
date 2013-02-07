@@ -26,11 +26,15 @@ public class MyControllerListener implements ControllerListener {
 	private boolean downPressed;
 	private boolean upPressed;
 	private boolean analogUsed;
+	private boolean screwingPressed;
+	private boolean unscrewingPressed;
 
 	private boolean attachScrewPressed;
 
 	// axisX and axisY represent the point where the analog stick is
-	private float axisX, axisY;
+	private float axisX, axisY, axisRX, axisRY;
+	int angleInt, prevAngle, currAngle;
+	double angle;
 
 	// Using xbox face button names. B, X, Y are unused for now
 	private final static int buttonA = 0;
@@ -74,7 +78,9 @@ public class MyControllerListener implements ControllerListener {
 		}
 		axisY = controller.getAxis( 0 );
 		axisX = controller.getAxis( 1 );
-
+		axisRX = controller.getAxis( 2 );
+		axisRY = controller.getAxis( 3 );
+		
 		if ( axisY < 0.2f && axisY > -0.2f ) {
 			upPressed = false;
 			downPressed = false;
@@ -101,6 +107,16 @@ public class MyControllerListener implements ControllerListener {
 			upPressed = true;
 			analogUsed = true;
 		}
+		
+		if(!( (axisRX < 0.01 && axisRY < 0.01)
+				&& (axisRX > -0.01 && axisRY > -0.01)))
+			rightStickScrew(controller);
+		else {
+			screwingPressed = false;
+			unscrewingPressed = false;
+		}
+		
+		System.out.println("sc: " + screwing() + ", unsc: " + unscrewing() );
 		return false;
 	}
 
@@ -324,7 +340,7 @@ public class MyControllerListener implements ControllerListener {
 	 * @author Ranveer
 	 */
 	public boolean screwing( ) {
-		return rightPressed;
+		return rightPressed || screwingPressed;
 	}
 
 	/**
@@ -334,7 +350,7 @@ public class MyControllerListener implements ControllerListener {
 	 * @author Ranveer
 	 */
 	public boolean unscrewing( ) {
-		return leftPressed;
+		return leftPressed || unscrewingPressed;
 	}
 
 	/**
@@ -349,4 +365,21 @@ public class MyControllerListener implements ControllerListener {
 		return Controllers.getControllers( ).indexOf( controller, true );
 	}
 
+	private void rightStickScrew(Controller controller){
+		prevAngle = currAngle;
+		angleInt = (int) Math.toDegrees(Math.atan2( -axisRX, -axisRY )) + 180;
+		currAngle = angleInt;
+		//System.out.println("Currangle: " + currAngle + " prevAngle: " + prevAngle);
+		//System.out.println("RX: " + axisRX + " RY: " + axisRY);
+		
+		if( currAngle  > prevAngle ){
+			screwingPressed = true;
+			unscrewingPressed = false;
+		}
+		else if ( currAngle < prevAngle ){
+			unscrewingPressed = true;
+			screwingPressed = false;
+		}
+	
+	}
 }

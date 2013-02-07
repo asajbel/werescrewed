@@ -65,7 +65,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 	private MyContactListener contactListener;
 	private SBox2DDebugRenderer debugRenderer;
 	private Player player1, player2;
-	private TiledPlatform tiledPlat, ground, movingTP;
+	private TiledPlatform tiledPlat, ground, movingTP, singTile, rectile;
 	private PlatformBuilder platBuilder;
 	private PuzzleScrew puzzleScrew;
 	private Skeleton skeleton;
@@ -87,7 +87,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		rootSkeleton = new Skeleton( "", Vector2.Zero, null, world );
 		entityManager.addSkeleton( rootSkeleton.name, rootSkeleton );
 		platBuilder = new PlatformBuilder( world );
-		testTexture = new Texture( Gdx.files.internal( "data/rletter.png" ) );
+		testTexture = new Texture( Gdx.files.internal( "data/TilesetTest.png" ) );
 
 		// Initialize camera
 		initCamera( );
@@ -108,8 +108,6 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		// First player has to have the name "player1"
 		// Second player has to have the name "player2"
 		// Otherwise input handler breaks
-		//player1 = new Player( "player1", world, new Vector2( 1.0f, 1.0f ) );
-		//player2 = new Player( "player2", world, new Vector2( 1.5f, 1.5f ) );
 		
 		player1 = new PlayerBuilder()
 					.name( "player1" )
@@ -155,6 +153,24 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		tiledPlat.body.setType( BodyType.DynamicBody );
 		tiledPlat.body.setFixedRotation( false );
 		skeleton.addPlatform( tiledPlat );
+		
+		// Tiled Rectangle Platform
+		/*
+		rectile = platBuilder.setPosition( -200.0f, 600.f )
+				.setDimensions( 20,3 ).setTexture( testTexture )
+				.setName( "rectangle tiled" ).setResitituion( 0.0f ).buildTilePlatform( );
+		rectile.body.setType( BodyType.DynamicBody );
+		rectile.body.setFixedRotation( false );
+		skeleton.addPlatform( rectile );
+		*/
+		
+		// Tiled Single Platform
+		singTile = platBuilder.position( -1.0f, 1000.0f )
+				.dimensions( 1, 1 ).setTexture( testTexture )
+				.name( "Single Tiled" ).setResitituion( 0.0f ).buildTilePlatform( );
+		singTile.body.setType( BodyType.DynamicBody );
+		singTile.body.setFixedRotation( false );
+		skeleton.addPlatform( singTile ); 
 
 		// Moving platform
 		movingTP = platBuilder.position( 0.0f, 120.0f )
@@ -300,6 +316,23 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 			skeleton.addBoneAndJoint( piston, pistonJoint );
 		}
 
+		
+		builder = platBuilder.width( 20 ).height( 1 )
+				.setOneSided( true )
+				// .setPosition( (-500f-i*40)*PIXEL_TO_BOX, 150f*PIXEL_TO_BOX )
+				.setTexture( testTexture ).setFriction( 1f );
+		// .buildTilePlatform( world );
+
+		TiledPlatform elevator = builder.position( -1500, 150 )
+				.setMoveable( true ).buildTilePlatform( );
+		elevator.body.setType( BodyType.DynamicBody );
+		PrismaticJoint pistonJ = jointBuilder.bodyB( ( Entity ) elevator )
+		.anchor( elevator.body.getWorldCenter( ) ).build( );
+		
+		elevator.setMover( new PistonMover( pistonJ, 0f,  2f ) );
+		elevator.body.setSleepingAllowed( false );
+		skeleton.addBoneAndJoint( elevator, pistonJ );
+		
 		ComplexPlatform gear = new ComplexPlatform( "gear", new Vector2(
 				1000 * Util.PIXEL_TO_BOX, 300 * Util.PIXEL_TO_BOX ), null, 3,
 				world, "gearSmall" );

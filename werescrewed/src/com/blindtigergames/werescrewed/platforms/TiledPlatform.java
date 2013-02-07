@@ -27,6 +27,13 @@ import com.blindtigergames.werescrewed.util.Util;
 public class TiledPlatform extends Platform {
 	protected float tileHeight, tileWidth;
 	protected Vector2 bodypos;
+	protected TileSet tileSet;
+
+	protected enum Shape {
+		SINGLE, VERTICAL, HORIZONTAL, RECTANGLE
+	}
+
+	protected Shape shape = Shape.SINGLE;
 
 	protected class Tile {
 		public float xOffset, yOffset;
@@ -48,15 +55,32 @@ public class TiledPlatform extends Platform {
 	protected Vector< Tile > tiles;
 
 	public TiledPlatform( String n, Vector2 pos, Texture tex, float width,
-			float height, boolean isOneSided, World world ) {
+			float height, boolean isOneSided, boolean isMoveable, World world ) {
 		super( n, pos, tex, world );
+		this.tileSet = new TileSet( tex );
 		this.tileHeight = height;
 		this.tileWidth = width;
+
+		if ( height > 1 && width > 1 ) {
+			shape = Shape.RECTANGLE;
+		} else if ( width > 1 ) {
+			shape = Shape.HORIZONTAL;
+		} else if ( height > 1 ) {
+			shape = Shape.VERTICAL;
+		} else {
+			shape = Shape.SINGLE;
+		}
+
+		if ( tex.getHeight( ) != 128 && tex.getWidth( ) != 128 ) {
+			shape = Shape.SINGLE;
+		}
+
 		this.width = width * tileConstant;
 		this.height = height * tileConstant;
 		constructTileBody( pos.x, pos.y, width, height );
 		body.setUserData( this );
 		setOneSided( isOneSided );
+		this.moveable = isMoveable;
 		tileBody( );
 	}
 
@@ -79,7 +103,8 @@ public class TiledPlatform extends Platform {
 		FixtureDef platformFixtureDef = new FixtureDef( );
 		platformFixtureDef.shape = polygon;
 		platformFixtureDef.filter.categoryBits = Util.DYNAMIC_OBJECTS;
-		platformFixtureDef.filter.maskBits = Util.DYNAMIC_OBJECTS | Util.CATEGORY_PLAYER;
+		platformFixtureDef.filter.maskBits = Util.DYNAMIC_OBJECTS
+				| Util.CATEGORY_PLAYER;
 		body.createFixture( platformFixtureDef );
 
 		polygon.dispose( );
@@ -91,18 +116,134 @@ public class TiledPlatform extends Platform {
 		Sprite temp;
 		Tile insub;
 		float offset_x, offset_y;
-		for ( int i = 0; i < tileWidth; i++ ) {
-			offset_x = ( i - tileWidth / 2 + 1 ) * tileConstant * 2;
-			for ( int j = 0; j < tileHeight; j++ ) {
-				temp = new Sprite( sprite );
+		switch ( shape ) {
+		case SINGLE:
+			temp = tileSet.getSingleTile( );
+			offset_x = temp.getWidth( ) / 2;
+			offset_y = temp.getHeight( ) / 2;
+			insub = setTile( temp, offset_x, offset_y );
+			tiles.add( insub );
+			break;
+		case VERTICAL:
+			temp = tileSet.getVerticalTopTile( );
+			offset_x = ( 0 - tileWidth / 2 + 1 ) * tileConstant * 2;
+			offset_y = ( 0 - tileHeight / 2 + 1 ) * tileConstant * 2;
+			insub = setTile( temp, offset_x, offset_y );
+			tiles.add( insub );
+			for ( int j = 1; j < tileHeight - 1; j++ ) {
+				temp = tileSet.getVerticalMiddleTile( );
 				offset_y = ( j - tileHeight / 2 + 1 ) * tileConstant * 2;
-				temp.setOrigin( offset_x, offset_y );
-				temp.setPosition( bodypos.x - offset_x, bodypos.y - offset_y );
-				temp.setRotation( MathUtils.radiansToDegrees * body.getAngle( ) );
-				insub = new Tile( offset_x, offset_y, temp );
+				insub = setTile( temp, offset_x, offset_y );
 				tiles.add( insub );
 			}
+			temp = tileSet.getVerticalBottomTile( );
+			offset_y = ( ( tileHeight - 1 ) - tileHeight / 2 + 1 )
+					* tileConstant * 2;
+			insub = setTile( temp, offset_x, offset_y );
+			tiles.add( insub );
+			break;
+		case HORIZONTAL:
+			temp = tileSet.getHorizontalRightTile( );
+			offset_x = ( 0 - tileWidth / 2 + 1 ) * tileConstant * 2;
+			offset_y = ( 0 - tileHeight / 2 + 1 ) * tileConstant * 2;
+			insub = setTile( temp, offset_x, offset_y );
+			tiles.add( insub );
+			for ( int i = 1; i < tileWidth - 1; i++ ) {
+				temp = tileSet.getHorizontalMiddleTile( );
+				offset_x = ( i - tileWidth / 2 + 1 ) * tileConstant * 2;
+				insub = setTile( temp, offset_x, offset_y );
+				tiles.add( insub );
+			}
+			temp = tileSet.getHorizontalLeftTile( );
+			offset_x = ( ( tileWidth - 1 ) - tileWidth / 2 + 1 ) * tileConstant
+					* 2;
+			insub = setTile( temp, offset_x, offset_y );
+			tiles.add( insub );
+			break;
+		case RECTANGLE:
+			temp = tileSet.getRectangleUpperRight( );
+			offset_x = ( 0 - tileWidth / 2 + 1 ) * tileConstant * 2;
+			offset_y = ( 0 - tileHeight / 2 + 1 ) * tileConstant * 2;
+			insub = setTile( temp, offset_x, offset_y );
+			tiles.add( insub );
+			for ( int i = 1; i < tileWidth - 1; i++ ) {
+				temp = tileSet.getRectangleUpperMiddle( );
+				offset_x = ( i - tileWidth / 2 + 1 ) * tileConstant * 2;
+				insub = setTile( temp, offset_x, offset_y );
+				tiles.add( insub );
+			}
+			temp = tileSet.getRectangleUpperLeft( );
+			offset_x = ( ( tileWidth - 1 ) - tileWidth / 2 + 1 ) * tileConstant
+					* 2;
+			insub = setTile( temp, offset_x, offset_y );
+			tiles.add( insub );
+
+			for ( int j = 1; j < tileHeight - 1; j++ ) {
+				temp = tileSet.getRectangleMiddleRight( );
+				offset_x = ( 0 - tileWidth / 2 + 1 ) * tileConstant * 2;
+				offset_y = ( j - tileHeight / 2 + 1 ) * tileConstant * 2;
+				insub = setTile( temp, offset_x, offset_y );
+				tiles.add( insub );
+				for ( int i = 1; i < tileWidth - 1; i++ ) {
+					temp = tileSet.getRectangleMiddleCenter( );
+					offset_x = ( i - tileWidth / 2 + 1 ) * tileConstant * 2;
+					temp.setOrigin( offset_x, offset_y );
+					temp.setPosition( bodypos.x - offset_x, bodypos.y
+							- offset_y );
+					temp.setRotation( MathUtils.radiansToDegrees
+							* body.getAngle( ) );
+					insub = new Tile( offset_x, offset_y, temp );
+					tiles.add( insub );
+				}
+				temp = tileSet.getRectangleMiddleLeft( );
+				offset_x = ( ( tileWidth - 1 ) - tileWidth / 2 + 1 )
+						* tileConstant * 2;
+				insub = setTile( temp, offset_x, offset_y );
+				tiles.add( insub );
+			}
+
+			temp = tileSet.getRectangleBottomRight( );
+			offset_x = ( 0 - tileWidth / 2 + 1 ) * tileConstant * 2;
+			offset_y = ( ( tileHeight - 1 ) - tileHeight / 2 + 1 )
+					* tileConstant * 2;
+			insub = setTile( temp, offset_x, offset_y );
+			tiles.add( insub );
+			for ( int i = 1; i < tileWidth - 1; i++ ) {
+				temp = tileSet.getRectangleBottomMiddle( );
+				offset_x = ( i - tileWidth / 2 + 1 ) * tileConstant * 2;
+				insub = setTile( temp, offset_x, offset_y );
+				tiles.add( insub );
+			}
+			temp = tileSet.getRectangleBottomLeft( );
+			offset_x = ( ( tileWidth - 1 ) - tileWidth / 2 + 1 ) * tileConstant
+					* 2;
+			insub = setTile( temp, offset_x, offset_y );
+			tiles.add( insub );
+			break;
+		default:
+			for ( int i = 0; i < tileWidth; i++ ) {
+				offset_x = ( i - tileWidth / 2 + 1 ) * tileConstant * 2;
+				for ( int j = 0; j < tileHeight; j++ ) {
+					temp = tileSet.getSingleTile( );
+					offset_y = ( j - tileHeight / 2 + 1 ) * tileConstant * 2;
+					temp.setOrigin( offset_x, offset_y );
+					temp.setPosition( bodypos.x - offset_x, bodypos.y
+							- offset_y );
+					temp.setRotation( MathUtils.radiansToDegrees
+							* body.getAngle( ) );
+					insub = new Tile( offset_x, offset_y, temp );
+					tiles.add( insub );
+				}
+			}
+			break;
 		}
+	}
+
+	private Tile setTile( Sprite temp, float offset_x, float offset_y ) {
+		temp.setOrigin( offset_x, offset_y );
+		temp.setPosition( bodypos.x - offset_x, bodypos.y - offset_y );
+		temp.setRotation( MathUtils.radiansToDegrees * body.getAngle( ) );
+		return ( new Tile( offset_x, offset_y, temp ) );
 	}
 
 	public float getActualHeight( ) {

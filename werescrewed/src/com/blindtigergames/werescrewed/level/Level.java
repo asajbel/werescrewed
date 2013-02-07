@@ -10,9 +10,9 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.blindtigergames.werescrewed.camera.Camera;
 import com.blindtigergames.werescrewed.debug.SBox2DDebugRenderer;
 import com.blindtigergames.werescrewed.entity.EntityManager;
-import com.blindtigergames.werescrewed.entity.builders.PlatformBuilder;
-import com.blindtigergames.werescrewed.entity.builders.PlayerBuilder;
 import com.blindtigergames.werescrewed.platforms.Platform;
+import com.blindtigergames.werescrewed.entity.builders.PlayerBuilder;
+import com.blindtigergames.werescrewed.entity.builders.PlatformBuilder;
 import com.blindtigergames.werescrewed.platforms.RoomPlatform;
 import com.blindtigergames.werescrewed.platforms.TiledPlatform;
 import com.blindtigergames.werescrewed.player.Player;
@@ -93,11 +93,6 @@ public class Level {
 		.setTexture( texture )
 		.buildTilePlatform( );
 
-		rp = new PlatformBuilder(out.world)
-		.position( -1.0f, 0.4f )
-		.dimensions( 1, 10 )
-		.setTexture( texture )
-		.buildRoomPlatform( );
 		
 		ground = new PlatformBuilder(out.world)
 		.position( 0.0f, 0.0f )
@@ -106,7 +101,6 @@ public class Level {
 		.buildTilePlatform( );
 		
 		out.platforms.add( ground );
-		out.platforms.add( rp );
 		out.platforms.add( tp );
 		
 		

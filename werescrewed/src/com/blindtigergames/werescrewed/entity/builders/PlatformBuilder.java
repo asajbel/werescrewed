@@ -7,7 +7,6 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.blindtigergames.werescrewed.platforms.Platform;
 import com.blindtigergames.werescrewed.platforms.PlatformType;
-import com.blindtigergames.werescrewed.platforms.RoomPlatform;
 import com.blindtigergames.werescrewed.platforms.ShapePlatform;
 import com.blindtigergames.werescrewed.platforms.Shapes;
 import com.blindtigergames.werescrewed.platforms.TiledPlatform;
@@ -22,21 +21,22 @@ import com.blindtigergames.werescrewed.platforms.TiledPlatform;
 // Later should be loaded in by file
 public class PlatformBuilder extends GenericEntityBuilder<PlatformBuilder> {
 	protected float width = 1.0f;
-	float height = 1.0f;
-	float outerWidth = 1.0f;
-	float outerHeight = 1.0f;
-	float thickX = 1.0f;
-	float thickY = 1.0f;
-	float scale = 1.0f;
-	float density = 1.0f;
-	float friction = 0.5f;
-	float restitution = 0.1f;
-	float gravScale = 0.1f;
-	boolean flipHorizonal = false;
-	boolean flipVertical = false;
-	boolean isOneSided = false;
+	protected float height = 1.0f;
+	protected float outerWidth = 1.0f;
+	protected float outerHeight = 1.0f;
+	protected float thickX = 1.0f;
+	protected float thickY = 1.0f;
+	protected float scale = 1.0f;
+	protected float density = 1.0f;
+	protected float friction = 0.5f;
+	protected float restitution = 0.1f;
+	protected float gravScale = 0.1f;
+	protected boolean flipHorizonal = false;
+	protected boolean flipVertical = false;
+	protected boolean isOneSided = false;
 	protected PlatformType pType = PlatformType.SHAPE;
-	Shapes shape = null;
+	protected boolean moveable = false;
+	protected Shapes shape = null;
 	
 /**
  * 
@@ -78,6 +78,7 @@ public class PlatformBuilder extends GenericEntityBuilder<PlatformBuilder> {
 		this.width = w;
 		return this;
 	}
+	
 /**
  * 
  * @param h - set height with a float, default is 1
@@ -87,6 +88,7 @@ public class PlatformBuilder extends GenericEntityBuilder<PlatformBuilder> {
 		this.height = h;
 		return this;
 	}
+
 /**
  * 
  * @param dimension - set width/height with Vector2, default is (1,1)
@@ -196,6 +198,17 @@ public class PlatformBuilder extends GenericEntityBuilder<PlatformBuilder> {
 		return this;
 	}
 
+/**
+ * 
+ * @param moving - boolean tells if platform could move, default false
+ * @return PlatformBuilder
+ */
+	
+	public PlatformBuilder setMoveable( boolean moving ) {
+		this.moveable = moving;
+		return this;
+	}
+
 	/**
 	 * resets all the values to its default, use between builds
 	 */
@@ -216,6 +229,7 @@ public class PlatformBuilder extends GenericEntityBuilder<PlatformBuilder> {
 		this.flipHorizonal = false;
 		this.flipVertical = false;
 		this.isOneSided = false;
+		this.moveable = false;
 		this.shape = null;
 		this.tex = null;
 		this.name = "No name";
@@ -231,29 +245,17 @@ public class PlatformBuilder extends GenericEntityBuilder<PlatformBuilder> {
 	
 	@Override
 	public Platform build(){
-		return null;
+		if (pType == PlatformType.TILED){
+			return buildTilePlatform();
+		}
+		return buildShapePlatform();
 	}
-
-/**
- * builds room platform according to specs	
- * @return RoomPlatform
- */
-	public RoomPlatform buildRoomPlatform( ) {
-		RoomPlatform rp = new RoomPlatform( this.name, this.pos, this.tex, this.width, this.height, world );
-
-		rp.setDensity( this.density );
-		rp.setFriction( this.friction );
-		rp.setRestitution( this.restitution );
-		rp.setGravScale( this.gravScale );
-		return rp;
-	}
-
 /**
  * builds tile platform with specified numbers
  * @return TiledPlatform
  */
 	public TiledPlatform buildTilePlatform( ) {
-		TiledPlatform tp = new TiledPlatform( this.name, this.pos, this.tex, this.width, this.height, this.isOneSided, world );
+		TiledPlatform tp = new TiledPlatform( this.name, this.pos, this.tex, this.width, this.height, this.isOneSided, this.moveable, world );
 
 		tp.setDensity( this.density );
 		tp.setFriction( this.friction );
