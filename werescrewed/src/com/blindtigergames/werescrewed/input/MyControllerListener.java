@@ -29,28 +29,38 @@ public class MyControllerListener implements ControllerListener {
 	private boolean screwingPressed;
 	private boolean unscrewingPressed;
 
+	private boolean prevScrewingPressed, prevUnscrewingPressed;
 	private boolean attachScrewPressed;
 
+	private boolean debugScrewMode1 = true, debugScrewMode2, debugScrewMode3;
 	// axisX and axisY represent the point where the analog stick is
 	private float axisX, axisY, axisRX, axisRY;
-	int angleInt, prevAngle, currAngle;
-	int prevDir, currDir;
+	int angleInt, prevAngle = 0, currAngle = 0;
+	int prevDirection, currDir;
 	double angle;
+	int currDirectionXAxis;
+	int currDirectionYAxis;
+	int currDirection = 0;
+	int screwCounter = 0;
 
 	// Using xbox face button names. B, X, Y are unused for now
 	private final static int BUTTON_A = 0;
-	// private final static int buttonB = 1;
-	// private final static int buttonX = 2;
-	// private final static int buttonY = 3;
-	private final static int BUMPER_R = 5;
-	// private final static int trigger = 4;
+	private final static int BUTTON_B = 1;
+	private final static int BUTTON_X = 2;
+	private final static int BUTTON_Y = 3;
+	private final static int BUMPER_RIGHT = 5;
+	private final static int TRIGGER = 4;
+	private final static int SELECT = 6;
 	private final static int PAUSE = 7;
 	
 	private final static int SCREW_UP = 1;
 	private final static int SCREW_RIGHT = 2;
 	private final static int SCREW_DOWN = 3;
 	private final static int SCREW_LEFT = 4;
+	private final static int SCREW_COUNTER = 10;
 	
+	private final static float DEADZONE = 0.2f;
+	private final static float ANALOG_CENTER = 0.01f;
 
 	/**
 	 * This function checks the analog sticks to see if they moved
@@ -75,9 +85,10 @@ public class MyControllerListener implements ControllerListener {
 		 * 
 		 * trigger is button 4: left is positive, right is negative
 		 */
+		
 		//System.out.println("axis: " + controller.getAxis( 1 ) ); // 0 = vertical, 1 =
 		// horizontal
-		if ( buttonIndex == 4 ) {
+		if ( buttonIndex == TRIGGER ) {
 			if ( axisPoint < -0.3f || axisPoint > 0.3f )
 				attachScrewPressed = true;
 			else
@@ -88,39 +99,44 @@ public class MyControllerListener implements ControllerListener {
 		axisRX = controller.getAxis( 3 );
 		axisRY = controller.getAxis( 2 );
 		
-		if ( axisY < 0.2f && axisY > -0.2f ) {
+		if ( axisY < DEADZONE && axisY > -DEADZONE ) {
 			upPressed = false;
 			downPressed = false;
 			analogUsed = false;
 		}
-		if ( axisX < 0.2f && axisX > -0.2f ) {
+		if ( axisX < DEADZONE && axisX > -DEADZONE ) {
 			rightPressed = false;
 			leftPressed = false;
 			analogUsed = false;
 		}
-		if ( axisX > 0.2f ) {
+		if ( axisX > DEADZONE ) {
 			rightPressed = true;
 			analogUsed = true;
 		}
-		if ( axisX < -0.2f ) {
+		if ( axisX < -DEADZONE ) {
 			leftPressed = true;
 			analogUsed = true;
 		}
-		if ( axisY > 0.2f ) {
+		if ( axisY > DEADZONE ) {
 			downPressed = true;
 			analogUsed = true;
 		}
-		if ( axisY < -0.2f ) {
+		if ( axisY < -DEADZONE ) {
 			upPressed = true;
 			analogUsed = true;
 		}
 		
-		if(!( (axisRX < 0.01 && axisRY < 0.01)
-				&& (axisRX > -0.01 && axisRY > -0.01)))
+		if(!( (axisRX < ANALOG_CENTER && axisRY < ANALOG_CENTER)
+				&& (axisRX > -ANALOG_CENTER && axisRY > -ANALOG_CENTER)))
 			rightStickScrew(controller);
 		else {
 			screwingPressed = false;
 			unscrewingPressed = false;
+			currDirection = 0;
+			prevDirection = 0;
+			screwCounter = 0;
+			prevAngle = 0;
+			currAngle = 0;
 		}
 		
 		//System.out.println("sc: " + screwing() + ", unsc: " + unscrewing() );
@@ -133,16 +149,35 @@ public class MyControllerListener implements ControllerListener {
 	 */
 	@Override
 	public boolean buttonDown( Controller controller, int buttonIndex ) {
+		
 		// System.out.println("#" + indexOf(controller) + ", button " +
 		// buttonIndex + " down");
 
+		if( buttonIndex == SELECT){
+			if(debugScrewMode1){
+				 debugScrewMode1 = false;
+				 debugScrewMode2 = true;
+			}
+			else if(debugScrewMode2){
+				debugScrewMode2 = false;
+				debugScrewMode3 = true;
+			}
+			else if( debugScrewMode3 ){
+				debugScrewMode3 = false;
+				debugScrewMode1 = true;
+			}
+			Gdx.app.log( "debug", "1: " + debugScrewMode1 + "2: " + debugScrewMode2 + "3: " + debugScrewMode3 );
+		}
+		
+
 		if ( buttonIndex == BUTTON_A )
 			jumpPressed = true;
-		if ( buttonIndex == BUMPER_R )
+		if ( buttonIndex == BUMPER_RIGHT )
 			attachScrewPressed = true;
 		if ( buttonIndex == PAUSE )
 			pausePressed = true;
 		return false;
+		
 	}
 
 	/**
@@ -154,7 +189,7 @@ public class MyControllerListener implements ControllerListener {
 	public boolean buttonUp( Controller controller, int buttonIndex ) {
 		if ( buttonIndex == BUTTON_A )
 			jumpPressed = false;
-		if ( buttonIndex == BUMPER_R )
+		if ( buttonIndex == BUMPER_RIGHT )
 			attachScrewPressed = false;
 		if ( buttonIndex == PAUSE )
 			pausePressed = false;
@@ -347,7 +382,14 @@ public class MyControllerListener implements ControllerListener {
 	 * @author Ranveer
 	 */
 	public boolean screwing( ) {
-		return rightPressed || screwingPressed;
+		prevScrewingPressed = screwingPressed;
+		if((prevScrewingPressed == screwingPressed))
+			screwCounter++;
+		if(screwCounter > SCREW_COUNTER) {
+			screwingPressed = false;
+			screwCounter = 0;
+		}
+		return screwingPressed;
 	}
 
 	/**
@@ -357,7 +399,14 @@ public class MyControllerListener implements ControllerListener {
 	 * @author Ranveer
 	 */
 	public boolean unscrewing( ) {
-		return leftPressed || unscrewingPressed;
+		prevUnscrewingPressed = unscrewingPressed;
+		if((prevUnscrewingPressed == unscrewingPressed))
+			screwCounter++;
+		if(screwCounter > SCREW_COUNTER) {
+			unscrewingPressed = false;
+			screwCounter = 0;
+		}
+		return unscrewingPressed;
 	}
 
 	/**
@@ -373,53 +422,137 @@ public class MyControllerListener implements ControllerListener {
 	}
 
 	private void rightStickScrew(Controller controller){
-		/*
-		prevAngle = currAngle;
+		
+		
 		angleInt = (int) Math.toDegrees(Math.atan2( -axisRX, -axisRY )) + 180;
 		currAngle = angleInt;
 		//System.out.println("Currangle: " + currAngle + " prevAngle: " + prevAngle);
 		//System.out.println("RX: " + axisRX + " RY: " + axisRY);
-		
-		if( currAngle  > prevAngle ){
+
+
+	if(debugScrewMode1) {
+		if( prevAngle == 0 )
+			prevAngle = currAngle;
+		if( currAngle - prevAngle > 2 ){ 
 			screwingPressed = true;
 			unscrewingPressed = false;
+			prevAngle = currAngle;
 		}
-		else if ( currAngle < prevAngle ){
+		else if ( prevAngle - currAngle > 2 ){ 
 			unscrewingPressed = true;
 			screwingPressed = false;
+			prevAngle = currAngle;
 		}
-		*/
-		prevDir = currDir;
+	} else if (debugScrewMode2) {
+		if( prevAngle == 0 )
+			prevAngle = currAngle;
 		
-		System.out.println( "rx: " + axisRX + " ry: " + axisRY);
-		if(axisRX == 1.0f){
-			currDir = SCREW_RIGHT;
-			System.out.println( "right");
+		if( currAngle > prevAngle ){ 
+			screwingPressed = true;
+			unscrewingPressed = false;
+			prevAngle = currAngle;
 		}
-		if(axisRX == -1.0f){
-			currDir = SCREW_LEFT;
-			System.out.println( "left");
+		else if ( prevAngle > currAngle ){ 
+			unscrewingPressed = true;
+			screwingPressed = false;
+			prevAngle = currAngle;
 		}
-		if(axisRY == 1.0f ){
-			currDir = SCREW_DOWN;
-			System.out.println( "down");
-		}
-		if(axisRY == -1.0f ){
-			currDir = SCREW_UP;
-			System.out.println( "up");
-		}
+	} else if (debugScrewMode3) {
 		
-		if(currDir == SCREW_UP){
-			if(prevDir == SCREW_LEFT){
-				unscrewingPressed = true;
-				screwingPressed = false;
-			}
-			if(prevDir == SCREW_RIGHT){
-				unscrewingPressed = false;
-				screwingPressed = true;
-			}
+		//System.out.println( "rx: " + (int)axisRX + " ry: " + (int)axisRY);
+		//System.out.println( "temp: " + temp + " Prev: " + prevDir + "counter: " + counter);
 
+		prevAngle = currAngle;
+		
+		currDirection = 0;
+		
+		if((int) axisRX == 1.0f){
+			currDirection = SCREW_RIGHT;
+		}
+		if((int) axisRX == -1.0f){
+			currDirection = SCREW_LEFT;
+		}
+		if((int) axisRY == 1.0f ){
+			currDirection = SCREW_DOWN;
+		}
+		if((int) axisRY == -1.0f ){
+			currDirection = SCREW_UP;
 		}
 		
+		if( screwCounter > 20 ) {
+			unscrewingPressed = false;
+			screwingPressed = false;
+			currDirection = 0;
+			screwCounter = 0;
+		}
+	
+		if(currDirection == SCREW_UP){
+			if(prevDirection == SCREW_LEFT){
+				screwingPressed = true;
+				unscrewingPressed = false;
+				screwCounter = 0;
+			}
+			if(prevDirection == SCREW_RIGHT){
+				screwingPressed = false;
+				unscrewingPressed = true;
+				screwCounter = 0;
+			}
+		}
+		
+		if(currDirection == SCREW_LEFT){
+			if(prevDirection == SCREW_UP){
+				screwingPressed = false;
+				unscrewingPressed = true;
+				
+				screwCounter = 0;
+			}
+			if(prevDirection == SCREW_DOWN){
+				screwingPressed = true;
+				unscrewingPressed = false;
+				screwCounter = 0;
+			}
+		}
+		if(currDirection == SCREW_RIGHT){
+			if(prevDirection == SCREW_UP){
+				screwingPressed = true;
+				unscrewingPressed = false;
+				screwCounter = 0;
+			}
+			if(prevDirection == SCREW_DOWN){
+				screwingPressed = false;
+				unscrewingPressed = true;
+				screwCounter = 0;
+			}
+		}
+		if(currDirection == SCREW_DOWN){
+			if(prevDirection == SCREW_RIGHT){
+				screwingPressed = true;
+				unscrewingPressed = false;
+				screwCounter = 0;
+			}
+			if(prevDirection == SCREW_LEFT){
+				screwingPressed = false;
+				unscrewingPressed = true;
+				screwCounter = 0;
+			}
+		}
+		
+		if((int) axisRX == 1.0f){
+			prevDirection = SCREW_RIGHT;
+		}
+		if((int) axisRX == -1.0f){
+			prevDirection = SCREW_LEFT;
+		}
+		if((int) axisRY == 1.0f ){
+			prevDirection = SCREW_DOWN;
+		}
+		if((int) axisRY == -1.0f ){
+			prevDirection = SCREW_UP;
+		}
+		
+		//System.out.println( "sc: " + screwingPressed + ", unsc: " + unscrewingPressed );
+		
+		
+		}
 	}
 }

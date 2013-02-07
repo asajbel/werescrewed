@@ -209,7 +209,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		jointDef.lowerTranslation = -2.5f;
 		jointDef.upperTranslation = 3.0f;
 		jointDef.motorSpeed = 7.0f;
-		puzzleScrew = new PuzzleScrew( "001", new Vector2( 0.0f, 0.2f ), 50,
+		puzzleScrew = new PuzzleScrew( "001", new Vector2( 0.0f, 0.2f ), 100,
 				skeleton, world );
 		puzzleScrew.puzzleManager.addEntity( movingTP );
 		LerpMover lm = new LerpMover(
