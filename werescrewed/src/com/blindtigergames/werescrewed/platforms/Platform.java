@@ -12,7 +12,7 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.World;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityDef;
-import com.blindtigergames.werescrewed.entity.Skeleton;
+import com.blindtigergames.werescrewed.skeleton.Skeleton;
 import com.blindtigergames.werescrewed.entity.mover.IMover;
 import com.blindtigergames.werescrewed.screws.Screw;
 import com.blindtigergames.werescrewed.util.Util;
@@ -185,6 +185,6 @@ public class Platform extends Entity {
 				newAngleFromSkeleton, skeleOrigin );
 		
 		body.setTransform( newPos, newRotation );
-		//Gdx.app.log( "Platform['"+name+"']", "newPos: "+newPos );
+		Gdx.app.log( "Platform['"+name+"']", "newPos: "+newPos );
 	}
 }

@@ -53,7 +53,7 @@ public class PuzzleManager {
 	}
 
 	/**
-	 * obsolete if using kinimatic entities
+	 * obsolete if using kinematic entities
 	 */
 	public void addJointDef( JointDef puzzlePiece ) {
 		puzzleJoints.add( puzzlePiece );

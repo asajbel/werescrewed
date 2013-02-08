@@ -9,9 +9,9 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.XmlReader;
 import com.badlogic.gdx.utils.XmlReader.Element;
 import com.blindtigergames.werescrewed.entity.Entity;
-import com.blindtigergames.werescrewed.entity.EntityBuilder;
 import com.blindtigergames.werescrewed.entity.EntityDef;
-import com.blindtigergames.werescrewed.platforms.PlatformBuilder;
+import com.blindtigergames.werescrewed.entity.builders.EntityBuilder;
+import com.blindtigergames.werescrewed.entity.builders.PlatformBuilder;
 import com.blindtigergames.werescrewed.platforms.TiledPlatform;
 import com.blindtigergames.werescrewed.util.Util;
 
@@ -43,12 +43,42 @@ public class GleedLoader {
 		Array<Element> items = element.getChildByName("Items").getChildrenByName("Item");
 		Gdx.app.log("GleedLoader", "Entities Found:"+items.size);
 		for (Element item: items) {
-			loadEntity(item);
+			loadElement(item);
 		}
 	}
 	
-	protected void loadEntity(Element item) {
+	protected void loadElement(Element item){
 		HashMap<String,String> props = getCustomProperties(item);
+		if (props.containsKey(GleedTypeTags.tag)){
+			GleedTypeTags tag = GleedTypeTags.fromString( props.get( GleedTypeTags.tag ) );
+			if (tag.equals(GleedTypeTags.MOVER)){
+				loadMover(item, props);
+				return;
+			}
+		}
+		loadEntity(item, props);
+	}
+	
+	protected static String getName(Element item){
+		return item.getAttribute("Name");
+	}
+
+	protected static Vector2 getPosition(Element item){
+		Element posElem = item.getChildByName("Position");
+		return new Vector2(posElem.getFloat("X"), posElem.getFloat("Y")).mul( -1 );
+	}
+	
+	protected void loadMover(Element item, HashMap<String,String> props){
+		String name = getName(item);
+		Vector2 pos = getPosition(item);
+		/*
+		 * 1. Check to make sure we're loading a path
+		 * 2. See if it loops
+		 * 3. Look for a velocity value
+		 */
+	}
+	
+	protected void loadEntity(Element item, HashMap<String,String> props) {
 		String name = item.getAttribute("Name");
 		Element posElem = item.getChildByName("Position");
 		Vector2 pos = new Vector2(posElem.getFloat("X"), posElem.getFloat("Y")).mul( Util.PIXEL_TO_BOX );
@@ -62,12 +92,12 @@ public class GleedLoader {
 					int h = Integer.decode(props.get("TileHeight"));
 					
 					TiledPlatform tp = new PlatformBuilder(level.world)
-					.setName( name )
-					.setPosition( pos.x, pos.y )
-					.setDimensions( w, h )
-					.setTexture( def.getTexture() )
-					.setResitituion( 0.0f )
-					.setKinematic( )
+					.name( name )
+					.type( def )
+					.position( pos.x, pos.y )
+					.dimensions( w, h )
+					.texture( def.getTexture() )
+					.resitituion( 0.0f )
 					.buildTilePlatform( );
 					Gdx.app.log("GleedLoader", "Platform loaded:"+tp.name);
 					level.entities.addEntity( name, tp );
@@ -115,6 +145,7 @@ public class GleedLoader {
 		return out;
 	}
 
+	protected static final String typeTag = "Type";
 	protected static final String defTag = "Definition";
 	protected static final String playerCat = "Player";
 	protected static final String tileCat = "TiledPlatform";	

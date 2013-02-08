@@ -6,7 +6,7 @@
                 <Item xsi:type="RectangleItem" Name="platform1" Visible="true">
                     <Position>
                         <X>-246</X>
-                        <Y>14</Y>
+                        <Y>-100</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="tiledPlatform">
@@ -32,7 +32,7 @@
                 <Item xsi:type="CircleItem" Name="player" Visible="true">
                     <Position>
                         <X>50</X>
-                        <Y>50</Y>
+                        <Y>500</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="playerTest">
