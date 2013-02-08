@@ -1,4 +1,4 @@
-package com.blindtigergames.werescrewed.entity;
+package com.blindtigergames.werescrewed.player;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
@@ -14,6 +14,8 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJoint;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
 import com.blindtigergames.werescrewed.camera.AnchorList;
+import com.blindtigergames.werescrewed.entity.Entity;
+import com.blindtigergames.werescrewed.entity.EntityDef;
 import com.blindtigergames.werescrewed.input.MyControllerListener;
 import com.blindtigergames.werescrewed.input.PlayerInputHandler;
 import com.blindtigergames.werescrewed.platforms.Platform;
@@ -90,8 +92,7 @@ public class Player extends Entity {
 	 * 
 	 * @param world
 	 *            in which the player exists
-	 * @param pos
-	 *            ition of the player in the world
+	 * @param postion of the player in the world
 	 * @param name
 	 */
 	public Player( String name, World world, Vector2 pos ) {
@@ -720,7 +721,7 @@ public class Player extends Entity {
 
 		// If player hits the screw button and is in distance
 		// then attach the player to the screw
-		if ( inputHandler.screwPressed( )
+		if ( controllerListener.screwPressed( )
 				&& playerState != PlayerState.Screwing
 				&& ( playerState != PlayerState.JumpingOffScrew || screwJumpTimeout < 2 ) ) {
 			if ( hitScrew ) {

@@ -23,10 +23,9 @@ public class ComplexPlatform extends Platform {
 
 	// String object would be like "bottle" then we will load that particular
 	// body (precompiled)
-	public ComplexPlatform( String n, Vector2 pos, Texture tex, int scale,
-			World world, String definitionName ) {
-		super( n, EntityDef.getDefinition( definitionName ), world, pos, 0.0f,
-				new Vector2( 1f, 1f ) );
+	public ComplexPlatform( String n, Vector2 pos, Texture tex, float scale,
+			World world, EntityDef def) {
+		super( n, def, world, pos, 0.0f, new Vector2( 1f, 1f ) );
 		// super(n, pos, tex, null);
 		// this.world = world;
 		// this.width = width;
@@ -34,7 +33,10 @@ public class ComplexPlatform extends Platform {
 		// constructComplexBody( pos.x, pos.y, scale, bodyName );
 		// this.scale = scale;
 	}
-
+	public ComplexPlatform( String n, Vector2 pos, Texture tex, float scale,
+			World world, String definitionName ) {
+		this( n, pos, tex, scale, world, EntityDef.getDefinition( definitionName ));
+	}
 	@SuppressWarnings( "unused" )
 	private void constructComplexBody( float x, float y, int scale,
 			String bodyName ) {

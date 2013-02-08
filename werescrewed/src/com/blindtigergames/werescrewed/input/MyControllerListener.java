@@ -77,7 +77,7 @@ public class MyControllerListener implements ControllerListener {
 	private final static int SCREW_DOWN = 3;
 	private final static int SCREW_LEFT = 4;
 	private final static int SCREW_COUNTER = 10;
-	private final static int SCREW_ANGLE_DIFF = 2;
+	private final static int SCREW_ANGLE_DIFF = 5;
 
 	// Analog deadzone and center
 	private final static float DEADZONE = 0.2f;
@@ -453,13 +453,13 @@ public class MyControllerListener implements ControllerListener {
 		if ( debugScrewMode1 ) {
 			if ( prevAngle == 0 )
 				prevAngle = currAngle;
-			if ( currAngle - prevAngle < SCREW_ANGLE_DIFF ) {
-				screwingPressed = true;
-				unscrewingPressed = false;
-				prevAngle = currAngle;
-			} else if ( prevAngle - currAngle < SCREW_ANGLE_DIFF ) {
-				unscrewingPressed = true;
+			if ( currAngle - prevAngle > SCREW_ANGLE_DIFF ) {
 				screwingPressed = false;
+				unscrewingPressed = true;
+				prevAngle = currAngle;
+			} else if ( prevAngle - currAngle > SCREW_ANGLE_DIFF ) {
+				unscrewingPressed = false;
+				screwingPressed = true;
 				prevAngle = currAngle;
 			}
 		} 

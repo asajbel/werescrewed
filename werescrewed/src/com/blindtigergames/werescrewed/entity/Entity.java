@@ -26,8 +26,8 @@ public class Entity {
 	public Body body;
 	protected World world;
 	public IMover mover;
-	private boolean solid;
-
+	protected boolean solid;
+	protected float energy;
 	/**
 	 * Create entity by definition
 	 * 
@@ -55,6 +55,7 @@ public class Entity {
 		this.offset = new Vector2( 0.0f, 0.0f );
 		this.sprite = constructSprite( texture );
 		this.body = constructBody( );
+		this.energy = 1.0f;
 		setPosition( pos );
 	}
 	
@@ -93,15 +94,22 @@ public class Entity {
 			world = body.getWorld( );
 			sprite.setScale( Util.PIXEL_TO_BOX );
 		}
-		setPosition( pos );		
+		setPosition( pos );
+		this.energy = 1.0f;
 	}
-
-	public void setPosition( Vector2 pos ) {
-		if ( body != null ) {
-			body.setTransform( pos.x, pos.y, body.getAngle( ) );
-		} else if ( sprite != null ) {
-			sprite.setPosition( pos.x, pos.y );
+	
+	public void setPosition(float x, float y){
+		//x *= Util.PIXEL_TO_BOX;
+		//y *= Util.PIXEL_TO_BOX;
+		if (body != null){
+			body.setTransform(x, y, body.getAngle());
+		} else if (sprite != null){
+			sprite.setPosition(x, y);
 		}
+	}
+	
+	public void setPosition( Vector2 pos ) {
+		setPosition(pos.x,pos.y);
 	}
 
 	public Vector2 getPosition( ) {
@@ -119,14 +127,6 @@ public class Entity {
 			sprite.setPosition( bodyPos.x - offset.x, bodyPos.y - offset.y );
 			sprite.setRotation( MathUtils.radiansToDegrees * body.getAngle( ) );
 			sprite.draw( batch );
-		}
-	}
-	
-	public void setPosition(float x, float y){
-		if (body != null){
-			body.setTransform(x, y, body.getAngle());
-		} else if (sprite != null){
-			sprite.setPosition(x, y);
 		}
 	}
 
@@ -189,7 +189,7 @@ public class Entity {
 	
     public void Move(Vector2 vector)
     {
-    	Vector2 pos = body.getPosition().add(vector);
+    	Vector2 pos = body.getPosition().add(vector.mul( Util.PIXEL_TO_BOX ));
     	setPosition(pos);
     }
 
@@ -230,6 +230,12 @@ public class Entity {
 		this.solid = solid;
 	}
 
+	public void setEnergy( float energy){
+		this.energy = energy;
+	}
+
+	public float getEnergy(){ return energy; }
+	
 	/**
 	 * Sets body awake, used in
 	 * 

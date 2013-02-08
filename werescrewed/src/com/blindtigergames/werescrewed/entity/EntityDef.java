@@ -14,6 +14,7 @@ import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.Shape;
 import com.badlogic.gdx.utils.XmlReader;
+import com.blindtigergames.werescrewed.util.BodyEditorLoader;
 import com.blindtigergames.werescrewed.util.Util;
 
 public class EntityDef {
@@ -81,6 +82,11 @@ public class EntityDef {
 	public void setTexture( Texture texture ) {
 		this.texture = texture;
 	}
+	
+	public void addFixtureDef (FixtureDef def){
+		fixtureDefs.add( def );
+	}
+	
 	/**
 	 * Loads the body elements for the current Entity
 	 * 
