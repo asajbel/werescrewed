@@ -185,6 +185,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		// Ground
 		ground = platBuilder.position( 0.0f, 0.0f ).name( "ground" )
 				.dimensions( 200, 1 ).texture( testTexture )
+				.kinematic( )
 				.resitituion( 0.0f ).buildTilePlatform( );
 		skeleton.addKinematicPlatform( ground );
 	}
@@ -279,18 +280,11 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 
 		TiledPlatform skeletonTest1 = platBuilder.width( 10 ).height( 1 )
 				.friction( 1f ).oneSided( false )
-				.position( -500, -200 ).texture( testTexture )
+				.position( 500, 200 ).texture( testTexture )
+				.kinematic( )
 				.buildTilePlatform( );
 		skeleton.addKinematicPlatform( skeletonTest1 );
-
-		TiledPlatform skeletonTest2 = platBuilder.width( 10 ).height( 1 )
-				.oneSided( false ).position( 500, 300 )
-				.texture( testTexture ).friction( 1f )
-				.buildTilePlatform( );
-		skeletonTest2.setOneSided( true );
-		skeletonTest2.body.setType( BodyType.DynamicBody );
-		skeleton.addPlatformRotatingCenter( skeletonTest2 );
-
+		
 		/*
 		 * TODO: FIX PLATFORM DENSITY
 		 */
@@ -380,6 +374,26 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 			debugTest = false;
 		} else
 			debugTest = true;
+		
+		
+		if ( Gdx.input.isKeyPressed( Input.Keys.Z ) ) {
+			rootSkeleton.translate( 0.0f, 0.01f );
+			//rootSkeleton.body.setLinearVelocity( new Vector2(0,1f) );
+		}
+
+		if ( Gdx.input.isKeyPressed( Input.Keys.X ) ) {
+			rootSkeleton.translate( 0.0f, -0.01f );
+			//rootSkeleton.body.setLinearVelocity( new Vector2(0,-1f) );
+		}
+
+		if ( Gdx.input.isKeyPressed( Input.Keys.C ) ) {
+			rootSkeleton.rotate( -0.001f );
+		}
+
+		if ( Gdx.input.isKeyPressed( Input.Keys.V ) ) {
+			rootSkeleton.rotate( 0.001f );
+		}
+		
 
 		player1.update( deltaTime );
 		player2.update( deltaTime );

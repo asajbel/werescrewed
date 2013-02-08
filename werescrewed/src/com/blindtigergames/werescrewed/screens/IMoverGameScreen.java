@@ -57,6 +57,7 @@ public class IMoverGameScreen implements com.badlogic.gdx.Screen {
 	private SBox2DDebugRenderer debugRenderer;
 	private Player player1, player2;
 	private TiledPlatform tiledPlat, ground, kinPlat1;
+	TiledPlatform skeletonTest2;
 	private PlatformBuilder platBuilder;
 	private PuzzleScrew puzzleScrew;
 	private Skeleton skeleton;
@@ -79,7 +80,7 @@ public class IMoverGameScreen implements com.badlogic.gdx.Screen {
 		rootSkeleton.addSkeleton( skeleton );
 		entityManager.addSkeleton( rootSkeleton.name, rootSkeleton );
 		platBuilder = new PlatformBuilder( world );
-		testTexture = new Texture( Gdx.files.internal( "data/rletter.png" ) );
+		testTexture = new Texture( Gdx.files.internal( "data/TilesetTest.png" ) );
 
 		// Initialize camera
 		initCamera( );
@@ -91,17 +92,17 @@ public class IMoverGameScreen implements com.badlogic.gdx.Screen {
 		// tp = platBuilder.position( 350.0f, 100.0f ).dimensions( 10, 1 )
 		// .texture( testTexture ).name( "tp" ).resitituion( 0.0f )
 		// .buildTilePlatform( );
-		
-		//initStructureScrews();
+
 
 		kinPlat1 = platBuilder.position( 350.0f, 170.0f ).dimensions( 10, 1 )
 				.texture( testTexture ).name( "kinPlat1" ).resitituion( 0.0f )
+				.kinematic( )
 				.buildTilePlatform( );
-		kinPlat1.body.setType( BodyType.KinematicBody );
+		//kinPlat1.body.setType( BodyType.KinematicBody );
 		skeleton.addKinematicPlatform( kinPlat1 );
 
 		// buildMoverPlatforms( );
-		TiledPlatform skeletonTest2 = platBuilder.width( 10 ).height( 1 )
+		skeletonTest2 = platBuilder.width( 10 ).height( 1 )
 				.oneSided( false ).position( 500, 300 ).texture( testTexture )
 				.friction( 1f ).dynamic( )
 				// .setOneSided( true )
@@ -120,6 +121,8 @@ public class IMoverGameScreen implements com.badlogic.gdx.Screen {
 		player2 = new PlayerBuilder( ).name( "player2" ).world( world )
 				.position( 1.5f, 1.5f ).buildPlayer( );
 		
+		initStructureScrews();
+		initPuzzleScrews();
 		initClimbingScrews();
 
 		debugRenderer = new SBox2DDebugRenderer( Util.BOX_TO_PIXEL );
@@ -143,16 +146,16 @@ public class IMoverGameScreen implements com.badlogic.gdx.Screen {
 	 */
 	private void initStructureScrews( ) {
 		StructureScrew leftPlatScrew = new StructureScrew( "", new Vector2(
-				tiledPlat.body.getPosition( ).x - 0.5f,
-				tiledPlat.body.getPosition( ).y ), 50, tiledPlat, skeleton,
+				skeletonTest2.body.getPosition( ).x - 0.5f,
+				skeletonTest2.body.getPosition( ).y ), 50, skeletonTest2, skeleton,
 				world );
 
 		StructureScrew rightPlatScrew = new StructureScrew( "", new Vector2(
-				tiledPlat.body.getPosition( ).x + 0.5f,
-				tiledPlat.body.getPosition( ).y ), 50, tiledPlat, skeleton,
+				skeletonTest2.body.getPosition( ).x + 0.5f,
+				skeletonTest2.body.getPosition( ).y ), 50, skeletonTest2, skeleton,
 				world );
-		tiledPlat.addScrew( leftPlatScrew );
-		tiledPlat.addScrew( rightPlatScrew );
+		skeletonTest2.addScrew( leftPlatScrew );
+		skeletonTest2.addScrew( rightPlatScrew );
 	}
 
 	/**
@@ -250,7 +253,7 @@ public class IMoverGameScreen implements com.badlogic.gdx.Screen {
 		platBuilder.reset( );
 
 		PlatformBuilder builder = platBuilder.width( 1 ).height( 3 )
-				.oneSided( false )
+				.oneSided( false ).dynamic( )
 				// .setPosition( (-500f-i*40)*PIXEL_TO_BOX, 150f*PIXEL_TO_BOX )
 				.texture( testTexture ).friction( 1f );
 		// .buildTilePlatform( world );
@@ -262,7 +265,6 @@ public class IMoverGameScreen implements com.badlogic.gdx.Screen {
 			TiledPlatform piston = builder.position( ( -100f - i * 40 ), 220f )
 					.buildTilePlatform( );
 
-			piston.body.setType( BodyType.DynamicBody );
 			PrismaticJoint pistonJoint = jointBuilder.bodyB( ( Entity ) piston )
 					.anchor( piston.body.getWorldCenter( ) ).build( );
 			// Something is still not quite right with this, try replacing 3
