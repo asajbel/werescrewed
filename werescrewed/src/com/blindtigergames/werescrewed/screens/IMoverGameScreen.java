@@ -56,7 +56,7 @@ public class IMoverGameScreen implements com.badlogic.gdx.Screen {
 	private MyContactListener contactListener;
 	private SBox2DDebugRenderer debugRenderer;
 	private Player player1, player2;
-	private TiledPlatform tiledPlat, ground, movingTP;
+	private TiledPlatform tiledPlat, ground, kinPlat1;
 	private PlatformBuilder platBuilder;
 	private PuzzleScrew puzzleScrew;
 	private Skeleton skeleton;
@@ -92,17 +92,16 @@ public class IMoverGameScreen implements com.badlogic.gdx.Screen {
 		// .texture( testTexture ).name( "tp" ).resitituion( 0.0f )
 		// .buildTilePlatform( );
 
-		movingTP = platBuilder.position( 350.0f, 170.0f ).dimensions( 10, 1 )
-				.texture( testTexture ).name( "movingTP" ).resitituion( 0.0f )
+		kinPlat1 = platBuilder.position( 350.0f, 170.0f ).dimensions( 10, 1 )
+				.texture( testTexture ).name( "kinPlat1" ).resitituion( 0.0f )
 				.buildTilePlatform( );
-		movingTP.body.setType( BodyType.KinematicBody );
-		skeleton.addKinematicPlatform( movingTP );
+		kinPlat1.body.setType( BodyType.KinematicBody );
+		skeleton.addKinematicPlatform( kinPlat1 );
 
 		// buildMoverPlatforms( );
 		TiledPlatform skeletonTest2 = platBuilder.width( 10 ).height( 1 )
 				.oneSided( false ).position( 500, 300 ).texture( testTexture )
 				.friction( 1f ).dynamic( )
-
 				// .setOneSided( true )
 				.name( "dynamicTiledPlat1" ).buildTilePlatform( );
 		skeleton.addDynamicPlatform( skeletonTest2 );
@@ -159,8 +158,8 @@ public class IMoverGameScreen implements com.badlogic.gdx.Screen {
 
 		Vector2 axis = new Vector2( 1, 0 );
 		PrismaticJointDef jointDef = new PrismaticJointDef( );
-		jointDef.initialize( movingTP.body, skeleton.body,
-				movingTP.body.getPosition( ), axis );
+		jointDef.initialize( kinPlat1.body, skeleton.body,
+				kinPlat1.body.getPosition( ), axis );
 		jointDef.enableMotor = true;
 		jointDef.enableLimit = true;
 		jointDef.lowerTranslation = -2.5f;
@@ -168,12 +167,12 @@ public class IMoverGameScreen implements com.badlogic.gdx.Screen {
 		jointDef.motorSpeed = 7.0f;
 		puzzleScrew = new PuzzleScrew( "001", new Vector2( 0.0f, 0.2f ), 50,
 				skeleton, world );
-		puzzleScrew.puzzleManager.addEntity( movingTP );
+		puzzleScrew.puzzleManager.addEntity( kinPlat1 );
 		LerpMover lm = new LerpMover(
-				new Vector2( movingTP.body.getPosition( ).x,
-						movingTP.body.getPosition( ).y ), new Vector2(
-						movingTP.body.getPosition( ).x + 1.75f,
-						movingTP.body.getPosition( ).y ), 1f );
+				new Vector2( kinPlat1.body.getPosition( ).x,
+						kinPlat1.body.getPosition( ).y ), new Vector2(
+						kinPlat1.body.getPosition( ).x + 1.75f,
+						kinPlat1.body.getPosition( ).y ), 1f );
 		puzzleScrew.puzzleManager.addMover( lm );
 	}
 
@@ -318,7 +317,7 @@ public class IMoverGameScreen implements com.badlogic.gdx.Screen {
 
 		if ( Gdx.input.isKeyPressed( Input.Keys.X ) ) {
 			rootSkeleton.translate( 0.0f, -0.01f );
-			//Gdx.app.log( "derP", "yerp" );
+			// Gdx.app.log( "derP", "yerp" );
 		}
 
 		if ( Gdx.input.isKeyPressed( Input.Keys.C ) ) {

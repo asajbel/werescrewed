@@ -51,7 +51,7 @@ public class Platform extends Entity {
 	/**
 	 * Used for kinematic movement connected to skeleton
 	 */
-	protected Vector2 localPosition;
+	protected Vector2 localPosition; //in pixels
 	protected float localRotation; // in radians
 
 	public Platform( String name, Vector2 pos, Texture tex, World world ) {
@@ -76,7 +76,7 @@ public class Platform extends Entity {
 	}
 	
 	void init(Vector2 pos){
-		localPosition = pos.mul( Util.PIXEL_TO_BOX );
+		localPosition = pos.cpy( );//pos.mul( Util.PIXEL_TO_BOX );
 		localRotation = 0;
 	}
 
@@ -174,7 +174,7 @@ public class Platform extends Entity {
 	public void setPosRotFromSkeleton( Skeleton skeleton ) {
 		// originPos has already been updated by it's IMover by this point
 		// TODO: modify this if imover uses pixels or box2d meters
-		float radiusFromSkeleton = localPosition.len( );
+		float radiusFromSkeleton = localPosition.cpy( ).mul( Util.PIXEL_TO_BOX ).len( );
 		// update angle between platform and skeleton
 		float newAngleFromSkeleton = skeleton.body.getAngle( )
 				+ Util.angleBetweenPoints( Vector2.Zero, localPosition );
@@ -185,6 +185,6 @@ public class Platform extends Entity {
 				newAngleFromSkeleton, skeleOrigin );
 		
 		body.setTransform( newPos, newRotation );
-		Gdx.app.log( "Platform['"+name+"']", "newPos: "+newPos );
+		//Gdx.app.log( "Platform['"+name+"']", "newPos: "+newPos );
 	}
 }
