@@ -68,6 +68,7 @@ public class GleedLoader {
 		return new Vector2(posElem.getFloat("X"), posElem.getFloat("Y")).mul( -1 );
 	}
 	
+	@SuppressWarnings( "unused" )
 	protected void loadMover(Element item, HashMap<String,String> props){
 		String name = getName(item);
 		Vector2 pos = getPosition(item);

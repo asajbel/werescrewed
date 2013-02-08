@@ -1,6 +1,5 @@
 package com.blindtigergames.werescrewed.level;
 
-import java.util.HashMap;
 
 public enum GleedTypeTags {
     ENTITY("Entity"),
