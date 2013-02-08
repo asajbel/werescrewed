@@ -26,8 +26,6 @@ import com.blindtigergames.werescrewed.util.Util;
  */
 
 public class Platform extends Entity {
-
-	protected enum PlatformType{PLATFORM,TILED,COMPLEX,SHAPE};
 	
 	IMover mover;
 
@@ -78,6 +76,7 @@ public class Platform extends Entity {
 	void init(Vector2 pos){
 		localPosition = pos.cpy( );//pos.mul( Util.PIXEL_TO_BOX );
 		localRotation = 0;
+		platType = PlatformType.DEFAULT; //set to default unless subclass sets it later in a constructor
 	}
 
 	public void addScrew( Screw s ) {
@@ -162,6 +161,14 @@ public class Platform extends Entity {
 	protected void rotateBy90( ) {
 		float bodyAngle = body.getAngle( );
 		body.setTransform( body.getPosition( ), bodyAngle + 90 );
+	}
+	
+	/**
+	 * Returns the private member platform type for casting or whatever
+	 * @return PLATFORMTYPE
+	 */
+	public PlatformType getPlatformType(){
+		return platType;
 	}
 	
 	/**

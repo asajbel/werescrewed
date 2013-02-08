@@ -13,6 +13,7 @@ import com.badlogic.gdx.physics.box2d.joints.RevoluteJoint;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.joint.RevoluteJointBuilder;
 import com.blindtigergames.werescrewed.platforms.Platform;
+import com.blindtigergames.werescrewed.platforms.PlatformType;
 import com.blindtigergames.werescrewed.platforms.TiledPlatform;
 import com.blindtigergames.werescrewed.screws.Screw;
 import com.blindtigergames.werescrewed.screws.StrippedScrew;
@@ -149,32 +150,22 @@ public class Skeleton extends Entity {
     }
 
     /**
-     * Sleep dynamic platforms on this skeleton. 
+     * set skeleton to awake or not
      * TODO: Do kinamtic platforms need sleeping?
      */
-    public void sleepSkeleton() {
+    public void setSkeletonAwake( boolean isAwake) {
         body.setActive( false );
         for ( Skeleton skeleton : childSkeletons ) {
-            skeleton.sleepSkeleton();
+            skeleton.setSkeletonAwake(isAwake);
         }
         for ( Entity e : dynamicPlatforms ) {
             // boneJoint.bone.body.setActive(false);
-            e.body.setAwake( false );
+            e.body.setAwake( isAwake );
         }
-    }
-
-    /**
-     * Wake dynamic platofrms on skeleton.
-     * TODO: Do kinematic platoforms need sleeping?
-     * @author stew
-     */
-    public void wakeSkeleton() {
-        body.setActive( true );
-        for ( Skeleton skeleton : childSkeletons ) {
-            skeleton.wakeSkeleton();
-        }
-        for ( Platform p : dynamicPlatforms ) {
-           p.body.setAwake( true );
+        if ( screws != null ){
+        	for ( Screw s: screws ){
+        		s.body.setAwake( isAwake );
+        	}
         }
     }
     
@@ -187,7 +178,7 @@ public class Skeleton extends Entity {
     	body.setTransform( body.getTransform( )
 				.getPosition( ).add( x, y ), body
 				.getTransform( ).getRotation( ) );
-		wakeSkeleton( );
+    	setSkeletonAwake( true );
     }
     
     /**
@@ -197,7 +188,7 @@ public class Skeleton extends Entity {
     public void rotate( float angleRadians ){
     	body.setTransform( body.getTransform( ) .getPosition( ),
     			body.getTransform( ).getRotation( )+angleRadians );
-		wakeSkeleton( );
+    	setSkeletonAwake( true );
     }
 
     /**
@@ -264,11 +255,24 @@ public class Skeleton extends Entity {
             skeleton.update( deltaTime );
         }
         for ( Platform p : dynamicPlatforms ) {
-            p.update( deltaTime );
+        	updatePlatform(p,deltaTime);
         }
         for ( Platform p : kinematicPlatforms ) {
-    		p.update( deltaTime );
+        	updatePlatform(p,deltaTime);
         }
+    }
+    
+    /**
+     * Update a single platform, casting if necessary
+     */
+    private void updatePlatform( Platform platform, float deltaTime ){
+    	switch (platform.getPlatformType( )){
+    	case TILED:
+    		((TiledPlatform)platform).update( deltaTime );
+    		break;
+    	default:
+    		platform.update( deltaTime );
+    	}
     }
     
     @Override
@@ -283,12 +287,26 @@ public class Skeleton extends Entity {
             skeleton.draw( batch );
         }
         for (  Platform p : dynamicPlatforms ) {
-            p.draw( batch );
+        	drawPlatform(p,batch);
         }
         for (  Platform p : kinematicPlatforms ) {
-            p.draw( batch );
+        	drawPlatform(p,batch);
         }
     }
+    
+    /**
+     * Draw each child. Tiled platforms have unique draw calls
+     */
+    private void drawPlatform( Platform platform, SpriteBatch batch ){
+    	switch (platform.getPlatformType( )){
+    	case TILED:
+    		((TiledPlatform)platform).draw( batch );
+    		break;
+    	default:
+    		platform.draw( batch );
+    	}
+    }
+    
     
     /**
      * update child skeletons based on rotation & position of this skeleton

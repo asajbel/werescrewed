@@ -2,5 +2,7 @@ package com.blindtigergames.werescrewed.platforms;
 
 public enum PlatformType {
 	COMPLEX,
-	TILED
+	TILED,
+	DEFAULT,
+	SHAPE
 }

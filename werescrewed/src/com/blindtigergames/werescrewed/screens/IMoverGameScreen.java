@@ -91,6 +91,8 @@ public class IMoverGameScreen implements com.badlogic.gdx.Screen {
 		// tp = platBuilder.position( 350.0f, 100.0f ).dimensions( 10, 1 )
 		// .texture( testTexture ).name( "tp" ).resitituion( 0.0f )
 		// .buildTilePlatform( );
+		
+		//initStructureScrews();
 
 		kinPlat1 = platBuilder.position( 350.0f, 170.0f ).dimensions( 10, 1 )
 				.texture( testTexture ).name( "kinPlat1" ).resitituion( 0.0f )
@@ -117,6 +119,8 @@ public class IMoverGameScreen implements com.badlogic.gdx.Screen {
 				.position( 1.0f, 1.0f ).buildPlayer( );
 		player2 = new PlayerBuilder( ).name( "player2" ).world( world )
 				.position( 1.5f, 1.5f ).buildPlayer( );
+		
+		initClimbingScrews();
 
 		debugRenderer = new SBox2DDebugRenderer( Util.BOX_TO_PIXEL );
 		debugRenderer.setDrawJoints( false );
@@ -200,10 +204,6 @@ public class IMoverGameScreen implements com.badlogic.gdx.Screen {
 			skeleton.addStrippedScrew( climbingScrew );
 		}
 
-		ground = platBuilder.position( 0.0f, 0.0f ).name( "ground" )
-				.dimensions( 100, 1 ).texture( testTexture ).dynamic( )
-				.resitituion( 0.0f ).buildTilePlatform( );
-		skeleton.addKinematicPlatform( ground );
 		// skeleton.addPlatform( tp ); // Tp already has a structureScrew
 		// holding
 		// it up
@@ -211,14 +211,8 @@ public class IMoverGameScreen implements com.badlogic.gdx.Screen {
 		/*
 		 * Comment if you don't want stew's moving platforms in your way!
 		 */
-		buildMoverPlatforms( );
-		rootSkeleton.addSkeleton( skeleton );
-
-		debugRenderer = new SBox2DDebugRenderer( Util.BOX_TO_PIXEL );
-		debugRenderer.setDrawJoints( false );
-		Gdx.app.setLogLevel( Application.LOG_DEBUG );
-
-		new FPSLogger( );
+		//buildMoverPlatforms( );
+		//rootSkeleton.addSkeleton( skeleton );
 
 	}
 

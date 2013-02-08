@@ -36,7 +36,7 @@ public class PlatformBuilder extends GenericEntityBuilder<PlatformBuilder> {
 	protected boolean flipHorizonal = false;
 	protected boolean flipVertical = false;
 	protected boolean isOneSided = false;
-	protected PlatformType pType = PlatformType.COMPLEX;
+	protected PlatformType pType = PlatformType.DEFAULT;
 	protected boolean moveable = false;
 	protected Shapes shape = null;
 	protected BodyType bodyType = BodyType.DynamicBody;
@@ -239,6 +239,7 @@ public class PlatformBuilder extends GenericEntityBuilder<PlatformBuilder> {
 		this.tex = null;
 		this.name = "No name";
 		this.bodyType = bodyType.DynamicBody;
+		this.pType = PlatformType.DEFAULT;
 		return this;
 	}
 	
@@ -321,6 +322,7 @@ public class PlatformBuilder extends GenericEntityBuilder<PlatformBuilder> {
 	public ShapePlatform buildShapePlatform( ) {
 		ShapePlatform sp = new ShapePlatform( this.name, this.pos, this.tex, world, this.shape, this.width,
 				this.height, this.flipHorizonal );
+		
 		sp.body.setType( bodyType );
 		bodyType = BodyType.DynamicBody;
 		sp.setDensity( this.density );
