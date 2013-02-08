@@ -21,13 +21,13 @@ import com.blindtigergames.werescrewed.util.Util;
 
 public class PuzzleScrew extends Screw {
 	public PuzzleManager puzzleManager;
+	private int threshold;
 
 	public PuzzleScrew( String name, Vector2 pos, int max, Entity entity,
 			World world ) {
 		super( name, pos, null );
 		this.world = world;
-		maxDepth = max;
-		depth = max;
+		maxDepth = threshold = depth = max;
 		puzzleManager = new PuzzleManager( world );
 
 		sprite.setColor( Color.GREEN );
@@ -67,6 +67,17 @@ public class PuzzleScrew extends Screw {
 		revoluteJointDef.enableMotor = false;
 		world.createJoint( revoluteJointDef );
 	}
+	
+	/**
+	 * creates Puzzle Screw with binary
+	 * @param max screwable amount
+	 * @param th threshold for binary action
+	 */
+	public PuzzleScrew( String name, Vector2 pos, int max, Entity entity,
+			World world, int th ) {
+		this(name, pos, max, entity, world);
+		threshold = th;
+	}
 
 	@Override
 	public void screwLeft( ) {
@@ -89,6 +100,7 @@ public class PuzzleScrew extends Screw {
 			screwStep = depth + 6;
 			puzzleManager
 			.runElement( 1f - ( ( float ) depth / ( ( float ) maxDepth ) ) );
+			System.out.println(name + " depth:" + depth);
 		}
 	}
 
@@ -105,8 +117,21 @@ public class PuzzleScrew extends Screw {
 		}
 	}
 
+	/**
+	 * public access to get max depth of a screw
+	 * @return value of maxDepth
+	 */
 	public int getMaxDepth( ) {
 		return maxDepth;
+	}
+	
+	/**
+	 * checks if binary puzzle screw is active
+	 * @return if screwed past threshold
+	 */
+
+	public boolean isActive( ) {
+		return threshold <= depth;
 	}
 
 	// private RevoluteJoint screwToSkel;
