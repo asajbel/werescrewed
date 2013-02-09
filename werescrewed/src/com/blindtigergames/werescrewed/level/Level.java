@@ -83,6 +83,7 @@ public class Level {
 	public static Level getDefaultLevel(){
 		Level out = new Level();
 		TiledPlatform tp, ground;
+		@SuppressWarnings( "unused" )
 		RoomPlatform rp;
 		//ShapePlatform sp;
 		Texture texture = new Texture( Gdx.files.internal( "data/rletter.png" ) );

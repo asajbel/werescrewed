@@ -67,6 +67,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 	private MyContactListener contactListener;
 	private SBox2DDebugRenderer debugRenderer;
 	private Player player1, player2;
+	@SuppressWarnings( "unused" )
 	private TiledPlatform tiledPlat, ground, movingTP, singTile, rectile;
 	private PlatformBuilder platBuilder;
 	private PuzzleScrew puzzleScrew;
