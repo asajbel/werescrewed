@@ -243,11 +243,14 @@ public class Player extends Entity {
 				slow( );
 		}
 
+		if ( playerState == PlayerState.JumpingOffScrew && currentScrew == null ) {
+			playerState = PlayerState.Jumping;
+		} 
+		
 		//attach to screws and players when attach button is pushed
 		if ( inputHandler.screwPressed( )
 				&& playerState != PlayerState.Screwing
-				&& ( playerState != PlayerState.JumpingOffScrew 
-				|| screwJumpTimeout < SCREW_JUMP_STEPS / 3 ) ) {
+				&& ( playerState != PlayerState.JumpingOffScrew ) ) {
 			if ( hitScrew ) {
 				attachToScrew( );
 			} else if ( otherPlayer != null ) {
@@ -461,7 +464,6 @@ public class Player extends Entity {
 				filter.maskBits = Util.CATEGORY_EVERYTHING;
 				f.setFilterData( filter );
 			}
-			playerState = PlayerState.Jumping;
 			platformBody = null;
 		} else if ( screwJumpTimeout == SCREW_JUMP_STEPS ) {
 			// switch the player to not collide with the current platformBody
