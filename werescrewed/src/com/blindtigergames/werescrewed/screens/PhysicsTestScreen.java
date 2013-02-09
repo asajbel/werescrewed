@@ -180,6 +180,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 				.name( "movingTP" ).resitituion( 0.0f )
 				.buildTilePlatform( );
 		movingTP.body.setType( BodyType.KinematicBody );
+		
 		buildMoverPlatforms( );
 
 		// Ground
@@ -387,11 +388,11 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		}
 
 		if ( Gdx.input.isKeyPressed( Input.Keys.C ) ) {
-			rootSkeleton.rotate( -0.001f );
+			rootSkeleton.rotate( -0.01f );
 		}
 
 		if ( Gdx.input.isKeyPressed( Input.Keys.V ) ) {
-			rootSkeleton.rotate( 0.001f );
+			rootSkeleton.rotate( 0.01f );
 		}
 		
 
