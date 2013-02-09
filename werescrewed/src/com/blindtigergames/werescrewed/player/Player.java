@@ -68,7 +68,7 @@ public class Player extends Entity {
 	public final static float ANALOG_DEADZONE = 0.2f;
 	public final static float ANALOG_MAX_RANGE = 1.0f;
 	public final static float PLAYER_FRICTION = 0.6f;
-	public final static int SCREW_JUMP_STEPS = 7;
+	public final static int SCREW_JUMP_STEPS = 12;
 
 	// Static variables
 	public static Texture texture = new Texture(
@@ -129,6 +129,8 @@ public class Player extends Entity {
 	public void update( float deltaTime ) {
 		super.update( deltaTime );
 
+		if(this.name.equals("player1")) 
+			System.out.println( playerState );
 		AnchorList.getInstance( ).setAnchorPosBox( anchorID, getPosition( ) );
 		if ( isDead ) {
 			// TODO: do stuff here
@@ -461,7 +463,7 @@ public class Player extends Entity {
 				filter.maskBits = Util.CATEGORY_EVERYTHING;
 				f.setFilterData( filter );
 			}
-			playerState = PlayerState.Jumping;
+			//playerState = PlayerState.Jumping;
 			platformBody = null;
 		} else if ( screwJumpTimeout == SCREW_JUMP_STEPS ) {
 			// switch the player to not collide with the current platformBody
@@ -784,12 +786,17 @@ public class Player extends Entity {
 				slow( );
 		}
 
+		if( playerState == PlayerState.JumpingOffScrew 
+				&& currentScrew == null ) {
+			playerState = PlayerState.Jumping;
+		} else if ( isGrounded( ) && playerState != PlayerState.HeadStand ) {
+			playerState = PlayerState.Standing;
+		}
 		// If player hits the screw button and is in distance
 		// then attach the player to the screw
 		if ( controllerListener.screwPressed( )
 				&& playerState != PlayerState.Screwing
-				&& ( playerState != PlayerState.JumpingOffScrew 
-				|| screwJumpTimeout < SCREW_JUMP_STEPS / 3 ) ) {
+				&& ( playerState != PlayerState.JumpingOffScrew ) ) {			
 			if ( hitScrew ) {
 				attachToScrew( );
 			} else if ( otherPlayer != null ) {
