@@ -87,7 +87,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		entityManager = new EntityManager( );
 		skeleton = new Skeleton( "", Vector2.Zero, null, world );
 		rootSkeleton = new Skeleton( "", Vector2.Zero, null, world );
-		entityManager.addSkeleton( rootSkeleton.name, rootSkeleton );
+		//entityManager.addSkeleton( rootSkeleton.name, rootSkeleton );
 		platBuilder = new PlatformBuilder( world );
 		testTexture = new Texture( Gdx.files.internal( "data/TilesetTest.png" ) );
 
@@ -398,7 +398,8 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		player1.update( deltaTime );
 		player2.update( deltaTime );
 		puzzleScrew.update( deltaTime );
-		entityManager.update( deltaTime );
+		//entityManager.update( deltaTime );
+		rootSkeleton.update( deltaTime );
 
 		batch.setProjectionMatrix( cam.combined( ) );
 		batch.begin( );

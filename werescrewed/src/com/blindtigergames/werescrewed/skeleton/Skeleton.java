@@ -2,6 +2,8 @@ package com.blindtigergames.werescrewed.skeleton;
 
 import java.util.ArrayList;
 
+import sun.tools.tree.ThisExpression;
+
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
@@ -42,20 +44,20 @@ public class Skeleton extends Entity {
     public Skeleton( String n, Vector2 pos, Texture tex, World world ) {
         super( n, pos, tex, null, false); // not constructing body class
         this.world = world;
-        this.dynamicPlatforms = new ArrayList<Platform>();
         constructSkeleton( pos );
+        this.dynamicPlatforms = new ArrayList<Platform>();
         childSkeletons = new ArrayList<Skeleton>();
-        
         kinematicPlatforms = new ArrayList< Platform >( );
     }
 
     public void constructSkeleton( Vector2 pos ) {
         // Skeletons have no fixtures!!
         BodyDef skeletonBodyDef = new BodyDef();
-        skeletonBodyDef.type = BodyType.StaticBody; // Kinematic so gravity
+        skeletonBodyDef.type = BodyType.KinematicBody; // Kinematic so gravity
                                                     // doesn't effect it
         skeletonBodyDef.position.set( pos.mul( Util.PIXEL_TO_BOX ) );
         body = world.createBody( skeletonBodyDef );
+        body.setUserData( this );
     }
 
     /**
