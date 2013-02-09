@@ -1,6 +1,7 @@
 package com.blindtigergames.werescrewed.collisionManager;
 
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
@@ -22,6 +23,8 @@ public class MyContactListener implements ContactListener {
 
 	private static int NUM_PLAYER1_CONTACTS = 0;
 	private static int NUM_PLAYER2_CONTACTS = 0;
+	private static int NUM_PLAYER1_SCREWCONTACTS = 0;
+	private static int NUM_PLAYER2_SCREWCONTACTS = 0;
 	private Player p1;
 
 	/**
@@ -49,18 +52,15 @@ public class MyContactListener implements ContactListener {
 				playerInvolved = true;
 			}
 
-			// Ensure the collision involves the player's feet
-			// if ( playerInvolved
-			// && !( playerFix.getShape( ) instanceof CircleShape ) ) {
-			// playerInvolved = false;
-			// }
-
 			if ( playerInvolved ) {
 				Player player = ( Player ) playerFix.getBody( ).getUserData( );
 				if ( objectFix.getBody( ).getUserData( ) instanceof Entity ) {
 					Entity object = ( Entity ) objectFix.getBody( )
 							.getUserData( );
+					// Ensure the object is solid and involves the player's feet
+					// also make sure its not the player
 					if ( object.isSolid( )
+							&& playerFix.getShape( ) instanceof CircleShape
 							&& !( objectFix.getBody( ).getUserData( ) instanceof Player ) ) {
 						if ( p1 == null || p1 == player ) {
 							p1 = player;
@@ -72,7 +72,14 @@ public class MyContactListener implements ContactListener {
 					} else if ( objectFix.getBody( ).getUserData( ) instanceof Screw ) {
 						Screw screw = ( Screw ) objectFix.getBody( )
 								.getUserData( );
-						player.hitScrew( screw );
+						if ( p1 == null || p1 == player ) {
+							p1 = player;
+							NUM_PLAYER1_SCREWCONTACTS++;
+							player.hitScrew( screw );
+						} else if ( p1 != player ) {
+							NUM_PLAYER2_SCREWCONTACTS++;
+							player.hitScrew( screw );
+						}
 					} else if ( objectFix.getBody( ).getUserData( ) instanceof Player ) {
 						Player player2 = ( Player ) objectFix.getBody( )
 								.getUserData( );
@@ -108,17 +115,16 @@ public class MyContactListener implements ContactListener {
 				objectFix = x1;
 				playerInvolved = true;
 			}
-			// Ensure the collision involves the player's feet
-			// if ( playerInvolved
-			// && !( playerFix.getShape( ) instanceof CircleShape ) ) {
-			// playerInvolved = false;
-			// }
+
 			if ( playerInvolved ) {
 				Player player = ( Player ) playerFix.getBody( ).getUserData( );
 				if ( objectFix.getBody( ).getUserData( ) instanceof Entity ) {
 					Entity object = ( Entity ) objectFix.getBody( )
 							.getUserData( );
+					// Ensure the object is solid and involves the player's feet
+					// also make sure its not the player
 					if ( object.isSolid( )
+							&& playerFix.getShape( ) instanceof CircleShape
 							&& !( objectFix.getBody( ).getUserData( ) instanceof Player ) ) {
 						if ( p1 == null || p1 == player ) {
 							p1 = player;
@@ -134,7 +140,18 @@ public class MyContactListener implements ContactListener {
 						}
 						contact.setEnabled( true );
 					} else if ( objectFix.getBody( ).getUserData( ) instanceof Screw ) {
-						player.hitScrew( null );
+						if ( p1 == null || p1 == player ) {
+							p1 = player;
+							NUM_PLAYER1_SCREWCONTACTS--;
+							if ( NUM_PLAYER1_SCREWCONTACTS <= 0 ) {
+								player.hitScrew( null );
+							}
+						} else if ( p1 != player ) {
+							NUM_PLAYER2_SCREWCONTACTS--;
+							if ( NUM_PLAYER2_SCREWCONTACTS <= 0 ) {
+								player.hitScrew( null );
+							}
+						}
 					} else if ( objectFix.getBody( ).getUserData( ) instanceof Player ) {
 						Player player2 = ( Player ) objectFix.getBody( )
 								.getUserData( );
@@ -195,15 +212,10 @@ public class MyContactListener implements ContactListener {
 							contact.setEnabled( false );
 						}
 					}
-				} /*
-				 * else if ( objectFix.getBody( ).getUserData( ) instanceof
-				 * Player ) { Player player2 = ( Player ) objectFix.getBody( )
-				 * .getUserData( ); if ( !player.isGrounded( ) ||
-				 * !player2.isGrounded( ) ) { player.hitPlayer( player2 );
-				 * player2.hitPlayer( player ); contact.setEnabled( true ); }
-				 * else { player.hitPlayer( player2 ); player2.hitPlayer( player
-				 * ); contact.setEnabled( true ); } }
-				 */
+					if ( player.isTopPlayer( ) ) {
+						contact.setEnabled( false );
+					}
+				}
 			}
 		}
 	}

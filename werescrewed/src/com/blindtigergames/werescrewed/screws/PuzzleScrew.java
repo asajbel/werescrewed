@@ -133,7 +133,4 @@ public class PuzzleScrew extends Screw {
 	public boolean isActive( ) {
 		return threshold <= depth;
 	}
-
-	// private RevoluteJoint screwToSkel;
-
 }
