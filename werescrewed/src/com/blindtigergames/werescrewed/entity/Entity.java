@@ -229,7 +229,13 @@ public class Entity {
 	public void setSolid( boolean solid ) {
 		this.solid = solid;
 	}
-
+	/**
+	 * Sets the energy of the current body.
+	 * Energy is a new property for Entities that is meant
+	 * to scale impulses. It currently does nothing, but if someone.
+	 * 
+	 * @param energy
+	 */
 	public void setEnergy( float energy){
 		this.energy = energy;
 	}

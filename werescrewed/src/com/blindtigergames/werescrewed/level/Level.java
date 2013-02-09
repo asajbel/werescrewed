@@ -44,11 +44,11 @@ public class Level {
 
 		world = new World( new Vector2( 0, -100 ), true );
 		camera = new Camera( w, h);
-		player = (Player)new PlayerBuilder()
-					.name("Player")
+		player = new PlayerBuilder()
+					.name("player1")
 					.world( world )
 					.position( new Vector2(0.0f,0.0f) )
-					.build();
+					.buildPlayer();
 
 		entities = new EntityManager();
 		platforms = new ArrayList<Platform>();

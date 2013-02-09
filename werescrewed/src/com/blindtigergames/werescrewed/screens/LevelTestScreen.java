@@ -28,9 +28,14 @@ public class LevelTestScreen implements com.badlogic.gdx.Screen {
 	
 	@Override
 	public void render( float delta ) {
-		Gdx.gl20.glClearColor( 0.0f, 0f, 0.0f, 1.0f );
-		Gdx.gl20.glClear( GL20.GL_COLOR_BUFFER_BIT );
-
+		if(Gdx.gl20 != null){
+			Gdx.gl20.glClearColor( 0.0f, 0f, 0.0f, 1.0f );
+			Gdx.gl20.glClear( GL20.GL_COLOR_BUFFER_BIT );
+		} else {
+			Gdx.gl10.glClearColor( 0.0f, 0f, 0.0f, 1.0f );
+			Gdx.gl10.glClear( GL20.GL_COLOR_BUFFER_BIT );
+		}
+		
 		if ( Gdx.input.isKeyPressed( Input.Keys.ESCAPE ) ) {
 			ScreenManager.getInstance( ).show( ScreenType.PAUSE );
 		}
