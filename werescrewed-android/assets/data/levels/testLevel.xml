@@ -19,8 +19,8 @@
                             <string>1</string>
                         </Property>
                     </CustomProperties>
-                    <Width>0</Width>
-                    <Height>0</Height>
+                    <Width>1600</Width>
+                    <Height>32</Height>
                     <FillColor>
                         <R>192</R>
                         <G>0</G>

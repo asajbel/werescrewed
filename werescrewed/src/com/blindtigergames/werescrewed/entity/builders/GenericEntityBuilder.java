@@ -52,7 +52,7 @@ public class GenericEntityBuilder <B extends GenericEntityBuilder<?>>{
 		solid = true;
 		mover = null;
 	}
-	//Simply resets the builder to initial state ant returns it.
+	//Simply resets the builder to initial state and returns it.
 	@SuppressWarnings( "unchecked" )
 	public B reset(){
 		resetInternal();
@@ -61,7 +61,7 @@ public class GenericEntityBuilder <B extends GenericEntityBuilder<?>>{
 	
 	/**
 	 * 
-	 * @param name - String name of platform, default is "noname"
+	 * @param name - String name of entity, default is "noname"
 	 * @return EntityBuilder
 	 */
 	@SuppressWarnings( "unchecked" )
@@ -69,7 +69,11 @@ public class GenericEntityBuilder <B extends GenericEntityBuilder<?>>{
 		name = n;
 		return (B)this;
 	}
-
+	/**
+	 * 
+	 * @param def - EntityDef used to load body/texture information.
+	 * @return EntityBuilder
+	 */
 	@SuppressWarnings( "unchecked" )
 	public B type(EntityDef def){
 		type = def;
@@ -80,17 +84,30 @@ public class GenericEntityBuilder <B extends GenericEntityBuilder<?>>{
 
 	}
 	
-	//Used if only a string is passed in.
+	/**
+	 * 
+	 * @param def - Runs the EntityDef function with the definition loaded from this name.
+	 * @return EntityBuilder
+	 */
 	public B type(String def){
 		return (B)type(EntityDef.getDefinition( def ));
 	}
-	
+	/**
+	 * 
+	 * @param world - sets the current world of the created entity.
+	 * @return EntityBuilder
+	 */
 	@SuppressWarnings( "unchecked" )
 	public B world(World w){
 		world = w;
 		return (B)this;
 	}
 	
+	/**
+	 * 
+	 * @param body - sets the body of the created entity.
+	 * @return EntityBuilder
+	 */
 	@SuppressWarnings( "unchecked" )
 	public B body(Body b){
 		body = b;
@@ -98,40 +115,70 @@ public class GenericEntityBuilder <B extends GenericEntityBuilder<?>>{
 		return (B)this;
 	}
 	
+	/**
+	 * 
+	 * @param tex - sets the texture of the created entity.
+	 * @return EntityBuilder
+	 */
 	@SuppressWarnings( "unchecked" )
 	public B texture(Texture t){
 		tex = t;
 		return (B)this;
 	}
-	
+	/**
+	 * 
+	 * @param p - sets the position of the created entity.
+	 * @return EntityBuilder
+	 */
 	@SuppressWarnings( "unchecked" )
 	public B position(Vector2 p){
 		return (B)positionX(p.x).positionY(p.y);
 	}
-	
+	/**
+	 * 
+	 * @param x - new x position of the created entity
+	 * @param y - new y position of the created entity
+	 * @return EntityBuilder
+	 */
 	@SuppressWarnings( "unchecked" )	
 	public B position( float x, float y ) {
 		return (B)positionX(x).positionY(y);
 	}
-	
+	/**
+	 * 
+	 * @param x - new x position of the created entity
+	 * @return EntityBuilder
+	 */
 	@SuppressWarnings( "unchecked" )
 	public B positionX(float x){
 		pos.x = x;
 		return (B)this;
 	}
-	
+	/**
+	 * 
+	 * @param y - new y position of the created entity
+	 * @return EntityBuilder
+	 */	
 	@SuppressWarnings( "unchecked" )
 	public B positionY(float y){
 		pos.y = y;
 		return (B)this;
 	}
-	
+	/**
+	 * 
+	 * @param r - new angle of the created entity
+	 * @return EntityBuilder
+	 */
 	@SuppressWarnings( "unchecked" )
 	public B rotation(float r){
 		rot = r;
 		return (B)this;
 	}
-	
+	/**
+	 * 
+	 * @param s - sets whether the created entity is solid or not.
+	 * @return EntityBuilder
+	 */	
 	@SuppressWarnings( "unchecked" )	
 	public B solid(boolean s){
 		solid = s;
@@ -140,12 +187,19 @@ public class GenericEntityBuilder <B extends GenericEntityBuilder<?>>{
 	/**
 	 * Loads an entity's special properties from a hashmap.
 	 * For generic entities, this does nothing. This is basically a placeholder for subclasses to inherit.
-	 */
+
+	 * @param props - Strind/String hashmap containing the data
+	 * @return EntityBuilder
+	 */	
 	@SuppressWarnings( "unchecked" )
 	public B properties(HashMap<String,String> props){
 		return (B)this;
 	}
-	
+	/**
+	 * Data-wise copy of another EntityBuilder into this one.
+	 * @param that - the original builder to be copied.
+	 * @return EntityBuilder
+	 */		
 	@SuppressWarnings( "unchecked" )
 	public B copy(GenericEntityBuilder<?> that){
 		name = that.name;
@@ -160,13 +214,22 @@ public class GenericEntityBuilder <B extends GenericEntityBuilder<?>>{
 		body = that.body;
 		return (B)this;	
 	}
-	
+	/**
+	 * Returns whether the builder has enough information to build.
+	 * For most entities, you need a world and either a Body or an EntityDef.
+	 * 
+	 * @return boolean
+	 */	
 	protected boolean canBuild(){
 		if (world == null) return false;
 		if (type == null && body == null) return false;
 		return true;
 	}
-	
+	/**
+	 * Returns an entity created from given data.
+	 * 
+	 * @return Entity
+	 */	
 	public Entity build(){
 		Entity out = null;
 		if (canBuild()){
@@ -181,6 +244,7 @@ public class GenericEntityBuilder <B extends GenericEntityBuilder<?>>{
 		}
 		return out;
 	}
+	
 	protected static final String nameTag = "Name";
 	protected static final String typeTag = "Definition";
 	protected static final String xTag = "X";
