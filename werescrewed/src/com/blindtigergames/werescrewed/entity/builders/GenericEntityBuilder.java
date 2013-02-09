@@ -51,6 +51,10 @@ public class GenericEntityBuilder <B extends GenericEntityBuilder<?>>{
 		sca = new Vector2(1,1);
 		solid = true;
 		mover = null;
+		type = null;
+		world = null;
+		tex = null;
+		body = null;
 	}
 	//Simply resets the builder to initial state and returns it.
 	@SuppressWarnings( "unchecked" )
