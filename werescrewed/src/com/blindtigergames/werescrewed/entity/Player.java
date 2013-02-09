@@ -17,6 +17,7 @@ import com.blindtigergames.werescrewed.camera.AnchorList;
 import com.blindtigergames.werescrewed.input.MyControllerListener;
 import com.blindtigergames.werescrewed.input.PlayerInputHandler;
 import com.blindtigergames.werescrewed.platforms.Platform;
+import com.blindtigergames.werescrewed.screws.BossScrew;
 import com.blindtigergames.werescrewed.screws.Screw;
 import com.blindtigergames.werescrewed.util.Util;
 
@@ -226,10 +227,19 @@ public class Player extends Entity {
 		}
 
 		if ( playerState == PlayerState.Screwing ) {
-			if ( inputHandler.unscrewing( ) ) {
-				currentScrew.screwLeft( );
-			} else if ( inputHandler.screwing( ) ) {
-				currentScrew.screwRight( );
+			if ( !(currentScrew instanceof BossScrew) ) {
+				if ( inputHandler.unscrewing( ) ) {
+					currentScrew.screwLeft( );
+				} else if ( inputHandler.screwing( ) ) {
+					currentScrew.screwRight( );
+				}
+			}
+			else {//player2.currentScrew == this.currentScrew
+				if ( inputHandler.unscrewing( ) ) {// && player2.inputHandler.unscrewing
+					currentScrew.screwLeft( );
+				} else if ( inputHandler.screwing( ) ) {// && player2.inputHandler.screwing
+					currentScrew.screwRight( );
+				}
 			}
 			if ( currentScrew.body.getJointList( ).size( ) <= 1 ) {
 				world.destroyJoint( playerToScrew );
@@ -541,7 +551,7 @@ public class Player extends Entity {
 		if ( currentScrew.body.getJointList( ).size( ) > 0 ) {
 			boolean screwOccupied = false;
 			for ( JointEdge j : currentScrew.body.getJointList( ) ) {
-				if ( j.joint.getBodyA( ).getUserData( ) instanceof Player ) {
+				if ( j.joint.getBodyA( ).getUserData( ) instanceof Player && !(currentScrew instanceof BossScrew)) {
 					screwOccupied = true;
 					Gdx.app.log( "Player attach to screw", "screw is occupied" );
 				}

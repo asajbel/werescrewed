@@ -167,7 +167,7 @@ public class GameScreen implements com.badlogic.gdx.Screen {
 
 	@Override
 	public void render( float deltaTime ) {
-		Gdx.gl10.glClearColor( 0.0f, 0f, 0.0f, 1.0f );
+		Gdx.gl10.glClearColor( 0.0f, 0.0f, 0.0f, 1.0f );
 		Gdx.gl10.glClear( GL20.GL_COLOR_BUFFER_BIT );
 
 		// float deltaTime = Gdx.graphics.getDeltaTime( );

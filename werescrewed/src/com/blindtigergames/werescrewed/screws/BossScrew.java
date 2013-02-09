@@ -2,6 +2,8 @@ package com.blindtigergames.werescrewed.screws;
 
 import java.util.ArrayList;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -23,6 +25,8 @@ import com.blindtigergames.werescrewed.util.Util;
  */
 
 public class BossScrew extends Screw {
+	
+	protected boolean endFlag;
 
 	public BossScrew( String name, Vector2 pos, int max, Entity entity,
 			Skeleton skeleton, World world ) {
@@ -33,8 +37,10 @@ public class BossScrew extends Screw {
 		rotation = 0;
 		fallTimeout = max * 4;
 		extraJoints = new ArrayList< RevoluteJoint >( );
+		endFlag = false;
 
 		// create the screw body
+		sprite.setColor( Color.RED );
 		BodyDef screwBodyDef = new BodyDef( );
 		screwBodyDef.type = BodyType.DynamicBody;
 		screwBodyDef.position.set( pos );
@@ -114,6 +120,10 @@ public class BossScrew extends Screw {
 			screwStep = depth + 6;
 		}
 	}
+	
+	public boolean endLevelFlag ( ) {
+		return endFlag;
+	}
 
 	@Override
 	public void update( float deltaTime ) {
@@ -127,6 +137,8 @@ public class BossScrew extends Screw {
 				for ( RevoluteJoint j : extraJoints ) {
 					world.destroyJoint( j );
 				}
+				Gdx.app.log( "Boss Screw Removed" , "End Level" );
+				endFlag = true;
 			}
 			fallTimeout--;
 		} else {

@@ -36,7 +36,14 @@ public enum ScreenType {
 	GAME {
 		@Override
 		protected com.badlogic.gdx.Screen getScreenInstance( ) {
-			return new GameScreen();
+			return new GameScreen( );
+		}
+	},
+	
+	WIN {
+		@Override
+		protected com.badlogic.gdx.Screen getScreenInstance( ) {
+			return new WinScreen( );
 		}
 	},
 
