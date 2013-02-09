@@ -113,6 +113,8 @@ public class Player extends Entity {
 		maxFriction( );
 
 		setUpController( );
+		
+		body.setSleepingAllowed( false );
 	}
 
 	// METHODS

@@ -2,7 +2,6 @@ package com.blindtigergames.werescrewed.entity.builders;
 
 import java.util.HashMap;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.World;
@@ -238,7 +237,7 @@ public class PlatformBuilder extends GenericEntityBuilder<PlatformBuilder> {
 		this.shape = null;
 		this.tex = null;
 		this.name = "No name";
-		this.bodyType = bodyType.DynamicBody;
+		this.bodyType = BodyType.DynamicBody;
 		this.pType = PlatformType.DEFAULT;
 		return this;
 	}

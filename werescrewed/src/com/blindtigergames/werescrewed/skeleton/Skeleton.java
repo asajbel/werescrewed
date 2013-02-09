@@ -2,30 +2,28 @@ package com.blindtigergames.werescrewed.skeleton;
 
 import java.util.ArrayList;
 
-import sun.tools.tree.ThisExpression;
+import javax.management.loading.PrivateClassLoader;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
-import com.badlogic.gdx.physics.box2d.Joint;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.physics.box2d.joints.RevoluteJoint;
+import com.badlogic.gdx.utils.Array;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.joint.RevoluteJointBuilder;
 import com.blindtigergames.werescrewed.platforms.Platform;
-import com.blindtigergames.werescrewed.platforms.PlatformType;
 import com.blindtigergames.werescrewed.platforms.TiledPlatform;
 import com.blindtigergames.werescrewed.screws.Screw;
 import com.blindtigergames.werescrewed.screws.StrippedScrew;
 import com.blindtigergames.werescrewed.util.Util;
 
 /**
- * Bone is an entity which is placed onto the Skeleton then when the Skeleton
- * moves, the Bones should follow
+ * A Skeleton is a node in the level tree structure. It moves platforms under it
+ * as well as skeletons attached.
  * 
- * @author Ranveer/Stewart
+ * @author Stewart
  * 
  *         TODO: Perhaps change skeleton name, make skeleton more like a tree It
  *         should have a list of non-jointed entities too.
@@ -36,6 +34,7 @@ public class Skeleton extends Entity {
     private ArrayList<Skeleton> childSkeletons;
     private ArrayList<Platform> dynamicPlatforms;
     private ArrayList<Platform> kinematicPlatforms;
+    private ArrayList<Entity>   looseEntity; 
     private Texture foregroundTex;
     private ArrayList< Screw > screws;
 
@@ -69,7 +68,7 @@ public class Skeleton extends Entity {
     public void addPlatformRotatingCenter( Platform platform ) {
         // Default values of the builder will allow rotation with anchor at
         // center of platform
-        RevoluteJoint joint = new RevoluteJointBuilder( world ).skeleton( this ).bodyB( platform )
+        new RevoluteJointBuilder( world ).skeleton( this ).bodyB( platform )
                 .build();
         
         addDynamicPlatform( platform );
@@ -90,7 +89,7 @@ public class Skeleton extends Entity {
     public void addPlatformRotatingCenterWithMot( Platform platform, float rotSpeedInMeters ) {
         // Default values of the builder will allow rotation with anchor at
         // center of platform
-        RevoluteJoint joint = new RevoluteJointBuilder( world )
+        new RevoluteJointBuilder( world )
         						.skeleton( this )
         						.bodyB( platform )
         						.motor( true )
@@ -106,7 +105,7 @@ public class Skeleton extends Entity {
      * @param platform
      */
     public void addDynamicPlatformFixed( Platform platform ) {
-        RevoluteJoint joint = new RevoluteJointBuilder( world ).skeleton( this ).bodyB( platform )
+        new RevoluteJointBuilder( world ).skeleton( this ).bodyB( platform )
                 .limit( true ).lower( 0 ).upper( 0 ).build();
         addDynamicPlatform( platform );
     }
@@ -127,7 +126,7 @@ public class Skeleton extends Entity {
       * @param ss -  add stripped screw onto the skeleton
       */
      public void addStrippedScrew ( StrippedScrew ss ){
-        RevoluteJoint joint = new RevoluteJointBuilder( world ).skeleton( this ).bodyB( ss )
+        new RevoluteJointBuilder( world ).skeleton( this ).bodyB( ss )
                  .limit( true ).lower( 0 ).upper( 0 ).build();
      	//addDynamicPlatform( ss );
     }
@@ -160,10 +159,9 @@ public class Skeleton extends Entity {
         for ( Skeleton skeleton : childSkeletons ) {
             skeleton.setSkeletonAwake(isAwake);
         }
-        for ( Entity e : dynamicPlatforms ) {
-            // boneJoint.bone.body.setActive(false);
-            e.body.setAwake( isAwake );
-        }
+        /*for ( Platform p : dynamicPlatforms ) {
+            p.body.setAwake( isAwake );
+        }*/
         if ( screws != null ){
         	for ( Screw s: screws ){
         		s.body.setAwake( isAwake );
@@ -177,10 +175,11 @@ public class Skeleton extends Entity {
      * @param y - float in Y axis
      */
     public void translate( float x, float y ){
-    	body.setTransform( body.getTransform( )
+    	/*body.setTransform( body.getTransform( )
 				.getPosition( ).add( x, y ), body
 				.getTransform( ).getRotation( ) );
-    	setSkeletonAwake( true );
+    	setSkeletonAwake( true );*/
+    	body.setTransform(body.getPosition().x+x, body.getPosition().y+y, body.getAngle());
     }
     
     /**
@@ -188,9 +187,10 @@ public class Skeleton extends Entity {
      * @author stew
      */
     public void rotate( float angleRadians ){
-    	body.setTransform( body.getTransform( ) .getPosition( ),
-    			body.getTransform( ).getRotation( )+angleRadians );
-    	setSkeletonAwake( true );
+    	/*body.setTransform( body.getTransform( ) .getPosition( ),
+    			body.getTransform( ).getRotation( )+angleRadians );*/
+    	body.setTransform( body.getPosition(), body.getAngle( )+angleRadians );
+    	//setSkeletonAwake( true );
     }
 
     /**
@@ -340,20 +340,3 @@ public class Skeleton extends Entity {
     }
     
 }
-    
-    //Deprecated subclass for storing joints of platforms
-    /*protected class BoneAndJoints {
-        protected ArrayList<Joint> joints;
-        protected Entity bone;
-
-        protected BoneAndJoints( Entity bone, ArrayList<Joint> joints ) {
-            this.bone = bone;
-            this.joints = joints;
-        }
-
-        protected BoneAndJoints( Entity bone, Joint joint ) {
-            this.bone = bone;
-            joints = new ArrayList<Joint>();
-            this.joints.add( joint );
-        }
-    }*/
