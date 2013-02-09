@@ -7,10 +7,12 @@ import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.controllers.PovDirection;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Filter;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.JointEdge;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJoint;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
 import com.blindtigergames.werescrewed.camera.AnchorList;
@@ -48,6 +50,7 @@ public class Player extends Entity {
 	private Player otherPlayer;
 	private RevoluteJoint playerToScrew;
 	private RevoluteJoint playerToPlayer;
+	private Body platformBody;
 	private boolean topPlayer = false;
 	private boolean isDead = false, deadDebug;
 	private boolean hitScrew;
@@ -65,6 +68,7 @@ public class Player extends Entity {
 	public final static float ANALOG_DEADZONE = 0.2f;
 	public final static float ANALOG_MAX_RANGE = 1.0f;
 	public final static float PLAYER_FRICTION = 0.6f;
+	public final static int SCREW_JUMP_STEPS = 7;
 
 	// Static variables
 	public static Texture texture = new Texture(
@@ -195,7 +199,7 @@ public class Player extends Entity {
 				if ( playerState == PlayerState.Screwing ) {
 					world.destroyJoint( playerToScrew );
 					playerState = PlayerState.JumpingOffScrew;
-					screwJumpTimeout = 7;
+					screwJumpTimeout = SCREW_JUMP_STEPS;
 					jump( );
 				} else if ( isGrounded( ) ) {
 					if ( playerState != PlayerState.HeadStand ) {
@@ -229,7 +233,7 @@ public class Player extends Entity {
 			if ( playerState == PlayerState.Screwing ) {
 				world.destroyJoint( playerToScrew );
 				playerState = PlayerState.JumpingOffScrew;
-				screwJumpTimeout = 7;
+				screwJumpTimeout = SCREW_JUMP_STEPS;
 			}
 		}
 
@@ -239,9 +243,11 @@ public class Player extends Entity {
 				slow( );
 		}
 
+		//attach to screws and players when attach button is pushed
 		if ( inputHandler.screwPressed( )
 				&& playerState != PlayerState.Screwing
-				&& ( playerState != PlayerState.JumpingOffScrew || screwJumpTimeout < 2 ) ) {
+				&& ( playerState != PlayerState.JumpingOffScrew 
+				|| screwJumpTimeout < SCREW_JUMP_STEPS / 3 ) ) {
 			if ( hitScrew ) {
 				attachToScrew( );
 			} else if ( otherPlayer != null ) {
@@ -250,6 +256,7 @@ public class Player extends Entity {
 			}
 		}
 
+		//loosen tight screws and jump if screw joint is gone
 		if ( playerState == PlayerState.Screwing ) {
 			if ( inputHandler.unscrewing( ) ) {
 				currentScrew.screwLeft( );
@@ -259,47 +266,42 @@ public class Player extends Entity {
 			if ( currentScrew.body.getJointList( ).size( ) <= 1 ) {
 				world.destroyJoint( playerToScrew );
 				playerState = PlayerState.JumpingOffScrew;
-				screwJumpTimeout = 7;
+				screwJumpTimeout = SCREW_JUMP_STEPS;
 				jump( );
 			}
 		}
 
 		if ( playerState == PlayerState.JumpingOffScrew ) {
 			if ( screwJumpTimeout == 0 ) {
-				Filter filter = new Filter( );
-				for ( Fixture f : body.getFixtureList( ) ) {
-					filter = f.getFilterData( );
-					// move player back to original category
-					filter.categoryBits = Util.CATEGORY_PLAYER;
-					// player now collides with everything
-					filter.maskBits = Util.CATEGORY_EVERYTHING;
-					f.setFilterData( filter );
-				}
-				playerState = PlayerState.Jumping;
-			} else if ( screwJumpTimeout == 7 ) {
+				jumpOffStructurePlatform( );
+			} else if ( screwJumpTimeout == SCREW_JUMP_STEPS ) {
 				boolean platformInWay = false;
 				for ( JointEdge j : currentScrew.body.getJointList( ) ) {
 					if ( j.joint.getBodyB( ).getUserData( ) instanceof Platform ) {
 						platformInWay = true;
+						platformBody = j.joint.getBodyB( );
+						Filter filter = new Filter( );
+						for ( Fixture f : platformBody.getFixtureList( ) ) {
+							filter = f.getFilterData( );
+							// move platform to its own single category
+							// it should be the only thing in this category
+							filter.categoryBits = Util.CATEGORY_SUBPLATFORM;
+							// set to collide with everything
+							filter.maskBits = Util.CATEGORY_EVERYTHING;
+							f.setFilterData( filter );
+						}
 					}
 				}
 				if ( platformInWay ) {
-					if ( inputHandler.downPressed( ) ) {
-						screwJumpTimeout = 2;
-					}
+					jumpOffStructurePlatform( );
 				} else {
-					Filter filter = new Filter( );
-					for ( Fixture f : body.getFixtureList( ) ) {
-						filter = f.getFilterData( );
-						// move player back to original category
-						filter.categoryBits = Util.CATEGORY_PLAYER;
-						// player now collides with everything
-						filter.maskBits = Util.CATEGORY_EVERYTHING;
-						f.setFilterData( filter );
-					}
+					screwJumpTimeout = 0;
+					jumpOffStructurePlatform( );
 				}
-				screwJumpTimeout--;
-			} else if ( !hitScrew ) {
+				if ( screwJumpTimeout > 0 ) {
+					screwJumpTimeout--;
+				}
+			} else {
 				screwJumpTimeout--;
 			}
 		}
@@ -428,6 +430,54 @@ public class Player extends Entity {
 	}
 
 	/**
+	 * set jumping off screw give the player a birth to stop colliding with the
+	 * current platform
+	 * 
+	 */
+	private void jumpOffStructurePlatform( ) {
+		if ( screwJumpTimeout == 0 ) {
+			Filter filter = new Filter( );
+			if ( platformBody != null ) {
+				// set the bits of the platform back to everything
+				for ( Fixture f : platformBody.getFixtureList( ) ) {
+					filter = f.getFilterData( );
+					// move platform back to original category
+					if ( platformBody.getType( ) == BodyType.DynamicBody ) {
+						filter.categoryBits = Util.DYNAMIC_OBJECTS;
+					} else {
+						filter.categoryBits = Util.KINEMATIC_OBJECTS;
+					}
+					// platform now collides with everything
+					filter.maskBits = Util.CATEGORY_EVERYTHING;
+					f.setFilterData( filter );
+				}
+			}
+			// set the bits of the player back to everything
+			for ( Fixture f : body.getFixtureList( ) ) {
+				filter = f.getFilterData( );
+				// move player back to original category
+				filter.categoryBits = Util.CATEGORY_PLAYER;
+				// player now collides with everything
+				filter.maskBits = Util.CATEGORY_EVERYTHING;
+				f.setFilterData( filter );
+			}
+			playerState = PlayerState.Jumping;
+			platformBody = null;
+		} else if ( screwJumpTimeout == SCREW_JUMP_STEPS ) {
+			// switch the player to not collide with the current platformBody
+			Filter filter = new Filter( );
+			for ( Fixture f : body.getFixtureList( ) ) {
+				filter = f.getFilterData( );
+				// move player back to original category
+				filter.categoryBits = Util.CATEGORY_PLAYER;
+				// player now collides with everything
+				filter.maskBits = ~Util.CATEGORY_SUBPLATFORM;
+				f.setFilterData( filter );
+			}
+		}
+	}
+
+	/**
 	 * Sets the current screw
 	 * 
 	 * @author dennis
@@ -467,14 +517,14 @@ public class Player extends Entity {
 	}
 
 	/**
-	 * returns true if this is the top player
-	 * in the head stand
+	 * returns true if this is the top player in the head stand
+	 * 
 	 * @return topPlayer
 	 */
 	public boolean isTopPlayer( ) {
 		return topPlayer;
 	}
-	
+
 	/**
 	 * joints the top players feet to the bottom players head which is the
 	 * position of the players are in before they attempt double jumping
@@ -489,7 +539,7 @@ public class Player extends Entity {
 			topPlayer = false;
 		} else if ( otherPlayer.body.getPosition( ).y < body.getPosition( ).y ) {
 			topPlayer = true;
-			setGrounded( false  );
+			setGrounded( false );
 			this.setPosition(
 					otherPlayer.body.getPosition( ).x,
 					otherPlayer.body.getPosition( ).y
@@ -519,7 +569,7 @@ public class Player extends Entity {
 	public void setGrounded( boolean newVal ) {
 		if ( !newVal || !topPlayer ) {
 			this.grounded = newVal;
-		} 
+		}
 		if ( newVal && playerState != PlayerState.Screwing ) {
 			Filter filter = new Filter( );
 			for ( Fixture f : body.getFixtureList( ) ) {
@@ -672,7 +722,7 @@ public class Player extends Entity {
 				&& playerState != PlayerState.Standing && isGrounded( ) ) {
 			playerState = PlayerState.Standing;
 		}
-		
+
 		if ( playerState == PlayerState.HeadStand
 				&& body.getJointList( ).size( ) == 0 ) {
 			if ( isGrounded( ) ) {
@@ -681,13 +731,13 @@ public class Player extends Entity {
 				playerState = PlayerState.Jumping;
 			}
 		}
-		
+
 		if ( controllerListener.jumpPressed( ) ) {
 			if ( !jumpPressedController ) {
 				if ( playerState == PlayerState.Screwing ) {
 					world.destroyJoint( playerToScrew );
 					playerState = PlayerState.JumpingOffScrew;
-					screwJumpTimeout = 7;
+					screwJumpTimeout = SCREW_JUMP_STEPS;
 					jump( );
 				} else if ( isGrounded( ) ) {
 					if ( playerState != PlayerState.HeadStand ) {
@@ -725,11 +775,6 @@ public class Player extends Entity {
 		}
 		if ( controllerListener.downPressed( ) ) {
 			stop( );
-			if ( playerState == PlayerState.Screwing ) {
-				world.destroyJoint( playerToScrew );
-				playerState = PlayerState.JumpingOffScrew;
-				screwJumpTimeout = 1;
-			}
 		}
 
 		if ( ( !controllerListener.leftPressed( ) && !controllerListener
@@ -743,7 +788,8 @@ public class Player extends Entity {
 		// then attach the player to the screw
 		if ( controllerListener.screwPressed( )
 				&& playerState != PlayerState.Screwing
-				&& ( playerState != PlayerState.JumpingOffScrew || screwJumpTimeout < 2 ) ) {
+				&& ( playerState != PlayerState.JumpingOffScrew 
+				|| screwJumpTimeout < SCREW_JUMP_STEPS / 3 ) ) {
 			if ( hitScrew ) {
 				attachToScrew( );
 			} else if ( otherPlayer != null ) {
@@ -757,8 +803,10 @@ public class Player extends Entity {
 				&& playerState == PlayerState.Screwing ) {
 			world.destroyJoint( playerToScrew );
 			playerState = PlayerState.JumpingOffScrew;
-			screwJumpTimeout = 2;
+			screwJumpTimeout = SCREW_JUMP_STEPS;
 		}
+		
+		//loosen and tighten screws and jump when the screw joint is gone
 		if ( playerState == PlayerState.Screwing ) {
 			if ( controllerListener.unscrewing( ) ) {
 				currentScrew.screwLeft( );
@@ -768,47 +816,44 @@ public class Player extends Entity {
 			if ( currentScrew.body.getJointList( ).size( ) <= 1 ) {
 				world.destroyJoint( playerToScrew );
 				playerState = PlayerState.JumpingOffScrew;
-				screwJumpTimeout = 7;
+				screwJumpTimeout = SCREW_JUMP_STEPS;
 				jump( );
 			}
 		}
 
 		if ( playerState == PlayerState.JumpingOffScrew ) {
 			if ( screwJumpTimeout == 0 ) {
-				Filter filter = new Filter( );
-				for ( Fixture f : body.getFixtureList( ) ) {
-					filter = f.getFilterData( );
-					// move player back to original category
-					filter.categoryBits = Util.CATEGORY_PLAYER;
-					// player now collides with everything
-					filter.maskBits = Util.CATEGORY_EVERYTHING;
-					f.setFilterData( filter );
-				}
-				playerState = PlayerState.Standing;
-			} else if ( screwJumpTimeout == 7 ) {
+				jumpOffStructurePlatform( );
+			} else if ( screwJumpTimeout == SCREW_JUMP_STEPS ) {
+				//check whether there is a platform in your way
+				//if so change its collision bits
 				boolean platformInWay = false;
 				for ( JointEdge j : currentScrew.body.getJointList( ) ) {
 					if ( j.joint.getBodyB( ).getUserData( ) instanceof Platform ) {
 						platformInWay = true;
+						platformBody = j.joint.getBodyB( );
+						Filter filter = new Filter( );
+						for ( Fixture f : platformBody.getFixtureList( ) ) {
+							filter = f.getFilterData( );
+							// move platform to its own single category
+							// it should be the only thing in this category
+							filter.categoryBits = Util.CATEGORY_SUBPLATFORM;
+							// set to collide with everything
+							filter.maskBits = Util.CATEGORY_EVERYTHING;
+							f.setFilterData( filter );
+						}
 					}
 				}
 				if ( platformInWay ) {
-					if ( inputHandler.downPressed( ) ) {
-						screwJumpTimeout = 2;
-					}
+					jumpOffStructurePlatform( );
 				} else {
-					Filter filter = new Filter( );
-					for ( Fixture f : body.getFixtureList( ) ) {
-						filter = f.getFilterData( );
-						// move player back to original category
-						filter.categoryBits = Util.CATEGORY_PLAYER;
-						// player now collides with everything
-						filter.maskBits = Util.CATEGORY_EVERYTHING;
-						f.setFilterData( filter );
-					}
+					screwJumpTimeout = 0;
+					jumpOffStructurePlatform( );
 				}
-				screwJumpTimeout--;
-			} else if ( !hitScrew ) {
+				if ( screwJumpTimeout > 0 ) {
+					screwJumpTimeout--;
+				}
+			} else {
 				screwJumpTimeout--;
 			}
 		}
