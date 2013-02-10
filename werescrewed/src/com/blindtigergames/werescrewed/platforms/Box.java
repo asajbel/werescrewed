@@ -50,6 +50,5 @@ public class Box extends Platform {
 	}
 
 	public void exampleCollide( ) {
-		System.out.println( "Oi, Im standing here - box" );
 	}
 }
