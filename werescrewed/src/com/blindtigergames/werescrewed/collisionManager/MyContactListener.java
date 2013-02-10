@@ -221,6 +221,12 @@ public class MyContactListener implements ContactListener {
 					if ( player.isTopPlayer( ) ) {
 						contact.setEnabled( false );
 					}
+				} else if ( objectFix.getBody( ).getUserData( ) instanceof Player ) {
+					Player player2 = ( Player ) objectFix.getBody( )
+							.getUserData( );
+					if( player.isInGrabState( ) || player2.isInGrabState( ) ) {
+						contact.setEnabled( false );
+					} 
 				}
 			}
 		}

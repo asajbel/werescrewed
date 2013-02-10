@@ -61,7 +61,7 @@ public class Player extends Entity {
 	private int anchorID;
 
 	// debug double jump style
-	private int DOUBLEJUMPSTYLE = 0;
+	private int DOUBLEJUMPSTYLE = 1;
 
 	// Static constants
 	public final static float MAX_VELOCITY = 1.8f;
@@ -134,7 +134,13 @@ public class Player extends Entity {
 		super.update( deltaTime );
 
 		if ( this.name.equals( "player1" ) ) {
-			// Gdx.app.log( "player1", "" + playerState );
+			//Gdx.app.log( "player1", "" + playerState );
+		}
+		if ( Gdx.input.isKeyPressed( Keys.PERIOD ) ) { 
+			DOUBLEJUMPSTYLE = 1;
+		} 
+		if ( Gdx.input.isKeyPressed( Keys.SEMICOLON ) ) {
+			DOUBLEJUMPSTYLE = 0;
 		}
 		AnchorList.getInstance( ).setAnchorPosBox( anchorID, getPosition( ) );
 		if ( isDead ) {
@@ -338,6 +344,15 @@ public class Player extends Entity {
 		return playerState == PlayerState.HeadStand;
 	}
 
+	/**
+	 * return true if in grab state
+	 * 
+	 * @return if in grab state
+	 */
+	public boolean isInGrabState( ) {
+		return playerState == PlayerState.GrabMode;
+	}
+	
 	/**
 	 * returns true if this is the top player in the head stand
 	 * 
@@ -825,6 +840,7 @@ public class Player extends Entity {
 		inputHandler.update( );
 		if ( playerState != PlayerState.Screwing
 				&& playerState != PlayerState.JumpingOffScrew
+				&& playerState != PlayerState.GrabMode
 				&& playerState != PlayerState.HeadStand && isGrounded( ) ) {
 			playerState = PlayerState.Standing;
 		}
@@ -862,9 +878,31 @@ public class Player extends Entity {
 				&& playerState != PlayerState.Screwing
 				&& playerState != PlayerState.HeadStand ) {
 			if ( otherPlayer != null ) {
-				setHeadStand( );
-				otherPlayer.setHeadStand( );
+				if ( DOUBLEJUMPSTYLE == 0 ) {
+					setHeadStand( );
+					otherPlayer.setHeadStand( );
+				} 
 			}
+			if ( DOUBLEJUMPSTYLE == 1 ) {
+				playerState = PlayerState.GrabMode;
+			}
+		} else if ( playerState == PlayerState.GrabMode ) {
+			if ( otherPlayer != null ) {
+				Filter filter = new Filter( );
+				for ( Fixture f : otherPlayer.body.getFixtureList( ) ) {
+					filter = f.getFilterData( );
+					// move player back to original category
+					filter.categoryBits = Util.CATEGORY_PLAYER;
+					// player now collides with everything
+					filter.maskBits = ~Util.CATEGORY_PLAYER;
+					f.setFilterData( filter );
+				}
+				otherPlayer.body.setLinearVelocity( new Vector2( otherPlayer.body.getLinearVelocity( ).x,
+						0.0f ) );
+				otherPlayer.body.applyLinearImpulse( new Vector2( 0.0f, JUMP_IMPLUSE * 1.5f ),
+						otherPlayer.body.getWorldCenter( ) );
+			}
+			playerState = PlayerState.Standing;
 		}
 		// attach to screws when attach button is pushed
 		if ( inputHandler.screwPressed( )
