@@ -216,7 +216,7 @@ public class EntityDef {
 	/**
 	 * Loads a definition from XML
 	 * 
-	 * @param id file name fo the XML file to load
+	 * @param id file name for the XML file to load
 	 * @return The loaded definition
 	 */
 	protected static EntityDef loadDefinition( String id ) {
@@ -254,7 +254,6 @@ public class EntityDef {
 
 			return out;
 		} catch ( IOException e ) {
-			// TODO Auto-generated catch block
 			Gdx.app.log( "Error", "Loading entity definition " + id + " ", e );
 		}
 
