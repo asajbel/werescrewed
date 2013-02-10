@@ -60,6 +60,9 @@ public class Player extends Entity {
 	private boolean jumpPressedController;
 	private int anchorID;
 
+	// debug double jump style
+	private int DOUBLEJUMPSTYLE = 0;
+
 	// Static constants
 	public final static float MAX_VELOCITY = 1.8f;
 	public final static float MIN_VELOCITY = 0.05f;
@@ -68,7 +71,7 @@ public class Player extends Entity {
 	public final static float ANALOG_DEADZONE = 0.2f;
 	public final static float ANALOG_MAX_RANGE = 1.0f;
 	public final static float PLAYER_FRICTION = 0.6f;
-	public final static int SCREW_JUMP_STEPS = 7;
+	public final static int SCREW_JUMP_STEPS = 12;
 
 	// Static variables
 	public static Texture texture = new Texture(
@@ -129,7 +132,10 @@ public class Player extends Entity {
 	public void update( float deltaTime ) {
 		super.update( deltaTime );
 
-		AnchorList.getInstance( ).setAnchorPosBox( anchorID, getPosition( ) );
+		if ( this.name.equals( "player1" ) )
+			// Gdx.app.log( "player1", "" + playerState );
+			AnchorList.getInstance( )
+					.setAnchorPosBox( anchorID, getPosition( ) );
 		if ( isDead ) {
 			// TODO: do stuff here
 			// playerState = playerState.Dead;
@@ -180,14 +186,15 @@ public class Player extends Entity {
 
 		if ( playerState != PlayerState.Screwing
 				&& playerState != PlayerState.JumpingOffScrew
-				&& playerState != PlayerState.HeadStand
-				&& playerState != PlayerState.Standing && isGrounded( ) ) {
+				&& playerState != PlayerState.HeadStand && isGrounded( ) ) {
 			playerState = PlayerState.Standing;
 		}
 
 		if ( playerState == PlayerState.HeadStand
 				&& body.getJointList( ).size( ) == 0 ) {
 			if ( isGrounded( ) ) {
+				Gdx.app.log( "updateKeyboard",
+						"switch player State from head stand to standing" );
 				playerState = PlayerState.Standing;
 			} else {
 				playerState = PlayerState.Jumping;
@@ -221,11 +228,21 @@ public class Player extends Entity {
 			jumpPressedKeyboard = false;
 		}
 		if ( inputHandler.leftPressed( ) ) {
+			if ( playerState == PlayerState.HeadStand ) {
+				otherPlayer.removePlayerToPlayer( );
+				removePlayerToPlayer( );
+				playerState = PlayerState.Standing;
+			}
 			moveLeft( );
 			prevKey = Keys.A;
 		}
 
 		if ( inputHandler.rightPressed( ) ) {
+			if ( playerState == PlayerState.HeadStand ) {
+				otherPlayer.removePlayerToPlayer( );
+				removePlayerToPlayer( );
+				playerState = PlayerState.Standing;
+			}
 			moveRight( );
 			prevKey = Keys.D;
 		}
@@ -234,6 +251,9 @@ public class Player extends Entity {
 				world.destroyJoint( playerToScrew );
 				playerState = PlayerState.JumpingOffScrew;
 				screwJumpTimeout = SCREW_JUMP_STEPS;
+			} else if ( playerState == PlayerState.HeadStand ) {
+				removePlayerToPlayer( );
+				playerState = PlayerState.Standing;
 			}
 		}
 
@@ -243,23 +263,27 @@ public class Player extends Entity {
 				slow( );
 		}
 
-		if ( playerState == PlayerState.JumpingOffScrew && currentScrew == null ) {
-			playerState = PlayerState.Jumping;
-		} 
-		
-		//attach to screws and players when attach button is pushed
+		// attach to screws attach button is pushed
 		if ( inputHandler.screwPressed( )
 				&& playerState != PlayerState.Screwing
 				&& ( playerState != PlayerState.JumpingOffScrew ) ) {
 			if ( hitScrew ) {
 				attachToScrew( );
-			} else if ( otherPlayer != null ) {
+			}
+		}
+
+		// grab another player, if your colliding
+		// with another player, for double jump
+		if ( inputHandler.isGrabPressed( )
+				&& playerState != PlayerState.Screwing
+				&& playerState != PlayerState.HeadStand ) {
+			if ( otherPlayer != null ) {
 				setHeadStand( );
 				otherPlayer.setHeadStand( );
 			}
 		}
 
-		//loosen tight screws and jump if screw joint is gone
+		// loosen tight screws and jump if screw joint is gone
 		if ( playerState == PlayerState.Screwing ) {
 			if ( inputHandler.unscrewing( ) ) {
 				currentScrew.screwLeft( );
@@ -271,6 +295,21 @@ public class Player extends Entity {
 				playerState = PlayerState.JumpingOffScrew;
 				screwJumpTimeout = SCREW_JUMP_STEPS;
 				jump( );
+			}
+		}
+
+		// if state is jumping off screw
+		// and the player is either not hitting a screw
+		// or the player is grounded then reset the state
+		if ( playerState == PlayerState.JumpingOffScrew ) {
+			if ( isGrounded( ) ) {
+				playerState = PlayerState.Standing;
+				screwJumpTimeout = 0;
+				jumpOffStructurePlatform( );
+			} else if ( currentScrew == null ) {
+				playerState = PlayerState.Jumping;
+				screwJumpTimeout = 0;
+				jumpOffStructurePlatform( );
 			}
 		}
 
@@ -473,7 +512,8 @@ public class Player extends Entity {
 				// move player back to original category
 				filter.categoryBits = Util.CATEGORY_PLAYER;
 				// player now collides with everything
-				filter.maskBits = ~Util.CATEGORY_SUBPLATFORM;
+				filter.maskBits = ~Util.CATEGORY_SUBPLATFORM
+						& ~Util.CATEGORY_PLAYER;
 				f.setFilterData( filter );
 			}
 		}
@@ -505,6 +545,15 @@ public class Player extends Entity {
 		if ( playerState != PlayerState.Screwing ) {
 			this.otherPlayer = otherPlayer;
 		}
+	}
+
+	/**
+	 * return true if in head stand state
+	 * 
+	 * @return if in head stand state
+	 */
+	public boolean isInHeadStand( ) {
+		return playerState == PlayerState.HeadStand;
 	}
 
 	/**
@@ -542,23 +591,26 @@ public class Player extends Entity {
 		} else if ( otherPlayer.body.getPosition( ).y < body.getPosition( ).y ) {
 			topPlayer = true;
 			setGrounded( false );
-			this.setPosition(
-					otherPlayer.body.getPosition( ).x,
-					otherPlayer.body.getPosition( ).y
-							+ ( otherPlayer.sprite.getHeight( ) / 2.0f )
-							* Util.PIXEL_TO_BOX );
-			// connect the players together with a joint
-			RevoluteJointDef revoluteJointDef = new RevoluteJointDef( );
-			revoluteJointDef.initialize(
-					body,
-					otherPlayer.body,
-					new Vector2( otherPlayer.body.getPosition( ).x,
-							otherPlayer.body.getPosition( ).y
-									- ( sprite.getHeight( ) )
-									* Util.PIXEL_TO_BOX ) );
-			revoluteJointDef.enableMotor = false;
-			playerToPlayer = ( RevoluteJoint ) world
-					.createJoint( revoluteJointDef );
+			if ( DOUBLEJUMPSTYLE == 0 ) {
+				this.setPosition( otherPlayer.body.getPosition( ).x,
+						otherPlayer.body.getPosition( ).y
+								+ ( otherPlayer.sprite.getHeight( ) / 2.0f )
+								* Util.PIXEL_TO_BOX );
+				// connect the players together with a joint
+				RevoluteJointDef revoluteJointDef = new RevoluteJointDef( );
+				revoluteJointDef.initialize(
+						body,
+						otherPlayer.body,
+						new Vector2( otherPlayer.body.getPosition( ).x,
+								otherPlayer.body.getPosition( ).y
+										- ( sprite.getHeight( ) )
+										* Util.PIXEL_TO_BOX ) );
+				revoluteJointDef.enableMotor = false;
+				playerToPlayer = ( RevoluteJoint ) world
+						.createJoint( revoluteJointDef );
+			} else if ( DOUBLEJUMPSTYLE == 1 ) {
+
+			}
 			playerState = PlayerState.HeadStand;
 		}
 	}
@@ -569,7 +621,7 @@ public class Player extends Entity {
 	 * @param grounded
 	 */
 	public void setGrounded( boolean newVal ) {
-		if ( !newVal || !topPlayer ) {
+		if ( playerState != PlayerState.Screwing && ( !newVal || !topPlayer ) ) {
 			this.grounded = newVal;
 		}
 		if ( newVal && playerState != PlayerState.Screwing ) {
@@ -761,6 +813,11 @@ public class Player extends Entity {
 			jumpPressedController = false;
 		}
 		if ( controllerListener.leftPressed( ) ) {
+			if ( playerState == PlayerState.HeadStand ) {
+				otherPlayer.removePlayerToPlayer( );
+				removePlayerToPlayer( );
+				playerState = PlayerState.Standing;
+			}
 			if ( controllerListener.analogUsed( ) )
 				moveAnalogLeft( );
 			else
@@ -769,6 +826,11 @@ public class Player extends Entity {
 		}
 
 		if ( controllerListener.rightPressed( ) ) {
+			if ( playerState == PlayerState.HeadStand ) {
+				otherPlayer.removePlayerToPlayer( );
+				removePlayerToPlayer( );
+				playerState = PlayerState.Standing;
+			}
 			if ( controllerListener.analogUsed( ) )
 				moveAnalogRight( );
 			else
@@ -786,19 +848,34 @@ public class Player extends Entity {
 				slow( );
 		}
 
-		// If player hits the screw button and is in distance
-		// then attach the player to the screw
-		if ( controllerListener.screwPressed( )
-				&& playerState != PlayerState.Screwing
-				&& ( playerState != PlayerState.JumpingOffScrew 
-				|| screwJumpTimeout < SCREW_JUMP_STEPS / 3 ) ) {
-			if ( hitScrew ) {
-				attachToScrew( );
-			} else if ( otherPlayer != null ) {
+		// if state is jumping off screw
+		// and the player is either not hitting a screw
+		// or the player is grounded then reset the state
+		if ( playerState == PlayerState.JumpingOffScrew && currentScrew == null ) {
+			playerState = PlayerState.Jumping;
+		} else if ( isGrounded( ) && playerState != PlayerState.HeadStand ) {
+			playerState = PlayerState.Standing;
+		}
+
+		// grab another player, if your colliding
+		// with another player, for double jump
+		if ( inputHandler.isGrabPressed( ) ) {
+			if ( otherPlayer != null ) {
 				setHeadStand( );
 				otherPlayer.setHeadStand( );
 			}
 		}
+
+		// If player hits the screw button and is in distance
+		// then attach the player to the screw
+		if ( controllerListener.screwPressed( )
+				&& playerState != PlayerState.Screwing
+				&& ( playerState != PlayerState.JumpingOffScrew ) ) {
+			if ( hitScrew ) {
+				attachToScrew( );
+			}
+		}
+
 		// If the button is let go, then the player is dropped
 		// Basically you have to hold attach button to stick to screw
 		if ( !controllerListener.screwPressed( )
@@ -807,8 +884,8 @@ public class Player extends Entity {
 			playerState = PlayerState.JumpingOffScrew;
 			screwJumpTimeout = SCREW_JUMP_STEPS;
 		}
-		
-		//loosen and tighten screws and jump when the screw joint is gone
+
+		// loosen and tighten screws and jump when the screw joint is gone
 		if ( playerState == PlayerState.Screwing ) {
 			if ( controllerListener.unscrewing( ) ) {
 				currentScrew.screwLeft( );
@@ -827,8 +904,8 @@ public class Player extends Entity {
 			if ( screwJumpTimeout == 0 ) {
 				jumpOffStructurePlatform( );
 			} else if ( screwJumpTimeout == SCREW_JUMP_STEPS ) {
-				//check whether there is a platform in your way
-				//if so change its collision bits
+				// check whether there is a platform in your way
+				// if so change its collision bits
 				boolean platformInWay = false;
 				for ( JointEdge j : currentScrew.body.getJointList( ) ) {
 					if ( j.joint.getBodyB( ).getUserData( ) instanceof Platform ) {

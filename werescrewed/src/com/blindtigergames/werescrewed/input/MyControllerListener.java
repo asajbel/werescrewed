@@ -29,6 +29,7 @@ public class MyControllerListener implements ControllerListener {
 	private boolean analogUsed;
 	private boolean screwingPressed;
 	private boolean unscrewingPressed;
+	private boolean grabPressed;
 
 	// Screwing booleans
 	private boolean prevScrewingPressed;
@@ -62,6 +63,7 @@ public class MyControllerListener implements ControllerListener {
 	@SuppressWarnings( "unused" )
 	private final static int BUTTON_Y = 3;
 	private final static int TRIGGER = 4;
+	private final static int BUMPER_LEFT = 4;
 	private final static int BUMPER_RIGHT = 5;
 	private final static int SELECT = 6;
 	private final static int PAUSE = 7;
@@ -164,7 +166,6 @@ public class MyControllerListener implements ControllerListener {
 	 */
 	@Override
 	public boolean buttonDown( Controller controller, int buttonIndex ) {
-
 		// Switching between Screwing/Unscrewing Modes
 		if ( buttonIndex == SELECT ) {
 			if ( debugScrewMode1 ) {
@@ -188,6 +189,9 @@ public class MyControllerListener implements ControllerListener {
 			attachScrewPressed = true;
 		if ( buttonIndex == PAUSE )
 			pausePressed = true;
+		if ( buttonIndex == BUMPER_LEFT )
+			Gdx.app.log( "controller", "" + buttonIndex );
+			grabPressed = true;
 		return false;
 
 	}
@@ -207,6 +211,8 @@ public class MyControllerListener implements ControllerListener {
 			attachScrewPressed = false;
 		if ( buttonIndex == PAUSE )
 			pausePressed = false;
+		if ( buttonIndex == BUMPER_LEFT )
+			grabPressed = false;
 
 		return false;
 	}
@@ -388,6 +394,16 @@ public class MyControllerListener implements ControllerListener {
 	 */
 	public boolean screwPressed( ) {
 		return attachScrewPressed;
+	}
+	
+	/**
+	 * Returns whether the button to grab a player is pressed
+	 * 
+	 * @return boolean
+	 * @author dennis
+	 */
+	public boolean isGrabPressed( ) {
+		return grabPressed;
 	}
 
 	/**

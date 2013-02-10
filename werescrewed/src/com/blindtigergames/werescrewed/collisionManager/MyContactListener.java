@@ -155,8 +155,10 @@ public class MyContactListener implements ContactListener {
 					} else if ( objectFix.getBody( ).getUserData( ) instanceof Player ) {
 						Player player2 = ( Player ) objectFix.getBody( )
 								.getUserData( );
-						player.hitPlayer( null );
-						player2.hitPlayer( null );
+						if( !player.isInHeadStand( ) ) {
+							player.hitPlayer( null );
+							player2.hitPlayer( null );
+						}
 					}
 				}
 			}
