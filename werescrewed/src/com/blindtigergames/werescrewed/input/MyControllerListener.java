@@ -62,6 +62,7 @@ public class MyControllerListener implements ControllerListener {
 	@SuppressWarnings( "unused" )
 	private final static int BUTTON_Y = 3;
 	private final static int TRIGGER = 4;
+	private final static int BUMPER_LEFT = 4;
 	private final static int BUMPER_RIGHT = 5;
 	private final static int SELECT = 6;
 	private final static int PAUSE = 7;
@@ -164,6 +165,7 @@ public class MyControllerListener implements ControllerListener {
 	 */
 	@Override
 	public boolean buttonDown( Controller controller, int buttonIndex ) {
+		Gdx.app.log( controller.getName( ), String.valueOf(buttonIndex) );
 
 		// Switching between Screwing/Unscrewing Modes
 		if ( buttonIndex == SELECT ) {
