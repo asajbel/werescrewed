@@ -173,7 +173,7 @@ public class StructureScrew extends Screw {
 			sprite.draw( batch );
 		}
 	}
-
+	
 	private RevoluteJoint platformJoint;
 	private RevoluteJoint screwToSkel;
 	private ArrayList< RevoluteJoint > extraJoints;
