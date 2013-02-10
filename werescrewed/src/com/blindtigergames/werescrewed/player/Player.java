@@ -122,6 +122,7 @@ public class Player extends Entity {
 		maxFriction( );
 
 		setUpController( );
+		controllerDebug = true; 
 	}
 
 	// METHODS
@@ -132,10 +133,10 @@ public class Player extends Entity {
 	public void update( float deltaTime ) {
 		super.update( deltaTime );
 
-		if ( this.name.equals( "player1" ) )
-			// Gdx.app.log( "player1", "" + playerState );
-			AnchorList.getInstance( )
-					.setAnchorPosBox( anchorID, getPosition( ) );
+		if ( this.name.equals( "player1" ) ) {
+			//Gdx.app.log( "player1", "" + playerState );
+		}
+		AnchorList.getInstance( ).setAnchorPosBox( anchorID, getPosition( ) );
 		if ( isDead ) {
 			// TODO: do stuff here
 			// playerState = playerState.Dead;
@@ -148,13 +149,9 @@ public class Player extends Entity {
 			body.setTransform( body.getPosition( ).x, body.getPosition( ).y, 0 );
 			updateKeyboard( deltaTime );
 			if ( controller != null ) {
-				if ( controllerIsActive ) {
 					updateController( deltaTime );
 
 				}
-			} else {
-				// Look to see if controller was inserted
-			}
 		}
 
 		// Hit backspace to kill the player or respawn him
