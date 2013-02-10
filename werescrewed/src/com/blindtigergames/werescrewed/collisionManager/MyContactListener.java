@@ -144,12 +144,16 @@ public class MyContactListener implements ContactListener {
 							p1 = player;
 							NUM_PLAYER1_SCREWCONTACTS--;
 							if ( NUM_PLAYER1_SCREWCONTACTS <= 0 ) {
-								player.hitScrew( null );
+								if ( ! player.isOnScrew( ) ) {
+									player.hitScrew( null );
+								}
 							}
 						} else if ( p1 != player ) {
 							NUM_PLAYER2_SCREWCONTACTS--;
 							if ( NUM_PLAYER2_SCREWCONTACTS <= 0 ) {
-								player.hitScrew( null );
+								if ( ! player.isOnScrew( ) ) {
+									player.hitScrew( null );
+								}
 							}
 						}
 					} else if ( objectFix.getBody( ).getUserData( ) instanceof Player ) {
