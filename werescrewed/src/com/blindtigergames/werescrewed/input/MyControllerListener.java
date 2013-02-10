@@ -164,6 +164,7 @@ public class MyControllerListener implements ControllerListener {
 	 */
 	@Override
 	public boolean buttonDown( Controller controller, int buttonIndex ) {
+		Gdx.app.log( controller.getName( ), String.valueOf(buttonIndex) );
 
 		// Switching between Screwing/Unscrewing Modes
 		if ( buttonIndex == SELECT ) {

@@ -119,6 +119,7 @@ public class Player extends Entity {
 		maxFriction( );
 
 		setUpController( );
+		controllerDebug = true; 
 	}
 
 	// METHODS
@@ -142,13 +143,9 @@ public class Player extends Entity {
 			body.setTransform( body.getPosition( ).x, body.getPosition( ).y, 0 );
 			updateKeyboard( deltaTime );
 			if ( controller != null ) {
-				if ( controllerIsActive ) {
 					updateController( deltaTime );
 
 				}
-			} else {
-				// Look to see if controller was inserted
-			}
 		}
 
 		// Hit backspace to kill the player or respawn him
