@@ -8,7 +8,6 @@ import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
-import com.blindtigergames.werescrewed.entity.Player;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 //import com.blindtigergames.werescrewed.screens.GameScreen;
 //import com.sun.xml.internal.bind.v2.runtime.reflect.ListIterator;
@@ -36,7 +35,6 @@ public class Camera {
 	// translation
 	// private static final float SPEED_TARGET_MODIFIER = 5f;
 	private static final float BUFFER_RATIO = .5f;
-//	private static final int LISTEN_BUFFER = 300;
 	private static final float ACCELERATION_RATIO = .005f;
 	private static final float DECELERATION_RATIO = .03f;
 	private static final float ACCELERATION_BUFFER_RATIO = .5f;
@@ -53,12 +51,7 @@ public class Camera {
 	private float targetBuffer;
 	private boolean translateState;
 
-	// might take these out when no longer required
-	private Player player1;
-	private Player player2;
 	private AnchorList anchorList;
-	private int player1Anchor;
-	private int player2Anchor;
 
 	// debug
 	private boolean debugInput;
@@ -66,26 +59,7 @@ public class Camera {
 	private ShapeRenderer shapeRenderer;
 
 	public Camera( float viewportWidth, float viewportHeight ) {
-		this( viewportWidth, viewportHeight, null, null );
-	}
-
-	public Camera( float viewportWidth, float viewportHeight, Player player ) {
-		this( viewportWidth, viewportHeight, player, null );
-	}
-
-	public Camera( float viewportWidth, float viewportHeight, Player player1,
-			Player player2 ) {
 		initializeVars( viewportWidth, viewportHeight );
-		this.player1 = player1;
-		this.player2 = player2;
-
-		if ( player1 != null ) {
-			player1Anchor = anchorList.addAnchor( true, player1.getPosition( ) );
-		}
-
-		if ( player2 != null ) {
-			player2Anchor = anchorList.addAnchor( true, player2.getPosition( ) );
-		}
 		camera.update( );
 	}
 
@@ -118,8 +92,6 @@ public class Camera {
 				* ACCELERATION_BUFFER_RATIO;
 		translateState = true;
 
-		player1Anchor = -1;
-		player2Anchor = -1;
 		anchorList = AnchorList.getInstance( camera );
 		anchorList.clear( );
 		if ( ANCHOR_TEST_MODE ) {
@@ -132,6 +104,10 @@ public class Camera {
 		shapeRenderer = new ShapeRenderer( );
 	}
 
+	/**
+	 * get boundaries of the screen in a Rectangle
+	 * @return
+	 */
 	public Rectangle getBounds( ) {
 		return screenBounds;
 	}
@@ -140,6 +116,9 @@ public class Camera {
 		return camera.combined;
 	}
 
+	/**
+	 * update the camera
+	 */
 	public void update( ) {
 		debugInput = false;
 		debugRender = false;
@@ -153,14 +132,7 @@ public class Camera {
 		}
 		if ( debugInput )
 			handleInput( );
-
-		// update player anchors
-		if ( player1Anchor > -1 ) {
-			anchorList.setAnchorPos( player1Anchor, player1.getPosition( ) );
-		}
-		if ( player2Anchor > -1 ) {
-			anchorList.setAnchorPos( player2Anchor, player2.getPosition( ) );
-		}
+		
 		// update all positions and dimensions
 		position = camera.position;
 		center2D.x = position.x;
@@ -203,6 +175,20 @@ public class Camera {
 		translateTarget3D.y = translateTarget.y;
 		translateTarget3D.z = 0f;
     	return this.translateTarget;
+    }
+    
+    /**
+     * determine if any part of rect1 is outside of rect2
+     * @param rect1 inner Rectangle
+     * @param rect2 outer Rectangle
+     * @return true if any part of rect1 is outside of rect2, false otherwise
+     */
+    private boolean rectOutsideRect(Rectangle rect1, Rectangle rect2) {
+    	boolean returnValue = false;
+    	
+    	
+    	
+    	return returnValue;
     }
 
 	/**
@@ -247,10 +233,9 @@ public class Camera {
 	}
     
     /**
-     * 
+     * translate the camera towards the translate target
      */
     private void translate() {
-//    	camera.position.set(translateTarget3D);
     	Vector2.tmp.x = translateTarget.x;
     	Vector2.tmp.y = translateTarget.y;
     	Vector2.tmp.sub(center2D);
@@ -282,20 +267,6 @@ public class Camera {
      */
     private void zoom() {
     	
-    }
-    
-    /**
-     * determine if any part of rect1 is outside of rect2
-     * @param rect1 inner Rectangle
-     * @param rect2 outer Rectangle
-     * @return true if any part of rect1 is outside of rect2, false otherwise
-     */
-    private boolean rectOutsideRect(Rectangle rect1, Rectangle rect2) {
-    	boolean returnValue = false;
-    	
-    	
-    	
-    	return returnValue;
     }
     
     private void createTestAnchors() {

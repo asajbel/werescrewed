@@ -59,17 +59,6 @@ public class Entity {
 		this.body = constructBody( );
 		setPosition( pos );
 	}
-	
-	/*public Entity(String n, EntityDef d, World w, Vector2 pos,
-			float rot, Vector2 sca)
-	{
-		this();
-		name = n;
-		type = d;
-		world = w;
-		constructSprite();
-		constructBody(pos.x, pos.y, sca.x, sca.y);
-	}*/
 
 	/**
 	 * Create entity by body. Debug constructor: Should be removed eventually.

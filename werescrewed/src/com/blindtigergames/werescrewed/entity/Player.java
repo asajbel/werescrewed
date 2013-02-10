@@ -61,6 +61,7 @@ public class Player extends Entity {
 	public final static float ANALOG_DEADZONE = 0.2f;
 	public final static float ANALOG_MAX_RANGE = 1.0f;
 	public final static float PLAYER_FRICTION = 0.7f;
+	public final static Vector2 PLAYER_BUFFER = new Vector2(128f, 128f);
 
 	// Static variables
 	public static Texture texture = new Texture(
@@ -103,7 +104,7 @@ public class Player extends Entity {
 		body.setBullet( true );
 		playerState = PlayerState.Standing;
 		inputHandler = new PlayerInputHandler( this.name );
-		anchor = new Anchor(getPosition( ));
+		anchor = new Anchor(true, body.getWorldCenter( ), PLAYER_BUFFER);
 		AnchorList.getInstance( ).addAnchor( anchor );
 		anchor.activate( );
 
@@ -121,8 +122,8 @@ public class Player extends Entity {
 	 * Updates information about the player every step
 	 */
 	public void update( float deltaTime ) {
-		updateAnchor();
 		super.update( deltaTime );
+		updateAnchor();
 		if ( isDead ) {
 			// TODO: do stuff here
 			// playerState = playerState.Dead;
@@ -612,8 +613,12 @@ public class Player extends Entity {
 		}
 	}
 	
+	/**
+	 * updates the player's anchor
+	 * @author Edward Ramirez
+	 */
 	private void updateAnchor() {
-		anchor.setPositionBox( getPosition() );
+		anchor.setPositionBox(body.getWorldCenter( ));
 	}
 
 	/**

@@ -1,24 +1,16 @@
 package com.blindtigergames.werescrewed.camera;
 
 import java.util.ArrayList;
-import java.util.PriorityQueue;
-
-
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
 
 /*******************************************************************************
  * Stores a list of all current anchors in the world
  * @author Edward Ramirez
  ******************************************************************************/
 public class AnchorList {
-	private class AnchorPair {
-		public int firstAnchorID;
-		public int secondAnchorID;
-	}
 	
 	private ArrayList<Anchor> anchorList;
 	private Vector2 sum;
@@ -29,8 +21,7 @@ public class AnchorList {
 	private static AnchorList instance;
 	private ShapeRenderer shapeRenderer;
 	private OrthographicCamera camera;
-	private PriorityQueue anchorDistanceQue;
-	
+		
 	private AnchorList() {
 		this(null);
 	}
@@ -78,6 +69,7 @@ public class AnchorList {
 		// render anchor points + buffer
 		if (camera != null && debugRender) {
 			for (Anchor curAnchor:anchorList) {
+				// renders a square of buffer width and height
 				shapeRenderer.setProjectionMatrix(camera.combined);
 				shapeRenderer.begin(ShapeType.Rectangle);
 				shapeRenderer.identity();
@@ -86,6 +78,7 @@ public class AnchorList {
 									curAnchor.buffer.x * 2, curAnchor.buffer.y * 2);
 				shapeRenderer.end();
 				
+				// renders a cross through the square if the current anchor is special (i.e. the player)
 				if (curAnchor.special) {
 
 					shapeRenderer.begin(ShapeType.Line);
