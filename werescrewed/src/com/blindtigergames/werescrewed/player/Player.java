@@ -129,8 +129,6 @@ public class Player extends Entity {
 	public void update( float deltaTime ) {
 		super.update( deltaTime );
 
-		if(this.name.equals("player1")) 
-			System.out.println( playerState );
 		AnchorList.getInstance( ).setAnchorPosBox( anchorID, getPosition( ) );
 		if ( isDead ) {
 			// TODO: do stuff here
