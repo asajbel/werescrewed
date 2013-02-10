@@ -28,7 +28,7 @@ public class PlatformBuilder extends GenericEntityBuilder<PlatformBuilder> {
 	protected float thickY = 1.0f;
 	protected float scale = 1.0f;
 	protected float density = 1.0f;
-	protected float friction = 0.5f;
+	protected float friction = 1.0f;
 	protected float restitution = 0.1f;
 	protected float gravScale = 0.1f;
 	protected boolean flipHorizonal = false;
