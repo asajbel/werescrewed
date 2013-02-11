@@ -24,8 +24,7 @@ public class LoadingScreen implements com.badlogic.gdx.Screen {
 		WereScrewedGame.manager.load("assets/data/common/TilesetTest.png", Texture.class);
 		WereScrewedGame.manager.load("assets/data/common/test01.png", Texture.class);
 		WereScrewedGame.manager.load("assets/data/common/jumping_man.png", Texture.class);
-		//need to download the sound backend before playing anything
-		//WereScrewedGame.manager.load("assets/data/common/sounds/jump.ogg", Sound.class);
+		WereScrewedGame.manager.load("assets/data/common/sounds/jump.ogg", Sound.class);
 		Gdx.app.log( "LoadingScreen", "Assets queued for loading..." );
 	}
 

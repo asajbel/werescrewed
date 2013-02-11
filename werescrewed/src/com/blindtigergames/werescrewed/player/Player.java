@@ -135,8 +135,7 @@ public class Player extends Entity {
 		setUpController( );
 		controllerDebug = true;
 		
-		jump = Gdx.audio.newSound(Gdx.files.internal("assets/data/common/sounds/jump.ogg"));
-				//WereScrewedGame.manager.get("assets/data/common/sounds/jump.ogg");
+		jump = WereScrewedGame.manager.get("assets/data/common/sounds/jump.ogg");
 	}
 
 	// PUBLIC METHODS
