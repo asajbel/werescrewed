@@ -6,7 +6,6 @@ import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Keys;
-import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -21,7 +20,6 @@ import com.blindtigergames.werescrewed.camera.Camera;
 import com.blindtigergames.werescrewed.collisionManager.MyContactListener;
 import com.blindtigergames.werescrewed.debug.SBox2DDebugRenderer;
 import com.blindtigergames.werescrewed.entity.Entity;
-import com.blindtigergames.werescrewed.entity.EntityManager;
 import com.blindtigergames.werescrewed.entity.builders.PlatformBuilder;
 import com.blindtigergames.werescrewed.entity.builders.PlayerBuilder;
 import com.blindtigergames.werescrewed.entity.mover.LerpMover;
@@ -62,7 +60,6 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 	private Camera cam;
 	private SpriteBatch batch;
 	private Texture testTexture;
-	private EntityManager entityManager;
 	private World world;
 	private MyContactListener contactListener;
 	private SBox2DDebugRenderer debugRenderer;
@@ -85,10 +82,10 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		// Initialize world and variables to allow adding entities
 		batch = new SpriteBatch( );
 		world = new World( new Vector2( 0, -45 ), true );
-		entityManager = new EntityManager( );
-		skeleton = new Skeleton( "", Vector2.Zero, null, world );
-		rootSkeleton = new Skeleton( "", Vector2.Zero, null, world );
-		entityManager.addSkeleton( rootSkeleton.name, rootSkeleton );
+		//entityManager = new EntityManager( );
+		skeleton = new Skeleton( "skeleton", Vector2.Zero, null, world );
+		rootSkeleton = new Skeleton( "root", Vector2.Zero, null, world );
+		//entityManager.addSkeleton( rootSkeleton.name, rootSkeleton );
 		platBuilder = new PlatformBuilder( world );
 		testTexture = new Texture( Gdx.files.internal( "data/TilesetTest.png" ) );
 
@@ -128,10 +125,11 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		rootSkeleton.addSkeleton( skeleton );
 
 		debugRenderer = new SBox2DDebugRenderer( Util.BOX_TO_PIXEL );
-		debugRenderer.setDrawJoints( false );
+		//debugRenderer.setDrawJoints( false );
+
 		Gdx.app.setLogLevel( Application.LOG_DEBUG );
 
-		new FPSLogger( );
+
 
 	}
 
@@ -386,7 +384,8 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		player1.update( deltaTime );
 		player2.update( deltaTime );
 		puzzleScrew.update( deltaTime );
-		entityManager.update( deltaTime );
+		rootSkeleton.update( deltaTime );
+		//entityManager.update( deltaTime );
 
 		batch.setProjectionMatrix( cam.combined( ) );
 		batch.begin( );
