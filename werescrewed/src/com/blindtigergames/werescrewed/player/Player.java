@@ -146,7 +146,7 @@ public class Player extends Entity {
 			// Gdx.app.log( "player2:" , "" + isGrounded( ) );
 		}
 		if ( this.name.equals( "player1" ) ) {
-			Gdx.app.log( "player1", "" + playerState );
+			// Gdx.app.log( "player1", "" + playerState );
 			// Gdx.app.log( "player1:" , "" + isGrounded( ) );
 		}
 
