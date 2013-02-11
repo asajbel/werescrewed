@@ -72,7 +72,9 @@ public class Player extends Entity {
 	public final static float ANALOG_MAX_RANGE = 1.0f;
 	public final static float PLAYER_FRICTION = 0.6f;
 	public final static int SCREW_JUMP_STEPS = 12;
+	public final static int GRAB_COUNTER_STEPS = 5;
 
+	public int grabCounter = 0;
 	// Static variables
 	public static Texture texture = new Texture(
 			Gdx.files.internal( "data/player_r_m.png" ) );
@@ -133,19 +135,21 @@ public class Player extends Entity {
 	public void update( float deltaTime ) {
 		super.update( deltaTime );
 
-//		if ( this.name.equals( "player2" ) ) {
-//			 Gdx.app.log( "player2", "" + playerState );
-//			 Gdx.app.log( "player2:" , "" + isGrounded(  ) );
-//		}
-//		if ( this.name.equals( "player1" ) ) {
-//			 Gdx.app.log( "player1", "" + playerState );
-//			 Gdx.app.log( "player1:" , "" + isGrounded(  ) );
-//		}
+		if ( this.name.equals( "player2" ) ) {
+			// Gdx.app.log( "player2", "" + playerState );
+			// Gdx.app.log( "player2:" , "" + isGrounded(  ) );
+		}
+		if ( this.name.equals( "player1" ) ) {
+			// Gdx.app.log( "player1", "" + playerState );
+			// Gdx.app.log( "player1:" , "" + isGrounded(  ) );
+		}
 		if ( Gdx.input.isKeyPressed( Keys.PERIOD ) ) {
 			DOUBLEJUMPSTYLE = 1;
+			System.out.println( 1 );
 		}
 		if ( Gdx.input.isKeyPressed( Keys.SEMICOLON ) ) {
 			DOUBLEJUMPSTYLE = 0;
+			System.out.println( 0 );
 		}
 		AnchorList.getInstance( ).setAnchorPosBox( anchorID, getPosition( ) );
 		if ( isDead ) {
@@ -910,8 +914,18 @@ public class Player extends Entity {
 		if ( playerState != PlayerState.Screwing
 				&& playerState != PlayerState.JumpingOffScrew
 				&& playerState != PlayerState.HeadStand && isGrounded( ) ) {
-			playerState = PlayerState.Standing;
+			if(grabCounter > GRAB_COUNTER_STEPS)
+			{
+				playerState = PlayerState.Standing;
+				grabCounter = 0;
+			}
 		}
+		
+		if(!controllerListener.isGrabPressed( ))
+		{
+			grabCounter++;
+		}
+
 		checkHeadStandState( );
 		if ( controllerListener.jumpPressed( ) ) {
 			if ( !jumpPressedController ) {
@@ -955,23 +969,26 @@ public class Player extends Entity {
 		// maybe its just the number scheme or maybe its just my controller...
 		//this function is true for more than one button 
 		//not to sure why...
-//		if ( controllerListener.isGrabPressed( ) 
-//				&& playerState != PlayerState.Screwing
-//				&& playerState != PlayerState.HeadStand ) {
-//			if ( otherPlayer != null ) {
-//				if ( DOUBLEJUMPSTYLE == 0 ) {
-//					setHeadStand( );
-//					otherPlayer.setHeadStand( );
-//				}
-//			}
-//			if ( DOUBLEJUMPSTYLE == 1 ) {
-//				playerState = PlayerState.GrabMode;
-//			}
-//		} 
-//		if ( playerState == PlayerState.GrabMode 
-//				&& !inputHandler.isGrabPressed( ) ) {
-//			processReleaseGrab( );
-//		}
+		if ( controllerListener.isGrabPressed( ) 
+				&& playerState != PlayerState.Screwing
+				&& playerState != PlayerState.HeadStand ) {
+			if ( otherPlayer != null ) {
+				if ( DOUBLEJUMPSTYLE == 0 ) {
+					setHeadStand( );
+					otherPlayer.setHeadStand( );
+				}
+			}
+			if ( DOUBLEJUMPSTYLE == 1 ) {
+				playerState = PlayerState.GrabMode;
+			}
+		} 
+		
+		
+		if ( playerState == PlayerState.GrabMode 
+				&& !controllerListener.isGrabPressed( ) ) {
+			processReleaseGrab( );
+		}
+
 		// If player hits the screw button and is in distance
 		// then attach the player to the screw
 		if ( controllerListener.screwPressed( )

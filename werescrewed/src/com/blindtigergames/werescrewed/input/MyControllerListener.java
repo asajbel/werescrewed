@@ -58,7 +58,6 @@ public class MyControllerListener implements ControllerListener {
 	private final static int BUTTON_A = 0;
 	@SuppressWarnings( "unused" )
 	private final static int BUTTON_B = 1;
-	@SuppressWarnings( "unused" )
 	private final static int BUTTON_X = 2;
 	@SuppressWarnings( "unused" )
 	private final static int BUTTON_Y = 3;
@@ -66,7 +65,6 @@ public class MyControllerListener implements ControllerListener {
 	private final static int BUMPER_RIGHT = 5;
 	private final static int SELECT = 6;
 	private final static int PAUSE = 7;
-	private final static int RIGHT_ANALOG_DOWN = 10;
 	
 	private final static int LEFTSTICK_AXIS_Y = 0;
 	private final static int LEFTSTICK_AXIS_X = 1;
@@ -191,9 +189,10 @@ public class MyControllerListener implements ControllerListener {
 			attachScrewPressed = true;
 		if ( buttonIndex == PAUSE )
 			pausePressed = true;
-		if ( buttonIndex == RIGHT_ANALOG_DOWN )
-			Gdx.app.log( "controller", "" + buttonIndex );
+		if ( buttonIndex == BUTTON_X )
 			grabPressed = true;
+		
+		Gdx.app.log( "controller", "" + buttonIndex );
 		return false;
 
 	}
@@ -213,7 +212,7 @@ public class MyControllerListener implements ControllerListener {
 			attachScrewPressed = false;
 		if ( buttonIndex == PAUSE )
 			pausePressed = false;
-		if ( buttonIndex == RIGHT_ANALOG_DOWN )
+		if ( buttonIndex == BUTTON_X )
 			grabPressed = false;
 
 		return false;
