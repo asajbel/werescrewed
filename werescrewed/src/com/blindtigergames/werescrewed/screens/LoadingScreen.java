@@ -50,7 +50,7 @@ public class LoadingScreen implements com.badlogic.gdx.Screen {
 			Gdx.app.log( "LoadingScreen.render", "Loading Complete!!" );
 			
 			//go to the physics screen
-			ScreenManager.getInstance( ).show( ScreenType.PHYSICS );
+			ScreenManager.getInstance( ).show( ScreenType.MAIN_MENU );
 		}
 		Gdx.app.log( "LoadingScreen.render", "Loading... ");
 
