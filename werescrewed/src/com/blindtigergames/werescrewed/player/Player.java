@@ -1,7 +1,5 @@
 package com.blindtigergames.werescrewed.player;
 
-
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.controllers.Controller;
@@ -70,7 +68,8 @@ public class Player extends Entity {
 	public final static float MAX_VELOCITY = 1.8f;
 	public final static float MIN_VELOCITY = 0.05f;
 	public final static float MOVEMENT_IMPLUSE = 0.01f;
-	public final static float JUMP_IMPLUSE = 0.15f; //0.09 = controller, 0.15 = keyboard
+	public final static float JUMP_IMPLUSE = 0.15f; // 0.09 = controller, 0.15 =
+													// keyboard
 	public final static int JUMP_COUNTER = 10;
 	public final static float ANALOG_DEADZONE = 0.2f;
 	public final static float ANALOG_MAX_RANGE = 1.0f;
@@ -80,7 +79,7 @@ public class Player extends Entity {
 
 	public int grabCounter = 0;
 	public int jumpCounter = 0;
-	
+
 	// Static variables
 	public static Texture texture = new Texture(
 			Gdx.files.internal( "data/player_r_m.png" ) );
@@ -143,11 +142,11 @@ public class Player extends Entity {
 
 		if ( this.name.equals( "player2" ) ) {
 			// Gdx.app.log( "player2", "" + playerState );
-			// Gdx.app.log( "player2:" , "" + isGrounded(  ) );
+			// Gdx.app.log( "player2:" , "" + isGrounded( ) );
 		}
 		if ( this.name.equals( "player1" ) ) {
-			 Gdx.app.log( "player1", "" + playerState );
-			// Gdx.app.log( "player1:" , "" + isGrounded(  ) );
+			Gdx.app.log( "player1", "" + playerState );
+			// Gdx.app.log( "player1:" , "" + isGrounded( ) );
 		}
 		if ( Gdx.input.isKeyPressed( Keys.PERIOD ) ) {
 			DOUBLEJUMPSTYLE = 1;
@@ -302,6 +301,7 @@ public class Player extends Entity {
 					body.getWorldCenter( ) );
 		}
 	}
+
 	public void jumpScrew( ) {
 		// if the player isn't in head stand mode or if the player
 		// is the top player then jump normally
@@ -330,6 +330,7 @@ public class Player extends Entity {
 					body.getWorldCenter( ) );
 		}
 	}
+
 	/**
 	 * Sets the current screw
 	 * 
@@ -409,24 +410,22 @@ public class Player extends Entity {
 			} else if ( otherPlayer.body.getPosition( ).y < body.getPosition( ).y ) {
 				topPlayer = true;
 				setGrounded( false );
-				if ( DOUBLEJUMPSTYLE == 0 ) {
-					this.setPosition( otherPlayer.body.getPosition( ).x,
-							otherPlayer.body.getPosition( ).y
-									+ ( otherPlayer.sprite.getHeight( ) / 2.0f )
-									* Util.PIXEL_TO_BOX );
-					// connect the players together with a joint
-					RevoluteJointDef revoluteJointDef = new RevoluteJointDef( );
-					revoluteJointDef.initialize( body, otherPlayer.body,
-							new Vector2( otherPlayer.body.getPosition( ).x,
-									otherPlayer.body.getPosition( ).y
-											- ( sprite.getHeight( ) )
-											* Util.PIXEL_TO_BOX ) );
-					revoluteJointDef.enableMotor = false;
-					playerToPlayer = ( RevoluteJoint ) world
-							.createJoint( revoluteJointDef );
-				} else if ( DOUBLEJUMPSTYLE == 1 ) {
-
-				}
+				this.setPosition( otherPlayer.body.getPosition( ).x,
+						otherPlayer.body.getPosition( ).y
+								+ ( otherPlayer.sprite.getHeight( ) / 2.0f )
+								* Util.PIXEL_TO_BOX );
+				// connect the players together with a joint
+				RevoluteJointDef revoluteJointDef = new RevoluteJointDef( );
+				revoluteJointDef.initialize(
+						body,
+						otherPlayer.body,
+						new Vector2( otherPlayer.body.getPosition( ).x,
+								otherPlayer.body.getPosition( ).y
+										- ( sprite.getHeight( ) )
+										* Util.PIXEL_TO_BOX ) );
+				revoluteJointDef.enableMotor = false;
+				playerToPlayer = ( RevoluteJoint ) world
+						.createJoint( revoluteJointDef );
 				playerState = PlayerState.HeadStand;
 			}
 		}
@@ -620,15 +619,15 @@ public class Player extends Entity {
 			world.destroyJoint( playerToScrew );
 			playerState = PlayerState.JumpingOffScrew;
 			screwJumpTimeout = SCREW_JUMP_STEPS;
-			//TODO: ADD SCREW JUMPING HERE
+			// TODO: ADD SCREW JUMPING HERE
 			jumpPressedController = true;
-			jumpScrew( ); 
+			jumpScrew( );
 		} else if ( !jumpPressedController ) {
 			if ( playerState != PlayerState.HeadStand ) {
 				playerState = PlayerState.Jumping;
 				jump( );
 				jumpCounter++;
-				if(jumpCounter > JUMP_COUNTER){
+				if ( jumpCounter > JUMP_COUNTER ) {
 					jumpCounter = 0;
 					jumpPressedController = true;
 				}
@@ -661,6 +660,7 @@ public class Player extends Entity {
 			playerState = PlayerState.Jumping;
 		}
 	}
+
 	/**
 	 * check to see if its ok to reset the state from the jumping off screw
 	 * state
@@ -968,8 +968,8 @@ public class Player extends Entity {
 			if ( DOUBLEJUMPSTYLE == 1 ) {
 				playerState = PlayerState.GrabMode;
 			}
-		} 
-		if ( playerState == PlayerState.GrabMode 
+		}
+		if ( playerState == PlayerState.GrabMode
 				&& !inputHandler.isGrabPressed( ) ) {
 			processReleaseGrab( );
 		}
@@ -993,53 +993,52 @@ public class Player extends Entity {
 		if ( playerState != PlayerState.Screwing
 				&& playerState != PlayerState.JumpingOffScrew
 				&& playerState != PlayerState.HeadStand && isGrounded( ) ) {
-			if(grabCounter > GRAB_COUNTER_STEPS)
-			{
+			if ( grabCounter > GRAB_COUNTER_STEPS ) {
 				playerState = PlayerState.Standing;
 				grabCounter = 0;
 			}
 		}
-		
-		if(!controllerListener.isGrabPressed( ))
-		{
+
+		if ( !controllerListener.isGrabPressed( ) ) {
 			grabCounter++;
 		}
 
 		checkHeadStandState( );
 		if ( controllerListener.jumpPressed( ) ) {
 			processJumpStateController( );
-	}
-		
-		if(isGrounded()){
+		}
+
+		if ( isGrounded( ) ) {
 			jumpCounter = 0;
 		}
-		if(!controllerListener.screwPressed( ))
+		if ( !controllerListener.screwPressed( ) ) {
 			screwButtonHeld = false;
-		
+		}
 		if ( !controllerListener.jumpPressed( ) ) {
-			if(isGrounded() )
+			if ( isGrounded( ) ) {
 				jumpPressedController = false;
-			
-			else if( playerState == PlayerState.Screwing )
-				jumpPressedController = false;
-			
-			else {
-				jumpPressedController = true;
 			}
+		} else if ( playerState == PlayerState.Screwing ) {
+			jumpPressedController = false;
+		} else {
+			jumpPressedController = true;
+		}
 		if ( controllerListener.leftPressed( ) ) {
 			processMovingState( );
-			if ( controllerListener.analogUsed( ) )
+			if ( controllerListener.analogUsed( ) ) {
 				moveAnalogLeft( );
-			else
+			} else {
 				moveLeft( );
+			}
 			prevButton = PovDirection.west;
 		}
 		if ( controllerListener.rightPressed( ) ) {
 			processMovingState( );
-			if ( controllerListener.analogUsed( ) )
+			if ( controllerListener.analogUsed( ) ) {
 				moveAnalogRight( );
-			else
+			} else {
 				moveRight( );
+			}
 			prevButton = PovDirection.east;
 		}
 		if ( controllerListener.downPressed( ) ) {
@@ -1049,17 +1048,19 @@ public class Player extends Entity {
 		if ( ( !controllerListener.leftPressed( ) && !controllerListener
 				.rightPressed( ) )
 				&& ( prevButton == PovDirection.east || prevButton == PovDirection.west ) ) {
-			if ( !grounded )
+			if ( !grounded ) {
 				slow( );
+			}
 		}
 		// grab another player, if your colliding
 		// with another player, for double jump
 		//
 		// grab pressed seems to not work on the controller
-		// maybe its just the number scheme or maybe its just my controller...
-		//this function is true for more than one button 
-		//not to sure why...
-		if ( controllerListener.isGrabPressed( ) 
+		// maybe its just the number scheme or maybe its just my
+		// controller...
+		// this function is true for more than one button
+		// not to sure why...
+		if ( controllerListener.isGrabPressed( )
 				&& playerState != PlayerState.Screwing
 				&& playerState != PlayerState.HeadStand ) {
 			if ( otherPlayer != null ) {
@@ -1071,20 +1072,16 @@ public class Player extends Entity {
 			if ( DOUBLEJUMPSTYLE == 1 ) {
 				playerState = PlayerState.GrabMode;
 			}
-		} 
-		
-		
-		if ( playerState == PlayerState.GrabMode 
+		}
+		if ( playerState == PlayerState.GrabMode
 				&& !controllerListener.isGrabPressed( ) ) {
 			processReleaseGrab( );
 		}
-
 		// If player hits the screw button and is in distance
 		// then attach the player to the screw
-		if ( (controllerListener.screwPressed( ) ) 
-				&& (playerState != PlayerState.Screwing 
-				&&  playerState != PlayerState.JumpingOffScrew ) ) {
-			if ( hitScrew && !screwButtonHeld) {
+		if ( ( controllerListener.screwPressed( ) )
+				&& ( playerState != PlayerState.Screwing && playerState != PlayerState.JumpingOffScrew ) ) {
+			if ( hitScrew && !screwButtonHeld ) {
 				attachToScrew( );
 				screwButtonHeld = true;
 				jumpCounter = 0;
@@ -1098,7 +1095,6 @@ public class Player extends Entity {
 			playerState = PlayerState.JumpingOffScrew;
 			screwJumpTimeout = SCREW_JUMP_STEPS;
 			screwButtonHeld = false;
-		}	
+		}
 	}
-}
 }
