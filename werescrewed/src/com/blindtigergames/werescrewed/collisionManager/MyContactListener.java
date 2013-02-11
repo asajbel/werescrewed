@@ -226,7 +226,9 @@ public class MyContactListener implements ContactListener {
 							.getUserData( );
 					if( player.isInGrabState( ) || player2.isInGrabState( ) ) {
 						contact.setEnabled( false );
-					} 
+					} else if ( !player.isGrounded( ) || !player2.isGrounded( ) ) { 
+						contact.setEnabled( false );
+					}
 				}
 			}
 		}
