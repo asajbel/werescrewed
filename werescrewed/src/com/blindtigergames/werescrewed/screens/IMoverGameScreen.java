@@ -326,6 +326,8 @@ public class IMoverGameScreen implements com.badlogic.gdx.Screen {
 
 		player1.update( deltaTime );
 		player2.update( deltaTime );
+		
+		
 		// puzzleScrew.update( deltaTime );
 		// entityManager.update( deltaTime );
 		rootSkeleton.update( deltaTime );

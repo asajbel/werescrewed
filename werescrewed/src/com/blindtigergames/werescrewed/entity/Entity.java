@@ -294,4 +294,8 @@ public class Entity {
 			body.setGravityScale( g );
 		}
 	}
+	
+	public String toString(){
+		return "Entity["+name+"] pos:"+body.getPosition( )+", body.active:"+body.isActive( )+", body.awake:"+body.isAwake( );
+	}
 }

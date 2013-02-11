@@ -47,6 +47,7 @@ public class Skeleton extends Entity {
         this.dynamicPlatforms = new ArrayList<Platform>();
         childSkeletons = new ArrayList<Skeleton>();
         kinematicPlatforms = new ArrayList< Platform >( );
+        looseEntity = new ArrayList< Entity >();
     }
 
     public void constructSkeleton( Vector2 pos ) {
@@ -155,17 +156,47 @@ public class Skeleton extends Entity {
      * TODO: Do kinamtic platforms need sleeping?
      */
     public void setSkeletonAwake( boolean isAwake) {
-        body.setActive( false );
+        //body.setActive( true );
         for ( Skeleton skeleton : childSkeletons ) {
             skeleton.setSkeletonAwake(isAwake);
         }
-        /*for ( Platform p : dynamicPlatforms ) {
+        for ( Platform p : dynamicPlatforms ) {
             p.body.setAwake( isAwake );
-        }*/
-        if ( screws != null ){
-        	for ( Screw s: screws ){
-        		s.body.setAwake( isAwake );
-        	}
+        }
+        for( Entity e: looseEntity ){
+        	e.body.setAwake( isAwake );
+        }
+        for( Platform platform : kinematicPlatforms ){
+        	platform.body.setAwake( isAwake );
+        }
+    }
+    
+    /**
+     * setSkeletonActive() recursively sets all child skeletons active state to isActive\
+     * @author stew
+     */
+    public void setSkeletonActiveRec( boolean isActive) {
+        for ( Skeleton skeleton : childSkeletons ) {
+            skeleton.setSkeletonActiveRec(isActive);
+        }
+        setSkeletonActive(isActive);
+    }
+    
+    /**
+     * Sets this skeleton & all associated entity's active state to isActive
+     * @param isActive
+     * @author stew
+     */
+    public void setSkeletonActive( boolean isActive ){
+    	body.setActive( isActive );
+    	for ( Platform p : dynamicPlatforms ) {
+            p.body.setActive( isActive );
+        }
+        for( Entity e: looseEntity ){
+        	e.body.setActive( isActive );
+        }
+        for( Platform platform : kinematicPlatforms ){
+        	platform.body.setActive( isActive );
         }
     }
     
@@ -175,11 +206,9 @@ public class Skeleton extends Entity {
      * @param y - float in Y axis
      */
     public void translate( float x, float y ){
-    	/*body.setTransform( body.getTransform( )
-				.getPosition( ).add( x, y ), body
-				.getTransform( ).getRotation( ) );
-    	setSkeletonAwake( true );*/
     	body.setTransform(body.getPosition().x+x, body.getPosition().y+y, body.getAngle());
+    	setSkeletonAwake( true );
+    	setSkeletonActive(true);
     }
     
     /**
@@ -190,7 +219,7 @@ public class Skeleton extends Entity {
     	/*body.setTransform( body.getTransform( ) .getPosition( ),
     			body.getTransform( ).getRotation( )+angleRadians );*/
     	body.setTransform( body.getPosition(), body.getAngle( )+angleRadians );
-    	//setSkeletonAwake( true );
+    	setSkeletonAwake( true );
     }
 
     /**

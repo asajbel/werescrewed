@@ -401,6 +401,9 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		puzzleScrew.update( deltaTime );
 		//entityManager.update( deltaTime );
 		rootSkeleton.update( deltaTime );
+		
+		
+		Gdx.app.log( "player1", player1.toString( )+" isGrounded:"+player1.isGrounded( ) );
 
 		batch.setProjectionMatrix( cam.combined( ) );
 		batch.begin( );
