@@ -70,7 +70,7 @@ public class Player extends Entity {
 	public final static float MAX_VELOCITY = 1.8f;
 	public final static float MIN_VELOCITY = 0.05f;
 	public final static float MOVEMENT_IMPLUSE = 0.01f;
-	public final static float JUMP_IMPLUSE = 0.15f; //0.09 = controller, 0.15 = keyboard
+	public final static float JUMP_IMPLUSE = 0.09f; //0.09 = controller, 0.15 = keyboard
 	public final static int JUMP_COUNTER = 10;
 	public final static float ANALOG_DEADZONE = 0.2f;
 	public final static float ANALOG_MAX_RANGE = 1.0f;
@@ -1025,7 +1025,8 @@ public class Player extends Entity {
 			
 			else {
 				jumpPressedController = true;
-			}
+		}
+		}
 		if ( controllerListener.leftPressed( ) ) {
 			processMovingState( );
 			if ( controllerListener.analogUsed( ) )
@@ -1101,4 +1102,4 @@ public class Player extends Entity {
 		}	
 	}
 }
-}
+
