@@ -70,7 +70,7 @@ public class Player extends Entity {
 	public final static float MAX_VELOCITY = 1.8f;
 	public final static float MIN_VELOCITY = 0.05f;
 	public final static float MOVEMENT_IMPLUSE = 0.01f;
-	public final static float JUMP_IMPLUSE = 0.09f; //0.09 = controller, 0.15 = keyboard
+	public final static float JUMP_IMPLUSE = 0.15f; //0.09 = controller, 0.15 = keyboard
 	public final static int JUMP_COUNTER = 10;
 	public final static float ANALOG_DEADZONE = 0.2f;
 	public final static float ANALOG_MAX_RANGE = 1.0f;
@@ -913,6 +913,29 @@ public class Player extends Entity {
 		}
 
 	}
+	
+	/**
+	 * reseting jumpcounter and screw button being held and jump state
+	 */
+	private void resetScrewJump(){
+		if(isGrounded()){
+			jumpCounter = 0;
+		}
+		if(!controllerListener.screwPressed( ))
+			screwButtonHeld = false;
+		
+		if ( !controllerListener.jumpPressed( ) ) {
+			if(isGrounded() )
+				jumpPressedController = false;
+			
+			else if( playerState == PlayerState.Screwing )
+				jumpPressedController = false;
+			
+			else 
+				jumpPressedController = true;
+			
+		}
+	}
 
 	/**
 	 * This function updates the keyboard state which the player checks to do
@@ -1010,25 +1033,9 @@ public class Player extends Entity {
 		checkHeadStandState( );
 		if ( controllerListener.jumpPressed( ) ) {
 			processJumpStateController( );
-	}
-		
-		if(isGrounded()){
-			jumpCounter = 0;
 		}
-		if(!controllerListener.screwPressed( ))
-			screwButtonHeld = false;
-		
-		if ( !controllerListener.jumpPressed( ) ) {
-			if(isGrounded() )
-				jumpPressedController = false;
-			
-			else if( playerState == PlayerState.Screwing )
-				jumpPressedController = false;
-			
-			else {
-				jumpPressedController = true;
-		}
-		}
+		resetScrewJump();
+
 		if ( controllerListener.leftPressed( ) ) {
 			processMovingState( );
 			if ( controllerListener.analogUsed( ) )
