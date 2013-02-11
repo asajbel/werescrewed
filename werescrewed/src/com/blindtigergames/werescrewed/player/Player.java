@@ -428,6 +428,7 @@ public class Player extends Entity {
 				revoluteJointDef.enableMotor = false;
 				playerToPlayer = ( RevoluteJoint ) world
 						.createJoint( revoluteJointDef );
+
 				playerState = PlayerState.HeadStand;
 			}
 		}
@@ -915,25 +916,29 @@ public class Player extends Entity {
 	}
 
 	/**
-	 * reseting jumpcounter and screw button being held and jump state
+	 * reseting jumpcounter and screw button being held and jump state and the
+	 * grab button
 	 */
-	private void resetScrewJump( ) {
+	private void resetScrewJumpGrab( ) {
 		if ( isGrounded( ) ) {
 			jumpCounter = 0;
 		}
-		if ( !controllerListener.screwPressed( ) )
+		if ( !controllerListener.screwPressed( ) ) {
 			screwButtonHeld = false;
-
+		}
+		if ( !controllerListener.isGrabPressed( ) ) {
+			grabCounter++;
+		}
 		if ( !controllerListener.jumpPressed( ) ) {
-			if ( isGrounded( ) )
+			if ( isGrounded( ) ) {
 				jumpPressedController = false;
 
-			else if ( playerState == PlayerState.Screwing )
+			} else if ( playerState == PlayerState.Screwing ) {
 				jumpPressedController = false;
 
-			else
+			} else {
 				jumpPressedController = true;
-
+			}
 		}
 	}
 
@@ -1018,37 +1023,23 @@ public class Player extends Entity {
 		if ( playerState != PlayerState.Screwing
 				&& playerState != PlayerState.JumpingOffScrew
 				&& playerState != PlayerState.HeadStand && isGrounded( ) ) {
+
+			// This code exists because you need to release the grab button
+			// to toss the other player, while colliding with the other player
 			if ( grabCounter > GRAB_COUNTER_STEPS ) {
 				playerState = PlayerState.Standing;
 				grabCounter = 0;
 			}
 		}
 
-		if ( !controllerListener.isGrabPressed( ) ) {
-			grabCounter++;
-		}
-
 		checkHeadStandState( );
+
 		if ( controllerListener.jumpPressed( ) ) {
 			processJumpStateController( );
 		}
 
-		if ( isGrounded( ) ) {
-			jumpCounter = 0;
-		}
-		if ( !controllerListener.screwPressed( ) ) {
-			screwButtonHeld = false;
-		}
-		if ( !controllerListener.jumpPressed( ) ) {
-			if ( isGrounded( ) ) {
-				jumpPressedController = false;
-			}
-		} else if ( playerState == PlayerState.Screwing ) {
-			jumpPressedController = false;
-		} else {
-			jumpPressedController = true;
-		}
-		resetScrewJump( );
+		resetScrewJumpGrab( );
+
 		if ( controllerListener.leftPressed( ) ) {
 			processMovingState( );
 			if ( controllerListener.analogUsed( ) ) {
@@ -1080,12 +1071,6 @@ public class Player extends Entity {
 		}
 		// grab another player, if your colliding
 		// with another player, for double jump
-		//
-		// grab pressed seems to not work on the controller
-		// maybe its just the number scheme or maybe its just my
-		// controller...
-		// this function is true for more than one button
-		// not to sure why...
 		if ( controllerListener.isGrabPressed( )
 				&& playerState != PlayerState.Screwing
 				&& playerState != PlayerState.HeadStand ) {
@@ -1099,10 +1084,12 @@ public class Player extends Entity {
 				playerState = PlayerState.GrabMode;
 			}
 		}
+
 		if ( playerState == PlayerState.GrabMode
 				&& !controllerListener.isGrabPressed( ) ) {
 			processReleaseGrab( );
 		}
+
 		// If player hits the screw button and is in distance
 		// then attach the player to the screw
 		if ( ( controllerListener.screwPressed( ) )
