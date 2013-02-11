@@ -149,13 +149,15 @@ public class Player extends Entity {
 			 Gdx.app.log( "player1", "" + playerState );
 			// Gdx.app.log( "player1:" , "" + isGrounded(  ) );
 		}
+		
+		// toss mode
 		if ( Gdx.input.isKeyPressed( Keys.PERIOD ) ) {
 			DOUBLEJUMPSTYLE = 1;
-			System.out.println( 1 );
 		}
+		
+		// Attach/headstand mode
 		if ( Gdx.input.isKeyPressed( Keys.SEMICOLON ) ) {
 			DOUBLEJUMPSTYLE = 0;
-			System.out.println( 0 );
 		}
 		AnchorList.getInstance( ).setAnchorPosBox( anchorID, getPosition( ) );
 		if ( isDead ) {
