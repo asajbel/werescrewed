@@ -237,7 +237,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 	private void initClimbingScrews( ) {
 		climbingScrews = new ArrayList< StrippedScrew >( );
 		float x1 = 1.75f;
-		float x2 = 2.0f;
+		float x2 = 2.4f;
 		float y1 = 0.6f;
 		float dy = 0.7f;
 		for ( int i = 0; i < 10; i++ ) {
@@ -385,7 +385,6 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		player2.update( deltaTime );
 		puzzleScrew.update( deltaTime );
 		rootSkeleton.update( deltaTime );
-		//entityManager.update( deltaTime );
 
 		batch.setProjectionMatrix( cam.combined( ) );
 		batch.begin( );

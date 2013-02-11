@@ -148,13 +148,15 @@ public class Player extends Entity {
 			Gdx.app.log( "player1", "" + playerState );
 			// Gdx.app.log( "player1:" , "" + isGrounded( ) );
 		}
+
+		// toss mode
 		if ( Gdx.input.isKeyPressed( Keys.PERIOD ) ) {
 			DOUBLEJUMPSTYLE = 1;
-			System.out.println( 1 );
 		}
+
+		// Attach/headstand mode
 		if ( Gdx.input.isKeyPressed( Keys.SEMICOLON ) ) {
 			DOUBLEJUMPSTYLE = 0;
-			System.out.println( 0 );
 		}
 		AnchorList.getInstance( ).setAnchorPosBox( anchorID, getPosition( ) );
 		if ( isDead ) {
@@ -913,6 +915,29 @@ public class Player extends Entity {
 	}
 
 	/**
+	 * reseting jumpcounter and screw button being held and jump state
+	 */
+	private void resetScrewJump( ) {
+		if ( isGrounded( ) ) {
+			jumpCounter = 0;
+		}
+		if ( !controllerListener.screwPressed( ) )
+			screwButtonHeld = false;
+
+		if ( !controllerListener.jumpPressed( ) ) {
+			if ( isGrounded( ) )
+				jumpPressedController = false;
+
+			else if ( playerState == PlayerState.Screwing )
+				jumpPressedController = false;
+
+			else
+				jumpPressedController = true;
+
+		}
+	}
+
+	/**
 	 * This function updates the keyboard state which the player checks to do
 	 * stuff
 	 * 
@@ -1023,6 +1048,7 @@ public class Player extends Entity {
 		} else {
 			jumpPressedController = true;
 		}
+		resetScrewJump( );
 		if ( controllerListener.leftPressed( ) ) {
 			processMovingState( );
 			if ( controllerListener.analogUsed( ) ) {
