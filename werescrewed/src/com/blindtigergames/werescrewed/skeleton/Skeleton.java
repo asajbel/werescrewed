@@ -36,7 +36,7 @@ public class Skeleton extends Entity {
     private ArrayList<Platform> kinematicPlatforms;
     private ArrayList<Entity>   looseEntity; 
     private Texture foregroundTex;
-    private ArrayList< Screw > screws;
+    private ArrayList< Screw > screws; //add all screws you want drawn
 
     // private Skeleton(){};
 
@@ -133,6 +133,14 @@ public class Skeleton extends Entity {
      	//addDynamicPlatform( ss );
         screws.add( ss );
     }
+     
+     /**
+      * Add a screw to be drawn!
+      * @param Screw
+      */
+     public void addScrewForDraw(Screw s){
+    	 screws.add(s);
+     }
 
      /**
       * Simply adds a platform to the list, without explicitly

@@ -15,6 +15,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.joints.PrismaticJoint;
 import com.badlogic.gdx.physics.box2d.joints.PrismaticJointDef;
+import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.camera.Camera;
 import com.blindtigergames.werescrewed.collisionManager.MyContactListener;
 import com.blindtigergames.werescrewed.debug.SBox2DDebugRenderer;
@@ -80,7 +81,7 @@ public class IMoverGameScreen implements com.badlogic.gdx.Screen {
 		rootSkeleton.addSkeleton( skeleton );
 		entityManager.addSkeleton( rootSkeleton.name, rootSkeleton );
 		platBuilder = new PlatformBuilder( world );
-		testTexture = new Texture( Gdx.files.internal( "data/TilesetTest.png" ) );
+		testTexture = WereScrewedGame.manager.get("assets/data/common/TilesetTest.png", Texture.class);
 
 		// Initialize camera
 		initCamera( );
@@ -181,6 +182,7 @@ public class IMoverGameScreen implements com.badlogic.gdx.Screen {
 						kinPlat1.body.getPosition( ).x + 1.75f,
 						kinPlat1.body.getPosition( ).y ), 1f );
 		puzzleScrew.puzzleManager.addMover( lm );
+		skeleton.addScrewForDraw( puzzleScrew );
 	}
 
 	/**

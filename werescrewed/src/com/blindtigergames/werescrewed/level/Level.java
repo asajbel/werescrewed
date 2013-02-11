@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
+import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.camera.Camera;
 import com.blindtigergames.werescrewed.debug.SBox2DDebugRenderer;
 import com.blindtigergames.werescrewed.entity.EntityManager;
@@ -44,11 +45,11 @@ public class Level {
 
 		world = new World( new Vector2( 0, -100 ), true );
 		camera = new Camera( w, h);
-		player = (Player)new PlayerBuilder()
-					.name("Player")
+		player = new PlayerBuilder()
+					.name("player1")
 					.world( world )
 					.position( new Vector2(0.0f,0.0f) )
-					.build();
+					.buildPlayer();
 
 		entities = new EntityManager();
 		platforms = new ArrayList<Platform>();
@@ -83,9 +84,11 @@ public class Level {
 	public static Level getDefaultLevel(){
 		Level out = new Level();
 		TiledPlatform tp, ground;
+		@SuppressWarnings( "unused" )
 		RoomPlatform rp;
 		//ShapePlatform sp;
-		Texture texture = new Texture( Gdx.files.internal( "data/rletter.png" ) );
+		Texture texture =
+				WereScrewedGame.manager.get("assets/data/common/rletter.png", Texture.class);
 		
 		tp = new PlatformBuilder(out.world)
 		.position( 2.0f, 0.2f )

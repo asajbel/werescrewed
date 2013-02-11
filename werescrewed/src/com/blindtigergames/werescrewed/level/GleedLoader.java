@@ -68,6 +68,7 @@ public class GleedLoader {
 		return new Vector2(posElem.getFloat("X"), posElem.getFloat("Y")).mul( -1 );
 	}
 	
+	@SuppressWarnings( "unused" )
 	protected void loadMover(Element item, HashMap<String,String> props){
 		String name = getName(item);
 		Vector2 pos = getPosition(item);
@@ -88,16 +89,25 @@ public class GleedLoader {
 			if (def != null){
 				if (def.getCategory( ).equals( tileCat )){ //Insert special cases here.\
 					
-					int w = Integer.decode(props.get("TileWidth"));
-					int h = Integer.decode(props.get("TileHeight"));
-					
+					float w = (item.getFloat( "Width" ));
+					float h = (item.getFloat( "Height" ));
+					float tileX = def.getTexture( ).getWidth( )/4.0f;
+					float tileY = def.getTexture( ).getWidth( )/4.0f;
+					if (tileX > 0)
+						w = w / tileX;
+					if (tileY > 0)
+						h = h / tileY;
+					Gdx.app.log( "GleedLoader:", "Tile Width:"+Float.toString( tileX ));
+					Gdx.app.log( "GleedLoader:", "Tile Height:"+Float.toString( tileY ));					
+					Gdx.app.log( "GleedLoader:", "Tiled Platform Width:"+Float.toString( w ));
+					Gdx.app.log( "GleedLoader:", "Tiled Platform Height:"+Float.toString( h ));					
+
 					TiledPlatform tp = new PlatformBuilder(level.world)
 					.name( name )
 					.type( def )
 					.position( pos.x, pos.y )
-					.dimensions( w, h )
+					.dimensions( (int)w, (int)h )
 					.texture( def.getTexture() )
-					.resitituion( 0.0f )
 					.buildTilePlatform( );
 					Gdx.app.log("GleedLoader", "Platform loaded:"+tp.name);
 					level.entities.addEntity( name, tp );

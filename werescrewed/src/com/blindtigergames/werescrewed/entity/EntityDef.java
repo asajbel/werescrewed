@@ -14,19 +14,67 @@ import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.Shape;
 import com.badlogic.gdx.utils.XmlReader;
+import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.util.BodyEditorLoader;
 import com.blindtigergames.werescrewed.util.Util;
 
+/**
+ * Contains code for loading external files with definitions for Entities
+ * 
+ * @author Blind Tiger Games
+ * 
+ */
 public class EntityDef {
 
-	// Methods
-	protected EntityDef( String n ) {
+	// FIELDS
+
+	// Static Fields
+	protected static HashMap< String, EntityDef > definitions;
+
+	// Sprite Fields (i.e. everything needed to define just the sprite half)
+	protected Texture texture;
+	protected String initialAnim;
+	protected Vector2 origin;
+	protected Vector2 spriteScale;
+	protected Color tint;
+
+	// Body Fields (i.e. everything needed to define just the body half)
+	protected BodyDef bodyDef;
+	protected ArrayList< FixtureDef > fixtureDefs;
+	protected float gravityScale;
+	protected boolean fixedRotation;
+
+	// Miscellaneous Fields
+	protected String name;
+	private String category;
+
+	// CONSTANTS
+
+	// Static constants
+	public static final String NO_CATEGORY = "Entity";
+
+	// Static initialization
+	static {
+		definitions = new HashMap< String, EntityDef >( );
+	}
+
+	// METHODS
+
+	/**
+	 * Generic constructor: defaults to null texture, (0,0) origin, (1,1) scale,
+	 * and neutral tint
+	 * 
+	 * @param name
+	 *            used for loading
+	 */
+	protected EntityDef( String name ) {
 		// Sprite Data
 		setTexture( null );
 		initialAnim = "";
 		origin = new Vector2( 0, 0 );
 		spriteScale = new Vector2( 1, 1 );
 		tint = new Color( 1.0f, 1.0f, 1.0f, 1.0f );
+
 		// Body Data
 		bodyDef = new BodyDef( );
 		bodyDef.type = BodyType.DynamicBody;
@@ -35,15 +83,27 @@ public class EntityDef {
 		fixedRotation = false;
 
 		// Misc Data
-		setName( n );
+		setName( name );
 	}
 
-	protected EntityDef( String n, Texture t, String iA, BodyDef bDef,
-			ArrayList< FixtureDef > fixes ) {
-		this( n );
+	/**
+	 * 
+	 * @param name
+	 *            used for loading
+	 * @param tex
+	 *            ture of the sprite
+	 * @param initAnim
+	 * @param bDef
+	 *            body definition to load
+	 * @param fixes
+	 *            fixtures of the body
+	 */
+	protected EntityDef( String name, Texture tex, String initAnim,
+			BodyDef bDef, ArrayList< FixtureDef > fixes ) {
+		this( name );
 		// Sprite Data
-		setTexture( t );
-		initialAnim = iA;
+		setTexture( tex );
+		initialAnim = initAnim;
 
 		// Body Data
 		bodyDef = bDef;
@@ -82,11 +142,11 @@ public class EntityDef {
 	public void setTexture( Texture texture ) {
 		this.texture = texture;
 	}
-	
-	public void addFixtureDef (FixtureDef def){
+
+	public void addFixtureDef( FixtureDef def ) {
 		fixtureDefs.add( def );
 	}
-	
+
 	/**
 	 * Loads the body elements for the current Entity
 	 * 
@@ -94,11 +154,12 @@ public class EntityDef {
 	 * @param friction
 	 * @param restitution
 	 * @param scale
-	 * @param bodyName .json file name for the body
+	 * @param bodyName
+	 *            .json file name for the body
 	 */
 	protected void loadComplexBody( float density, float friction,
 			float restitution, float scale, String bodyName ) {
-		String filename = "data/bodies/" + bodyName + ".json";
+		String filename = "assets/data/bodies/" + bodyName + ".json";
 		BodyEditorLoader loader = new BodyEditorLoader(
 				Gdx.files.internal( filename ) );
 
@@ -106,30 +167,13 @@ public class EntityDef {
 				scale );
 	}
 
-	// Sprite Fields (i.e. everything needed to define just the sprite half)
-	protected Texture texture;
-	protected String initialAnim;
-	protected Vector2 origin;
-	protected Vector2 spriteScale;
-	protected Color tint;
-
-	// Body Fields (i.e. everything needed to define just the body half)
-	protected BodyDef bodyDef;
-	protected ArrayList< FixtureDef > fixtureDefs;
-	protected float gravityScale;
-	protected boolean fixedRotation;
-
-	// Miscellaneous Fields
-	protected String name;
-	private String category;
-
-	// Static Methods and Fields
-	protected static HashMap< String, EntityDef > definitions;
-	static {
-		definitions = new HashMap< String, EntityDef >( );
-	}
-	public static final String NO_CATEGORY = "Entity";
-	
+	/**
+	 * Loads the definition from the HashMap, if it exists. If not, load it up.
+	 * 
+	 * @param id
+	 *            for the HashMap
+	 * @return the definition of the entity
+	 */
 	public static EntityDef getDefinition( String id ) {
 		if ( definitions.containsKey( id ) ) {
 			return definitions.get( id ); // If we already have a definition,
@@ -147,12 +191,12 @@ public class EntityDef {
 
 				CircleShape playerfeetShape = new CircleShape( );
 				playerfeetShape.setRadius( 10f * Util.PIXEL_TO_BOX );
-				FixtureDef playerFixtureDef = makeFixtureDef( 9.9f, 0.0f,
-						0.0f, playerfeetShape );
+				FixtureDef playerFixtureDef = makeFixtureDef( 9.9f, 0.0f, 0.0f,
+						playerfeetShape );
 				fixes.add( playerFixtureDef );
 
-				out = new EntityDef( "player", new Texture(
-						Gdx.files.internal( "data/player_r_m.png" ) ), "",
+				out = new EntityDef( "player",
+						WereScrewedGame.manager.get("assets/data/common/player_r_m.png", Texture.class), "",
 						playerBodyDef, fixes );
 			} else if ( id.equals( "bottle" ) ) { // Bottle
 				BodyDef bottleBodyDef = new BodyDef( );
@@ -170,11 +214,14 @@ public class EntityDef {
 		}
 	}
 
-	/*
-	 * Loads an entity definition from XML. TODO Fill with XML loading code
+	/**
+	 * Loads a definition from XML
+	 * 
+	 * @param id file name for the XML file to load
+	 * @return The loaded definition
 	 */
 	protected static EntityDef loadDefinition( String id ) {
-		String filename = "data/entities/" + id + ".xml";
+		String filename = "assets/data/entities/" + id + ".xml";
 		try {
 			XmlReader reader = new XmlReader( );
 			XmlReader.Element xml = reader
@@ -182,10 +229,10 @@ public class EntityDef {
 			EntityDef out = new EntityDef( id );
 
 			// Category Data
-			out.setCategory( xml.get( "category", NO_CATEGORY) );
+			out.setCategory( xml.get( "category", NO_CATEGORY ) );
 			// Sprite Data
 			String texName = xml.get( "texture" );
-			out.setTexture( new Texture( Gdx.files.internal( texName ) ) );
+			out.setTexture(WereScrewedGame.manager.get("assets/data/" + texName, Texture.class));
 			out.initialAnim = xml.get( "initialAnim" );
 			out.origin.x = xml.getFloat( "originX" );
 			out.origin.y = xml.getFloat( "originY" );
@@ -201,14 +248,13 @@ public class EntityDef {
 			float friction = xml.getFloat( "friction" );
 			float restitution = xml.getFloat( "restitution" );
 			float scale = xml.getFloat( "bodyScale" );
-			out.fixedRotation = xml.getBoolean( "fixedRotation", false);
+			out.fixedRotation = xml.getBoolean( "fixedRotation", false );
 
 			out.loadComplexBody( density, friction, restitution, scale,
 					bodyName );
 
 			return out;
 		} catch ( IOException e ) {
-			// TODO Auto-generated catch block
 			Gdx.app.log( "Error", "Loading entity definition " + id + " ", e );
 		}
 

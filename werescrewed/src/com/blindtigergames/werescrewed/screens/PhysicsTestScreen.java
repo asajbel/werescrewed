@@ -6,7 +6,6 @@ import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Keys;
-import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -17,11 +16,11 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.joints.PrismaticJoint;
 import com.badlogic.gdx.physics.box2d.joints.PrismaticJointDef;
+import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.camera.Camera;
 import com.blindtigergames.werescrewed.collisionManager.MyContactListener;
 import com.blindtigergames.werescrewed.debug.SBox2DDebugRenderer;
 import com.blindtigergames.werescrewed.entity.Entity;
-import com.blindtigergames.werescrewed.entity.EntityManager;
 import com.blindtigergames.werescrewed.entity.builders.PlatformBuilder;
 import com.blindtigergames.werescrewed.entity.builders.PlayerBuilder;
 import com.blindtigergames.werescrewed.entity.mover.LerpMover;
@@ -62,11 +61,11 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 	private Camera cam;
 	private SpriteBatch batch;
 	private Texture testTexture;
-	private EntityManager entityManager;
 	private World world;
 	private MyContactListener contactListener;
 	private SBox2DDebugRenderer debugRenderer;
 	private Player player1, player2;
+	@SuppressWarnings( "unused" )
 	private TiledPlatform tiledPlat, ground, movingTP, singTile, rectile;
 	private PlatformBuilder platBuilder;
 	private PuzzleScrew puzzleScrew;
@@ -84,12 +83,13 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		// Initialize world and variables to allow adding entities
 		batch = new SpriteBatch( );
 		world = new World( new Vector2( 0, -45 ), true );
-		entityManager = new EntityManager( );
-		skeleton = new Skeleton( "", Vector2.Zero, null, world );
-		rootSkeleton = new Skeleton( "", Vector2.Zero, null, world );
+		//entityManager = new EntityManager( );
+		skeleton = new Skeleton( "skeleton", Vector2.Zero, null, world );
+		rootSkeleton = new Skeleton( "root", Vector2.Zero, null, world );
 		//entityManager.addSkeleton( rootSkeleton.name, rootSkeleton );
 		platBuilder = new PlatformBuilder( world );
-		testTexture = new Texture( Gdx.files.internal( "data/TilesetTest.png" ) );
+		testTexture = WereScrewedGame.manager.get(
+				"assets/data/common/TilesetTest.png",Texture.class);
 
 		// Initialize camera
 		initCamera( );
@@ -127,10 +127,11 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		rootSkeleton.addSkeleton( skeleton );
 
 		debugRenderer = new SBox2DDebugRenderer( Util.BOX_TO_PIXEL );
-		debugRenderer.setDrawJoints( false );
+		//debugRenderer.setDrawJoints( false );
+
 		Gdx.app.setLogLevel( Application.LOG_DEBUG );
 
-		new FPSLogger( );
+
 
 	}
 
@@ -234,6 +235,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 						movingTP.body.getPosition( ).x + 1.75f,
 						movingTP.body.getPosition( ).y ), 1f );
 		puzzleScrew.puzzleManager.addMover( lm );
+		skeleton.addScrewForDraw( puzzleScrew );
 	}
 
 	/**
@@ -242,7 +244,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 	private void initClimbingScrews( ) {
 		climbingScrews = new ArrayList< StrippedScrew >( );
 		float x1 = 1.75f;
-		float x2 = 2.0f;
+		float x2 = 2.4f;
 		float y1 = 0.6f;
 		float dy = 0.7f;
 		for ( int i = 0; i < 10; i++ ) {
@@ -401,11 +403,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		player1.update( deltaTime );
 		player2.update( deltaTime );
 		puzzleScrew.update( deltaTime );
-		//entityManager.update( deltaTime );
 		rootSkeleton.update( deltaTime );
-		
-		
-		//Gdx.app.log( "player1", player1.toString( )+" isGrounded:"+player1.isGrounded( ) );
 
 		batch.setProjectionMatrix( cam.combined( ) );
 		batch.begin( );
