@@ -1,5 +1,7 @@
 package com.blindtigergames.werescrewed.player;
 
+
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.controllers.Controller;
@@ -58,6 +60,7 @@ public class Player extends Entity {
 	private boolean grounded;
 	private boolean jumpPressedKeyboard;
 	private boolean jumpPressedController;
+	private boolean screwButtonHeld;
 	private int anchorID;
 
 	// debug double jump style
@@ -67,7 +70,8 @@ public class Player extends Entity {
 	public final static float MAX_VELOCITY = 1.8f;
 	public final static float MIN_VELOCITY = 0.05f;
 	public final static float MOVEMENT_IMPLUSE = 0.01f;
-	public final static float JUMP_IMPLUSE = 0.15f;
+	public final static float JUMP_IMPLUSE = 0.15f; //0.09 = controller, 0.15 = keyboard
+	public final static int JUMP_COUNTER = 10;
 	public final static float ANALOG_DEADZONE = 0.2f;
 	public final static float ANALOG_MAX_RANGE = 1.0f;
 	public final static float PLAYER_FRICTION = 0.6f;
@@ -75,6 +79,8 @@ public class Player extends Entity {
 	public final static int GRAB_COUNTER_STEPS = 5;
 
 	public int grabCounter = 0;
+	public int jumpCounter = 0;
+	
 	// Static variables
 	public static Texture texture = new Texture(
 			Gdx.files.internal( "data/player_r_m.png" ) );
@@ -140,7 +146,7 @@ public class Player extends Entity {
 			// Gdx.app.log( "player2:" , "" + isGrounded(  ) );
 		}
 		if ( this.name.equals( "player1" ) ) {
-			// Gdx.app.log( "player1", "" + playerState );
+			 Gdx.app.log( "player1", "" + playerState );
 			// Gdx.app.log( "player1:" , "" + isGrounded(  ) );
 		}
 		if ( Gdx.input.isKeyPressed( Keys.PERIOD ) ) {
@@ -296,7 +302,34 @@ public class Player extends Entity {
 					body.getWorldCenter( ) );
 		}
 	}
-
+	public void jumpScrew( ) {
+		// if the player isn't in head stand mode or if the player
+		// is the top player then jump normally
+		if ( playerState != PlayerState.HeadStand || topPlayer ) {
+			body.setLinearVelocity( new Vector2( body.getLinearVelocity( ).x,
+					0.0f ) );
+			body.applyLinearImpulse( new Vector2( 0.0f, JUMP_IMPLUSE * 1.5f ),
+					body.getWorldCenter( ) );
+			if ( playerState != PlayerState.JumpingOffScrew ) {
+				Filter filter = new Filter( );
+				for ( Fixture f : body.getFixtureList( ) ) {
+					filter = f.getFilterData( );
+					// move player back to original category
+					filter.categoryBits = Util.CATEGORY_PLAYER;
+					// player now collides with everything
+					filter.maskBits = ~Util.CATEGORY_PLAYER;
+					f.setFilterData( filter );
+				}
+			}
+		} else {
+			// if in head stand mode and this is the bottom player then jump
+			// with twice as much force
+			body.setLinearVelocity( new Vector2( body.getLinearVelocity( ).x,
+					0.0f ) );
+			body.applyLinearImpulse( new Vector2( 0.0f, JUMP_IMPLUSE * 2f ),
+					body.getWorldCenter( ) );
+		}
+	}
 	/**
 	 * Sets the current screw
 	 * 
@@ -582,6 +615,52 @@ public class Player extends Entity {
 		}
 	}
 
+	private void processJumpStateController( ) {
+		if ( playerState == PlayerState.Screwing ) {
+			world.destroyJoint( playerToScrew );
+			playerState = PlayerState.JumpingOffScrew;
+			screwJumpTimeout = SCREW_JUMP_STEPS;
+			//TODO: ADD SCREW JUMPING HERE
+			jumpPressedController = true;
+			jumpScrew( ); 
+		} else if ( !jumpPressedController ) {
+			if ( playerState != PlayerState.HeadStand ) {
+				playerState = PlayerState.Jumping;
+				jump( );
+				jumpCounter++;
+				if(jumpCounter > JUMP_COUNTER){
+					jumpCounter = 0;
+					jumpPressedController = true;
+				}
+			} else if ( topPlayer ) {
+				// jump first to make sure top player
+				// only jumps with a small force
+				jump( );
+				// check if this player has the joint
+				removePlayerToPlayer( );
+				if ( otherPlayer != null ) {
+					otherPlayer.hitPlayer( null );
+				}
+				hitPlayer( null );
+				playerState = PlayerState.Jumping;
+			} else {
+				// let the bottom player jump
+				// with a large amount of force
+				jump( );
+			}
+		} else if ( topPlayer ) {
+			// jump first to make sure top player
+			// only jumps with a small force
+			jump( );
+			// check if this player has the joint
+			removePlayerToPlayer( );
+			if ( otherPlayer != null ) {
+				otherPlayer.hitPlayer( null );
+			}
+			hitPlayer( null );
+			playerState = PlayerState.Jumping;
+		}
+	}
 	/**
 	 * check to see if its ok to reset the state from the jumping off screw
 	 * state
@@ -928,14 +1007,25 @@ public class Player extends Entity {
 
 		checkHeadStandState( );
 		if ( controllerListener.jumpPressed( ) ) {
-			if ( !jumpPressedController ) {
-				processJumpState( );
+			processJumpStateController( );
+	}
+		
+		if(isGrounded()){
+			jumpCounter = 0;
+		}
+		if(!controllerListener.screwPressed( ))
+			screwButtonHeld = false;
+		
+		if ( !controllerListener.jumpPressed( ) ) {
+			if(isGrounded() )
+				jumpPressedController = false;
+			
+			else if( playerState == PlayerState.Screwing )
+				jumpPressedController = false;
+			
+			else {
 				jumpPressedController = true;
 			}
-		}
-		if ( !controllerListener.jumpPressed( ) ) {
-			jumpPressedController = false;
-		}
 		if ( controllerListener.leftPressed( ) ) {
 			processMovingState( );
 			if ( controllerListener.analogUsed( ) )
@@ -991,11 +1081,13 @@ public class Player extends Entity {
 
 		// If player hits the screw button and is in distance
 		// then attach the player to the screw
-		if ( controllerListener.screwPressed( )
-				&& playerState != PlayerState.Screwing
-				&& ( playerState != PlayerState.JumpingOffScrew ) ) {
-			if ( hitScrew ) {
+		if ( (controllerListener.screwPressed( ) ) 
+				&& (playerState != PlayerState.Screwing 
+				&&  playerState != PlayerState.JumpingOffScrew ) ) {
+			if ( hitScrew && !screwButtonHeld) {
 				attachToScrew( );
+				screwButtonHeld = true;
+				jumpCounter = 0;
 			}
 		}
 		// If the button is let go, then the player is dropped
@@ -1005,6 +1097,8 @@ public class Player extends Entity {
 			world.destroyJoint( playerToScrew );
 			playerState = PlayerState.JumpingOffScrew;
 			screwJumpTimeout = SCREW_JUMP_STEPS;
-		}
+			screwButtonHeld = false;
+		}	
 	}
+}
 }
