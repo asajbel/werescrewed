@@ -15,6 +15,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.joints.PrismaticJoint;
 import com.badlogic.gdx.physics.box2d.joints.PrismaticJointDef;
+import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.camera.Camera;
 import com.blindtigergames.werescrewed.collisionManager.MyContactListener;
 import com.blindtigergames.werescrewed.debug.SBox2DDebugRenderer;
@@ -73,7 +74,8 @@ public class IMoverGameScreen implements com.badlogic.gdx.Screen {
 		float height = Gdx.graphics.getHeight( ) / zoom;
 
 		cam = new Camera( width, height );
-		texture = new Texture( Gdx.files.internal( "data/rletter.png" ) );
+		texture = WereScrewedGame.manager.get(
+				"assets/common/data/rletter.png", Texture.class);
 		batch = new SpriteBatch( );
 		entityManager = new EntityManager( );
 
@@ -87,7 +89,8 @@ public class IMoverGameScreen implements com.badlogic.gdx.Screen {
 
 		player = new Player( "player", world, new Vector2( 1.0f, 1.0f ) );
 
-		texture = new Texture( Gdx.files.internal( "data/rletter.png" ) );
+		texture = WereScrewedGame.manager.get(
+				"assets/common/data/TilesetTest.png", Texture.class);
 
 		tp = platBuilder.position( 350.0f, 100.0f ).dimensions( 10, 1 )
 				.texture( texture ).name( "tp" ).resitituion( 0.0f )
@@ -104,7 +107,8 @@ public class IMoverGameScreen implements com.badlogic.gdx.Screen {
 		entityManager.addEntity( tp.name, tp );
 		entityManager.removeEntity( movingTP.name, movingTP );
 
-		background = new Texture( Gdx.files.internal( "data/libgdx.png" ) );
+		background = WereScrewedGame.manager.get(
+				"assets/common/data/libgdx.png",Texture.class);
 		structScrew = new StructureScrew( "", tp.body.getPosition( ), 50, tp,
 				skeleton, world );
 		puzzleScrew = new PuzzleScrew( "001", new Vector2( 0.0f, 0.2f ), 50,

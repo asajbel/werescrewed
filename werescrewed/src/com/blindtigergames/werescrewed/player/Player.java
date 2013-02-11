@@ -15,6 +15,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJoint;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
+import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.camera.AnchorList;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityDef;
@@ -81,8 +82,8 @@ public class Player extends Entity {
 	public int jumpCounter = 0;
 
 	// Static variables
-	public static Texture texture = new Texture(
-			Gdx.files.internal( "data/player_r_m.png" ) );
+	public static Texture texture =
+			WereScrewedGame.manager.get("assets/data/common/player_r_m.png", Texture.class);
 
 	// Enums
 	/**

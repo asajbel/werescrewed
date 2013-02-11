@@ -16,6 +16,7 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.joints.PrismaticJoint;
 import com.badlogic.gdx.physics.box2d.joints.PrismaticJointDef;
+import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.camera.Camera;
 import com.blindtigergames.werescrewed.collisionManager.MyContactListener;
 import com.blindtigergames.werescrewed.debug.SBox2DDebugRenderer;
@@ -87,7 +88,8 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		rootSkeleton = new Skeleton( "root", Vector2.Zero, null, world );
 		//entityManager.addSkeleton( rootSkeleton.name, rootSkeleton );
 		platBuilder = new PlatformBuilder( world );
-		testTexture = new Texture( Gdx.files.internal( "data/TilesetTest.png" ) );
+		testTexture = WereScrewedGame.manager.get(
+				"assets/data/common/TilesetTest.png",Texture.class);
 
 		// Initialize camera
 		initCamera( );
