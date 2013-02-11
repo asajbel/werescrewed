@@ -6,6 +6,7 @@ import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
@@ -15,6 +16,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.joints.PrismaticJoint;
 import com.badlogic.gdx.physics.box2d.joints.PrismaticJointDef;
+import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.camera.Camera;
 import com.blindtigergames.werescrewed.collisionManager.MyContactListener;
 import com.blindtigergames.werescrewed.debug.SBox2DDebugRenderer;
@@ -55,7 +57,6 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 	// public static final float RAD_TO_DEG = 57.295779513082320876f;
 
 	// Variables
-
 	private Camera cam;
 	private SpriteBatch batch;
 	private Texture testTexture;
@@ -78,6 +79,16 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 	 * physics-related mechanics
 	 */
 	public PhysicsTestScreen( ) {
+		
+		// enqueue assets for loading
+		enqueueAssets();
+		
+		// load up all of the assets
+		loadAssets();
+		
+		// print the loaded assets
+		printLoadedAssets();
+		
 		// Initialize world and variables to allow adding entities
 		batch = new SpriteBatch( );
 		world = new World( new Vector2( 0, -45 ), true );
@@ -86,7 +97,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		rootSkeleton = new Skeleton( "", Vector2.Zero, null, world );
 		entityManager.addSkeleton( rootSkeleton.name, rootSkeleton );
 		platBuilder = new PlatformBuilder( world );
-		testTexture = new Texture( Gdx.files.internal( "data/rletter.png" ) );
+		testTexture = WereScrewedGame.manager.get( "data/rletter.png" );
 
 		System.out.println( " after worl " );
 		// Initialize camera
@@ -96,10 +107,10 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		contactListener = new MyContactListener( );
 		world.setContactListener( contactListener );
 
-		System.out.println( " after cam " );
+		Gdx.app.log( ""," after cam " );
 		// Initialize platforms
 		initTiledPlatforms( );
-		System.out.println( " after plats " );
+		Gdx.app.log( ""," after plats " );
 		// Initialize screws
 		initStructureScrews( );
 		initPuzzleScrews( );
@@ -111,9 +122,9 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		// Otherwise input handler breaks
 		player1 = new Player( "player1", world, new Vector2( 1.0f, 1.0f ) );
 		player2 = new Player( "player2", world, new Vector2( 1.5f, 1.5f ) );
-		System.out.println( " players" );
+		Gdx.app.log( ""," players" );
 
-		System.out.println( "after joints " );
+		Gdx.app.log( "","after joints " );
 		// Add screws
 
 		rootSkeleton.addSkeleton( skeleton );
@@ -126,6 +137,60 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 
 	}
 
+	/**
+	 * loadAssets
+	 * 		Load all the assets, and check if everything is loaded. Once
+	 * 		this method is complete, all the assets should be loaded.
+	 * 
+	 * @author Nick Patti
+	 * 
+	 * @return void
+	 */
+	private void loadAssets( ) {
+		
+		//begin loading assets, don't stop until you're done
+		float progress;
+		while(!WereScrewedGame.manager.update()){
+			
+			//display the loading information
+			progress = WereScrewedGame.manager.getProgress();
+			Gdx.app.log( "loadAssets", "Loading... " + progress + " percent" );
+			
+		}
+		
+		// you're all done, now get outta here
+		Gdx.app.log( "loadAssets", "Loading Complete!" );
+	}
+
+	/**
+	 * enqueueAssets
+	 * 		takes all of the assets and adds them into the AssetManager queue
+	 * 
+	 * @author Nick Patti
+	 * 
+	 * @return void
+	 */
+	private void enqueueAssets( ) {
+		//the method that adds things to the assetManager queue is actually
+		//called "load," which is kinda silly
+		WereScrewedGame.manager.load("data/player_r_m.png", Texture.class);
+		WereScrewedGame.manager.load("data/player_b_m.png", Texture.class);
+		WereScrewedGame.manager.load("data/rletter.png", Texture.class);
+		WereScrewedGame.manager.load("data/screw.png", Texture.class);
+	}
+
+	/**
+	 * printLoadedAssets
+	 * 		Prints out all of the assets that have been loaded by the AssetManager
+	 * 
+	 * @author Nick Patti
+	 * 
+	 * @return void
+	 */
+	private void printLoadedAssets( ) {
+				
+	}
+	
 	/**
 	 * Initializes camera settings
 	 */
@@ -344,6 +409,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 
 		world.step( 1 / 60f, 6, 2 );
 	}
+	
 
 	@Override
 	public void resize( int width, int height ) {

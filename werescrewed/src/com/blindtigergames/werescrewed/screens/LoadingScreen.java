@@ -32,8 +32,6 @@ public class LoadingScreen implements com.badlogic.gdx.Screen {
 
 	public LoadingScreen( ) {
 
-		// WereScrewedGame.manager.load("data/loading.pack",
-		// TextureAtlas.class);
 		// Tell the manager to load assets for the loading screen
 
 		WereScrewedGame.manager.load( "data/loading.pack", TextureAtlas.class );
