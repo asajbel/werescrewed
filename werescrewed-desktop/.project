@@ -16,9 +16,9 @@
 	</natures>
 	<linkedResources>
 		<link>
-			<name>data</name>
+			<name>assets</name>
 			<type>2</type>
-			<locationURI>PARENT-1-PROJECT_LOC/werescrewed-android/assets/data</locationURI>
+			<locationURI>PARENT-1-PROJECT_LOC/werescrewed-android/assets</locationURI>
 		</link>
 	</linkedResources>
 </projectDescription>
