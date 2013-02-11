@@ -48,6 +48,7 @@ public class Skeleton extends Entity {
         childSkeletons = new ArrayList<Skeleton>();
         kinematicPlatforms = new ArrayList< Platform >( );
         looseEntity = new ArrayList< Entity >();
+        screws = new ArrayList<Screw>();
     }
 
     public void constructSkeleton( Vector2 pos ) {
@@ -130,6 +131,7 @@ public class Skeleton extends Entity {
         new RevoluteJointBuilder( world ).skeleton( this ).bodyB( ss )
                  .limit( true ).lower( 0 ).upper( 0 ).build();
      	//addDynamicPlatform( ss );
+        screws.add( ss );
     }
 
      /**
@@ -322,6 +324,9 @@ public class Skeleton extends Entity {
         }
         for (  Platform p : kinematicPlatforms ) {
         	drawPlatform(p,batch);
+        }
+        for ( Screw screw : screws ){
+        	screw.draw( batch );
         }
     }
     

@@ -183,10 +183,12 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		
 		buildMoverPlatforms( );
 
-		// Ground
+		//TODO : FIX ONESIDED BUG, 
+		// Ground: SHOULD NEVER BE ONESIDED
 		ground = platBuilder.position( 0.0f, 0.0f ).name( "ground" )
 				.dimensions( 200, 1 ).texture( testTexture )
 				.kinematic( )
+				.oneSided( false )
 				.resitituion( 0.0f ).buildTilePlatform( );
 		skeleton.addKinematicPlatform( ground );
 	}
@@ -403,7 +405,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		rootSkeleton.update( deltaTime );
 		
 		
-		Gdx.app.log( "player1", player1.toString( )+" isGrounded:"+player1.isGrounded( ) );
+		//Gdx.app.log( "player1", player1.toString( )+" isGrounded:"+player1.isGrounded( ) );
 
 		batch.setProjectionMatrix( cam.combined( ) );
 		batch.begin( );
