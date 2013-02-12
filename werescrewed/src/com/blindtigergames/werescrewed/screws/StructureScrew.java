@@ -84,6 +84,7 @@ public class StructureScrew extends Screw {
 		sprite.setPosition( bodyPos.x - offset.x, bodyPos.y - offset.y );
 		if ( depth == 0 ) {
 			if ( fallTimeout == 0 && screwToSkel != null ) {
+				body.setType( BodyType.DynamicBody );
 				world.destroyJoint( screwToSkel );
 				world.destroyJoint( platformJoint );
 				for ( RevoluteJoint j : extraJoints ) {
@@ -188,10 +189,10 @@ public class StructureScrew extends Screw {
 
 	private void connectEntityToSkeleton( Entity entity, Skeleton skeleton,
 			Vector2 pos ) {
-		RevoluteJointDef revoluteJointDef = new RevoluteJointDef( );
 		// connect the entity to the skeleton
+		RevoluteJointDef revoluteJointDef = new RevoluteJointDef( );
 		revoluteJointDef = new RevoluteJointDef( );
-		revoluteJointDef.initialize( entity.body, skeleton.body, pos );
+		revoluteJointDef.initialize( entity.body, skeleton.body, entity.getPosition( ) );
 		revoluteJointDef.enableMotor = false;
 		platformJoint = ( RevoluteJoint ) world.createJoint( revoluteJointDef );
 		if ( entity.body.getJointList( ).size( ) > 3 ) {

@@ -20,6 +20,7 @@ import com.blindtigergames.werescrewed.camera.Camera;
 import com.blindtigergames.werescrewed.collisionManager.MyContactListener;
 import com.blindtigergames.werescrewed.debug.SBox2DDebugRenderer;
 import com.blindtigergames.werescrewed.entity.Entity;
+import com.blindtigergames.werescrewed.entity.Rope;
 import com.blindtigergames.werescrewed.entity.builders.PlatformBuilder;
 import com.blindtigergames.werescrewed.entity.builders.PlayerBuilder;
 import com.blindtigergames.werescrewed.entity.mover.LerpMover;
@@ -69,6 +70,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 	private PlatformBuilder platBuilder;
 	private PuzzleScrew puzzleScrew;
 	private BossScrew bossBolt;
+	private Rope rope;
 	private Skeleton skeleton;
 	private Skeleton rootSkeleton;
 	private ArrayList< StrippedScrew > climbingScrews;
@@ -107,6 +109,8 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		initClimbingScrews( );
 		initbossBolt( );
 
+		rope = new Rope( "rope", new Vector2 (2000.0f * Util.PIXEL_TO_BOX, 400.0f* Util.PIXEL_TO_BOX), null, world );
+		
 		// Add players
 		// First player has to have the name "player1"
 		// Second player has to have the name "player2"
@@ -155,7 +159,8 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 				.dimensions( 10, 1 ).texture( testTexture )
 				.dynamic( )
 				.name( "tp" ).resitituion( 0.0f ).buildTilePlatform( );
-		skeleton.addDynamicPlatform( tiledPlat );
+		//skeleton.addDynamicPlatform( tiledPlat );
+		skeleton.addPlatform( tiledPlat );
 		
 		// Tiled Single Platform
 		singTile = platBuilder.position( -1.0f, 1000.0f )
@@ -213,23 +218,23 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 	 */
 	private void initPuzzleScrews( ) {
 
-		Vector2 axis = new Vector2( 1, 0 );
-		PrismaticJointDef jointDef = new PrismaticJointDef( );
-		jointDef.initialize( movingTP.body, skeleton.body,
-				movingTP.body.getPosition( ), axis );
-		jointDef.enableMotor = true;
-		jointDef.enableLimit = true;
-		jointDef.lowerTranslation = -2.5f;
-		jointDef.upperTranslation = 3.0f;
-		jointDef.motorSpeed = 7.0f;
+//		Vector2 axis = new Vector2( 1, 0 );
+//		PrismaticJointDef jointDef = new PrismaticJointDef( );
+//		jointDef.initialize( movingTP.body, skeleton.body,
+//				movingTP.body.getPosition( ), axis );
+//		jointDef.enableMotor = true;
+//		jointDef.enableLimit = true;
+//		jointDef.lowerTranslation = -2.5f;
+//		jointDef.upperTranslation = 3.0f;
+//		jointDef.motorSpeed = 7.0f;
 		puzzleScrew = new PuzzleScrew( "001", new Vector2( 0.0f, 0.2f ), 50,
 				skeleton, world );
-		//puzzleScrew.puzzleManager.addEntity( movingTP );
+		puzzleScrew.puzzleManager.addEntity( movingTP );
 		LerpMover lm = new LerpMover(
 				new Vector2( movingTP.body.getPosition( ).x,
 						movingTP.body.getPosition( ).y ), new Vector2(
 						movingTP.body.getPosition( ).x + 1.75f,
-						movingTP.body.getPosition( ).y ), 1f );
+						movingTP.body.getPosition( ).y ), 0.003f );
 		puzzleScrew.puzzleManager.addMover( lm );
 		skeleton.addScrewForDraw( puzzleScrew );
 	}
@@ -407,15 +412,16 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 
 		player1.update( deltaTime, player2 );
 		player2.update( deltaTime, player1 );
-		puzzleScrew.update( deltaTime );
+		//puzzleScrew.update( deltaTime );
 		rootSkeleton.update( deltaTime );
 		batch.setProjectionMatrix( cam.combined( ) );
 		batch.begin( );
 
-		puzzleScrew.draw( batch );
+		//puzzleScrew.draw( batch );
 		rootSkeleton.draw( batch );
 		player1.draw( batch );
 		player2.draw( batch );
+		rope.draw( batch );
 		batch.end( );
 
 		if ( bossBolt.endLevelFlag() ) {

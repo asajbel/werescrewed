@@ -2,6 +2,8 @@ package com.blindtigergames.werescrewed.entity.mover;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.blindtigergames.werescrewed.platforms.Platform;
+import com.blindtigergames.werescrewed.util.Util;
 
 public class LerpMover implements IMover {
 
@@ -34,10 +36,11 @@ public class LerpMover implements IMover {
 	public void move( float deltaTime, Body body, SteeringOutput steering ) {
 	}
 	
-	public void runPuzzleMovement( float screwVal, Body body ) {
+	public void runPuzzleMovement( float screwVal, Platform p ) {
 		Vector2 temp = new Vector2( beginningPoint.x, beginningPoint.y);
 		beginningPoint.lerp( endPoint, screwVal );
-		body.setTransform( beginningPoint, 0.0f );
+		p.setLocalPos( beginningPoint.mul( Util.BOX_TO_PIXEL ) );
+		//body.setTransform( beginningPoint, 0.0f );
 		beginningPoint = temp;
 	}
 }

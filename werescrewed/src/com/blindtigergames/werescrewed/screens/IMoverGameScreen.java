@@ -9,7 +9,6 @@ import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Keys;
-import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -34,7 +33,7 @@ import com.blindtigergames.werescrewed.entity.tween.EntityAccessor;
 import com.blindtigergames.werescrewed.entity.tween.PlatformAccessor;
 import com.blindtigergames.werescrewed.joint.JointFactory;
 import com.blindtigergames.werescrewed.joint.PrismaticJointBuilder;
-import com.blindtigergames.werescrewed.platforms.ComplexPlatform;
+import com.blindtigergames.werescrewed.platforms.Platform;
 import com.blindtigergames.werescrewed.platforms.TiledPlatform;
 import com.blindtigergames.werescrewed.player.Player;
 import com.blindtigergames.werescrewed.screws.PuzzleScrew;
@@ -130,6 +129,7 @@ public class IMoverGameScreen implements com.badlogic.gdx.Screen {
 				// .setOneSided( true )
 				.name( "dynamicTiledPlat1" ).buildTilePlatform( );
 		skeleton.addDynamicPlatform( skeletonTest2 );
+		//skeleton.addPlatform( skeletonTest2 );
 		skeletonTest2.body.setFixedRotation( false );// WHY!?
 
 		// Ground
@@ -176,6 +176,9 @@ public class IMoverGameScreen implements com.badlogic.gdx.Screen {
 				skeletonTest2.body.getPosition( ).x + 0.5f,
 				skeletonTest2.body.getPosition( ).y ), 50, skeletonTest2, skeleton,
 				world );
+		StrippedScrew hanginScrew = new StrippedScrew( "", world, new Vector2(
+				skeletonTest2.body.getPosition( ).x + 0.03f, skeletonTest2.body.getPosition( ).y ), skeletonTest2 );
+		skeletonTest2.addScrew( hanginScrew );
 		skeletonTest2.addScrew( leftPlatScrew );
 		skeletonTest2.addScrew( rightPlatScrew );
 	}
@@ -201,7 +204,7 @@ public class IMoverGameScreen implements com.badlogic.gdx.Screen {
 				new Vector2( kinPlat1.body.getPosition( ).x,
 						kinPlat1.body.getPosition( ).y ), new Vector2(
 						kinPlat1.body.getPosition( ).x + 1.75f,
-						kinPlat1.body.getPosition( ).y ), 1f );
+						kinPlat1.body.getPosition( ).y ), 0.003f );
 		puzzleScrew.puzzleManager.addMover( lm );
 		skeleton.addScrewForDraw( puzzleScrew );
 	}
@@ -286,10 +289,13 @@ public class IMoverGameScreen implements com.badlogic.gdx.Screen {
 			skeleton.addDynamicPlatform( piston );
 		}
 
-		ComplexPlatform gear = new ComplexPlatform( "gear", new Vector2(
-				1000 * Util.PIXEL_TO_BOX, 300 * Util.PIXEL_TO_BOX ), null, 3,
-				world, "gearSmall" );
-		gear.body.setType( BodyType.DynamicBody );
+		Platform gear = builder.name( "gear" )
+				.position( 1000 * Util.PIXEL_TO_BOX, 300 * Util.PIXEL_TO_BOX )
+				.texture( null )
+				.setScale( 3f )
+				.type( "gearSmall" )
+				.dynamic( )
+				.buildComplexPlatform( );
 		skeleton.addPlatformRotatingCenterWithMot( gear, 1f );
 	}
 
