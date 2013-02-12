@@ -1,7 +1,9 @@
 package com.blindtigergames.werescrewed.screens;
 
+import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.blindtigergames.werescrewed.WereScrewedGame;
@@ -17,15 +19,29 @@ public class LoadingScreen implements com.badlogic.gdx.Screen {
 	 * 
 	 */
 	public LoadingScreen(){
-		WereScrewedGame.manager.load("assets/data/common/player_b_f.png", Texture.class);
-		WereScrewedGame.manager.load("assets/data/common/player_r_m.png", Texture.class);
-		WereScrewedGame.manager.load("assets/data/common/rletter.png", Texture.class);
-		WereScrewedGame.manager.load("assets/data/common/screw.png", Texture.class);
-		WereScrewedGame.manager.load("assets/data/common/TilesetTest.png", Texture.class);
-		WereScrewedGame.manager.load("assets/data/common/test01.png", Texture.class);
-		WereScrewedGame.manager.load("assets/data/common/jumping_man.png", Texture.class);
-		WereScrewedGame.manager.load("assets/data/common/sounds/jump.ogg", Sound.class);
-		Gdx.app.log( "LoadingScreen", "Assets queued for loading..." );
+
+		// two examples of loading stuff:
+		//WereScrewedGame.manager.load("assets/data/common/player_b_f.png", Texture.class);
+		//WereScrewedGame.manager.load("assets/data/common/sounds/jump.ogg", Sound.class);
+		
+		
+		FileHandle dirHandle;
+		if (Gdx.app.getType() == ApplicationType.Android) {
+		  dirHandle = Gdx.files.internal("data/common/");
+		} else {
+		  // ApplicationType.Desktop ..
+		  dirHandle = Gdx.files.internal("assets/data/common/");
+		}
+		for (FileHandle entry: dirHandle.list()) {
+		   
+			if(!entry.isDirectory( ))
+				WereScrewedGame.manager.load( dirHandle.path( )  + "/" + entry.name( ), Texture.class );
+			
+			//TODO: better way to go into directories in directories
+			if(entry.name( ).equals("sounds"))
+				WereScrewedGame.manager.load(dirHandle.path( ) + "/sounds/jump.ogg", Sound.class);
+			
+		}
 	}
 
 	/**
@@ -52,7 +68,7 @@ public class LoadingScreen implements com.badlogic.gdx.Screen {
 			//go to the physics screen
 			ScreenManager.getInstance( ).show( ScreenType.MAIN_MENU );
 		}
-		Gdx.app.log( "LoadingScreen.render", "Loading... ");
+		//Gdx.app.log( "LoadingScreen.render", "Loading... ");
 
 	}
 
