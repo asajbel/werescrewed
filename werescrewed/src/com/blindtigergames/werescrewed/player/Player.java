@@ -148,6 +148,7 @@ public class Player extends Entity {
 		if ( this.name.equals( "player1" ) ) {
 			// Gdx.app.log( "player1", "" + playerState );
 			// Gdx.app.log( "player1:" , "" + isGrounded( ) );
+			//System.out.println( controllerListener.getLeftAnalogAngle( ) );
 		}
 
 		// toss mode
@@ -305,33 +306,27 @@ public class Player extends Entity {
 		}
 	}
 
+	/**
+	 * only called when player jumps off of a screw, in progress
+	 */
 	public void jumpScrew( ) {
-		// if the player isn't in head stand mode or if the player
-		// is the top player then jump normally
-		if ( playerState != PlayerState.HeadStand || topPlayer ) {
-			body.setLinearVelocity( new Vector2( body.getLinearVelocity( ).x,
-					0.0f ) );
-			body.applyLinearImpulse( new Vector2( 0.0f, JUMP_IMPLUSE * 1.5f ),
-					body.getWorldCenter( ) );
-			if ( playerState != PlayerState.JumpingOffScrew ) {
-				Filter filter = new Filter( );
-				for ( Fixture f : body.getFixtureList( ) ) {
-					filter = f.getFilterData( );
-					// move player back to original category
-					filter.categoryBits = Util.CATEGORY_PLAYER;
-					// player now collides with everything
-					filter.maskBits = ~Util.CATEGORY_PLAYER;
-					f.setFilterData( filter );
-				}
+		//double x = controllerListener.getLeftAnalogAngle( );
+		body.setLinearVelocity( new Vector2( body.getLinearVelocity( ).x,
+				0.0f ) );
+		body.applyLinearImpulse( new Vector2( 0.0f, JUMP_IMPLUSE * 1.5f ),
+				body.getWorldCenter( ) );
+		if ( playerState != PlayerState.JumpingOffScrew ) {
+			Filter filter = new Filter( );
+			for ( Fixture f : body.getFixtureList( ) ) {
+				filter = f.getFilterData( );
+				// move player back to original category
+				filter.categoryBits = Util.CATEGORY_PLAYER;
+				// player now collides with everything
+				filter.maskBits = ~Util.CATEGORY_PLAYER;
+				f.setFilterData( filter );
 			}
-		} else {
-			// if in head stand mode and this is the bottom player then jump
-			// with twice as much force
-			body.setLinearVelocity( new Vector2( body.getLinearVelocity( ).x,
-					0.0f ) );
-			body.applyLinearImpulse( new Vector2( 0.0f, JUMP_IMPLUSE * 2f ),
-					body.getWorldCenter( ) );
 		}
+		
 	}
 
 	/**
