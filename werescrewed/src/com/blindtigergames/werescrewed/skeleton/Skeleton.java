@@ -22,8 +22,8 @@ import com.blindtigergames.werescrewed.util.Util;
  * 
  * @author Ranveer/Stewart
  * 
- *         TODO: Perhaps change skeleton name, make skeleton more like a tree It
- *         should have a list of non-jointed entities too.
+ *         TODO: Perhaps change skeleton name, and make skeleton more like a tree 
+ *         (i.e. It should have a list of non-jointed entities too.)
  */
 
 public class Skeleton extends Entity {

@@ -297,7 +297,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		 * TODO: FIX PLATFORM DENSITY
 		 */
 
-		platBuilder.reset( );
+		platBuilder.reset( ).world( world );
 
 		PlatformBuilder builder = platBuilder.width( 1 ).height( 3 )
 				.oneSided( false )

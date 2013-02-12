@@ -9,6 +9,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityDef;
 import com.blindtigergames.werescrewed.entity.mover.IMover;
+import com.blindtigergames.werescrewed.skeleton.Skeleton;
 
 /**
  * EntityBuilder is meant to simplify creating entities and
