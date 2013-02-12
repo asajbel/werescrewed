@@ -189,12 +189,15 @@ public class StructureScrew extends Screw {
 
 	private void connectEntityToSkeleton( Entity entity, Skeleton skeleton,
 			Vector2 pos ) {
-		RevoluteJointDef revoluteJointDef = new RevoluteJointDef( );
 		// connect the entity to the skeleton
+		RevoluteJointDef revoluteJointDef = new RevoluteJointDef( );
 		revoluteJointDef = new RevoluteJointDef( );
-		revoluteJointDef.initialize( body, skeleton.body, pos );
+		revoluteJointDef.initialize( entity.body, skeleton.body, entity.getPosition( ) );
 		revoluteJointDef.enableMotor = false;
 		platformJoint = ( RevoluteJoint ) world.createJoint( revoluteJointDef );
+		if ( entity.body.getJointList( ).size( ) > 3 ) {
+			entity.body.setType( BodyType.KinematicBody );
+		}
 	}
 
 	private RevoluteJoint platformJoint;

@@ -7,6 +7,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.mover.IMover;
 import com.blindtigergames.werescrewed.entity.mover.LerpMover;
+import com.blindtigergames.werescrewed.platforms.Platform;
 
 /**
  * puzzle screw class for moving puzzle pieces
@@ -75,10 +76,10 @@ public class PuzzleManager {
 		for ( int i = 0; i < puzzleEntities.size( ); i++ ) {
 			if ( puzzleEntities.get( i ).mover == null ) {
 				if ( i <= puzzleMovers.size( ) ) {
-					puzzleEntities.get( i ).mover = puzzleMovers.get( i );
-//					LerpMover lm = ( LerpMover ) puzzleMovers.get( i );
-//					lm.runPuzzleMovement( screwVal,
-//							puzzleEntities.get( i ).body );
+					//puzzleEntities.get( i ).mover = puzzleMovers.get( i );
+					LerpMover lm = ( LerpMover ) puzzleMovers.get( i );
+					lm.runPuzzleMovement( screwVal,
+							(Platform) puzzleEntities.get( i ) );
 				}
 				/*
 				 * if ( e.body.getJointList( ).size( ) < 1 ) {
