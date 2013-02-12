@@ -6,6 +6,7 @@ import com.badlogic.gdx.controllers.ControllerListener;
 import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.controllers.PovDirection;
 import com.badlogic.gdx.math.Vector3;
+import com.blindtigergames.werescrewed.input.mappings.Mapping;
 
 /**
  * My controller listener class grabs input from controllers Booleans are
@@ -54,23 +55,6 @@ public class MyControllerListener implements ControllerListener {
 	private int currDirection = 0;
 	private int screwCounter = 0;
 
-	// Using xbox button names. B, X, Y are unused for now
-	private final static int BUTTON_A = 0;
-	@SuppressWarnings( "unused" )
-	private final static int BUTTON_B = 1;
-	private final static int BUTTON_X = 2;
-	@SuppressWarnings( "unused" )
-	private final static int BUTTON_Y = 3;
-	private final static int TRIGGER = 4;
-	private final static int BUMPER_RIGHT = 5;
-	private final static int SELECT = 6;
-	private final static int PAUSE = 7;
-	
-	private final static int LEFTSTICK_AXIS_Y = 0;
-	private final static int LEFTSTICK_AXIS_X = 1;
-	private final static int RIGHTSTICK_AXIS_Y = 2;
-	private final static int RIGHTSTICK_AXIS_X = 3;
-
 	// Used for screwing/unscrewing with right analog stick
 	private final static int SCREW_UP = 1;
 	private final static int SCREW_RIGHT = 2;
@@ -98,17 +82,17 @@ public class MyControllerListener implements ControllerListener {
 	public boolean axisMoved( Controller controller, int buttonIndex,
 			float axisPoint ) {
 
-		if ( buttonIndex == TRIGGER ) {
+		if ( buttonIndex == Mapping.AXIS_RIGHT_TRIGGER ) {
 			if ( axisPoint < -TRIGGER_DEADZONE || axisPoint > TRIGGER_DEADZONE )
 				attachScrewPressed = true;
 			else
 				attachScrewPressed = false;
 		}
 		
-		axisLY = controller.getAxis( LEFTSTICK_AXIS_Y );
-		axisLX = controller.getAxis( LEFTSTICK_AXIS_X );
-		axisRY = controller.getAxis( RIGHTSTICK_AXIS_Y );
-		axisRX = controller.getAxis( RIGHTSTICK_AXIS_X );
+		axisLY = controller.getAxis( Mapping.AXIS_LEFT_Y );
+		axisLX = controller.getAxis( Mapping.AXIS_LEFT_X );
+		axisRY = controller.getAxis( Mapping.AXIS_RIGHT_Y );
+		axisRX = controller.getAxis( Mapping.AXIS_RIGHT_X );
 		
 		// Resetting Analog stick
 		if ( axisLY < DEADZONE && axisLY > -DEADZONE ) {
@@ -167,7 +151,7 @@ public class MyControllerListener implements ControllerListener {
 		Gdx.app.log( controller.getName( ), String.valueOf(buttonIndex) );
 
 		// Switching between Screwing/Unscrewing Modes
-		if ( buttonIndex == SELECT ) {
+		if ( buttonIndex == Mapping.BUTTON_R3 ) {
 			if ( debugScrewMode1 ) {
 				debugScrewMode1 = false;
 				debugScrewMode2 = true;
@@ -183,13 +167,13 @@ public class MyControllerListener implements ControllerListener {
 		}
 
 		// Setting jump/pause/bumper
-		if ( buttonIndex == BUTTON_A )
+		if ( buttonIndex == Mapping.BUTTON_X )
 			jumpPressed = true;
-		if ( buttonIndex == BUMPER_RIGHT )
+		if ( buttonIndex == Mapping.BUTTON_R1 )
 			attachScrewPressed = true;
-		if ( buttonIndex == PAUSE )
+		if ( buttonIndex == Mapping.BUTTON_START )
 			pausePressed = true;
-		if ( buttonIndex == BUTTON_X )
+		if ( buttonIndex == Mapping.BUTTON_S )
 			grabPressed = true;
 		
 		Gdx.app.log( "controller", "" + buttonIndex );
@@ -206,13 +190,13 @@ public class MyControllerListener implements ControllerListener {
 	public boolean buttonUp( Controller controller, int buttonIndex ) {
 		
 		// Resetting buttons
-		if ( buttonIndex == BUTTON_A )
+		if ( buttonIndex == Mapping.BUTTON_X )
 			jumpPressed = false;
-		if ( buttonIndex == BUMPER_RIGHT )
+		if ( buttonIndex == Mapping.BUTTON_R1 )
 			attachScrewPressed = false;
-		if ( buttonIndex == PAUSE )
+		if ( buttonIndex == Mapping.BUTTON_START )
 			pausePressed = false;
-		if ( buttonIndex == BUTTON_X )
+		if ( buttonIndex == Mapping.BUTTON_S )
 			grabPressed = false;
 
 		return false;
@@ -244,6 +228,8 @@ public class MyControllerListener implements ControllerListener {
 	@Override
 	public boolean povMoved( Controller controller, int buttonIndex,
 			PovDirection direction ) {
+		
+		Gdx.app.log( controller.getName( ), String.valueOf( buttonIndex ) );
 		
 		if ( direction == PovDirection.center ) {
 			rightPressed = false;
