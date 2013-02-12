@@ -82,11 +82,7 @@ public class Player extends Entity {
 	public int grabCounter = 0;
 	public int jumpCounter = 0;
 	
-	private Sound jump;
-
-	// Static variables
-	public static Texture texture =
-			WereScrewedGame.manager.get("assets/data/common/player_r_m.png", Texture.class);
+	private Sound jumpSound;
 
 	// Enums
 	/**
@@ -135,7 +131,7 @@ public class Player extends Entity {
 		setUpController( );
 		controllerDebug = true;
 		
-		jump = WereScrewedGame.manager.get("assets/data/common/sounds/jump.ogg");
+		jumpSound = WereScrewedGame.manager.get("assets/data/common/sounds/jump.ogg");
 	}
 
 	// PUBLIC METHODS
@@ -593,6 +589,7 @@ public class Player extends Entity {
 					playerState = PlayerState.Jumping;
 				}
 				jump( );
+				jumpSound.play( );
 			} else if ( topPlayer ) {
 				// jump first to make sure top player
 				// only jumps with a small force
@@ -967,7 +964,7 @@ public class Player extends Entity {
 			if ( !jumpPressedKeyboard ) {
 				processJumpState( );
 				jumpPressedKeyboard = true;
-				jump.play( );
+				
 			}
 		}
 		if ( !inputHandler.jumpPressed( ) ) {
