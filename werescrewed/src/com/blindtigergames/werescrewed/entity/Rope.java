@@ -26,10 +26,10 @@ public class Rope extends Entity {
 		BodyDef bodyDef = new BodyDef();
 		bodyDef.type = BodyType.StaticBody;
 		bodyDef.position.set( pos );
-		bodyDef.gravityScale = .07f;
+		bodyDef.gravityScale = .01f;
 		FixtureDef fixDef = new FixtureDef();
 		PolygonShape polygonShape = new PolygonShape();
-		polygonShape.setAsBox( .03f, 0.05f );
+		polygonShape.setAsBox( .05f, 0.03f );
 		fixDef.shape = polygonShape;
 		fixDef.density = 0.1f;
 		body = world.createBody( bodyDef );
@@ -38,41 +38,48 @@ public class Rope extends Entity {
 		
 		for ( int i = 1; i <= 10; i++ ){
 			bodyDef = new BodyDef();
-			bodyDef.position.set( new Vector2 ( pos.x, pos.y - i * 0.1f) );
+			bodyDef.position.set( new Vector2 ( pos.x, pos.y - i * 32.0f * Util.PIXEL_TO_BOX) );
 			bodyDef.type = BodyType.DynamicBody;
-			polygonShape.setAsBox( 0.01f, 0.05f );
+			polygonShape.setAsBox( 4.0f * Util.PIXEL_TO_BOX, 16.0f * Util.PIXEL_TO_BOX );
 			FixtureDef fixtureDef = new FixtureDef();
 			fixtureDef.shape = polygonShape;
-			fixtureDef.isSensor = false;
-			fixtureDef.density = .5f;
+			//fixtureDef.isSensor = false;
+			fixtureDef.density = 1.0f;
+			fixtureDef.restitution = 0.2f;
+			fixtureDef.friction = 0.0f;
 			body = world.createBody( bodyDef );
 			body.createFixture( fixtureDef );
 			RevoluteJointDef revoluteJointDef = new RevoluteJointDef( );
 //			revoluteJointDef.initialize( link, body, body.getPosition() );
-			revoluteJointDef.initialize( link, body, new Vector2 ( pos.x, pos.y - i * 0.1f + 0.05f ) );
+//			revoluteJointDef.initialize( link, body, new Vector2 ( pos.x,
+//					pos.y - i * 0.1f + 0.01f ) );
+			
+			revoluteJointDef.initialize( link, body, new Vector2 ( body.getWorldCenter( ).x,
+					body.getWorldCenter().y + 16.0f * Util.PIXEL_TO_BOX ) );
 			revoluteJointDef.enableMotor = false;
-			revoluteJointDef.enableLimit = true;
+			/*revoluteJointDef.enableLimit = true;
 			revoluteJointDef.lowerAngle = 45 * MathUtils.degreesToRadians;
-			revoluteJointDef.upperAngle = 180 * MathUtils.degreesToRadians;
+			revoluteJointDef.upperAngle = 180 * MathUtils.degreesToRadians;*/
+			revoluteJointDef.collideConnected = false;
 			world.createJoint( revoluteJointDef );	
 			body.setUserData( this );
 			link = body;
 		}
-		bodyDef.position.set(  new Vector2 ( pos.x, pos.y - 11 * 0.1f) );
-		FixtureDef fixtureDef = new FixtureDef();
-		polygonShape.setAsBox( 0.03f, 0.05f );
-		fixtureDef.shape = polygonShape;
-		fixtureDef.isSensor = false;
-		fixtureDef.density = 0.5f;
-		body = world.createBody( bodyDef );
-		body.createFixture( fixtureDef );
-		RevoluteJointDef revoluteJointDef = new RevoluteJointDef( );
-		revoluteJointDef.initialize( link, body, body.getPosition( ) );
-		revoluteJointDef.enableMotor = false;
-		revoluteJointDef.enableLimit = true;
-		revoluteJointDef.lowerAngle = 45 * MathUtils.degreesToRadians;
-		revoluteJointDef.upperAngle = 180 * MathUtils.degreesToRadians;
-		world.createJoint( revoluteJointDef );
+//		bodyDef.position.set(  new Vector2 ( pos.x, pos.y - 11 * 0.1f) );
+//		FixtureDef fixtureDef = new FixtureDef();
+//		polygonShape.setAsBox( 0.03f, 0.05f );
+//		fixtureDef.shape = polygonShape;
+//		fixtureDef.isSensor = false;
+//		fixtureDef.density = 0.5f;
+//		body = world.createBody( bodyDef );
+//		body.createFixture( fixtureDef );
+//		RevoluteJointDef revoluteJointDef = new RevoluteJointDef( );
+//		revoluteJointDef.initialize( link, body, body.getPosition( ) );
+//		revoluteJointDef.enableMotor = false;
+//		revoluteJointDef.enableLimit = true;
+//		revoluteJointDef.lowerAngle = 45 * MathUtils.degreesToRadians;
+//		revoluteJointDef.upperAngle = 180 * MathUtils.degreesToRadians;
+//		world.createJoint( revoluteJointDef );
 	
 		// TODO Auto-generated constructor stub
 	
