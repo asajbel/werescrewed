@@ -1,6 +1,7 @@
 package com.blindtigergames.werescrewed.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -52,6 +53,10 @@ class MainMenuScreen implements com.badlogic.gdx.Screen {
 		imoverButton.draw( batch, camera );
 		exitButton.draw( batch, camera );
 		batch.end( );
+		
+		if(Gdx.input.isKeyPressed( Keys.P )){
+			System.exit(1);
+		}
 	}
 
 	@Override
