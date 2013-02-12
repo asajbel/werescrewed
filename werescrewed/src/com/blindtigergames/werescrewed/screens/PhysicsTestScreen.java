@@ -216,12 +216,12 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 //		jointDef.motorSpeed = 7.0f;
 		puzzleScrew = new PuzzleScrew( "001", new Vector2( 0.0f, 0.2f ), 50,
 				skeleton, world );
-		//puzzleScrew.puzzleManager.addEntity( movingTP );
+		puzzleScrew.puzzleManager.addEntity( movingTP );
 		LerpMover lm = new LerpMover(
 				new Vector2( movingTP.body.getPosition( ).x,
 						movingTP.body.getPosition( ).y ), new Vector2(
 						movingTP.body.getPosition( ).x + 1.75f,
-						movingTP.body.getPosition( ).y ), 1f );
+						movingTP.body.getPosition( ).y ), 0.003f );
 		puzzleScrew.puzzleManager.addMover( lm );
 		skeleton.addScrewForDraw( puzzleScrew );
 	}
@@ -397,7 +397,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		batch.setProjectionMatrix( cam.combined( ) );
 		batch.begin( );
 
-		puzzleScrew.draw( batch );
+		//puzzleScrew.draw( batch );
 		rootSkeleton.draw( batch );
 		player1.draw( batch );
 		player2.draw( batch );

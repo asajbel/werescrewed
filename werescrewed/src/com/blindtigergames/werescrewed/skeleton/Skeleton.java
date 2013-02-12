@@ -278,11 +278,11 @@ public class Skeleton extends Entity {
         }
     	for ( Platform p : dynamicPlatforms ) {
     		p.updateMover( deltaTime );
-        }
+        }          
     	//update kinamatic platforms on their local imover coordinate system
     	for ( Platform p : kinematicPlatforms ) {
     		p.updateMover( deltaTime );
-        }
+        } 
     }
 
     /****
@@ -297,11 +297,14 @@ public class Skeleton extends Entity {
         for ( Platform p : dynamicPlatforms ) {
         	updatePlatform(p,deltaTime);
         }
-        for ( Screw s: screws ) {
-    		s.update( deltaTime );
-        }
         for ( Platform p : kinematicPlatforms ) {
         	updatePlatform(p,deltaTime);
+        }    	
+        //update all puzzle screws to save their movement changes
+        //should just be puzzle screws no other type need to be in the screws list
+        //except for drawing
+        for ( Screw s: screws ) {
+    		s.update( deltaTime );
         }
     }
     

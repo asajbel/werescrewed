@@ -75,9 +75,10 @@ public class PuzzleManager {
 		for ( int i = 0; i < puzzleEntities.size( ); i++ ) {
 			if ( puzzleEntities.get( i ).mover == null ) {
 				if ( i <= puzzleMovers.size( ) ) {
-					LerpMover lm = ( LerpMover ) puzzleMovers.get( i );
-					lm.runPuzzleMovement( screwVal,
-							puzzleEntities.get( i ).body );
+					puzzleEntities.get( i ).mover = puzzleMovers.get( i );
+//					LerpMover lm = ( LerpMover ) puzzleMovers.get( i );
+//					lm.runPuzzleMovement( screwVal,
+//							puzzleEntities.get( i ).body );
 				}
 				/*
 				 * if ( e.body.getJointList( ).size( ) < 1 ) {
