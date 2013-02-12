@@ -61,7 +61,8 @@ public class Player extends Entity {
 	public final static float ANALOG_DEADZONE = 0.2f;
 	public final static float ANALOG_MAX_RANGE = 1.0f;
 	public final static float PLAYER_FRICTION = 0.7f;
-	public final static Vector2 PLAYER_BUFFER = new Vector2(128f, 128f);
+	public final static Vector2 PLAYER_BUFFER = new Vector2( 128f, 128f );
+	private static final float PLAYA_RADIUS = 0;
 
 	// Static variables
 	public static Texture texture = new Texture(
@@ -104,7 +105,9 @@ public class Player extends Entity {
 		body.setBullet( true );
 		playerState = PlayerState.Standing;
 		inputHandler = new PlayerInputHandler( this.name );
-		anchor = new Anchor(true, body.getWorldCenter( ), PLAYER_BUFFER);
+		anchor = new Anchor( true, new Vector2( body.getWorldCenter( ).x
+				* Util.BOX_TO_PIXEL, body.getWorldCenter( ).y
+				* Util.BOX_TO_PIXEL ), PLAYER_BUFFER, world, PLAYA_RADIUS );
 		AnchorList.getInstance( ).addAnchor( anchor );
 		anchor.activate( );
 
@@ -123,7 +126,7 @@ public class Player extends Entity {
 	 */
 	public void update( float deltaTime ) {
 		super.update( deltaTime );
-		updateAnchor();
+		updateAnchor( );
 		if ( isDead ) {
 			// TODO: do stuff here
 			// playerState = playerState.Dead;
@@ -612,13 +615,14 @@ public class Player extends Entity {
 				body.setLinearVelocity( 0.0f, body.getLinearVelocity( ).y );
 		}
 	}
-	
+
 	/**
 	 * updates the player's anchor
+	 * 
 	 * @author Edward Ramirez
 	 */
-	private void updateAnchor() {
-		anchor.setPositionBox(body.getWorldCenter( ));
+	private void updateAnchor( ) {
+		anchor.setPositionBox( body.getWorldCenter( ) );
 	}
 
 	/**

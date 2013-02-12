@@ -38,11 +38,11 @@ public class Level {
 	public Level( ){
 		
 		float zoom = 1.0f;
-		float w = Gdx.graphics.getWidth( ) / zoom;
-		float h = Gdx.graphics.getHeight( ) / zoom;
+		float width = Gdx.graphics.getWidth( ) / zoom;
+		float height = Gdx.graphics.getHeight( ) / zoom;
 
 		world = new World( new Vector2( 0, -100 ), true );
-		camera = new Camera( w, h);
+		camera = new Camera( width, height, world);
 		player = (Player)new PlayerBuilder()
 					.name("Player")
 					.world( world )

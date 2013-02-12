@@ -1,6 +1,5 @@
 package com.blindtigergames.werescrewed.collisionManager;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.Contact;
@@ -9,6 +8,7 @@ import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.JointEdge;
 import com.badlogic.gdx.physics.box2d.Manifold;
+import com.blindtigergames.werescrewed.camera.Anchor;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.Player;
 import com.blindtigergames.werescrewed.platforms.TiledPlatform;
@@ -75,6 +75,12 @@ public class MyContactListener implements ContactListener {
 								.getUserData( );
 						player.hitScrew( screw );
 					}
+				} else if ( objectFix.getBody( ).getUserData( ) instanceof Anchor ) {
+					// TODO: stuff
+					Anchor anchor = ( Anchor ) objectFix.getBody( )
+							.getUserData( );
+					if ( !anchor.special )
+						anchor.activate( );
 				}
 			}
 		}
@@ -131,6 +137,12 @@ public class MyContactListener implements ContactListener {
 					} else if ( objectFix.getBody( ).getUserData( ) instanceof Screw ) {
 						player.endHitScrew( );
 					}
+				} else if ( objectFix.getBody( ).getUserData( ) instanceof Anchor ) {
+					// TODO: stuff
+					Anchor anchor = ( Anchor ) objectFix.getBody( )
+							.getUserData( );
+					if ( !anchor.special )
+						anchor.deactivate( );
 				}
 			}
 		}

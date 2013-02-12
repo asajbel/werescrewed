@@ -29,11 +29,6 @@ public class Screw extends Entity {
 				Gdx.files.internal( "data/screw.png" ) ) : tex ), null, false );
 	}
 
-	@Override
-	public void update( float deltaTime ) {
-		super.update( deltaTime );
-	}
-
 	/**
 	 * destroys everything contained within the screw instance
 	 */

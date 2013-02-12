@@ -84,7 +84,7 @@ public class IMoverGameScreen implements com.badlogic.gdx.Screen {
 		float width = Gdx.graphics.getWidth( ) / zoom;
 		float height = Gdx.graphics.getHeight( ) / zoom;
 
-		cam = new Camera( width, height );
+		cam = new Camera( width, height, world );
 		texture = new Texture( Gdx.files.internal( "data/rletter.png" ) );
 		batch = new SpriteBatch( );
 		entityManager = new EntityManager( );
