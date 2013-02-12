@@ -10,12 +10,13 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.blindtigergames.werescrewed.camera.Camera;
 import com.blindtigergames.werescrewed.debug.SBox2DDebugRenderer;
 import com.blindtigergames.werescrewed.entity.EntityManager;
-import com.blindtigergames.werescrewed.entity.Player;
-import com.blindtigergames.werescrewed.entity.PlayerBuilder;
-import com.blindtigergames.werescrewed.entity.Skeleton;
 import com.blindtigergames.werescrewed.platforms.Platform;
-import com.blindtigergames.werescrewed.platforms.PlatformBuilder;
+import com.blindtigergames.werescrewed.entity.builders.PlayerBuilder;
+import com.blindtigergames.werescrewed.entity.builders.PlatformBuilder;
+import com.blindtigergames.werescrewed.platforms.RoomPlatform;
 import com.blindtigergames.werescrewed.platforms.TiledPlatform;
+import com.blindtigergames.werescrewed.player.Player;
+import com.blindtigergames.werescrewed.skeleton.Skeleton;
 
 
 /**
@@ -43,11 +44,11 @@ public class Level {
 
 		world = new World( new Vector2( 0, -100 ), true );
 		camera = new Camera( w, h);
-		player = (Player)new PlayerBuilder()
-					.name("Player")
+		player = new PlayerBuilder()
+					.name("player1")
 					.world( world )
 					.position( new Vector2(0.0f,0.0f) )
-					.build();
+					.buildPlayer();
 
 		entities = new EntityManager();
 		platforms = new ArrayList<Platform>();
@@ -82,18 +83,22 @@ public class Level {
 	public static Level getDefaultLevel(){
 		Level out = new Level();
 		TiledPlatform tp, ground;
+		@SuppressWarnings( "unused" )
+		RoomPlatform rp;
+		//ShapePlatform sp;
 		Texture texture = new Texture( Gdx.files.internal( "data/rletter.png" ) );
 		
 		tp = new PlatformBuilder(out.world)
-		.setPosition( 2.0f, 0.2f )
-		.setDimensions( 10, 1 )
-		.setTexture( texture )
+		.position( 2.0f, 0.2f )
+		.dimensions( 10, 1 )
+		.texture( texture )
 		.buildTilePlatform( );
+
 		
 		ground = new PlatformBuilder(out.world)
-		.setPosition( 0.0f, 0.0f )
-		.setDimensions( 100, 1 )
-		.setTexture( texture )
+		.position( 0.0f, 0.0f )
+		.dimensions( 100, 1 )
+		.texture( texture )
 		.buildTilePlatform( );
 		
 		out.platforms.add( ground );

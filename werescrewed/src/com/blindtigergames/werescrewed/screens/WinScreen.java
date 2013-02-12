@@ -37,6 +37,7 @@ class WinScreen implements com.badlogic.gdx.Screen{
 
 		if ( Gdx.input.isKeyPressed( Input.Keys.ENTER ) ) {
 			ScreenManager.getInstance( ).show( ScreenType.PHYSICS );
+			// Later this will probably call the next level screen instead.
 		}
 		batch.begin( );
 		firstLine.draw( batch );

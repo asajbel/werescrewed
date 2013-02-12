@@ -24,6 +24,7 @@ public class AnchorList {
 	private static AnchorList instance;
 	private ShapeRenderer shapeRenderer;
 	private OrthographicCamera camera;
+	//private Vector2 specialDistance;
 	private AnchorList() {
 		this(null);
 	}
@@ -223,6 +224,14 @@ public class AnchorList {
     	
     	midpoint2 = sum.div((float) count);
      	return specialMidpoint;
+	}
+	
+	public float specialDistance() {
+		if (anchorList.size() < 2) return 0.0f;
+		specialMidpoint.x = anchorList.get(0).position.x;
+		specialMidpoint.y = anchorList.get( 0 ).position.y;
+		specialMidpoint.sub( anchorList.get( 1 ).position );
+		return specialMidpoint.len( );
 	}
 	
 	public Vector2 getMidpoint () {

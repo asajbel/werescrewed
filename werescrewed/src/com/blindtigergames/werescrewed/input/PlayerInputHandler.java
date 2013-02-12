@@ -37,11 +37,11 @@ public class PlayerInputHandler {
 			right = Keys.D;
 			screw = Keys.F;
 		} else if ( playerNumber.equals( "player2" ) ) {
-			up = Keys.I;
-			down = Keys.K;
-			left = Keys.J;
-			right = Keys.L;
-			screw = Keys.H;
+			up = Keys.UP;                //I
+			down = Keys.DOWN;            //K
+			left = Keys.LEFT;            //J
+			right = Keys.RIGHT;          //L
+			screw = Keys.SHIFT_RIGHT;    //H
 		}
 
 	}

@@ -12,7 +12,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJoint;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
 import com.blindtigergames.werescrewed.entity.Entity;
-import com.blindtigergames.werescrewed.entity.Skeleton;
+import com.blindtigergames.werescrewed.skeleton.Skeleton;
 import com.blindtigergames.werescrewed.util.Util;
 
 /**
@@ -49,7 +49,7 @@ public class StructureScrew extends Screw {
 		screwFixture.filter.categoryBits = Util.CATEGORY_SCREWS; 
 		screwFixture.filter.maskBits = Util.CATEGORY_PLAYER | Util.CATEGORY_SUBPLAYER;
 		body.createFixture( screwFixture );
-		screwShape.dispose( );
+		//screwShape.dispose( );
 		body.setUserData( this );
 
 		// add radar sensor to screw
@@ -61,7 +61,7 @@ public class StructureScrew extends Screw {
 		radarFixture.filter.categoryBits = Util.CATEGORY_SCREWS; 
 		radarFixture.filter.maskBits = Util.CATEGORY_PLAYER | Util.CATEGORY_SUBPLAYER;
 		body.createFixture( radarFixture );
-		radarShape.dispose( );
+		//radarShape.dispose( );
 
 		
 		// connect the screw to the entity
@@ -75,8 +75,6 @@ public class StructureScrew extends Screw {
 		revoluteJointDef.initialize( entity.body, skeleton.body, pos );
 		revoluteJointDef.enableMotor = false;
 		platformJoint = ( RevoluteJoint ) world.createJoint( revoluteJointDef );
-
-
 	}
 
 	/**

@@ -1,4 +1,4 @@
-package com.blindtigergames.werescrewed.entity;
+package com.blindtigergames.werescrewed.util;
 
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.math.Vector2;
@@ -10,6 +10,8 @@ import com.badlogic.gdx.physics.box2d.Shape;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.OrderedMap;
+import com.blindtigergames.werescrewed.entity.EntityDef;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -172,7 +174,7 @@ public class BodyEditorLoader {
 
 			polygonShape = new PolygonShape( );
 			polygonShape.set( vertices );
-			def.fixtureDefs.add( makeFixtureDef( den, fri, res, polygonShape ) );
+			def.addFixtureDef( makeFixtureDef( den, fri, res, polygonShape ) );
 
 			for ( int ii = 0, nn = vertices.length; ii < nn; ii++ ) {
 				free( vertices[ ii ] );
@@ -187,7 +189,7 @@ public class BodyEditorLoader {
 			circleShape = new CircleShape( );
 			circleShape.setPosition( center );
 			circleShape.setRadius( radius );
-			def.fixtureDefs.add( makeFixtureDef( den, fri, res, circleShape ) );
+			def.addFixtureDef( makeFixtureDef( den, fri, res, circleShape ) );
 
 			free( center );
 		}
