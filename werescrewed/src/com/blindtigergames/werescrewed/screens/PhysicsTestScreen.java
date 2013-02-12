@@ -431,7 +431,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		if ( debug )
 			debugRenderer.render( world, cam.combined( ) );
 
-		world.step( 1 / 60f, 6, 2 );
+		world.step( 1 / 60f, 6, 3 );
 	}
 
 	@Override
