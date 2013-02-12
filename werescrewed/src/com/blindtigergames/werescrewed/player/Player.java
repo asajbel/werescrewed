@@ -1027,8 +1027,8 @@ public class Player extends Entity {
 			// This code exists because you need to release the grab button
 			// to toss the other player, while colliding with the other player
 			if ( grabCounter > GRAB_COUNTER_STEPS ) {
-				playerState = PlayerState.Standing;
 				grabCounter = 0;
+				playerState = PlayerState.Standing;
 			}
 		}
 
