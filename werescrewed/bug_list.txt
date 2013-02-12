@@ -1,0 +1,3 @@
+BUG LIST:
+Done?(x)	Found By	Description
+			Stew		Players fall through one-sides platforms when skeletons move up/down.

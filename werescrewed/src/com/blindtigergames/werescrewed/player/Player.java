@@ -2,6 +2,7 @@ package com.blindtigergames.werescrewed.player;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.controllers.PovDirection;
@@ -15,6 +16,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJoint;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
+import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.camera.AnchorList;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityDef;
@@ -79,10 +81,12 @@ public class Player extends Entity {
 
 	public int grabCounter = 0;
 	public int jumpCounter = 0;
+	
+	private Sound jump;
 
 	// Static variables
-	public static Texture texture = new Texture(
-			Gdx.files.internal( "data/player_r_m.png" ) );
+	public static Texture texture =
+			WereScrewedGame.manager.get("assets/data/common/player_r_m.png", Texture.class);
 
 	// Enums
 	/**
@@ -130,6 +134,8 @@ public class Player extends Entity {
 
 		setUpController( );
 		controllerDebug = true;
+		
+		jump = WereScrewedGame.manager.get("assets/data/common/sounds/jump.ogg");
 	}
 
 	// PUBLIC METHODS
@@ -145,7 +151,7 @@ public class Player extends Entity {
 			// Gdx.app.log( "player2:" , "" + isGrounded( ) );
 		}
 		if ( this.name.equals( "player1" ) ) {
-			Gdx.app.log( "player1", "" + playerState );
+			// Gdx.app.log( "player1", "" + playerState );
 			// Gdx.app.log( "player1:" , "" + isGrounded( ) );
 		}
 
@@ -961,6 +967,7 @@ public class Player extends Entity {
 			if ( !jumpPressedKeyboard ) {
 				processJumpState( );
 				jumpPressedKeyboard = true;
+				jump.play( );
 			}
 		}
 		if ( !inputHandler.jumpPressed( ) ) {

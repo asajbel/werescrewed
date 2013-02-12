@@ -16,6 +16,7 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.joints.PrismaticJoint;
 import com.badlogic.gdx.physics.box2d.joints.PrismaticJointDef;
+import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.camera.Camera;
 import com.blindtigergames.werescrewed.collisionManager.MyContactListener;
 import com.blindtigergames.werescrewed.debug.SBox2DDebugRenderer;
@@ -87,7 +88,8 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		rootSkeleton = new Skeleton( "root", Vector2.Zero, null, world );
 		//entityManager.addSkeleton( rootSkeleton.name, rootSkeleton );
 		platBuilder = new PlatformBuilder( world );
-		testTexture = new Texture( Gdx.files.internal( "data/TilesetTest.png" ) );
+		testTexture = WereScrewedGame.manager.get(
+				"assets/data/common/TilesetTest.png",Texture.class);
 
 		// Initialize camera
 		initCamera( );
@@ -179,13 +181,17 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 				.name( "movingTP" ).resitituion( 0.0f )
 				.buildTilePlatform( );
 		movingTP.body.setType( BodyType.KinematicBody );
+		
 		buildMoverPlatforms( );
 
-		// Ground
+		//TODO : FIX ONESIDED BUG, 
+		// Ground: SHOULD NEVER BE ONESIDED
 		ground = platBuilder.position( 0.0f, 0.0f ).name( "ground" )
 				.dimensions( 200, 1 ).texture( testTexture )
+				.kinematic( )
+				.oneSided( false )
 				.resitituion( 0.0f ).buildTilePlatform( );
-		skeleton.addPlatformFixed( ground );
+		skeleton.addKinematicPlatform( ground );
 	}
 
 	/**
@@ -229,6 +235,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 						movingTP.body.getPosition( ).x + 1.75f,
 						movingTP.body.getPosition( ).y ), 1f );
 		puzzleScrew.puzzleManager.addMover( lm );
+		skeleton.addScrewForDraw( puzzleScrew );
 	}
 
 	/**
@@ -272,25 +279,17 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 								0 ), 1.0f, 1f );
 		PrismaticJoint j = ( PrismaticJoint ) world
 				.createJoint( prismaticJointDef );
-		skeleton.addBoneAndJoint( slidingPlatform, j );
 		slidingPlatform.setMover( new SlidingMotorMover(
 				PuzzleType.PRISMATIC_SLIDER, j ) );
+		skeleton.addDynamicPlatform( slidingPlatform );
 
 		TiledPlatform skeletonTest1 = platBuilder.width( 10 ).height( 1 )
 				.friction( 1f ).oneSided( false )
-				.position( -500, -200 ).texture( testTexture )
+				.position( 500, 200 ).texture( testTexture )
+				.kinematic( )
 				.buildTilePlatform( );
-		skeletonTest1.body.setType( BodyType.DynamicBody );
-		skeleton.addPlatformFixed( skeletonTest1 );
-
-		TiledPlatform skeletonTest2 = platBuilder.width( 10 ).height( 1 )
-				.oneSided( false ).position( 500, 300 )
-				.texture( testTexture ).friction( 1f )
-				.buildTilePlatform( );
-		skeletonTest2.setOneSided( true );
-		skeletonTest2.body.setType( BodyType.DynamicBody );
-		skeleton.addPlatformRotatingCenter( skeletonTest2 );
-
+		skeleton.addKinematicPlatform( skeletonTest1 );
+		
 		/*
 		 * TODO: FIX PLATFORM DENSITY
 		 */
@@ -317,7 +316,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 			// with 0.
 			piston.setMover( new PistonMover( pistonJoint, 0f, i / 10.0f + 2f ) );
 			piston.body.setSleepingAllowed( false );
-			skeleton.addBoneAndJoint( piston, pistonJoint );
+			skeleton.addDynamicPlatform( piston );
 		}
 
 		
@@ -335,7 +334,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		
 		elevator.setMover( new PistonMover( pistonJ, 0f,  2f ) );
 		elevator.body.setSleepingAllowed( false );
-		skeleton.addBoneAndJoint( elevator, pistonJ );
+		//skeleton.addBoneAndJoint( elevator, pistonJ );
 		
 		ComplexPlatform gear = new ComplexPlatform( "gear", new Vector2(
 				1000 * Util.PIXEL_TO_BOX, 300 * Util.PIXEL_TO_BOX ), null, 3,
@@ -352,7 +351,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		}
 		gear.setSolid( true );
 		gear.body.setType( BodyType.DynamicBody );
-		skeleton.addPlatformRotatingCenterWithRot( gear, 1f );
+		skeleton.addPlatformRotatingCenterWithMot( gear, 1f );
 	}
 
 	@Override
@@ -380,6 +379,26 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 			debugTest = false;
 		} else
 			debugTest = true;
+		
+		
+		if ( Gdx.input.isKeyPressed( Input.Keys.Z ) ) {
+			rootSkeleton.translate( 0.0f, 0.01f );
+			//rootSkeleton.body.setLinearVelocity( new Vector2(0,1f) );
+		}
+
+		if ( Gdx.input.isKeyPressed( Input.Keys.X ) ) {
+			rootSkeleton.translate( 0.0f, -0.01f );
+			//rootSkeleton.body.setLinearVelocity( new Vector2(0,-1f) );
+		}
+
+		if ( Gdx.input.isKeyPressed( Input.Keys.C ) ) {
+			rootSkeleton.rotate( -0.01f );
+		}
+
+		if ( Gdx.input.isKeyPressed( Input.Keys.V ) ) {
+			rootSkeleton.rotate( 0.01f );
+		}
+		
 
 		player1.update( deltaTime );
 		player2.update( deltaTime );

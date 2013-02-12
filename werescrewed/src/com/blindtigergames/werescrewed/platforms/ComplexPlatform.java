@@ -26,6 +26,7 @@ public class ComplexPlatform extends Platform {
 	public ComplexPlatform( String n, Vector2 pos, Texture tex, float scale,
 			World world, EntityDef def) {
 		super( n, def, world, pos, 0.0f, new Vector2( 1f, 1f ) );
+		platType = PlatformType.COMPLEX;
 		// super(n, pos, tex, null);
 		// this.world = world;
 		// this.width = width;

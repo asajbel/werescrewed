@@ -17,6 +17,7 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.joints.PrismaticJoint;
 import com.badlogic.gdx.physics.box2d.joints.PrismaticJointDef;
+import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.camera.Camera;
 import com.blindtigergames.werescrewed.collisionManager.MyContactListener;
 import com.blindtigergames.werescrewed.debug.SBox2DDebugRenderer;
@@ -76,7 +77,8 @@ public class EntityDefTestScreen implements com.badlogic.gdx.Screen {
 		rootSkeleton = new Skeleton( "", Vector2.Zero, null, world );
 		entityManager.addSkeleton( rootSkeleton.name, rootSkeleton );
 		platBuilder = new PlatformBuilder( world );
-		testTexture = new Texture( Gdx.files.internal( "data/TilesetTest.png" ) );
+		testTexture = WereScrewedGame.manager.get(
+				"assets/common/data/TilesetTest.png", Texture.class);
 
 		// Initialize camera
 		initCamera( );
@@ -172,8 +174,9 @@ public class EntityDefTestScreen implements com.badlogic.gdx.Screen {
 		// Ground
 		ground = platBuilder.position( 0.0f, 0.0f ).name( "ground" )
 				.dimensions( 200, 1 ).texture( testTexture )
+				.kinematic( ).oneSided( false )
 				.resitituion( 0.0f ).buildTilePlatform( );
-		skeleton.addPlatformFixed( ground );
+		skeleton.addKinematicPlatform( ground );
 	}
 
 	/**
@@ -260,7 +263,7 @@ public class EntityDefTestScreen implements com.badlogic.gdx.Screen {
 								0 ), 1.0f, 1f );
 		PrismaticJoint j = ( PrismaticJoint ) world
 				.createJoint( prismaticJointDef );
-		skeleton.addBoneAndJoint( slidingPlatform, j );
+		skeleton.addDynamicPlatform( slidingPlatform );
 		slidingPlatform.setMover( new SlidingMotorMover(
 				PuzzleType.PRISMATIC_SLIDER, j ) );
 
@@ -269,7 +272,7 @@ public class EntityDefTestScreen implements com.badlogic.gdx.Screen {
 				.position( -500, -200 ).texture( testTexture )
 				.buildTilePlatform( );
 		skeletonTest1.body.setType( BodyType.DynamicBody );
-		skeleton.addPlatformFixed( skeletonTest1 );
+		skeleton.addDynamicPlatform( skeletonTest1 );
 
 		TiledPlatform skeletonTest2 = platBuilder.width( 10 ).height( 1 )
 				.oneSided( false ).position( 500, 300 )
@@ -305,7 +308,7 @@ public class EntityDefTestScreen implements com.badlogic.gdx.Screen {
 			// with 0.
 			piston.setMover( new PistonMover( pistonJoint, 0f, i / 10.0f + 2f ) );
 			piston.body.setSleepingAllowed( false );
-			skeleton.addBoneAndJoint( piston, pistonJoint );
+			skeleton.addDynamicPlatform( piston );
 		}
 
 		
@@ -323,7 +326,7 @@ public class EntityDefTestScreen implements com.badlogic.gdx.Screen {
 		
 		elevator.setMover( new PistonMover( pistonJ, 0f,  2f ) );
 		elevator.body.setSleepingAllowed( false );
-		skeleton.addBoneAndJoint( elevator, pistonJ );
+		skeleton.addDynamicPlatform( elevator );
 		
 		ComplexPlatform gear = new ComplexPlatform( "gear", new Vector2(
 				1000 * Util.PIXEL_TO_BOX, 300 * Util.PIXEL_TO_BOX ), null, 3,
@@ -340,7 +343,7 @@ public class EntityDefTestScreen implements com.badlogic.gdx.Screen {
 		}
 		gear.setSolid( true );
 		gear.body.setType( BodyType.DynamicBody );
-		skeleton.addPlatformRotatingCenterWithRot( gear, 1f );
+		skeleton.addPlatformRotatingCenterWithMot( gear, 1f );
 	}
 
 	@Override
