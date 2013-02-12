@@ -10,7 +10,6 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.World;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityDef;
-import com.blindtigergames.werescrewed.entity.mover.IMover;
 import com.blindtigergames.werescrewed.screws.Screw;
 import com.blindtigergames.werescrewed.skeleton.Skeleton;
 import com.blindtigergames.werescrewed.util.Util;
@@ -39,11 +38,6 @@ public class Platform extends Entity {
 	protected final int tileConstant = 16;
 	
 	protected PlatformType platType;
-
-	/**
-	 * Used for kinematic movement connected to skeleton
-	 */
-	protected Vector2 origin;
 	
 	/**
 	 * Used for kinematic movement connected to skeleton
@@ -101,6 +95,44 @@ public class Platform extends Entity {
 	//============================================
 	// Methods
 	//============================================
+	
+	/**
+	 * return localPosition Vector2 in PIXELS.
+	 * @return
+	 */
+	public Vector2 getLocalPos(){
+		return localPosition;
+	}
+	
+	/**
+	 * set localPosition Vector2 in PIXELS!!!
+	 * @param newLocalPos in PIXELS
+	 */
+	public void setLocalPos( Vector2 newLocalPosPixel ){
+		localPosition.x = newLocalPosPixel.x;
+		localPosition.y = newLocalPosPixel.y;
+	}
+	
+	public void setLocalPos( float xPixel, float yPixel ){
+		localPosition.x = xPixel;
+		localPosition.y = yPixel;
+	}
+	
+	/**
+	 * returns local rotation in RADIANS
+	 */
+	public float getLocalRot(){
+		return localRotation;
+	}
+	
+	/**
+	 * set local rotation in RADIAN
+	 * @param newLocalRotRadians
+	 */
+	public void setLocalRot( float newLocalRotRadians ){
+		localRotation = newLocalRotRadians;
+	}
+	
 	public void addScrew( Screw s ) {
 		screws.add( s );
 	}
@@ -115,7 +147,7 @@ public class Platform extends Entity {
 	@Override
 	public void update( float deltaTime ) {
 		super.update( deltaTime );
-		//body.setActive( true );
+		body.setActive( true );
 		for ( Screw s : screws ) {
 			s.update( deltaTime );
 		}
