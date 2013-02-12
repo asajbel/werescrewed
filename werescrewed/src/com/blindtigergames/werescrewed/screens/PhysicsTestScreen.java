@@ -108,7 +108,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		initPuzzleScrews( );
 		initClimbingScrews( );
 
-		rope = new Rope( "rope", new Vector2 ( 300.0f * Util.PIXEL_TO_BOX, 400.0f* Util.PIXEL_TO_BOX), null, world );
+		rope = new Rope( "rope", new Vector2 ( 200.0f * Util.PIXEL_TO_BOX, 400.0f* Util.PIXEL_TO_BOX), null, world );
 		// Add players
 		// First player has to have the name "player1"
 		// Second player has to have the name "player2"
@@ -405,7 +405,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		if ( debug )
 			debugRenderer.render( world, cam.combined( ) );
 
-		world.step( 1 / 60f, 6, 4 );
+		world.step( 1 / 60f, 6, 3 );
 	}
 
 	@Override
