@@ -20,6 +20,7 @@ import com.blindtigergames.werescrewed.camera.Camera;
 import com.blindtigergames.werescrewed.collisionManager.MyContactListener;
 import com.blindtigergames.werescrewed.debug.SBox2DDebugRenderer;
 import com.blindtigergames.werescrewed.entity.Entity;
+import com.blindtigergames.werescrewed.entity.Rope;
 import com.blindtigergames.werescrewed.entity.builders.PlatformBuilder;
 import com.blindtigergames.werescrewed.entity.builders.PlayerBuilder;
 import com.blindtigergames.werescrewed.entity.mover.LerpMover;
@@ -68,6 +69,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 	private TiledPlatform tiledPlat, ground, movingTP, singTile, rectile;
 	private PlatformBuilder platBuilder;
 	private PuzzleScrew puzzleScrew;
+	private Rope rope;
 	private Skeleton skeleton;
 	private Skeleton rootSkeleton;
 	private ArrayList< StrippedScrew > climbingScrews;
@@ -105,6 +107,8 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		initPuzzleScrews( );
 		initClimbingScrews( );
 
+		rope = new Rope( "rope", new Vector2 (2000.0f * Util.PIXEL_TO_BOX, 400.0f* Util.PIXEL_TO_BOX), null, world );
+		
 		// Add players
 		// First player has to have the name "player1"
 		// Second player has to have the name "player2"
@@ -392,6 +396,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 
 		player1.update( deltaTime );
 		player2.update( deltaTime );
+		rope.update( deltaTime );
 		//puzzleScrew.update( deltaTime );
 		rootSkeleton.update( deltaTime );
 
@@ -402,6 +407,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		rootSkeleton.draw( batch );
 		player1.draw( batch );
 		player2.draw( batch );
+		rope.draw( batch );
 		batch.end( );
 
 		if ( debug )
