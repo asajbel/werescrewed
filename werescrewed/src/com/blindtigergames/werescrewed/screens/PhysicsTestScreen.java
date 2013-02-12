@@ -230,7 +230,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 						movingTP.body.getPosition( ).y ), new Vector2(
 						movingTP.body.getPosition( ).x + 1.75f,
 						movingTP.body.getPosition( ).y ), 1f );
-		puzzleScrew.puzzleManager.addMover( lm );
+		puzzleScrew.puzzleManager.addMover( movingTP.name, lm );
 	}
 
 	/**

@@ -125,7 +125,6 @@ public class IMoverGameScreen implements com.badlogic.gdx.Screen {
 		jointDef.motorSpeed = 7.0f;
 
 		puzzleScrew.puzzleManager.addEntity( movingTP );
-		puzzleScrew.puzzleManager.addJointDef( jointDef );
 
 		float x1 = 1.75f;
 		float x2 = 2.25f;
