@@ -140,9 +140,9 @@ public class Player extends Entity {
 	/**
 	 * Updates information about the player every step
 	 */
-	public void update( float deltaTime, Player otherPlayer ) {
+	public void update( float deltaTime ) {
 		super.update( deltaTime );
-		this.otherPlayer = otherPlayer;
+		//this.otherPlayer = otherPlayer;
 		if ( this.name.equals( "player2" ) ) {
 			// Gdx.app.log( "player2", "" + playerState );
 			// Gdx.app.log( "player2:" , "" + isGrounded( ) );
@@ -494,12 +494,13 @@ public class Player extends Entity {
 			if ( !screwOccupied ) {
 				Filter filter;
 				for ( Fixture f : body.getFixtureList( ) ) {
+					f.setSensor( true );
 					filter = f.getFilterData( );
 					// move player to another category so other objects stop
 					// colliding
 					filter.categoryBits = Util.CATEGORY_SUBPLAYER;
 					// player still collides with sensor of screw
-					filter.maskBits = Util.CATEGORY_SCREWS;
+					filter.maskBits = Util.CATEGORY_SCREWS | Util.CATEGORY_PLAYER;
 					f.setFilterData( filter );
 				}
 				body.setTransform( new Vector2( currentScrew.getPosition( ).x
@@ -544,6 +545,7 @@ public class Player extends Entity {
 			}
 			// set the bits of the player back to everything
 			for ( Fixture f : body.getFixtureList( ) ) {
+				f.setSensor( false );
 				filter = f.getFilterData( );
 				// move player back to original category
 				filter.categoryBits = Util.CATEGORY_PLAYER;
@@ -732,20 +734,13 @@ public class Player extends Entity {
 				}
 			} else if ( currentScrew.body.getJointList( ).size( ) >= 3
 					&& currentScrew instanceof BossScrew ) {
-				if ( controllerListener.unscrewing( )
+				if ( otherPlayer != null && controllerListener.unscrewing( )
 						&& otherPlayer.controllerListener.unscrewing( ) ) {
 					currentScrew.screwLeft( );
-				} else if ( controllerListener.screwing( )
+				} else if ( otherPlayer != null && controllerListener.screwing( )
 						&& otherPlayer.controllerListener.screwing( ) ) {
 					currentScrew.screwRight( );
 				}
-			}
-			if ( currentScrew.body.getJointList( ).size( ) <= 1
-					|| ( currentScrew instanceof BossScrew && currentScrew.getDepth( ) == 0 ) ) {
-				world.destroyJoint( playerToScrew );
-				playerState = PlayerState.JumpingOffScrew;
-				screwJumpTimeout = SCREW_JUMP_STEPS;
-				jump( );
 			}
 
 		} else {
@@ -757,24 +752,17 @@ public class Player extends Entity {
 				}
 			} else if ( currentScrew.body.getJointList( ).size( ) >= 3
 					&& currentScrew instanceof BossScrew ) {
-				if ( inputHandler.unscrewing( )
+				if ( otherPlayer != null && inputHandler.unscrewing( )
 						&& otherPlayer.inputHandler.unscrewing( ) ) {
 					currentScrew.screwLeft( );
-				} else if ( inputHandler.screwing( )
+				} else if ( otherPlayer != null && inputHandler.screwing( )
 						&& otherPlayer.inputHandler.screwing( ) ) {
 					currentScrew.screwRight( );
 				}
 			}
-
-			if ( currentScrew.body.getJointList( ).size( ) <= 1
-					|| ( currentScrew instanceof BossScrew && currentScrew.getDepth( ) == 0 ) ) {
-				world.destroyJoint( playerToScrew );
-				playerState = PlayerState.JumpingOffScrew;
-				screwJumpTimeout = SCREW_JUMP_STEPS;
-				jump( );
-			}
 		}
-		if ( currentScrew.body.getJointList( ).size( ) <= 1 ) {
+		if ( currentScrew.body.getJointList( ).size( ) <= 1
+				|| ( currentScrew instanceof BossScrew && currentScrew.getDepth( ) == 0 ) ) {
 			world.destroyJoint( playerToScrew );
 			playerState = PlayerState.JumpingOffScrew;
 			screwJumpTimeout = SCREW_JUMP_STEPS;

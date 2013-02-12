@@ -410,8 +410,8 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		}
 		
 
-		player1.update( deltaTime, player2 );
-		player2.update( deltaTime, player1 );
+		player1.update( deltaTime );
+		player2.update( deltaTime );
 		//puzzleScrew.update( deltaTime );
 		rootSkeleton.update( deltaTime );
 		batch.setProjectionMatrix( cam.combined( ) );
@@ -431,7 +431,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		if ( debug )
 			debugRenderer.render( world, cam.combined( ) );
 
-		world.step( 1 / 60f, 6, 2 );
+		world.step( 1 / 60f, 6, 4 );
 	}
 
 	@Override

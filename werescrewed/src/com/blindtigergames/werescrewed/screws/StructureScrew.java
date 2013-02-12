@@ -192,12 +192,9 @@ public class StructureScrew extends Screw {
 		// connect the entity to the skeleton
 		RevoluteJointDef revoluteJointDef = new RevoluteJointDef( );
 		revoluteJointDef = new RevoluteJointDef( );
-		revoluteJointDef.initialize( entity.body, skeleton.body, entity.getPosition( ) );
+		revoluteJointDef.initialize( body, skeleton.body, pos );
 		revoluteJointDef.enableMotor = false;
 		platformJoint = ( RevoluteJoint ) world.createJoint( revoluteJointDef );
-		if ( entity.body.getJointList( ).size( ) > 3 ) {
-			entity.body.setType( BodyType.KinematicBody );
-		}
 	}
 
 	private RevoluteJoint platformJoint;

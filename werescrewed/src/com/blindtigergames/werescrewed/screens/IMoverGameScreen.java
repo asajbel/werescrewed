@@ -132,6 +132,7 @@ public class IMoverGameScreen implements com.badlogic.gdx.Screen {
 		//skeleton.addPlatform( skeletonTest2 );
 		skeletonTest2.body.setFixedRotation( false );// WHY!?
 
+
 		// Ground
 		ground = platBuilder.position( 0.0f, 0.0f ).name( "ground" )
 				.dimensions( 200, 1 ).texture( testTexture ).kinematic( )
@@ -171,16 +172,18 @@ public class IMoverGameScreen implements com.badlogic.gdx.Screen {
 				skeletonTest2.body.getPosition( ).x - 0.5f,
 				skeletonTest2.body.getPosition( ).y ), 50, skeletonTest2, skeleton,
 				world );
-
 		StructureScrew rightPlatScrew = new StructureScrew( "", new Vector2(
 				skeletonTest2.body.getPosition( ).x + 0.5f,
 				skeletonTest2.body.getPosition( ).y ), 50, skeletonTest2, skeleton,
 				world );
 		StrippedScrew hanginScrew = new StrippedScrew( "", world, new Vector2(
 				skeletonTest2.body.getPosition( ).x + 0.03f, skeletonTest2.body.getPosition( ).y ), skeletonTest2 );
-		skeletonTest2.addScrew( hanginScrew );
-		skeletonTest2.addScrew( leftPlatScrew );
-		skeletonTest2.addScrew( rightPlatScrew );
+//		skeletonTest2.addScrew( hanginScrew );
+//		skeletonTest2.addScrew( leftPlatScrew );
+//		skeletonTest2.addScrew( rightPlatScrew );
+		skeleton.addScrewForDraw( hanginScrew );
+		skeleton.addScrewForDraw( leftPlatScrew );
+		skeleton.addScrewForDraw( rightPlatScrew );
 	}
 
 	/**
