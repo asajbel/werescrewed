@@ -31,7 +31,7 @@ public class StructureScrew extends Screw {
 		maxDepth = max;
 		depth = max;
 		rotation = 0;
-		fallTimeout = max * 4;
+		fallTimeout = max * 3;
 		extraJoints = new ArrayList< RevoluteJoint >( );
 
 		constuctBody( pos );
@@ -78,6 +78,7 @@ public class StructureScrew extends Screw {
 
 	@Override
 	public void update( float deltaTime ) {
+		body.setAwake( true );
 		super.update( deltaTime );
 		Vector2 bodyPos = body.getPosition( ).mul( Util.BOX_TO_PIXEL );
 		sprite.setPosition( bodyPos.x - offset.x, bodyPos.y - offset.y );
@@ -87,6 +88,11 @@ public class StructureScrew extends Screw {
 				world.destroyJoint( platformJoint );
 				for ( RevoluteJoint j : extraJoints ) {
 					world.destroyJoint( j );
+				}
+				//if the number of joints is less than 3 set to dynamic body
+				//a joint for the screw and a joint to the skeleton or less
+				if ( platformJoint.getBodyA( ).getJointList( ).size( ) < 3 ) {
+					platformJoint.getBodyA( ).setType( BodyType.DynamicBody );
 				}
 			}
 			fallTimeout--;
@@ -188,6 +194,9 @@ public class StructureScrew extends Screw {
 		revoluteJointDef.initialize( entity.body, skeleton.body, pos );
 		revoluteJointDef.enableMotor = false;
 		platformJoint = ( RevoluteJoint ) world.createJoint( revoluteJointDef );
+		if ( entity.body.getJointList( ).size( ) > 3 ) {
+			entity.body.setType( BodyType.KinematicBody );
+		}
 	}
 
 	private RevoluteJoint platformJoint;
