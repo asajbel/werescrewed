@@ -130,6 +130,7 @@ public class IMoverGameScreen implements com.badlogic.gdx.Screen {
 				// .setOneSided( true )
 				.name( "dynamicTiledPlat1" ).buildTilePlatform( );
 		skeleton.addDynamicPlatform( skeletonTest2 );
+		//skeleton.addPlatform( skeletonTest2 );
 		skeletonTest2.body.setFixedRotation( false );// WHY!?
 
 		// Ground
@@ -176,6 +177,9 @@ public class IMoverGameScreen implements com.badlogic.gdx.Screen {
 				skeletonTest2.body.getPosition( ).x + 0.5f,
 				skeletonTest2.body.getPosition( ).y ), 50, skeletonTest2, skeleton,
 				world );
+		StrippedScrew hanginScrew = new StrippedScrew( "", world, new Vector2(
+				skeletonTest2.body.getPosition( ).x + 0.03f, skeletonTest2.body.getPosition( ).y ), skeletonTest2 );
+		skeletonTest2.addScrew( hanginScrew );
 		skeletonTest2.addScrew( leftPlatScrew );
 		skeletonTest2.addScrew( rightPlatScrew );
 	}
@@ -201,7 +205,7 @@ public class IMoverGameScreen implements com.badlogic.gdx.Screen {
 				new Vector2( kinPlat1.body.getPosition( ).x,
 						kinPlat1.body.getPosition( ).y ), new Vector2(
 						kinPlat1.body.getPosition( ).x + 1.75f,
-						kinPlat1.body.getPosition( ).y ), 1f );
+						kinPlat1.body.getPosition( ).y ), 0.003f );
 		puzzleScrew.puzzleManager.addMover( lm );
 		skeleton.addScrewForDraw( puzzleScrew );
 	}

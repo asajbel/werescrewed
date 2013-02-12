@@ -153,7 +153,8 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 				.dimensions( 10, 1 ).texture( testTexture )
 				.dynamic( )
 				.name( "tp" ).resitituion( 0.0f ).buildTilePlatform( );
-		skeleton.addDynamicPlatform( tiledPlat );
+		//skeleton.addDynamicPlatform( tiledPlat );
+		skeleton.addPlatform( tiledPlat );
 		
 		// Tiled Single Platform
 		singTile = platBuilder.position( -1.0f, 1000.0f )
