@@ -17,10 +17,11 @@ public class PlayerInputHandler {
 	private boolean rightPressed;
 	private boolean jumpPressed;
 	private boolean downPressed;
+	private boolean grabPressed;
 
 	private boolean attachScrewPressed;
 
-	private int up, down, left, right, screw;
+	private int up, down, left, right, screw, grab;
 
 	/**
 	 * Hooks up the player to the input class, so events can be reported
@@ -36,12 +37,14 @@ public class PlayerInputHandler {
 			left = Keys.A;
 			right = Keys.D;
 			screw = Keys.F;
+			grab = Keys.R;
 		} else if ( playerNumber.equals( "player2" ) ) {
-			up = Keys.UP;                //I
-			down = Keys.DOWN;            //K
-			left = Keys.LEFT;            //J
-			right = Keys.RIGHT;          //L
-			screw = Keys.SHIFT_RIGHT;    //H
+			up = Keys.I;
+			down = Keys.K;
+			left = Keys.J;
+			right = Keys.L;
+			screw = Keys.H;
+			grab = Keys.Y;
 		}
 
 	}
@@ -58,6 +61,7 @@ public class PlayerInputHandler {
 		jumpPressed = Gdx.input.isKeyPressed( up );
 		downPressed = Gdx.input.isKeyPressed( down );
 		attachScrewPressed = Gdx.input.isKeyPressed( screw );
+		grabPressed = Gdx.input.isKeyPressed( grab );
 
 	}
 
@@ -107,6 +111,15 @@ public class PlayerInputHandler {
 	}
 
 	/**
+	 * returns whether the grab button is pressed
+	 * used for the double jump grab
+	 * @return
+	 */
+	public boolean isGrabPressed( ) {
+		return grabPressed;
+	}
+	
+	/**
 	 * Returns whether the attach to screw key is pressed
 	 * 
 	 * @return boolean
@@ -114,7 +127,7 @@ public class PlayerInputHandler {
 	public boolean screwPressed( ) {
 		return attachScrewPressed;
 	}
-
+	
 	public boolean unscrewPressed( ) {
 		return Gdx.input.isKeyPressed( Keys.Z );
 	}

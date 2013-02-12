@@ -144,19 +144,25 @@ public class MyContactListener implements ContactListener {
 							p1 = player;
 							NUM_PLAYER1_SCREWCONTACTS--;
 							if ( NUM_PLAYER1_SCREWCONTACTS <= 0 ) {
-								player.hitScrew( null );
+								if ( ! player.isOnScrew( ) ) {
+									player.hitScrew( null );
+								}
 							}
 						} else if ( p1 != player ) {
 							NUM_PLAYER2_SCREWCONTACTS--;
 							if ( NUM_PLAYER2_SCREWCONTACTS <= 0 ) {
-								player.hitScrew( null );
+								if ( ! player.isOnScrew( ) ) {
+									player.hitScrew( null );
+								}
 							}
 						}
 					} else if ( objectFix.getBody( ).getUserData( ) instanceof Player ) {
 						Player player2 = ( Player ) objectFix.getBody( )
 								.getUserData( );
-						player.hitPlayer( null );
-						player2.hitPlayer( null );
+						if( !player.isInHeadStand( ) ) {
+							player.hitPlayer( null );
+							player2.hitPlayer( null );
+						}
 					}
 				}
 			}
@@ -213,6 +219,14 @@ public class MyContactListener implements ContactListener {
 						}
 					}
 					if ( player.isTopPlayer( ) ) {
+						contact.setEnabled( false );
+					}
+				} else if ( objectFix.getBody( ).getUserData( ) instanceof Player ) {
+					Player player2 = ( Player ) objectFix.getBody( )
+							.getUserData( );
+					if( player.isInGrabState( ) || player2.isInGrabState( ) ) {
+						contact.setEnabled( false );
+					} else if ( !player.isGrounded( ) || !player2.isGrounded( ) ) { 
 						contact.setEnabled( false );
 					}
 				}

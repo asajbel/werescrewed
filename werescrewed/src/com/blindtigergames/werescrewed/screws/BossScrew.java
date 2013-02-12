@@ -82,7 +82,9 @@ public class BossScrew extends Screw {
 		revoluteJointDef.initialize( entity.body, skeleton.body, pos );
 		revoluteJointDef.enableMotor = false;
 		platformJoint = ( RevoluteJoint ) world.createJoint( revoluteJointDef );
-
+		if ( entity.body.getJointList( ).size( ) > 3 ) {
+			entity.body.setType( BodyType.KinematicBody );
+		}
 	}
 
 	/**
@@ -143,6 +145,11 @@ public class BossScrew extends Screw {
 				}
 				Gdx.app.log( "Boss Screw Removed" , "End Level" );
 				endFlag = true;
+				//if the number of joints is less than 3 set to dynamic body
+				//a joint for the screw and a joint to the skeleton or less
+				if ( platformJoint.getBodyA( ).getJointList( ).size( ) < 3 ) {
+					platformJoint.getBodyA( ).setType( BodyType.DynamicBody );
+				}
 			}
 			fallTimeout--;
 		} else {

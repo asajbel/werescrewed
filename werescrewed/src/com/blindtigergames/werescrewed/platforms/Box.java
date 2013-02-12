@@ -9,6 +9,11 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.blindtigergames.werescrewed.util.Util;
 
+/**
+ * THIS CLASS IS DEPRECATED. USED TILED PLATFORM INSTEAD
+ * @author stew
+ *
+ */
 public class Box extends Platform {
 
 	boolean colliding;
@@ -50,6 +55,5 @@ public class Box extends Platform {
 	}
 
 	public void exampleCollide( ) {
-		System.out.println( "Oi, Im standing here - box" );
 	}
 }

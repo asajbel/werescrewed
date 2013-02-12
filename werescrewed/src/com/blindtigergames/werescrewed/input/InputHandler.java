@@ -18,10 +18,11 @@ public class InputHandler implements InputProcessor {
 	private boolean rightPressed;
 	private boolean jumpPressed;
 	private boolean downPressed;
+	private boolean grabPressed;
 	
 	private boolean attachScrewPressed;
 	
-	private int up, down, left, right, screw;
+	private int up, down, left, right, screw, grab;
 	/*
 	 * Hooks up the InputProcessor to the input class, so events can be reported
 	 */
@@ -33,12 +34,14 @@ public class InputHandler implements InputProcessor {
 			left = Keys.A;
 			right = Keys.D;
 			screw = Keys.F;
+			grab = Keys.R;
 		} else if (playerNumber.equals( "player2" ) ){
 			up = Keys.I;
 			down = Keys.K;
 			left = Keys.J;
 			right = Keys.L;
 			screw = Keys.H;
+			grab = Keys.Y;
 		}
 		
 			
@@ -58,6 +61,8 @@ public class InputHandler implements InputProcessor {
 		rightPressed = Gdx.input.isKeyPressed( Keys.D );
 		jumpPressed = Gdx.input.isKeyPressed( Keys.W );
 		downPressed = Gdx.input.isKeyPressed( Keys.S );
+		
+		grabPressed = Gdx.input.isKeyPressed( Keys.R );
 		Gdx.input.isKeyPressed( Keys.Q );
 
 	}
@@ -109,6 +114,10 @@ public class InputHandler implements InputProcessor {
 		//return Gdx.input.isKeyPressed( Keys.SPACE );
 		return attachScrewPressed;
 	}
+	
+	public boolean isGrabPressed( ) {
+		return grabPressed;
+	}
 
 	public boolean unscrewPressed( ) {
 		return Gdx.input.isKeyPressed( Keys.Z );
@@ -142,6 +151,9 @@ public class InputHandler implements InputProcessor {
 		if ( keycode == screw ) {
 			attachScrewPressed = true;
 		}
+		if ( keycode == grab ) {
+			grabPressed = true;
+		}
 		return true;
 	}
 
@@ -166,7 +178,9 @@ public class InputHandler implements InputProcessor {
 		if ( keycode == screw ) {
 			attachScrewPressed = false;
 		}
-
+		if ( keycode == grab ) {
+			grabPressed = false;
+		}
 		return true;
 	}
 
