@@ -34,7 +34,7 @@ import com.blindtigergames.werescrewed.entity.tween.EntityAccessor;
 import com.blindtigergames.werescrewed.entity.tween.PlatformAccessor;
 import com.blindtigergames.werescrewed.joint.JointFactory;
 import com.blindtigergames.werescrewed.joint.PrismaticJointBuilder;
-import com.blindtigergames.werescrewed.platforms.ComplexPlatform;
+import com.blindtigergames.werescrewed.platforms.Platform;
 import com.blindtigergames.werescrewed.platforms.TiledPlatform;
 import com.blindtigergames.werescrewed.player.Player;
 import com.blindtigergames.werescrewed.screws.PuzzleScrew;
@@ -290,10 +290,13 @@ public class IMoverGameScreen implements com.badlogic.gdx.Screen {
 			skeleton.addDynamicPlatform( piston );
 		}
 
-		ComplexPlatform gear = new ComplexPlatform( "gear", new Vector2(
-				1000 * Util.PIXEL_TO_BOX, 300 * Util.PIXEL_TO_BOX ), null, 3,
-				world, "gearSmall" );
-		gear.body.setType( BodyType.DynamicBody );
+		Platform gear = builder.name( "gear" )
+				.position( 1000 * Util.PIXEL_TO_BOX, 300 * Util.PIXEL_TO_BOX )
+				.texture( null )
+				.setScale( 3f )
+				.type( "gearSmall" )
+				.dynamic( )
+				.buildComplexPlatform( );
 		skeleton.addPlatformRotatingCenterWithMot( gear, 1f );
 	}
 
