@@ -27,7 +27,7 @@ class MainMenuScreen implements com.badlogic.gdx.Screen {
 		batch = new SpriteBatch( );
 		font = new BitmapFont( );
 		lineHeight = Math.round( 2.5f * font.getCapHeight( ) );
-		headingLabel = new Label( "Screen Manager Demo", font );
+		headingLabel = new Label( "We're Screwed!!", font );
 		playButton = new Button( "Physics Test Screen", font, new ScreenSwitchHandler(
 				ScreenType.PHYSICS ) );
 		gleedButton = new Button( "Gleed Screen", font, new ScreenSwitchHandler(
@@ -56,6 +56,9 @@ class MainMenuScreen implements com.badlogic.gdx.Screen {
 		
 		if(Gdx.input.isKeyPressed( Keys.P )){
 			System.exit(1);
+		}
+		if(Gdx.input.isKeyPressed( Keys.ENTER )){
+			ScreenManager.getInstance( ).show( ScreenType.PHYSICS );
 		}
 	}
 
