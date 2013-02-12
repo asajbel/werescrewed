@@ -1,3 +1,3 @@
 BUG LIST:
-Done?(x)	Found By	Description
-			Stew		Players fall through one-sides platforms when skeletons move up/down.
+Done?(x)	Found By	Squashed by	Description
+			Stew					Players fall through one-sides platforms when skeletons move up/down too fast because player goes slightly under the platform which then turns off the contact listener i think.

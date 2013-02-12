@@ -5,7 +5,6 @@ import java.util.HashMap;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.World;
-import com.blindtigergames.werescrewed.platforms.ComplexPlatform;
 import com.blindtigergames.werescrewed.platforms.Platform;
 import com.blindtigergames.werescrewed.platforms.PlatformType;
 import com.blindtigergames.werescrewed.platforms.ShapePlatform;
@@ -35,7 +34,7 @@ public class PlatformBuilder extends GenericEntityBuilder<PlatformBuilder> {
 	protected boolean flipHorizonal = false;
 	protected boolean flipVertical = false;
 	protected boolean isOneSided = false;
-	protected PlatformType pType = PlatformType.DEFAULT;
+	//protected PlatformType pType = PlatformType.DEFAULT;
 	protected boolean moveable = false;
 	protected Shapes shape = null;
 	protected BodyType bodyType = BodyType.DynamicBody;
@@ -61,17 +60,6 @@ public class PlatformBuilder extends GenericEntityBuilder<PlatformBuilder> {
 		this.shape = shape;
 		return this;
 	}
-/**
-	 * 
-	 * @param pT - Pick a platform type to create when using build()
-	 * 	Default is a complex platform.
-	 * 	Default is null
-	 * @return PlatformBuilder
-	 */
-		public PlatformBuilder platformType( PlatformType pT ) {
-			this.pType = pT;
-			return this;
-		}
 
 /**
  * 
@@ -237,8 +225,7 @@ public class PlatformBuilder extends GenericEntityBuilder<PlatformBuilder> {
 		this.shape = null;
 		this.tex = null;
 		this.name = "No name";
-		this.bodyType = BodyType.DynamicBody;
-		this.pType = PlatformType.DEFAULT;
+		this.bodyType = BodyType.KinematicBody;
 		return this;
 	}
 	
@@ -264,13 +251,6 @@ public class PlatformBuilder extends GenericEntityBuilder<PlatformBuilder> {
 		return this;
 	}
 	
-	@Override
-	public Platform build(){
-		if (pType == PlatformType.TILED){
-			return buildTilePlatform();
-		}
-		return buildComplexPlatform();
-	}
 /**
  * builds tile platform with specified numbers
  * @return TiledPlatform
@@ -285,7 +265,6 @@ public class PlatformBuilder extends GenericEntityBuilder<PlatformBuilder> {
 				                              this.moveable, 
 				                              this.world);
 		tp.body.setType( bodyType );
-		bodyType = BodyType.DynamicBody;
 		tp.setDensity( this.density );
 		tp.setFriction( this.friction );
 		tp.setRestitution( this.restitution );
@@ -296,15 +275,16 @@ public class PlatformBuilder extends GenericEntityBuilder<PlatformBuilder> {
 	 * builds complex platform from available data.
 	 * @return ComplexPlatform
 	 */
-	public ComplexPlatform buildComplexPlatform( ) {
-		ComplexPlatform cp = new ComplexPlatform( this.name, 
-												  this.pos,
-												  this.tex, 
-												  this.scale,
-												  this.world,
-												  this.type);
+	public Platform buildComplexPlatform( ) {
+		Platform cp = new Platform( this.name,
+									this.type,
+									this.world,
+									this.pos,
+									this.rot,
+									new Vector2(this.scale,this.scale));
+		
+		cp.setPlatformType(PlatformType.COMPLEX);
 		cp.body.setType( bodyType );
-		bodyType = BodyType.DynamicBody;
 		cp.setDensity( this.density );
 		cp.setFriction( this.friction );
 		cp.setRestitution( this.restitution );
@@ -323,7 +303,6 @@ public class PlatformBuilder extends GenericEntityBuilder<PlatformBuilder> {
 				this.height, this.flipHorizonal );
 		
 		sp.body.setType( bodyType );
-		bodyType = BodyType.DynamicBody;
 		sp.setDensity( this.density );
 		sp.setFriction( this.friction );
 		sp.setRestitution( this.restitution );

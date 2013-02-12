@@ -85,7 +85,6 @@ public class Level {
 		Level out = new Level();
 		TiledPlatform tp, ground;
 		@SuppressWarnings( "unused" )
-		RoomPlatform rp;
 		//ShapePlatform sp;
 		Texture texture =
 				WereScrewedGame.manager.get("assets/data/common/rletter.png", Texture.class);

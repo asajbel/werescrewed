@@ -2,15 +2,12 @@ package com.blindtigergames.werescrewed.skeleton;
 
 import java.util.ArrayList;
 
-import javax.management.loading.PrivateClassLoader;
-
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.utils.Array;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.joint.RevoluteJointBuilder;
 import com.blindtigergames.werescrewed.platforms.Platform;
@@ -113,8 +110,8 @@ public class Skeleton extends Entity {
     }
     
     /**
-     * 
-     * @param platform - add platform that has structure screws already
+     *  Add a platform to this skeleton. Will determine what list to add it to for you!
+     * @param platform
      */
      public void addPlatform( Platform platform ){
     	 if ( platform.body.getType( ) == BodyType.DynamicBody )

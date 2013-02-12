@@ -11,6 +11,8 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.blindtigergames.werescrewed.util.Util;
 
 /**
+ * THIS CLASS IS DEPRECATED, WAITING TO DELETE IT UNTIL THIS CODE
+ * IS SAVED IN PLATFORM BUILDER
  * @param name
  *            blah blah
  * 

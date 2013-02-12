@@ -20,7 +20,7 @@ import com.blindtigergames.werescrewed.util.Util;
 
 /**
  * 
- * @author Ranveer
+ * @author Ranveer / Stew / Anders
  * 
  */
 
