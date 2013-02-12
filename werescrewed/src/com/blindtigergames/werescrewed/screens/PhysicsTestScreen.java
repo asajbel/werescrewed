@@ -205,15 +205,15 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 	 */
 	private void initPuzzleScrews( ) {
 
-		Vector2 axis = new Vector2( 1, 0 );
-		PrismaticJointDef jointDef = new PrismaticJointDef( );
-		jointDef.initialize( movingTP.body, skeleton.body,
-				movingTP.body.getPosition( ), axis );
-		jointDef.enableMotor = true;
-		jointDef.enableLimit = true;
-		jointDef.lowerTranslation = -2.5f;
-		jointDef.upperTranslation = 3.0f;
-		jointDef.motorSpeed = 7.0f;
+//		Vector2 axis = new Vector2( 1, 0 );
+//		PrismaticJointDef jointDef = new PrismaticJointDef( );
+//		jointDef.initialize( movingTP.body, skeleton.body,
+//				movingTP.body.getPosition( ), axis );
+//		jointDef.enableMotor = true;
+//		jointDef.enableLimit = true;
+//		jointDef.lowerTranslation = -2.5f;
+//		jointDef.upperTranslation = 3.0f;
+//		jointDef.motorSpeed = 7.0f;
 		puzzleScrew = new PuzzleScrew( "001", new Vector2( 0.0f, 0.2f ), 50,
 				skeleton, world );
 		//puzzleScrew.puzzleManager.addEntity( movingTP );
@@ -391,7 +391,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 
 		player1.update( deltaTime );
 		player2.update( deltaTime );
-		puzzleScrew.update( deltaTime );
+		//puzzleScrew.update( deltaTime );
 		rootSkeleton.update( deltaTime );
 
 		batch.setProjectionMatrix( cam.combined( ) );

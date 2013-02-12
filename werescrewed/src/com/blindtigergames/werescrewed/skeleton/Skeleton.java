@@ -12,6 +12,7 @@ import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.joint.RevoluteJointBuilder;
 import com.blindtigergames.werescrewed.platforms.Platform;
 import com.blindtigergames.werescrewed.platforms.TiledPlatform;
+import com.blindtigergames.werescrewed.screws.PuzzleScrew;
 import com.blindtigergames.werescrewed.screws.Screw;
 import com.blindtigergames.werescrewed.screws.StrippedScrew;
 import com.blindtigergames.werescrewed.util.Util;
@@ -125,8 +126,9 @@ public class Skeleton extends Entity {
       * @param ss -  add stripped screw onto the skeleton
       */
      public void addStrippedScrew ( StrippedScrew ss ){
-        new RevoluteJointBuilder( world ).skeleton( this ).bodyB( ss )
-                 .limit( true ).lower( 0 ).upper( 0 ).build();
+    	 //this is a repeated joint joint already exists in screw
+//        new RevoluteJointBuilder( world ).skeleton( this ).bodyB( ss )
+//                 .limit( true ).lower( 0 ).upper( 0 ).build();
      	//addDynamicPlatform( ss );
         screws.add( ss );
     }
@@ -294,6 +296,9 @@ public class Skeleton extends Entity {
         }
         for ( Platform p : dynamicPlatforms ) {
         	updatePlatform(p,deltaTime);
+        }
+        for ( Screw s: screws ) {
+    		s.update( deltaTime );
         }
         for ( Platform p : kinematicPlatforms ) {
         	updatePlatform(p,deltaTime);
