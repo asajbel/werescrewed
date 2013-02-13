@@ -299,7 +299,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 				.buildTilePlatform( );
 		skeleton.addKinematicPlatform( skeletonTest1 );
 		
-		rope = new Rope( "rope", new Vector2 ( 1f, 1.5f), new Vector2 ( 8.0f, 32.0f ), 10, null, world );
+		rope = new Rope( "rope", new Vector2 ( 8f, 1.5f), new Vector2 ( 8.0f, 32.0f ), 10, null, world );
 
 		
 		/*
