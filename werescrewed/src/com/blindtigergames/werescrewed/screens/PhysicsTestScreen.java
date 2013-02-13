@@ -91,7 +91,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		//entityManager.addSkeleton( rootSkeleton.name, rootSkeleton );
 		platBuilder = new PlatformBuilder( world );
 		testTexture = WereScrewedGame.manager.get(
-				"assets/data/common/TilesetTest.png",Texture.class);
+				WereScrewedGame.dirHandle + "/common/TilesetTest.png",Texture.class);
 
 		// Initialize camera
 		initCamera( );
