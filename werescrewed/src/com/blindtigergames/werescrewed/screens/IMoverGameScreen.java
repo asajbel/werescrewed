@@ -90,7 +90,8 @@ public class IMoverGameScreen implements com.badlogic.gdx.Screen {
 		rootSkeleton.addSkeleton( skeleton );
 		entityManager.addSkeleton( rootSkeleton.name, rootSkeleton );
 		platBuilder = new PlatformBuilder( world );
-		testTexture = WereScrewedGame.manager.get("assets/data/common/TilesetTest.png", Texture.class);
+		testTexture = WereScrewedGame.manager.get(WereScrewedGame.dirHandle.path( ) +
+				"/common/TilesetTest.png", Texture.class);
 		
 		
 		Tween.registerAccessor(Entity.class, new EntityAccessor());

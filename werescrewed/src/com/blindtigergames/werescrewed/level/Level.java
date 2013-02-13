@@ -86,7 +86,7 @@ public class Level {
 		@SuppressWarnings( "unused" )
 		//ShapePlatform sp;
 		Texture texture =
-				WereScrewedGame.manager.get("assets/data/common/rletter.png", Texture.class);
+				WereScrewedGame.manager.get(WereScrewedGame.dirHandle.path( ) + "/common/rletter.png", Texture.class);
 		
 		tp = new PlatformBuilder(out.world)
 		.position( 2.0f, 0.2f )

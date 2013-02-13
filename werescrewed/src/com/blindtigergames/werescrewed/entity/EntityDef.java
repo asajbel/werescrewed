@@ -196,8 +196,8 @@ public class EntityDef {
 				fixes.add( playerFixtureDef );
 
 				out = new EntityDef( "player",
-						WereScrewedGame.manager.get("assets/data/common/player_r_m.png", Texture.class), "",
-						playerBodyDef, fixes );
+						WereScrewedGame.manager.get(WereScrewedGame.dirHandle.path( )  + "/common/"
+						+ "player_r_m.png", Texture.class), "", playerBodyDef, fixes );
 			} else if ( id.equals( "bottle" ) ) { // Bottle
 				BodyDef bottleBodyDef = new BodyDef( );
 				bottleBodyDef.type = BodyType.DynamicBody;
@@ -221,7 +221,7 @@ public class EntityDef {
 	 * @return The loaded definition
 	 */
 	protected static EntityDef loadDefinition( String id ) {
-		String filename = "assets/data/entities/" + id + ".xml";
+		String filename = WereScrewedGame.dirHandle.path( )  + "/entities/" + id + ".xml";
 		try {
 			XmlReader reader = new XmlReader( );
 			XmlReader.Element xml = reader
@@ -232,7 +232,8 @@ public class EntityDef {
 			out.setCategory( xml.get( "category", NO_CATEGORY ) );
 			// Sprite Data
 			String texName = xml.get( "texture" );
-			out.setTexture(WereScrewedGame.manager.get("assets/data/" + texName, Texture.class));
+			out.setTexture(WereScrewedGame.manager.get(
+					WereScrewedGame.dirHandle.path( )  + "/" + texName, Texture.class));
 			out.initialAnim = xml.get( "initialAnim" );
 			out.origin.x = xml.getFloat( "originX" );
 			out.origin.y = xml.getFloat( "originY" );

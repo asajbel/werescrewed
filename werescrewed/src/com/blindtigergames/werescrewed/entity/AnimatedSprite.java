@@ -55,7 +55,7 @@ public class AnimatedSprite extends Sprite implements I_Drawable {
 		FRAMES = f;
 		ROWS = r;
 		COLUMNS = c;
-		String spriteSheetFullName = "data/" + spriteSheetName;
+		String spriteSheetFullName = WereScrewedGame.dirHandle.path( )  + "/" + spriteSheetName;
 		spriteSheet = WereScrewedGame.manager.get(spriteSheetFullName, Texture.class);
 
 		// temporary frames for placing each frame into spriteSheetFrames

@@ -25,23 +25,38 @@ public class LoadingScreen implements com.badlogic.gdx.Screen {
 		//WereScrewedGame.manager.load("assets/data/common/sounds/jump.ogg", Sound.class);
 		
 		
-		FileHandle dirHandle;
+		FileHandle common;
 		if (Gdx.app.getType() == ApplicationType.Android) {
-		  dirHandle = Gdx.files.internal("data/common/");
+			WereScrewedGame.dirHandle = Gdx.files.internal("data/");
 		} else {
 		  // ApplicationType.Desktop ..
-		  dirHandle = Gdx.files.internal("assets/data/common/");
+			WereScrewedGame.dirHandle = Gdx.files.internal("assets/data/");
 		}
-		for (FileHandle entry: dirHandle.list()) {
+		for (FileHandle entry: WereScrewedGame.dirHandle.list()) {
 		   
-			if(!entry.isDirectory( ))
-				WereScrewedGame.manager.load( dirHandle.path( )  + "/" + entry.name( ), Texture.class );
+			if(!entry.isDirectory( )){
+				WereScrewedGame.manager.load( WereScrewedGame.dirHandle.path( )  + "/" + entry.name( ), Texture.class );
+				//System.out.println( entry.name());
+			}
 			
 			//TODO: better way to go into directories in directories
-			if(entry.name( ).equals("sounds"))
-				WereScrewedGame.manager.load(dirHandle.path( ) + "/sounds/jump.ogg", Sound.class);
-			
+			if(entry.name( ).equals( "common" )){
+				common = Gdx.files.internal( WereScrewedGame.dirHandle.path( )  + "/common/" );
+				
+				for( FileHandle com: common.list( )){
+					
+					if(com.name( ).equals("sounds")){
+						WereScrewedGame.manager.load( common.path( ) + "/sounds/jump.ogg", Sound.class);
+						//System.out.println( "soundloaded" );
+					}
+					else{
+						WereScrewedGame.manager.load( common.path( )  + "/" + com.name( ), Texture.class );
+					}
+						//System.out.println( com.name());
+				}
+			}
 		}
+		//System.out.println( WereScrewedGame.dirHandle.path( )  );
 	}
 
 	/**
