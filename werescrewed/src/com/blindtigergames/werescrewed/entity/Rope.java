@@ -71,26 +71,26 @@ public class Rope extends Entity {
 		//polygonShape.dispose( );
 		
 		
-//		bodyDef.position.set(  new Vector2 ( pieces.get( pieces.size( )-1 ).getWorldCenter( ).x,
-//				pieces.get( pieces.size( )-1 ).getWorldCenter().y  - 32.0f * Util.PIXEL_TO_BOX ) );
-//		FixtureDef fixtureDef = new FixtureDef();
-//		polygonShape.setAsBox(  64.0f * Util.PIXEL_TO_BOX, 16.0f * Util.PIXEL_TO_BOX );
-//		fixtureDef.shape = polygonShape;
-//		fixtureDef.isSensor = false;
-//		fixtureDef.density = 10.0f;
-//		body = world.createBody( bodyDef );
-//		body.createFixture( fixtureDef );
-//		RevoluteJointDef revoluteJointDef = new RevoluteJointDef( );
-//		revoluteJointDef.initialize( pieces.get( pieces.size( )-1 ), body,  new Vector2 ( body.getWorldCenter( ).x,
-//				body.getWorldCenter().y + 16.0f * Util.PIXEL_TO_BOX ) );
-//		revoluteJointDef.enableMotor = false;
-//		revoluteJointDef.enableLimit = true;
-//		world.createJoint( revoluteJointDef );
-//		
-//		pieces.add(body);
+		bodyDef.position.set(  new Vector2 ( pieces.get( pieces.size( )-1 ).getWorldCenter( ).x,
+				pieces.get( pieces.size( )-1 ).getWorldCenter().y  - 32.0f * Util.PIXEL_TO_BOX ) );
+		FixtureDef fixtureDef = new FixtureDef();
+		polygonShape.setAsBox(  64.0f * Util.PIXEL_TO_BOX, 16.0f * Util.PIXEL_TO_BOX );
+		fixtureDef.shape = polygonShape;
+		fixtureDef.isSensor = false;
+		fixtureDef.density = 10.0f;
+		body = world.createBody( bodyDef );
+		body.createFixture( fixtureDef );
+		RevoluteJointDef revoluteJointDef = new RevoluteJointDef( );
+		revoluteJointDef.initialize( pieces.get( pieces.size( )-1 ), body,  new Vector2 ( body.getWorldCenter( ).x,
+				body.getWorldCenter().y + 16.0f * Util.PIXEL_TO_BOX ) );
+		revoluteJointDef.enableMotor = false;
+		revoluteJointDef.enableLimit = true;
+		world.createJoint( revoluteJointDef );
+		
+		pieces.add(body);
 	
-		for( Body b : pieces)
-			System.out.println( b.toString( ));
+		//for( Body b : pieces)
+			//System.out.println( b.toString( ));
 		// TODO Auto-generated constructor stub
 	
 	}
