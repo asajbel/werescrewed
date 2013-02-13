@@ -133,7 +133,7 @@ public class Player extends Entity {
 		controllerDebug = true;
 
 		jumpSound = WereScrewedGame.manager
-				.get( "assets/data/common/sounds/jump.ogg" );
+				.get( WereScrewedGame.dirHandle + "/common/sounds/jump.ogg" );
 	}
 
 	// PUBLIC METHODS

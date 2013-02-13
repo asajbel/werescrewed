@@ -159,7 +159,7 @@ public class EntityDef {
 	 */
 	protected void loadComplexBody( float density, float friction,
 			float restitution, float scale, String bodyName ) {
-		String filename = "assets/data/bodies/" + bodyName + ".json";
+		String filename = WereScrewedGame.dirHandle + "/bodies/" + bodyName + ".json";
 		BodyEditorLoader loader = new BodyEditorLoader(
 				Gdx.files.internal( filename ) );
 
