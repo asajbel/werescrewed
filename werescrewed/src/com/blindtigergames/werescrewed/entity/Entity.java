@@ -9,6 +9,7 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.blindtigergames.werescrewed.camera.Anchor;
+import com.blindtigergames.werescrewed.camera.AnchorList;
 import com.blindtigergames.werescrewed.entity.mover.IMover;
 import com.blindtigergames.werescrewed.util.Util;
 
@@ -49,7 +50,8 @@ public class Entity {
 	 *            boolean determining whether or not the player can stand on it
 	 */
 	public Entity( String name, EntityDef type, World world, Vector2 pos,
-			float rot, Vector2 scale, Texture texture, boolean solid ) {
+			float rot, Vector2 scale, Texture texture, boolean solid,
+			float anchRadius ) {
 		this.name = name;
 		this.type = type;
 		this.world = world;
@@ -58,6 +60,13 @@ public class Entity {
 		this.sprite = constructSprite( texture );
 		this.body = constructBody( );
 		setPosition( pos );
+		if ( anchRadius >= 0 ) {
+			Vector2 centPos = new Vector2( body.getWorldCenter( ).x
+					* Util.BOX_TO_PIXEL, body.getWorldCenter( ).y
+					* Util.BOX_TO_PIXEL );
+			this.anchor = new Anchor( centPos, world, anchRadius );
+			AnchorList.getInstance( ).addAnchor( anchor );
+		}
 	}
 
 	/**
@@ -112,18 +121,22 @@ public class Entity {
 			sprite.draw( batch );
 		}
 	}
-	
-	public void setPosition(float x, float y){
-		if (body != null){
-			body.setTransform(x, y, body.getAngle());
-		} else if (sprite != null){
-			sprite.setPosition(x, y);
+
+	public void setPosition( float x, float y ) {
+		if ( body != null ) {
+			body.setTransform( x, y, body.getAngle( ) );
+		} else if ( sprite != null ) {
+			sprite.setPosition( x, y );
 		}
 	}
 
 	public void update( float deltaTime ) {
-		if ( body != null && mover != null ) {
-			mover.move( deltaTime, body );
+		if ( body != null ) {
+			if ( mover != null ) {
+				mover.move( deltaTime, body );
+			}
+			if ( anchor != null )
+				updateAnchor( );
 		}
 	}
 
@@ -135,7 +148,8 @@ public class Entity {
 	 * Builds a sprite from a texture. If the texture is null, it attempts to
 	 * load one from the XML definitions
 	 * 
-	 * @param texture from which a sprite can be generated, or null, if loading 
+	 * @param texture
+	 *            from which a sprite can be generated, or null, if loading
 	 * @return the loaded/generated sprite, or null if neither applies
 	 */
 	protected Sprite constructSprite( Texture texture ) {
@@ -177,13 +191,11 @@ public class Entity {
 		sprite.setOrigin( origin.x, origin.y );
 		return sprite;
 	}
-	
-    public void Move(Vector2 vector)
-    {
-    	Vector2 pos = body.getPosition().add(vector);
-    	setPosition(pos);
-    }
 
+	public void Move( Vector2 vector ) {
+		Vector2 pos = body.getPosition( ).add( vector );
+		setPosition( pos );
+	}
 
 	/**
 	 * Builds the body associated with the entity's type.
@@ -230,14 +242,22 @@ public class Entity {
 		body.setAwake( true );
 	}
 
-	
 	/**
 	 * Change the sprite to be displayed on the entity
 	 * 
 	 * @param newSprite
-	 * 		The new sprite that will be displayed on top of the entity
+	 *            The new sprite that will be displayed on top of the entity
 	 */
-	public void changeSprite(Sprite newSprite){
+	public void changeSprite( Sprite newSprite ) {
 		this.sprite = newSprite;
+	}
+
+	/**
+	 * updates the player's anchor
+	 * 
+	 * @author Edward Ramirez
+	 */
+	private void updateAnchor( ) {
+		anchor.setPositionBox( body.getWorldCenter( ) );
 	}
 }

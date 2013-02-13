@@ -76,7 +76,6 @@ public class MyContactListener implements ContactListener {
 						player.hitScrew( screw );
 					}
 				} else if ( objectFix.getBody( ).getUserData( ) instanceof Anchor ) {
-					// TODO: stuff
 					Anchor anchor = ( Anchor ) objectFix.getBody( )
 							.getUserData( );
 					if ( !anchor.special )
@@ -138,7 +137,6 @@ public class MyContactListener implements ContactListener {
 						player.endHitScrew( );
 					}
 				} else if ( objectFix.getBody( ).getUserData( ) instanceof Anchor ) {
-					// TODO: stuff
 					Anchor anchor = ( Anchor ) objectFix.getBody( )
 							.getUserData( );
 					if ( !anchor.special )

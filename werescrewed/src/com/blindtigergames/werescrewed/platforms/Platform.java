@@ -50,14 +50,14 @@ public class Platform extends Entity {
 	}
 
 	public Platform( String name, EntityDef type, World world, Vector2 pos, float rot,
-			Vector2 scale ) {
-		super( name, type, world, pos, rot, scale, null, true );
+			Vector2 scale, float anchRadius ) {
+		super( name, type, world, pos, rot, scale, null, true, anchRadius );
 		screws = new ArrayList< Screw >( );
 	}
 
 	public Platform( String name, EntityDef type, World world, Vector2 pos, float rot,
-			Vector2 scale, Texture tex ) {
-		super( name, type, world, pos, rot, scale, tex, true );
+			Vector2 scale, float anchRadius, Texture tex ) {
+		super( name, type, world, pos, rot, scale, tex, true, anchRadius );
 		screws = new ArrayList< Screw >( );
 	}
 

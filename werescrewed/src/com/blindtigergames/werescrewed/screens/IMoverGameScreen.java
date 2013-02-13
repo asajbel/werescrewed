@@ -239,7 +239,7 @@ public class IMoverGameScreen implements com.badlogic.gdx.Screen {
 
 		ComplexPlatform gear = new ComplexPlatform( "gear", new Vector2(
 				1000 * PIXEL_TO_BOX, 300 * PIXEL_TO_BOX ), null, 3, world,
-				"gearSmall" );
+				"gearSmall", 0 );
 		gear.body.setType( BodyType.DynamicBody );
 		skeleton.addPlatformRotatingCenterWithRot( gear, 1f );
 

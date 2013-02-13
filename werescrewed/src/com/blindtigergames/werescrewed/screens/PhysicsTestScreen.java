@@ -15,8 +15,6 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.joints.PrismaticJoint;
 import com.badlogic.gdx.physics.box2d.joints.PrismaticJointDef;
-import com.blindtigergames.werescrewed.camera.Anchor;
-import com.blindtigergames.werescrewed.camera.AnchorList;
 import com.blindtigergames.werescrewed.camera.Camera;
 import com.blindtigergames.werescrewed.collisionManager.MyContactListener;
 import com.blindtigergames.werescrewed.debug.SBox2DDebugRenderer;
@@ -75,7 +73,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 	private ArrayList< StrippedScrew > climbingScrews;
 	private boolean debug = true;
 	private boolean debugTest = true;
-	private Anchor anchor;
+	// private Anchor anchor;
 
 	/**
 	 * Defines all necessary components in a screen for testing different
@@ -94,9 +92,11 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 
 		// Initialize camera
 		initCamera( );
-		anchor = new Anchor( new Vector2( 7 * Util.BOX_TO_PIXEL, Util.BOX_TO_PIXEL ), world, 5f );
-		anchor.deactivate( );
-		AnchorList.getInstance( ).addAnchor( anchor );
+		// Uncomment for test anchor
+		// anchor = new Anchor( new Vector2( 7 * Util.BOX_TO_PIXEL,
+		// Util.BOX_TO_PIXEL ), world, 5f );
+		// anchor.deactivate( );
+		// AnchorList.getInstance( ).addAnchor( anchor );
 
 		// Initialize listeners
 		contactListener = new MyContactListener( );
@@ -331,7 +331,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 
 		ComplexPlatform gear = new ComplexPlatform( "gear", new Vector2(
 				1000 * Util.PIXEL_TO_BOX, 300 * Util.PIXEL_TO_BOX ), null, 3,
-				world, "gearSmall" );
+				world, "gearSmall", 1f );
 		gear.body.setType( BodyType.DynamicBody );
 		skeleton.addPlatformRotatingCenterWithRot( gear, 1f );
 	}

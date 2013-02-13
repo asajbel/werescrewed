@@ -13,8 +13,6 @@ import com.badlogic.gdx.physics.box2d.JointEdge;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJoint;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
-import com.blindtigergames.werescrewed.camera.Anchor;
-import com.blindtigergames.werescrewed.camera.AnchorList;
 import com.blindtigergames.werescrewed.input.MyControllerListener;
 import com.blindtigergames.werescrewed.input.PlayerInputHandler;
 import com.blindtigergames.werescrewed.platforms.Platform;
@@ -97,7 +95,7 @@ public class Player extends Entity {
 	 */
 	public Player( String name, World world, Vector2 pos ) {
 		super( name, EntityDef.getDefinition( "playerTest" ), world, pos, 0.0f,
-				new Vector2( 1f, 1f ), null, true );
+				new Vector2( 1f, 1f ), null, true, PLAYA_RADIUS );
 		body.setGravityScale( 0.25f );
 		body.setFixedRotation( true );
 		this.world = world;
@@ -105,11 +103,9 @@ public class Player extends Entity {
 		body.setBullet( true );
 		playerState = PlayerState.Standing;
 		inputHandler = new PlayerInputHandler( this.name );
-		anchor = new Anchor( true, new Vector2( body.getWorldCenter( ).x
-				* Util.BOX_TO_PIXEL, body.getWorldCenter( ).y
-				* Util.BOX_TO_PIXEL ), PLAYER_BUFFER, world, PLAYA_RADIUS );
-		AnchorList.getInstance( ).addAnchor( anchor );
+		anchor.setBuffer( PLAYER_BUFFER );
 		anchor.activate( );
+		anchor.special = true;
 
 		torso = body.getFixtureList( ).get( 0 );
 		feet = body.getFixtureList( ).get( 1 );
@@ -126,7 +122,6 @@ public class Player extends Entity {
 	 */
 	public void update( float deltaTime ) {
 		super.update( deltaTime );
-		updateAnchor( );
 		if ( isDead ) {
 			// TODO: do stuff here
 			// playerState = playerState.Dead;
@@ -614,15 +609,6 @@ public class Player extends Entity {
 			else if ( velocity >= -0.1 && velocity <= 0.1f && velocity != 0.0f )
 				body.setLinearVelocity( 0.0f, body.getLinearVelocity( ).y );
 		}
-	}
-
-	/**
-	 * updates the player's anchor
-	 * 
-	 * @author Edward Ramirez
-	 */
-	private void updateAnchor( ) {
-		anchor.setPositionBox( body.getWorldCenter( ) );
 	}
 
 	/**

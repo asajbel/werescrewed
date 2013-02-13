@@ -15,10 +15,10 @@ import com.blindtigergames.werescrewed.entity.mover.IMover;
  * This will also help once categories are implemented with EntityDef, since
  * we can switch constructors depending on the definition's category.
  * 
-*/		
+ */
 
-public class EntityBuilder{
-	//Common to all builders
+public class EntityBuilder {
+	// Common to all builders
 	protected String name;
 	protected Vector2 pos;
 	protected float rot;
@@ -26,99 +26,102 @@ public class EntityBuilder{
 	protected IMover mover;
 	protected boolean solid;
 
-	//Used for type+world construction
+	// Used for type+world construction
 	protected EntityDef type;
 	protected World world;
-	
-	//Used for texture+body construction
+
+	// Used for texture+body construction
 	protected Texture tex;
 	protected Body body;
-	
-	public EntityBuilder(){
-		resetInternal();
+
+	public EntityBuilder( ) {
+		resetInternal( );
 	}
-	
-	protected void resetInternal(){
+
+	protected void resetInternal( ) {
 		name = "";
-		pos = new Vector2(0,0);
+		pos = new Vector2( 0, 0 );
 		rot = 0.0f;
-		sca = new Vector2(1,1);
+		sca = new Vector2( 1, 1 );
 		solid = true;
 		mover = null;
 	}
-	//Simply resets the builder to initial state ant returns it.
-	public EntityBuilder reset(){
-		resetInternal();
+
+	// Simply resets the builder to initial state ant returns it.
+	public EntityBuilder reset( ) {
+		resetInternal( );
 		return this;
 	}
-	
-	public EntityBuilder name(String n){
+
+	public EntityBuilder name( String n ) {
 		name = n;
 		return this;
 	}
 
-	public EntityBuilder type(EntityDef def){
+	public EntityBuilder type( EntityDef def ) {
 		type = def;
-		if (type.getCategory().equals( "Player" )){
-			return new PlayerBuilder().copy(this);
+		if ( type.getCategory( ).equals( "Player" ) ) {
+			return new PlayerBuilder( ).copy( this );
 		}
 		return this;
 
 	}
-	
-	//Used if only a string is passed in.
-	public EntityBuilder type(String def){
-		return type(EntityDef.getDefinition( def ));
+
+	// Used if only a string is passed in.
+	public EntityBuilder type( String def ) {
+		return type( EntityDef.getDefinition( def ) );
 	}
-	
-	public EntityBuilder world(World w){
+
+	public EntityBuilder world( World w ) {
 		world = w;
 		return this;
 	}
-	
-	public EntityBuilder body(Body b){
+
+	public EntityBuilder body( Body b ) {
 		body = b;
 		world = b.getWorld( );
 		return this;
 	}
-	
-	public EntityBuilder texture(Texture t){
+
+	public EntityBuilder texture( Texture t ) {
 		tex = t;
 		return this;
 	}
-	
-	public EntityBuilder position(Vector2 p){
-		return positionX(p.x).positionY(p.y);
+
+	public EntityBuilder position( Vector2 p ) {
+		return positionX( p.x ).positionY( p.y );
 	}
-	
-	public EntityBuilder positionX(float x){
+
+	public EntityBuilder positionX( float x ) {
 		pos.x = x;
 		return this;
 	}
-	
-	public EntityBuilder positionY(float y){
+
+	public EntityBuilder positionY( float y ) {
 		pos.y = y;
 		return this;
 	}
-	
-	public EntityBuilder rotation(float r){
+
+	public EntityBuilder rotation( float r ) {
 		rot = r;
 		return this;
 	}
-	
-	public EntityBuilder solid(boolean s){
+
+	public EntityBuilder solid( boolean s ) {
 		solid = s;
 		return this;
 	}
+
 	/**
-	 * Loads an entity's special properties from a hashmap.
-	 * For generic entities, this does nothing. This is basically a placeholder for subclasses to inherit.
+	 * Loads an entity's special properties from a hashmap. For generic
+	 * entities, this does nothing. This is basically a placeholder for
+	 * subclasses to inherit.
 	 */
-	public EntityBuilder properties(HashMap<String,String> props){
+	public EntityBuilder properties( HashMap< String, String > props ) {
 		return this;
 	}
-	
-	public EntityBuilder copy(EntityBuilder that){
+
+	public EntityBuilder copy( EntityBuilder that ) {
 		name = that.name;
 		pos = that.pos;
 		rot = that.rot;
@@ -129,33 +132,39 @@ public class EntityBuilder{
 		world = that.world;
 		tex = that.tex;
 		body = that.body;
-		return this;	
+		return this;
 	}
-	
-	protected boolean canBuild(){
-		if (world == null) return false;
-		if (type == null && body == null) return false;
+
+	protected boolean canBuild( ) {
+		if ( world == null )
+			return false;
+		if ( type == null && body == null )
+			return false;
 		return true;
 	}
-	
-	public Entity build(){
+
+	public Entity build( ) {
 		Entity out = null;
-		if (canBuild()){
-			if (type != null){
-				out = new Entity(name, type, world, pos, rot, sca, tex, solid);
+		if ( canBuild( ) ) {
+			if ( type != null ) {
+				// NOTE: 1f is just a stand in! Should pass in a variable anchor
+				// radius!
+				out = new Entity( name, type, world, pos, rot, sca, tex, solid,
+						1f );
 			} else {
-				out = new Entity(name, pos, tex, body, solid);
+				out = new Entity( name, pos, tex, body, solid );
 			}
-			if (mover != null){
+			if ( mover != null ) {
 				out.setMover( mover );
 			}
 		}
 		return out;
 	}
+
 	protected static final String nameTag = "Name";
 	protected static final String typeTag = "Definition";
 	protected static final String xTag = "X";
 	protected static final String yTag = "Y";
-	protected static final String aTag = "Angle";	
+	protected static final String aTag = "Angle";
 
 }

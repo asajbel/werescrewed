@@ -23,6 +23,7 @@ public class Anchor {
 	protected Vector2 buffer;
 	protected boolean activated;
 	private Body body;
+	private World world;
 
 	static protected final Vector2 DEFAULT_BUFFER = new Vector2( 128f, 128f );
 
@@ -65,8 +66,9 @@ public class Anchor {
 		this.positionBox = new Vector2( position.x * Util.PIXEL_TO_BOX,
 				position.y * Util.PIXEL_TO_BOX );
 		this.buffer = buffer;
+		this.world = world;
 		this.activated = false;
-		this.body = constructBody( world, radius );
+		this.body = constructBody( radius );
 		this.body.setTransform( positionBox, body.getAngle( ) );
 	}
 
@@ -77,10 +79,10 @@ public class Anchor {
 	 * @param radius
 	 * @return the reference to the body
 	 */
-	private Body constructBody( World world, float radius ) {
+	private Body constructBody( float radius ) {
 		BodyDef bodyDef = new BodyDef( );
 		bodyDef.type = BodyType.StaticBody;
-		Body body = world.createBody( bodyDef );
+		Body body = this.world.createBody( bodyDef );
 		CircleShape sensorShape = new CircleShape( );
 		sensorShape.setRadius( radius );
 		FixtureDef sensor = new FixtureDef( );
