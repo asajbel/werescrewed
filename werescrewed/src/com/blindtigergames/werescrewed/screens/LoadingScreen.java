@@ -27,13 +27,16 @@ public class LoadingScreen implements com.badlogic.gdx.Screen {
 		
 		FileHandle common;
 		if (Gdx.app.getType() == ApplicationType.Android) {
-			WereScrewedGame.dirHandle = Gdx.files.internal("data/");
+			WereScrewedGame.dirHandle = Gdx.files.internal("assets/data/");
 		} else {
 		  // ApplicationType.Desktop ..
 			WereScrewedGame.dirHandle = Gdx.files.internal("assets/data/");
 		}
 		for (FileHandle entry: WereScrewedGame.dirHandle.list()) {
 		   
+			//if this file is named ".DS_Store", which like to show up on Macs, then FUCK OFF.
+			if(entry.name( ).equals(".DS_Store")) continue;
+			
 			if(!entry.isDirectory( )){
 				WereScrewedGame.manager.load( WereScrewedGame.dirHandle.path( )  + "/" + entry.name( ), Texture.class );
 				//System.out.println( entry.name());
