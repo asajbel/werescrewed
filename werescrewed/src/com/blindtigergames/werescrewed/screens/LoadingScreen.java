@@ -39,6 +39,7 @@ public class LoadingScreen implements com.badlogic.gdx.Screen {
 				//System.out.println( entry.name());
 			}
 			
+			
 			//TODO: better way to go into directories in directories
 			if(entry.name( ).equals( "common" )){
 				common = Gdx.files.internal( WereScrewedGame.dirHandle.path( )  + "/common/" );
