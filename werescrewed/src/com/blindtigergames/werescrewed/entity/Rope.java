@@ -13,18 +13,42 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
+import com.blindtigergames.werescrewed.screws.StrippedScrew;
 import com.blindtigergames.werescrewed.util.Util;
 
 public class Rope extends Entity {
 	
 	Body tail;
 	Body link;
+	StrippedScrew screw;
 	private ArrayList<Body> pieces;
+	private float linkWidth, linkHeight;
 	
-	public Rope( String name, Vector2 pos, Texture texture, World world ) {
+	public Rope( String name, Vector2 pos, Vector2 widthHeight, int links, Texture texture, World world ) {
 		super( name, pos, texture, null, true );
 		
 		pieces = new ArrayList<Body>( );
+		
+		constructRope ( name, pos, widthHeight, links, world);
+		
+		screw = new StrippedScrew (  "rope screw", world, new Vector2 (pos.x,  pos.y - widthHeight.y * Util.PIXEL_TO_BOX * links), this );
+		
+	
+	}
+	
+	public Rope( String name, Entity entity, Vector2 widthHeight, int links, Texture texture, World world ) {
+		super( name, entity.getPosition( ), texture, null, true );
+		
+		pieces = new ArrayList<Body>( );
+		
+		constructRope (name, entity.getPosition( ), widthHeight, links, world );
+		
+		screw = new StrippedScrew (  "rope screw", world, new Vector2 (entity.getPosition( ).x,  entity.getPosition( ).y - widthHeight.y * Util.PIXEL_TO_BOX * links), this );
+		
+	
+	}
+	
+	private void constructRope (String name, Vector2 pos, Vector2 widthHeight, int links, World world){
 		
 		BodyDef bodyDef = new BodyDef();
 		bodyDef.type = BodyType.StaticBody;
@@ -40,13 +64,13 @@ public class Rope extends Entity {
 		pieces.add( body );
 		//link = body;
 		
-		for ( int i = 0; i < 10; ++i ){
+		for ( int i = 0; i < links; ++i ){
 			bodyDef = new BodyDef();
-			bodyDef.position.set( new Vector2 ( pieces.get( pieces.size( )-1 ).getWorldCenter( ).x, 
-					pieces.get( pieces.size( )-1 ).getWorldCenter( ).y  - 32.0f * Util.PIXEL_TO_BOX) );
+			bodyDef.position.set( new Vector2 ( pieces.get( pieces.size( ) - 1 ).getWorldCenter( ).x, 
+					pieces.get( pieces.size( ) - 1 ).getWorldCenter( ).y  - widthHeight.y * Util.PIXEL_TO_BOX) );
 			bodyDef.type = BodyType.DynamicBody;
 			bodyDef.gravityScale = 0.1f;
-			polygonShape.setAsBox( 4.0f * Util.PIXEL_TO_BOX, 16.0f * Util.PIXEL_TO_BOX );
+			polygonShape.setAsBox( widthHeight.x / 2 * Util.PIXEL_TO_BOX, widthHeight.y / 2 * Util.PIXEL_TO_BOX );
 			FixtureDef fixtureDef = new FixtureDef();
 			fixtureDef.shape = polygonShape;
 			fixtureDef.density = 10.0f;
@@ -58,41 +82,15 @@ public class Rope extends Entity {
 			
 			RevoluteJointDef revoluteJointDef = new RevoluteJointDef( );
 			revoluteJointDef.initialize( pieces.get( pieces.size( )-1 ), body, new Vector2 ( body.getWorldCenter( ).x,
-					body.getWorldCenter().y + 16.0f * Util.PIXEL_TO_BOX ) );
+					body.getWorldCenter().y + widthHeight.y / 2 * Util.PIXEL_TO_BOX ) );
 			revoluteJointDef.enableMotor = false;
 			revoluteJointDef.collideConnected = false;
 			world.createJoint( revoluteJointDef );	
 			body.setUserData( this );
-			//link = body;
 			pieces.add( body );
 
 		}
 		
-		//polygonShape.dispose( );
-		
-		
-		bodyDef.position.set(  new Vector2 ( pieces.get( pieces.size( )-1 ).getWorldCenter( ).x,
-				pieces.get( pieces.size( )-1 ).getWorldCenter().y  - 32.0f * Util.PIXEL_TO_BOX ) );
-		FixtureDef fixtureDef = new FixtureDef();
-		polygonShape.setAsBox(  64.0f * Util.PIXEL_TO_BOX, 16.0f * Util.PIXEL_TO_BOX );
-		fixtureDef.shape = polygonShape;
-		fixtureDef.isSensor = false;
-		fixtureDef.density = 10.0f;
-		body = world.createBody( bodyDef );
-		body.createFixture( fixtureDef );
-		RevoluteJointDef revoluteJointDef = new RevoluteJointDef( );
-		revoluteJointDef.initialize( pieces.get( pieces.size( )-1 ), body,  new Vector2 ( body.getWorldCenter( ).x,
-				body.getWorldCenter().y + 16.0f * Util.PIXEL_TO_BOX ) );
-		revoluteJointDef.enableMotor = false;
-		revoluteJointDef.enableLimit = true;
-		world.createJoint( revoluteJointDef );
-		
-		pieces.add(body);
-	
-		//for( Body b : pieces)
-			//System.out.println( b.toString( ));
-		// TODO Auto-generated constructor stub
-	
 	}
 	
 	@Override
@@ -101,7 +99,6 @@ public class Rope extends Entity {
 			pieces.get( pieces.size( )-1 ).applyLinearImpulse( new Vector2(5.5f, 0.0f),
 					pieces.get( pieces.size( )-1 ).getWorldCenter( ) );
 		
-		//System.out.println(body.toString( ));
 		
 	}
 	

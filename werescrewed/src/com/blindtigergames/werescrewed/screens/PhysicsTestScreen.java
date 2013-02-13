@@ -13,6 +13,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Filter;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.joints.PrismaticJoint;
 import com.badlogic.gdx.physics.box2d.joints.PrismaticJointDef;
 import com.blindtigergames.werescrewed.WereScrewedGame;
@@ -32,7 +33,6 @@ import com.blindtigergames.werescrewed.joint.PrismaticJointBuilder;
 import com.blindtigergames.werescrewed.platforms.Platform;
 import com.blindtigergames.werescrewed.platforms.TiledPlatform;
 import com.blindtigergames.werescrewed.player.Player;
-import com.blindtigergames.werescrewed.screws.BossScrew;
 import com.blindtigergames.werescrewed.screws.PuzzleScrew;
 import com.blindtigergames.werescrewed.screws.StrippedScrew;
 import com.blindtigergames.werescrewed.screws.StructureScrew;
@@ -66,16 +66,16 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 	private MyContactListener contactListener;
 	private SBox2DDebugRenderer debugRenderer;
 	private Player player1, player2;
-	private TiledPlatform tiledPlat, ground, movingTP, singTile, testPlat, rectile;
+	@SuppressWarnings( "unused" )
+	private TiledPlatform tiledPlat, ground, movingTP, singTile, rectile;
 	private PlatformBuilder platBuilder;
 	private PuzzleScrew puzzleScrew;
-	private BossScrew bossBolt;
-	private Rope rope;
 	private Skeleton skeleton;
 	private Skeleton rootSkeleton;
 	private ArrayList< StrippedScrew > climbingScrews;
 	private boolean debug = true;
 	private boolean debugTest = true;
+	Rope rope;
 
 	/**
 	 * Defines all necessary components in a screen for testing different
@@ -91,7 +91,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		//entityManager.addSkeleton( rootSkeleton.name, rootSkeleton );
 		platBuilder = new PlatformBuilder( world );
 		testTexture = WereScrewedGame.manager.get(
-				WereScrewedGame.dirHandle.path( ) + "/common/TilesetTest.png",Texture.class);
+				WereScrewedGame.dirHandle + "/common/TilesetTest.png",Texture.class);
 
 		// Initialize camera
 		initCamera( );
@@ -107,10 +107,8 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		initStructureScrews( );
 		initPuzzleScrews( );
 		initClimbingScrews( );
-		initbossBolt( );
 
-		rope = new Rope( "rope", new Vector2 (2000.0f * Util.PIXEL_TO_BOX, 400.0f* Util.PIXEL_TO_BOX), null, world );
-		
+		//rope = new Rope( "rope", new Vector2 (2000.0f * Util.PIXEL_TO_BOX, 400.0f* Util.PIXEL_TO_BOX), null, world );
 		// Add players
 		// First player has to have the name "player1"
 		// Second player has to have the name "player2"
@@ -160,7 +158,6 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 				.dynamic( )
 				.name( "tp" ).resitituion( 0.0f ).buildTilePlatform( );
 		skeleton.addDynamicPlatform( tiledPlat );
-		//skeleton.addPlatform( tiledPlat );
 		
 		// Tiled Single Platform
 		singTile = platBuilder.position( -1.0f, 1000.0f )
@@ -168,6 +165,8 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 				.dynamic( )
 				.name( "Single Tiled" ).resitituion( 0.0f ).buildTilePlatform( );
 		skeleton.addPlatform( singTile );
+		singTile.body.setFixedRotation( false );
+
 
 		// Moving platform
 		movingTP = platBuilder.position( 0.0f, 120.0f )
@@ -179,12 +178,6 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		
 		buildMoverPlatforms( );
 
-		testPlat = platBuilder.position(  1500.0f, 150.0f )
-				.dimensions( 5, 1 ).texture( testTexture )
-				.name( "bossTest" ).resitituion( 0.0f ).buildTilePlatform( );
-		skeleton.addPlatform( testPlat );
-		
-		// Ground
 		//TODO : FIX ONESIDED BUG, 
 		// Ground: SHOULD NEVER BE ONESIDED
 		ground = platBuilder.position( 0.0f, 0.0f ).name( "ground" )
@@ -200,16 +193,16 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 	 * manager and skeleton
 	 */
 	private void initStructureScrews( ) {
-//		StructureScrew leftPlatScrew = new StructureScrew( "", new Vector2(
-//				tiledPlat.body.getPosition( ).x - 0.5f,
-//				tiledPlat.body.getPosition( ).y ), 50, tiledPlat, skeleton,
-//				world );
+		StructureScrew leftPlatScrew = new StructureScrew( "", new Vector2(
+				tiledPlat.body.getPosition( ).x - 0.5f,
+				tiledPlat.body.getPosition( ).y ), 50, tiledPlat, skeleton,
+				world );
 
 		StructureScrew rightPlatScrew = new StructureScrew( "", new Vector2(
 				tiledPlat.body.getPosition( ).x + 0.5f,
 				tiledPlat.body.getPosition( ).y ), 50, tiledPlat, skeleton,
 				world );
-		//tiledPlat.addScrew( leftPlatScrew );
+		tiledPlat.addScrew( leftPlatScrew );
 		tiledPlat.addScrew( rightPlatScrew );
 	}
 
@@ -217,16 +210,6 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 	 * Initializes settings for puzzle screws
 	 */
 	private void initPuzzleScrews( ) {
-
-//		Vector2 axis = new Vector2( 1, 0 );
-//		PrismaticJointDef jointDef = new PrismaticJointDef( );
-//		jointDef.initialize( movingTP.body, skeleton.body,
-//				movingTP.body.getPosition( ), axis );
-//		jointDef.enableMotor = true;
-//		jointDef.enableLimit = true;
-//		jointDef.lowerTranslation = -2.5f;
-//		jointDef.upperTranslation = 3.0f;
-//		jointDef.motorSpeed = 7.0f;
 		puzzleScrew = new PuzzleScrew( "001", new Vector2( 0.0f, 0.2f ), 50,
 				skeleton, world );
 		puzzleScrew.puzzleManager.addEntity( movingTP );
@@ -235,7 +218,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 						movingTP.body.getPosition( ).y ), new Vector2(
 						movingTP.body.getPosition( ).x + 1.75f,
 						movingTP.body.getPosition( ).y ), 1f, true );
-		puzzleScrew.puzzleManager.addMover( lm );
+		puzzleScrew.puzzleManager.addMover( movingTP.name, lm );
 		skeleton.addScrewForDraw( puzzleScrew );
 	}
 
@@ -262,14 +245,6 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		for ( StrippedScrew climbingScrew : climbingScrews ) {
 			skeleton.addStrippedScrew( climbingScrew );
 		}
-	}
-	
-	private void initbossBolt( ) {
-		bossBolt = new BossScrew( "bossy",
-				new Vector2( testPlat.body.getPosition( ).x,
-				testPlat.body.getPosition( ).y ), 100, testPlat,
-				skeleton, world);
-		testPlat.addScrew( bossBolt );
 	}
 
 	/**
@@ -298,6 +273,9 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 				.kinematic( )
 				.buildTilePlatform( );
 		skeleton.addKinematicPlatform( skeletonTest1 );
+		
+		rope = new Rope( "rope", new Vector2 ( 8f, 1.5f), new Vector2 ( 8.0f, 32.0f ), 10, null, world );
+
 		
 		/*
 		 * TODO: FIX PLATFORM DENSITY
@@ -412,26 +390,22 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 
 		player1.update( deltaTime );
 		player2.update( deltaTime );
-		//puzzleScrew.update( deltaTime );
+		puzzleScrew.update( deltaTime );
 		rootSkeleton.update( deltaTime );
+
 		batch.setProjectionMatrix( cam.combined( ) );
 		batch.begin( );
 
-		//puzzleScrew.draw( batch );
+		puzzleScrew.draw( batch );
 		rootSkeleton.draw( batch );
 		player1.draw( batch );
 		player2.draw( batch );
-		rope.draw( batch );
 		batch.end( );
 
-		if ( bossBolt.endLevelFlag() ) {
-			ScreenManager.getInstance( ).show( ScreenType.WIN );
-		}
-		
 		if ( debug )
 			debugRenderer.render( world, cam.combined( ) );
 
-		world.step( 1 / 60f, 6, 3 );
+		world.step( 1 / 60f, 6, 2 );
 	}
 
 	@Override

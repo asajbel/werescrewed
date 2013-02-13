@@ -219,7 +219,7 @@ public class EntityDefTestScreen implements com.badlogic.gdx.Screen {
 						movingTP.body.getPosition( ).y ), new Vector2(
 						movingTP.body.getPosition( ).x + 1.75f,
 						movingTP.body.getPosition( ).y ), 1f, true );
-		puzzleScrew.puzzleManager.addMover( lm );
+		puzzleScrew.puzzleManager.addMover( movingTP.name, lm );
 	}
 
 	/**

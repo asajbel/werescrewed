@@ -65,8 +65,8 @@ public class IMoverGameScreen implements com.badlogic.gdx.Screen {
 	private Player player1, player2;
 	private TiledPlatform tiledPlat, ground, kinPlat1;
 	TiledPlatform skeletonTest2;
+	private PuzzleScrew puzzleScrew1;
 	private PlatformBuilder platBuilder;
-	private PuzzleScrew puzzleScrew;
 	private Skeleton skeleton;
 	private Skeleton rootSkeleton;
 	private ArrayList< StrippedScrew > climbingScrews;
@@ -214,16 +214,16 @@ public class IMoverGameScreen implements com.badlogic.gdx.Screen {
 		jointDef.lowerTranslation = -2.5f;
 		jointDef.upperTranslation = 3.0f;
 		jointDef.motorSpeed = 7.0f;
-		puzzleScrew = new PuzzleScrew( "001", new Vector2( 0.0f, 0.2f ), 50,
+		puzzleScrew1 = new PuzzleScrew( "001", new Vector2( 0.0f, 0.2f ), 50,
 				skeleton, world );
-		puzzleScrew.puzzleManager.addEntity( kinPlat1 );
+		puzzleScrew1.puzzleManager.addEntity( kinPlat1 );
 		LerpMover lm = new LerpMover(
 				new Vector2( kinPlat1.body.getPosition( ).x,
 						kinPlat1.body.getPosition( ).y ), new Vector2(
 						kinPlat1.body.getPosition( ).x + 1.75f,
 						kinPlat1.body.getPosition( ).y ), 0.003f, true );
-		puzzleScrew.puzzleManager.addMover( lm );
-		skeleton.addScrewForDraw( puzzleScrew );
+		puzzleScrew1.puzzleManager.addMover( kinPlat1.name, lm );
+		skeleton.addScrewForDraw( puzzleScrew1 );
 	}
 
 	/**
