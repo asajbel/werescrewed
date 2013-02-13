@@ -118,7 +118,7 @@ public class GleedLoader {
 					level.entities.addEntity( name, tp );
 					level.root.addKinematicPlatform( tp );
 				} else if (def.getCategory( ).equals( complexCat )) {
-					ComplexPlatform cp = new PlatformBuilder(level.world)
+					Platform cp = new PlatformBuilder(level.world)
 					.name( name )
 					.type( def )
 					.position( pos.x, pos.y )

@@ -109,7 +109,7 @@ public class MyControllerListener implements ControllerListener {
 		axisLX = controller.getAxis( LEFTSTICK_AXIS_X );
 		axisRY = controller.getAxis( RIGHTSTICK_AXIS_Y );
 		axisRX = controller.getAxis( RIGHTSTICK_AXIS_X );
-
+		
 		// Resetting Analog stick
 		if ( axisLY < DEADZONE && axisLY > -DEADZONE ) {
 			upPressed = false;
@@ -441,6 +441,15 @@ public class MyControllerListener implements ControllerListener {
 		return unscrewingPressed;
 	}
 
+	
+	public double getLeftAnalogAngle(){
+		if( axisLX < 0.1f && axisLX > -0.1f) {
+			if( axisLY < 0.1f && axisLY > -0.1f)
+				return 0.0;
+		}
+		
+		return Math.toDegrees( Math.atan2( -axisLX, -axisLY ) ) + 180;
+	}
 	/**
 	 * Function returns the what index the controller is (player 1 or player 2)
 	 * 

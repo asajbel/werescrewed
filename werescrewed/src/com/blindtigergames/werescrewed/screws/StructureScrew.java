@@ -31,11 +31,11 @@ public class StructureScrew extends Screw {
 		maxDepth = max;
 		depth = max;
 		rotation = 0;
-		fallTimeout = max * 4;
+		fallTimeout = max * 3;
 		extraJoints = new ArrayList< RevoluteJoint >( );
 
 		constuctBody( pos );
-		connectScrewToEntity( entity, pos );
+		connectScrewToEntity( skeleton, pos );
 		connectEntityToSkeleton( entity, skeleton, pos );
 
 	}
@@ -78,11 +78,13 @@ public class StructureScrew extends Screw {
 
 	@Override
 	public void update( float deltaTime ) {
+		body.setAwake( true );
 		super.update( deltaTime );
 		Vector2 bodyPos = body.getPosition( ).mul( Util.BOX_TO_PIXEL );
 		sprite.setPosition( bodyPos.x - offset.x, bodyPos.y - offset.y );
 		if ( depth == 0 ) {
 			if ( fallTimeout == 0 && screwToSkel != null ) {
+				body.setType( BodyType.DynamicBody );
 				world.destroyJoint( screwToSkel );
 				world.destroyJoint( platformJoint );
 				for ( RevoluteJoint j : extraJoints ) {
@@ -169,25 +171,25 @@ public class StructureScrew extends Screw {
 				| Util.CATEGORY_SUBPLAYER;
 		body.createFixture( radarFixture );
 		radarShape.dispose( );
-
 	}
 
-	private void connectScrewToEntity( Entity entity, Vector2 pos ) {
+	private void connectScrewToEntity( Skeleton skeleton, Vector2 pos ) {
 		// connect the screw to the entity
 		RevoluteJointDef revoluteJointDef = new RevoluteJointDef( );
-		revoluteJointDef.initialize( body, entity.body, pos );
+		revoluteJointDef.initialize( body, skeleton.body, pos );
 		revoluteJointDef.enableMotor = false;
 		screwToSkel = ( RevoluteJoint ) world.createJoint( revoluteJointDef );
 	}
 
 	private void connectEntityToSkeleton( Entity entity, Skeleton skeleton,
 			Vector2 pos ) {
-		RevoluteJointDef revoluteJointDef = new RevoluteJointDef( );
 		// connect the entity to the skeleton
+		RevoluteJointDef revoluteJointDef = new RevoluteJointDef( );
 		revoluteJointDef = new RevoluteJointDef( );
 		revoluteJointDef.initialize( entity.body, skeleton.body, pos );
 		revoluteJointDef.enableMotor = false;
 		platformJoint = ( RevoluteJoint ) world.createJoint( revoluteJointDef );
+		entity.body.setFixedRotation( false );
 	}
 
 	private RevoluteJoint platformJoint;

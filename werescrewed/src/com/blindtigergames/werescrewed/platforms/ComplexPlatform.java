@@ -10,6 +10,8 @@ import com.blindtigergames.werescrewed.entity.EntityDef;
 import com.blindtigergames.werescrewed.util.Util;
 
 /**
+ * THIS CLASS IS DEPRECATED
+ * DON'T USE IT, INSSTEAD BUILD A COMPLEX PLATFORM WITH PLATFORMBUILDER
  * @param name
  *            blah blah
  * 

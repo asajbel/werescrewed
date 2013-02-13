@@ -32,6 +32,13 @@ public enum ScreenType {
 			return new PhysicsTestScreen();
 		}
 	},
+	
+	WIN {
+		@Override
+		protected com.badlogic.gdx.Screen getScreenInstance( ) {
+			return new WinScreen( );
+		}
+	},
 	CREDITS {
 		@Override
 		protected com.badlogic.gdx.Screen getScreenInstance( ) {

@@ -1,5 +1,6 @@
 package com.blindtigergames.werescrewed.screws;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -71,7 +72,7 @@ public class PuzzleScrew extends Screw {
 			screwStep = depth + 6;
 			puzzleManager
 					.runElement( 1f - ( ( float ) depth / ( ( float ) maxDepth ) ) );
-			System.out.println( name + " depth:" + depth );
+			Gdx.app.log( name + " depth", "" + depth );
 		}
 	}
 

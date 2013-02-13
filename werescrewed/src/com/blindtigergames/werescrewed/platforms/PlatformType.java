@@ -1,5 +1,10 @@
 package com.blindtigergames.werescrewed.platforms;
 
+/**
+ * Differentiate Platforms with this type
+ * @author stew
+ *
+ */
 public enum PlatformType {
 	COMPLEX,
 	TILED,

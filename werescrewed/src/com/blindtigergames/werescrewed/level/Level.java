@@ -14,7 +14,6 @@ import com.blindtigergames.werescrewed.entity.EntityManager;
 import com.blindtigergames.werescrewed.platforms.Platform;
 import com.blindtigergames.werescrewed.entity.builders.PlayerBuilder;
 import com.blindtigergames.werescrewed.entity.builders.PlatformBuilder;
-import com.blindtigergames.werescrewed.platforms.RoomPlatform;
 import com.blindtigergames.werescrewed.platforms.TiledPlatform;
 import com.blindtigergames.werescrewed.player.Player;
 import com.blindtigergames.werescrewed.skeleton.Skeleton;
@@ -85,10 +84,9 @@ public class Level {
 		Level out = new Level();
 		TiledPlatform tp, ground;
 		@SuppressWarnings( "unused" )
-		RoomPlatform rp;
 		//ShapePlatform sp;
 		Texture texture =
-				WereScrewedGame.manager.get("assets/data/common/rletter.png", Texture.class);
+				WereScrewedGame.manager.get(WereScrewedGame.dirHandle.path( ) + "/common/rletter.png", Texture.class);
 		
 		tp = new PlatformBuilder(out.world)
 		.position( 2.0f, 0.2f )

@@ -1,6 +1,5 @@
 package com.blindtigergames.werescrewed.screws;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.blindtigergames.werescrewed.WereScrewedGame;
@@ -25,7 +24,8 @@ public class Screw extends Entity {
 	protected int screwStep;
 
 	public Screw( String name, Vector2 pos, Texture tex ) {
-		super( name, pos, ( tex == null ? WereScrewedGame.manager.get("assets/data/common/screw.png", Texture.class) : tex ), null, false );
+		super( name, pos, ( tex == null ? 
+				WereScrewedGame.manager.get(WereScrewedGame.dirHandle.path( ) +"/common/screw.png", Texture.class) : tex ), null, false );
 	}
 
 	@Override

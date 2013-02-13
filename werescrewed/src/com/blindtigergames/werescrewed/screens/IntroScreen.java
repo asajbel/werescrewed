@@ -15,7 +15,7 @@ class IntroScreen implements com.badlogic.gdx.Screen {
 	private SpriteBatch batch = null;
 	private BitmapFont font = null;
 	static Texture player = WereScrewedGame.manager.get(
-			"assets/common/data/TilesetTest.png", Texture.class);
+			WereScrewedGame.dirHandle.path( ) + "/common/TilesetTest.png", Texture.class);
 
 	Stage stage;
 

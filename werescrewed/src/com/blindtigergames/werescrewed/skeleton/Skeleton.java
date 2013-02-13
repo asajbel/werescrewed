@@ -2,15 +2,12 @@ package com.blindtigergames.werescrewed.skeleton;
 
 import java.util.ArrayList;
 
-import javax.management.loading.PrivateClassLoader;
-
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.utils.Array;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.joint.RevoluteJointBuilder;
 import com.blindtigergames.werescrewed.platforms.Platform;
@@ -113,8 +110,8 @@ public class Skeleton extends Entity {
     }
     
     /**
-     * 
-     * @param platform - add platform that has structure screws already
+     *  Add a platform to this skeleton. Will determine what list to add it to for you!
+     * @param platform
      */
      public void addPlatform( Platform platform ){
     	 if ( platform.body.getType( ) == BodyType.DynamicBody )
@@ -128,8 +125,9 @@ public class Skeleton extends Entity {
       * @param ss -  add stripped screw onto the skeleton
       */
      public void addStrippedScrew ( StrippedScrew ss ){
-        new RevoluteJointBuilder( world ).skeleton( this ).bodyB( ss )
-                 .limit( true ).lower( 0 ).upper( 0 ).build();
+    	 //this is a repeated joint joint already exists in screw
+//        new RevoluteJointBuilder( world ).skeleton( this ).bodyB( ss )
+//                 .limit( true ).lower( 0 ).upper( 0 ).build();
      	//addDynamicPlatform( ss );
         screws.add( ss );
     }
@@ -150,7 +148,6 @@ public class Skeleton extends Entity {
       */
     public void addDynamicPlatform( Platform platform ) {
         this.dynamicPlatforms.add( platform );
-
     }
 
     /**
@@ -178,6 +175,9 @@ public class Skeleton extends Entity {
         }
         for( Platform platform : kinematicPlatforms ){
         	platform.body.setAwake( isAwake );
+        }
+        for ( Screw s: screws ) {
+        	s.body.setAwake( true );
         }
     }
     
@@ -279,11 +279,11 @@ public class Skeleton extends Entity {
         }
     	for ( Platform p : dynamicPlatforms ) {
     		p.updateMover( deltaTime );
-        }
+        }          
     	//update kinamatic platforms on their local imover coordinate system
     	for ( Platform p : kinematicPlatforms ) {
     		p.updateMover( deltaTime );
-        }
+        } 
     }
 
     /****
@@ -300,6 +300,12 @@ public class Skeleton extends Entity {
         }
         for ( Platform p : kinematicPlatforms ) {
         	updatePlatform(p,deltaTime);
+        }    	
+        //update all puzzle screws to save their movement changes
+        //should just be puzzle screws no other type need to be in the screws list
+        //except for drawing
+        for ( Screw s: screws ) {
+    		s.update( deltaTime );
         }
     }
     

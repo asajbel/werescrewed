@@ -1,6 +1,7 @@
 package com.blindtigergames.werescrewed.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -26,7 +27,7 @@ class MainMenuScreen implements com.badlogic.gdx.Screen {
 		batch = new SpriteBatch( );
 		font = new BitmapFont( );
 		lineHeight = Math.round( 2.5f * font.getCapHeight( ) );
-		headingLabel = new Label( "Screen Manager Demo", font );
+		headingLabel = new Label( "We're Screwed!!", font );
 		playButton = new Button( "Physics Test Screen", font, new ScreenSwitchHandler(
 				ScreenType.PHYSICS ) );
 		gleedButton = new Button( "Gleed Screen", font, new ScreenSwitchHandler(
@@ -52,6 +53,13 @@ class MainMenuScreen implements com.badlogic.gdx.Screen {
 		imoverButton.draw( batch, camera );
 		exitButton.draw( batch, camera );
 		batch.end( );
+		
+		if(Gdx.input.isKeyPressed( Keys.P )){
+			System.exit(1);
+		}
+		if(Gdx.input.isKeyPressed( Keys.ENTER )){
+			ScreenManager.getInstance( ).show( ScreenType.PHYSICS );
+		}
 	}
 
 	@Override

@@ -14,7 +14,7 @@
                         </Property>
                         <Property Name="TileWidth" Type="string" Description="4">
                             <string>50</string>
-                        </Property>
+                        </Propeidrty>
                         <Property Name="TileHeight" Type="string" Description="1">
                             <string>1</string>
                         </Property>
@@ -61,8 +61,8 @@
                         <Y>0</Y>
                     </Position>
                     <CustomProperties>
-                        <Property Name="Definition" Type="string" Description="playerTest">
-                            <string>playerTest</string>
+                        <Property Name="Definition" Type="string" Description="player1">
+                            <string>player1</string>
                         </Property>
                     </CustomProperties>
                     <Radius>14</Radius>
