@@ -13,6 +13,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Filter;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.joints.PrismaticJoint;
 import com.badlogic.gdx.physics.box2d.joints.PrismaticJointDef;
 import com.blindtigergames.werescrewed.WereScrewedGame;
@@ -164,6 +165,8 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 				.dynamic( )
 				.name( "Single Tiled" ).resitituion( 0.0f ).buildTilePlatform( );
 		skeleton.addPlatform( singTile );
+		singTile.body.setFixedRotation( false );
+
 
 		// Moving platform
 		movingTP = platBuilder.position( 0.0f, 120.0f )
@@ -271,7 +274,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 				.buildTilePlatform( );
 		skeleton.addKinematicPlatform( skeletonTest1 );
 		
-		rope = new Rope( "rope", new Vector2 ( 10f, 1.5f), new Vector2 ( 8.0f, 32.0f ), 10, null, world );
+		rope = new Rope( "rope", new Vector2 ( 8f, 1.5f), new Vector2 ( 8.0f, 32.0f ), 10, null, world );
 
 		
 		/*
