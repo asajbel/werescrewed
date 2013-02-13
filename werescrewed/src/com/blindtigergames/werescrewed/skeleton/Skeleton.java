@@ -148,7 +148,6 @@ public class Skeleton extends Entity {
       */
     public void addDynamicPlatform( Platform platform ) {
         this.dynamicPlatforms.add( platform );
-
     }
 
     /**
@@ -176,6 +175,9 @@ public class Skeleton extends Entity {
         }
         for( Platform platform : kinematicPlatforms ){
         	platform.body.setAwake( isAwake );
+        }
+        for ( Screw s: screws ) {
+        	s.body.setAwake( true );
         }
     }
     

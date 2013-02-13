@@ -148,6 +148,7 @@ public class Platform extends Entity {
 	public void update( float deltaTime ) {
 		super.update( deltaTime );
 		body.setActive( true );
+		body.setAwake( true );
 		for ( Screw s : screws ) {
 			s.update( deltaTime );
 		}

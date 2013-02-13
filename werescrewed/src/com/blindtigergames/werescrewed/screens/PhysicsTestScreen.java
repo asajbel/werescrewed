@@ -159,8 +159,8 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 				.dimensions( 10, 1 ).texture( testTexture )
 				.dynamic( )
 				.name( "tp" ).resitituion( 0.0f ).buildTilePlatform( );
-		//skeleton.addDynamicPlatform( tiledPlat );
-		skeleton.addPlatform( tiledPlat );
+		skeleton.addDynamicPlatform( tiledPlat );
+		//skeleton.addPlatform( tiledPlat );
 		
 		// Tiled Single Platform
 		singTile = platBuilder.position( -1.0f, 1000.0f )
@@ -200,16 +200,16 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 	 * manager and skeleton
 	 */
 	private void initStructureScrews( ) {
-		StructureScrew leftPlatScrew = new StructureScrew( "", new Vector2(
-				tiledPlat.body.getPosition( ).x - 0.5f,
-				tiledPlat.body.getPosition( ).y ), 50, tiledPlat, skeleton,
-				world );
+//		StructureScrew leftPlatScrew = new StructureScrew( "", new Vector2(
+//				tiledPlat.body.getPosition( ).x - 0.5f,
+//				tiledPlat.body.getPosition( ).y ), 50, tiledPlat, skeleton,
+//				world );
 
 		StructureScrew rightPlatScrew = new StructureScrew( "", new Vector2(
 				tiledPlat.body.getPosition( ).x + 0.5f,
 				tiledPlat.body.getPosition( ).y ), 50, tiledPlat, skeleton,
 				world );
-		tiledPlat.addScrew( leftPlatScrew );
+		//tiledPlat.addScrew( leftPlatScrew );
 		tiledPlat.addScrew( rightPlatScrew );
 	}
 

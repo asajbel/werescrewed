@@ -14,6 +14,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+import com.badlogic.gdx.physics.box2d.MassData;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.joints.PrismaticJoint;
 import com.badlogic.gdx.physics.box2d.joints.PrismaticJointDef;
@@ -125,12 +126,12 @@ public class IMoverGameScreen implements com.badlogic.gdx.Screen {
 		// buildMoverPlatforms( );
 		skeletonTest2 = platBuilder.width( 10 ).height( 1 )
 				.oneSided( false ).position( 500, 300 ).texture( testTexture )
-				.friction( 1f ).dynamic( )
+				.friction( 1f ).dynamic( ).resitituion( 0.0f )
 				// .setOneSided( true )
 				.name( "dynamicTiledPlat1" ).buildTilePlatform( );
-		skeleton.addDynamicPlatform( skeletonTest2 );
-		//skeleton.addPlatform( skeletonTest2 );
-		skeletonTest2.body.setFixedRotation( false );// WHY!?
+		//skeleton.addDynamicPlatform( skeletonTest2 );
+		skeleton.addPlatform( skeletonTest2 );
+		//skeletonTest2.body.setFixedRotation( false );// WHY!?
 
 
 		// Ground
@@ -144,6 +145,9 @@ public class IMoverGameScreen implements com.badlogic.gdx.Screen {
 		player2 = new PlayerBuilder( ).name( "player2" ).world( world )
 				.position( 1.5f, 1.5f ).buildPlayer( );
 		
+		MassData massD = player1.body.getMassData( );
+		massD.mass = 0.0f;
+		player1.body.setMassData( massD );
 		initStructureScrews();
 		initPuzzleScrews();
 		initClimbingScrews();
@@ -176,13 +180,18 @@ public class IMoverGameScreen implements com.badlogic.gdx.Screen {
 				skeletonTest2.body.getPosition( ).x + 0.5f,
 				skeletonTest2.body.getPosition( ).y ), 50, skeletonTest2, skeleton,
 				world );
-		StrippedScrew hanginScrew = new StrippedScrew( "", world, new Vector2(
-				skeletonTest2.body.getPosition( ).x + 0.03f, skeletonTest2.body.getPosition( ).y ), skeletonTest2 );
+		StructureScrew centerPlatScrew = new StructureScrew( "", new Vector2(
+				skeletonTest2.body.getPosition( ).x,
+				skeletonTest2.body.getPosition( ).y ), 50, skeletonTest2, skeleton,
+				world );
+//		StrippedScrew hanginScrew = new StrippedScrew( "", world, new Vector2(
+//				skeletonTest2.body.getPosition( ).x + 0.03f, skeletonTest2.body.getPosition( ).y ), skeletonTest2 );
 //		skeletonTest2.addScrew( hanginScrew );
 //		skeletonTest2.addScrew( leftPlatScrew );
 //		skeletonTest2.addScrew( rightPlatScrew );
-		skeleton.addScrewForDraw( hanginScrew );
+		//skeleton.addScrewForDraw( hanginScrew );
 		skeleton.addScrewForDraw( leftPlatScrew );
+		skeleton.addScrewForDraw( centerPlatScrew );
 		skeleton.addScrewForDraw( rightPlatScrew );
 	}
 
