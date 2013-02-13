@@ -12,6 +12,8 @@ import com.blindtigergames.werescrewed.entity.EntityDef;
 import com.blindtigergames.werescrewed.util.Util;
 
 /**
+ * THIS CLASS IS DEPRECATED
+ * DON'T USE IT, INSSTEAD BUILD A COMPLEX PLATFORM WITH PLATFORMBUILDER
  * @param name
  *            blah blah
  * 
@@ -26,6 +28,7 @@ public class ComplexPlatform extends Platform {
 	public ComplexPlatform( String n, Vector2 pos, Texture tex, float scale,
 			World world, EntityDef def) {
 		super( n, def, world, pos, 0.0f, new Vector2( 1f, 1f ) );
+		platType = PlatformType.COMPLEX;
 		// super(n, pos, tex, null);
 		// this.world = world;
 		// this.width = width;
@@ -46,9 +49,5 @@ public class ComplexPlatform extends Platform {
 		BodyDef bd = new BodyDef( );
 		bd.position.set( x * Util.PIXEL_TO_BOX, y * Util.PIXEL_TO_BOX );
 		bd.type = BodyType.DynamicBody;
-
-		// public void update( float deltaTime ) {
-		// super.update( deltaTime );
-		// }
 	}
 }

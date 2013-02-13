@@ -14,6 +14,7 @@ import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.Shape;
 import com.badlogic.gdx.utils.XmlReader;
+import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.util.BodyEditorLoader;
 import com.blindtigergames.werescrewed.util.Util;
 
@@ -158,7 +159,7 @@ public class EntityDef {
 	 */
 	protected void loadComplexBody( float density, float friction,
 			float restitution, float scale, String bodyName ) {
-		String filename = "data/bodies/" + bodyName + ".json";
+		String filename = "assets/data/bodies/" + bodyName + ".json";
 		BodyEditorLoader loader = new BodyEditorLoader(
 				Gdx.files.internal( filename ) );
 
@@ -194,8 +195,8 @@ public class EntityDef {
 						playerfeetShape );
 				fixes.add( playerFixtureDef );
 
-				out = new EntityDef( "player", new Texture(
-						Gdx.files.internal( "data/player_r_m.png" ) ), "",
+				out = new EntityDef( "player",
+						WereScrewedGame.manager.get("assets/data/common/player_r_m.png", Texture.class), "",
 						playerBodyDef, fixes );
 			} else if ( id.equals( "bottle" ) ) { // Bottle
 				BodyDef bottleBodyDef = new BodyDef( );
@@ -216,11 +217,11 @@ public class EntityDef {
 	/**
 	 * Loads a definition from XML
 	 * 
-	 * @param id file name fo the XML file to load
+	 * @param id file name for the XML file to load
 	 * @return The loaded definition
 	 */
 	protected static EntityDef loadDefinition( String id ) {
-		String filename = "data/entities/" + id + ".xml";
+		String filename = "assets/data/entities/" + id + ".xml";
 		try {
 			XmlReader reader = new XmlReader( );
 			XmlReader.Element xml = reader
@@ -231,7 +232,7 @@ public class EntityDef {
 			out.setCategory( xml.get( "category", NO_CATEGORY ) );
 			// Sprite Data
 			String texName = xml.get( "texture" );
-			out.setTexture( new Texture( Gdx.files.internal( texName ) ) );
+			out.setTexture(WereScrewedGame.manager.get("assets/data/" + texName, Texture.class));
 			out.initialAnim = xml.get( "initialAnim" );
 			out.origin.x = xml.getFloat( "originX" );
 			out.origin.y = xml.getFloat( "originY" );
@@ -254,7 +255,6 @@ public class EntityDef {
 
 			return out;
 		} catch ( IOException e ) {
-			// TODO Auto-generated catch block
 			Gdx.app.log( "Error", "Loading entity definition " + id + " ", e );
 		}
 

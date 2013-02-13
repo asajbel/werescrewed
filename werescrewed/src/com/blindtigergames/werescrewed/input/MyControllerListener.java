@@ -29,6 +29,7 @@ public class MyControllerListener implements ControllerListener {
 	private boolean analogUsed;
 	private boolean screwingPressed;
 	private boolean unscrewingPressed;
+	private boolean grabPressed;
 
 	// Screwing booleans
 	private boolean prevScrewingPressed;
@@ -57,12 +58,10 @@ public class MyControllerListener implements ControllerListener {
 	private final static int BUTTON_A = 0;
 	@SuppressWarnings( "unused" )
 	private final static int BUTTON_B = 1;
-	@SuppressWarnings( "unused" )
 	private final static int BUTTON_X = 2;
 	@SuppressWarnings( "unused" )
 	private final static int BUTTON_Y = 3;
 	private final static int TRIGGER = 4;
-	private final static int BUMPER_LEFT = 4;
 	private final static int BUMPER_RIGHT = 5;
 	private final static int SELECT = 6;
 	private final static int PAUSE = 7;
@@ -110,7 +109,7 @@ public class MyControllerListener implements ControllerListener {
 		axisLX = controller.getAxis( LEFTSTICK_AXIS_X );
 		axisRY = controller.getAxis( RIGHTSTICK_AXIS_Y );
 		axisRX = controller.getAxis( RIGHTSTICK_AXIS_X );
-
+		
 		// Resetting Analog stick
 		if ( axisLY < DEADZONE && axisLY > -DEADZONE ) {
 			upPressed = false;
@@ -165,6 +164,8 @@ public class MyControllerListener implements ControllerListener {
 	 */
 	@Override
 	public boolean buttonDown( Controller controller, int buttonIndex ) {
+		Gdx.app.log( controller.getName( ), String.valueOf(buttonIndex) );
+
 		// Switching between Screwing/Unscrewing Modes
 		if ( buttonIndex == SELECT ) {
 			if ( debugScrewMode1 ) {
@@ -188,6 +189,10 @@ public class MyControllerListener implements ControllerListener {
 			attachScrewPressed = true;
 		if ( buttonIndex == PAUSE )
 			pausePressed = true;
+		if ( buttonIndex == BUTTON_X )
+			grabPressed = true;
+		
+		Gdx.app.log( "controller", "" + buttonIndex );
 		return false;
 
 	}
@@ -207,6 +212,8 @@ public class MyControllerListener implements ControllerListener {
 			attachScrewPressed = false;
 		if ( buttonIndex == PAUSE )
 			pausePressed = false;
+		if ( buttonIndex == BUTTON_X )
+			grabPressed = false;
 
 		return false;
 	}
@@ -389,6 +396,16 @@ public class MyControllerListener implements ControllerListener {
 	public boolean screwPressed( ) {
 		return attachScrewPressed;
 	}
+	
+	/**
+	 * Returns whether the button to grab a player is pressed
+	 * 
+	 * @return boolean
+	 * @author dennis
+	 */
+	public boolean isGrabPressed( ) {
+		return grabPressed;
+	}
 
 	/**
 	 * Returns whether trying to screw clockwise (righty tighty) with right stick
@@ -424,6 +441,15 @@ public class MyControllerListener implements ControllerListener {
 		return unscrewingPressed;
 	}
 
+	
+	public double getLeftAnalogAngle(){
+		if( axisLX < 0.1f && axisLX > -0.1f) {
+			if( axisLY < 0.1f && axisLY > -0.1f)
+				return 0.0;
+		}
+		
+		return Math.toDegrees( Math.atan2( -axisLX, -axisLY ) ) + 180;
+	}
 	/**
 	 * Function returns the what index the controller is (player 1 or player 2)
 	 * 
