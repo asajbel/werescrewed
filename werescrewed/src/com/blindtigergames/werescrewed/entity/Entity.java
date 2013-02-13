@@ -1,5 +1,6 @@
 package com.blindtigergames.werescrewed.entity;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -60,7 +61,6 @@ public class Entity {
 		this.sprite = constructSprite( texture );
 		this.body = constructBody( );
 		setPosition( pos );
-
 	}
 	/**
 	 * Create entity by body. Debug constructor: Should be removed eventually.
@@ -134,6 +134,15 @@ public class Entity {
 	}
 
 	public void update( float deltaTime ) {
+		//animation stuff may go here
+	}
+	
+	/**
+	 * Update the mover of this entity, if it exists.
+	 * Now separated from update() so that it can be called whenever skeleton wants.
+	 * @param deltaTime
+	 */
+	public void updateMover( float deltaTime ){
 		if (active){
 			if ( body != null && mover != null ) {
 				mover.move( deltaTime, body );
@@ -320,5 +329,37 @@ public class Entity {
 			f.setFilterData( filter );
 		}
 
+	}
+
+	public void setDensity( float d ) {
+		if ( body != null ){
+		for ( int i = 0; i < body.getFixtureList( ).size( ); ++i )
+			body.getFixtureList( ).get( i ).setDensity( d );
+		}
+
+	}
+
+	public void setFriction( float f ) {
+		if ( body != null ){
+		for ( int i = 0; i < body.getFixtureList( ).size( ); ++i )
+			body.getFixtureList( ).get( i ).setFriction( f );
+		}
+	}
+
+	public void setRestitution( float r ) {
+		if ( body != null ){
+		for ( int i = 0; i < body.getFixtureList( ).size( ); ++i )
+			body.getFixtureList( ).get( i ).setRestitution( r );
+		}
+	}
+
+	public void setGravScale( float g ) {
+		if ( body != null ){
+			body.setGravityScale( g );
+		}
+	}
+	
+	public String toString(){
+		return "Entity["+name+"] pos:"+body.getPosition( )+", body.active:"+body.isActive( )+", body.awake:"+body.isAwake( );
 	}
 }

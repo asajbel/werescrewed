@@ -3,6 +3,7 @@ package com.blindtigergames.werescrewed.entity.builders;
 import java.util.HashMap;
 
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.World;
 import com.blindtigergames.werescrewed.platforms.ComplexPlatform;
 import com.blindtigergames.werescrewed.platforms.Platform;
@@ -28,15 +29,16 @@ public class PlatformBuilder extends GenericEntityBuilder<PlatformBuilder> {
 	protected float thickY = 1.0f;
 	protected float scale = 1.0f;
 	protected float density = 1.0f;
-	protected float friction = 0.5f;
+	protected float friction = 1.0f;
 	protected float restitution = 0.1f;
 	protected float gravScale = 0.1f;
 	protected boolean flipHorizonal = false;
 	protected boolean flipVertical = false;
 	protected boolean isOneSided = false;
-	protected PlatformType pType = PlatformType.COMPLEX;
+	protected PlatformType pType = PlatformType.DEFAULT;
 	protected boolean moveable = false;
 	protected Shapes shape = null;
+	protected BodyType bodyType = BodyType.DynamicBody;
 	
 /**
  * 
@@ -235,6 +237,23 @@ public class PlatformBuilder extends GenericEntityBuilder<PlatformBuilder> {
 		this.shape = null;
 		this.tex = null;
 		this.name = "No name";
+		this.bodyType = BodyType.DynamicBody;
+		this.pType = PlatformType.DEFAULT;
+		return this;
+	}
+	
+	public PlatformBuilder dynamic(){
+		bodyType = BodyType.DynamicBody;
+		return this;
+	}
+	
+	public PlatformBuilder staticBody(){
+		bodyType = BodyType.StaticBody;
+		return this;
+	}
+	
+	public PlatformBuilder kinematic(){
+		bodyType = BodyType.KinematicBody;
 		return this;
 	}
 	
@@ -265,7 +284,8 @@ public class PlatformBuilder extends GenericEntityBuilder<PlatformBuilder> {
 				                              this.isOneSided, 
 				                              this.moveable, 
 				                              this.world);
-
+		tp.body.setType( bodyType );
+		bodyType = BodyType.DynamicBody;
 		tp.setDensity( this.density );
 		tp.setFriction( this.friction );
 		tp.setRestitution( this.restitution );
@@ -283,7 +303,8 @@ public class PlatformBuilder extends GenericEntityBuilder<PlatformBuilder> {
 												  this.scale,
 												  this.world,
 												  this.type);
-
+		cp.body.setType( bodyType );
+		bodyType = BodyType.DynamicBody;
 		cp.setDensity( this.density );
 		cp.setFriction( this.friction );
 		cp.setRestitution( this.restitution );
@@ -300,7 +321,9 @@ public class PlatformBuilder extends GenericEntityBuilder<PlatformBuilder> {
 	public ShapePlatform buildShapePlatform( ) {
 		ShapePlatform sp = new ShapePlatform( this.name, this.pos, this.tex, world, this.shape, this.width,
 				this.height, this.flipHorizonal );
-
+		
+		sp.body.setType( bodyType );
+		bodyType = BodyType.DynamicBody;
 		sp.setDensity( this.density );
 		sp.setFriction( this.friction );
 		sp.setRestitution( this.restitution );

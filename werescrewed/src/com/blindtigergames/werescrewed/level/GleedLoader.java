@@ -15,6 +15,7 @@ import com.blindtigergames.werescrewed.entity.EntityDef;
 import com.blindtigergames.werescrewed.entity.builders.EntityBuilder;
 import com.blindtigergames.werescrewed.entity.builders.PlatformBuilder;
 import com.blindtigergames.werescrewed.platforms.ComplexPlatform;
+import com.blindtigergames.werescrewed.platforms.Platform;
 import com.blindtigergames.werescrewed.platforms.TiledPlatform;
 import com.blindtigergames.werescrewed.skeleton.Skeleton;
 import com.blindtigergames.werescrewed.util.Util;
@@ -52,7 +53,6 @@ public class GleedLoader {
 		for (Element item: items.values()) {
 			loadElement(item);
 		}
-		
 	}
 	
 	protected void loadElement(Element item){
@@ -116,7 +116,7 @@ public class GleedLoader {
 					tp.quickfixCollisions( );
 					Gdx.app.log("GleedLoader", "Platform loaded:"+tp.name);
 					level.entities.addEntity( name, tp );
-					level.root.addPlatformFixed( tp );
+					level.root.addKinematicPlatform( tp );
 				} else if (def.getCategory( ).equals( complexCat )) {
 					ComplexPlatform cp = new PlatformBuilder(level.world)
 					.name( name )
@@ -128,7 +128,7 @@ public class GleedLoader {
 					cp.quickfixCollisions( );
 					Gdx.app.log("GleedLoader", "Platform loaded:"+cp.name);
 					level.entities.addEntity( name, cp );
-					level.root.addPlatformFixed( cp );
+					level.root.addKinematicPlatform( cp );
 				} else if (def.getCategory( ).equals( playerCat )){
 					level.player.setPosition( pos );
 				} else {

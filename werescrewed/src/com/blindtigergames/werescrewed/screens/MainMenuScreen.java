@@ -17,7 +17,8 @@ class MainMenuScreen implements com.badlogic.gdx.Screen {
 	private BitmapFont font = null;
 	private Label headingLabel = null;
 	private Button playButton = null;
-	private Button creditsButton = null;
+	private Button gleedButton = null;
+	private Button imoverButton = null;
 	private Button exitButton = null;
 	private int lineHeight = 0;
 
@@ -26,10 +27,12 @@ class MainMenuScreen implements com.badlogic.gdx.Screen {
 		font = new BitmapFont( );
 		lineHeight = Math.round( 2.5f * font.getCapHeight( ) );
 		headingLabel = new Label( "Screen Manager Demo", font );
-		playButton = new Button( "Play", font, new ScreenSwitchHandler(
-				ScreenType.GAME ) );
-		creditsButton = new Button( "Credits", font, new ScreenSwitchHandler(
-				ScreenType.CREDITS ) );
+		playButton = new Button( "Physics Test Screen", font, new ScreenSwitchHandler(
+				ScreenType.PHYSICS ) );
+		gleedButton = new Button( "Gleed Screen", font, new ScreenSwitchHandler(
+				ScreenType.GLEED ) );
+		imoverButton = new Button( "IMover Screen", font, new ScreenSwitchHandler(
+				ScreenType.IMOVER ) );
 		exitButton = new Button( "Exit", font, new ButtonHandler( ) {
 			@Override
 			public void onClick( ) {
@@ -45,7 +48,8 @@ class MainMenuScreen implements com.badlogic.gdx.Screen {
 		batch.begin( );
 		headingLabel.draw( batch );
 		playButton.draw( batch, camera );
-		creditsButton.draw( batch, camera );
+		gleedButton.draw( batch, camera );
+		imoverButton.draw( batch, camera );
 		exitButton.draw( batch, camera );
 		batch.end( );
 	}
@@ -61,10 +65,12 @@ class MainMenuScreen implements com.badlogic.gdx.Screen {
 		headingLabel.setY( centerY + 2 * lineHeight );
 		playButton.setX( centerX - playButton.getWidth( ) / 2 );
 		playButton.setY( centerY + lineHeight );
-		creditsButton.setX( centerX - creditsButton.getWidth( ) / 2 );
-		creditsButton.setY( centerY );
+		gleedButton.setX( centerX - gleedButton.getWidth( ) / 2 );
+		gleedButton.setY( centerY );
+		imoverButton.setX( centerX - imoverButton.getWidth( )/2 );
+		imoverButton.setY( centerY - lineHeight );
 		exitButton.setX( centerX - exitButton.getWidth( ) / 2 );
-		exitButton.setY( centerY - lineHeight );
+		exitButton.setY( centerY - 2*lineHeight );
 	}
 
 	@Override

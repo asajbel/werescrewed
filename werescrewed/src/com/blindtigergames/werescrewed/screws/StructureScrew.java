@@ -34,47 +34,10 @@ public class StructureScrew extends Screw {
 		fallTimeout = max * 4;
 		extraJoints = new ArrayList< RevoluteJoint >( );
 
-		// create the screw body
-		BodyDef screwBodyDef = new BodyDef( );
-		screwBodyDef.type = BodyType.DynamicBody;
-		screwBodyDef.position.set( pos );
-		screwBodyDef.gravityScale = 0.07f;
-		body = world.createBody( screwBodyDef );
-		CircleShape screwShape = new CircleShape( );
-		screwShape
-				.setRadius( ( sprite.getWidth( ) / 2.0f ) * Util.PIXEL_TO_BOX );
-		FixtureDef screwFixture = new FixtureDef( );
-		screwFixture.shape = screwShape;
-		screwFixture.isSensor = true;
-		screwFixture.filter.categoryBits = Util.CATEGORY_SCREWS; 
-		screwFixture.filter.maskBits = Util.CATEGORY_PLAYER | Util.CATEGORY_SUBPLAYER;
-		body.createFixture( screwFixture );
-		//screwShape.dispose( );
-		body.setUserData( this );
+		constuctBody( pos );
+		connectScrewToEntity( entity, pos );
+		connectEntityToSkeleton( entity, skeleton, pos );
 
-		// add radar sensor to screw
-		CircleShape radarShape = new CircleShape( );
-		radarShape.setRadius( sprite.getWidth( ) * 1.25f * Util.PIXEL_TO_BOX );
-		FixtureDef radarFixture = new FixtureDef( );
-		radarFixture.shape = radarShape;
-		radarFixture.isSensor = true;
-		radarFixture.filter.categoryBits = Util.CATEGORY_SCREWS; 
-		radarFixture.filter.maskBits = Util.CATEGORY_PLAYER | Util.CATEGORY_SUBPLAYER;
-		body.createFixture( radarFixture );
-		//radarShape.dispose( );
-
-		
-		// connect the screw to the entity
-		RevoluteJointDef revoluteJointDef = new RevoluteJointDef( );
-		revoluteJointDef.initialize( body, entity.body, pos );
-		revoluteJointDef.enableMotor = false;
-		screwToSkel = ( RevoluteJoint ) world.createJoint( revoluteJointDef );
-
-		// connect the entity to the skeleton
-		revoluteJointDef = new RevoluteJointDef( );
-		revoluteJointDef.initialize( entity.body, skeleton.body, pos );
-		revoluteJointDef.enableMotor = false;
-		platformJoint = ( RevoluteJoint ) world.createJoint( revoluteJointDef );
 	}
 
 	/**
@@ -172,6 +135,59 @@ public class StructureScrew extends Screw {
 		if ( sprite != null ) {
 			sprite.draw( batch );
 		}
+	}
+
+	private void constuctBody( Vector2 pos ) {
+
+		// create the screw body
+		BodyDef screwBodyDef = new BodyDef( );
+		screwBodyDef.type = BodyType.DynamicBody;
+		screwBodyDef.position.set( pos );
+		screwBodyDef.gravityScale = 0.07f;
+		body = world.createBody( screwBodyDef );
+		CircleShape screwShape = new CircleShape( );
+		screwShape
+				.setRadius( ( sprite.getWidth( ) / 2.0f ) * Util.PIXEL_TO_BOX );
+		FixtureDef screwFixture = new FixtureDef( );
+		screwFixture.shape = screwShape;
+		screwFixture.isSensor = true;
+		screwFixture.filter.categoryBits = Util.CATEGORY_SCREWS;
+		screwFixture.filter.maskBits = Util.CATEGORY_PLAYER
+				| Util.CATEGORY_SUBPLAYER;
+		body.createFixture( screwFixture );
+		screwShape.dispose( );
+		body.setUserData( this );
+
+		// add radar sensor to screw
+		CircleShape radarShape = new CircleShape( );
+		radarShape.setRadius( sprite.getWidth( ) * 1.25f * Util.PIXEL_TO_BOX );
+		FixtureDef radarFixture = new FixtureDef( );
+		radarFixture.shape = radarShape;
+		radarFixture.isSensor = true;
+		radarFixture.filter.categoryBits = Util.CATEGORY_SCREWS;
+		radarFixture.filter.maskBits = Util.CATEGORY_PLAYER
+				| Util.CATEGORY_SUBPLAYER;
+		body.createFixture( radarFixture );
+		radarShape.dispose( );
+
+	}
+
+	private void connectScrewToEntity( Entity entity, Vector2 pos ) {
+		// connect the screw to the entity
+		RevoluteJointDef revoluteJointDef = new RevoluteJointDef( );
+		revoluteJointDef.initialize( body, entity.body, pos );
+		revoluteJointDef.enableMotor = false;
+		screwToSkel = ( RevoluteJoint ) world.createJoint( revoluteJointDef );
+	}
+
+	private void connectEntityToSkeleton( Entity entity, Skeleton skeleton,
+			Vector2 pos ) {
+		RevoluteJointDef revoluteJointDef = new RevoluteJointDef( );
+		// connect the entity to the skeleton
+		revoluteJointDef = new RevoluteJointDef( );
+		revoluteJointDef.initialize( entity.body, skeleton.body, pos );
+		revoluteJointDef.enableMotor = false;
+		platformJoint = ( RevoluteJoint ) world.createJoint( revoluteJointDef );
 	}
 
 	private RevoluteJoint platformJoint;
