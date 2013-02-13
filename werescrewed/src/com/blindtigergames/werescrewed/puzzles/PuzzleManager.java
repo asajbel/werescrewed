@@ -47,7 +47,8 @@ public class PuzzleManager {
 	 * adds a mover to manipulate the specific entity
 	 * 
 	 * @param key
-	 *            for the mover in the map
+	 *            for the mover in the map, use the name of the entity it
+	 *            applies to.
 	 * @param IMover
 	 *            puzzlePiece
 	 */
@@ -61,7 +62,8 @@ public class PuzzleManager {
 	 * @param movers
 	 */
 
-	public void createLists( ArrayList< Entity > pEs, Map< String, IMover > movers ) {
+	public void createLists( ArrayList< Entity > pEs,
+			Map< String, IMover > movers ) {
 		puzzleEntities = pEs;
 		puzzleMovers = movers;
 	}
@@ -74,12 +76,11 @@ public class PuzzleManager {
 	 * 0.5f is no
 	 */
 	public void runElement( float screwVal ) {
-		for ( Entity e: puzzleEntities) {
+		for ( Entity e : puzzleEntities ) {
 			if ( e.mover == null ) {
-				if ( puzzleMovers.containsKey( e.name )) {
+				if ( puzzleMovers.containsKey( e.name ) ) {
 					LerpMover lm = ( LerpMover ) puzzleMovers.get( e.name );
-					lm.runPuzzleMovement( screwVal,
-							(Platform) e );
+					lm.runPuzzleMovement( screwVal, ( Platform ) e );
 				}
 			}
 		}

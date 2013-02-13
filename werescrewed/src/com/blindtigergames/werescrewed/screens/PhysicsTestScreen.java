@@ -20,6 +20,7 @@ import com.blindtigergames.werescrewed.camera.Camera;
 import com.blindtigergames.werescrewed.collisionManager.MyContactListener;
 import com.blindtigergames.werescrewed.debug.SBox2DDebugRenderer;
 import com.blindtigergames.werescrewed.entity.Entity;
+import com.blindtigergames.werescrewed.entity.Rope;
 import com.blindtigergames.werescrewed.entity.builders.PlatformBuilder;
 import com.blindtigergames.werescrewed.entity.builders.PlayerBuilder;
 import com.blindtigergames.werescrewed.entity.mover.LerpMover;
@@ -73,6 +74,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 	private ArrayList< StrippedScrew > climbingScrews;
 	private boolean debug = true;
 	private boolean debugTest = true;
+	Rope rope;
 
 	/**
 	 * Defines all necessary components in a screen for testing different
@@ -105,6 +107,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		initPuzzleScrews( );
 		initClimbingScrews( );
 
+		//rope = new Rope( "rope", new Vector2 (2000.0f * Util.PIXEL_TO_BOX, 400.0f* Util.PIXEL_TO_BOX), null, world );
 		// Add players
 		// First player has to have the name "player1"
 		// Second player has to have the name "player2"
@@ -204,19 +207,9 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 	 * Initializes settings for puzzle screws
 	 */
 	private void initPuzzleScrews( ) {
-
-		Vector2 axis = new Vector2( 1, 0 );
-		PrismaticJointDef jointDef = new PrismaticJointDef( );
-		jointDef.initialize( movingTP.body, skeleton.body,
-				movingTP.body.getPosition( ), axis );
-		jointDef.enableMotor = true;
-		jointDef.enableLimit = true;
-		jointDef.lowerTranslation = -2.5f;
-		jointDef.upperTranslation = 3.0f;
-		jointDef.motorSpeed = 7.0f;
 		puzzleScrew = new PuzzleScrew( "001", new Vector2( 0.0f, 0.2f ), 50,
 				skeleton, world );
-		//puzzleScrew.puzzleManager.addEntity( movingTP );
+		puzzleScrew.puzzleManager.addEntity( movingTP );
 		LerpMover lm = new LerpMover(
 				new Vector2( movingTP.body.getPosition( ).x,
 						movingTP.body.getPosition( ).y ), new Vector2(
@@ -277,6 +270,9 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 				.kinematic( )
 				.buildTilePlatform( );
 		skeleton.addKinematicPlatform( skeletonTest1 );
+		
+		rope = new Rope( "rope", new Vector2 ( 10f, 1.5f), new Vector2 ( 8.0f, 32.0f ), 10, null, world );
+
 		
 		/*
 		 * TODO: FIX PLATFORM DENSITY
