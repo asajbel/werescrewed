@@ -24,7 +24,8 @@ public class Screw extends Entity {
 	protected int screwStep;
 
 	public Screw( String name, Vector2 pos, Texture tex ) {
-		super( name, pos, ( tex == null ? WereScrewedGame.manager.get("assets/data/common/screw.png", Texture.class) : tex ), null, false );
+		super( name, pos, ( tex == null ? 
+				WereScrewedGame.manager.get(WereScrewedGame.dirHandle.path( ) +"/common/screw.png", Texture.class) : tex ), null, false );
 	}
 
 	@Override

@@ -31,7 +31,7 @@ import com.blindtigergames.werescrewed.entity.mover.PuzzleType;
 import com.blindtigergames.werescrewed.entity.mover.SlidingMotorMover;
 import com.blindtigergames.werescrewed.joint.JointFactory;
 import com.blindtigergames.werescrewed.joint.PrismaticJointBuilder;
-import com.blindtigergames.werescrewed.platforms.ComplexPlatform;
+import com.blindtigergames.werescrewed.platforms.Platform;
 import com.blindtigergames.werescrewed.platforms.TiledPlatform;
 import com.blindtigergames.werescrewed.player.Player;
 import com.blindtigergames.werescrewed.screws.PuzzleScrew;
@@ -78,7 +78,7 @@ public class EntityDefTestScreen implements com.badlogic.gdx.Screen {
 		entityManager.addSkeleton( rootSkeleton.name, rootSkeleton );
 		platBuilder = new PlatformBuilder( world );
 		testTexture = WereScrewedGame.manager.get(
-				"assets/common/data/TilesetTest.png", Texture.class);
+				WereScrewedGame.dirHandle.path( ) + "/common/TilesetTest.png", Texture.class);
 
 		// Initialize camera
 		initCamera( );
@@ -218,7 +218,7 @@ public class EntityDefTestScreen implements com.badlogic.gdx.Screen {
 				new Vector2( movingTP.body.getPosition( ).x,
 						movingTP.body.getPosition( ).y ), new Vector2(
 						movingTP.body.getPosition( ).x + 1.75f,
-						movingTP.body.getPosition( ).y ), 1f );
+						movingTP.body.getPosition( ).y ), 1f, true );
 		puzzleScrew.puzzleManager.addMover( movingTP.name, lm );
 	}
 
@@ -328,9 +328,14 @@ public class EntityDefTestScreen implements com.badlogic.gdx.Screen {
 		elevator.body.setSleepingAllowed( false );
 		skeleton.addDynamicPlatform( elevator );
 		
-		ComplexPlatform gear = new ComplexPlatform( "gear", new Vector2(
-				1000 * Util.PIXEL_TO_BOX, 300 * Util.PIXEL_TO_BOX ), null, 3,
-				world, "gearSmall" );
+		Platform gear = builder.name( "gear" )
+				.position( 1000 * Util.PIXEL_TO_BOX, 300 * Util.PIXEL_TO_BOX )
+				.texture( null )
+				.setScale( 3f )
+				.dynamic()
+				.type( "gearSmall" )
+				.buildComplexPlatform( );
+		
 		Filter filter;
 		for ( Fixture f : gear.body.getFixtureList( ) ) {
 			filter = f.getFilterData( );
@@ -341,8 +346,6 @@ public class EntityDefTestScreen implements com.badlogic.gdx.Screen {
 			filter.maskBits = Util.CATEGORY_EVERYTHING;
 			f.setFilterData( filter );
 		}
-		gear.setSolid( true );
-		gear.body.setType( BodyType.DynamicBody );
 		skeleton.addPlatformRotatingCenterWithMot( gear, 1f );
 	}
 

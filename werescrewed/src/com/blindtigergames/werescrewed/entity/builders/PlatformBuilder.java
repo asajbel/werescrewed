@@ -7,37 +7,33 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.World;
 import com.blindtigergames.werescrewed.platforms.Platform;
 import com.blindtigergames.werescrewed.platforms.PlatformType;
-import com.blindtigergames.werescrewed.platforms.ShapePlatform;
-import com.blindtigergames.werescrewed.platforms.Shapes;
 import com.blindtigergames.werescrewed.platforms.TiledPlatform;
 
 /**
  * PlatformBuilder should make building platforms a lot simpler and clearer
  * Work in progress
- * @author Ranveer
+ * @author Ranveer, Stew
  * 
  */
 
 // Later should be loaded in by file
 public class PlatformBuilder extends GenericEntityBuilder<PlatformBuilder> {
-	protected float width = 1.0f;
-	protected float height = 1.0f;
-	protected float outerWidth = 1.0f;
-	protected float outerHeight = 1.0f;
-	protected float thickX = 1.0f;
-	protected float thickY = 1.0f;
-	protected float scale = 1.0f;
-	protected float density = 1.0f;
-	protected float friction = 1.0f;
-	protected float restitution = 0.1f;
-	protected float gravScale = 0.1f;
-	protected boolean flipHorizonal = false;
-	protected boolean flipVertical = false;
-	protected boolean isOneSided = false;
-	//protected PlatformType pType = PlatformType.DEFAULT;
-	protected boolean moveable = false;
-	protected Shapes shape = null;
-	protected BodyType bodyType = BodyType.DynamicBody;
+	protected float 	width;
+	protected float 	height;
+	protected float 	outerWidth;
+	protected float 	outerHeight;
+	protected float 	thickX;
+	protected float 	thickY;
+	protected float 	scale;
+	protected float 	density;
+	protected float 	friction;
+	protected float 	restitution;
+	protected float 	gravScale;
+	protected boolean 	flipHorizonal;
+	protected boolean 	flipVertical;
+	protected boolean 	isOneSided;
+	protected boolean 	moveable;
+	protected BodyType 	bodyType;
 	
 /**
  * 
@@ -47,18 +43,8 @@ public class PlatformBuilder extends GenericEntityBuilder<PlatformBuilder> {
 	
 	public PlatformBuilder( World world ) {
 		super();
+		reset();
 		super.world(world);
-	}
-	
-/**
- * 
- * @param shape - Pick a shape to create (trapezoid, rhombus, etc)
- * 	Default is null
- * @return PlatformBuilder
- */
-	public PlatformBuilder shape( Shapes shape ) {
-		this.shape = shape;
-		return this;
 	}
 
 /**
@@ -222,7 +208,6 @@ public class PlatformBuilder extends GenericEntityBuilder<PlatformBuilder> {
 		this.flipVertical = false;
 		this.isOneSided = false;
 		this.moveable = false;
-		this.shape = null;
 		this.tex = null;
 		this.name = "No name";
 		this.bodyType = BodyType.KinematicBody;
@@ -290,24 +275,6 @@ public class PlatformBuilder extends GenericEntityBuilder<PlatformBuilder> {
 		cp.setRestitution( this.restitution );
 		cp.setGravScale( this.gravScale );
 		return cp;
-	}
-	
-	/**
-	 * builds shape platform
-	 * Note from Kevin: This is a holdover from Ranveer's code.
-	 * If we don't plan on keeping shapes, this should become deprecated.
-	 * @return ShapePlatform
-	 */
-	public ShapePlatform buildShapePlatform( ) {
-		ShapePlatform sp = new ShapePlatform( this.name, this.pos, this.tex, world, this.shape, this.width,
-				this.height, this.flipHorizonal );
-		
-		sp.body.setType( bodyType );
-		sp.setDensity( this.density );
-		sp.setFriction( this.friction );
-		sp.setRestitution( this.restitution );
-		sp.setGravScale( this.gravScale );
-		return sp;
 	}
 
 }
