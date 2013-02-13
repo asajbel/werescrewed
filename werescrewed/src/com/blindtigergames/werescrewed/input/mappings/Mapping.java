@@ -2,7 +2,10 @@ package com.blindtigergames.werescrewed.input.mappings;
 
 import java.lang.reflect.Field;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.controllers.Controller;
+import com.blindtigergames.werescrewed.WereScrewedGame;
 
 /**
  * Button and axis mapping {@link Controller}.
@@ -11,10 +14,10 @@ import com.badlogic.gdx.controllers.Controller;
  */
 public class Mapping {
 	public static final String ID = "Android Direct Input Game Controller";
-	public static final int BUTTON_X;
-	public static final int BUTTON_S;
-	public static final int BUTTON_O;
-	public static final int BUTTON_T;
+	public static final int BUTTON_FACE_BOT;
+	public static final int BUTTON_FACE_LEFT;
+	public static final int BUTTON_FACE_RIGHT;
+	public static final int BUTTON_FACE_TOP;
 	public static final int BUTTON_DPAD_UP;
 	public static final int BUTTON_DPAD_DOWN;
 	public static final int BUTTON_DPAD_RIGHT;
@@ -33,7 +36,7 @@ public class Mapping {
 	public static final int AXIS_RIGHT_TRIGGER;
 	public static final int BUTTON_START;
 	public static final int BUTTON_SELECT; 
-	/** whether the app is running on a real Ouya device **/
+	/** whether the app is running on a real Android device **/
 	public static final boolean runningOnAndroid;
 	
 	static {
@@ -44,36 +47,39 @@ public class Mapping {
 			isAndroid = "cardhu".equals(deviceField.get(null));
 		} catch(Exception e) {
 		}
+		if (Gdx.app.getType() == ApplicationType.Android) {
+			isAndroid = true; 
+		} 
 		runningOnAndroid = isAndroid;
 		
 		if(isAndroid) {
-			BUTTON_X = 96;
-			BUTTON_S = 99;
-			BUTTON_T = 100;
-			BUTTON_O = 97;
+			BUTTON_FACE_BOT = 96;
+			BUTTON_FACE_LEFT = 99;
+			BUTTON_FACE_TOP = 100;
+			BUTTON_FACE_RIGHT = 97;
 			BUTTON_DPAD_UP = 19;
 			BUTTON_DPAD_DOWN = 20;
 			BUTTON_DPAD_RIGHT = 22;
 			BUTTON_DPAD_LEFT = 21;
-			BUTTON_L1 = 104;
-			BUTTON_L2 = 102;
+			BUTTON_L1 = 102;
+			BUTTON_L2 = 104;
 			BUTTON_L3 = 106;
-			BUTTON_R1 = 105;
-			BUTTON_R2 = 103;
+			BUTTON_R1 = 103;
+			BUTTON_R2 = 105;
 			BUTTON_R3 = 107;
 			AXIS_LEFT_X = 0;
 			AXIS_LEFT_Y = 1;
-			AXIS_LEFT_TRIGGER = 2;
-			AXIS_RIGHT_X = 3;
-			AXIS_RIGHT_Y = 4;
-			AXIS_RIGHT_TRIGGER = 5;
+			AXIS_LEFT_TRIGGER = 12;
+			AXIS_RIGHT_X = 2;
+			AXIS_RIGHT_Y = 3;
+			AXIS_RIGHT_TRIGGER = 13;
 			BUTTON_SELECT = 4;
 			BUTTON_START = 108;
 		} else {
-			BUTTON_X = 0;
-			BUTTON_O = 1;
-			BUTTON_S = 2;
-			BUTTON_T = 3;
+			BUTTON_FACE_BOT = 0;
+			BUTTON_FACE_RIGHT = 1;
+			BUTTON_FACE_LEFT = 2;
+			BUTTON_FACE_TOP = 3;
 			BUTTON_DPAD_UP = 104;
 			BUTTON_DPAD_DOWN = 105;
 			BUTTON_DPAD_RIGHT = 108;

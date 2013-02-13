@@ -989,6 +989,7 @@ public class Player extends Entity {
 		if ( !inputHandler.jumpPressed( ) ) {
 			jumpPressedKeyboard = false;
 		}
+		
 		if ( inputHandler.leftPressed( ) ) {
 			processMovingState( );
 			moveLeft( );
