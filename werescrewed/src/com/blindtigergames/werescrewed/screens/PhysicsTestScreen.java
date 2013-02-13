@@ -13,6 +13,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Filter;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.joints.PrismaticJoint;
 import com.badlogic.gdx.physics.box2d.joints.PrismaticJointDef;
 import com.blindtigergames.werescrewed.WereScrewedGame;
@@ -168,6 +169,8 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 				.dynamic( )
 				.name( "Single Tiled" ).resitituion( 0.0f ).buildTilePlatform( );
 		skeleton.addPlatform( singTile );
+		singTile.body.setFixedRotation( false );
+
 
 		// Moving platform
 		movingTP = platBuilder.position( 0.0f, 120.0f )
