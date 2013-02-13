@@ -109,8 +109,8 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		initClimbingScrews( );
 		initbossBolt( );
 
-		rope = new Rope( "rope", new Vector2 (2000.0f * Util.PIXEL_TO_BOX, 400.0f* Util.PIXEL_TO_BOX), null, world );
-		
+		//rope = new Rope( "rope", new Vector2 (2000.0f * Util.PIXEL_TO_BOX, 400.0f* Util.PIXEL_TO_BOX), null, world );
+
 		// Add players
 		// First player has to have the name "player1"
 		// Second player has to have the name "player2"
@@ -298,6 +298,9 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 				.kinematic( )
 				.buildTilePlatform( );
 		skeleton.addKinematicPlatform( skeletonTest1 );
+		
+		rope = new Rope( "rope", new Vector2 ( 1f, 1.5f), new Vector2 ( 8.0f, 32.0f ), 10, null, world );
+
 		
 		/*
 		 * TODO: FIX PLATFORM DENSITY
