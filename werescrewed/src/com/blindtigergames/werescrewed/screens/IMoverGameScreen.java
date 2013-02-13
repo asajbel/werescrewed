@@ -14,6 +14,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.MassData;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.joints.PrismaticJoint;
@@ -146,9 +147,12 @@ public class IMoverGameScreen implements com.badlogic.gdx.Screen {
 		player2 = new PlayerBuilder( ).name( "player2" ).world( world )
 				.position( 1.5f, 1.5f ).buildPlayer( );
 		
-		MassData massD = player1.body.getMassData( );
-		massD.mass = 0.0f;
-		player1.body.setMassData( massD );
+//		for ( Fixture f: skeletonTest2.body.getFixtureList( ) ) {
+//			f.setDensity( 1f );
+//		}
+//		MassData massD = player1.body.getMassData( );
+//		massD.mass = 1.0f;
+//		player1.body.setMassData( massD );
 		initStructureScrews();
 		initPuzzleScrews();
 		initClimbingScrews();
@@ -217,7 +221,7 @@ public class IMoverGameScreen implements com.badlogic.gdx.Screen {
 				new Vector2( kinPlat1.body.getPosition( ).x,
 						kinPlat1.body.getPosition( ).y ), new Vector2(
 						kinPlat1.body.getPosition( ).x + 1.75f,
-						kinPlat1.body.getPosition( ).y ), 0.003f );
+						kinPlat1.body.getPosition( ).y ), 0.003f, true );
 		puzzleScrew.puzzleManager.addMover( lm );
 		skeleton.addScrewForDraw( puzzleScrew );
 	}
