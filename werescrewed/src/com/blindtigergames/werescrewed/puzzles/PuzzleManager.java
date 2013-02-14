@@ -1,12 +1,14 @@
 package com.blindtigergames.werescrewed.puzzles;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
-import com.badlogic.gdx.physics.box2d.JointDef;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.physics.box2d.World;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.mover.IMover;
-import com.blindtigergames.werescrewed.entity.mover.LerpMover;
+import com.blindtigergames.werescrewed.platforms.Platform;
 
 /**
  * puzzle screw class for moving puzzle pieces
@@ -19,8 +21,7 @@ public class PuzzleManager {
 
 	public PuzzleManager( World world ) {
 		puzzleEntities = new ArrayList< Entity >( );
-		puzzleMovers = new ArrayList< IMover >( );
-		puzzleJoints = new ArrayList< JointDef >( );
+		puzzleMovers = new HashMap< String, IMover >( );
 	}
 
 	public void update( float deltaTime ) {
@@ -45,21 +46,24 @@ public class PuzzleManager {
 	/**
 	 * adds a mover to manipulate the specific entity
 	 * 
+	 * @param key
+	 *            for the mover in the map, use the name of the entity it
+	 *            applies to.
 	 * @param IMover
 	 *            puzzlePiece
 	 */
-	public void addMover( IMover puzzlePiece ) {
-		puzzleMovers.add( puzzlePiece );
+	public void addMover( String key, IMover puzzlePiece ) {
+		puzzleMovers.put( key, puzzlePiece );
 	}
 
 	/**
-	 * obsolete if using kinematic entities
+	 * 
+	 * @param pEs
+	 * @param movers
 	 */
-	public void addJointDef( JointDef puzzlePiece ) {
-		puzzleJoints.add( puzzlePiece );
-	}
 
-	public void createLists( ArrayList< Entity > pEs, ArrayList< IMover > movers ) {
+	public void createLists( ArrayList< Entity > pEs,
+			Map< String, IMover > movers ) {
 		puzzleEntities = pEs;
 		puzzleMovers = movers;
 	}
@@ -68,32 +72,21 @@ public class PuzzleManager {
 	 * applies movement to an entity or turns on/off movement for an entities
 	 * mover by using Entity.applyPuzzleMovement ( puzzleScrew.depth /
 	 * puzzleScrew.maxDepth ) puzzleScrew.depth / puzzleScrew.maxDepth can
-	 * either be a percentage of movement or it can be a boolean < 0.5f is yes >
-	 * 0.5f is no
+	 * either be a percentage of movement or it can be a boolean < 0.5f is yes
+	 * > 0.5f is no
 	 */
 	public void runElement( float screwVal ) {
-		for ( int i = 0; i < puzzleEntities.size( ); i++ ) {
-			if ( puzzleEntities.get( i ).mover == null ) {
-				if ( i <= puzzleMovers.size( ) ) {
-					puzzleEntities.get( i ).mover = puzzleMovers.get( i );
-//					LerpMover lm = ( LerpMover ) puzzleMovers.get( i );
-//					lm.runPuzzleMovement( screwVal,
-//							puzzleEntities.get( i ).body );
+		for ( Entity e : puzzleEntities ) {
+			if ( e.mover == null ) {
+				if ( puzzleMovers.containsKey( e.name ) ) {
+					Gdx.app.log( "screw value", "" + screwVal );
+					puzzleMovers.get( e.name ).runPuzzleMovement( screwVal, ( Platform ) e );
 				}
-				/*
-				 * if ( e.body.getJointList( ).size( ) < 1 ) {
-				 * System.out.println( "the joint is created" ); PrismaticJoint
-				 * j = ( PrismaticJoint ) world .createJoint( puzzleJoints.get(
-				 * index ) ); SlidingMotorMover sm = new SlidingMotorMover(
-				 * PuzzleType.PRISMATIC_SLIDER, j ); e.setMover( sm );
-				 * e.body.setAwake( true ); puzzleMovers.add( sm ); }
-				 */
 			}
 		}
 	}
 
 	private ArrayList< Entity > puzzleEntities;
-	private ArrayList< IMover > puzzleMovers;
-	private ArrayList< JointDef > puzzleJoints;
+	private Map< String, IMover > puzzleMovers;
 
 }

@@ -19,7 +19,6 @@ class MainMenuScreen implements com.badlogic.gdx.Screen {
 	private Label headingLabel = null;
 	private Button playButton = null;
 	private Button gleedButton = null;
-	private Button imoverButton = null;
 	private Button exitButton = null;
 	private int lineHeight = 0;
 
@@ -32,8 +31,7 @@ class MainMenuScreen implements com.badlogic.gdx.Screen {
 				ScreenType.PHYSICS ) );
 		gleedButton = new Button( "Gleed Screen", font, new ScreenSwitchHandler(
 				ScreenType.GLEED ) );
-		imoverButton = new Button( "IMover Screen", font, new ScreenSwitchHandler(
-				ScreenType.IMOVER ) );
+
 		exitButton = new Button( "Exit", font, new ButtonHandler( ) {
 			@Override
 			public void onClick( ) {
@@ -50,7 +48,7 @@ class MainMenuScreen implements com.badlogic.gdx.Screen {
 		headingLabel.draw( batch );
 		playButton.draw( batch, camera );
 		gleedButton.draw( batch, camera );
-		imoverButton.draw( batch, camera );
+		//imoverButton.draw( batch, camera );
 		exitButton.draw( batch, camera );
 		batch.end( );
 		
@@ -75,8 +73,8 @@ class MainMenuScreen implements com.badlogic.gdx.Screen {
 		playButton.setY( centerY + lineHeight );
 		gleedButton.setX( centerX - gleedButton.getWidth( ) / 2 );
 		gleedButton.setY( centerY );
-		imoverButton.setX( centerX - imoverButton.getWidth( )/2 );
-		imoverButton.setY( centerY - lineHeight );
+		//imoverButton.setX( centerX - imoverButton.getWidth( )/2 );
+		//imoverButton.setY( centerY - lineHeight );
 		exitButton.setX( centerX - exitButton.getWidth( ) / 2 );
 		exitButton.setY( centerY - 2*lineHeight );
 	}

@@ -78,7 +78,7 @@ public class EntityDefTestScreen implements com.badlogic.gdx.Screen {
 		entityManager.addSkeleton( rootSkeleton.name, rootSkeleton );
 		platBuilder = new PlatformBuilder( world );
 		testTexture = WereScrewedGame.manager.get(
-				"assets/common/data/TilesetTest.png", Texture.class);
+				WereScrewedGame.dirHandle.path( ) + "/common/TilesetTest.png", Texture.class);
 
 		// Initialize camera
 		initCamera( );
@@ -212,14 +212,14 @@ public class EntityDefTestScreen implements com.badlogic.gdx.Screen {
 		jointDef.upperTranslation = 3.0f;
 		jointDef.motorSpeed = 7.0f;
 		puzzleScrew = new PuzzleScrew( "001", new Vector2( 0.0f, 0.2f ), 50,
-				skeleton, world );
+				skeleton, world, 0 );
 		puzzleScrew.puzzleManager.addEntity( movingTP );
 		LerpMover lm = new LerpMover(
 				new Vector2( movingTP.body.getPosition( ).x,
 						movingTP.body.getPosition( ).y ), new Vector2(
 						movingTP.body.getPosition( ).x + 1.75f,
-						movingTP.body.getPosition( ).y ), 1f );
-		puzzleScrew.puzzleManager.addMover( lm );
+						movingTP.body.getPosition( ).y ), 1f, true );
+		puzzleScrew.puzzleManager.addMover( movingTP.name, lm );
 	}
 
 	/**

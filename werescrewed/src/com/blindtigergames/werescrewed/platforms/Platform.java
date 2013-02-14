@@ -2,6 +2,7 @@ package com.blindtigergames.werescrewed.platforms;
 
 import java.util.ArrayList;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
@@ -42,8 +43,9 @@ public class Platform extends Entity {
 	/**
 	 * Used for kinematic movement connected to skeleton
 	 */
-	protected Vector2 localPosition; //in pixels
-	protected float localRotation; // in radians
+	protected Vector2 localPosition; //in pixels, local coordinate system
+	protected float localRotation; // in radians, local rot system
+	private Vector2 originPosition; //world position that this platform spawns at, in pixels
 
 	
 	//============================================
@@ -86,8 +88,9 @@ public class Platform extends Entity {
 	 */
 	void init(Vector2 pos){
 		screws = new ArrayList< Screw >( );
-		localPosition = pos.cpy( );//pos.mul( Util.PIXEL_TO_BOX );
+		localPosition = new Vector2(0,0);
 		localRotation = 0;
+		originPosition = pos.cpy();
 		platType = PlatformType.DEFAULT; //set to default unless subclass sets it later in a constructor
 	}
 
@@ -133,6 +136,28 @@ public class Platform extends Entity {
 		localRotation = newLocalRotRadians;
 	}
 	
+	/**
+	 * return originPosition Vector2 in PIXELS.
+	 * @return
+	 */
+	public Vector2 getOriginPos(){
+		return originPosition;
+	}
+	
+	/**
+	 * set Origin Position Vector2 in PIXELS!!!
+	 * @param newLocalPos in PIXELS
+	 */
+	public void setOriginPos( Vector2 newOriginPosPixel ){
+		originPosition.x = newOriginPosPixel.x;
+		originPosition.y = newOriginPosPixel.y;
+	}
+	
+	public void setOriginPos( float xPixel, float yPixel ){
+		originPosition.x = xPixel;
+		originPosition.y = yPixel;
+	}
+	
 	public void addScrew( Screw s ) {
 		screws.add( s );
 	}
@@ -148,6 +173,7 @@ public class Platform extends Entity {
 	public void update( float deltaTime ) {
 		super.update( deltaTime );
 		body.setActive( true );
+		body.setAwake( true );
 		for ( Screw s : screws ) {
 			s.update( deltaTime );
 		}
@@ -239,13 +265,15 @@ public class Platform extends Entity {
 	 * @author stew
 	 */
 	public void setPosRotFromSkeleton( Skeleton skeleton ) {
+		//System.out.println("origin:"+originPosition+" bodyPos:"+body.getPosition());
 		// originPos has already been updated by it's IMover by this point
 		// TODO: modify this if imover uses pixels or box2d meters
-		float radiusFromSkeleton = localPosition.cpy( ).mul( Util.PIXEL_TO_BOX ).len( );
+		float radiusFromSkeleton = originPosition.cpy().add(localPosition).mul( Util.PIXEL_TO_BOX ).len( );
 		// update angle between platform and skeleton
-		float newAngleFromSkeleton = skeleton.body.getAngle( )
-				+ Util.angleBetweenPoints( Vector2.Zero, localPosition );
 		Vector2 skeleOrigin = skeleton.body.getPosition( );
+		float newAngleFromSkeleton = skeleton.body.getAngle( )
+				+ Util.angleBetweenPoints( skeleOrigin, originPosition.cpy( ).add( localPosition ) );
+		
 		
 		float newRotation = localRotation + skeleton.body.getAngle( );
 		Vector2 newPos = Util.PointOnCircle( radiusFromSkeleton,

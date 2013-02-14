@@ -4,7 +4,6 @@ import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.files.FileHandle;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.blindtigergames.werescrewed.WereScrewedGame;
 
@@ -13,7 +12,7 @@ import com.blindtigergames.werescrewed.WereScrewedGame;
  * Doesn't work yet
  */
 
-public class LoadingScreen implements com.badlogic.gdx.Screen {
+public class LoadingScreen extends Screen {
 
 	/**
 	 * 
@@ -25,23 +24,39 @@ public class LoadingScreen implements com.badlogic.gdx.Screen {
 		//WereScrewedGame.manager.load("assets/data/common/sounds/jump.ogg", Sound.class);
 		
 		
-		FileHandle dirHandle;
+		FileHandle common;
 		if (Gdx.app.getType() == ApplicationType.Android) {
-		  dirHandle = Gdx.files.internal("data/common/");
+			WereScrewedGame.dirHandle = Gdx.files.internal("data/");
 		} else {
 		  // ApplicationType.Desktop ..
-		  dirHandle = Gdx.files.internal("assets/data/common/");
+			WereScrewedGame.dirHandle = Gdx.files.internal("assets/data/");
 		}
-		for (FileHandle entry: dirHandle.list()) {
+		for (FileHandle entry: WereScrewedGame.dirHandle.list()) {
 		   
-			if(!entry.isDirectory( ))
-				WereScrewedGame.manager.load( dirHandle.path( )  + "/" + entry.name( ), Texture.class );
+			if(!entry.isDirectory( )){
+				WereScrewedGame.manager.load( WereScrewedGame.dirHandle.path( )  + "/" + entry.name( ), Texture.class );
+				//System.out.println( entry.name());
+			}
+			
 			
 			//TODO: better way to go into directories in directories
-			if(entry.name( ).equals("sounds"))
-				WereScrewedGame.manager.load(dirHandle.path( ) + "/sounds/jump.ogg", Sound.class);
-			
+			if(entry.name( ).equals( "common" )){
+				common = Gdx.files.internal( WereScrewedGame.dirHandle.path( )  + "/common/" );
+				
+				for( FileHandle com: common.list( )){
+					
+					if(com.name( ).equals("sounds")){
+						WereScrewedGame.manager.load( common.path( ) + "/sounds/jump.ogg", Sound.class);
+						//System.out.println( "soundloaded" );
+					}
+					else{
+						WereScrewedGame.manager.load( common.path( )  + "/" + com.name( ), Texture.class );
+					}
+						//System.out.println( com.name());
+				}
+			}
 		}
+		//System.out.println( WereScrewedGame.dirHandle.path( )  );
 	}
 
 	/**
@@ -54,10 +69,7 @@ public class LoadingScreen implements com.badlogic.gdx.Screen {
 	 */
 	@Override
 	public void render(float delta) {
-
-		// Clear the screen
-		Gdx.gl20.glClearColor( 0.0f, 0f, 0.0f, 1.0f );
-		Gdx.gl20.glClear( GL20.GL_COLOR_BUFFER_BIT );
+		super.render(delta);
 
 		//begin loading the assets
 		if ( WereScrewedGame.manager.update( ) ) { 
@@ -71,36 +83,7 @@ public class LoadingScreen implements com.badlogic.gdx.Screen {
 		//Gdx.app.log( "LoadingScreen.render", "Loading... ");
 
 	}
-
-	@Override
-	public void resize( int width, int height ) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void show( ) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void hide( ) {
-		// WereScrewedGame.manager.unload("data/loading.pack");
-	}
-
-	@Override
-	public void pause( ) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void resume( ) {
-		// TODO Auto-generated method stub
-
-	}
-
+	
 	@Override
 	public void dispose( ) {
 		WereScrewedGame.manager.dispose();

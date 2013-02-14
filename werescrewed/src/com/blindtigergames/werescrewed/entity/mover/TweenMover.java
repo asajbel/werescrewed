@@ -7,6 +7,7 @@ import aurelienribon.tweenengine.TweenManager;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.blindtigergames.werescrewed.platforms.Platform;
 
 /**
  * General purpose mover for building an arbitrary path.
@@ -44,4 +45,20 @@ public class TweenMover implements IMover {
     public void move( float deltaTime, Body body, SteeringOutput steering ) {
         
     }
+
+	@Override
+	public void runPuzzleMovement( float screwVal, Platform p ) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public PuzzleType getMoverType( ) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	public void addTween(Tween tween){
+		tweens.add(tween);
+	}
 }

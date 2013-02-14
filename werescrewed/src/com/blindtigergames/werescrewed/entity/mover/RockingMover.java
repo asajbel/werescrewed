@@ -8,12 +8,22 @@ import com.blindtigergames.werescrewed.platforms.Platform;
  * a movement passed in to it's move.
  * @author Stew
  *****************************************************/
-public class StaticMover implements IMover {
+public class RockingMover implements IMover {
 
+	protected float time;
+	public float max;
+	public float speed;
+
+	public RockingMover(float m, float s){
+		time = 0.0f;
+		max = m;
+		speed = s;
+	}
+	
 	@Override
 	public void move(float deltaTime, Body body) {
-		//Intentionally returns immediately
-		return;
+		time += deltaTime;
+		body.setAngularVelocity( (float)(Math.sin( time * speed))*max );
 	}
 
 	@Override

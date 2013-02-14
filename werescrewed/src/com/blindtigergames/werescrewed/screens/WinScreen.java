@@ -9,28 +9,25 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.blindtigergames.werescrewed.gui.Button;
 import com.blindtigergames.werescrewed.gui.Label;
-import com.blindtigergames.werescrewed.screens.ScreenSwitchHandler;
 
-class PauseScreen implements com.badlogic.gdx.Screen {
+class WinScreen implements com.badlogic.gdx.Screen{
 
 	private SpriteBatch batch = null;
 	private OrthographicCamera camera = null;
 	private BitmapFont font = null;
-	private Label authorLabel = null;
-	private Label licenseLabel = null;
-	private Label versionLabel = null;
-	private Button backButton = null;
+	private Label firstLine = null;
+	private Label secLine = null;
+	private Button nextButton = null;
 	private int lineHeight = 0;
 
-	public PauseScreen( ) {
+	public WinScreen( ) {
 		batch = new SpriteBatch( );
 		font = new BitmapFont( );
 		lineHeight = Math.round( 2.5f * font.getCapHeight( ) );
-		authorLabel = new Label( "Author: biobob (Robert Komorovsky)", font );
-		licenseLabel = new Label( "License: Apache License 2.0", font );
-		versionLabel = new Label( "LibGDX version: " + Version.VERSION, font );
-		backButton = new Button( "Back", font, new ScreenSwitchHandler(
-				ScreenType.PHYSICS ) );
+		firstLine = new Label( "Mission Complete!", font );
+		secLine = new Label( "Winners Never Lose!!", font );
+		nextButton = new Button( "Next Level", font, new ScreenSwitchHandler(
+				ScreenType.LOADING ) );
 	}
 
 	@Override
@@ -38,14 +35,14 @@ class PauseScreen implements com.badlogic.gdx.Screen {
 		Gdx.gl.glClearColor( 0.5f, 0.5f, 0.5f, 1f );
 		Gdx.gl.glClear( GL10.GL_COLOR_BUFFER_BIT );
 
-		if ( Gdx.input.isKeyPressed( Input.Keys.ESCAPE ) ) {
+		if ( Gdx.input.isKeyPressed( Input.Keys.ENTER ) ) {
 			ScreenManager.getInstance( ).show( ScreenType.PHYSICS );
+			// Later this will probably call the next level screen instead.
 		}
 		batch.begin( );
-		authorLabel.draw( batch );
-		licenseLabel.draw( batch );
-		versionLabel.draw( batch );
-		backButton.draw( batch, camera );
+		firstLine.draw( batch );
+		secLine.draw( batch );
+		nextButton.draw( batch, camera );
 		batch.end( );
 
 	}
@@ -57,14 +54,12 @@ class PauseScreen implements com.badlogic.gdx.Screen {
 		batch.setProjectionMatrix( camera.combined );
 		int centerX = width / 2;
 		int centerY = height / 2;
-		authorLabel.setX( centerX - authorLabel.getWidth( ) / 2 );
-		authorLabel.setY( centerY + lineHeight );
-		licenseLabel.setX( centerX - licenseLabel.getWidth( ) / 2 );
-		licenseLabel.setY( centerY );
-		versionLabel.setX( centerX - versionLabel.getWidth( ) / 2 );
-		versionLabel.setY( centerY - lineHeight );
-		backButton.setX( centerX - backButton.getWidth( ) / 2 );
-		backButton.setY( 20 + backButton.getHeight( ) );
+		firstLine.setX( centerX - firstLine.getWidth( ) / 2 );
+		firstLine.setY( centerY + lineHeight );
+		secLine.setX( centerX - secLine.getWidth( ) / 2 );
+		secLine.setY( centerY );
+		nextButton.setX( centerX - nextButton.getWidth( ) / 2 );
+		nextButton.setY( 20 + nextButton.getHeight( ) );
 	}
 
 	@Override

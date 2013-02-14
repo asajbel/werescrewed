@@ -42,7 +42,7 @@ public class Level {
 		float w = Gdx.graphics.getWidth( ) / zoom;
 		float h = Gdx.graphics.getHeight( ) / zoom;
 
-		world = new World( new Vector2( 0, -100 ), true );
+		world = new World( new Vector2( 0, GRAVITY ), true );
 		camera = new Camera( w, h);
 		player = new PlayerBuilder()
 					.name("player1")
@@ -86,7 +86,7 @@ public class Level {
 		@SuppressWarnings( "unused" )
 		//ShapePlatform sp;
 		Texture texture =
-				WereScrewedGame.manager.get("assets/data/common/rletter.png", Texture.class);
+				WereScrewedGame.manager.get(WereScrewedGame.dirHandle.path( ) + "/common/rletter.png", Texture.class);
 		
 		tp = new PlatformBuilder(out.world)
 		.position( 2.0f, 0.2f )
@@ -107,4 +107,6 @@ public class Level {
 		
 		return out;
 	}
+	
+	public static int GRAVITY = -45;
 }
