@@ -215,7 +215,7 @@ public class IMoverGameScreen implements com.badlogic.gdx.Screen {
 		jointDef.upperTranslation = 3.0f;
 		jointDef.motorSpeed = 7.0f;
 		puzzleScrew1 = new PuzzleScrew( "001", new Vector2( 0.0f, 0.2f ), 50,
-				skeleton, world );
+				skeleton, world, 0 );
 		puzzleScrew1.puzzleManager.addEntity( kinPlat1 );
 		LerpMover lm = new LerpMover(
 				new Vector2( kinPlat1.body.getPosition( ).x,

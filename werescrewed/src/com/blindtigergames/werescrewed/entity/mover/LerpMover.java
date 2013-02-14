@@ -15,9 +15,16 @@ public class LerpMover implements IMover {
 	private boolean done = false;
 	private PuzzleType puzzleType;
 
-	public LerpMover( Vector2 bp, Vector2 ep, float speed, boolean loop ) {
-		beginningPoint = new Vector2( bp.x, bp.y );
-		endPoint = new Vector2( ep.x, ep.y );
+	/**
+	 * 
+	 * @param beginningPoint
+	 * @param endingPoint
+	 * @param speed of lerp
+	 * @param loop on or off
+	 */
+	public LerpMover( Vector2 beginningPoint, Vector2 endingPoint, float speed, boolean loop ) {
+		this.beginningPoint = beginningPoint.cpy( );
+		this.endPoint = endingPoint.cpy( );
 		this.speed = speed;
 		this.loop = loop;
 	}

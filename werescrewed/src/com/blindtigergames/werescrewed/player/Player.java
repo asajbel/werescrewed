@@ -207,7 +207,7 @@ public class Player extends Entity {
 		if ( playerState == PlayerState.JumpingOffScrew ) {
 			handleJumpOffScrew( );
 		}
-		// terminalVelocityCheck( 6.0f );
+		terminalVelocityCheck( 15.0f );
 		// the jump doesn't work the first time on dynamic bodies so do it twice
 		if ( playerState == PlayerState.Jumping && isGrounded( ) ) {
 			jump( );
@@ -862,7 +862,6 @@ public class Player extends Entity {
 		}
 	}
 
-	// this was causing the player to not be able to jump...
 	/**
 	 * Checks player's vertical velocity and resets to be within bounds
 	 * 
@@ -871,7 +870,6 @@ public class Player extends Entity {
 	 * 
 	 * @author Bryan
 	 */
-	@SuppressWarnings( "unused" )
 	private void terminalVelocityCheck( float terminal ) {
 		if ( playerState != PlayerState.HeadStand ) {
 			if ( body.getLinearVelocity( ).y < -( terminal ) ) {

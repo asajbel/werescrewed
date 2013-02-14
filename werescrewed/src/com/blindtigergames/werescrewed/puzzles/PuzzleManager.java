@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.physics.box2d.World;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.mover.IMover;
@@ -78,6 +79,7 @@ public class PuzzleManager {
 		for ( Entity e : puzzleEntities ) {
 			if ( e.mover == null ) {
 				if ( puzzleMovers.containsKey( e.name ) ) {
+					Gdx.app.log( "screw value", "" + screwVal );
 					puzzleMovers.get( e.name ).runPuzzleMovement( screwVal, ( Platform ) e );
 				}
 			}

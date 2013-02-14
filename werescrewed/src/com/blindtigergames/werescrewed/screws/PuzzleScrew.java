@@ -25,10 +25,11 @@ public class PuzzleScrew extends Screw {
 	private int threshold;
 
 	public PuzzleScrew( String name, Vector2 pos, int max, Entity entity,
-			World world ) {
+			World world, int startDepth ) {
 		super( name, pos, null );
 		this.world = world;
-		maxDepth = threshold = depth = max;
+		maxDepth = threshold = max;
+		depth = startDepth;
 		puzzleManager = new PuzzleManager( world );
 		screwType = ScrewType.PUZZLE;
 		
@@ -47,8 +48,8 @@ public class PuzzleScrew extends Screw {
 	 *            threshold for binary action
 	 */
 	public PuzzleScrew( String name, Vector2 pos, int max, Entity entity,
-			World world, int th ) {
-		this( name, pos, max, entity, world );
+			World world, int th, int startDepth ) {
+		this( name, pos, max, entity, world, startDepth );
 		threshold = th;
 	}
 
@@ -60,7 +61,7 @@ public class PuzzleScrew extends Screw {
 			rotation += 10;
 			screwStep = depth + 5;
 			puzzleManager
-					.runElement( 1f - ( ( float ) depth / ( ( float ) maxDepth ) ) );
+					.runElement( ( float ) depth / ( ( float ) maxDepth ) );
 		}
 	}
 
@@ -72,8 +73,7 @@ public class PuzzleScrew extends Screw {
 			rotation -= 10;
 			screwStep = depth + 6;
 			puzzleManager
-					.runElement( 1f - ( ( float ) depth / ( ( float ) maxDepth ) ) );
-			Gdx.app.log( name + " depth", "" + depth );
+					.runElement(( float ) depth / ( ( float ) maxDepth ) );
 		}
 	}
 
