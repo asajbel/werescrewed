@@ -152,9 +152,6 @@ public class BossScrew extends Screw {
 				endFlag = true;
 				// if the number of joints is less than 3 set to dynamic body
 				// a joint for the screw and a joint to the skeleton or less
-				if ( platformJoint.getBodyA( ).getJointList( ).size( ) < 3 ) {
-					platformJoint.getBodyA( ).setType( BodyType.DynamicBody );
-				}
 			}
 			fallTimeout--;
 		} else {
