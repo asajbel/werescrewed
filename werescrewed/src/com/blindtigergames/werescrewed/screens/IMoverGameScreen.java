@@ -216,7 +216,7 @@ public class IMoverGameScreen implements com.badlogic.gdx.Screen {
 				new Vector2( kinPlat1.body.getPosition( ).x,
 						kinPlat1.body.getPosition( ).y ), new Vector2(
 						kinPlat1.body.getPosition( ).x + 1.75f,
-						kinPlat1.body.getPosition( ).y ), 0.003f, true );
+						kinPlat1.body.getPosition( ).y ), 0.003f, true, PuzzleType.PUZZLE_SCREW_CONTROL );
 		puzzleScrew1.puzzleManager.addMover( kinPlat1.name, lm );
 		skeleton.addScrewForDraw( puzzleScrew1 );
 	}

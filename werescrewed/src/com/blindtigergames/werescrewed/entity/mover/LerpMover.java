@@ -19,14 +19,17 @@ public class LerpMover implements IMover {
 	 * 
 	 * @param beginningPoint
 	 * @param endingPoint
-	 * @param speed of lerp
-	 * @param loop on or off
+	 * @param speed
+	 * @param loop
+	 * @param type does the puzzle override the platforms mover or just move once
 	 */
-	public LerpMover( Vector2 beginningPoint, Vector2 endingPoint, float speed, boolean loop ) {
+	public LerpMover( Vector2 beginningPoint, Vector2 endingPoint, float speed,
+			boolean loop, PuzzleType type ) {
 		this.beginningPoint = beginningPoint.cpy( );
 		this.endPoint = endingPoint.cpy( );
 		this.speed = speed;
 		this.loop = loop;
+		puzzleType = type;
 	}
 
 	@Override
@@ -59,13 +62,19 @@ public class LerpMover implements IMover {
 
 	@Override
 	public void runPuzzleMovement( float screwVal, Platform p ) {
-		Vector2 temp = new Vector2( beginningPoint.x, beginningPoint.y );
-		beginningPoint.lerp( endPoint, screwVal );
-		p.setLocalPos( beginningPoint.mul( Util.BOX_TO_PIXEL ) );
-		// body.setTransform( beginningPoint, 0.0f );
-		beginningPoint = temp;
+		if ( puzzleType == PuzzleType.PUZZLE_SCREW_CONTROL ) {
+			Vector2 temp = new Vector2( beginningPoint.x, beginningPoint.y );
+			beginningPoint.lerp( endPoint, screwVal );
+			p.setLocalPos( beginningPoint.mul( Util.BOX_TO_PIXEL ) );
+			// body.setTransform( beginningPoint, 0.0f );
+			beginningPoint = temp;
+		} else if ( puzzleType == PuzzleType.OVERRIDE_ENTITY_MOVER ) {
+			if ( p.mover == null ) {
+				p.mover = this;
+			}
+		}
 	}
-	
+
 	@Override
 	public PuzzleType getMoverType( ) {
 		return puzzleType;
