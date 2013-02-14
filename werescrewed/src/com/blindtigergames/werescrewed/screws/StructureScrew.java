@@ -31,7 +31,7 @@ public class StructureScrew extends Screw {
 		maxDepth = max;
 		depth = max;
 		rotation = 0;
-		fallTimeout = max * 3;
+		fallTimeout = max * 2;
 		extraJoints = new ArrayList< RevoluteJoint >( );
 		screwType = ScrewType.STRUCTURAL;
 		
@@ -152,7 +152,8 @@ public class StructureScrew extends Screw {
 				.setRadius( ( sprite.getWidth( ) / 2.0f ) * Util.PIXEL_TO_BOX );
 		FixtureDef screwFixture = new FixtureDef( );
 		screwFixture.shape = screwShape;
-		screwFixture.density = 0.1f;
+		screwFixture.isSensor = true;
+		screwFixture.density = 0.5f;
 		screwFixture.filter.categoryBits = Util.CATEGORY_SCREWS;
 		screwFixture.filter.maskBits = Util.CATEGORY_PLAYER
 				| Util.CATEGORY_SUBPLAYER;

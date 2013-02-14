@@ -114,7 +114,7 @@ public class ScrewBuilder extends GenericEntityBuilder< ScrewBuilder > {
 	public PuzzleScrew buildPuzzleScrew(){
 		PuzzleScrew out = null;
 		if (canBuild() && entity != null)
-			out = new PuzzleScrew(name, pos, max, entity, world);
+			out = new PuzzleScrew(name, pos, max, entity, world, max);
 		return out;
 	}
 	

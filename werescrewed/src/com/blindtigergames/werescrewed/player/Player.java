@@ -9,6 +9,7 @@ import com.badlogic.gdx.controllers.PovDirection;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Filter;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.JointEdge;
@@ -19,6 +20,8 @@ import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.camera.AnchorList;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityDef;
+import com.blindtigergames.werescrewed.entity.mover.LerpMover;
+import com.blindtigergames.werescrewed.entity.mover.PuzzleType;
 import com.blindtigergames.werescrewed.input.MyControllerListener;
 import com.blindtigergames.werescrewed.input.PlayerInputHandler;
 import com.blindtigergames.werescrewed.platforms.Platform;
@@ -70,7 +73,8 @@ public class Player extends Entity {
 	public final static float MAX_VELOCITY = 1.8f;
 	public final static float MIN_VELOCITY = 0.05f;
 	public final static float MOVEMENT_IMPULSE = 0.01f;
-	public final static float JUMP_IMPULSE = 0.15f; // 0.09 = controller, 0.15 = Keyboard
+	public final static float JUMP_IMPULSE = 0.15f; // 0.09 = controller, 0.15 =
+													// Keyboard
 	public final static float JUMP_SCREW_IMPULSE = 0.1f;
 	public final static int JUMP_COUNTER = 10;
 	public final static float ANALOG_DEADZONE = 0.2f;
@@ -190,9 +194,6 @@ public class Player extends Entity {
 		} else
 			deadDebug = true;
 
-		if ( mover != null ) {
-			mover.move( deltaTime, body );
-		}
 		// Hit Enter to active the controller
 		if ( Gdx.input.isKeyPressed( Keys.ENTER ) ) {
 			if ( controllerDebug )
@@ -206,6 +207,30 @@ public class Player extends Entity {
 		}
 		if ( playerState == PlayerState.JumpingOffScrew ) {
 			handleJumpOffScrew( );
+		}
+		if ( playerState == PlayerState.Screwing ) {
+			if ( mover != null ) {
+				LerpMover lm = ( LerpMover ) mover;
+				if ( !lm.atEnd( ) ) {
+					lm.move( deltaTime, body );
+				} else {
+					body.setTransform(
+							new Vector2( currentScrew.getPosition( ).x
+									- ( sprite.getWidth( ) / 4.0f )
+									* Util.PIXEL_TO_BOX, currentScrew
+									.getPosition( ).y
+									- ( sprite.getHeight( ) / 4.0f )
+									* Util.PIXEL_TO_BOX ), 0.0f );
+					RevoluteJointDef revoluteJointDef = new RevoluteJointDef( );
+					revoluteJointDef.initialize( body, currentScrew.body,
+							currentScrew.getPosition( ) );
+					revoluteJointDef.enableMotor = false;
+					playerToScrew = ( RevoluteJoint ) world
+							.createJoint( revoluteJointDef );
+					playerState = PlayerState.Screwing;
+					mover = null;
+				}
+			}
 		}
 		terminalVelocityCheck( 15.0f );
 		// the jump doesn't work the first time on dynamic bodies so do it twice
@@ -315,11 +340,11 @@ public class Player extends Entity {
 		float x = controllerListener.analogAxisX( );
 		float y = controllerListener.analogAxisY( ) * -1;
 		float multiplierY = 1.5f;
-		if(y < 0.0) multiplierY = 0.1f;
+		if ( y < 0.0 )
+			multiplierY = 0.1f;
 		body.setLinearVelocity( new Vector2( body.getLinearVelocity( ).x, 0.0f ) );
 		body.applyLinearImpulse( new Vector2( JUMP_SCREW_IMPULSE * x * 0.7f,
-				JUMP_SCREW_IMPULSE * y * multiplierY),
-				body.getWorldCenter( ) );
+				JUMP_SCREW_IMPULSE * y * multiplierY ), body.getWorldCenter( ) );
 	}
 
 	/**
@@ -499,26 +524,15 @@ public class Player extends Entity {
 							| Util.CATEGORY_PLAYER | Util.CATEGORY_GROUND;
 					f.setFilterData( filter );
 				}
-				// mover = new LerpMover( body.getPosition( ), new Vector2(
-				// currentScrew.getPosition( ).x
-				// - ( sprite.getWidth( ) / 4.0f )
-				// * Util.PIXEL_TO_BOX,
-				// currentScrew.getPosition( ).y
-				// - ( sprite.getHeight( ) / 4.0f )
-				// * Util.PIXEL_TO_BOX ), 0.07f,
-				// false );
-				body.setTransform( new Vector2( currentScrew.getPosition( ).x
-						- ( sprite.getWidth( ) / 4.0f ) * Util.PIXEL_TO_BOX,
+				mover = new LerpMover( body.getPosition( ), new Vector2(
+						currentScrew.getPosition( ).x
+								- ( sprite.getWidth( ) / 4.0f )
+								* Util.PIXEL_TO_BOX,
 						currentScrew.getPosition( ).y
 								- ( sprite.getHeight( ) / 4.0f )
-								* Util.PIXEL_TO_BOX ), 0.0f );
+								* Util.PIXEL_TO_BOX ), 0.07f, false,
+						PuzzleType.OVERRIDE_ENTITY_MOVER );
 				// connect the screw to the skeleton;
-				RevoluteJointDef revoluteJointDef = new RevoluteJointDef( );
-				revoluteJointDef.initialize( body, currentScrew.body,
-						currentScrew.getPosition( ) );
-				revoluteJointDef.enableMotor = false;
-				playerToScrew = ( RevoluteJoint ) world
-						.createJoint( revoluteJointDef );
 				playerState = PlayerState.Screwing;
 			}
 		}
@@ -748,7 +762,8 @@ public class Player extends Entity {
 				currentScrew.screwRight( );
 			}
 		}
-		if ( currentScrew.body.getJointList( ).size( ) <= 1
+		if ( mover == null
+				&& currentScrew.body.getJointList( ).size( ) <= 1
 				|| ( currentScrew.getScrewType( ) == ScrewType.BOSS && currentScrew
 						.getDepth( ) == 0 ) ) {
 			mover = null;
