@@ -33,8 +33,8 @@ public class Skeleton extends Entity {
     private ArrayList<Platform> kinematicPlatforms;
     private ArrayList<Entity>   looseEntity; 
     private Texture foregroundTex;
-    private ArrayList< Screw > screws; //add all screws you want drawn
-
+    private ArrayList< Screw > screws; //add all screws you want drawn    
+    
     // private Skeleton(){};
 
     public Skeleton( String n, Vector2 pos, Texture tex, World world ) {
@@ -296,10 +296,10 @@ public class Skeleton extends Entity {
             skeleton.update( deltaTime );
         }
         for ( Platform p : dynamicPlatforms ) {
-        	updatePlatform(p,deltaTime);
+        	p.update( deltaTime );
         }
         for ( Platform p : kinematicPlatforms ) {
-        	updatePlatform(p,deltaTime);
+        	p.update( deltaTime );
         }    	
         //update all puzzle screws to save their movement changes
         //should just be puzzle screws no other type need to be in the screws list
@@ -307,19 +307,6 @@ public class Skeleton extends Entity {
         for ( Screw s: screws ) {
     		s.update( deltaTime );
         }
-    }
-    
-    /**
-     * Update a single platform, casting if necessary
-     */
-    private void updatePlatform( Platform platform, float deltaTime ){
-    	switch (platform.getPlatformType( )){
-    	case TILED:
-    		((TiledPlatform)platform).update( deltaTime );
-    		break;
-    	default:
-    		platform.update( deltaTime );
-    	}
     }
     
     @Override

@@ -131,6 +131,7 @@ public class GleedLoader {
 					level.root.addKinematicPlatform( cp );
 				} else if (def.getCategory( ).equals( playerCat )){
 					level.player.setPosition( pos );
+					Gdx.app.log("GleedLoader", "Player Spawnpoint:"+pos.toString( ));
 				} else {
 					Entity e = new EntityBuilder()
 							.type(def)
