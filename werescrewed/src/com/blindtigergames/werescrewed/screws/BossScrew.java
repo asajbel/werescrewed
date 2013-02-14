@@ -126,19 +126,28 @@ public class BossScrew extends Screw {
 		}
 	}
 
+	@Override
 	public boolean endLevelFlag( ) {
 		return endFlag;
 	}
-
+	
+	@Override
 	public int getDepth( ) {
 		return depth;
 	}
-
+	
+	@Override
 	public void addPlayer( ) {
 		playerCount++;
 		if ( playerCount == 2 ) {
 			removable = true;
 		}
+	}
+	
+	@Override
+	public void removePlayer( ) {
+		playerCount--;
+		removable = false;
 	}
 
 	@Override

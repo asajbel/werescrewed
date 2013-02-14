@@ -79,7 +79,6 @@ public class StructureScrew extends Screw {
 
 	@Override
 	public void update( float deltaTime ) {
-		body.setAwake( true );
 		super.update( deltaTime );
 		Vector2 bodyPos = body.getPosition( ).mul( Util.BOX_TO_PIXEL );
 		sprite.setPosition( bodyPos.x - offset.x, bodyPos.y - offset.y );

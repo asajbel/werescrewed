@@ -488,6 +488,7 @@ public class Player extends Entity {
 				}
 			}
 			if ( !screwOccupied ) {
+				currentScrew.addPlayer( );
 				Filter filter;
 				for ( Fixture f : body.getFixtureList( ) ) {
 					f.setSensor( true );
@@ -500,13 +501,13 @@ public class Player extends Entity {
 							| Util.CATEGORY_PLAYER | Util.CATEGORY_GROUND;
 					f.setFilterData( filter );
 				}
-//				mover = new LerpForceMover( body.getPosition( ), new Vector2(
+//				mover = new LerpMover( body.getPosition( ), new Vector2(
 //						currentScrew.getPosition( ).x
 //								- ( sprite.getWidth( ) / 4.0f )
 //								* Util.PIXEL_TO_BOX,
 //						currentScrew.getPosition( ).y
 //								- ( sprite.getHeight( ) / 4.0f )
-//								* Util.PIXEL_TO_BOX ), new Vector2( 0, 5f ),
+//								* Util.PIXEL_TO_BOX ), 0.07f,
 //						false );
 				 body.setTransform( new Vector2( currentScrew.getPosition( ).x
 				 - ( sprite.getWidth( ) / 4.0f ) * Util.PIXEL_TO_BOX,
@@ -581,6 +582,7 @@ public class Player extends Entity {
 	private void processJumpState( ) {
 		if ( playerState == PlayerState.Screwing ) {
 			mover = null;
+			currentScrew.removePlayer( );
 			world.destroyJoint( playerToScrew );
 			playerState = PlayerState.JumpingOffScrew;
 			screwJumpTimeout = SCREW_JUMP_STEPS;
