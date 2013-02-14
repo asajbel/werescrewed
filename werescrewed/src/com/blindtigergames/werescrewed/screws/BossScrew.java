@@ -25,8 +25,6 @@ import com.blindtigergames.werescrewed.util.Util;
  */
 
 public class BossScrew extends Screw {
-	
-	protected boolean endFlag;
 
 	public BossScrew( String name, Vector2 pos, int max, Entity entity,
 			Skeleton skeleton, World world ) {
@@ -37,7 +35,7 @@ public class BossScrew extends Screw {
 		rotation = 0;
 		fallTimeout = max * 4;
 		extraJoints = new ArrayList< RevoluteJoint >( );
-		endFlag = false;
+		screwType = ScrewType.BOSS;
 
 		// create the screw body
 		sprite.setColor( Color.RED );
@@ -82,9 +80,6 @@ public class BossScrew extends Screw {
 		revoluteJointDef.initialize( entity.body, skeleton.body, pos );
 		revoluteJointDef.enableMotor = false;
 		platformJoint = ( RevoluteJoint ) world.createJoint( revoluteJointDef );
-		if ( entity.body.getJointList( ).size( ) > 3 ) {
-			entity.body.setType( BodyType.KinematicBody );
-		}
 	}
 
 	/**
@@ -105,32 +100,42 @@ public class BossScrew extends Screw {
 
 	@Override
 	public void screwLeft( ) {
-		if ( depth > 0 ) {
-			body.setAngularVelocity( 15 );
-			depth--;
-			rotation += 10;
-			screwStep = depth + 5;
+		if ( playerCount == 1 ) {
+			if ( depth > 0 ) {
+				body.setAngularVelocity( 15 );
+				depth--;
+				rotation += 10;
+				screwStep = depth + 5;
+			}
+		} else {
+			playerCount++;
 		}
 	}
 
 	@Override
 	public void screwRight( ) {
-		if ( depth < maxDepth ) {
-			body.setAngularVelocity( -15 );
-			depth++;
-			rotation -= 10;
-			screwStep = depth + 6;
+		if ( playerCount == 1 ) {
+			if ( depth < maxDepth ) {
+				body.setAngularVelocity( -15 );
+				depth++;
+				rotation -= 10;
+				screwStep = depth + 6;
+			}
+		} else {
+			playerCount++;
 		}
 	}
-	
-	public boolean endLevelFlag ( ) {
+
+	@Override
+	public boolean endLevelFlag( ) {
 		return endFlag;
 	}
 	
-	public int getDepth ( ) {
+	@Override
+	public int getDepth( ) {
 		return depth;
 	}
-
+	
 	@Override
 	public void update( float deltaTime ) {
 		super.update( deltaTime );
@@ -143,13 +148,10 @@ public class BossScrew extends Screw {
 				for ( RevoluteJoint j : extraJoints ) {
 					world.destroyJoint( j );
 				}
-				Gdx.app.log( "Boss Screw Removed" , "End Level" );
+				Gdx.app.log( "Boss Screw Removed", "End Level" );
 				endFlag = true;
-				//if the number of joints is less than 3 set to dynamic body
-				//a joint for the screw and a joint to the skeleton or less
-				if ( platformJoint.getBodyA( ).getJointList( ).size( ) < 3 ) {
-					platformJoint.getBodyA( ).setType( BodyType.DynamicBody );
-				}
+				// if the number of joints is less than 3 set to dynamic body
+				// a joint for the screw and a joint to the skeleton or less
 			}
 			fallTimeout--;
 		} else {
@@ -189,7 +191,7 @@ public class BossScrew extends Screw {
 		if ( depth == screwStep ) {
 			body.setAngularVelocity( 0 );
 		}
-
+		playerCount = 0;
 	}
 
 	@Override
@@ -205,4 +207,6 @@ public class BossScrew extends Screw {
 	private int fallTimeout;
 	private boolean lerpUp = true;
 	private float alpha = 0.0f;
+	private boolean endFlag = false;
+	private int playerCount = 0;
 }

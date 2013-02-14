@@ -2,6 +2,7 @@ package com.blindtigergames.werescrewed.entity.mover;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.blindtigergames.werescrewed.platforms.Platform;
 
 public class LerpForceMover implements IMover {
 
@@ -100,5 +101,14 @@ public class LerpForceMover implements IMover {
 		public boolean atEnd( ) {
 			return done;
 		}
+		
+		@Override
+		public void runPuzzleMovement( float screwVal, Platform p ) {
 
+		}
+		
+		@Override
+		public PuzzleType getMoverType( ) {
+			return null;
+		}
 }

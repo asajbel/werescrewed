@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.physics.box2d.World;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.mover.IMover;
-import com.blindtigergames.werescrewed.entity.mover.LerpMover;
 import com.blindtigergames.werescrewed.platforms.Platform;
 
 /**
@@ -72,15 +72,15 @@ public class PuzzleManager {
 	 * applies movement to an entity or turns on/off movement for an entities
 	 * mover by using Entity.applyPuzzleMovement ( puzzleScrew.depth /
 	 * puzzleScrew.maxDepth ) puzzleScrew.depth / puzzleScrew.maxDepth can
-	 * either be a percentage of movement or it can be a boolean < 0.5f is yes >
-	 * 0.5f is no
+	 * either be a percentage of movement or it can be a boolean < 0.5f is yes
+	 * > 0.5f is no
 	 */
 	public void runElement( float screwVal ) {
 		for ( Entity e : puzzleEntities ) {
 			if ( e.mover == null ) {
 				if ( puzzleMovers.containsKey( e.name ) ) {
-					LerpMover lm = ( LerpMover ) puzzleMovers.get( e.name );
-					lm.runPuzzleMovement( screwVal, ( Platform ) e );
+					Gdx.app.log( "screw value", "" + screwVal );
+					puzzleMovers.get( e.name ).runPuzzleMovement( screwVal, ( Platform ) e );
 				}
 			}
 		}

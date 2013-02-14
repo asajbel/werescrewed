@@ -5,10 +5,10 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
-import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.puzzles.PuzzleManager;
 import com.blindtigergames.werescrewed.util.Util;
@@ -25,12 +25,14 @@ public class PuzzleScrew extends Screw {
 	private int threshold;
 
 	public PuzzleScrew( String name, Vector2 pos, int max, Entity entity,
-			World world ) {
+			World world, int startDepth ) {
 		super( name, pos, null );
 		this.world = world;
-		maxDepth = threshold = depth = max;
+		maxDepth = threshold = max;
+		depth = startDepth;
 		puzzleManager = new PuzzleManager( world );
-
+		screwType = ScrewType.PUZZLE;
+		
 		sprite.setColor( Color.GREEN );
 
 		constructBody( pos );
@@ -46,8 +48,8 @@ public class PuzzleScrew extends Screw {
 	 *            threshold for binary action
 	 */
 	public PuzzleScrew( String name, Vector2 pos, int max, Entity entity,
-			World world, int th ) {
-		this( name, pos, max, entity, world );
+			World world, int th, int startDepth ) {
+		this( name, pos, max, entity, world, startDepth );
 		threshold = th;
 	}
 
@@ -59,7 +61,7 @@ public class PuzzleScrew extends Screw {
 			rotation += 10;
 			screwStep = depth + 5;
 			puzzleManager
-					.runElement( 1f - ( ( float ) depth / ( ( float ) maxDepth ) ) );
+					.runElement( ( float ) depth / ( ( float ) maxDepth ) );
 		}
 	}
 
@@ -71,8 +73,7 @@ public class PuzzleScrew extends Screw {
 			rotation -= 10;
 			screwStep = depth + 6;
 			puzzleManager
-					.runElement( 1f - ( ( float ) depth / ( ( float ) maxDepth ) ) );
-			Gdx.app.log( name + " depth", "" + depth );
+					.runElement(( float ) depth / ( ( float ) maxDepth ) );
 		}
 	}
 

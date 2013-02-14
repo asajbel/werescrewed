@@ -1,6 +1,7 @@
 package com.blindtigergames.werescrewed.entity.mover;
 
 import com.badlogic.gdx.physics.box2d.Body;
+import com.blindtigergames.werescrewed.platforms.Platform;
 
 /*****************************************************
  * Doesn't calculate any new movement, but can apply
@@ -31,4 +32,13 @@ public class RockingMover implements IMover {
 		body.setAngularVelocity(steering.rotation);
 	}
 	
+	@Override
+	public void runPuzzleMovement( float screwVal, Platform p ) {
+
+	}
+	
+	@Override
+	public PuzzleType getMoverType( ) {
+		return null;
+	}
 }
