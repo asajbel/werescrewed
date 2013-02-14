@@ -19,7 +19,7 @@ import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.camera.AnchorList;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityDef;
-import com.blindtigergames.werescrewed.entity.mover.LerpMover;
+import com.blindtigergames.werescrewed.entity.mover.LerpForceMover;
 import com.blindtigergames.werescrewed.input.MyControllerListener;
 import com.blindtigergames.werescrewed.input.PlayerInputHandler;
 import com.blindtigergames.werescrewed.platforms.Platform;
@@ -499,17 +499,19 @@ public class Player extends Entity {
 							| Util.CATEGORY_PLAYER | Util.CATEGORY_GROUND;
 					f.setFilterData( filter );
 				}
-				// mover = new LerpMover( body.getPosition( ),
-				// new Vector2( currentScrew.getPosition( ).x
-				// - ( sprite.getWidth( ) / 4.0f ) * Util.PIXEL_TO_BOX,
-				// currentScrew.getPosition( ).y
-				// - ( sprite.getHeight( ) / 4.0f )
-				// * Util.PIXEL_TO_BOX ), 0.07f, false );
-				body.setTransform( new Vector2( currentScrew.getPosition( ).x
-						- ( sprite.getWidth( ) / 4.0f ) * Util.PIXEL_TO_BOX,
-						currentScrew.getPosition( ).y
-								- ( sprite.getHeight( ) / 4.0f )
-								* Util.PIXEL_TO_BOX ), 0.0f );
+//				mover = new LerpForceMover( body.getPosition( ), new Vector2(
+//						currentScrew.getPosition( ).x
+//								- ( sprite.getWidth( ) / 4.0f )
+//								* Util.PIXEL_TO_BOX,
+//						currentScrew.getPosition( ).y
+//								- ( sprite.getHeight( ) / 4.0f )
+//								* Util.PIXEL_TO_BOX ), new Vector2( 0, 5f ),
+//						false );
+				 body.setTransform( new Vector2( currentScrew.getPosition( ).x
+				 - ( sprite.getWidth( ) / 4.0f ) * Util.PIXEL_TO_BOX,
+				 currentScrew.getPosition( ).y
+				 - ( sprite.getHeight( ) / 4.0f )
+				 * Util.PIXEL_TO_BOX ), 0.0f );
 				// connect the screw to the skeleton;
 				RevoluteJointDef revoluteJointDef = new RevoluteJointDef( );
 				revoluteJointDef.initialize( body, currentScrew.body,
@@ -619,6 +621,10 @@ public class Player extends Entity {
 		}
 	}
 
+	/**
+	 * jump logic for every time the jump button is pushed before applying an
+	 * actual jump for the controller
+	 */
 	private void processJumpStateController( ) {
 		if ( playerState == PlayerState.Screwing ) {
 			mover = null;
@@ -863,7 +869,7 @@ public class Player extends Entity {
 	}
 
 	/**
-	 * @author Bryan Pacini
+	 * @author Bryan
 	 * @return void slows player
 	 */
 	private void slow( ) {
@@ -886,7 +892,7 @@ public class Player extends Entity {
 	 * @param terminal
 	 *            -float whatever you want terminal velocity to be
 	 * 
-	 * @author Bryan Pacini
+	 * @author Bryan
 	 */
 	private void terminalVelocityCheck( float terminal ) {
 		if ( playerState != PlayerState.HeadStand ) {
@@ -1146,19 +1152,7 @@ public class Player extends Entity {
 						&& velocity != 0.0f )
 					body.setLinearVelocity( 0.0f, body.getLinearVelocity( ).y );
 			}
-
 			screwButtonHeld = false;
 		}
 	}
-
-	/*
-	 * private void stop( ) { if ( feet.getFriction( ) == 0 ) { float velocity =
-	 * body.getLinearVelocity( ).x; if ( velocity != 0.0f ) { if ( velocity <
-	 * -0.1f ) body.applyLinearImpulse( new Vector2( 0.005f, 0.0f ),
-	 * body.getWorldCenter( ) ); else if ( velocity > 0.1f )
-	 * body.applyLinearImpulse( new Vector2( -0.005f, 0.0f ),
-	 * body.getWorldCenter( ) ); else if ( velocity >= -0.1 && velocity <= 0.1f
-	 * && velocity != 0.0f ) body.setLinearVelocity( 0.0f,
-	 * body.getLinearVelocity( ).y ); } } }
-	 */
 }
