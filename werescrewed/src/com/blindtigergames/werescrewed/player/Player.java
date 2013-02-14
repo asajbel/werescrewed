@@ -19,7 +19,6 @@ import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.camera.AnchorList;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityDef;
-import com.blindtigergames.werescrewed.entity.mover.LerpForceMover;
 import com.blindtigergames.werescrewed.input.MyControllerListener;
 import com.blindtigergames.werescrewed.input.PlayerInputHandler;
 import com.blindtigergames.werescrewed.platforms.Platform;
@@ -70,9 +69,9 @@ public class Player extends Entity {
 	// Static constants
 	public final static float MAX_VELOCITY = 1.8f;
 	public final static float MIN_VELOCITY = 0.05f;
-	public final static float MOVEMENT_IMPLUSE = 0.01f;
-	public final static float JUMP_IMPLUSE = 0.15f; // 0.09 = controller, 0.15 =
-													// keyboard
+	public final static float MOVEMENT_IMPULSE = 0.01f;
+	public final static float JUMP_IMPULSE = 0.15f; // 0.09 = controller, 0.15 = Keyboard
+	public final static float JUMP_SCREW_IMPULSE = 0.1f;
 	public final static int JUMP_COUNTER = 10;
 	public final static float ANALOG_DEADZONE = 0.2f;
 	public final static float ANALOG_MAX_RANGE = 1.0f;
@@ -214,7 +213,7 @@ public class Player extends Entity {
 			jump( );
 		}
 		if ( otherPlayer != null ) {
-			Gdx.app.log( "otherPlayer", otherPlayer.name );
+			//Gdx.app.log( "otherPlayer", otherPlayer.name );
 		}
 	}
 
@@ -246,7 +245,7 @@ public class Player extends Entity {
 	 */
 	public void moveRight( ) {
 		if ( body.getLinearVelocity( ).x < MAX_VELOCITY ) {
-			body.applyLinearImpulse( new Vector2( MOVEMENT_IMPLUSE, 0.0f ),
+			body.applyLinearImpulse( new Vector2( MOVEMENT_IMPULSE, 0.0f ),
 					body.getWorldCenter( ) );
 		}
 	}
@@ -256,7 +255,7 @@ public class Player extends Entity {
 	 */
 	public void moveLeft( ) {
 		if ( body.getLinearVelocity( ).x > -MAX_VELOCITY ) {
-			body.applyLinearImpulse( new Vector2( -MOVEMENT_IMPLUSE, 0.0f ),
+			body.applyLinearImpulse( new Vector2( -MOVEMENT_IMPULSE, 0.0f ),
 					body.getWorldCenter( ) );
 		}
 	}
@@ -271,7 +270,7 @@ public class Player extends Entity {
 		float temp = ( ( ( axisX - ANALOG_DEADZONE ) / ( ANALOG_MAX_RANGE - ANALOG_DEADZONE ) ) * ( MAX_VELOCITY - MIN_VELOCITY ) )
 				+ MIN_VELOCITY;
 		if ( body.getLinearVelocity( ).x < temp ) {
-			body.applyLinearImpulse( new Vector2( MOVEMENT_IMPLUSE, 0.0f ),
+			body.applyLinearImpulse( new Vector2( MOVEMENT_IMPULSE, 0.0f ),
 					body.getWorldCenter( ) );
 		}
 	}
@@ -286,7 +285,7 @@ public class Player extends Entity {
 		float temp = ( ( ( axisX + ANALOG_DEADZONE ) / ( ANALOG_MAX_RANGE - ANALOG_DEADZONE ) ) * ( MAX_VELOCITY - MIN_VELOCITY ) )
 				- MIN_VELOCITY;
 		if ( body.getLinearVelocity( ).x > temp ) {
-			body.applyLinearImpulse( new Vector2( -MOVEMENT_IMPLUSE, 0.0f ),
+			body.applyLinearImpulse( new Vector2( -MOVEMENT_IMPULSE, 0.0f ),
 					body.getWorldCenter( ) );
 		}
 	}
@@ -300,14 +299,14 @@ public class Player extends Entity {
 		if ( playerState != PlayerState.HeadStand || topPlayer ) {
 			body.setLinearVelocity( new Vector2( body.getLinearVelocity( ).x,
 					0.0f ) );
-			body.applyLinearImpulse( new Vector2( 0.0f, JUMP_IMPLUSE ),
+			body.applyLinearImpulse( new Vector2( 0.0f, JUMP_IMPULSE ),
 					body.getWorldCenter( ) );
 		} else {
 			// if in head stand mode and this is the bottom player then jump
 			// with twice as much force
 			body.setLinearVelocity( new Vector2( body.getLinearVelocity( ).x,
 					0.0f ) );
-			body.applyLinearImpulse( new Vector2( 0.0f, JUMP_IMPLUSE * 2f ),
+			body.applyLinearImpulse( new Vector2( 0.0f, JUMP_IMPULSE * 2f ),
 					body.getWorldCenter( ) );
 		}
 	}
@@ -316,9 +315,13 @@ public class Player extends Entity {
 	 * only called when player jumps off of a screw, in progress
 	 */
 	public void jumpScrew( ) {
-		// double x = controllerListener.getLeftAnalogAngle( );
+		float x = controllerListener.analogAxisX( );
+		float y = controllerListener.analogAxisY( ) * -1;
+		float multiplierY = 1.5f;
+		if(y < 0.0) multiplierY = 0.1f;
 		body.setLinearVelocity( new Vector2( body.getLinearVelocity( ).x, 0.0f ) );
-		body.applyLinearImpulse( new Vector2( 0.0f, JUMP_IMPLUSE * 1.5f ),
+		body.applyLinearImpulse( new Vector2( JUMP_SCREW_IMPULSE * x * 0.7f,
+				JUMP_SCREW_IMPULSE * y * multiplierY),
 				body.getWorldCenter( ) );
 	}
 
@@ -852,7 +855,7 @@ public class Player extends Entity {
 			otherPlayer.body.setLinearVelocity( new Vector2( otherPlayer.body
 					.getLinearVelocity( ).x, 0.0f ) );
 			otherPlayer.body.applyLinearImpulse( new Vector2( 0.0f,
-					JUMP_IMPLUSE * 1.5f ), otherPlayer.body.getWorldCenter( ) );
+					JUMP_IMPULSE * 1.5f ), otherPlayer.body.getWorldCenter( ) );
 		}
 		playerState = PlayerState.Standing;
 	}
