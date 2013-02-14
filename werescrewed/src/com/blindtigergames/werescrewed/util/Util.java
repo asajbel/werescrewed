@@ -27,6 +27,7 @@ public class Util {
 	 * Collision Categories and masks for every 
 	 * object that needs them
 	 */
+	public static final short CATEGORY_GROUND = 0x0009; //player should never not collide with ground
 	public static final short CATEGORY_SCREWS = 0x0008;
 	public static final short CATEGORY_PLAYER = 0x0001;
 	public static final short CATEGORY_SUBPLAYER = 0x0010;

@@ -14,6 +14,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.MassData;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.joints.PrismaticJoint;
@@ -64,8 +65,8 @@ public class IMoverGameScreen implements com.badlogic.gdx.Screen {
 	private Player player1, player2;
 	private TiledPlatform tiledPlat, ground, kinPlat1;
 	TiledPlatform skeletonTest2;
+	private PuzzleScrew puzzleScrew1;
 	private PlatformBuilder platBuilder;
-	private PuzzleScrew puzzleScrew;
 	private Skeleton skeleton;
 	private Skeleton rootSkeleton;
 	private ArrayList< StrippedScrew > climbingScrews;
@@ -146,9 +147,12 @@ public class IMoverGameScreen implements com.badlogic.gdx.Screen {
 		player2 = new PlayerBuilder( ).name( "player2" ).world( world )
 				.position( 1.5f, 1.5f ).buildPlayer( );
 		
-		MassData massD = player1.body.getMassData( );
-		massD.mass = 0.0f;
-		player1.body.setMassData( massD );
+//		for ( Fixture f: skeletonTest2.body.getFixtureList( ) ) {
+//			f.setDensity( 1f );
+//		}
+//		MassData massD = player1.body.getMassData( );
+//		massD.mass = 1.0f;
+//		player1.body.setMassData( massD );
 		initStructureScrews();
 		initPuzzleScrews();
 		initClimbingScrews();
@@ -210,16 +214,16 @@ public class IMoverGameScreen implements com.badlogic.gdx.Screen {
 		jointDef.lowerTranslation = -2.5f;
 		jointDef.upperTranslation = 3.0f;
 		jointDef.motorSpeed = 7.0f;
-		puzzleScrew = new PuzzleScrew( "001", new Vector2( 0.0f, 0.2f ), 50,
+		puzzleScrew1 = new PuzzleScrew( "001", new Vector2( 0.0f, 0.2f ), 50,
 				skeleton, world );
-		puzzleScrew.puzzleManager.addEntity( kinPlat1 );
+		puzzleScrew1.puzzleManager.addEntity( kinPlat1 );
 		LerpMover lm = new LerpMover(
 				new Vector2( kinPlat1.body.getPosition( ).x,
 						kinPlat1.body.getPosition( ).y ), new Vector2(
 						kinPlat1.body.getPosition( ).x + 1.75f,
-						kinPlat1.body.getPosition( ).y ), 0.003f );
-		puzzleScrew.puzzleManager.addMover( lm );
-		skeleton.addScrewForDraw( puzzleScrew );
+						kinPlat1.body.getPosition( ).y ), 0.003f, true );
+		puzzleScrew1.puzzleManager.addMover( kinPlat1.name, lm );
+		skeleton.addScrewForDraw( puzzleScrew1 );
 	}
 
 	/**

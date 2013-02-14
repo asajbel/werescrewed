@@ -62,6 +62,18 @@ public class Entity {
 		this.body = constructBody( );
 		setPosition( pos );
 	}
+	// Kevin: Why is this commented out?
+	/*public Entity(String n, EntityDef d, World w, Vector2 pos,
+			float rot, Vector2 sca)
+	{
+		this();
+		name = n;
+		type = d;
+		world = w;
+		constructSprite();
+		constructBody(pos.x, pos.y, sca.x, sca.y);
+	}*/
+
 	/**
 	 * Create entity by body. Debug constructor: Should be removed eventually.
 	 * 
@@ -89,7 +101,6 @@ public class Entity {
 	}
 	/**
 	 * Common sub-constructor that applies to all Entity() constructors.
-	 * Make sure to call this AFTER both body and sprite are constructed.
 	 */
 	protected void construct(String name, Vector2 pos, boolean solid){
 		this.name = name;
@@ -314,8 +325,29 @@ public class Entity {
 		this.sprite = newSprite;
 	}
 	/**
+	 * set the bodies category collision bits
+	 * @param 
+	 */
+	public void setCategoryMask( short category, short mask ) {
+		if ( body != null) {
+			Filter filter = new Filter();
+			for ( Fixture f : body.getFixtureList( ) ) {
+				f.setSensor( false );
+				filter = f.getFilterData( );
+				// move player back to original category
+				filter.categoryBits = category;
+				// player now collides with everything
+				filter.maskBits = mask;
+				f.setFilterData( filter );
+			}
+		}
+	}
+
+	/**
 	 *  This is a quick-n-dirty fix for complex body collisions.
 	 *  Hopefully we'll get to a point where we don't need it.
+	 *  There's probably some overlap between mine and Dennis' functions,
+     *  I'll try to sort it out on next update.
 	 */
 	public void quickfixCollisions(){
 		Filter filter;
