@@ -36,6 +36,7 @@ public class Util {
 	public static final short KINEMATIC_OBJECTS = 0x0005;
 	public static final short CATEGORY_NOTHING = 0x0000;
 	public static final short CATEGORY_EVERYTHING = -1;
+	public static final short CATEGORY_ROPE = 0x0020;
 	
 	/**
 	 * PointOnCircle()
