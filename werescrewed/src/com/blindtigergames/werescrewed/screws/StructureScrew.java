@@ -176,7 +176,7 @@ public class StructureScrew extends Screw {
 	private void connectScrewToEntity( Entity entity, Skeleton skeleton, Vector2 pos ) {
 		// connect the screw to the entity
 		RevoluteJointDef revoluteJointDef = new RevoluteJointDef( );
-		revoluteJointDef.initialize( body, skeleton.body, pos );
+		revoluteJointDef.initialize( body, entity.body, pos );
 		revoluteJointDef.enableMotor = false;
 		screwToSkel = ( RevoluteJoint ) world.createJoint( revoluteJointDef );
 	}

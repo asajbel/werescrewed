@@ -96,14 +96,7 @@ public class Screw extends Entity {
 	public boolean endLevelFlag( ) {
 		return false;
 	}
-	
-	public void addPlayer( ) {
-	}
-	
-	public void removePlayer( ) {
-
-	}
-	
+		
 	/**
 	 * returns the ScrewType of the screw
 	 * @return ScrewType type of screw

@@ -7,7 +7,6 @@ import java.util.Map;
 import com.badlogic.gdx.physics.box2d.World;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.mover.IMover;
-import com.blindtigergames.werescrewed.entity.mover.LerpMover;
 import com.blindtigergames.werescrewed.platforms.Platform;
 
 /**
@@ -72,8 +71,8 @@ public class PuzzleManager {
 	 * applies movement to an entity or turns on/off movement for an entities
 	 * mover by using Entity.applyPuzzleMovement ( puzzleScrew.depth /
 	 * puzzleScrew.maxDepth ) puzzleScrew.depth / puzzleScrew.maxDepth can
-	 * either be a percentage of movement or it can be a boolean < 0.5f is yes >
-	 * 0.5f is no
+	 * either be a percentage of movement or it can be a boolean < 0.5f is yes
+	 * > 0.5f is no
 	 */
 	public void runElement( float screwVal ) {
 		for ( Entity e : puzzleEntities ) {

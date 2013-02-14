@@ -10,7 +10,6 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.Rope;
-import com.blindtigergames.werescrewed.screws.Screw.ScrewType;
 import com.blindtigergames.werescrewed.util.Util;
 
 /**

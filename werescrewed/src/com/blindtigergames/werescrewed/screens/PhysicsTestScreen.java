@@ -80,7 +80,6 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 	private Skeleton skeleton;
 	private Skeleton rootSkeleton;
 	private ArrayList< StrippedScrew > climbingScrews;
-	private BossScrew bossBolt;
 	private boolean debug = true;
 	private boolean debugTest = true;
 	Rope rope;
@@ -402,7 +401,6 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 			rootSkeleton.rotate( 0.01f );
 		}
 		
-
 		player1.update( deltaTime );
 		player2.update( deltaTime );
 		puzzleScrew.update( deltaTime );

@@ -37,4 +37,8 @@ public class RockingMover implements IMover {
 
 	}
 	
+	@Override
+	public PuzzleType getMoverType( ) {
+		return null;
+	}
 }

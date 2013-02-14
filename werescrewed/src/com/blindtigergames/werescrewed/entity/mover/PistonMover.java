@@ -97,4 +97,9 @@ public class PistonMover implements IMover {
 	public void runPuzzleMovement( float screwVal, Platform p ) {
 
 	}
+	
+	@Override
+	public PuzzleType getMoverType( ) {
+		return null;
+	}
 }

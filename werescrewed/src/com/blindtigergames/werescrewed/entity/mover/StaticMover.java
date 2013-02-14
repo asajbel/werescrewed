@@ -27,4 +27,8 @@ public class StaticMover implements IMover {
 
 	}
 	
+	@Override
+	public PuzzleType getMoverType( ) {
+		return null;
+	}
 }

@@ -11,6 +11,7 @@ public class TimelineMover implements IMover {
 
     boolean loop;
     SteeringOutput movement;
+    
 
     public TimelineMover() {
         movement = new SteeringOutput( new Vector2( 0, -0.01f ), 0 );
@@ -33,5 +34,10 @@ public class TimelineMover implements IMover {
 	@Override
 	public void runPuzzleMovement( float screwVal, Platform p ) {
 
+	}
+	
+	@Override
+	public PuzzleType getMoverType( ) {
+		return null;
 	}
 }

@@ -13,6 +13,7 @@ public class LerpMover implements IMover {
 	private float alpha = 0;
 	private boolean loop;
 	private boolean done = false;
+	private PuzzleType puzzleType;
 
 	public LerpMover( Vector2 bp, Vector2 ep, float speed, boolean loop ) {
 		beginningPoint = new Vector2( bp.x, bp.y );
@@ -57,5 +58,9 @@ public class LerpMover implements IMover {
 		// body.setTransform( beginningPoint, 0.0f );
 		beginningPoint = temp;
 	}
-
+	
+	@Override
+	public PuzzleType getMoverType( ) {
+		return puzzleType;
+	}
 }

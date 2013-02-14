@@ -58,4 +58,8 @@ public class SlidingMotorMover implements IMover {
 
 	}
 
+	@Override
+	public PuzzleType getMoverType( ) {
+		return null;
+	}
 }

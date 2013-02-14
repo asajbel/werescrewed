@@ -14,7 +14,6 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJoint;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
 import com.blindtigergames.werescrewed.entity.Entity;
-import com.blindtigergames.werescrewed.screws.Screw.ScrewType;
 import com.blindtigergames.werescrewed.skeleton.Skeleton;
 import com.blindtigergames.werescrewed.util.Util;
 
@@ -81,9 +80,6 @@ public class BossScrew extends Screw {
 		revoluteJointDef.initialize( entity.body, skeleton.body, pos );
 		revoluteJointDef.enableMotor = false;
 		platformJoint = ( RevoluteJoint ) world.createJoint( revoluteJointDef );
-		if ( entity.body.getJointList( ).size( ) > 3 ) {
-			entity.body.setType( BodyType.KinematicBody );
-		}
 	}
 
 	/**
@@ -104,25 +100,29 @@ public class BossScrew extends Screw {
 
 	@Override
 	public void screwLeft( ) {
-		if ( removable ) {
+		if ( playerCount == 1 ) {
 			if ( depth > 0 ) {
 				body.setAngularVelocity( 15 );
 				depth--;
 				rotation += 10;
 				screwStep = depth + 5;
 			}
+		} else {
+			playerCount++;
 		}
 	}
 
 	@Override
 	public void screwRight( ) {
-		if ( removable ) {
+		if ( playerCount == 1 ) {
 			if ( depth < maxDepth ) {
 				body.setAngularVelocity( -15 );
 				depth++;
 				rotation -= 10;
 				screwStep = depth + 6;
 			}
+		} else {
+			playerCount++;
 		}
 	}
 
@@ -136,20 +136,6 @@ public class BossScrew extends Screw {
 		return depth;
 	}
 	
-	@Override
-	public void addPlayer( ) {
-		playerCount++;
-		if ( playerCount == 2 ) {
-			removable = true;
-		}
-	}
-	
-	@Override
-	public void removePlayer( ) {
-		playerCount--;
-		removable = false;
-	}
-
 	@Override
 	public void update( float deltaTime ) {
 		super.update( deltaTime );
@@ -208,7 +194,7 @@ public class BossScrew extends Screw {
 		if ( depth == screwStep ) {
 			body.setAngularVelocity( 0 );
 		}
-
+		playerCount = 0;
 	}
 
 	@Override
@@ -225,6 +211,5 @@ public class BossScrew extends Screw {
 	private boolean lerpUp = true;
 	private float alpha = 0.0f;
 	private boolean endFlag = false;
-	private boolean removable = false;
 	private int playerCount = 0;
 }

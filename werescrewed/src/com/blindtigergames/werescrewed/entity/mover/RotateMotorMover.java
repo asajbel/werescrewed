@@ -40,4 +40,8 @@ public class RotateMotorMover implements IMover {
 
 	}
 
+	@Override
+	public PuzzleType getMoverType( ) {
+		return null;
+	}
 }
