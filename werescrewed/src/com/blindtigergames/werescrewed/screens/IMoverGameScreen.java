@@ -15,6 +15,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+import com.badlogic.gdx.physics.box2d.Filter;
+import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.joints.PrismaticJoint;
 import com.badlogic.gdx.physics.box2d.joints.PrismaticJointDef;
@@ -104,11 +106,6 @@ public class IMoverGameScreen implements com.badlogic.gdx.Screen {
 		// Initialize listeners
 		contactListener = new MyContactListener( );
 		world.setContactListener( contactListener );
-
-		// tp = platBuilder.position( 350.0f, 100.0f ).dimensions( 10, 1 )
-		// .texture( testTexture ).name( "tp" ).resitituion( 0.0f )
-		// .buildTilePlatform( );
-
 
 		kinPlat1 = platBuilder.position( 350.0f, 170.0f ).dimensions( 10, 1 )
 				.texture( testTexture ).name( "kinPlat1" ).resitituion( 0.0f )
@@ -291,13 +288,24 @@ public class IMoverGameScreen implements com.badlogic.gdx.Screen {
 		}
 
 		Platform gear = builder.name( "gear" )
-				.position( 1000 * Util.PIXEL_TO_BOX, 300 * Util.PIXEL_TO_BOX )
+				.position( 1000, 300)
 				.texture( null )
 				.setScale( 3f )
 				.type( "gearSmall" )
 				.dynamic( )
 				.buildComplexPlatform( );
 		skeleton.addPlatformRotatingCenterWithMot( gear, 1f );
+		
+		Filter filter;
+		for ( Fixture f : gear.body.getFixtureList( ) ) {
+			filter = f.getFilterData( );
+			// move player to another category so other objects stop
+			// colliding
+			filter.categoryBits = Util.DYNAMIC_OBJECTS;
+			// player still collides with sensor of screw
+			filter.maskBits = Util.CATEGORY_EVERYTHING;
+			f.setFilterData( filter );
+		}
 	}
 
 	@Override

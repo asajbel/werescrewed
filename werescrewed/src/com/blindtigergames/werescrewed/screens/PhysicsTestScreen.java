@@ -2,6 +2,11 @@ package com.blindtigergames.werescrewed.screens;
 
 import java.util.ArrayList;
 
+import aurelienribon.tweenengine.Tween;
+import aurelienribon.tweenengine.TweenEquation;
+import aurelienribon.tweenengine.TweenEquations;
+import aurelienribon.tweenengine.TweenManager;
+
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -26,6 +31,9 @@ import com.blindtigergames.werescrewed.entity.mover.LerpMover;
 import com.blindtigergames.werescrewed.entity.mover.PistonMover;
 import com.blindtigergames.werescrewed.entity.mover.PuzzleType;
 import com.blindtigergames.werescrewed.entity.mover.SlidingMotorMover;
+import com.blindtigergames.werescrewed.entity.mover.TweenMover;
+import com.blindtigergames.werescrewed.entity.tween.EntityAccessor;
+import com.blindtigergames.werescrewed.entity.tween.PlatformAccessor;
 import com.blindtigergames.werescrewed.joint.JointFactory;
 import com.blindtigergames.werescrewed.joint.PrismaticJointBuilder;
 import com.blindtigergames.werescrewed.platforms.Platform;
@@ -73,6 +81,8 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 	private ArrayList< StrippedScrew > climbingScrews;
 	private boolean debug = true;
 	private boolean debugTest = true;
+	
+	//private TweenManager tweenManager;
 
 	/**
 	 * Defines all necessary components in a screen for testing different
@@ -90,6 +100,11 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		testTexture = WereScrewedGame.manager.get(
 				"assets/data/common/TilesetTest.png",Texture.class);
 
+		Tween.registerAccessor(Entity.class, new EntityAccessor());
+		Tween.registerAccessor(Entity.class, new PlatformAccessor());
+		//tweenManager = new TweenManager( );
+		Tween.setWaypointsLimit( 1 );
+		
 		// Initialize camera
 		initCamera( );
 
@@ -161,7 +176,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 				.dimensions( 1, 1 ).texture( testTexture )
 				.dynamic( )
 				.name( "Single Tiled" ).resitituion( 0.0f ).buildTilePlatform( );
-		skeleton.addPlatform( singTile );
+		skeleton.addDynamicPlatform( singTile );
 
 		// Moving platform
 		movingTP = platBuilder.position( 0.0f, 120.0f )
@@ -170,6 +185,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 				.kinematic( )
 				.buildTilePlatform( );
 		skeleton.addKinematicPlatform( movingTP );
+		
 		
 		buildMoverPlatforms( );
 
@@ -278,6 +294,17 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 				.kinematic( )
 				.buildTilePlatform( );
 		skeleton.addKinematicPlatform( skeletonTest1 );
+		skeletonTest1.setMover( new TweenMover(
+									Tween.to( skeletonTest1, PlatformAccessor.LOCAL_POS_XY, 2.0f )
+									.target( skeletonTest1.getLocalPos( ).x+100, 
+											 skeletonTest1.getLocalPos( ).y )
+									.repeatYoyo( Tween.INFINITY, 0 )
+									.start(),
+									Tween.to( skeletonTest1, PlatformAccessor.LOCAL_ROT, 4.0f )
+									.target( Util.PI*2 )
+									.ease( TweenEquations.easeNone )
+									.repeat( Tween.INFINITY, 0 )
+									.start() ));
 		
 		/*
 		 * TODO: FIX PLATFORM DENSITY
@@ -325,13 +352,15 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		elevator.body.setSleepingAllowed( false );
 		
 		Platform gear = builder.name( "gear" )
-								.position( 1000 * Util.PIXEL_TO_BOX, 300 * Util.PIXEL_TO_BOX )
+								.position( 1000, 300 )
 								.texture( null )
 								.setScale( 3f )
 								.type( "gearSmall" )
+								.kinematic( )
 								.buildComplexPlatform( );
-
-		skeleton.addPlatformRotatingCenterWithMot( gear, 1f );
+		skeleton.addKinematicPlatform( gear );
+		gear.setMover( new TweenMover(Tween.to(gear,PlatformAccessor.LOCAL_ROT, 20).target( Util.PI*2 ).repeat( Tween.INFINITY, 0 ).ease(TweenEquations.easeNone).start()) );
+		//skeleton.addPlatformRotatingCenterWithMot( gear, 1f );
 		Filter filter;
 		for ( Fixture f : gear.body.getFixtureList( ) ) {
 			filter = f.getFilterData( );
@@ -388,6 +417,8 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		if ( Gdx.input.isKeyPressed( Input.Keys.V ) ) {
 			rootSkeleton.rotate( 0.01f );
 		}
+		
+		//tweenManager.update( deltaTime );
 		
 
 		player1.update( deltaTime );

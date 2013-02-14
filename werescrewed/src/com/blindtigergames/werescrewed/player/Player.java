@@ -115,6 +115,7 @@ public class Player extends Entity {
 				new Vector2( 1f, 1f ), null, true );
 		body.setGravityScale( 0.25f );
 		body.setFixedRotation( true );
+		body.setSleepingAllowed(false);
 		this.world = world;
 		body.setUserData( this );
 		body.setBullet( true );
