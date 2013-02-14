@@ -79,8 +79,7 @@ public class PuzzleManager {
 		for ( Entity e : puzzleEntities ) {
 			if ( e.mover == null ) {
 				if ( puzzleMovers.containsKey( e.name ) ) {
-					LerpMover lm = ( LerpMover ) puzzleMovers.get( e.name );
-					lm.runPuzzleMovement( screwVal, ( Platform ) e );
+					puzzleMovers.get( e.name ).runPuzzleMovement( screwVal, ( Platform ) e );
 				}
 			}
 		}

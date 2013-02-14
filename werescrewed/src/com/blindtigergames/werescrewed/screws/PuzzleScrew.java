@@ -11,6 +11,7 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.puzzles.PuzzleManager;
+import com.blindtigergames.werescrewed.screws.Screw.ScrewType;
 import com.blindtigergames.werescrewed.util.Util;
 
 /**
@@ -30,7 +31,8 @@ public class PuzzleScrew extends Screw {
 		this.world = world;
 		maxDepth = threshold = depth = max;
 		puzzleManager = new PuzzleManager( world );
-
+		screwType = ScrewType.PUZZLE;
+		
 		sprite.setColor( Color.GREEN );
 
 		constructBody( pos );

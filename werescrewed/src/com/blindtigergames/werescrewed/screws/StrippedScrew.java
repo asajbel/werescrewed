@@ -10,6 +10,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.Rope;
+import com.blindtigergames.werescrewed.screws.Screw.ScrewType;
 import com.blindtigergames.werescrewed.util.Util;
 
 /**
@@ -24,7 +25,8 @@ public class StrippedScrew extends Screw {
 	public StrippedScrew( String name, World world, Vector2 pos, Entity entity ) {
 		super( name, pos, null );
 		this.world = world;
-
+		screwType = ScrewType.STRIPPED;
+		
 		sprite.setColor( Color.ORANGE );
 		sprite.setOrigin( 0.0f, 0.0f );
 

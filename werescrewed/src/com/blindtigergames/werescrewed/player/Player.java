@@ -25,6 +25,7 @@ import com.blindtigergames.werescrewed.input.PlayerInputHandler;
 import com.blindtigergames.werescrewed.platforms.Platform;
 import com.blindtigergames.werescrewed.screws.BossScrew;
 import com.blindtigergames.werescrewed.screws.Screw;
+import com.blindtigergames.werescrewed.screws.Screw.ScrewType;
 import com.blindtigergames.werescrewed.util.Util;
 
 /**
@@ -208,14 +209,14 @@ public class Player extends Entity {
 		if ( playerState == PlayerState.JumpingOffScrew ) {
 			handleJumpOffScrew( );
 		}
-		terminalVelocityCheck( 6.0f );
+		//terminalVelocityCheck( 6.0f );
 		// the jump doesn't work the first time on dynamic bodies so do it twice
 		if ( playerState == PlayerState.Jumping && isGrounded( ) ) {
 			jump( );
 		}
-		if ( otherPlayer != null ) {
-			Gdx.app.log( "otherPlayer", otherPlayer.name );
-		}
+//		if ( otherPlayer != null ) {
+//			Gdx.app.log( "otherPlayer", otherPlayer.name );
+//		}
 	}
 
 	/**
@@ -482,7 +483,7 @@ public class Player extends Entity {
 			for ( JointEdge j : currentScrew.body.getJointList( ) ) {
 				// Altered if statement so both players can be on BossScrew.
 				if ( j.joint.getBodyA( ).getUserData( ) instanceof Player
-						&& !( currentScrew instanceof BossScrew ) ) {
+						&& currentScrew.getScrewType( ) != ScrewType.BOSS ) {
 					screwOccupied = true;
 				}
 			}
@@ -736,14 +737,14 @@ public class Player extends Entity {
 	private void handleScrewing( boolean controller ) {
 		// loosen and tighten screws and jump when the screw joint is gone
 		if ( controller ) {
-			if ( !( currentScrew instanceof BossScrew ) ) {
+			if ( currentScrew.getScrewType( ) != ScrewType.BOSS ) {
 				if ( controllerListener.unscrewing( ) ) {
 					currentScrew.screwLeft( );
 				} else if ( controllerListener.screwing( ) ) {
 					currentScrew.screwRight( );
 				}
 			} else if ( currentScrew.body.getJointList( ).size( ) >= 3
-					&& currentScrew instanceof BossScrew ) {
+					&& currentScrew.getScrewType( ) == ScrewType.BOSS ) {
 				if ( otherPlayer != null && controllerListener.unscrewing( )
 						&& otherPlayer.controllerListener.unscrewing( ) ) {
 					currentScrew.screwLeft( );
@@ -755,14 +756,14 @@ public class Player extends Entity {
 			}
 
 		} else {
-			if ( !( currentScrew instanceof BossScrew ) ) {
+			if ( currentScrew.getScrewType( ) != ScrewType.BOSS ) {
 				if ( inputHandler.unscrewing( ) ) {
 					currentScrew.screwLeft( );
 				} else if ( inputHandler.screwing( ) ) {
 					currentScrew.screwRight( );
 				}
 			} else if ( currentScrew.body.getJointList( ).size( ) >= 3
-					&& currentScrew instanceof BossScrew ) {
+					&& currentScrew.getScrewType( ) == ScrewType.BOSS) {
 				if ( otherPlayer != null && inputHandler.unscrewing( )
 						&& otherPlayer.inputHandler.unscrewing( ) ) {
 					currentScrew.screwLeft( );
@@ -773,7 +774,7 @@ public class Player extends Entity {
 			}
 		}
 		if ( currentScrew.body.getJointList( ).size( ) <= 1
-				|| ( currentScrew instanceof BossScrew && currentScrew
+				|| ( currentScrew.getScrewType( ) == ScrewType.BOSS && currentScrew
 						.getDepth( ) == 0 ) ) {
 			mover = null;
 			world.destroyJoint( playerToScrew );

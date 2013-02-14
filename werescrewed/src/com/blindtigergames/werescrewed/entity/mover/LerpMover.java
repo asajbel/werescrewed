@@ -49,6 +49,7 @@ public class LerpMover implements IMover {
 		return done;
 	}
 
+	@Override
 	public void runPuzzleMovement( float screwVal, Platform p ) {
 		Vector2 temp = new Vector2( beginningPoint.x, beginningPoint.y );
 		beginningPoint.lerp( endPoint, screwVal );

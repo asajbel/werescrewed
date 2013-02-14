@@ -33,9 +33,10 @@ public class StructureScrew extends Screw {
 		rotation = 0;
 		fallTimeout = max * 3;
 		extraJoints = new ArrayList< RevoluteJoint >( );
-
+		screwType = ScrewType.STRUCTURAL;
+		
 		constuctBody( pos );
-		connectScrewToEntity( skeleton, pos );
+		connectScrewToEntity( entity, skeleton, pos );
 		connectEntityToSkeleton( entity, skeleton, pos );
 
 	}
@@ -152,7 +153,7 @@ public class StructureScrew extends Screw {
 				.setRadius( ( sprite.getWidth( ) / 2.0f ) * Util.PIXEL_TO_BOX );
 		FixtureDef screwFixture = new FixtureDef( );
 		screwFixture.shape = screwShape;
-		screwFixture.isSensor = true;
+		screwFixture.density = 0.1f;
 		screwFixture.filter.categoryBits = Util.CATEGORY_SCREWS;
 		screwFixture.filter.maskBits = Util.CATEGORY_PLAYER
 				| Util.CATEGORY_SUBPLAYER;
@@ -173,7 +174,7 @@ public class StructureScrew extends Screw {
 		radarShape.dispose( );
 	}
 
-	private void connectScrewToEntity( Skeleton skeleton, Vector2 pos ) {
+	private void connectScrewToEntity( Entity entity, Skeleton skeleton, Vector2 pos ) {
 		// connect the screw to the entity
 		RevoluteJointDef revoluteJointDef = new RevoluteJointDef( );
 		revoluteJointDef.initialize( body, skeleton.body, pos );
@@ -187,7 +188,7 @@ public class StructureScrew extends Screw {
 		entity.body.setFixedRotation( false );
 		RevoluteJointDef revoluteJointDef = new RevoluteJointDef( );
 		revoluteJointDef = new RevoluteJointDef( );
-		revoluteJointDef.initialize( body, entity.body, pos );
+		revoluteJointDef.initialize( entity.body, skeleton.body, pos );
 		revoluteJointDef.enableMotor = false;
 		platformJoint = ( RevoluteJoint ) world.createJoint( revoluteJointDef );
 		entity.body.setFixedRotation( false );
