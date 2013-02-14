@@ -77,7 +77,7 @@ public class MyControllerListener implements ControllerListener {
 	private final static int SCREW_DOWN = 3;
 	private final static int SCREW_LEFT = 4;
 	private final static int SCREW_COUNTER = 10;
-	private final static int SCREW_ANGLE_DIFF = 5;
+	private final static int SCREW_ANGLE_DIFF = 10;
 
 	// Analog deadzone and center
 	private final static float DEADZONE = 0.2f;

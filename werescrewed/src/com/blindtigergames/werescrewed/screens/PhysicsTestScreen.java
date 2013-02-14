@@ -20,7 +20,6 @@ import com.blindtigergames.werescrewed.camera.Camera;
 import com.blindtigergames.werescrewed.collisionManager.MyContactListener;
 import com.blindtigergames.werescrewed.debug.SBox2DDebugRenderer;
 import com.blindtigergames.werescrewed.entity.Entity;
-import com.blindtigergames.werescrewed.entity.Rope;
 import com.blindtigergames.werescrewed.entity.builders.PlatformBuilder;
 import com.blindtigergames.werescrewed.entity.builders.PlayerBuilder;
 import com.blindtigergames.werescrewed.entity.mover.LerpMover;
@@ -33,6 +32,7 @@ import com.blindtigergames.werescrewed.joint.PrismaticJointBuilder;
 import com.blindtigergames.werescrewed.platforms.Platform;
 import com.blindtigergames.werescrewed.platforms.TiledPlatform;
 import com.blindtigergames.werescrewed.player.Player;
+import com.blindtigergames.werescrewed.rope.Rope;
 import com.blindtigergames.werescrewed.screws.BossScrew;
 import com.blindtigergames.werescrewed.screws.PuzzleScrew;
 import com.blindtigergames.werescrewed.screws.StrippedScrew;
@@ -288,7 +288,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 				.buildTilePlatform( );
 		skeleton.addKinematicPlatform( skeletonTest1 );
 		
-		rope = new Rope( "rope", new Vector2 ( 8f, 1.5f), new Vector2 ( 8.0f, 32.0f ), 10, null, world );
+		rope = new Rope( "rope", new Vector2 ( 8f, 1.5f), new Vector2 ( 16.0f, 32.0f ), 10, null, world );
 
 		
 		/*
@@ -405,14 +405,16 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		player2.update( deltaTime );
 		puzzleScrew.update( deltaTime );
 		rootSkeleton.update( deltaTime );
-
+		rope.update( deltaTime );
 		batch.setProjectionMatrix( cam.combined( ) );
 		batch.begin( );
 
 		puzzleScrew.draw( batch );
 		rootSkeleton.draw( batch );
+		rope.draw( batch );
 		player1.draw( batch );
 		player2.draw( batch );
+		
 		batch.end( );
 
 		if ( debug )

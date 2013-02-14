@@ -9,7 +9,7 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
 import com.blindtigergames.werescrewed.entity.Entity;
-import com.blindtigergames.werescrewed.entity.Rope;
+import com.blindtigergames.werescrewed.rope.Rope;
 import com.blindtigergames.werescrewed.util.Util;
 
 /**
@@ -25,7 +25,7 @@ public class StrippedScrew extends Screw {
 		super( name, pos, null );
 		this.world = world;
 		screwType = ScrewType.STRIPPED;
-		
+
 		sprite.setColor( Color.ORANGE );
 		sprite.setOrigin( 0.0f, 0.0f );
 
@@ -33,16 +33,17 @@ public class StrippedScrew extends Screw {
 		connectScrewToEntity( entity );
 
 	}
-	
-	public StrippedScrew( String name, World world, Vector2 pos, Rope rope ) {
+
+	public StrippedScrew( String name, World world, Vector2 pos ) {
 		super( name, pos, null );
 		this.world = world;
+		screwType = ScrewType.STRIPPED;
 
 		sprite.setColor( Color.ORANGE );
 		sprite.setOrigin( 0.0f, 0.0f );
 
 		constructBody( pos );
-		connectScrewToEntity( rope );
+
 	}
 
 	@Override
@@ -89,7 +90,7 @@ public class StrippedScrew extends Screw {
 
 	}
 
-	private void connectScrewToEntity( Entity entity ) {
+	public void connectScrewToEntity( Entity entity ) {
 		// connect the screw to the entity
 		RevoluteJointDef revoluteJointDef = new RevoluteJointDef( );
 		revoluteJointDef.initialize( body, entity.body, body.getPosition( ) );
