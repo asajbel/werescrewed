@@ -89,8 +89,8 @@ public class MyControllerListener implements ControllerListener {
 				attachScrewPressed = false;
 		}
 
-		Gdx.app.log( controller.getName( ) + " axis",
-				String.valueOf( buttonIndex ) );
+//		Gdx.app.log( controller.getName( ) + " axis",
+//				String.valueOf( buttonIndex ) );
 
 		axisLY = controller.getAxis( Mapping.AXIS_LEFT_Y );
 		axisLX = controller.getAxis( Mapping.AXIS_LEFT_X );
@@ -152,8 +152,8 @@ public class MyControllerListener implements ControllerListener {
 	 */
 	@Override
 	public boolean buttonDown( Controller controller, int buttonIndex ) {
-		Gdx.app.log( controller.getName( ) + " Down",
-				String.valueOf( buttonIndex ) );
+//		Gdx.app.log( controller.getName( ) + " Down",
+//				String.valueOf( buttonIndex ) );
 
 		// Switching between Screwing/Unscrewing Modes
 		if ( buttonIndex == Mapping.BUTTON_R3 ) {
@@ -201,8 +201,8 @@ public class MyControllerListener implements ControllerListener {
 
 	@Override
 	public boolean buttonUp( Controller controller, int buttonIndex ) {
-		Gdx.app.log( controller.getName( ) + " up",
-				String.valueOf( buttonIndex ) );
+//		Gdx.app.log( controller.getName( ) + " up",
+//				String.valueOf( buttonIndex ) );
 
 		// Resetting buttons
 		if ( buttonIndex == Mapping.BUTTON_FACE_BOT )
@@ -253,8 +253,8 @@ public class MyControllerListener implements ControllerListener {
 	public boolean povMoved( Controller controller, int buttonIndex,
 			PovDirection direction ) {
 
-		Gdx.app.log( controller.getName( ) + " pov",
-				String.valueOf( buttonIndex ) );
+//		Gdx.app.log( controller.getName( ) + " pov",
+//				String.valueOf( buttonIndex ) );
 
 		if ( direction == PovDirection.center ) {
 			rightPressed = false;
