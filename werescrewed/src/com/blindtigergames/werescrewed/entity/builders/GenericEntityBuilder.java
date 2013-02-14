@@ -231,6 +231,18 @@ public class GenericEntityBuilder <B extends GenericEntityBuilder<?>>{
 		return true;
 	}
 	/**
+	 * Returns the reason (if any) the builder does not have enough information to build.
+	 * Returns empty string if no problems were found.
+	 * 
+	 * @return String
+	 */	
+	protected String whyCantBuild(){
+		if (world == null) return "World is null.";
+		if (type == null && body == null) return "No type/body specified.";
+		return "";
+	}
+
+	/**
 	 * Returns an entity created from given data.
 	 * 
 	 * @return Entity
