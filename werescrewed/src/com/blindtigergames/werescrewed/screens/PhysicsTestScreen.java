@@ -161,7 +161,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 	 */
 	private void initTiledPlatforms( ) {
 		// Tiled Platform
-		tiledPlat = platBuilder.position( 700.0f, 100.0f )
+		tiledPlat = platBuilder.position( 700.0f, 175.0f )
 				.dimensions( 10, 1 ).texture( testTexture )
 				.dynamic( )
 				.name( "tp" ).resitituion( 0.0f ).buildTilePlatform( );
@@ -225,7 +225,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 	 */
 	private void initPuzzleScrews( ) {
 		// two fliping platforms
-		TiledPlatform flipPlat1 = platBuilder.position( 0.0f, 350f )
+		TiledPlatform flipPlat1 = platBuilder.position( 20.0f, 370f )
 				.dimensions( 5, 1 ).texture( testTexture )
 				.name( "001_flip1" ).resitituion( 0.0f )
 				.kinematic( )
@@ -233,7 +233,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		skeleton.addKinematicPlatform( flipPlat1 );
 		
 		// two fliping platforms
-		TiledPlatform flipPlat2 = platBuilder.position( 350.0f, 350f )
+		TiledPlatform flipPlat2 = platBuilder.position( 350.0f, 475f )
 				.dimensions( 5, 1 ).texture( testTexture )
 				.name( "001_flip2" ).resitituion( 0.0f )
 				.kinematic( )
@@ -314,7 +314,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 
 		TiledPlatform skeletonTest1 = platBuilder.width( 10 ).height( 1 )
 				.friction( 1f ).oneSided( false )
-				.position( 500, 200 ).texture( testTexture )
+				.position( 500, 250 ).texture( testTexture )
 				.kinematic( )
 				.buildTilePlatform( );
 		skeleton.addKinematicPlatform( skeletonTest1 );
