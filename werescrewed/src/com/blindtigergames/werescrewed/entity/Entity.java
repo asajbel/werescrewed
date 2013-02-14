@@ -1,12 +1,13 @@
 package com.blindtigergames.werescrewed.entity;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.Filter;
+import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.blindtigergames.werescrewed.entity.mover.IMover;
@@ -273,6 +274,24 @@ public class Entity {
 		this.sprite = newSprite;
 	}
 	
+	/**
+	 * set the bodies category collision bits
+	 * @param 
+	 */
+	public void setCategoryMask( short category, short mask ) {
+		if ( body != null) {
+			Filter filter = new Filter();
+			for ( Fixture f : body.getFixtureList( ) ) {
+				f.setSensor( false );
+				filter = f.getFilterData( );
+				// move player back to original category
+				filter.categoryBits = category;
+				// player now collides with everything
+				filter.maskBits = mask;
+				f.setFilterData( filter );
+			}
+		}
+	}
 	
 	public void setDensity( float d ) {
 		if ( body != null ){

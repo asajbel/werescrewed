@@ -180,11 +180,12 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 
 		//TODO : FIX ONESIDED BUG, 
 		// Ground: SHOULD NEVER BE ONESIDED
-		ground = platBuilder.position( 0.0f, 0.0f ).name( "ground" )
-				.dimensions( 200, 1 ).texture( testTexture )
+		ground = platBuilder.position( 0.0f, -75.0f ).name( "ground" )
+				.dimensions( 200, 4 ).texture( testTexture )
 				.kinematic( )
 				.oneSided( false )
 				.resitituion( 0.0f ).buildTilePlatform( );
+		ground.setCategoryMask( Util.CATEGORY_GROUND, Util.CATEGORY_EVERYTHING );
 		skeleton.addKinematicPlatform( ground );
 	}
 
@@ -405,7 +406,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		if ( debug )
 			debugRenderer.render( world, cam.combined( ) );
 
-		world.step( 1 / 60f, 6, 2 );
+		world.step( 1 / 60f, 6, 6 );
 	}
 
 	@Override

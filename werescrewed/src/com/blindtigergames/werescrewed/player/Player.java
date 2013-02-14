@@ -132,8 +132,8 @@ public class Player extends Entity {
 		setUpController( );
 		controllerDebug = true;
 
-		jumpSound = WereScrewedGame.manager
-				.get( WereScrewedGame.dirHandle + "/common/sounds/jump.ogg" );
+		jumpSound = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
+				+ "/common/sounds/jump.ogg" );
 	}
 
 	// PUBLIC METHODS
@@ -320,18 +320,6 @@ public class Player extends Entity {
 		body.setLinearVelocity( new Vector2( body.getLinearVelocity( ).x, 0.0f ) );
 		body.applyLinearImpulse( new Vector2( 0.0f, JUMP_IMPLUSE * 1.5f ),
 				body.getWorldCenter( ) );
-		if ( playerState != PlayerState.JumpingOffScrew ) {
-			Filter filter = new Filter( );
-			for ( Fixture f : body.getFixtureList( ) ) {
-				filter = f.getFilterData( );
-				// move player back to original category
-				filter.categoryBits = Util.CATEGORY_PLAYER;
-				// player now collides with everything
-				filter.maskBits = ~Util.CATEGORY_PLAYER;
-				f.setFilterData( filter );
-			}
-		}
-
 	}
 
 	/**
@@ -508,20 +496,20 @@ public class Player extends Entity {
 					filter.categoryBits = Util.CATEGORY_SUBPLAYER;
 					// player still collides with sensor of screw
 					filter.maskBits = Util.CATEGORY_SCREWS
-							| Util.CATEGORY_PLAYER;
+							| Util.CATEGORY_PLAYER | Util.CATEGORY_GROUND;
 					f.setFilterData( filter );
 				}
-				mover = new LerpMover( body.getPosition( ),
-						new Vector2( currentScrew.getPosition( ).x
-								 - ( sprite.getWidth( ) / 4.0f ) * Util.PIXEL_TO_BOX,
-								 currentScrew.getPosition( ).y
-								 - ( sprite.getHeight( ) / 4.0f )
-								 * Util.PIXEL_TO_BOX ), 0.07f, false );
-				// body.setTransform( new Vector2( currentScrew.getPosition( ).x
+				// mover = new LerpMover( body.getPosition( ),
+				// new Vector2( currentScrew.getPosition( ).x
 				// - ( sprite.getWidth( ) / 4.0f ) * Util.PIXEL_TO_BOX,
 				// currentScrew.getPosition( ).y
 				// - ( sprite.getHeight( ) / 4.0f )
-				// * Util.PIXEL_TO_BOX ), 0.0f );
+				// * Util.PIXEL_TO_BOX ), 0.07f, false );
+				body.setTransform( new Vector2( currentScrew.getPosition( ).x
+						- ( sprite.getWidth( ) / 4.0f ) * Util.PIXEL_TO_BOX,
+						currentScrew.getPosition( ).y
+								- ( sprite.getHeight( ) / 4.0f )
+								* Util.PIXEL_TO_BOX ), 0.0f );
 				// connect the screw to the skeleton;
 				RevoluteJointDef revoluteJointDef = new RevoluteJointDef( );
 				revoluteJointDef.initialize( body, currentScrew.body,
@@ -717,7 +705,7 @@ public class Player extends Entity {
 						// it should be the only thing in this category
 						filter.categoryBits = Util.CATEGORY_SUBPLATFORM;
 						// set to collide with everything
-						filter.maskBits = Util.CATEGORY_EVERYTHING;
+						filter.maskBits = ~Util.CATEGORY_PLAYER;
 						f.setFilterData( filter );
 					}
 				}
@@ -983,7 +971,6 @@ public class Player extends Entity {
 			if ( !jumpPressedKeyboard ) {
 				processJumpState( );
 				jumpPressedKeyboard = true;
-
 			}
 		}
 		if ( !inputHandler.jumpPressed( ) ) {

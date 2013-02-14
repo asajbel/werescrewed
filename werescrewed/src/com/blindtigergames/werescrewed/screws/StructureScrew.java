@@ -184,9 +184,10 @@ public class StructureScrew extends Screw {
 	private void connectEntityToSkeleton( Entity entity, Skeleton skeleton,
 			Vector2 pos ) {
 		// connect the entity to the skeleton
+		entity.body.setFixedRotation( false );
 		RevoluteJointDef revoluteJointDef = new RevoluteJointDef( );
 		revoluteJointDef = new RevoluteJointDef( );
-		revoluteJointDef.initialize( entity.body, skeleton.body, pos );
+		revoluteJointDef.initialize( body, entity.body, pos );
 		revoluteJointDef.enableMotor = false;
 		platformJoint = ( RevoluteJoint ) world.createJoint( revoluteJointDef );
 		entity.body.setFixedRotation( false );
