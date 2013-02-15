@@ -15,6 +15,7 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.joints.PrismaticJoint;
 import com.badlogic.gdx.physics.box2d.joints.PrismaticJointDef;
+import com.badlogic.gdx.physics.box2d.joints.PulleyJointDef;
 import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.camera.Camera;
 import com.blindtigergames.werescrewed.collisionManager.MyContactListener;
@@ -116,6 +117,26 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		initPuzzleScrews( );
 		initClimbingScrews( );
 
+		
+		TiledPlatform singTile = platBuilder.position( -1200.0f, 500.0f ).dimensions( 1, 1 )
+				.texture( testTexture ).dynamic( ).name( "Single Tiled" )
+				.resitituion( 0.0f ).buildTilePlatform( );
+		skeleton.addPlatform( singTile );
+		singTile.body.setFixedRotation( false );
+		
+		TiledPlatform singTile2 = platBuilder.position( -1300.0f, 500.0f ).dimensions( 1, 1 )
+				.texture( testTexture ).dynamic( ).name( "Single Tiled" )
+				.resitituion( 0.0f ).buildTilePlatform( );
+		skeleton.addPlatform( singTile2 );
+		singTile2.body.setFixedRotation( false );
+		
+		Vector2 g1 = new Vector2(singTile.body.getWorldCenter( ).x, singTile.body.getWorldCenter( ).y - 100.0f * Util.PIXEL_TO_BOX);
+		Vector2 g2 = new Vector2(singTile2.body.getWorldCenter( ).x, singTile2.body.getWorldCenter( ).y - 100.0f * Util.PIXEL_TO_BOX);
+		PulleyJointDef pjd = new PulleyJointDef();
+		pjd.initialize( singTile.body, singTile2.body, g1, g2,
+				singTile.body.getWorldCenter( ), singTile2.body.getWorldCenter(), 1.0f);
+		
+		world.createJoint( pjd );
 		// rope = new Rope( "rope", new Vector2 (2000.0f * Util.PIXEL_TO_BOX,
 		// 400.0f* Util.PIXEL_TO_BOX), null, world );
 		// Add players
@@ -133,7 +154,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		rootSkeleton.addSkeleton( skeleton );
 
 		debugRenderer = new SBox2DDebugRenderer( Util.BOX_TO_PIXEL );
-		debugRenderer.setDrawJoints( false );
+		//debugRenderer.setDrawJoints( false );
 
 		Gdx.app.setLogLevel( Application.LOG_DEBUG );
 
@@ -356,12 +377,17 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		elevator.setMover( new PistonMover( pistonJ, 0f, 2f ) );
 		elevator.body.setSleepingAllowed( false );
 
+		//1000 - 1219 for perfect gears
 		Platform gear = builder.name( "gear" )
+				.position( 1219 * Util.PIXEL_TO_BOX, 320 * Util.PIXEL_TO_BOX )
+				.texture( null ).setScale( 3f ).type( "gearSmall" )
+				.buildComplexPlatform( );
+		skeleton.addPlatformRotatingCenterWithMot( gear, 1f );
+		Platform gear2 = builder.name( "gear2" )
 				.position( 1000 * Util.PIXEL_TO_BOX, 300 * Util.PIXEL_TO_BOX )
 				.texture( null ).setScale( 3f ).type( "gearSmall" )
 				.buildComplexPlatform( );
-
-		skeleton.addPlatformRotatingCenterWithMot( gear, 1f );
+		skeleton.addPlatformRotatingCenter( gear2 );
 		Filter filter;
 		for ( Fixture f : gear.body.getFixtureList( ) ) {
 			filter = f.getFilterData( );
