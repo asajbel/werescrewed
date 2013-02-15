@@ -16,12 +16,14 @@ import com.blindtigergames.werescrewed.util.Util;
  * @author stew
  *
  */
-public class RotateTweenMover extends TweenMover implements IMover {
+public class PuzzleRotateTweenMover extends TweenMover implements IMover {
 
+	
 	private float duration;
 	private float rotAmount;
-	private float delay;
 	private boolean isYoyoRepeat;
+	private PuzzleType puzzleType;
+	private boolean isUp; //used for yoyo repeat, to go back and forth
 
 	/**
 	 * Rotate a platform. Use this if you want something to rotate indefinetly.
@@ -29,46 +31,35 @@ public class RotateTweenMover extends TweenMover implements IMover {
 	 * @param rotAmountRadians - float, how much rotation applied in radian. use 2PI for a full circle
 	 * @param isYoyoRepeat - boolean true for looping back and forth or false for looping and jumping to beginning. Use yoyo for not full rotations
 	 */
-	public RotateTweenMover( Platform platform, float duration, float rotAmountRadians, float delay, boolean isYoyoRepeat ) {
-		super(true);
+	public PuzzleRotateTweenMover( float duration, float rotAmountRadians, boolean isYoyoRepeat ) {
+		super(false);
+		puzzleType = PuzzleType.ON_OFF_MOVER;
 		this.duration = duration;
 		this.rotAmount = rotAmountRadians;
-		this.delay = delay;
 		this.isYoyoRepeat = isYoyoRepeat;
-		if ( isYoyoRepeat ){
-			addTween( Tween.to( platform, PlatformAccessor.LOCAL_ROT, duration )
-						   .ease(TweenEquations.easeNone) //no ease for smooth lerp
-						   .target( rotAmountRadians )
-						   .repeatYoyo( Tween.INFINITY, delay ).start()
-						   );
-		}else{
-			addTween( Tween.to( platform, PlatformAccessor.LOCAL_ROT, duration )
-						.ease(TweenEquations.easeNone) //no ease for smooth lerp
-					   .target( rotAmountRadians )
-					   .repeat( Tween.INFINITY, delay ).start()
-					   );
-		}
+		this.isUp = false;
 	}
 	
-	/**
-	 * Will rotate the platform indefinetly in a full circle for a default time
-	 */
-	public RotateTweenMover( Platform platform ){
-		this(platform,10f,Util.TWO_PI,0f,false);
-	}
-
 	@Override
 	public void runPuzzleMovement( float screwVal, Platform p ) {
-		//p.mover = this;
-		//addTween(Tween.to( p, PlatformAccessor.LOCAL_ROT, duration ));
-		//NOT DONE
-		
+		p.mover = this;
+		System.out.println( "yo!" );
+		if( screwVal >= 0.5f ){
+			float targetRotation = p.getLocalRot( );
+			if ( isYoyoRepeat ){
+				targetRotation += rotAmount * ((isUp)?-1f:1f);
+				isUp = !isUp;
+			}else{
+				targetRotation += rotAmount;
+			}
+			addTween(Tween.to( p, PlatformAccessor.LOCAL_ROT, duration )
+						  .target( targetRotation ).start());
+		}
 	}
 
 	@Override
 	public PuzzleType getMoverType( ) {
-		// TODO Auto-generated method stub
-		return null;
+		return puzzleType;
 	}
 
 }

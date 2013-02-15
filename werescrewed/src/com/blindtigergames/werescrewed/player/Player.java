@@ -532,7 +532,6 @@ public class Player extends Entity {
 								- ( sprite.getHeight( ) / 4.0f )
 								* Util.PIXEL_TO_BOX ), 0.07f, false,
 						PuzzleType.OVERRIDE_ENTITY_MOVER );
-				// connect the screw to the skeleton;
 				playerState = PlayerState.Screwing;
 			}
 		}
@@ -593,8 +592,10 @@ public class Player extends Entity {
 	 */
 	private void processJumpState( ) {
 		if ( playerState == PlayerState.Screwing ) {
+			if ( mover == null ) {
+				world.destroyJoint( playerToScrew );
+			}			
 			mover = null;
-			world.destroyJoint( playerToScrew );
 			playerState = PlayerState.JumpingOffScrew;
 			screwJumpTimeout = SCREW_JUMP_STEPS;
 			jump( );
@@ -641,12 +642,14 @@ public class Player extends Entity {
 	 */
 	private void processJumpStateController( ) {
 		if ( playerState == PlayerState.Screwing ) {
-			mover = null;
-			world.destroyJoint( playerToScrew );
+			if ( mover == null ) {
+				world.destroyJoint( playerToScrew );
+			}
 			playerState = PlayerState.JumpingOffScrew;
 			screwJumpTimeout = SCREW_JUMP_STEPS;
 			// TODO: ADD SCREW JUMPING HERE
 			jumpPressedController = true;
+			mover = null;
 			jumpScrew( );
 		} else if ( !jumpPressedController ) {
 			if ( playerState != PlayerState.HeadStand ) {
@@ -766,8 +769,10 @@ public class Player extends Entity {
 				&& currentScrew.body.getJointList( ).size( ) <= 1
 				|| ( currentScrew.getScrewType( ) == ScrewType.BOSS && currentScrew
 						.getDepth( ) == 0 ) ) {
+			if ( mover == null ) {
+				world.destroyJoint( playerToScrew );
+			}			
 			mover = null;
-			world.destroyJoint( playerToScrew );
 			playerState = PlayerState.JumpingOffScrew;
 			screwJumpTimeout = SCREW_JUMP_STEPS;
 			jump( );
@@ -801,8 +806,10 @@ public class Player extends Entity {
 	 */
 	private void processMovementDown( ) {
 		if ( playerState == PlayerState.Screwing ) {
+			if ( mover == null ) {
+				world.destroyJoint( playerToScrew );
+			}			
 			mover = null;
-			world.destroyJoint( playerToScrew );
 			playerState = PlayerState.JumpingOffScrew;
 			screwJumpTimeout = SCREW_JUMP_STEPS;
 		} else {
@@ -1116,8 +1123,10 @@ public class Player extends Entity {
 		// Basically you have to hold attach button to stick to screw
 		if ( !controllerListener.screwPressed( )
 				&& playerState == PlayerState.Screwing ) {
+			if ( mover == null ) {
+				world.destroyJoint( playerToScrew );
+			}			
 			mover = null;
-			world.destroyJoint( playerToScrew );
 			playerState = PlayerState.JumpingOffScrew;
 			screwJumpTimeout = SCREW_JUMP_STEPS;
 		}
