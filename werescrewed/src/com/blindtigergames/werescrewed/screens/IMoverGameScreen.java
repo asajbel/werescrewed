@@ -349,20 +349,20 @@ public class IMoverGameScreen implements com.badlogic.gdx.Screen {
 			debugTest = true;
 
 		if ( Gdx.input.isKeyPressed( Input.Keys.Z ) ) {
-			rootSkeleton.translate( 0.0f, 0.01f );
+			rootSkeleton.translateBy( 0.0f, 0.01f );
 		}
 
 		if ( Gdx.input.isKeyPressed( Input.Keys.X ) ) {
-			rootSkeleton.translate( 0.0f, -0.01f );
+			rootSkeleton.translateBy( 0.0f, -0.01f );
 			// Gdx.app.log( "derP", "yerp" );
 		}
 
 		if ( Gdx.input.isKeyPressed( Input.Keys.C ) ) {
-			rootSkeleton.rotate( -0.01f );
+			rootSkeleton.rotateBy( -0.01f );
 		}
 
 		if ( Gdx.input.isKeyPressed( Input.Keys.V ) ) {
-			rootSkeleton.rotate( 0.01f );
+			rootSkeleton.rotateBy( 0.01f );
 		}
 		
 		tweenManager.update( deltaTime );

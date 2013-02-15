@@ -103,19 +103,20 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		// Initialize world and variables to allow adding entities
 		batch = new SpriteBatch( );
 		world = new World( new Vector2( 0, -45 ), true );
+		Tween.registerAccessor(Entity.class, new EntityAccessor());
+		Tween.registerAccessor(Entity.class, new PlatformAccessor());
+		//tweenManager = new TweenManager( );
+		Tween.setWaypointsLimit( 1 );
 		//entityManager = new EntityManager( );
 		skeleton = new Skeleton( "skeleton", Vector2.Zero, null, world );
 		rootSkeleton = new Skeleton( "root", Vector2.Zero, null, world );
-		rootSkeleton.mover = new RockingMover( -0.02f, 1.0f);
+		//rootSkeleton.setMover(new TweenMover( Tween.to(rootSkeleton, EntityAccessor.ROTATION, 10).target(0.01f).target(-0.01f).repeat( Tween.INFINITY, 0 ).start()));
 		//entityManager.addSkeleton( rootSkeleton.name, rootSkeleton );
 		platBuilder = new PlatformBuilder( world );
 		testTexture = WereScrewedGame.manager.get(
 				WereScrewedGame.dirHandle + "/common/TilesetTest.png",Texture.class);
 
-		Tween.registerAccessor(Entity.class, new EntityAccessor());
-		Tween.registerAccessor(Entity.class, new PlatformAccessor());
-		//tweenManager = new TweenManager( );
-		Tween.setWaypointsLimit( 1 );
+		
 		
 		// Initialize camera
 		initCamera( );
@@ -361,16 +362,18 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 
 		platBuilder.reset( ).world( world );
 
-		PlatformBuilder builder = platBuilder.width( 1 ).height( 3 )
+		PrismaticJointBuilder jointBuilder = new PrismaticJointBuilder( world )
+		.skeleton( skeleton ).axis( 0, 1 ).motor( true ).limit( true )
+		.upper( 1 ).motorSpeed( 1 );
+		
+		/*PlatformBuilder builder = platBuilder.width( 1 ).height( 3 )
 				.oneSided( false )
 				.dynamic( )
 				// .setPosition( (-500f-i*40)*PIXEL_TO_BOX, 150f*PIXEL_TO_BOX )
 				.texture( testTexture ).friction( 1f );
 		// .buildTilePlatform( world );
 
-		PrismaticJointBuilder jointBuilder = new PrismaticJointBuilder( world )
-				.skeleton( skeleton ).axis( 0, 1 ).motor( true ).limit( true )
-				.upper( 1 ).motorSpeed( 1 );
+		
 		for ( int i = 0; i < 10; ++i ) {
 			TiledPlatform piston = builder.position( ( -100f - i * 40 ),
 					220f ).buildTilePlatform( );
@@ -382,7 +385,22 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 			piston.setMover( new PistonMover( pistonJoint, 3f, i / 10.0f + 2f ) );
 			//piston.body.setSleepingAllowed( false );
 			skeleton.addDynamicPlatform( piston );
-		}
+		}*/
+		
+		PlatformBuilder builder = platBuilder.width( 1 ).height( 3 )
+				.oneSided( false )
+				.kinematic( )
+				.setScale(1)
+				.texture( testTexture ).friction( 1f );
+//		for ( int i = 0; i < 10; ++i ){
+//			TiledPlatform pistonKin = builder.name("pistonKin"+i)
+//					.position(-200f - i * 40,220f).buildTilePlatform();
+//					skeleton.addKinematicPlatform(pistonKin);
+//					pistonKin.setMover( new PistonTweenMover( pistonKin, new Vector2(0,300), 1f, 3f, 1f, 0f, i / 10.0f +1) );
+//
+//		}
+		
+		
 
 		
 		builder = platBuilder.width( 20 ).height( 1 )
@@ -459,23 +477,25 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		} else
 			debugTest = true;
 		
-		
+		//System.out.println( "root:"+rootSkeleton.getPosition()+" rot"+rootSkeleton.body.getAngle( ) );
 		if ( Gdx.input.isKeyPressed( Input.Keys.Z ) ) {
-			rootSkeleton.translate( 0.0f, 0.01f );
+			rootSkeleton.translateBy( 0.0f, 0.01f );
+			//System.out.println( "Z!!!!!!!!!!!!!!!!!!!!!!!!!!!" );
+			
 			//rootSkeleton.body.setLinearVelocity( new Vector2(0,1f) );
 		}
 
 		if ( Gdx.input.isKeyPressed( Input.Keys.X ) ) {
-			rootSkeleton.translate( 0.0f, -0.01f );
+			rootSkeleton.translateBy( 0.0f, -0.01f );
 			//rootSkeleton.body.setLinearVelocity( new Vector2(0,-1f) );
 		}
 
 		if ( Gdx.input.isKeyPressed( Input.Keys.C ) ) {
-			rootSkeleton.rotate( -0.01f );
+			rootSkeleton.rotateBy( -0.01f );
 		}
 
 		if ( Gdx.input.isKeyPressed( Input.Keys.V ) ) {
-			rootSkeleton.rotate( 0.01f );
+			rootSkeleton.rotateBy( 0.01f );
 		}
 		
 		player1.update( deltaTime );
