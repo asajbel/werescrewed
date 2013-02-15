@@ -22,6 +22,7 @@ import com.blindtigergames.werescrewed.debug.SBox2DDebugRenderer;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.builders.PlatformBuilder;
 import com.blindtigergames.werescrewed.entity.builders.PlayerBuilder;
+import com.blindtigergames.werescrewed.entity.builders.ScrewBuilder;
 import com.blindtigergames.werescrewed.entity.mover.LerpMover;
 import com.blindtigergames.werescrewed.entity.mover.PistonMover;
 import com.blindtigergames.werescrewed.entity.mover.PuzzleType;
@@ -77,6 +78,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 	@SuppressWarnings( "unused" )
 	private TiledPlatform tiledPlat, ground, movingTP, singTile, rectile;
 	private PlatformBuilder platBuilder;
+	private PuzzleScrew puzzleScrew;
 	private Skeleton skeleton;
 	private Skeleton rootSkeleton;
 	private ArrayList< StrippedScrew > climbingScrews;
@@ -202,11 +204,17 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 	 * manager and skeleton
 	 */
 	private void initStructureScrews( ) {
-		StructureScrew leftPlatScrew = new StructureScrew( "", new Vector2(
+		/*StructureScrew leftPlatScrew = new StructureScrew( "", new Vector2(
 				tiledPlat.body.getPosition( ).x - 0.5f,
 				tiledPlat.body.getPosition( ).y ), 50, tiledPlat, skeleton,
 				world );
-
+ 	    */
+		StructureScrew leftPlatScrew = new ScrewBuilder()
+											.position(tiledPlat.body.getPosition( ).x - 0.5f, tiledPlat.body.getPosition( ).y)
+											.entity( tiledPlat )
+											.skeleton( skeleton )
+											.world( world )
+											.buildStructureScrew();
 //		StructureScrew rightPlatScrew = new StructureScrew( "", new Vector2(
 //				tiledPlat.body.getPosition( ).x + 0.5f,
 //				tiledPlat.body.getPosition( ).y ), 50, tiledPlat, skeleton,
@@ -261,7 +269,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 				new Vector2( movingTP.body.getPosition( ).x,
 						movingTP.body.getPosition( ).y ), new Vector2(
 						movingTP.body.getPosition( ).x + 1.75f,
-						movingTP.body.getPosition( ).y ), 1f, true );
+						movingTP.body.getPosition( ).y ), 1f, true, PuzzleType.PUZZLE_SCREW_CONTROL );
 		puzzleScrew2.puzzleManager.addMover( movingTP.name, lm2 );
 		skeleton.addScrewForDraw( puzzleScrew2 );
 	
