@@ -49,6 +49,10 @@ public class Player extends Entity {
 	private Controller controller;
 	private boolean controllerIsActive, controllerDebug;
 	private float axisX;
+	private float leftAnalogX;
+	private float leftAnalogY;
+	//private float rightAnalogX;
+	//private float rightAnalogY;
 
 	private Screw currentScrew;
 	private Player otherPlayer;
@@ -325,25 +329,25 @@ public class Player extends Entity {
 		} else {
 			// if in head stand mode and this is the bottom player then jump
 			// with twice as much force
-			body.setLinearVelocity( new Vector2( body.getLinearVelocity( ).x,
-					0.0f ) );
+//			body.setLinearVelocity( new Vector2( body.getLinearVelocity( ).x,
+//					0.0f ) );
 			body.applyLinearImpulse( new Vector2( 0.0f, JUMP_IMPULSE * 2f ),
 					body.getWorldCenter( ) );
 		}
 	}
 
 	/**
-	 * only called when player jumps off of a screw, in progress
+	 * directs jump impulse off of screw based on analog stick
 	 */
 	public void jumpScrew( ) {
-		float x = controllerListener.analogAxisX( );
-		float y = controllerListener.analogAxisY( ) * -1;
+		leftAnalogX = controllerListener.analogAxisX( );
+		leftAnalogY = controllerListener.analogAxisY( ) * -1;
 		float multiplierY = 1.5f;
-		if ( y < 0.0 )
+		if ( leftAnalogY < 0.0 )
 			multiplierY = 0.1f;
-		body.setLinearVelocity( new Vector2( body.getLinearVelocity( ).x, 0.0f ) );
-		body.applyLinearImpulse( new Vector2( JUMP_SCREW_IMPULSE * x * 0.7f,
-				JUMP_SCREW_IMPULSE * y * multiplierY ), body.getWorldCenter( ) );
+		//body.setLinearVelocity( new Vector2( body.getLinearVelocity( ).x, 0.0f ) );
+		body.applyLinearImpulse( new Vector2( JUMP_SCREW_IMPULSE * leftAnalogX * 0.7f,
+				JUMP_SCREW_IMPULSE * leftAnalogY * multiplierY ), body.getWorldCenter( ) );
 	}
 
 	/**
@@ -768,10 +772,9 @@ public class Player extends Entity {
 				&& currentScrew.body.getJointList( ).size( ) <= 1
 				|| ( currentScrew.getScrewType( ) == ScrewType.BOSS && currentScrew
 						.getDepth( ) == 0 ) ) {
-			if ( mover == null ) {
+			if ( mover == null ){
 				world.destroyJoint( playerToScrew );
-			}			
-			mover = null;
+			}
 			playerState = PlayerState.JumpingOffScrew;
 			screwJumpTimeout = SCREW_JUMP_STEPS;
 			jump( );
@@ -1075,7 +1078,12 @@ public class Player extends Entity {
 				moveRight( );
 			}
 			prevButton = PovDirection.east;
-		}
+		}/*
+		if(!controllerListener.rightPressed( ) && !controllerListener.leftPressed( )){
+			if (grounded){
+				body.applyLinearImpulse( new Vector2(0,  -24), body.getWorldCenter( ) );
+			}
+		}*/
 		if ( controllerListener.downPressed( ) ) {
 			// processMovementDown( );
 			stop( );

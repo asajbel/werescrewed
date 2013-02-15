@@ -77,7 +77,6 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 	@SuppressWarnings( "unused" )
 	private TiledPlatform tiledPlat, ground, movingTP, singTile, rectile;
 	private PlatformBuilder platBuilder;
-	private PuzzleScrew puzzleScrew;
 	private Skeleton skeleton;
 	private Skeleton rootSkeleton;
 	private ArrayList< StrippedScrew > climbingScrews;
@@ -317,7 +316,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 
 		/*
 		 * TODO: FIX PLATFORM DENSITY
-		 */
+		 */ 
 
 		platBuilder.reset( ).world( world );
 
