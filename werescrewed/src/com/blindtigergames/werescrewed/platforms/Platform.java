@@ -265,7 +265,6 @@ public class Platform extends Entity {
 	 * @author stew
 	 */
 	public void setPosRotFromSkeleton( Skeleton skeleton ) {
-		//System.out.println("origin:"+originPosition+" bodyPos:"+body.getPosition());
 		// originPos has already been updated by it's IMover by this point
 		// TODO: modify this if imover uses pixels or box2d meters
 		float radiusFromSkeleton = originPosition.cpy().add(localPosition).mul( Util.PIXEL_TO_BOX ).len( );

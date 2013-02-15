@@ -32,14 +32,14 @@ import com.blindtigergames.werescrewed.entity.builders.ScrewBuilder;
 import com.blindtigergames.werescrewed.entity.mover.LerpMover;
 import com.blindtigergames.werescrewed.entity.mover.PistonMover;
 import com.blindtigergames.werescrewed.entity.mover.PistonTweenMover;
-import com.blindtigergames.werescrewed.entity.mover.PuzzlePistonTweenMover;
-import com.blindtigergames.werescrewed.entity.mover.PuzzleRotateTweenMover;
 import com.blindtigergames.werescrewed.entity.mover.PuzzleType;
 import com.blindtigergames.werescrewed.entity.mover.RockingMover;
 import com.blindtigergames.werescrewed.entity.mover.RotateByDegree;
 import com.blindtigergames.werescrewed.entity.mover.RotateTweenMover;
 import com.blindtigergames.werescrewed.entity.mover.SlidingMotorMover;
 import com.blindtigergames.werescrewed.entity.mover.TweenMover;
+import com.blindtigergames.werescrewed.entity.mover.puzzle.PuzzlePistonTweenMover;
+import com.blindtigergames.werescrewed.entity.mover.puzzle.PuzzleRotateTweenMover;
 import com.blindtigergames.werescrewed.entity.tween.EntityAccessor;
 import com.blindtigergames.werescrewed.entity.tween.PlatformAccessor;
 import com.blindtigergames.werescrewed.joint.JointFactory;
@@ -282,8 +282,10 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		rm = new RotateByDegree( -90.0f, 0.0f, 0, 0.5f );
 		PuzzleRotateTweenMover prtm = new PuzzleRotateTweenMover( 1, Util.PI/2, true);
 		PuzzlePistonTweenMover pptm = new PuzzlePistonTweenMover( flipPlat2, new Vector2(100,0), 1, 1, 0, 0 );
+		//PistonTweenMover ptm = new PistonTweenMover( flipPlat2, new Vector2(100,0), 1, 1, 0, 0, 0 );
+		//flipPlat2.setMover( pptm );
 		puzzleScrew.puzzleManager.addEntity( flipPlat2 );
-		puzzleScrew.puzzleManager.addMover( flipPlat2.name, rm );
+		puzzleScrew.puzzleManager.addMover( flipPlat2.name, pptm );
 		skeleton.addScrewForDraw( puzzleScrew );
 
 		// lerp puzzle screw control
@@ -384,6 +386,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 				.kinematic( )
 				.setScale(1)
 				.texture( testTexture ).friction( 1f );
+		//TODO: bug - these are placed in the incorrect position!
 		for ( int i = 0; i < 10; ++i ){
 			TiledPlatform pistonKin = builder.name("pistonKin"+i)
 					.position(-200f - i * 40,220f).buildTilePlatform();

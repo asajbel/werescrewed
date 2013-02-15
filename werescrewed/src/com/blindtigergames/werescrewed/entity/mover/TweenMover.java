@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import aurelienribon.tweenengine.Tween;
 import aurelienribon.tweenengine.TweenManager;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.blindtigergames.werescrewed.platforms.Platform;
@@ -20,7 +21,7 @@ import com.sun.tools.internal.ws.wsdl.document.jaxws.Exception;
 public class TweenMover implements IMover {
 
 	private boolean runSynchronously; //run tweens all at the same time(true) OR one at a time(false) 
-    ArrayList<Tween> tweens; //active tweens that will be updated
+    protected ArrayList<Tween> tweens; //active tweens that will be updated
 
     /**
      * 
@@ -77,7 +78,7 @@ public class TweenMover implements IMover {
 	@Override
 	public void runPuzzleMovement( float screwVal, Platform p ) {
 		// TODO Auto-generated method stub
-		
+		Gdx.app.log( "tweenmover", "" );
 	}
 
 	@Override
@@ -107,5 +108,9 @@ public class TweenMover implements IMover {
 		} else {
 			throw new IndexOutOfBoundsException("TweenMover: No tweens in the list when calling getFirstTween()");
 		}
+	}
+	
+	protected boolean hasNoTweens(){
+		return (tweens.size( ) == 0);
 	}
 }
