@@ -22,6 +22,7 @@ public class ShapePlatform extends Platform {
 	public ShapePlatform( String n, Vector2 pos, Texture tex, World world,
 			Shapes shape, float width, float height, boolean flip ) {
 		super( n, pos, tex, null );
+		platType = PlatformType.SHAPE;
 		this.world = world;
 
 		switch ( shape ) {

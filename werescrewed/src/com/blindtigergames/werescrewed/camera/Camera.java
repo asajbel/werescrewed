@@ -201,6 +201,7 @@ public class Camera {
 	 */
 	private void adjustCamera( ) {
 		translateLogic( );
+		zoom();
 	}
 
 	/**
@@ -272,9 +273,12 @@ public class Camera {
 	/**
 	 * zoom camera to keep anchors on screen
 	 */
-	@SuppressWarnings( "unused" )
+	//@SuppressWarnings( "unused" )
 	private void zoom( ) {
-
+		float temp = AnchorList.getInstance( ).specialDistance( ) / viewportHeight;
+		if (temp > 1f) camera.zoom = temp;
+		translateBuffer.width = screenBounds.width * BUFFER_RATIO;
+		translateBuffer.height = screenBounds.height * BUFFER_RATIO;
 	}
 
 	@SuppressWarnings( "unused" )

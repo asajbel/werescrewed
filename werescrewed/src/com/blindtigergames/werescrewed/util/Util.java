@@ -1,5 +1,7 @@
 package com.blindtigergames.werescrewed.util;
 
+import com.badlogic.gdx.math.Vector2;
+
 /**
  * A utility class that has random useful things like PI definitions and such
  * 
@@ -25,12 +27,63 @@ public class Util {
 	 * Collision Categories and masks for every 
 	 * object that needs them
 	 */
+	public static final short CATEGORY_GROUND = 0x0009; //player should never not collide with ground
 	public static final short CATEGORY_SCREWS = 0x0008;
 	public static final short CATEGORY_PLAYER = 0x0001;
 	public static final short CATEGORY_SUBPLAYER = 0x0010;
+	public static final short CATEGORY_SUBPLATFORM = 0x0006;
 	public static final short DYNAMIC_OBJECTS = 0x0004;
 	public static final short KINEMATIC_OBJECTS = 0x0005;
 	public static final short CATEGORY_NOTHING = 0x0000;
 	public static final short CATEGORY_EVERYTHING = -1;
+	public static final short CATEGORY_ROPE = 0x0020;
+	
+	/**
+	 * PointOnCircle()
+	 * @author stew
+	 * @param radius
+	 *            FLOAT
+	 * @param angleInRadians
+	 *            YO
+	 * @param origin
+	 *            derp
+	 * @return
+	 */
+	public static Vector2 PointOnCircle( float radius, float angleInRadians,
+			Vector2 origin ) {
+		// Convert from degrees to radians via multiplication by PI/180
+		float x = ( float ) ( radius * Math.cos( angleInRadians ) ) + origin.x;
+		float y = ( float ) ( radius * Math.sin( angleInRadians ) ) + origin.y;
+
+		return new Vector2( x, y );
+	}
+
+	/**
+	 * Finds the angle between 2 points in radians. Correctly returns the angle
+	 * rather than NaN since atan() only has a range between -pi/2 -> pi/2
+	 * TODO: this may have bugs for pi and 0.
+	 * 
+	 * @param pointA
+	 *            as vector2
+	 * @param pointB
+	 *            as vector2
+	 * @return float angle in radians
+	 * @author stew
+	 */
+	public static float angleBetweenPoints( Vector2 pointA, Vector2 pointB ) {
+		float angle = ( float ) Math.atan( ( pointB.y - pointA.y )
+				/ ( pointB.x - pointA.x ) );
+		if ( Float.isNaN( angle ) ) {
+			if ( pointA.y > pointB.y ) { // pointA is above pointB
+				return ( float ) Math.PI / 2;
+			} else if ( pointB.y > pointA.y ) {// pointA is below pointB
+				return ( float ) ( 3 * Math.PI / 2 );
+			} else {// pointA & B are the same!!
+				return 0; // better than NaN!
+			}
+		} else {
+			return angle;
+		}
+	}
 	
 }

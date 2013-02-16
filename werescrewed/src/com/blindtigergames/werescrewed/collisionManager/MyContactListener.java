@@ -10,8 +10,8 @@ import com.badlogic.gdx.physics.box2d.JointEdge;
 import com.badlogic.gdx.physics.box2d.Manifold;
 import com.blindtigergames.werescrewed.camera.Anchor;
 import com.blindtigergames.werescrewed.entity.Entity;
-import com.blindtigergames.werescrewed.entity.Player;
 import com.blindtigergames.werescrewed.platforms.TiledPlatform;
+import com.blindtigergames.werescrewed.player.Player;
 import com.blindtigergames.werescrewed.screws.Screw;
 import com.blindtigergames.werescrewed.screws.StructureScrew;
 
@@ -24,6 +24,8 @@ public class MyContactListener implements ContactListener {
 
 	private static int NUM_PLAYER1_CONTACTS = 0;
 	private static int NUM_PLAYER2_CONTACTS = 0;
+	private static int NUM_PLAYER1_SCREWCONTACTS = 0;
+	private static int NUM_PLAYER2_SCREWCONTACTS = 0;
 	private Player p1;
 
 	/**
@@ -51,18 +53,16 @@ public class MyContactListener implements ContactListener {
 				playerInvolved = true;
 			}
 
-			// Ensure the collision involves the player's feet
-			if ( playerInvolved
-					&& !( playerFix.getShape( ) instanceof CircleShape ) ) {
-				playerInvolved = false;
-			}
-
 			if ( playerInvolved ) {
 				Player player = ( Player ) playerFix.getBody( ).getUserData( );
 				if ( objectFix.getBody( ).getUserData( ) instanceof Entity ) {
 					Entity object = ( Entity ) objectFix.getBody( )
 							.getUserData( );
-					if ( object.isSolid( ) ) {
+					// Ensure the object is solid and involves the player's feet
+					// also make sure its not the player
+					if ( object.isSolid( )
+							&& playerFix.getShape( ) instanceof CircleShape
+							&& !( objectFix.getBody( ).getUserData( ) instanceof Player ) ) {
 						if ( p1 == null || p1 == player ) {
 							p1 = player;
 							NUM_PLAYER1_CONTACTS++;
@@ -73,7 +73,19 @@ public class MyContactListener implements ContactListener {
 					} else if ( objectFix.getBody( ).getUserData( ) instanceof Screw ) {
 						Screw screw = ( Screw ) objectFix.getBody( )
 								.getUserData( );
-						player.hitScrew( screw );
+						if ( p1 == null || p1 == player ) {
+							p1 = player;
+							NUM_PLAYER1_SCREWCONTACTS++;
+							player.hitScrew( screw );
+						} else if ( p1 != player ) {
+							NUM_PLAYER2_SCREWCONTACTS++;
+							player.hitScrew( screw );
+						}
+					} else if ( objectFix.getBody( ).getUserData( ) instanceof Player ) {
+						Player player2 = ( Player ) objectFix.getBody( )
+								.getUserData( );
+						player.hitPlayer( player2 );
+						player2.hitPlayer( player );
 					}
 				} else if ( objectFix.getBody( ).getUserData( ) instanceof Anchor ) {
 					Anchor anchor = ( Anchor ) objectFix.getBody( )
@@ -109,17 +121,17 @@ public class MyContactListener implements ContactListener {
 				objectFix = x1;
 				playerInvolved = true;
 			}
-			// Ensure the collision involves the player's feet
-			if ( playerInvolved
-					&& !( playerFix.getShape( ) instanceof CircleShape ) ) {
-				playerInvolved = false;
-			}
+
 			if ( playerInvolved ) {
 				Player player = ( Player ) playerFix.getBody( ).getUserData( );
 				if ( objectFix.getBody( ).getUserData( ) instanceof Entity ) {
 					Entity object = ( Entity ) objectFix.getBody( )
 							.getUserData( );
-					if ( object.isSolid( ) ) {
+					// Ensure the object is solid and involves the player's feet
+					// also make sure its not the player
+					if ( object.isSolid( )
+							&& playerFix.getShape( ) instanceof CircleShape
+							&& !( objectFix.getBody( ).getUserData( ) instanceof Player ) ) {
 						if ( p1 == null || p1 == player ) {
 							p1 = player;
 							NUM_PLAYER1_CONTACTS--;
@@ -134,7 +146,29 @@ public class MyContactListener implements ContactListener {
 						}
 						contact.setEnabled( true );
 					} else if ( objectFix.getBody( ).getUserData( ) instanceof Screw ) {
-						player.endHitScrew( );
+						if ( p1 == null || p1 == player ) {
+							p1 = player;
+							NUM_PLAYER1_SCREWCONTACTS--;
+							if ( NUM_PLAYER1_SCREWCONTACTS <= 0 ) {
+								if ( ! player.isOnScrew( ) ) {
+									player.hitScrew( null );
+								}
+							}
+						} else if ( p1 != player ) {
+							NUM_PLAYER2_SCREWCONTACTS--;
+							if ( NUM_PLAYER2_SCREWCONTACTS <= 0 ) {
+								if ( ! player.isOnScrew( ) ) {
+									player.hitScrew( null );
+								}
+							}
+						}
+					} else if ( objectFix.getBody( ).getUserData( ) instanceof Player ) {
+						Player player2 = ( Player ) objectFix.getBody( )
+								.getUserData( );
+						if( !player.isInHeadStand( ) ) {
+							player.hitPlayer( null );
+							player2.hitPlayer( null );
+						}
 					}
 				} else if ( objectFix.getBody( ).getUserData( ) instanceof Anchor ) {
 					Anchor anchor = ( Anchor ) objectFix.getBody( )
@@ -194,6 +228,17 @@ public class MyContactListener implements ContactListener {
 						if ( platformPos.y > playerPos.y ) {
 							contact.setEnabled( false );
 						}
+					}
+					if ( player.isTopPlayer( ) ) {
+						contact.setEnabled( false );
+					}
+				} else if ( objectFix.getBody( ).getUserData( ) instanceof Player ) {
+					Player player2 = ( Player ) objectFix.getBody( )
+							.getUserData( );
+					if( player.isInGrabState( ) || player2.isInGrabState( ) ) {
+						contact.setEnabled( false );
+					} else if ( !player.isGrounded( ) || !player2.isGrounded( ) ) { 
+						contact.setEnabled( false );
 					}
 				}
 			}

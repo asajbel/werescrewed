@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.Animation;
+import com.blindtigergames.werescrewed.WereScrewedGame;
 
 /**
  * @author Nick Patti
@@ -44,7 +45,8 @@ public class AnimatedSprite extends Sprite implements I_Drawable {
 	 * @param fr
 	 *            The frame rate of the animation
 	 * @param spriteSheetName
-	 *            The name of the sprite sheet, including the extension
+	 *            The name of the sprite sheet, including the parent files below
+	 *            data, and the extension
 	 * @param loopType
 	 *            The loop type specified by a constant provided by libGDX
 	 */
@@ -53,8 +55,8 @@ public class AnimatedSprite extends Sprite implements I_Drawable {
 		FRAMES = f;
 		ROWS = r;
 		COLUMNS = c;
-		String spriteSheetFullName = "data/" + spriteSheetName;
-		spriteSheet = new Texture( Gdx.files.internal( spriteSheetFullName ) );
+		String spriteSheetFullName = WereScrewedGame.dirHandle.path( )  + "/" + spriteSheetName;
+		spriteSheet = WereScrewedGame.manager.get(spriteSheetFullName, Texture.class);
 
 		// temporary frames for placing each frame into spriteSheetFrames
 		TextureRegion[ ][ ] tmpFrame = TextureRegion.split( spriteSheet,
