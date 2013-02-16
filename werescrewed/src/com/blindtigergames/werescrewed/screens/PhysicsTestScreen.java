@@ -131,27 +131,9 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		initStructureScrews( );
 		initPuzzleScrews( );
 		initClimbingScrews( );
-
 		
-		TiledPlatform singTile = platBuilder.position( -1200.0f, 500.0f ).dimensions( 1, 1 )
-				.texture( testTexture ).dynamic( ).name( "Single Tiled" )
-				.resitituion( 0.0f ).buildTilePlatform( );
-		skeleton.addPlatform( singTile );
-		singTile.body.setFixedRotation( false );
 		
-		TiledPlatform singTile2 = platBuilder.position( -1300.0f, 500.0f ).dimensions( 1, 1 )
-				.texture( testTexture ).dynamic( ).name( "Single Tiled" )
-				.resitituion( 0.0f ).buildTilePlatform( );
-		skeleton.addPlatform( singTile2 );
-		singTile2.body.setFixedRotation( false );
 		
-		Vector2 g1 = new Vector2(singTile.body.getWorldCenter( ).x, singTile.body.getWorldCenter( ).y - 100.0f * Util.PIXEL_TO_BOX);
-		Vector2 g2 = new Vector2(singTile2.body.getWorldCenter( ).x, singTile2.body.getWorldCenter( ).y - 100.0f * Util.PIXEL_TO_BOX);
-		PulleyJointDef pjd = new PulleyJointDef();
-		pjd.initialize( singTile.body, singTile2.body, g1, g2,
-				singTile.body.getWorldCenter( ), singTile2.body.getWorldCenter(), 1.0f);
-		
-		world.createJoint( pjd );
 		// rope = new Rope( "rope", new Vector2 (2000.0f * Util.PIXEL_TO_BOX,
 		// 400.0f* Util.PIXEL_TO_BOX), null, world );
 		// Add players
@@ -414,18 +396,16 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 
 		//1000 - 1219 for perfect gears
 		Platform gear = builder.name( "gear" )
-				.position( 1229 * Util.PIXEL_TO_BOX, 320 * Util.PIXEL_TO_BOX )
+				.position( 1219 * Util.PIXEL_TO_BOX, 320 * Util.PIXEL_TO_BOX )
 				.texture( null ).setScale( 3f ).type( "gearSmall" )
 				.buildComplexPlatform( );
-		//skeleton.addDynamicPlatform( gear );
-		skeleton.addPlatformRotatingCenter( gear );
+		skeleton.addPlatformRotatingCenterWithMot( gear, 1f );
 		Platform gear2 = builder.name( "gear2" )
-				.position( 1000, 300 )
+				.position( 1000 * Util.PIXEL_TO_BOX, 300 * Util.PIXEL_TO_BOX )
 				.texture( null ).setScale( 3f ).type( "gearSmall" )
-				.kinematic( )
 				.buildComplexPlatform( );
-		skeleton.addKinematicPlatform( gear2 );
-		gear2.setMover( new RotateTweenMover( gear2 ) );
+		skeleton.addPlatformRotatingCenter( gear2 );
+		
 		Filter filter;
 		for ( Fixture f : gear.body.getFixtureList( ) ) {
 			filter = f.getFilterData( );
@@ -438,6 +418,27 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		}
 	}
 
+	public void initPulley(){
+		TiledPlatform singTile = platBuilder.position( -1200.0f, 500.0f ).dimensions( 1, 1 )
+				.texture( testTexture ).dynamic( ).name( "Single Tiled" )
+				.resitituion( 0.0f ).buildTilePlatform( );
+		skeleton.addPlatform( singTile );
+		singTile.body.setFixedRotation( false );
+		
+		TiledPlatform singTile2 = platBuilder.position( -1300.0f, 500.0f ).dimensions( 1, 1 )
+				.texture( testTexture ).dynamic( ).name( "Single Tiled" )
+				.resitituion( 0.0f ).buildTilePlatform( );
+		skeleton.addPlatform( singTile2 );
+		singTile2.body.setFixedRotation( false );
+		
+		Vector2 g1 = new Vector2(singTile.body.getWorldCenter( ).x, singTile.body.getWorldCenter( ).y - 100.0f * Util.PIXEL_TO_BOX);
+		Vector2 g2 = new Vector2(singTile2.body.getWorldCenter( ).x, singTile2.body.getWorldCenter( ).y - 100.0f * Util.PIXEL_TO_BOX);
+		PulleyJointDef pjd = new PulleyJointDef();
+		pjd.initialize( singTile.body, singTile2.body, g1, g2,
+				singTile.body.getWorldCenter( ), singTile2.body.getWorldCenter(), 1.0f);
+		
+		world.createJoint( pjd );
+	}
 	@Override
 	public void render( float deltaTime ) {
 		if ( Gdx.gl20 != null ) {
