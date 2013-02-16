@@ -86,7 +86,7 @@ public class MyContactListener implements ContactListener {
 								.getUserData( );
 						player.hitPlayer( player2 );
 						player2.hitPlayer( player );
-					}
+					} 
 				}
 			}
 		}
@@ -131,12 +131,16 @@ public class MyContactListener implements ContactListener {
 							p1 = player;
 							NUM_PLAYER1_CONTACTS--;
 							if ( NUM_PLAYER1_CONTACTS <= 0 ) {
-								player.setGrounded( false );
+								if ( player.getState( ) == PlayerState.Falling ) {
+									player.setGrounded( false ); 
+								}
 							}
 						} else if ( p1 != player ) {
 							NUM_PLAYER2_CONTACTS--;
 							if ( NUM_PLAYER2_CONTACTS <= 0 ) {
-								player.setGrounded( false );
+								if ( player.getState( ) == PlayerState.Falling ) {
+									player.setGrounded( false ); 
+								}
 							}
 						}
 						contact.setEnabled( true );
@@ -163,12 +167,13 @@ public class MyContactListener implements ContactListener {
 						if ( player.getState( ) != PlayerState.HeadStand ) {
 							player.hitPlayer( null );
 							player2.hitPlayer( null );
-						}
+						} 
 					}
 				}
 			}
 		}
 	}
+	
 
 	/**
 	 * Before physics is calculated each step
@@ -228,9 +233,12 @@ public class MyContactListener implements ContactListener {
 					if ( player.getState( ) == PlayerState.GrabMode
 							|| player2.getState( ) == PlayerState.GrabMode ) {
 						contact.setEnabled( false );
-					} else if ( !player.isGrounded( ) || !player2.isGrounded( ) ) {
+					} else if ( ( !player.isGrounded( ) || !player2
+							.isGrounded( ) )
+							&& player.getState( ) != PlayerState.Falling
+							&& player2.getState( ) != PlayerState.Falling ) {
 						contact.setEnabled( false );
-					}
+					} 
 				}
 			}
 		}

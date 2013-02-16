@@ -14,6 +14,7 @@ public class LerpMover implements IMover {
 	private boolean loop;
 	private boolean done = false;
 	private PuzzleType puzzleType;
+	private LinearAxis axis;
 
 	/**
 	 * 
@@ -24,11 +25,12 @@ public class LerpMover implements IMover {
 	 * @param type does the puzzle override the platforms mover or just move once
 	 */
 	public LerpMover( Vector2 beginningPoint, Vector2 endingPoint, float speed,
-			boolean loop, PuzzleType type ) {
+			boolean loop, PuzzleType type, LinearAxis axis ) {
 		this.beginningPoint = beginningPoint.cpy( );
 		this.endPoint = endingPoint.cpy( );
 		this.speed = speed;
 		this.loop = loop;
+		this.axis = axis;
 		puzzleType = type;
 	}
 
@@ -47,7 +49,13 @@ public class LerpMover implements IMover {
 		}
 		Vector2 temp = new Vector2( beginningPoint.x, beginningPoint.y );
 		beginningPoint.lerp( endPoint, alpha );
-		body.setTransform( beginningPoint.mul( Util.PIXEL_TO_BOX ), 0.0f );
+		if ( axis == LinearAxis.VERTICAL ) {
+			body.setTransform( body.getPosition( ).x, beginningPoint.y * Util.PIXEL_TO_BOX, 0.0f );
+		} else if ( axis == LinearAxis.HORIZONTAL ) {
+			body.setTransform( beginningPoint.x * Util.PIXEL_TO_BOX, body.getPosition( ).y, 0.0f );			
+		} else {
+			body.setTransform( beginningPoint.mul( Util.PIXEL_TO_BOX ), 0.0f );			
+		}
 		beginningPoint = temp;
 	}
 
@@ -65,8 +73,13 @@ public class LerpMover implements IMover {
 		if ( puzzleType == PuzzleType.PUZZLE_SCREW_CONTROL ) {
 			Vector2 temp = new Vector2( beginningPoint.x, beginningPoint.y );
 			beginningPoint.lerp( endPoint, screwVal );
-			p.setLocalPos( beginningPoint );
-			// body.setTransform( beginningPoint, 0.0f );
+			if ( axis == LinearAxis.VERTICAL ) {
+				p.setLocalPos( p.getLocalPos( ).x, beginningPoint.y );
+			} else if ( axis == LinearAxis.HORIZONTAL ) {
+				p.setLocalPos( beginningPoint.x, p.getLocalPos( ).y );			
+			} else {
+				p.setLocalPos( beginningPoint.y, 0.0f );		
+			}
 			beginningPoint = temp;
 		} else if ( puzzleType == PuzzleType.OVERRIDE_ENTITY_MOVER ) {
 			if ( p.mover == null ) {

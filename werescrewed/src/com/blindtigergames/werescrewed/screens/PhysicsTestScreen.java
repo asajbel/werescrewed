@@ -27,6 +27,7 @@ import com.blindtigergames.werescrewed.entity.builders.PlatformBuilder;
 import com.blindtigergames.werescrewed.entity.builders.PlayerBuilder;
 import com.blindtigergames.werescrewed.entity.builders.ScrewBuilder;
 import com.blindtigergames.werescrewed.entity.mover.LerpMover;
+import com.blindtigergames.werescrewed.entity.mover.LinearAxis;
 import com.blindtigergames.werescrewed.entity.mover.PistonTweenMover;
 import com.blindtigergames.werescrewed.entity.mover.PuzzleType;
 import com.blindtigergames.werescrewed.entity.mover.RockingMover;
@@ -150,7 +151,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 	 */
 	private void initTiledPlatforms( ) {
 		// Tiled Platform
-		tiledPlat = platBuilder.position( 700.0f, 175.0f ).dimensions( 10, 1 )
+		tiledPlat = platBuilder.position( 700.0f, 125.0f ).dimensions( 10, 1 )
 				.texture( testTexture ).dynamic( ).name( "tp" )
 				.resitituion( 0.0f ).buildTilePlatform( );
 		skeleton.addDynamicPlatform( tiledPlat );
@@ -175,7 +176,6 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		ground = platBuilder.position( 0.0f, -75 ).name( "ground" )
 				.dimensions( 200, 4 ).texture( testTexture ).kinematic( )
 				.oneSided( false ).resitituion( 0.0f ).buildTilePlatform( );
-		ground.setCategoryMask( Util.CATEGORY_GROUND, Util.CATEGORY_EVERYTHING );
 		skeleton.addKinematicPlatform( ground );
 	}
 
@@ -237,7 +237,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		LerpMover lm2 = new LerpMover( movingTP.body.getPosition( ).mul( Util.BOX_TO_PIXEL ),
 				new Vector2( movingTP.body.getPosition( ).x, movingTP.body
 						.getPosition( ).y + 0.3f ).mul( Util.BOX_TO_PIXEL ),
-				1f, true, PuzzleType.PUZZLE_SCREW_CONTROL );
+				1f, true, PuzzleType.PUZZLE_SCREW_CONTROL, LinearAxis.VERTICAL );
 		puzzleScrew.puzzleManager.addEntity( movingTP );
 		puzzleScrew.puzzleManager.addMover( movingTP.name, lm2 );
 
@@ -255,9 +255,9 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		PuzzleScrew puzzleScrew2 = new PuzzleScrew( "002", new Vector2( 150f,
 				32f ), 50, skeleton, world, 0, false );
 		LerpMover lm = new LerpMover( movingTP.body.getPosition( ).mul( Util.BOX_TO_PIXEL ),
-				new Vector2( movingTP.body.getPosition( ).x, movingTP.body
-						.getPosition( ).y ).mul( Util.BOX_TO_PIXEL ).add( 256f, 0f ),
-				1f, true, PuzzleType.PUZZLE_SCREW_CONTROL );
+				new Vector2( movingTP.body.getPosition( ).x + 1.75f, movingTP.body
+						.getPosition( ).y ).mul( Util.BOX_TO_PIXEL ),
+				1f, true, PuzzleType.PUZZLE_SCREW_CONTROL, LinearAxis.HORIZONTAL );
 		puzzleScrew2.puzzleManager.addEntity( movingTP );
 		puzzleScrew2.puzzleManager.addMover( movingTP.name, lm );
 		skeleton.addScrewForDraw( puzzleScrew2 );

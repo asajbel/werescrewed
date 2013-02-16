@@ -27,6 +27,7 @@ import com.blindtigergames.werescrewed.entity.builders.PlatformBuilder;
 import com.blindtigergames.werescrewed.entity.builders.PlayerBuilder;
 import com.blindtigergames.werescrewed.entity.builders.ScrewBuilder;
 import com.blindtigergames.werescrewed.entity.mover.LerpMover;
+import com.blindtigergames.werescrewed.entity.mover.LinearAxis;
 import com.blindtigergames.werescrewed.entity.mover.PistonTweenMover;
 import com.blindtigergames.werescrewed.entity.mover.PuzzleType;
 import com.blindtigergames.werescrewed.entity.mover.RockingMover;
@@ -211,7 +212,6 @@ public class IMoverGameScreen implements com.badlogic.gdx.Screen {
 		ground = platBuilder.position( 0.0f, -75.0f ).name( "ground" )
 				.dimensions( 200, 4 ).texture( testTexture ).kinematic( )
 				.oneSided( false ).resitituion( 0.0f ).buildTilePlatform( );
-		ground.setCategoryMask( Util.CATEGORY_GROUND, Util.CATEGORY_EVERYTHING );
 		skeleton.addKinematicPlatform( ground );
 	}
 
@@ -228,7 +228,7 @@ public class IMoverGameScreen implements com.badlogic.gdx.Screen {
 		StructureScrew leftPlatScrew = new ScrewBuilder( )
 				.position(
 						tiledPlat.body.getPosition( ).x * Util.BOX_TO_PIXEL
-								- ( tiledPlat.sprite.getWidth( )),
+								- ( tiledPlat.sprite.getWidth( ) ),
 						tiledPlat.body.getPosition( ).y * Util.BOX_TO_PIXEL )
 				.entity( tiledPlat ).skeleton( skeleton ).world( world )
 				.buildStructureScrew( );
@@ -238,9 +238,9 @@ public class IMoverGameScreen implements com.badlogic.gdx.Screen {
 		// world );
 		BossScrew bossBolt = new BossScrew( "", new Vector2(
 				tiledPlat.body.getPosition( ).x * Util.BOX_TO_PIXEL
-				+ ( tiledPlat.sprite.getWidth( ) ),
-		tiledPlat.body.getPosition( ).y * Util.BOX_TO_PIXEL  ), 50, tiledPlat, skeleton,
-				world );
+						+ ( tiledPlat.sprite.getWidth( ) ),
+				tiledPlat.body.getPosition( ).y * Util.BOX_TO_PIXEL ), 50,
+				tiledPlat, skeleton, world );
 		tiledPlat.addScrew( bossBolt );
 		tiledPlat.addScrew( leftPlatScrew );
 		// tiledPlat.addScrew( rightPlatScrew );
@@ -265,17 +265,17 @@ public class IMoverGameScreen implements com.badlogic.gdx.Screen {
 
 		// rotate puzzle screw control
 		RotateByDegree rm = new RotateByDegree( 0.0f, -90.0f, 0, 0.5f );
-		PuzzleScrew puzzleScrew = new PuzzleScrew( "001", new Vector2( 32f,
-				32f ), 50, skeleton, world, 0, false );
+		PuzzleScrew puzzleScrew = new PuzzleScrew( "001",
+				new Vector2( 32f, 32f ), 50, skeleton, world, 0, false );
 		puzzleScrew.puzzleManager.addEntity( flipPlat1 );
 		puzzleScrew.puzzleManager.addMover( flipPlat1.name, rm );
 		// also add a up mover to movingTP
 		LerpMover lm2 = new LerpMover(
-				new Vector2( movingTP.body.getPosition( ).x,
-						movingTP.body.getPosition( ).y ).mul( Util.BOX_TO_PIXEL ), new Vector2(
-						movingTP.body.getPosition( ).x,
-						movingTP.body.getPosition( ).y + 0.3f ).mul( Util.BOX_TO_PIXEL ), 1f, true,
-				PuzzleType.PUZZLE_SCREW_CONTROL );
+				new Vector2( movingTP.body.getPosition( ).x, movingTP.body
+						.getPosition( ).y ).mul( Util.BOX_TO_PIXEL ),
+				new Vector2( movingTP.body.getPosition( ).x, movingTP.body
+						.getPosition( ).y + 0.3f ).mul( Util.BOX_TO_PIXEL ),
+				1f, true, PuzzleType.PUZZLE_SCREW_CONTROL, LinearAxis.VERTICAL );
 		puzzleScrew.puzzleManager.addEntity( movingTP );
 		puzzleScrew.puzzleManager.addMover( movingTP.name, lm2 );
 
@@ -292,10 +292,11 @@ public class IMoverGameScreen implements com.badlogic.gdx.Screen {
 		PuzzleScrew puzzleScrew2 = new PuzzleScrew( "002", new Vector2( 150f,
 				32f ), 50, skeleton, world, 0, false );
 		lm2 = new LerpMover( new Vector2( movingTP.body.getPosition( ).x,
-				movingTP.body.getPosition( ).y ).mul( Util.BOX_TO_PIXEL ), new Vector2(
-				movingTP.body.getPosition( ).x + 1.75f,
-				movingTP.body.getPosition( ).y ).mul( Util.BOX_TO_PIXEL ), 1f, true,
-				PuzzleType.PUZZLE_SCREW_CONTROL );
+				movingTP.body.getPosition( ).y ).mul( Util.BOX_TO_PIXEL ),
+				new Vector2( movingTP.body.getPosition( ).x + 1.75f,
+						movingTP.body.getPosition( ).y )
+						.mul( Util.BOX_TO_PIXEL ), 1f, true,
+				PuzzleType.PUZZLE_SCREW_CONTROL, LinearAxis.HORIZONTAL );
 		puzzleScrew2.puzzleManager.addEntity( movingTP );
 		puzzleScrew2.puzzleManager.addMover( movingTP.name, lm2 );
 		skeleton.addScrewForDraw( puzzleScrew2 );
