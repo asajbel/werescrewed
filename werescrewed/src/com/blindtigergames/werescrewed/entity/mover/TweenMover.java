@@ -21,6 +21,15 @@ public class TweenMover implements IMover {
     protected ArrayList<Tween> tweens; //active tweens that will be updated
 
     /**
+     * Simply adds one tween to this mover, and runs synchrounously if any more tweens are added.
+     * @param tween to run (probably continuously, but you set it to repeat yourself)
+     */
+    public TweenMover(Tween tween) {
+    	init(true);
+    	tweens.add(tween);
+    }
+    
+    /**
      * 
      * @param runSynchronously run tweens all at the same time(true) OR one at a time(false)
      * @param tween
@@ -28,6 +37,18 @@ public class TweenMover implements IMover {
     public TweenMover(boolean runSynchronously, Tween tween) {
     	init(runSynchronously);
     	tweens.add(tween);
+    }
+    
+    /**
+     * Convienience constructor
+     * @param runSynchronously run tweens all at the same time(true) OR one at a time(false)
+     * @param tween...
+     */
+    public TweenMover(Tween... tween){
+    	init(true);
+    	for ( Tween t : tween ){
+    		tweens.add(t);
+    	}
     }
     
     /**

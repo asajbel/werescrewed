@@ -2,7 +2,10 @@ package com.blindtigergames.werescrewed.screens;
 
 import java.util.ArrayList;
 
+import aurelienribon.tweenengine.Timeline;
 import aurelienribon.tweenengine.Tween;
+import aurelienribon.tweenengine.TweenEquations;
+
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -31,8 +34,8 @@ import com.blindtigergames.werescrewed.entity.mover.PuzzleType;
 import com.blindtigergames.werescrewed.entity.mover.RockingMover;
 import com.blindtigergames.werescrewed.entity.mover.RotateByDegree;
 import com.blindtigergames.werescrewed.entity.mover.SlidingMotorMover;
+import com.blindtigergames.werescrewed.entity.mover.TimelineTweenMover;
 import com.blindtigergames.werescrewed.entity.mover.puzzle.PuzzlePistonTweenMover;
-import com.blindtigergames.werescrewed.entity.mover.puzzle.PuzzleRotateTweenMover;
 import com.blindtigergames.werescrewed.entity.tween.EntityAccessor;
 import com.blindtigergames.werescrewed.entity.tween.PlatformAccessor;
 import com.blindtigergames.werescrewed.joint.JointFactory;
@@ -55,20 +58,6 @@ import com.blindtigergames.werescrewed.util.Util;
 public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 
 	// FIELDS
-
-	// Static Constants
-
-	/***
-	 * Box2D to pixels conversion.
-	 * 
-	 * This number means 1 meter equals 256 pixels. That means the biggest
-	 * in-game object (10 meters) we can use is 2560 pixels wide, which is much
-	 * bigger than our max screen resolution so it should be enough.
-	 */
-	// public static final float BOX_TO_PIXEL = 256f;
-	// public static final float PIXEL_TO_BOX = 1 / BOX_TO_PIXEL;
-	// public static final float DEG_TO_RAD = 0.0174532925199432957f;
-	// public static final float RAD_TO_DEG = 57.295779513082320876f;
 
 	// Variables
 
@@ -232,7 +221,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 
 		// two fliping platforms
 		TiledPlatform flipPlat2 = platBuilder.position( 350.0f, 475f )
-				.dimensions( 5, 1 ).texture( testTexture ).name( "001_flip2" )
+				.dimensions( 5, 2 ).texture( testTexture ).name( "001_flip2" )
 				.resitituion( 0.0f ).kinematic( ).buildTilePlatform( );
 		flipPlat2.setLocalRot( -90 * Util.DEG_TO_RAD );
 		skeleton.addKinematicPlatform( flipPlat2 );
@@ -254,7 +243,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		puzzleScrew.puzzleManager.addMover( movingTP.name, lm2 );
 
 		rm = new RotateByDegree( -90.0f, 0.0f, 0, 0.5f );
-		PuzzlePistonTweenMover pptm = new PuzzlePistonTweenMover( flipPlat2, new Vector2(100,0), 1, 1, 0, 0 );
+		PuzzlePistonTweenMover pptm = new PuzzlePistonTweenMover( flipPlat2, new Vector2(0,100), 1, 1, 0, 0 );
 		//PistonTweenMover ptm = new PistonTweenMover( flipPlat2, new Vector2(100,0), 1, 1, 0, 0, 0 );
 		//flipPlat2.setMover( pptm );
 		puzzleScrew.puzzleManager.addEntity( flipPlat2 );
@@ -326,6 +315,36 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 
 		rope = new Rope( "rope", new Vector2( 8f, 1.5f ), new Vector2( 16.0f,
 				32.0f ), 10, null, world );
+		
+		TiledPlatform pathPlatform = platBuilder.dimensions( 4, 1 ).position( 1600, 100 )
+				.friction( 1f )
+				.kinematic( ).buildTilePlatform( );
+		skeleton.addKinematicPlatform( pathPlatform );
+		//build path. TODO: make building paths easier!!
+		pathPlatform.setMover( new TimelineTweenMover(
+				Timeline.createSequence( )
+				.push( Tween.to( pathPlatform, PlatformAccessor.LOCAL_POS_XY, 2 )
+						.target( 300,0 )
+						.ease( TweenEquations.easeNone )
+						.start() )
+				.push( Tween.to( pathPlatform, PlatformAccessor.LOCAL_POS_XY, 2 )
+						.target( 300,300 )
+						.ease( TweenEquations.easeNone )
+						.start())
+				.push( Tween.to( pathPlatform, PlatformAccessor.LOCAL_POS_XY, 2 )
+						.target( 0,300 )
+						.ease( TweenEquations.easeNone )
+						.start() )
+				.push( Tween.to( pathPlatform, PlatformAccessor.LOCAL_POS_XY, 2 )
+						.target( 0,0 )
+						.ease( TweenEquations.easeNone )
+						.start() )
+				.repeat( Tween.INFINITY, 0 )
+				.start( )
+			));
+		
+		
+		
 
 		/*
 		 * TODO: FIX PLATFORM DENSITY
@@ -333,13 +352,12 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 
 		platBuilder.reset( ).world( world );
 
+		//for building dynamic pistons (they don't work very well)
 		PlatformBuilder builder = platBuilder.width( 1 ).height( 3 )
 				.oneSided( false ).dynamic( )
 				// .setPosition( (-500f-i*40)*PIXEL_TO_BOX, 150f*PIXEL_TO_BOX )
 				.texture( testTexture ).friction( 1f );
-		// .buildTilePlatform( world );
 
-		
 		/*for ( int i = 0; i < 10; ++i ) {
 			TiledPlatform piston = builder.position( ( -100f - i * 40 ), 220f )
 					.buildTilePlatform( );

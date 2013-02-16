@@ -145,6 +145,7 @@ public class Player extends Entity {
 	 */
 	public void update( float deltaTime ) {
 		super.update( deltaTime );
+		
 		// this.otherPlayer = otherPlayer;
 		if ( this.name.equals( "player2" ) ) {
 			// Gdx.app.log( "player2", "" + playerState );
@@ -162,7 +163,6 @@ public class Player extends Entity {
 			body.setLinearVelocity( Vector2.Zero );
 			body.setFixedRotation( false );
 			body.setAngularVelocity( 0.1f );
-
 		} else {
 			body.setFixedRotation( true );
 			body.setTransform( body.getPosition( ).x, body.getPosition( ).y, 0 );
@@ -971,6 +971,7 @@ public class Player extends Entity {
 		}
 		checkHeadStandState( );
 		if ( inputHandler.jumpPressed( ) ) {
+			
 			if ( !jumpPressedKeyboard ) {
 				processJumpState( );
 				jumpPressedKeyboard = true;
