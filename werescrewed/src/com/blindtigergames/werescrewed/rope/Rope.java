@@ -57,18 +57,11 @@ public class Rope {
 
 		}
 
-		//this is the same as..
-		screw = new StrippedScrew( "rope screw", world, new Vector2(
-				getEnd( ).body.getWorldCenter( ).x,
-				getEnd( ).body.getWorldCenter( ).y - widthHeight.y
-						* Util.PIXEL_TO_BOX ) );
-		screw.connectScrewToEntity( getEnd( ) );
-		//this
+
 		screw = new StrippedScrew( "rope screw", world, new Vector2(
 				getEnd( ).body.getWorldCenter( ).x,
 				getEnd( ).body.getWorldCenter( ).y - widthHeight.y
 						* Util.PIXEL_TO_BOX ), getEnd( ) );
-		//screw.connectScrewToEntity( getEnd( ) );
 	}
 
 	public void update( float deltatime ) {

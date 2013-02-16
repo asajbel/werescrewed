@@ -49,6 +49,7 @@ public class RotateByDegree implements IMover {
 
 	@Override
 	public void runPuzzleMovement( float screwVal, Platform p ) {
+		//System.out.println( "yo!" );
 		if ( offVal == 0 ) {
 			if ( screwVal >= onVal ) {
 				p.setLocalRot( endAngle * Util.DEG_TO_RAD );

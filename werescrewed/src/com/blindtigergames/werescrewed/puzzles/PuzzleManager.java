@@ -77,12 +77,12 @@ public class PuzzleManager {
 	 */
 	public void runElement( float screwVal ) {
 		for ( Entity e : puzzleEntities ) {
-			if ( e.mover == null ) {
+			//if ( e.mover == null ) {
 				if ( puzzleMovers.containsKey( e.name ) ) {
-					Gdx.app.log( "screw value", "" + screwVal );
+					//Gdx.app.log( "screw value", "" + screwVal );
 					puzzleMovers.get( e.name ).runPuzzleMovement( screwVal, ( Platform ) e );
 				}
-			}
+			//}
 		}
 	}
 

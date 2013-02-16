@@ -212,11 +212,11 @@ public class Skeleton extends Entity {
     
     /**
      * translate the skeletons with specified values
-     * @param x - float in X axis
-     * @param y - float in Y axis
+     * @param x - meters in X axis
+     * @param y - meters in Y axis
      */
-    public void translate( float x, float y ){
-    	body.setTransform(body.getPosition().x+x, body.getPosition().y+y, body.getAngle());
+    public void translateBy( float x, float y ){
+    	body.setTransform(body.getPosition().x + x, body.getPosition().y + y, body.getAngle());
     	setSkeletonAwake( true );
     	setSkeletonActive(true);
     }
@@ -225,7 +225,7 @@ public class Skeleton extends Entity {
      * Rotate skeleton in radians
      * @author stew
      */
-    public void rotate( float angleRadians ){
+    public void rotateBy( float angleRadians ){
     	/*body.setTransform( body.getTransform( ) .getPosition( ),
     			body.getTransform( ).getRotation( )+angleRadians );*/
     	body.setTransform( body.getPosition(), body.getAngle( )+angleRadians );

@@ -33,24 +33,6 @@ public class StrippedScrew extends Screw {
 
 	}
 
-	/**
-	 * this is only used by ropes this doesn't create a joint
-	 * @param name
-	 * @param world
-	 * @param pos
-	 */
-	public StrippedScrew( String name, World world, Vector2 pos ) {
-		super( name, pos, null );
-		this.world = world;
-		screwType = ScrewType.STRIPPED;
-
-		sprite.setColor( Color.ORANGE );
-		sprite.setOrigin( 0.0f, 0.0f );
-
-		constructBody( pos );
-
-	}
-
 	@Override
 	public void screwLeft( ) {
 	}

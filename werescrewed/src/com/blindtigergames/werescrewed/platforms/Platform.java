@@ -43,8 +43,9 @@ public class Platform extends Entity {
 	/**
 	 * Used for kinematic movement connected to skeleton
 	 */
-	protected Vector2 localPosition; //in pixels
-	protected float localRotation; // in radians
+	protected Vector2 localPosition; //in pixels, local coordinate system
+	protected float localRotation; // in radians, local rot system
+	private Vector2 originPosition; //world position that this platform spawns at, in pixels
 
 	
 	//============================================
@@ -87,8 +88,9 @@ public class Platform extends Entity {
 	 */
 	void init(Vector2 pos){
 		screws = new ArrayList< Screw >( );
-		localPosition = pos.cpy( );//pos.mul( Util.PIXEL_TO_BOX );
+		localPosition = new Vector2(0,0);
 		localRotation = 0;
+		originPosition = pos.cpy();
 		platType = PlatformType.DEFAULT; //set to default unless subclass sets it later in a constructor
 	}
 
@@ -132,6 +134,28 @@ public class Platform extends Entity {
 	 */
 	public void setLocalRot( float newLocalRotRadians ){
 		localRotation = newLocalRotRadians;
+	}
+	
+	/**
+	 * return originPosition Vector2 in PIXELS.
+	 * @return
+	 */
+	public Vector2 getOriginPos(){
+		return originPosition;
+	}
+	
+	/**
+	 * set Origin Position Vector2 in PIXELS!!!
+	 * @param newLocalPos in PIXELS
+	 */
+	public void setOriginPos( Vector2 newOriginPosPixel ){
+		originPosition.x = newOriginPosPixel.x;
+		originPosition.y = newOriginPosPixel.y;
+	}
+	
+	public void setOriginPos( float xPixel, float yPixel ){
+		originPosition.x = xPixel;
+		originPosition.y = yPixel;
 	}
 	
 	public void addScrew( Screw s ) {
@@ -243,11 +267,12 @@ public class Platform extends Entity {
 	public void setPosRotFromSkeleton( Skeleton skeleton ) {
 		// originPos has already been updated by it's IMover by this point
 		// TODO: modify this if imover uses pixels or box2d meters
-		float radiusFromSkeleton = localPosition.cpy( ).mul( Util.PIXEL_TO_BOX ).len( );
+		float radiusFromSkeleton = originPosition.cpy().add(localPosition).mul( Util.PIXEL_TO_BOX ).len( );
 		// update angle between platform and skeleton
-		float newAngleFromSkeleton = skeleton.body.getAngle( )
-				+ Util.angleBetweenPoints( Vector2.Zero, localPosition );
 		Vector2 skeleOrigin = skeleton.body.getPosition( );
+		float newAngleFromSkeleton = skeleton.body.getAngle( )
+				+ Util.angleBetweenPoints( skeleOrigin, originPosition.cpy( ).add( localPosition ) );
+		
 		
 		float newRotation = localRotation + skeleton.body.getAngle( );
 		Vector2 newPos = Util.PointOnCircle( radiusFromSkeleton,

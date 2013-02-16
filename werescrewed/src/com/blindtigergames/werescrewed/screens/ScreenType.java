@@ -51,12 +51,6 @@ public enum ScreenType {
 			return new PhysicsTestScreen( );
 		}
 	},
-	IMOVER {
-        @Override
-        protected com.badlogic.gdx.Screen getScreenInstance() {
-             return new IMoverGameScreen();
-        }
-    },
 	GLEED {
         @Override
         protected com.badlogic.gdx.Screen getScreenInstance() {
