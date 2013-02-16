@@ -464,13 +464,11 @@ public class Player extends Entity {
 							| Util.CATEGORY_PLAYER | Util.CATEGORY_GROUND;
 					f.setFilterData( filter );
 				}
-				mover = new LerpMover( body.getPosition( ), new Vector2(
-						currentScrew.getPosition( ).x
-								- ( sprite.getWidth( ) / 4.0f )
-								* Util.PIXEL_TO_BOX,
-						currentScrew.getPosition( ).y
-								- ( sprite.getHeight( ) / 4.0f )
-								* Util.PIXEL_TO_BOX ), SCREW_ATTACH_SPEED, false,
+				mover = new LerpMover( body.getPosition( ).mul( Util.BOX_TO_PIXEL ), new Vector2(
+						currentScrew.getPosition( ).x * Util.BOX_TO_PIXEL
+								- ( sprite.getWidth( ) / 4.0f ),
+						currentScrew.getPosition( ).y * Util.BOX_TO_PIXEL
+								- ( sprite.getHeight( ) / 4.0f ) ), SCREW_ATTACH_SPEED, false,
 						PuzzleType.OVERRIDE_ENTITY_MOVER );
 				playerState = PlayerState.Screwing;
 			}

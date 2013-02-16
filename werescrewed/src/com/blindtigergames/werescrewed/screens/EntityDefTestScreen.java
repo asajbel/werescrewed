@@ -57,7 +57,6 @@ public class EntityDefTestScreen implements com.badlogic.gdx.Screen {
 	@SuppressWarnings( "unused" )
 	private TiledPlatform tiledPlat, ground, movingTP, singTile, rectile;
 	private PlatformBuilder platBuilder;
-	private PuzzleScrew puzzleScrew;
 	private Skeleton skeleton;
 	private Skeleton rootSkeleton;
 	private ArrayList< StrippedScrew > climbingScrews;
@@ -185,13 +184,15 @@ public class EntityDefTestScreen implements com.badlogic.gdx.Screen {
 	 */
 	private void initStructureScrews( ) {
 		StructureScrew leftPlatScrew = new StructureScrew( "", new Vector2(
-				tiledPlat.body.getPosition( ).x - 0.5f,
-				tiledPlat.body.getPosition( ).y ), 50, tiledPlat, skeleton,
+				tiledPlat.body.getPosition( ).x * Util.BOX_TO_PIXEL
+				- ( tiledPlat.sprite.getWidth( ) ),
+		tiledPlat.body.getPosition( ).y * Util.BOX_TO_PIXEL ), 50, tiledPlat, skeleton,
 				world );
 
 		StructureScrew rightPlatScrew = new StructureScrew( "", new Vector2(
-				tiledPlat.body.getPosition( ).x + 0.5f,
-				tiledPlat.body.getPosition( ).y ), 50, tiledPlat, skeleton,
+				tiledPlat.body.getPosition( ).x * Util.BOX_TO_PIXEL
+				+ ( tiledPlat.sprite.getWidth( ) ),
+		tiledPlat.body.getPosition( ).y * Util.BOX_TO_PIXEL  ), 50, tiledPlat, skeleton,
 				world );
 		tiledPlat.addScrew( leftPlatScrew );
 		tiledPlat.addScrew( rightPlatScrew );
@@ -211,15 +212,16 @@ public class EntityDefTestScreen implements com.badlogic.gdx.Screen {
 		jointDef.lowerTranslation = -2.5f;
 		jointDef.upperTranslation = 3.0f;
 		jointDef.motorSpeed = 7.0f;
-		puzzleScrew = new PuzzleScrew( "001", new Vector2( 0.0f, 0.2f ), 50,
-				skeleton, world, 0 );
+		PuzzleScrew puzzleScrew = new PuzzleScrew( "001", new Vector2( 32f, 32f ), 50,
+				skeleton, world, 0, false );
 		puzzleScrew.puzzleManager.addEntity( movingTP );
 		LerpMover lm = new LerpMover(
 				new Vector2( movingTP.body.getPosition( ).x,
-						movingTP.body.getPosition( ).y ), new Vector2(
+						movingTP.body.getPosition( ).y ).mul( Util.BOX_TO_PIXEL ), new Vector2(
 						movingTP.body.getPosition( ).x + 1.75f,
-						movingTP.body.getPosition( ).y ), 1f, true, PuzzleType.PUZZLE_SCREW_CONTROL );
+						movingTP.body.getPosition( ).y ).mul( Util.BOX_TO_PIXEL ), 1f, true, PuzzleType.PUZZLE_SCREW_CONTROL );
 		puzzleScrew.puzzleManager.addMover( movingTP.name, lm );
+		skeleton.addScrewForDraw( puzzleScrew );
 	}
 
 	/**
@@ -227,10 +229,10 @@ public class EntityDefTestScreen implements com.badlogic.gdx.Screen {
 	 */
 	private void initClimbingScrews( ) {
 		climbingScrews = new ArrayList< StrippedScrew >( );
-		float x1 = 1.75f;
-		float x2 = 2.0f;
-		float y1 = 0.6f;
-		float dy = 0.7f;
+		float x1 = 420f;
+		float x2 = 650f;
+		float y1 = 256f;
+		float dy = 200f;
 		for ( int i = 0; i < 10; i++ ) {
 			if ( i % 2 == 0 ) {
 				climbingScrews.add( new StrippedScrew( "", world, new Vector2(
@@ -377,13 +379,11 @@ public class EntityDefTestScreen implements com.badlogic.gdx.Screen {
 
 		player1.update( deltaTime );
 		player2.update( deltaTime );
-		puzzleScrew.update( deltaTime );
 		entityManager.update( deltaTime );
 
 		batch.setProjectionMatrix( cam.combined( ) );
 		batch.begin( );
 
-		puzzleScrew.draw( batch );
 		rootSkeleton.draw( batch );
 		player1.draw( batch );
 		player2.draw( batch );

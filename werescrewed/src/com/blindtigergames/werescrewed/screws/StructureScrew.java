@@ -31,7 +31,7 @@ public class StructureScrew extends Screw {
 		maxDepth = max;
 		depth = max;
 		rotation = 0;
-		fallTimeout = max * 2;
+		fallTimeout = max;
 		extraJoints = new ArrayList< RevoluteJoint >( );
 		screwType = ScrewType.STRUCTURAL;
 		
@@ -144,7 +144,7 @@ public class StructureScrew extends Screw {
 		// create the screw body
 		BodyDef screwBodyDef = new BodyDef( );
 		screwBodyDef.type = BodyType.DynamicBody;
-		screwBodyDef.position.set( pos );
+		screwBodyDef.position.set( pos.mul( Util.PIXEL_TO_BOX ) );
 		screwBodyDef.gravityScale = 0.07f;
 		body = world.createBody( screwBodyDef );
 		CircleShape screwShape = new CircleShape( );

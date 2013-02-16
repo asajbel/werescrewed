@@ -47,7 +47,7 @@ public class LerpMover implements IMover {
 		}
 		Vector2 temp = new Vector2( beginningPoint.x, beginningPoint.y );
 		beginningPoint.lerp( endPoint, alpha );
-		body.setTransform( beginningPoint, 0.0f );
+		body.setTransform( beginningPoint.mul( Util.PIXEL_TO_BOX ), 0.0f );
 		beginningPoint = temp;
 	}
 
@@ -65,7 +65,7 @@ public class LerpMover implements IMover {
 		if ( puzzleType == PuzzleType.PUZZLE_SCREW_CONTROL ) {
 			Vector2 temp = new Vector2( beginningPoint.x, beginningPoint.y );
 			beginningPoint.lerp( endPoint, screwVal );
-			p.setLocalPos( beginningPoint.mul( Util.BOX_TO_PIXEL ) );
+			p.setLocalPos( beginningPoint );
 			// body.setTransform( beginningPoint, 0.0f );
 			beginningPoint = temp;
 		} else if ( puzzleType == PuzzleType.OVERRIDE_ENTITY_MOVER ) {

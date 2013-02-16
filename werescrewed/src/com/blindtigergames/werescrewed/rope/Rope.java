@@ -57,11 +57,10 @@ public class Rope {
 
 		}
 
-
 		screw = new StrippedScrew( "rope screw", world, new Vector2(
-				getEnd( ).body.getWorldCenter( ).x,
-				getEnd( ).body.getWorldCenter( ).y - widthHeight.y
-						* Util.PIXEL_TO_BOX ), getEnd( ) );
+				getEnd( ).body.getWorldCenter( ).x * Util.BOX_TO_PIXEL,
+				getEnd( ).body.getWorldCenter( ).y * Util.BOX_TO_PIXEL
+						- widthHeight.y ), getEnd( ) );
 	}
 
 	public void update( float deltatime ) {

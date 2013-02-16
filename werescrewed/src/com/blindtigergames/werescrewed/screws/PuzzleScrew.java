@@ -21,14 +21,16 @@ import com.blindtigergames.werescrewed.util.Util;
 
 public class PuzzleScrew extends Screw {
 	public PuzzleManager puzzleManager;
-	private int threshold;
+	private boolean resetAble;
+	private int startDepth;
 
 	public PuzzleScrew( String name, Vector2 pos, int max, Entity entity,
-			World world, int startDepth ) {
+			World world, int startDepth, boolean resetable ) {
 		super( name, pos, null );
 		this.world = world;
-		maxDepth = threshold = max;
-		depth = startDepth;
+		maxDepth = max;
+		this.startDepth = depth = startDepth;
+		resetAble = resetable;
 		puzzleManager = new PuzzleManager( world );
 		screwType = ScrewType.PUZZLE;
 		
@@ -38,19 +40,6 @@ public class PuzzleScrew extends Screw {
 		connectScrewToEntity( entity );
 	}
 
-	/**
-	 * creates Puzzle Screw with binary
-	 * 
-	 * @param max
-	 *            screwable amount
-	 * @param th
-	 *            threshold for binary action
-	 */
-	public PuzzleScrew( String name, Vector2 pos, int max, Entity entity,
-			World world, int th, int startDepth ) {
-		this( name, pos, max, entity, world, startDepth );
-		threshold = th;
-	}
 
 	@Override
 	public void screwLeft( ) {
@@ -99,20 +88,20 @@ public class PuzzleScrew extends Screw {
 	}
 
 	/**
-	 * checks if binary puzzle screw is active
-	 * 
-	 * @return if screwed past threshold
+	 * resets this screw back to its initial position
+	 * @param pos
 	 */
-
-	public boolean isActive( ) {
-		return threshold <= depth;
+	public void resetScrew( ) {
+		if ( resetAble ) {
+			depth = startDepth;
+		}
 	}
-
+	
 	private void constructBody( Vector2 pos ) {
 		// create the screw body
 		BodyDef screwBodyDef = new BodyDef( );
 		screwBodyDef.type = BodyType.DynamicBody;
-		screwBodyDef.position.set( pos );
+		screwBodyDef.position.set( pos.mul( Util.PIXEL_TO_BOX ) );
 		screwBodyDef.gravityScale = 0.07f;
 		body = world.createBody( screwBodyDef );
 		CircleShape screwShape = new CircleShape( );

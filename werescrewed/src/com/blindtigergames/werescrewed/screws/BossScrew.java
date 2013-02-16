@@ -41,7 +41,7 @@ public class BossScrew extends Screw {
 		sprite.setColor( Color.RED );
 		BodyDef screwBodyDef = new BodyDef( );
 		screwBodyDef.type = BodyType.DynamicBody;
-		screwBodyDef.position.set( pos );
+		screwBodyDef.position.set( pos.mul( Util.PIXEL_TO_BOX ) );
 		screwBodyDef.gravityScale = 0.07f;
 		body = world.createBody( screwBodyDef );
 		CircleShape screwShape = new CircleShape( );
