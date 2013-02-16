@@ -11,6 +11,7 @@ import com.badlogic.gdx.physics.box2d.Manifold;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.platforms.TiledPlatform;
 import com.blindtigergames.werescrewed.player.Player;
+import com.blindtigergames.werescrewed.player.Player.PlayerState;
 import com.blindtigergames.werescrewed.screws.Screw;
 import com.blindtigergames.werescrewed.screws.StructureScrew;
 
@@ -144,14 +145,14 @@ public class MyContactListener implements ContactListener {
 							p1 = player;
 							NUM_PLAYER1_SCREWCONTACTS--;
 							if ( NUM_PLAYER1_SCREWCONTACTS <= 0 ) {
-								if ( ! player.isOnScrew( ) ) {
+								if ( player.getState( ) != PlayerState.Screwing ) {
 									player.hitScrew( null );
 								}
 							}
 						} else if ( p1 != player ) {
 							NUM_PLAYER2_SCREWCONTACTS--;
 							if ( NUM_PLAYER2_SCREWCONTACTS <= 0 ) {
-								if ( ! player.isOnScrew( ) ) {
+								if ( player.getState( ) != PlayerState.Screwing ) {
 									player.hitScrew( null );
 								}
 							}
@@ -159,7 +160,7 @@ public class MyContactListener implements ContactListener {
 					} else if ( objectFix.getBody( ).getUserData( ) instanceof Player ) {
 						Player player2 = ( Player ) objectFix.getBody( )
 								.getUserData( );
-						if( !player.isInHeadStand( ) ) {
+						if ( player.getState( ) != PlayerState.HeadStand ) {
 							player.hitPlayer( null );
 							player2.hitPlayer( null );
 						}
@@ -224,9 +225,10 @@ public class MyContactListener implements ContactListener {
 				} else if ( objectFix.getBody( ).getUserData( ) instanceof Player ) {
 					Player player2 = ( Player ) objectFix.getBody( )
 							.getUserData( );
-					if( player.isInGrabState( ) || player2.isInGrabState( ) ) {
+					if ( player.getState( ) == PlayerState.GrabMode
+							|| player2.getState( ) == PlayerState.GrabMode ) {
 						contact.setEnabled( false );
-					} else if ( !player.isGrounded( ) || !player2.isGrounded( ) ) { 
+					} else if ( !player.isGrounded( ) || !player2.isGrounded( ) ) {
 						contact.setEnabled( false );
 					}
 				}
