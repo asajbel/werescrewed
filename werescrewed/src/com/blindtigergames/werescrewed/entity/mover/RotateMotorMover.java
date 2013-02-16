@@ -2,7 +2,6 @@ package com.blindtigergames.werescrewed.entity.mover;
 
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJoint;
-import com.blindtigergames.werescrewed.platforms.Platform;
 
 /**
  * This class may be totally uneccesary, for now let's see 
@@ -34,14 +33,5 @@ public class RotateMotorMover implements IMover {
 		// TODO Auto-generated method stub
 
 	}
-	
-	@Override
-	public void runPuzzleMovement( float screwVal, Platform p ) {
 
-	}
-
-	@Override
-	public PuzzleType getMoverType( ) {
-		return null;
-	}
 }

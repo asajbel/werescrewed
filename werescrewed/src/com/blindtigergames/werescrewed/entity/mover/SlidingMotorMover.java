@@ -3,7 +3,6 @@ package com.blindtigergames.werescrewed.entity.mover;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.joints.PrismaticJoint;
-import com.blindtigergames.werescrewed.platforms.Platform;
 
 /**
  * Can be used for sliding platforms, pistons, elevators
@@ -52,14 +51,5 @@ public class SlidingMotorMover implements IMover {
         Gdx.app.error( "PrismaticMoverError",
                 "This method isn't supported yet. Don't use it." );
     }
-	
-	@Override
-	public void runPuzzleMovement( float screwVal, Platform p ) {
 
-	}
-
-	@Override
-	public PuzzleType getMoverType( ) {
-		return null;
-	}
 }

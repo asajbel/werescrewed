@@ -14,6 +14,12 @@ public enum ScreenType {
 			return new PauseScreen( );
 		}
 	},
+	LEVELTEST {
+		@Override
+		protected com.badlogic.gdx.Screen getScreenInstance( ) {
+			return new LevelTestScreen( );
+		}
+	},
 	LOADING {
 		@Override
 		protected com.badlogic.gdx.Screen getScreenInstance( ) {
@@ -26,28 +32,21 @@ public enum ScreenType {
 			return new MainMenuScreen( );
 		}
 	},
+
 	GAME {
 		@Override
 		protected com.badlogic.gdx.Screen getScreenInstance( ) {
 			return new PhysicsTestScreen();
-<<<<<<< HEAD
-=======
 		}
 	},
-	
-	WIN {
-		@Override
-		protected com.badlogic.gdx.Screen getScreenInstance( ) {
-			return new WinScreen( );
->>>>>>> origin/master
-		}
-	},
+
 	CREDITS {
 		@Override
 		protected com.badlogic.gdx.Screen getScreenInstance( ) {
 			return new CreditsScreen( );
 		}
 	},
+
 	PHYSICS {
 		@Override
 		protected com.badlogic.gdx.Screen getScreenInstance( ) {

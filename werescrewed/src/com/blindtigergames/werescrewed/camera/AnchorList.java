@@ -246,14 +246,9 @@ public class AnchorList {
 	public Vector2 getMidpointVelocity( ) {
 		return midpointVelocity;
 	}
-	
-	public float specialDistance() {
-		Vector2.tmp.x = anchorList.get( 0 ).position.x - anchorList.get( 0 ).position.x;
-		Vector2.tmp.y = anchorList.get( 0 ).position.y - anchorList.get( 0 ).position.y;
-		return Vector2.tmp.len( );
-	}
 
 	private void setMidpoint( ) {
+		// TODO: discriminate by distance
 		int count = 0;
 		sum.x = 0f;
 		sum.y = 0f;

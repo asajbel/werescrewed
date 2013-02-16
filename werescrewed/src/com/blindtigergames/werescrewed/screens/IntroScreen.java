@@ -8,14 +8,12 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.blindtigergames.werescrewed.WereScrewedGame;
 
 class IntroScreen implements com.badlogic.gdx.Screen {
 
 	private SpriteBatch batch = null;
 	private BitmapFont font = null;
-	static Texture player = WereScrewedGame.manager.get(
-			WereScrewedGame.dirHandle.path( ) + "/common/TilesetTest.png", Texture.class);
+	static Texture player = new Texture( Gdx.files.internal( "data/libgdx.png" ) );
 
 	Stage stage;
 

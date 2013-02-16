@@ -7,16 +7,15 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
-import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.camera.Camera;
 import com.blindtigergames.werescrewed.debug.SBox2DDebugRenderer;
 import com.blindtigergames.werescrewed.entity.EntityManager;
+import com.blindtigergames.werescrewed.entity.Player;
+import com.blindtigergames.werescrewed.entity.PlayerBuilder;
+import com.blindtigergames.werescrewed.entity.Skeleton;
 import com.blindtigergames.werescrewed.platforms.Platform;
-import com.blindtigergames.werescrewed.entity.builders.PlayerBuilder;
-import com.blindtigergames.werescrewed.entity.builders.PlatformBuilder;
+import com.blindtigergames.werescrewed.platforms.PlatformBuilder;
 import com.blindtigergames.werescrewed.platforms.TiledPlatform;
-import com.blindtigergames.werescrewed.player.Player;
-import com.blindtigergames.werescrewed.skeleton.Skeleton;
 
 
 /**
@@ -42,13 +41,13 @@ public class Level {
 		float width = Gdx.graphics.getWidth( ) / zoom;
 		float height = Gdx.graphics.getHeight( ) / zoom;
 
-		world = new World( new Vector2( 0, GRAVITY ), true );
+		world = new World( new Vector2( 0, -100 ), true );
 		camera = new Camera( width, height, world);
-		player = new PlayerBuilder()
-					.name("player1")
+		player = (Player)new PlayerBuilder()
+					.name("Player")
 					.world( world )
 					.position( new Vector2(0.0f,0.0f) )
-					.buildPlayer();
+					.build();
 
 		entities = new EntityManager();
 		platforms = new ArrayList<Platform>();
@@ -83,21 +82,18 @@ public class Level {
 	public static Level getDefaultLevel(){
 		Level out = new Level();
 		TiledPlatform tp, ground;
-		//ShapePlatform sp;
-		Texture texture =
-				WereScrewedGame.manager.get(WereScrewedGame.dirHandle.path( ) + "/common/rletter.png", Texture.class);
+		Texture texture = new Texture( Gdx.files.internal( "data/rletter.png" ) );
 		
 		tp = new PlatformBuilder(out.world)
-		.position( 2.0f, 0.2f )
-		.dimensions( 10, 1 )
-		.texture( texture )
+		.setPosition( 2.0f, 0.2f )
+		.setDimensions( 10, 1 )
+		.setTexture( texture )
 		.buildTilePlatform( );
-
 		
 		ground = new PlatformBuilder(out.world)
-		.position( 0.0f, 0.0f )
-		.dimensions( 100, 1 )
-		.texture( texture )
+		.setPosition( 0.0f, 0.0f )
+		.setDimensions( 100, 1 )
+		.setTexture( texture )
 		.buildTilePlatform( );
 		
 		out.platforms.add( ground );
@@ -106,6 +102,4 @@ public class Level {
 		
 		return out;
 	}
-	
-	public static int GRAVITY = -45;
 }

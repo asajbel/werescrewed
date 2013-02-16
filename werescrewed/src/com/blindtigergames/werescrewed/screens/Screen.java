@@ -9,9 +9,11 @@ import com.blindtigergames.werescrewed.collisionManager.MyContactListener;
 import com.blindtigergames.werescrewed.debug.SBox2DDebugRenderer;
 import com.blindtigergames.werescrewed.input.InputHandler;
 import com.blindtigergames.werescrewed.level.Level;
-import com.blindtigergames.werescrewed.util.Util;
 
 public class Screen implements com.badlogic.gdx.Screen {
+
+	public static final float BOX_TO_PIXEL = 256f;
+	public static final float PIXEL_TO_BOX = 1 / BOX_TO_PIXEL;
 	
 	protected Level level;
 	protected InputHandler inputHandler;
@@ -23,7 +25,7 @@ public class Screen implements com.badlogic.gdx.Screen {
 	public Screen( ){
 		inputHandler = new InputHandler( "player1" );
 		batch = new SpriteBatch( );
-		debugRenderer = new SBox2DDebugRenderer( Util.BOX_TO_PIXEL );
+		debugRenderer = new SBox2DDebugRenderer( BOX_TO_PIXEL );
 		MCL = new MyContactListener( );
 		level = null;
 	}
@@ -44,10 +46,8 @@ public class Screen implements com.badlogic.gdx.Screen {
 		if ( Gdx.input.isKeyPressed( Keys.P ) ) {
 			System.exit( 0 );
 		}
-		if (level != null){
-			level.update( delta );
-			level.draw( batch, debugRenderer );
-		}
+		level.update( delta );
+		level.draw( batch, debugRenderer );
 	}
 
 	@Override
