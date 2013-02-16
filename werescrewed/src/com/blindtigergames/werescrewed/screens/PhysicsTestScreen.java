@@ -234,12 +234,12 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		puzzleScrew.puzzleManager.addEntity( flipPlat1 );
 		puzzleScrew.puzzleManager.addMover( flipPlat1.name, rm );
 		// also add a up mover to movingTP
-//		LerpMover lm2 = new LerpMover( movingTP.body.getPosition( ).mul( Util.BOX_TO_PIXEL ),
-//				new Vector2( movingTP.body.getPosition( ).x, movingTP.body
-//						.getPosition( ).y + 0.3f ).mul( Util.BOX_TO_PIXEL ),
-//				1f, true, PuzzleType.PUZZLE_SCREW_CONTROL );
-//		puzzleScrew.puzzleManager.addEntity( movingTP );
-//		puzzleScrew.puzzleManager.addMover( movingTP.name, lm2 );
+		LerpMover lm2 = new LerpMover( movingTP.body.getPosition( ).mul( Util.BOX_TO_PIXEL ),
+				new Vector2( movingTP.body.getPosition( ).x, movingTP.body
+						.getPosition( ).y + 0.3f ).mul( Util.BOX_TO_PIXEL ),
+				1f, true, PuzzleType.PUZZLE_SCREW_CONTROL );
+		puzzleScrew.puzzleManager.addEntity( movingTP );
+		puzzleScrew.puzzleManager.addMover( movingTP.name, lm2 );
 
 		rm = new RotateByDegree( -90.0f, 0.0f, 0, 0.5f );
 		PuzzlePistonTweenMover pptm = new PuzzlePistonTweenMover( flipPlat2,
@@ -255,8 +255,9 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		PuzzleScrew puzzleScrew2 = new PuzzleScrew( "002", new Vector2( 150f,
 				32f ), 50, skeleton, world, 0, false );
 		LerpMover lm = new LerpMover( movingTP.body.getPosition( ).mul( Util.BOX_TO_PIXEL ),
-				(movingTP.body.getPosition( ).add( 1.75f, 0 )).mul( Util.BOX_TO_PIXEL ), 1f, true,
-				PuzzleType.PUZZLE_SCREW_CONTROL );
+				new Vector2( movingTP.body.getPosition( ).x, movingTP.body
+						.getPosition( ).y ).mul( Util.BOX_TO_PIXEL ).add( 256f, 0f ),
+				1f, true, PuzzleType.PUZZLE_SCREW_CONTROL );
 		puzzleScrew2.puzzleManager.addEntity( movingTP );
 		puzzleScrew2.puzzleManager.addMover( movingTP.name, lm );
 		skeleton.addScrewForDraw( puzzleScrew2 );
