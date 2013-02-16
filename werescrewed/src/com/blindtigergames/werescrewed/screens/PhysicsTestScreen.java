@@ -3,10 +3,6 @@ package com.blindtigergames.werescrewed.screens;
 import java.util.ArrayList;
 
 import aurelienribon.tweenengine.Tween;
-import aurelienribon.tweenengine.TweenEquation;
-import aurelienribon.tweenengine.TweenEquations;
-import aurelienribon.tweenengine.TweenManager;
-
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -30,20 +26,16 @@ import com.blindtigergames.werescrewed.entity.builders.PlatformBuilder;
 import com.blindtigergames.werescrewed.entity.builders.PlayerBuilder;
 import com.blindtigergames.werescrewed.entity.builders.ScrewBuilder;
 import com.blindtigergames.werescrewed.entity.mover.LerpMover;
-import com.blindtigergames.werescrewed.entity.mover.PistonMover;
 import com.blindtigergames.werescrewed.entity.mover.PistonTweenMover;
 import com.blindtigergames.werescrewed.entity.mover.PuzzleType;
 import com.blindtigergames.werescrewed.entity.mover.RockingMover;
 import com.blindtigergames.werescrewed.entity.mover.RotateByDegree;
-import com.blindtigergames.werescrewed.entity.mover.RotateTweenMover;
 import com.blindtigergames.werescrewed.entity.mover.SlidingMotorMover;
-import com.blindtigergames.werescrewed.entity.mover.TweenMover;
 import com.blindtigergames.werescrewed.entity.mover.puzzle.PuzzlePistonTweenMover;
 import com.blindtigergames.werescrewed.entity.mover.puzzle.PuzzleRotateTweenMover;
 import com.blindtigergames.werescrewed.entity.tween.EntityAccessor;
 import com.blindtigergames.werescrewed.entity.tween.PlatformAccessor;
 import com.blindtigergames.werescrewed.joint.JointFactory;
-import com.blindtigergames.werescrewed.joint.PrismaticJointBuilder;
 import com.blindtigergames.werescrewed.platforms.Platform;
 import com.blindtigergames.werescrewed.platforms.TiledPlatform;
 import com.blindtigergames.werescrewed.player.Player;
@@ -131,7 +123,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		initStructureScrews( );
 		initPuzzleScrews( );
 		initClimbingScrews( );
-		
+		initPulley();
 		
 		
 		// rope = new Rope( "rope", new Vector2 (2000.0f * Util.PIXEL_TO_BOX,
@@ -194,7 +186,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 
 		// TODO : FIX ONESIDED BUG,
 		// Ground: SHOULD NEVER BE ONESIDED
-		ground = platBuilder.position( 0.0f, -75.0f ).name( "ground" )
+		ground = platBuilder.position( 0.0f, -75 ).name( "ground" )
 				.dimensions( 200, 4 ).texture( testTexture ).kinematic( )
 				.oneSided( false ).resitituion( 0.0f ).buildTilePlatform( );
 		ground.setCategoryMask( Util.CATEGORY_GROUND, Util.CATEGORY_EVERYTHING );
@@ -262,7 +254,6 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		puzzleScrew.puzzleManager.addMover( movingTP.name, lm2 );
 
 		rm = new RotateByDegree( -90.0f, 0.0f, 0, 0.5f );
-		PuzzleRotateTweenMover prtm = new PuzzleRotateTweenMover( 1, Util.PI/2, true);
 		PuzzlePistonTweenMover pptm = new PuzzlePistonTweenMover( flipPlat2, new Vector2(100,0), 1, 1, 0, 0 );
 		//PistonTweenMover ptm = new PistonTweenMover( flipPlat2, new Vector2(100,0), 1, 1, 0, 0, 0 );
 		//flipPlat2.setMover( pptm );
@@ -385,14 +376,14 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 				.texture( testTexture ).friction( 1f );
 		// .buildTilePlatform( world );
 
-		TiledPlatform elevator = builder.position( -1500, 150 ).moveable( true )
-				.buildTilePlatform( );
-		
-		//PrismaticJoint pistonJ = jointBuilder.bodyB( ( Entity ) elevator )
-		//		.anchor( elevator.body.getWorldCenter( ) ).build( );
-
-		//elevator.setMover( new PistonMover( pistonJ, 0f, 2f ) );
-		elevator.body.setSleepingAllowed( false );
+//		TiledPlatform elevator = builder.position( -1500, 150 ).moveable( true )
+//				.buildTilePlatform( );
+//		
+//		//PrismaticJoint pistonJ = jointBuilder.bodyB( ( Entity ) elevator )
+//		//		.anchor( elevator.body.getWorldCenter( ) ).build( );
+//
+//		//elevator.setMover( new PistonMover( pistonJ, 0f, 2f ) );
+//		elevator.body.setSleepingAllowed( false );
 
 		//1000 - 1219 for perfect gears
 		Platform gear = builder.name( "gear" )
@@ -419,20 +410,20 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 	}
 
 	public void initPulley(){
-		TiledPlatform singTile = platBuilder.position( -1200.0f, 500.0f ).dimensions( 1, 1 )
+		TiledPlatform singTile = platBuilder.position( -1200.0f, 400.0f ).dimensions( 1, 1 )
 				.texture( testTexture ).dynamic( ).name( "Single Tiled" )
 				.resitituion( 0.0f ).buildTilePlatform( );
 		skeleton.addPlatform( singTile );
 		singTile.body.setFixedRotation( false );
 		
-		TiledPlatform singTile2 = platBuilder.position( -1300.0f, 500.0f ).dimensions( 1, 1 )
+		TiledPlatform singTile2 = platBuilder.position( -1300.0f, 400.0f ).dimensions( 1, 1 )
 				.texture( testTexture ).dynamic( ).name( "Single Tiled" )
 				.resitituion( 0.0f ).buildTilePlatform( );
 		skeleton.addPlatform( singTile2 );
 		singTile2.body.setFixedRotation( false );
 		
-		Vector2 g1 = new Vector2(singTile.body.getWorldCenter( ).x, singTile.body.getWorldCenter( ).y - 100.0f * Util.PIXEL_TO_BOX);
-		Vector2 g2 = new Vector2(singTile2.body.getWorldCenter( ).x, singTile2.body.getWorldCenter( ).y - 100.0f * Util.PIXEL_TO_BOX);
+		Vector2 g1 = new Vector2(singTile.body.getWorldCenter( ).x, singTile.body.getWorldCenter( ).y - 200.0f * Util.PIXEL_TO_BOX);
+		Vector2 g2 = new Vector2(singTile2.body.getWorldCenter( ).x, singTile2.body.getWorldCenter( ).y - 200.0f * Util.PIXEL_TO_BOX);
 		PulleyJointDef pjd = new PulleyJointDef();
 		pjd.initialize( singTile.body, singTile2.body, g1, g2,
 				singTile.body.getWorldCenter( ), singTile2.body.getWorldCenter(), 1.0f);

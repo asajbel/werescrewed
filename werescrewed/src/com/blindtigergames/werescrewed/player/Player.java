@@ -37,6 +37,19 @@ import com.blindtigergames.werescrewed.util.Util;
  */
 public class Player extends Entity {
 
+	public final static float MAX_VELOCITY = 1.7f;
+	public final static float MIN_VELOCITY = 0.05f;
+	public final static float MOVEMENT_IMPULSE = 0.01f;
+	public final static float JUMP_SCREW_IMPULSE = 0.1f;
+	public final static int JUMP_COUNTER = 10;
+	public final static float ANALOG_DEADZONE = 0.2f;
+	public final static float ANALOG_MAX_RANGE = 1.0f;
+	public final static float PLAYER_FRICTION = 0.6f;
+	public final static int SCREW_JUMP_STEPS = 12;
+	public final static float SCREW_ATTACH_SPEED = 0.07f;
+	public final static int GRAB_COUNTER_STEPS = 5;
+	public float JUMP_IMPULSE = 0.15f; 
+	
 	public Fixture feet;
 	public Fixture torso;
 	int check = 0;
@@ -48,7 +61,6 @@ public class Player extends Entity {
 	private PlayerState playerState;
 	private Controller controller;
 	private boolean controllerIsActive, controllerDebug;
-	private float axisX;
 	private float leftAnalogX;
 	private float leftAnalogY;
 	// private float rightAnalogX;
@@ -68,20 +80,6 @@ public class Player extends Entity {
 	private boolean jumpPressedController;
 	private boolean screwButtonHeld;
 	private int anchorID;
-
-	// Static constants
-	public final static float MAX_VELOCITY = 1.8f;
-	public final static float MIN_VELOCITY = 0.05f;
-	public final static float MOVEMENT_IMPULSE = 0.01f;
-	public float JUMP_IMPULSE = 0.15f; // 0.09 = controller, 0.15 =
-													// Keyboard
-	public final static float JUMP_SCREW_IMPULSE = 0.1f;
-	public final static int JUMP_COUNTER = 10;
-	public final static float ANALOG_DEADZONE = 0.2f;
-	public final static float ANALOG_MAX_RANGE = 1.0f;
-	public final static float PLAYER_FRICTION = 0.6f;
-	public final static int SCREW_JUMP_STEPS = 12;
-	public final static int GRAB_COUNTER_STEPS = 5;
 
 	public int grabCounter = 0;
 	public int jumpCounter = 0;
@@ -283,8 +281,8 @@ public class Player extends Entity {
 	 * @author Ranveer
 	 */
 	public void moveAnalogRight( ) {
-		axisX = controllerListener.analogAxisX( );
-		float temp = ( ( ( axisX - ANALOG_DEADZONE ) / ( ANALOG_MAX_RANGE - ANALOG_DEADZONE ) ) * ( MAX_VELOCITY - MIN_VELOCITY ) )
+		leftAnalogX = controllerListener.analogLeftAxisX( );
+		float temp = ( ( ( leftAnalogX - ANALOG_DEADZONE ) / ( ANALOG_MAX_RANGE - ANALOG_DEADZONE ) ) * ( MAX_VELOCITY - MIN_VELOCITY ) )
 				+ MIN_VELOCITY;
 		if ( body.getLinearVelocity( ).x < temp ) {
 			body.applyLinearImpulse( new Vector2( MOVEMENT_IMPULSE, 0.0f ),
@@ -298,8 +296,8 @@ public class Player extends Entity {
 	 * @author Ranveer
 	 */
 	public void moveAnalogLeft( ) {
-		axisX = controllerListener.analogAxisX( );
-		float temp = ( ( ( axisX + ANALOG_DEADZONE ) / ( ANALOG_MAX_RANGE - ANALOG_DEADZONE ) ) * ( MAX_VELOCITY - MIN_VELOCITY ) )
+		leftAnalogX = controllerListener.analogLeftAxisX( );
+		float temp = ( ( ( leftAnalogX + ANALOG_DEADZONE ) / ( ANALOG_MAX_RANGE - ANALOG_DEADZONE ) ) * ( MAX_VELOCITY - MIN_VELOCITY ) )
 				- MIN_VELOCITY;
 		if ( body.getLinearVelocity( ).x > temp ) {
 			body.applyLinearImpulse( new Vector2( -MOVEMENT_IMPULSE, 0.0f ),
@@ -332,8 +330,8 @@ public class Player extends Entity {
 	 * directs jump impulse off of screw based on analog stick
 	 */
 	public void jumpScrew( ) {
-		leftAnalogX = controllerListener.analogAxisX( );
-		leftAnalogY = controllerListener.analogAxisY( ) * -1;
+		leftAnalogX = controllerListener.analogLeftAxisX( );
+		leftAnalogY = controllerListener.analogLeftAxisY( ) * -1;
 		float multiplierY = 1.5f;
 		if ( leftAnalogY < 0.0 )
 			multiplierY = 0.1f;
@@ -472,7 +470,7 @@ public class Player extends Entity {
 								* Util.PIXEL_TO_BOX,
 						currentScrew.getPosition( ).y
 								- ( sprite.getHeight( ) / 4.0f )
-								* Util.PIXEL_TO_BOX ), 0.07f, false,
+								* Util.PIXEL_TO_BOX ), SCREW_ATTACH_SPEED, false,
 						PuzzleType.OVERRIDE_ENTITY_MOVER );
 				playerState = PlayerState.Screwing;
 			}

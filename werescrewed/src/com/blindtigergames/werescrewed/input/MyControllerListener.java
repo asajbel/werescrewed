@@ -324,7 +324,7 @@ public class MyControllerListener implements ControllerListener {
 	 * @return float
 	 * @author Ranveer
 	 */
-	public float analogAxisX( ) {
+	public float analogLeftAxisX( ) {
 		return axisLX;
 	}
 
@@ -334,7 +334,7 @@ public class MyControllerListener implements ControllerListener {
 	 * @return float
 	 * @author Ranveer
 	 */
-	public float analogAxisY( ) {
+	public float analogLeftAxisY( ) {
 		return axisLY;
 	}
 
