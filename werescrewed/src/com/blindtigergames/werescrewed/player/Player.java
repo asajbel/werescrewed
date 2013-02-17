@@ -311,6 +311,8 @@ public class Player extends Entity {
 	 * Causes the player to jump
 	 */
 	public void jump( ) {
+		//Regardless of how the player jumps, we shouldn't consider them grounded anymore.
+		setGrounded(false);
 		// if the player isn't in head stand mode or if the player
 		// is the top player then jump normally
 		if ( playerState != PlayerState.HeadStand || topPlayer ) {
@@ -342,6 +344,7 @@ public class Player extends Entity {
 		body.applyLinearImpulse( new Vector2( JUMP_SCREW_IMPULSE * leftAnalogX
 				* 0.7f, JUMP_SCREW_IMPULSE * leftAnalogY * multiplierY ),
 				body.getWorldCenter( ) );
+		setGrounded(false);
 	}
 
 	/**
@@ -475,6 +478,7 @@ public class Player extends Entity {
 								* Util.PIXEL_TO_BOX ), 0.07f, false,
 						PuzzleType.OVERRIDE_ENTITY_MOVER );
 				playerState = PlayerState.Screwing;
+				setGrounded(true);
 			}
 		}
 	}
