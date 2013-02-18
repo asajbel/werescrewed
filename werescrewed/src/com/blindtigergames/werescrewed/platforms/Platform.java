@@ -331,9 +331,7 @@ public class Platform extends Entity {
 		localPosition = localPosition.add( localLinearVelocity );
 		body.setLinearVelocity( localLinearVelocity );
 		body.setAngularVelocity( localAngularVelocity );*/
-		
-		
-		
+
 		// originPos has already been updated by it's IMover by this point
 		// TODO: modify this if imover uses pixels or box2d meters
 		float radiusFromSkeleton = originPosition.cpy( ).add( localPosition )
@@ -348,7 +346,8 @@ public class Platform extends Entity {
 		Vector2 newPos = Util.PointOnCircle( radiusFromSkeleton,
 				newAngleFromSkeleton, skeleOrigin );
 
-		changePosition = newPos.sub( body.getPosition( ) );
+		changePosition = newPos.cpy().sub( body.getPosition( ) );
+		//Gdx.app.log( this.name, ""+changePosition );
 		
 		body.setTransform( newPos, newRotation );
 	}
