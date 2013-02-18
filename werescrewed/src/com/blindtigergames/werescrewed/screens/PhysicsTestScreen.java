@@ -479,6 +479,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 
 		if ( Gdx.input.isKeyPressed( Input.Keys.Z ) ) {
 			rootSkeleton.translateBy( 0.0f, 0.01f );
+			//Gdx.app.log( "BANG:", "BANG" );
 			// rootSkeleton.body.setLinearVelocity( new Vector2(0,1f) );
 		}
 
@@ -494,6 +495,11 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		if ( Gdx.input.isKeyPressed( Input.Keys.V ) ) {
 			rootSkeleton.rotateBy( 0.01f );
 		}
+		
+
+		
+		//Gdx.app.log( "Root:", rootSkeleton.toString( ) );
+		//Gdx.app.log( "Skele:", skeleton.toString( ) );
 
 		player1.update( deltaTime );
 		player2.update( deltaTime );

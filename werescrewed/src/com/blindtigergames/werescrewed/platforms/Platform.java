@@ -348,7 +348,7 @@ public class Platform extends Entity {
 		Vector2 newPos = Util.PointOnCircle( radiusFromSkeleton,
 				newAngleFromSkeleton, skeleOrigin );
 
-		changePosition = newPos.sub( body.getPosition( ) );
+		changePosition = newPos.cpy().sub( body.getPosition( ) );
 		
 		body.setTransform( newPos, newRotation );
 	}
