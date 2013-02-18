@@ -156,10 +156,8 @@ public class GenericEntityBuilder< B extends GenericEntityBuilder< ? >> {
 
 	/**
 	 * 
-	 * @param x
-	 *            - new x position of the created entity
-	 * @param y
-	 *            - new y position of the created entity
+	 * @param x - new x position of the created entity (in pixels)
+	 * @param y - new y position of the created entity (in pixels)
 	 * @return EntityBuilder
 	 */
 	@SuppressWarnings( "unchecked" )

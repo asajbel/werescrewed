@@ -134,7 +134,7 @@ public class EntityDefTestScreen implements com.badlogic.gdx.Screen {
 	private void initTiledPlatforms( ) {
 		// Tiled Platform
 		tiledPlat = platBuilder.position( 700.0f, 100.0f ).dimensions( 10, 1 )
-				.texture( testTexture ).name( "tp" ).resitituion( 0.0f )
+				.texture( testTexture ).name( "tp" ).restitution( 0.0f )
 				.buildTilePlatform( );
 		tiledPlat.body.setType( BodyType.DynamicBody );
 		tiledPlat.body.setFixedRotation( false );
@@ -152,14 +152,14 @@ public class EntityDefTestScreen implements com.badlogic.gdx.Screen {
 		// Tiled Single Platform
 		singTile = platBuilder.position( -1.0f, 1000.0f ).dimensions( 1, 1 )
 				.texture( testTexture ).name( "Single Tiled" )
-				.resitituion( 0.0f ).buildTilePlatform( );
+				.restitution( 0.0f ).buildTilePlatform( );
 		singTile.body.setType( BodyType.DynamicBody );
 		singTile.body.setFixedRotation( false );
 		skeleton.addPlatform( singTile );
 
 		// Moving platform
 		movingTP = platBuilder.position( 0.0f, 120.0f ).dimensions( 10, 1 )
-				.texture( testTexture ).name( "movingTP" ).resitituion( 0.0f )
+				.texture( testTexture ).name( "movingTP" ).restitution( 0.0f )
 				.buildTilePlatform( );
 		movingTP.body.setType( BodyType.KinematicBody );
 		buildMoverPlatforms( );
@@ -167,7 +167,7 @@ public class EntityDefTestScreen implements com.badlogic.gdx.Screen {
 		// Ground
 		ground = platBuilder.position( 0.0f, 0.0f ).name( "ground" )
 				.dimensions( 200, 1 ).texture( testTexture ).kinematic( )
-				.oneSided( false ).resitituion( 0.0f ).buildTilePlatform( );
+				.oneSided( false ).restitution( 0.0f ).buildTilePlatform( );
 		skeleton.addKinematicPlatform( ground );
 	}
 
