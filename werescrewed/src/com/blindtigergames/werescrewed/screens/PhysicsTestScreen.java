@@ -92,7 +92,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		platBuilder = new PlatformBuilder( world );
 		testTexture = WereScrewedGame.manager.get(
 				WereScrewedGame.dirHandle + "/common/TilesetTest.png",Texture.class);
-
+		
 		// Initialize camera
 		initCamera( );
 
@@ -356,6 +356,9 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 
 		if ( Gdx.input.isKeyPressed( Input.Keys.ESCAPE ) ) {
 			ScreenManager.getInstance( ).show( ScreenType.PAUSE );
+		}
+		if ( Gdx.input.isKeyPressed( Input.Keys.N ) ) {
+			ScreenManager.getInstance( ).show( ScreenType.WIN );
 		}
 		if ( Gdx.input.isKeyPressed( Keys.P ) ) {
 			System.exit( 0 );

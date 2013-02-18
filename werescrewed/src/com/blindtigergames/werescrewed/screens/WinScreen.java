@@ -32,9 +32,11 @@ class WinScreen implements com.badlogic.gdx.Screen{
 
 	@Override
 	public void render( float delta ) {
-		Gdx.gl.glClearColor( 0.5f, 0.5f, 0.5f, 1f );
+		Gdx.gl.glClearColor( 0.1f, 0.1f, 0.1f, 1f );
 		Gdx.gl.glClear( GL10.GL_COLOR_BUFFER_BIT );
 
+		ScreenManager.getInstance( ).dispose( ScreenType.PHYSICS);
+		
 		if ( Gdx.input.isKeyPressed( Input.Keys.ENTER ) ) {
 			ScreenManager.getInstance( ).show( ScreenType.PHYSICS );
 			// Later this will probably call the next level screen instead.
