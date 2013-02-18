@@ -20,8 +20,6 @@ import com.blindtigergames.werescrewed.platforms.TiledPlatform;
 public class PlatformBuilder extends GenericEntityBuilder<PlatformBuilder> {
 	protected float 	width;
 	protected float 	height;
-	protected float 	outerWidth;
-	protected float 	outerHeight;
 	protected float 	thickX;
 	protected float 	thickY;
 	protected float 	scale;
@@ -95,26 +93,6 @@ public class PlatformBuilder extends GenericEntityBuilder<PlatformBuilder> {
  */
 	public PlatformBuilder dimensions( float width, float height ) {
 		return this.width( width ).height( height );
-	}
-
-/**
- * 
- * @param outerWidth - float used for cross shape
- * @return PlatformBuilder
- */
-	public PlatformBuilder outerWidth( float outerWidth ) {
-		this.outerWidth = outerWidth;
-		return this;
-	}
-
-	/**
-	 * 
-	 * @param outerHeight - float used for cross shape
-	 * @return PlatformBuilder
-	 */
-	public PlatformBuilder outerHeight( float outerHeight ) {
-		this.outerHeight = outerHeight;
-		return this;
 	}
 
 /**
@@ -206,8 +184,6 @@ public class PlatformBuilder extends GenericEntityBuilder<PlatformBuilder> {
 		super.resetInternal();
 		this.width = 1.0f;
 		this.height = 1.0f;
-		this.outerWidth = 1.0f;
-		this.outerHeight = 1.0f;
 		this.thickX = 1.0f;
 		this.thickY = 1.0f;
 		this.scale = 1.0f;

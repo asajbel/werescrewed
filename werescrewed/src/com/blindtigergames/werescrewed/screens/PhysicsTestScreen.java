@@ -34,6 +34,7 @@ import com.blindtigergames.werescrewed.entity.mover.RockingMover;
 import com.blindtigergames.werescrewed.entity.mover.RotateByDegree;
 import com.blindtigergames.werescrewed.entity.mover.SlidingMotorMover;
 import com.blindtigergames.werescrewed.entity.mover.TimelineTweenMover;
+import com.blindtigergames.werescrewed.entity.mover.TweenMover;
 import com.blindtigergames.werescrewed.entity.mover.puzzle.PuzzlePistonTweenMover;
 import com.blindtigergames.werescrewed.entity.tween.EntityAccessor;
 import com.blindtigergames.werescrewed.entity.tween.PlatformAccessor;
@@ -130,7 +131,9 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		rootSkeleton.addSkeleton( skeleton );
 
 		debugRenderer = new SBox2DDebugRenderer( Util.BOX_TO_PIXEL );
-		// debugRenderer.setDrawJoints( false );
+
+		debugRenderer.setDrawJoints( false );
+
 
 		Gdx.app.setLogLevel( Application.LOG_DEBUG );
 
@@ -272,9 +275,9 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 	private void initClimbingScrews( ) {
 		climbingScrews = new ArrayList< StrippedScrew >( );
 		float x1 = 420f;
-		float x2 = 650f;
+		float x2 = 600f;
 		float y1 = 256f;
-		float dy = 200f;
+		float dy = 160f;
 		for ( int i = 0; i < 10; i++ ) {
 			if ( i % 2 == 0 ) {
 				climbingScrews.add( new StrippedScrew( "", world, new Vector2(
@@ -317,6 +320,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		rope = new Rope( "rope", new Vector2( 8f, 1.5f ), new Vector2( 16.0f,
 				64.0f ), 5, null, world );
 
+
 		TiledPlatform pathPlatform = platBuilder.dimensions( 4, 1 )
 				.position( 1600, 100 ).friction( 1f ).kinematic( )
 				.buildTilePlatform( );
@@ -346,6 +350,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 								.target( 0, 0 ).ease( TweenEquations.easeNone )
 								.start( ) ).repeat( Tween.INFINITY, 0 ).start( ) ) );
 
+
 		/*
 		 * TODO: FIX PLATFORM DENSITY
 		 */
@@ -358,7 +363,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 				// .setPosition( (-500f-i*40)*PIXEL_TO_BOX, 150f*PIXEL_TO_BOX )
 				.texture( testTexture ).friction( 1f );
 
-		/*
+		/*//old way of building dynamic pistons
 		 * for ( int i = 0; i < 10; ++i ) { TiledPlatform piston =
 		 * builder.position( ( -100f - i * 40 ), 220f ) .buildTilePlatform( );
 		 * 
@@ -370,25 +375,24 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		 * skeleton.addDynamicPlatform( piston ); }
 		 */
 
-		// BUILD ROW OF PISTONS
+		// BUILD ROW OF PISTONS with new kinematic way
 		builder = platBuilder.width( 1 ).height( 3 ).oneSided( false )
 				.kinematic( ).setScale( 1 ).texture( testTexture )
 				.friction( 1f );
 		// TODO: bug - these are placed in the incorrect position!
 		for ( int i = 0; i < 10; ++i ) {
 			TiledPlatform pistonKin = builder.name( "pistonKin" + i )
-					.position( -200f - i * 40, 220f ).buildTilePlatform( );
+					.position( -200f - i * 40, 500f ).buildTilePlatform( );
 			skeleton.addKinematicPlatform( pistonKin );
 			pistonKin.setMover( new PistonTweenMover( pistonKin, new Vector2(
 					0, 300 ), 1f, 3f, 1f, 0f, i / 10.0f + 1 ) );
-			System.out.println( "Piston" + i + ": " + pistonKin.getPosition( ) );
+			//System.out.println( "Piston" + i + ": " + pistonKin.getPosition( ) );
 		}
 
 		builder = platBuilder.width( 20 ).height( 1 ).oneSided( true )
 				.dynamic( )
 				// .setPosition( (-500f-i*40)*PIXEL_TO_BOX, 150f*PIXEL_TO_BOX )
 				.texture( testTexture ).friction( 1f );
-		// .buildTilePlatform( world );
 
 		// TiledPlatform elevator = builder.position( -1500, 150 ).moveable(
 		// true )
@@ -478,6 +482,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 
 		if ( Gdx.input.isKeyPressed( Input.Keys.Z ) ) {
 			rootSkeleton.translateBy( 0.0f, 0.01f );
+			//Gdx.app.log( "BANG:", "BANG" );
 			// rootSkeleton.body.setLinearVelocity( new Vector2(0,1f) );
 		}
 
@@ -493,6 +498,9 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		if ( Gdx.input.isKeyPressed( Input.Keys.V ) ) {
 			rootSkeleton.rotateBy( 0.01f );
 		}
+		
+		//Gdx.app.log( "Root:", rootSkeleton.toString( ) );
+		//Gdx.app.log( "Skele:", skeleton.toString( ) );
 
 		player1.update( deltaTime );
 		player2.update( deltaTime );
