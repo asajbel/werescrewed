@@ -271,9 +271,9 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 	private void initClimbingScrews( ) {
 		climbingScrews = new ArrayList< StrippedScrew >( );
 		float x1 = 420f;
-		float x2 = 650f;
+		float x2 = 600f;
 		float y1 = 256f;
-		float dy = 200f;
+		float dy = 160f;
 		for ( int i = 0; i < 10; i++ ) {
 			if ( i % 2 == 0 ) {
 				climbingScrews.add( new StrippedScrew( "", world, new Vector2(
