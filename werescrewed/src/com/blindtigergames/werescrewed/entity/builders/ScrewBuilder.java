@@ -2,10 +2,13 @@ package com.blindtigergames.werescrewed.entity.builders;
 
 import java.util.HashMap;
 
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.World;
 import com.blindtigergames.werescrewed.entity.Entity;
-import com.blindtigergames.werescrewed.screws.*;
+import com.blindtigergames.werescrewed.screws.BossScrew;
+import com.blindtigergames.werescrewed.screws.PuzzleScrew;
+import com.blindtigergames.werescrewed.screws.Screw;
+import com.blindtigergames.werescrewed.screws.ScrewType;
+import com.blindtigergames.werescrewed.screws.StrippedScrew;
+import com.blindtigergames.werescrewed.screws.StructureScrew;
 import com.blindtigergames.werescrewed.skeleton.Skeleton;
 
 public class ScrewBuilder extends GenericEntityBuilder< ScrewBuilder > {
@@ -119,7 +122,7 @@ public class ScrewBuilder extends GenericEntityBuilder< ScrewBuilder > {
 	public PuzzleScrew buildPuzzleScrew(){
 		PuzzleScrew out = null;
 		if (canBuild() && entity != null)
-			out = new PuzzleScrew(name, pos, max, entity, world, startDepth);
+			out = new PuzzleScrew(name, pos, max, entity, world, startDepth, false);
 		return out;
 	}
 	
