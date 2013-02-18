@@ -2,10 +2,9 @@ package com.blindtigergames.werescrewed.screens;
 
 import java.util.ArrayList;
 
+import aurelienribon.tweenengine.Timeline;
 import aurelienribon.tweenengine.Tween;
-import aurelienribon.tweenengine.TweenEquation;
 import aurelienribon.tweenengine.TweenEquations;
-import aurelienribon.tweenengine.TweenManager;
 
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
@@ -15,8 +14,6 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Filter;
-import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.joints.PrismaticJoint;
 import com.badlogic.gdx.physics.box2d.joints.PrismaticJointDef;
@@ -30,20 +27,17 @@ import com.blindtigergames.werescrewed.entity.builders.PlatformBuilder;
 import com.blindtigergames.werescrewed.entity.builders.PlayerBuilder;
 import com.blindtigergames.werescrewed.entity.builders.ScrewBuilder;
 import com.blindtigergames.werescrewed.entity.mover.LerpMover;
-import com.blindtigergames.werescrewed.entity.mover.PistonMover;
+import com.blindtigergames.werescrewed.entity.mover.LinearAxis;
 import com.blindtigergames.werescrewed.entity.mover.PistonTweenMover;
 import com.blindtigergames.werescrewed.entity.mover.PuzzleType;
 import com.blindtigergames.werescrewed.entity.mover.RockingMover;
 import com.blindtigergames.werescrewed.entity.mover.RotateByDegree;
-import com.blindtigergames.werescrewed.entity.mover.RotateTweenMover;
 import com.blindtigergames.werescrewed.entity.mover.SlidingMotorMover;
-import com.blindtigergames.werescrewed.entity.mover.TweenMover;
+import com.blindtigergames.werescrewed.entity.mover.TimelineTweenMover;
 import com.blindtigergames.werescrewed.entity.mover.puzzle.PuzzlePistonTweenMover;
-import com.blindtigergames.werescrewed.entity.mover.puzzle.PuzzleRotateTweenMover;
 import com.blindtigergames.werescrewed.entity.tween.EntityAccessor;
 import com.blindtigergames.werescrewed.entity.tween.PlatformAccessor;
 import com.blindtigergames.werescrewed.joint.JointFactory;
-import com.blindtigergames.werescrewed.joint.PrismaticJointBuilder;
 import com.blindtigergames.werescrewed.platforms.Platform;
 import com.blindtigergames.werescrewed.platforms.TiledPlatform;
 import com.blindtigergames.werescrewed.player.Player;
@@ -63,20 +57,6 @@ import com.blindtigergames.werescrewed.util.Util;
 public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 
 	// FIELDS
-
-	// Static Constants
-
-	/***
-	 * Box2D to pixels conversion.
-	 * 
-	 * This number means 1 meter equals 256 pixels. That means the biggest
-	 * in-game object (10 meters) we can use is 2560 pixels wide, which is much
-	 * bigger than our max screen resolution so it should be enough.
-	 */
-	// public static final float BOX_TO_PIXEL = 256f;
-	// public static final float PIXEL_TO_BOX = 1 / BOX_TO_PIXEL;
-	// public static final float DEG_TO_RAD = 0.0174532925199432957f;
-	// public static final float RAD_TO_DEG = 57.295779513082320876f;
 
 	// Variables
 
@@ -114,9 +94,9 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		testTexture = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 				+ "/common/TilesetTest.png", Texture.class );
 
-		Tween.registerAccessor( Platform.class, new PlatformAccessor() );
-		Tween.registerAccessor( Entity.class, new EntityAccessor() );
-		
+		Tween.registerAccessor( Platform.class, new PlatformAccessor( ) );
+		Tween.registerAccessor( Entity.class, new EntityAccessor( ) );
+
 		// Initialize camera
 		initCamera( );
 
@@ -131,9 +111,8 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		initStructureScrews( );
 		initPuzzleScrews( );
 		initClimbingScrews( );
-		
-		
-		
+		initPulley( );
+
 		// rope = new Rope( "rope", new Vector2 (2000.0f * Util.PIXEL_TO_BOX,
 		// 400.0f* Util.PIXEL_TO_BOX), null, world );
 		// Add players
@@ -151,7 +130,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		rootSkeleton.addSkeleton( skeleton );
 
 		debugRenderer = new SBox2DDebugRenderer( Util.BOX_TO_PIXEL );
-		//debugRenderer.setDrawJoints( false );
+		// debugRenderer.setDrawJoints( false );
 
 		Gdx.app.setLogLevel( Application.LOG_DEBUG );
 
@@ -172,7 +151,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 	 */
 	private void initTiledPlatforms( ) {
 		// Tiled Platform
-		tiledPlat = platBuilder.position( 700.0f, 175.0f ).dimensions( 10, 1 )
+		tiledPlat = platBuilder.position( 700.0f, 125.0f ).dimensions( 10, 1 )
 				.texture( testTexture ).dynamic( ).name( "tp" )
 				.resitituion( 0.0f ).buildTilePlatform( );
 		skeleton.addDynamicPlatform( tiledPlat );
@@ -194,10 +173,9 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 
 		// TODO : FIX ONESIDED BUG,
 		// Ground: SHOULD NEVER BE ONESIDED
-		ground = platBuilder.position( 0.0f, -75.0f ).name( "ground" )
+		ground = platBuilder.position( 0.0f, -75 ).name( "ground" )
 				.dimensions( 200, 4 ).texture( testTexture ).kinematic( )
 				.oneSided( false ).resitituion( 0.0f ).buildTilePlatform( );
-		ground.setCategoryMask( Util.CATEGORY_GROUND, Util.CATEGORY_EVERYTHING );
 		skeleton.addKinematicPlatform( ground );
 	}
 
@@ -212,17 +190,21 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		 * ).y ), 50, tiledPlat, skeleton, world );
 		 */
 		StructureScrew leftPlatScrew = new ScrewBuilder( )
-				.position( tiledPlat.body.getPosition( ).x - 0.5f,
-						tiledPlat.body.getPosition( ).y ).entity( tiledPlat )
-				.skeleton( skeleton ).world( world ).buildStructureScrew( );
+				.position(
+						tiledPlat.body.getPosition( ).x * Util.BOX_TO_PIXEL
+								- ( tiledPlat.sprite.getWidth( ) ),
+						tiledPlat.body.getPosition( ).y * Util.BOX_TO_PIXEL )
+				.entity( tiledPlat ).skeleton( skeleton ).world( world )
+				.buildStructureScrew( );
 		// StructureScrew rightPlatScrew = new StructureScrew( "", new Vector2(
 		// tiledPlat.body.getPosition( ).x + 0.5f,
 		// tiledPlat.body.getPosition( ).y ), 50, tiledPlat, skeleton,
 		// world );
 		BossScrew bossBolt = new BossScrew( "", new Vector2(
-				tiledPlat.body.getPosition( ).x + 0.5f,
-				tiledPlat.body.getPosition( ).y ), 50, tiledPlat, skeleton,
-				world );
+				tiledPlat.body.getPosition( ).x * Util.BOX_TO_PIXEL
+						+ ( tiledPlat.sprite.getWidth( ) ),
+				tiledPlat.body.getPosition( ).y * Util.BOX_TO_PIXEL ), 50,
+				tiledPlat, skeleton, world );
 		tiledPlat.addScrew( bossBolt );
 		tiledPlat.addScrew( leftPlatScrew );
 		// tiledPlat.addScrew( rightPlatScrew );
@@ -233,54 +215,51 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 	 */
 	private void initPuzzleScrews( ) {
 		// two fliping platforms
-		TiledPlatform flipPlat1 = platBuilder.position( 20.0f, 370f )
+		TiledPlatform flipPlat1 = platBuilder.position( 0.0f, 370f )
 				.dimensions( 5, 1 ).texture( testTexture ).name( "001_flip1" )
 				.resitituion( 0.0f ).kinematic( ).buildTilePlatform( );
 		skeleton.addKinematicPlatform( flipPlat1 );
 
 		// two fliping platforms
-		TiledPlatform flipPlat2 = platBuilder.position( 350.0f, 475f )
-				.dimensions( 5, 1 ).texture( testTexture ).name( "001_flip2" )
+		TiledPlatform flipPlat2 = platBuilder.position( 200.0f, 475f )
+				.dimensions( 5, 2 ).texture( testTexture ).name( "001_flip2" )
 				.resitituion( 0.0f ).kinematic( ).buildTilePlatform( );
 		flipPlat2.setLocalRot( -90 * Util.DEG_TO_RAD );
 		skeleton.addKinematicPlatform( flipPlat2 );
 
 		// rotate puzzle screw control
 		RotateByDegree rm = new RotateByDegree( 0.0f, -90.0f, 0, 0.5f );
-		PuzzleScrew puzzleScrew = new PuzzleScrew( "001", new Vector2( 0.5f,
-				0.2f ), 50, skeleton, world, 0 );
+		PuzzleScrew puzzleScrew = new PuzzleScrew( "001",
+				new Vector2( 32f, 32f ), 50, skeleton, world, 0, false );
 		puzzleScrew.puzzleManager.addEntity( flipPlat1 );
 		puzzleScrew.puzzleManager.addMover( flipPlat1.name, rm );
-		//also add a up mover to movingTP
-		LerpMover lm2 = new LerpMover(
-				new Vector2( movingTP.body.getPosition( ).x,
-						movingTP.body.getPosition( ).y ), new Vector2(
-						movingTP.body.getPosition( ).x,
-						movingTP.body.getPosition( ).y + 0.3f ), 1f, true,
-				PuzzleType.PUZZLE_SCREW_CONTROL );
+		// also add a up mover to movingTP
+		LerpMover lm2 = new LerpMover( movingTP.body.getPosition( ).mul( Util.BOX_TO_PIXEL ),
+				new Vector2( movingTP.body.getPosition( ).x, movingTP.body
+						.getPosition( ).y + 0.3f ).mul( Util.BOX_TO_PIXEL ),
+				1f, true, PuzzleType.PUZZLE_SCREW_CONTROL, LinearAxis.VERTICAL );
 		puzzleScrew.puzzleManager.addEntity( movingTP );
 		puzzleScrew.puzzleManager.addMover( movingTP.name, lm2 );
 
 		rm = new RotateByDegree( -90.0f, 0.0f, 0, 0.5f );
-		PuzzleRotateTweenMover prtm = new PuzzleRotateTweenMover( 1, Util.PI/2, true);
-		PuzzlePistonTweenMover pptm = new PuzzlePistonTweenMover( flipPlat2, new Vector2(100,0), 1, 1, 0, 0 );
-		//PistonTweenMover ptm = new PistonTweenMover( flipPlat2, new Vector2(100,0), 1, 1, 0, 0, 0 );
-		//flipPlat2.setMover( pptm );
+		PuzzlePistonTweenMover pptm = new PuzzlePistonTweenMover( flipPlat2,
+				new Vector2( 0, 100 ), 1, 1, 0, 0 );
+		// PistonTweenMover ptm = new PistonTweenMover( flipPlat2, new
+		// Vector2(100,0), 1, 1, 0, 0, 0 );
+		// flipPlat2.setMover( pptm );
 		puzzleScrew.puzzleManager.addEntity( flipPlat2 );
 		puzzleScrew.puzzleManager.addMover( flipPlat2.name, pptm );
 		skeleton.addScrewForDraw( puzzleScrew );
 
 		// lerp puzzle screw control
-		PuzzleScrew puzzleScrew2 = new PuzzleScrew( "002", new Vector2( 0.0f,
-				0.2f ), 50, skeleton, world, 0 );
-		lm2 = new LerpMover(
-				new Vector2( movingTP.body.getPosition( ).x,
-						movingTP.body.getPosition( ).y ), new Vector2(
-						movingTP.body.getPosition( ).x + 1.75f,
-						movingTP.body.getPosition( ).y ), 1f, true,
-				PuzzleType.PUZZLE_SCREW_CONTROL );
+		PuzzleScrew puzzleScrew2 = new PuzzleScrew( "002", new Vector2( 150f,
+				32f ), 50, skeleton, world, 0, false );
+		LerpMover lm = new LerpMover( movingTP.body.getPosition( ).mul( Util.BOX_TO_PIXEL ),
+				new Vector2( movingTP.body.getPosition( ).x + 1.75f, movingTP.body
+						.getPosition( ).y ).mul( Util.BOX_TO_PIXEL ),
+				1f, true, PuzzleType.PUZZLE_SCREW_CONTROL, LinearAxis.HORIZONTAL );
 		puzzleScrew2.puzzleManager.addEntity( movingTP );
-		puzzleScrew2.puzzleManager.addMover( movingTP.name, lm2 );
+		puzzleScrew2.puzzleManager.addMover( movingTP.name, lm );
 		skeleton.addScrewForDraw( puzzleScrew2 );
 
 	}
@@ -290,10 +269,10 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 	 */
 	private void initClimbingScrews( ) {
 		climbingScrews = new ArrayList< StrippedScrew >( );
-		float x1 = 1.75f;
-		float x2 = 2.4f;
-		float y1 = 0.6f;
-		float dy = 0.7f;
+		float x1 = 420f;
+		float x2 = 650f;
+		float y1 = 256f;
+		float dy = 200f;
 		for ( int i = 0; i < 10; i++ ) {
 			if ( i % 2 == 0 ) {
 				climbingScrews.add( new StrippedScrew( "", world, new Vector2(
@@ -336,48 +315,72 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		rope = new Rope( "rope", new Vector2( 8f, 1.5f ), new Vector2( 16.0f,
 				32.0f ), 10, null, world );
 
+		TiledPlatform pathPlatform = platBuilder.dimensions( 4, 1 )
+				.position( 1600, 100 ).friction( 1f ).kinematic( )
+				.buildTilePlatform( );
+		skeleton.addKinematicPlatform( pathPlatform );
+		// build path. TODO: make building paths easier!!
+		pathPlatform
+				.setMover( new TimelineTweenMover( Timeline
+						.createSequence( )
+						.push( Tween
+								.to( pathPlatform,
+										PlatformAccessor.LOCAL_POS_XY, 2 )
+								.target( 300, 0 )
+								.ease( TweenEquations.easeNone ).start( ) )
+						.push( Tween
+								.to( pathPlatform,
+										PlatformAccessor.LOCAL_POS_XY, 2 )
+								.target( 300, 300 )
+								.ease( TweenEquations.easeNone ).start( ) )
+						.push( Tween
+								.to( pathPlatform,
+										PlatformAccessor.LOCAL_POS_XY, 2 )
+								.target( 0, 300 )
+								.ease( TweenEquations.easeNone ).start( ) )
+						.push( Tween
+								.to( pathPlatform,
+										PlatformAccessor.LOCAL_POS_XY, 2 )
+								.target( 0, 0 ).ease( TweenEquations.easeNone )
+								.start( ) ).repeat( Tween.INFINITY, 0 ).start( ) ) );
+
 		/*
 		 * TODO: FIX PLATFORM DENSITY
-		 */ 
+		 */
 
 		platBuilder.reset( ).world( world );
 
+		// for building dynamic pistons (they don't work very well)
 		PlatformBuilder builder = platBuilder.width( 1 ).height( 3 )
 				.oneSided( false ).dynamic( )
 				// .setPosition( (-500f-i*40)*PIXEL_TO_BOX, 150f*PIXEL_TO_BOX )
 				.texture( testTexture ).friction( 1f );
-		// .buildTilePlatform( world );
 
-		
-		/*for ( int i = 0; i < 10; ++i ) {
-			TiledPlatform piston = builder.position( ( -100f - i * 40 ), 220f )
-					.buildTilePlatform( );
+		/*
+		 * for ( int i = 0; i < 10; ++i ) { TiledPlatform piston =
+		 * builder.position( ( -100f - i * 40 ), 220f ) .buildTilePlatform( );
+		 * 
+		 * PrismaticJoint pistonJoint = jointBuilder.bodyB( ( Entity ) piston )
+		 * .anchor( piston.body.getWorldCenter( ) ).build( ); // Something is
+		 * still not quite right with this, try replacing 3 // with 0.
+		 * piston.setMover( new PistonMover( pistonJoint, 3f, i / 10.0f + 2f )
+		 * ); // piston.body.setSleepingAllowed( false );
+		 * skeleton.addDynamicPlatform( piston ); }
+		 */
 
-			PrismaticJoint pistonJoint = jointBuilder.bodyB( ( Entity ) piston )
-					.anchor( piston.body.getWorldCenter( ) ).build( );
-			// Something is still not quite right with this, try replacing 3
-			// with 0.
-			piston.setMover( new PistonMover( pistonJoint, 3f, i / 10.0f + 2f ) );
-			// piston.body.setSleepingAllowed( false );
-			skeleton.addDynamicPlatform( piston );
-		}*/
-		
-		//BUILD ROW OF PISTONS
-		builder = platBuilder.width( 1 ).height( 3 )
-				.oneSided( false )
-				.kinematic( )
-				.setScale(1)
-				.texture( testTexture ).friction( 1f );
-		//TODO: bug - these are placed in the incorrect position!
-		for ( int i = 0; i < 10; ++i ){
-			TiledPlatform pistonKin = builder.name("pistonKin"+i)
-					.position(-200f - i * 40,220f).buildTilePlatform();
-					skeleton.addKinematicPlatform(pistonKin);
-					pistonKin.setMover( new PistonTweenMover( pistonKin, new Vector2(0,300), 1f, 3f, 1f, 0f, i / 10.0f +1) );
-					System.out.println("Piston"+i+": "+pistonKin.getPosition( ));
+		// BUILD ROW OF PISTONS
+		builder = platBuilder.width( 1 ).height( 3 ).oneSided( false )
+				.kinematic( ).setScale( 1 ).texture( testTexture )
+				.friction( 1f );
+		// TODO: bug - these are placed in the incorrect position!
+		for ( int i = 0; i < 10; ++i ) {
+			TiledPlatform pistonKin = builder.name( "pistonKin" + i )
+					.position( -200f - i * 40, 220f ).buildTilePlatform( );
+			skeleton.addKinematicPlatform( pistonKin );
+			pistonKin.setMover( new PistonTweenMover( pistonKin, new Vector2(
+					0, 300 ), 1f, 3f, 1f, 0f, i / 10.0f + 1 ) );
+			System.out.println( "Piston" + i + ": " + pistonKin.getPosition( ) );
 		}
-		
-		
 
 		builder = platBuilder.width( 20 ).height( 1 ).oneSided( true )
 				.dynamic( )
@@ -385,16 +388,17 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 				.texture( testTexture ).friction( 1f );
 		// .buildTilePlatform( world );
 
-		TiledPlatform elevator = builder.position( -1500, 150 ).moveable( true )
-				.buildTilePlatform( );
-		
-		//PrismaticJoint pistonJ = jointBuilder.bodyB( ( Entity ) elevator )
-		//		.anchor( elevator.body.getWorldCenter( ) ).build( );
+		// TiledPlatform elevator = builder.position( -1500, 150 ).moveable(
+		// true )
+		// .buildTilePlatform( );
+		//
+		// //PrismaticJoint pistonJ = jointBuilder.bodyB( ( Entity ) elevator )
+		// // .anchor( elevator.body.getWorldCenter( ) ).build( );
+		//
+		// //elevator.setMover( new PistonMover( pistonJ, 0f, 2f ) );
+		// elevator.body.setSleepingAllowed( false );
 
-		//elevator.setMover( new PistonMover( pistonJ, 0f, 2f ) );
-		elevator.body.setSleepingAllowed( false );
-
-		//1000 - 1219 for perfect gears
+		// 1000 - 1219 for perfect gears
 		Platform gear = builder.name( "gear" )
 				.position( 1219 * Util.PIXEL_TO_BOX, 320 * Util.PIXEL_TO_BOX )
 				.texture( null ).setScale( 3f ).type( "gearSmall" )
@@ -405,40 +409,34 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 				.texture( null ).setScale( 3f ).type( "gearSmall" )
 				.buildComplexPlatform( );
 		skeleton.addPlatformRotatingCenter( gear2 );
-		
-		Filter filter;
-		for ( Fixture f : gear.body.getFixtureList( ) ) {
-			filter = f.getFilterData( );
-			// move player to another category so other objects stop
-			// colliding
-			filter.categoryBits = Util.DYNAMIC_OBJECTS;
-			// player still collides with sensor of screw
-			filter.maskBits = Util.CATEGORY_EVERYTHING;
-			f.setFilterData( filter );
-		}
+		gear2.quickfixCollisions( );
 	}
 
-	public void initPulley(){
-		TiledPlatform singTile = platBuilder.position( -1200.0f, 500.0f ).dimensions( 1, 1 )
-				.texture( testTexture ).dynamic( ).name( "Single Tiled" )
-				.resitituion( 0.0f ).buildTilePlatform( );
+	public void initPulley( ) {
+		TiledPlatform singTile = platBuilder.position( -1200.0f, 400.0f )
+				.dimensions( 1, 1 ).texture( testTexture ).dynamic( )
+				.name( "Single Tiled" ).resitituion( 0.0f ).buildTilePlatform( );
 		skeleton.addPlatform( singTile );
 		singTile.body.setFixedRotation( false );
-		
-		TiledPlatform singTile2 = platBuilder.position( -1300.0f, 500.0f ).dimensions( 1, 1 )
-				.texture( testTexture ).dynamic( ).name( "Single Tiled" )
-				.resitituion( 0.0f ).buildTilePlatform( );
+
+		TiledPlatform singTile2 = platBuilder.position( -1300.0f, 400.0f )
+				.dimensions( 1, 1 ).texture( testTexture ).dynamic( )
+				.name( "Single Tiled" ).resitituion( 0.0f ).buildTilePlatform( );
 		skeleton.addPlatform( singTile2 );
 		singTile2.body.setFixedRotation( false );
-		
-		Vector2 g1 = new Vector2(singTile.body.getWorldCenter( ).x, singTile.body.getWorldCenter( ).y - 100.0f * Util.PIXEL_TO_BOX);
-		Vector2 g2 = new Vector2(singTile2.body.getWorldCenter( ).x, singTile2.body.getWorldCenter( ).y - 100.0f * Util.PIXEL_TO_BOX);
-		PulleyJointDef pjd = new PulleyJointDef();
+
+		Vector2 g1 = new Vector2( singTile.body.getWorldCenter( ).x,
+				singTile.body.getWorldCenter( ).y - 200.0f * Util.PIXEL_TO_BOX );
+		Vector2 g2 = new Vector2( singTile2.body.getWorldCenter( ).x,
+				singTile2.body.getWorldCenter( ).y - 200.0f * Util.PIXEL_TO_BOX );
+		PulleyJointDef pjd = new PulleyJointDef( );
 		pjd.initialize( singTile.body, singTile2.body, g1, g2,
-				singTile.body.getWorldCenter( ), singTile2.body.getWorldCenter(), 1.0f);
-		
+				singTile.body.getWorldCenter( ),
+				singTile2.body.getWorldCenter( ), 1.0f );
+
 		world.createJoint( pjd );
 	}
+
 	@Override
 	public void render( float deltaTime ) {
 		if ( Gdx.gl20 != null ) {
@@ -465,8 +463,8 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		} else
 			debugTest = true;
 
-		//System.out.println( "skele:" + skeleton.getPosition( ) );
-		
+		// System.out.println( "skele:" + skeleton.getPosition( ) );
+
 		if ( Gdx.input.isKeyPressed( Input.Keys.Z ) ) {
 			rootSkeleton.translateBy( 0.0f, 0.01f );
 			// rootSkeleton.body.setLinearVelocity( new Vector2(0,1f) );
@@ -487,13 +485,11 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 
 		player1.update( deltaTime );
 		player2.update( deltaTime );
-		// puzzleScrew.update( deltaTime );
 		rootSkeleton.update( deltaTime );
 		rope.update( deltaTime );
 		batch.setProjectionMatrix( cam.combined( ) );
 		batch.begin( );
 
-		// puzzleScrew.draw( batch );
 		rootSkeleton.draw( batch );
 		rope.draw( batch );
 		player1.draw( batch );
