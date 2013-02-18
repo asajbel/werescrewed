@@ -470,27 +470,18 @@ public class Player extends Entity {
 	}
 	
 	/**
-	 * Transforms player position by offset
+	 * sets flag to determine if player needs to move with kinematic platforms
 	 * 
-	 * @param posOffset is the offset you want to apply to player
-	 */
-	public void setPlatformTransform( Vector2 posOffset ){
-		Gdx.app.log( name + "old:", " " + body.getPosition( ) );
-		body.setTransform( body.getPosition( ).cpy().add(posOffset), 0);
-		Gdx.app.log( name + "new:", " " + body.getPosition( ) );
-	}
-	
-	/**
-	 * 
-	 * @param value
+	 * @param value turns flag on and off
 	 */
 	public void setMovingPlatformFlag( boolean value){
 		kinematicTransform = value;
 	}
 	
 	/**
+	 * sets offset that player will use to match movement of kinematic platforms
 	 * 
-	 * @param offset
+	 * @param newOffset offset you want
 	 */
 	public void setOffset(Vector2 newOffset){
 		platformOffset = newOffset;
@@ -965,6 +956,17 @@ public class Player extends Entity {
 				jumpPressedController = true;
 			}
 		}
+	}
+	
+	/**
+	 * Transforms player position by offset
+	 * 
+	 * @param posOffset is the offset you want to apply to player
+	 */
+	private void setPlatformTransform( Vector2 posOffset ){
+		Gdx.app.log( name + "old:", " " + body.getPosition( ) );
+		body.setTransform( body.getPosition( ).cpy().add(posOffset), 0);
+		Gdx.app.log( name + "new:", " " + body.getPosition( ) );
 	}
 
 	/**

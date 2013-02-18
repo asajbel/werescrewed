@@ -210,7 +210,7 @@ public class MyContactListener implements ContactListener {
 						if(plat.mover != null){
 							player.setMovingPlatformFlag( true );
 							player.setOffset( plat.getChangePosition( ) );
-							Gdx.app.log( "x: " + plat.getChangePosition( ).x, "y: " + plat.getChangePosition( ).y );
+							//Gdx.app.log( "x: " + plat.getChangePosition( ).x, "y: " + plat.getChangePosition( ).y );
 						}
 					}
 				}
