@@ -2,6 +2,7 @@ package com.blindtigergames.werescrewed.screens;
 
 import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
@@ -24,7 +25,6 @@ public class LoadingScreen extends Screen {
 		//WereScrewedGame.manager.load("assets/data/common/sounds/jump.ogg", Sound.class);
 		
 		
-		FileHandle common;
 		if (Gdx.app.getType() == ApplicationType.Android) {
 			WereScrewedGame.dirHandle = Gdx.files.internal("data/");
 		} else {
@@ -32,7 +32,7 @@ public class LoadingScreen extends Screen {
 			WereScrewedGame.dirHandle = Gdx.files.internal("assets/data/");
 		}
 		
-		String screenTag = "junk";
+		String screenTag = "level2";
 		loadFilesInDirectory(WereScrewedGame.dirHandle, screenTag);
 		//System.out.println( WereScrewedGame.dirHandle.path( )  );
 	}
@@ -47,7 +47,7 @@ public class LoadingScreen extends Screen {
 	 * 			The current directory that the function is loading files from
 	 * 
 	 * @param screenTag
-	 * 			indicates which screen is going to be loaded, which influences which
+	 * 			Indicates which screen is going to be loaded, which influences which
 	 * 			file's contents are loaded
 	 * 
 	 * @return void
@@ -58,60 +58,61 @@ public class LoadingScreen extends Screen {
 		for (FileHandle entry: currentDirectory.list()) {
 			Gdx.app.log( currentDirectory.name(), "found file " + entry.name() );
 		   
-			//if this file is named ".DS_Store", which like to show up on Macs, then FUCK OFF.
-			if(entry.name( ).equals(".DS_Store")) continue;
+			//figure out what it means to be a file I don't care about
+			String entryName = entry.name();
+			boolean IDontCareAboutThisFile = entryName.equals("bodies") ||
+					entryName.equals("entities") || entryName.equals(".DS_Store");
 			
-			//if the entry is a directory, then go into this folder
-			if(entry.isDirectory( )){
-				
-				//TODO: determine if we need to go into this folder
-				
-				//hop inside this directory
-				loadFilesInDirectory(entry, screenTag);
-			}
+			if(IDontCareAboutThisFile) continue;
+			
+			//determine if we want to go into this directory
+			//TODO: The string interpretation of screenTag will go here
+			boolean IWannaLoadTheseFiles = 
+					entryName.equals("common") || entryName.equals("levels") ||
+					entryName.equals(screenTag);
+			
+			if(IWannaLoadTheseFiles) loadFilesInDirectory(entry, screenTag);
 			
 			//load the file that we're currently looking at
 			String fileExtension = entry.extension( );
-			
-			//TODO: I don't think this is right...
-			String fileName = currentDirectory.name() + entry.name();
-			Gdx.app.log( "filename to be loaded", fileName );
-			if(fileExtension.equals("png")){
-				WereScrewedGame.manager.load(fileName, Texture.class);
-			}else if(fileExtension.equals("ogg")){
-				WereScrewedGame.manager.load(fileName, Sound.class);
-			}
+			String fullPathName = currentDirectory.parent() + "/" + currentDirectory.name() + "/" + entry.name();
+
+			loadCurrentFile( fileExtension, fullPathName );
 			
 		}
 		
 		Gdx.app.log("GOING UP", "returning to " + currentDirectory.parent( ));
 	}
-	
-	/*if(!entry.isDirectory( )){
-	WereScrewedGame.manager.load( WereScrewedGame.dirHandle.path( )  + "/" + entry.name( ), Texture.class );
-	//System.out.println( entry.name());
-}
 
-
-//TODO: better way to go into directories in directories
-if(entry.name( ).equals( "common" )){
-	common = Gdx.files.internal( WereScrewedGame.dirHandle.path( )  + "/common/" );
-	
-	for( FileHandle com: common.list( )){
-		
-		//TODO: load either texture or sound based on file extension
-		String commonPathName = common.path() + "/" + com.name( );
-		
-		if(com.extension().equals("ogg")){
-			WereScrewedGame.manager.load( commonPathName, Sound.class);
-			Gdx.app.log("Sound Loaded", commonPathName);
-		}
-		else{
-			WereScrewedGame.manager.load( commonPathName, Texture.class );
-			Gdx.app.log("Texture Loaded", commonPathName);
+	/**
+	 * A small babby function to load the current file
+	 * 
+	 * @author Nick Patti
+	 * 
+	 * @param fileExtension
+	 * 			The file extension, which is used to choose whether to load the file
+	 * 			a texture, sound, or music object.
+	 * 
+	 * @param fullPathName
+	 * 			The full path name of the file to be passed into the load function
+	 */
+	private void loadCurrentFile( String fileExtension, String fullPathName ) {
+		if(fileExtension.equals("png")){
+			WereScrewedGame.manager.load(fullPathName, Texture.class);
+			Gdx.app.log( "Texture file loaded", fullPathName );
+			
+		//TODO: This will need to be adjusted when music files are loaded.
+		//So far, I'm assuming if the file is an .mp3, it's a music file
+		}else if(fileExtension.equals("ogg")){
+			WereScrewedGame.manager.load(fullPathName, Sound.class);
+			Gdx.app.log( "Sound file loaded", fullPathName );
+			
+		}else if(fileExtension.equals("mp3")){
+			WereScrewedGame.manager.load(fullPathName, Music.class);
+			Gdx.app.log( "Music file loaded", fullPathName );
 		}
 	}
-}*/
+	
 
 	/**
 	 * Runs every frame tick. Loads the assets that are queued in WereScrewedGame.manager,
