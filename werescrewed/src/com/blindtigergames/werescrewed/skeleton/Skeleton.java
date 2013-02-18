@@ -218,7 +218,7 @@ public class Skeleton extends Entity {
     public void translateBy( float x, float y ){
     	body.setTransform(body.getPosition().x + x, body.getPosition().y + y, body.getAngle());
     	setSkeletonAwake( true );
-    	setSkeletonActive(true);
+    	//setSkeletonActive(true);
     }
     
     /**
