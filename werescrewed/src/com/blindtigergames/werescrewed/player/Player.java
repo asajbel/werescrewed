@@ -466,6 +466,15 @@ public class Player extends Entity {
 	public boolean isGrounded( ) {
 		return grounded;
 	}
+	
+	/**
+	 * Transforms player position by offset
+	 * 
+	 * @param posOffset is the offset you want to apply to player
+	 */
+	public void setPlatformTransform( Vector2 posOffset ){
+		body.setTransform( body.getPosition( ).add(posOffset), 0);
+	}
 
 	// PRIVATE METHODS
 
