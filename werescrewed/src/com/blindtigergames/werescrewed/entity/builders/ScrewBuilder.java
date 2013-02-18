@@ -12,7 +12,7 @@ public class ScrewBuilder extends GenericEntityBuilder< ScrewBuilder > {
 	protected ScrewType screwType;
 	protected Entity entity;
 	protected Skeleton skeleton;
-	protected int max;
+	protected int max, startDepth;
 	
 	public ScrewBuilder(){
 		super();
@@ -20,6 +20,7 @@ public class ScrewBuilder extends GenericEntityBuilder< ScrewBuilder > {
 		this.entity = null;
 		this.skeleton = null;
 		this.max = 100;
+		this.startDepth = 0;
 	}
 	
 	@Override
@@ -78,6 +79,10 @@ public class ScrewBuilder extends GenericEntityBuilder< ScrewBuilder > {
 		return this;		
 	}
 	
+	public ScrewBuilder startDepth(int d){
+		this.startDepth = d;
+		return this;		
+	}
 	@Override
 	public boolean canBuild(){
 		return (world != null);
@@ -114,7 +119,7 @@ public class ScrewBuilder extends GenericEntityBuilder< ScrewBuilder > {
 	public PuzzleScrew buildPuzzleScrew(){
 		PuzzleScrew out = null;
 		if (canBuild() && entity != null)
-			out = new PuzzleScrew(name, pos, max, entity, world, 0, false);
+			out = new PuzzleScrew(name, pos, max, entity, world, startDepth);
 		return out;
 	}
 	
