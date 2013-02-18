@@ -359,7 +359,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 				// .setPosition( (-500f-i*40)*PIXEL_TO_BOX, 150f*PIXEL_TO_BOX )
 				.texture( testTexture ).friction( 1f );
 
-		/*
+		/*//old way of building dynamic pistons
 		 * for ( int i = 0; i < 10; ++i ) { TiledPlatform piston =
 		 * builder.position( ( -100f - i * 40 ), 220f ) .buildTilePlatform( );
 		 * 
@@ -371,25 +371,24 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		 * skeleton.addDynamicPlatform( piston ); }
 		 */
 
-		// BUILD ROW OF PISTONS
+		// BUILD ROW OF PISTONS with new kinematic way
 		builder = platBuilder.width( 1 ).height( 3 ).oneSided( false )
 				.kinematic( ).setScale( 1 ).texture( testTexture )
 				.friction( 1f );
 		// TODO: bug - these are placed in the incorrect position!
 		for ( int i = 0; i < 10; ++i ) {
 			TiledPlatform pistonKin = builder.name( "pistonKin" + i )
-					.position( -200f - i * 40, 220f ).buildTilePlatform( );
+					.position( -200f - i * 40, 500f ).buildTilePlatform( );
 			skeleton.addKinematicPlatform( pistonKin );
 			pistonKin.setMover( new PistonTweenMover( pistonKin, new Vector2(
 					0, 300 ), 1f, 3f, 1f, 0f, i / 10.0f + 1 ) );
-			System.out.println( "Piston" + i + ": " + pistonKin.getPosition( ) );
+			//System.out.println( "Piston" + i + ": " + pistonKin.getPosition( ) );
 		}
 
 		builder = platBuilder.width( 20 ).height( 1 ).oneSided( true )
 				.dynamic( )
 				// .setPosition( (-500f-i*40)*PIXEL_TO_BOX, 150f*PIXEL_TO_BOX )
 				.texture( testTexture ).friction( 1f );
-		// .buildTilePlatform( world );
 
 		// TiledPlatform elevator = builder.position( -1500, 150 ).moveable(
 		// true )
@@ -495,8 +494,6 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		if ( Gdx.input.isKeyPressed( Input.Keys.V ) ) {
 			rootSkeleton.rotateBy( 0.01f );
 		}
-		
-
 		
 		//Gdx.app.log( "Root:", rootSkeleton.toString( ) );
 		//Gdx.app.log( "Skele:", skeleton.toString( ) );
