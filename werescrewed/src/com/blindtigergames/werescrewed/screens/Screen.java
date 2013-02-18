@@ -44,8 +44,10 @@ public class Screen implements com.badlogic.gdx.Screen {
 		if ( Gdx.input.isKeyPressed( Keys.P ) ) {
 			System.exit( 0 );
 		}
-		level.update( delta );
-		level.draw( batch, debugRenderer );
+		if (level != null){
+			level.update( delta );
+			level.draw( batch, debugRenderer );
+		}
 	}
 
 	@Override

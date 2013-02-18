@@ -14,7 +14,7 @@
                         </Property>
                         <Property Name="TileWidth" Type="string" Description="4">
                             <string>50</string>
-                        </Property>
+                        </Propeidrty>
                         <Property Name="TileHeight" Type="string" Description="1">
                             <string>1</string>
                         </Property>
@@ -29,10 +29,36 @@
                         <PackedValue>2445279424</PackedValue>
                     </FillColor>
                 </Item>
+                <Item xsi:type="RectangleItem" Name="platform2" Visible="true">
+                    <Position>
+                        <X>1</X>
+                        <Y>1</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="tiledPlatform">
+                            <string>tiledPlatform</string>
+                        </Property>
+                        <Property Name="TileWidth" Type="string" Description="4">
+                            <string>50</string>
+                        </Property>
+                        <Property Name="TileHeight" Type="string" Description="1">
+                            <string>1</string>
+                        </Property>
+                    </CustomProperties>
+                    <Width>160</Width>
+                    <Height>32</Height>
+                    <FillColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </FillColor>
+                </Item>
                 <Item xsi:type="CircleItem" Name="player" Visible="true">
                     <Position>
-                        <X>50</X>
-                        <Y>500</Y>
+                        <X>0</X>
+                        <Y>0</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="playerTest">
@@ -51,7 +77,7 @@
                 <Item xsi:type="CircleItem" Name="bottle" Visible="true">
                     <Position>
                         <X>100</X>
-                        <Y>100</Y>
+                        <Y>0</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="complexTest">

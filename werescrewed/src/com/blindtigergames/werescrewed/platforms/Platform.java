@@ -2,6 +2,7 @@ package com.blindtigergames.werescrewed.platforms;
 
 import java.util.ArrayList;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
@@ -15,18 +16,18 @@ import com.blindtigergames.werescrewed.skeleton.Skeleton;
 import com.blindtigergames.werescrewed.util.Util;
 
 /**
- * Platform
- * Mostly just an inherited class, but complex platform uses that as it's main class
+ * Platform Mostly just an inherited class, but complex platform uses that as
+ * it's main class
+ * 
  * @author Ranveer / Stew
  * 
  */
 
 public class Platform extends Entity {
-	
-	
-	//============================================
+
+	// ============================================
 	// Fields
-	//============================================
+	// ============================================
 	protected float width, height;
 	protected boolean dynamicType = false;
 	protected boolean rotate = false;
@@ -36,23 +37,25 @@ public class Platform extends Entity {
 	// tileConstant is 16 for setasbox function which uses half width/height
 	// creates 32x32 objects
 	protected final int tileConstant = 16;
-	
+
 	protected PlatformType platType;
-	
+
 	/**
 	 * Used for kinematic movement connected to skeleton
 	 */
-	protected Vector2 localPosition; //in pixels
-	protected float localRotation; // in radians
+	protected Vector2 localPosition; // in pixels, local coordinate system
+	protected float localRotation; // in radians, local rot system
+	private Vector2 originPosition; // world position that this platform spawns
+									// at, in pixels
 
-	
-	//============================================
+	// ============================================
 	// Constructors
-	//============================================
-	
+	// ============================================
+
 	/**
-	 * General purpose platform constructor for things that don't use an entitydef.
-	 * Currently used by PlatformBuilder and Tiled Platform
+	 * General purpose platform constructor for things that don't use an
+	 * entitydef. Currently used by PlatformBuilder and Tiled Platform
+	 * 
 	 * @param name
 	 * @param pos
 	 * @param tex
@@ -61,11 +64,13 @@ public class Platform extends Entity {
 	public Platform( String name, Vector2 pos, Texture tex, World world ) {
 		super( name, pos, tex, null, true );
 		this.world = world;
-		init(pos);
+		init( pos );
 	}
 
 	/**
-	 * Construct platforms using an EntityDef. This is used by PlatformBuilder.buildComplexBody()
+	 * Construct platforms using an EntityDef. This is used by
+	 * PlatformBuilder.buildComplexBody()
+	 * 
 	 * @param name
 	 * @param type
 	 * @param world
@@ -76,63 +81,94 @@ public class Platform extends Entity {
 	public Platform( String name, EntityDef type, World world, Vector2 pos,
 			float rot, Vector2 scale ) {
 		super( name, type, world, pos, rot, scale, null, true );
-		init(pos);
+		init( pos );
 	}
-	
+
 	/**
 	 * Initialize things.
+	 * 
 	 * @author stew
 	 * @param pos
 	 */
-	void init(Vector2 pos){
+	void init( Vector2 pos ) {
 		screws = new ArrayList< Screw >( );
-		localPosition = pos.cpy( );//pos.mul( Util.PIXEL_TO_BOX );
+		localPosition = new Vector2( 0, 0 );
 		localRotation = 0;
-		platType = PlatformType.DEFAULT; //set to default unless subclass sets it later in a constructor
+		originPosition = pos.cpy( );
+		platType = PlatformType.DEFAULT; // set to default unless subclass sets
+											// it later in a constructor
 	}
 
-	
-	//============================================
+	// ============================================
 	// Methods
-	//============================================
-	
+	// ============================================
+
 	/**
 	 * return localPosition Vector2 in PIXELS.
+	 * 
 	 * @return
 	 */
-	public Vector2 getLocalPos(){
+	public Vector2 getLocalPos( ) {
 		return localPosition;
 	}
-	
+
 	/**
 	 * set localPosition Vector2 in PIXELS!!!
-	 * @param newLocalPos in PIXELS
+	 * 
+	 * @param newLocalPos
+	 *            in PIXELS
 	 */
-	public void setLocalPos( Vector2 newLocalPosPixel ){
+	public void setLocalPos( Vector2 newLocalPosPixel ) {
 		localPosition.x = newLocalPosPixel.x;
 		localPosition.y = newLocalPosPixel.y;
 	}
-	
-	public void setLocalPos( float xPixel, float yPixel ){
+
+	public void setLocalPos( float xPixel, float yPixel ) {
 		localPosition.x = xPixel;
 		localPosition.y = yPixel;
 	}
-	
+
 	/**
 	 * returns local rotation in RADIANS
 	 */
-	public float getLocalRot(){
+	public float getLocalRot( ) {
 		return localRotation;
 	}
-	
+
 	/**
 	 * set local rotation in RADIAN
+	 * 
 	 * @param newLocalRotRadians
 	 */
-	public void setLocalRot( float newLocalRotRadians ){
+	public void setLocalRot( float newLocalRotRadians ) {
 		localRotation = newLocalRotRadians;
 	}
-	
+
+	/**
+	 * return originPosition Vector2 in PIXELS.
+	 * 
+	 * @return
+	 */
+	public Vector2 getOriginPos( ) {
+		return originPosition;
+	}
+
+	/**
+	 * set Origin Position Vector2 in PIXELS!!!
+	 * 
+	 * @param newLocalPos
+	 *            in PIXELS
+	 */
+	public void setOriginPos( Vector2 newOriginPosPixel ) {
+		originPosition.x = newOriginPosPixel.x;
+		originPosition.y = newOriginPosPixel.y;
+	}
+
+	public void setOriginPos( float xPixel, float yPixel ) {
+		originPosition.x = xPixel;
+		originPosition.y = yPixel;
+	}
+
 	public void addScrew( Screw s ) {
 		screws.add( s );
 	}
@@ -183,7 +219,7 @@ public class Platform extends Entity {
 			}
 		}
 
-		//TODO: Why de-activate this??
+		// TODO: Why de-activate this??
 		body.setActive( false );
 	}
 
@@ -214,24 +250,26 @@ public class Platform extends Entity {
 		float bodyAngle = body.getAngle( );
 		body.setTransform( body.getPosition( ), bodyAngle + 90 );
 	}
-	
+
 	/**
 	 * Returns the private member platform type for casting or whatever
+	 * 
 	 * @return PLATFORMTYPE
 	 */
-	public PlatformType getPlatformType(){
+	public PlatformType getPlatformType( ) {
 		return platType;
 	}
-	
+
 	/**
 	 * Set this platforms type!!
+	 * 
 	 * @author stew
 	 * @param newPlatformType
 	 */
-	public void setPlatformType(PlatformType newPlatformType){
+	public void setPlatformType( PlatformType newPlatformType ) {
 		platType = newPlatformType;
 	}
-	
+
 	/**
 	 * Set the position and angle of the kinematic platform based on the parent
 	 * skeleton's pos/rot. Use originPos & originalLocalRot
@@ -242,16 +280,18 @@ public class Platform extends Entity {
 	public void setPosRotFromSkeleton( Skeleton skeleton ) {
 		// originPos has already been updated by it's IMover by this point
 		// TODO: modify this if imover uses pixels or box2d meters
-		float radiusFromSkeleton = localPosition.cpy( ).mul( Util.PIXEL_TO_BOX ).len( );
+		float radiusFromSkeleton = originPosition.cpy( ).add( localPosition )
+				.mul( Util.PIXEL_TO_BOX ).len( );
 		// update angle between platform and skeleton
-		float newAngleFromSkeleton = skeleton.body.getAngle( )
-				+ Util.angleBetweenPoints( Vector2.Zero, localPosition );
 		Vector2 skeleOrigin = skeleton.body.getPosition( );
-		
+		float newAngleFromSkeleton = skeleton.body.getAngle( )
+				+ Util.angleBetweenPoints( skeleOrigin, originPosition.cpy( )
+						.add( localPosition ) );
+
 		float newRotation = localRotation + skeleton.body.getAngle( );
 		Vector2 newPos = Util.PointOnCircle( radiusFromSkeleton,
 				newAngleFromSkeleton, skeleOrigin );
-		
+
 		body.setTransform( newPos, newRotation );
 	}
 }

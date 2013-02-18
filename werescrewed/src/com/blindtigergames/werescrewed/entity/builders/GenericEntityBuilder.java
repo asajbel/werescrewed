@@ -9,6 +9,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityDef;
 import com.blindtigergames.werescrewed.entity.mover.IMover;
+import com.blindtigergames.werescrewed.skeleton.Skeleton;
 
 /**
  * EntityBuilder is meant to simplify creating entities and
@@ -51,6 +52,10 @@ public class GenericEntityBuilder <B extends GenericEntityBuilder<?>>{
 		sca = new Vector2(1,1);
 		solid = true;
 		mover = null;
+		type = null;
+		world = null;
+		tex = null;
+		body = null;
 	}
 	//Simply resets the builder to initial state and returns it.
 	@SuppressWarnings( "unchecked" )
@@ -225,6 +230,18 @@ public class GenericEntityBuilder <B extends GenericEntityBuilder<?>>{
 		if (type == null && body == null) return false;
 		return true;
 	}
+	/**
+	 * Returns the reason (if any) the builder does not have enough information to build.
+	 * Returns empty string if no problems were found.
+	 * 
+	 * @return String
+	 */	
+	protected String whyCantBuild(){
+		if (world == null) return "World is null.";
+		if (type == null && body == null) return "No type/body specified.";
+		return "";
+	}
+
 	/**
 	 * Returns an entity created from given data.
 	 * 

@@ -1,7 +1,11 @@
-package com.blindtigergames.werescrewed.entity.mover;
+package com.blindtigergames.werescrewed.entity.mover.puzzle;
 
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.joints.PrismaticJoint;
+import com.blindtigergames.werescrewed.entity.mover.IMover;
+import com.blindtigergames.werescrewed.entity.mover.PuzzleType;
+import com.blindtigergames.werescrewed.entity.mover.SteeringOutput;
+import com.blindtigergames.werescrewed.platforms.Platform;
 
 /**
  * Flips motor speed on prismatic joint so a piston will shoot up and
@@ -50,5 +54,15 @@ public class PuzzlePistonMover implements IMover {
         // TODO Auto-generated method stub
 
     }
+	
+	@Override
+	public void runPuzzleMovement( float screwVal, Platform p ) {
+
+	}
+	
+	@Override
+	public PuzzleType getMoverType( ) {
+		return null;
+	}
 
 }

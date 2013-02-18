@@ -221,7 +221,9 @@ public class EntityDef {
 	 * @return The loaded definition
 	 */
 	protected static EntityDef loadDefinition( String id ) {
-		String filename = WereScrewedGame.dirHandle.path( )  + "/entities/" + id + ".xml";
+		Gdx.app.log( "EntityDef", "Loading EntityDef: "+id);
+		String filename = WereScrewedGame.dirHandle.path( )  + "/entities/" + id + ".xml";		
+		Gdx.app.log( "EntityDef", "Filename: "+filename);
 		try {
 			XmlReader reader = new XmlReader( );
 			XmlReader.Element xml = reader

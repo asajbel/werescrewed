@@ -13,7 +13,7 @@ import com.blindtigergames.werescrewed.platforms.Platform;
  * @author stew
  ******************************************************************************/
 
-public class PlatformAccessor extends EntityAccessor implements TweenAccessor< Entity > {
+public class PlatformAccessor implements TweenAccessor< Entity > {
 
 	public static final int LOCAL_POS_X = 1;
 	public static final int LOCAL_POS_Y = 2;
@@ -38,9 +38,9 @@ public class PlatformAccessor extends EntityAccessor implements TweenAccessor< E
 			return 1;
 		default:
 			//default to using parent Entity Accessor or breaking
-			if ( super.getValues( target, tweenType, returnValues ) < 0 ) {
+			//if ( getValues( target, tweenType, returnValues ) < 0 ) {
 				assert false;
-			}
+			//}
 			return -1;
 		}
 	}
@@ -62,7 +62,7 @@ public class PlatformAccessor extends EntityAccessor implements TweenAccessor< E
 			break;
 		default:
 			//default to using parent Entity Accessor or breaking
-			super.setValues( target, tweenType, newValues );
+			//super.setValues( target, tweenType, newValues );
 			assert false;
 		}
 	}
