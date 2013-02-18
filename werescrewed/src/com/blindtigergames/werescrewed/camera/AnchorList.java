@@ -242,9 +242,20 @@ public class AnchorList {
 	public float specialDistance( ) {
 		if ( anchorList.size( ) < 2 )
 			return 0.0f;
-		specialMidpoint.x = anchorList.get( 0 ).position.x;
-		specialMidpoint.y = anchorList.get( 0 ).position.y;
-		specialMidpoint.sub( anchorList.get( 1 ).position );
+
+		boolean foundFirst = false;
+		for ( Anchor curAnchor : anchorList ) {
+			if ( curAnchor.special ) {
+				if ( !foundFirst ) {
+					foundFirst = true;
+					specialMidpoint.x = curAnchor.position.x;
+					specialMidpoint.y = curAnchor.position.y;
+				} else {
+					specialMidpoint.sub( anchorList.get( 1 ).position );
+				}
+			}
+		}
+
 		return specialMidpoint.len( );
 	}
 
@@ -262,7 +273,8 @@ public class AnchorList {
 		sum.x = 0f;
 		sum.y = 0f;
 		for ( Anchor curAnchor : anchorList ) {
-			if ( curAnchor.activated ) {
+			if ( curAnchor != null
+					&& ( curAnchor.activated || curAnchor.special ) ) {
 				sum.add( curAnchor.position );
 				count++;
 			}
