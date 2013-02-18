@@ -54,31 +54,20 @@ public class Entity {
 	 */
 	public Entity( String name, EntityDef type, World world, Vector2 pos,
 			float rot, Vector2 scale, Texture texture, boolean solid ) {
-		this.construct( name, pos, solid );
+		this.construct( name, solid );
 		this.type = type;
 		this.world = world;
 		this.sprite = constructSprite( texture );
-		this.body = constructBody( );
+		this.body = constructBodyByType( );
 		setPosition( pos );
 	}
-	// Kevin: Why is this commented out?
-	/*public Entity(String n, EntityDef d, World w, Vector2 pos,
-			float rot, Vector2 sca)
-	{
-		this();
-		name = n;
-		type = d;
-		world = w;
-		constructSprite();
-		constructBody(pos.x, pos.y, sca.x, sca.y);
-	}*/
 
 	/**
 	 * Create entity by body. Debug constructor: Should be removed eventually.
 	 * 
 	 * @param name
-	 * @param pos
-	 *            ition of the entity in the world
+	 * @param positionPixels
+	 *            ition of the entity in the world in PIXELS
 	 * @param texture
 	 *            (null if defined elsewhere)
 	 * @param body
@@ -86,22 +75,22 @@ public class Entity {
 	 * @param solid
 	 *            boolean determining whether or not the player can stand on it
 	 */
-	public Entity( String name, Vector2 pos, Texture texture, Body body,
+	public Entity( String name, Vector2 positionPixels, Texture texture, Body body,
 			boolean solid ) {
-		this.construct( name, pos, solid );
+		this.construct( name, solid );
 		this.sprite = constructSprite( texture );
 		this.body = body;
 		if ( body != null ) {
 			world = body.getWorld( );
 			sprite.setScale( Util.PIXEL_TO_BOX );
 		}
-		setPosition( pos );
-
+		setPosition( positionPixels );
 	}
+	
 	/**
 	 * Common sub-constructor that applies to all Entity() constructors.
 	 */
-	protected void construct(String name, Vector2 pos, boolean solid){
+	protected void construct(String name, boolean solid){
 		this.name = name;
 		this.solid = solid;
 		this.offset = new Vector2( 0.0f, 0.0f );
@@ -111,27 +100,33 @@ public class Entity {
 		this.active = true;
 	}
 	
-	public void setPosition(float x, float y){
-		//x *= Util.PIXEL_TO_BOX;
-		//y *= Util.PIXEL_TO_BOX;
+	/**
+	 * Set position of the body in meters.
+	 * @param xMeters
+	 * @param yMeters
+	 */
+	public void setPosition(float xMeters, float yMeters){
 		if (body != null){
-			body.setTransform(x, y, body.getAngle());
+			body.setTransform(xMeters, yMeters, body.getAngle());
 		} else if (sprite != null){
-			sprite.setPosition(x, y);
+			sprite.setPosition(xMeters*Util.BOX_TO_PIXEL, yMeters*Util.BOX_TO_PIXEL);
 		}
 	}
 	
-	public void setPosition( Vector2 pos ) {
-		setPosition(pos.x,pos.y);
+	/**
+	 * Set position by  meters!!
+	 * @param positionMeters
+	 */
+	public void setPosition( Vector2 positionMeters ) {
+		setPosition(positionMeters.x,positionMeters.y);
 	}
 
+	/**
+	 * returns body position in meters.
+	 * @return Vector2 in meters
+	 */
 	public Vector2 getPosition( ) {
 		return body.getPosition( );
-	}
-
-	public void move( Vector2 vector ) {
-		Vector2 pos = body.getPosition( ).add( vector );
-		setPosition( pos );
 	}
 
 	public void draw( SpriteBatch batch ) {
@@ -210,20 +205,13 @@ public class Entity {
 		sprite.setOrigin( origin.x, origin.y );
 		return sprite;
 	}
-	
-    public void Move(Vector2 vector)
-    {
-    	Vector2 pos = body.getPosition().add(vector.mul( Util.PIXEL_TO_BOX ));
-    	setPosition(pos);
-    }
-
 
 	/**
 	 * Builds the body associated with the entity's type.
 	 * 
 	 * @return the loaded body, or null, if type is null
 	 */
-	protected Body constructBody( ) {
+	protected Body constructBodyByType( ) {
 		Body newBody;
 		if ( type != null ) {
 			newBody = world.createBody( type.bodyDef );
@@ -391,6 +379,6 @@ public class Entity {
 	}
 	
 	public String toString(){
-		return "Entity["+name+"] pos:"+body.getPosition( )+", body.active:"+body.isActive( )+", body.awake:"+body.isAwake( );
+		return "Entity["+name+"] pos:"+body.getPosition( )+", angle: "+body.getAngle( )+", body.active:"+body.isActive( )+", body.awake:"+body.isAwake( );
 	}
 }
