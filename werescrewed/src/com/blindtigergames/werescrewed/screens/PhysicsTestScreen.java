@@ -34,6 +34,7 @@ import com.blindtigergames.werescrewed.entity.mover.RockingMover;
 import com.blindtigergames.werescrewed.entity.mover.RotateByDegree;
 import com.blindtigergames.werescrewed.entity.mover.SlidingMotorMover;
 import com.blindtigergames.werescrewed.entity.mover.TimelineTweenMover;
+import com.blindtigergames.werescrewed.entity.mover.TweenMover;
 import com.blindtigergames.werescrewed.entity.mover.puzzle.PuzzlePistonTweenMover;
 import com.blindtigergames.werescrewed.entity.tween.EntityAccessor;
 import com.blindtigergames.werescrewed.entity.tween.PlatformAccessor;
@@ -126,7 +127,9 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		rootSkeleton.addSkeleton( skeleton );
 
 		debugRenderer = new SBox2DDebugRenderer( Util.BOX_TO_PIXEL );
-		// debugRenderer.setDrawJoints( false );
+
+		debugRenderer.setDrawJoints( false );
+
 
 		Gdx.app.setLogLevel( Application.LOG_DEBUG );
 
@@ -311,7 +314,8 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		skeleton.addKinematicPlatform( skeletonTest1 );
 
 		rope = new Rope( "rope", new Vector2( 8f, 1.5f ), new Vector2( 16.0f,
-				32.0f ), 10, null, world );
+				64.0f ), 5, null, world );
+
 
 		TiledPlatform pathPlatform = platBuilder.dimensions( 4, 1 )
 				.position( 1600, 100 ).friction( 1f ).kinematic( )
@@ -341,6 +345,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 										PlatformAccessor.LOCAL_POS_XY, 2 )
 								.target( 0, 0 ).ease( TweenEquations.easeNone )
 								.start( ) ).repeat( Tween.INFINITY, 0 ).start( ) ) );
+
 
 		/*
 		 * TODO: FIX PLATFORM DENSITY
