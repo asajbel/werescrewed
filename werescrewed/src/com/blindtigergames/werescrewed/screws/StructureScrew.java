@@ -162,16 +162,16 @@ public class StructureScrew extends Screw {
 		body.setUserData( this );
 
 		// add radar sensor to screw
-		CircleShape radarShape = new CircleShape( );
-		radarShape.setRadius( sprite.getWidth( ) * 1.25f * Util.PIXEL_TO_BOX );
-		FixtureDef radarFixture = new FixtureDef( );
-		radarFixture.shape = radarShape;
-		radarFixture.isSensor = true;
-		radarFixture.filter.categoryBits = Util.CATEGORY_SCREWS;
-		radarFixture.filter.maskBits = Util.CATEGORY_PLAYER
-				| Util.CATEGORY_SUBPLAYER;
-		body.createFixture( radarFixture );
-		radarShape.dispose( );
+//		CircleShape radarShape = new CircleShape( );
+//		radarShape.setRadius( sprite.getWidth( ) * 1.1f * Util.PIXEL_TO_BOX );
+//		FixtureDef radarFixture = new FixtureDef( );
+//		radarFixture.shape = radarShape;
+//		radarFixture.isSensor = true;
+//		radarFixture.filter.categoryBits = Util.CATEGORY_SCREWS;
+//		radarFixture.filter.maskBits = Util.CATEGORY_PLAYER
+//				| Util.CATEGORY_SUBPLAYER;
+//		body.createFixture( radarFixture );
+//		radarShape.dispose( );
 	}
 
 	private void connectScrewToEntity( Entity entity, Skeleton skeleton, Vector2 pos ) {

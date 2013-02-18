@@ -1,6 +1,5 @@
 package com.blindtigergames.werescrewed.screws;
 
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
@@ -33,8 +32,8 @@ public class PuzzleScrew extends Screw {
 		resetAble = resetable;
 		puzzleManager = new PuzzleManager( world );
 		screwType = ScrewType.PUZZLE;
-		
-		sprite.setColor( Color.GREEN );
+
+		sprite.setColor( 16f/255f, 215f/255f, 96f/255f, 1.0f);
 
 		constructBody( pos );
 		connectScrewToEntity( entity );
@@ -114,18 +113,18 @@ public class PuzzleScrew extends Screw {
 		body.setUserData( this );
 
 		// add radar sensor to screw
-		CircleShape radarShape = new CircleShape( );
-		radarShape.setRadius( sprite.getWidth( ) * 1.25f * Util.PIXEL_TO_BOX );
-		FixtureDef radarFixture = new FixtureDef( );
-		radarFixture.shape = radarShape;
-		radarFixture.isSensor = true;
-		radarFixture.filter.categoryBits = Util.CATEGORY_SCREWS;
-		radarFixture.filter.maskBits = Util.CATEGORY_PLAYER
-				| Util.CATEGORY_SUBPLAYER;
-		body.createFixture( radarFixture );
+//		CircleShape radarShape = new CircleShape( );
+//		radarShape.setRadius( sprite.getWidth( ) * 1.25f * Util.PIXEL_TO_BOX );
+//		FixtureDef radarFixture = new FixtureDef( );
+//		radarFixture.shape = radarShape;
+//		radarFixture.isSensor = true;
+//		radarFixture.filter.categoryBits = Util.CATEGORY_SCREWS;
+//		radarFixture.filter.maskBits = Util.CATEGORY_PLAYER
+//				| Util.CATEGORY_SUBPLAYER;
+//		body.createFixture( radarFixture );
 
 		// You dont dispose the fixturedef, you dispose the shape
-		radarShape.dispose( );
+		//radarShape.dispose( );
 		screwShape.dispose( );
 	}
 
