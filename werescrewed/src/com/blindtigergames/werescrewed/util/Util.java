@@ -22,17 +22,20 @@ public class Util {
 	public static final float PIXEL_TO_BOX = 1 / BOX_TO_PIXEL;
 	public static final float DEG_TO_RAD = 0.0174532925199432957f;
 	public static final float RAD_TO_DEG = 57.295779513082320876f;
+	public static final float PI = 3.141592653589793f;
+	public static final float TWO_PI = 2*3.141592653589793f;
 	
 	/**
 	 * Collision Categories and masks for every 
 	 * object that needs them
 	 */
-	public static final short CATEGORY_SCREWS = 0x0008;
-	public static final short CATEGORY_PLAYER = 0x0001;
-	public static final short CATEGORY_SUBPLAYER = 0x0010;
-	public static final short CATEGORY_SUBPLATFORM = 0x0006;
-	public static final short DYNAMIC_OBJECTS = 0x0004;
-	public static final short KINEMATIC_OBJECTS = 0x0005;
+	public static final short CATEGORY_PLAYER = 0x0002;
+	public static final short CATEGORY_SUBPLAYER = 0x0004;
+	public static final short DYNAMIC_OBJECTS = 0x0003;
+	public static final short KINEMATIC_OBJECTS = 0x0010;
+	public static final short CATEGORY_SUBPLATFORM = 0x0020;
+	public static final short CATEGORY_SCREWS = 0x0040;
+	public static final short CATEGORY_ROPE = 0x0080;
 	public static final short CATEGORY_NOTHING = 0x0000;
 	public static final short CATEGORY_EVERYTHING = -1;
 	

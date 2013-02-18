@@ -2,9 +2,10 @@ package com.blindtigergames.werescrewed.entity.mover;
 
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.joints.PrismaticJoint;
+import com.blindtigergames.werescrewed.platforms.Platform;
 
 /**
- * Moves an entity on a prismatic joint using a motor FOREVER. Will not stop
+ * Moves a dynamic entity on a prismatic joint using a motor FOREVER. Will not stop
  * This mover assumes you have created a prismatic joint already
  * 
  * @author stew
@@ -91,5 +92,14 @@ public class PistonMover implements IMover {
 		// TODO Auto-generated method stub
 
 	}
+	
+	@Override
+	public void runPuzzleMovement( float screwVal, Platform p ) {
 
+	}
+	
+	@Override
+	public PuzzleType getMoverType( ) {
+		return null;
+	}
 }

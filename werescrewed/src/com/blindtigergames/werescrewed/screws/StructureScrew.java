@@ -31,11 +31,12 @@ public class StructureScrew extends Screw {
 		maxDepth = max;
 		depth = max;
 		rotation = 0;
-		fallTimeout = max * 3;
+		fallTimeout = 70;
 		extraJoints = new ArrayList< RevoluteJoint >( );
-
+		screwType = ScrewType.STRUCTURAL;
+		
 		constuctBody( pos );
-		connectScrewToEntity( skeleton, pos );
+		connectScrewToEntity( entity, skeleton, pos );
 		connectEntityToSkeleton( entity, skeleton, pos );
 
 	}
@@ -78,7 +79,6 @@ public class StructureScrew extends Screw {
 
 	@Override
 	public void update( float deltaTime ) {
-		body.setAwake( true );
 		super.update( deltaTime );
 		Vector2 bodyPos = body.getPosition( ).mul( Util.BOX_TO_PIXEL );
 		sprite.setPosition( bodyPos.x - offset.x, bodyPos.y - offset.y );
@@ -93,7 +93,7 @@ public class StructureScrew extends Screw {
 			}
 			fallTimeout--;
 		} else {
-			fallTimeout = maxDepth * 4;
+			fallTimeout = 70;
 		}
 		if ( depth > 0 ) {
 			sprite.setPosition(
@@ -144,7 +144,7 @@ public class StructureScrew extends Screw {
 		// create the screw body
 		BodyDef screwBodyDef = new BodyDef( );
 		screwBodyDef.type = BodyType.DynamicBody;
-		screwBodyDef.position.set( pos );
+		screwBodyDef.position.set( pos.mul( Util.PIXEL_TO_BOX ) );
 		screwBodyDef.gravityScale = 0.07f;
 		body = world.createBody( screwBodyDef );
 		CircleShape screwShape = new CircleShape( );
@@ -153,6 +153,7 @@ public class StructureScrew extends Screw {
 		FixtureDef screwFixture = new FixtureDef( );
 		screwFixture.shape = screwShape;
 		screwFixture.isSensor = true;
+		screwFixture.density = 0.5f;
 		screwFixture.filter.categoryBits = Util.CATEGORY_SCREWS;
 		screwFixture.filter.maskBits = Util.CATEGORY_PLAYER
 				| Util.CATEGORY_SUBPLAYER;
@@ -161,22 +162,22 @@ public class StructureScrew extends Screw {
 		body.setUserData( this );
 
 		// add radar sensor to screw
-		CircleShape radarShape = new CircleShape( );
-		radarShape.setRadius( sprite.getWidth( ) * 1.25f * Util.PIXEL_TO_BOX );
-		FixtureDef radarFixture = new FixtureDef( );
-		radarFixture.shape = radarShape;
-		radarFixture.isSensor = true;
-		radarFixture.filter.categoryBits = Util.CATEGORY_SCREWS;
-		radarFixture.filter.maskBits = Util.CATEGORY_PLAYER
-				| Util.CATEGORY_SUBPLAYER;
-		body.createFixture( radarFixture );
-		radarShape.dispose( );
+//		CircleShape radarShape = new CircleShape( );
+//		radarShape.setRadius( sprite.getWidth( ) * 1.1f * Util.PIXEL_TO_BOX );
+//		FixtureDef radarFixture = new FixtureDef( );
+//		radarFixture.shape = radarShape;
+//		radarFixture.isSensor = true;
+//		radarFixture.filter.categoryBits = Util.CATEGORY_SCREWS;
+//		radarFixture.filter.maskBits = Util.CATEGORY_PLAYER
+//				| Util.CATEGORY_SUBPLAYER;
+//		body.createFixture( radarFixture );
+//		radarShape.dispose( );
 	}
 
-	private void connectScrewToEntity( Skeleton skeleton, Vector2 pos ) {
+	private void connectScrewToEntity( Entity entity, Skeleton skeleton, Vector2 pos ) {
 		// connect the screw to the entity
 		RevoluteJointDef revoluteJointDef = new RevoluteJointDef( );
-		revoluteJointDef.initialize( body, skeleton.body, pos );
+		revoluteJointDef.initialize( body, entity.body, pos );
 		revoluteJointDef.enableMotor = false;
 		screwToSkel = ( RevoluteJoint ) world.createJoint( revoluteJointDef );
 	}
@@ -184,6 +185,7 @@ public class StructureScrew extends Screw {
 	private void connectEntityToSkeleton( Entity entity, Skeleton skeleton,
 			Vector2 pos ) {
 		// connect the entity to the skeleton
+		entity.body.setFixedRotation( false );
 		RevoluteJointDef revoluteJointDef = new RevoluteJointDef( );
 		revoluteJointDef = new RevoluteJointDef( );
 		revoluteJointDef.initialize( entity.body, skeleton.body, pos );

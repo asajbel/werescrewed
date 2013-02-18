@@ -27,7 +27,7 @@ class WinScreen implements com.badlogic.gdx.Screen{
 		firstLine = new Label( "Mission Complete!", font );
 		secLine = new Label( "Winners Never Lose!!", font );
 		nextButton = new Button( "Next Level", font, new ScreenSwitchHandler(
-				ScreenType.PHYSICS ) );
+				ScreenType.LOADING ) );
 	}
 
 	@Override

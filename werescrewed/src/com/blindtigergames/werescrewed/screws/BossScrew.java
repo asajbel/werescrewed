@@ -3,7 +3,6 @@ package com.blindtigergames.werescrewed.screws;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -25,8 +24,6 @@ import com.blindtigergames.werescrewed.util.Util;
  */
 
 public class BossScrew extends Screw {
-	
-	protected boolean endFlag;
 
 	public BossScrew( String name, Vector2 pos, int max, Entity entity,
 			Skeleton skeleton, World world ) {
@@ -35,15 +32,15 @@ public class BossScrew extends Screw {
 		maxDepth = max;
 		depth = max;
 		rotation = 0;
-		fallTimeout = max * 4;
+		fallTimeout = 70;
 		extraJoints = new ArrayList< RevoluteJoint >( );
-		endFlag = false;
+		screwType = ScrewType.BOSS;
 
 		// create the screw body
-		sprite.setColor( Color.RED );
+		sprite.setColor( 244f/255f, 215f/255f, 7f/255f, 1.0f);
 		BodyDef screwBodyDef = new BodyDef( );
 		screwBodyDef.type = BodyType.DynamicBody;
-		screwBodyDef.position.set( pos );
+		screwBodyDef.position.set( pos.mul( Util.PIXEL_TO_BOX ) );
 		screwBodyDef.gravityScale = 0.07f;
 		body = world.createBody( screwBodyDef );
 		CircleShape screwShape = new CircleShape( );
@@ -60,16 +57,16 @@ public class BossScrew extends Screw {
 		body.setUserData( this );
 
 		// add radar sensor to screw
-		CircleShape radarShape = new CircleShape( );
-		radarShape.setRadius( sprite.getWidth( ) * 1.25f * Util.PIXEL_TO_BOX );
-		FixtureDef radarFixture = new FixtureDef( );
-		radarFixture.shape = radarShape;
-		radarFixture.isSensor = true;
-		radarFixture.filter.categoryBits = Util.CATEGORY_SCREWS;
-		radarFixture.filter.maskBits = Util.CATEGORY_PLAYER
-				| Util.CATEGORY_SUBPLAYER;
-		body.createFixture( radarFixture );
-		radarShape.dispose( );
+//		CircleShape radarShape = new CircleShape( );
+//		radarShape.setRadius( sprite.getWidth( ) * 1.25f * Util.PIXEL_TO_BOX );
+//		FixtureDef radarFixture = new FixtureDef( );
+//		radarFixture.shape = radarShape;
+//		radarFixture.isSensor = true;
+//		radarFixture.filter.categoryBits = Util.CATEGORY_SCREWS;
+//		radarFixture.filter.maskBits = Util.CATEGORY_PLAYER
+//				| Util.CATEGORY_SUBPLAYER;
+//		body.createFixture( radarFixture );
+//		radarShape.dispose( );
 
 		// connect the screw to the entity
 		RevoluteJointDef revoluteJointDef = new RevoluteJointDef( );
@@ -82,9 +79,6 @@ public class BossScrew extends Screw {
 		revoluteJointDef.initialize( entity.body, skeleton.body, pos );
 		revoluteJointDef.enableMotor = false;
 		platformJoint = ( RevoluteJoint ) world.createJoint( revoluteJointDef );
-		if ( entity.body.getJointList( ).size( ) > 3 ) {
-			entity.body.setType( BodyType.KinematicBody );
-		}
 	}
 
 	/**
@@ -105,32 +99,42 @@ public class BossScrew extends Screw {
 
 	@Override
 	public void screwLeft( ) {
-		if ( depth > 0 ) {
-			body.setAngularVelocity( 15 );
-			depth--;
-			rotation += 10;
-			screwStep = depth + 5;
+		if ( playerCount == 1 ) {
+			if ( depth > 0 ) {
+				body.setAngularVelocity( 15 );
+				depth--;
+				rotation += 10;
+				screwStep = depth + 5;
+			}
+		} else {
+			playerCount++;
 		}
 	}
 
 	@Override
 	public void screwRight( ) {
-		if ( depth < maxDepth ) {
-			body.setAngularVelocity( -15 );
-			depth++;
-			rotation -= 10;
-			screwStep = depth + 6;
+		if ( playerCount == 1 ) {
+			if ( depth < maxDepth ) {
+				body.setAngularVelocity( -15 );
+				depth++;
+				rotation -= 10;
+				screwStep = depth + 6;
+			}
+		} else {
+			playerCount++;
 		}
 	}
-	
-	public boolean endLevelFlag ( ) {
+
+	@Override
+	public boolean endLevelFlag( ) {
 		return endFlag;
 	}
 	
-	public int getDepth ( ) {
+	@Override
+	public int getDepth( ) {
 		return depth;
 	}
-
+	
 	@Override
 	public void update( float deltaTime ) {
 		super.update( deltaTime );
@@ -143,17 +147,14 @@ public class BossScrew extends Screw {
 				for ( RevoluteJoint j : extraJoints ) {
 					world.destroyJoint( j );
 				}
-				Gdx.app.log( "Boss Screw Removed" , "End Level" );
+				Gdx.app.log( "Boss Screw Removed", "End Level" );
 				endFlag = true;
-				//if the number of joints is less than 3 set to dynamic body
-				//a joint for the screw and a joint to the skeleton or less
-				if ( platformJoint.getBodyA( ).getJointList( ).size( ) < 3 ) {
-					platformJoint.getBodyA( ).setType( BodyType.DynamicBody );
-				}
+				// if the number of joints is less than 3 set to dynamic body
+				// a joint for the screw and a joint to the skeleton or less
 			}
 			fallTimeout--;
 		} else {
-			fallTimeout = maxDepth * 4;
+			fallTimeout = 70;
 		}
 		if ( depth > 0 ) {
 			sprite.setPosition(
@@ -189,7 +190,7 @@ public class BossScrew extends Screw {
 		if ( depth == screwStep ) {
 			body.setAngularVelocity( 0 );
 		}
-
+		playerCount = 0;
 	}
 
 	@Override
@@ -205,4 +206,6 @@ public class BossScrew extends Screw {
 	private int fallTimeout;
 	private boolean lerpUp = true;
 	private float alpha = 0.0f;
+	private boolean endFlag = false;
+	private int playerCount = 0;
 }

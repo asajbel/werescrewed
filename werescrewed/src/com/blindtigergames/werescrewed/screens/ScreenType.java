@@ -1,17 +1,29 @@
 package com.blindtigergames.werescrewed.screens;
 
 public enum ScreenType {
+	CREDITS {
+		@Override
+		protected com.badlogic.gdx.Screen getScreenInstance( ) {
+			return new CreditsScreen( );
+		}
+	},
 
+	GAME {
+		@Override
+		protected com.badlogic.gdx.Screen getScreenInstance( ) {
+			return new PhysicsTestScreen();
+		}
+	},
+	GLEED {
+        @Override
+        protected com.badlogic.gdx.Screen getScreenInstance() {
+             return new GleedTestScreen("testLevel");
+        }
+    },
 	INTRO {
 		@Override
 		protected com.badlogic.gdx.Screen getScreenInstance( ) {
 			return new IntroScreen( );
-		}
-	},
-	PAUSE {
-		@Override
-		protected com.badlogic.gdx.Screen getScreenInstance( ) {
-			return new PauseScreen( );
 		}
 	},
 	LOADING {
@@ -20,29 +32,16 @@ public enum ScreenType {
 			return new LoadingScreen( );
 		}
 	},
-	MAIN_MENU {
+	PAUSE {
 		@Override
 		protected com.badlogic.gdx.Screen getScreenInstance( ) {
-			return new MainMenuScreen( );
+			return new PauseScreen( );
 		}
 	},
-	GAME {
+	PLAYTEST {
 		@Override
 		protected com.badlogic.gdx.Screen getScreenInstance( ) {
-			return new PhysicsTestScreen();
-		}
-	},
-	
-	WIN {
-		@Override
-		protected com.badlogic.gdx.Screen getScreenInstance( ) {
-			return new WinScreen( );
-		}
-	},
-	CREDITS {
-		@Override
-		protected com.badlogic.gdx.Screen getScreenInstance( ) {
-			return new CreditsScreen( );
+			return new DebugPlayTestScreen( );
 		}
 	},
 	PHYSICS {
@@ -51,18 +50,22 @@ public enum ScreenType {
 			return new PhysicsTestScreen( );
 		}
 	},
-	IMOVER {
-        @Override
-        protected com.badlogic.gdx.Screen getScreenInstance() {
-             return new IMoverGameScreen();
-        }
-    },
-	GLEED {
-        @Override
-        protected com.badlogic.gdx.Screen getScreenInstance() {
-             return new GleedTestScreen("testLevel");
-        }
-    };
+	
+	MAIN_MENU {
+		@Override
+		protected com.badlogic.gdx.Screen getScreenInstance( ) {
+			return new MainMenuScreen( );
+		}
+	},
+	
+	
+	WIN {
+		@Override
+		protected com.badlogic.gdx.Screen getScreenInstance( ) {
+			return new WinScreen( );
+		}
+	};
+	
 
 	protected abstract com.badlogic.gdx.Screen getScreenInstance( );
 

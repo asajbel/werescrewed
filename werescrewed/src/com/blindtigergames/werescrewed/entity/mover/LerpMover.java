@@ -13,12 +13,25 @@ public class LerpMover implements IMover {
 	private float alpha = 0;
 	private boolean loop;
 	private boolean done = false;
+	private PuzzleType puzzleType;
+	private LinearAxis axis;
 
-	public LerpMover( Vector2 bp, Vector2 ep, float speed, boolean loop ) {
-		beginningPoint = new Vector2( bp.x, bp.y );
-		endPoint = new Vector2( ep.x, ep.y );
+	/**
+	 * 
+	 * @param beginningPoint
+	 * @param endingPoint
+	 * @param speed
+	 * @param loop
+	 * @param type does the puzzle override the platforms mover or just move once
+	 */
+	public LerpMover( Vector2 beginningPoint, Vector2 endingPoint, float speed,
+			boolean loop, PuzzleType type, LinearAxis axis ) {
+		this.beginningPoint = beginningPoint.cpy( );
+		this.endPoint = endingPoint.cpy( );
 		this.speed = speed;
 		this.loop = loop;
+		this.axis = axis;
+		puzzleType = type;
 	}
 
 	@Override
@@ -36,7 +49,13 @@ public class LerpMover implements IMover {
 		}
 		Vector2 temp = new Vector2( beginningPoint.x, beginningPoint.y );
 		beginningPoint.lerp( endPoint, alpha );
-		body.setTransform( beginningPoint, 0.0f );
+		if ( axis == LinearAxis.VERTICAL ) {
+			body.setTransform( body.getPosition( ).x, beginningPoint.y * Util.PIXEL_TO_BOX, 0.0f );
+		} else if ( axis == LinearAxis.HORIZONTAL ) {
+			body.setTransform( beginningPoint.x * Util.PIXEL_TO_BOX, body.getPosition( ).y, 0.0f );			
+		} else {
+			body.setTransform( beginningPoint.mul( Util.PIXEL_TO_BOX ), 0.0f );			
+		}
 		beginningPoint = temp;
 	}
 
@@ -49,12 +68,28 @@ public class LerpMover implements IMover {
 		return done;
 	}
 
+	@Override
 	public void runPuzzleMovement( float screwVal, Platform p ) {
-		Vector2 temp = new Vector2( beginningPoint.x, beginningPoint.y );
-		beginningPoint.lerp( endPoint, screwVal );
-		p.setLocalPos( beginningPoint.mul( Util.BOX_TO_PIXEL ) );
-		// body.setTransform( beginningPoint, 0.0f );
-		beginningPoint = temp;
+		if ( puzzleType == PuzzleType.PUZZLE_SCREW_CONTROL ) {
+			Vector2 temp = new Vector2( beginningPoint.x, beginningPoint.y );
+			beginningPoint.lerp( endPoint, screwVal );
+			if ( axis == LinearAxis.VERTICAL ) {
+				p.setLocalPos( p.getLocalPos( ).x, beginningPoint.y );
+			} else if ( axis == LinearAxis.HORIZONTAL ) {
+				p.setLocalPos( beginningPoint.x, p.getLocalPos( ).y );			
+			} else {
+				p.setLocalPos( beginningPoint.y, 0.0f );		
+			}
+			beginningPoint = temp;
+		} else if ( puzzleType == PuzzleType.OVERRIDE_ENTITY_MOVER ) {
+			if ( p.mover == null ) {
+				p.mover = this;
+			}
+		}
 	}
 
+	@Override
+	public PuzzleType getMoverType( ) {
+		return puzzleType;
+	}
 }

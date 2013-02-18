@@ -4,7 +4,6 @@ import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.files.FileHandle;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.blindtigergames.werescrewed.WereScrewedGame;
 
@@ -13,7 +12,7 @@ import com.blindtigergames.werescrewed.WereScrewedGame;
  * Doesn't work yet
  */
 
-public class LoadingScreen implements com.badlogic.gdx.Screen {
+public class LoadingScreen extends Screen {
 
 	/**
 	 * 
@@ -124,10 +123,7 @@ if(entry.name( ).equals( "common" )){
 	 */
 	@Override
 	public void render(float delta) {
-
-		// Clear the screen
-		Gdx.gl20.glClearColor( 0.0f, 0f, 0.0f, 1.0f );
-		Gdx.gl20.glClear( GL20.GL_COLOR_BUFFER_BIT );
+		super.render(delta);
 
 		//begin loading the assets
 		if ( WereScrewedGame.manager.update( ) ) { 
@@ -141,36 +137,7 @@ if(entry.name( ).equals( "common" )){
 		//Gdx.app.log( "LoadingScreen.render", "Loading... ");
 
 	}
-
-	@Override
-	public void resize( int width, int height ) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void show( ) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void hide( ) {
-		// WereScrewedGame.manager.unload("data/loading.pack");
-	}
-
-	@Override
-	public void pause( ) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void resume( ) {
-		// TODO Auto-generated method stub
-
-	}
-
+	
 	@Override
 	public void dispose( ) {
 		WereScrewedGame.manager.dispose();

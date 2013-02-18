@@ -1,12 +1,13 @@
 package com.blindtigergames.werescrewed.entity;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.Filter;
+import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.blindtigergames.werescrewed.entity.mover.IMover;
@@ -29,6 +30,10 @@ public class Entity {
 	public IMover mover;
 	protected boolean solid;
 	protected float energy;
+	protected boolean active;
+	protected boolean visible;
+	protected boolean maintained;
+
 	/**
 	 * Create entity by definition
 	 * 
@@ -49,17 +54,14 @@ public class Entity {
 	 */
 	public Entity( String name, EntityDef type, World world, Vector2 pos,
 			float rot, Vector2 scale, Texture texture, boolean solid ) {
-		this.name = name;
+		this.construct( name, pos, solid );
 		this.type = type;
 		this.world = world;
-		this.solid = solid;
-		this.offset = new Vector2( 0.0f, 0.0f );
 		this.sprite = constructSprite( texture );
 		this.body = constructBody( );
-		this.energy = 1.0f;
 		setPosition( pos );
 	}
-	
+	// Kevin: Why is this commented out?
 	/*public Entity(String n, EntityDef d, World w, Vector2 pos,
 			float rot, Vector2 sca)
 	{
@@ -86,9 +88,7 @@ public class Entity {
 	 */
 	public Entity( String name, Vector2 pos, Texture texture, Body body,
 			boolean solid ) {
-		this.name = name;
-		this.solid = solid;
-		this.offset = new Vector2( 0.0f, 0.0f );
+		this.construct( name, pos, solid );
 		this.sprite = constructSprite( texture );
 		this.body = body;
 		if ( body != null ) {
@@ -96,7 +96,19 @@ public class Entity {
 			sprite.setScale( Util.PIXEL_TO_BOX );
 		}
 		setPosition( pos );
+
+	}
+	/**
+	 * Common sub-constructor that applies to all Entity() constructors.
+	 */
+	protected void construct(String name, Vector2 pos, boolean solid){
+		this.name = name;
+		this.solid = solid;
+		this.offset = new Vector2( 0.0f, 0.0f );
 		this.energy = 1.0f;
+		this.maintained = true;
+		this.visible = true;
+		this.active = true;
 	}
 	
 	public void setPosition(float x, float y){
@@ -123,7 +135,7 @@ public class Entity {
 	}
 
 	public void draw( SpriteBatch batch ) {
-		if ( sprite != null ) {
+		if ( sprite != null && visible) {
 			Vector2 bodyPos = body.getPosition( ).mul( Util.BOX_TO_PIXEL );
 			sprite.setPosition( bodyPos.x - offset.x, bodyPos.y - offset.y );
 			sprite.setRotation( MathUtils.radiansToDegrees * body.getAngle( ) );
@@ -141,8 +153,10 @@ public class Entity {
 	 * @param deltaTime
 	 */
 	public void updateMover( float deltaTime ){
-		if ( body != null && mover != null ) {
-			mover.move( deltaTime, body );
+		if (active){
+			if ( body != null && mover != null ) {
+				mover.move( deltaTime, body );
+			}
 		}
 	}
 
@@ -210,17 +224,17 @@ public class Entity {
 	 * @return the loaded body, or null, if type is null
 	 */
 	protected Body constructBody( ) {
-		Body body;
+		Body newBody;
 		if ( type != null ) {
-			body = world.createBody( type.bodyDef );
-			body.setUserData( this );
+			newBody = world.createBody( type.bodyDef );
+			newBody.setUserData( this );
 			for ( FixtureDef fix : type.fixtureDefs ) {
-				body.createFixture( fix );
+				newBody.createFixture( fix );
 			}
 		} else {
 			return null;
 		}
-		return body;
+		return newBody;
 	}
 
 	/**
@@ -264,6 +278,43 @@ public class Entity {
 
 	
 	/**
+	 * Determines whether an entity should be deleted
+	 * on next update or not
+	 * 
+	 * @param m - boolean
+	 */
+	public void setMaintained(boolean m){
+		maintained = m;
+	}
+	public boolean isMaintained(){
+		return maintained;
+	}
+	
+	/**
+	 * Determines whether an entity should be drawn or not.
+	 * 
+	 * @param v - boolean
+	 */
+	public void setVisible(boolean v){
+		visible = v;
+	}
+	public boolean isVisible(){
+		return visible;
+	}
+
+	/**
+	 * Determines whether an entity should be updated or not.
+	 * 
+	 * @param a - boolean
+	 */
+	public void setActive(boolean a){
+		active = a;
+	}
+	public boolean isActive(){
+		return active;
+	}
+	
+	/**
 	 * Change the sprite to be displayed on the entity
 	 * 
 	 * @param newSprite
@@ -272,8 +323,45 @@ public class Entity {
 	public void changeSprite(Sprite newSprite){
 		this.sprite = newSprite;
 	}
-	
-	
+	/**
+	 * set the bodies category collision bits
+	 * @param 
+	 */
+	public void setCategoryMask( short category, short mask ) {
+		if ( body != null) {
+			Filter filter = new Filter();
+			for ( Fixture f : body.getFixtureList( ) ) {
+				f.setSensor( false );
+				filter = f.getFilterData( );
+				// move player back to original category
+				filter.categoryBits = category;
+				// player now collides with everything
+				filter.maskBits = mask;
+				f.setFilterData( filter );
+			}
+		}
+	}
+
+	/**
+	 *  This is a quick-n-dirty fix for complex body collisions.
+	 *  Hopefully we'll get to a point where we don't need it.
+	 *  There's probably some overlap between mine and Dennis' functions,
+     *  I'll try to sort it out on next update.
+	 */
+	public void quickfixCollisions(){
+		Filter filter;
+		for ( Fixture f : body.getFixtureList( ) ) {
+			filter = f.getFilterData( );
+			// move player to another category so other objects stop
+			// colliding
+			filter.categoryBits = Util.DYNAMIC_OBJECTS;
+			// player still collides with sensor of screw
+			filter.maskBits = Util.CATEGORY_EVERYTHING;
+			f.setFilterData( filter );
+		}
+
+	}
+
 	public void setDensity( float d ) {
 		if ( body != null ){
 		for ( int i = 0; i < body.getFixtureList( ).size( ); ++i )
