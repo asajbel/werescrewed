@@ -53,8 +53,7 @@ public class StrippedScrew extends Screw {
 				.setRadius( ( sprite.getWidth( ) / 2.0f ) * Util.PIXEL_TO_BOX );
 		FixtureDef screwFixture = new FixtureDef( );
 		screwFixture.filter.categoryBits = Util.CATEGORY_SCREWS;
-		screwFixture.filter.maskBits = Util.CATEGORY_PLAYER
-				| Util.CATEGORY_SUBPLAYER;
+		screwFixture.filter.maskBits = Util.CATEGORY_EVERYTHING;
 		screwFixture.shape = screwShape;
 		screwFixture.isSensor = true;
 		body.createFixture( screwFixture );

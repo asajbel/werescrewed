@@ -234,7 +234,8 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		puzzleScrew.puzzleManager.addEntity( flipPlat1 );
 		puzzleScrew.puzzleManager.addMover( flipPlat1.name, rm );
 		// also add a up mover to movingTP
-		LerpMover lm2 = new LerpMover( movingTP.body.getPosition( ).mul( Util.BOX_TO_PIXEL ),
+		LerpMover lm2 = new LerpMover( movingTP.body.getPosition( ).mul(
+				Util.BOX_TO_PIXEL ),
 				new Vector2( movingTP.body.getPosition( ).x, movingTP.body
 						.getPosition( ).y + 0.3f ).mul( Util.BOX_TO_PIXEL ),
 				1f, true, PuzzleType.PUZZLE_SCREW_CONTROL, LinearAxis.VERTICAL );
@@ -254,10 +255,11 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		// lerp puzzle screw control
 		PuzzleScrew puzzleScrew2 = new PuzzleScrew( "002", new Vector2( 150f,
 				32f ), 50, skeleton, world, 0, false );
-		LerpMover lm = new LerpMover( movingTP.body.getPosition( ).mul( Util.BOX_TO_PIXEL ),
-				new Vector2( movingTP.body.getPosition( ).x + 1.75f, movingTP.body
-						.getPosition( ).y ).mul( Util.BOX_TO_PIXEL ),
-				1f, true, PuzzleType.PUZZLE_SCREW_CONTROL, LinearAxis.HORIZONTAL );
+		LerpMover lm = new LerpMover( movingTP.body.getPosition( ).mul(
+				Util.BOX_TO_PIXEL ), new Vector2(
+				movingTP.body.getPosition( ).x + 1.75f,
+				movingTP.body.getPosition( ).y ).mul( Util.BOX_TO_PIXEL ), 1f,
+				true, PuzzleType.PUZZLE_SCREW_CONTROL, LinearAxis.HORIZONTAL );
 		puzzleScrew2.puzzleManager.addEntity( movingTP );
 		puzzleScrew2.puzzleManager.addMover( movingTP.name, lm );
 		skeleton.addScrewForDraw( puzzleScrew2 );
@@ -435,6 +437,15 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 				singTile2.body.getWorldCenter( ), 1.0f );
 
 		world.createJoint( pjd );
+
+		skeleton.addStrippedScrew( new StrippedScrew( "", world, new Vector2(
+				singTile.body.getPosition( ).x * Util.BOX_TO_PIXEL,
+				singTile.body.getPosition( ).y * Util.BOX_TO_PIXEL ), singTile ) );
+
+		skeleton.addStrippedScrew( new StrippedScrew( "", world, new Vector2(
+				singTile2.body.getPosition( ).x * Util.BOX_TO_PIXEL,
+				singTile2.body.getPosition( ).y * Util.BOX_TO_PIXEL ),
+				singTile2 ) );
 	}
 
 	@Override

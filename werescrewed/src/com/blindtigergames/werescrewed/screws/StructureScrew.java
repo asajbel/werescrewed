@@ -31,7 +31,7 @@ public class StructureScrew extends Screw {
 		maxDepth = max;
 		depth = max;
 		rotation = 0;
-		fallTimeout = max;
+		fallTimeout = 70;
 		extraJoints = new ArrayList< RevoluteJoint >( );
 		screwType = ScrewType.STRUCTURAL;
 		
@@ -93,7 +93,7 @@ public class StructureScrew extends Screw {
 			}
 			fallTimeout--;
 		} else {
-			fallTimeout = maxDepth * 4;
+			fallTimeout = 70;
 		}
 		if ( depth > 0 ) {
 			sprite.setPosition(

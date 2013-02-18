@@ -33,7 +33,7 @@ public class BossScrew extends Screw {
 		maxDepth = max;
 		depth = max;
 		rotation = 0;
-		fallTimeout = max * 4;
+		fallTimeout = 70;
 		extraJoints = new ArrayList< RevoluteJoint >( );
 		screwType = ScrewType.BOSS;
 
@@ -155,7 +155,7 @@ public class BossScrew extends Screw {
 			}
 			fallTimeout--;
 		} else {
-			fallTimeout = maxDepth * 4;
+			fallTimeout = 70;
 		}
 		if ( depth > 0 ) {
 			sprite.setPosition(
