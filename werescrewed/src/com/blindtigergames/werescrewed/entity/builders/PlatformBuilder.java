@@ -141,7 +141,7 @@ public class PlatformBuilder extends GenericEntityBuilder<PlatformBuilder> {
  * @param restitution - float restitution, default is 0.0f
  * @return PlatformBuilder
  */
-	public PlatformBuilder resitituion( float restitution ) {
+	public PlatformBuilder restitution( float restitution ) {
 		this.restitution = restitution;
 		return this;
 	}

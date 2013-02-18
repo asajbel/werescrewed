@@ -129,13 +129,13 @@ public class IMoverGameScreen implements com.badlogic.gdx.Screen {
 
 		TiledPlatform singTile = platBuilder.position( -1200.0f, 500.0f )
 				.dimensions( 1, 1 ).texture( testTexture ).dynamic( )
-				.name( "Single Tiled" ).resitituion( 0.0f ).buildTilePlatform( );
+				.name( "Single Tiled" ).restitution( 0.0f ).buildTilePlatform( );
 		skeleton.addPlatform( singTile );
 		singTile.body.setFixedRotation( false );
 
 		TiledPlatform singTile2 = platBuilder.position( -1300.0f, 500.0f )
 				.dimensions( 1, 1 ).texture( testTexture ).dynamic( )
-				.name( "Single Tiled" ).resitituion( 0.0f ).buildTilePlatform( );
+				.name( "Single Tiled" ).restitution( 0.0f ).buildTilePlatform( );
 		skeleton.addPlatform( singTile2 );
 		singTile2.body.setFixedRotation( false );
 
@@ -189,19 +189,19 @@ public class IMoverGameScreen implements com.badlogic.gdx.Screen {
 		// Tiled Platform
 		tiledPlat = platBuilder.position( 700.0f, 175.0f ).dimensions( 10, 1 )
 				.texture( testTexture ).dynamic( ).name( "tp" )
-				.resitituion( 0.0f ).buildTilePlatform( );
+				.restitution( 0.0f ).buildTilePlatform( );
 		skeleton.addDynamicPlatform( tiledPlat );
 
 		// Tiled Single Platform
 		singTile = platBuilder.position( -1.0f, 1000.0f ).dimensions( 1, 1 )
 				.texture( testTexture ).dynamic( ).name( "Single Tiled" )
-				.resitituion( 0.0f ).buildTilePlatform( );
+				.restitution( 0.0f ).buildTilePlatform( );
 		skeleton.addPlatform( singTile );
 		singTile.body.setFixedRotation( false );
 
 		// Moving platform
 		movingTP = platBuilder.position( 0.0f, 120.0f ).dimensions( 10, 1 )
-				.texture( testTexture ).name( "movingTP" ).resitituion( 0.0f )
+				.texture( testTexture ).name( "movingTP" ).restitution( 0.0f )
 				.kinematic( ).buildTilePlatform( );
 		skeleton.addKinematicPlatform( movingTP );
 
@@ -211,7 +211,7 @@ public class IMoverGameScreen implements com.badlogic.gdx.Screen {
 		// Ground: SHOULD NEVER BE ONESIDED
 		ground = platBuilder.position( 0.0f, -75.0f ).name( "ground" )
 				.dimensions( 200, 4 ).texture( testTexture ).kinematic( )
-				.oneSided( false ).resitituion( 0.0f ).buildTilePlatform( );
+				.oneSided( false ).restitution( 0.0f ).buildTilePlatform( );
 		skeleton.addKinematicPlatform( ground );
 	}
 
@@ -253,13 +253,13 @@ public class IMoverGameScreen implements com.badlogic.gdx.Screen {
 		// two fliping platforms
 		TiledPlatform flipPlat1 = platBuilder.position( 20.0f, 370f )
 				.dimensions( 5, 1 ).texture( testTexture ).name( "001_flip1" )
-				.resitituion( 0.0f ).kinematic( ).buildTilePlatform( );
+				.restitution( 0.0f ).kinematic( ).buildTilePlatform( );
 		skeleton.addKinematicPlatform( flipPlat1 );
 
 		// two fliping platforms
 		TiledPlatform flipPlat2 = platBuilder.position( 350.0f, 475f )
 				.dimensions( 5, 1 ).texture( testTexture ).name( "001_flip2" )
-				.resitituion( 0.0f ).kinematic( ).buildTilePlatform( );
+				.restitution( 0.0f ).kinematic( ).buildTilePlatform( );
 		flipPlat2.setLocalRot( -90 * Util.DEG_TO_RAD );
 		skeleton.addKinematicPlatform( flipPlat2 );
 
