@@ -1,35 +1,10 @@
 package com.blindtigergames.werescrewed.screens;
 
 public enum ScreenType {
-
-	INTRO {
+	CREDITS {
 		@Override
 		protected com.badlogic.gdx.Screen getScreenInstance( ) {
-			return new IntroScreen( );
-		}
-	},
-	PAUSE {
-		@Override
-		protected com.badlogic.gdx.Screen getScreenInstance( ) {
-			return new PauseScreen( );
-		}
-	},
-	LEVELTEST {
-		@Override
-		protected com.badlogic.gdx.Screen getScreenInstance( ) {
-			return new LevelTestScreen( );
-		}
-	},
-	LOADING {
-		@Override
-		protected com.badlogic.gdx.Screen getScreenInstance( ) {
-			return new LoadingScreen( );
-		}
-	},
-	MAIN_MENU {
-		@Override
-		protected com.badlogic.gdx.Screen getScreenInstance( ) {
-			return new MainMenuScreen( );
+			return new CreditsScreen( );
 		}
 	},
 
@@ -39,32 +14,58 @@ public enum ScreenType {
 			return new PhysicsTestScreen();
 		}
 	},
-
-	CREDITS {
+	GLEED {
+        @Override
+        protected com.badlogic.gdx.Screen getScreenInstance() {
+             return new GleedTestScreen("testLevel");
+        }
+    },
+	INTRO {
 		@Override
 		protected com.badlogic.gdx.Screen getScreenInstance( ) {
-			return new CreditsScreen( );
+			return new IntroScreen( );
 		}
 	},
-
+	LOADING {
+		@Override
+		protected com.badlogic.gdx.Screen getScreenInstance( ) {
+			return new LoadingScreen( );
+		}
+	},
+	PAUSE {
+		@Override
+		protected com.badlogic.gdx.Screen getScreenInstance( ) {
+			return new PauseScreen( );
+		}
+	},
+	PLAYTEST {
+		@Override
+		protected com.badlogic.gdx.Screen getScreenInstance( ) {
+			return new DebugPlayTestScreen( );
+		}
+	},
 	PHYSICS {
 		@Override
 		protected com.badlogic.gdx.Screen getScreenInstance( ) {
 			return new PhysicsTestScreen( );
 		}
 	},
-	IMOVER {
-        @Override
-        protected com.badlogic.gdx.Screen getScreenInstance() {
-             return new IMoverGameScreen();
-        }
-    },
-	GLEED {
-        @Override
-        protected com.badlogic.gdx.Screen getScreenInstance() {
-             return new GleedTestScreen("testLevel");
-        }
-    };
+	
+	MAIN_MENU {
+		@Override
+		protected com.badlogic.gdx.Screen getScreenInstance( ) {
+			return new MainMenuScreen( );
+		}
+	},
+	
+	
+	WIN {
+		@Override
+		protected com.badlogic.gdx.Screen getScreenInstance( ) {
+			return new WinScreen( );
+		}
+	};
+	
 
 	protected abstract com.badlogic.gdx.Screen getScreenInstance( );
 

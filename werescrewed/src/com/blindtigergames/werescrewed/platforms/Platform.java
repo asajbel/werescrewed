@@ -3,31 +3,31 @@ package com.blindtigergames.werescrewed.platforms;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+import com.badlogic.gdx.physics.box2d.Filter;
 import com.badlogic.gdx.physics.box2d.Fixture;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityDef;
-import com.blindtigergames.werescrewed.entity.mover.IMover;
 import com.blindtigergames.werescrewed.screws.Screw;
+import com.blindtigergames.werescrewed.skeleton.Skeleton;
 import com.blindtigergames.werescrewed.util.Util;
 
 /**
- * @param name
+ * Platform Mostly just an inherited class, but complex platform uses that as
+ * it's main class
  * 
- * 
- * @author Ranveer
+ * @author Ranveer / Stew
  * 
  */
 
 public class Platform extends Entity {
 
-	IMover mover;
-
+	// ============================================
+	// Fields
+	// ============================================
 	protected float width, height;
 	protected boolean dynamicType = false;
 	protected boolean rotate = false;
@@ -38,27 +38,135 @@ public class Platform extends Entity {
 	// creates 32x32 objects
 	protected final int tileConstant = 16;
 
+	protected PlatformType platType;
+
 	/**
 	 * Used for kinematic movement connected to skeleton
 	 */
-	protected Vector2 origin;
+	protected Vector2 localPosition; // in pixels, local coordinate system
+	protected float localRotation; // in radians, local rot system
+	private Vector2 originPosition; // world position that this platform spawns
+									// at, in pixels
 
+	// ============================================
+	// Constructors
+	// ============================================
+
+	/**
+	 * General purpose platform constructor for things that don't use an
+	 * entitydef. Currently used by PlatformBuilder and Tiled Platform
+	 * 
+	 * @param name
+	 * @param pos
+	 * @param tex
+	 * @param world
+	 */
 	public Platform( String name, Vector2 pos, Texture tex, World world ) {
 		super( name, pos, tex, null, true );
 		this.world = world;
-		screws = new ArrayList< Screw >( );
+		init( pos );
 	}
 
-	public Platform( String name, EntityDef type, World world, Vector2 pos, float rot,
-			Vector2 scale, float anchRadius ) {
+	/**
+	 * Construct platforms using an EntityDef. This is used by
+	 * PlatformBuilder.buildComplexBody()
+	 * 
+	 * @param name
+	 * @param type
+	 * @param world
+	 * @param pos
+	 * @param rot
+	 * @param scale
+	 */
+	public Platform( String name, EntityDef type, World world, Vector2 pos,
+			float rot, Vector2 scale, float anchRadius ) {
 		super( name, type, world, pos, rot, scale, null, true, anchRadius );
-		screws = new ArrayList< Screw >( );
+		init( pos );
 	}
 
-	public Platform( String name, EntityDef type, World world, Vector2 pos, float rot,
-			Vector2 scale, float anchRadius, Texture tex ) {
-		super( name, type, world, pos, rot, scale, tex, true, anchRadius );
+	/**
+	 * Initialize things.
+	 * 
+	 * @author stew
+	 * @param pos
+	 */
+	void init( Vector2 pos ) {
 		screws = new ArrayList< Screw >( );
+		localPosition = new Vector2( 0, 0 );
+		localRotation = 0;
+		originPosition = pos.cpy( );
+		platType = PlatformType.DEFAULT; // set to default unless subclass sets
+											// it later in a constructor
+	}
+
+	// ============================================
+	// Methods
+	// ============================================
+
+	/**
+	 * return localPosition Vector2 in PIXELS.
+	 * 
+	 * @return
+	 */
+	public Vector2 getLocalPos( ) {
+		return localPosition;
+	}
+
+	/**
+	 * set localPosition Vector2 in PIXELS!!!
+	 * 
+	 * @param newLocalPos
+	 *            in PIXELS
+	 */
+	public void setLocalPos( Vector2 newLocalPosPixel ) {
+		localPosition.x = newLocalPosPixel.x;
+		localPosition.y = newLocalPosPixel.y;
+	}
+
+	public void setLocalPos( float xPixel, float yPixel ) {
+		localPosition.x = xPixel;
+		localPosition.y = yPixel;
+	}
+
+	/**
+	 * returns local rotation in RADIANS
+	 */
+	public float getLocalRot( ) {
+		return localRotation;
+	}
+
+	/**
+	 * set local rotation in RADIAN
+	 * 
+	 * @param newLocalRotRadians
+	 */
+	public void setLocalRot( float newLocalRotRadians ) {
+		localRotation = newLocalRotRadians;
+	}
+
+	/**
+	 * return originPosition Vector2 in PIXELS.
+	 * 
+	 * @return
+	 */
+	public Vector2 getOriginPos( ) {
+		return originPosition;
+	}
+
+	/**
+	 * set Origin Position Vector2 in PIXELS!!!
+	 * 
+	 * @param newLocalPos
+	 *            in PIXELS
+	 */
+	public void setOriginPos( Vector2 newOriginPosPixel ) {
+		originPosition.x = newOriginPosPixel.x;
+		originPosition.y = newOriginPosPixel.y;
+	}
+
+	public void setOriginPos( float xPixel, float yPixel ) {
+		originPosition.x = xPixel;
+		originPosition.y = yPixel;
 	}
 
 	public void addScrew( Screw s ) {
@@ -74,60 +182,44 @@ public class Platform extends Entity {
 
 	@Override
 	public void update( float deltaTime ) {
-
-		body.setActive( true );
-
 		super.update( deltaTime );
-
-		if ( Gdx.input.isKeyPressed( Keys.B ) ) {
-			setOneSided( !getOneSided( ) );
-			System.out.println( getOneSided( ) );
-		}
+		body.setActive( true );
+		body.setAwake( true );
 		for ( Screw s : screws ) {
 			s.update( deltaTime );
 		}
 	}
 
-	public void setDensity( float d ) {
-		for ( int i = 0; i < body.getFixtureList( ).size( ); ++i )
-			body.getFixtureList( ).get( i ).setDensity( d );
-
-	}
-
-	public void setFriction( float f ) {
-		for ( int i = 0; i < body.getFixtureList( ).size( ); ++i )
-			body.getFixtureList( ).get( i ).setFriction( f );
-	}
-
-	public void setRestitution( float r ) {
-		for ( int i = 0; i < body.getFixtureList( ).size( ); ++i )
-			body.getFixtureList( ).get( i ).setRestitution( r );
-	}
-
-	public void setGravScale( float g ) {
-		body.setGravityScale( g );
-	}
-
+	/**
+	 * Swap from kinematic to dynamic.
+	 */
 	public void changeType( ) {
 		dynamicType = !dynamicType;
 		if ( dynamicType ) {
 			body.setType( BodyType.DynamicBody );
-			FixtureDef fix = new FixtureDef( );
-			fix.filter.categoryBits = Util.DYNAMIC_OBJECTS; 
-			fix.filter.maskBits = -1;
+			Filter filter = new Filter( );
 			for ( Fixture f : body.getFixtureList( ) ) {
-				f.setFilterData( fix.filter );
+				filter = f.getFilterData( );
+				// move player back to original category
+				filter.categoryBits = Util.DYNAMIC_OBJECTS;
+				// player now collides with everything
+				filter.maskBits = Util.CATEGORY_EVERYTHING;
+				f.setFilterData( filter );
 			}
 		} else {
 			body.setType( BodyType.KinematicBody );
-			FixtureDef fix = new FixtureDef( );
-			fix.filter.categoryBits = Util.KINEMATIC_OBJECTS; 
-			fix.filter.maskBits = -1;
+			Filter filter = new Filter( );
 			for ( Fixture f : body.getFixtureList( ) ) {
-				f.setFilterData( fix.filter );
+				filter = f.getFilterData( );
+				// move player back to original category
+				filter.categoryBits = Util.KINEMATIC_OBJECTS;
+				// player now collides with everything
+				filter.maskBits = Util.CATEGORY_EVERYTHING;
+				f.setFilterData( filter );
 			}
 		}
 
+		// TODO: Why de-activate this??
 		body.setActive( false );
 	}
 
@@ -157,5 +249,49 @@ public class Platform extends Entity {
 	protected void rotateBy90( ) {
 		float bodyAngle = body.getAngle( );
 		body.setTransform( body.getPosition( ), bodyAngle + 90 );
+	}
+
+	/**
+	 * Returns the private member platform type for casting or whatever
+	 * 
+	 * @return PLATFORMTYPE
+	 */
+	public PlatformType getPlatformType( ) {
+		return platType;
+	}
+
+	/**
+	 * Set this platforms type!!
+	 * 
+	 * @author stew
+	 * @param newPlatformType
+	 */
+	public void setPlatformType( PlatformType newPlatformType ) {
+		platType = newPlatformType;
+	}
+
+	/**
+	 * Set the position and angle of the kinematic platform based on the parent
+	 * skeleton's pos/rot. Use originPos & originalLocalRot
+	 * 
+	 * @param skeleton
+	 * @author stew
+	 */
+	public void setPosRotFromSkeleton( Skeleton skeleton ) {
+		// originPos has already been updated by it's IMover by this point
+		// TODO: modify this if imover uses pixels or box2d meters
+		float radiusFromSkeleton = originPosition.cpy( ).add( localPosition )
+				.mul( Util.PIXEL_TO_BOX ).len( );
+		// update angle between platform and skeleton
+		Vector2 skeleOrigin = skeleton.body.getPosition( );
+		float newAngleFromSkeleton = skeleton.body.getAngle( )
+				+ Util.angleBetweenPoints( skeleOrigin, originPosition.cpy( )
+						.add( localPosition ) );
+
+		float newRotation = localRotation + skeleton.body.getAngle( );
+		Vector2 newPos = Util.PointOnCircle( radiusFromSkeleton,
+				newAngleFromSkeleton, skeleOrigin );
+
+		body.setTransform( newPos, newRotation );
 	}
 }

@@ -20,31 +20,21 @@ import com.blindtigergames.werescrewed.util.Util;
 
 /**
  * 
- * @author Ranveer
+ * @author Ranveer / Stew / Anders
  * 
  */
 
 public class TiledPlatform extends Platform {
-	protected float tileHeight, tileWidth;
-	protected Vector2 bodypos;
-	protected TileSet tileSet;
-
-	protected enum Shape {
-		SINGLE, VERTICAL, HORIZONTAL, RECTANGLE
-	}
-
-	protected Shape shape = Shape.SINGLE;
-
 	protected class Tile {
 		public float xOffset, yOffset;
 		public Sprite tileSprite;
-
+	
 		public Tile( ) {
 			xOffset = 0;
 			yOffset = 0;
 			sprite = null;
 		}
-
+	
 		public Tile( float offset_x, float offset_y, Sprite the_sprite ) {
 			xOffset = offset_x;
 			yOffset = offset_y;
@@ -52,11 +42,22 @@ public class TiledPlatform extends Platform {
 		}
 	}
 
+	protected enum Shape {
+		SINGLE, VERTICAL, HORIZONTAL, RECTANGLE
+	}
+
+	protected float tileHeight, tileWidth;
+	protected Vector2 bodypos;
+	protected TileSet tileSet;
+
+	protected Shape shape;// = Shape.SINGLE;
+
 	protected Vector< Tile > tiles;
 
 	public TiledPlatform( String n, Vector2 pos, Texture tex, float width,
 			float height, boolean isOneSided, boolean isMoveable, World world ) {
 		super( n, pos, tex, world );
+		platType = PlatformType.TILED;
 		this.tileSet = new TileSet( tex );
 		this.tileHeight = height;
 		this.tileWidth = width;
