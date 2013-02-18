@@ -41,7 +41,7 @@ public class Rope {
 	private void constructRope( String name, Vector2 pos, Vector2 widthHeight,
 			int links, World world ) {
 
-		Link topPiece = new Link( "top", world, pos, null );
+		Link topPiece = new Link( "top", world, pos, null, widthHeight );
 		topPiece.body.setType( BodyType.StaticBody );
 		linkParts.add( topPiece );
 
@@ -50,7 +50,7 @@ public class Rope {
 			Link temp = new Link( "link" + i, world, new Vector2(
 					getEnd( ).body.getWorldCenter( ).x,
 					getEnd( ).body.getWorldCenter( ).y - widthHeight.y
-							* Util.PIXEL_TO_BOX ), null );
+							* Util.PIXEL_TO_BOX ), null, widthHeight );
 
 			getEnd( ).createLinkJoint( temp );
 			linkParts.add( temp );
