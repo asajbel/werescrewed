@@ -35,6 +35,7 @@ import com.blindtigergames.werescrewed.entity.mover.RockingMover;
 import com.blindtigergames.werescrewed.entity.mover.RotateByDegree;
 import com.blindtigergames.werescrewed.entity.mover.SlidingMotorMover;
 import com.blindtigergames.werescrewed.entity.mover.TimelineTweenMover;
+import com.blindtigergames.werescrewed.entity.mover.TweenMover;
 import com.blindtigergames.werescrewed.entity.mover.puzzle.PuzzlePistonTweenMover;
 import com.blindtigergames.werescrewed.entity.tween.EntityAccessor;
 import com.blindtigergames.werescrewed.entity.tween.PlatformAccessor;
@@ -132,7 +133,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		rootSkeleton.addSkeleton( skeleton );
 
 		debugRenderer = new SBox2DDebugRenderer( Util.BOX_TO_PIXEL );
-		//debugRenderer.setDrawJoints( false );
+		debugRenderer.setDrawJoints( false );
 
 		Gdx.app.setLogLevel( Application.LOG_DEBUG );
 
@@ -317,31 +318,33 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 				32.0f ), 10, null, world );
 		
 		TiledPlatform pathPlatform = platBuilder.dimensions( 4, 1 ).position( 1600, 100 )
-				.friction( 1f )
+				.friction( 10f )
 				.kinematic( ).buildTilePlatform( );
 		skeleton.addKinematicPlatform( pathPlatform );
 		//build path. TODO: make building paths easier!!
-		pathPlatform.setMover( new TimelineTweenMover(
-				Timeline.createSequence( )
-				.push( Tween.to( pathPlatform, PlatformAccessor.LOCAL_POS_XY, 2 )
-						.target( 300,0 )
-						.ease( TweenEquations.easeNone )
-						.start() )
-				.push( Tween.to( pathPlatform, PlatformAccessor.LOCAL_POS_XY, 2 )
-						.target( 300,300 )
-						.ease( TweenEquations.easeNone )
-						.start())
-				.push( Tween.to( pathPlatform, PlatformAccessor.LOCAL_POS_XY, 2 )
-						.target( 0,300 )
-						.ease( TweenEquations.easeNone )
-						.start() )
-				.push( Tween.to( pathPlatform, PlatformAccessor.LOCAL_POS_XY, 2 )
-						.target( 0,0 )
-						.ease( TweenEquations.easeNone )
-						.start() )
-				.repeat( Tween.INFINITY, 0 )
-				.start( )
-			));
+//		pathPlatform.setMover( new TimelineTweenMover(
+//				Timeline.createSequence( )
+//				.push( Tween.to( pathPlatform, PlatformAccessor.LOCAL_POS_XY, 2 )
+//						.target( 300,0 )
+//						.ease( TweenEquations.easeNone )
+//						.start() )
+//				.push( Tween.to( pathPlatform, PlatformAccessor.LOCAL_POS_XY, 2 )
+//						.target( 300,300 )
+//						.ease( TweenEquations.easeNone )
+//						.start())
+//				.push( Tween.to( pathPlatform, PlatformAccessor.LOCAL_POS_XY, 2 )
+//						.target( 0,300 )
+//						.ease( TweenEquations.easeNone )
+//						.start() )
+//				.push( Tween.to( pathPlatform, PlatformAccessor.LOCAL_POS_XY, 2 )
+//						.target( 0,0 )
+//						.ease( TweenEquations.easeNone )
+//						.start() )
+//				.repeat( Tween.INFINITY, 0 )
+//				.start( )
+//			));
+		pathPlatform.setMover( new TweenMover( Tween.to( pathPlatform, PlatformAccessor.LOCAL_VEL_X, 3 )
+												.target( 10f ).repeatYoyo( Tween.INFINITY, 0 ).start( )) );
 		
 		
 		
