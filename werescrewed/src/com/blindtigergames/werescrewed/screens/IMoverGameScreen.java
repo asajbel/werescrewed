@@ -3,9 +3,6 @@ package com.blindtigergames.werescrewed.screens;
 import java.util.ArrayList;
 
 import aurelienribon.tweenengine.Tween;
-import aurelienribon.tweenengine.TweenEquation;
-import aurelienribon.tweenengine.TweenEquations;
-import aurelienribon.tweenengine.TweenManager;
 
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
@@ -30,20 +27,18 @@ import com.blindtigergames.werescrewed.entity.builders.PlatformBuilder;
 import com.blindtigergames.werescrewed.entity.builders.PlayerBuilder;
 import com.blindtigergames.werescrewed.entity.builders.ScrewBuilder;
 import com.blindtigergames.werescrewed.entity.mover.LerpMover;
-import com.blindtigergames.werescrewed.entity.mover.PistonMover;
+import com.blindtigergames.werescrewed.entity.mover.LinearAxis;
 import com.blindtigergames.werescrewed.entity.mover.PistonTweenMover;
 import com.blindtigergames.werescrewed.entity.mover.PuzzleType;
 import com.blindtigergames.werescrewed.entity.mover.RockingMover;
 import com.blindtigergames.werescrewed.entity.mover.RotateByDegree;
 import com.blindtigergames.werescrewed.entity.mover.RotateTweenMover;
 import com.blindtigergames.werescrewed.entity.mover.SlidingMotorMover;
-import com.blindtigergames.werescrewed.entity.mover.TweenMover;
 import com.blindtigergames.werescrewed.entity.mover.puzzle.PuzzlePistonTweenMover;
 import com.blindtigergames.werescrewed.entity.mover.puzzle.PuzzleRotateTweenMover;
 import com.blindtigergames.werescrewed.entity.tween.EntityAccessor;
 import com.blindtigergames.werescrewed.entity.tween.PlatformAccessor;
 import com.blindtigergames.werescrewed.joint.JointFactory;
-import com.blindtigergames.werescrewed.joint.PrismaticJointBuilder;
 import com.blindtigergames.werescrewed.platforms.Platform;
 import com.blindtigergames.werescrewed.platforms.TiledPlatform;
 import com.blindtigergames.werescrewed.player.Player;
@@ -90,7 +85,6 @@ public class IMoverGameScreen implements com.badlogic.gdx.Screen {
 	@SuppressWarnings( "unused" )
 	private TiledPlatform tiledPlat, ground, movingTP, singTile, rectile;
 	private PlatformBuilder platBuilder;
-	private PuzzleScrew puzzleScrew;
 	private Skeleton skeleton;
 	private Skeleton rootSkeleton;
 	private ArrayList< StrippedScrew > climbingScrews;
@@ -115,9 +109,9 @@ public class IMoverGameScreen implements com.badlogic.gdx.Screen {
 		testTexture = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 				+ "/common/TilesetTest.png", Texture.class );
 
-		Tween.registerAccessor( Platform.class, new PlatformAccessor() );
-		Tween.registerAccessor( Entity.class, new EntityAccessor() );
-		
+		Tween.registerAccessor( Platform.class, new PlatformAccessor( ) );
+		Tween.registerAccessor( Entity.class, new EntityAccessor( ) );
+
 		// Initialize camera
 		initCamera( );
 
@@ -133,25 +127,27 @@ public class IMoverGameScreen implements com.badlogic.gdx.Screen {
 		initPuzzleScrews( );
 		initClimbingScrews( );
 
-		
-		TiledPlatform singTile = platBuilder.position( -1200.0f, 500.0f ).dimensions( 1, 1 )
-				.texture( testTexture ).dynamic( ).name( "Single Tiled" )
-				.resitituion( 0.0f ).buildTilePlatform( );
+		TiledPlatform singTile = platBuilder.position( -1200.0f, 500.0f )
+				.dimensions( 1, 1 ).texture( testTexture ).dynamic( )
+				.name( "Single Tiled" ).resitituion( 0.0f ).buildTilePlatform( );
 		skeleton.addPlatform( singTile );
 		singTile.body.setFixedRotation( false );
-		
-		TiledPlatform singTile2 = platBuilder.position( -1300.0f, 500.0f ).dimensions( 1, 1 )
-				.texture( testTexture ).dynamic( ).name( "Single Tiled" )
-				.resitituion( 0.0f ).buildTilePlatform( );
+
+		TiledPlatform singTile2 = platBuilder.position( -1300.0f, 500.0f )
+				.dimensions( 1, 1 ).texture( testTexture ).dynamic( )
+				.name( "Single Tiled" ).resitituion( 0.0f ).buildTilePlatform( );
 		skeleton.addPlatform( singTile2 );
 		singTile2.body.setFixedRotation( false );
-		
-		Vector2 g1 = new Vector2(singTile.body.getWorldCenter( ).x, singTile.body.getWorldCenter( ).y - 100.0f * Util.PIXEL_TO_BOX);
-		Vector2 g2 = new Vector2(singTile2.body.getWorldCenter( ).x, singTile2.body.getWorldCenter( ).y - 100.0f * Util.PIXEL_TO_BOX);
-		PulleyJointDef pjd = new PulleyJointDef();
+
+		Vector2 g1 = new Vector2( singTile.body.getWorldCenter( ).x,
+				singTile.body.getWorldCenter( ).y - 100.0f * Util.PIXEL_TO_BOX );
+		Vector2 g2 = new Vector2( singTile2.body.getWorldCenter( ).x,
+				singTile2.body.getWorldCenter( ).y - 100.0f * Util.PIXEL_TO_BOX );
+		PulleyJointDef pjd = new PulleyJointDef( );
 		pjd.initialize( singTile.body, singTile2.body, g1, g2,
-				singTile.body.getWorldCenter( ), singTile2.body.getWorldCenter(), 1.0f);
-		
+				singTile.body.getWorldCenter( ),
+				singTile2.body.getWorldCenter( ), 1.0f );
+
 		world.createJoint( pjd );
 		// rope = new Rope( "rope", new Vector2 (2000.0f * Util.PIXEL_TO_BOX,
 		// 400.0f* Util.PIXEL_TO_BOX), null, world );
@@ -170,7 +166,7 @@ public class IMoverGameScreen implements com.badlogic.gdx.Screen {
 		rootSkeleton.addSkeleton( skeleton );
 
 		debugRenderer = new SBox2DDebugRenderer( Util.BOX_TO_PIXEL );
-		//debugRenderer.setDrawJoints( false );
+		// debugRenderer.setDrawJoints( false );
 
 		Gdx.app.setLogLevel( Application.LOG_DEBUG );
 
@@ -216,7 +212,6 @@ public class IMoverGameScreen implements com.badlogic.gdx.Screen {
 		ground = platBuilder.position( 0.0f, -75.0f ).name( "ground" )
 				.dimensions( 200, 4 ).texture( testTexture ).kinematic( )
 				.oneSided( false ).resitituion( 0.0f ).buildTilePlatform( );
-		ground.setCategoryMask( Util.CATEGORY_GROUND, Util.CATEGORY_EVERYTHING );
 		skeleton.addKinematicPlatform( ground );
 	}
 
@@ -231,17 +226,21 @@ public class IMoverGameScreen implements com.badlogic.gdx.Screen {
 		 * ).y ), 50, tiledPlat, skeleton, world );
 		 */
 		StructureScrew leftPlatScrew = new ScrewBuilder( )
-				.position( tiledPlat.body.getPosition( ).x - 0.5f,
-						tiledPlat.body.getPosition( ).y ).entity( tiledPlat )
-				.skeleton( skeleton ).world( world ).buildStructureScrew( );
+				.position(
+						tiledPlat.body.getPosition( ).x * Util.BOX_TO_PIXEL
+								- ( tiledPlat.sprite.getWidth( ) ),
+						tiledPlat.body.getPosition( ).y * Util.BOX_TO_PIXEL )
+				.entity( tiledPlat ).skeleton( skeleton ).world( world )
+				.buildStructureScrew( );
 		// StructureScrew rightPlatScrew = new StructureScrew( "", new Vector2(
 		// tiledPlat.body.getPosition( ).x + 0.5f,
 		// tiledPlat.body.getPosition( ).y ), 50, tiledPlat, skeleton,
 		// world );
 		BossScrew bossBolt = new BossScrew( "", new Vector2(
-				tiledPlat.body.getPosition( ).x + 0.5f,
-				tiledPlat.body.getPosition( ).y ), 50, tiledPlat, skeleton,
-				world );
+				tiledPlat.body.getPosition( ).x * Util.BOX_TO_PIXEL
+						+ ( tiledPlat.sprite.getWidth( ) ),
+				tiledPlat.body.getPosition( ).y * Util.BOX_TO_PIXEL ), 50,
+				tiledPlat, skeleton, world );
 		tiledPlat.addScrew( bossBolt );
 		tiledPlat.addScrew( leftPlatScrew );
 		// tiledPlat.addScrew( rightPlatScrew );
@@ -266,36 +265,38 @@ public class IMoverGameScreen implements com.badlogic.gdx.Screen {
 
 		// rotate puzzle screw control
 		RotateByDegree rm = new RotateByDegree( 0.0f, -90.0f, 0, 0.5f );
-		PuzzleScrew puzzleScrew = new PuzzleScrew( "001", new Vector2( 0.5f,
-				0.2f ), 50, skeleton, world, 0 );
+		PuzzleScrew puzzleScrew = new PuzzleScrew( "001",
+				new Vector2( 32f, 32f ), 50, skeleton, world, 0, false );
 		puzzleScrew.puzzleManager.addEntity( flipPlat1 );
 		puzzleScrew.puzzleManager.addMover( flipPlat1.name, rm );
-		//also add a up mover to movingTP
+		// also add a up mover to movingTP
 		LerpMover lm2 = new LerpMover(
-				new Vector2( movingTP.body.getPosition( ).x,
-						movingTP.body.getPosition( ).y ), new Vector2(
-						movingTP.body.getPosition( ).x,
-						movingTP.body.getPosition( ).y + 0.3f ), 1f, true,
-				PuzzleType.PUZZLE_SCREW_CONTROL );
+				new Vector2( movingTP.body.getPosition( ).x, movingTP.body
+						.getPosition( ).y ).mul( Util.BOX_TO_PIXEL ),
+				new Vector2( movingTP.body.getPosition( ).x, movingTP.body
+						.getPosition( ).y + 0.3f ).mul( Util.BOX_TO_PIXEL ),
+				1f, true, PuzzleType.PUZZLE_SCREW_CONTROL, LinearAxis.VERTICAL );
 		puzzleScrew.puzzleManager.addEntity( movingTP );
 		puzzleScrew.puzzleManager.addMover( movingTP.name, lm2 );
 
 		rm = new RotateByDegree( -90.0f, 0.0f, 0, 0.5f );
-		PuzzleRotateTweenMover prtm = new PuzzleRotateTweenMover( 1, Util.PI/2, true);
-		PuzzlePistonTweenMover pptm = new PuzzlePistonTweenMover( flipPlat2, new Vector2(100,0), 1, 1, 0, 0 );
+		PuzzleRotateTweenMover prtm = new PuzzleRotateTweenMover( 1,
+				Util.PI / 2, true );
+		PuzzlePistonTweenMover pptm = new PuzzlePistonTweenMover( flipPlat2,
+				new Vector2( 100, 0 ), 1, 1, 0, 0 );
 		puzzleScrew.puzzleManager.addEntity( flipPlat2 );
 		puzzleScrew.puzzleManager.addMover( flipPlat2.name, rm );
 		skeleton.addScrewForDraw( puzzleScrew );
 
 		// lerp puzzle screw control
-		PuzzleScrew puzzleScrew2 = new PuzzleScrew( "002", new Vector2( 0.0f,
-				0.2f ), 50, skeleton, world, 0 );
-		lm2 = new LerpMover(
-				new Vector2( movingTP.body.getPosition( ).x,
-						movingTP.body.getPosition( ).y ), new Vector2(
-						movingTP.body.getPosition( ).x + 1.75f,
-						movingTP.body.getPosition( ).y ), 1f, true,
-				PuzzleType.PUZZLE_SCREW_CONTROL );
+		PuzzleScrew puzzleScrew2 = new PuzzleScrew( "002", new Vector2( 150f,
+				32f ), 50, skeleton, world, 0, false );
+		lm2 = new LerpMover( new Vector2( movingTP.body.getPosition( ).x,
+				movingTP.body.getPosition( ).y ).mul( Util.BOX_TO_PIXEL ),
+				new Vector2( movingTP.body.getPosition( ).x + 1.75f,
+						movingTP.body.getPosition( ).y )
+						.mul( Util.BOX_TO_PIXEL ), 1f, true,
+				PuzzleType.PUZZLE_SCREW_CONTROL, LinearAxis.HORIZONTAL );
 		puzzleScrew2.puzzleManager.addEntity( movingTP );
 		puzzleScrew2.puzzleManager.addMover( movingTP.name, lm2 );
 		skeleton.addScrewForDraw( puzzleScrew2 );
@@ -307,10 +308,10 @@ public class IMoverGameScreen implements com.badlogic.gdx.Screen {
 	 */
 	private void initClimbingScrews( ) {
 		climbingScrews = new ArrayList< StrippedScrew >( );
-		float x1 = 1.75f;
-		float x2 = 2.4f;
-		float y1 = 0.6f;
-		float dy = 0.7f;
+		float x1 = 420f;
+		float x2 = 650f;
+		float y1 = 256f;
+		float dy = 200f;
 		for ( int i = 0; i < 10; i++ ) {
 			if ( i % 2 == 0 ) {
 				climbingScrews.add( new StrippedScrew( "", world, new Vector2(
@@ -365,35 +366,30 @@ public class IMoverGameScreen implements com.badlogic.gdx.Screen {
 				.texture( testTexture ).friction( 1f );
 		// .buildTilePlatform( world );
 
-		
-		/*for ( int i = 0; i < 10; ++i ) {
-			TiledPlatform piston = builder.position( ( -100f - i * 40 ), 220f )
-					.buildTilePlatform( );
+		/*
+		 * for ( int i = 0; i < 10; ++i ) { TiledPlatform piston =
+		 * builder.position( ( -100f - i * 40 ), 220f ) .buildTilePlatform( );
+		 * 
+		 * PrismaticJoint pistonJoint = jointBuilder.bodyB( ( Entity ) piston )
+		 * .anchor( piston.body.getWorldCenter( ) ).build( ); // Something is
+		 * still not quite right with this, try replacing 3 // with 0.
+		 * piston.setMover( new PistonMover( pistonJoint, 3f, i / 10.0f + 2f )
+		 * ); // piston.body.setSleepingAllowed( false );
+		 * skeleton.addDynamicPlatform( piston ); }
+		 */
 
-			PrismaticJoint pistonJoint = jointBuilder.bodyB( ( Entity ) piston )
-					.anchor( piston.body.getWorldCenter( ) ).build( );
-			// Something is still not quite right with this, try replacing 3
-			// with 0.
-			piston.setMover( new PistonMover( pistonJoint, 3f, i / 10.0f + 2f ) );
-			// piston.body.setSleepingAllowed( false );
-			skeleton.addDynamicPlatform( piston );
-		}*/
-		
-		//BUILD ROW OF PISTONS
-		builder = platBuilder.width( 1 ).height( 3 )
-				.oneSided( false )
-				.kinematic( )
-				.setScale(1)
-				.texture( testTexture ).friction( 1f );
-		for ( int i = 0; i < 10; ++i ){
-			TiledPlatform pistonKin = builder.name("pistonKin"+i)
-					.position(-200f - i * 40,220f).buildTilePlatform();
-					skeleton.addKinematicPlatform(pistonKin);
-					pistonKin.setMover( new PistonTweenMover( pistonKin, new Vector2(0,300), 1f, 3f, 1f, 0f, i / 10.0f +1) );
-					System.out.println("Piston"+i+": "+pistonKin.getPosition( ));
+		// BUILD ROW OF PISTONS
+		builder = platBuilder.width( 1 ).height( 3 ).oneSided( false )
+				.kinematic( ).setScale( 1 ).texture( testTexture )
+				.friction( 1f );
+		for ( int i = 0; i < 10; ++i ) {
+			TiledPlatform pistonKin = builder.name( "pistonKin" + i )
+					.position( -200f - i * 40, 220f ).buildTilePlatform( );
+			skeleton.addKinematicPlatform( pistonKin );
+			pistonKin.setMover( new PistonTweenMover( pistonKin, new Vector2(
+					0, 300 ), 1f, 3f, 1f, 0f, i / 10.0f + 1 ) );
+			System.out.println( "Piston" + i + ": " + pistonKin.getPosition( ) );
 		}
-		
-		
 
 		builder = platBuilder.width( 20 ).height( 1 ).oneSided( true )
 				.dynamic( )
@@ -403,37 +399,26 @@ public class IMoverGameScreen implements com.badlogic.gdx.Screen {
 
 		TiledPlatform elevator = builder.position( -1500, 150 ).moveable( true )
 				.buildTilePlatform( );
-		
-		//PrismaticJoint pistonJ = jointBuilder.bodyB( ( Entity ) elevator )
-		//		.anchor( elevator.body.getWorldCenter( ) ).build( );
 
-		//elevator.setMover( new PistonMover( pistonJ, 0f, 2f ) );
+		// PrismaticJoint pistonJ = jointBuilder.bodyB( ( Entity ) elevator )
+		// .anchor( elevator.body.getWorldCenter( ) ).build( );
+
+		// elevator.setMover( new PistonMover( pistonJ, 0f, 2f ) );
 		elevator.body.setSleepingAllowed( false );
 
-		//1000 - 1219 for perfect gears
+		// 1000 - 1219 for perfect gears
 		Platform gear = builder.name( "gear" )
 				.position( 1229 * Util.PIXEL_TO_BOX, 320 * Util.PIXEL_TO_BOX )
 				.texture( null ).setScale( 3f ).type( "gearSmall" )
 				.buildComplexPlatform( );
-		//skeleton.addDynamicPlatform( gear );
+		// skeleton.addDynamicPlatform( gear );
 		skeleton.addPlatformRotatingCenter( gear );
-		Platform gear2 = builder.name( "gear2" )
-				.position( 1000, 300 )
-				.texture( null ).setScale( 3f ).type( "gearSmall" )
-				.kinematic( )
+		Platform gear2 = builder.name( "gear2" ).position( 1000, 300 )
+				.texture( null ).setScale( 3f ).type( "gearSmall" ).kinematic( )
 				.buildComplexPlatform( );
 		skeleton.addKinematicPlatform( gear2 );
 		gear2.setMover( new RotateTweenMover( gear2 ) );
-		Filter filter;
-		for ( Fixture f : gear.body.getFixtureList( ) ) {
-			filter = f.getFilterData( );
-			// move player to another category so other objects stop
-			// colliding
-			filter.categoryBits = Util.DYNAMIC_OBJECTS;
-			// player still collides with sensor of screw
-			filter.maskBits = Util.CATEGORY_EVERYTHING;
-			f.setFilterData( filter );
-		}
+		gear2.quickfixCollisions( );
 	}
 
 	@Override
@@ -462,8 +447,8 @@ public class IMoverGameScreen implements com.badlogic.gdx.Screen {
 		} else
 			debugTest = true;
 
-		//System.out.println( "skele:" + skeleton.getPosition( ) );
-		
+		// System.out.println( "skele:" + skeleton.getPosition( ) );
+
 		if ( Gdx.input.isKeyPressed( Input.Keys.Z ) ) {
 			rootSkeleton.translateBy( 0.0f, 0.01f );
 			// rootSkeleton.body.setLinearVelocity( new Vector2(0,1f) );

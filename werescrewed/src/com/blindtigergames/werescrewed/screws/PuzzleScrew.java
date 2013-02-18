@@ -1,6 +1,5 @@
 package com.blindtigergames.werescrewed.screws;
 
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
@@ -21,36 +20,25 @@ import com.blindtigergames.werescrewed.util.Util;
 
 public class PuzzleScrew extends Screw {
 	public PuzzleManager puzzleManager;
-	private int threshold;
+	private boolean resetAble;
+	private int startDepth;
 
 	public PuzzleScrew( String name, Vector2 pos, int max, Entity entity,
-			World world, int startDepth ) {
+			World world, int startDepth, boolean resetable ) {
 		super( name, pos, null );
 		this.world = world;
-		maxDepth = threshold = max;
-		depth = startDepth;
+		maxDepth = max;
+		this.startDepth = depth = startDepth;
+		resetAble = resetable;
 		puzzleManager = new PuzzleManager( world );
 		screwType = ScrewType.PUZZLE;
-		
-		sprite.setColor( Color.GREEN );
+
+		sprite.setColor( 16f/255f, 215f/255f, 96f/255f, 1.0f);
 
 		constructBody( pos );
 		connectScrewToEntity( entity );
 	}
 
-	/**
-	 * creates Puzzle Screw with binary
-	 * 
-	 * @param max
-	 *            screwable amount
-	 * @param th
-	 *            threshold for binary action
-	 */
-	public PuzzleScrew( String name, Vector2 pos, int max, Entity entity,
-			World world, int th, int startDepth ) {
-		this( name, pos, max, entity, world, startDepth );
-		threshold = th;
-	}
 
 	@Override
 	public void screwLeft( ) {
@@ -99,20 +87,20 @@ public class PuzzleScrew extends Screw {
 	}
 
 	/**
-	 * checks if binary puzzle screw is active
-	 * 
-	 * @return if screwed past threshold
+	 * resets this screw back to its initial position
+	 * @param pos
 	 */
-
-	public boolean isActive( ) {
-		return threshold <= depth;
+	public void resetScrew( ) {
+		if ( resetAble ) {
+			depth = startDepth;
+		}
 	}
-
+	
 	private void constructBody( Vector2 pos ) {
 		// create the screw body
 		BodyDef screwBodyDef = new BodyDef( );
 		screwBodyDef.type = BodyType.DynamicBody;
-		screwBodyDef.position.set( pos );
+		screwBodyDef.position.set( pos.mul( Util.PIXEL_TO_BOX ) );
 		screwBodyDef.gravityScale = 0.07f;
 		body = world.createBody( screwBodyDef );
 		CircleShape screwShape = new CircleShape( );
@@ -125,18 +113,18 @@ public class PuzzleScrew extends Screw {
 		body.setUserData( this );
 
 		// add radar sensor to screw
-		CircleShape radarShape = new CircleShape( );
-		radarShape.setRadius( sprite.getWidth( ) * 1.25f * Util.PIXEL_TO_BOX );
-		FixtureDef radarFixture = new FixtureDef( );
-		radarFixture.shape = radarShape;
-		radarFixture.isSensor = true;
-		radarFixture.filter.categoryBits = Util.CATEGORY_SCREWS;
-		radarFixture.filter.maskBits = Util.CATEGORY_PLAYER
-				| Util.CATEGORY_SUBPLAYER;
-		body.createFixture( radarFixture );
+//		CircleShape radarShape = new CircleShape( );
+//		radarShape.setRadius( sprite.getWidth( ) * 1.25f * Util.PIXEL_TO_BOX );
+//		FixtureDef radarFixture = new FixtureDef( );
+//		radarFixture.shape = radarShape;
+//		radarFixture.isSensor = true;
+//		radarFixture.filter.categoryBits = Util.CATEGORY_SCREWS;
+//		radarFixture.filter.maskBits = Util.CATEGORY_PLAYER
+//				| Util.CATEGORY_SUBPLAYER;
+//		body.createFixture( radarFixture );
 
 		// You dont dispose the fixturedef, you dispose the shape
-		radarShape.dispose( );
+		//radarShape.dispose( );
 		screwShape.dispose( );
 	}
 

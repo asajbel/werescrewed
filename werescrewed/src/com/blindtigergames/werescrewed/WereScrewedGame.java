@@ -1,6 +1,8 @@
 package com.blindtigergames.werescrewed;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.FPSLogger;
@@ -13,6 +15,8 @@ public class WereScrewedGame extends Game {
 	public static FileHandle dirHandle;
 
 	public FPSLogger logger;
+	
+	private boolean restartFlag = false;
 
 	@Override
 	public void create( ) {
@@ -39,8 +43,22 @@ public class WereScrewedGame extends Game {
 	@Override
 	public void render( ) {
 		update( 0 );
+		if ( Gdx.input.isKeyPressed( Keys.SHIFT_LEFT ) && Gdx.input.isKeyPressed( Keys.ESCAPE ) ){
+			if ( !restartFlag ){
+				restartFlag = true;
+				restart( );
+			}
+		}else{
+			restartFlag = false;
+		}
 		super.render( );
-		//logger.log( );
+	}
+	
+	public void restart(){
+		this.dispose();
+		manager = new AssetManager( );
+		ScreenManager.getInstance( ).initialize( this );
+		ScreenManager.getInstance( ).show( ScreenType.LOADING );
 	}
 
 	public void update( float dT ) {
