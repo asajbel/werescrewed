@@ -68,8 +68,8 @@ public class LoadingScreen extends Screen {
 			//determine if we want to go into this directory
 			//TODO: The string interpretation of screenTag will go here
 			boolean IWannaLoadTheseFiles = 
-					entryName.equals("common") || entryName.equals("levels") ||
-					entryName.equals(screenTag);
+					entryName.equals("common") || entryName.equals("sounds") ||
+					entryName.equals("levels") || entryName.equals(screenTag);
 			
 			if(IWannaLoadTheseFiles) loadFilesInDirectory(entry, screenTag);
 			
