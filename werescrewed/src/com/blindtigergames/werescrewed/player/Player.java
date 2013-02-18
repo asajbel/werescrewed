@@ -38,9 +38,9 @@ import com.blindtigergames.werescrewed.util.Util;
  */
 public class Player extends Entity {
 
-	public final static float MAX_VELOCITY = 1.7f;
-	public final static float MIN_VELOCITY = 0.05f;
-	public final static float MOVEMENT_IMPULSE = 0.01f;
+	public final static float MAX_VELOCITY = 1.65f;
+	public final static float MIN_VELOCITY = 0.01f;
+	public final static float MOVEMENT_IMPULSE = 0.009f;
 	public final static float JUMP_SCREW_IMPULSE = 0.1f;
 	public final static int JUMP_COUNTER = 10;
 	public final static float ANALOG_DEADZONE = 0.2f;
@@ -49,7 +49,7 @@ public class Player extends Entity {
 	public final static int SCREW_JUMP_STEPS = 12;
 	public final static float SCREW_ATTACH_SPEED = 0.07f;
 	public final static int GRAB_COUNTER_STEPS = 5;
-	public float JUMP_IMPULSE = 0.15f;
+	public float JUMP_IMPULSE = 0.13f;
 
 	public Fixture feet;
 	public Fixture torso;
@@ -160,8 +160,6 @@ public class Player extends Entity {
 		}
 		AnchorList.getInstance( ).setAnchorPosBox( anchorID, getPosition( ) );
 		if ( isDead ) {
-			// TODO: do stuff here
-			// playerState = playerState.Dead;
 			body.setLinearVelocity( Vector2.Zero );
 			body.setFixedRotation( false );
 			body.setAngularVelocity( 0.1f );
@@ -169,7 +167,6 @@ public class Player extends Entity {
 			body.setFixedRotation( true );
 			body.setTransform( body.getPosition( ).x, body.getPosition( ).y, 0 );
 			if ( controller != null ) {
-				JUMP_IMPULSE = 0.09f;
 				updateController( deltaTime );
 			} else {
 				updateKeyboard( deltaTime );
@@ -305,6 +302,35 @@ public class Player extends Entity {
 				- MIN_VELOCITY;
 		if ( body.getLinearVelocity( ).x > temp ) {
 			body.applyLinearImpulse( new Vector2( -MOVEMENT_IMPULSE, 0.0f ),
+					body.getWorldCenter( ) );
+		}
+	}
+	/**
+	 * Moves the player right, based off how far analog stick is pushed right
+	 * 
+	 * @author Ranveer
+	 */
+	public void moveAnalogRightInAir( ) {
+		leftAnalogX = controllerListener.analogLeftAxisX( );
+		float temp = ( ( ( leftAnalogX - ANALOG_DEADZONE ) / ( ANALOG_MAX_RANGE - ANALOG_DEADZONE ) ) * ( MAX_VELOCITY - MIN_VELOCITY ) )
+				+ MIN_VELOCITY;
+		if ( body.getLinearVelocity( ).x < temp ) {
+			body.applyLinearImpulse( new Vector2( MOVEMENT_IMPULSE/2, 0.0f ),
+					body.getWorldCenter( ) );
+		}
+	}
+
+	/**
+	 * Moves the player left, based off how far analog stick is pushed left
+	 * 
+	 * @author Ranveer
+	 */
+	public void moveAnalogLeftInAir( ) {
+		leftAnalogX = controllerListener.analogLeftAxisX( );
+		float temp = ( ( ( leftAnalogX + ANALOG_DEADZONE ) / ( ANALOG_MAX_RANGE - ANALOG_DEADZONE ) ) * ( MAX_VELOCITY - MIN_VELOCITY ) )
+				- MIN_VELOCITY;
+		if ( body.getLinearVelocity( ).x > temp ) {
+			body.applyLinearImpulse( new Vector2( -MOVEMENT_IMPULSE/2, 0.0f ),
 					body.getWorldCenter( ) );
 		}
 	}
@@ -581,7 +607,6 @@ public class Player extends Entity {
 			}
 			playerState = PlayerState.JumpingOffScrew;
 			screwJumpTimeout = SCREW_JUMP_STEPS;
-			// TODO: ADD SCREW JUMPING HERE
 			jumpPressedController = true;
 			mover = null;
 			jumpScrew( );
@@ -882,31 +907,7 @@ public class Player extends Entity {
 		}
 	}
 
-	/**
-	 * This function creates a new controllerListener and sets the active
-	 * controller depending on how many players is being created
-	 * 
-	 * @author Ranveer
-	 */
-	private void setUpController( ) {
-		controllerListener = new MyControllerListener( );
-		for ( Controller controller2 : Controllers.getControllers( ) ) {
-			Gdx.app.log( "ok", controller2.getName( ) );
-		}
-		if ( Controllers.getControllers( ).size >= 1 ) {
-			if ( this.name.equals( "player1" ) ) {
-				controller = Controllers.getControllers( ).get( 0 );
-				controller.addListener( controllerListener );
-			}
-		}
-		if ( Controllers.getControllers( ).size == 2 ) {
-			if ( this.name.equals( "player2" ) ) {
-				controller = Controllers.getControllers( ).get( 1 );
-				controller.addListener( controllerListener );
-			}
-		}
-
-	}
+	
 
 	/**
 	 * reseting jumpcounter and screw button being held and jump state and the
@@ -1026,7 +1027,12 @@ public class Player extends Entity {
 		if ( controllerListener.leftPressed( ) ) {
 			processMovingState( );
 			if ( controllerListener.analogUsed( ) ) {
-				moveAnalogLeft( );
+				if(playerState == PlayerState.Falling || playerState == PlayerState.Jumping){
+					moveAnalogLeftInAir();
+				}
+				else{
+					moveAnalogLeft( );
+				}
 			} else {
 				moveLeft( );
 			}
@@ -1035,7 +1041,12 @@ public class Player extends Entity {
 		if ( controllerListener.rightPressed( ) ) {
 			processMovingState( );
 			if ( controllerListener.analogUsed( ) ) {
-				moveAnalogRight( );
+				if(playerState == PlayerState.Falling || playerState == PlayerState.Jumping){
+					moveAnalogRightInAir();
+				}
+				else{
+					moveAnalogRight( );
+				}
 			} else {
 				moveRight( );
 			}
@@ -1114,5 +1125,34 @@ public class Player extends Entity {
 			}
 			screwButtonHeld = false;
 		}
+	}
+	
+	/**
+	 * This function creates a new controllerListener and sets the active
+	 * controller depending on how many players is being created
+	 * 
+	 * @author Ranveer
+	 */
+	private void setUpController( ) {
+		for ( Controller controller2 : Controllers.getControllers( ) ) {
+			Gdx.app.log( "ok", controller2.getName( ) );
+		}
+		if ( Controllers.getControllers( ).size >= 1 ) {
+			if ( this.name.equals( "player1" ) ) {
+				controllerListener = new MyControllerListener( );
+				controller = Controllers.getControllers( ).get( 0 );
+				controller.addListener( controllerListener );
+				JUMP_IMPULSE = 0.08f;
+			}
+		}
+		if ( Controllers.getControllers( ).size == 2 ) {
+			if ( this.name.equals( "player2" ) ) {
+				controllerListener = new MyControllerListener( );
+				controller = Controllers.getControllers( ).get( 1 );
+				controller.addListener( controllerListener );
+				JUMP_IMPULSE = 0.08f;
+			}
+		}
+
 	}
 }

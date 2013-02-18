@@ -49,11 +49,7 @@ import com.blindtigergames.werescrewed.screws.StructureScrew;
 import com.blindtigergames.werescrewed.skeleton.Skeleton;
 import com.blindtigergames.werescrewed.util.Util;
 
-/*
- * Stop hardcoding things into this screen!
- * You're breaking all the others!
- * ~Kevin
- */
+
 public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 
 	// FIELDS
@@ -84,7 +80,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 	public PhysicsTestScreen( ) {
 		// Initialize world and variables to allow adding entities
 		batch = new SpriteBatch( );
-		world = new World( new Vector2( 0, -45 ), true );
+		world = new World( new Vector2( 0, -35 ), true );
 		// entityManager = new EntityManager( );
 		skeleton = new Skeleton( "skeleton", Vector2.Zero, null, world );
 		rootSkeleton = new Skeleton( "root", Vector2.Zero, null, world );
