@@ -391,6 +391,6 @@ public class Entity {
 	}
 	
 	public String toString(){
-		return "Entity["+name+"] pos:"+body.getPosition( )+", body.active:"+body.isActive( )+", body.awake:"+body.isAwake( );
+		return "Entity["+name+"] pos:"+body.getPosition( )+", angle: "+body.getAngle( )+", body.active:"+body.isActive( )+", body.awake:"+body.isAwake( );
 	}
 }

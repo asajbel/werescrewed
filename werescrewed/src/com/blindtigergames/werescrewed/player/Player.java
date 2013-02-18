@@ -47,7 +47,7 @@ public class Player extends Entity {
 	public final static float ANALOG_MAX_RANGE = 1.0f;
 	public final static float PLAYER_FRICTION = 0.6f;
 	public final static int SCREW_JUMP_STEPS = 12;
-	public final static float SCREW_ATTACH_SPEED = 0.07f;
+	public final static float SCREW_ATTACH_SPEED = 0.1f;
 	public final static int GRAB_COUNTER_STEPS = 5;
 	public float JUMP_IMPULSE = 0.13f;
 
@@ -365,13 +365,21 @@ public class Player extends Entity {
 	public void jumpScrew( ) {
 		leftAnalogX = controllerListener.analogLeftAxisX( );
 		leftAnalogY = controllerListener.analogLeftAxisY( ) * -1;
-		float multiplierY = 1.5f;
-		if ( leftAnalogY < 0.0 )
+		float multiplierY = 1.2f;
+		float multiplierX = 0.6f;
+		if ( leftAnalogY < -0.1f )
 			multiplierY = 0.1f;
-		// body.setLinearVelocity( new Vector2( body.getLinearVelocity( ).x,
-		// 0.0f ) );
+		if(leftAnalogX < 0.01f && leftAnalogY < 0.01f
+				&& leftAnalogX > -0.01f && leftAnalogY > -0.01f){
+			multiplierX = 0.0f;
+			multiplierY = 1.25f;
+			leftAnalogY = 1.0f;
+		}
+		if((leftAnalogX > 0.7f || leftAnalogX < -0.7f) && (leftAnalogY < 0.3f && leftAnalogY > -0.3f)){
+			multiplierX = 0.8f;
+		}
 		body.applyLinearImpulse( new Vector2( JUMP_SCREW_IMPULSE * leftAnalogX
-				* 0.7f, JUMP_SCREW_IMPULSE * leftAnalogY * multiplierY ),
+				* multiplierX, JUMP_SCREW_IMPULSE * leftAnalogY * multiplierY ),
 				body.getWorldCenter( ) );
 		setGrounded(false);
 	}
@@ -465,6 +473,15 @@ public class Player extends Entity {
 	 */
 	public boolean isGrounded( ) {
 		return grounded;
+	}
+	
+	/**
+	 * Transforms player position by offset
+	 * 
+	 * @param posOffset is the offset you want to apply to player
+	 */
+	public void setPlatformTransform( Vector2 posOffset ){
+		body.setTransform( body.getPosition( ).add(posOffset), 0);
 	}
 
 	// PRIVATE METHODS
