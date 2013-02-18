@@ -49,8 +49,8 @@ public class MyControllerListener implements ControllerListener {
 	private float axisRY;
 
 	// Angles and directions for screwing
-	private int prevAngle = 0;
-	private int currAngle = 0;
+	private int prevRightAnalogAngle = 0;
+	private int currRightAnalogAngle = 0;
 	private int prevDirection;
 	private int currDirection = 0;
 	private int screwCounter = 0;
@@ -137,8 +137,8 @@ public class MyControllerListener implements ControllerListener {
 			currDirection = 0;
 			prevDirection = 0;
 			screwCounter = 0;
-			prevAngle = 0;
-			currAngle = 0;
+			prevRightAnalogAngle = 0;
+			currRightAnalogAngle = 0;
 		} else
 			// Updating Right Stick Screwing
 			rightStickScrew( );
@@ -156,7 +156,7 @@ public class MyControllerListener implements ControllerListener {
 //				String.valueOf( buttonIndex ) );
 
 		// Switching between Screwing/Unscrewing Modes
-		if ( buttonIndex == Mapping.BUTTON_R3 ) {
+		if ( buttonIndex == Mapping.BUTTON_SELECT ) {
 			if ( debugScrewMode1 ) {
 				debugScrewMode1 = false;
 				debugScrewMode2 = true;
@@ -485,41 +485,45 @@ public class MyControllerListener implements ControllerListener {
 	 */
 	private void rightStickScrew( ) {
 
-		currAngle = ( int ) Math.toDegrees( Math.atan2( -axisRX, -axisRY ) ) + 180;
-
+		currRightAnalogAngle = ( int ) Math.toDegrees( Math.atan2( -axisRX, -axisRY ) ) + 180;
+		System.out.println("curr: " + currRightAnalogAngle + ", prev: " + prevRightAnalogAngle);
 		// First mode is sets the Previous Angle when it is moved from the
 		// center
 		// then when the stick is moved it checks to see if its different from
 		// where
 		// it started, if so then it is screwing/unscrewing
 		if ( debugScrewMode1 ) {
-			if ( prevAngle == 0 )
-				prevAngle = currAngle;
-			if ( currAngle - prevAngle > SCREW_ANGLE_DIFF ) {
+			if ( currRightAnalogAngle - prevRightAnalogAngle > 350 ){
+				screwingPressed = true;
+				unscrewingPressed = false;
+				prevRightAnalogAngle = currRightAnalogAngle;
+			}
+			else if ( currRightAnalogAngle - prevRightAnalogAngle < -350 ){
 				screwingPressed = false;
 				unscrewingPressed = true;
-				prevAngle = currAngle;
-			} else if ( prevAngle - currAngle > SCREW_ANGLE_DIFF ) {
-				unscrewingPressed = false;
+				prevRightAnalogAngle = currRightAnalogAngle;
+			}
+			else if ( currRightAnalogAngle < prevRightAnalogAngle ) {
 				screwingPressed = true;
-				prevAngle = currAngle;
+				unscrewingPressed = false;
+				prevRightAnalogAngle = currRightAnalogAngle;
+			} else if ( prevRightAnalogAngle < currRightAnalogAngle ) {
+				unscrewingPressed = true;
+				screwingPressed = false;
+				prevRightAnalogAngle = currRightAnalogAngle;
 			}
 		}
-
-		// Second mode is similar to first except it checks the difference
-		// every tick instead of when diff is greater than 1
 		else if ( debugScrewMode2 ) {
-			if ( prevAngle == 0 )
-				prevAngle = currAngle;
-
-			if ( currAngle < prevAngle ) {
-				screwingPressed = true;
-				unscrewingPressed = false;
-				prevAngle = currAngle;
-			} else if ( prevAngle < currAngle ) {
-				unscrewingPressed = true;
+			if ( prevRightAnalogAngle == 0 )
+				prevRightAnalogAngle = currRightAnalogAngle;
+			if ( currRightAnalogAngle - prevRightAnalogAngle > SCREW_ANGLE_DIFF ) {
 				screwingPressed = false;
-				prevAngle = currAngle;
+				unscrewingPressed = true;
+				prevRightAnalogAngle = currRightAnalogAngle;
+			} else if ( prevRightAnalogAngle - currRightAnalogAngle > SCREW_ANGLE_DIFF ) {
+				unscrewingPressed = false;
+				screwingPressed = true;
+				prevRightAnalogAngle = currRightAnalogAngle;
 			}
 		}
 
@@ -529,7 +533,7 @@ public class MyControllerListener implements ControllerListener {
 		// prev direction
 		else if ( debugScrewMode3 ) {
 
-			prevAngle = currAngle;
+			prevRightAnalogAngle = currRightAnalogAngle;
 
 			currDirection = 0;
 
