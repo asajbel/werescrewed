@@ -238,16 +238,18 @@ public class Camera {
 			}
 		}
 
-		if ( outsideTrue ) {
-			zoomOut( );
-			if ( !insideTargetBuffer ) {
-				translate( );
-			}
-		} else {
-			translateLogic( );
-			if ( camera.zoom > 1f )
-				zoomIn( );
-		}
+//		if ( outsideTrue ) {
+//			zoomOut( );
+//			if ( !insideTargetBuffer ) {
+//				translate( );
+//			}
+//		} else {
+//			translateLogic( );
+//			if ( camera.zoom > 1f )
+//				zoomIn( );
+//		}
+		zoom();
+		translateLogic();
 	}
 
 	/**
