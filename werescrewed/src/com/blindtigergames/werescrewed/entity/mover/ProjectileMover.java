@@ -72,9 +72,9 @@ public class ProjectileMover implements IMover {
 				fixtureDef.density = 10.0f;
 				fixtureDef.restitution = 0.0f;
 				fixtureDef.friction = 0.1f;
-				body = Util.world.createBody( bodyDef );
+/*				body = Util.world.createBody( bodyDef );
 				body.createFixture( fixtureDef );
-				elementList[elementIndex] = body;
+				elementList[elementIndex] = body;*/
 			}
 			else{
 				elementList[elementIndex].setTransform( origin, 0f );
