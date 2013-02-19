@@ -46,7 +46,7 @@ public class Player extends Entity {
 	public final static float ANALOG_MAX_RANGE = 1.0f;
 	public final static float PLAYER_FRICTION = 0.6f;
 	public final static int SCREW_JUMP_STEPS = 15;
-	public final static float SCREW_ATTACH_SPEED = 0.07f;
+	public final static float SCREW_ATTACH_SPEED = 0.1f;
 	public final static int GRAB_COUNTER_STEPS = 5;
 	public float JUMP_IMPULSE = 0.13f;
 
@@ -80,9 +80,8 @@ public class Player extends Entity {
 	private boolean jumpPressedController;
 	private boolean screwButtonHeld;
 	private boolean kinematicTransform = false;
+	// private Vector2 platformOffset;
 	private int anchorID;
-	
-	private float footFriction = PLAYER_FRICTION;
 
 	public int grabCounter = 0;
 	public int jumpCounter = 0;
@@ -149,6 +148,9 @@ public class Player extends Entity {
 	 */
 	public void update( float deltaTime ) {
 		super.update( deltaTime );
+		if ( name.equals( "player1" ) ) {
+			Gdx.app.log( "playerState", "" + playerState );
+		}
 		if ( kinematicTransform ) {
 			// setPlatformTransform( platformOffset );
 			kinematicTransform = false;
@@ -167,9 +169,6 @@ public class Player extends Entity {
 				updateKeyboard( deltaTime );
 			}
 		}
-		
-		//updateFootFriction();
-		//Gdx.app.log( name, feet.getFriction( )+"" );
 
 		// debug stuff
 		// Hit backspace to kill the player or respawn him
@@ -474,27 +473,6 @@ public class Player extends Entity {
 	 */
 	public void noFriction( ) {
 		feet.setFriction( 0.0f );
-		footFriction = 0;
-	}
-	
-	/**
-	 * slowly increases friction to avoid that silly stopping bug.
-	 * Call this every player.update()
-	 */
-	private void updateFootFriction( ){
-		if ( isGrounded() ){
-			//increase friction while on ground
-			if ( footFriction < PLAYER_FRICTION ){
-				footFriction += 0.1f;
-				if ( footFriction > PLAYER_FRICTION ){
-					footFriction = PLAYER_FRICTION;
-				}
-			}
-		}else {
-			footFriction = 0f;
-		}
-		//Gdx.app.log( name, feet.getFriction()+"" );
-		feet.setFriction( footFriction );
 	}
 
 	/**
@@ -538,7 +516,7 @@ public class Player extends Entity {
 						SCREW_ATTACH_SPEED, false,
 						PuzzleType.OVERRIDE_ENTITY_MOVER, LinearAxis.DIAGONAL );
 				playerState = PlayerState.Screwing;
-				setGrounded( false );
+				setGrounded( true );
 			}
 		}
 	}
@@ -600,10 +578,10 @@ public class Player extends Entity {
 			if ( mover == null ) {
 				world.destroyJoint( playerToScrew );
 			}
-			mover = null;
 			for ( Fixture f : body.getFixtureList( ) ) {
 				f.setSensor( false );
 			}
+			mover = null;
 			playerState = PlayerState.JumpingOffScrew;
 			screwJumpTimeout = SCREW_JUMP_STEPS;
 			jump( );
@@ -613,10 +591,8 @@ public class Player extends Entity {
 				if ( playerState != PlayerState.GrabMode ) {
 					playerState = PlayerState.Jumping;
 				}
-				//noFriction(); //working on fixing friction
 				jump( );
-				//Gdx.app.log(name,"jump");
-				//jumpSound.play( );
+				// jumpSound.play( );
 			} else {
 				// let the bottom player jump
 				// with a large amount of force
@@ -720,16 +696,18 @@ public class Player extends Entity {
 					f.setFilterData( filter );
 				}
 				jumpOffScrew( );
+				screwJumpTimeout--;
 			} else {
-				// screwJumpTimeout = 0;
+				jumpOffScrew( );
+				screwJumpTimeout--;
+			}
+		} else {
+			if ( screwJumpTimeout > 0 ) {
+				screwJumpTimeout--;
+				jumpOffScrew( );
+			} else {
 				jumpOffScrew( );
 			}
-		}
-		if ( screwJumpTimeout > 0 ) {
-			screwJumpTimeout--;
-			jumpOffScrew( );
-		} else {
-			jumpOffScrew( );
 		}
 	}
 
@@ -1039,8 +1017,7 @@ public class Player extends Entity {
 		// attach to screws when attach button is pushed
 		if ( inputHandler.screwPressed( )
 				&& playerState != PlayerState.Screwing
-				&& ( playerState != PlayerState.JumpingOffScrew )
-				&& !inputHandler.jumpPressed( )) {
+				&& ( playerState != PlayerState.JumpingOffScrew ) ) {
 			if ( hitScrew ) {
 				attachToScrew( );
 			}
@@ -1131,9 +1108,7 @@ public class Player extends Entity {
 		// If player hits the screw button and is in distance
 		// then attach the player to the screw
 		if ( ( controllerListener.screwPressed( ) )
-				&& ( playerState != PlayerState.Screwing 
-				&& playerState != PlayerState.JumpingOffScrew )
-				&& !controllerListener.jumpPressed( )) {
+				&& ( playerState != PlayerState.Screwing && playerState != PlayerState.JumpingOffScrew ) ) {
 			if ( hitScrew && !screwButtonHeld ) {
 				attachToScrew( );
 				screwButtonHeld = true;
@@ -1151,8 +1126,6 @@ public class Player extends Entity {
 				f.setSensor( false );
 			}
 			mover = null;
-			// VELO = ZERO OTHERWISE PLAYER COULD SHOOT THROUGH A WALL (BUG)
-			body.setLinearVelocity( Vector2.Zero );
 			playerState = PlayerState.JumpingOffScrew;
 			screwJumpTimeout = SCREW_JUMP_STEPS;
 		}
@@ -1211,5 +1184,4 @@ public class Player extends Entity {
 		}
 
 	}
-
 }
