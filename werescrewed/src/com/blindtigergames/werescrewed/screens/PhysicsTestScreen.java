@@ -29,6 +29,7 @@ import com.blindtigergames.werescrewed.entity.builders.ScrewBuilder;
 import com.blindtigergames.werescrewed.entity.mover.LerpMover;
 import com.blindtigergames.werescrewed.entity.mover.LinearAxis;
 import com.blindtigergames.werescrewed.entity.mover.PistonTweenMover;
+import com.blindtigergames.werescrewed.entity.mover.ProjectileMover;
 import com.blindtigergames.werescrewed.entity.mover.PuzzleType;
 import com.blindtigergames.werescrewed.entity.mover.RockingMover;
 import com.blindtigergames.werescrewed.entity.mover.RotateByDegree;
@@ -82,6 +83,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		// Initialize world and variables to allow adding entities
 		batch = new SpriteBatch( );
 		world = new World( new Vector2( 0, -35 ), true );
+		Util.world = world;
 		// entityManager = new EntityManager( );
 		skeleton = new Skeleton( "skeleton", Vector2.Zero, null, world );
 		rootSkeleton = new Skeleton( "root", Vector2.Zero, null, world );
@@ -225,6 +227,8 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 				.resitituion( 0.0f ).kinematic( ).buildTilePlatform( );
 		flipPlat2.setLocalRot( -90 * Util.DEG_TO_RAD );
 		skeleton.addKinematicPlatform( flipPlat2 );
+		
+		ProjectileMover cannon = new ProjectileMover(1, 2, 10, new Vector2( 400f, 400f ) );
 
 		// rotate puzzle screw control
 		RotateByDegree rm = new RotateByDegree( 0.0f, -90.0f, 0, 0.5f );
@@ -232,6 +236,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 				new Vector2( 32f, 32f ), 50, skeleton, world, 0, false );
 		puzzleScrew.puzzleManager.addEntity( flipPlat1 );
 		puzzleScrew.puzzleManager.addMover( flipPlat1.name, rm );
+		
 		// also add a up mover to movingTP
 		LerpMover lm2 = new LerpMover( movingTP.body.getPosition( ).mul(
 				Util.BOX_TO_PIXEL ),
