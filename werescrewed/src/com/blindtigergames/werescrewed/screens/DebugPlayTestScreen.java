@@ -18,12 +18,14 @@ import com.blindtigergames.werescrewed.debug.SBox2DDebugRenderer;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.builders.PlatformBuilder;
 import com.blindtigergames.werescrewed.entity.builders.PlayerBuilder;
+import com.blindtigergames.werescrewed.entity.builders.ScrewBuilder;
 import com.blindtigergames.werescrewed.entity.tween.EntityAccessor;
 import com.blindtigergames.werescrewed.entity.tween.PlatformAccessor;
 import com.blindtigergames.werescrewed.platforms.Platform;
 import com.blindtigergames.werescrewed.platforms.TiledPlatform;
 import com.blindtigergames.werescrewed.player.Player;
 import com.blindtigergames.werescrewed.screws.StrippedScrew;
+import com.blindtigergames.werescrewed.screws.StructureScrew;
 import com.blindtigergames.werescrewed.skeleton.Skeleton;
 import com.blindtigergames.werescrewed.util.Util;
 
@@ -79,9 +81,9 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 
 		// Initialize players
 		player1 = new PlayerBuilder( ).name( "player1" ).world( world )
-				.position( 125 * TILE, 25 * TILE ).buildPlayer( );
+				.position( 115f * TILE, 42 * TILE).buildPlayer( );
 		player2 = new PlayerBuilder( ).name( "player2" ).world( world )
-				.position( 125.5f * TILE, 25 * TILE ).buildPlayer( );
+				.position( 114f * TILE, 42 * TILE ).buildPlayer( );
 
 		// TODO: Everything.
 
@@ -107,6 +109,7 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		ground = platBuilder.position( 81 * TILE, 0 ).name( "ground1" )
 				.dimensions( 160, 2 ).texture( testTexture ).kinematic( )
 				.oneSided( false ).restitution( 0.0f ).buildTilePlatform( );
+		ground.setCategoryMask( Util.KINEMATIC_OBJECTS, Util.CATEGORY_EVERYTHING );
 		skel1.addKinematicPlatform( ground );
 
 		wall = platBuilder.position( 0, 99 * TILE ).name( "wall1" )
@@ -241,6 +244,7 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		ground = platBuilder.position( 181 * TILE, 11 * TILE ).name( "ground2" )
 				.dimensions( 40, 2 ).texture( testTexture ).kinematic( )
 				.oneSided( false ).restitution( 0 ).buildTilePlatform( );
+		ground.setCategoryMask( Util.KINEMATIC_OBJECTS, Util.CATEGORY_EVERYTHING );
 		skel1.addKinematicPlatform( ground );
 
 		wall = platBuilder.position( 202 * TILE, 25 * TILE ).name( "wall3" )
@@ -277,48 +281,67 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 				.dimensions( 3, 1 ).texture( testTexture ).kinematic( )
 				.oneSided( false ).restitution( 0 ).buildTilePlatform( );
 		skel2.addKinematicPlatform( plat );
-
-		plat = platBuilder.position( 187.5f * TILE, 22 * TILE ).name( "plat8" )
+		
+		strScrew = new StrippedScrew( "strScrew3", world, new Vector2(
+				190 * TILE, 24 * TILE ), skel2 );
+		skel2.addStrippedScrew( strScrew );
+		
+		strScrew = new StrippedScrew( "strScrew3", world, new Vector2(
+				185 * TILE, 24 * TILE ), skel2 );
+		skel2.addStrippedScrew( strScrew );
+		
+		plat = platBuilder.position( 195 * TILE, 25 * TILE ).name( "plat7" )
+				.dimensions( 3, 1 ).texture( testTexture ).kinematic( )
+				.oneSided( false ).restitution( 0 ).buildTilePlatform( );
+		skel2.addKinematicPlatform( plat );
+		
+		plat = platBuilder.position( 180 * TILE, 25 * TILE ).name( "plat7" )
+				.dimensions( 3, 1 ).texture( testTexture ).kinematic( )
+				.oneSided( false ).restitution( 0 ).buildTilePlatform( );
+		skel2.addKinematicPlatform( plat );
+		
+		plat = platBuilder.position( 187.5f * TILE, 30 * TILE ).name( "plat8" )
 				.dimensions( 5, 1 ).texture( testTexture ).kinematic( )
 				.oneSided( false ).restitution( 0 ).buildTilePlatform( );
 		skel2.addKinematicPlatform( plat );
-
+		
 		// PUZZLE 2 //
 
 		strScrew = new StrippedScrew( "strScrew4", world, new Vector2(
-				178 * TILE, 26 * TILE ), skel2 );
+				178 * TILE, 34 * TILE ), skel2 );
 		skel2.addStrippedScrew( strScrew );
 
 		strScrew = new StrippedScrew( "strScrew5", world, new Vector2(
-				171 * TILE, 26 * TILE ), skel2 );
+				171 * TILE, 34 * TILE ), skel2 );
 		skel2.addStrippedScrew( strScrew );
 
 		ground = platBuilder.position( 131 * TILE, 22 * TILE ).name( "ground3" )
 				.dimensions( 68, 1 ).texture( testTexture ).kinematic( )
 				.oneSided( false ).restitution( 0 ).buildTilePlatform( );
+		ground.setCategoryMask( Util.KINEMATIC_OBJECTS, Util.CATEGORY_EVERYTHING );
 		skel2.addKinematicPlatform( ground );
 
 		// PUZZLE 3 //
 
-		plat = platBuilder.position( 130 * TILE, 28 * TILE ).name( "plat10" )
-				.dimensions( 1, 11 ).texture( testTexture ).kinematic( )
+		plat = platBuilder.position( 127f * TILE, 28 * TILE ).name( "plat10" )
+				.dimensions( 3, 11 ).texture( testTexture ).kinematic( )
 				.oneSided( false ).restitution( 0 ).buildTilePlatform( );
 		skel2.addKinematicPlatform( plat );
 
 		strScrew = new StrippedScrew( "strScrew6", world, new Vector2(
-				138 * TILE, 29 * TILE ), skel2 );
+				139 * TILE, 29 * TILE ), skel2 );
 		skel2.addStrippedScrew( strScrew );
 
 		strScrew = new StrippedScrew( "strScrew7", world, new Vector2(
-				134 * TILE, 32 * TILE ), skel2 );
+				134 * TILE, 34 * TILE ), skel2 );
 		skel2.addStrippedScrew( strScrew );
 
 		strScrew = new StrippedScrew( "strScrew8", world, new Vector2(
-				126 * TILE, 32 * TILE ), skel2 );
+				119 * TILE, 34 * TILE ), skel2 );
 		skel2.addStrippedScrew( strScrew );
 
 		strScrew = new StrippedScrew( "strScrew9", world, new Vector2(
-				122 * TILE, 29 * TILE ), skel2 );
+				115 * TILE, 29 * TILE ), skel2 );
 		skel2.addStrippedScrew( strScrew );
 
 		// PUZZLE 4 //
@@ -328,15 +351,15 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		skel2.addStrippedScrew( strScrew );
 
 		strScrew = new StrippedScrew( "strScrew11", world, new Vector2(
-				102 * TILE, 33 * TILE ), skel2 );
+				101 * TILE, 34 * TILE ), skel2 );
 		skel2.addStrippedScrew( strScrew );
 
 		strScrew = new StrippedScrew( "strScrew12", world, new Vector2(
-				108 * TILE, 33 * TILE ), skel2 );
+				109 * TILE, 34 * TILE ), skel2 );
 		skel2.addStrippedScrew( strScrew );
 
 		strScrew = new StrippedScrew( "strScrew13", world, new Vector2(
-				105 * TILE, 37 * TILE ), skel2 );
+				105 * TILE, 39 * TILE ), skel2 );
 		skel2.addStrippedScrew( strScrew );
 
 		wall = platBuilder.position( 96.5f * TILE, 71.5f * TILE )
@@ -354,9 +377,31 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		ground = platBuilder.position( 183 * TILE, 40.5f * TILE ).name( "ground4" )
 				.dimensions( 150, 1 ).texture( testTexture ).kinematic( )
 				.oneSided( false ).restitution( 0 ).buildTilePlatform( );
+		ground.setCategoryMask( Util.KINEMATIC_OBJECTS, Util.CATEGORY_EVERYTHING );
 		skel3.addKinematicPlatform( ground );
 		
+		plat = platBuilder.position( 115f * TILE, 47 * TILE ).name( "plat9" )
+				.dimensions( 9, 1 ).texture( testTexture ).dynamic( )
+				.oneSided( false ).restitution( 0 ).buildTilePlatform( );
+		skel3.addDynamicPlatform( plat );
 		
+		StructureScrew s1 = new ScrewBuilder( )
+		.position(
+				plat.body.getPosition( ).x * Util.BOX_TO_PIXEL
+						- ( plat.sprite.getWidth( ) ),
+				plat.body.getPosition( ).y * Util.BOX_TO_PIXEL )
+		.entity( plat ).skeleton( skel3 ).world( world )
+		.buildStructureScrew( );
+		plat.addScrew( s1 );
+		
+		StructureScrew s2 = new ScrewBuilder( )
+		.position(
+				plat.body.getPosition( ).x * Util.BOX_TO_PIXEL
+						+ ( plat.sprite.getWidth( ) ),
+				plat.body.getPosition( ).y * Util.BOX_TO_PIXEL )
+		.entity( plat ).skeleton( skel3 ).world( world )
+		.buildStructureScrew( );
+		plat.addScrew( s2 );
 		
 		rootSkeleton.addSkeleton( skel3 );
 	}

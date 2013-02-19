@@ -46,7 +46,7 @@ public class Player extends Entity {
 	public final static float ANALOG_MAX_RANGE = 1.0f;
 	public final static float PLAYER_FRICTION = 0.6f;
 	public final static int SCREW_JUMP_STEPS = 15;
-	public final static float SCREW_ATTACH_SPEED = 0.1f;
+	public final static float SCREW_ATTACH_SPEED = 0.07f;
 	public final static int GRAB_COUNTER_STEPS = 5;
 	public float JUMP_IMPULSE = 0.13f;
 
@@ -538,7 +538,7 @@ public class Player extends Entity {
 						SCREW_ATTACH_SPEED, false,
 						PuzzleType.OVERRIDE_ENTITY_MOVER, LinearAxis.DIAGONAL );
 				playerState = PlayerState.Screwing;
-				setGrounded( true );
+				setGrounded( false );
 			}
 		}
 	}
@@ -1030,7 +1030,8 @@ public class Player extends Entity {
 		// attach to screws when attach button is pushed
 		if ( inputHandler.screwPressed( )
 				&& playerState != PlayerState.Screwing
-				&& ( playerState != PlayerState.JumpingOffScrew ) ) {
+				&& ( playerState != PlayerState.JumpingOffScrew )
+				&& !inputHandler.jumpPressed( )) {
 			if ( hitScrew ) {
 				attachToScrew( );
 			}
@@ -1121,7 +1122,9 @@ public class Player extends Entity {
 		// If player hits the screw button and is in distance
 		// then attach the player to the screw
 		if ( ( controllerListener.screwPressed( ) )
-				&& ( playerState != PlayerState.Screwing && playerState != PlayerState.JumpingOffScrew ) ) {
+				&& ( playerState != PlayerState.Screwing 
+				&& playerState != PlayerState.JumpingOffScrew )
+				&& !controllerListener.jumpPressed( )) {
 			if ( hitScrew && !screwButtonHeld ) {
 				attachToScrew( );
 				screwButtonHeld = true;
@@ -1194,4 +1197,5 @@ public class Player extends Entity {
 		}
 
 	}
+
 }
