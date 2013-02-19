@@ -62,8 +62,9 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		rootSkeleton = new Skeleton( "root", Vector2.Zero, null, world );
 
 		platBuilder = new PlatformBuilder( world );
-		testTexture = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-				+ "/common/TilesetTest.png", Texture.class );
+
+		testTexture = WereScrewedGame.manager.get( WereScrewedGame.dirHandle.path( ) + "/common/TilesetTest.png", Texture.class );
+
 
 		Tween.registerAccessor( Platform.class, new PlatformAccessor( ) );
 		Tween.registerAccessor( Entity.class, new EntityAccessor( ) );

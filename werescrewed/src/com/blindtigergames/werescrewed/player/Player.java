@@ -578,10 +578,9 @@ public class Player extends Entity {
 			// switch the player to not collide with the current platformBody
 			Filter filter = new Filter( );
 			for ( Fixture f : body.getFixtureList( ) ) {
-				f.setSensor( false );
 				filter = f.getFilterData( );
 				// move player back to original category
-				filter.categoryBits = Util.CATEGORY_PLAYER;
+				filter.categoryBits = Util.CATEGORY_SUBPLAYER;
 				// player now collides with everything except the platform in
 				// the way
 				filter.maskBits = ~Util.CATEGORY_SUBPLATFORM;
@@ -610,7 +609,7 @@ public class Player extends Entity {
 					playerState = PlayerState.Jumping;
 				}
 				jump( );
-				jumpSound.play( );
+				//jumpSound.play( );
 			} else {
 				// let the bottom player jump
 				// with a large amount of force
@@ -707,7 +706,7 @@ public class Player extends Entity {
 					// it should be the only thing in this category
 					filter.categoryBits = Util.CATEGORY_SUBPLATFORM;
 					// set to collide with everything
-					filter.maskBits = ~Util.CATEGORY_PLAYER;
+					filter.maskBits = ~Util.CATEGORY_SUBPLAYER;
 					f.setFilterData( filter );
 				}
 				jumpOffScrew( );

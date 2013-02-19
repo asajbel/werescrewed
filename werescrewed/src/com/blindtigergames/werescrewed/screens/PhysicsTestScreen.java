@@ -35,7 +35,6 @@ import com.blindtigergames.werescrewed.entity.mover.RockingMover;
 import com.blindtigergames.werescrewed.entity.mover.RotateByDegree;
 import com.blindtigergames.werescrewed.entity.mover.SlidingMotorMover;
 import com.blindtigergames.werescrewed.entity.mover.TimelineTweenMover;
-import com.blindtigergames.werescrewed.entity.mover.TweenMover;
 import com.blindtigergames.werescrewed.entity.mover.puzzle.PuzzlePistonTweenMover;
 import com.blindtigergames.werescrewed.entity.tween.EntityAccessor;
 import com.blindtigergames.werescrewed.entity.tween.PlatformAccessor;
@@ -93,8 +92,8 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		// entityManager.addSkeleton( rootSkeleton.name, rootSkeleton );
 		platBuilder = new PlatformBuilder( world );
 		ropeBuilder = new RopeBuilder ( world );
-		testTexture = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-				+ "/common/TilesetTest.png", Texture.class );
+		
+		testTexture = WereScrewedGame.manager.get( WereScrewedGame.dirHandle.path( ) + "/common/TilesetTest.png", Texture.class );
 
 		Tween.registerAccessor( Platform.class, new PlatformAccessor( ) );
 		Tween.registerAccessor( Entity.class, new EntityAccessor( ) );
