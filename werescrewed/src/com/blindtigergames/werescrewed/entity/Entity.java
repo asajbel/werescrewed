@@ -72,6 +72,13 @@ public class Entity {
 			AnchorList.getInstance( ).addAnchor( anchor );
 		}
 	}
+	// Kevin: Why is this commented out?
+	/*
+	 * public Entity(String n, EntityDef d, World w, Vector2 pos, float rot,
+	 * Vector2 sca) { this(); name = n; type = d; world = w; constructSprite();
+	 * constructBody(pos.x, pos.y, sca.x, sca.y); }
+	 */
+
 
 	/**
 	 * Create entity by body. Debug constructor: Should be removed eventually.
@@ -97,7 +104,7 @@ public class Entity {
 		}
 		setPosition( positionPixels );
 	}
-	
+
 	/**
 	 * Common sub-constructor that applies to all Entity() constructors.
 	 */
@@ -110,7 +117,7 @@ public class Entity {
 		this.visible = true;
 		this.active = true;
 	}
-	
+
 	/**
 	 * Set position of the body in meters.
 	 * @param xMeters
@@ -162,10 +169,12 @@ public class Entity {
 	public void updateMover( float deltaTime ) {
 		if ( active ) {
 			if ( body != null ) {
-				if ( mover != null )
+				if ( mover != null ) {
 					mover.move( deltaTime, body );
-				if ( anchor != null )
+				}
+				if ( anchor != null ) {
 					updateAnchor( );
+				}
 			}
 		}
 	}
@@ -220,6 +229,12 @@ public class Entity {
 		}
 		sprite.setOrigin( origin.x, origin.y );
 		return sprite;
+	}
+
+
+	public void Move( Vector2 vector ) {
+		Vector2 pos = body.getPosition( ).add( vector.mul( Util.PIXEL_TO_BOX ) );
+		setPosition( pos );
 	}
 
 	/**
@@ -410,8 +425,11 @@ public class Entity {
 			body.setGravityScale( g );
 		}
 	}
-	
-	public String toString(){
-		return "Entity["+name+"] pos:"+body.getPosition( )+", angle: "+body.getAngle( )+", body.active:"+body.isActive( )+", body.awake:"+body.isAwake( );
+
+	public String toString( ) {
+		return "Entity[" + name + "] pos:" + body.getPosition( )
+				+ ", body.active:" + body.isActive( ) + ", body.awake:"
+				+ body.isAwake( );
 	}
+	
 }

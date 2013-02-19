@@ -5,8 +5,6 @@ import java.util.HashMap;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Filter;
-import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.XmlReader;
 import com.badlogic.gdx.utils.XmlReader.Element;
@@ -14,11 +12,9 @@ import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityDef;
 import com.blindtigergames.werescrewed.entity.builders.EntityBuilder;
 import com.blindtigergames.werescrewed.entity.builders.PlatformBuilder;
-import com.blindtigergames.werescrewed.platforms.ComplexPlatform;
 import com.blindtigergames.werescrewed.platforms.Platform;
 import com.blindtigergames.werescrewed.platforms.TiledPlatform;
 import com.blindtigergames.werescrewed.skeleton.Skeleton;
-import com.blindtigergames.werescrewed.util.Util;
 
 public class GleedLoader {	
 	protected XmlReader reader;
