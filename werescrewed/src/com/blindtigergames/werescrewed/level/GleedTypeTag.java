@@ -1,14 +1,15 @@
 package com.blindtigergames.werescrewed.level;
 
 
-public enum GleedTypeTags {
+public enum GleedTypeTag {
     ENTITY("Entity"),
-    MOVER("Mover")
+    MOVER("Mover"),
+    SKELETON("Skeleton")
     ;
     /**
      * @param text
      */
-    private GleedTypeTags(final String text) {
+    private GleedTypeTag(final String text) {
         this.text = text;
         
     }
@@ -19,8 +20,8 @@ public enum GleedTypeTags {
         return text;
     }
     
-    public static GleedTypeTags fromString(String s){
-    	for (GleedTypeTags tag : GleedTypeTags.values()) {
+    public static GleedTypeTag fromString(String s){
+    	for (GleedTypeTag tag : GleedTypeTag.values()) {
     		  if (tag.text.equals( s ))
     			  return tag;
     	}

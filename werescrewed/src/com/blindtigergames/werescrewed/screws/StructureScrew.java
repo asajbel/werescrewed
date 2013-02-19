@@ -131,14 +131,14 @@ public class StructureScrew extends Screw {
 		}
 
 	}
-
+/*
 	@Override
 	public void draw( SpriteBatch batch ) {
 		if ( sprite != null ) {
 			sprite.draw( batch );
 		}
 	}
-
+*/
 	private void constuctBody( Vector2 pos ) {
 
 		// create the screw body

@@ -3,6 +3,8 @@ package com.blindtigergames.werescrewed.entity;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -25,6 +27,7 @@ public class Entity {
 	public EntityDef type;
 	public Sprite sprite;
 	public Vector2 offset;
+	public Vector2 bodyOffset;
 	public Body body;
 	protected World world;
 	public IMover mover;
@@ -61,18 +64,7 @@ public class Entity {
 		this.body = constructBody( );
 		setPosition( pos );
 	}
-	// Kevin: Why is this commented out?
-	/*public Entity(String n, EntityDef d, World w, Vector2 pos,
-			float rot, Vector2 sca)
-	{
-		this();
-		name = n;
-		type = d;
-		world = w;
-		constructSprite();
-		constructBody(pos.x, pos.y, sca.x, sca.y);
-	}*/
-
+	
 	/**
 	 * Create entity by body. Debug constructor: Should be removed eventually.
 	 * 
@@ -105,6 +97,7 @@ public class Entity {
 		this.name = name;
 		this.solid = solid;
 		this.offset = new Vector2( 0.0f, 0.0f );
+		this.bodyOffset = new Vector2( 0.0f, 0.0f );
 		this.energy = 1.0f;
 		this.maintained = true;
 		this.visible = true;
@@ -112,6 +105,8 @@ public class Entity {
 	}
 	
 	public void setPosition(float x, float y){
+		x -= bodyOffset.x;
+		y -= bodyOffset.y;
 		//x *= Util.PIXEL_TO_BOX;
 		//y *= Util.PIXEL_TO_BOX;
 		if (body != null){
@@ -126,7 +121,7 @@ public class Entity {
 	}
 
 	public Vector2 getPosition( ) {
-		return body.getPosition( );
+		return body.getPosition( ).add( bodyOffset );
 	}
 
 	public void move( Vector2 vector ) {
@@ -136,15 +131,33 @@ public class Entity {
 
 	public void draw( SpriteBatch batch ) {
 		if ( sprite != null && visible) {
-			Vector2 bodyPos = body.getPosition( ).mul( Util.BOX_TO_PIXEL );
-			sprite.setPosition( bodyPos.x - offset.x, bodyPos.y - offset.y );
-			sprite.setRotation( MathUtils.radiansToDegrees * body.getAngle( ) );
 			sprite.draw( batch );
 		}
+		drawOrigin(batch);
 	}
 
+	public void drawOrigin(SpriteBatch batch){
+		float axisSize = 128.0f;
+		ShapeRenderer shapes = new ShapeRenderer();
+		shapes.setProjectionMatrix( batch.getProjectionMatrix( ) );
+		Vector2 pos = getPosition().mul( Util.BOX_TO_PIXEL );
+		shapes.begin( ShapeType.Line );
+		shapes.setColor( 1.0f, 0.0f, 0.0f, 1.0f );
+		shapes.line(pos.x, pos.y, pos.x+axisSize, pos.y); //Red:  X-axis
+		shapes.setColor( 0.0f, 0.0f, 1.0f, 1.0f );
+		shapes.line(pos.x, pos.y, pos.x, pos.y+axisSize); //Blue: Y-axis
+		if (sprite != null){
+			shapes.setColor( 0.0f, 1.0f, 0.0f, 1.0f );
+			shapes.line(pos.x, pos.y, pos.x + sprite.getOriginX( ), pos.y + sprite.getOriginY( )); //Green: Sprite Origin
+		}
+		shapes.end();
+	}
+	
 	public void update( float deltaTime ) {
 		//animation stuff may go here
+		Vector2 bodyPos = body.getPosition( ).mul( Util.BOX_TO_PIXEL );
+		sprite.setPosition( bodyPos.x - offset.x, bodyPos.y - offset.y );
+		sprite.setRotation( MathUtils.radiansToDegrees * body.getAngle( ) );
 	}
 	
 	/**
@@ -203,7 +216,6 @@ public class Entity {
 			// Definitions for non-loaded sprites
 			origin = new Vector2( sprite.getWidth( ) / 2,
 					sprite.getHeight( ) / 2 );
-
 			// Arbitrary offset :(
 			this.offset.set( sprite.getWidth( ) / 2, sprite.getHeight( ) / 2 );
 		}

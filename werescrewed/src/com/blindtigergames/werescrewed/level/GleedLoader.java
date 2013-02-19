@@ -1,9 +1,12 @@
 package com.blindtigergames.werescrewed.level;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.EnumMap;
 import java.util.HashMap;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Filter;
 import com.badlogic.gdx.physics.box2d.Fixture;
@@ -14,6 +17,7 @@ import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityDef;
 import com.blindtigergames.werescrewed.entity.builders.EntityBuilder;
 import com.blindtigergames.werescrewed.entity.builders.PlatformBuilder;
+import com.blindtigergames.werescrewed.entity.mover.IMover;
 import com.blindtigergames.werescrewed.platforms.ComplexPlatform;
 import com.blindtigergames.werescrewed.platforms.Platform;
 import com.blindtigergames.werescrewed.platforms.TiledPlatform;
@@ -23,11 +27,16 @@ import com.blindtigergames.werescrewed.util.Util;
 public class GleedLoader {	
 	protected XmlReader reader;
 	protected Level level;
-	protected HashMap<String,Element> items;
+	protected HashMap<String,Element> elements;
+	protected EnumMap<GleedTypeTag, ArrayList<Item>> items;
 	
 	public GleedLoader(){
 		reader = new XmlReader();
 		level = null;
+		items = new EnumMap<GleedTypeTag, ArrayList<Item>>(GleedTypeTag.class);
+		for (GleedTypeTag t : GleedTypeTag.values() ){
+			items.put(t, new ArrayList<Item>());
+		}
 	}
 	
 	public Level load(String filename){
@@ -46,40 +55,45 @@ public class GleedLoader {
 	
 	protected void loadLayer(Element element) {
 		Gdx.app.log("GleedLoader", "loading layer " + element.getAttribute("Name", ""));
-		items = getChildrenByNameHash(element.getChildByName("Items"), "Item", "Name");
-		Gdx.app.log("GleedLoader", "Entities Found:"+items.values().size());
-		Skeleton skeleton = level.root;
-		
-		for (Element item: items.values()) {
-			loadElement(item);
-		}
-	}
-	
-	protected void loadElement(Element item){
-		HashMap<String,String> props = getCustomProperties(item);
-		if (props.containsKey(GleedTypeTags.tag)){
-			GleedTypeTags tag = GleedTypeTags.fromString( props.get( GleedTypeTags.tag ) );
-			if (tag.equals(GleedTypeTags.MOVER)){
-				loadMover(item, props);
-				return;
+		elements = getChildrenByNameHash(element.getChildByName("Items"), "Item", "Name");
+		Gdx.app.log("GleedLoader", "Entities Found:"+elements.values().size());
+		Item item;
+		//Sorts items into entities, movers, skeletons, etc.
+		for (Element e: elements.values()) {
+			item = new Item(e);
+			//Make sure we have a valid tag. If not, 
+			if (item.tag != null){
+				items.get( item.tag ).add( item );
+			} else {
+				items.get(GleedTypeTag.ENTITY).add( item );
 			}
 		}
-		loadEntity(item, props);
-	}
-	
-	protected static String getName(Element item){
-		return item.getAttribute("Name");
-	}
-
-	protected static Vector2 getPosition(Element item){
-		Element posElem = item.getChildByName("Position");
-		return new Vector2(posElem.getFloat("X"), posElem.getFloat("Y")*-1.0f);
+		
+		//Load skeletons first.
+		for (Item i: items.get(GleedTypeTag.SKELETON)){
+			loadSkeleton(i);
+		}
+		//Then movers.
+		for (Item i: items.get(GleedTypeTag.MOVER)){
+			loadMover(i);
+		}
+		//And finally, entities.
+		for (Item i: items.get(GleedTypeTag.ENTITY)){
+			loadEntity(i);
+		}		
 	}
 	
 	@SuppressWarnings( "unused" )
-	protected void loadMover(Element item, HashMap<String,String> props){
-		String name = getName(item);
-		Vector2 pos = getPosition(item);
+	protected void loadSkeleton(Item item){
+		Skeleton out = new Skeleton(item.name, item.pos, item.tex, level.world);
+	}
+	
+	@SuppressWarnings( "unused" )
+	protected void loadMover(Item item){
+		if (item.gleedType.equals( "PathItem" )){
+			ArrayList<Vector2> points;
+			
+		}
 		/*
 		 * 1. Check to make sure we're loading a path
 		 * 2. See if it loops
@@ -87,69 +101,66 @@ public class GleedLoader {
 		 */
 	}
 	
-	protected void loadEntity(Element item, HashMap<String,String> props) {
-		String name = item.getAttribute("Name");
-		Vector2 pos = getPosition(item);
-		if (props.containsKey( defTag )){
-			String defName = props.get( defTag );
+	protected void loadEntity(Item item) {
+		if (item.props.containsKey( defTag )){
+			String defName = item.props.get( defTag );
 			EntityDef def = EntityDef.getDefinition( defName );
 			if (def != null){
 				if (def.getCategory( ).equals( tileCat )){ //Insert special cases here.\
-					
-					float w = (item.getFloat( "Width" ));
-					float h = (item.getFloat( "Height" ));
 					float tileX = def.getTexture( ).getWidth( )/4.0f;
 					float tileY = def.getTexture( ).getWidth( )/4.0f;
-					if (tileX > 0)
-						w = w / tileX;
-					if (tileY > 0)
-						h = h / tileY;
-					
+					if (tileX > 0 && tileY > 0)
+						item.sca = item.sca.div( tileX, tileY );
 					TiledPlatform tp = new PlatformBuilder(level.world)
-					.name( name )
+					.name( item.name )
 					.type( def )
-					.position( pos.x, pos.y )
-					.dimensions( (int)w, (int)h )
+					.position( item.pos.x, item.pos.y )
+					.dimensions( item.sca.x, item.sca.y )
 					.texture( def.getTexture() )
 					.solid( true )
 					.buildTilePlatform( );
-					tp.quickfixCollisions( );
 					Gdx.app.log("GleedLoader", "Platform loaded:"+tp.name);
-					level.entities.addEntity( name, tp );
-					level.root.addKinematicPlatform( tp );
+					level.entities.addEntity( item.name, tp );
+					if (item.props.containsKey( "Dynamic" )){
+						level.root.addDynamicPlatform( tp );
+					} else {
+						level.root.addKinematicPlatform( tp );
+					}
 				} else if (def.getCategory( ).equals( complexCat )) {
 					Platform cp = new PlatformBuilder(level.world)
-					.name( name )
+					.name( item.name )
 					.type( def )
-					.position( pos.x, pos.y )
+					.position( item.pos.x, item.pos.y )
 					.texture( def.getTexture() )
 					.solid( true )
 					.buildComplexPlatform( );
-					cp.quickfixCollisions( );
 					Gdx.app.log("GleedLoader", "Platform loaded:"+cp.name);
-					level.entities.addEntity( name, cp );
-					level.root.addKinematicPlatform( cp );
+					level.entities.addEntity( item.name, cp );
+					if (item.props.containsKey( "Dynamic" )){
+						level.root.addDynamicPlatform( cp );
+					} else {
+						level.root.addKinematicPlatform( cp );
+					}
 				} else if (def.getCategory( ).equals( playerCat )){
-					level.player.setPosition( pos );
-					Gdx.app.log("GleedLoader", "Player Spawnpoint:"+pos.toString( ));
+					level.player.setPosition( item.pos );
+					Gdx.app.log("GleedLoader", "Player Spawnpoint:"+item.pos.toString( ));
 				} else {
 					Entity e = new EntityBuilder()
 							.type(def)
-							.name(name)
+							.name(item.name)
 							.world(level.world)
-							.position(pos)
-							.properties(props)
+							.position(item.pos)
+							.properties(item.props)
 							.build();
-					e.quickfixCollisions( );
-					Gdx.app.log("GleedLoader", "Entity loaded:"+name);
-					level.entities.addEntity( name, e );
+					Gdx.app.log("GleedLoader", "Entity loaded:"+item.name);
+					level.entities.addEntity( item.name, e );
 				}
-				Gdx.app.log("GleedLoader", "Position:"+pos.x+","+pos.y);
+				Gdx.app.log("GleedLoader", "Position:"+item.pos.x+","+item.pos.y);
 			} else {
-				Gdx.app.log("GleedLoader", "Warning: "+name+"'s listed definition, '"+defName+"' is not a known EntityDef.");
+				Gdx.app.log("GleedLoader", "Warning: "+item.name+"'s listed definition, '"+defName+"' is not a known EntityDef.");
 			}
 		} else {
-			Gdx.app.log("GleedLoader", "Warning: "+name+" does not have a valid '"+defTag+"' tag.");
+			Gdx.app.log("GleedLoader", "Warning: "+item.name+" does not have a valid '"+defTag+"' tag.");
 		}
 	}
 	
@@ -171,6 +182,7 @@ public class GleedLoader {
 		}
 		return out;
 	}
+	
 	protected static HashMap<String, Element> getChildrenByNameHash(Element e, String tag, String nameTag){
 		HashMap<String,Element> out = new HashMap<String,Element>();
 		Array<Element> properties = e.getChildrenByName(tag);
@@ -181,6 +193,58 @@ public class GleedLoader {
 		}
 		return out;
 	}
+	
+	protected class Item {
+		public Item(Element e){
+			element = e;
+			name = getName(e);
+			gleedType = getGleedType(e);
+			props = getCustomProperties(e);
+			tag = GleedTypeTag.fromString( props.get( GleedTypeTag.tag ) );
+			pos = getPosition(e);
+			sca = getScale(e);
+			tex = getTexture(e);
+		}
+		public Element element;
+		String name, gleedType;
+		public GleedTypeTag tag;
+		public HashMap<String,String> props;
+		public Vector2 pos;
+		public Vector2 sca;
+		public Texture tex;
+	}
+
+	protected static String getName(Element item){
+		return item.getAttribute("Name");
+	}
+
+	protected static Vector2 getPosition(Element item){
+		Element posElem = item.getChildByName("Position");
+		return new Vector2(posElem.getFloat("X"), posElem.getFloat("Y")*-1.0f);
+	}
+
+	protected static String getGleedType(Element item){
+		return item.get( "xsi:type" );
+	}
+	
+	protected static Vector2 getScale(Element item){
+		Vector2 out = new Vector2(1.0f,1.0f);
+		try{
+			if (getGleedType(item).equals( "CircleItem" )){
+				out.x = out.y = item.getFloat( "Radius" )*2.0f;
+			} else {
+				out.x = item.getFloat( "Width" );
+				out.y = item.getFloat( "Height" );
+			}
+		} finally {
+		}
+		return out;
+	}
+	
+	protected static Texture getTexture(Element item){
+		return null;
+	}	
+	
 	protected static final String typeTag = "Type";
 	protected static final String defTag = "Definition";
 	protected static final String playerCat = "Player";
