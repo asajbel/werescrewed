@@ -51,6 +51,7 @@ public class Camera {
 	private Vector3 translateTarget3D;
 	private float targetBuffer;
 	private boolean translateState;
+	private Vector2 avgOutside;
 
 	private AnchorList anchorList;
 
@@ -97,13 +98,14 @@ public class Camera {
 		anchorList = AnchorList.getInstance( camera );
 		anchorList.clear( );
 		if ( ANCHOR_TEST_MODE ) {
-//			createTestAnchors( world );
+			// createTestAnchors( world );
 		}
 
 		// debug
 		debugInput = false;
 		debugRender = false;
 		shapeRenderer = new ShapeRenderer( );
+		avgOutside = new Vector2( 0f, 0f );
 	}
 
 	/**
@@ -185,9 +187,15 @@ public class Camera {
 	 *            outer Rectangle
 	 * @return true if any part of rect1 is outside of rect2, false otherwise
 	 */
-	@SuppressWarnings( "unused" )
 	private boolean rectOutsideRect( Rectangle rect1, Rectangle rect2 ) {
 		boolean returnValue = false;
+
+		if ( rect1.x > rect2.x && rect1.y > rect2.y
+				&& ( rect1.x + rect1.width ) < rect2.x + rect2.width
+				&& ( rect1.y + rect1.height ) < rect2.y + rect2.height )
+			returnValue = false;
+		else
+			returnValue = true;
 
 		return returnValue;
 	}
@@ -196,6 +204,11 @@ public class Camera {
 	 * Adjust the camera by translating and zooming when necessary
 	 */
 	private void adjustCamera( ) {
+		avgOutside.x = 0f;
+		avgOutside.y = 0f;
+		for (Anchor curAnchor : anchorList.anchorList) {
+			 
+		}
 		translateLogic( );
 		zoom();
 	}
@@ -269,10 +282,11 @@ public class Camera {
 	/**
 	 * zoom camera to keep anchors on screen
 	 */
-	//@SuppressWarnings( "unused" )
 	private void zoom( ) {
-		float temp = AnchorList.getInstance( ).specialDistance( ) / viewportHeight;
-		if (temp > 1f) camera.zoom = temp;
+		float temp = AnchorList.getInstance( ).specialDistance( )
+				/ viewportHeight;
+		if ( temp > 1f )
+			camera.zoom = temp;
 		translateBuffer.width = screenBounds.width * BUFFER_RATIO;
 		translateBuffer.height = screenBounds.height * BUFFER_RATIO;
 	}

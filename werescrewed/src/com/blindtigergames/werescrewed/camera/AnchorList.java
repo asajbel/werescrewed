@@ -15,7 +15,7 @@ import com.badlogic.gdx.physics.box2d.World;
  ******************************************************************************/
 public class AnchorList {
 
-	private ArrayList< Anchor > anchorList;
+	protected ArrayList< Anchor > anchorList;
 	private Vector2 sum;
 	private Vector2 midpoint2;
 	private Vector2 prevMidpoint;
