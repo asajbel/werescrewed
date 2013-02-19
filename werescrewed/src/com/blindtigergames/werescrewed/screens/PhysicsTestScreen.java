@@ -37,6 +37,7 @@ import com.blindtigergames.werescrewed.entity.mover.SlidingMotorMover;
 import com.blindtigergames.werescrewed.entity.mover.TimelineTweenMover;
 import com.blindtigergames.werescrewed.entity.mover.puzzle.PuzzlePistonTweenMover;
 import com.blindtigergames.werescrewed.entity.tween.EntityAccessor;
+import com.blindtigergames.werescrewed.entity.tween.PathBuilder;
 import com.blindtigergames.werescrewed.entity.tween.PlatformAccessor;
 import com.blindtigergames.werescrewed.joint.JointFactory;
 import com.blindtigergames.werescrewed.platforms.Platform;
@@ -334,8 +335,17 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 				.buildTilePlatform( );
 		skeleton.addKinematicPlatform( pathPlatform );
 		// build path. TODO: make building paths easier!!
+		PathBuilder pb = new PathBuilder();
 		pathPlatform
-				.setMover( new TimelineTweenMover( Timeline
+				.setMover(  pb.begin( pathPlatform )
+							  .target( 300, 0, 5 )
+							  .target( 300, 300, 5 )
+							  .target( 0, 300, 5 )
+							  .target( 0, 0, 5 )
+							  .build( ) );
+
+		/*//leaving in this code just to show how much better path making is :D
+		 * Timeline
 						.createSequence( )
 						.push( Tween
 								.to( pathPlatform,
@@ -356,8 +366,9 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 								.to( pathPlatform,
 										PlatformAccessor.LOCAL_POS_XY, 5 )
 								.target( 0, 0 ).ease( TweenEquations.easeNone )
-								.start( ) ).repeat( Tween.INFINITY, 0 ).start( ) ) );
-
+								.start( ) )
+						.repeat( Tween.INFINITY, 0 ).start( ) 
+		 */
 
 		/*
 		 * TODO: FIX PLATFORM DENSITY
