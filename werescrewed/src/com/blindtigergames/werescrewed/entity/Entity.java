@@ -141,10 +141,21 @@ public class Entity {
 
 	/**
 	 * returns body position in meters.
-	 * @return Vector2 in meters
+	 * @return Vector2 in meters of bodie's world origin
 	 */
 	public Vector2 getPosition( ) {
 		return body.getPosition( );
+	}
+	
+	/**
+	 * Use this position when setting relative position of platforms
+	 * for paths targets. ie you set a platform at (x,y) in meters,
+	 * but the path takes in pixels, so do something like platform.
+	 * getPositionPixel().add(0,600)
+	 * @return world position of origin in PIXELS
+	 */
+	public Vector2 getPositionPixel(){
+		return body.getPosition( ).cpy().mul( Util.BOX_TO_PIXEL );
 	}
 
 	public void draw( SpriteBatch batch ) {
