@@ -58,7 +58,7 @@ public class BossScrew extends Screw {
 
 		// add radar sensor to screw
 //		CircleShape radarShape = new CircleShape( );
-//		radarShape.setRadius( sprite.getWidth( ) * 1.25f * Util.PIXEL_TO_BOX );
+//		radarShape.setRadius( sprite.getWidth( ) * 1.05f * Util.PIXEL_TO_BOX );
 //		FixtureDef radarFixture = new FixtureDef( );
 //		radarFixture.shape = radarShape;
 //		radarFixture.isSensor = true;

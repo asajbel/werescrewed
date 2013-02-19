@@ -251,7 +251,7 @@ public class AnchorList {
 					specialMidpoint.x = curAnchor.position.x;
 					specialMidpoint.y = curAnchor.position.y;
 				} else {
-					specialMidpoint.sub( anchorList.get( 1 ).position );
+					specialMidpoint.sub( curAnchor.position );
 				}
 			}
 		}

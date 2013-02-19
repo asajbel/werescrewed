@@ -1,6 +1,6 @@
 BUG LIST:
 Done?(x)	Found By	Squashed by	Description
-			Stew					Players fall through one-sides platforms when skeletons move up/down too fast because player goes slightly under the platform which then turns off the contact listener i think.
+	 x		Stew		Stew		Players fall through one-sides platforms when skeletons move up/down too fast because player goes slightly under the platform which then turns off the contact listener i think.
      x      Anders      Anders      The asset manager does not work for android because everyone is using direct paths rather than relative, because android has a different path.
             Anders                  Jumping when off the screen allows for infinite jumping when holding grab. 
             Anders                  Jumping up through a one sided platform sends the player higher then usual, is jump being reset?

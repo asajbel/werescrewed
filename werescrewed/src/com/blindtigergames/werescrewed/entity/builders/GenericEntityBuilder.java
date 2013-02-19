@@ -27,7 +27,7 @@ import com.blindtigergames.werescrewed.skeleton.Skeleton;
 public class GenericEntityBuilder< B extends GenericEntityBuilder< ? >> {
 	// Common to all builders
 	protected String name;
-	protected Vector2 pos;
+	protected Vector2 pos; //in pixels
 	protected float rot;
 	protected Vector2 sca;
 	protected IMover mover;
@@ -146,7 +146,7 @@ public class GenericEntityBuilder< B extends GenericEntityBuilder< ? >> {
 	/**
 	 * 
 	 * @param p
-	 *            - sets the position of the created entity.
+	 *            - sets the position of the created entity in PIXELS.
 	 * @return EntityBuilder
 	 */
 	@SuppressWarnings( "unchecked" )
@@ -168,7 +168,7 @@ public class GenericEntityBuilder< B extends GenericEntityBuilder< ? >> {
 	/**
 	 * 
 	 * @param x
-	 *            - new x position of the created entity
+	 *            - new x position of the created entity in PIXELS.
 	 * @return EntityBuilder
 	 */
 	@SuppressWarnings( "unchecked" )
@@ -180,7 +180,7 @@ public class GenericEntityBuilder< B extends GenericEntityBuilder< ? >> {
 	/**
 	 * 
 	 * @param y
-	 *            - new y position of the created entity
+	 *            - new y position of the created entity in PIXELS.
 	 * @return EntityBuilder
 	 */
 	@SuppressWarnings( "unchecked" )
@@ -192,7 +192,7 @@ public class GenericEntityBuilder< B extends GenericEntityBuilder< ? >> {
 	/**
 	 * 
 	 * @param r
-	 *            - new angle of the created entity
+	 *            - new angle of the created entity in radians
 	 * @return EntityBuilder
 	 */
 	@SuppressWarnings( "unchecked" )

@@ -35,7 +35,7 @@ public class Link extends Entity {
 		fixtureDef.filter.categoryBits = Util.CATEGORY_ROPE;
 		fixtureDef.filter.maskBits = Util.CATEGORY_NOTHING;
 		fixtureDef.shape = polygonShape;
-		fixtureDef.density = 10.0f;
+		fixtureDef.density = 1f;
 		fixtureDef.restitution = 0.0f;
 		fixtureDef.friction = 0.1f;
 		body = world.createBody( bodyDef );

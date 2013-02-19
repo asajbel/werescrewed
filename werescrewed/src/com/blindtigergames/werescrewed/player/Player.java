@@ -46,7 +46,7 @@ public class Player extends Entity {
 	public final static float ANALOG_DEADZONE = 0.2f;
 	public final static float ANALOG_MAX_RANGE = 1.0f;
 	public final static float PLAYER_FRICTION = 0.6f;
-	public final static int SCREW_JUMP_STEPS = 15;
+	public final static int SCREW_JUMP_STEPS = 20;
 	public final static float SCREW_ATTACH_SPEED = 0.1f;
 	public final static int GRAB_COUNTER_STEPS = 5;
 	public float JUMP_IMPULSE = 0.13f;
@@ -81,7 +81,7 @@ public class Player extends Entity {
 	private boolean jumpPressedController;
 	private boolean screwButtonHeld;
 	private boolean kinematicTransform = false;
-	private Vector2 platformOffset;
+	// private Vector2 platformOffset;
 
 	public int grabCounter = 0;
 	public int jumpCounter = 0;
@@ -139,6 +139,7 @@ public class Player extends Entity {
 
 		jumpSound = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 				+ "/common/sounds/jump.ogg" );
+
 	}
 
 	// PUBLIC METHODS
@@ -148,6 +149,9 @@ public class Player extends Entity {
 	 */
 	public void update( float deltaTime ) {
 		super.update( deltaTime );
+		if ( name.equals( "player1" ) ) {
+		//	Gdx.app.log( "playerState", "" + playerState );
+		}
 		if ( kinematicTransform ) {
 			// setPlatformTransform( platformOffset );
 			kinematicTransform = false;
@@ -480,34 +484,6 @@ public class Player extends Entity {
 		return grounded;
 	}
 
-	// /**
-	// * sets flag to determine if player needs to move with kinematic platforms
-	// *
-	// * @param posOffset
-	// * is the offset you want to apply to player
-	// */
-	// public void setPlatformTransform( Vector2 posOffset ) {
-	// body.setTransform( body.getPosition( ).add( posOffset ), 0 );
-	// }
-
-	/**
-	 * @param value
-	 *            turns flag on and off
-	 */
-	public void setMovingPlatformFlag( boolean value ) {
-		kinematicTransform = value;
-	}
-
-	/**
-	 * sets offset that player will use to match movement of kinematic platforms
-	 * 
-	 * @param newOffset
-	 *            offset you want
-	 */
-	public void setOffset( Vector2 newOffset ) {
-		platformOffset = newOffset;
-	}
-
 	// PRIVATE METHODS
 
 	/**
@@ -582,10 +558,9 @@ public class Player extends Entity {
 			// switch the player to not collide with the current platformBody
 			Filter filter = new Filter( );
 			for ( Fixture f : body.getFixtureList( ) ) {
-				f.setSensor( false );
 				filter = f.getFilterData( );
 				// move player back to original category
-				filter.categoryBits = Util.CATEGORY_PLAYER;
+				filter.categoryBits = Util.CATEGORY_SUBPLAYER;
 				// player now collides with everything except the platform in
 				// the way
 				filter.maskBits = ~Util.CATEGORY_SUBPLATFORM;
@@ -603,6 +578,9 @@ public class Player extends Entity {
 			if ( mover == null ) {
 				world.destroyJoint( playerToScrew );
 			}
+			for ( Fixture f : body.getFixtureList( ) ) {
+				f.setSensor( false );
+			}
 			mover = null;
 			playerState = PlayerState.JumpingOffScrew;
 			screwJumpTimeout = SCREW_JUMP_STEPS;
@@ -614,7 +592,7 @@ public class Player extends Entity {
 					playerState = PlayerState.Jumping;
 				}
 				jump( );
-				jumpSound.play( );
+				// jumpSound.play( );
 			} else {
 				// let the bottom player jump
 				// with a large amount of force
@@ -642,6 +620,9 @@ public class Player extends Entity {
 		if ( playerState == PlayerState.Screwing ) {
 			if ( mover == null ) {
 				world.destroyJoint( playerToScrew );
+			}
+			for ( Fixture f : body.getFixtureList( ) ) {
+				f.setSensor( false );
 			}
 			playerState = PlayerState.JumpingOffScrew;
 			screwJumpTimeout = SCREW_JUMP_STEPS;
@@ -711,20 +692,22 @@ public class Player extends Entity {
 					// it should be the only thing in this category
 					filter.categoryBits = Util.CATEGORY_SUBPLATFORM;
 					// set to collide with everything
-					filter.maskBits = ~Util.CATEGORY_PLAYER;
+					filter.maskBits = ~Util.CATEGORY_SUBPLAYER;
 					f.setFilterData( filter );
 				}
 				jumpOffScrew( );
+				screwJumpTimeout--;
 			} else {
-				// screwJumpTimeout = 0;
+				jumpOffScrew( );
+				screwJumpTimeout--;
+			}
+		} else {
+			if ( screwJumpTimeout > 0 ) {
+				screwJumpTimeout--;
+				jumpOffScrew( );
+			} else {
 				jumpOffScrew( );
 			}
-		}
-		if ( screwJumpTimeout > 0 ) {
-			screwJumpTimeout--;
-			jumpOffScrew( );
-		} else {
-			jumpOffScrew( );
 		}
 	}
 
@@ -788,6 +771,9 @@ public class Player extends Entity {
 		if ( playerState == PlayerState.Screwing ) {
 			if ( mover == null ) {
 				world.destroyJoint( playerToScrew );
+			}
+			for ( Fixture f : body.getFixtureList( ) ) {
+				f.setSensor( false );
 			}
 			mover = null;
 			playerState = PlayerState.JumpingOffScrew;
@@ -1135,6 +1121,9 @@ public class Player extends Entity {
 				&& playerState == PlayerState.Screwing ) {
 			if ( mover == null ) {
 				world.destroyJoint( playerToScrew );
+			}
+			for ( Fixture f : body.getFixtureList( ) ) {
+				f.setSensor( false );
 			}
 			mover = null;
 			playerState = PlayerState.JumpingOffScrew;
