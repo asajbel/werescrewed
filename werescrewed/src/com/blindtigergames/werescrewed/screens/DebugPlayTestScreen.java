@@ -33,6 +33,7 @@ import com.blindtigergames.werescrewed.platforms.Platform;
 import com.blindtigergames.werescrewed.platforms.TiledPlatform;
 import com.blindtigergames.werescrewed.player.Player;
 import com.blindtigergames.werescrewed.rope.Rope;
+import com.blindtigergames.werescrewed.screws.BossScrew;
 import com.blindtigergames.werescrewed.screws.PuzzleScrew;
 import com.blindtigergames.werescrewed.screws.StrippedScrew;
 import com.blindtigergames.werescrewed.screws.StructureScrew;
@@ -68,6 +69,8 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 	private Skeleton skel4;
 	private Skeleton skel5, skel6;
 	private Rope testRope;
+	
+	private BossScrew bossBolt;
 
 	public DebugPlayTestScreen( ) {
 
@@ -95,7 +98,7 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		player1 = new PlayerBuilder( ).name( "player1" ).world( world )
 				.position( 112f * TILE, 83 * TILE ).buildPlayer( );
 //		player2 = new PlayerBuilder( ).name( "player2" ).world( world )
-//				.position(  109f * TILE, 73 * TILE ).buildPlayer( );
+//				.position(  111f * TILE, 83 * TILE ).buildPlayer( );
 
 		// 115f * TILE, 42 * TILE
 		// start = 1, 1
@@ -658,6 +661,19 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 				.width( 16f ).height( 64f ).links( 5 ).buildRope( );
 		skel9.addRope( testRope );
 		
+		plat = platBuilder.position( 175f * TILE, 95 * TILE ).name( "plat11" )
+				.dimensions( 6, 1).texture( testTexture ).kinematic( ).friction( 1.0f )
+				.oneSided( true ).restitution( 0 ).buildTilePlatform( );
+		skel9.addKinematicPlatform( plat );
+		
+		
+		bossBolt = new BossScrew( "", new Vector2(
+				plat.body.getPosition( ).x * Util.BOX_TO_PIXEL
+						+ ( plat.sprite.getWidth( ) / 10 ),
+						plat.body.getPosition( ).y * Util.BOX_TO_PIXEL ), 50,
+						plat, skel9, world );
+		plat.addScrew( bossBolt );
+		
 		rootSkeleton.addSkeleton( skel9 );
 	}
 	private void initCamera( ) {
@@ -695,7 +711,7 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		
 		player1.update( deltaTime );
 		//player2.update( deltaTime );
-		testRope.update( deltaTime );
+		//testRope.update( deltaTime );
 		rootSkeleton.update( deltaTime );
 
 		batch.setProjectionMatrix( cam.combined( ) );
@@ -704,13 +720,14 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		rootSkeleton.draw( batch );
 		player1.draw( batch );
 		//player2.draw( batch );
-		testRope.draw( batch );
+		//testRope.draw( batch );
 
 		batch.end( );
 
 		if ( debug )
 			debugRenderer.render( world, cam.combined( ) );
 
+		//if(endLevelFlag)
 		world.step( 1 / 60f, 6, 6 );
 	}
 
