@@ -6,6 +6,7 @@ import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -24,6 +25,7 @@ import com.blindtigergames.werescrewed.entity.builders.ScrewBuilder;
 import com.blindtigergames.werescrewed.entity.mover.LerpMover;
 import com.blindtigergames.werescrewed.entity.mover.LinearAxis;
 import com.blindtigergames.werescrewed.entity.mover.PuzzleType;
+import com.blindtigergames.werescrewed.entity.mover.RockingMover;
 import com.blindtigergames.werescrewed.entity.mover.RotateByDegree;
 import com.blindtigergames.werescrewed.entity.mover.puzzle.PuzzlePistonTweenMover;
 import com.blindtigergames.werescrewed.entity.tween.EntityAccessor;
@@ -71,6 +73,8 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 	private Rope testRope;
 	
 	private BossScrew bossBolt;
+	private float endgameCounter;
+	private Music inceptionhorn;
 
 	public DebugPlayTestScreen( ) {
 
@@ -82,8 +86,10 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		platBuilder = new PlatformBuilder( world );
 
 		testTexture = WereScrewedGame.manager.get( WereScrewedGame.dirHandle.path( ) + "/common/TilesetTest.png", Texture.class );
-
-
+		inceptionhorn = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
+				+ "/common/sounds/inceptionbutton.mp3" );
+		endgameCounter = 0;
+		
 		Tween.registerAccessor( Platform.class, new PlatformAccessor( ) );
 		Tween.registerAccessor( Entity.class, new EntityAccessor( ) );
 
@@ -96,9 +102,9 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 
 		// Initialize players
 		player1 = new PlayerBuilder( ).name( "player1" ).world( world )
-				.position( 112f * TILE, 83 * TILE ).buildPlayer( );
-//		player2 = new PlayerBuilder( ).name( "player2" ).world( world )
-//				.position(  111f * TILE, 83 * TILE ).buildPlayer( );
+				.position( 175f * TILE, 96 * TILE ).buildPlayer( );
+		player2 = new PlayerBuilder( ).name( "player2" ).world( world )
+				.position(  176f * TILE, 96 * TILE ).buildPlayer( );
 
 		// 115f * TILE, 42 * TILE
 		// start = 1, 1
@@ -576,17 +582,17 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		
 		plat = platBuilder.position( 116f * TILE, 71 * TILE ).name( "plat9" )
 				.dimensions( 37, 1).texture( testTexture ).kinematic( ).friction( 1.0f )
-				.oneSided( true ).restitution( 0 ).buildTilePlatform( );
+				.oneSided( false ).restitution( 0 ).buildTilePlatform( );
 		skel7.addKinematicPlatform( plat );
 		
 		plat = platBuilder.position( 148f * TILE, 80 * TILE ).name( "plat9" )
 				.dimensions( 75, 1).texture( testTexture ).kinematic( ).friction( 1.0f )
-				.oneSided( true ).restitution( 0 ).buildTilePlatform( );
+				.oneSided( false ).restitution( 0 ).buildTilePlatform( );
 		skel7.addKinematicPlatform( plat );
 		
 		plat = platBuilder.position( 185f * TILE, 92 * TILE ).name( "plat9" )
 				.dimensions( 1, 25).texture( testTexture ).kinematic( ).friction( 1.0f )
-				.oneSided( true ).restitution( 0 ).buildTilePlatform( );
+				.oneSided( false ).restitution( 0 ).buildTilePlatform( );
 		skel7.addKinematicPlatform( plat );
 		
 		rootSkeleton.addSkeleton( skel7 );
@@ -699,18 +705,19 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 			ScreenManager.getInstance( ).show( ScreenType.PAUSE );
 		}
 		if ( Gdx.input.isKeyPressed( Keys.P ) ) {
-			System.exit( 0 );
+			Gdx.app.exit();
 		}
 
 		if ( Gdx.input.isKeyPressed( Keys.NUM_0 ) ) {
-			if ( debugTest )
+			if ( debugTest ){
 				debug = !debug;
+			}
 			debugTest = false;
 		} else
 			debugTest = true;
 		
 		player1.update( deltaTime );
-		//player2.update( deltaTime );
+	    player2.update( deltaTime );
 		//testRope.update( deltaTime );
 		rootSkeleton.update( deltaTime );
 
@@ -719,7 +726,7 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 
 		rootSkeleton.draw( batch );
 		player1.draw( batch );
-		//player2.draw( batch );
+		player2.draw( batch );
 		//testRope.draw( batch );
 
 		batch.end( );
@@ -727,7 +734,18 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		if ( debug )
 			debugRenderer.render( world, cam.combined( ) );
 
-		//if(endLevelFlag)
+		if(bossBolt.endLevelFlag( )){
+			if(!inceptionhorn.isPlaying( )){
+				inceptionhorn.play( );
+			}
+			if(endgameCounter == 0f)
+				rootSkeleton.mover = new RockingMover( -0.1f, 0.8f );
+			endgameCounter += deltaTime;
+			cam.camera.zoom += 0.01f;
+			if(endgameCounter > 18f)
+				Gdx.app.exit();
+		}
+		
 		world.step( 1 / 60f, 6, 6 );
 	}
 
