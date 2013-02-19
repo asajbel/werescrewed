@@ -56,11 +56,6 @@ public class Screw extends Entity {
 				WereScrewedGame.manager.get(WereScrewedGame.dirHandle.path( ) +"/common/screw.png", Texture.class) : tex ), null, false );
 	}
 
-	@Override
-	public void update( float deltaTime ) {
-		super.update( deltaTime );
-	}
-
 	/**
 	 * destroys everything contained within the screw instance
 	 */

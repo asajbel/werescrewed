@@ -125,7 +125,7 @@ public class EntityDefTestScreen implements com.badlogic.gdx.Screen {
 		float zoom = 1.0f;
 		float width = Gdx.graphics.getWidth( ) / zoom;
 		float height = Gdx.graphics.getHeight( ) / zoom;
-		cam = new Camera( width, height );
+		cam = new Camera( width, height, world );
 	}
 
 	/**

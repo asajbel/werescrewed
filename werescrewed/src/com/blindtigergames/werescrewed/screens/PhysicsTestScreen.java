@@ -82,6 +82,8 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		// Initialize world and variables to allow adding entities
 		batch = new SpriteBatch( );
 		world = new World( new Vector2( 0, -35 ), true );
+		// Initialize camera
+		initCamera( );
 		// entityManager = new EntityManager( );
 		skeleton = new Skeleton( "skeleton", Vector2.Zero, null, world );
 		rootSkeleton = new Skeleton( "root", Vector2.Zero, null, world );
@@ -93,9 +95,11 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 
 		Tween.registerAccessor( Platform.class, new PlatformAccessor( ) );
 		Tween.registerAccessor( Entity.class, new EntityAccessor( ) );
-
-		// Initialize camera
-		initCamera( );
+		// Uncomment for test anchor
+		// anchor = new Anchor( new Vector2( 7 * Util.BOX_TO_PIXEL,
+		// Util.BOX_TO_PIXEL ), world, 5f );
+		// anchor.deactivate( );
+		// AnchorList.getInstance( ).addAnchor( anchor );
 
 		// Initialize listeners
 		contactListener = new MyContactListener( );
@@ -142,7 +146,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		float zoom = 1.0f;
 		float width = Gdx.graphics.getWidth( ) / zoom;
 		float height = Gdx.graphics.getHeight( ) / zoom;
-		cam = new Camera( width, height );
+		cam = new Camera( width, height, world );
 	}
 
 	/**

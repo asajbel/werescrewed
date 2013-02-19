@@ -10,6 +10,7 @@ import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.JointEdge;
 import com.badlogic.gdx.physics.box2d.Manifold;
+import com.blindtigergames.werescrewed.camera.Anchor;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.platforms.Platform;
 import com.blindtigergames.werescrewed.platforms.TiledPlatform;
@@ -89,7 +90,12 @@ public class MyContactListener implements ContactListener {
 								.getUserData( );
 						player.hitPlayer( player2 );
 						player2.hitPlayer( player );
-					} 
+					} else if ( objectFix.getBody( ).getUserData( ) instanceof Anchor ) {
+						Anchor anchor = ( Anchor ) objectFix.getBody( )
+								.getUserData( );
+						if ( !anchor.special )
+							anchor.activate( );
+					}
 				}
 			}
 		}
@@ -135,14 +141,14 @@ public class MyContactListener implements ContactListener {
 							NUM_PLAYER1_CONTACTS--;
 							if ( NUM_PLAYER1_CONTACTS <= 0 ) {
 								if ( player.getState( ) == PlayerState.Falling ) {
-									player.setGrounded( false ); 
+									player.setGrounded( false );
 								}
 							}
 						} else if ( p1 != player ) {
 							NUM_PLAYER2_CONTACTS--;
 							if ( NUM_PLAYER2_CONTACTS <= 0 ) {
 								if ( player.getState( ) == PlayerState.Falling ) {
-									player.setGrounded( false ); 
+									player.setGrounded( false );
 								}
 							}
 						}
@@ -170,13 +176,17 @@ public class MyContactListener implements ContactListener {
 						if ( player.getState( ) != PlayerState.HeadStand ) {
 							player.hitPlayer( null );
 							player2.hitPlayer( null );
-						} 
+						}
 					}
+				} else if ( objectFix.getBody( ).getUserData( ) instanceof Anchor ) {
+					Anchor anchor = ( Anchor ) objectFix.getBody( )
+							.getUserData( );
+					if ( !anchor.special )
+						anchor.deactivate( );
 				}
 			}
 		}
 	}
-	
 
 	/**
 	 * Before physics is calculated each step
@@ -251,7 +261,7 @@ public class MyContactListener implements ContactListener {
 							&& player.getState( ) != PlayerState.Falling
 							&& player2.getState( ) != PlayerState.Falling ) {
 						contact.setEnabled( false );
-					} 
+					}
 				}
 			}
 		}

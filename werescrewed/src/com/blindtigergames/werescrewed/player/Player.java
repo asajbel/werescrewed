@@ -118,7 +118,7 @@ public class Player extends Entity {
 	 */
 	public Player( String name, World world, Vector2 pos ) {
 		super( name, EntityDef.getDefinition( name ), world, pos, 0.0f,
-				new Vector2( 1f, 1f ), null, true );
+				new Vector2( 1f, 1f ), null, true, 0.0f );
 		body.setGravityScale( 0.25f );
 		body.setFixedRotation( true );
 		body.setSleepingAllowed( false );
@@ -127,7 +127,7 @@ public class Player extends Entity {
 		body.setBullet( true );
 		playerState = PlayerState.Standing;
 		inputHandler = new PlayerInputHandler( this.name );
-		anchorID = AnchorList.getInstance( ).addAnchor( true, pos );
+		anchorID = AnchorList.getInstance( ).addAnchor( true, pos, world, 0.0f );
 
 		torso = body.getFixtureList( ).get( 0 );
 		feet = body.getFixtureList( ).get( 1 );

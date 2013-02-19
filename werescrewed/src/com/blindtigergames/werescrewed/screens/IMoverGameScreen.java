@@ -12,8 +12,6 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Filter;
-import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.joints.PrismaticJoint;
 import com.badlogic.gdx.physics.box2d.joints.PrismaticJointDef;
@@ -179,7 +177,7 @@ public class IMoverGameScreen implements com.badlogic.gdx.Screen {
 		float zoom = 1.0f;
 		float width = Gdx.graphics.getWidth( ) / zoom;
 		float height = Gdx.graphics.getHeight( ) / zoom;
-		cam = new Camera( width, height );
+		cam = new Camera( width, height, world );
 	}
 
 	/**
@@ -390,7 +388,6 @@ public class IMoverGameScreen implements com.badlogic.gdx.Screen {
 					0, 300 ), 1f, 3f, 1f, 0f, i / 10.0f + 1 ) );
 			System.out.println( "Piston" + i + ": " + pistonKin.getPosition( ) );
 		}
-
 		builder = platBuilder.width( 20 ).height( 1 ).oneSided( true )
 				.dynamic( )
 				// .setPosition( (-500f-i*40)*PIXEL_TO_BOX, 150f*PIXEL_TO_BOX )
