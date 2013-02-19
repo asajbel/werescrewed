@@ -48,7 +48,6 @@ public class Platform extends Entity {
 	protected Vector2 localLinearVelocity; //in meters/step
 	protected float localAngularVelocity; //
 	private Vector2 originPosition; //world position that this platform spawns at, in pixels
-	private Vector2 changePosition;
 
 	// ============================================
 	// Constructors
@@ -100,7 +99,6 @@ public class Platform extends Entity {
 		originPosition = pos.cpy( );
 		platType = PlatformType.DEFAULT; // set to default unless subclass sets
 											// it later in a constructor
-		changePosition = new Vector2(0,0);
 	}
 
 	// ============================================
@@ -192,10 +190,6 @@ public class Platform extends Entity {
 	
 	public void setLocAngularVel( float angVelMeter ){
 		localAngularVelocity = angVelMeter;
-	}
-	
-	public Vector2 getChangePosition(){
-		return changePosition;
 	}
 	
 	public void addScrew( Screw s ) {

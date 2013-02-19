@@ -27,7 +27,7 @@ import com.blindtigergames.werescrewed.util.Util;
  *         (i.e. It should have a list of non-jointed entities too.)
  */
 
-public class Skeleton extends Entity {
+public class Skeleton extends Platform {
 
     private ArrayList<Skeleton> childSkeletons;
     private ArrayList<Platform> dynamicPlatforms;
@@ -37,7 +37,7 @@ public class Skeleton extends Entity {
     private ArrayList< Screw > screws; //add all screws you want drawn
 
     public Skeleton( String n, Vector2 pos, Texture tex, World world ) {
-        super( n, pos, tex, null, false); // not constructing body class
+        super( n, pos, tex, world); // not constructing body class
         this.world = world;
         constructSkeleton( pos );
         this.dynamicPlatforms = new ArrayList<Platform>();
@@ -45,6 +45,7 @@ public class Skeleton extends Entity {
         kinematicPlatforms = new ArrayList< Platform >( );
         looseEntity = new ArrayList< Entity >();
         screws = new ArrayList<Screw>();
+        super.setSolid( false );
     }
 
     public void constructSkeleton( Vector2 pos ) {
@@ -246,7 +247,7 @@ public class Skeleton extends Entity {
         updateEntityMovers( deltaTime );
         
         //recursively move all children skeletons by this moved updated pos*rot.
-        setPosRotChildSkeletons( );
+        setPosRotChildSkeletons( deltaTime );
         
         //Now we can rotate all kinematic entities connected by updated skeleton rot / position
         setPosRotAllKinematicPlatforms(deltaTime);
@@ -348,14 +349,16 @@ public class Skeleton extends Entity {
      * update child skeletons based on rotation & position of this skeleton
      * TODO: OPTIMIZATION only call this when the skeleton has moved / rotated
      */
-    private void setPosRotChildSkeletons( ) {
+    private void setPosRotChildSkeletons( float deltaTime ) {
 		for ( Skeleton skeleton : childSkeletons ){
-			skeleton.body.setTransform( Util.PointOnCircle(
-							this.body.getPosition( ).dst( skeleton.body.getPosition( ) ), //radius
-							this.body.getAngle( ), this.body.getWorldCenter( ) ), //angle on circle, origin
-					this.body.getAngle( ) ); //set angle of child skeleton
+//			skeleton.body.setTransform( Util.PointOnCircle(
+//							this.body.getPosition( ).dst( skeleton.body.getPosition( ) ), //radius
+//							this.body.getAngle( ), this.body.getWorldCenter( ) ), //angle on circle, origin
+//					this.body.getAngle( ) ); //set angle of child skeleton
+//			
+			skeleton.setPosRotFromSkeleton( deltaTime, this );
 			//now recursively apply this change to child skeletons
-			skeleton.setPosRotChildSkeletons( );
+			skeleton.setPosRotChildSkeletons( deltaTime );
 		}
 	}
     

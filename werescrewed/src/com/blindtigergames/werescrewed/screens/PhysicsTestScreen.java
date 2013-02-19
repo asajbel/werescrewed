@@ -2,9 +2,7 @@ package com.blindtigergames.werescrewed.screens;
 
 import java.util.ArrayList;
 
-import aurelienribon.tweenengine.Timeline;
 import aurelienribon.tweenengine.Tween;
-import aurelienribon.tweenengine.TweenEquations;
 
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
@@ -34,7 +32,6 @@ import com.blindtigergames.werescrewed.entity.mover.PuzzleType;
 import com.blindtigergames.werescrewed.entity.mover.RockingMover;
 import com.blindtigergames.werescrewed.entity.mover.RotateByDegree;
 import com.blindtigergames.werescrewed.entity.mover.SlidingMotorMover;
-import com.blindtigergames.werescrewed.entity.mover.TimelineTweenMover;
 import com.blindtigergames.werescrewed.entity.mover.puzzle.PuzzlePistonTweenMover;
 import com.blindtigergames.werescrewed.entity.tween.EntityAccessor;
 import com.blindtigergames.werescrewed.entity.tween.PathBuilder;
@@ -91,9 +88,11 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		// entityManager = new EntityManager( );
 		skeleton = new Skeleton( "skeleton", new Vector2(1,0), null, world );
 		rootSkeleton = new Skeleton( "root", Vector2.Zero, null, world );
-		rootSkeleton.mover = new RockingMover( -0.02f, 1.0f );
+		/* Examples of movers on skeletons */
+		//rootSkeleton.mover = new RockingMover( -0.02f, 1.0f );
+		//rootSkeleton.setMover( new PathBuilder( ).begin( skeleton ).target( 0, 100, 2 ).target(0,0,2).repeatYoyo( true ).build( ) );
+		//skeleton.setMover( new PathBuilder( ).begin( skeleton ).target( 0, 100, 2 ).target(0,0,2).repeatYoyo( true ).build( ) );
 		//rootSkeleton.setMover(new TweenMover(Tween.to(rootSkeleton,EntityAccessor.ANGULAR_VEL, 1).target(0.1f).target( -0.4f ).repeatYoyo( Tween.INFINITY, 0 ).start( )));
-		// entityManager.addSkeleton( rootSkeleton.name, rootSkeleton );
 		platBuilder = new PlatformBuilder( world );
 		ropeBuilder = new RopeBuilder ( world );
 		
