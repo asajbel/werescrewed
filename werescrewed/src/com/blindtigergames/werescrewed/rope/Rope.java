@@ -43,7 +43,7 @@ public class Rope {
 			int links, World world ) {
 
 		Link topPiece = new Link( "top", world, pos, null, widthHeight );
-		topPiece.body.setType( BodyType.StaticBody );
+		topPiece.body.setType( BodyType.DynamicBody );
 		linkParts.add( topPiece );
 
 		for ( int i = 0; i < links; ++i ) {
@@ -113,7 +113,9 @@ public class Rope {
 		return null;
 	}
 	
-	private Link getEnd( ) {
+	public Link getEnd( ) {
 		return linkParts.get( linkParts.size( ) - 1 );
 	}
+	
+
 }

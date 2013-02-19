@@ -67,6 +67,7 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 	private Skeleton skel3;
 	private Skeleton skel4;
 	private Skeleton skel5, skel6;
+	private Rope testRope;
 
 	public DebugPlayTestScreen( ) {
 
@@ -106,6 +107,8 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		floor5( );
 		floor6( );
 		floor7( );
+		
+		
 		
 		rootSkeleton.addSkeleton( skeleton );
 		debugRenderer = new SBox2DDebugRenderer( Util.BOX_TO_PIXEL );
@@ -651,9 +654,9 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		skeleton.addScrewForDraw( puzzleScrew2 );
 		
 		RopeBuilder ropeBuilder = new RopeBuilder ( world );
-		Rope testRope = ropeBuilder.position(140f * TILE, 85 * TILE )
+		testRope = ropeBuilder.position(19.1f, 12.8f )
 				.width( 16f ).height( 64f ).links( 5 ).buildRope( );
-		
+		skel9.addRope( testRope );
 		
 		rootSkeleton.addSkeleton( skel9 );
 	}
@@ -692,7 +695,7 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		
 		player1.update( deltaTime );
 		//player2.update( deltaTime );
-
+		testRope.update( deltaTime );
 		rootSkeleton.update( deltaTime );
 
 		batch.setProjectionMatrix( cam.combined( ) );
@@ -701,6 +704,7 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		rootSkeleton.draw( batch );
 		player1.draw( batch );
 		//player2.draw( batch );
+		testRope.draw( batch );
 
 		batch.end( );
 
