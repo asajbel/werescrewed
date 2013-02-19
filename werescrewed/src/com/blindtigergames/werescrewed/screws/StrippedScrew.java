@@ -51,16 +51,18 @@ public class StrippedScrew extends Screw {
 		screwShape
 				.setRadius( ( sprite.getWidth( ) / 2.0f ) * Util.PIXEL_TO_BOX );
 		FixtureDef screwFixture = new FixtureDef( );
+		screwFixture.density = 4f;
 		screwFixture.filter.categoryBits = Util.CATEGORY_SCREWS;
 		screwFixture.filter.maskBits = Util.CATEGORY_EVERYTHING;
-		screwFixture.shape = screwShape;
 		screwFixture.isSensor = true;
+		screwFixture.shape = screwShape;
 		body.createFixture( screwFixture );
+		body.setFixedRotation( true );
 		body.setUserData( this );
 
-		// add radar sensor to screw
+		// add radar sensor to screw this is needed/not needed depending on the size of the screw
 //		CircleShape radarShape = new CircleShape( );
-//		radarShape.setRadius( sprite.getWidth( ) * 1.25f * Util.PIXEL_TO_BOX );
+//		radarShape.setRadius( sprite.getWidth( ) * 1.05f * Util.PIXEL_TO_BOX );
 //		FixtureDef radarFixture = new FixtureDef( );
 //		radarFixture.shape = radarShape;
 //		radarFixture.isSensor = true;
@@ -68,9 +70,8 @@ public class StrippedScrew extends Screw {
 //		radarFixture.filter.maskBits = Util.CATEGORY_PLAYER
 //				| Util.CATEGORY_SUBPLAYER;
 //		body.createFixture( radarFixture );
-
-		// You dont dispose the fixturedef, you dispose the shape
-		//radarShape.dispose( );
+//		//You dont dispose the fixturedef, you dispose the shape
+//		radarShape.dispose( );
 		screwShape.dispose( );
 
 	}

@@ -47,10 +47,9 @@ public class ProjectileMover implements IMover {
 
 	@Override
 	public void move( float deltaTime, Body body ) {
-		// TODO Auto-generated method stub
-		
-	}
 
+	}
+	
 	@Override
 	public void move( float deltaTime, Body body, SteeringOutput steering ) {
 		move( deltaTime, body );

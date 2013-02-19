@@ -8,7 +8,7 @@ import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
-import com.blindtigergames.werescrewed.player.Player;
+import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 //import com.blindtigergames.werescrewed.screens.GameScreen;
 //import com.sun.xml.internal.bind.v2.runtime.reflect.ListIterator;
@@ -22,7 +22,6 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 public class Camera {
 	private static final boolean ANCHOR_TEST_MODE = false;
 	// private static final boolean ANCHOR_TEST_MODE= true;
-
 	public static final float BOX_TO_PIXEL = 256f;
 	public static final float PIXEL_TO_BOX = 1 / BOX_TO_PIXEL;
 	public static final float DEGTORAD = 0.0174532925199432957f;
@@ -37,7 +36,6 @@ public class Camera {
 	// translation
 	// private static final float SPEED_TARGET_MODIFIER = 5f;
 	private static final float BUFFER_RATIO = .5f;
-	// private static final int LISTEN_BUFFER = 300;
 	private static final float ACCELERATION_RATIO = .005f;
 	private static final float DECELERATION_RATIO = .03f;
 	private static final float ACCELERATION_BUFFER_RATIO = .5f;
@@ -54,43 +52,20 @@ public class Camera {
 	private float targetBuffer;
 	private boolean translateState;
 
-	// might take these out when no longer required
-	private Player player1;
-	private Player player2;
 	private AnchorList anchorList;
-	private int player1Anchor;
-	private int player2Anchor;
 
 	// debug
 	private boolean debugInput;
 	private boolean debugRender;
 	private ShapeRenderer shapeRenderer;
 
-	public Camera( float viewportWidth, float viewportHeight ) {
-		this( viewportWidth, viewportHeight, null, null );
-	}
-
-	public Camera( float viewportWidth, float viewportHeight, Player player ) {
-		this( viewportWidth, viewportHeight, player, null );
-	}
-
-	public Camera( float viewportWidth, float viewportHeight, Player player1,
-			Player player2 ) {
-		initializeVars( viewportWidth, viewportHeight );
-		this.player1 = player1;
-		this.player2 = player2;
-
-		if ( player1 != null ) {
-			player1Anchor = anchorList.addAnchor( true, player1.getPosition( ) );
-		}
-
-		if ( player2 != null ) {
-			player2Anchor = anchorList.addAnchor( true, player2.getPosition( ) );
-		}
+	public Camera( float viewportWidth, float viewportHeight, World world ) {
+		initializeVars( viewportWidth, viewportHeight, world );
 		camera.update( );
 	}
 
-	private void initializeVars( float viewportWidth, float viewportHeight ) {
+	private void initializeVars( float viewportWidth, float viewportHeight,
+			World world ) {
 		camera = new OrthographicCamera( 1, viewportHeight / viewportWidth );
 		this.viewportHeight = Gdx.graphics.getHeight( );
 		this.viewportWidth = Gdx.graphics.getWidth( );
@@ -119,12 +94,10 @@ public class Camera {
 				* ACCELERATION_BUFFER_RATIO;
 		translateState = true;
 
-		player1Anchor = -1;
-		player2Anchor = -1;
 		anchorList = AnchorList.getInstance( camera );
 		anchorList.clear( );
 		if ( ANCHOR_TEST_MODE ) {
-			createTestAnchors( );
+//			createTestAnchors( world );
 		}
 
 		// debug
@@ -133,6 +106,11 @@ public class Camera {
 		shapeRenderer = new ShapeRenderer( );
 	}
 
+	/**
+	 * get boundaries of the screen in a Rectangle
+	 * 
+	 * @return
+	 */
 	public Rectangle getBounds( ) {
 		return screenBounds;
 	}
@@ -141,6 +119,9 @@ public class Camera {
 		return camera.combined;
 	}
 
+	/**
+	 * update the camera
+	 */
 	public void update( ) {
 		debugInput = false;
 		debugRender = false;
@@ -154,14 +135,6 @@ public class Camera {
 		}
 		if ( debugInput )
 			handleInput( );
-
-		// update player anchors
-		if ( player1Anchor > -1 ) {
-			anchorList.setAnchorPos( player1Anchor, player1.getPosition( ) );
-		}
-		if ( player2Anchor > -1 ) {
-			anchorList.setAnchorPos( player2Anchor, player2.getPosition( ) );
-		}
 
 		// update all positions and dimensions
 		position = camera.position;
@@ -186,10 +159,6 @@ public class Camera {
 
 		camera.update( );
 
-		if ( debugInput ) {
-			System.out.println( "Zoom: " + camera.zoom );
-		}
-
 		// also render anchors if debugRender == true
 		anchorList.update( debugRender );
 	}
@@ -198,13 +167,29 @@ public class Camera {
 	 * set focus of camera to the midpoint of all anchors
 	 */
 	private Vector2 setTranslateTarget( ) {
-		translateTarget.x = anchorList.midpoint( ).x;
-		translateTarget.y = anchorList.midpoint( ).y;
+		translateTarget.x = anchorList.getMidpoint( ).x;
+		translateTarget.y = anchorList.getMidpoint( ).y;
 
 		translateTarget3D.x = translateTarget.x;
 		translateTarget3D.y = translateTarget.y;
 		translateTarget3D.z = 0f;
 		return this.translateTarget;
+	}
+
+	/**
+	 * determine if any part of rect1 is outside of rect2
+	 * 
+	 * @param rect1
+	 *            inner Rectangle
+	 * @param rect2
+	 *            outer Rectangle
+	 * @return true if any part of rect1 is outside of rect2, false otherwise
+	 */
+	@SuppressWarnings( "unused" )
+	private boolean rectOutsideRect( Rectangle rect1, Rectangle rect2 ) {
+		boolean returnValue = false;
+
+		return returnValue;
 	}
 
 	/**
@@ -252,10 +237,9 @@ public class Camera {
 	}
 
 	/**
-     * 
-     */
+	 * translate the camera towards the translate target
+	 */
 	private void translate( ) {
-		// camera.position.set(translateTarget3D);
 		Vector2.tmp.x = translateTarget.x;
 		Vector2.tmp.y = translateTarget.y;
 		Vector2.tmp.sub( center2D );
@@ -288,30 +272,15 @@ public class Camera {
 	//@SuppressWarnings( "unused" )
 	private void zoom( ) {
 		float temp = AnchorList.getInstance( ).specialDistance( ) / viewportHeight;
-		if (temp > 1f) camera.zoom = temp;
+		if (temp >= 1f) camera.zoom = temp;
 		translateBuffer.width = screenBounds.width * BUFFER_RATIO;
 		translateBuffer.height = screenBounds.height * BUFFER_RATIO;
 	}
 
-	/**
-	 * determine if any part of rect1 is outside of rect2
-	 * 
-	 * @param rect1
-	 *            inner Rectangle
-	 * @param rect2
-	 *            outer Rectangle
-	 * @return true if any part of rect1 is outside of rect2, false otherwise
-	 */
 	@SuppressWarnings( "unused" )
-	private boolean rectOutsideRect( Rectangle rect1, Rectangle rect2 ) {
-		boolean returnValue = false;
-
-		return returnValue;
-	}
-
-	private void createTestAnchors( ) {
+	private void createTestAnchors( World world ) {
 		// anchorList.addAnchor( false, new Vector2(0f, 0f) );
-		anchorList.addAnchor( false, new Vector2( -128f, 128f ) );
+		// anchorList.addAnchor( false, new Vector2( -128f, 128f ), world, 3f );
 	}
 
 	/**
