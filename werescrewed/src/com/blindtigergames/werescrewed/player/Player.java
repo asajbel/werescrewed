@@ -139,8 +139,7 @@ public class Player extends Entity {
 
 		jumpSound = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 				+ "/common/sounds/jump.ogg" );
-		
-		
+
 	}
 
 	// PUBLIC METHODS
@@ -150,8 +149,8 @@ public class Player extends Entity {
 	 */
 	public void update( float deltaTime ) {
 		super.update( deltaTime );
-		if( kinematicTransform ){
-			//setPlatformTransform( platformOffset );
+		if ( kinematicTransform ) {
+			// setPlatformTransform( platformOffset );
 			kinematicTransform = false;
 		}
 		AnchorList.getInstance( ).setAnchorPosBox( anchorID, getPosition( ) );
@@ -371,18 +370,20 @@ public class Player extends Entity {
 		float multiplierX = 0.6f;
 		if ( leftAnalogY < -0.1f )
 			multiplierY = 0.1f;
-		if(leftAnalogX < 0.01f && leftAnalogY < 0.01f
-				&& leftAnalogX > -0.01f && leftAnalogY > -0.01f){
+		if ( leftAnalogX < 0.01f && leftAnalogY < 0.01f && leftAnalogX > -0.01f
+				&& leftAnalogY > -0.01f ) {
 			multiplierX = 0.0f;
 			multiplierY = 1.25f;
 			leftAnalogY = 1.0f;
 		}
-		if((leftAnalogX > 0.7f || leftAnalogX < -0.7f) && (leftAnalogY < 0.3f && leftAnalogY > -0.3f)){
+		if ( ( leftAnalogX > 0.7f || leftAnalogX < -0.7f )
+				&& ( leftAnalogY < 0.3f && leftAnalogY > -0.3f ) ) {
 			multiplierX = 0.8f;
 		}
-		body.applyLinearImpulse( new Vector2( JUMP_SCREW_IMPULSE * leftAnalogX
-				* multiplierX, JUMP_SCREW_IMPULSE * leftAnalogY * multiplierY ),
-				body.getWorldCenter( ) );
+		body.applyLinearImpulse(
+				new Vector2( JUMP_SCREW_IMPULSE * leftAnalogX * multiplierX,
+						JUMP_SCREW_IMPULSE * leftAnalogY * multiplierY ), body
+						.getWorldCenter( ) );
 		setGrounded( false );
 	}
 
@@ -473,6 +474,7 @@ public class Player extends Entity {
 	 */
 	public void noFriction( ) {
 		feet.setFriction( 0.0f );
+		footFriction = 0;
 	}
 	
 	/**
@@ -481,6 +483,7 @@ public class Player extends Entity {
 	 */
 	private void updateFootFriction( ){
 		if ( isGrounded() ){
+			//increase friction while on ground
 			if ( footFriction < PLAYER_FRICTION ){
 				footFriction += 0.1f;
 				if ( footFriction > PLAYER_FRICTION ){
@@ -490,7 +493,7 @@ public class Player extends Entity {
 		}else {
 			footFriction = 0f;
 		}
-		Gdx.app.log( name, feet.getFriction()+"" );
+		//Gdx.app.log( name, feet.getFriction()+"" );
 		feet.setFriction( footFriction );
 	}
 
@@ -522,7 +525,7 @@ public class Player extends Entity {
 				}
 			}
 			if ( !screwOccupied ) {
-				//Filter filter;
+				// Filter filter;
 				for ( Fixture f : body.getFixtureList( ) ) {
 					f.setSensor( true );
 				}
@@ -577,10 +580,9 @@ public class Player extends Entity {
 			// switch the player to not collide with the current platformBody
 			Filter filter = new Filter( );
 			for ( Fixture f : body.getFixtureList( ) ) {
-				f.setSensor( false );
 				filter = f.getFilterData( );
 				// move player back to original category
-				filter.categoryBits = Util.CATEGORY_PLAYER;
+				filter.categoryBits = Util.CATEGORY_SUBPLAYER;
 				// player now collides with everything except the platform in
 				// the way
 				filter.maskBits = ~Util.CATEGORY_SUBPLATFORM;
@@ -608,8 +610,9 @@ public class Player extends Entity {
 				if ( playerState != PlayerState.GrabMode ) {
 					playerState = PlayerState.Jumping;
 				}
-				noFriction();
+				//noFriction(); //working on fixing friction
 				jump( );
+				//Gdx.app.log(name,"jump");
 				//jumpSound.play( );
 			} else {
 				// let the bottom player jump
@@ -707,12 +710,12 @@ public class Player extends Entity {
 					// it should be the only thing in this category
 					filter.categoryBits = Util.CATEGORY_SUBPLATFORM;
 					// set to collide with everything
-					filter.maskBits = ~Util.CATEGORY_PLAYER;
+					filter.maskBits = ~Util.CATEGORY_SUBPLAYER;
 					f.setFilterData( filter );
 				}
 				jumpOffScrew( );
 			} else {
-				//screwJumpTimeout = 0;
+				// screwJumpTimeout = 0;
 				jumpOffScrew( );
 			}
 		}
@@ -957,15 +960,16 @@ public class Player extends Entity {
 			}
 		}
 	}
-	
+
 	/**
 	 * Transforms player position by offset
 	 * 
-	 * @param posOffset is the offset you want to apply to player
+	 * @param posOffset
+	 *            is the offset you want to apply to player
 	 */
-	private void setPlatformTransform( Vector2 posOffset ){
+	private void setPlatformTransform( Vector2 posOffset ) {
 		Gdx.app.log( name + "old:", " " + body.getPosition( ) );
-		body.setTransform( body.getPosition( ).cpy().add(posOffset), 0);
+		body.setTransform( body.getPosition( ).cpy( ).add( posOffset ), 0 );
 		Gdx.app.log( name + "new:", " " + body.getPosition( ) );
 	}
 
