@@ -601,6 +601,9 @@ public class Player extends Entity {
 				world.destroyJoint( playerToScrew );
 			}
 			mover = null;
+			for ( Fixture f : body.getFixtureList( ) ) {
+				f.setSensor( false );
+			}
 			playerState = PlayerState.JumpingOffScrew;
 			screwJumpTimeout = SCREW_JUMP_STEPS;
 			jump( );
@@ -641,6 +644,9 @@ public class Player extends Entity {
 		if ( playerState == PlayerState.Screwing ) {
 			if ( mover == null ) {
 				world.destroyJoint( playerToScrew );
+			}
+			for ( Fixture f : body.getFixtureList( ) ) {
+				f.setSensor( false );
 			}
 			playerState = PlayerState.JumpingOffScrew;
 			screwJumpTimeout = SCREW_JUMP_STEPS;
@@ -787,6 +793,9 @@ public class Player extends Entity {
 		if ( playerState == PlayerState.Screwing ) {
 			if ( mover == null ) {
 				world.destroyJoint( playerToScrew );
+			}
+			for ( Fixture f : body.getFixtureList( ) ) {
+				f.setSensor( false );
 			}
 			mover = null;
 			playerState = PlayerState.JumpingOffScrew;
@@ -1137,6 +1146,9 @@ public class Player extends Entity {
 				&& playerState == PlayerState.Screwing ) {
 			if ( mover == null ) {
 				world.destroyJoint( playerToScrew );
+			}
+			for ( Fixture f : body.getFixtureList( ) ) {
+				f.setSensor( false );
 			}
 			mover = null;
 			// VELO = ZERO OTHERWISE PLAYER COULD SHOOT THROUGH A WALL (BUG)
