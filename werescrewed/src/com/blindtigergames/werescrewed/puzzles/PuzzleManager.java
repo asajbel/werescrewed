@@ -8,6 +8,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.mover.IMover;
 import com.blindtigergames.werescrewed.platforms.Platform;
+import com.blindtigergames.werescrewed.screws.PuzzleScrew;
 
 /**
  * puzzle screw class for moving puzzle pieces
@@ -18,6 +19,7 @@ import com.blindtigergames.werescrewed.platforms.Platform;
 
 public class PuzzleManager {
 
+	
 	public PuzzleManager( World world ) {
 		puzzleEntities = new ArrayList< Entity >( );
 		puzzleMovers = new HashMap< String, IMover >( );
@@ -73,15 +75,15 @@ public class PuzzleManager {
 	 * either be a percentage of movement or it can be a boolean < 0.5f is yes >
 	 * 0.5f is no
 	 */
-	public void runElement( float screwVal ) {
+	public void runElement( PuzzleScrew screw, float screwVal ) {
 		for ( Entity e : puzzleEntities ) {
 			if ( puzzleMovers.containsKey( e.name ) ) {
-				puzzleMovers.get( e.name ).runPuzzleMovement( screwVal,
+				puzzleMovers.get( e.name ).runPuzzleMovement( screw, screwVal,
 						( Platform ) e );
 			}
 		} 
 	}
-
+	
 	private ArrayList< Entity > puzzleEntities;
 	private Map< String, IMover > puzzleMovers;
 

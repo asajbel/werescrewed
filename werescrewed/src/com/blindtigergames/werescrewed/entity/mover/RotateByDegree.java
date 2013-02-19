@@ -2,6 +2,7 @@ package com.blindtigergames.werescrewed.entity.mover;
 
 import com.badlogic.gdx.physics.box2d.Body;
 import com.blindtigergames.werescrewed.platforms.Platform;
+import com.blindtigergames.werescrewed.screws.PuzzleScrew;
 import com.blindtigergames.werescrewed.util.Util;
 
 public class RotateByDegree implements IMover {
@@ -48,8 +49,7 @@ public class RotateByDegree implements IMover {
 	}
 
 	@Override
-	public void runPuzzleMovement( float screwVal, Platform p ) {
-		//System.out.println( "yo!" );
+	public void runPuzzleMovement( PuzzleScrew screw, float screwVal, Platform p ) {
 		if ( offVal == 0 ) {
 			if ( screwVal >= onVal ) {
 				p.setLocalRot( endAngle * Util.DEG_TO_RAD );

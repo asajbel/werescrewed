@@ -2,6 +2,7 @@ package com.blindtigergames.werescrewed.entity.mover;
 
 import com.badlogic.gdx.physics.box2d.Body;
 import com.blindtigergames.werescrewed.platforms.Platform;
+import com.blindtigergames.werescrewed.screws.PuzzleScrew;
 
 public class ProjectileMover implements IMover {
 	public ProjectileMover(){
@@ -19,7 +20,7 @@ public class ProjectileMover implements IMover {
 
 
 	@Override
-	public void runPuzzleMovement( float screwVal, Platform p ) {
+	public void runPuzzleMovement( PuzzleScrew screw, float screwVal, Platform p ) {
 
 	}
 

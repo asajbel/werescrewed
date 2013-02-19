@@ -149,7 +149,7 @@ public class Player extends Entity {
 	public void update( float deltaTime ) {
 		super.update( deltaTime );
 		if ( name.equals( "player1" ) ) {
-			Gdx.app.log( "playerState", "" + playerState );
+			//Gdx.app.log( "playerState", "" + playerState );
 		}
 		if ( kinematicTransform ) {
 			// setPlatformTransform( platformOffset );

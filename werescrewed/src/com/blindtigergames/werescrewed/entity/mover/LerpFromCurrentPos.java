@@ -3,6 +3,7 @@ package com.blindtigergames.werescrewed.entity.mover;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.blindtigergames.werescrewed.platforms.Platform;
+import com.blindtigergames.werescrewed.screws.PuzzleScrew;
 import com.blindtigergames.werescrewed.util.Util;
 
 public class LerpFromCurrentPos implements IMover {
@@ -23,8 +24,7 @@ public class LerpFromCurrentPos implements IMover {
 	 * @param loop
 	 * @param type does the puzzle override the platforms mover or just move once
 	 */
-	public LerpFromCurrentPos ( Vector2 endingPoint, float speed,
-			boolean loop, PuzzleType type, LinearAxis axis ) {
+	public LerpFromCurrentPos ( Vector2 endingPoint, float speed, PuzzleType type, LinearAxis axis ) {
 		this.endPoint = endingPoint.cpy( );
 		this.speed = speed;
 		this.axis = axis;
@@ -62,9 +62,9 @@ public class LerpFromCurrentPos implements IMover {
 	}
 
 	@Override
-	public void runPuzzleMovement( float screwVal, Platform p ) {
+	public void runPuzzleMovement( PuzzleScrew screw, float screwVal, Platform p ) {
 		if ( puzzleType == PuzzleType.PUZZLE_SCREW_CONTROL ) {
-			beginningPoint = p.body.getPosition( ).cpy( ).mul( Util.BOX_TO_PIXEL );
+			beginningPoint = p.body.getPosition( ).cpy( );
 			beginningPoint.lerp( endPoint, screwVal );
 			if ( axis == LinearAxis.VERTICAL ) {
 				p.setLocalPos( p.getLocalPos( ).x, beginningPoint.y );
@@ -78,6 +78,7 @@ public class LerpFromCurrentPos implements IMover {
 				p.mover = this;
 			}
 		}
+		screw.resetScrew( );
 	}
 
 	@Override

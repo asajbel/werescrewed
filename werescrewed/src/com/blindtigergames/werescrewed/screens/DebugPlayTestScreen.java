@@ -82,9 +82,9 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 
 		// Initialize players
 		player1 = new PlayerBuilder( ).name( "player1" ).world( world )
-				.position( 1f * TILE, 1f * TILE).buildPlayer( );
+				.position( 112f * TILE, 83f * TILE).buildPlayer( );
 		player2 = new PlayerBuilder( ).name( "player2" ).world( world )
-				.position( 2f * TILE, 1f * TILE ).buildPlayer( );
+				.position( 112f * TILE, 83f * TILE ).buildPlayer( );
 
 		// 115f * TILE, 42 * TILE
 
