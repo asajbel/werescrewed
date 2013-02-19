@@ -47,7 +47,7 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 	private Skeleton skel1;
 	private TiledPlatform stair;
 
-	private final float TILE = 32;
+	private static final float TILE = 32;
 	private TiledPlatform step;
 	private Skeleton skel2;
 	private TiledPlatform ground;
@@ -77,9 +77,9 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 
 		// Initialize players
 		player1 = new PlayerBuilder( ).name( "player1" ).world( world )
-				.position( 12.0f, 1.0f ).buildPlayer( );
+				.position( 21.0f, 2.0f ).buildPlayer( );
 		player2 = new PlayerBuilder( ).name( "player2" ).world( world )
-				.position( 12.5f, 1.0f ).buildPlayer( );
+				.position( 21.5f, 2.0f ).buildPlayer( );
 
 		// TODO: Everything.
 
@@ -93,16 +93,6 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 
 		Gdx.app.setLogLevel( Application.LOG_DEBUG );
 
-	}
-
-	private void floor2( ) {
-		skel2 = new Skeleton( "skel2", new Vector2( 0, 0 ), null, world );
-
-		strScrew = new StrippedScrew( "strScrew1", world, new Vector2(
-				175 * TILE, 17 * TILE ), skel2 );
-		skel2.addStrippedScrew( strScrew );
-
-		rootSkeleton.addSkeleton( skel2 );
 	}
 
 	private void floor1( ) {
@@ -252,6 +242,31 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		skel1.addKinematicPlatform( ground );
 
 		rootSkeleton.addSkeleton( skel1 );
+	}
+
+	private void floor2( ) {
+		skel2 = new Skeleton( "skel2", new Vector2( 0, 0 ), null, world );
+
+		// PUZZLE 1 //
+
+		strScrew = new StrippedScrew( "strScrew1", world, new Vector2(
+				170 * TILE, 17 * TILE ), skel2 );
+		skel2.addStrippedScrew( strScrew );
+
+		strScrew = new StrippedScrew( "strScrew2", world, new Vector2(
+				185 * TILE, 17 * TILE ), skel2 );
+		skel2.addStrippedScrew( strScrew );
+
+		strScrew = new StrippedScrew( "strScrew3", world, new Vector2(
+				189 * TILE, 17 * TILE ), skel2 );
+		skel2.addStrippedScrew( strScrew );
+
+		plat = platBuilder.position( 180 * TILE, 20 * TILE ).name( "plat6" )
+				.dimensions( 3, 1 ).texture( testTexture ).kinematic( )
+				.oneSided( false ).restitution( 0 ).buildTilePlatform( );
+		skel2.addKinematicPlatform( plat );
+		
+		rootSkeleton.addSkeleton( skel2 );
 	}
 
 	private void initCamera( ) {

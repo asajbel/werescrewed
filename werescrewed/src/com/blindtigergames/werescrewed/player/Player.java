@@ -610,7 +610,7 @@ public class Player extends Entity {
 					playerState = PlayerState.Jumping;
 				}
 				jump( );
-				jumpSound.play( );
+//				jumpSound.play( );
 			} else {
 				// let the bottom player jump
 				// with a large amount of force
