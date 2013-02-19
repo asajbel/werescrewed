@@ -127,9 +127,9 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		// Otherwise input handler breaks
 
 		player1 = new PlayerBuilder( ).name( "player1" ).world( world )
-				.position( 1.0f, 1.0f ).buildPlayer( );
+				.position( 1.0f, 100.0f ).buildPlayer( );
 		player2 = new PlayerBuilder( ).name( "player2" ).world( world )
-				.position( 1.5f, 1.5f ).buildPlayer( );
+				.position( 1.5f, 110.5f ).buildPlayer( );
 
 		// Add screws
 
@@ -410,12 +410,12 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 
 		// 1000 - 1219 for perfect gears
 		Platform gear = builder.name( "gear" )
-				.position( 1219 * Util.PIXEL_TO_BOX, 320 * Util.PIXEL_TO_BOX )
+				.position( 1219, 320 )
 				.texture( null ).setScale( 3f ).type( "gearSmall" )
 				.buildComplexPlatform( );
 		skeleton.addPlatformRotatingCenterWithMot( gear, 1f );
 		Platform gear2 = builder.name( "gear2" )
-				.position( 1000 * Util.PIXEL_TO_BOX, 300 * Util.PIXEL_TO_BOX )
+				.position( 1000 , 300 )
 				.texture( null ).setScale( 3f ).type( "gearSmall" )
 				.buildComplexPlatform( );
 		skeleton.addPlatformRotatingCenter( gear2 );
