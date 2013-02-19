@@ -20,6 +20,7 @@ class MainMenuScreen implements com.badlogic.gdx.Screen {
 	private Button playButton = null;
 	private Button gleedButton = null;
 	private Button exitButton = null;
+	private Button testButton;
 	private int lineHeight = 0;
 
 	public MainMenuScreen( ) {
@@ -27,10 +28,12 @@ class MainMenuScreen implements com.badlogic.gdx.Screen {
 		font = new BitmapFont( );
 		lineHeight = Math.round( 2.5f * font.getCapHeight( ) );
 		headingLabel = new Label( "We're Screwed!!", font );
-		playButton = new Button( "Physics Test Screen", font, new ScreenSwitchHandler(
-				ScreenType.PHYSICS ) );
-		gleedButton = new Button( "Gleed Screen", font, new ScreenSwitchHandler(
-				ScreenType.GLEED ) );
+		playButton = new Button( "Physics Test Screen", font,
+				new ScreenSwitchHandler( ScreenType.PHYSICS ) );
+		testButton = new Button( "Playtest Screen", font,
+				new ScreenSwitchHandler( ScreenType.PLAYTEST ) );
+		gleedButton = new Button( "Gleed Screen", font,
+				new ScreenSwitchHandler( ScreenType.GLEED ) );
 
 		exitButton = new Button( "Exit", font, new ButtonHandler( ) {
 			@Override
@@ -48,15 +51,16 @@ class MainMenuScreen implements com.badlogic.gdx.Screen {
 		headingLabel.draw( batch );
 		playButton.draw( batch, camera );
 		gleedButton.draw( batch, camera );
-		//imoverButton.draw( batch, camera );
+		testButton.draw( batch, camera );
+		// imoverButton.draw( batch, camera );
 		exitButton.draw( batch, camera );
 		batch.end( );
-		
-		if(Gdx.input.isKeyPressed( Keys.P )){
-			System.exit(1);
+
+		if ( Gdx.input.isKeyPressed( Keys.P ) ) {
+			System.exit( 1 );
 		}
-		if(Gdx.input.isKeyPressed( Keys.ENTER )){
-			ScreenManager.getInstance( ).show( ScreenType.PHYSICS );
+		if ( Gdx.input.isKeyPressed( Keys.ENTER ) ) {
+			ScreenManager.getInstance( ).show( ScreenType.PLAYTEST );
 		}
 	}
 
@@ -68,15 +72,17 @@ class MainMenuScreen implements com.badlogic.gdx.Screen {
 		int centerX = width / 2;
 		int centerY = height / 2;
 		headingLabel.setX( centerX - headingLabel.getWidth( ) / 2 );
-		headingLabel.setY( centerY + 2 * lineHeight );
+		headingLabel.setY( centerY + 3 * lineHeight );
+		testButton.setX( centerX - testButton.getWidth( ) / 2 );
+		testButton.setY( centerY + 2 * lineHeight );
 		playButton.setX( centerX - playButton.getWidth( ) / 2 );
 		playButton.setY( centerY + lineHeight );
 		gleedButton.setX( centerX - gleedButton.getWidth( ) / 2 );
 		gleedButton.setY( centerY );
-		//imoverButton.setX( centerX - imoverButton.getWidth( )/2 );
-		//imoverButton.setY( centerY - lineHeight );
+		// imoverButton.setX( centerX - imoverButton.getWidth( )/2 );
+		// imoverButton.setY( centerY - lineHeight );
 		exitButton.setX( centerX - exitButton.getWidth( ) / 2 );
-		exitButton.setY( centerY - 2*lineHeight );
+		exitButton.setY( centerY - 2 * lineHeight );
 	}
 
 	@Override

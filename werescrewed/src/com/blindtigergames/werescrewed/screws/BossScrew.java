@@ -3,7 +3,6 @@ package com.blindtigergames.werescrewed.screws;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -33,12 +32,12 @@ public class BossScrew extends Screw {
 		maxDepth = max;
 		depth = max;
 		rotation = 0;
-		fallTimeout = max * 4;
+		fallTimeout = 70;
 		extraJoints = new ArrayList< RevoluteJoint >( );
 		screwType = ScrewType.BOSS;
 
 		// create the screw body
-		sprite.setColor( Color.RED );
+		sprite.setColor( 244f/255f, 215f/255f, 7f/255f, 1.0f);
 		BodyDef screwBodyDef = new BodyDef( );
 		screwBodyDef.type = BodyType.DynamicBody;
 		screwBodyDef.position.set( pos.mul( Util.PIXEL_TO_BOX ) );
@@ -58,16 +57,16 @@ public class BossScrew extends Screw {
 		body.setUserData( this );
 
 		// add radar sensor to screw
-		CircleShape radarShape = new CircleShape( );
-		radarShape.setRadius( sprite.getWidth( ) * 1.25f * Util.PIXEL_TO_BOX );
-		FixtureDef radarFixture = new FixtureDef( );
-		radarFixture.shape = radarShape;
-		radarFixture.isSensor = true;
-		radarFixture.filter.categoryBits = Util.CATEGORY_SCREWS;
-		radarFixture.filter.maskBits = Util.CATEGORY_PLAYER
-				| Util.CATEGORY_SUBPLAYER;
-		body.createFixture( radarFixture );
-		radarShape.dispose( );
+//		CircleShape radarShape = new CircleShape( );
+//		radarShape.setRadius( sprite.getWidth( ) * 1.05f * Util.PIXEL_TO_BOX );
+//		FixtureDef radarFixture = new FixtureDef( );
+//		radarFixture.shape = radarShape;
+//		radarFixture.isSensor = true;
+//		radarFixture.filter.categoryBits = Util.CATEGORY_SCREWS;
+//		radarFixture.filter.maskBits = Util.CATEGORY_PLAYER
+//				| Util.CATEGORY_SUBPLAYER;
+//		body.createFixture( radarFixture );
+//		radarShape.dispose( );
 
 		// connect the screw to the entity
 		RevoluteJointDef revoluteJointDef = new RevoluteJointDef( );
@@ -155,7 +154,7 @@ public class BossScrew extends Screw {
 			}
 			fallTimeout--;
 		} else {
-			fallTimeout = maxDepth * 4;
+			fallTimeout = 70;
 		}
 		if ( depth > 0 ) {
 			sprite.setPosition(

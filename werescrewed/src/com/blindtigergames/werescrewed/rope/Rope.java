@@ -5,15 +5,16 @@ import java.util.ArrayList;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+import com.badlogic.gdx.physics.box2d.World;
 import com.blindtigergames.werescrewed.entity.Entity;
+import com.blindtigergames.werescrewed.screws.Screw;
 import com.blindtigergames.werescrewed.screws.StrippedScrew;
 import com.blindtigergames.werescrewed.util.Util;
 
 public class Rope {
 
-	StrippedScrew screw;
+	private StrippedScrew screw;
 	private ArrayList< Link > linkParts;
 
 	public Rope( String name, Vector2 pos, Vector2 widthHeight, int links,
@@ -41,8 +42,8 @@ public class Rope {
 	private void constructRope( String name, Vector2 pos, Vector2 widthHeight,
 			int links, World world ) {
 
-		Link topPiece = new Link( "top", world, pos, null );
-		topPiece.body.setType( BodyType.StaticBody );
+		Link topPiece = new Link( "top", world, pos, null, widthHeight );
+		topPiece.body.setType( BodyType.DynamicBody );
 		linkParts.add( topPiece );
 
 		for ( int i = 0; i < links; ++i ) {
@@ -50,7 +51,7 @@ public class Rope {
 			Link temp = new Link( "link" + i, world, new Vector2(
 					getEnd( ).body.getWorldCenter( ).x,
 					getEnd( ).body.getWorldCenter( ).y - widthHeight.y
-							* Util.PIXEL_TO_BOX ), null );
+							* Util.PIXEL_TO_BOX ), null, widthHeight );
 
 			getEnd( ).createLinkJoint( temp );
 			linkParts.add( temp );
@@ -61,6 +62,7 @@ public class Rope {
 				getEnd( ).body.getWorldCenter( ).x * Util.BOX_TO_PIXEL,
 				getEnd( ).body.getWorldCenter( ).y * Util.BOX_TO_PIXEL
 						- widthHeight.y ), getEnd( ) );
+		screw.body.getFixtureList( ).get( 0 ).setSensor( false );
 	}
 
 	public void update( float deltatime ) {
@@ -75,7 +77,45 @@ public class Rope {
 		screw.draw( batch );
 	}
 
-	private Link getEnd( ) {
+	/**
+	 * 
+	 * @return the screw attached at the end of the rope
+	 */
+	public Screw getEndAttachment( ) {
+		return screw;
+	}
+	
+	/**
+	 * 
+	 * @return the first link in the rope
+	 */
+	public Link getFirstLink ( ) {
+		return linkParts.get( 0 );
+	}
+	
+	/**
+	 * 
+	 * @return the last link in the rope
+	 */
+	public Link getLastLink( ) {
 		return linkParts.get( linkParts.size( ) - 1 );
 	}
+	
+	/**
+	 * 
+	 * @param index - the index of the link in the rope
+	 * @return the link at this index of the rope
+	 */
+	public Link getLink( int index ) {
+		if ( index < linkParts.size( ) ) {
+			return linkParts.get( index );
+		}
+		return null;
+	}
+	
+	public Link getEnd( ) {
+		return linkParts.get( linkParts.size( ) - 1 );
+	}
+	
+
 }

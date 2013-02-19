@@ -60,8 +60,7 @@ public class Util {
 	}
 
 	/**
-	 * Finds the angle between 2 points in radians. Correctly returns the angle
-	 * rather than NaN since atan() only has a range between -pi/2 -> pi/2
+	 * Finds the angle between 2 points in radians. Won't ever return NaN.
 	 * TODO: this may have bugs for pi and 0.
 	 * 
 	 * @param pointA
@@ -72,8 +71,8 @@ public class Util {
 	 * @author stew
 	 */
 	public static float angleBetweenPoints( Vector2 pointA, Vector2 pointB ) {
-		float angle = ( float ) Math.atan( ( pointB.y - pointA.y )
-				/ ( pointB.x - pointA.x ) );
+		float angle = ( float ) Math.atan2( ( pointB.y - pointA.y )
+				, ( pointB.x - pointA.x ) );
 		if ( Float.isNaN( angle ) ) {
 			if ( pointA.y > pointB.y ) { // pointA is above pointB
 				return ( float ) Math.PI / 2;

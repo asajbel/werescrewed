@@ -12,10 +12,13 @@ import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.util.Util;
 
 public class Link extends Entity {
+	private float width, height;
 
-	public Link( String name, World world, Vector2 pos, Texture texture ) {
+	public Link( String name, World world, Vector2 pos, Texture texture, Vector2 widthHeight ) {
 		super( name, pos, texture, null, true );
 		this.world = world;
+		this.width = widthHeight.x;
+		this.height = widthHeight.y;
 
 		constructBody( pos );
 	}
@@ -26,11 +29,13 @@ public class Link extends Entity {
 		bodyDef.type = BodyType.DynamicBody;
 		bodyDef.gravityScale = 0.1f;
 		PolygonShape polygonShape = new PolygonShape( );
-		polygonShape.setAsBox( 8.0f * Util.PIXEL_TO_BOX,
-				16.0f * Util.PIXEL_TO_BOX );
+		polygonShape.setAsBox( width / 2 * Util.PIXEL_TO_BOX,
+				height / 2 * Util.PIXEL_TO_BOX );
 		FixtureDef fixtureDef = new FixtureDef( );
+		fixtureDef.filter.categoryBits = Util.CATEGORY_ROPE;
+		fixtureDef.filter.maskBits = Util.CATEGORY_NOTHING;
 		fixtureDef.shape = polygonShape;
-		fixtureDef.density = 10.0f;
+		fixtureDef.density = 1f;
 		fixtureDef.restitution = 0.0f;
 		fixtureDef.friction = 0.1f;
 		body = world.createBody( bodyDef );
@@ -44,7 +49,7 @@ public class Link extends Entity {
 		RevoluteJointDef revoluteJointDef = new RevoluteJointDef( );
 		revoluteJointDef.initialize( link.body, body,
 				new Vector2( body.getWorldCenter( ).x, body.getWorldCenter( ).y
-						- 16.0f * Util.PIXEL_TO_BOX ) );
+						- height / 2 * Util.PIXEL_TO_BOX ) );
 		revoluteJointDef.enableMotor = false;
 		revoluteJointDef.collideConnected = false;
 		world.createJoint( revoluteJointDef );

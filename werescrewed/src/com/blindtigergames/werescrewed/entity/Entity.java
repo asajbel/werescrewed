@@ -12,6 +12,8 @@ import com.badlogic.gdx.physics.box2d.Filter;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
+import com.blindtigergames.werescrewed.camera.Anchor;
+import com.blindtigergames.werescrewed.camera.AnchorList;
 import com.blindtigergames.werescrewed.entity.mover.IMover;
 import com.blindtigergames.werescrewed.util.Util;
 
@@ -32,6 +34,7 @@ public class Entity {
 	protected World world;
 	public IMover mover;
 	protected boolean solid;
+	protected Anchor anchor;
 	protected float energy;
 	protected boolean active;
 	protected boolean visible;
@@ -55,22 +58,30 @@ public class Entity {
 	 * @param solid
 	 *            boolean determining whether or not the player can stand on it
 	 */
-	public Entity( String name, EntityDef type, World world, Vector2 pos,
-			float rot, Vector2 scale, Texture texture, boolean solid ) {
+	public Entity( String name, EntityDef type, World world, 
+			Vector2 pos, float rot, Vector2 scale, Texture texture, boolean solid, 
+            float anchRadius) {
 		this.construct( name, pos, solid );
 		this.type = type;
 		this.world = world;
 		this.sprite = constructSprite( texture );
-		this.body = constructBody( );
-		setPosition( pos );
+		this.body = constructBodyByType( );
+		setPixelPosition( pos );
+		if ( anchRadius >= 0 ) {
+			Vector2 centPos = new Vector2( body.getWorldCenter( ).x
+					* Util.BOX_TO_PIXEL, body.getWorldCenter( ).y
+					* Util.BOX_TO_PIXEL );
+			this.anchor = new Anchor( centPos, world, anchRadius );
+			AnchorList.getInstance( ).addAnchor( anchor );
+		}
 	}
 	
 	/**
 	 * Create entity by body. Debug constructor: Should be removed eventually.
 	 * 
 	 * @param name
-	 * @param pos
-	 *            ition of the entity in the world
+	 * @param positionPixels
+	 *            ition of the entity in the world in PIXELS
 	 * @param texture
 	 *            (null if defined elsewhere)
 	 * @param body
@@ -78,18 +89,18 @@ public class Entity {
 	 * @param solid
 	 *            boolean determining whether or not the player can stand on it
 	 */
-	public Entity( String name, Vector2 pos, Texture texture, Body body,
+	public Entity( String name, Vector2 positionPixels, Texture texture, Body body,
 			boolean solid ) {
-		this.construct( name, pos, solid );
+		this.construct( name, positionPixels, solid );
 		this.sprite = constructSprite( texture );
 		this.body = body;
 		if ( body != null ) {
 			world = body.getWorld( );
 			sprite.setScale( Util.PIXEL_TO_BOX );
 		}
-		setPosition( pos );
-
+		this.setPixelPosition( positionPixels );
 	}
+
 	/**
 	 * Common sub-constructor that applies to all Entity() constructors.
 	 */
@@ -103,25 +114,55 @@ public class Entity {
 		this.visible = true;
 		this.active = true;
 	}
-	
+
+	/**
+	 * Set position of the body in meters.
+	 * @param xMeters
+	 * @param yMeters
+	 */
 	public void setPosition(float x, float y){
 		x -= bodyOffset.x;
 		y -= bodyOffset.y;
-		//x *= Util.PIXEL_TO_BOX;
-		//y *= Util.PIXEL_TO_BOX;
 		if (body != null){
 			body.setTransform(x, y, body.getAngle());
 		} else if (sprite != null){
 			sprite.setPosition(x, y);
 		}
 	}
-	
-	public void setPosition( Vector2 pos ) {
-		setPosition(pos.x,pos.y);
+
+	public void setPixelPosition(float x, float y){
+		setPosition(x * Util.PIXEL_TO_BOX, y * Util.PIXEL_TO_BOX);	
 	}
 
+	public void setPixelPosition(Vector2 pixels){
+		setPixelPosition(pixels.x, pixels.y);	
+	}
+	
+	/**
+	 * Set position by  meters!!
+	 * @param positionMeters
+	 */
+	public void setPosition( Vector2 positionMeters ) {
+		setPosition(positionMeters.x,positionMeters.y);
+	}
+
+	/**
+	 * returns body position in meters.
+	 * @return Vector2 in meters of bodie's world origin
+	 */
 	public Vector2 getPosition( ) {
 		return body.getPosition( ).add( bodyOffset );
+	}
+	
+	/**
+	 * Use this position when setting relative position of platforms
+	 * for paths targets. ie you set a platform at (x,y) in meters,
+	 * but the path takes in pixels, so do something like platform.
+	 * getPositionPixel().add(0,600)
+	 * @return world position of origin in PIXELS
+	 */
+	public Vector2 getPositionPixel(){
+		return body.getPosition( ).cpy().mul( Util.BOX_TO_PIXEL );
 	}
 
 	public void move( Vector2 vector ) {
@@ -130,7 +171,7 @@ public class Entity {
 	}
 
 	public void draw( SpriteBatch batch ) {
-		if ( sprite != null && visible) {
+		if ( sprite != null && visible ) {
 			sprite.draw( batch );
 		}
 		drawOrigin(batch);
@@ -165,10 +206,15 @@ public class Entity {
 	 * Now separated from update() so that it can be called whenever skeleton wants.
 	 * @param deltaTime
 	 */
-	public void updateMover( float deltaTime ){
-		if (active){
-			if ( body != null && mover != null ) {
-				mover.move( deltaTime, body );
+	public void updateMover( float deltaTime ) {
+		if ( active ) {
+			if ( body != null ) {
+				if ( mover != null ) {
+					mover.move( deltaTime, body );
+				}
+				if ( anchor != null ) {
+					updateAnchor( );
+				}
 			}
 		}
 	}
@@ -216,6 +262,7 @@ public class Entity {
 			// Definitions for non-loaded sprites
 			origin = new Vector2( sprite.getWidth( ) / 2,
 					sprite.getHeight( ) / 2 );
+
 			// Arbitrary offset :(
 			this.offset.set( sprite.getWidth( ) / 2, sprite.getHeight( ) / 2 );
 		}
@@ -223,11 +270,11 @@ public class Entity {
 		return sprite;
 	}
 	
-    public void Move(Vector2 vector)
-    {
-    	Vector2 pos = body.getPosition().add(vector.mul( Util.PIXEL_TO_BOX ));
-    	setPosition(pos);
-    }
+	public void Move( Vector2 vector ) 
+	{
+		Vector2 pos = body.getPosition( ).add( vector.mul( Util.PIXEL_TO_BOX ) );
+		setPosition( pos );
+	}
 
 
 	/**
@@ -235,7 +282,7 @@ public class Entity {
 	 * 
 	 * @return the loaded body, or null, if type is null
 	 */
-	protected Body constructBody( ) {
+	protected Body constructBodyByType( ) {
 		Body newBody;
 		if ( type != null ) {
 			newBody = world.createBody( type.bodyDef );
@@ -265,6 +312,7 @@ public class Entity {
 	public void setSolid( boolean solid ) {
 		this.solid = solid;
 	}
+
 	/**
 	 * Sets the energy of the current body.
 	 * Energy is a new property for Entities that is meant
@@ -288,60 +336,75 @@ public class Entity {
 		body.setAwake( true );
 	}
 
-	
 	/**
 	 * Determines whether an entity should be deleted
 	 * on next update or not
 	 * 
-	 * @param m - boolean
+	 * @param m
+	 *            - boolean
 	 */
-	public void setMaintained(boolean m){
+	public void setMaintained( boolean m ) {
 		maintained = m;
 	}
-	public boolean isMaintained(){
+
+	public boolean isMaintained( ) {
 		return maintained;
 	}
-	
+
 	/**
 	 * Determines whether an entity should be drawn or not.
 	 * 
-	 * @param v - boolean
+	 * @param v
+	 *            - boolean
 	 */
-	public void setVisible(boolean v){
+	public void setVisible( boolean v ) {
 		visible = v;
 	}
-	public boolean isVisible(){
+
+	public boolean isVisible( ) {
 		return visible;
 	}
 
 	/**
 	 * Determines whether an entity should be updated or not.
 	 * 
-	 * @param a - boolean
+	 * @param a
+	 *            - boolean
 	 */
-	public void setActive(boolean a){
+	public void setActive( boolean a ) {
 		active = a;
 	}
 	public boolean isActive(){
 		return active;
 	}
-	
+
 	/**
 	 * Change the sprite to be displayed on the entity
 	 * 
 	 * @param newSprite
-	 * 		The new sprite that will be displayed on top of the entity
+	 *            The new sprite that will be displayed on top of the entity
 	 */
-	public void changeSprite(Sprite newSprite){
+	public void changeSprite( Sprite newSprite ) {
 		this.sprite = newSprite;
 	}
+
+	/**
+	 * updates the player's anchor
+	 * 
+	 * @author Edward Ramirez
+	 */
+	private void updateAnchor( ) {
+		anchor.setPositionBox( body.getWorldCenter( ) );
+	}
+
 	/**
 	 * set the bodies category collision bits
-	 * @param 
+	 * 
+	 * @param
 	 */
 	public void setCategoryMask( short category, short mask ) {
-		if ( body != null) {
-			Filter filter = new Filter();
+		if ( body != null ) {
+			Filter filter = new Filter( );
 			for ( Fixture f : body.getFixtureList( ) ) {
 				f.setSensor( false );
 				filter = f.getFilterData( );
@@ -355,12 +418,12 @@ public class Entity {
 	}
 
 	/**
-	 *  This is a quick-n-dirty fix for complex body collisions.
-	 *  Hopefully we'll get to a point where we don't need it.
-	 *  There's probably some overlap between mine and Dennis' functions,
-     *  I'll try to sort it out on next update.
+	 * This is a quick-n-dirty fix for complex body collisions. Hopefully we'll
+	 * get to a point where we don't need it. There's probably some overlap
+	 * between mine and Dennis' functions, I'll try to sort it out on next
+	 * update.
 	 */
-	public void quickfixCollisions(){
+	public void quickfixCollisions( ) {
 		Filter filter;
 		for ( Fixture f : body.getFixtureList( ) ) {
 			filter = f.getFilterData( );
@@ -375,34 +438,37 @@ public class Entity {
 	}
 
 	public void setDensity( float d ) {
-		if ( body != null ){
-		for ( int i = 0; i < body.getFixtureList( ).size( ); ++i )
-			body.getFixtureList( ).get( i ).setDensity( d );
+		if ( body != null ) {
+			for ( int i = 0; i < body.getFixtureList( ).size( ); ++i )
+				body.getFixtureList( ).get( i ).setDensity( d );
 		}
 
 	}
 
 	public void setFriction( float f ) {
-		if ( body != null ){
-		for ( int i = 0; i < body.getFixtureList( ).size( ); ++i )
-			body.getFixtureList( ).get( i ).setFriction( f );
+		if ( body != null ) {
+			for ( int i = 0; i < body.getFixtureList( ).size( ); ++i )
+				body.getFixtureList( ).get( i ).setFriction( f );
 		}
 	}
 
 	public void setRestitution( float r ) {
-		if ( body != null ){
-		for ( int i = 0; i < body.getFixtureList( ).size( ); ++i )
-			body.getFixtureList( ).get( i ).setRestitution( r );
+		if ( body != null ) {
+			for ( int i = 0; i < body.getFixtureList( ).size( ); ++i )
+				body.getFixtureList( ).get( i ).setRestitution( r );
 		}
 	}
 
 	public void setGravScale( float g ) {
-		if ( body != null ){
+		if ( body != null ) {
 			body.setGravityScale( g );
 		}
 	}
-	
-	public String toString(){
-		return "Entity["+name+"] pos:"+body.getPosition( )+", body.active:"+body.isActive( )+", body.awake:"+body.isAwake( );
+
+	public String toString( ) {
+		return "Entity[" + name + "] pos:" + body.getPosition( )
+				+ ", body.active:" + body.isActive( ) + ", body.awake:"
+				+ body.isAwake( );
 	}
+	
 }

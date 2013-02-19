@@ -29,6 +29,8 @@ public class GleedLoader {
 	protected Level level;
 	protected HashMap<String,Element> elements;
 	protected EnumMap<GleedTypeTag, ArrayList<Item>> items;
+	protected static final float GLEED_TO_GDX_X = 1.0f;
+	protected static final float GLEED_TO_GDX_Y = 1.0f;
 	
 	public GleedLoader(){
 		reader = new XmlReader();
@@ -210,6 +212,7 @@ public class GleedLoader {
 		public GleedTypeTag tag;
 		public HashMap<String,String> props;
 		public Vector2 pos;
+		public Vector2 origin;
 		public Vector2 sca;
 		public Texture tex;
 	}
@@ -220,7 +223,7 @@ public class GleedLoader {
 
 	protected static Vector2 getPosition(Element item){
 		Element posElem = item.getChildByName("Position");
-		return new Vector2(posElem.getFloat("X"), posElem.getFloat("Y")*-1.0f);
+		return new Vector2(posElem.getFloat("X")*GLEED_TO_GDX_X, posElem.getFloat("Y")*GLEED_TO_GDX_Y);
 	}
 
 	protected static String getGleedType(Element item){
@@ -244,6 +247,11 @@ public class GleedLoader {
 	protected static Texture getTexture(Element item){
 		return null;
 	}	
+	
+	protected static Vector2 getGleedOrigin(Element item){
+		Vector2 out = new Vector2(0.0f,0.0f);
+		return out;
+	}
 	
 	protected static final String typeTag = "Type";
 	protected static final String defTag = "Definition";
