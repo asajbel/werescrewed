@@ -25,6 +25,7 @@ import com.blindtigergames.werescrewed.debug.SBox2DDebugRenderer;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.builders.PlatformBuilder;
 import com.blindtigergames.werescrewed.entity.builders.PlayerBuilder;
+import com.blindtigergames.werescrewed.entity.builders.RopeBuilder;
 import com.blindtigergames.werescrewed.entity.builders.ScrewBuilder;
 import com.blindtigergames.werescrewed.entity.mover.LerpMover;
 import com.blindtigergames.werescrewed.entity.mover.LinearAxis;
@@ -70,9 +71,10 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 	private Skeleton skeleton;
 	private Skeleton rootSkeleton;
 	private ArrayList< StrippedScrew > climbingScrews;
+	private Rope testRope;
+	private RopeBuilder ropeBuilder;
 	private boolean debug = true;
 	private boolean debugTest = true;
-	Rope rope;
 
 	/**
 	 * Defines all necessary components in a screen for testing different
@@ -90,6 +92,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		rootSkeleton.mover = new RockingMover( -0.02f, 1.0f );
 		// entityManager.addSkeleton( rootSkeleton.name, rootSkeleton );
 		platBuilder = new PlatformBuilder( world );
+		ropeBuilder = new RopeBuilder ( world );
 		testTexture = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 				+ "/common/TilesetTest.png", Texture.class );
 
@@ -114,6 +117,8 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		initClimbingScrews( );
 		initPulley( );
 
+		testRope = ropeBuilder.position( 8f, 1.5f ).width( 16f ).height( 64f ).links( 5 ).buildRope( );
+		
 		// rope = new Rope( "rope", new Vector2 (2000.0f * Util.PIXEL_TO_BOX,
 		// 400.0f* Util.PIXEL_TO_BOX), null, world );
 		// Add players
@@ -180,6 +185,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 				.dimensions( 200, 4 ).texture( testTexture ).kinematic( )
 				.oneSided( false ).restitution( 0.0f ).buildTilePlatform( );
 		skeleton.addKinematicPlatform( ground );
+	
 	}
 
 	/**
@@ -317,8 +323,6 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 				.texture( testTexture ).kinematic( ).buildTilePlatform( );
 		skeleton.addKinematicPlatform( skeletonTest1 );
 
-		rope = new Rope( "rope", new Vector2( 8f, 1.5f ), new Vector2( 16.0f,
-				64.0f ), 5, null, world );
 
 
 		TiledPlatform pathPlatform = platBuilder.dimensions( 4, 1 )
@@ -505,12 +509,12 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		player1.update( deltaTime );
 		player2.update( deltaTime );
 		rootSkeleton.update( deltaTime );
-		rope.update( deltaTime );
+		testRope.update( deltaTime );
 		batch.setProjectionMatrix( cam.combined( ) );
 		batch.begin( );
 
 		rootSkeleton.draw( batch );
-		rope.draw( batch );
+		testRope.draw( batch );
 		player1.draw( batch );
 		player2.draw( batch );
 

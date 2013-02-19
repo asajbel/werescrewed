@@ -23,6 +23,7 @@ import com.blindtigergames.werescrewed.entity.tween.PlatformAccessor;
 import com.blindtigergames.werescrewed.platforms.Platform;
 import com.blindtigergames.werescrewed.platforms.TiledPlatform;
 import com.blindtigergames.werescrewed.player.Player;
+import com.blindtigergames.werescrewed.screws.StrippedScrew;
 import com.blindtigergames.werescrewed.skeleton.Skeleton;
 import com.blindtigergames.werescrewed.util.Util;
 
@@ -50,6 +51,7 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 	private TiledPlatform step;
 	private Skeleton skel2;
 	private TiledPlatform ground;
+	private StrippedScrew strScrew;
 
 	public DebugPlayTestScreen( ) {
 
@@ -95,7 +97,11 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 
 	private void floor2( ) {
 		skel2 = new Skeleton( "skel2", new Vector2( 0, 0 ), null, world );
+		strScrew = new StrippedScrew( "strScrew1", world, new Vector2(
+				175 * TILE, 17 * TILE ), skel2 );
+		skel2.addStrippedScrew( strScrew );
 
+		rootSkeleton.addSkeleton( skel2 );
 	}
 
 	private void floor1( ) {
@@ -176,6 +182,8 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 				.oneSided( true ).restitution( 0 ).buildTilePlatform( );
 		skel1.addKinematicPlatform( plat );
 
+		// PUZZLE 3 //
+
 		stair = platBuilder.position( 77 * TILE, 2 * TILE ).name( "stair1" )
 				.dimensions( 8, 2 ).texture( testTexture ).kinematic( )
 				.oneSided( false ).restitution( 0 ).buildTilePlatform( );
@@ -210,6 +218,7 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 				.dimensions( 2, 3 ).texture( testTexture ).kinematic( )
 				.oneSided( false ).restitution( 0 ).buildTilePlatform( );
 		skel1.addKinematicPlatform( stair );
+		// PUZZLE 4 //
 
 		float dx = 4;
 		float x = 106;
@@ -233,10 +242,11 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 				.dimensions( 2, 11 ).texture( testTexture ).kinematic( )
 				.oneSided( false ).restitution( 0 ).buildTilePlatform( );
 		skel1.addKinematicPlatform( wall );
-		
-		ground = platBuilder.position( 181 * TILE, 11f * TILE ).name( "ground2" )
-				.dimensions( 40, 2 ).texture( testTexture ).kinematic( )
-				.oneSided( false ).restitution( 0 ).buildTilePlatform( );
+
+		ground = platBuilder.position( 181 * TILE, 11f * TILE )
+				.name( "ground2" ).dimensions( 40, 2 ).texture( testTexture )
+				.kinematic( ).oneSided( false ).restitution( 0 )
+				.buildTilePlatform( );
 		skel1.addKinematicPlatform( ground );
 
 		rootSkeleton.addSkeleton( skel1 );
