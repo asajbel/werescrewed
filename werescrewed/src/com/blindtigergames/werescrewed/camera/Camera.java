@@ -227,7 +227,7 @@ public class Camera {
 		// the bounds of the screen, normalizes it, then adds then all
 		// together to come up with a pseudo average
 		for ( Anchor curAnchor : anchorList.anchorList ) {
-			if ( rectOutsideRect( curAnchor.getBufferRectangle( ), screenBounds ) ) {
+			if ( curAnchor.activated && rectOutsideRect( curAnchor.getBufferRectangle( ), screenBounds ) ) {
 				outsideTrue = true;
 				Vector2.tmp.x = curAnchor.position.x - translateTarget.x;
 				Vector2.tmp.y = curAnchor.position.y - translateTarget.y;

@@ -126,6 +126,7 @@ public class Player extends Entity {
 		body.setBullet( true );
 		playerState = PlayerState.Standing;
 		inputHandler = new PlayerInputHandler( this.name );
+		anchor = new Anchor(true, body.getWorldCenter( ).mul( Util.BOX_TO_PIXEL ), new Vector2(128f, 128f), world, 0f);
 		anchor.special = true;
 		AnchorList.getInstance( ).addAnchor( anchor );
 

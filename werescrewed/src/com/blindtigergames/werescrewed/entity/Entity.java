@@ -64,7 +64,7 @@ public class Entity {
 		this.sprite = constructSprite( texture );
 		this.body = constructBodyByType( );
 		setPosition( positionPixels.mul( Util.PIXEL_TO_BOX ) );
-		if ( anchRadius >= 0 ) {
+		if ( anchRadius > 0 ) {
 			Vector2 centPos = new Vector2( body.getWorldCenter( ).x
 					* Util.BOX_TO_PIXEL, body.getWorldCenter( ).y
 					* Util.BOX_TO_PIXEL );

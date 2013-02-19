@@ -102,55 +102,55 @@ public class AnchorList {
 		}
 	}
 
-	/**
-	 * 
-	 * @param special
-	 *            Set true if creating a player anchor.
-	 * @param position
-	 *            Position of the current anchor
-	 * @return The id of the current anchor. Don't forget to update it!
-	 */
-	public int addAnchor( boolean special, Vector2 position, World world,
-			float radius ) {
-		return addAnchor( special, position, Anchor.DEFAULT_BUFFER, world,
-				radius );
-	}
-
-	/**
-	 * 
-	 * @param special
-	 *            Set true when creating a player anchor.
-	 * @param position
-	 *            Position of the current anchor
-	 * @param bufferWidth
-	 *            Width of a "buffer" square around anchor to keep within
-	 *            screen. Ex: jump height.
-	 * @return The id of the current anchor. Don't forget to update it!
-	 */
-	public int addAnchor( boolean special, Vector2 position, int bufferWidth,
-			World world, float radius ) {
-		return addAnchor( special, position, new Vector2( bufferWidth,
-				bufferWidth ), world, radius );
-	}
-
-	/**
-	 * 
-	 * @param special
-	 *            Set true when creating a player anchor.
-	 * @param position
-	 *            Position of the current anchor
-	 * @param Width
-	 *            and height of "buffer" around anchor to keep within screen.
-	 *            Ex: width/height of boss head.
-	 * @return The id of the current anchor. Don't forget to update it!
-	 */
-
-	public int addAnchor( boolean special, Vector2 position, Vector2 buffer,
-			World world, float radius ) {
-		int id = anchorList.size( );
-		addAnchor( new Anchor( special, position, buffer, world, radius ) );
-		return id;
-	}
+//	/**
+//	 * 
+//	 * @param special
+//	 *            Set true if creating a player anchor.
+//	 * @param position
+//	 *            Position of the current anchor
+//	 * @return The id of the current anchor. Don't forget to update it!
+//	 */
+//	public int addAnchor( boolean special, Vector2 position, World world,
+//			float radius ) {
+//		return addAnchor( special, position, Anchor.DEFAULT_BUFFER, world,
+//				radius );
+//	}
+//
+//	/**
+//	 * 
+//	 * @param special
+//	 *            Set true when creating a player anchor.
+//	 * @param position
+//	 *            Position of the current anchor
+//	 * @param bufferWidth
+//	 *            Width of a "buffer" square around anchor to keep within
+//	 *            screen. Ex: jump height.
+//	 * @return The id of the current anchor. Don't forget to update it!
+//	 */
+//	public int addAnchor( boolean special, Vector2 position, int bufferWidth,
+//			World world, float radius ) {
+//		return addAnchor( special, position, new Vector2( bufferWidth,
+//				bufferWidth ), world, radius );
+//	}
+//
+//	/**
+//	 * 
+//	 * @param special
+//	 *            Set true when creating a player anchor.
+//	 * @param position
+//	 *            Position of the current anchor
+//	 * @param Width
+//	 *            and height of "buffer" around anchor to keep within screen.
+//	 *            Ex: width/height of boss head.
+//	 * @return The id of the current anchor. Don't forget to update it!
+//	 */
+//
+//	public int addAnchor( boolean special, Vector2 position, Vector2 buffer,
+//			World world, float radius ) {
+//		int id = anchorList.size( );
+//		addAnchor( new Anchor( special, position, buffer, world, radius ) );
+//		return id;
+//	}
 
 	public void addAnchor( Anchor newAnchor ) {
 		anchorList.add( newAnchor );
