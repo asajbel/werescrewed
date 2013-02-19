@@ -8,6 +8,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.physics.box2d.joints.WeldJoint;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.joint.RevoluteJointBuilder;
 import com.blindtigergames.werescrewed.platforms.Platform;
@@ -33,9 +34,7 @@ public class Skeleton extends Entity {
     private ArrayList<Platform> kinematicPlatforms;
     private ArrayList<Entity>   looseEntity; 
     private Texture foregroundTex;
-    private ArrayList< Screw > screws; //add all screws you want drawn    
-    
-    // private Skeleton(){};
+    private ArrayList< Screw > screws; //add all screws you want drawn
 
     public Skeleton( String n, Vector2 pos, Texture tex, World world ) {
         super( n, pos, tex, null, false); // not constructing body class
@@ -250,7 +249,7 @@ public class Skeleton extends Entity {
         setPosRotChildSkeletons( );
         
         //Now we can rotate all kinematic entities connected by updated skeleton rot / position
-        setPosRotAllKinematicPlatforms();
+        setPosRotAllKinematicPlatforms(deltaTime);
         
         //Update children animations and stuff
         updateChildren( deltaTime );
@@ -363,14 +362,14 @@ public class Skeleton extends Entity {
     /**
      * @author stew
      */
-    private void setPosRotAllKinematicPlatforms(){
+    private void setPosRotAllKinematicPlatforms(float deltaTime){
     	//first recursively set all kin platforms position
     	for ( Skeleton skeleton : childSkeletons ){
-    		skeleton.setPosRotAllKinematicPlatforms( );
+    		skeleton.setPosRotAllKinematicPlatforms(deltaTime);
     	}
     	//then set all kin platforms of this skeleton
     	for ( Platform platform : kinematicPlatforms ){
-    		platform.setPosRotFromSkeleton( this );
+    		platform.setPosRotFromSkeleton( deltaTime, this );
     	}
     }
     

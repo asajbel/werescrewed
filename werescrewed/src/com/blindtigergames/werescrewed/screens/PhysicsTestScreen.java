@@ -86,18 +86,20 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		world = new World( new Vector2( 0, -35 ), true );
 		// Initialize camera
 		initCamera( );
+		Tween.registerAccessor( Platform.class, new PlatformAccessor( ) );
+		Tween.registerAccessor( Entity.class, new EntityAccessor( ) );
 		// entityManager = new EntityManager( );
-		skeleton = new Skeleton( "skeleton", Vector2.Zero, null, world );
+		skeleton = new Skeleton( "skeleton", new Vector2(1,0), null, world );
 		rootSkeleton = new Skeleton( "root", Vector2.Zero, null, world );
 		rootSkeleton.mover = new RockingMover( -0.02f, 1.0f );
+		//rootSkeleton.setMover(new TweenMover(Tween.to(rootSkeleton,EntityAccessor.ANGULAR_VEL, 1).target(0.1f).target( -0.4f ).repeatYoyo( Tween.INFINITY, 0 ).start( )));
 		// entityManager.addSkeleton( rootSkeleton.name, rootSkeleton );
 		platBuilder = new PlatformBuilder( world );
 		ropeBuilder = new RopeBuilder ( world );
 		testTexture = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 				+ "/common/TilesetTest.png", Texture.class );
 
-		Tween.registerAccessor( Platform.class, new PlatformAccessor( ) );
-		Tween.registerAccessor( Entity.class, new EntityAccessor( ) );
+		
 		// Uncomment for test anchor
 		// anchor = new Anchor( new Vector2( 7 * Util.BOX_TO_PIXEL,
 		// Util.BOX_TO_PIXEL ), world, 5f );
@@ -127,9 +129,9 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		// Otherwise input handler breaks
 
 		player1 = new PlayerBuilder( ).name( "player1" ).world( world )
-				.position( 1.0f, 1.0f ).buildPlayer( );
+				.position( 1.0f, 100.0f ).buildPlayer( );
 		player2 = new PlayerBuilder( ).name( "player2" ).world( world )
-				.position( 1.5f, 1.5f ).buildPlayer( );
+				.position( 1.5f, 110.5f ).buildPlayer( );
 
 		// Add screws
 
@@ -335,22 +337,22 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 						.createSequence( )
 						.push( Tween
 								.to( pathPlatform,
-										PlatformAccessor.LOCAL_POS_XY, 2 )
+										PlatformAccessor.LOCAL_POS_XY, 5 )
 								.target( 300, 0 )
 								.ease( TweenEquations.easeNone ).start( ) )
 						.push( Tween
 								.to( pathPlatform,
-										PlatformAccessor.LOCAL_POS_XY, 2 )
+										PlatformAccessor.LOCAL_POS_XY, 5 )
 								.target( 300, 300 )
 								.ease( TweenEquations.easeNone ).start( ) )
 						.push( Tween
 								.to( pathPlatform,
-										PlatformAccessor.LOCAL_POS_XY, 2 )
+										PlatformAccessor.LOCAL_POS_XY, 5 )
 								.target( 0, 300 )
 								.ease( TweenEquations.easeNone ).start( ) )
 						.push( Tween
 								.to( pathPlatform,
-										PlatformAccessor.LOCAL_POS_XY, 2 )
+										PlatformAccessor.LOCAL_POS_XY, 5 )
 								.target( 0, 0 ).ease( TweenEquations.easeNone )
 								.start( ) ).repeat( Tween.INFINITY, 0 ).start( ) ) );
 
@@ -410,12 +412,12 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 
 		// 1000 - 1219 for perfect gears
 		Platform gear = builder.name( "gear" )
-				.position( 1219 * Util.PIXEL_TO_BOX, 320 * Util.PIXEL_TO_BOX )
+				.position( 1219, 320 )
 				.texture( null ).setScale( 3f ).type( "gearSmall" )
 				.buildComplexPlatform( );
 		skeleton.addPlatformRotatingCenterWithMot( gear, 1f );
 		Platform gear2 = builder.name( "gear2" )
-				.position( 1000 * Util.PIXEL_TO_BOX, 300 * Util.PIXEL_TO_BOX )
+				.position( 1000 , 300 )
 				.texture( null ).setScale( 3f ).type( "gearSmall" )
 				.buildComplexPlatform( );
 		skeleton.addPlatformRotatingCenter( gear2 );
