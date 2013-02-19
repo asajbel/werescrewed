@@ -225,13 +225,16 @@ public class MyContactListener implements ContactListener {
 							isScrew = true;
 						}
 					}
-					if ( !isScrew ) {
+					///////////////////////////
+					// Does this do anything?
+					///////////////////////////
+					/*if ( !isScrew ) {
 						player.maxFriction( );
 						tilePlat.body.getFixtureList( ).get( 0 )
 								.setFriction( 1f );
 					} else {
 						player.noFriction( );
-					}
+					}*/
 					Vector2 platformPos = tilePlat.getPosition( );
 					Vector2 playerPos = player.getPosition( );
 					if ( tilePlat.getOneSided( ) ) {
@@ -294,13 +297,16 @@ public class MyContactListener implements ContactListener {
 							isScrew = true;
 						}
 					}
-					if ( !isScrew ) {
+					///////////////////////////
+					// Does this do anything?
+					///////////////////////////
+					/*if ( !isScrew ) {
 						player.maxFriction( );
 						tilePlat.body.getFixtureList( ).get( 0 )
 								.setFriction( 1f );
 					} else {
 						player.noFriction( );
-					}
+					}*/
 					Vector2 platformPos = tilePlat.getPosition( );
 					Vector2 playerPos = player.getPosition( );
 					if ( tilePlat.getOneSided( ) ) {

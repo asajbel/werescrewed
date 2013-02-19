@@ -128,9 +128,9 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		// Otherwise input handler breaks
 
 		player1 = new PlayerBuilder( ).name( "player1" ).world( world )
-				.position( 1.0f, 100.0f ).buildPlayer( );
+				.position( 70.0f, 600.0f ).buildPlayer( );
 		player2 = new PlayerBuilder( ).name( "player2" ).world( world )
-				.position( 1.5f, 110.5f ).buildPlayer( );
+				.position( 1.5f, 610.5f ).buildPlayer( );
 
 		// Add screws
 

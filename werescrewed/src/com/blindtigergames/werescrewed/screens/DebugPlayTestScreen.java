@@ -52,6 +52,7 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 	private Skeleton skel2;
 	private TiledPlatform ground;
 	private StrippedScrew strScrew;
+	private Skeleton skel3;
 
 	public DebugPlayTestScreen( ) {
 
@@ -78,14 +79,15 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 
 		// Initialize players
 		player1 = new PlayerBuilder( ).name( "player1" ).world( world )
-				.position( 21.0f, 2.0f ).buildPlayer( );
+				.position( 125 * TILE, 25 * TILE ).buildPlayer( );
 		player2 = new PlayerBuilder( ).name( "player2" ).world( world )
-				.position( 21.5f, 2.0f ).buildPlayer( );
+				.position( 125.5f * TILE, 25 * TILE ).buildPlayer( );
 
 		// TODO: Everything.
 
 		floor1( );
 		floor2( );
+		floor3( );
 
 		rootSkeleton.addSkeleton( skeleton );
 
@@ -236,11 +238,15 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 				.oneSided( false ).restitution( 0 ).buildTilePlatform( );
 		skel1.addKinematicPlatform( wall );
 
-		ground = platBuilder.position( 181 * TILE, 11f * TILE )
-				.name( "ground2" ).dimensions( 40, 2 ).texture( testTexture )
-				.kinematic( ).oneSided( false ).restitution( 0 )
-				.buildTilePlatform( );
+		ground = platBuilder.position( 181 * TILE, 11 * TILE ).name( "ground2" )
+				.dimensions( 40, 2 ).texture( testTexture ).kinematic( )
+				.oneSided( false ).restitution( 0 ).buildTilePlatform( );
 		skel1.addKinematicPlatform( ground );
+
+		wall = platBuilder.position( 202 * TILE, 25 * TILE ).name( "wall3" )
+				.dimensions( 2, 30 ).texture( testTexture ).kinematic( )
+				.oneSided( false ).restitution( 0 ).buildTilePlatform( );
+		skel1.addKinematicPlatform( wall );
 
 		rootSkeleton.addSkeleton( skel1 );
 	}
@@ -259,15 +265,100 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		skel2.addStrippedScrew( strScrew );
 
 		strScrew = new StrippedScrew( "strScrew3", world, new Vector2(
-				189 * TILE, 17 * TILE ), skel2 );
+				190 * TILE, 17 * TILE ), skel2 );
 		skel2.addStrippedScrew( strScrew );
 
-		plat = platBuilder.position( 180 * TILE, 20 * TILE ).name( "plat6" )
+		plat = platBuilder.position( 180 * TILE, 19 * TILE ).name( "plat6" )
 				.dimensions( 3, 1 ).texture( testTexture ).kinematic( )
 				.oneSided( false ).restitution( 0 ).buildTilePlatform( );
 		skel2.addKinematicPlatform( plat );
-		
+
+		plat = platBuilder.position( 195 * TILE, 19 * TILE ).name( "plat7" )
+				.dimensions( 3, 1 ).texture( testTexture ).kinematic( )
+				.oneSided( false ).restitution( 0 ).buildTilePlatform( );
+		skel2.addKinematicPlatform( plat );
+
+		plat = platBuilder.position( 187.5f * TILE, 22 * TILE ).name( "plat8" )
+				.dimensions( 5, 1 ).texture( testTexture ).kinematic( )
+				.oneSided( false ).restitution( 0 ).buildTilePlatform( );
+		skel2.addKinematicPlatform( plat );
+
+		// PUZZLE 2 //
+
+		strScrew = new StrippedScrew( "strScrew4", world, new Vector2(
+				178 * TILE, 26 * TILE ), skel2 );
+		skel2.addStrippedScrew( strScrew );
+
+		strScrew = new StrippedScrew( "strScrew5", world, new Vector2(
+				171 * TILE, 26 * TILE ), skel2 );
+		skel2.addStrippedScrew( strScrew );
+
+		ground = platBuilder.position( 131 * TILE, 22 * TILE ).name( "ground3" )
+				.dimensions( 68, 1 ).texture( testTexture ).kinematic( )
+				.oneSided( false ).restitution( 0 ).buildTilePlatform( );
+		skel2.addKinematicPlatform( ground );
+
+		// PUZZLE 3 //
+
+		plat = platBuilder.position( 130 * TILE, 28 * TILE ).name( "plat10" )
+				.dimensions( 1, 11 ).texture( testTexture ).kinematic( )
+				.oneSided( false ).restitution( 0 ).buildTilePlatform( );
+		skel2.addKinematicPlatform( plat );
+
+		strScrew = new StrippedScrew( "strScrew6", world, new Vector2(
+				138 * TILE, 29 * TILE ), skel2 );
+		skel2.addStrippedScrew( strScrew );
+
+		strScrew = new StrippedScrew( "strScrew7", world, new Vector2(
+				134 * TILE, 32 * TILE ), skel2 );
+		skel2.addStrippedScrew( strScrew );
+
+		strScrew = new StrippedScrew( "strScrew8", world, new Vector2(
+				126 * TILE, 32 * TILE ), skel2 );
+		skel2.addStrippedScrew( strScrew );
+
+		strScrew = new StrippedScrew( "strScrew9", world, new Vector2(
+				122 * TILE, 29 * TILE ), skel2 );
+		skel2.addStrippedScrew( strScrew );
+
+		// PUZZLE 4 //
+
+		strScrew = new StrippedScrew( "strScrew10", world, new Vector2(
+				105 * TILE, 29 * TILE ), skel2 );
+		skel2.addStrippedScrew( strScrew );
+
+		strScrew = new StrippedScrew( "strScrew11", world, new Vector2(
+				102 * TILE, 33 * TILE ), skel2 );
+		skel2.addStrippedScrew( strScrew );
+
+		strScrew = new StrippedScrew( "strScrew12", world, new Vector2(
+				108 * TILE, 33 * TILE ), skel2 );
+		skel2.addStrippedScrew( strScrew );
+
+		strScrew = new StrippedScrew( "strScrew13", world, new Vector2(
+				105 * TILE, 37 * TILE ), skel2 );
+		skel2.addStrippedScrew( strScrew );
+
+		wall = platBuilder.position( 96.5f * TILE, 71.5f * TILE )
+				.name( "wall4" ).dimensions( 1, 100 ).texture( testTexture )
+				.kinematic( ).oneSided( false ).restitution( 0 )
+				.buildTilePlatform( );
+		skel2.addKinematicPlatform( wall );
+
 		rootSkeleton.addSkeleton( skel2 );
+	}
+
+	private void floor3( ) {
+		skel3 = new Skeleton( "skel3", new Vector2( 0, 0 ), null, world );
+		
+		ground = platBuilder.position( 183 * TILE, 40.5f * TILE ).name( "ground4" )
+				.dimensions( 150, 1 ).texture( testTexture ).kinematic( )
+				.oneSided( false ).restitution( 0 ).buildTilePlatform( );
+		skel3.addKinematicPlatform( ground );
+		
+		
+		
+		rootSkeleton.addSkeleton( skel3 );
 	}
 
 	private void initCamera( ) {
