@@ -6,7 +6,10 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.blindtigergames.werescrewed.WereScrewedGame;
+import com.blindtigergames.werescrewed.gui.Label;
 
 
 /*
@@ -14,16 +17,23 @@ import com.blindtigergames.werescrewed.WereScrewedGame;
  */
 
 public class LoadingScreen extends Screen {
-
+	
+	private BitmapFont font 	= null;
+	private int scaleSize 		= 10;
+	private Label loadingLabel 	= null;
+	private SpriteBatch batch 	= null;
+	
+	
 	/**
-	 * 
+	 * Loading Screen Constructor
 	 */
-	public LoadingScreen(){
-
-		// two examples of loading stuff:
-		//WereScrewedGame.manager.load("assets/data/common/player_b_f.png", Texture.class);
-		//WereScrewedGame.manager.load("assets/data/common/sounds/jump.ogg", Sound.class);
+	public LoadingScreen(){		
 		
+		font = new BitmapFont();
+		font.scale(scaleSize);
+		
+		loadingLabel = new Label("Loading... 0%", font);
+		batch = new SpriteBatch();
 		
 		if (Gdx.app.getType() == ApplicationType.Android) {
 			WereScrewedGame.dirHandle = Gdx.files.internal("data/");
@@ -34,7 +44,6 @@ public class LoadingScreen extends Screen {
 		
 		String screenTag = "level2";
 		loadFilesInDirectory(WereScrewedGame.dirHandle, screenTag);
-		//System.out.println( WereScrewedGame.dirHandle.path( )  );
 	}
 
 	/**
@@ -116,16 +125,25 @@ public class LoadingScreen extends Screen {
 
 	/**
 	 * Runs every frame tick. Loads the assets that are queued in WereScrewedGame.manager,
-	 * and moves to the next screen
+	 * and moves to the next screen. Shows how much of the assets have been loaded.
 	 * 
-	 * @author Ranveer and Nick
+	 * @author Ranveer, Nick, and Jen
 	 * 
 	 * @return void
 	 */
 	@Override
 	public void render(float delta) {
 		super.render(delta);
-
+		
+		//tell me how much has loaded
+		float percentLoaded = WereScrewedGame.manager.getProgress( ) * 100;
+		loadingLabel.setCaption("Loading... " + (int)percentLoaded + "%");
+		
+		//draw the label on the screen
+		batch.begin( );
+		loadingLabel.draw( batch );
+		batch.end();
+		
 		//begin loading the assets
 		if ( WereScrewedGame.manager.update( ) ) { 
 			
@@ -135,8 +153,15 @@ public class LoadingScreen extends Screen {
 			//go to the physics screen
 			ScreenManager.getInstance( ).show( ScreenType.MAIN_MENU );
 		}
-		//Gdx.app.log( "LoadingScreen.render", "Loading... ");
 
+	}
+	
+	@Override
+	public void resize(int width, int height){
+		int centerX = width/2 - loadingLabel.getWidth()/2;
+		int centerY = height/2 + loadingLabel.getHeight()/2;
+		loadingLabel.setX(centerX);
+		loadingLabel.setY(centerY);
 	}
 	
 	@Override
