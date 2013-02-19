@@ -96,9 +96,9 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 
 		// Initialize players
 		player1 = new PlayerBuilder( ).name( "player1" ).world( world )
-				.position( 112f * TILE, 83 * TILE ).buildPlayer( );
-//		player2 = new PlayerBuilder( ).name( "player2" ).world( world )
-//				.position(  111f * TILE, 83 * TILE ).buildPlayer( );
+				.position( 1f * TILE, 1f * TILE ).buildPlayer( );
+		player2 = new PlayerBuilder( ).name( "player2" ).world( world )
+				.position(  1f * TILE, 1f * TILE ).buildPlayer( );
 
 		// 115f * TILE, 42 * TILE
 		// start = 1, 1
@@ -710,7 +710,7 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 			debugTest = true;
 		
 		player1.update( deltaTime );
-		//player2.update( deltaTime );
+	    player2.update( deltaTime );
 		//testRope.update( deltaTime );
 		rootSkeleton.update( deltaTime );
 
@@ -719,7 +719,7 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 
 		rootSkeleton.draw( batch );
 		player1.draw( batch );
-		//player2.draw( batch );
+		player2.draw( batch );
 		//testRope.draw( batch );
 
 		batch.end( );
