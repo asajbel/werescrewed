@@ -73,6 +73,7 @@ public class MyContactListener implements ContactListener {
 						} else if ( p1 != player ) {
 							NUM_PLAYER2_CONTACTS++;
 						}
+						player.hitSolidObject( objectFix.getBody( ) );
 						player.setGrounded( true );
 					} else if ( objectFix.getBody( ).getUserData( ) instanceof Screw ) {
 						Screw screw = ( Screw ) objectFix.getBody( )
@@ -152,6 +153,7 @@ public class MyContactListener implements ContactListener {
 								}
 							}
 						}
+						player.hitSolidObject( null );
 						contact.setEnabled( true );
 					} else if ( objectFix.getBody( ).getUserData( ) instanceof Screw ) {
 						if ( p1 == null || p1 == player ) {

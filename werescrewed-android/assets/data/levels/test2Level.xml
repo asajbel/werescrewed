@@ -1,0 +1,59 @@
+<?xml version="1.0"?>
+<Level xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="Level_01" Visible="true">
+    <Layers>
+        <Layer Name="layer0" Visible="true">
+            <Items>
+                <Item xsi:type="RectangleItem" Name="kin_plat_0_0" Visible="true">
+                    <Position>
+                        <X>-472</X>
+                        <Y>-64</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>tiledPlatform</string>
+                        </Property>
+                    </CustomProperties>
+                    <Width>320</Width>
+                    <Height>37</Height>
+                    <FillColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </FillColor>
+                </Item>
+                <Item xsi:type="RectangleItem" Name="kin_plat_0_1" Visible="true">
+                    <Position>
+                        <X>-556</X>
+                        <Y>56</Y>
+                    </Position>
+                    <CustomProperties />
+                    <Width>1118</Width>
+                    <Height>135</Height>
+                    <FillColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </FillColor>
+                </Item>
+            </Items>
+            <ScrollSpeed>
+                <X>1</X>
+                <Y>1</Y>
+            </ScrollSpeed>
+        </Layer>
+    </Layers>
+    <CustomProperties />
+    <EditorRelated>
+        <NextItemNumber>6</NextItemNumber>
+        <ContentRootFolder>C:\</ContentRootFolder>
+        <CameraPosition>
+            <X>0</X>
+            <Y>0</Y>
+        </CameraPosition>
+        <Version>1.3.0.0</Version>
+    </EditorRelated>
+</Level>
