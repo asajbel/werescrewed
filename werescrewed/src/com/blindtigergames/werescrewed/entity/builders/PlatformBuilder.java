@@ -188,7 +188,7 @@ public class PlatformBuilder extends GenericEntityBuilder<PlatformBuilder> {
 		this.thickY = 1.0f;
 		this.scale = 1.0f;
 		this.density = 1.0f;
-		this.friction = 0.5f;
+		this.friction = 1.0f;
 		this.restitution = 0.1f;
 		this.gravScale = 0.1f;
 		this.anchRadius = 0.0f;
@@ -237,7 +237,6 @@ public class PlatformBuilder extends GenericEntityBuilder<PlatformBuilder> {
 				                              this.isOneSided, 
 				                              this.moveable, 
 				                              this.world);
-		tp.setRestitution( 0 );
 		tp.body.setType( bodyType );
 		tp.setDensity( this.density );
 		tp.setFriction( this.friction );
