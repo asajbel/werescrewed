@@ -185,6 +185,9 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		ground = platBuilder.position( 0.0f, -75 ).name( "ground" )
 				.dimensions( 200, 4 ).texture( testTexture ).kinematic( )
 				.oneSided( false ).restitution( 0.0f ).buildTilePlatform( );
+		//THIS SHOULD BE SET IN EVERYTHING START USING THEM 
+		//AND THINGS WILL STOP FALLING THROUGH OTHER THINGS
+		ground.setCategoryMask( Util.KINEMATIC_OBJECTS, Util.CATEGORY_EVERYTHING );
 		skeleton.addKinematicPlatform( ground );
 	
 	}
