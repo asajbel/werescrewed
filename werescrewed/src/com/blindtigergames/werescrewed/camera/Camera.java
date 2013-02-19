@@ -52,6 +52,12 @@ public class Camera {
 	private float targetBuffer;
 	private boolean translateState;
 	private Vector2 avgOutside;
+	private boolean insideTargetBuffer;
+
+	// zoom
+	private static final float ZOOM_ACCELERATION = 0f;
+	private static final float ZOOM_MAX_SPEED = 5f;
+	private float zoomSpeed = .01f;
 
 	private AnchorList anchorList;
 
@@ -94,6 +100,7 @@ public class Camera {
 		accelerationBuffer = ( ( translateBuffer.width / 2 + translateBuffer.height / 2 ) / 2 )
 				* ACCELERATION_BUFFER_RATIO;
 		translateState = true;
+		insideTargetBuffer = false;
 
 		anchorList = AnchorList.getInstance( camera );
 		anchorList.clear( );
@@ -151,6 +158,12 @@ public class Camera {
 		translateBuffer.y = position.y - translateBuffer.height * .5f;
 		setTranslateTarget( );
 
+		// check if center is inside target buffer
+		if ( center2D.dst( translateTarget ) < targetBuffer )
+			insideTargetBuffer = true;
+		else
+			insideTargetBuffer = false;
+
 		// Do the actual translation and zooming
 		adjustCamera( );
 
@@ -194,8 +207,10 @@ public class Camera {
 				&& ( rect1.x + rect1.width ) < rect2.x + rect2.width
 				&& ( rect1.y + rect1.height ) < rect2.y + rect2.height )
 			returnValue = false;
-		else
+		else {
+			System.out.println( rect1 );
 			returnValue = true;
+		}
 
 		return returnValue;
 	}
@@ -206,11 +221,33 @@ public class Camera {
 	private void adjustCamera( ) {
 		avgOutside.x = 0f;
 		avgOutside.y = 0f;
-		for (Anchor curAnchor : anchorList.anchorList) {
-			 
+		boolean outsideTrue = false;
+
+		// get vectors from the translateTarget to all anchors outside of
+		// the bounds of the screen, normalizes it, then adds then all
+		// together to come up with a pseudo average
+		for ( Anchor curAnchor : anchorList.anchorList ) {
+			if ( rectOutsideRect( curAnchor.getBufferRectangle( ), screenBounds ) ) {
+				outsideTrue = true;
+				Vector2.tmp.x = curAnchor.position.x - translateTarget.x;
+				Vector2.tmp.y = curAnchor.position.y - translateTarget.y;
+				Vector2.tmp.nor( );
+				avgOutside.add( Vector2.tmp );
+				if ( insideTargetBuffer )
+					break;
+			}
 		}
-		translateLogic( );
-		zoom();
+
+		if ( outsideTrue ) {
+			zoomOut( );
+			if ( !insideTargetBuffer ) {
+				translate( );
+			}
+		} else {
+			translateLogic( );
+			if ( camera.zoom > 1f )
+				zoomIn( );
+		}
 	}
 
 	/**
@@ -220,7 +257,7 @@ public class Camera {
 	private void translateLogic( ) {
 		// determine whether to translate, lock, or do nothing
 		if ( !debugInput && translateState ) {
-			if ( center2D.dst( translateTarget ) < targetBuffer ) {
+			if ( insideTargetBuffer ) {
 
 				// center of camera is inside of buffer circle around target
 				float tempAngle = 0f;
@@ -280,13 +317,36 @@ public class Camera {
 	}
 
 	/**
-	 * zoom camera to keep anchors on screen
+	 * zoom camera to keep anchors on screen soon this will be obsolete...
+	 * soon...
 	 */
 	private void zoom( ) {
 		float temp = AnchorList.getInstance( ).specialDistance( )
 				/ viewportHeight;
 		if ( temp > 1f )
 			camera.zoom = temp;
+		translateBuffer.width = screenBounds.width * BUFFER_RATIO;
+		translateBuffer.height = screenBounds.height * BUFFER_RATIO;
+	}
+
+	/**
+	 * zoom out
+	 */
+	private void zoomOut( ) {
+		camera.zoom += zoomSpeed;
+		if ( zoomSpeed < ZOOM_MAX_SPEED )
+			zoomSpeed += ZOOM_ACCELERATION;
+		translateBuffer.width = screenBounds.width * BUFFER_RATIO;
+		translateBuffer.height = screenBounds.height * BUFFER_RATIO;
+	}
+
+	/**
+	 * zoom in
+	 */
+	private void zoomIn( ) {
+		camera.zoom -= zoomSpeed;
+		if ( zoomSpeed < ZOOM_MAX_SPEED )
+			zoomSpeed += ZOOM_ACCELERATION;
 		translateBuffer.width = screenBounds.width * BUFFER_RATIO;
 		translateBuffer.height = screenBounds.height * BUFFER_RATIO;
 	}
