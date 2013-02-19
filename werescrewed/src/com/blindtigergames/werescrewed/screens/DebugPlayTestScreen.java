@@ -12,7 +12,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.physics.box2d.joints.PrismaticJoint;
 import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.camera.Camera;
 import com.blindtigergames.werescrewed.collisionManager.MyContactListener;
@@ -27,7 +26,7 @@ import com.blindtigergames.werescrewed.entity.mover.LinearAxis;
 import com.blindtigergames.werescrewed.entity.mover.PuzzleType;
 import com.blindtigergames.werescrewed.entity.mover.RockingMover;
 import com.blindtigergames.werescrewed.entity.mover.RotateByDegree;
-import com.blindtigergames.werescrewed.entity.mover.puzzle.PuzzlePistonTweenMover;
+import com.blindtigergames.werescrewed.entity.mover.puzzle.PuzzleRotateTweenMover;
 import com.blindtigergames.werescrewed.entity.tween.EntityAccessor;
 import com.blindtigergames.werescrewed.entity.tween.PathBuilder;
 import com.blindtigergames.werescrewed.entity.tween.PlatformAccessor;
@@ -647,8 +646,9 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		PuzzleScrew puzzleScrew = new PuzzleScrew( "004",
 				new Vector2( 130f * TILE, 83 * TILE ), 50, skel9, world, 0, false );
 		RotateByDegree rm = new RotateByDegree( 0.0f, -90.0f, 0, 0.5f );
+		PuzzleRotateTweenMover rtm1 = new PuzzleRotateTweenMover( 1, Util.PI/2, true );
 		puzzleScrew.puzzleManager.addEntity( plat );
-		puzzleScrew.puzzleManager.addMover( plat.name, rm );
+		puzzleScrew.puzzleManager.addMover( plat.name, rtm1 );
 		skeleton.addScrewForDraw( puzzleScrew );
 		
 		plat = platBuilder.position( 143f * TILE, 89 * TILE ).name( "plat11" )
@@ -659,7 +659,8 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		PuzzleScrew puzzleScrew2 = new PuzzleScrew( "006",
 				new Vector2( 143f * TILE, 83 * TILE ), 50, skel9, world, 0, false );
 		puzzleScrew2.puzzleManager.addEntity( plat );
-		puzzleScrew2.puzzleManager.addMover( plat.name, rm );
+		PuzzleRotateTweenMover rtm2 = new PuzzleRotateTweenMover( 1, Util.PI/2, true );
+		puzzleScrew2.puzzleManager.addMover( plat.name, rtm2 );
 		skeleton.addScrewForDraw( puzzleScrew2 );
 		
 		RopeBuilder ropeBuilder = new RopeBuilder ( world );
