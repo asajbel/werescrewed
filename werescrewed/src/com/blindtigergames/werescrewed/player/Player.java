@@ -45,7 +45,7 @@ public class Player extends Entity {
 	public final static float ANALOG_DEADZONE = 0.2f;
 	public final static float ANALOG_MAX_RANGE = 1.0f;
 	public final static float PLAYER_FRICTION = 0.6f;
-	public final static int SCREW_JUMP_STEPS = 15;
+	public final static int SCREW_JUMP_STEPS = 20;
 	public final static float SCREW_ATTACH_SPEED = 0.1f;
 	public final static int GRAB_COUNTER_STEPS = 5;
 	public float JUMP_IMPULSE = 0.13f;
