@@ -80,7 +80,7 @@ public class Player extends Entity {
 	private boolean jumpPressedController;
 	private boolean screwButtonHeld;
 	private boolean kinematicTransform = false;
-	private Vector2 platformOffset;
+	//private Vector2 platformOffset;
 	private int anchorID;
 
 	public int grabCounter = 0;
@@ -138,6 +138,8 @@ public class Player extends Entity {
 
 		jumpSound = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 				+ "/common/sounds/jump.ogg" );
+		
+		
 	}
 
 	// PUBLIC METHODS
@@ -478,32 +480,6 @@ public class Player extends Entity {
 		return grounded;
 	}
 
-//	/**
-//	 * sets flag to determine if player needs to move with kinematic platforms
-//	 * 
-//	 * @param posOffset
-//	 *            is the offset you want to apply to player
-//	 */
-//	public void setPlatformTransform( Vector2 posOffset ) {
-//		body.setTransform( body.getPosition( ).add( posOffset ), 0 );
-//	}
-	
-	/**
-	 * @param value turns flag on and off
-	 */
-	public void setMovingPlatformFlag( boolean value){
-		kinematicTransform = value;
-	}
-	
-	/**
-	 * sets offset that player will use to match movement of kinematic platforms
-	 * 
-	 * @param newOffset offset you want
-	 */
-	public void setOffset(Vector2 newOffset){
-		platformOffset = newOffset;
-	}
-
 	// PRIVATE METHODS
 
 	/**
@@ -610,7 +586,7 @@ public class Player extends Entity {
 					playerState = PlayerState.Jumping;
 				}
 				jump( );
-				jumpSound.play( );
+				//jumpSound.play( );
 			} else {
 				// let the bottom player jump
 				// with a large amount of force
