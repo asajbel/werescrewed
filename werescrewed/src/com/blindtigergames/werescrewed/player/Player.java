@@ -1139,6 +1139,8 @@ public class Player extends Entity {
 				world.destroyJoint( playerToScrew );
 			}
 			mover = null;
+			// VELO = ZERO OTHERWISE PLAYER COULD SHOOT THROUGH A WALL (BUG)
+			body.setLinearVelocity( Vector2.Zero );
 			playerState = PlayerState.JumpingOffScrew;
 			screwJumpTimeout = SCREW_JUMP_STEPS;
 		}
