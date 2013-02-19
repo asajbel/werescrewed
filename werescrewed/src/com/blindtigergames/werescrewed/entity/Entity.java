@@ -61,17 +61,13 @@ public class Entity {
 		this.body = constructBody( );
 		setPosition( pos );
 	}
+
 	// Kevin: Why is this commented out?
-	/*public Entity(String n, EntityDef d, World w, Vector2 pos,
-			float rot, Vector2 sca)
-	{
-		this();
-		name = n;
-		type = d;
-		world = w;
-		constructSprite();
-		constructBody(pos.x, pos.y, sca.x, sca.y);
-	}*/
+	/*
+	 * public Entity(String n, EntityDef d, World w, Vector2 pos, float rot,
+	 * Vector2 sca) { this(); name = n; type = d; world = w; constructSprite();
+	 * constructBody(pos.x, pos.y, sca.x, sca.y); }
+	 */
 
 	/**
 	 * Create entity by body. Debug constructor: Should be removed eventually.
@@ -98,10 +94,11 @@ public class Entity {
 		setPosition( pos );
 
 	}
+
 	/**
 	 * Common sub-constructor that applies to all Entity() constructors.
 	 */
-	protected void construct(String name, Vector2 pos, boolean solid){
+	protected void construct( String name, Vector2 pos, boolean solid ) {
 		this.name = name;
 		this.solid = solid;
 		this.offset = new Vector2( 0.0f, 0.0f );
@@ -110,19 +107,19 @@ public class Entity {
 		this.visible = true;
 		this.active = true;
 	}
-	
-	public void setPosition(float x, float y){
-		//x *= Util.PIXEL_TO_BOX;
-		//y *= Util.PIXEL_TO_BOX;
-		if (body != null){
-			body.setTransform(x, y, body.getAngle());
-		} else if (sprite != null){
-			sprite.setPosition(x, y);
+
+	public void setPosition( float x, float y ) {
+		// x *= Util.PIXEL_TO_BOX;
+		// y *= Util.PIXEL_TO_BOX;
+		if ( body != null ) {
+			body.setTransform( x, y, body.getAngle( ) );
+		} else if ( sprite != null ) {
+			sprite.setPosition( x, y );
 		}
 	}
-	
+
 	public void setPosition( Vector2 pos ) {
-		setPosition(pos.x,pos.y);
+		setPosition( pos.x, pos.y );
 	}
 
 	public Vector2 getPosition( ) {
@@ -135,7 +132,7 @@ public class Entity {
 	}
 
 	public void draw( SpriteBatch batch ) {
-		if ( sprite != null && visible) {
+		if ( sprite != null && visible ) {
 			Vector2 bodyPos = body.getPosition( ).mul( Util.BOX_TO_PIXEL );
 			sprite.setPosition( bodyPos.x - offset.x, bodyPos.y - offset.y );
 			sprite.setRotation( MathUtils.radiansToDegrees * body.getAngle( ) );
@@ -144,16 +141,17 @@ public class Entity {
 	}
 
 	public void update( float deltaTime ) {
-		//animation stuff may go here
+		// animation stuff may go here
 	}
-	
+
 	/**
-	 * Update the mover of this entity, if it exists.
-	 * Now separated from update() so that it can be called whenever skeleton wants.
+	 * Update the mover of this entity, if it exists. Now separated from
+	 * update() so that it can be called whenever skeleton wants.
+	 * 
 	 * @param deltaTime
 	 */
-	public void updateMover( float deltaTime ){
-		if (active){
+	public void updateMover( float deltaTime ) {
+		if ( active ) {
 			if ( body != null && mover != null ) {
 				mover.move( deltaTime, body );
 			}
@@ -168,7 +166,8 @@ public class Entity {
 	 * Builds a sprite from a texture. If the texture is null, it attempts to
 	 * load one from the XML definitions
 	 * 
-	 * @param texture from which a sprite can be generated, or null, if loading 
+	 * @param texture
+	 *            from which a sprite can be generated, or null, if loading
 	 * @return the loaded/generated sprite, or null if neither applies
 	 */
 	protected Sprite constructSprite( Texture texture ) {
@@ -210,13 +209,11 @@ public class Entity {
 		sprite.setOrigin( origin.x, origin.y );
 		return sprite;
 	}
-	
-    public void Move(Vector2 vector)
-    {
-    	Vector2 pos = body.getPosition().add(vector.mul( Util.PIXEL_TO_BOX ));
-    	setPosition(pos);
-    }
 
+	public void Move( Vector2 vector ) {
+		Vector2 pos = body.getPosition( ).add( vector.mul( Util.PIXEL_TO_BOX ) );
+		setPosition( pos );
+	}
 
 	/**
 	 * Builds the body associated with the entity's type.
@@ -253,20 +250,22 @@ public class Entity {
 	public void setSolid( boolean solid ) {
 		this.solid = solid;
 	}
+
 	/**
-	 * Sets the energy of the current body.
-	 * Energy is a new property for Entities that is meant
-	 * to scale impulses. It currently does nothing, but it's here
-	 * if someone wants to use it.
+	 * Sets the energy of the current body. Energy is a new property for
+	 * Entities that is meant to scale impulses. It currently does nothing, but
+	 * it's here if someone wants to use it.
 	 * 
 	 * @param energy
 	 */
-	public void setEnergy( float energy){
+	public void setEnergy( float energy ) {
 		this.energy = energy;
 	}
 
-	public float getEnergy(){ return energy; }
-	
+	public float getEnergy( ) {
+		return energy;
+	}
+
 	/**
 	 * Sets body awake, used in
 	 * 
@@ -276,60 +275,66 @@ public class Entity {
 		body.setAwake( true );
 	}
 
-	
 	/**
-	 * Determines whether an entity should be deleted
-	 * on next update or not
+	 * Determines whether an entity should be deleted on next update or not
 	 * 
-	 * @param m - boolean
+	 * @param m
+	 *            - boolean
 	 */
-	public void setMaintained(boolean m){
+	public void setMaintained( boolean m ) {
 		maintained = m;
 	}
-	public boolean isMaintained(){
+
+	public boolean isMaintained( ) {
 		return maintained;
 	}
-	
+
 	/**
 	 * Determines whether an entity should be drawn or not.
 	 * 
-	 * @param v - boolean
+	 * @param v
+	 *            - boolean
 	 */
-	public void setVisible(boolean v){
+	public void setVisible( boolean v ) {
 		visible = v;
 	}
-	public boolean isVisible(){
+
+	public boolean isVisible( ) {
 		return visible;
 	}
 
 	/**
 	 * Determines whether an entity should be updated or not.
 	 * 
-	 * @param a - boolean
+	 * @param a
+	 *            - boolean
 	 */
-	public void setActive(boolean a){
+	public void setActive( boolean a ) {
 		active = a;
 	}
-	public boolean isActive(){
+
+	public boolean isActive( ) {
 		return active;
 	}
-	
+
 	/**
 	 * Change the sprite to be displayed on the entity
 	 * 
 	 * @param newSprite
-	 * 		The new sprite that will be displayed on top of the entity
+	 *            The new sprite that will be displayed on top of the entity
 	 */
-	public void changeSprite(Sprite newSprite){
+	public void changeSprite( Sprite newSprite ) {
 		this.sprite = newSprite;
 	}
+
 	/**
 	 * set the bodies category collision bits
-	 * @param 
+	 * 
+	 * @param
 	 */
 	public void setCategoryMask( short category, short mask ) {
-		if ( body != null) {
-			Filter filter = new Filter();
+		if ( body != null ) {
+			Filter filter = new Filter( );
 			for ( Fixture f : body.getFixtureList( ) ) {
 				f.setSensor( false );
 				filter = f.getFilterData( );
@@ -343,12 +348,12 @@ public class Entity {
 	}
 
 	/**
-	 *  This is a quick-n-dirty fix for complex body collisions.
-	 *  Hopefully we'll get to a point where we don't need it.
-	 *  There's probably some overlap between mine and Dennis' functions,
-     *  I'll try to sort it out on next update.
+	 * This is a quick-n-dirty fix for complex body collisions. Hopefully we'll
+	 * get to a point where we don't need it. There's probably some overlap
+	 * between mine and Dennis' functions, I'll try to sort it out on next
+	 * update.
 	 */
-	public void quickfixCollisions(){
+	public void quickfixCollisions( ) {
 		Filter filter;
 		for ( Fixture f : body.getFixtureList( ) ) {
 			filter = f.getFilterData( );
@@ -363,34 +368,36 @@ public class Entity {
 	}
 
 	public void setDensity( float d ) {
-		if ( body != null ){
-		for ( int i = 0; i < body.getFixtureList( ).size( ); ++i )
-			body.getFixtureList( ).get( i ).setDensity( d );
+		if ( body != null ) {
+			for ( int i = 0; i < body.getFixtureList( ).size( ); ++i )
+				body.getFixtureList( ).get( i ).setDensity( d );
 		}
 
 	}
 
 	public void setFriction( float f ) {
-		if ( body != null ){
-		for ( int i = 0; i < body.getFixtureList( ).size( ); ++i )
-			body.getFixtureList( ).get( i ).setFriction( f );
+		if ( body != null ) {
+			for ( int i = 0; i < body.getFixtureList( ).size( ); ++i )
+				body.getFixtureList( ).get( i ).setFriction( f );
 		}
 	}
 
 	public void setRestitution( float r ) {
-		if ( body != null ){
-		for ( int i = 0; i < body.getFixtureList( ).size( ); ++i )
-			body.getFixtureList( ).get( i ).setRestitution( r );
+		if ( body != null ) {
+			for ( int i = 0; i < body.getFixtureList( ).size( ); ++i )
+				body.getFixtureList( ).get( i ).setRestitution( r );
 		}
 	}
 
 	public void setGravScale( float g ) {
-		if ( body != null ){
+		if ( body != null ) {
 			body.setGravityScale( g );
 		}
 	}
-	
-	public String toString(){
-		return "Entity["+name+"] pos:"+body.getPosition( )+", body.active:"+body.isActive( )+", body.awake:"+body.isAwake( );
+
+	public String toString( ) {
+		return "Entity[" + name + "] pos:" + body.getPosition( )
+				+ ", body.active:" + body.isActive( ) + ", body.awake:"
+				+ body.isAwake( );
 	}
 }
