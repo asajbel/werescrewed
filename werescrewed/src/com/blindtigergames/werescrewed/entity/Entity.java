@@ -55,7 +55,7 @@ public class Entity {
 	 * @param solid
 	 *            boolean determining whether or not the player can stand on it
 	 */
-	public Entity( String name, EntityDef type, World world, Vector2 pos,
+	public Entity( String name, EntityDef type, World world, Vector2 positionPixels,
 			float rot, Vector2 scale, Texture texture, boolean solid,
 			float anchRadius) {
 		this.construct( name, solid );
@@ -63,7 +63,7 @@ public class Entity {
 		this.world = world;
 		this.sprite = constructSprite( texture );
 		this.body = constructBodyByType( );
-		setPosition( pos );
+		setPosition( positionPixels.mul( Util.PIXEL_TO_BOX ) );
 		if ( anchRadius >= 0 ) {
 			Vector2 centPos = new Vector2( body.getWorldCenter( ).x
 					* Util.BOX_TO_PIXEL, body.getWorldCenter( ).y
@@ -102,7 +102,7 @@ public class Entity {
 			world = body.getWorld( );
 			sprite.setScale( Util.PIXEL_TO_BOX );
 		}
-		setPosition( positionPixels );
+		//setPosition( positionPixels );
 	}
 
 	/**

@@ -80,7 +80,7 @@ public class Player extends Entity {
 	private boolean jumpPressedController;
 	private boolean screwButtonHeld;
 	private boolean kinematicTransform = false;
-	private Vector2 platformOffset;
+	// private Vector2 platformOffset;
 	private int anchorID;
 
 	public int grabCounter = 0;
@@ -138,6 +138,7 @@ public class Player extends Entity {
 
 		jumpSound = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 				+ "/common/sounds/jump.ogg" );
+
 	}
 
 	// PUBLIC METHODS
@@ -147,8 +148,8 @@ public class Player extends Entity {
 	 */
 	public void update( float deltaTime ) {
 		super.update( deltaTime );
-		if( kinematicTransform ){
-			//setPlatformTransform( platformOffset );
+		if ( kinematicTransform ) {
+			// setPlatformTransform( platformOffset );
 			kinematicTransform = false;
 		}
 		AnchorList.getInstance( ).setAnchorPosBox( anchorID, getPosition( ) );
@@ -365,18 +366,20 @@ public class Player extends Entity {
 		float multiplierX = 0.6f;
 		if ( leftAnalogY < -0.1f )
 			multiplierY = 0.1f;
-		if(leftAnalogX < 0.01f && leftAnalogY < 0.01f
-				&& leftAnalogX > -0.01f && leftAnalogY > -0.01f){
+		if ( leftAnalogX < 0.01f && leftAnalogY < 0.01f && leftAnalogX > -0.01f
+				&& leftAnalogY > -0.01f ) {
 			multiplierX = 0.0f;
 			multiplierY = 1.25f;
 			leftAnalogY = 1.0f;
 		}
-		if((leftAnalogX > 0.7f || leftAnalogX < -0.7f) && (leftAnalogY < 0.3f && leftAnalogY > -0.3f)){
+		if ( ( leftAnalogX > 0.7f || leftAnalogX < -0.7f )
+				&& ( leftAnalogY < 0.3f && leftAnalogY > -0.3f ) ) {
 			multiplierX = 0.8f;
 		}
-		body.applyLinearImpulse( new Vector2( JUMP_SCREW_IMPULSE * leftAnalogX
-				* multiplierX, JUMP_SCREW_IMPULSE * leftAnalogY * multiplierY ),
-				body.getWorldCenter( ) );
+		body.applyLinearImpulse(
+				new Vector2( JUMP_SCREW_IMPULSE * leftAnalogX * multiplierX,
+						JUMP_SCREW_IMPULSE * leftAnalogY * multiplierY ), body
+						.getWorldCenter( ) );
 		setGrounded( false );
 	}
 
@@ -478,32 +481,6 @@ public class Player extends Entity {
 		return grounded;
 	}
 
-//	/**
-//	 * sets flag to determine if player needs to move with kinematic platforms
-//	 * 
-//	 * @param posOffset
-//	 *            is the offset you want to apply to player
-//	 */
-//	public void setPlatformTransform( Vector2 posOffset ) {
-//		body.setTransform( body.getPosition( ).add( posOffset ), 0 );
-//	}
-	
-	/**
-	 * @param value turns flag on and off
-	 */
-	public void setMovingPlatformFlag( boolean value){
-		kinematicTransform = value;
-	}
-	
-	/**
-	 * sets offset that player will use to match movement of kinematic platforms
-	 * 
-	 * @param newOffset offset you want
-	 */
-	public void setOffset(Vector2 newOffset){
-		platformOffset = newOffset;
-	}
-
 	// PRIVATE METHODS
 
 	/**
@@ -523,7 +500,7 @@ public class Player extends Entity {
 				}
 			}
 			if ( !screwOccupied ) {
-				//Filter filter;
+				// Filter filter;
 				for ( Fixture f : body.getFixtureList( ) ) {
 					f.setSensor( true );
 				}
@@ -711,7 +688,7 @@ public class Player extends Entity {
 				}
 				jumpOffScrew( );
 			} else {
-				//screwJumpTimeout = 0;
+				// screwJumpTimeout = 0;
 				jumpOffScrew( );
 			}
 		}
@@ -956,15 +933,16 @@ public class Player extends Entity {
 			}
 		}
 	}
-	
+
 	/**
 	 * Transforms player position by offset
 	 * 
-	 * @param posOffset is the offset you want to apply to player
+	 * @param posOffset
+	 *            is the offset you want to apply to player
 	 */
-	private void setPlatformTransform( Vector2 posOffset ){
+	private void setPlatformTransform( Vector2 posOffset ) {
 		Gdx.app.log( name + "old:", " " + body.getPosition( ) );
-		body.setTransform( body.getPosition( ).cpy().add(posOffset), 0);
+		body.setTransform( body.getPosition( ).cpy( ).add( posOffset ), 0 );
 		Gdx.app.log( name + "new:", " " + body.getPosition( ) );
 	}
 
