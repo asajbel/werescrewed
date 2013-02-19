@@ -1,6 +1,8 @@
 package com.blindtigergames.werescrewed.collisionManager;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactImpulse;
@@ -8,7 +10,9 @@ import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.JointEdge;
 import com.badlogic.gdx.physics.box2d.Manifold;
+import com.blindtigergames.werescrewed.camera.Anchor;
 import com.blindtigergames.werescrewed.entity.Entity;
+import com.blindtigergames.werescrewed.platforms.Platform;
 import com.blindtigergames.werescrewed.platforms.TiledPlatform;
 import com.blindtigergames.werescrewed.player.Player;
 import com.blindtigergames.werescrewed.player.Player.PlayerState;
@@ -87,7 +91,12 @@ public class MyContactListener implements ContactListener {
 								.getUserData( );
 						player.hitPlayer( player2 );
 						player2.hitPlayer( player );
-					} 
+					} else if ( objectFix.getBody( ).getUserData( ) instanceof Anchor ) {
+						Anchor anchor = ( Anchor ) objectFix.getBody( )
+								.getUserData( );
+						if ( !anchor.special )
+							anchor.activate( );
+					}
 				}
 			}
 		}
@@ -133,14 +142,14 @@ public class MyContactListener implements ContactListener {
 							NUM_PLAYER1_CONTACTS--;
 							if ( NUM_PLAYER1_CONTACTS <= 0 ) {
 								if ( player.getState( ) == PlayerState.Falling ) {
-									player.setGrounded( false ); 
+									player.setGrounded( false );
 								}
 							}
 						} else if ( p1 != player ) {
 							NUM_PLAYER2_CONTACTS--;
 							if ( NUM_PLAYER2_CONTACTS <= 0 ) {
 								if ( player.getState( ) == PlayerState.Falling ) {
-									player.setGrounded( false ); 
+									player.setGrounded( false );
 								}
 							}
 						}
@@ -169,13 +178,17 @@ public class MyContactListener implements ContactListener {
 						if ( player.getState( ) != PlayerState.HeadStand ) {
 							player.hitPlayer( null );
 							player2.hitPlayer( null );
-						} 
+						}
 					}
+				} else if ( objectFix.getBody( ).getUserData( ) instanceof Anchor ) {
+					Anchor anchor = ( Anchor ) objectFix.getBody( )
+							.getUserData( );
+					if ( !anchor.special )
+						anchor.deactivate( );
 				}
 			}
 		}
 	}
-	
 
 	/**
 	 * Before physics is calculated each step
@@ -203,6 +216,16 @@ public class MyContactListener implements ContactListener {
 			}
 			if ( playerInvolved ) {
 				Player player = ( Player ) playerFix.getBody( ).getUserData( );
+				if ( objectFix.getBody( ).getUserData( ) instanceof Platform ) {
+					if ( objectFix.getBody( ).getType( ) == BodyType.KinematicBody) {
+						Platform plat = (Platform) objectFix.getBody( ).getUserData( );
+						if(plat.mover != null){
+							player.setMovingPlatformFlag( true );
+							player.setOffset( plat.getChangePosition( ) );
+							//Gdx.app.log( "x: " + plat.getChangePosition( ).x, "y: " + plat.getChangePosition( ).y );
+						}
+					}
+				}
 				if ( objectFix.getBody( ).getUserData( ) instanceof TiledPlatform ) {
 					TiledPlatform tilePlat = ( TiledPlatform ) objectFix
 							.getBody( ).getUserData( );
@@ -240,7 +263,7 @@ public class MyContactListener implements ContactListener {
 							&& player.getState( ) != PlayerState.Falling
 							&& player2.getState( ) != PlayerState.Falling ) {
 						contact.setEnabled( false );
-					} 
+					}
 				}
 			}
 		}

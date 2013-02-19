@@ -21,14 +21,12 @@ import com.blindtigergames.werescrewed.entity.builders.PlayerBuilder;
 import com.blindtigergames.werescrewed.entity.tween.EntityAccessor;
 import com.blindtigergames.werescrewed.entity.tween.PlatformAccessor;
 import com.blindtigergames.werescrewed.platforms.Platform;
+import com.blindtigergames.werescrewed.platforms.TiledPlatform;
 import com.blindtigergames.werescrewed.player.Player;
 import com.blindtigergames.werescrewed.skeleton.Skeleton;
 import com.blindtigergames.werescrewed.util.Util;
 
-
 public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
-
-
 
 	private Camera cam;
 	private SpriteBatch batch;
@@ -42,12 +40,21 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 	private Skeleton rootSkeleton;
 	private boolean debug = true;
 	private boolean debugTest = true;
+	private TiledPlatform wall;
+	private TiledPlatform obst;
+	private TiledPlatform plat;
+	private Skeleton skel1;
+	private TiledPlatform stair;
 
+	private final float TILE = 32;
+	private TiledPlatform step;
+	private Skeleton skel2;
+	private TiledPlatform ground;
 
 	public DebugPlayTestScreen( ) {
 
 		batch = new SpriteBatch( );
-		world = new World( new Vector2( 0, -45 ), true );
+		world = new World( new Vector2( 0, -35 ), true );
 
 		skeleton = new Skeleton( "skeleton", Vector2.Zero, null, world );
 		rootSkeleton = new Skeleton( "root", Vector2.Zero, null, world );
@@ -56,9 +63,9 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		testTexture = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 				+ "/common/TilesetTest.png", Texture.class );
 
-		Tween.registerAccessor( Platform.class, new PlatformAccessor() );
-		Tween.registerAccessor( Entity.class, new EntityAccessor() );
-		
+		Tween.registerAccessor( Platform.class, new PlatformAccessor( ) );
+		Tween.registerAccessor( Entity.class, new EntityAccessor( ) );
+
 		// Initialize camera
 		initCamera( );
 
@@ -66,13 +73,16 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		contactListener = new MyContactListener( );
 		world.setContactListener( contactListener );
 
-
+		// Initialize players
 		player1 = new PlayerBuilder( ).name( "player1" ).world( world )
-				.position( 1.0f, 1.0f ).buildPlayer( );
+				.position( 12.0f, 1.0f ).buildPlayer( );
 		player2 = new PlayerBuilder( ).name( "player2" ).world( world )
-				.position( 1.5f, 1.5f ).buildPlayer( );
+				.position( 12.5f, 1.0f ).buildPlayer( );
 
-		// Add screws
+		// TODO: Everything.
+
+		floor1( );
+		floor2( );
 
 		rootSkeleton.addSkeleton( skeleton );
 
@@ -83,12 +93,160 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 
 	}
 
+	private void floor2( ) {
+		skel2 = new Skeleton( "skel2", new Vector2( 0, 0 ), null, world );
+
+	}
+
+	private void floor1( ) {
+
+		skel1 = new Skeleton( "skel1", new Vector2( 0, 0 ), null, world );
+
+		// PUZZLE 1 //
+
+		ground = platBuilder.position( 81 * TILE, 0 ).name( "ground1" )
+				.dimensions( 160, 2 ).texture( testTexture ).kinematic( )
+				.oneSided( false ).restitution( 0.0f ).buildTilePlatform( );
+		skel1.addKinematicPlatform( ground );
+
+		wall = platBuilder.position( 0, 99 * TILE ).name( "wall1" )
+				.dimensions( 2, 200 ).texture( testTexture ).kinematic( )
+				.oneSided( false ).restitution( 0.0f ).buildTilePlatform( );
+		skel1.addKinematicPlatform( wall );
+
+		obst = platBuilder.position( 15 * TILE, 1.5f * TILE ).name( "obst1" )
+				.dimensions( 2, 1 ).texture( testTexture ).kinematic( )
+				.oneSided( false ).restitution( 0 ).buildTilePlatform( );
+		skel1.addKinematicPlatform( obst );
+
+		obst = platBuilder.position( 20 * TILE, 2f * TILE ).name( "obst2" )
+				.dimensions( 2, 2 ).texture( testTexture ).kinematic( )
+				.oneSided( false ).restitution( 0 ).buildTilePlatform( );
+		skel1.addKinematicPlatform( obst );
+
+		obst = platBuilder.position( 25 * TILE, 2.5f * TILE ).name( "obst3" )
+				.dimensions( 2, 3 ).texture( testTexture ).kinematic( )
+				.oneSided( false ).restitution( 0 ).buildTilePlatform( );
+		skel1.addKinematicPlatform( obst );
+
+		obst = platBuilder.position( 30 * TILE, 3f * TILE ).name( "obst4" )
+				.dimensions( 2, 4 ).texture( testTexture ).kinematic( )
+				.oneSided( false ).restitution( 0 ).buildTilePlatform( );
+		skel1.addKinematicPlatform( obst );
+
+		obst = platBuilder.position( 35 * TILE, 3.5f * TILE ).name( "obst5" )
+				.dimensions( 2, 5 ).texture( testTexture ).kinematic( )
+				.oneSided( false ).restitution( 0 ).buildTilePlatform( );
+		skel1.addKinematicPlatform( obst );
+
+		obst = platBuilder.position( 40 * TILE, 3.5f * TILE ).name( "obst6" )
+				.dimensions( 2, 5 ).texture( testTexture ).kinematic( )
+				.oneSided( false ).restitution( 0 ).buildTilePlatform( );
+		skel1.addKinematicPlatform( obst );
+
+		obst = platBuilder.position( 45 * TILE, 3.5f * TILE ).name( "obst7" )
+				.dimensions( 2, 5 ).texture( testTexture ).kinematic( )
+				.oneSided( false ).restitution( 0 ).buildTilePlatform( );
+		skel1.addKinematicPlatform( obst );
+
+		// PUZZLE 2 //
+
+		plat = platBuilder.position( 55 * TILE, 4.5f * TILE ).name( "plat1" )
+				.dimensions( 4, 1 ).texture( testTexture ).kinematic( )
+				.oneSided( true ).restitution( 0 ).buildTilePlatform( );
+		skel1.addKinematicPlatform( plat );
+
+		plat = platBuilder.position( 67 * TILE, 4.5f * TILE ).name( "plat2" )
+				.dimensions( 4, 1 ).texture( testTexture ).kinematic( )
+				.oneSided( true ).restitution( 0 ).buildTilePlatform( );
+		skel1.addKinematicPlatform( plat );
+
+		plat = platBuilder.position( 55 * TILE, 8.5f * TILE ).name( "plat3" )
+				.dimensions( 4, 1 ).texture( testTexture ).kinematic( )
+				.oneSided( true ).restitution( 0 ).buildTilePlatform( );
+		skel1.addKinematicPlatform( plat );
+
+		plat = platBuilder.position( 67 * TILE, 8.5f * TILE ).name( "plat4" )
+				.dimensions( 4, 1 ).texture( testTexture ).kinematic( )
+				.oneSided( true ).restitution( 0 ).buildTilePlatform( );
+		skel1.addKinematicPlatform( plat );
+
+		plat = platBuilder.position( 61 * TILE, 6.5f * TILE ).name( "plat5" )
+				.dimensions( 4, 1 ).texture( testTexture ).kinematic( )
+				.oneSided( true ).restitution( 0 ).buildTilePlatform( );
+		skel1.addKinematicPlatform( plat );
+
+		stair = platBuilder.position( 77 * TILE, 2 * TILE ).name( "stair1" )
+				.dimensions( 8, 2 ).texture( testTexture ).kinematic( )
+				.oneSided( false ).restitution( 0 ).buildTilePlatform( );
+		skel1.addKinematicPlatform( stair );
+
+		stair = platBuilder.position( 78 * TILE, 4 * TILE ).name( "stair2" )
+				.dimensions( 6, 2 ).texture( testTexture ).kinematic( )
+				.oneSided( false ).restitution( 0 ).buildTilePlatform( );
+		skel1.addKinematicPlatform( stair );
+
+		stair = platBuilder.position( 79 * TILE, 6 * TILE ).name( "stair3" )
+				.dimensions( 4, 2 ).texture( testTexture ).kinematic( )
+				.oneSided( false ).restitution( 0 ).buildTilePlatform( );
+		skel1.addKinematicPlatform( stair );
+
+		stair = platBuilder.position( 80 * TILE, 8 * TILE ).name( "stair4" )
+				.dimensions( 2, 2 ).texture( testTexture ).kinematic( )
+				.oneSided( false ).restitution( 0 ).buildTilePlatform( );
+		skel1.addKinematicPlatform( stair );
+
+		stair = platBuilder.position( 82 * TILE, 2.5f * TILE ).name( "stair5" )
+				.dimensions( 2, 3 ).texture( testTexture ).kinematic( )
+				.oneSided( false ).restitution( 0 ).buildTilePlatform( );
+		skel1.addKinematicPlatform( stair );
+
+		plat = platBuilder.position( 93 * TILE, 5 * TILE ).name( "plat6" )
+				.dimensions( 2, 8 ).texture( testTexture ).kinematic( )
+				.oneSided( false ).restitution( 0 ).buildTilePlatform( );
+		skel1.addKinematicPlatform( plat );
+
+		stair = platBuilder.position( 95 * TILE, 2.5f * TILE ).name( "stair6" )
+				.dimensions( 2, 3 ).texture( testTexture ).kinematic( )
+				.oneSided( false ).restitution( 0 ).buildTilePlatform( );
+		skel1.addKinematicPlatform( stair );
+
+		float dx = 4;
+		float x = 106;
+		float dy = 2;
+		float y = 1.5f;
+		float width = 6f;
+		int i = 0;
+		while ( width > 0 ) {
+			step = platBuilder.position( x * TILE, y * TILE )
+					.name( "step" + ( i + 1 ) ).dimensions( width, 1 )
+					.texture( testTexture ).kinematic( ).oneSided( true )
+					.restitution( 0 ).buildTilePlatform( );
+			skel1.addKinematicPlatform( step );
+			x += dx + width + .5f;
+			y += dy;
+			i++;
+			width--;
+		}
+
+		wall = platBuilder.position( 160 * TILE, 6.5f * TILE ).name( "wall2" )
+				.dimensions( 2, 11 ).texture( testTexture ).kinematic( )
+				.oneSided( false ).restitution( 0 ).buildTilePlatform( );
+		skel1.addKinematicPlatform( wall );
+		
+		ground = platBuilder.position( 181 * TILE, 11f * TILE ).name( "ground2" )
+				.dimensions( 40, 2 ).texture( testTexture ).kinematic( )
+				.oneSided( false ).restitution( 0 ).buildTilePlatform( );
+		skel1.addKinematicPlatform( ground );
+
+		rootSkeleton.addSkeleton( skel1 );
+	}
 
 	private void initCamera( ) {
 		float zoom = 1.0f;
 		float width = Gdx.graphics.getWidth( ) / zoom;
 		float height = Gdx.graphics.getHeight( ) / zoom;
-		cam = new Camera( width, height );
+		cam = new Camera( width, height, world );
 	}
 
 	@Override
@@ -117,7 +275,6 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		} else
 			debugTest = true;
 
-		
 		player1.update( deltaTime );
 		player2.update( deltaTime );
 
