@@ -103,7 +103,7 @@ public class Camera {
 				* ACCELERATION_BUFFER_RATIO;
 		translateState = true;
 		insideTargetBuffer = false;
-		zoomSpeed = .01f;
+		zoomSpeed = 0f;
 		targetToBufferRatio = 1f;
 
 		anchorList = AnchorList.getInstance( camera );
@@ -338,10 +338,18 @@ public class Camera {
 			newZoom = longestDist.y / viewportHeight;
 		}
 		if ( newZoom > 1f ) {
-			camera.zoom = newZoom;
+			zoomSteer(newZoom);
 			translateBuffer.width = screenBounds.width * BUFFER_RATIO;
 			translateBuffer.height = screenBounds.height * BUFFER_RATIO;
 		}
+	}
+	
+	/**
+	 * steer zoom to the new zoom
+	 * @param newZoom
+	 */
+	private void zoomSteer(float newZoom) {
+		camera.zoom = newZoom;
 	}
 
 	@SuppressWarnings( "unused" )
