@@ -100,9 +100,9 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 
 		// Initialize players
 		player1 = new PlayerBuilder( ).name( "player1" ).world( world )
-				.position( 1f * TILE, 1f * TILE  ).buildPlayer( );
+				.position( 1f * TILE, 1f * TILE ).buildPlayer( );
 		player2 = new PlayerBuilder( ).name( "player2" ).world( world )
-				.position( 1f * TILE, 1f * TILE  ).buildPlayer( );
+				.position(1f * TILE, 1f * TILE).buildPlayer( );
 
 		// END: 175f * TILE, 96f * TILE
 		// START : 1f * TILE, 1f * TILE 
@@ -796,8 +796,8 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 				cam.turnOffZoom( );
 			}
 			endgameCounter += deltaTime;
-			cam.camera.zoom += 0.01f;
-			if ( endgameCounter > 15f )
+			cam.camera.zoom += 0.015f;
+			if ( endgameCounter > 10f )
 				Gdx.app.exit( );
 		}
 
