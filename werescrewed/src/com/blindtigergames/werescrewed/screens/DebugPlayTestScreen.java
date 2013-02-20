@@ -6,6 +6,7 @@ import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -22,8 +23,9 @@ import com.blindtigergames.werescrewed.entity.builders.RopeBuilder;
 import com.blindtigergames.werescrewed.entity.builders.ScrewBuilder;
 import com.blindtigergames.werescrewed.entity.mover.LerpMover;
 import com.blindtigergames.werescrewed.entity.mover.LinearAxis;
-import com.blindtigergames.werescrewed.entity.mover.PuzzleType;
+import com.blindtigergames.werescrewed.entity.mover.RockingMover;
 import com.blindtigergames.werescrewed.entity.mover.RotateByDegree;
+import com.blindtigergames.werescrewed.entity.mover.puzzle.PuzzleRotateTweenMover;
 import com.blindtigergames.werescrewed.entity.tween.EntityAccessor;
 import com.blindtigergames.werescrewed.entity.tween.PathBuilder;
 import com.blindtigergames.werescrewed.entity.tween.PlatformAccessor;
@@ -69,6 +71,8 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 	private Rope testRope;
 
 	private BossScrew bossBolt;
+	private float endgameCounter;
+	private Music inceptionhorn;
 
 	public DebugPlayTestScreen( ) {
 
@@ -82,6 +86,9 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		testTexture = WereScrewedGame.manager.get(
 				WereScrewedGame.dirHandle.path( ) + "/common/TilesetTest.png",
 				Texture.class );
+		inceptionhorn = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
+				+ "/common/sounds/inceptionbutton.mp3" );
+		endgameCounter = 0;
 
 		Tween.registerAccessor( Platform.class, new PlatformAccessor( ) );
 		Tween.registerAccessor( Entity.class, new EntityAccessor( ) );
@@ -99,8 +106,8 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		player2 = new PlayerBuilder( ).name( "player2" ).world( world )
 				.position( 121f * TILE, 83f * TILE ).buildPlayer( );
 
-		// 115f * TILE, 42 * TILE
-		// start = 1, 1
+		// to see finale: 175 * TILE, 96 * TILE
+		// START : 1* TILE, 1* TILE 
 
 		floor1( );
 		floor2( );
@@ -611,14 +618,14 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 
 		plat = platBuilder.position( 148f * TILE, 80 * TILE ).name( "plat9" )
 				.dimensions( 75, 1 ).texture( testTexture ).kinematic( )
-				.friction( 1.0f ).oneSided( true ).restitution( 0 )
+				.friction( 1.0f ).oneSided( false ).restitution( 0 )
 				.buildTilePlatform( );
 		plat.setCategoryMask( Util.KINEMATIC_OBJECTS, Util.CATEGORY_EVERYTHING );
 		skel7.addKinematicPlatform( plat );
 
 		plat = platBuilder.position( 185f * TILE, 92 * TILE ).name( "plat9" )
 				.dimensions( 1, 25 ).texture( testTexture ).kinematic( )
-				.friction( 1.0f ).oneSided( true ).restitution( 0 )
+				.friction( 1.0f ).oneSided( false ).restitution( 0 )
 				.buildTilePlatform( );
 		plat.setCategoryMask( Util.KINEMATIC_OBJECTS, Util.CATEGORY_EVERYTHING );
 		skel7.addKinematicPlatform( plat );
@@ -650,11 +657,13 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		skeleton.addScrewForDraw( puzzleScrew );
 
 		PuzzleScrew puzzleScrew2 = new PuzzleScrew( "001", new Vector2(
+				
 				113f * TILE, 83 * TILE ), 50, skel8, world, 50, false );
 		LerpMover lm3 = new LerpMover( new Vector2( plat.body.getPosition( ).x,
 				plat.body.getPosition( ).y + 1.5f ).mul( Util.BOX_TO_PIXEL ),
 				plat.body.getPosition( ).mul( Util.BOX_TO_PIXEL ), 0.001f,
 				false, LinearAxis.VERTICAL, 0, 1, 0f );
+		
 
 		puzzleScrew2.puzzleManager.addEntity( plat );
 		puzzleScrew2.puzzleManager.addMover( plat.name, lm3 );
@@ -684,8 +693,11 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		PuzzleScrew puzzleScrew = new PuzzleScrew( "004", new Vector2(
 				130f * TILE, 83 * TILE ), 50, skel9, world, 0, false );
 		RotateByDegree rm = new RotateByDegree( 0.0f, -90.0f, 0, 0.5f );
+
+		PuzzleRotateTweenMover rtm1 = new PuzzleRotateTweenMover( 1,
+				Util.PI / 2, true );
 		puzzleScrew.puzzleManager.addEntity( plat );
-		puzzleScrew.puzzleManager.addMover( plat.name, rm );
+		puzzleScrew.puzzleManager.addMover( plat.name, rtm1 );
 		skeleton.addScrewForDraw( puzzleScrew );
 
 		plat = platBuilder.position( 143f * TILE, 89 * TILE ).name( "plat11" )
@@ -698,7 +710,9 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		PuzzleScrew puzzleScrew2 = new PuzzleScrew( "006", new Vector2(
 				143f * TILE, 83 * TILE ), 50, skel9, world, 0, false );
 		puzzleScrew2.puzzleManager.addEntity( plat );
-		puzzleScrew2.puzzleManager.addMover( plat.name, rm );
+		PuzzleRotateTweenMover rtm2 = new PuzzleRotateTweenMover( 1,
+				Util.PI / 2, true );
+		puzzleScrew2.puzzleManager.addMover( plat.name, rtm2 );
 		skeleton.addScrewForDraw( puzzleScrew2 );
 
 		RopeBuilder ropeBuilder = new RopeBuilder( world );
@@ -744,12 +758,13 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 			ScreenManager.getInstance( ).show( ScreenType.PAUSE );
 		}
 		if ( Gdx.input.isKeyPressed( Keys.P ) ) {
-			System.exit( 0 );
+			Gdx.app.exit( );
 		}
 
 		if ( Gdx.input.isKeyPressed( Keys.NUM_0 ) ) {
-			if ( debugTest )
+			if ( debugTest ) {
 				debug = !debug;
+			}
 			debugTest = false;
 		} else
 			debugTest = true;
@@ -757,6 +772,7 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		player1.update( deltaTime );
 		player2.update( deltaTime );
 		// testRope.update( deltaTime );
+
 		rootSkeleton.update( deltaTime );
 
 		batch.setProjectionMatrix( cam.combined( ) );
@@ -767,12 +783,25 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		player2.draw( batch );
 		// testRope.draw( batch );
 
+
 		batch.end( );
 
 		if ( debug )
 			debugRenderer.render( world, cam.combined( ) );
 
 		// if(endLevelFlag)
+		if ( bossBolt.endLevelFlag( ) ) {
+			if ( !inceptionhorn.isPlaying( ) ) {
+				inceptionhorn.play( );
+			}
+			if ( endgameCounter == 0f )
+				rootSkeleton.mover = new RockingMover( -0.1f, 0.8f );
+			endgameCounter += deltaTime;
+			cam.camera.zoom += 0.01f;
+			if ( endgameCounter > 18f )
+				Gdx.app.exit( );
+		}
+
 		world.step( 1 / 60f, 6, 6 );
 	}
 
