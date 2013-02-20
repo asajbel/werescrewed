@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 
@@ -81,9 +82,9 @@ public class AnchorList {
 				shapeRenderer.setProjectionMatrix( camera.combined );
 				shapeRenderer.begin( ShapeType.Rectangle );
 				shapeRenderer.identity( );
-				shapeRenderer.rect( curAnchor.position.x - curAnchor.buffer.x,
-						curAnchor.position.y - curAnchor.buffer.y,
-						curAnchor.buffer.x * 2, curAnchor.buffer.y * 2 );
+				Rectangle drawRect = curAnchor.getBufferRectangle( );
+				shapeRenderer.rect( drawRect.x, drawRect.y, drawRect.width,
+						drawRect.height );
 				shapeRenderer.end( );
 
 				// renders a cross through the square if the current anchor is
@@ -91,16 +92,11 @@ public class AnchorList {
 				if ( curAnchor.special ) {
 
 					shapeRenderer.begin( ShapeType.Line );
-					shapeRenderer.line( curAnchor.position.x
-							- curAnchor.buffer.x, curAnchor.position.y
-							- curAnchor.buffer.y, curAnchor.position.x
-							+ curAnchor.buffer.x, curAnchor.position.y
-							+ curAnchor.buffer.y );
-					shapeRenderer.line( curAnchor.position.x
-							- curAnchor.buffer.x, curAnchor.position.y
-							+ curAnchor.buffer.y, curAnchor.position.x
-							+ curAnchor.buffer.x, curAnchor.position.y
-							- curAnchor.buffer.y );
+					shapeRenderer.line( drawRect.x, drawRect.y, drawRect.x
+							+ drawRect.width, drawRect.y + drawRect.height );
+					shapeRenderer.line( drawRect.x, drawRect.y
+							+ drawRect.height, drawRect.x + drawRect.width,
+							drawRect.y );
 					shapeRenderer.end( );
 				}
 			}
@@ -233,7 +229,7 @@ public class AnchorList {
 			vectDist.x = pair.first.position.x - pair.second.position.x;
 			vectDist.x = Math.abs( vectDist.x );
 			vectDist.x += ( pair.first.buffer.x + pair.second.buffer.x );
-			
+
 			// set y distance
 			vectDist.y = pair.first.position.y - pair.second.position.y;
 			vectDist.y = Math.abs( vectDist.y );

@@ -331,9 +331,10 @@ public class Camera {
 		float newZoom = 1f;
 
 		Vector2 longestDist = anchorList.getLongestXYDist( );
-		if ( longestDist.x > longestDist.y ) {
+		Vector2 distFromEdge = new Vector2(longestDist.x - screenBounds.width, longestDist.y - screenBounds.height);
+		if ( distFromEdge.x > distFromEdge.y ) {
 			newZoom = longestDist.x / viewportWidth;
-		} else if ( longestDist.y > longestDist.x ) {
+		} else if ( distFromEdge.y > distFromEdge.x ) {
 			newZoom = longestDist.y / viewportHeight;
 		}
 		if ( newZoom > 1f ) {
