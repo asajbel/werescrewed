@@ -102,10 +102,10 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		player1 = new PlayerBuilder( ).name( "player1" ).world( world )
 				.position( 1f * TILE, 1f * TILE  ).buildPlayer( );
 		player2 = new PlayerBuilder( ).name( "player2" ).world( world )
-				.position( 1f * TILE, 1f * TILE ).buildPlayer( );
+				.position( 1f * TILE, 1f * TILE  ).buildPlayer( );
 
-		// to see finale: 175 * TILE, 96 * TILE
-		// START : 1* TILE, 1* TILE 
+		// END: 175f * TILE, 96f * TILE
+		// START : 1f * TILE, 1f * TILE 
 
 		floor1( );
 		floor2( );
@@ -137,7 +137,7 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		skel1.addKinematicPlatform( ground );
 
 		wall = platBuilder.position( 0, 99 * TILE ).name( "wall1" )
-				.dimensions( 2, 200 ).texture( testTexture ).kinematic( )
+				.dimensions( 2, 250 ).texture( testTexture ).kinematic( )
 				.oneSided( false ).restitution( 0.0f ).buildTilePlatform( );
 		wall.setCategoryMask( Util.KINEMATIC_OBJECTS, Util.CATEGORY_EVERYTHING );
 		skel1.addKinematicPlatform( wall );
