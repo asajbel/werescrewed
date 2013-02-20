@@ -126,7 +126,9 @@ public class Player extends Entity {
 		body.setBullet( true );
 		playerState = PlayerState.Standing;
 		inputHandler = new PlayerInputHandler( this.name );
-		anchor = new Anchor(true, body.getWorldCenter( ).mul( Util.BOX_TO_PIXEL ), new Vector2(128f, 128f), world, 0f);
+		anchor = new Anchor( true, new Vector2( body.getWorldCenter( ).x
+				* Util.BOX_TO_PIXEL, body.getWorldCenter( ).y
+				* Util.BOX_TO_PIXEL ), new Vector2( 128f, 128f ), world, 0f );
 		anchor.special = true;
 		AnchorList.getInstance( ).addAnchor( anchor );
 
@@ -151,7 +153,7 @@ public class Player extends Entity {
 	public void update( float deltaTime ) {
 		super.update( deltaTime );
 		if ( name.equals( "player1" ) ) {
-		//	Gdx.app.log( "playerState", "" + playerState );
+			// Gdx.app.log( "playerState", "" + playerState );
 		}
 		if ( kinematicTransform ) {
 			// setPlatformTransform( platformOffset );
