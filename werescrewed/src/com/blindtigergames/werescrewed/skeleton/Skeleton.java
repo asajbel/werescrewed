@@ -13,6 +13,7 @@ import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.joint.RevoluteJointBuilder;
 import com.blindtigergames.werescrewed.platforms.Platform;
 import com.blindtigergames.werescrewed.platforms.TiledPlatform;
+import com.blindtigergames.werescrewed.rope.Rope;
 import com.blindtigergames.werescrewed.screws.Screw;
 import com.blindtigergames.werescrewed.screws.StrippedScrew;
 import com.blindtigergames.werescrewed.util.Util;
@@ -120,6 +121,11 @@ public class Skeleton extends Platform {
     		 addKinematicPlatform( platform );
      }
      
+     public void addRope( Rope rope ) {
+         new RevoluteJointBuilder( world ).skeleton( this ).bodyB( rope.getFirstLink( ) )
+                 .limit( true ).lower( 0 ).upper( 0 ).build();
+         looseEntity.add( rope.getFirstLink( ) );
+     }
      /**
       * 
       * @param ss -  add stripped screw onto the skeleton

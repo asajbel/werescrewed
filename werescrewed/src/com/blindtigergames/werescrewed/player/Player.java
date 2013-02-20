@@ -513,8 +513,7 @@ public class Player extends Entity {
 								- ( sprite.getWidth( ) / 4.0f ),
 						currentScrew.getPosition( ).y * Util.BOX_TO_PIXEL
 								- ( sprite.getHeight( ) / 4.0f ) ),
-						SCREW_ATTACH_SPEED, false,
-						PuzzleType.OVERRIDE_ENTITY_MOVER, LinearAxis.DIAGONAL );
+						SCREW_ATTACH_SPEED, false, LinearAxis.DIAGONAL, 0 );
 				playerState = PlayerState.Screwing;
 				setGrounded( true );
 			}

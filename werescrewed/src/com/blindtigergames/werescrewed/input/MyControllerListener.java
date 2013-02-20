@@ -486,7 +486,7 @@ public class MyControllerListener implements ControllerListener {
 	private void rightStickScrew( ) {
 
 		currRightAnalogAngle = ( int ) Math.toDegrees( Math.atan2( -axisRX, -axisRY ) ) + 180;
-		System.out.println("curr: " + currRightAnalogAngle + ", prev: " + prevRightAnalogAngle);
+		//System.out.println("curr: " + currRightAnalogAngle + ", prev: " + prevRightAnalogAngle);
 		// First mode is sets the Previous Angle when it is moved from the
 		// center
 		// then when the stick is moved it checks to see if its different from

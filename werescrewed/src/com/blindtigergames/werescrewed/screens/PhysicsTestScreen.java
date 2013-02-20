@@ -25,7 +25,6 @@ import com.blindtigergames.werescrewed.entity.builders.PlatformBuilder;
 import com.blindtigergames.werescrewed.entity.builders.PlayerBuilder;
 import com.blindtigergames.werescrewed.entity.builders.RopeBuilder;
 import com.blindtigergames.werescrewed.entity.builders.ScrewBuilder;
-import com.blindtigergames.werescrewed.entity.mover.LerpFromCurrentPos;
 import com.blindtigergames.werescrewed.entity.mover.LerpMover;
 import com.blindtigergames.werescrewed.entity.mover.LinearAxis;
 import com.blindtigergames.werescrewed.entity.mover.PistonTweenMover;
@@ -126,6 +125,9 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		testRope = ropeBuilder.position( 8f, 1.5f ).width( 16f ).height( 64f )
 				.links( 5 ).buildRope( );
 
+
+		testRope = ropeBuilder.position( 1000f, 600f ).width( 16f ).height( 64f ).links( 5 ).buildRope( );
+		
 		// rope = new Rope( "rope", new Vector2 (2000.0f * Util.PIXEL_TO_BOX,
 		// 400.0f* Util.PIXEL_TO_BOX), null, world );
 		// Add players
@@ -251,8 +253,8 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		LerpMover lm2 = new LerpMover( movingTP.body.getPosition( ).mul( Util.BOX_TO_PIXEL ), 
 				new Vector2(
 				movingTP.body.getPosition( ).x,
-				movingTP.body.getPosition( ).y + 0.3f ).mul( Util.BOX_TO_PIXEL ), 1f, false,
-				PuzzleType.PUZZLE_SCREW_CONTROL, LinearAxis.HORIZONTAL );
+				movingTP.body.getPosition( ).y + 0.3f ).mul( Util.BOX_TO_PIXEL ), 0.001f, false,
+				 LinearAxis.VERTICAL, 0 );
 		puzzleScrew.puzzleManager.addEntity( movingTP );
 		puzzleScrew.puzzleManager.addMover( movingTP.name, lm2 );
 
@@ -269,8 +271,8 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		LerpMover lm = new LerpMover( movingTP.body.getPosition( ).mul( Util.BOX_TO_PIXEL ), 
 				new Vector2(
 				movingTP.body.getPosition( ).x + 1.75f,
-				movingTP.body.getPosition( ).y ).mul( Util.BOX_TO_PIXEL ), 1f, false,
-				PuzzleType.PUZZLE_SCREW_CONTROL, LinearAxis.HORIZONTAL );
+				movingTP.body.getPosition( ).y ).mul( Util.BOX_TO_PIXEL ),
+				LinearAxis.HORIZONTAL );
 		puzzleScrew2.puzzleManager.addEntity( movingTP );
 		puzzleScrew2.puzzleManager.addMover( movingTP.name, lm );
 		skeleton.addScrewForDraw( puzzleScrew2 );

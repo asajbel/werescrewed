@@ -60,7 +60,7 @@ class MainMenuScreen implements com.badlogic.gdx.Screen {
 			System.exit( 1 );
 		}
 		if ( Gdx.input.isKeyPressed( Keys.ENTER ) ) {
-			ScreenManager.getInstance( ).show( ScreenType.PHYSICS );
+			ScreenManager.getInstance( ).show( ScreenType.PLAYTEST );
 		}
 	}
 
