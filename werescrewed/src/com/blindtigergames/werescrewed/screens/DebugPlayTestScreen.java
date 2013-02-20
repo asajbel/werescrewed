@@ -100,9 +100,9 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 
 		// Initialize players
 		player1 = new PlayerBuilder( ).name( "player1" ).world( world )
-				.position( 1f * TILE, 1f * TILE ).buildPlayer( );
+				.position( 177f * TILE, 93f * TILE ).buildPlayer( );
 		player2 = new PlayerBuilder( ).name( "player2" ).world( world )
-				.position(1f * TILE, 1f * TILE).buildPlayer( );
+				.position(177f * TILE, 93f * TILE).buildPlayer( );
 
 		// END: 175f * TILE, 96f * TILE
 		// START : 1f * TILE, 1f * TILE 
@@ -713,9 +713,11 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		skeleton.addScrewForDraw( puzzleScrew2 );
 
 		RopeBuilder ropeBuilder = new RopeBuilder( world );
-		testRope = ropeBuilder.position( 19.1f, 12.8f ).width( 16f )
+		testRope = ropeBuilder.position( 157f * TILE, 105 * TILE ).width( 16f )
 				.height( 64f ).links( 5 ).buildRope( );
 		skel9.addRope( testRope );
+		
+		StrippedScrew ropeScrew = new StrippedScrew( "ropeScrew", world, new Vector2 ( 157f * TILE, 94 * TILE ), testRope.getLastLink( ) );
 
 		plat = platBuilder.position( 175f * TILE, 94 * TILE ).name( "plat11" )
 				.dimensions( 6, 1 ).texture( testTexture ).kinematic( )

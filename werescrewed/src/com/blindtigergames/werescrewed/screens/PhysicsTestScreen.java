@@ -62,12 +62,13 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 	private SBox2DDebugRenderer debugRenderer;
 	private Player player1, player2;
 	@SuppressWarnings( "unused" )
-	private TiledPlatform tiledPlat, ground, movingTP, singTile, rectile;
+	private TiledPlatform tiledPlat, ground, movingTP, singTile, rectile, ropePlatform;
 	private PlatformBuilder platBuilder;
 	private Skeleton skeleton;
 	private Skeleton rootSkeleton;
 	private ArrayList< StrippedScrew > climbingScrews;
 	private Rope testRope;
+	private StrippedScrew ropeScrew;
 	private RopeBuilder ropeBuilder;
 	private boolean debug = true;
 	private boolean debugTest = true;
@@ -125,9 +126,23 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		initClimbingScrews( );
 		initPulley( );
 
-		testRope = ropeBuilder.position( 2000f, 450f ).width( 16f ).height( 64f )
+		testRope = ropeBuilder.position( 2400f, 450f ).width( 16f ).height( 64f )
 				.links( 5 ).buildRope( );
 
+		TiledPlatform topPlatform = platBuilder.width( 10 ).height( 1 )
+				.oneSided( true ).position( 2400, 480 ).texture( testTexture )
+				.friction( 1f ).staticBody( ).buildTilePlatform( );
+		
+		testRope.attachEntityToTop( topPlatform, false );
+		
+		TiledPlatform bottomPlatform = platBuilder.width( 10 ).height( 1 )
+				.oneSided( true ).position( 0, 0 ).texture( testTexture )
+				.friction( 1f ).dynamic( ).buildTilePlatform( );
+		
+		testRope.attachEntityToBottom ( bottomPlatform, true );
+		
+		
+		//ropeScrew = new StrippedScrew ( "ropeScrew", world, new Vector2 (2000, 64), testRope.getLastLink( ));
 
 		
 		// rope = new Rope( "rope", new Vector2 (2000.0f * Util.PIXEL_TO_BOX,

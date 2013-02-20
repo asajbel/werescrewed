@@ -45,7 +45,7 @@ public class Rope {
 			int links, World world ) {
 
 		Link topPiece = new Link( "top", world, pos, null, widthHeight );
-		topPiece.body.setType( BodyType.StaticBody );
+		topPiece.body.setType( BodyType.DynamicBody );
 		linkParts.add( topPiece );
 
 		for ( int i = 0; i < links; ++i ) {
@@ -59,20 +59,33 @@ public class Rope {
 			linkParts.add( temp );
 
 		}
-
+/*
 		screw = new StrippedScrew( "rope screw", world, new Vector2(
 				getEnd( ).body.getWorldCenter( ).x * Util.BOX_TO_PIXEL,
 				getEnd( ).body.getWorldCenter( ).y * Util.BOX_TO_PIXEL
 						- widthHeight.y ), getEnd( ) );
-		screw.body.getFixtureList( ).get( 0 ).setSensor( false );
+		screw.body.getFixtureList( ).get( 0 ).setSensor( false );*/
 	}
 
-	public void attachEntityToTop ( Entity entity ){
+	public void attachEntityToTop ( Entity entity, boolean move ){
+		if ( move ) {
+			entity.setPosition( getFirstLink( ).getPosition( ) );
+		}
 			RevoluteJointDef revoluteJointDef = new RevoluteJointDef( );
 			revoluteJointDef.initialize( getFirstLink().body, entity.body, getFirstLink().body.getPosition( ) );
 			revoluteJointDef.enableMotor = false;
 			world.createJoint( revoluteJointDef );
 	}
+	
+	public void attachEntityToBottom ( Entity entity, boolean move ){
+		if ( move ) {
+			entity.setPosition( getLastLink( ).getPosition( ) );
+		}
+		RevoluteJointDef revoluteJointDef = new RevoluteJointDef( );
+		revoluteJointDef.initialize( getLastLink().body, entity.body, getLastLink().body.getPosition( ) );
+		revoluteJointDef.enableMotor = false;
+		world.createJoint( revoluteJointDef );
+}
 	
 	public void update( float deltatime ) {
 		// if(Gdx.input.isKeyPressed( Keys.O ))
@@ -83,7 +96,8 @@ public class Rope {
 	}
 
 	public void draw( SpriteBatch batch ) {
-		screw.draw( batch );
+		if (screw != null)
+			screw.draw( batch );
 	}
 
 	/**
