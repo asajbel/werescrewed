@@ -65,6 +65,7 @@ public class Camera {
 	private boolean debugInput;
 	private boolean debugRender;
 	private ShapeRenderer shapeRenderer;
+	private boolean debugTurnOffZoom;
 
 	public Camera( float viewportWidth, float viewportHeight, World world ) {
 		initializeVars( viewportWidth, viewportHeight, world );
@@ -113,6 +114,7 @@ public class Camera {
 		debugRender = false;
 		shapeRenderer = new ShapeRenderer( );
 		avgOutside = new Vector2( 0f, 0f );
+		debugTurnOffZoom = false;
 	}
 
 	/**
@@ -248,7 +250,8 @@ public class Camera {
 //			if ( camera.zoom > 1f )
 //				zoomIn( );
 //		}
-		zoom();
+		if(!debugTurnOffZoom)
+			zoom();
 		translateLogic();
 	}
 
@@ -432,5 +435,9 @@ public class Camera {
 		if ( Gdx.input.isKeyPressed( Input.Keys.NUM_2 ) ) {
 			camera.zoom = 2f;
 		}
+	}
+	
+	public void turnOffZoom(){
+		debugTurnOffZoom = true;
 	}
 }
