@@ -36,11 +36,11 @@ public class Camera {
 	// translation
 	// private static final float SPEED_TARGET_MODIFIER = 5f;
 	private static final float BUFFER_RATIO = .5f;
-	private static final float ACCELERATION_RATIO = .005f;
-	private static final float DECELERATION_RATIO = .03f;
-	private static final float ACCELERATION_BUFFER_RATIO = .5f;
-	private static final float TARGET_BUFFER_RATIO = .05f;
-	private static final float MINIMUM_FOLLOW_SPEED = 3f;
+	private static final float ACCELERATION_RATIO = .001f;
+	private static final float DECELERATION_RATIO = .002f;
+	private static final float ACCELERATION_BUFFER_RATIO = .1f;
+	private static final float TARGET_BUFFER_RATIO = .02f;
+	private static final float MINIMUM_FOLLOW_SPEED = .1f;
 	private static final float MAX_ANGLE_DIFF = 45f;
 	private float accelerationBuffer;
 	private Vector2 translateVelocity;
@@ -245,12 +245,11 @@ public class Camera {
 
 		if ( outsideTrue ) {
 			if ( !insideTargetBuffer ) {
-				translate( );
+				translateState = true;;
 			}
-		} else {
-			translateLogic( );
 		}
-		zoomOut( );
+		translateLogic( );
+		zoom( );
 	}
 
 	/**
@@ -267,7 +266,8 @@ public class Camera {
 				tempAngle = anchorList.getMidpointVelocity( ).angle( )
 						- translateVelocity.angle( );
 				tempAngle = Math.abs( tempAngle );
-				translate( );
+				camera.position.x = translateTarget.x;
+				camera.position.y = translateTarget.y;
 				if ( anchorList.getMidpointVelocity( ).len( ) < MINIMUM_FOLLOW_SPEED
 						|| tempAngle > MAX_ANGLE_DIFF ) {
 					translateState = false;
@@ -320,25 +320,12 @@ public class Camera {
 	}
 
 	/**
-	 * zoom camera to keep anchors on screen soon this will be obsolete...
-	 * soon...
-	 */
-	private void zoom( ) {
-		float temp = AnchorList.getInstance( ).specialDistance( )
-				/ viewportHeight;
-		if ( temp > 1f )
-			camera.zoom = temp;
-		translateBuffer.width = screenBounds.width * BUFFER_RATIO;
-		translateBuffer.height = screenBounds.height * BUFFER_RATIO;
-	}
-
-	/**
-	 * zoom out
+	 * zoom
 	 * 
 	 * @param modifier
 	 *            modifies zoom rate
 	 */
-	private void zoomOut( ) {
+	private void zoom( ) {
 		// camera.zoom += modifier * zoomSpeed;
 		// if ( zoomSpeed < ZOOM_MAX_SPEED )
 		// zoomSpeed += ZOOM_ACCELERATION;
@@ -355,17 +342,6 @@ public class Camera {
 			translateBuffer.width = screenBounds.width * BUFFER_RATIO;
 			translateBuffer.height = screenBounds.height * BUFFER_RATIO;
 		}
-	}
-
-	/**
-	 * zoom in
-	 */
-	private void zoomIn( ) {
-		camera.zoom -= zoomSpeed;
-		if ( zoomSpeed < ZOOM_MAX_SPEED )
-			zoomSpeed += ZOOM_ACCELERATION;
-		translateBuffer.width = screenBounds.width * BUFFER_RATIO;
-		translateBuffer.height = screenBounds.height * BUFFER_RATIO;
 	}
 
 	@SuppressWarnings( "unused" )
