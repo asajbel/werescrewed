@@ -81,7 +81,7 @@ public class Player extends Entity {
 	private boolean jumpPressedController;
 	private boolean screwButtonHeld;
 	private boolean kinematicTransform = false;
-	// private Vector2 platformOffset;
+	private float footFriction = PLAYER_FRICTION;
 
 	public int grabCounter = 0;
 	public int jumpCounter = 0;
@@ -153,7 +153,7 @@ public class Player extends Entity {
 	public void update( float deltaTime ) {
 		super.update( deltaTime );
 		if ( name.equals( "player1" ) ) {
-			// Gdx.app.log( "playerState", "" + playerState );
+			//Gdx.app.log( "playerState", "" + playerState );
 		}
 		if ( kinematicTransform ) {
 			// setPlatformTransform( platformOffset );
@@ -172,6 +172,8 @@ public class Player extends Entity {
 				updateKeyboard( deltaTime );
 			}
 		}
+		
+		//updateFootFriction();
 
 		// debug stuff
 		// Hit backspace to kill the player or respawn him
@@ -469,6 +471,7 @@ public class Player extends Entity {
 	 */
 	public void maxFriction( ) {
 		feet.setFriction( PLAYER_FRICTION );
+		footFriction = PLAYER_FRICTION;
 	}
 
 	/**
@@ -476,6 +479,28 @@ public class Player extends Entity {
 	 */
 	public void noFriction( ) {
 		feet.setFriction( 0.0f );
+		footFriction = 0f;
+	}
+	
+	/**
+	 * slowly increases friction to avoid that silly stopping bug.
+	 * Call this every player.update()
+	 */
+	private void updateFootFriction( ){
+		if ( isGrounded() ){
+			//increase friction while on ground
+			if ( footFriction < PLAYER_FRICTION ){
+				footFriction += 0.1f;
+				if ( footFriction > PLAYER_FRICTION ){
+					footFriction = PLAYER_FRICTION;
+				}
+			}
+		}else {
+			footFriction = 0f;
+		}
+		Gdx.app.log( name, feet.getFriction()+"" );
+		//Gdx.app.log( name, feet.getFriction()+"" );
+		feet.setFriction( footFriction );
 	}
 
 	/**
@@ -516,8 +541,7 @@ public class Player extends Entity {
 								- ( sprite.getWidth( ) / 4.0f ),
 						currentScrew.getPosition( ).y * Util.BOX_TO_PIXEL
 								- ( sprite.getHeight( ) / 4.0f ) ),
-						SCREW_ATTACH_SPEED, false,
-						PuzzleType.OVERRIDE_ENTITY_MOVER, LinearAxis.DIAGONAL );
+						SCREW_ATTACH_SPEED, false, LinearAxis.DIAGONAL, 0 );
 				playerState = PlayerState.Screwing;
 				setGrounded( true );
 			}
@@ -596,6 +620,7 @@ public class Player extends Entity {
 				}
 				jump( );
 				// jumpSound.play( );
+				//noFriction( );
 			} else {
 				// let the bottom player jump
 				// with a large amount of force

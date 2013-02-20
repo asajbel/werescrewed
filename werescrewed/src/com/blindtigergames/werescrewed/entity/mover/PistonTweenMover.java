@@ -10,6 +10,7 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.joints.PrismaticJoint;
 import com.blindtigergames.werescrewed.entity.tween.PlatformAccessor;
 import com.blindtigergames.werescrewed.platforms.Platform;
+import com.blindtigergames.werescrewed.screws.PuzzleScrew;
 
 /**
  * This mover will infinitely move a platform in a piston fashion.
@@ -83,7 +84,7 @@ public class PistonTweenMover extends TweenMover implements IMover {
 	}
 	
 	@Override
-	public void runPuzzleMovement( float screwVal, Platform p ) {
+	public void runPuzzleMovement( PuzzleScrew screw, float screwVal, Platform p ) {
 		System.out.println( "piston mover run puzzle" );
 		//addwaypoint to originposition then reset
 		//DON"T USE THIS MOVER FOR THIS

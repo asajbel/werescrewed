@@ -272,8 +272,7 @@ public class IMoverGameScreen implements com.badlogic.gdx.Screen {
 				new Vector2( movingTP.body.getPosition( ).x, movingTP.body
 						.getPosition( ).y ).mul( Util.BOX_TO_PIXEL ),
 				new Vector2( movingTP.body.getPosition( ).x, movingTP.body
-						.getPosition( ).y + 0.3f ).mul( Util.BOX_TO_PIXEL ),
-				1f, true, PuzzleType.PUZZLE_SCREW_CONTROL, LinearAxis.VERTICAL );
+						.getPosition( ).y + 0.3f ).mul( Util.BOX_TO_PIXEL ), LinearAxis.VERTICAL );
 		puzzleScrew.puzzleManager.addEntity( movingTP );
 		puzzleScrew.puzzleManager.addMover( movingTP.name, lm2 );
 
@@ -293,8 +292,7 @@ public class IMoverGameScreen implements com.badlogic.gdx.Screen {
 				movingTP.body.getPosition( ).y ).mul( Util.BOX_TO_PIXEL ),
 				new Vector2( movingTP.body.getPosition( ).x + 1.75f,
 						movingTP.body.getPosition( ).y )
-						.mul( Util.BOX_TO_PIXEL ), 1f, true,
-				PuzzleType.PUZZLE_SCREW_CONTROL, LinearAxis.HORIZONTAL );
+						.mul( Util.BOX_TO_PIXEL ), LinearAxis.HORIZONTAL );
 		puzzleScrew2.puzzleManager.addEntity( movingTP );
 		puzzleScrew2.puzzleManager.addMover( movingTP.name, lm2 );
 		skeleton.addScrewForDraw( puzzleScrew2 );

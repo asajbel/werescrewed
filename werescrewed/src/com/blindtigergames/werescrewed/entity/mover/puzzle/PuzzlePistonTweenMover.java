@@ -12,6 +12,7 @@ import com.blindtigergames.werescrewed.entity.mover.SteeringOutput;
 import com.blindtigergames.werescrewed.entity.mover.TweenMover;
 import com.blindtigergames.werescrewed.entity.tween.PlatformAccessor;
 import com.blindtigergames.werescrewed.platforms.Platform;
+import com.blindtigergames.werescrewed.screws.PuzzleScrew;
 
 /**
  * This mover will infinitely move a platform in a piston fashion.
@@ -60,7 +61,7 @@ public class PuzzlePistonTweenMover extends TweenMover implements IMover {
 	}
 	
 	@Override
-	public void runPuzzleMovement( float screwVal, Platform p ) {
+	public void runPuzzleMovement( PuzzleScrew screw, float screwVal, Platform p ) {
 		//addwaypoint to originposition then reset
 		if( p.mover == null && screwVal >= 0.5 && hasNoTweens() ) {
 			p.setMover(this);

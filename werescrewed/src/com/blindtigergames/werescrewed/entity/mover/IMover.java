@@ -2,6 +2,7 @@ package com.blindtigergames.werescrewed.entity.mover;
 
 import com.badlogic.gdx.physics.box2d.Body;
 import com.blindtigergames.werescrewed.platforms.Platform;
+import com.blindtigergames.werescrewed.screws.PuzzleScrew;
 
 /*******************************************************************************
  * IMover Interface - Move a Box2D body
@@ -38,7 +39,7 @@ public interface IMover {
 	 * @param platform
 	 *            - the platform the will be altered by this mover
 	 */
-	public void runPuzzleMovement( float screwVal, Platform p );
+	public void runPuzzleMovement( PuzzleScrew screw, float screwVal, Platform p );
 	
 	/**
 	 * returns the behavior for which this mover will be used in a puzzle
