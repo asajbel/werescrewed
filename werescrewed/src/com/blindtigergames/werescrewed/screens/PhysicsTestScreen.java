@@ -125,11 +125,10 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		initClimbingScrews( );
 		initPulley( );
 
-		testRope = ropeBuilder.position( 8f, 1.5f ).width( 16f ).height( 64f )
+		testRope = ropeBuilder.position( 2000f, 450f ).width( 16f ).height( 64f )
 				.links( 5 ).buildRope( );
 
 
-		testRope = ropeBuilder.position( 1000f, 600f ).width( 16f ).height( 64f ).links( 5 ).buildRope( );
 		
 		// rope = new Rope( "rope", new Vector2 (2000.0f * Util.PIXEL_TO_BOX,
 		// 400.0f* Util.PIXEL_TO_BOX), null, world );
