@@ -113,8 +113,8 @@ public class Anchor {
 	 * @return
 	 */
 	public Rectangle getBufferRectangle( ) {
-		return new Rectangle( position.x - ( buffer.x / 2 ), position.y
-				- ( buffer.y / 2 ), buffer.x, buffer.y );
+		return new Rectangle( position.x - buffer.x, position.y - buffer.y,
+				2 * buffer.x, 2 * buffer.y );
 	}
 
 	/**

@@ -36,11 +36,11 @@ public class Camera {
 	// translation
 	// private static final float SPEED_TARGET_MODIFIER = 5f;
 	private static final float BUFFER_RATIO = .5f;
-	private static final float ACCELERATION_RATIO = .005f;
-	private static final float DECELERATION_RATIO = .03f;
-	private static final float ACCELERATION_BUFFER_RATIO = .5f;
-	private static final float TARGET_BUFFER_RATIO = .05f;
-	private static final float MINIMUM_FOLLOW_SPEED = 3f;
+	private static final float ACCELERATION_RATIO = .001f;
+	private static final float DECELERATION_RATIO = .002f;
+	private static final float ACCELERATION_BUFFER_RATIO = .1f;
+	private static final float TARGET_BUFFER_RATIO = .02f;
+	private static final float MINIMUM_FOLLOW_SPEED = .1f;
 	private static final float MAX_ANGLE_DIFF = 45f;
 	private float accelerationBuffer;
 	private Vector2 translateVelocity;
@@ -53,11 +53,12 @@ public class Camera {
 	private boolean translateState;
 	private Vector2 avgOutside;
 	private boolean insideTargetBuffer;
+	private float targetToBufferRatio;
 
 	// zoom
-	private static final float ZOOM_ACCELERATION = 0f;
-	private static final float ZOOM_MAX_SPEED = 5f;
-	private float zoomSpeed = .01f;
+	private static final float ZOOM_ACCELERATION = 1f;
+	private static final float ZOOM_MAX_SPEED = .02f;
+	private float zoomSpeed;
 
 	private AnchorList anchorList;
 
@@ -65,6 +66,7 @@ public class Camera {
 	private boolean debugInput;
 	private boolean debugRender;
 	private ShapeRenderer shapeRenderer;
+	private boolean debugTurnOffZoom;
 
 	public Camera( float viewportWidth, float viewportHeight, World world ) {
 		initializeVars( viewportWidth, viewportHeight, world );
@@ -82,8 +84,8 @@ public class Camera {
 				this.viewportHeight * .5f, 0f );
 		position = camera.position;
 		center2D = new Vector2( position.x, position.y );
-		screenBounds = new Rectangle( position.x, position.y, viewportHeight,
-				viewportWidth );
+		screenBounds = new Rectangle( position.x - viewportWidth / 2,
+				position.y - viewportHeight / 2, viewportWidth, viewportHeight );
 
 		this.translateBuffer = new Rectangle( camera.position.x,
 				camera.position.y, this.viewportWidth * BUFFER_RATIO,
@@ -101,6 +103,8 @@ public class Camera {
 				* ACCELERATION_BUFFER_RATIO;
 		translateState = true;
 		insideTargetBuffer = false;
+		zoomSpeed = 0f;
+		targetToBufferRatio = 1f;
 
 		anchorList = AnchorList.getInstance( camera );
 		anchorList.clear( );
@@ -113,6 +117,7 @@ public class Camera {
 		debugRender = false;
 		shapeRenderer = new ShapeRenderer( );
 		avgOutside = new Vector2( 0f, 0f );
+		debugTurnOffZoom = false;
 	}
 
 	/**
@@ -149,8 +154,8 @@ public class Camera {
 		position = camera.position;
 		center2D.x = position.x;
 		center2D.y = position.y;
-		screenBounds.x = position.x;
-		screenBounds.y = position.y;
+		screenBounds.x = position.x - viewportWidth / 2;
+		screenBounds.y = position.y - viewportHeight / 2;
 		screenBounds.width = camera.zoom * viewportWidth;
 		screenBounds.height = camera.zoom * viewportHeight;
 
@@ -159,7 +164,8 @@ public class Camera {
 		setTranslateTarget( );
 
 		// check if center is inside target buffer
-		if ( center2D.dst( translateTarget ) < targetBuffer )
+		targetToBufferRatio = center2D.dst( translateTarget ) / targetBuffer;
+		if ( targetToBufferRatio < 1f )
 			insideTargetBuffer = true;
 		else
 			insideTargetBuffer = false;
@@ -208,7 +214,6 @@ public class Camera {
 				&& ( rect1.y + rect1.height ) < rect2.y + rect2.height )
 			returnValue = false;
 		else {
-			System.out.println( rect1 );
 			returnValue = true;
 		}
 
@@ -227,7 +232,9 @@ public class Camera {
 		// the bounds of the screen, normalizes it, then adds then all
 		// together to come up with a pseudo average
 		for ( Anchor curAnchor : anchorList.anchorList ) {
-			if ( curAnchor.activated && rectOutsideRect( curAnchor.getBufferRectangle( ), screenBounds ) ) {
+			if ( ( curAnchor.activated || curAnchor.special )
+					&& rectOutsideRect( curAnchor.getBufferRectangle( ),
+							screenBounds ) ) {
 				outsideTrue = true;
 				Vector2.tmp.x = curAnchor.position.x - translateTarget.x;
 				Vector2.tmp.y = curAnchor.position.y - translateTarget.y;
@@ -238,18 +245,13 @@ public class Camera {
 			}
 		}
 
-//		if ( outsideTrue ) {
-//			zoomOut( );
-//			if ( !insideTargetBuffer ) {
-//				translate( );
-//			}
-//		} else {
-//			translateLogic( );
-//			if ( camera.zoom > 1f )
-//				zoomIn( );
-//		}
-		zoom();
-		translateLogic();
+		if ( outsideTrue ) {
+			if ( !insideTargetBuffer ) {
+				translateState = true;;
+			}
+		}
+		translateLogic( );
+		zoom( );
 	}
 
 	/**
@@ -266,7 +268,8 @@ public class Camera {
 				tempAngle = anchorList.getMidpointVelocity( ).angle( )
 						- translateVelocity.angle( );
 				tempAngle = Math.abs( tempAngle );
-				translate( );
+				camera.position.x = translateTarget.x;
+				camera.position.y = translateTarget.y;
 				if ( anchorList.getMidpointVelocity( ).len( ) < MINIMUM_FOLLOW_SPEED
 						|| tempAngle > MAX_ANGLE_DIFF ) {
 					translateState = false;
@@ -319,38 +322,34 @@ public class Camera {
 	}
 
 	/**
-	 * zoom camera to keep anchors on screen soon this will be obsolete...
-	 * soon...
+	 * zoom out or in depending on anchor buffer rectangles
+	 * 
+	 * @param modifier
+	 *            modifies zoom rate
 	 */
 	private void zoom( ) {
-		float temp = AnchorList.getInstance( ).specialDistance( )
-				/ viewportHeight;
-		if ( temp > 1f )
-			camera.zoom = temp;
-		translateBuffer.width = screenBounds.width * BUFFER_RATIO;
-		translateBuffer.height = screenBounds.height * BUFFER_RATIO;
-	}
+		float newZoom = 1f;
 
-	/**
-	 * zoom out
-	 */
-	private void zoomOut( ) {
-		camera.zoom += zoomSpeed;
-		if ( zoomSpeed < ZOOM_MAX_SPEED )
-			zoomSpeed += ZOOM_ACCELERATION;
-		translateBuffer.width = screenBounds.width * BUFFER_RATIO;
-		translateBuffer.height = screenBounds.height * BUFFER_RATIO;
+		Vector2 longestDist = anchorList.getLongestXYDist( );
+		Vector2 distFromEdge = new Vector2(longestDist.x - screenBounds.width, longestDist.y - screenBounds.height);
+		if ( distFromEdge.x > distFromEdge.y ) {
+			newZoom = longestDist.x / viewportWidth;
+		} else if ( distFromEdge.y > distFromEdge.x ) {
+			newZoom = longestDist.y / viewportHeight;
+		}
+		if ( newZoom > 1f ) {
+			zoomSteer(newZoom);
+			translateBuffer.width = screenBounds.width * BUFFER_RATIO;
+			translateBuffer.height = screenBounds.height * BUFFER_RATIO;
+		}
 	}
-
+	
 	/**
-	 * zoom in
+	 * steer zoom to the new zoom
+	 * @param newZoom
 	 */
-	private void zoomIn( ) {
-		camera.zoom -= zoomSpeed;
-		if ( zoomSpeed < ZOOM_MAX_SPEED )
-			zoomSpeed += ZOOM_ACCELERATION;
-		translateBuffer.width = screenBounds.width * BUFFER_RATIO;
-		translateBuffer.height = screenBounds.height * BUFFER_RATIO;
+	private void zoomSteer(float newZoom) {
+		camera.zoom = newZoom;
 	}
 
 	@SuppressWarnings( "unused" )
@@ -432,5 +431,9 @@ public class Camera {
 		if ( Gdx.input.isKeyPressed( Input.Keys.NUM_2 ) ) {
 			camera.zoom = 2f;
 		}
+	}
+	
+	public void turnOffZoom(){
+		debugTurnOffZoom = true;
 	}
 }

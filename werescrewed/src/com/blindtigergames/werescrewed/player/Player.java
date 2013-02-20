@@ -49,6 +49,7 @@ public class Player extends Entity {
 	public final static int SCREW_JUMP_STEPS = 20;
 	public final static float SCREW_ATTACH_SPEED = 0.1f;
 	public final static int GRAB_COUNTER_STEPS = 5;
+	public final static Vector2 ANCHOR_BUFFER_SIZE = new Vector2(400f, 256f);
 	public float JUMP_IMPULSE = 0.13f;
 
 	public Fixture feet;
@@ -128,7 +129,7 @@ public class Player extends Entity {
 		inputHandler = new PlayerInputHandler( this.name );
 		anchor = new Anchor( true, new Vector2( body.getWorldCenter( ).x
 				* Util.BOX_TO_PIXEL, body.getWorldCenter( ).y
-				* Util.BOX_TO_PIXEL ), new Vector2( 128f, 128f ), world, 0f );
+				* Util.BOX_TO_PIXEL ), new Vector2( ANCHOR_BUFFER_SIZE.x, ANCHOR_BUFFER_SIZE.y ), world, 0f );
 		anchor.special = true;
 		AnchorList.getInstance( ).addAnchor( anchor );
 
@@ -1136,7 +1137,9 @@ public class Player extends Entity {
 		// If player hits the screw button and is in distance
 		// then attach the player to the screw
 		if ( ( controllerListener.screwPressed( ) )
-				&& ( playerState != PlayerState.Screwing && playerState != PlayerState.JumpingOffScrew ) ) {
+				&& ( playerState != PlayerState.Screwing 
+				&& playerState != PlayerState.JumpingOffScrew )
+				&& !controllerListener.jumpPressed( )) {
 			if ( hitScrew && !screwButtonHeld ) {
 				attachToScrew( );
 				screwButtonHeld = true;
