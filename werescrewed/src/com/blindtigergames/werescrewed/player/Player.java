@@ -155,6 +155,8 @@ public class Player extends Entity {
 		super.update( deltaTime );
 		if ( name.equals( "player1" ) ) {
 			//Gdx.app.log( "playerState", "" + playerState );
+			//System.out.println("x: " + controllerListener.analogLeftAxisX( )
+			//		+ ", y: " + controllerListener.analogLeftAxisY( ));
 		}
 		if ( kinematicTransform ) {
 			// setPlatformTransform( platformOffset );
@@ -373,17 +375,21 @@ public class Player extends Entity {
 		leftAnalogY = controllerListener.analogLeftAxisY( ) * -1;
 		float multiplierY = 1.2f;
 		float multiplierX = 0.6f;
-		if ( leftAnalogY < -0.1f )
+		if ( leftAnalogY < -0.0f ){
 			multiplierY = 0.1f;
+			multiplierX = 0.7f;
+		}
 		if ( leftAnalogX < 0.01f && leftAnalogY < 0.01f && leftAnalogX > -0.01f
 				&& leftAnalogY > -0.01f ) {
 			multiplierX = 0.0f;
 			multiplierY = 1.25f;
 			leftAnalogY = 1.0f;
 		}
-		if ( ( leftAnalogX > 0.7f || leftAnalogX < -0.7f )
-				&& ( leftAnalogY < 0.3f && leftAnalogY > -0.3f ) ) {
-			multiplierX = 0.8f;
+		if ( ( leftAnalogX > 0.5f || leftAnalogX < -0.5f )
+				&& ( leftAnalogY < 0.7f && leftAnalogY > -0.7f ) ) {
+			multiplierX = 0.7f;
+			multiplierY = 1.25f;
+			System.out.println("x: " + leftAnalogX + ", y: " + leftAnalogY);
 		}
 		body.applyLinearImpulse(
 				new Vector2( JUMP_SCREW_IMPULSE * leftAnalogX * multiplierX,
