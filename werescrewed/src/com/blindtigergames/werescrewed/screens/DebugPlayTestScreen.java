@@ -100,9 +100,9 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 
 		// Initialize players
 		player1 = new PlayerBuilder( ).name( "player1" ).world( world )
-				.position( 112f * TILE, 83f * TILE ).buildPlayer( );
+				.position( 1f * TILE, 1f * TILE  ).buildPlayer( );
 		player2 = new PlayerBuilder( ).name( "player2" ).world( world )
-				.position( 121f * TILE, 83f * TILE ).buildPlayer( );
+				.position( 1f * TILE, 1f * TILE ).buildPlayer( );
 
 		// to see finale: 175 * TILE, 96 * TILE
 		// START : 1* TILE, 1* TILE 
@@ -717,7 +717,7 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 				.height( 64f ).links( 5 ).buildRope( );
 		skel9.addRope( testRope );
 
-		plat = platBuilder.position( 175f * TILE, 95 * TILE ).name( "plat11" )
+		plat = platBuilder.position( 175f * TILE, 94 * TILE ).name( "plat11" )
 				.dimensions( 6, 1 ).texture( testTexture ).kinematic( )
 				.friction( 1.0f ).oneSided( true ).restitution( 0 )
 				.buildTilePlatform( );
@@ -791,11 +791,13 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 			if ( !inceptionhorn.isPlaying( ) ) {
 				inceptionhorn.play( );
 			}
-			if ( endgameCounter == 0f )
-				rootSkeleton.mover = new RockingMover( -0.1f, 0.8f );
+			if ( endgameCounter == 0f ){
+				rootSkeleton.mover = new RockingMover( -0.1f, 0.5f );
+				cam.turnOffZoom( );
+			}
 			endgameCounter += deltaTime;
 			cam.camera.zoom += 0.01f;
-			if ( endgameCounter > 18f )
+			if ( endgameCounter > 15f )
 				Gdx.app.exit( );
 		}
 
