@@ -322,7 +322,7 @@ public class Camera {
 	}
 
 	/**
-	 * zoom
+	 * zoom out or in depending on anchor buffer rectangles
 	 * 
 	 * @param modifier
 	 *            modifies zoom rate
