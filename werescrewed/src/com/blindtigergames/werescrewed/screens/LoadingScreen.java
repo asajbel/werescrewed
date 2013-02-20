@@ -2,6 +2,7 @@ package com.blindtigergames.werescrewed.screens;
 
 import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.files.FileHandle;
@@ -12,28 +13,35 @@ import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.gui.Label;
 
 
-/*
- * Doesn't work yet
- */
-
 public class LoadingScreen extends Screen {
 	
-	private BitmapFont font 	= null;
-	private int scaleSize 		= 10;
-	private Label loadingLabel 	= null;
-	private SpriteBatch batch 	= null;
+	private BitmapFont font 			= null;
+	private int scaleSize 				= 7;
+	private Label loadingLabel 			= null;
+	private Label loadingCompleteLabel 	= null;
+	private SpriteBatch batch 			= null;
+	private String screenTag			= null;
 	
 	
 	/**
-	 * Loading Screen Constructor
+	 * Displays the loading screen and loads the appropriate contents for
+	 * the next screen based on the screenTag that is submitted
+	 * 
+	 * @author Nick Patti
+	 * 
+	 * @param st
+	 * 			A string to designate which files to load for the next screen
 	 */
-	public LoadingScreen(){		
+	public LoadingScreen(String st){		
 		
 		font = new BitmapFont();
 		font.scale(scaleSize);
 		
 		loadingLabel = new Label("Loading... 0%", font);
+		loadingCompleteLabel = new Label("Press 'A'!!", font);
 		batch = new SpriteBatch();
+		
+		screenTag = st;
 		
 		if (Gdx.app.getType() == ApplicationType.Android) {
 			WereScrewedGame.dirHandle = Gdx.files.internal("data/");
@@ -42,10 +50,21 @@ public class LoadingScreen extends Screen {
 			WereScrewedGame.dirHandle = Gdx.files.internal("assets/data/");
 		}
 		
-		String screenTag = "level2";
 		loadFilesInDirectory(WereScrewedGame.dirHandle, screenTag);
 	}
+	
+	
+	/**
+	 * Only loads the contents of "common," created so that some of the other code
+	 * didn't have to change.
+	 * 
+	 * @param none
+	 */
+	public LoadingScreen(){
+		this(null);
+	}
 
+	
 	/**
 	 * A recursive function to load all files in a given directory, and load the files
 	 * directories in directories
@@ -93,6 +112,7 @@ public class LoadingScreen extends Screen {
 		Gdx.app.log("GOING UP", "returning to " + currentDirectory.parent( ));
 	}
 
+	
 	/**
 	 * A small babby function to load the current file
 	 * 
@@ -139,30 +159,46 @@ public class LoadingScreen extends Screen {
 		float percentLoaded = WereScrewedGame.manager.getProgress( ) * 100;
 		loadingLabel.setCaption("Loading... " + (int)percentLoaded + "%");
 		
-		//draw the label on the screen
 		batch.begin( );
-		loadingLabel.draw( batch );
-		batch.end();
 		
 		//begin loading the assets
 		if ( WereScrewedGame.manager.update( ) ) { 
 			
 			//assets have been loaded!
-			Gdx.app.log( "LoadingScreen.render", "Loading Complete!!" );
+			loadingLabel.setCaption("Loading Complete!!");
+			loadingCompleteLabel.draw( batch );
 			
-			//go to the physics screen
-			ScreenManager.getInstance( ).show( ScreenType.MAIN_MENU );
+			//ask the player to press a button to continue to the next screen
+			if(Gdx.input.isKeyPressed( Input.Keys.A )){
+				
+				//TODO: Use the screenTag to pick which screen to go to next
+				ScreenManager.getInstance( ).show( ScreenType.MAIN_MENU );	
+			}
 		}
-
+		
+		//draw the label on the screen
+		loadingLabel.draw( batch );
+		batch.end();
 	}
+	
 	
 	@Override
 	public void resize(int width, int height){
-		int centerX = width/2 - loadingLabel.getWidth()/2;
-		int centerY = height/2 + loadingLabel.getHeight()/2;
-		loadingLabel.setX(centerX);
-		loadingLabel.setY(centerY);
+		
+		//set position of the loading label
+		//TODO: Figure out a way to keep it in the center of the screen without rezizing
+		int loadingLabelX = width/2 - loadingLabel.getWidth()/2;
+		int loadingLabelY = height/2 + loadingLabel.getHeight();
+		loadingLabel.setX(loadingLabelX);
+		loadingLabel.setY(loadingLabelY);
+		
+		//set position of loading complete label
+		int loadingCompleteLabelX = width/2 - loadingCompleteLabel.getWidth()/2;
+		int loadingCompleteLabelY = height/2 - loadingCompleteLabel.getHeight()/3;
+		loadingCompleteLabel.setX(loadingCompleteLabelX);
+		loadingCompleteLabel.setY(loadingCompleteLabelY);
 	}
+	
 	
 	@Override
 	public void dispose( ) {

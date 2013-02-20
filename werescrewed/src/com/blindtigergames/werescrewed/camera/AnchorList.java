@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 
@@ -15,7 +16,12 @@ import com.badlogic.gdx.physics.box2d.World;
  ******************************************************************************/
 public class AnchorList {
 
-	private ArrayList< Anchor > anchorList;
+	protected class AnchorPair {
+		protected Anchor first;
+		protected Anchor second;
+	}
+
+	protected ArrayList< Anchor > anchorList;
 	private Vector2 sum;
 	private Vector2 midpoint2;
 	private Vector2 prevMidpoint;
@@ -76,9 +82,9 @@ public class AnchorList {
 				shapeRenderer.setProjectionMatrix( camera.combined );
 				shapeRenderer.begin( ShapeType.Rectangle );
 				shapeRenderer.identity( );
-				shapeRenderer.rect( curAnchor.position.x - curAnchor.buffer.x,
-						curAnchor.position.y - curAnchor.buffer.y,
-						curAnchor.buffer.x * 2, curAnchor.buffer.y * 2 );
+				Rectangle drawRect = curAnchor.getBufferRectangle( );
+				shapeRenderer.rect( drawRect.x, drawRect.y, drawRect.width,
+						drawRect.height );
 				shapeRenderer.end( );
 
 				// renders a cross through the square if the current anchor is
@@ -86,70 +92,15 @@ public class AnchorList {
 				if ( curAnchor.special ) {
 
 					shapeRenderer.begin( ShapeType.Line );
-					shapeRenderer.line( curAnchor.position.x
-							- curAnchor.buffer.x, curAnchor.position.y
-							- curAnchor.buffer.y, curAnchor.position.x
-							+ curAnchor.buffer.x, curAnchor.position.y
-							+ curAnchor.buffer.y );
-					shapeRenderer.line( curAnchor.position.x
-							- curAnchor.buffer.x, curAnchor.position.y
-							+ curAnchor.buffer.y, curAnchor.position.x
-							+ curAnchor.buffer.x, curAnchor.position.y
-							- curAnchor.buffer.y );
+					shapeRenderer.line( drawRect.x, drawRect.y, drawRect.x
+							+ drawRect.width, drawRect.y + drawRect.height );
+					shapeRenderer.line( drawRect.x, drawRect.y
+							+ drawRect.height, drawRect.x + drawRect.width,
+							drawRect.y );
 					shapeRenderer.end( );
 				}
 			}
 		}
-	}
-
-	/**
-	 * 
-	 * @param special
-	 *            Set true if creating a player anchor.
-	 * @param position
-	 *            Position of the current anchor
-	 * @return The id of the current anchor. Don't forget to update it!
-	 */
-	public int addAnchor( boolean special, Vector2 position, World world,
-			float radius ) {
-		return addAnchor( special, position, Anchor.DEFAULT_BUFFER, world,
-				radius );
-	}
-
-	/**
-	 * 
-	 * @param special
-	 *            Set true when creating a player anchor.
-	 * @param position
-	 *            Position of the current anchor
-	 * @param bufferWidth
-	 *            Width of a "buffer" square around anchor to keep within
-	 *            screen. Ex: jump height.
-	 * @return The id of the current anchor. Don't forget to update it!
-	 */
-	public int addAnchor( boolean special, Vector2 position, int bufferWidth,
-			World world, float radius ) {
-		return addAnchor( special, position, new Vector2( bufferWidth,
-				bufferWidth ), world, radius );
-	}
-
-	/**
-	 * 
-	 * @param special
-	 *            Set true when creating a player anchor.
-	 * @param position
-	 *            Position of the current anchor
-	 * @param Width
-	 *            and height of "buffer" around anchor to keep within screen.
-	 *            Ex: width/height of boss head.
-	 * @return The id of the current anchor. Don't forget to update it!
-	 */
-
-	public int addAnchor( boolean special, Vector2 position, Vector2 buffer,
-			World world, float radius ) {
-		int id = anchorList.size( );
-		addAnchor( new Anchor( special, position, buffer, world, radius ) );
-		return id;
 	}
 
 	public void addAnchor( Anchor newAnchor ) {
@@ -251,12 +202,41 @@ public class AnchorList {
 					specialMidpoint.x = curAnchor.position.x;
 					specialMidpoint.y = curAnchor.position.y;
 				} else {
-					specialMidpoint.sub( anchorList.get( 1 ).position );
+					specialMidpoint.sub( curAnchor.position );
 				}
 			}
 		}
 
 		return specialMidpoint.len( );
+	}
+
+	/**
+	 * get longest x and y distance between anchors plus their buffer widths and
+	 * heights respectively
+	 * 
+	 * @return a Vector 2 where: x = the longest x distance between anchors plus
+	 *         their buffer widths and y = the longest y distance between
+	 *         anchors plus their buffer heights
+	 */
+	public Vector2 getLongestXYDist( ) {
+		Vector2 vectDist = new Vector2( 0f, 0f );
+
+		// for now, just using distance between players
+		AnchorPair pair = getSpecialPair( );
+
+		if ( pair != null && pair.first != null && pair.second != null ) {
+			// set x distance
+			vectDist.x = pair.first.position.x - pair.second.position.x;
+			vectDist.x = Math.abs( vectDist.x );
+			vectDist.x += ( pair.first.buffer.x + pair.second.buffer.x );
+
+			// set y distance
+			vectDist.y = pair.first.position.y - pair.second.position.y;
+			vectDist.y = Math.abs( vectDist.y );
+			vectDist.y += ( pair.first.buffer.y + pair.second.buffer.y );
+		}
+
+		return vectDist;
 	}
 
 	public Vector2 getMidpoint( ) {
@@ -265,6 +245,30 @@ public class AnchorList {
 
 	public Vector2 getMidpointVelocity( ) {
 		return midpointVelocity;
+	}
+
+	protected AnchorPair getSpecialPair( ) {
+		AnchorPair returnPair = new AnchorPair( );
+		returnPair.first = null;
+		returnPair.second = null;
+		boolean foundFirst = false;
+		// for now, just the first 2 special anchors (the players)
+		for ( Anchor curAnchor : anchorList ) {
+			if ( curAnchor.special ) {
+				if ( !foundFirst ) {
+					returnPair.first = curAnchor;
+					foundFirst = true;
+				} else {
+					returnPair.second = curAnchor;
+					break;
+				}
+			}
+		}
+
+		if ( returnPair.first != null && returnPair.second != null )
+			return returnPair;
+		else
+			return null;
 	}
 
 	private void setMidpoint( ) {

@@ -8,10 +8,12 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.physics.box2d.joints.WeldJoint;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.joint.RevoluteJointBuilder;
 import com.blindtigergames.werescrewed.platforms.Platform;
 import com.blindtigergames.werescrewed.platforms.TiledPlatform;
+import com.blindtigergames.werescrewed.rope.Rope;
 import com.blindtigergames.werescrewed.screws.Screw;
 import com.blindtigergames.werescrewed.screws.StrippedScrew;
 import com.blindtigergames.werescrewed.util.Util;
@@ -26,19 +28,18 @@ import com.blindtigergames.werescrewed.util.Util;
  *         (i.e. It should have a list of non-jointed entities too.)
  */
 
-public class Skeleton extends Entity {
+public class Skeleton extends Platform {
 
     private ArrayList<Skeleton> childSkeletons;
     private ArrayList<Platform> dynamicPlatforms;
     private ArrayList<Platform> kinematicPlatforms;
     private ArrayList<Entity>   looseEntity; 
     private Texture foregroundTex;
-    private ArrayList< Screw > screws; //add all screws you want drawn    
-    
-    // private Skeleton(){};
+    private ArrayList< Screw > screws; //add all screws you want drawn
+    private ArrayList< Rope > ropes;
 
     public Skeleton( String n, Vector2 pos, Texture tex, World world ) {
-        super( n, pos, tex, null, false); // not constructing body class
+        super( n, pos, tex, world); // not constructing body class
         this.world = world;
         constructSkeleton( pos );
         this.dynamicPlatforms = new ArrayList<Platform>();
@@ -46,6 +47,8 @@ public class Skeleton extends Entity {
         kinematicPlatforms = new ArrayList< Platform >( );
         looseEntity = new ArrayList< Entity >();
         screws = new ArrayList<Screw>();
+        ropes = new ArrayList< Rope >( );
+        super.setSolid( false );
     }
 
     public void constructSkeleton( Vector2 pos ) {
@@ -60,7 +63,7 @@ public class Skeleton extends Entity {
 
     /**
      * Attach a platform to this skeleton that will freely rotate about the
-     * center
+     * center. Make sure the platform is dynamic
      * 
      * @param platform
      */
@@ -75,6 +78,7 @@ public class Skeleton extends Entity {
     
     /**
      * Add Kinamatic platform to this Skeleton
+     * @param Platform that's already set as kinematic
      */
     public void addKinematicPlatform( Platform platform ){
     	kinematicPlatforms.add( platform );
@@ -82,7 +86,7 @@ public class Skeleton extends Entity {
     
     /**
      * Attach a platform to this skeleton that rotates with a motor
-     * 
+     * the platform must already be set as dynamic
      * @param platform
      */
     public void addPlatformRotatingCenterWithMot( Platform platform, float rotSpeedInMeters ) {
@@ -118,6 +122,12 @@ public class Skeleton extends Entity {
     		 addDynamicPlatform( platform );
     	 else 
     		 addKinematicPlatform( platform );
+     }
+     
+     public void addRope( Rope rope ) {
+         new RevoluteJointBuilder( world ).skeleton( this ).bodyB( rope.getFirstLink( ) )
+                 .limit( true ).lower( 0 ).upper( 0 ).build();
+         ropes.add( rope );
      }
      
      /**
@@ -177,8 +187,12 @@ public class Skeleton extends Entity {
         	platform.body.setAwake( isAwake );
         }
         for ( Screw s: screws ) {
-        	s.body.setAwake( true );
+        	s.body.setAwake( isAwake );
         }
+        //TODO: add ropes to this function
+//        for ( Rope r: ropes ){
+//        	r.
+//        }
     }
     
     /**
@@ -186,10 +200,10 @@ public class Skeleton extends Entity {
      * @author stew
      */
     public void setSkeletonActiveRec( boolean isActive) {
-        for ( Skeleton skeleton : childSkeletons ) {
+    	setSkeletonActive(isActive);
+    	for ( Skeleton skeleton : childSkeletons ) {
             skeleton.setSkeletonActiveRec(isActive);
         }
-        setSkeletonActive(isActive);
     }
     
     /**
@@ -208,6 +222,10 @@ public class Skeleton extends Entity {
         for( Platform platform : kinematicPlatforms ){
         	platform.body.setActive( isActive );
         }
+        for ( Screw screw : screws ){
+        	screw.body.setActive( isActive );
+        }
+        /* TODO: add ropes */
     }
     
     /**
@@ -247,10 +265,10 @@ public class Skeleton extends Entity {
         updateEntityMovers( deltaTime );
         
         //recursively move all children skeletons by this moved updated pos*rot.
-        setPosRotChildSkeletons( );
+        setPosRotChildSkeletons( deltaTime );
         
         //Now we can rotate all kinematic entities connected by updated skeleton rot / position
-        setPosRotAllKinematicPlatforms();
+        setPosRotAllKinematicPlatforms(deltaTime);
         
         //Update children animations and stuff
         updateChildren( deltaTime );
@@ -284,6 +302,8 @@ public class Skeleton extends Entity {
     	for ( Platform p : kinematicPlatforms ) {
     		p.updateMover( deltaTime );
         } 
+    	
+    	/* TODO: add ropes and loose entity */
     }
 
     /****
@@ -305,6 +325,7 @@ public class Skeleton extends Entity {
         //should just be puzzle screws no other type need to be in the screws list
         //except for drawing
         for ( Screw s: screws ) {
+        	//if ( s.)
     		s.update( deltaTime );
         }
     }
@@ -349,28 +370,30 @@ public class Skeleton extends Entity {
      * update child skeletons based on rotation & position of this skeleton
      * TODO: OPTIMIZATION only call this when the skeleton has moved / rotated
      */
-    private void setPosRotChildSkeletons( ) {
+    private void setPosRotChildSkeletons( float deltaTime ) {
 		for ( Skeleton skeleton : childSkeletons ){
-			skeleton.body.setTransform( Util.PointOnCircle(
-							this.body.getPosition( ).dst( skeleton.body.getPosition( ) ), //radius
-							this.body.getAngle( ), this.body.getWorldCenter( ) ), //angle on circle, origin
-					this.body.getAngle( ) ); //set angle of child skeleton
+//			skeleton.body.setTransform( Util.PointOnCircle(
+//							this.body.getPosition( ).dst( skeleton.body.getPosition( ) ), //radius
+//							this.body.getAngle( ), this.body.getWorldCenter( ) ), //angle on circle, origin
+//					this.body.getAngle( ) ); //set angle of child skeleton
+//			
+			skeleton.setPosRotFromSkeleton( deltaTime, this );
 			//now recursively apply this change to child skeletons
-			skeleton.setPosRotChildSkeletons( );
+			skeleton.setPosRotChildSkeletons( deltaTime );
 		}
 	}
     
     /**
      * @author stew
      */
-    private void setPosRotAllKinematicPlatforms(){
+    private void setPosRotAllKinematicPlatforms(float deltaTime){
     	//first recursively set all kin platforms position
     	for ( Skeleton skeleton : childSkeletons ){
-    		skeleton.setPosRotAllKinematicPlatforms( );
+    		skeleton.setPosRotAllKinematicPlatforms(deltaTime);
     	}
     	//then set all kin platforms of this skeleton
     	for ( Platform platform : kinematicPlatforms ){
-    		platform.setPosRotFromSkeleton( this );
+    		platform.setPosRotFromSkeleton( deltaTime, this );
     	}
     }
     

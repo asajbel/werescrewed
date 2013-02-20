@@ -4,11 +4,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.physics.box2d.World;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.mover.IMover;
 import com.blindtigergames.werescrewed.platforms.Platform;
+import com.blindtigergames.werescrewed.screws.PuzzleScrew;
 
 /**
  * puzzle screw class for moving puzzle pieces
@@ -19,6 +19,7 @@ import com.blindtigergames.werescrewed.platforms.Platform;
 
 public class PuzzleManager {
 
+	
 	public PuzzleManager( World world ) {
 		puzzleEntities = new ArrayList< Entity >( );
 		puzzleMovers = new HashMap< String, IMover >( );
@@ -61,7 +62,6 @@ public class PuzzleManager {
 	 * @param pEs
 	 * @param movers
 	 */
-
 	public void createLists( ArrayList< Entity > pEs,
 			Map< String, IMover > movers ) {
 		puzzleEntities = pEs;
@@ -72,20 +72,18 @@ public class PuzzleManager {
 	 * applies movement to an entity or turns on/off movement for an entities
 	 * mover by using Entity.applyPuzzleMovement ( puzzleScrew.depth /
 	 * puzzleScrew.maxDepth ) puzzleScrew.depth / puzzleScrew.maxDepth can
-	 * either be a percentage of movement or it can be a boolean < 0.5f is yes
-	 * > 0.5f is no
+	 * either be a percentage of movement or it can be a boolean < 0.5f is yes >
+	 * 0.5f is no
 	 */
-	public void runElement( float screwVal ) {
+	public void runElement( PuzzleScrew screw, float screwVal ) {
 		for ( Entity e : puzzleEntities ) {
-			//if ( e.mover == null ) {
-				if ( puzzleMovers.containsKey( e.name ) ) {
-					//Gdx.app.log( "screw value", "" + screwVal );
-					puzzleMovers.get( e.name ).runPuzzleMovement( screwVal, ( Platform ) e );
-				}
-			//}
-		}
+			if ( puzzleMovers.containsKey( e.name ) ) {
+				puzzleMovers.get( e.name ).runPuzzleMovement( screw, screwVal,
+						( Platform ) e );
+			}
+		} 
 	}
-
+	
 	private ArrayList< Entity > puzzleEntities;
 	private Map< String, IMover > puzzleMovers;
 

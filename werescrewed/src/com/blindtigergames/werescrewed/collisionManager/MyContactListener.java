@@ -216,16 +216,6 @@ public class MyContactListener implements ContactListener {
 			}
 			if ( playerInvolved ) {
 				Player player = ( Player ) playerFix.getBody( ).getUserData( );
-				if ( objectFix.getBody( ).getUserData( ) instanceof Platform ) {
-					if ( objectFix.getBody( ).getType( ) == BodyType.KinematicBody) {
-						Platform plat = (Platform) objectFix.getBody( ).getUserData( );
-						if(plat.mover != null){
-							player.setMovingPlatformFlag( true );
-							player.setOffset( plat.getChangePosition( ) );
-							//Gdx.app.log( "x: " + plat.getChangePosition( ).x, "y: " + plat.getChangePosition( ).y );
-						}
-					}
-				}
 				if ( objectFix.getBody( ).getUserData( ) instanceof TiledPlatform ) {
 					TiledPlatform tilePlat = ( TiledPlatform ) objectFix
 							.getBody( ).getUserData( );
@@ -235,13 +225,16 @@ public class MyContactListener implements ContactListener {
 							isScrew = true;
 						}
 					}
-					if ( !isScrew ) {
+					///////////////////////////
+					// Does this do anything?
+					///////////////////////////
+					/*if ( !isScrew ) {
 						player.maxFriction( );
 						tilePlat.body.getFixtureList( ).get( 0 )
 								.setFriction( 1f );
 					} else {
 						player.noFriction( );
-					}
+					}*/
 					Vector2 platformPos = tilePlat.getPosition( );
 					Vector2 playerPos = player.getPosition( );
 					if ( tilePlat.getOneSided( ) ) {
@@ -304,13 +297,16 @@ public class MyContactListener implements ContactListener {
 							isScrew = true;
 						}
 					}
-					if ( !isScrew ) {
+					///////////////////////////
+					// Does this do anything?
+					///////////////////////////
+					/*if ( !isScrew ) {
 						player.maxFriction( );
 						tilePlat.body.getFixtureList( ).get( 0 )
 								.setFriction( 1f );
 					} else {
 						player.noFriction( );
-					}
+					}*/
 					Vector2 platformPos = tilePlat.getPosition( );
 					Vector2 playerPos = player.getPosition( );
 					if ( tilePlat.getOneSided( ) ) {

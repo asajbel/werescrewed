@@ -55,16 +55,16 @@ public class Entity {
 	 * @param solid
 	 *            boolean determining whether or not the player can stand on it
 	 */
-	public Entity( String name, EntityDef type, World world, Vector2 pos,
-			float rot, Vector2 scale, Texture texture, boolean solid,
-			float anchRadius) {
+	public Entity( String name, EntityDef type, World world,
+			Vector2 positionPixels, float rot, Vector2 scale, Texture texture,
+			boolean solid, float anchRadius ) {
 		this.construct( name, solid );
 		this.type = type;
 		this.world = world;
 		this.sprite = constructSprite( texture );
 		this.body = constructBodyByType( );
-		setPosition( pos );
-		if ( anchRadius >= 0 ) {
+		setPosition( positionPixels.mul( Util.PIXEL_TO_BOX ) );
+		if ( anchRadius > 0 ) {
 			Vector2 centPos = new Vector2( body.getWorldCenter( ).x
 					* Util.BOX_TO_PIXEL, body.getWorldCenter( ).y
 					* Util.BOX_TO_PIXEL );
@@ -72,13 +72,13 @@ public class Entity {
 			AnchorList.getInstance( ).addAnchor( anchor );
 		}
 	}
+
 	// Kevin: Why is this commented out?
 	/*
 	 * public Entity(String n, EntityDef d, World w, Vector2 pos, float rot,
 	 * Vector2 sca) { this(); name = n; type = d; world = w; constructSprite();
 	 * constructBody(pos.x, pos.y, sca.x, sca.y); }
 	 */
-
 
 	/**
 	 * Create entity by body. Debug constructor: Should be removed eventually.
@@ -93,8 +93,8 @@ public class Entity {
 	 * @param solid
 	 *            boolean determining whether or not the player can stand on it
 	 */
-	public Entity( String name, Vector2 positionPixels, Texture texture, Body body,
-			boolean solid ) {
+	public Entity( String name, Vector2 positionPixels, Texture texture,
+			Body body, boolean solid ) {
 		this.construct( name, solid );
 		this.sprite = constructSprite( texture );
 		this.body = body;
@@ -102,13 +102,13 @@ public class Entity {
 			world = body.getWorld( );
 			sprite.setScale( Util.PIXEL_TO_BOX );
 		}
-		setPosition( positionPixels );
+		// setPosition( positionPixels );
 	}
 
 	/**
 	 * Common sub-constructor that applies to all Entity() constructors.
 	 */
-	protected void construct(String name, boolean solid){
+	protected void construct( String name, boolean solid ) {
 		this.name = name;
 		this.solid = solid;
 		this.offset = new Vector2( 0.0f, 0.0f );
@@ -120,31 +120,46 @@ public class Entity {
 
 	/**
 	 * Set position of the body in meters.
+	 * 
 	 * @param xMeters
 	 * @param yMeters
 	 */
-	public void setPosition(float xMeters, float yMeters){
-		if (body != null){
-			body.setTransform(xMeters, yMeters, body.getAngle());
-		} else if (sprite != null){
-			sprite.setPosition(xMeters*Util.BOX_TO_PIXEL, yMeters*Util.BOX_TO_PIXEL);
+	public void setPosition( float xMeters, float yMeters ) {
+		if ( body != null ) {
+			body.setTransform( xMeters, yMeters, body.getAngle( ) );
+		} else if ( sprite != null ) {
+			sprite.setPosition( xMeters * Util.BOX_TO_PIXEL, yMeters
+					* Util.BOX_TO_PIXEL );
 		}
 	}
-	
+
 	/**
-	 * Set position by  meters!!
+	 * Set position by meters!!
+	 * 
 	 * @param positionMeters
 	 */
 	public void setPosition( Vector2 positionMeters ) {
-		setPosition(positionMeters.x,positionMeters.y);
+		setPosition( positionMeters.x, positionMeters.y );
 	}
 
 	/**
 	 * returns body position in meters.
-	 * @return Vector2 in meters
+	 * 
+	 * @return Vector2 in meters of bodie's world origin
 	 */
 	public Vector2 getPosition( ) {
 		return body.getPosition( );
+	}
+
+	/**
+	 * Use this position when setting relative position of platforms for paths
+	 * targets. ie you set a platform at (x,y) in meters, but the path takes in
+	 * pixels, so do something like platform. getPositionPixel().add(0,600)
+	 * 
+	 * @return world position of origin in PIXELS
+	 */
+	public Vector2 getPositionPixel( ) {
+		return body.getPosition( ).cpy( ).mul( Util.BOX_TO_PIXEL );
 	}
 
 	public void draw( SpriteBatch batch ) {
@@ -157,6 +172,9 @@ public class Entity {
 	}
 
 	public void update( float deltaTime ) {
+		if ( body != null && anchor != null ) {
+			updateAnchor( );
+		}
 		// animation stuff may go here
 	}
 
@@ -171,9 +189,6 @@ public class Entity {
 			if ( body != null ) {
 				if ( mover != null ) {
 					mover.move( deltaTime, body );
-				}
-				if ( anchor != null ) {
-					updateAnchor( );
 				}
 			}
 		}
@@ -230,7 +245,6 @@ public class Entity {
 		sprite.setOrigin( origin.x, origin.y );
 		return sprite;
 	}
-
 
 	public void Move( Vector2 vector ) {
 		Vector2 pos = body.getPosition( ).add( vector.mul( Util.PIXEL_TO_BOX ) );
@@ -431,5 +445,5 @@ public class Entity {
 				+ ", body.active:" + body.isActive( ) + ", body.awake:"
 				+ body.isAwake( );
 	}
-	
+
 }

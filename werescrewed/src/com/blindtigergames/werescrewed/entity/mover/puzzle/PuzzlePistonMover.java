@@ -6,6 +6,7 @@ import com.blindtigergames.werescrewed.entity.mover.IMover;
 import com.blindtigergames.werescrewed.entity.mover.PuzzleType;
 import com.blindtigergames.werescrewed.entity.mover.SteeringOutput;
 import com.blindtigergames.werescrewed.platforms.Platform;
+import com.blindtigergames.werescrewed.screws.PuzzleScrew;
 
 /**
  * Flips motor speed on prismatic joint so a piston will shoot up and
@@ -56,7 +57,7 @@ public class PuzzlePistonMover implements IMover {
     }
 	
 	@Override
-	public void runPuzzleMovement( float screwVal, Platform p ) {
+	public void runPuzzleMovement( PuzzleScrew screw, float screwVal, Platform p ) {
 
 	}
 	

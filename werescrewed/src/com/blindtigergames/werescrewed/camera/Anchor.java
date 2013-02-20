@@ -32,6 +32,12 @@ public class Anchor {
 	 * 
 	 * @param position
 	 *            starting position of anchor (in pixels)
+	 * @param world
+	 *            the box2d world
+	 * 
+	 * @param radius
+	 *            the float radial size of the anchor's body for activating and
+	 *            deactivating
 	 */
 	public Anchor( Vector2 position, World world, float radius ) {
 		this( false, position, DEFAULT_BUFFER, world, radius );
@@ -44,6 +50,13 @@ public class Anchor {
 	 *            starting position of anchor (in pixels)
 	 * @param buffer
 	 *            buffer around anchor which must always stay within view
+	 * 
+	 * @param world
+	 *            the box2d world
+	 * 
+	 * @param radius
+	 *            the float radial size of the anchor's body for activating and
+	 *            deactivating
 	 */
 	public Anchor( Vector2 position, Vector2 buffer, World world, float radius ) {
 		this( false, position, buffer, world, radius );
@@ -100,8 +113,8 @@ public class Anchor {
 	 * @return
 	 */
 	public Rectangle getBufferRectangle( ) {
-		return new Rectangle( position.x - ( buffer.x / 2 ), position.y
-				- ( buffer.y / 2 ), buffer.x, buffer.y );
+		return new Rectangle( position.x - buffer.x, position.y - buffer.y,
+				2 * buffer.x, 2 * buffer.y );
 	}
 
 	/**
