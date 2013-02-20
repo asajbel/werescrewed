@@ -39,7 +39,7 @@ public class LoadingScreen extends Screen {
 			WereScrewedGame.dirHandle = Gdx.files.internal("data/");
 		} else {
 		  // ApplicationType.Desktop ..
-			WereScrewedGame.dirHandle = Gdx.files.internal("assets/data/");
+			WereScrewedGame.dirHandle = Gdx.files.internal("assets/data");
 		}
 		
 		String screenTag = "level2";
@@ -63,7 +63,7 @@ public class LoadingScreen extends Screen {
 	 */
 	private void loadFilesInDirectory(FileHandle currentDirectory, String screenTag) {
 		Gdx.app.log("GOING DOWN", "now inside " + currentDirectory.name() );
-		
+				
 		for (FileHandle entry: currentDirectory.list()) {
 			Gdx.app.log( currentDirectory.name(), "found file " + entry.name() );
 		   

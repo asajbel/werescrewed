@@ -84,9 +84,14 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 
 		platBuilder = new PlatformBuilder( world );
 
+		WereScrewedGame.manager.load("data/common/tilesetTest.png", Texture.class);
+		
 		testTexture = WereScrewedGame.manager.get(
-				WereScrewedGame.dirHandle.path( ) + "/common/TilesetTest.png",
+				WereScrewedGame.dirHandle.path( ) + "/common/tilesetTest.png",
 				Texture.class );
+		
+		WereScrewedGame.manager.load("data/common/sounds/inceptionbutton.mp3", Texture.class);
+		
 		inceptionhorn = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 				+ "/common/sounds/inceptionbutton.mp3" );
 		endgameCounter = 0;
