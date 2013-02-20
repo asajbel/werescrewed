@@ -26,10 +26,12 @@ public enum ScreenType {
 			return new IntroScreen( );
 		}
 	},
+	//TODO: Do we need different enums for each of the loading screens,
+	//      since they'll each load different things depending on the level?
 	LOADING {
 		@Override
 		protected com.badlogic.gdx.Screen getScreenInstance( ) {
-			return new LoadingScreen( );
+			return new LoadingScreen();
 		}
 	},
 	PAUSE {
