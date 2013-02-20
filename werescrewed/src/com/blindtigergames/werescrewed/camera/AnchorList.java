@@ -15,6 +15,11 @@ import com.badlogic.gdx.physics.box2d.World;
  ******************************************************************************/
 public class AnchorList {
 
+	protected class AnchorPair {
+		protected Anchor first;
+		protected Anchor second;
+	}
+
 	protected ArrayList< Anchor > anchorList;
 	private Vector2 sum;
 	private Vector2 midpoint2;
@@ -101,56 +106,6 @@ public class AnchorList {
 			}
 		}
 	}
-
-//	/**
-//	 * 
-//	 * @param special
-//	 *            Set true if creating a player anchor.
-//	 * @param position
-//	 *            Position of the current anchor
-//	 * @return The id of the current anchor. Don't forget to update it!
-//	 */
-//	public int addAnchor( boolean special, Vector2 position, World world,
-//			float radius ) {
-//		return addAnchor( special, position, Anchor.DEFAULT_BUFFER, world,
-//				radius );
-//	}
-//
-//	/**
-//	 * 
-//	 * @param special
-//	 *            Set true when creating a player anchor.
-//	 * @param position
-//	 *            Position of the current anchor
-//	 * @param bufferWidth
-//	 *            Width of a "buffer" square around anchor to keep within
-//	 *            screen. Ex: jump height.
-//	 * @return The id of the current anchor. Don't forget to update it!
-//	 */
-//	public int addAnchor( boolean special, Vector2 position, int bufferWidth,
-//			World world, float radius ) {
-//		return addAnchor( special, position, new Vector2( bufferWidth,
-//				bufferWidth ), world, radius );
-//	}
-//
-//	/**
-//	 * 
-//	 * @param special
-//	 *            Set true when creating a player anchor.
-//	 * @param position
-//	 *            Position of the current anchor
-//	 * @param Width
-//	 *            and height of "buffer" around anchor to keep within screen.
-//	 *            Ex: width/height of boss head.
-//	 * @return The id of the current anchor. Don't forget to update it!
-//	 */
-//
-//	public int addAnchor( boolean special, Vector2 position, Vector2 buffer,
-//			World world, float radius ) {
-//		int id = anchorList.size( );
-//		addAnchor( new Anchor( special, position, buffer, world, radius ) );
-//		return id;
-//	}
 
 	public void addAnchor( Anchor newAnchor ) {
 		anchorList.add( newAnchor );
@@ -259,12 +214,65 @@ public class AnchorList {
 		return specialMidpoint.len( );
 	}
 
+	/**
+	 * get longest x and y distance between anchors plus their buffer widths and
+	 * heights respectively
+	 * 
+	 * @return a Vector 2 where: x = the longest x distance between anchors plus
+	 *         their buffer widths and y = the longest y distance between
+	 *         anchors plus their buffer heights
+	 */
+	public Vector2 getLongestXYDist( ) {
+		Vector2 vectDist = new Vector2( 0f, 0f );
+
+		// for now, just using distance between players
+		AnchorPair pair = getSpecialPair( );
+
+		if ( pair != null && pair.first != null && pair.second != null ) {
+			// set x distance
+			vectDist.x = pair.first.position.x - pair.second.position.x;
+			vectDist.x = Math.abs( vectDist.x );
+			vectDist.x += ( pair.first.buffer.x + pair.second.buffer.x );
+			
+			// set y distance
+			vectDist.y = pair.first.position.y - pair.second.position.y;
+			vectDist.y = Math.abs( vectDist.y );
+			vectDist.y += ( pair.first.buffer.y + pair.second.buffer.y );
+		}
+
+		return vectDist;
+	}
+
 	public Vector2 getMidpoint( ) {
 		return midpoint2;
 	}
 
 	public Vector2 getMidpointVelocity( ) {
 		return midpointVelocity;
+	}
+
+	protected AnchorPair getSpecialPair( ) {
+		AnchorPair returnPair = new AnchorPair( );
+		returnPair.first = null;
+		returnPair.second = null;
+		boolean foundFirst = false;
+		// for now, just the first 2 special anchors (the players)
+		for ( Anchor curAnchor : anchorList ) {
+			if ( curAnchor.special ) {
+				if ( !foundFirst ) {
+					returnPair.first = curAnchor;
+					foundFirst = true;
+				} else {
+					returnPair.second = curAnchor;
+					break;
+				}
+			}
+		}
+
+		if ( returnPair.first != null && returnPair.second != null )
+			return returnPair;
+		else
+			return null;
 	}
 
 	private void setMidpoint( ) {
