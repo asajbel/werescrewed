@@ -5,7 +5,6 @@ import java.util.Vector;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -20,12 +19,12 @@ import com.blindtigergames.werescrewed.screws.Screw;
 import com.blindtigergames.werescrewed.util.Util;
 
 /**
- * 
+ * Tiled platform that uses texture atlas
  * @author Ranveer / Stew / Anders
  * 
  */
 
-public class TiledPlatform extends Platform {
+public class TiledPlatform2 extends Platform {
 	protected class Tile {
 		public float xOffset, yOffset;
 		public Sprite tileSprite;
@@ -49,37 +48,33 @@ public class TiledPlatform extends Platform {
 
 	protected float tileHeight, tileWidth;
 	protected Vector2 bodypos;
-	protected TileSet tileSet;
+	protected TileSet2 tileSet; //TODO: TiledPlatform should take in a TileSet, not an atlas. a single Tileset can be used for all tiledplatforms
 
 	protected Shape shape;// = Shape.SINGLE;
 
 	protected Vector< Tile > tiles;
 
-	public TiledPlatform( String n, Vector2 pos, Texture tex, float width,
+	public TiledPlatform2( String n, Vector2 pos, TextureAtlas atlas, float width,
 			float height, boolean isOneSided, boolean isMoveable, World world ) {
-		super( n, pos, tex, world );
+		super( n, pos, null, world );
 		platType = PlatformType.TILED;
-		this.tileSet = new TileSet( tex );
+		this.tileSet = new TileSet2( atlas );
 		this.tileHeight = height;
 		this.tileWidth = width;
 
-		if ( height > 1 && width > 1 ) {
+		if ( tileHeight > 1 && tileWidth > 1 ) {
 			shape = Shape.RECTANGLE;
-		} else if ( width > 1 ) {
+		} else if ( tileWidth > 1 ) {
 			shape = Shape.HORIZONTAL;
-		} else if ( height > 1 ) {
+		} else if ( tileHeight > 1 ) {
 			shape = Shape.VERTICAL;
 		} else {
 			shape = Shape.SINGLE;
 		}
 
-//		if ( tex.getHeight( ) != 128 && tex.getWidth( ) != 128 ) {
-//			shape = Shape.SINGLE;
-//		}
-
-		this.width = width * tileConstant;
-		this.height = height * tileConstant;
-		constructTileBody( pos.x, pos.y, width, height );
+		this.width = tileWidth * tileConstant;
+		this.height = tileHeight * tileConstant;
+		constructTileBody( pos.x, pos.y, tileWidth, tileHeight );
 		body.setUserData( this );
 		setOneSided( isOneSided );
 		this.moveable = isMoveable;
@@ -121,8 +116,8 @@ public class TiledPlatform extends Platform {
 		switch ( shape ) {
 		case SINGLE:
 			temp = tileSet.getSingleTile( );
-			offset_x = temp.getWidth( ) / 2;
-			offset_y = temp.getHeight( ) / 2;
+			offset_x = 0;//temp.getWidth( ) / 2;
+			offset_y = 0;//temp.getHeight( ) / 2;
 			insub = setTile( temp, offset_x, offset_y );
 			tiles.add( insub );
 			break;
@@ -242,7 +237,8 @@ public class TiledPlatform extends Platform {
 	}
 
 	private Tile setTile( Sprite temp, float offset_x, float offset_y ) {
-		temp.setOrigin( offset_x, offset_y );
+		Gdx.app.log( temp.toString( ), temp.getOriginX( ) + " " + temp.getOriginY( ) );
+		temp.setOrigin( offset_x - temp.getOriginX( ), offset_y - temp.getOriginY( ) );
 		temp.setPosition( bodypos.x - offset_x, bodypos.y - offset_y );
 		temp.setRotation( MathUtils.radiansToDegrees * body.getAngle( ) );
 		return ( new Tile( offset_x, offset_y, temp ) );

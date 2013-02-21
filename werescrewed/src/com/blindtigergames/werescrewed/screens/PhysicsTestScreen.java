@@ -11,8 +11,10 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.joints.PrismaticJoint;
 import com.badlogic.gdx.physics.box2d.joints.PrismaticJointDef;
 import com.badlogic.gdx.physics.box2d.joints.PulleyJointDef;
@@ -39,6 +41,7 @@ import com.blindtigergames.werescrewed.entity.tween.PlatformAccessor;
 import com.blindtigergames.werescrewed.joint.JointFactory;
 import com.blindtigergames.werescrewed.platforms.Platform;
 import com.blindtigergames.werescrewed.platforms.TiledPlatform;
+import com.blindtigergames.werescrewed.platforms.TiledPlatform2;
 import com.blindtigergames.werescrewed.player.Player;
 import com.blindtigergames.werescrewed.rope.Rope;
 import com.blindtigergames.werescrewed.screws.BossScrew;
@@ -72,6 +75,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 	private RopeBuilder ropeBuilder;
 	private boolean debug = true;
 	private boolean debugTest = true;
+	TiledPlatform2 tp2;
 
 	/**
 	 * Defines all necessary components in a screen for testing different
@@ -105,6 +109,12 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 
 		testTexture = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 						+ "/common/TilesetTest.png", Texture.class );
+		
+		TextureAtlas atlas = new TextureAtlas( 
+				Gdx.files.internal( WereScrewedGame.dirHandle + "/common/tileset1.pack" ) );
+		
+		
+		
 
 
 		// Uncomment for test anchor
@@ -158,6 +168,9 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 				.position( 1.5f, 610.5f ).buildPlayer( );
 
 		// Add screws
+		
+		tp2 = new TiledPlatform2( "tp2", new Vector2(0,200), atlas, 1, 1, false, true, world );
+		tp2.body.setType( BodyType.KinematicBody );
 
 		rootSkeleton.addSkeleton( skeleton );
 
@@ -458,7 +471,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 	@Override
 	public void render( float deltaTime ) {
 		if ( Gdx.gl20 != null ) {
-			Gdx.gl20.glClearColor( 0.0f, 0f, 0.0f, 1.0f );
+			Gdx.gl20.glClearColor( 0.2f, 0.2f, 0.2f, 1.0f );
 			Gdx.gl20.glClear( GL20.GL_COLOR_BUFFER_BIT );
 		} else {
 			Gdx.gl10.glClearColor( 0.0f, 0f, 0.0f, 1.0f );
@@ -506,7 +519,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		testRope.update( deltaTime );
 		batch.setProjectionMatrix( cam.combined( ) );
 		batch.begin( );
-
+		tp2.draw( batch );
 		rootSkeleton.draw( batch );
 		testRope.draw( batch );
 		player1.draw( batch );
