@@ -169,7 +169,7 @@ public class LoadingScreen extends Screen {
 			loadingCompleteLabel.draw( batch );
 			
 			//ask the player to press a button to continue to the next screen
-			if(Gdx.input.isKeyPressed( Input.Keys.A )){
+			if(percentLoaded == 100){
 				
 				//TODO: Use the screenTag to pick which screen to go to next
 				ScreenManager.getInstance( ).show( ScreenType.MAIN_MENU );	
