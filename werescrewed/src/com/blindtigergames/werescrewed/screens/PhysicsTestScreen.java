@@ -109,9 +109,9 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		platBuilder = new PlatformBuilder( world );
 		ropeBuilder = new RopeBuilder( world );
 
-		testTexture = WereScrewedGame.manager.get(
-				WereScrewedGame.dirHandle.path( ) + "/common/TilesetTest.png",
-				Texture.class );
+		testTexture = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
+						+ "/common/TilesetTest.png", Texture.class );
+
 
 		// Uncomment for test anchor
 		// anchor = new Anchor( new Vector2( 7 * Util.BOX_TO_PIXEL,
@@ -288,7 +288,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		PuzzleScrew puzzleScrew = new PuzzleScrew( "001",
 				new Vector2( 32f, 32f ), 50, skeleton, world, 0, false );
 		puzzleScrew.puzzleManager.addEntity( flipPlat1 );
-		puzzleScrew.puzzleManager.addMover( flipPlat1.name, rm );
+		puzzleScrew.puzzleManager.addMover( rm );
 		
 		// also add a up mover to movingTP
 		LerpMover lm2 = new LerpMover( movingTP.body.getPosition( ).mul( Util.BOX_TO_PIXEL ), 
@@ -297,13 +297,13 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 				movingTP.body.getPosition( ).y + 0.3f ).mul( Util.BOX_TO_PIXEL ), 0.001f, false,
 				 LinearAxis.VERTICAL, 0 );
 		puzzleScrew.puzzleManager.addEntity( movingTP );
-		puzzleScrew.puzzleManager.addMover( movingTP.name, lm2 );
+		puzzleScrew.puzzleManager.addMover( lm2 );
 
 		rm = new RotateByDegree( -90.0f, 0.0f, 0, 0.5f );
 		PuzzlePistonTweenMover pptm = new PuzzlePistonTweenMover( flipPlat2,
 				new Vector2( 0, 100 ), 1, 1, 0, 0 );
 		puzzleScrew.puzzleManager.addEntity( flipPlat2 );
-		puzzleScrew.puzzleManager.addMover( flipPlat2.name, pptm );
+		puzzleScrew.puzzleManager.addMover( pptm );
 		skeleton.addScrewForDraw( puzzleScrew );
 
 		// lerp puzzle screw control
@@ -315,7 +315,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 				movingTP.body.getPosition( ).y ).mul( Util.BOX_TO_PIXEL ),
 				LinearAxis.HORIZONTAL );
 		puzzleScrew2.puzzleManager.addEntity( movingTP );
-		puzzleScrew2.puzzleManager.addMover( movingTP.name, lm );
+		puzzleScrew2.puzzleManager.addMover( lm );
 		skeleton.addScrewForDraw( puzzleScrew2 );
 
 	}
@@ -490,6 +490,9 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 
 		if ( Gdx.input.isKeyPressed( Input.Keys.ESCAPE ) ) {
 			ScreenManager.getInstance( ).show( ScreenType.PAUSE );
+		}
+		if ( Gdx.input.isKeyPressed( Input.Keys.NUM_1 ) ) {
+			ScreenManager.getInstance( ).show( ScreenType.WIN );
 		}
 		if ( Gdx.input.isKeyPressed( Keys.P ) ) {
 			System.exit( 0 );

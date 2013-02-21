@@ -41,7 +41,8 @@ public class Player extends Entity {
 	public final static float MAX_VELOCITY = 1.65f;
 	public final static float MIN_VELOCITY = 0.01f;
 	public final static float MOVEMENT_IMPULSE = 0.009f;
-	public final static float JUMP_SCREW_IMPULSE = 0.1f;
+	public final static float JUMP_SCREW_IMPULSE = 0.12f;
+	public final static float JUMP_CONTROL_MUTIPLIER = 0.5f;
 	public final static int JUMP_COUNTER = 10;
 	public final static float ANALOG_DEADZONE = 0.2f;
 	public final static float ANALOG_MAX_RANGE = 1.0f;
@@ -155,18 +156,19 @@ public class Player extends Entity {
 		super.update( deltaTime );
 		if ( name.equals( "player1" ) ) {
 			//Gdx.app.log( "playerState", "" + playerState );
+			//System.out.println(isGrounded());
 		}
 		if ( kinematicTransform ) {
 			// setPlatformTransform( platformOffset );
 			kinematicTransform = false;
 		}
 		if ( isDead ) {
-			body.setLinearVelocity( Vector2.Zero );
-			body.setFixedRotation( false );
-			body.setAngularVelocity( 0.1f );
+		//	body.setLinearVelocity( Vector2.Zero );
+		//	body.setFixedRotation( false );
+		//	body.setAngularVelocity( 0.1f );
 		} else {
-			body.setFixedRotation( true );
-			body.setTransform( body.getPosition( ).x, body.getPosition( ).y, 0 );
+		//	body.setFixedRotation( true );
+		//	body.setTransform( body.getPosition( ).x, body.getPosition( ).y, 0 );
 			if ( controller != null ) {
 				updateController( deltaTime );
 			} else {
@@ -319,7 +321,7 @@ public class Player extends Entity {
 		float temp = ( ( ( leftAnalogX - ANALOG_DEADZONE ) / ( ANALOG_MAX_RANGE - ANALOG_DEADZONE ) ) * ( MAX_VELOCITY - MIN_VELOCITY ) )
 				+ MIN_VELOCITY;
 		if ( body.getLinearVelocity( ).x < temp ) {
-			body.applyLinearImpulse( new Vector2( MOVEMENT_IMPULSE / 2, 0.0f ),
+			body.applyLinearImpulse( new Vector2( MOVEMENT_IMPULSE * JUMP_CONTROL_MUTIPLIER, 0.0f ),
 					body.getWorldCenter( ) );
 		}
 	}
@@ -335,7 +337,7 @@ public class Player extends Entity {
 				- MIN_VELOCITY;
 		if ( body.getLinearVelocity( ).x > temp ) {
 			body.applyLinearImpulse(
-					new Vector2( -MOVEMENT_IMPULSE / 2, 0.0f ),
+					new Vector2( -MOVEMENT_IMPULSE * JUMP_CONTROL_MUTIPLIER, 0.0f ),
 					body.getWorldCenter( ) );
 		}
 	}
@@ -370,25 +372,38 @@ public class Player extends Entity {
 	 */
 	public void jumpScrew( ) {
 		leftAnalogX = controllerListener.analogLeftAxisX( );
-		leftAnalogY = controllerListener.analogLeftAxisY( ) * -1;
-		float multiplierY = 1.2f;
-		float multiplierX = 0.6f;
-		if ( leftAnalogY < -0.1f )
-			multiplierY = 0.1f;
-		if ( leftAnalogX < 0.01f && leftAnalogY < 0.01f && leftAnalogX > -0.01f
-				&& leftAnalogY > -0.01f ) {
-			multiplierX = 0.0f;
-			multiplierY = 1.25f;
-			leftAnalogY = 1.0f;
+		leftAnalogY = controllerListener.analogLeftAxisY( ) ;
+//		float multiplierY = 1.2f;
+//		float multiplierX = 0.6f;
+//		if ( leftAnalogY < -0.1f )
+//			multiplierY = 0.1f;
+//		if ( leftAnalogX < 0.01f && leftAnalogY < 0.01f && leftAnalogX > -0.01f
+//				&& leftAnalogY > -0.01f ) {
+//			multiplierX = 0.0f;
+//			multiplierY = 1.25f;
+//			leftAnalogY = 1.0f;
+//		}
+//		if ( ( leftAnalogX > 0.7f || leftAnalogX < -0.7f )
+//				&& ( leftAnalogY < 0.3f && leftAnalogY > -0.3f ) ) {
+//			multiplierX = 0.8f;
+//		}
+//		body.applyLinearImpulse(
+//				new Vector2( JUMP_SCREW_IMPULSE * leftAnalogX * multiplierX,
+//						JUMP_SCREW_IMPULSE * leftAnalogY * multiplierY ), body
+//						.getWorldCenter( ) );
+//		setGrounded( false );
+		float yImpulse = JUMP_SCREW_IMPULSE;
+		if ( leftAnalogY > -0.7f ) {
+			if ( leftAnalogY > 0.01f || leftAnalogY < -0.01f ) {
+				if ( leftAnalogX > 0.01f || leftAnalogX < -0.01f ) {
+					float temp = ( leftAnalogY + 0.7f ) / 1.7f;
+					yImpulse -= temp * JUMP_SCREW_IMPULSE;
+				}
+			}
 		}
-		if ( ( leftAnalogX > 0.7f || leftAnalogX < -0.7f )
-				&& ( leftAnalogY < 0.3f && leftAnalogY > -0.3f ) ) {
-			multiplierX = 0.8f;
-		}
-		body.applyLinearImpulse(
-				new Vector2( JUMP_SCREW_IMPULSE * leftAnalogX * multiplierX,
-						JUMP_SCREW_IMPULSE * leftAnalogY * multiplierY ), body
-						.getWorldCenter( ) );
+		float xImpulse = leftAnalogX * JUMP_SCREW_IMPULSE * 0.1f;
+		body.applyLinearImpulse( new Vector2( xImpulse, yImpulse ),
+				body.getWorldCenter( ) );
 		setGrounded( false );
 	}
 
@@ -544,7 +559,7 @@ public class Player extends Entity {
 								- ( sprite.getHeight( ) / 4.0f ) ),
 						SCREW_ATTACH_SPEED, false, LinearAxis.DIAGONAL, 0 );
 				playerState = PlayerState.Screwing;
-				setGrounded( true );
+				setGrounded( false );
 			}
 		}
 	}
