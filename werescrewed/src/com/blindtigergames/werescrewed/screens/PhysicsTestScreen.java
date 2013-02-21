@@ -62,12 +62,13 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 	private SBox2DDebugRenderer debugRenderer;
 	private Player player1, player2;
 	@SuppressWarnings( "unused" )
-	private TiledPlatform tiledPlat, ground, movingTP, singTile, rectile;
+	private TiledPlatform tiledPlat, ground, movingTP, singTile, rectile, ropePlatform;
 	private PlatformBuilder platBuilder;
 	private Skeleton skeleton;
 	private Skeleton rootSkeleton;
 	private ArrayList< StrippedScrew > climbingScrews;
 	private Rope testRope;
+	private StrippedScrew ropeScrew;
 	private RopeBuilder ropeBuilder;
 	private boolean debug = true;
 	private boolean debugTest = true;
@@ -125,11 +126,24 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		initClimbingScrews( );
 		initPulley( );
 
-		testRope = ropeBuilder.position( 8f, 1.5f ).width( 16f ).height( 64f )
+		testRope = ropeBuilder.position( 2400f, 450f ).width( 16f ).height( 64f )
 				.links( 5 ).buildRope( );
 
+		TiledPlatform topPlatform = platBuilder.width( 10 ).height( 1 )
+				.oneSided( true ).position( 2400, 480 ).texture( testTexture )
+				.friction( 1f ).staticBody( ).buildTilePlatform( );
+		
+		testRope.attachEntityToTop( topPlatform, false );
+		
+		TiledPlatform bottomPlatform = platBuilder.width( 10 ).height( 1 )
+				.oneSided( true ).position( 0, 0 ).texture( testTexture )
+				.friction( 1f ).dynamic( ).buildTilePlatform( );
+		
+		testRope.attachEntityToBottom ( bottomPlatform, true );
+		
+		
+		//ropeScrew = new StrippedScrew ( "ropeScrew", world, new Vector2 (2000, 64), testRope.getLastLink( ));
 
-		testRope = ropeBuilder.position( 1000f, 600f ).width( 16f ).height( 64f ).links( 5 ).buildRope( );
 		
 		// rope = new Rope( "rope", new Vector2 (2000.0f * Util.PIXEL_TO_BOX,
 		// 400.0f* Util.PIXEL_TO_BOX), null, world );
@@ -253,7 +267,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		PuzzleScrew puzzleScrew = new PuzzleScrew( "001",
 				new Vector2( 32f, 32f ), 50, skeleton, world, 0, false );
 		puzzleScrew.puzzleManager.addEntity( flipPlat1 );
-		puzzleScrew.puzzleManager.addMover( flipPlat1.name, rm );
+		puzzleScrew.puzzleManager.addMover( rm );
 		
 		// also add a up mover to movingTP
 		LerpMover lm2 = new LerpMover( movingTP.body.getPosition( ).mul( Util.BOX_TO_PIXEL ), 
@@ -262,13 +276,13 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 				movingTP.body.getPosition( ).y + 0.3f ).mul( Util.BOX_TO_PIXEL ), 0.001f, false,
 				 LinearAxis.VERTICAL, 0 );
 		puzzleScrew.puzzleManager.addEntity( movingTP );
-		puzzleScrew.puzzleManager.addMover( movingTP.name, lm2 );
+		puzzleScrew.puzzleManager.addMover( lm2 );
 
 		rm = new RotateByDegree( -90.0f, 0.0f, 0, 0.5f );
 		PuzzlePistonTweenMover pptm = new PuzzlePistonTweenMover( flipPlat2,
 				new Vector2( 0, 100 ), 1, 1, 0, 0 );
 		puzzleScrew.puzzleManager.addEntity( flipPlat2 );
-		puzzleScrew.puzzleManager.addMover( flipPlat2.name, pptm );
+		puzzleScrew.puzzleManager.addMover( pptm );
 		skeleton.addScrewForDraw( puzzleScrew );
 
 		// lerp puzzle screw control
@@ -280,7 +294,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 				movingTP.body.getPosition( ).y ).mul( Util.BOX_TO_PIXEL ),
 				LinearAxis.HORIZONTAL );
 		puzzleScrew2.puzzleManager.addEntity( movingTP );
-		puzzleScrew2.puzzleManager.addMover( movingTP.name, lm );
+		puzzleScrew2.puzzleManager.addMover( lm );
 		skeleton.addScrewForDraw( puzzleScrew2 );
 
 	}
@@ -455,6 +469,9 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 
 		if ( Gdx.input.isKeyPressed( Input.Keys.ESCAPE ) ) {
 			ScreenManager.getInstance( ).show( ScreenType.PAUSE );
+		}
+		if ( Gdx.input.isKeyPressed( Input.Keys.NUM_1 ) ) {
+			ScreenManager.getInstance( ).show( ScreenType.WIN );
 		}
 		if ( Gdx.input.isKeyPressed( Keys.P ) ) {
 			System.exit( 0 );

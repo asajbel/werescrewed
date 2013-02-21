@@ -30,7 +30,7 @@ public class PuzzleScrew extends Screw {
 		maxDepth = max;
 		this.startDepth = depth = startDepth;
 		resetAble = resetable;
-		puzzleManager = new PuzzleManager( world );
+		puzzleManager = new PuzzleManager( this.name );
 		screwType = ScrewType.PUZZLE;
 
 		sprite.setColor( 16f/255f, 215f/255f, 96f/255f, 1.0f);
@@ -94,6 +94,16 @@ public class PuzzleScrew extends Screw {
 		if ( resetAble ) {
 			depth = startDepth;
 		}
+	}
+	
+	/**
+	 * fixes puzzle mechanics 
+	 * when this screw is being used in a puzzle 
+	 * with multiple puzzle screws
+	 * @param otherScrew
+	 */
+	public void fixConcurrentScrew( PuzzleScrew otherScrew ) {
+		depth = otherScrew.getDepth( );
 	}
 	
 	private void constructBody( Vector2 pos ) {

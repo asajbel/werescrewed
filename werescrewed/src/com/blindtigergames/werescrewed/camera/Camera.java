@@ -251,7 +251,8 @@ public class Camera {
 			}
 		}
 		translateLogic( );
-		zoom( );
+		if(!debugTurnOffZoom)
+			zoom( );
 	}
 
 	/**

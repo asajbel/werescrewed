@@ -105,9 +105,9 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 
 		// Initialize players
 		player1 = new PlayerBuilder( ).name( "player1" ).world( world )
-				.position( 1f * TILE, 1f * TILE  ).buildPlayer( );
+				.position(  175f * TILE, 96f * TILE ).buildPlayer( );
 		player2 = new PlayerBuilder( ).name( "player2" ).world( world )
-				.position( 1f * TILE, 1f * TILE  ).buildPlayer( );
+				.position(  175f * TILE, 96f * TILE).buildPlayer( );
 
 		// END: 175f * TILE, 96f * TILE
 		// START : 1f * TILE, 1f * TILE 
@@ -481,7 +481,7 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 				.skeleton( skel3 ).world( world ).buildStructureScrew( );
 		plat.addScrew( s4 );
 
-		ground = platBuilder.position( 160 * TILE, 45f * TILE )
+		ground = platBuilder.position( 160 * TILE, 46f * TILE )
 				.name( "ground4" ).dimensions( 50, 1 ).texture( testTexture )
 				.kinematic( ).oneSided( false ).restitution( 0 )
 				.buildTilePlatform( );
@@ -651,24 +651,24 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		LerpMover lm2 = new LerpMover( new Vector2( plat.body.getPosition( ).x
 				* Util.BOX_TO_PIXEL, plat.body.getPosition( ).y
 				* Util.BOX_TO_PIXEL ), new Vector2( plat.body.getPosition( ).x,
-				plat.body.getPosition( ).y + 1.5f ).mul( Util.BOX_TO_PIXEL ),
-				0.001f, false, LinearAxis.VERTICAL, 0, 0, 1f );
+				plat.body.getPosition( ).y + 1.5f ).mul( Util.BOX_TO_PIXEL ), LinearAxis.VERTICAL );
 
 		puzzleScrew.puzzleManager.addEntity( plat );
-		puzzleScrew.puzzleManager.addMover( plat.name, lm2 );
+		puzzleScrew.puzzleManager.addMover( lm2 );
 		skeleton.addScrewForDraw( puzzleScrew );
 
 		PuzzleScrew puzzleScrew2 = new PuzzleScrew( "001", new Vector2(
-				
-				113f * TILE, 83 * TILE ), 50, skel8, world, 50, false );
-		LerpMover lm3 = new LerpMover( new Vector2( plat.body.getPosition( ).x,
-				plat.body.getPosition( ).y + 1.5f ).mul( Util.BOX_TO_PIXEL ),
-				plat.body.getPosition( ).mul( Util.BOX_TO_PIXEL ), 0.001f,
-				false, LinearAxis.VERTICAL, 0, 1, 0f );
+				113f * TILE, 83 * TILE ), 50, skel8, world, 0, false );
+//		LerpMover lm3 = new LerpMover( new Vector2( plat.body.getPosition( ).x,
+//				plat.body.getPosition( ).y + 1.5f ).mul( Util.BOX_TO_PIXEL ),
+//				plat.body.getPosition( ).mul( Util.BOX_TO_PIXEL ), 0.001f,
+//				false, LinearAxis.VERTICAL, 0, 1, 0f );
 		
 
+		puzzleScrew.puzzleManager.addScrew( puzzleScrew2 );
+		puzzleScrew2.puzzleManager.addScrew( puzzleScrew );
 		puzzleScrew2.puzzleManager.addEntity( plat );
-		puzzleScrew2.puzzleManager.addMover( plat.name, lm3 );
+		puzzleScrew2.puzzleManager.addMover( lm2 );
 		skeleton.addScrewForDraw( puzzleScrew2 );
 
 		rootSkeleton.addSkeleton( skel8 );
@@ -699,7 +699,7 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		PuzzleRotateTweenMover rtm1 = new PuzzleRotateTweenMover( 1,
 				Util.PI / 2, true );
 		puzzleScrew.puzzleManager.addEntity( plat );
-		puzzleScrew.puzzleManager.addMover( plat.name, rtm1 );
+		puzzleScrew.puzzleManager.addMover( rtm1 );
 		skeleton.addScrewForDraw( puzzleScrew );
 
 		plat = platBuilder.position( 143f * TILE, 89 * TILE ).name( "plat11" )
@@ -714,14 +714,16 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		puzzleScrew2.puzzleManager.addEntity( plat );
 		PuzzleRotateTweenMover rtm2 = new PuzzleRotateTweenMover( 1,
 				Util.PI / 2, true );
-		puzzleScrew2.puzzleManager.addMover( plat.name, rtm2 );
+		puzzleScrew2.puzzleManager.addMover( rtm2 );
 		skeleton.addScrewForDraw( puzzleScrew2 );
 
 		RopeBuilder ropeBuilder = new RopeBuilder( world );
-		testRope = ropeBuilder.position( 19.1f, 12.8f ).width( 16f )
+		testRope = ropeBuilder.position( 157f * TILE, 105 * TILE ).width( 16f )
 				.height( 64f ).links( 5 ).buildRope( );
 		skel9.addRope( testRope );
-
+		
+		StrippedScrew ropeScrew = new StrippedScrew( "ropeScrew", world, new Vector2 ( 157f * TILE, 94 * TILE ), testRope.getLastLink( ) );
+		skel9.addScrewForDraw( ropeScrew );
 		plat = platBuilder.position( 175f * TILE, 94 * TILE ).name( "plat11" )
 				.dimensions( 6, 1 ).texture( testTexture ).kinematic( )
 				.friction( 1.0f ).oneSided( true ).restitution( 0 )
@@ -773,7 +775,7 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 
 		player1.update( deltaTime );
 		player2.update( deltaTime );
-		// testRope.update( deltaTime );
+		//testRope.update( deltaTime );
 
 		rootSkeleton.update( deltaTime );
 
@@ -783,7 +785,7 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		rootSkeleton.draw( batch );
 		player1.draw( batch );
 		player2.draw( batch );
-		// testRope.draw( batch );
+		testRope.draw( batch );
 
 
 		batch.end( );
@@ -801,9 +803,10 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 				cam.turnOffZoom( );
 			}
 			endgameCounter += deltaTime;
-			cam.camera.zoom += 0.01f;
-			if ( endgameCounter > 15f )
+			cam.camera.zoom += 0.015f;
+			if ( endgameCounter > 10f )
 				Gdx.app.exit( );
+				//ScreenManager.getInstance( ).show( ScreenType.MAIN_MENU );
 		}
 
 		world.step( 1 / 60f, 6, 6 );
