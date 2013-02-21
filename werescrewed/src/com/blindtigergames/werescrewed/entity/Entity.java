@@ -1,7 +1,6 @@
 package com.blindtigergames.werescrewed.entity;
 
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
@@ -67,7 +66,7 @@ public class Entity {
 		this.sprite = constructSprite( texture );
 		this.body = constructBodyByType( );
 		setPixelPosition( pos );
-		if ( anchRadius >= 0 ) {
+		if ( anchRadius > 0 ) {
 			Vector2 centPos = new Vector2( body.getWorldCenter( ).x
 					* Util.BOX_TO_PIXEL, body.getWorldCenter( ).y
 					* Util.BOX_TO_PIXEL );
@@ -89,8 +88,8 @@ public class Entity {
 	 * @param solid
 	 *            boolean determining whether or not the player can stand on it
 	 */
-	public Entity( String name, Vector2 positionPixels, Texture texture, Body body,
-			boolean solid ) {
+	public Entity( String name, Vector2 positionPixels, Texture texture,
+			Body body, boolean solid ) {
 		this.construct( name, positionPixels, solid );
 		this.sprite = constructSprite( texture );
 		this.body = body;
@@ -117,6 +116,7 @@ public class Entity {
 
 	/**
 	 * Set position of the body in meters.
+	 * 
 	 * @param xMeters
 	 * @param yMeters
 	 */
@@ -129,6 +129,7 @@ public class Entity {
 			sprite.setPosition(x, y);
 		}
 	}
+	
 
 	public void setPixelPosition(float x, float y){
 		setPosition(x * Util.PIXEL_TO_BOX, y * Util.PIXEL_TO_BOX);	
@@ -139,30 +140,32 @@ public class Entity {
 	}
 	
 	/**
-	 * Set position by  meters!!
+	 * Set position by meters!!
+	 * 
 	 * @param positionMeters
 	 */
 	public void setPosition( Vector2 positionMeters ) {
-		setPosition(positionMeters.x,positionMeters.y);
+		setPosition( positionMeters.x, positionMeters.y );
 	}
 
 	/**
 	 * returns body position in meters.
+	 * 
 	 * @return Vector2 in meters of bodie's world origin
 	 */
 	public Vector2 getPosition( ) {
 		return body.getPosition( ).add( bodyOffset );
 	}
-	
+
 	/**
-	 * Use this position when setting relative position of platforms
-	 * for paths targets. ie you set a platform at (x,y) in meters,
-	 * but the path takes in pixels, so do something like platform.
-	 * getPositionPixel().add(0,600)
+	 * Use this position when setting relative position of platforms for paths
+	 * targets. ie you set a platform at (x,y) in meters, but the path takes in
+	 * pixels, so do something like platform. getPositionPixel().add(0,600)
+	 * 
 	 * @return world position of origin in PIXELS
 	 */
-	public Vector2 getPositionPixel(){
-		return body.getPosition( ).cpy().mul( Util.BOX_TO_PIXEL );
+	public Vector2 getPositionPixel( ) {
+		return body.getPosition( ).cpy( ).mul( Util.BOX_TO_PIXEL );
 	}
 
 	public void move( Vector2 vector ) {
@@ -199,6 +202,10 @@ public class Entity {
 		Vector2 bodyPos = body.getPosition( ).mul( Util.BOX_TO_PIXEL );
 		sprite.setPosition( bodyPos.x - offset.x, bodyPos.y - offset.y );
 		sprite.setRotation( MathUtils.radiansToDegrees * body.getAngle( ) );
+		if ( body != null && anchor != null ) {
+			updateAnchor( );
+		}
+		// animation stuff may go here
 	}
 	
 	/**
@@ -211,9 +218,6 @@ public class Entity {
 			if ( body != null ) {
 				if ( mover != null ) {
 					mover.move( deltaTime, body );
-				}
-				if ( anchor != null ) {
-					updateAnchor( );
 				}
 			}
 		}
@@ -470,5 +474,5 @@ public class Entity {
 				+ ", body.active:" + body.isActive( ) + ", body.awake:"
 				+ body.isAwake( );
 	}
-	
+
 }

@@ -36,6 +36,7 @@ public class Skeleton extends Platform {
     private ArrayList<Entity>   looseEntity; 
     private Texture foregroundTex;
     private ArrayList< Screw > screws; //add all screws you want drawn
+    private ArrayList< Rope > ropes;
 
     public Skeleton( String n, Vector2 pos, Texture tex, World world ) {
         super( n, pos, tex, world); // not constructing body class
@@ -46,6 +47,7 @@ public class Skeleton extends Platform {
         kinematicPlatforms = new ArrayList< Platform >( );
         looseEntity = new ArrayList< Entity >();
         screws = new ArrayList<Screw>();
+        ropes = new ArrayList< Rope >( );
         super.setSolid( false );
     }
 
@@ -61,7 +63,7 @@ public class Skeleton extends Platform {
 
     /**
      * Attach a platform to this skeleton that will freely rotate about the
-     * center
+     * center. Make sure the platform is dynamic
      * 
      * @param platform
      */
@@ -76,6 +78,7 @@ public class Skeleton extends Platform {
     
     /**
      * Add Kinamatic platform to this Skeleton
+     * @param Platform that's already set as kinematic
      */
     public void addKinematicPlatform( Platform platform ){
     	kinematicPlatforms.add( platform );
@@ -83,7 +86,7 @@ public class Skeleton extends Platform {
     
     /**
      * Attach a platform to this skeleton that rotates with a motor
-     * 
+     * the platform must already be set as dynamic
      * @param platform
      */
     public void addPlatformRotatingCenterWithMot( Platform platform, float rotSpeedInMeters ) {
@@ -124,8 +127,9 @@ public class Skeleton extends Platform {
      public void addRope( Rope rope ) {
          new RevoluteJointBuilder( world ).skeleton( this ).bodyB( rope.getFirstLink( ) )
                  .limit( true ).lower( 0 ).upper( 0 ).build();
-         looseEntity.add( rope.getFirstLink( ) );
+         ropes.add( rope );
      }
+     
      /**
       * 
       * @param ss -  add stripped screw onto the skeleton
@@ -183,8 +187,12 @@ public class Skeleton extends Platform {
         	platform.body.setAwake( isAwake );
         }
         for ( Screw s: screws ) {
-        	s.body.setAwake( true );
+        	s.body.setAwake( isAwake );
         }
+        //TODO: add ropes to this function
+//        for ( Rope r: ropes ){
+//        	r.
+//        }
     }
     
     /**
@@ -192,10 +200,10 @@ public class Skeleton extends Platform {
      * @author stew
      */
     public void setSkeletonActiveRec( boolean isActive) {
-        for ( Skeleton skeleton : childSkeletons ) {
+    	setSkeletonActive(isActive);
+    	for ( Skeleton skeleton : childSkeletons ) {
             skeleton.setSkeletonActiveRec(isActive);
         }
-        setSkeletonActive(isActive);
     }
     
     /**
@@ -214,6 +222,10 @@ public class Skeleton extends Platform {
         for( Platform platform : kinematicPlatforms ){
         	platform.body.setActive( isActive );
         }
+        for ( Screw screw : screws ){
+        	screw.body.setActive( isActive );
+        }
+        /* TODO: add ropes */
     }
     
     /**
@@ -290,6 +302,8 @@ public class Skeleton extends Platform {
     	for ( Platform p : kinematicPlatforms ) {
     		p.updateMover( deltaTime );
         } 
+    	
+    	/* TODO: add ropes and loose entity */
     }
 
     /****
@@ -311,6 +325,7 @@ public class Skeleton extends Platform {
         //should just be puzzle screws no other type need to be in the screws list
         //except for drawing
         for ( Screw s: screws ) {
+        	//if ( s.)
     		s.update( deltaTime );
         }
     }

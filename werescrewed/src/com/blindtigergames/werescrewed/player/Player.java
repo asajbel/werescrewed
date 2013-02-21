@@ -16,6 +16,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJoint;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
 import com.blindtigergames.werescrewed.WereScrewedGame;
+import com.blindtigergames.werescrewed.camera.Anchor;
 import com.blindtigergames.werescrewed.camera.AnchorList;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityDef;
@@ -48,6 +49,7 @@ public class Player extends Entity {
 	public final static int SCREW_JUMP_STEPS = 20;
 	public final static float SCREW_ATTACH_SPEED = 0.1f;
 	public final static int GRAB_COUNTER_STEPS = 5;
+	public final static Vector2 ANCHOR_BUFFER_SIZE = new Vector2(400f, 256f);
 	public float JUMP_IMPULSE = 0.13f;
 
 	public Fixture feet;
@@ -80,8 +82,7 @@ public class Player extends Entity {
 	private boolean jumpPressedController;
 	private boolean screwButtonHeld;
 	private boolean kinematicTransform = false;
-	// private Vector2 platformOffset;
-	private int anchorID;
+	private float footFriction = PLAYER_FRICTION;
 
 	public int grabCounter = 0;
 	public int jumpCounter = 0;
@@ -126,7 +127,11 @@ public class Player extends Entity {
 		body.setBullet( true );
 		playerState = PlayerState.Standing;
 		inputHandler = new PlayerInputHandler( this.name );
-		anchorID = AnchorList.getInstance( ).addAnchor( true, pos, world, 0.0f );
+		anchor = new Anchor( true, new Vector2( body.getWorldCenter( ).x
+				* Util.BOX_TO_PIXEL, body.getWorldCenter( ).y
+				* Util.BOX_TO_PIXEL ), new Vector2( ANCHOR_BUFFER_SIZE.x, ANCHOR_BUFFER_SIZE.y ), world, 0f );
+		anchor.special = true;
+		AnchorList.getInstance( ).addAnchor( anchor );
 
 		torso = body.getFixtureList( ).get( 0 );
 		feet = body.getFixtureList( ).get( 1 );
@@ -149,13 +154,12 @@ public class Player extends Entity {
 	public void update( float deltaTime ) {
 		super.update( deltaTime );
 		if ( name.equals( "player1" ) ) {
-		//	Gdx.app.log( "playerState", "" + playerState );
+			//Gdx.app.log( "playerState", "" + playerState );
 		}
 		if ( kinematicTransform ) {
 			// setPlatformTransform( platformOffset );
 			kinematicTransform = false;
 		}
-		AnchorList.getInstance( ).setAnchorPosBox( anchorID, getPosition( ) );
 		if ( isDead ) {
 			body.setLinearVelocity( Vector2.Zero );
 			body.setFixedRotation( false );
@@ -169,6 +173,8 @@ public class Player extends Entity {
 				updateKeyboard( deltaTime );
 			}
 		}
+		
+		//updateFootFriction();
 
 		// debug stuff
 		// Hit backspace to kill the player or respawn him
@@ -466,6 +472,7 @@ public class Player extends Entity {
 	 */
 	public void maxFriction( ) {
 		feet.setFriction( PLAYER_FRICTION );
+		footFriction = PLAYER_FRICTION;
 	}
 
 	/**
@@ -473,6 +480,28 @@ public class Player extends Entity {
 	 */
 	public void noFriction( ) {
 		feet.setFriction( 0.0f );
+		footFriction = 0f;
+	}
+	
+	/**
+	 * slowly increases friction to avoid that silly stopping bug.
+	 * Call this every player.update()
+	 */
+	private void updateFootFriction( ){
+		if ( isGrounded() ){
+			//increase friction while on ground
+			if ( footFriction < PLAYER_FRICTION ){
+				footFriction += 0.1f;
+				if ( footFriction > PLAYER_FRICTION ){
+					footFriction = PLAYER_FRICTION;
+				}
+			}
+		}else {
+			footFriction = 0f;
+		}
+		Gdx.app.log( name, feet.getFriction()+"" );
+		//Gdx.app.log( name, feet.getFriction()+"" );
+		feet.setFriction( footFriction );
 	}
 
 	/**
@@ -513,8 +542,7 @@ public class Player extends Entity {
 								- ( sprite.getWidth( ) / 4.0f ),
 						currentScrew.getPosition( ).y * Util.BOX_TO_PIXEL
 								- ( sprite.getHeight( ) / 4.0f ) ),
-						SCREW_ATTACH_SPEED, false,
-						PuzzleType.OVERRIDE_ENTITY_MOVER, LinearAxis.DIAGONAL );
+						SCREW_ATTACH_SPEED, false, LinearAxis.DIAGONAL, 0 );
 				playerState = PlayerState.Screwing;
 				setGrounded( true );
 			}
@@ -593,6 +621,7 @@ public class Player extends Entity {
 				}
 				jump( );
 				// jumpSound.play( );
+				//noFriction( );
 			} else {
 				// let the bottom player jump
 				// with a large amount of force
@@ -1108,7 +1137,9 @@ public class Player extends Entity {
 		// If player hits the screw button and is in distance
 		// then attach the player to the screw
 		if ( ( controllerListener.screwPressed( ) )
-				&& ( playerState != PlayerState.Screwing && playerState != PlayerState.JumpingOffScrew ) ) {
+				&& ( playerState != PlayerState.Screwing 
+				&& playerState != PlayerState.JumpingOffScrew )
+				&& !controllerListener.jumpPressed( )) {
 			if ( hitScrew && !screwButtonHeld ) {
 				attachToScrew( );
 				screwButtonHeld = true;
