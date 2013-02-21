@@ -57,7 +57,7 @@
                 </Item>
                 <Item xsi:type="CircleItem" Name="player" Visible="true">
                     <Position>
-                        <X>-160</X>
+                        <X>192</X>
                         <Y>0</Y>
                     </Position>
                     <CustomProperties>
