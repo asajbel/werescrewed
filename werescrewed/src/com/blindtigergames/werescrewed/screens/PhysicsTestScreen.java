@@ -12,6 +12,9 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.joints.PrismaticJoint;
 import com.badlogic.gdx.physics.box2d.joints.PrismaticJointDef;
@@ -37,6 +40,7 @@ import com.blindtigergames.werescrewed.entity.tween.EntityAccessor;
 import com.blindtigergames.werescrewed.entity.tween.PathBuilder;
 import com.blindtigergames.werescrewed.entity.tween.PlatformAccessor;
 import com.blindtigergames.werescrewed.joint.JointFactory;
+import com.blindtigergames.werescrewed.joint.RevoluteJointBuilder;
 import com.blindtigergames.werescrewed.platforms.Platform;
 import com.blindtigergames.werescrewed.platforms.TiledPlatform;
 import com.blindtigergames.werescrewed.player.Player;
@@ -88,8 +92,10 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		Tween.registerAccessor( Entity.class, new EntityAccessor( ) );
 
 		// entityManager = new EntityManager( );
-		skeleton = new Skeleton( "skeleton", new Vector2( 1, 0 ), null, world );
+		skeleton = new Skeleton( "skeleton", new Vector2( 500, 0 ), null, world );
+		//skeleton.body.setType( BodyType.DynamicBody );
 		rootSkeleton = new Skeleton( "root", Vector2.Zero, null, world );
+		
 		/* Examples of movers on skeletons */
 		// rootSkeleton.mover = new RockingMover( -0.02f, 1.0f );
 		// rootSkeleton.setMover( new PathBuilder( ).begin( skeleton ).target(
@@ -139,6 +145,8 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 				.oneSided( true ).position( 0, 0 ).texture( testTexture )
 				.friction( 1f ).dynamic( ).buildTilePlatform( );
 		
+		buildSubSkeleton();
+		
 		testRope.attachEntityToBottom ( bottomPlatform, true );
 		
 		
@@ -153,9 +161,9 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		// Otherwise input handler breaks
 
 		player1 = new PlayerBuilder( ).name( "player1" ).world( world )
-				.position( 70.0f, 600.0f ).buildPlayer( );
+				.position( 70.0f, 100.0f ).buildPlayer( );
 		player2 = new PlayerBuilder( ).name( "player2" ).world( world )
-				.position( 1.5f, 610.5f ).buildPlayer( );
+				.position( 1.5f, 110.5f ).buildPlayer( );
 
 		// Add screws
 
@@ -166,7 +174,20 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		debugRenderer.setDrawJoints( false );
 
 		Gdx.app.setLogLevel( Application.LOG_DEBUG );
-
+	}
+	
+	private void buildSubSkeleton(){
+		Skeleton dynSkeleton = new Skeleton( "dynamicSkeleton", new Vector2(0,200), testTexture, world );
+		//dynSkeleton.body.createFixture( , density )
+		
+		rootSkeleton.addSkeleton( dynSkeleton );
+		dynSkeleton.body.setType( BodyType.DynamicBody );
+		RevoluteJointBuilder jbBuilder = new RevoluteJointBuilder( world );
+		jbBuilder.skeleton( skeleton ).bodyB( dynSkeleton ).motor( true ).build( );
+		TiledPlatform plat = platBuilder.dynamic( ).position( 0, 200 ).dimensions( 4,1 ).oneSided( false ).buildTilePlatform( );
+		plat.body.setFixedRotation( false );
+		dynSkeleton.addPlatformRotatingCenter( plat );
+		
 	}
 
 	/**

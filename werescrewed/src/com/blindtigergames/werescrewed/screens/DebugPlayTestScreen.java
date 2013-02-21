@@ -580,7 +580,7 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		skel7.addKinematicPlatform( plat );
 
 		PathBuilder pb2 = new PathBuilder( );
-		plat.setMover( pb2.begin( plat ).target( -750, 0, 4 ).target( 0, 0, 4 )
+		plat.setMover( pb2.begin( plat ).delay( 1f ).target( -750, 0, 4 ).target( 0, 0, 4 )
 				.build( ) );
 
 		plat = platBuilder.position( 142f * TILE, 50 * TILE ).name( "plat9" )
