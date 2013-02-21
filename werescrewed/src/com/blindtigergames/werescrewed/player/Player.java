@@ -156,6 +156,7 @@ public class Player extends Entity {
 		super.update( deltaTime );
 		if ( name.equals( "player1" ) ) {
 			//Gdx.app.log( "playerState", "" + playerState );
+			//System.out.println(isGrounded());
 		}
 		if ( kinematicTransform ) {
 			// setPlatformTransform( platformOffset );
@@ -558,7 +559,7 @@ public class Player extends Entity {
 								- ( sprite.getHeight( ) / 4.0f ) ),
 						SCREW_ATTACH_SPEED, false, LinearAxis.DIAGONAL, 0 );
 				playerState = PlayerState.Screwing;
-				setGrounded( true );
+				setGrounded( false );
 			}
 		}
 	}
