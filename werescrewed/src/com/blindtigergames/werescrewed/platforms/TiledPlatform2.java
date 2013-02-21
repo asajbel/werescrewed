@@ -15,6 +15,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
+import com.blindtigergames.werescrewed.graphics.TextureAtlasS;
 import com.blindtigergames.werescrewed.screws.Screw;
 import com.blindtigergames.werescrewed.util.Util;
 
@@ -54,7 +55,7 @@ public class TiledPlatform2 extends Platform {
 
 	protected Vector< Tile > tiles;
 
-	public TiledPlatform2( String n, Vector2 pos, TextureAtlas atlas, float width,
+	public TiledPlatform2( String n, Vector2 pos, TextureAtlasS atlas, float width,
 			float height, boolean isOneSided, boolean isMoveable, World world ) {
 		super( n, pos, null, world );
 		platType = PlatformType.TILED;
@@ -237,11 +238,13 @@ public class TiledPlatform2 extends Platform {
 	}
 
 	private Tile setTile( Sprite temp, float offset_x, float offset_y ) {
-		Gdx.app.log( temp.toString( ), temp.getOriginX( ) + " " + temp.getOriginY( ) );
-		temp.setOrigin( offset_x - temp.getOriginX( ), offset_y - temp.getOriginY( ) );
-		temp.setPosition( bodypos.x - offset_x, bodypos.y - offset_y );
+		Gdx.app.log( "origin", temp.getOriginX( ) + " " + temp.getOriginY( ) );
+		//Gdx.app.log( "size", temp.getWidth( ) + " " + temp.getHeight( ) );
+		//temp.setOrigin( offset_x + temp.getOriginX( ), offset_y + temp.getOriginY( ) );
+		temp.setPosition( bodypos.x, bodypos.y );
 		temp.setRotation( MathUtils.radiansToDegrees * body.getAngle( ) );
-		return ( new Tile( offset_x, offset_y, temp ) );
+		return ( new Tile( temp.getOriginX( ), temp.getOriginY( ), temp ) );
+		//TODO: ASK ANDERS HOW SPRITE POSITIONING WORKS
 	}
 
 	public float getActualHeight( ) {
@@ -268,8 +271,7 @@ public class TiledPlatform2 extends Platform {
 		Iterator< Tile > v = tiles.listIterator( );
 		while ( v.hasNext( ) ) {
 			d = v.next( );
-			d.tileSprite.setPosition( bodypos.x - d.xOffset, bodypos.y
-					- d.yOffset );
+			d.tileSprite.setPosition( bodypos.x, bodypos.y );
 			d.tileSprite.setRotation( MathUtils.radiansToDegrees
 					* body.getAngle( ) );
 			d.tileSprite.draw( batch );

@@ -242,6 +242,7 @@ public class TiledPlatform extends Platform {
 	}
 
 	private Tile setTile( Sprite temp, float offset_x, float offset_y ) {
+		
 		temp.setOrigin( offset_x, offset_y );
 		temp.setPosition( bodypos.x - offset_x, bodypos.y - offset_y );
 		temp.setRotation( MathUtils.radiansToDegrees * body.getAngle( ) );

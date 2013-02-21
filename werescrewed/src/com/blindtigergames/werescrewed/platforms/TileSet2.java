@@ -5,15 +5,14 @@ package com.blindtigergames.werescrewed.platforms;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.blindtigergames.werescrewed.graphics.TextureAtlasS;
 
 /**
  * @author Anders
  * 
  */
 public class TileSet2 {
-	private TextureAtlas atlas;
+	private TextureAtlasS atlas;
 	private int tileHeight, tileWidth;
 
 	/**
@@ -24,7 +23,7 @@ public class TileSet2 {
 	 *            The set of tiles that is needed for a tile set.
 	 * 
 	 */
-	public TileSet2( TextureAtlas atlas ) {
+	public TileSet2( TextureAtlasS atlas ) {
 		this.atlas = atlas;
 		Texture first = atlas.getTextures( ).iterator( ).next( );
 		this.tileHeight = first.getHeight( ) / 4;

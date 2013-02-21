@@ -38,6 +38,7 @@ import com.blindtigergames.werescrewed.entity.mover.puzzle.PuzzlePistonTweenMove
 import com.blindtigergames.werescrewed.entity.tween.EntityAccessor;
 import com.blindtigergames.werescrewed.entity.tween.PathBuilder;
 import com.blindtigergames.werescrewed.entity.tween.PlatformAccessor;
+import com.blindtigergames.werescrewed.graphics.TextureAtlasS;
 import com.blindtigergames.werescrewed.joint.JointFactory;
 import com.blindtigergames.werescrewed.platforms.Platform;
 import com.blindtigergames.werescrewed.platforms.TiledPlatform;
@@ -110,11 +111,8 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		testTexture = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 						+ "/common/TilesetTest.png", Texture.class );
 		
-		TextureAtlas atlas = new TextureAtlas( 
+		TextureAtlasS atlas = new TextureAtlasS( 
 				Gdx.files.internal( WereScrewedGame.dirHandle + "/common/tileset1.pack" ) );
-		
-		
-		
 
 
 		// Uncomment for test anchor
