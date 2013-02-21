@@ -48,7 +48,7 @@ public class PuzzleScrew extends Screw {
 			rotation += 10;
 			screwStep = depth + 5;
 			puzzleManager
-					.runElement( ( float ) depth / ( ( float ) maxDepth ) );
+					.runElement( this, ( float ) depth / ( ( float ) maxDepth ) );
 		}
 	}
 
@@ -60,7 +60,7 @@ public class PuzzleScrew extends Screw {
 			rotation -= 10;
 			screwStep = depth + 6;
 			puzzleManager
-					.runElement(( float ) depth / ( ( float ) maxDepth ) );
+					.runElement( this, ( float ) depth / ( ( float ) maxDepth ) );
 		}
 	}
 

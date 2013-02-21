@@ -9,8 +9,10 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.blindtigergames.werescrewed.platforms.Platform;
+import com.blindtigergames.werescrewed.screws.PuzzleScrew;
 import com.blindtigergames.werescrewed.platforms.TiledPlatform;
 import com.blindtigergames.werescrewed.util.Util;
+
 
 public class ProjectileMover implements IMover {
 	
@@ -56,7 +58,7 @@ public class ProjectileMover implements IMover {
 	}
 
 	@Override
-	public void runPuzzleMovement( float screwVal, Platform p ) {
+	public void runPuzzleMovement( PuzzleScrew screw, float screwVal, Platform p ) {
 		if ( screwVal <= onVal ) {
 			if(elementList[elementIndex] == null){
 				Body body;
