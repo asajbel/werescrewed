@@ -59,7 +59,7 @@ public class StructureScrew extends Screw {
 
 	@Override
 	public void screwLeft( ) {
-		if ( depth > 0 ) {
+		if ( depth > -7 ) {
 			body.setAngularVelocity( 15 );
 			depth--;
 			rotation += 10;
@@ -82,7 +82,7 @@ public class StructureScrew extends Screw {
 		super.update( deltaTime );
 		Vector2 bodyPos = body.getPosition( ).mul( Util.BOX_TO_PIXEL );
 		sprite.setPosition( bodyPos.x - offset.x, bodyPos.y - offset.y );
-		if ( depth == 0 ) {
+		if ( depth <= 0 ) {
 			if ( fallTimeout == 0 && screwToSkel != null ) {
 				body.setType( BodyType.DynamicBody );
 				world.destroyJoint( screwToSkel );
