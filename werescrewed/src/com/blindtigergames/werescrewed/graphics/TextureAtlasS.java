@@ -393,13 +393,13 @@ public class TextureAtlasS implements Disposable {
 		if (region.packedWidth == region.originalWidth && region.packedHeight == region.originalHeight) {
 			if (region.rotate) {
 				Sprite sprite = new Sprite(region);
-				sprite.setOrigin( collideOffsetX + region.originalWidth/2, collideOffsetY + region.originalHeight/2 );
+				sprite.setOrigin( collideOffsetX , collideOffsetY );
 				sprite.setBounds(0, 0, region.getRegionHeight(), region.getRegionWidth());
 				sprite.rotate90(true);
 				return sprite;
 			}
 			Sprite sprite = new Sprite(region);
-			sprite.setOrigin( collideOffsetX + region.originalWidth/2, collideOffsetY + region.originalHeight/2 );
+			sprite.setOrigin( collideOffsetX , collideOffsetY  );
 			return sprite;
 		}
 		return new AtlasSprite(region);

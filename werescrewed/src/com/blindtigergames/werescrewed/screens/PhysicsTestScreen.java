@@ -109,7 +109,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		ropeBuilder = new RopeBuilder( world );
 
 		testTexture = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-						+ "/common/TilesetTest.png", Texture.class );
+						+ "/common/tileset1.png", Texture.class );
 		
 		TextureAtlasS atlas = new TextureAtlasS( 
 				Gdx.files.internal( WereScrewedGame.dirHandle + "/common/tileset1.pack" ) );
