@@ -470,6 +470,9 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		if ( Gdx.input.isKeyPressed( Input.Keys.ESCAPE ) ) {
 			ScreenManager.getInstance( ).show( ScreenType.PAUSE );
 		}
+		if ( Gdx.input.isKeyPressed( Input.Keys.NUM_1 ) ) {
+			ScreenManager.getInstance( ).show( ScreenType.WIN );
+		}
 		if ( Gdx.input.isKeyPressed( Keys.P ) ) {
 			System.exit( 0 );
 		}
