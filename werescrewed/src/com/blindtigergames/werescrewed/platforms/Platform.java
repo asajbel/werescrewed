@@ -314,7 +314,6 @@ public class Platform extends Entity {
 	 * @author stew
 	 */
 	public void setPosRotFromSkeleton( float deltaTime, Skeleton skeleton ) {
-		
 		float radiusFromSkeleton = originPosition.cpy( ).add( localPosition )
 				.mul( Util.PIXEL_TO_BOX ).len( );
 		// update angle between platform and skeleton
