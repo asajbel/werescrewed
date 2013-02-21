@@ -26,8 +26,8 @@ class WinScreen implements com.badlogic.gdx.Screen{
 		lineHeight = Math.round( 2.5f * font.getCapHeight( ) );
 		firstLine = new Label( "Mission Complete!", font );
 		secLine = new Label( "Winners Never Lose!!", font );
-		nextButton = new Button( "Next Level", font, new ScreenSwitchHandler(
-				ScreenType.PHYSICS ) );
+		nextButton = new Button( "Continue", font, new ScreenSwitchHandler(
+				ScreenType.TROPHY ) );
 	}
 
 	@Override
@@ -35,10 +35,10 @@ class WinScreen implements com.badlogic.gdx.Screen{
 		Gdx.gl.glClearColor( 0.1f, 0.1f, 0.1f, 1f );
 		Gdx.gl.glClear( GL10.GL_COLOR_BUFFER_BIT );
 
-		ScreenManager.getInstance( ).dispose( ScreenType.PHYSICS);
+		ScreenManager.getInstance( ).dispose( ScreenType.TROPHY);
 		
 		if ( Gdx.input.isKeyPressed( Input.Keys.ENTER ) ) {
-			ScreenManager.getInstance( ).show( ScreenType.PHYSICS );
+			ScreenManager.getInstance( ).show( ScreenType.TROPHY );
 			// Later this will probably call the next level screen instead.
 		}
 		batch.begin( );

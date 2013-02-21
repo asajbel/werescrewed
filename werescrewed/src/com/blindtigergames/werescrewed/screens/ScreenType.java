@@ -66,7 +66,14 @@ public enum ScreenType {
 		protected com.badlogic.gdx.Screen getScreenInstance( ) {
 			return new WinScreen( );
 		}
-	};	
+	},	
+	
+	TROPHY {
+		@Override
+		protected com.badlogic.gdx.Screen getScreenInstance( ) {
+			return new TrophyScreen( );
+		}
+	};
 
 	protected abstract com.badlogic.gdx.Screen getScreenInstance( );
 
