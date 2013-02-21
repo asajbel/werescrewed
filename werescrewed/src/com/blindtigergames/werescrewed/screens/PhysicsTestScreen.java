@@ -12,6 +12,9 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.joints.PrismaticJoint;
 import com.badlogic.gdx.physics.box2d.joints.PrismaticJointDef;
@@ -37,6 +40,7 @@ import com.blindtigergames.werescrewed.entity.tween.EntityAccessor;
 import com.blindtigergames.werescrewed.entity.tween.PathBuilder;
 import com.blindtigergames.werescrewed.entity.tween.PlatformAccessor;
 import com.blindtigergames.werescrewed.joint.JointFactory;
+import com.blindtigergames.werescrewed.joint.RevoluteJointBuilder;
 import com.blindtigergames.werescrewed.platforms.Platform;
 import com.blindtigergames.werescrewed.platforms.TiledPlatform;
 import com.blindtigergames.werescrewed.player.Player;
@@ -88,8 +92,10 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		Tween.registerAccessor( Entity.class, new EntityAccessor( ) );
 
 		// entityManager = new EntityManager( );
-		skeleton = new Skeleton( "skeleton", new Vector2( 1, 0 ), null, world );
+		skeleton = new Skeleton( "skeleton", new Vector2( 500, 0 ), null, world );
+		//skeleton.body.setType( BodyType.DynamicBody );
 		rootSkeleton = new Skeleton( "root", Vector2.Zero, null, world );
+		
 		/* Examples of movers on skeletons */
 		// rootSkeleton.mover = new RockingMover( -0.02f, 1.0f );
 		// rootSkeleton.setMover( new PathBuilder( ).begin( skeleton ).target(
@@ -103,9 +109,9 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		platBuilder = new PlatformBuilder( world );
 		ropeBuilder = new RopeBuilder( world );
 
-		testTexture = WereScrewedGame.manager.get(
-				WereScrewedGame.dirHandle.path( ) + "/common/TilesetTest.png",
-				Texture.class );
+		testTexture = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
+						+ "/common/TilesetTest.png", Texture.class );
+
 
 		// Uncomment for test anchor
 		// anchor = new Anchor( new Vector2( 7 * Util.BOX_TO_PIXEL,
@@ -139,6 +145,8 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 				.oneSided( true ).position( 0, 0 ).texture( testTexture )
 				.friction( 1f ).dynamic( ).buildTilePlatform( );
 		
+		buildSubSkeleton();
+		
 		testRope.attachEntityToBottom ( bottomPlatform, true );
 		
 		
@@ -153,9 +161,9 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		// Otherwise input handler breaks
 
 		player1 = new PlayerBuilder( ).name( "player1" ).world( world )
-				.position( 70.0f, 600.0f ).buildPlayer( );
+				.position( 70.0f, 100.0f ).buildPlayer( );
 		player2 = new PlayerBuilder( ).name( "player2" ).world( world )
-				.position( 1.5f, 610.5f ).buildPlayer( );
+				.position( 1.5f, 110.5f ).buildPlayer( );
 
 		// Add screws
 
@@ -166,7 +174,20 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		debugRenderer.setDrawJoints( false );
 
 		Gdx.app.setLogLevel( Application.LOG_DEBUG );
-
+	}
+	
+	private void buildSubSkeleton(){
+		Skeleton dynSkeleton = new Skeleton( "dynamicSkeleton", new Vector2(0,200), testTexture, world );
+		//dynSkeleton.body.createFixture( , density )
+		
+		rootSkeleton.addSkeleton( dynSkeleton );
+		dynSkeleton.body.setType( BodyType.DynamicBody );
+		RevoluteJointBuilder jbBuilder = new RevoluteJointBuilder( world );
+		jbBuilder.skeleton( skeleton ).bodyB( dynSkeleton ).motor( true ).build( );
+		TiledPlatform plat = platBuilder.dynamic( ).position( 0, 200 ).dimensions( 4,1 ).oneSided( false ).buildTilePlatform( );
+		plat.body.setFixedRotation( false );
+		dynSkeleton.addPlatformRotatingCenter( plat );
+		
 	}
 
 	/**
@@ -267,7 +288,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		PuzzleScrew puzzleScrew = new PuzzleScrew( "001",
 				new Vector2( 32f, 32f ), 50, skeleton, world, 0, false );
 		puzzleScrew.puzzleManager.addEntity( flipPlat1 );
-		puzzleScrew.puzzleManager.addMover( flipPlat1.name, rm );
+		puzzleScrew.puzzleManager.addMover( rm );
 		
 		// also add a up mover to movingTP
 		LerpMover lm2 = new LerpMover( movingTP.body.getPosition( ).mul( Util.BOX_TO_PIXEL ), 
@@ -276,13 +297,13 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 				movingTP.body.getPosition( ).y + 0.3f ).mul( Util.BOX_TO_PIXEL ), 0.001f, false,
 				 LinearAxis.VERTICAL, 0 );
 		puzzleScrew.puzzleManager.addEntity( movingTP );
-		puzzleScrew.puzzleManager.addMover( movingTP.name, lm2 );
+		puzzleScrew.puzzleManager.addMover( lm2 );
 
 		rm = new RotateByDegree( -90.0f, 0.0f, 0, 0.5f );
 		PuzzlePistonTweenMover pptm = new PuzzlePistonTweenMover( flipPlat2,
 				new Vector2( 0, 100 ), 1, 1, 0, 0 );
 		puzzleScrew.puzzleManager.addEntity( flipPlat2 );
-		puzzleScrew.puzzleManager.addMover( flipPlat2.name, pptm );
+		puzzleScrew.puzzleManager.addMover( pptm );
 		skeleton.addScrewForDraw( puzzleScrew );
 
 		// lerp puzzle screw control
@@ -294,7 +315,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 				movingTP.body.getPosition( ).y ).mul( Util.BOX_TO_PIXEL ),
 				LinearAxis.HORIZONTAL );
 		puzzleScrew2.puzzleManager.addEntity( movingTP );
-		puzzleScrew2.puzzleManager.addMover( movingTP.name, lm );
+		puzzleScrew2.puzzleManager.addMover( lm );
 		skeleton.addScrewForDraw( puzzleScrew2 );
 
 	}

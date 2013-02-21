@@ -266,7 +266,7 @@ public class IMoverGameScreen implements com.badlogic.gdx.Screen {
 		PuzzleScrew puzzleScrew = new PuzzleScrew( "001",
 				new Vector2( 32f, 32f ), 50, skeleton, world, 0, false );
 		puzzleScrew.puzzleManager.addEntity( flipPlat1 );
-		puzzleScrew.puzzleManager.addMover( flipPlat1.name, rm );
+		puzzleScrew.puzzleManager.addMover( rm );
 		// also add a up mover to movingTP
 		LerpMover lm2 = new LerpMover(
 				new Vector2( movingTP.body.getPosition( ).x, movingTP.body
@@ -274,7 +274,7 @@ public class IMoverGameScreen implements com.badlogic.gdx.Screen {
 				new Vector2( movingTP.body.getPosition( ).x, movingTP.body
 						.getPosition( ).y + 0.3f ).mul( Util.BOX_TO_PIXEL ), LinearAxis.VERTICAL );
 		puzzleScrew.puzzleManager.addEntity( movingTP );
-		puzzleScrew.puzzleManager.addMover( movingTP.name, lm2 );
+		puzzleScrew.puzzleManager.addMover( lm2 );
 
 		rm = new RotateByDegree( -90.0f, 0.0f, 0, 0.5f );
 		PuzzleRotateTweenMover prtm = new PuzzleRotateTweenMover( 1,
@@ -282,7 +282,7 @@ public class IMoverGameScreen implements com.badlogic.gdx.Screen {
 		PuzzlePistonTweenMover pptm = new PuzzlePistonTweenMover( flipPlat2,
 				new Vector2( 100, 0 ), 1, 1, 0, 0 );
 		puzzleScrew.puzzleManager.addEntity( flipPlat2 );
-		puzzleScrew.puzzleManager.addMover( flipPlat2.name, rm );
+		puzzleScrew.puzzleManager.addMover( rm );
 		skeleton.addScrewForDraw( puzzleScrew );
 
 		// lerp puzzle screw control
@@ -294,7 +294,7 @@ public class IMoverGameScreen implements com.badlogic.gdx.Screen {
 						movingTP.body.getPosition( ).y )
 						.mul( Util.BOX_TO_PIXEL ), LinearAxis.HORIZONTAL );
 		puzzleScrew2.puzzleManager.addEntity( movingTP );
-		puzzleScrew2.puzzleManager.addMover( movingTP.name, lm2 );
+		puzzleScrew2.puzzleManager.addMover( lm2 );
 		skeleton.addScrewForDraw( puzzleScrew2 );
 
 	}

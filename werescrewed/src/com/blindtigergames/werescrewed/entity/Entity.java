@@ -11,6 +11,7 @@ import com.badlogic.gdx.physics.box2d.Filter;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.blindtigergames.werescrewed.camera.Anchor;
 import com.blindtigergames.werescrewed.camera.AnchorList;
 import com.blindtigergames.werescrewed.entity.mover.IMover;
@@ -467,6 +468,18 @@ public class Entity {
 		if ( body != null ) {
 			body.setGravityScale( g );
 		}
+	}
+	
+	/**
+	 * Return whether this entity's body is kinematic.
+	 * @author stew 
+	 * @return false if Dynamic static or has no body otherwise true
+	 */
+	public boolean isKinematic(){
+		if ( body != null ){
+			return (body.getType( ) == BodyType.KinematicBody);
+		}
+		return false;
 	}
 
 	public String toString( ) {
