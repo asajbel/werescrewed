@@ -11,27 +11,69 @@ public enum ScreenType {
 	GAME {
 		@Override
 		protected com.badlogic.gdx.Screen getScreenInstance( ) {
-			return new PhysicsTestScreen();
+			return new PhysicsTestScreen( );
 		}
 	},
 	GLEED {
-        @Override
-        protected com.badlogic.gdx.Screen getScreenInstance() {
-             return new GleedTestScreen("testLevel");
-        }
-    },
+		@Override
+		protected com.badlogic.gdx.Screen getScreenInstance( ) {
+			return new GleedTestScreen( "testLevel" );
+		}
+	},
 	INTRO {
 		@Override
 		protected com.badlogic.gdx.Screen getScreenInstance( ) {
 			return new IntroScreen( );
 		}
 	},
-	//TODO: Do we need different enums for each of the loading screens,
-	//      since they'll each load different things depending on the level?
+	LEVEL_1 {
+		@Override
+		protected com.badlogic.gdx.Screen getScreenInstance( ) {
+			return new Level1Screen( );
+		}
+	},
+	// TODO: Do we need different enums for each of the loading screens,
+	// since they'll each load different things depending on the level?
 	LOADING {
 		@Override
 		protected com.badlogic.gdx.Screen getScreenInstance( ) {
-			return new LoadingScreen();
+			return new LoadingScreen( );
+		}
+	},
+	LOADING_1 {
+		@Override
+		protected com.badlogic.gdx.Screen getScreenInstance( ) {
+			return new LoadingScreen( "level1" );
+		}
+	},
+	LOADING_2 {
+		@Override
+		protected com.badlogic.gdx.Screen getScreenInstance( ) {
+			return new LoadingScreen( "level2" );
+		}
+	},
+	LOADING_3 {
+		@Override
+		protected com.badlogic.gdx.Screen getScreenInstance( ) {
+			return new LoadingScreen( "level3" );
+		}
+	},
+	LOADING_4 {
+		@Override
+		protected com.badlogic.gdx.Screen getScreenInstance( ) {
+			return new LoadingScreen( "level4" );
+		}
+	},
+	LOADING_5 {
+		@Override
+		protected com.badlogic.gdx.Screen getScreenInstance( ) {
+			return new LoadingScreen( "level5" );
+		}
+	},
+	LOADING_TEST {
+		@Override
+		protected com.badlogic.gdx.Screen getScreenInstance( ) {
+			return new LoadingScreen( "testLevel" );
 		}
 	},
 	PAUSE {
@@ -52,22 +94,21 @@ public enum ScreenType {
 			return new PhysicsTestScreen( );
 		}
 	},
-	
+
 	MAIN_MENU {
 		@Override
 		protected com.badlogic.gdx.Screen getScreenInstance( ) {
 			return new MainMenuScreen( );
 		}
 	},
-	
-	
+
 	WIN {
 		@Override
 		protected com.badlogic.gdx.Screen getScreenInstance( ) {
 			return new WinScreen( );
 		}
-	},	
-	
+	},
+
 	TROPHY {
 		@Override
 		protected com.badlogic.gdx.Screen getScreenInstance( ) {
