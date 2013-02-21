@@ -713,11 +713,11 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		skeleton.addScrewForDraw( puzzleScrew2 );
 
 		RopeBuilder ropeBuilder = new RopeBuilder( world );
-		testRope = ropeBuilder.position( 157f * TILE, 105 * TILE ).width( 16f )
+		testRope = ropeBuilder.position( 154f * TILE, 104 * TILE ).width( 16f )
 				.height( 64f ).links( 5 ).buildRope( );
 		skel9.addRope( testRope );
 		
-		StrippedScrew ropeScrew = new StrippedScrew( "ropeScrew", world, new Vector2 ( 157f * TILE, 94 * TILE ), testRope.getLastLink( ) );
+		StrippedScrew ropeScrew = new StrippedScrew( "ropeScrew", world, new Vector2 ( 154f * TILE, 93 * TILE ), testRope.getLastLink( ) );
 		skel9.addScrewForDraw( ropeScrew );
 		plat = platBuilder.position( 175f * TILE, 94 * TILE ).name( "plat11" )
 				.dimensions( 6, 1 ).texture( testTexture ).kinematic( )
