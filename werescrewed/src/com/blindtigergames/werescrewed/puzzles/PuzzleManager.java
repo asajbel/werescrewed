@@ -1,37 +1,31 @@
 package com.blindtigergames.werescrewed.puzzles;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.badlogic.gdx.physics.box2d.World;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.mover.IMover;
 import com.blindtigergames.werescrewed.platforms.Platform;
 import com.blindtigergames.werescrewed.screws.PuzzleScrew;
 
-/**
- * puzzle screw class for moving puzzle pieces
- * 
- * @author Dennis
- * 
- */
-
 public class PuzzleManager {
 
-	
-	public PuzzleManager( World world ) {
-		puzzleEntities = new ArrayList< Entity >( );
+	public PuzzleManager( String name ) {
+		puzzleScrews = new HashMap< String, PuzzleScrew >( );
+		puzzleEntities = new HashMap< String, Entity >( );
 		puzzleMovers = new HashMap< String, IMover >( );
+		puzzleName = name;
 	}
 
 	public void update( float deltaTime ) {
-		for ( Entity e : puzzleEntities ) {
-			e.update( deltaTime );
-			if ( e.mover != null ) {
-				e.mover.move( deltaTime, e.body );
-			}
-		}
+
+	}
+
+	/**
+	 * adds a screw to the map of screws
+	 */
+	public void addScrew( PuzzleScrew puzzlePiece ) {
+		puzzleScrews.put( puzzleName + "_" + puzzleScrews.size( ), puzzlePiece );
 	}
 
 	/**
@@ -41,7 +35,8 @@ public class PuzzleManager {
 	 *            puzzlePiece
 	 */
 	public void addEntity( Entity puzzlePiece ) {
-		puzzleEntities.add( puzzlePiece );
+		puzzleEntities.put( puzzleName + "_" + puzzleEntities.size( ),
+				puzzlePiece );
 	}
 
 	/**
@@ -53,8 +48,8 @@ public class PuzzleManager {
 	 * @param IMover
 	 *            puzzlePiece
 	 */
-	public void addMover( String key, IMover puzzlePiece ) {
-		puzzleMovers.put( key, puzzlePiece );
+	public void addMover( IMover puzzlePiece ) {
+		puzzleMovers.put( puzzleName + "_" + puzzleMovers.size( ), puzzlePiece );
 	}
 
 	/**
@@ -62,7 +57,7 @@ public class PuzzleManager {
 	 * @param pEs
 	 * @param movers
 	 */
-	public void createLists( ArrayList< Entity > pEs,
+	public void createLists( Map< String, Entity > pEs,
 			Map< String, IMover > movers ) {
 		puzzleEntities = pEs;
 		puzzleMovers = movers;
@@ -76,15 +71,27 @@ public class PuzzleManager {
 	 * 0.5f is no
 	 */
 	public void runElement( PuzzleScrew screw, float screwVal ) {
-		for ( Entity e : puzzleEntities ) {
-			if ( puzzleMovers.containsKey( e.name ) ) {
-				puzzleMovers.get( e.name ).runPuzzleMovement( screw, screwVal,
-						( Platform ) e );
+		int elementID = 0;
+		String keyVal = puzzleName + "_" + elementID;
+		while ( puzzleEntities.containsKey( keyVal ) ) {
+			if ( puzzleMovers.containsKey( keyVal ) ) {
+				puzzleMovers.get( keyVal ).runPuzzleMovement( screw, screwVal,
+						( Platform ) puzzleEntities.get( keyVal ) );
 			}
-		} 
+			elementID++;
+			keyVal = puzzleName + "_" + elementID;
+		}
+		elementID = 0;
+		keyVal = puzzleName + "_" + elementID;
+		while ( puzzleScrews.containsKey( keyVal ) ) {
+			puzzleScrews.get( keyVal ).fixConcurrentScrew( screw );
+			elementID++;
+			keyVal = puzzleName + "_" + elementID;
+		}
 	}
-	
-	private ArrayList< Entity > puzzleEntities;
-	private Map< String, IMover > puzzleMovers;
 
+	private Map< String, PuzzleScrew > puzzleScrews;
+	private Map< String, Entity > puzzleEntities;
+	private Map< String, IMover > puzzleMovers;
+	private String puzzleName;
 }
