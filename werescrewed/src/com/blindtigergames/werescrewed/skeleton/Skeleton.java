@@ -6,6 +6,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.joints.WeldJoint;
@@ -59,6 +61,17 @@ public class Skeleton extends Platform {
         skeletonBodyDef.position.set( pos.mul( Util.PIXEL_TO_BOX ) );
         body = world.createBody( skeletonBodyDef );
         body.setUserData( this );
+        
+        FixtureDef dynFixtureDef = new FixtureDef( );
+		PolygonShape polygon = new PolygonShape( );
+		polygon.setAsBox( 1 * Util.PIXEL_TO_BOX,
+				1 * Util.PIXEL_TO_BOX );
+		dynFixtureDef.shape = polygon;
+		dynFixtureDef.density = 0.1f;
+		dynFixtureDef.filter.categoryBits = Util.CATEGORY_SUBPLATFORM;
+		dynFixtureDef.filter.maskBits = Util.CATEGORY_NOTHING;
+		body.createFixture( dynFixtureDef );
+		polygon.dispose( );
     }
 
     /**
@@ -324,8 +337,7 @@ public class Skeleton extends Platform {
         //update all puzzle screws to save their movement changes
         //should just be puzzle screws no other type need to be in the screws list
         //except for drawing
-        for ( Screw s: screws ) {
-        	//if ( s.)
+        for ( Screw s : screws ) {
     		s.update( deltaTime );
         }
     }
@@ -372,12 +384,8 @@ public class Skeleton extends Platform {
      */
     private void setPosRotChildSkeletons( float deltaTime ) {
 		for ( Skeleton skeleton : childSkeletons ){
-//			skeleton.body.setTransform( Util.PointOnCircle(
-//							this.body.getPosition( ).dst( skeleton.body.getPosition( ) ), //radius
-//							this.body.getAngle( ), this.body.getWorldCenter( ) ), //angle on circle, origin
-//					this.body.getAngle( ) ); //set angle of child skeleton
-//			
-			skeleton.setPosRotFromSkeleton( deltaTime, this );
+			if ( skeleton.isKinematic( ) )
+				skeleton.setPosRotFromSkeleton( deltaTime, this );
 			//now recursively apply this change to child skeletons
 			skeleton.setPosRotChildSkeletons( deltaTime );
 		}
