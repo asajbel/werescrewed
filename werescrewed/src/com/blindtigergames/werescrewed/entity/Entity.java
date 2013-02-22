@@ -1,7 +1,6 @@
 package com.blindtigergames.werescrewed.entity;
 
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
@@ -89,8 +88,8 @@ public class Entity {
 	 * @param solid
 	 *            boolean determining whether or not the player can stand on it
 	 */
-	public Entity( String name, Vector2 positionPixels, Texture texture, Body body,
-			boolean solid ) {
+	public Entity( String name, Vector2 positionPixels, Texture texture,
+			Body body, boolean solid ) {
 		this.construct( name, positionPixels, solid );
 		this.sprite = constructSprite( texture );
 		this.body = body;
@@ -139,6 +138,15 @@ public class Entity {
 		setPixelPosition(pixels.x, pixels.y);	
 	}
 	
+	public void setPosition( float xMeters, float yMeters ) {
+		if ( body != null ) {
+			body.setTransform( xMeters, yMeters, body.getAngle( ) );
+		} else if ( sprite != null ) {
+			sprite.setPosition( xMeters * Util.BOX_TO_PIXEL, yMeters
+					* Util.BOX_TO_PIXEL );
+		}
+	}
+
 	/**
 	 * Set position by meters!!
 	 * 
@@ -164,8 +172,8 @@ public class Entity {
 	 * getPositionPixel().add(0,600)
 	 * @return world position of origin in PIXELS
 	 */
-	public Vector2 getPositionPixel(){
-		return body.getPosition( ).cpy().mul( Util.BOX_TO_PIXEL );
+	public Vector2 getPositionPixel( ) {
+		return body.getPosition( ).cpy( ).mul( Util.BOX_TO_PIXEL );
 	}
 
 	public void move( Vector2 vector ) {
@@ -175,9 +183,6 @@ public class Entity {
 
 	public void draw( SpriteBatch batch ) {
 		if ( sprite != null && visible ) {
-			Vector2 bodyPos = body.getPosition( ).mul( Util.BOX_TO_PIXEL );
-			sprite.setPosition( bodyPos.x - offset.x, bodyPos.y - offset.y );
-			sprite.setRotation( MathUtils.radiansToDegrees * body.getAngle( ) );
 			sprite.draw( batch );
 		}
 		drawOrigin(batch);
@@ -220,9 +225,6 @@ public class Entity {
 			if ( body != null ) {
 				if ( mover != null ) {
 					mover.move( deltaTime, body );
-				}
-				if ( anchor != null ) {
-					updateAnchor( );
 				}
 			}
 		}

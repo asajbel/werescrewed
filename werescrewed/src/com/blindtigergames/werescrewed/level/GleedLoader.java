@@ -17,10 +17,14 @@ import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityDef;
 import com.blindtigergames.werescrewed.entity.builders.EntityBuilder;
 import com.blindtigergames.werescrewed.entity.builders.PlatformBuilder;
+import com.blindtigergames.werescrewed.entity.builders.ScrewBuilder;
 import com.blindtigergames.werescrewed.entity.mover.IMover;
 import com.blindtigergames.werescrewed.platforms.ComplexPlatform;
 import com.blindtigergames.werescrewed.platforms.Platform;
 import com.blindtigergames.werescrewed.platforms.TiledPlatform;
+import com.blindtigergames.werescrewed.screws.Screw;
+import com.blindtigergames.werescrewed.screws.ScrewType;
+import com.blindtigergames.werescrewed.screws.StrippedScrew;
 import com.blindtigergames.werescrewed.skeleton.Skeleton;
 import com.blindtigergames.werescrewed.util.Util;
 
@@ -30,7 +34,7 @@ public class GleedLoader {
 	protected HashMap<String,Element> elements;
 	protected EnumMap<GleedTypeTag, ArrayList<Item>> items;
 	protected static final float GLEED_TO_GDX_X = 1.0f;
-	protected static final float GLEED_TO_GDX_Y = 1.0f;
+	protected static final float GLEED_TO_GDX_Y = -1.0f;
 	
 	public GleedLoader(){
 		reader = new XmlReader();
@@ -106,60 +110,92 @@ public class GleedLoader {
 	protected void loadEntity(Item item) {
 		if (item.props.containsKey( defTag )){
 			String defName = item.props.get( defTag );
-			EntityDef def = EntityDef.getDefinition( defName );
-			if (def != null){
-				if (def.getCategory( ).equals( tileCat )){ //Insert special cases here.\
-					float tileX = def.getTexture( ).getWidth( )/4.0f;
-					float tileY = def.getTexture( ).getWidth( )/4.0f;
-					if (tileX > 0 && tileY > 0)
-						item.sca = item.sca.div( tileX, tileY );
-					TiledPlatform tp = new PlatformBuilder(level.world)
+			if (ScrewType.fromString( defName ) != null){
+				ScrewType sType = ScrewType.fromString( defName );
+				switch (sType){
+				case SCREW_STRIPPED:
+					StrippedScrew s = new ScrewBuilder()
 					.name( item.name )
-					.type( def )
-					.position( item.pos.x, item.pos.y )
-					.dimensions( item.sca.x, item.sca.y )
-					.texture( def.getTexture() )
-					.solid( true )
-					.buildTilePlatform( );
-					Gdx.app.log("GleedLoader", "Platform loaded:"+tp.name);
-					level.entities.addEntity( item.name, tp );
-					if (item.props.containsKey( "Dynamic" )){
-						level.root.addDynamicPlatform( tp );
-					} else {
-						level.root.addKinematicPlatform( tp );
-					}
-				} else if (def.getCategory( ).equals( complexCat )) {
-					Platform cp = new PlatformBuilder(level.world)
-					.name( item.name )
-					.type( def )
-					.position( item.pos.x, item.pos.y )
-					.texture( def.getTexture() )
-					.solid( true )
-					.buildComplexPlatform( );
-					Gdx.app.log("GleedLoader", "Platform loaded:"+cp.name);
-					level.entities.addEntity( item.name, cp );
-					if (item.props.containsKey( "Dynamic" )){
-						level.root.addDynamicPlatform( cp );
-					} else {
-						level.root.addKinematicPlatform( cp );
-					}
-				} else if (def.getCategory( ).equals( playerCat )){
-					level.player.setPosition( item.pos );
-					Gdx.app.log("GleedLoader", "Player Spawnpoint:"+item.pos.toString( ));
-				} else {
-					Entity e = new EntityBuilder()
-							.type(def)
-							.name(item.name)
-							.world(level.world)
-							.position(item.pos)
-							.properties(item.props)
-							.build();
-					Gdx.app.log("GleedLoader", "Entity loaded:"+item.name);
-					level.entities.addEntity( item.name, e );
+					.position( item.pos )
+					.world( level.world )
+					.entity( level.root )
+					.properties( item.props )
+					.buildStrippedScrew();
+					Gdx.app.log("GleedLoader", "Building stripped screw "+ item.name + " at " + item.pos.toString( ));
+					level.root.addScrewForDraw( s );
+					break;
+				case SCREW_STRUCTURAL:
+					break;
+				case SCREW_PUZZLE:
+					break;
+				case SCREW_BOSS:
+					break;					
 				}
-				Gdx.app.log("GleedLoader", "Position:"+item.pos.x+","+item.pos.y);
 			} else {
-				Gdx.app.log("GleedLoader", "Warning: "+item.name+"'s listed definition, '"+defName+"' is not a known EntityDef.");
+				EntityDef def = EntityDef.getDefinition( defName );
+				if (def != null){
+					if (def.getCategory( ).equals( tileCat )){ //Insert special cases here.\
+						//Align the platform's origin with the coordinates from Gleed2D.
+						item.pos.x += item.sca.x/2.0f;
+						item.pos.y -= item.sca.y/2.0f;
+						
+						float tileX = def.getTexture( ).getWidth( )/4.0f;
+						float tileY = def.getTexture( ).getWidth( )/4.0f;
+						if (tileX > 0 && tileY > 0)
+							item.sca = item.sca.div( tileX, tileY );
+						
+						TiledPlatform tp = new PlatformBuilder(level.world)
+						.name( item.name )
+						.type( def )
+						.position( item.pos.x, item.pos.y )
+						.dimensions( item.sca.x, item.sca.y )
+						.texture( def.getTexture() )
+						.solid( true )
+						.buildTilePlatform( );
+						Gdx.app.log("GleedLoader", "Platform loaded:"+tp.name);
+						tp.setPixelPosition(item.pos);
+						level.entities.addEntity( item.name, tp );
+						if (item.props.containsKey( "Dynamic" )){
+							level.root.addDynamicPlatform( tp );
+						} else {
+							level.root.addKinematicPlatform( tp );
+						}
+					} else if (def.getCategory( ).equals( complexCat )) {
+						Platform cp = new PlatformBuilder(level.world)
+						.name( item.name )
+						.type( def )
+						.position( item.pos.x, item.pos.y )
+						.texture( def.getTexture() )
+						.solid( true )
+						.buildComplexPlatform( );
+						cp.setPixelPosition(item.pos);
+	
+						Gdx.app.log("GleedLoader", "Platform loaded:"+cp.name);
+						level.entities.addEntity( item.name, cp );
+						if (item.props.containsKey( "Dynamic" )){
+							level.root.addDynamicPlatform( cp );
+						} else {
+							level.root.addKinematicPlatform( cp );
+						}
+					} else if (def.getCategory( ).equals( playerCat )){
+						level.player.setPixelPosition( item.pos );
+						Gdx.app.log("GleedLoader", "Player Spawnpoint:"+item.pos.toString( ));
+					} else {
+						Entity e = new EntityBuilder()
+								.type(def)
+								.name(item.name)
+								.world(level.world)
+								.position(item.pos)
+								.properties(item.props)
+								.build();
+						Gdx.app.log("GleedLoader", "Entity loaded:"+item.name);
+						e.setPixelPosition(item.pos);
+						level.entities.addEntity( item.name, e );
+					}
+					Gdx.app.log("GleedLoader", "Position:"+item.pos.x+","+item.pos.y);
+				} else {
+					Gdx.app.log("GleedLoader", "Warning: "+item.name+"'s listed definition, '"+defName+"' is not a known EntityDef.");
+				}
 			}
 		} else {
 			Gdx.app.log("GleedLoader", "Warning: "+item.name+" does not have a valid '"+defTag+"' tag.");
