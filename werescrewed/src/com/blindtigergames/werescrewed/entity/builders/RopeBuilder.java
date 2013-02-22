@@ -4,6 +4,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.rope.Rope;
+import com.blindtigergames.werescrewed.util.Util;
 
 public class RopeBuilder extends GenericEntityBuilder<RopeBuilder> {
 	protected float linkWidth;
@@ -39,7 +40,7 @@ public class RopeBuilder extends GenericEntityBuilder<RopeBuilder> {
 	
 	public Rope buildRope() {
 		Rope rope = new Rope( this.name,
-							  this.pos,
+							  new Vector2 (this.pos.x * Util.PIXEL_TO_BOX, this.pos.y * Util.PIXEL_TO_BOX),
 							  new Vector2 ( linkWidth, linkHeight),
 							  this.links,
 							  this.tex,

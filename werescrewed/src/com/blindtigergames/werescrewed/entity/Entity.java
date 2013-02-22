@@ -117,6 +117,7 @@ public class Entity {
 
 	/**
 	 * Set position of the body in meters.
+	 * 
 	 * @param xMeters
 	 * @param yMeters
 	 */
@@ -139,15 +140,17 @@ public class Entity {
 	}
 	
 	/**
-	 * Set position by  meters!!
+	 * Set position by meters!!
+	 * 
 	 * @param positionMeters
 	 */
 	public void setPosition( Vector2 positionMeters ) {
-		setPosition(positionMeters.x,positionMeters.y);
+		setPosition( positionMeters.x, positionMeters.y );
 	}
 
 	/**
 	 * returns body position in meters.
+	 * 
 	 * @return Vector2 in meters of bodie's world origin
 	 */
 	public Vector2 getPosition( ) {
@@ -172,6 +175,9 @@ public class Entity {
 
 	public void draw( SpriteBatch batch ) {
 		if ( sprite != null && visible ) {
+			Vector2 bodyPos = body.getPosition( ).mul( Util.BOX_TO_PIXEL );
+			sprite.setPosition( bodyPos.x - offset.x, bodyPos.y - offset.y );
+			sprite.setRotation( MathUtils.radiansToDegrees * body.getAngle( ) );
 			sprite.draw( batch );
 		}
 		drawOrigin(batch);
@@ -195,12 +201,15 @@ public class Entity {
 	}
 	
 	public void update( float deltaTime ) {
+		if ( body != null && anchor != null ) {
+			updateAnchor( );
+		}		
 		//animation stuff may go here
 		Vector2 bodyPos = body.getPosition( ).mul( Util.BOX_TO_PIXEL );
 		sprite.setPosition( bodyPos.x - offset.x, bodyPos.y - offset.y );
 		sprite.setRotation( MathUtils.radiansToDegrees * body.getAngle( ) );
 	}
-	
+
 	/**
 	 * Update the mover of this entity, if it exists.
 	 * Now separated from update() so that it can be called whenever skeleton wants.
@@ -227,7 +236,8 @@ public class Entity {
 	 * Builds a sprite from a texture. If the texture is null, it attempts to
 	 * load one from the XML definitions
 	 * 
-	 * @param texture from which a sprite can be generated, or null, if loading 
+	 * @param texture
+	 *            from which a sprite can be generated, or null, if loading
 	 * @return the loaded/generated sprite, or null if neither applies
 	 */
 	protected Sprite constructSprite( Texture texture ) {
@@ -321,12 +331,14 @@ public class Entity {
 	 * 
 	 * @param energy
 	 */
-	public void setEnergy( float energy){
+	public void setEnergy( float energy ) {
 		this.energy = energy;
 	}
 
-	public float getEnergy(){ return energy; }
-	
+	public float getEnergy( ) {
+		return energy;
+	}
+
 	/**
 	 * Sets body awake, used in
 	 * 
