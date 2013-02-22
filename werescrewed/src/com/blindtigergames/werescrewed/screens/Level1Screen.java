@@ -128,11 +128,11 @@ public class Level1Screen implements com.badlogic.gdx.Screen {
 		initClimbingScrews( );
 		initPulley( );
 
-		testRope = ropeBuilder.position( 2400f, 450f ).width( 16f ).height( 64f )
+		testRope = ropeBuilder.position( 2800f, 450f ).width( 16f ).height( 64f )
 				.links( 5 ).buildRope( );
 
 		TiledPlatform topPlatform = platBuilder.width( 10 ).height( 1 )
-				.oneSided( true ).position( 2400, 480 ).texture( testTexture )
+				.oneSided( true ).position( 2800, 480 ).texture( testTexture )
 				.friction( 1f ).staticBody( ).buildTilePlatform( );
 		
 		testRope.attachEntityToTop( topPlatform, false );
