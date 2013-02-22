@@ -166,9 +166,9 @@ public class LoadingScreen extends Screen {
 			
 			//assets have been loaded!
 			loadingLabel.setCaption("Loading Complete!!");
-			loadingCompleteLabel.draw( batch );
+			//loadingCompleteLabel.draw( batch );
 			
-			//ask the player to press a button to continue to the next screen
+			//TODO: if you want input for the next screen, put it here
 			if(percentLoaded == 100){
 				
 				//TODO: Use the screenTag to pick which screen to go to next
@@ -186,7 +186,7 @@ public class LoadingScreen extends Screen {
 	public void resize(int width, int height){
 		
 		//set position of the loading label
-		//TODO: Figure out a way to keep it in the center of the screen without rezizing
+		//TODO: Figure out a way to keep it in the center of the screen without resizing
 		int loadingLabelX = width/2 - loadingLabel.getWidth()/2;
 		int loadingLabelY = height/2 + loadingLabel.getHeight();
 		loadingLabel.setX(loadingLabelX);

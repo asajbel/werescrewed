@@ -168,25 +168,5 @@ public class AnimatedSprite extends Sprite implements I_Drawable {
 		stateTime = 0;
 	}
 
-	/**
-	 * toString A handy util method which displays the name of the sprite that
-	 * is animating
-	 * 
-	 * public String toString(){ return animation.toString(); }
-	 */
 }
-
-/**** Below is code that is not completed yet *****/
-/**
- * TODO: Finish this constructor! A constructor which mimics the animation
- * class. TextureRegions, such as sprite sheet's n' stuff, go in here.
- * 
- * @param frameDuration
- * @param keyFrames
- */
-
-/**           public AnimatedSprite(float frameDuration, TextureRegion
- *            keyFrames){ this.animation = new Animation(frameDuration,
- *            keyFrames); }
- * 
- */
+q
