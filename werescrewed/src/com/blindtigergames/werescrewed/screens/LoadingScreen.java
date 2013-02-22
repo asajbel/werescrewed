@@ -143,10 +143,11 @@ public class LoadingScreen extends Screen {
 			WereScrewedGame.manager.load( fullPathName, Music.class );
 			Gdx.app.log( "Music file loaded", fullPathName );
 			
-		} /*else if ( fileExtension.equals( "pack" )){
-			WereScrewedGame.manager.load(fullPathName, TextureAtlas.class);
+		}
+		else if ( fileExtension.equals( "pack" )){
+			WereScrewedGame.manager.loadAtlas( fullPathName );
 			Gdx.app.log( "Atlas pack file loaded", fullPathName );
-		}*/
+		}
 	}
 
 	/**

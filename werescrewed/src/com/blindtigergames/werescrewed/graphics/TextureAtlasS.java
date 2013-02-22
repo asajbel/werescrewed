@@ -58,9 +58,11 @@ public class TextureAtlasS implements Disposable {
 
 	private final HashSet<Texture> textures = new HashSet(4);
 	private final Array<AtlasRegion> regions = new Array<AtlasRegion>();
-	private static int collideOffsetX = 0;
-
-	private static int collideOffsetY = 0;
+	//Sorry, only one atlas wide collideOffset per texture atlas.
+	//If you have a problem with tile offsets, tell me about it.
+	//-stew
+	private int collideOffsetX = 0;
+	private int collideOffsetY = 0;
 
 	public static class TextureAtlasData {
 		public static class Page {
@@ -72,10 +74,12 @@ public class TextureAtlasS implements Disposable {
 			public final TextureFilter magFilter;
 			public final TextureWrap uWrap;
 			public final TextureWrap vWrap;
+			public final int collideOffsetX;
+			public final int collideOffsetY;
 			
 
 			public Page (FileHandle handle, boolean useMipMaps, Format format, TextureFilter minFilter, TextureFilter magFilter,
-				TextureWrap uWrap, TextureWrap vWrap) {
+				TextureWrap uWrap, TextureWrap vWrap, int collideOffsetX, int collideOffsetY ) {
 				this.textureFile = handle;
 				this.useMipMaps = useMipMaps;
 				this.format = format;
@@ -83,6 +87,8 @@ public class TextureAtlasS implements Disposable {
 				this.magFilter = magFilter;
 				this.uWrap = uWrap;
 				this.vWrap = vWrap;
+				this.collideOffsetX = collideOffsetX;
+				this.collideOffsetY = collideOffsetY;
 			}
 		}
 
@@ -102,8 +108,8 @@ public class TextureAtlasS implements Disposable {
 			public boolean flip;
 			public int[] splits;
 			public int[] pads;
-			//public int collideOffsetX;
-			//public int collideOffsetY;
+			public int collideOffsetX;
+			public int collideOffsetY;
 		}
 
 		final Array<Page> pages = new Array<Page>();
@@ -140,10 +146,10 @@ public class TextureAtlasS implements Disposable {
 						}
 						
 						readTuple( reader );
-						collideOffsetX = Integer.parseInt(tuple[0]);
-						collideOffsetY =Integer.parseInt(tuple[1] );
+						int collideOffsetX = Integer.parseInt(tuple[0]);
+						int collideOffsetY =Integer.parseInt(tuple[1] );
 
-						pageImage = new Page(file, min.isMipMap(), format, min, max, repeatX, repeatY);
+						pageImage = new Page(file, min.isMipMap(), format, min, max, repeatX, repeatY, collideOffsetX, collideOffsetY);
 						pages.add(pageImage);
 					} else {
 						boolean rotate = Boolean.valueOf(readValue(reader));
@@ -164,8 +170,8 @@ public class TextureAtlasS implements Disposable {
 						region.height = height;
 						region.name = line;
 						region.rotate = rotate;
-						//region.collideOffsetX = collideOffsetX;
-						//region.collideOffsetY = collideOffsetY;
+						region.collideOffsetX = pageImage.collideOffsetX;
+						region.collideOffsetY = pageImage.collideOffsetY;
 
 						if (readTuple(reader) == 4) { // split is optional
 							region.splits = new int[] {Integer.parseInt(tuple[0]), Integer.parseInt(tuple[1]),
@@ -253,6 +259,8 @@ public class TextureAtlasS implements Disposable {
 	private void load (TextureAtlasData data) {
 		ObjectMap<TextureAtlasData.Page, Texture> pageToTexture = new ObjectMap<TextureAtlasData.Page, Texture>();
 		for (TextureAtlasData.Page page : data.pages) {
+			this.collideOffsetX = page.collideOffsetX;
+			this.collideOffsetY = page.collideOffsetY;
 			Texture texture = null;
 			if (page.texture == null) {
 				texture = new Texture(page.textureFile, page.format, page.useMipMaps);

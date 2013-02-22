@@ -33,6 +33,7 @@ public class EntityDef {
 
 	// Sprite Fields (i.e. everything needed to define just the sprite half)
 	protected Texture texture;
+	protected String tileSetName;
 	protected String initialAnim;
 	protected Vector2 origin;
 	protected Vector2 spriteScale;
@@ -70,6 +71,7 @@ public class EntityDef {
 	protected EntityDef( String name ) {
 		// Sprite Data
 		setTexture( null );
+		tileSetName = null;
 		initialAnim = "";
 		origin = new Vector2( 0, 0 );
 		spriteScale = new Vector2( 1, 1 );

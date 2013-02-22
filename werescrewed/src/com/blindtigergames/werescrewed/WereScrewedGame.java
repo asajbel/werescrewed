@@ -3,9 +3,9 @@ package com.blindtigergames.werescrewed;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.FPSLogger;
+import com.blindtigergames.werescrewed.asset.AssetManager;
 import com.blindtigergames.werescrewed.screens.ScreenManager;
 import com.blindtigergames.werescrewed.screens.ScreenType;
 
