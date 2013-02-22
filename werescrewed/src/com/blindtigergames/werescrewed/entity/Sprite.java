@@ -2,7 +2,6 @@ package com.blindtigergames.werescrewed.entity;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -17,7 +16,12 @@ import com.blindtigergames.werescrewed.WereScrewedGame;
  *        data required for animation, such as frame rate and frame number.
  */
 
-public class AnimatedSprite extends Sprite implements I_Drawable {
+public class Sprite extends com.badlogic.gdx.graphics.g2d.Sprite implements I_Drawable {
+	/* These constants are identical to the ones in LibGDX's sprite class
+	 * I just changed their visibility to protected instead of private.
+	 */
+	protected static final int VERTEX_SIZE = 2 + 1 + 2;
+	protected static final int SPRITE_SIZE = 4 * VERTEX_SIZE;
 
 	private static int FRAMES = 1;
 	private static int ROWS = 1;
@@ -50,8 +54,9 @@ public class AnimatedSprite extends Sprite implements I_Drawable {
 	 * @param loopType
 	 *            The loop type specified by a constant provided by libGDX
 	 */
-	public AnimatedSprite( int f, int r, int c, float fr,
+	public Sprite( int f, int r, int c, float fr,
 			String spriteSheetName, int loopType ) {
+		super();
 		FRAMES = f;
 		ROWS = r;
 		COLUMNS = c;
@@ -103,8 +108,9 @@ public class AnimatedSprite extends Sprite implements I_Drawable {
 	 * @param loopType
 	 *            The loop type specified by a constant provided by libGDX
 	 */
-	public AnimatedSprite( int f, int r, int c, float fr,
+	public Sprite( int f, int r, int c, float fr,
 			Texture spriteSheetTexture, int loopType ) {
+		super(spriteSheetTexture);
 		ROWS = r;
 		COLUMNS = c;
 		spriteSheet = spriteSheetTexture;
@@ -130,7 +136,15 @@ public class AnimatedSprite extends Sprite implements I_Drawable {
 		stateTime = 0f;
 	}
 	
-    /** 
+    public Sprite( Texture texture ) {
+    	this( 1, 1, 1, 1.0f, texture, 0);
+    }
+    
+    public Sprite( TextureRegion region ) {
+    	this( 1, 1, 1, 1.0f, region.getTexture( ), 0);
+    	currentFrame = region;
+    }
+	/** 
      * draw 
      * Draws the animated sprite on the screen.
      * 
@@ -145,11 +159,9 @@ public class AnimatedSprite extends Sprite implements I_Drawable {
 		// find the change in time and pick the correct frame to draw
 		stateTime += Gdx.graphics.getDeltaTime( );
 		currentFrame = animation.getKeyFrame( stateTime );
-
-		// batch.begin has already been called, so just draw away!
-		batch.draw( currentFrame, 1.0f, 1.0f );
+		this.setRegion( currentFrame );
+		super.draw( batch );
 	}
-
 	/**
 	 * reset
 	 * A method which resets the animation to the first frame. Useful for
@@ -169,4 +181,3 @@ public class AnimatedSprite extends Sprite implements I_Drawable {
 	}
 
 }
-q
