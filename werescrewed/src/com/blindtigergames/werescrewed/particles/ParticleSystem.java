@@ -9,12 +9,25 @@ public class ParticleSystem {
 
 	private ArrayList< Particle > particles;
 
+	
+	/**
+	 * Builds new particle engine with initial particle
+	 * 
+	 * @param baseEntity Entity
+	 * @param mover IMover
+	 * @param lifeSpan float
+	 */
 	public ParticleSystem( Entity baseEntity, IMover mover, float lifeSpan ) {
 		particles = new ArrayList< Particle >( );
 		Particle p = new Particle( baseEntity, lifeSpan, mover );
 		particles.add( p );
 	}
 
+	/**
+	 * updates all particles in the system
+	 * 
+	 * @param deltaTime float
+	 */
 	public void update( float deltaTime ) {
 		for ( Particle p : particles ) {
 			p.update( deltaTime );
@@ -23,15 +36,31 @@ public class ParticleSystem {
 			}
 		}
 	}
-
+	
+	/**
+	 * adds a new particle to the system
+	 * 
+	 * @param e Entity
+	 * @param lifeSpan float
+	 * @param mover IMover
+	 */ 
 	public void addParticle( Entity e, float lifeSpan, IMover mover ) {
 		particles.add( new Particle( e, lifeSpan, mover ) );
 	}
-
+	
+	/**
+	 * don't use this right now
+	 * 
+	 * @param e Entity
+	 * @param lifeSpan float
+	 * @param mover IMover
+	 * @param duplications int
+	 */
 	public void duplicateParticle( Entity e, float lifeSpan, IMover mover,
 			int duplications ) {
 		for ( int i = 0; i < duplications; i++ ) {
 			particles.add( new Particle( e, lifeSpan, mover ) );
 		}
 	}
+	
 }
