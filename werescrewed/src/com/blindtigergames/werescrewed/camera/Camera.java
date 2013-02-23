@@ -51,7 +51,6 @@ public class Camera {
 	private Vector3 translateTarget3D;
 	private float targetBuffer;
 	private boolean translateState;
-	private Vector2 avgOutside;
 	private boolean insideTargetBuffer;
 	private float targetToBufferRatio;
 
@@ -60,6 +59,11 @@ public class Camera {
 	private static final float ZOOM_MAX_SPEED = 100f;
 	private static final float ZOOM_SIG_DIFF = .01f;
 	private static final float ZOOM_IN_FACTOR = .5f;
+
+	private enum RectDirection {
+		X, Y, BOTH, NONE
+	};
+
 	private float zoomSpeed;
 
 	private AnchorList anchorList;
@@ -118,7 +122,6 @@ public class Camera {
 		debugInput = false;
 		debugRender = false;
 		shapeRenderer = new ShapeRenderer( );
-		avgOutside = new Vector2( 0f, 0f );
 		debugTurnOffZoom = false;
 	}
 
@@ -208,63 +211,63 @@ public class Camera {
 	 *            outer Rectangle
 	 * @return true if any part of rect1 is outside of rect2, false otherwise
 	 */
-	private boolean rectOutsideRect( Rectangle rect1, Rectangle rect2 ) {
-		boolean returnValue = false;
+	private RectDirection rectOutsideRect( Rectangle rect1, Rectangle rect2 ) {
+		RectDirection returnDir = RectDirection.NONE;
 
-		if ( rect1.x > rect2.x && rect1.y > rect2.y
-				&& ( rect1.x + rect1.width ) < rect2.x + rect2.width
-				&& ( rect1.y + rect1.height ) < rect2.y + rect2.height )
-			returnValue = false;
-		else {
-			returnValue = true;
+		if ( rect1.x < rect2.x
+				|| ( rect1.x + rect1.width ) > ( rect2.x + rect2.width ) )
+			returnDir = RectDirection.X;
+		if ( rect1.y < rect2.y
+				|| ( rect1.y + rect1.height ) > ( rect2.y + rect2.height ) ) {
+			if ( returnDir == RectDirection.X )
+				returnDir = RectDirection.BOTH;
+			else
+				returnDir = RectDirection.Y;
 		}
 
-		return returnValue;
+		return returnDir;
 	}
 
 	/**
 	 * Adjust the camera by translating and zooming when necessary
 	 */
 	private void adjustCamera( ) {
-		avgOutside.x = 0f;
-		avgOutside.y = 0f;
-		boolean outsideTrue = false;
-		float newZoom = 1f;
+		boolean outside_x = false;
+		boolean outside_y = false;
 
 		// get vectors from the translateTarget to all anchors outside of
 		// the bounds of the screen, normalizes it, then adds then all
 		// together to come up with a pseudo average
 		for ( Anchor curAnchor : anchorList.anchorList ) {
-			if ( ( curAnchor.activated || curAnchor.special )
-					&& rectOutsideRect( curAnchor.getBufferRectangle( ),
-							screenBounds ) ) {
-				outsideTrue = true;
-				Vector2.tmp.x = curAnchor.position.x - translateTarget.x;
-				Vector2.tmp.y = curAnchor.position.y - translateTarget.y;
-				Vector2.tmp.nor( );
-				avgOutside.add( Vector2.tmp );
-				if ( insideTargetBuffer )
-					break;
+			if ( curAnchor.activated || curAnchor.special ) {
+				RectDirection dir = rectOutsideRect(
+						curAnchor.getBufferRectangle( ), screenBounds );
+
+				// only do stuff if a buffer anchor is outside the screen
+				if ( dir != RectDirection.NONE ) {
+
+					// find whether buffer is outside in x, y or both directions
+					if ( dir == RectDirection.BOTH ) {
+						outside_x = true;
+						outside_y = true;
+					} else if ( dir == RectDirection.X )
+						outside_x = true;
+					else
+						outside_y = true;
+
+					if ( insideTargetBuffer )
+						break;
+				}
 			}
 		}
 
-		Vector2 longestDist = anchorList.getLongestXYDist( );
-		Vector2 distFromEdge = new Vector2( longestDist.x - screenBounds.width,
-				longestDist.y - screenBounds.height );
-		if ( distFromEdge.x > distFromEdge.y ) {
-			newZoom = longestDist.x / viewportWidth;
-		} else if ( distFromEdge.y > distFromEdge.x ) {
-			newZoom = longestDist.y / viewportHeight;
-		}
-
-		if ( outsideTrue ) {
+		if ( outside_x || outside_y ) {
 			if ( !insideTargetBuffer ) {
 				translateState = true;
-				;
 			}
 		}
-		translateLogic( true, true );
-		zoom( newZoom );
+		translateLogic( outside_x, outside_y );
+		zoom( );
 	}
 
 	/**
@@ -294,7 +297,7 @@ public class Camera {
 					translateSpeed = 0f;
 				}
 			} else
-				translate( trans_x, trans_y);
+				translate( trans_x, trans_y );
 		} else if ( !translateState ) {
 			translateVelocity.x = 0f;
 			translateVelocity.y = 0f;
@@ -310,7 +313,8 @@ public class Camera {
 	 * translate the camera towards the translate target
 	 */
 	private void translate( boolean trans_x, boolean trans_y ) {
-		// only account for translate target on axis which is being translated on
+		// only account for translate target on axis which is being translated
+		// on
 		if ( trans_x )
 			Vector2.tmp.x = translateTarget.x;
 		else
@@ -320,7 +324,7 @@ public class Camera {
 			Vector2.tmp.y = translateTarget.y;
 		else
 			Vector2.tmp.y = center2D.y;
-		
+
 		Vector2.tmp.sub( center2D );
 
 		if ( Vector2.tmp.len( ) > accelerationBuffer ) {
@@ -351,7 +355,16 @@ public class Camera {
 	 * @param modifier
 	 *            modifies zoom rate
 	 */
-	private void zoom( float newZoom ) {
+	private void zoom( ) {
+		float newZoom = 1f;
+		Vector2 longestDist = anchorList.getLongestXYDist( );
+		Vector2 distFromEdge = new Vector2( longestDist.x - screenBounds.width,
+				longestDist.y - screenBounds.height );
+		if ( distFromEdge.x > distFromEdge.y ) {
+			newZoom = longestDist.x / viewportWidth;
+		} else if ( distFromEdge.y > distFromEdge.x ) {
+			newZoom = longestDist.y / viewportHeight;
+		}
 
 		if ( newZoom > 1f && zoomSpeed < ZOOM_MAX_SPEED ) {
 			zoomSteer( newZoom );
@@ -374,13 +387,20 @@ public class Camera {
 		zoomSpeed += ZOOM_ACCELERATION;
 
 		// use speed to zoom out
-		if ( newZoom > camera.zoom )
-			camera.zoom += zoomSpeed;
+		if ( newZoom > camera.zoom ) {
+			if ( ( camera.zoom + zoomSpeed ) < newZoom )
+				camera.zoom += zoomSpeed;
+			else
+				camera.zoom = newZoom;
+		}
 
 		// if zooming in, use slower (half maybe) speed
-		if ( newZoom < camera.zoom )
-			camera.zoom -= zoomSpeed / ZOOM_IN_FACTOR;
-		// camera.zoom = newZoom;
+		if ( newZoom < camera.zoom ) {
+			if ( ( camera.zoom - zoomSpeed / ZOOM_IN_FACTOR ) > newZoom )
+				camera.zoom -= zoomSpeed / ZOOM_IN_FACTOR;
+			else
+				camera.zoom = newZoom;
+		}
 	}
 
 	@SuppressWarnings( "unused" )
