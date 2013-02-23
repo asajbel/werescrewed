@@ -52,8 +52,7 @@ public class Player extends Entity {
 	public final static int GRAB_COUNTER_STEPS = 5;
 	public final static Vector2 ANCHOR_BUFFER_SIZE = new Vector2(400f, 256f);
 	public float JUMP_IMPULSE = 0.13f;
-	public float directionJumpDivsion = 2.0f;
-	
+
 	public Fixture feet;
 	public Fixture torso;
 	int check = 0;
@@ -82,10 +81,8 @@ public class Player extends Entity {
 	private boolean grounded;
 	private boolean jumpPressedKeyboard;
 	private boolean jumpPressedController;
-	private boolean canJumpOffScrew;
 	private boolean screwButtonHeld;
 	private boolean kinematicTransform = false;
-	private boolean changeDirectionsOnce = false;
 	private float footFriction = PLAYER_FRICTION;
 
 	public int grabCounter = 0;
@@ -139,7 +136,6 @@ public class Player extends Entity {
 
 		torso = body.getFixtureList( ).get( 0 );
 		feet = body.getFixtureList( ).get( 1 );
-		torso.getShape( ).setRadius( 0 );
 
 		maxFriction( );
 
@@ -160,8 +156,7 @@ public class Player extends Entity {
 		super.update( deltaTime );
 		if ( name.equals( "player1" ) ) {
 			//Gdx.app.log( "playerState", "" + playerState );
-			//System.out.println( prevButton + ", " +  directionJumpDivsion +  ", " + grounded +
-			//		", " + feet.getFriction( ) + ", " + body.getLinearVelocity( ).x);
+			//System.out.println(isGrounded());
 		}
 		if ( kinematicTransform ) {
 			// setPlatformTransform( platformOffset );
@@ -322,17 +317,11 @@ public class Player extends Entity {
 	 * @author Ranveer
 	 */
 	public void moveAnalogRightInAir( ) {
-
-		if(changeDirectionsOnce && prevButton == PovDirection.west) {
-			directionJumpDivsion *= 2;
-			changeDirectionsOnce = false;
-		}
 		leftAnalogX = controllerListener.analogLeftAxisX( );
 		float temp = ( ( ( leftAnalogX - ANALOG_DEADZONE ) / ( ANALOG_MAX_RANGE - ANALOG_DEADZONE ) ) * ( MAX_VELOCITY - MIN_VELOCITY ) )
 				+ MIN_VELOCITY;
 		if ( body.getLinearVelocity( ).x < temp ) {
-			body.applyLinearImpulse(
-					new Vector2( MOVEMENT_IMPULSE / directionJumpDivsion, 0.0f ),
+			body.applyLinearImpulse( new Vector2( MOVEMENT_IMPULSE * JUMP_CONTROL_MUTIPLIER, 0.0f ),
 					body.getWorldCenter( ) );
 		}
 	}
@@ -343,16 +332,12 @@ public class Player extends Entity {
 	 * @author Ranveer
 	 */
 	public void moveAnalogLeftInAir( ) {
-		if(changeDirectionsOnce && prevButton == PovDirection.east){
-			directionJumpDivsion *= 2;
-			changeDirectionsOnce = false;
-		}
 		leftAnalogX = controllerListener.analogLeftAxisX( );
 		float temp = ( ( ( leftAnalogX + ANALOG_DEADZONE ) / ( ANALOG_MAX_RANGE - ANALOG_DEADZONE ) ) * ( MAX_VELOCITY - MIN_VELOCITY ) )
 				- MIN_VELOCITY;
 		if ( body.getLinearVelocity( ).x > temp ) {
 			body.applyLinearImpulse(
-					new Vector2( -MOVEMENT_IMPULSE / directionJumpDivsion, 0.0f ),
+					new Vector2( -MOVEMENT_IMPULSE * JUMP_CONTROL_MUTIPLIER, 0.0f ),
 					body.getWorldCenter( ) );
 		}
 	}
@@ -575,9 +560,6 @@ public class Player extends Entity {
 						SCREW_ATTACH_SPEED, false, LinearAxis.DIAGONAL, 0 );
 				playerState = PlayerState.Screwing;
 				setGrounded( false );
-				if(controllerListener.jumpPressed( )){
-					canJumpOffScrew = false;
-				}
 			}
 		}
 	}
@@ -679,20 +661,18 @@ public class Player extends Entity {
 	 * actual jump for the controller
 	 */
 	private void processJumpStateController( ) {
-			if ( playerState == PlayerState.Screwing ) {
-				if(canJumpOffScrew){
-					if ( mover == null ) {
-						world.destroyJoint( playerToScrew );
-					}
-					for ( Fixture f : body.getFixtureList( ) ) {
-						f.setSensor( false );
-					}
-					playerState = PlayerState.JumpingOffScrew;
-					screwJumpTimeout = SCREW_JUMP_STEPS;
-					jumpPressedController = true;
-					mover = null;
-					jumpScrew( );
+		if ( playerState == PlayerState.Screwing ) {
+			if ( mover == null ) {
+				world.destroyJoint( playerToScrew );
 			}
+			for ( Fixture f : body.getFixtureList( ) ) {
+				f.setSensor( false );
+			}
+			playerState = PlayerState.JumpingOffScrew;
+			screwJumpTimeout = SCREW_JUMP_STEPS;
+			jumpPressedController = true;
+			mover = null;
+			jumpScrew( );
 		} else if ( !jumpPressedController ) {
 			if ( !topPlayer ) {
 				if ( playerState != PlayerState.JumpingOffScrew ) {
@@ -994,9 +974,6 @@ public class Player extends Entity {
 	private void resetScrewJumpGrab( ) {
 		if ( isGrounded( ) ) {
 			jumpCounter = 0;
-			directionJumpDivsion = 2;
-			changeDirectionsOnce = true;
-			prevButton = null;
 		}
 		if ( !controllerListener.screwPressed( ) ) {
 			screwButtonHeld = false;
@@ -1005,7 +982,6 @@ public class Player extends Entity {
 			grabCounter++;
 		}
 		if ( !controllerListener.jumpPressed( ) ) {
-			canJumpOffScrew = true;
 			if ( isGrounded( ) || otherPlayer != null ) {
 				jumpPressedController = false;
 			} else if ( playerState == PlayerState.Screwing ) {
@@ -1153,14 +1129,13 @@ public class Player extends Entity {
 		 */
 		if ( controllerListener.downPressed( ) ) {
 			// processMovementDown( );
-			//stop( );
+			stop( );
 		}
 		if ( ( !controllerListener.leftPressed( ) && !controllerListener
 				.rightPressed( ) )
 				&& ( prevButton == PovDirection.east || prevButton == PovDirection.west ) ) {
 			if ( !grounded ) {
 				slow( );
-				prevButton = null;
 			}
 		}
 		// grab another player, if your colliding
@@ -1178,7 +1153,8 @@ public class Player extends Entity {
 		// then attach the player to the screw
 		if ( ( controllerListener.screwPressed( ) )
 				&& ( playerState != PlayerState.Screwing 
-				&& playerState != PlayerState.JumpingOffScrew )) {
+				&& playerState != PlayerState.JumpingOffScrew )
+				&& !controllerListener.jumpPressed( )) {
 			if ( hitScrew && !screwButtonHeld ) {
 				attachToScrew( );
 				screwButtonHeld = true;
@@ -1209,7 +1185,7 @@ public class Player extends Entity {
 	 * Stops the player
 	 */
 	private void stop( ) {
-	//	if ( feet.getFriction( ) == 0 ) {
+		if ( feet.getFriction( ) == 0 ) {
 			float velocity = body.getLinearVelocity( ).x;
 			if ( velocity != 0.0f ) {
 				if ( velocity < -0.1f )
@@ -1222,8 +1198,8 @@ public class Player extends Entity {
 						&& velocity != 0.0f )
 					body.setLinearVelocity( 0.0f, body.getLinearVelocity( ).y );
 			}
-			//screwButtonHeld = false;
-	//	}
+			screwButtonHeld = false;
+		}
 	}
 
 	/**
