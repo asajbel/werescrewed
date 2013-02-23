@@ -37,9 +37,9 @@ import com.blindtigergames.werescrewed.util.Util;
  */
 public class Player extends Entity {
 
-	public final static float MAX_VELOCITY = 1.65f;
+	public final static float MAX_VELOCITY = 1.55f;
 	public final static float MIN_VELOCITY = 0.01f;
-	public final static float MOVEMENT_IMPULSE = 0.009f;
+	public final static float MOVEMENT_IMPULSE = 0.007f;
 	public final static float JUMP_SCREW_IMPULSE = 0.12f;
 	public final static float JUMP_CONTROL_MUTIPLIER = 0.5f;
 	public final static int JUMP_COUNTER = 10;
@@ -162,7 +162,7 @@ public class Player extends Entity {
 	public void update( float deltaTime ) {
 		super.update( deltaTime );
 		if ( name.equals( "player1" ) ) {
-			
+			//System.out.println( directionJumpDivsion );
 		}
 		if ( kinematicTransform ) {
 			// setPlatformTransform( platformOffset );
@@ -347,10 +347,6 @@ public class Player extends Entity {
 		float temp = ( ( ( leftAnalogX - ANALOG_DEADZONE ) / ( ANALOG_MAX_RANGE - ANALOG_DEADZONE ) ) * ( MAX_VELOCITY - MIN_VELOCITY ) )
 				+ MIN_VELOCITY;
 		if ( body.getLinearVelocity( ).x < temp ) {
-			//old? new?
-			body.applyLinearImpulse( new Vector2( MOVEMENT_IMPULSE
-					* JUMP_CONTROL_MUTIPLIER, 0.0f ), body.getWorldCenter( ) );
-			//old? new?
 			body.applyLinearImpulse(
 					new Vector2( MOVEMENT_IMPULSE / directionJumpDivsion, 0.0f ),
 					body.getWorldCenter( ) );
@@ -371,10 +367,6 @@ public class Player extends Entity {
 		float temp = ( ( ( leftAnalogX + ANALOG_DEADZONE ) / ( ANALOG_MAX_RANGE - ANALOG_DEADZONE ) ) * ( MAX_VELOCITY - MIN_VELOCITY ) )
 				- MIN_VELOCITY;
 		if ( body.getLinearVelocity( ).x > temp ) {
-			//old? new?
-			body.applyLinearImpulse( new Vector2( -MOVEMENT_IMPULSE
-					* JUMP_CONTROL_MUTIPLIER, 0.0f ), body.getWorldCenter( ) );
-			//old? new?
 			body.applyLinearImpulse(
 					new Vector2( -MOVEMENT_IMPULSE / directionJumpDivsion, 0.0f ),
 					body.getWorldCenter( ) );
@@ -976,6 +968,7 @@ public class Player extends Entity {
 	 * @return void slows player
 	 */
 	private void slow( ) {
+		System.out.println( "slow called" );
 		float velocity = body.getLinearVelocity( ).x;
 		if ( velocity != 0.0f ) {
 			if ( velocity < -0.1f )
@@ -988,6 +981,7 @@ public class Player extends Entity {
 				body.setLinearVelocity( 0.0f, body.getLinearVelocity( ).y );
 		}
 	}
+
 
 	/**
 	 * Checks player's vertical velocity and resets to be within bounds
@@ -1182,6 +1176,7 @@ public class Player extends Entity {
 				&& ( prevButton == PovDirection.east || prevButton == PovDirection.west ) ) {
 			if ( !grounded ) {
 				slow( );
+				//stop();
 				prevButton = null;
 			}
 		}
