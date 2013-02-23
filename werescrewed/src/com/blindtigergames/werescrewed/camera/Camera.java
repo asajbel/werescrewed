@@ -56,8 +56,10 @@ public class Camera {
 	private float targetToBufferRatio;
 
 	// zoom
-	private static final float ZOOM_ACCELERATION = 1f;
-	private static final float ZOOM_MAX_SPEED = .02f;
+	private static final float ZOOM_ACCELERATION = .001f;
+	private static final float ZOOM_MAX_SPEED = 100f;
+	private static final float ZOOM_SIG_DIFF = .01f;
+	private static final float ZOOM_IN_FACTOR = .5f;
 	private float zoomSpeed;
 
 	private AnchorList anchorList;
@@ -227,6 +229,7 @@ public class Camera {
 		avgOutside.x = 0f;
 		avgOutside.y = 0f;
 		boolean outsideTrue = false;
+		float newZoom = 1f;
 
 		// get vectors from the translateTarget to all anchors outside of
 		// the bounds of the screen, normalizes it, then adds then all
@@ -245,20 +248,30 @@ public class Camera {
 			}
 		}
 
+		Vector2 longestDist = anchorList.getLongestXYDist( );
+		Vector2 distFromEdge = new Vector2( longestDist.x - screenBounds.width,
+				longestDist.y - screenBounds.height );
+		if ( distFromEdge.x > distFromEdge.y ) {
+			newZoom = longestDist.x / viewportWidth;
+		} else if ( distFromEdge.y > distFromEdge.x ) {
+			newZoom = longestDist.y / viewportHeight;
+		}
+
 		if ( outsideTrue ) {
 			if ( !insideTargetBuffer ) {
-				translateState = true;;
+				translateState = true;
+				;
 			}
 		}
-		translateLogic( );
-		zoom( );
+		translateLogic( true, true );
+		zoom( newZoom );
 	}
 
 	/**
 	 * Either translate, lock, or do nothing based on various buffers and
 	 * positions
 	 */
-	private void translateLogic( ) {
+	private void translateLogic( boolean trans_x, boolean trans_y ) {
 		// determine whether to translate, lock, or do nothing
 		if ( !debugInput && translateState ) {
 			if ( insideTargetBuffer ) {
@@ -268,8 +281,10 @@ public class Camera {
 				tempAngle = anchorList.getMidpointVelocity( ).angle( )
 						- translateVelocity.angle( );
 				tempAngle = Math.abs( tempAngle );
-				camera.position.x = translateTarget.x;
-				camera.position.y = translateTarget.y;
+				if ( trans_x )
+					camera.position.x = translateTarget.x;
+				if ( trans_y )
+					camera.position.y = translateTarget.y;
 				if ( anchorList.getMidpointVelocity( ).len( ) < MINIMUM_FOLLOW_SPEED
 						|| tempAngle > MAX_ANGLE_DIFF ) {
 					translateState = false;
@@ -279,7 +294,7 @@ public class Camera {
 					translateSpeed = 0f;
 				}
 			} else
-				translate( );
+				translate( trans_x, trans_y);
 		} else if ( !translateState ) {
 			translateVelocity.x = 0f;
 			translateVelocity.y = 0f;
@@ -294,9 +309,18 @@ public class Camera {
 	/**
 	 * translate the camera towards the translate target
 	 */
-	private void translate( ) {
-		Vector2.tmp.x = translateTarget.x;
-		Vector2.tmp.y = translateTarget.y;
+	private void translate( boolean trans_x, boolean trans_y ) {
+		// only account for translate target on axis which is being translated on
+		if ( trans_x )
+			Vector2.tmp.x = translateTarget.x;
+		else
+			Vector2.tmp.x = center2D.x;
+
+		if ( trans_y )
+			Vector2.tmp.y = translateTarget.y;
+		else
+			Vector2.tmp.y = center2D.y;
+		
 		Vector2.tmp.sub( center2D );
 
 		if ( Vector2.tmp.len( ) > accelerationBuffer ) {
@@ -327,29 +351,36 @@ public class Camera {
 	 * @param modifier
 	 *            modifies zoom rate
 	 */
-	private void zoom( ) {
-		float newZoom = 1f;
+	private void zoom( float newZoom ) {
 
-		Vector2 longestDist = anchorList.getLongestXYDist( );
-		Vector2 distFromEdge = new Vector2(longestDist.x - screenBounds.width, longestDist.y - screenBounds.height);
-		if ( distFromEdge.x > distFromEdge.y ) {
-			newZoom = longestDist.x / viewportWidth;
-		} else if ( distFromEdge.y > distFromEdge.x ) {
-			newZoom = longestDist.y / viewportHeight;
-		}
-		if ( newZoom > 1f ) {
-			zoomSteer(newZoom);
+		if ( newZoom > 1f && zoomSpeed < ZOOM_MAX_SPEED ) {
+			zoomSteer( newZoom );
 			translateBuffer.width = screenBounds.width * BUFFER_RATIO;
 			translateBuffer.height = screenBounds.height * BUFFER_RATIO;
 		}
 	}
-	
+
 	/**
 	 * steer zoom to the new zoom
+	 * 
 	 * @param newZoom
 	 */
-	private void zoomSteer(float newZoom) {
-		camera.zoom = newZoom;
+	private void zoomSteer( float newZoom ) {
+		// if difference is small enough, set speed to zero
+		if ( Math.abs( camera.zoom - newZoom ) < ZOOM_SIG_DIFF )
+			zoomSpeed = 0;
+
+		// accelerate zoom
+		zoomSpeed += ZOOM_ACCELERATION;
+
+		// use speed to zoom out
+		if ( newZoom > camera.zoom )
+			camera.zoom += zoomSpeed;
+
+		// if zooming in, use slower (half maybe) speed
+		if ( newZoom < camera.zoom )
+			camera.zoom -= zoomSpeed / ZOOM_IN_FACTOR;
+		// camera.zoom = newZoom;
 	}
 
 	@SuppressWarnings( "unused" )
@@ -432,8 +463,8 @@ public class Camera {
 			camera.zoom = 2f;
 		}
 	}
-	
-	public void turnOffZoom(){
+
+	public void turnOffZoom( ) {
 		debugTurnOffZoom = true;
 	}
 }
