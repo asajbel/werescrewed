@@ -6,6 +6,8 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.controllers.PovDirection;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
@@ -20,6 +22,7 @@ import com.blindtigergames.werescrewed.camera.Anchor;
 import com.blindtigergames.werescrewed.camera.AnchorList;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityDef;
+import com.blindtigergames.werescrewed.entity.Sprite;
 import com.blindtigergames.werescrewed.entity.mover.LerpMover;
 import com.blindtigergames.werescrewed.entity.mover.LinearAxis;
 import com.blindtigergames.werescrewed.entity.mover.PuzzleType;
@@ -97,6 +100,7 @@ public class Player extends Entity {
 	 * </p>
 	 * <Ul>
 	 * Standing <br />
+	 * Running <br />
 	 * Jumping <br />
 	 * Falling <br />
 	 * Screwing <br />
@@ -104,7 +108,8 @@ public class Player extends Entity {
 	 * </Ul>
 	 */
 	public enum PlayerState {
-		Standing, Jumping, Falling, Screwing, JumpingOffScrew, Dead, GrabMode, HeadStand
+		Standing, Running, Jumping, Falling,
+		Screwing, JumpingOffScrew, Dead, GrabMode, HeadStand
 	}
 
 	// CONSTRUCTORS
@@ -165,7 +170,11 @@ public class Player extends Entity {
 		if ( isDead ) {
 		//	body.setLinearVelocity( Vector2.Zero );
 		//	body.setFixedRotation( false );
-		//	body.setAngularVelocity( 0.1f );
+		//	body.setAngularVelocity( 0.1f )
+			
+			//TODO: this is sloppy as fuck, so fix it all nice like
+			Texture blah = WereScrewedGame.manager.get(WereScrewedGame.dirHandle + "/common/player_b_m_dying_r.png");
+			sprite = new Sprite(7, 1, 7, 0.1f, blah, Animation.NORMAL);
 		} else {
 		//	body.setFixedRotation( true );
 		//	body.setTransform( body.getPosition( ).x, body.getPosition( ).y, 0 );
@@ -365,6 +374,13 @@ public class Player extends Entity {
 					body.getWorldCenter( ) );
 		}
 		setGrounded( false );
+		
+		//TODO: Animations reset, but this is probably leads to a memory leak 
+		Texture blah = WereScrewedGame.manager.get(WereScrewedGame.dirHandle + "/common/player_b_m_jumping.png");
+		//if(sprite != null){/*delete the sprite here*/}
+		
+		//TODO: Also, how do I align the sprite to the physics body?
+		sprite = new Sprite(3, 1, 3, 0.1f, blah, Animation.NORMAL);
 	}
 
 	/**

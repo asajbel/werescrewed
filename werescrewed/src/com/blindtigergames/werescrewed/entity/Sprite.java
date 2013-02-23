@@ -88,6 +88,9 @@ public class Sprite extends com.badlogic.gdx.graphics.g2d.Sprite implements I_Dr
 	}
 
 	/**
+	 * TODO: this constructor requires too many magic numbers,
+	 * so think of a way to fix that.
+	 * 
 	 * Create an animating sprite using a Texture of a sprite sheet. May or may
 	 * not be here in a later build, since it's extremely similar to the sprite
 	 * sheet constructor
