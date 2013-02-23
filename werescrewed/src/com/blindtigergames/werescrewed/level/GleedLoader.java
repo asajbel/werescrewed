@@ -153,7 +153,7 @@ public class GleedLoader {
 						.solid( true )
 						.buildTilePlatform( );
 						Gdx.app.log("GleedLoader", "Platform loaded:"+tp.name);
-						tp.setPixelPosition(item.pos);
+					//	tp.setPixelPosition(item.pos);
 						level.entities.addEntity( item.name, tp );
 						if (item.props.containsKey( "Dynamic" )){
 							level.root.addDynamicPlatform( tp );
@@ -168,7 +168,7 @@ public class GleedLoader {
 						.texture( def.getTexture() )
 						.solid( true )
 						.buildComplexPlatform( );
-						cp.setPixelPosition(item.pos);
+					//	cp.setPixelPosition(item.pos);
 	
 						Gdx.app.log("GleedLoader", "Platform loaded:"+cp.name);
 						level.entities.addEntity( item.name, cp );
@@ -178,7 +178,7 @@ public class GleedLoader {
 							level.root.addKinematicPlatform( cp );
 						}
 					} else if (def.getCategory( ).equals( playerCat )){
-						level.player.setPixelPosition( item.pos );
+						//level.player.setPixelPosition( item.pos );
 						Gdx.app.log("GleedLoader", "Player Spawnpoint:"+item.pos.toString( ));
 					} else {
 						Entity e = new EntityBuilder()
@@ -189,7 +189,7 @@ public class GleedLoader {
 								.properties(item.props)
 								.build();
 						Gdx.app.log("GleedLoader", "Entity loaded:"+item.name);
-						e.setPixelPosition(item.pos);
+						//e.setPixelPosition(item.pos);
 						level.entities.addEntity( item.name, e );
 					}
 					Gdx.app.log("GleedLoader", "Position:"+item.pos.x+","+item.pos.y);

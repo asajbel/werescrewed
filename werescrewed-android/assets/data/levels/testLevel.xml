@@ -55,13 +55,13 @@
                         <PackedValue>2445279424</PackedValue>
                     </FillColor>
                 </Item>
-                <Item xsi:type="CircleItem" Name="player" Visible="true">
+                <Item xsi:type="CircleItem" Name="player1" Visible="true">
                     <Position>
-                        <X>192</X>
+                        <X>256</X>
                         <Y>0</Y>
                     </Position>
                     <CustomProperties>
-                        <Property Name="Definition" Type="string" Description="playerTest">
+                        <Property Name="Definition" Type="string" Description="player1">
                             <string>player1</string>
                         </Property>
                     </CustomProperties>

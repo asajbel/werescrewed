@@ -13,8 +13,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.joints.PrismaticJoint;
 import com.badlogic.gdx.physics.box2d.joints.PrismaticJointDef;
@@ -52,7 +50,7 @@ import com.blindtigergames.werescrewed.screws.StructureScrew;
 import com.blindtigergames.werescrewed.skeleton.Skeleton;
 import com.blindtigergames.werescrewed.util.Util;
 
-public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
+public class Level1Screen implements com.badlogic.gdx.Screen {
 
 	// FIELDS
 
@@ -65,14 +63,12 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 	private MyContactListener contactListener;
 	private SBox2DDebugRenderer debugRenderer;
 	private Player player1, player2;
-	@SuppressWarnings( "unused" )
-	private TiledPlatform tiledPlat, ground, movingTP, singTile, rectile, ropePlatform;
+	private TiledPlatform tiledPlat, ground, movingTP, singTile;
 	private PlatformBuilder platBuilder;
 	private Skeleton skeleton;
 	private Skeleton rootSkeleton;
 	private ArrayList< StrippedScrew > climbingScrews;
 	private Rope testRope;
-	private StrippedScrew ropeScrew;
 	private RopeBuilder ropeBuilder;
 	private boolean debug = true;
 	private boolean debugTest = true;
@@ -81,7 +77,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 	 * Defines all necessary components in a screen for testing different
 	 * physics-related mechanics
 	 */
-	public PhysicsTestScreen( ) {
+	public Level1Screen( ) {
 		// Initialize world and variables to allow adding entities
 		batch = new SpriteBatch( );
 		world = new World( new Vector2( 0, -35 ), true );
@@ -110,7 +106,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		ropeBuilder = new RopeBuilder( world );
 
 		testTexture = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-						+ "/common/TilesetTest.png", Texture.class );
+						+ "/levels/level1/TilesetTest.png", Texture.class );
 
 
 		// Uncomment for test anchor
@@ -281,7 +277,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		flipPlat2.setLocalRot( -90 * Util.DEG_TO_RAD );
 		skeleton.addKinematicPlatform( flipPlat2 );
 		
-		ProjectileMover cannon = new ProjectileMover(1, 2, 10, new Vector2( 400f, 400f ) );
+		new ProjectileMover(1, 2, 10, new Vector2( 400f, 400f ) );
 
 		// rotate puzzle screw control
 		RotateByDegree rm = new RotateByDegree( 0.0f, -90.0f, 0, 0.5f );

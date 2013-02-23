@@ -11,6 +11,7 @@ import com.badlogic.gdx.physics.box2d.Filter;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.blindtigergames.werescrewed.camera.Anchor;
 import com.blindtigergames.werescrewed.camera.AnchorList;
 import com.blindtigergames.werescrewed.entity.mover.IMover;
@@ -57,15 +58,15 @@ public class Entity {
 	 * @param solid
 	 *            boolean determining whether or not the player can stand on it
 	 */
-	public Entity( String name, EntityDef type, World world, 
-			Vector2 pos, float rot, Vector2 scale, Texture texture, boolean solid, 
-            float anchRadius) {
-		this.construct( name, pos, solid );
+	public Entity( String name, EntityDef type, World world,
+			Vector2 positionPixels, float rot, Vector2 scale, Texture texture,
+			boolean solid, float anchRadius ) {
+		this.construct( name, solid );
 		this.type = type;
 		this.world = world;
 		this.sprite = constructSprite( texture );
 		this.body = constructBodyByType( );
-		setPixelPosition( pos );
+		setPixelPosition( positionPixels );
 		if ( anchRadius >= 0 ) {
 			Vector2 centPos = new Vector2( body.getWorldCenter( ).x
 					* Util.BOX_TO_PIXEL, body.getWorldCenter( ).y
@@ -90,7 +91,7 @@ public class Entity {
 	 */
 	public Entity( String name, Vector2 positionPixels, Texture texture,
 			Body body, boolean solid ) {
-		this.construct( name, positionPixels, solid );
+		this.construct( name, solid );
 		this.sprite = constructSprite( texture );
 		this.body = body;
 		if ( body != null ) {
@@ -103,7 +104,7 @@ public class Entity {
 	/**
 	 * Common sub-constructor that applies to all Entity() constructors.
 	 */
-	protected void construct(String name, Vector2 pos, boolean solid){
+	protected void construct( String name, boolean solid ) {
 		this.name = name;
 		this.solid = solid;
 		this.offset = new Vector2( 0.0f, 0.0f );
@@ -120,13 +121,14 @@ public class Entity {
 	 * @param xMeters
 	 * @param yMeters
 	 */
-	public void setPosition(float x, float y){
-		x -= bodyOffset.x;
-		y -= bodyOffset.y;
-		if (body != null){
-			body.setTransform(x, y, body.getAngle());
-		} else if (sprite != null){
-			sprite.setPosition(x, y);
+	public void setPosition( float xMeters, float yMeters ) {
+		xMeters -= bodyOffset.x;
+		yMeters -= bodyOffset.y;
+		if ( body != null ) {
+			body.setTransform( xMeters, yMeters, body.getAngle( ) );
+		} else if ( sprite != null ) {
+			sprite.setPosition( xMeters * Util.BOX_TO_PIXEL, yMeters
+					* Util.BOX_TO_PIXEL );
 		}
 	}
 
@@ -138,15 +140,6 @@ public class Entity {
 		setPixelPosition(pixels.x, pixels.y);	
 	}
 	
-	public void setPosition( float xMeters, float yMeters ) {
-		if ( body != null ) {
-			body.setTransform( xMeters, yMeters, body.getAngle( ) );
-		} else if ( sprite != null ) {
-			sprite.setPosition( xMeters * Util.BOX_TO_PIXEL, yMeters
-					* Util.BOX_TO_PIXEL );
-		}
-	}
-
 	/**
 	 * Set position by meters!!
 	 * 
@@ -200,7 +193,7 @@ public class Entity {
 		shapes.line(pos.x, pos.y, pos.x, pos.y+axisSize); //Blue: Y-axis
 		if (sprite != null){
 			shapes.setColor( 0.0f, 1.0f, 0.0f, 1.0f );
-			shapes.line(pos.x, pos.y, pos.x + sprite.getOriginX( ), pos.y + sprite.getOriginY( )); //Green: Sprite Origin
+			shapes.line(pos.x, pos.y, pos.x - sprite.getOriginX( ), pos.y - sprite.getOriginY( )); //Green: Sprite Origin
 		}
 		shapes.end();
 	}
@@ -216,8 +209,9 @@ public class Entity {
 	}
 
 	/**
-	 * Update the mover of this entity, if it exists.
-	 * Now separated from update() so that it can be called whenever skeleton wants.
+	 * Update the mover of this entity, if it exists. Now separated from
+	 * update() so that it can be called whenever skeleton wants.
+	 * 
 	 * @param deltaTime
 	 */
 	public void updateMover( float deltaTime ) {
@@ -478,11 +472,23 @@ public class Entity {
 			body.setGravityScale( g );
 		}
 	}
+	
+	/**
+	 * Return whether this entity's body is kinematic.
+	 * @author stew 
+	 * @return false if Dynamic static or has no body otherwise true
+	 */
+	public boolean isKinematic(){
+		if ( body != null ){
+			return (body.getType( ) == BodyType.KinematicBody);
+		}
+		return false;
+	}
 
 	public String toString( ) {
 		return "Entity[" + name + "] pos:" + body.getPosition( )
 				+ ", body.active:" + body.isActive( ) + ", body.awake:"
 				+ body.isAwake( );
 	}
-	
+
 }
