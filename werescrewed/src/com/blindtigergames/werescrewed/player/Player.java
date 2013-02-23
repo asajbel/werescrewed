@@ -37,9 +37,9 @@ import com.blindtigergames.werescrewed.util.Util;
  */
 public class Player extends Entity {
 
-	public final static float MAX_VELOCITY = 1.65f;
+	public final static float MAX_VELOCITY = 1.55f;
 	public final static float MIN_VELOCITY = 0.01f;
-	public final static float MOVEMENT_IMPULSE = 0.009f;
+	public final static float MOVEMENT_IMPULSE = 0.007f;
 	public final static float JUMP_SCREW_IMPULSE = 0.12f;
 	public final static float JUMP_CONTROL_MUTIPLIER = 0.5f;
 	public final static int JUMP_COUNTER = 10;
@@ -334,10 +334,6 @@ public class Player extends Entity {
 		float temp = ( ( ( leftAnalogX - ANALOG_DEADZONE ) / ( ANALOG_MAX_RANGE - ANALOG_DEADZONE ) ) * ( MAX_VELOCITY - MIN_VELOCITY ) )
 				+ MIN_VELOCITY;
 		if ( body.getLinearVelocity( ).x < temp ) {
-			//old? new?
-			body.applyLinearImpulse( new Vector2( MOVEMENT_IMPULSE
-					* JUMP_CONTROL_MUTIPLIER, 0.0f ), body.getWorldCenter( ) );
-			//old? new?
 			body.applyLinearImpulse(
 					new Vector2( MOVEMENT_IMPULSE / directionJumpDivsion, 0.0f ),
 					body.getWorldCenter( ) );
@@ -358,10 +354,6 @@ public class Player extends Entity {
 		float temp = ( ( ( leftAnalogX + ANALOG_DEADZONE ) / ( ANALOG_MAX_RANGE - ANALOG_DEADZONE ) ) * ( MAX_VELOCITY - MIN_VELOCITY ) )
 				- MIN_VELOCITY;
 		if ( body.getLinearVelocity( ).x > temp ) {
-			//old? new?
-			body.applyLinearImpulse( new Vector2( -MOVEMENT_IMPULSE
-					* JUMP_CONTROL_MUTIPLIER, 0.0f ), body.getWorldCenter( ) );
-			//old? new?
 			body.applyLinearImpulse(
 					new Vector2( -MOVEMENT_IMPULSE / directionJumpDivsion, 0.0f ),
 					body.getWorldCenter( ) );
@@ -1165,7 +1157,7 @@ public class Player extends Entity {
 		 */
 		if ( controllerListener.downPressed( ) ) {
 			// processMovementDown( );
-			stop( );
+			//stop( );
 		}
 		if ( ( !controllerListener.leftPressed( ) && !controllerListener
 				.rightPressed( ) )
