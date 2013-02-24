@@ -55,9 +55,9 @@ public class Camera {
 	private float targetToBufferRatio;
 
 	// zoom
-	private static final float ZOOM_ACCELERATION = .001f;
+	private static final float ZOOM_ACCELERATION = .0001f;
 	private static final float ZOOM_MAX_SPEED = 100f;
-	private static final float ZOOM_SIG_DIFF = .01f;
+	private static final float ZOOM_SIG_DIFF = .0005f;
 	private static final float ZOOM_IN_FACTOR = .5f;
 
 	private enum RectDirection {
@@ -396,8 +396,8 @@ public class Camera {
 
 		// if zooming in, use slower (half maybe) speed
 		if ( newZoom < camera.zoom ) {
-			if ( ( camera.zoom - zoomSpeed / ZOOM_IN_FACTOR ) > newZoom )
-				camera.zoom -= zoomSpeed / ZOOM_IN_FACTOR;
+			if ( ( camera.zoom - zoomSpeed * ZOOM_IN_FACTOR ) > newZoom )
+				camera.zoom -= zoomSpeed * ZOOM_IN_FACTOR;
 			else
 				camera.zoom = newZoom;
 		}
