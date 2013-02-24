@@ -94,12 +94,12 @@ public class GleedLoader {
 					
 					float w = (item.getFloat( "Width" ));
 					float h = (item.getFloat( "Height" ));
-					float tileX = def.getTexture( ).getWidth( )/4.0f;
+					/*float tileX = def.getTexture( ).getWidth( )/4.0f;
 					float tileY = def.getTexture( ).getWidth( )/4.0f;
 					if (tileX > 0)
 						w = w / tileX;
 					if (tileY > 0)
-						h = h / tileY;
+						h = h / tileY;*/
 					
 					TiledPlatform tp = new PlatformBuilder(level.world)
 					.name( name )

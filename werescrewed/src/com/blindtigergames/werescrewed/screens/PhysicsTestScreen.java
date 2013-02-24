@@ -101,6 +101,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		//skeleton.body.setType( BodyType.DynamicBody );
 		rootSkeleton = new Skeleton( "root", Vector2.Zero, null, world );
 		
+		
 		/* Examples of movers on skeletons */
 		// rootSkeleton.mover = new RockingMover( -0.02f, 1.0f );
 		// rootSkeleton.setMover( new PathBuilder( ).begin( skeleton ).target(

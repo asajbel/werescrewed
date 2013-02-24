@@ -13,6 +13,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.Shape;
+import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.badlogic.gdx.utils.XmlReader;
 import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.util.BodyEditorLoader;
@@ -235,9 +236,18 @@ public class EntityDef {
 			// Category Data
 			out.setCategory( xml.get( "category", NO_CATEGORY ) );
 			// Sprite Data
-			String texName = xml.get( "texture" );
-			out.setTexture(WereScrewedGame.manager.get(
+			String texName = null;
+			String tileSetName = null;
+			try{
+				texName = xml.get( "texture" );
+			}catch(GdxRuntimeException e){
+				tileSetName = xml.get( "tileset" );
+			}
+			if (texName != null ){
+				out.setTexture(WereScrewedGame.manager.get(
 					WereScrewedGame.dirHandle.path( )  + "/" + texName, Texture.class));
+			}
+			out.tileSetName = tileSetName;
 			out.initialAnim = xml.get( "initialAnim" );
 			out.origin.x = xml.getFloat( "originX" );
 			out.origin.y = xml.getFloat( "originY" );
