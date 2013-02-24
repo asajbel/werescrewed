@@ -1,10 +1,10 @@
 package com.blindtigergames.werescrewed.screws;
 
 public enum ScrewType {
-	SCREW_STRIPPED("Stripped"),
-	SCREW_STRUCTURAL("Structural"),
-	SCREW_PUZZLE("Puzzle"),
-	SCREW_BOSS("Boss");
+	SCREW_STRIPPED("ScrewStripped"),
+	SCREW_STRUCTURAL("ScrewStructural"),
+	SCREW_PUZZLE("ScrewPuzzle"),
+	SCREW_BOSS("ScrewBoss");
     /**
      * @param text
      */
