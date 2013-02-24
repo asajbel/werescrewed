@@ -204,6 +204,11 @@ public class Player extends Entity {
 					debugAttach1 = debugAttach3 = false;
 					debugAttach2 = true;
 				}
+				else if (debugAttach2 && debugAttach2Hold){
+					debugAttach1 = debugAttach2 = false;
+					debugAttach3 = true;
+					debugAttach2Hold = false;
+				}
 				else if(debugAttach2){
 					debugAttach2Hold = true;
 				}
@@ -211,9 +216,8 @@ public class Player extends Entity {
 					debugAttach1 = debugAttach2 = false;
 					debugAttach3 = true;
 					debugAttach2Hold = false;
-				}
-				else if(debugAttach3){
-					debugAttach2 = debugAttach3 = false;
+				}else if(debugAttach3){
+					debugAttach2 = debugAttach3 = debugAttach2Hold = false;
 					debugAttach1 = true;
 				}
 				Gdx.app.log("attaching mode: ", debugAttach1 + ", "
@@ -702,16 +706,18 @@ public class Player extends Entity {
 	 */
 	private void processJumpStateController( ) {
 		if ( playerState == PlayerState.Screwing  ) {
-			if ( mover == null ) {
-				world.destroyJoint( playerToScrew );
-				for ( Fixture f : body.getFixtureList( ) ) {
-					f.setSensor( false );
+			if(canJumpOffScrew){
+				if ( mover == null ) {
+					world.destroyJoint( playerToScrew );
+					for ( Fixture f : body.getFixtureList( ) ) {
+						f.setSensor( false );
+					}
+					playerState = PlayerState.JumpingOffScrew;
+					screwJumpTimeout = SCREW_JUMP_STEPS;
+					jumpPressedController = true;
+					mover = null;
+					jumpScrew( );
 				}
-				playerState = PlayerState.JumpingOffScrew;
-				screwJumpTimeout = SCREW_JUMP_STEPS;
-				jumpPressedController = true;
-				mover = null;
-				jumpScrew( );
 			}
 		} else if ( !jumpPressedController ) {
 			if ( !topPlayer ) {
@@ -1253,7 +1259,8 @@ public class Player extends Entity {
 		}
 		if(debugAttach2 && controllerListener.screwPressed( ) 
 				&& playerState == PlayerState.Screwing ){
-			if(!holdingScrewWhenAttached && debugAttach2Hold){
+			if( debugAttach2Hold){
+				if(!holdingScrewWhenAttached){
 				if ( mover == null ) {
 					world.destroyJoint( playerToScrew );
 					for ( Fixture f : body.getFixtureList( ) ) {
@@ -1262,8 +1269,20 @@ public class Player extends Entity {
 					mover = null;
 					playerState = PlayerState.JumpingOffScrew;
 					screwJumpTimeout = SCREW_JUMP_STEPS;
+					}
 				}
+			}else{
+				if ( mover == null ) {
+					world.destroyJoint( playerToScrew );
+					for ( Fixture f : body.getFixtureList( ) ) {
+						f.setSensor( false );
+					}
+					mover = null;
+					playerState = PlayerState.JumpingOffScrew;
+					screwJumpTimeout = SCREW_JUMP_STEPS;
+					}
 			}
+		
 		}
 		// loosen and tighten screws and jump when the screw joint is gone
 		if ( playerState == PlayerState.Screwing ) {
