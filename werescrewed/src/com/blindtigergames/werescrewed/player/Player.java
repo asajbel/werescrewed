@@ -685,16 +685,18 @@ public class Player extends Entity {
 	 */
 	private void processJumpStateController( ) {
 		if ( playerState == PlayerState.Screwing ) {
-			if ( mover == null ) {
-				world.destroyJoint( playerToScrew );
-				for ( Fixture f : body.getFixtureList( ) ) {
-					f.setSensor( false );
+			if(canJumpOffScrew){
+				if ( mover == null ) {
+					world.destroyJoint( playerToScrew );
+					for ( Fixture f : body.getFixtureList( ) ) {
+						f.setSensor( false );
+					}
+					playerState = PlayerState.JumpingOffScrew;
+					screwJumpTimeout = SCREW_JUMP_STEPS;
+					jumpPressedController = true;
+					mover = null;
+					jumpScrew( );
 				}
-				playerState = PlayerState.JumpingOffScrew;
-				screwJumpTimeout = SCREW_JUMP_STEPS;
-				jumpPressedController = true;
-				mover = null;
-				jumpScrew( );
 			}
 		} else if ( !jumpPressedController ) {
 			if ( !topPlayer ) {
