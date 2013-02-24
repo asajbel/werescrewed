@@ -40,7 +40,7 @@ public class Player extends Entity {
 	public final static float MAX_VELOCITY = 1.55f;
 	public final static float MIN_VELOCITY = 0.01f;
 	public final static float MOVEMENT_IMPULSE = 0.007f;
-	public final static float JUMP_SCREW_IMPULSE = 0.12f;
+	public final static float JUMP_SCREW_IMPULSE = 0.11f;
 	public final static float JUMP_CONTROL_MUTIPLIER = 0.5f;
 	public final static int JUMP_COUNTER = 10;
 	public final static float ANALOG_DEADZONE = 0.2f;
@@ -85,6 +85,7 @@ public class Player extends Entity {
 	private boolean screwButtonHeld;
 	private boolean kinematicTransform = false;
 	private boolean changeDirectionsOnce = false;
+	private boolean holdingScrewWhenAttached = false;
 	private float footFriction = PLAYER_FRICTION;
 
 	public int grabCounter = 0;
@@ -94,6 +95,7 @@ public class Player extends Entity {
 	
 	
 	private boolean debugAttach1 = true, debugAttach2 = false, debugAttach3 = false;
+	private boolean debugAttach2Hold = false;
 
 	// Enums
 	/**
@@ -162,7 +164,7 @@ public class Player extends Entity {
 	public void update( float deltaTime ) {
 		super.update( deltaTime );
 		if ( name.equals( "player1" ) ) {
-			//System.out.println( directionJumpDivsion );
+			//System.out.println( canJumpOffScrew );
 		}
 		if ( kinematicTransform ) {
 			// setPlatformTransform( platformOffset );
@@ -198,19 +200,24 @@ public class Player extends Entity {
 		if ( Gdx.input.isKeyPressed( Keys.ENTER ) ) {
 			if ( controllerDebug ){
 				controllerIsActive = !controllerIsActive;
-				Gdx.app.log("attaching mode: ", debugAttach1 + ", " + debugAttach2 + ", " + debugAttach3);
 				if(debugAttach1){
 					debugAttach1 = debugAttach3 = false;
 					debugAttach2 = true;
 				}
 				else if(debugAttach2){
+					debugAttach2Hold = true;
+				}
+				else if(debugAttach2Hold){
 					debugAttach1 = debugAttach2 = false;
 					debugAttach3 = true;
+					debugAttach2Hold = false;
 				}
 				else if(debugAttach3){
 					debugAttach2 = debugAttach3 = false;
 					debugAttach1 = true;
 				}
+				Gdx.app.log("attaching mode: ", debugAttach1 + ", "
+				+ debugAttach2 + ", " + debugAttach2Hold + ", " + debugAttach3);
 			}
 			controllerDebug = false;
 		} else
@@ -694,7 +701,7 @@ public class Player extends Entity {
 	 * actual jump for the controller
 	 */
 	private void processJumpStateController( ) {
-		if ( playerState == PlayerState.Screwing ) {
+		if ( playerState == PlayerState.Screwing  ) {
 			if ( mover == null ) {
 				world.destroyJoint( playerToScrew );
 				for ( Fixture f : body.getFixtureList( ) ) {
@@ -968,7 +975,6 @@ public class Player extends Entity {
 	 * @return void slows player
 	 */
 	private void slow( ) {
-		System.out.println( "slow called" );
 		float velocity = body.getLinearVelocity( ).x;
 		if ( velocity != 0.0f ) {
 			if ( velocity < -0.1f )
@@ -1205,7 +1211,18 @@ public class Player extends Entity {
 						canJumpOffScrew = false;
 					}
 				}
-			}else if(debugAttach2 || debugAttach3){
+			}else if(debugAttach2){
+				if ( hitScrew ) {
+					attachToScrew( );
+					jumpCounter = 0;
+					if(controllerListener.jumpPressed( ) ){
+						canJumpOffScrew = false;
+					}
+					if(controllerListener.screwPressed( ) && debugAttach2Hold){
+						holdingScrewWhenAttached = true;
+					}
+				}
+			}else if(debugAttach3){
 				if ( hitScrew ) {
 					attachToScrew( );
 					jumpCounter = 0;
@@ -1217,28 +1234,35 @@ public class Player extends Entity {
 		}
 		// If the button is let go, then the player is dropped
 		// Basically you have to hold attach button to stick to screw
-		if ( !debugAttach2 && !controllerListener.screwPressed( )
+		if ( !controllerListener.screwPressed( )
 				&& playerState == PlayerState.Screwing ) {
-			if ( mover == null ) {
-				world.destroyJoint( playerToScrew );
-				for ( Fixture f : body.getFixtureList( ) ) {
-					f.setSensor( false );
+			if(!debugAttach2 ){
+				if ( mover == null ) {
+					world.destroyJoint( playerToScrew );
+					for ( Fixture f : body.getFixtureList( ) ) {
+						f.setSensor( false );
+					}
+					mover = null;
+					playerState = PlayerState.JumpingOffScrew;
+					screwJumpTimeout = SCREW_JUMP_STEPS;
 				}
-				mover = null;
-				playerState = PlayerState.JumpingOffScrew;
-				screwJumpTimeout = SCREW_JUMP_STEPS;
+			}else{
+				if(debugAttach2Hold)
+					holdingScrewWhenAttached = false;
 			}
 		}
 		if(debugAttach2 && controllerListener.screwPressed( ) 
 				&& playerState == PlayerState.Screwing ){
-			if ( mover == null ) {
-				world.destroyJoint( playerToScrew );
-				for ( Fixture f : body.getFixtureList( ) ) {
-					f.setSensor( false );
+			if(!holdingScrewWhenAttached && debugAttach2Hold){
+				if ( mover == null ) {
+					world.destroyJoint( playerToScrew );
+					for ( Fixture f : body.getFixtureList( ) ) {
+						f.setSensor( false );
+					}
+					mover = null;
+					playerState = PlayerState.JumpingOffScrew;
+					screwJumpTimeout = SCREW_JUMP_STEPS;
 				}
-				mover = null;
-				playerState = PlayerState.JumpingOffScrew;
-				screwJumpTimeout = SCREW_JUMP_STEPS;
 			}
 		}
 		// loosen and tighten screws and jump when the screw joint is gone
