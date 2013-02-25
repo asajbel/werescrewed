@@ -133,7 +133,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		initPulley( );
 
 		testRope = ropeBuilder.position( 2800f, 450f ).width( 16f ).height( 64f )
-				.links( 5 ).buildRope( );
+				.links( 5 ).texture( testTexture ).buildRope( );
 
 		TiledPlatform topPlatform = platBuilder.width( 10 ).height( 1 )
 				.oneSided( true ).position( 2800, 480 ).texture( testTexture )
