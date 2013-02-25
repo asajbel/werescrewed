@@ -277,15 +277,28 @@ public class Camera {
 	private void translateLogic( boolean trans_x, boolean trans_y ) {
 		// determine whether to translate, lock, or do nothing
 		if ( !debugInput && translateState ) {
-			if ( insideTargetBuffer ) {
+			boolean lock = false;
+
+			if ( insideTargetBuffer )
+				lock = true;
+			else if ( trans_x
+					&& Math.abs( translateTarget.x - center2D.x ) < targetBuffer )
+				lock = true;
+			else if ( trans_y
+					&& Math.abs( translateTarget.y - center2D.y ) < targetBuffer )
+				lock = true;
+
+			if ( lock ) {
 
 				// center of camera is inside of buffer circle around target
 				float tempAngle = 0f;
 				tempAngle = anchorList.getMidpointVelocity( ).angle( )
 						- translateVelocity.angle( );
 				tempAngle = Math.abs( tempAngle );
-				camera.position.x = translateTarget.x;
-				camera.position.y = translateTarget.y;
+				if ( trans_x )
+					camera.position.x = translateTarget.x;
+				if ( trans_y )
+					camera.position.y = translateTarget.y;
 				if ( anchorList.getMidpointVelocity( ).len( ) < MINIMUM_FOLLOW_SPEED
 						|| tempAngle > MAX_ANGLE_DIFF ) {
 					translateState = false;
@@ -332,10 +345,10 @@ public class Camera {
 					* DECELERATION_RATIO;
 		}
 
-		if ( ( translateSpeed + translateAcceleration ) < Vector2.tmp.len( ) - 5f )
+		if ( ( translateSpeed + translateAcceleration ) < Vector2.tmp.len( ) - 1f )
 			translateSpeed += translateAcceleration;
 		else
-			translateSpeed = Vector2.tmp.len( ) - 5f;
+			translateSpeed = Vector2.tmp.len( ) - 1f;
 
 		// make sure camera never moves faster than the anchor midpoint
 		if ( trans_x && trans_y ) {
