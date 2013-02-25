@@ -98,6 +98,9 @@ public class Rope {
 	public void draw( SpriteBatch batch ) {
 		if (screw != null)
 			screw.draw( batch );
+		for ( int i = 0; i < linkParts.size( ); i++ ) {
+			getLink( i ).draw( batch );
+		}
 	}
 
 	/**

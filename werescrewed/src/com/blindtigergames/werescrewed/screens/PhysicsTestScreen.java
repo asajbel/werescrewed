@@ -110,7 +110,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		ropeBuilder = new RopeBuilder( world );
 
 		testTexture = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-						+ "/common/TilesetTest.png", Texture.class );
+						+ "/common/tilesetTest.png", Texture.class );
 
 
 		// Uncomment for test anchor
