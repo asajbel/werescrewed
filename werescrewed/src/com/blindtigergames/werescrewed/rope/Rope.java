@@ -13,12 +13,33 @@ import com.blindtigergames.werescrewed.screws.Screw;
 import com.blindtigergames.werescrewed.screws.StrippedScrew;
 import com.blindtigergames.werescrewed.util.Util;
 
+/* A chain of box fixtures that 
+ * are jointed together to act as a rope.
+ * 
+ * @author Edward Boning, Ranveer Dhaliwal
+ * 
+ */
 public class Rope {
 
 	private StrippedScrew screw;
 	private ArrayList< Link > linkParts;
 	private World world;
 
+	/* Constructs a rope at a given position
+	 * 
+	 * @param name
+	 * 			name of the rope entity
+	 * @param pos
+	 * 			desired position of the top of the rope
+	 * @param widthHeight
+	 * 			width and height of each link
+	 * @param links
+	 * 			number of links of chain
+	 * @param texture
+	 * 			texture of rope
+	 * @param world
+	 * 			world the rope exists in
+	 */
 	public Rope( String name, Vector2 pos, Vector2 widthHeight, int links,
 			Texture texture, World world ) {
 		this.world = world;
@@ -30,6 +51,21 @@ public class Rope {
 
 	}
 
+	/* Constructs a rope at the position of a given entity
+	 * 
+	 * @param name
+	 * 			name of the rope entity
+	 * @param entity
+	 * 			entity where the rope will be created
+	 * @param widthHeight
+	 * 			width and height of each link
+	 * @param links
+	 * 			number of links of chain
+	 * @param texture
+	 * 			texture of rope
+	 * @param world
+	 * 			world the rope exists in
+	 */	
 	public Rope( String name, Entity entity, Vector2 widthHeight, int links,
 			Texture texture, World world ) {
 		this.world = world;
@@ -41,6 +77,9 @@ public class Rope {
 
 	}
 
+	/* Constructs rope fixtures given parameters from the constructor
+	 * 
+	 */
 	private void constructRope( String name, Vector2 pos, Vector2 widthHeight,
 			int links, World world ) {
 
@@ -59,14 +98,17 @@ public class Rope {
 			linkParts.add( temp );
 
 		}
-/*
-		screw = new StrippedScrew( "rope screw", world, new Vector2(
-				getEnd( ).body.getWorldCenter( ).x * Util.BOX_TO_PIXEL,
-				getEnd( ).body.getWorldCenter( ).y * Util.BOX_TO_PIXEL
-						- widthHeight.y ), getEnd( ) );
-		screw.body.getFixtureList( ).get( 0 ).setSensor( false );*/
 	}
 
+	/* Creates a joint between the top link and a given entity
+	 * 
+	 * @param entity
+	 * 			entity to which the rope will be jointed
+	 * @param move
+	 * 			if true, will move the given entity's position
+	 * 			to the top of the rope
+	 * 
+	 */
 	public void attachEntityToTop ( Entity entity, boolean move ){
 		if ( move ) {
 			entity.setPosition( getFirstLink( ).getPosition( ) );
@@ -77,6 +119,15 @@ public class Rope {
 			world.createJoint( revoluteJointDef );
 	}
 	
+	/* Creates a joint between the bottom link and a given entity
+	 * 
+	 * @param entity
+	 * 			entity to which the rope will be jointed
+	 * @param move
+	 *			if true, will move the given entity's position
+	 *			to the bottom of the rope 
+	 * 
+	 */
 	public void attachEntityToBottom ( Entity entity, boolean move ){
 		if ( move ) {
 			entity.setPosition( getLastLink( ).getPosition( ) );
@@ -95,6 +146,12 @@ public class Rope {
 
 	}
 
+	/* Draws all links of the rope
+	 * 
+	 * @param batch
+	 * 			sprite batch used for drawing the rope
+	 * 
+	 */
 	public void draw( SpriteBatch batch ) {
 		if (screw != null)
 			screw.draw( batch );
@@ -139,6 +196,9 @@ public class Rope {
 		return null;
 	}
 	
+	/*
+	 * @return the last link in the rope
+	 */
 	public Link getEnd( ) {
 		return linkParts.get( linkParts.size( ) - 1 );
 	}
