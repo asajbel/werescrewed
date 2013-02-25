@@ -284,10 +284,8 @@ public class Camera {
 				tempAngle = anchorList.getMidpointVelocity( ).angle( )
 						- translateVelocity.angle( );
 				tempAngle = Math.abs( tempAngle );
-				if ( trans_x )
-					camera.position.x = translateTarget.x;
-				if ( trans_y )
-					camera.position.y = translateTarget.y;
+				camera.position.x = translateTarget.x;
+				camera.position.y = translateTarget.y;
 				if ( anchorList.getMidpointVelocity( ).len( ) < MINIMUM_FOLLOW_SPEED
 						|| tempAngle > MAX_ANGLE_DIFF ) {
 					translateState = false;
@@ -315,16 +313,18 @@ public class Camera {
 	private void translate( boolean trans_x, boolean trans_y ) {
 		// only account for translate target on axis which is being translated
 		// on
-		if ( trans_x )
-			Vector2.tmp.x = translateTarget.x;
-		else
-			Vector2.tmp.x = center2D.x;
+//		if ( trans_x )
+//			Vector2.tmp.x = translateTarget.x;
+//		else
+//			Vector2.tmp.x = center2D.x;
+//
+//		if ( trans_y )
+//			Vector2.tmp.y = translateTarget.y;
+//		else
+//			Vector2.tmp.y = center2D.y;
 
-		if ( trans_y )
-			Vector2.tmp.y = translateTarget.y;
-		else
-			Vector2.tmp.y = center2D.y;
-
+		Vector2.tmp.x = translateTarget.x;
+		Vector2.tmp.y = translateTarget.y;
 		Vector2.tmp.sub( center2D );
 
 		if ( Vector2.tmp.len( ) > accelerationBuffer ) {
@@ -334,7 +334,7 @@ public class Camera {
 					* DECELERATION_RATIO;
 		}
 
-		if ( ( translateSpeed + translateAcceleration ) < ( Vector2.tmp.len( ) - 5f ) )
+		if ( ( translateSpeed + translateAcceleration ) < Vector2.tmp.len( ) )
 			translateSpeed += translateAcceleration;
 		else
 			translateSpeed = Vector2.tmp.len( ) - 5f;
@@ -385,10 +385,10 @@ public class Camera {
 
 		// accelerate zoom
 		zoomSpeed += ZOOM_ACCELERATION;
-
+		
 		// use speed to zoom out
 		if ( newZoom > camera.zoom ) {
-			if ( ( camera.zoom + zoomSpeed ) < newZoom )
+			if ( ( camera.zoom + zoomSpeed ) < ( newZoom - .001f ) )
 				camera.zoom += zoomSpeed;
 			else
 				camera.zoom = newZoom;
@@ -396,7 +396,7 @@ public class Camera {
 
 		// if zooming in, use slower (half maybe) speed
 		if ( newZoom < camera.zoom ) {
-			if ( ( camera.zoom - zoomSpeed * ZOOM_IN_FACTOR ) > newZoom )
+			if ( ( camera.zoom - zoomSpeed * ZOOM_IN_FACTOR ) > ( newZoom + .001f ) )
 				camera.zoom -= zoomSpeed * ZOOM_IN_FACTOR;
 			else
 				camera.zoom = newZoom;
