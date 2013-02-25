@@ -313,18 +313,16 @@ public class Camera {
 	private void translate( boolean trans_x, boolean trans_y ) {
 		// only account for translate target on axis which is being translated
 		// on
-//		if ( trans_x )
-//			Vector2.tmp.x = translateTarget.x;
-//		else
-//			Vector2.tmp.x = center2D.x;
-//
-//		if ( trans_y )
-//			Vector2.tmp.y = translateTarget.y;
-//		else
-//			Vector2.tmp.y = center2D.y;
+		if ( trans_x )
+			Vector2.tmp.x = translateTarget.x;
+		else
+			Vector2.tmp.x = center2D.x;
 
-		Vector2.tmp.x = translateTarget.x;
-		Vector2.tmp.y = translateTarget.y;
+		if ( trans_y )
+			Vector2.tmp.y = translateTarget.y;
+		else
+			Vector2.tmp.y = center2D.y;
+
 		Vector2.tmp.sub( center2D );
 
 		if ( Vector2.tmp.len( ) > accelerationBuffer ) {
@@ -334,13 +332,26 @@ public class Camera {
 					* DECELERATION_RATIO;
 		}
 
-		if ( ( translateSpeed + translateAcceleration ) < Vector2.tmp.len( ) )
+		if ( ( translateSpeed + translateAcceleration ) < Vector2.tmp.len( ) - 5f )
 			translateSpeed += translateAcceleration;
 		else
 			translateSpeed = Vector2.tmp.len( ) - 5f;
 
-		if ( translateSpeed < anchorList.getMidpointVelocity( ).len( ) )
-			translateSpeed = anchorList.getMidpointVelocity( ).len( );
+		// make sure camera never moves faster than the anchor midpoint
+		if ( trans_x && trans_y ) {
+			if ( translateSpeed < anchorList.getMidpointVelocity( ).len( ) )
+				translateSpeed = anchorList.getMidpointVelocity( ).len( );
+		} else if ( trans_x ) {
+			if ( translateSpeed < Math.cos( anchorList.getMidpointVelocity( )
+					.len( ) ) )
+				translateSpeed = ( float ) Math.cos( anchorList
+						.getMidpointVelocity( ).len( ) );
+		} else if ( trans_y ) {
+			if ( translateSpeed < Math.sin( anchorList.getMidpointVelocity( )
+					.len( ) ) )
+				translateSpeed = ( float ) Math.sin( anchorList
+						.getMidpointVelocity( ).len( ) );
+		}
 
 		Vector2.tmp.nor( );
 		translateVelocity.x = Vector2.tmp.x;
@@ -385,7 +396,7 @@ public class Camera {
 
 		// accelerate zoom
 		zoomSpeed += ZOOM_ACCELERATION;
-		
+
 		// use speed to zoom out
 		if ( newZoom > camera.zoom ) {
 			if ( ( camera.zoom + zoomSpeed ) < ( newZoom - .001f ) )
