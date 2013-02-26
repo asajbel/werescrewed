@@ -265,9 +265,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 	private void initStructureScrews( ) {
 		StructureScrew leftPlatScrew = new ScrewBuilder( )
 				.position(
-						tiledPlat.body.getPosition( ).x * Util.BOX_TO_PIXEL
-								- ( 0 ),
-						tiledPlat.body.getPosition( ).y * Util.BOX_TO_PIXEL )
+						tiledPlat.getPositionPixel( ).sub( tiledPlat.getPixelWidth( )/2,0 ) )
 				.entity( tiledPlat ).skeleton( skeleton ).world( world )
 				.buildStructureScrew( );
 		// StructureScrew rightPlatScrew = new StructureScrew( "", new Vector2(

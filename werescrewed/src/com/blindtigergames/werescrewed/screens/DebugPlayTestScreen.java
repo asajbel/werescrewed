@@ -83,7 +83,7 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		rootSkeleton = new Skeleton( "root", Vector2.Zero, null, world );
 
 		//Uncomment the tilset part to see the new tileset in game.
-		platBuilder = new PlatformBuilder( world );//.tileSet( "tileset1" );
+		platBuilder = new PlatformBuilder( world ).tileSet( "tileset-teal" );
 
 		testTexture = null;/*WereScrewedGame.manager.get(
 				WereScrewedGame.dirHandle.path( ) + "/common/tileset/TilesetTest.png",
@@ -101,9 +101,9 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 
 		// Initialize players
 		player1 = new PlayerBuilder( ).name( "player1" ).world( world )
-				.position( 110f * TILE, 48 * TILE  ).buildPlayer( );
+				.position( 175f * TILE, 96f * TILE   ).buildPlayer( );
 		player2 = new PlayerBuilder( ).name( "player2" ).world( world )
-				.position( 110f * TILE, 48 * TILE  ).buildPlayer( );
+				.position( 175f * TILE, 96f * TILE   ).buildPlayer( );
 
 		// END: 175f * TILE, 96f * TILE
 		// START : 1f * TILE, 1f * TILE 
@@ -439,14 +439,15 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 
 		StructureScrew s1 = new ScrewBuilder( )
 				.position(
-						plat.getPositionPixel( ).sub(  plat.getMeterWidth( )*13,0 ))
+						plat.getPositionPixel( ).sub(  plat.getPixelWidth( )/2, 0 )
+						)
 				.entity( plat ).skeleton( skel3 ).world( world )
 				.buildStructureScrew( );
 		plat.addScrew( s1 );
 
 		StructureScrew s2 = new ScrewBuilder( )
 				.position(
-						plat.getPositionPixel( ).add(  plat.getMeterWidth( )*13,0 ) )
+						plat.getPositionPixel( ).add(  plat.getPixelWidth( )/2,0 ) )
 				.entity( plat ).skeleton( skel3 ).world( world )
 				.buildStructureScrew( );
 		plat.addScrew( s2 );
@@ -459,14 +460,14 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 
 		StructureScrew s3 = new ScrewBuilder( )
 				.position(
-						plat.getPositionPixel( ).sub( 0, plat.getMeterHeight( )*13 ) )
+						plat.getPositionPixel( ).sub( 0, plat.getPixelHeight( )/2 ) )
 						.entity( plat )
 				.skeleton( skel3 ).world( world ).buildStructureScrew( );
 		plat.addScrew( s3 );
 
 		StructureScrew s4 = new ScrewBuilder( )
 				.position(
-						plat.getPositionPixel( ).add( 0, plat.getMeterHeight( )*13 ) )
+						plat.getPositionPixel( ).add( 0, plat.getPixelHeight( )/2 ) )
 						.entity( plat )
 				.skeleton( skel3 ).world( world ).buildStructureScrew( );
 		plat.addScrew( s4 );
@@ -741,7 +742,7 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 	@Override
 	public void render( float deltaTime ) {
 		if ( Gdx.gl20 != null ) {
-			Gdx.gl20.glClearColor( 0.0f, 0f, 0.0f, 1.0f );
+			Gdx.gl20.glClearColor( 0.2f, 0.2f, 0.2f, 1.0f );
 			Gdx.gl20.glClear( GL20.GL_COLOR_BUFFER_BIT );
 		} else {
 			Gdx.gl10.glClearColor( 0.0f, 0f, 0.0f, 1.0f );
