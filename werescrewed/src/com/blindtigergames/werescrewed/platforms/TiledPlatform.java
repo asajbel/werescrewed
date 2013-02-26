@@ -244,10 +244,6 @@ public class TiledPlatform extends Platform {
 	@Override
 	public void update( float deltaTime ) {
 		super.update( deltaTime );
-		if ( Gdx.input.isKeyPressed( Keys.B ) ) {
-			setOneSided( !getOneSided( ) );
-			System.out.println( getOneSided( ) );
-		}
 		bodypos = body.getPosition( ).mul( Util.BOX_TO_PIXEL );
 	}
 
