@@ -1,5 +1,8 @@
 package com.blindtigergames.werescrewed.entity;
 
+import java.util.ArrayList;
+import java.util.EnumMap;
+
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
@@ -23,13 +26,17 @@ import com.blindtigergames.werescrewed.util.Util;
  * 
  */
 public class Entity {
+	private static final int INITAL_CAPACITY = 3;
+	
 	public String name;
 	public EntityDef type;
 	public Sprite sprite;
 	public Vector2 offset;
 	public Body body;
 	protected World world;
-	public IMover mover;
+	public ArrayList<IMover> moverArray;
+	private RobotState currentRobotState;
+	private EnumMap<RobotState, Integer> robotStateMap;
 	protected boolean solid;
 	protected Anchor anchor;
 	protected float energy;
@@ -116,6 +123,7 @@ public class Entity {
 		this.maintained = true;
 		this.visible = true;
 		this.active = true;
+		setUpRobotState();
 	}
 
 	/**
@@ -187,8 +195,8 @@ public class Entity {
 	public void updateMover( float deltaTime ) {
 		if ( active ) {
 			if ( body != null ) {
-				if ( mover != null ) {
-					mover.move( deltaTime, body );
+				if ( currentMover() != null ) {
+					currentMover().move( deltaTime, body );
 				}
 			}
 		}
@@ -270,15 +278,43 @@ public class Entity {
 		return newBody;
 	}
 
-	/**
-	 * Set the mover of this entity!
-	 * 
-	 * @param mover
-	 */
-	public void setMover( IMover mover ) {
-		this.mover = mover;
-	}
 
+	public void setCurrentMover(RobotState robotState){
+		currentRobotState = robotState;
+	}
+	/**
+	 * This function adds a mover to the entity,
+	 * YOU MUST SPECIFIY WHICH STATE IT IS ASSOCIATED WITH
+	 * EITHER IDLE, DOCILE, HOSTILE, OR CUSTOM1
+	 * @param mover
+	 * @param robotState
+	 */
+	public void addMover( IMover mover, RobotState robotState) {
+		int index = robotStateMap.get( robotState );
+		moverArray.set( index, mover );
+	}
+	
+	public void setMoverNull(RobotState robotState) {
+		int index = robotStateMap.get( robotState );
+		moverArray.set( index, null );
+	}
+	public void setMoverNullAtCurrentState() {
+		int index = robotStateMap.get( currentRobotState );
+		moverArray.set( index, null );
+	}
+	public void setMoverAtCurrentState(IMover mover){
+		int index = robotStateMap.get( currentRobotState );
+		moverArray.set( index, mover );
+	}
+	
+	public RobotState getCurrentState(){
+		return currentRobotState;
+	}
+	
+	public IMover currentMover(){
+		return moverArray.get( robotStateMap.get( currentRobotState ) );
+	}
+	
 	public boolean isSolid( ) {
 		return this.solid;
 	}
@@ -506,4 +542,24 @@ public class Entity {
 				+ body.isAwake( );
 	}
 
+
+	
+	/**
+	 * 
+	 */
+	private void setUpRobotState(){
+		moverArray = new ArrayList<IMover>();
+		for(int i = 0; i < INITAL_CAPACITY; ++i)
+			moverArray.add( null );
+		robotStateMap = new EnumMap<RobotState, Integer>(RobotState.class);
+		robotStateMap.put( RobotState.IDLE, 0 );
+		robotStateMap.put( RobotState.DOCILE, 1 );
+		robotStateMap.put( RobotState.HOSTILE, 2 );
+		//robotStateMap.put( RobotState.CUSTOM1, 3 );
+		//robotStateMap.put( RobotState.CUSTOM2, 4 );
+		//robotStateMap.put( RobotState.CUSTOM3, 5 );
+		
+		//Initalize to idle
+		currentRobotState = RobotState.IDLE;
+	}
 }

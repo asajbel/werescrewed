@@ -23,6 +23,7 @@ import com.blindtigergames.werescrewed.collisionManager.MyContactListener;
 import com.blindtigergames.werescrewed.debug.SBox2DDebugRenderer;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityManager;
+import com.blindtigergames.werescrewed.entity.RobotState;
 import com.blindtigergames.werescrewed.entity.builders.PlatformBuilder;
 import com.blindtigergames.werescrewed.entity.builders.PlayerBuilder;
 import com.blindtigergames.werescrewed.entity.mover.LerpMover;
@@ -259,8 +260,8 @@ public class EntityDefTestScreen implements com.badlogic.gdx.Screen {
 		PrismaticJoint j = ( PrismaticJoint ) world
 				.createJoint( prismaticJointDef );
 		skeleton.addDynamicPlatform( slidingPlatform );
-		slidingPlatform.setMover( new SlidingMotorMover(
-				PuzzleType.PRISMATIC_SLIDER, j ) );
+		slidingPlatform.addMover( new SlidingMotorMover(
+				PuzzleType.PRISMATIC_SLIDER, j ), RobotState.IDLE );
 
 		TiledPlatform skeletonTest1 = platBuilder.width( 10 ).height( 1 )
 				.friction( 1f ).oneSided( false ).position( -500, -200 )
@@ -299,7 +300,8 @@ public class EntityDefTestScreen implements com.badlogic.gdx.Screen {
 					.anchor( piston.body.getWorldCenter( ) ).build( );
 			// Something is still not quite right with this, try replacing 3
 			// with 0.
-			piston.setMover( new PistonMover( pistonJoint, 0f, i / 10.0f + 2f ) );
+			piston.addMover( new PistonMover( pistonJoint, 0f, i / 10.0f + 2f ),
+					RobotState.IDLE );
 			piston.body.setSleepingAllowed( false );
 			skeleton.addDynamicPlatform( piston );
 		}
@@ -315,7 +317,7 @@ public class EntityDefTestScreen implements com.badlogic.gdx.Screen {
 		PrismaticJoint pistonJ = jointBuilder.bodyB( ( Entity ) elevator )
 				.anchor( elevator.body.getWorldCenter( ) ).build( );
 
-		elevator.setMover( new PistonMover( pistonJ, 0f, 2f ) );
+		elevator.addMover( new PistonMover( pistonJ, 0f, 2f ), RobotState.IDLE );
 		elevator.body.setSleepingAllowed( false );
 		skeleton.addDynamicPlatform( elevator );
 
