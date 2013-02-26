@@ -273,7 +273,7 @@ public class TiledPlatform extends Platform {
 		}
 		for ( Screw s : screws )
 			s.draw( batch );
-		drawOrigin( batch );
+		//drawOrigin( batch );
 	}
 
 }

@@ -12,7 +12,8 @@ import com.blindtigergames.werescrewed.puzzles.PuzzleManager;
 import com.blindtigergames.werescrewed.util.Util;
 
 /**
- * blah blah
+ * screws used to move platforms with different types of control
+ * look into mover types for various different possibilities
  * 
  * @author Dennis
  * 
@@ -39,7 +40,10 @@ public class PuzzleScrew extends Screw {
 		connectScrewToEntity( entity );
 	}
 
-
+	/**
+	 * screwing left calls the puzzle manager element 
+	 * and applies the screw value to whatever movement is required
+	 */
 	@Override
 	public void screwLeft( ) {
 		if ( depth > 0 ) {
@@ -52,6 +56,10 @@ public class PuzzleScrew extends Screw {
 		}
 	}
 
+	/**
+	 * screwing right calls the puzzle manager element 
+	 * and applies the screw value to whatever movement is required
+	 */
 	@Override
 	public void screwRight( ) {
 		if ( depth < maxDepth ) {

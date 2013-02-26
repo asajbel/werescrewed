@@ -139,6 +139,9 @@ public class EntityDef {
 	}
 
 	public Texture getTexture( ) {
+		if ( texture == null ){
+			return WereScrewedGame.manager.getTextureAtlas( tileSetName ).getTextures( ).iterator( ).next( );
+		}
 		return texture;
 	}
 

@@ -94,7 +94,12 @@ public enum ScreenType {
 			return new PhysicsTestScreen( );
 		}
 	},
-
+	RESURRECT {
+		@Override
+		protected com.badlogic.gdx.Screen getScreenInstance( ) {
+			return new ResurrectScreen( );
+		}
+	},
 	MAIN_MENU {
 		@Override
 		protected com.badlogic.gdx.Screen getScreenInstance( ) {

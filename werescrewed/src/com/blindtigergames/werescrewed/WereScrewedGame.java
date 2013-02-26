@@ -2,6 +2,7 @@ package com.blindtigergames.werescrewed;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.FPSLogger;
@@ -52,6 +53,9 @@ public class WereScrewedGame extends Game {
 			restartFlag = false;
 		}
 		super.render( );
+		if (Gdx.app.getType() == ApplicationType.Android) {
+			logger.log( ); 
+		}
 	}
 	
 	public void restart(){

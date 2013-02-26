@@ -45,6 +45,15 @@ public class AssetManager extends com.badlogic.gdx.assets.AssetManager {
 		return new TileSet( atlasMap.get( "TilesetTest" ) );
 	}
 	
+	/**
+	 * return a preloaded texture atlas with a name matching the param.
+	 * @param atlasName name of texture atlas pack file without the extension
+	 * @return Texture Atlas pre-loaded during loading screen.
+	 */
+	public TextureAtlasS getTextureAtlas( String atlasName ){
+		return atlasMap.get( atlasName );
+	}
+	
 	@Override
 	public void dispose(){
 		super.dispose( );
