@@ -1,24 +1,23 @@
 package com.blindtigergames.werescrewed.collisionManager;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Fixture;
-import com.badlogic.gdx.physics.box2d.JointEdge;
 import com.badlogic.gdx.physics.box2d.Manifold;
 import com.blindtigergames.werescrewed.camera.Anchor;
 import com.blindtigergames.werescrewed.checkpoints.CheckPoint;
 import com.blindtigergames.werescrewed.entity.Entity;
+import com.blindtigergames.werescrewed.platforms.Platform;
+import com.blindtigergames.werescrewed.platforms.PlatformType;
 import com.blindtigergames.werescrewed.platforms.TiledPlatform;
 import com.blindtigergames.werescrewed.player.Player;
 import com.blindtigergames.werescrewed.player.Player.PlayerState;
 import com.blindtigergames.werescrewed.screws.ResurrectScrew;
 import com.blindtigergames.werescrewed.screws.Screw;
 import com.blindtigergames.werescrewed.screws.Screw.ScrewType;
-import com.blindtigergames.werescrewed.screws.StructureScrew;
 
 /**
  * 
@@ -57,28 +56,30 @@ public class MyContactListener implements ContactListener {
 				objectFix = x1;
 				playerInvolved = true;
 			}
-
 			if ( playerInvolved ) {
 				Player player = ( Player ) playerFix.getBody( ).getUserData( );
 				if ( objectFix.getBody( ).getUserData( ) instanceof Entity ) {
 					Entity object = ( Entity ) objectFix.getBody( )
 							.getUserData( );
-					// Ensure the object is solid and involves the player's feet
-					// also make sure its not the player
-					if ( object.isSolid( )
-							&& playerFix.getShape( ) instanceof CircleShape
-							&& !( objectFix.getBody( ).getUserData( ) instanceof Player ) ) {
-						if ( p1 == null || p1 == player ) {
-							p1 = player;
-							NUM_PLAYER1_CONTACTS++;
-						} else if ( p1 != player ) {
-							NUM_PLAYER2_CONTACTS++;
+					switch ( object.getEntityType( ) ) { //switch between different types of entities
+					case PLATFORM:
+						// Ensure the object is solid and involves the player's
+						// feet
+						// also make sure its not the player
+						if ( object.isSolid( )
+								&& playerFix.getShape( ) instanceof CircleShape ) {
+							if ( p1 == null || p1 == player ) {
+								p1 = player;
+								NUM_PLAYER1_CONTACTS++;
+							} else if ( p1 != player ) {
+								NUM_PLAYER2_CONTACTS++;
+							}
+							player.hitSolidObject( objectFix.getBody( ) );
+							player.setGrounded( true );
 						}
-						player.hitSolidObject( objectFix.getBody( ) );
-						player.setGrounded( true );
-					} else if ( objectFix.getBody( ).getUserData( ) instanceof Screw ) {
-						Screw screw = ( Screw ) objectFix.getBody( )
-								.getUserData( );
+						break;
+					case SCREW:
+						Screw screw = ( Screw ) object;
 						if ( p1 == null || p1 == player ) {
 							p1 = player;
 							NUM_PLAYER1_SCREWCONTACTS++;
@@ -91,21 +92,26 @@ public class MyContactListener implements ContactListener {
 							ResurrectScrew rScrew = ( ResurrectScrew ) screw;
 							rScrew.hitPlayer( player );
 						}
-					} else if ( objectFix.getBody( ).getUserData( ) instanceof Player ) {
+						break;
+					case PLAYER:
 						Player player2 = ( Player ) objectFix.getBody( )
 								.getUserData( );
-							player.hitPlayer( player2 );
-							player2.hitPlayer( player );
-					} else if ( objectFix.getBody( ).getUserData( ) instanceof Anchor ) {
-						Anchor anchor = ( Anchor ) objectFix.getBody( )
-								.getUserData( );
-						if ( !anchor.special )
-							anchor.activate( );
-					} else if ( objectFix.getBody( ).getUserData( ) instanceof CheckPoint ) {
+						player.hitPlayer( player2 );
+						player2.hitPlayer( player );
+						break;
+					case CHECKPOINT:
 						CheckPoint checkP = ( CheckPoint ) objectFix.getBody( )
 								.getUserData( );
 						checkP.hitPlayer( );
+						break;
+					default:
+						break;
 					}
+				} else if ( objectFix.getBody( ).getUserData( ) instanceof Anchor ) {
+					Anchor anchor = ( Anchor ) objectFix.getBody( )
+							.getUserData( );
+					if ( !anchor.special )
+						anchor.activate( );
 				}
 			}
 		}
@@ -135,36 +141,39 @@ public class MyContactListener implements ContactListener {
 				objectFix = x1;
 				playerInvolved = true;
 			}
-
 			if ( playerInvolved ) {
 				Player player = ( Player ) playerFix.getBody( ).getUserData( );
 				if ( objectFix.getBody( ).getUserData( ) instanceof Entity ) {
 					Entity object = ( Entity ) objectFix.getBody( )
 							.getUserData( );
-					// Ensure the object is solid and involves the player's feet
-					// also make sure its not the player
-					if ( object.isSolid( )
-							&& playerFix.getShape( ) instanceof CircleShape
-							&& !( objectFix.getBody( ).getUserData( ) instanceof Player ) ) {
-						if ( p1 == null || p1 == player ) {
-							p1 = player;
-							NUM_PLAYER1_CONTACTS--;
-							if ( NUM_PLAYER1_CONTACTS <= 0 ) {
-								if ( player.getState( ) == PlayerState.Falling ) {
-									player.setGrounded( false );
+					switch ( object.getEntityType( ) ) { //switch between different types of entities
+					case PLATFORM:
+						// Ensure the object is solid and involves the player's
+						// feet
+						// also make sure its not the player
+						if ( object.isSolid( )
+								&& playerFix.getShape( ) instanceof CircleShape ) {
+							if ( p1 == null || p1 == player ) {
+								p1 = player;
+								NUM_PLAYER1_CONTACTS--;
+								if ( NUM_PLAYER1_CONTACTS <= 0 ) {
+									if ( player.getState( ) == PlayerState.Falling ) {
+										player.setGrounded( false );
+									}
+								}
+							} else if ( p1 != player ) {
+								NUM_PLAYER2_CONTACTS--;
+								if ( NUM_PLAYER2_CONTACTS <= 0 ) {
+									if ( player.getState( ) == PlayerState.Falling ) {
+										player.setGrounded( false );
+									}
 								}
 							}
-						} else if ( p1 != player ) {
-							NUM_PLAYER2_CONTACTS--;
-							if ( NUM_PLAYER2_CONTACTS <= 0 ) {
-								if ( player.getState( ) == PlayerState.Falling ) {
-									player.setGrounded( false );
-								}
-							}
+							player.hitSolidObject( null );
+							contact.setEnabled( true );
 						}
-						player.hitSolidObject( null );
-						contact.setEnabled( true );
-					} else if ( objectFix.getBody( ).getUserData( ) instanceof Screw ) {
+						break;
+					case SCREW:
 						if ( p1 == null || p1 == player ) {
 							p1 = player;
 							NUM_PLAYER1_SCREWCONTACTS--;
@@ -181,13 +190,17 @@ public class MyContactListener implements ContactListener {
 								}
 							}
 						}
-					} else if ( objectFix.getBody( ).getUserData( ) instanceof Player ) {
+						break;
+					case PLAYER:
 						Player player2 = ( Player ) objectFix.getBody( )
 								.getUserData( );
 						if ( player.getState( ) != PlayerState.HeadStand ) {
 							player.hitPlayer( null );
 							player2.hitPlayer( null );
 						}
+						break;
+					default:
+						break;
 					}
 				} else if ( objectFix.getBody( ).getUserData( ) instanceof Anchor ) {
 					Anchor anchor = ( Anchor ) objectFix.getBody( )
@@ -225,31 +238,43 @@ public class MyContactListener implements ContactListener {
 			}
 			if ( playerInvolved ) {
 				Player player = ( Player ) playerFix.getBody( ).getUserData( );
-				if ( objectFix.getBody( ).getUserData( ) instanceof TiledPlatform ) {
-					TiledPlatform tilePlat = ( TiledPlatform ) objectFix
-							.getBody( ).getUserData( );
-					Vector2 platformPos = tilePlat.getPosition( );
-					Vector2 playerPos = player.getPosition( );
-					if ( tilePlat.getOneSided( ) ) {
-						if ( platformPos.y > playerPos.y ) {
+				if ( objectFix.getBody( ).getUserData( ) instanceof Entity ) {
+					Entity object = ( Entity ) objectFix.getBody( )
+							.getUserData( );
+					switch ( object.getEntityType( ) ) { //switch between different types of entities
+					case PLATFORM:
+						Platform plat = ( Platform ) object;
+						if ( plat.getPlatformType( ) == PlatformType.TILED ) {
+							TiledPlatform tilePlat = ( TiledPlatform ) objectFix
+									.getBody( ).getUserData( );
+							Vector2 platformPos = tilePlat.getPosition( );
+							Vector2 playerPos = player.getPosition( );
+							if ( tilePlat.getOneSided( ) ) {
+								if ( platformPos.y > playerPos.y ) {
+									contact.setEnabled( false );
+								}
+							}
+							if ( player.isTopPlayer( ) ) {
+								contact.setEnabled( false );
+							}
+						}
+						break;
+					case PLAYER:
+						Player player2 = ( Player ) object;
+						if ( player.getState( ) == PlayerState.GrabMode
+								|| player2.getState( ) == PlayerState.GrabMode ) {
+							contact.setEnabled( false );
+						} else if ( ( ( !player.isGrounded( ) || !player2
+								.isGrounded( ) )
+								&& player.getState( ) != PlayerState.Falling && player2
+								.getState( ) != PlayerState.Falling )
+								|| !player.isHeadStandTimedOut( )
+								|| !player2.isHeadStandTimedOut( ) ) {
 							contact.setEnabled( false );
 						}
-					}
-					if ( player.isTopPlayer( ) ) {
-						contact.setEnabled( false );
-					}
-				} else if ( objectFix.getBody( ).getUserData( ) instanceof Player ) {
-					Player player2 = ( Player ) objectFix.getBody( )
-							.getUserData( );
-					if ( player.getState( ) == PlayerState.GrabMode
-							|| player2.getState( ) == PlayerState.GrabMode ) {
-						contact.setEnabled( false );
-					} else if ( ( ( !player.isGrounded( ) || !player2
-							.isGrounded( ) )
-							&& player.getState( ) != PlayerState.Falling
-							&& player2.getState( ) != PlayerState.Falling ) || 
-							!player.isHeadStandTimedOut( ) || !player2.isHeadStandTimedOut( ) ) {
-						contact.setEnabled( false );
+						break;
+					default:
+						break;
 					}
 				}
 			}
@@ -282,17 +307,28 @@ public class MyContactListener implements ContactListener {
 			}
 			if ( playerInvolved ) {
 				Player player = ( Player ) playerFix.getBody( ).getUserData( );
-				if ( objectFix.getBody( ).getUserData( ) instanceof TiledPlatform ) {
-					TiledPlatform tilePlat = ( TiledPlatform ) objectFix
-							.getBody( ).getUserData( );
-					Vector2 platformPos = tilePlat.getPosition( );
-					Vector2 playerPos = player.getPosition( );
-					if ( tilePlat.getOneSided( ) ) {
-						if ( platformPos.y > playerPos.y ) {
-							contact.setEnabled( false );
+				if ( objectFix.getBody( ).getUserData( ) instanceof Entity ) {
+					Entity object = ( Entity ) objectFix.getBody( )
+							.getUserData( );
+					switch ( object.getEntityType( ) ) { //switch between different types of entities
+					case PLATFORM:
+						Platform plat = ( Platform ) object;
+						if ( plat.getPlatformType( ) == PlatformType.TILED ) {
+							TiledPlatform tilePlat = ( TiledPlatform ) objectFix
+									.getBody( ).getUserData( );
+							Vector2 platformPos = tilePlat.getPosition( );
+							Vector2 playerPos = player.getPosition( );
+							if ( tilePlat.getOneSided( ) ) {
+								if ( platformPos.y > playerPos.y ) {
+									contact.setEnabled( false );
+								}
+							}
 						}
+						break;
+					default:
+						break;
 					}
-				} 
+				}
 			}
 		}
 	}

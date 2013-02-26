@@ -6,11 +6,13 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.JointEdge;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.joints.PulleyJoint;
 import com.badlogic.gdx.physics.box2d.joints.PulleyJointDef;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
 import com.blindtigergames.werescrewed.entity.Entity;
+import com.blindtigergames.werescrewed.entity.EntityType;
 import com.blindtigergames.werescrewed.player.Player;
 import com.blindtigergames.werescrewed.util.Util;
 
@@ -36,13 +38,14 @@ public class ResurrectScrew extends Screw {
 	 * @param world
 	 * @param deadPlayer
 	 */
-	public ResurrectScrew( String name, Vector2 pos, Entity entity,
+	public ResurrectScrew( Vector2 pos, Entity entity,
 			World world, Player deadPlayer ) {
-		super( name, pos, null );
+		super( "onlyInstance_RezScrew", pos, null );
 		this.world = world;
 		this.depth = 1;
 		this.deadPlayer = deadPlayer;
 		screwType = ScrewType.RESURRECT;
+		entityType = EntityType.SCREW;
 
 		sprite.setColor( 200f / 255f, 200f / 255f, 200f / 255f, 0.33f );
 
@@ -90,10 +93,27 @@ public class ResurrectScrew extends Screw {
 		}
 	}
 
+	/**
+	 * destroys the joints
+	 */
+	public void removeJoints( ) {
+		for( JointEdge j: body.getJointList( ) ) {
+			world.destroyJoint( j.joint );
+		}
+	}
+
+	/**
+	 * destroys the body
+	 */
+	public void removeBody( ) {
+		world.destroyBody( body );
+	}
+	
 	@Override
 	public void update( float deltaTime ) {
 		super.update( deltaTime );
-		if ( destroyJoint ) {
+		if ( destroyJoint
+				|| ( deadPlayer != null && !deadPlayer.isPlayerDead( ) ) ) {
 			deadPlayer.respawnPlayer( );
 			world.destroyJoint( pulleyJoint );
 			world.destroyBody( pulleyWeight );
@@ -130,16 +150,17 @@ public class ResurrectScrew extends Screw {
 		body.setUserData( this );
 
 		// add radar sensor to screw
-//		CircleShape radarShape = new CircleShape( );
-//		radarShape.setRadius( sprite.getWidth( ) * 1.25f * Util.PIXEL_TO_BOX );
-//		FixtureDef radarFixture = new FixtureDef( );
-//		radarFixture.shape = radarShape;
-//		radarFixture.isSensor = true;
-//		radarFixture.filter.categoryBits = Util.CATEGORY_SCREWS;
-//		radarFixture.filter.maskBits = Util.CATEGORY_PLAYER
-//				| Util.CATEGORY_SUBPLAYER;
-//		body.createFixture( radarFixture );
-		//radarShape.dispose( );
+		// CircleShape radarShape = new CircleShape( );
+		// radarShape.setRadius( sprite.getWidth( ) * 1.25f * Util.PIXEL_TO_BOX
+		// );
+		// FixtureDef radarFixture = new FixtureDef( );
+		// radarFixture.shape = radarShape;
+		// radarFixture.isSensor = true;
+		// radarFixture.filter.categoryBits = Util.CATEGORY_SCREWS;
+		// radarFixture.filter.maskBits = Util.CATEGORY_PLAYER
+		// | Util.CATEGORY_SUBPLAYER;
+		// body.createFixture( radarFixture );
+		// radarShape.dispose( );
 
 		screwShape.dispose( );
 	}

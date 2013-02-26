@@ -36,6 +36,7 @@ public class Entity {
 	protected boolean active;
 	protected boolean visible;
 	protected boolean maintained;
+	protected EntityType entityType;
 
 	/**
 	 * Create entity by definition
@@ -450,6 +451,13 @@ public class Entity {
 			return (body.getType( ) == BodyType.KinematicBody);
 		}
 		return false;
+	}
+	
+	/**
+	 * gets the type of entity 
+	 */
+	public EntityType getEntityType( ) {
+		return entityType;
 	}
 	
 	/**
