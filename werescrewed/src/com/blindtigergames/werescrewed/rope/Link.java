@@ -54,4 +54,12 @@ public class Link extends Entity {
 		revoluteJointDef.collideConnected = false;
 		world.createJoint( revoluteJointDef );
 	}
+	
+	public float getWidth(){
+		return this.width;
+	}
+	
+	public float getHeight(){
+		return this.height;
+	}
 }

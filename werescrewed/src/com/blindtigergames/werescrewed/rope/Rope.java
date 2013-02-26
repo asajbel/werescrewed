@@ -205,12 +205,13 @@ public class Rope {
 	
 
 	public void createScrew(){
-//		screw = new StrippedScrew( "ropeScrew", world,
-//				new Vector2(getLastLink().body.getWorldCenter( ).x, 
-//						getLastLink().body.getWorldCenter().y - 64f * Util.PIXEL_TO_BOX), 
-//						 getLastLink( ) );
-		
-		//This code doesn't work correctly yet
+		screw = new StrippedScrew( "ropeScrew", world,
+				new Vector2(getLastLink().body.getPosition( ).x * Util.BOX_TO_PIXEL,
+						(getLastLink().body.getPosition( ).y * Util.BOX_TO_PIXEL)
+						- (getLastLink().getHeight( ))), 
+						 getLastLink( ) );
+
+
 	}
 	
 }
