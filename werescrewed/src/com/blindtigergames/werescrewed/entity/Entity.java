@@ -548,7 +548,9 @@ public class Entity {
 	 * 
 	 */
 	private void setUpRobotState(){
-		moverArray = new ArrayList<IMover>(INITAL_CAPACITY);
+		moverArray = new ArrayList<IMover>();
+		for(int i = 0; i < INITAL_CAPACITY; ++i)
+			moverArray.add( null );
 		robotStateMap = new EnumMap<RobotState, Integer>(RobotState.class);
 		robotStateMap.put( RobotState.IDLE, 0 );
 		robotStateMap.put( RobotState.DOCILE, 1 );

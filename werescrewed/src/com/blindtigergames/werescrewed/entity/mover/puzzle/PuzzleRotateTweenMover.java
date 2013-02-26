@@ -48,10 +48,10 @@ public class PuzzleRotateTweenMover extends TweenMover implements IMover {
 	
 	@Override
 	public void runPuzzleMovement( PuzzleScrew screw, float screwVal, Platform p ) {
-		if( p.mover == null  && hasNoTweens()  ){
+		if( p.currentMover( ) == null  && hasNoTweens()  ){
 			if ( (screwVal >= 0.9 && !isAtMaxScrewValue) || (screwVal <= 0.1 && isAtMaxScrewValue) ){
 				isAtMaxScrewValue = !isAtMaxScrewValue;
-				p.setMover(this);
+				p.setMoverAtCurrentState( this );
 				float targetRotation = p.getLocalRot( );
 				if ( isYoyoRepeat ){
 					targetRotation += rotAmount * ((isUp)?-1f:1f);
@@ -63,7 +63,7 @@ public class PuzzleRotateTweenMover extends TweenMover implements IMover {
 							  .target( targetRotation ).start());
 				}
 		}else if ( hasNoTweens() ){
-			p.setMover( null );
+			p.setMoverNullAtCurrentState( );
 		}
 	}
 
