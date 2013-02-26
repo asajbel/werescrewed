@@ -162,6 +162,7 @@ public class Player extends Entity {
 		super.update( deltaTime );
 		if ( name.equals( "player1" ) ) {
 			//Gdx.app.log( "playerState", "" + playerState + " " + grounded );
+			//System.out.println( jumpPressedKeyboard );
 		}
 		if ( name.equals( "player2" ) ) {
 			//Gdx.app.log( "playerState", "" + playerState + " " + grounded );
@@ -1056,7 +1057,7 @@ public class Player extends Entity {
 			prevButton = null;
 		}
 		if ( !inputHandler.jumpPressed( ) ) {
-			if ( isGrounded( ) || otherPlayer != null ) {
+			if ( isGrounded( ) || topPlayer ) {
 				jumpPressedKeyboard = false;
 			} else if ( playerState == PlayerState.Screwing ) {
 				jumpPressedKeyboard = false;
