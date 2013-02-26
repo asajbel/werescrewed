@@ -51,7 +51,7 @@ public class Player extends Entity {
 	public final static float SCREW_ATTACH_SPEED = 0.1f;
 	public final static int GRAB_COUNTER_STEPS = 5;
 	public final static Vector2 ANCHOR_BUFFER_SIZE = new Vector2( 400f, 256f );
-	public float JUMP_IMPULSE = 0.08f;
+	public float JUMP_IMPULSE = 0.09f;
 	public float directionJumpDivsion = 2.0f;
 
 	public Fixture feet;
