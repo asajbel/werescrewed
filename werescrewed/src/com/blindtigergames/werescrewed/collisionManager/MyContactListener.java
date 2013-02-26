@@ -1,8 +1,6 @@
 package com.blindtigergames.werescrewed.collisionManager;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactImpulse;
@@ -11,12 +9,14 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.JointEdge;
 import com.badlogic.gdx.physics.box2d.Manifold;
 import com.blindtigergames.werescrewed.camera.Anchor;
+import com.blindtigergames.werescrewed.checkpoints.CheckPoint;
 import com.blindtigergames.werescrewed.entity.Entity;
-import com.blindtigergames.werescrewed.platforms.Platform;
 import com.blindtigergames.werescrewed.platforms.TiledPlatform;
 import com.blindtigergames.werescrewed.player.Player;
 import com.blindtigergames.werescrewed.player.Player.PlayerState;
+import com.blindtigergames.werescrewed.screws.ResurrectScrew;
 import com.blindtigergames.werescrewed.screws.Screw;
+import com.blindtigergames.werescrewed.screws.Screw.ScrewType;
 import com.blindtigergames.werescrewed.screws.StructureScrew;
 
 /**
@@ -86,6 +86,10 @@ public class MyContactListener implements ContactListener {
 							NUM_PLAYER2_SCREWCONTACTS++;
 							player.hitScrew( screw );
 						}
+						if ( screw.getScrewType( ) == ScrewType.RESURRECT ) {
+							ResurrectScrew rScrew = ( ResurrectScrew ) screw;
+							rScrew.hitPlayer( player );
+						}
 					} else if ( objectFix.getBody( ).getUserData( ) instanceof Player ) {
 						Player player2 = ( Player ) objectFix.getBody( )
 								.getUserData( );
@@ -96,7 +100,11 @@ public class MyContactListener implements ContactListener {
 								.getUserData( );
 						if ( !anchor.special )
 							anchor.activate( );
-					}
+					} else if ( objectFix.getBody( ).getUserData( ) instanceof CheckPoint ) {
+						CheckPoint checkP = ( CheckPoint ) objectFix.getBody( )
+								.getUserData( );
+						checkP.hitPlayer( );
+					} 
 				}
 			}
 		}
@@ -185,7 +193,7 @@ public class MyContactListener implements ContactListener {
 							.getUserData( );
 					if ( !anchor.special )
 						anchor.deactivate( );
-				}
+				} 
 			}
 		}
 	}
@@ -219,22 +227,6 @@ public class MyContactListener implements ContactListener {
 				if ( objectFix.getBody( ).getUserData( ) instanceof TiledPlatform ) {
 					TiledPlatform tilePlat = ( TiledPlatform ) objectFix
 							.getBody( ).getUserData( );
-					boolean isScrew = false;
-					for ( JointEdge j : tilePlat.body.getJointList( ) ) {
-						if ( j.joint.getBodyB( ).getUserData( ) instanceof StructureScrew ) {
-							isScrew = true;
-						}
-					}
-					///////////////////////////
-					// Does this do anything?
-					///////////////////////////
-					/*if ( !isScrew ) {
-						player.maxFriction( );
-						tilePlat.body.getFixtureList( ).get( 0 )
-								.setFriction( 1f );
-					} else {
-						player.noFriction( );
-					}*/
 					Vector2 platformPos = tilePlat.getPosition( );
 					Vector2 playerPos = player.getPosition( );
 					if ( tilePlat.getOneSided( ) ) {
@@ -257,7 +249,7 @@ public class MyContactListener implements ContactListener {
 							&& player2.getState( ) != PlayerState.Falling ) {
 						contact.setEnabled( false );
 					}
-				}
+				}  
 			}
 		}
 	}
@@ -291,22 +283,6 @@ public class MyContactListener implements ContactListener {
 				if ( objectFix.getBody( ).getUserData( ) instanceof TiledPlatform ) {
 					TiledPlatform tilePlat = ( TiledPlatform ) objectFix
 							.getBody( ).getUserData( );
-					boolean isScrew = false;
-					for ( JointEdge j : tilePlat.body.getJointList( ) ) {
-						if ( j.joint.getBodyB( ).getUserData( ) instanceof StructureScrew ) {
-							isScrew = true;
-						}
-					}
-					///////////////////////////
-					// Does this do anything?
-					///////////////////////////
-					/*if ( !isScrew ) {
-						player.maxFriction( );
-						tilePlat.body.getFixtureList( ).get( 0 )
-								.setFriction( 1f );
-					} else {
-						player.noFriction( );
-					}*/
 					Vector2 platformPos = tilePlat.getPosition( );
 					Vector2 playerPos = player.getPosition( );
 					if ( tilePlat.getOneSided( ) ) {
@@ -314,7 +290,7 @@ public class MyContactListener implements ContactListener {
 							contact.setEnabled( false );
 						}
 					}
-				}
+				} 
 			}
 		}
 	}

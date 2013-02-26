@@ -2,7 +2,6 @@ package com.blindtigergames.werescrewed.screws;
 
 import java.util.ArrayList;
 
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
@@ -16,7 +15,8 @@ import com.blindtigergames.werescrewed.skeleton.Skeleton;
 import com.blindtigergames.werescrewed.util.Util;
 
 /**
- * blah blah
+ * screws that are used to hold removable pieces
+ * together they can be un-screwed and will fall
  * 
  * @author Dennis
  * 
@@ -131,14 +131,7 @@ public class StructureScrew extends Screw {
 		}
 
 	}
-/*
-	@Override
-	public void draw( SpriteBatch batch ) {
-		if ( sprite != null ) {
-			sprite.draw( batch );
-		}
-	}
-*/
+
 	private void constuctBody( Vector2 pos ) {
 
 		// create the screw body
@@ -161,6 +154,7 @@ public class StructureScrew extends Screw {
 		screwShape.dispose( );
 		body.setUserData( this );
 
+		//we may want a radar depending on the size of the sprite...
 		// add radar sensor to screw
 //		CircleShape radarShape = new CircleShape( );
 //		radarShape.setRadius( sprite.getWidth( ) * 1.1f * Util.PIXEL_TO_BOX );

@@ -1,5 +1,6 @@
 package com.blindtigergames.werescrewed.entity.builders;
 
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.blindtigergames.werescrewed.entity.Entity;
@@ -35,6 +36,11 @@ public class RopeBuilder extends GenericEntityBuilder<RopeBuilder> {
 	
 	public RopeBuilder links ( int links ){
 		this.links = links;
+		return this;
+	}
+	
+	public RopeBuilder texture ( Texture texture ){
+		this.tex = texture;
 		return this;
 	}
 	
