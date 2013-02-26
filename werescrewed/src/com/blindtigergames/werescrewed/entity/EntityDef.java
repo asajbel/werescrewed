@@ -13,6 +13,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.Shape;
+import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.badlogic.gdx.utils.XmlReader;
 import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.util.BodyEditorLoader;
@@ -33,6 +34,7 @@ public class EntityDef {
 
 	// Sprite Fields (i.e. everything needed to define just the sprite half)
 	protected Texture texture;
+	protected String tileSetName;
 	protected String initialAnim;
 	protected Vector2 origin;
 	protected Vector2 spriteScale;
@@ -70,6 +72,7 @@ public class EntityDef {
 	protected EntityDef( String name ) {
 		// Sprite Data
 		setTexture( null );
+		tileSetName = null;
 		initialAnim = "";
 		origin = new Vector2( 0, 0 );
 		spriteScale = new Vector2( 1, 1 );
@@ -136,6 +139,9 @@ public class EntityDef {
 	}
 
 	public Texture getTexture( ) {
+		if ( texture == null ){
+			return WereScrewedGame.manager.getTextureAtlas( tileSetName ).getTextures( ).iterator( ).next( );
+		}
 		return texture;
 	}
 
@@ -233,9 +239,18 @@ public class EntityDef {
 			// Category Data
 			out.setCategory( xml.get( "category", NO_CATEGORY ) );
 			// Sprite Data
-			String texName = xml.get( "texture" );
-			out.setTexture(WereScrewedGame.manager.get(
+			String texName = null;
+			String tileSetName = null;
+			try{
+				texName = xml.get( "texture" );
+			}catch(GdxRuntimeException e){
+				tileSetName = xml.get( "tileset" );
+			}
+			if (texName != null ){
+				out.setTexture(WereScrewedGame.manager.get(
 					WereScrewedGame.dirHandle.path( )  + "/" + texName, Texture.class));
+			}
+			out.tileSetName = tileSetName;
 			out.initialAnim = xml.get( "initialAnim" );
 			out.origin.x = xml.getFloat( "originX" );
 			out.origin.y = xml.getFloat( "originY" );

@@ -5,235 +5,99 @@ package com.blindtigergames.werescrewed.platforms;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.blindtigergames.werescrewed.graphics.TextureAtlasS;
 
 /**
- * @author Anders
+ * Original by Ander
+ * Reworked TileSet by Stew.  Used to build a tiledplatform.
+ * @author Anders / Stew
  * 
  */
 public class TileSet {
-	private Texture tex;
+	private TextureAtlasS atlas;
 	private int tileHeight, tileWidth;
 
 	/**
-	 * Creates a Tile Set for tiled Entities. Assumes a 4 by 4 set.
+	 * Creates a Tile Set for tiled Entities. Assumes all tiles are the w/h of the first tile
+	 *  and that the tileset is 4x4
 	 * 
 	 * @param texture
 	 *            The set of tiles that is needed for a tile set.
 	 * 
 	 */
-	public TileSet( Texture texture ) {
-		this.tex = texture;
-		this.tileHeight = texture.getHeight( ) / 4;
-		this.tileWidth = texture.getWidth( ) / 4;
+	public TileSet( TextureAtlasS atlas ) {
+		this.atlas = atlas;
+		Texture first = atlas.getTextures( ).iterator( ).next( );
+		this.tileHeight = first.getHeight( ) / 4;
+		this.tileWidth = first.getWidth( ) / 4;
 	}
+	
+	private enum TiIdx{
+		Single(1),HorizontalLeft(2),HorizontalMiddle(3),HorizontalRight(4),
+		VerticalTop(5),VerticalMiddle(9),VerticalBottom(13),RectangleUpperLeft(6),
+		RectangleUpperMiddle(7),RectangleUpperRight(8),RectangleMiddleLeft(10),
+		RectangleMiddleCenter(11),RectangleMiddleRight(12),RectangleBottomLeft(14),
+		RectangleBottomMiddle(15),RectangleBottomRight(16);
+		
+		public int value;
 
-	// /**
-	// * Creates a Tile Set for tiled Entities.
-	// *
-	// * @param texture
-	// * The set of tiles that is needed for a tile set.
-	// *
-	// * @param width
-	// * The number of tiles horizontally.
-	// *
-	// * @param height
-	// * The number of tiles vertically.
-	// *
-	// */
-	// public TileSet( Texture texture, int width, int height ) {
-	// this.tex = texture;
-	// this.tileHieght = texture.getHeight( ) / width;
-	// this.tileWidth = texture.getWidth( ) / height;
-	// }
-
-	/**
-	 * Returns the sprite from the set that is the single 1 by 1 tile.
-	 * 
-	 * @return A sprite that is the single tile.
-	 */
+    	private TiIdx(int value) {
+            this.value = value;
+    	}
+	};
+	
+	
 	public Sprite getSingleTile( ) {
-		TextureRegion reg = new TextureRegion( tex, tileWidth, tileHeight );
-		return ( new Sprite( reg ) );
+		return ( atlas.createSprite( TiIdx.Single.value+"" ) );
 	}
 
-	/**
-	 * Returns the sprite from the set that is the left tile of a horizontal x by 1
-	 * tile.
-	 * 
-	 * @return A sprite that is the left tile of a horizontal tile set.
-	 */
 	public Sprite getHorizontalLeftTile( ) {
-		TextureRegion reg = new TextureRegion( tex, tileWidth, 0, tileWidth,
-				tileHeight );
-		return ( new Sprite( reg ) );
+		return ( atlas.createSprite( TiIdx.HorizontalLeft.value+"" ) );
 	}
 
-	/**
-	 * Returns the sprite from the set that is the middle tiles of a horizontal x by 1
-	 * tile.
-	 * 
-	 * @return A sprite that is the middle tile of a horizontal tile set.
-	 */
 	public Sprite getHorizontalMiddleTile( ) {
-		TextureRegion reg = new TextureRegion( tex, tileWidth * 2, 0,
-				tileWidth, tileHeight );
-		return ( new Sprite( reg ) );
+		return ( atlas.createSprite( TiIdx.HorizontalMiddle.value+"" ) );
 	}
-
-	/**
-	 * Returns the sprite from the set that is the right tile of a horizontal x by 1
-	 * tile.
-	 * 
-	 * @return A sprite that is the right tile of a horizontal tile set.
-	 */
 	public Sprite getHorizontalRightTile( ) {
-		TextureRegion reg = new TextureRegion( tex, tileWidth * 3, 0,
-				tileWidth, tileHeight );
-		return ( new Sprite( reg ) );
+		return ( atlas.createSprite( TiIdx.HorizontalRight.value+"" ) );
 	}
-
-	/**
-	 * Returns the sprite from the set that is the top tile of a vertical 1 by y
-	 * tile.
-	 * 
-	 * @return A sprite that is the top tile of a vertical tile set.
-	 */
 	public Sprite getVerticalTopTile( ) {
-		TextureRegion reg = new TextureRegion( tex, 0, tileHeight, tileWidth,
-				tileHeight );
-		return ( new Sprite( reg ) );
+		return ( atlas.createSprite( TiIdx.VerticalTop.value+"" ) );
 	}
-
-	/**
-	 * Returns the sprite from the set that is the middle tiles of a vertical 1 by y
-	 * tile.
-	 * 
-	 * @return A sprite that is the middle tile of a vertical tile set.
-	 */
 	public Sprite getVerticalMiddleTile( ) {
-		TextureRegion reg = new TextureRegion( tex, 0, tileHeight * 2,
-				tileWidth, tileHeight );
-		return ( new Sprite( reg ) );
+		return ( atlas.createSprite( TiIdx.VerticalMiddle.value+"" ) );
 	}
-
-	/**
-	 * Returns the sprite from the set that is the bottom tile of a vertical 1 by y
-	 * tile.
-	 * 
-	 * @return A sprite that is the bottom tile of a vertical tile set.
-	 */
 	public Sprite getVerticalBottomTile( ) {
-		TextureRegion reg = new TextureRegion( tex, 0, tileHeight * 3,
-				tileWidth, tileHeight );
-		return ( new Sprite( reg ) );
+		return ( atlas.createSprite( TiIdx.VerticalBottom.value+"" ) );
 	}
-
-	/**
-	 * Returns the sprite from the set that is the upper left tile of a rectangular x
-	 * by y tile.
-	 * 
-	 * @return A sprite that is the upper left tile of a rectangular tile set.
-	 */
 	public Sprite getRectangleUpperLeft( ) {
-		TextureRegion reg = new TextureRegion( tex, tileWidth, tileHeight,
-				tileWidth, tileHeight );
-		return ( new Sprite( reg ) );
+		return ( atlas.createSprite( TiIdx.RectangleUpperLeft.value+"" ) );
 	}
-
-	/**
-	 * Returns the sprite from the set that is the upper middle tile of a rectangular
-	 * x by y tile.
-	 * 
-	 * @return A sprite that is the upper middle tile of a rectangular tile set.
-	 */
 	public Sprite getRectangleUpperMiddle( ) {
-		TextureRegion reg = new TextureRegion( tex, tileWidth * 2, tileHeight,
-				tileWidth, tileHeight );
-		return ( new Sprite( reg ) );
+		return ( atlas.createSprite( TiIdx.RectangleUpperMiddle.value+"" ) );
 	}
-
-	/**
-	 * Returns the sprite from the set that is the upper right tile of a rectangular x
-	 * by y tile.
-	 * 
-	 * @return A sprite that is the upper right tile of a rectangular tile set.
-	 */
 	public Sprite getRectangleUpperRight( ) {
-		TextureRegion reg = new TextureRegion( tex, tileWidth * 3, tileHeight,
-				tileWidth, tileHeight );
-		return ( new Sprite( reg ) );
+		return ( atlas.createSprite( TiIdx.RectangleUpperRight.value+"" ) );
 	}
-
-	/**
-	 * Returns the sprite from the set that is the middle left tile of a rectangular x
-	 * by y tile.
-	 * 
-	 * @return A sprite that is the middle left tile of a rectangular tile set.
-	 */
 	public Sprite getRectangleMiddleLeft( ) {
-		TextureRegion reg = new TextureRegion( tex, tileWidth, tileHeight * 2,
-				tileWidth, tileHeight );
-		return ( new Sprite( reg ) );
+		return ( atlas.createSprite( TiIdx.RectangleMiddleLeft.value+"" ) );
 	}
-
-	/**
-	 * Returns the sprite from the set that is the middle center tile of a rectangular
-	 * x by y tile.
-	 * 
-	 * @return A sprite that is the middle center tile of a rectangular tile set.
-	 */
 	public Sprite getRectangleMiddleCenter( ) {
-		TextureRegion reg = new TextureRegion( tex, tileWidth * 2,
-				tileHeight * 2, tileWidth, tileHeight );
-		return ( new Sprite( reg ) );
+		return ( atlas.createSprite( TiIdx.RectangleMiddleCenter.value+"" ) );
 	}
 
-	/**
-	 * Returns the sprite from the set that is the middle right tile of a rectangular
-	 * x by y tile.
-	 * 
-	 * @return A sprite that is the middle right tile of a rectangular tile set.
-	 */
 	public Sprite getRectangleMiddleRight( ) {
-		TextureRegion reg = new TextureRegion( tex, tileWidth * 3,
-				tileHeight * 2, tileWidth, tileHeight );
-		return ( new Sprite( reg ) );
+		return ( atlas.createSprite( TiIdx.RectangleMiddleRight.value+"" ) );
 	}
 
-	/**
-	 * Returns the sprite from the set that is the bottom left tile of a rectangular x
-	 * by y tile.
-	 * 
-	 * @return A sprite that is the bottom left tile of a rectangular tile set.
-	 */
 	public Sprite getRectangleBottomLeft( ) {
-		TextureRegion reg = new TextureRegion( tex, tileWidth, tileHeight * 3,
-				tileWidth, tileHeight );
-		return ( new Sprite( reg ) );
+		return ( atlas.createSprite( TiIdx.RectangleBottomLeft.value+"" ) );
 	}
 
-	/**
-	 * Returns the sprite from the set that is the bottom middle tile of a rectangular
-	 * x by y tile.
-	 * 
-	 * @return A sprite that is the bottom middle tile of a rectangular tile set.
-	 */
 	public Sprite getRectangleBottomMiddle( ) {
-		TextureRegion reg = new TextureRegion( tex, tileWidth * 2,
-				tileHeight * 3, tileWidth, tileHeight );
-		return ( new Sprite( reg ) );
+		return ( atlas.createSprite( TiIdx.RectangleBottomMiddle.value+"" ) );
 	}
-
-	/**
-	 * Returns the sprite from the set that is the bottom right tile of a rectangular
-	 * x by y.
-	 * 
-	 * @return A sprite that is the bottom right tile of a rectangular tile set.
-	 */
 	public Sprite getRectangleBottomRight( ) {
-		TextureRegion reg = new TextureRegion( tex, tileWidth * 3,
-				tileHeight * 3, tileWidth, tileHeight );
-		return ( new Sprite( reg ) );
+		return ( atlas.createSprite( TiIdx.RectangleBottomRight.value+"" ) );
 	}
 }

@@ -4,6 +4,7 @@ public enum ScrewType {
 	SCREW_STRIPPED("ScrewStripped"),
 	SCREW_STRUCTURAL("ScrewStructural"),
 	SCREW_PUZZLE("ScrewPuzzle"),
+	SCREW_RESURRECT("ScrewResurrect"),
 	SCREW_BOSS("ScrewBoss");
     /**
      * @param text

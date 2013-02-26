@@ -1,4 +1,4 @@
-Debug Hotkeys!!
+l;Debug Hotkeys!!
 ===============
 Record any debug hotkeys you've created here,
 so that everyone knows about them!

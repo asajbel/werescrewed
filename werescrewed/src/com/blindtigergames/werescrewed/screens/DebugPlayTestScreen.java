@@ -82,11 +82,12 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		skeleton = new Skeleton( "skeleton", Vector2.Zero, null, world );
 		rootSkeleton = new Skeleton( "root", Vector2.Zero, null, world );
 
-		platBuilder = new PlatformBuilder( world );
+		//Uncomment the tilset part to see the new tileset in game.
+		platBuilder = new PlatformBuilder( world );//.tileSet( "tileset1" );
 
-		testTexture = WereScrewedGame.manager.get(
-				WereScrewedGame.dirHandle.path( ) + "/common/TilesetTest.png",
-				Texture.class );
+		testTexture = null;/*WereScrewedGame.manager.get(
+				WereScrewedGame.dirHandle.path( ) + "/common/tileset/TilesetTest.png",
+				Texture.class );*/
 		inceptionhorn = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 				+ "/common/sounds/inceptionbutton.mp3" );
 		endgameCounter = 0;
@@ -100,9 +101,9 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 
 		// Initialize players
 		player1 = new PlayerBuilder( ).name( "player1" ).world( world )
-				.position( 1f * TILE, 1f * TILE ).buildPlayer( );
+				.position( 110f * TILE, 48 * TILE  ).buildPlayer( );
 		player2 = new PlayerBuilder( ).name( "player2" ).world( world )
-				.position( 1f * TILE, 1f * TILE ).buildPlayer( );
+				.position( 110f * TILE, 48 * TILE  ).buildPlayer( );
 
 		// END: 175f * TILE, 96f * TILE
 		// START : 1f * TILE, 1f * TILE 
@@ -438,18 +439,14 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 
 		StructureScrew s1 = new ScrewBuilder( )
 				.position(
-						plat.body.getPosition( ).x * Util.BOX_TO_PIXEL
-								- ( plat.sprite.getWidth( ) ),
-						plat.body.getPosition( ).y * Util.BOX_TO_PIXEL )
+						plat.getPositionPixel( ).sub(  plat.getMeterWidth( )*13,0 ))
 				.entity( plat ).skeleton( skel3 ).world( world )
 				.buildStructureScrew( );
 		plat.addScrew( s1 );
 
 		StructureScrew s2 = new ScrewBuilder( )
 				.position(
-						plat.body.getPosition( ).x * Util.BOX_TO_PIXEL
-								+ ( plat.sprite.getWidth( ) ),
-						plat.body.getPosition( ).y * Util.BOX_TO_PIXEL )
+						plat.getPositionPixel( ).add(  plat.getMeterWidth( )*13,0 ) )
 				.entity( plat ).skeleton( skel3 ).world( world )
 				.buildStructureScrew( );
 		plat.addScrew( s2 );
@@ -462,17 +459,15 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 
 		StructureScrew s3 = new ScrewBuilder( )
 				.position(
-						plat.body.getPosition( ).x * Util.BOX_TO_PIXEL,
-						plat.body.getPosition( ).y * Util.BOX_TO_PIXEL
-								- ( plat.sprite.getHeight( ) ) ).entity( plat )
+						plat.getPositionPixel( ).sub( 0, plat.getMeterHeight( )*13 ) )
+						.entity( plat )
 				.skeleton( skel3 ).world( world ).buildStructureScrew( );
 		plat.addScrew( s3 );
 
 		StructureScrew s4 = new ScrewBuilder( )
 				.position(
-						plat.body.getPosition( ).x * Util.BOX_TO_PIXEL,
-						plat.body.getPosition( ).y * Util.BOX_TO_PIXEL
-								+ ( plat.sprite.getHeight( ) ) ).entity( plat )
+						plat.getPositionPixel( ).add( 0, plat.getMeterHeight( )*13 ) )
+						.entity( plat )
 				.skeleton( skel3 ).world( world ).buildStructureScrew( );
 		plat.addScrew( s4 );
 
@@ -715,11 +710,12 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		RopeBuilder ropeBuilder = new RopeBuilder( world );
 
 		testRope = ropeBuilder.position( 154f * TILE, 104 * TILE ).width( 16f )
-				.height( 64f ).links( 5 ).buildRope( );
+				.height( 64f ).links( 5 ).createScrew( ).buildRope( );
 		skel9.addRope( testRope );
 		
-		StrippedScrew ropeScrew = new StrippedScrew( "ropeScrew", world, new Vector2 ( 154f * TILE, 93 * TILE ), testRope.getLastLink( ) );
-		skel9.addScrewForDraw( ropeScrew );
+		//StrippedScrew ropeScrew = new StrippedScrew( "ropeScrew", world,
+		//new Vector2 ( 154f * TILE, 93 * TILE ), testRope.getLastLink( ) );
+		//skel9.addScrewForDraw( ropeScrew );
 		plat = platBuilder.position( 175f * TILE, 94 * TILE ).name( "plat11" )
 				.dimensions( 6, 1 ).texture( testTexture ).kinematic( )
 				.friction( 1.0f ).oneSided( true ).restitution( 0 )
@@ -727,7 +723,7 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		skel9.addKinematicPlatform( plat );
 
 		bossBolt = new BossScrew( "", new Vector2( plat.body.getPosition( ).x
-				* Util.BOX_TO_PIXEL + ( plat.sprite.getWidth( ) / 10 ),
+				* Util.BOX_TO_PIXEL + ( plat.getMeterWidth()/2 ),
 				plat.body.getPosition( ).y * Util.BOX_TO_PIXEL ), 50, plat,
 				skel9, world );
 		plat.addScrew( bossBolt );

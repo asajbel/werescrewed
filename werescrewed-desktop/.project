@@ -14,11 +14,4 @@
 	<natures>
 		<nature>org.eclipse.jdt.core.javanature</nature>
 	</natures>
-	<linkedResources>
-		<link>
-			<name>data</name>
-			<type>2</type>
-			<locationURI>PARENT-1-PROJECT_LOC/werescrewed-android/assets/data</locationURI>
-		</link>
-	</linkedResources>
 </projectDescription>

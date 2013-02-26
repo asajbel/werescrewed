@@ -9,15 +9,13 @@ public class ParticleSystem {
 
 	private ArrayList< Particle > particles;
 
-	
 	/**
-	 * Builds new particle engine with initial particle
-	 * 
+	 * Creates Particle System with one initial particle
 	 * @param baseEntity Entity
-	 * @param mover IMover
 	 * @param lifeSpan float
+	 * @param mover mover
 	 */
-	public ParticleSystem( Entity baseEntity, IMover mover, float lifeSpan ) {
+	public ParticleSystem( Entity baseEntity, float lifeSpan, IMover mover ) {
 		particles = new ArrayList< Particle >( );
 		Particle p = new Particle( baseEntity, lifeSpan, mover );
 		particles.add( p );
@@ -38,16 +36,16 @@ public class ParticleSystem {
 	}
 	
 	/**
-	 * adds a new particle to the system
-	 * 
-	 * @param e Entity
+	 * adds new particle to the engine with the following components
+	 * @param entity Entity
 	 * @param lifeSpan float
-	 * @param mover IMover
-	 */ 
-	public void addParticle( Entity e, float lifeSpan, IMover mover ) {
-		particles.add( new Particle( e, lifeSpan, mover ) );
+	 * @param mover mover
+	 */
+	public void addParticle( Entity entity, float lifeSpan, IMover mover ) {
+		particles.add( new Particle( entity, lifeSpan, mover ) );
 	}
-	
+
+
 	/**
 	 * don't use this right now
 	 * 
@@ -62,5 +60,4 @@ public class ParticleSystem {
 			particles.add( new Particle( e, lifeSpan, mover ) );
 		}
 	}
-	
 }
