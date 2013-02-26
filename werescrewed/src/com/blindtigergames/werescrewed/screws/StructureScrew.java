@@ -2,6 +2,7 @@ package com.blindtigergames.werescrewed.screws;
 
 import java.util.ArrayList;
 
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
@@ -31,7 +32,7 @@ public class StructureScrew extends Screw {
 		maxDepth = max;
 		depth = max;
 		rotation = 0;
-		fallTimeout = 70;
+		fallTimeout = 140;
 		extraJoints = new ArrayList< RevoluteJoint >( );
 		screwType = ScrewType.STRUCTURAL;
 		
@@ -59,7 +60,7 @@ public class StructureScrew extends Screw {
 
 	@Override
 	public void screwLeft( ) {
-		if ( depth > -7 ) {
+		if ( depth > -10 ) {
 			body.setAngularVelocity( 15 );
 			depth--;
 			rotation += 10;
@@ -96,13 +97,13 @@ public class StructureScrew extends Screw {
 			fallTimeout = 70;
 		}
 		if ( depth > 0 ) {
-			sprite.setPosition(
-					sprite.getX( )
-							+ ( .25f * ( float ) ( ( maxDepth - depth ) * ( Math
-									.cos( body.getAngle( ) ) ) ) ),
-					sprite.getY( )
-							+ ( .25f * ( float ) ( ( maxDepth - depth ) * ( Math
-									.sin( body.getAngle( ) ) ) ) ) );
+//			sprite.setPosition(
+//					sprite.getX( )
+//							+ ( .25f * ( float ) ( ( maxDepth - depth ) * ( Math
+//									.cos( body.getAngle( ) ) ) ) ),
+//					sprite.getY( )
+//							+ ( .25f * ( float ) ( ( maxDepth - depth ) * ( Math
+//									.sin( body.getAngle( ) ) ) ) ) );
 		} else if ( fallTimeout > 0 ) {
 			sprite.setPosition( sprite.getX( ) - 8f, sprite.getY( ) );
 			Vector2 spritePos = new Vector2( sprite.getX( ), sprite.getY( ) );
@@ -129,9 +130,16 @@ public class StructureScrew extends Screw {
 		if ( depth == screwStep ) {
 			body.setAngularVelocity( 0 );
 		}
-
 	}
 
+	@Override
+	public void draw( SpriteBatch batch ) {
+		if ( sprite != null ) {
+			sprite.draw( batch );
+		}
+	}
+	
+	
 	private void constuctBody( Vector2 pos ) {
 
 		// create the screw body
