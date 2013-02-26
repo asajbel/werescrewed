@@ -12,6 +12,7 @@ import com.badlogic.gdx.physics.box2d.Manifold;
 import com.blindtigergames.werescrewed.camera.Anchor;
 import com.blindtigergames.werescrewed.checkpoints.CheckPoint;
 import com.blindtigergames.werescrewed.entity.Entity;
+import com.blindtigergames.werescrewed.hazard.Hazard;
 import com.blindtigergames.werescrewed.platforms.TiledPlatform;
 import com.blindtigergames.werescrewed.player.Player;
 import com.blindtigergames.werescrewed.player.Player.PlayerState;
@@ -105,6 +106,10 @@ public class MyContactListener implements ContactListener {
 						CheckPoint checkP = ( CheckPoint ) objectFix.getBody( )
 								.getUserData( );
 						checkP.hitPlayer( );
+					} else if ( objectFix.getBody( ).getUserData( ) instanceof Hazard ) {
+						Hazard hazard = ( Hazard ) objectFix.getBody( )
+								.getUserData( );
+						hazard.performContact( player );
 					}
 				}
 			}
