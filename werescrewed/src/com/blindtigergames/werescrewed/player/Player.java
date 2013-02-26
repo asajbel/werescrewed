@@ -1039,7 +1039,7 @@ public class Player extends Entity {
 		}
 		if ( !controllerListener.jumpPressed( ) ) {
 			canJumpOffScrew = true;
-			if ( isGrounded( ) || otherPlayer != null ) {
+			if ( isGrounded( ) || topPlayer ) {
 				jumpPressedController = false;
 			} else if ( playerState == PlayerState.Screwing ) {
 				jumpPressedController = false;
