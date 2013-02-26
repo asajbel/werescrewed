@@ -1,5 +1,6 @@
 package com.blindtigergames.werescrewed.collisionManager;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.Contact;
@@ -93,8 +94,8 @@ public class MyContactListener implements ContactListener {
 					} else if ( objectFix.getBody( ).getUserData( ) instanceof Player ) {
 						Player player2 = ( Player ) objectFix.getBody( )
 								.getUserData( );
-						player.hitPlayer( player2 );
-						player2.hitPlayer( player );
+							player.hitPlayer( player2 );
+							player2.hitPlayer( player );
 					} else if ( objectFix.getBody( ).getUserData( ) instanceof Anchor ) {
 						Anchor anchor = ( Anchor ) objectFix.getBody( )
 								.getUserData( );
@@ -104,7 +105,7 @@ public class MyContactListener implements ContactListener {
 						CheckPoint checkP = ( CheckPoint ) objectFix.getBody( )
 								.getUserData( );
 						checkP.hitPlayer( );
-					} 
+					}
 				}
 			}
 		}
@@ -193,7 +194,7 @@ public class MyContactListener implements ContactListener {
 							.getUserData( );
 					if ( !anchor.special )
 						anchor.deactivate( );
-				} 
+				}
 			}
 		}
 	}
@@ -243,13 +244,14 @@ public class MyContactListener implements ContactListener {
 					if ( player.getState( ) == PlayerState.GrabMode
 							|| player2.getState( ) == PlayerState.GrabMode ) {
 						contact.setEnabled( false );
-					} else if ( ( !player.isGrounded( ) || !player2
+					} else if ( ( ( !player.isGrounded( ) || !player2
 							.isGrounded( ) )
 							&& player.getState( ) != PlayerState.Falling
-							&& player2.getState( ) != PlayerState.Falling ) {
+							&& player2.getState( ) != PlayerState.Falling ) || 
+							!player.isHeadStandTimedOut( ) || !player2.isHeadStandTimedOut( ) ) {
 						contact.setEnabled( false );
 					}
-				}  
+				}
 			}
 		}
 	}

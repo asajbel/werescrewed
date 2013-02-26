@@ -47,6 +47,7 @@ public class Player extends Entity {
 	public final static float ANALOG_MAX_RANGE = 1.0f;
 	public final static float PLAYER_FRICTION = 0.6f;
 	public final static int SCREW_JUMP_STEPS = 20;
+	public final static int HEAD_JUMP_STEPS = 30;
 	public final static float SCREW_ATTACH_SPEED = 0.1f;
 	public final static int GRAB_COUNTER_STEPS = 5;
 	public final static Vector2 ANCHOR_BUFFER_SIZE = new Vector2( 400f, 256f );
@@ -77,6 +78,7 @@ public class Player extends Entity {
 	private boolean isDead = false, deadDebug;
 	private boolean hitScrew;
 	private int screwJumpTimeout = 0;
+	private int headStandTimeout = 0;
 	private boolean grounded;
 	private boolean jumpPressedKeyboard;
 	private boolean jumpPressedController;
@@ -159,7 +161,7 @@ public class Player extends Entity {
 	public void update( float deltaTime ) {
 		super.update( deltaTime );
 		if ( name.equals( "player1" ) ) {
-			// Gdx.app.log( "playerState", "" + playerState );
+			Gdx.app.log( "playerState", "" + playerState );
 		}
 		if ( kinematicTransform ) {
 			// setPlatformTransform( platformOffset );
@@ -205,6 +207,20 @@ public class Player extends Entity {
 				&& playerState != PlayerState.JumpingOffScrew
 				&& playerState != PlayerState.HeadStand ) {
 			playerState = PlayerState.Falling;
+		}
+		// after the players collide check if one is falling
+		// and one is standing and if a head stand didn't occur step before
+		// then put them into head stand state
+		if ( otherPlayer != null && playerState == PlayerState.Falling
+				&& otherPlayer.getState( ) == PlayerState.Standing
+				&& headStandTimeout == 0 && otherPlayer.isHeadStandTimedOut( ) ) {
+			topPlayer = true;
+			setHeadStand( );
+			otherPlayer.setHeadStand( );
+		} else {
+			if ( headStandTimeout > 0 ) {
+				headStandTimeout--;
+			}
 		}
 		if ( playerState == PlayerState.Screwing ) {
 			if ( mover != null ) {
@@ -394,12 +410,11 @@ public class Player extends Entity {
 		} else {
 			// if in head stand mode and this is the bottom player then jump
 			// with twice as much force
-			// body.setLinearVelocity( new Vector2( body.getLinearVelocity( ).x,
-			// 0.0f ) );
-			body.applyLinearImpulse( new Vector2( 0.0f, JUMP_IMPULSE * 2f ),
+			body.setLinearVelocity( new Vector2( body.getLinearVelocity( ).x,
+					0.0f ) );
+			body.applyLinearImpulse( new Vector2( 0.0f, JUMP_IMPULSE ),
 					body.getWorldCenter( ) );
 		}
-		setGrounded( false );
 	}
 
 	/**
@@ -476,6 +491,13 @@ public class Player extends Entity {
 	 */
 	public boolean isTopPlayer( ) {
 		return topPlayer;
+	}
+
+	/**
+	 * returns if head stand is still in timeout mode
+	 */
+	public boolean isHeadStandTimedOut( ) {
+		return headStandTimeout == 0;
 	}
 
 	/**
@@ -650,16 +672,15 @@ public class Player extends Entity {
 			}
 		} else if ( !jumpPressedKeyboard ) {
 			if ( !topPlayer ) {
-				if ( playerState != PlayerState.HeadStand ) {
-					if ( playerState != PlayerState.GrabMode ) {
-						playerState = PlayerState.Jumping;
-					}
-					jump( );
-					jumpCounter++;
-					if ( jumpCounter > JUMP_COUNTER ) {
-						jumpCounter = 0;
-						jumpPressedKeyboard = true;
-					}
+				if ( playerState != PlayerState.GrabMode
+						&& playerState != PlayerState.HeadStand ) {
+					playerState = PlayerState.Jumping;
+				}
+				jump( );
+				jumpCounter++;
+				if ( jumpCounter > JUMP_COUNTER ) {
+					jumpCounter = 0;
+					jumpPressedKeyboard = true;
 				}
 			} else if ( topPlayer ) {
 				// jump first to make sure top player
@@ -702,7 +723,8 @@ public class Player extends Entity {
 			}
 		} else if ( !jumpPressedController ) {
 			if ( !topPlayer ) {
-				if ( playerState != PlayerState.JumpingOffScrew ) {
+				if ( playerState != PlayerState.JumpingOffScrew
+						&& playerState != PlayerState.HeadStand ) {
 					playerState = PlayerState.Jumping;
 				}
 				jump( );
@@ -820,18 +842,16 @@ public class Player extends Entity {
 		// if moved left/right during head stands remove the joint
 		// and reference to the other player and reset the playerstate
 		if ( playerState == PlayerState.HeadStand ) {
+			headStandTimeout = HEAD_JUMP_STEPS;
 			if ( otherPlayer != null ) {
 				if ( !topPlayer ) {
 					otherPlayer.removePlayerToPlayer( );
 				} else {
 					removePlayerToPlayer( );
 				}
-				otherPlayer.hitPlayer( null );
 			} else {
 				removePlayerToPlayer( );
 			}
-			hitPlayer( null );
-			playerState = PlayerState.Standing;
 		}
 	}
 
@@ -897,16 +917,8 @@ public class Player extends Entity {
 		if ( playerState == PlayerState.HeadStand
 				&& body.getJointList( ).size( ) == 0 ) {
 			if ( isGrounded( ) ) {
-				if ( otherPlayer != null ) {
-					otherPlayer.hitPlayer( null );
-				}
-				hitPlayer( null );
 				playerState = PlayerState.Standing;
 			} else {
-				if ( otherPlayer != null ) {
-					otherPlayer.hitPlayer( null );
-				}
-				hitPlayer( null );
 				playerState = PlayerState.Jumping;
 			}
 		}
