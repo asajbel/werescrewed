@@ -69,8 +69,8 @@ public class ResurrectScreen implements com.badlogic.gdx.Screen {
 		// skeleton.body.setType( BodyType.DynamicBody );
 		rootSkeleton = new Skeleton( "root", Vector2.Zero, null, world );
 
-		testTexture = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-				+ "/common/tilesetTest.png", Texture.class );
+		//testTexture = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
+		//		+ "/common/tilesetTest.png", Texture.class );
 
 		platBuilder = new PlatformBuilder( world );
 		
