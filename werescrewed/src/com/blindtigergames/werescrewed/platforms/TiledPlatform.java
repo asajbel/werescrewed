@@ -241,14 +241,6 @@ public class TiledPlatform extends Platform {
 		return ( new Tile( offset_x, offset_y, temp ) );
 	}
 
-	public float getActualHeight( ) {
-		return height * 32;
-	}
-
-	public float getActualWidth( ) {
-		return width * 32;
-	}
-
 	@Override
 	public void update( float deltaTime ) {
 		super.update( deltaTime );
@@ -276,4 +268,37 @@ public class TiledPlatform extends Platform {
 		//drawOrigin( batch );
 	}
 
+	/**
+	 * Get the sprite width of this tiled platform
+	 * @return Pixel float width of tiled platform
+	 */
+	public float getPixelWidth(){
+		return width * tileConstant;
+	}
+	
+	/**
+	 * Get the sprite height of this tiled platform
+	 * @return Pixel float height of tiled platform
+	 */
+	public float getPixelHeight(){
+		return height * tileConstant;
+	}
+	
+	/**
+	 * Get the sprite meter width of this tiled platform
+	 * @return METER float width of tiled platform
+	 */
+	public float getMeterWidth(){
+		return width * tileConstant * Util.PIXEL_TO_BOX;
+	}
+	
+	/**
+	 * Get the sprite METER height of this tiled platform
+	 * @return METER float height of tiled platform
+	 */
+	@Override
+	public float getMeterHeight(){
+		return height * tileConstant * Util.PIXEL_TO_BOX;
+	}
+	
 }
