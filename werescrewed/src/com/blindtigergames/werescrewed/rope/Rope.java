@@ -204,4 +204,14 @@ public class Rope {
 	}
 	
 
+	public void createScrew(){
+		screw = new StrippedScrew( "ropeScrew", world,
+				new Vector2(getLastLink().body.getPosition( ).x * Util.BOX_TO_PIXEL,
+						(getLastLink().body.getPosition( ).y * Util.BOX_TO_PIXEL)
+						- (getLastLink().getHeight( ))), 
+						 getLastLink( ) );
+
+
+	}
+	
 }
