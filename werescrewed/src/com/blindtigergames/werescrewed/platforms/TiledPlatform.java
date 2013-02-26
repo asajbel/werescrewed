@@ -272,6 +272,7 @@ public class TiledPlatform extends Platform {
 	 * Get the sprite width of this tiled platform
 	 * @return Pixel float width of tiled platform
 	 */
+	@Override
 	public float getPixelWidth(){
 		return width * tileConstant;
 	}
@@ -280,6 +281,7 @@ public class TiledPlatform extends Platform {
 	 * Get the sprite height of this tiled platform
 	 * @return Pixel float height of tiled platform
 	 */
+	@Override
 	public float getPixelHeight(){
 		return height * tileConstant;
 	}
@@ -288,6 +290,7 @@ public class TiledPlatform extends Platform {
 	 * Get the sprite meter width of this tiled platform
 	 * @return METER float width of tiled platform
 	 */
+	@Override
 	public float getMeterWidth(){
 		return width * tileConstant * Util.PIXEL_TO_BOX;
 	}

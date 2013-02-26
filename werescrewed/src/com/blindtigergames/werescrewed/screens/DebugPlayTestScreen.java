@@ -101,9 +101,9 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 
 		// Initialize players
 		player1 = new PlayerBuilder( ).name( "player1" ).world( world )
-				.position( 1f * TILE, 1f * TILE  ).buildPlayer( );
+				.position( 110f * TILE, 48 * TILE  ).buildPlayer( );
 		player2 = new PlayerBuilder( ).name( "player2" ).world( world )
-				.position( 1f * TILE, 1f * TILE  ).buildPlayer( );
+				.position( 110f * TILE, 48 * TILE  ).buildPlayer( );
 
 		// END: 175f * TILE, 96f * TILE
 		// START : 1f * TILE, 1f * TILE 
@@ -439,18 +439,14 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 
 		StructureScrew s1 = new ScrewBuilder( )
 				.position(
-						plat.body.getPosition( ).x * Util.BOX_TO_PIXEL
-								- ( plat.getPixelWidth( ) ),
-						plat.body.getPosition( ).y * Util.BOX_TO_PIXEL )
+						plat.getPositionPixel( ).sub(  plat.getMeterWidth( )*13,0 ))
 				.entity( plat ).skeleton( skel3 ).world( world )
 				.buildStructureScrew( );
 		plat.addScrew( s1 );
 
 		StructureScrew s2 = new ScrewBuilder( )
 				.position(
-						plat.body.getPosition( ).x * Util.BOX_TO_PIXEL
-								+ ( plat.getPixelWidth() ),
-						plat.body.getPosition( ).y * Util.BOX_TO_PIXEL )
+						plat.getPositionPixel( ).add(  plat.getMeterWidth( )*13,0 ) )
 				.entity( plat ).skeleton( skel3 ).world( world )
 				.buildStructureScrew( );
 		plat.addScrew( s2 );
@@ -463,17 +459,15 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 
 		StructureScrew s3 = new ScrewBuilder( )
 				.position(
-						plat.body.getPosition( ).x * Util.BOX_TO_PIXEL,
-						plat.body.getPosition( ).y * Util.BOX_TO_PIXEL
-								- ( plat.getPixelHeight() ) ).entity( plat )
+						plat.getPositionPixel( ).sub( 0, plat.getMeterHeight( )*13 ) )
+						.entity( plat )
 				.skeleton( skel3 ).world( world ).buildStructureScrew( );
 		plat.addScrew( s3 );
 
 		StructureScrew s4 = new ScrewBuilder( )
 				.position(
-						plat.body.getPosition( ).x * Util.BOX_TO_PIXEL,
-						plat.body.getPosition( ).y * Util.BOX_TO_PIXEL
-								+ ( plat.getPixelHeight() ) ).entity( plat )
+						plat.getPositionPixel( ).add( 0, plat.getMeterHeight( )*13 ) )
+						.entity( plat )
 				.skeleton( skel3 ).world( world ).buildStructureScrew( );
 		plat.addScrew( s4 );
 
