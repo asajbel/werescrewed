@@ -5,6 +5,7 @@ import java.util.HashMap;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.World;
+import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.platforms.Platform;
 import com.blindtigergames.werescrewed.platforms.PlatformType;
 import com.blindtigergames.werescrewed.platforms.TiledPlatform;
@@ -33,6 +34,7 @@ public class PlatformBuilder extends GenericEntityBuilder<PlatformBuilder> {
 	protected boolean 	isOneSided;
 	protected boolean 	moveable;
 	protected BodyType 	bodyType;
+	protected String 	tileSet;
 	
 /**
  * 
@@ -155,6 +157,16 @@ public class PlatformBuilder extends GenericEntityBuilder<PlatformBuilder> {
 		return this;
 	}
 	
+	/**
+	 * Set name of tileset you want
+	 * @param tileSetName, don't set for default tileset
+	 * @return
+	 */
+	public PlatformBuilder tileSet( String tileSetName ) {
+		this.tileSet = tileSetName;
+		return this;
+	}
+	
 /**
  * 
  * @param oneSide - boolean set platform to oneside, default false
@@ -199,6 +211,7 @@ public class PlatformBuilder extends GenericEntityBuilder<PlatformBuilder> {
 		this.tex = null;
 		this.name = "No name";
 		this.bodyType = BodyType.KinematicBody;
+		this.tileSet = "TilesetTest";
 		return this;
 	}
 	
@@ -231,7 +244,7 @@ public class PlatformBuilder extends GenericEntityBuilder<PlatformBuilder> {
 	public TiledPlatform buildTilePlatform( ) {
 		TiledPlatform tp = new TiledPlatform( this.name, 
 				                              this.pos, 
-				                              this.tex, 
+				                              WereScrewedGame.manager.getTileSet( tileSet ), 
 				                              this.width, 
 				                              this.height, 
 				                              this.isOneSided, 

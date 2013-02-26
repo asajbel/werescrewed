@@ -451,7 +451,55 @@ public class Entity {
 		}
 		return false;
 	}
-
+	
+	/**
+	 * Get the sprite width of this entity
+	 * @return Pixel float width of sprite
+	 */
+	public float getPixelWidth(){
+		if ( sprite != null ){
+			return sprite.getWidth( );
+		}
+		return Float.NaN;
+	}
+	
+	/**
+	 * Get the sprite height of this entity
+	 * @return Pixel float height of sprite
+	 */
+	public float getPixelHeight(){
+		if ( sprite != null ){
+			return sprite.getHeight( );
+		}
+		return Float.NaN;
+	}
+	
+	/**
+	 * Get the sprite meter width of this entity
+	 * @return METER float width of sprite
+	 */
+	public float getMeterWidth(){
+		if ( sprite != null ){
+			return sprite.getWidth( ) * Util.PIXEL_TO_BOX;
+		}
+		return Float.NaN;
+	}
+	
+	/**
+	 * Get the sprite METER height of this entity
+	 * @return METER float height of sprite
+	 */
+	public float getMeterHeight(){
+		if ( sprite != null ){
+			return sprite.getHeight( ) * Util.PIXEL_TO_BOX;
+		}
+		return Float.NaN;
+	}
+	
+	/**
+	 * for debug
+	 * @author stew
+	 */
 	public String toString( ) {
 		return "Entity[" + name + "] pos:" + body.getPosition( )
 				+ ", body.active:" + body.isActive( ) + ", body.awake:"

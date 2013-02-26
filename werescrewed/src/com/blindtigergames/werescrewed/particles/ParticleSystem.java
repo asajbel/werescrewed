@@ -46,7 +46,7 @@ public class ParticleSystem {
 		particles.add( new Particle( entity, lifeSpan, mover ) );
 	}
 
-	
+
 	/**
 	 * don't use this right now
 	 * 
@@ -61,5 +61,4 @@ public class ParticleSystem {
 			particles.add( new Particle( e, lifeSpan, mover ) );
 		}
 	}
-	
 }

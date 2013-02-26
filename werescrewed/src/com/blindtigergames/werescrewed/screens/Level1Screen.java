@@ -242,7 +242,7 @@ public class Level1Screen implements com.badlogic.gdx.Screen {
 		StructureScrew leftPlatScrew = new ScrewBuilder( )
 				.position(
 						tiledPlat.body.getPosition( ).x * Util.BOX_TO_PIXEL
-								- ( tiledPlat.sprite.getWidth( ) ),
+								- ( tiledPlat.getPixelWidth( ) ),
 						tiledPlat.body.getPosition( ).y * Util.BOX_TO_PIXEL )
 				.entity( tiledPlat ).skeleton( skeleton ).world( world )
 				.buildStructureScrew( );
@@ -252,7 +252,7 @@ public class Level1Screen implements com.badlogic.gdx.Screen {
 		// world );
 		BossScrew bossBolt = new BossScrew( "", new Vector2(
 				tiledPlat.body.getPosition( ).x * Util.BOX_TO_PIXEL
-						+ ( tiledPlat.sprite.getWidth( ) ),
+						+ ( tiledPlat.getPixelWidth( ) ),
 				tiledPlat.body.getPosition( ).y * Util.BOX_TO_PIXEL ), 50,
 				tiledPlat, skeleton, world );
 		tiledPlat.addScrew( bossBolt );

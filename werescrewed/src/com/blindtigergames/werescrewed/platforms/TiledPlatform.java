@@ -3,9 +3,6 @@ package com.blindtigergames.werescrewed.platforms;
 import java.util.Iterator;
 import java.util.Vector;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input.Keys;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
@@ -19,7 +16,7 @@ import com.blindtigergames.werescrewed.screws.Screw;
 import com.blindtigergames.werescrewed.util.Util;
 
 /**
- * 
+ * Tiled platform that uses texture atlas
  * @author Ranveer / Stew / Anders
  * 
  */
@@ -48,41 +45,36 @@ public class TiledPlatform extends Platform {
 
 	protected float tileHeight, tileWidth;
 	protected Vector2 bodypos;
-	protected TileSet tileSet;
 
 	protected Shape shape;// = Shape.SINGLE;
 
 	protected Vector< Tile > tiles;
 
-	public TiledPlatform( String n, Vector2 pos, Texture tex, float width,
+	public TiledPlatform( String n, Vector2 pos, TileSet tileSet, float width,
 			float height, boolean isOneSided, boolean isMoveable, World world ) {
-		super( n, pos, tex, world );
+		super( n, pos, null, world );
 		platType = PlatformType.TILED;
-		this.tileSet = new TileSet( tex );
+		//this.tileSet = tileset;
 		this.tileHeight = height;
 		this.tileWidth = width;
 
-		if ( height > 1 && width > 1 ) {
+		if ( tileHeight > 1 && tileWidth > 1 ) {
 			shape = Shape.RECTANGLE;
-		} else if ( width > 1 ) {
+		} else if ( tileWidth > 1 ) {
 			shape = Shape.HORIZONTAL;
-		} else if ( height > 1 ) {
+		} else if ( tileHeight > 1 ) {
 			shape = Shape.VERTICAL;
 		} else {
 			shape = Shape.SINGLE;
 		}
 
-		if ( tex.getHeight( ) != 128 && tex.getWidth( ) != 128 ) {
-			shape = Shape.SINGLE;
-		}
-
-		this.width = width * tileConstant;
-		this.height = height * tileConstant;
-		constructTileBody( pos.x, pos.y, width, height );
+		this.width = tileWidth * tileConstant;
+		this.height = tileHeight * tileConstant;
+		constructTileBody( pos.x, pos.y, tileWidth, tileHeight );
 		body.setUserData( this );
 		setOneSided( isOneSided );
 		this.moveable = isMoveable;
-		tileBody( );
+		tileBody( tileSet );
 	}
 
 	private void constructTileBody( float x, float y, float width, float height ) {
@@ -111,7 +103,7 @@ public class TiledPlatform extends Platform {
 		polygon.dispose( );
 	}
 
-	private void tileBody( ) {
+	private void tileBody( TileSet tileSet ) {
 		bodypos = body.getPosition( ).mul( Util.BOX_TO_PIXEL );
 		tiles = new Vector< Tile >( ( int ) ( tileHeight * tileWidth ) );
 		Sprite temp;
@@ -120,8 +112,8 @@ public class TiledPlatform extends Platform {
 		switch ( shape ) {
 		case SINGLE:
 			temp = tileSet.getSingleTile( );
-			offset_x = temp.getWidth( ) / 2;
-			offset_y = temp.getHeight( ) / 2;
+			offset_x = tileConstant / 2 + temp.getOriginX( )+1; //not sure why +1 works
+			offset_y = tileConstant / 2 + temp.getOriginY( );
 			insub = setTile( temp, offset_x, offset_y );
 			tiles.add( insub );
 			break;
@@ -188,12 +180,7 @@ public class TiledPlatform extends Platform {
 				for ( int i = 1; i < tileWidth - 1; i++ ) {
 					temp = tileSet.getRectangleMiddleCenter( );
 					offset_x = ( i - tileWidth / 2 + 1 ) * tileConstant * 2;
-					temp.setOrigin( offset_x, offset_y );
-					temp.setPosition( bodypos.x - offset_x, bodypos.y
-							- offset_y );
-					temp.setRotation( MathUtils.radiansToDegrees
-							* body.getAngle( ) );
-					insub = new Tile( offset_x, offset_y, temp );
+					insub = setTile(temp,offset_x,offset_y);
 					tiles.add( insub );
 				}
 				temp = tileSet.getRectangleMiddleLeft( );
@@ -241,27 +228,17 @@ public class TiledPlatform extends Platform {
 	}
 
 	private Tile setTile( Sprite temp, float offset_x, float offset_y ) {
+		offset_x += temp.getOriginX( );
+		offset_y += temp.getOriginY( );
 		temp.setOrigin( offset_x, offset_y );
 		temp.setPosition( bodypos.x - offset_x, bodypos.y - offset_y );
 		temp.setRotation( MathUtils.radiansToDegrees * body.getAngle( ) );
 		return ( new Tile( offset_x, offset_y, temp ) );
 	}
 
-	public float getActualHeight( ) {
-		return height * 32;
-	}
-
-	public float getActualWidth( ) {
-		return width * 32;
-	}
-
 	@Override
 	public void update( float deltaTime ) {
 		super.update( deltaTime );
-		if ( Gdx.input.isKeyPressed( Keys.B ) ) {
-			setOneSided( !getOneSided( ) );
-			System.out.println( getOneSided( ) );
-		}
 		bodypos = body.getPosition( ).mul( Util.BOX_TO_PIXEL );
 	}
 
@@ -282,4 +259,40 @@ public class TiledPlatform extends Platform {
 		//drawOrigin( batch );
 	}
 
+	/**
+	 * Get the sprite width of this tiled platform
+	 * @return Pixel float width of tiled platform
+	 */
+	@Override
+	public float getPixelWidth(){
+		return width * tileConstant;
+	}
+	
+	/**
+	 * Get the sprite height of this tiled platform
+	 * @return Pixel float height of tiled platform
+	 */
+	@Override
+	public float getPixelHeight(){
+		return height * tileConstant;
+	}
+	
+	/**
+	 * Get the sprite meter width of this tiled platform
+	 * @return METER float width of tiled platform
+	 */
+	@Override
+	public float getMeterWidth(){
+		return width * tileConstant * Util.PIXEL_TO_BOX;
+	}
+	
+	/**
+	 * Get the sprite METER height of this tiled platform
+	 * @return METER float height of tiled platform
+	 */
+	@Override
+	public float getMeterHeight(){
+		return height * tileConstant * Util.PIXEL_TO_BOX;
+	}
+	
 }

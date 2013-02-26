@@ -9,5 +9,4 @@ public class GleedTestScreen extends Screen {
 		level = new GleedLoader().load( filename );
 		level.world.setContactListener( MCL );
 	}
-
 }

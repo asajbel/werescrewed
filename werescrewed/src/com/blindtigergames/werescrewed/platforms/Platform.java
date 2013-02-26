@@ -255,7 +255,6 @@ public class Platform extends Entity {
 			}
 		}
 
-		// TODO: Why de-activate this??
 		body.setActive( false );
 	}
 
