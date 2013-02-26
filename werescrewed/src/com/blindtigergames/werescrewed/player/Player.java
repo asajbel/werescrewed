@@ -161,7 +161,10 @@ public class Player extends Entity {
 	public void update( float deltaTime ) {
 		super.update( deltaTime );
 		if ( name.equals( "player1" ) ) {
-			Gdx.app.log( "playerState", "" + playerState );
+			//Gdx.app.log( "playerState", "" + playerState + " " + grounded );
+		}
+		if ( name.equals( "player2" ) ) {
+			//Gdx.app.log( "playerState", "" + playerState + " " + grounded );
 		}
 		if ( kinematicTransform ) {
 			// setPlatformTransform( platformOffset );
@@ -765,7 +768,13 @@ public class Player extends Entity {
 			playerState = PlayerState.Standing;
 			jumpOffScrew( );
 		} else if ( screwJumpTimeout == 0 ) {
-			playerState = PlayerState.Jumping;
+			if ( isGrounded ( ) ) { 
+				playerState = PlayerState.Standing;
+			} else if ( body.getLinearVelocity( ).y > 0 ) {
+				playerState = PlayerState.Jumping;
+			} else {
+				playerState = PlayerState.Falling;
+			}
 			jumpOffScrew( );
 		}
 	}
@@ -919,7 +928,11 @@ public class Player extends Entity {
 			if ( isGrounded( ) ) {
 				playerState = PlayerState.Standing;
 			} else {
-				playerState = PlayerState.Jumping;
+				if ( body.getLinearVelocity( ).y > 0 ) {
+					playerState = PlayerState.Jumping;
+				} else {
+					playerState = PlayerState.Falling;
+				}
 			}
 		}
 	}
@@ -948,9 +961,9 @@ public class Player extends Entity {
 				&& !isGrounded( ) ) {
 			// if this player is jumping or falling and the other player is
 			// standing
-			topPlayer = true;
-			setHeadStand( );
-			otherPlayer.setHeadStand( );
+//			topPlayer = true;
+//			setHeadStand( );
+//			otherPlayer.setHeadStand( );
 		} else if ( playerState == PlayerState.Standing ) {
 			playerState = PlayerState.GrabMode;
 		}
