@@ -34,16 +34,16 @@ public class Entity {
 	public Vector2 offset;
 	public Body body;
 	protected World world;
-	public ArrayList<IMover> moverArray;
-	private RobotState currentRobotState;
-	private EnumMap<RobotState, Integer> robotStateMap;
 	protected boolean solid;
 	protected Anchor anchor;
 	protected float energy;
-	protected boolean active;
+	protected boolean moverActive;
 	protected boolean visible;
 	protected boolean maintained;
 	protected EntityType entityType;
+	private ArrayList<IMover> moverArray;
+	private RobotState currentRobotState;
+	private EnumMap<RobotState, Integer> robotStateMap;
 	/**
 	 * Create entity by definition
 	 * 
@@ -122,7 +122,7 @@ public class Entity {
 		this.energy = 1.0f;
 		this.maintained = true;
 		this.visible = true;
-		this.active = true;
+		this.moverActive = true;
 		setUpRobotState();
 	}
 
@@ -193,7 +193,7 @@ public class Entity {
 	 * @param deltaTime
 	 */
 	public void updateMover( float deltaTime ) {
-		if ( active ) {
+		if ( moverActive ) {
 			if ( body != null ) {
 				if ( currentMover() != null ) {
 					currentMover().move( deltaTime, body );
@@ -422,11 +422,11 @@ public class Entity {
 	 *            - boolean
 	 */
 	public void setActive( boolean a ) {
-		active = a;
+		moverActive = a;
 	}
 
 	public boolean isActive( ) {
-		return active;
+		return moverActive;
 	}
 
 	/**
