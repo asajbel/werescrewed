@@ -8,6 +8,7 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
 import com.blindtigergames.werescrewed.entity.Entity;
+import com.blindtigergames.werescrewed.entity.EntityType;
 import com.blindtigergames.werescrewed.puzzles.PuzzleManager;
 import com.blindtigergames.werescrewed.util.Util;
 
@@ -33,6 +34,7 @@ public class PuzzleScrew extends Screw {
 		resetAble = resetable;
 		puzzleManager = new PuzzleManager( this.name );
 		screwType = ScrewType.PUZZLE;
+		entityType = EntityType.SCREW;
 
 		sprite.setColor( 16f/255f, 215f/255f, 96f/255f, 1.0f);
 
