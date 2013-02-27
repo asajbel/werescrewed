@@ -37,6 +37,7 @@ public class ParticleSystem {
 	
 	/**
 	 * adds new particle to the engine with the following components
+	 * 
 	 * @param entity Entity
 	 * @param lifeSpan float
 	 * @param mover mover
@@ -44,6 +45,7 @@ public class ParticleSystem {
 	public void addParticle( Entity entity, float lifeSpan, IMover mover ) {
 		particles.add( new Particle( entity, lifeSpan, mover ) );
 	}
+
 
 	/**
 	 * don't use this right now

@@ -22,6 +22,7 @@ class MainMenuScreen implements com.badlogic.gdx.Screen {
 	private Button gleedButton = null;
 	private Button exitButton = null;
 	private Button testButton;
+	private Button resurrectButton = null;
 	private int lineHeight = 0;
 	private Button level1Button;
 
@@ -32,6 +33,8 @@ class MainMenuScreen implements com.badlogic.gdx.Screen {
 		headingLabel = new Label( "We're Screwed!!", font );
 		playButton = new Button( "Physics Test Screen", font,
 				new ScreenSwitchHandler( ScreenType.PHYSICS ) );
+		resurrectButton = new Button( "Resurrect Test Screen", font,
+				new ScreenSwitchHandler( ScreenType.RESURRECT ) );
 		testButton = new Button( "Playtest Screen", font,
 				new ScreenSwitchHandler( ScreenType.PLAYTEST ) );
 		gleedButton = new Button( "Gleed Screen", font,
@@ -55,6 +58,7 @@ class MainMenuScreen implements com.badlogic.gdx.Screen {
 		headingLabel.draw( batch );
 		playButton.draw( batch, camera );
 		gleedButton.draw( batch, camera );
+		resurrectButton.draw( batch, camera );
 		testButton.draw( batch, camera );
 		level1Button.draw( batch, camera );
 		// imoverButton.draw( batch, camera );
@@ -84,12 +88,14 @@ class MainMenuScreen implements com.badlogic.gdx.Screen {
 		playButton.setY( centerY + lineHeight );
 		gleedButton.setX( centerX - gleedButton.getWidth( ) / 2 );
 		gleedButton.setY( centerY );
+		resurrectButton.setX( centerX - testButton.getWidth( ) /2 );
+		resurrectButton.setY( centerY - lineHeight );
 		level1Button.setX( centerX - level1Button.getWidth( ) / 2 );
-		level1Button.setY( centerY - lineHeight );
+		level1Button.setY( centerY - lineHeight * 2 );
 		// imoverButton.setX( centerX - imoverButton.getWidth( )/2 );
 		// imoverButton.setY( centerY - lineHeight );
 		exitButton.setX( centerX - exitButton.getWidth( ) / 2 );
-		exitButton.setY( centerY - 2 * lineHeight );
+		exitButton.setY( centerY - 3 * lineHeight );
 	}
 
 	@Override

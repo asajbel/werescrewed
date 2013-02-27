@@ -8,11 +8,13 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
 import com.blindtigergames.werescrewed.entity.Entity;
+import com.blindtigergames.werescrewed.entity.EntityType;
 import com.blindtigergames.werescrewed.puzzles.PuzzleManager;
 import com.blindtigergames.werescrewed.util.Util;
 
 /**
- * blah blah
+ * screws used to move platforms with different types of control
+ * look into mover types for various different possibilities
  * 
  * @author Dennis
  * 
@@ -32,6 +34,7 @@ public class PuzzleScrew extends Screw {
 		resetAble = resetable;
 		puzzleManager = new PuzzleManager( this.name );
 		screwType = ScrewType.PUZZLE;
+		entityType = EntityType.SCREW;
 
 		sprite.setColor( 16f/255f, 215f/255f, 96f/255f, 1.0f);
 
@@ -39,7 +42,10 @@ public class PuzzleScrew extends Screw {
 		connectScrewToEntity( entity );
 	}
 
-
+	/**
+	 * screwing left calls the puzzle manager element 
+	 * and applies the screw value to whatever movement is required
+	 */
 	@Override
 	public void screwLeft( ) {
 		if ( depth > 0 ) {
@@ -52,6 +58,10 @@ public class PuzzleScrew extends Screw {
 		}
 	}
 
+	/**
+	 * screwing right calls the puzzle manager element 
+	 * and applies the screw value to whatever movement is required
+	 */
 	@Override
 	public void screwRight( ) {
 		if ( depth < maxDepth ) {

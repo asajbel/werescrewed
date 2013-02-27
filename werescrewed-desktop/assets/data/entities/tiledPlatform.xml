@@ -1,6 +1,6 @@
 <entity>
    	<category>TiledPlatform</category>
-	<texture>common/TilesetTest.png</texture>
+	<tileset>TilesetTest</tileset>
 	<initialAnim>default</initialAnim>
 	<originX>0.0f</originX>
 	<originY>0.0f</originY>

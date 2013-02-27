@@ -1,5 +1,8 @@
 package com.blindtigergames.werescrewed.entity;
 
+import java.util.ArrayList;
+import java.util.EnumMap;
+
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
@@ -23,20 +26,24 @@ import com.blindtigergames.werescrewed.util.Util;
  * 
  */
 public class Entity {
+	private static final int INITAL_CAPACITY = 3;
+	
 	public String name;
 	public EntityDef type;
 	public Sprite sprite;
 	public Vector2 offset;
 	public Body body;
 	protected World world;
-	public IMover mover;
 	protected boolean solid;
 	protected Anchor anchor;
 	protected float energy;
-	protected boolean active;
+	protected boolean moverActive;
 	protected boolean visible;
 	protected boolean maintained;
-
+	protected EntityType entityType;
+	private ArrayList<IMover> moverArray;
+	private RobotState currentRobotState;
+	private EnumMap<RobotState, Integer> robotStateMap;
 	/**
 	 * Create entity by definition
 	 * 
@@ -115,7 +122,8 @@ public class Entity {
 		this.energy = 1.0f;
 		this.maintained = true;
 		this.visible = true;
-		this.active = true;
+		this.moverActive = true;
+		setUpRobotState();
 	}
 
 	/**
@@ -185,10 +193,10 @@ public class Entity {
 	 * @param deltaTime
 	 */
 	public void updateMover( float deltaTime ) {
-		if ( active ) {
+		if ( moverActive ) {
 			if ( body != null ) {
-				if ( mover != null ) {
-					mover.move( deltaTime, body );
+				if ( currentMover() != null ) {
+					currentMover().move( deltaTime, body );
 				}
 			}
 		}
@@ -270,15 +278,83 @@ public class Entity {
 		return newBody;
 	}
 
-	/**
-	 * Set the mover of this entity!
-	 * 
-	 * @param mover
-	 */
-	public void setMover( IMover mover ) {
-		this.mover = mover;
-	}
 
+
+	/**
+	 * This function adds a mover to the entity,
+	 * YOU MUST SPECIFIY WHICH STATE IT IS ASSOCIATED WITH
+	 * EITHER IDLE, DOCILE, HOSTILE
+	 * 
+	 * This fucntions also replaces the mover associated with that
+	 * robotstate, so you cannot get that old mover back
+	 * @param mover - Imover
+	 * @param robotState - for example:  RobotState.Idle 
+	 * @author Ranveer
+	 */
+	public void addMover( IMover mover, RobotState robotState) {
+		int index = robotStateMap.get( robotState );
+		moverArray.set( index, mover );
+	}
+	
+	/**
+	 * Changes robotState from current to the argument
+	 * @param robotState - for example: RobotState.IDLE 
+	 * @author Ranveer
+	 */
+	public void setCurrentMover(RobotState robotState){
+		currentRobotState = robotState;
+	}
+	
+	/**
+	 * Sets the mover associated with the argument's robotstate
+	 * to null. Warning, this gets rid of old mover
+	 * @param robotState - for example: RobotState.IDLE
+	 * @author Ranveer
+	 */
+	public void setMoverNull(RobotState robotState) {
+		int index = robotStateMap.get( robotState );
+		moverArray.set( index, null );
+	}
+	
+	/**
+	 * Sets the current state's mover to null
+	 * Warning, this gets rid of old mover
+	 * @author Ranveer
+	 */
+	public void setMoverNullAtCurrentState() {
+		int index = robotStateMap.get( currentRobotState );
+		moverArray.set( index, null );
+	}
+	
+	/**
+	 * Replaces current state's mover with the argument
+	 * @param mover
+	 * @author Ranveer
+	 */
+	public void setMoverAtCurrentState(IMover mover){
+		int index = robotStateMap.get( currentRobotState );
+		moverArray.set( index, mover );
+	}
+	
+	/**
+	 * gets the current RobotState of the entity
+	 * example: p.getCurrentState() == RobotState.IDLE
+	 * @return RobotState
+	 * @author Ranveer
+	 */
+	public RobotState getCurrentState(){
+		return currentRobotState;
+	}
+	
+	/**
+	 * gets the current mover, in the current robotstate
+	 * @return IMover
+	 * @author Ranveer
+	 */
+	public IMover currentMover(){
+		return moverArray.get( robotStateMap.get( currentRobotState ) );
+	}
+	
 	public boolean isSolid( ) {
 		return this.solid;
 	}
@@ -346,11 +422,11 @@ public class Entity {
 	 *            - boolean
 	 */
 	public void setActive( boolean a ) {
-		active = a;
+		moverActive = a;
 	}
 
 	public boolean isActive( ) {
-		return active;
+		return moverActive;
 	}
 
 	/**
@@ -451,11 +527,92 @@ public class Entity {
 		}
 		return false;
 	}
-
+	
+	/**
+	 * Get the sprite width of this entity
+	 * @return Pixel float width of sprite
+	 */
+	public float getPixelWidth(){
+		if ( sprite != null ){
+			return sprite.getWidth( );
+		}
+		return Float.NaN;
+	}
+	/**
+	 * gets the type of entity 
+	 */
+	public EntityType getEntityType( ) {
+		return entityType;
+	}
+	/**
+	 * Get the sprite height of this entity
+	 * @return Pixel float height of sprite
+	 */
+	public float getPixelHeight(){
+		if ( sprite != null ){
+			return sprite.getHeight( );
+		}
+		return Float.NaN;
+	}
+	
+	/**
+	 * Get the sprite meter width of this entity
+	 * @return METER float width of sprite
+	 */
+	public float getMeterWidth(){
+		if ( sprite != null ){
+			return sprite.getWidth( ) * Util.PIXEL_TO_BOX;
+		}
+		return Float.NaN;
+	}
+	
+	/**
+	 * Get the sprite METER height of this entity
+	 * @return METER float height of sprite
+	 */
+	public float getMeterHeight(){
+		if ( sprite != null ){
+			return sprite.getHeight( ) * Util.PIXEL_TO_BOX;
+		}
+		return Float.NaN;
+	}
+	
+	/**
+	 * for debug
+	 * @author stew
+	 */
 	public String toString( ) {
 		return "Entity[" + name + "] pos:" + body.getPosition( )
 				+ ", body.active:" + body.isActive( ) + ", body.awake:"
 				+ body.isAwake( );
 	}
 
+
+	
+	/**
+	 * Sets up moverArray and fills it with null
+	 * and set up the EnumMap 
+	 * Idle = 0
+	 * Docile = 1
+	 * Hostile = 2 
+	 * 
+	 * and sets this entity's default state as IDLE
+	 * 
+	 * @author Ranveer
+	 */
+	private void setUpRobotState(){
+		moverArray = new ArrayList<IMover>();
+		for(int i = 0; i < INITAL_CAPACITY; ++i)
+			moverArray.add( null );
+		robotStateMap = new EnumMap<RobotState, Integer>(RobotState.class);
+		robotStateMap.put( RobotState.IDLE, 0 );
+		robotStateMap.put( RobotState.DOCILE, 1 );
+		robotStateMap.put( RobotState.HOSTILE, 2 );
+		//robotStateMap.put( RobotState.CUSTOM1, 3 );
+		//robotStateMap.put( RobotState.CUSTOM2, 4 );
+		//robotStateMap.put( RobotState.CUSTOM3, 5 );
+		
+		//Initalize to idle
+		currentRobotState = RobotState.IDLE;
+	}
 }

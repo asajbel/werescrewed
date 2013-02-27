@@ -10,6 +10,7 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.World;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityDef;
+import com.blindtigergames.werescrewed.entity.EntityType;
 import com.blindtigergames.werescrewed.screws.Screw;
 import com.blindtigergames.werescrewed.skeleton.Skeleton;
 import com.blindtigergames.werescrewed.util.Util;
@@ -64,6 +65,7 @@ public class Platform extends Entity {
 	public Platform( String name, Vector2 pos, Texture tex, World world ) {
 		super( name, pos, tex, null, true );
 		this.world = world;
+		entityType = EntityType.PLATFORM;
 		init( pos );
 	}
 
@@ -81,6 +83,7 @@ public class Platform extends Entity {
 	public Platform( String name, EntityDef type, World world, Vector2 pos,
 			float rot, Vector2 scale, float anchRadius ) {
 		super( name, type, world, pos, rot, scale, null, true, anchRadius );
+		entityType = EntityType.PLATFORM;
 		init( pos );
 	}
 
@@ -255,7 +258,6 @@ public class Platform extends Entity {
 			}
 		}
 
-		// TODO: Why de-activate this??
 		body.setActive( false );
 	}
 

@@ -9,6 +9,7 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.gui.Label;
 
@@ -141,6 +142,11 @@ public class LoadingScreen extends Screen {
 		} else if ( fileExtension.equals( "mp3" ) ) {
 			WereScrewedGame.manager.load( fullPathName, Music.class );
 			Gdx.app.log( "Music file loaded", fullPathName );
+			
+		}
+		else if ( fileExtension.equals( "pack" )){
+			WereScrewedGame.manager.loadAtlas( fullPathName );
+			Gdx.app.log( "Atlas pack file loaded", fullPathName );
 		}
 	}
 

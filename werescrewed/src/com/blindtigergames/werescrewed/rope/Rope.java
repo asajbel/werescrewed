@@ -44,7 +44,7 @@ public class Rope {
 			Texture texture, World world ) {
 		this.world = world;
 		linkParts = new ArrayList< Link >( );
-		constructRope( name, pos, widthHeight, links, world );
+		constructRope( name, pos, widthHeight, links, texture, world );
 
 		// screw = new StrippedScrew ( "rope screw", world, new Vector2 (pos.x,
 		// pos.y - widthHeight.y * Util.PIXEL_TO_BOX * links) );
@@ -70,7 +70,7 @@ public class Rope {
 			Texture texture, World world ) {
 		this.world = world;
 		linkParts = new ArrayList< Link >( );
-		constructRope( name, entity.getPosition( ), widthHeight, links, world );
+		constructRope( name, entity.getPosition( ), widthHeight, links, texture, world );
 
 		// screw = new StrippedScrew ( "rope screw", world, new Vector2 (pos.x,
 		// pos.y - widthHeight.y * Util.PIXEL_TO_BOX * links) );
@@ -81,9 +81,9 @@ public class Rope {
 	 * 
 	 */
 	private void constructRope( String name, Vector2 pos, Vector2 widthHeight,
-			int links, World world ) {
+			int links, Texture texture, World world ) {
 
-		Link topPiece = new Link( "top", world, pos, null, widthHeight );
+		Link topPiece = new Link( "top", world, pos, texture, widthHeight );
 		topPiece.body.setType( BodyType.DynamicBody );
 		linkParts.add( topPiece );
 
@@ -92,7 +92,7 @@ public class Rope {
 			Link temp = new Link( "link" + i, world, new Vector2(
 					getEnd( ).body.getWorldCenter( ).x,
 					getEnd( ).body.getWorldCenter( ).y - widthHeight.y
-							* Util.PIXEL_TO_BOX ), null, widthHeight );
+							* Util.PIXEL_TO_BOX ), texture, widthHeight );
 
 			getEnd( ).createLinkJoint( temp );
 			linkParts.add( temp );
@@ -204,4 +204,14 @@ public class Rope {
 	}
 	
 
+	public void createScrew(){
+		screw = new StrippedScrew( "ropeScrew", world,
+				new Vector2(getLastLink().body.getPosition( ).x * Util.BOX_TO_PIXEL,
+						(getLastLink().body.getPosition( ).y * Util.BOX_TO_PIXEL)
+						- (getLastLink().getHeight( ))), 
+						 getLastLink( ) );
+
+
+	}
+	
 }
