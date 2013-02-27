@@ -157,20 +157,20 @@ public class ResurrectScreen implements com.badlogic.gdx.Screen {
 			debugTest = true;
 
 		if ( Gdx.input.isKeyPressed( Input.Keys.Z ) ) {
-			player2.killPlayer( );
-			//rootSkeleton.translateBy( 0.0f, 0.01f );
+			//player2.killPlayer( );
+			rootSkeleton.translateBy( 0.0f, 0.01f );
 		}
 
 		if ( Gdx.input.isKeyPressed( Input.Keys.X ) ) {
-			//rootSkeleton.translateBy( 0.0f, -0.01f );
+			rootSkeleton.translateBy( 0.0f, -0.01f );
 		}
 
 		if ( Gdx.input.isKeyPressed( Input.Keys.C ) ) {
-			//rootSkeleton.rotateBy( -0.01f );
+			rootSkeleton.rotateBy( -0.01f );
 		}
 
 		if ( Gdx.input.isKeyPressed( Input.Keys.V ) ) {
-			//rootSkeleton.rotateBy( 0.01f );
+			rootSkeleton.rotateBy( 0.01f );
 		}
 
 		player1.update( deltaTime );
