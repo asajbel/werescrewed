@@ -22,10 +22,6 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 public class Camera {
 	private static final boolean ANCHOR_TEST_MODE = false;
 	// private static final boolean ANCHOR_TEST_MODE= true;
-	public static final float BOX_TO_PIXEL = 256f;
-	public static final float PIXEL_TO_BOX = 1 / BOX_TO_PIXEL;
-	public static final float DEGTORAD = 0.0174532925199432957f;
-	public static final float RADTODEG = 57.295779513082320876f;
 	public OrthographicCamera camera;
 	public float viewportHeight;
 	public float viewportWidth;
@@ -115,7 +111,7 @@ public class Camera {
 		anchorList = AnchorList.getInstance( camera );
 		anchorList.clear( );
 		if ( ANCHOR_TEST_MODE ) {
-			// createTestAnchors( world );
+			createTestAnchors( world );
 		}
 
 		// debug
@@ -192,14 +188,13 @@ public class Camera {
 	/**
 	 * set focus of camera to the midpoint of all anchors
 	 */
-	private Vector2 setTranslateTarget( ) {
+	private void setTranslateTarget( ) {
 		translateTarget.x = anchorList.getMidpoint( ).x;
 		translateTarget.y = anchorList.getMidpoint( ).y;
 
 		translateTarget3D.x = translateTarget.x;
 		translateTarget3D.y = translateTarget.y;
 		translateTarget3D.z = 0f;
-		return this.translateTarget;
 	}
 
 	/**
