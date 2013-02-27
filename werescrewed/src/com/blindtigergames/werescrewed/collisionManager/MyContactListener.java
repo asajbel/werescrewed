@@ -12,6 +12,7 @@ import com.blindtigergames.werescrewed.checkpoints.CheckPoint;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.platforms.Platform;
 import com.blindtigergames.werescrewed.platforms.PlatformType;
+import com.blindtigergames.werescrewed.hazard.Hazard;
 import com.blindtigergames.werescrewed.platforms.TiledPlatform;
 import com.blindtigergames.werescrewed.player.Player;
 import com.blindtigergames.werescrewed.player.Player.PlayerState;
@@ -61,7 +62,9 @@ public class MyContactListener implements ContactListener {
 				if ( objectFix.getBody( ).getUserData( ) instanceof Entity ) {
 					Entity object = ( Entity ) objectFix.getBody( )
 							.getUserData( );
-					switch ( object.getEntityType( ) ) { //switch between different types of entities
+					switch ( object.getEntityType( ) ) { // switch between
+															// different types
+															// of entities
 					case PLATFORM:
 						// Ensure the object is solid and involves the player's
 						// feet
@@ -98,6 +101,11 @@ public class MyContactListener implements ContactListener {
 								.getUserData( );
 						player.hitPlayer( player2 );
 						player2.hitPlayer( player );
+						break;
+					case HAZARD:
+						Hazard hazard = ( Hazard ) objectFix.getBody( )
+								.getUserData( );
+						hazard.performContact( player );
 						break;
 					case CHECKPOINT:
 						CheckPoint checkP = ( CheckPoint ) objectFix.getBody( )
@@ -146,7 +154,9 @@ public class MyContactListener implements ContactListener {
 				if ( objectFix.getBody( ).getUserData( ) instanceof Entity ) {
 					Entity object = ( Entity ) objectFix.getBody( )
 							.getUserData( );
-					switch ( object.getEntityType( ) ) { //switch between different types of entities
+					switch ( object.getEntityType( ) ) { // switch between
+															// different types
+															// of entities
 					case PLATFORM:
 						// Ensure the object is solid and involves the player's
 						// feet
@@ -241,7 +251,9 @@ public class MyContactListener implements ContactListener {
 				if ( objectFix.getBody( ).getUserData( ) instanceof Entity ) {
 					Entity object = ( Entity ) objectFix.getBody( )
 							.getUserData( );
-					switch ( object.getEntityType( ) ) { //switch between different types of entities
+					switch ( object.getEntityType( ) ) { // switch between
+															// different types
+															// of entities
 					case PLATFORM:
 						Platform plat = ( Platform ) object;
 						if ( plat.getPlatformType( ) == PlatformType.TILED ) {
@@ -310,7 +322,9 @@ public class MyContactListener implements ContactListener {
 				if ( objectFix.getBody( ).getUserData( ) instanceof Entity ) {
 					Entity object = ( Entity ) objectFix.getBody( )
 							.getUserData( );
-					switch ( object.getEntityType( ) ) { //switch between different types of entities
+					switch ( object.getEntityType( ) ) { // switch between
+															// different types
+															// of entities
 					case PLATFORM:
 						Platform plat = ( Platform ) object;
 						if ( plat.getPlatformType( ) == PlatformType.TILED ) {

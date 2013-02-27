@@ -8,6 +8,7 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityDef;
+import com.blindtigergames.werescrewed.entity.RobotState;
 import com.blindtigergames.werescrewed.entity.mover.IMover;
 import com.blindtigergames.werescrewed.skeleton.Skeleton;
 
@@ -305,7 +306,7 @@ public class GenericEntityBuilder< B extends GenericEntityBuilder< ? >> {
 				out = new Entity( name, pos, tex, body, solid );
 			}
 			if ( mover != null ) {
-				out.setMover( mover );
+				out.addMover( mover, RobotState.IDLE );
 			}
 		}
 		return out;

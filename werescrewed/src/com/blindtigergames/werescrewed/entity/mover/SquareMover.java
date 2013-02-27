@@ -133,8 +133,8 @@ public class SquareMover implements IMover {
 				break;
 			}
 		} else if ( puzzleType == PuzzleType.OVERRIDE_ENTITY_MOVER ) {
-			if ( p.mover == null ) {
-				p.mover = this;
+			if ( p.currentMover( ) == null ) {
+				p.setMoverAtCurrentState( this );
 			}
 		}
 	}
