@@ -44,7 +44,6 @@ public class Entity {
 	protected boolean visible;
 	protected boolean maintained;
 	protected EntityType entityType;
-
 	/**
 	 * Create entity by definition
 	 * 
@@ -280,38 +279,78 @@ public class Entity {
 	}
 
 
-	public void setCurrentMover(RobotState robotState){
-		currentRobotState = robotState;
-	}
+
 	/**
 	 * This function adds a mover to the entity,
 	 * YOU MUST SPECIFIY WHICH STATE IT IS ASSOCIATED WITH
-	 * EITHER IDLE, DOCILE, HOSTILE, OR CUSTOM1
-	 * @param mover
-	 * @param robotState
+	 * EITHER IDLE, DOCILE, HOSTILE
+	 * 
+	 * This fucntions also replaces the mover associated with that
+	 * robotstate, so you cannot get that old mover back
+	 * @param mover - Imover
+	 * @param robotState - for example:  RobotState.Idle 
+	 * @author Ranveer
 	 */
 	public void addMover( IMover mover, RobotState robotState) {
 		int index = robotStateMap.get( robotState );
 		moverArray.set( index, mover );
 	}
 	
+	/**
+	 * Changes robotState from current to the argument
+	 * @param robotState - for example: RobotState.IDLE 
+	 * @author Ranveer
+	 */
+	public void setCurrentMover(RobotState robotState){
+		currentRobotState = robotState;
+	}
+	
+	/**
+	 * Sets the mover associated with the argument's robotstate
+	 * to null. Warning, this gets rid of old mover
+	 * @param robotState - for example: RobotState.IDLE
+	 * @author Ranveer
+	 */
 	public void setMoverNull(RobotState robotState) {
 		int index = robotStateMap.get( robotState );
 		moverArray.set( index, null );
 	}
+	
+	/**
+	 * Sets the current state's mover to null
+	 * Warning, this gets rid of old mover
+	 * @author Ranveer
+	 */
 	public void setMoverNullAtCurrentState() {
 		int index = robotStateMap.get( currentRobotState );
 		moverArray.set( index, null );
 	}
+	
+	/**
+	 * Replaces current state's mover with the argument
+	 * @param mover
+	 * @author Ranveer
+	 */
 	public void setMoverAtCurrentState(IMover mover){
 		int index = robotStateMap.get( currentRobotState );
 		moverArray.set( index, mover );
 	}
 	
+	/**
+	 * gets the current RobotState of the entity
+	 * example: p.getCurrentState() == RobotState.IDLE
+	 * @return RobotState
+	 * @author Ranveer
+	 */
 	public RobotState getCurrentState(){
 		return currentRobotState;
 	}
 	
+	/**
+	 * gets the current mover, in the current robotstate
+	 * @return IMover
+	 * @author Ranveer
+	 */
 	public IMover currentMover(){
 		return moverArray.get( robotStateMap.get( currentRobotState ) );
 	}
@@ -490,13 +529,6 @@ public class Entity {
 	}
 	
 	/**
-	 * gets the type of entity 
-	 */
-	public EntityType getEntityType( ) {
-		return entityType;
-	}
-	
-	/**
 	 * Get the sprite width of this entity
 	 * @return Pixel float width of sprite
 	 */
@@ -506,7 +538,12 @@ public class Entity {
 		}
 		return Float.NaN;
 	}
-	
+	/**
+	 * gets the type of entity 
+	 */
+	public EntityType getEntityType( ) {
+		return entityType;
+	}
 	/**
 	 * Get the sprite height of this entity
 	 * @return Pixel float height of sprite
@@ -553,7 +590,15 @@ public class Entity {
 
 	
 	/**
+	 * Sets up moverArray and fills it with null
+	 * and set up the EnumMap 
+	 * Idle = 0
+	 * Docile = 1
+	 * Hostile = 2 
 	 * 
+	 * and sets this entity's default state as IDLE
+	 * 
+	 * @author Ranveer
 	 */
 	private void setUpRobotState(){
 		moverArray = new ArrayList<IMover>();
