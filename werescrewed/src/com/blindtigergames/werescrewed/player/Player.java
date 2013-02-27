@@ -175,12 +175,7 @@ public class Player extends Entity {
 		//	body.setLinearVelocity( Vector2.Zero );
 		//	body.setFixedRotation( false );
 		//	body.setAngularVelocity( 0.1f )
-			
-			//TODO: this is sloppy as fuck, so fix it all nice like
-			Texture blah = WereScrewedGame.manager.get(WereScrewedGame.dirHandle + "/common/player_b_m_dying_r.png");
-			sprite = new Sprite(7, 1, 7, 0.1f, blah, Animation.NORMAL);
-
-			// TODO: death stuff
+		// TODO: death stuff
 
 		} else {
 			if ( controller != null ) {
@@ -415,13 +410,6 @@ public class Player extends Entity {
 					body.getWorldCenter( ) );
 		}
 		setGrounded( false );
-		
-		//TODO: Animations reset, but this is probably leads to a memory leak 
-		Texture blah = WereScrewedGame.manager.get(WereScrewedGame.dirHandle + "/common/player_b_m_jumping.png");
-		//if(sprite != null){/*delete the sprite here*/}
-		
-		//TODO: Also, how do I align the sprite to the physics body?
-		sprite = new Sprite(3, 1, 3, 0.1f, blah, Animation.NORMAL);
 	}
 
 	/**
