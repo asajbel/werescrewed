@@ -3,11 +3,8 @@ package com.blindtigergames.werescrewed.platforms;
 import java.util.Iterator;
 import java.util.Vector;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -15,8 +12,6 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
-import com.blindtigergames.werescrewed.graphics.TextureAtlasS;
-import com.blindtigergames.werescrewed.platforms.TiledPlatform.Tile;
 import com.blindtigergames.werescrewed.screws.Screw;
 import com.blindtigergames.werescrewed.util.Util;
 
@@ -265,39 +260,39 @@ public class TiledPlatform extends Platform {
 	}
 
 	/**
-	 * Get the sprite width of this tiled platform
+	 * Get the actual sprite width of this tiled platform
 	 * @return Pixel float width of tiled platform
 	 */
 	@Override
 	public float getPixelWidth(){
-		return width * tileConstant;
+		return width * 2;
 	}
 	
 	/**
-	 * Get the sprite height of this tiled platform
+	 * Get the actual sprite height of this tiled platform
 	 * @return Pixel float height of tiled platform
 	 */
 	@Override
 	public float getPixelHeight(){
-		return height * tileConstant;
+		return height * 2;
 	}
 	
 	/**
-	 * Get the sprite meter width of this tiled platform
+	 * Get the actual sprite meter width of this tiled platform
 	 * @return METER float width of tiled platform
 	 */
 	@Override
 	public float getMeterWidth(){
-		return width * tileConstant * Util.PIXEL_TO_BOX;
+		return width * 2 * Util.PIXEL_TO_BOX;
 	}
 	
 	/**
-	 * Get the sprite METER height of this tiled platform
+	 * Get the actual sprite METER height of this tiled platform
 	 * @return METER float height of tiled platform
 	 */
 	@Override
 	public float getMeterHeight(){
-		return height * tileConstant * Util.PIXEL_TO_BOX;
+		return height * 2 * Util.PIXEL_TO_BOX;
 	}
 	
 }

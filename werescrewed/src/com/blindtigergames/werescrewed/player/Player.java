@@ -20,6 +20,8 @@ import com.blindtigergames.werescrewed.camera.Anchor;
 import com.blindtigergames.werescrewed.camera.AnchorList;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityDef;
+import com.blindtigergames.werescrewed.entity.EntityType;
+import com.blindtigergames.werescrewed.entity.mover.IMover;
 import com.blindtigergames.werescrewed.entity.mover.LerpMover;
 import com.blindtigergames.werescrewed.entity.mover.LinearAxis;
 import com.blindtigergames.werescrewed.input.MyControllerListener;
@@ -87,6 +89,8 @@ public class Player extends Entity {
 	private boolean kinematicTransform = false;
 	private boolean changeDirectionsOnce = false;
 	private float footFriction = PLAYER_FRICTION;
+	
+	private IMover mover;
 
 	public int grabCounter = 0;
 	public int jumpCounter = 0;
@@ -124,6 +128,7 @@ public class Player extends Entity {
 	public Player( String name, World world, Vector2 pos ) {
 		super( name, EntityDef.getDefinition( name ), world, pos, 0.0f,
 				new Vector2( 1f, 1f ), null, true, 0.0f );
+		entityType = EntityType.PLAYER;
 		body.setGravityScale( 0.25f );
 		body.setFixedRotation( true );
 		body.setSleepingAllowed( false );
@@ -161,10 +166,11 @@ public class Player extends Entity {
 	public void update( float deltaTime ) {
 		super.update( deltaTime );
 		if ( name.equals( "player1" ) ) {
-			//Gdx.app.log( "playerState", "" + playerState + " " + grounded );
+			// Gdx.app.log( "playerState", "" + playerState + " " + grounded );
+			// System.out.println( jumpPressedKeyboard );
 		}
 		if ( name.equals( "player2" ) ) {
-			//Gdx.app.log( "playerState", "" + playerState + " " + grounded );
+			//Gdx.app.log( "playerState", "" + playerState + " " + grounded + "isDead? = " + isDead );
 		}
 		if ( kinematicTransform ) {
 			// setPlatformTransform( platformOffset );
@@ -172,6 +178,21 @@ public class Player extends Entity {
 		}
 		if ( isDead ) {
 			// TODO: death stuff
+			if ( controller != null ) {
+				updateController( deltaTime );
+				if ( controllerListener.isGrabPressed( ) ) {
+					playerState = PlayerState.GrabMode;
+				} else {
+					playerState = PlayerState.Standing;
+				}
+			} else {
+				updateKeyboard( deltaTime );
+				if ( inputHandler.isGrabPressed( ) ) {
+					playerState = PlayerState.GrabMode;
+				} else {
+					playerState = PlayerState.Standing;
+				}
+			}
 		} else {
 			if ( controller != null ) {
 				updateController( deltaTime );
@@ -189,16 +210,18 @@ public class Player extends Entity {
 				isDead = !isDead;
 			}
 			deadDebug = false;
-		} else
+		} else {
 			deadDebug = true;
+		}
 		// Hit Enter to active the controller
 		if ( Gdx.input.isKeyPressed( Keys.ENTER ) ) {
-			if ( controllerDebug )
+			if ( controllerDebug ) {
 				controllerIsActive = !controllerIsActive;
+			}
 			controllerDebug = false;
-		} else
+		} else {
 			controllerDebug = true;
-
+		}
 		if ( playerState == PlayerState.JumpingOffScrew ) {
 			resetJumpOffScrew( );
 		}
@@ -768,7 +791,7 @@ public class Player extends Entity {
 			playerState = PlayerState.Standing;
 			jumpOffScrew( );
 		} else if ( screwJumpTimeout == 0 ) {
-			if ( isGrounded ( ) ) { 
+			if ( isGrounded( ) ) {
 				playerState = PlayerState.Standing;
 			} else if ( body.getLinearVelocity( ).y > 0 ) {
 				playerState = PlayerState.Jumping;
@@ -961,9 +984,9 @@ public class Player extends Entity {
 				&& !isGrounded( ) ) {
 			// if this player is jumping or falling and the other player is
 			// standing
-//			topPlayer = true;
-//			setHeadStand( );
-//			otherPlayer.setHeadStand( );
+			// topPlayer = true;
+			// setHeadStand( );
+			// otherPlayer.setHeadStand( );
 		} else if ( playerState == PlayerState.Standing ) {
 			playerState = PlayerState.GrabMode;
 		}
@@ -1038,7 +1061,7 @@ public class Player extends Entity {
 		}
 		if ( !controllerListener.jumpPressed( ) ) {
 			canJumpOffScrew = true;
-			if ( isGrounded( ) || otherPlayer != null ) {
+			if ( isGrounded( ) || topPlayer ) {
 				jumpPressedController = false;
 			} else if ( playerState == PlayerState.Screwing ) {
 				jumpPressedController = false;
@@ -1056,7 +1079,7 @@ public class Player extends Entity {
 			prevButton = null;
 		}
 		if ( !inputHandler.jumpPressed( ) ) {
-			if ( isGrounded( ) || otherPlayer != null ) {
+			if ( isGrounded( ) || topPlayer ) {
 				jumpPressedKeyboard = false;
 			} else if ( playerState == PlayerState.Screwing ) {
 				jumpPressedKeyboard = false;

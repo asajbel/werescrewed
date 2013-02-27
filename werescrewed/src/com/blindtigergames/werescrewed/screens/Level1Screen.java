@@ -22,6 +22,7 @@ import com.blindtigergames.werescrewed.camera.Camera;
 import com.blindtigergames.werescrewed.collisionManager.MyContactListener;
 import com.blindtigergames.werescrewed.debug.SBox2DDebugRenderer;
 import com.blindtigergames.werescrewed.entity.Entity;
+import com.blindtigergames.werescrewed.entity.RobotState;
 import com.blindtigergames.werescrewed.entity.builders.PlatformBuilder;
 import com.blindtigergames.werescrewed.entity.builders.PlayerBuilder;
 import com.blindtigergames.werescrewed.entity.builders.RopeBuilder;
@@ -355,8 +356,8 @@ public class Level1Screen implements com.badlogic.gdx.Screen {
 								0 ), 1.0f, 1f );
 		PrismaticJoint j = ( PrismaticJoint ) world
 				.createJoint( prismaticJointDef );
-		slidingPlatform.setMover( new SlidingMotorMover(
-				PuzzleType.PRISMATIC_SLIDER, j ) );
+		slidingPlatform.addMover( new SlidingMotorMover(
+				PuzzleType.PRISMATIC_SLIDER, j ), RobotState.IDLE );
 		skeleton.addDynamicPlatform( slidingPlatform );
 
 		TiledPlatform skeletonTest1 = platBuilder.width( 10 ).height( 1 )
@@ -370,9 +371,9 @@ public class Level1Screen implements com.badlogic.gdx.Screen {
 		skeleton.addKinematicPlatform( pathPlatform );
 		// build path. TODO: make building paths easier!!
 		PathBuilder pb = new PathBuilder( );
-		pathPlatform.setMover( pb.begin( pathPlatform ).target( 300, 0, 5 )
+		pathPlatform.addMover( pb.begin( pathPlatform ).target( 300, 0, 5 )
 				.target( 300, 300, 5 ).target( 0, 300, 5 ).target( 0, 0, 5 )
-				.build( ) );
+				.build( ), RobotState.IDLE );
 
 		/*
 		 * //leaving in this code just to show how much better path making is :D
@@ -417,8 +418,8 @@ public class Level1Screen implements com.badlogic.gdx.Screen {
 			TiledPlatform pistonKin = builder.name( "pistonKin" + i )
 					.position( -200f - i * 40, 500f ).buildTilePlatform( );
 			skeleton.addKinematicPlatform( pistonKin );
-			pistonKin.setMover( new PistonTweenMover( pistonKin, new Vector2(
-					0, 300 ), 1f, 3f, 1f, 0f, i / 10.0f + 1 ) );
+			pistonKin.addMover( new PistonTweenMover( pistonKin, new Vector2(
+					0, 300 ), 1f, 3f, 1f, 0f, i / 10.0f + 1 ), RobotState.IDLE );
 		}
 
 		builder = platBuilder.width( 20 ).height( 1 ).oneSided( true )
