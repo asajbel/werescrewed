@@ -33,15 +33,20 @@ public class Sprite extends com.badlogic.gdx.graphics.g2d.Sprite implements I_Dr
 	float stateTime;
 
 	/**
+	 * Create an animating sprite using a texture atlas.
+	 */
+	
+	
+	/**
 	 * Create an animating sprite using a sprite sheet. Must know the number of
 	 * rows and columns of the sprite sheet in order to construct properly.
+	 * 
+	 * @deprecated
 	 * 
 	 * @author Nick Patti
 	 * 
 	 * @param f
-	 *            The number of frames in the sprite sheet. TODO: What to do if
-	 *            you have an odd number of sprites in a sheet, but more than
-	 *            one row?
+	 *            The number of frames in the sprite sheet.
 	 * @param r
 	 *            The number of rows in the sprite sheet. Default value is 1.
 	 * @param c
@@ -88,12 +93,11 @@ public class Sprite extends com.badlogic.gdx.graphics.g2d.Sprite implements I_Dr
 	}
 
 	/**
-	 * TODO: this constructor requires too many magic numbers,
-	 * so think of a way to fix that.
-	 * 
 	 * Create an animating sprite using a Texture of a sprite sheet. May or may
 	 * not be here in a later build, since it's extremely similar to the sprite
 	 * sheet constructor
+	 * 
+	 * @deprecated
 	 * 
 	 * @author Nick Patti
 	 * 
@@ -164,23 +168,6 @@ public class Sprite extends com.badlogic.gdx.graphics.g2d.Sprite implements I_Dr
 		currentFrame = animation.getKeyFrame( stateTime );
 		this.setRegion( currentFrame );
 		super.draw( batch );
-	}
-	/**
-	 * reset
-	 * A method which resets the animation to the first frame. Useful for
-	 * swapping back and forth between different animated sprites that do not
-	 * loop without having to create a new one.
-	 * 
-	 * @author Nick Patti
-	 * 
-	 * @return void
-	 * 
-	 * TODO: currently does not do anything. fix this method
-	 */
-	public void reset( ) {
-		// TODO: find a way to have stateTime count from zero and up again.
-		Gdx.app.log( "AnimatedSprite.reset()", "reset called" );
-		stateTime = 0;
 	}
 
 }
