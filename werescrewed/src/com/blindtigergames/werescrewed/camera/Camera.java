@@ -274,26 +274,34 @@ public class Camera {
 		if ( !debugInput && translateState ) {
 			boolean lock = false;
 
+			// lock when:
+			// - camera center is really close to target
+			// - camera center is really close to target.x when only translating
+			// 		on x axis
+			// - camera center is really close to target.y when only translating
+			// 		on y axis
 			if ( insideTargetBuffer )
 				lock = true;
 			else if ( trans_x
-					&& Math.abs( translateTarget.x - center2D.x ) < targetBuffer )
+					&& Math.abs( translateTarget.x - center2D.x ) < targetBuffer
+					&& !trans_y )
 				lock = true;
 			else if ( trans_y
-					&& Math.abs( translateTarget.y - center2D.y ) < targetBuffer )
+					&& Math.abs( translateTarget.y - center2D.y ) < targetBuffer
+					&& !trans_x )
 				lock = true;
 
+			// center of camera is within buffer from target, so camera
+			// locks to target
 			if ( lock ) {
-
-				// center of camera is inside of buffer circle around target
+				// find angle between midpoint velocity and translate velocity
+				// if player stops moving or changes direction abruptly, disable
+				// lock
 				float tempAngle = 0f;
 				tempAngle = anchorList.getMidpointVelocity( ).angle( )
 						- translateVelocity.angle( );
 				tempAngle = Math.abs( tempAngle );
-				if ( trans_x )
-					camera.position.x = translateTarget.x;
-				if ( trans_y )
-					camera.position.y = translateTarget.y;
+
 				if ( anchorList.getMidpointVelocity( ).len( ) < MINIMUM_FOLLOW_SPEED
 						|| tempAngle > MAX_ANGLE_DIFF ) {
 					translateState = false;
@@ -301,6 +309,11 @@ public class Camera {
 					translateVelocity.y = 0f;
 					translateAcceleration = 0f;
 					translateSpeed = 0f;
+				} else {
+					if ( trans_x )
+						camera.position.x = translateTarget.x;
+					if ( trans_y )
+						camera.position.y = translateTarget.y;
 				}
 			} else
 				translate( trans_x, trans_y );
