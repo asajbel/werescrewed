@@ -10,6 +10,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Vector2;
@@ -43,6 +44,7 @@ import com.blindtigergames.werescrewed.entity.tween.PlatformAccessor;
 import com.blindtigergames.werescrewed.graphics.TextureAtlasS;
 import com.blindtigergames.werescrewed.joint.JointFactory;
 import com.blindtigergames.werescrewed.joint.RevoluteJointBuilder;
+import com.blindtigergames.werescrewed.particles.Steam;
 import com.blindtigergames.werescrewed.platforms.Platform;
 import com.blindtigergames.werescrewed.platforms.TileSet;
 import com.blindtigergames.werescrewed.platforms.TiledPlatform;
@@ -80,6 +82,8 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 	private RopeBuilder ropeBuilder;
 	private boolean debug = true;
 	private boolean debugTest = true;
+	public Steam testSteam;
+	public SpriteBatch particleBatch;
 	//ArrayList< TiledPlatform > tp2 = new ArrayList< TiledPlatform >( );
 
 	/**
@@ -135,6 +139,9 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		initPuzzleScrews( );
 		initClimbingScrews( );
 		initPulley( );
+		
+		// Initialize particles
+		initParticleEffect( );
 
 		testRope = ropeBuilder.position( 2800f, 450f ).width( 16f )
 				.height( 64f ).links( 5 ).buildRope( );
@@ -256,6 +263,10 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 				Util.CATEGORY_EVERYTHING );
 		skeleton.addKinematicPlatform( ground );
 
+	}
+
+	private void initParticleEffect( ) {
+		testSteam = new Steam ("testSteam", new Vector2(-100f, 0f), null, null, false, 25, 50, world );
 	}
 
 	/**
@@ -467,6 +478,10 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		skeleton.addPlatformRotatingCenter( gear2 );
 		gear2.quickfixCollisions( );
 	}
+	
+	public void ParticleTest( ){
+		
+	}
 
 	public void initPulley( ) {
 		TiledPlatform singTile = platBuilder.position( -1200.0f, 400.0f )
@@ -557,17 +572,18 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		batch.begin( );
 
 		//tp2.draw( batch );
+		testSteam.draw(batch, deltaTime);
 		rootSkeleton.draw( batch );
 		testRope.draw( batch );
 		player1.draw( batch );
 		player2.draw( batch );
-
+		
 		batch.end( );
 
 		if ( debug )
 			debugRenderer.render( world, cam.combined( ) );
 
-		world.step( 1 / 60f, 6, 6 );
+		world.step( 1 / 60f, 6, 3 );
 	}
 
 	@Override
