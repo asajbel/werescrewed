@@ -27,6 +27,7 @@ public class PuzzlePistonTweenMover extends TweenMover implements IMover {
 	private float timeUp, timeDown;
 	private float delayDown, delayUp;
 	private float delayOnce;
+	private boolean isAtMaxScrewValue;
 	//private Tween tween;
 	//private boolean isGoingUp;
 
@@ -47,6 +48,7 @@ public class PuzzlePistonTweenMover extends TweenMover implements IMover {
 		this.timeDown = timeDown;
 		this.delayUp = delayUp;
 		this.delayDown = delayDown;
+		this.isAtMaxScrewValue = false;
 	}
 
 	@Override
@@ -63,21 +65,24 @@ public class PuzzlePistonTweenMover extends TweenMover implements IMover {
 	@Override
 	public void runPuzzleMovement( PuzzleScrew screw, float screwVal, Platform p ) {
 		//addwaypoint to originposition then reset
-		if( p.mover == null && screwVal >= 0.5 && hasNoTweens() ) {
-			p.setMover(this);
-				addTween( Tween.to( pistonPlatform, PlatformAccessor.LOCAL_POS_XY, this.timeUp )
-							   .target( this.pistonDestination.x, this.pistonDestination.y  )
-							   .delay(  this.delayUp )
+		if( p.currentMover( ) == null && hasNoTweens() ) {
+			if ( (screwVal >= 0.9 && !isAtMaxScrewValue) || (screwVal <= 0.1 && isAtMaxScrewValue) ){
+				isAtMaxScrewValue = !isAtMaxScrewValue;
+				p.setMoverAtCurrentState( this );
+					addTween( Tween.to( pistonPlatform, PlatformAccessor.LOCAL_POS_XY, this.timeUp )
+								   .target( this.pistonDestination.x, this.pistonDestination.y  )
+								   .delay(  this.delayUp )
+								   .ease( TweenEquations.easeNone )
+								   .start() );
+					addTween( Tween.to( pistonPlatform, PlatformAccessor.LOCAL_POS_XY, this.timeDown )
+							   .target( 0, 0 )
+							   .delay( this.delayDown )
 							   .ease( TweenEquations.easeNone )
 							   .start() );
-				addTween( Tween.to( pistonPlatform, PlatformAccessor.LOCAL_POS_XY, this.timeDown )
-						   .target( 0, 0 )
-						   .delay( this.delayDown )
-						   .ease( TweenEquations.easeNone )
-						   .start() );
-			
+				
+			}
 		}else if ( hasNoTweens() ){
-			p.mover = null;
+			p.setMoverNullAtCurrentState( );
 		}
 	}
 	

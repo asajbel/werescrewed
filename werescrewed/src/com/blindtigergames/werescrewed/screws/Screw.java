@@ -10,6 +10,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
 import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.entity.Entity;
+import com.blindtigergames.werescrewed.entity.EntityType;
 import com.blindtigergames.werescrewed.skeleton.Skeleton;
 import com.blindtigergames.werescrewed.util.Util;
 
@@ -48,6 +49,7 @@ public class Screw extends Entity {
 				WereScrewedGame.manager.get(WereScrewedGame.dirHandle.path( ) +"/common/screw.png", Texture.class ), null, false );
 		screwType = ScrewType.STATIC;
 		this.world = world;
+		entityType = EntityType.SCREW;
 		constructBody( pos );
 		connectScrewToEntity( entity );
 	}

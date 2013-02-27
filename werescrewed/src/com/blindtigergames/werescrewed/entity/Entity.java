@@ -1,5 +1,8 @@
 package com.blindtigergames.werescrewed.entity;
 
+import java.util.ArrayList;
+import java.util.EnumMap;
+
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
@@ -19,24 +22,29 @@ import com.blindtigergames.werescrewed.util.Util;
  * Anything that can exist. Contains a physics body, and a sprite which may or
  * may not be animated.
  * 
- * @author Kevin
+ * @author Kevin / Ranveer
  * 
  */
 public class Entity {
+	private static final int INITAL_CAPACITY = 3;
+	
 	public String name;
 	public EntityDef type;
 	public Sprite sprite;
 	public Vector2 offset;
 	public Body body;
 	protected World world;
-	public IMover mover;
 	protected boolean solid;
 	protected Anchor anchor;
 	protected float energy;
-	protected boolean active;
+	protected boolean moverActive;
 	protected boolean visible;
 	protected boolean maintained;
-
+	protected EntityType entityType;
+	private ArrayList<IMover> moverArray;
+	private RobotState currentRobotState;
+	private EnumMap<RobotState, Integer> robotStateMap;
+	
 	/**
 	 * Create entity by definition
 	 * 
@@ -73,12 +81,6 @@ public class Entity {
 		}
 	}
 
-	// Kevin: Why is this commented out?
-	/*
-	 * public Entity(String n, EntityDef d, World w, Vector2 pos, float rot,
-	 * Vector2 sca) { this(); name = n; type = d; world = w; constructSprite();
-	 * constructBody(pos.x, pos.y, sca.x, sca.y); }
-	 */
 
 	/**
 	 * Create entity by body. Debug constructor: Should be removed eventually.
@@ -115,7 +117,8 @@ public class Entity {
 		this.energy = 1.0f;
 		this.maintained = true;
 		this.visible = true;
-		this.active = true;
+		this.moverActive = true;
+		setUpRobotState();
 	}
 
 	/**
@@ -185,10 +188,10 @@ public class Entity {
 	 * @param deltaTime
 	 */
 	public void updateMover( float deltaTime ) {
-		if ( active ) {
+		if ( moverActive ) {
 			if ( body != null ) {
-				if ( mover != null ) {
-					mover.move( deltaTime, body );
+				if ( currentMover() != null ) {
+					currentMover().move( deltaTime, body );
 				}
 			}
 		}
@@ -270,19 +273,95 @@ public class Entity {
 		return newBody;
 	}
 
-	/**
-	 * Set the mover of this entity!
-	 * 
-	 * @param mover
-	 */
-	public void setMover( IMover mover ) {
-		this.mover = mover;
-	}
 
+
+	/**
+	 * This function adds a mover to the entity,
+	 * YOU MUST SPECIFIY WHICH STATE IT IS ASSOCIATED WITH
+	 * EITHER IDLE, DOCILE, HOSTILE
+	 * 
+	 * This fucntions also replaces the mover associated with that
+	 * robotstate, so you cannot get that old mover back
+	 * @param mover - Imover
+	 * @param robotState - for example:  RobotState.Idle 
+	 * @author Ranveer
+	 */
+	public void addMover( IMover mover, RobotState robotState) {
+		int index = robotStateMap.get( robotState );
+		moverArray.set( index, mover );
+	}
+	
+	/**
+	 * Changes robotState from current to the argument
+	 * @param robotState - for example: RobotState.IDLE 
+	 * @author Ranveer
+	 */
+	public void setCurrentMover(RobotState robotState){
+		currentRobotState = robotState;
+	}
+	
+	/**
+	 * Sets the mover associated with the argument's robotstate
+	 * to null. Warning, this gets rid of old mover
+	 * @param robotState - for example: RobotState.IDLE
+	 * @author Ranveer
+	 */
+	public void setMoverNull(RobotState robotState) {
+		int index = robotStateMap.get( robotState );
+		moverArray.set( index, null );
+	}
+	
+	/**
+	 * Sets the current state's mover to null
+	 * Warning, this gets rid of old mover
+	 * @author Ranveer
+	 */
+	public void setMoverNullAtCurrentState() {
+		int index = robotStateMap.get( currentRobotState );
+		moverArray.set( index, null );
+	}
+	
+	/**
+	 * Replaces current state's mover with the argument
+	 * @param mover
+	 * @author Ranveer
+	 */
+	public void setMoverAtCurrentState(IMover mover){
+		int index = robotStateMap.get( currentRobotState );
+		moverArray.set( index, mover );
+	}
+	
+	/**
+	 * gets the current RobotState of the entity
+	 * example: p.getCurrentState() == RobotState.IDLE
+	 * @return RobotState
+	 * @author Ranveer
+	 */
+	public RobotState getCurrentState(){
+		return currentRobotState;
+	}
+	
+	/**
+	 * gets the current mover, in the current robotstate
+	 * @return IMover
+	 * @author Ranveer
+	 */
+	public IMover currentMover(){
+		return moverArray.get( robotStateMap.get( currentRobotState ) );
+	}
+	
+	/**
+	 * Determines if entity is solid, which means the player can jump off of it
+	 * @return boolean
+	 */
 	public boolean isSolid( ) {
 		return this.solid;
 	}
 
+	/**
+	 * sets entity to either solid or not, determines whether player can jump off of it
+	 * @param solid - boolean
+	 */
 	public void setSolid( boolean solid ) {
 		this.solid = solid;
 	}
@@ -314,13 +393,16 @@ public class Entity {
 	/**
 	 * Determines whether an entity should be deleted on next update or not
 	 * 
-	 * @param m
-	 *            - boolean
+	 * @param m - boolean
 	 */
 	public void setMaintained( boolean m ) {
 		maintained = m;
 	}
 
+	/**
+	 * checks whether an entity is currently being maintained
+	 * @return boolean
+	 */
 	public boolean isMaintained( ) {
 		return maintained;
 	}
@@ -328,13 +410,16 @@ public class Entity {
 	/**
 	 * Determines whether an entity should be drawn or not.
 	 * 
-	 * @param v
-	 *            - boolean
+	 * @param v - boolean
 	 */
 	public void setVisible( boolean v ) {
 		visible = v;
 	}
 
+	/**
+	 * returns whether an entity is visible, or on screen
+	 * @return boolean
+	 */
 	public boolean isVisible( ) {
 		return visible;
 	}
@@ -342,15 +427,18 @@ public class Entity {
 	/**
 	 * Determines whether an entity should be updated or not.
 	 * 
-	 * @param a
-	 *            - boolean
+	 * @param a - boolean
 	 */
 	public void setActive( boolean a ) {
-		active = a;
+		moverActive = a;
 	}
 
+	/**
+	 * checks whether if the current mover is active, or being updated or not
+	 * @return boolean
+	 */
 	public boolean isActive( ) {
-		return active;
+		return moverActive;
 	}
 
 	/**
@@ -412,31 +500,47 @@ public class Entity {
 
 	}
 
-	public void setDensity( float d ) {
+	/**
+	 * sets the Density of all fixtures associated with this entity
+	 * @param density - float
+	 */
+	public void setDensity( float density ) {
 		if ( body != null ) {
 			for ( int i = 0; i < body.getFixtureList( ).size( ); ++i )
-				body.getFixtureList( ).get( i ).setDensity( d );
+				body.getFixtureList( ).get( i ).setDensity( density );
 		}
 
 	}
 
-	public void setFriction( float f ) {
+	/**
+	 * sets the friction of all fixtures associated with this entity
+	 * @param friction - float
+	 */
+	public void setFriction( float friction ) {
 		if ( body != null ) {
 			for ( int i = 0; i < body.getFixtureList( ).size( ); ++i )
-				body.getFixtureList( ).get( i ).setFriction( f );
+				body.getFixtureList( ).get( i ).setFriction( friction );
 		}
 	}
 
-	public void setRestitution( float r ) {
+	/**
+	 * sets the restituion of all fixtures associated with this entity
+	 * @param restitution - float
+	 */
+	public void setRestitution( float restitution ) {
 		if ( body != null ) {
 			for ( int i = 0; i < body.getFixtureList( ).size( ); ++i )
-				body.getFixtureList( ).get( i ).setRestitution( r );
+				body.getFixtureList( ).get( i ).setRestitution( restitution );
 		}
 	}
 
-	public void setGravScale( float g ) {
+	/**
+	 * sets the gravity scale of this entity
+	 * @param scale - float
+	 */
+	public void setGravScale( float scale ) {
 		if ( body != null ) {
-			body.setGravityScale( g );
+			body.setGravityScale( scale );
 		}
 	}
 	
@@ -462,7 +566,12 @@ public class Entity {
 		}
 		return Float.NaN;
 	}
-	
+	/**
+	 * gets the type of entity 
+	 */
+	public EntityType getEntityType( ) {
+		return entityType;
+	}
 	/**
 	 * Get the sprite height of this entity
 	 * @return Pixel float height of sprite
@@ -506,4 +615,33 @@ public class Entity {
 				+ body.isAwake( );
 	}
 
+
+	
+	/**
+	 * Sets up moverArray and fills it with null
+	 * and set up the EnumMap 
+	 * Idle = 0
+	 * Docile = 1
+	 * Hostile = 2 
+	 * 
+	 * and sets this entity's default state as IDLE
+	 * 
+	 * Will be optimized soon
+	 * @author Ranveer
+	 */
+	private void setUpRobotState(){
+		moverArray = new ArrayList<IMover>();
+		for(int i = 0; i < INITAL_CAPACITY; ++i)
+			moverArray.add( null );
+		robotStateMap = new EnumMap<RobotState, Integer>(RobotState.class);
+		robotStateMap.put( RobotState.IDLE, 0 );
+		robotStateMap.put( RobotState.DOCILE, 1 );
+		robotStateMap.put( RobotState.HOSTILE, 2 );
+		//robotStateMap.put( RobotState.CUSTOM1, 3 );
+		//robotStateMap.put( RobotState.CUSTOM2, 4 );
+		//robotStateMap.put( RobotState.CUSTOM3, 5 );
+		
+		//Initalize to idle
+		currentRobotState = RobotState.IDLE;
+	}
 }

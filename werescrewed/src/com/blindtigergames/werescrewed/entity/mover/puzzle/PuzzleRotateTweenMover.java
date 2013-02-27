@@ -28,6 +28,7 @@ public class PuzzleRotateTweenMover extends TweenMover implements IMover {
 	private boolean isYoyoRepeat;
 	private PuzzleType puzzleType;
 	private boolean isUp; //used for yoyo repeat, to go back and forth
+	private boolean isAtMaxScrewValue;
 
 	/**
 	 * Rotate a platform. Use this if you want something to rotate indefinetly.
@@ -42,24 +43,27 @@ public class PuzzleRotateTweenMover extends TweenMover implements IMover {
 		this.rotAmount = rotAmountRadians;
 		this.isYoyoRepeat = isYoyoRepeat;
 		this.isUp = false;
+		this.isAtMaxScrewValue = false;
 	}
 	
 	@Override
 	public void runPuzzleMovement( PuzzleScrew screw, float screwVal, Platform p ) {
-		
-		if( p.mover == null && screwVal >= 0.5 && hasNoTweens()  ){
-			p.setMover(this);
-			float targetRotation = p.getLocalRot( );
-			if ( isYoyoRepeat ){
-				targetRotation += rotAmount * ((isUp)?-1f:1f);
-				isUp = !isUp;
-			}else{
-				targetRotation += rotAmount;
-			}
-			addTween(Tween.to( p, PlatformAccessor.LOCAL_ROT, duration )
-						  .target( targetRotation ).start());
+		if( p.currentMover( ) == null  && hasNoTweens()  ){
+			if ( (screwVal >= 0.9 && !isAtMaxScrewValue) || (screwVal <= 0.1 && isAtMaxScrewValue) ){
+				isAtMaxScrewValue = !isAtMaxScrewValue;
+				p.setMoverAtCurrentState( this );
+				float targetRotation = p.getLocalRot( );
+				if ( isYoyoRepeat ){
+					targetRotation += rotAmount * ((isUp)?-1f:1f);
+					isUp = !isUp;
+				}else{
+					targetRotation += rotAmount;
+				}
+				addTween(Tween.to( p, PlatformAccessor.LOCAL_ROT, duration )
+							  .target( targetRotation ).start());
+				}
 		}else if ( hasNoTweens() ){
-			p.setMover( null );
+			p.setMoverNullAtCurrentState( );
 		}
 	}
 

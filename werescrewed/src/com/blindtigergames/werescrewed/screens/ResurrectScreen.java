@@ -11,9 +11,9 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
-import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.camera.Camera;
 import com.blindtigergames.werescrewed.checkpoints.CheckPoint;
+import com.blindtigergames.werescrewed.checkpoints.ProgressManager;
 import com.blindtigergames.werescrewed.collisionManager.MyContactListener;
 import com.blindtigergames.werescrewed.debug.SBox2DDebugRenderer;
 import com.blindtigergames.werescrewed.entity.Entity;
@@ -24,7 +24,6 @@ import com.blindtigergames.werescrewed.entity.tween.PlatformAccessor;
 import com.blindtigergames.werescrewed.platforms.Platform;
 import com.blindtigergames.werescrewed.platforms.TiledPlatform;
 import com.blindtigergames.werescrewed.player.Player;
-import com.blindtigergames.werescrewed.screws.ResurrectScrew;
 import com.blindtigergames.werescrewed.skeleton.Skeleton;
 import com.blindtigergames.werescrewed.util.Util;
 
@@ -47,8 +46,7 @@ public class ResurrectScreen implements com.badlogic.gdx.Screen {
 	private PlatformBuilder platBuilder;
 	private boolean debug = true;
 	private boolean debugTest = true;
-	private CheckPoint checkP;
-	private ResurrectScrew rezScrew;
+	private ProgressManager progressManager;
 
 	/**
 	 * Defines all necessary components in a screen for testing different
@@ -69,23 +67,22 @@ public class ResurrectScreen implements com.badlogic.gdx.Screen {
 		// skeleton.body.setType( BodyType.DynamicBody );
 		rootSkeleton = new Skeleton( "root", Vector2.Zero, null, world );
 
-		//testTexture = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-		//		+ "/common/tilesetTest.png", Texture.class );
+		// testTexture = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
+		// + "/common/tilesetTest.png", Texture.class );
 
 		platBuilder = new PlatformBuilder( world );
-		
+
 		// Initialize listeners
 		contactListener = new MyContactListener( );
 		world.setContactListener( contactListener );
-		
+
 		player1 = new PlayerBuilder( ).name( "player1" ).world( world )
-				.position( 0.0f, 100.0f ).buildPlayer( );
+				.position( -1024.0f, 100.0f ).buildPlayer( );
 		player2 = new PlayerBuilder( ).name( "player2" ).world( world )
-				.position( 512f, 110.5f ).buildPlayer( );
-				
+				.position( -1015f, 110.5f ).buildPlayer( );
+
 		initTiledPlatforms( );
 		initCheckPoints( );
-		initResurrectionScrews( );
 
 		rootSkeleton.addSkeleton( skeleton );
 
@@ -116,15 +113,19 @@ public class ResurrectScreen implements com.badlogic.gdx.Screen {
 				Util.CATEGORY_EVERYTHING );
 		skeleton.addKinematicPlatform( ground );
 	}
-	
+
 	private void initCheckPoints( ) {
-		checkP = new CheckPoint( "check_01", new Vector2( -128f, 32f ),
-				skeleton, world, "levelStage_0_1" );
-	}
-	
-	private void initResurrectionScrews( ) {
-		rezScrew = new ResurrectScrew( "rezScrew", new Vector2( 128f, 196f), skeleton,
-			world, player2 );
+		progressManager = new ProgressManager( player1, player2, world );
+		progressManager.addCheckPoint( new CheckPoint( "check_01", new Vector2(
+				-512f, 32f ), skeleton, world, progressManager, "levelStage_0_0" ) );
+		progressManager.addCheckPoint( new CheckPoint( "check_01", new Vector2(
+				0f, 32f ), skeleton, world, progressManager, "levelStage_0_1" ) );
+		progressManager.addCheckPoint( new CheckPoint( "check_01", new Vector2(
+				512f, 32f ), skeleton, world, progressManager, "levelStage_0_2" ) );
+		progressManager.addCheckPoint( new CheckPoint( "check_01", new Vector2(
+				1024f, 32f ), skeleton, world, progressManager, "levelStage_0_3" ) );
+		progressManager.addCheckPoint( new CheckPoint( "check_01", new Vector2(
+				1512f, 32f ), skeleton, world, progressManager, "levelStage_0_4" ) );
 	}
 
 	@Override
@@ -162,28 +163,28 @@ public class ResurrectScreen implements com.badlogic.gdx.Screen {
 		}
 
 		if ( Gdx.input.isKeyPressed( Input.Keys.X ) ) {
-			//rootSkeleton.translateBy( 0.0f, -0.01f );
+			rootSkeleton.translateBy( 0.0f, -0.01f );
 		}
 
 		if ( Gdx.input.isKeyPressed( Input.Keys.C ) ) {
-			//rootSkeleton.rotateBy( -0.01f );
+			rootSkeleton.rotateBy( -0.01f );
 		}
 
 		if ( Gdx.input.isKeyPressed( Input.Keys.V ) ) {
-			//rootSkeleton.rotateBy( 0.01f );
+			rootSkeleton.translateBy( 0.0f, 0.01f );
 		}
+
+
 
 		player1.update( deltaTime );
 		player2.update( deltaTime );
 		rootSkeleton.update( deltaTime );
-		checkP.update( deltaTime );
-		rezScrew.update( deltaTime );
+		progressManager.update( deltaTime );
 		batch.setProjectionMatrix( cam.combined( ) );
 		batch.begin( );
 
 		rootSkeleton.draw( batch );
-		checkP.draw( batch );
-		rezScrew.draw( batch );
+		progressManager.draw( batch );
 		player1.draw( batch );
 		player2.draw( batch );
 
