@@ -914,6 +914,7 @@ public class Player extends Entity {
 	 */
 	private void setHeadStand( ) {
 		if ( otherPlayer != null ) {
+			jumpCounter = 0;
 			if ( topPlayer ) {
 				playerState = PlayerState.HeadStand;
 				this.setPosition( otherPlayer.body.getPosition( ).x,
