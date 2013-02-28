@@ -103,12 +103,13 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 
 		// Initialize players
 		player1 = new PlayerBuilder( ).name( "player1" ).world( world )
-				.position( 170f * TILE, 17f * TILE  ).buildPlayer( );
+				.position( 175f * TILE, 96f * TILE  ).buildPlayer( );
 		player2 = new PlayerBuilder( ).name( "player2" ).world( world )
-				.position(170f * TILE, 17f * TILE  ).buildPlayer( );
+				.position(175f * TILE, 96f * TILE  ).buildPlayer( );
 
 		// END: 175f * TILE, 96f * TILE
 		// START : 1f * TILE, 1f * TILE 
+		// stripped screws: 170 * TILE, 17 * TILE
 
 		floor1( );
 		floor2( );
@@ -731,17 +732,17 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 				skel9, world );
 		plat.addScrew( bossBolt );
 		
-		specialPlat = platBuilder.position( 175f * TILE, 85 * TILE ).name( "plat12" )
-				.dimensions( 6, 1 ).texture( testTexture ).kinematic( )
-				.friction( 1.0f ).oneSided( true ).restitution( 0 )
-				.buildTilePlatform( );
-		skel9.addKinematicPlatform( specialPlat );
-		
-		PathBuilder pb = new PathBuilder( );
-		specialPlat.addMover( pb.begin( specialPlat ).target( 0, 150, 3 ).target( 0, 0, 3 )
-				.build( ), RobotState.IDLE );
-		specialPlat.addMover( pb.begin( specialPlat ).target( 150, 0, 3 ).target( 0, 0, 3 )
-				.build( ), RobotState.DOCILE );
+//		specialPlat = platBuilder.position( 175f * TILE, 85 * TILE ).name( "plat12" )
+//				.dimensions( 6, 1 ).texture( testTexture ).kinematic( )
+//				.friction( 1.0f ).oneSided( true ).restitution( 0 )
+//				.buildTilePlatform( );
+//		skel9.addKinematicPlatform( specialPlat );
+//		
+//		PathBuilder pb = new PathBuilder( );
+//		specialPlat.addMover( pb.begin( specialPlat ).target( 0, 150, 3 ).target( 0, 0, 3 )
+//				.build( ), RobotState.IDLE );
+//		specialPlat.addMover( pb.begin( specialPlat ).target( 150, 0, 3 ).target( 0, 0, 3 )
+//				.build( ), RobotState.DOCILE );
 		
 		rootSkeleton.addSkeleton( skel9 );
 	}
@@ -775,10 +776,10 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		if ( Gdx.input.isKeyPressed( Keys.NUM_0 ) ) {
 			if ( debugTest ) {
 				debug = !debug;
-				if(specialPlat.getCurrentState( ) == RobotState.IDLE)
-					specialPlat.setCurrentMover( RobotState.DOCILE );
-				else
-					specialPlat.setCurrentMover( RobotState.IDLE );
+				//if(specialPlat.getCurrentState( ) == RobotState.IDLE)
+				//	specialPlat.setCurrentMover( RobotState.DOCILE );
+				//else
+				//	specialPlat.setCurrentMover( RobotState.IDLE );
 			}
 			debugTest = false;
 		} else
