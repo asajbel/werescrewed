@@ -2,6 +2,7 @@ package com.blindtigergames.werescrewed.checkpoints;
 
 import java.util.ArrayList;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.JointEdge;
 import com.badlogic.gdx.physics.box2d.World;
@@ -77,16 +78,15 @@ public class ProgressManager {
 		if ( player1.isPlayerDead( ) && player2.isPlayerDead( ) ) {
 			spawnAtCheckPoint( player1 );
 			spawnAtCheckPoint( player2 );
+			Gdx.app.log( "hello", "both players are dead" );
 			holdTime = 0;
-		}
-		// if a single player is dead allow them to re-spawn
-		// and create a resurrection screw to let their
-		// team-mate re-spawn them
-		if ( player1.isPlayerDead( ) ) {
+		} else if ( player1.isPlayerDead( ) && !player2.isPlayerDead( ) ) {
+			// if a single player is dead allow them to re-spawn
+			// and create a resurrection screw to let their
+			// team-mate re-spawn them
 			handleDeadPlayer( );
 			handleDeadPlayerInput( player1 );
-		}
-		if ( player2.isPlayerDead( ) ) {
+		} else if ( player2.isPlayerDead( ) && !player1.isPlayerDead( ) ) {
 			handleDeadPlayer( );
 			handleDeadPlayerInput( player2 );
 		}
@@ -136,11 +136,11 @@ public class ProgressManager {
 					.getJointList( ) ) {
 				entity = ( Entity ) j.joint.getBodyB( ).getUserData( );
 			}
-			if ( player1.isPlayerDead( ) ) {
+			if ( player1.isPlayerDead( ) && !player2.isPlayerDead( ) ) {
 				resurrectScrew = new ResurrectScrew( player1.getPosition( )
 						.add( 0, 256f * Util.PIXEL_TO_BOX )
 						.mul( Util.BOX_TO_PIXEL ), entity, world, player1 );
-			} else {
+			} else if ( !player1.isPlayerDead( ) ) {
 				resurrectScrew = new ResurrectScrew( player2.getPosition( )
 						.add( 0, 256f * Util.PIXEL_TO_BOX )
 						.mul( Util.BOX_TO_PIXEL ), entity, world, player2 );
@@ -171,7 +171,7 @@ public class ProgressManager {
 	 * @param player
 	 */
 	private void spawnAtCheckPoint( Player player ) {
-		if ( !resurrectScrew.isPlayerAttached( ) ) {
+		if ( resurrectScrew != null ) {
 			resurrectScrew.remove( );
 			if ( resurrectScrew.isRemoved( ) ) {
 				resurrectScrew = null;
