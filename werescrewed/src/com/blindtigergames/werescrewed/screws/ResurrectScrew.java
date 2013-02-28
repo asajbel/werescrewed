@@ -11,6 +11,7 @@ import com.badlogic.gdx.physics.box2d.joints.PulleyJoint;
 import com.badlogic.gdx.physics.box2d.joints.PulleyJointDef;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
 import com.blindtigergames.werescrewed.entity.Entity;
+import com.blindtigergames.werescrewed.entity.EntityType;
 import com.blindtigergames.werescrewed.player.Player;
 import com.blindtigergames.werescrewed.util.Util;
 
@@ -24,8 +25,8 @@ import com.blindtigergames.werescrewed.util.Util;
 public class ResurrectScrew extends Screw {
 	private PulleyJoint pulleyJoint;
 	private Body pulleyWeight;
-	private boolean pullLeft;
 	private Player deadPlayer;
+	private boolean pullLeft;
 	private boolean destroyJoint = false;
 
 	/**
@@ -36,13 +37,14 @@ public class ResurrectScrew extends Screw {
 	 * @param world
 	 * @param deadPlayer
 	 */
-	public ResurrectScrew( String name, Vector2 pos, Entity entity,
-			World world, Player deadPlayer ) {
-		super( name, pos, null );
+	public ResurrectScrew( Vector2 pos, Entity entity, World world,
+			Player deadPlayer ) {
+		super( "onlyInstance_RezScrew", pos, null );
 		this.world = world;
 		this.depth = 1;
 		this.deadPlayer = deadPlayer;
 		screwType = ScrewType.RESURRECT;
+		entityType = EntityType.SCREW;
 
 		sprite.setColor( 200f / 255f, 200f / 255f, 200f / 255f, 0.33f );
 
@@ -87,26 +89,52 @@ public class ResurrectScrew extends Screw {
 	public void hitPlayer( Player player ) {
 		if ( player == deadPlayer ) {
 			destroyJoint = true;
+			player.respawnPlayer( );
+		}
+	}
+
+	/**
+	 * destroys the joints and body of the object
+	 */
+	public void remove( ) {
+		if ( !removed ) {
+			if ( pulleyJoint != null ) {
+				world.destroyJoint( pulleyJoint );
+				pulleyJoint = null;
+			}
+			if ( !playerAttached ) {
+				while ( body.getJointList( ).iterator( ).hasNext( ) ) {
+					world.destroyJoint( body.getJointList( ).get( 0 ).joint );
+				}
+				world.destroyBody( body );
+				removed = true;
+				world.destroyBody( pulleyWeight );
+				pulleyWeight = null;
+			}
 		}
 	}
 
 	@Override
 	public void update( float deltaTime ) {
 		super.update( deltaTime );
-		if ( destroyJoint ) {
-			deadPlayer.respawnPlayer( );
-			world.destroyJoint( pulleyJoint );
-			world.destroyBody( pulleyWeight );
-			deadPlayer = null;
-			destroyJoint = false;
+		if ( !deadPlayer.isPlayerDead( ) ) {
+			remove( );
 		}
-		sprite.setRotation( rotation );
-		if ( depth != screwStep ) {
-			screwStep--;
-		}
-		if ( depth == screwStep ) {
-			body.setAngularVelocity( 0 );
-			pulleyWeight.setLinearVelocity( new Vector2( 0f, 0f ) );
+		if ( !removed ) {
+			if ( destroyJoint ) {
+				remove( );
+				destroyJoint = false;
+			}
+			sprite.setRotation( rotation );
+			if ( depth != screwStep ) {
+				screwStep--;
+			}
+			if ( depth == screwStep ) {
+				body.setAngularVelocity( 0 );
+				if ( pulleyWeight != null ) {
+					pulleyWeight.setLinearVelocity( new Vector2( 0f, 0f ) );
+				}
+			}
 		}
 	}
 
@@ -130,16 +158,17 @@ public class ResurrectScrew extends Screw {
 		body.setUserData( this );
 
 		// add radar sensor to screw
-//		CircleShape radarShape = new CircleShape( );
-//		radarShape.setRadius( sprite.getWidth( ) * 1.25f * Util.PIXEL_TO_BOX );
-//		FixtureDef radarFixture = new FixtureDef( );
-//		radarFixture.shape = radarShape;
-//		radarFixture.isSensor = true;
-//		radarFixture.filter.categoryBits = Util.CATEGORY_SCREWS;
-//		radarFixture.filter.maskBits = Util.CATEGORY_PLAYER
-//				| Util.CATEGORY_SUBPLAYER;
-//		body.createFixture( radarFixture );
-		//radarShape.dispose( );
+		// CircleShape radarShape = new CircleShape( );
+		// radarShape.setRadius( sprite.getWidth( ) * 1.25f * Util.PIXEL_TO_BOX
+		// );
+		// FixtureDef radarFixture = new FixtureDef( );
+		// radarFixture.shape = radarShape;
+		// radarFixture.isSensor = true;
+		// radarFixture.filter.categoryBits = Util.CATEGORY_SCREWS;
+		// radarFixture.filter.maskBits = Util.CATEGORY_PLAYER
+		// | Util.CATEGORY_SUBPLAYER;
+		// body.createFixture( radarFixture );
+		// radarShape.dispose( );
 
 		screwShape.dispose( );
 	}

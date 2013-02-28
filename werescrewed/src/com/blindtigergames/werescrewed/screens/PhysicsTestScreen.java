@@ -10,6 +10,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Vector2;
@@ -25,6 +26,7 @@ import com.blindtigergames.werescrewed.checkpoints.CheckPoint;
 import com.blindtigergames.werescrewed.collisionManager.MyContactListener;
 import com.blindtigergames.werescrewed.debug.SBox2DDebugRenderer;
 import com.blindtigergames.werescrewed.entity.Entity;
+import com.blindtigergames.werescrewed.entity.RobotState;
 import com.blindtigergames.werescrewed.entity.builders.PlatformBuilder;
 import com.blindtigergames.werescrewed.entity.builders.PlayerBuilder;
 import com.blindtigergames.werescrewed.entity.builders.RopeBuilder;
@@ -43,6 +45,7 @@ import com.blindtigergames.werescrewed.entity.tween.PlatformAccessor;
 import com.blindtigergames.werescrewed.graphics.TextureAtlasS;
 import com.blindtigergames.werescrewed.joint.JointFactory;
 import com.blindtigergames.werescrewed.joint.RevoluteJointBuilder;
+import com.blindtigergames.werescrewed.particles.Steam;
 import com.blindtigergames.werescrewed.platforms.Platform;
 import com.blindtigergames.werescrewed.platforms.TileSet;
 import com.blindtigergames.werescrewed.platforms.TiledPlatform;
@@ -80,6 +83,8 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 	private RopeBuilder ropeBuilder;
 	private boolean debug = true;
 	private boolean debugTest = true;
+	public Steam testSteam;
+	public SpriteBatch particleBatch;
 	//ArrayList< TiledPlatform > tp2 = new ArrayList< TiledPlatform >( );
 
 	/**
@@ -135,6 +140,9 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		initPuzzleScrews( );
 		initClimbingScrews( );
 		initPulley( );
+		
+		// Initialize particles
+		initParticleEffect( );
 
 		testRope = ropeBuilder.position( 2800f, 450f ).width( 16f )
 				.height( 64f ).links( 5 ).buildRope( );
@@ -259,15 +267,20 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 	}
 
 	/**
+	 * Initializes steam for testing, not on a skeleton at the moment
+	 */
+	private void initParticleEffect( ) {
+		testSteam = new Steam ("testSteam", new Vector2(-100f, 0f), null, null, false, 25, 50, world );
+	}
+
+	/**
 	 * Initialize the platform screws' settings and add them to the entity
 	 * manager and skeleton
 	 */
 	private void initStructureScrews( ) {
 		StructureScrew leftPlatScrew = new ScrewBuilder( )
 				.position(
-						tiledPlat.body.getPosition( ).x * Util.BOX_TO_PIXEL
-								- ( 0 ),
-						tiledPlat.body.getPosition( ).y * Util.BOX_TO_PIXEL )
+						tiledPlat.getPositionPixel( ).sub( tiledPlat.getPixelWidth( )/2,0 ) )
 				.entity( tiledPlat ).skeleton( skeleton ).world( world )
 				.buildStructureScrew( );
 		// StructureScrew rightPlatScrew = new StructureScrew( "", new Vector2(
@@ -382,8 +395,8 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 								0 ), 1.0f, 1f );
 		PrismaticJoint j = ( PrismaticJoint ) world
 				.createJoint( prismaticJointDef );
-		slidingPlatform.setMover( new SlidingMotorMover(
-				PuzzleType.PRISMATIC_SLIDER, j ) );
+		slidingPlatform.addMover( new SlidingMotorMover(
+				PuzzleType.PRISMATIC_SLIDER, j ), RobotState.IDLE );
 		skeleton.addDynamicPlatform( slidingPlatform );
 
 		TiledPlatform skeletonTest1 = platBuilder.width( 10 ).height( 1 )
@@ -398,9 +411,9 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		skeleton.addKinematicPlatform( pathPlatform );
 		// build path. TODO: make building paths easier!!
 		PathBuilder pb = new PathBuilder( );
-		pathPlatform.setMover( pb.begin( pathPlatform ).target( 300, 0, 5 )
+		pathPlatform.addMover( pb.begin( pathPlatform ).target( 300, 0, 5 )
 				.target( 300, 300, 5 ).target( 0, 300, 5 ).target( 0, 0, 5 )
-				.build( ) );
+				.build( ), RobotState.IDLE );
 
 		/*
 		 * //leaving in this code just to show how much better path making is :D
@@ -446,8 +459,8 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 			TiledPlatform pistonKin = builder.name( "pistonKin" + i )
 					.position( -200f - i * 40, 500f ).buildTilePlatform( );
 			skeleton.addKinematicPlatform( pistonKin );
-			pistonKin.setMover( new PistonTweenMover( pistonKin, new Vector2(
-					0, 300 ), 1f, 3f, 1f, 0f, i / 10.0f + 1 ) );
+			pistonKin.addMover( new PistonTweenMover( pistonKin, new Vector2(
+					0, 300 ), 1f, 3f, 1f, 0f, i / 10.0f + 1 ), RobotState.IDLE );
 		}
 
 		builder = platBuilder.width( 20 ).height( 1 ).oneSided( true )
@@ -466,6 +479,10 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 				.buildComplexPlatform( );
 		skeleton.addPlatformRotatingCenter( gear2 );
 		gear2.quickfixCollisions( );
+	}
+	
+	public void ParticleTest( ){
+		
 	}
 
 	public void initPulley( ) {
@@ -557,17 +574,18 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		batch.begin( );
 
 		//tp2.draw( batch );
+		testSteam.draw(batch, deltaTime);
 		rootSkeleton.draw( batch );
 		testRope.draw( batch );
 		player1.draw( batch );
 		player2.draw( batch );
-
+		
 		batch.end( );
 
 		if ( debug )
 			debugRenderer.render( world, cam.combined( ) );
 
-		world.step( 1 / 60f, 6, 6 );
+		world.step( 1 / 60f, 6, 3 );
 	}
 
 	@Override
