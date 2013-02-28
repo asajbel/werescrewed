@@ -11,7 +11,6 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.Filter;
 import com.badlogic.gdx.physics.box2d.Fixture;
-import com.badlogic.gdx.physics.box2d.JointEdge;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJoint;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
@@ -89,7 +88,7 @@ public class Player extends Entity {
 	private boolean kinematicTransform = false;
 	private boolean changeDirectionsOnce = false;
 	private float footFriction = PLAYER_FRICTION;
-	
+
 	private IMover mover;
 
 	public int grabCounter = 0;
@@ -170,7 +169,8 @@ public class Player extends Entity {
 			// System.out.println( jumpPressedKeyboard );
 		}
 		if ( name.equals( "player2" ) ) {
-			//Gdx.app.log( "playerState", "" + playerState + " " + grounded + "isDead? = " + isDead );
+			// Gdx.app.log( "playerState", "" + playerState + " " + grounded +
+			// "isDead? = " + isDead );
 		}
 		if ( kinematicTransform ) {
 			// setPlatformTransform( platformOffset );
@@ -602,31 +602,22 @@ public class Player extends Entity {
 	 */
 	private void attachToScrew( ) {
 		if ( currentScrew.body.getJointList( ).size( ) > 0
-				&& playerState != PlayerState.HeadStand ) {
-			boolean screwOccupied = false;
-			for ( JointEdge j : currentScrew.body.getJointList( ) ) {
-				// Altered if statement so both players can be on BossScrew.
-				if ( j.joint.getBodyA( ).getUserData( ) instanceof Player
-						&& currentScrew.getScrewType( ) != ScrewType.BOSS ) {
-					screwOccupied = true;
-				}
+				&& playerState != PlayerState.HeadStand
+				&& !currentScrew.isPlayerAttached( ) ) {
+			// Filter filter;
+			for ( Fixture f : body.getFixtureList( ) ) {
+				f.setSensor( true );
 			}
-			if ( !screwOccupied ) {
-				// Filter filter;
-				for ( Fixture f : body.getFixtureList( ) ) {
-					f.setSensor( true );
-				}
-				mover = new LerpMover( body.getPosition( ).mul(
-						Util.BOX_TO_PIXEL ), new Vector2(
-						currentScrew.getPosition( ).x * Util.BOX_TO_PIXEL
-								- ( sprite.getWidth( ) / 4.0f ),
-						currentScrew.getPosition( ).y * Util.BOX_TO_PIXEL
-								- ( sprite.getHeight( ) / 4.0f ) ),
-						SCREW_ATTACH_SPEED, false, LinearAxis.DIAGONAL, 0 );
-				playerState = PlayerState.Screwing;
-				setGrounded( false );
-
-			}
+			mover = new LerpMover(
+					body.getPosition( ).mul( Util.BOX_TO_PIXEL ), new Vector2(
+							currentScrew.getPosition( ).x * Util.BOX_TO_PIXEL
+									- ( sprite.getWidth( ) / 4.0f ),
+							currentScrew.getPosition( ).y * Util.BOX_TO_PIXEL
+									- ( sprite.getHeight( ) / 4.0f ) ),
+					SCREW_ATTACH_SPEED, false, LinearAxis.DIAGONAL, 0 );
+			playerState = PlayerState.Screwing;
+			currentScrew.setPlayerAttached( true );
+			setGrounded( false );
 		}
 	}
 
@@ -691,6 +682,7 @@ public class Player extends Entity {
 						f.setSensor( false );
 					}
 					mover = null;
+					currentScrew.setPlayerAttached( false );
 					playerState = PlayerState.JumpingOffScrew;
 					screwJumpTimeout = SCREW_JUMP_STEPS;
 					jump( );
@@ -744,6 +736,7 @@ public class Player extends Entity {
 					screwJumpTimeout = SCREW_JUMP_STEPS;
 					jumpPressedController = true;
 					mover = null;
+					currentScrew.setPlayerAttached( false );
 					jumpScrew( );
 				}
 			}
@@ -898,6 +891,7 @@ public class Player extends Entity {
 					f.setSensor( false );
 				}
 				mover = null;
+				currentScrew.setPlayerAttached( false );
 				playerState = PlayerState.JumpingOffScrew;
 				screwJumpTimeout = SCREW_JUMP_STEPS;
 			}
@@ -1178,6 +1172,7 @@ public class Player extends Entity {
 							f.setSensor( false );
 						}
 						mover = null;
+						currentScrew.setPlayerAttached( false );
 						playerState = PlayerState.JumpingOffScrew;
 						screwJumpTimeout = SCREW_JUMP_STEPS;
 					}
@@ -1292,6 +1287,7 @@ public class Player extends Entity {
 					f.setSensor( false );
 				}
 				mover = null;
+				currentScrew.setPlayerAttached( false );
 				playerState = PlayerState.JumpingOffScrew;
 				screwJumpTimeout = SCREW_JUMP_STEPS;
 			}

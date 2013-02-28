@@ -6,7 +6,6 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.JointEdge;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.joints.PulleyJoint;
 import com.badlogic.gdx.physics.box2d.joints.PulleyJointDef;
@@ -97,11 +96,11 @@ public class ResurrectScrew extends Screw {
 	 * destroys the joints and body of the object
 	 */
 	public void remove( ) {
-		world.destroyJoint( pulleyJoint );
-		world.destroyBody( pulleyWeight );
 		while ( body.getJointList( ).iterator( ).hasNext( ) ) {
 			world.destroyJoint( body.getJointList( ).get( 0 ).joint );
 		}
+//		world.destroyJoint( pulleyJoint );
+		world.destroyBody( pulleyWeight );
 		world.destroyBody( body );
 	}
 	

@@ -1,5 +1,6 @@
 package com.blindtigergames.werescrewed.collisionManager;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.Contact;
@@ -62,6 +63,7 @@ public class MyContactListener implements ContactListener {
 				if ( objectFix.getBody( ).getUserData( ) instanceof Entity ) {
 					Entity object = ( Entity ) objectFix.getBody( )
 							.getUserData( );
+					if ( object.getEntityType( ) == null ) {
 					switch ( object.getEntityType( ) ) { // switch between
 															// different types
 															// of entities
@@ -114,6 +116,9 @@ public class MyContactListener implements ContactListener {
 						break;
 					default:
 						break;
+					}
+					} else {
+						Gdx.app.log( "please declaire your entity with a type to the Entity Type enum", "" );
 					}
 				} else if ( objectFix.getBody( ).getUserData( ) instanceof Anchor ) {
 					Anchor anchor = ( Anchor ) objectFix.getBody( )
