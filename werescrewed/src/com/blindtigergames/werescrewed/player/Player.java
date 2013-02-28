@@ -39,9 +39,9 @@ import com.blindtigergames.werescrewed.util.Util;
  */
 public class Player extends Entity {
 
-	public final static float MAX_VELOCITY = 1.55f;
+	public final static float MAX_VELOCITY = 1.65f;
 	public final static float MIN_VELOCITY = 0.01f;
-	public final static float MOVEMENT_IMPULSE = 0.007f;
+	public final static float MOVEMENT_IMPULSE = 0.009f;
 	public final static float JUMP_SCREW_IMPULSE = 0.12f;
 	public final static float JUMP_CONTROL_MUTIPLIER = 0.5f;
 	public final static int JUMP_COUNTER = 10;
@@ -147,7 +147,6 @@ public class Player extends Entity {
 		torso = body.getFixtureList( ).get( 0 );
 		feet = body.getFixtureList( ).get( 1 );
 		torso.getShape( ).setRadius( 0 );
-
 		maxFriction( );
 
 		setUpController( );
