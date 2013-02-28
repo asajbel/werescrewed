@@ -1,5 +1,6 @@
 package com.blindtigergames.werescrewed.collisionManager;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.Contact;
@@ -62,58 +63,69 @@ public class MyContactListener implements ContactListener {
 				if ( objectFix.getBody( ).getUserData( ) instanceof Entity ) {
 					Entity object = ( Entity ) objectFix.getBody( )
 							.getUserData( );
-					switch ( object.getEntityType( ) ) { // switch between
-															// different types
-															// of entities
-					case PLATFORM:
-						// Ensure the object is solid and involves the player's
-						// feet
-						// also make sure its not the player
-						if ( object.isSolid( )
-								&& playerFix.getShape( ) instanceof CircleShape ) {
+					if ( object.getEntityType( ) != null ) {
+						switch ( object.getEntityType( ) ) { // switch between
+																// different
+																// types
+																// of entities
+						case PLATFORM:
+							// Ensure the object is solid and involves the
+							// player's
+							// feet
+							// also make sure its not the player
+							if ( object.isSolid( )
+									&& playerFix.getShape( ) instanceof CircleShape ) {
+								if ( p1 == null || p1 == player ) {
+									p1 = player;
+									NUM_PLAYER1_CONTACTS++;
+								} else if ( p1 != player ) {
+									NUM_PLAYER2_CONTACTS++;
+								}
+								player.hitSolidObject( objectFix.getBody( ) );
+								player.setGrounded( true );
+							}
+							break;
+						case SCREW:
+							Screw screw = ( Screw ) object;
 							if ( p1 == null || p1 == player ) {
 								p1 = player;
-								NUM_PLAYER1_CONTACTS++;
+								NUM_PLAYER1_SCREWCONTACTS++;
+								player.hitScrew( screw );
 							} else if ( p1 != player ) {
-								NUM_PLAYER2_CONTACTS++;
+								NUM_PLAYER2_SCREWCONTACTS++;
+								player.hitScrew( screw );
 							}
-							player.hitSolidObject( objectFix.getBody( ) );
-							player.setGrounded( true );
+							if ( screw.getScrewType( ) == ScrewType.RESURRECT ) {
+								ResurrectScrew rScrew = ( ResurrectScrew ) screw;
+								rScrew.hitPlayer( player );
+							}
+							break;
+						case PLAYER:
+							Player player2 = ( Player ) objectFix.getBody( )
+									.getUserData( );
+							player.hitPlayer( player2 );
+							player2.hitPlayer( player );
+							break;
+						case HAZARD:
+							Hazard hazard = ( Hazard ) objectFix.getBody( )
+									.getUserData( );
+							hazard.performContact( player );
+							break;
+						case CHECKPOINT:
+							CheckPoint checkP = ( CheckPoint ) objectFix
+									.getBody( ).getUserData( );
+							checkP.hitPlayer( );
+							break;
+						case STEAM:
+							player.setSteamCollide( true );
+							break;
+						default:
+							break;
 						}
-						break;
-					case SCREW:
-						Screw screw = ( Screw ) object;
-						if ( p1 == null || p1 == player ) {
-							p1 = player;
-							NUM_PLAYER1_SCREWCONTACTS++;
-							player.hitScrew( screw );
-						} else if ( p1 != player ) {
-							NUM_PLAYER2_SCREWCONTACTS++;
-							player.hitScrew( screw );
-						}
-						if ( screw.getScrewType( ) == ScrewType.RESURRECT ) {
-							ResurrectScrew rScrew = ( ResurrectScrew ) screw;
-							rScrew.hitPlayer( player );
-						}
-						break;
-					case PLAYER:
-						Player player2 = ( Player ) objectFix.getBody( )
-								.getUserData( );
-						player.hitPlayer( player2 );
-						player2.hitPlayer( player );
-						break;
-					case HAZARD:
-						Hazard hazard = ( Hazard ) objectFix.getBody( )
-								.getUserData( );
-						hazard.performContact( player );
-						break;
-					case CHECKPOINT:
-						CheckPoint checkP = ( CheckPoint ) objectFix.getBody( )
-								.getUserData( );
-						checkP.hitPlayer( );
-						break;
-					default:
-						break;
+					} else {
+						Gdx.app.log(
+								"please declare your entity with a type to the Entity Type enum",
+								"" );
 					}
 				} else if ( objectFix.getBody( ).getUserData( ) instanceof Anchor ) {
 					Anchor anchor = ( Anchor ) objectFix.getBody( )
@@ -154,63 +166,74 @@ public class MyContactListener implements ContactListener {
 				if ( objectFix.getBody( ).getUserData( ) instanceof Entity ) {
 					Entity object = ( Entity ) objectFix.getBody( )
 							.getUserData( );
-					switch ( object.getEntityType( ) ) { // switch between
-															// different types
-															// of entities
-					case PLATFORM:
-						// Ensure the object is solid and involves the player's
-						// feet
-						// also make sure its not the player
-						if ( object.isSolid( )
-								&& playerFix.getShape( ) instanceof CircleShape ) {
+					if ( object.getEntityType( ) != null ) {
+						switch ( object.getEntityType( ) ) { // switch between
+																// different
+																// types
+																// of entities
+						case PLATFORM:
+							// Ensure the object is solid and involves the
+							// player's
+							// feet
+							// also make sure its not the player
+							if ( object.isSolid( )
+									&& playerFix.getShape( ) instanceof CircleShape ) {
+								if ( p1 == null || p1 == player ) {
+									p1 = player;
+									NUM_PLAYER1_CONTACTS--;
+									if ( NUM_PLAYER1_CONTACTS <= 0 ) {
+										if ( player.getState( ) == PlayerState.Falling ) {
+											player.setGrounded( false );
+										}
+									}
+								} else if ( p1 != player ) {
+									NUM_PLAYER2_CONTACTS--;
+									if ( NUM_PLAYER2_CONTACTS <= 0 ) {
+										if ( player.getState( ) == PlayerState.Falling ) {
+											player.setGrounded( false );
+										}
+									}
+								}
+								player.hitSolidObject( null );
+								contact.setEnabled( true );
+							}
+							break;
+						case SCREW:
 							if ( p1 == null || p1 == player ) {
 								p1 = player;
-								NUM_PLAYER1_CONTACTS--;
-								if ( NUM_PLAYER1_CONTACTS <= 0 ) {
-									if ( player.getState( ) == PlayerState.Falling ) {
-										player.setGrounded( false );
+								NUM_PLAYER1_SCREWCONTACTS--;
+								if ( NUM_PLAYER1_SCREWCONTACTS <= 0 ) {
+									if ( player.getState( ) != PlayerState.Screwing ) {
+										player.hitScrew( null );
 									}
 								}
 							} else if ( p1 != player ) {
-								NUM_PLAYER2_CONTACTS--;
-								if ( NUM_PLAYER2_CONTACTS <= 0 ) {
-									if ( player.getState( ) == PlayerState.Falling ) {
-										player.setGrounded( false );
+								NUM_PLAYER2_SCREWCONTACTS--;
+								if ( NUM_PLAYER2_SCREWCONTACTS <= 0 ) {
+									if ( player.getState( ) != PlayerState.Screwing ) {
+										player.hitScrew( null );
 									}
 								}
 							}
-							player.hitSolidObject( null );
-							contact.setEnabled( true );
-						}
-						break;
-					case SCREW:
-						if ( p1 == null || p1 == player ) {
-							p1 = player;
-							NUM_PLAYER1_SCREWCONTACTS--;
-							if ( NUM_PLAYER1_SCREWCONTACTS <= 0 ) {
-								if ( player.getState( ) != PlayerState.Screwing ) {
-									player.hitScrew( null );
-								}
+							break;
+						case PLAYER:
+							Player player2 = ( Player ) objectFix.getBody( )
+									.getUserData( );
+							if ( player.getState( ) != PlayerState.HeadStand ) {
+								player.hitPlayer( null );
+								player2.hitPlayer( null );
 							}
-						} else if ( p1 != player ) {
-							NUM_PLAYER2_SCREWCONTACTS--;
-							if ( NUM_PLAYER2_SCREWCONTACTS <= 0 ) {
-								if ( player.getState( ) != PlayerState.Screwing ) {
-									player.hitScrew( null );
-								}
-							}
+							break;
+						case STEAM:
+							player.setSteamCollide( false );
+							break;
+						default:
+							break;
 						}
-						break;
-					case PLAYER:
-						Player player2 = ( Player ) objectFix.getBody( )
-								.getUserData( );
-						if ( player.getState( ) != PlayerState.HeadStand ) {
-							player.hitPlayer( null );
-							player2.hitPlayer( null );
-						}
-						break;
-					default:
-						break;
+					} else {
+						Gdx.app.log(
+								"please declare your entity with a type to the Entity Type enum",
+								"" );
 					}
 				} else if ( objectFix.getBody( ).getUserData( ) instanceof Anchor ) {
 					Anchor anchor = ( Anchor ) objectFix.getBody( )
@@ -251,49 +274,56 @@ public class MyContactListener implements ContactListener {
 				if ( objectFix.getBody( ).getUserData( ) instanceof Entity ) {
 					Entity object = ( Entity ) objectFix.getBody( )
 							.getUserData( );
-					switch ( object.getEntityType( ) ) { // switch between
-															// different types
-															// of entities
-					case PLATFORM:
-						Platform plat = ( Platform ) object;
-						if ( plat.getPlatformType( ) == PlatformType.TILED ) {
-							TiledPlatform tilePlat = ( TiledPlatform ) objectFix
-									.getBody( ).getUserData( );
-							Vector2 platformPos = tilePlat.getPosition( );
-							Vector2 playerPos = player.getPosition( );
-							if ( tilePlat.getOneSided( ) ) {
-								if ( platformPos.y > playerPos.y ) {
+					if ( object.getEntityType( ) != null ) {
+						switch ( object.getEntityType( ) ) { // switch between
+																// different
+																// types
+																// of entities
+						case PLATFORM:
+							Platform plat = ( Platform ) object;
+							if ( plat.getPlatformType( ) == PlatformType.TILED ) {
+								TiledPlatform tilePlat = ( TiledPlatform ) objectFix
+										.getBody( ).getUserData( );
+								Vector2 platformPos = tilePlat.getPosition( );
+								Vector2 playerPos = player.getPosition( );
+								if ( tilePlat.getOneSided( ) ) {
+									if ( platformPos.y > playerPos.y ) {
+										contact.setEnabled( false );
+									}
+								}
+								if ( player.isTopPlayer( ) ) {
 									contact.setEnabled( false );
 								}
 							}
-							if ( player.isTopPlayer( ) ) {
+							break;
+						case PLAYER:
+							Player player2 = ( Player ) object;
+							if ( player.getState( ) == PlayerState.GrabMode
+									|| player2.getState( ) == PlayerState.GrabMode ) {
+								contact.setEnabled( false );
+							} else if ( ( ( !player.isGrounded( ) || !player2
+									.isGrounded( ) )
+									&& player.getState( ) != PlayerState.Falling && player2
+									.getState( ) != PlayerState.Falling )
+									|| !player.isHeadStandTimedOut( )
+									|| !player2.isHeadStandTimedOut( ) ) {
 								contact.setEnabled( false );
 							}
+							break;
+						default:
+							break;
 						}
-						break;
-					case PLAYER:
-						Player player2 = ( Player ) object;
-						if ( player.getState( ) == PlayerState.GrabMode
-								|| player2.getState( ) == PlayerState.GrabMode ) {
-							contact.setEnabled( false );
-						} else if ( ( ( !player.isGrounded( ) || !player2
-								.isGrounded( ) )
-								&& player.getState( ) != PlayerState.Falling && player2
-								.getState( ) != PlayerState.Falling )
-								|| !player.isHeadStandTimedOut( )
-								|| !player2.isHeadStandTimedOut( ) ) {
-							contact.setEnabled( false );
-						}
-						break;
-					default:
-						break;
+					} else {
+						Gdx.app.log(
+								"please declare your entity with a type to the Entity Type enum",
+								"" );
 					}
 				}
 			}
 		}
 	}
 
-	/**
+	/*
 	 * After physics is calculated each step
 	 */
 	@Override
@@ -322,25 +352,32 @@ public class MyContactListener implements ContactListener {
 				if ( objectFix.getBody( ).getUserData( ) instanceof Entity ) {
 					Entity object = ( Entity ) objectFix.getBody( )
 							.getUserData( );
-					switch ( object.getEntityType( ) ) { // switch between
-															// different types
-															// of entities
-					case PLATFORM:
-						Platform plat = ( Platform ) object;
-						if ( plat.getPlatformType( ) == PlatformType.TILED ) {
-							TiledPlatform tilePlat = ( TiledPlatform ) objectFix
-									.getBody( ).getUserData( );
-							Vector2 platformPos = tilePlat.getPosition( );
-							Vector2 playerPos = player.getPosition( );
-							if ( tilePlat.getOneSided( ) ) {
-								if ( platformPos.y > playerPos.y ) {
-									contact.setEnabled( false );
+					if ( object.getEntityType( ) != null ) {
+						switch ( object.getEntityType( ) ) { // switch between
+																// different
+																// types
+																// of entities
+						case PLATFORM:
+							Platform plat = ( Platform ) object;
+							if ( plat.getPlatformType( ) == PlatformType.TILED ) {
+								TiledPlatform tilePlat = ( TiledPlatform ) objectFix
+										.getBody( ).getUserData( );
+								Vector2 platformPos = tilePlat.getPosition( );
+								Vector2 playerPos = player.getPosition( );
+								if ( tilePlat.getOneSided( ) ) {
+									if ( platformPos.y > playerPos.y ) {
+										contact.setEnabled( false );
+									}
 								}
 							}
+							break;
+						default:
+							break;
 						}
-						break;
-					default:
-						break;
+					} else {
+						Gdx.app.log(
+								"please declare your entity with a type to the Entity Type enum",
+								"" );
 					}
 				}
 			}

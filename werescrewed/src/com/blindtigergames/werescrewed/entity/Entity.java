@@ -22,7 +22,7 @@ import com.blindtigergames.werescrewed.util.Util;
  * Anything that can exist. Contains a physics body, and a sprite which may or
  * may not be animated.
  * 
- * @author Kevin
+ * @author Kevin / Ranveer
  * 
  */
 public class Entity {
@@ -37,13 +37,14 @@ public class Entity {
 	protected boolean solid;
 	protected Anchor anchor;
 	protected float energy;
-	protected boolean moverActive;
+	protected boolean active;
 	protected boolean visible;
 	protected boolean maintained;
 	protected EntityType entityType;
 	private ArrayList<IMover> moverArray;
 	private RobotState currentRobotState;
 	private EnumMap<RobotState, Integer> robotStateMap;
+	
 	/**
 	 * Create entity by definition
 	 * 
@@ -80,12 +81,6 @@ public class Entity {
 		}
 	}
 
-	// Kevin: Why is this commented out?
-	/*
-	 * public Entity(String n, EntityDef d, World w, Vector2 pos, float rot,
-	 * Vector2 sca) { this(); name = n; type = d; world = w; constructSprite();
-	 * constructBody(pos.x, pos.y, sca.x, sca.y); }
-	 */
 
 	/**
 	 * Create entity by body. Debug constructor: Should be removed eventually.
@@ -122,7 +117,7 @@ public class Entity {
 		this.energy = 1.0f;
 		this.maintained = true;
 		this.visible = true;
-		this.moverActive = true;
+		this.active = true;
 		setUpRobotState();
 	}
 
@@ -193,7 +188,7 @@ public class Entity {
 	 * @param deltaTime
 	 */
 	public void updateMover( float deltaTime ) {
-		if ( moverActive ) {
+		if ( active ) {
 			if ( body != null ) {
 				if ( currentMover() != null ) {
 					currentMover().move( deltaTime, body );
@@ -355,10 +350,18 @@ public class Entity {
 		return moverArray.get( robotStateMap.get( currentRobotState ) );
 	}
 	
+	/**
+	 * Determines if entity is solid, which means the player can jump off of it
+	 * @return boolean
+	 */
 	public boolean isSolid( ) {
 		return this.solid;
 	}
 
+	/**
+	 * sets entity to either solid or not, determines whether player can jump off of it
+	 * @param solid - boolean
+	 */
 	public void setSolid( boolean solid ) {
 		this.solid = solid;
 	}
@@ -390,13 +393,16 @@ public class Entity {
 	/**
 	 * Determines whether an entity should be deleted on next update or not
 	 * 
-	 * @param m
-	 *            - boolean
+	 * @param m - boolean
 	 */
 	public void setMaintained( boolean m ) {
 		maintained = m;
 	}
 
+	/**
+	 * checks whether an entity is currently being maintained
+	 * @return boolean
+	 */
 	public boolean isMaintained( ) {
 		return maintained;
 	}
@@ -404,13 +410,16 @@ public class Entity {
 	/**
 	 * Determines whether an entity should be drawn or not.
 	 * 
-	 * @param v
-	 *            - boolean
+	 * @param v - boolean
 	 */
 	public void setVisible( boolean v ) {
 		visible = v;
 	}
 
+	/**
+	 * returns whether an entity is visible, or on screen
+	 * @return boolean
+	 */
 	public boolean isVisible( ) {
 		return visible;
 	}
@@ -418,15 +427,18 @@ public class Entity {
 	/**
 	 * Determines whether an entity should be updated or not.
 	 * 
-	 * @param a
-	 *            - boolean
+	 * @param a - boolean
 	 */
 	public void setActive( boolean a ) {
-		moverActive = a;
+		active = a;
 	}
 
+	/**
+	 * checks whether if the current mover is active, or being updated or not
+	 * @return boolean
+	 */
 	public boolean isActive( ) {
-		return moverActive;
+		return active;
 	}
 
 	/**
@@ -488,31 +500,47 @@ public class Entity {
 
 	}
 
-	public void setDensity( float d ) {
+	/**
+	 * sets the Density of all fixtures associated with this entity
+	 * @param density - float
+	 */
+	public void setDensity( float density ) {
 		if ( body != null ) {
 			for ( int i = 0; i < body.getFixtureList( ).size( ); ++i )
-				body.getFixtureList( ).get( i ).setDensity( d );
+				body.getFixtureList( ).get( i ).setDensity( density );
 		}
 
 	}
 
-	public void setFriction( float f ) {
+	/**
+	 * sets the friction of all fixtures associated with this entity
+	 * @param friction - float
+	 */
+	public void setFriction( float friction ) {
 		if ( body != null ) {
 			for ( int i = 0; i < body.getFixtureList( ).size( ); ++i )
-				body.getFixtureList( ).get( i ).setFriction( f );
+				body.getFixtureList( ).get( i ).setFriction( friction );
 		}
 	}
 
-	public void setRestitution( float r ) {
+	/**
+	 * sets the restituion of all fixtures associated with this entity
+	 * @param restitution - float
+	 */
+	public void setRestitution( float restitution ) {
 		if ( body != null ) {
 			for ( int i = 0; i < body.getFixtureList( ).size( ); ++i )
-				body.getFixtureList( ).get( i ).setRestitution( r );
+				body.getFixtureList( ).get( i ).setRestitution( restitution );
 		}
 	}
 
-	public void setGravScale( float g ) {
+	/**
+	 * sets the gravity scale of this entity
+	 * @param scale - float
+	 */
+	public void setGravScale( float scale ) {
 		if ( body != null ) {
-			body.setGravityScale( g );
+			body.setGravityScale( scale );
 		}
 	}
 	
@@ -598,6 +626,7 @@ public class Entity {
 	 * 
 	 * and sets this entity's default state as IDLE
 	 * 
+	 * Will be optimized soon
 	 * @author Ranveer
 	 */
 	private void setUpRobotState(){

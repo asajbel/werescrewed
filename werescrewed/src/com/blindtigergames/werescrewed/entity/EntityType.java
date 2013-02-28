@@ -6,5 +6,7 @@ public enum EntityType {
     HAZARD,
     SCREW,
     CHECKPOINT,
+    STEAM,
     PLAYER,
+    EVENTTRIGGER
 }
