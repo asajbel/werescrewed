@@ -44,22 +44,17 @@ public class Skeleton extends Platform {
     //protected ArrayList< Screw > screws; //add all screws you want drawn
     //protected ArrayList< Rope > ropes;
     
-    protected static HashMap< String, Platform > dynamicPlatformMap = new HashMap< String, Platform >( );
-	protected static HashMap< String, Skeleton > childSkeletonMap = new HashMap< String, Skeleton >( );
-	protected static HashMap< String, Platform > kinematicPlatformMap = new HashMap< String, Platform >( );
-	protected static HashMap< String, Rope > ropeMap = new HashMap< String, Rope >( );
-	protected static HashMap< String, Screw > screwMap = new HashMap< String, Screw >( );
+    protected HashMap< String, Platform > dynamicPlatformMap = new HashMap< String, Platform >( );
+	protected HashMap< String, Skeleton > childSkeletonMap = new HashMap< String, Skeleton >( );
+	protected HashMap< String, Platform > kinematicPlatformMap = new HashMap< String, Platform >( );
+	protected HashMap< String, Rope > ropeMap = new HashMap< String, Rope >( );
+	protected HashMap< String, Screw > screwMap = new HashMap< String, Screw >( );
 	
 
     public Skeleton( String n, Vector2 pos, Texture tex, World world ) {
         super( n, pos, tex, world); // not constructing body class
         this.world = world;
         constructSkeleton( pos );
-        //this.dynamicPlatforms = new ArrayList<Platform>();
-        //childSkeletons = new ArrayList<Skeleton>();
-        //kinematicPlatforms = new ArrayList< Platform >( );
-        //screws = new ArrayList<Screw>();
-        //ropes = new ArrayList< Rope >( );
         super.setSolid( false );
         
         
@@ -155,7 +150,7 @@ public class Skeleton extends Platform {
          new RevoluteJointBuilder( world ).skeleton( this ).bodyB( rope.getFirstLink( ) )
                  .limit( true ).lower( 0 ).upper( 0 ).build();
          //ropes.add( rope );
-         Skeleton.ropeMap.put( "ropes have no names, fix me",  rope );
+         ropeMap.put( "ropes have no names, fix me",  rope );
      }
      
      /**
@@ -312,11 +307,12 @@ public class Skeleton extends Platform {
      * @author stew
      */
     protected void updateChildSkeletonMovers( float deltaTime ){
+
+    	
     	for ( Skeleton skeleton : childSkeletonMap.values( ) ){
-    		Gdx.app.log( skeleton.name, childSkeletonMap.values( ).size( )+"" );
+    		//Gdx.app.log( skeleton.name, childSkeletonMap.values( ).size( )+"" );
     		//System.exit( 0 );
     		skeleton.updateMover( deltaTime );
-    		
     		skeleton.updateChildSkeletonMovers( deltaTime );
     	}
     }
