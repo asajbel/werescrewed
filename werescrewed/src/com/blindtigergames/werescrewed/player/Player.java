@@ -52,6 +52,7 @@ public class Player extends Entity {
 	public final static float SCREW_ATTACH_SPEED = 0.1f;
 	public final static int GRAB_COUNTER_STEPS = 5;
 	public final static Vector2 ANCHOR_BUFFER_SIZE = new Vector2( 400f, 256f );
+	public final static float STEAM_FORCE = .5f;
 	public float JUMP_IMPULSE = 0.08f;
 	public float directionJumpDivsion = 2.0f;
 
@@ -87,6 +88,7 @@ public class Player extends Entity {
 	private boolean screwButtonHeld;
 	private boolean kinematicTransform = false;
 	private boolean changeDirectionsOnce = false;
+	private boolean steamCollide = false;
 	private float footFriction = PLAYER_FRICTION;
 
 	private IMover mover;
@@ -271,6 +273,9 @@ public class Player extends Entity {
 					mover = null;
 				}
 			}
+		}
+		else if (steamCollide){
+			steamResolution( );
 		}
 		terminalVelocityCheck( 15.0f );
 		// the jump doesn't work the first time on dynamic bodies so do it twice
@@ -1344,5 +1349,31 @@ public class Player extends Entity {
 			}
 		}
 
+	}
+
+	/**
+	 * sets the value of steam collide flag
+	 * 
+	 * @param value boolean
+	 */
+	
+	public void setSteamCollide( boolean value ) {
+		steamCollide = value;
+	}
+	
+	/**
+	 * says whether the player is in steam
+	 * 
+	 * @return boolean
+	 */
+	public boolean isSteamCollide( ){
+		return steamCollide;
+	}
+	
+	/**
+	 * applys force to player
+	 */
+	private void steamResolution( ){
+		body.applyForceToCenter( 0f, STEAM_FORCE );
 	}
 }

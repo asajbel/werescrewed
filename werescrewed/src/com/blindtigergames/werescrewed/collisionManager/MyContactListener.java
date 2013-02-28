@@ -114,6 +114,9 @@ public class MyContactListener implements ContactListener {
 								.getUserData( );
 						checkP.hitPlayer( );
 						break;
+					case STEAM:
+						player.setSteamCollide( true );
+						break;
 					default:
 						break;
 					}
@@ -214,6 +217,9 @@ public class MyContactListener implements ContactListener {
 							player2.hitPlayer( null );
 						}
 						break;
+					case STEAM:
+						player.setSteamCollide( false );
+						break;
 					default:
 						break;
 					}
@@ -298,7 +304,7 @@ public class MyContactListener implements ContactListener {
 		}
 	}
 
-	/**
+	/*
 	 * After physics is calculated each step
 	 */
 	@Override
