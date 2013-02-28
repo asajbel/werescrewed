@@ -1,12 +1,12 @@
 package com.blindtigergames.werescrewed.screws;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.JointEdge;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.joints.PulleyJoint;
 import com.badlogic.gdx.physics.box2d.joints.PulleyJointDef;
@@ -26,10 +26,9 @@ import com.blindtigergames.werescrewed.util.Util;
 public class ResurrectScrew extends Screw {
 	private PulleyJoint pulleyJoint;
 	private Body pulleyWeight;
-	private boolean pullLeft;
 	private Player deadPlayer;
+	private boolean pullLeft;
 	private boolean destroyJoint = false;
-	private boolean playerAttached = false;
 
 	/**
 	 * 
@@ -39,8 +38,8 @@ public class ResurrectScrew extends Screw {
 	 * @param world
 	 * @param deadPlayer
 	 */
-	public ResurrectScrew( Vector2 pos, Entity entity,
-			World world, Player deadPlayer ) {
+	public ResurrectScrew( Vector2 pos, Entity entity, World world,
+			Player deadPlayer ) {
 		super( "onlyInstance_RezScrew", pos, null );
 		this.world = world;
 		this.depth = 1;
@@ -91,6 +90,7 @@ public class ResurrectScrew extends Screw {
 	public void hitPlayer( Player player ) {
 		if ( player == deadPlayer ) {
 			destroyJoint = true;
+			player.respawnPlayer( );
 		}
 	}
 
@@ -98,43 +98,45 @@ public class ResurrectScrew extends Screw {
 	 * destroys the joints and body of the object
 	 */
 	public void remove( ) {
-		world.destroyJoint( pulleyJoint );
-		world.destroyBody( pulleyWeight );
-		playerAttached = false;
-		while ( body.getJointList( ).iterator( ).hasNext( ) ) {
-			Entity entity = ( Entity ) body.getJointList( ).get( 0 ).joint.getBodyA( ).getUserData( );
-			if ( entity.getEntityType( ) != EntityType.PLAYER ) {
-				world.destroyJoint( body.getJointList( ).get( 0 ).joint );
-			} else {
-				playerAttached = true;
+		if ( !removed ) {
+			if ( pulleyJoint != null ) {
+				world.destroyJoint( pulleyJoint );
+				pulleyJoint = null;
+			}
+			if ( !playerAttached ) {
+				while ( body.getJointList( ).iterator( ).hasNext( ) ) {
+					world.destroyJoint( body.getJointList( ).get( 0 ).joint );
+				}
+				world.destroyBody( body );
+				removed = true;
+				world.destroyBody( pulleyWeight );
+				pulleyWeight = null;
 			}
 		}
-		if ( !playerAttached ) {
-			world.destroyBody( body );
-		}
+		Gdx.app.log( "hleld " + removed, "world " + playerAttached );
 	}
-	
+
 	@Override
 	public void update( float deltaTime ) {
 		super.update( deltaTime );
-		if ( playerAttached ) {
-			remove ( );
+		if ( !deadPlayer.isPlayerDead( ) ) {
+			remove( );
 		}
-		if ( destroyJoint
-				|| ( deadPlayer != null && !deadPlayer.isPlayerDead( ) ) ) {
-			deadPlayer.respawnPlayer( );
-			world.destroyJoint( pulleyJoint );
-			world.destroyBody( pulleyWeight );
-			deadPlayer = null;
-			destroyJoint = false;
-		}
-		sprite.setRotation( rotation );
-		if ( depth != screwStep ) {
-			screwStep--;
-		}
-		if ( depth == screwStep ) {
-			body.setAngularVelocity( 0 );
-			pulleyWeight.setLinearVelocity( new Vector2( 0f, 0f ) );
+		if ( !removed ) {
+			if ( destroyJoint ) {
+				remove( );
+				destroyJoint = false;
+			}
+			sprite.setRotation( rotation );
+			if ( depth != screwStep ) {
+				screwStep--;
+			}
+			if ( depth == screwStep ) {
+				body.setAngularVelocity( 0 );
+				if ( pulleyWeight != null ) {
+					pulleyWeight.setLinearVelocity( new Vector2( 0f, 0f ) );
+				}
+			}
 		}
 	}
 

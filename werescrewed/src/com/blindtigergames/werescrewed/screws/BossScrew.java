@@ -99,6 +99,15 @@ public class BossScrew extends Screw {
 		return depth;
 	}
 	
+	/**
+	 * boss screws allow two players to attach
+	 * this function should always return false
+	 * @return playerAttached
+	 */
+	public boolean isPlayerAttached( ) {
+		return false;
+	}
+	
 	@Override
 	public void update( float deltaTime ) {
 		super.update( deltaTime );
