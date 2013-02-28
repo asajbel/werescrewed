@@ -176,6 +176,7 @@ public class Player extends Entity {
 			//Gdx.app.log( name + " playerState", "" + playerState + " "
 			//		+ grounded + "isDead? = " + isDead );
 		}
+
 		if ( kinematicTransform ) {
 			// setPlatformTransform( platformOffset );
 			kinematicTransform = false;
