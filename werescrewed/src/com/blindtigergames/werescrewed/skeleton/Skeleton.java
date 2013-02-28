@@ -50,14 +50,13 @@ public class Skeleton extends Platform {
 	protected HashMap< String, Rope > ropeMap = new HashMap< String, Rope >( );
 	protected HashMap< String, Screw > screwMap = new HashMap< String, Screw >( );
 	
+	private int entityCount = 0;
 
     public Skeleton( String n, Vector2 pos, Texture tex, World world ) {
         super( n, pos, tex, world); // not constructing body class
         this.world = world;
         constructSkeleton( pos );
         super.setSolid( false );
-        
-        
     }
 
     public void constructSkeleton( Vector2 pos ) {
@@ -97,14 +96,6 @@ public class Skeleton extends Platform {
         
     }
     
-    /**
-     * Add Kinamatic platform to this Skeleton
-     * @param Platform that's already set as kinematic
-     */
-    public void addKinematicPlatform( Platform platform ){
-    	//kinematicPlatforms.add( platform );
-    	kinematicPlatformMap.put( platform.name, platform );
-    }
     
     /**
      * Attach a platform to this skeleton that rotates with a motor
@@ -171,7 +162,8 @@ public class Skeleton extends Platform {
       */
      public void addScrewForDraw(Screw s){
     	 //screws.add(s);
-    	 screwMap.put( s.name, s );
+    	 entityCount++;
+    	 screwMap.put( s.name+entityCount, s );
      }
 
      /**
@@ -181,9 +173,27 @@ public class Skeleton extends Platform {
       * @author stew
       */
     public void addDynamicPlatform( Platform platform ) {
+    	entityCount++;
         //this.dynamicPlatforms.add( platform );
+    	if ( dynamicPlatformMap.containsKey( platform.name ) ){
+    		platform.name = platform.name + "-CHANGE_MY_NAME"+entityCount;
+    	}
     	dynamicPlatformMap.put( platform.name, platform );
     }
+    
+    /**
+     * Add Kinamatic platform to this Skeleton
+     * @param Platform that's already set as kinematic
+     */
+    public void addKinematicPlatform( Platform platform ){
+    	//kinematicPlatforms.add( platform );
+    	entityCount++;
+    	if ( kinematicPlatformMap.containsKey( platform.name ) ){
+    		platform.name = platform.name + "-CHANGE_MY_NAME"+entityCount;
+    	}
+    	kinematicPlatformMap.put( platform.name, platform );
+    }
+    
 
     /**
      * Add a skeleton to the sub skeleton list of this one.
@@ -339,7 +349,7 @@ public class Skeleton extends Platform {
      * Update all sub-skeleton and bones on this skeleton
      * @author stew
      */
-    private void updateChildren( float deltaTime ) {
+    protected void updateChildren( float deltaTime ) {
         // update sub skeleton and bones
         for ( Skeleton skeleton : childSkeletonMap.values( ) ) {
             skeleton.update( deltaTime );
@@ -398,7 +408,7 @@ public class Skeleton extends Platform {
      * update child skeletons based on rotation & position of this skeleton
      * TODO: OPTIMIZATION only call this when the skeleton has moved / rotated
      */
-    private void setPosRotChildSkeletons( float deltaTime ) {
+    protected void setPosRotChildSkeletons( float deltaTime ) {
 		for ( Skeleton skeleton : childSkeletonMap.values( ) ){
 			if ( skeleton.isKinematic( ) )
 				skeleton.setPosRotFromSkeleton( deltaTime, this );
@@ -410,7 +420,7 @@ public class Skeleton extends Platform {
     /**
      * @author stew
      */
-    private void setPosRotAllKinematicPlatforms(float deltaTime){
+    protected void setPosRotAllKinematicPlatforms(float deltaTime){
     	//first recursively set all kin platforms position
     	for ( Skeleton skeleton : childSkeletonMap.values( ) ){
     		skeleton.setPosRotAllKinematicPlatforms(deltaTime);

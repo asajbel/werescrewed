@@ -19,27 +19,33 @@ public class RootSkeleton extends Skeleton {
 	
 	 @Override
 	 public void update( float deltaTime ) {
-		 
-		//update root skeleton imover
-	        updateMover( deltaTime );
-	        //followed by children skeleton imovers
-	        updateChildSkeletonMovers( deltaTime );
-	        //update all children platform IMovers on their imover local coord system
-	        updateEntityMovers( deltaTime );
-	        
-	        //recursively move all children skeletons by this moved updated pos*rot.
-	        setPosRotChildSkeletons( deltaTime );
-	        
-	        //Now we can rotate all kinematic entities connected by updated skeleton rot / position
-	        //setPosRotAllKinematicPlatforms(deltaTime);
-	        
-	        //Update children animations and stuff
-	        updateChildren( deltaTime );
-		 
-		 for ( Entity entity : looseEntity ){
-			 entity.update( deltaTime );
-		 }
-		 super.update( deltaTime );
+        //recursively update all skeleton movers
+        updateChildSkeletonMovers( deltaTime );
+        
+        //update all children platform IMovers on their imover local coord system
+        updateEntityMovers( deltaTime );
+        
+        //recursively move all children skeletons by this moved updated pos*rot.
+        //setPosRotChildSkeletons( deltaTime );
+        for ( Skeleton childSkeleton : childSkeletonMap.values( ) ){
+        	childSkeleton.setPosRotChildSkeletons( deltaTime );
+        }
+        
+      //Now we can rotate all kinematic entities connected by updated skeleton rot / position
+        for ( Skeleton childSkeleton : childSkeletonMap.values( ) ){
+        	childSkeleton.setPosRotAllKinematicPlatforms( deltaTime );
+        	childSkeleton.updateChildren( deltaTime );
+        }
+        
+        //Update children animations and stuff
+        //for ( Skeleton childSkeleton : childSkeletonMap.values( ) ){
+        //	childSkeleton.updateChildren( deltaTime );
+        //}
+        
+		for ( Entity entity : looseEntity ){
+			entity.update( deltaTime );
+		}
+		//super.update( deltaTime );
 	 }
 
     @Override
