@@ -12,6 +12,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJoint;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
 import com.blindtigergames.werescrewed.entity.Entity;
+import com.blindtigergames.werescrewed.entity.EntityType;
 import com.blindtigergames.werescrewed.skeleton.Skeleton;
 import com.blindtigergames.werescrewed.util.Util;
 
@@ -35,6 +36,7 @@ public class StructureScrew extends Screw {
 		fallTimeout = 140;
 		extraJoints = new ArrayList< RevoluteJoint >( );
 		screwType = ScrewType.STRUCTURAL;
+		entityType = EntityType.SCREW;
 		
 		constuctBody( pos );
 		connectScrewToEntity( entity, skeleton, pos );

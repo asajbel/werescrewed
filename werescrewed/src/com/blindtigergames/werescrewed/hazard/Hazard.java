@@ -5,6 +5,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityDef;
+import com.blindtigergames.werescrewed.entity.EntityType;
 import com.blindtigergames.werescrewed.player.Player;
 
 /**
@@ -22,6 +23,8 @@ public class Hazard extends Entity {
 			boolean solid, float anchRadius ) {
 		super( name, type, world, posPix, rot, scale, texture, solid,
 				anchRadius );
+		//type used to determine what type of entity for collisions
+		entityType = EntityType.HAZARD;
 	}
 
 	//Performs check to see if a player has collided with a hazard.

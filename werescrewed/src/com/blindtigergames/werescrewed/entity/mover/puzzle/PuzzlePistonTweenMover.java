@@ -65,10 +65,10 @@ public class PuzzlePistonTweenMover extends TweenMover implements IMover {
 	@Override
 	public void runPuzzleMovement( PuzzleScrew screw, float screwVal, Platform p ) {
 		//addwaypoint to originposition then reset
-		if( p.mover == null && hasNoTweens() ) {
+		if( p.currentMover( ) == null && hasNoTweens() ) {
 			if ( (screwVal >= 0.9 && !isAtMaxScrewValue) || (screwVal <= 0.1 && isAtMaxScrewValue) ){
 				isAtMaxScrewValue = !isAtMaxScrewValue;
-				p.setMover(this);
+				p.setMoverAtCurrentState( this );
 					addTween( Tween.to( pistonPlatform, PlatformAccessor.LOCAL_POS_XY, this.timeUp )
 								   .target( this.pistonDestination.x, this.pistonDestination.y  )
 								   .delay(  this.delayUp )
@@ -81,7 +81,7 @@ public class PuzzlePistonTweenMover extends TweenMover implements IMover {
 							   .start() );
 			}
 		}else if ( hasNoTweens() ){
-			p.mover = null;
+			p.setMoverNullAtCurrentState( );
 		}
 	}
 	

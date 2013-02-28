@@ -13,6 +13,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJoint;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
 import com.blindtigergames.werescrewed.entity.Entity;
+import com.blindtigergames.werescrewed.entity.EntityType;
 import com.blindtigergames.werescrewed.skeleton.Skeleton;
 import com.blindtigergames.werescrewed.util.Util;
 
@@ -35,7 +36,7 @@ public class BossScrew extends Screw {
 		fallTimeout = 140;
 		extraJoints = new ArrayList< RevoluteJoint >( );
 		screwType = ScrewType.BOSS;
-
+		entityType = EntityType.SCREW;
 
 		sprite.setColor( 244f/255f, 215f/255f, 7f/255f, 1.0f);
 		
@@ -96,6 +97,15 @@ public class BossScrew extends Screw {
 	@Override
 	public int getDepth( ) {
 		return depth;
+	}
+	
+	/**
+	 * boss screws allow two players to attach
+	 * this function should always return false
+	 * @return playerAttached
+	 */
+	public boolean isPlayerAttached( ) {
+		return false;
 	}
 	
 	@Override
