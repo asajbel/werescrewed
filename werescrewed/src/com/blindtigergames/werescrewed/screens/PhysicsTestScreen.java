@@ -393,16 +393,6 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		TiledPlatform slidingPlatform = platBuilder.width( 10 ).height( 1 )
 				.oneSided( true ).position( -1000, 200 )//.texture( testTexture )
 				.friction( 1f ).dynamic( ).buildTilePlatform( );
-//
-//		PrismaticJointDef prismaticJointDef = JointFactory
-//				.constructSlidingJointDef( skeleton.body, slidingPlatform.body,
-//						slidingPlatform.body.getWorldCenter( ), new Vector2( 1,
-//								0 ), 1.0f, 1f );
-//		PrismaticJoint j = ( PrismaticJoint ) world
-//				.createJoint( prismaticJointDef );
-//		slidingPlatform.setMover( new SlidingMotorMover(
-//				PuzzleType.PRISMATIC_SLIDER, j ) );
-//		skeleton.addDynamicPlatform( slidingPlatform );
 
 		PrismaticJointDef prismaticJointDef = JointFactory
 				.constructSlidingJointDef( skeleton.body, slidingPlatform.body,
