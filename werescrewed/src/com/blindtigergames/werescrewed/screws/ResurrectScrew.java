@@ -29,6 +29,7 @@ public class ResurrectScrew extends Screw {
 	private boolean pullLeft;
 	private Player deadPlayer;
 	private boolean destroyJoint = false;
+	private boolean playerAttached = false;
 
 	/**
 	 * 
@@ -99,15 +100,26 @@ public class ResurrectScrew extends Screw {
 	public void remove( ) {
 		world.destroyJoint( pulleyJoint );
 		world.destroyBody( pulleyWeight );
+		playerAttached = false;
 		while ( body.getJointList( ).iterator( ).hasNext( ) ) {
-			world.destroyJoint( body.getJointList( ).get( 0 ).joint );
+			Entity entity = ( Entity ) body.getJointList( ).get( 0 ).joint.getBodyA( ).getUserData( );
+			if ( entity.getEntityType( ) != EntityType.PLAYER ) {
+				world.destroyJoint( body.getJointList( ).get( 0 ).joint );
+			} else {
+				playerAttached = true;
+			}
 		}
-		world.destroyBody( body );
+		if ( !playerAttached ) {
+			world.destroyBody( body );
+		}
 	}
 	
 	@Override
 	public void update( float deltaTime ) {
 		super.update( deltaTime );
+		if ( playerAttached ) {
+			remove ( );
+		}
 		if ( destroyJoint
 				|| ( deadPlayer != null && !deadPlayer.isPlayerDead( ) ) ) {
 			deadPlayer.respawnPlayer( );
