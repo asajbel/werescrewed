@@ -1,6 +1,7 @@
 package com.blindtigergames.werescrewed.hazard;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.blindtigergames.werescrewed.entity.Entity;
@@ -29,6 +30,10 @@ public class Hazard extends Entity {
 
 	//Performs check to see if a player has collided with a hazard.
 	public void performContact ( Player player ) {
-		
+		player.killPlayer( );
+	}
+	
+	public boolean isActive ( ) {
+		return active;
 	}
 }

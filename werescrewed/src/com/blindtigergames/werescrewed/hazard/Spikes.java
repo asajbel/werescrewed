@@ -1,6 +1,7 @@
 package com.blindtigergames.werescrewed.hazard;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.blindtigergames.werescrewed.entity.EntityDef;
@@ -22,11 +23,23 @@ public class Spikes extends Hazard {
 		
 	}
 
+	@Override
 	public void performContact ( Player player ) {
 		/*Possible Player-Spike collision test
 		  (player.x + player.width > spikes.x) &&
 		   (player.x < spikes.x + spikes.width) && 
 		   (player.y <= spikes.y + spikes.height)
 		*/
+		player.killPlayer( );
+	}
+	
+	@Override
+	public void update( float deltaTime ) {
+		
+	}
+
+	@Override
+	public void draw( SpriteBatch batch ) {
+		
 	}
 }

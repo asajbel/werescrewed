@@ -284,6 +284,7 @@ public class Player extends Entity {
 	 */
 	public void killPlayer( ) {
 		isDead = true;
+		System.out.println( isDead );
 	}
 
 	/**

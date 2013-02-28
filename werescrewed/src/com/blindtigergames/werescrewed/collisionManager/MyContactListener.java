@@ -209,6 +209,9 @@ public class MyContactListener implements ContactListener {
 							player2.hitPlayer( null );
 						}
 						break;
+					case HAZARD:
+						player.respawnPlayer( );
+						break;
 					default:
 						break;
 					}

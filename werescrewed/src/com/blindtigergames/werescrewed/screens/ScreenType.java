@@ -100,6 +100,12 @@ public enum ScreenType {
 			return new ResurrectScreen( );
 		}
 	},
+	HAZARD {
+		@Override
+		protected com.badlogic.gdx.Screen getScreenInstance( ) {
+			return new HazardScreen( );
+		}
+	},
 	MAIN_MENU {
 		@Override
 		protected com.badlogic.gdx.Screen getScreenInstance( ) {
