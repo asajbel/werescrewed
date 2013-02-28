@@ -266,6 +266,9 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 
 	}
 
+	/**
+	 * Initializes steam for testing, not on a skeleton at the moment
+	 */
 	private void initParticleEffect( ) {
 		testSteam = new Steam ("testSteam", new Vector2(-100f, 0f), null, null, false, 25, 50, world );
 	}

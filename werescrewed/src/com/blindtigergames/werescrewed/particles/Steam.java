@@ -13,6 +13,7 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.World;
 import com.blindtigergames.werescrewed.entity.Entity;
+import com.blindtigergames.werescrewed.entity.EntityType;
 import com.blindtigergames.werescrewed.util.Util;
 
 public class Steam extends Entity{
@@ -22,6 +23,7 @@ public class Steam extends Entity{
 	float height;
 	
 	/**
+	 * Creates a steam vent which moves players up when they collide
 	 * 
 	 * @param name String
 	 * @param positionPixels Vector2
@@ -35,7 +37,7 @@ public class Steam extends Entity{
 			boolean solid, float pixelWidth, float pixelHeight, World world ) {
 
 		super( name, positionPixels, texture, body, false );
-
+		entityType = EntityType.STEAM;
 		width = pixelWidth;
 		height = pixelHeight;
 		this.world = world;
@@ -48,10 +50,23 @@ public class Steam extends Entity{
 		constructBody(positionPixels, pixelHeight, pixelWidth);
 	}
 	
+	/**
+	 * Draws the particles for steam from the base of its body
+	 * 
+	 * @param batch spriteBatch
+	 * @param deltaTime float
+	 */
 	public void draw( SpriteBatch batch, float deltaTime ) {
 			particleEffect.draw( batch, deltaTime );
 	}
-
+	
+	/**
+	 * builds body of steam collision rectangle
+	 * 
+	 * @param position Vector2
+	 * @param height float
+	 * @param width float
+	 */
 	private void constructBody(Vector2 position, float height, float width){
 		BodyDef bodyDef = new BodyDef( );
 		bodyDef.type = BodyType.KinematicBody;

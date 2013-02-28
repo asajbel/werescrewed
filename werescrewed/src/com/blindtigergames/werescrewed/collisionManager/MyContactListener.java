@@ -1,5 +1,6 @@
 package com.blindtigergames.werescrewed.collisionManager;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.Contact;
@@ -112,6 +113,9 @@ public class MyContactListener implements ContactListener {
 								.getUserData( );
 						checkP.hitPlayer( );
 						break;
+					case STEAM:
+						player.setSteamCollide( true );
+						break;
 					default:
 						break;
 					}
@@ -209,6 +213,9 @@ public class MyContactListener implements ContactListener {
 							player2.hitPlayer( null );
 						}
 						break;
+					case STEAM:
+						player.setSteamCollide( false );
+						break;
 					default:
 						break;
 					}
@@ -293,7 +300,7 @@ public class MyContactListener implements ContactListener {
 		}
 	}
 
-	/**
+	/*
 	 * After physics is calculated each step
 	 */
 	@Override
