@@ -169,12 +169,12 @@ public class Player extends Entity {
 		if ( name.equals( "player1" ) ) {
 			// Gdx.app.log( "playerState", "" + playerState + " " + grounded );
 			// System.out.println( jumpPressedKeyboard );
-			 //Gdx.app.log( name + " playerState", "" + playerState + " " + grounded +
-			// "isDead? = " + isDead );
+			Gdx.app.log( name + " playerState", "" + playerState + " "
+					+ grounded + "isDead? = " + isDead );
 		}
 		if ( name.equals( "player2" ) ) {
-			// Gdx.app.log( name + " playerState", "" + playerState + " " + grounded +
-			// "isDead? = " + isDead );
+			Gdx.app.log( name + " playerState", "" + playerState + " "
+					+ grounded + "isDead? = " + isDead );
 		}
 		if ( kinematicTransform ) {
 			// setPlatformTransform( platformOffset );
@@ -235,7 +235,7 @@ public class Player extends Entity {
 		if ( body.getLinearVelocity( ).y < -MIN_VELOCITY * 6f
 				&& playerState != PlayerState.Screwing
 				&& playerState != PlayerState.JumpingOffScrew
-				&& playerState != PlayerState.HeadStand ) {
+				&& playerState != PlayerState.HeadStand && !isDead ) {
 			playerState = PlayerState.Falling;
 		}
 		// after the players collide check if one is falling
@@ -275,8 +275,7 @@ public class Player extends Entity {
 					mover = null;
 				}
 			}
-		}
-		else if (steamCollide){
+		} else if ( steamCollide ) {
 			steamResolution( );
 		}
 		terminalVelocityCheck( 15.0f );
@@ -290,6 +289,26 @@ public class Player extends Entity {
 	 * This function sets player in dead state
 	 */
 	public void killPlayer( ) {
+		playerState = PlayerState.Standing;
+		while ( body.getJointList( ).iterator( ).hasNext( ) ) {
+			world.destroyJoint( body.getJointList( ).get( 0 ).joint );
+		}
+		playerToPlayer = null;
+		playerToScrew = null;
+		if ( currentScrew != null ) {
+			currentScrew.setPlayerAttached( false );
+			currentScrew = null;
+		}
+		Filter filter = new Filter( );
+		for ( Fixture f : body.getFixtureList( ) ) {
+			f.setSensor( false );
+			filter = f.getFilterData( );
+			// move player back to original category
+			filter.categoryBits = Util.CATEGORY_PLAYER;
+			// player now collides with everything
+			filter.maskBits = Util.CATEGORY_EVERYTHING;
+			f.setFilterData( filter );
+		}
 		isDead = true;
 	}
 
@@ -608,7 +627,8 @@ public class Player extends Entity {
 	 * @author dennis
 	 */
 	private void attachToScrew( ) {
-		if ( currentScrew.body.getJointList( ).size( ) > 0
+		if ( currentScrew != null
+				&& currentScrew.body.getJointList( ).size( ) > 0
 				&& playerState != PlayerState.HeadStand
 				&& !currentScrew.isPlayerAttached( ) ) {
 			// Filter filter;
@@ -1356,26 +1376,27 @@ public class Player extends Entity {
 	/**
 	 * sets the value of steam collide flag
 	 * 
-	 * @param value boolean
+	 * @param value
+	 *            boolean
 	 */
-	
+
 	public void setSteamCollide( boolean value ) {
 		steamCollide = value;
 	}
-	
+
 	/**
 	 * says whether the player is in steam
 	 * 
 	 * @return boolean
 	 */
-	public boolean isSteamCollide( ){
+	public boolean isSteamCollide( ) {
 		return steamCollide;
 	}
-	
+
 	/**
 	 * applys force to player
 	 */
-	private void steamResolution( ){
+	private void steamResolution( ) {
 		body.applyForceToCenter( 0f, STEAM_FORCE );
 	}
 }

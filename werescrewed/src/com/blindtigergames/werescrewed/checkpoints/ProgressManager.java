@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.JointEdge;
 import com.badlogic.gdx.physics.box2d.World;
 import com.blindtigergames.werescrewed.entity.Entity;
@@ -22,7 +23,7 @@ import com.blindtigergames.werescrewed.util.Util;
 public class ProgressManager {
 
 	private ArrayList< CheckPoint > checkPoints;
-	private ResurrectScrew resurrectScrew;
+	private ResurrectScrew[ ] resurrectScrews;
 	private Player player1;
 	private Player player2;
 	private World world;
@@ -41,7 +42,9 @@ public class ProgressManager {
 		this.player2 = p2;
 		this.world = world;
 		checkPoints = new ArrayList< CheckPoint >( );
-		resurrectScrew = null;
+		resurrectScrews = new ResurrectScrew[ 2 ];
+		resurrectScrews[0] = new ResurrectScrew( Vector2.Zero, world );
+		resurrectScrews[1] = new ResurrectScrew( Vector2.Zero, world );
 		currentCheckPoint = 0;
 	}
 
@@ -90,12 +93,9 @@ public class ProgressManager {
 			handleDeadPlayer( );
 			handleDeadPlayerInput( player2 );
 		}
-		if ( resurrectScrew != null && !player1.isPlayerDead( )
-				&& !player2.isPlayerDead( )
-				&& !resurrectScrew.isPlayerAttached( ) ) {
-			resurrectScrew.remove( );
-			if ( resurrectScrew.isRemoved( ) ) {
-				resurrectScrew = null;
+		if ( !player1.isPlayerDead( ) && !player2.isPlayerDead( ) ) {
+			for ( ResurrectScrew rezScrew : resurrectScrews ) {
+				rezScrew.setActive( false );
 			}
 		}
 		for ( int i = 0; i < checkPoints.size( ); i++ ) {
@@ -104,8 +104,10 @@ public class ProgressManager {
 			}
 			checkPoints.get( i ).update( deltaTime );
 		}
-		if ( resurrectScrew != null ) {
-			resurrectScrew.update( deltaTime );
+		for ( ResurrectScrew rezScrew : resurrectScrews ) {
+			if ( rezScrew.isActive( ) ) {
+				rezScrew.update( deltaTime );
+			}
 		}
 	}
 
@@ -119,9 +121,9 @@ public class ProgressManager {
 		for ( CheckPoint c : checkPoints ) {
 			c.draw( batch );
 		}
-		if ( resurrectScrew != null ) {
-			if ( resurrectScrew.body.getJointList( ).size( ) <= 1 ) {
-				resurrectScrew.draw( batch );
+		for ( ResurrectScrew rezScrew : resurrectScrews ) {
+			if ( rezScrew.isActive( ) ) {
+				rezScrew.draw( batch );
 			}
 		}
 	}
@@ -130,21 +132,27 @@ public class ProgressManager {
 	 * when a player dies create a resurrection screw
 	 */
 	private void handleDeadPlayer( ) {
-		if ( resurrectScrew == null ) {
-			Entity entity = null;
-			for ( JointEdge j : checkPoints.get( currentCheckPoint ).body
-					.getJointList( ) ) {
-				entity = ( Entity ) j.joint.getBodyB( ).getUserData( );
-			}
-			if ( player1.isPlayerDead( ) && !player2.isPlayerDead( ) ) {
-				resurrectScrew = new ResurrectScrew( player1.getPosition( )
-						.add( 0, 256f * Util.PIXEL_TO_BOX )
-						.mul( Util.BOX_TO_PIXEL ), entity, world, player1 );
-			} else if ( !player1.isPlayerDead( ) ) {
-				resurrectScrew = new ResurrectScrew( player2.getPosition( )
-						.add( 0, 256f * Util.PIXEL_TO_BOX )
-						.mul( Util.BOX_TO_PIXEL ), entity, world, player2 );
-			}
+		Entity entity = checkPoints.get( currentCheckPoint );
+		for ( JointEdge j : checkPoints.get( currentCheckPoint ).body
+				.getJointList( ) ) {
+			entity = ( Entity ) j.joint.getBodyB( ).getUserData( );
+		}
+		if ( player1.isPlayerDead( ) && !player2.isPlayerDead( ) ) {
+			resurrectScrews[ 0 ].body.setTransform(
+					player1.getPosition( ).add( 0, 256f * Util.PIXEL_TO_BOX )
+							.mul( Util.BOX_TO_PIXEL ), 0.0f );
+			resurrectScrews[ 0 ].connectScrewToEntity( entity );
+			resurrectScrews[ 0 ].setActive( true );
+			resurrectScrews[ 0 ].setDeadPlayer( player1 );
+			resurrectScrews[ 0 ].constructPulley( );
+		} else if ( !player1.isPlayerDead( ) ) {
+			resurrectScrews[ 1 ].body.setTransform(
+					player2.getPosition( ).add( 0, 256f * Util.PIXEL_TO_BOX )
+							.mul( Util.BOX_TO_PIXEL ), 0.0f );
+			resurrectScrews[ 1 ].setActive( true );
+			resurrectScrews[ 1 ].connectScrewToEntity( entity );
+			resurrectScrews[ 1 ].setDeadPlayer( player1 );
+			resurrectScrews[ 1 ].constructPulley( );
 		}
 	}
 
@@ -171,15 +179,12 @@ public class ProgressManager {
 	 * @param player
 	 */
 	private void spawnAtCheckPoint( Player player ) {
-		if ( resurrectScrew != null ) {
-			resurrectScrew.remove( );
-			if ( resurrectScrew.isRemoved( ) ) {
-				resurrectScrew = null;
-			}
-		}
 		player.body.setTransform( checkPoints.get( currentCheckPoint )
 				.getPosition( ), 0.0f );
 		player.respawnPlayer( );
+		for ( ResurrectScrew rezScrew : resurrectScrews ) {
+			rezScrew.setActive( false );
+		}
 	}
 
 }
