@@ -25,8 +25,8 @@ import com.blindtigergames.werescrewed.util.Util;
 public class ResurrectScrew extends Screw {
 	private PulleyJoint pulleyJoint;
 	private Body pulleyWeight;
-	private boolean pullLeft;
 	private Player deadPlayer;
+	private boolean pullLeft;
 	private boolean destroyJoint = false;
 
 	/**
@@ -37,8 +37,8 @@ public class ResurrectScrew extends Screw {
 	 * @param world
 	 * @param deadPlayer
 	 */
-	public ResurrectScrew( Vector2 pos, Entity entity,
-			World world, Player deadPlayer ) {
+	public ResurrectScrew( Vector2 pos, Entity entity, World world,
+			Player deadPlayer ) {
 		super( "onlyInstance_RezScrew", pos, null );
 		this.world = world;
 		this.depth = 1;
@@ -96,32 +96,45 @@ public class ResurrectScrew extends Screw {
 	 * destroys the joints and body of the object
 	 */
 	public void remove( ) {
-		while ( body.getJointList( ).iterator( ).hasNext( ) ) {
-			world.destroyJoint( body.getJointList( ).get( 0 ).joint );
+		if ( !removed ) {
+			if ( !playerAttached ) {
+				while ( body.getJointList( ).iterator( ).hasNext( ) ) {
+					world.destroyJoint( body.getJointList( ).get( 0 ).joint );
+				}
+				world.destroyBody( body );
+				removed = true;
+			}
+			if ( pulleyJoint != null ) {
+				world.destroyJoint( pulleyJoint );
+				pulleyJoint = null;
+			}
+			if ( pulleyWeight != null ) {
+				world.destroyBody( pulleyWeight );
+				pulleyWeight = null;
+			}
 		}
-//		world.destroyJoint( pulleyJoint );
-		world.destroyBody( pulleyWeight );
-		world.destroyBody( body );
 	}
-	
+
 	@Override
 	public void update( float deltaTime ) {
 		super.update( deltaTime );
-		if ( destroyJoint
-				|| ( deadPlayer != null && !deadPlayer.isPlayerDead( ) ) ) {
-			deadPlayer.respawnPlayer( );
-			world.destroyJoint( pulleyJoint );
-			world.destroyBody( pulleyWeight );
-			deadPlayer = null;
-			destroyJoint = false;
-		}
-		sprite.setRotation( rotation );
-		if ( depth != screwStep ) {
-			screwStep--;
-		}
-		if ( depth == screwStep ) {
-			body.setAngularVelocity( 0 );
-			pulleyWeight.setLinearVelocity( new Vector2( 0f, 0f ) );
+		if ( !removed ) {
+			if ( destroyJoint
+					|| ( deadPlayer != null && !deadPlayer.isPlayerDead( ) ) ) {
+				deadPlayer.respawnPlayer( );
+				deadPlayer = null;
+				destroyJoint = false;
+			}
+			sprite.setRotation( rotation );
+			if ( depth != screwStep ) {
+				screwStep--;
+			}
+			if ( depth == screwStep ) {
+				body.setAngularVelocity( 0 );
+				if ( pulleyWeight != null ) {
+					pulleyWeight.setLinearVelocity( new Vector2( 0f, 0f ) );
+				}
+			}
 		}
 	}
 

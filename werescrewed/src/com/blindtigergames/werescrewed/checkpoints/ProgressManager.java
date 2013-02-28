@@ -92,9 +92,8 @@ public class ProgressManager {
 		}
 		if ( resurrectScrew != null && !player1.isPlayerDead( )
 				&& !player2.isPlayerDead( )
-				&& resurrectScrew.body.getJointList( ).size( ) <= 1 ) {
+				&& !resurrectScrew.isPlayerAttached( ) ) {
 			resurrectScrew.remove( );
-			resurrectScrew = null;
 		}
 		for ( int i = 0; i < checkPoints.size( ); i++ ) {
 			if ( i != currentCheckPoint ) {
@@ -169,8 +168,9 @@ public class ProgressManager {
 	 * @param player
 	 */
 	private void spawnAtCheckPoint( Player player ) {
-		resurrectScrew.remove( );
-		resurrectScrew = null;
+		if ( !resurrectScrew.isPlayerAttached( ) ) {
+			resurrectScrew.remove( );
+		}
 		player.body.setTransform( checkPoints.get( currentCheckPoint )
 				.getPosition( ), 0.0f );
 		player.respawnPlayer( );

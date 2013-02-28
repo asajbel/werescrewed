@@ -37,6 +37,7 @@ public class Screw extends Entity {
 	protected int maxDepth;
 	protected int screwStep;
 	protected boolean playerAttached;
+	protected boolean removed;
 	protected ScrewType screwType;
 
 	/**
