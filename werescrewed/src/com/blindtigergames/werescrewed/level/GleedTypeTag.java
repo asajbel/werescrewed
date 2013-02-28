@@ -15,6 +15,7 @@ public enum GleedTypeTag {
     }
 
     private final String text;
+    
     @Override
     public String toString() {
         return text;

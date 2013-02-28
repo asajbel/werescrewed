@@ -61,8 +61,12 @@ public class ScrewBuilder extends GenericEntityBuilder< ScrewBuilder > {
 	@Override
 	public ScrewBuilder properties(HashMap<String,String> props){
 		super.properties( props );
-		this.screwType(props.get( "ScrewType" ));
-		this.max(Integer.decode( props.get("ScrewMax") ));
+		if (props.containsKey( "ScrewType" )){
+			this.screwType(props.get( "ScrewType" ));
+		}
+		if (props.containsKey( "ScrewMax" )){
+			this.max(Integer.decode( props.get("ScrewMax") ));
+		}
 		return this;
 	}
 	

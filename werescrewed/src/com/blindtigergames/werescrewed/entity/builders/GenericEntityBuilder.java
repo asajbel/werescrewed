@@ -227,7 +227,7 @@ public class GenericEntityBuilder< B extends GenericEntityBuilder< ? >> {
 
 	/**
 	 * Loads an entity's special properties from a hashmap. For generic
-	 * entities, this does nothing. This is basically a placeholder for
+	 * entities, this only loads movers from a hashmap. This is basically a placeholder for
 	 * subclasses to inherit.
 	 * 
 	 * @param props
@@ -236,6 +236,9 @@ public class GenericEntityBuilder< B extends GenericEntityBuilder< ? >> {
 	 */
 	@SuppressWarnings( "unchecked" )
 	public B properties( HashMap< String, String > props ) {
+		if (props.containsKey( "IdleMover" )){
+			
+		}
 		return ( B ) this;
 	}
 

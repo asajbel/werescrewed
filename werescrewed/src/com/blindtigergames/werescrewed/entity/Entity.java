@@ -15,6 +15,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.blindtigergames.werescrewed.camera.Anchor;
 import com.blindtigergames.werescrewed.camera.AnchorList;
 import com.blindtigergames.werescrewed.entity.mover.IMover;
+import com.blindtigergames.werescrewed.level.GleedLoadable;
 import com.blindtigergames.werescrewed.util.Util;
 
 /**
@@ -24,7 +25,7 @@ import com.blindtigergames.werescrewed.util.Util;
  * @author Kevin
  * 
  */
-public class Entity {
+public class Entity implements GleedLoadable {
 	public String name;
 	public EntityDef type;
 	public Sprite sprite;
@@ -204,8 +205,10 @@ public class Entity {
 		}		
 		//animation stuff may go here
 		Vector2 bodyPos = body.getPosition( ).mul( Util.BOX_TO_PIXEL );
-		sprite.setPosition( bodyPos.x - offset.x, bodyPos.y - offset.y );
-		sprite.setRotation( MathUtils.radiansToDegrees * body.getAngle( ) );
+		if (sprite != null){
+			sprite.setPosition( bodyPos.x - offset.x, bodyPos.y - offset.y );
+			sprite.setRotation( MathUtils.radiansToDegrees * body.getAngle( ) );
+		}
 	}
 
 	/**
