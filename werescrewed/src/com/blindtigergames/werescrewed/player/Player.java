@@ -169,7 +169,7 @@ public class Player extends Entity {
 		if ( name.equals( "player1" ) ) {
 			// Gdx.app.log( "playerState", "" + playerState + " " + grounded );
 			// System.out.println( jumpPressedKeyboard );
-			Gdx.app.log( name + " playerState", "" + playerState + " "
+			 Gdx.app.log( name + " playerState", "" + playerState + " "
 					+ grounded + "isDead? = " + isDead );
 		}
 		if ( name.equals( "player2" ) ) {
@@ -1397,6 +1397,8 @@ public class Player extends Entity {
 	 * applys force to player
 	 */
 	private void steamResolution( ) {
+		if (prevButton == null)
+			body.setLinearVelocity(new Vector2 ( 0f, body.getLinearVelocity( ).y));
 		body.applyForceToCenter( 0f, STEAM_FORCE );
 	}
 }

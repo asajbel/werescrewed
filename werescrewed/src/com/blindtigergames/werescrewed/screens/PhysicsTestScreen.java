@@ -270,7 +270,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 	 * Initializes steam for testing, not on a skeleton at the moment
 	 */
 	private void initParticleEffect( ) {
-		testSteam = new Steam ("testSteam", new Vector2(-100f, 0f), null, null, false, 25, 50, world );
+		testSteam = new Steam ("testSteam", new Vector2(-100f, 20f), null, null, false, 25, 50, world );
 	}
 
 	/**
@@ -315,10 +315,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 				.restitution( 0.0f ).kinematic( ).buildTilePlatform( );
 		flipPlat2.setLocalRot( -90 * Util.DEG_TO_RAD );
 		skeleton.addKinematicPlatform( flipPlat2 );
-
-		ProjectileMover cannon = new ProjectileMover( 1, 2, 10, new Vector2(
-				400f, 400f ) );
-
+		
 		// rotate puzzle screw control
 		RotateByDegree rm = new RotateByDegree( 0.0f, -90.0f, 0, 0.5f );
 		PuzzleScrew puzzleScrew = new PuzzleScrew( "001",
@@ -470,11 +467,11 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 				.friction( 1f );
 
 		// 1000 - 1219 for perfect gears
-		Platform gear = builder.name( "gear" ).position( 1219, 320 )
+		Platform gear = builder.name( "gear" ).position( -1719, 320 )
 				.texture( null ).setScale( 3f ).type( "gearSmall" )
 				.buildComplexPlatform( );
 		skeleton.addPlatformRotatingCenterWithMot( gear, 1f );
-		Platform gear2 = builder.name( "gear2" ).position( 1000, 300 )
+		Platform gear2 = builder.name( "gear2" ).position( -1500, 300 )
 				.texture( null ).setScale( 3f ).type( "gearSmall" )
 				.buildComplexPlatform( );
 		skeleton.addPlatformRotatingCenter( gear2 );
