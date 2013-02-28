@@ -79,6 +79,7 @@ public class PuzzlePistonTweenMover extends TweenMover implements IMover {
 							   .delay( this.delayDown )
 							   .ease( TweenEquations.easeNone )
 							   .start() );
+				
 			}
 		}else if ( hasNoTweens() ){
 			p.mover = null;
