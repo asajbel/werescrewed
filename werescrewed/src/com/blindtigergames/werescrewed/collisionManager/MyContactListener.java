@@ -11,6 +11,7 @@ import com.badlogic.gdx.physics.box2d.Manifold;
 import com.blindtigergames.werescrewed.camera.Anchor;
 import com.blindtigergames.werescrewed.checkpoints.CheckPoint;
 import com.blindtigergames.werescrewed.entity.Entity;
+import com.blindtigergames.werescrewed.eventTrigger.EventTrigger;
 import com.blindtigergames.werescrewed.platforms.Platform;
 import com.blindtigergames.werescrewed.platforms.PlatformType;
 import com.blindtigergames.werescrewed.hazard.Hazard;
@@ -118,6 +119,11 @@ public class MyContactListener implements ContactListener {
 							break;
 						case STEAM:
 							player.setSteamCollide( true );
+							break;
+						case EVENTTRIGGER:
+							EventTrigger et = ( EventTrigger ) objectFix.getBody( )
+								.getUserData( );
+							et.phoneHome( );
 							break;
 						default:
 							break;

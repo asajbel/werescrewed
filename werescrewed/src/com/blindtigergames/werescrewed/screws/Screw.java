@@ -117,7 +117,6 @@ public class Screw extends Entity {
 	 */
 	public void setPlayerAttached( boolean isPlayerAttached ) {
 		playerAttached = isPlayerAttached;
-		Gdx.app.log( "connected", "to scre " + playerAttached);
 	}
 	
 	/**

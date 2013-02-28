@@ -30,6 +30,7 @@ import com.blindtigergames.werescrewed.entity.mover.puzzle.PuzzleRotateTweenMove
 import com.blindtigergames.werescrewed.entity.tween.EntityAccessor;
 import com.blindtigergames.werescrewed.entity.tween.PathBuilder;
 import com.blindtigergames.werescrewed.entity.tween.PlatformAccessor;
+import com.blindtigergames.werescrewed.eventTrigger.EventTrigger;
 import com.blindtigergames.werescrewed.platforms.Platform;
 import com.blindtigergames.werescrewed.platforms.TiledPlatform;
 import com.blindtigergames.werescrewed.player.Player;
@@ -731,6 +732,9 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 				plat.body.getPosition( ).y * Util.BOX_TO_PIXEL ), 50, plat,
 				skel9, world );
 		plat.addScrew( bossBolt );
+		
+		EventTrigger et = new EventTrigger("event1", world);
+		et.constructCircleBody( 100, new Vector2(175f * TILE, 94 * TILE) );
 		
 //		specialPlat = platBuilder.position( 175f * TILE, 85 * TILE ).name( "plat12" )
 //				.dimensions( 6, 1 ).texture( testTexture ).kinematic( )

@@ -1,7 +1,11 @@
 package com.blindtigergames.werescrewed.skeleton;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
@@ -32,24 +36,26 @@ import com.blindtigergames.werescrewed.util.Util;
 
 public class Skeleton extends Platform {
 
-    private ArrayList<Skeleton> childSkeletons;
-    private ArrayList<Platform> dynamicPlatforms;
-    private ArrayList<Platform> kinematicPlatforms;
-    private ArrayList<Entity>   looseEntity; 
-    private Texture foregroundTex;
-    private ArrayList< Screw > screws; //add all screws you want drawn
-    private ArrayList< Rope > ropes;
+    //protected ArrayList<Skeleton> childSkeletons;
+    //protected ArrayList<Platform> dynamicPlatforms;
+    //protected ArrayList<Platform> kinematicPlatforms;
+    //private ArrayList<Entity>   looseEntity; 
+    protected Texture foregroundTex;
+    //protected ArrayList< Screw > screws; //add all screws you want drawn
+    //protected ArrayList< Rope > ropes;
+    
+    protected HashMap< String, Platform > dynamicPlatformMap = new HashMap< String, Platform >( );
+	protected HashMap< String, Skeleton > childSkeletonMap = new HashMap< String, Skeleton >( );
+	protected HashMap< String, Platform > kinematicPlatformMap = new HashMap< String, Platform >( );
+	protected HashMap< String, Rope > ropeMap = new HashMap< String, Rope >( );
+	protected HashMap< String, Screw > screwMap = new HashMap< String, Screw >( );
+	
+	private int entityCount = 0;
 
     public Skeleton( String n, Vector2 pos, Texture tex, World world ) {
         super( n, pos, tex, world); // not constructing body class
         this.world = world;
         constructSkeleton( pos );
-        this.dynamicPlatforms = new ArrayList<Platform>();
-        childSkeletons = new ArrayList<Skeleton>();
-        kinematicPlatforms = new ArrayList< Platform >( );
-        looseEntity = new ArrayList< Entity >();
-        screws = new ArrayList<Screw>();
-        ropes = new ArrayList< Rope >( );
         super.setSolid( false );
     }
 
@@ -87,15 +93,9 @@ public class Skeleton extends Platform {
                 .build();
         
         addDynamicPlatform( platform );
+        
     }
     
-    /**
-     * Add Kinamatic platform to this Skeleton
-     * @param Platform that's already set as kinematic
-     */
-    public void addKinematicPlatform( Platform platform ){
-    	kinematicPlatforms.add( platform );
-    }
     
     /**
      * Attach a platform to this skeleton that rotates with a motor
@@ -140,7 +140,8 @@ public class Skeleton extends Platform {
      public void addRope( Rope rope ) {
          new RevoluteJointBuilder( world ).skeleton( this ).bodyB( rope.getFirstLink( ) )
                  .limit( true ).lower( 0 ).upper( 0 ).build();
-         ropes.add( rope );
+         //ropes.add( rope );
+         ropeMap.put( "ropes have no names, fix me",  rope );
      }
      
      /**
@@ -152,7 +153,7 @@ public class Skeleton extends Platform {
 //        new RevoluteJointBuilder( world ).skeleton( this ).bodyB( ss )
 //                 .limit( true ).lower( 0 ).upper( 0 ).build();
      	//addDynamicPlatform( ss );
-        screws.add( ss );
+    	 addScrewForDraw( ss );
     }
      
      /**
@@ -160,7 +161,9 @@ public class Skeleton extends Platform {
       * @param Screw
       */
      public void addScrewForDraw(Screw s){
-    	 screws.add(s);
+    	 //screws.add(s);
+    	 entityCount++;
+    	 screwMap.put( s.name+entityCount, s );
      }
 
      /**
@@ -170,42 +173,63 @@ public class Skeleton extends Platform {
       * @author stew
       */
     public void addDynamicPlatform( Platform platform ) {
-        this.dynamicPlatforms.add( platform );
+    	entityCount++;
+        //this.dynamicPlatforms.add( platform );
+    	if ( dynamicPlatformMap.containsKey( platform.name ) ){
+    		platform.name = platform.name + "-CHANGE_MY_NAME"+entityCount;
+    	}
+    	dynamicPlatformMap.put( platform.name, platform );
     }
+    
+    /**
+     * Add Kinamatic platform to this Skeleton
+     * @param Platform that's already set as kinematic
+     */
+    public void addKinematicPlatform( Platform platform ){
+    	//kinematicPlatforms.add( platform );
+    	entityCount++;
+    	if ( kinematicPlatformMap.containsKey( platform.name ) ){
+    		platform.name = platform.name + "-CHANGE_MY_NAME"+entityCount;
+    	}
+    	kinematicPlatformMap.put( platform.name, platform );
+    }
+    
 
     /**
      * Add a skeleton to the sub skeleton list of this one.
      * @author stew
      */
     public void addSkeleton( Skeleton skeleton ) {
-        this.childSkeletons.add( skeleton );
+        //this.childSkeletons.add( skeleton );
+    	childSkeletonMap.put( skeleton.name, skeleton );
     }
-
+    
     /**
      * set skeleton to awake or not
      * TODO: Do kinamtic platforms need sleeping?
      */
-    public void setSkeletonAwake( boolean isAwake) {
-        //body.setActive( true );
-        for ( Skeleton skeleton : childSkeletons ) {
-            skeleton.setSkeletonAwake(isAwake);
-        }
-        for ( Platform p : dynamicPlatforms ) {
-            p.body.setAwake( isAwake );
-        }
-        for( Entity e: looseEntity ){
-        	e.body.setAwake( isAwake );
-        }
-        for( Platform platform : kinematicPlatforms ){
-        	platform.body.setAwake( isAwake );
-        }
-        for ( Screw s: screws ) {
-        	s.body.setAwake( isAwake );
-        }
-        //TODO: add ropes to this function
-//        for ( Rope r: ropes ){
-//        	r.
-//        }
+    public void setSkeletonAwakeRec( boolean isAwake) {
+		for ( Skeleton skeleton : childSkeletonMap.values( ) ){
+			skeleton.setSkeletonAwakeRec( isAwake );
+		}
+		for ( Platform platform : dynamicPlatformMap.values( ) ){
+			platform.body.setAwake( isAwake );
+		}
+		for ( Platform platform : kinematicPlatformMap.values( ) ){
+			platform.body.setAwake( isAwake );
+		}
+		for ( Screw screw : screwMap.values( ) ){
+			screw.body.setAwake( isAwake );
+		}
+		
+		//TODO: add ropes to this function
+//		Iterator< Map.Entry< String, Rope > > ropeIt = ropeMap.entrySet( )
+//				.iterator( );
+//		Map.Entry< String, Rope > ropeToUpdate;
+//		while ( ropeIt.hasNext( ) ) {
+//			ropeToUpdate = ropeIt.next( );
+//			ropeToUpdate.getValue( ).body.setAwake( isAwake );
+//		}
     }
     
     /**
@@ -214,9 +238,9 @@ public class Skeleton extends Platform {
      */
     public void setSkeletonActiveRec( boolean isActive) {
     	setSkeletonActive(isActive);
-    	for ( Skeleton skeleton : childSkeletons ) {
-            skeleton.setSkeletonActiveRec(isActive);
-        }
+		for ( Skeleton skeleton : childSkeletonMap.values( ) ){
+			skeleton.setSkeletonActiveRec( isActive );
+		}
     }
     
     /**
@@ -226,18 +250,16 @@ public class Skeleton extends Platform {
      */
     public void setSkeletonActive( boolean isActive ){
     	body.setActive( isActive );
-    	for ( Platform p : dynamicPlatforms ) {
-            p.body.setActive( isActive );
-        }
-        for( Entity e: looseEntity ){
-        	e.body.setActive( isActive );
-        }
-        for( Platform platform : kinematicPlatforms ){
-        	platform.body.setActive( isActive );
-        }
-        for ( Screw screw : screws ){
-        	screw.body.setActive( isActive );
-        }
+		
+		for ( Platform platform : dynamicPlatformMap.values( ) ){
+			platform.body.setActive( isActive );
+		}
+		for ( Platform platform : kinematicPlatformMap.values( ) ){
+			platform.body.setActive( isActive );
+		}
+		for ( Screw screw : screwMap.values( ) ){
+			screw.body.setActive( isActive );
+		}
         /* TODO: add ropes */
     }
     
@@ -248,7 +270,7 @@ public class Skeleton extends Platform {
      */
     public void translateBy( float x, float y ){
     	body.setTransform(body.getPosition().x + x, body.getPosition().y + y, body.getAngle());
-    	setSkeletonAwake( true );
+    	setSkeletonAwakeRec( true );
     	//setSkeletonActive(true);
     }
     
@@ -260,7 +282,7 @@ public class Skeleton extends Platform {
     	/*body.setTransform( body.getTransform( ) .getPosition( ),
     			body.getTransform( ).getRotation( )+angleRadians );*/
     	body.setTransform( body.getPosition(), body.getAngle( )+angleRadians );
-    	setSkeletonAwake( true );
+    	setSkeletonAwakeRec( true );
     }
 
     /**
@@ -273,7 +295,9 @@ public class Skeleton extends Platform {
     	//update root skeleton imover
         updateMover( deltaTime );
         //followed by children skeleton imovers
+        
         updateChildSkeletonMovers( deltaTime );
+        
         //update all children platform IMovers on their imover local coord system
         updateEntityMovers( deltaTime );
         
@@ -293,7 +317,11 @@ public class Skeleton extends Platform {
      * @author stew
      */
     protected void updateChildSkeletonMovers( float deltaTime ){
-    	for ( Skeleton skeleton : childSkeletons ){
+
+    	
+    	for ( Skeleton skeleton : childSkeletonMap.values( ) ){
+    		//Gdx.app.log( skeleton.name, childSkeletonMap.values( ).size( )+"" );
+    		//System.exit( 0 );
     		skeleton.updateMover( deltaTime );
     		skeleton.updateChildSkeletonMovers( deltaTime );
     	}
@@ -305,17 +333,15 @@ public class Skeleton extends Platform {
      * @author stew
      */
     protected void updateEntityMovers( float deltaTime ){
-    	for ( Skeleton skeleton : childSkeletons ) {
-            skeleton.updateEntityMovers( deltaTime );
-        }
-    	for ( Platform p : dynamicPlatforms ) {
-    		p.updateMover( deltaTime );
-        }          
-    	//update kinamatic platforms on their local imover coordinate system
-    	for ( Platform p : kinematicPlatforms ) {
-    		p.updateMover( deltaTime );
-        } 
-    	
+    	for ( Skeleton skeleton : childSkeletonMap.values( ) ){
+			skeleton.updateEntityMovers( deltaTime );
+		}
+		for ( Platform platform : dynamicPlatformMap.values( ) ){
+			platform.updateMover( deltaTime );
+		}
+		for ( Platform platform : kinematicPlatformMap.values( ) ){
+			platform.updateMover( deltaTime );
+		}
     	/* TODO: add ropes and loose entity */
     }
 
@@ -323,21 +349,21 @@ public class Skeleton extends Platform {
      * Update all sub-skeleton and bones on this skeleton
      * @author stew
      */
-    private void updateChildren( float deltaTime ) {
+    protected void updateChildren( float deltaTime ) {
         // update sub skeleton and bones
-        for ( Skeleton skeleton : childSkeletons ) {
+        for ( Skeleton skeleton : childSkeletonMap.values( ) ) {
             skeleton.update( deltaTime );
         }
-        for ( Platform p : dynamicPlatforms ) {
+        for ( Platform p : dynamicPlatformMap.values( ) ) {
         	p.update( deltaTime );
         }
-        for ( Platform p : kinematicPlatforms ) {
+        for ( Platform p : kinematicPlatformMap.values( ) ) {
         	p.update( deltaTime );
         }    	
         //update all puzzle screws to save their movement changes
         //should just be puzzle screws no other type need to be in the screws list
         //except for drawing
-        for ( Screw s : screws ) {
+        for ( Screw s : screwMap.values( ) ) {
     		s.update( deltaTime );
         }
     }
@@ -350,16 +376,16 @@ public class Skeleton extends Platform {
     }
     
     private void drawChildren( SpriteBatch batch ){
-        for ( Skeleton skeleton : childSkeletons ) {
+        for ( Skeleton skeleton : childSkeletonMap.values( ) ) {
             skeleton.draw( batch );
         }
-        for (  Platform p : dynamicPlatforms ) {
+        for (  Platform p : dynamicPlatformMap.values( ) ) {
         	drawPlatform(p,batch);
         }
-        for (  Platform p : kinematicPlatforms ) {
+        for (  Platform p : kinematicPlatformMap.values( ) ) {
         	drawPlatform(p,batch);
         }
-        for ( Screw screw : screws ){
+        for ( Screw screw : screwMap.values( ) ){
         	screw.draw( batch );
         }
     }
@@ -382,8 +408,8 @@ public class Skeleton extends Platform {
      * update child skeletons based on rotation & position of this skeleton
      * TODO: OPTIMIZATION only call this when the skeleton has moved / rotated
      */
-    private void setPosRotChildSkeletons( float deltaTime ) {
-		for ( Skeleton skeleton : childSkeletons ){
+    protected void setPosRotChildSkeletons( float deltaTime ) {
+		for ( Skeleton skeleton : childSkeletonMap.values( ) ){
 			if ( skeleton.isKinematic( ) )
 				skeleton.setPosRotFromSkeleton( deltaTime, this );
 			//now recursively apply this change to child skeletons
@@ -394,13 +420,13 @@ public class Skeleton extends Platform {
     /**
      * @author stew
      */
-    private void setPosRotAllKinematicPlatforms(float deltaTime){
+    protected void setPosRotAllKinematicPlatforms(float deltaTime){
     	//first recursively set all kin platforms position
-    	for ( Skeleton skeleton : childSkeletons ){
+    	for ( Skeleton skeleton : childSkeletonMap.values( ) ){
     		skeleton.setPosRotAllKinematicPlatforms(deltaTime);
     	}
     	//then set all kin platforms of this skeleton
-    	for ( Platform platform : kinematicPlatforms ){
+    	for ( Platform platform : kinematicPlatformMap.values( ) ){
     		platform.setPosRotFromSkeleton( deltaTime, this );
     	}
     }

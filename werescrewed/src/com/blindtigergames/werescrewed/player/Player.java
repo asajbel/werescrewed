@@ -169,13 +169,12 @@ public class Player extends Entity {
 		if ( name.equals( "player1" ) ) {
 			// Gdx.app.log( "playerState", "" + playerState + " " + grounded );
 			// System.out.println( jumpPressedKeyboard );
-			 Gdx.app.log( name + " playerState", "" + playerState + " "
-					+ grounded + "isDead? = " + isDead );
 		}
 		if ( name.equals( "player2" ) ) {
-			Gdx.app.log( name + " playerState", "" + playerState + " "
-					+ grounded + "isDead? = " + isDead );
+			//Gdx.app.log( name + " playerState", "" + playerState + " "
+			//		+ grounded + "isDead? = " + isDead );
 		}
+
 		if ( kinematicTransform ) {
 			// setPlatformTransform( platformOffset );
 			kinematicTransform = false;
@@ -297,6 +296,7 @@ public class Player extends Entity {
 		playerToScrew = null;
 		if ( currentScrew != null ) {
 			currentScrew.setPlayerAttached( false );
+			Gdx.app.log( "disconnect", "from screw"  );
 			currentScrew = null;
 		}
 		Filter filter = new Filter( );

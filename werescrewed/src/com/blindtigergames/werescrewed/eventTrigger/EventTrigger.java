@@ -1,5 +1,6 @@
 package com.blindtigergames.werescrewed.eventTrigger;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
@@ -27,7 +28,7 @@ public class EventTrigger extends Entity{
 	public void constructCircleBody(float radiusPixel, Vector2 positionPixel){
 		
 		BodyDef bodyDef = new BodyDef( );
-		bodyDef.type = BodyType.DynamicBody;
+		bodyDef.type = BodyType.KinematicBody;
 		bodyDef.position.set( positionPixel.mul( Util.PIXEL_TO_BOX ));
 		body = world.createBody( bodyDef );
 		
@@ -35,8 +36,8 @@ public class EventTrigger extends Entity{
 		circle.setRadius( radiusPixel * Util.PIXEL_TO_BOX );
 		
 		FixtureDef fixture = new FixtureDef( );
-//		fixture.filter.categoryBits = Util.CATEGORY_SCREWS;
-//		fixture.filter.maskBits = Util.CATEGORY_EVERYTHING;
+		fixture.filter.categoryBits = Util.CATEGORY_SCREWS;
+		fixture.filter.maskBits = Util.CATEGORY_EVERYTHING;
 		fixture.isSensor = true;
 		fixture.shape = circle;
 		
@@ -49,7 +50,7 @@ public class EventTrigger extends Entity{
 	
 	public void contructRectangleBody(float heightPixels, float widthPixels, Vector2 positionPixel){
 		BodyDef bodyDef = new BodyDef( );
-		bodyDef.type = BodyType.DynamicBody;
+		bodyDef.type = BodyType.KinematicBody;
 		bodyDef.position.set( positionPixel.mul( Util.PIXEL_TO_BOX ));
 		body = world.createBody( bodyDef );
 		
@@ -57,8 +58,8 @@ public class EventTrigger extends Entity{
 		polygon.setAsBox( heightPixels/2 * Util.PIXEL_TO_BOX, widthPixels/2 * Util.PIXEL_TO_BOX );
 		
 		FixtureDef fixture = new FixtureDef( );
-//		fixture.filter.categoryBits = Util.CATEGORY_SCREWS;
-//		fixture.filter.maskBits = Util.CATEGORY_EVERYTHING;
+		fixture.filter.categoryBits = Util.CATEGORY_SCREWS;
+		fixture.filter.maskBits = Util.CATEGORY_EVERYTHING;
 		fixture.isSensor = true;
 		fixture.shape = polygon;
 		
@@ -120,5 +121,9 @@ public class EventTrigger extends Entity{
 				}
 			}
 		}
+	}
+	
+	public void phoneHome(){
+		Gdx.app.log( "hello,", "yes this is dog" );
 	}
 }
