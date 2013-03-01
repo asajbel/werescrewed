@@ -171,8 +171,8 @@ public class Player extends Entity {
 			// System.out.println( jumpPressedKeyboard );
 		}
 		if ( name.equals( "player2" ) ) {
-			//Gdx.app.log( name + " playerState", "" + playerState + " "
-			//		+ grounded + "isDead? = " + isDead );
+			// Gdx.app.log( name + " playerState", "" + playerState + " "
+			// + grounded + "isDead? = " + isDead );
 		}
 
 		if ( kinematicTransform ) {
@@ -182,14 +182,13 @@ public class Player extends Entity {
 		if ( isDead ) {
 			// TODO: death stuff
 			if ( controller != null ) {
-				updateController( deltaTime );
 				if ( controllerListener.isGrabPressed( ) ) {
 					playerState = PlayerState.GrabMode;
 				} else {
 					playerState = PlayerState.Standing;
 				}
 			} else {
-				updateKeyboard( deltaTime );
+				inputHandler.update( );
 				if ( inputHandler.isGrabPressed( ) ) {
 					playerState = PlayerState.GrabMode;
 				} else {
@@ -242,10 +241,21 @@ public class Player extends Entity {
 		// then put them into head stand state
 		if ( otherPlayer != null && playerState == PlayerState.Falling
 				&& otherPlayer.getState( ) == PlayerState.Standing
-				&& headStandTimeout == 0 && otherPlayer.isHeadStandTimedOut( ) ) {
-			topPlayer = true;
-			setHeadStand( );
-			otherPlayer.setHeadStand( );
+				&& !otherPlayer.isPlayerDead( ) && headStandTimeout == 0
+				&& otherPlayer.isHeadStandTimedOut( ) ) {
+			// check if the top player is in-line with the other players head
+			if ( otherPlayer.body.getPosition( ).mul( Util.BOX_TO_PIXEL )
+					.add( sprite.getWidth( ) / 3.0f, 0.0f ).x <= body
+					.getPosition( ).mul( Util.BOX_TO_PIXEL )
+					.add( sprite.getWidth( ) / 2.0f, 0.0f ).x
+					&& body.getPosition( ).mul( Util.BOX_TO_PIXEL )
+							.add( sprite.getWidth( ) / 2.0f, 0.0f ).x < otherPlayer.body
+							.getPosition( ).mul( Util.BOX_TO_PIXEL )
+							.add( sprite.getWidth( ) / 1.6f, 0.0f ).x ) {
+				topPlayer = true;
+				setHeadStand( );
+				otherPlayer.setHeadStand( );
+			}
 		} else {
 			if ( headStandTimeout > 0 ) {
 				headStandTimeout--;
@@ -308,6 +318,7 @@ public class Player extends Entity {
 			filter.maskBits = Util.CATEGORY_EVERYTHING;
 			f.setFilterData( filter );
 		}
+		body.setTransform( body.getPosition( ), 90f * Util.DEG_TO_RAD );
 		isDead = true;
 	}
 
@@ -315,6 +326,7 @@ public class Player extends Entity {
 	 * This function sets player in alive state
 	 */
 	public void respawnPlayer( ) {
+		body.setTransform( body.getPosition( ), 0f );
 		isDead = false;
 	}
 
@@ -1396,8 +1408,9 @@ public class Player extends Entity {
 	 * applys force to player
 	 */
 	private void steamResolution( ) {
-		if (prevButton == null)
-			body.setLinearVelocity(new Vector2 ( 0f, body.getLinearVelocity( ).y));
+		if ( prevButton == null )
+			body.setLinearVelocity( new Vector2( 0f,
+					body.getLinearVelocity( ).y ) );
 		body.applyForceToCenter( 0f, STEAM_FORCE );
 	}
 }

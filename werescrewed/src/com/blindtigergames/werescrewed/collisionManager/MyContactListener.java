@@ -307,14 +307,12 @@ public class MyContactListener implements ContactListener {
 							if ( player.getState( ) == PlayerState.GrabMode
 									|| player2.getState( ) == PlayerState.GrabMode ) {
 								contact.setEnabled( false );
-							} else if ( ( ( !player.isGrounded( ) || !player2
-									.isGrounded( ) )
-									&& player.getState( ) != PlayerState.Falling && player2
+							} else if ( ( player.getState( ) != PlayerState.Falling && player2
 									.getState( ) != PlayerState.Falling )
 									|| !player.isHeadStandTimedOut( )
 									|| !player2.isHeadStandTimedOut( ) ) {
 								contact.setEnabled( false );
-							}
+							} 
 							break;
 						default:
 							break;
