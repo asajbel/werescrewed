@@ -12,12 +12,6 @@
                         <Property Name="Definition" Type="string" Description="tiledPlatform">
                             <string>tiledPlatform</string>
                         </Property>
-                        <Property Name="TileWidth" Type="string" Description="4">
-                            <string>50</string>
-                        </Property>
-                        <Property Name="TileHeight" Type="string" Description="1">
-                            <string>1</string>
-                        </Property>
                     </CustomProperties>
                     <Width>1600</Width>
                     <Height>32</Height>
@@ -38,11 +32,11 @@
                         <Property Name="Definition" Type="string" Description="tiledPlatform">
                             <string>tiledPlatform</string>
                         </Property>
-                        <Property Name="TileWidth" Type="string" Description="4">
-                            <string>50</string>
+                        <Property Name="MoverIdle" Type="string" Description="">
+                            <string>rocking 0.3f 2.0f</string>
                         </Property>
-                        <Property Name="TileHeight" Type="string" Description="1">
-                            <string>1</string>
+                        <Property Name="Dynamic" Type="string" Description="">
+                            <string />
                         </Property>
                     </CustomProperties>
                     <Width>192</Width>
@@ -378,7 +372,7 @@
                             <Y>0</Y>
                         </Vector2>
                         <Vector2>
-                            <X>352</X>
+                            <X>320</X>
                             <Y>-128</Y>
                         </Vector2>
                         <Vector2>
@@ -412,7 +406,7 @@
                             <Y>-128</Y>
                         </Vector2>
                         <Vector2>
-                            <X>608</X>
+                            <X>576</X>
                             <Y>-256</Y>
                         </Vector2>
                         <Vector2>
@@ -446,6 +440,25 @@
                         <PackedValue>2445279424</PackedValue>
                     </LineColor>
                 </Item>
+                <Item xsi:type="CircleItem" Name="Circle_0022" Visible="true">
+                    <Position>
+                        <X>-416</X>
+                        <Y>160</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>complexTest</string>
+                        </Property>
+                    </CustomProperties>
+                    <Radius>96</Radius>
+                    <FillColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </FillColor>
+                </Item>
             </Items>
             <ScrollSpeed>
                 <X>1</X>
@@ -462,7 +475,7 @@
     </Layers>
     <CustomProperties />
     <EditorRelated>
-        <NextItemNumber>21</NextItemNumber>
+        <NextItemNumber>22</NextItemNumber>
         <ContentRootFolder>C:\</ContentRootFolder>
         <CameraPosition>
             <X>0</X>

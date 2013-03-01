@@ -14,11 +14,15 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.XmlReader;
 import com.badlogic.gdx.utils.XmlReader.Element;
 import com.blindtigergames.werescrewed.entity.Entity;
+import com.blindtigergames.werescrewed.entity.EntityCategory;
 import com.blindtigergames.werescrewed.entity.EntityDef;
+import com.blindtigergames.werescrewed.entity.RobotState;
 import com.blindtigergames.werescrewed.entity.builders.EntityBuilder;
+import com.blindtigergames.werescrewed.entity.builders.MoverBuilder;
 import com.blindtigergames.werescrewed.entity.builders.PlatformBuilder;
 import com.blindtigergames.werescrewed.entity.builders.ScrewBuilder;
 import com.blindtigergames.werescrewed.entity.mover.IMover;
+import com.blindtigergames.werescrewed.entity.mover.MoverType;
 import com.blindtigergames.werescrewed.entity.mover.TimelineTweenMover;
 import com.blindtigergames.werescrewed.entity.mover.TweenMover;
 import com.blindtigergames.werescrewed.entity.tween.PathBuilder;
@@ -59,6 +63,10 @@ public class GleedLoader {
 		level = new Level();
 		skeletons.put( "root", level.root );
 		Element root;
+		entities.clear( );
+		movers.clear( );
+		skeletons.clear( );
+		
 		try {
 			root = reader.parse(Gdx.files.internal( filename ));
 			Array<Element> layers = root.getChildByName("Layers").getChildrenByName( "Layer" );
@@ -97,8 +105,6 @@ public class GleedLoader {
 		return level;
 	}
 	
-	
-	@SuppressWarnings( "unused" )
 	protected Skeleton loadSkeleton(Item item){
 		if (skeletons.containsKey( item.name )){
 			return skeletons.get( item.name );
@@ -121,7 +127,11 @@ public class GleedLoader {
 		return level.root;
 	}
 	
+	public static final String startTime = "starttime";
+	public static final String endTime = "endtime";
+	
 	protected TimelineTweenMover loadMover (Item item){
+		item.checkLocked();
 		if (movers.containsKey( item.name )){
 			return movers.get( item.name );
 		} else if (item.gleedType.equals( "PathItem" )){
@@ -139,14 +149,14 @@ public class GleedLoader {
 			for (int i = 0; i < pointElems.size; i++){
 				times.add( -1.0f );
 			}
-			if (item.props.containsKey( "StartTime" )){
-				times.set(frontPoint, Float.parseFloat( item.props.get( "StartTime") ) );
+			if (item.props.containsKey( startTime )){
+				times.set(frontPoint, Float.parseFloat( item.props.get( startTime ) ) );
 				frontTime = times.get(0);
 			} else {
 				times.set(frontPoint, frontTime); //By default, the first point should be at time 0.
 			}
 			if (item.props.containsKey( "EndTime" )){
-				times.set(pointElems.size-1, Float.parseFloat( item.props.get( "EndTime") ) );	
+				times.set(pointElems.size-1, Float.parseFloat( item.props.get( endTime ) ) );	
 			} else {
 				times.set(pointElems.size-1, 1.0f);
 			}
@@ -155,7 +165,7 @@ public class GleedLoader {
 				point = new Vector2(vElem.getFloat( "X" ), vElem.getFloat( "Y" ));
 				points.add( point );
 				Gdx.app.log( "GleedLoader", "Point "+i+" has coordinates "+point.toString( )+".");
-				timeTag = "Point"+i+"Time";
+				timeTag = "point"+i+"time";
 				if (item.props.containsKey( timeTag )){
 					float time = Float.parseFloat( item.props.get( timeTag ));
 					if (time >= 0.0f){
@@ -196,35 +206,128 @@ public class GleedLoader {
 		return null;
 	}
 	
-	protected void loadEntity(Item item) {
-		if (item.props.containsKey( defTag )){
-			String defName = item.props.get( defTag );
-			if (ScrewType.fromString( defName ) != null){
-				ScrewType sType = ScrewType.fromString( defName );
-				switch (sType){
-				case SCREW_STRIPPED:
-					StrippedScrew s = new ScrewBuilder()
-					.name( item.name )
-					.position( item.pos )
-					.world( level.world )
-					.entity( level.root )
-					.screwType( ScrewType.fromString( defName ))
-					.properties( item.props )
-					.buildStrippedScrew();
-					Gdx.app.log("GleedLoader", "Building stripped screw "+ item.name + " at " + item.pos.toString( ));
-					level.root.addScrewForDraw( s );
-					break;
-				case SCREW_STRUCTURAL:
-					break;
-				case SCREW_PUZZLE:
-					break;
-				case SCREW_BOSS:
-					break;
-				default:
-					break;
-				}
+	protected Entity loadEntity(Item item){
+		Entity out = null;
+		if (item.hasDefTag( )){
+			if (ScrewType.fromString( item.defName ) != null){
+				loadScrew(item);
 			} else {
-				EntityDef def = EntityDef.getDefinition( defName );
+				if (item.isDefined( )){
+					if (item.getDefinition().getCategory( ) == EntityCategory.TILED_PLATFORM ){
+						out = loadTiledPlatform(item);
+					} else if (item.getDefinition().getCategory( ) == EntityCategory.COMPLEX_PLATFORM ){
+						out = loadComplexPlatform(item);
+					} else if (item.getDefinition().getCategory( ) == EntityCategory.PLAYER ){
+						loadPlayerSpawnPoint(item);
+					} else {
+						out = loadGeneralEntity(item);
+					}
+				}
+			}
+		}
+		if (out != null){
+			entities.put( item.name, out );
+			//level.root is still not drawing/updating things properly on its own. Stew, get on it!
+			level.entities.addEntity( item.name, out );
+			//Load movers
+			String moverName; IMover mover;
+			for (RobotState state : RobotState.values( )){
+				String tag = "mover"+state.toString( ).toLowerCase( );
+				if (item.props.containsKey( tag )){
+					moverName = item.props.get( tag );
+					mover = null;
+					if (movers.containsKey( moverName )){
+						mover = loadMover(moverName);
+					} else {
+						mover = new MoverBuilder()
+								.fromString(moverName)
+								.build( );
+					}
+					if (mover != null){
+						Gdx.app.log( "GleedLoader", "Attaching mover ["+moverName+"] to "+item.name+"." );
+						out.addMover( mover, state );
+					}
+				}
+			}
+		}
+		return out;
+	}
+	
+	protected TiledPlatform loadTiledPlatform(Item item){
+		TiledPlatform out = null;
+		//Align the platform's origin with the coordinates from Gleed2D.
+		Vector2 pos = new Vector2();
+		Vector2 sca = new Vector2();
+		pos.x = item.pos.x + (item.sca.x/2.0f * GLEED_TO_GDX_X);
+		pos.y = item.pos.y + (item.sca.y/2.0f * GLEED_TO_GDX_Y);
+		
+		float tileX = item.getDefinition().getTexture( ).getWidth( )/4.0f;
+		float tileY = item.getDefinition().getTexture( ).getWidth( )/4.0f;
+		if (tileX > 0 && tileY > 0)
+			sca = item.sca.div( tileX, tileY );
+		
+		out = new PlatformBuilder(level.world)
+		.name( item.name )
+		.type( item.getDefinition() )
+		.position( pos )
+		.dimensions( sca )
+		.texture( item.getDefinition().getTexture() )
+		.solid( true )
+		.buildTilePlatform( );
+
+		Skeleton parent = loadSkeleton(item.skeleton);
+		if (item.props.containsKey( "dynamic" )){
+			Gdx.app.log("GleedLoader", "Dynamic platform loaded:"+out.name);
+			parent.addDynamicPlatform( out );
+		} else {
+			Gdx.app.log("GleedLoader", "Kinematic platform loaded:"+out.name);
+			parent.addKinematicPlatform( out );
+		}
+		return out;
+	}
+	
+	protected Platform loadComplexPlatform(Item item){
+		Platform out = new PlatformBuilder(level.world)
+		.name( item.name )
+		.type( item.getDefinition( ) )
+		.position( item.pos.x, item.pos.y )
+		.texture( item.getDefinition( ).getTexture() )
+		.solid( true )
+		.buildComplexPlatform( );
+		
+		Gdx.app.log("GleedLoader", "Platform loaded:"+item.name);
+		level.entities.addEntity( item.name, out );
+		if (item.props.containsKey( "dynamic" )){
+			level.root.addDynamicPlatform( out );
+		} else {
+			level.root.addKinematicPlatform( out );
+		}
+		return out;
+	}
+
+	protected void loadPlayerSpawnPoint(Item item){
+		level.player.setPixelPosition( item.pos ); //Kevin: Who commented this out?
+		Gdx.app.log("GleedLoader", "Player Spawnpoint:"+item.pos.toString( ));
+	}
+	
+	protected Entity loadGeneralEntity(Item item){
+		Entity out = new EntityBuilder()
+		.type(item.getDefinition( ))
+		.name(item.name)
+		.world(level.world)
+		.position(item.pos)
+		.properties(item.props)
+		.build();
+		Gdx.app.log("GleedLoader", "Entity loaded:"+item.name);
+		return out;
+	}
+	
+	/*protected void loadEntity(Item item) {
+		if (item.props.containsKey( defTag )){
+			if (ScrewType.fromString( item.def ) != null){
+				
+			} else {
+				EntityDef def = EntityDef.getDefinition( item.def );
 				if (def != null){
 					if (def.getCategory( ).equals( tileCat )){ //Insert special cases here.\
 						//Align the platform's origin with the coordinates from Gleed2D.
@@ -286,12 +389,42 @@ public class GleedLoader {
 					}
 					Gdx.app.log("GleedLoader", "Position:"+item.pos.x+","+item.pos.y);
 				} else {
-					Gdx.app.log("GleedLoader", "Warning: "+item.name+"'s listed definition, '"+defName+"' is not a known EntityDef.");
+					Gdx.app.log("GleedLoader", "Warning: "+item.name+"'s listed definition, '"+item.def+"' is not a known EntityDef.");
 				}
 			}
 		} else {
 			Gdx.app.log("GleedLoader", "Warning: "+item.name+" does not have a valid '"+defTag+"' tag.");
 		}
+	}*/
+	
+	public Screw loadScrew(Item item){
+		Screw out = null;
+		ScrewType sType = ScrewType.fromString( item.defName );
+		switch (sType){
+		case SCREW_STRIPPED:
+			out = new ScrewBuilder()
+			.name( item.name )
+			.position( item.pos )
+			.world( level.world )
+			.entity( level.root )
+			.screwType( ScrewType.SCREW_STRIPPED )
+			.properties( item.props )
+			.buildStrippedScrew();
+			Gdx.app.log("GleedLoader", "Building stripped screw "+ item.name + " at " + item.pos.toString( ));
+			break;
+		case SCREW_STRUCTURAL:
+			break;
+		case SCREW_PUZZLE:
+			break;
+		case SCREW_BOSS:
+			break;
+		default:
+			break;
+		}
+		Skeleton parent = loadSkeleton(item.skeleton);
+		parent.addScrew( out );
+		parent.addScrewForDraw( out );
+		return out;
 	}
 	
 	public Level getLevel(){return level;}
@@ -306,8 +439,8 @@ public class GleedLoader {
 		Array<Element> properties = e.getChildByName("CustomProperties").getChildrenByName("Property");
 		String name; String value;
 		for (Element prop: properties){
-			name = prop.getAttribute("Name");
-			value = prop.get("string");
+			name = prop.getAttribute("Name").toLowerCase( );
+			value = prop.get("string", "<no value>");
 			out.put(name,value);
 		}
 		return out;
@@ -324,25 +457,21 @@ public class GleedLoader {
 		return out;
 	}
 	
-	protected Skeleton getSkeleton(Item item){
-		if (item.props.containsKey( "Skeleton" )){
-			String skeletonName = item.props.get( "Skeleton" );
-			if (!skeletonName.equals( "root" )){
-				return loadSkeleton(skeletonName);
-			}
-		}
-		return level.root;
-	}
-	
 	protected class Item {
 		public Item(Element e){
 			element = e;
 			name = getName(e);
 			gleedType = getGleedType(e);
 			props = getCustomProperties(e);
-			def = props.get( "Definition" );
-			if (props.containsKey( "Skeleton" ))
-				skeleton = props.get( "Skeleton" );
+			if (props.containsKey( EntityDef.tag )){
+				defName = props.get( EntityDef.tag );
+			}
+			else {
+				defName = "";
+			}
+			def = null;
+			if (props.containsKey( "skeleton" ))
+				skeleton = props.get( "skeleton" );
 			else skeleton = "root";
 			tag = GleedTypeTag.fromString( props.get( GleedTypeTag.tag ) );
 			pos = getPosition(e);
@@ -351,7 +480,8 @@ public class GleedLoader {
 			locked = false;
 		}
 		public Element element;
-		String name, gleedType, def;
+		public String name, gleedType, defName;
+		private EntityDef def;
 		public GleedTypeTag tag;
 		public HashMap<String,String> props;
 		public Vector2 pos;
@@ -368,6 +498,13 @@ public class GleedLoader {
 			}
 			locked = true;
 		}
+		public EntityDef getDefinition(){
+			if (def == null)
+				def = EntityDef.getDefinition( defName );
+			return def;
+		}
+		public boolean hasDefTag(){ return !defName.equals( "" );}
+		public boolean isDefined(){ return getDefinition() != null;}
 	}
 
 	protected static String getName(Element item){
@@ -412,9 +549,6 @@ public class GleedLoader {
 	}
 	
 	protected static final String typeTag = "Type";
-	protected static final String defTag = "Definition";
-	protected static final String playerCat = "Player";
-	protected static final String tileCat = "TiledPlatform";	
-	protected static final String complexCat = "ComplexPlatform";	
+	protected static final String defTag = "Definition";	
 
 }

@@ -29,6 +29,6 @@ public enum GleedTypeTag {
     	return null;
     }
     
-    public static final String tag = "Type";
+    public static final String tag = "type";
 
 }

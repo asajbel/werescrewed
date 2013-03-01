@@ -48,13 +48,10 @@ public class EntityDef {
 
 	// Miscellaneous Fields
 	protected String name;
-	private String category;
+	protected EntityCategory category;
 
 	// CONSTANTS
-
-	// Static constants
-	public static final String NO_CATEGORY = "Entity";
-
+	public static final String tag = "definition";
 	// Static initialization
 	static {
 		definitions = new HashMap< String, EntityDef >( );
@@ -87,6 +84,7 @@ public class EntityDef {
 
 		// Misc Data
 		setName( name );
+		category = null;
 	}
 
 	/**
@@ -130,13 +128,20 @@ public class EntityDef {
 		this.name = name;
 	}
 
-	public String getCategory( ) {
-		return category;
+	public EntityCategory getCategory( ) {
+		return this.category;
 	}
 
-	public void setCategory( String category ) {
-		this.category = category;
+	public void setCategory( EntityCategory cat ) {
+		this.category = cat;
 	}
+	
+	public void setCategory( String catName ) {
+		EntityCategory cat = EntityCategory.fromString( catName );
+		if (cat != null)
+			setCategory(cat);
+	}
+
 
 	public Texture getTexture( ) {
 		if ( texture == null ){
@@ -237,7 +242,7 @@ public class EntityDef {
 			EntityDef out = new EntityDef( id );
 
 			// Category Data
-			out.setCategory( xml.get( "category", NO_CATEGORY ) );
+			out.setCategory( xml.get( EntityCategory.tag, "" ) );
 			// Sprite Data
 			String texName = null;
 			String tileSetName = null;
