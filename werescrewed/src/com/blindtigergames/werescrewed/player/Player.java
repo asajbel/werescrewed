@@ -164,7 +164,7 @@ public class Player extends Entity {
 	public void update( float deltaTime ) {
 		super.update( deltaTime );
 		if ( name.equals( "player1" ) ) {
-			//System.out.println( canJumpOffScrew );
+			//System.out.println( jumpCounter );
 		}
 		if ( kinematicTransform ) {
 			// setPlatformTransform( platformOffset );
@@ -415,26 +415,7 @@ public class Player extends Entity {
 	public void jumpScrew( ) {
 		leftAnalogX = controllerListener.analogLeftAxisX( );
 		leftAnalogY = controllerListener.analogLeftAxisY( );
-		// float multiplierY = 1.2f;
-		// float multiplierX = 0.6f;
-		// if ( leftAnalogY < -0.1f )
-		// multiplierY = 0.1f;
-		// if ( leftAnalogX < 0.01f && leftAnalogY < 0.01f && leftAnalogX >
-		// -0.01f
-		// && leftAnalogY > -0.01f ) {
-		// multiplierX = 0.0f;
-		// multiplierY = 1.25f;
-		// leftAnalogY = 1.0f;
-		// }
-		// if ( ( leftAnalogX > 0.7f || leftAnalogX < -0.7f )
-		// && ( leftAnalogY < 0.3f && leftAnalogY > -0.3f ) ) {
-		// multiplierX = 0.8f;
-		// }
-		// body.applyLinearImpulse(
-		// new Vector2( JUMP_SCREW_IMPULSE * leftAnalogX * multiplierX,
-		// JUMP_SCREW_IMPULSE * leftAnalogY * multiplierY ), body
-		// .getWorldCenter( ) );
-		// setGrounded( false );
+
 		float yImpulse = JUMP_SCREW_IMPULSE;
 		if ( leftAnalogY > -0.7f ) {
 			if ( leftAnalogY > 0.01f || leftAnalogY < -0.01f ) {
