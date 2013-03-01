@@ -8,6 +8,7 @@ import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.controllers.PovDirection;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.Filter;
 import com.badlogic.gdx.physics.box2d.Fixture;
@@ -40,7 +41,7 @@ public class Player extends Entity {
 
 	public final static float MAX_VELOCITY = 1.65f;
 	public final static float MIN_VELOCITY = 0.01f;
-	public final static float MOVEMENT_IMPULSE = 0.009f;
+	public final static float MOVEMENT_IMPULSE = 0.012f;
 	public final static float JUMP_SCREW_IMPULSE = 0.12f;
 	public final static float JUMP_CONTROL_MUTIPLIER = 0.5f;
 	public final static int JUMP_COUNTER = 10;
@@ -53,11 +54,15 @@ public class Player extends Entity {
 	public final static int GRAB_COUNTER_STEPS = 5;
 	public final static Vector2 ANCHOR_BUFFER_SIZE = new Vector2( 400f, 256f );
 	public final static float STEAM_FORCE = .5f;
-	public float JUMP_IMPULSE = 0.09f;
+	public float JUMP_IMPULSE = 0.12f;
 	public float directionJumpDivsion = 2.0f;
 
 	public Fixture feet;
 	public Fixture torso;
+//	public Body playerTorso;
+//	public Body playerFeet;
+//	public RevoluteJoint revJoint; 
+//	float motorspeed; 
 	int check = 0;
 
 	private PovDirection prevButton;
@@ -147,8 +152,37 @@ public class Player extends Entity {
 
 		torso = body.getFixtureList( ).get( 0 );
 		feet = body.getFixtureList( ).get( 1 );
+		feet.setRestitution( 0.001f );
 		torso.getShape( ).setRadius( 0 );
 		maxFriction( );
+
+		BodyDef bodydef = new BodyDef( );
+		bodydef.position.set( pos );
+//		playerTorso = world.createBody( bodydef );
+//		playerTorso.createFixture( torso.getShape( ), 0.0f );
+//		playerTorso.setGravityScale( 0.25f );
+//		playerTorso.setFixedRotation( true );
+//		playerTorso.setSleepingAllowed( false );
+//		playerTorso.setUserData( this );
+//		playerTorso.setBullet( true );
+//
+//		bodydef = new BodyDef( );
+//		bodydef.position.set( playerTorso.getWorldCenter( ).x,
+//				playerTorso.getWorldCenter( ).y + sprite.getHeight( ) / 2
+//						* Util.PIXEL_TO_BOX );
+//		playerFeet = world.createBody( bodydef );
+//		playerFeet.createFixture( feet.getShape( ), 0.0f );
+//		playerFeet.setGravityScale( 0.25f );
+//		playerFeet.setFixedRotation( true );
+//		playerFeet.setSleepingAllowed( false );
+//		playerFeet.setUserData( this );
+//		playerFeet.setBullet( true );
+//
+//		RevoluteJointDef revJointDef = new RevoluteJointDef( );
+//		revJointDef.initialize( playerTorso, playerFeet, playerFeet.getWorldCenter( ) );
+//		revJointDef.enableMotor = true;
+//		revJointDef.maxMotorTorque = 10000; 
+//		revJoint = ( RevoluteJoint ) world.createJoint( revJointDef );
 
 		setUpController( );
 		controllerDebug = true;
@@ -165,16 +199,16 @@ public class Player extends Entity {
 	 */
 	public void update( float deltaTime ) {
 		super.update( deltaTime );
-		if ( name.equals( "player1" ) ) {
-			// Gdx.app.log( "playerState", "" + playerState + " " + grounded );
-			// System.out.println( jumpPressedKeyboard );
-			Gdx.app.log( name + " playerState", "" + playerState + " "
-					+ grounded + "isDead? = " + isDead );
-		}
-		if ( name.equals( "player2" ) ) {
-			Gdx.app.log( name + " playerState", "" + playerState + " "
-					+ grounded + "isDead? = " + isDead );
-		}
+		// if ( name.equals( "player1" ) ) {
+		// Gdx.app.log( "playerState", "" + playerState + " " + grounded );
+		// System.out.println( jumpPressedKeyboard );
+		// Gdx.app.log( name + " playerState", "" + playerState + " "
+		// + grounded + "isDead? = " + isDead );
+		// }
+		// if ( name.equals( "player2" ) ) {
+		// Gdx.app.log( name + " playerState", "" + playerState + " "
+		// + grounded + "isDead? = " + isDead );
+		// }
 		if ( kinematicTransform ) {
 			// setPlatformTransform( platformOffset );
 			kinematicTransform = false;
@@ -341,6 +375,8 @@ public class Player extends Entity {
 			if ( body.getLinearVelocity( ).x < MAX_VELOCITY ) {
 				body.applyLinearImpulse( new Vector2( MOVEMENT_IMPULSE
 						/ directionJumpDivsion, 0.0f ), body.getWorldCenter( ) );
+//				motorspeed += 5; 
+//				revJoint.setMotorSpeed( motorspeed );
 			}
 		} else {
 			if ( body.getLinearVelocity( ).x < MAX_VELOCITY ) {
@@ -365,6 +401,8 @@ public class Player extends Entity {
 			if ( body.getLinearVelocity( ).x > -MAX_VELOCITY ) {
 				body.applyLinearImpulse( new Vector2( -MOVEMENT_IMPULSE
 						/ directionJumpDivsion, 0.0f ), body.getWorldCenter( ) );
+//				motorspeed -= 5; 
+//				revJoint.setMotorSpeed( motorspeed );
 			}
 		} else {
 			if ( body.getLinearVelocity( ).x > -MAX_VELOCITY ) {
