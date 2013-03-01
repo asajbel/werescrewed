@@ -123,7 +123,8 @@ public class MyContactListener implements ContactListener {
 						case EVENTTRIGGER:
 							EventTrigger et = ( EventTrigger ) objectFix.getBody( )
 								.getUserData( );
-							et.phoneHome( );
+						//	et.phoneHome( );
+							et.setActivated( true );
 							break;
 						default:
 							break;
@@ -232,6 +233,11 @@ public class MyContactListener implements ContactListener {
 							break;
 						case STEAM:
 							player.setSteamCollide( false );
+							break;
+						case EVENTTRIGGER:
+							EventTrigger et = ( EventTrigger ) objectFix.getBody( )
+							.getUserData( );
+							et.setActivated( false );
 							break;
 						default:
 							break;

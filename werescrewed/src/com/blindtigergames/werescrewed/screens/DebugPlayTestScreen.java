@@ -76,6 +76,7 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 	private BossScrew bossBolt;
 	private float endgameCounter;
 	private Music inceptionhorn;
+	private EventTrigger et;
 
 	public DebugPlayTestScreen( ) {
 
@@ -744,7 +745,7 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 				skel9, world );
 		plat.addScrew( bossBolt );
 		
-		EventTrigger et = new EventTrigger("event1", world);
+		et = new EventTrigger("event1", world);
 		et.constructCircleBody( 100, new Vector2(175f * TILE, 90 * TILE) );
 		
 //		specialPlat = platBuilder.position( 175f * TILE, 85 * TILE ).name( "plat12" )
