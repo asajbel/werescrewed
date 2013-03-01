@@ -30,6 +30,7 @@ import com.blindtigergames.werescrewed.entity.mover.puzzle.PuzzleRotateTweenMove
 import com.blindtigergames.werescrewed.entity.tween.EntityAccessor;
 import com.blindtigergames.werescrewed.entity.tween.PathBuilder;
 import com.blindtigergames.werescrewed.entity.tween.PlatformAccessor;
+import com.blindtigergames.werescrewed.eventTrigger.EventTrigger;
 import com.blindtigergames.werescrewed.platforms.Platform;
 import com.blindtigergames.werescrewed.platforms.TiledPlatform;
 import com.blindtigergames.werescrewed.player.Player;
@@ -75,6 +76,7 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 	private BossScrew bossBolt;
 	private float endgameCounter;
 	private Music inceptionhorn;
+	private EventTrigger et;
 
 	public DebugPlayTestScreen( ) {
 
@@ -518,7 +520,8 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		PathBuilder pb = new PathBuilder( );
 		skel4.addMover( pb.begin( skel4 ).target( 0, 150, 3 ).target( 0, 0, 3 )
 				.build( ), RobotState.IDLE );
-
+		skel4.setActive( true );
+		
 		plat = platBuilder.position( 190f * TILE, 55 * TILE ).name( "plat9" )
 				.dimensions( 4, 1 ).texture( testTexture ).kinematic( )
 				.oneSided( true ).restitution( 0 ).buildTilePlatform( );
@@ -537,7 +540,8 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		PathBuilder pb3 = new PathBuilder( );
 		skel6.addMover( pb3.begin( skel6 ).target( 0, -150, 3 )
 				.target( 0, 0, 3 ).build( ), RobotState.IDLE );
-
+		skel6.setActive( true );
+		
 		skel5 = new Skeleton( "skel5", new Vector2( 0, 0 ), null, world );
 		strScrew = new StrippedScrew( "strScrew4", world, new Vector2(
 				192f * TILE, 69 * TILE ), skel5 );
@@ -550,6 +554,7 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		PathBuilder pb2 = new PathBuilder( );
 		skel5.addMover( pb2.begin( skel5 ).target( 0, 150, 3 ).target( 0, 0, 3 )
 				.build( ) , RobotState.IDLE);
+		skel5.setActive( true );
 
 		rootSkeleton.addSkeleton( skel6 );
 		rootSkeleton.addSkeleton( skel4 );
@@ -570,7 +575,8 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		PathBuilder pb = new PathBuilder( );
 		plat.addMover( pb.begin( plat ).target( 0, -650, 6 ).target( 0, 0, 6 )
 				.build( ), RobotState.IDLE );
-
+		plat.setActive( true );
+		
 		plat = platBuilder.position( 172f * TILE, 50 * TILE ).name( "plat9" )
 				.dimensions( 7, 1 ).texture( testTexture ).kinematic( )
 				.friction( 1.0f ).oneSided( true ).restitution( 0 )
@@ -581,7 +587,8 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		PathBuilder pb2 = new PathBuilder( );
 		plat.addMover( pb2.begin( plat ).delay( 1f ).target( -750, 0, 4 ).target( 0, 0, 4 )
 				.build( ), RobotState.IDLE );
-
+		plat.setActive( true );
+		
 		plat = platBuilder.position( 142f * TILE, 50 * TILE ).name( "plat9" )
 				.dimensions( 7, 1 ).texture( testTexture ).kinematic( )
 				.friction( 1.0f ).oneSided( true ).restitution( 0 )
@@ -592,7 +599,8 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		PathBuilder pb3 = new PathBuilder( );
 		plat.addMover( pb3.begin( plat ).target( 0, 750, 5 ).target( 0, 0, 5 )
 				.build( ), RobotState.IDLE );
-
+		plat.setActive( true );
+		
 		plat = platBuilder.position( 153f * TILE, 55 * TILE ).name( "plat9" )
 				.dimensions( 7, 1 ).texture( testTexture ).kinematic( )
 				.friction( 1.0f ).oneSided( true ).restitution( 0 )
@@ -604,7 +612,8 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		plat.addMover( pb4.begin( plat ).target( 0, 500, 3 )
 				.target( 500, 500, 3 ).target( 500, 0, 3 ).target( 0, 0, 3 )
 				.build( ), RobotState.IDLE );
-
+		plat.setActive( true );
+		
 		plat = platBuilder.position( 116f * TILE, 71 * TILE ).name( "plat9" )
 				.dimensions( 37, 1 ).texture( testTexture ).kinematic( )
 				.friction( 1.0f ).oneSided( true ).restitution( 0 )
@@ -647,6 +656,7 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 				* Util.BOX_TO_PIXEL ), new Vector2( plat.body.getPosition( ).x,
 				plat.body.getPosition( ).y + 1.5f ).mul( Util.BOX_TO_PIXEL ), LinearAxis.VERTICAL );
 
+		plat.setActive( true );
 		puzzleScrew.puzzleManager.addEntity( plat );
 		puzzleScrew.puzzleManager.addMover( lm2 );
 		skeleton.addScrewForDraw( puzzleScrew );
@@ -661,6 +671,7 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 
 		puzzleScrew.puzzleManager.addScrew( puzzleScrew2 );
 		puzzleScrew2.puzzleManager.addScrew( puzzleScrew );
+		plat.setActive( true );
 		puzzleScrew2.puzzleManager.addEntity( plat );
 		puzzleScrew2.puzzleManager.addMover( lm2 );
 		skeleton.addScrewForDraw( puzzleScrew2 );
@@ -692,6 +703,7 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 
 		PuzzleRotateTweenMover rtm1 = new PuzzleRotateTweenMover( 1,
 				Util.PI / 2, true );
+		plat.setActive( true );
 		puzzleScrew.puzzleManager.addEntity( plat );
 		puzzleScrew.puzzleManager.addMover( rtm1 );
 		skeleton.addScrewForDraw( puzzleScrew );
@@ -705,6 +717,7 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 
 		PuzzleScrew puzzleScrew2 = new PuzzleScrew( "006", new Vector2(
 				143f * TILE, 83 * TILE ), 50, skel9, world, 0, false );
+		plat.setActive( true );
 		puzzleScrew2.puzzleManager.addEntity( plat );
 		PuzzleRotateTweenMover rtm2 = new PuzzleRotateTweenMover( 1,
 				Util.PI / 2, true );
@@ -731,6 +744,9 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 				plat.body.getPosition( ).y * Util.BOX_TO_PIXEL ), 50, plat,
 				skel9, world );
 		plat.addScrew( bossBolt );
+		
+		et = new EventTrigger("event1", world);
+		et.constructCircleBody( 100, new Vector2(175f * TILE, 90 * TILE) );
 		
 //		specialPlat = platBuilder.position( 175f * TILE, 85 * TILE ).name( "plat12" )
 //				.dimensions( 6, 1 ).texture( testTexture ).kinematic( )
@@ -812,6 +828,7 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 			}
 			if ( endgameCounter == 0f ){
 				rootSkeleton.addMover( new RockingMover( -0.1f, 0.5f ) , RobotState.IDLE);
+				rootSkeleton.setActive( true );
 				cam.turnOffZoom( );
 			}
 			endgameCounter += deltaTime;

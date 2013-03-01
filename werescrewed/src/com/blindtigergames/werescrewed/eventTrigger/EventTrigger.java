@@ -1,5 +1,8 @@
 package com.blindtigergames.werescrewed.eventTrigger;
 
+import java.util.ArrayList;
+
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
@@ -15,19 +18,22 @@ import com.blindtigergames.werescrewed.util.Util;
 public class EventTrigger extends Entity{
 	
 	private boolean repeatable = false;
+	private boolean repeatTriggeredOnce = false;
 	private boolean activated = false;
 	private boolean triggeredOnce = false;
+	private ArrayList<Entity> entityList;
 	
 	public EventTrigger(String name, World world){
 		super(name, null, null, null, false );
 		this.world = world;
 		entityType = EntityType.EVENTTRIGGER;
+		entityList = new ArrayList<Entity>();
 	}
 	
 	public void constructCircleBody(float radiusPixel, Vector2 positionPixel){
 		
 		BodyDef bodyDef = new BodyDef( );
-		bodyDef.type = BodyType.DynamicBody;
+		bodyDef.type = BodyType.KinematicBody;
 		bodyDef.position.set( positionPixel.mul( Util.PIXEL_TO_BOX ));
 		body = world.createBody( bodyDef );
 		
@@ -35,8 +41,8 @@ public class EventTrigger extends Entity{
 		circle.setRadius( radiusPixel * Util.PIXEL_TO_BOX );
 		
 		FixtureDef fixture = new FixtureDef( );
-//		fixture.filter.categoryBits = Util.CATEGORY_SCREWS;
-//		fixture.filter.maskBits = Util.CATEGORY_EVERYTHING;
+		fixture.filter.categoryBits = Util.CATEGORY_SCREWS;
+		fixture.filter.maskBits = Util.CATEGORY_EVERYTHING;
 		fixture.isSensor = true;
 		fixture.shape = circle;
 		
@@ -49,7 +55,7 @@ public class EventTrigger extends Entity{
 	
 	public void contructRectangleBody(float heightPixels, float widthPixels, Vector2 positionPixel){
 		BodyDef bodyDef = new BodyDef( );
-		bodyDef.type = BodyType.DynamicBody;
+		bodyDef.type = BodyType.KinematicBody;
 		bodyDef.position.set( positionPixel.mul( Util.PIXEL_TO_BOX ));
 		body = world.createBody( bodyDef );
 		
@@ -57,8 +63,8 @@ public class EventTrigger extends Entity{
 		polygon.setAsBox( heightPixels/2 * Util.PIXEL_TO_BOX, widthPixels/2 * Util.PIXEL_TO_BOX );
 		
 		FixtureDef fixture = new FixtureDef( );
-//		fixture.filter.categoryBits = Util.CATEGORY_SCREWS;
-//		fixture.filter.maskBits = Util.CATEGORY_EVERYTHING;
+		fixture.filter.categoryBits = Util.CATEGORY_SCREWS;
+		fixture.filter.maskBits = Util.CATEGORY_EVERYTHING;
 		fixture.isSensor = true;
 		fixture.shape = polygon;
 		
@@ -106,6 +112,9 @@ public class EventTrigger extends Entity{
 	 */
 	public void setActivated(boolean active){
 		this.activated = active;
+		if(active == false){
+			repeatTriggeredOnce = false;
+		}
 	}
 	
 	public void update( float deltaTime ){
@@ -113,12 +122,28 @@ public class EventTrigger extends Entity{
 	}
 	
 	public void triggerEvent(){
-		if(repeatable){
-			if(activated){
-				if(!triggeredOnce){
-					//entity.move
+		if(!repeatable){
+			if(!triggeredOnce){
+				for(Entity e : entityList){
+					e.setActive( true );
 				}
+				triggeredOnce = true;
+			}
+		} else if(repeatable){
+			if(!repeatTriggeredOnce){
+				for(Entity e : entityList){
+					e.setActive( true );
+				}
+				repeatTriggeredOnce = true;
 			}
 		}
+	}
+	
+	public void phoneHome(){
+		Gdx.app.log( "hello", "yes, this is dog" );
+	}
+	
+	public void addEntityToTrigger(Entity entity){
+		entityList.add( entity );
 	}
 }

@@ -11,6 +11,7 @@ import com.badlogic.gdx.physics.box2d.Manifold;
 import com.blindtigergames.werescrewed.camera.Anchor;
 import com.blindtigergames.werescrewed.checkpoints.CheckPoint;
 import com.blindtigergames.werescrewed.entity.Entity;
+import com.blindtigergames.werescrewed.eventTrigger.EventTrigger;
 import com.blindtigergames.werescrewed.platforms.Platform;
 import com.blindtigergames.werescrewed.platforms.PlatformType;
 import com.blindtigergames.werescrewed.hazard.Hazard;
@@ -118,6 +119,12 @@ public class MyContactListener implements ContactListener {
 							break;
 						case STEAM:
 							player.setSteamCollide( true );
+							break;
+						case EVENTTRIGGER:
+							EventTrigger et = ( EventTrigger ) objectFix.getBody( )
+								.getUserData( );
+						//	et.phoneHome( );
+							et.setActivated( true );
 							break;
 						default:
 							break;
@@ -227,6 +234,11 @@ public class MyContactListener implements ContactListener {
 						case STEAM:
 							player.setSteamCollide( false );
 							break;
+						case EVENTTRIGGER:
+							EventTrigger et = ( EventTrigger ) objectFix.getBody( )
+							.getUserData( );
+							et.setActivated( false );
+							break;
 						default:
 							break;
 						}
@@ -301,14 +313,12 @@ public class MyContactListener implements ContactListener {
 							if ( player.getState( ) == PlayerState.GrabMode
 									|| player2.getState( ) == PlayerState.GrabMode ) {
 								contact.setEnabled( false );
-							} else if ( ( ( !player.isGrounded( ) || !player2
-									.isGrounded( ) )
-									&& player.getState( ) != PlayerState.Falling && player2
+							} else if ( ( player.getState( ) != PlayerState.Falling && player2
 									.getState( ) != PlayerState.Falling )
 									|| !player.isHeadStandTimedOut( )
 									|| !player2.isHeadStandTimedOut( ) ) {
 								contact.setEnabled( false );
-							}
+							} 
 							break;
 						default:
 							break;
