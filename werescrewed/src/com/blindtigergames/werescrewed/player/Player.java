@@ -1218,14 +1218,26 @@ public class Player extends Entity {
 					}
 				}
 			}else if(debugAttach2){
-				if ( hitScrew ) {
-					attachToScrew( );
-					jumpCounter = 0;
-					if(controllerListener.jumpPressed( ) ){
-						canJumpOffScrew = false;
+				if(debugAttach2Hold){
+					if ( hitScrew && !screwButtonHeld ) {
+						attachToScrew( );
+						screwButtonHeld = true;
+						jumpCounter = 0;
+						if(controllerListener.jumpPressed( ) ){
+							canJumpOffScrew = false;
+						}
+						if(controllerListener.screwPressed( )){
+							holdingScrewWhenAttached = true;
+						}
 					}
-					if(controllerListener.screwPressed( ) && debugAttach2Hold){
-						holdingScrewWhenAttached = true;
+				}else{
+					if ( hitScrew  ) {
+						attachToScrew( );
+						jumpCounter = 0;
+						if(controllerListener.jumpPressed( ) ){
+							canJumpOffScrew = false;
+						}
+
 					}
 				}
 			}else if(debugAttach3){
