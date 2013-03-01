@@ -13,7 +13,6 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.Filter;
 import com.badlogic.gdx.physics.box2d.Fixture;
-import com.badlogic.gdx.physics.box2d.JointEdge;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJoint;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
@@ -56,6 +55,7 @@ public class Player extends Entity {
 	public final static float SCREW_ATTACH_SPEED = 0.1f;
 	public final static int GRAB_COUNTER_STEPS = 5;
 	public final static Vector2 ANCHOR_BUFFER_SIZE = new Vector2( 400f, 256f );
+	public final static float STEAM_FORCE = .5f;
 	public float JUMP_IMPULSE = 0.08f;
 	public float directionJumpDivsion = 2.0f;
 
@@ -91,8 +91,9 @@ public class Player extends Entity {
 	private boolean screwButtonHeld;
 	private boolean kinematicTransform = false;
 	private boolean changeDirectionsOnce = false;
+	private boolean steamCollide = false;
 	private float footFriction = PLAYER_FRICTION;
-	
+
 	private IMover mover;
 
 	public int grabCounter = 0;
@@ -175,8 +176,10 @@ public class Player extends Entity {
 			// System.out.println( jumpPressedKeyboard );
 		}
 		if ( name.equals( "player2" ) ) {
-			//Gdx.app.log( "playerState", "" + playerState + " " + grounded + "isDead? = " + isDead );
+			//Gdx.app.log( name + " playerState", "" + playerState + " "
+			//		+ grounded + "isDead? = " + isDead );
 		}
+
 		if ( kinematicTransform ) {
 			// setPlatformTransform( platformOffset );
 			kinematicTransform = false;
@@ -242,7 +245,7 @@ public class Player extends Entity {
 		if ( body.getLinearVelocity( ).y < -MIN_VELOCITY * 6f
 				&& playerState != PlayerState.Screwing
 				&& playerState != PlayerState.JumpingOffScrew
-				&& playerState != PlayerState.HeadStand ) {
+				&& playerState != PlayerState.HeadStand && !isDead ) {
 			playerState = PlayerState.Falling;
 		}
 		// after the players collide check if one is falling
@@ -282,6 +285,8 @@ public class Player extends Entity {
 					mover = null;
 				}
 			}
+		} else if ( steamCollide ) {
+			steamResolution( );
 		}
 		terminalVelocityCheck( 15.0f );
 		// the jump doesn't work the first time on dynamic bodies so do it twice
@@ -294,6 +299,26 @@ public class Player extends Entity {
 	 * This function sets player in dead state
 	 */
 	public void killPlayer( ) {
+		playerState = PlayerState.Standing;
+		while ( body.getJointList( ).iterator( ).hasNext( ) ) {
+			world.destroyJoint( body.getJointList( ).get( 0 ).joint );
+		}
+		playerToPlayer = null;
+		playerToScrew = null;
+		if ( currentScrew != null ) {
+			currentScrew.setPlayerAttached( false );
+			currentScrew = null;
+		}
+		Filter filter = new Filter( );
+		for ( Fixture f : body.getFixtureList( ) ) {
+			f.setSensor( false );
+			filter = f.getFilterData( );
+			// move player back to original category
+			filter.categoryBits = Util.CATEGORY_PLAYER;
+			// player now collides with everything
+			filter.maskBits = Util.CATEGORY_EVERYTHING;
+			f.setFilterData( filter );
+		}
 		isDead = true;
 	}
 
@@ -612,32 +637,24 @@ public class Player extends Entity {
 	 * @author dennis
 	 */
 	private void attachToScrew( ) {
-		if ( currentScrew.body.getJointList( ).size( ) > 0
-				&& playerState != PlayerState.HeadStand ) {
-			boolean screwOccupied = false;
-			for ( JointEdge j : currentScrew.body.getJointList( ) ) {
-				// Altered if statement so both players can be on BossScrew.
-				if ( j.joint.getBodyA( ).getUserData( ) instanceof Player
-						&& currentScrew.getScrewType( ) != ScrewType.BOSS ) {
-					screwOccupied = true;
-				}
+		if ( currentScrew != null
+				&& currentScrew.body.getJointList( ).size( ) > 0
+				&& playerState != PlayerState.HeadStand
+				&& !currentScrew.isPlayerAttached( ) ) {
+			// Filter filter;
+			for ( Fixture f : body.getFixtureList( ) ) {
+				f.setSensor( true );
 			}
-			if ( !screwOccupied ) {
-				// Filter filter;
-				for ( Fixture f : body.getFixtureList( ) ) {
-					f.setSensor( true );
-				}
-				mover = new LerpMover( body.getPosition( ).mul(
-						Util.BOX_TO_PIXEL ), new Vector2(
-						currentScrew.getPosition( ).x * Util.BOX_TO_PIXEL
-								- ( sprite.getWidth( ) / 4.0f ),
-						currentScrew.getPosition( ).y * Util.BOX_TO_PIXEL
-								- ( sprite.getHeight( ) / 4.0f ) ),
-						SCREW_ATTACH_SPEED, false, LinearAxis.DIAGONAL, 0 );
-				playerState = PlayerState.Screwing;
-				setGrounded( false );
-
-			}
+			mover = new LerpMover(
+					body.getPosition( ).mul( Util.BOX_TO_PIXEL ), new Vector2(
+							currentScrew.getPosition( ).x * Util.BOX_TO_PIXEL
+									- ( sprite.getWidth( ) / 4.0f ),
+							currentScrew.getPosition( ).y * Util.BOX_TO_PIXEL
+									- ( sprite.getHeight( ) / 4.0f ) ),
+					SCREW_ATTACH_SPEED, false, LinearAxis.DIAGONAL, 0 );
+			playerState = PlayerState.Screwing;
+			currentScrew.setPlayerAttached( true );
+			setGrounded( false );
 		}
 	}
 
@@ -702,6 +719,7 @@ public class Player extends Entity {
 						f.setSensor( false );
 					}
 					mover = null;
+					currentScrew.setPlayerAttached( false );
 					playerState = PlayerState.JumpingOffScrew;
 					screwJumpTimeout = SCREW_JUMP_STEPS;
 					jump( );
@@ -755,6 +773,7 @@ public class Player extends Entity {
 					screwJumpTimeout = SCREW_JUMP_STEPS;
 					jumpPressedController = true;
 					mover = null;
+					currentScrew.setPlayerAttached( false );
 					jumpScrew( );
 				}
 			}
@@ -909,6 +928,7 @@ public class Player extends Entity {
 					f.setSensor( false );
 				}
 				mover = null;
+				currentScrew.setPlayerAttached( false );
 				playerState = PlayerState.JumpingOffScrew;
 				screwJumpTimeout = SCREW_JUMP_STEPS;
 			}
@@ -925,6 +945,7 @@ public class Player extends Entity {
 	 */
 	private void setHeadStand( ) {
 		if ( otherPlayer != null ) {
+			jumpCounter = 0;
 			if ( topPlayer ) {
 				playerState = PlayerState.HeadStand;
 				this.setPosition( otherPlayer.body.getPosition( ).x,
@@ -1188,6 +1209,7 @@ public class Player extends Entity {
 							f.setSensor( false );
 						}
 						mover = null;
+						currentScrew.setPlayerAttached( false );
 						playerState = PlayerState.JumpingOffScrew;
 						screwJumpTimeout = SCREW_JUMP_STEPS;
 					}
@@ -1302,6 +1324,7 @@ public class Player extends Entity {
 					f.setSensor( false );
 				}
 				mover = null;
+				currentScrew.setPlayerAttached( false );
 				playerState = PlayerState.JumpingOffScrew;
 				screwJumpTimeout = SCREW_JUMP_STEPS;
 			}
@@ -1358,5 +1381,34 @@ public class Player extends Entity {
 			}
 		}
 
+	}
+
+	/**
+	 * sets the value of steam collide flag
+	 * 
+	 * @param value
+	 *            boolean
+	 */
+
+	public void setSteamCollide( boolean value ) {
+		steamCollide = value;
+	}
+
+	/**
+	 * says whether the player is in steam
+	 * 
+	 * @return boolean
+	 */
+	public boolean isSteamCollide( ) {
+		return steamCollide;
+	}
+
+	/**
+	 * applys force to player
+	 */
+	private void steamResolution( ) {
+		if (prevButton == null)
+			body.setLinearVelocity(new Vector2 ( 0f, body.getLinearVelocity( ).y));
+		body.applyForceToCenter( 0f, STEAM_FORCE );
 	}
 }

@@ -30,6 +30,7 @@ import com.blindtigergames.werescrewed.entity.mover.puzzle.PuzzleRotateTweenMove
 import com.blindtigergames.werescrewed.entity.tween.EntityAccessor;
 import com.blindtigergames.werescrewed.entity.tween.PathBuilder;
 import com.blindtigergames.werescrewed.entity.tween.PlatformAccessor;
+import com.blindtigergames.werescrewed.eventTrigger.EventTrigger;
 import com.blindtigergames.werescrewed.platforms.Platform;
 import com.blindtigergames.werescrewed.platforms.TiledPlatform;
 import com.blindtigergames.werescrewed.player.Player;
@@ -70,6 +71,7 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 	private Skeleton skel4;
 	private Skeleton skel5, skel6;
 	private Rope testRope;
+	private TiledPlatform specialPlat;
 
 	private BossScrew bossBolt;
 	private float endgameCounter;
@@ -102,12 +104,13 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 
 		// Initialize players
 		player1 = new PlayerBuilder( ).name( "player1" ).world( world )
-				.position( 175f * TILE, 96f * TILE   ).buildPlayer( );
+				.position( 175f * TILE, 96f * TILE  ).buildPlayer( );
 		player2 = new PlayerBuilder( ).name( "player2" ).world( world )
-				.position( 175f * TILE, 96f * TILE   ).buildPlayer( );
+				.position(175f * TILE, 96f * TILE  ).buildPlayer( );
 
 		// END: 175f * TILE, 96f * TILE
 		// START : 1f * TILE, 1f * TILE 
+		// stripped screws: 170 * TILE, 17 * TILE
 
 		floor1( );
 		floor2( );
@@ -729,7 +732,22 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 				plat.body.getPosition( ).y * Util.BOX_TO_PIXEL ), 50, plat,
 				skel9, world );
 		plat.addScrew( bossBolt );
-
+		
+		EventTrigger et = new EventTrigger("event1", world);
+		et.constructCircleBody( 100, new Vector2(175f * TILE, 94 * TILE) );
+		
+//		specialPlat = platBuilder.position( 175f * TILE, 85 * TILE ).name( "plat12" )
+//				.dimensions( 6, 1 ).texture( testTexture ).kinematic( )
+//				.friction( 1.0f ).oneSided( true ).restitution( 0 )
+//				.buildTilePlatform( );
+//		skel9.addKinematicPlatform( specialPlat );
+//		
+//		PathBuilder pb = new PathBuilder( );
+//		specialPlat.addMover( pb.begin( specialPlat ).target( 0, 150, 3 ).target( 0, 0, 3 )
+//				.build( ), RobotState.IDLE );
+//		specialPlat.addMover( pb.begin( specialPlat ).target( 150, 0, 3 ).target( 0, 0, 3 )
+//				.build( ), RobotState.DOCILE );
+		
 		rootSkeleton.addSkeleton( skel9 );
 	}
 
@@ -762,6 +780,10 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		if ( Gdx.input.isKeyPressed( Keys.NUM_0 ) ) {
 			if ( debugTest ) {
 				debug = !debug;
+				//if(specialPlat.getCurrentState( ) == RobotState.IDLE)
+				//	specialPlat.setCurrentMover( RobotState.DOCILE );
+				//else
+				//	specialPlat.setCurrentMover( RobotState.IDLE );
 			}
 			debugTest = false;
 		} else

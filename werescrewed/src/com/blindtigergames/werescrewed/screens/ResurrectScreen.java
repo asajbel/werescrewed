@@ -47,6 +47,17 @@ public class ResurrectScreen implements com.badlogic.gdx.Screen {
 	private boolean debug = true;
 	private boolean debugTest = true;
 	private ProgressManager progressManager;
+	
+	//timeout for killing player input
+	//wont need this as there wont be a button to kill the player
+	//eventually
+	private int killTimeout = 0;
+
+	// DEBUG CONTROLS
+//	'z' kill player 1
+//	'x' kill player 2
+//	'r' player 1's re-spawn button
+//	'y' player 2's re-spawn button
 
 	/**
 	 * Defines all necessary components in a screen for testing different
@@ -157,13 +168,17 @@ public class ResurrectScreen implements com.badlogic.gdx.Screen {
 		} else
 			debugTest = true;
 
-		if ( Gdx.input.isKeyPressed( Input.Keys.Z ) ) {
-			player2.killPlayer( );
-			//rootSkeleton.translateBy( 0.0f, 0.01f );
+		if ( killTimeout > 0 ) {
+			killTimeout--;
+		}
+		if ( Gdx.input.isKeyPressed( Input.Keys.Z ) && killTimeout == 0 ) {
+			player1.killPlayer( );
+			killTimeout = 15;
 		}
 
-		if ( Gdx.input.isKeyPressed( Input.Keys.X ) ) {
-			rootSkeleton.translateBy( 0.0f, -0.01f );
+		if ( Gdx.input.isKeyPressed( Input.Keys.X )  && killTimeout == 0) {
+			player2.killPlayer( );
+			killTimeout = 15;
 		}
 
 		if ( Gdx.input.isKeyPressed( Input.Keys.C ) ) {
