@@ -54,5 +54,5 @@ public class EventTriggerBuilder extends GenericEntityBuilder<EventTriggerBuilde
 		return this;
 	}
 	
-}
+
 }
