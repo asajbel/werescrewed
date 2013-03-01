@@ -1,5 +1,7 @@
 package com.blindtigergames.werescrewed.eventTrigger;
 
+import java.util.ArrayList;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -18,11 +20,13 @@ public class EventTrigger extends Entity{
 	private boolean repeatable = false;
 	private boolean activated = false;
 	private boolean triggeredOnce = false;
+	private ArrayList<Entity> entityList;
 	
 	public EventTrigger(String name, World world){
 		super(name, null, null, null, false );
 		this.world = world;
 		entityType = EntityType.EVENTTRIGGER;
+		entityList = new ArrayList<Entity>();
 	}
 	
 	public void constructCircleBody(float radiusPixel, Vector2 positionPixel){
@@ -125,5 +129,9 @@ public class EventTrigger extends Entity{
 	
 	public void phoneHome(){
 		Gdx.app.log( "hello,", "yes this is dog" );
+	}
+	
+	public void addEntityToTrigger(Entity entity){
+		entityList.add( entity );
 	}
 }

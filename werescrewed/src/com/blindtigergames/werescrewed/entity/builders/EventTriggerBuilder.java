@@ -26,4 +26,33 @@ public class EventTriggerBuilder extends GenericEntityBuilder<EventTriggerBuilde
 		this.height = 100f;
 		return this;
 	}
+	
+	public EventTriggerBuilder radius(float radius){
+		this.radius = radius;
+		return this;
+	}
+	
+	public EventTriggerBuilder height(float height){
+		this.height = height;
+		return this;
+	}
+	
+	public EventTriggerBuilder width(float width){
+		this.width = width;
+		return this;
+	}
+	
+	public EventTriggerBuilder circle(){
+		this.circle = true;
+		this.rectangle = false;
+		return this;
+	}
+	
+	public EventTriggerBuilder rectangle(){
+		this.rectangle = true;
+		this.circle = false;
+		return this;
+	}
+	
+}
 }
