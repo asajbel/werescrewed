@@ -68,6 +68,7 @@ public class Camera {
 	private boolean debugInput;
 	private boolean debugRender;
 	private ShapeRenderer shapeRenderer;
+	@SuppressWarnings( "unused" )
 	private boolean debugTurnOffZoom;
 
 	public Camera( float viewportWidth, float viewportHeight, World world ) {
@@ -138,10 +139,12 @@ public class Camera {
 	 * update the camera
 	 */
 	public void update( ) {
+		// Tracks player holding "B"
 		debugInput = false;
+		// Tracks player holding "N"
 		debugRender = false;
 		// debugMode = true;
-		// check debug
+		// check debug keys
 		if ( Gdx.input.isKeyPressed( Keys.B ) ) {
 			debugInput = true;
 		}
@@ -186,7 +189,7 @@ public class Camera {
 	}
 
 	/**
-	 * set focus of camera to the midpoint of all anchors
+	 * Set focus of camera to the midpoint of all anchors
 	 */
 	private void setTranslateTarget( ) {
 		translateTarget.x = anchorList.getMidpoint( ).x;
@@ -435,7 +438,6 @@ public class Camera {
 		}
 	}
 
-	@SuppressWarnings( "unused" )
 	private void createTestAnchors( World world ) {
 		// anchorList.addAnchor( false, new Vector2(0f, 0f) );
 		// anchorList.addAnchor( false, new Vector2( -128f, 128f ), world, 3f );
@@ -477,6 +479,9 @@ public class Camera {
 		shapeRenderer.end( );
 	}
 
+	/**
+	 * Logic for handling debug input while "B" is pressed
+	 */
 	private void handleInput( ) {
 		if ( Gdx.input.isKeyPressed( Input.Keys.E ) ) {
 			camera.zoom += 0.02;
