@@ -1,6 +1,13 @@
 package com.blindtigergames.werescrewed.screens;
 
 public enum ScreenType {
+	CHARACTER_SELECT {
+		@Override
+		protected com.badlogic.gdx.Screen getScreenInstance( ) {
+			return new CharacterSelectScreen( );
+		}
+	},
+	
 	CREDITS {
 		@Override
 		protected com.badlogic.gdx.Screen getScreenInstance( ) {
@@ -30,6 +37,12 @@ public enum ScreenType {
 		@Override
 		protected com.badlogic.gdx.Screen getScreenInstance( ) {
 			return new Level1Screen( );
+		}
+	},
+	LEVEL_SELECT {
+		@Override
+		protected com.badlogic.gdx.Screen getScreenInstance( ) {
+			return new LevelSelectScreen( );
 		}
 	},
 	// TODO: Do we need different enums for each of the loading screens,
@@ -76,6 +89,12 @@ public enum ScreenType {
 			return new LoadingScreen( "testLevel" );
 		}
 	},
+	OPTIONS {
+		@Override
+		protected com.badlogic.gdx.Screen getScreenInstance( ) {
+			return new OptionsScreen( );
+		}
+	},
 	PAUSE {
 		@Override
 		protected com.badlogic.gdx.Screen getScreenInstance( ) {
@@ -112,7 +131,13 @@ public enum ScreenType {
 			return new MainMenuScreen( );
 		}
 	},
-
+	
+	STORY {
+		@Override
+		protected com.badlogic.gdx.Screen getScreenInstance( ) {
+			return new StoryModeScreen( );
+		}
+	},
 	WIN {
 		@Override
 		protected com.badlogic.gdx.Screen getScreenInstance( ) {

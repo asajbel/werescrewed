@@ -19,6 +19,11 @@ public class Hazard extends Entity {
 
 	public boolean active;
 	
+	public Hazard( String name, Vector2 pos, float height, float width, World world, boolean isActive ) {
+		super( name, pos, null, null, true );
+		entityType = EntityType.HAZARD;
+	}
+	
 	public Hazard( String name, EntityDef type, World world,
 			Vector2 posPix, float rot, Vector2 scale, Texture texture,
 			boolean solid, float anchRadius ) {
@@ -28,12 +33,22 @@ public class Hazard extends Entity {
 		entityType = EntityType.HAZARD;
 	}
 
+	public boolean isActive ( ) {
+		return active;
+	}
+	
 	//Performs check to see if a player has collided with a hazard.
 	public void performContact ( Player player ) {
 		player.killPlayer( );
 	}
 	
-	public boolean isActive ( ) {
-		return active;
+	@Override
+	public void update( float deltaTime ) {
+		
+	}
+
+	@Override
+	public void draw( SpriteBatch batch ) {
+		
 	}
 }

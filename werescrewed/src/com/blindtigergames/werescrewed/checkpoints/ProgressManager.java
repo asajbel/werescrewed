@@ -2,7 +2,9 @@ package com.blindtigergames.werescrewed.checkpoints;
 
 import java.util.ArrayList;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.JointEdge;
 import com.badlogic.gdx.physics.box2d.World;
 import com.blindtigergames.werescrewed.entity.Entity;
@@ -21,11 +23,10 @@ import com.blindtigergames.werescrewed.util.Util;
 public class ProgressManager {
 
 	private ArrayList< CheckPoint > checkPoints;
-	private ResurrectScrew resurrectScrew;
+	private ResurrectScrew[ ] resurrectScrews;
 	private Player player1;
 	private Player player2;
 	private World world;
-	private boolean changeCheckPoint = false;
 	private int currentCheckPoint;
 	private int holdTime = 0;
 	private int respawnTime = 100;
@@ -41,7 +42,9 @@ public class ProgressManager {
 		this.player2 = p2;
 		this.world = world;
 		checkPoints = new ArrayList< CheckPoint >( );
-		resurrectScrew = null;
+		resurrectScrews = new ResurrectScrew[ 2 ];
+		resurrectScrews[0] = new ResurrectScrew( Vector2.Zero, world );
+		resurrectScrews[1] = new ResurrectScrew( Vector2.Zero, world );
 		currentCheckPoint = 0;
 	}
 
@@ -65,10 +68,7 @@ public class ProgressManager {
 		if ( checkP != checkPoints.get( currentCheckPoint ) ) {
 			for ( int i = 0; i < checkPoints.size( ); i++ ) {
 				if ( checkPoints.get( i ) == checkP ) {
-					if ( i > currentCheckPoint ) {
-						changeCheckPoint = true;
-						currentCheckPoint = i;
-					}
+					currentCheckPoint = i;
 					break;
 				}
 			}
@@ -76,43 +76,38 @@ public class ProgressManager {
 	}
 
 	public void update( float deltaTime ) {
-		// removes the bodies and joints of previous checkpoints
-		if ( changeCheckPoint ) {
-			for ( int i = 0; i < currentCheckPoint; i++ ) {
-				if ( !checkPoints.get( i ).isRemoved( ) ) {
-					checkPoints.get( i ).remove( );
-				}
-			}
-			changeCheckPoint = false;
-		}
-		//if both players are dead
-		//automatically re-spawn at the last checkpoint
+		// if both players are dead
+		// automatically re-spawn at the last checkpoint
 		if ( player1.isPlayerDead( ) && player2.isPlayerDead( ) ) {
 			spawnAtCheckPoint( player1 );
 			spawnAtCheckPoint( player2 );
+			Gdx.app.log( "hello", "both players are dead" );
 			holdTime = 0;
-		}
-		//if a single player is dead allow them to re-spawn
-		//and create a resurrection screw to let their 
-		//team-mate re-spawn them
-		if ( player1.isPlayerDead( ) ) {
+		} else if ( player1.isPlayerDead( ) && !player2.isPlayerDead( ) ) {
+			// if a single player is dead allow them to re-spawn
+			// and create a resurrection screw to let their
+			// team-mate re-spawn them
 			handleDeadPlayer( );
 			handleDeadPlayerInput( player1 );
-		}
-		if ( player2.isPlayerDead( ) ) {
+		} else if ( player2.isPlayerDead( ) && !player1.isPlayerDead( ) ) {
 			handleDeadPlayer( );
 			handleDeadPlayerInput( player2 );
 		}
-		int start = currentCheckPoint;
-		int end = currentCheckPoint + 1;
-		if ( end >= checkPoints.size( ) ) {
-			end = checkPoints.size( ) - 1;
+		if ( !player1.isPlayerDead( ) && !player2.isPlayerDead( ) ) {
+			for ( ResurrectScrew rezScrew : resurrectScrews ) {
+				rezScrew.setActive( false );
+			}
 		}
-		for ( int i = start; i <= end; i++ ) {
+		for ( int i = 0; i < checkPoints.size( ); i++ ) {
+			if ( i != currentCheckPoint ) {
+				checkPoints.get( i ).deactivate( );
+			}
 			checkPoints.get( i ).update( deltaTime );
 		}
-		if ( resurrectScrew != null ) {
-			resurrectScrew.update( deltaTime );
+		for ( ResurrectScrew rezScrew : resurrectScrews ) {
+			if ( rezScrew.isActive( ) ) {
+				rezScrew.update( deltaTime );
+			}
 		}
 	}
 
@@ -123,16 +118,13 @@ public class ProgressManager {
 	 * @param batch
 	 */
 	public void draw( SpriteBatch batch ) {
-		int start = currentCheckPoint;
-		int end = currentCheckPoint + 2;
-		if ( end >= checkPoints.size( ) ) {
-			end = checkPoints.size( ) - 1;
+		for ( CheckPoint c : checkPoints ) {
+			c.draw( batch );
 		}
-		for ( int i = start; i <= end; i++ ) {
-			checkPoints.get( i ).draw( batch );
-		}
-		if ( resurrectScrew != null ) {
-			resurrectScrew.draw( batch );
+		for ( ResurrectScrew rezScrew : resurrectScrews ) {
+			if ( rezScrew.isActive( ) ) {
+				rezScrew.draw( batch );
+			}
 		}
 	}
 
@@ -140,21 +132,27 @@ public class ProgressManager {
 	 * when a player dies create a resurrection screw
 	 */
 	private void handleDeadPlayer( ) {
-		if ( resurrectScrew == null ) {
-			Entity entity = null;
-			for ( JointEdge j : checkPoints.get( currentCheckPoint ).body
-					.getJointList( ) ) {
-				entity = ( Entity ) j.joint.getBodyB( ).getUserData( );
-			}
-			if ( player1.isPlayerDead( ) ) {
-				resurrectScrew = new ResurrectScrew( player1.getPosition( )
-						.add( 0, 256f * Util.PIXEL_TO_BOX )
-						.mul( Util.BOX_TO_PIXEL ), entity, world, player1 );
-			} else {
-				resurrectScrew = new ResurrectScrew( player2.getPosition( )
-						.add( 0, 256f * Util.PIXEL_TO_BOX )
-						.mul( Util.BOX_TO_PIXEL ), entity, world, player2 );
-			}
+		Entity entity = checkPoints.get( currentCheckPoint );
+		for ( JointEdge j : checkPoints.get( currentCheckPoint ).body
+				.getJointList( ) ) {
+			entity = ( Entity ) j.joint.getBodyB( ).getUserData( );
+		}
+		if ( player1.isPlayerDead( ) && !player2.isPlayerDead( ) ) {
+			resurrectScrews[ 0 ].body.setTransform(
+					player1.getPosition( ).add( 0, 256f * Util.PIXEL_TO_BOX )
+							.mul( Util.BOX_TO_PIXEL ), 0.0f );
+			resurrectScrews[ 0 ].connectScrewToEntity( entity );
+			resurrectScrews[ 0 ].setActive( true );
+			resurrectScrews[ 0 ].setDeadPlayer( player1 );
+			resurrectScrews[ 0 ].constructPulley( );
+		} else if ( !player1.isPlayerDead( ) ) {
+			resurrectScrews[ 1 ].body.setTransform(
+					player2.getPosition( ).add( 0, 256f * Util.PIXEL_TO_BOX )
+							.mul( Util.BOX_TO_PIXEL ), 0.0f );
+			resurrectScrews[ 1 ].setActive( true );
+			resurrectScrews[ 1 ].connectScrewToEntity( entity );
+			resurrectScrews[ 1 ].setDeadPlayer( player1 );
+			resurrectScrews[ 1 ].constructPulley( );
 		}
 	}
 
@@ -181,11 +179,12 @@ public class ProgressManager {
 	 * @param player
 	 */
 	private void spawnAtCheckPoint( Player player ) {
-		resurrectScrew.remove( );
-		resurrectScrew = null;
 		player.body.setTransform( checkPoints.get( currentCheckPoint )
 				.getPosition( ), 0.0f );
 		player.respawnPlayer( );
+		for ( ResurrectScrew rezScrew : resurrectScrews ) {
+			rezScrew.setActive( false );
+		}
 	}
 
 }

@@ -6,10 +6,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.CircleShape;
-import com.badlogic.gdx.physics.box2d.Filter;
-import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.JointEdge;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
 import com.blindtigergames.werescrewed.WereScrewedGame;
@@ -64,27 +61,20 @@ public class CheckPoint extends Entity {
 		world.destroyBody( body );
 		removed = true;
 	}
-	
+
 	/**
 	 * returns whether or not this entity has been removed
 	 */
 	public boolean isRemoved( ) {
 		return removed;
 	}
-	
+
 	/**
 	 * activates this checkpoint if not already active
 	 */
 	public void hitPlayer( ) {
 		if ( !active ) {
 			body.setAngularVelocity( 3f );
-		}
-		Filter filter = new Filter( );
-		for ( Fixture f : body.getFixtureList( ) ) {
-			filter = f.getFilterData( );
-			filter.categoryBits = Util.CATEGORY_IGNORE;
-			filter.maskBits = Util.CATEGORY_NOTHING;
-			f.setFilterData( filter );
 		}
 		active = true;
 		progressManager.hitNewCheckPoint( this );
@@ -99,14 +89,23 @@ public class CheckPoint extends Entity {
 		return active;
 	}
 
+	/**
+	 * deactivates a checkpoint
+	 */
+	public void deactivate( ) {
+		active = false;
+		body.setAngularVelocity( -3f );
+	}
+
 	@Override
 	public void update( float deltaTime ) {
 		super.update( deltaTime );
 		if ( active ) {
 			if ( body.getAngle( ) >= 90f * Util.DEG_TO_RAD ) {
 				body.setAngularVelocity( 0.0f );
-				active = false;
 			}
+		} else if ( body.getAngle( ) <= 0.0f ) {
+			body.setAngularVelocity( 0.0f );
 		}
 	}
 

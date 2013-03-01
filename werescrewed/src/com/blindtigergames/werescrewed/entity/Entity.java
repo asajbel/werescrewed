@@ -37,7 +37,7 @@ public class Entity {
 	protected boolean solid;
 	protected Anchor anchor;
 	protected float energy;
-	protected boolean moverActive;
+	protected boolean active;
 	protected boolean visible;
 	protected boolean maintained;
 	protected EntityType entityType;
@@ -117,7 +117,7 @@ public class Entity {
 		this.energy = 1.0f;
 		this.maintained = true;
 		this.visible = true;
-		this.moverActive = true;
+		this.active = true;
 		setUpRobotState();
 	}
 
@@ -188,7 +188,7 @@ public class Entity {
 	 * @param deltaTime
 	 */
 	public void updateMover( float deltaTime ) {
-		if ( moverActive ) {
+		if ( active ) {
 			if ( body != null ) {
 				if ( currentMover() != null ) {
 					currentMover().move( deltaTime, body );
@@ -430,7 +430,7 @@ public class Entity {
 	 * @param a - boolean
 	 */
 	public void setActive( boolean a ) {
-		moverActive = a;
+		active = a;
 	}
 
 	/**
@@ -438,7 +438,7 @@ public class Entity {
 	 * @return boolean
 	 */
 	public boolean isActive( ) {
-		return moverActive;
+		return active;
 	}
 
 	/**

@@ -38,7 +38,7 @@ public class HazardScreen implements com.badlogic.gdx.Screen {
 	private Skeleton rootSkeleton;
 	private TiledPlatform ground;
 	private PlatformBuilder platBuilder;
-	private Spikes spike;
+	private Spikes spikes;
 	private boolean debug = true;
 	private boolean debugTest = true;
 	
@@ -87,9 +87,8 @@ public class HazardScreen implements com.badlogic.gdx.Screen {
 	}
 	
 	private void initHazards( ) {
-		spike = new Spikes( "Spikes1", null, world, new Vector2( -1050.0f, 90.0f),
-				new Vector2( 100.0f, 100.0f ), testTexture, true);
-		
+		spikes = new Spikes( "Spikes1", new Vector2( -1050.0f, 90.0f), 
+				50.0f, 50.0f, world, true );
 	}
 	
 	@Override
@@ -98,7 +97,7 @@ public class HazardScreen implements com.badlogic.gdx.Screen {
 			Gdx.gl20.glClearColor( 0.0f, 0.0f, 0.0f, 1.0f );
 			Gdx.gl20.glClear( GL20.GL_COLOR_BUFFER_BIT );
 		} else {
-			Gdx.gl10.glClearColor( 0.0f, 0f, 0.0f, 1.0f );
+			Gdx.gl10.glClearColor( 0.0f, 0.0f, 0.0f, 1.0f );
 			Gdx.gl10.glClear( GL20.GL_COLOR_BUFFER_BIT );
 		}
 		
@@ -114,12 +113,12 @@ public class HazardScreen implements com.badlogic.gdx.Screen {
 		player1.update( deltaTime );
 		player2.update( deltaTime );
 		rootSkeleton.update( deltaTime );
-		spike.update( deltaTime );
+		spikes.update( deltaTime );
 		batch.setProjectionMatrix( cam.combined( ) );
 		batch.begin( );
 		
 		rootSkeleton.draw( batch );
-		spike.draw( batch );
+		spikes.draw( batch );
 		player1.draw( batch );
 		player2.draw( batch );
 

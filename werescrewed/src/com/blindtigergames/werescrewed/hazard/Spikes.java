@@ -17,10 +17,12 @@ import com.blindtigergames.werescrewed.player.Player;
 //Just your standard spikes.
 public class Spikes extends Hazard {
 
-	public Spikes( String name, EntityDef type, World world, Vector2 posPix,
-			Vector2 scale, Texture texture, boolean solid ) {
-		super( name, type, world, posPix, 0.0f, scale, texture, solid, 0.0f );
-		
+	private float height, width;
+	
+	public Spikes( String name, Vector2 pos, float height, float width, World world, boolean isActive ) {
+		super( name, pos, height, width, world, isActive );
+		this.height = height;
+		this.width = width;
 	}
 
 	@Override
