@@ -734,7 +734,7 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		plat.addScrew( bossBolt );
 		
 		EventTrigger et = new EventTrigger("event1", world);
-		et.constructCircleBody( 100, new Vector2(175f * TILE, 94 * TILE) );
+		et.constructCircleBody( 100, new Vector2(175f * TILE, 90 * TILE) );
 		
 //		specialPlat = platBuilder.position( 175f * TILE, 85 * TILE ).name( "plat12" )
 //				.dimensions( 6, 1 ).texture( testTexture ).kinematic( )
