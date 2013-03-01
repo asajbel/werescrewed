@@ -53,6 +53,12 @@ public class ResurrectScreen implements com.badlogic.gdx.Screen {
 	//eventually
 	private int killTimeout = 0;
 
+	// DEBUG CONTROLS
+//	'z' kill player 1
+//	'x' kill player 2
+//	'r' player 1's re-spawn button
+//	'y' player 2's re-spawn button
+
 	/**
 	 * Defines all necessary components in a screen for testing different
 	 * physics-related mechanics

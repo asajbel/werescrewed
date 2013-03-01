@@ -296,7 +296,6 @@ public class Player extends Entity {
 		playerToScrew = null;
 		if ( currentScrew != null ) {
 			currentScrew.setPlayerAttached( false );
-			Gdx.app.log( "disconnect", "from screw"  );
 			currentScrew = null;
 		}
 		Filter filter = new Filter( );
