@@ -18,6 +18,7 @@ import com.blindtigergames.werescrewed.util.Util;
 public class EventTrigger extends Entity{
 	
 	private boolean repeatable = false;
+	private boolean repeatTriggeredOnce = false;
 	private boolean activated = false;
 	private boolean triggeredOnce = false;
 	private ArrayList<Entity> entityList;
@@ -111,6 +112,9 @@ public class EventTrigger extends Entity{
 	 */
 	public void setActivated(boolean active){
 		this.activated = active;
+		if(active == false){
+			repeatTriggeredOnce = false;
+		}
 	}
 	
 	public void update( float deltaTime ){
@@ -118,17 +122,25 @@ public class EventTrigger extends Entity{
 	}
 	
 	public void triggerEvent(){
-		if(repeatable){
-			if(activated){
-				if(!triggeredOnce){
-					//entity.move
+		if(!repeatable){
+			if(!triggeredOnce){
+				for(Entity e : entityList){
+					e.setActive( true );
 				}
+				triggeredOnce = true;
+			}
+		} else if(repeatable){
+			if(!repeatTriggeredOnce){
+				for(Entity e : entityList){
+					e.setActive( true );
+				}
+				repeatTriggeredOnce = true;
 			}
 		}
 	}
 	
 	public void phoneHome(){
-		Gdx.app.log( "hello,", "yes this is dog" );
+		Gdx.app.log( "hello", "yes, this is dog" );
 	}
 	
 	public void addEntityToTrigger(Entity entity){

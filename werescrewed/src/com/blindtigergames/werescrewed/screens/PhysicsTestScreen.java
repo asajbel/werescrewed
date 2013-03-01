@@ -325,6 +325,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		RotateByDegree rm = new RotateByDegree( 0.0f, -90.0f, 0, 0.5f );
 		PuzzleScrew puzzleScrew = new PuzzleScrew( "001",
 				new Vector2( 32f, 32f ), 50, skeleton, world, 0, false );
+		flipPlat1.setActive( true );
 		puzzleScrew.puzzleManager.addEntity( flipPlat1 );
 		puzzleScrew.puzzleManager.addMover( rm );
 
@@ -334,12 +335,14 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 				new Vector2( movingTP.body.getPosition( ).x, movingTP.body
 						.getPosition( ).y + 0.3f ).mul( Util.BOX_TO_PIXEL ),
 				0.001f, false, LinearAxis.VERTICAL, 0 );
+		movingTP.setActive( true );
 		puzzleScrew.puzzleManager.addEntity( movingTP );
 		puzzleScrew.puzzleManager.addMover( lm2 );
 
 		rm = new RotateByDegree( -90.0f, 0.0f, 0, 0.5f );
 		PuzzlePistonTweenMover pptm = new PuzzlePistonTweenMover( flipPlat2,
 				new Vector2( 0, 100 ), 1, 1, 0, 0 );
+		flipPlat2.setActive( true );
 		puzzleScrew.puzzleManager.addEntity( flipPlat2 );
 		puzzleScrew.puzzleManager.addMover( pptm );
 		skeleton.addScrewForDraw( puzzleScrew );
@@ -352,6 +355,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 				movingTP.body.getPosition( ).x + 1.75f,
 				movingTP.body.getPosition( ).y ).mul( Util.BOX_TO_PIXEL ),
 				LinearAxis.HORIZONTAL );
+		movingTP.setActive( true );
 		puzzleScrew2.puzzleManager.addEntity( movingTP );
 		puzzleScrew2.puzzleManager.addMover( lm );
 		skeleton.addScrewForDraw( puzzleScrew2 );
@@ -397,6 +401,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 								0 ), 1.0f, 1f );
 		PrismaticJoint j = ( PrismaticJoint ) world
 				.createJoint( prismaticJointDef );
+		slidingPlatform.setActive( true );
 		slidingPlatform.addMover( new SlidingMotorMover(
 				PuzzleType.PRISMATIC_SLIDER, j ), RobotState.IDLE );
 		skeleton.addDynamicPlatform( slidingPlatform );
@@ -415,6 +420,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		skeleton.addKinematicPlatform( pathPlatform );
 		// build path. TODO: make building paths easier!!
 		PathBuilder pb = new PathBuilder( );
+		pathPlatform.setActive( true );
 		pathPlatform.addMover( pb.begin( pathPlatform ).target( 300, 0, 5 )
 				.target( 300, 300, 5 ).target( 0, 300, 5 ).target( 0, 0, 5 )
 				.build( ), RobotState.IDLE );
@@ -463,6 +469,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 			TiledPlatform pistonKin = builder.name( "pistonKin" + i )
 					.position( -200f - i * 40, 500f ).buildTilePlatform( );
 			skeleton.addKinematicPlatform( pistonKin );
+			pistonKin.setActive( true );
 			pistonKin.addMover( new PistonTweenMover( pistonKin, new Vector2(
 					0, 300 ), 1f, 3f, 1f, 0f, i / 10.0f + 1 ), RobotState.IDLE );
 		}
