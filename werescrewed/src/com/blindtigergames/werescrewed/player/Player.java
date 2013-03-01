@@ -59,10 +59,6 @@ public class Player extends Entity {
 
 	public Fixture feet;
 	public Fixture torso;
-//	public Body playerTorso;
-//	public Body playerFeet;
-//	public RevoluteJoint revJoint; 
-//	float motorspeed; 
 	int check = 0;
 
 	private PovDirection prevButton;
@@ -158,31 +154,6 @@ public class Player extends Entity {
 
 		BodyDef bodydef = new BodyDef( );
 		bodydef.position.set( pos );
-//		playerTorso = world.createBody( bodydef );
-//		playerTorso.createFixture( torso.getShape( ), 0.0f );
-//		playerTorso.setGravityScale( 0.25f );
-//		playerTorso.setFixedRotation( true );
-//		playerTorso.setSleepingAllowed( false );
-//		playerTorso.setUserData( this );
-//		playerTorso.setBullet( true );
-//
-//		bodydef = new BodyDef( );
-//		bodydef.position.set( playerTorso.getWorldCenter( ).x,
-//				playerTorso.getWorldCenter( ).y + sprite.getHeight( ) / 2
-//						* Util.PIXEL_TO_BOX );
-//		playerFeet = world.createBody( bodydef );
-//		playerFeet.createFixture( feet.getShape( ), 0.0f );
-//		playerFeet.setGravityScale( 0.25f );
-//		playerFeet.setFixedRotation( true );
-//		playerFeet.setSleepingAllowed( false );
-//		playerFeet.setUserData( this );
-//		playerFeet.setBullet( true );
-//
-//		RevoluteJointDef revJointDef = new RevoluteJointDef( );
-//		revJointDef.initialize( playerTorso, playerFeet, playerFeet.getWorldCenter( ) );
-//		revJointDef.enableMotor = true;
-//		revJointDef.maxMotorTorque = 10000; 
-//		revJoint = ( RevoluteJoint ) world.createJoint( revJointDef );
 
 		setUpController( );
 		controllerDebug = true;
@@ -199,16 +170,6 @@ public class Player extends Entity {
 	 */
 	public void update( float deltaTime ) {
 		super.update( deltaTime );
-		// if ( name.equals( "player1" ) ) {
-		// Gdx.app.log( "playerState", "" + playerState + " " + grounded );
-		// System.out.println( jumpPressedKeyboard );
-		// Gdx.app.log( name + " playerState", "" + playerState + " "
-		// + grounded + "isDead? = " + isDead );
-		// }
-		// if ( name.equals( "player2" ) ) {
-		// Gdx.app.log( name + " playerState", "" + playerState + " "
-		// + grounded + "isDead? = " + isDead );
-		// }
 		if ( kinematicTransform ) {
 			// setPlatformTransform( platformOffset );
 			kinematicTransform = false;
@@ -375,8 +336,6 @@ public class Player extends Entity {
 			if ( body.getLinearVelocity( ).x < MAX_VELOCITY ) {
 				body.applyLinearImpulse( new Vector2( MOVEMENT_IMPULSE
 						/ directionJumpDivsion, 0.0f ), body.getWorldCenter( ) );
-//				motorspeed += 5; 
-//				revJoint.setMotorSpeed( motorspeed );
 			}
 		} else {
 			if ( body.getLinearVelocity( ).x < MAX_VELOCITY ) {
@@ -401,8 +360,6 @@ public class Player extends Entity {
 			if ( body.getLinearVelocity( ).x > -MAX_VELOCITY ) {
 				body.applyLinearImpulse( new Vector2( -MOVEMENT_IMPULSE
 						/ directionJumpDivsion, 0.0f ), body.getWorldCenter( ) );
-//				motorspeed -= 5; 
-//				revJoint.setMotorSpeed( motorspeed );
 			}
 		} else {
 			if ( body.getLinearVelocity( ).x > -MAX_VELOCITY ) {
