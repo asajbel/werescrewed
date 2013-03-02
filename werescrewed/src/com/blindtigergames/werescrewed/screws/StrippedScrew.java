@@ -8,10 +8,13 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
 import com.blindtigergames.werescrewed.entity.Entity;
+import com.blindtigergames.werescrewed.entity.EntityType;
 import com.blindtigergames.werescrewed.util.Util;
 
 /**
- * blah blah
+ * screws that do not un-screw 
+ * they are only used for climbing or
+ * tacking entities together
  * 
  * @author Dennis
  * 
@@ -23,6 +26,7 @@ public class StrippedScrew extends Screw {
 		super( name, pos, null );
 		this.world = world;
 		screwType = ScrewType.STRIPPED;
+		entityType = EntityType.SCREW;
 
 		sprite.setColor( 255f/255f, 112f/255f, 52f/255f, 1.0f ); //rust color pulled off a hexdecimal chart
 		sprite.setOrigin( 0.0f, 0.0f );
@@ -60,6 +64,7 @@ public class StrippedScrew extends Screw {
 		body.setFixedRotation( true );
 		body.setUserData( this );
 
+		//we may want a radar depending on the size of the sprite...
 		// add radar sensor to screw this is needed/not needed depending on the size of the screw
 //		CircleShape radarShape = new CircleShape( );
 //		radarShape.setRadius( sprite.getWidth( ) * 1.05f * Util.PIXEL_TO_BOX );
@@ -70,7 +75,6 @@ public class StrippedScrew extends Screw {
 //		radarFixture.filter.maskBits = Util.CATEGORY_PLAYER
 //				| Util.CATEGORY_SUBPLAYER;
 //		body.createFixture( radarFixture );
-//		//You dont dispose the fixturedef, you dispose the shape
 //		radarShape.dispose( );
 		screwShape.dispose( );
 

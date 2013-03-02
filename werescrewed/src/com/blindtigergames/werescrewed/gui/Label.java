@@ -73,5 +73,9 @@ public class Label {
 		width = Math.round(dimensions.width);
 		height = Math.round(dimensions.height);
 	}
+	
+	public void setText( String newText ) {
+		caption = newText;
+	}
 
 }

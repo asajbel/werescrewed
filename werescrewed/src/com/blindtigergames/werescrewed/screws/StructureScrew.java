@@ -12,11 +12,13 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJoint;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
 import com.blindtigergames.werescrewed.entity.Entity;
+import com.blindtigergames.werescrewed.entity.EntityType;
 import com.blindtigergames.werescrewed.skeleton.Skeleton;
 import com.blindtigergames.werescrewed.util.Util;
 
 /**
- * blah blah
+ * screws that are used to hold removable pieces
+ * together they can be un-screwed and will fall
  * 
  * @author Dennis
  * 
@@ -31,9 +33,10 @@ public class StructureScrew extends Screw {
 		maxDepth = max;
 		depth = max;
 		rotation = 0;
-		fallTimeout = 70;
+		fallTimeout = 140;
 		extraJoints = new ArrayList< RevoluteJoint >( );
 		screwType = ScrewType.STRUCTURAL;
+		entityType = EntityType.SCREW;
 		
 		constuctBody( pos );
 		connectScrewToEntity( entity, skeleton, pos );
@@ -59,7 +62,7 @@ public class StructureScrew extends Screw {
 
 	@Override
 	public void screwLeft( ) {
-		if ( depth > 0 ) {
+		if ( depth > -10 ) {
 			body.setAngularVelocity( 15 );
 			depth--;
 			rotation += 10;
@@ -82,7 +85,7 @@ public class StructureScrew extends Screw {
 		super.update( deltaTime );
 		Vector2 bodyPos = body.getPosition( ).mul( Util.BOX_TO_PIXEL );
 		sprite.setPosition( bodyPos.x - offset.x, bodyPos.y - offset.y );
-		if ( depth == 0 ) {
+		if ( depth <= 0 ) {
 			if ( fallTimeout == 0 && screwToSkel != null ) {
 				body.setType( BodyType.DynamicBody );
 				world.destroyJoint( screwToSkel );
@@ -96,13 +99,13 @@ public class StructureScrew extends Screw {
 			fallTimeout = 70;
 		}
 		if ( depth > 0 ) {
-			sprite.setPosition(
-					sprite.getX( )
-							+ ( .25f * ( float ) ( ( maxDepth - depth ) * ( Math
-									.cos( body.getAngle( ) ) ) ) ),
-					sprite.getY( )
-							+ ( .25f * ( float ) ( ( maxDepth - depth ) * ( Math
-									.sin( body.getAngle( ) ) ) ) ) );
+//			sprite.setPosition(
+//					sprite.getX( )
+//							+ ( .25f * ( float ) ( ( maxDepth - depth ) * ( Math
+//									.cos( body.getAngle( ) ) ) ) ),
+//					sprite.getY( )
+//							+ ( .25f * ( float ) ( ( maxDepth - depth ) * ( Math
+//									.sin( body.getAngle( ) ) ) ) ) );
 		} else if ( fallTimeout > 0 ) {
 			sprite.setPosition( sprite.getX( ) - 8f, sprite.getY( ) );
 			Vector2 spritePos = new Vector2( sprite.getX( ), sprite.getY( ) );
@@ -129,7 +132,6 @@ public class StructureScrew extends Screw {
 		if ( depth == screwStep ) {
 			body.setAngularVelocity( 0 );
 		}
-
 	}
 
 	@Override
@@ -138,7 +140,8 @@ public class StructureScrew extends Screw {
 			sprite.draw( batch );
 		}
 	}
-
+	
+	
 	private void constuctBody( Vector2 pos ) {
 
 		// create the screw body
@@ -161,6 +164,7 @@ public class StructureScrew extends Screw {
 		screwShape.dispose( );
 		body.setUserData( this );
 
+		//we may want a radar depending on the size of the sprite...
 		// add radar sensor to screw
 //		CircleShape radarShape = new CircleShape( );
 //		radarShape.setRadius( sprite.getWidth( ) * 1.1f * Util.PIXEL_TO_BOX );

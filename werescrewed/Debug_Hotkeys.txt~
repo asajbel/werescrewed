@@ -1,0 +1,27 @@
+l;Debug Hotkeys!!
+===============
+Record any debug hotkeys you've created here,
+so that everyone knows about them!
+
+Camera
+------
+'B' - Hold to allow control of camera with
+	  arrow keys and 'Q' & 'E'
+	  
+'N' - Show buffer rectangle and circle around camera target
+
+'O' - Changes all platform from dynamic to kinematic and back again
+
+'T' - rotates all platforms
+
+'Y' - stops rotating platforms
+
+'P' - exit game
+
+Resurrection Screen
+------------------
+
+'z' kill player 1
+'x' kill player 2
+'r' player 1's respawn button
+'y' player 2's respawn button

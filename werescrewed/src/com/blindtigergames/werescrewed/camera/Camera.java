@@ -68,7 +68,6 @@ public class Camera {
 	private boolean debugInput;
 	private boolean debugRender;
 	private ShapeRenderer shapeRenderer;
-	@SuppressWarnings( "unused" )
 	private boolean debugTurnOffZoom;
 
 	public Camera( float viewportWidth, float viewportHeight, World world ) {
@@ -265,7 +264,8 @@ public class Camera {
 			}
 		}
 		translateLogic( outside_x, outside_y );
-		zoom( );
+		if(!debugTurnOffZoom)
+			zoom( );
 	}
 
 	/**

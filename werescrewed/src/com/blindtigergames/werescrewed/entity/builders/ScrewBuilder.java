@@ -2,13 +2,10 @@ package com.blindtigergames.werescrewed.entity.builders;
 
 import java.util.HashMap;
 
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.World;
 import com.blindtigergames.werescrewed.entity.Entity;
-import com.blindtigergames.werescrewed.screws.BossScrew;
-import com.blindtigergames.werescrewed.screws.PuzzleScrew;
-import com.blindtigergames.werescrewed.screws.Screw;
-import com.blindtigergames.werescrewed.screws.ScrewType;
-import com.blindtigergames.werescrewed.screws.StrippedScrew;
-import com.blindtigergames.werescrewed.screws.StructureScrew;
+import com.blindtigergames.werescrewed.screws.*;
 import com.blindtigergames.werescrewed.skeleton.Skeleton;
 
 public class ScrewBuilder extends GenericEntityBuilder< ScrewBuilder > {
@@ -16,6 +13,7 @@ public class ScrewBuilder extends GenericEntityBuilder< ScrewBuilder > {
 	protected Entity entity;
 	protected Skeleton skeleton;
 	protected int max, startDepth;
+	protected boolean resetable;
 	
 	public ScrewBuilder(){
 		super();
@@ -55,6 +53,7 @@ public class ScrewBuilder extends GenericEntityBuilder< ScrewBuilder > {
 			return this.screwType(t);
 		return this;
 	}
+	
 	/**
 	 * Sets screw properties from a hashmap
 	 * Will likely be used for the Gleed2D loader.
@@ -86,6 +85,12 @@ public class ScrewBuilder extends GenericEntityBuilder< ScrewBuilder > {
 		this.startDepth = d;
 		return this;		
 	}
+	
+	public ScrewBuilder resetable(boolean r){
+		this.resetable = r;
+		return this;
+	}
+	
 	@Override
 	public boolean canBuild(){
 		return (world != null);
@@ -122,7 +127,7 @@ public class ScrewBuilder extends GenericEntityBuilder< ScrewBuilder > {
 	public PuzzleScrew buildPuzzleScrew(){
 		PuzzleScrew out = null;
 		if (canBuild() && entity != null)
-			out = new PuzzleScrew(name, pos, max, entity, world, startDepth, false);
+			out = new PuzzleScrew(name, pos, max, entity, world, startDepth, resetable);
 		return out;
 	}
 	
