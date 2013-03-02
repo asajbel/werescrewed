@@ -1,13 +1,5 @@
 package com.blindtigergames.werescrewed.screens;
 
-import java.io.BufferedReader;
-import java.io.DataInputStream;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.InputStreamReader;
-import java.util.Scanner;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
@@ -45,12 +37,15 @@ public class LoadingScreen extends Screen {
 		loadingCompleteLabel = new Label( "Press 'A'!!", font );
 		batch = new SpriteBatch( );
 
-		screenTag = st;
+		if ( st != null && !st.isEmpty( ) ) {
+			screenTag = st;
+		} else {
+			screenTag = "commonLevel";
+		}
+		Gdx.app.log( "loading assets for" , screenTag );
 
-		screenTag = "commonLevel";
-		// if ( screenTag.length( ) == 0 || screenTag.charAt( 0 ) != 'l' ) {
-		// screenTag = "common";
-		// }
+		//THIS IS WHAT THE DIRECTORY SHOULD ALWAYS BE
+		//THERE SHOULDN"T BE TWO FOLDERS 
 		WereScrewedGame.dirHandle = Gdx.files.internal( "data/" );
 		// if ( Gdx.app.getType( ) == ApplicationType.Android ) {
 		// WereScrewedGame.dirHandle = Gdx.files.internal( "data/" );
@@ -59,13 +54,16 @@ public class LoadingScreen extends Screen {
 		// WereScrewedGame.dirHandle = Gdx.files.internal( "assets/data/" );
 		// }
 
-		FileHandle handle = Gdx.files.internal( "commonLevel.txt" );
-
+		//reads through the text file that is named
+		//the same thing as the screenTag
+		//and reads each line which is a path and loads that file
+		FileHandle handle = Gdx.files.internal( "data/" + screenTag + ".txt" );
 		String split[] = handle.readString( ).split( "\\n" );
 		for ( String s : split ) {
 			s.replaceAll( "\\s", "" );
 			if ( s.length( ) > 0 ) {
 				if ( s.charAt( 0 ) != '#' ) {
+					//gets the extension
 					String extension = s.split( "\\." )[ 1 ];
 					System.out.println( s );
 					if ( extension.equals( "png" ) ) {

@@ -42,8 +42,8 @@ public class Steam extends Entity{
 		this.world = world;
 		particleEffect = new ParticleEffect( );
 		particleEffect.load(
-				Gdx.files.internal( "assets/data/particles/steam" ),
-				Gdx.files.internal( "assets/data/particles" ) );
+				Gdx.files.internal( "data/particles/steam" ),
+				Gdx.files.internal( "data/particles" ) );
 		particleEffect.setPosition( positionPixels.x, positionPixels.y - height);
 
 		constructBody(positionPixels, pixelHeight, pixelWidth);
