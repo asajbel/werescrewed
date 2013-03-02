@@ -42,10 +42,10 @@ public class LoadingScreen extends Screen {
 		} else {
 			screenTag = "commonLevel";
 		}
-		Gdx.app.log( "loading assets for" , screenTag );
+		Gdx.app.log( "loading assets for", screenTag );
 
-		//THIS IS WHAT THE DIRECTORY SHOULD ALWAYS BE
-		//THERE SHOULDN"T BE TWO FOLDERS 
+		// THIS IS WHAT THE DIRECTORY SHOULD ALWAYS BE
+		// THERE SHOULDN"T BE TWO FOLDERS
 		WereScrewedGame.dirHandle = Gdx.files.internal( "data/" );
 		// if ( Gdx.app.getType( ) == ApplicationType.Android ) {
 		// WereScrewedGame.dirHandle = Gdx.files.internal( "data/" );
@@ -54,31 +54,19 @@ public class LoadingScreen extends Screen {
 		// WereScrewedGame.dirHandle = Gdx.files.internal( "assets/data/" );
 		// }
 
-		//reads through the text file that is named
-		//the same thing as the screenTag
-		//and reads each line which is a path and loads that file
+		// reads through the text file that is named
+		// the same thing as the screenTag
+		// and reads each line which is a path and loads that file
 		FileHandle handle = Gdx.files.internal( "data/" + screenTag + ".txt" );
 		String split[] = handle.readString( ).split( "\\n" );
 		for ( String s : split ) {
 			s.replaceAll( "\\s", "" );
 			if ( s.length( ) > 0 ) {
 				if ( s.charAt( 0 ) != '#' ) {
-					//gets the extension
+					// gets the extension
 					String extension = s.split( "\\." )[ 1 ];
-					System.out.println( s );
-					if ( extension.equals( "png" ) ) {
-						WereScrewedGame.manager.load( WereScrewedGame.dirHandle
-								+ s, Texture.class );
-					} else if ( extension.equals( "pack" ) ) {
-						WereScrewedGame.manager
-								.loadAtlas( WereScrewedGame.dirHandle + s );
-					} else if ( extension.equals( "mp3" ) ) {
-						WereScrewedGame.manager.load( WereScrewedGame.dirHandle
-								+ s, Music.class );
-					} else if ( extension.equals( "ogg" ) ) {
-						WereScrewedGame.manager.load( WereScrewedGame.dirHandle
-								+ s, Sound.class );
-					}
+					// loads the file
+					loadCurrentFile( extension, WereScrewedGame.dirHandle + s );
 				}
 			}
 		}
