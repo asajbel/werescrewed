@@ -9,11 +9,15 @@ import com.blindtigergames.werescrewed.player.Player;
 
 /**
  * 
+ * An extension of the Hazard class that makes Spike-type Hazards.
+ * Spikes are of varying length and only hurt the player if they 
+ * touch the top part of the spike, not the side.
+ * 
  * @author Jenn Makaiwi & Ed Boning.
  *
  */
 
-/* /\/\/\/\/\/\/\/\/\/\/\/\/\/\ */
+//  */\/\/\/\/\/\/\/\/\/\/\/\/\/\
 //Just your standard spikes.
 public class Spikes extends Hazard {
 
@@ -37,11 +41,11 @@ public class Spikes extends Hazard {
 	
 	@Override
 	public void update( float deltaTime ) {
-		
+		// TODO: Write method to make SOMETHING appear on Hazard Test Screen.
 	}
 
 	@Override
 	public void draw( SpriteBatch batch ) {
-		
+		// TODO: Write method to make SOMETHING appear on Hazard Test Screen.
 	}
 }

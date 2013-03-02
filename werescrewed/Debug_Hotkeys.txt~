@@ -18,4 +18,10 @@ Camera
 
 'P' - exit game
 
+Resurrection Screen
+------------------
 
+'z' kill player 1
+'x' kill player 2
+'r' player 1's respawn button
+'y' player 2's respawn button
