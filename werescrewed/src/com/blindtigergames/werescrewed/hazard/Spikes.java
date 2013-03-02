@@ -44,7 +44,7 @@ public class Spikes extends Hazard {
 		   (player.x < spikes.x + spikes.width) && 
 		   (player.y <= spikes.y + spikes.height)
 		*/
-		//player.killPlayer( );
+		player.killPlayer( );
 		Gdx.app.log( "Hello", "World" );
 	}
 	
