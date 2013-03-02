@@ -3,15 +3,17 @@
 /common/sounds/jump.ogg
 
 ##common tilesets
-/common/tileset/tileset1.png
-/common/tileset/TilesetTest.png
-/common/tileset/tileset-green.png
-/common/tileset/tileset-teal.png
-/common/tilesetTest.png
+##/common/tileset/tileset1.png
+##/common/tileset/TilesetTest.png
+##/common/tileset/tileset-green.png
+##/common/tileset/tileset-teal.png
+##/common/tilesetTest.png
 
 ##texture atlas
 /common/tileset1.pack
 /common/TilesetTest.pack
+/common/tileset-teal.pack
+/common/autumn.pack
 
 ##common texture
 /common/player_b_f.png
