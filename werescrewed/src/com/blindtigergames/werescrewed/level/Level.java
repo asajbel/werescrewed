@@ -9,14 +9,17 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.Array;
 import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.camera.Camera;
 import com.blindtigergames.werescrewed.debug.SBox2DDebugRenderer;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityManager;
+import com.blindtigergames.werescrewed.entity.RobotState;
 import com.blindtigergames.werescrewed.platforms.Platform;
 import com.blindtigergames.werescrewed.entity.builders.PlayerBuilder;
 import com.blindtigergames.werescrewed.entity.builders.PlatformBuilder;
+import com.blindtigergames.werescrewed.entity.mover.RockingMover;
 import com.blindtigergames.werescrewed.entity.tween.EntityAccessor;
 import com.blindtigergames.werescrewed.entity.tween.PlatformAccessor;
 import com.blindtigergames.werescrewed.platforms.TiledPlatform;
@@ -36,7 +39,8 @@ import com.blindtigergames.werescrewed.skeleton.Skeleton;
 public class Level {
 	public Camera camera;
 	public World world;
-	Player player;
+	public static final int NUM_PLAYERS = 2;
+	Array<Player> players;
 	EntityManager entities;
 	ArrayList<Platform> platforms;
 	Skeleton root;
@@ -48,11 +52,14 @@ public class Level {
 		float height = Gdx.graphics.getHeight( ) / zoom;
 		world = new World( new Vector2( 0, GRAVITY ), true );
 		camera = new Camera( width, height, world);
-		player = new PlayerBuilder()
-					.name("player1")
-					.world( world )
-					.position( new Vector2(0.0f,0.0f) )
-					.buildPlayer();
+		players = new Array<Player>();
+		for (int p = 0; p < NUM_PLAYERS; p++){
+			players.add( new PlayerBuilder()
+			.name("player"+Integer.toString( p+1 ))
+			.world( world )
+			.position( new Vector2(0.0f,0.0f) )
+			.buildPlayer() );
+		}
 
 		entities = new EntityManager();
 		platforms = new ArrayList<Platform>();
@@ -65,7 +72,8 @@ public class Level {
 	public void update( float deltaTime ){
 		camera.update( );
 		
-		player.update( deltaTime );
+		for (Player player: players)
+			player.update( deltaTime );
 		root.update( deltaTime );
 		entities.update( deltaTime );
 		for (Platform p: platforms)
@@ -79,8 +87,8 @@ public class Level {
 		root.draw( sb );
 		for (Platform p: platforms)
 			p.draw( sb );
-		
-		player.draw( sb );
+		for (Player player: players)
+			player.draw( sb );
 		sb.end();
 		dr.render( world, camera.combined( ) );
 		world.step( 1 / 60f, 6, 2 );

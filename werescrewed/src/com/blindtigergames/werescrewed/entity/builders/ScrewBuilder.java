@@ -129,29 +129,48 @@ public class ScrewBuilder extends GenericEntityBuilder< ScrewBuilder > {
 	
 	public StrippedScrew buildStrippedScrew(){
 		StrippedScrew out = null;
-		if (canBuild() && entity != null)
+		if (canBuild() && entity != null){
 			out = new StrippedScrew(name, world, pos, entity);
+			if (skeleton != null){
+				skeleton.addStrippedScrew( out );
+			}
+		}
 		return out;
 	}
 	
 	public StructureScrew buildStructureScrew(){
 		StructureScrew out = null;
-		if (canBuild() && entity != null && skeleton != null)
+		if (canBuild() && entity != null && skeleton != null){
 			out = new StructureScrew(name, pos, max, entity, skeleton, world);
+			if (skeleton != null){
+				skeleton.addScrew(out);
+				skeleton.addScrewForDraw( out );
+			}
+		}
 		return out;
 	}
 	
 	public PuzzleScrew buildPuzzleScrew(){
 		PuzzleScrew out = null;
-		if (canBuild() && entity != null)
+		if (canBuild() && entity != null){
 			out = new PuzzleScrew(name, pos, max, entity, world, startDepth, resetable);
+			if (skeleton != null){
+				skeleton.addScrew(out);
+				skeleton.addScrewForDraw( out );
+			}
+		}
 		return out;
 	}
 	
 	public BossScrew buildBossScrew(){
 		BossScrew out = null;
-		if (canBuild() && entity != null && skeleton != null)
+		if (canBuild() && entity != null && skeleton != null){
 			out = new BossScrew(name, pos, max, entity, skeleton, world);
+			if (skeleton != null){
+				skeleton.addScrew(out);
+				skeleton.addScrewForDraw( out );
+			}
+		}
 		return out;
 	}
 }

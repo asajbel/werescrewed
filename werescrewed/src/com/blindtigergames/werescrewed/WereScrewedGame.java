@@ -56,6 +56,7 @@ public class WereScrewedGame extends Game {
 		if (Gdx.app.getType() == ApplicationType.Android) {
 			logger.log( ); 
 		}
+		logger.log( );
 	}
 	
 	public void restart(){
