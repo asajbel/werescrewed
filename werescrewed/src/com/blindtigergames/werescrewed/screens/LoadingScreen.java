@@ -47,12 +47,6 @@ public class LoadingScreen extends Screen {
 		// THIS IS WHAT THE DIRECTORY SHOULD ALWAYS BE
 		// THERE SHOULDN"T BE TWO FOLDERS
 		WereScrewedGame.dirHandle = Gdx.files.internal( "data/" );
-		// if ( Gdx.app.getType( ) == ApplicationType.Android ) {
-		// WereScrewedGame.dirHandle = Gdx.files.internal( "data/" );
-		// } else {
-		// // ApplicationType.Desktop ..
-		// WereScrewedGame.dirHandle = Gdx.files.internal( "assets/data/" );
-		// }
 
 		// reads through the text file that is named
 		// the same thing as the screenTag
