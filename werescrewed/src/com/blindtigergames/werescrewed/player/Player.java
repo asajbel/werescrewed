@@ -1307,12 +1307,12 @@ public class Player extends Entity {
 		// then attach the player to the screw
 		if ( ( controllerListener.screwPressed( ) )
 				&& ( playerState != PlayerState.Screwing && playerState != PlayerState.JumpingOffScrew ) ) {
-			if ( hitScrew && !screwButtonHeld ) {
+			if ( hitScrew  ) {
 				attachToScrew( );
 				if ( controllerListener.jumpPressed( ) ) {
 					canJumpOffScrew = false;
 				}
-				screwButtonHeld = true;
+				
 				jumpCounter = 0;
 			}
 		}
