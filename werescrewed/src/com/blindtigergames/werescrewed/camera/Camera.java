@@ -53,7 +53,7 @@ public class Camera {
 	// zoom
 	private static final float ZOOM_ACCELERATION = .0001f;
 	private static final float ZOOM_MAX_SPEED = 100f;
-	private static final float ZOOM_SIG_DIFF = .0005f;
+	private static final float ZOOM_SIG_DIFF = .00005f;
 	private static final float ZOOM_IN_FACTOR = .5f;
 
 	private enum RectDirection {
@@ -264,7 +264,7 @@ public class Camera {
 			}
 		}
 		translateLogic( outside_x, outside_y );
-		if(!debugTurnOffZoom)
+		if ( !debugTurnOffZoom )
 			zoom( );
 	}
 
@@ -280,9 +280,9 @@ public class Camera {
 			// lock when:
 			// - camera center is really close to target
 			// - camera center is really close to target.x when only translating
-			// 		on x axis
+			// on x axis
 			// - camera center is really close to target.y when only translating
-			// 		on y axis
+			// on y axis
 			if ( insideTargetBuffer )
 				lock = true;
 			else if ( trans_x
@@ -395,13 +395,14 @@ public class Camera {
 		Vector2 longestDist = anchorList.getLongestXYDist( );
 		Vector2 distFromEdge = new Vector2( longestDist.x - screenBounds.width,
 				longestDist.y - screenBounds.height );
+
 		if ( distFromEdge.x > distFromEdge.y ) {
 			newZoom = longestDist.x / viewportWidth;
 		} else if ( distFromEdge.y > distFromEdge.x ) {
 			newZoom = longestDist.y / viewportHeight;
 		}
 
-		if ( newZoom > 1f && zoomSpeed < ZOOM_MAX_SPEED ) {
+		if ( zoomSpeed < ZOOM_MAX_SPEED ) {
 			zoomSteer( newZoom );
 			translateBuffer.width = screenBounds.width * BUFFER_RATIO;
 			translateBuffer.height = screenBounds.height * BUFFER_RATIO;
@@ -411,31 +412,35 @@ public class Camera {
 	/**
 	 * steer zoom to the new zoom
 	 * 
-	 * @param newZoom
+	 * @param targetZoom
 	 */
-	private void zoomSteer( float newZoom ) {
+	private void zoomSteer( float targetZoom ) {
 		// if difference is small enough, set speed to zero
-		if ( Math.abs( camera.zoom - newZoom ) < ZOOM_SIG_DIFF )
+		float newZoom = camera.zoom;
+		if ( Math.abs( camera.zoom - targetZoom ) < ZOOM_SIG_DIFF )
 			zoomSpeed = 0;
 
 		// accelerate zoom
 		zoomSpeed += ZOOM_ACCELERATION;
 
 		// use speed to zoom out
-		if ( newZoom > camera.zoom ) {
-			if ( ( camera.zoom + zoomSpeed ) < ( newZoom - .001f ) )
-				camera.zoom += zoomSpeed;
+		if ( targetZoom > camera.zoom ) {
+			if ( ( camera.zoom + zoomSpeed ) < ( targetZoom - .001f ) )
+				newZoom += zoomSpeed;
 			else
-				camera.zoom = newZoom;
+				newZoom = targetZoom;
 		}
 
 		// if zooming in, use slower (half maybe) speed
-		if ( newZoom < camera.zoom ) {
-			if ( ( camera.zoom - zoomSpeed * ZOOM_IN_FACTOR ) > ( newZoom + .001f ) )
-				camera.zoom -= zoomSpeed * ZOOM_IN_FACTOR;
+		if ( targetZoom < camera.zoom ) {
+			if ( ( camera.zoom - zoomSpeed * ZOOM_IN_FACTOR ) > ( targetZoom + .001f ) )
+				newZoom -= zoomSpeed * ZOOM_IN_FACTOR;
 			else
-				camera.zoom = newZoom;
+				newZoom = targetZoom;
 		}
+
+		if ( newZoom > 1f )
+			camera.zoom = newZoom;
 	}
 
 	private void createTestAnchors( World world ) {
