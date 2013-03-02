@@ -1,15 +1,20 @@
 package com.blindtigergames.werescrewed.screens;
 
-import com.badlogic.gdx.Application.ApplicationType;
+import java.io.BufferedReader;
+import java.io.DataInputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.InputStreamReader;
+import java.util.Scanner;
+
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.gui.Label;
 
@@ -42,14 +47,46 @@ public class LoadingScreen extends Screen {
 
 		screenTag = st;
 
-		if ( Gdx.app.getType( ) == ApplicationType.Android ) {
-			WereScrewedGame.dirHandle = Gdx.files.internal( "data/" );
-		} else {
-			// ApplicationType.Desktop ..
-			WereScrewedGame.dirHandle = Gdx.files.internal( "assets/data/" );
+		screenTag = "commonLevel";
+		// if ( screenTag.length( ) == 0 || screenTag.charAt( 0 ) != 'l' ) {
+		// screenTag = "common";
+		// }
+		WereScrewedGame.dirHandle = Gdx.files.internal( "data/" );
+		// if ( Gdx.app.getType( ) == ApplicationType.Android ) {
+		// WereScrewedGame.dirHandle = Gdx.files.internal( "data/" );
+		// } else {
+		// // ApplicationType.Desktop ..
+		// WereScrewedGame.dirHandle = Gdx.files.internal( "assets/data/" );
+		// }
+
+		FileHandle handle = Gdx.files.internal( "commonLevel.txt" );
+
+		String split[] = handle.readString( ).split( "\\n" );
+		for ( String s : split ) {
+			s.replaceAll( "\\s", "" );
+			if ( s.length( ) > 0 ) {
+				if ( s.charAt( 0 ) != '#' ) {
+					String extension = s.split( "\\." )[ 1 ];
+					System.out.println( s );
+					if ( extension.equals( "png" ) ) {
+						WereScrewedGame.manager.load( WereScrewedGame.dirHandle
+								+ s, Texture.class );
+					} else if ( extension.equals( "pack" ) ) {
+						WereScrewedGame.manager
+								.loadAtlas( WereScrewedGame.dirHandle + s );
+					} else if ( extension.equals( "mp3" ) ) {
+						WereScrewedGame.manager.load( WereScrewedGame.dirHandle
+								+ s, Music.class );
+					} else if ( extension.equals( "ogg" ) ) {
+						WereScrewedGame.manager.load( WereScrewedGame.dirHandle
+								+ s, Sound.class );
+					}
+				}
+			}
 		}
 
-		loadFilesInDirectory( WereScrewedGame.dirHandle, screenTag );
+		// loadFilesInDirectory( WereScrewedGame.dirHandle, screenTag );
+
 	}
 
 	/**
@@ -142,9 +179,8 @@ public class LoadingScreen extends Screen {
 		} else if ( fileExtension.equals( "mp3" ) ) {
 			WereScrewedGame.manager.load( fullPathName, Music.class );
 			Gdx.app.log( "Music file loaded", fullPathName );
-			
-		}
-		else if ( fileExtension.equals( "pack" )){
+
+		} else if ( fileExtension.equals( "pack" ) ) {
 			WereScrewedGame.manager.loadAtlas( fullPathName );
 			Gdx.app.log( "Atlas pack file loaded", fullPathName );
 		}
