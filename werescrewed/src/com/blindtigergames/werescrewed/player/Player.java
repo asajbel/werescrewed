@@ -166,33 +166,36 @@ public class Player extends Entity {
 	 */
 	public void update( float deltaTime ) {
 		super.update( deltaTime );
-		if ( name.equals( "player1" ) ) {
-			// Gdx.app.log( "playerState", "" + playerState + " " + grounded );
-			// System.out.println( jumpPressedKeyboard );
-		}
-		if ( name.equals( "player2" ) ) {
-			// Gdx.app.log( name + " playerState", "" + playerState + " "
-			// + grounded + "isDead? = " + isDead );
-		}
+		/*
+		 * if ( name.equals( "player1" ) ) { // Gdx.app.log( "playerState", "" +
+		 * playerState + " " + grounded ); // System.out.println(
+		 * jumpPressedKeyboard ); } if ( name.equals( "player2" ) ) {
+		 * Gdx.app.log( name + " playerState", "" + playerState + " " + grounded
+		 * + "isDead? = " + isDead ); }
+		 */
 
 		if ( kinematicTransform ) {
 			// setPlatformTransform( platformOffset );
 			kinematicTransform = false;
 		}
 		if ( isDead ) {
+			if ( playerState != PlayerState.Dead
+					&& playerState != PlayerState.GrabMode ) {
+				killPlayer( );
+			}
 			// TODO: death stuff
 			if ( controller != null ) {
 				if ( controllerListener.isGrabPressed( ) ) {
 					playerState = PlayerState.GrabMode;
 				} else {
-					playerState = PlayerState.Standing;
+					playerState = PlayerState.Dead;
 				}
 			} else {
 				inputHandler.update( );
 				if ( inputHandler.isGrabPressed( ) ) {
 					playerState = PlayerState.GrabMode;
 				} else {
-					playerState = PlayerState.Standing;
+					playerState = PlayerState.Dead;
 				}
 			}
 		} else {
@@ -298,27 +301,35 @@ public class Player extends Entity {
 	 * This function sets player in dead state
 	 */
 	public void killPlayer( ) {
-		playerState = PlayerState.Standing;
-		while ( body.getJointList( ).iterator( ).hasNext( ) ) {
-			world.destroyJoint( body.getJointList( ).get( 0 ).joint );
+		if ( !world.isLocked( ) ) {
+			playerState = PlayerState.Dead;
+			if ( playerToPlayer != null ) {
+				world.destroyJoint( playerToPlayer );
+			}
+			if ( playerToScrew != null ) {
+				world.destroyJoint( playerToScrew );
+			}
+			playerToPlayer = null;
+			playerToScrew = null;
+			if ( currentScrew != null ) {
+				currentScrew.setPlayerAttached( false );
+				currentScrew = null;
+			}
+			mover = null;
+			Filter filter = new Filter( );
+			for ( Fixture f : body.getFixtureList( ) ) {
+				f.setSensor( false );
+				filter = f.getFilterData( );
+				// move player back to original category
+				filter.categoryBits = Util.CATEGORY_PLAYER;
+				// player now collides with everything
+				filter.maskBits = Util.CATEGORY_EVERYTHING;
+				f.setFilterData( filter );
+			}
+			body.setTransform( body.getPosition( ), 90f * Util.DEG_TO_RAD );
+		} else {
+			playerState = PlayerState.Standing;
 		}
-		playerToPlayer = null;
-		playerToScrew = null;
-		if ( currentScrew != null ) {
-			currentScrew.setPlayerAttached( false );
-			currentScrew = null;
-		}
-		Filter filter = new Filter( );
-		for ( Fixture f : body.getFixtureList( ) ) {
-			f.setSensor( false );
-			filter = f.getFilterData( );
-			// move player back to original category
-			filter.categoryBits = Util.CATEGORY_PLAYER;
-			// player now collides with everything
-			filter.maskBits = Util.CATEGORY_EVERYTHING;
-			f.setFilterData( filter );
-		}
-		body.setTransform( body.getPosition( ), 90f * Util.DEG_TO_RAD );
 		isDead = true;
 	}
 
@@ -327,6 +338,7 @@ public class Player extends Entity {
 	 */
 	public void respawnPlayer( ) {
 		body.setTransform( body.getPosition( ), 0f );
+		playerState = PlayerState.Standing;
 		isDead = false;
 	}
 
@@ -716,6 +728,7 @@ public class Player extends Entity {
 			if ( !screwButtonHeld ) {
 				if ( mover == null ) {
 					world.destroyJoint( playerToScrew );
+					playerToScrew = null;
 					for ( Fixture f : body.getFixtureList( ) ) {
 						f.setSensor( false );
 					}
@@ -767,6 +780,7 @@ public class Player extends Entity {
 			if ( canJumpOffScrew ) {
 				if ( mover == null ) {
 					world.destroyJoint( playerToScrew );
+					playerToScrew = null;
 					for ( Fixture f : body.getFixtureList( ) ) {
 						f.setSensor( false );
 					}
@@ -925,6 +939,7 @@ public class Player extends Entity {
 		if ( playerState == PlayerState.Screwing ) {
 			if ( mover == null ) {
 				world.destroyJoint( playerToScrew );
+				playerToScrew = null;
 				for ( Fixture f : body.getFixtureList( ) ) {
 					f.setSensor( false );
 				}
@@ -1206,6 +1221,7 @@ public class Player extends Entity {
 				if ( !screwButtonHeld ) {
 					if ( mover == null ) {
 						world.destroyJoint( playerToScrew );
+						playerToScrew = null;
 						for ( Fixture f : body.getFixtureList( ) ) {
 							f.setSensor( false );
 						}
@@ -1306,12 +1322,12 @@ public class Player extends Entity {
 		// then attach the player to the screw
 		if ( ( controllerListener.screwPressed( ) )
 				&& ( playerState != PlayerState.Screwing && playerState != PlayerState.JumpingOffScrew ) ) {
-			if ( hitScrew && !screwButtonHeld ) {
+			if ( hitScrew ) {
 				attachToScrew( );
 				if ( controllerListener.jumpPressed( ) ) {
 					canJumpOffScrew = false;
 				}
-				screwButtonHeld = true;
+
 				jumpCounter = 0;
 			}
 		}
@@ -1321,6 +1337,7 @@ public class Player extends Entity {
 				&& playerState == PlayerState.Screwing ) {
 			if ( mover == null ) {
 				world.destroyJoint( playerToScrew );
+				playerToScrew = null;
 				for ( Fixture f : body.getFixtureList( ) ) {
 					f.setSensor( false );
 				}
