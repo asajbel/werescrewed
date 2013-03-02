@@ -3,11 +3,7 @@
 /common/sounds/jump.ogg
 
 ##common tilesets
-/levels/level1/TilesetTest.png
-/common/tileset/tileset1.png
-/common/tileset/tileset-green.png
-/common/tileset/tileset-teal.png
-/common/tilesetTest.png
+##/levels/level1/TilesetTest.png
 
 ##texture atlas
 /common/tileset1.pack

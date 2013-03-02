@@ -79,7 +79,7 @@ public class EntityDefTestScreen implements com.badlogic.gdx.Screen {
 		entityManager.addSkeleton( rootSkeleton.name, rootSkeleton );
 		platBuilder = new PlatformBuilder( world );
 		testTexture = WereScrewedGame.manager.get(
-				WereScrewedGame.dirHandle.path( ) + "/common/TilesetTest.png",
+				WereScrewedGame.dirHandle.path( ) + "/common/tilesetTest.png",
 				Texture.class );
 
 		// Initialize camera

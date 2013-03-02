@@ -106,8 +106,8 @@ public class Level1Screen implements com.badlogic.gdx.Screen {
 		platBuilder = new PlatformBuilder( world );
 		ropeBuilder = new RopeBuilder( world );
 
-		testTexture = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-						+ "/levels/level1/TilesetTest.png", Texture.class );
+		testTexture = null;//WereScrewedGame.manager.get( WereScrewedGame.dirHandle
+						//+ "/levels/level1/TilesetTest.png", Texture.class );
 
 
 		// Uncomment for test anchor
