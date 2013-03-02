@@ -58,14 +58,27 @@ public class ScrewBuilder extends GenericEntityBuilder< ScrewBuilder > {
 	 * Sets screw properties from a hashmap
 	 * Will likely be used for the Gleed2D loader.
 	 */
+	protected static final String screwTypeTag = "screwtype";
+	protected static final String screwMaxTag = "screwmax";
+	protected static final String screwResetTag = "resetable";
 	@Override
 	public ScrewBuilder properties(HashMap<String,String> props){
 		super.properties( props );
-		if (props.containsKey( "ScrewType" )){
-			this.screwType(props.get( "ScrewType" ));
+		if (props.containsKey( screwTypeTag )){
+			this.screwType(props.get( screwTypeTag ));
 		}
-		if (props.containsKey( "ScrewMax" )){
-			this.max(Integer.decode( props.get("ScrewMax") ));
+		if (props.containsKey( screwMaxTag )){
+			this.max(Integer.decode( props.get( screwMaxTag ) ));
+		}
+		if (props.containsKey( screwResetTag )){
+			if (props.get( screwResetTag ).equalsIgnoreCase( "false" ) 
+				|| props.get( screwResetTag ).equalsIgnoreCase( "no" ) 
+				|| props.get( screwResetTag ).equals( "0" ))
+			{
+				this.resetable( false );
+			} else {
+				this.resetable( true );
+			}
 		}
 		return this;
 	}

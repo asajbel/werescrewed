@@ -2,6 +2,8 @@ package com.blindtigergames.werescrewed.level;
 
 import java.util.ArrayList;
 
+import aurelienribon.tweenengine.Tween;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -10,10 +12,13 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.camera.Camera;
 import com.blindtigergames.werescrewed.debug.SBox2DDebugRenderer;
+import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityManager;
 import com.blindtigergames.werescrewed.platforms.Platform;
 import com.blindtigergames.werescrewed.entity.builders.PlayerBuilder;
 import com.blindtigergames.werescrewed.entity.builders.PlatformBuilder;
+import com.blindtigergames.werescrewed.entity.tween.EntityAccessor;
+import com.blindtigergames.werescrewed.entity.tween.PlatformAccessor;
 import com.blindtigergames.werescrewed.platforms.TiledPlatform;
 import com.blindtigergames.werescrewed.player.Player;
 import com.blindtigergames.werescrewed.skeleton.Skeleton;
@@ -52,6 +57,9 @@ public class Level {
 		entities = new EntityManager();
 		platforms = new ArrayList<Platform>();
 		root = new Skeleton("root", new Vector2(0,0), null, world);
+		
+		Tween.registerAccessor( Platform.class, new PlatformAccessor( ) );
+		Tween.registerAccessor( Entity.class, new EntityAccessor( ) );
 	}
 	
 	public void update( float deltaTime ){

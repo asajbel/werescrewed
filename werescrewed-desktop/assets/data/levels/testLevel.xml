@@ -33,7 +33,7 @@
                             <string>tiledPlatform</string>
                         </Property>
                         <Property Name="MoverIdle" Type="string" Description="">
-                            <string>rocking 0.3f 2.0f</string>
+                            <string>Path_1</string>
                         </Property>
                         <Property Name="Dynamic" Type="string" Description="">
                             <string />
@@ -351,8 +351,8 @@
                 </Item>
                 <Item xsi:type="PathItem" Name="Path_1" Visible="true">
                     <Position>
-                        <X>256</X>
-                        <Y>-128</Y>
+                        <X>160</X>
+                        <Y>32</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Type" Type="string" Description="">
@@ -372,7 +372,7 @@
                             <Y>0</Y>
                         </Vector2>
                         <Vector2>
-                            <X>320</X>
+                            <X>256</X>
                             <Y>-128</Y>
                         </Vector2>
                         <Vector2>
@@ -384,7 +384,7 @@
                             <Y>-256</Y>
                         </Vector2>
                         <Vector2>
-                            <X>-128</X>
+                            <X>-64</X>
                             <Y>-128</Y>
                         </Vector2>
                         <Vector2>
@@ -398,36 +398,36 @@
                     </LocalPoints>
                     <WorldPoints>
                         <Vector2>
-                            <X>256</X>
-                            <Y>-128</Y>
+                            <X>160</X>
+                            <Y>32</Y>
                         </Vector2>
                         <Vector2>
-                            <X>448</X>
-                            <Y>-128</Y>
+                            <X>352</X>
+                            <Y>32</Y>
                         </Vector2>
                         <Vector2>
-                            <X>576</X>
-                            <Y>-256</Y>
+                            <X>416</X>
+                            <Y>-96</Y>
                         </Vector2>
                         <Vector2>
-                            <X>448</X>
-                            <Y>-384</Y>
+                            <X>352</X>
+                            <Y>-224</Y>
                         </Vector2>
                         <Vector2>
-                            <X>256</X>
-                            <Y>-384</Y>
+                            <X>160</X>
+                            <Y>-224</Y>
                         </Vector2>
                         <Vector2>
-                            <X>128</X>
-                            <Y>-256</Y>
+                            <X>96</X>
+                            <Y>-96</Y>
                         </Vector2>
                         <Vector2>
-                            <X>256</X>
-                            <Y>-128</Y>
+                            <X>160</X>
+                            <Y>32</Y>
                         </Vector2>
                         <Vector2>
-                            <X>256</X>
-                            <Y>-128</Y>
+                            <X>160</X>
+                            <Y>32</Y>
                         </Vector2>
                     </WorldPoints>
                     <IsPolygon>false</IsPolygon>
