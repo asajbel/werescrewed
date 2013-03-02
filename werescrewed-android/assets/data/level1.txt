@@ -1,0 +1,18 @@
+##sounds
+/common/sounds/inceptionbutton.mp3
+/common/sounds/jump.ogg
+
+##common tilesets
+##/levels/level1/TilesetTest.png
+
+##texture atlas
+/common/tileset1.pack
+/common/TilesetTest.pack
+
+##common texture
+/common/player_b_f.png
+/common/player_r_m.png
+/common/screw.png
+/common/test01.png
+/common/cletter.png
+/particles/particle.png

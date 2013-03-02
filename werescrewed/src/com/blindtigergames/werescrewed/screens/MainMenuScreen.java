@@ -1,16 +1,14 @@
 package com.blindtigergames.werescrewed.screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.blindtigergames.werescrewed.gui.Button;
-import com.blindtigergames.werescrewed.gui.Label;
 import com.blindtigergames.werescrewed.gui.Button.ButtonHandler;
-import com.blindtigergames.werescrewed.screens.ScreenSwitchHandler;
+import com.blindtigergames.werescrewed.gui.Label;
 
 class MainMenuScreen implements com.badlogic.gdx.Screen {
 
