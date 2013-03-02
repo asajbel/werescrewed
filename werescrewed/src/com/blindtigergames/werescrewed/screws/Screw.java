@@ -1,5 +1,7 @@
 package com.blindtigergames.werescrewed.screws;
 
+import java.util.ArrayList;
+
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -7,6 +9,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.physics.box2d.joints.RevoluteJoint;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
 import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.entity.Entity;
@@ -39,6 +42,7 @@ public class Screw extends Entity {
 	protected boolean playerAttached = false;
 	protected boolean removed = false;
 	protected ScrewType screwType;
+	protected ArrayList< RevoluteJoint > extraJoints;
 
 	/**
 	 * constructor to use if you want a static screw
@@ -50,16 +54,16 @@ public class Screw extends Entity {
 	 * @param skeleton
 	 * @param world
 	 */
-	public Screw( String name, Vector2 pos, int max, Entity entity,
-			Skeleton skeleton, World world ) {
+	public Screw( String name, Vector2 pos, Entity entity, World world ) {
 		super( name, pos, WereScrewedGame.manager.get(
-				WereScrewedGame.dirHandle.path( ) + "/common/screw.png",
+				WereScrewedGame.dirHandle.path( ) + "/common/screw1.png",
 				Texture.class ), null, false );
-		screwType = ScrewType.STATIC;
 		this.world = world;
+		screwType = ScrewType.STATIC;
 		entityType = EntityType.SCREW;
+		extraJoints = new ArrayList< RevoluteJoint >( );
 		constructBody( pos );
-		connectScrewToEntity( entity );
+		addStructureJoint( entity );
 	}
 
 	public Screw( String name, Vector2 pos, Texture tex ) {
@@ -140,7 +144,23 @@ public class Screw extends Entity {
 	public ScrewType getScrewType( ) {
 		return screwType;
 	}
-
+	
+	/**
+	 * attaches any other object between this screw and the main entity that
+	 * this screw is attached
+	 * 
+	 * @param entity
+	 */
+	public void addStructureJoint( Entity entity ) {
+		// connect other structure to structure screw
+		RevoluteJointDef revoluteJointDef = new RevoluteJointDef( );
+		revoluteJointDef.initialize( body, entity.body, body.getPosition( ) );
+		revoluteJointDef.enableMotor = false;
+		RevoluteJoint screwJoint = ( RevoluteJoint ) world
+				.createJoint( revoluteJointDef );
+		extraJoints.add( screwJoint );
+	}
+	
 	private void constructBody( Vector2 pos ) {
 		// create the screw body
 		BodyDef screwBodyDef = new BodyDef( );
@@ -150,7 +170,7 @@ public class Screw extends Entity {
 		body = world.createBody( screwBodyDef );
 		CircleShape screwShape = new CircleShape( );
 		screwShape
-				.setRadius( ( sprite.getWidth( ) / 2.0f ) * Util.PIXEL_TO_BOX );
+				.setRadius( 0f );
 		FixtureDef screwFixture = new FixtureDef( );
 		screwFixture.filter.categoryBits = Util.CATEGORY_SCREWS;
 		screwFixture.filter.maskBits = Util.CATEGORY_NOTHING;
@@ -161,13 +181,5 @@ public class Screw extends Entity {
 
 		// You dont dispose the fixturedef, you dispose the shape
 		screwShape.dispose( );
-	}
-
-	private void connectScrewToEntity( Entity entity ) {
-		// connect the screw to the entity
-		RevoluteJointDef revoluteJointDef = new RevoluteJointDef( );
-		revoluteJointDef.initialize( body, entity.body, body.getPosition( ) );
-		revoluteJointDef.enableMotor = false;
-		world.createJoint( revoluteJointDef );
 	}
 }

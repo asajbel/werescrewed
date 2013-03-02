@@ -39,7 +39,7 @@ public class StructureScrew extends Screw {
 		entityType = EntityType.SCREW;
 		
 		constuctBody( pos );
-		connectScrewToEntity( entity, skeleton, pos );
+		connectScrewToEntity( entity, pos );
 		connectEntityToSkeleton( entity, skeleton, pos );
 
 	}
@@ -178,7 +178,7 @@ public class StructureScrew extends Screw {
 //		radarShape.dispose( );
 	}
 
-	private void connectScrewToEntity( Entity entity, Skeleton skeleton, Vector2 pos ) {
+	private void connectScrewToEntity( Entity entity, Vector2 pos ) {
 		// connect the screw to the entity
 		RevoluteJointDef revoluteJointDef = new RevoluteJointDef( );
 		revoluteJointDef.initialize( body, entity.body, pos );
@@ -200,7 +200,6 @@ public class StructureScrew extends Screw {
 
 	private RevoluteJoint platformJoint;
 	private RevoluteJoint screwToSkel;
-	private ArrayList< RevoluteJoint > extraJoints;
 	private int fallTimeout;
 	private boolean lerpUp = true;
 	private float alpha = 0.0f;
