@@ -57,10 +57,16 @@ public class LoadingScreen extends Screen {
 			s.replaceAll( "\\s", "" );
 			if ( s.length( ) > 0 ) {
 				if ( s.charAt( 0 ) != '#' ) {
-					// gets the extension
-					String extension = s.split( "\\." )[ 1 ];
-					// loads the file
-					loadCurrentFile( extension, WereScrewedGame.dirHandle + s );
+					String file[] = s.split( "\\." );
+					if ( file.length > 1 ) {
+						// gets the extension
+						String extension = file[1];
+						// loads the file
+						loadCurrentFile( extension, WereScrewedGame.dirHandle
+								+ s );
+					} else {
+						Gdx.app.log( "Loading screen: ", s + "doesn't have an extension" );
+					}
 				}
 			}
 		}
