@@ -31,9 +31,6 @@ import com.blindtigergames.werescrewed.util.Util;
  * 
  */
 public class Screw extends Entity {
-	public enum ScrewType {
-		STATIC, STRIPPED, PUZZLE, STRUCTURAL, RESURRECT, BOSS
-	}
 
 	protected int rotation;
 	protected int depth;
@@ -59,7 +56,7 @@ public class Screw extends Entity {
 				WereScrewedGame.dirHandle.path( ) + "/common/screw1.png",
 				Texture.class ), null, false );
 		this.world = world;
-		screwType = ScrewType.STATIC;
+		screwType = ScrewType.SCREW_STRIPPED;
 		entityType = EntityType.SCREW;
 		extraJoints = new ArrayList< RevoluteJoint >( );
 		constructBody( pos );

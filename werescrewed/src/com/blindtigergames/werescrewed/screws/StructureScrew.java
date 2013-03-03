@@ -35,7 +35,7 @@ public class StructureScrew extends Screw {
 		rotation = 0;
 		fallTimeout = 140;
 		extraJoints = new ArrayList< RevoluteJoint >( );
-		screwType = ScrewType.STRUCTURAL;
+		screwType = ScrewType.SCREW_STRUCTURAL;
 		entityType = EntityType.SCREW;
 		
 		constuctBody( pos );
@@ -156,7 +156,7 @@ public class StructureScrew extends Screw {
 		FixtureDef screwFixture = new FixtureDef( );
 		screwFixture.shape = screwShape;
 		screwFixture.isSensor = true;
-		screwFixture.density = 1f;
+		screwFixture.density = 0.5f;
 		screwFixture.filter.categoryBits = Util.CATEGORY_SCREWS;
 		screwFixture.filter.maskBits = Util.CATEGORY_PLAYER
 				| Util.CATEGORY_SUBPLAYER;
@@ -192,7 +192,7 @@ public class StructureScrew extends Screw {
 		entity.body.setFixedRotation( false );
 		RevoluteJointDef revoluteJointDef = new RevoluteJointDef( );
 		revoluteJointDef = new RevoluteJointDef( );
-		revoluteJointDef.initialize( entity.body, skeleton.body, pos );
+		revoluteJointDef.initialize( body, skeleton.body, pos );
 		revoluteJointDef.enableMotor = false;
 		platformJoint = ( RevoluteJoint ) world.createJoint( revoluteJointDef );
 		entity.body.setFixedRotation( false );

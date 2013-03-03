@@ -20,7 +20,7 @@ import com.blindtigergames.werescrewed.player.Player;
 import com.blindtigergames.werescrewed.player.Player.PlayerState;
 import com.blindtigergames.werescrewed.screws.ResurrectScrew;
 import com.blindtigergames.werescrewed.screws.Screw;
-import com.blindtigergames.werescrewed.screws.Screw.ScrewType;
+import com.blindtigergames.werescrewed.screws.ScrewType;
 
 /**
  * 
@@ -96,7 +96,7 @@ public class MyContactListener implements ContactListener {
 								NUM_PLAYER2_SCREWCONTACTS++;
 								player.hitScrew( screw );
 							}
-							if ( screw.getScrewType( ) == ScrewType.RESURRECT ) {
+							if ( screw.getScrewType( ) == ScrewType.SCREW_RESURRECT ) {
 								ResurrectScrew rScrew = ( ResurrectScrew ) screw;
 								rScrew.hitPlayer( player );
 							}
