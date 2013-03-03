@@ -20,7 +20,7 @@ public class ScrewBuilder extends GenericEntityBuilder< ScrewBuilder > {
 	
 	public ScrewBuilder(){
 		super();
-		this.screwType = ScrewType.SCREW_STRIPPED;
+		this.screwType = ScrewType.SCREW_COSMETIC;
 		this.entity = null;
 		this.skeleton = null;
 		this.max = 100;
@@ -146,6 +146,8 @@ public class ScrewBuilder extends GenericEntityBuilder< ScrewBuilder > {
 			case SCREW_RESURRECT:
 				out = this.buildRezzScrew( );
 				break;
+			case SCREW_COSMETIC:
+				out = this.buildCosmeticScrew( );
 			default:
 				break;
 		}
@@ -156,7 +158,17 @@ public class ScrewBuilder extends GenericEntityBuilder< ScrewBuilder > {
 		}
 		return out;
 	}
-
+	public Screw buildCosmeticScrew(){
+		Screw out = null;
+		if (canBuild() && entity != null && skeleton != null){
+			out = new Screw(name, pos, entity, world);
+			if (skeleton != null){
+				skeleton.addScrew(out);
+				skeleton.addScrewForDraw( out );
+			}
+		}
+		return out;
+	}
 	public StrippedScrew buildStrippedScrew(){
 		StrippedScrew out = null;
 		if (canBuild() && entity != null){
