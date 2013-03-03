@@ -33,7 +33,7 @@ public class PuzzleScrew extends Screw {
 		this.startDepth = depth = startDepth;
 		resetAble = resetable;
 		puzzleManager = new PuzzleManager( this.name );
-		screwType = ScrewType.PUZZLE;
+		screwType = ScrewType.SCREW_PUZZLE;
 		entityType = EntityType.SCREW;
 
 		sprite.setColor( 16f/255f, 215f/255f, 96f/255f, 1.0f);

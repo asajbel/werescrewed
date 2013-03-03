@@ -37,7 +37,7 @@ public class BossScrew extends Screw {
 		rotation = 0;
 		fallTimeout = 140;
 		extraJoints = new ArrayList< RevoluteJoint >( );
-		screwType = ScrewType.BOSS;
+		screwType = ScrewType.SCREW_BOSS;
 		entityType = EntityType.SCREW;
 
 		sprite.setColor( 244f/255f, 215f/255f, 7f/255f, 1.0f);

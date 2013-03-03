@@ -147,7 +147,8 @@ public class Entity implements GleedLoadable {
 	}
 
 	public void setPixelPosition(Vector2 pixels){
-		setPixelPosition(pixels.x, pixels.y);	
+		if (pixels != null)
+			setPixelPosition(pixels.x, pixels.y);	
 	}
 	
 	/**
@@ -188,7 +189,7 @@ public class Entity implements GleedLoadable {
 		if ( sprite != null && visible ) {
 			sprite.draw( batch );
 		}
-		drawOrigin(batch);
+		//drawOrigin(batch);
 	}
 
 	public void drawOrigin(SpriteBatch batch){

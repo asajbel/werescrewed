@@ -5,6 +5,7 @@ import java.util.HashMap;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.blindtigergames.werescrewed.entity.Entity;
+import com.blindtigergames.werescrewed.player.Player;
 import com.blindtigergames.werescrewed.screws.*;
 import com.blindtigergames.werescrewed.skeleton.Skeleton;
 
@@ -14,6 +15,8 @@ public class ScrewBuilder extends GenericEntityBuilder< ScrewBuilder > {
 	protected Skeleton skeleton;
 	protected int max, startDepth;
 	protected boolean resetable;
+	protected Player player;
+	protected boolean playerOffset;
 	
 	public ScrewBuilder(){
 		super();
@@ -22,6 +25,8 @@ public class ScrewBuilder extends GenericEntityBuilder< ScrewBuilder > {
 		this.skeleton = null;
 		this.max = 100;
 		this.startDepth = 0;
+		this.player = null;
+		this.playerOffset = false;
 	}
 	
 	@Override
@@ -108,6 +113,16 @@ public class ScrewBuilder extends GenericEntityBuilder< ScrewBuilder > {
 		return this;
 	}
 	
+	public ScrewBuilder player(Player p){
+		this.player = p;
+		return this;
+	}
+
+	public ScrewBuilder playerOffset(boolean o){
+		this.playerOffset = o;
+		return this;
+	}
+	
 	@Override
 	public boolean canBuild(){
 		return (world != null);
@@ -115,18 +130,33 @@ public class ScrewBuilder extends GenericEntityBuilder< ScrewBuilder > {
 	
 	public Screw buildScrew(){
 		Screw out = null;
+		switch(screwType){
+			case SCREW_STRIPPED:
+				out = this.buildStrippedScrew( );
+				break;
+			case SCREW_STRUCTURAL:
+				out = this.buildStructureScrew( );
+				break;
+			case SCREW_PUZZLE:
+				out = this.buildPuzzleScrew( );
+				break;
+			case SCREW_BOSS:
+				out = this.buildBossScrew( ); 
+				break;
+			case SCREW_RESURRECT:
+				out = this.buildRezzScrew( );
+				break;
+			default:
+				break;
+		}
 		if (screwType.equals( ScrewType.SCREW_STRIPPED )){
-			out = this.buildStrippedScrew( );
 		} else if (screwType.equals( ScrewType.SCREW_STRUCTURAL )){
-			out = this.buildStructureScrew( );
 		} else if (screwType.equals( ScrewType.SCREW_PUZZLE )){
-			out = this.buildPuzzleScrew( );
 		} else if (screwType.equals( ScrewType.SCREW_BOSS )){
-			out = this.buildBossScrew( ); 
 		}
 		return out;
 	}
-	
+
 	public StrippedScrew buildStrippedScrew(){
 		StrippedScrew out = null;
 		if (canBuild() && entity != null){
@@ -173,4 +203,20 @@ public class ScrewBuilder extends GenericEntityBuilder< ScrewBuilder > {
 		}
 		return out;
 	}
+	
+	public ResurrectScrew buildRezzScrew( ) {
+		ResurrectScrew out = null;
+		if (canBuild() && entity != null && player != null){
+			Vector2 finalPos;
+			if (this.playerOffset){
+				finalPos = this.pos.add( player.getPositionPixel( ) );
+			} else {
+				finalPos = this.pos;
+			}
+			out = new ResurrectScrew( finalPos, this.entity, this.world,
+					this.player );
+		}
+		return out;
+	}
+
 }

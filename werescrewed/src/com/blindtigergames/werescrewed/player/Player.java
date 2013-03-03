@@ -26,7 +26,7 @@ import com.blindtigergames.werescrewed.entity.mover.LinearAxis;
 import com.blindtigergames.werescrewed.input.MyControllerListener;
 import com.blindtigergames.werescrewed.input.PlayerInputHandler;
 import com.blindtigergames.werescrewed.screws.Screw;
-import com.blindtigergames.werescrewed.screws.Screw.ScrewType;
+import com.blindtigergames.werescrewed.screws.ScrewType;
 import com.blindtigergames.werescrewed.util.Util;
 
 /**
@@ -901,7 +901,7 @@ public class Player extends Entity {
 		}
 		if ( mover == null
 				&& currentScrew.body.getJointList( ).size( ) <= 1
-				|| ( currentScrew.getScrewType( ) == ScrewType.BOSS && currentScrew
+				|| ( currentScrew.getScrewType( ) == ScrewType.SCREW_BOSS && currentScrew
 						.getDepth( ) == 0 ) ) {
 			if ( mover == null ) {
 				world.destroyJoint( playerToScrew );
