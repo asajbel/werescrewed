@@ -89,7 +89,6 @@ public class ResurrectScrew extends Screw {
 	public void hitPlayer( Player player ) {
 		if ( player == deadPlayer ) {
 			destroyJoint = true;
-			player.respawnPlayer( );
 		}
 	}
 
@@ -122,6 +121,7 @@ public class ResurrectScrew extends Screw {
 		}
 		if ( !removed ) {
 			if ( destroyJoint ) {
+				deadPlayer.respawnPlayer( );
 				remove( );
 				destroyJoint = false;
 			}

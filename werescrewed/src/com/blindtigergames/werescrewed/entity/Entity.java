@@ -121,7 +121,7 @@ public class Entity implements GleedLoadable {
 		this.energy = 1.0f;
 		this.maintained = true;
 		this.visible = true;
-		this.active = true;
+		this.active = false;
 		setUpRobotState();
 	}
 

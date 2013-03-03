@@ -106,8 +106,8 @@ public class Level1Screen implements com.badlogic.gdx.Screen {
 		platBuilder = new PlatformBuilder( world );
 		ropeBuilder = new RopeBuilder( world );
 
-		testTexture = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-						+ "/levels/level1/TilesetTest.png", Texture.class );
+		testTexture = null;//WereScrewedGame.manager.get( WereScrewedGame.dirHandle
+						//+ "/levels/level1/TilesetTest.png", Texture.class );
 
 
 		// Uncomment for test anchor
@@ -181,7 +181,7 @@ public class Level1Screen implements com.badlogic.gdx.Screen {
 		dynSkeleton.body.setType( BodyType.DynamicBody );
 		RevoluteJointBuilder jbBuilder = new RevoluteJointBuilder( world );
 		jbBuilder.skeleton( skeleton ).bodyB( dynSkeleton ).motor( true ).build( );
-		TiledPlatform plat = platBuilder.dynamic( ).position( 0, 200 ).dimensions( 4,1 ).oneSided( false ).buildTilePlatform( );
+		TiledPlatform plat = platBuilder.dynamic( ).position( 0, 200 ).dimensions( 4,1 ).density( 1f ).oneSided( false ).buildTilePlatform( );
 		plat.body.setFixedRotation( false );
 		dynSkeleton.addPlatformRotatingCenter( plat );
 		

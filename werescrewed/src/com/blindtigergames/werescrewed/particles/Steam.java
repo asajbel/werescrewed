@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -43,8 +42,8 @@ public class Steam extends Entity{
 		this.world = world;
 		particleEffect = new ParticleEffect( );
 		particleEffect.load(
-				Gdx.files.internal( "assets/data/particles/steam" ),
-				Gdx.files.internal( "assets/data/particles" ) );
+				Gdx.files.internal( "data/particles/steam" ),
+				Gdx.files.internal( "data/particles" ) );
 		particleEffect.setPosition( positionPixels.x, positionPixels.y - height);
 
 		constructBody(positionPixels, pixelHeight, pixelWidth);
