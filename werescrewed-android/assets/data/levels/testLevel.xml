@@ -348,8 +348,8 @@
                 </Item>
                 <Item xsi:type="PathItem" Name="Path_1" Visible="true">
                     <Position>
-                        <X>0</X>
-                        <Y>0</Y>
+                        <X>160</X>
+                        <Y>32</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Type" Type="string" Description="">
@@ -361,20 +361,8 @@
                         <Property Name="point1time" Type="string" Description="">
                             <string>2.0f</string>
                         </Property>
-                        <Property Name="point2time" Type="string" Description="">
-                            <string>2.0f</string>
-                        </Property>
-                        <Property Name="point3time" Type="string" Description="">
-                            <string>2.0f</string>
-                        </Property>
-                        <Property Name="point4time" Type="string" Description="">
-                            <string>2.0f</string>
-                        </Property>
-                        <Property Name="point5time" Type="string" Description="">
-                            <string>2.0f</string>
-                        </Property>
-                        <Property Name="point6time" Type="string" Description="">
-                            <string>2.0f</string>
+                        <Property Name="endTime" Type="string" Description="">
+                            <string>10.0f</string>
                         </Property>
                     </CustomProperties>
                     <LocalPoints>
@@ -409,32 +397,32 @@
                     </LocalPoints>
                     <WorldPoints>
                         <Vector2>
-                            <X>0</X>
-                            <Y>0</Y>
+                            <X>160</X>
+                            <Y>32</Y>
                         </Vector2>
                         <Vector2>
-                            <X>192</X>
-                            <Y>0</Y>
+                            <X>352</X>
+                            <Y>32</Y>
                         </Vector2>
                         <Vector2>
-                            <X>256</X>
-                            <Y>-128</Y>
+                            <X>416</X>
+                            <Y>-96</Y>
                         </Vector2>
                         <Vector2>
-                            <X>192</X>
-                            <Y>-256</Y>
+                            <X>352</X>
+                            <Y>-224</Y>
                         </Vector2>
                         <Vector2>
-                            <X>0</X>
-                            <Y>-256</Y>
+                            <X>160</X>
+                            <Y>-224</Y>
                         </Vector2>
                         <Vector2>
-                            <X>-64</X>
-                            <Y>-128</Y>
+                            <X>96</X>
+                            <Y>-96</Y>
                         </Vector2>
                         <Vector2>
-                            <X>0</X>
-                            <Y>0</Y>
+                            <X>160</X>
+                            <Y>32</Y>
                         </Vector2>
                     </WorldPoints>
                     <IsPolygon>false</IsPolygon>
