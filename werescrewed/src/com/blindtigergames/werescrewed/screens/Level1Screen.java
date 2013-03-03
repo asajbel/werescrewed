@@ -17,7 +17,6 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.joints.PrismaticJoint;
 import com.badlogic.gdx.physics.box2d.joints.PrismaticJointDef;
 import com.badlogic.gdx.physics.box2d.joints.PulleyJointDef;
-import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.camera.Camera;
 import com.blindtigergames.werescrewed.collisionManager.MyContactListener;
 import com.blindtigergames.werescrewed.debug.SBox2DDebugRenderer;
@@ -46,6 +45,7 @@ import com.blindtigergames.werescrewed.player.Player;
 import com.blindtigergames.werescrewed.rope.Rope;
 import com.blindtigergames.werescrewed.screws.BossScrew;
 import com.blindtigergames.werescrewed.screws.PuzzleScrew;
+import com.blindtigergames.werescrewed.screws.Screw;
 import com.blindtigergames.werescrewed.screws.StrippedScrew;
 import com.blindtigergames.werescrewed.screws.StructureScrew;
 import com.blindtigergames.werescrewed.skeleton.Skeleton;
@@ -186,8 +186,8 @@ public class Level1Screen implements com.badlogic.gdx.Screen {
 		RevoluteJointBuilder jbBuilder = new RevoluteJointBuilder( world );
 		jbBuilder.skeleton( skeleton ).bodyB( dynSkeleton ).motor( false ).build( );
 		//joints the first dynamic skeleton to the second dynamic skeleton
-		StructureScrew screw = new StructureScrew ( "dynamic_skeleton_joint", new Vector2( 50, 100), 50, dynSkeleton,
-				dynSkeleton2, world );
+		Screw screw = new Screw ( "dynamic_skeleton_joint", new Vector2( 50, 100), dynSkeleton, world );
+		screw.addStructureJoint( dynSkeleton2 );
 		//joint the two dynamic skeletons to the parent skeleton
 		//screw.addStructureJoint( skeleton );
 		rootSkeleton.addScrewForDraw( screw );

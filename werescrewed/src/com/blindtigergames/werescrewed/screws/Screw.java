@@ -67,6 +67,7 @@ public class Screw extends Entity {
 		super( name, pos, ( tex == null ? WereScrewedGame.manager.get(
 				WereScrewedGame.dirHandle.path( ) + "/common/screw.png",
 				Texture.class ) : tex ), null, false );
+		entityType = EntityType.SCREW;
 	}
 
 	/**
