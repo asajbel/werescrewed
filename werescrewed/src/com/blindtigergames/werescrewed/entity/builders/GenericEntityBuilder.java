@@ -6,8 +6,12 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
-import com.blindtigergames.werescrewed.entity.*;
+import com.blindtigergames.werescrewed.entity.Entity;
+import com.blindtigergames.werescrewed.entity.EntityCategory;
+import com.blindtigergames.werescrewed.entity.EntityDef;
+import com.blindtigergames.werescrewed.entity.RobotState;
 import com.blindtigergames.werescrewed.entity.mover.IMover;
+
 /**
  * EntityBuilder is meant to simplify creating entities and allow for extension
  * through inheritance and polymorphism. Will probably be a constant
