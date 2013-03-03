@@ -100,7 +100,6 @@ public class LoadingScreen extends Screen {
 	 * 
 	 * @return void
 	 */
-	@SuppressWarnings( "unused" )
 	private void loadFilesInDirectory( FileHandle currentDirectory,
 			String screenTag ) {
 		// Gdx.app.log( "GOING DOWN", "now inside " + currentDirectory.name( )
