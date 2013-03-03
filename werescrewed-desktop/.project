@@ -18,7 +18,7 @@
 		<link>
 			<name>assets</name>
 			<type>2</type>
-			<location>/home/dennis/Documents/gdStudio/werescrewed/werescrewed-android/assets</location>
+			<locationURI>WORKSPACE_LOC/werescrewed-android/assets</locationURI>
 		</link>
 	</linkedResources>
 </projectDescription>
