@@ -152,10 +152,10 @@ public class Camera {
 		position = camera.position;
 		center2D.x = position.x;
 		center2D.y = position.y;
-		screenBounds.x = position.x - viewportWidth / 2;
-		screenBounds.y = position.y - viewportHeight / 2;
 		screenBounds.width = camera.zoom * viewportWidth;
 		screenBounds.height = camera.zoom * viewportHeight;
+		screenBounds.x = position.x - screenBounds.width / 2;
+		screenBounds.y = position.y - screenBounds.height / 2;
 
 		translateBuffer.x = position.x - translateBuffer.width * .5f;
 		translateBuffer.y = position.y - translateBuffer.height * .5f;
@@ -235,9 +235,6 @@ public class Camera {
 				// has exited the screen
 				RectDirection dir = rectOutsideRect(
 						curAnchor.getBufferRectangle( ), screenBounds );
-				// Debug stuff
-				if ( dir != RectDirection.NONE )
-					Gdx.app.log( "Direction", dir.toString( ) );
 
 				// Check that a buffer has indeed exited the screen
 				if ( dir != RectDirection.NONE ) {
@@ -305,11 +302,15 @@ public class Camera {
 				tempAngle = anchorList.getMidpointVelocity( ).angle( )
 						- translateVelocity.angle( );
 				tempAngle = Math.abs( tempAngle );
-				if ( trans_x )
+				if ( trans_x || trans_y ) {
+					if ( trans_x )
+						camera.position.x = translateTarget.x;
+					if ( trans_y )
+						camera.position.y = translateTarget.y;
+				} else {
 					camera.position.x = translateTarget.x;
-				if ( trans_y )
 					camera.position.y = translateTarget.y;
-
+				}
 				if ( anchorList.getMidpointVelocity( ).len( ) < MINIMUM_FOLLOW_SPEED
 						|| tempAngle > MAX_ANGLE_DIFF ) {
 					translateState = false;
@@ -317,7 +318,6 @@ public class Camera {
 					translateVelocity.y = 0f;
 					translateAcceleration = 0f;
 					translateSpeed = 0f;
-				} else {
 				}
 			} else
 				translate( trans_x, trans_y );
