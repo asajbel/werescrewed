@@ -8,8 +8,6 @@ import java.util.HashMap;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Filter;
-import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.XmlReader;
 import com.badlogic.gdx.utils.XmlReader.Element;
@@ -18,15 +16,11 @@ import com.blindtigergames.werescrewed.entity.EntityDef;
 import com.blindtigergames.werescrewed.entity.builders.EntityBuilder;
 import com.blindtigergames.werescrewed.entity.builders.PlatformBuilder;
 import com.blindtigergames.werescrewed.entity.builders.ScrewBuilder;
-import com.blindtigergames.werescrewed.entity.mover.IMover;
-import com.blindtigergames.werescrewed.platforms.ComplexPlatform;
 import com.blindtigergames.werescrewed.platforms.Platform;
 import com.blindtigergames.werescrewed.platforms.TiledPlatform;
-import com.blindtigergames.werescrewed.screws.Screw;
 import com.blindtigergames.werescrewed.screws.ScrewType;
 import com.blindtigergames.werescrewed.screws.StrippedScrew;
 import com.blindtigergames.werescrewed.skeleton.Skeleton;
-import com.blindtigergames.werescrewed.util.Util;
 
 public class GleedLoader {	
 	protected XmlReader reader;
@@ -129,6 +123,8 @@ public class GleedLoader {
 				case SCREW_PUZZLE:
 					break;
 				case SCREW_BOSS:
+					break;
+				default:
 					break;					
 				}
 			} else {

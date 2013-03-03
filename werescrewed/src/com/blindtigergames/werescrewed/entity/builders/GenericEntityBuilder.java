@@ -10,7 +10,6 @@ import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityDef;
 import com.blindtigergames.werescrewed.entity.RobotState;
 import com.blindtigergames.werescrewed.entity.mover.IMover;
-import com.blindtigergames.werescrewed.skeleton.Skeleton;
 
 /**
  * EntityBuilder is meant to simplify creating entities and allow for extension

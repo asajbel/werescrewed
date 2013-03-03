@@ -45,9 +45,10 @@ public class Platform extends Entity {
 	 */
 	protected Vector2 localPosition; // in pixels, local coordinate system
 	protected float localRotation; // in radians, local rot system
-	protected Vector2 localLinearVelocity; //in meters/step
+	protected Vector2 localLinearVelocity; // in meters/step
 	protected float localAngularVelocity; //
-	private Vector2 originPosition; //world position that this platform spawns at, in pixels
+	private Vector2 originPosition; // world position that this platform spawns
+									// at, in pixels
 
 	// ============================================
 	// Constructors
@@ -95,8 +96,8 @@ public class Platform extends Entity {
 	 */
 	void init( Vector2 pos ) {
 		screws = new ArrayList< Screw >( );
-		localPosition = new Vector2(0,0);
-		localLinearVelocity = new Vector2(0,0);
+		localPosition = new Vector2( 0, 0 );
+		localLinearVelocity = new Vector2( 0, 0 );
 		localRotation = 0;
 		originPosition = pos.cpy( );
 		platType = PlatformType.DEFAULT; // set to default unless subclass sets
@@ -172,28 +173,28 @@ public class Platform extends Entity {
 		originPosition.x = xPixel;
 		originPosition.y = yPixel;
 	}
-	
-	public Vector2 getLocLinearVel(){
+
+	public Vector2 getLocLinearVel( ) {
 		return localLinearVelocity;
 	}
-	
-	public void setLocLinearVel( Vector2 linVelMeters ){
+
+	public void setLocLinearVel( Vector2 linVelMeters ) {
 		localLinearVelocity = linVelMeters.cpy( );
 	}
-	
-	public void setLocLinearVel( float xMeter, float yMeter ){
+
+	public void setLocLinearVel( float xMeter, float yMeter ) {
 		localLinearVelocity.x = xMeter;
 		localLinearVelocity.y = yMeter;
 	}
-	
-	public float getLocAngularVel(){
+
+	public float getLocAngularVel( ) {
 		return localAngularVelocity;
 	}
-	
-	public void setLocAngularVel( float angVelMeter ){
+
+	public void setLocAngularVel( float angVelMeter ) {
 		localAngularVelocity = angVelMeter;
 	}
-	
+
 	public void addScrew( Screw s ) {
 		screws.add( s );
 	}
@@ -205,23 +206,27 @@ public class Platform extends Entity {
 			s.body.setAwake( true );
 	}
 
+	@SuppressWarnings( "unused" )
 	@Override
 	public void update( float deltaTime ) {
 		super.update( deltaTime );
-		
-		//Basic velocity so that platforms can do friction
-		if ( false && body.getType( ) == BodyType.KinematicBody ){
+
+		// Basic velocity so that platforms can do friction
+		// Uhhhhhh... false && [anything] is false. This body never happens
+		if ( false && body.getType( ) == BodyType.KinematicBody ) {
 			body.setAngularVelocity( localAngularVelocity );
 			float x = localLinearVelocity.x;
 			float y = localLinearVelocity.y;
 			float angle = body.getAngle( );
-			//rotate a vector
-			localLinearVelocity.x = ( float ) ( (x * Math.cos(angle)) - (y * Math.sin(angle)) );
-			localLinearVelocity.y = ( float ) ( (y * Math.cos(angle)) - (x * Math.sin(angle)) );
+			// rotate a vector
+			localLinearVelocity.x = ( float ) ( ( x * Math.cos( angle ) ) - ( y * Math
+					.sin( angle ) ) );
+			localLinearVelocity.y = ( float ) ( ( y * Math.cos( angle ) ) - ( x * Math
+					.sin( angle ) ) );
 			body.setLinearVelocity( localLinearVelocity );
 			localPosition = localPosition.add( localLinearVelocity );
 		}
-		
+
 		body.setActive( true );
 		body.setAwake( true );
 		for ( Screw s : screws ) {
@@ -327,9 +332,10 @@ public class Platform extends Entity {
 		float newRotation = localRotation + skeleton.body.getAngle( );
 		Vector2 newPos = Util.PointOnCircle( radiusFromSkeleton,
 				newAngleFromSkeleton, skeleOrigin );
-		
-		float frameRate = 1/deltaTime;
-		body.setLinearVelocity( newPos.sub( body.getPosition() ).mul( frameRate ) );
-		body.setAngularVelocity( (newRotation - body.getAngle() ) * frameRate );
+
+		float frameRate = 1 / deltaTime;
+		body.setLinearVelocity( newPos.sub( body.getPosition( ) ).mul(
+				frameRate ) );
+		body.setAngularVelocity( ( newRotation - body.getAngle( ) ) * frameRate );
 	}
 }

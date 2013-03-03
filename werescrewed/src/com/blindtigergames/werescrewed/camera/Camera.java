@@ -4,15 +4,13 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-//import com.blindtigergames.werescrewed.screens.GameScreen;
-//import com.sun.xml.internal.bind.v2.runtime.reflect.ListIterator;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 
 /*******************************************************************************
  * Camera class. Zooms and translates based on anchors. Max 30 anchors.
@@ -48,7 +46,6 @@ public class Camera {
 	private float targetBuffer;
 	private boolean translateState;
 	private boolean insideTargetBuffer;
-	private float targetToBufferRatio;
 
 	// zoom
 	private static final float ZOOM_ACCELERATION = .0001f;
@@ -106,8 +103,6 @@ public class Camera {
 		translateState = true;
 		insideTargetBuffer = false;
 		zoomSpeed = 0f;
-		targetToBufferRatio = 1f;
-
 		anchorList = AnchorList.getInstance( camera );
 		anchorList.clear( );
 		if ( ANCHOR_TEST_MODE ) {
@@ -167,8 +162,7 @@ public class Camera {
 		setTranslateTarget( );
 
 		// check if center is inside target buffer
-		targetToBufferRatio = center2D.dst( translateTarget ) / targetBuffer;
-		if ( targetToBufferRatio < 1f )
+		if ( center2D.dst( translateTarget ) < targetBuffer )
 			insideTargetBuffer = true;
 		else
 			insideTargetBuffer = false;
@@ -229,21 +223,26 @@ public class Camera {
 	 * Adjust the camera by translating and zooming when necessary
 	 */
 	private void adjustCamera( ) {
+		// Track the status of buffers
 		boolean outside_x = false;
 		boolean outside_y = false;
 
-		// get vectors from the translateTarget to all anchors outside of
-		// the bounds of the screen, normalizes it, then adds then all
-		// together to come up with a pseudo average
+		// Iterate through each anchor
 		for ( Anchor curAnchor : anchorList.anchorList ) {
+			// Only consider active and special (player) anchors
 			if ( curAnchor.activated || curAnchor.special ) {
+				// Find the direction in which the buffer of the current anchor
+				// has exited the screen
 				RectDirection dir = rectOutsideRect(
 						curAnchor.getBufferRectangle( ), screenBounds );
+				// Debug stuff
+				if ( dir != RectDirection.NONE )
+					Gdx.app.log( "Direction", dir.toString( ) );
 
-				// only do stuff if a buffer anchor is outside the screen
+				// Check that a buffer has indeed exited the screen
 				if ( dir != RectDirection.NONE ) {
 
-					// find whether buffer is outside in x, y or both directions
+					// Find whether buffer is outside in x, y or both directions
 					if ( dir == RectDirection.BOTH ) {
 						outside_x = true;
 						outside_y = true;
@@ -252,7 +251,9 @@ public class Camera {
 					else
 						outside_y = true;
 
-					if ( insideTargetBuffer )
+					// If we know buffers have left in both x and y directions,
+					// we don't need to check anymore.
+					if ( outside_x && outside_y )
 						break;
 				}
 			}

@@ -6,11 +6,17 @@ import com.blindtigergames.werescrewed.entity.Entity;
 public class EventTriggerBuilder extends GenericEntityBuilder<EventTriggerBuilder>{
 	
 	//name and pos 
+	@SuppressWarnings( "unused" )
 	private boolean rectangle;
+	@SuppressWarnings( "unused" )
 	private boolean circle;
+	@SuppressWarnings( "unused" )
 	private float radius;
+	@SuppressWarnings( "unused" )
 	private float width, height;
+	@SuppressWarnings( "unused" )
 	private boolean offsetAbove, offsetBelow, offsetRight, offsetLeft;
+	@SuppressWarnings( "unused" )
 	private boolean attachedToEntity;
 	
 	public EventTriggerBuilder( World world ) {

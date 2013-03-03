@@ -1,19 +1,13 @@
 package com.blindtigergames.werescrewed.entity.mover.puzzle;
 
 import aurelienribon.tweenengine.Tween;
-import aurelienribon.tweenengine.TweenEquation;
-import aurelienribon.tweenengine.TweenEquations;
 
-import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.joints.RevoluteJoint;
-import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.mover.IMover;
 import com.blindtigergames.werescrewed.entity.mover.PuzzleType;
 import com.blindtigergames.werescrewed.entity.mover.TweenMover;
 import com.blindtigergames.werescrewed.entity.tween.PlatformAccessor;
 import com.blindtigergames.werescrewed.platforms.Platform;
 import com.blindtigergames.werescrewed.screws.PuzzleScrew;
-import com.blindtigergames.werescrewed.util.Util;
 
 /**
  * Rotate a kinematic platform INDEFINETLY. this is a set and ignore kind of mover

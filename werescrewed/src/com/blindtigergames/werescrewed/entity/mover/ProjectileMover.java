@@ -1,22 +1,20 @@
 package com.blindtigergames.werescrewed.entity.mover;
 
-import java.util.ArrayList;
-
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
-import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.blindtigergames.werescrewed.platforms.Platform;
 import com.blindtigergames.werescrewed.screws.PuzzleScrew;
-import com.blindtigergames.werescrewed.platforms.TiledPlatform;
-import com.blindtigergames.werescrewed.util.Util;
 
 
 public class ProjectileMover implements IMover {
 	
+	@SuppressWarnings( "unused" )
 	private PuzzleType puzzleType;
+	@SuppressWarnings( "unused" )
 	private float spawn;
 	private float onVal;
 	private Body[] elementList;
@@ -61,6 +59,7 @@ public class ProjectileMover implements IMover {
 	public void runPuzzleMovement( PuzzleScrew screw, float screwVal, Platform p ) {
 		if ( screwVal <= onVal ) {
 			if(elementList[elementIndex] == null){
+				@SuppressWarnings( "unused" )
 				Body body;
 				BodyDef bodyDef = new BodyDef( );
 				bodyDef.position.set( origin );
