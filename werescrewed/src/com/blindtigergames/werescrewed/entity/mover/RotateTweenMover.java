@@ -1,12 +1,8 @@
 package com.blindtigergames.werescrewed.entity.mover;
 
 import aurelienribon.tweenengine.Tween;
-import aurelienribon.tweenengine.TweenEquation;
 import aurelienribon.tweenengine.TweenEquations;
 
-import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.joints.RevoluteJoint;
-import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.tween.PlatformAccessor;
 import com.blindtigergames.werescrewed.platforms.Platform;
 import com.blindtigergames.werescrewed.screws.PuzzleScrew;
@@ -19,9 +15,13 @@ import com.blindtigergames.werescrewed.util.Util;
  */
 public class RotateTweenMover extends TweenMover implements IMover {
 
+	@SuppressWarnings( "unused" )
 	private float duration;
+	@SuppressWarnings( "unused" )
 	private float rotAmount;
+	@SuppressWarnings( "unused" )
 	private float delay;
+	@SuppressWarnings( "unused" )
 	private boolean isYoyoRepeat;
 
 	/**

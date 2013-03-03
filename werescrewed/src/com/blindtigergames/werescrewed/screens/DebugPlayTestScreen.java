@@ -700,6 +700,7 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 
 		PuzzleScrew puzzleScrew = new PuzzleScrew( "004", new Vector2(
 				130f * TILE, 83 * TILE ), 50, skel9, world, 0, false );
+		@SuppressWarnings( "unused" )
 		RotateByDegree rm = new RotateByDegree( 0.0f, -90.0f, 0, 0.5f );
 
 		PuzzleRotateTweenMover rtm1 = new PuzzleRotateTweenMover( 1,

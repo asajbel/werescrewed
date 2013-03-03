@@ -2,10 +2,9 @@ package com.blindtigergames.werescrewed.input.mappings;
 
 import java.lang.reflect.Field;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Application.ApplicationType;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.controllers.Controller;
-import com.blindtigergames.werescrewed.WereScrewedGame;
 
 /**
  * Button and axis mapping {@link Controller}.

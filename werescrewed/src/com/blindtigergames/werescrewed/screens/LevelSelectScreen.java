@@ -14,6 +14,7 @@ public class LevelSelectScreen implements com.badlogic.gdx.Screen {
 	private SpriteBatch batch = null;
 	private OrthographicCamera camera = null;
 	private BitmapFont font = null;
+	@SuppressWarnings( "unused" )
 	private int lineHeight = 0;
 	private Button backButton = null;
 	
@@ -68,6 +69,7 @@ public class LevelSelectScreen implements com.badlogic.gdx.Screen {
 		camera.setToOrtho( false, width, height );
 		batch.setProjectionMatrix( camera.combined );
 		int centerX = width / 2;
+		@SuppressWarnings( "unused" )
 		int centerY = height / 2;
 		backButton.setX( centerX - backButton.getWidth( ) / 2 );
 		backButton.setY( 20 + backButton.getHeight( ) );

@@ -7,20 +7,19 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.blindtigergames.werescrewed.gui.Button;
 
-public class StoryModeScreen implements com.badlogic.gdx.Screen{
+public class StoryModeScreen implements com.badlogic.gdx.Screen {
 	private SpriteBatch batch = null;
 	private OrthographicCamera camera = null;
 	private BitmapFont font = null;
+	@SuppressWarnings( "unused" )
 	private int lineHeight = 0;
 	private Button backButton = null;
-	/* Things needed...
-	 * New game
-	 * Load Game
-	 * Back
+
+	/*
+	 * Things needed... New game Load Game Back
 	 */
-	
-	
-	public StoryModeScreen(){
+
+	public StoryModeScreen( ) {
 		batch = new SpriteBatch( );
 		font = new BitmapFont( );
 		lineHeight = Math.round( 2.5f * font.getCapHeight( ) );
@@ -31,19 +30,19 @@ public class StoryModeScreen implements com.badlogic.gdx.Screen{
 	@Override
 	public void dispose( ) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void hide( ) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void pause( ) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -55,7 +54,7 @@ public class StoryModeScreen implements com.badlogic.gdx.Screen{
 		batch.begin( );
 
 		batch.end( );
-		
+
 	}
 
 	@Override
@@ -65,6 +64,7 @@ public class StoryModeScreen implements com.badlogic.gdx.Screen{
 		camera.setToOrtho( false, width, height );
 		batch.setProjectionMatrix( camera.combined );
 		int centerX = width / 2;
+		@SuppressWarnings( "unused" )
 		int centerY = height / 2;
 
 		backButton.setX( centerX - backButton.getWidth( ) / 2 );
@@ -74,12 +74,12 @@ public class StoryModeScreen implements com.badlogic.gdx.Screen{
 	@Override
 	public void resume( ) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void show( ) {
 		// TODO Auto-generated method stub
-		
+
 	}
 }

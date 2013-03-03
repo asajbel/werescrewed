@@ -98,7 +98,6 @@ public class Level {
 	public static Level getDefaultLevel(){
 		Level out = new Level();
 		TiledPlatform tp, ground;
-		@SuppressWarnings( "unused" )
 		//ShapePlatform sp;
 		Texture texture =
 				WereScrewedGame.manager.get(WereScrewedGame.dirHandle.path( ) + "/common/rletter.png", Texture.class);
