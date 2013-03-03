@@ -12,6 +12,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityType;
+import com.blindtigergames.werescrewed.entity.action.IAction;
 import com.blindtigergames.werescrewed.util.Util;
 
 
@@ -22,6 +23,7 @@ public class EventTrigger extends Entity{
 	private boolean activated = false;
 	private boolean triggeredOnce = false;
 	private ArrayList<Entity> entityList;
+	private IAction action;
 	
 	public EventTrigger(String name, World world){
 		super(name, null, null, null, false );
@@ -125,25 +127,27 @@ public class EventTrigger extends Entity{
 		if(!repeatable){
 			if(!triggeredOnce){
 				for(Entity e : entityList){
-					e.setActive( true );
+					action.act( e );
 				}
 				triggeredOnce = true;
 			}
 		} else if(repeatable){
 			if(!repeatTriggeredOnce){
 				for(Entity e : entityList){
-					e.setActive( true );
+					action.act( e );
 				}
 				repeatTriggeredOnce = true;
 			}
 		}
 	}
 	
-	public void phoneHome(){
-		Gdx.app.log( "hello", "yes, this is dog" );
-	}
+
 	
 	public void addEntityToTrigger(Entity entity){
 		entityList.add( entity );
+	}
+	
+	public void addIAction(IAction action){
+		this.action = action;
 	}
 }

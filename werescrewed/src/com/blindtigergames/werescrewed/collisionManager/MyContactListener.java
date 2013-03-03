@@ -124,8 +124,8 @@ public class MyContactListener implements ContactListener {
 						case EVENTTRIGGER:
 							EventTrigger et = ( EventTrigger ) objectFix.getBody( )
 								.getUserData( );
-						//	et.phoneHome( );
 							et.setActivated( true );
+							et.triggerEvent( );
 							break;
 						default:
 							break;
