@@ -26,6 +26,7 @@ import com.blindtigergames.werescrewed.util.Util;
 
 public class StructureScrew extends Screw {
 
+	private ArrayList< RevoluteJoint > extraJoints;
 	public StructureScrew( String name, Vector2 pos, int max, Entity entity,
 			Skeleton skeleton, World world ) {
 		super( name, pos, null );
