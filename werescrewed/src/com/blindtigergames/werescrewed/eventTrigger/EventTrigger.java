@@ -131,7 +131,8 @@ public class EventTrigger extends Entity{
 				}
 				triggeredOnce = true;
 			}
-		} else if(repeatable){
+		} 
+		if(repeatable){
 			if(!repeatTriggeredOnce){
 				for(Entity e : entityList){
 					action.act( e );
