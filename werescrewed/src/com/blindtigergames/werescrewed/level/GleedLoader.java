@@ -55,6 +55,8 @@ public class GleedLoader {
 	}
 	
 	
+	
+	
 	public Level load(String filename){
 		skeletons.put( "root", level.root );
 		Element root;
@@ -151,7 +153,7 @@ public class GleedLoader {
 			}
 			for (int i = 0; i < pointElems.size; i++){
 				vElem = pointElems.get( i );
-				point = new Vector2(vElem.getFloat( "X" ), vElem.getFloat( "Y" ));
+				point = new Vector2(vElem.getFloat( "X" )*GLEED_TO_GDX_X, vElem.getFloat( "Y" )*GLEED_TO_GDX_Y);
 				points.add( point );
 				Gdx.app.log( "GleedLoader", "Point "+i+" has coordinates "+point.toString( )+".");
 				timeTag = "point"+i+"time";
@@ -247,6 +249,7 @@ public class GleedLoader {
 						Gdx.app.log( "GleedLoader", "Attaching mover ["+moverName+"] to "+item.name+"." );
 						out.addMover( mover, state );
 						out.setCurrentMover( RobotState.IDLE );
+						out.setActive( true );
 					}
 				}
 			}
