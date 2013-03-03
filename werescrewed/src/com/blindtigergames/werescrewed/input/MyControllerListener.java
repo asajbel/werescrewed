@@ -66,7 +66,7 @@ public class MyControllerListener implements ControllerListener {
 	// Analog deadzone and center
 	private final static float DEADZONE = 0.2f;
 	private final static float TRIGGER_DEADZONE = 0.3f;
-	private final static float ANALOG_CENTER = 0.01f;
+	private final static float ANALOG_CENTER = 0.7f;
 
 	/**
 	 * This function checks the analog sticks to see if they moved
@@ -462,6 +462,10 @@ public class MyControllerListener implements ControllerListener {
 
 		return Math.toDegrees( Math.atan2( -axisLX, -axisLY ) ) + 180;
 	}
+	
+	public double getRightAnalogAngle(){
+		return currRightAnalogAngle;
+	}
 
 	/**
 	 * Function returns the what index the controller is (player 1 or player 2)
@@ -484,21 +488,28 @@ public class MyControllerListener implements ControllerListener {
 	 * 
 	 */
 	private void rightStickScrew( ) {
+		//System.out.println( "x: " + axisRX + ", Y: " + axisRY );
+		axisRY *= -1;
+		currRightAnalogAngle = ( int ) Math.toDegrees( Math.atan2( -axisRY, -axisRX ) ) + 180;
 
-		currRightAnalogAngle = ( int ) Math.toDegrees( Math.atan2( -axisRX, -axisRY ) ) + 180;
-		//System.out.println("curr: " + currRightAnalogAngle + ", prev: " + prevRightAnalogAngle);
+
+//		System.out.println("screwing: "+ screwing( )
+//				+ " unscrewing: " + unscrewing() 
+//				+ " currAngle: "+ currRightAnalogAngle
+//				+ " prevAngle: " + prevRightAnalogAngle);
+		
 		// First mode is sets the Previous Angle when it is moved from the
 		// center
 		// then when the stick is moved it checks to see if its different from
 		// where
 		// it started, if so then it is screwing/unscrewing
 		if ( debugScrewMode1 ) {
-			if ( currRightAnalogAngle - prevRightAnalogAngle > 350 ){
+			if ( currRightAnalogAngle - prevRightAnalogAngle > 250 ){
 				screwingPressed = true;
 				unscrewingPressed = false;
 				prevRightAnalogAngle = currRightAnalogAngle;
 			}
-			else if ( currRightAnalogAngle - prevRightAnalogAngle < -350 ){
+			else if ( currRightAnalogAngle - prevRightAnalogAngle < -250 ){
 				screwingPressed = false;
 				unscrewingPressed = true;
 				prevRightAnalogAngle = currRightAnalogAngle;
@@ -511,6 +522,9 @@ public class MyControllerListener implements ControllerListener {
 				unscrewingPressed = true;
 				screwingPressed = false;
 				prevRightAnalogAngle = currRightAnalogAngle;
+			}
+			else{
+				Gdx.app.log( "analog:", "uh oh" );
 			}
 		}
 		else if ( debugScrewMode2 ) {
