@@ -43,7 +43,7 @@ public class ResurrectScrew extends Screw {
 		this.world = world;
 		this.depth = 1;
 		this.deadPlayer = deadPlayer;
-		screwType = ScrewType.RESURRECT;
+		screwType = ScrewType.SCREW_RESURRECT;
 		entityType = EntityType.SCREW;
 
 		sprite.setColor( 200f / 255f, 200f / 255f, 200f / 255f, 0.33f );

@@ -35,7 +35,7 @@ public class StructureScrew extends Screw {
 		rotation = 0;
 		fallTimeout = 140;
 		extraJoints = new ArrayList< RevoluteJoint >( );
-		screwType = ScrewType.STRUCTURAL;
+		screwType = ScrewType.SCREW_STRUCTURAL;
 		entityType = EntityType.SCREW;
 		
 		constuctBody( pos );

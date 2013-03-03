@@ -5,6 +5,8 @@ import java.util.EnumMap;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -16,6 +18,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.blindtigergames.werescrewed.camera.Anchor;
 import com.blindtigergames.werescrewed.camera.AnchorList;
 import com.blindtigergames.werescrewed.entity.mover.IMover;
+import com.blindtigergames.werescrewed.level.GleedLoadable;
 import com.blindtigergames.werescrewed.util.Util;
 
 /**
@@ -25,13 +28,14 @@ import com.blindtigergames.werescrewed.util.Util;
  * @author Kevin / Ranveer
  * 
  */
-public class Entity {
+public class Entity implements GleedLoadable {
 	private static final int INITAL_CAPACITY = 3;
 	
 	public String name;
 	public EntityDef type;
 	public Sprite sprite;
 	public Vector2 offset;
+	public Vector2 bodyOffset;
 	public Body body;
 	protected World world;
 	protected boolean solid;
@@ -71,8 +75,8 @@ public class Entity {
 		this.world = world;
 		this.sprite = constructSprite( texture );
 		this.body = constructBodyByType( );
-		setPosition( positionPixels.mul( Util.PIXEL_TO_BOX ) );
-		if ( anchRadius > 0 ) {
+		setPixelPosition( positionPixels );
+		if ( anchRadius >= 0 ) {
 			Vector2 centPos = new Vector2( body.getWorldCenter( ).x
 					* Util.BOX_TO_PIXEL, body.getWorldCenter( ).y
 					* Util.BOX_TO_PIXEL );
@@ -80,8 +84,7 @@ public class Entity {
 			AnchorList.getInstance( ).addAnchor( anchor );
 		}
 	}
-
-
+	
 	/**
 	 * Create entity by body. Debug constructor: Should be removed eventually.
 	 * 
@@ -104,7 +107,7 @@ public class Entity {
 			world = body.getWorld( );
 			sprite.setScale( Util.PIXEL_TO_BOX );
 		}
-		// setPosition( positionPixels );
+		this.setPixelPosition( positionPixels );
 	}
 
 	/**
@@ -114,6 +117,7 @@ public class Entity {
 		this.name = name;
 		this.solid = solid;
 		this.offset = new Vector2( 0.0f, 0.0f );
+		this.bodyOffset = new Vector2( 0.0f, 0.0f );
 		this.energy = 1.0f;
 		this.maintained = true;
 		this.visible = true;
@@ -128,6 +132,8 @@ public class Entity {
 	 * @param yMeters
 	 */
 	public void setPosition( float xMeters, float yMeters ) {
+		xMeters -= bodyOffset.x;
+		yMeters -= bodyOffset.y;
 		if ( body != null ) {
 			body.setTransform( xMeters, yMeters, body.getAngle( ) );
 		} else if ( sprite != null ) {
@@ -136,6 +142,15 @@ public class Entity {
 		}
 	}
 
+	public void setPixelPosition(float x, float y){
+		setPosition(x * Util.PIXEL_TO_BOX, y * Util.PIXEL_TO_BOX);	
+	}
+
+	public void setPixelPosition(Vector2 pixels){
+		if (pixels != null)
+			setPixelPosition(pixels.x, pixels.y);	
+	}
+	
 	/**
 	 * Set position by meters!!
 	 * 
@@ -151,34 +166,59 @@ public class Entity {
 	 * @return Vector2 in meters of bodie's world origin
 	 */
 	public Vector2 getPosition( ) {
-		return body.getPosition( );
+		return body.getPosition( ).add( bodyOffset );
 	}
-
+	
 	/**
-	 * Use this position when setting relative position of platforms for paths
-	 * targets. ie you set a platform at (x,y) in meters, but the path takes in
-	 * pixels, so do something like platform. getPositionPixel().add(0,600)
-	 * 
+	 * Use this position when setting relative position of platforms
+	 * for paths targets. ie you set a platform at (x,y) in meters,
+	 * but the path takes in pixels, so do something like platform.
+	 * getPositionPixel().add(0,600)
 	 * @return world position of origin in PIXELS
 	 */
 	public Vector2 getPositionPixel( ) {
 		return body.getPosition( ).cpy( ).mul( Util.BOX_TO_PIXEL );
 	}
 
-	public void draw( SpriteBatch batch ) {
-		if ( sprite != null && visible ) {
-			Vector2 bodyPos = body.getPosition( ).mul( Util.BOX_TO_PIXEL );
-			sprite.setPosition( bodyPos.x - offset.x, bodyPos.y - offset.y );
-			sprite.setRotation( MathUtils.radiansToDegrees * body.getAngle( ) );
-			sprite.draw( batch );
-		}
+	public void move( Vector2 vector ) {
+		Vector2 pos = body.getPosition( ).add( vector );
+		setPosition( pos );
 	}
 
+	public void draw( SpriteBatch batch ) {
+		if ( sprite != null && visible ) {
+			sprite.draw( batch );
+		}
+		//drawOrigin(batch);
+	}
+
+	public void drawOrigin(SpriteBatch batch){
+		float axisSize = 128.0f;
+		ShapeRenderer shapes = new ShapeRenderer();
+		shapes.setProjectionMatrix( batch.getProjectionMatrix( ) );
+		Vector2 pos = getPosition().mul( Util.BOX_TO_PIXEL );
+		shapes.begin( ShapeType.Line );
+		shapes.setColor( 1.0f, 0.0f, 0.0f, 1.0f );
+		shapes.line(pos.x, pos.y, pos.x+axisSize, pos.y); //Red:  X-axis
+		shapes.setColor( 0.0f, 0.0f, 1.0f, 1.0f );
+		shapes.line(pos.x, pos.y, pos.x, pos.y+axisSize); //Blue: Y-axis
+		if (sprite != null){
+			shapes.setColor( 0.0f, 1.0f, 0.0f, 1.0f );
+			shapes.line(pos.x, pos.y, pos.x - sprite.getOriginX( ), pos.y - sprite.getOriginY( )); //Green: Sprite Origin
+		}
+		shapes.end();
+	}
+	
 	public void update( float deltaTime ) {
 		if ( body != null && anchor != null ) {
 			updateAnchor( );
+		}		
+		//animation stuff may go here
+		Vector2 bodyPos = body.getPosition( ).mul( Util.BOX_TO_PIXEL );
+		if (sprite != null){
+			sprite.setPosition( bodyPos.x - offset.x, bodyPos.y - offset.y );
+			sprite.setRotation( MathUtils.radiansToDegrees * body.getAngle( ) );
 		}
-		// animation stuff may go here
 	}
 
 	/**
@@ -248,11 +288,13 @@ public class Entity {
 		sprite.setOrigin( origin.x, origin.y );
 		return sprite;
 	}
-
-	public void Move( Vector2 vector ) {
+	
+	public void Move( Vector2 vector ) 
+	{
 		Vector2 pos = body.getPosition( ).add( vector.mul( Util.PIXEL_TO_BOX ) );
 		setPosition( pos );
 	}
+
 
 	/**
 	 * Builds the body associated with the entity's type.
@@ -367,9 +409,10 @@ public class Entity {
 	}
 
 	/**
-	 * Sets the energy of the current body. Energy is a new property for
-	 * Entities that is meant to scale impulses. It currently does nothing, but
-	 * it's here if someone wants to use it.
+	 * Sets the energy of the current body.
+	 * Energy is a new property for Entities that is meant
+	 * to scale impulses. It currently does nothing, but it's here
+	 * if someone wants to use it.
 	 * 
 	 * @param energy
 	 */
@@ -391,7 +434,8 @@ public class Entity {
 	}
 
 	/**
-	 * Determines whether an entity should be deleted on next update or not
+	 * Determines whether an entity should be deleted
+	 * on next update or not
 	 * 
 	 * @param m - boolean
 	 */

@@ -18,6 +18,7 @@ import com.blindtigergames.werescrewed.collisionManager.MyContactListener;
 import com.blindtigergames.werescrewed.debug.SBox2DDebugRenderer;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.RobotState;
+import com.blindtigergames.werescrewed.entity.action.ActivateMoverAction;
 import com.blindtigergames.werescrewed.entity.builders.PlatformBuilder;
 import com.blindtigergames.werescrewed.entity.builders.PlayerBuilder;
 import com.blindtigergames.werescrewed.entity.builders.RopeBuilder;
@@ -71,7 +72,6 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 	private Skeleton skel4;
 	private Skeleton skel5, skel6;
 	private Rope testRope;
-	@SuppressWarnings( "unused" )
 	private TiledPlatform specialPlat;
 
 	private BossScrew bossBolt;
@@ -106,9 +106,9 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 
 		// Initialize players
 		player1 = new PlayerBuilder( ).name( "player1" ).world( world )
-				.position( 1f * TILE, 1f * TILE  ).buildPlayer( );
+				.position( 175f * TILE, 96f * TILE  ).buildPlayer( );
 		player2 = new PlayerBuilder( ).name( "player2" ).world( world )
-				.position(2f * TILE, 1f * TILE  ).buildPlayer( );
+				.position( 175f * TILE, 96f * TILE  ).buildPlayer( );
 
 		// END: 175f * TILE, 96f * TILE
 		// START : 1f * TILE, 1f * TILE 
@@ -750,18 +750,21 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		et = new EventTrigger("event1", world);
 		et.constructCircleBody( 100, new Vector2(175f * TILE, 90 * TILE) );
 		
-//		specialPlat = platBuilder.position( 175f * TILE, 85 * TILE ).name( "plat12" )
-//				.dimensions( 6, 1 ).texture( testTexture ).kinematic( )
-//				.friction( 1.0f ).oneSided( true ).restitution( 0 )
-//				.buildTilePlatform( );
-//		skel9.addKinematicPlatform( specialPlat );
-//		
-//		PathBuilder pb = new PathBuilder( );
-//		specialPlat.addMover( pb.begin( specialPlat ).target( 0, 150, 3 ).target( 0, 0, 3 )
-//				.build( ), RobotState.IDLE );
-//		specialPlat.addMover( pb.begin( specialPlat ).target( 150, 0, 3 ).target( 0, 0, 3 )
-//				.build( ), RobotState.DOCILE );
+		specialPlat = platBuilder.position( 175f * TILE, 84 * TILE ).name( "plat12" )
+				.dimensions( 6, 1 ).texture( testTexture ).kinematic( )
+				.friction( 1.0f ).oneSided( true ).restitution( 0 )
+				.buildTilePlatform( );
+		skel9.addKinematicPlatform( specialPlat );
 		
+		PathBuilder pb = new PathBuilder( );
+		specialPlat.addMover( pb.begin( specialPlat ).target( 0, 150, 3 ).target( 0, 0, 3 )
+				.build( ), RobotState.IDLE );
+		specialPlat.addMover( pb.begin( specialPlat ).target( 150, 0, 3 ).target( 0, 0, 3 )
+				.build( ), RobotState.DOCILE );
+		//specialPlat.setActive( true );
+		
+		et.addEntityToTrigger( specialPlat );
+		et.addIAction( new ActivateMoverAction() );
 		rootSkeleton.addSkeleton( skel9 );
 	}
 

@@ -6,9 +6,11 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.JointEdge;
 import com.badlogic.gdx.physics.box2d.World;
 import com.blindtigergames.werescrewed.entity.Entity;
+import com.blindtigergames.werescrewed.entity.builders.ScrewBuilder;
 import com.blindtigergames.werescrewed.player.Player;
 import com.blindtigergames.werescrewed.player.Player.PlayerState;
 import com.blindtigergames.werescrewed.screws.ResurrectScrew;
+import com.blindtigergames.werescrewed.screws.ScrewType;
 import com.blindtigergames.werescrewed.util.Util;
 
 /**
@@ -142,19 +144,23 @@ public class ProgressManager {
 					.getJointList( ) ) {
 				entity = ( Entity ) j.joint.getBodyB( ).getUserData( );
 			}
+			ScrewBuilder rezzBuilder = new ScrewBuilder()
+			.screwType(ScrewType.SCREW_RESURRECT)
+			.entity(entity)
+			.world(world)
+			.playerOffset( true )
+			.position( 64.0f , 64.0f );
+
 			if ( player1.isPlayerDead( ) ) {
 				//create new rez screw and attach
 				//it to player1 as the dead player
-				resurrectScrew = new ResurrectScrew( player1.getPosition( )
-						.add( 0, 256f * Util.PIXEL_TO_BOX )
-						.mul( Util.BOX_TO_PIXEL ), entity, world, player1 );
+				rezzBuilder.player( player1 );
 			} else {
 				//create new rez screw and attach
 				//it to player2 as the dead player
-				resurrectScrew = new ResurrectScrew( player2.getPosition( )
-						.add( 0, 256f * Util.PIXEL_TO_BOX )
-						.mul( Util.BOX_TO_PIXEL ), entity, world, player2 );
+				rezzBuilder.player( player2 );
 			}
+			resurrectScrew = rezzBuilder.buildRezzScrew();
 		}
 	}
 
