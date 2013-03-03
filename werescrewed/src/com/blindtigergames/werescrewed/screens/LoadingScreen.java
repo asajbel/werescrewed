@@ -42,7 +42,7 @@ public class LoadingScreen extends Screen {
 		} else {
 			screenTag = "commonLevel";
 		}
-		Gdx.app.log( "loading assets for", screenTag );
+		Gdx.app.log( "Loading assets for", screenTag );
 
 		// THIS IS WHAT THE DIRECTORY SHOULD ALWAYS BE
 		// THERE SHOULDN"T BE TWO FOLDERS
@@ -52,7 +52,7 @@ public class LoadingScreen extends Screen {
 		// the same thing as the screenTag
 		// and reads each line which is a path and loads that file
 		FileHandle handle = Gdx.files.internal( "data/" + screenTag + ".txt" );
-		String split[] = handle.readString( ).split( "\\n" );
+		String split[] = handle.readString( ).split( "\\r?\\n" );
 		for ( String s : split ) {
 			s.replaceAll( "\\s", "" );
 			if ( s.length( ) > 0 ) {
