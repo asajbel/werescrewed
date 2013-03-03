@@ -89,4 +89,6 @@ public class EventTriggerBuilder extends GenericEntityBuilder<EventTriggerBuilde
 		this.offsetRight = false;
 		return this;
 	}
+	
+
 }

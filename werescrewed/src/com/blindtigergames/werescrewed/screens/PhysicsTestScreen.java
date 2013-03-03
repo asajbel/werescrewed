@@ -176,7 +176,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		// Add screws
 
 		PlatformBuilder pb = new PlatformBuilder( world );
-		pb.name( "tp2-1" ).position( 0, 200 ).tileSet( "tileset1" )
+		pb.name( "tp2-1" ).position( 0, 200 ).tileSet( "autumn" )
 				.dimensions( 1, 1 ).oneSided( false ).moveable( true )
 				.kinematic( );
 		skeleton.addKinematicPlatform( pb.buildTilePlatform( ) );

@@ -67,7 +67,7 @@ public class Skeleton extends Platform {
 		polygon.setAsBox( 1 * Util.PIXEL_TO_BOX,
 				1 * Util.PIXEL_TO_BOX );
 		dynFixtureDef.shape = polygon;
-		dynFixtureDef.density = 0.1f;
+		dynFixtureDef.density = 100f;
 		dynFixtureDef.filter.categoryBits = Util.CATEGORY_SUBPLATFORM;
 		dynFixtureDef.filter.maskBits = Util.CATEGORY_NOTHING;
 		body.createFixture( dynFixtureDef );
@@ -188,7 +188,6 @@ public class Skeleton extends Platform {
     	kinematicPlatformMap.put( platform.name, platform );
     }
     
-
     /**
      * Add a skeleton to the sub skeleton list of this one.
      * @author stew

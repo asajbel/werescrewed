@@ -1,6 +1,5 @@
 package com.blindtigergames.werescrewed.screens;
 
-import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
@@ -38,16 +37,42 @@ public class LoadingScreen extends Screen {
 		loadingCompleteLabel = new Label( "Press 'A'!!", font );
 		batch = new SpriteBatch( );
 
-		screenTag = st;
-
-		if ( Gdx.app.getType( ) == ApplicationType.Android ) {
-			WereScrewedGame.dirHandle = Gdx.files.internal( "data/" );
+		if ( st != null && !st.isEmpty( ) ) {
+			screenTag = st;
 		} else {
-			// ApplicationType.Desktop ..
-			WereScrewedGame.dirHandle = Gdx.files.internal( "assets/data/" );
+			screenTag = "commonLevel";
+		}
+		Gdx.app.log( "loading assets for", screenTag );
+
+		// THIS IS WHAT THE DIRECTORY SHOULD ALWAYS BE
+		// THERE SHOULDN"T BE TWO FOLDERS
+		WereScrewedGame.dirHandle = Gdx.files.internal( "data/" );
+
+		// reads through the text file that is named
+		// the same thing as the screenTag
+		// and reads each line which is a path and loads that file
+		FileHandle handle = Gdx.files.internal( "data/" + screenTag + ".txt" );
+		String split[] = handle.readString( ).split( "\\n" );
+		for ( String s : split ) {
+			s.replaceAll( "\\s", "" );
+			if ( s.length( ) > 0 ) {
+				if ( s.charAt( 0 ) != '#' ) {
+					String file[] = s.split( "\\." );
+					if ( file.length > 1 ) {
+						// gets the extension
+						String extension = file[1];
+						// loads the file
+						loadCurrentFile( extension, WereScrewedGame.dirHandle
+								+ s );
+					} else {
+						Gdx.app.log( "Loading screen: ", s + "doesn't have an extension" );
+					}
+				}
+			}
 		}
 
-		loadFilesInDirectory( WereScrewedGame.dirHandle, screenTag );
+		// loadFilesInDirectory( WereScrewedGame.dirHandle, screenTag );
+
 	}
 
 	/**
@@ -142,7 +167,7 @@ public class LoadingScreen extends Screen {
 
 		} else if ( fileExtension.equals( "mp3" ) ) {
 			WereScrewedGame.manager.load( fullPathName, Music.class );
-			// Gdx.app.log( "Music file loaded", fullPathName );
+			Gdx.app.log( "Music file loaded", fullPathName );
 
 		} else if ( fileExtension.equals( "pack" ) ) {
 			WereScrewedGame.manager.loadAtlas( fullPathName );

@@ -88,7 +88,7 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		rootSkeleton = new Skeleton( "root", Vector2.Zero, null, world );
 
 		//Uncomment the tilset part to see the new tileset in game.
-		platBuilder = new PlatformBuilder( world ).tileSet( "tileset-teal" );
+		platBuilder = new PlatformBuilder( world ).tileSet( "autumn" );
 
 		testTexture = null;/*WereScrewedGame.manager.get(
 				WereScrewedGame.dirHandle.path( ) + "/common/tileset/TilesetTest.png",

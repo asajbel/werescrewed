@@ -11,6 +11,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.blindtigergames.werescrewed.camera.Camera;
+import com.blindtigergames.werescrewed.checkpoints.CheckPoint;
+import com.blindtigergames.werescrewed.checkpoints.ProgressManager;
 import com.blindtigergames.werescrewed.collisionManager.MyContactListener;
 import com.blindtigergames.werescrewed.debug.SBox2DDebugRenderer;
 import com.blindtigergames.werescrewed.entity.Entity;
@@ -32,6 +34,7 @@ public class HazardScreen implements com.badlogic.gdx.Screen {
 	private Texture testTexture;
 	private World world;
 	private MyContactListener contactListener;
+	private ProgressManager progressManager;
 	private SBox2DDebugRenderer debugRenderer;
 	private Player player1, player2;
 	private Skeleton skeleton;
@@ -62,6 +65,7 @@ public class HazardScreen implements com.badlogic.gdx.Screen {
 		
 		initTiledPlatforms( );
 		initHazards( );
+		initCheckPoints( );
 		
 		rootSkeleton.addSkeleton( skeleton );
 		debugRenderer = new SBox2DDebugRenderer( Util.BOX_TO_PIXEL );
@@ -91,6 +95,14 @@ public class HazardScreen implements com.badlogic.gdx.Screen {
 				50.0f, 50.0f, world, true );
 	}
 	
+	private void initCheckPoints( ) {
+		progressManager = new ProgressManager( player1, player2, world );
+		progressManager.addCheckPoint( new CheckPoint( "check_01", new Vector2(
+				-512f, 32f ), skeleton, world, progressManager, "levelStage_0_0" ) );
+		progressManager.addCheckPoint( new CheckPoint( "check_01", new Vector2(
+				0f, 32f ), skeleton, world, progressManager, "levelStage_0_1" ) );
+	}
+	
 	@Override
 	public void render( float deltaTime ) {
 		if ( Gdx.gl20 != null ) {
@@ -112,12 +124,14 @@ public class HazardScreen implements com.badlogic.gdx.Screen {
 		
 		player1.update( deltaTime );
 		player2.update( deltaTime );
+		progressManager.update( deltaTime );
 		rootSkeleton.update( deltaTime );
 		spikes.update( deltaTime );
 		batch.setProjectionMatrix( cam.combined( ) );
 		batch.begin( );
 		
 		rootSkeleton.draw( batch );
+		progressManager.draw( batch );
 		spikes.draw( batch );
 		player1.draw( batch );
 		player2.draw( batch );
