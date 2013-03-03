@@ -305,6 +305,10 @@ public class Camera {
 				tempAngle = anchorList.getMidpointVelocity( ).angle( )
 						- translateVelocity.angle( );
 				tempAngle = Math.abs( tempAngle );
+				if ( trans_x )
+					camera.position.x = translateTarget.x;
+				if ( trans_y )
+					camera.position.y = translateTarget.y;
 
 				if ( anchorList.getMidpointVelocity( ).len( ) < MINIMUM_FOLLOW_SPEED
 						|| tempAngle > MAX_ANGLE_DIFF ) {
@@ -314,10 +318,6 @@ public class Camera {
 					translateAcceleration = 0f;
 					translateSpeed = 0f;
 				} else {
-					if ( trans_x )
-						camera.position.x = translateTarget.x;
-					if ( trans_y )
-						camera.position.y = translateTarget.y;
 				}
 			} else
 				translate( trans_x, trans_y );
@@ -338,15 +338,20 @@ public class Camera {
 	private void translate( boolean trans_x, boolean trans_y ) {
 		// only account for translate target on axis which is being translated
 		// on
-		if ( trans_x )
-			Vector2.tmp.x = translateTarget.x;
-		else
-			Vector2.tmp.x = center2D.x;
+		if ( trans_x || trans_y ) {
+			if ( trans_x )
+				Vector2.tmp.x = translateTarget.x;
+			else
+				Vector2.tmp.x = center2D.x;
 
-		if ( trans_y )
+			if ( trans_y )
+				Vector2.tmp.y = translateTarget.y;
+			else
+				Vector2.tmp.y = center2D.y;
+		} else {
+			Vector2.tmp.x = translateTarget.x;
 			Vector2.tmp.y = translateTarget.y;
-		else
-			Vector2.tmp.y = center2D.y;
+		}
 
 		Vector2.tmp.sub( center2D );
 
