@@ -156,7 +156,7 @@ public class StructureScrew extends Screw {
 		FixtureDef screwFixture = new FixtureDef( );
 		screwFixture.shape = screwShape;
 		screwFixture.isSensor = true;
-		screwFixture.density = 0.5f;
+		screwFixture.density = 1f;
 		screwFixture.filter.categoryBits = Util.CATEGORY_SCREWS;
 		screwFixture.filter.maskBits = Util.CATEGORY_PLAYER
 				| Util.CATEGORY_SUBPLAYER;

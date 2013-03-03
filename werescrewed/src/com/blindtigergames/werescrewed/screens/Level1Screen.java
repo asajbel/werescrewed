@@ -168,22 +168,31 @@ public class Level1Screen implements com.badlogic.gdx.Screen {
 
 		debugRenderer = new SBox2DDebugRenderer( Util.BOX_TO_PIXEL );
 
-		debugRenderer.setDrawJoints( false );
+		//debugRenderer.setDrawJoints( false );
 
 		Gdx.app.setLogLevel( Application.LOG_DEBUG );
 	}
 	
 	private void buildSubSkeleton(){
 		Skeleton dynSkeleton = new Skeleton( "dynamicSkeleton", new Vector2(0,200), testTexture, world );
+		Skeleton dynSkeleton2 = new Skeleton( "dynamic2Skeleton", new Vector2(100,200), testTexture, world );
 		//dynSkeleton.body.createFixture( , density )
 		
-		rootSkeleton.addSkeleton( dynSkeleton );
+		skeleton.addSkeleton( dynSkeleton );
+		skeleton.addSkeleton( dynSkeleton2 );
 		dynSkeleton.body.setType( BodyType.DynamicBody );
-		RevoluteJointBuilder jbBuilder = new RevoluteJointBuilder( world );
-		jbBuilder.skeleton( skeleton ).bodyB( dynSkeleton ).motor( true ).build( );
-		TiledPlatform plat = platBuilder.dynamic( ).position( 0, 200 ).dimensions( 4,1 ).density( 1f ).oneSided( false ).buildTilePlatform( );
-		plat.body.setFixedRotation( false );
-		dynSkeleton.addPlatformRotatingCenter( plat );
+		dynSkeleton2.body.setType( BodyType.DynamicBody );
+		dynSkeleton.setDensity( 5f );
+		dynSkeleton2.setDensity( 5f );
+//		RevoluteJointBuilder jbBuilder = new RevoluteJointBuilder( world );
+//		jbBuilder.skeleton( skeleton ).bodyB( dynSkeleton ).motor( false ).build( );
+		StructureScrew screw = new StructureScrew ( "dynamic_skeleton_joint", new Vector2( 50, 100), 50, dynSkeleton,
+				dynSkeleton2, world );
+		screw.addStructureJoint( skeleton );
+		rootSkeleton.addScrewForDraw( screw );
+//		TiledPlatform plat = platBuilder.dynamic( ).position( 0, 200 ).dimensions( 4,1 ).density( 1f ).oneSided( false ).buildTilePlatform( );
+//		plat.body.setFixedRotation( false );
+//		dynSkeleton.addDynamicPlatformFixed( plat );
 		
 	}
 
