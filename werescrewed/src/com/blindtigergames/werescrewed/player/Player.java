@@ -311,8 +311,12 @@ public class Player extends Entity {
 	public void killPlayer( ) {
 		if ( !world.isLocked( ) ) {
 			playerState = PlayerState.Dead;
-			removePlayerToScrew( );
-			removePlayerToPlayer( );
+			if ( playerToScrew != null ) {
+				removePlayerToScrew( );
+			}
+			if ( playerToPlayer != null ) {
+				removePlayerToPlayer( );
+			}
 			Filter filter = new Filter( );
 			for ( Fixture f : body.getFixtureList( ) ) {
 				f.setSensor( false );
