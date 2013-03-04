@@ -15,6 +15,7 @@ public enum GleedTypeTag {
     }
 
     private final String text;
+    
     @Override
     public String toString() {
         return text;
@@ -28,6 +29,6 @@ public enum GleedTypeTag {
     	return null;
     }
     
-    public static final String tag = "Type";
+    public static final String tag = "type";
 
 }

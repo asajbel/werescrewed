@@ -1,21 +1,15 @@
 package com.blindtigergames.werescrewed.skeleton;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
-import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.physics.box2d.joints.WeldJoint;
-import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.joint.RevoluteJointBuilder;
 import com.blindtigergames.werescrewed.platforms.Platform;
 import com.blindtigergames.werescrewed.platforms.TiledPlatform;
@@ -73,7 +67,7 @@ public class Skeleton extends Platform {
 		polygon.setAsBox( 1 * Util.PIXEL_TO_BOX,
 				1 * Util.PIXEL_TO_BOX );
 		dynFixtureDef.shape = polygon;
-		dynFixtureDef.density = 0.1f;
+		dynFixtureDef.density = 100f;
 		dynFixtureDef.filter.categoryBits = Util.CATEGORY_SUBPLATFORM;
 		dynFixtureDef.filter.maskBits = Util.CATEGORY_NOTHING;
 		body.createFixture( dynFixtureDef );
@@ -194,7 +188,6 @@ public class Skeleton extends Platform {
     	kinematicPlatformMap.put( platform.name, platform );
     }
     
-
     /**
      * Add a skeleton to the sub skeleton list of this one.
      * @author stew

@@ -101,6 +101,7 @@ public class TiledPlatform extends Platform {
 		body.createFixture( platformFixtureDef );
 
 		polygon.dispose( );
+		
 	}
 
 	private void tileBody( TileSet tileSet ) {

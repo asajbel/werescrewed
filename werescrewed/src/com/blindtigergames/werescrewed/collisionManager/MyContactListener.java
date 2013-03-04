@@ -20,7 +20,7 @@ import com.blindtigergames.werescrewed.player.Player;
 import com.blindtigergames.werescrewed.player.Player.PlayerState;
 import com.blindtigergames.werescrewed.screws.ResurrectScrew;
 import com.blindtigergames.werescrewed.screws.Screw;
-import com.blindtigergames.werescrewed.screws.Screw.ScrewType;
+import com.blindtigergames.werescrewed.screws.ScrewType;
 
 /**
  * 
@@ -96,7 +96,7 @@ public class MyContactListener implements ContactListener {
 								NUM_PLAYER2_SCREWCONTACTS++;
 								player.hitScrew( screw );
 							}
-							if ( screw.getScrewType( ) == ScrewType.RESURRECT ) {
+							if ( screw.getScrewType( ) == ScrewType.SCREW_RESURRECT ) {
 								ResurrectScrew rScrew = ( ResurrectScrew ) screw;
 								rScrew.hitPlayer( player );
 							}
@@ -111,6 +111,7 @@ public class MyContactListener implements ContactListener {
 							Hazard hazard = ( Hazard ) objectFix.getBody( )
 									.getUserData( );
 							hazard.performContact( player );
+							Gdx.app.log( "Player " + player.name, " Collided with Hazard" );
 							break;
 						case CHECKPOINT:
 							CheckPoint checkP = ( CheckPoint ) objectFix
@@ -123,8 +124,8 @@ public class MyContactListener implements ContactListener {
 						case EVENTTRIGGER:
 							EventTrigger et = ( EventTrigger ) objectFix.getBody( )
 								.getUserData( );
-						//	et.phoneHome( );
-							et.setActivated( true );
+							et.setActivated( true, player.name );
+							et.triggerBeginEvent( );
 							break;
 						default:
 							break;
@@ -237,7 +238,8 @@ public class MyContactListener implements ContactListener {
 						case EVENTTRIGGER:
 							EventTrigger et = ( EventTrigger ) objectFix.getBody( )
 							.getUserData( );
-							et.setActivated( false );
+							et.triggerEndEvent( );
+							et.setActivated( false, player.name );
 							break;
 						default:
 							break;

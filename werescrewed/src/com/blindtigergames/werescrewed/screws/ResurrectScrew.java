@@ -43,7 +43,8 @@ public class ResurrectScrew extends Screw {
 		this.world = world;
 		this.depth = 1;
 		this.deadPlayer = deadPlayer;
-		screwType = ScrewType.RESURRECT;
+		active = true;
+		screwType = ScrewType.SCREW_RESURRECT;
 		entityType = EntityType.SCREW;
 
 		sprite.setColor( 200f / 255f, 200f / 255f, 200f / 255f, 0.33f );
@@ -65,6 +66,16 @@ public class ResurrectScrew extends Screw {
 			pulleyWeight.setLinearVelocity( new Vector2( -1f, 0f ) );
 		}
 	}
+	
+	@Override
+	public void screwLeft(int region ) {
+		if ( pullLeft ) {
+			body.setAngularVelocity( 15 );
+			rotation += 10;
+			screwStep = depth + 5;
+			pulleyWeight.setLinearVelocity( new Vector2( -1f, 0f ) );
+		}
+	}
 
 	/**
 	 * if the pulley weight goes to the right use right to draw dead player
@@ -72,6 +83,16 @@ public class ResurrectScrew extends Screw {
 	 */
 	@Override
 	public void screwRight( ) {
+		if ( !pullLeft ) {
+			body.setAngularVelocity( -15 );
+			rotation -= 10;
+			screwStep = depth + 5;
+			pulleyWeight.setLinearVelocity( new Vector2( 1f, 0f ) );
+		}
+	}
+	
+	@Override
+	public void screwRight(int region ) {
 		if ( !pullLeft ) {
 			body.setAngularVelocity( -15 );
 			rotation -= 10;

@@ -7,10 +7,10 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
 import com.blindtigergames.werescrewed.entity.Entity;
+import com.blindtigergames.werescrewed.entity.EntityCategory;
 import com.blindtigergames.werescrewed.entity.EntityDef;
 import com.blindtigergames.werescrewed.entity.RobotState;
 import com.blindtigergames.werescrewed.entity.mover.IMover;
-import com.blindtigergames.werescrewed.skeleton.Skeleton;
 
 /**
  * EntityBuilder is meant to simplify creating entities and allow for extension
@@ -89,7 +89,7 @@ public class GenericEntityBuilder< B extends GenericEntityBuilder< ? >> {
 	@SuppressWarnings( "unchecked" )
 	public B type( EntityDef def ) {
 		type = def;
-		if ( type.getCategory( ).equals( "Player" ) ) {
+		if ( type.getCategory( ) == EntityCategory.PLAYER ) {
 			return ( B ) new PlayerBuilder( ).copy( this );
 		}
 		return ( B ) this;
@@ -228,7 +228,7 @@ public class GenericEntityBuilder< B extends GenericEntityBuilder< ? >> {
 
 	/**
 	 * Loads an entity's special properties from a hashmap. For generic
-	 * entities, this does nothing. This is basically a placeholder for
+	 * entities, this only loads movers from a hashmap. This is basically a placeholder for
 	 * subclasses to inherit.
 	 * 
 	 * @param props
