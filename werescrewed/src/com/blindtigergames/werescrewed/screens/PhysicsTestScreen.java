@@ -92,6 +92,9 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		batch = new SpriteBatch( );
 		world = new World( new Vector2( 0, -35 ), true );
 
+		Entity e = null;
+		if ( e.name == null ){}
+		
 		// Initialize camera
 		initCamera( );
 		Tween.registerAccessor( Platform.class, new PlatformAccessor( ) );

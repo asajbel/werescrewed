@@ -6,23 +6,31 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.blindtigergames.werescrewed.gui.Button;
+import com.blindtigergames.werescrewed.gui.Label;
 
 public class StoryModeScreen implements com.badlogic.gdx.Screen {
 	private SpriteBatch batch = null;
 	private OrthographicCamera camera = null;
 	private BitmapFont font = null;
-	@SuppressWarnings( "unused" )
 	private int lineHeight = 0;
+	private Label screenLabel = null;
+	private Button newGameButton = null;
+	private Button loadGameButton = null;
 	private Button backButton = null;
 
 	/*
-	 * Things needed... New game Load Game Back
+	 * Things needed... New game, Load Game,
 	 */
 
 	public StoryModeScreen( ) {
 		batch = new SpriteBatch( );
 		font = new BitmapFont( );
 		lineHeight = Math.round( 2.5f * font.getCapHeight( ) );
+		screenLabel = new Label("STORY MODE", font);
+		newGameButton = new Button("New Game", font,
+				new ScreenSwitchHandler(ScreenType.CHARACTER_SELECT));
+		loadGameButton = new Button("Load Game", font,
+				new ScreenSwitchHandler(ScreenType.PLAYTEST));
 		backButton = new Button( "Back", font, new ScreenSwitchHandler(
 				ScreenType.MAIN_MENU ) );
 	}
@@ -52,7 +60,10 @@ public class StoryModeScreen implements com.badlogic.gdx.Screen {
 		Gdx.gl.glClear( GL10.GL_COLOR_BUFFER_BIT );
 		// TODO Auto-generated method stub
 		batch.begin( );
-
+		screenLabel.draw( batch );
+		newGameButton.draw( batch, camera );
+		loadGameButton.draw( batch, camera );
+		backButton.draw( batch, camera );
 		batch.end( );
 
 	}
@@ -64,9 +75,13 @@ public class StoryModeScreen implements com.badlogic.gdx.Screen {
 		camera.setToOrtho( false, width, height );
 		batch.setProjectionMatrix( camera.combined );
 		int centerX = width / 2;
-		@SuppressWarnings( "unused" )
 		int centerY = height / 2;
-
+		screenLabel.setX( centerX - screenLabel.getWidth( )/2);
+		screenLabel.setY( centerY + 7 * lineHeight);
+		newGameButton.setX( centerX - newGameButton.getWidth( )/2);
+		newGameButton.setY( centerY + 4 * lineHeight);
+		loadGameButton.setX( centerX - loadGameButton.getWidth( )/2 );
+		loadGameButton.setY( centerY + 3 * lineHeight);
 		backButton.setX( centerX - backButton.getWidth( ) / 2 );
 		backButton.setY( 20 + backButton.getHeight( ) );
 	}
