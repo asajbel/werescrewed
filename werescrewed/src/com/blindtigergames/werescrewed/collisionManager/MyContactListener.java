@@ -124,8 +124,8 @@ public class MyContactListener implements ContactListener {
 						case EVENTTRIGGER:
 							EventTrigger et = ( EventTrigger ) objectFix.getBody( )
 								.getUserData( );
-							et.setActivated( true );
-							et.triggerEvent( );
+							et.setActivated( true, player.name );
+							et.triggerBeginEvent( );
 							break;
 						default:
 							break;
@@ -238,7 +238,8 @@ public class MyContactListener implements ContactListener {
 						case EVENTTRIGGER:
 							EventTrigger et = ( EventTrigger ) objectFix.getBody( )
 							.getUserData( );
-							et.setActivated( false );
+							et.setActivated( false, player.name );
+							et.triggerEndEvent( );
 							break;
 						default:
 							break;

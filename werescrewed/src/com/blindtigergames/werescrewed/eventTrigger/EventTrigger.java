@@ -23,12 +23,14 @@ import com.blindtigergames.werescrewed.util.Util;
 
 public class EventTrigger extends Entity{
 	
-	private boolean repeatable = false;
+	private boolean repeatable = true;
 	private boolean repeatTriggeredOnce = false;
 	private boolean activated = false;
 	private boolean triggeredOnce = false;
+	private boolean twoPlayersToActivate = false, twoPlayersToDeactivate = false;
+	private boolean playerOneContact = false, playerTwoContact = false;
 	private ArrayList<Entity> entityList;
-	private IAction action;
+	private IAction beginAction, endAction;
 	
 	public EventTrigger(String name, World world){
 		super(name, null, null, null, false );
@@ -105,9 +107,60 @@ public class EventTrigger extends Entity{
 	}
 	
 	/**
+	 * sets boolean to see if this event takes two players to turn on
+	 * @author Ranveer
+	 */
+	public void setTwoPlayersToActivate(boolean b){
+		twoPlayersToActivate = b;
+	}
+	/**
+	 * returns boolean to see if this event takes two players to turn on
+	 * @return - boolean
+	 * @author Ranveer
+	 */
+	public boolean takeTwoPlayersToActivate(){
+		return twoPlayersToActivate;
+	}
+	
+	/**
+	 * sets boolean to see if this event takes two players to turn off
+	 * @author Ranveer
+	 */
+	public void setTwoPlayersToDeactivate(boolean b){
+		twoPlayersToDeactivate = b;
+	}
+	/**
+	 * returns boolean to see if this event takes two players to turn off
+	 * @return - boolean
+	 * @author Ranveer
+	 */
+	public boolean takeTwoPlayersToDeactivate(){
+		return twoPlayersToDeactivate;
+	}
+	
+	/**
+	 * returns boolean to see if player one is colliding with this event trigger
+	 * @return - boolean
+	 * @author Ranveer
+	 */
+	public boolean playerOneColliding(){
+		return playerOneContact;
+	}
+	
+	/**
+	 * returns boolean to see if player two is colliding with this event trigger
+	 * @return - boolean
+	 * @author Ranveer
+	 */
+	public boolean playerTwoColliding(){
+		return playerTwoContact;
+	}
+	
+	/**
 	 * Checks if player is currently colliding with this
 	 * EventTrigger
 	 * @return boolean
+	 * @author Ranveer
 	 */
 	public boolean isActivated(){
 		return activated;
@@ -115,24 +168,188 @@ public class EventTrigger extends Entity{
 	
 	/**
 	 * Sets activated to true or false, depending on player collision
+	 * and depending on if it takes two players to activate/deactivate
+	 * and if the event is repeatable or not
 	 * @param active - boolean
+	 * @author Ranveer
 	 */
-	public void setActivated(boolean active){
-		this.activated = active;
-		if(active == false){
-			repeatTriggeredOnce = false;
+	public void setActivated(boolean active, String name){
+		if(active == true){
+			// If it takes two players to turn it on
+			if(twoPlayersToActivate)
+			{
+				if(!playerOneContact)
+				{
+					if(name.equals( "player1" ))
+					{
+						playerOneContact = true;
+					}
+				}
+				if(!playerTwoContact)
+				{
+					if(name.equals( "player2" ))
+					{
+						playerTwoContact = true;
+					}
+				}
+				//When both players collide, then turn it active
+				if(playerOneContact && playerTwoContact){
+					this.activated = true;
+				}
+			//Else it takes only 1 player to turn it on
+			}else{
+				if(name.equals( "player2" ))
+				{
+					playerTwoContact = true;
+				}
+				if(name.equals( "player1" ))
+				{
+					playerOneContact = true;
+				}
+				this.activated = true;
+			}
+		}
+		else if(active == false)
+		{
+			//If the event isn't repeatable, then it should never turn back to false
+			if(!repeatable){
+				if(triggeredOnce){
+					return;
+					//Not repeatable so can't turn it off
+					// later it will be deleted here
+				}
+			}
+			else{
+				//Else if it is repeatable, check if we ran it already
+				// then check if it takes two players to deactivate or one player
+				if(repeatTriggeredOnce)
+				{
+					if(twoPlayersToDeactivate)
+					{
+						if(playerOneContact)
+						{
+							if(name.equals( "player1" ))
+							{
+								playerOneContact = false;
+							}
+						}
+						if(playerTwoContact)
+						{
+							if(name.equals( "player2" ))
+							{
+								playerTwoContact = false;
+							}
+						}
+						
+						if(!playerOneContact && !playerTwoContact)
+						{
+							repeatTriggeredOnce = false;
+							this.activated = false;
+						}
+					}
+					//else takes 1 player to deactivate
+					else
+					{
+						if(name.equals( "player1" ))
+						{
+							playerOneContact = false;
+						}
+						if(name.equals( "player2" ))
+						{
+							playerTwoContact = false;
+						}
+						repeatTriggeredOnce = false;
+						this.activated = false;
+					}
+				}
+			}
+			
 		}
 	}
 	
+	
+	/**
+	 * random prints, no real need for update function yet
+	 * @param - float deltaTime
+	 * @author Ranveer
+	 */
 	public void update( float deltaTime ){
-		//TODO: what to update?
+//		System.out.println( "p1: " + playerOneContact 
+//				+ ", p2: " + playerTwoContact 
+//				+ ", activated: " + this.activated);
 	}
 	
-	public void triggerEvent(){
+	/**
+	 * triggers the beginning Action depending on if it takes two players to
+	 * run it or just one player
+	 * @author Ranveer
+	 */
+	public void triggerBeginEvent(){
+		if(twoPlayersToActivate){
+			if(playerOneContact && playerTwoContact){
+				runBeginAction();
+			}
+		}
+		else{
+			runBeginAction();
+		}
+	}
+	
+	/**
+	 * triggers the ending Action depending on if it takes two players to
+	 * run it or just one player
+	 * @author Ranveer
+	 */
+	public void triggerEndEvent(){
+		if(twoPlayersToDeactivate){
+			if(!playerOneContact && !playerTwoContact){
+				runEndAction();
+			}
+		}
+		else{
+			runEndAction();
+		}
+	}
+	
+	/**
+	 * Add entity to Event Trigger
+	 * @param entity - Entity
+	 * @author Ranveer
+	 */
+	public void addEntityToTrigger(Entity entity){
+		entityList.add( entity );
+	}
+	
+	/**
+	 * Add IAction as a Begin Action
+	 * @param action - IAction
+	 * @author Ranveer
+	 */
+	public void addBeginIAction(IAction action){
+		this.beginAction = action;
+	}
+	
+	/**
+	 * Add IAction as a End Action
+	 * @param action - IAction
+	 * @author Ranveer
+	 */
+	public void addEndIAction(IAction action){
+		this.endAction = action;
+	}
+	
+	/**
+	 * calls act() with its begin action on every entity in this list
+	 * depending on if its repeatable or not
+	 * @author Ranveer
+	 */
+	private void runBeginAction(){
 		if(!repeatable){
 			if(!triggeredOnce){
 				for(Entity e : entityList){
-					action.act( e );
+					if(beginAction != null){
+						beginAction.act( e );
+					}
 				}
 				triggeredOnce = true;
 			}
@@ -140,23 +357,42 @@ public class EventTrigger extends Entity{
 		if(repeatable){
 			if(!repeatTriggeredOnce){
 				for(Entity e : entityList){
-					action.act( e );
+					if(beginAction != null){
+						beginAction.act( e );
+					}
 				}
 				repeatTriggeredOnce = true;
 			}
 		}
 	}
 	
-
-	
-	public void addEntityToTrigger(Entity entity){
-		entityList.add( entity );
+	/**
+	 * calls act() with its end action on every entity in this list
+	 * depending on if its repeatable or not
+	 * @author Ranveer
+	 */
+	private void runEndAction(){
+		if(!repeatable){
+			if(!triggeredOnce){
+				for(Entity e : entityList){
+					if(endAction != null){
+						endAction.act( e );
+					}
+				}
+				triggeredOnce = true;
+			}
+		} 
+		if(repeatable){
+			if(!repeatTriggeredOnce){
+				for(Entity e : entityList){
+					if(endAction != null){
+						endAction.act( e );
+					}
+				}
+				repeatTriggeredOnce = true;
+			}
+		}
 	}
-	
-	public void addIAction(IAction action){
-		this.action = action;
-	}
-	
 	/**
 	 * UNUSED
 	 * 
@@ -170,25 +406,26 @@ public class EventTrigger extends Entity{
 	 * to see the correct use
 	 * @param entity
 	 */
+	@SuppressWarnings( "unused" )
 	private void applyAction(Entity entity){
 		switch(entity.getEntityType( )){
 		case ENTITY:
-			action.act(entity);
+			beginAction.act(entity);
 			break;
 		case HAZARD:
-			action.act( (Hazard) entity );
+			beginAction.act( (Hazard) entity );
 			break;
 		case PLATFORM:
-			action.act( (Platform) entity );
+			beginAction.act( (Platform) entity );
 			break;
 		case STEAM:
-			action.act( (Steam) entity );
+			beginAction.act( (Steam) entity );
 			break;
 		case SKELETON:
-			action.act( (Skeleton) entity );
+			beginAction.act( (Skeleton) entity );
 			break;
 		case PLAYER:
-			action.act( (Player) entity );
+			beginAction.act( (Player) entity );
 			break;
 		default:
 			Gdx.app.log("Cannot apply action to", entity.toString( ));

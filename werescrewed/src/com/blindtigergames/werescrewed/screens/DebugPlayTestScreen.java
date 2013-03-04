@@ -19,6 +19,7 @@ import com.blindtigergames.werescrewed.debug.SBox2DDebugRenderer;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.RobotState;
 import com.blindtigergames.werescrewed.entity.action.EntityActivateMoverAction;
+import com.blindtigergames.werescrewed.entity.builders.EventTriggerBuilder;
 import com.blindtigergames.werescrewed.entity.builders.PlatformBuilder;
 import com.blindtigergames.werescrewed.entity.builders.PlayerBuilder;
 import com.blindtigergames.werescrewed.entity.builders.RopeBuilder;
@@ -747,8 +748,7 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 				skel9, world );
 		plat.addScrew( bossBolt );
 		
-		et = new EventTrigger("event1", world);
-		et.constructCircleBody( 100, new Vector2(175f * TILE, 90 * TILE) );
+
 		
 		specialPlat = platBuilder.position( 175f * TILE, 84 * TILE ).name( "plat12" )
 				.dimensions( 6, 1 ).texture( testTexture ).kinematic( )
@@ -763,8 +763,11 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 				.build( ), RobotState.DOCILE );
 		//specialPlat.setActive( true );
 		
-		et.addEntityToTrigger( specialPlat );
-		et.addIAction( new EntityActivateMoverAction() );
+		EventTriggerBuilder etb = new EventTriggerBuilder(world);
+		et = etb.name( "event1" ).circle( ).radius( 100 )
+				.position( new Vector2(175f * TILE, 84 * TILE) )
+				.addEntity( specialPlat ).beginAction( new EntityActivateMoverAction() ).build();
+			
 		rootSkeleton.addSkeleton( skel9 );
 	}
 
@@ -809,6 +812,7 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		player1.update( deltaTime );
 		player2.update( deltaTime );
 		testRope.update( deltaTime );
+		et.update( deltaTime );
 
 		rootSkeleton.update( deltaTime );
 
