@@ -808,7 +808,7 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 
 		player1.update( deltaTime );
 		player2.update( deltaTime );
-		//testRope.update( deltaTime );
+		testRope.update( deltaTime );
 
 		rootSkeleton.update( deltaTime );
 
@@ -816,9 +816,10 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		batch.begin( );
 
 		rootSkeleton.draw( batch );
+		testRope.draw( batch );
 		player1.draw( batch );
 		player2.draw( batch );
-		testRope.draw( batch );
+		
 
 
 		batch.end( );
