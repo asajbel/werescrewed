@@ -42,7 +42,8 @@ public class Player extends Entity {
 	public final static float MAX_VELOCITY = 1.65f;
 	public final static float MIN_VELOCITY = 0.01f;
 	public final static float MOVEMENT_IMPULSE = 0.012f;
-	public final static float JUMP_SCREW_IMPULSE = 0.12f;
+	public final static float JUMP_IMPULSE = 0.12f;
+	public final static float JUMP_SCREW_IMPULSE = JUMP_IMPULSE * 3 / 2;
 	public final static float JUMP_CONTROL_MUTIPLIER = 0.5f;
 	public final static int JUMP_COUNTER = 10;
 	public final static float ANALOG_DEADZONE = 0.2f;
@@ -54,7 +55,6 @@ public class Player extends Entity {
 	public final static int GRAB_COUNTER_STEPS = 5;
 	public final static Vector2 ANCHOR_BUFFER_SIZE = new Vector2( 400f, 256f );
 	public final static float STEAM_FORCE = .5f;
-	public float JUMP_IMPULSE = 0.12f;
 	public float directionJumpDivsion = 2.0f;
 
 	public Fixture feet;
@@ -482,14 +482,14 @@ public class Player extends Entity {
 		leftAnalogX = controllerListener.analogLeftAxisX( );
 		leftAnalogY = controllerListener.analogLeftAxisY( );
 		float yImpulse = JUMP_SCREW_IMPULSE;
-		if ( leftAnalogY > -0.7f ) {
-			if ( leftAnalogY > 0.01f || leftAnalogY < -0.01f ) {
-				if ( leftAnalogX > 0.01f || leftAnalogX < -0.01f ) {
-					float temp = ( leftAnalogY + 0.7f ) / 1.7f;
-					yImpulse -= temp * JUMP_SCREW_IMPULSE;
-				}
-			}
-		}
+		// if ( leftAnalogY > -0.7f ) {
+		// if ( leftAnalogY > 0.01f || leftAnalogY < -0.01f ) {
+		// if ( leftAnalogX > 0.01f || leftAnalogX < -0.01f ) {
+		// float temp = ( leftAnalogY + 0.7f ) / 1.7f;
+		// yImpulse -= temp * JUMP_SCREW_IMPULSE;
+		// }
+		// }
+		// }
 		float xImpulse = leftAnalogX * JUMP_SCREW_IMPULSE * 0.1f;
 		body.applyLinearImpulse( new Vector2( xImpulse, yImpulse ),
 				body.getWorldCenter( ) );
@@ -997,8 +997,7 @@ public class Player extends Entity {
 			otherPlayer.body.setLinearVelocity( new Vector2( otherPlayer.body
 					.getLinearVelocity( ).x, 0.0f ) );
 			otherPlayer.body.applyLinearImpulse( new Vector2( 0.0f,
-					otherPlayer.JUMP_IMPULSE * 1.5f ), otherPlayer.body
-					.getWorldCenter( ) );
+					JUMP_IMPULSE * 1.5f ), otherPlayer.body.getWorldCenter( ) );
 		}
 		playerState = PlayerState.Standing;
 	}
