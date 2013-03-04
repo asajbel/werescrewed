@@ -98,6 +98,8 @@ public class Rope {
 			linkParts.add( temp );
 
 		}
+		
+		
 	}
 
 	/* Creates a joint between the top link and a given entity

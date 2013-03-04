@@ -102,6 +102,7 @@ public class Entity implements GleedLoadable {
 			sprite.setScale( Util.PIXEL_TO_BOX );
 		}
 		this.setPixelPosition( positionPixels );
+		
 	}
 
 	/**

@@ -22,6 +22,9 @@ import com.blindtigergames.werescrewed.collisionManager.MyContactListener;
 import com.blindtigergames.werescrewed.debug.SBox2DDebugRenderer;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.RobotState;
+import com.blindtigergames.werescrewed.entity.action.EntityActivateMoverAction;
+import com.blindtigergames.werescrewed.entity.action.EntityDeactivateMoverAction;
+import com.blindtigergames.werescrewed.entity.builders.EventTriggerBuilder;
 import com.blindtigergames.werescrewed.entity.builders.PlatformBuilder;
 import com.blindtigergames.werescrewed.entity.builders.PlayerBuilder;
 import com.blindtigergames.werescrewed.entity.builders.RopeBuilder;
@@ -36,6 +39,7 @@ import com.blindtigergames.werescrewed.entity.mover.puzzle.PuzzlePistonTweenMove
 import com.blindtigergames.werescrewed.entity.tween.EntityAccessor;
 import com.blindtigergames.werescrewed.entity.tween.PathBuilder;
 import com.blindtigergames.werescrewed.entity.tween.PlatformAccessor;
+import com.blindtigergames.werescrewed.eventTrigger.EventTrigger;
 import com.blindtigergames.werescrewed.joint.JointFactory;
 import com.blindtigergames.werescrewed.joint.RevoluteJointBuilder;
 import com.blindtigergames.werescrewed.particles.Steam;
@@ -74,12 +78,13 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 	private ArrayList< StrippedScrew > climbingScrews;
 	private Rope testRope;
 	@SuppressWarnings( "unused" )
-	private StrippedScrew ropeScrew;
 	private RopeBuilder ropeBuilder;
 	private boolean debug = true;
 	private boolean debugTest = true;
 	public Steam testSteam;
 	public SpriteBatch particleBatch;
+	private EventTrigger et;
+	private TiledPlatform specialPlat;
 
 	// ArrayList< TiledPlatform > tp2 = new ArrayList< TiledPlatform >( );
 
@@ -92,8 +97,8 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		batch = new SpriteBatch( );
 		world = new World( new Vector2( 0, -35 ), true );
 
-		Entity e = null;
-		if ( e.name == null ){}
+//		Entity e = null;
+//		if ( e.name == null ){}
 		
 		// Initialize camera
 		initCamera( );
@@ -139,12 +144,13 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		initPuzzleScrews( );
 		initClimbingScrews( );
 		initPulley( );
-
+		
 		// Initialize particles
 		initParticleEffect( );
 
+		initEventTrigger();
 		testRope = ropeBuilder.position( 2800f, 450f ).width( 16f )
-				.height( 64f ).links( 5 ).buildRope( );
+				.height( 64f ).links( 5 ).createScrew( ).buildRope( );
 
 		TiledPlatform topPlatform = platBuilder.width( 10 ).height( 1 )
 				.oneSided( true ).position( 2400, 480 )// .texture( testTexture
@@ -161,8 +167,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 
 		testRope.attachEntityToBottom( bottomPlatform, true );
 
-		// ropeScrew = new StrippedScrew ( "ropeScrew", world, new Vector2
-		// (2000, 64), testRope.getLastLink( ));
+
 
 		// rope = new Rope( "rope", new Vector2 (2000.0f * Util.PIXEL_TO_BOX,
 		// 400.0f* Util.PIXEL_TO_BOX), null, world );
@@ -542,6 +547,31 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 				singTile2.body.getPosition( ).y * Util.BOX_TO_PIXEL ),
 				singTile2 ) );
 	}
+	
+	
+	public void initEventTrigger(){
+		specialPlat = platBuilder.position( -1000, 300).name( "plat12" )
+				.dimensions( 6, 1 ).texture( testTexture ).kinematic( )
+				.friction( 1.0f ).oneSided( true ).restitution( 0 )
+				.buildTilePlatform( );
+		
+		PathBuilder pb = new PathBuilder( );
+		specialPlat.addMover( pb.begin( specialPlat ).target( 0, 150, 3 ).target( 0, 0, 3 )
+				.build( ), RobotState.IDLE );
+		specialPlat.addMover( pb.begin( specialPlat ).target( 150, 0, 3 ).target( 0, 0, 3 )
+				.build( ), RobotState.DOCILE );
+		
+		EventTriggerBuilder etb = new EventTriggerBuilder(world);
+		et = etb.name( "event1" ).circle( ).radius( 100 )
+				.position( new Vector2(-1000, 100) )
+				.addEntity( specialPlat ).beginAction( new EntityActivateMoverAction() )
+				.endAction( new EntityDeactivateMoverAction() ).repeatable( ).twoPlayersToDeactivate( )
+				.twoPlayersToActivate( )
+				.build();
+		
+		
+		skeleton.addKinematicPlatform( specialPlat );
+	}
 
 	@Override
 	public void render( float deltaTime ) {
@@ -553,6 +583,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 			Gdx.gl10.glClear( GL20.GL_COLOR_BUFFER_BIT );
 		}
 
+		//System.out.println("plat: " + specialPlat.body.getPosition( )+ ", et: " + et.body.getPosition( ));
 		cam.update( );
 
 		if ( Gdx.input.isKeyPressed( Input.Keys.ESCAPE ) ) {

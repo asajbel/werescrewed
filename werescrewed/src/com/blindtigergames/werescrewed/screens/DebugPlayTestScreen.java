@@ -751,25 +751,26 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		
 
 		
-		specialPlat = platBuilder.position( 175f * TILE, 84 * TILE ).name( "plat12" )
-				.dimensions( 6, 1 ).texture( testTexture ).kinematic( )
-				.friction( 1.0f ).oneSided( true ).restitution( 0 )
-				.buildTilePlatform( );
-		skel9.addKinematicPlatform( specialPlat );
-		
-		PathBuilder pb = new PathBuilder( );
-		specialPlat.addMover( pb.begin( specialPlat ).target( 0, 150, 3 ).target( 0, 0, 3 )
-				.build( ), RobotState.IDLE );
-		specialPlat.addMover( pb.begin( specialPlat ).target( 150, 0, 3 ).target( 0, 0, 3 )
-				.build( ), RobotState.DOCILE );
-		//specialPlat.setActive( true );
-		
-		EventTriggerBuilder etb = new EventTriggerBuilder(world);
-		et = etb.name( "event1" ).circle( ).radius( 100 )
-				.position( new Vector2(175f * TILE, 84 * TILE) )
-				.addEntity( specialPlat ).beginAction( new EntityActivateMoverAction() )
-				.endAction( new EntityDeactivateMoverAction() ).repeatable( ).twoPlayersToDeactivate( )
-				.build();
+//		specialPlat = platBuilder.position( 175f * TILE, 84 * TILE ).name( "plat12" )
+//				.dimensions( 6, 1 ).texture( testTexture ).kinematic( )
+//				.friction( 1.0f ).oneSided( true ).restitution( 0 )
+//				.buildTilePlatform( );
+//		skel9.addKinematicPlatform( specialPlat );
+//		
+//		PathBuilder pb = new PathBuilder( );
+//		specialPlat.addMover( pb.begin( specialPlat ).target( 0, 150, 3 ).target( 0, 0, 3 )
+//				.build( ), RobotState.IDLE );
+//		specialPlat.addMover( pb.begin( specialPlat ).target( 150, 0, 3 ).target( 0, 0, 3 )
+//				.build( ), RobotState.DOCILE );
+//		//specialPlat.setActive( true );
+//		
+//		EventTriggerBuilder etb = new EventTriggerBuilder(world);
+//		et = etb.name( "event1" ).circle( ).radius( 100 )
+//				.position( new Vector2(175f * TILE, 84 * TILE) )
+//				.addEntity( specialPlat ).beginAction( new EntityActivateMoverAction() )
+//				.endAction( new EntityDeactivateMoverAction() ).repeatable( ).twoPlayersToDeactivate( )
+//				.twoPlayersToActivate( )
+//				.build();
 			
 		rootSkeleton.addSkeleton( skel9 );
 	}
@@ -815,8 +816,8 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		player1.update( deltaTime );
 		player2.update( deltaTime );
 		testRope.update( deltaTime );
-		et.update( deltaTime );
-		//System.out.println(specialPlat.isActive( ));
+	//	et.update( deltaTime );
+		
 		
 		rootSkeleton.update( deltaTime );
 
