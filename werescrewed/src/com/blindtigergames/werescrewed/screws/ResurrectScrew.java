@@ -65,6 +65,16 @@ public class ResurrectScrew extends Screw {
 			pulleyWeight.setLinearVelocity( new Vector2( -1f, 0f ) );
 		}
 	}
+	
+	@Override
+	public void screwLeft(int region ) {
+		if ( pullLeft ) {
+			body.setAngularVelocity( 15 );
+			rotation += 10;
+			screwStep = depth + 5;
+			pulleyWeight.setLinearVelocity( new Vector2( -1f, 0f ) );
+		}
+	}
 
 	/**
 	 * if the pulley weight goes to the right use right to draw dead player
@@ -72,6 +82,16 @@ public class ResurrectScrew extends Screw {
 	 */
 	@Override
 	public void screwRight( ) {
+		if ( !pullLeft ) {
+			body.setAngularVelocity( -15 );
+			rotation -= 10;
+			screwStep = depth + 5;
+			pulleyWeight.setLinearVelocity( new Vector2( 1f, 0f ) );
+		}
+	}
+	
+	@Override
+	public void screwRight(int region ) {
 		if ( !pullLeft ) {
 			body.setAngularVelocity( -15 );
 			rotation -= 10;

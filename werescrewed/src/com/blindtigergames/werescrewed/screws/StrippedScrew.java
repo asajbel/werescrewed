@@ -36,14 +36,6 @@ public class StrippedScrew extends Screw {
 
 	}
 
-	@Override
-	public void screwLeft( ) {
-	}
-
-	@Override
-	public void screwRight( ) {
-	}
-
 	private void constructBody( Vector2 pos ) {
 		// create the screw body
 		BodyDef screwBodyDef = new BodyDef( );

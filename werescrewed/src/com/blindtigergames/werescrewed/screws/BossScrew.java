@@ -64,6 +64,20 @@ public class BossScrew extends Screw {
 	}
 
 	@Override
+	public void screwLeft( int region) {
+		if ( playerCount == 1 ) {
+			if ( depth > 0 ) {
+				body.setAngularVelocity( 15 );
+				depth--;
+				rotation = region * 5;
+				screwStep = depth + 5;
+			}
+		} else {
+			playerCount++;
+		}
+	}
+	
+	@Override
 	public void screwLeft( ) {
 		if ( playerCount == 1 ) {
 			if ( depth > 0 ) {
@@ -81,9 +95,22 @@ public class BossScrew extends Screw {
 	public void screwRight( ) {
 		if ( playerCount == 1 ) {
 			if ( depth < maxDepth ) {
-				body.setAngularVelocity( -15 );
+				body.setAngularVelocity( -1 );
 				depth++;
 				rotation -= 10;
+				screwStep = depth + 6;
+			}
+		} else {
+			playerCount++;
+		}
+	}
+	@Override
+	public void screwRight(int region ) {
+		if ( playerCount == 1 ) {
+			if ( depth < maxDepth ) {
+				body.setAngularVelocity( -1 );
+				depth++;
+				rotation = region * 5;
 				screwStep = depth + 6;
 			}
 		} else {

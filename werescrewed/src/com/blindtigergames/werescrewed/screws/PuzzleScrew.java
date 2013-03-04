@@ -47,9 +47,22 @@ public class PuzzleScrew extends Screw {
 	 * and applies the screw value to whatever movement is required
 	 */
 	@Override
-	public void screwLeft( ) {
+	public void screwLeft( int region ) {
 		if ( depth > 0 ) {
-			body.setAngularVelocity( 15 );
+			body.setAngularVelocity( 1 );
+			depth--;
+			spriteRegion += region;
+			rotation = region * 5;
+			screwStep = depth + 5;
+			puzzleManager
+					.runElement( this, ( float ) depth / ( ( float ) maxDepth ) );
+		}
+	}
+	
+	@Override
+	public void screwLeft(){
+		if ( depth > 0 ) {
+			body.setAngularVelocity( 1 );
 			depth--;
 			rotation += 10;
 			screwStep = depth + 5;
@@ -62,10 +75,24 @@ public class PuzzleScrew extends Screw {
 	 * screwing right calls the puzzle manager element 
 	 * and applies the screw value to whatever movement is required
 	 */
+	
 	@Override
-	public void screwRight( ) {
+	public void screwRight( int region) {
 		if ( depth < maxDepth ) {
-			body.setAngularVelocity( -15 );
+			body.setAngularVelocity( -1 );
+			depth++;
+			spriteRegion += region;
+			rotation = region * 5;
+			screwStep = depth + 6;
+			puzzleManager
+					.runElement( this, ( float ) depth / ( ( float ) maxDepth ) );
+		}
+	}
+	
+	@Override
+	public void screwRight(){
+		if ( depth < maxDepth ) {
+			body.setAngularVelocity( -1 );
 			depth++;
 			rotation -= 10;
 			screwStep = depth + 6;

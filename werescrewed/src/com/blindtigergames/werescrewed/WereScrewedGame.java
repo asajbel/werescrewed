@@ -53,10 +53,10 @@ public class WereScrewedGame extends Game {
 			restartFlag = false;
 		}
 		super.render( );
-		if (Gdx.app.getType() == ApplicationType.Android) {
-			logger.log( ); 
-		}
-		logger.log( );
+//		if (Gdx.app.getType() == ApplicationType.Android) {
+//			logger.log( ); 
+//		}
+//		logger.log( );
 	}
 	
 	public void restart(){

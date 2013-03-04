@@ -55,6 +55,9 @@ public class MyControllerListener implements ControllerListener {
 	private int currDirection = 0;
 	private int screwCounter = 0;
 
+	private int prevRegion;
+	private int currRegion;
+
 	// Used for screwing/unscrewing with right analog stick
 	private final static int SCREW_UP = 1;
 	private final static int SCREW_RIGHT = 2;
@@ -89,8 +92,8 @@ public class MyControllerListener implements ControllerListener {
 				attachScrewPressed = false;
 		}
 
-//		Gdx.app.log( controller.getName( ) + " axis",
-//				String.valueOf( buttonIndex ) );
+		// Gdx.app.log( controller.getName( ) + " axis",
+		// String.valueOf( buttonIndex ) );
 
 		axisLY = controller.getAxis( Mapping.AXIS_LEFT_Y );
 		axisLX = controller.getAxis( Mapping.AXIS_LEFT_X );
@@ -139,6 +142,7 @@ public class MyControllerListener implements ControllerListener {
 			screwCounter = 0;
 			prevRightAnalogAngle = 0;
 			currRightAnalogAngle = 0;
+			prevRegion = -1;
 		} else
 			// Updating Right Stick Screwing
 			rightStickScrew( );
@@ -152,8 +156,8 @@ public class MyControllerListener implements ControllerListener {
 	 */
 	@Override
 	public boolean buttonDown( Controller controller, int buttonIndex ) {
-//		Gdx.app.log( controller.getName( ) + " Down",
-//				String.valueOf( buttonIndex ) );
+		// Gdx.app.log( controller.getName( ) + " Down",
+		// String.valueOf( buttonIndex ) );
 
 		// Switching between Screwing/Unscrewing Modes
 		if ( buttonIndex == Mapping.BUTTON_SELECT ) {
@@ -201,8 +205,8 @@ public class MyControllerListener implements ControllerListener {
 
 	@Override
 	public boolean buttonUp( Controller controller, int buttonIndex ) {
-//		Gdx.app.log( controller.getName( ) + " up",
-//				String.valueOf( buttonIndex ) );
+		// Gdx.app.log( controller.getName( ) + " up",
+		// String.valueOf( buttonIndex ) );
 
 		// Resetting buttons
 		if ( buttonIndex == Mapping.BUTTON_FACE_BOT )
@@ -253,8 +257,8 @@ public class MyControllerListener implements ControllerListener {
 	public boolean povMoved( Controller controller, int buttonIndex,
 			PovDirection direction ) {
 
-//		Gdx.app.log( controller.getName( ) + " pov",
-//				String.valueOf( buttonIndex ) );
+		// Gdx.app.log( controller.getName( ) + " pov",
+		// String.valueOf( buttonIndex ) );
 
 		if ( direction == PovDirection.center ) {
 			rightPressed = false;
@@ -462,8 +466,8 @@ public class MyControllerListener implements ControllerListener {
 
 		return Math.toDegrees( Math.atan2( -axisLX, -axisLY ) ) + 180;
 	}
-	
-	public double getRightAnalogAngle(){
+
+	public double getRightAnalogAngle( ) {
 		return currRightAnalogAngle;
 	}
 
@@ -479,6 +483,10 @@ public class MyControllerListener implements ControllerListener {
 		return Controllers.getControllers( ).indexOf( controller, true );
 	}
 
+	public int getRegion( ) {
+		return currRegion;
+	}
+
 	/**
 	 * This function checks to see Right stick's state and then sets the screw
 	 * or unscrew boolean
@@ -488,33 +496,72 @@ public class MyControllerListener implements ControllerListener {
 	 * 
 	 */
 	private void rightStickScrew( ) {
-		//System.out.println( "x: " + axisRX + ", Y: " + axisRY );
+		// System.out.println( "x: " + axisRX + ", Y: " + axisRY );
 		axisRY *= -1;
-		currRightAnalogAngle = ( int ) Math.toDegrees( Math.atan2( -axisRY, -axisRX ) ) + 180;
+		currRightAnalogAngle = ( int ) Math.toDegrees( Math.atan2( -axisRY,
+				-axisRX ) ) + 180;
 
-
-//		System.out.println("screwing: "+ screwing( )
-//				+ " unscrewing: " + unscrewing() 
-//				+ " currAngle: "+ currRightAnalogAngle
-//				+ " prevAngle: " + prevRightAnalogAngle);
-		
+		// System.out.println("screwing: "+ screwing( )
+		// + " unscrewing: " + unscrewing()
+		// + " currAngle: "+ currRightAnalogAngle
+		// + " prevAngle: " + prevRightAnalogAngle);
+		//
 		// First mode is sets the Previous Angle when it is moved from the
 		// center
 		// then when the stick is moved it checks to see if its different from
 		// where
 		// it started, if so then it is screwing/unscrewing
 		if ( debugScrewMode1 ) {
-			if ( currRightAnalogAngle - prevRightAnalogAngle > 250 ){
+			if ( prevRegion == -1 ) {
+				unscrewingPressed = false;
+				screwingPressed = false;
+				prevRegion = currRegion;
+				return;
+			}
+
+			prevRegion = currRegion;
+			currRegion = currRightAnalogAngle / 5;
+			// Gdx.app.log( "angle: " + currRightAnalogAngle, " region: "
+			// +currRegion );
+
+			if ( currRegion - prevRegion > 60 ) {
+				unscrewingPressed = false;
+				screwingPressed = true;
+			} else if ( currRegion - prevRegion < -60 ) {
+				unscrewingPressed = true;
+				screwingPressed = false;
+			} else if ( currRegion > prevRegion ) {
+				unscrewingPressed = true;
+				screwingPressed = false;
+			} else if ( currRegion < prevRegion ) {
+				unscrewingPressed = false;
+				screwingPressed = true;
+			}
+
+		} else if ( debugScrewMode2 ) {
+			// if ( prevRightAnalogAngle == 0 )
+			// prevRightAnalogAngle = currRightAnalogAngle;
+			// if ( currRightAnalogAngle - prevRightAnalogAngle >
+			// SCREW_ANGLE_DIFF ) {
+			// screwingPressed = false;
+			// unscrewingPressed = true;
+			// prevRightAnalogAngle = currRightAnalogAngle;
+			// } else if ( prevRightAnalogAngle - currRightAnalogAngle >
+			// SCREW_ANGLE_DIFF ) {
+			// unscrewingPressed = false;
+			// screwingPressed = true;
+			// prevRightAnalogAngle = currRightAnalogAngle;
+			// }
+
+			if ( currRightAnalogAngle - prevRightAnalogAngle > 250 ) {
 				screwingPressed = true;
 				unscrewingPressed = false;
 				prevRightAnalogAngle = currRightAnalogAngle;
-			}
-			else if ( currRightAnalogAngle - prevRightAnalogAngle < -250 ){
+			} else if ( currRightAnalogAngle - prevRightAnalogAngle < -250 ) {
 				screwingPressed = false;
 				unscrewingPressed = true;
 				prevRightAnalogAngle = currRightAnalogAngle;
-			}
-			else if ( currRightAnalogAngle < prevRightAnalogAngle ) {
+			} else if ( currRightAnalogAngle < prevRightAnalogAngle ) {
 				screwingPressed = true;
 				unscrewingPressed = false;
 				prevRightAnalogAngle = currRightAnalogAngle;
@@ -522,22 +569,8 @@ public class MyControllerListener implements ControllerListener {
 				unscrewingPressed = true;
 				screwingPressed = false;
 				prevRightAnalogAngle = currRightAnalogAngle;
-			}
-			else{
-				Gdx.app.log( "analog:", "uh oh" );
-			}
-		}
-		else if ( debugScrewMode2 ) {
-			if ( prevRightAnalogAngle == 0 )
-				prevRightAnalogAngle = currRightAnalogAngle;
-			if ( currRightAnalogAngle - prevRightAnalogAngle > SCREW_ANGLE_DIFF ) {
-				screwingPressed = false;
-				unscrewingPressed = true;
-				prevRightAnalogAngle = currRightAnalogAngle;
-			} else if ( prevRightAnalogAngle - currRightAnalogAngle > SCREW_ANGLE_DIFF ) {
-				unscrewingPressed = false;
-				screwingPressed = true;
-				prevRightAnalogAngle = currRightAnalogAngle;
+			} else {
+
 			}
 		}
 

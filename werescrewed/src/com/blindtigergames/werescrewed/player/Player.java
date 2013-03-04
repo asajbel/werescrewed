@@ -888,9 +888,9 @@ public class Player extends Entity {
 		// loosen and tighten screws and jump when the screw joint is gone
 		if ( controller ) {
 			if ( controllerListener.unscrewing( ) ) {
-				currentScrew.screwLeft( );
+				currentScrew.screwLeft(controllerListener.getRegion( ) );
 			} else if ( controllerListener.screwing( ) ) {
-				currentScrew.screwRight( );
+				currentScrew.screwRight( controllerListener.getRegion( ));
 			}
 		} else {
 			if ( inputHandler.unscrewing( ) ) {

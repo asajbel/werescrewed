@@ -106,9 +106,9 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 
 		// Initialize players
 		player1 = new PlayerBuilder( ).name( "player1" ).world( world )
-				.position( 175f * TILE, 96f * TILE  ).buildPlayer( );
+				.position( 175f * TILE, 96f * TILE ).buildPlayer( );
 		player2 = new PlayerBuilder( ).name( "player2" ).world( world )
-				.position( 175f * TILE, 96f * TILE  ).buildPlayer( );
+				.position(  175f * TILE, 96f * TILE  ).buildPlayer( );
 
 		// END: 175f * TILE, 96f * TILE
 		// START : 1f * TILE, 1f * TILE 
@@ -651,7 +651,7 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		skel8.addKinematicPlatform( plat );
 
 		PuzzleScrew puzzleScrew = new PuzzleScrew( "001", new Vector2(
-				109f * TILE, 73 * TILE ), 50, skel8, world, 0, false );
+				109f * TILE, 73 * TILE ), 100, skel8, world, 0, false );
 		LerpMover lm2 = new LerpMover( new Vector2( plat.body.getPosition( ).x
 				* Util.BOX_TO_PIXEL, plat.body.getPosition( ).y
 				* Util.BOX_TO_PIXEL ), new Vector2( plat.body.getPosition( ).x,
@@ -663,7 +663,7 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		skeleton.addScrewForDraw( puzzleScrew );
 
 		PuzzleScrew puzzleScrew2 = new PuzzleScrew( "001", new Vector2(
-				113f * TILE, 83 * TILE ), 50, skel8, world, 0, false );
+				113f * TILE, 83 * TILE ), 100, skel8, world, 0, false );
 //		LerpMover lm3 = new LerpMover( new Vector2( plat.body.getPosition( ).x,
 //				plat.body.getPosition( ).y + 1.5f ).mul( Util.BOX_TO_PIXEL ),
 //				plat.body.getPosition( ).mul( Util.BOX_TO_PIXEL ), 0.001f,
@@ -699,7 +699,7 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		skel9.addKinematicPlatform( plat );
 
 		PuzzleScrew puzzleScrew = new PuzzleScrew( "004", new Vector2(
-				130f * TILE, 83 * TILE ), 50, skel9, world, 0, false );
+				130f * TILE, 83 * TILE ), 100, skel9, world, 0, false );
 		@SuppressWarnings( "unused" )
 		RotateByDegree rm = new RotateByDegree( 0.0f, -90.0f, 0, 0.5f );
 
@@ -718,7 +718,7 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		skel9.addKinematicPlatform( plat );
 
 		PuzzleScrew puzzleScrew2 = new PuzzleScrew( "006", new Vector2(
-				143f * TILE, 83 * TILE ), 50, skel9, world, 0, false );
+				143f * TILE, 83 * TILE ), 100, skel9, world, 0, false );
 		plat.setActive( true );
 		puzzleScrew2.puzzleManager.addEntity( plat );
 		PuzzleRotateTweenMover rtm2 = new PuzzleRotateTweenMover( 1,
