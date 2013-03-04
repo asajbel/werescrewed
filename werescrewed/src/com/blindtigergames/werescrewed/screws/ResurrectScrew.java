@@ -43,6 +43,7 @@ public class ResurrectScrew extends Screw {
 		this.world = world;
 		this.depth = 1;
 		this.deadPlayer = deadPlayer;
+		active = true;
 		screwType = ScrewType.SCREW_RESURRECT;
 		entityType = EntityType.SCREW;
 

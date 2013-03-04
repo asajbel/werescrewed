@@ -286,6 +286,22 @@ public class Player extends Entity {
 					playerState = PlayerState.Screwing;
 					mover = null;
 				}
+			} else {
+				//if resurrect screw and its not active remove the player joint
+				if ( currentScrew.getScrewType( ) == ScrewType.SCREW_RESURRECT ) {
+					if ( !currentScrew.isActive( ) ) {
+						world.destroyJoint( playerToScrew );
+						playerToScrew = null;
+						for ( Fixture f : body.getFixtureList( ) ) {
+							f.setSensor( false );
+						}
+						mover = null;
+						currentScrew.setPlayerAttached( false );
+						playerState = PlayerState.JumpingOffScrew;
+						screwJumpTimeout = SCREW_JUMP_STEPS;
+						jump( );
+					}
+				}
 			}
 		} else if ( steamCollide ) {
 			steamResolution( );
