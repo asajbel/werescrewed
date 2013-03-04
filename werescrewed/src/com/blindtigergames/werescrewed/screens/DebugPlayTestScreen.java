@@ -19,6 +19,7 @@ import com.blindtigergames.werescrewed.debug.SBox2DDebugRenderer;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.RobotState;
 import com.blindtigergames.werescrewed.entity.action.EntityActivateMoverAction;
+import com.blindtigergames.werescrewed.entity.action.EntityDeactivateMoverAction;
 import com.blindtigergames.werescrewed.entity.builders.EventTriggerBuilder;
 import com.blindtigergames.werescrewed.entity.builders.PlatformBuilder;
 import com.blindtigergames.werescrewed.entity.builders.PlayerBuilder;
@@ -766,7 +767,9 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		EventTriggerBuilder etb = new EventTriggerBuilder(world);
 		et = etb.name( "event1" ).circle( ).radius( 100 )
 				.position( new Vector2(175f * TILE, 84 * TILE) )
-				.addEntity( specialPlat ).beginAction( new EntityActivateMoverAction() ).build();
+				.addEntity( specialPlat ).beginAction( new EntityActivateMoverAction() )
+				.endAction( new EntityDeactivateMoverAction() ).repeatable( ).twoPlayersToDeactivate( )
+				.build();
 			
 		rootSkeleton.addSkeleton( skel9 );
 	}
@@ -813,7 +816,8 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		player2.update( deltaTime );
 		testRope.update( deltaTime );
 		et.update( deltaTime );
-
+		//System.out.println(specialPlat.isActive( ));
+		
 		rootSkeleton.update( deltaTime );
 
 		batch.setProjectionMatrix( cam.combined( ) );

@@ -238,8 +238,8 @@ public class MyContactListener implements ContactListener {
 						case EVENTTRIGGER:
 							EventTrigger et = ( EventTrigger ) objectFix.getBody( )
 							.getUserData( );
-							et.setActivated( false, player.name );
 							et.triggerEndEvent( );
+							et.setActivated( false, player.name );
 							break;
 						default:
 							break;

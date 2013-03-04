@@ -23,7 +23,7 @@ import com.blindtigergames.werescrewed.util.Util;
 
 public class EventTrigger extends Entity{
 	
-	private boolean repeatable = true;
+	private boolean repeatable = false;
 	private boolean repeatTriggeredOnce = false;
 	private boolean activated = false;
 	private boolean triggeredOnce = false;
@@ -276,7 +276,10 @@ public class EventTrigger extends Entity{
 	public void update( float deltaTime ){
 //		System.out.println( "p1: " + playerOneContact 
 //				+ ", p2: " + playerTwoContact 
-//				+ ", activated: " + this.activated);
+//				+ ", activated: " + this.activated
+//				+ "repeatTrig: " + repeatTriggeredOnce);
+		
+		//System.out.println( repeatTriggeredOnce );
 	}
 	
 	/**
