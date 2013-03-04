@@ -8,5 +8,7 @@ public enum EntityType {
     CHECKPOINT,
     STEAM,
     PLAYER,
-    EVENTTRIGGER
+    EVENTTRIGGER,
+    SKELETON,
+    ENTITY
 }

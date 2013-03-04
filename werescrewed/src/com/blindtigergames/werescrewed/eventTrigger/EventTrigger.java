@@ -13,6 +13,11 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityType;
 import com.blindtigergames.werescrewed.entity.action.IAction;
+import com.blindtigergames.werescrewed.hazard.Hazard;
+import com.blindtigergames.werescrewed.particles.Steam;
+import com.blindtigergames.werescrewed.platforms.Platform;
+import com.blindtigergames.werescrewed.player.Player;
+import com.blindtigergames.werescrewed.skeleton.Skeleton;
 import com.blindtigergames.werescrewed.util.Util;
 
 
@@ -150,5 +155,43 @@ public class EventTrigger extends Entity{
 	
 	public void addIAction(IAction action){
 		this.action = action;
+	}
+	
+	/**
+	 * UNUSED
+	 * 
+	 * THe idea for this function was to call actions for certain 
+	 * types, but instead I changed IAction so that each 
+	 * implementation of IAction would do the casting itself
+	 * What this means is we have to be careful which entities are in which
+	 * EventTriggers with the correct IActions
+	 * 
+	 * Check out the IAction: HazardActivateAction.java 
+	 * to see the correct use
+	 * @param entity
+	 */
+	private void applyAction(Entity entity){
+		switch(entity.getEntityType( )){
+		case ENTITY:
+			action.act(entity);
+			break;
+		case HAZARD:
+			action.act( (Hazard) entity );
+			break;
+		case PLATFORM:
+			action.act( (Platform) entity );
+			break;
+		case STEAM:
+			action.act( (Steam) entity );
+			break;
+		case SKELETON:
+			action.act( (Skeleton) entity );
+			break;
+		case PLAYER:
+			action.act( (Player) entity );
+			break;
+		default:
+			Gdx.app.log("Cannot apply action to", entity.toString( ));
+		}
 	}
 }

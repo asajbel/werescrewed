@@ -18,7 +18,7 @@ import com.blindtigergames.werescrewed.collisionManager.MyContactListener;
 import com.blindtigergames.werescrewed.debug.SBox2DDebugRenderer;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.RobotState;
-import com.blindtigergames.werescrewed.entity.action.ActivateMoverAction;
+import com.blindtigergames.werescrewed.entity.action.EntityActivateMoverAction;
 import com.blindtigergames.werescrewed.entity.builders.PlatformBuilder;
 import com.blindtigergames.werescrewed.entity.builders.PlayerBuilder;
 import com.blindtigergames.werescrewed.entity.builders.RopeBuilder;
@@ -764,7 +764,7 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		//specialPlat.setActive( true );
 		
 		et.addEntityToTrigger( specialPlat );
-		et.addIAction( new ActivateMoverAction() );
+		et.addIAction( new EntityActivateMoverAction() );
 		rootSkeleton.addSkeleton( skel9 );
 	}
 
