@@ -67,6 +67,7 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 	private TiledPlatform plat;
 	private Skeleton skel1;
 	private TiledPlatform stair;
+	private EventTrigger et;
 
 	private static final float TILE = 32;
 	private TiledPlatform step;
@@ -77,12 +78,10 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 	private Skeleton skel4;
 	private Skeleton skel5, skel6;
 	private Rope testRope;
-	private TiledPlatform specialPlat;
 
 	private BossScrew bossBolt;
 	private float endgameCounter;
 	private Music inceptionhorn;
-	private EventTrigger et;
 
 	public DebugPlayTestScreen( ) {
 
