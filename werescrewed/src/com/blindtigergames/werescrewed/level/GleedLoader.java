@@ -24,9 +24,12 @@ import com.blindtigergames.werescrewed.entity.mover.TimelineTweenMover;
 import com.blindtigergames.werescrewed.entity.tween.PathBuilder;
 import com.blindtigergames.werescrewed.platforms.Platform;
 import com.blindtigergames.werescrewed.platforms.TiledPlatform;
+import com.blindtigergames.werescrewed.screws.PuzzleScrew;
 import com.blindtigergames.werescrewed.screws.Screw;
 import com.blindtigergames.werescrewed.screws.ScrewType;
 import com.blindtigergames.werescrewed.skeleton.Skeleton;
+import com.blindtigergames.werescrewed.util.ArrayHash;
+import com.blindtigergames.werescrewed.util.Util;
 
 public class GleedLoader {	
 	protected XmlReader reader;
@@ -35,6 +38,7 @@ public class GleedLoader {
 	protected HashMap<String,Entity> entities;
 	protected HashMap<String,TimelineTweenMover> movers;
 	protected HashMap<String,Skeleton> skeletons;
+	protected HashMap<String,PuzzleScrew> puzzleScrews;
 	protected int spawnPoints;
 	
 	protected static final float GLEED_TO_GDX_X = 1.0f;
@@ -49,13 +53,11 @@ public class GleedLoader {
 		entities = new HashMap<String, Entity>();
 		movers = new HashMap<String, TimelineTweenMover>();
 		skeletons = new HashMap<String, Skeleton>();
+		puzzleScrews = new HashMap<String, PuzzleScrew>();
 		level = new Level();
 		spawnPoints = 0;
 		
 	}
-	
-	
-	
 	
 	public Level load(String filename){
 		skeletons.put( "root", level.root );
@@ -206,6 +208,7 @@ public class GleedLoader {
 		return null;
 	}
 
+	protected static final String puzzleTag = "puzzle"; 
 	protected Entity loadEntity(Item item){
 		Entity out = null;
 		boolean isPlatform = false;
@@ -253,9 +256,46 @@ public class GleedLoader {
 					}
 				}
 			}
+			//Attach to puzzle manager
+			if (item.props.containsKey( puzzleTag )){
+				for (String puzzleString : item.props.getAll( puzzleTag )){
+					Array<String> tokens = new Array<String>(puzzleString.split( "\\s+" ));
+					String puzzleName = "";
+					moverName = "";
+					String token;
+					for (int t = 0; t < tokens.size; t++){
+						token = tokens.get( t );
+						if (t == 0){
+							puzzleName = token;
+						} else {
+							moverName = moverName.concat( token );
+						}
+					}
+					if (!puzzleName.equals( item.name )){
+						PuzzleScrew puzzle = loadPuzzle(puzzleName);
+						if (puzzle != null){
+							mover = null;
+							if (MoverType.fromString( moverName ) != null){
+								mover = new MoverBuilder()
+								.fromString(moverName)
+								.build( );
+							} else if (isPlatform){
+								mover = loadMover(moverName, out);
+							}
+							if (mover != null){
+								Gdx.app.log( "GleedLoader", "Attaching "+item.name+" to puzzle screw "+puzzle.name+" with mover string ["+moverName+"]" );
+								puzzle.puzzleManager.addEntity( out );
+								puzzle.puzzleManager.addMover( mover );
+							}
+						}
+					}
+				}
+			}
 		}
 		return out;
 	}
+	
+	protected static final String dynamicTag = "dynamic";
 	
 	protected TiledPlatform loadTiledPlatform(Item item){
 		TiledPlatform out = null;
@@ -264,6 +304,10 @@ public class GleedLoader {
 		Vector2 sca = new Vector2();
 		pos.x = item.pos.x + (item.sca.x/2.0f * GLEED_TO_GDX_X);
 		pos.y = item.pos.y + (item.sca.y/2.0f * GLEED_TO_GDX_Y);
+		
+		boolean isDynamic = false;
+		if (item.props.containsKey( "dynamic" ))
+			isDynamic = true;
 		
 		float tileX = item.getDefinition().getTexture( ).getWidth( )/4.0f;
 		float tileY = item.getDefinition().getTexture( ).getWidth( )/4.0f;
@@ -277,10 +321,11 @@ public class GleedLoader {
 		.dimensions( sca )
 		.texture( item.getDefinition().getTexture() )
 		.solid( true )
+		.dynamic( isDynamic )
 		.buildTilePlatform( );
 
 		Skeleton parent = loadSkeleton(item.skeleton);
-		if (item.props.containsKey( "dynamic" )){
+		if (isDynamic){
 			Gdx.app.log("GleedLoader", "Dynamic platform loaded:"+out.name);
 			parent.addDynamicPlatform( out );
 		} else {
@@ -343,47 +388,43 @@ public class GleedLoader {
 		} else {
 			builder.entity( parent );
 		}
-		Screw out = builder.buildScrew();
-		if (out != null){
-			switch (sType){
-			case SCREW_STRIPPED:
-				Gdx.app.log("GleedLoader", "Building stripped screw "+ item.name + " at " + item.pos.toString( ));
-				break;
-			case SCREW_STRUCTURAL:
-				Gdx.app.log("GleedLoader", "Building structural screw "+ item.name + " at " + item.pos.toString( ));
-				break;
+		Screw out = null;
+		switch (sType){
 			case SCREW_PUZZLE:
 				Gdx.app.log("GleedLoader", "Building puzzle screw "+ item.name + " at " + item.pos.toString( ));
-				break;
-			case SCREW_BOSS:
-				Gdx.app.log("GleedLoader", "Building boss screw "+ item.name + " at " + item.pos.toString( ));
+				PuzzleScrew p = builder.buildPuzzleScrew( );
+				puzzleScrews.put(item.name, p);
+				out = p;
 				break;
 			default:
+				out = builder.buildScrew();
 				break;
-			}
-			/*
-			parent.addScrew( out );
-			parent.addScrewForDraw( out );
-			*/
 		}
 		return out;
 	}
 
-	public Level getLevel(){return level;}
-	
-	protected static EntityDef getDefinition(Element item){
-		HashMap<String,String> props = getCustomProperties(item);
-		return EntityDef.getDefinition(props.get( defTag ));
+	public PuzzleScrew loadPuzzle(String name){
+		if (puzzleScrews.containsKey( name )){
+			return puzzleScrews.get( name );
+		} else if (items.get( GleedTypeTag.ENTITY ).containsKey( name )){
+			loadEntity( name ); //In loading the entity, we should get the puzzle screw loaded.
+			if (puzzleScrews.containsKey( name )){
+				return puzzleScrews.get( name );
+			}
+		}
+		return null;
 	}
 	
-	protected static HashMap<String,String> getCustomProperties(Element e){
-		HashMap<String,String> out = new HashMap<String,String>();
+	public Level getLevel(){return level;}
+	
+	protected static ArrayHash getCustomProperties(Element e){
+		ArrayHash out = new ArrayHash();
 		Array<Element> properties = e.getChildByName("CustomProperties").getChildrenByName("Property");
 		String name; String value;
 		for (Element prop: properties){
 			name = prop.getAttribute("Name").toLowerCase( );
 			value = prop.get("string", "<no value>");
-			out.put(name,value);
+			out.add( name, value );
 		}
 		return out;
 	}
@@ -425,7 +466,7 @@ public class GleedLoader {
 		public String name, gleedType, defName;
 		private EntityDef def;
 		public GleedTypeTag tag;
-		public HashMap<String,String> props;
+		public ArrayHash props;
 		public Vector2 pos;
 		public Vector2 origin;
 		public Vector2 sca;

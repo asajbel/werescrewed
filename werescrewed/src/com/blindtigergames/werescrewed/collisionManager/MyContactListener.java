@@ -110,7 +110,7 @@ public class MyContactListener implements ContactListener {
 						case HAZARD:
 							Hazard hazard = ( Hazard ) objectFix.getBody( )
 									.getUserData( );
-							hazard.performContact( player );
+							hazard.performContact( player, objectFix );
 							Gdx.app.log( "Player " + player.name, " Collided with Hazard" );
 							break;
 						case CHECKPOINT:

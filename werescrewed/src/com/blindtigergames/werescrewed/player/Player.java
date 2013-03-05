@@ -28,6 +28,7 @@ import com.blindtigergames.werescrewed.input.MyControllerListener;
 import com.blindtigergames.werescrewed.input.PlayerInputHandler;
 import com.blindtigergames.werescrewed.screws.Screw;
 import com.blindtigergames.werescrewed.screws.ScrewType;
+import com.blindtigergames.werescrewed.util.Metrics;
 import com.blindtigergames.werescrewed.util.Util;
 
 /**
@@ -324,6 +325,9 @@ public class Player extends Entity {
 				f.setFilterData( filter );
 			}
 			body.setTransform( body.getPosition( ), 90f * Util.DEG_TO_RAD );
+			if(Metrics.turnOnMetrics){
+				Metrics.addPlayerDeathPosition( this.getPositionPixel( ) );
+			}
 		} else {
 			playerState = PlayerState.Standing;
 		}
@@ -665,6 +669,9 @@ public class Player extends Entity {
 			playerState = PlayerState.Screwing;
 			currentScrew.setPlayerAttached( true );
 			setGrounded( false );
+			if(Metrics.turnOnMetrics){
+				Metrics.addPlayerAttachToScrewPosition( this.getPositionPixel( ) );
+			}
 		}
 	}
 

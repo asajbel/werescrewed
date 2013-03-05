@@ -12,6 +12,7 @@ public class RopeBuilder extends GenericEntityBuilder<RopeBuilder> {
 	protected float linkHeight;
 	protected int links;
 	protected boolean createScrew;
+	protected Entity attachToTop;
 	
 	public RopeBuilder ( World world ){
 		super();
@@ -48,6 +49,11 @@ public class RopeBuilder extends GenericEntityBuilder<RopeBuilder> {
 		createScrew = true;
 		return this;
 	}
+	
+	public RopeBuilder attachToTop(Entity entity){
+		this.attachToTop = entity;
+		return this;
+	}
 	public Rope buildRope() {
 		Rope rope = new Rope( this.name,
 							  new Vector2 (this.pos.x * Util.PIXEL_TO_BOX, this.pos.y * Util.PIXEL_TO_BOX),
@@ -56,6 +62,7 @@ public class RopeBuilder extends GenericEntityBuilder<RopeBuilder> {
 							  this.tex,
 							  this.world );
 		if(createScrew) rope.createScrew( );
+		if(this.attachToTop != null) rope.attachEntityToTop( attachToTop, true );
 		return rope;
 	}
 	

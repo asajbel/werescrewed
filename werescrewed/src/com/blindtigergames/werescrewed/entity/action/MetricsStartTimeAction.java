@@ -7,7 +7,8 @@ public class MetricsStartTimeAction implements IAction{
 
 	@Override
 	public void act( ) {
-		Metrics.addPlayerBeginTime( (System.currentTimeMillis( ) /1000) % 60  );
+		if( Metrics.turnOnMetrics )
+			Metrics.addPlayerBeginTime( (System.currentTimeMillis( ) /1000) % 60  );
 		
 	}
 

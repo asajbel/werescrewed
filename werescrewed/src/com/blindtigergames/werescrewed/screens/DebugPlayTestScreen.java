@@ -140,7 +140,7 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		EventTriggerBuilder etb = new EventTriggerBuilder(world);
 		et = etb.name( "event1" ).circle( ).radius( 100 )
 				.position( new Vector2(10 * TILE, 1.5f * TILE ) )
-				.beginAction( new MetricsStartTimeAction() ).endAction( new MetricsEndTimeAction() )
+				.beginAction( new MetricsStartTimeAction() )
 				.build();
 		
 		ground = platBuilder.position( 81 * TILE, 0 ).name( "ground1" )
