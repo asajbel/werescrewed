@@ -8,6 +8,7 @@ import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.player.Player;
 import com.blindtigergames.werescrewed.screws.*;
 import com.blindtigergames.werescrewed.skeleton.Skeleton;
+import com.blindtigergames.werescrewed.util.ArrayHash;
 
 public class ScrewBuilder extends GenericEntityBuilder< ScrewBuilder > {
 	protected ScrewType screwType;
@@ -67,7 +68,7 @@ public class ScrewBuilder extends GenericEntityBuilder< ScrewBuilder > {
 	protected static final String screwMaxTag = "screwmax";
 	protected static final String screwResetTag = "resetable";
 	@Override
-	public ScrewBuilder properties(HashMap<String,String> props){
+	public ScrewBuilder properties(ArrayHash props){
 		super.properties( props );
 		if (props.containsKey( screwTypeTag )){
 			this.screwType(props.get( screwTypeTag ));
