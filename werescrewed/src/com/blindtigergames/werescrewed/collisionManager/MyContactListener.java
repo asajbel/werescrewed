@@ -87,27 +87,25 @@ public class MyContactListener implements ContactListener {
 							}
 							break;
 						case SCREW:
-							if ( player.isPlayerDead( ) ) {
+							//if ( player.isPlayerDead( ) ) {
 								Screw screw = ( Screw ) object;
 								if ( p1 == null || p1 == player ) {
 									p1 = player;
 									NUM_PLAYER1_SCREWCONTACTS++;
+									player.hitScrew( screw );
 									if ( screw.getScrewType( ) == ScrewType.SCREW_RESURRECT ) {
 										ResurrectScrew rScrew = ( ResurrectScrew ) screw;
 										rScrew.hitPlayer( player );
-										Gdx.app.log( "hit rez screw", "" );
 									}
-									player.hitScrew( screw );
 								} else if ( p1 != player ) {
 									NUM_PLAYER2_SCREWCONTACTS++;
+									player.hitScrew( screw );
 									if ( screw.getScrewType( ) == ScrewType.SCREW_RESURRECT ) {
 										ResurrectScrew rScrew = ( ResurrectScrew ) screw;
 										rScrew.hitPlayer( player );
-										Gdx.app.log( "hit rez screw", "" );
 									}
-									player.hitScrew( screw );
 								}
-							}
+							//}
 							break;
 						case PLAYER:
 							Player player2 = ( Player ) objectFix.getBody( )
