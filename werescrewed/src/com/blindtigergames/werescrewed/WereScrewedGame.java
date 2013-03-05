@@ -59,7 +59,7 @@ public class WereScrewedGame extends Game {
 			if( !metricsFlag ){
 				metricsFlag = true;
 				Metrics.turnOnMetrics = !Metrics.turnOnMetrics;
-				System.out.print( Metrics.turnOnMetrics );
+				Gdx.app.log( "Metrics activated", "" + Metrics.turnOnMetrics );
 			}
 		}else{
 			metricsFlag = false;
