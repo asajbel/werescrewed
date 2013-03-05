@@ -4,7 +4,8 @@ package com.blindtigergames.werescrewed.level;
 public enum GleedTypeTag {
     ENTITY("Entity"),
     MOVER("Mover"),
-    SKELETON("Skeleton")
+    SKELETON("Skeleton"),
+    PUZZLE("Puzzle")
     ;
     /**
      * @param text

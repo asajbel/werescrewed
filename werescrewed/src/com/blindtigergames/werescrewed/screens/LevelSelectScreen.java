@@ -37,7 +37,7 @@ public class LevelSelectScreen implements com.badlogic.gdx.Screen {
 		screenLabel = new Label( "Level Select", font);
 		playButton = new Button( "Physics Test Screen", font,
 				new ScreenSwitchHandler( ScreenType.PHYSICS ) );
-		resurrectButton = new Button( "Resurrect Test Screen", font,
+		resurrectButton = new Button( "Parallax Test Screen", font,
 				new ScreenSwitchHandler( ScreenType.RESURRECT ) );
 		hazardButton = new Button ( "Hazard Test Screen", font,
 				new ScreenSwitchHandler( ScreenType.HAZARD ) );

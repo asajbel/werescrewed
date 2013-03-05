@@ -151,22 +151,22 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		testRope = ropeBuilder.position( 2800f, 450f ).width( 16f )
 				.height( 64f ).links( 5 ).createScrew( ).buildRope( );
 
-		TiledPlatform topPlatform = platBuilder.width( 10 ).height( 1 )
+		TiledPlatform topPlatform = platBuilder.name( "othe").width( 10 ).height( 1 )
 				.oneSided( true ).position( 2400, 480 )// .texture( testTexture
 														// )
 				.friction( 1f ).staticBody( ).buildTilePlatform( );
 
-		testRope.attachEntityToTop( topPlatform, false );
+		testRope.attachEntityToTop( topPlatform, true );
 
-		TiledPlatform bottomPlatform = platBuilder.width( 10 ).height( 1 )
-				.oneSided( true ).position( 0, 0 )// .texture( testTexture )
-				.friction( 1f ).dynamic( ).buildTilePlatform( );
+//		TiledPlatform bottomPlatform = platBuilder.name( "othe2").width( 10 ).height( 1 )
+//				.oneSided( true ).position( 0, 0 )// .texture( testTexture )
+//				.friction( 1f ).dynamic( ).buildTilePlatform( );
+//
+//		
+//
+//		testRope.attachEntityToBottom( bottomPlatform, true );
 
 		buildSubSkeleton( );
-
-		testRope.attachEntityToBottom( bottomPlatform, true );
-
-
 
 		// rope = new Rope( "rope", new Vector2 (2000.0f * Util.PIXEL_TO_BOX,
 		// 400.0f* Util.PIXEL_TO_BOX), null, world );
@@ -208,6 +208,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		debugRenderer.setDrawJoints( false );
 
 		Gdx.app.setLogLevel( Application.LOG_DEBUG );
+		
 	}
 
 	private void buildSubSkeleton( ) {
@@ -220,7 +221,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		RevoluteJointBuilder jbBuilder = new RevoluteJointBuilder( world );
 		jbBuilder.skeleton( skeleton ).bodyB( dynSkeleton ).motor( true )
 				.build( );
-		TiledPlatform plat = platBuilder.dynamic( ).position( 0, 200 )
+		TiledPlatform plat = platBuilder.name( "othe4").dynamic( ).position( 0, 200 )
 				.dimensions( 4, 1 ).oneSided( false ).buildTilePlatform( );
 		plat.body.setFixedRotation( false );
 		dynSkeleton.addPlatformRotatingCenter( plat );
@@ -403,7 +404,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 	 * Initializes settings for moving platforms and adds them to the skeleton
 	 */
 	void buildMoverPlatforms( ) {
-		TiledPlatform slidingPlatform = platBuilder.width( 10 ).height( 1 )
+		TiledPlatform slidingPlatform = platBuilder.name( "othe5").width( 10 ).height( 1 )
 				.oneSided( true ).position( -1000, 200 )// .texture( testTexture
 														// )
 				.friction( 1f ).dynamic( ).buildTilePlatform( );
@@ -419,7 +420,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 				PuzzleType.PRISMATIC_SLIDER, j ), RobotState.IDLE );
 		skeleton.addDynamicPlatform( slidingPlatform );
 
-		TiledPlatform skeletonTest1 = platBuilder.width( 10 ).height( 1 )
+		TiledPlatform skeletonTest1 = platBuilder.name( "othe6").width( 10 ).height( 1 )
 				.friction( 1f ).oneSided( false ).position( 500, 250 )
 				// .texture( testTexture )
 				// .name( "yea!" )
@@ -428,7 +429,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		// Gdx.app.log( "name:", skeletonTest1.name );
 
 		TiledPlatform pathPlatform = platBuilder.dimensions( 4, 1 )
-				.position( 1600, 100 ).friction( 1f ).kinematic( )
+				.position( 1600, 100 ).friction( 1f ).kinematic( ).name( "othe7")
 				.buildTilePlatform( );
 		skeleton.addKinematicPlatform( pathPlatform );
 		// build path. TODO: make building paths easier!!
@@ -455,7 +456,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		platBuilder.reset( ).world( world );
 
 		// for building dynamic pistons (they don't work very well)
-		PlatformBuilder builder = platBuilder.width( 1 ).height( 3 )
+		PlatformBuilder builder = platBuilder.width( 1 ).height( 3 ).name( "othe8")
 				.oneSided( false ).dynamic( )
 				// .setPosition( (-500f-i*40)*PIXEL_TO_BOX, 150f*PIXEL_TO_BOX )
 				// .texture( testTexture )
@@ -476,7 +477,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 
 		// BUILD ROW OF PISTONS with new kinematic way
 		builder = platBuilder.width( 1 ).height( 3 ).oneSided( false )
-				.kinematic( ).setScale( 1 )// .texture( testTexture )
+				.kinematic( ).setScale( 1 ).name( "othe9")// .texture( testTexture )
 				.friction( 1f );
 		for ( int i = 0; i < 10; ++i ) {
 			TiledPlatform pistonKin = builder.name( "pistonKin" + i )
@@ -487,7 +488,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 					0, 300 ), 1f, 3f, 1f, 0f, i / 10.0f + 1 ), RobotState.IDLE );
 		}
 
-		builder = platBuilder.width( 20 ).height( 1 ).oneSided( true )
+		builder = platBuilder.width( 20 ).height( 1 ).oneSided( true ).name( "othe0")
 				.dynamic( )
 				// .setPosition( (-500f-i*40)*PIXEL_TO_BOX, 150f*PIXEL_TO_BOX )
 				// .texture( testTexture )
@@ -549,7 +550,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 	
 	
 	public void initEventTrigger(){
-		specialPlat = platBuilder.position( -1000, 300).name( "plat12" )
+		specialPlat = platBuilder.position( -1000, 300).name( "specialPlat" )
 				.dimensions( 6, 1 ).texture( testTexture ).kinematic( )
 				.friction( 1.0f ).oneSided( true ).restitution( 0 )
 				.buildTilePlatform( );
@@ -570,6 +571,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		
 		
 		skeleton.addKinematicPlatform( specialPlat );
+		
 	}
 
 	@Override
@@ -582,7 +584,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 			Gdx.gl10.glClear( GL20.GL_COLOR_BUFFER_BIT );
 		}
 
-		//System.out.println("plat: " + specialPlat.body.getPosition( )+ ", et: " + et.body.getPosition( ));
+		
 		cam.update( );
 
 		if ( Gdx.input.isKeyPressed( Input.Keys.ESCAPE ) ) {
@@ -617,7 +619,6 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		if ( Gdx.input.isKeyPressed( Input.Keys.V ) ) {
 			oldRootSkeleton.rotateBy( 0.01f );
 		}
-
 		player1.update( deltaTime );
 		player2.update( deltaTime );
 		// oldRootSkeleton.update( deltaTime );
