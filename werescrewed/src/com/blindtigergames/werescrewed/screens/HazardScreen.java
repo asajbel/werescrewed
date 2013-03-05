@@ -91,8 +91,8 @@ public class HazardScreen implements com.badlogic.gdx.Screen {
 	}
 	
 	private void initHazards( ) {
-		spikes = new Spikes( "Spikes1", new Vector2( -1050.0f, 90.0f), 
-				50.0f, 50.0f, world, true );
+		spikes = new Spikes( "Spikes1", new Vector2( -1250.0f, -10.0f), 
+				1, 4, world, true );
 	}
 	
 	private void initCheckPoints( ) {
