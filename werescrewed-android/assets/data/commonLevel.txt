@@ -15,8 +15,12 @@
 /common/screw1.png
 /common/test01.png
 /common/cletter.png
+<<<<<<< HEAD
 /common/parallax_layer1_0.png
 /common/parallax_layer1_1.png
 /common/parallax_layer2_0.png
 /common/parallax_layer2_1.png
+=======
+/common/spikes.png
+>>>>>>> 4081a666f5473ceb4c37e13a1173c5367b72a8cc
 /particles/particle.png

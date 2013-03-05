@@ -4,6 +4,7 @@ import aurelienribon.tweenengine.Tween;
 
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
@@ -91,8 +92,8 @@ public class HazardScreen implements com.badlogic.gdx.Screen {
 	}
 	
 	private void initHazards( ) {
-		spikes = new Spikes( "Spikes1", new Vector2( -1050.0f, 90.0f), 
-				50.0f, 50.0f, world, true );
+		spikes = new Spikes( "Spikes1", new Vector2( -1250.0f, -10.0f), 
+				1, 4, world, true );
 	}
 	
 	private void initCheckPoints( ) {
@@ -111,6 +112,9 @@ public class HazardScreen implements com.badlogic.gdx.Screen {
 		} else {
 			Gdx.gl10.glClearColor( 0.0f, 0.0f, 0.0f, 1.0f );
 			Gdx.gl10.glClear( GL20.GL_COLOR_BUFFER_BIT );
+		}
+		if ( Gdx.input.isKeyPressed( Input.Keys.ESCAPE ) ) {
+			ScreenManager.getInstance( ).show( ScreenType.PAUSE );
 		}
 		
 		cam.update( );

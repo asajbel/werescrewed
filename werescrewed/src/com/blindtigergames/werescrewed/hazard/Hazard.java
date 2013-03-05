@@ -3,6 +3,7 @@ package com.blindtigergames.werescrewed.hazard;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.World;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityDef;
@@ -19,8 +20,8 @@ public class Hazard extends Entity {
 
 	public boolean active;
 	
-	public Hazard( String name, Vector2 pos, float height, float width, World world, boolean isActive ) {
-		super( name, pos, null, null, true );
+	public Hazard( String name, Vector2 pos, Texture texture, World world, boolean isActive ) {
+		super( name, pos, texture, null, true );
 		entityType = EntityType.HAZARD;
 	}
 	
@@ -38,7 +39,7 @@ public class Hazard extends Entity {
 	}
 	
 	//Performs check to see if a player has collided with a hazard.
-	public void performContact ( Player player ) {
+	public void performContact ( Player player, Fixture fixture ) {
 		player.killPlayer( );
 	}
 	
@@ -49,6 +50,6 @@ public class Hazard extends Entity {
 
 	@Override
 	public void draw( SpriteBatch batch ) {
-		
+		super.draw( batch );
 	}
 }

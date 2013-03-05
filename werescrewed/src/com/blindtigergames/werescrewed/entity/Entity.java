@@ -275,7 +275,7 @@ public class Entity implements GleedLoadable {
 		} else {
 			// Definitions for non-loaded sprites
 			origin = new Vector2( sprite.getWidth( ) / 2,
-					sprite.getHeight( ) / 2 );
+					sprite.getHeight( ) / 2);
 
 			// Arbitrary offset :(
 			this.offset.set( sprite.getWidth( ) / 2, sprite.getHeight( ) / 2 );
