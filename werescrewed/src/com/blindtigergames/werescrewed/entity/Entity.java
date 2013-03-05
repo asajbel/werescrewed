@@ -3,6 +3,7 @@ package com.blindtigergames.werescrewed.entity;
 import java.util.ArrayList;
 import java.util.EnumMap;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -691,5 +692,19 @@ public class Entity implements GleedLoadable {
 		
 		//Initalize to idle
 		currentRobotState = RobotState.IDLE;
+	}
+	
+	/**
+	 * prints Fixture's index in FixtureList.
+	 * 
+	 * @param fix Fixture
+	 */
+	public void getFixtureIndex(Fixture fix){
+		for (int i = 0; i < body.getFixtureList( ).size( ); i++){
+			if(fix == body.getFixtureList( ).get( i )){
+				Gdx.app.log( name + " FixtureListIndex: " , "" + i );
+				return;
+			}
+		}
 	}
 }

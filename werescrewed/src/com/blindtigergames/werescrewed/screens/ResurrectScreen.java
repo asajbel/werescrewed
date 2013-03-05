@@ -154,19 +154,19 @@ public class ResurrectScreen implements com.badlogic.gdx.Screen {
 		bg_2_1.sprite.setScale( 1.9f );
 		
 		bg_1_0.setMoverAtCurrentState( new ParallaxMover(
-				new Vector2( 1024*1.9f, 0 ), new Vector2( -1024*1.9f, 0 ), 0.0003f, .5f ) );
+				new Vector2( 1024*1.9f, 0 ), new Vector2( -1024*1.9f, 0 ), 0.0005f, .5f ) );
 		bg_1_0.setActive( true );
 
 		bg_1_1.setMoverAtCurrentState( new ParallaxMover(
-				new Vector2( 1024*1.9f, 0  ), new Vector2( -1024*1.9f, 0  ), 0.0003f, 0f ) );
+				new Vector2( 1024*1.9f, 0  ), new Vector2( -1024*1.9f, 0  ), 0.0005f, 0f ) );
 		bg_1_1.setActive( true );
 
 		bg_2_0.setMoverAtCurrentState( new ParallaxMover(
-				new Vector2( -1024*1.9f, 0 ), new Vector2( 1024*1.9f, 0 ), 0.00015f, .5f ) );
+				new Vector2( 1024*1.9f, 0 ), new Vector2( -1024*1.9f, 0 ), 0.00025f, .5f ) );
 		bg_2_0.setActive( true );
 
 		bg_2_1.setMoverAtCurrentState( new ParallaxMover(
-				new Vector2( -1024*1.9f, 0 ), new Vector2( 1024*1.9f, 0 ), 0.00015f, 0f ) );
+				new Vector2( 1024*1.9f, 0 ), new Vector2( -1024*1.9f, 0 ), 0.00025f, 0f ) );
 		bg_2_1.setActive( true );
 		
 
@@ -174,7 +174,7 @@ public class ResurrectScreen implements com.badlogic.gdx.Screen {
 
 	private void initHazards( ) {
 		spikes = new Spikes( "Spikes1", new Vector2( -1250.0f, -10.0f), 
-				1, 4, world, true );
+				1, 4, world, true, false, true );
 	}
 
 	private void initTiledPlatforms( ) {
@@ -220,6 +220,7 @@ public class ResurrectScreen implements com.badlogic.gdx.Screen {
 		}
 
 		cam.update( );
+		//update background camera
 		bgCam.update( );
 		
 		if ( Gdx.input.isKeyPressed( Input.Keys.ESCAPE ) ) {
@@ -266,24 +267,13 @@ public class ResurrectScreen implements com.badlogic.gdx.Screen {
 		progressManager.update( deltaTime );
 		spikes.update( deltaTime );
 		
+		//update background skeletons
 		bg_2_0.update( deltaTime );
-		bg_2_0.sprite.setPosition(
-				bg_2_0.body.getPosition( ).mul( Util.BOX_TO_PIXEL ).x,
-				bg_2_0.body.getPosition( ).mul( Util.BOX_TO_PIXEL ).y );
 		bg_2_1.update( deltaTime );
-		bg_2_1.sprite.setPosition(
-				bg_2_1.body.getPosition( ).mul( Util.BOX_TO_PIXEL ).x,
-				bg_2_1.body.getPosition( ).mul( Util.BOX_TO_PIXEL ).y );
 		bg_1_0.update( deltaTime );
-		bg_1_0.sprite.setPosition(
-				bg_1_0.body.getPosition( ).mul( Util.BOX_TO_PIXEL ).x,
-				bg_1_0.body.getPosition( ).mul( Util.BOX_TO_PIXEL ).y );
 		bg_1_1.update( deltaTime );
-		bg_1_1.sprite.setPosition(
-				bg_1_1.body.getPosition( ).mul( Util.BOX_TO_PIXEL ).x,
-				bg_1_1.body.getPosition( ).mul( Util.BOX_TO_PIXEL ).y );
 
-
+		//update background stuff which uses different transformation matrices
 		bgBatch.begin( );
 		bg_2_0.draw( bgBatch );
 		bg_2_1.draw( bgBatch );
@@ -291,16 +281,14 @@ public class ResurrectScreen implements com.badlogic.gdx.Screen {
 		bg_1_1.draw( bgBatch );
 		bgBatch.end( );
 		
+		//use the camera matrix for things not in the background
 		batch.setProjectionMatrix( cam.combined( ) );
-
 		batch.begin( );
-	
 		rootSkeleton.draw( batch );
 		progressManager.draw( batch );
 		spikes.draw( batch );
 		player1.draw( batch );
 		player2.draw( batch );
-
 		batch.end( );
 
 		if ( debug )
