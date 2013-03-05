@@ -77,7 +77,6 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 	RootSkeleton rootSkeleton;
 	private ArrayList< StrippedScrew > climbingScrews;
 	private Rope testRope;
-	@SuppressWarnings( "unused" )
 	private RopeBuilder ropeBuilder;
 	private boolean debug = true;
 	private boolean debugTest = true;
