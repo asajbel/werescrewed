@@ -15,4 +15,8 @@
 /common/screw1.png
 /common/test01.png
 /common/cletter.png
+/common/parallax_layer1_0.png
+/common/parallax_layer1_1.png
+/common/parallax_layer2_0.png
+/common/parallax_layer2_1.png
 /particles/particle.png
