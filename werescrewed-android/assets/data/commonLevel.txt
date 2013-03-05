@@ -15,4 +15,5 @@
 /common/screw1.png
 /common/test01.png
 /common/cletter.png
+/common/tileset/TilesetTest.png
 /particles/particle.png
