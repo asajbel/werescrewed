@@ -1,6 +1,7 @@
 package com.blindtigergames.werescrewed.screws;
 
 public enum ScrewType {
+	SCREW_COSMETIC("ScrewCosmetic"),
 	SCREW_STRIPPED("ScrewStripped"),
 	SCREW_STRUCTURAL("ScrewStructural"),
 	SCREW_PUZZLE("ScrewPuzzle"),

@@ -11,6 +11,7 @@ import com.badlogic.gdx.physics.box2d.Manifold;
 import com.blindtigergames.werescrewed.camera.Anchor;
 import com.blindtigergames.werescrewed.checkpoints.CheckPoint;
 import com.blindtigergames.werescrewed.entity.Entity;
+import com.blindtigergames.werescrewed.eventTrigger.EventTrigger;
 import com.blindtigergames.werescrewed.platforms.Platform;
 import com.blindtigergames.werescrewed.platforms.PlatformType;
 import com.blindtigergames.werescrewed.hazard.Hazard;
@@ -19,7 +20,7 @@ import com.blindtigergames.werescrewed.player.Player;
 import com.blindtigergames.werescrewed.player.Player.PlayerState;
 import com.blindtigergames.werescrewed.screws.ResurrectScrew;
 import com.blindtigergames.werescrewed.screws.Screw;
-import com.blindtigergames.werescrewed.screws.Screw.ScrewType;
+import com.blindtigergames.werescrewed.screws.ScrewType;
 
 /**
  * 
@@ -95,7 +96,7 @@ public class MyContactListener implements ContactListener {
 								NUM_PLAYER2_SCREWCONTACTS++;
 								player.hitScrew( screw );
 							}
-							if ( screw.getScrewType( ) == ScrewType.RESURRECT ) {
+							if ( screw.getScrewType( ) == ScrewType.SCREW_RESURRECT ) {
 								ResurrectScrew rScrew = ( ResurrectScrew ) screw;
 								rScrew.hitPlayer( player );
 							}
@@ -110,6 +111,7 @@ public class MyContactListener implements ContactListener {
 							Hazard hazard = ( Hazard ) objectFix.getBody( )
 									.getUserData( );
 							hazard.performContact( player );
+							Gdx.app.log( "Player " + player.name, " Collided with Hazard" );
 							break;
 						case CHECKPOINT:
 							CheckPoint checkP = ( CheckPoint ) objectFix
@@ -118,6 +120,12 @@ public class MyContactListener implements ContactListener {
 							break;
 						case STEAM:
 							player.setSteamCollide( true );
+							break;
+						case EVENTTRIGGER:
+							EventTrigger et = ( EventTrigger ) objectFix.getBody( )
+								.getUserData( );
+							et.setActivated( true, player.name );
+							et.triggerBeginEvent( );
 							break;
 						default:
 							break;
@@ -227,6 +235,12 @@ public class MyContactListener implements ContactListener {
 						case STEAM:
 							player.setSteamCollide( false );
 							break;
+						case EVENTTRIGGER:
+							EventTrigger et = ( EventTrigger ) objectFix.getBody( )
+							.getUserData( );
+							et.triggerEndEvent( );
+							et.setActivated( false, player.name );
+							break;
 						default:
 							break;
 						}
@@ -301,14 +315,12 @@ public class MyContactListener implements ContactListener {
 							if ( player.getState( ) == PlayerState.GrabMode
 									|| player2.getState( ) == PlayerState.GrabMode ) {
 								contact.setEnabled( false );
-							} else if ( ( ( !player.isGrounded( ) || !player2
-									.isGrounded( ) )
-									&& player.getState( ) != PlayerState.Falling && player2
+							} else if ( ( player.getState( ) != PlayerState.Falling && player2
 									.getState( ) != PlayerState.Falling )
 									|| !player.isHeadStandTimedOut( )
 									|| !player2.isHeadStandTimedOut( ) ) {
 								contact.setEnabled( false );
-							}
+							} 
 							break;
 						default:
 							break;

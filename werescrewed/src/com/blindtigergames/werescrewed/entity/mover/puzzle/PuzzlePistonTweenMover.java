@@ -5,7 +5,6 @@ import aurelienribon.tweenengine.TweenEquations;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.joints.PrismaticJoint;
 import com.blindtigergames.werescrewed.entity.mover.IMover;
 import com.blindtigergames.werescrewed.entity.mover.PuzzleType;
 import com.blindtigergames.werescrewed.entity.mover.SteeringOutput;
@@ -26,6 +25,7 @@ public class PuzzlePistonTweenMover extends TweenMover implements IMover {
 	private Vector2 pistonDestination; //where the piston shoots to in piston local coord pixels
 	private float timeUp, timeDown;
 	private float delayDown, delayUp;
+	@SuppressWarnings( "unused" )
 	private float delayOnce;
 	private boolean isAtMaxScrewValue;
 	//private Tween tween;
@@ -79,7 +79,6 @@ public class PuzzlePistonTweenMover extends TweenMover implements IMover {
 							   .delay( this.delayDown )
 							   .ease( TweenEquations.easeNone )
 							   .start() );
-				
 			}
 		}else if ( hasNoTweens() ){
 			p.setMoverNullAtCurrentState( );

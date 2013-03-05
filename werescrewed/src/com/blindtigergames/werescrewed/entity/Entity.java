@@ -76,13 +76,7 @@ public class Entity implements GleedLoadable {
 		this.sprite = constructSprite( texture );
 		this.body = constructBodyByType( );
 		setPixelPosition( positionPixels );
-		if ( anchRadius >= 0 ) {
-			Vector2 centPos = new Vector2( body.getWorldCenter( ).x
-					* Util.BOX_TO_PIXEL, body.getWorldCenter( ).y
-					* Util.BOX_TO_PIXEL );
-			this.anchor = new Anchor( centPos, world, anchRadius );
-			AnchorList.getInstance( ).addAnchor( anchor );
-		}
+		createAnchor(anchRadius);
 	}
 	
 	/**
@@ -108,6 +102,7 @@ public class Entity implements GleedLoadable {
 			sprite.setScale( Util.PIXEL_TO_BOX );
 		}
 		this.setPixelPosition( positionPixels );
+		
 	}
 
 	/**
@@ -121,7 +116,7 @@ public class Entity implements GleedLoadable {
 		this.energy = 1.0f;
 		this.maintained = true;
 		this.visible = true;
-		this.active = true;
+		this.active = false;
 		setUpRobotState();
 	}
 
@@ -147,7 +142,8 @@ public class Entity implements GleedLoadable {
 	}
 
 	public void setPixelPosition(Vector2 pixels){
-		setPixelPosition(pixels.x, pixels.y);	
+		if (pixels != null)
+			setPixelPosition(pixels.x, pixels.y);	
 	}
 	
 	/**
@@ -188,7 +184,7 @@ public class Entity implements GleedLoadable {
 		if ( sprite != null && visible ) {
 			sprite.draw( batch );
 		}
-		drawOrigin(batch);
+		//drawOrigin(batch);
 	}
 
 	public void drawOrigin(SpriteBatch batch){
@@ -659,6 +655,15 @@ public class Entity implements GleedLoadable {
 	}
 
 
+	private void createAnchor( float anchRadius ){
+		if ( anchRadius >= 0 ) {
+			Vector2 centPos = new Vector2( body.getWorldCenter( ).x
+					* Util.BOX_TO_PIXEL, body.getWorldCenter( ).y
+					* Util.BOX_TO_PIXEL );
+			this.anchor = new Anchor( centPos, world, anchRadius );
+			AnchorList.getInstance( ).addAnchor( anchor );
+		}
+	}
 	
 	/**
 	 * Sets up moverArray and fills it with null

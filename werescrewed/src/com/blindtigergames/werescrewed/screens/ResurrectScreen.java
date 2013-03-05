@@ -21,6 +21,7 @@ import com.blindtigergames.werescrewed.entity.builders.PlatformBuilder;
 import com.blindtigergames.werescrewed.entity.builders.PlayerBuilder;
 import com.blindtigergames.werescrewed.entity.tween.EntityAccessor;
 import com.blindtigergames.werescrewed.entity.tween.PlatformAccessor;
+import com.blindtigergames.werescrewed.hazard.Spikes;
 import com.blindtigergames.werescrewed.platforms.Platform;
 import com.blindtigergames.werescrewed.platforms.TiledPlatform;
 import com.blindtigergames.werescrewed.player.Player;
@@ -47,11 +48,18 @@ public class ResurrectScreen implements com.badlogic.gdx.Screen {
 	private boolean debug = true;
 	private boolean debugTest = true;
 	private ProgressManager progressManager;
+	private Spikes spikes;
 	
 	//timeout for killing player input
 	//wont need this as there wont be a button to kill the player
 	//eventually
 	private int killTimeout = 0;
+
+	// DEBUG CONTROLS
+//	'z' kill player 1
+//	'x' kill player 2
+//	'r' player 1's re-spawn button
+//	'y' player 2's re-spawn button
 
 	/**
 	 * Defines all necessary components in a screen for testing different
@@ -88,6 +96,7 @@ public class ResurrectScreen implements com.badlogic.gdx.Screen {
 
 		initTiledPlatforms( );
 		initCheckPoints( );
+		initHazards( );
 
 		rootSkeleton.addSkeleton( skeleton );
 
@@ -108,6 +117,11 @@ public class ResurrectScreen implements com.badlogic.gdx.Screen {
 		cam = new Camera( width, height, world );
 	}
 
+	private void initHazards( ) {
+		spikes = new Spikes( "Spikes1", new Vector2( -1050.0f, 90.0f), 
+				50.0f, 50.0f, world, true );
+	}
+	
 	private void initTiledPlatforms( ) {
 		ground = platBuilder.position( 0.0f, -75 ).name( "ground" )
 				.dimensions( 200, 4 ).texture( testTexture ).kinematic( )
@@ -189,11 +203,13 @@ public class ResurrectScreen implements com.badlogic.gdx.Screen {
 		player2.update( deltaTime );
 		rootSkeleton.update( deltaTime );
 		progressManager.update( deltaTime );
+		spikes.update( deltaTime );
 		batch.setProjectionMatrix( cam.combined( ) );
 		batch.begin( );
 
 		rootSkeleton.draw( batch );
 		progressManager.draw( batch );
+		spikes.draw( batch );
 		player1.draw( batch );
 		player2.draw( batch );
 

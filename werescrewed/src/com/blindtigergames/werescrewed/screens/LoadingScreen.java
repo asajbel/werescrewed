@@ -1,15 +1,12 @@
 package com.blindtigergames.werescrewed.screens;
 
-import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.gui.Label;
 
@@ -40,16 +37,42 @@ public class LoadingScreen extends Screen {
 		loadingCompleteLabel = new Label( "Press 'A'!!", font );
 		batch = new SpriteBatch( );
 
-		screenTag = st;
-
-		if ( Gdx.app.getType( ) == ApplicationType.Android ) {
-			WereScrewedGame.dirHandle = Gdx.files.internal( "data/" );
+		if ( st != null && !st.isEmpty( ) ) {
+			screenTag = st;
 		} else {
-			// ApplicationType.Desktop ..
-			WereScrewedGame.dirHandle = Gdx.files.internal( "assets/data/" );
+			screenTag = "commonLevel";
+		}
+		Gdx.app.log( "Loading assets for", screenTag );
+
+		// THIS IS WHAT THE DIRECTORY SHOULD ALWAYS BE
+		// THERE SHOULDN"T BE TWO FOLDERS
+		WereScrewedGame.dirHandle = Gdx.files.internal( "data/" );
+
+		// reads through the text file that is named
+		// the same thing as the screenTag
+		// and reads each line which is a path and loads that file
+		FileHandle handle = Gdx.files.internal( "data/" + screenTag + ".txt" );
+		String split[] = handle.readString( ).split( "\\r?\\n" );
+		for ( String s : split ) {
+			s.replaceAll( "\\s", "" );
+			if ( s.length( ) > 0 ) {
+				if ( s.charAt( 0 ) != '#' ) {
+					String file[] = s.split( "\\." );
+					if ( file.length > 1 ) {
+						// gets the extension
+						String extension = file[1];
+						// loads the file
+						loadCurrentFile( extension, WereScrewedGame.dirHandle
+								+ s );
+					} else {
+						Gdx.app.log( "Loading screen: ", s + "doesn't have an extension" );
+					}
+				}
+			}
 		}
 
-		loadFilesInDirectory( WereScrewedGame.dirHandle, screenTag );
+		// loadFilesInDirectory( WereScrewedGame.dirHandle, screenTag );
+
 	}
 
 	/**
@@ -79,10 +102,12 @@ public class LoadingScreen extends Screen {
 	 */
 	private void loadFilesInDirectory( FileHandle currentDirectory,
 			String screenTag ) {
-		Gdx.app.log( "GOING DOWN", "now inside " + currentDirectory.name( ) );
+		// Gdx.app.log( "GOING DOWN", "now inside " + currentDirectory.name( )
+		// );
 
 		for ( FileHandle entry : currentDirectory.list( ) ) {
-			Gdx.app.log( currentDirectory.name( ), "found file " + entry.name( ) );
+			// Gdx.app.log( currentDirectory.name( ), "found file " +
+			// entry.name( ) );
 
 			// figure out what it means to be a file I don't care about
 			String entryName = entry.name( );
@@ -112,7 +137,8 @@ public class LoadingScreen extends Screen {
 
 		}
 
-		Gdx.app.log( "GOING UP", "returning to " + currentDirectory.parent( ) );
+		// Gdx.app.log( "GOING UP", "returning to " + currentDirectory.parent( )
+		// );
 	}
 
 	/**
@@ -131,22 +157,21 @@ public class LoadingScreen extends Screen {
 	private void loadCurrentFile( String fileExtension, String fullPathName ) {
 		if ( fileExtension.equals( "png" ) ) {
 			WereScrewedGame.manager.load( fullPathName, Texture.class );
-			Gdx.app.log( "Texture file loaded", fullPathName );
+			// Gdx.app.log( "Texture file loaded", fullPathName );
 
 			// TODO: This will need to be adjusted when music files are loaded.
 			// So far, I'm assuming if the file is an .mp3, it's a music file
 		} else if ( fileExtension.equals( "ogg" ) ) {
 			WereScrewedGame.manager.load( fullPathName, Sound.class );
-			Gdx.app.log( "Sound file loaded", fullPathName );
+			// Gdx.app.log( "Sound file loaded", fullPathName );
 
 		} else if ( fileExtension.equals( "mp3" ) ) {
 			WereScrewedGame.manager.load( fullPathName, Music.class );
 			Gdx.app.log( "Music file loaded", fullPathName );
-			
-		}
-		else if ( fileExtension.equals( "pack" )){
+
+		} else if ( fileExtension.equals( "pack" ) ) {
 			WereScrewedGame.manager.loadAtlas( fullPathName );
-			Gdx.app.log( "Atlas pack file loaded", fullPathName );
+			// Gdx.app.log( "Atlas pack file loaded", fullPathName );
 		}
 	}
 
@@ -198,7 +223,7 @@ public class LoadingScreen extends Screen {
 
 		// set position of the loading label
 		// TODO: Figure out a way to keep it in the center of the screen without
-		// rezizing
+		// resizing
 		int loadingLabelX = width / 2 - loadingLabel.getWidth( ) / 2;
 		int loadingLabelY = height / 2 + loadingLabel.getHeight( );
 		loadingLabel.setX( loadingLabelX );

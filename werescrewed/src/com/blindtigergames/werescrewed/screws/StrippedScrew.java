@@ -25,7 +25,7 @@ public class StrippedScrew extends Screw {
 	public StrippedScrew( String name, World world, Vector2 pos, Entity entity ) {
 		super( name, pos, null );
 		this.world = world;
-		screwType = ScrewType.STRIPPED;
+		screwType = ScrewType.SCREW_STRIPPED;
 		entityType = EntityType.SCREW;
 
 		sprite.setColor( 255f/255f, 112f/255f, 52f/255f, 1.0f ); //rust color pulled off a hexdecimal chart
@@ -34,14 +34,6 @@ public class StrippedScrew extends Screw {
 		constructBody( pos );
 		connectScrewToEntity( entity );
 
-	}
-
-	@Override
-	public void screwLeft( ) {
-	}
-
-	@Override
-	public void screwRight( ) {
 	}
 
 	private void constructBody( Vector2 pos ) {
