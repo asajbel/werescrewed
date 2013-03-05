@@ -12,6 +12,8 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.Filter;
 import com.badlogic.gdx.physics.box2d.Fixture;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJoint;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
@@ -60,6 +62,9 @@ public class Player extends Entity {
 
 	public Fixture feet;
 	public Fixture torso;
+	public Fixture rightSensor;
+	public Fixture leftSensor;
+	public Fixture topSensor;
 	int check = 0;
 
 	private PovDirection prevButton;
@@ -147,12 +152,9 @@ public class Player extends Entity {
 		anchor.special = true;
 		AnchorList.getInstance( ).addAnchor( anchor );
 
-		torso = body.getFixtureList( ).get( 0 );
-		feet = body.getFixtureList( ).get( 1 );
-		feet.setRestitution( 0.001f );
-		torso.getShape( ).setRadius( 0 );
+		setFixtures();
 		maxFriction( );
-
+		
 		BodyDef bodydef = new BodyDef( );
 		bodydef.position.set( pos );
 
@@ -161,8 +163,7 @@ public class Player extends Entity {
 
 		jumpSound = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 				+ "/common/sounds/jump.ogg" );
-
-	}
+		}
 
 	// PUBLIC METHODS
 
@@ -1407,5 +1408,21 @@ public class Player extends Entity {
 			body.setLinearVelocity( new Vector2( 0f,
 					body.getLinearVelocity( ).y ) );
 		body.applyForceToCenter( 0f, STEAM_FORCE );
+	}
+	
+	/**
+	 * sets fixture specific data for use in constructor;
+	 */
+	private void setFixtures( ){
+		torso = body.getFixtureList( ).get( 0 );
+		leftSensor = body.getFixtureList( ).get( 1 );
+		rightSensor = body.getFixtureList( ).get( 3 );
+		topSensor = body.getFixtureList( ).get( 2 );
+		feet = body.getFixtureList( ).get( 4 );
+		feet.setRestitution( 0.001f );
+		torso.getShape( ).setRadius( 0 );
+		rightSensor.setSensor( true );
+		leftSensor.setSensor( true );
+		topSensor.setSensor( true );
 	}
 }
