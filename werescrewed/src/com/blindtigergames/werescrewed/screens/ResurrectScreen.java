@@ -154,25 +154,22 @@ public class ResurrectScreen implements com.badlogic.gdx.Screen {
 		bg_2_1.sprite.setScale( 1.9f );
 		
 		bg_1_0.setMoverAtCurrentState( new ParallaxMover(
-				new Vector2( 1024*1.9f, 0 ), new Vector2( -1024*1.9f, 0 ), 0.0005f, .5f ) );
+				new Vector2( 1024*1.9f, 0 ), new Vector2( -1024*1.9f, 0 ), 0.0003f, .5f ) );
 		bg_1_0.setActive( true );
 
 		bg_1_1.setMoverAtCurrentState( new ParallaxMover(
-				new Vector2( 1023*1.9f, 0  ), new Vector2( -1024*1.9f, 0  ), 0.0005f, 0f ) );
+				new Vector2( 1024*1.9f, 0  ), new Vector2( -1024*1.9f, 0  ), 0.0003f, 0f ) );
 		bg_1_1.setActive( true );
 
 		bg_2_0.setMoverAtCurrentState( new ParallaxMover(
-				new Vector2( -1024*1.9f, 0 ), new Vector2( 1024*1.9f, 0 ), 0.0005f, .5f ) );
+				new Vector2( -1024*1.9f, 0 ), new Vector2( 1024*1.9f, 0 ), 0.00015f, .5f ) );
 		bg_2_0.setActive( true );
 
 		bg_2_1.setMoverAtCurrentState( new ParallaxMover(
-				new Vector2( -1023*1.9f, 0 ), new Vector2( 1024*1.9f, 0 ), 0.0005f, 0f ) );
+				new Vector2( -1024*1.9f, 0 ), new Vector2( 1024*1.9f, 0 ), 0.00015f, 0f ) );
 		bg_2_1.setActive( true );
+		
 
-		// rootSkeleton.addSkeleton( bg_2_0 );
-		// rootSkeleton.addSkeleton( bg_2_1 );
-		// rootSkeleton.addSkeleton( bg_1_0 );
-		// rootSkeleton.addSkeleton( bg_1_1 );
 	}
 
 	private void initHazards( ) {
@@ -268,6 +265,7 @@ public class ResurrectScreen implements com.badlogic.gdx.Screen {
 		rootSkeleton.update( deltaTime );
 		progressManager.update( deltaTime );
 		spikes.update( deltaTime );
+		
 		bg_2_0.update( deltaTime );
 		bg_2_0.sprite.setPosition(
 				bg_2_0.body.getPosition( ).mul( Util.BOX_TO_PIXEL ).x,
