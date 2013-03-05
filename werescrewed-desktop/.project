@@ -18,7 +18,11 @@
 		<link>
 			<name>assets</name>
 			<type>2</type>
+<<<<<<< HEAD
+			<location>C:/Users/Jenn/workspace/werescrewed/werescrewed-android/assets</location>
+=======
 			<locationURI>PARENT-1-PROJECT_LOC/werescrewed-android/assets</locationURI>
+>>>>>>> 73648a132c4a2b2b644329af7f54501437f83afd
 		</link>
 	</linkedResources>
 </projectDescription>
