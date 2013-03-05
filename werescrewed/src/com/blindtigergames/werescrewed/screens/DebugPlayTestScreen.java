@@ -18,8 +18,7 @@ import com.blindtigergames.werescrewed.collisionManager.MyContactListener;
 import com.blindtigergames.werescrewed.debug.SBox2DDebugRenderer;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.RobotState;
-import com.blindtigergames.werescrewed.entity.action.EntityActivateMoverAction;
-import com.blindtigergames.werescrewed.entity.action.EntityDeactivateMoverAction;
+import com.blindtigergames.werescrewed.entity.action.*;
 import com.blindtigergames.werescrewed.entity.builders.EventTriggerBuilder;
 import com.blindtigergames.werescrewed.entity.builders.PlatformBuilder;
 import com.blindtigergames.werescrewed.entity.builders.PlayerBuilder;
@@ -43,6 +42,7 @@ import com.blindtigergames.werescrewed.screws.PuzzleScrew;
 import com.blindtigergames.werescrewed.screws.StrippedScrew;
 import com.blindtigergames.werescrewed.screws.StructureScrew;
 import com.blindtigergames.werescrewed.skeleton.Skeleton;
+import com.blindtigergames.werescrewed.util.Metrics;
 import com.blindtigergames.werescrewed.util.Util;
 
 public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
@@ -108,14 +108,14 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 
 		// Initialize players
 		player1 = new PlayerBuilder( ).name( "player1" ).world( world )
-				.position( 175f * TILE, 96f * TILE ).buildPlayer( );
+				.position( 1f * TILE, 1f * TILE  ).buildPlayer( );
 		player2 = new PlayerBuilder( ).name( "player2" ).world( world )
-				.position(  175f * TILE, 96f * TILE  ).buildPlayer( );
+				.position( 1f * TILE, 1f * TILE   ).buildPlayer( );
 
 		// END: 175f * TILE, 96f * TILE
 		// START : 1f * TILE, 1f * TILE 
 		// stripped screws: 170 * TILE, 17 * TILE
-
+		Metrics m = new Metrics();
 		floor1( );
 		floor2( );
 		floor3( );
@@ -137,7 +137,12 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		skel1 = new Skeleton( "skel1", new Vector2( 0, 0 ), null, world );
 
 		// PUZZLE 1 //
-
+		EventTriggerBuilder etb = new EventTriggerBuilder(world);
+		et = etb.name( "event1" ).circle( ).radius( 100 )
+				.position( new Vector2(10 * TILE, 1.5f * TILE ) )
+				.beginAction( new MetricsStartTimeAction() ).endAction( new MetricsEndTimeAction() )
+				.build();
+		
 		ground = platBuilder.position( 81 * TILE, 0 ).name( "ground1" )
 				.dimensions( 160, 2 ).texture( testTexture ).kinematic( )
 				.oneSided( false ).restitution( 0.0f ).buildTilePlatform( );
@@ -193,6 +198,12 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		obst.setCategoryMask( Util.KINEMATIC_OBJECTS, Util.CATEGORY_EVERYTHING );
 		skel1.addKinematicPlatform( obst );
 
+		
+//		etb = new EventTriggerBuilder(world);
+//		et = etb.name( "event2" ).circle( ).radius( 100 )
+//				.position( new Vector2(50 * TILE, 1.5f * TILE ) )
+//				.beginAction( new MetricsEndTimeAction() ).endAction( new MetricsStartTimeAction() )
+//				.build();
 		// PUZZLE 2 //
 
 		plat = platBuilder.position( 55 * TILE, 4.5f * TILE ).name( "plat1" )
@@ -225,6 +236,11 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		plat.setCategoryMask( Util.KINEMATIC_OBJECTS, Util.CATEGORY_EVERYTHING );
 		skel1.addKinematicPlatform( plat );
 
+//		etb = new EventTriggerBuilder(world);
+//		et = etb.name( "event2" ).circle( ).radius( 100 )
+//				.position( new Vector2(62 * TILE, 1.5f * TILE ) )
+//				.beginAction( new MetricsEndTimeAction() ).endAction( new MetricsStartTimeAction() )
+//				.build();
 		// PUZZLE 3 //
 
 		stair = platBuilder.position( 77 * TILE, 2 * TILE ).name( "stair1" )
@@ -816,7 +832,7 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		player1.update( deltaTime );
 		player2.update( deltaTime );
 		testRope.update( deltaTime );
-	//	et.update( deltaTime );
+		//et.update( deltaTime );
 		
 		
 		rootSkeleton.update( deltaTime );
