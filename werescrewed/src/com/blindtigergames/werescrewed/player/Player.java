@@ -43,7 +43,7 @@ public class Player extends Entity {
 	public final static float MIN_VELOCITY = 0.01f;
 	public final static float MOVEMENT_IMPULSE = 0.012f;
 	public final static float JUMP_IMPULSE = 0.12f;
-	public final static float JUMP_SCREW_IMPULSE = JUMP_IMPULSE * 3 / 2;
+	public final static float JUMP_SCREW_IMPULSE = JUMP_IMPULSE * 5 / 4;
 	public final static float JUMP_CONTROL_MUTIPLIER = 0.5f;
 	public final static int JUMP_COUNTER = 10;
 	public final static float ANALOG_DEADZONE = 0.2f;
@@ -505,6 +505,14 @@ public class Player extends Entity {
 		// }
 		// }
 		float xImpulse = leftAnalogX * JUMP_SCREW_IMPULSE * 0.1f;
+//		if ( leftAnalogX > 0.01f || leftAnalogX < -0.01f ) {
+//			yImpulse -= Math.abs( xImpulse ) * 5;
+//		if ( leftAnalogY < -0.35f ) {
+//			float temp = ( leftAnalogY + 0.7f ) / 1.7f;
+//			yImpulse -= temp * JUMP_SCREW_IMPULSE; 
+//		}
+//			Gdx.app.log( name, String.valueOf( xImpulse ) + ", " + String.valueOf( yImpulse ) );
+//		}
 		body.applyLinearImpulse( new Vector2( xImpulse, yImpulse ),
 				body.getWorldCenter( ) );
 		setGrounded( false );
