@@ -177,7 +177,7 @@ public class ResurrectScreen implements com.badlogic.gdx.Screen {
 
 	private void initHazards( ) {
 		spikes = new Spikes( "Spikes1", new Vector2( -1250.0f, -10.0f), 
-				1, 4, world, true );
+				1, 4, world, true, false, true );
 	}
 
 	private void initTiledPlatforms( ) {
