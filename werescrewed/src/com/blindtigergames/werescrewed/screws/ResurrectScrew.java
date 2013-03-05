@@ -28,6 +28,7 @@ public class ResurrectScrew extends Screw {
 	private Player deadPlayer;
 	private boolean pullLeft;
 	private boolean destroyJoint = false;
+	private boolean removeNextStep = false;
 
 	/**
 	 * 
@@ -110,9 +111,23 @@ public class ResurrectScrew extends Screw {
 	public void hitPlayer( Player player ) {
 		if ( player == deadPlayer ) {
 			destroyJoint = true;
-		}
+		} 
 	}
 
+	/**
+	 * check if this screw should be removed
+	 */
+	public boolean deleteQueue( ) {
+		return removeNextStep;
+	}
+	
+	/**
+	 * set if this screw should be removed next step
+	 */
+	public void setRemove( boolean setRemoved ) {
+		removeNextStep = setRemoved;
+	}
+	
 	/**
 	 * destroys the joints and body of the object
 	 */
@@ -137,15 +152,12 @@ public class ResurrectScrew extends Screw {
 	@Override
 	public void update( float deltaTime ) {
 		super.update( deltaTime );
-		if ( !deadPlayer.isPlayerDead( ) ) {
-			remove( );
-		}
 		if ( !removed ) {
 			if ( destroyJoint ) {
 				deadPlayer.respawnPlayer( );
 				remove( );
-				destroyJoint = false;
-			}
+				active = false;
+			} 
 			sprite.setRotation( rotation );
 			if ( depth != screwStep ) {
 				screwStep--;

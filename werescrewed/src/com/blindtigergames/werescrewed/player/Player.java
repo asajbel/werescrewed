@@ -28,6 +28,7 @@ import com.blindtigergames.werescrewed.entity.mover.LerpMover;
 import com.blindtigergames.werescrewed.entity.mover.LinearAxis;
 import com.blindtigergames.werescrewed.input.MyControllerListener;
 import com.blindtigergames.werescrewed.input.PlayerInputHandler;
+import com.blindtigergames.werescrewed.screws.ResurrectScrew;
 import com.blindtigergames.werescrewed.screws.Screw;
 import com.blindtigergames.werescrewed.screws.ScrewType;
 import com.blindtigergames.werescrewed.util.Metrics;
@@ -245,14 +246,13 @@ public class Player extends Entity {
 				&& !otherPlayer.isPlayerDead( ) && headStandTimeout == 0
 				&& otherPlayer.isHeadStandTimedOut( ) ) {
 			// check if the top player is in-line with the other players head
-			if ( otherPlayer.body.getPosition( ).mul( Util.BOX_TO_PIXEL )
-					.add( sprite.getWidth( ) / 3.0f, 0.0f ).x <= body
-					.getPosition( ).mul( Util.BOX_TO_PIXEL )
-					.add( sprite.getWidth( ) / 2.0f, 0.0f ).x
-					&& body.getPosition( ).mul( Util.BOX_TO_PIXEL )
-							.add( sprite.getWidth( ) / 2.0f, 0.0f ).x < otherPlayer.body
-							.getPosition( ).mul( Util.BOX_TO_PIXEL )
-							.add( sprite.getWidth( ) / 1.6f, 0.0f ).x ) {
+			// and check if the top player is actually above the other player
+			if ( ( playerState == PlayerState.Falling && this
+					.getPositionPixel( ).y > otherPlayer.getPositionPixel( ).y )
+					&& ( otherPlayer.getPositionPixel( ).sub( sprite.getWidth( )/3.0f, 0.0f ).x <= this
+							.getPositionPixel( ).x )
+					&& ( otherPlayer.getPositionPixel( ).add( sprite.getWidth( )/4.0f,
+							0.0f ).x > this.getPositionPixel( ).x ) ) {
 				topPlayer = true;
 				setHeadStand( );
 				otherPlayer.setHeadStand( );
@@ -285,9 +285,11 @@ public class Player extends Entity {
 					mover = null;
 				}
 			} else {
-				//if resurrect screw and its not active remove the player joint
+				// if resurrect screw and its not active remove the player joint
 				if ( currentScrew.getScrewType( ) == ScrewType.SCREW_RESURRECT ) {
-					if ( !currentScrew.isActive( ) ) {
+					ResurrectScrew rezScrew = ( ResurrectScrew ) currentScrew;
+					if ( rezScrew.deleteQueue( ) ) {
+						Gdx.app.log( "end hit rez screw", "" );
 						removePlayerToScrew( );
 						jump( );
 					}
@@ -310,11 +312,13 @@ public class Player extends Entity {
 		if ( !world.isLocked( ) ) {
 			playerState = PlayerState.Dead;
 			if ( playerToScrew != null ) {
+				Gdx.app.log( "remove rez screw if dead", "" );
 				removePlayerToScrew( );
 			}
 			if ( playerToPlayer != null ) {
 				removePlayerToPlayer( );
 			}
+			currentScrew = null;
 			Filter filter = new Filter( );
 			for ( Fixture f : body.getFixtureList( ) ) {
 				f.setSensor( false );
@@ -326,7 +330,7 @@ public class Player extends Entity {
 				f.setFilterData( filter );
 			}
 			body.setTransform( body.getPosition( ), 90f * Util.DEG_TO_RAD );
-			if(Metrics.turnOnMetrics){
+			if ( Metrics.turnOnMetrics ) {
 				Metrics.addPlayerDeathPosition( this.getPositionPixel( ) );
 			}
 		} else {
@@ -670,7 +674,7 @@ public class Player extends Entity {
 			playerState = PlayerState.Screwing;
 			currentScrew.setPlayerAttached( true );
 			setGrounded( false );
-			if(Metrics.turnOnMetrics){
+			if ( Metrics.turnOnMetrics ) {
 				Metrics.addPlayerAttachToScrewPosition( this.getPositionPixel( ) );
 			}
 		}
@@ -877,9 +881,9 @@ public class Player extends Entity {
 		// loosen and tighten screws and jump when the screw joint is gone
 		if ( controller ) {
 			if ( controllerListener.unscrewing( ) ) {
-				currentScrew.screwLeft(controllerListener.getRegion( ) );
+				currentScrew.screwLeft( controllerListener.getRegion( ) );
 			} else if ( controllerListener.screwing( ) ) {
-				currentScrew.screwRight( controllerListener.getRegion( ));
+				currentScrew.screwRight( controllerListener.getRegion( ) );
 			}
 		} else {
 			if ( inputHandler.unscrewing( ) ) {
@@ -1044,10 +1048,11 @@ public class Player extends Entity {
 		}
 		mover = null;
 		currentScrew.setPlayerAttached( false );
+		currentScrew = null;
 		playerState = PlayerState.JumpingOffScrew;
 		screwJumpTimeout = SCREW_JUMP_STEPS;
 	}
-	
+
 	/**
 	 * @author Bryan
 	 * @return void slows player

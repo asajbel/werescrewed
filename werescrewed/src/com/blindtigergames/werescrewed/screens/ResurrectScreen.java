@@ -162,11 +162,11 @@ public class ResurrectScreen implements com.badlogic.gdx.Screen {
 		bg_1_1.setActive( true );
 
 		bg_2_0.setMoverAtCurrentState( new ParallaxMover(
-				new Vector2( -1024*1.9f, 0 ), new Vector2( 1024*1.9f, 0 ), 0.0005f, .5f ) );
+				new Vector2( 1024*1.9f, 0 ), new Vector2( -1024*1.9f, 0 ), 0.00025f, .5f ) );
 		bg_2_0.setActive( true );
 
 		bg_2_1.setMoverAtCurrentState( new ParallaxMover(
-				new Vector2( -1023*1.9f, 0 ), new Vector2( 1024*1.9f, 0 ), 0.0005f, 0f ) );
+				new Vector2( 1023*1.9f, 0 ), new Vector2( -1024*1.9f, 0 ), 0.00025f, 0f ) );
 		bg_2_1.setActive( true );
 
 		// rootSkeleton.addSkeleton( bg_2_0 );
@@ -177,7 +177,7 @@ public class ResurrectScreen implements com.badlogic.gdx.Screen {
 
 	private void initHazards( ) {
 		spikes = new Spikes( "Spikes1", new Vector2( -1250.0f, -10.0f), 
-				1, 4, world, true );
+				1, 4, world, true, false, true );
 	}
 
 	private void initTiledPlatforms( ) {
