@@ -87,18 +87,26 @@ public class MyContactListener implements ContactListener {
 							}
 							break;
 						case SCREW:
-							Screw screw = ( Screw ) object;
-							if ( p1 == null || p1 == player ) {
-								p1 = player;
-								NUM_PLAYER1_SCREWCONTACTS++;
-								player.hitScrew( screw );
-							} else if ( p1 != player ) {
-								NUM_PLAYER2_SCREWCONTACTS++;
-								player.hitScrew( screw );
-							}
-							if ( screw.getScrewType( ) == ScrewType.SCREW_RESURRECT ) {
-								ResurrectScrew rScrew = ( ResurrectScrew ) screw;
-								rScrew.hitPlayer( player );
+							if ( player.isPlayerDead( ) ) {
+								Screw screw = ( Screw ) object;
+								if ( p1 == null || p1 == player ) {
+									p1 = player;
+									NUM_PLAYER1_SCREWCONTACTS++;
+									if ( screw.getScrewType( ) == ScrewType.SCREW_RESURRECT ) {
+										ResurrectScrew rScrew = ( ResurrectScrew ) screw;
+										rScrew.hitPlayer( player );
+										Gdx.app.log( "hit rez screw", "" );
+									}
+									player.hitScrew( screw );
+								} else if ( p1 != player ) {
+									NUM_PLAYER2_SCREWCONTACTS++;
+									if ( screw.getScrewType( ) == ScrewType.SCREW_RESURRECT ) {
+										ResurrectScrew rScrew = ( ResurrectScrew ) screw;
+										rScrew.hitPlayer( player );
+										Gdx.app.log( "hit rez screw", "" );
+									}
+									player.hitScrew( screw );
+								}
 							}
 							break;
 						case PLAYER:
@@ -111,7 +119,8 @@ public class MyContactListener implements ContactListener {
 							Hazard hazard = ( Hazard ) objectFix.getBody( )
 									.getUserData( );
 							hazard.performContact( player, objectFix );
-							Gdx.app.log( "Player " + player.name, " Collided with Hazard" );
+							// Gdx.app.log( "Player " + player.name,
+							// " Collided with Hazard" );
 							break;
 						case CHECKPOINT:
 							CheckPoint checkP = ( CheckPoint ) objectFix
@@ -122,8 +131,8 @@ public class MyContactListener implements ContactListener {
 							player.setSteamCollide( true );
 							break;
 						case EVENTTRIGGER:
-							EventTrigger et = ( EventTrigger ) objectFix.getBody( )
-								.getUserData( );
+							EventTrigger et = ( EventTrigger ) objectFix
+									.getBody( ).getUserData( );
 							et.setActivated( true, player.name );
 							et.triggerBeginEvent( );
 							break;
@@ -211,6 +220,7 @@ public class MyContactListener implements ContactListener {
 								p1 = player;
 								NUM_PLAYER1_SCREWCONTACTS--;
 								if ( NUM_PLAYER1_SCREWCONTACTS <= 0 ) {
+									NUM_PLAYER1_SCREWCONTACTS = 0;
 									if ( player.getState( ) != PlayerState.Screwing ) {
 										player.hitScrew( null );
 									}
@@ -218,6 +228,7 @@ public class MyContactListener implements ContactListener {
 							} else if ( p1 != player ) {
 								NUM_PLAYER2_SCREWCONTACTS--;
 								if ( NUM_PLAYER2_SCREWCONTACTS <= 0 ) {
+									NUM_PLAYER2_SCREWCONTACTS = 0;
 									if ( player.getState( ) != PlayerState.Screwing ) {
 										player.hitScrew( null );
 									}
@@ -236,8 +247,8 @@ public class MyContactListener implements ContactListener {
 							player.setSteamCollide( false );
 							break;
 						case EVENTTRIGGER:
-							EventTrigger et = ( EventTrigger ) objectFix.getBody( )
-							.getUserData( );
+							EventTrigger et = ( EventTrigger ) objectFix
+									.getBody( ).getUserData( );
 							et.triggerEndEvent( );
 							et.setActivated( false, player.name );
 							break;
@@ -318,9 +329,15 @@ public class MyContactListener implements ContactListener {
 							} else if ( ( player.getState( ) != PlayerState.Falling && player2
 									.getState( ) != PlayerState.Falling )
 									|| !player.isHeadStandTimedOut( )
-									|| !player2.isHeadStandTimedOut( ) ) {
+									|| !player2.isHeadStandTimedOut( )
+									|| ( player.getState( ) == PlayerState.Falling && player
+											.getPositionPixel( ).y < player2
+											.getPositionPixel( ).y )
+									|| ( player2.getState( ) == PlayerState.Falling && player2
+											.getPositionPixel( ).y < player
+											.getPositionPixel( ).y ) ) {
 								contact.setEnabled( false );
-							} 
+							}
 							break;
 						default:
 							break;

@@ -208,7 +208,7 @@ public class ProgressManager {
 					resurrectScrew = null;
 				}
 			} else {
-				resurrectScrew.setActive( false );
+				resurrectScrew.setRemove( true );
 			}
 		}
 	}

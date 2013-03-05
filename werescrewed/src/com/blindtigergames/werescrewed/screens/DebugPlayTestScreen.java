@@ -12,6 +12,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.camera.Camera;
 import com.blindtigergames.werescrewed.collisionManager.MyContactListener;
@@ -33,12 +34,14 @@ import com.blindtigergames.werescrewed.entity.tween.EntityAccessor;
 import com.blindtigergames.werescrewed.entity.tween.PathBuilder;
 import com.blindtigergames.werescrewed.entity.tween.PlatformAccessor;
 import com.blindtigergames.werescrewed.eventTrigger.EventTrigger;
+import com.blindtigergames.werescrewed.joint.RevoluteJointBuilder;
 import com.blindtigergames.werescrewed.platforms.Platform;
 import com.blindtigergames.werescrewed.platforms.TiledPlatform;
 import com.blindtigergames.werescrewed.player.Player;
 import com.blindtigergames.werescrewed.rope.Rope;
 import com.blindtigergames.werescrewed.screws.BossScrew;
 import com.blindtigergames.werescrewed.screws.PuzzleScrew;
+import com.blindtigergames.werescrewed.screws.Screw;
 import com.blindtigergames.werescrewed.screws.StrippedScrew;
 import com.blindtigergames.werescrewed.screws.StructureScrew;
 import com.blindtigergames.werescrewed.skeleton.Skeleton;
@@ -92,9 +95,9 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		//Uncomment the tilset part to see the new tileset in game.
 		platBuilder = new PlatformBuilder( world ).tileSet( "autumn" );
 
-		testTexture = null;/*WereScrewedGame.manager.get(
+		testTexture = WereScrewedGame.manager.get(
 				WereScrewedGame.dirHandle.path( ) + "/common/tileset/TilesetTest.png",
-				Texture.class );*/
+				Texture.class );
 		inceptionhorn = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 				+ "/common/sounds/inceptionbutton.mp3" );
 		endgameCounter = 0;
@@ -324,8 +327,39 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		skel1.addKinematicPlatform( wall );
 
 		rootSkeleton.addSkeleton( skel1 );
+		
+		buildSubSkeleton( );
 	}
 
+	private void buildSubSkeleton(){
+		Skeleton upperArmSkeleton = new Skeleton( "dynamicSkeleton", new Vector2(1100, 400), testTexture, world );
+		Skeleton lowerArmSkeleton = new Skeleton( "dynamic2Skeleton", new Vector2(1500, 400), testTexture, world );
+		//upperArmSkeleton.setMoverAtCurrentState( new RockingMover( 90, 3f) );
+
+		upperArmSkeleton.body.setType( BodyType.DynamicBody );
+		lowerArmSkeleton.body.setType( BodyType.DynamicBody );
+		//joints the first dynamic skeleton to the parent skeleton
+		Screw shoulderJoint = new Screw ( "dynamic_skeleton_joint", new Vector2( 1100, 400), upperArmSkeleton, world );
+		//joints the first dynamic skeleton to the second dynamic skeleton
+		Screw elbowJoint = new Screw ( "dynamic_skeleton_joint", new Vector2( 1300, 400), upperArmSkeleton, world );
+		elbowJoint.addStructureJoint( lowerArmSkeleton );
+		//joint the two dynamic skeletons to the parent skeleton
+		//screw.addStructureJoint( skeleton );
+		TiledPlatform plat = platBuilder.dynamic( ).position( 1200, 400 ).dimensions( 4,1 ).density( 1f ).oneSided( false ).buildTilePlatform( );
+		//joint the platform to the second dynamic skeleton
+		StructureScrew platJoint1 = new StructureScrew ( "dynamic_skeleton_joint2", plat.getPositionPixel( ), 50, plat,
+				lowerArmSkeleton, world );
+		plat.body.setFixedRotation( true );
+		plat.setCategoryMask( Util.DYNAMIC_OBJECTS, Util.CATEGORY_EVERYTHING );
+		lowerArmSkeleton.addDynamicPlatform( plat );
+		skel1.addSkeleton( upperArmSkeleton );
+		skel1.addSkeleton( lowerArmSkeleton );
+		skel1.addScrewForDraw( platJoint1 );		
+		skel1.addScrewForDraw( shoulderJoint );
+		skel1.addScrewForDraw( elbowJoint );
+		
+	}
+	
 	private void floor2( ) {
 		skel2 = new Skeleton( "skel2", new Vector2( 0, 0 ), null, world );
 
