@@ -61,11 +61,30 @@ public class StructureScrew extends Screw {
 	}
 
 	@Override
-	public void screwLeft( ) {
+	public void screwLeft( int region ) {
 		if ( depth > -10 ) {
-			body.setAngularVelocity( 15 );
+			body.setAngularVelocity( 1 );
 			depth--;
-			rotation += 10;
+			rotation = region * 5;
+			screwStep = depth + 5;
+		}
+	}
+
+	@Override
+	public void screwRight(int region) {
+		if ( depth < maxDepth ) {
+			body.setAngularVelocity( -1 );
+			depth++;
+			rotation = region * 5;
+			screwStep = depth + 6;
+		}
+	}
+	@Override
+	public void screwLeft(  ) {
+		if ( depth > -10 ) {
+			body.setAngularVelocity( 1 );
+			depth--;
+			rotation -= 10;
 			screwStep = depth + 5;
 		}
 	}
@@ -73,13 +92,12 @@ public class StructureScrew extends Screw {
 	@Override
 	public void screwRight( ) {
 		if ( depth < maxDepth ) {
-			body.setAngularVelocity( -15 );
+			body.setAngularVelocity( -1 );
 			depth++;
-			rotation -= 10;
+			rotation += 10;
 			screwStep = depth + 6;
 		}
 	}
-
 	@Override
 	public void update( float deltaTime ) {
 		super.update( deltaTime );
@@ -192,7 +210,7 @@ public class StructureScrew extends Screw {
 		entity.body.setFixedRotation( false );
 		RevoluteJointDef revoluteJointDef = new RevoluteJointDef( );
 		revoluteJointDef = new RevoluteJointDef( );
-		revoluteJointDef.initialize( entity.body, skeleton.body, pos );
+		revoluteJointDef.initialize( body, skeleton.body, pos );
 		revoluteJointDef.enableMotor = false;
 		platformJoint = ( RevoluteJoint ) world.createJoint( revoluteJointDef );
 		entity.body.setFixedRotation( false );

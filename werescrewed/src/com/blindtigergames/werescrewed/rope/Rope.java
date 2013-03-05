@@ -98,6 +98,8 @@ public class Rope {
 			linkParts.add( temp );
 
 		}
+		
+		
 	}
 
 	/* Creates a joint between the top link and a given entity
@@ -138,7 +140,8 @@ public class Rope {
 		world.createJoint( revoluteJointDef );
 }
 	
-	public void update( float deltatime ) {
+	public void update( float deltaTime ) {
+		screw.update( deltaTime );
 		// if(Gdx.input.isKeyPressed( Keys.O ))
 		// pieces.get( pieces.size( )-1 ).applyLinearImpulse( new Vector2(0.5f,
 		// 0.0f),

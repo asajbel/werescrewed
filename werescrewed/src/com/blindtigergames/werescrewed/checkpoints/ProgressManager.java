@@ -85,31 +85,29 @@ public class ProgressManager {
 		// and create a resurrection screw to let their
 		// team-mate re-spawn them
 		else if ( player1.isPlayerDead( ) ) {
-			//create a rez screw if it doesn't already exist
+			// create a rez screw if it doesn't already exist
 			handleDeadPlayer( );
-			//handle dead player input to allow them to re-spawn
+			// handle dead player input to allow them to re-spawn
 			handleDeadPlayerInput( player1 );
-		}
-		else if ( player2.isPlayerDead( ) ) {
-			//create a rez screw if it doesn't already exist
+		} else if ( player2.isPlayerDead( ) ) {
+			// create a rez screw if it doesn't already exist
 			handleDeadPlayer( );
-			//handle dead player input to allow them to re-spawn
+			// handle dead player input to allow them to re-spawn
 			handleDeadPlayerInput( player2 );
-		}
-		else { 
-			//if both players are alive then remove the current
-			//instance of the resurrection screw
+		} else {
+			// if both players are alive then remove the current
+			// instance of the resurrection screw
 			removeRezScrew( );
 		}
 		for ( int i = 0; i < checkPoints.size( ); i++ ) {
 			if ( i != currentCheckPoint ) {
-				//deactivate all the checkpoints that are not
-				//the current checkpoint
+				// deactivate all the checkpoints that are not
+				// the current checkpoint
 				checkPoints.get( i ).deactivate( );
 			}
 			checkPoints.get( i ).update( deltaTime );
 		}
-		//update the rez screw if it exists
+		// update the rez screw if it exists
 		if ( resurrectScrew != null ) {
 			resurrectScrew.update( deltaTime );
 		}
@@ -138,29 +136,27 @@ public class ProgressManager {
 	private void handleDeadPlayer( ) {
 		if ( resurrectScrew == null ) {
 			Entity entity = null;
-			//find the entity that the current checkpoint is jointed to
-			//and use it to connect the rez screw to
+			// find the entity that the current checkpoint is jointed to
+			// and use it to connect the rez screw to
 			for ( JointEdge j : checkPoints.get( currentCheckPoint ).body
 					.getJointList( ) ) {
 				entity = ( Entity ) j.joint.getBodyB( ).getUserData( );
 			}
-			ScrewBuilder rezzBuilder = new ScrewBuilder()
-			.screwType(ScrewType.SCREW_RESURRECT)
-			.entity(entity)
-			.world(world)
-			.playerOffset( true )
-			.position( 64.0f , 64.0f );
+			ScrewBuilder rezzBuilder = new ScrewBuilder( )
+					.screwType( ScrewType.SCREW_RESURRECT ).entity( entity )
+					.world( world ).playerOffset( true )
+					.position( 64.0f, 64.0f );
 
 			if ( player1.isPlayerDead( ) ) {
-				//create new rez screw and attach
-				//it to player1 as the dead player
+				// create new rez screw and attach
+				// it to player1 as the dead player
 				rezzBuilder.player( player1 );
 			} else {
-				//create new rez screw and attach
-				//it to player2 as the dead player
+				// create new rez screw and attach
+				// it to player2 as the dead player
 				rezzBuilder.player( player2 );
 			}
-			resurrectScrew = rezzBuilder.buildRezzScrew();
+			resurrectScrew = rezzBuilder.buildRezzScrew( );
 		}
 	}
 
@@ -173,13 +169,13 @@ public class ProgressManager {
 		if ( player.getState( ) == PlayerState.GrabMode ) {
 			holdTime++;
 			if ( holdTime > respawnTime ) {
-				//if the dead player has held the re-spawn button
-				//respawn them at the current check point
+				// if the dead player has held the re-spawn button
+				// respawn them at the current check point
 				spawnAtCheckPoint( player );
 				holdTime = 0;
 			}
 		} else {
-			//if the player lets go reset the time
+			// if the player lets go reset the time
 			holdTime = 0;
 		}
 	}
@@ -190,26 +186,29 @@ public class ProgressManager {
 	 * @param player
 	 */
 	private void spawnAtCheckPoint( Player player ) {
-		//bring the player back to life
+		// bring the player back to life
 		player.respawnPlayer( );
-		//remove the instance of the rez screw
+		// remove the instance of the rez screw
 		removeRezScrew( );
-		//move the player to the current checkpoint
+		// move the player to the current checkpoint
 		player.body.setTransform( checkPoints.get( currentCheckPoint )
 				.getPosition( ), 0.0f );
 	}
-	
+
 	/**
 	 * removes the current instance of an resurrect screw
 	 */
 	private void removeRezScrew( ) {
-		//remove the rez screw if both players are alive
+		// remove the rez screw if both players are alive
 		if ( resurrectScrew != null && !player1.isPlayerDead( )
-				&& !player2.isPlayerDead( )
-				&& !resurrectScrew.isPlayerAttached( ) ) {
-			resurrectScrew.remove( );
-			if ( resurrectScrew.isRemoved( ) ) {
-				resurrectScrew = null;
+				&& !player2.isPlayerDead( ) ) {
+			if ( !resurrectScrew.isPlayerAttached( ) ) {
+				resurrectScrew.remove( );
+				if ( resurrectScrew.isRemoved( ) ) {
+					resurrectScrew = null;
+				}
+			} else {
+				resurrectScrew.setActive( false );
 			}
 		}
 	}

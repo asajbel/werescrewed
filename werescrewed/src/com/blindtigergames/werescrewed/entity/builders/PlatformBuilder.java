@@ -258,6 +258,7 @@ public class PlatformBuilder extends GenericEntityBuilder<PlatformBuilder> {
 				                              this.isOneSided, 
 				                              this.moveable, 
 				                              this.world);
+
 		tp.body.setType( bodyType );
 		tp.setDensity( this.density );
 		tp.setFriction( this.friction );

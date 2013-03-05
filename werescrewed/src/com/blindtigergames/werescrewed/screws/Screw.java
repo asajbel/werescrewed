@@ -36,6 +36,7 @@ public class Screw extends Entity {
 	protected int depth;
 	protected int maxDepth;
 	protected int screwStep;
+	protected int spriteRegion;
 	protected boolean playerAttached = false;
 	protected boolean removed = false;
 	protected ScrewType screwType;
@@ -67,6 +68,7 @@ public class Screw extends Entity {
 		super( name, pos, ( tex == null ? WereScrewedGame.manager.get(
 				WereScrewedGame.dirHandle.path( ) + "/common/screw.png",
 				Texture.class ) : tex ), null, false );
+		entityType = EntityType.SCREW;
 	}
 
 	/**
@@ -90,18 +92,20 @@ public class Screw extends Entity {
 	 * 
 	 * @param
 	 */
+	public void screwLeft( int region ) {
+	}
 	public void screwLeft( ) {
 	}
-
 	/**
 	 * Turns structural and puzzle screws to the right which increases depth and
 	 * tightens structural screws
 	 * 
 	 * @param
 	 */
+	public void screwRight(int region ) {
+	}
 	public void screwRight( ) {
 	}
-
 	/**
 	 * returns true if the screws body
 	 * is jointed to a player

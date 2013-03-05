@@ -23,6 +23,7 @@ import com.blindtigergames.werescrewed.util.Util;
  * 
  */
 public class CheckPoint extends Entity {
+	@SuppressWarnings( "unused" )
 	private String levelLoadStage;
 	private boolean active = false;
 	private ProgressManager progressManager;

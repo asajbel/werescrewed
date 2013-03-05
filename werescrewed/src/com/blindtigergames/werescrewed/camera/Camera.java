@@ -4,15 +4,13 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-//import com.blindtigergames.werescrewed.screens.GameScreen;
-//import com.sun.xml.internal.bind.v2.runtime.reflect.ListIterator;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 
 /*******************************************************************************
  * Camera class. Zooms and translates based on anchors. Max 30 anchors.
@@ -48,7 +46,6 @@ public class Camera {
 	private float targetBuffer;
 	private boolean translateState;
 	private boolean insideTargetBuffer;
-	private float targetToBufferRatio;
 
 	// zoom
 	private static final float ZOOM_ACCELERATION = .0001f;
@@ -106,8 +103,6 @@ public class Camera {
 		translateState = true;
 		insideTargetBuffer = false;
 		zoomSpeed = 0f;
-		targetToBufferRatio = 1f;
-
 		anchorList = AnchorList.getInstance( camera );
 		anchorList.clear( );
 		if ( ANCHOR_TEST_MODE ) {
@@ -157,18 +152,17 @@ public class Camera {
 		position = camera.position;
 		center2D.x = position.x;
 		center2D.y = position.y;
-		screenBounds.x = position.x - viewportWidth / 2;
-		screenBounds.y = position.y - viewportHeight / 2;
 		screenBounds.width = camera.zoom * viewportWidth;
 		screenBounds.height = camera.zoom * viewportHeight;
+		screenBounds.x = position.x - screenBounds.width / 2;
+		screenBounds.y = position.y - screenBounds.height / 2;
 
 		translateBuffer.x = position.x - translateBuffer.width * .5f;
 		translateBuffer.y = position.y - translateBuffer.height * .5f;
 		setTranslateTarget( );
 
 		// check if center is inside target buffer
-		targetToBufferRatio = center2D.dst( translateTarget ) / targetBuffer;
-		if ( targetToBufferRatio < 1f )
+		if ( center2D.dst( translateTarget ) < targetBuffer )
 			insideTargetBuffer = true;
 		else
 			insideTargetBuffer = false;
@@ -229,21 +223,23 @@ public class Camera {
 	 * Adjust the camera by translating and zooming when necessary
 	 */
 	private void adjustCamera( ) {
+		// Track the status of buffers
 		boolean outside_x = false;
 		boolean outside_y = false;
 
-		// get vectors from the translateTarget to all anchors outside of
-		// the bounds of the screen, normalizes it, then adds then all
-		// together to come up with a pseudo average
+		// Iterate through each anchor
 		for ( Anchor curAnchor : anchorList.anchorList ) {
+			// Only consider active and special (player) anchors
 			if ( curAnchor.activated || curAnchor.special ) {
+				// Find the direction in which the buffer of the current anchor
+				// has exited the screen
 				RectDirection dir = rectOutsideRect(
 						curAnchor.getBufferRectangle( ), screenBounds );
 
-				// only do stuff if a buffer anchor is outside the screen
+				// Check that a buffer has indeed exited the screen
 				if ( dir != RectDirection.NONE ) {
 
-					// find whether buffer is outside in x, y or both directions
+					// Find whether buffer is outside in x, y or both directions
 					if ( dir == RectDirection.BOTH ) {
 						outside_x = true;
 						outside_y = true;
@@ -252,7 +248,9 @@ public class Camera {
 					else
 						outside_y = true;
 
-					if ( insideTargetBuffer )
+					// If we know buffers have left in both x and y directions,
+					// we don't need to check anymore.
+					if ( outside_x && outside_y )
 						break;
 				}
 			}
@@ -304,7 +302,15 @@ public class Camera {
 				tempAngle = anchorList.getMidpointVelocity( ).angle( )
 						- translateVelocity.angle( );
 				tempAngle = Math.abs( tempAngle );
-
+				if ( trans_x || trans_y ) {
+					if ( trans_x )
+						camera.position.x = translateTarget.x;
+					if ( trans_y )
+						camera.position.y = translateTarget.y;
+				} else {
+					camera.position.x = translateTarget.x;
+					camera.position.y = translateTarget.y;
+				}
 				if ( anchorList.getMidpointVelocity( ).len( ) < MINIMUM_FOLLOW_SPEED
 						|| tempAngle > MAX_ANGLE_DIFF ) {
 					translateState = false;
@@ -312,11 +318,6 @@ public class Camera {
 					translateVelocity.y = 0f;
 					translateAcceleration = 0f;
 					translateSpeed = 0f;
-				} else {
-					if ( trans_x )
-						camera.position.x = translateTarget.x;
-					if ( trans_y )
-						camera.position.y = translateTarget.y;
 				}
 			} else
 				translate( trans_x, trans_y );
@@ -337,15 +338,20 @@ public class Camera {
 	private void translate( boolean trans_x, boolean trans_y ) {
 		// only account for translate target on axis which is being translated
 		// on
-		if ( trans_x )
-			Vector2.tmp.x = translateTarget.x;
-		else
-			Vector2.tmp.x = center2D.x;
+		if ( trans_x || trans_y ) {
+			if ( trans_x )
+				Vector2.tmp.x = translateTarget.x;
+			else
+				Vector2.tmp.x = center2D.x;
 
-		if ( trans_y )
+			if ( trans_y )
+				Vector2.tmp.y = translateTarget.y;
+			else
+				Vector2.tmp.y = center2D.y;
+		} else {
+			Vector2.tmp.x = translateTarget.x;
 			Vector2.tmp.y = translateTarget.y;
-		else
-			Vector2.tmp.y = center2D.y;
+		}
 
 		Vector2.tmp.sub( center2D );
 

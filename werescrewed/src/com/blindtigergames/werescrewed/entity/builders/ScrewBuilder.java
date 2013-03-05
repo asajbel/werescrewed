@@ -3,7 +3,6 @@ package com.blindtigergames.werescrewed.entity.builders;
 import java.util.HashMap;
 
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.World;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.player.Player;
 import com.blindtigergames.werescrewed.screws.*;

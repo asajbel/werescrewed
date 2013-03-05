@@ -2,9 +2,12 @@ package com.blindtigergames.werescrewed.entity.action;
 
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.hazard.Hazard;
+import com.blindtigergames.werescrewed.particles.Steam;
+import com.blindtigergames.werescrewed.platforms.Platform;
 import com.blindtigergames.werescrewed.player.Player;
+import com.blindtigergames.werescrewed.skeleton.Skeleton;
 
-public class ActivateMoverAction implements IAction{
+public class AnchorActivateAction implements IAction{
 
 	@Override
 	public void act( ) {
@@ -14,19 +17,8 @@ public class ActivateMoverAction implements IAction{
 
 	@Override
 	public void act( Entity entity ) {
-		entity.setActive( true );
-		
-	}
-
-	@Override
-	public void act( Player player ) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void act( Hazard hazard ) {
-		// TODO Auto-generated method stub
+		//entity.anchor.activate()
+		//TODO: figure out better way to make anchors
 		
 	}
 	

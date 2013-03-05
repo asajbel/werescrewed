@@ -76,13 +76,7 @@ public class Entity implements GleedLoadable {
 		this.sprite = constructSprite( texture );
 		this.body = constructBodyByType( );
 		setPixelPosition( positionPixels );
-		if ( anchRadius >= 0 ) {
-			Vector2 centPos = new Vector2( body.getWorldCenter( ).x
-					* Util.BOX_TO_PIXEL, body.getWorldCenter( ).y
-					* Util.BOX_TO_PIXEL );
-			this.anchor = new Anchor( centPos, world, anchRadius );
-			AnchorList.getInstance( ).addAnchor( anchor );
-		}
+		createAnchor(anchRadius);
 	}
 	
 	/**
@@ -108,6 +102,7 @@ public class Entity implements GleedLoadable {
 			sprite.setScale( Util.PIXEL_TO_BOX );
 		}
 		this.setPixelPosition( positionPixels );
+		
 	}
 
 	/**
@@ -660,6 +655,15 @@ public class Entity implements GleedLoadable {
 	}
 
 
+	private void createAnchor( float anchRadius ){
+		if ( anchRadius >= 0 ) {
+			Vector2 centPos = new Vector2( body.getWorldCenter( ).x
+					* Util.BOX_TO_PIXEL, body.getWorldCenter( ).y
+					* Util.BOX_TO_PIXEL );
+			this.anchor = new Anchor( centPos, world, anchRadius );
+			AnchorList.getInstance( ).addAnchor( anchor );
+		}
+	}
 	
 	/**
 	 * Sets up moverArray and fills it with null
