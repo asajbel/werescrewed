@@ -163,13 +163,13 @@ public class Rope {
 		}
 	}
 
-	/**
-	 * 
-	 * @return the screw attached at the end of the rope
-	 */
-	public Screw getEndAttachment( ) {
-		return screw;
-	}
+//	/**
+//	 * 
+//	 * @return the screw attached at the end of the rope
+//	 */
+//	public Screw getEndAttachment( ) {
+//		return screw;
+//	}
 	
 	/**
 	 * 

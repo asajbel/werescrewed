@@ -7,6 +7,7 @@ public class MetricsEndTimeAction implements IAction{
 
 	@Override
 	public void act( ) {
+		if( Metrics.turnOnMetrics )
 		Metrics.addPlayerEndTime((System.currentTimeMillis( ) /1000) % 60 );
 		
 	}
