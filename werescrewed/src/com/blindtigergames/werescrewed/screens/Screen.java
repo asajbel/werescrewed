@@ -1,14 +1,21 @@
 package com.blindtigergames.werescrewed.screens;
 
+import aurelienribon.tweenengine.Tween;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.blindtigergames.werescrewed.camera.Camera;
 import com.blindtigergames.werescrewed.collisionManager.MyContactListener;
 import com.blindtigergames.werescrewed.debug.SBox2DDebugRenderer;
+import com.blindtigergames.werescrewed.entity.Entity;
+import com.blindtigergames.werescrewed.entity.tween.EntityAccessor;
+import com.blindtigergames.werescrewed.entity.tween.PlatformAccessor;
 import com.blindtigergames.werescrewed.input.InputHandler;
 import com.blindtigergames.werescrewed.level.Level;
+import com.blindtigergames.werescrewed.platforms.Platform;
 import com.blindtigergames.werescrewed.util.Util;
 
 public class Screen implements com.badlogic.gdx.Screen {
@@ -17,6 +24,7 @@ public class Screen implements com.badlogic.gdx.Screen {
 	protected InputHandler inputHandler;
 	protected SpriteBatch batch;
 	protected SBox2DDebugRenderer debugRenderer;
+
 	MyContactListener MCL;
 
 	
@@ -26,6 +34,13 @@ public class Screen implements com.badlogic.gdx.Screen {
 		debugRenderer = new SBox2DDebugRenderer( Util.BOX_TO_PIXEL );
 		MCL = new MyContactListener( );
 		level = null;
+		Tween.registerAccessor( Platform.class, new PlatformAccessor( ) );
+		Tween.registerAccessor( Entity.class, new EntityAccessor( ) );
+
+	}
+	
+	protected void initLevel( ){
+		level = new Level( );
 	}
 	
 	@Override

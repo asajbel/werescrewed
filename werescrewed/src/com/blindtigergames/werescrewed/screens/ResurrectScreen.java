@@ -28,7 +28,7 @@ import com.blindtigergames.werescrewed.player.Player;
 import com.blindtigergames.werescrewed.skeleton.Skeleton;
 import com.blindtigergames.werescrewed.util.Util;
 
-public class ResurrectScreen implements com.badlogic.gdx.Screen {
+public class ResurrectScreen extends Screen {
 
 	// FIELDS
 
@@ -149,6 +149,7 @@ public class ResurrectScreen implements com.badlogic.gdx.Screen {
 
 	@Override
 	public void render( float deltaTime ) {
+		super.render( deltaTime );
 		if ( Gdx.gl20 != null ) {
 			Gdx.gl20.glClearColor( 0.0f, 0f, 0.0f, 1.0f );
 			Gdx.gl20.glClear( GL20.GL_COLOR_BUFFER_BIT );
@@ -159,9 +160,9 @@ public class ResurrectScreen implements com.badlogic.gdx.Screen {
 
 		cam.update( );
 
-		if ( Gdx.input.isKeyPressed( Input.Keys.ESCAPE ) ) {
-			ScreenManager.getInstance( ).show( ScreenType.PAUSE );
-		}
+		//if ( Gdx.input.isKeyPressed( Input.Keys.ESCAPE ) ) {
+		//	ScreenManager.getInstance( ).show( ScreenType.PAUSE );
+		//}
 		if ( Gdx.input.isKeyPressed( Input.Keys.NUM_1 ) ) {
 			ScreenManager.getInstance( ).show( ScreenType.WIN );
 		}

@@ -41,9 +41,9 @@ public class Level {
 	public World world;
 	public static final int NUM_PLAYERS = 2;
 	Array<Player> players;
-	EntityManager entities;
+	public EntityManager entities;
 	ArrayList<Platform> platforms;
-	Skeleton root;
+	private Skeleton root;
 	
 	public Level( ){
 		
@@ -61,6 +61,8 @@ public class Level {
 			.buildPlayer() );
 		}
 
+		
+		
 		entities = new EntityManager();
 		platforms = new ArrayList<Platform>();
 		root = new Skeleton("root", new Vector2(0,0), null, world);
@@ -69,12 +71,16 @@ public class Level {
 		Tween.registerAccessor( Entity.class, new EntityAccessor( ) );
 	}
 	
+	public Player getPlayer(int index){
+		return players.get( index );
+	}
+	
 	public void update( float deltaTime ){
 		camera.update( );
 		
 		for (Player player: players)
 			player.update( deltaTime );
-		root.update( deltaTime );
+		getRoot().update( deltaTime );
 		entities.update( deltaTime );
 		for (Platform p: platforms)
 			p.update( deltaTime );
@@ -84,7 +90,7 @@ public class Level {
 		sb.setProjectionMatrix( camera.combined() );
 		sb.begin();
 		entities.draw( sb );
-		root.draw( sb );
+		getRoot().draw( sb );
 		for (Platform p: platforms)
 			p.draw( sb );
 		for (Player player: players)
@@ -122,5 +128,10 @@ public class Level {
 		return out;
 	}
 	
+	
+	public Skeleton getRoot( ) {
+		return root;
+	}
+
 	public static int GRAVITY = -45;
 }

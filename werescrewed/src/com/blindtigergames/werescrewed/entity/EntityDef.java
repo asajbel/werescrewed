@@ -7,6 +7,7 @@ import java.util.HashMap;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
@@ -144,8 +145,8 @@ public class EntityDef {
 
 
 	public Texture getTexture( ) {
-		if ( texture == null ){
-			return WereScrewedGame.manager.getTextureAtlas( tileSetName ).getTextures( ).iterator( ).next( );
+		if (texture == null){
+			setTexture(WereScrewedGame.manager.getTextureAtlas( tileSetName ).getTextures( ).iterator( ).next( ));
 		}
 		return texture;
 	}
@@ -252,8 +253,13 @@ public class EntityDef {
 				tileSetName = xml.get( "tileset" );
 			}
 			if (texName != null ){
-				out.setTexture(WereScrewedGame.manager.get(
-					WereScrewedGame.dirHandle.path( )  + "/" + texName, Texture.class));
+				String texPath = WereScrewedGame.dirHandle.path( )  + "/" + texName;
+				if (WereScrewedGame.manager.isLoaded( texPath )){
+					out.setTexture( WereScrewedGame.manager.get( texPath , Texture.class));
+				} else {
+					Gdx.app.log( "EntityDef", "AssetManager dun goofed: loading ["+texPath+"] manually." );
+					out.setTexture( new Texture( Gdx.files.internal( texPath )) );
+				}
 			}
 			out.tileSetName = tileSetName;
 			out.initialAnim = xml.get( "initialAnim" );

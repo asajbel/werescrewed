@@ -10,7 +10,7 @@ public class PlayerBuilder extends GenericEntityBuilder<PlayerBuilder> {
 	
 	public PlayerBuilder( ) {
 		super();
-		type = EntityDef.getDefinition( "playerTest" );
+		type = EntityDef.getDefinition( "player1" );
 		number = 1;
 	}
 	public PlayerBuilder number(int n){

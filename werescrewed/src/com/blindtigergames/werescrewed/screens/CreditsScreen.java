@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.gui.Button;
 import com.blindtigergames.werescrewed.gui.Label;
 import com.blindtigergames.werescrewed.screens.ScreenSwitchHandler;
@@ -15,6 +16,8 @@ class CreditsScreen implements com.badlogic.gdx.Screen {
 	private SpriteBatch batch = null;
 	private OrthographicCamera camera = null;
 	private BitmapFont font = null;
+	private BitmapFont fancyFont = null;
+	private Label screenLabel = null;
 	private Label authorLabel = null;
 	private Label licenseLabel = null;
 	private Label versionLabel = null;
@@ -24,10 +27,13 @@ class CreditsScreen implements com.badlogic.gdx.Screen {
 	public CreditsScreen( ) {
 		batch = new SpriteBatch( );
 		font = new BitmapFont( );
+		String ornatiquePathName = WereScrewedGame.dirHandle + "/common/ornatique-26";
+		fancyFont = WereScrewedGame.manager.get( ornatiquePathName + ".fnt", BitmapFont.class );
 		lineHeight = Math.round( 2.5f * font.getCapHeight( ) );
-		authorLabel = new Label( "Author: biobob (Robert Komorovsky)", font );
-		licenseLabel = new Label( "License: Apache License 2.0", font );
-		versionLabel = new Label( "LibGDX version: " + Version.VERSION, font );
+		screenLabel = new Label("CREDITS",fancyFont);
+		authorLabel = new Label( "", font );
+		licenseLabel = new Label( "", font );
+		versionLabel = new Label( "" + Version.VERSION, font );
 		backButton = new Button( "Back", font, new ScreenSwitchHandler(
 				ScreenType.MAIN_MENU ) );
 	}
@@ -51,6 +57,8 @@ class CreditsScreen implements com.badlogic.gdx.Screen {
 		batch.setProjectionMatrix( camera.combined );
 		int centerX = width / 2;
 		int centerY = height / 2;
+		screenLabel.setX( centerX - screenLabel.getWidth()/2);
+		screenLabel.setY( centerY + 7 * lineHeight );
 		authorLabel.setX( centerX - authorLabel.getWidth( ) / 2 );
 		authorLabel.setY( centerY + lineHeight );
 		licenseLabel.setX( centerX - licenseLabel.getWidth( ) / 2 );

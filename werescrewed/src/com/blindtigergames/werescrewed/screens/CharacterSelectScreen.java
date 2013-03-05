@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.gui.Button;
 import com.blindtigergames.werescrewed.gui.Label;
 
@@ -12,6 +13,7 @@ public class CharacterSelectScreen implements com.badlogic.gdx.Screen {
 	private SpriteBatch batch = null;
 	private OrthographicCamera camera = null;
 	private BitmapFont font = null;
+	private BitmapFont fancyFont = null;
 	private int lineHeight = 0;
 	private Label screenLabel = null;
 	private Button backButton = null;
@@ -23,8 +25,10 @@ public class CharacterSelectScreen implements com.badlogic.gdx.Screen {
 	public CharacterSelectScreen(){
 		batch = new SpriteBatch( );
 		font = new BitmapFont( );
+		String ornatiquePathName = WereScrewedGame.dirHandle + "/common/ornatique-26";
+		fancyFont = WereScrewedGame.manager.get( ornatiquePathName + ".fnt", BitmapFont.class );
 		lineHeight = Math.round( 2.5f * font.getCapHeight( ) );
-		screenLabel = new Label("Character Select", font);
+		screenLabel = new Label("Character Select", fancyFont);
 		backButton = new Button( "Back", font, new ScreenSwitchHandler(
 				ScreenType.STORY ) );
 	}

@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.gui.Button;
 import com.blindtigergames.werescrewed.gui.Label;
 
@@ -15,6 +16,7 @@ public class LevelSelectScreen implements com.badlogic.gdx.Screen {
 	private SpriteBatch batch = null;
 	private OrthographicCamera camera = null;
 	private BitmapFont font = null;
+	private BitmapFont fancyFont = null;
 	private Label screenLabel = null;
 	private Button playButton = null;
 	private Button gleedButton = null;
@@ -33,19 +35,21 @@ public class LevelSelectScreen implements com.badlogic.gdx.Screen {
 	public LevelSelectScreen(){
 		batch = new SpriteBatch( );
 		font = new BitmapFont( );
+		String ornatiquePathName = WereScrewedGame.dirHandle + "/common/ornatique-26";
+		fancyFont = WereScrewedGame.manager.get( ornatiquePathName + ".fnt", BitmapFont.class );
 		lineHeight = Math.round( 2.5f * font.getCapHeight( ) );
-		screenLabel = new Label( "Level Select", font);
-		playButton = new Button( "Physics Test Screen", font,
+		screenLabel = new Label( "LEVEL SELECT", fancyFont);
+		playButton = new Button( "Physics Test Screen", fancyFont,
 				new ScreenSwitchHandler( ScreenType.PHYSICS ) );
-		resurrectButton = new Button( "Resurrect Test Screen", font,
+		resurrectButton = new Button( "Resurrect Test Screen", fancyFont,
 				new ScreenSwitchHandler( ScreenType.RESURRECT ) );
-		hazardButton = new Button ( "Hazard Test Screen", font,
+		hazardButton = new Button ( "Hazard Test Screen", fancyFont,
 				new ScreenSwitchHandler( ScreenType.HAZARD ) );
-		testButton = new Button( "Playtest Screen", font,
+		testButton = new Button( "Playtest Screen", fancyFont,
 				new ScreenSwitchHandler( ScreenType.PLAYTEST ) );
-		gleedButton = new Button( "Gleed Screen", font,
+		gleedButton = new Button( "Gleed Screen", fancyFont,
 				new ScreenSwitchHandler( ScreenType.GLEED ) );
-		level1Button = new Button( "Level 1", font, 
+		level1Button = new Button( "Level 1", fancyFont, 
 				new ScreenSwitchHandler(ScreenType.LOADING_1 ) );
 		
 		backButton = new Button( "Back", font, new ScreenSwitchHandler(

@@ -4,8 +4,10 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.gui.Button;
 import com.blindtigergames.werescrewed.gui.Button.ButtonHandler;
 import com.blindtigergames.werescrewed.gui.Label;
@@ -15,6 +17,7 @@ class MainMenuScreen implements com.badlogic.gdx.Screen {
 	private SpriteBatch batch = null;
 	private OrthographicCamera camera = null;
 	private BitmapFont font = null;
+	private BitmapFont fancyFont = null;
 	private Label headingLabel = null;
 	private Button exitButton = null;
 	private int lineHeight = 0;
@@ -26,15 +29,19 @@ class MainMenuScreen implements com.badlogic.gdx.Screen {
 	public MainMenuScreen( ) {
 		batch = new SpriteBatch( );
 		font = new BitmapFont( );
+		String ornatiquePathName = WereScrewedGame.dirHandle + "/common/ornatique-26";
+		fancyFont = WereScrewedGame.manager.get( ornatiquePathName + ".fnt", BitmapFont.class );
+				/*new BitmapFont(WereScrewedGame.manager.get(ornatiquePathName + ".fnt", BitmapFont.class),
+				WereScrewedGame.manager.get( ornatiquePathName + ".png", Texture.class ));*/
 		lineHeight = Math.round( 2.5f * font.getCapHeight( ) );
-		headingLabel = new Label( "We're Screwed!!", font );
+		headingLabel = new Label( "We're Screwed!!", fancyFont );
 		
 		storyButton = new Button("Start", font,
 				new ScreenSwitchHandler(ScreenType.STORY));
 		levelSelectButton = new Button( "Level Select", font,
 				new ScreenSwitchHandler(ScreenType.LEVEL_SELECT));
 		optionsButton = new Button("Options", font,
-				new ScreenSwitchHandler( ScreenType.WIN));
+				new ScreenSwitchHandler( ScreenType.OPTIONS));
 		exitButton = new Button( "Exit", font, new ButtonHandler( ) {
 			@Override
 			public void onClick( ) {

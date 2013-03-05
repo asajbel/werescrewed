@@ -16,3 +16,6 @@
 /common/test01.png
 /common/cletter.png
 /particles/particle.png
+
+##common fonts
+/common/ornatique-26.fnt

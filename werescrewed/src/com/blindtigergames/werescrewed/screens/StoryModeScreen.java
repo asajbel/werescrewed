@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.gui.Button;
 import com.blindtigergames.werescrewed.gui.Label;
 
@@ -12,6 +13,7 @@ public class StoryModeScreen implements com.badlogic.gdx.Screen {
 	private SpriteBatch batch = null;
 	private OrthographicCamera camera = null;
 	private BitmapFont font = null;
+	private BitmapFont fancyFont = null;
 	private int lineHeight = 0;
 	private Label screenLabel = null;
 	private Button newGameButton = null;
@@ -26,7 +28,9 @@ public class StoryModeScreen implements com.badlogic.gdx.Screen {
 		batch = new SpriteBatch( );
 		font = new BitmapFont( );
 		lineHeight = Math.round( 2.5f * font.getCapHeight( ) );
-		screenLabel = new Label("STORY MODE", font);
+		String ornatiquePathName = WereScrewedGame.dirHandle + "/common/ornatique-26";
+		fancyFont = WereScrewedGame.manager.get( ornatiquePathName + ".fnt", BitmapFont.class );
+		screenLabel = new Label("STORY MODE", fancyFont);
 		newGameButton = new Button("New Game", font,
 				new ScreenSwitchHandler(ScreenType.CHARACTER_SELECT));
 		loadGameButton = new Button("Load Game", font,

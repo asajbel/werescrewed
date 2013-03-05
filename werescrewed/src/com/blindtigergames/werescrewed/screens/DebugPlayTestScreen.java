@@ -849,8 +849,9 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 			endgameCounter += deltaTime;
 			cam.camera.zoom += 0.015f;
 			if ( endgameCounter > 10f )
-				Gdx.app.exit( );
-				//ScreenManager.getInstance( ).show( ScreenType.MAIN_MENU );
+				//Gdx.app.exit( );
+				ScreenManager.getInstance( ).show( ScreenType.MAIN_MENU );
+				ScreenManager.getInstance( ).dispose( ScreenType.PLAYTEST );
 		}
 
 		world.step( 1 / 60f, 6, 6 );

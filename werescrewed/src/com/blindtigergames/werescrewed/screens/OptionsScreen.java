@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.gui.Button;
 import com.blindtigergames.werescrewed.gui.Label;
 import com.blindtigergames.werescrewed.screens.ScreenSwitchHandler;
@@ -13,6 +14,7 @@ class OptionsScreen implements com.badlogic.gdx.Screen{
 
 	private SpriteBatch batch = null;
 	private BitmapFont font = null;
+	private BitmapFont fancyFont = null;
 	private int lineHeight = 0;
 	private OrthographicCamera camera = null;
 	private Label screenLabel = null;
@@ -33,9 +35,11 @@ class OptionsScreen implements com.badlogic.gdx.Screen{
 	public OptionsScreen(){
 		batch = new SpriteBatch( );
 		font = new BitmapFont( );
+		String ornatiquePathName = WereScrewedGame.dirHandle + "/common/ornatique-26";
+		fancyFont = WereScrewedGame.manager.get( ornatiquePathName + ".fnt", BitmapFont.class );
 		lineHeight = Math.round( 2.5f * font.getCapHeight( ) );
 		//the following are placeholder displays. Add actual option buttons here later
-		screenLabel = new Label("OPTIONS", font);
+		screenLabel = new Label("OPTIONS", fancyFont);
 		controls = new Label( "Controls", font );
 		music = new Label("Music", font);
 		sound = new Label("Sound",font);

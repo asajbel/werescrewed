@@ -58,7 +58,7 @@ public class GleedLoader {
 	
 	
 	public Level load(String filename){
-		skeletons.put( "root", level.root );
+		skeletons.put( "root", level.getRoot() );
 		Element root;
 		Array<Element> elements = new Array<Element>();
 
@@ -115,7 +115,7 @@ public class GleedLoader {
 		} else if (items.get( GleedTypeTag.SKELETON ).containsKey(name )){
 			return loadSkeleton(items.get( GleedTypeTag.SKELETON ).get( name ));
 		}
-		return level.root;
+		return level.getRoot();
 	}
 	
 	public static final String startTime = "starttime";
