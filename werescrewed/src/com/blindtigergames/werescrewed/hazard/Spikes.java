@@ -36,23 +36,65 @@ import com.blindtigergames.werescrewed.util.Util;
 // Just your standard spikes.
 public class Spikes extends Hazard {
 	
+	protected enum Orientation {
+		LEFT, RIGHT, UP, DOWN
+	}
+	
 	protected Vector < Tile > tiles = new Vector <Tile>();
 	protected float tileConstant = 32.0f;
 	protected Vector2 bodypos;
+	protected boolean hori;
+	Orientation ori;
 
-
+	/**
+	 * 
+	 * @param name
+	 * @param pos
+	 * @param height
+	 * @param width
+	 * @param world
+	 * @param isActive
+	 * 		Determines if hazard is currently active.
+	 * @param invert
+	 * 		False if spikes face positive direction (up, right),
+	 * 		True if spikes face negative direction (down, left).
+	 */
 	public Spikes( String name, Vector2 pos, float height, float width,
-			World world, boolean isActive ) {
+			World world, boolean isActive, boolean invert, boolean horizontal ) {
 		super( name, pos, ( Texture ) WereScrewedGame.manager
 				.get( WereScrewedGame.dirHandle + "/common/spikes.png" ),
 				world, isActive );
 		entityType = EntityType.HAZARD;
 
+		if ( horizontal ) {
+			if ( invert )
+				ori = Orientation.DOWN;
+			else
+				ori = Orientation.UP;
+		}
+		else {
+			if ( invert )
+				ori = Orientation.LEFT;
+			else
+				ori = Orientation.RIGHT;
+		}
+		
+		if ( height > width ) {
+			this.hori = false;
+		}
+		else if ( width > height ) {
+			this.hori = true;
+		}
+		else {
+			this.hori = horizontal;
+		}
+		
 		this.world = world;
 		this.active = isActive;
 		// this.sprite = constructSprite( (Texture) WereScrewedGame.manager
 		// .get( WereScrewedGame.dirHandle + "/common/spikes.png" ) );
 		constructBody( pos, height, width );
+		constructTile( pos, height, width );
 	}
 
 	@Override
@@ -69,23 +111,29 @@ public class Spikes extends Hazard {
 	}
 
 	private void constructBody( Vector2 position, float height, float width ) {
-		Tile insub;
-		float offset_x, offset_y;
-		
 		BodyDef bodyDef = new BodyDef( );
 		bodyDef.type = BodyType.KinematicBody;
+		
 		bodyDef.position.set( ( position.x + (width * tileConstant )/ 2 ) * Util.PIXEL_TO_BOX,
-				( position.y + (height * tileConstant) / 2 ) * Util.PIXEL_TO_BOX );
+				( position.y + ( height * tileConstant) / 2 ) * Util.PIXEL_TO_BOX );
 		body = world.createBody( bodyDef );
 
 		PolygonShape polygon = new PolygonShape( );
-		polygon.setAsBox( (width * tileConstant ) / 2 * Util.PIXEL_TO_BOX, (height * tileConstant )  / 2
+		polygon.setAsBox( (width * tileConstant ) / 2 * Util.PIXEL_TO_BOX, ( height * tileConstant )  / 2
 				* Util.PIXEL_TO_BOX );
 		FixtureDef spikeFixtureDef = new FixtureDef( );
 		spikeFixtureDef.shape = polygon;
 		body.createFixture( spikeFixtureDef );
-		polygon.setAsBox( (((width * tileConstant ) / 2) - 5 ) * Util.PIXEL_TO_BOX,
-							(height * tileConstant )  / 2  * Util.PIXEL_TO_BOX );
+		
+		if ( hori ) {
+			polygon.setAsBox( ( ( ( width * tileConstant ) / 2) - 5 ) * Util.PIXEL_TO_BOX,
+								( height * tileConstant )  / 2  * Util.PIXEL_TO_BOX );
+		}
+		else {
+			polygon.setAsBox( ( width * tileConstant ) / 2 * Util.PIXEL_TO_BOX,
+								( ( ( height * tileConstant )  / 2) - 5 )  * Util.PIXEL_TO_BOX );
+		}
+		
 		spikeFixtureDef.shape = polygon;
 		body.createFixture( spikeFixtureDef );
 
@@ -94,14 +142,14 @@ public class Spikes extends Hazard {
 		body.setUserData( this );
 		
 		bodypos = body.getPosition( ).mul( Util.BOX_TO_PIXEL );
+	}
+
+	private void constructTile( Vector2 position, float height, float width ) {
+		Tile insub;
+		float offset_x, offset_y;
 		
 		Sprite temp = constructSprite( ( Texture ) WereScrewedGame.manager
 				.get( WereScrewedGame.dirHandle + "/common/spikes.png" ) );
-		
-		System.out.println("Spikes isLoaded: " +
-				WereScrewedGame.manager.isLoaded(  WereScrewedGame.dirHandle + "/common/spikes.png" ));
-		
-		
 		for ( int i = 0; i < width; i++ ) {
 			offset_x = ( i - width / 2 + 1 ) * tileConstant;
 			for ( int j = 0; j < height; j++ ) {
@@ -116,10 +164,9 @@ public class Spikes extends Hazard {
 			}
 		}
 	}
-
+	
 	@Override
 	public void update( float deltaTime ) {
-		// TODO: Write method to make SOMETHING appear on Hazard Test Screen.
 	}
 
 	@Override
@@ -128,13 +175,40 @@ public class Spikes extends Hazard {
 		Iterator< Tile > v = tiles.listIterator( );
 		while ( v.hasNext( ) ) {
 			d = v.next( );
-			d.tileSprite.setPosition( bodypos.x - d.xOffset, bodypos.y
-					- d.yOffset );
-			d.tileSprite.setRotation( MathUtils.radiansToDegrees
-					* body.getAngle( ) );
-			d.tileSprite.draw( batch );
+
+			switch ( ori ) {
+			case RIGHT:
+				d.tileSprite.setPosition( bodypos.x - d.xOffset, bodypos.y
+						- d.yOffset );
+				d.tileSprite.setRotation( MathUtils.radiansToDegrees
+						* body.getAngle( ) - 90 );
+				break;
+			case LEFT:
+				d.tileSprite.setPosition( bodypos.x - d.xOffset, bodypos.y
+						- d.yOffset );
+				d.tileSprite.setRotation( MathUtils.radiansToDegrees
+						* body.getAngle( ) + 90 );
+				break;
+			case UP:
+				d.tileSprite.setPosition( bodypos.x - d.xOffset, bodypos.y
+						- d.yOffset );
+				d.tileSprite.setRotation( MathUtils.radiansToDegrees
+						* body.getAngle( ) );
+				break;
+			case DOWN:
+				d.tileSprite.setPosition( bodypos.x - d.xOffset, bodypos.y
+						- d.yOffset );
+				d.tileSprite.setRotation( MathUtils.radiansToDegrees
+						* body.getAngle( ) + 180 );
+				break;
+			default:
+				d.tileSprite.setPosition( bodypos.x - d.xOffset, bodypos.y
+						- d.yOffset );
+				d.tileSprite.setRotation( MathUtils.radiansToDegrees
+						* body.getAngle( ) );
+			}
+				d.tileSprite.draw( batch );
 		}
 		//super.draw( batch );
-		// TODO: Write method to make SOMETHING appear on Hazard Test Screen.
 	}
 }

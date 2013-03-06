@@ -12,6 +12,8 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.Filter;
 import com.badlogic.gdx.physics.box2d.Fixture;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJoint;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
@@ -26,6 +28,7 @@ import com.blindtigergames.werescrewed.entity.mover.LerpMover;
 import com.blindtigergames.werescrewed.entity.mover.LinearAxis;
 import com.blindtigergames.werescrewed.input.MyControllerListener;
 import com.blindtigergames.werescrewed.input.PlayerInputHandler;
+import com.blindtigergames.werescrewed.screws.ResurrectScrew;
 import com.blindtigergames.werescrewed.screws.Screw;
 import com.blindtigergames.werescrewed.screws.ScrewType;
 import com.blindtigergames.werescrewed.util.Metrics;
@@ -60,6 +63,9 @@ public class Player extends Entity {
 
 	public Fixture feet;
 	public Fixture torso;
+	public Fixture rightSensor;
+	public Fixture leftSensor;
+	public Fixture topSensor;
 	int check = 0;
 
 	private PovDirection prevButton;
@@ -147,12 +153,9 @@ public class Player extends Entity {
 		anchor.special = true;
 		AnchorList.getInstance( ).addAnchor( anchor );
 
-		torso = body.getFixtureList( ).get( 0 );
-		feet = body.getFixtureList( ).get( 1 );
-		feet.setRestitution( 0.001f );
-		torso.getShape( ).setRadius( 0 );
+		setFixtures();
 		maxFriction( );
-
+		
 		BodyDef bodydef = new BodyDef( );
 		bodydef.position.set( pos );
 
@@ -161,8 +164,7 @@ public class Player extends Entity {
 
 		jumpSound = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 				+ "/common/sounds/jump.ogg" );
-
-	}
+		}
 
 	// PUBLIC METHODS
 
@@ -244,14 +246,13 @@ public class Player extends Entity {
 				&& !otherPlayer.isPlayerDead( ) && headStandTimeout == 0
 				&& otherPlayer.isHeadStandTimedOut( ) ) {
 			// check if the top player is in-line with the other players head
-			if ( otherPlayer.body.getPosition( ).mul( Util.BOX_TO_PIXEL )
-					.add( sprite.getWidth( ) / 3.0f, 0.0f ).x <= body
-					.getPosition( ).mul( Util.BOX_TO_PIXEL )
-					.add( sprite.getWidth( ) / 2.0f, 0.0f ).x
-					&& body.getPosition( ).mul( Util.BOX_TO_PIXEL )
-							.add( sprite.getWidth( ) / 2.0f, 0.0f ).x < otherPlayer.body
-							.getPosition( ).mul( Util.BOX_TO_PIXEL )
-							.add( sprite.getWidth( ) / 1.6f, 0.0f ).x ) {
+			// and check if the top player is actually above the other player
+			if ( ( playerState == PlayerState.Falling && this
+					.getPositionPixel( ).y > otherPlayer.getPositionPixel( ).y )
+					&& ( otherPlayer.getPositionPixel( ).sub( sprite.getWidth( )/3.0f, 0.0f ).x <= this
+							.getPositionPixel( ).x )
+					&& ( otherPlayer.getPositionPixel( ).add( sprite.getWidth( )/4.0f,
+							0.0f ).x > this.getPositionPixel( ).x ) ) {
 				topPlayer = true;
 				setHeadStand( );
 				otherPlayer.setHeadStand( );
@@ -286,7 +287,9 @@ public class Player extends Entity {
 			} else {
 				// if resurrect screw and its not active remove the player joint
 				if ( currentScrew.getScrewType( ) == ScrewType.SCREW_RESURRECT ) {
-					if ( !currentScrew.isActive( ) ) {
+					ResurrectScrew rezScrew = ( ResurrectScrew ) currentScrew;
+					if ( rezScrew.deleteQueue( ) ) {
+						Gdx.app.log( "end hit rez screw", "" );
 						removePlayerToScrew( );
 						jump( );
 					}
@@ -309,11 +312,13 @@ public class Player extends Entity {
 		if ( !world.isLocked( ) ) {
 			playerState = PlayerState.Dead;
 			if ( playerToScrew != null ) {
+				Gdx.app.log( "remove rez screw if dead", "" );
 				removePlayerToScrew( );
 			}
 			if ( playerToPlayer != null ) {
 				removePlayerToPlayer( );
 			}
+			currentScrew = null;
 			Filter filter = new Filter( );
 			for ( Fixture f : body.getFixtureList( ) ) {
 				f.setSensor( false );
@@ -1044,6 +1049,7 @@ public class Player extends Entity {
 		}
 		mover = null;
 		currentScrew.setPlayerAttached( false );
+		currentScrew = null;
 		playerState = PlayerState.JumpingOffScrew;
 		screwJumpTimeout = SCREW_JUMP_STEPS;
 	}
@@ -1440,5 +1446,21 @@ public class Player extends Entity {
 			body.setLinearVelocity( new Vector2( 0f,
 					body.getLinearVelocity( ).y ) );
 		body.applyForceToCenter( 0f, STEAM_FORCE );
+	}
+	
+	/**
+	 * sets fixture specific data for use in constructor;
+	 */
+	private void setFixtures( ){
+		torso = body.getFixtureList( ).get( 0 );
+		leftSensor = body.getFixtureList( ).get( 1 );
+		rightSensor = body.getFixtureList( ).get( 3 );
+		topSensor = body.getFixtureList( ).get( 2 );
+		feet = body.getFixtureList( ).get( 4 );
+		feet.setRestitution( 0.001f );
+		torso.getShape( ).setRadius( 0 );
+		rightSensor.setSensor( true );
+		leftSensor.setSensor( true );
+		topSensor.setSensor( true );
 	}
 }
