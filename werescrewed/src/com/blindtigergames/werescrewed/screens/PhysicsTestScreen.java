@@ -157,17 +157,17 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 														// )
 				.friction( 1f ).staticBody( ).buildTilePlatform( );
 
-		testRope.attachEntityToTop( topPlatform, false );
+		testRope.attachEntityToTop( topPlatform, true );
 
-		TiledPlatform bottomPlatform = platBuilder.name( "othe2").width( 10 ).height( 1 )
-				.oneSided( true ).position( 0, 0 )// .texture( testTexture )
-				.friction( 1f ).dynamic( ).buildTilePlatform( );
+//		TiledPlatform bottomPlatform = platBuilder.name( "othe2").width( 10 ).height( 1 )
+//				.oneSided( true ).position( 0, 0 )// .texture( testTexture )
+//				.friction( 1f ).dynamic( ).buildTilePlatform( );
+//
+//		
+//
+//		testRope.attachEntityToBottom( bottomPlatform, true );
 
 		buildSubSkeleton( );
-
-		testRope.attachEntityToBottom( bottomPlatform, true );
-
-
 
 		// rope = new Rope( "rope", new Vector2 (2000.0f * Util.PIXEL_TO_BOX,
 		// 400.0f* Util.PIXEL_TO_BOX), null, world );

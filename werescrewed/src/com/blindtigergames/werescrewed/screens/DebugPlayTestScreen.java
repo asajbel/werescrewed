@@ -108,9 +108,9 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 
 		// Initialize players
 		player1 = new PlayerBuilder( ).name( "player1" ).world( world )
-				.position( 1f * TILE, 1f * TILE  ).buildPlayer( );
+				.position( 170f * TILE, 17f * TILE  ).buildPlayer( );
 		player2 = new PlayerBuilder( ).name( "player2" ).world( world )
-				.position( 1f * TILE, 1f * TILE   ).buildPlayer( );
+				.position( 170f * TILE, 17f * TILE   ).buildPlayer( );
 
 		// END: 175f * TILE, 96f * TILE
 		// START : 1f * TILE, 1f * TILE 
@@ -140,7 +140,7 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		EventTriggerBuilder etb = new EventTriggerBuilder(world);
 		et = etb.name( "event1" ).circle( ).radius( 100 )
 				.position( new Vector2(10 * TILE, 1.5f * TILE ) )
-				.beginAction( new MetricsStartTimeAction() ).endAction( new MetricsEndTimeAction() )
+				.beginAction( new MetricsStartTimeAction() )
 				.build();
 		
 		ground = platBuilder.position( 81 * TILE, 0 ).name( "ground1" )

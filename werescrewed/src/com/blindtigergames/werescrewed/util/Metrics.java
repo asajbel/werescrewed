@@ -7,29 +7,23 @@ import com.badlogic.gdx.math.Vector2;
 
 public class Metrics{
 	
-	private static ArrayList<Vector2> playerDeathPositions;
-	private static ArrayList<Vector2> playerJumpPositions;
-	private static ArrayList<Vector2> playerAttachToScrewPositions;
-	private static ArrayList<Vector2> playerUnscrewedPositions;
-	// Every pair is a start time and end time
-	private static ArrayList<Float> playerTime;
-	//time spent in areas
-	public Metrics(){
-		playerDeathPositions = new ArrayList<Vector2>();
-		playerJumpPositions = new ArrayList<Vector2>();
-		playerAttachToScrewPositions = new ArrayList<Vector2>();
-		playerUnscrewedPositions = new ArrayList<Vector2>();
-		
-		playerTime = new ArrayList<Float>();
-	}
+	public static boolean turnOnMetrics = false;
+	private static ArrayList<Vector2> playerDeathPositions = new ArrayList<Vector2>();
+	private static ArrayList<Vector2> playerJumpPositions = new ArrayList<Vector2>();
+	private static ArrayList<Vector2> playerAttachToScrewPositions = new ArrayList<Vector2>();
+	private static ArrayList<Vector2> playerUnscrewedPositions = new ArrayList<Vector2>();
+	private static ArrayList<Float> playerTime = new ArrayList<Float>();
+
 	public static void addPlayerDeathPosition(Vector2 position){
 		Gdx.app.log( "player died ", ""+ position );
 		playerDeathPositions.add( position );
 	}
 	public static void addPlayerJumpPosition(Vector2 position){
+		Gdx.app.log( "player jump ", ""+ position );
 		playerJumpPositions.add( position );
 	}
 	public static void addPlayerAttachToScrewPosition(Vector2 position){
+		Gdx.app.log( "player attached to screw ", ""+ position );
 		playerAttachToScrewPositions.add(position);
 	}
 	
