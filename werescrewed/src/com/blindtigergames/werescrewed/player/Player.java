@@ -493,34 +493,34 @@ public class Player extends Entity {
 		}
 	}
 
-	/**
-	 * directs jump impulse off of screw based on analog stick
-	 */
-	public void jumpScrew( ) {
-		leftAnalogX = controllerListener.analogLeftAxisX( );
-		leftAnalogY = controllerListener.analogLeftAxisY( );
-		float yImpulse = JUMP_SCREW_IMPULSE;
-		// if ( leftAnalogY > -0.7f ) {
-		// if ( leftAnalogY > 0.01f || leftAnalogY < -0.01f ) {
-		// if ( leftAnalogX > 0.01f || leftAnalogX < -0.01f ) {
-		// float temp = ( leftAnalogY + 0.7f ) / 1.7f;
-		// yImpulse -= temp * JUMP_SCREW_IMPULSE;
-		// }
-		// }
-		// }
-		float xImpulse = leftAnalogX * JUMP_SCREW_IMPULSE * 0.1f;
-//		if ( leftAnalogX > 0.01f || leftAnalogX < -0.01f ) {
-//			yImpulse -= Math.abs( xImpulse ) * 5;
-//		if ( leftAnalogY < -0.35f ) {
-//			float temp = ( leftAnalogY + 0.7f ) / 1.7f;
-//			yImpulse -= temp * JUMP_SCREW_IMPULSE; 
-//		}
-//			Gdx.app.log( name, String.valueOf( xImpulse ) + ", " + String.valueOf( yImpulse ) );
-//		}
-		body.applyLinearImpulse( new Vector2( xImpulse, yImpulse ),
-				body.getWorldCenter( ) );
-		setGrounded( false );
-	}
+//	/**
+//	 * directs jump impulse off of screw based on analog stick
+//	 */
+//	public void jumpScrew( ) {
+//		leftAnalogX = controllerListener.analogLeftAxisX( );
+//		leftAnalogY = controllerListener.analogLeftAxisY( );
+//		float yImpulse = JUMP_SCREW_IMPULSE;
+//		// if ( leftAnalogY > -0.7f ) {
+//		// if ( leftAnalogY > 0.01f || leftAnalogY < -0.01f ) {
+//		// if ( leftAnalogX > 0.01f || leftAnalogX < -0.01f ) {
+//		// float temp = ( leftAnalogY + 0.7f ) / 1.7f;
+//		// yImpulse -= temp * JUMP_SCREW_IMPULSE;
+//		// }
+//		// }
+//		// }
+//		float xImpulse = leftAnalogX * JUMP_SCREW_IMPULSE * 0.1f;
+////		if ( leftAnalogX > 0.01f || leftAnalogX < -0.01f ) {
+////			yImpulse -= Math.abs( xImpulse ) * 5;
+////		if ( leftAnalogY < -0.35f ) {
+////			float temp = ( leftAnalogY + 0.7f ) / 1.7f;
+////			yImpulse -= temp * JUMP_SCREW_IMPULSE; 
+////		}
+////			Gdx.app.log( name, String.valueOf( xImpulse ) + ", " + String.valueOf( yImpulse ) );
+////		}
+//		body.applyLinearImpulse( new Vector2( xImpulse, yImpulse ),
+//				body.getWorldCenter( ) );
+//		setGrounded( false );
+//	}
 
 	/**
 	 * Sets the current screw
