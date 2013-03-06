@@ -61,6 +61,7 @@ public class MyContactListener implements ContactListener {
 			}
 			if ( playerInvolved ) {
 				Player player = ( Player ) playerFix.getBody( ).getUserData( );
+				player.setCrush( playerFix, true );
 				if ( objectFix.getBody( ).getUserData( ) instanceof Entity ) {
 					Entity object = ( Entity ) objectFix.getBody( )
 							.getUserData( );
@@ -178,6 +179,7 @@ public class MyContactListener implements ContactListener {
 			}
 			if ( playerInvolved ) {
 				Player player = ( Player ) playerFix.getBody( ).getUserData( );
+				player.setCrush( playerFix, false );
 				if ( objectFix.getBody( ).getUserData( ) instanceof Entity ) {
 					Entity object = ( Entity ) objectFix.getBody( )
 							.getUserData( );

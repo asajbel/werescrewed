@@ -66,6 +66,12 @@ public class Player extends Entity {
 	public Fixture rightSensor;
 	public Fixture leftSensor;
 	public Fixture topSensor;
+	
+	boolean rightCrush;
+	boolean leftCrush;
+	boolean topCrush;
+	boolean botCrush;
+	
 	int check = 0;
 
 	private PovDirection prevButton;
@@ -1493,6 +1499,26 @@ public class Player extends Entity {
 	public boolean isSteamCollide( ) {
 		return steamCollide;
 	}
+	
+	/**
+	 * sets crushing sensor
+	 * 
+	 * @param fixture Fixture
+	 * @param value boolean
+	 */
+	public void setCrush( Fixture fixture, boolean value ) {
+		if ( fixture == feet )
+			botCrush = value;
+		else if ( fixture == topSensor )
+			topCrush = value;
+		else if ( fixture == rightSensor )
+			rightCrush = value;
+		else if ( fixture == leftSensor )
+			leftCrush = value;
+		Gdx.app.log("\nright: ", "" + rightCrush);
+		Gdx.app.log("left: ", "" + leftCrush);
+		Gdx.app.log("top: ", "" + topCrush);
+	}
 
 	/**
 	 * applys force to player
@@ -1518,5 +1544,8 @@ public class Player extends Entity {
 		rightSensor.setSensor( true );
 		leftSensor.setSensor( true );
 		topSensor.setSensor( true );
+		rightSensor.setDensity( 0.0f );
+		leftSensor.setDensity( 0.0f );
+		topSensor.setDensity( 0.0f );
 	}
 }

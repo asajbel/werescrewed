@@ -569,9 +569,13 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 				.twoPlayersToActivate( )
 				.build();
 		
-		
 		skeleton.addKinematicPlatform( specialPlat );
 		
+		specialPlat = platBuilder.position( 1000, 150).name( "specialPlat" )
+				.dimensions( 6, 1 ).texture( testTexture ).dynamic( )
+				.friction( 1.0f ).oneSided( false ).restitution( 0 )
+				.buildTilePlatform( );
+		skeleton.addPlatform( specialPlat );
 	}
 
 	@Override
