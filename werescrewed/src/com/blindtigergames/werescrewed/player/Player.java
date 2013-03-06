@@ -303,6 +303,9 @@ public class Player extends Entity {
 					}
 				}
 			}
+		} else if ( ( topCrush && botCrush ) || ( leftCrush && rightCrush ) ) {
+			//this.killPlayer( );
+			Gdx.app.log(name,": squish");
 		} else if ( steamCollide ) {
 			steamResolution( );
 		}
@@ -1445,6 +1448,7 @@ public class Player extends Entity {
 		Gdx.app.log("\nright: ", "" + rightCrush);
 		Gdx.app.log("left: ", "" + leftCrush);
 		Gdx.app.log("top: ", "" + topCrush);
+		Gdx.app.log("bottom: ", "" + botCrush);
 	}
 
 	/**
