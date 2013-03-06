@@ -61,10 +61,12 @@ public class MyContactListener implements ContactListener {
 			}
 			if ( playerInvolved ) {
 				Player player = ( Player ) playerFix.getBody( ).getUserData( );
-				player.setCrush( playerFix, true );
 				if ( objectFix.getBody( ).getUserData( ) instanceof Entity ) {
 					Entity object = ( Entity ) objectFix.getBody( )
 							.getUserData( );
+					if ( object.getCrushing( ) ) {
+						player.setCrush( playerFix, true );
+					}
 					if ( object.getEntityType( ) != null ) {
 						switch ( object.getEntityType( ) ) { // switch between
 																// different
@@ -88,25 +90,25 @@ public class MyContactListener implements ContactListener {
 							}
 							break;
 						case SCREW:
-							//if ( player.isPlayerDead( ) ) {
-								Screw screw = ( Screw ) object;
-								if ( p1 == null || p1 == player ) {
-									p1 = player;
-									NUM_PLAYER1_SCREWCONTACTS++;
-									player.hitScrew( screw );
-									if ( screw.getScrewType( ) == ScrewType.SCREW_RESURRECT ) {
-										ResurrectScrew rScrew = ( ResurrectScrew ) screw;
-										rScrew.hitPlayer( player );
-									}
-								} else if ( p1 != player ) {
-									NUM_PLAYER2_SCREWCONTACTS++;
-									player.hitScrew( screw );
-									if ( screw.getScrewType( ) == ScrewType.SCREW_RESURRECT ) {
-										ResurrectScrew rScrew = ( ResurrectScrew ) screw;
-										rScrew.hitPlayer( player );
-									}
+							// if ( player.isPlayerDead( ) ) {
+							Screw screw = ( Screw ) object;
+							if ( p1 == null || p1 == player ) {
+								p1 = player;
+								NUM_PLAYER1_SCREWCONTACTS++;
+								player.hitScrew( screw );
+								if ( screw.getScrewType( ) == ScrewType.SCREW_RESURRECT ) {
+									ResurrectScrew rScrew = ( ResurrectScrew ) screw;
+									rScrew.hitPlayer( player );
 								}
-							//}
+							} else if ( p1 != player ) {
+								NUM_PLAYER2_SCREWCONTACTS++;
+								player.hitScrew( screw );
+								if ( screw.getScrewType( ) == ScrewType.SCREW_RESURRECT ) {
+									ResurrectScrew rScrew = ( ResurrectScrew ) screw;
+									rScrew.hitPlayer( player );
+								}
+							}
+							// }
 							break;
 						case PLAYER:
 							Player player2 = ( Player ) objectFix.getBody( )
@@ -179,10 +181,12 @@ public class MyContactListener implements ContactListener {
 			}
 			if ( playerInvolved ) {
 				Player player = ( Player ) playerFix.getBody( ).getUserData( );
-				player.setCrush( playerFix, false );
 				if ( objectFix.getBody( ).getUserData( ) instanceof Entity ) {
 					Entity object = ( Entity ) objectFix.getBody( )
 							.getUserData( );
+					if ( object.getCrushing( ) ) {
+						player.setCrush( playerFix, false );
+					}
 					if ( object.getEntityType( ) != null ) {
 						switch ( object.getEntityType( ) ) { // switch between
 																// different

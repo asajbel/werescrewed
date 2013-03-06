@@ -66,12 +66,12 @@ public class Player extends Entity {
 	public Fixture rightSensor;
 	public Fixture leftSensor;
 	public Fixture topSensor;
-	
+
 	boolean rightCrush;
 	boolean leftCrush;
 	boolean topCrush;
 	boolean botCrush;
-	
+
 	int check = 0;
 
 	private PovDirection prevButton;
@@ -303,6 +303,9 @@ public class Player extends Entity {
 					}
 				}
 			}
+		} else if ( ( topCrush && botCrush ) || ( leftCrush && rightCrush ) ) {
+			// this.killPlayer( );
+			Gdx.app.log( name, ": squish" );
 		} else if ( steamCollide ) {
 			steamResolution( );
 		}
@@ -329,13 +332,15 @@ public class Player extends Entity {
 			currentScrew = null;
 			Filter filter = new Filter( );
 			for ( Fixture f : body.getFixtureList( ) ) {
-				f.setSensor( false );
-				filter = f.getFilterData( );
-				// move player back to original category
-				filter.categoryBits = Util.CATEGORY_PLAYER;
-				// player now collides with everything
-				filter.maskBits = Util.CATEGORY_EVERYTHING;
-				f.setFilterData( filter );
+				if ( f != rightSensor && f != leftSensor && f != topSensor ) {
+					f.setSensor( false );
+					filter = f.getFilterData( );
+					// move player back to original category
+					filter.categoryBits = Util.CATEGORY_PLAYER;
+					// player now collides with everything
+					filter.maskBits = Util.CATEGORY_EVERYTHING;
+					f.setFilterData( filter );
+				}
 			}
 			body.setTransform( body.getPosition( ), 90f * Util.DEG_TO_RAD );
 			if ( Metrics.activated ) {
@@ -486,8 +491,9 @@ public class Player extends Entity {
 	 * Causes the player to jump
 	 */
 	public void jump( ) {
-		
-		if ( Metrics.activated && (grounded || playerState == PlayerState.Screwing) ) {
+
+		if ( Metrics.activated
+				&& ( grounded || playerState == PlayerState.Screwing ) ) {
 			Metrics.addPlayerJumpPosition( this.getPositionPixel( ) );
 		}
 		// Regardless of how the player jumps, we shouldn't consider them
@@ -681,13 +687,15 @@ public class Player extends Entity {
 			Filter filter = new Filter( );
 			// set the bits of the player back to everything
 			for ( Fixture f : body.getFixtureList( ) ) {
-				f.setSensor( false );
-				filter = f.getFilterData( );
-				// move player back to original category
-				filter.categoryBits = Util.CATEGORY_PLAYER;
-				// player now collides with everything
-				filter.maskBits = Util.CATEGORY_EVERYTHING;
-				f.setFilterData( filter );
+				if ( f != rightSensor && f != leftSensor && f != topSensor ) {
+					f.setSensor( false );
+					filter = f.getFilterData( );
+					// move player back to original category
+					filter.categoryBits = Util.CATEGORY_PLAYER;
+					// player now collides with everything
+					filter.maskBits = Util.CATEGORY_EVERYTHING;
+					f.setFilterData( filter );
+				}
 			}
 			if ( platformBody != null ) {
 				// set the bits of the platform back to everything
@@ -882,28 +890,31 @@ public class Player extends Entity {
 		if ( controller ) {
 			if ( controllerListener.unscrewing( ) ) {
 				currentScrew.screwLeft( controllerListener.getRegion( ) );
-				if(Metrics.activated){
-					if(currentScrew.getScrewType( ) != ScrewType.SCREW_STRIPPED){
-						if(currentScrew.getDepth() == 0){
-							if(!Metrics.addToUnscrewListOnce){
-								Metrics.addPlayerUnscrewedScrewPosition( this.getPositionPixel( ) );
+				if ( Metrics.activated ) {
+					if ( currentScrew.getScrewType( ) != ScrewType.SCREW_STRIPPED ) {
+						if ( currentScrew.getDepth( ) == 0 ) {
+							if ( !Metrics.addToUnscrewListOnce ) {
+								Metrics.addPlayerUnscrewedScrewPosition( this
+										.getPositionPixel( ) );
 								Metrics.addToUnscrewListOnce = true;
 							}
-						}else{
+						} else {
 							Metrics.addToUnscrewListOnce = false;
 						}
 					}
 				}
 			} else if ( controllerListener.screwing( ) ) {
 				currentScrew.screwRight( controllerListener.getRegion( ) );
-				if(Metrics.activated){
-					if(currentScrew.getScrewType( ) != ScrewType.SCREW_STRIPPED){
-						if(currentScrew.getDepth() == currentScrew.getMaxDepth( )){
-							if(!Metrics.addToUnscrewListOnce){
-								Metrics.addPlayerScrewedScrewPosition( this.getPositionPixel( ) );
+				if ( Metrics.activated ) {
+					if ( currentScrew.getScrewType( ) != ScrewType.SCREW_STRIPPED ) {
+						if ( currentScrew.getDepth( ) == currentScrew
+								.getMaxDepth( ) ) {
+							if ( !Metrics.addToUnscrewListOnce ) {
+								Metrics.addPlayerScrewedScrewPosition( this
+										.getPositionPixel( ) );
 								Metrics.addToUnscrewListOnce = true;
 							}
-						}else{
+						} else {
 							Metrics.addToUnscrewListOnce = false;
 						}
 					}
@@ -912,53 +923,57 @@ public class Player extends Entity {
 		} else {
 			if ( inputHandler.unscrewing( ) ) {
 				currentScrew.screwLeft( );
-				if(Metrics.activated){
-					if(currentScrew.getScrewType( ).toString( ) != ScrewType.SCREW_STRIPPED.toString( )){
-						if(currentScrew.getDepth() == 0){
-							if(!Metrics.addToUnscrewListOnce){
-								Metrics.addPlayerUnscrewedScrewPosition( this.getPositionPixel( ) );
+				if ( Metrics.activated ) {
+					if ( currentScrew.getScrewType( ).toString( ) != ScrewType.SCREW_STRIPPED
+							.toString( ) ) {
+						if ( currentScrew.getDepth( ) == 0 ) {
+							if ( !Metrics.addToUnscrewListOnce ) {
+								Metrics.addPlayerUnscrewedScrewPosition( this
+										.getPositionPixel( ) );
 								Metrics.addToUnscrewListOnce = true;
 							}
-						}
-						else{
+						} else {
 							Metrics.addToUnscrewListOnce = false;
 						}
-						
+
 					}
 				}
-				
+
 			} else if ( inputHandler.screwing( ) ) {
 				currentScrew.screwRight( );
-				
-				if(Metrics.activated){
-					if(currentScrew.getScrewType( ).toString( ) != ScrewType.SCREW_STRIPPED.toString( )){
-						if(currentScrew.getDepth() == currentScrew.getMaxDepth( )){
-							if(!Metrics.addToUnscrewListOnce){
-								Metrics.addPlayerScrewedScrewPosition( this.getPositionPixel( ) );
+
+				if ( Metrics.activated ) {
+					if ( currentScrew.getScrewType( ).toString( ) != ScrewType.SCREW_STRIPPED
+							.toString( ) ) {
+						if ( currentScrew.getDepth( ) == currentScrew
+								.getMaxDepth( ) ) {
+							if ( !Metrics.addToUnscrewListOnce ) {
+								Metrics.addPlayerScrewedScrewPosition( this
+										.getPositionPixel( ) );
 								Metrics.addToUnscrewListOnce = true;
 							}
-						}else{
+						} else {
 							Metrics.addToUnscrewListOnce = false;
 						}
 					}
 				}
-				
+
 			}
 		}
-		
+
 		if ( mover == null
 				&& currentScrew.body.getJointList( ).size( ) <= 1
 				|| ( currentScrew.getScrewType( ) == ScrewType.SCREW_BOSS && currentScrew
 						.getDepth( ) == 0 ) ) {
 			if ( mover == null ) {
 				world.destroyJoint( playerToScrew );
-			
+
 			}
 			playerState = PlayerState.JumpingOffScrew;
 			screwJumpTimeout = SCREW_JUMP_STEPS;
-			//JUMP COMMENTED OUT BECAUSE IT ADDS JUMP TO METRICS WHEN 
+			// JUMP COMMENTED OUT BECAUSE IT ADDS JUMP TO METRICS WHEN
 			// PLAYER DOESN'T ACTUALLY HIT THE JUMP BUTTON
-			//jump( );
+			// jump( );
 			body.setLinearVelocity( new Vector2( body.getLinearVelocity( ).x,
 					0.0f ) );
 			body.applyLinearImpulse( new Vector2( 0.0f, JUMP_IMPULSE / 2 ),
@@ -1105,7 +1120,9 @@ public class Player extends Entity {
 		world.destroyJoint( playerToScrew );
 		playerToScrew = null;
 		for ( Fixture f : body.getFixtureList( ) ) {
-			f.setSensor( false );
+			if ( f != rightSensor && f != leftSensor && f != topSensor ) {
+				f.setSensor( false );
+			}
 		}
 		mover = null;
 		currentScrew.setPlayerAttached( false );
@@ -1320,7 +1337,7 @@ public class Player extends Entity {
 		// removePlayerToScrew( );
 		// }
 		// }
-		
+
 		// loosen tight screws and jump if screw joint is gone
 		if ( playerState == PlayerState.Screwing ) {
 			handleScrewing( controller != null );
@@ -1499,12 +1516,14 @@ public class Player extends Entity {
 	public boolean isSteamCollide( ) {
 		return steamCollide;
 	}
-	
+
 	/**
 	 * sets crushing sensor
 	 * 
-	 * @param fixture Fixture
-	 * @param value boolean
+	 * @param fixture
+	 *            Fixture
+	 * @param value
+	 *            boolean
 	 */
 	public void setCrush( Fixture fixture, boolean value ) {
 		if ( fixture == feet )
@@ -1515,9 +1534,10 @@ public class Player extends Entity {
 			rightCrush = value;
 		else if ( fixture == leftSensor )
 			leftCrush = value;
-		Gdx.app.log("\nright: ", "" + rightCrush);
-		Gdx.app.log("left: ", "" + leftCrush);
-		Gdx.app.log("top: ", "" + topCrush);
+		// Gdx.app.log("\nright: ", "" + rightCrush);
+		// Gdx.app.log("left: ", "" + leftCrush);
+		// Gdx.app.log("top: ", "" + topCrush);
+		// Gdx.app.log("bottom: ", "" + botCrush);
 	}
 
 	/**

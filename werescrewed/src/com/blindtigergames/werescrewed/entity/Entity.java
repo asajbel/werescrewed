@@ -43,6 +43,7 @@ public class Entity implements GleedLoadable {
 	protected Anchor anchor;
 	protected float energy;
 	protected boolean active;
+	protected boolean crushing;
 	protected boolean visible;
 	protected boolean maintained;
 	protected EntityType entityType;
@@ -706,5 +707,23 @@ public class Entity implements GleedLoadable {
 				return;
 			}
 		}
+	}
+
+	/**
+	 * returns whether an entity can crush the player
+	 * 
+	 * @return boolean
+	 */
+	public boolean getCrushing( ) {
+		return crushing;
+	}
+	
+	/**
+	 * sets flag to determine if an entity can crush
+	 * 
+	 * @param value boolean
+	 */
+	public void setCrushing( boolean value ) {
+		crushing = value;
 	}
 }
