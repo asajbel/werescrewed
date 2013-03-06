@@ -84,7 +84,7 @@ public class StructureScrew extends Screw {
 		if ( depth > -10 ) {
 			body.setAngularVelocity( 1 );
 			depth--;
-			rotation -= 10;
+			rotation += 10;
 			screwStep = depth + 5;
 		}
 	}
@@ -94,7 +94,7 @@ public class StructureScrew extends Screw {
 		if ( depth < maxDepth ) {
 			body.setAngularVelocity( -1 );
 			depth++;
-			rotation += 10;
+			rotation -= 10;
 			screwStep = depth + 6;
 		}
 	}

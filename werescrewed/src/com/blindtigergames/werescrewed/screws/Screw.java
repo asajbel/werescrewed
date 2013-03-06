@@ -132,7 +132,16 @@ public class Screw extends Entity {
 	public int getDepth( ) {
 		return depth;
 	}
-
+	
+	/**
+	 * public access to get max depth of a screw
+	 * 
+	 * @return value of maxDepth
+	 */
+	public int getMaxDepth( ) {
+		return maxDepth;
+	}
+	
 	public boolean endLevelFlag( ) {
 		return false;
 	}
@@ -145,6 +154,7 @@ public class Screw extends Entity {
 	public ScrewType getScrewType( ) {
 		return screwType;
 	}
+	
 	
 	/**
 	 * attaches any other object between this screw and the main entity that
