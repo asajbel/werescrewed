@@ -135,17 +135,17 @@ public class EntityDef {
 	public void setCategory( EntityCategory cat ) {
 		this.category = cat;
 	}
-	
+
 	public void setCategory( String catName ) {
 		EntityCategory cat = EntityCategory.fromString( catName );
-		if (cat != null)
-			setCategory(cat);
+		if ( cat != null )
+			setCategory( cat );
 	}
 
-
 	public Texture getTexture( ) {
-		if ( texture == null ){
-			return WereScrewedGame.manager.getTextureAtlas( tileSetName ).getTextures( ).iterator( ).next( );
+		if ( texture == null ) {
+			return WereScrewedGame.manager.getTextureAtlas( tileSetName )
+					.getTextures( ).iterator( ).next( );
 		}
 		return texture;
 	}
@@ -170,7 +170,8 @@ public class EntityDef {
 	 */
 	protected void loadComplexBody( float density, float friction,
 			float restitution, float scale, String bodyName ) {
-		String filename = WereScrewedGame.dirHandle + "/bodies/" + bodyName + ".json";
+		String filename = WereScrewedGame.dirHandle + "/bodies/" + bodyName
+				+ ".json";
 		BodyEditorLoader loader = new BodyEditorLoader(
 				Gdx.files.internal( filename ) );
 
@@ -206,17 +207,18 @@ public class EntityDef {
 						playerfeetShape );
 				fixes.add( playerFixtureDef );
 
-				out = new EntityDef( "player",
-						WereScrewedGame.manager.get(WereScrewedGame.dirHandle.path( )  + "/common/"
-						+ "player_r_m.png", Texture.class), "", playerBodyDef, fixes );
+				out = new EntityDef( "player", WereScrewedGame.manager.get(
+						WereScrewedGame.dirHandle.path( ) + "/common/"
+								+ "player_r_m.png", Texture.class ), "",
+						playerBodyDef, fixes );
 			} else if ( id.equals( "bottle" ) ) { // Bottle
 				BodyDef bottleBodyDef = new BodyDef( );
 				bottleBodyDef.type = BodyType.DynamicBody;
 				out = new EntityDef( "bottle", null, "", bottleBodyDef, null );
 				out.loadComplexBody( 1.0f, 0.5f, 0.0f, 1, "bottle" );
 			} else {
-				out = EntityDef.loadDefinition( id ); // Otherwise, try loading
-														// from XML.
+				// Otherwise, trying loading from XML File
+				out = EntityDef.loadDefinition( id );
 			}
 			if ( out != null )
 				definitions.put( id, out ); // If we get a new definition, store
@@ -228,32 +230,35 @@ public class EntityDef {
 	/**
 	 * Loads a definition from XML
 	 * 
-	 * @param id file name for the XML file to load
+	 * @param id
+	 *            file name for the XML file to load
 	 * @return The loaded definition
 	 */
 	protected static EntityDef loadDefinition( String id ) {
-		Gdx.app.log( "EntityDef", "Loading EntityDef: "+id);
-		String filename = WereScrewedGame.dirHandle.path( )  + "/entities/" + id + ".xml";		
-		Gdx.app.log( "EntityDef", "Filename: "+filename);
+		Gdx.app.log( "EntityDef", "Loading EntityDef: " + id );
+		String filename = WereScrewedGame.dirHandle.path( ) + "/entities/" + id
+				+ ".xml";
+		Gdx.app.log( "EntityDef", "Filename: " + filename );
 		try {
 			XmlReader reader = new XmlReader( );
 			XmlReader.Element xml = reader
 					.parse( Gdx.files.internal( filename ) );
 			EntityDef out = new EntityDef( id );
 
-			// Category Data
-			out.setCategory( xml.get( EntityCategory.tag, "" ) );
+			// Category Data, look for the row called category in xml
+			out.setCategory( xml.get( "category", "" ) ); // EntityCategory.tag, "" ) );
 			// Sprite Data
 			String texName = null;
 			String tileSetName = null;
-			try{
+			try {
 				texName = xml.get( "texture" );
-			}catch(GdxRuntimeException e){
+			} catch ( GdxRuntimeException e ) {
 				tileSetName = xml.get( "tileset" );
 			}
-			if (texName != null ){
-				out.setTexture(WereScrewedGame.manager.get(
-					WereScrewedGame.dirHandle.path( )  + "/" + texName, Texture.class));
+			if ( texName != null ) {
+				out.setTexture( WereScrewedGame.manager.get(
+						WereScrewedGame.dirHandle.path( ) + "/" + texName,
+						Texture.class ) );
 			}
 			out.tileSetName = tileSetName;
 			out.initialAnim = xml.get( "initialAnim" );
@@ -275,7 +280,6 @@ public class EntityDef {
 
 			out.loadComplexBody( density, friction, restitution, scale,
 					bodyName );
-
 			return out;
 		} catch ( IOException e ) {
 			Gdx.app.log( "Error", "Loading entity definition " + id + " ", e );
