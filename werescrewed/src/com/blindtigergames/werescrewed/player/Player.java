@@ -303,8 +303,10 @@ public class Player extends Entity {
 					}
 				}
 			}
-		} else if ( ( topCrush && botCrush ) || ( leftCrush && rightCrush ) ) {
-			// this.killPlayer( );
+		} else if ( ( ( topCrush && botCrush ) || ( leftCrush && rightCrush ) )
+				&& playerState != PlayerState.JumpingOffScrew ) {
+			Gdx.app.log( "playerstate", "" + playerState );
+			this.killPlayer( );
 			Gdx.app.log( name, ": squish" );
 		} else if ( steamCollide ) {
 			steamResolution( );
@@ -965,12 +967,7 @@ public class Player extends Entity {
 				&& currentScrew.body.getJointList( ).size( ) <= 1
 				|| ( currentScrew.getScrewType( ) == ScrewType.SCREW_BOSS && currentScrew
 						.getDepth( ) == 0 ) ) {
-			if ( mover == null ) {
-				world.destroyJoint( playerToScrew );
-
-			}
-			playerState = PlayerState.JumpingOffScrew;
-			screwJumpTimeout = SCREW_JUMP_STEPS;
+			removePlayerToScrew( );
 			// JUMP COMMENTED OUT BECAUSE IT ADDS JUMP TO METRICS WHEN
 			// PLAYER DOESN'T ACTUALLY HIT THE JUMP BUTTON
 			// jump( );
