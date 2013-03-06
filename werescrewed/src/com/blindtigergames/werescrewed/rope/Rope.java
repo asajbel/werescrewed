@@ -25,20 +25,20 @@ public class Rope {
 	private ArrayList< Link > linkParts;
 	private World world;
 
-	/* Constructs a rope at a given position
+	/*
+	 * Constructs a rope at a given position
 	 * 
-	 * @param name
-	 * 			name of the rope entity
-	 * @param pos
-	 * 			desired position of the top of the rope
-	 * @param widthHeight
-	 * 			width and height of each link
-	 * @param links
-	 * 			number of links of chain
-	 * @param texture
-	 * 			texture of rope
-	 * @param world
-	 * 			world the rope exists in
+	 * @param name name of the rope entity
+	 * 
+	 * @param pos desired position of the top of the rope
+	 * 
+	 * @param widthHeight width and height of each link
+	 * 
+	 * @param links number of links of chain
+	 * 
+	 * @param texture texture of rope
+	 * 
+	 * @param world world the rope exists in
 	 */
 	public Rope( String name, Vector2 pos, Vector2 widthHeight, int links,
 			Texture texture, World world ) {
@@ -46,39 +46,40 @@ public class Rope {
 		linkParts = new ArrayList< Link >( );
 		constructRope( name, pos, widthHeight, links, texture, world );
 
-		// screw = new StrippedScrew ( "rope screw", world, new Vector2 (pos.x,
-		// pos.y - widthHeight.y * Util.PIXEL_TO_BOX * links) );
-
+		screw = new StrippedScrew( "rope screw", world, new Vector2( pos.x,
+				pos.y - widthHeight.y * Util.PIXEL_TO_BOX * links ).mul( Util.BOX_TO_PIXEL ),
+				linkParts.get( linkParts.size( ) - 1 ) );
 	}
 
-	/* Constructs a rope at the position of a given entity
+	/*
+	 * Constructs a rope at the position of a given entity
 	 * 
-	 * @param name
-	 * 			name of the rope entity
-	 * @param entity
-	 * 			entity where the rope will be created
-	 * @param widthHeight
-	 * 			width and height of each link
-	 * @param links
-	 * 			number of links of chain
-	 * @param texture
-	 * 			texture of rope
-	 * @param world
-	 * 			world the rope exists in
-	 */	
+	 * @param name name of the rope entity
+	 * 
+	 * @param entity entity where the rope will be created
+	 * 
+	 * @param widthHeight width and height of each link
+	 * 
+	 * @param links number of links of chain
+	 * 
+	 * @param texture texture of rope
+	 * 
+	 * @param world world the rope exists in
+	 */
 	public Rope( String name, Entity entity, Vector2 widthHeight, int links,
 			Texture texture, World world ) {
 		this.world = world;
 		linkParts = new ArrayList< Link >( );
-		constructRope( name, entity.getPosition( ), widthHeight, links, texture, world );
+		constructRope( name, entity.getPosition( ), widthHeight, links,
+				texture, world );
 
 		// screw = new StrippedScrew ( "rope screw", world, new Vector2 (pos.x,
 		// pos.y - widthHeight.y * Util.PIXEL_TO_BOX * links) );
 
 	}
 
-	/* Constructs rope fixtures given parameters from the constructor
-	 * 
+	/*
+	 * Constructs rope fixtures given parameters from the constructor
 	 */
 	private void constructRope( String name, Vector2 pos, Vector2 widthHeight,
 			int links, Texture texture, World world ) {
@@ -98,48 +99,47 @@ public class Rope {
 			linkParts.add( temp );
 
 		}
-		
-		
+
 	}
 
-	/* Creates a joint between the top link and a given entity
+	/*
+	 * Creates a joint between the top link and a given entity
 	 * 
-	 * @param entity
-	 * 			entity to which the rope will be jointed
-	 * @param move
-	 * 			if true, will move the given entity's position
-	 * 			to the top of the rope
+	 * @param entity entity to which the rope will be jointed
 	 * 
+	 * @param move if true, will move the given entity's position to the top of
+	 * the rope
 	 */
-	public void attachEntityToTop ( Entity entity, boolean move ){
+	public void attachEntityToTop( Entity entity, boolean move ) {
 		if ( move ) {
 			entity.setPosition( getFirstLink( ).getPosition( ) );
 		}
-			RevoluteJointDef revoluteJointDef = new RevoluteJointDef( );
-			revoluteJointDef.initialize( getFirstLink().body, entity.body, getFirstLink().body.getPosition( ) );
-			revoluteJointDef.enableMotor = false;
-			world.createJoint( revoluteJointDef );
+		RevoluteJointDef revoluteJointDef = new RevoluteJointDef( );
+		revoluteJointDef.initialize( getFirstLink( ).body, entity.body,
+				getFirstLink( ).body.getPosition( ) );
+		revoluteJointDef.enableMotor = false;
+		world.createJoint( revoluteJointDef );
 	}
-	
-	/* Creates a joint between the bottom link and a given entity
+
+	/*
+	 * Creates a joint between the bottom link and a given entity
 	 * 
-	 * @param entity
-	 * 			entity to which the rope will be jointed
-	 * @param move
-	 *			if true, will move the given entity's position
-	 *			to the bottom of the rope 
+	 * @param entity entity to which the rope will be jointed
 	 * 
+	 * @param move if true, will move the given entity's position to the bottom
+	 * of the rope
 	 */
-	public void attachEntityToBottom ( Entity entity, boolean move ){
+	public void attachEntityToBottom( Entity entity, boolean move ) {
 		if ( move ) {
 			entity.setPosition( getLastLink( ).getPosition( ) );
 		}
 		RevoluteJointDef revoluteJointDef = new RevoluteJointDef( );
-		revoluteJointDef.initialize( getLastLink().body, entity.body, getLastLink().body.getPosition( ) );
+		revoluteJointDef.initialize( getLastLink( ).body, entity.body,
+				getLastLink( ).body.getPosition( ) );
 		revoluteJointDef.enableMotor = false;
 		world.createJoint( revoluteJointDef );
-}
-	
+	}
+
 	public void update( float deltaTime ) {
 		screw.update( deltaTime );
 		// if(Gdx.input.isKeyPressed( Keys.O ))
@@ -149,14 +149,13 @@ public class Rope {
 
 	}
 
-	/* Draws all links of the rope
+	/*
+	 * Draws all links of the rope
 	 * 
-	 * @param batch
-	 * 			sprite batch used for drawing the rope
-	 * 
+	 * @param batch sprite batch used for drawing the rope
 	 */
 	public void draw( SpriteBatch batch ) {
-		if (screw != null)
+		if ( screw != null )
 			screw.draw( batch );
 		for ( int i = 0; i < linkParts.size( ); i++ ) {
 			getLink( i ).draw( batch );
@@ -170,15 +169,15 @@ public class Rope {
 	public Screw getEndAttachment( ) {
 		return screw;
 	}
-	
+
 	/**
 	 * 
 	 * @return the first link in the rope
 	 */
-	public Link getFirstLink ( ) {
+	public Link getFirstLink( ) {
 		return linkParts.get( 0 );
 	}
-	
+
 	/**
 	 * 
 	 * @return the last link in the rope
@@ -186,10 +185,11 @@ public class Rope {
 	public Link getLastLink( ) {
 		return linkParts.get( linkParts.size( ) - 1 );
 	}
-	
+
 	/**
 	 * 
-	 * @param index - the index of the link in the rope
+	 * @param index
+	 *            - the index of the link in the rope
 	 * @return the link at this index of the rope
 	 */
 	public Link getLink( int index ) {
@@ -198,23 +198,20 @@ public class Rope {
 		}
 		return null;
 	}
-	
+
 	/*
 	 * @return the last link in the rope
 	 */
 	public Link getEnd( ) {
 		return linkParts.get( linkParts.size( ) - 1 );
 	}
-	
 
-	public void createScrew(){
-		screw = new StrippedScrew( "ropeScrew", world,
-				new Vector2(getLastLink().body.getPosition( ).x * Util.BOX_TO_PIXEL,
-						(getLastLink().body.getPosition( ).y * Util.BOX_TO_PIXEL)
-						- (getLastLink().getHeight( ))), 
-						 getLastLink( ) );
-
+	public void createScrew( ) {
+		screw = new StrippedScrew( "ropeScrew", world, new Vector2(
+				getLastLink( ).body.getPosition( ).x * Util.BOX_TO_PIXEL,
+				( getLastLink( ).body.getPosition( ).y * Util.BOX_TO_PIXEL )
+						- ( getLastLink( ).getHeight( ) ) ), getLastLink( ) );
 
 	}
-	
+
 }
