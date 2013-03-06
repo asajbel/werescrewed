@@ -46,7 +46,7 @@ public class Player extends Entity {
 	public final static float MAX_VELOCITY = 1.65f;
 	public final static float MIN_VELOCITY = 0.01f;
 	public final static float MOVEMENT_IMPULSE = 0.012f;
-	public final static float JUMP_IMPULSE = 0.12f;
+	public final static float JUMP_IMPULSE = 0.13f;
 	public final static float JUMP_SCREW_IMPULSE = JUMP_IMPULSE * 5 / 4;
 	public final static float JUMP_CONTROL_MUTIPLIER = 0.5f;
 	public final static int JUMP_COUNTER = 10;
@@ -153,9 +153,9 @@ public class Player extends Entity {
 		anchor.special = true;
 		AnchorList.getInstance( ).addAnchor( anchor );
 
-		setFixtures();
+		setFixtures( );
 		maxFriction( );
-		
+
 		BodyDef bodydef = new BodyDef( );
 		bodydef.position.set( pos );
 
@@ -164,7 +164,7 @@ public class Player extends Entity {
 
 		jumpSound = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 				+ "/common/sounds/jump.ogg" );
-		}
+	}
 
 	// PUBLIC METHODS
 
@@ -249,10 +249,12 @@ public class Player extends Entity {
 			// and check if the top player is actually above the other player
 			if ( ( playerState == PlayerState.Falling && this
 					.getPositionPixel( ).y > otherPlayer.getPositionPixel( ).y )
-					&& ( otherPlayer.getPositionPixel( ).sub( sprite.getWidth( )/3.0f, 0.0f ).x <= this
+					&& ( otherPlayer.getPositionPixel( ).sub(
+							sprite.getWidth( ) / 3.0f, 0.0f ).x <= this
 							.getPositionPixel( ).x )
-					&& ( otherPlayer.getPositionPixel( ).add( sprite.getWidth( )/4.0f,
-							0.0f ).x > this.getPositionPixel( ).x ) ) {
+					&& ( otherPlayer.getPositionPixel( ).add(
+							sprite.getWidth( ) / 4.0f, 0.0f ).x > this
+							.getPositionPixel( ).x ) ) {
 				topPlayer = true;
 				setHeadStand( );
 				otherPlayer.setHeadStand( );
@@ -1189,55 +1191,57 @@ public class Player extends Entity {
 			processReleaseGrab( );
 		}
 
-		// if ( !inputHandler.screwPressed( ) ) {
-		// screwButtonHeld = false;
-		// }
-		// // attach to screws when attach button is pushed
-		// if ( inputHandler.screwPressed( ) ) {
-		// if ( playerState != PlayerState.Screwing ) {
-		// if ( playerState != PlayerState.JumpingOffScrew ) {
+		if ( !inputHandler.screwPressed( ) ) {
+			screwButtonHeld = false;
+		}
+		// attach to screws when attach button is pushed
+		if ( inputHandler.screwPressed( ) ) {
+			if ( playerState != PlayerState.Screwing ) {
+				if ( playerState != PlayerState.JumpingOffScrew ) {
+					if ( hitScrew ) {
+						attachToScrew( );
+						jumpCounter = 0;
+						if ( inputHandler.jumpPressed( ) ) {
+							canJumpOffScrew = false;
+						}
+						if ( inputHandler.screwPressed( ) ) {
+							screwButtonHeld = true;
+						}
+					}
+				}
+			} else {
+				if ( !screwButtonHeld ) {
+					if ( mover == null ) {
+						removePlayerToScrew( );
+					}
+				}
+			}
+
+		}
+
+		// // If player hits the screw button and is in distance
+		// // then attach the player to the screw
+		// if ( ( inputHandler.screwPressed( ) )
+		// && ( playerState != PlayerState.Screwing && playerState !=
+		// PlayerState.JumpingOffScrew ) ) {
 		// if ( hitScrew ) {
 		// attachToScrew( );
-		// jumpCounter = 0;
 		// if ( inputHandler.jumpPressed( ) ) {
 		// canJumpOffScrew = false;
 		// }
-		// if ( inputHandler.screwPressed( ) ) {
-		// screwButtonHeld = true;
+		//
+		// jumpCounter = 0;
 		// }
 		// }
-		// }
-		// } else {
-		// if ( !screwButtonHeld ) {
+		// // If the button is let go, then the player is dropped
+		// // Basically you have to hold attach button to stick to screw
+		// if ( !inputHandler.screwPressed( )
+		// && playerState == PlayerState.Screwing ) {
 		// if ( mover == null ) {
 		// removePlayerToScrew( );
 		// }
 		// }
-		// }
-		//
-		// }
-
-		// If player hits the screw button and is in distance
-		// then attach the player to the screw
-		if ( ( inputHandler.screwPressed( ) )
-				&& ( playerState != PlayerState.Screwing && playerState != PlayerState.JumpingOffScrew ) ) {
-			if ( hitScrew ) {
-				attachToScrew( );
-				if ( inputHandler.jumpPressed( ) ) {
-					canJumpOffScrew = false;
-				}
-
-				jumpCounter = 0;
-			}
-		}
-		// If the button is let go, then the player is dropped
-		// Basically you have to hold attach button to stick to screw
-		if ( !inputHandler.screwPressed( )
-				&& playerState == PlayerState.Screwing ) {
-			if ( mover == null ) {
-				removePlayerToScrew( );
-			}
-		}
+		
 		// loosen tight screws and jump if screw joint is gone
 		if ( playerState == PlayerState.Screwing ) {
 			handleScrewing( controller != null );
@@ -1426,11 +1430,11 @@ public class Player extends Entity {
 					body.getLinearVelocity( ).y ) );
 		body.applyForceToCenter( 0f, STEAM_FORCE );
 	}
-	
+
 	/**
 	 * sets fixture specific data for use in constructor;
 	 */
-	private void setFixtures( ){
+	private void setFixtures( ) {
 		torso = body.getFixtureList( ).get( 0 );
 		leftSensor = body.getFixtureList( ).get( 1 );
 		rightSensor = body.getFixtureList( ).get( 3 );
