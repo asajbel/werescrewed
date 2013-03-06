@@ -33,9 +33,6 @@ class PauseScreen implements com.badlogic.gdx.Screen {
 		fancyFont = WereScrewedGame.manager.get( ornatiquePathName + ".fnt", BitmapFont.class );
 		lineHeight = Math.round( 2.5f * font.getCapHeight( ) );
 		screenLabel = new Label("PAUSE", fancyFont);
-		authorLabel = new Label( "", font );
-		licenseLabel = new Label( "", font );
-		versionLabel = new Label( "" + Version.VERSION, font );
 		mainMenuButton = new Button("Main Menu",font, 
 				new ScreenSwitchHandler(ScreenType.MAIN_MENU));
 		backButton = new Button( "Physics Test Screen", font, 
@@ -47,14 +44,17 @@ class PauseScreen implements com.badlogic.gdx.Screen {
 		Gdx.gl.glClearColor( 0.5f, 0.5f, 0.5f, 1f );
 		Gdx.gl.glClear( GL10.GL_COLOR_BUFFER_BIT );
 
-		if ( Gdx.input.isKeyPressed( Input.Keys.ESCAPE ) ) {
-			ScreenManager.getInstance( ).show( ScreenType.PHYSICS );
+		//if ( Gdx.input.isKeyPressed( Input.Keys.ESCAPE ) ) {
+		//	ScreenManager.getInstance( ).show( ScreenType.PHYSICS );
+		//}
+		if(mainMenuButton.equals( ScreenType.MAIN_MENU)){
+			ScreenManager.getInstance( ).dispose(ScreenType.PHYSICS);
+			ScreenManager.getInstance().dispose(ScreenType.HAZARD);
+			ScreenManager.getInstance( ).dispose(ScreenType.GLEED );
+			
 		}
 		batch.begin( );
 		screenLabel.draw( batch );
-		authorLabel.draw( batch );
-		licenseLabel.draw( batch );
-		versionLabel.draw( batch );
 		mainMenuButton.draw( batch, camera );
 		backButton.draw( batch, camera );
 		batch.end( );
@@ -70,12 +70,6 @@ class PauseScreen implements com.badlogic.gdx.Screen {
 		int centerY = height / 2;
 		screenLabel.setX( centerX - screenLabel.getWidth()/2);
 		screenLabel.setY( centerY + 7 * lineHeight );
-		authorLabel.setX( centerX - authorLabel.getWidth( ) / 2 );
-		authorLabel.setY( centerY + lineHeight );
-		licenseLabel.setX( centerX - licenseLabel.getWidth( ) / 2 );
-		licenseLabel.setY( centerY );
-		versionLabel.setX( centerX - versionLabel.getWidth( ) / 2 );
-		versionLabel.setY( centerY - lineHeight );
 		mainMenuButton.setX( centerX - mainMenuButton.getWidth()/2);
 		mainMenuButton.setY( 35 + mainMenuButton.getHeight( ) );
 		backButton.setX( centerX - backButton.getWidth( ) / 2 );

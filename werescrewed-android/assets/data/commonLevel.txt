@@ -15,7 +15,10 @@
 /common/screw1.png
 /common/test01.png
 /common/cletter.png
+/common/spikes.png
+/common/blind_tiger_logo_720.png
 /particles/particle.png
 
 ##common fonts
 /common/ornatique-26.fnt
+/common/ornatique.fnt

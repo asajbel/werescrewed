@@ -15,9 +15,11 @@ import com.blindtigergames.werescrewed.gui.Label;
 class MainMenuScreen implements com.badlogic.gdx.Screen {
 
 	private SpriteBatch batch = null;
+	private Texture logo = null;
 	private OrthographicCamera camera = null;
 	private BitmapFont font = null;
 	private BitmapFont fancyFont = null;
+	private BitmapFont smallFont = null;
 	private Label headingLabel = null;
 	private Button exitButton = null;
 	private int lineHeight = 0;
@@ -29,20 +31,24 @@ class MainMenuScreen implements com.badlogic.gdx.Screen {
 	public MainMenuScreen( ) {
 		batch = new SpriteBatch( );
 		font = new BitmapFont( );
-		String ornatiquePathName = WereScrewedGame.dirHandle + "/common/ornatique-26";
+		String ornatiquePathName = WereScrewedGame.dirHandle + "/common/ornatique";
 		fancyFont = WereScrewedGame.manager.get( ornatiquePathName + ".fnt", BitmapFont.class );
 				/*new BitmapFont(WereScrewedGame.manager.get(ornatiquePathName + ".fnt", BitmapFont.class),
 				WereScrewedGame.manager.get( ornatiquePathName + ".png", Texture.class ));*/
+		String smallOrnatiquePathName = WereScrewedGame.dirHandle + "/common/ornatique";
+		smallFont = WereScrewedGame.manager.get( smallOrnatiquePathName + ".fnt", BitmapFont.class );
+		logo =  WereScrewedGame.manager.get( WereScrewedGame.dirHandle
+				 + "/common/blind_tiger_logo_720.png", Texture.class );
 		lineHeight = Math.round( 2.5f * font.getCapHeight( ) );
 		headingLabel = new Label( "We're Screwed!!", fancyFont );
 		
-		storyButton = new Button("Start", font,
+		storyButton = new Button("Start", smallFont,
 				new ScreenSwitchHandler(ScreenType.STORY));
-		levelSelectButton = new Button( "Level Select", font,
+		levelSelectButton = new Button( "Level Select", smallFont,
 				new ScreenSwitchHandler(ScreenType.LEVEL_SELECT));
-		optionsButton = new Button("Options", font,
+		optionsButton = new Button("Options", smallFont,
 				new ScreenSwitchHandler( ScreenType.OPTIONS));
-		exitButton = new Button( "Exit", font, new ButtonHandler( ) {
+		exitButton = new Button( "Exit", smallFont, new ButtonHandler( ) {
 			@Override
 			public void onClick( ) {
 				Gdx.app.exit( );
@@ -55,6 +61,7 @@ class MainMenuScreen implements com.badlogic.gdx.Screen {
 		Gdx.gl.glClearColor( 0.5f, 0.5f, 0.5f, 1f );
 		Gdx.gl.glClear( GL10.GL_COLOR_BUFFER_BIT );
 		batch.begin( );
+		batch.draw(logo, 0, 0);
 		headingLabel.draw( batch );
 		storyButton.draw( batch, camera );
 		levelSelectButton.draw( batch, camera );

@@ -22,22 +22,6 @@ import com.blindtigergames.werescrewed.util.Util;
  */
 
 public class TiledPlatform extends Platform {
-	protected class Tile {
-		public float xOffset, yOffset;
-		public Sprite tileSprite;
-	
-		public Tile( ) {
-			xOffset = 0;
-			yOffset = 0;
-			sprite = null;
-		}
-	
-		public Tile( float offset_x, float offset_y, Sprite the_sprite ) {
-			xOffset = offset_x;
-			yOffset = offset_y;
-			tileSprite = the_sprite;
-		}
-	}
 
 	protected enum Shape {
 		SINGLE, VERTICAL, HORIZONTAL, RECTANGLE

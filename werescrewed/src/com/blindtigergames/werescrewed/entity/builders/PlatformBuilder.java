@@ -9,6 +9,7 @@ import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.platforms.Platform;
 import com.blindtigergames.werescrewed.platforms.PlatformType;
 import com.blindtigergames.werescrewed.platforms.TiledPlatform;
+import com.blindtigergames.werescrewed.util.ArrayHash;
 
 /**
  * PlatformBuilder should make building platforms a lot simpler and clearer
@@ -215,6 +216,13 @@ public class PlatformBuilder extends GenericEntityBuilder<PlatformBuilder> {
 		return this;
 	}
 	
+	public PlatformBuilder dynamic( boolean d ) {
+		if (d){
+			return this.dynamic( );
+		}
+		return this.kinematic( );
+	}
+	
 	public PlatformBuilder dynamic(){
 		bodyType = BodyType.DynamicBody;
 		return this;
@@ -231,7 +239,7 @@ public class PlatformBuilder extends GenericEntityBuilder<PlatformBuilder> {
 	}
 	
 	@Override
-	public PlatformBuilder properties(HashMap<String,String> props){
+	public PlatformBuilder properties(ArrayHash props){
 		super.properties( props );
 		
 		return this;

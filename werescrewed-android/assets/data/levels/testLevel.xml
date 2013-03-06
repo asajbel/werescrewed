@@ -26,14 +26,14 @@
                 <Item xsi:type="RectangleItem" Name="platform2" Visible="true">
                     <Position>
                         <X>64</X>
-                        <Y>0</Y>
+                        <Y>16</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="tiledPlatform">
                             <string>tiledPlatform</string>
                         </Property>
-                        <Property Name="MoverIdle" Type="string" Description="">
-                            <string>Path_1</string>
+                        <Property Name="Dynamic" Type="string" Description="">
+                            <string />
                         </Property>
                     </CustomProperties>
                     <Width>192</Width>
@@ -134,6 +134,9 @@
                         <Property Name="Definition" Type="string" Description="">
                             <string>tiledPlatform</string>
                         </Property>
+                        <Property Name="puzzle" Type="string" Description="">
+                            <string>puzzle_1 Path_1</string>
+                        </Property>
                     </CustomProperties>
                     <Width>128</Width>
                     <Height>32</Height>
@@ -148,7 +151,7 @@
                 <Item xsi:type="RectangleItem" Name="tcap" Visible="true">
                     <Position>
                         <X>-192</X>
-                        <Y>-128</Y>
+                        <Y>-160</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -187,18 +190,21 @@
                 </Item>
                 <Item xsi:type="CircleItem" Name="screw1" Visible="true">
                     <Position>
-                        <X>160</X>
+                        <X>96</X>
                         <Y>32</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
-                            <string>ScrewStripped</string>
+                            <string>ScrewStructural</string>
                         </Property>
                         <Property Name="ScrewMax" Type="string" Description="">
                             <string>100</string>
                         </Property>
                         <Property Name="ScrewType" Type="string" Description="">
-                            <string>ScrewStripped</string>
+                            <string>ScrewStructural</string>
+                        </Property>
+                        <Property Name="Target" Type="string" Description="">
+                            <string>platform2</string>
                         </Property>
                     </CustomProperties>
                     <Radius>32</Radius>
@@ -348,8 +354,8 @@
                 </Item>
                 <Item xsi:type="PathItem" Name="Path_1" Visible="true">
                     <Position>
-                        <X>160</X>
-                        <Y>32</Y>
+                        <X>-160</X>
+                        <Y>-64</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Type" Type="string" Description="">
@@ -363,6 +369,9 @@
                         </Property>
                         <Property Name="endTime" Type="string" Description="">
                             <string>10.0f</string>
+                        </Property>
+                        <Property Name="point2time" Type="string" Description="">
+                            <string>2.0f</string>
                         </Property>
                     </CustomProperties>
                     <LocalPoints>
@@ -397,32 +406,32 @@
                     </LocalPoints>
                     <WorldPoints>
                         <Vector2>
-                            <X>160</X>
-                            <Y>32</Y>
+                            <X>-160</X>
+                            <Y>-64</Y>
                         </Vector2>
                         <Vector2>
-                            <X>352</X>
-                            <Y>32</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>416</X>
-                            <Y>-96</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>352</X>
-                            <Y>-224</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>160</X>
-                            <Y>-224</Y>
+                            <X>32</X>
+                            <Y>-64</Y>
                         </Vector2>
                         <Vector2>
                             <X>96</X>
-                            <Y>-96</Y>
+                            <Y>-192</Y>
                         </Vector2>
                         <Vector2>
-                            <X>160</X>
-                            <Y>32</Y>
+                            <X>32</X>
+                            <Y>-320</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>-160</X>
+                            <Y>-320</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>-224</X>
+                            <Y>-192</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>-160</X>
+                            <Y>-64</Y>
                         </Vector2>
                     </WorldPoints>
                     <IsPolygon>false</IsPolygon>
@@ -473,6 +482,53 @@
                         <PackedValue>2445279424</PackedValue>
                     </FillColor>
                 </Item>
+                <Item xsi:type="CircleItem" Name="Circle_0024" Visible="true">
+                    <Position>
+                        <X>224</X>
+                        <Y>32</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>ScrewStructural</string>
+                        </Property>
+                        <Property Name="ScrewMax" Type="string" Description="">
+                            <string>100</string>
+                        </Property>
+                        <Property Name="Target" Type="string" Description="">
+                            <string>platform2</string>
+                        </Property>
+                    </CustomProperties>
+                    <Radius>32</Radius>
+                    <FillColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </FillColor>
+                </Item>
+                <Item xsi:type="CircleItem" Name="puzzle_1" Visible="true">
+                    <Position>
+                        <X>-64</X>
+                        <Y>128</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>ScrewPuzzle</string>
+                        </Property>
+                        <Property Name="ScrewMax" Type="string" Description="">
+                            <string>100</string>
+                        </Property>
+                    </CustomProperties>
+                    <Radius>32</Radius>
+                    <FillColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </FillColor>
+                </Item>
             </Items>
             <ScrollSpeed>
                 <X>1</X>
@@ -489,7 +545,7 @@
     </Layers>
     <CustomProperties />
     <EditorRelated>
-        <NextItemNumber>23</NextItemNumber>
+        <NextItemNumber>25</NextItemNumber>
         <ContentRootFolder>C:\</ContentRootFolder>
         <CameraPosition>
             <X>0</X>
