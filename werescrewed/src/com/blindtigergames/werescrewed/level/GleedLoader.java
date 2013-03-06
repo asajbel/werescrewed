@@ -522,6 +522,10 @@ public class GleedLoader {
 				def = EntityDef.getDefinition( defName );
 			return def;
 		}
+		/**
+		 * checks if xml has a name under Definition
+		 * @return boolean
+		 */
 		public boolean hasDefTag(){ return !defName.equals( "" );}
 		public boolean isDefined(){ return getDefinition() != null;}
 	}

@@ -66,6 +66,12 @@ public class Player extends Entity {
 	public Fixture rightSensor;
 	public Fixture leftSensor;
 	public Fixture topSensor;
+	
+	boolean rightCrush;
+	boolean leftCrush;
+	boolean topCrush;
+	boolean botCrush;
+	
 	int check = 0;
 
 	private PovDirection prevButton;
@@ -332,7 +338,7 @@ public class Player extends Entity {
 				f.setFilterData( filter );
 			}
 			body.setTransform( body.getPosition( ), 90f * Util.DEG_TO_RAD );
-			if ( Metrics.turnOnMetrics ) {
+			if ( Metrics.activated ) {
 				Metrics.addPlayerDeathPosition( this.getPositionPixel( ) );
 			}
 		} else {
@@ -480,6 +486,10 @@ public class Player extends Entity {
 	 * Causes the player to jump
 	 */
 	public void jump( ) {
+		
+		if ( Metrics.activated && (grounded || playerState == PlayerState.Screwing) ) {
+			Metrics.addPlayerJumpPosition( this.getPositionPixel( ) );
+		}
 		// Regardless of how the player jumps, we shouldn't consider them
 		// grounded anymore.
 		setGrounded( false );
@@ -655,7 +665,7 @@ public class Player extends Entity {
 			playerState = PlayerState.Screwing;
 			currentScrew.setPlayerAttached( true );
 			setGrounded( false );
-			if ( Metrics.turnOnMetrics ) {
+			if ( Metrics.activated ) {
 				Metrics.addPlayerAttachToScrewPosition( this.getPositionPixel( ) );
 			}
 		}
@@ -720,6 +730,10 @@ public class Player extends Entity {
 					removePlayerToScrew( );
 					// jumpPressedKeyboard = true;
 					jump( );
+					if ( Metrics.activated ) {
+						Metrics.addPlayerJumpPosition( this.getPositionPixel( ) );
+						Metrics.addToUnscrewListOnce = false;
+					}
 				}
 			}
 		} else if ( !jumpPressedKeyboard ) {
@@ -765,6 +779,10 @@ public class Player extends Entity {
 					removePlayerToScrew( );
 					// jumpPressedController = true;
 					jump( );
+					if ( Metrics.activated ) {
+						Metrics.addPlayerJumpPosition( this.getPositionPixel( ) );
+						Metrics.addToUnscrewListOnce = false;
+					}
 				}
 			}
 		} else if ( !jumpPressedController ) {
@@ -864,26 +882,87 @@ public class Player extends Entity {
 		if ( controller ) {
 			if ( controllerListener.unscrewing( ) ) {
 				currentScrew.screwLeft( controllerListener.getRegion( ) );
+				if(Metrics.activated){
+					if(currentScrew.getScrewType( ) != ScrewType.SCREW_STRIPPED){
+						if(currentScrew.getDepth() == 0){
+							if(!Metrics.addToUnscrewListOnce){
+								Metrics.addPlayerUnscrewedScrewPosition( this.getPositionPixel( ) );
+								Metrics.addToUnscrewListOnce = true;
+							}
+						}else{
+							Metrics.addToUnscrewListOnce = false;
+						}
+					}
+				}
 			} else if ( controllerListener.screwing( ) ) {
 				currentScrew.screwRight( controllerListener.getRegion( ) );
+				if(Metrics.activated){
+					if(currentScrew.getScrewType( ) != ScrewType.SCREW_STRIPPED){
+						if(currentScrew.getDepth() == currentScrew.getMaxDepth( )){
+							if(!Metrics.addToUnscrewListOnce){
+								Metrics.addPlayerScrewedScrewPosition( this.getPositionPixel( ) );
+								Metrics.addToUnscrewListOnce = true;
+							}
+						}else{
+							Metrics.addToUnscrewListOnce = false;
+						}
+					}
+				}
 			}
 		} else {
 			if ( inputHandler.unscrewing( ) ) {
 				currentScrew.screwLeft( );
+				if(Metrics.activated){
+					if(currentScrew.getScrewType( ).toString( ) != ScrewType.SCREW_STRIPPED.toString( )){
+						if(currentScrew.getDepth() == 0){
+							if(!Metrics.addToUnscrewListOnce){
+								Metrics.addPlayerUnscrewedScrewPosition( this.getPositionPixel( ) );
+								Metrics.addToUnscrewListOnce = true;
+							}
+						}
+						else{
+							Metrics.addToUnscrewListOnce = false;
+						}
+						
+					}
+				}
+				
 			} else if ( inputHandler.screwing( ) ) {
 				currentScrew.screwRight( );
+				
+				if(Metrics.activated){
+					if(currentScrew.getScrewType( ).toString( ) != ScrewType.SCREW_STRIPPED.toString( )){
+						if(currentScrew.getDepth() == currentScrew.getMaxDepth( )){
+							if(!Metrics.addToUnscrewListOnce){
+								Metrics.addPlayerScrewedScrewPosition( this.getPositionPixel( ) );
+								Metrics.addToUnscrewListOnce = true;
+							}
+						}else{
+							Metrics.addToUnscrewListOnce = false;
+						}
+					}
+				}
+				
 			}
 		}
+		
 		if ( mover == null
 				&& currentScrew.body.getJointList( ).size( ) <= 1
 				|| ( currentScrew.getScrewType( ) == ScrewType.SCREW_BOSS && currentScrew
 						.getDepth( ) == 0 ) ) {
 			if ( mover == null ) {
 				world.destroyJoint( playerToScrew );
+			
 			}
 			playerState = PlayerState.JumpingOffScrew;
 			screwJumpTimeout = SCREW_JUMP_STEPS;
-			jump( );
+			//JUMP COMMENTED OUT BECAUSE IT ADDS JUMP TO METRICS WHEN 
+			// PLAYER DOESN'T ACTUALLY HIT THE JUMP BUTTON
+			//jump( );
+			body.setLinearVelocity( new Vector2( body.getLinearVelocity( ).x,
+					0.0f ) );
+			body.applyLinearImpulse( new Vector2( 0.0f, JUMP_IMPULSE / 2 ),
+					body.getWorldCenter( ) );
 		}
 	}
 
@@ -1420,6 +1499,26 @@ public class Player extends Entity {
 	public boolean isSteamCollide( ) {
 		return steamCollide;
 	}
+	
+	/**
+	 * sets crushing sensor
+	 * 
+	 * @param fixture Fixture
+	 * @param value boolean
+	 */
+	public void setCrush( Fixture fixture, boolean value ) {
+		if ( fixture == feet )
+			botCrush = value;
+		else if ( fixture == topSensor )
+			topCrush = value;
+		else if ( fixture == rightSensor )
+			rightCrush = value;
+		else if ( fixture == leftSensor )
+			leftCrush = value;
+		Gdx.app.log("\nright: ", "" + rightCrush);
+		Gdx.app.log("left: ", "" + leftCrush);
+		Gdx.app.log("top: ", "" + topCrush);
+	}
 
 	/**
 	 * applys force to player
@@ -1445,5 +1544,8 @@ public class Player extends Entity {
 		rightSensor.setSensor( true );
 		leftSensor.setSensor( true );
 		topSensor.setSensor( true );
+		rightSensor.setDensity( 0.0f );
+		leftSensor.setDensity( 0.0f );
+		topSensor.setDensity( 0.0f );
 	}
 }

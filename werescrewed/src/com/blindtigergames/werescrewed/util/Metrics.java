@@ -7,11 +7,13 @@ import com.badlogic.gdx.math.Vector2;
 
 public class Metrics{
 	
-	public static boolean turnOnMetrics = false;
+	public static boolean activated = false;
+	public static boolean addToUnscrewListOnce = false;
 	private static ArrayList<Vector2> playerDeathPositions = new ArrayList<Vector2>();
 	private static ArrayList<Vector2> playerJumpPositions = new ArrayList<Vector2>();
 	private static ArrayList<Vector2> playerAttachToScrewPositions = new ArrayList<Vector2>();
 	private static ArrayList<Vector2> playerUnscrewedPositions = new ArrayList<Vector2>();
+	private static ArrayList<Vector2> playerScrewedPositions = new ArrayList<Vector2>();
 	private static ArrayList<Float> playerTime = new ArrayList<Float>();
 
 	public static void addPlayerDeathPosition(Vector2 position){
@@ -27,6 +29,14 @@ public class Metrics{
 		playerAttachToScrewPositions.add(position);
 	}
 	
+	public static void addPlayerUnscrewedScrewPosition(Vector2 position){
+		Gdx.app.log( "player unscrewed screw ", "" + position);
+		playerUnscrewedPositions.add( position );
+	}
+	public static void addPlayerScrewedScrewPosition(Vector2 position){
+		Gdx.app.log( "player screwed screw ", "" + position);
+		playerScrewedPositions.add( position );
+	}
 	public static void addPlayerBeginTime(float time){
 		Gdx.app.log( "begin time ", ""+ time );
 		playerTime.add( time );

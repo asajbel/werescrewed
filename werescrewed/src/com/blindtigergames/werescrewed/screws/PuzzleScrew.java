@@ -114,14 +114,7 @@ public class PuzzleScrew extends Screw {
 		}
 	}
 
-	/**
-	 * public access to get max depth of a screw
-	 * 
-	 * @return value of maxDepth
-	 */
-	public int getMaxDepth( ) {
-		return maxDepth;
-	}
+
 
 	/**
 	 * resets this screw back to its initial position
