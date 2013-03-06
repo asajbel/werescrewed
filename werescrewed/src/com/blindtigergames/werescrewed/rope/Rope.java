@@ -46,9 +46,12 @@ public class Rope {
 		linkParts = new ArrayList< Link >( );
 		constructRope( name, pos, widthHeight, links, texture, world );
 
-		screw = new StrippedScrew( "rope screw", world, new Vector2( pos.x,
-				pos.y - widthHeight.y * Util.PIXEL_TO_BOX * links ).mul( Util.BOX_TO_PIXEL ),
-				linkParts.get( linkParts.size( ) - 1 ) );
+		screw = new StrippedScrew( "ropescrew", world,
+				new Vector2( pos.x, pos.y
+						- widthHeight.y * Util.PIXEL_TO_BOX * links )
+						.mul( Util.BOX_TO_PIXEL ), linkParts.get( linkParts
+						.size( ) - 1 ) );
+
 	}
 
 	/*
@@ -73,8 +76,11 @@ public class Rope {
 		constructRope( name, entity.getPosition( ), widthHeight, links,
 				texture, world );
 
-		// screw = new StrippedScrew ( "rope screw", world, new Vector2 (pos.x,
-		// pos.y - widthHeight.y * Util.PIXEL_TO_BOX * links) );
+		screw = new StrippedScrew( "ropescrew", world,
+				new Vector2( entity.getPosition( ).x, entity.getPosition( ).y
+						- widthHeight.y * Util.PIXEL_TO_BOX * links )
+						.mul( Util.BOX_TO_PIXEL ), linkParts.get( linkParts
+						.size( ) - 1 ) );
 
 	}
 
@@ -161,6 +167,7 @@ public class Rope {
 			getLink( i ).draw( batch );
 		}
 	}
+
 
 	/**
 	 * 
