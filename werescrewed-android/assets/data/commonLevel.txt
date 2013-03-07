@@ -22,3 +22,7 @@
 /common/spikes.png
 /common/tileset/TilesetTest.png
 /particles/particle.png
+
+
+##Fonts
+/debug/debug_font.fnt
