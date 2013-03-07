@@ -25,4 +25,4 @@
 
 
 ##Fonts
-/debug/debug_font.fnt
+##/debug/debug_font.fnt
