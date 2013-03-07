@@ -63,6 +63,7 @@ public class RotateTweenMover extends TweenMover implements IMover {
 		//p.mover = this;
 		//addTween(Tween.to( p, PlatformAccessor.LOCAL_ROT, duration ));
 		//NOT DONE
+		p.setMoverAtCurrentState( this );
 		
 	}
 

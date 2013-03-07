@@ -332,6 +332,7 @@ public class Player extends Entity {
 				removePlayerToPlayer( );
 			}
 			currentScrew = null;
+			mover = null;
 			Filter filter = new Filter( );
 			for ( Fixture f : body.getFixtureList( ) ) {
 				if ( f != rightSensor && f != leftSensor && f != topSensor ) {
@@ -340,7 +341,7 @@ public class Player extends Entity {
 					// move player back to original category
 					filter.categoryBits = Util.CATEGORY_PLAYER;
 					// player now collides with everything
-					filter.maskBits = Util.CATEGORY_EVERYTHING;
+					filter.maskBits = Util.CATEGORY_NOTHING;
 					f.setFilterData( filter );
 				}
 			}
@@ -358,6 +359,18 @@ public class Player extends Entity {
 	 * This function sets player in alive state
 	 */
 	public void respawnPlayer( ) {
+		Filter filter = new Filter( );
+		for ( Fixture f : body.getFixtureList( ) ) {
+			if ( f != rightSensor && f != leftSensor && f != topSensor ) {
+				f.setSensor( false );
+				filter = f.getFilterData( );
+				// move player back to original category
+				filter.categoryBits = Util.CATEGORY_PLAYER;
+				// player now collides with everything
+				filter.maskBits = Util.CATEGORY_EVERYTHING;
+				f.setFilterData( filter );
+			}
+		}
 		body.setTransform( body.getPosition( ), 0f );
 		playerState = PlayerState.Standing;
 		isDead = false;
@@ -564,6 +577,13 @@ public class Player extends Entity {
 		return playerState;
 	}
 
+	/**
+	 * get the instance of the currentscrew
+	 */
+	public Screw getCurrentScrew( ) {
+		return currentScrew;
+	}
+	
 	/**
 	 * returns true if this is the top player in the head stand
 	 * 

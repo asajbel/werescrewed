@@ -18,6 +18,8 @@ import com.badlogic.gdx.physics.box2d.joints.PrismaticJoint;
 import com.badlogic.gdx.physics.box2d.joints.PrismaticJointDef;
 import com.badlogic.gdx.physics.box2d.joints.PulleyJointDef;
 import com.blindtigergames.werescrewed.camera.Camera;
+import com.blindtigergames.werescrewed.checkpoints.CheckPoint;
+import com.blindtigergames.werescrewed.checkpoints.ProgressManager;
 import com.blindtigergames.werescrewed.collisionManager.MyContactListener;
 import com.blindtigergames.werescrewed.debug.SBox2DDebugRenderer;
 import com.blindtigergames.werescrewed.entity.Entity;
@@ -40,6 +42,7 @@ import com.blindtigergames.werescrewed.entity.tween.EntityAccessor;
 import com.blindtigergames.werescrewed.entity.tween.PathBuilder;
 import com.blindtigergames.werescrewed.entity.tween.PlatformAccessor;
 import com.blindtigergames.werescrewed.eventTrigger.EventTrigger;
+import com.blindtigergames.werescrewed.hazard.Spikes;
 import com.blindtigergames.werescrewed.joint.JointFactory;
 import com.blindtigergames.werescrewed.joint.RevoluteJointBuilder;
 import com.blindtigergames.werescrewed.particles.Steam;
@@ -67,6 +70,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 	private World world;
 	private MyContactListener contactListener;
 	private SBox2DDebugRenderer debugRenderer;
+	private ProgressManager progressManager;
 	private Player player1, player2;
 	@SuppressWarnings( "unused" )
 	private TiledPlatform tiledPlat, ground, movingTP, singTile, rectile,
@@ -84,6 +88,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 	public SpriteBatch particleBatch;
 	private EventTrigger et;
 	private TiledPlatform specialPlat;
+	private Spikes spikes;
 
 	// ArrayList< TiledPlatform > tp2 = new ArrayList< TiledPlatform >( );
 
@@ -147,6 +152,8 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		// Initialize particles
 		initParticleEffect( );
 
+		initHazards( );
+		
 		initEventTrigger();
 		testRope = ropeBuilder.position( 2800f, 450f ).width( 16f )
 				.height( 64f ).links( 5 ).createScrew( ).buildRope( );
@@ -180,6 +187,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		player2 = new PlayerBuilder( ).name( "player2" ).world( world )
 				.position( 1.5f, 110.5f ).buildPlayer( );
 
+		initCheckPoints( );
 		// Add screws
 
 		PlatformBuilder pb = new PlatformBuilder( world );
@@ -290,6 +298,14 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 	}
 
 	/**
+	 * Initializes hazards. At the moment only makes spikes.
+	 */
+	private void initHazards( ) {
+		spikes = new Spikes( "Spikes1", new Vector2( -500.0f, -10.0f), 
+				1, 6, world, true, false, true );
+	}
+	
+	/**
 	 * Initialize the platform screws' settings and add them to the entity
 	 * manager and skeleton
 	 */
@@ -386,11 +402,11 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		float dy = 160f;
 		for ( int i = 0; i < 10; i++ ) {
 			if ( i % 2 == 0 ) {
-				climbingScrews.add( new StrippedScrew( "", world, new Vector2(
-						x1, y1 ), skeleton ) );
+				climbingScrews.add( new StrippedScrew( "", new Vector2(
+						x1, y1 ), skeleton, world ) );
 			} else {
-				climbingScrews.add( new StrippedScrew( "", world, new Vector2(
-						x2, y1 ), skeleton ) );
+				climbingScrews.add( new StrippedScrew( "", new Vector2(
+						x2, y1 ), skeleton, world ) );
 			}
 			y1 += dy;
 		}
@@ -538,16 +554,26 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 
 		world.createJoint( pjd );
 
-		skeleton.addStrippedScrew( new StrippedScrew( "", world, new Vector2(
+		skeleton.addStrippedScrew( new StrippedScrew( "", new Vector2(
 				singTile.body.getPosition( ).x * Util.BOX_TO_PIXEL,
-				singTile.body.getPosition( ).y * Util.BOX_TO_PIXEL ), singTile ) );
+				singTile.body.getPosition( ).y * Util.BOX_TO_PIXEL ), singTile, world ) );
 
-		skeleton.addStrippedScrew( new StrippedScrew( "", world, new Vector2(
+		skeleton.addStrippedScrew( new StrippedScrew( "", new Vector2(
 				singTile2.body.getPosition( ).x * Util.BOX_TO_PIXEL,
 				singTile2.body.getPosition( ).y * Util.BOX_TO_PIXEL ),
-				singTile2 ) );
+				singTile2, world ) );
 	}
 	
+	private void initCheckPoints( ) {
+		progressManager = new ProgressManager( player1, player2, world );
+		progressManager
+				.addCheckPoint( new CheckPoint( "check_01", new Vector2( 0f,
+						64f ), skeleton, world, progressManager,
+						"levelStage_0_0" ) );
+		progressManager.addCheckPoint( new CheckPoint( "check_01", new Vector2(
+				512, 64 ), skeleton, world, progressManager,
+				"levelStage_0_1" ) );
+	}
 	
 	public void initEventTrigger(){
 		specialPlat = platBuilder.position( -1000, 300).name( "specialPlat" )
@@ -627,14 +653,18 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		player2.update( deltaTime );
 		// oldRootSkeleton.update( deltaTime );
 		rootSkeleton.update( deltaTime );
+		progressManager.update( deltaTime );
 		testRope.update( deltaTime );
+		spikes.update(  deltaTime );
 		batch.setProjectionMatrix( cam.combined( ) );
 		batch.begin( );
 
 		// tp2.draw( batch );
 		testSteam.draw( batch, deltaTime );
+		progressManager.draw( batch );
 		rootSkeleton.draw( batch );
 		testRope.draw( batch );
+		spikes.draw( batch );
 		player1.draw( batch );
 		player2.draw( batch );
 

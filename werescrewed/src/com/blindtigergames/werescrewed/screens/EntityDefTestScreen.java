@@ -230,11 +230,11 @@ public class EntityDefTestScreen implements com.badlogic.gdx.Screen {
 		float dy = 200f;
 		for ( int i = 0; i < 10; i++ ) {
 			if ( i % 2 == 0 ) {
-				climbingScrews.add( new StrippedScrew( "", world, new Vector2(
-						x1, y1 ), skeleton ) );
+				climbingScrews.add( new StrippedScrew( "", new Vector2(
+						x1, y1 ), skeleton, world ) );
 			} else {
-				climbingScrews.add( new StrippedScrew( "", world, new Vector2(
-						x2, y1 ), skeleton ) );
+				climbingScrews.add( new StrippedScrew( "", new Vector2(
+						x2, y1 ), skeleton, world ) );
 			}
 			y1 += dy;
 		}

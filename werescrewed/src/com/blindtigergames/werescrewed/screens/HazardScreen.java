@@ -22,6 +22,7 @@ import com.blindtigergames.werescrewed.entity.builders.PlayerBuilder;
 import com.blindtigergames.werescrewed.entity.tween.EntityAccessor;
 import com.blindtigergames.werescrewed.entity.tween.PlatformAccessor;
 import com.blindtigergames.werescrewed.hazard.Spikes;
+import com.blindtigergames.werescrewed.hazard.builders.SpikesBuilder;
 import com.blindtigergames.werescrewed.platforms.Platform;
 import com.blindtigergames.werescrewed.platforms.TiledPlatform;
 import com.blindtigergames.werescrewed.player.Player;
@@ -44,7 +45,8 @@ public class HazardScreen implements com.badlogic.gdx.Screen {
 	private TiledPlatform ground, crusher;
 	private StructureScrew struct1, struct2;
 	private PlatformBuilder platBuilder;
-	private Spikes spikes;
+	private SpikesBuilder spikesBuilder;
+	private Spikes spikes, spikes2;
 	private boolean debug = true;
 	private boolean debugTest = true;
 	
@@ -58,6 +60,7 @@ public class HazardScreen implements com.badlogic.gdx.Screen {
 		skeleton = new Skeleton( "skeleton", Vector2.Zero, null, world );
 		rootSkeleton = new Skeleton( "root", Vector2.Zero, null, world );
 		platBuilder = new PlatformBuilder( world );
+		spikesBuilder = new SpikesBuilder ( world );
 		contactListener = new MyContactListener( );
 		world.setContactListener( contactListener );
 		
@@ -99,7 +102,12 @@ public class HazardScreen implements com.badlogic.gdx.Screen {
 	
 	private void initHazards( ) {
 		spikes = new Spikes( "Spikes1", new Vector2( -1250.0f, -10.0f), 
-				4, 1, world, true, true, false );
+				1, 12, world, true, false, false );
+		
+		spikes2 = spikesBuilder.position ( -1050.0f, -10.0f )
+				.dimensions( 1, 8)
+				.left()
+				.buildSpikes();
 	}
 	
 	private void initCrushTest( ){
@@ -149,12 +157,14 @@ public class HazardScreen implements com.badlogic.gdx.Screen {
 		progressManager.update( deltaTime );
 		rootSkeleton.update( deltaTime );
 		spikes.update( deltaTime );
+		spikes2.update( deltaTime );
 		batch.setProjectionMatrix( cam.combined( ) );
 		batch.begin( );
 		
 		rootSkeleton.draw( batch );
 		progressManager.draw( batch );
 		spikes.draw( batch );
+		spikes2.draw( batch );
 		player1.draw( batch );
 		player2.draw( batch );
 

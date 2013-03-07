@@ -512,15 +512,15 @@ public class Entity implements GleedLoadable {
 			for ( Fixture f : body.getFixtureList( ) ) {
 				f.setSensor( false );
 				filter = f.getFilterData( );
-				// move player back to original category
+				// set category
 				filter.categoryBits = category;
-				// player now collides with everything
+				// set mask
 				filter.maskBits = mask;
 				f.setFilterData( filter );
 			}
 		}
 	}
-
+	
 	/**
 	 * This is a quick-n-dirty fix for complex body collisions. Hopefully we'll
 	 * get to a point where we don't need it. There's probably some overlap

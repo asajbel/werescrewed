@@ -1,9 +1,11 @@
 package com.blindtigergames.werescrewed.asset;
 
+import java.io.FileNotFoundException;
 import java.util.HashMap;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.blindtigergames.werescrewed.graphics.TextureAtlasS;
 import com.blindtigergames.werescrewed.platforms.TileSet;
 
@@ -17,10 +19,12 @@ import com.blindtigergames.werescrewed.platforms.TileSet;
 
 public class AssetManager extends com.badlogic.gdx.assets.AssetManager {
 	HashMap< String, TextureAtlasS > atlasMap;
+	HashMap< String, BitmapFont > fontMap;
 	
 	public AssetManager(){
 		super();
 		atlasMap = new HashMap< String, TextureAtlasS >( );
+		fontMap = new HashMap<String, BitmapFont>();
 	}
 	
 	/**
@@ -51,6 +55,21 @@ public class AssetManager extends com.badlogic.gdx.assets.AssetManager {
 	 */
 	public TextureAtlasS getTextureAtlas( String atlasName ){
 		return atlasMap.get( atlasName );
+	}
+	
+	@SuppressWarnings( "unused" )
+	public void loadFont( String fullPathToFont ){
+		FileHandle fileHandle = Gdx.files.internal( fullPathToFont );
+		
+		BitmapFont font = new BitmapFont(fileHandle, false);
+		if ( font == null ){
+			Gdx.app.log( "AssetManager", "Font is null! "+fileHandle.path( ) );
+		}
+		fontMap.put( fileHandle.nameWithoutExtension( ), font );
+	}
+	
+	public BitmapFont getFont(String fontName){
+		return fontMap.get( fontName );
 	}
 	
 	@Override

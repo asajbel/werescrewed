@@ -11,7 +11,6 @@ import com.blindtigergames.werescrewed.player.Player;
 import com.blindtigergames.werescrewed.player.Player.PlayerState;
 import com.blindtigergames.werescrewed.screws.ResurrectScrew;
 import com.blindtigergames.werescrewed.screws.ScrewType;
-import com.blindtigergames.werescrewed.util.Util;
 
 /**
  * handles all of the progress through checkpoints also handles re-spawning with
@@ -145,7 +144,7 @@ public class ProgressManager {
 			ScrewBuilder rezzBuilder = new ScrewBuilder( )
 					.screwType( ScrewType.SCREW_RESURRECT ).entity( entity )
 					.world( world ).playerOffset( true )
-					.position( 64.0f, 64.0f );
+					.position( 0f, 150f );
 
 			if ( player1.isPlayerDead( ) ) {
 				// create new rez screw and attach

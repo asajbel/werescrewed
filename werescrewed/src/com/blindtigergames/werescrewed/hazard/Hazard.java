@@ -34,22 +34,21 @@ public class Hazard extends Entity {
 		entityType = EntityType.HAZARD;
 	}
 
+	// Returns current state of hazard. active == true == on / active == false == off
 	public boolean isActive ( ) {
 		return active;
+	}
+	
+	/**
+	 * @param state
+	 * 		Determines if boolean active is on (true) or off (false).
+	 */
+	public void setActive ( boolean state ) {
+		this.active = state;
 	}
 	
 	//Performs check to see if a player has collided with a hazard.
 	public void performContact ( Player player, Fixture fixture ) {
 		player.killPlayer( );
-	}
-	
-	@Override
-	public void update( float deltaTime ) {
-		
-	}
-
-	@Override
-	public void draw( SpriteBatch batch ) {
-		super.draw( batch );
 	}
 }

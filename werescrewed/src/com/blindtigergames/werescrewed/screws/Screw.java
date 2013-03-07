@@ -87,6 +87,16 @@ public class Screw extends Entity {
 	}
 	
 	/**
+	 * returns the joint at this index
+	 */
+	public RevoluteJoint getJoint( int index ) {
+		if ( index < extraJoints.size( ) ) {
+			return extraJoints.get( index );
+		}
+		return null;
+	}
+	
+	/**
 	 * Turns structural and puzzle screws to the left which decreases depth
 	 * structural screws will eventually fall out
 	 * 
@@ -94,6 +104,7 @@ public class Screw extends Entity {
 	 */
 	public void screwLeft( int region ) {
 	}
+	
 	public void screwLeft( ) {
 	}
 	/**
@@ -104,6 +115,7 @@ public class Screw extends Entity {
 	 */
 	public void screwRight(int region ) {
 	}
+	
 	public void screwRight( ) {
 	}
 	/**

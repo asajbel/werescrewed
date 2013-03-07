@@ -173,6 +173,10 @@ public class LoadingScreen extends Screen {
 			WereScrewedGame.manager.loadAtlas( fullPathName );
 			// Gdx.app.log( "Atlas pack file loaded", fullPathName );
 		}
+		else if ( fileExtension.equals( "fnt" )){
+			WereScrewedGame.manager.loadFont( fullPathName );
+			Gdx.app.log( "Bitmap pack file loaded", fullPathName );
+		}
 	}
 
 	/**

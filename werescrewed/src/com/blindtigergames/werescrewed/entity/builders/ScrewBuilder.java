@@ -172,7 +172,7 @@ public class ScrewBuilder extends GenericEntityBuilder< ScrewBuilder > {
 	public StrippedScrew buildStrippedScrew(){
 		StrippedScrew out = null;
 		if (canBuild() && entity != null){
-			out = new StrippedScrew(name, world, pos, entity);
+			out = new StrippedScrew(name, pos, entity, world);
 			if (skeleton != null){
 				skeleton.addStrippedScrew( out );
 			}
