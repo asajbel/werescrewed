@@ -178,24 +178,29 @@ public class Spikes extends Hazard {
 
 			switch ( ori ) {
 			case RIGHT:
-				d.tileSprite.setPosition( bodypos.x - d.xOffset, bodypos.y
-						- d.yOffset );
+				d.tileSprite.setOrigin( d.tileSprite.getWidth( ) / 2, d.tileSprite.getHeight( ) / 2 );
 				d.tileSprite.setRotation( MathUtils.radiansToDegrees
 						* body.getAngle( ) - 90 );
+				d.tileSprite.setPosition( bodypos.x - d.xOffset, bodypos.y 
+						- d.yOffset );
+
 				break;
 			case LEFT:
+				d.tileSprite.setOrigin( d.tileSprite.getWidth( ) / 2, d.tileSprite.getHeight( ) / 2 );
 				d.tileSprite.setPosition( bodypos.x - d.xOffset, bodypos.y
 						- d.yOffset );
 				d.tileSprite.setRotation( MathUtils.radiansToDegrees
 						* body.getAngle( ) + 90 );
 				break;
 			case UP:
+				d.tileSprite.setOrigin( d.tileSprite.getWidth( ) / 2, d.tileSprite.getHeight( ) / 2 );
 				d.tileSprite.setPosition( bodypos.x - d.xOffset, bodypos.y
 						- d.yOffset );
 				d.tileSprite.setRotation( MathUtils.radiansToDegrees
 						* body.getAngle( ) );
 				break;
 			case DOWN:
+				d.tileSprite.setOrigin( d.tileSprite.getWidth( ) / 2, d.tileSprite.getHeight( ) / 2 );
 				d.tileSprite.setPosition( bodypos.x - d.xOffset, bodypos.y
 						- d.yOffset );
 				d.tileSprite.setRotation( MathUtils.radiansToDegrees
