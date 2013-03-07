@@ -40,8 +40,9 @@ public class Spikes extends Hazard {
 	}
 	
 	protected Vector < Tile > tiles = new Vector <Tile>();
-	protected float tileConstant = 32.0f;
 	protected Vector2 bodypos;
+	protected Vector2 defaultPos;
+	protected float tileConstant = 32.0f;
 	protected boolean hori;
 	Orientation ori;
 
@@ -57,6 +58,9 @@ public class Spikes extends Hazard {
 	 * @param invert
 	 * 		False if spikes face positive direction (up, right),
 	 * 		True if spikes face negative direction (down, left).
+	 * @param horizontal
+	 * 		Meant for 1x1 spikes, determines orientation of spikes
+	 * 		i.e. facing up/down or left/right.
 	 */
 	public Spikes( String name, Vector2 pos, float height, float width,
 			World world, boolean isActive, boolean invert, boolean horizontal ) {
@@ -64,8 +68,18 @@ public class Spikes extends Hazard {
 				.get( WereScrewedGame.dirHandle + "/common/spikes.png" ),
 				world, isActive );
 		entityType = EntityType.HAZARD;
-
-		if ( horizontal ) {
+		
+		if ( height > width ) {
+			this.hori = false;
+		}
+		else if ( width > height ) {
+			this.hori = true;
+		}
+		else {
+			this.hori = horizontal;
+		}
+		
+		if ( hori ) {
 			if ( invert )
 				ori = Orientation.DOWN;
 			else
@@ -78,16 +92,7 @@ public class Spikes extends Hazard {
 				ori = Orientation.RIGHT;
 		}
 		
-		if ( height > width ) {
-			this.hori = false;
-		}
-		else if ( width > height ) {
-			this.hori = true;
-		}
-		else {
-			this.hori = horizontal;
-		}
-		
+		this.defaultPos = pos;
 		this.world = world;
 		this.active = isActive;
 		// this.sprite = constructSprite( (Texture) WereScrewedGame.manager
@@ -125,12 +130,12 @@ public class Spikes extends Hazard {
 		body.createFixture( spikeFixtureDef );
 		
 		if ( hori ) {
-			polygon.setAsBox( ( ( ( width * tileConstant ) / 2) - 5 ) * Util.PIXEL_TO_BOX,
+			polygon.setAsBox( ( ( ( width * tileConstant ) / 2 ) - 6 ) * Util.PIXEL_TO_BOX,
 								( height * tileConstant )  / 2  * Util.PIXEL_TO_BOX );
 		}
 		else {
 			polygon.setAsBox( ( width * tileConstant ) / 2 * Util.PIXEL_TO_BOX,
-								( ( ( height * tileConstant )  / 2) - 5 )  * Util.PIXEL_TO_BOX );
+								( ( ( height * tileConstant )  / 2) - 6 )  * Util.PIXEL_TO_BOX );
 		}
 		
 		spikeFixtureDef.shape = polygon;
@@ -166,6 +171,35 @@ public class Spikes extends Hazard {
 	
 	@Override
 	public void update( float deltaTime ) {
+		if (active) {
+			switch ( ori ) {
+			case RIGHT:
+				break;
+			case LEFT:
+				break;
+			case UP:
+				break;
+			case DOWN:
+				break;
+			default:
+				break;
+			}
+		}
+		else {
+			switch ( ori ) {
+			case RIGHT:
+				
+				break;
+			case LEFT:
+				break;
+			case UP:
+				break;
+			case DOWN:
+				break;
+			default:
+				break;
+			}
+		}
 	}
 
 	@Override
@@ -178,10 +212,10 @@ public class Spikes extends Hazard {
 			switch ( ori ) {
 			case RIGHT:
 				d.tileSprite.setOrigin( d.tileSprite.getWidth( ) / 2, d.tileSprite.getHeight( ) / 2 );
-				d.tileSprite.setRotation( MathUtils.radiansToDegrees
-						* body.getAngle( ) - 90 );
 				d.tileSprite.setPosition( bodypos.x - d.xOffset, bodypos.y 
 						- d.yOffset );
+				d.tileSprite.setRotation( MathUtils.radiansToDegrees
+						* body.getAngle( ) - 90 );
 
 				break;
 			case LEFT:
@@ -213,6 +247,5 @@ public class Spikes extends Hazard {
 			}
 				d.tileSprite.draw( batch );
 		}
-		//super.draw( batch );
 	}
 }

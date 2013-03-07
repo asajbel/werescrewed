@@ -99,11 +99,7 @@ public class HazardScreen implements com.badlogic.gdx.Screen {
 	
 	private void initHazards( ) {
 		spikes = new Spikes( "Spikes1", new Vector2( -1250.0f, -10.0f), 
-<<<<<<< HEAD
-				1, 8, world, true, true, false );
-=======
-				4, 1, world, true, true, false );
->>>>>>> 75d604fd7ace9061394d96d16997abb66f6d77ac
+				1, 12, world, true, false, false );
 	}
 	
 	private void initCrushTest( ){
