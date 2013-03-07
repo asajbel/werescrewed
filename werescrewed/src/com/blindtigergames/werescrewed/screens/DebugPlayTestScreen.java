@@ -110,12 +110,12 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 
 		// Initialize players
 		player1 = new PlayerBuilder( ).name( "player1" ).world( world )
-				.position( 1f * TILE, 1f * TILE  ).buildPlayer( );
+				.position( 140 * TILE, 30 * TILE  ).buildPlayer( );
 		player2 = new PlayerBuilder( ).name( "player2" ).world( world )
-				.position( 1f * TILE, 1f * TILE   ).buildPlayer( );
+				.position( 140 * TILE, 30 * TILE   ).buildPlayer( );
 
 		// END: 175f * TILE, 96f * TILE
-		// START : 1f * TILE, 1f * TILE 
+		// START :: 1f * TILE, 1f * TILE 
 		// stripped screws: 170 * TILE, 17 * TILE
 		Metrics m = new Metrics();
 		floor1( );
@@ -335,16 +335,28 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		Skeleton lowerArmSkeleton = new Skeleton( "dynamic2Skeleton", new Vector2(1500, 400), testTexture, world );
 		//upperArmSkeleton.setMoverAtCurrentState( new RockingMover( 90, 3f) );
 
-		upperArmSkeleton.body.setType( BodyType.DynamicBody );
+		PuzzleScrew puzzleScrew = new PuzzleScrew( "004", new Vector2(
+				700f, 200f ), 100, skel1, world, 0, false );
+
+		PuzzleRotateTweenMover rtm1 = new PuzzleRotateTweenMover( 1,
+				Util.PI / 2, true );
+		
+		puzzleScrew.puzzleManager.addEntity( upperArmSkeleton );
+		puzzleScrew.puzzleManager.addMover( rtm1 );
+		skel1.addScrewForDraw( puzzleScrew );
+		
+		upperArmSkeleton.setActive( true );
+		upperArmSkeleton.body.setType( BodyType.KinematicBody );
 		lowerArmSkeleton.body.setType( BodyType.DynamicBody );
 		//joints the first dynamic skeleton to the parent skeleton
 		Screw shoulderJoint = new Screw ( "dynamic_skeleton_joint", new Vector2( 1100, 400), upperArmSkeleton, world );
+		shoulderJoint.addStructureJoint( skel1 );
 		//joints the first dynamic skeleton to the second dynamic skeleton
-		Screw elbowJoint = new Screw ( "dynamic_skeleton_joint", new Vector2( 1300, 400), upperArmSkeleton, world );
+		Screw elbowJoint = new Screw ( "dynamic_skeleton_joint", new Vector2( 1250, 400), upperArmSkeleton, world );
 		elbowJoint.addStructureJoint( lowerArmSkeleton );
 		//joint the two dynamic skeletons to the parent skeleton
 		//screw.addStructureJoint( skeleton );
-		TiledPlatform plat = platBuilder.dynamic( ).position( 1200, 400 ).dimensions( 4,1 ).density( 1f ).oneSided( false ).buildTilePlatform( );
+		TiledPlatform plat = platBuilder.dynamic( ).position( 1500, 400 ).dimensions( 4,1 ).density( 1f ).oneSided( false ).buildTilePlatform( );
 		//joint the platform to the second dynamic skeleton
 		StructureScrew platJoint1 = new StructureScrew ( "dynamic_skeleton_joint2", plat.getPositionPixel( ), 50, plat,
 				lowerArmSkeleton, world );

@@ -58,8 +58,8 @@ public class WereScrewedGame extends Game {
 		if(Gdx.input.isKeyPressed( Keys.SEMICOLON )){
 			if( !metricsFlag ){
 				metricsFlag = true;
-				Metrics.turnOnMetrics = !Metrics.turnOnMetrics;
-				Gdx.app.log( "Metrics activated", "" + Metrics.turnOnMetrics );
+				Metrics.activated = !Metrics.activated;
+				Gdx.app.log( "Metrics activated", "" + Metrics.activated );
 			}
 		}else{
 			metricsFlag = false;

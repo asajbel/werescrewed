@@ -285,6 +285,7 @@ public class Skeleton extends Platform {
      */
     @Override
     public void update( float deltaTime ) {
+    	super.update( deltaTime );
     	//update root skeleton imover
         updateMover( deltaTime );
         //followed by children skeleton imovers

@@ -3,6 +3,7 @@ package com.blindtigergames.werescrewed.entity;
 import java.util.ArrayList;
 import java.util.EnumMap;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -42,6 +43,7 @@ public class Entity implements GleedLoadable {
 	protected Anchor anchor;
 	protected float energy;
 	protected boolean active;
+	protected boolean crushing;
 	protected boolean visible;
 	protected boolean maintained;
 	protected EntityType entityType;
@@ -691,5 +693,37 @@ public class Entity implements GleedLoadable {
 		
 		//Initalize to idle
 		currentRobotState = RobotState.IDLE;
+	}
+	
+	/**
+	 * prints Fixture's index in FixtureList.
+	 * 
+	 * @param fix Fixture
+	 */
+	public void getFixtureIndex(Fixture fix){
+		for (int i = 0; i < body.getFixtureList( ).size( ); i++){
+			if(fix == body.getFixtureList( ).get( i )){
+				Gdx.app.log( name + " FixtureListIndex: " , "" + i );
+				return;
+			}
+		}
+	}
+
+	/**
+	 * returns whether an entity can crush the player
+	 * 
+	 * @return boolean
+	 */
+	public boolean getCrushing( ) {
+		return crushing;
+	}
+	
+	/**
+	 * sets flag to determine if an entity can crush
+	 * 
+	 * @param value boolean
+	 */
+	public void setCrushing( boolean value ) {
+		crushing = value;
 	}
 }

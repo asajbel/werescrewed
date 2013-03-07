@@ -25,6 +25,7 @@ import com.blindtigergames.werescrewed.hazard.Spikes;
 import com.blindtigergames.werescrewed.platforms.Platform;
 import com.blindtigergames.werescrewed.platforms.TiledPlatform;
 import com.blindtigergames.werescrewed.player.Player;
+import com.blindtigergames.werescrewed.screws.StructureScrew;
 import com.blindtigergames.werescrewed.skeleton.Skeleton;
 import com.blindtigergames.werescrewed.util.Util;
 
@@ -40,7 +41,8 @@ public class HazardScreen implements com.badlogic.gdx.Screen {
 	private Player player1, player2;
 	private Skeleton skeleton;
 	private Skeleton rootSkeleton;
-	private TiledPlatform ground;
+	private TiledPlatform ground, crusher;
+	private StructureScrew struct1, struct2;
 	private PlatformBuilder platBuilder;
 	private Spikes spikes;
 	private boolean debug = true;
@@ -59,6 +61,8 @@ public class HazardScreen implements com.badlogic.gdx.Screen {
 		contactListener = new MyContactListener( );
 		world.setContactListener( contactListener );
 		
+		
+		
 		player1 = new PlayerBuilder( ).name( "player1" ).world( world )
 				.position( -1000.0f, 100.0f ).buildPlayer( );
 		player2 = new PlayerBuilder( ).name( "player2" ).world( world )
@@ -67,6 +71,7 @@ public class HazardScreen implements com.badlogic.gdx.Screen {
 		initTiledPlatforms( );
 		initHazards( );
 		initCheckPoints( );
+		initCrushTest( );
 		
 		rootSkeleton.addSkeleton( skeleton );
 		debugRenderer = new SBox2DDebugRenderer( Util.BOX_TO_PIXEL );
@@ -88,12 +93,25 @@ public class HazardScreen implements com.badlogic.gdx.Screen {
 				.oneSided( false ).restitution( 0.0f ).buildTilePlatform( );
 		ground.setCategoryMask( Util.KINEMATIC_OBJECTS,
 				Util.CATEGORY_EVERYTHING );
+		ground.setCrushing( true );
 		skeleton.addKinematicPlatform( ground );
 	}
 	
 	private void initHazards( ) {
 		spikes = new Spikes( "Spikes1", new Vector2( -1250.0f, -10.0f), 
 				4, 1, world, true, true, false );
+	}
+	
+	private void initCrushTest( ){
+		crusher = platBuilder.position( 400.0f, 100.0f ).name( "crusher" )
+				.dimensions( 6, 1 ).texture( testTexture ).dynamic( )
+				.oneSided( false ).restitution( 0.0f ).buildTilePlatform( );
+		crusher.setCrushing( true );
+		skeleton.addDynamicPlatform( crusher );
+		struct1 = new StructureScrew("struct1", crusher.getPositionPixel( ).add(new Vector2(-50f, 0f)), 50, crusher, skeleton, world);
+		struct2 = new StructureScrew("struct1", crusher.getPositionPixel( ).add(new Vector2(50f, 0f)), 50, crusher, skeleton, world);
+		skeleton.addScrewForDraw( struct1 );
+		skeleton.addScrewForDraw( struct2 );
 	}
 	
 	private void initCheckPoints( ) {
