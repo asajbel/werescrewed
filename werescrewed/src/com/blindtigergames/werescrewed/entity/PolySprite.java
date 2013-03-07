@@ -33,23 +33,9 @@ public class PolySprite extends Sprite {
 	 * @param spriteSheetName
 	 * @param loopType
 	 */
-	public PolySprite( int f, int r, int c, float fr, String spriteSheetName, int loopType , 
+	public PolySprite( String spriteSheetName, 
 			             Array<Vector2> verts, Array<Vector2> uvs, ShaderProgram s) {
-		super( f, r, c, fr, spriteSheetName, loopType );
-		constructMesh(verts,uvs);
-	}
-
-	/**
-	 * @param f
-	 * @param r
-	 * @param c
-	 * @param fr
-	 * @param spriteSheetTexture
-	 * @param loopType
-	 */
-	public PolySprite( int f, int r, int c, float fr, Texture spriteSheetTexture, int loopType,
-		Array<Vector2> verts, Array<Vector2> uvs, ShaderProgram s ) {
-		super( f, r, c, fr, spriteSheetTexture, loopType );
+		super( spriteSheetName, "0" );
 		constructMesh(verts,uvs);
 	}
 
