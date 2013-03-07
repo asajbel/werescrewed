@@ -58,12 +58,12 @@ public class AssetManager extends com.badlogic.gdx.assets.AssetManager {
 	}
 	
 	@SuppressWarnings( "unused" )
-	public void loadFont( String fullPathToFont ) throws FileNotFoundException{
+	public void loadFont( String fullPathToFont ){
 		FileHandle fileHandle = Gdx.files.internal( fullPathToFont );
 		
 		BitmapFont font = new BitmapFont(fileHandle, false);
 		if ( font == null ){
-			throw new FileNotFoundException("When loading a bitmap font path "+fileHandle.path( )+" font file wasn't found");
+			Gdx.app.log( "AssetManager", "Font is null! "+fileHandle.path( ) );
 		}
 		fontMap.put( fileHandle.nameWithoutExtension( ), font );
 	}
