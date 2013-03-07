@@ -29,12 +29,9 @@ class PauseScreen implements com.badlogic.gdx.Screen {
 		font = new BitmapFont( );
 		lineHeight = Math.round( 2.5f * font.getCapHeight( ) );
 		screenLabel = new Label("Pause Screen", font);
-		authorLabel = new Label( "Author: biobob (Robert Komorovsky)", font );
-		licenseLabel = new Label( "License: Apache License 2.0", font );
-		versionLabel = new Label( "LibGDX version: " + Version.VERSION, font );
 		mainMenuButton = new Button("Main Menu",font, 
 				new ScreenSwitchHandler(ScreenType.MAIN_MENU));
-		backButton = new Button( "Back", font, 
+		backButton = new Button( "Physics Screen", font, 
 				new ScreenSwitchHandler(ScreenType.PHYSICS ) );
 	}
 
@@ -43,14 +40,11 @@ class PauseScreen implements com.badlogic.gdx.Screen {
 		Gdx.gl.glClearColor( 0.5f, 0.5f, 0.5f, 1f );
 		Gdx.gl.glClear( GL10.GL_COLOR_BUFFER_BIT );
 
-		if ( Gdx.input.isKeyPressed( Input.Keys.ESCAPE ) ) {
-			ScreenManager.getInstance( ).show( ScreenType.PHYSICS );
-		}
+		//if ( Gdx.input.isKeyPressed( Input.Keys.ESCAPE ) ) {
+		//	ScreenManager.getInstance( ).show( ScreenType.PHYSICS );
+		//}
 		batch.begin( );
 		screenLabel.draw( batch );
-		authorLabel.draw( batch );
-		licenseLabel.draw( batch );
-		versionLabel.draw( batch );
 		mainMenuButton.draw( batch, camera );
 		backButton.draw( batch, camera );
 		batch.end( );
@@ -66,14 +60,8 @@ class PauseScreen implements com.badlogic.gdx.Screen {
 		int centerY = height / 2;
 		screenLabel.setX( centerX - screenLabel.getWidth()/2);
 		screenLabel.setY( centerY + 7 * lineHeight );
-		authorLabel.setX( centerX - authorLabel.getWidth( ) / 2 );
-		authorLabel.setY( centerY + lineHeight );
-		licenseLabel.setX( centerX - licenseLabel.getWidth( ) / 2 );
-		licenseLabel.setY( centerY );
-		versionLabel.setX( centerX - versionLabel.getWidth( ) / 2 );
-		versionLabel.setY( centerY - lineHeight );
 		mainMenuButton.setX( centerX - mainMenuButton.getWidth()/2);
-		mainMenuButton.setY( 35 + mainMenuButton.getHeight( ) );
+		mainMenuButton.setY( 40 + mainMenuButton.getHeight( ) );
 		backButton.setX( centerX - backButton.getWidth( ) / 2 );
 		backButton.setY( 20 + backButton.getHeight( ) );
 	}

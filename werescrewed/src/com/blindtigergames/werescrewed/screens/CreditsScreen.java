@@ -15,6 +15,7 @@ class CreditsScreen implements com.badlogic.gdx.Screen {
 	private SpriteBatch batch = null;
 	private OrthographicCamera camera = null;
 	private BitmapFont font = null;
+	private Label screenLabel = null;
 	private Label authorLabel = null;
 	private Label licenseLabel = null;
 	private Label versionLabel = null;
@@ -25,9 +26,10 @@ class CreditsScreen implements com.badlogic.gdx.Screen {
 		batch = new SpriteBatch( );
 		font = new BitmapFont( );
 		lineHeight = Math.round( 2.5f * font.getCapHeight( ) );
-		authorLabel = new Label( "Author: biobob (Robert Komorovsky)", font );
-		licenseLabel = new Label( "License: Apache License 2.0", font );
-		versionLabel = new Label( "LibGDX version: " + Version.VERSION, font );
+		screenLabel = new Label("CREDITS",font);
+		authorLabel = new Label( "", font );
+		licenseLabel = new Label( "", font );
+		versionLabel = new Label( "" + Version.VERSION, font );
 		backButton = new Button( "Back", font, new ScreenSwitchHandler(
 				ScreenType.MAIN_MENU ) );
 	}
@@ -37,6 +39,7 @@ class CreditsScreen implements com.badlogic.gdx.Screen {
 		Gdx.gl.glClearColor( 0.5f, 0.5f, 0.5f, 1f );
 		Gdx.gl.glClear( GL10.GL_COLOR_BUFFER_BIT );
 		batch.begin( );
+		screenLabel.draw( batch );
 		authorLabel.draw( batch );
 		licenseLabel.draw( batch );
 		versionLabel.draw( batch );
@@ -51,6 +54,8 @@ class CreditsScreen implements com.badlogic.gdx.Screen {
 		batch.setProjectionMatrix( camera.combined );
 		int centerX = width / 2;
 		int centerY = height / 2;
+		screenLabel.setX( centerX - screenLabel.getWidth()/2);
+		screenLabel.setY( centerY + 7 * lineHeight );
 		authorLabel.setX( centerX - authorLabel.getWidth( ) / 2 );
 		authorLabel.setY( centerY + lineHeight );
 		licenseLabel.setX( centerX - licenseLabel.getWidth( ) / 2 );
