@@ -44,22 +44,6 @@ public class StructureScrew extends Screw {
 
 	}
 
-	/**
-	 * attaches any other object between this screw and the main entity that
-	 * this screw is attached
-	 * 
-	 * @param entity
-	 */
-	public void addStructureJoint( Entity entity ) {
-		// connect other structure to structure screw
-		RevoluteJointDef revoluteJointDef = new RevoluteJointDef( );
-		revoluteJointDef.initialize( body, entity.body, body.getPosition( ) );
-		revoluteJointDef.enableMotor = false;
-		RevoluteJoint screwJoint = ( RevoluteJoint ) world
-				.createJoint( revoluteJointDef );
-		extraJoints.add( screwJoint );
-	}
-
 	@Override
 	public void screwLeft( int region ) {
 		if ( depth > -10 ) {
@@ -106,6 +90,7 @@ public class StructureScrew extends Screw {
 		if ( depth <= 0 ) {
 			if ( fallTimeout == 0 && screwToSkel != null ) {
 				body.setType( BodyType.DynamicBody );
+				//screwToSkel.getBodyB( ).setType( BodyType.DynamicBody );
 				world.destroyJoint( screwToSkel );
 				world.destroyJoint( platformJoint );
 				for ( RevoluteJoint j : extraJoints ) {

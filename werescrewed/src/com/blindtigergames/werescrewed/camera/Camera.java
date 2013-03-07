@@ -495,12 +495,12 @@ public class Camera {
 	 */
 	private void handleInput( ) {
 		if ( Gdx.input.isKeyPressed( Input.Keys.E ) ) {
-			camera.zoom += 0.02;
+			camera.zoom += 0.2;
 			translateBuffer.width = screenBounds.width * BUFFER_RATIO;
 			translateBuffer.height = screenBounds.height * BUFFER_RATIO;
 		}
 		if ( Gdx.input.isKeyPressed( Input.Keys.Q ) ) {
-			camera.zoom -= 0.02;
+			camera.zoom -= 0.2;
 			translateBuffer.width = camera.zoom * viewportWidth * BUFFER_RATIO;
 			translateBuffer.height = camera.zoom * viewportHeight
 					* BUFFER_RATIO;

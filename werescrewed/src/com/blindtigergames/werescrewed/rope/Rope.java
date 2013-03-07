@@ -46,11 +46,11 @@ public class Rope {
 		linkParts = new ArrayList< Link >( );
 		constructRope( name, pos, widthHeight, links, texture, world );
 
-		screw = new StrippedScrew( "ropescrew", world,
+		screw = new StrippedScrew( "ropescrew",
 				new Vector2( pos.x, pos.y
 						- widthHeight.y * Util.PIXEL_TO_BOX * links )
 						.mul( Util.BOX_TO_PIXEL ), linkParts.get( linkParts
-						.size( ) - 1 ) );
+						.size( ) - 1 ), world );
 
 	}
 
@@ -76,11 +76,11 @@ public class Rope {
 		constructRope( name, entity.getPosition( ), widthHeight, links,
 				texture, world );
 
-		screw = new StrippedScrew( "ropescrew", world,
+		screw = new StrippedScrew( "ropescrew",
 				new Vector2( entity.getPosition( ).x, entity.getPosition( ).y
 						- widthHeight.y * Util.PIXEL_TO_BOX * links )
 						.mul( Util.BOX_TO_PIXEL ), linkParts.get( linkParts
-						.size( ) - 1 ) );
+						.size( ) - 1 ), world );
 
 	}
 
@@ -214,10 +214,10 @@ public class Rope {
 	}
 
 	public void createScrew( ) {
-		screw = new StrippedScrew( "ropeScrew", world, new Vector2(
+		screw = new StrippedScrew( "ropeScrew", new Vector2(
 				getLastLink( ).body.getPosition( ).x * Util.BOX_TO_PIXEL,
 				( getLastLink( ).body.getPosition( ).y * Util.BOX_TO_PIXEL )
-						- ( getLastLink( ).getHeight( ) ) ), getLastLink( ) );
+						- ( getLastLink( ).getHeight( ) ) ), getLastLink( ), world );
 
 	}
 

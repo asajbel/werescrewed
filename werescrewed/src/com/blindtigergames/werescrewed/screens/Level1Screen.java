@@ -343,11 +343,11 @@ public class Level1Screen implements com.badlogic.gdx.Screen {
 		float dy = 160f;
 		for ( int i = 0; i < 10; i++ ) {
 			if ( i % 2 == 0 ) {
-				climbingScrews.add( new StrippedScrew( "", world, new Vector2(
-						x1, y1 ), skeleton ) );
+				climbingScrews.add( new StrippedScrew( "", new Vector2(
+						x1, y1 ), skeleton, world ) );
 			} else {
-				climbingScrews.add( new StrippedScrew( "", world, new Vector2(
-						x2, y1 ), skeleton ) );
+				climbingScrews.add( new StrippedScrew( "", new Vector2(
+						x2, y1 ), skeleton, world ) );
 			}
 			y1 += dy;
 		}
@@ -478,14 +478,14 @@ public class Level1Screen implements com.badlogic.gdx.Screen {
 
 		world.createJoint( pjd );
 
-		skeleton.addStrippedScrew( new StrippedScrew( "", world, new Vector2(
+		skeleton.addStrippedScrew( new StrippedScrew( "", new Vector2(
 				singTile.body.getPosition( ).x * Util.BOX_TO_PIXEL,
-				singTile.body.getPosition( ).y * Util.BOX_TO_PIXEL ), singTile ) );
+				singTile.body.getPosition( ).y * Util.BOX_TO_PIXEL ), singTile, world ) );
 
-		skeleton.addStrippedScrew( new StrippedScrew( "", world, new Vector2(
+		skeleton.addStrippedScrew( new StrippedScrew( "", new Vector2(
 				singTile2.body.getPosition( ).x * Util.BOX_TO_PIXEL,
 				singTile2.body.getPosition( ).y * Util.BOX_TO_PIXEL ),
-				singTile2 ) );
+				singTile2, world ) );
 	}
 
 	@Override
