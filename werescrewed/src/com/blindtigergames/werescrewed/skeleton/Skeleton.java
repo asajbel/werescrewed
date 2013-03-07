@@ -10,6 +10,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
+import com.blindtigergames.werescrewed.eventTrigger.EventTrigger;
 import com.blindtigergames.werescrewed.joint.RevoluteJointBuilder;
 import com.blindtigergames.werescrewed.platforms.Platform;
 import com.blindtigergames.werescrewed.platforms.TiledPlatform;
@@ -43,6 +44,7 @@ public class Skeleton extends Platform {
 	protected HashMap< String, Platform > kinematicPlatformMap = new HashMap< String, Platform >( );
 	protected HashMap< String, Rope > ropeMap = new HashMap< String, Rope >( );
 	protected HashMap< String, Screw > screwMap = new HashMap< String, Screw >( );
+	protected HashMap< String, EventTrigger > eventMap = new HashMap< String, EventTrigger > ( );
 	
 	private int entityCount = 0;
 
@@ -186,6 +188,17 @@ public class Skeleton extends Platform {
     		platform.name = platform.name + "-CHANGE_MY_NAME"+entityCount;
     	}
     	kinematicPlatformMap.put( platform.name, platform );
+    }
+    /**
+     * Add EventTrigger to this Skeleton
+     * @param event EventTrigger to be added to Skeleton
+     */
+    public void addEventTrigger ( EventTrigger event ){
+    	entityCount++;
+    	if ( eventMap.containsKey( event.name ) ){
+    		event.name = event.name + "-CHANGE_MY_NAME"+entityCount;
+    	}
+    	eventMap.put ( event.name, event); 
     }
     
     /**
