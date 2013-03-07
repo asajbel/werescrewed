@@ -144,7 +144,7 @@ public class ProgressManager {
 			ScrewBuilder rezzBuilder = new ScrewBuilder( )
 					.screwType( ScrewType.SCREW_RESURRECT ).entity( entity )
 					.world( world ).playerOffset( true )
-					.position( 64.0f, 64.0f );
+					.position( 0f, 150f );
 
 			if ( player1.isPlayerDead( ) ) {
 				// create new rez screw and attach

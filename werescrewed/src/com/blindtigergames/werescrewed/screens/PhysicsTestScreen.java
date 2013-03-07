@@ -18,6 +18,8 @@ import com.badlogic.gdx.physics.box2d.joints.PrismaticJoint;
 import com.badlogic.gdx.physics.box2d.joints.PrismaticJointDef;
 import com.badlogic.gdx.physics.box2d.joints.PulleyJointDef;
 import com.blindtigergames.werescrewed.camera.Camera;
+import com.blindtigergames.werescrewed.checkpoints.CheckPoint;
+import com.blindtigergames.werescrewed.checkpoints.ProgressManager;
 import com.blindtigergames.werescrewed.collisionManager.MyContactListener;
 import com.blindtigergames.werescrewed.debug.SBox2DDebugRenderer;
 import com.blindtigergames.werescrewed.entity.Entity;
@@ -67,6 +69,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 	private World world;
 	private MyContactListener contactListener;
 	private SBox2DDebugRenderer debugRenderer;
+	private ProgressManager progressManager;
 	private Player player1, player2;
 	@SuppressWarnings( "unused" )
 	private TiledPlatform tiledPlat, ground, movingTP, singTile, rectile,
@@ -180,6 +183,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		player2 = new PlayerBuilder( ).name( "player2" ).world( world )
 				.position( 1.5f, 110.5f ).buildPlayer( );
 
+		initCheckPoints( );
 		// Add screws
 
 		PlatformBuilder pb = new PlatformBuilder( world );
@@ -548,6 +552,16 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 				singTile2, world ) );
 	}
 	
+	private void initCheckPoints( ) {
+		progressManager = new ProgressManager( player1, player2, world );
+		progressManager
+				.addCheckPoint( new CheckPoint( "check_01", new Vector2( 0f,
+						64f ), skeleton, world, progressManager,
+						"levelStage_0_0" ) );
+		progressManager.addCheckPoint( new CheckPoint( "check_01", new Vector2(
+				512, 64 ), skeleton, world, progressManager,
+				"levelStage_0_1" ) );
+	}
 	
 	public void initEventTrigger(){
 		specialPlat = platBuilder.position( -1000, 300).name( "specialPlat" )
@@ -627,12 +641,14 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		player2.update( deltaTime );
 		// oldRootSkeleton.update( deltaTime );
 		rootSkeleton.update( deltaTime );
+		progressManager.update( deltaTime );
 		testRope.update( deltaTime );
 		batch.setProjectionMatrix( cam.combined( ) );
 		batch.begin( );
 
 		// tp2.draw( batch );
 		testSteam.draw( batch, deltaTime );
+		progressManager.draw( batch );
 		rootSkeleton.draw( batch );
 		testRope.draw( batch );
 		player1.draw( batch );
