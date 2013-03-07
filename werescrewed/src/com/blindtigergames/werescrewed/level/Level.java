@@ -53,24 +53,21 @@ public class Level {
 	
 	public Level( ){
 		
-		float zoom = 1.0f;
-		float width = Gdx.graphics.getWidth( ) / zoom;
-		float height = Gdx.graphics.getHeight( ) / zoom;
-		
 		world = new World( new Vector2( 0, GRAVITY ), true );
 		myContactListener = new MyContactListener();
 		world.setContactListener( myContactListener );
 		
-		camera = new Camera( width, height, world);
-		player1 = new PlayerBuilder( ).name( "player1" ).world( world )
-				.position( 0, 0 ).buildPlayer( );
-		player2 = new PlayerBuilder( ).name( "player2" ).world( world )
-				.position( 0, 0  ).buildPlayer( );
+//		camera = new Camera( width, height, world);
+//		player1 = new PlayerBuilder( ).name( "player1" ).world( world )
+//				.position( 0, 0 ).buildPlayer( );
+//		player2 = new PlayerBuilder( ).name( "player2" ).world( world )
+//				.position( 0, 0  ).buildPlayer( );
 
 
-		rootSkeleton = new RootSkeleton("root", new Vector2(0,0), null, world);
-		root = new Skeleton("root1", new Vector2(0,0), null, world);
-		rootSkeleton.addSkeleton( root );
+//		rootSkeleton = new RootSkeleton("root", new Vector2(0,0), null, world);
+//		root = new Skeleton("root1", new Vector2(0,0), null, world);
+//		rootSkeleton.addSkeleton( root );
+		
 		Tween.registerAccessor( Platform.class, new PlatformAccessor( ) );
 		Tween.registerAccessor( Entity.class, new EntityAccessor( ) );
 	}
@@ -95,7 +92,7 @@ public class Level {
 		batch.end();
 		
 		debugRenderer.render( world, camera.combined( ) );
-		world.step( 1 / 60f, 6, 6 );
+		world.step( 1 / 60f, 6, 3 );
 
 	}
 	
