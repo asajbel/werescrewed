@@ -42,6 +42,7 @@ import com.blindtigergames.werescrewed.entity.tween.EntityAccessor;
 import com.blindtigergames.werescrewed.entity.tween.PathBuilder;
 import com.blindtigergames.werescrewed.entity.tween.PlatformAccessor;
 import com.blindtigergames.werescrewed.eventTrigger.EventTrigger;
+import com.blindtigergames.werescrewed.hazard.Spikes;
 import com.blindtigergames.werescrewed.joint.JointFactory;
 import com.blindtigergames.werescrewed.joint.RevoluteJointBuilder;
 import com.blindtigergames.werescrewed.particles.Steam;
@@ -87,6 +88,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 	public SpriteBatch particleBatch;
 	private EventTrigger et;
 	private TiledPlatform specialPlat;
+	private Spikes spikes;
 
 	// ArrayList< TiledPlatform > tp2 = new ArrayList< TiledPlatform >( );
 
@@ -150,6 +152,8 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		// Initialize particles
 		initParticleEffect( );
 
+		initHazards( );
+		
 		initEventTrigger();
 		testRope = ropeBuilder.position( 2800f, 450f ).width( 16f )
 				.height( 64f ).links( 5 ).createScrew( ).buildRope( );
@@ -293,6 +297,14 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 				null, false, 25, 50, world );
 	}
 
+	/**
+	 * Initializes hazards. At the moment only makes spikes.
+	 */
+	private void initHazards( ) {
+		spikes = new Spikes( "Spikes1", new Vector2( -500.0f, -10.0f), 
+				1, 6, world, true, false, true );
+	}
+	
 	/**
 	 * Initialize the platform screws' settings and add them to the entity
 	 * manager and skeleton
@@ -643,6 +655,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		rootSkeleton.update( deltaTime );
 		progressManager.update( deltaTime );
 		testRope.update( deltaTime );
+		spikes.update(  deltaTime );
 		batch.setProjectionMatrix( cam.combined( ) );
 		batch.begin( );
 
@@ -651,6 +664,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		progressManager.draw( batch );
 		rootSkeleton.draw( batch );
 		testRope.draw( batch );
+		spikes.draw( batch );
 		player1.draw( batch );
 		player2.draw( batch );
 
