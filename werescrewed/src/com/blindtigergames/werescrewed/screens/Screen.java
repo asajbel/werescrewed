@@ -5,26 +5,22 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.blindtigergames.werescrewed.collisionManager.MyContactListener;
 import com.blindtigergames.werescrewed.debug.SBox2DDebugRenderer;
-import com.blindtigergames.werescrewed.input.InputHandler;
 import com.blindtigergames.werescrewed.level.Level;
 import com.blindtigergames.werescrewed.util.Util;
 
 public class Screen implements com.badlogic.gdx.Screen {
 	
 	protected Level level;
-	protected InputHandler inputHandler;
 	protected SpriteBatch batch;
 	protected SBox2DDebugRenderer debugRenderer;
-	MyContactListener MCL;
+	
 
 	
 	public Screen( ){
-		inputHandler = new InputHandler( "player1" );
+
 		batch = new SpriteBatch( );
 		debugRenderer = new SBox2DDebugRenderer( Util.BOX_TO_PIXEL );
-		MCL = new MyContactListener( );
 		level = null;
 	}
 	

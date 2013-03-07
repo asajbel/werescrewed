@@ -145,14 +145,14 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 				.beginAction( new MetricsStartTimeAction() )
 				.build();
 		
-		ground = platBuilder.position( 81 * TILE, 0 ).name( "ground1" )
-				.dimensions( 160, 2 ).texture( testTexture ).kinematic( )
+		ground = platBuilder.position( 50 * TILE, 0 ).name( "ground1" )
+				.dimensions( 250, 2 ).texture( testTexture ).kinematic( )
 				.oneSided( false ).restitution( 0.0f ).buildTilePlatform( );
 		ground.setCategoryMask( Util.KINEMATIC_OBJECTS,
 				Util.CATEGORY_EVERYTHING );
 		skel1.addKinematicPlatform( ground );
 
-		wall = platBuilder.position( 0, 99 * TILE ).name( "wall1" )
+		wall = platBuilder.position( -77 * TILE, 100 * TILE ).name( "wall1" )
 				.dimensions( 2, 250 ).texture( testTexture ).kinematic( )
 				.oneSided( false ).restitution( 0.0f ).buildTilePlatform( );
 		wall.setCategoryMask( Util.KINEMATIC_OBJECTS, Util.CATEGORY_EVERYTHING );
@@ -869,6 +869,7 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 				//	specialPlat.setCurrentMover( RobotState.DOCILE );
 				//else
 				//	specialPlat.setCurrentMover( RobotState.IDLE );
+				cam.turnOffZoom( );
 			}
 			debugTest = false;
 		} else

@@ -7,6 +7,6 @@ public class GleedTestScreen extends Screen {
 		super();
 		String filename = "data/levels/"+ name + ".xml";
 		level = new GleedLoader().load( filename );
-		level.world.setContactListener( MCL );
+
 	}
 }
