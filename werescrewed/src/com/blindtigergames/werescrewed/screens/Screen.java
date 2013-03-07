@@ -3,8 +3,13 @@ package com.blindtigergames.werescrewed.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.blindtigergames.werescrewed.WereScrewedGame;
+import com.blindtigergames.werescrewed.debug.FPSLoggerS;
 import com.blindtigergames.werescrewed.debug.SBox2DDebugRenderer;
 import com.blindtigergames.werescrewed.level.Level;
 import com.blindtigergames.werescrewed.util.Util;
@@ -15,13 +20,21 @@ public class Screen implements com.badlogic.gdx.Screen {
 	protected SpriteBatch batch;
 	protected SBox2DDebugRenderer debugRenderer;
 	
-
+	BitmapFont debug_font;
+	Camera uiCamera;
+	
+	public FPSLoggerS logger;
 	
 	public Screen( ){
 
 		batch = new SpriteBatch( );
 		debugRenderer = new SBox2DDebugRenderer( Util.BOX_TO_PIXEL );
 		level = null;
+		
+		debug_font = WereScrewedGame.manager.getFont( "debug_font" );
+		logger = new FPSLoggerS( );
+		uiCamera = new OrthographicCamera(Gdx.graphics.getWidth( ), Gdx.graphics.getHeight( ));
+		uiCamera.position.set(0,0 , 0); //-Gdx.graphics.getWidth( ), -Gdx.graphics.getHeight( )
 	}
 	
 	@Override
@@ -43,6 +56,14 @@ public class Screen implements com.badlogic.gdx.Screen {
 		if (level != null){
 			level.update( delta );
 			level.draw( batch, debugRenderer );
+			
+			
+				int FPS = logger.getFPS( );
+				batch.setProjectionMatrix( uiCamera.combined );
+				batch.begin( );
+				debug_font.draw(batch, "FPS: "+FPS, -Gdx.graphics.getWidth( )/2, Gdx.graphics.getHeight( )/2);//-Gdx.graphics.getWidth( )/4, Gdx.graphics.getHeight( )/4
+				batch.end( );
+			
 		}
 	}
 
