@@ -334,6 +334,11 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 	}
 
 	private void buildArmSkeleton(){
+		//PuzzleScrew pscrew = new PuzzleScrew( "armpuzzle", )
+		plat = platBuilder.position( 1600, 800 ).name( "armstop" )
+				.dimensions( 7, 1 ).texture( testTexture ).kinematic( )
+				.oneSided( false ).restitution( 0 ).buildTilePlatform( );
+		skel1.addKinematicPlatform( plat );
 		Skeleton upperArmSkeleton = new Skeleton( "dynamicSkeleton", new Vector2(1000, 800), testTexture, world );
 		Skeleton lowerArmSkeleton = new Skeleton( "dynamic2Skeleton", new Vector2(400, 800), testTexture, world );
 		//upperArmSkeleton.setMoverAtCurrentState( new RockingMover( 90, 3f) );
