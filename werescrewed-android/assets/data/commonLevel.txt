@@ -7,6 +7,7 @@
 /common/TilesetTest.pack
 /common/tileset-teal.pack
 /common/autumn.pack
+/common/animations/red_male/idle.txt
 
 ##common texture
 /common/player_b_f.png

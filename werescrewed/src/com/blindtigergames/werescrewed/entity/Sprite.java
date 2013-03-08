@@ -55,6 +55,14 @@ public class Sprite extends com.badlogic.gdx.graphics.g2d.Sprite implements I_Dr
     	currentFrame = tex;
     }
     
+    public void setAnimator(IAnimator a){
+    	animator = a;
+    }
+    
+    public IAnimator getAnimator(){
+    	return animator;
+    }
+    
     public Sprite (String atlasName, String initialRegion){
     	this(WereScrewedGame.manager.get( atlasName, TextureAtlas.class ), initialRegion);
     }
