@@ -7,10 +7,12 @@ import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Fixture;
+import com.badlogic.gdx.physics.box2d.JointEdge;
 import com.badlogic.gdx.physics.box2d.Manifold;
 import com.blindtigergames.werescrewed.camera.Anchor;
 import com.blindtigergames.werescrewed.checkpoints.CheckPoint;
 import com.blindtigergames.werescrewed.entity.Entity;
+import com.blindtigergames.werescrewed.entity.EntityType;
 import com.blindtigergames.werescrewed.eventTrigger.EventTrigger;
 import com.blindtigergames.werescrewed.platforms.Platform;
 import com.blindtigergames.werescrewed.platforms.PlatformType;
@@ -113,13 +115,21 @@ public class MyContactListener implements ContactListener {
 						case PLAYER:
 							Player player2 = ( Player ) objectFix.getBody( )
 									.getUserData( );
-							player.hitPlayer( player2 );
-							player2.hitPlayer( player );
+							if ( !player.isPlayerDead( )
+									&& !player2.isPlayerDead( ) ) {
+								player.hitPlayer( player2 );
+								player2.hitPlayer( player );
+								player.setGrounded( true );
+								player2.setGrounded( true );
+							}
 							break;
 						case HAZARD:
-							Hazard hazard = ( Hazard ) objectFix.getBody( )
-									.getUserData( );
-							hazard.performContact( player, objectFix );
+							if ( player.getCurrentScrew( ) == null
+									|| player.getCurrentScrew( ).getScrewType( ) != ScrewType.SCREW_RESURRECT ) {
+								Hazard hazard = ( Hazard ) objectFix.getBody( )
+										.getUserData( );
+								hazard.performContact( player, objectFix );
+							}
 							// Gdx.app.log( "Player " + player.name,
 							// " Collided with Hazard" );
 							break;
@@ -203,14 +213,14 @@ public class MyContactListener implements ContactListener {
 									p1 = player;
 									NUM_PLAYER1_CONTACTS--;
 									if ( NUM_PLAYER1_CONTACTS <= 0 ) {
-										if ( player.getState( ) == PlayerState.Falling ) {
+										if ( player.getState( ) != PlayerState.HeadStand ) {
 											player.setGrounded( false );
 										}
 									}
 								} else if ( p1 != player ) {
 									NUM_PLAYER2_CONTACTS--;
 									if ( NUM_PLAYER2_CONTACTS <= 0 ) {
-										if ( player.getState( ) == PlayerState.Falling ) {
+										if ( player.getState( ) != PlayerState.HeadStand ) {
 											player.setGrounded( false );
 										}
 									}

@@ -22,16 +22,6 @@ public interface IMover {
 	void move( float deltaTime, Body body );
 
 	/**
-	 * Calculates movement then applies to body
-	 * 
-	 * @param Body
-	 *            - The body to apply the movement to
-	 * @param SteeringOutput
-	 *            - Optional additional movement to apply to body
-	 */
-	void move( float deltaTime, Body body, SteeringOutput steering );
-
-	/**
 	 * is called from a puzzleManager and not applied to the body every step
 	 * 
 	 * @param screwVal

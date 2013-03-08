@@ -28,7 +28,7 @@ import com.blindtigergames.werescrewed.entity.builders.PlatformBuilder;
 import com.blindtigergames.werescrewed.entity.builders.PlayerBuilder;
 import com.blindtigergames.werescrewed.entity.mover.LerpMover;
 import com.blindtigergames.werescrewed.entity.mover.LinearAxis;
-import com.blindtigergames.werescrewed.entity.mover.PistonMover;
+//import com.blindtigergames.werescrewed.entity.mover.PistonMover;
 import com.blindtigergames.werescrewed.entity.mover.PuzzleType;
 import com.blindtigergames.werescrewed.entity.mover.SlidingMotorMover;
 import com.blindtigergames.werescrewed.joint.JointFactory;
@@ -181,13 +181,15 @@ public class EntityDefTestScreen implements com.badlogic.gdx.Screen {
 				tiledPlat.body.getPosition( ).x * Util.BOX_TO_PIXEL
 						- ( tiledPlat.sprite.getWidth( ) ),
 				tiledPlat.body.getPosition( ).y * Util.BOX_TO_PIXEL ), 50,
-				tiledPlat, skeleton, world );
+				tiledPlat, world );
+		leftPlatScrew.addStructureJoint( skeleton );
 
 		StructureScrew rightPlatScrew = new StructureScrew( "", new Vector2(
 				tiledPlat.body.getPosition( ).x * Util.BOX_TO_PIXEL
 						+ ( tiledPlat.sprite.getWidth( ) ),
 				tiledPlat.body.getPosition( ).y * Util.BOX_TO_PIXEL ), 50,
-				tiledPlat, skeleton, world );
+				tiledPlat, world );
+		rightPlatScrew.addStructureJoint( skeleton );
 		tiledPlat.addScrew( leftPlatScrew );
 		tiledPlat.addScrew( rightPlatScrew );
 	}
@@ -300,8 +302,8 @@ public class EntityDefTestScreen implements com.badlogic.gdx.Screen {
 					.anchor( piston.body.getWorldCenter( ) ).build( );
 			// Something is still not quite right with this, try replacing 3
 			// with 0.
-			piston.addMover( new PistonMover( pistonJoint, 0f, i / 10.0f + 2f ),
-					RobotState.IDLE );
+			//piston.addMover( new PistonMover( pistonJoint, 0f, i / 10.0f + 2f ),
+			//		RobotState.IDLE );
 			piston.body.setSleepingAllowed( false );
 			skeleton.addDynamicPlatform( piston );
 		}
@@ -317,7 +319,7 @@ public class EntityDefTestScreen implements com.badlogic.gdx.Screen {
 		PrismaticJoint pistonJ = jointBuilder.bodyB( ( Entity ) elevator )
 				.anchor( elevator.body.getWorldCenter( ) ).build( );
 
-		elevator.addMover( new PistonMover( pistonJ, 0f, 2f ), RobotState.IDLE );
+		//elevator.addMover( new PistonMover( pistonJ, 0f, 2f ), RobotState.IDLE );
 		elevator.body.setSleepingAllowed( false );
 		skeleton.addDynamicPlatform( elevator );
 

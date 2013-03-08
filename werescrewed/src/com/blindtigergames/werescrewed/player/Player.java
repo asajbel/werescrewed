@@ -87,8 +87,7 @@ public class Player extends Entity {
 
 	private Screw currentScrew;
 	private Player otherPlayer;
-	private RevoluteJoint playerToScrew;
-	private RevoluteJoint playerToPlayer;
+	private RevoluteJoint playerJoint;
 	private Body platformBody;
 	private boolean topPlayer = false;
 	private boolean isDead = false, deadDebug;
@@ -244,27 +243,9 @@ public class Player extends Entity {
 				&& playerState != PlayerState.HeadStand && !isDead ) {
 			playerState = PlayerState.Falling;
 		}
-		// after the players collide check if one is falling
-		// and one is standing and if a head stand didn't occur step before
-		// then put them into head stand state
-		if ( otherPlayer != null && playerState == PlayerState.Falling
-				&& otherPlayer.getState( ) == PlayerState.Standing
-				&& !otherPlayer.isPlayerDead( ) && headStandTimeout == 0
-				&& otherPlayer.isHeadStandTimedOut( ) ) {
-			// check if the top player is in-line with the other players head
-			// and check if the top player is actually above the other player
-			if ( ( playerState == PlayerState.Falling && this
-					.getPositionPixel( ).y > otherPlayer.getPositionPixel( ).y )
-					&& ( otherPlayer.getPositionPixel( ).sub(
-							sprite.getWidth( ) / 3.0f, 0.0f ).x <= this
-							.getPositionPixel( ).x )
-					&& ( otherPlayer.getPositionPixel( ).add(
-							sprite.getWidth( ) / 4.0f, 0.0f ).x > this
-							.getPositionPixel( ).x ) ) {
-				topPlayer = true;
-				setHeadStand( );
-				otherPlayer.setHeadStand( );
-			}
+		if ( otherPlayer != null && isHeadStandPossible( ) ) {
+			setHeadStand( );
+			otherPlayer.setHeadStand( );
 		} else {
 			if ( headStandTimeout > 0 ) {
 				headStandTimeout--;
@@ -287,7 +268,7 @@ public class Player extends Entity {
 					revoluteJointDef.initialize( body, currentScrew.body,
 							currentScrew.getPosition( ) );
 					revoluteJointDef.enableMotor = false;
-					playerToScrew = ( RevoluteJoint ) world
+					playerJoint = ( RevoluteJoint ) world
 							.createJoint( revoluteJointDef );
 					playerState = PlayerState.Screwing;
 					mover = null;
@@ -297,7 +278,6 @@ public class Player extends Entity {
 				if ( currentScrew.getScrewType( ) == ScrewType.SCREW_RESURRECT ) {
 					ResurrectScrew rezScrew = ( ResurrectScrew ) currentScrew;
 					if ( rezScrew.deleteQueue( ) ) {
-						Gdx.app.log( "end hit rez screw", "" );
 						removePlayerToScrew( );
 						jump( );
 					}
@@ -305,9 +285,7 @@ public class Player extends Entity {
 			}
 		} else if ( ( ( topCrush && botCrush ) || ( leftCrush && rightCrush ) )
 				&& playerState != PlayerState.JumpingOffScrew ) {
-			Gdx.app.log( "playerstate", "" + playerState );
 			this.killPlayer( );
-			Gdx.app.log( name, ": squish" );
 		} else if ( steamCollide ) {
 			steamResolution( );
 		}
@@ -323,15 +301,14 @@ public class Player extends Entity {
 	 */
 	public void killPlayer( ) {
 		if ( !world.isLocked( ) ) {
-			playerState = PlayerState.Dead;
-			if ( playerToScrew != null ) {
-				Gdx.app.log( "remove rez screw if dead", "" );
+			if ( playerState == PlayerState.Screwing ) {
 				removePlayerToScrew( );
 			}
-			if ( playerToPlayer != null ) {
+			if ( playerState == PlayerState.HeadStand && topPlayer ) {
 				removePlayerToPlayer( );
 			}
 			currentScrew = null;
+			mover = null;
 			Filter filter = new Filter( );
 			for ( Fixture f : body.getFixtureList( ) ) {
 				if ( f != rightSensor && f != leftSensor && f != topSensor ) {
@@ -340,10 +317,11 @@ public class Player extends Entity {
 					// move player back to original category
 					filter.categoryBits = Util.CATEGORY_PLAYER;
 					// player now collides with everything
-					filter.maskBits = Util.CATEGORY_EVERYTHING;
+					filter.maskBits = Util.CATEGORY_NOTHING;
 					f.setFilterData( filter );
 				}
 			}
+			playerState = PlayerState.Dead;
 			body.setTransform( body.getPosition( ), 90f * Util.DEG_TO_RAD );
 			if ( Metrics.activated ) {
 				Metrics.addPlayerDeathPosition( this.getPositionPixel( ) );
@@ -358,6 +336,18 @@ public class Player extends Entity {
 	 * This function sets player in alive state
 	 */
 	public void respawnPlayer( ) {
+		Filter filter = new Filter( );
+		for ( Fixture f : body.getFixtureList( ) ) {
+			if ( f != rightSensor && f != leftSensor && f != topSensor ) {
+				f.setSensor( false );
+				filter = f.getFilterData( );
+				// move player back to original category
+				filter.categoryBits = Util.CATEGORY_PLAYER;
+				// player now collides with everything
+				filter.maskBits = Util.CATEGORY_EVERYTHING;
+				f.setFilterData( filter );
+			}
+		}
 		body.setTransform( body.getPosition( ), 0f );
 		playerState = PlayerState.Standing;
 		isDead = false;
@@ -565,6 +555,13 @@ public class Player extends Entity {
 	}
 
 	/**
+	 * get the instance of the currentscrew
+	 */
+	public Screw getCurrentScrew( ) {
+		return currentScrew;
+	}
+
+	/**
 	 * returns true if this is the top player in the head stand
 	 * 
 	 * @return topPlayer
@@ -589,14 +586,16 @@ public class Player extends Entity {
 		if ( !topPlayer ) {
 			this.grounded = newVal;
 		}
-		Filter filter = new Filter( );
-		for ( Fixture f : body.getFixtureList( ) ) {
-			filter = f.getFilterData( );
-			// move player back to original category
-			filter.categoryBits = Util.CATEGORY_PLAYER;
-			// player now collides with everything
-			filter.maskBits = Util.CATEGORY_EVERYTHING;
-			f.setFilterData( filter );
+		if ( screwJumpTimeout == 0 ) {
+			Filter filter = new Filter( );
+			for ( Fixture f : body.getFixtureList( ) ) {
+				filter = f.getFilterData( );
+				// move player back to original category
+				filter.categoryBits = Util.CATEGORY_PLAYER;
+				// player now collides with everything
+				filter.maskBits = Util.CATEGORY_EVERYTHING;
+				f.setFilterData( filter );
+			}
 		}
 	}
 
@@ -659,10 +658,10 @@ public class Player extends Entity {
 				&& currentScrew.body.getJointList( ).size( ) > 0
 				&& playerState != PlayerState.HeadStand
 				&& !currentScrew.isPlayerAttached( ) ) {
-			// Filter filter;
 			for ( Fixture f : body.getFixtureList( ) ) {
 				f.setSensor( true );
 			}
+			if ( currentScrew.body.getLinearVelocity( ).len( ) < SCREW_ATTACH_SPEED ) {
 			mover = new LerpMover(
 					body.getPosition( ).mul( Util.BOX_TO_PIXEL ), new Vector2(
 							currentScrew.getPosition( ).x * Util.BOX_TO_PIXEL
@@ -670,6 +669,22 @@ public class Player extends Entity {
 							currentScrew.getPosition( ).y * Util.BOX_TO_PIXEL
 									- ( sprite.getHeight( ) / 4.0f ) ),
 					SCREW_ATTACH_SPEED, false, LinearAxis.DIAGONAL, 0 );
+			} else {
+				body.setTransform(
+						new Vector2( currentScrew.getPosition( ).x
+								- ( sprite.getWidth( ) / 4.0f )
+								* Util.PIXEL_TO_BOX, currentScrew
+								.getPosition( ).y
+								- ( sprite.getHeight( ) / 4.0f )
+								* Util.PIXEL_TO_BOX ), 0.0f );
+				RevoluteJointDef revoluteJointDef = new RevoluteJointDef( );
+				revoluteJointDef.initialize( body, currentScrew.body,
+						currentScrew.getPosition( ) );
+				revoluteJointDef.enableMotor = false;
+				playerJoint = ( RevoluteJoint ) world
+						.createJoint( revoluteJointDef );
+				mover = null;
+			}
 			playerState = PlayerState.Screwing;
 			currentScrew.setPlayerAttached( true );
 			setGrounded( false );
@@ -833,8 +848,8 @@ public class Player extends Entity {
 	 */
 	private void resetJumpOffScrew( ) {
 		// if state is jumping off screw
-		// and the player is either not hitting a screw
-		// or the player is grounded then reset the state
+		// and the player is grounded and done with
+		// the screw jump
 		if ( isGrounded( ) && screwJumpTimeout == 0 ) {
 			playerState = PlayerState.Standing;
 			jumpOffScrew( );
@@ -1012,6 +1027,46 @@ public class Player extends Entity {
 	}
 
 	/**
+	 * checks if a head stand is possible
+	 */
+	private boolean isHeadStandPossible( ) {
+		if ( playerState == PlayerState.Falling
+				&& otherPlayer.getState( ) == PlayerState.Standing
+				&& !otherPlayer.isPlayerDead( ) && headStandTimeout == 0
+				&& otherPlayer.isHeadStandTimedOut( ) ) {
+			// check if the top player is in-line with the other players head
+			// and check if the top player is actually above the other player
+			if ( ( this.getPositionPixel( ).y > otherPlayer.getPositionPixel( )
+					.add( 0, sprite.getHeight( ) / 2f ).y )
+					&& ( otherPlayer.getPositionPixel( ).sub(
+							sprite.getWidth( ) / 3.0f, 0.0f ).x <= this
+							.getPositionPixel( ).x )
+					&& ( otherPlayer.getPositionPixel( ).add(
+							sprite.getWidth( ) / 4.0f, 0.0f ).x > this
+							.getPositionPixel( ).x ) ) {
+				boolean isMoving = false;
+				//check if the player is using input 
+				//to move either left or right
+				if ( controller != null ) {
+					if ( controllerListener.leftPressed( )
+							|| controllerListener.rightPressed( ) ) {
+						isMoving = true;
+					}
+				} else {
+					if ( inputHandler.leftPressed( ) || inputHandler.rightPressed( ) ) {
+						isMoving = true;
+					}
+				}
+				if ( !isMoving ) {
+					topPlayer = true;
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	/**
 	 * joints the top players feet to the bottom players head which is the
 	 * position of the players are in before they attempt double jumping
 	 * 
@@ -1036,7 +1091,7 @@ public class Player extends Entity {
 										- ( sprite.getHeight( ) )
 										* Util.PIXEL_TO_BOX ) );
 				revoluteJointDef.enableMotor = false;
-				playerToPlayer = ( RevoluteJoint ) world
+				playerJoint = ( RevoluteJoint ) world
 						.createJoint( revoluteJointDef );
 				playerState = PlayerState.HeadStand;
 			} else {
@@ -1102,10 +1157,10 @@ public class Player extends Entity {
 	 */
 	private void removePlayerToPlayer( ) {
 		if ( topPlayer ) {
-			if ( playerToPlayer != null ) {
-				world.destroyJoint( playerToPlayer );
+			if ( playerJoint != null ) {
+				world.destroyJoint( playerJoint );
 			}
-			playerToPlayer = null;
+			playerJoint = null;
 			topPlayer = false;
 		}
 	}
@@ -1114,8 +1169,10 @@ public class Player extends Entity {
 	 * removes the player to screw joint
 	 */
 	private void removePlayerToScrew( ) {
-		world.destroyJoint( playerToScrew );
-		playerToScrew = null;
+		if ( playerJoint != null ) {
+			world.destroyJoint( playerJoint );
+			playerJoint = null;
+		}
 		for ( Fixture f : body.getFixtureList( ) ) {
 			if ( f != rightSensor && f != leftSensor && f != topSensor ) {
 				f.setSensor( false );
@@ -1500,7 +1557,6 @@ public class Player extends Entity {
 	 * @param value
 	 *            boolean
 	 */
-
 	public void setSteamCollide( boolean value ) {
 		steamCollide = value;
 	}

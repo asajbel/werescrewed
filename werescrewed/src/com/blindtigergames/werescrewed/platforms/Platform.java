@@ -7,6 +7,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.Filter;
 import com.badlogic.gdx.physics.box2d.Fixture;
+import com.badlogic.gdx.physics.box2d.JointEdge;
 import com.badlogic.gdx.physics.box2d.World;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityDef;
@@ -234,6 +235,16 @@ public class Platform extends Entity {
 		}
 	}
 
+	/**
+	 * removes the bodies and joints
+	 */
+	public void remove ( ) {
+        for ( JointEdge j: body.getJointList( ) ) {
+        	world.destroyJoint( j.joint );
+        }
+        world.destroyBody( body );		
+	}
+	
 	/**
 	 * Swap from kinematic to dynamic.
 	 */

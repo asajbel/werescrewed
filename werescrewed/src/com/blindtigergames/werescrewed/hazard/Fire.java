@@ -6,8 +6,8 @@ import com.badlogic.gdx.physics.box2d.World;
 
 public class Fire extends Hazard {
 
-	public Fire( String name, Vector2 pos, World world, boolean solid,
-			float pixelWidth, float pixelHeight, boolean isActive ) {
+	public Fire( String name, Vector2 pos, World world,
+			boolean isActive ) {
 		super( name, pos, null, world, isActive );
 		entityType = entityType.HAZARD;
 		

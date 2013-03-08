@@ -21,8 +21,13 @@
 /common/parallax_layer2_1.png
 /common/spikes.png
 /common/tileset/TilesetTest.png
+/common/blind_tiger_logo_720.png
 /particles/particle.png
+/common/robot/alphabot_tile_interior.png
 
 
 ##Fonts
-##/debug/debug_font.fnt
+/debug/debug_font.fnt
+/common/ornatique-26.fnt
+/common/ornatique.fnt
+/common/ArmenianCircus.fnt

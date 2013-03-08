@@ -160,7 +160,7 @@ public class ScrewBuilder extends GenericEntityBuilder< ScrewBuilder > {
 	}
 	public Screw buildCosmeticScrew(){
 		Screw out = null;
-		if (canBuild() && entity != null && skeleton != null){
+		if (canBuild() && entity != null){
 			out = new Screw(name, pos, entity, world);
 			if (skeleton != null){
 				skeleton.addScrew(out);
@@ -182,9 +182,10 @@ public class ScrewBuilder extends GenericEntityBuilder< ScrewBuilder > {
 	
 	public StructureScrew buildStructureScrew(){
 		StructureScrew out = null;
-		if (canBuild() && entity != null && skeleton != null){
-			out = new StructureScrew(name, pos, max, entity, skeleton, world);
+		if (canBuild() && entity != null){
+			out = new StructureScrew(name, pos, max, entity, world);
 			if (skeleton != null){
+				out.addStructureJoint( skeleton );
 				skeleton.addScrew(out);
 				skeleton.addScrewForDraw( out );
 			}
@@ -206,9 +207,10 @@ public class ScrewBuilder extends GenericEntityBuilder< ScrewBuilder > {
 	
 	public BossScrew buildBossScrew(){
 		BossScrew out = null;
-		if (canBuild() && entity != null && skeleton != null){
-			out = new BossScrew(name, pos, max, entity, skeleton, world);
+		if (canBuild() && entity != null){
+			out = new BossScrew(name, pos, max, entity, world);
 			if (skeleton != null){
+				out.addStructureJoint( skeleton );
 				skeleton.addScrew(out);
 				skeleton.addScrewForDraw( out );
 			}

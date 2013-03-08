@@ -10,6 +10,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.PolygonSprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
@@ -17,10 +18,15 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.joints.PrismaticJoint;
 import com.badlogic.gdx.physics.box2d.joints.PrismaticJointDef;
 import com.badlogic.gdx.physics.box2d.joints.PulleyJointDef;
+import com.badlogic.gdx.utils.Array;
+import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.camera.Camera;
+import com.blindtigergames.werescrewed.checkpoints.CheckPoint;
+import com.blindtigergames.werescrewed.checkpoints.ProgressManager;
 import com.blindtigergames.werescrewed.collisionManager.MyContactListener;
 import com.blindtigergames.werescrewed.debug.SBox2DDebugRenderer;
 import com.blindtigergames.werescrewed.entity.Entity;
+import com.blindtigergames.werescrewed.entity.PolySprite;
 import com.blindtigergames.werescrewed.entity.RobotState;
 import com.blindtigergames.werescrewed.entity.action.EntityActivateMoverAction;
 import com.blindtigergames.werescrewed.entity.action.EntityDeactivateMoverAction;
@@ -68,6 +74,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 	private World world;
 	private MyContactListener contactListener;
 	private SBox2DDebugRenderer debugRenderer;
+	private ProgressManager progressManager;
 	private Player player1, player2;
 	@SuppressWarnings( "unused" )
 	private TiledPlatform tiledPlat, ground, movingTP, singTile, rectile,
@@ -86,6 +93,8 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 	private EventTrigger et;
 	private TiledPlatform specialPlat;
 	private Spikes spikes;
+	
+	//PolySprite polySprite;
 
 	// ArrayList< TiledPlatform > tp2 = new ArrayList< TiledPlatform >( );
 
@@ -184,6 +193,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		player2 = new PlayerBuilder( ).name( "player2" ).world( world )
 				.position( 1.5f, 110.5f ).buildPlayer( );
 
+		initCheckPoints( );
 		// Add screws
 
 		PlatformBuilder pb = new PlatformBuilder( world );
@@ -213,7 +223,27 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 
 		Gdx.app.setLogLevel( Application.LOG_DEBUG );
 		
+		
+		
+		buildPolySprite( );
+		
 	}
+	
+	
+	void buildPolySprite(){
+		Array< Vector2 > verts = new Array< Vector2 >();
+		verts.add( new Vector2(0,0) );
+		verts.add( new Vector2(1,0) );
+		verts.add( new Vector2(0,1) );
+		verts.add( new Vector2(-1,.25f) );
+		
+		
+		PolySprite polySprite = new PolySprite(WereScrewedGame.manager.get( 
+				WereScrewedGame.dirHandle.path( ) +"/common/robot/alphabot_tile_interior.png",
+				Texture.class ),
+				verts);
+	}
+	
 
 	private void buildSubSkeleton( ) {
 		Skeleton dynSkeleton = new Skeleton( "dynamicSkeleton", new Vector2( 0,
@@ -319,7 +349,8 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		BossScrew bossBolt = new BossScrew( "", new Vector2(
 				tiledPlat.body.getPosition( ).x * Util.BOX_TO_PIXEL + ( 0 ),
 				tiledPlat.body.getPosition( ).y * Util.BOX_TO_PIXEL ), 50,
-				tiledPlat, skeleton, world );
+				tiledPlat, world );
+		bossBolt.addStructureJoint( skeleton );
 		tiledPlat.addScrew( bossBolt );
 		tiledPlat.addScrew( leftPlatScrew );
 		// tiledPlat.addScrew( rightPlatScrew );
@@ -560,6 +591,16 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 				singTile2, world ) );
 	}
 	
+	private void initCheckPoints( ) {
+		progressManager = new ProgressManager( player1, player2, world );
+		progressManager
+				.addCheckPoint( new CheckPoint( "check_01", new Vector2( 0f,
+						64f ), skeleton, world, progressManager,
+						"levelStage_0_0" ) );
+		progressManager.addCheckPoint( new CheckPoint( "check_01", new Vector2(
+				512, 64 ), skeleton, world, progressManager,
+				"levelStage_0_1" ) );
+	}
 	
 	public void initEventTrigger(){
 		specialPlat = platBuilder.position( -1000, 300).name( "specialPlat" )
@@ -635,10 +676,14 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		if ( Gdx.input.isKeyPressed( Input.Keys.V ) ) {
 			oldRootSkeleton.rotateBy( 0.01f );
 		}
+		
+		//polySprite.draw( batch );
+		
 		player1.update( deltaTime );
 		player2.update( deltaTime );
 		// oldRootSkeleton.update( deltaTime );
 		rootSkeleton.update( deltaTime );
+		progressManager.update( deltaTime );
 		testRope.update( deltaTime );
 		spikes.update(  deltaTime );
 		batch.setProjectionMatrix( cam.combined( ) );
@@ -646,6 +691,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 
 		// tp2.draw( batch );
 		testSteam.draw( batch, deltaTime );
+		progressManager.draw( batch );
 		rootSkeleton.draw( batch );
 		testRope.draw( batch );
 		spikes.draw( batch );

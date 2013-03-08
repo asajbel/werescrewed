@@ -4,17 +4,22 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.gui.Button;
 import com.blindtigergames.werescrewed.gui.Button.ButtonHandler;
 import com.blindtigergames.werescrewed.gui.Label;
 
 class MainMenuScreen implements com.badlogic.gdx.Screen {
+	// extends Screen
 
 	private SpriteBatch batch = null;
+	private Texture logo = null;
 	private OrthographicCamera camera = null;
 	private BitmapFont font = null;
+	BitmapFont fancyFont;
 	private Label headingLabel = null;
 	private Button exitButton = null;
 	private int lineHeight = 0;
@@ -26,6 +31,9 @@ class MainMenuScreen implements com.badlogic.gdx.Screen {
 	public MainMenuScreen( ) {
 		batch = new SpriteBatch( );
 		font = new BitmapFont( );
+		fancyFont = WereScrewedGame.manager.getFont( "ornitque" );
+		logo =  WereScrewedGame.manager.get( WereScrewedGame.dirHandle
+				 + "/common/blind_tiger_logo_720.png", Texture.class );
 		lineHeight = Math.round( 2.5f * font.getCapHeight( ) );
 		headingLabel = new Label( "We're Screwed!!", font );
 		
@@ -34,7 +42,7 @@ class MainMenuScreen implements com.badlogic.gdx.Screen {
 		levelSelectButton = new Button( "Level Select", font,
 				new ScreenSwitchHandler(ScreenType.LEVEL_SELECT));
 		optionsButton = new Button("Options", font,
-				new ScreenSwitchHandler( ScreenType.WIN));
+				new ScreenSwitchHandler( ScreenType.OPTIONS));
 		exitButton = new Button( "Exit", font, new ButtonHandler( ) {
 			@Override
 			public void onClick( ) {
@@ -45,9 +53,11 @@ class MainMenuScreen implements com.badlogic.gdx.Screen {
 
 	@Override
 	public void render( float delta ) {
+		//super.render(delta);
 		Gdx.gl.glClearColor( 0.5f, 0.5f, 0.5f, 1f );
 		Gdx.gl.glClear( GL10.GL_COLOR_BUFFER_BIT );
 		batch.begin( );
+		batch.draw(logo, 0, 0);
 		headingLabel.draw( batch );
 		storyButton.draw( batch, camera );
 		levelSelectButton.draw( batch, camera );

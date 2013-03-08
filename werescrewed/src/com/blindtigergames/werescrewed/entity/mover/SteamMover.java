@@ -27,11 +27,6 @@ public class SteamMover implements IMover {
 	}
 
 	@Override
-	public void move( float deltaTime, Body body, SteeringOutput steering ) {
-		move( deltaTime, body );
-	}
-
-	@Override
 	public void runPuzzleMovement( PuzzleScrew screw, float screwVal, Platform p ) {
 		// TODO Auto-generated method stub
 
