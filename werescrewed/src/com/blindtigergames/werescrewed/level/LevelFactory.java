@@ -406,9 +406,9 @@ public class LevelFactory {
 			isDynamic = true;
 		}
 		boolean isOneSided = false;
-//		if(item.props.get( "oneSide" ).equals( "true" )){
-//			isOneSided = true;
-//		}
+		if(item.props.get( "onesided" ).equals( "true" )){
+			isOneSided = true;
+		}
 
 		TiledPlatform out = null;
 
