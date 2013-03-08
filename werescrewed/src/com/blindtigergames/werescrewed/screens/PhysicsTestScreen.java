@@ -323,7 +323,8 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		BossScrew bossBolt = new BossScrew( "", new Vector2(
 				tiledPlat.body.getPosition( ).x * Util.BOX_TO_PIXEL + ( 0 ),
 				tiledPlat.body.getPosition( ).y * Util.BOX_TO_PIXEL ), 50,
-				tiledPlat, skeleton, world );
+				tiledPlat, world );
+		bossBolt.addStructureJoint( skeleton );
 		tiledPlat.addScrew( bossBolt );
 		tiledPlat.addScrew( leftPlatScrew );
 		// tiledPlat.addScrew( rightPlatScrew );

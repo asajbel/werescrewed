@@ -8,6 +8,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.JointEdge;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.blindtigergames.werescrewed.joint.RevoluteJointBuilder;
@@ -360,6 +361,30 @@ public class Skeleton extends Platform {
         for ( Screw s : screwMap.values( ) ) {
     		s.update( deltaTime );
         }
+    }
+    
+	/**
+	 * removes the bodies and joints
+	 * of all the skeletons children
+	 */
+    @Override
+    public void remove ( ) {
+        for ( Skeleton skeleton : childSkeletonMap.values( ) ) {
+            skeleton.remove( );
+        }
+        for (  Platform p : dynamicPlatformMap.values( ) ) {
+        	p.remove( );
+        }
+        for (  Platform p : kinematicPlatformMap.values( ) ) {
+        	p.remove( );
+        }
+        for ( Screw screw : screwMap.values( ) ){
+        	screw.remove( );
+        }
+        for ( JointEdge j: body.getJointList( ) ) {
+        	world.destroyJoint( j.joint );
+        }
+        world.destroyBody( body );
     }
     
     @Override
