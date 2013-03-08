@@ -1028,8 +1028,10 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 					Metrics.printMetrics( );
 				}
 				Gdx.app.exit( );
+				// if we want want the game to go back to the main menu, comment the above line and uncomment the 2 lines below -Vic
+				// ScreenManager.getInstance( ).show( ScreenType.MAIN_MENU );
+				// ScreenManager.getInstance( ).dispose( ScreenType.MAIN_MENU );
 			}
-			// ScreenManager.getInstance( ).show( ScreenType.MAIN_MENU );
 		}
 
 		world.step( 1 / 60f, 6, 6 );

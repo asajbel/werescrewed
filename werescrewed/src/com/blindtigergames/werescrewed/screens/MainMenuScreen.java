@@ -12,8 +12,8 @@ import com.blindtigergames.werescrewed.gui.Button;
 import com.blindtigergames.werescrewed.gui.Button.ButtonHandler;
 import com.blindtigergames.werescrewed.gui.Label;
 
-class MainMenuScreen extends Screen {
-	//implements com.badlogic.gdx.Screen 
+class MainMenuScreen implements com.badlogic.gdx.Screen {
+	// extends Screen
 
 	private SpriteBatch batch = null;
 	private Texture logo = null;
@@ -53,6 +53,7 @@ class MainMenuScreen extends Screen {
 
 	@Override
 	public void render( float delta ) {
+		//super.render(delta);
 		Gdx.gl.glClearColor( 0.5f, 0.5f, 0.5f, 1f );
 		Gdx.gl.glClear( GL10.GL_COLOR_BUFFER_BIT );
 		batch.begin( );

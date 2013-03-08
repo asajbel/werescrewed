@@ -5,8 +5,10 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Version;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.gui.Button;
 import com.blindtigergames.werescrewed.gui.Label;
 import com.blindtigergames.werescrewed.screens.ScreenSwitchHandler;
@@ -14,6 +16,7 @@ import com.blindtigergames.werescrewed.screens.ScreenSwitchHandler;
 class PauseScreen implements com.badlogic.gdx.Screen {
 
 	private SpriteBatch batch = null;
+	private Texture logo = null;
 	private OrthographicCamera camera = null;
 	private BitmapFont font = null;
 	private Label screenLabel = null;
@@ -27,6 +30,8 @@ class PauseScreen implements com.badlogic.gdx.Screen {
 	public PauseScreen( ) {
 		batch = new SpriteBatch( );
 		font = new BitmapFont( );
+		logo =  WereScrewedGame.manager.get( WereScrewedGame.dirHandle
+				 + "/common/blind_tiger_logo_720.png", Texture.class );
 		lineHeight = Math.round( 2.5f * font.getCapHeight( ) );
 		screenLabel = new Label("Pause Screen", font);
 		mainMenuButton = new Button("Main Menu",font, 
@@ -44,6 +49,7 @@ class PauseScreen implements com.badlogic.gdx.Screen {
 		//	ScreenManager.getInstance( ).show( ScreenType.PHYSICS );
 		//}
 		batch.begin( );
+		batch.draw(logo, 0, 0);
 		screenLabel.draw( batch );
 		mainMenuButton.draw( batch, camera );
 		backButton.draw( batch, camera );

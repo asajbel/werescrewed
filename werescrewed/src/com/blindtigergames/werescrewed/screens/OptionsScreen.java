@@ -3,8 +3,10 @@ package com.blindtigergames.werescrewed.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.gui.Button;
 import com.blindtigergames.werescrewed.gui.Label;
 import com.blindtigergames.werescrewed.screens.ScreenSwitchHandler;
@@ -13,6 +15,7 @@ class OptionsScreen implements com.badlogic.gdx.Screen{
 
 	private SpriteBatch batch = null;
 	private BitmapFont font = null;
+	private Texture logo = null;
 	private int lineHeight = 0;
 	private OrthographicCamera camera = null;
 	private Label screenLabel = null;
@@ -33,6 +36,8 @@ class OptionsScreen implements com.badlogic.gdx.Screen{
 	public OptionsScreen(){
 		batch = new SpriteBatch( );
 		font = new BitmapFont( );
+		logo =  WereScrewedGame.manager.get( WereScrewedGame.dirHandle
+				 + "/common/blind_tiger_logo_720.png", Texture.class );
 		lineHeight = Math.round( 2.5f * font.getCapHeight( ) );
 		//the following are placeholder displays. Add actual option buttons here later
 		screenLabel = new Label("OPTIONS", font);
@@ -71,6 +76,7 @@ class OptionsScreen implements com.badlogic.gdx.Screen{
 		Gdx.gl.glClear( GL10.GL_COLOR_BUFFER_BIT );
 		// TODO Auto-generated method stub
 		batch.begin( );
+		batch.draw(logo, 0, 0);
 		screenLabel.draw( batch );
 		controls.draw( batch );
 		music.draw( batch );
