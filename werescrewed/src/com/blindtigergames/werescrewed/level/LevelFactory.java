@@ -354,8 +354,8 @@ public class LevelFactory {
 			//attach skeleton to skeleton
 			Skeleton skeleton = new Skeleton( item.name, item.pos, null, level.world );
 			skeletons.put( item.name, skeleton );
-			if(item.props.containsKey( "AttachToSkeleton" )){
-				String parentSkeleton = item.props.get( "AttachToSkeleton" );
+			if(item.props.containsKey( "attachtoskeleton" )){
+				String parentSkeleton = item.props.get( "attachtoskeleton" );
 				Skeleton parent = skeletons.get( parentSkeleton );
 				
 				parent.addSkeleton( skeleton );
@@ -370,14 +370,15 @@ public class LevelFactory {
 	private void constructPlayer(Item item){
 		if(item.name.equals("playerOne")){
 			
+			//ADD X=200 TO PLAYER 1 AND X=100 TO PLAYER 2 SO THEY FALL ON THE PLATFORM
 			level.player1 = new PlayerBuilder( ).name( "player1" ).world( level.world )
-					.position( item.pos ).buildPlayer( );
-			System.out.println( "player pos: " + item.pos + ", body pos " + level.player1.getPositionPixel( ) );
+					.position( item.pos.add( new Vector2(0, 0f) ) ).buildPlayer( );
+			Gdx.app.log( "player pos: " + item.pos, " body pos " + level.player1.getPositionPixel( ) );
 		} else if(item.name.equals("playerTwo") ){
 			
 			level.player2 = new PlayerBuilder( ).name( "player2" ).world( level.world )
-					.position( item.pos ).buildPlayer( );
-			System.out.println( "player pos: " + item.pos + ", body pos " + level.player2.getPositionPixel( ) );
+					.position( item.pos.add( new Vector2(0, 0f) ) ).buildPlayer( );
+			Gdx.app.log( "player pos: " + item.pos , " body pos " + level.player2.getPositionPixel( ) );
 		}
 		
 
@@ -412,26 +413,26 @@ public class LevelFactory {
 
 		TiledPlatform out = null;
 
-		System.out.println("TTHIS IS THE POSITION: " + item.pos);
+		Gdx.app.log("LevelFactory, platform position ", "" + item.pos);
 		out = new PlatformBuilder(level.world)
 		.name( item.name )
 		//.type( item.getDefinition() )
+		.tileSet( "autumn" )
 		.position( new Vector2(xPos, yPos) )
 		.dimensions( new Vector2(tileWidth, tileHeight) )
-		.texture( null )
 		.solid( true )
 		.oneSided( isOneSided )
 		.dynamic( isDynamic )
 		.buildTilePlatform( );
 
-		System.out.println("BODY PIXEL POS " + out.getPositionPixel( ));
+		Gdx.app.log("LevelFactory, body position ", "" + out.getPositionPixel( ));
 		Skeleton parent = loadSkeleton(item.skeleton);
 		
 		if (isDynamic){
-			Gdx.app.log("LevelFactory", "Tiled Dynamic platform loaded:"+out.name);
+			Gdx.app.log("LevelFactory", "Tiled Dynamic platform loaded: "+out.name);
 			parent.addDynamicPlatform( out );
 		} else {
-			Gdx.app.log("LevelFactory", "Tiled Kinematic platform loaded:"+out.name);
+			Gdx.app.log("LevelFactory", "Tiled Kinematic platform loaded: "+out.name);
 			
 			parent.addKinematicPlatform( out );
 		}
