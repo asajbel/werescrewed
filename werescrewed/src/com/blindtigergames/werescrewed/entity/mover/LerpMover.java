@@ -1,5 +1,6 @@
 package com.blindtigergames.werescrewed.entity.mover;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.blindtigergames.werescrewed.entity.RobotState;
@@ -158,7 +159,7 @@ public class LerpMover implements IMover {
 				p.setLocalPos( newPos, p.getLocalPos( ).y );
 			} else {
 				body.setTransform( beginningPoint.x * Util.PIXEL_TO_BOX,
-						body.getPosition( ).y, 0.0f );
+						body.getPosition( ).y, body.getAngle( ) );
 			}
 		} else {
 			if ( body.getUserData( ) instanceof Platform ) {

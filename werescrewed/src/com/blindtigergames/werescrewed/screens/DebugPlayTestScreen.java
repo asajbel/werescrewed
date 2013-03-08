@@ -112,9 +112,9 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 
 		// Initialize players
 		player1 = new PlayerBuilder( ).name( "player1" ).world( world )
-				.position( 1f * TILE, 4 * TILE ).buildPlayer( );
+				.position( 110f * TILE, 49 * TILE ).buildPlayer( );
 		player2 = new PlayerBuilder( ).name( "player2" ).world( world )
-				.position( 1f * TILE, 4 * TILE ).buildPlayer( );
+				.position( 110f * TILE, 49 * TILE ).buildPlayer( );
 
 		// END: 175f * TILE, 96f * TILE
 		// START :: 1f * TILE, 1f * TILE
@@ -297,7 +297,7 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		float y = 1.5f;
 		float width = 7f;
 		int i = 0;
-		while ( width > 2 ) {
+		while ( width > 1 ) {
 			step = platBuilder.position( x * TILE, y * TILE )
 					.name( "step" + ( i + 1 ) ).dimensions( width, 1 )
 					.texture( testTexture ).kinematic( ).oneSided( true )
@@ -533,6 +533,7 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 
 	private void floor3( ) {
 		skel3 = new Skeleton( "skel3", new Vector2( 0, 0 ), null, world );
+		// create the sub skeleton that rotates
 		Skeleton rotatingRoom = new Skeleton( "rotateSkel", new Vector2(
 				120 * TILE, 51 * TILE ), testTexture, world );
 		RotateTweenMover rtm = new RotateTweenMover( rotatingRoom, 10f,
@@ -541,6 +542,7 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		rotatingRoom.setMoverAtCurrentState( rtm );
 		rotatingRoom.setActive( true );
 		skel3.addSkeleton( rotatingRoom );
+
 		// puzzle that controls the rotations of the room
 		PuzzleScrew pscrew = new PuzzleScrew( "rotateRoom", new Vector2(
 				120 * TILE, 51 * TILE ), 50, rotatingRoom, world, 0, false );
@@ -556,33 +558,37 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 				Util.CATEGORY_EVERYTHING );
 		skel3.addKinematicPlatform( ground );
 
-		plat = platBuilder.position( 115f * TILE, 50 * TILE ).name( "plat9" )
-				.dimensions( 9, 1 ).texture( testTexture ).dynamic( )
+		// the left wall of the room
+		plat = platBuilder.position( 115f * TILE, 51 * TILE ).name( "plat9" )
+				.dimensions( 1, 9 ).texture( testTexture ).dynamic( )
 				.oneSided( false ).restitution( 0 ).buildTilePlatform( );
 		plat.setCategoryMask( Util.DYNAMIC_OBJECTS, Util.CATEGORY_EVERYTHING );
 		rotatingRoom.addDynamicPlatform( plat );
 
 		StructureScrew s1 = new ScrewBuilder( )
 				.position(
-						plat.getPositionPixel( ).sub(
-								plat.getPixelWidth( ) / 2, 0 ) ).entity( plat )
+						plat.getPositionPixel( ).sub( 0,
+								plat.getPixelHeight( ) / 2 ) ).entity( plat )
 				.skeleton( rotatingRoom ).world( world ).buildStructureScrew( );
 		s1.addStructureJoint( rotatingRoom );
-		plat.addScrew( s1 );
+		//plat.addScrew( s1 );
+		rotatingRoom.addScrewForDraw( s1 );
 
 		StructureScrew s2 = new ScrewBuilder( )
 				.position(
-						plat.getPositionPixel( ).add(
-								plat.getPixelWidth( ) / 2, 0 ) ).entity( plat )
+						plat.getPositionPixel( ).add( 0,
+								plat.getPixelHeight( ) / 2 ) ).entity( plat )
 				.world( world ).buildStructureScrew( );
 		s2.addStructureJoint( rotatingRoom );
-		plat.addScrew( s2 );
+		//plat.addScrew( s2 );
+		rotatingRoom.addScrewForDraw( s2 );
 
-		plat = platBuilder.position( 125f * TILE, 49 * TILE ).name( "plat9" )
+		// the right wall of the room
+		plat = platBuilder.position( 128f * TILE, 51 * TILE ).name( "plat9" )
 				.dimensions( 1, 9 ).texture( testTexture ).dynamic( )
 				.oneSided( false ).restitution( 0 ).buildTilePlatform( );
 		plat.setCategoryMask( Util.DYNAMIC_OBJECTS, Util.CATEGORY_EVERYTHING );
-		skel3.addDynamicPlatform( plat );
+		rotatingRoom.addDynamicPlatform( plat );
 
 		StructureScrew s3 = new ScrewBuilder( )
 				.position(
@@ -590,7 +596,8 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 								plat.getPixelHeight( ) / 2 ) ).entity( plat )
 				.world( world ).buildStructureScrew( );
 		s3.addStructureJoint( rotatingRoom );
-		plat.addScrew( s3 );
+		//plat.addScrew( s3 );
+		rotatingRoom.addScrewForDraw( s3 );
 
 		StructureScrew s4 = new ScrewBuilder( )
 				.position(
@@ -598,7 +605,28 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 								plat.getPixelHeight( ) / 2 ) ).entity( plat )
 				.world( world ).buildStructureScrew( );
 		s4.addStructureJoint( rotatingRoom );
-		plat.addScrew( s4 );
+		//plat.addScrew( s4 );
+		rotatingRoom.addScrewForDraw( s4 );
+
+		// the top wall of the room
+		plat = platBuilder.position( 119f * TILE, 56 * TILE ).name( "plat9" )
+				.dimensions( 9, 1 ).texture( testTexture ).dynamic( )
+				.oneSided( false ).restitution( 0 ).buildTilePlatform( );
+		plat.setCategoryMask( Util.DYNAMIC_OBJECTS, Util.CATEGORY_EVERYTHING );
+		plat.body.setFixedRotation( false );
+		rotatingRoom.addDynamicPlatform( plat );
+		s2.addStructureJoint( plat );
+		s4.addStructureJoint( plat );
+
+		// the bottom wall of the room
+		plat = platBuilder.position( 119f * TILE, 46 * TILE ).name( "plat9" )
+				.dimensions( 9, 1 ).texture( testTexture ).dynamic( )
+				.oneSided( false ).restitution( 0 ).buildTilePlatform( );
+		plat.setCategoryMask( Util.DYNAMIC_OBJECTS, Util.CATEGORY_EVERYTHING );
+		plat.body.setFixedRotation( false );
+		rotatingRoom.addDynamicPlatform( plat );
+		s1.addStructureJoint( plat );
+		s3.addStructureJoint( plat );
 
 		ground = platBuilder.position( 160 * TILE, 46f * TILE )
 				.name( "ground4" ).dimensions( 50, 1 ).texture( testTexture )
