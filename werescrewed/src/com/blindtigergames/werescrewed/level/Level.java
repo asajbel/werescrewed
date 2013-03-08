@@ -69,7 +69,7 @@ public class Level {
 
 
 		rootSkeleton = new RootSkeleton("root", new Vector2(0,0), null, world);
-		root = new Skeleton("root1", new Vector2(0,0), null, world);
+		root = new RootSkeleton("root1", new Vector2(0,0), null, world);
 		rootSkeleton.addSkeleton( root );
 		Tween.registerAccessor( Platform.class, new PlatformAccessor( ) );
 		Tween.registerAccessor( Entity.class, new EntityAccessor( ) );

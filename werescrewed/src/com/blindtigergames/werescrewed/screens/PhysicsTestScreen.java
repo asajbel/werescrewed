@@ -10,6 +10,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.PolygonSprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
@@ -17,10 +18,13 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.joints.PrismaticJoint;
 import com.badlogic.gdx.physics.box2d.joints.PrismaticJointDef;
 import com.badlogic.gdx.physics.box2d.joints.PulleyJointDef;
+import com.badlogic.gdx.utils.Array;
+import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.camera.Camera;
 import com.blindtigergames.werescrewed.collisionManager.MyContactListener;
 import com.blindtigergames.werescrewed.debug.SBox2DDebugRenderer;
 import com.blindtigergames.werescrewed.entity.Entity;
+import com.blindtigergames.werescrewed.entity.PolySprite;
 import com.blindtigergames.werescrewed.entity.RobotState;
 import com.blindtigergames.werescrewed.entity.action.EntityActivateMoverAction;
 import com.blindtigergames.werescrewed.entity.action.EntityDeactivateMoverAction;
@@ -86,6 +90,8 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 	private EventTrigger et;
 	private TiledPlatform specialPlat;
 	private Spikes spikes;
+	
+	PolySprite polySprite;
 
 	// ArrayList< TiledPlatform > tp2 = new ArrayList< TiledPlatform >( );
 
@@ -213,7 +219,27 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 
 		Gdx.app.setLogLevel( Application.LOG_DEBUG );
 		
+		
+		
+		buildPolySprite( );
+		
 	}
+	
+	
+	void buildPolySprite(){
+		Array< Vector2 > verts = new Array< Vector2 >();
+		verts.add( new Vector2(0,0) );
+		verts.add( new Vector2(1,0) );
+		verts.add( new Vector2(0,1) );
+		verts.add( new Vector2(-1,.25f) );
+		
+		
+		polySprite = new PolySprite(WereScrewedGame.manager.get( 
+				WereScrewedGame.dirHandle.path( ) +"/common/robot/alphabot_tile_interior.png",
+				Texture.class ),
+				verts);
+	}
+	
 
 	private void buildSubSkeleton( ) {
 		Skeleton dynSkeleton = new Skeleton( "dynamicSkeleton", new Vector2( 0,
@@ -635,6 +661,9 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		if ( Gdx.input.isKeyPressed( Input.Keys.V ) ) {
 			oldRootSkeleton.rotateBy( 0.01f );
 		}
+		
+		polySprite.draw( batch );
+		
 		player1.update( deltaTime );
 		player2.update( deltaTime );
 		// oldRootSkeleton.update( deltaTime );

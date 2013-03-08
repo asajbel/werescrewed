@@ -74,7 +74,7 @@ public class Camera {
 
 	private void initializeVars( float viewportWidth, float viewportHeight,
 			World world ) {
-		camera = new OrthographicCamera( 1, viewportHeight / viewportWidth );
+		camera = new OrthographicCamera( 1, viewportHeight / viewportWidth );//1, viewportHeight / viewportWidth
 		this.viewportHeight = Gdx.graphics.getHeight( );
 		this.viewportWidth = Gdx.graphics.getWidth( );
 		camera.viewportWidth = this.viewportWidth;

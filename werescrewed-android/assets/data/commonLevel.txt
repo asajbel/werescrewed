@@ -23,6 +23,7 @@
 /common/tileset/TilesetTest.png
 /common/blind_tiger_logo_720.png
 /particles/particle.png
+/common/robot/alphabot_tile_interior.png
 
 
 ##Fonts
