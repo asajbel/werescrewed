@@ -16,6 +16,7 @@ import com.blindtigergames.werescrewed.collisionManager.MyContactListener;
 import com.blindtigergames.werescrewed.debug.SBox2DDebugRenderer;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityManager;
+import com.blindtigergames.werescrewed.entity.PolySprite;
 import com.blindtigergames.werescrewed.entity.RobotState;
 import com.blindtigergames.werescrewed.platforms.Platform;
 import com.blindtigergames.werescrewed.entity.builders.PlayerBuilder;
@@ -50,6 +51,7 @@ public class Level {
 	Player player1, player2;
 	RootSkeleton rootSkeleton;
 	Skeleton root;
+	PolySprite polySprite;
 	
 	public Level( ){
 		
@@ -73,6 +75,19 @@ public class Level {
 		rootSkeleton.addSkeleton( root );
 		Tween.registerAccessor( Platform.class, new PlatformAccessor( ) );
 		Tween.registerAccessor( Entity.class, new EntityAccessor( ) );
+		
+		
+		Array<Vector2> verts = new Array<Vector2>();
+		verts.add( new Vector2(-500,-500) );
+		verts.add( new Vector2(500.0f,-500.0f) );
+		verts.add( new Vector2(500.0f,500.0f) );
+		verts.add( new Vector2(-500.0f,500.0f) );
+		
+		Texture polyTex = WereScrewedGame.manager.get(
+				WereScrewedGame.dirHandle.path( ) + "/common/tileset/TilesetTest.png",
+				Texture.class );
+		
+		polySprite = new PolySprite( polyTex, verts );
 	}
 	
 	public void update( float deltaTime ){
@@ -86,12 +101,15 @@ public class Level {
 	
 	public void draw ( SpriteBatch batch, SBox2DDebugRenderer debugRenderer){
 		batch.setProjectionMatrix( camera.combined() );
+		
 		batch.begin();
 		
+		
 		rootSkeleton.draw( batch );
+		
 		player1.draw( batch );
 		player2.draw( batch );
-		
+		polySprite.draw( batch );
 		batch.end();
 		
 		debugRenderer.render( world, camera.combined( ) );

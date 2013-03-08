@@ -91,7 +91,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 	private TiledPlatform specialPlat;
 	private Spikes spikes;
 	
-	PolySprite polySprite;
+	//PolySprite polySprite;
 
 	// ArrayList< TiledPlatform > tp2 = new ArrayList< TiledPlatform >( );
 
@@ -234,7 +234,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		verts.add( new Vector2(-1,.25f) );
 		
 		
-		polySprite = new PolySprite(WereScrewedGame.manager.get( 
+		PolySprite polySprite = new PolySprite(WereScrewedGame.manager.get( 
 				WereScrewedGame.dirHandle.path( ) +"/common/robot/alphabot_tile_interior.png",
 				Texture.class ),
 				verts);
@@ -662,7 +662,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 			oldRootSkeleton.rotateBy( 0.01f );
 		}
 		
-		polySprite.draw( batch );
+		//polySprite.draw( batch );
 		
 		player1.update( deltaTime );
 		player2.update( deltaTime );
