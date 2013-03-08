@@ -3,31 +3,27 @@
  */
 package com.blindtigergames.werescrewed.entity;
 
-import javax.vecmath.Vector4f;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Mesh;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.VertexAttribute;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.NumberUtils;
 import com.blindtigergames.werescrewed.WereScrewedGame;
-import com.sun.java.swing.plaf.windows.resources.windows;
 
 /**
- * COnstruct a sprite that fills a texture inside a CONVEX polygon
- * Since this doesn't support origin, You'll want to position your
- * origin point at (0,0) and all other points relative to that
- * @author Stew / a little bit Kevin :D
+ * A sprite that fills a texture inside a CONVEX polygon.
+ * Since this doesn't support origin, you'll want to position your
+ * origin point at (0,0) and all other points relative to that.
+ * This should behave just like a lib gdx sprite.
+ * 
+ * @author Stew & a little bit Kevin :D
  * 
  */
 public class PolySprite extends Sprite {
@@ -47,13 +43,13 @@ public class PolySprite extends Sprite {
 
 
 	/**
-	 * Construct a polysprite with a given texture
-	 * @param texture
-	 * @param verts an array of verts, each vector2 is x,y of a vertice
-	 * @param r
-	 * @param g
-	 * @param b
-	 * @param a
+	 * Construct a polysprite with a given texture and color
+	 * @param texture, size/shape doesn't matter, it will be repeated
+	 * @param verts an array of verts, each vector2 is x,y of a vertice in pixels
+	 * @param r red color
+	 * @param g green
+	 * @param b blue
+	 * @param a alpha
 	 */
 	public PolySprite( Texture texture, Array< Vector2 > verts, float r,
 			float g, float b, float a ) {
@@ -62,6 +58,12 @@ public class PolySprite extends Sprite {
 		constructMesh( verts, r, g, b, a );
 	}
 
+	/**
+	 * Construct a polysprite with a texture and vertices given in pixels.
+	 * The color will be white.
+	 * @param texture texture, size/shape doesn't matter, it will be repeated
+	 * @param verts an array of verts, each vector2 is x,y of a vertice in pixels
+	 */
 	public PolySprite( Texture texture, Array< Vector2 > verts ) {
 		super( texture );
 		init(verts);
@@ -130,10 +132,11 @@ public class PolySprite extends Sprite {
 			vertices[ 9 * i + 1 ] += yAmount;
 		}
 		mesh.setVertices( verts );
-		
-		//dirty = true;
 	}
 
+	/**
+	 * Set the color, form 0..1
+	 */
 	@Override
 	public void setColor (float r, float g, float b, float a) {
 		int intBits = ((int)(255 * a) << 24) | ((int)(255 * b) << 16) | ((int)(255 * g) << 8) | ((int)(255 * r));
@@ -217,8 +220,6 @@ public class PolySprite extends Sprite {
 			mesh.render( shader, GL20.GL_TRIANGLES );
 		}
 	}
-	
-	
 	
 	private void constructMesh( Array< Vector2 > verts, float r, float g,
 			float b, float a ) {
@@ -316,7 +317,4 @@ public class PolySprite extends Sprite {
 		}
 		return texCoords;
 	}
-
-	
-
 }

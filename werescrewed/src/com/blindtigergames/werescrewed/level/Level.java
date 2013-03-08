@@ -78,7 +78,7 @@ public class Level {
 		Tween.registerAccessor( Entity.class, new EntityAccessor( ) );
 
 		
-		Array<Vector2> verts = new Array<Vector2>();
+		/*Array<Vector2> verts = new Array<Vector2>();
 		verts.add( new Vector2(-500,-500) );
 		verts.add( new Vector2(500.0f,-500.0f) );
 		verts.add( new Vector2(500.0f,500.0f) );
@@ -88,7 +88,7 @@ public class Level {
 				WereScrewedGame.dirHandle.path( ) + "/common/robot/alphabot_tile_interior.png",
 				Texture.class );
 		
-		polySprite = new PolySprite( polyTex, verts );
+		polySprite = new PolySprite( polyTex, verts );*/
 	}
 	
 	public void update( float deltaTime ){
@@ -106,12 +106,12 @@ public class Level {
 		batch.setProjectionMatrix( camera.combined() );
 		
 		batch.begin();
-		
+		//polySprite.draw( batch );
 		rootSkeleton.draw( batch );
 		
 		player1.draw( batch );
 		player2.draw( batch );
-		polySprite.draw( batch );
+		
 		batch.end();
 		
 		debugRenderer.render( world, camera.combined( ) );

@@ -51,7 +51,6 @@ public class Entity implements GleedLoadable {
 	private ArrayList< IMover > moverArray;
 	private RobotState currentRobotState;
 	private EnumMap< RobotState, Integer > robotStateMap;
-	private boolean isPolySprite;
 
 	/**
 	 * Create entity by definition
@@ -81,7 +80,6 @@ public class Entity implements GleedLoadable {
 		this.body = constructBodyByType( );
 		setPixelPosition( positionPixels );
 		createAnchor( anchRadius );
-		isPolySprite = false;
 	}
 
 	/**
@@ -107,9 +105,19 @@ public class Entity implements GleedLoadable {
 			sprite.setScale( Util.PIXEL_TO_BOX );
 		}
 		this.setPixelPosition( positionPixels );
-		isPolySprite = false;
 	}
 
+	/**
+	 * Construct an entity that uses a PolySprite
+	 * @param name, oh you know.
+	 * @param positionPixels POSITION IN PIXELS
+	 * @param texture texture to fill the polysprite with
+	 * @param verts an Array<Vector2> of vertex points of the poly. 
+	 * 		Must be concave or it will look weird.
+	 * @param body - same old
+	 * @param solid same as it always was.
+	 * @author stew
+	 */
 	public Entity( String name, Vector2 positionPixels, Texture texture,
 			Array< Vector2 > verts, Body body, boolean solid ) {
 		this.construct( name, solid );
