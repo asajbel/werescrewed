@@ -571,7 +571,6 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 								plat.getPixelHeight( ) / 2 ) ).entity( plat )
 				.skeleton( rotatingRoom ).world( world ).buildStructureScrew( );
 		s1.addStructureJoint( rotatingRoom );
-		//plat.addScrew( s1 );
 		rotatingRoom.addScrewForDraw( s1 );
 
 		StructureScrew s2 = new ScrewBuilder( )
@@ -580,7 +579,6 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 								plat.getPixelHeight( ) / 2 ) ).entity( plat )
 				.world( world ).buildStructureScrew( );
 		s2.addStructureJoint( rotatingRoom );
-		//plat.addScrew( s2 );
 		rotatingRoom.addScrewForDraw( s2 );
 
 		// the right wall of the room
@@ -596,7 +594,6 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 								plat.getPixelHeight( ) / 2 ) ).entity( plat )
 				.world( world ).buildStructureScrew( );
 		s3.addStructureJoint( rotatingRoom );
-		//plat.addScrew( s3 );
 		rotatingRoom.addScrewForDraw( s3 );
 
 		StructureScrew s4 = new ScrewBuilder( )
@@ -605,7 +602,6 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 								plat.getPixelHeight( ) / 2 ) ).entity( plat )
 				.world( world ).buildStructureScrew( );
 		s4.addStructureJoint( rotatingRoom );
-		//plat.addScrew( s4 );
 		rotatingRoom.addScrewForDraw( s4 );
 
 		// the top wall of the room
