@@ -112,9 +112,9 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 
 		// Initialize players
 		player1 = new PlayerBuilder( ).name( "player1" ).world( world )
-				.position( 1 * TILE, 4 * TILE).buildPlayer( );
+				.position( 1f * TILE, 4 * TILE ).buildPlayer( );
 		player2 = new PlayerBuilder( ).name( "player2" ).world( world )
-				.position( 1 * TILE, 4 * TILE ).buildPlayer( );
+				.position( 1f * TILE, 4 * TILE ).buildPlayer( );
 
 		// END: 175f * TILE, 96f * TILE
 		// START :: 1f * TILE, 1f * TILE
@@ -334,32 +334,31 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 	}
 
 	private void buildArmSkeleton( ) {
-		//puzzle screw that controls the gate
-		PuzzleScrew pscrewtop = new PuzzleScrew( "armpuzzle", new Vector2( 1670,
-				870 ), 50, skel1, world, 0, false );
-		//block platform
+		// puzzle screw that controls the gate
+		PuzzleScrew pscrewtop = new PuzzleScrew( "armpuzzle", new Vector2(
+				1670, 870 ), 50, skel1, world, 0, false );
+		// block platform
 		plat = platBuilder.position( 1800, 800 ).name( "armstop" )
 				.dimensions( 15, 1 ).texture( testTexture ).kinematic( )
 				.oneSided( false ).restitution( 0 ).buildTilePlatform( );
 		skel1.addKinematicPlatform( plat );
-		//gate platform
+		// gate platform
 		plat = platBuilder.position( 1500, 700 ).name( "armstop" )
 				.dimensions( 1, 32 ).texture( testTexture ).kinematic( )
 				.oneSided( false ).restitution( 0 ).buildTilePlatform( );
 		pscrewtop.puzzleManager.addEntity( plat );
-		pscrewtop.puzzleManager
-				.addMover( new LerpMover( plat.getPositionPixel( ), plat
-						.getPositionPixel( ).add( 0f, 256f ),
-						LinearAxis.VERTICAL ) );
+		pscrewtop.puzzleManager.addMover( new LerpMover( plat
+				.getPositionPixel( ), plat.getPositionPixel( ).add( 0f, 256f ),
+				LinearAxis.VERTICAL ) );
 		skel1.addKinematicPlatform( plat );
 		skel1.addScrewForDraw( pscrewtop );
-		//skeleton at shoulder joint
+		// skeleton at shoulder joint
 		Skeleton upperArmSkeleton = new Skeleton( "dynamicSkeleton",
 				new Vector2( 1000, 800 ), testTexture, world );
-		//skeleton after elbow joint
+		// skeleton after elbow joint
 		Skeleton lowerArmSkeleton = new Skeleton( "dynamic2Skeleton",
 				new Vector2( 400, 800 ), testTexture, world );
-		//platforms that represent the arms
+		// platforms that represent the arms
 		TiledPlatform upperArm = platBuilder.dynamic( ).position( 850, 800 )
 				.dimensions( 9, 1 ).density( 1f ).oneSided( false )
 				.buildTilePlatform( );
@@ -368,14 +367,14 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 				.buildTilePlatform( );
 		upperArm.body.setFixedRotation( false );
 		lowerArm.body.setFixedRotation( false );
-		//mover that the arm initially has and also that the bottom
-		//puzzle screw can reset
+		// mover that the arm initially has and also that the bottom
+		// puzzle screw can reset
 		RotateTweenMover rtm1 = new RotateTweenMover( upperArmSkeleton, 10f,
 				Util.PI, 2f, true );
 		upperArmSkeleton.setMoverAtCurrentState( rtm1 );
-		//puzzle screw that controls the initial arm move
-		PuzzleScrew pscrewbottom = new PuzzleScrew( "armpuzzle", new Vector2( 1200,
-				320), 50, skel1, world, 0, false );
+		// puzzle screw that controls the initial arm move
+		PuzzleScrew pscrewbottom = new PuzzleScrew( "armpuzzle", new Vector2(
+				1200, 320 ), 50, skel1, world, 0, false );
 		pscrewbottom.puzzleManager.addEntity( upperArmSkeleton );
 		pscrewbottom.puzzleManager.addMover( rtm1 );
 		skel1.addScrewForDraw( pscrewbottom );
@@ -383,7 +382,7 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		upperArmSkeleton.body.setType( BodyType.KinematicBody );
 		lowerArmSkeleton.body.setType( BodyType.DynamicBody );
 		// joints the first dynamic skeleton to the parent skeleton
-		//puzzle screw that controls the analog arm puzzle
+		// puzzle screw that controls the analog arm puzzle
 		PuzzleScrew shoulderJoint = new PuzzleScrew( "dynamic_skeleton_joint",
 				new Vector2( 1000, 800 ), 50, upperArmSkeleton, world, 0, false );
 		shoulderJoint.addStructureJoint( skel1 );
@@ -395,8 +394,8 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		// jbBuilder.skeleton( middleArmSkeleton ).bodyB( upperArm ).motor(
 		// false ).build( );
 		// joints the first dynamic skeleton to the second dynamic skeleton
-		StrippedScrew elbowJoint = new StrippedScrew(
-				"dynamic_skeleton_joint", new Vector2( 700, 800 ), upperArm, world );
+		StrippedScrew elbowJoint = new StrippedScrew( "dynamic_skeleton_joint",
+				new Vector2( 700, 800 ), upperArm, world );
 		elbowJoint.addStructureJoint( upperArmSkeleton );
 		elbowJoint.addStructureJoint( lowerArm );
 		elbowJoint.addStructureJoint( lowerArmSkeleton );
@@ -534,15 +533,17 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 
 	private void floor3( ) {
 		skel3 = new Skeleton( "skel3", new Vector2( 0, 0 ), null, world );
-		Skeleton rotatingRoom = new Skeleton( "rotateSkel", new Vector2( 120 * TILE, 51 * TILE), testTexture, world);
+		Skeleton rotatingRoom = new Skeleton( "rotateSkel", new Vector2(
+				120 * TILE, 51 * TILE ), testTexture, world );
 		RotateTweenMover rtm = new RotateTweenMover( rotatingRoom, 10f,
 				Util.PI, 2f, true );
 		rotatingRoom.body.setType( BodyType.KinematicBody );
 		rotatingRoom.setMoverAtCurrentState( rtm );
 		rotatingRoom.setActive( true );
 		skel3.addSkeleton( rotatingRoom );
-		//puzzle that controls the rotations of the room
-		PuzzleScrew pscrew = new PuzzleScrew( "rotateRoom", new Vector2( 120 * TILE, 51 * TILE ), 50, rotatingRoom, world, 0, false);
+		// puzzle that controls the rotations of the room
+		PuzzleScrew pscrew = new PuzzleScrew( "rotateRoom", new Vector2(
+				120 * TILE, 51 * TILE ), 50, rotatingRoom, world, 0, false );
 		pscrew.puzzleManager.addEntity( rotatingRoom );
 		pscrew.puzzleManager.addMover( new PuzzleRotateTweenMover( 2f,
 				-Util.PI / 4.0f, false ) );
@@ -566,13 +567,15 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 						plat.getPositionPixel( ).sub(
 								plat.getPixelWidth( ) / 2, 0 ) ).entity( plat )
 				.skeleton( rotatingRoom ).world( world ).buildStructureScrew( );
+		s1.addStructureJoint( rotatingRoom );
 		plat.addScrew( s1 );
 
 		StructureScrew s2 = new ScrewBuilder( )
 				.position(
 						plat.getPositionPixel( ).add(
 								plat.getPixelWidth( ) / 2, 0 ) ).entity( plat )
-				.skeleton( rotatingRoom ).world( world ).buildStructureScrew( );
+				.world( world ).buildStructureScrew( );
+		s2.addStructureJoint( rotatingRoom );
 		plat.addScrew( s2 );
 
 		plat = platBuilder.position( 125f * TILE, 49 * TILE ).name( "plat9" )
@@ -585,14 +588,16 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 				.position(
 						plat.getPositionPixel( ).sub( 0,
 								plat.getPixelHeight( ) / 2 ) ).entity( plat )
-				.skeleton( rotatingRoom ).world( world ).buildStructureScrew( );
+				.world( world ).buildStructureScrew( );
+		s3.addStructureJoint( rotatingRoom );
 		plat.addScrew( s3 );
 
 		StructureScrew s4 = new ScrewBuilder( )
 				.position(
 						plat.getPositionPixel( ).add( 0,
 								plat.getPixelHeight( ) / 2 ) ).entity( plat )
-				.skeleton( rotatingRoom ).world( world ).buildStructureScrew( );
+				.world( world ).buildStructureScrew( );
+		s4.addStructureJoint( rotatingRoom );
 		plat.addScrew( s4 );
 
 		ground = platBuilder.position( 160 * TILE, 46f * TILE )
@@ -863,7 +868,8 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		bossBolt = new BossScrew( "", new Vector2( plat.body.getPosition( ).x
 				* Util.BOX_TO_PIXEL + ( plat.getMeterWidth( ) / 2 ),
 				plat.body.getPosition( ).y * Util.BOX_TO_PIXEL ), 50, plat,
-				skel9, world );
+				world );
+		bossBolt.addStructureJoint( skel9 );
 		plat.addScrew( bossBolt );
 
 		// specialPlat = platBuilder.position( 175f * TILE, 84 * TILE ).name(
