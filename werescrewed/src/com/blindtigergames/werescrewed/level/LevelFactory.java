@@ -372,13 +372,15 @@ public class LevelFactory {
 			
 			level.player1 = new PlayerBuilder( ).name( "player1" ).world( level.world )
 					.position( item.pos ).buildPlayer( );
-
+			System.out.println( "player pos: " + item.pos + ", body pos " + level.player1.getPositionPixel( ) );
 		} else if(item.name.equals("playerTwo") ){
 			
 			level.player2 = new PlayerBuilder( ).name( "player2" ).world( level.world )
 					.position( item.pos ).buildPlayer( );
-
+			System.out.println( "player pos: " + item.pos + ", body pos " + level.player2.getPositionPixel( ) );
 		}
+		
+
 	}
 	
 	private void placeCamera(Item item){
@@ -392,9 +394,13 @@ public class LevelFactory {
 	}
 	
 	private void constructTiledPlatform(Item item){
-		float width = item.element.getFloat( "Width" ) / 32f;
-		float height = item.element.getFloat( "Height" ) / 32f;
+		float width = item.element.getFloat( "Width" );
+		float height = item.element.getFloat( "Height" );
+		float tileWidth = width / 32f;
+		float tileHeight = height / 32f;
 		
+		float xPos = item.pos.x + (width/2);
+		float yPos = item.pos.y + (height/2);
 		boolean isDynamic = false;
 		if(item.props.get( "dynamic" ).equals( "true" )){
 			isDynamic = true;
@@ -410,14 +416,15 @@ public class LevelFactory {
 		out = new PlatformBuilder(level.world)
 		.name( item.name )
 		//.type( item.getDefinition() )
-		.position( item.pos )
-		.dimensions( new Vector2(width, height) )
+		.position( new Vector2(xPos, yPos) )
+		.dimensions( new Vector2(tileWidth, tileHeight) )
 		.texture( null )
 		.solid( true )
 		.oneSided( isOneSided )
 		.dynamic( isDynamic )
 		.buildTilePlatform( );
 
+		System.out.println("BODY PIXEL POS " + out.getPositionPixel( ));
 		Skeleton parent = loadSkeleton(item.skeleton);
 		
 		if (isDynamic){
