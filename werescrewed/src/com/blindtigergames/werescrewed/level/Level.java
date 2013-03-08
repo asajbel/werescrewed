@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import aurelienribon.tweenengine.Tween;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
@@ -75,7 +76,7 @@ public class Level {
 		rootSkeleton.addSkeleton( root );
 		Tween.registerAccessor( Platform.class, new PlatformAccessor( ) );
 		Tween.registerAccessor( Entity.class, new EntityAccessor( ) );
-		
+
 		
 		Array<Vector2> verts = new Array<Vector2>();
 		verts.add( new Vector2(-500,-500) );
@@ -96,6 +97,8 @@ public class Level {
 		player1.update( deltaTime );
 		player2.update( deltaTime );
 		rootSkeleton.update( deltaTime );
+		
+		
 
 	}
 	
@@ -103,7 +106,6 @@ public class Level {
 		batch.setProjectionMatrix( camera.combined() );
 		
 		batch.begin();
-		
 		
 		rootSkeleton.draw( batch );
 		

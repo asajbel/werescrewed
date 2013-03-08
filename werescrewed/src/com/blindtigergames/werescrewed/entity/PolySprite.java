@@ -13,6 +13,7 @@ import com.badlogic.gdx.graphics.VertexAttribute;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
@@ -24,6 +25,8 @@ import com.sun.java.swing.plaf.windows.resources.windows;
 
 /**
  * COnstruct a sprite that fills a texture inside a CONVEX polygon
+ * Since this doesn't support origin, You'll want to position your
+ * origin point at (0,0) and all other points relative to that
  * @author Stew / a little bit Kevin :D
  * 
  */
@@ -32,12 +35,14 @@ public class PolySprite extends Sprite {
 	protected Mesh mesh;
 	protected ShaderProgram shader;
 	protected float[ ] verts;
+	private Array< Vector2 > localVerts;
 	private int numVerts;
 	protected Rectangle bounds;
 	protected Vector2 center;
 	private float x, y;
 	private float rotation;
-	private Matrix4 modelMat; //holds position and rotation for the polygon.
+	//private Matrix4 modelMat; //holds position and rotation for the polygon.
+	//private Matrix4 rotationMat;
 	
 
 
@@ -53,22 +58,24 @@ public class PolySprite extends Sprite {
 	public PolySprite( Texture texture, Array< Vector2 > verts, float r,
 			float g, float b, float a ) {
 		super( texture );
-		init(verts.size);
+		init(verts);
 		constructMesh( verts, r, g, b, a );
 	}
 
 	public PolySprite( Texture texture, Array< Vector2 > verts ) {
 		super( texture );
-		init(verts.size);
+		init(verts);
 		constructMesh( verts, 1, 1, 1, 1 );
 	}
 	
-	private void init(int numVerts){
-		this.numVerts = numVerts;
+	private void init(Array< Vector2 > verts){
+		this.numVerts = verts.size;
+		this.localVerts = verts;
 		this.x=0;
 		this.y=0;
 		this.rotation=0;
-		modelMat= new Matrix4( );
+		//modelMat= new Matrix4( );
+		//rotationMat = new Matrix4( ).rotate( 0, 0, 1, rotation );
 	}
 	
 	@Override
@@ -96,7 +103,7 @@ public class PolySprite extends Sprite {
 	 * changed, it is slightly more efficient to translate after those operations. */
 	@Override
 	public void translateX (float xAmount) {
-		this.x += xAmount;
+		//this.x += xAmount;
 		translate( xAmount, 0 );
 	}
 
@@ -116,14 +123,15 @@ public class PolySprite extends Sprite {
 		x += xAmount;
 		y += yAmount;
 
-		/*float[] vertices = this.verts;
+		float[] vertices = this.verts;
 		
 		for ( int i = 0; i < numVerts; i++ ) {
 			vertices[ 9 * i ]     += xAmount;
 			vertices[ 9 * i + 1 ] += yAmount;
-		}*/
+		}
+		mesh.setVertices( verts );
 		
-		modelMat.idt( ).rotate( Vector3.Z, rotation ).translate( x, y, 0 );
+		//dirty = true;
 	}
 
 	@Override
@@ -151,17 +159,31 @@ public class PolySprite extends Sprite {
 		}
 	}
 	
+	/**
+	 * This could be a bug!
+	 */
 	@Override
 	public void setRotation (float degrees) {
-		this.rotation = degrees;
-		modelMat.idt( ).rotate( Vector3.Z, rotation ).translate( x, y, 0 );
+		rotate( degrees - rotation );
+		//modelMat.idt( ).rotate( Vector3.Z, rotation ).translate( x, y, 0 );
 	}
 	
 	/** Sets the sprite's rotation relative to the current rotation. */
 	@Override
 	public void rotate (float degrees) {
 		rotation += degrees;
-		modelMat.idt( ).rotate( Vector3.Z, rotation ).translate( x, y, 0 );
+		//modelMat.idt( ).rotate( Vector3.Z, rotation ).translate( x, y, 0 );
+		
+		float cos = MathUtils.cosDeg( rotation );
+		float sin = MathUtils.sinDeg( rotation );
+		
+		for ( int i = 0; i < numVerts; i++ ) {
+			float oldx = localVerts.get( i).x;
+			float oldy = localVerts.get( i).y;
+			verts[ 9 * i + 0 ] = (oldx)*cos - (oldy)*sin + this.x;
+			verts[ 9 * i + 1 ] = (oldx)*sin + (oldy)*cos + this.y;
+		}
+		mesh.setVertices( verts );
 	}
 	
 	@Override
@@ -192,10 +214,7 @@ public class PolySprite extends Sprite {
 			this.getTexture( ).setWrap( Texture.TextureWrap.Repeat,
 					Texture.TextureWrap.Repeat );
 			//camera * modelview
-			//batch.setTransformMatrix( modelMat );
 			mesh.render( shader, GL20.GL_TRIANGLES );
-			//batch.setTransformMatrix( new Matrix4() );
-			//mesh.render( shader, GL20.GL_TRIANGLE_FAN );
 		}
 	}
 	
@@ -212,7 +231,6 @@ public class PolySprite extends Sprite {
 		float maxY = Float.MIN_VALUE;
 		// 9 is 3 positions, 4 colors, and 2 texcoords
 		this.verts = new float[ numVerts * 9 ];
-		// this.uvs = new float[ verts.size * 2 ];
 
 		for ( int i = 0; i < numVerts; i++ ) {
 			float x = verts.get( i ).x;
@@ -236,9 +254,6 @@ public class PolySprite extends Sprite {
 			this.verts[ 9 * i + 4 ] = g; // g
 			this.verts[ 9 * i + 5 ] = b; // b
 			this.verts[ 9 * i + 6 ] = a; // a
-			
-			// we actually set the uvs later because we need the bounds to
-			// properly set it.
 		}
 
 		this.bounds = new Rectangle( minX, minY, maxX - minX, maxY - minY );
@@ -251,9 +266,6 @@ public class PolySprite extends Sprite {
 			this.verts[ 9 * i + 7 ] = texCoords[ 2 * i ]; // uv
 			this.verts[ 9 * i + 8 ] = texCoords[ 2 * i + 1 ]; // uw
 		}
-
-		//System.out.println( "HELLA " + verts.size + "\n\n\n" );
-
 		mesh = new Mesh( true, numVerts, ( numVerts - 2 ) * 3,
 				VertexAttribute.Position( ), VertexAttribute.ColorUnpacked( ),
 				VertexAttribute.TexCoords( 0 ) );
@@ -280,13 +292,7 @@ public class PolySprite extends Sprite {
 			indices[ i * 3 ] = ( short ) ( i + 1 );
 			indices[ i * 3 + 1 ] = ( short ) ( i + 2 );
 			indices[ i * 3 + 2 ] = 0;
-			//System.out.println( "DERP!" );
 		}
-		//System.out.print( "yo!" );
-		/*for ( int i = 0; i < indices.length; ++i ) {
-			System.out.print( indices[ i ] + ", " );
-		}
-		System.out.print( "\n" );*/
 		return indices;
 	}
 
