@@ -48,7 +48,7 @@ public class Platform extends Entity {
 	protected float localRotation; // in radians, local rot system
 	protected Vector2 localLinearVelocity; // in meters/step
 	protected float localAngularVelocity; //
-	private Vector2 originPosition; // world position that this platform spawns
+	protected Vector2 originPosition; // world position that this platform spawns
 									// at, in pixels
 
 	// ============================================
@@ -332,7 +332,7 @@ public class Platform extends Entity {
 	 * @author stew
 	 */
 	public void setPosRotFromSkeleton( float deltaTime, Skeleton skeleton ) {
-		float radiusFromSkeleton = originPosition.cpy( ).add( localPosition )
+		float radiusFromSkeleton = originPosition.cpy( ).sub( skeleton.originPosition ).add( localPosition )
 				.mul( Util.PIXEL_TO_BOX ).len( );
 		// update angle between platform and skeleton
 		Vector2 skeleOrigin = skeleton.body.getPosition( );
@@ -343,6 +343,8 @@ public class Platform extends Entity {
 		float newRotation = localRotation + skeleton.body.getAngle( );
 		Vector2 newPos = Util.PointOnCircle( radiusFromSkeleton,
 				newAngleFromSkeleton, skeleOrigin );
+		
+		
 
 		float frameRate = 1 / deltaTime;
 		body.setLinearVelocity( newPos.sub( body.getPosition( ) ).mul(
