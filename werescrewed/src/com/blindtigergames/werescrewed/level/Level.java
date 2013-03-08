@@ -85,7 +85,7 @@ public class Level {
 		verts.add( new Vector2(-500.0f,500.0f) );
 		
 		Texture polyTex = WereScrewedGame.manager.get(
-				WereScrewedGame.dirHandle.path( ) + "/common/tileset/TilesetTest.png",
+				WereScrewedGame.dirHandle.path( ) + "/common/robot/alphabot_tile_interior.png",
 				Texture.class );
 		
 		polySprite = new PolySprite( polyTex, verts );

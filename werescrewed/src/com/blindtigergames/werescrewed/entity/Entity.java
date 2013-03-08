@@ -11,11 +11,12 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.Filter;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+import com.badlogic.gdx.utils.Array;
 import com.blindtigergames.werescrewed.camera.Anchor;
 import com.blindtigergames.werescrewed.camera.AnchorList;
 import com.blindtigergames.werescrewed.entity.mover.IMover;
@@ -31,7 +32,7 @@ import com.blindtigergames.werescrewed.util.Util;
  */
 public class Entity implements GleedLoadable {
 	private static final int INITAL_CAPACITY = 3;
-	
+
 	public String name;
 	public EntityDef type;
 	public Sprite sprite;
@@ -47,10 +48,11 @@ public class Entity implements GleedLoadable {
 	protected boolean visible;
 	protected boolean maintained;
 	protected EntityType entityType;
-	private ArrayList<IMover> moverArray;
+	private ArrayList< IMover > moverArray;
 	private RobotState currentRobotState;
-	private EnumMap<RobotState, Integer> robotStateMap;
-	
+	private EnumMap< RobotState, Integer > robotStateMap;
+	private boolean isPolySprite;
+
 	/**
 	 * Create entity by definition
 	 * 
@@ -78,9 +80,10 @@ public class Entity implements GleedLoadable {
 		this.sprite = constructSprite( texture );
 		this.body = constructBodyByType( );
 		setPixelPosition( positionPixels );
-		createAnchor(anchRadius);
+		createAnchor( anchRadius );
+		isPolySprite = false;
 	}
-	
+
 	/**
 	 * Create entity by body. Debug constructor: Should be removed eventually.
 	 * 
@@ -104,7 +107,18 @@ public class Entity implements GleedLoadable {
 			sprite.setScale( Util.PIXEL_TO_BOX );
 		}
 		this.setPixelPosition( positionPixels );
-		
+		isPolySprite = false;
+	}
+
+	public Entity( String name, Vector2 positionPixels, Texture texture,
+			Array< Vector2 > verts, Body body, boolean solid ) {
+		this.construct( name, solid );
+		this.sprite = new PolySprite( texture, verts );
+		this.body = body;
+		if ( body != null ) {
+			world = body.getWorld( );
+		}
+		this.setPixelPosition( positionPixels );
 	}
 
 	/**
@@ -119,7 +133,7 @@ public class Entity implements GleedLoadable {
 		this.maintained = true;
 		this.visible = true;
 		this.active = false;
-		setUpRobotState();
+		setUpRobotState( );
 	}
 
 	/**
@@ -139,15 +153,15 @@ public class Entity implements GleedLoadable {
 		}
 	}
 
-	public void setPixelPosition(float x, float y){
-		setPosition(x * Util.PIXEL_TO_BOX, y * Util.PIXEL_TO_BOX);	
+	public void setPixelPosition( float x, float y ) {
+		setPosition( x * Util.PIXEL_TO_BOX, y * Util.PIXEL_TO_BOX );
 	}
 
-	public void setPixelPosition(Vector2 pixels){
-		if (pixels != null)
-			setPixelPosition(pixels.x, pixels.y);	
+	public void setPixelPosition( Vector2 pixels ) {
+		if ( pixels != null )
+			setPixelPosition( pixels.x, pixels.y );
 	}
-	
+
 	/**
 	 * Set position by meters!!
 	 * 
@@ -165,12 +179,12 @@ public class Entity implements GleedLoadable {
 	public Vector2 getPosition( ) {
 		return body.getPosition( ).add( bodyOffset );
 	}
-	
+
 	/**
-	 * Use this position when setting relative position of platforms
-	 * for paths targets. ie you set a platform at (x,y) in meters,
-	 * but the path takes in pixels, so do something like platform.
-	 * getPositionPixel().add(0,600)
+	 * Use this position when setting relative position of platforms for paths
+	 * targets. ie you set a platform at (x,y) in meters, but the path takes in
+	 * pixels, so do something like platform. getPositionPixel().add(0,600)
+	 * 
 	 * @return world position of origin in PIXELS
 	 */
 	public Vector2 getPositionPixel( ) {
@@ -186,33 +200,34 @@ public class Entity implements GleedLoadable {
 		if ( sprite != null && visible ) {
 			sprite.draw( batch );
 		}
-		//drawOrigin(batch);
+		// drawOrigin(batch);
 	}
 
-	public void drawOrigin(SpriteBatch batch){
+	public void drawOrigin( SpriteBatch batch ) {
 		float axisSize = 128.0f;
-		ShapeRenderer shapes = new ShapeRenderer();
+		ShapeRenderer shapes = new ShapeRenderer( );
 		shapes.setProjectionMatrix( batch.getProjectionMatrix( ) );
-		Vector2 pos = getPosition().mul( Util.BOX_TO_PIXEL );
+		Vector2 pos = getPosition( ).mul( Util.BOX_TO_PIXEL );
 		shapes.begin( ShapeType.Line );
 		shapes.setColor( 1.0f, 0.0f, 0.0f, 1.0f );
-		shapes.line(pos.x, pos.y, pos.x+axisSize, pos.y); //Red:  X-axis
+		shapes.line( pos.x, pos.y, pos.x + axisSize, pos.y ); // Red: X-axis
 		shapes.setColor( 0.0f, 0.0f, 1.0f, 1.0f );
-		shapes.line(pos.x, pos.y, pos.x, pos.y+axisSize); //Blue: Y-axis
-		if (sprite != null){
+		shapes.line( pos.x, pos.y, pos.x, pos.y + axisSize ); // Blue: Y-axis
+		if ( sprite != null ) {
 			shapes.setColor( 0.0f, 1.0f, 0.0f, 1.0f );
-			shapes.line(pos.x, pos.y, pos.x - sprite.getOriginX( ), pos.y - sprite.getOriginY( )); //Green: Sprite Origin
+			shapes.line( pos.x, pos.y, pos.x - sprite.getOriginX( ), pos.y
+					- sprite.getOriginY( ) ); // Green: Sprite Origin
 		}
-		shapes.end();
+		shapes.end( );
 	}
-	
+
 	public void update( float deltaTime ) {
 		if ( body != null && anchor != null ) {
 			updateAnchor( );
-		}		
-		//animation stuff may go here
+		}
+		// animation stuff may go here
 		Vector2 bodyPos = body.getPosition( ).mul( Util.BOX_TO_PIXEL );
-		if (sprite != null){
+		if ( sprite != null ) {
 			sprite.setPosition( bodyPos.x - offset.x, bodyPos.y - offset.y );
 			sprite.setRotation( MathUtils.radiansToDegrees * body.getAngle( ) );
 		}
@@ -227,8 +242,8 @@ public class Entity implements GleedLoadable {
 	public void updateMover( float deltaTime ) {
 		if ( active ) {
 			if ( body != null ) {
-				if ( currentMover() != null ) {
-					currentMover().move( deltaTime, body );
+				if ( currentMover( ) != null ) {
+					currentMover( ).move( deltaTime, body );
 				}
 			}
 		}
@@ -277,7 +292,7 @@ public class Entity implements GleedLoadable {
 		} else {
 			// Definitions for non-loaded sprites
 			origin = new Vector2( sprite.getWidth( ) / 2,
-					sprite.getHeight( ) / 2);
+					sprite.getHeight( ) / 2 );
 
 			// Arbitrary offset :(
 			this.offset.set( sprite.getWidth( ) / 2, sprite.getHeight( ) / 2 );
@@ -285,13 +300,11 @@ public class Entity implements GleedLoadable {
 		sprite.setOrigin( origin.x, origin.y );
 		return sprite;
 	}
-	
-	public void Move( Vector2 vector ) 
-	{
+
+	public void Move( Vector2 vector ) {
 		Vector2 pos = body.getPosition( ).add( vector.mul( Util.PIXEL_TO_BOX ) );
 		setPosition( pos );
 	}
-
 
 	/**
 	 * Builds the body associated with the entity's type.
@@ -312,85 +325,94 @@ public class Entity implements GleedLoadable {
 		return newBody;
 	}
 
-
-
 	/**
-	 * This function adds a mover to the entity,
-	 * YOU MUST SPECIFIY WHICH STATE IT IS ASSOCIATED WITH
-	 * EITHER IDLE, DOCILE, HOSTILE
+	 * This function adds a mover to the entity, YOU MUST SPECIFIY WHICH STATE
+	 * IT IS ASSOCIATED WITH EITHER IDLE, DOCILE, HOSTILE
 	 * 
-	 * This fucntions also replaces the mover associated with that
-	 * robotstate, so you cannot get that old mover back
-	 * @param mover - Imover
-	 * @param robotState - for example:  RobotState.Idle 
+	 * This fucntions also replaces the mover associated with that robotstate,
+	 * so you cannot get that old mover back
+	 * 
+	 * @param mover
+	 *            - Imover
+	 * @param robotState
+	 *            - for example: RobotState.Idle
 	 * @author Ranveer
 	 */
-	public void addMover( IMover mover, RobotState robotState) {
+	public void addMover( IMover mover, RobotState robotState ) {
 		int index = robotStateMap.get( robotState );
 		moverArray.set( index, mover );
 	}
-	
+
 	/**
 	 * Changes robotState from current to the argument
-	 * @param robotState - for example: RobotState.IDLE 
+	 * 
+	 * @param robotState
+	 *            - for example: RobotState.IDLE
 	 * @author Ranveer
 	 */
-	public void setCurrentMover(RobotState robotState){
+	public void setCurrentMover( RobotState robotState ) {
 		currentRobotState = robotState;
 	}
-	
+
 	/**
-	 * Sets the mover associated with the argument's robotstate
-	 * to null. Warning, this gets rid of old mover
-	 * @param robotState - for example: RobotState.IDLE
+	 * Sets the mover associated with the argument's robotstate to null.
+	 * Warning, this gets rid of old mover
+	 * 
+	 * @param robotState
+	 *            - for example: RobotState.IDLE
 	 * @author Ranveer
 	 */
-	public void setMoverNull(RobotState robotState) {
+	public void setMoverNull( RobotState robotState ) {
 		int index = robotStateMap.get( robotState );
 		moverArray.set( index, null );
 	}
-	
+
 	/**
-	 * Sets the current state's mover to null
-	 * Warning, this gets rid of old mover
+	 * Sets the current state's mover to null Warning, this gets rid of old
+	 * mover
+	 * 
 	 * @author Ranveer
 	 */
-	public void setMoverNullAtCurrentState() {
+	public void setMoverNullAtCurrentState( ) {
 		int index = robotStateMap.get( currentRobotState );
 		moverArray.set( index, null );
 	}
-	
+
 	/**
 	 * Replaces current state's mover with the argument
+	 * 
 	 * @param mover
 	 * @author Ranveer
 	 */
-	public void setMoverAtCurrentState(IMover mover){
+	public void setMoverAtCurrentState( IMover mover ) {
 		int index = robotStateMap.get( currentRobotState );
 		moverArray.set( index, mover );
 	}
-	
+
 	/**
-	 * gets the current RobotState of the entity
-	 * example: p.getCurrentState() == RobotState.IDLE
+	 * gets the current RobotState of the entity example: p.getCurrentState() ==
+	 * RobotState.IDLE
+	 * 
 	 * @return RobotState
 	 * @author Ranveer
 	 */
-	public RobotState getCurrentState(){
+	public RobotState getCurrentState( ) {
 		return currentRobotState;
 	}
-	
+
 	/**
 	 * gets the current mover, in the current robotstate
+	 * 
 	 * @return IMover
 	 * @author Ranveer
 	 */
-	public IMover currentMover(){
+	public IMover currentMover( ) {
 		return moverArray.get( robotStateMap.get( currentRobotState ) );
 	}
-	
+
 	/**
 	 * Determines if entity is solid, which means the player can jump off of it
+	 * 
 	 * @return boolean
 	 */
 	public boolean isSolid( ) {
@@ -398,18 +420,20 @@ public class Entity implements GleedLoadable {
 	}
 
 	/**
-	 * sets entity to either solid or not, determines whether player can jump off of it
-	 * @param solid - boolean
+	 * sets entity to either solid or not, determines whether player can jump
+	 * off of it
+	 * 
+	 * @param solid
+	 *            - boolean
 	 */
 	public void setSolid( boolean solid ) {
 		this.solid = solid;
 	}
 
 	/**
-	 * Sets the energy of the current body.
-	 * Energy is a new property for Entities that is meant
-	 * to scale impulses. It currently does nothing, but it's here
-	 * if someone wants to use it.
+	 * Sets the energy of the current body. Energy is a new property for
+	 * Entities that is meant to scale impulses. It currently does nothing, but
+	 * it's here if someone wants to use it.
 	 * 
 	 * @param energy
 	 */
@@ -431,10 +455,10 @@ public class Entity implements GleedLoadable {
 	}
 
 	/**
-	 * Determines whether an entity should be deleted
-	 * on next update or not
+	 * Determines whether an entity should be deleted on next update or not
 	 * 
-	 * @param m - boolean
+	 * @param m
+	 *            - boolean
 	 */
 	public void setMaintained( boolean m ) {
 		maintained = m;
@@ -442,6 +466,7 @@ public class Entity implements GleedLoadable {
 
 	/**
 	 * checks whether an entity is currently being maintained
+	 * 
 	 * @return boolean
 	 */
 	public boolean isMaintained( ) {
@@ -451,7 +476,8 @@ public class Entity implements GleedLoadable {
 	/**
 	 * Determines whether an entity should be drawn or not.
 	 * 
-	 * @param v - boolean
+	 * @param v
+	 *            - boolean
 	 */
 	public void setVisible( boolean v ) {
 		visible = v;
@@ -459,6 +485,7 @@ public class Entity implements GleedLoadable {
 
 	/**
 	 * returns whether an entity is visible, or on screen
+	 * 
 	 * @return boolean
 	 */
 	public boolean isVisible( ) {
@@ -468,7 +495,8 @@ public class Entity implements GleedLoadable {
 	/**
 	 * Determines whether an entity should be updated or not.
 	 * 
-	 * @param a - boolean
+	 * @param a
+	 *            - boolean
 	 */
 	public void setActive( boolean a ) {
 		active = a;
@@ -476,6 +504,7 @@ public class Entity implements GleedLoadable {
 
 	/**
 	 * checks whether if the current mover is active, or being updated or not
+	 * 
 	 * @return boolean
 	 */
 	public boolean isActive( ) {
@@ -520,7 +549,7 @@ public class Entity implements GleedLoadable {
 			}
 		}
 	}
-	
+
 	/**
 	 * This is a quick-n-dirty fix for complex body collisions. Hopefully we'll
 	 * get to a point where we don't need it. There's probably some overlap
@@ -543,7 +572,9 @@ public class Entity implements GleedLoadable {
 
 	/**
 	 * sets the Density of all fixtures associated with this entity
-	 * @param density - float
+	 * 
+	 * @param density
+	 *            - float
 	 */
 	public void setDensity( float density ) {
 		if ( body != null ) {
@@ -555,7 +586,9 @@ public class Entity implements GleedLoadable {
 
 	/**
 	 * sets the friction of all fixtures associated with this entity
-	 * @param friction - float
+	 * 
+	 * @param friction
+	 *            - float
 	 */
 	public void setFriction( float friction ) {
 		if ( body != null ) {
@@ -566,7 +599,9 @@ public class Entity implements GleedLoadable {
 
 	/**
 	 * sets the restituion of all fixtures associated with this entity
-	 * @param restitution - float
+	 * 
+	 * @param restitution
+	 *            - float
 	 */
 	public void setRestitution( float restitution ) {
 		if ( body != null ) {
@@ -577,77 +612,87 @@ public class Entity implements GleedLoadable {
 
 	/**
 	 * sets the gravity scale of this entity
-	 * @param scale - float
+	 * 
+	 * @param scale
+	 *            - float
 	 */
 	public void setGravScale( float scale ) {
 		if ( body != null ) {
 			body.setGravityScale( scale );
 		}
 	}
-	
+
 	/**
 	 * Return whether this entity's body is kinematic.
-	 * @author stew 
+	 * 
+	 * @author stew
 	 * @return false if Dynamic static or has no body otherwise true
 	 */
-	public boolean isKinematic(){
-		if ( body != null ){
-			return (body.getType( ) == BodyType.KinematicBody);
+	public boolean isKinematic( ) {
+		if ( body != null ) {
+			return ( body.getType( ) == BodyType.KinematicBody );
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Get the sprite width of this entity
+	 * 
 	 * @return Pixel float width of sprite
 	 */
-	public float getPixelWidth(){
-		if ( sprite != null ){
+	public float getPixelWidth( ) {
+		if ( sprite != null ) {
 			return sprite.getWidth( );
 		}
 		return Float.NaN;
 	}
+
 	/**
-	 * gets the type of entity 
+	 * gets the type of entity
 	 */
 	public EntityType getEntityType( ) {
 		return entityType;
 	}
+
 	/**
 	 * Get the sprite height of this entity
+	 * 
 	 * @return Pixel float height of sprite
 	 */
-	public float getPixelHeight(){
-		if ( sprite != null ){
+	public float getPixelHeight( ) {
+		if ( sprite != null ) {
 			return sprite.getHeight( );
 		}
 		return Float.NaN;
 	}
-	
+
 	/**
 	 * Get the sprite meter width of this entity
+	 * 
 	 * @return METER float width of sprite
 	 */
-	public float getMeterWidth(){
-		if ( sprite != null ){
+	public float getMeterWidth( ) {
+		if ( sprite != null ) {
 			return sprite.getWidth( ) * Util.PIXEL_TO_BOX;
 		}
 		return Float.NaN;
 	}
-	
+
 	/**
 	 * Get the sprite METER height of this entity
+	 * 
 	 * @return METER float height of sprite
 	 */
-	public float getMeterHeight(){
-		if ( sprite != null ){
+	public float getMeterHeight( ) {
+		if ( sprite != null ) {
 			return sprite.getHeight( ) * Util.PIXEL_TO_BOX;
 		}
 		return Float.NaN;
 	}
-	
+
 	/**
 	 * for debug
+	 * 
 	 * @author stew
 	 */
 	public String toString( ) {
@@ -656,8 +701,7 @@ public class Entity implements GleedLoadable {
 				+ body.isAwake( );
 	}
 
-
-	private void createAnchor( float anchRadius ){
+	private void createAnchor( float anchRadius ) {
 		if ( anchRadius >= 0 ) {
 			Vector2 centPos = new Vector2( body.getWorldCenter( ).x
 					* Util.BOX_TO_PIXEL, body.getWorldCenter( ).y
@@ -666,44 +710,43 @@ public class Entity implements GleedLoadable {
 			AnchorList.getInstance( ).addAnchor( anchor );
 		}
 	}
-	
+
 	/**
-	 * Sets up moverArray and fills it with null
-	 * and set up the EnumMap 
-	 * Idle = 0
-	 * Docile = 1
-	 * Hostile = 2 
+	 * Sets up moverArray and fills it with null and set up the EnumMap Idle = 0
+	 * Docile = 1 Hostile = 2
 	 * 
 	 * and sets this entity's default state as IDLE
 	 * 
 	 * Will be optimized soon
+	 * 
 	 * @author Ranveer
 	 */
-	private void setUpRobotState(){
-		moverArray = new ArrayList<IMover>();
-		for(int i = 0; i < INITAL_CAPACITY; ++i)
+	private void setUpRobotState( ) {
+		moverArray = new ArrayList< IMover >( );
+		for ( int i = 0; i < INITAL_CAPACITY; ++i )
 			moverArray.add( null );
-		robotStateMap = new EnumMap<RobotState, Integer>(RobotState.class);
+		robotStateMap = new EnumMap< RobotState, Integer >( RobotState.class );
 		robotStateMap.put( RobotState.IDLE, 0 );
 		robotStateMap.put( RobotState.DOCILE, 1 );
 		robotStateMap.put( RobotState.HOSTILE, 2 );
-		//robotStateMap.put( RobotState.CUSTOM1, 3 );
-		//robotStateMap.put( RobotState.CUSTOM2, 4 );
-		//robotStateMap.put( RobotState.CUSTOM3, 5 );
-		
-		//Initalize to idle
+		// robotStateMap.put( RobotState.CUSTOM1, 3 );
+		// robotStateMap.put( RobotState.CUSTOM2, 4 );
+		// robotStateMap.put( RobotState.CUSTOM3, 5 );
+
+		// Initalize to idle
 		currentRobotState = RobotState.IDLE;
 	}
-	
+
 	/**
 	 * prints Fixture's index in FixtureList.
 	 * 
-	 * @param fix Fixture
+	 * @param fix
+	 *            Fixture
 	 */
-	public void getFixtureIndex(Fixture fix){
-		for (int i = 0; i < body.getFixtureList( ).size( ); i++){
-			if(fix == body.getFixtureList( ).get( i )){
-				Gdx.app.log( name + " FixtureListIndex: " , "" + i );
+	public void getFixtureIndex( Fixture fix ) {
+		for ( int i = 0; i < body.getFixtureList( ).size( ); i++ ) {
+			if ( fix == body.getFixtureList( ).get( i ) ) {
+				Gdx.app.log( name + " FixtureListIndex: ", "" + i );
 				return;
 			}
 		}
@@ -717,11 +760,12 @@ public class Entity implements GleedLoadable {
 	public boolean getCrushing( ) {
 		return crushing;
 	}
-	
+
 	/**
 	 * sets flag to determine if an entity can crush
 	 * 
-	 * @param value boolean
+	 * @param value
+	 *            boolean
 	 */
 	public void setCrushing( boolean value ) {
 		crushing = value;
