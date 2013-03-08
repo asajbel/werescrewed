@@ -26,9 +26,8 @@ public class Hazard extends Entity {
 	
 	public Hazard( String name, EntityDef type, World world,
 			Vector2 posPix, float rot, Vector2 scale, Texture texture,
-			boolean solid, float anchRadius ) {
-		super( name, type, world, posPix, rot, scale, texture, solid,
-				anchRadius );
+			boolean solid ) {
+		super( name, type, world, posPix, rot, scale, texture, solid);
 		//type used to determine what type of entity for collisions
 		entityType = EntityType.HAZARD;
 	}

@@ -1,6 +1,5 @@
 package com.blindtigergames.werescrewed.entity.mover;
 
-import com.blindtigergames.werescrewed.level.GleedTypeTag;
 
 public enum MoverType {
 		ROCKING("rocking"),

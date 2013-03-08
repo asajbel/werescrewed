@@ -49,7 +49,7 @@ public class Camera {
 
 	// zoom
 	private static final float ZOOM_ACCELERATION = .0001f;
-	private static final float ZOOM_MAX_SPEED = 100f;
+	private static final float ZOOM_MAX_SPEED = 1f;
 	private static final float ZOOM_SIG_DIFF = .00005f;
 	private static final float ZOOM_IN_FACTOR = .5f;
 

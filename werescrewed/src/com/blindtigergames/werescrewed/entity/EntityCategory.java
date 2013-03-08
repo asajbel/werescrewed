@@ -1,6 +1,5 @@
 package com.blindtigergames.werescrewed.entity;
 
-import com.blindtigergames.werescrewed.level.GleedTypeTag;
 
 public enum EntityCategory {
 	PLAYER("Player"),

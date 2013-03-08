@@ -33,7 +33,6 @@ public class GenericEntityBuilder< B extends GenericEntityBuilder< ? >> {
 	protected Vector2 sca;
 	protected IMover mover;
 	protected boolean solid;
-	protected float anchRadius;
 
 	// Used for type+world construction
 	protected EntityDef type;
@@ -53,7 +52,6 @@ public class GenericEntityBuilder< B extends GenericEntityBuilder< ? >> {
 		rot = 0.0f;
 		sca = new Vector2( 1, 1 );
 		solid = true;
-		anchRadius = 0.0f;
 		mover = null;
 		type = null;
 		world = null;
@@ -215,18 +213,6 @@ public class GenericEntityBuilder< B extends GenericEntityBuilder< ? >> {
 	}
 
 	/**
-	 * 
-	 * @param a
-	 *            - sets whether the created entity is solid or not
-	 * @return EntityBuilder
-	 */
-	@SuppressWarnings( "unchecked" )
-	public B anchRadius( float a ) {
-		anchRadius = a;
-		return ( B ) this;
-	}
-
-	/**
 	 * Loads an entity's special properties from a hashmap. For generic
 	 * entities, this only loads movers from a hashmap. This is basically a placeholder for
 	 * subclasses to inherit.
@@ -254,7 +240,6 @@ public class GenericEntityBuilder< B extends GenericEntityBuilder< ? >> {
 		rot = that.rot;
 		sca = that.sca;
 		solid = that.solid;
-		anchRadius = that.anchRadius;
 		mover = that.mover;
 		type = that.type;
 		world = that.world;
@@ -300,8 +285,7 @@ public class GenericEntityBuilder< B extends GenericEntityBuilder< ? >> {
 		Entity out = null;
 		if ( canBuild( ) ) {
 			if ( type != null ) {
-				out = new Entity( name, type, world, pos, rot, sca, tex, solid,
-						anchRadius );
+				out = new Entity( name, type, world, pos, rot, sca, tex, solid);
 			} else {
 				out = new Entity( name, pos, tex, body, solid );
 			}

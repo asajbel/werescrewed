@@ -28,7 +28,6 @@ public class PlatformBuilder extends GenericEntityBuilder<PlatformBuilder> {
 	protected float 	friction;
 	protected float 	restitution;
 	protected float 	gravScale;
-	protected float		anchRadius;
 	protected boolean 	flipHorizonal;
 	protected boolean 	flipVertical;
 	protected boolean 	isOneSided;
@@ -137,16 +136,6 @@ public class PlatformBuilder extends GenericEntityBuilder<PlatformBuilder> {
 		return this;
 	}
 
-/**
- * 
- * @param anchRadius - float radius of anchor, default is 0.0f
- * @return PlatformBuilder
- */
-	public PlatformBuilder anchRadius( float anchRadius ) {
-		this.anchRadius = anchRadius;
-		return this;
-	}
-
 	public PlatformBuilder flipHorizontal( boolean flipHori ) {
 		this.flipHorizonal = flipHori;
 		return this;
@@ -203,7 +192,6 @@ public class PlatformBuilder extends GenericEntityBuilder<PlatformBuilder> {
 		this.friction = 1.0f;
 		this.restitution = 0.1f;
 		this.gravScale = 0.1f;
-		this.anchRadius = 0.0f;
 		this.flipHorizonal = false;
 		this.flipVertical = false;
 		this.isOneSided = false;
@@ -267,8 +255,7 @@ public class PlatformBuilder extends GenericEntityBuilder<PlatformBuilder> {
 									this.world,
 									this.pos,
 									this.rot,
-									new Vector2(this.scale,this.scale),
-									this.anchRadius);
+									new Vector2(this.scale,this.scale));
 		
 		cp.setPlatformType(PlatformType.COMPLEX);
 		cp.body.setType( bodyType );

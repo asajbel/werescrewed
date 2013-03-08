@@ -11,7 +11,6 @@ import com.blindtigergames.werescrewed.player.Player;
 import com.blindtigergames.werescrewed.player.Player.PlayerState;
 import com.blindtigergames.werescrewed.screws.ResurrectScrew;
 import com.blindtigergames.werescrewed.screws.ScrewType;
-import com.blindtigergames.werescrewed.util.Util;
 
 /**
  * handles all of the progress through checkpoints also handles re-spawning with

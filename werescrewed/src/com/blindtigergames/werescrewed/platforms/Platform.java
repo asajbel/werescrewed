@@ -82,8 +82,8 @@ public class Platform extends Entity {
 	 * @param scale
 	 */
 	public Platform( String name, EntityDef type, World world, Vector2 pos,
-			float rot, Vector2 scale, float anchRadius ) {
-		super( name, type, world, pos, rot, scale, null, true, anchRadius );
+			float rot, Vector2 scale ) {
+		super( name, type, world, pos, rot, scale, null, true );
 		entityType = EntityType.PLATFORM;
 		init( pos );
 	}

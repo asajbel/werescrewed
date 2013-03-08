@@ -10,13 +10,12 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.Filter;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.blindtigergames.werescrewed.camera.Anchor;
-import com.blindtigergames.werescrewed.camera.AnchorList;
 import com.blindtigergames.werescrewed.entity.mover.IMover;
 import com.blindtigergames.werescrewed.level.GleedLoadable;
 import com.blindtigergames.werescrewed.util.Util;
@@ -69,20 +68,13 @@ public class Entity implements GleedLoadable {
 	 */
 	public Entity( String name, EntityDef type, World world,
 			Vector2 positionPixels, float rot, Vector2 scale, Texture texture,
-			boolean solid, float anchRadius ) {
+			boolean solid ) {
 		this.construct( name, solid );
 		this.type = type;
 		this.world = world;
 		this.sprite = constructSprite( texture );
 		this.body = constructBodyByType( );
 		setPixelPosition( positionPixels );
-		if ( anchRadius >= 0 ) {
-			Vector2 centPos = new Vector2( body.getWorldCenter( ).x
-					* Util.BOX_TO_PIXEL, body.getWorldCenter( ).y
-					* Util.BOX_TO_PIXEL );
-			this.anchor = new Anchor( centPos, world, anchRadius );
-			AnchorList.getInstance( ).addAnchor( anchor );
-		}
 	}
 	
 	/**

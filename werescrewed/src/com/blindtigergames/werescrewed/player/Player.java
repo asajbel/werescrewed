@@ -51,9 +51,9 @@ public class Player extends Entity {
 	public final static int HEAD_JUMP_STEPS = 30;
 	public final static float SCREW_ATTACH_SPEED = 0.1f;
 	public final static int GRAB_COUNTER_STEPS = 5;
-	public final static Vector2 ANCHOR_BUFFER_SIZE = new Vector2( 400f, 256f );
+	public final static Vector2 ANCHOR_BUFFER_SIZE = new Vector2( 200f, 128f );
 	public final static float STEAM_FORCE = .5f;
-	public float JUMP_IMPULSE = 0.08f;
+	public final static float JUMP_IMPULSE = 0.08f;
 	public float directionJumpDivsion = 2.0f;
 
 	public Fixture feet;
@@ -128,7 +128,7 @@ public class Player extends Entity {
 	 */
 	public Player( String name, World world, Vector2 pos ) {
 		super( name, EntityDef.getDefinition( name ), world, pos, 0.0f,
-				new Vector2( 1f, 1f ), null, true, 0.0f );
+				new Vector2( 1f, 1f ), null, true );
 		entityType = EntityType.PLAYER;
 		body.setGravityScale( 0.25f );
 		body.setFixedRotation( true );
@@ -141,7 +141,7 @@ public class Player extends Entity {
 		anchor = new Anchor( true, new Vector2( body.getWorldCenter( ).x
 				* Util.BOX_TO_PIXEL, body.getWorldCenter( ).y
 				* Util.BOX_TO_PIXEL ), new Vector2( ANCHOR_BUFFER_SIZE.x,
-				ANCHOR_BUFFER_SIZE.y ), world, 0f );
+				ANCHOR_BUFFER_SIZE.y ) );
 		anchor.special = true;
 		AnchorList.getInstance( ).addAnchor( anchor );
 
