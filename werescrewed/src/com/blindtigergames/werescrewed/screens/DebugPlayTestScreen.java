@@ -112,14 +112,13 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 
 		// Initialize players
 		player1 = new PlayerBuilder( ).name( "player1" ).world( world )
-				.position( 110f * TILE, 49 * TILE ).buildPlayer( );
+				.position( 1f * TILE, 4 * TILE ).buildPlayer( );
 		player2 = new PlayerBuilder( ).name( "player2" ).world( world )
-				.position( 110f * TILE, 49 * TILE ).buildPlayer( );
+				.position( 1f * TILE, 4 * TILE ).buildPlayer( );
 
 		// END: 175f * TILE, 96f * TILE
 		// START :: 1f * TILE, 1f * TILE
 		// stripped screws: 170 * TILE, 17 * TILE
-		Metrics m = new Metrics( );
 		floor1( );
 		floor2( );
 		floor3( );
@@ -145,7 +144,9 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		EventTriggerBuilder etb = new EventTriggerBuilder( world );
 		et = etb.name( "event1" ).circle( ).radius( 100 )
 				.position( new Vector2( 10 * TILE, 1.5f * TILE ) )
-				.beginAction( new MetricsStartTimeAction( ) ).build( );
+				.beginAction( new MetricsStartTimeAction( skel1.name ) )
+				.build( );
+		skel1.addEventTrigger( et );
 
 		ground = platBuilder.position( 50 * TILE, 0 ).name( "ground1" )
 				.dimensions( 250, 2 ).texture( testTexture ).kinematic( )
@@ -297,7 +298,7 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		float y = 1.5f;
 		float width = 7f;
 		int i = 0;
-		while ( width > 1 ) {
+		while ( width >= 2 ) {
 			step = platBuilder.position( x * TILE, y * TILE )
 					.name( "step" + ( i + 1 ) ).dimensions( width, 1 )
 					.texture( testTexture ).kinematic( ).oneSided( true )
@@ -1022,8 +1023,12 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 			}
 			endgameCounter += deltaTime;
 			cam.camera.zoom += 0.015f;
-			if ( endgameCounter > 10f )
+			if ( endgameCounter > 10f ) {
+				if ( Metrics.activated ) {
+					Metrics.printMetrics( );
+				}
 				Gdx.app.exit( );
+			}
 			// ScreenManager.getInstance( ).show( ScreenType.MAIN_MENU );
 		}
 
