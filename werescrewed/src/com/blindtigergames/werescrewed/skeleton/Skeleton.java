@@ -3,15 +3,15 @@ package com.blindtigergames.werescrewed.skeleton;
 import java.util.HashMap;
 
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.PolygonSprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.JointEdge;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
-import com.blindtigergames.werescrewed.entity.PolySprite;
+import com.blindtigergames.werescrewed.eventTrigger.EventTrigger;
 import com.blindtigergames.werescrewed.joint.RevoluteJointBuilder;
 import com.blindtigergames.werescrewed.platforms.Platform;
 import com.blindtigergames.werescrewed.platforms.TiledPlatform;
@@ -32,13 +32,13 @@ import com.blindtigergames.werescrewed.util.Util;
 
 public class Skeleton extends Platform {
 
-    private PolySprite bgSprite;
     
     protected HashMap< String, Platform > dynamicPlatformMap = new HashMap< String, Platform >( );
 	protected HashMap< String, Skeleton > childSkeletonMap = new HashMap< String, Skeleton >( );
 	protected HashMap< String, Platform > kinematicPlatformMap = new HashMap< String, Platform >( );
 	protected HashMap< String, Rope > ropeMap = new HashMap< String, Rope >( );
 	protected HashMap< String, Screw > screwMap = new HashMap< String, Screw >( );
+	protected HashMap< String, EventTrigger > eventMap = new HashMap< String, EventTrigger > ( );
 	
 	private int entityCount = 0;
 
@@ -47,19 +47,6 @@ public class Skeleton extends Platform {
         this.world = world;
         constructSkeleton( pos );
         super.setSolid( false );
-    }
-    
-    public Skeleton( String n, Vector2 pos, World world ) {
-        super( n, pos, null, world); // not constructing body class
-        this.world = world;
-        constructSkeleton( pos );
-        super.setSolid( false );
-        this.bgSprite = bgSprite;
-        bgSprite.setPosition( pos.x, pos.y );
-    }
-    
-    public void setBgSprite(PolySprite bgSprite){
-    	this.bgSprite = bgSprite;
     }
 
     public void constructSkeleton( Vector2 pos ) {
@@ -195,6 +182,17 @@ public class Skeleton extends Platform {
     		platform.name = platform.name + "-CHANGE_MY_NAME"+entityCount;
     	}
     	kinematicPlatformMap.put( platform.name, platform );
+    }
+    /**
+     * Add EventTrigger to this Skeleton
+     * @param event EventTrigger to be added to Skeleton
+     */
+    public void addEventTrigger ( EventTrigger event ){
+    	entityCount++;
+    	if ( eventMap.containsKey( event.name ) ){
+    		event.name = event.name + "-CHANGE_MY_NAME"+entityCount;
+    	}
+    	eventMap.put ( event.name, event); 
     }
     
     /**
@@ -369,6 +367,30 @@ public class Skeleton extends Platform {
         for ( Screw s : screwMap.values( ) ) {
     		s.update( deltaTime );
         }
+    }
+    
+	/**
+	 * removes the bodies and joints
+	 * of all the skeletons children
+	 */
+    @Override
+    public void remove ( ) {
+        for ( Skeleton skeleton : childSkeletonMap.values( ) ) {
+            skeleton.remove( );
+        }
+        for (  Platform p : dynamicPlatformMap.values( ) ) {
+        	p.remove( );
+        }
+        for (  Platform p : kinematicPlatformMap.values( ) ) {
+        	p.remove( );
+        }
+        for ( Screw screw : screwMap.values( ) ){
+        	screw.remove( );
+        }
+        for ( JointEdge j: body.getJointList( ) ) {
+        	world.destroyJoint( j.joint );
+        }
+        world.destroyBody( body );
     }
     
     @Override

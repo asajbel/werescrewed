@@ -193,8 +193,8 @@ public class Level1Screen implements com.badlogic.gdx.Screen {
 		rootSkeleton.addScrewForDraw( screw );
 		TiledPlatform plat = platBuilder.dynamic( ).position( 100, 270 ).dimensions( 4,1 ).density( 1f ).oneSided( false ).buildTilePlatform( );
 		//joint the platform to the second dynamic skeleton
-		StructureScrew screw2 = new StructureScrew ( "dynamic_skeleton_joint2", plat.getPositionPixel( ), 50, plat,
-				dynSkeleton2, world );
+		StructureScrew screw2 = new StructureScrew ( "dynamic_skeleton_joint2", plat.getPositionPixel( ), 50, plat, world );
+		screw2.addStructureJoint( dynSkeleton2 );
 		rootSkeleton.addScrewForDraw( screw2 );
 		plat.body.setFixedRotation( false );
 		plat.setCategoryMask( Util.DYNAMIC_OBJECTS, Util.CATEGORY_EVERYTHING );
@@ -270,7 +270,8 @@ public class Level1Screen implements com.badlogic.gdx.Screen {
 				tiledPlat.body.getPosition( ).x * Util.BOX_TO_PIXEL
 						+ ( tiledPlat.getPixelWidth( ) ),
 				tiledPlat.body.getPosition( ).y * Util.BOX_TO_PIXEL ), 50,
-				tiledPlat, skeleton, world );
+				tiledPlat, world );
+		bossBolt.addStructureJoint( skeleton );
 		tiledPlat.addScrew( bossBolt );
 		tiledPlat.addScrew( leftPlatScrew );
 		// tiledPlat.addScrew( rightPlatScrew );

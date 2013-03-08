@@ -15,6 +15,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.Filter;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.JointEdge;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.blindtigergames.werescrewed.camera.Anchor;
@@ -228,7 +229,16 @@ public class Entity implements GleedLoadable {
 		}
 		shapes.end( );
 	}
-
+	
+	public void remove ( ) {
+		if ( body != null ) {
+			for ( JointEdge j: body.getJointList( ) ) {
+				world.destroyJoint( j.joint );
+			}
+			world.destroyBody( body );
+		}
+	}
+	
 	public void update( float deltaTime ) {
 		if ( body != null && anchor != null ) {
 			updateAnchor( );

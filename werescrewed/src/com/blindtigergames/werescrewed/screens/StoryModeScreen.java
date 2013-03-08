@@ -3,8 +3,10 @@ package com.blindtigergames.werescrewed.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.gui.Button;
 import com.blindtigergames.werescrewed.gui.Label;
 
@@ -12,6 +14,7 @@ public class StoryModeScreen implements com.badlogic.gdx.Screen {
 	private SpriteBatch batch = null;
 	private OrthographicCamera camera = null;
 	private BitmapFont font = null;
+	private Texture logo = null;
 	private int lineHeight = 0;
 	private Label screenLabel = null;
 	private Button newGameButton = null;
@@ -25,6 +28,8 @@ public class StoryModeScreen implements com.badlogic.gdx.Screen {
 	public StoryModeScreen( ) {
 		batch = new SpriteBatch( );
 		font = new BitmapFont( );
+		logo =  WereScrewedGame.manager.get( WereScrewedGame.dirHandle
+				 + "/common/blind_tiger_logo_720.png", Texture.class );
 		lineHeight = Math.round( 2.5f * font.getCapHeight( ) );
 		screenLabel = new Label("STORY MODE", font);
 		newGameButton = new Button("New Game", font,
@@ -60,6 +65,7 @@ public class StoryModeScreen implements com.badlogic.gdx.Screen {
 		Gdx.gl.glClear( GL10.GL_COLOR_BUFFER_BIT );
 		// TODO Auto-generated method stub
 		batch.begin( );
+		batch.draw(logo, 0, 0);
 		screenLabel.draw( batch );
 		newGameButton.draw( batch, camera );
 		loadGameButton.draw( batch, camera );

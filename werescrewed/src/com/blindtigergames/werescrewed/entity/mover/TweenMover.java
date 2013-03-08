@@ -89,11 +89,6 @@ public class TweenMover implements IMover {
         }
     }
 
-    @Override
-    public void move( float deltaTime, Body body, SteeringOutput steering ) {
-        
-    }
-
 	@Override
 	public void runPuzzleMovement( PuzzleScrew screw, float screwVal, Platform p ) {
 		// TODO Auto-generated method stub

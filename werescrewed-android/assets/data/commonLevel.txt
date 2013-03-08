@@ -30,3 +30,4 @@
 /debug/debug_font.fnt
 /common/ornatique-26.fnt
 /common/ornatique.fnt
+/common/ArmenianCircus.fnt

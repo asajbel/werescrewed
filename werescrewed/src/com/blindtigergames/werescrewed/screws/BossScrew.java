@@ -28,8 +28,7 @@ import com.blindtigergames.werescrewed.util.Util;
 
 public class BossScrew extends Screw {
 
-	public BossScrew( String name, Vector2 pos, int max, Entity entity,
-			Skeleton skeleton, World world ) {
+	public BossScrew( String name, Vector2 pos, int max, Entity entity, World world ) {
 		super( name, pos, null );
 		this.world = world;
 		maxDepth = max;
@@ -43,24 +42,7 @@ public class BossScrew extends Screw {
 		sprite.setColor( 244f/255f, 215f/255f, 7f/255f, 1.0f);
 		
 		constuctBody( pos );
-		connectScrewToEntity( entity, skeleton, pos );
-		connectEntityToSkeleton( entity, skeleton, pos );
-	}
-
-	/**
-	 * attaches any other object between this screw and the main entity that
-	 * this screw is attached
-	 * 
-	 * @param entity
-	 */
-	public void addStructureJoint( Entity entity ) {
-		// connect other structure to structure screw
-		RevoluteJointDef revoluteJointDef = new RevoluteJointDef( );
-		revoluteJointDef.initialize( body, entity.body, body.getPosition( ) );
-		revoluteJointDef.enableMotor = false;
-		RevoluteJoint screwJoint = ( RevoluteJoint ) world
-				.createJoint( revoluteJointDef );
-		extraJoints.add( screwJoint );
+		addStructureJoint( entity );
 	}
 
 	@Override
@@ -143,9 +125,7 @@ public class BossScrew extends Screw {
 		Vector2 bodyPos = body.getPosition( ).mul( Util.BOX_TO_PIXEL );
 		sprite.setPosition( bodyPos.x - offset.x, bodyPos.y - offset.y );
 		if ( depth == 0 ) {
-			if ( fallTimeout == 0 && screwToSkel != null ) {
-				world.destroyJoint( screwToSkel );
-				world.destroyJoint( platformJoint );
+			if ( fallTimeout == 0 ) {
 				for ( RevoluteJoint j : extraJoints ) {
 					world.destroyJoint( j );
 				}
@@ -236,30 +216,7 @@ public class BossScrew extends Screw {
 //		body.createFixture( radarFixture );
 //		radarShape.dispose( );
 	}
-
-	private void connectScrewToEntity( Entity entity, Skeleton skeleton, Vector2 pos ) {
-		// connect the screw to the entity
-		RevoluteJointDef revoluteJointDef = new RevoluteJointDef( );
-		revoluteJointDef.initialize( body, entity.body, pos );
-		revoluteJointDef.enableMotor = false;
-		screwToSkel = ( RevoluteJoint ) world.createJoint( revoluteJointDef );
-	}
-
-	private void connectEntityToSkeleton( Entity entity, Skeleton skeleton,
-			Vector2 pos ) {
-		// connect the entity to the skeleton
-		entity.body.setFixedRotation( false );
-		RevoluteJointDef revoluteJointDef = new RevoluteJointDef( );
-		revoluteJointDef = new RevoluteJointDef( );
-		revoluteJointDef.initialize( entity.body, skeleton.body, pos );
-		revoluteJointDef.enableMotor = false;
-		platformJoint = ( RevoluteJoint ) world.createJoint( revoluteJointDef );
-		entity.body.setFixedRotation( false );
-	}
 	
-	private RevoluteJoint platformJoint;
-	private RevoluteJoint screwToSkel;
-	private ArrayList< RevoluteJoint > extraJoints;
 	private int fallTimeout;
 	private boolean lerpUp = true;
 	private float alpha = 0.0f;

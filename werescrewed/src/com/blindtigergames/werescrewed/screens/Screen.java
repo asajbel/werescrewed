@@ -30,8 +30,8 @@ public class Screen implements com.badlogic.gdx.Screen {
 		batch = new SpriteBatch( );
 		debugRenderer = new SBox2DDebugRenderer( Util.BOX_TO_PIXEL );
 		level = null;
-		
-		debug_font = WereScrewedGame.manager.getFont( "debug_font" );
+		if(WereScrewedGame.manager.isLoaded( "debug_font" ))
+			debug_font = WereScrewedGame.manager.getFont( "debug_font" );
 		logger = new FPSLoggerS( );
 		uiCamera = new OrthographicCamera(Gdx.graphics.getWidth( ), Gdx.graphics.getHeight( ));
 		uiCamera.position.set(0,0 , 0); //-Gdx.graphics.getWidth( ), -Gdx.graphics.getHeight( )
@@ -60,7 +60,8 @@ public class Screen implements com.badlogic.gdx.Screen {
 			int FPS = logger.getFPS( );
 			batch.setProjectionMatrix( uiCamera.combined );
 			batch.begin( );
-			debug_font.draw(batch, "FPS: "+FPS, -Gdx.graphics.getWidth( )/2, Gdx.graphics.getHeight( )/2);//-Gdx.graphics.getWidth( )/4, Gdx.graphics.getHeight( )/4
+			if(debug_font != null)
+				debug_font.draw(batch, "FPS: "+FPS, -Gdx.graphics.getWidth( )/2, Gdx.graphics.getHeight( )/2);//-Gdx.graphics.getWidth( )/4, Gdx.graphics.getHeight( )/4
 			batch.end( );
 			
 		}
