@@ -24,7 +24,7 @@ public class PolySpriteTestScreen extends Screen {
 		level = new GleedLoader().load( filename );
 		level.world.setContactListener( MCL );
 		//initShaders();
-		//initPolySprite();
+		initPolySprite();
 	}
 	
 	protected void initPolySprite(){
@@ -34,17 +34,11 @@ public class PolySpriteTestScreen extends Screen {
 		verts.add( new Vector2(500.0f,500.0f) );
 		verts.add( new Vector2(-500.0f,500.0f) );
 		
-		Array<Vector2> uvs = new Array<Vector2>();
-		uvs.add( new Vector2(-4.0f,4.0f) );
-		uvs.add( new Vector2(4.0f,4.0f) );
-		uvs.add( new Vector2(4.0f,-4.0f) );
-		uvs.add( new Vector2(-4.0f,-4.0f) );
-		
 		Texture polyTex = WereScrewedGame.manager.get(
 				WereScrewedGame.dirHandle.path( ) + "/common/tileset/TilesetTest.png",
 				Texture.class );
 		
-		//poly = new PolySprite(polyTex, verts, 1,1,1,1, uvs);
+		//level.polySprite = new PolySprite(polyTex, verts);
 	}
 	
 	@Override
