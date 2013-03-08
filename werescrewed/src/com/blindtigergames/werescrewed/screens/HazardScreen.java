@@ -21,6 +21,9 @@ import com.blindtigergames.werescrewed.entity.builders.PlatformBuilder;
 import com.blindtigergames.werescrewed.entity.builders.PlayerBuilder;
 import com.blindtigergames.werescrewed.entity.tween.EntityAccessor;
 import com.blindtigergames.werescrewed.entity.tween.PlatformAccessor;
+import com.blindtigergames.werescrewed.hazard.Electricity;
+import com.blindtigergames.werescrewed.hazard.Fire;
+import com.blindtigergames.werescrewed.hazard.Saws;
 import com.blindtigergames.werescrewed.hazard.Spikes;
 import com.blindtigergames.werescrewed.platforms.Platform;
 import com.blindtigergames.werescrewed.platforms.TiledPlatform;
@@ -45,6 +48,9 @@ public class HazardScreen implements com.badlogic.gdx.Screen {
 	private StructureScrew struct1, struct2;
 	private PlatformBuilder platBuilder;
 	private Spikes spikes;
+	private Fire fire;
+	private Electricity elec;
+	private Saws saw;
 	private boolean debug = true;
 	private boolean debugTest = true;
 	
@@ -98,8 +104,14 @@ public class HazardScreen implements com.badlogic.gdx.Screen {
 	}
 	
 	private void initHazards( ) {
-		spikes = new Spikes( "Spikes1", new Vector2( -1250.0f, -10.0f), 
+		spikes = new Spikes( "Spikes1", new Vector2( -1250.0f, -10.0f ), 
 				1, 12, world, true, false, false );
+		fire = new Fire( "Fire1", new Vector2( -3000.0f, -10.0f ), 
+				world, true );
+		elec = new Electricity( "Elec1", new Vector2( 3000.0f, -10.0f ),
+				world, true );
+		saw = new Saws( "Saw1", new Vector2( -2000.0f, 40.0f ),
+				2, world, true );
 	}
 	
 	private void initCrushTest( ){
@@ -149,12 +161,16 @@ public class HazardScreen implements com.badlogic.gdx.Screen {
 		progressManager.update( deltaTime );
 		rootSkeleton.update( deltaTime );
 		spikes.update( deltaTime );
+		saw.update( deltaTime );
 		batch.setProjectionMatrix( cam.combined( ) );
 		batch.begin( );
 		
 		rootSkeleton.draw( batch );
 		progressManager.draw( batch );
 		spikes.draw( batch );
+		fire.draw( batch );
+		elec.draw( batch );
+		saw.draw( batch );
 		player1.draw( batch );
 		player2.draw( batch );
 

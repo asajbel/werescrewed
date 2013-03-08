@@ -6,11 +6,10 @@ import com.badlogic.gdx.physics.box2d.World;
 
 public class Electricity extends Hazard {
 
-	public Electricity( String name, Vector2 pos, Texture texture, World world,
+	public Electricity( String name, Vector2 pos, World world,
 			boolean isActive ) {
-		super( name, pos, texture, world, isActive );
+		super( name, pos, null, world, isActive );
 		
 		
 	}
-
 }
