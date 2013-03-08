@@ -298,7 +298,7 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		float y = 1.5f;
 		float width = 7f;
 		int i = 0;
-		while ( width > 2 ) {
+		while ( width >= 2 ) {
 			step = platBuilder.position( x * TILE, y * TILE )
 					.name( "step" + ( i + 1 ) ).dimensions( width, 1 )
 					.texture( testTexture ).kinematic( ).oneSided( true )
