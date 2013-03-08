@@ -15,6 +15,7 @@ import com.blindtigergames.werescrewed.graphics.TextureAtlasS;
  */
 public class TileSet {
 	private TextureAtlasS atlas;
+	@SuppressWarnings( "unused" )
 	private int tileHeight, tileWidth;
 
 	/**

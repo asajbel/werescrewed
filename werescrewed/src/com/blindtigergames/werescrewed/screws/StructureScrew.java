@@ -13,7 +13,6 @@ import com.badlogic.gdx.physics.box2d.joints.RevoluteJoint;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityType;
-import com.blindtigergames.werescrewed.skeleton.Skeleton;
 import com.blindtigergames.werescrewed.util.Util;
 
 /**
@@ -26,8 +25,7 @@ import com.blindtigergames.werescrewed.util.Util;
 
 public class StructureScrew extends Screw {
 
-	public StructureScrew( String name, Vector2 pos, int max, Entity entity,
-			Skeleton skeleton, World world ) {
+	public StructureScrew( String name, Vector2 pos, int max, Entity entity, World world ) {
 		super( name, pos, null );
 		this.world = world;
 		maxDepth = max;
@@ -35,35 +33,38 @@ public class StructureScrew extends Screw {
 		rotation = 0;
 		fallTimeout = 140;
 		extraJoints = new ArrayList< RevoluteJoint >( );
-		screwType = ScrewType.STRUCTURAL;
+		screwType = ScrewType.SCREW_STRUCTURAL;
 		entityType = EntityType.SCREW;
+		entity.body.setFixedRotation( false );
 		
 		constuctBody( pos );
-		connectScrewToEntity( entity, skeleton, pos );
-		connectEntityToSkeleton( entity, skeleton, pos );
+		addStructureJoint( entity );
 
-	}
-
-	/**
-	 * attaches any other object between this screw and the main entity that
-	 * this screw is attached
-	 * 
-	 * @param entity
-	 */
-	public void addStructureJoint( Entity entity ) {
-		// connect other structure to structure screw
-		RevoluteJointDef revoluteJointDef = new RevoluteJointDef( );
-		revoluteJointDef.initialize( body, entity.body, body.getPosition( ) );
-		revoluteJointDef.enableMotor = false;
-		RevoluteJoint screwJoint = ( RevoluteJoint ) world
-				.createJoint( revoluteJointDef );
-		extraJoints.add( screwJoint );
 	}
 
 	@Override
-	public void screwLeft( ) {
+	public void screwLeft( int region ) {
 		if ( depth > -10 ) {
-			body.setAngularVelocity( 15 );
+			body.setAngularVelocity( 1 );
+			depth--;
+			rotation = region * 5;
+			screwStep = depth + 5;
+		}
+	}
+
+	@Override
+	public void screwRight(int region) {
+		if ( depth < maxDepth ) {
+			body.setAngularVelocity( -1 );
+			depth++;
+			rotation = region * 5;
+			screwStep = depth + 6;
+		}
+	}
+	@Override
+	public void screwLeft(  ) {
+		if ( depth > -10 ) {
+			body.setAngularVelocity( 1 );
 			depth--;
 			rotation += 10;
 			screwStep = depth + 5;
@@ -73,23 +74,19 @@ public class StructureScrew extends Screw {
 	@Override
 	public void screwRight( ) {
 		if ( depth < maxDepth ) {
-			body.setAngularVelocity( -15 );
+			body.setAngularVelocity( -1 );
 			depth++;
 			rotation -= 10;
 			screwStep = depth + 6;
 		}
 	}
-
 	@Override
 	public void update( float deltaTime ) {
 		super.update( deltaTime );
 		Vector2 bodyPos = body.getPosition( ).mul( Util.BOX_TO_PIXEL );
 		sprite.setPosition( bodyPos.x - offset.x, bodyPos.y - offset.y );
 		if ( depth <= 0 ) {
-			if ( fallTimeout == 0 && screwToSkel != null ) {
-				body.setType( BodyType.DynamicBody );
-				world.destroyJoint( screwToSkel );
-				world.destroyJoint( platformJoint );
+			if ( fallTimeout == 0 ) {
 				for ( RevoluteJoint j : extraJoints ) {
 					world.destroyJoint( j );
 				}
@@ -141,7 +138,6 @@ public class StructureScrew extends Screw {
 		}
 	}
 	
-	
 	private void constuctBody( Vector2 pos ) {
 
 		// create the screw body
@@ -178,29 +174,6 @@ public class StructureScrew extends Screw {
 //		radarShape.dispose( );
 	}
 
-	private void connectScrewToEntity( Entity entity, Skeleton skeleton, Vector2 pos ) {
-		// connect the screw to the entity
-		RevoluteJointDef revoluteJointDef = new RevoluteJointDef( );
-		revoluteJointDef.initialize( body, entity.body, pos );
-		revoluteJointDef.enableMotor = false;
-		screwToSkel = ( RevoluteJoint ) world.createJoint( revoluteJointDef );
-	}
-
-	private void connectEntityToSkeleton( Entity entity, Skeleton skeleton,
-			Vector2 pos ) {
-		// connect the entity to the skeleton
-		entity.body.setFixedRotation( false );
-		RevoluteJointDef revoluteJointDef = new RevoluteJointDef( );
-		revoluteJointDef = new RevoluteJointDef( );
-		revoluteJointDef.initialize( entity.body, skeleton.body, pos );
-		revoluteJointDef.enableMotor = false;
-		platformJoint = ( RevoluteJoint ) world.createJoint( revoluteJointDef );
-		entity.body.setFixedRotation( false );
-	}
-
-	private RevoluteJoint platformJoint;
-	private RevoluteJoint screwToSkel;
-	private ArrayList< RevoluteJoint > extraJoints;
 	private int fallTimeout;
 	private boolean lerpUp = true;
 	private float alpha = 0.0f;

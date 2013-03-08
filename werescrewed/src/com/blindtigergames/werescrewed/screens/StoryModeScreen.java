@@ -3,27 +3,39 @@ package com.blindtigergames.werescrewed.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.gui.Button;
+import com.blindtigergames.werescrewed.gui.Label;
 
-public class StoryModeScreen implements com.badlogic.gdx.Screen{
+public class StoryModeScreen implements com.badlogic.gdx.Screen {
 	private SpriteBatch batch = null;
 	private OrthographicCamera camera = null;
 	private BitmapFont font = null;
+	private Texture logo = null;
 	private int lineHeight = 0;
+	private Label screenLabel = null;
+	private Button newGameButton = null;
+	private Button loadGameButton = null;
 	private Button backButton = null;
-	/* Things needed...
-	 * New game
-	 * Load Game
-	 * Back
+
+	/*
+	 * Things needed... New game, Load Game,
 	 */
-	
-	
-	public StoryModeScreen(){
+
+	public StoryModeScreen( ) {
 		batch = new SpriteBatch( );
 		font = new BitmapFont( );
+		logo =  WereScrewedGame.manager.get( WereScrewedGame.dirHandle
+				 + "/common/blind_tiger_logo_720.png", Texture.class );
 		lineHeight = Math.round( 2.5f * font.getCapHeight( ) );
+		screenLabel = new Label("STORY MODE", font);
+		newGameButton = new Button("New Game", font,
+				new ScreenSwitchHandler(ScreenType.CHARACTER_SELECT));
+		loadGameButton = new Button("Load Game", font,
+				new ScreenSwitchHandler(ScreenType.PLAYTEST));
 		backButton = new Button( "Back", font, new ScreenSwitchHandler(
 				ScreenType.MAIN_MENU ) );
 	}
@@ -31,19 +43,19 @@ public class StoryModeScreen implements com.badlogic.gdx.Screen{
 	@Override
 	public void dispose( ) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void hide( ) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void pause( ) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -53,9 +65,13 @@ public class StoryModeScreen implements com.badlogic.gdx.Screen{
 		Gdx.gl.glClear( GL10.GL_COLOR_BUFFER_BIT );
 		// TODO Auto-generated method stub
 		batch.begin( );
-
+		batch.draw(logo, 0, 0);
+		screenLabel.draw( batch );
+		newGameButton.draw( batch, camera );
+		loadGameButton.draw( batch, camera );
+		backButton.draw( batch, camera );
 		batch.end( );
-		
+
 	}
 
 	@Override
@@ -66,7 +82,12 @@ public class StoryModeScreen implements com.badlogic.gdx.Screen{
 		batch.setProjectionMatrix( camera.combined );
 		int centerX = width / 2;
 		int centerY = height / 2;
-
+		screenLabel.setX( centerX - screenLabel.getWidth( )/2);
+		screenLabel.setY( centerY + 7 * lineHeight);
+		newGameButton.setX( centerX - newGameButton.getWidth( )/2);
+		newGameButton.setY( centerY + 4 * lineHeight);
+		loadGameButton.setX( centerX - loadGameButton.getWidth( )/2 );
+		loadGameButton.setY( centerY + 3 * lineHeight);
 		backButton.setX( centerX - backButton.getWidth( ) / 2 );
 		backButton.setY( 20 + backButton.getHeight( ) );
 	}
@@ -74,12 +95,12 @@ public class StoryModeScreen implements com.badlogic.gdx.Screen{
 	@Override
 	public void resume( ) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void show( ) {
 		// TODO Auto-generated method stub
-		
+
 	}
 }

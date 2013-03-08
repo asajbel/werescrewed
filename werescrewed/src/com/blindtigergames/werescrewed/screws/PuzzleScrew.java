@@ -1,11 +1,14 @@
 package com.blindtigergames.werescrewed.screws;
 
+import java.util.ArrayList;
+
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.physics.box2d.joints.RevoluteJoint;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityType;
@@ -33,8 +36,9 @@ public class PuzzleScrew extends Screw {
 		this.startDepth = depth = startDepth;
 		resetAble = resetable;
 		puzzleManager = new PuzzleManager( this.name );
-		screwType = ScrewType.PUZZLE;
+		screwType = ScrewType.SCREW_PUZZLE;
 		entityType = EntityType.SCREW;
+		extraJoints = new ArrayList< RevoluteJoint >( );
 
 		sprite.setColor( 16f/255f, 215f/255f, 96f/255f, 1.0f);
 
@@ -47,9 +51,22 @@ public class PuzzleScrew extends Screw {
 	 * and applies the screw value to whatever movement is required
 	 */
 	@Override
-	public void screwLeft( ) {
+	public void screwLeft( int region ) {
 		if ( depth > 0 ) {
-			body.setAngularVelocity( 15 );
+			body.setAngularVelocity( 1 );
+			depth--;
+			spriteRegion += region;
+			rotation = region * 5;
+			screwStep = depth + 5;
+			puzzleManager
+					.runElement( this, ( float ) depth / ( ( float ) maxDepth ) );
+		}
+	}
+	
+	@Override
+	public void screwLeft(){
+		if ( depth > 0 ) {
+			body.setAngularVelocity( 1 );
 			depth--;
 			rotation += 10;
 			screwStep = depth + 5;
@@ -62,10 +79,24 @@ public class PuzzleScrew extends Screw {
 	 * screwing right calls the puzzle manager element 
 	 * and applies the screw value to whatever movement is required
 	 */
+	
 	@Override
-	public void screwRight( ) {
+	public void screwRight( int region) {
 		if ( depth < maxDepth ) {
-			body.setAngularVelocity( -15 );
+			body.setAngularVelocity( -1 );
+			depth++;
+			spriteRegion += region;
+			rotation = region * 5;
+			screwStep = depth + 6;
+			puzzleManager
+					.runElement( this, ( float ) depth / ( ( float ) maxDepth ) );
+		}
+	}
+	
+	@Override
+	public void screwRight(){
+		if ( depth < maxDepth ) {
+			body.setAngularVelocity( -1 );
 			depth++;
 			rotation -= 10;
 			screwStep = depth + 6;
@@ -87,14 +118,7 @@ public class PuzzleScrew extends Screw {
 		}
 	}
 
-	/**
-	 * public access to get max depth of a screw
-	 * 
-	 * @return value of maxDepth
-	 */
-	public int getMaxDepth( ) {
-		return maxDepth;
-	}
+
 
 	/**
 	 * resets this screw back to its initial position

@@ -17,7 +17,6 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.joints.PrismaticJoint;
 import com.badlogic.gdx.physics.box2d.joints.PrismaticJointDef;
 import com.badlogic.gdx.physics.box2d.joints.PulleyJointDef;
-import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.camera.Camera;
 import com.blindtigergames.werescrewed.collisionManager.MyContactListener;
 import com.blindtigergames.werescrewed.debug.SBox2DDebugRenderer;
@@ -46,6 +45,7 @@ import com.blindtigergames.werescrewed.player.Player;
 import com.blindtigergames.werescrewed.rope.Rope;
 import com.blindtigergames.werescrewed.screws.BossScrew;
 import com.blindtigergames.werescrewed.screws.PuzzleScrew;
+import com.blindtigergames.werescrewed.screws.Screw;
 import com.blindtigergames.werescrewed.screws.StrippedScrew;
 import com.blindtigergames.werescrewed.screws.StructureScrew;
 import com.blindtigergames.werescrewed.skeleton.Skeleton;
@@ -106,8 +106,8 @@ public class Level1Screen implements com.badlogic.gdx.Screen {
 		platBuilder = new PlatformBuilder( world );
 		ropeBuilder = new RopeBuilder( world );
 
-		testTexture = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-						+ "/levels/level1/TilesetTest.png", Texture.class );
+		testTexture = null;//WereScrewedGame.manager.get( WereScrewedGame.dirHandle
+						//+ "/levels/level1/TilesetTest.png", Texture.class );
 
 
 		// Uncomment for test anchor
@@ -168,22 +168,37 @@ public class Level1Screen implements com.badlogic.gdx.Screen {
 
 		debugRenderer = new SBox2DDebugRenderer( Util.BOX_TO_PIXEL );
 
-		debugRenderer.setDrawJoints( false );
+		//debugRenderer.setDrawJoints( false );
 
 		Gdx.app.setLogLevel( Application.LOG_DEBUG );
 	}
 	
 	private void buildSubSkeleton(){
-		Skeleton dynSkeleton = new Skeleton( "dynamicSkeleton", new Vector2(0,200), testTexture, world );
+		Skeleton dynSkeleton = new Skeleton( "dynamicSkeleton", new Vector2(0,270), testTexture, world );
+		Skeleton dynSkeleton2 = new Skeleton( "dynamic2Skeleton", new Vector2(100,270), testTexture, world );
 		//dynSkeleton.body.createFixture( , density )
 		
-		rootSkeleton.addSkeleton( dynSkeleton );
+		skeleton.addSkeleton( dynSkeleton );
+		skeleton.addSkeleton( dynSkeleton2 );
 		dynSkeleton.body.setType( BodyType.DynamicBody );
+		dynSkeleton2.body.setType( BodyType.DynamicBody );
+		//joints the first dynamic skeleton to the parent skeleton
 		RevoluteJointBuilder jbBuilder = new RevoluteJointBuilder( world );
-		jbBuilder.skeleton( skeleton ).bodyB( dynSkeleton ).motor( true ).build( );
-		TiledPlatform plat = platBuilder.dynamic( ).position( 0, 200 ).dimensions( 4,1 ).oneSided( false ).buildTilePlatform( );
+		jbBuilder.skeleton( skeleton ).bodyB( dynSkeleton ).motor( false ).build( );
+		//joints the first dynamic skeleton to the second dynamic skeleton
+		Screw screw = new Screw ( "dynamic_skeleton_joint", new Vector2( 50, 100), dynSkeleton, world );
+		screw.addStructureJoint( dynSkeleton2 );
+		//joint the two dynamic skeletons to the parent skeleton
+		//screw.addStructureJoint( skeleton );
+		rootSkeleton.addScrewForDraw( screw );
+		TiledPlatform plat = platBuilder.dynamic( ).position( 100, 270 ).dimensions( 4,1 ).density( 1f ).oneSided( false ).buildTilePlatform( );
+		//joint the platform to the second dynamic skeleton
+		StructureScrew screw2 = new StructureScrew ( "dynamic_skeleton_joint2", plat.getPositionPixel( ), 50, plat, world );
+		screw2.addStructureJoint( dynSkeleton2 );
+		rootSkeleton.addScrewForDraw( screw2 );
 		plat.body.setFixedRotation( false );
-		dynSkeleton.addPlatformRotatingCenter( plat );
+		plat.setCategoryMask( Util.DYNAMIC_OBJECTS, Util.CATEGORY_EVERYTHING );
+		dynSkeleton2.addDynamicPlatform( plat );
 		
 	}
 
@@ -255,7 +270,8 @@ public class Level1Screen implements com.badlogic.gdx.Screen {
 				tiledPlat.body.getPosition( ).x * Util.BOX_TO_PIXEL
 						+ ( tiledPlat.getPixelWidth( ) ),
 				tiledPlat.body.getPosition( ).y * Util.BOX_TO_PIXEL ), 50,
-				tiledPlat, skeleton, world );
+				tiledPlat, world );
+		bossBolt.addStructureJoint( skeleton );
 		tiledPlat.addScrew( bossBolt );
 		tiledPlat.addScrew( leftPlatScrew );
 		// tiledPlat.addScrew( rightPlatScrew );
@@ -328,11 +344,11 @@ public class Level1Screen implements com.badlogic.gdx.Screen {
 		float dy = 160f;
 		for ( int i = 0; i < 10; i++ ) {
 			if ( i % 2 == 0 ) {
-				climbingScrews.add( new StrippedScrew( "", world, new Vector2(
-						x1, y1 ), skeleton ) );
+				climbingScrews.add( new StrippedScrew( "", new Vector2(
+						x1, y1 ), skeleton, world ) );
 			} else {
-				climbingScrews.add( new StrippedScrew( "", world, new Vector2(
-						x2, y1 ), skeleton ) );
+				climbingScrews.add( new StrippedScrew( "", new Vector2(
+						x2, y1 ), skeleton, world ) );
 			}
 			y1 += dy;
 		}
@@ -463,14 +479,14 @@ public class Level1Screen implements com.badlogic.gdx.Screen {
 
 		world.createJoint( pjd );
 
-		skeleton.addStrippedScrew( new StrippedScrew( "", world, new Vector2(
+		skeleton.addStrippedScrew( new StrippedScrew( "", new Vector2(
 				singTile.body.getPosition( ).x * Util.BOX_TO_PIXEL,
-				singTile.body.getPosition( ).y * Util.BOX_TO_PIXEL ), singTile ) );
+				singTile.body.getPosition( ).y * Util.BOX_TO_PIXEL ), singTile, world ) );
 
-		skeleton.addStrippedScrew( new StrippedScrew( "", world, new Vector2(
+		skeleton.addStrippedScrew( new StrippedScrew( "", new Vector2(
 				singTile2.body.getPosition( ).x * Util.BOX_TO_PIXEL,
 				singTile2.body.getPosition( ).y * Util.BOX_TO_PIXEL ),
-				singTile2 ) );
+				singTile2, world ) );
 	}
 
 	@Override

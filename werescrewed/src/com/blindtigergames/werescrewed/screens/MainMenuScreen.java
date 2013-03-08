@@ -1,49 +1,48 @@
 package com.blindtigergames.werescrewed.screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.gui.Button;
-import com.blindtigergames.werescrewed.gui.Label;
 import com.blindtigergames.werescrewed.gui.Button.ButtonHandler;
-import com.blindtigergames.werescrewed.screens.ScreenSwitchHandler;
+import com.blindtigergames.werescrewed.gui.Label;
 
 class MainMenuScreen implements com.badlogic.gdx.Screen {
+	// extends Screen
 
 	private SpriteBatch batch = null;
+	private Texture logo = null;
 	private OrthographicCamera camera = null;
 	private BitmapFont font = null;
+	BitmapFont fancyFont;
 	private Label headingLabel = null;
-	private Button playButton = null;
-	private Button gleedButton = null;
 	private Button exitButton = null;
-	private Button testButton;
-	private Button resurrectButton = null;
 	private int lineHeight = 0;
-	private Button level1Button;
+
+	private Button storyButton = null;
+	private Button levelSelectButton = null;
 	private Button optionsButton = null;
 
 	public MainMenuScreen( ) {
 		batch = new SpriteBatch( );
 		font = new BitmapFont( );
+		fancyFont = WereScrewedGame.manager.getFont( "ornitque" );
+		logo =  WereScrewedGame.manager.get( WereScrewedGame.dirHandle
+				 + "/common/blind_tiger_logo_720.png", Texture.class );
 		lineHeight = Math.round( 2.5f * font.getCapHeight( ) );
 		headingLabel = new Label( "We're Screwed!!", font );
-		playButton = new Button( "Physics Test Screen", font,
-				new ScreenSwitchHandler( ScreenType.PHYSICS ) );
-		resurrectButton = new Button( "Resurrect Test Screen", font,
-				new ScreenSwitchHandler( ScreenType.RESURRECT ) );
-		testButton = new Button( "Playtest Screen", font,
-				new ScreenSwitchHandler( ScreenType.PLAYTEST ) );
-		gleedButton = new Button( "Gleed Screen", font,
-				new ScreenSwitchHandler( ScreenType.GLEED ) );
-		level1Button = new Button( "Level 1", font, 
-				new ScreenSwitchHandler(ScreenType.LOADING_1 ) );
+		
+		storyButton = new Button("Start", font,
+				new ScreenSwitchHandler(ScreenType.STORY));
+		levelSelectButton = new Button( "Level Select", font,
+				new ScreenSwitchHandler(ScreenType.LEVEL_SELECT));
 		optionsButton = new Button("Options", font,
-				new ScreenSwitchHandler( ScreenType.CHARACTER_SELECT));
+				new ScreenSwitchHandler( ScreenType.OPTIONS));
 		exitButton = new Button( "Exit", font, new ButtonHandler( ) {
 			@Override
 			public void onClick( ) {
@@ -54,15 +53,14 @@ class MainMenuScreen implements com.badlogic.gdx.Screen {
 
 	@Override
 	public void render( float delta ) {
+		//super.render(delta);
 		Gdx.gl.glClearColor( 0.5f, 0.5f, 0.5f, 1f );
 		Gdx.gl.glClear( GL10.GL_COLOR_BUFFER_BIT );
 		batch.begin( );
+		batch.draw(logo, 0, 0);
 		headingLabel.draw( batch );
-		playButton.draw( batch, camera );
-		gleedButton.draw( batch, camera );
-		resurrectButton.draw( batch, camera );
-		testButton.draw( batch, camera );
-		level1Button.draw( batch, camera );
+		storyButton.draw( batch, camera );
+		levelSelectButton.draw( batch, camera );
 		optionsButton.draw( batch, camera );
 		// imoverButton.draw( batch, camera );
 		exitButton.draw( batch, camera );
@@ -74,6 +72,11 @@ class MainMenuScreen implements com.badlogic.gdx.Screen {
 		if ( Gdx.input.isKeyPressed( Keys.ENTER ) ) {
 			ScreenManager.getInstance( ).show( ScreenType.PLAYTEST );
 		}
+		
+		if ( Gdx.input.isKeyPressed( Keys.EQUALS ) ) {
+			ScreenManager.getInstance( ).show( ScreenType.GLEED );
+		}
+		
 	}
 
 	@Override
@@ -84,23 +87,17 @@ class MainMenuScreen implements com.badlogic.gdx.Screen {
 		int centerX = width / 2;
 		int centerY = height / 2;
 		headingLabel.setX( centerX - headingLabel.getWidth( ) / 2 );
-		headingLabel.setY( centerY + 3 * lineHeight );
-		testButton.setX( centerX - testButton.getWidth( ) / 2 );
-		testButton.setY( centerY + 2 * lineHeight );
-		playButton.setX( centerX - playButton.getWidth( ) / 2 );
-		playButton.setY( centerY + lineHeight );
-		gleedButton.setX( centerX - gleedButton.getWidth( ) / 2 );
-		gleedButton.setY( centerY );
-		resurrectButton.setX( centerX - testButton.getWidth( ) /2 );
-		resurrectButton.setY( centerY - lineHeight );
-		level1Button.setX( centerX - level1Button.getWidth( ) / 2 );
-		level1Button.setY( centerY - lineHeight * 2 );
+		headingLabel.setY( centerY + 7 * lineHeight );
+		storyButton.setX( centerX  - storyButton.getWidth( )/2);
+		storyButton.setY( centerY + 5 * lineHeight);
+		levelSelectButton.setX( centerX - levelSelectButton.getWidth( )/2 );
+		levelSelectButton.setY( centerY + 4 * lineHeight);
 		optionsButton.setX( centerX - optionsButton.getWidth( )/2);
-		optionsButton.setY( centerY - 3 * lineHeight );
+		optionsButton.setY( centerY + 3 * lineHeight );
 		// imoverButton.setX( centerX - imoverButton.getWidth( )/2 );
 		// imoverButton.setY( centerY - lineHeight );
 		exitButton.setX( centerX - exitButton.getWidth( ) / 2 );
-		exitButton.setY( centerY - 4 * lineHeight );
+		exitButton.setY( centerY + 2 * lineHeight );
 	}
 
 	@Override

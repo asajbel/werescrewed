@@ -1,5 +1,7 @@
 package com.blindtigergames.werescrewed.screws;
 
+import java.util.ArrayList;
+
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -7,11 +9,11 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.physics.box2d.joints.RevoluteJoint;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
 import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityType;
-import com.blindtigergames.werescrewed.skeleton.Skeleton;
 import com.blindtigergames.werescrewed.util.Util;
 
 /**
@@ -28,20 +30,19 @@ import com.blindtigergames.werescrewed.util.Util;
  * 
  */
 public class Screw extends Entity {
-	public enum ScrewType {
-		STATIC, STRIPPED, PUZZLE, STRUCTURAL, RESURRECT, BOSS
-	}
 
 	protected int rotation;
 	protected int depth;
 	protected int maxDepth;
 	protected int screwStep;
+	protected int spriteRegion;
 	protected boolean playerAttached = false;
 	protected boolean removed = false;
 	protected ScrewType screwType;
+	protected ArrayList< RevoluteJoint > extraJoints;
 
 	/**
-	 * constructor to use if you want a static screw
+	 * constructor to use if you want a cosmetic screw
 	 * 
 	 * @param name
 	 * @param pos
@@ -50,45 +51,69 @@ public class Screw extends Entity {
 	 * @param skeleton
 	 * @param world
 	 */
-	public Screw( String name, Vector2 pos, int max, Entity entity,
-			Skeleton skeleton, World world ) {
+	public Screw( String name, Vector2 pos, Entity entity, World world ) {
 		super( name, pos, WereScrewedGame.manager.get(
-				WereScrewedGame.dirHandle.path( ) + "/common/screw.png",
+				WereScrewedGame.dirHandle.path( ) + "/common/screw1.png",
 				Texture.class ), null, false );
-		screwType = ScrewType.STATIC;
 		this.world = world;
+		screwType = ScrewType.SCREW_COSMETIC;
 		entityType = EntityType.SCREW;
+		extraJoints = new ArrayList< RevoluteJoint >( );
 		constructBody( pos );
-		connectScrewToEntity( entity );
+		addStructureJoint( entity );
 	}
 
+	/**
+	 * constructor called by subclass screws don't use this to build a screw
+	 * 
+	 * @param name
+	 * @param pos
+	 * @param tex
+	 */
 	public Screw( String name, Vector2 pos, Texture tex ) {
 		super( name, pos, ( tex == null ? WereScrewedGame.manager.get(
 				WereScrewedGame.dirHandle.path( ) + "/common/screw.png",
 				Texture.class ) : tex ), null, false );
+		entityType = EntityType.SCREW;
 	}
 
 	/**
 	 * destroys everything contained within the screw instance
 	 */
 	public void remove( ) {
+		for ( RevoluteJoint j : extraJoints ) {
+			world.destroyJoint( j );
+		}
 		world.destroyBody( body );
+		removed = true;
 	}
 
 	/**
-	 * returns true if the box2d stuff
-	 * has been completely removed
+	 * returns true if the box2d stuff has been completely removed
 	 */
 	public boolean isRemoved( ) {
 		return removed;
 	}
-	
+
+	/**
+	 * returns the joint at this index
+	 */
+	public RevoluteJoint getJoint( int index ) {
+		if ( index < extraJoints.size( ) ) {
+			return extraJoints.get( index );
+		}
+		return null;
+	}
+
 	/**
 	 * Turns structural and puzzle screws to the left which decreases depth
 	 * structural screws will eventually fall out
 	 * 
 	 * @param
 	 */
+	public void screwLeft( int region ) {
+	}
+
 	public void screwLeft( ) {
 	}
 
@@ -98,12 +123,15 @@ public class Screw extends Entity {
 	 * 
 	 * @param
 	 */
+	public void screwRight( int region ) {
+	}
+
 	public void screwRight( ) {
 	}
 
 	/**
-	 * returns true if the screws body
-	 * is jointed to a player
+	 * returns true if the screws body is jointed to a player
+	 * 
 	 * @return playerAttached
 	 */
 	public boolean isPlayerAttached( ) {
@@ -112,12 +140,13 @@ public class Screw extends Entity {
 
 	/**
 	 * sets if the player is attached to this screw
+	 * 
 	 * @param isPlayerAttached
 	 */
 	public void setPlayerAttached( boolean isPlayerAttached ) {
 		playerAttached = isPlayerAttached;
 	}
-	
+
 	/**
 	 * Turns structural and puzzle screws to the left structural screws will
 	 * eventually fall out
@@ -126,6 +155,15 @@ public class Screw extends Entity {
 	 */
 	public int getDepth( ) {
 		return depth;
+	}
+
+	/**
+	 * public access to get max depth of a screw
+	 * 
+	 * @return value of maxDepth
+	 */
+	public int getMaxDepth( ) {
+		return maxDepth;
 	}
 
 	public boolean endLevelFlag( ) {
@@ -141,6 +179,22 @@ public class Screw extends Entity {
 		return screwType;
 	}
 
+	/**
+	 * attaches any other object between this screw and the main entity that
+	 * this screw is attached
+	 * 
+	 * @param entity
+	 */
+	public void addStructureJoint( Entity entity ) {
+		// connect other structure to structure screw
+		RevoluteJointDef revoluteJointDef = new RevoluteJointDef( );
+		revoluteJointDef.initialize( body, entity.body, body.getPosition( ) );
+		revoluteJointDef.enableMotor = false;
+		RevoluteJoint screwJoint = ( RevoluteJoint ) world
+				.createJoint( revoluteJointDef );
+		extraJoints.add( screwJoint );
+	}
+
 	private void constructBody( Vector2 pos ) {
 		// create the screw body
 		BodyDef screwBodyDef = new BodyDef( );
@@ -149,8 +203,7 @@ public class Screw extends Entity {
 		screwBodyDef.gravityScale = 0.07f;
 		body = world.createBody( screwBodyDef );
 		CircleShape screwShape = new CircleShape( );
-		screwShape
-				.setRadius( ( sprite.getWidth( ) / 2.0f ) * Util.PIXEL_TO_BOX );
+		screwShape.setRadius( 0f );
 		FixtureDef screwFixture = new FixtureDef( );
 		screwFixture.filter.categoryBits = Util.CATEGORY_SCREWS;
 		screwFixture.filter.maskBits = Util.CATEGORY_NOTHING;
@@ -161,13 +214,5 @@ public class Screw extends Entity {
 
 		// You dont dispose the fixturedef, you dispose the shape
 		screwShape.dispose( );
-	}
-
-	private void connectScrewToEntity( Entity entity ) {
-		// connect the screw to the entity
-		RevoluteJointDef revoluteJointDef = new RevoluteJointDef( );
-		revoluteJointDef.initialize( body, entity.body, body.getPosition( ) );
-		revoluteJointDef.enableMotor = false;
-		world.createJoint( revoluteJointDef );
 	}
 }

@@ -6,10 +6,9 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.blindtigergames.werescrewed.entity.Entity;
+import com.blindtigergames.werescrewed.entity.EntityType;
 import com.blindtigergames.werescrewed.entity.mover.IMover;
 import com.blindtigergames.werescrewed.util.Util;
 
@@ -19,14 +18,27 @@ public class ParticleEmitter extends Entity{
 	private ArrayList< Particle > particles;
 	private boolean activated;
 	
-	ParticleEmitter( String name, Vector2 positionPixels, Texture texture, Body body,
-			boolean solid, Entity baseEntity, float lifeSpan, IMover mover, boolean active){
-		super( name, positionPixels, texture, null, true );
+	
+	/**
+	 * Entity used to manage Particle Systems, in which the Particles are Entities
+	 * 
+	 * @param name String
+	 * @param positionPixels Vector2
+	 * @param texture Texture
+	 * @param body Body
+	 * @param baseEntity Entity
+	 * @param lifeSpan float
+	 * @param mover IMover
+	 * @param active boolean
+	 */
+	ParticleEmitter( String name, Vector2 positionPixels, Texture texture, Body body, Entity baseEntity, float lifeSpan, IMover mover, boolean active){
+		super( name, positionPixels, texture, null, false );
 		particles = new ArrayList< Particle >( );
 		Particle p = new Particle( baseEntity, lifeSpan, mover );
 		particles.add( p );
 		constructBody(positionPixels);
 		activated = active;
+		entityType = EntityType.PARTICLE_EMITTER;
 	}
 	
 	/**

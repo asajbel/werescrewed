@@ -20,15 +20,14 @@ public class TimelineTweenMover implements IMover {
 	}
 
 	@Override
-	public void move( float deltaTime, Body body, SteeringOutput steering ) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
 	public void runPuzzleMovement( PuzzleScrew screw, float screwVal, Platform p ) {
 		// TODO Auto-generated method stub
-		
+		p.setMoverAtCurrentState( this );
+		if (screwVal > 0.0f){
+			p.setActive( true );
+		} else {
+			p.setActive( false );
+		}
 	}
 
 	@Override

@@ -26,12 +26,6 @@ public class RockingMover implements IMover {
 		time += deltaTime;
 		body.setAngularVelocity( (float)(Math.sin( time * speed))*max );
 	}
-
-	@Override
-	public void move(float deltaTime, Body body, SteeringOutput steering) {
-		body.setLinearVelocity(steering.velocity);
-		body.setAngularVelocity(steering.rotation);
-	}
 	
 	@Override
 	public void runPuzzleMovement( PuzzleScrew screw, float screwVal, Platform p ) {

@@ -28,7 +28,7 @@ import com.blindtigergames.werescrewed.entity.builders.PlatformBuilder;
 import com.blindtigergames.werescrewed.entity.builders.PlayerBuilder;
 import com.blindtigergames.werescrewed.entity.mover.LerpMover;
 import com.blindtigergames.werescrewed.entity.mover.LinearAxis;
-import com.blindtigergames.werescrewed.entity.mover.PistonMover;
+//import com.blindtigergames.werescrewed.entity.mover.PistonMover;
 import com.blindtigergames.werescrewed.entity.mover.PuzzleType;
 import com.blindtigergames.werescrewed.entity.mover.SlidingMotorMover;
 import com.blindtigergames.werescrewed.joint.JointFactory;
@@ -79,7 +79,7 @@ public class EntityDefTestScreen implements com.badlogic.gdx.Screen {
 		entityManager.addSkeleton( rootSkeleton.name, rootSkeleton );
 		platBuilder = new PlatformBuilder( world );
 		testTexture = WereScrewedGame.manager.get(
-				WereScrewedGame.dirHandle.path( ) + "/common/TilesetTest.png",
+				WereScrewedGame.dirHandle.path( ) + "/common/tilesetTest.png",
 				Texture.class );
 
 		// Initialize camera
@@ -181,13 +181,15 @@ public class EntityDefTestScreen implements com.badlogic.gdx.Screen {
 				tiledPlat.body.getPosition( ).x * Util.BOX_TO_PIXEL
 						- ( tiledPlat.sprite.getWidth( ) ),
 				tiledPlat.body.getPosition( ).y * Util.BOX_TO_PIXEL ), 50,
-				tiledPlat, skeleton, world );
+				tiledPlat, world );
+		leftPlatScrew.addStructureJoint( skeleton );
 
 		StructureScrew rightPlatScrew = new StructureScrew( "", new Vector2(
 				tiledPlat.body.getPosition( ).x * Util.BOX_TO_PIXEL
 						+ ( tiledPlat.sprite.getWidth( ) ),
 				tiledPlat.body.getPosition( ).y * Util.BOX_TO_PIXEL ), 50,
-				tiledPlat, skeleton, world );
+				tiledPlat, world );
+		rightPlatScrew.addStructureJoint( skeleton );
 		tiledPlat.addScrew( leftPlatScrew );
 		tiledPlat.addScrew( rightPlatScrew );
 	}
@@ -230,11 +232,11 @@ public class EntityDefTestScreen implements com.badlogic.gdx.Screen {
 		float dy = 200f;
 		for ( int i = 0; i < 10; i++ ) {
 			if ( i % 2 == 0 ) {
-				climbingScrews.add( new StrippedScrew( "", world, new Vector2(
-						x1, y1 ), skeleton ) );
+				climbingScrews.add( new StrippedScrew( "", new Vector2(
+						x1, y1 ), skeleton, world ) );
 			} else {
-				climbingScrews.add( new StrippedScrew( "", world, new Vector2(
-						x2, y1 ), skeleton ) );
+				climbingScrews.add( new StrippedScrew( "", new Vector2(
+						x2, y1 ), skeleton, world ) );
 			}
 			y1 += dy;
 		}
@@ -300,8 +302,8 @@ public class EntityDefTestScreen implements com.badlogic.gdx.Screen {
 					.anchor( piston.body.getWorldCenter( ) ).build( );
 			// Something is still not quite right with this, try replacing 3
 			// with 0.
-			piston.addMover( new PistonMover( pistonJoint, 0f, i / 10.0f + 2f ),
-					RobotState.IDLE );
+			//piston.addMover( new PistonMover( pistonJoint, 0f, i / 10.0f + 2f ),
+			//		RobotState.IDLE );
 			piston.body.setSleepingAllowed( false );
 			skeleton.addDynamicPlatform( piston );
 		}
@@ -317,7 +319,7 @@ public class EntityDefTestScreen implements com.badlogic.gdx.Screen {
 		PrismaticJoint pistonJ = jointBuilder.bodyB( ( Entity ) elevator )
 				.anchor( elevator.body.getWorldCenter( ) ).build( );
 
-		elevator.addMover( new PistonMover( pistonJ, 0f, 2f ), RobotState.IDLE );
+		//elevator.addMover( new PistonMover( pistonJ, 0f, 2f ), RobotState.IDLE );
 		elevator.body.setSleepingAllowed( false );
 		skeleton.addDynamicPlatform( elevator );
 

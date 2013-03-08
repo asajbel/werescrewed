@@ -1,6 +1,5 @@
 package com.blindtigergames.werescrewed.entity.mover;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.blindtigergames.werescrewed.entity.RobotState;
@@ -159,7 +158,7 @@ public class LerpMover implements IMover {
 				p.setLocalPos( newPos, p.getLocalPos( ).y );
 			} else {
 				body.setTransform( beginningPoint.x * Util.PIXEL_TO_BOX,
-						body.getPosition( ).y, 0.0f );
+						body.getPosition( ).y, body.getAngle( ) );
 			}
 		} else {
 			if ( body.getUserData( ) instanceof Platform ) {
@@ -173,11 +172,6 @@ public class LerpMover implements IMover {
 			}
 		}
 		beginningPoint = temp;
-	}
-
-	@Override
-	public void move( float deltaTime, Body body, SteeringOutput steering ) {
-		move( deltaTime, body );
 	}
 
 	public boolean atEnd( ) {
@@ -213,10 +207,10 @@ public class LerpMover implements IMover {
 			if ( p.currentMover( ) instanceof LerpMover ) {
 				LerpMover lm = ( LerpMover ) p.currentMover( );
 				if ( lm.atEnd( ) ) {
-					p.setMoverAtCurrentState(this);
+					p.setMoverAtCurrentState( this );
 				}
 			} else {
-				p.setMoverAtCurrentState(this);
+				p.setMoverAtCurrentState( this );
 			}
 			break;
 		case ON_OFF_MOVER:
@@ -224,12 +218,12 @@ public class LerpMover implements IMover {
 			// the screw value has to be greater than the on value
 			if ( offValue == 0 ) {
 				// if its a lerp mover dont overwrite it
-				if ( p.currentMover() instanceof LerpMover ) {
-					LerpMover lm = ( LerpMover ) p.currentMover();
+				if ( p.currentMover( ) instanceof LerpMover ) {
+					LerpMover lm = ( LerpMover ) p.currentMover( );
 					if ( lm == this ) {
 						// if the same mover is already applied but the screwval
 						// is now off reverese the speed
-						if ( screwVal < onValue && !reverse  ) {
+						if ( screwVal < onValue && !reverse ) {
 							speed *= -1;
 							done = false;
 							reverse = true;
@@ -237,29 +231,29 @@ public class LerpMover implements IMover {
 						}
 					} else if ( lm.atEnd( ) ) {
 						if ( screwVal >= onValue ) {
-							p.addMover(this, RobotState.IDLE);
+							p.addMover( this, RobotState.IDLE );
 							reverse = false;
 						} else {
 							alpha = 0f;
 							done = false;
-							p.setMoverNullAtCurrentState();
+							p.setMoverNullAtCurrentState( );
 						}
 					}
 				} else {
 					if ( screwVal >= onValue ) {
-						p.setMoverAtCurrentState(this);
+						p.setMoverAtCurrentState( this );
 						reverse = false;
 					} else {
 						alpha = 0f;
 						done = false;
-						p.setMoverNullAtCurrentState();
+						p.setMoverNullAtCurrentState( );
 					}
 				}
 			} else { // offvalue = 1
 				// if the value is on the high side of the screw
 				// the screw value has to be lower than the on value
-				if ( p.currentMover() instanceof LerpMover ) {
-					LerpMover lm = ( LerpMover ) p.currentMover();
+				if ( p.currentMover( ) instanceof LerpMover ) {
+					LerpMover lm = ( LerpMover ) p.currentMover( );
 					if ( lm == this ) {
 						// if the same mover is already applied but the screwval
 						// is now off reverese the speed
@@ -271,7 +265,7 @@ public class LerpMover implements IMover {
 						}
 					} else if ( lm.atEnd( ) ) {
 						if ( screwVal <= onValue ) {
-							p.setMoverAtCurrentState(this);
+							p.setMoverAtCurrentState( this );
 							reverse = false;
 						} else {
 							alpha = 0f;
@@ -281,7 +275,7 @@ public class LerpMover implements IMover {
 					}
 				} else {
 					if ( screwVal <= onValue ) {
-						p.setMoverAtCurrentState(this);
+						p.setMoverAtCurrentState( this );
 						reverse = false;
 					} else {
 						alpha = 0f;

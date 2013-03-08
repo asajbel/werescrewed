@@ -1,11 +1,14 @@
 package com.blindtigergames.werescrewed.screws;
 
+import java.util.ArrayList;
+
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.physics.box2d.joints.RevoluteJoint;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityType;
@@ -22,11 +25,12 @@ import com.blindtigergames.werescrewed.util.Util;
 
 public class StrippedScrew extends Screw {
 
-	public StrippedScrew( String name, World world, Vector2 pos, Entity entity ) {
+	public StrippedScrew( String name, Vector2 pos, Entity entity, World world) {
 		super( name, pos, null );
 		this.world = world;
-		screwType = ScrewType.STRIPPED;
+		screwType = ScrewType.SCREW_STRIPPED;
 		entityType = EntityType.SCREW;
+		extraJoints = new ArrayList< RevoluteJoint >( );
 
 		sprite.setColor( 255f/255f, 112f/255f, 52f/255f, 1.0f ); //rust color pulled off a hexdecimal chart
 		sprite.setOrigin( 0.0f, 0.0f );
@@ -34,14 +38,6 @@ public class StrippedScrew extends Screw {
 		constructBody( pos );
 		connectScrewToEntity( entity );
 
-	}
-
-	@Override
-	public void screwLeft( ) {
-	}
-
-	@Override
-	public void screwRight( ) {
 	}
 
 	private void constructBody( Vector2 pos ) {

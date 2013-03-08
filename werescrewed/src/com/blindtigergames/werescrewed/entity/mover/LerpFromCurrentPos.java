@@ -2,7 +2,6 @@ package com.blindtigergames.werescrewed.entity.mover;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
-import com.blindtigergames.werescrewed.entity.RobotState;
 import com.blindtigergames.werescrewed.platforms.Platform;
 import com.blindtigergames.werescrewed.screws.PuzzleScrew;
 import com.blindtigergames.werescrewed.util.Util;
@@ -51,11 +50,6 @@ public class LerpFromCurrentPos implements IMover {
 		} else {
 			body.setTransform( beginningPoint.mul( Util.PIXEL_TO_BOX ), 0.0f );			
 		}
-	}
-
-	@Override
-	public void move( float deltaTime, Body body, SteeringOutput steering ) {
-		move( deltaTime, body );
 	}
 
 	public boolean atEnd( ) {
