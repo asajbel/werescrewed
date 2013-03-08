@@ -39,7 +39,7 @@ class PauseScreen implements com.badlogic.gdx.Screen {
 	public void render( float delta ) {
 		Gdx.gl.glClearColor( 0.5f, 0.5f, 0.5f, 1f );
 		Gdx.gl.glClear( GL10.GL_COLOR_BUFFER_BIT );
-
+		//taking this out temporarily  
 		//if ( Gdx.input.isKeyPressed( Input.Keys.ESCAPE ) ) {
 		//	ScreenManager.getInstance( ).show( ScreenType.PHYSICS );
 		//}
