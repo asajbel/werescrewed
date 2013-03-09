@@ -37,10 +37,6 @@ public class MyControllerListener implements ControllerListener {
 	private boolean prevUnscrewingPressed;
 	private boolean attachScrewPressed;
 
-	// Three modes for screwing (testing)
-	private boolean debugScrewMode1 = true;
-	private boolean debugScrewMode2 = false;
-	private boolean debugScrewMode3 = false;
 
 	// Used for analog stick, L = left, R = right
 	private float axisLX;
@@ -49,22 +45,15 @@ public class MyControllerListener implements ControllerListener {
 	private float axisRY;
 
 	// Angles and directions for screwing
-	private int prevRightAnalogAngle = 0;
 	private int currRightAnalogAngle = 0;
-	private int prevDirection;
-	private int currDirection = 0;
 	private int screwCounter = 0;
 
 	private int prevRegion;
 	private int currRegion;
 
 	// Used for screwing/unscrewing with right analog stick
-	private final static int SCREW_UP = 1;
-	private final static int SCREW_RIGHT = 2;
-	private final static int SCREW_DOWN = 3;
-	private final static int SCREW_LEFT = 4;
 	private final static int SCREW_COUNTER = 10;
-	private final static int SCREW_ANGLE_DIFF = 10;
+	
 
 	// Analog deadzone and center
 	private final static float DEADZONE = 0.2f;
@@ -137,10 +126,7 @@ public class MyControllerListener implements ControllerListener {
 				&& ( axisRX > -ANALOG_CENTER && axisRY > -ANALOG_CENTER ) ) {
 			screwingPressed = false;
 			unscrewingPressed = false;
-			currDirection = 0;
-			prevDirection = 0;
 			screwCounter = 0;
-			prevRightAnalogAngle = 0;
 			currRightAnalogAngle = 0;
 			//prevRegion = -1;
 		} else
@@ -156,24 +142,6 @@ public class MyControllerListener implements ControllerListener {
 	 */
 	@Override
 	public boolean buttonDown( Controller controller, int buttonIndex ) {
-		// Gdx.app.log( controller.getName( ) + " Down",
-		// String.valueOf( buttonIndex ) );
-
-		// Switching between Screwing/Unscrewing Modes
-		if ( buttonIndex == Mapping.BUTTON_SELECT ) {
-			if ( debugScrewMode1 ) {
-				debugScrewMode1 = false;
-				debugScrewMode2 = true;
-			} else if ( debugScrewMode2 ) {
-				debugScrewMode2 = false;
-				debugScrewMode3 = true;
-			} else if ( debugScrewMode3 ) {
-				debugScrewMode3 = false;
-				debugScrewMode1 = true;
-			}
-			Gdx.app.log( "debug", "1: " + debugScrewMode1 + "2: "
-					+ debugScrewMode2 + "3: " + debugScrewMode3 );
-		}
 
 		// Setting jump/pause/bumper
 		if ( buttonIndex == Mapping.BUTTON_FACE_BOT )
@@ -507,22 +475,11 @@ public class MyControllerListener implements ControllerListener {
 	 * 
 	 */
 	private void rightStickScrew( ) {
-		// System.out.println( "x: " + axisRX + ", Y: " + axisRY );
 		axisRY *= -1;
 		currRightAnalogAngle = ( int ) Math.toDegrees( Math.atan2( -axisRY,
 				-axisRX ) ) + 180;
 
-		// System.out.println("screwing: "+ screwing( )
-		// + " unscrewing: " + unscrewing()
-		// + " currAngle: "+ currRightAnalogAngle
-		// + " prevAngle: " + prevRightAnalogAngle);
-		//
-		// First mode is sets the Previous Angle when it is moved from the
-		// center
-		// then when the stick is moved it checks to see if its different from
-		// where
-		// it started, if so then it is screwing/unscrewing
-		if ( debugScrewMode1 ) {
+
 //			if ( prevRegion == -1 ) {
 //				unscrewingPressed = false;
 //				screwingPressed = false;
@@ -530,157 +487,24 @@ public class MyControllerListener implements ControllerListener {
 //				return;
 //			}
 
-			prevRegion = currRegion;
-			currRegion = currRightAnalogAngle / 5;
-			// Gdx.app.log( "angle: " + currRightAnalogAngle, " region: "
-			// +currRegion );
+		prevRegion = currRegion;
+		currRegion = currRightAnalogAngle / 5;
 
-			if ( currRegion - prevRegion > 60 ) {
-				unscrewingPressed = false;
-				screwingPressed = true;
-			} else if ( currRegion - prevRegion < -60 ) {
-				unscrewingPressed = true;
-				screwingPressed = false;
-			} else if ( currRegion > prevRegion ) {
-				unscrewingPressed = true;
-				screwingPressed = false;
-			} else if ( currRegion < prevRegion ) {
-				unscrewingPressed = false;
-				screwingPressed = true;
-			}
-
-		} else if ( debugScrewMode2 ) {
-			// if ( prevRightAnalogAngle == 0 )
-			// prevRightAnalogAngle = currRightAnalogAngle;
-			// if ( currRightAnalogAngle - prevRightAnalogAngle >
-			// SCREW_ANGLE_DIFF ) {
-			// screwingPressed = false;
-			// unscrewingPressed = true;
-			// prevRightAnalogAngle = currRightAnalogAngle;
-			// } else if ( prevRightAnalogAngle - currRightAnalogAngle >
-			// SCREW_ANGLE_DIFF ) {
-			// unscrewingPressed = false;
-			// screwingPressed = true;
-			// prevRightAnalogAngle = currRightAnalogAngle;
-			// }
-
-			if ( currRightAnalogAngle - prevRightAnalogAngle > 250 ) {
-				screwingPressed = true;
-				unscrewingPressed = false;
-				prevRightAnalogAngle = currRightAnalogAngle;
-			} else if ( currRightAnalogAngle - prevRightAnalogAngle < -250 ) {
-				screwingPressed = false;
-				unscrewingPressed = true;
-				prevRightAnalogAngle = currRightAnalogAngle;
-			} else if ( currRightAnalogAngle < prevRightAnalogAngle ) {
-				screwingPressed = true;
-				unscrewingPressed = false;
-				prevRightAnalogAngle = currRightAnalogAngle;
-			} else if ( prevRightAnalogAngle < currRightAnalogAngle ) {
-				unscrewingPressed = true;
-				screwingPressed = false;
-				prevRightAnalogAngle = currRightAnalogAngle;
-			} else {
-
-			}
+		if ( currRegion - prevRegion > 60 ) {
+			unscrewingPressed = false;
+			screwingPressed = true;
+		} else if ( currRegion - prevRegion < -60 ) {
+			unscrewingPressed = true;
+			screwingPressed = false;
+		} else if ( currRegion > prevRegion ) {
+			unscrewingPressed = true;
+			screwingPressed = false;
+		} else if ( currRegion < prevRegion ) {
+			unscrewingPressed = false;
+			screwingPressed = true;
 		}
 
-		// Last mode checks when the stick has past specific points
-		// meaning top (0, -1) right (1, 0) left (-1, 0) and bottom (0, 1)
-		// then it sets the current direction, updates screwing, then sets the
-		// prev direction
-		else if ( debugScrewMode3 ) {
-
-			prevRightAnalogAngle = currRightAnalogAngle;
-
-			currDirection = 0;
-
-			if ( ( int ) axisRX == 1.0f ) {
-				currDirection = SCREW_RIGHT;
-			}
-			if ( ( int ) axisRX == -1.0f ) {
-				currDirection = SCREW_LEFT;
-			}
-			if ( ( int ) axisRY == 1.0f ) {
-				currDirection = SCREW_DOWN;
-			}
-			if ( ( int ) axisRY == -1.0f ) {
-				currDirection = SCREW_UP;
-			}
-
-			if ( screwCounter > SCREW_COUNTER ) {
-				unscrewingPressed = false;
-				screwingPressed = false;
-				currDirection = 0;
-				screwCounter = 0;
-			}
-
-			if ( currDirection == SCREW_UP ) {
-				if ( prevDirection == SCREW_LEFT ) {
-					screwingPressed = true;
-					unscrewingPressed = false;
-					screwCounter = 0;
-				}
-				if ( prevDirection == SCREW_RIGHT ) {
-					screwingPressed = false;
-					unscrewingPressed = true;
-					screwCounter = 0;
-				}
-			}
-
-			if ( currDirection == SCREW_LEFT ) {
-				if ( prevDirection == SCREW_UP ) {
-					screwingPressed = false;
-					unscrewingPressed = true;
-
-					screwCounter = 0;
-				}
-				if ( prevDirection == SCREW_DOWN ) {
-					screwingPressed = true;
-					unscrewingPressed = false;
-					screwCounter = 0;
-				}
-			}
-
-			if ( currDirection == SCREW_RIGHT ) {
-				if ( prevDirection == SCREW_UP ) {
-					screwingPressed = true;
-					unscrewingPressed = false;
-					screwCounter = 0;
-				}
-				if ( prevDirection == SCREW_DOWN ) {
-					screwingPressed = false;
-					unscrewingPressed = true;
-					screwCounter = 0;
-				}
-			}
-
-			if ( currDirection == SCREW_DOWN ) {
-				if ( prevDirection == SCREW_RIGHT ) {
-					screwingPressed = true;
-					unscrewingPressed = false;
-					screwCounter = 0;
-				}
-				if ( prevDirection == SCREW_LEFT ) {
-					screwingPressed = false;
-					unscrewingPressed = true;
-					screwCounter = 0;
-				}
-			}
-
-			if ( ( int ) axisRX == 1.0f ) {
-				prevDirection = SCREW_RIGHT;
-			}
-			if ( ( int ) axisRX == -1.0f ) {
-				prevDirection = SCREW_LEFT;
-			}
-			if ( ( int ) axisRY == 1.0f ) {
-				prevDirection = SCREW_DOWN;
-			}
-			if ( ( int ) axisRY == -1.0f ) {
-				prevDirection = SCREW_UP;
-			}
-
-		}
+		
 	}
+	
 }
