@@ -36,7 +36,7 @@ public class StrippedScrew extends Screw {
 		sprite.setOrigin( 0.0f, 0.0f );
 
 		constructBody( pos );
-		connectScrewToEntity( entity );
+		addStructureJoint( entity );
 
 	}
 
@@ -74,14 +74,6 @@ public class StrippedScrew extends Screw {
 //		radarShape.dispose( );
 		screwShape.dispose( );
 
-	}
-
-	public void connectScrewToEntity( Entity entity ) {
-		// connect the screw to the entity
-		RevoluteJointDef revoluteJointDef = new RevoluteJointDef( );
-		revoluteJointDef.initialize( body, entity.body, body.getPosition( ) );
-		revoluteJointDef.enableMotor = false;
-		world.createJoint( revoluteJointDef );
 	}
 
 }

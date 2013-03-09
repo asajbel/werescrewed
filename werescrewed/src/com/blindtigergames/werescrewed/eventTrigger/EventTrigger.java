@@ -12,12 +12,12 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityType;
+import com.blindtigergames.werescrewed.entity.Skeleton;
 import com.blindtigergames.werescrewed.entity.action.IAction;
 import com.blindtigergames.werescrewed.hazard.Hazard;
 import com.blindtigergames.werescrewed.particles.Steam;
 import com.blindtigergames.werescrewed.platforms.Platform;
 import com.blindtigergames.werescrewed.player.Player;
-import com.blindtigergames.werescrewed.skeleton.Skeleton;
 import com.blindtigergames.werescrewed.util.Util;
 
 

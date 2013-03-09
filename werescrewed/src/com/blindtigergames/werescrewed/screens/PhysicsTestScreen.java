@@ -28,6 +28,8 @@ import com.blindtigergames.werescrewed.debug.SBox2DDebugRenderer;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.PolySprite;
 import com.blindtigergames.werescrewed.entity.RobotState;
+import com.blindtigergames.werescrewed.entity.RootSkeleton;
+import com.blindtigergames.werescrewed.entity.Skeleton;
 import com.blindtigergames.werescrewed.entity.action.EntityActivateMoverAction;
 import com.blindtigergames.werescrewed.entity.action.EntityDeactivateMoverAction;
 import com.blindtigergames.werescrewed.entity.builders.EventTriggerBuilder;
@@ -58,8 +60,6 @@ import com.blindtigergames.werescrewed.screws.BossScrew;
 import com.blindtigergames.werescrewed.screws.PuzzleScrew;
 import com.blindtigergames.werescrewed.screws.StrippedScrew;
 import com.blindtigergames.werescrewed.screws.StructureScrew;
-import com.blindtigergames.werescrewed.skeleton.RootSkeleton;
-import com.blindtigergames.werescrewed.skeleton.Skeleton;
 import com.blindtigergames.werescrewed.util.Util;
 
 public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
@@ -290,6 +290,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 				.buildTilePlatform( );
 		skeleton.addPlatform( singTile );
 		singTile.body.setFixedRotation( false );
+		singTile.setCategoryMask( Util.KINEMATIC_OBJECTS, Util.CATEGORY_EVERYTHING );
 
 		// Moving platform
 		movingTP = platBuilder.position( 0.0f, 120.0f ).dimensions( 10, 1 )

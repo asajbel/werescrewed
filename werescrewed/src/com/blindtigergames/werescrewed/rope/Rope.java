@@ -13,7 +13,7 @@ import com.blindtigergames.werescrewed.screws.Screw;
 import com.blindtigergames.werescrewed.screws.StrippedScrew;
 import com.blindtigergames.werescrewed.util.Util;
 
-/* A chain of box fixtures that 
+/** A chain of box fixtures that 
  * are jointed together to act as a rope.
  * 
  * @author Edward Boning, Ranveer Dhaliwal
@@ -25,7 +25,7 @@ public class Rope {
 	private ArrayList< Link > linkParts;
 	private World world;
 
-	/*
+	/**
 	 * Constructs a rope at a given position
 	 * 
 	 * @param name name of the rope entity

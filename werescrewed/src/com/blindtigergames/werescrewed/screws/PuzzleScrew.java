@@ -26,7 +26,7 @@ import com.blindtigergames.werescrewed.util.Util;
 public class PuzzleScrew extends Screw {
 	public PuzzleManager puzzleManager;
 	private boolean resetAble;
-	private int startDepth;
+	
 
 	public PuzzleScrew( String name, Vector2 pos, int max, Entity entity,
 			World world, int startDepth, boolean resetable ) {
@@ -43,7 +43,7 @@ public class PuzzleScrew extends Screw {
 		sprite.setColor( 16f/255f, 215f/255f, 96f/255f, 1.0f);
 
 		constructBody( pos );
-		connectScrewToEntity( entity );
+		addStructureJoint( entity );
 	}
 
 	/**
@@ -63,6 +63,33 @@ public class PuzzleScrew extends Screw {
 		}
 	}
 	
+	@Override
+	public void screwLeft( int region, boolean switchedDirections ) {
+		if(switchedDirections){
+			startRegion = region;
+			prevDiff = 0;
+		}
+		
+		if ( depth > 0 ) {
+			diff = startRegion - region;
+			newDiff = diff - prevDiff;
+			if(newDiff > 10){
+				newDiff = 0;
+			}
+			prevDiff = diff;
+			
+			body.setAngularVelocity( 1 );
+			depth += newDiff;
+			spriteRegion += region;
+			if(diff != 0){
+				rotation += (-newDiff * 5);
+			}
+			screwStep = depth + 5;
+			puzzleManager
+					.runElement( this, ( float ) depth / ( ( float ) maxDepth ) );
+		}
+		
+	}
 	@Override
 	public void screwLeft(){
 		if ( depth > 0 ) {
@@ -85,7 +112,6 @@ public class PuzzleScrew extends Screw {
 		if ( depth < maxDepth ) {
 			body.setAngularVelocity( -1 );
 			depth++;
-			spriteRegion += region;
 			rotation = region * 5;
 			screwStep = depth + 6;
 			puzzleManager
@@ -93,6 +119,33 @@ public class PuzzleScrew extends Screw {
 		}
 	}
 	
+	@Override
+	public void screwRight( int region, boolean switchedDirections ) {
+		if(switchedDirections){
+			startRegion = region;
+			prevDiff = 0;
+		}
+		
+		if ( depth < maxDepth ) {
+			diff = startRegion - region;
+			newDiff = diff - prevDiff;
+			if(newDiff < -10){
+				newDiff = 0;
+			}
+			prevDiff = diff;
+			
+			
+			body.setAngularVelocity( -1 );
+			depth += newDiff;
+			if(diff != 0){
+				rotation += (-newDiff * 5);
+			}
+			screwStep = depth + 6;
+			puzzleManager
+					.runElement( this, ( float ) depth / ( ( float ) maxDepth ) );
+		}
+		
+	}
 	@Override
 	public void screwRight(){
 		if ( depth < maxDepth ) {
@@ -172,11 +225,4 @@ public class PuzzleScrew extends Screw {
 		screwShape.dispose( );
 	}
 
-	private void connectScrewToEntity( Entity entity ) {
-		// connect the screw to the entity;
-		RevoluteJointDef revoluteJointDef = new RevoluteJointDef( );
-		revoluteJointDef.initialize( body, entity.body, body.getPosition( ) );
-		revoluteJointDef.enableMotor = false;
-		world.createJoint( revoluteJointDef );
-	}
 }

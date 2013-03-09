@@ -1,4 +1,4 @@
-package com.blindtigergames.werescrewed.skeleton;
+package com.blindtigergames.werescrewed.entity;
 
 import java.util.HashMap;
 

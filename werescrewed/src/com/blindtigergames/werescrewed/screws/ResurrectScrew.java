@@ -78,6 +78,33 @@ public class ResurrectScrew extends Screw {
 		}
 	}
 
+	@Override
+	public void screwLeft( int region, boolean switchedDirections ) {
+		if(switchedDirections){
+			startRegion = region;
+			prevDiff = 0;
+		}
+		
+		if ( pullLeft ) {
+			diff = startRegion - region;
+			newDiff = diff - prevDiff;
+			if(newDiff > 10){
+				newDiff = 0;
+			}
+			prevDiff = diff;
+			
+			body.setAngularVelocity( 1 );
+			depth += newDiff;
+			spriteRegion += region;
+			if(diff != 0){
+				rotation += (-newDiff * 5);
+			}
+			screwStep = depth + 5;
+			pulleyWeight.setLinearVelocity( new Vector2( -1f, 0f ) );
+		}
+		
+	}
+	
 	/**
 	 * if the pulley weight goes to the right use right to draw dead player
 	 * closer
@@ -102,6 +129,31 @@ public class ResurrectScrew extends Screw {
 		}
 	}
 
+	@Override
+	public void screwRight( int region, boolean switchedDirections ) {
+		if(switchedDirections){
+			startRegion = region;
+			prevDiff = 0;
+		}
+		
+		if ( !pullLeft) {
+			diff = startRegion - region;
+			newDiff = diff - prevDiff;
+			if(newDiff < -10){
+				newDiff = 0;
+			}
+			prevDiff = diff;
+			
+			body.setAngularVelocity( -1 );
+			depth += newDiff;
+			if(diff != 0){
+				rotation += (-newDiff * 5);
+			}
+			screwStep = depth + 5;
+			pulleyWeight.setLinearVelocity( new Vector2( 1f, 0f ) );
+		}
+		
+	}
 	/**
 	 * look at collisions with the screw and determine if it is the dead player
 	 * if so bring the player back to life
@@ -131,6 +183,7 @@ public class ResurrectScrew extends Screw {
 	/**
 	 * destroys the joints and body of the object
 	 */
+	@Override
 	public void remove( ) {
 		if ( !removed ) {
 			if ( pulleyJoint != null ) {

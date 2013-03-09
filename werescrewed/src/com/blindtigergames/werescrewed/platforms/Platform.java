@@ -12,8 +12,8 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityDef;
 import com.blindtigergames.werescrewed.entity.EntityType;
+import com.blindtigergames.werescrewed.entity.Skeleton;
 import com.blindtigergames.werescrewed.screws.Screw;
-import com.blindtigergames.werescrewed.skeleton.Skeleton;
 import com.blindtigergames.werescrewed.util.Util;
 
 /**
@@ -211,7 +211,6 @@ public class Platform extends Entity {
 	@Override
 	public void update( float deltaTime ) {
 		super.update( deltaTime );
-
 		// Basic velocity so that platforms can do friction
 		// Uhhhhhh... false && [anything] is false. This body never happens
 		if ( false && body.getType( ) == BodyType.KinematicBody ) {
@@ -238,10 +237,14 @@ public class Platform extends Entity {
 	/**
 	 * removes the bodies and joints
 	 */
+	@Override
 	public void remove ( ) {
-        for ( JointEdge j: body.getJointList( ) ) {
-        	world.destroyJoint( j.joint );
-        }
+		for ( Screw s: screws ) {
+			s.remove( );
+		}
+		while ( body.getJointList( ).iterator( ).hasNext( ) ) {
+			world.destroyJoint( body.getJointList( ).get( 0 ).joint );
+		}
         world.destroyBody( body );		
 	}
 	
