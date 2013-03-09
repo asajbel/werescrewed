@@ -85,9 +85,10 @@ public class Screw extends Entity {
 	/**
 	 * destroys everything contained within the screw instance
 	 */
+	@Override
 	public void remove( ) {
-		for ( RevoluteJoint j : extraJoints ) {
-			world.destroyJoint( j );
+		while ( body.getJointList( ).iterator( ).hasNext( ) ) {
+			world.destroyJoint( body.getJointList( ).get( 0 ).joint );
 		}
 		world.destroyBody( body );
 		removed = true;

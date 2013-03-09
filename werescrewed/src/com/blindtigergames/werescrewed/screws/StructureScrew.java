@@ -38,7 +38,6 @@ public class StructureScrew extends Screw {
 		
 		constuctBody( pos );
 		addStructureJoint( entity );
-
 	}
 
 	@Override
