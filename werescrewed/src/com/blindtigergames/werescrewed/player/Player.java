@@ -200,6 +200,7 @@ public class Player extends Entity {
 //			System.out.println( "feet friction: " + feet.getFriction( ) 
 //					+ " feet position: " + feet.getBody( ).getPosition( ) );
 			
+			//System.out.println(hitScrew);
 		}
 		if ( kinematicTransform ) {
 			// setPlatformTransform( platformOffset );
@@ -249,10 +250,6 @@ public class Player extends Entity {
 		if ( Gdx.input.isKeyPressed( Keys.ENTER ) ) {
 			if ( controllerDebug ) {
 				controllerIsActive = !controllerIsActive;
-				if(controllerIsActive)
-					feet.setFriction( 1.0f );
-				else
-					feet.setFriction( 0.0f );
 			}
 			controllerDebug = false;
 		} else {
@@ -642,34 +639,36 @@ public class Player extends Entity {
 	
 	private void updateFootFriction( ) {
 		
-		if(isGrounded()){
-			if ( feet.getFriction() < PLAYER_FRICTION ) {
-				frictionCounter += FRICTION_INCREMENT;
-						
-				CircleShape ps = new CircleShape();
-				ps.setRadius( feet.getShape( ).getRadius( ) );
-
-	
-				ps.setPosition( ps.getPosition( ).add( FEET_OFFSET_X, FEET_OFFSET_Y ) );
-				FixtureDef fd = new FixtureDef();
-				
-				fd.shape = ps;
-				fd.density = 1f;
-				fd.restitution = 0.001f;
-				fd.friction = frictionCounter;
-				body.destroyFixture( feet );
-				
-				body.createFixture( fd );
-				
-				if ( feet.getFriction() > PLAYER_FRICTION ) {
-					feet.setFriction( PLAYER_FRICTION );
-
-				}
-			}
-		} else{
-			frictionCounter = 0f;
-			feet.setFriction( frictionCounter);
-		}
+//		if(isGrounded()){
+//			if ( feet.getFriction() < PLAYER_FRICTION ) {
+//				frictionCounter += FRICTION_INCREMENT;
+//						
+//				CircleShape ps = new CircleShape();
+//				ps.setRadius( feet.getShape( ).getRadius( ) );
+//
+//	
+//				ps.setPosition( ps.getPosition( ).add( FEET_OFFSET_X, FEET_OFFSET_Y ) );
+//				FixtureDef fd = new FixtureDef();
+//				
+//				fd.shape = ps;
+//				fd.density = 1f;
+//				fd.restitution = 0.001f;
+//				fd.friction = frictionCounter;
+//				body.destroyFixture( feet );
+//				
+//				body.createFixture( fd );
+//				
+//
+//
+//				if ( feet.getFriction() > PLAYER_FRICTION ) {
+//					feet.setFriction( PLAYER_FRICTION );
+//
+//				}
+//			}
+//		} else{
+//			frictionCounter = 0f;
+//			feet.setFriction( frictionCounter);
+//		}
 		
 	}
 
