@@ -112,9 +112,9 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 
 		// Initialize players
 		player1 = new PlayerBuilder( ).name( "player1" ).world( world )
-				.position( 1f * TILE, 4 * TILE ).buildPlayer( );
+				.position(145f * TILE, 86f * TILE).buildPlayer( );
 		player2 = new PlayerBuilder( ).name( "player2" ).world( world )
-				.position( 1f * TILE, 4 * TILE ).buildPlayer( );
+				.position( 145f * TILE, 86f * TILE ).buildPlayer( );
 
 		// END: 175f * TILE, 96f * TILE
 		// START :: 1f * TILE, 1f * TILE
@@ -877,8 +877,9 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 
 		RopeBuilder ropeBuilder = new RopeBuilder( world );
 
-		testRope = ropeBuilder.position( 154f * TILE, 104 * TILE ).width( 16f )
-				.height( 64f ).links( 5 ).createScrew( ).buildRope( );
+		//texture only exists for 16x64 rope, which are default values for w/h
+		testRope = ropeBuilder.position( 154f * TILE, 104 * TILE ).links( 5 )
+				.createScrew( ).buildRope( );
 		skel9.addRope( testRope );
 
 		// StrippedScrew ropeScrew = new StrippedScrew( "ropeScrew", world,

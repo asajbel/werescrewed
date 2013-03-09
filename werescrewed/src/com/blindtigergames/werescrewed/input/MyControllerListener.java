@@ -142,7 +142,7 @@ public class MyControllerListener implements ControllerListener {
 			screwCounter = 0;
 			prevRightAnalogAngle = 0;
 			currRightAnalogAngle = 0;
-			prevRegion = -1;
+			//prevRegion = -1;
 		} else
 			// Updating Right Stick Screwing
 			rightStickScrew( );
@@ -342,6 +342,14 @@ public class MyControllerListener implements ControllerListener {
 		return axisLY;
 	}
 
+	public float analogRightAxisX(){
+		return axisRX;
+	}
+	
+	public float analogRightAxisY(){
+		return axisRY;
+	}
+	
 	/**
 	 * Returns whether the pause button is pressed.
 	 * 
@@ -483,10 +491,13 @@ public class MyControllerListener implements ControllerListener {
 		return Controllers.getControllers( ).indexOf( controller, true );
 	}
 
-	public int getRegion( ) {
+	public int getCurrRegion( ) {
 		return currRegion;
 	}
 
+	public int getPrevRegion(){
+		return prevRegion;
+	}
 	/**
 	 * This function checks to see Right stick's state and then sets the screw
 	 * or unscrew boolean
@@ -512,12 +523,12 @@ public class MyControllerListener implements ControllerListener {
 		// where
 		// it started, if so then it is screwing/unscrewing
 		if ( debugScrewMode1 ) {
-			if ( prevRegion == -1 ) {
-				unscrewingPressed = false;
-				screwingPressed = false;
-				prevRegion = currRegion;
-				return;
-			}
+//			if ( prevRegion == -1 ) {
+//				unscrewingPressed = false;
+//				screwingPressed = false;
+//				prevRegion = currRegion;
+//				return;
+//			}
 
 			prevRegion = currRegion;
 			currRegion = currRightAnalogAngle / 5;

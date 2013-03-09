@@ -12,8 +12,6 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.Filter;
 import com.badlogic.gdx.physics.box2d.Fixture;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJoint;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
@@ -81,9 +79,15 @@ public class Player extends Entity {
 	private Controller controller;
 	private boolean controllerIsActive, controllerDebug;
 	private float leftAnalogX;
+	@SuppressWarnings( "unused" )
 	private float leftAnalogY;
 	// private float rightAnalogX;
 	// private float rightAnalogY;
+	private boolean switchedScrewingDirection;
+	private boolean isScrewing;
+	private boolean isUnscrewing;
+	private boolean resetScrewing;
+	
 
 	private Screw currentScrew;
 	private Player otherPlayer;
@@ -178,6 +182,10 @@ public class Player extends Entity {
 	 */
 	public void update( float deltaTime ) {
 		super.update( deltaTime );
+		
+		if(name.equals( "player1" )){
+
+		}
 		if ( kinematicTransform ) {
 			// setPlatformTransform( platformOffset );
 			kinematicTransform = false;
@@ -906,7 +914,19 @@ public class Player extends Entity {
 		// loosen and tighten screws and jump when the screw joint is gone
 		if ( controller ) {
 			if ( controllerListener.unscrewing( ) ) {
-				currentScrew.screwLeft( controllerListener.getRegion( ) );
+				if(resetScrewing){
+					resetScrewing = false;
+				}
+				else if(isScrewing) {
+					switchedScrewingDirection = true;
+					isUnscrewing = true;
+					isScrewing = false;
+				}
+				else{
+					isUnscrewing = true;
+					switchedScrewingDirection = false;
+				}
+				currentScrew.screwLeft( controllerListener.getCurrRegion( ), switchedScrewingDirection );
 				if ( Metrics.activated ) {
 					if ( currentScrew.getScrewType( ) != ScrewType.SCREW_STRIPPED ) {
 						if ( currentScrew.getDepth( ) == 0 ) {
@@ -921,7 +941,19 @@ public class Player extends Entity {
 					}
 				}
 			} else if ( controllerListener.screwing( ) ) {
-				currentScrew.screwRight( controllerListener.getRegion( ) );
+				if(resetScrewing){
+					resetScrewing = false;
+				}
+				else if(isUnscrewing){
+					switchedScrewingDirection = true;
+					isScrewing = true;
+					isUnscrewing = false;
+				}
+				else{
+					isScrewing = true;
+					switchedScrewingDirection = false;
+				}
+				currentScrew.screwRight( controllerListener.getCurrRegion( ), switchedScrewingDirection );
 				if ( Metrics.activated ) {
 					if ( currentScrew.getScrewType( ) != ScrewType.SCREW_STRIPPED ) {
 						if ( currentScrew.getDepth( ) == currentScrew
@@ -1227,11 +1259,17 @@ public class Player extends Entity {
 	 * grab button
 	 */
 	private void resetScrewJumpGrab( ) {
+		if ( ( controllerListener.analogRightAxisX() < 0.7 && controllerListener.analogRightAxisY() < 0.7 )
+				&& ( controllerListener.analogRightAxisX() > -0.7 && controllerListener.analogRightAxisY() > -0.7 ) ) {
+			switchedScrewingDirection = true;
+			resetScrewing = true;
+		}
 		if ( isGrounded( ) ) {
 			jumpCounter = 0;
 			directionJumpDivsion = 2;
 			changeDirectionsOnce = true;
 			prevButton = null;
+			//switchedScrewingDirection = false;
 		}
 		if ( !controllerListener.screwPressed( ) ) {
 			screwButtonHeld = false;
