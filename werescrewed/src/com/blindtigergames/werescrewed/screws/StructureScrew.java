@@ -119,6 +119,7 @@ public class StructureScrew extends Screw {
 		}
 		
 	}
+	
 	@Override
 	public void screwRight( ) {
 		if ( depth < maxDepth ) {
@@ -128,6 +129,7 @@ public class StructureScrew extends Screw {
 			screwStep = depth + 6;
 		}
 	}
+	
 	@Override
 	public void update( float deltaTime ) {
 		super.update( deltaTime );
@@ -193,6 +195,7 @@ public class StructureScrew extends Screw {
 		screwBodyDef.type = BodyType.DynamicBody;
 		screwBodyDef.position.set( pos.mul( Util.PIXEL_TO_BOX ) );
 		screwBodyDef.gravityScale = 0.07f;
+		screwBodyDef.fixedRotation = false;
 		body = world.createBody( screwBodyDef );
 		CircleShape screwShape = new CircleShape( );
 		screwShape
