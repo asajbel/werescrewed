@@ -2,6 +2,7 @@ player/player_b_m_textureatlas.png
 format: RGBA8888
 filter: Linear,Linear
 repeat: none
+offset: 0, 0
 screwing
   rotate: false
   xy: 262, 392

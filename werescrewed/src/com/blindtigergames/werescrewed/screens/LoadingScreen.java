@@ -91,6 +91,8 @@ public class LoadingScreen extends Screen {
 	 * 
 	 * @author Nick Patti
 	 * 
+	 * @deprecated
+	 * 
 	 * @param currentDirectory
 	 *            The current directory that the function is loading files from
 	 * 
@@ -157,13 +159,11 @@ public class LoadingScreen extends Screen {
 	private void loadCurrentFile( String fileExtension, String fullPathName ) {
 		if ( fileExtension.equals( "png" ) ) {
 			WereScrewedGame.manager.load( fullPathName, Texture.class );
-			// Gdx.app.log( "Texture file loaded", fullPathName );
+			Gdx.app.log( "Texture file loaded", fullPathName );
 
-			// TODO: This will need to be adjusted when music files are loaded.
-			// So far, I'm assuming if the file is an .mp3, it's a music file
 		} else if ( fileExtension.equals( "ogg" ) ) {
 			WereScrewedGame.manager.load( fullPathName, Sound.class );
-			// Gdx.app.log( "Sound file loaded", fullPathName );
+			Gdx.app.log( "Sound file loaded", fullPathName );
 
 		} else if ( fileExtension.equals( "mp3" ) ) {
 			WereScrewedGame.manager.load( fullPathName, Music.class );
@@ -171,7 +171,7 @@ public class LoadingScreen extends Screen {
 
 		} else if ( fileExtension.equals( "pack" ) ) {
 			WereScrewedGame.manager.loadAtlas( fullPathName );
-			// Gdx.app.log( "Atlas pack file loaded", fullPathName );
+			Gdx.app.log( "Atlas pack file loaded", fullPathName );
 		}
 		else if ( fileExtension.equals( "fnt" )){
 			WereScrewedGame.manager.loadFont( fullPathName );

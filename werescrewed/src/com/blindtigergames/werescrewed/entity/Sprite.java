@@ -1,8 +1,11 @@
 package com.blindtigergames.werescrewed.entity;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.blindtigergames.werescrewed.WereScrewedGame;
@@ -29,13 +32,51 @@ public class Sprite extends com.badlogic.gdx.graphics.g2d.Sprite implements I_Dr
 	Animation animation;
 	Texture spriteSheet;
 	TextureRegion[ ] spriteSheetFrames;
+	
+	//New variables for texture atlas stuff
+	TextureAtlas spriteAtlas;
+	AtlasRegion[] spriteAtlasFrames;
+	AtlasRegion currentAtlasFrame;
 	TextureRegion currentFrame;
+	
 	float stateTime;
 
 	/**
 	 * Create an animating sprite using a texture atlas.
+	 * 
+	 * @author Nick Patti
+	 * 
+	 * @param animName
+	 * 			The name of the animation that you would like to use,
+	 * 			as seen in the texture pack file
+	 * 
+	 * @param f
+	 * 			The number of frames in the sprite sheet
+	 * 
+	 * @param fr
+	 * 			The frame rate of the animation
+	 * 
+	 * @param loopType
+	 *            The loop type specified by a constant provided by libGDX
 	 */
-	
+	public Sprite(TextureAtlas atlas, String animName, int f, float fr, int loopType){
+		
+		spriteAtlas = atlas;
+		
+		//the frames for animation
+		spriteAtlasFrames = new AtlasRegion[f];
+		
+		//fill the frames with the appropriate texture regions
+		for(int i = 0; i < f; ++i){
+			
+			//find the correct texture region using name and index
+			spriteAtlasFrames[i] = spriteAtlas.findRegion(animName, i+1);
+		}
+		
+		//fill in the animation with the frames
+		animation = new Animation(fr, spriteAtlasFrames);
+		animation.setPlayMode(loopType);
+	}
 	
 	/**
 	 * Create an animating sprite using a sprite sheet. Must know the number of
