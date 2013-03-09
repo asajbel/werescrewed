@@ -29,8 +29,8 @@ import com.blindtigergames.werescrewed.screws.Screw;
 import com.blindtigergames.werescrewed.screws.ScrewType;
 import com.blindtigergames.werescrewed.screws.StrippedScrew;
 import com.blindtigergames.werescrewed.screws.StructureScrew;
-import com.blindtigergames.werescrewed.skeleton.RootSkeleton;
-import com.blindtigergames.werescrewed.skeleton.Skeleton;
+import com.blindtigergames.werescrewed.entity.RootSkeleton;
+import com.blindtigergames.werescrewed.entity.Skeleton;
 import com.blindtigergames.werescrewed.util.ArrayHash;
 
 
