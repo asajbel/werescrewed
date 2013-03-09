@@ -1,6 +1,7 @@
 ##sounds
 /common/sounds/inceptionbutton.mp3
 /common/sounds/jump.ogg
+/common/sounds/WilhelmScream.mp3
 
 ##texture atlas
 /common/tileset1.pack

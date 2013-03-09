@@ -68,6 +68,10 @@ public class AssetManager extends com.badlogic.gdx.assets.AssetManager {
 		fontMap.put( fileHandle.nameWithoutExtension( ), font );
 	}
 	
+	public boolean isFontLoaded(String fontName){
+		return fontMap.get( fontName ) != null;
+	}
+	
 	public BitmapFont getFont(String fontName){
 		return fontMap.get( fontName );
 	}
