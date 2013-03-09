@@ -43,7 +43,7 @@ public class PuzzleScrew extends Screw {
 		sprite.setColor( 16f/255f, 215f/255f, 96f/255f, 1.0f);
 
 		constructBody( pos );
-		connectScrewToEntity( entity );
+		addStructureJoint( entity );
 	}
 
 	/**
@@ -225,11 +225,4 @@ public class PuzzleScrew extends Screw {
 		screwShape.dispose( );
 	}
 
-	private void connectScrewToEntity( Entity entity ) {
-		// connect the screw to the entity;
-		RevoluteJointDef revoluteJointDef = new RevoluteJointDef( );
-		revoluteJointDef.initialize( body, entity.body, body.getPosition( ) );
-		revoluteJointDef.enableMotor = false;
-		world.createJoint( revoluteJointDef );
-	}
 }

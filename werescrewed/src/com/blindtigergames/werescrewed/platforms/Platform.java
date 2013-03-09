@@ -237,10 +237,14 @@ public class Platform extends Entity {
 	/**
 	 * removes the bodies and joints
 	 */
+	@Override
 	public void remove ( ) {
-        for ( JointEdge j: body.getJointList( ) ) {
-        	world.destroyJoint( j.joint );
-        }
+		for ( Screw s: screws ) {
+			s.remove( );
+		}
+		while ( body.getJointList( ).iterator( ).hasNext( ) ) {
+			world.destroyJoint( body.getJointList( ).get( 0 ).joint );
+		}
         world.destroyBody( body );		
 	}
 	

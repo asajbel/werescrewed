@@ -183,6 +183,7 @@ public class ResurrectScrew extends Screw {
 	/**
 	 * destroys the joints and body of the object
 	 */
+	@Override
 	public void remove( ) {
 		if ( !removed ) {
 			if ( pulleyJoint != null ) {
