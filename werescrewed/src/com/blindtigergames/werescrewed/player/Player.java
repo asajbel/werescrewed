@@ -10,8 +10,10 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.Filter;
 import com.badlogic.gdx.physics.box2d.Fixture;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJoint;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
@@ -57,6 +59,10 @@ public class Player extends Entity {
 	public final static int GRAB_COUNTER_STEPS = 5;
 	public final static Vector2 ANCHOR_BUFFER_SIZE = new Vector2( 400f, 256f );
 	public final static float STEAM_FORCE = .5f;
+	public final static float FRICTION_INCREMENT = 0.1f;
+	public final static float FEET_OFFSET_X = 39f * Util.PIXEL_TO_BOX;
+	public final static float FEET_OFFSET_Y = 15f  * Util.PIXEL_TO_BOX;
+	
 	public float directionJumpDivsion = 2.0f;
 
 	public Fixture feet;
@@ -106,7 +112,6 @@ public class Player extends Entity {
 	private boolean kinematicTransform = false;
 	private boolean changeDirectionsOnce = false;
 	private boolean steamCollide = false;
-	private float footFriction = PLAYER_FRICTION;
 
 	private IMover mover;
 
@@ -115,6 +120,10 @@ public class Player extends Entity {
 
 	@SuppressWarnings( "unused" )
 	private Sound jumpSound;
+	
+	public float frictionCounter = 0;
+	
+
 
 	// Enums
 	/**
@@ -184,7 +193,13 @@ public class Player extends Entity {
 		super.update( deltaTime );
 		
 		if(name.equals( "player1" )){
-
+//			if(contact != null)
+//				System.out.println("contact friction: " + contact.getFriction( ) 
+//						+ "feet friction: " + feet.getFriction( ) );
+			
+//			System.out.println( "feet friction: " + feet.getFriction( ) 
+//					+ " feet position: " + feet.getBody( ).getPosition( ) );
+			
 		}
 		if ( kinematicTransform ) {
 			// setPlatformTransform( platformOffset );
@@ -218,7 +233,7 @@ public class Player extends Entity {
 			}
 		}
 
-		// updateFootFriction();
+		updateFootFriction();
 
 		// debug stuff
 		// Hit backspace to kill the player or respawn him
@@ -234,6 +249,10 @@ public class Player extends Entity {
 		if ( Gdx.input.isKeyPressed( Keys.ENTER ) ) {
 			if ( controllerDebug ) {
 				controllerIsActive = !controllerIsActive;
+				if(controllerIsActive)
+					feet.setFriction( 1.0f );
+				else
+					feet.setFriction( 0.0f );
 			}
 			controllerDebug = false;
 		} else {
@@ -544,14 +563,7 @@ public class Player extends Entity {
 		}
 	}
 
-	/**
-	 * sets the body of some body that the player is hitting
-	 */
-	public void hitSolidObject( Body b ) {
-		if ( screwJumpTimeout == 0 ) {
-			platformBody = b;
-		}
-	}
+
 
 	/**
 	 * return s the current state of the player
@@ -612,7 +624,7 @@ public class Player extends Entity {
 	 */
 	public void maxFriction( ) {
 		feet.setFriction( PLAYER_FRICTION );
-		footFriction = PLAYER_FRICTION;
+
 	}
 
 	/**
@@ -620,31 +632,55 @@ public class Player extends Entity {
 	 */
 	public void noFriction( ) {
 		feet.setFriction( 0.0f );
-		footFriction = 0f;
+
 	}
 
 	/**
 	 * slowly increases friction to avoid that silly stopping bug. Call this
 	 * every player.update()
 	 */
-	@SuppressWarnings( "unused" )
+	
 	private void updateFootFriction( ) {
-		if ( isGrounded( ) ) {
-			// increase friction while on ground
-			if ( footFriction < PLAYER_FRICTION ) {
-				footFriction += 0.1f;
-				if ( footFriction > PLAYER_FRICTION ) {
-					footFriction = PLAYER_FRICTION;
+		
+		if(isGrounded()){
+			if ( feet.getFriction() < PLAYER_FRICTION ) {
+				frictionCounter += FRICTION_INCREMENT;
+						
+				CircleShape ps = new CircleShape();
+				ps.setRadius( feet.getShape( ).getRadius( ) );
+
+	
+				ps.setPosition( ps.getPosition( ).add( FEET_OFFSET_X, FEET_OFFSET_Y ) );
+				FixtureDef fd = new FixtureDef();
+				
+				fd.shape = ps;
+				fd.density = 1f;
+				fd.restitution = 0.001f;
+				fd.friction = frictionCounter;
+				body.destroyFixture( feet );
+				
+				body.createFixture( fd );
+				
+				if ( feet.getFriction() > PLAYER_FRICTION ) {
+					feet.setFriction( PLAYER_FRICTION );
+
 				}
 			}
-		} else {
-			footFriction = 0f;
+		} else{
+			frictionCounter = 0f;
+			feet.setFriction( frictionCounter);
 		}
-		Gdx.app.log( name, feet.getFriction( ) + "" );
-		// Gdx.app.log( name, feet.getFriction()+"" );
-		feet.setFriction( footFriction );
+		
 	}
 
+	/**
+	 * sets the body of some body that the player is hitting
+	 */
+	public void hitSolidObject( Body b ) {
+		if ( screwJumpTimeout == 0 ) {
+			platformBody = b;
+		}
+	}
 	/**
 	 * Checks if the player is grounded
 	 * 
