@@ -26,6 +26,7 @@
 /particles/particle.png
 /common/robot/alphabot_tile_interior.png
 /common/ropelink.png
+/common/gear.png
 
 
 ##Fonts

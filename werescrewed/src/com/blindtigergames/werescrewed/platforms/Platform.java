@@ -211,7 +211,6 @@ public class Platform extends Entity {
 	@Override
 	public void update( float deltaTime ) {
 		super.update( deltaTime );
-
 		// Basic velocity so that platforms can do friction
 		// Uhhhhhh... false && [anything] is false. This body never happens
 		if ( false && body.getType( ) == BodyType.KinematicBody ) {
