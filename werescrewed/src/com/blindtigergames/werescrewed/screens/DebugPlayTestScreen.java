@@ -29,6 +29,7 @@ import com.blindtigergames.werescrewed.entity.builders.RopeBuilder;
 import com.blindtigergames.werescrewed.entity.builders.ScrewBuilder;
 import com.blindtigergames.werescrewed.entity.mover.LerpMover;
 import com.blindtigergames.werescrewed.entity.mover.LinearAxis;
+import com.blindtigergames.werescrewed.entity.mover.PuzzleType;
 import com.blindtigergames.werescrewed.entity.mover.RockingMover;
 import com.blindtigergames.werescrewed.entity.mover.RotateByDegree;
 import com.blindtigergames.werescrewed.entity.mover.RotateTweenMover;
@@ -385,12 +386,12 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		// joints the first dynamic skeleton to the parent skeleton
 		// puzzle screw that controls the analog arm puzzle
 		PuzzleScrew shoulderJoint = new PuzzleScrew( "dynamic_skeleton_joint",
-				new Vector2( 1000, 800 ), 50, upperArmSkeleton, world, 0, false );
+				new Vector2( 1000, 800 ), 500, upperArmSkeleton, world, 0, false );
 		shoulderJoint.addStructureJoint( skel1 );
 		shoulderJoint.addStructureJoint( upperArm );
 		shoulderJoint.puzzleManager.addEntity( upperArmSkeleton );
 		shoulderJoint.puzzleManager.addMover( new PuzzleRotateTweenMover( 2f,
-				-Util.PI / 4.0f, false ) );
+				-Util.PI / 4.0f, false, PuzzleType.PUZZLE_SCREW_CONTROL ) );
 		// RevoluteJointBuilder jbBuilder = new RevoluteJointBuilder( world );
 		// jbBuilder.skeleton( middleArmSkeleton ).bodyB( upperArm ).motor(
 		// false ).build( );
@@ -549,7 +550,7 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 				120 * TILE, 51 * TILE ), 50, rotatingRoom, world, 0, false );
 		pscrew.puzzleManager.addEntity( rotatingRoom );
 		pscrew.puzzleManager.addMover( new PuzzleRotateTweenMover( 2f,
-				-Util.PI / 4.0f, false ) );
+				-Util.PI / 4.0f, false, PuzzleType.ON_OFF_MOVER ) );
 		skel3.addScrewForDraw( pscrew );
 		ground = platBuilder.position( 183 * TILE, 40.5f * TILE )
 				.name( "ground4" ).dimensions( 150, 1 ).texture( testTexture )
@@ -853,7 +854,7 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		RotateByDegree rm = new RotateByDegree( 0.0f, -90.0f, 0, 0.5f );
 
 		PuzzleRotateTweenMover rtm1 = new PuzzleRotateTweenMover( 1,
-				Util.PI / 2, true );
+				Util.PI / 2, true, PuzzleType.ON_OFF_MOVER );
 		plat.setActive( true );
 		puzzleScrew.puzzleManager.addEntity( plat );
 		puzzleScrew.puzzleManager.addMover( rtm1 );
@@ -871,7 +872,7 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		plat.setActive( true );
 		puzzleScrew2.puzzleManager.addEntity( plat );
 		PuzzleRotateTweenMover rtm2 = new PuzzleRotateTweenMover( 1,
-				Util.PI / 2, true );
+				Util.PI / 2, true, PuzzleType.ON_OFF_MOVER );
 		puzzleScrew2.puzzleManager.addMover( rtm2 );
 		skeleton.addScrewForDraw( puzzleScrew2 );
 

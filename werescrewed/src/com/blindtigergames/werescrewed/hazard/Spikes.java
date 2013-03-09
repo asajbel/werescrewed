@@ -103,15 +103,9 @@ public class Spikes extends Hazard {
 
 	@Override
 	public void performContact( Player player, Fixture fixture ) {
-		/*
-		 * Possible Player-Spike collision test (player.x + player.width >
-		 * spikes.x) && (player.x < spikes.x + spikes.width) && (player.y <=
-		 * spikes.y + spikes.height)
-		 */
-		if ( fixture == this.body.getFixtureList( ).get( 1 ) ){
+		if ( fixture == this.body.getFixtureList( ).get( 1 ) && active ){
 			player.killPlayer( );			
 		}
-		Gdx.app.log( "Hello", "World" );
 	}
 
 	private void constructBody( Vector2 position, float height, float width ) {
