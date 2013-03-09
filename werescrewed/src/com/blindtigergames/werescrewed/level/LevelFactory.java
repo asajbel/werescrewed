@@ -18,6 +18,8 @@ import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityCategory;
 import com.blindtigergames.werescrewed.entity.EntityDef;
 import com.blindtigergames.werescrewed.entity.RobotState;
+import com.blindtigergames.werescrewed.entity.RootSkeleton;
+import com.blindtigergames.werescrewed.entity.Skeleton;
 import com.blindtigergames.werescrewed.entity.builders.EntityBuilder;
 import com.blindtigergames.werescrewed.entity.builders.MoverBuilder;
 import com.blindtigergames.werescrewed.entity.builders.PlatformBuilder;
@@ -33,8 +35,6 @@ import com.blindtigergames.werescrewed.player.Player;
 import com.blindtigergames.werescrewed.screws.PuzzleScrew;
 import com.blindtigergames.werescrewed.screws.Screw;
 import com.blindtigergames.werescrewed.screws.ScrewType;
-import com.blindtigergames.werescrewed.skeleton.RootSkeleton;
-import com.blindtigergames.werescrewed.skeleton.Skeleton;
 import com.blindtigergames.werescrewed.util.ArrayHash;
 import com.blindtigergames.werescrewed.util.Util;
 

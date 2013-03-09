@@ -21,12 +21,14 @@ import com.blindtigergames.werescrewed.collisionManager.MyContactListener;
 import com.blindtigergames.werescrewed.debug.SBox2DDebugRenderer;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.RobotState;
+import com.blindtigergames.werescrewed.entity.Skeleton;
 import com.blindtigergames.werescrewed.entity.action.MetricsStartTimeAction;
 import com.blindtigergames.werescrewed.entity.builders.EventTriggerBuilder;
 import com.blindtigergames.werescrewed.entity.builders.PlatformBuilder;
 import com.blindtigergames.werescrewed.entity.builders.PlayerBuilder;
 import com.blindtigergames.werescrewed.entity.builders.RopeBuilder;
 import com.blindtigergames.werescrewed.entity.builders.ScrewBuilder;
+import com.blindtigergames.werescrewed.entity.builders.SkeletonBuilder;
 import com.blindtigergames.werescrewed.entity.mover.LerpMover;
 import com.blindtigergames.werescrewed.entity.mover.LinearAxis;
 import com.blindtigergames.werescrewed.entity.mover.PuzzleType;
@@ -46,7 +48,6 @@ import com.blindtigergames.werescrewed.screws.BossScrew;
 import com.blindtigergames.werescrewed.screws.PuzzleScrew;
 import com.blindtigergames.werescrewed.screws.StrippedScrew;
 import com.blindtigergames.werescrewed.screws.StructureScrew;
-import com.blindtigergames.werescrewed.skeleton.Skeleton;
 import com.blindtigergames.werescrewed.util.Metrics;
 import com.blindtigergames.werescrewed.util.Util;
 
@@ -113,13 +114,14 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 
 		// Initialize players
 		player1 = new PlayerBuilder( ).name( "player1" ).world( world )
-				.position(145f * TILE, 86f * TILE).buildPlayer( );
+				.position(1f * TILE, 1f * TILE).buildPlayer( );
 		player2 = new PlayerBuilder( ).name( "player2" ).world( world )
-				.position( 145f * TILE, 86f * TILE ).buildPlayer( );
+				.position( 1f * TILE, 1f * TILE ).buildPlayer( );
 
 		// END: 175f * TILE, 96f * TILE
 		// START :: 1f * TILE, 1f * TILE
 		// stripped screws: 170 * TILE, 17 * TILE
+		// puzzle screws: 145f * TILE, 86f * TILE
 		floor1( );
 		floor2( );
 		floor3( );
@@ -354,9 +356,13 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 				LinearAxis.VERTICAL ) );
 		skel1.addKinematicPlatform( plat );
 		skel1.addScrewForDraw( pscrewtop );
+		
+		SkeletonBuilder skeleBuilder = new SkeletonBuilder( world );
 		// skeleton at shoulder joint
-		Skeleton upperArmSkeleton = new Skeleton( "dynamicSkeleton",
-				new Vector2( 1000, 800 ), testTexture, world );
+		Skeleton upperArmSkeleton = skeleBuilder.position( 1000,800 ).texture( testTexture ).vert( -100,-100 ).vert( 100,-100 ).vert( 0,100 ).dynamic( ).build( );
+		//new Skeleton( "dynamicSkeleton",
+		//		new Vector2( 1000, 800 ), testTexture, world );
+		
 		// skeleton after elbow joint
 		Skeleton lowerArmSkeleton = new Skeleton( "dynamic2Skeleton",
 				new Vector2( 400, 800 ), testTexture, world );
