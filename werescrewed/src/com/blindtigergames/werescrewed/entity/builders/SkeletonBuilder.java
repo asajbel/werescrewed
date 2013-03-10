@@ -1,5 +1,6 @@
 package com.blindtigergames.werescrewed.entity.builders;
 
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.PolygonSprite;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
@@ -8,13 +9,16 @@ import com.badlogic.gdx.utils.Array;
 import com.blindtigergames.werescrewed.entity.PolySprite;
 import com.blindtigergames.werescrewed.entity.RootSkeleton;
 import com.blindtigergames.werescrewed.entity.Skeleton;
+import com.blindtigergames.werescrewed.graphics.TextureAtlasS;
 
 public class SkeletonBuilder extends GenericEntityBuilder<SkeletonBuilder>{
 
-	protected Array< Vector2 > polyVerts;
+	protected Array< Vector2 > polyVertsFG, polyVertsBG;
 
 	protected float 	density;
 	private BodyType bodyType;
+	protected boolean onBGverts;
+	protected Texture texBackground, texForeground, texBody;
 	
 	public SkeletonBuilder(World world){
 		super();
@@ -26,9 +30,49 @@ public class SkeletonBuilder extends GenericEntityBuilder<SkeletonBuilder>{
 	@Override
 	public SkeletonBuilder reset(){
 		super.reset( );
-		this.polyVerts = null;
+		this.polyVertsFG = null;
+		this.polyVertsBG = null;
 		this.bodyType = BodyType.KinematicBody;
 		this.density = 1.0f;
+		this.onBGverts = true;
+		this.texBackground = null;
+		this.texForeground = null;
+		this.texBody = null;
+		return this;
+	}
+	
+	/**
+	 * All following verts added will set to the background polysprite of this skeleton
+	 * This is true by default
+	 * @return
+	 */
+	public SkeletonBuilder bg(){
+		this.onBGverts = true;
+		return this;
+	}
+	
+	/**
+	 * All following verts will apply to the foreground polysprite
+	 * @return
+	 */
+	public SkeletonBuilder fg(){
+		this.onBGverts = false;
+		return this;
+	}
+
+	
+	public SkeletonBuilder texForeground(Texture fgTex){
+		this.texForeground = fgTex;
+		return this;
+	}
+	
+	public SkeletonBuilder texBackground(Texture bgTex){
+		this.texBackground = bgTex;
+		return this;
+	}
+	
+	public SkeletonBuilder texBody(Texture bodyTex){
+		this.texBody = bodyTex;
 		return this;
 	}
 	
@@ -38,7 +82,11 @@ public class SkeletonBuilder extends GenericEntityBuilder<SkeletonBuilder>{
 	 * @return
 	 */
 	public SkeletonBuilder setVerts(Array< Vector2 > verts){
-		this.polyVerts = verts;
+		if ( onBGverts ){
+			this.polyVertsBG = verts;
+		}else{
+			this.polyVertsFG = verts;
+		}
 		return this;
 	}
 
@@ -48,10 +96,19 @@ public class SkeletonBuilder extends GenericEntityBuilder<SkeletonBuilder>{
 	 * @return
 	 */
 	public SkeletonBuilder vert(Vector2 vert){
-		if ( polyVerts == null ){
-			polyVerts = new Array< Vector2 >();
+		Array< Vector2 > vertList;
+		if ( onBGverts ){
+			if ( polyVertsBG == null ){
+				polyVertsBG = new Array< Vector2 >();
+			}
+			vertList = polyVertsBG;
+		}else{
+			if ( polyVertsFG == null ){
+				polyVertsFG = new Array< Vector2 >();
+			}
+			vertList = polyVertsFG;
 		}
-		polyVerts.add( vert );
+		vertList.add( vert );
 		return this;
 	}
 	
@@ -92,10 +149,10 @@ public class SkeletonBuilder extends GenericEntityBuilder<SkeletonBuilder>{
 	 * @param density - float used for density, default is 1.0f
 	 * @return SkeletonBuilder
 	 */
-		public SkeletonBuilder density( float density ) {
-			this.density = density;
-			return this;
-		}
+	public SkeletonBuilder density( float density ) {
+		this.density = density;
+		return this;
+	}
 	
 	/**
 	 * Builds a friggin root skeleton, what do you want jeese.
@@ -106,9 +163,12 @@ public class SkeletonBuilder extends GenericEntityBuilder<SkeletonBuilder>{
 	
 	@Override
 	public Skeleton build(){
-		Skeleton out = new Skeleton( name, pos, (polyVerts==null)?tex:null, super.world );
-		if ( polyVerts != null ){
-			out.sprite = new PolySprite( tex, polyVerts );
+		Skeleton out = new Skeleton( name, pos, null, super.world );
+		if ( polyVertsFG != null && texForeground != null ){
+			out.fgSprite = new PolySprite( texForeground, polyVertsFG );
+		}
+		if ( polyVertsBG != null && texBackground != null){
+			out.bgSprite = new PolySprite( texBackground, polyVertsBG );
 		}
 		out.body.setType( bodyType );
 		out.setDensity( this.density );

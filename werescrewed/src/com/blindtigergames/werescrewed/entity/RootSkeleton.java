@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 
@@ -32,7 +33,16 @@ public class RootSkeleton extends Skeleton {
         
       //Now we can rotate all kinematic entities connected by updated skeleton rot / position
         for ( Skeleton childSkeleton : childSkeletonMap.values( ) ){
+        	if ( childSkeleton.fgSprite != null ){
+        		childSkeleton.fgSprite.setPosition( childSkeleton.body.getPosition( ).x, childSkeleton.body.getPosition( ).y );
+        		childSkeleton.fgSprite.setRotation( MathUtils.radiansToDegrees * childSkeleton.body.getAngle( ) );
+    		}
+    		if ( childSkeleton.bgSprite != null ){
+    			childSkeleton.bgSprite.setPosition( childSkeleton.body.getPosition( ).x, childSkeleton.body.getPosition( ).y );
+    			childSkeleton.bgSprite.setRotation( MathUtils.radiansToDegrees * childSkeleton.body.getAngle( ) );
+    		}
         	childSkeleton.setPosRotAllKinematicPlatforms( deltaTime );
+        	//childSkeleton.update( deltaTime );
         	childSkeleton.updateChildren( deltaTime );
         }
         
