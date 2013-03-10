@@ -1,6 +1,9 @@
 package com.blindtigergames.werescrewed.entity;
 
-import com.blindtigergames.werescrewed.level.GleedTypeTag;
+/**
+ * Refers to category line found in /assets/data/entities/----.xml
+ * used to call the correct constuct function (eg: tiled vs complex)
+ */
 
 public enum EntityCategory {
 	PLAYER("Player"),

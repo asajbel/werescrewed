@@ -1,5 +1,6 @@
 package com.blindtigergames.werescrewed.screws;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -28,6 +29,7 @@ public class ResurrectScrew extends Screw {
 	private Player deadPlayer;
 	private boolean pullLeft;
 	private boolean destroyJoint = false;
+	private boolean removeNextStep = false;
 
 	/**
 	 * 
@@ -77,6 +79,33 @@ public class ResurrectScrew extends Screw {
 		}
 	}
 
+	@Override
+	public void screwLeft( int region, boolean switchedDirections ) {
+		if(switchedDirections){
+			startRegion = region;
+			prevDiff = 0;
+		}
+		
+		if ( pullLeft ) {
+			diff = startRegion - region;
+			newDiff = diff - prevDiff;
+			if(newDiff > 10){
+				newDiff = 0;
+			}
+			prevDiff = diff;
+			
+			body.setAngularVelocity( 1 );
+			depth += newDiff;
+			spriteRegion += region;
+			if(diff != 0){
+				rotation += (-newDiff * 5);
+			}
+			screwStep = depth + 5;
+			pulleyWeight.setLinearVelocity( new Vector2( -1f, 0f ) );
+		}
+		
+	}
+	
 	/**
 	 * if the pulley weight goes to the right use right to draw dead player
 	 * closer
@@ -101,6 +130,31 @@ public class ResurrectScrew extends Screw {
 		}
 	}
 
+	@Override
+	public void screwRight( int region, boolean switchedDirections ) {
+		if(switchedDirections){
+			startRegion = region;
+			prevDiff = 0;
+		}
+		
+		if ( !pullLeft) {
+			diff = startRegion - region;
+			newDiff = diff - prevDiff;
+			if(newDiff < -10){
+				newDiff = 0;
+			}
+			prevDiff = diff;
+			
+			body.setAngularVelocity( -1 );
+			depth += newDiff;
+			if(diff != 0){
+				rotation += (-newDiff * 5);
+			}
+			screwStep = depth + 5;
+			pulleyWeight.setLinearVelocity( new Vector2( 1f, 0f ) );
+		}
+		
+	}
 	/**
 	 * look at collisions with the screw and determine if it is the dead player
 	 * if so bring the player back to life
@@ -110,12 +164,27 @@ public class ResurrectScrew extends Screw {
 	public void hitPlayer( Player player ) {
 		if ( player == deadPlayer ) {
 			destroyJoint = true;
-		}
+		} 
 	}
 
 	/**
+	 * check if this screw should be removed
+	 */
+	public boolean deleteQueue( ) {
+		return removeNextStep;
+	}
+	
+	/**
+	 * set if this screw should be removed next step
+	 */
+	public void setRemove( boolean setRemoved ) {
+		removeNextStep = setRemoved;
+	}
+	
+	/**
 	 * destroys the joints and body of the object
 	 */
+	@Override
 	public void remove( ) {
 		if ( !removed ) {
 			if ( pulleyJoint != null ) {
@@ -137,15 +206,12 @@ public class ResurrectScrew extends Screw {
 	@Override
 	public void update( float deltaTime ) {
 		super.update( deltaTime );
-		if ( !deadPlayer.isPlayerDead( ) ) {
-			remove( );
-		}
 		if ( !removed ) {
 			if ( destroyJoint ) {
 				deadPlayer.respawnPlayer( );
 				remove( );
-				destroyJoint = false;
-			}
+				active = false;
+			} 
 			sprite.setRotation( rotation );
 			if ( depth != screwStep ) {
 				screwStep--;
@@ -164,6 +230,7 @@ public class ResurrectScrew extends Screw {
 		BodyDef screwBodyDef = new BodyDef( );
 		screwBodyDef.type = BodyType.DynamicBody;
 		screwBodyDef.position.set( pos.mul( Util.PIXEL_TO_BOX ) );
+		screwBodyDef.angle = pos.hashCode( );
 		screwBodyDef.gravityScale = 0.07f;
 		body = world.createBody( screwBodyDef );
 		CircleShape screwShape = new CircleShape( );

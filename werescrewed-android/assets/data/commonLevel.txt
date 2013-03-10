@@ -1,6 +1,7 @@
 ##sounds
 /common/sounds/inceptionbutton.mp3
 /common/sounds/jump.ogg
+/common/sounds/WilhelmScream.mp3
 
 ##texture atlas
 /common/tileset1.pack
@@ -16,5 +17,22 @@
 /common/screw1.png
 /common/test01.png
 /common/cletter.png
+/common/parallax_layer1_0.png
+/common/parallax_layer1_1.png
+/common/parallax_layer2_0.png
+/common/parallax_layer2_1.png
+/common/spikes.png
 /common/tileset/TilesetTest.png
+/common/blind_tiger_logo_720.png
 /particles/particle.png
+/common/robot/alphabot_tile_interior.png
+/common/robot/alphabot_tile_suit_main.png
+/common/ropelink.png
+/common/gear.png
+
+
+##Fonts
+/debug/debug_font.fnt
+/common/ornatique-26.fnt
+/common/ornatique.fnt
+/common/ArmenianCircus.fnt

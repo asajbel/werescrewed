@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.blindtigergames.werescrewed.asset.AssetManager;
 import com.blindtigergames.werescrewed.screens.ScreenManager;
 import com.blindtigergames.werescrewed.screens.ScreenType;
+import com.blindtigergames.werescrewed.util.Metrics;
 
 public class WereScrewedGame extends Game {
 
@@ -20,13 +21,19 @@ public class WereScrewedGame extends Game {
 	public FPSLogger logger;
 	
 	private boolean restartFlag = false;
+	private boolean metricsFlag = false;
 	
 	public static ShaderProgram defaultShader;
 
 	@Override
 	public void create( ) {
 		ScreenManager.getInstance( ).initialize( this );
-
+		
+		if (Gdx.graphics.isGL20Available( ))
+			defaultShader = SpriteBatch.createDefaultShader( );
+		else
+			defaultShader = null;
+		
 		// ScreenManager.getInstance().show(Screen.INTRO);
 
 		// ScreenManager.getInstance().show(Screen.LEVELTEST);
@@ -36,10 +43,7 @@ public class WereScrewedGame extends Game {
 		ScreenManager.getInstance( ).show( ScreenType.LOADING );
 
 		logger = new FPSLogger( );
-		if (Gdx.graphics.isGL20Available( ))
-			defaultShader = SpriteBatch.createDefaultShader( );
-		else
-			defaultShader = null;
+
 
 	}
 
@@ -59,6 +63,16 @@ public class WereScrewedGame extends Game {
 			}
 		}else{
 			restartFlag = false;
+		}
+		
+		if(Gdx.input.isKeyPressed( Keys.SEMICOLON )){
+			if( !metricsFlag ){
+				metricsFlag = true;
+				Metrics.activated = !Metrics.activated;
+				Gdx.app.log( "Metrics activated", "" + Metrics.activated );
+			}
+		}else{
+			metricsFlag = false;
 		}
 		super.render( );
 		if (Gdx.app.getType() == ApplicationType.Android) {

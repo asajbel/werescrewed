@@ -14,6 +14,7 @@ import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityCategory;
 import com.blindtigergames.werescrewed.entity.EntityDef;
 import com.blindtigergames.werescrewed.entity.RobotState;
+import com.blindtigergames.werescrewed.entity.Skeleton;
 import com.blindtigergames.werescrewed.entity.builders.EntityBuilder;
 import com.blindtigergames.werescrewed.entity.builders.MoverBuilder;
 import com.blindtigergames.werescrewed.entity.builders.PlatformBuilder;
@@ -28,7 +29,6 @@ import com.blindtigergames.werescrewed.platforms.TiledPlatform;
 import com.blindtigergames.werescrewed.screws.PuzzleScrew;
 import com.blindtigergames.werescrewed.screws.Screw;
 import com.blindtigergames.werescrewed.screws.ScrewType;
-import com.blindtigergames.werescrewed.skeleton.Skeleton;
 import com.blindtigergames.werescrewed.util.ArrayHash;
 import com.blindtigergames.werescrewed.util.Util;
 import com.blindtigergames.werescrewed.entity.mover.Path;
@@ -77,11 +77,14 @@ public class GleedLoader {
 				Gdx.app.log("GleedLoader", "Entities Found:"+elements.size);
 				Item item;
 				//Sorts items into entities, movers, skeletons, etc.
+				
+				//Currently (3-5-2013) none of these tags are in the xml
+				// all are just considered as GleedTypeTag.ENTITY
 				for (Element e: elements) {
 					item = new Item(e);
 					//Make sure we have a valid tag. If not, 
-					if (item.tag != null){
-						items.get( item.tag ).put(item.name, item );
+					if (item.gleedTag != null){
+						items.get( item.gleedTag ).put(item.name, item );
 					} else {
 						items.get(GleedTypeTag.ENTITY).put(item.name, item );
 					}
@@ -215,14 +218,27 @@ public class GleedLoader {
 		return null;
 	}
 
+	/**
+	 * This funtion loads all sorts of objects after reading in the Item item (defined by the xml file)
+	 * under GleedTypeTag.ENTITY
+	 * @param item - Item
+	 * @return Entity
+	 */
 	protected static final String puzzleTag = "puzzle"; 
 	protected Entity loadEntity(Item item){
 		Entity out = null;
 		boolean isPlatform = false;
 		if (item.hasDefTag( )){
+			//First check if the item's definition is a type of screw
 			if (ScrewType.fromString( item.defName ) != null){
 				loadScrew(item);
 			} else {
+				
+				/**
+				 * check if it has a name, then get its EntityDef (if not loaded, it loads the xml)
+				 * then check if its category is a tiled/complex plat
+				 */
+				
 				if (item.isDefined( )){
 					if (item.getDefinition().getCategory( ) == EntityCategory.TILED_PLATFORM ){
 						out = loadTiledPlatform(item);
@@ -316,6 +332,10 @@ public class GleedLoader {
 		if (item.props.containsKey( "dynamic" ))
 			isDynamic = true;
 		
+		//Its as simple as this to get custom values
+		// either it will give me the right string or it if doesn't exist: null
+		//System.out.println( "custom props: " + item.props.get( "definition" ) );
+		
 		float tileX = item.getDefinition().getTexture( ).getWidth( )/4.0f;
 		float tileY = item.getDefinition().getTexture( ).getWidth( )/4.0f;
 		if (tileX > 0 && tileY > 0)
@@ -333,10 +353,10 @@ public class GleedLoader {
 
 		Skeleton parent = loadSkeleton(item.skeleton);
 		if (isDynamic){
-			Gdx.app.log("GleedLoader", "Dynamic platform loaded:"+out.name);
+			Gdx.app.log("GleedLoader", "Tiled Dynamic platform loaded:"+out.name);
 			parent.addDynamicPlatform( out );
 		} else {
-			Gdx.app.log("GleedLoader", "Kinematic platform loaded:"+out.name);
+			Gdx.app.log("GleedLoader", "Tiled Kinematic platform loaded:"+out.name);
 			parent.addKinematicPlatform( out );
 		}
 		return out;
@@ -351,7 +371,7 @@ public class GleedLoader {
 		.solid( true )
 		.buildComplexPlatform( );
 		
-		Gdx.app.log("GleedLoader", "Platform loaded:"+item.name);
+		Gdx.app.log("GleedLoader", "Complex Platform loaded:"+item.name);
 		Skeleton parent = loadSkeleton(item.skeleton);
 		if (item.props.containsKey( "dynamic" )){
 			parent.addDynamicPlatform( out );
@@ -374,7 +394,7 @@ public class GleedLoader {
 		.position(item.pos)
 		.properties(item.props)
 		.build();
-		Gdx.app.log("GleedLoader", "Entity loaded:"+item.name);
+		Gdx.app.log("GleedLoader", "General Entity loaded:"+item.name);
 		return out;
 	}
 	
@@ -463,16 +483,24 @@ public class GleedLoader {
 			if (props.containsKey( "skeleton" ))
 				skeleton = props.get( "skeleton" );
 			else skeleton = "root";
-			tag = GleedTypeTag.fromString( props.get( GleedTypeTag.tag ) );
+			gleedTag = GleedTypeTag.fromString( props.get( "type" ) ); //GleedTypeTag.tag ) );
 			pos = getPosition(e);
 			sca = getScale(e);
 			tex = getTexture(e);
 			locked = false;
 		}
 		public Element element;
-		public String name, gleedType, defName;
+		
+		public String name;
+		//In the xml, gleedType refers to type. for example: CircleItem, RectangleItem
+		public String gleedType;
+		
+		// defName refers the string under the name under the CustomProperties
+		// <Property Name="Definition"...
+		// 	 <string>tiledPlatform</string> <======= that is the defName
+		public String defName;
 		private EntityDef def;
-		public GleedTypeTag tag;
+		public GleedTypeTag gleedTag;
 		public ArrayHash props;
 		public Vector2 pos;
 		public Vector2 origin;
@@ -488,11 +516,23 @@ public class GleedLoader {
 			}
 			locked = true;
 		}
+		
+		/**
+		 * getDefinition loads the correct XML file with the same time (complexTest)
+		 * complexText loads the bottle, gearSmall would load the gear
+		 * Remember to set them to kinematic or they just fall
+		 * 
+		 * @return EntityDef
+		 */
 		public EntityDef getDefinition(){
 			if (def == null)
 				def = EntityDef.getDefinition( defName );
 			return def;
 		}
+		/**
+		 * checks if xml has a name under Definition
+		 * @return boolean
+		 */
 		public boolean hasDefTag(){ return !defName.equals( "" );}
 		public boolean isDefined(){ return getDefinition() != null;}
 	}

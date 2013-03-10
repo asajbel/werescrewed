@@ -13,11 +13,12 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.camera.Camera;
+import com.blindtigergames.werescrewed.collisionManager.MyContactListener;
 import com.blindtigergames.werescrewed.debug.SBox2DDebugRenderer;
 import com.blindtigergames.werescrewed.entity.Entity;
-import com.blindtigergames.werescrewed.entity.EntityManager;
 import com.blindtigergames.werescrewed.entity.PolySprite;
-import com.blindtigergames.werescrewed.entity.RobotState;
+import com.blindtigergames.werescrewed.entity.RootSkeleton;
+import com.blindtigergames.werescrewed.entity.Skeleton;
 import com.blindtigergames.werescrewed.platforms.Platform;
 import com.blindtigergames.werescrewed.entity.builders.PlayerBuilder;
 import com.blindtigergames.werescrewed.entity.builders.PlatformBuilder;
@@ -26,7 +27,6 @@ import com.blindtigergames.werescrewed.entity.tween.EntityAccessor;
 import com.blindtigergames.werescrewed.entity.tween.PlatformAccessor;
 import com.blindtigergames.werescrewed.platforms.TiledPlatform;
 import com.blindtigergames.werescrewed.player.Player;
-import com.blindtigergames.werescrewed.skeleton.Skeleton;
 
 
 /**
@@ -38,14 +38,21 @@ import com.blindtigergames.werescrewed.skeleton.Skeleton;
  * 
  */
 
+
+
 public class Level {
+	
+	public static int GRAVITY = -35;
+	
 	public Camera camera;
 	public World world;
+	public MyContactListener myContactListener;
 	public static final int NUM_PLAYERS = 2;
 	Array<Player> players;
-	EntityManager entities;
+	public RootSkeleton rootSkeleton;
+	public Skeleton root;
 	ArrayList<Platform> platforms;
-	Skeleton root;
+	public PolySprite polySprite;
 	
 	public Level( ){
 		
@@ -53,6 +60,8 @@ public class Level {
 		float width = Gdx.graphics.getWidth( ) / zoom;
 		float height = Gdx.graphics.getHeight( ) / zoom;
 		world = new World( new Vector2( 0, GRAVITY ), true );
+		myContactListener = new MyContactListener();
+		world.setContactListener( myContactListener );		
 		camera = new Camera( width, height, world);
 		players = new Array<Player>();
 		for (int p = 0; p < NUM_PLAYERS; p++){
@@ -63,7 +72,6 @@ public class Level {
 			.buildPlayer() );
 		}
 
-		entities = new EntityManager();
 		platforms = new ArrayList<Platform>();
 		root = new Skeleton("root", new Vector2(0,0), null, world);
 		
@@ -77,7 +85,6 @@ public class Level {
 		for (Player player: players)
 			player.update( deltaTime );
 		root.update( deltaTime );
-		entities.update( deltaTime );
 		for (Platform p: platforms)
 			p.update( deltaTime );
 	}
@@ -88,7 +95,6 @@ public class Level {
 		sb.setProjectionMatrix( camera.combined() );
 		sb.enableBlending( );
 		sb.begin();
-		entities.draw( sb );
 		root.draw( sb );
 		for (Platform p: platforms)
 			p.draw( sb );
@@ -127,5 +133,4 @@ public class Level {
 		return out;
 	}
 	
-	public static int GRAVITY = -45;
 }

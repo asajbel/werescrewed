@@ -24,7 +24,7 @@ public enum ScreenType {
 	GLEED {
 		@Override
 		protected com.badlogic.gdx.Screen getScreenInstance( ) {
-			return new GleedTestScreen( "testLevel" );
+			return new GleedTestScreen( "PlayTestLevel" );
 		}
 	},
 	INTRO {

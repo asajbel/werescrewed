@@ -18,7 +18,7 @@
 		<link>
 			<name>assets</name>
 			<type>2</type>
-			<locationURI>WORKSPACE_LOC/werescrewed-android/assets</locationURI>
+			<locationURI>PARENT-1-PROJECT_LOC/werescrewed-android/assets</locationURI>
 		</link>
 	</linkedResources>
 </projectDescription>

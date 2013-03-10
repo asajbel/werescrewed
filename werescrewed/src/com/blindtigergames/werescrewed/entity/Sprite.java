@@ -39,7 +39,7 @@ public class Sprite extends com.badlogic.gdx.graphics.g2d.Sprite implements I_Dr
 	}
 	
     public Sprite ( TextureAtlas a, String initialRegion ){
-    	this();
+    	super( a.findRegion( initialRegion ) );
     	atlas = a;
     	currentFrame = atlas.findRegion( initialRegion );
     	animator = new SimpleFrameAnimator()
@@ -98,7 +98,6 @@ public class Sprite extends com.badlogic.gdx.graphics.g2d.Sprite implements I_Dr
 			currentFrame = atlas.findRegion( animator.getRegion( ) );
 		}
 		if (currentFrame != null){
-			this.setTexture( currentFrame.getTexture( ) );
 			this.setRegion( currentFrame );
 			//We only need to update when the frame changes.
 			currentFrame = null;

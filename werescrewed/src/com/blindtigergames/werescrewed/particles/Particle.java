@@ -31,6 +31,7 @@ public class Particle {
 	public void update( float deltaTime ) {
 		if ( lifeSpan > 0 ) {
 			movement.move( deltaTime, part.body );
+			part.update( deltaTime );
 			lifeSpan--;
 		}
 	}

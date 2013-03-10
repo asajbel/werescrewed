@@ -22,7 +22,6 @@ public class PolySpriteTestScreen extends Screen {
 		String filename = "data/levels/"+ name + ".xml";
 
 		level = new GleedLoader().load( filename );
-		level.world.setContactListener( MCL );
 		//initShaders();
 		initPolySprite();
 	}

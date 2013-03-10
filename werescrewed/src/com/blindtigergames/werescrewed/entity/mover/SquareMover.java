@@ -84,11 +84,6 @@ public class SquareMover implements IMover {
 		}
 	}
 
-	@Override
-	public void move( float deltaTime, Body body, SteeringOutput steering ) {
-		move( deltaTime, body );
-	}
-
 	public boolean atEnd( ) {
 		return done;
 	}
