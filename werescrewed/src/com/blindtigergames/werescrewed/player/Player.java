@@ -48,8 +48,7 @@ public class Player extends Entity {
 	public final static float MOVEMENT_IMPULSE = 0.010f;
 	public final static float JUMP_IMPULSE = 0.10f;
 	public final static float JUMP_SCREW_IMPULSE = JUMP_IMPULSE * 5 / 4;
-	public final static float JUMP_CONTROL_MUTIPLIER = 0.5f;
-	public final static float JUMP_SLOW_SPEED = 0.001f;
+	public final static float JUMP_SLOW_SPEED = 0.002f;
 	public final static int JUMP_COUNTER = 10;
 	public final static float ANALOG_DEADZONE = 0.2f;
 	public final static float ANALOG_MAX_RANGE = 1.0f;
@@ -63,8 +62,8 @@ public class Player extends Entity {
 	public final static float FRICTION_INCREMENT = 0.3f;
 	public final static float FEET_OFFSET_X = 39f * Util.PIXEL_TO_BOX;
 	public final static float FEET_OFFSET_Y = 15f * Util.PIXEL_TO_BOX;
-
-	public float directionJumpDivsion = 2.0f;
+	public final static float JUMP_DIRECTION_MULTIPLIER = 1f;
+	public float directionJumpDivsion = 1.0f;
 
 	public Fixture feet;
 	public Fixture torso;
@@ -393,7 +392,7 @@ public class Player extends Entity {
 		if ( playerState == PlayerState.Falling
 				|| playerState == PlayerState.Jumping ) {
 			if ( changeDirectionsOnce && prevButton == PovDirection.west ) {
-				directionJumpDivsion *= 2;
+				directionJumpDivsion *= JUMP_DIRECTION_MULTIPLIER;
 				changeDirectionsOnce = false;
 			}
 			if ( body.getLinearVelocity( ).x < MAX_VELOCITY ) {
@@ -417,7 +416,7 @@ public class Player extends Entity {
 		if ( playerState == PlayerState.Falling
 				|| playerState == PlayerState.Jumping ) {
 			if ( changeDirectionsOnce && prevButton == PovDirection.east ) {
-				directionJumpDivsion *= 2;
+				directionJumpDivsion *= JUMP_DIRECTION_MULTIPLIER;
 				changeDirectionsOnce = false;
 			}
 			if ( body.getLinearVelocity( ).x > -MAX_VELOCITY ) {
