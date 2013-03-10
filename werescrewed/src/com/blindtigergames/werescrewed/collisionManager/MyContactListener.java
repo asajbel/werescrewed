@@ -31,6 +31,13 @@ public class MyContactListener implements ContactListener {
 
 	private static int NUM_PLAYER1_CONTACTS = 0;
 	private static int NUM_PLAYER2_CONTACTS = 0;
+<<<<<<< HEAD
+=======
+	@SuppressWarnings( "unused" )
+	private static int NUM_PLAYER1_SCREWCONTACTS = 0;
+	@SuppressWarnings( "unused" )
+	private static int NUM_PLAYER2_SCREWCONTACTS = 0;
+>>>>>>> master
 	private Player p1;
 
 
@@ -235,6 +242,10 @@ public class MyContactListener implements ContactListener {
 							} else if (  player.name.equals( "player2" ) ) {
 								if ( player.getState( ) != PlayerState.Screwing ) {
 									player.hitScrew( null );
+<<<<<<< HEAD
+=======
+
+>>>>>>> master
 								}
 								
 							}
