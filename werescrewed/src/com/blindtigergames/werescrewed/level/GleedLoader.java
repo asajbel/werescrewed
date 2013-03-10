@@ -20,6 +20,7 @@ import com.blindtigergames.werescrewed.entity.builders.PlatformBuilder;
 import com.blindtigergames.werescrewed.entity.builders.ScrewBuilder;
 import com.blindtigergames.werescrewed.entity.mover.IMover;
 import com.blindtigergames.werescrewed.entity.mover.MoverType;
+import com.blindtigergames.werescrewed.entity.mover.PathPoint;
 import com.blindtigergames.werescrewed.entity.mover.TimelineTweenMover;
 import com.blindtigergames.werescrewed.entity.tween.PathBuilder;
 import com.blindtigergames.werescrewed.platforms.Platform;
@@ -30,6 +31,7 @@ import com.blindtigergames.werescrewed.screws.ScrewType;
 import com.blindtigergames.werescrewed.skeleton.Skeleton;
 import com.blindtigergames.werescrewed.util.ArrayHash;
 import com.blindtigergames.werescrewed.util.Util;
+import com.blindtigergames.werescrewed.entity.mover.Path;
 
 public class GleedLoader {	
 	protected XmlReader reader;
@@ -37,6 +39,7 @@ public class GleedLoader {
 	protected EnumMap<GleedTypeTag, HashMap<String, Item>> items;
 	protected HashMap<String,Entity> entities;
 	protected HashMap<String,TimelineTweenMover> movers;
+	protected HashMap<String,Path> paths;
 	protected HashMap<String,Skeleton> skeletons;
 	protected HashMap<String,PuzzleScrew> puzzleScrews;
 	protected int spawnPoints;
@@ -52,6 +55,7 @@ public class GleedLoader {
 		}
 		entities = new HashMap<String, Entity>();
 		movers = new HashMap<String, TimelineTweenMover>();
+		paths = new HashMap<String, Path>();
 		skeletons = new HashMap<String, Skeleton>();
 		puzzleScrews = new HashMap<String, PuzzleScrew>();
 		level = new Level();
@@ -133,6 +137,7 @@ public class GleedLoader {
 			Array<Vector2> points = new Array<Vector2>(pointElems.size);
 			Array<Float> times = new Array<Float>(pointElems.size);
 			PathBuilder pBuilder = new PathBuilder().begin( (Platform)entity );
+			Path path = new Path();
 			
 			Element vElem; Vector2 point; String timeTag;
 			int frontPoint = 0; float frontTime = 0.0f;
@@ -180,9 +185,11 @@ public class GleedLoader {
 			}
 			for (int i = 0; i < points.size; i++){
 				pBuilder.target( points.get(i).x, points.get(i).y, times.get(i).floatValue( ) );
+				path.addPoint(new PathPoint().position( points.get(i) ).time( times.get(i) ));
 			}
 			TimelineTweenMover out = pBuilder.build( );
 			movers.put(item.name, out);
+			paths.put( item.name, path );
 			return out;
 		}
 		RuntimeException notPath = new RuntimeException(item.name+" is defined as a mover but is not a path object. Only paths can be defined as movers.");
