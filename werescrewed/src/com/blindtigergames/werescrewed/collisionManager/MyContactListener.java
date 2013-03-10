@@ -7,16 +7,14 @@ import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Fixture;
-import com.badlogic.gdx.physics.box2d.JointEdge;
 import com.badlogic.gdx.physics.box2d.Manifold;
 import com.blindtigergames.werescrewed.camera.Anchor;
 import com.blindtigergames.werescrewed.checkpoints.CheckPoint;
 import com.blindtigergames.werescrewed.entity.Entity;
-import com.blindtigergames.werescrewed.entity.EntityType;
 import com.blindtigergames.werescrewed.eventTrigger.EventTrigger;
+import com.blindtigergames.werescrewed.hazard.Hazard;
 import com.blindtigergames.werescrewed.platforms.Platform;
 import com.blindtigergames.werescrewed.platforms.PlatformType;
-import com.blindtigergames.werescrewed.hazard.Hazard;
 import com.blindtigergames.werescrewed.platforms.TiledPlatform;
 import com.blindtigergames.werescrewed.player.Player;
 import com.blindtigergames.werescrewed.player.Player.PlayerState;
@@ -33,8 +31,6 @@ public class MyContactListener implements ContactListener {
 
 	private static int NUM_PLAYER1_CONTACTS = 0;
 	private static int NUM_PLAYER2_CONTACTS = 0;
-	private static int NUM_PLAYER1_SCREWCONTACTS = 0;
-	private static int NUM_PLAYER2_SCREWCONTACTS = 0;
 	private Player p1;
 
 	/**
@@ -96,14 +92,12 @@ public class MyContactListener implements ContactListener {
 							Screw screw = ( Screw ) object;
 							if ( p1 == null || p1 == player ) {
 								p1 = player;
-								NUM_PLAYER1_SCREWCONTACTS++;
 								player.hitScrew( screw );
 								if ( screw.getScrewType( ) == ScrewType.SCREW_RESURRECT ) {
 									ResurrectScrew rScrew = ( ResurrectScrew ) screw;
 									rScrew.hitPlayer( player );
 								}
 							} else if ( p1 != player ) {
-								NUM_PLAYER2_SCREWCONTACTS++;
 								player.hitScrew( screw );
 								if ( screw.getScrewType( ) == ScrewType.SCREW_RESURRECT ) {
 									ResurrectScrew rScrew = ( ResurrectScrew ) screw;
@@ -232,20 +226,12 @@ public class MyContactListener implements ContactListener {
 						case SCREW:
 							if ( p1 == null || p1 == player ) {
 								p1 = player;
-								NUM_PLAYER1_SCREWCONTACTS--;
-								if ( NUM_PLAYER1_SCREWCONTACTS <= 0 ) {
-									NUM_PLAYER1_SCREWCONTACTS = 0;
-									if ( player.getState( ) != PlayerState.Screwing ) {
-										player.hitScrew( null );
-									}
+								if ( player.getState( ) != PlayerState.Screwing ) {
+									player.hitScrew( null );
 								}
 							} else if ( p1 != player ) {
-								NUM_PLAYER2_SCREWCONTACTS--;
-								if ( NUM_PLAYER2_SCREWCONTACTS <= 0 ) {
-									NUM_PLAYER2_SCREWCONTACTS = 0;
-									if ( player.getState( ) != PlayerState.Screwing ) {
-										player.hitScrew( null );
-									}
+								if ( player.getState( ) != PlayerState.Screwing ) {
+									player.hitScrew( null );
 								}
 							}
 							break;

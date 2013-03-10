@@ -9,7 +9,6 @@ import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJoint;
-import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityType;
 import com.blindtigergames.werescrewed.util.Util;
@@ -46,6 +45,7 @@ public class StrippedScrew extends Screw {
 		screwBodyDef.type = BodyType.DynamicBody;
 		screwBodyDef.position.set( pos.mul( Util.PIXEL_TO_BOX ) );
 		screwBodyDef.gravityScale = 0.07f;
+		screwBodyDef.fixedRotation = false;
 		body = world.createBody( screwBodyDef );
 		CircleShape screwShape = new CircleShape( );
 		screwShape
