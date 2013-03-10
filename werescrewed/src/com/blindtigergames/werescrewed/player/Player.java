@@ -62,8 +62,9 @@ public class Player extends Entity {
 	public final static float FRICTION_INCREMENT = 0.3f;
 	public final static float FEET_OFFSET_X = 39f * Util.PIXEL_TO_BOX;
 	public final static float FEET_OFFSET_Y = 15f * Util.PIXEL_TO_BOX;
-	public final static float JUMP_DIRECTION_MULTIPLIER = 1f;
-	public float directionJumpDivsion = 1.0f;
+	public final static float JUMP_DIRECTION_MULTIPLIER = 2f;
+	public final static float JUMP_DEFAULT_DIVISION = 1.0f;
+	public float directionJumpDivsion = JUMP_DEFAULT_DIVISION;
 
 	public Fixture feet;
 	public Fixture torso;
@@ -470,7 +471,7 @@ public class Player extends Entity {
 	public void moveAnalogRightInAir( ) {
 
 		if ( changeDirectionsOnce && prevButton == PovDirection.west ) {
-			directionJumpDivsion *= 2;
+			directionJumpDivsion *= JUMP_DIRECTION_MULTIPLIER;
 			changeDirectionsOnce = false;
 		}
 		leftAnalogX = controllerListener.analogLeftAxisX( );
@@ -489,7 +490,7 @@ public class Player extends Entity {
 	 */
 	public void moveAnalogLeftInAir( ) {
 		if ( changeDirectionsOnce && prevButton == PovDirection.east ) {
-			directionJumpDivsion *= 2;
+			directionJumpDivsion *= JUMP_DIRECTION_MULTIPLIER;
 			changeDirectionsOnce = false;
 		}
 		leftAnalogX = controllerListener.analogLeftAxisX( );
@@ -1325,7 +1326,7 @@ public class Player extends Entity {
 		}
 		if ( isGrounded( ) ) {
 			jumpCounter = 0;
-			directionJumpDivsion = 2;
+			directionJumpDivsion = JUMP_DEFAULT_DIVISION;
 			changeDirectionsOnce = true;
 			prevButton = null;
 			// switchedScrewingDirection = false;
@@ -1351,7 +1352,7 @@ public class Player extends Entity {
 	private void resetScrewJumpGrabKeyboard( ) {
 		if ( isGrounded( ) ) {
 			jumpCounter = 0;
-			directionJumpDivsion = 2;
+			directionJumpDivsion = JUMP_DEFAULT_DIVISION;
 			changeDirectionsOnce = true;
 			prevButton = null;
 		}
