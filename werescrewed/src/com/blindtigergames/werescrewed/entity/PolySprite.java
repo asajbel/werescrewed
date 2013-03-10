@@ -45,7 +45,7 @@ public class PolySprite extends Sprite {
 	/**
 	 * Construct a polysprite with a given texture and color
 	 * @param texture, size/shape doesn't matter, it will be repeated
-	 * @param verts an array of verts, each vector2 is x,y of a vertice in pixels
+	 * @param verts an array of verts, each vector2 is x,y of a vertex in pixels
 	 * @param r red color
 	 * @param g green
 	 * @param b blue

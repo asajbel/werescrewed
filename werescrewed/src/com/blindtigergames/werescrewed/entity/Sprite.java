@@ -151,6 +151,8 @@ public class Sprite extends com.badlogic.gdx.graphics.g2d.Sprite implements I_Dr
     	this( 1, 1, 1, 1.0f, region.getTexture( ), 0);
     	currentFrame = region;
     }
+    
+    
 	/** 
      * draw 
      * Draws the animated sprite on the screen.
