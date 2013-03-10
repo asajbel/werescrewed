@@ -43,12 +43,13 @@ import com.blindtigergames.werescrewed.util.Util;
  */
 public class Player extends Entity {
 
-	public final static float MAX_VELOCITY = 1.65f;
+	public final static float MAX_VELOCITY = 1.55f;
 	public final static float MIN_VELOCITY = 0.01f;
-	public final static float MOVEMENT_IMPULSE = 0.013f;
-	public final static float JUMP_IMPULSE = 0.13f;
+	public final static float MOVEMENT_IMPULSE = 0.010f;
+	public final static float JUMP_IMPULSE = 0.10f;
 	public final static float JUMP_SCREW_IMPULSE = JUMP_IMPULSE * 5 / 4;
 	public final static float JUMP_CONTROL_MUTIPLIER = 0.5f;
+	public final static float JUMP_SLOW_SPEED = 0.001f;
 	public final static int JUMP_COUNTER = 10;
 	public final static float ANALOG_DEADZONE = 0.2f;
 	public final static float ANALOG_MAX_RANGE = 1.0f;
@@ -59,7 +60,7 @@ public class Player extends Entity {
 	public final static int GRAB_COUNTER_STEPS = 5;
 	public final static Vector2 ANCHOR_BUFFER_SIZE = new Vector2( 400f, 256f );
 	public final static float STEAM_FORCE = .5f;
-	public final static float FRICTION_INCREMENT = 0.1f;
+	public final static float FRICTION_INCREMENT = 0.3f;
 	public final static float FEET_OFFSET_X = 39f * Util.PIXEL_TO_BOX;
 	public final static float FEET_OFFSET_Y = 15f * Util.PIXEL_TO_BOX;
 
@@ -1261,14 +1262,35 @@ public class Player extends Entity {
 		float velocity = body.getLinearVelocity( ).x;
 		if ( velocity != 0.0f ) {
 			if ( velocity < -0.1f )
-				body.applyLinearImpulse( new Vector2( 0.001f, 0.0f ),
+				body.applyLinearImpulse( new Vector2( JUMP_SLOW_SPEED, 0.0f ),
 						body.getWorldCenter( ) );
 			else if ( velocity > 0.1f )
-				body.applyLinearImpulse( new Vector2( -0.001f, 0.0f ),
+				body.applyLinearImpulse( new Vector2( -JUMP_SLOW_SPEED, 0.0f ),
 						body.getWorldCenter( ) );
 			else if ( velocity >= -0.1 && velocity <= 0.1f && velocity != 0.0f )
 				body.setLinearVelocity( 0.0f, body.getLinearVelocity( ).y );
 		}
+	}
+	
+	/**
+	 * Stops the player
+	 */
+	@SuppressWarnings( "unused" )
+	private void stop( ) {
+		// if ( feet.getFriction( ) == 0 ) {
+		float velocity = body.getLinearVelocity( ).x;
+		if ( velocity != 0.0f ) {
+			if ( velocity < -0.1f )
+				body.applyLinearImpulse( new Vector2( 0.005f, 0.0f ),
+						body.getWorldCenter( ) );
+			else if ( velocity > 0.1f )
+				body.applyLinearImpulse( new Vector2( -0.005f, 0.0f ),
+						body.getWorldCenter( ) );
+			else if ( velocity >= -0.1 && velocity <= 0.1f && velocity != 0.0f )
+				body.setLinearVelocity( 0.0f, body.getLinearVelocity( ).y );
+		}
+		// screwButtonHeld = false;
+		// }
 	}
 
 	/**
@@ -1579,27 +1601,7 @@ public class Player extends Entity {
 		}
 	}
 
-	/**
-	 * Stops the player
-	 */
-	@SuppressWarnings( "unused" )
-	private void stop( ) {
-		// if ( feet.getFriction( ) == 0 ) {
-		float velocity = body.getLinearVelocity( ).x;
-		if ( velocity != 0.0f ) {
-			if ( velocity < -0.1f )
-				body.applyLinearImpulse( new Vector2( 0.005f, 0.0f ),
-						body.getWorldCenter( ) );
-			else if ( velocity > 0.1f )
-				body.applyLinearImpulse( new Vector2( -0.005f, 0.0f ),
-						body.getWorldCenter( ) );
-			else if ( velocity >= -0.1 && velocity <= 0.1f && velocity != 0.0f )
-				body.setLinearVelocity( 0.0f, body.getLinearVelocity( ).y );
-		}
-		// screwButtonHeld = false;
-		// }
-	}
-
+	
 	/**
 	 * This function creates a new controllerListener and sets the active
 	 * controller depending on how many players is being created

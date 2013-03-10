@@ -609,6 +609,8 @@ public class LevelFactory {
 //		} else {
 //			times.set(pointElems.size-1, 1.0f);
 //		}
+		
+		// Starts at one because first point on a path should start at 0,0 by default
 		for (int i = 1; i < pointElems.size; i++){
 			vElem = pointElems.get( i );
 			point = new Vector2(vElem.getFloat( "X" )*GLEED_TO_GDX_X, vElem.getFloat( "Y" )*GLEED_TO_GDX_Y);
