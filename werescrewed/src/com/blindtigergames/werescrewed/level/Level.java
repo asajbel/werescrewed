@@ -112,7 +112,7 @@ public class Level {
 		batch.end();
 		
 		debugRenderer.render( world, camera.combined( ) );
-		world.step( 1 / 60f, 6, 3 );
+		world.step(WereScrewedGame.oneOverTargetFrameRate, 6, 3 );
 
 	}
 	
