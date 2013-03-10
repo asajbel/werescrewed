@@ -194,10 +194,9 @@ public class Player extends Entity {
 				+ "/common/sounds/jump.ogg" );
 		
 		//TODO: pick which texture atlas to use based on the character
-		/*The following will be fixed in another branch
-		 * characterAtlas = WereScrewedGame.manager.get(
-				"player_b_m_textureatlas.pack", TextureAtlas.class);
-		*/
+		//The following will be fixed in another branch
+		//characterAtlas = WereScrewedGame.manager.get(
+		//		"player_b_m_textureatlas.pack", TextureAtlas.class);
 	}
 
 	// PUBLIC METHODS
