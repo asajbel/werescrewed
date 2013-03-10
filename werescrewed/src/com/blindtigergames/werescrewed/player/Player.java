@@ -52,7 +52,7 @@ public class Player extends Entity {
 	public final static int JUMP_COUNTER = 10;
 	public final static float ANALOG_DEADZONE = 0.2f;
 	public final static float ANALOG_MAX_RANGE = 1.0f;
-	public final static float PLAYER_FRICTION = 0.6f;
+	public final static float PLAYER_FRICTION = 0.7f;
 	public final static int SCREW_JUMP_STEPS = 15;
 	public final static int HEAD_JUMP_STEPS = 30;
 	public final static float SCREW_ATTACH_SPEED = 0.1f;
@@ -197,7 +197,7 @@ public class Player extends Entity {
 			// System.out.println( "feet friction: " + feet.getFriction( )
 			// + " feet position: " + feet.getBody( ).getPosition( ) );
 
-			// System.out.println(hitScrew);
+			 //System.out.println(isGrounded() + " jumpc " + jumpCounter);
 		}
 		if ( kinematicTransform ) {
 			// setPlatformTransform( platformOffset );
