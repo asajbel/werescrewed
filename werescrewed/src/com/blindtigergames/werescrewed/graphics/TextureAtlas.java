@@ -29,6 +29,8 @@ import java.io.InputStreamReader;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import com.badlogic.gdx.Files.FileType;
 import com.badlogic.gdx.Gdx;
@@ -39,7 +41,6 @@ import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.Texture.TextureWrap;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
@@ -54,7 +55,7 @@ import com.badlogic.gdx.utils.ObjectMap;
  * 
  * @author Nathan Sweet
  */
-public class TextureAtlasS implements Disposable {
+public class TextureAtlas implements Disposable {
 	static final String[ ] tuple = new String[ 4 ];
 
 	private final HashSet< Texture > textures = new HashSet< Texture >( 4 );
@@ -204,11 +205,23 @@ public class TextureAtlasS implements Disposable {
 						region.originalWidth = Integer.parseInt( tuple[ 0 ] );
 						region.originalHeight = Integer.parseInt( tuple[ 1 ] );
 
-						readTuple( reader );
-						region.offsetX = Integer.parseInt( tuple[ 0 ] );
-						region.offsetY = Integer.parseInt( tuple[ 1 ] );
+						//readTuple( reader );
+						String possibleLine = reader.readLine();
 
-						region.index = Integer.parseInt( readValue( reader ) );
+						if (possibleLine.matches( "^\\s*offset:\\s*(\\d+)\\s*,\\s*(\\d+)$" )){
+							//read the values into the offset ints
+							Pattern p = Pattern.compile( "(\\d+)" );
+							Matcher m = p.matcher(possibleLine);
+							m.find();
+							region.offsetX = Integer.parseInt( m.group() );
+							m.find();
+							region.offsetY = Integer.parseInt( m.group() );
+							
+							region.index = Integer.parseInt( readValue( reader ) );
+						} else {
+							region.index = Integer.parseInt( parseValue( line ) );
+						}
+
 
 						if ( flip )
 							region.flip = true;
@@ -240,14 +253,14 @@ public class TextureAtlasS implements Disposable {
 	}
 
 	/** Creates an empty atlas to which regions can be added. */
-	public TextureAtlasS( ) {
+	public TextureAtlas( ) {
 	}
 
 	/**
 	 * Loads the specified pack file using {@link FileType#Internal}, using the
 	 * parent directory of the pack file to find the page images.
 	 */
-	public TextureAtlasS( String internalPackFile ) {
+	public TextureAtlas( String internalPackFile ) {
 		this( Gdx.files.internal( internalPackFile ) );
 	}
 
@@ -255,7 +268,7 @@ public class TextureAtlasS implements Disposable {
 	 * Loads the specified pack file, using the parent directory of the pack
 	 * file to find the page images.
 	 */
-	public TextureAtlasS( FileHandle packFile ) {
+	public TextureAtlas( FileHandle packFile ) {
 		this( packFile, packFile.parent( ) );
 	}
 
@@ -265,11 +278,11 @@ public class TextureAtlasS implements Disposable {
 	 *            perspective where 0,0 is the upper left corner.
 	 * @see #TextureAtlas(FileHandle)
 	 */
-	public TextureAtlasS( FileHandle packFile, boolean flip ) {
+	public TextureAtlas( FileHandle packFile, boolean flip ) {
 		this( packFile, packFile.parent( ), flip );
 	}
 
-	public TextureAtlasS( FileHandle packFile, FileHandle imagesDir ) {
+	public TextureAtlas( FileHandle packFile, FileHandle imagesDir ) {
 		this( packFile, imagesDir, false );
 	}
 
@@ -278,7 +291,7 @@ public class TextureAtlasS implements Disposable {
 	 *            If true, all regions loaded will be flipped for use with a
 	 *            perspective where 0,0 is the upper left corner.
 	 */
-	public TextureAtlasS( FileHandle packFile, FileHandle imagesDir,
+	public TextureAtlas( FileHandle packFile, FileHandle imagesDir,
 			boolean flip ) {
 		this( new TextureAtlasData( packFile, imagesDir, flip ) );
 	}
@@ -287,7 +300,7 @@ public class TextureAtlasS implements Disposable {
 	 * @param data
 	 *            May be null.
 	 */
-	public TextureAtlasS( TextureAtlasData data ) {
+	public TextureAtlas( TextureAtlasData data ) {
 		if ( data != null )
 			load( data );
 	}
@@ -562,6 +575,10 @@ public class TextureAtlasS implements Disposable {
 
 	static String readValue( BufferedReader reader ) throws IOException {
 		String line = reader.readLine( );
+		return parseValue(line);
+	}
+
+	static String parseValue( String line ) throws IOException {
 		int colon = line.indexOf( ':' );
 		if ( colon == -1 )
 			throw new GdxRuntimeException( "Invalid line: " + line );

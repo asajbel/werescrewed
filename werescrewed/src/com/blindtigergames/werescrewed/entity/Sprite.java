@@ -4,11 +4,14 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.math.Vector2;
 import com.blindtigergames.werescrewed.WereScrewedGame;
+import com.blindtigergames.werescrewed.entity.animator.IAnimator;
+import com.blindtigergames.werescrewed.entity.animator.SimpleFrameAnimator;
+import com.blindtigergames.werescrewed.graphics.TextureAtlas;
 
 /**
- * @author Nick Patti
+ * @author Nick Patti/Kevin Cameron
  * 
  * @notes Users can interchange AnimatedSprites for libGDX sprites. They are
  *        called the exact same way, and animations are handled in the draw
@@ -23,128 +26,63 @@ public class Sprite extends com.badlogic.gdx.graphics.g2d.Sprite implements I_Dr
 	protected static final int VERTEX_SIZE = 2 + 1 + 2;
 	protected static final int SPRITE_SIZE = 4 * VERTEX_SIZE;
 
-	private static int FRAMES = 1;
-	private static int ROWS = 1;
-	private static int COLUMNS = 1;
-	Animation animation;
-	Texture spriteSheet;
-	TextureRegion[ ] spriteSheetFrames;
+	//Set this to whatever global constant we eventually use.
+	protected static final float FPS = 60.0f;
+	
+	TextureAtlas atlas;
+	IAnimator animator;
 	TextureRegion currentFrame;
-	float stateTime;
-
-	/**
-	 * Create an animating sprite using a sprite sheet. Must know the number of
-	 * rows and columns of the sprite sheet in order to construct properly.
-	 * 
-	 * @author Nick Patti
-	 * 
-	 * @param f
-	 *            The number of frames in the sprite sheet. TODO: What to do if
-	 *            you have an odd number of sprites in a sheet, but more than
-	 *            one row?
-	 * @param r
-	 *            The number of rows in the sprite sheet. Default value is 1.
-	 * @param c
-	 *            The number of columns in the sprite sheet. Default value is 1.
-	 * @param fr
-	 *            The frame rate of the animation
-	 * @param spriteSheetName
-	 *            The name of the sprite sheet, including the parent files below
-	 *            data, and the extension
-	 * @param loopType
-	 *            The loop type specified by a constant provided by libGDX
-	 */
-	public Sprite( int f, int r, int c, float fr,
-			String spriteSheetName, int loopType ) {
+	
+	public Sprite(){
 		super();
-		FRAMES = f;
-		ROWS = r;
-		COLUMNS = c;
-		String spriteSheetFullName = WereScrewedGame.dirHandle.path( )  + "/" + spriteSheetName;
-		spriteSheet = WereScrewedGame.manager.get(spriteSheetFullName, Texture.class);
-
-		// temporary frames for placing each frame into spriteSheetFrames
-		TextureRegion[ ][ ] tmpFrame = TextureRegion.split( spriteSheet,
-				spriteSheet.getWidth( ) / COLUMNS, spriteSheet.getHeight( )
-						/ ROWS );
-
-		spriteSheetFrames = new TextureRegion[ COLUMNS * ROWS ];
-
-		// populate each of the frames with the correct image
-		int index = 0;
-		for ( int i = 0; i < ROWS; ++i ) {
-			for ( int j = 0; j < COLUMNS; ++j ) {
-				spriteSheetFrames[ index ] = tmpFrame[ i ][ j ];
-				if ( index++ >= FRAMES )
-					Gdx.app.log( "AnimatedSprite",
-							"You're gonna have some sprite flickering..." );
-			}
-		}
-
-		// create the animation and set the play mode
-		animation = new Animation( fr, spriteSheetFrames );
-		animation.setPlayMode( loopType );
-		stateTime = 0f;
-	}
-
-	/**
-	 * Create an animating sprite using a Texture of a sprite sheet. May or may
-	 * not be here in a later build, since it's extremely similar to the sprite
-	 * sheet constructor
-	 * 
-	 * @author Nick Patti
-	 * 
-	 * @param f
-	 *            The number of frames in the sprite sheet
-	 * @param r
-	 *            The number of rows in the sprite sheet. Default value is 1.
-	 * @param c
-	 *            The number of columns in the sprite sheet. Default value is 1.
-	 * @param fr
-	 *            The frame rate of the animation. The smaller the number, the
-	 *            faster the animation.
-	 * @param spriteSheetTexture
-	 *            The Texture containing the sprite sheet
-	 * @param loopType
-	 *            The loop type specified by a constant provided by libGDX
-	 */
-	public Sprite( int f, int r, int c, float fr,
-			Texture spriteSheetTexture, int loopType ) {
-		super(spriteSheetTexture);
-		ROWS = r;
-		COLUMNS = c;
-		spriteSheet = spriteSheetTexture;
-
-		// temporary frames for placing each frame into spriteSheetFrames
-		TextureRegion[ ][ ] tmpFrame = TextureRegion.split( spriteSheet,
-				spriteSheet.getWidth( ) / COLUMNS, spriteSheet.getHeight( )
-						/ ROWS );
-
-		spriteSheetFrames = new TextureRegion[ COLUMNS * ROWS ];
-
-		// populate each of the frames with the correct image
-		int index = 0;
-		for ( int i = 0; i < ROWS; ++i ) {
-			for ( int j = 0; j < COLUMNS; ++j ) {
-				spriteSheetFrames[ index++ ] = tmpFrame[ i ][ j ];
-			}
-		}
-
-		// create the animation and set the play mode
-		animation = new Animation( fr, spriteSheetFrames );
-		animation.setPlayMode( loopType );
-		stateTime = 0f;
+    	initialize();
 	}
 	
-    public Sprite( Texture texture ) {
-    	this( 1, 1, 1, 1.0f, texture, 0);
+    public Sprite ( TextureAtlas a, String initialRegion ){
+    	this();
+    	atlas = a;
+    	currentFrame = atlas.findRegion( initialRegion );
+    	animator = new SimpleFrameAnimator()
+    				.maxFrames( atlas.getRegions( ).size )
+    				.speed( FPS / atlas.getRegions( ).size );
+    	this.setTexture(currentFrame.getTexture( ));
     }
     
-    public Sprite( TextureRegion region ) {
-    	this( 1, 1, 1, 1.0f, region.getTexture( ), 0);
-    	currentFrame = region;
+    public Sprite (Texture tex){
+    	super(tex);
+    	initialize();
     }
-	/** 
+    
+    public Sprite (TextureRegion tex){
+    	super(tex);
+    	initialize();
+    	currentFrame = tex;
+    }
+    
+    public void setAnimator(IAnimator a){
+    	animator = a;
+    }
+    
+    public IAnimator getAnimator(){
+    	return animator;
+    }
+    
+    public Sprite (String atlasName, String initialRegion){
+    	this(WereScrewedGame.manager.getAtlas( atlasName ), initialRegion);
+    }
+    
+    protected void initialize(){
+		atlas = null;
+		animator = null;
+		currentFrame = null;
+    }
+    
+    public void update( float deltaTime ){
+    	if (animator != null)
+    		animator.update( deltaTime );  	
+    }
+    
+    /** 
      * draw 
      * Draws the animated sprite on the screen.
      * 
@@ -156,12 +94,18 @@ public class Sprite extends com.badlogic.gdx.graphics.g2d.Sprite implements I_Dr
 	 */
 	@Override
 	public void draw( SpriteBatch batch ) {
-		// find the change in time and pick the correct frame to draw
-		stateTime += Gdx.graphics.getDeltaTime( );
-		currentFrame = animation.getKeyFrame( stateTime );
-		this.setRegion( currentFrame );
+		if (atlas != null && animator != null){
+			currentFrame = atlas.findRegion( animator.getRegion( ) );
+		}
+		if (currentFrame != null){
+			this.setTexture( currentFrame.getTexture( ) );
+			this.setRegion( currentFrame );
+			//We only need to update when the frame changes.
+			currentFrame = null;
+		}
 		super.draw( batch );
 	}
+
 	/**
 	 * reset
 	 * A method which resets the animation to the first frame. Useful for
@@ -177,7 +121,11 @@ public class Sprite extends com.badlogic.gdx.graphics.g2d.Sprite implements I_Dr
 	public void reset( ) {
 		// TODO: find a way to have stateTime count from zero and up again.
 		Gdx.app.log( "AnimatedSprite.reset()", "reset called" );
-		stateTime = 0;
+		animator.setFrameNumber( 0 );
+	}
+
+	public void setPosition( Vector2 pos ) {
+		super.setPosition(pos.x, pos.y);
 	}
 
 	/**

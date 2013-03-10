@@ -6,6 +6,8 @@ import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.FPSLogger;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.blindtigergames.werescrewed.asset.AssetManager;
 import com.blindtigergames.werescrewed.screens.ScreenManager;
 import com.blindtigergames.werescrewed.screens.ScreenType;
@@ -18,6 +20,8 @@ public class WereScrewedGame extends Game {
 	public FPSLogger logger;
 	
 	private boolean restartFlag = false;
+	
+	public static ShaderProgram defaultShader;
 
 	@Override
 	public void create( ) {
@@ -32,6 +36,10 @@ public class WereScrewedGame extends Game {
 		ScreenManager.getInstance( ).show( ScreenType.LOADING );
 
 		logger = new FPSLogger( );
+		if (Gdx.graphics.isGL20Available( ))
+			defaultShader = SpriteBatch.createDefaultShader( );
+		else
+			defaultShader = null;
 
 	}
 

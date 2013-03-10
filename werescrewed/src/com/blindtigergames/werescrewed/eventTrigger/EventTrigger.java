@@ -24,13 +24,16 @@ import com.blindtigergames.werescrewed.util.Util;
 public class EventTrigger extends Entity{
 	
 	private boolean repeatable = false;
-	private boolean repeatTriggeredOnce = false;
+	private boolean repeatBeginTriggeredOnce = false;
+	private boolean repeatEndTriggeredOnce = false;
 	private boolean activated = false;
-	private boolean triggeredOnce = false;
+	private boolean beginTriggeredOnce = false, endTriggeredOnce = false;
 	private boolean twoPlayersToActivate = false, twoPlayersToDeactivate = false;
 	private boolean playerOneContact = false, playerTwoContact = false;
 	private ArrayList<Entity> entityList;
 	private IAction beginAction, endAction;
+	private boolean actOnEntity = false;
+	private int playerOneCount = 0, playerTwoCount = 0;
 	
 	public EventTrigger(String name, World world){
 		super(name, null, null, null, false );
@@ -84,6 +87,13 @@ public class EventTrigger extends Entity{
 		polygon.dispose( );
 	}
 	
+	public boolean isActingOnEntity(){
+		return actOnEntity;
+	}
+	
+	public void setActingOnEntity(boolean b){
+		actOnEntity = b;
+	}
 	/**
 	 * checks whether this EventTrigger is repeatable,
 	 * which means player can exit the sensor and then collide again
@@ -175,6 +185,7 @@ public class EventTrigger extends Entity{
 	 */
 	public void setActivated(boolean active, String name){
 		if(active == true){
+
 			// If it takes two players to turn it on
 			if(twoPlayersToActivate)
 			{
@@ -211,19 +222,19 @@ public class EventTrigger extends Entity{
 		}
 		else if(active == false)
 		{
-			//If the event isn't repeatable, then it should never turn back to false
-			if(!repeatable){
-				if(triggeredOnce){
-					return;
-					//Not repeatable so can't turn it off
-					// later it will be deleted here
-				}
-			}
-			else{
-				//Else if it is repeatable, check if we ran it already
-				// then check if it takes two players to deactivate or one player
-				if(repeatTriggeredOnce)
-				{
+//			//If the event isn't repeatable, then it should never turn back to false
+//			if(!repeatable){
+//				if(triggeredOnce){
+//					return;
+//					//Not repeatable so can't turn it off
+//					// later it will be deleted here
+//				}
+//			}
+//			else{
+//				//Else if it is repeatable, check if we ran it already
+//				// then check if it takes two players to deactivate or one player
+//				if(repeatTriggeredOnce)
+//				{
 					if(twoPlayersToDeactivate)
 					{
 						if(playerOneContact)
@@ -243,7 +254,8 @@ public class EventTrigger extends Entity{
 						
 						if(!playerOneContact && !playerTwoContact)
 						{
-							repeatTriggeredOnce = false;
+							repeatEndTriggeredOnce = false;
+							repeatBeginTriggeredOnce = false;
 							this.activated = false;
 						}
 					}
@@ -253,16 +265,39 @@ public class EventTrigger extends Entity{
 						if(name.equals( "player1" ))
 						{
 							playerOneContact = false;
+							playerOneCount++;
 						}
 						if(name.equals( "player2" ))
 						{
 							playerTwoContact = false;
+							playerTwoCount++;
 						}
-						repeatTriggeredOnce = false;
-						this.activated = false;
+						if(playerOneCount == 2){
+							if(repeatEndTriggeredOnce){
+								if(!playerOneContact && !playerTwoContact)
+								{
+									repeatEndTriggeredOnce = false;
+								}
+							}
+							
+							repeatBeginTriggeredOnce = false;
+							this.activated = false;
+							playerOneCount = 0;
+						}
+						if( playerTwoCount == 2){
+							if(repeatEndTriggeredOnce){
+								if(!playerOneContact && !playerTwoContact)
+								{
+									repeatEndTriggeredOnce = false;
+								}
+							}
+							repeatBeginTriggeredOnce = false;
+							this.activated = false;
+							playerTwoCount = 0;
+						}
 					}
-				}
-			}
+				//}
+			//}
 			
 		}
 	}
@@ -274,10 +309,11 @@ public class EventTrigger extends Entity{
 	 * @author Ranveer
 	 */
 	public void update( float deltaTime ){
-//		System.out.println( "p1: " + playerOneContact 
-//				+ ", p2: " + playerTwoContact 
-//				+ ", activated: " + this.activated
-//				+ "repeatTrig: " + repeatTriggeredOnce);
+		System.out.println( "p1: " + playerOneContact 
+				+ ", p2: " + playerTwoContact 
+				+ ", activated: " + this.activated
+				+ "repeatBegin: " + repeatBeginTriggeredOnce
+				+ "repeatEnd: " + repeatEndTriggeredOnce);
 		
 		//System.out.println( repeatTriggeredOnce );
 	}
@@ -348,23 +384,35 @@ public class EventTrigger extends Entity{
 	 */
 	private void runBeginAction(){
 		if(!repeatable){
-			if(!triggeredOnce){
-				for(Entity e : entityList){
+			if(!beginTriggeredOnce){
+				if(actOnEntity){
+					for(Entity e : entityList){
+						if(beginAction != null){
+							beginAction.act( e );
+						}
+					}
+				}else{
 					if(beginAction != null){
-						beginAction.act( e );
+						beginAction.act( );
 					}
 				}
-				triggeredOnce = true;
+				beginTriggeredOnce = true;
 			}
 		} 
 		if(repeatable){
-			if(!repeatTriggeredOnce){
-				for(Entity e : entityList){
+			if(!repeatBeginTriggeredOnce){
+				if(actOnEntity){
+					for(Entity e : entityList){
+						if(beginAction != null){
+							beginAction.act( e );
+						}
+					}
+				}else{
 					if(beginAction != null){
-						beginAction.act( e );
+						beginAction.act( );
 					}
 				}
-				repeatTriggeredOnce = true;
+				repeatBeginTriggeredOnce = true;
 			}
 		}
 	}
@@ -376,23 +424,35 @@ public class EventTrigger extends Entity{
 	 */
 	private void runEndAction(){
 		if(!repeatable){
-			if(!triggeredOnce){
-				for(Entity e : entityList){
+			if(!endTriggeredOnce){
+				if(actOnEntity){
+					for(Entity e : entityList){
+						if(endAction != null){
+							endAction.act( e );
+						}
+					}
+				}else{
 					if(endAction != null){
-						endAction.act( e );
+						endAction.act( );
 					}
 				}
-				triggeredOnce = true;
+				endTriggeredOnce = true;
 			}
 		} 
 		if(repeatable){
-			if(!repeatTriggeredOnce){
-				for(Entity e : entityList){
+			if(!repeatEndTriggeredOnce){
+				if(actOnEntity){
+					for(Entity e : entityList){
+						if(endAction != null){
+							endAction.act( e );
+						}
+					}
+				}else{
 					if(endAction != null){
-						endAction.act( e );
+						endAction.act( );
 					}
 				}
-				repeatTriggeredOnce = true;
+				repeatEndTriggeredOnce = true;
 			}
 		}
 	}

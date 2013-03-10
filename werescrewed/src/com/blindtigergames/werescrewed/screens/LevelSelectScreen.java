@@ -45,6 +45,8 @@ public class LevelSelectScreen implements com.badlogic.gdx.Screen {
 				new ScreenSwitchHandler( ScreenType.PLAYTEST ) );
 		gleedButton = new Button( "Gleed Screen", font,
 				new ScreenSwitchHandler( ScreenType.GLEED ) );
+		gleedButton = new Button( "PolySprite Screen", font,
+				new ScreenSwitchHandler( ScreenType.POLY ) );
 		level1Button = new Button( "Level 1", font, 
 				new ScreenSwitchHandler(ScreenType.LOADING_1 ) );
 		

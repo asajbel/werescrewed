@@ -18,6 +18,7 @@ public class EventTriggerBuilder extends
 	private float width, height;
 	private boolean offsetAbove, offsetBelow, offsetRight, offsetLeft;
 	private boolean attachedToEntity;
+	private boolean actOnEntity;
 	@SuppressWarnings( "unused" )
 	private float attachedEntityHeight, attachedEntityWidth;
 	private boolean repeatableAction;
@@ -54,6 +55,7 @@ public class EventTriggerBuilder extends
 		this.offsetRight = false;
 		this.offsetLeft = false;
 		this.attachedToEntity = false;
+		this.actOnEntity = false;
 		return this;
 	}
 
@@ -140,6 +142,7 @@ public class EventTriggerBuilder extends
 	}
 
 	public EventTriggerBuilder addEntity( Entity entity ) {
+		this.actOnEntity = true;
 		entitiesToAdd.add( entity );
 		return this;
 	}
@@ -180,6 +183,7 @@ public class EventTriggerBuilder extends
 		et.setTwoPlayersToDeactivate( this.twoPlayersToDeactive );
 		et.addBeginIAction( this.beginAction );
 		et.addEndIAction( this.endAction );
+		et.setActingOnEntity( this.actOnEntity );
 
 		for ( Entity e : entitiesToAdd ) {
 			et.addEntityToTrigger( e );

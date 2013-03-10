@@ -150,6 +150,13 @@ public enum ScreenType {
 		protected com.badlogic.gdx.Screen getScreenInstance( ) {
 			return new TrophyScreen( );
 		}
+	}, 
+	
+	POLY {
+		@Override
+		protected com.badlogic.gdx.Screen getScreenInstance( ) {
+			return new PolySpriteTestScreen( "testLevel" );
+		}
 	};
 
 	protected abstract com.badlogic.gdx.Screen getScreenInstance( );

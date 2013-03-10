@@ -45,6 +45,8 @@ public class Entity implements GleedLoadable {
 	protected boolean visible;
 	protected boolean maintained;
 	protected EntityType entityType;
+	protected ArrayList<Sprite> decals;
+	protected ArrayList<Vector2> decalOffsets;
 	private ArrayList<IMover> moverArray;
 	private RobotState currentRobotState;
 	private EnumMap<RobotState, Integer> robotStateMap;
@@ -75,7 +77,9 @@ public class Entity implements GleedLoadable {
 		this.world = world;
 		this.sprite = constructSprite( texture );
 		this.body = constructBodyByType( );
-		setPixelPosition( positionPixels );
+		this.decals = new ArrayList<Sprite>();
+		this.decalOffsets = new ArrayList<Vector2>();
+		this.setPixelPosition( positionPixels );
 		createAnchor(anchRadius);
 	}
 	
@@ -93,7 +97,7 @@ public class Entity implements GleedLoadable {
 	 *            boolean determining whether or not the player can stand on it
 	 */
 	public Entity( String name, Vector2 positionPixels, Texture texture,
-			Body body, boolean solid ) {
+			Body body, boolean solid , float anchRadius) {
 		this.construct( name, solid );
 		this.sprite = constructSprite( texture );
 		this.body = body;
@@ -102,9 +106,13 @@ public class Entity implements GleedLoadable {
 			sprite.setScale( Util.PIXEL_TO_BOX );
 		}
 		this.setPixelPosition( positionPixels );
-		
 	}
-
+	
+	public Entity( String name, Vector2 positionPixels, Texture texture,
+			Body body, boolean solid){
+		this(name, positionPixels, texture, body, solid, 0.0f);
+	}
+	
 	/**
 	 * Common sub-constructor that applies to all Entity() constructors.
 	 */
@@ -184,7 +192,7 @@ public class Entity implements GleedLoadable {
 		if ( sprite != null && visible ) {
 			sprite.draw( batch );
 		}
-		//drawOrigin(batch);
+		drawOrigin(batch);
 	}
 
 	public void drawOrigin(SpriteBatch batch){
@@ -213,6 +221,7 @@ public class Entity implements GleedLoadable {
 		if (sprite != null){
 			sprite.setPosition( bodyPos.x - offset.x, bodyPos.y - offset.y );
 			sprite.setRotation( MathUtils.radiansToDegrees * body.getAngle( ) );
+			sprite.update( deltaTime );
 		}
 	}
 
@@ -691,5 +700,51 @@ public class Entity implements GleedLoadable {
 		
 		//Initalize to idle
 		currentRobotState = RobotState.IDLE;
+	}
+	
+	/**
+	 * 
+	 */
+	public void addDecal(Sprite s, Vector2 offset){
+		this.decals.add( s );
+		this.decalOffsets.add( offset );
+	}
+	
+	public void addDecal(Sprite s){
+		addDecal(s, new Vector2(s.getX( ), s.getY( )));
+	}
+	
+	
+	public void updateDecals( float deltaTime ){
+		Vector2 bodyPos = this.getPositionPixel( );
+		float angle = this.getAngle( ), 
+				cos = ( float ) Math.cos( angle ),
+				sin = ( float ) Math.sin( angle );
+		float x,y;
+		Vector2 offset;
+		Sprite decal;
+		for (int i = 0; i < decals.size(); i++){
+			offset = decalOffsets.get( i );
+			decal = decals.get( i );
+			x = bodyPos.x + (cos * offset.x) + (sin * offset.y);
+			y = bodyPos.y + (cos * offset.x) - (sin * offset.y);
+			decal.setPosition( x, y );
+			decal.setRotation( angle );
+		}	
+	}
+	
+	/**
+	 * 
+	 */
+	public void drawDecals(SpriteBatch batch){
+		for (Sprite decal: decals){
+			decal.draw( batch );
+		}
+	}
+	
+	public float getAngle( ){
+		if (body != null)
+			return body.getAngle( );
+		return sprite.getRotation( );
 	}
 }
