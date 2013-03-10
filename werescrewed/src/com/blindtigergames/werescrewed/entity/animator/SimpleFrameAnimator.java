@@ -56,6 +56,7 @@ public class SimpleFrameAnimator implements IAnimator {
 	}
 
 	public SimpleFrameAnimator maxFrames(int f){
+		Gdx.app.log("SimpleFrameAnimator", "Setting max frames to: "+f);
 		frames = f;
 		return this;
 	}
@@ -72,13 +73,9 @@ public class SimpleFrameAnimator implements IAnimator {
 	
 	@Override
 	public void update( float dT ) {
-		time += (dT * speed);
-		if (frames > 0){
-			frame = validFrame( (int)Math.floor( time / frames) );
-		} else {
-			frame = 0;
-		}
-		Gdx.app.log( "SimpleFrameAnimator", "Time:"+time+" Frame"+frame );
+		incrementTime(dT);
+		frame = (int)Math.floor( time * frames);
+		Gdx.app.log( "SimpleFrameAnimator", "Time: "+time+" Frame: "+frame );
 	}
 
 	@Override
@@ -99,35 +96,41 @@ public class SimpleFrameAnimator implements IAnimator {
 
 	@Override
 	public void setFrameNumber( int f ) {
-		frame = f - start;		
+		frame = f - start;
+		time = (float)frame / frames;
 	}
 
-	public int validFrame( int f ){
-		if (f < 0){
-			if (loop == LoopBehavior.LOOP){
-				f = frames;
-			} else {
-				f = 0;
-				if (loop == LoopBehavior.YOYO){
-					speed *= -1.0f;
-				} else {
-					speed = 0.0f;
-				}
+	public void incrementTime( float dT ){
+		time += (dT * speed);
+		if (time < 0.0f){
+			switch (loop){
+			case STOP:
+				time = 0.0f;
+				speed = 0.0f;
+				break;
+			case LOOP:
+				time -= Math.floor( time );				
+				break;
+			case YOYO:
+				time = 0.0f;
+				speed *= -1.0f;
+				break;
 			}
 		}
-		if (f > frames){
-			if (loop == LoopBehavior.LOOP){
-				f = 0;
-			} else {
-				f = frames;
-				if (loop == LoopBehavior.YOYO){
-					speed *= -1.0f;
-				} else {
-					speed = 0.0f;
-				}
+		if (time > 0.0f){
+			switch (loop){
+			case STOP:
+				time = 1.0f;
+				speed = 0.0f;
+				break;
+			case LOOP:
+				time -= Math.floor( time );				
+				break;
+			case YOYO:
+				time = 1.0f;
+				speed *= -1.0f;
+				break;
 			}
 		}
-		return f;
-	}
-	
+	}	
 }

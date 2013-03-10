@@ -3,13 +3,12 @@ package com.blindtigergames.werescrewed.entity;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.math.Vector2;
 import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.entity.animator.IAnimator;
 import com.blindtigergames.werescrewed.entity.animator.SimpleFrameAnimator;
+import com.blindtigergames.werescrewed.graphics.TextureAtlas;
 
 /**
  * @author Nick Patti/Kevin Cameron
@@ -27,6 +26,9 @@ public class Sprite extends com.badlogic.gdx.graphics.g2d.Sprite implements I_Dr
 	protected static final int VERTEX_SIZE = 2 + 1 + 2;
 	protected static final int SPRITE_SIZE = 4 * VERTEX_SIZE;
 
+	//Set this to whatever global constant we eventually use.
+	protected static final float FPS = 60.0f;
+	
 	TextureAtlas atlas;
 	IAnimator animator;
 	TextureRegion currentFrame;
@@ -41,7 +43,9 @@ public class Sprite extends com.badlogic.gdx.graphics.g2d.Sprite implements I_Dr
     	atlas = a;
     	currentFrame = atlas.findRegion( initialRegion );
     	animator = new SimpleFrameAnimator()
-    				.maxFrames( atlas.getRegions( ).size );
+    				.maxFrames( atlas.getRegions( ).size )
+    				.speed( FPS / atlas.getRegions( ).size );
+    	this.setTexture(currentFrame.getTexture( ));
     }
     
     public Sprite (Texture tex){
@@ -64,7 +68,7 @@ public class Sprite extends com.badlogic.gdx.graphics.g2d.Sprite implements I_Dr
     }
     
     public Sprite (String atlasName, String initialRegion){
-    	this(WereScrewedGame.manager.get( atlasName, TextureAtlas.class ), initialRegion);
+    	this(WereScrewedGame.manager.getAtlas( atlasName ), initialRegion);
     }
     
     protected void initialize(){
@@ -92,10 +96,12 @@ public class Sprite extends com.badlogic.gdx.graphics.g2d.Sprite implements I_Dr
 	public void draw( SpriteBatch batch ) {
 		if (atlas != null && animator != null){
 			currentFrame = atlas.findRegion( animator.getRegion( ) );
-			this.setRegion( currentFrame );
 		}
 		if (currentFrame != null){
+			this.setTexture( currentFrame.getTexture( ) );
 			this.setRegion( currentFrame );
+			//We only need to update when the frame changes.
+			currentFrame = null;
 		}
 		super.draw( batch );
 	}
@@ -115,6 +121,7 @@ public class Sprite extends com.badlogic.gdx.graphics.g2d.Sprite implements I_Dr
 	public void reset( ) {
 		// TODO: find a way to have stateTime count from zero and up again.
 		Gdx.app.log( "AnimatedSprite.reset()", "reset called" );
+		animator.setFrameNumber( 0 );
 	}
 
 	public void setPosition( Vector2 pos ) {

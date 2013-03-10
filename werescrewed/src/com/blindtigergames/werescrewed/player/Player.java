@@ -161,8 +161,7 @@ public class Player extends Entity {
 
 		jumpSound = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 				+ "/common/sounds/jump.ogg" );
-		//sprite = new Sprite(WereScrewedGame.dirHandle
-		//		+ "/common/animations/red_male/idle.txt","0");
+		//sprite = new Sprite( "idle" ,"0");
 	}
 
 	// PUBLIC METHODS

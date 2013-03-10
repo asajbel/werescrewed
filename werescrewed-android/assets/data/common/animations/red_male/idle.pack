@@ -2,6 +2,7 @@ idle.png
 format: RGBA8888
 filter: Linear,Linear
 repeat: none
+offset: 0,0
 16
   rotate: false
   xy: 132, 132
