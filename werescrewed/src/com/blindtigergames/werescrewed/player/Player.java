@@ -340,7 +340,7 @@ public class Player extends Entity {
 				// move player back to original category
 				filter.categoryBits = Util.CATEGORY_PLAYER;
 				// player now collides with everything
-				filter.maskBits = Util.CATEGORY_NOTHING;
+				filter.maskBits = Util.CATEGORY_SCREWS;
 				f.setFilterData( filter );
 			}
 			playerState = PlayerState.Dead;
