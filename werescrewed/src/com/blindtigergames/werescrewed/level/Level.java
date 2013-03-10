@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import aurelienribon.tweenengine.Tween;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
@@ -15,6 +16,7 @@ import com.blindtigergames.werescrewed.camera.Camera;
 import com.blindtigergames.werescrewed.debug.SBox2DDebugRenderer;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityManager;
+import com.blindtigergames.werescrewed.entity.PolySprite;
 import com.blindtigergames.werescrewed.entity.RobotState;
 import com.blindtigergames.werescrewed.platforms.Platform;
 import com.blindtigergames.werescrewed.entity.builders.PlayerBuilder;
@@ -81,7 +83,10 @@ public class Level {
 	}
 	
 	public void draw ( SpriteBatch sb, SBox2DDebugRenderer dr){
+		sb.setShader( WereScrewedGame.defaultShader );
+		sb.setBlendFunction( GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA );
 		sb.setProjectionMatrix( camera.combined() );
+		sb.enableBlending( );
 		sb.begin();
 		entities.draw( sb );
 		root.draw( sb );

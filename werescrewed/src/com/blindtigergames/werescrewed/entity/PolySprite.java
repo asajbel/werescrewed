@@ -29,8 +29,6 @@ public class PolySprite extends Sprite {
 	protected Mesh mesh;
 	protected ShaderProgram shader;
 	protected float[ ] verts;
-	// protected float[ ] color;
-	// protected float[ ] uvs;
 	protected Rectangle bounds;
 	protected Vector2 center;
 
@@ -106,7 +104,7 @@ public class PolySprite extends Sprite {
 			this.verts[ 9 * i + 8 ] = texCoords[ 2 * i + 1 ]; // uw
 		}
 
-		System.out.println( "HELLA " + verts.size + "\n\n\n" );
+		//System.out.println( "HELLA " + verts.size + "\n\n\n" );
 
 		mesh = new Mesh( true, verts.size, ( verts.size - 2 ) * 3,
 				VertexAttribute.Position( ), VertexAttribute.ColorUnpacked( ),
@@ -134,13 +132,13 @@ public class PolySprite extends Sprite {
 			indices[ i * 3 ] = ( short ) ( i + 1 );
 			indices[ i * 3 + 1 ] = ( short ) ( i + 2 );
 			indices[ i * 3 + 2 ] = 0;
-			System.out.println( "DERP!" );
+			//System.out.println( "DERP!" );
 		}
-		System.out.print( "yo!" );
-		for ( int i = 0; i < indices.length; ++i ) {
+		//System.out.print( "yo!" );
+		/*for ( int i = 0; i < indices.length; ++i ) {
 			System.out.print( indices[ i ] + ", " );
 		}
-		System.out.print( "\n" );
+		System.out.print( "\n" );*/
 		return indices;
 	}
 
