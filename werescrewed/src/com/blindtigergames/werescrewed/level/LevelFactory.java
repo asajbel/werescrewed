@@ -32,6 +32,7 @@ import com.blindtigergames.werescrewed.screws.StructureScrew;
 import com.blindtigergames.werescrewed.entity.RootSkeleton;
 import com.blindtigergames.werescrewed.entity.Skeleton;
 import com.blindtigergames.werescrewed.util.ArrayHash;
+import com.blindtigergames.werescrewed.util.Util;
 
 
 public class LevelFactory {	
@@ -400,14 +401,17 @@ public class LevelFactory {
 		float xPos = item.pos.x + (width/2);
 		float yPos = item.pos.y - (height/2);
 		
+
+		PlatformBuilder pb = new PlatformBuilder(level.world);
 		
 		boolean isDynamic = false;
 		if(item.props.containsKey( "dynamic" )){
 			isDynamic = true;
 		}
-		boolean isOneSided = false;
+
+
 		if(item.props.containsKey( "onesided" )){
-			isOneSided = true;
+			pb.oneSided( true );
 		}
 
 		boolean isCrushable = false;
@@ -415,17 +419,20 @@ public class LevelFactory {
 			isCrushable = true;
 		}
 		
-		PlatformBuilder pb = new PlatformBuilder(level.world);
+
+		
 		TiledPlatform out = null;
 
-		out = pb.name( item.name )
+		pb.name( item.name )
 		.position( new Vector2(xPos, yPos) )
 		.dimensions( new Vector2(tileWidth, tileHeight) )
-		.tileSet( "autumn" )
-		.solid( true )
-		.oneSided( isOneSided )
-		.dynamic( isDynamic )
-		.buildTilePlatform( );
+		.tileSet( "autumn" );
+		
+		if(isDynamic) pb.dynamic( );
+		else
+			pb.kinematic( );
+		
+		out = pb.buildTilePlatform( );
 
 		entities.put( item.name, out);
 		out.setCrushing( isCrushable );
@@ -434,11 +441,13 @@ public class LevelFactory {
 		
 		if (isDynamic){
 			Gdx.app.log("LevelFactory", "Tiled Dynamic platform loaded:"+out.name);
-			parent.addDynamicPlatform( out );
+			parent.addDynamicPlatform(  out );
 		} else {
 			Gdx.app.log("LevelFactory", "Tiled Kinematic platform loaded:"+out.name);
 			
 			parent.addKinematicPlatform( out );
+			out.setCategoryMask( Util.KINEMATIC_OBJECTS,
+					Util.CATEGORY_EVERYTHING );
 		}
 	}
 	

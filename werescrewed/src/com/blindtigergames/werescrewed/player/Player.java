@@ -645,10 +645,12 @@ public class Player extends Entity {
 						FEET_OFFSET_Y ) );
 				FixtureDef fd = new FixtureDef( );
 
+
 				fd.shape = ps;
 				fd.density = 1f;
 				fd.restitution = 0.001f;
 				fd.friction = frictionCounter;
+
 				fd.filter.categoryBits = Util.CATEGORY_PLAYER;
 				fd.filter.maskBits = Util.CATEGORY_EVERYTHING;
 				body.destroyFixture( feet );

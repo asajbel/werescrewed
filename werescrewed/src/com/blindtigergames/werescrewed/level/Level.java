@@ -36,10 +36,10 @@ public class Level {
 	public Camera camera;
 	public World world;
 	public MyContactListener myContactListener;
-	Player player1, player2;
-	RootSkeleton rootSkeleton;
-	Skeleton root;
-	PolySprite polySprite;
+	public Player player1, player2;
+	public RootSkeleton rootSkeleton;
+	public Skeleton root;
+	public PolySprite polySprite;
 	
 	public Level( ){
 		
@@ -73,6 +73,7 @@ public class Level {
 				Texture.class );
 		
 		polySprite = new PolySprite( polyTex, verts );*/
+		
 	}
 	
 	public void update( float deltaTime ){
@@ -99,7 +100,7 @@ public class Level {
 		batch.end();
 		
 		debugRenderer.render( world, camera.combined( ) );
-		world.step( 1 / 60f, 6, 3 );
+		world.step( 1 / 60f, 6,6 );
 
 	}
 	
