@@ -19,6 +19,7 @@ import com.blindtigergames.werescrewed.checkpoints.ProgressManager;
 import com.blindtigergames.werescrewed.collisionManager.MyContactListener;
 import com.blindtigergames.werescrewed.debug.SBox2DDebugRenderer;
 import com.blindtigergames.werescrewed.entity.Entity;
+import com.blindtigergames.werescrewed.entity.Skeleton;
 import com.blindtigergames.werescrewed.entity.builders.PlatformBuilder;
 import com.blindtigergames.werescrewed.entity.builders.PlayerBuilder;
 import com.blindtigergames.werescrewed.entity.mover.ParallaxMover;
@@ -28,7 +29,6 @@ import com.blindtigergames.werescrewed.hazard.Spikes;
 import com.blindtigergames.werescrewed.platforms.Platform;
 import com.blindtigergames.werescrewed.platforms.TiledPlatform;
 import com.blindtigergames.werescrewed.player.Player;
-import com.blindtigergames.werescrewed.skeleton.Skeleton;
 import com.blindtigergames.werescrewed.util.Util;
 
 public class ResurrectScreen implements com.badlogic.gdx.Screen {
@@ -126,45 +126,50 @@ public class ResurrectScreen implements com.badlogic.gdx.Screen {
 		cam = new Camera( width, height, world );
 		
 		bgCam = new OrthographicCamera( 1, width / height );
+		bgCam.viewportWidth = width;
+		bgCam.viewportHeight = height;
+		bgCam.position.set( width* .5f,
+				height * .5f, 0f );
+		bgCam.update( );
 	}
 
 	private void initParallaxBackground( ) {
-		Skeleton bg_1_0 = new Skeleton( "bg_1_0", new Vector2( 0, 0 ),
+		Skeleton bg_1_0 = new Skeleton( "bg_1_0", new Vector2( 1920, 512 ),
 				WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 						+ "/common/parallax_layer1_0.png", Texture.class ),
 				world );
-		Skeleton bg_1_1 = new Skeleton( "bg_1_1", new Vector2( 1024*1.9f, 0 ),
+		Skeleton bg_1_1 = new Skeleton( "bg_1_1", new Vector2( 1920, 512  ),
 				WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 						+ "/common/parallax_layer1_1.png", Texture.class ),
 				world );
-		Skeleton bg_2_0 = new Skeleton( "bg_2_0", new Vector2( 0, 0 ),
+		Skeleton bg_2_0 = new Skeleton( "bg_2_0", new Vector2( 1920, 512  ),
 				WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 						+ "/common/parallax_layer2_0.png", Texture.class ),
 				world );
-		Skeleton bg_2_1 = new Skeleton( "bg_2_1", new Vector2( -1024*1.9f, 0 ),
+		Skeleton bg_2_1 = new Skeleton( "bg_2_1", new Vector2( 1920, 512  ),
 				WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 						+ "/common/parallax_layer2_1.png", Texture.class ),
 				world );
 
-		bg_1_0.sprite.setScale( 1.9f );
-		bg_1_1.sprite.setScale( 1.9f );
-		bg_2_0.sprite.setScale( 1.9f );
-		bg_2_1.sprite.setScale( 1.9f );
+//		bg_1_0.sprite.setScale( 1.9f );
+//		bg_1_1.sprite.setScale( 1.9f );
+//		bg_2_0.sprite.setScale( 1.9f );
+//		bg_2_1.sprite.setScale( 1.9f );
 		
 		bg_1_0.setMoverAtCurrentState( new ParallaxMover(
-				new Vector2( 1280*1.9f, 270 ), new Vector2( -768*1.9f, 270 ), 0.0005f, .5f ) );
+				new Vector2( 2240, 512 ), new Vector2( -280, 512 ), 0.0002f, .5f ) );
 		bg_1_0.setActive( true );
 
 		bg_1_1.setMoverAtCurrentState( new ParallaxMover(
-				new Vector2( 1280*1.9f, 270  ), new Vector2( -768*1.9f, 270  ), 0.0005f, 0f ) );
+				new Vector2( 2240, 512 ), new Vector2( -280, 512 ), 0.0002f, 0f ) );
 		bg_1_1.setActive( true );
 
 		bg_2_0.setMoverAtCurrentState( new ParallaxMover(
-				new Vector2( 1280*1.9f, 270 ), new Vector2( -768*1.9f, 270 ), 0.00025f, .5f ) );
+				new Vector2( 2240, 512 ), new Vector2( -280, 512 ), 0.0001f, .5f ) );
 		bg_2_0.setActive( true );
 
 		bg_2_1.setMoverAtCurrentState( new ParallaxMover(
-				new Vector2( 1280*1.9f, 270 ), new Vector2( -768*1.9f, 270 ), 0.00025f, 0f ) );
+				new Vector2( 2240, 512 ), new Vector2( -280, 512 ), 0.0001f, 0f ) );
 		bg_2_1.setActive( true );
 		bgRootSkel.addSkeleton( bg_1_0 );
 		bgRootSkel.addSkeleton( bg_1_1 );
@@ -221,7 +226,9 @@ public class ResurrectScreen implements com.badlogic.gdx.Screen {
 		}
 
 		cam.update( );
-		//update background camera
+		//update background camera zoom
+		//float zoomRatio = ( ( ( 1.1f - 1f ) * ( cam.camera.zoom-1 ) ) / ( 3f - 1f ) ) + 1;
+		//bgCam.zoom = Math.min( 1.1f, zoomRatio );
 		bgCam.update( );
 		
 		if ( Gdx.input.isKeyPressed( Input.Keys.ESCAPE ) ) {
@@ -272,6 +279,7 @@ public class ResurrectScreen implements com.badlogic.gdx.Screen {
 		bgRootSkel.update( deltaTime );
 
 		//update background stuff which uses different transformation matrices
+		bgBatch.setProjectionMatrix( bgCam.combined );
 		bgBatch.begin( );
 		bgRootSkel.draw( bgBatch );
 		bgBatch.end( );

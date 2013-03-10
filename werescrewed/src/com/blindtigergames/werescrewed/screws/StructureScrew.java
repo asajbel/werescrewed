@@ -10,7 +10,6 @@ import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJoint;
-import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityType;
 import com.blindtigergames.werescrewed.util.Util;
@@ -39,7 +38,6 @@ public class StructureScrew extends Screw {
 		
 		constuctBody( pos );
 		addStructureJoint( entity );
-
 	}
 
 	@Override
@@ -62,6 +60,30 @@ public class StructureScrew extends Screw {
 		}
 	}
 	@Override
+	public void screwRight( int region, boolean switchedDirections ) {
+		if(switchedDirections){
+			startRegion = region;
+			prevDiff = 0;
+		}
+		
+		if ( depth < maxDepth ) {
+			diff = startRegion - region;
+			newDiff = diff - prevDiff;
+			if(newDiff < -10){
+				newDiff = 0;
+			}
+			prevDiff = diff;
+			
+			body.setAngularVelocity( -1 );
+			depth += newDiff;
+			if(diff != 0){
+				rotation += (-newDiff * 5);
+			}
+			screwStep = depth + 6;
+		}
+		
+	}
+	@Override
 	public void screwLeft(  ) {
 		if ( depth > -10 ) {
 			body.setAngularVelocity( 1 );
@@ -71,6 +93,32 @@ public class StructureScrew extends Screw {
 		}
 	}
 
+	@Override
+	public void screwLeft( int region, boolean switchedDirections ) {
+		if(switchedDirections){
+			startRegion = region;
+			prevDiff = 0;
+		}
+		
+		if ( depth > 0 ) {
+			diff = startRegion - region;
+			newDiff = diff - prevDiff;
+			if(newDiff > 10){
+				newDiff = 0;
+			}
+			prevDiff = diff;
+			
+			
+			body.setAngularVelocity( 1 );
+			depth += newDiff;
+			spriteRegion += region;
+			if(diff != 0){
+				rotation += (-newDiff * 5);
+			}
+			screwStep = depth + 5;
+		}
+		
+	}
 	@Override
 	public void screwRight( ) {
 		if ( depth < maxDepth ) {

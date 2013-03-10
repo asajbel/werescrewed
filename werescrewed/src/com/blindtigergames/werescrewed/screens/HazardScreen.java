@@ -17,17 +17,20 @@ import com.blindtigergames.werescrewed.checkpoints.ProgressManager;
 import com.blindtigergames.werescrewed.collisionManager.MyContactListener;
 import com.blindtigergames.werescrewed.debug.SBox2DDebugRenderer;
 import com.blindtigergames.werescrewed.entity.Entity;
+import com.blindtigergames.werescrewed.entity.Skeleton;
 import com.blindtigergames.werescrewed.entity.builders.PlatformBuilder;
 import com.blindtigergames.werescrewed.entity.builders.PlayerBuilder;
 import com.blindtigergames.werescrewed.entity.tween.EntityAccessor;
 import com.blindtigergames.werescrewed.entity.tween.PlatformAccessor;
+import com.blindtigergames.werescrewed.hazard.Electricity;
+import com.blindtigergames.werescrewed.hazard.Fire;
+import com.blindtigergames.werescrewed.hazard.Saws;
 import com.blindtigergames.werescrewed.hazard.Spikes;
 import com.blindtigergames.werescrewed.hazard.builders.SpikesBuilder;
 import com.blindtigergames.werescrewed.platforms.Platform;
 import com.blindtigergames.werescrewed.platforms.TiledPlatform;
 import com.blindtigergames.werescrewed.player.Player;
 import com.blindtigergames.werescrewed.screws.StructureScrew;
-import com.blindtigergames.werescrewed.skeleton.Skeleton;
 import com.blindtigergames.werescrewed.util.Util;
 
 public class HazardScreen implements com.badlogic.gdx.Screen {
@@ -45,6 +48,9 @@ public class HazardScreen implements com.badlogic.gdx.Screen {
 	private TiledPlatform ground, crusher;
 	private StructureScrew struct1, struct2;
 	private PlatformBuilder platBuilder;
+	private Fire fire;
+	private Electricity elec;
+	private Saws saw;
 	private SpikesBuilder spikesBuilder;
 	private Spikes spikes, spikes2;
 	private boolean debug = true;
@@ -99,9 +105,16 @@ public class HazardScreen implements com.badlogic.gdx.Screen {
 	}
 
 	private void initHazards( ) {
-		spikes = new Spikes( "Spikes1", new Vector2( -1250.0f, -10.0f ), 1, 12,
-				world, true, false, false );
-
+		/*
+		fire = new Fire( "Fire1", new Vector2( -3000.0f, -10.0f ), 
+				world, true );
+		elec = new Electricity( "Elec1", new Vector2( 3000.0f, -10.0f ),
+				world, true );
+		saw = new Saws( "Saw1", new Vector2( -2000.0f, 40.0f ),
+				2, world, true );
+		 */
+		spikes = new Spikes( "Spikes1", new Vector2( -1250.0f, -10.0f ), 
+				1, 12, world, true, false, false );
 		spikes2 = spikesBuilder.position( -1050.0f, -10.0f ).dimensions( 1, 8 )
 				.left( ).buildSpikes( );
 	}

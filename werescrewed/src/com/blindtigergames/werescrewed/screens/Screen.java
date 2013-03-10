@@ -30,7 +30,7 @@ public class Screen implements com.badlogic.gdx.Screen {
 		batch = new SpriteBatch( );
 		debugRenderer = new SBox2DDebugRenderer( Util.BOX_TO_PIXEL );
 		level = null;
-		if(WereScrewedGame.manager.isLoaded( "debug_font" ))
+		//if(WereScrewedGame.manager.isLoaded( "debug_font" ))
 			debug_font = WereScrewedGame.manager.getFont( "debug_font" );
 		logger = new FPSLoggerS( );
 		uiCamera = new OrthographicCamera(Gdx.graphics.getWidth( ), Gdx.graphics.getHeight( ));

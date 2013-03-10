@@ -40,6 +40,19 @@ class PauseScreen implements com.badlogic.gdx.Screen {
 				new ScreenSwitchHandler(ScreenType.PHYSICS ) );
 	}
 
+	public void disposeAll(){
+		ScreenManager.getInstance( ).dispose(ScreenType.PHYSICS );
+		ScreenManager.getInstance( ).dispose(ScreenType.PLAYTEST );
+		ScreenManager.getInstance( ).dispose(ScreenType.HAZARD );
+		ScreenManager.getInstance( ).dispose(ScreenType.OPTIONS );
+		ScreenManager.getInstance( ).dispose(ScreenType.LEVEL_SELECT );
+		ScreenManager.getInstance( ).dispose(ScreenType.CHARACTER_SELECT );
+		ScreenManager.getInstance( ).dispose(ScreenType.STORY );
+		ScreenManager.getInstance( ).dispose(ScreenType.RESURRECT );
+		ScreenManager.getInstance( ).dispose(ScreenType.GLEED );
+		ScreenManager.getInstance( ).dispose(ScreenType.LEVEL_SELECT );
+	}
+	
 	@Override
 	public void render( float delta ) {
 		Gdx.gl.glClearColor( 0.5f, 0.5f, 0.5f, 1f );
@@ -48,6 +61,7 @@ class PauseScreen implements com.badlogic.gdx.Screen {
 		//if ( Gdx.input.isKeyPressed( Input.Keys.ESCAPE ) ) {
 		//	ScreenManager.getInstance( ).show( ScreenType.PHYSICS );
 		//}
+		disposeAll();
 		batch.begin( );
 		batch.draw(logo, 0, 0);
 		screenLabel.draw( batch );

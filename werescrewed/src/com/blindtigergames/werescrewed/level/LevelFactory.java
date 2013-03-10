@@ -11,32 +11,27 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.XmlReader;
 import com.badlogic.gdx.utils.XmlReader.Element;
-import com.blindtigergames.werescrewed.camera.Anchor;
-import com.blindtigergames.werescrewed.camera.AnchorList;
 import com.blindtigergames.werescrewed.camera.Camera;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityCategory;
 import com.blindtigergames.werescrewed.entity.EntityDef;
-import com.blindtigergames.werescrewed.entity.RobotState;
 import com.blindtigergames.werescrewed.entity.builders.EntityBuilder;
-import com.blindtigergames.werescrewed.entity.builders.MoverBuilder;
 import com.blindtigergames.werescrewed.entity.builders.PlatformBuilder;
 import com.blindtigergames.werescrewed.entity.builders.PlayerBuilder;
 import com.blindtigergames.werescrewed.entity.builders.ScrewBuilder;
-import com.blindtigergames.werescrewed.entity.mover.IMover;
-import com.blindtigergames.werescrewed.entity.mover.MoverType;
 import com.blindtigergames.werescrewed.entity.mover.TimelineTweenMover;
 import com.blindtigergames.werescrewed.entity.tween.PathBuilder;
 import com.blindtigergames.werescrewed.platforms.Platform;
 import com.blindtigergames.werescrewed.platforms.TiledPlatform;
-import com.blindtigergames.werescrewed.player.Player;
+import com.blindtigergames.werescrewed.screws.BossScrew;
 import com.blindtigergames.werescrewed.screws.PuzzleScrew;
 import com.blindtigergames.werescrewed.screws.Screw;
 import com.blindtigergames.werescrewed.screws.ScrewType;
-import com.blindtigergames.werescrewed.skeleton.RootSkeleton;
-import com.blindtigergames.werescrewed.skeleton.Skeleton;
+import com.blindtigergames.werescrewed.screws.StrippedScrew;
+import com.blindtigergames.werescrewed.screws.StructureScrew;
+import com.blindtigergames.werescrewed.entity.RootSkeleton;
+import com.blindtigergames.werescrewed.entity.Skeleton;
 import com.blindtigergames.werescrewed.util.ArrayHash;
-import com.blindtigergames.werescrewed.util.Util;
 
 
 public class LevelFactory {	
@@ -234,18 +229,14 @@ public class LevelFactory {
 	 */
 	protected Entity loadEntity(Item item){
 		Entity out = null;
-		boolean isPlatform = false;
+
 		//for example, player or tiledplatform
 		String bluePrints = item.defName;
 		Gdx.app.log( "LevelFactory, bluePrints ", bluePrints );
 		
 		
-		if(  false ){//item.isDefined( )){
-			if (item.getDefinition().getCategory( ) == EntityCategory.COMPLEX_PLATFORM ){
-				out = loadComplexPlatform(item);
-				isPlatform = true;
-			}
-		} else if( bluePrints.equals( "skeleton" )){
+
+		if( bluePrints.equals( "skeleton" )){
 			constructSkeleton(item);
 		} else if( bluePrints.equals( "player" )){
 			constructPlayer(item);
@@ -253,6 +244,13 @@ public class LevelFactory {
 			placeCamera(item);
 		} else if( bluePrints.equals( "tiledPlatform" )){
 			constructTiledPlatform(item);
+		} else if( bluePrints.equals( "screw" )){
+			constructScrew(item);
+		}
+		
+		else if (item.getDefinition().getCategory( ) == EntityCategory.COMPLEX_PLATFORM ){
+			loadComplexPlatform(item);
+			System.out.println( item.defName );
 		}
 //		if (item.hasDefTag( )){
 //			//First check if the item's definition is a type of screw
@@ -349,13 +347,15 @@ public class LevelFactory {
 		if(item.name.equals( "RootSkeleton" )){
 			level.rootSkeleton = new RootSkeleton(item.name, item.pos, null, level.world);
 			skeletons.put( item.name, level.rootSkeleton );
+			entities.put( item.name, level.rootSkeleton);
 			
 		} else {
 			//attach skeleton to skeleton
 			Skeleton skeleton = new Skeleton( item.name, item.pos, null, level.world );
 			skeletons.put( item.name, skeleton );
-			if(item.props.containsKey( "AttachToSkeleton" )){
-				String parentSkeleton = item.props.get( "AttachToSkeleton" );
+			entities.put(  item.name, skeleton );
+			if(item.props.containsKey( "attachtoskeleton" )){
+				String parentSkeleton = item.props.get( "attachtoskeleton" );
 				Skeleton parent = skeletons.get( parentSkeleton );
 				
 				parent.addSkeleton( skeleton );
@@ -369,15 +369,13 @@ public class LevelFactory {
 	
 	private void constructPlayer(Item item){
 		if(item.name.equals("playerOne")){
-			
 			level.player1 = new PlayerBuilder( ).name( "player1" ).world( level.world )
-					.position( item.pos ).buildPlayer( );
-			System.out.println( "player pos: " + item.pos + ", body pos " + level.player1.getPositionPixel( ) );
+					.position( item.pos.add( 200f, 0f ) ).buildPlayer( );
+			entities.put("player1", level.player1);
 		} else if(item.name.equals("playerTwo") ){
 			
 			level.player2 = new PlayerBuilder( ).name( "player2" ).world( level.world )
-					.position( item.pos ).buildPlayer( );
-			System.out.println( "player pos: " + item.pos + ", body pos " + level.player2.getPositionPixel( ) );
+					.position( item.pos.add( 100f, 0f ) ).buildPlayer( );
 		}
 		
 
@@ -400,31 +398,38 @@ public class LevelFactory {
 		float tileHeight = height / 32f;
 		
 		float xPos = item.pos.x + (width/2);
-		float yPos = item.pos.y + (height/2);
+		float yPos = item.pos.y - (height/2);
+		
+		
 		boolean isDynamic = false;
-		if(item.props.get( "dynamic" ).equals( "true" )){
+		if(item.props.containsKey( "dynamic" )){
 			isDynamic = true;
 		}
 		boolean isOneSided = false;
-		if(item.props.get( "onesided" ).equals( "true" )){
+		if(item.props.containsKey( "onesided" )){
 			isOneSided = true;
 		}
 
+		boolean isCrushable = false;
+		if(item.props.containsKey( "crushable" ) ){
+			isCrushable = true;
+		}
+		
+		PlatformBuilder pb = new PlatformBuilder(level.world);
 		TiledPlatform out = null;
 
-		System.out.println("TTHIS IS THE POSITION: " + item.pos);
-		out = new PlatformBuilder(level.world)
-		.name( item.name )
-		//.type( item.getDefinition() )
+		out = pb.name( item.name )
 		.position( new Vector2(xPos, yPos) )
 		.dimensions( new Vector2(tileWidth, tileHeight) )
-		.texture( null )
+		.tileSet( "autumn" )
 		.solid( true )
 		.oneSided( isOneSided )
 		.dynamic( isDynamic )
 		.buildTilePlatform( );
 
-		System.out.println("BODY PIXEL POS " + out.getPositionPixel( ));
+		entities.put( item.name, out);
+		out.setCrushing( isCrushable );
+		
 		Skeleton parent = loadSkeleton(item.skeleton);
 		
 		if (isDynamic){
@@ -436,71 +441,110 @@ public class LevelFactory {
 			parent.addKinematicPlatform( out );
 		}
 	}
-	protected TiledPlatform loadTiledPlatform(Item item){
-		TiledPlatform out = null;
-		//Align the platform's origin with the coordinates from Gleed2D.
-		Vector2 pos = new Vector2();
-		Vector2 sca = new Vector2();
-		pos.x = item.pos.x + (item.sca.x/2.0f * GLEED_TO_GDX_X);
-		pos.y = item.pos.y + (item.sca.y/2.0f * GLEED_TO_GDX_Y);
+	
+	protected void loadComplexPlatform(Item item){
 		
 		boolean isDynamic = false;
-		if (item.props.containsKey( "dynamic" ))
+		if(item.props.containsKey( "dynamic" ) ){
 			isDynamic = true;
-		
-		//Its as simple as this to get custom values
-		// either it will give me the right string or it if doesn't exist: null
-		//System.out.println( "custom props: " + item.props.get( "definition" ) );
-		
-		float tileX = item.getDefinition().getTexture( ).getWidth( )/4.0f;
-		float tileY = item.getDefinition().getTexture( ).getWidth( )/4.0f;
-		if (tileX > 0 && tileY > 0)
-			sca = item.sca.div( tileX, tileY );
-		
-		out = new PlatformBuilder(level.world)
-		.name( item.name )
-		//.type( item.getDefinition() )
-		.position( pos )
-		.dimensions( sca )
-		.texture( item.getDefinition().getTexture() )
-		.solid( true )
-		.dynamic( isDynamic )
-		.buildTilePlatform( );
-
-		Skeleton parent = loadSkeleton(item.skeleton);
-		if (isDynamic){
-			Gdx.app.log("LevelFactory", "Tiled Dynamic platform loaded:"+out.name);
-			parent.addDynamicPlatform( out );
-		} else {
-			Gdx.app.log("LevelFactory", "Tiled Kinematic platform loaded:"+out.name);
-			parent.addKinematicPlatform( out );
 		}
-		return out;
-	}
-	
-	protected Platform loadComplexPlatform(Item item){
+		
+		boolean isCrushable = false;
+		if(item.props.containsKey( "crushable" ) ){
+			isCrushable = true;
+		}
+		
 		Platform out = new PlatformBuilder(level.world)
 		.name( item.name )
 		.type( item.getDefinition( ) )
 		.position( item.pos.x, item.pos.y )
 		.texture( item.getDefinition( ).getTexture() )
 		.solid( true )
+		.dynamic( isDynamic )
 		.buildComplexPlatform( );
+		
+		entities.put(item.name, out);
+				
+		out.setCrushing( isCrushable );
 		
 		Gdx.app.log("GleedLoader", "Complex Platform loaded:"+item.name);
 		Skeleton parent = loadSkeleton(item.skeleton);
-		if (item.props.containsKey( "dynamic" )){
+		if (isDynamic){
 			parent.addDynamicPlatform( out );
 		} else {
 			parent.addKinematicPlatform( out );
 		}
-		return out;
+		
 	}
+	private void constructScrew(Item item){
+		
+//		ScrewTypes:
+//		SCREW_COSMETIC("ScrewCosmetic"),
+//		SCREW_STRIPPED("ScrewStripped"),
+//		SCREW_STRUCTURAL("ScrewStructural"),
+//		SCREW_PUZZLE("ScrewPuzzle"),
+//		SCREW_RESURRECT("ScrewResurrect"),
+//		SCREW_BOSS("ScrewBoss");
+		
+		ScrewType sType = ScrewType.fromString( item.props.get( "screwtype" ) );
+		ScrewBuilder builder = new ScrewBuilder()
+		.name( item.name )
+		.position( item.pos )
+		.world( level.world )
+		.screwType( sType );
+		
+		Skeleton parent = loadSkeleton(item.skeleton);
+		builder.skeleton( parent );
+		
+		if (item.props.containsKey( "target" )){
+			String s = item.props.get( "target" );
+			Entity e = entities.get( s );
+			builder.entity( e );
+		} else {
+			builder.entity( parent );
+		}
+		
+		Screw out = null;
+		switch (sType){
+			case SCREW_PUZZLE:
+				Gdx.app.log("LevelFactory", "Building puzzle screw "+ item.name + " at " + item.pos.toString( ));
+				PuzzleScrew p = builder.buildPuzzleScrew( );
+				entities.put(item.name, p);
+				out = p;
+				break;
+			case SCREW_STRIPPED:
+				Gdx.app.log("LevelFactory", "Building stripped screw "+ item.name + " at " + item.pos.toString( ));
+				StrippedScrew s = builder.buildStrippedScrew( );
+				entities.put( item.name, s );
+				out = s;
+				break;
+			case SCREW_STRUCTURAL:
+				Gdx.app.log("LevelFactory", "Building structural screw "+ item.name + " at " + item.pos.toString( ));
+				StructureScrew ss = builder.buildStructureScrew( );
+				entities.put( item.name, ss );
+				out = ss;
+				break;
+			case SCREW_COSMETIC:
+				Gdx.app.log("LevelFactory", "Building cosmetic screw "+ item.name + " at " + item.pos.toString( ));
+				Screw screw = builder.buildScrew( );
+				entities.put( item.name, screw );
+				out = screw;
+				break;
+			case SCREW_BOSS:
+				Gdx.app.log("LevelFactory", "Building boss screw "+ item.name + " at " + item.pos.toString( ));
+				BossScrew bs = builder.buildBossScrew( );
+				entities.put( item.name, bs);
+				out = bs;
+				break;
+			default:
+				out = builder.buildScrew();
+				break;
+		}
+		out.getCrushing( );
 
-	protected void loadPlayerSpawnPoint(Item item){
-		level.player1.setPixelPosition( item.pos ); 
-		Gdx.app.log("GleedLoader", "Player Spawnpoint:"+item.pos.toString( ));
 	}
+	
+
 	
 	protected Entity loadGeneralEntity(Item item){
 		Entity out = new EntityBuilder()

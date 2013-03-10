@@ -36,6 +36,11 @@ public class Screw extends Entity {
 	protected int maxDepth;
 	protected int screwStep;
 	protected int spriteRegion;
+	protected int startRegion;
+	protected int newDiff;
+	protected int prevDiff;
+	protected int startDepth;
+	protected int diff;
 	protected boolean playerAttached = false;
 	protected boolean removed = false;
 	protected ScrewType screwType;
@@ -80,9 +85,10 @@ public class Screw extends Entity {
 	/**
 	 * destroys everything contained within the screw instance
 	 */
+	@Override
 	public void remove( ) {
-		for ( RevoluteJoint j : extraJoints ) {
-			world.destroyJoint( j );
+		while ( body.getJointList( ).iterator( ).hasNext( ) ) {
+			world.destroyJoint( body.getJointList( ).get( 0 ).joint );
 		}
 		world.destroyBody( body );
 		removed = true;
@@ -114,6 +120,8 @@ public class Screw extends Entity {
 	public void screwLeft( int region ) {
 	}
 
+	public void screwLeft( int region, boolean switchedDirections ) {
+	}
 	public void screwLeft( ) {
 	}
 
@@ -126,6 +134,9 @@ public class Screw extends Entity {
 	public void screwRight( int region ) {
 	}
 
+	public void screwRight( int region, boolean switchedDirections ) {
+	}
+	
 	public void screwRight( ) {
 	}
 
