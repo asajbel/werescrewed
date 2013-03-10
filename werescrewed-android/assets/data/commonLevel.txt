@@ -26,6 +26,7 @@
 /common/blind_tiger_logo_720.png
 /particles/particle.png
 /common/robot/alphabot_tile_interior.png
+/common/robot/alphabot_tile_suit_main.png
 /common/ropelink.png
 /common/gear.png
 

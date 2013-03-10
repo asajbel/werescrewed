@@ -1,7 +1,5 @@
 package com.blindtigergames.werescrewed.entity.builders;
 
-import java.util.HashMap;
-
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.World;
@@ -202,7 +200,7 @@ public class PlatformBuilder extends GenericEntityBuilder<PlatformBuilder> {
 		this.scale = 1.0f;
 		this.density = 1.0f;
 		this.friction = 1.0f;
-		this.restitution = 0.1f;
+		this.restitution = 0.0f;
 		this.gravScale = 0.1f;
 		this.anchRadius = 0.0f;
 		this.flipHorizonal = false;
@@ -265,6 +263,8 @@ public class PlatformBuilder extends GenericEntityBuilder<PlatformBuilder> {
 		tp.setRestitution( this.restitution );
 		tp.setGravScale( this.gravScale );
 		return tp;
+		
+		
 	}
 	/**
 	 * builds complex platform from available data.

@@ -33,6 +33,7 @@ public class MyContactListener implements ContactListener {
 	private static int NUM_PLAYER2_CONTACTS = 0;
 	private Player p1;
 
+
 	/**
 	 * When two new objects start to touch
 	 */
@@ -77,12 +78,12 @@ public class MyContactListener implements ContactListener {
 							// also make sure its not the player
 							if ( object.isSolid( )
 									&& playerFix.getShape( ) instanceof CircleShape ) {
-								if ( p1 == null || p1 == player ) {
-									p1 = player;
+								if ( player.name.equals( "player1" ) ) {
 									NUM_PLAYER1_CONTACTS++;
-								} else if ( p1 != player ) {
+								} else if ( player.name.equals( "player2" ) ) {
 									NUM_PLAYER2_CONTACTS++;
 								}
+								
 								player.hitSolidObject( objectFix.getBody( ) );
 								player.setGrounded( true );
 							}
@@ -104,6 +105,7 @@ public class MyContactListener implements ContactListener {
 									rScrew.hitPlayer( player );
 								}
 							}
+							
 							// }
 							break;
 						case PLAYER:
@@ -203,7 +205,7 @@ public class MyContactListener implements ContactListener {
 							// also make sure its not the player
 							if ( object.isSolid( )
 									&& playerFix.getShape( ) instanceof CircleShape ) {
-								if ( p1 == null || p1 == player ) {
+								if (  player.name.equals( "player1" ) ) {
 									p1 = player;
 									NUM_PLAYER1_CONTACTS--;
 									if ( NUM_PLAYER1_CONTACTS <= 0 ) {
@@ -211,7 +213,7 @@ public class MyContactListener implements ContactListener {
 											player.setGrounded( false );
 										}
 									}
-								} else if ( p1 != player ) {
+								} else if (  player.name.equals( "player2" ) ) {
 									NUM_PLAYER2_CONTACTS--;
 									if ( NUM_PLAYER2_CONTACTS <= 0 ) {
 										if ( player.getState( ) != PlayerState.HeadStand ) {
@@ -221,18 +223,21 @@ public class MyContactListener implements ContactListener {
 								}
 								player.hitSolidObject( null );
 								contact.setEnabled( true );
+
 							}
 							break;
 						case SCREW:
-							if ( p1 == null || p1 == player ) {
+							if (  player.name.equals( "player1" ) ) {
 								p1 = player;
 								if ( player.getState( ) != PlayerState.Screwing ) {
 									player.hitScrew( null );
 								}
-							} else if ( p1 != player ) {
+							} else if (  player.name.equals( "player2" ) ) {
 								if ( player.getState( ) != PlayerState.Screwing ) {
 									player.hitScrew( null );
+
 								}
+								
 							}
 							break;
 						case PLAYER:

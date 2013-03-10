@@ -2,8 +2,11 @@ package com.blindtigergames.werescrewed.entity;
 
 import java.util.HashMap;
 
+import javax.swing.text.StyledEditorKit.ForegroundAction;
+
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
@@ -32,6 +35,11 @@ import com.blindtigergames.werescrewed.util.Util;
 
 public class Skeleton extends Platform {
 
+	public static final int foreground = 0;
+	public static final int background = 1;
+	public static final int midground = 2;
+	
+	public PolySprite bgSprite, fgSprite;
     
     protected HashMap< String, Platform > dynamicPlatformMap = new HashMap< String, Platform >( );
 	protected HashMap< String, Skeleton > childSkeletonMap = new HashMap< String, Skeleton >( );
@@ -292,7 +300,19 @@ public class Skeleton extends Platform {
      */
     @Override
     public void update( float deltaTime ) {
-    	super.update( deltaTime );
+    	//super.update( deltaTime );
+    	
+		Vector2 bodyPos = body.getPosition( ).mul( Util.BOX_TO_PIXEL );
+		
+		if ( fgSprite != null ){
+			fgSprite.setPosition( bodyPos.x - offset.x, bodyPos.y - offset.y );
+			fgSprite.setRotation( MathUtils.radiansToDegrees * body.getAngle( ) );
+		}
+		if ( bgSprite != null ){
+			bgSprite.setPosition( bodyPos.x - offset.x, bodyPos.y - offset.y );
+			bgSprite.setRotation( MathUtils.radiansToDegrees * body.getAngle( ) );
+		}
+		
     	//update root skeleton imover
         updateMover( deltaTime );
         //followed by children skeleton imovers
@@ -352,6 +372,7 @@ public class Skeleton extends Platform {
      */
     protected void updateChildren( float deltaTime ) {
         // update sub skeleton and bones
+    	//update( deltaTime );
         for ( Skeleton skeleton : childSkeletonMap.values( ) ) {
             skeleton.update( deltaTime );
         }
@@ -395,9 +416,16 @@ public class Skeleton extends Platform {
     
     @Override
     public void draw( SpriteBatch batch ){
-    	super.draw( batch );
-    	
-    	drawChildren( batch );
+    	//super.draw( batch );
+    	if ( visible ){
+    		//draw bg
+    		if ( bgSprite != null )
+    			bgSprite.draw( batch );
+    		drawChildren( batch );
+    		if ( fgSprite != null )
+    			fgSprite.draw( batch );
+    		//draw fg
+    	}
     }
     
     private void drawChildren( SpriteBatch batch ){
