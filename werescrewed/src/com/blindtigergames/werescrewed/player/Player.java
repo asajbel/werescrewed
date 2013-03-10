@@ -639,36 +639,44 @@ public class Player extends Entity {
 	
 	private void updateFootFriction( ) {
 		
-//		if(isGrounded()){
-//			if ( feet.getFriction() < PLAYER_FRICTION ) {
-//				frictionCounter += FRICTION_INCREMENT;
-//						
-//				CircleShape ps = new CircleShape();
-//				ps.setRadius( feet.getShape( ).getRadius( ) );
-//
-//	
-//				ps.setPosition( ps.getPosition( ).add( FEET_OFFSET_X, FEET_OFFSET_Y ) );
-//				FixtureDef fd = new FixtureDef();
-//				
-//				fd.shape = ps;
-//				fd.density = 1f;
-//				fd.restitution = 0.001f;
-//				fd.friction = frictionCounter;
-//				body.destroyFixture( feet );
-//				
-//				body.createFixture( fd );
-//				
-//
-//
-//				if ( feet.getFriction() > PLAYER_FRICTION ) {
-//					feet.setFriction( PLAYER_FRICTION );
-//
-//				}
-//			}
-//		} else{
-//			frictionCounter = 0f;
-//			feet.setFriction( frictionCounter);
-//		}
+		if(isGrounded()){
+			if ( feet.getFriction() < PLAYER_FRICTION ) {
+				frictionCounter += FRICTION_INCREMENT;
+						
+				CircleShape ps = new CircleShape();
+				ps.setRadius( feet.getShape( ).getRadius( ) );
+
+	
+				ps.setPosition( ps.getPosition( ).add( FEET_OFFSET_X, FEET_OFFSET_Y ) );
+				FixtureDef fd = new FixtureDef();
+				
+				fd.shape = ps;
+				fd.density = 1f;
+				fd.restitution = 0.001f;
+				fd.friction = frictionCounter;
+				body.destroyFixture( feet );
+				
+				body.createFixture( fd );
+				
+				body.setGravityScale( 0.25f );
+				body.setFixedRotation( true );
+				body.setSleepingAllowed( false );
+				body.setUserData( this );
+				body.setBullet( true );
+//				if(name.equals("player2"))
+//					System.out.println( "counter " + frictionCounter );
+				if ( feet.getFriction() > PLAYER_FRICTION ) {
+					feet.setFriction( PLAYER_FRICTION );
+
+				}
+			}
+		} else{
+			frictionCounter = 0f;
+			feet.setFriction( frictionCounter);
+			
+		}
+//		if(name.equals("player2"))
+//		System.out.println( " in updatefoot: " + feet.getFriction() );
 		
 	}
 

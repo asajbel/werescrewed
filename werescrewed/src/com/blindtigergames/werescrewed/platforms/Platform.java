@@ -32,8 +32,8 @@ public class Platform extends Entity {
 	protected float width, height;
 	protected boolean dynamicType = false;
 	protected boolean rotate = false;
-	protected boolean oneSided = false;
-	protected boolean moveable = false;
+	public boolean oneSided = false;
+	public boolean moveable = false;
 	protected ArrayList< Screw > screws;
 	// tileConstant is 16 for setasbox function which uses half width/height
 	// creates 32x32 objects
