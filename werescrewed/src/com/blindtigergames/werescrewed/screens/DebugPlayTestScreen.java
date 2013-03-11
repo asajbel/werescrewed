@@ -1063,11 +1063,6 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		if ( Gdx.input.isKeyPressed( Keys.NUM_0 ) ) {
 			if ( debugTest ) {
 				debug = !debug;
-				// if(specialPlat.getCurrentState( ) == RobotState.IDLE)
-				// specialPlat.setCurrentMover( RobotState.DOCILE );
-				// else
-				// specialPlat.setCurrentMover( RobotState.IDLE );
-				cam.turnOffZoom( );
 			}
 			debugTest = false;
 		} else
