@@ -7,12 +7,13 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.Filter;
 import com.badlogic.gdx.physics.box2d.Fixture;
+import com.badlogic.gdx.physics.box2d.JointEdge;
 import com.badlogic.gdx.physics.box2d.World;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityDef;
 import com.blindtigergames.werescrewed.entity.EntityType;
+import com.blindtigergames.werescrewed.entity.Skeleton;
 import com.blindtigergames.werescrewed.screws.Screw;
-import com.blindtigergames.werescrewed.skeleton.Skeleton;
 import com.blindtigergames.werescrewed.util.Util;
 
 /**
@@ -31,8 +32,8 @@ public class Platform extends Entity {
 	protected float width, height;
 	protected boolean dynamicType = false;
 	protected boolean rotate = false;
-	protected boolean oneSided = false;
-	protected boolean moveable = false;
+	public boolean oneSided = false;
+	public boolean moveable = false;
 	protected ArrayList< Screw > screws;
 	// tileConstant is 16 for setasbox function which uses half width/height
 	// creates 32x32 objects
@@ -47,7 +48,7 @@ public class Platform extends Entity {
 	protected float localRotation; // in radians, local rot system
 	protected Vector2 localLinearVelocity; // in meters/step
 	protected float localAngularVelocity; //
-	private Vector2 originPosition; // world position that this platform spawns
+	protected Vector2 originPosition; // world position that this platform spawns
 									// at, in pixels
 
 	// ============================================
@@ -82,8 +83,8 @@ public class Platform extends Entity {
 	 * @param scale
 	 */
 	public Platform( String name, EntityDef type, World world, Vector2 pos,
-			float rot, Vector2 scale, float anchRadius ) {
-		super( name, type, world, pos, rot, scale, null, true, anchRadius );
+			float rot, Vector2 scale ) {
+		super( name, type, world, pos, rot, scale, null, true );
 		entityType = EntityType.PLATFORM;
 		init( pos );
 	}
@@ -210,7 +211,6 @@ public class Platform extends Entity {
 	@Override
 	public void update( float deltaTime ) {
 		super.update( deltaTime );
-
 		// Basic velocity so that platforms can do friction
 		// Uhhhhhh... false && [anything] is false. This body never happens
 		if ( false && body.getType( ) == BodyType.KinematicBody ) {
@@ -234,6 +234,20 @@ public class Platform extends Entity {
 		}
 	}
 
+	/**
+	 * removes the bodies and joints
+	 */
+	@Override
+	public void remove ( ) {
+		for ( Screw s: screws ) {
+			s.remove( );
+		}
+		while ( body.getJointList( ).iterator( ).hasNext( ) ) {
+			world.destroyJoint( body.getJointList( ).get( 0 ).joint );
+		}
+        world.destroyBody( body );		
+	}
+	
 	/**
 	 * Swap from kinematic to dynamic.
 	 */
@@ -321,13 +335,13 @@ public class Platform extends Entity {
 	 * @author stew
 	 */
 	public void setPosRotFromSkeleton( float deltaTime, Skeleton skeleton ) {
-		float radiusFromSkeleton = originPosition.cpy( ).add( localPosition )
+		float radiusFromSkeleton = originPosition.cpy( ).sub( skeleton.originPosition ).add( localPosition )
 				.mul( Util.PIXEL_TO_BOX ).len( );
 		// update angle between platform and skeleton
 		Vector2 skeleOrigin = skeleton.body.getPosition( );
 		float newAngleFromSkeleton = skeleton.body.getAngle( )
 				+ Util.angleBetweenPoints( skeleOrigin, originPosition.cpy( )
-						.add( localPosition ) );
+						.add( localPosition ).mul( Util.PIXEL_TO_BOX ) );
 
 		float newRotation = localRotation + skeleton.body.getAngle( );
 		Vector2 newPos = Util.PointOnCircle( radiusFromSkeleton,

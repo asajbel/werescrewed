@@ -2,16 +2,18 @@ package com.blindtigergames.werescrewed.checkpoints;
 
 import java.util.ArrayList;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.JointEdge;
 import com.badlogic.gdx.physics.box2d.World;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.builders.ScrewBuilder;
+import com.blindtigergames.werescrewed.entity.mover.LerpMover;
+import com.blindtigergames.werescrewed.entity.mover.LinearAxis;
 import com.blindtigergames.werescrewed.player.Player;
 import com.blindtigergames.werescrewed.player.Player.PlayerState;
 import com.blindtigergames.werescrewed.screws.ResurrectScrew;
 import com.blindtigergames.werescrewed.screws.ScrewType;
-import com.blindtigergames.werescrewed.util.Util;
 
 /**
  * handles all of the progress through checkpoints also handles re-spawning with
@@ -30,6 +32,7 @@ public class ProgressManager {
 	private int currentCheckPoint;
 	private int holdTime = 0;
 	private int respawnTime = 100;
+	private boolean playerMover = false;
 
 	/**
 	 * 
@@ -144,8 +147,7 @@ public class ProgressManager {
 			}
 			ScrewBuilder rezzBuilder = new ScrewBuilder( )
 					.screwType( ScrewType.SCREW_RESURRECT ).entity( entity )
-					.world( world ).playerOffset( true )
-					.position( 64.0f, 64.0f );
+					.world( world ).playerOffset( true ).position( 0f, 150f );
 
 			if ( player1.isPlayerDead( ) ) {
 				// create new rez screw and attach
@@ -169,14 +171,32 @@ public class ProgressManager {
 		if ( player.getState( ) == PlayerState.GrabMode ) {
 			holdTime++;
 			if ( holdTime > respawnTime ) {
+				playerMover = false;
+				player.setMoverNullAtCurrentState( );
 				// if the dead player has held the re-spawn button
 				// respawn them at the current check point
 				spawnAtCheckPoint( player );
 				holdTime = 0;
+
+			} else if ( !playerMover ) {
+				Gdx.app.log(" init mover", "now");
+				player.setActive( true );
+				player.setMoverAtCurrentState( new LerpMover(
+						player.getPositionPixel( ).sub(
+								player.sprite.getWidth( )/32.0f, 0 ), player
+								.getPositionPixel( ).add(
+										player.sprite.getWidth( )/32.0f, 0 ), .1f,
+						true, LinearAxis.HORIZONTAL, 0 ) );
+				playerMover = true;
+			} else {
+				player.updateMover( 0 );
 			}
 		} else {
 			// if the player lets go reset the time
 			holdTime = 0;
+			playerMover = false;
+			player.body.setLinearVelocity( 0f, 0f );
+			player.setMoverNullAtCurrentState( );
 		}
 	}
 

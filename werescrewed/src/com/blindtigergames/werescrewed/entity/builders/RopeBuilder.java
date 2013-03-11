@@ -21,8 +21,8 @@ public class RopeBuilder extends GenericEntityBuilder<RopeBuilder> {
 	}
 	
 	public RopeBuilder attachTo( Entity entity ){
-		this.pos.x = entity.getPosition( ).x;
-		this.pos.y = entity.getPosition( ).y;
+		this.pos.x = entity.getPosition( ).x * Util.BOX_TO_PIXEL;
+		this.pos.y = entity.getPosition( ).y * Util.BOX_TO_PIXEL;
 		return this;
 	}
 	

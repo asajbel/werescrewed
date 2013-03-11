@@ -1,7 +1,5 @@
 package com.blindtigergames.werescrewed.entity.builders;
 
-import java.util.HashMap;
-
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.World;
@@ -29,7 +27,6 @@ public class PlatformBuilder extends GenericEntityBuilder<PlatformBuilder> {
 	protected float 	friction;
 	protected float 	restitution;
 	protected float 	gravScale;
-	protected float		anchRadius;
 	protected boolean 	flipHorizonal;
 	protected boolean 	flipVertical;
 	protected boolean 	isOneSided;
@@ -138,16 +135,6 @@ public class PlatformBuilder extends GenericEntityBuilder<PlatformBuilder> {
 		return this;
 	}
 
-/**
- * 
- * @param anchRadius - float radius of anchor, default is 0.0f
- * @return PlatformBuilder
- */
-	public PlatformBuilder anchRadius( float anchRadius ) {
-		this.anchRadius = anchRadius;
-		return this;
-	}
-
 	public PlatformBuilder flipHorizontal( boolean flipHori ) {
 		this.flipHorizonal = flipHori;
 		return this;
@@ -202,9 +189,8 @@ public class PlatformBuilder extends GenericEntityBuilder<PlatformBuilder> {
 		this.scale = 1.0f;
 		this.density = 1.0f;
 		this.friction = 1.0f;
-		this.restitution = 0.1f;
+		this.restitution = 0.0f;
 		this.gravScale = 0.1f;
-		this.anchRadius = 0.0f;
 		this.flipHorizonal = false;
 		this.flipVertical = false;
 		this.isOneSided = false;
@@ -265,6 +251,8 @@ public class PlatformBuilder extends GenericEntityBuilder<PlatformBuilder> {
 		tp.setRestitution( this.restitution );
 		tp.setGravScale( this.gravScale );
 		return tp;
+		
+		
 	}
 	/**
 	 * builds complex platform from available data.
@@ -276,8 +264,7 @@ public class PlatformBuilder extends GenericEntityBuilder<PlatformBuilder> {
 									this.world,
 									this.pos,
 									this.rot,
-									new Vector2(this.scale,this.scale),
-									this.anchRadius);
+									new Vector2(this.scale,this.scale));
 		
 		cp.setPlatformType(PlatformType.COMPLEX);
 		cp.body.setType( bodyType );

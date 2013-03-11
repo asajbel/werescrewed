@@ -6,6 +6,8 @@ import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.FPSLogger;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.blindtigergames.werescrewed.asset.AssetManager;
 import com.blindtigergames.werescrewed.screens.ScreenManager;
 import com.blindtigergames.werescrewed.screens.ScreenType;
@@ -13,6 +15,9 @@ import com.blindtigergames.werescrewed.util.Metrics;
 
 public class WereScrewedGame extends Game {
 
+	public static final int targetFrameRate = 60;
+	public static final float oneOverTargetFrameRate = 1f/targetFrameRate;
+	
 	public static AssetManager manager = new AssetManager( );
 	public static FileHandle dirHandle;
 
@@ -20,10 +25,16 @@ public class WereScrewedGame extends Game {
 	
 	private boolean restartFlag = false;
 	private boolean metricsFlag = false;
+	
+	public static ShaderProgram defaultShader;
+	
+	private float fpsTime = 0;
 
 	@Override
 	public void create( ) {
 		ScreenManager.getInstance( ).initialize( this );
+		
+		defaultShader = SpriteBatch.createDefaultShader( );
 
 		// ScreenManager.getInstance().show(Screen.INTRO);
 
@@ -64,6 +75,19 @@ public class WereScrewedGame extends Game {
 		}else{
 			metricsFlag = false;
 		}
+		
+//		float deltaTime = Gdx.graphics.getDeltaTime( );
+//		fpsTime += deltaTime;
+//		if ( fpsTime >= oneOverTargetFrameRate ){
+//			Gdx.app.log( "FPS", ""+fpsTime+", "+ oneOverTargetFrameRate);
+//			fpsTime = fpsTime - oneOverTargetFrameRate;
+//			//Gdx.app.log( "Rendering", "Rendering");
+//			super.render( );
+//		}else{
+//			//fpsTime += deltaTime;
+//			//Gdx.app.log( "Not rendering", "");
+//		}
+		
 		super.render( );
 		if (Gdx.app.getType() == ApplicationType.Android) {
 			logger.log( ); 

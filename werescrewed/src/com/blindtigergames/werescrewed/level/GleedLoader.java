@@ -14,6 +14,7 @@ import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityCategory;
 import com.blindtigergames.werescrewed.entity.EntityDef;
 import com.blindtigergames.werescrewed.entity.RobotState;
+import com.blindtigergames.werescrewed.entity.Skeleton;
 import com.blindtigergames.werescrewed.entity.builders.EntityBuilder;
 import com.blindtigergames.werescrewed.entity.builders.MoverBuilder;
 import com.blindtigergames.werescrewed.entity.builders.PlatformBuilder;
@@ -27,7 +28,6 @@ import com.blindtigergames.werescrewed.platforms.TiledPlatform;
 import com.blindtigergames.werescrewed.screws.PuzzleScrew;
 import com.blindtigergames.werescrewed.screws.Screw;
 import com.blindtigergames.werescrewed.screws.ScrewType;
-import com.blindtigergames.werescrewed.skeleton.Skeleton;
 import com.blindtigergames.werescrewed.util.ArrayHash;
 
 
@@ -329,6 +329,10 @@ public class GleedLoader {
 		if (item.props.containsKey( "dynamic" ))
 			isDynamic = true;
 		
+		//Its as simple as this to get custom values
+		// either it will give me the right string or it if doesn't exist: null
+		//System.out.println( "custom props: " + item.props.get( "definition" ) );
+		
 		float tileX = item.getDefinition().getTexture( ).getWidth( )/4.0f;
 		float tileY = item.getDefinition().getTexture( ).getWidth( )/4.0f;
 		if (tileX > 0 && tileY > 0)
@@ -375,7 +379,7 @@ public class GleedLoader {
 	}
 
 	protected void loadPlayerSpawnPoint(Item item){
-		level.players.get(spawnPoints).setPixelPosition( item.pos ); //Kevin: Who commented this out?
+		level.player1.setPixelPosition( item.pos ); 
 		Gdx.app.log("GleedLoader", "Player Spawnpoint:"+item.pos.toString( ));
 	}
 	

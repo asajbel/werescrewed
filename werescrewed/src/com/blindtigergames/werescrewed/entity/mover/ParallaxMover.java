@@ -41,12 +41,7 @@ public class ParallaxMover implements IMover {
 		body.setTransform( beginningPoint.mul( Util.PIXEL_TO_BOX ), 0.0f );
 		beginningPoint = temp;
 	}
-
-	@Override
-	public void move( float deltaTime, Body body, SteeringOutput steering ) {
-		move( deltaTime, body );
-	}
-
+	
 	@Override
 	public void runPuzzleMovement( PuzzleScrew screw, float screwVal, Platform p ) {
 		//parallax movers shouldn't be used in puzzles

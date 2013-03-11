@@ -2,7 +2,9 @@ package com.blindtigergames.werescrewed.entity.mover;
 
 import aurelienribon.tweenengine.Timeline;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.blindtigergames.werescrewed.entity.Skeleton;
 import com.blindtigergames.werescrewed.platforms.Platform;
 import com.blindtigergames.werescrewed.screws.PuzzleScrew;
 
@@ -17,12 +19,6 @@ public class TimelineTweenMover implements IMover {
 	@Override
 	public void move( float deltaTime, Body body ) {
 		timeline.update( deltaTime );
-	}
-
-	@Override
-	public void move( float deltaTime, Body body, SteeringOutput steering ) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override

@@ -13,7 +13,7 @@ import com.blindtigergames.werescrewed.screws.Screw;
 import com.blindtigergames.werescrewed.screws.StrippedScrew;
 import com.blindtigergames.werescrewed.util.Util;
 
-/* A chain of box fixtures that 
+/** A chain of box fixtures that 
  * are jointed together to act as a rope.
  * 
  * @author Edward Boning, Ranveer Dhaliwal
@@ -21,11 +21,12 @@ import com.blindtigergames.werescrewed.util.Util;
  */
 public class Rope {
 
+	public String name;
 	private StrippedScrew screw;
 	private ArrayList< Link > linkParts;
 	private World world;
 
-	/*
+	/**
 	 * Constructs a rope at a given position
 	 * 
 	 * @param name name of the rope entity
@@ -42,15 +43,16 @@ public class Rope {
 	 */
 	public Rope( String name, Vector2 pos, Vector2 widthHeight, int links,
 			Texture texture, World world ) {
+		this.name = name;
 		this.world = world;
 		linkParts = new ArrayList< Link >( );
 		constructRope( name, pos, widthHeight, links, texture, world );
 
-		screw = new StrippedScrew( "ropescrew", world,
-				new Vector2( pos.x, pos.y
-						- widthHeight.y * Util.PIXEL_TO_BOX * links )
-						.mul( Util.BOX_TO_PIXEL ), linkParts.get( linkParts
-						.size( ) - 1 ) );
+//		screw = new StrippedScrew( "ropescrew",
+//				new Vector2( pos.x, pos.y
+//						- widthHeight.y * Util.PIXEL_TO_BOX * links )
+//						.mul( Util.BOX_TO_PIXEL ), linkParts.get( linkParts
+//						.size( ) - 1 ), world );
 
 	}
 
@@ -71,16 +73,17 @@ public class Rope {
 	 */
 	public Rope( String name, Entity entity, Vector2 widthHeight, int links,
 			Texture texture, World world ) {
+		this.name = name;
 		this.world = world;
 		linkParts = new ArrayList< Link >( );
 		constructRope( name, entity.getPosition( ), widthHeight, links,
 				texture, world );
 
-		screw = new StrippedScrew( "ropescrew", world,
-				new Vector2( entity.getPosition( ).x, entity.getPosition( ).y
-						- widthHeight.y * Util.PIXEL_TO_BOX * links )
-						.mul( Util.BOX_TO_PIXEL ), linkParts.get( linkParts
-						.size( ) - 1 ) );
+//		screw = new StrippedScrew( "ropescrew",
+//				new Vector2( entity.getPosition( ).x, entity.getPosition( ).y
+//						- widthHeight.y * Util.PIXEL_TO_BOX * links )
+//						.mul( Util.BOX_TO_PIXEL ), linkParts.get( linkParts
+//						.size( ) - 1 ), world );
 
 	}
 
@@ -214,10 +217,10 @@ public class Rope {
 	}
 
 	public void createScrew( ) {
-		screw = new StrippedScrew( "ropeScrew", world, new Vector2(
+		screw = new StrippedScrew( "ropeScrew", new Vector2(
 				getLastLink( ).body.getPosition( ).x * Util.BOX_TO_PIXEL,
 				( getLastLink( ).body.getPosition( ).y * Util.BOX_TO_PIXEL )
-						- ( getLastLink( ).getHeight( ) ) ), getLastLink( ) );
+						- ( getLastLink( ).getHeight( ) ) ), getLastLink( ), world );
 
 	}
 

@@ -27,29 +27,27 @@ public class Hazard extends Entity {
 	
 	public Hazard( String name, EntityDef type, World world,
 			Vector2 posPix, float rot, Vector2 scale, Texture texture,
-			boolean solid, float anchRadius ) {
-		super( name, type, world, posPix, rot, scale, texture, solid,
-				anchRadius );
+			boolean solid ) {
+		super( name, type, world, posPix, rot, scale, texture, solid);
 		//type used to determine what type of entity for collisions
 		entityType = EntityType.HAZARD;
 	}
 
+	// Returns current state of hazard. active == true == on / active == false == off
 	public boolean isActive ( ) {
 		return active;
+	}
+	
+	/**
+	 * @param state
+	 * 		Determines if boolean active is on (true) or off (false).
+	 */
+	public void setActive ( boolean state ) {
+		this.active = state;
 	}
 	
 	//Performs check to see if a player has collided with a hazard.
 	public void performContact ( Player player, Fixture fixture ) {
 		player.killPlayer( );
-	}
-	
-	@Override
-	public void update( float deltaTime ) {
-		
-	}
-
-	@Override
-	public void draw( SpriteBatch batch ) {
-		super.draw( batch );
 	}
 }

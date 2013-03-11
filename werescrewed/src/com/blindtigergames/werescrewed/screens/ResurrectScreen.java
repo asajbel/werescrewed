@@ -11,6 +11,11 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+import com.badlogic.gdx.physics.box2d.CircleShape;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.camera.Camera;
@@ -19,6 +24,8 @@ import com.blindtigergames.werescrewed.checkpoints.ProgressManager;
 import com.blindtigergames.werescrewed.collisionManager.MyContactListener;
 import com.blindtigergames.werescrewed.debug.SBox2DDebugRenderer;
 import com.blindtigergames.werescrewed.entity.Entity;
+import com.blindtigergames.werescrewed.entity.RootSkeleton;
+import com.blindtigergames.werescrewed.entity.Skeleton;
 import com.blindtigergames.werescrewed.entity.builders.PlatformBuilder;
 import com.blindtigergames.werescrewed.entity.builders.PlayerBuilder;
 import com.blindtigergames.werescrewed.entity.mover.ParallaxMover;
@@ -28,7 +35,6 @@ import com.blindtigergames.werescrewed.hazard.Spikes;
 import com.blindtigergames.werescrewed.platforms.Platform;
 import com.blindtigergames.werescrewed.platforms.TiledPlatform;
 import com.blindtigergames.werescrewed.player.Player;
-import com.blindtigergames.werescrewed.skeleton.Skeleton;
 import com.blindtigergames.werescrewed.util.Util;
 
 public class ResurrectScreen implements com.badlogic.gdx.Screen {
@@ -48,7 +54,7 @@ public class ResurrectScreen implements com.badlogic.gdx.Screen {
 	private Player player1, player2;
 	private Skeleton skeleton;
 	private Skeleton rootSkeleton;
-	private Skeleton bgRootSkel;
+	private RootSkeleton bgRootSkel;
 	private TiledPlatform ground;
 	private PlatformBuilder platBuilder;
 	private boolean debug = true;
@@ -86,7 +92,7 @@ public class ResurrectScreen implements com.badlogic.gdx.Screen {
 		skeleton = new Skeleton( "skeleton", new Vector2( 500, 0 ), null, world );
 		// skeleton.body.setType( BodyType.DynamicBody );
 		rootSkeleton = new Skeleton( "root", Vector2.Zero, null, world );
-		bgRootSkel = new Skeleton( "root", Vector2.Zero, null, world );
+		bgRootSkel = new RootSkeleton( "root", Vector2.Zero, null, world );
 
 		initParallaxBackground( );
 
@@ -100,9 +106,9 @@ public class ResurrectScreen implements com.badlogic.gdx.Screen {
 		world.setContactListener( contactListener );
 
 		player1 = new PlayerBuilder( ).name( "player1" ).world( world )
-				.position( 512.0f, 8.0f ).buildPlayer( );
+				.position( 0, 8f ).buildPlayer( );
 		player2 = new PlayerBuilder( ).name( "player2" ).world( world )
-				.position( 512f, 8.5f ).buildPlayer( );
+				.position( 0, 8.5f ).buildPlayer( );
 		initTiledPlatforms( );
 		initCheckPoints( );
 		initHazards( );
@@ -124,58 +130,109 @@ public class ResurrectScreen implements com.badlogic.gdx.Screen {
 		float width = Gdx.graphics.getWidth( ) / zoom;
 		float height = Gdx.graphics.getHeight( ) / zoom;
 		cam = new Camera( width, height, world );
-		
+
 		bgCam = new OrthographicCamera( 1, width / height );
+		bgCam.viewportWidth = width;
+		bgCam.viewportHeight = height;
+		bgCam.position.set( width * .5f, height * .5f, 0f );
+		bgCam.update( );
 	}
 
 	private void initParallaxBackground( ) {
-		Skeleton bg_1_0 = new Skeleton( "bg_1_0", new Vector2( 0, 0 ),
+		BodyDef screwBodyDef;
+		Body body;
+		CircleShape screwShape;
+		FixtureDef screwFixture;
+		Entity bg_1_0 = new Entity( "bg_1_0", new Vector2( -264, 512 ),
 				WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-						+ "/common/parallax_layer1_0.png", Texture.class ),
-				world );
-		Skeleton bg_1_1 = new Skeleton( "bg_1_1", new Vector2( 1024*1.9f, 0 ),
+						+ "/common/parallax_layer1_0.png",
+						Texture.class ), null, false );
+		Entity bg_1_1 = new Entity( "bg_1_0", new Vector2( 1920, 512 ),
 				WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 						+ "/common/parallax_layer1_1.png", Texture.class ),
-				world );
-		Skeleton bg_2_0 = new Skeleton( "bg_2_0", new Vector2( 0, 0 ),
+				null, false );
+		Entity bg_2_0 = new Entity( "bg_1_0", new Vector2( 1920, 512 ),
 				WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-						+ "/common/parallax_layer2_0.png", Texture.class ),
-				world );
-		Skeleton bg_2_1 = new Skeleton( "bg_2_1", new Vector2( -1024*1.9f, 0 ),
+						+ "/common/parallax_layer1_0.png", Texture.class ),
+				null, false );
+		Entity bg_2_1 = new Entity( "bg_1_0", new Vector2( 1920, 512 ),
 				WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-						+ "/common/parallax_layer2_1.png", Texture.class ),
-				world );
+						+ "/common/parallax_layer1_0.png", Texture.class ),
+				null, false );
+		for ( int i = 0; i < 4; i++ ) {
+			screwBodyDef = new BodyDef( );
+			screwBodyDef.type = BodyType.KinematicBody;
+			screwBodyDef.position.set( 0, 0 );
+			screwBodyDef.fixedRotation = true;
+			body = world.createBody( screwBodyDef );
+			screwShape = new CircleShape( );
+			screwShape.setRadius( 64 * Util.PIXEL_TO_BOX );
+			screwFixture = new FixtureDef( );
+			screwFixture.filter.categoryBits = Util.CATEGORY_IGNORE;
+			screwFixture.filter.maskBits = Util.CATEGORY_NOTHING;
+			screwFixture.shape = screwShape;
+			screwFixture.isSensor = true;
+			body.createFixture( screwFixture );
+			body.setUserData( this );
+			switch ( i ) {
+			case 0:
+				bg_1_0 = new Entity( "bg_1_0", new Vector2( -264, 512 ),
+						WereScrewedGame.manager.get( WereScrewedGame.dirHandle
+								+ "/common/parallax_layer1_0.png",
+								Texture.class ), body, false );
+				break;
+			case 1:
+				bg_1_1 = new Entity( "bg_1_1", new Vector2( 0, 0 ),
+						WereScrewedGame.manager.get( WereScrewedGame.dirHandle
+								+ "/common/parallax_layer1_1.png",
+								Texture.class ), body, false );
+				break;
+			case 2:
+				bg_2_0 = new Entity( "bg_2_0", new Vector2( 0, 0 ),
+						WereScrewedGame.manager.get( WereScrewedGame.dirHandle
+								+ "/common/parallax_layer2_0.png",
+								Texture.class ), body, false );
+				break;
+			case 3:
+				bg_2_1 = new Entity( "bg_2_1", new Vector2( 0, 0 ),
+						WereScrewedGame.manager.get( WereScrewedGame.dirHandle
+								+ "/common/parallax_layer2_1.png",
+								Texture.class ), body, false );
+				break;
+			default:
+				break;
+			}
+		}
+		// bg_1_0.sprite.setScale( 1.9f );
+		// bg_1_1.sprite.setScale( 1.9f );
+		// bg_2_0.sprite.setScale( 1.9f );
+		// bg_2_1.sprite.setScale( 1.9f );
 
-		bg_1_0.sprite.setScale( 1.9f );
-		bg_1_1.sprite.setScale( 1.9f );
-		bg_2_0.sprite.setScale( 1.9f );
-		bg_2_1.sprite.setScale( 1.9f );
-		
-		bg_1_0.setMoverAtCurrentState( new ParallaxMover(
-				new Vector2( 1280*1.9f, 270 ), new Vector2( -768*1.9f, 270 ), 0.0005f, .5f ) );
+		bg_1_0.setMoverAtCurrentState( new ParallaxMover( new Vector2( 2304,
+				512 ), new Vector2( -264, 512 ), 0.0002f, .5f ) );
 		bg_1_0.setActive( true );
-
-		bg_1_1.setMoverAtCurrentState( new ParallaxMover(
-				new Vector2( 1280*1.9f, 270  ), new Vector2( -768*1.9f, 270  ), 0.0005f, 0f ) );
+		bg_1_0.setVisible( true );
+		bg_1_1.setMoverAtCurrentState( new ParallaxMover( new Vector2( 2304,
+				512 ), new Vector2( -264, 512 ), 0.0002f, 0f ) );
 		bg_1_1.setActive( true );
-
-		bg_2_0.setMoverAtCurrentState( new ParallaxMover(
-				new Vector2( 1280*1.9f, 270 ), new Vector2( -768*1.9f, 270 ), 0.00025f, .5f ) );
+		bg_1_1.setVisible( true );
+		bg_2_0.setMoverAtCurrentState( new ParallaxMover( new Vector2( 2304,
+				512 ), new Vector2( -264, 512 ), 0.0001f, .5f ) );
 		bg_2_0.setActive( true );
-
-		bg_2_1.setMoverAtCurrentState( new ParallaxMover(
-				new Vector2( 1280*1.9f, 270 ), new Vector2( -768*1.9f, 270 ), 0.00025f, 0f ) );
+		bg_2_0.setVisible( true );
+		bg_2_1.setMoverAtCurrentState( new ParallaxMover( new Vector2( 2304,
+				512 ), new Vector2( -264, 512 ), 0.0001f, 0f ) );
 		bg_2_1.setActive( true );
-		bgRootSkel.addSkeleton( bg_1_0 );
-		bgRootSkel.addSkeleton( bg_1_1 );
-		bgRootSkel.addSkeleton( bg_2_0 );
-		bgRootSkel.addSkeleton( bg_2_1 );
-
+		bg_2_1.setVisible( true );
+		bgRootSkel.addLooseEntity( bg_2_0 );
+		bgRootSkel.addLooseEntity( bg_2_1 );
+		bgRootSkel.addLooseEntity( bg_1_0 );
+		bgRootSkel.addLooseEntity( bg_1_1 );
 	}
 
 	private void initHazards( ) {
-		spikes = new Spikes( "Spikes1", new Vector2( -1250.0f, -10.0f), 
-				1, 4, world, true, false, true );
+		spikes = new Spikes( "Spikes1", new Vector2( -1250.0f, -10.0f ), 1, 4,
+				world, true, false, true );
 	}
 
 	private void initTiledPlatforms( ) {
@@ -221,9 +278,12 @@ public class ResurrectScreen implements com.badlogic.gdx.Screen {
 		}
 
 		cam.update( );
-		//update background camera
+		// update background camera zoom
+		// float zoomRatio = ( ( ( 1.1f - 1f ) * ( cam.camera.zoom-1 ) ) / ( 3f
+		// - 1f ) ) + 1;
+		// bgCam.zoom = Math.min( 1.1f, zoomRatio );
 		bgCam.update( );
-		
+
 		if ( Gdx.input.isKeyPressed( Input.Keys.ESCAPE ) ) {
 			ScreenManager.getInstance( ).show( ScreenType.PAUSE );
 		}
@@ -267,16 +327,17 @@ public class ResurrectScreen implements com.badlogic.gdx.Screen {
 		rootSkeleton.update( deltaTime );
 		progressManager.update( deltaTime );
 		spikes.update( deltaTime );
-		
-		//update background skeletons
+
+		// update background skeletons
 		bgRootSkel.update( deltaTime );
 
-		//update background stuff which uses different transformation matrices
+		// update background stuff which uses different transformation matrices
+		bgBatch.setProjectionMatrix( bgCam.combined );
 		bgBatch.begin( );
 		bgRootSkel.draw( bgBatch );
 		bgBatch.end( );
-		
-		//use the camera matrix for things not in the background
+
+		// use the camera matrix for things not in the background
 		batch.setProjectionMatrix( cam.combined( ) );
 		batch.begin( );
 		rootSkeleton.draw( batch );
