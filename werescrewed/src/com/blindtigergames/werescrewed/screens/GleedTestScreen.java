@@ -90,7 +90,7 @@ public class GleedTestScreen extends Screen {
 
 		TiledPlatform plat5 = platBuilder.position( 5400, 700 ).name( "plat145" )
 				.dimensions( 1, 8) .kinematic( )
-				.friction( 1.0f )
+				.friction( 1.0f ).tileSet( "TilesetTest" )
 				.buildTilePlatform( );
 		skel3.addKinematicPlatform( plat5);
 		plat5.setActive( false );
@@ -105,7 +105,7 @@ public class GleedTestScreen extends Screen {
 		skel3.addScrewForDraw( elevatorscrew1 );
 		
 		TiledPlatform plat6 = platBuilder.position( 6700, 500 ).name( "plat146" )
-				.dimensions( 10, 1) .kinematic( )
+				.dimensions( 10, 1) .kinematic( ).tileSet( "autumn" )
 				.friction( 1.0f )
 				.buildTilePlatform( );
 		skel3.addKinematicPlatform( plat6 );
@@ -123,7 +123,7 @@ public class GleedTestScreen extends Screen {
 		skel3.addKinematicPlatform( plat8 );
 		
 //		
-//		TiledPlatform plat9 = platBuilder.position( 6700, 600 ).name( "plat149" )
+//		TiledPlatform plat9 = platBuilder.position( 6700, 600 ).name( "plat189" )
 //				.dimensions( 10, 1) .kinematic( )
 //				.friction( 1.0f )
 //				.buildTilePlatform( );
@@ -138,19 +138,28 @@ public class GleedTestScreen extends Screen {
 		Rope rope = ropeBuilder.buildRope( );
 		skel3.addRope( rope );
 		
-		
+//		
 //
 //		PuzzleScrew shoulderJoint = new PuzzleScrew( "dynamic_skeleton_joint",
-//				new Vector2( 6700, 600 ), 100, plat9, level.world, 0,
+//				new Vector2( 6700, 600 ), 100, skel3, level.world, 0,
 //				false );
-////		shoulderJoint.addStructureJoint( plat9 );
-////		shoulderJoint.addStructureJoint( plat6 );
-//		shoulderJoint.puzzleManager.addEntity( plat9 );
+//		
 //		//shoulderJoint.puzzleManager.addEntity( plat6 );
 //		PuzzleRotateTweenMover rtm2 = new PuzzleRotateTweenMover( 1,
 //				Util.PI / 2, true, PuzzleType.ON_OFF_MOVER );
+//		PuzzleRotateTweenMover rtm = new PuzzleRotateTweenMover( 1,
+//				Util.PI / 2, true, PuzzleType.ON_OFF_MOVER );
+//		//shoulderJoint.addStructureJoint( plat9 );
+////		shoulderJoint.addStructureJoint( plat6 );
+//		shoulderJoint.puzzleManager.addEntity( plat6 );
+//		shoulderJoint.puzzleManager.addMover( rtm2 );
+//		shoulderJoint.puzzleManager.addEntity( plat9 );
 //		shoulderJoint.puzzleManager.addMover( rtm2 );
 //		
+//		plat6.body.setFixedRotation( false );
+//		plat6.setActive( true );
+//		plat9.body.setFixedRotation( false );
+//		plat9.setActive( true );
 //		skel3.addScrewForDraw( shoulderJoint );
 		level.root.addSkeleton( skel2 );
 		level.root.addSkeleton( skel3 );
