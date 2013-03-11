@@ -21,6 +21,7 @@ import com.blindtigergames.werescrewed.util.Util;
  */
 public class Rope {
 
+	public String name;
 	private StrippedScrew screw;
 	private ArrayList< Link > linkParts;
 	private World world;
@@ -42,6 +43,7 @@ public class Rope {
 	 */
 	public Rope( String name, Vector2 pos, Vector2 widthHeight, int links,
 			Texture texture, World world ) {
+		this.name = name;
 		this.world = world;
 		linkParts = new ArrayList< Link >( );
 		constructRope( name, pos, widthHeight, links, texture, world );
@@ -71,6 +73,7 @@ public class Rope {
 	 */
 	public Rope( String name, Entity entity, Vector2 widthHeight, int links,
 			Texture texture, World world ) {
+		this.name = name;
 		this.world = world;
 		linkParts = new ArrayList< Link >( );
 		constructRope( name, entity.getPosition( ), widthHeight, links,
