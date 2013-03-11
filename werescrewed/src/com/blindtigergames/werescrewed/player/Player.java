@@ -6,6 +6,9 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.controllers.PovDirection;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -22,6 +25,7 @@ import com.blindtigergames.werescrewed.camera.Anchor;
 import com.blindtigergames.werescrewed.camera.AnchorList;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityDef;
+import com.blindtigergames.werescrewed.entity.Sprite;
 import com.blindtigergames.werescrewed.entity.EntityType;
 import com.blindtigergames.werescrewed.entity.mover.IMover;
 import com.blindtigergames.werescrewed.entity.mover.LerpMover;
@@ -120,6 +124,12 @@ public class Player extends Entity {
 
 	@SuppressWarnings( "unused" )
 	private Sound jumpSound;
+	
+	private TextureAtlas characterAtlas;
+	
+	//TODO: fill in the frames counts and frame rates for various animations like below
+	private int   jumpFrames = 3;
+	private float jumpSpeed  = 0.3f;
 
 	public float frictionCounter = 0;
 
@@ -130,6 +140,7 @@ public class Player extends Entity {
 	 * </p>
 	 * <Ul>
 	 * Standing <br />
+	 * Running <br />
 	 * Jumping <br />
 	 * Falling <br />
 	 * Screwing <br />
@@ -137,7 +148,8 @@ public class Player extends Entity {
 	 * </Ul>
 	 */
 	public enum PlayerState {
-		Standing, Jumping, Falling, Screwing, JumpingOffScrew, Dead, GrabMode, HeadStand
+		Standing, Running, Jumping, Falling,
+		Screwing, JumpingOffScrew, Dead, GrabMode, HeadStand
 	}
 
 	// CONSTRUCTORS
@@ -180,6 +192,11 @@ public class Player extends Entity {
 
 		jumpSound = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 				+ "/common/sounds/jump.ogg" );
+		
+		//TODO: pick which texture atlas to use based on the character
+		//The following will be fixed in another branch
+		//characterAtlas = WereScrewedGame.manager.get(
+		//		"player_b_m_textureatlas.pack", TextureAtlas.class);
 	}
 
 	// PUBLIC METHODS
@@ -205,10 +222,18 @@ public class Player extends Entity {
 			kinematicTransform = false;
 		}
 		if ( isDead ) {
+
+		//	body.setLinearVelocity( Vector2.Zero );
+		//	body.setFixedRotation( false );
+		//	body.setAngularVelocity( 0.1f )
+		// TODO: death stuff
+
+
 			if ( playerState != PlayerState.Dead
 					&& playerState != PlayerState.GrabMode ) {
 				killPlayer( );
 			}
+
 			// TODO: death stuff
 			if ( controller != null ) {
 				if ( controllerListener.isGrabPressed( ) ) {
@@ -529,6 +554,10 @@ public class Player extends Entity {
 			body.applyLinearImpulse( new Vector2( 0.0f, JUMP_IMPULSE ),
 					body.getWorldCenter( ) );
 		}
+		
+		//TODO: add the jumping sprite here
+		//This will work... soon.
+		//sprite = new Sprite(characterAtlas, "jumping", jumpFrames, jumpSpeed, Animation.NORMAL);
 	}
 
 	/**
@@ -1183,6 +1212,7 @@ public class Player extends Entity {
 			} else {
 				if ( body.getLinearVelocity( ).y > 0 ) {
 					playerState = PlayerState.Jumping;
+					//TODO: animating sprite test
 				} else {
 					playerState = PlayerState.Falling;
 				}
