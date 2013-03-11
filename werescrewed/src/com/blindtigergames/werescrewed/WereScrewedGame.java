@@ -15,6 +15,9 @@ import com.blindtigergames.werescrewed.util.Metrics;
 
 public class WereScrewedGame extends Game {
 
+	public static final int targetFrameRate = 60;
+	public static final float oneOverTargetFrameRate = 1f/targetFrameRate;
+	
 	public static AssetManager manager = new AssetManager( );
 	public static FileHandle dirHandle;
 
@@ -24,6 +27,8 @@ public class WereScrewedGame extends Game {
 	private boolean metricsFlag = false;
 	
 	public static ShaderProgram defaultShader;
+	
+	private float fpsTime = 0;
 
 	@Override
 	public void create( ) {
@@ -70,6 +75,19 @@ public class WereScrewedGame extends Game {
 		}else{
 			metricsFlag = false;
 		}
+		
+//		float deltaTime = Gdx.graphics.getDeltaTime( );
+//		fpsTime += deltaTime;
+//		if ( fpsTime >= oneOverTargetFrameRate ){
+//			Gdx.app.log( "FPS", ""+fpsTime+", "+ oneOverTargetFrameRate);
+//			fpsTime = fpsTime - oneOverTargetFrameRate;
+//			//Gdx.app.log( "Rendering", "Rendering");
+//			super.render( );
+//		}else{
+//			//fpsTime += deltaTime;
+//			//Gdx.app.log( "Not rendering", "");
+//		}
+		
 		super.render( );
 		if (Gdx.app.getType() == ApplicationType.Android) {
 			logger.log( ); 
