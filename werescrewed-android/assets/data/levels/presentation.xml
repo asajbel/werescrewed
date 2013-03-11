@@ -306,8 +306,8 @@
                 </Item>
                 <Item xsi:type="TextureItem" Name="stripped2" Visible="true">
                     <Position>
-                        <X>4912</X>
-                        <Y>-720</Y>
+                        <X>4512</X>
+                        <Y>128</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -423,8 +423,8 @@
                 </Item>
                 <Item xsi:type="RectangleItem" Name="moving" Visible="true">
                     <Position>
-                        <X>5072</X>
-                        <Y>-416</Y>
+                        <X>4672</X>
+                        <Y>432</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -449,8 +449,8 @@
                 </Item>
                 <Item xsi:type="PathItem" Name="squaremover" Visible="true">
                     <Position>
-                        <X>5072</X>
-                        <Y>-416</Y>
+                        <X>4672</X>
+                        <Y>432</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -496,24 +496,24 @@
                     </LocalPoints>
                     <WorldPoints>
                         <Vector2>
-                            <X>5072</X>
-                            <Y>-416</Y>
+                            <X>4672</X>
+                            <Y>432</Y>
                         </Vector2>
                         <Vector2>
-                            <X>5072</X>
-                            <Y>-576</Y>
+                            <X>4672</X>
+                            <Y>272</Y>
                         </Vector2>
                         <Vector2>
-                            <X>5360</X>
-                            <Y>-576</Y>
+                            <X>4960</X>
+                            <Y>272</Y>
                         </Vector2>
                         <Vector2>
-                            <X>5360</X>
-                            <Y>-416</Y>
+                            <X>4960</X>
+                            <Y>432</Y>
                         </Vector2>
                         <Vector2>
-                            <X>5072</X>
-                            <Y>-416</Y>
+                            <X>4672</X>
+                            <Y>432</Y>
                         </Vector2>
                     </WorldPoints>
                     <IsPolygon>false</IsPolygon>
@@ -1527,8 +1527,8 @@
                 </Item>
                 <Item xsi:type="RectangleItem" Name="ropeplat" Visible="true">
                     <Position>
-                        <X>4944</X>
-                        <Y>-784</Y>
+                        <X>4544</X>
+                        <Y>64</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -1550,8 +1550,8 @@
                 </Item>
                 <Item xsi:type="TextureItem" Name="rope" Visible="true">
                     <Position>
-                        <X>5056</X>
-                        <Y>-704</Y>
+                        <X>4656</X>
+                        <Y>144</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -1594,11 +1594,11 @@
     </Layers>
     <CustomProperties />
     <EditorRelated>
-        <NextItemNumber>59</NextItemNumber>
+        <NextItemNumber>62</NextItemNumber>
         <ContentRootFolder>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures</ContentRootFolder>
         <CameraPosition>
-            <X>5199.997</X>
-            <Y>-816.6692</Y>
+            <X>5508.33643</X>
+            <Y>-691.668335</Y>
         </CameraPosition>
         <Version>1.3.0.0</Version>
     </EditorRelated>
