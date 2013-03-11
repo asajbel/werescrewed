@@ -28,6 +28,8 @@
 /particles/particle.png
 /common/robot/alphabot_texture_skin.png
 /common/robot/alphabot_texture_tux.png
+/common/robot/alphabot_tile_suit_main.png
+/common/robot/alphabot_tile_interior.png
 /common/ropelink.png
 /common/gear.png
 

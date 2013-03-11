@@ -475,6 +475,14 @@ public class LevelFactory {
 			isCrushable = true;
 		}
 		
+		boolean rotatingcenter = false;
+		boolean motor = false;
+		if(item.props.containsKey( "rotatingcenter" )){
+			rotatingcenter = true;
+			if(item.props.get( "rotatingcenter" ).equals( "motor" )){
+				motor = true;
+			}
+		}
 		Platform out = new PlatformBuilder(level.world)
 		.name( item.name )
 		.type( item.getDefinition( ) )
@@ -491,6 +499,13 @@ public class LevelFactory {
 		Gdx.app.log("GleedLoader", "Complex Platform loaded:"+item.name);
 		Skeleton parent = loadSkeleton(item.skeleton);
 		if (isDynamic){
+			if(rotatingcenter){
+				if(motor){
+					parent.addPlatformRotatingCenterWithMot( out, 1f );
+				}else{
+					parent.addPlatformRotatingCenter( out );
+				}
+			}
 			parent.addDynamicPlatform( out );
 		} else {
 			parent.addKinematicPlatform( out );
@@ -610,37 +625,36 @@ public class LevelFactory {
 //			times.set(pointElems.size-1, 1.0f);
 //		}
 		
+		if( item.props.containsKey( "delay" )){
+			float delay = Float.parseFloat( item.props.get("delay") );
+			pBuilder.delay( delay );
+			Gdx.app.log( "LevelFactory", "path has delay "+ delay);
+		}
+		
 		// Starts at one because first point on a path should start at 0,0 by default
 		for (int i = 1; i < pointElems.size; i++){
 			vElem = pointElems.get( i );
 			point = new Vector2(vElem.getFloat( "X" )*GLEED_TO_GDX_X, vElem.getFloat( "Y" )*GLEED_TO_GDX_Y);
 			pathPoints.add( point );
 			Gdx.app.log( "LevelFactory", "Point "+i+" has coordinates "+point.toString( )+".");
+			
+		}
+		for (int i = 1; i <= pathPoints.size; ++i){
 			timeTag = "point"+i+"time";
 			if (item.props.containsKey( timeTag )){
 				float time = Float.parseFloat( item.props.get( timeTag ));
 				if (time >= 0.0f){
-					times.set( i, time );
+					times.set( i-1, time );
 				}
 			}
-			Gdx.app.log( "GleedLoader", "Point "+i+" has time "+times.get(i)+".");
-//			if (times.get( i ) >= 0.0f){
-//				Gdx.app.log( "GleedLoader", "Point "+i+" has time "+times.get(i)+".");
-//				if (i > frontPoint+1){
-//					float div = (times.get( i ) - frontTime)/(float)(i - frontPoint);
-//					for (int j = i-1; j > frontPoint; j--){
-//						times.set(j, frontTime + div*(j-frontPoint));
-//						Gdx.app.log( "GleedLoader", "Backtracking: Setting point "+j+" to time "+times.get(j)+".");
-//					}
-//					frontPoint = i;
-//					frontTime = times.get( i );
-//				}
-//			}
+			Gdx.app.log( "LevelFactory", "Point "+i+" has time "+times.get(i)+".");
 		}
-
 		for (int i = 0; i < pathPoints.size; i++){
 			pBuilder.target( pathPoints.get(i).x, pathPoints.get(i).y, times.get(i).floatValue( ) );
 		}
+		
+		
+		
 		TimelineTweenMover out = pBuilder.build( );
 		movers.put(item.name, out);
 		p.addMover( out, RobotState.IDLE );

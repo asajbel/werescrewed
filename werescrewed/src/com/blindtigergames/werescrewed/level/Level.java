@@ -2,6 +2,8 @@ package com.blindtigergames.werescrewed.level;
 
 import aurelienribon.tweenengine.Tween;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
@@ -40,6 +42,7 @@ public class Level {
 	public RootSkeleton rootSkeleton;
 	public Skeleton root;
 	public PolySprite polySprite;
+	private boolean debugTest, debug;
 	
 	public Level( ){
 		
@@ -83,6 +86,12 @@ public class Level {
 		player2.update( deltaTime );
 		rootSkeleton.update( deltaTime );
 		
+		if ( Gdx.input.isKeyPressed( Keys.NUM_0 ) ) {
+			if ( debugTest )
+				debug = !debug;
+			debugTest = false;
+		} else
+			debugTest = true;
 		
 
 	}
@@ -99,7 +108,8 @@ public class Level {
 		
 		batch.end();
 		
-		debugRenderer.render( world, camera.combined( ) );
+		if(debug)
+			debugRenderer.render( world, camera.combined( ) );
 		world.step( 1 / 60f, 6,6 );
 
 	}

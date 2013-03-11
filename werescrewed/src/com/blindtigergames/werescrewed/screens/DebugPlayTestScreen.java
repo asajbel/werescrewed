@@ -360,9 +360,16 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 
 		SkeletonBuilder skeleBuilder = new SkeletonBuilder( world );
 		// skeleton at shoulder joint
-		Skeleton upperArmSkeleton = skeleBuilder.position( 1000, 800 )
-				.texture( testTexture ).vert( -100, -100 ).vert( 100, -100 )
-				.vert( 0, 100 ).dynamic( ).build( );
+		Skeleton upperArmSkeleton = skeleBuilder.position( 1000, 800 ).texBackground( WereScrewedGame.manager.get(WereScrewedGame.dirHandle+"/common/robot/alphabot_texture_skin.png",Texture.class ))
+				.vert( -100, -100 ).vert( -100, 100 )
+				.vert( 100, 100 ).vert( 100, -100 ).dynamic( ).build( );
+		
+//		dynSkeleton = new SkeletonBuilder( world ).position( 0, 200 )
+//				.texBackground( WereScrewedGame.manager.get(WereScrewedGame.dirHandle+"/common/robot/alphabot_texture_skin.png",Texture.class )).name( "dynamicSkeleton" )
+//				.vert( -100, -100 ).vert( 100, -100 ).vert( 100, 100 ).vert( -100,100 )
+//				.texForeground( WereScrewedGame.manager.get(WereScrewedGame.dirHandle+"/common/robot/alphabot_texture_tux.png",Texture.class ))
+//				.fg( ).vert( 200,0 ).vert( 300,100 ).vert( 200,200 )
+//				.build( );
 		// new Skeleton( "dynamicSkeleton",
 		// new Vector2( 1000, 800 ), testTexture, world );
 
