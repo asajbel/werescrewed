@@ -138,18 +138,22 @@ public class ResurrectScreen implements com.badlogic.gdx.Screen {
 				WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 						+ "/common/parallax_layer1_0.png", Texture.class ),
 				world );
+		bg_1_0.setVisible( true );
 		Skeleton bg_1_1 = new Skeleton( "bg_1_1", new Vector2( 1920, 512  ),
 				WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 						+ "/common/parallax_layer1_1.png", Texture.class ),
 				world );
+		bg_1_1.setVisible( true );
 		Skeleton bg_2_0 = new Skeleton( "bg_2_0", new Vector2( 1920, 512  ),
 				WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 						+ "/common/parallax_layer2_0.png", Texture.class ),
 				world );
+		bg_2_0.setVisible( true );
 		Skeleton bg_2_1 = new Skeleton( "bg_2_1", new Vector2( 1920, 512  ),
 				WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 						+ "/common/parallax_layer2_1.png", Texture.class ),
 				world );
+		bg_2_1.setVisible( true );
 
 //		bg_1_0.sprite.setScale( 1.9f );
 //		bg_1_1.sprite.setScale( 1.9f );
