@@ -17,16 +17,15 @@ import com.blindtigergames.werescrewed.checkpoints.ProgressManager;
 import com.blindtigergames.werescrewed.collisionManager.MyContactListener;
 import com.blindtigergames.werescrewed.debug.SBox2DDebugRenderer;
 import com.blindtigergames.werescrewed.entity.Entity;
+import com.blindtigergames.werescrewed.entity.RobotState;
 import com.blindtigergames.werescrewed.entity.Skeleton;
 import com.blindtigergames.werescrewed.entity.builders.PlatformBuilder;
 import com.blindtigergames.werescrewed.entity.builders.PlayerBuilder;
+import com.blindtigergames.werescrewed.entity.mover.HazardMover;
 import com.blindtigergames.werescrewed.entity.tween.EntityAccessor;
 import com.blindtigergames.werescrewed.entity.tween.PlatformAccessor;
-import com.blindtigergames.werescrewed.hazard.Electricity;
-import com.blindtigergames.werescrewed.hazard.Fire;
-import com.blindtigergames.werescrewed.hazard.Saws;
-import com.blindtigergames.werescrewed.hazard.Spikes;
-import com.blindtigergames.werescrewed.hazard.builders.SpikesBuilder;
+import com.blindtigergames.werescrewed.hazard.*;
+import com.blindtigergames.werescrewed.hazard.builders.*;
 import com.blindtigergames.werescrewed.platforms.Platform;
 import com.blindtigergames.werescrewed.platforms.TiledPlatform;
 import com.blindtigergames.werescrewed.player.Player;
@@ -113,10 +112,12 @@ public class HazardScreen implements com.badlogic.gdx.Screen {
 		saw = new Saws( "Saw1", new Vector2( -2000.0f, 40.0f ),
 				2, world, true );
 		 */
-		spikes = new Spikes( "Spikes1", new Vector2( -1250.0f, -10.0f ), 
-				1, 12, world, true, false, false );
-		spikes2 = spikesBuilder.position( -1050.0f, -10.0f ).dimensions( 1, 8 )
-				.left( ).buildSpikes( );
+		spikes = new Spikes( "Spikes1", new Vector2( -2000.0f, -10.0f ), 
+				8, 1, world, true, false, false );
+		spikes2 = spikesBuilder.position( -1500.0f, -10.0f ).dimensions( 8, 1 )
+				.up( ).active().buildSpikes( );
+		spikes2.addMover( new HazardMover( spikes2.getPositionPixel().add(  0f, 256f ), spikes2.getOrientation() ), 
+				RobotState.IDLE );
 	}
 
 	private void initCrushTest( ) {
@@ -168,6 +169,11 @@ public class HazardScreen implements com.badlogic.gdx.Screen {
 		} else
 			debugTest = true;
 
+		if ( Gdx.input.isKeyPressed( Input.Keys.T ) ) {
+			spikes.setActive( !spikes.isActive() );
+			spikes2.setActive( !spikes2.isActive() );
+		}
+		
 		player1.update( deltaTime );
 		player2.update( deltaTime );
 		progressManager.update( deltaTime );

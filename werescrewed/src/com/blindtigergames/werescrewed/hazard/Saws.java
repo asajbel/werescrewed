@@ -17,7 +17,6 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.entity.EntityType;
 import com.blindtigergames.werescrewed.entity.Sprite;
-import com.blindtigergames.werescrewed.hazard.Spikes.Orientation;
 import com.blindtigergames.werescrewed.platforms.Tile;
 import com.blindtigergames.werescrewed.player.Player;
 import com.blindtigergames.werescrewed.util.Util;

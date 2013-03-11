@@ -1,5 +1,6 @@
 package com.blindtigergames.werescrewed.hazard;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
@@ -45,6 +46,7 @@ public class Hazard extends Entity {
 	 */
 	public void setActive ( boolean state ) {
 		this.active = state;
+		Gdx.app.log( "State changed:", " " + active );
 	}
 	
 	//Performs check to see if a player has collided with a hazard.

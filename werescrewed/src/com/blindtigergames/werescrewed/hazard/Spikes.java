@@ -35,16 +35,12 @@ import com.blindtigergames.werescrewed.util.Util;
 // Just your standard spikes.
 public class Spikes extends Hazard {
 	
-	protected enum Orientation {
-		LEFT, RIGHT, UP, DOWN
-	}
-	
 	protected Vector < Tile > tiles = new Vector <Tile>();
 	protected Vector2 bodypos;
 	protected Vector2 defaultPos;
 	protected float tileConstant = 32.0f;
 	protected boolean hori;
-	Orientation ori;
+	protected Orientation ori;
 
 	/**
 	 * 
@@ -101,6 +97,10 @@ public class Spikes extends Hazard {
 		constructTile( pos, height, width );
 	}
 
+	public Orientation getOrientation( ) {
+		return this.ori;
+	}
+	
 	@Override
 	public void performContact( Player player, Fixture fixture ) {
 		if ( fixture == this.body.getFixtureList( ).get( 1 ) && active ){
@@ -165,7 +165,7 @@ public class Spikes extends Hazard {
 	
 	@Override
 	public void update( float deltaTime ) {
-		if (active) {
+		/*if (active) {
 			switch ( ori ) {
 			case RIGHT:
 				break;
@@ -193,7 +193,7 @@ public class Spikes extends Hazard {
 			default:
 				break;
 			}
-		}
+		}*/
 	}
 
 	@Override
