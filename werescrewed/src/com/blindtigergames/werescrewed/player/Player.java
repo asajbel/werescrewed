@@ -191,6 +191,12 @@ public class Player extends Entity {
 		super.update( deltaTime );
 
 		if ( name.equals( "player1" ) ) {
+			// int i = 0;
+			// for ( Fixture f : body.getFixtureList( ) ) {
+			// Gdx.app.log( "fixture" + i + " a sensor?", "" + f.isSensor( ) );
+			// i++;
+			// }
+			// Gdx.app.log( "player 1 state", "" + playerState );
 			// if(contact != null)
 			// System.out.println("contact friction: " + contact.getFriction( )
 			// + "feet friction: " + feet.getFriction( ) );
@@ -198,7 +204,7 @@ public class Player extends Entity {
 			// System.out.println( "feet friction: " + feet.getFriction( )
 			// + " feet position: " + feet.getBody( ).getPosition( ) );
 
-			 //System.out.println(isGrounded() + " jumpc " + jumpCounter);
+			// System.out.println(isGrounded() + " jumpc " + jumpCounter);
 		}
 		if ( kinematicTransform ) {
 			// setPlatformTransform( platformOffset );
@@ -260,7 +266,7 @@ public class Player extends Entity {
 			handleJumpOffScrew( );
 		}
 		if ( body.getLinearVelocity( ).y < -MIN_VELOCITY * 4f
-				&& playerState != PlayerState.Screwing
+				&& platformBody == null && playerState != PlayerState.Screwing
 				&& playerState != PlayerState.JumpingOffScrew
 				&& playerState != PlayerState.HeadStand && !isDead ) {
 			playerState = PlayerState.Falling;
@@ -635,7 +641,6 @@ public class Player extends Entity {
 	 */
 	private void updateFootFriction( ) {
 
-
 		if ( isGrounded( ) ) {
 			if ( feet.getFriction( ) < PLAYER_FRICTION ) {
 				frictionCounter += FRICTION_INCREMENT;
@@ -647,13 +652,14 @@ public class Player extends Entity {
 						FEET_OFFSET_Y ) );
 				FixtureDef fd = new FixtureDef( );
 
-
 				fd.shape = ps;
 				fd.density = 1f;
 				fd.restitution = 0.001f;
 				fd.friction = frictionCounter;
 
-
+				if ( playerState == PlayerState.Screwing ) {
+					fd.isSensor = true;
+				}
 				fd.filter.categoryBits = Util.CATEGORY_PLAYER;
 				fd.filter.maskBits = Util.CATEGORY_EVERYTHING;
 				body.destroyFixture( feet );
@@ -679,6 +685,17 @@ public class Player extends Entity {
 	public void hitSolidObject( Body b ) {
 		if ( screwJumpTimeout == 0 ) {
 			platformBody = b;
+			if ( playerState == PlayerState.Falling ) {
+				playerState = PlayerState.Standing;
+			}
+		}
+		if ( playerState == PlayerState.HeadStand ) {
+			headStandTimeout = HEAD_JUMP_STEPS;
+			if ( otherPlayer != null ) {
+				if ( topPlayer && !world.isLocked( ) ) {
+					removePlayerToPlayer( );
+				}
+			} 
 		}
 	}
 
@@ -1101,7 +1118,8 @@ public class Player extends Entity {
 		if ( playerState == PlayerState.Falling
 				&& otherPlayer.getState( ) == PlayerState.Standing
 				&& !otherPlayer.isPlayerDead( ) && headStandTimeout == 0
-				&& otherPlayer.isHeadStandTimedOut( ) ) {
+				&& otherPlayer.isHeadStandTimedOut( ) 
+				&& platformBody == null ) {
 			// check if the top player is in-line with the other players head
 			// and check if the top player is actually above the other player
 			if ( ( this.getPositionPixel( ).y > otherPlayer.getPositionPixel( )
@@ -1271,7 +1289,7 @@ public class Player extends Entity {
 				body.setLinearVelocity( 0.0f, body.getLinearVelocity( ).y );
 		}
 	}
-	
+
 	/**
 	 * Stops the player
 	 */
@@ -1601,7 +1619,6 @@ public class Player extends Entity {
 		}
 	}
 
-	
 	/**
 	 * This function creates a new controllerListener and sets the active
 	 * controller depending on how many players is being created
