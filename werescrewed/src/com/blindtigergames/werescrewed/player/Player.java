@@ -6,6 +6,9 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.controllers.PovDirection;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -22,6 +25,7 @@ import com.blindtigergames.werescrewed.camera.Anchor;
 import com.blindtigergames.werescrewed.camera.AnchorList;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityDef;
+import com.blindtigergames.werescrewed.entity.Sprite;
 import com.blindtigergames.werescrewed.entity.EntityType;
 import com.blindtigergames.werescrewed.entity.mover.IMover;
 import com.blindtigergames.werescrewed.entity.mover.LerpMover;
@@ -120,6 +124,12 @@ public class Player extends Entity {
 
 	@SuppressWarnings( "unused" )
 	private Sound jumpSound;
+	
+	private TextureAtlas characterAtlas;
+	
+	//TODO: fill in the frames counts and frame rates for various animations like below
+	private int   jumpFrames = 3;
+	private float jumpSpeed  = 0.3f;
 
 	public float frictionCounter = 0;
 
@@ -130,6 +140,7 @@ public class Player extends Entity {
 	 * </p>
 	 * <Ul>
 	 * Standing <br />
+	 * Running <br />
 	 * Jumping <br />
 	 * Falling <br />
 	 * Screwing <br />
@@ -137,7 +148,8 @@ public class Player extends Entity {
 	 * </Ul>
 	 */
 	public enum PlayerState {
-		Standing, Jumping, Falling, Screwing, JumpingOffScrew, Dead, GrabMode, HeadStand
+		Standing, Running, Jumping, Falling,
+		Screwing, JumpingOffScrew, Dead, GrabMode, HeadStand
 	}
 
 	// CONSTRUCTORS
@@ -180,6 +192,11 @@ public class Player extends Entity {
 
 		jumpSound = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 				+ "/common/sounds/jump.ogg" );
+		
+		//TODO: pick which texture atlas to use based on the character
+		//The following will be fixed in another branch
+		//characterAtlas = WereScrewedGame.manager.get(
+		//		"player_b_m_textureatlas.pack", TextureAtlas.class);
 	}
 
 	// PUBLIC METHODS
@@ -191,6 +208,12 @@ public class Player extends Entity {
 		super.update( deltaTime );
 
 		if ( name.equals( "player1" ) ) {
+			// int i = 0;
+			// for ( Fixture f : body.getFixtureList( ) ) {
+			// Gdx.app.log( "fixture" + i + " a sensor?", "" + f.isSensor( ) );
+			// i++;
+			// }
+			// Gdx.app.log( "player 1 state", "" + playerState );
 			// if(contact != null)
 			// System.out.println("contact friction: " + contact.getFriction( )
 			// + "feet friction: " + feet.getFriction( ) );
@@ -198,17 +221,25 @@ public class Player extends Entity {
 			// System.out.println( "feet friction: " + feet.getFriction( )
 			// + " feet position: " + feet.getBody( ).getPosition( ) );
 
-			 //System.out.println(isGrounded() + " jumpc " + jumpCounter);
+			// System.out.println(isGrounded() + " jumpc " + jumpCounter);
 		}
 		if ( kinematicTransform ) {
 			// setPlatformTransform( platformOffset );
 			kinematicTransform = false;
 		}
 		if ( isDead ) {
+
+		//	body.setLinearVelocity( Vector2.Zero );
+		//	body.setFixedRotation( false );
+		//	body.setAngularVelocity( 0.1f )
+		// TODO: death stuff
+
+
 			if ( playerState != PlayerState.Dead
 					&& playerState != PlayerState.GrabMode ) {
 				killPlayer( );
 			}
+
 			// TODO: death stuff
 			if ( controller != null ) {
 				if ( controllerListener.isGrabPressed( ) ) {
@@ -260,7 +291,7 @@ public class Player extends Entity {
 			handleJumpOffScrew( );
 		}
 		if ( body.getLinearVelocity( ).y < -MIN_VELOCITY * 4f
-				&& playerState != PlayerState.Screwing
+				&& platformBody == null && playerState != PlayerState.Screwing
 				&& playerState != PlayerState.JumpingOffScrew
 				&& playerState != PlayerState.HeadStand && !isDead ) {
 			playerState = PlayerState.Falling;
@@ -529,6 +560,10 @@ public class Player extends Entity {
 			body.applyLinearImpulse( new Vector2( 0.0f, JUMP_IMPULSE ),
 					body.getWorldCenter( ) );
 		}
+		
+		//TODO: add the jumping sprite here
+		//This will work... soon.
+		//sprite = new Sprite(characterAtlas, "jumping", jumpFrames, jumpSpeed, Animation.NORMAL);
 	}
 
 	/**
@@ -635,7 +670,6 @@ public class Player extends Entity {
 	 */
 	private void updateFootFriction( ) {
 
-
 		if ( isGrounded( ) ) {
 			if ( feet.getFriction( ) < PLAYER_FRICTION ) {
 				frictionCounter += FRICTION_INCREMENT;
@@ -647,13 +681,14 @@ public class Player extends Entity {
 						FEET_OFFSET_Y ) );
 				FixtureDef fd = new FixtureDef( );
 
-
 				fd.shape = ps;
 				fd.density = 1f;
 				fd.restitution = 0.001f;
 				fd.friction = frictionCounter;
 
-
+				if ( playerState == PlayerState.Screwing ) {
+					fd.isSensor = true;
+				}
 				fd.filter.categoryBits = Util.CATEGORY_PLAYER;
 				fd.filter.maskBits = Util.CATEGORY_EVERYTHING;
 				body.destroyFixture( feet );
@@ -679,6 +714,17 @@ public class Player extends Entity {
 	public void hitSolidObject( Body b ) {
 		if ( screwJumpTimeout == 0 ) {
 			platformBody = b;
+			if ( playerState == PlayerState.Falling ) {
+				playerState = PlayerState.Standing;
+			}
+		}
+		if ( playerState == PlayerState.HeadStand ) {
+			headStandTimeout = HEAD_JUMP_STEPS;
+			if ( otherPlayer != null ) {
+				if ( topPlayer && !world.isLocked( ) ) {
+					removePlayerToPlayer( );
+				}
+			} 
 		}
 	}
 
@@ -1101,7 +1147,8 @@ public class Player extends Entity {
 		if ( playerState == PlayerState.Falling
 				&& otherPlayer.getState( ) == PlayerState.Standing
 				&& !otherPlayer.isPlayerDead( ) && headStandTimeout == 0
-				&& otherPlayer.isHeadStandTimedOut( ) ) {
+				&& otherPlayer.isHeadStandTimedOut( ) 
+				&& platformBody == null ) {
 			// check if the top player is in-line with the other players head
 			// and check if the top player is actually above the other player
 			if ( ( this.getPositionPixel( ).y > otherPlayer.getPositionPixel( )
@@ -1183,6 +1230,7 @@ public class Player extends Entity {
 			} else {
 				if ( body.getLinearVelocity( ).y > 0 ) {
 					playerState = PlayerState.Jumping;
+					//TODO: animating sprite test
 				} else {
 					playerState = PlayerState.Falling;
 				}
@@ -1271,7 +1319,7 @@ public class Player extends Entity {
 				body.setLinearVelocity( 0.0f, body.getLinearVelocity( ).y );
 		}
 	}
-	
+
 	/**
 	 * Stops the player
 	 */
@@ -1601,7 +1649,6 @@ public class Player extends Entity {
 		}
 	}
 
-	
 	/**
 	 * This function creates a new controllerListener and sets the active
 	 * controller depending on how many players is being created

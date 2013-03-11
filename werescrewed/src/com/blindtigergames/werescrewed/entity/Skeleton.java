@@ -2,8 +2,6 @@ package com.blindtigergames.werescrewed.entity;
 
 import java.util.HashMap;
 
-import javax.swing.text.StyledEditorKit.ForegroundAction;
-
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;

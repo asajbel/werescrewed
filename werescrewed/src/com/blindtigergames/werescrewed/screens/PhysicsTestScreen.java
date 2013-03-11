@@ -242,7 +242,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 
 		PolySprite polySprite = new PolySprite( WereScrewedGame.manager.get(
 				WereScrewedGame.dirHandle.path( )
-						+ "/common/robot/alphabot_tile_interior.png",
+						+ "/common/robot/alphabot_texture_skin.png",
 				Texture.class ), verts );
 	}
 
@@ -251,9 +251,9 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 								// 0,
 		// 200 ), testTexture, world );
 		dynSkeleton = new SkeletonBuilder( world ).position( 0, 200 )
-				.texBackground( WereScrewedGame.manager.get(WereScrewedGame.dirHandle+"/common/robot/alphabot_tile_interior.png",Texture.class )).name( "dynamicSkeleton" )
+				.texBackground( WereScrewedGame.manager.get(WereScrewedGame.dirHandle+"/common/robot/alphabot_texture_skin.png",Texture.class )).name( "dynamicSkeleton" )
 				.vert( -100, -100 ).vert( 100, -100 ).vert( 100, 100 ).vert( -100,100 )
-				.texForeground( WereScrewedGame.manager.get(WereScrewedGame.dirHandle+"/common/robot/alphabot_tile_suit_main.png",Texture.class ))
+				.texForeground( WereScrewedGame.manager.get(WereScrewedGame.dirHandle+"/common/robot/alphabot_texture_tux.png",Texture.class ))
 				.fg( ).vert( 200,0 ).vert( 300,100 ).vert( 200,200 )
 				.build( );
 		// dynSkeleton.body.createFixture( , density )
