@@ -195,9 +195,9 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		// Otherwise input handler breaks
 
 		player1 = new PlayerBuilder( ).name( "player1" ).world( world )
-				.position( 70.0f, 50.0f ).buildPlayer( );
+				.position( 0.0f, 0.0f ).buildPlayer( );
 		player2 = new PlayerBuilder( ).name( "player2" ).world( world )
-				.position( 1.5f, 110.5f ).buildPlayer( );
+				.position( 0f, 0.5f ).buildPlayer( );
 
 		initCheckPoints( );
 		// Add screws
@@ -338,8 +338,13 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 	 * Initializes hazards. At the moment only makes spikes.
 	 */
 	private void initHazards( ) {
+<<<<<<< HEAD
 		spikes = spikesBuilder.position( -500.0f, -10.0f ).dimensions( 6, 1 )
 				.up( ).active().buildSpikes( );
+=======
+		//spikes = new Spikes( "Spikes1", new Vector2( -500.0f, -10.0f ), 1, 6,
+		//		world, true, false, true );
+>>>>>>> aaaee6a00107c4320005e440dd78a97c8eae137b
 	}
 
 	/**
@@ -552,7 +557,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 				.friction( 1f );
 
 		// 1000 - 1219 for perfect gears
-		Platform gear = builder.name( "gear" ).position( -1719, 320 )
+		Platform gear = builder.name( "gear" ).position( -1800, 320 )
 				.texture( null ).setScale( 3f ).type( "gearSmall" )
 				.buildComplexPlatform( );
 		skeleton.addPlatformRotatingCenterWithMot( gear, 1f );
@@ -699,7 +704,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		rootSkeleton.update( deltaTime );
 		progressManager.update( deltaTime );
 		testRope.update( deltaTime );
-		spikes.update( deltaTime );
+	//	spikes.update( deltaTime );
 		batch.setProjectionMatrix( cam.combined( ) );
 		batch.begin( );
 
@@ -708,7 +713,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		progressManager.draw( batch );
 		rootSkeleton.draw( batch );
 		testRope.draw( batch );
-		spikes.draw( batch );
+		//spikes.draw( batch );
 		player1.draw( batch );
 		player2.draw( batch );
 

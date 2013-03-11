@@ -143,10 +143,10 @@ public class ResurrectScreen implements com.badlogic.gdx.Screen {
 		Body body;
 		CircleShape screwShape;
 		FixtureDef screwFixture;
-		Entity bg_1_0 = new Entity( "bg_1_0", new Vector2( 1920, 512 ),
+		Entity bg_1_0 = new Entity( "bg_1_0", new Vector2( -264, 512 ),
 				WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-						+ "/common/parallax_layer1_0.png", Texture.class ),
-				null, false );
+						+ "/common/parallax_layer1_0.png",
+						Texture.class ), null, false );
 		Entity bg_1_1 = new Entity( "bg_1_0", new Vector2( 1920, 512 ),
 				WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 						+ "/common/parallax_layer1_1.png", Texture.class ),

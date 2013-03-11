@@ -5,6 +5,13 @@ import com.blindtigergames.werescrewed.util.Metrics;
 
 public class MetricsStartTimeAction implements IAction {
 
+	/**
+	 * Event Trigger that adds the name of the section and start time to the
+	 * list of section names and times in Metrics.
+	 * 
+	 * @param name
+	 *            The name of the section.
+	 */
 	public MetricsStartTimeAction( String name ) {
 		if ( Metrics.activated ) {
 			Metrics.addPlayerBeginTime( ( System.currentTimeMillis( ) / 1000 ) % 60 );

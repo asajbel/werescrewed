@@ -20,12 +20,12 @@ public class ComplexPlatform extends Platform {
 	// String object would be like "bottle" then we will load that particular
 	// body (precompiled)
 	public ComplexPlatform( String n, Vector2 pos, Texture tex, float scale,
-			World world, EntityDef def, float anchRadius) {
-		super( n, def, world, pos, 0.0f, new Vector2( 1f, 1f ), anchRadius );
+			World world, EntityDef def) {
+		super( n, def, world, pos, 0.0f, new Vector2( 1f, 1f ) );
 		platType = PlatformType.COMPLEX;
 	}
 	public ComplexPlatform( String n, Vector2 pos, Texture tex, float scale,
 			World world, String definitionName , float anchRadius) {
-		this( n, pos, tex, scale, world, EntityDef.getDefinition( definitionName ), anchRadius);
+		this( n, pos, tex, scale, world, EntityDef.getDefinition( definitionName ));
 	}
 }

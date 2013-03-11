@@ -14,6 +14,8 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.World;
 import com.blindtigergames.werescrewed.WereScrewedGame;
+import com.blindtigergames.werescrewed.camera.Anchor;
+import com.blindtigergames.werescrewed.camera.AnchorList;
 import com.blindtigergames.werescrewed.camera.Camera;
 import com.blindtigergames.werescrewed.checkpoints.CheckPoint;
 import com.blindtigergames.werescrewed.checkpoints.ProgressManager;
@@ -88,6 +90,9 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 	private float endgameCounter;
 	private Music inceptionhorn;
 
+	private Anchor testAnchor;
+	private static final String LEVEL_NAME = "Debug_Playtest";
+
 	public DebugPlayTestScreen( ) {
 
 		batch = new SpriteBatch( );
@@ -115,9 +120,9 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 
 		// Initialize players
 		player1 = new PlayerBuilder( ).name( "player1" ).world( world )
-				.position( 115 * TILE, 50 * TILE ).buildPlayer( );
+				.position( 1 * TILE, 1 * TILE ).buildPlayer( );
 		player2 = new PlayerBuilder( ).name( "player2" ).world( world )
-				.position( 115 * TILE, 50 * TILE ).buildPlayer( );
+				.position( 1 * TILE, 1 * TILE ).buildPlayer( );
 
 		// END: 175f * TILE, 96f * TILE
 		// START :: 1f * TILE, 1f * TILE
@@ -131,6 +136,16 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		floor6( );
 		floor7( );
 		initCheckPoints( );
+
+		// Create anchor with start position and buffer as parameters
+		testAnchor = new Anchor( new Vector2( 10000, 10 ), new Vector2( 10000,
+				10000 ) );
+		// Add to the universally accessible anchor list
+		AnchorList.getInstance( ).addAnchor( testAnchor );
+		// Set timer in steps
+		testAnchor.setTimer( 200 );
+		// Activate it
+		testAnchor.activate( );
 
 		rootSkeleton.addSkeleton( skeleton );
 		debugRenderer = new SBox2DDebugRenderer( Util.BOX_TO_PIXEL );
@@ -360,9 +375,26 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 
 		SkeletonBuilder skeleBuilder = new SkeletonBuilder( world );
 		// skeleton at shoulder joint
-		Skeleton upperArmSkeleton = skeleBuilder.position( 1000, 800 )
-				.texture( testTexture ).vert( -100, -100 ).vert( 100, -100 )
-				.vert( 0, 100 ).dynamic( ).build( );
+		Skeleton upperArmSkeleton = skeleBuilder
+				.position( 1000, 800 )
+				.texBackground(
+						WereScrewedGame.manager.get( WereScrewedGame.dirHandle
+								+ "/common/robot/alphabot_texture_skin.png",
+								Texture.class ) ).vert( -100, -100 )
+				.vert( -100, 100 ).vert( 100, 100 ).vert( 100, -100 ).dynamic( )
+				.build( );
+
+		// dynSkeleton = new SkeletonBuilder( world ).position( 0, 200 )
+		// .texBackground(
+		// WereScrewedGame.manager.get(WereScrewedGame.dirHandle+"/common/robot/alphabot_texture_skin.png",Texture.class
+		// )).name( "dynamicSkeleton" )
+		// .vert( -100, -100 ).vert( 100, -100 ).vert( 100, 100 ).vert( -100,100
+		// )
+		// .texForeground(
+		// WereScrewedGame.manager.get(WereScrewedGame.dirHandle+"/common/robot/alphabot_texture_tux.png",Texture.class
+		// ))
+		// .fg( ).vert( 200,0 ).vert( 300,100 ).vert( 200,200 )
+		// .build( );
 		// new Skeleton( "dynamicSkeleton",
 		// new Vector2( 1000, 800 ), testTexture, world );
 
@@ -564,8 +596,8 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 
 		// puzzle that controls the elevator of the room and the gate
 		PuzzleScrew elevatorscrew1 = new PuzzleScrew( "elevatorControlinside",
-				rotatingRoom.getPositionPixel( ).add( 64, -64 ), 500, rotatingRoom, world, 0,
-				false );
+				rotatingRoom.getPositionPixel( ).add( 64, -64 ), 500,
+				rotatingRoom, world, 0, false );
 		// add the entities and movers
 		elevatorscrew1.puzzleManager.addEntity( rotatingRoom );
 		elevatorscrew1.puzzleManager.addMover( new PuzzleRotateTweenMover( 2f,
@@ -594,7 +626,8 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 
 		StructureScrew s1 = new ScrewBuilder( )
 				.position(
-						plat.getPositionPixel( ).sub( plat.getPixelWidth( ) /2.0f,
+						plat.getPositionPixel( ).sub(
+								plat.getPixelWidth( ) / 2.0f,
 								plat.getPixelHeight( ) / 2 ) ).entity( plat )
 				.skeleton( rotatingRoom ).world( world ).buildStructureScrew( );
 		s1.addStructureJoint( rotatingRoom );
@@ -602,7 +635,8 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 
 		StructureScrew s2 = new ScrewBuilder( )
 				.position(
-						plat.getPositionPixel( ).add( -plat.getPixelWidth( ) /2.0f,
+						plat.getPositionPixel( ).add(
+								-plat.getPixelWidth( ) / 2.0f,
 								plat.getPixelHeight( ) / 2 ) ).entity( plat )
 				.world( world ).buildStructureScrew( );
 		s2.addStructureJoint( rotatingRoom );
@@ -954,7 +988,6 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 				world );
 		bossBolt.addStructureJoint( skel9 );
 		plat.addScrew( bossBolt );
-
 		// specialPlat = platBuilder.position( 175f * TILE, 84 * TILE ).name(
 		// "plat12" )
 		// .dimensions( 6, 1 ).texture( testTexture ).kinematic( )
@@ -1036,11 +1069,6 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		if ( Gdx.input.isKeyPressed( Keys.NUM_0 ) ) {
 			if ( debugTest ) {
 				debug = !debug;
-				// if(specialPlat.getCurrentState( ) == RobotState.IDLE)
-				// specialPlat.setCurrentMover( RobotState.DOCILE );
-				// else
-				// specialPlat.setCurrentMover( RobotState.IDLE );
-				cam.turnOffZoom( );
 			}
 			debugTest = false;
 		} else
@@ -1083,7 +1111,7 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 			cam.camera.zoom += 0.015f;
 			if ( endgameCounter > 10f ) {
 				if ( Metrics.activated ) {
-					Metrics.printMetrics( );
+					Metrics.printMetrics( LEVEL_NAME );
 				}
 				Gdx.app.exit( );
 				// if we want want the game to go back to the main menu, comment

@@ -322,9 +322,6 @@ public class MyContactListener implements ContactListener {
 										contact.setEnabled( false );
 									}
 								}
-								if ( player.isTopPlayer( ) ) {
-									contact.setEnabled( false );
-								}
 							}
 							break;
 						case PLAYER:
@@ -403,6 +400,9 @@ public class MyContactListener implements ContactListener {
 									if ( platformPos.y > playerPos.y ) {
 										contact.setEnabled( false );
 									}
+								} 
+								if ( player.isTopPlayer( ) ) {
+									contact.setEnabled( false );
 								}
 							}
 							break;
