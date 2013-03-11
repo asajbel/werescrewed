@@ -23,6 +23,7 @@
 /common/spikes.png
 /common/tileset/TilesetTest.png
 /common/blind_tiger_logo_720.png
+/common/title_background.png
 /particles/particle.png
 /common/robot/alphabot_tile_interior.png
 /common/robot/alphabot_tile_suit_main.png

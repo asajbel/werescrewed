@@ -15,6 +15,7 @@ class OptionsScreen implements com.badlogic.gdx.Screen{
 
 	private SpriteBatch batch = null;
 	private BitmapFont font = null;
+	private BitmapFont fancyFont = null;
 	private Texture logo = null;
 	private int lineHeight = 0;
 	private OrthographicCamera camera = null;
@@ -36,18 +37,19 @@ class OptionsScreen implements com.badlogic.gdx.Screen{
 	public OptionsScreen(){
 		batch = new SpriteBatch( );
 		font = new BitmapFont( );
+		fancyFont = WereScrewedGame.manager.getFont( "ornatique" );
 		logo =  WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-				 + "/common/blind_tiger_logo_720.png", Texture.class );
+				 + "/common/title_background.png", Texture.class );
 		lineHeight = Math.round( 2.5f * font.getCapHeight( ) );
 		//the following are placeholder displays. Add actual option buttons here later
-		screenLabel = new Label("OPTIONS", font);
-		controls = new Label( "Controls", font );
-		music = new Label("Music", font);
-		sound = new Label("Sound",font);
-		voice = new Label("Voice",font);
-		subtitles = new Label("Subtitles",font);
+		screenLabel = new Label("OPTIONS", fancyFont);
+		controls = new Label( "Controls", fancyFont );
+		music = new Label("Music", fancyFont);
+		sound = new Label("Sound", fancyFont);
+		voice = new Label("Voice", fancyFont);
+		subtitles = new Label("Subtitles", fancyFont);
 		
-		backButton = new Button( "Back", font, new ScreenSwitchHandler(
+		backButton = new Button( "Back", fancyFont, new ScreenSwitchHandler(
 				ScreenType.MAIN_MENU ) );
 	}
 
@@ -96,7 +98,7 @@ class OptionsScreen implements com.badlogic.gdx.Screen{
 		int centerX = width / 2;
 		int centerY = height / 2;
 		screenLabel.setX( centerX - screenLabel.getWidth()/2);
-		screenLabel.setY( centerY + 7 * lineHeight);
+		screenLabel.setY( centerY + 6 * lineHeight);
 		controls.setX( centerX - controls.getWidth( )/2);
 		controls.setY( centerY + 2 * lineHeight  );
 		music.setX( centerX - music.getWidth( )/2);
