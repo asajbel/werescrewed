@@ -1,5 +1,6 @@
 package com.blindtigergames.werescrewed.entity.mover;
 
+import com.badlogic.gdx.utils.Array;
 
 public enum MoverType {
 		ROCKING("rocking"),
@@ -21,8 +22,16 @@ public enum MoverType {
 	    }
 	    
 	    public static MoverType fromString(String s){
+	    	//We only want the first word. The rest could be parameters.
+	    	Array<String> tokens = new Array<String>(s.split( "\\w+" ));
+    		String front;
+	    	if (tokens.size > 0){
+	    		front = tokens.get(0);
+	    	} else {
+	    		front = s;
+	    	}
 	    	for (MoverType tag : MoverType.values()) {
-	    		  if (tag.text.equals( s ))
+	    		  if (tag.text.equals( front ))
 	    			  return tag;
 	    	}
 	    	return null;

@@ -29,12 +29,6 @@ public class RotateMotorMover implements IMover {
 		//It shouldn't
 
 	}
-
-	@Override
-	public void move( float deltaTime, Body body, SteeringOutput steering ) {
-		// TODO Auto-generated method stub
-
-	}
 	
 	@Override
 	public void runPuzzleMovement( PuzzleScrew screw, float screwVal, Platform p ) {

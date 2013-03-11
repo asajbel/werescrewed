@@ -3,6 +3,8 @@ package com.blindtigergames.werescrewed.entity;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.blindtigergames.werescrewed.WereScrewedGame;
@@ -29,19 +31,62 @@ public class Sprite extends com.badlogic.gdx.graphics.g2d.Sprite implements I_Dr
 	Animation animation;
 	Texture spriteSheet;
 	TextureRegion[ ] spriteSheetFrames;
+	
+	//New variables for texture atlas stuff
+	TextureAtlas spriteAtlas;
+	AtlasRegion[] spriteAtlasFrames;
+	AtlasRegion currentAtlasFrame;
 	TextureRegion currentFrame;
+	
 	float stateTime;
 
+	/**
+	 * Create an animating sprite using a texture atlas.
+	 * 
+	 * @author Nick Patti
+	 * 
+	 * @param animName
+	 * 			The name of the animation that you would like to use,
+	 * 			as seen in the texture pack file
+	 * 
+	 * @param f
+	 * 			The number of frames in the sprite sheet
+	 * 
+	 * @param fr
+	 * 			The frame rate of the animation
+	 * 
+	 * @param loopType
+	 *            The loop type specified by a constant provided by libGDX
+	 */
+	public Sprite(TextureAtlas atlas, String animName, int f, float fr, int loopType){
+		
+		spriteAtlas = atlas;
+		
+		//the frames for animation
+		spriteAtlasFrames = new AtlasRegion[f];
+		
+		//fill the frames with the appropriate texture regions
+		for(int i = 0; i < f; ++i){
+			
+			//find the correct texture region using name and index
+			spriteAtlasFrames[i] = spriteAtlas.findRegion(animName, i+1);
+		}
+		
+		//fill in the animation with the frames
+		animation = new Animation(fr, spriteAtlasFrames);
+		animation.setPlayMode(loopType);
+	}
+	
 	/**
 	 * Create an animating sprite using a sprite sheet. Must know the number of
 	 * rows and columns of the sprite sheet in order to construct properly.
 	 * 
+	 * @deprecated
+	 * 
 	 * @author Nick Patti
 	 * 
 	 * @param f
-	 *            The number of frames in the sprite sheet. TODO: What to do if
-	 *            you have an odd number of sprites in a sheet, but more than
-	 *            one row?
+	 *            The number of frames in the sprite sheet.
 	 * @param r
 	 *            The number of rows in the sprite sheet. Default value is 1.
 	 * @param c
@@ -91,6 +136,8 @@ public class Sprite extends com.badlogic.gdx.graphics.g2d.Sprite implements I_Dr
 	 * Create an animating sprite using a Texture of a sprite sheet. May or may
 	 * not be here in a later build, since it's extremely similar to the sprite
 	 * sheet constructor
+	 * 
+	 * @deprecated
 	 * 
 	 * @author Nick Patti
 	 * 
@@ -162,43 +209,5 @@ public class Sprite extends com.badlogic.gdx.graphics.g2d.Sprite implements I_Dr
 		this.setRegion( currentFrame );
 		super.draw( batch );
 	}
-	/**
-	 * reset
-	 * A method which resets the animation to the first frame. Useful for
-	 * swapping back and forth between different animated sprites that do not
-	 * loop without having to create a new one.
-	 * 
-	 * @author Nick Patti
-	 * 
-	 * @return void
-	 * 
-	 * TODO: currently does not do anything. fix this method
-	 */
-	public void reset( ) {
-		// TODO: find a way to have stateTime count from zero and up again.
-		Gdx.app.log( "AnimatedSprite.reset()", "reset called" );
-		stateTime = 0;
-	}
 
-	/**
-	 * toString A handy util method which displays the name of the sprite that
-	 * is animating
-	 * 
-	 * public String toString(){ return animation.toString(); }
-	 */
 }
-
-/**** Below is code that is not completed yet *****/
-/**
- * TODO: Finish this constructor! A constructor which mimics the animation
- * class. TextureRegions, such as sprite sheet's n' stuff, go in here.
- * 
- * @param frameDuration
- * @param keyFrames
- */
-
-/**           public AnimatedSprite(float frameDuration, TextureRegion
- *            keyFrames){ this.animation = new Animation(frameDuration,
- *            keyFrames); }
- * 
- */

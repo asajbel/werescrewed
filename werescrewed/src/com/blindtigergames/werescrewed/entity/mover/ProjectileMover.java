@@ -49,11 +49,6 @@ public class ProjectileMover implements IMover {
 	public void move( float deltaTime, Body body ) {
 
 	}
-	
-	@Override
-	public void move( float deltaTime, Body body, SteeringOutput steering ) {
-		move( deltaTime, body );
-	}
 
 	@Override
 	public void runPuzzleMovement( PuzzleScrew screw, float screwVal, Platform p ) {

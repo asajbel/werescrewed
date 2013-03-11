@@ -1,7 +1,5 @@
 package com.blindtigergames.werescrewed.entity.builders;
 
-import java.util.HashMap;
-
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.World;
@@ -9,6 +7,7 @@ import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.platforms.Platform;
 import com.blindtigergames.werescrewed.platforms.PlatformType;
 import com.blindtigergames.werescrewed.platforms.TiledPlatform;
+import com.blindtigergames.werescrewed.util.ArrayHash;
 
 /**
  * PlatformBuilder should make building platforms a lot simpler and clearer
@@ -190,7 +189,7 @@ public class PlatformBuilder extends GenericEntityBuilder<PlatformBuilder> {
 		this.scale = 1.0f;
 		this.density = 1.0f;
 		this.friction = 1.0f;
-		this.restitution = 0.1f;
+		this.restitution = 0.0f;
 		this.gravScale = 0.1f;
 		this.flipHorizonal = false;
 		this.flipVertical = false;
@@ -201,6 +200,13 @@ public class PlatformBuilder extends GenericEntityBuilder<PlatformBuilder> {
 		this.bodyType = BodyType.KinematicBody;
 		this.tileSet = "TilesetTest";
 		return this;
+	}
+	
+	public PlatformBuilder dynamic( boolean d ) {
+		if (d){
+			return this.dynamic( );
+		}
+		return this.kinematic( );
 	}
 	
 	public PlatformBuilder dynamic(){
@@ -219,7 +225,7 @@ public class PlatformBuilder extends GenericEntityBuilder<PlatformBuilder> {
 	}
 	
 	@Override
-	public PlatformBuilder properties(HashMap<String,String> props){
+	public PlatformBuilder properties(ArrayHash props){
 		super.properties( props );
 		
 		return this;
@@ -238,12 +244,15 @@ public class PlatformBuilder extends GenericEntityBuilder<PlatformBuilder> {
 				                              this.isOneSided, 
 				                              this.moveable, 
 				                              this.world);
+
 		tp.body.setType( bodyType );
 		tp.setDensity( this.density );
 		tp.setFriction( this.friction );
 		tp.setRestitution( this.restitution );
 		tp.setGravScale( this.gravScale );
 		return tp;
+		
+		
 	}
 	/**
 	 * builds complex platform from available data.

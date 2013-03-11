@@ -3,8 +3,10 @@ package com.blindtigergames.werescrewed.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.gui.Button;
 import com.blindtigergames.werescrewed.gui.Label;
 
@@ -12,8 +14,10 @@ public class CharacterSelectScreen implements com.badlogic.gdx.Screen {
 	private SpriteBatch batch = null;
 	private OrthographicCamera camera = null;
 	private BitmapFont font = null;
+	private BitmapFont fancyFont = null;
+	private Texture logo = null;
 	private int lineHeight = 0;
-	private Label placeHolder = null;
+	private Label screenLabel = null;
 	private Button backButton = null;
 	
 	/*
@@ -23,10 +27,13 @@ public class CharacterSelectScreen implements com.badlogic.gdx.Screen {
 	public CharacterSelectScreen(){
 		batch = new SpriteBatch( );
 		font = new BitmapFont( );
+		fancyFont = WereScrewedGame.manager.getFont( "ornatique" );
+		logo =  WereScrewedGame.manager.get( WereScrewedGame.dirHandle
+				 + "/common/title_background.png", Texture.class );
 		lineHeight = Math.round( 2.5f * font.getCapHeight( ) );
-		placeHolder = new Label("Under Contruction", font);
-		backButton = new Button( "Back", font, new ScreenSwitchHandler(
-				ScreenType.MAIN_MENU ) );
+		screenLabel = new Label("Character Select", fancyFont);
+		backButton = new Button( "Back", fancyFont, new ScreenSwitchHandler(
+				ScreenType.STORY ) );
 	}
 	
 	@Override
@@ -55,7 +62,8 @@ public class CharacterSelectScreen implements com.badlogic.gdx.Screen {
 		Gdx.gl.glClear( GL10.GL_COLOR_BUFFER_BIT );
 		// TODO Auto-generated method stub
 		batch.begin( );
-		placeHolder.draw( batch );
+		batch.draw(logo, 0, 0);
+		screenLabel.draw( batch );
 		backButton.draw( batch, camera );
 		batch.end( );
 		
@@ -69,8 +77,8 @@ public class CharacterSelectScreen implements com.badlogic.gdx.Screen {
 		batch.setProjectionMatrix( camera.combined );
 		int centerX = width / 2;
 		int centerY = height / 2;
-		placeHolder.setX( centerX -placeHolder.getWidth( )/2);
-		placeHolder.setY( centerY + 3 * lineHeight);
+		screenLabel.setX( centerX - screenLabel.getWidth( )/2);
+		screenLabel.setY( centerY + 6 * lineHeight);
 		backButton.setX( centerX - backButton.getWidth( ) / 2 );
 		backButton.setY( 20 + backButton.getHeight( ) );
 		

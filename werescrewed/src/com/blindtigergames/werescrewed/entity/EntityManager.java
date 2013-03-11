@@ -6,7 +6,6 @@ import java.util.Map;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.blindtigergames.werescrewed.skeleton.Skeleton;
 
 /**
  * Stores a list of entities and skeletons for purposes of updating and deleting

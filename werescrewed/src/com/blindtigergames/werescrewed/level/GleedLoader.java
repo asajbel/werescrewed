@@ -14,6 +14,7 @@ import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityCategory;
 import com.blindtigergames.werescrewed.entity.EntityDef;
 import com.blindtigergames.werescrewed.entity.RobotState;
+import com.blindtigergames.werescrewed.entity.Skeleton;
 import com.blindtigergames.werescrewed.entity.builders.EntityBuilder;
 import com.blindtigergames.werescrewed.entity.builders.MoverBuilder;
 import com.blindtigergames.werescrewed.entity.builders.PlatformBuilder;
@@ -24,9 +25,11 @@ import com.blindtigergames.werescrewed.entity.mover.TimelineTweenMover;
 import com.blindtigergames.werescrewed.entity.tween.PathBuilder;
 import com.blindtigergames.werescrewed.platforms.Platform;
 import com.blindtigergames.werescrewed.platforms.TiledPlatform;
+import com.blindtigergames.werescrewed.screws.PuzzleScrew;
 import com.blindtigergames.werescrewed.screws.Screw;
 import com.blindtigergames.werescrewed.screws.ScrewType;
-import com.blindtigergames.werescrewed.skeleton.Skeleton;
+import com.blindtigergames.werescrewed.util.ArrayHash;
+
 
 public class GleedLoader {	
 	protected XmlReader reader;
@@ -35,10 +38,16 @@ public class GleedLoader {
 	protected HashMap<String,Entity> entities;
 	protected HashMap<String,TimelineTweenMover> movers;
 	protected HashMap<String,Skeleton> skeletons;
+	protected HashMap<String,PuzzleScrew> puzzleScrews;
 	protected int spawnPoints;
 	
 	protected static final float GLEED_TO_GDX_X = 1.0f;
 	protected static final float GLEED_TO_GDX_Y = -1.0f;
+	protected static final String screwTargetTag = "target";
+	public static final String startTime = "starttime";
+	public static final String endTime = "endtime";
+	protected static final String puzzleTag = "puzzle"; 
+	protected static final String dynamicTag = "dynamic";
 	
 	public GleedLoader(){
 		reader = new XmlReader();
@@ -49,13 +58,11 @@ public class GleedLoader {
 		entities = new HashMap<String, Entity>();
 		movers = new HashMap<String, TimelineTweenMover>();
 		skeletons = new HashMap<String, Skeleton>();
+		puzzleScrews = new HashMap<String, PuzzleScrew>();
 		level = new Level();
 		spawnPoints = 0;
 		
 	}
-	
-	
-	
 	
 	public Level load(String filename){
 		skeletons.put( "root", level.root );
@@ -71,11 +78,14 @@ public class GleedLoader {
 				Gdx.app.log("GleedLoader", "Entities Found:"+elements.size);
 				Item item;
 				//Sorts items into entities, movers, skeletons, etc.
+				
+				//Currently (3-5-2013) none of these tags are in the xml
+				// all are just considered as GleedTypeTag.ENTITY
 				for (Element e: elements) {
 					item = new Item(e);
 					//Make sure we have a valid tag. If not, 
-					if (item.tag != null){
-						items.get( item.tag ).put(item.name, item );
+					if (item.gleedTag != null){
+						items.get( item.gleedTag ).put(item.name, item );
 					} else {
 						items.get(GleedTypeTag.ENTITY).put(item.name, item );
 					}
@@ -118,8 +128,7 @@ public class GleedLoader {
 		return level.root;
 	}
 	
-	public static final String startTime = "starttime";
-	public static final String endTime = "endtime";
+
 	
 	protected TimelineTweenMover loadMover (Item item, Entity entity){
 		item.checkLocked();
@@ -206,13 +215,27 @@ public class GleedLoader {
 		return null;
 	}
 
+
+	/**
+	 * This funtion loads all sorts of objects after reading in the Item item (defined by the xml file)
+	 * under GleedTypeTag.ENTITY
+	 * @param item - Item
+	 * @return Entity
+	 */
 	protected Entity loadEntity(Item item){
 		Entity out = null;
 		boolean isPlatform = false;
 		if (item.hasDefTag( )){
+			//First check if the item's definition is a type of screw
 			if (ScrewType.fromString( item.defName ) != null){
 				loadScrew(item);
 			} else {
+				
+				/**
+				 * check if it has a name, then get its EntityDef (if not loaded, it loads the xml)
+				 * then check if its category is a tiled/complex plat
+				 */
+				
 				if (item.isDefined( )){
 					if (item.getDefinition().getCategory( ) == EntityCategory.TILED_PLATFORM ){
 						out = loadTiledPlatform(item);
@@ -253,9 +276,46 @@ public class GleedLoader {
 					}
 				}
 			}
+			//Attach to puzzle manager
+			if (item.props.containsKey( puzzleTag )){
+				for (String puzzleString : item.props.getAll( puzzleTag )){
+					Array<String> tokens = new Array<String>(puzzleString.split( "\\s+" ));
+					String puzzleName = "";
+					moverName = "";
+					String token;
+					for (int t = 0; t < tokens.size; t++){
+						token = tokens.get( t );
+						if (t == 0){
+							puzzleName = token;
+						} else {
+							moverName = moverName.concat( token );
+						}
+					}
+					if (!puzzleName.equals( item.name )){
+						PuzzleScrew puzzle = loadPuzzle(puzzleName);
+						if (puzzle != null){
+							mover = null;
+							if (MoverType.fromString( moverName ) != null){
+								mover = new MoverBuilder()
+								.fromString(moverName)
+								.build( );
+							} else if (isPlatform){
+								mover = loadMover(moverName, out);
+							}
+							if (mover != null){
+								Gdx.app.log( "GleedLoader", "Attaching "+item.name+" to puzzle screw "+puzzle.name+" with mover string ["+moverName+"]" );
+								puzzle.puzzleManager.addEntity( out );
+								puzzle.puzzleManager.addMover( mover );
+							}
+						}
+					}
+				}
+			}
 		}
 		return out;
 	}
+	
+	
 	
 	protected TiledPlatform loadTiledPlatform(Item item){
 		TiledPlatform out = null;
@@ -264,6 +324,14 @@ public class GleedLoader {
 		Vector2 sca = new Vector2();
 		pos.x = item.pos.x + (item.sca.x/2.0f * GLEED_TO_GDX_X);
 		pos.y = item.pos.y + (item.sca.y/2.0f * GLEED_TO_GDX_Y);
+		
+		boolean isDynamic = false;
+		if (item.props.containsKey( "dynamic" ))
+			isDynamic = true;
+		
+		//Its as simple as this to get custom values
+		// either it will give me the right string or it if doesn't exist: null
+		//System.out.println( "custom props: " + item.props.get( "definition" ) );
 		
 		float tileX = item.getDefinition().getTexture( ).getWidth( )/4.0f;
 		float tileY = item.getDefinition().getTexture( ).getWidth( )/4.0f;
@@ -277,14 +345,15 @@ public class GleedLoader {
 		.dimensions( sca )
 		.texture( item.getDefinition().getTexture() )
 		.solid( true )
+		.dynamic( isDynamic )
 		.buildTilePlatform( );
 
 		Skeleton parent = loadSkeleton(item.skeleton);
-		if (item.props.containsKey( "dynamic" )){
-			Gdx.app.log("GleedLoader", "Dynamic platform loaded:"+out.name);
+		if (isDynamic){
+			Gdx.app.log("GleedLoader", "Tiled Dynamic platform loaded:"+out.name);
 			parent.addDynamicPlatform( out );
 		} else {
-			Gdx.app.log("GleedLoader", "Kinematic platform loaded:"+out.name);
+			Gdx.app.log("GleedLoader", "Tiled Kinematic platform loaded:"+out.name);
 			parent.addKinematicPlatform( out );
 		}
 		return out;
@@ -299,7 +368,7 @@ public class GleedLoader {
 		.solid( true )
 		.buildComplexPlatform( );
 		
-		Gdx.app.log("GleedLoader", "Platform loaded:"+item.name);
+		Gdx.app.log("GleedLoader", "Complex Platform loaded:"+item.name);
 		Skeleton parent = loadSkeleton(item.skeleton);
 		if (item.props.containsKey( "dynamic" )){
 			parent.addDynamicPlatform( out );
@@ -310,7 +379,7 @@ public class GleedLoader {
 	}
 
 	protected void loadPlayerSpawnPoint(Item item){
-		level.players.get(spawnPoints).setPixelPosition( item.pos ); //Kevin: Who commented this out?
+		level.player1.setPixelPosition( item.pos ); 
 		Gdx.app.log("GleedLoader", "Player Spawnpoint:"+item.pos.toString( ));
 	}
 	
@@ -322,11 +391,11 @@ public class GleedLoader {
 		.position(item.pos)
 		.properties(item.props)
 		.build();
-		Gdx.app.log("GleedLoader", "Entity loaded:"+item.name);
+		Gdx.app.log("GleedLoader", "General Entity loaded:"+item.name);
 		return out;
 	}
 	
-	protected static final String screwTargetTag = "target";
+
 	public Screw loadScrew(Item item){
 		;
 		ScrewType sType = ScrewType.fromString( item.defName );
@@ -343,47 +412,43 @@ public class GleedLoader {
 		} else {
 			builder.entity( parent );
 		}
-		Screw out = builder.buildScrew();
-		if (out != null){
-			switch (sType){
-			case SCREW_STRIPPED:
-				Gdx.app.log("GleedLoader", "Building stripped screw "+ item.name + " at " + item.pos.toString( ));
-				break;
-			case SCREW_STRUCTURAL:
-				Gdx.app.log("GleedLoader", "Building structural screw "+ item.name + " at " + item.pos.toString( ));
-				break;
+		Screw out = null;
+		switch (sType){
 			case SCREW_PUZZLE:
 				Gdx.app.log("GleedLoader", "Building puzzle screw "+ item.name + " at " + item.pos.toString( ));
-				break;
-			case SCREW_BOSS:
-				Gdx.app.log("GleedLoader", "Building boss screw "+ item.name + " at " + item.pos.toString( ));
+				PuzzleScrew p = builder.buildPuzzleScrew( );
+				puzzleScrews.put(item.name, p);
+				out = p;
 				break;
 			default:
+				out = builder.buildScrew();
 				break;
-			}
-			/*
-			parent.addScrew( out );
-			parent.addScrewForDraw( out );
-			*/
 		}
 		return out;
 	}
 
-	public Level getLevel(){return level;}
-	
-	protected static EntityDef getDefinition(Element item){
-		HashMap<String,String> props = getCustomProperties(item);
-		return EntityDef.getDefinition(props.get( defTag ));
+	public PuzzleScrew loadPuzzle(String name){
+		if (puzzleScrews.containsKey( name )){
+			return puzzleScrews.get( name );
+		} else if (items.get( GleedTypeTag.ENTITY ).containsKey( name )){
+			loadEntity( name ); //In loading the entity, we should get the puzzle screw loaded.
+			if (puzzleScrews.containsKey( name )){
+				return puzzleScrews.get( name );
+			}
+		}
+		return null;
 	}
 	
-	protected static HashMap<String,String> getCustomProperties(Element e){
-		HashMap<String,String> out = new HashMap<String,String>();
+	public Level getLevel(){return level;}
+	
+	protected static ArrayHash getCustomProperties(Element e){
+		ArrayHash out = new ArrayHash();
 		Array<Element> properties = e.getChildByName("CustomProperties").getChildrenByName("Property");
 		String name; String value;
 		for (Element prop: properties){
 			name = prop.getAttribute("Name").toLowerCase( );
 			value = prop.get("string", "<no value>");
-			out.put(name,value);
+			out.add( name, value );
 		}
 		return out;
 	}
@@ -405,8 +470,8 @@ public class GleedLoader {
 			name = getName(e);
 			gleedType = getGleedType(e);
 			props = getCustomProperties(e);
-			if (props.containsKey( EntityDef.tag )){
-				defName = props.get( EntityDef.tag );
+			if (props.containsKey( "definition" )){ //EntityDef.tag )){
+				defName = props.get( "definition" );  //EntityDef.tag );
 			}
 			else {
 				defName = "";
@@ -415,17 +480,25 @@ public class GleedLoader {
 			if (props.containsKey( "skeleton" ))
 				skeleton = props.get( "skeleton" );
 			else skeleton = "root";
-			tag = GleedTypeTag.fromString( props.get( GleedTypeTag.tag ) );
+			gleedTag = GleedTypeTag.fromString( props.get( "type" ) ); //GleedTypeTag.tag ) );
 			pos = getPosition(e);
 			sca = getScale(e);
 			tex = getTexture(e);
 			locked = false;
 		}
 		public Element element;
-		public String name, gleedType, defName;
+		
+		public String name;
+		//In the xml, gleedType refers to type. for example: CircleItem, RectangleItem
+		public String gleedType;
+		
+		// defName refers the string under the name under the CustomProperties
+		// <Property Name="Definition"...
+		// 	 <string>tiledPlatform</string> <======= that is the defName
+		public String defName;
 		private EntityDef def;
-		public GleedTypeTag tag;
-		public HashMap<String,String> props;
+		public GleedTypeTag gleedTag;
+		public ArrayHash props;
 		public Vector2 pos;
 		public Vector2 origin;
 		public Vector2 sca;
@@ -440,11 +513,23 @@ public class GleedLoader {
 			}
 			locked = true;
 		}
+		
+		/**
+		 * getDefinition loads the correct XML file with the same time (complexTest)
+		 * complexText loads the bottle, gearSmall would load the gear
+		 * Remember to set them to kinematic or they just fall
+		 * 
+		 * @return EntityDef
+		 */
 		public EntityDef getDefinition(){
 			if (def == null)
 				def = EntityDef.getDefinition( defName );
 			return def;
 		}
+		/**
+		 * checks if xml has a name under Definition
+		 * @return boolean
+		 */
 		public boolean hasDefTag(){ return !defName.equals( "" );}
 		public boolean isDefined(){ return getDefinition() != null;}
 	}

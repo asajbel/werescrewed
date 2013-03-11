@@ -1,12 +1,14 @@
 package com.blindtigergames.werescrewed.screws;
 
+import java.util.ArrayList;
+
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
+import com.badlogic.gdx.physics.box2d.joints.RevoluteJoint;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityType;
 import com.blindtigergames.werescrewed.util.Util;
@@ -22,26 +24,19 @@ import com.blindtigergames.werescrewed.util.Util;
 
 public class StrippedScrew extends Screw {
 
-	public StrippedScrew( String name, World world, Vector2 pos, Entity entity ) {
+	public StrippedScrew( String name, Vector2 pos, Entity entity, World world) {
 		super( name, pos, null );
 		this.world = world;
 		screwType = ScrewType.SCREW_STRIPPED;
 		entityType = EntityType.SCREW;
+		extraJoints = new ArrayList< RevoluteJoint >( );
 
 		sprite.setColor( 255f/255f, 112f/255f, 52f/255f, 1.0f ); //rust color pulled off a hexdecimal chart
 		sprite.setOrigin( 0.0f, 0.0f );
 
 		constructBody( pos );
-		connectScrewToEntity( entity );
+		addStructureJoint( entity );
 
-	}
-
-	@Override
-	public void screwLeft( ) {
-	}
-
-	@Override
-	public void screwRight( ) {
 	}
 
 	private void constructBody( Vector2 pos ) {
@@ -50,6 +45,7 @@ public class StrippedScrew extends Screw {
 		screwBodyDef.type = BodyType.DynamicBody;
 		screwBodyDef.position.set( pos.mul( Util.PIXEL_TO_BOX ) );
 		screwBodyDef.gravityScale = 0.07f;
+		screwBodyDef.fixedRotation = false;
 		body = world.createBody( screwBodyDef );
 		CircleShape screwShape = new CircleShape( );
 		screwShape
@@ -78,14 +74,6 @@ public class StrippedScrew extends Screw {
 //		radarShape.dispose( );
 		screwShape.dispose( );
 
-	}
-
-	public void connectScrewToEntity( Entity entity ) {
-		// connect the screw to the entity
-		RevoluteJointDef revoluteJointDef = new RevoluteJointDef( );
-		revoluteJointDef.initialize( body, entity.body, body.getPosition( ) );
-		revoluteJointDef.enableMotor = false;
-		world.createJoint( revoluteJointDef );
 	}
 
 }

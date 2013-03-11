@@ -44,11 +44,6 @@ public class RotateByDegree implements IMover {
 	}
 
 	@Override
-	public void move( float deltaTime, Body body, SteeringOutput steering ) {
-		move( deltaTime, body );
-	}
-
-	@Override
 	public void runPuzzleMovement( PuzzleScrew screw, float screwVal, Platform p ) {
 		if ( offVal == 0 ) {
 			if ( screwVal >= onVal ) {

@@ -1,10 +1,17 @@
 package com.blindtigergames.werescrewed.level;
 
-
+/**
+ * Used to split up the level.xml into different types so we can call 
+ * the correct function to make the object or mover
+ * 
+ * as of 3-5-2013, gleedloader only uses entity tag
+ *
+ */
 public enum GleedTypeTag {
     ENTITY("Entity"),
     MOVER("Mover"),
-    SKELETON("Skeleton")
+    SKELETON("Skeleton"),
+    PUZZLE("Puzzle")
     ;
     /**
      * @param text

@@ -5,8 +5,10 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Version;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.gui.Button;
 import com.blindtigergames.werescrewed.gui.Label;
 import com.blindtigergames.werescrewed.screens.ScreenSwitchHandler;
@@ -14,37 +16,58 @@ import com.blindtigergames.werescrewed.screens.ScreenSwitchHandler;
 class PauseScreen implements com.badlogic.gdx.Screen {
 
 	private SpriteBatch batch = null;
+	private Texture logo = null;
 	private OrthographicCamera camera = null;
 	private BitmapFont font = null;
+	private BitmapFont fancyFont = null;
+	private Label screenLabel = null;
 	private Label authorLabel = null;
 	private Label licenseLabel = null;
 	private Label versionLabel = null;
+	private Button mainMenuButton = null;
 	private Button backButton = null;
 	private int lineHeight = 0;
 
 	public PauseScreen( ) {
 		batch = new SpriteBatch( );
 		font = new BitmapFont( );
+		fancyFont = WereScrewedGame.manager.getFont( "ornatique" );
+		logo =  WereScrewedGame.manager.get( WereScrewedGame.dirHandle
+				 + "/common/title_background.png", Texture.class );
 		lineHeight = Math.round( 2.5f * font.getCapHeight( ) );
-		authorLabel = new Label( "Author: biobob (Robert Komorovsky)", font );
-		licenseLabel = new Label( "License: Apache License 2.0", font );
-		versionLabel = new Label( "LibGDX version: " + Version.VERSION, font );
-		backButton = new Button( "Back", font, new ScreenSwitchHandler(
-				ScreenType.PHYSICS ) );
+		screenLabel = new Label("Pause Screen", fancyFont);
+		mainMenuButton = new Button("Main Menu",fancyFont, 
+				new ScreenSwitchHandler(ScreenType.MAIN_MENU));
+		backButton = new Button( "Physics Screen", fancyFont, 
+				new ScreenSwitchHandler(ScreenType.PHYSICS ) );
 	}
 
+	public void disposeAll(){
+		ScreenManager.getInstance( ).dispose(ScreenType.PHYSICS );
+		ScreenManager.getInstance( ).dispose(ScreenType.PLAYTEST );
+		ScreenManager.getInstance( ).dispose(ScreenType.HAZARD );
+		ScreenManager.getInstance( ).dispose(ScreenType.OPTIONS );
+		ScreenManager.getInstance( ).dispose(ScreenType.LEVEL_SELECT );
+		ScreenManager.getInstance( ).dispose(ScreenType.CHARACTER_SELECT );
+		ScreenManager.getInstance( ).dispose(ScreenType.STORY );
+		ScreenManager.getInstance( ).dispose(ScreenType.RESURRECT );
+		ScreenManager.getInstance( ).dispose(ScreenType.GLEED );
+		ScreenManager.getInstance( ).dispose(ScreenType.LEVEL_SELECT );
+	}
+	
 	@Override
 	public void render( float delta ) {
 		Gdx.gl.glClearColor( 0.5f, 0.5f, 0.5f, 1f );
 		Gdx.gl.glClear( GL10.GL_COLOR_BUFFER_BIT );
-
-		if ( Gdx.input.isKeyPressed( Input.Keys.ESCAPE ) ) {
-			ScreenManager.getInstance( ).show( ScreenType.PHYSICS );
-		}
+		//taking this out temporarily  
+		//if ( Gdx.input.isKeyPressed( Input.Keys.ESCAPE ) ) {
+		//	ScreenManager.getInstance( ).show( ScreenType.PHYSICS );
+		//}
+		disposeAll();
 		batch.begin( );
-		authorLabel.draw( batch );
-		licenseLabel.draw( batch );
-		versionLabel.draw( batch );
+		batch.draw(logo, 0, 0);
+		screenLabel.draw( batch );
+		mainMenuButton.draw( batch, camera );
 		backButton.draw( batch, camera );
 		batch.end( );
 
@@ -57,12 +80,10 @@ class PauseScreen implements com.badlogic.gdx.Screen {
 		batch.setProjectionMatrix( camera.combined );
 		int centerX = width / 2;
 		int centerY = height / 2;
-		authorLabel.setX( centerX - authorLabel.getWidth( ) / 2 );
-		authorLabel.setY( centerY + lineHeight );
-		licenseLabel.setX( centerX - licenseLabel.getWidth( ) / 2 );
-		licenseLabel.setY( centerY );
-		versionLabel.setX( centerX - versionLabel.getWidth( ) / 2 );
-		versionLabel.setY( centerY - lineHeight );
+		screenLabel.setX( centerX - screenLabel.getWidth()/2);
+		screenLabel.setY( centerY + 6 * lineHeight );
+		mainMenuButton.setX( centerX - mainMenuButton.getWidth()/2);
+		mainMenuButton.setY( 60 + mainMenuButton.getHeight( ) );
 		backButton.setX( centerX - backButton.getWidth( ) / 2 );
 		backButton.setY( 20 + backButton.getHeight( ) );
 	}

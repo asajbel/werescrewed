@@ -4,9 +4,12 @@ package com.blindtigergames.werescrewed.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.gui.Button;
+import com.blindtigergames.werescrewed.gui.Label;
 
 public class LevelSelectScreen implements com.badlogic.gdx.Screen {
 	
@@ -14,8 +17,16 @@ public class LevelSelectScreen implements com.badlogic.gdx.Screen {
 	private SpriteBatch batch = null;
 	private OrthographicCamera camera = null;
 	private BitmapFont font = null;
-	@SuppressWarnings( "unused" )
+	private BitmapFont fancyFont = null;
+	private Texture logo = null;
+	private Label screenLabel = null;
+	private Button playButton = null;
+	private Button gleedButton = null;
+	private Button testButton;
+	private Button resurrectButton = null;
+	private Button hazardButton = null;
 	private int lineHeight = 0;
+	private Button level1Button;
 	private Button backButton = null;
 	
 	/*
@@ -26,8 +37,25 @@ public class LevelSelectScreen implements com.badlogic.gdx.Screen {
 	public LevelSelectScreen(){
 		batch = new SpriteBatch( );
 		font = new BitmapFont( );
+		fancyFont = WereScrewedGame.manager.getFont( "ornatique" );
+		logo =  WereScrewedGame.manager.get( WereScrewedGame.dirHandle
+				 + "/common/title_background.png", Texture.class );
 		lineHeight = Math.round( 2.5f * font.getCapHeight( ) );
-		backButton = new Button( "Back", font, new ScreenSwitchHandler(
+		screenLabel = new Label( "Level Select", fancyFont);
+		playButton = new Button( "Physics Test Screen", fancyFont,
+				new ScreenSwitchHandler( ScreenType.PHYSICS ) );
+		resurrectButton = new Button( "Parallax Test Screen", fancyFont,
+				new ScreenSwitchHandler( ScreenType.RESURRECT ) );
+		hazardButton = new Button ( "Hazard Test Screen", fancyFont,
+				new ScreenSwitchHandler( ScreenType.HAZARD ) );
+		testButton = new Button( "Playtest Screen", fancyFont,
+				new ScreenSwitchHandler( ScreenType.PLAYTEST ) );
+		gleedButton = new Button( "Gleed Screen", fancyFont,
+				new ScreenSwitchHandler( ScreenType.GLEED ) );
+		level1Button = new Button( "Level 1", fancyFont, 
+				new ScreenSwitchHandler(ScreenType.LOADING_1 ) );
+		
+		backButton = new Button( "Back", fancyFont, new ScreenSwitchHandler(
 				ScreenType.MAIN_MENU ) );
 		
 	}
@@ -58,7 +86,16 @@ public class LevelSelectScreen implements com.badlogic.gdx.Screen {
 		Gdx.gl.glClear( GL10.GL_COLOR_BUFFER_BIT );
 		// TODO Auto-generated method stub
 		batch.begin( );
-
+		batch.draw(logo, 0, 0);
+		screenLabel.draw( batch );
+		playButton.draw( batch, camera );
+		gleedButton.draw( batch, camera );
+		resurrectButton.draw( batch, camera );
+		hazardButton.draw(  batch, camera );
+		testButton.draw( batch, camera );
+		level1Button.draw( batch, camera );
+		
+		backButton.draw( batch, camera );
 		batch.end( );
 	}
 
@@ -69,8 +106,23 @@ public class LevelSelectScreen implements com.badlogic.gdx.Screen {
 		camera.setToOrtho( false, width, height );
 		batch.setProjectionMatrix( camera.combined );
 		int centerX = width / 2;
-		@SuppressWarnings( "unused" )
 		int centerY = height / 2;
+		screenLabel.setX( centerX - screenLabel.getWidth( )/2);
+		screenLabel.setY( centerY + 6 * lineHeight);
+		testButton.setX( centerX - testButton.getWidth( ) / 2 );
+		testButton.setY( centerY + 3 * lineHeight );
+		playButton.setX( centerX - playButton.getWidth( ) / 2 );
+		playButton.setY( centerY + 2 * lineHeight );
+		gleedButton.setX( centerX - gleedButton.getWidth( ) / 2 );
+		gleedButton.setY( centerY + lineHeight);
+		resurrectButton.setX( centerX - resurrectButton.getWidth( ) /2 );
+		resurrectButton.setY( centerY);
+		hazardButton.setX( centerX - hazardButton.getWidth( ) /2 );
+		hazardButton.setY( centerY - lineHeight);
+		level1Button.setX( centerX - level1Button.getWidth( ) / 2 );
+		level1Button.setY( centerY - lineHeight * 2 );
+		
+		
 		backButton.setX( centerX - backButton.getWidth( ) / 2 );
 		backButton.setY( 20 + backButton.getHeight( ) );
 		
