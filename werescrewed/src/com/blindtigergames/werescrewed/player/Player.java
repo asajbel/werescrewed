@@ -6,6 +6,9 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.controllers.PovDirection;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -22,6 +25,7 @@ import com.blindtigergames.werescrewed.camera.Anchor;
 import com.blindtigergames.werescrewed.camera.AnchorList;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityDef;
+import com.blindtigergames.werescrewed.entity.Sprite;
 import com.blindtigergames.werescrewed.entity.EntityType;
 import com.blindtigergames.werescrewed.entity.mover.IMover;
 import com.blindtigergames.werescrewed.entity.mover.LerpMover;
@@ -48,8 +52,7 @@ public class Player extends Entity {
 	public final static float MOVEMENT_IMPULSE = 0.010f;
 	public final static float JUMP_IMPULSE = 0.10f;
 	public final static float JUMP_SCREW_IMPULSE = JUMP_IMPULSE * 5 / 4;
-	public final static float JUMP_CONTROL_MUTIPLIER = 0.5f;
-	public final static float JUMP_SLOW_SPEED = 0.001f;
+	public final static float JUMP_SLOW_SPEED = 0.002f;
 	public final static int JUMP_COUNTER = 10;
 	public final static float ANALOG_DEADZONE = 0.2f;
 	public final static float ANALOG_MAX_RANGE = 1.0f;
@@ -63,8 +66,9 @@ public class Player extends Entity {
 	public final static float FRICTION_INCREMENT = 0.3f;
 	public final static float FEET_OFFSET_X = 39f * Util.PIXEL_TO_BOX;
 	public final static float FEET_OFFSET_Y = 15f * Util.PIXEL_TO_BOX;
-
-	public float directionJumpDivsion = 2.0f;
+	public final static float JUMP_DIRECTION_MULTIPLIER = 2f;
+	public final static float JUMP_DEFAULT_DIVISION = 1.0f;
+	public float directionJumpDivsion = JUMP_DEFAULT_DIVISION;
 
 	public Fixture feet;
 	public Fixture torso;
@@ -120,6 +124,12 @@ public class Player extends Entity {
 
 	@SuppressWarnings( "unused" )
 	private Sound jumpSound;
+	
+	private TextureAtlas characterAtlas;
+	
+	//TODO: fill in the frames counts and frame rates for various animations like below
+	private int   jumpFrames = 3;
+	private float jumpSpeed  = 0.3f;
 
 	public float frictionCounter = 0;
 
@@ -130,6 +140,7 @@ public class Player extends Entity {
 	 * </p>
 	 * <Ul>
 	 * Standing <br />
+	 * Running <br />
 	 * Jumping <br />
 	 * Falling <br />
 	 * Screwing <br />
@@ -137,7 +148,8 @@ public class Player extends Entity {
 	 * </Ul>
 	 */
 	public enum PlayerState {
-		Standing, Jumping, Falling, Screwing, JumpingOffScrew, Dead, GrabMode, HeadStand
+		Standing, Running, Jumping, Falling,
+		Screwing, JumpingOffScrew, Dead, GrabMode, HeadStand
 	}
 
 	// CONSTRUCTORS
@@ -180,6 +192,11 @@ public class Player extends Entity {
 
 		jumpSound = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 				+ "/common/sounds/jump.ogg" );
+		
+		//TODO: pick which texture atlas to use based on the character
+		//The following will be fixed in another branch
+		//characterAtlas = WereScrewedGame.manager.get(
+		//		"player_b_m_textureatlas.pack", TextureAtlas.class);
 	}
 
 	// PUBLIC METHODS
@@ -211,10 +228,18 @@ public class Player extends Entity {
 			kinematicTransform = false;
 		}
 		if ( isDead ) {
+
+		//	body.setLinearVelocity( Vector2.Zero );
+		//	body.setFixedRotation( false );
+		//	body.setAngularVelocity( 0.1f )
+		// TODO: death stuff
+
+
 			if ( playerState != PlayerState.Dead
 					&& playerState != PlayerState.GrabMode ) {
 				killPlayer( );
 			}
+
 			// TODO: death stuff
 			if ( controller != null ) {
 				if ( controllerListener.isGrabPressed( ) ) {
@@ -399,7 +424,7 @@ public class Player extends Entity {
 		if ( playerState == PlayerState.Falling
 				|| playerState == PlayerState.Jumping ) {
 			if ( changeDirectionsOnce && prevButton == PovDirection.west ) {
-				directionJumpDivsion *= 2;
+				directionJumpDivsion *= JUMP_DIRECTION_MULTIPLIER;
 				changeDirectionsOnce = false;
 			}
 			if ( body.getLinearVelocity( ).x < MAX_VELOCITY ) {
@@ -423,7 +448,7 @@ public class Player extends Entity {
 		if ( playerState == PlayerState.Falling
 				|| playerState == PlayerState.Jumping ) {
 			if ( changeDirectionsOnce && prevButton == PovDirection.east ) {
-				directionJumpDivsion *= 2;
+				directionJumpDivsion *= JUMP_DIRECTION_MULTIPLIER;
 				changeDirectionsOnce = false;
 			}
 			if ( body.getLinearVelocity( ).x > -MAX_VELOCITY ) {
@@ -477,7 +502,7 @@ public class Player extends Entity {
 	public void moveAnalogRightInAir( ) {
 
 		if ( changeDirectionsOnce && prevButton == PovDirection.west ) {
-			directionJumpDivsion *= 2;
+			directionJumpDivsion *= JUMP_DIRECTION_MULTIPLIER;
 			changeDirectionsOnce = false;
 		}
 		leftAnalogX = controllerListener.analogLeftAxisX( );
@@ -496,7 +521,7 @@ public class Player extends Entity {
 	 */
 	public void moveAnalogLeftInAir( ) {
 		if ( changeDirectionsOnce && prevButton == PovDirection.east ) {
-			directionJumpDivsion *= 2;
+			directionJumpDivsion *= JUMP_DIRECTION_MULTIPLIER;
 			changeDirectionsOnce = false;
 		}
 		leftAnalogX = controllerListener.analogLeftAxisX( );
@@ -535,6 +560,10 @@ public class Player extends Entity {
 			body.applyLinearImpulse( new Vector2( 0.0f, JUMP_IMPULSE ),
 					body.getWorldCenter( ) );
 		}
+		
+		//TODO: add the jumping sprite here
+		//This will work... soon.
+		//sprite = new Sprite(characterAtlas, "jumping", jumpFrames, jumpSpeed, Animation.NORMAL);
 	}
 
 	/**
@@ -1201,6 +1230,7 @@ public class Player extends Entity {
 			} else {
 				if ( body.getLinearVelocity( ).y > 0 ) {
 					playerState = PlayerState.Jumping;
+					//TODO: animating sprite test
 				} else {
 					playerState = PlayerState.Falling;
 				}
@@ -1344,7 +1374,7 @@ public class Player extends Entity {
 		}
 		if ( isGrounded( ) ) {
 			jumpCounter = 0;
-			directionJumpDivsion = 2;
+			directionJumpDivsion = JUMP_DEFAULT_DIVISION;
 			changeDirectionsOnce = true;
 			prevButton = null;
 			// switchedScrewingDirection = false;
@@ -1370,7 +1400,7 @@ public class Player extends Entity {
 	private void resetScrewJumpGrabKeyboard( ) {
 		if ( isGrounded( ) ) {
 			jumpCounter = 0;
-			directionJumpDivsion = 2;
+			directionJumpDivsion = JUMP_DEFAULT_DIVISION;
 			changeDirectionsOnce = true;
 			prevButton = null;
 		}
