@@ -102,7 +102,7 @@ public class Entity implements GleedLoadable {
 		this.body = body;
 		if ( body != null ) {
 			world = body.getWorld( );
-			sprite.setScale( Util.PIXEL_TO_BOX );
+			//sprite.setScale( Util.PIXEL_TO_BOX );
 		}
 		this.setPixelPosition( positionPixels );
 	}
@@ -306,6 +306,7 @@ public class Entity implements GleedLoadable {
 			// Definitions for loaded sprites
 			origin = new Vector2( type.origin.x, type.origin.y );
 			sprite.setScale( type.spriteScale.x, type.spriteScale.y );
+			this.offset.set( type.origin.x,type.origin.x);
 		} else {
 			// Definitions for non-loaded sprites
 			origin = new Vector2( sprite.getWidth( ) / 2,

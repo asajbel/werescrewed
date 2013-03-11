@@ -55,11 +55,20 @@ public class RootSkeleton extends Skeleton {
         //}
         
 		for ( Entity entity : looseEntity ){
+			entity.updateMover( deltaTime );
 			entity.update( deltaTime );
 		}
 		//super.update( deltaTime );
 	 }
 
+	 /**
+	  * adds a loose entity to this skeleton
+	  * @param e
+	  */
+	public void addLooseEntity( Entity e ) {
+		looseEntity.add( e );
+	}
+	
     @Override
     public void draw( SpriteBatch batch ){
     	//possible bug: the draw order

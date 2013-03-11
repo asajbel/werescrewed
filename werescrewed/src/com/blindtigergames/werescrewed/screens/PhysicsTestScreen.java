@@ -192,9 +192,9 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		// Otherwise input handler breaks
 
 		player1 = new PlayerBuilder( ).name( "player1" ).world( world )
-				.position( 70.0f, 50.0f ).buildPlayer( );
+				.position( 0.0f, 0.0f ).buildPlayer( );
 		player2 = new PlayerBuilder( ).name( "player2" ).world( world )
-				.position( 1.5f, 110.5f ).buildPlayer( );
+				.position( 0f, 0.5f ).buildPlayer( );
 
 		initCheckPoints( );
 		// Add screws
@@ -239,7 +239,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 
 		PolySprite polySprite = new PolySprite( WereScrewedGame.manager.get(
 				WereScrewedGame.dirHandle.path( )
-						+ "/common/robot/alphabot_tile_interior.png",
+						+ "/common/robot/alphabot_texture_skin.png",
 				Texture.class ), verts );
 	}
 
@@ -248,9 +248,9 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 								// 0,
 		// 200 ), testTexture, world );
 		dynSkeleton = new SkeletonBuilder( world ).position( 0, 200 )
-				.texBackground( WereScrewedGame.manager.get(WereScrewedGame.dirHandle+"/common/robot/alphabot_tile_interior.png",Texture.class )).name( "dynamicSkeleton" )
+				.texBackground( WereScrewedGame.manager.get(WereScrewedGame.dirHandle+"/common/robot/alphabot_texture_skin.png",Texture.class )).name( "dynamicSkeleton" )
 				.vert( -100, -100 ).vert( 100, -100 ).vert( 100, 100 ).vert( -100,100 )
-				.texForeground( WereScrewedGame.manager.get(WereScrewedGame.dirHandle+"/common/robot/alphabot_tile_suit_main.png",Texture.class ))
+				.texForeground( WereScrewedGame.manager.get(WereScrewedGame.dirHandle+"/common/robot/alphabot_texture_tux.png",Texture.class ))
 				.fg( ).vert( 200,0 ).vert( 300,100 ).vert( 200,200 )
 				.build( );
 		// dynSkeleton.body.createFixture( , density )
@@ -335,8 +335,8 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 	 * Initializes hazards. At the moment only makes spikes.
 	 */
 	private void initHazards( ) {
-		spikes = new Spikes( "Spikes1", new Vector2( -500.0f, -10.0f ), 1, 6,
-				world, true, false, true );
+		//spikes = new Spikes( "Spikes1", new Vector2( -500.0f, -10.0f ), 1, 6,
+		//		world, true, false, true );
 	}
 
 	/**
@@ -549,7 +549,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 				.friction( 1f );
 
 		// 1000 - 1219 for perfect gears
-		Platform gear = builder.name( "gear" ).position( -1719, 320 )
+		Platform gear = builder.name( "gear" ).position( -1800, 320 )
 				.texture( null ).setScale( 3f ).type( "gearSmall" )
 				.buildComplexPlatform( );
 		skeleton.addPlatformRotatingCenterWithMot( gear, 1f );
@@ -696,7 +696,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		rootSkeleton.update( deltaTime );
 		progressManager.update( deltaTime );
 		testRope.update( deltaTime );
-		spikes.update( deltaTime );
+	//	spikes.update( deltaTime );
 		batch.setProjectionMatrix( cam.combined( ) );
 		batch.begin( );
 
@@ -705,7 +705,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		progressManager.draw( batch );
 		rootSkeleton.draw( batch );
 		testRope.draw( batch );
-		spikes.draw( batch );
+		//spikes.draw( batch );
 		player1.draw( batch );
 		player2.draw( batch );
 

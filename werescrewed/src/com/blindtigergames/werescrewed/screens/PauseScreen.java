@@ -19,6 +19,7 @@ class PauseScreen implements com.badlogic.gdx.Screen {
 	private Texture logo = null;
 	private OrthographicCamera camera = null;
 	private BitmapFont font = null;
+	private BitmapFont fancyFont = null;
 	private Label screenLabel = null;
 	private Label authorLabel = null;
 	private Label licenseLabel = null;
@@ -30,13 +31,14 @@ class PauseScreen implements com.badlogic.gdx.Screen {
 	public PauseScreen( ) {
 		batch = new SpriteBatch( );
 		font = new BitmapFont( );
+		fancyFont = WereScrewedGame.manager.getFont( "ornatique" );
 		logo =  WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-				 + "/common/blind_tiger_logo_720.png", Texture.class );
+				 + "/common/title_background.png", Texture.class );
 		lineHeight = Math.round( 2.5f * font.getCapHeight( ) );
-		screenLabel = new Label("Pause Screen", font);
-		mainMenuButton = new Button("Main Menu",font, 
+		screenLabel = new Label("Pause Screen", fancyFont);
+		mainMenuButton = new Button("Main Menu",fancyFont, 
 				new ScreenSwitchHandler(ScreenType.MAIN_MENU));
-		backButton = new Button( "Physics Screen", font, 
+		backButton = new Button( "Physics Screen", fancyFont, 
 				new ScreenSwitchHandler(ScreenType.PHYSICS ) );
 	}
 
@@ -79,9 +81,9 @@ class PauseScreen implements com.badlogic.gdx.Screen {
 		int centerX = width / 2;
 		int centerY = height / 2;
 		screenLabel.setX( centerX - screenLabel.getWidth()/2);
-		screenLabel.setY( centerY + 7 * lineHeight );
+		screenLabel.setY( centerY + 6 * lineHeight );
 		mainMenuButton.setX( centerX - mainMenuButton.getWidth()/2);
-		mainMenuButton.setY( 40 + mainMenuButton.getHeight( ) );
+		mainMenuButton.setY( 60 + mainMenuButton.getHeight( ) );
 		backButton.setX( centerX - backButton.getWidth( ) / 2 );
 		backButton.setY( 20 + backButton.getHeight( ) );
 	}
