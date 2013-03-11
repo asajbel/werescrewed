@@ -137,7 +137,7 @@ public class Skeleton extends Platform {
          new RevoluteJointBuilder( world ).skeleton( this ).bodyB( rope.getFirstLink( ) )
                  .limit( true ).lower( 0 ).upper( 0 ).build();
          //ropes.add( rope );
-         ropeMap.put( "ropes have no names, fix me",  rope );
+         ropeMap.put( rope.name,  rope );
      }
      
      /**
@@ -228,7 +228,7 @@ public class Skeleton extends Platform {
 			screw.body.setAwake( isAwake );
 		}
 		
-		//TODO: add ropes to this function
+//		//TODO: add ropes to this function
 //		Iterator< Map.Entry< String, Rope > > ropeIt = ropeMap.entrySet( )
 //				.iterator( );
 //		Map.Entry< String, Rope > ropeToUpdate;
@@ -384,6 +384,10 @@ public class Skeleton extends Platform {
         for ( Screw s : screwMap.values( ) ) {
     		s.update( deltaTime );
         }
+        
+        for ( Rope rope : ropeMap.values() ){
+        	rope.update( deltaTime);
+        }
     }
     
 	/**
@@ -436,6 +440,9 @@ public class Skeleton extends Platform {
         }
         for ( Screw screw : screwMap.values( ) ){
         	screw.draw( batch );
+        }
+        for( Rope rope : ropeMap.values()){
+        	rope.draw( batch );
         }
     }
     
