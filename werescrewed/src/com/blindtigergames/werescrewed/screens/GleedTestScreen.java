@@ -1,5 +1,6 @@
 package com.blindtigergames.werescrewed.screens;
 
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Texture;
 import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.entity.Entity;
@@ -19,12 +20,14 @@ import com.blindtigergames.werescrewed.screws.PuzzleScrew;
 
 public class GleedTestScreen extends Screen {
 	
-
+	Music music;
 	public GleedTestScreen( String name ){
 		super();
 		String filename = "data/levels/"+ name + ".xml";
 		level = new LevelFactory().load( filename );
 
+		music = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
+				+ "/common/sounds/TrainJob.mp3" );
 		SkeletonBuilder skeleBuilder = new SkeletonBuilder( level.world );
 		// skeleton at shoulder joint
 		Skeleton skel = skeleBuilder.position( 800, 0 ).name( "background" )
@@ -102,15 +105,15 @@ public class GleedTestScreen extends Screen {
 				.buildTilePlatform( );
 		skel3.addKinematicPlatform( plat6 );
 		
-		TiledPlatform plat7 = platBuilder.position( 6200, 200 ).name( "plat146" )
-				.dimensions( 10, 1) .kinematic( )
+		TiledPlatform plat7 = platBuilder.position( 6300, 200 ).name( "plat146" )
+				.dimensions( 20, 1) .kinematic( )
 				.friction( 1.0f )
 				.buildTilePlatform( );
 		skel3.addKinematicPlatform( plat7 );
 		
-		TiledPlatform plat8 = platBuilder.position( 6000, 250 ).name( "plat146" )
+		TiledPlatform plat8 = platBuilder.position( 6100, 350 ).name( "plat146" )
 				.dimensions( 3, 1) .kinematic( )
-				.friction( 1.0f )
+				.friction( 1.0f ).oneSided( true )
 				.buildTilePlatform( );
 		skel3.addKinematicPlatform( plat8 );
 		
@@ -122,13 +125,7 @@ public class GleedTestScreen extends Screen {
 		Rope rope = ropeBuilder.buildRope( );
 		skel3.addRope( rope );
 		
-		RopeBuilder ropeBuilder2 = new RopeBuilder( level.world );
-		ropeBuilder2.name( "rope2" ).position(6500, 300 ).links( 5 )
-				.createScrew( );
 
-
-		Rope rope2 = ropeBuilder2.buildRope( );
-		skel3.addRope( rope2 );
 		
 		level.root.addSkeleton( skel2 );
 		level.root.addSkeleton( skel3 );
@@ -138,7 +135,12 @@ public class GleedTestScreen extends Screen {
 	public void render( float deltaTime ) {
 		super.render( deltaTime );
 		
-	
+		if(!music.isPlaying( )){
+			music.play( );
+			music.setLooping( true);
+			music.setVolume( 0.3f );
+		}
+		//music.setLooping( true);
 		
 
 	}
