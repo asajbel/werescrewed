@@ -91,6 +91,7 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 	private Music inceptionhorn;
 
 	private Anchor testAnchor;
+	private static final String LEVEL_NAME = "Debug_Playtest";
 
 	public DebugPlayTestScreen( ) {
 
@@ -1110,7 +1111,7 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 			cam.camera.zoom += 0.015f;
 			if ( endgameCounter > 10f ) {
 				if ( Metrics.activated ) {
-					Metrics.printMetrics( );
+					Metrics.printMetrics( LEVEL_NAME );
 				}
 				Gdx.app.exit( );
 				// if we want want the game to go back to the main menu, comment
