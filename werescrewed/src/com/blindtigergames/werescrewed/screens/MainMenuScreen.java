@@ -19,7 +19,7 @@ class MainMenuScreen implements com.badlogic.gdx.Screen {
 	private Texture logo = null;
 	private OrthographicCamera camera = null;
 	private BitmapFont font = null;
-	//BitmapFont fancyFont;
+	BitmapFont fancyFont;
 	private Label headingLabel = null;
 	private Button exitButton = null;
 	private int lineHeight = 0;
@@ -31,14 +31,12 @@ class MainMenuScreen implements com.badlogic.gdx.Screen {
 	public MainMenuScreen( ) {
 		batch = new SpriteBatch( );
 		font = new BitmapFont( );
-		//fancyFont = WereScrewedGame.manager.getFont( "ornitque" );
-		//if(WereScrewedGame.manager.isFontLoaded( "ornitque.fnt" ))
-		//	Gdx.app.log( "Font", "it's loaded" );
-		//	fancyFont = WereScrewedGame.manager.getFont( "ornitque" );
+		fancyFont = WereScrewedGame.manager.getFont( "ornatique" );
+		//font = WereScrewedGame.manager.getFont( "ornatique" );
 		logo =  WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 				 + "/common/blind_tiger_logo_720.png", Texture.class );
 		lineHeight = Math.round( 2.5f * font.getCapHeight( ) );
-		headingLabel = new Label( "We're Screwed!!", font );
+		headingLabel = new Label( "We're Screwed!!", fancyFont );
 		
 		storyButton = new Button("Start", font,
 				new ScreenSwitchHandler(ScreenType.STORY));

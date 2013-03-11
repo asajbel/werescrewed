@@ -66,6 +66,7 @@ public class AssetManager extends com.badlogic.gdx.assets.AssetManager {
 			Gdx.app.log( "AssetManager", "Font is null! "+fileHandle.path( ) );
 		}
 		fontMap.put( fileHandle.nameWithoutExtension( ), font );
+		//Gdx.app.log( "AssetManager", "Size"+fontMap.size( )+" "+fileHandle.nameWithoutExtension( ) );
 	}
 	
 	public boolean isFontLoaded(String fontName){

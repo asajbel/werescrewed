@@ -32,8 +32,8 @@ public class Platform extends Entity {
 	protected float width, height;
 	protected boolean dynamicType = false;
 	protected boolean rotate = false;
-	protected boolean oneSided = false;
-	protected boolean moveable = false;
+	public boolean oneSided = false;
+	public boolean moveable = false;
 	protected ArrayList< Screw > screws;
 	// tileConstant is 16 for setasbox function which uses half width/height
 	// creates 32x32 objects
@@ -335,13 +335,13 @@ public class Platform extends Entity {
 	 * @author stew
 	 */
 	public void setPosRotFromSkeleton( float deltaTime, Skeleton skeleton ) {
-		float radiusFromSkeleton = originPosition.cpy( ).sub( skeleton.getPositionPixel( ) ).add( localPosition )
+		float radiusFromSkeleton = originPosition.cpy( ).sub( skeleton.originPosition ).add( localPosition )
 				.mul( Util.PIXEL_TO_BOX ).len( );
 		// update angle between platform and skeleton
 		Vector2 skeleOrigin = skeleton.body.getPosition( );
 		float newAngleFromSkeleton = skeleton.body.getAngle( )
 				+ Util.angleBetweenPoints( skeleOrigin, originPosition.cpy( )
-						.add( localPosition ) );
+						.add( localPosition ).mul( Util.PIXEL_TO_BOX ) );
 
 		float newRotation = localRotation + skeleton.body.getAngle( );
 		Vector2 newPos = Util.PointOnCircle( radiusFromSkeleton,

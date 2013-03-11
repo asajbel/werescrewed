@@ -115,9 +115,9 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 
 		// Initialize players
 		player1 = new PlayerBuilder( ).name( "player1" ).world( world )
-				.position( 115f * TILE, 56 * TILE ).buildPlayer( );
+				.position(175f * TILE, 96f * TILE).buildPlayer( );
 		player2 = new PlayerBuilder( ).name( "player2" ).world( world )
-				.position( 115f * TILE, 56 * TILE ).buildPlayer( );
+				.position( 175f * TILE, 96f * TILE).buildPlayer( );
 
 		// END: 175f * TILE, 96f * TILE
 		// START :: 1f * TILE, 1f * TILE
@@ -143,7 +143,7 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 	private void floor1( ) {
 
 		skel1 = new Skeleton( "skel1", new Vector2( 0, 0 ), null, world );
-
+		
 		// PUZZLE 1 //
 		EventTriggerBuilder etb = new EventTriggerBuilder( world );
 		et = etb.name( "event1" ).circle( ).radius( 100 )
@@ -154,7 +154,7 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 
 		ground = platBuilder.position( 50 * TILE, 0 ).name( "ground1" )
 				.dimensions( 250, 2 ).texture( testTexture ).kinematic( )
-				.oneSided( false ).restitution( 0.0f ).buildTilePlatform( );
+			.buildTilePlatform( );
 		ground.setCategoryMask( Util.KINEMATIC_OBJECTS,
 				Util.CATEGORY_EVERYTHING );
 		skel1.addKinematicPlatform( ground );
@@ -195,8 +195,8 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		obst.setCategoryMask( Util.KINEMATIC_OBJECTS, Util.CATEGORY_EVERYTHING );
 		skel1.addKinematicPlatform( obst );
 
-		obst = platBuilder.position( 40 * TILE, 3.5f * TILE ).name( "obst6" )
-				.dimensions( 2, 5 ).texture( testTexture ).kinematic( )
+		obst = platBuilder.position( 40 * TILE, 3f * TILE ).name( "obst6" )
+				.dimensions( 2, 4 ).texture( testTexture ).kinematic( )
 				.oneSided( false ).restitution( 0 ).buildTilePlatform( );
 		obst.setCategoryMask( Util.KINEMATIC_OBJECTS, Util.CATEGORY_EVERYTHING );
 		skel1.addKinematicPlatform( obst );
@@ -1094,7 +1094,7 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 			}
 		}
 
-		world.step( 1 / 60f, 6, 6 );
+		world.step( 1 / 60f, 6, 3 );
 	}
 
 	@Override

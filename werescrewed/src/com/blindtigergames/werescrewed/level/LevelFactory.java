@@ -15,10 +15,12 @@ import com.blindtigergames.werescrewed.camera.Camera;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityCategory;
 import com.blindtigergames.werescrewed.entity.EntityDef;
+import com.blindtigergames.werescrewed.entity.RobotState;
 import com.blindtigergames.werescrewed.entity.builders.EntityBuilder;
 import com.blindtigergames.werescrewed.entity.builders.PlatformBuilder;
 import com.blindtigergames.werescrewed.entity.builders.PlayerBuilder;
 import com.blindtigergames.werescrewed.entity.builders.ScrewBuilder;
+import com.blindtigergames.werescrewed.entity.builders.SkeletonBuilder;
 import com.blindtigergames.werescrewed.entity.mover.TimelineTweenMover;
 import com.blindtigergames.werescrewed.entity.tween.PathBuilder;
 import com.blindtigergames.werescrewed.platforms.Platform;
@@ -32,6 +34,7 @@ import com.blindtigergames.werescrewed.screws.StructureScrew;
 import com.blindtigergames.werescrewed.entity.RootSkeleton;
 import com.blindtigergames.werescrewed.entity.Skeleton;
 import com.blindtigergames.werescrewed.util.ArrayHash;
+import com.blindtigergames.werescrewed.util.Util;
 
 
 public class LevelFactory {	
@@ -146,6 +149,7 @@ public class LevelFactory {
 			Array<Float> times = new Array<Float>(pointElems.size);
 			PathBuilder pBuilder = new PathBuilder().begin( (Platform)entity );
 			
+			
 			Element vElem; Vector2 point; String timeTag;
 			int frontPoint = 0; float frontTime = 0.0f;
 			//Set first and last point times with separate tags.
@@ -246,6 +250,10 @@ public class LevelFactory {
 			constructTiledPlatform(item);
 		} else if( bluePrints.equals( "screw" )){
 			constructScrew(item);
+		} else if( bluePrints.equals( "pathmover" )){
+			constructPath(item);
+		} else if( bluePrints.equals(  "skeletonpoly" )){
+			
 		}
 		
 		else if (item.getDefinition().getCategory( ) == EntityCategory.COMPLEX_PLATFORM ){
@@ -351,7 +359,12 @@ public class LevelFactory {
 			
 		} else {
 			//attach skeleton to skeleton
-			Skeleton skeleton = new Skeleton( item.name, item.pos, null, level.world );
+			SkeletonBuilder skeleBuilder = new SkeletonBuilder( level.world );
+			
+			Skeleton skeleton = skeleBuilder.name( item.name )
+					.position( item.pos ).texture( null )
+					.build( );
+			//Skeleton skeleton = new Skeleton( item.name, item.pos, null, level.world );
 			skeletons.put( item.name, skeleton );
 			entities.put(  item.name, skeleton );
 			if(item.props.containsKey( "attachtoskeleton" )){
@@ -400,14 +413,17 @@ public class LevelFactory {
 		float xPos = item.pos.x + (width/2);
 		float yPos = item.pos.y - (height/2);
 		
+
+		PlatformBuilder pb = new PlatformBuilder(level.world);
 		
 		boolean isDynamic = false;
 		if(item.props.containsKey( "dynamic" )){
 			isDynamic = true;
 		}
-		boolean isOneSided = false;
+
+
 		if(item.props.containsKey( "onesided" )){
-			isOneSided = true;
+			pb.oneSided( true );
 		}
 
 		boolean isCrushable = false;
@@ -415,17 +431,20 @@ public class LevelFactory {
 			isCrushable = true;
 		}
 		
-		PlatformBuilder pb = new PlatformBuilder(level.world);
+
+		
 		TiledPlatform out = null;
 
-		out = pb.name( item.name )
+		pb.name( item.name )
 		.position( new Vector2(xPos, yPos) )
 		.dimensions( new Vector2(tileWidth, tileHeight) )
-		.tileSet( "autumn" )
-		.solid( true )
-		.oneSided( isOneSided )
-		.dynamic( isDynamic )
-		.buildTilePlatform( );
+		.tileSet( "autumn" );
+		
+		if(isDynamic) pb.dynamic( );
+		else
+			pb.kinematic( );
+		
+		out = pb.buildTilePlatform( );
 
 		entities.put( item.name, out);
 		out.setCrushing( isCrushable );
@@ -434,11 +453,13 @@ public class LevelFactory {
 		
 		if (isDynamic){
 			Gdx.app.log("LevelFactory", "Tiled Dynamic platform loaded:"+out.name);
-			parent.addDynamicPlatform( out );
+			parent.addDynamicPlatform(  out );
 		} else {
 			Gdx.app.log("LevelFactory", "Tiled Kinematic platform loaded:"+out.name);
 			
 			parent.addKinematicPlatform( out );
+			out.setCategoryMask( Util.KINEMATIC_OBJECTS,
+					Util.CATEGORY_EVERYTHING );
 		}
 	}
 	
@@ -558,6 +579,73 @@ public class LevelFactory {
 		return out;
 	}
 	
+	public void constructPath(Item item){
+		
+		Array<Element> pointElems = item.element.getChildByName( "LocalPoints" ).getChildrenByName( "Vector2" );
+		Gdx.app.log("LevelFactory", "Loading Path Mover:"+pointElems.size+" points.");
+		Array<Vector2> pathPoints = new Array<Vector2>(pointElems.size);
+		Array<Float> times = new Array<Float>(pointElems.size);
+		
+		Platform p = (Platform) loadEntity(item.props.get( "applyto" ));
+		PathBuilder pBuilder = new PathBuilder().begin( p );
+		
+		
+		Element vElem; Vector2 point; String timeTag;
+		int frontPoint = 0; float frontTime = 0.0f;
+		//Set first and last point times with separate tags.
+		//If tags are not available, assume they will be at 0.0f and 1.0f, respectively.
+		//As points are loaded, these values may get overridden; this is fine.
+		for (int i = 0; i < pointElems.size; i++){
+			times.add( 1.0f );
+		}
+//		if (item.props.containsKey( startTime )){
+//			times.set(frontPoint, Float.parseFloat( item.props.get( startTime ) ) );
+//			frontTime = times.get(0);
+//		} else {
+//			times.set(frontPoint, frontTime); //By default, the first point should be at time 0.
+//		}
+//		if (item.props.containsKey( "EndTime" )){
+//			times.set(pointElems.size-1, Float.parseFloat( item.props.get( endTime ) ) );	
+//		} else {
+//			times.set(pointElems.size-1, 1.0f);
+//		}
+		
+		// Starts at one because first point on a path should start at 0,0 by default
+		for (int i = 1; i < pointElems.size; i++){
+			vElem = pointElems.get( i );
+			point = new Vector2(vElem.getFloat( "X" )*GLEED_TO_GDX_X, vElem.getFloat( "Y" )*GLEED_TO_GDX_Y);
+			pathPoints.add( point );
+			Gdx.app.log( "LevelFactory", "Point "+i+" has coordinates "+point.toString( )+".");
+			timeTag = "point"+i+"time";
+			if (item.props.containsKey( timeTag )){
+				float time = Float.parseFloat( item.props.get( timeTag ));
+				if (time >= 0.0f){
+					times.set( i, time );
+				}
+			}
+			Gdx.app.log( "GleedLoader", "Point "+i+" has time "+times.get(i)+".");
+//			if (times.get( i ) >= 0.0f){
+//				Gdx.app.log( "GleedLoader", "Point "+i+" has time "+times.get(i)+".");
+//				if (i > frontPoint+1){
+//					float div = (times.get( i ) - frontTime)/(float)(i - frontPoint);
+//					for (int j = i-1; j > frontPoint; j--){
+//						times.set(j, frontTime + div*(j-frontPoint));
+//						Gdx.app.log( "GleedLoader", "Backtracking: Setting point "+j+" to time "+times.get(j)+".");
+//					}
+//					frontPoint = i;
+//					frontTime = times.get( i );
+//				}
+//			}
+		}
+
+		for (int i = 0; i < pathPoints.size; i++){
+			pBuilder.target( pathPoints.get(i).x, pathPoints.get(i).y, times.get(i).floatValue( ) );
+		}
+		TimelineTweenMover out = pBuilder.build( );
+		movers.put(item.name, out);
+		p.addMover( out, RobotState.IDLE );
+		p.setActive( true );
+	}
 
 	public Screw loadScrew(Item item){
 		;

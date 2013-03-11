@@ -5,6 +5,7 @@ import aurelienribon.tweenengine.Tween;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
+import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.camera.Camera;
 import com.blindtigergames.werescrewed.collisionManager.MyContactListener;
 import com.blindtigergames.werescrewed.debug.SBox2DDebugRenderer;
@@ -36,10 +37,10 @@ public class Level {
 	public Camera camera;
 	public World world;
 	public MyContactListener myContactListener;
-	Player player1, player2;
-	RootSkeleton rootSkeleton;
-	Skeleton root;
-	PolySprite polySprite;
+	public Player player1, player2;
+	public RootSkeleton rootSkeleton;
+	public Skeleton root;
+	public PolySprite polySprite;
 	
 	public Level( ){
 		
@@ -73,6 +74,7 @@ public class Level {
 				Texture.class );
 		
 		polySprite = new PolySprite( polyTex, verts );*/
+		
 	}
 	
 	public void update( float deltaTime ){

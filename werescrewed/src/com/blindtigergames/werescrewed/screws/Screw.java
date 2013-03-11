@@ -1,6 +1,7 @@
 package com.blindtigergames.werescrewed.screws;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
@@ -64,6 +65,7 @@ public class Screw extends Entity {
 		screwType = ScrewType.SCREW_COSMETIC;
 		entityType = EntityType.SCREW;
 		extraJoints = new ArrayList< RevoluteJoint >( );
+
 		constructBody( pos );
 		addStructureJoint( entity );
 	}
@@ -212,6 +214,7 @@ public class Screw extends Entity {
 		screwBodyDef.type = BodyType.DynamicBody;
 		screwBodyDef.position.set( pos.mul( Util.PIXEL_TO_BOX ) );
 		screwBodyDef.gravityScale = 0.07f;
+		screwBodyDef.fixedRotation = false;
 		body = world.createBody( screwBodyDef );
 		CircleShape screwShape = new CircleShape( );
 		screwShape.setRadius( 0f );

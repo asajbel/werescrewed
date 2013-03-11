@@ -16,7 +16,7 @@ import com.blindtigergames.werescrewed.util.Metrics;
 public class WereScrewedGame extends Game {
 
 	public static final int targetFrameRate = 60;
-	public static final float oneOverTargetFrameRate = 1/targetFrameRate;
+	public static final float oneOverTargetFrameRate = 1f/targetFrameRate;
 	
 	public static AssetManager manager = new AssetManager( );
 	public static FileHandle dirHandle;
@@ -79,12 +79,13 @@ public class WereScrewedGame extends Game {
 //		float deltaTime = Gdx.graphics.getDeltaTime( );
 //		fpsTime += deltaTime;
 //		if ( fpsTime >= oneOverTargetFrameRate ){
+//			Gdx.app.log( "FPS", ""+fpsTime+", "+ oneOverTargetFrameRate);
 //			fpsTime = fpsTime - oneOverTargetFrameRate;
-//			Gdx.app.log( "Rendering", "Rendering");
+//			//Gdx.app.log( "Rendering", "Rendering");
 //			super.render( );
 //		}else{
-//			fpsTime += deltaTime;
-//			Gdx.app.log( "Not rendering", "");
+//			//fpsTime += deltaTime;
+//			//Gdx.app.log( "Not rendering", "");
 //		}
 		
 		super.render( );

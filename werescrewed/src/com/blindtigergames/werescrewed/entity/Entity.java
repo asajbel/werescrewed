@@ -248,7 +248,6 @@ public class Entity implements GleedLoadable {
 			sprite.setPosition( bodyPos.x - offset.x, bodyPos.y - offset.y );
 			sprite.setRotation( MathUtils.radiansToDegrees * body.getAngle( ) );
 		}
-		
 	}
 
 	/**
