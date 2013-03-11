@@ -135,12 +135,12 @@ public class GleedTestScreen extends Screen {
 	public void render( float deltaTime ) {
 		super.render( deltaTime );
 		
-		if(!music.isPlaying( )){
-			music.play( );
-			music.setLooping( true);
-			music.setVolume( 0.3f );
-		}
-		//music.setLooping( true);
+//		if(!music.isPlaying( )){
+//			music.play( );
+//			music.setLooping( true);
+//			music.setVolume( 0.3f );
+//		}
+//		//music.setLooping( true);
 		
 
 	}
