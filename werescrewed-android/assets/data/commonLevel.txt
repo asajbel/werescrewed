@@ -8,7 +8,7 @@
 /common/TilesetTest.pack
 /common/tileset-teal.pack
 /common/autumn.pack
-/common/animations/red_male/idle.pack
+/common/player_b_m_textureatlas.pack
 
 ##common texture
 /common/player_b_f.png
@@ -25,8 +25,8 @@
 /common/tileset/TilesetTest.png
 /common/blind_tiger_logo_720.png
 /particles/particle.png
-/common/robot/alphabot_tile_interior.png
-/common/robot/alphabot_tile_suit_main.png
+/common/robot/alphabot_texture_skin.png
+/common/robot/alphabot_texture_tux.png
 /common/ropelink.png
 /common/gear.png
 

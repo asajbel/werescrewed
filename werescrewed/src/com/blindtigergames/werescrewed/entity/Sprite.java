@@ -38,14 +38,19 @@ public class Sprite extends com.badlogic.gdx.graphics.g2d.Sprite implements I_Dr
     	initialize();
 	}
 	
-    public Sprite ( TextureAtlas a, String initialRegion ){
-    	super( a.findRegion( initialRegion ) );
+    public Sprite ( TextureAtlas a, IAnimator anim){
+    	super();
     	atlas = a;
-    	currentFrame = atlas.findRegion( initialRegion );
-    	animator = new SimpleFrameAnimator()
-    				.maxFrames( atlas.getRegions( ).size )
-    				.speed( FPS / atlas.getRegions( ).size );
-    	this.setTexture(currentFrame.getTexture( ));
+    	animator = anim;
+    	currentFrame = atlas.findRegion( anim.getRegion( ), anim.getIndex( ) );
+    	this.setRegion(currentFrame);
+    	this.setBounds( 0.0f, 0.0f, currentFrame.getRegionWidth( ), currentFrame.getRegionHeight( ) );
+    }
+    
+    public Sprite (TextureAtlas a){
+    	this(a,  new SimpleFrameAnimator()
+					 .maxFrames( a.getRegions( ).size )
+    				 .speed( FPS / a.getRegions( ).size ));
     }
     
     public Sprite (Texture tex){
@@ -67,8 +72,8 @@ public class Sprite extends com.badlogic.gdx.graphics.g2d.Sprite implements I_Dr
     	return animator;
     }
     
-    public Sprite (String atlasName, String initialRegion){
-    	this(WereScrewedGame.manager.getAtlas( atlasName ), initialRegion);
+    public Sprite (String atlasName){
+    	this(WereScrewedGame.manager.getAtlas( atlasName ));
     }
     
     protected void initialize(){
@@ -79,7 +84,7 @@ public class Sprite extends com.badlogic.gdx.graphics.g2d.Sprite implements I_Dr
     
     public void update( float deltaTime ){
     	if (animator != null)
-    		animator.update( deltaTime );  	
+    		animator.update( deltaTime );
     }
     
     /** 
@@ -95,7 +100,7 @@ public class Sprite extends com.badlogic.gdx.graphics.g2d.Sprite implements I_Dr
 	@Override
 	public void draw( SpriteBatch batch ) {
 		if (atlas != null && animator != null){
-			currentFrame = atlas.findRegion( animator.getRegion( ) );
+			currentFrame = atlas.findRegion( animator.getRegion( ) , animator.getIndex( ) );
 		}
 		if (currentFrame != null){
 			this.setRegion( currentFrame );
@@ -120,7 +125,7 @@ public class Sprite extends com.badlogic.gdx.graphics.g2d.Sprite implements I_Dr
 	public void reset( ) {
 		// TODO: find a way to have stateTime count from zero and up again.
 		Gdx.app.log( "AnimatedSprite.reset()", "reset called" );
-		animator.setFrameNumber( 0 );
+		animator.reset();
 	}
 
 	public void setPosition( Vector2 pos ) {

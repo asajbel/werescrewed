@@ -6,6 +6,8 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.controllers.PovDirection;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -22,11 +24,14 @@ import com.blindtigergames.werescrewed.camera.Anchor;
 import com.blindtigergames.werescrewed.camera.AnchorList;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityDef;
+import com.blindtigergames.werescrewed.entity.Sprite;
 import com.blindtigergames.werescrewed.entity.EntityType;
 import com.blindtigergames.werescrewed.entity.Sprite;
+import com.blindtigergames.werescrewed.entity.animator.PlayerAnimator;
 import com.blindtigergames.werescrewed.entity.mover.IMover;
 import com.blindtigergames.werescrewed.entity.mover.LerpMover;
 import com.blindtigergames.werescrewed.entity.mover.LinearAxis;
+import com.blindtigergames.werescrewed.graphics.TextureAtlas;
 import com.blindtigergames.werescrewed.input.MyControllerListener;
 import com.blindtigergames.werescrewed.input.PlayerInputHandler;
 import com.blindtigergames.werescrewed.screws.ResurrectScrew;
@@ -122,6 +127,12 @@ public class Player extends Entity {
 
 	@SuppressWarnings( "unused" )
 	private Sound jumpSound;
+	
+	private TextureAtlas characterAtlas;
+	
+	//TODO: fill in the frames counts and frame rates for various animations like below
+	private int   jumpFrames = 3;
+	private float jumpSpeed  = 0.3f;
 
 	public float frictionCounter = 0;
 
@@ -132,6 +143,7 @@ public class Player extends Entity {
 	 * </p>
 	 * <Ul>
 	 * Standing <br />
+	 * Running <br />
 	 * Jumping <br />
 	 * Falling <br />
 	 * Screwing <br />
@@ -139,7 +151,8 @@ public class Player extends Entity {
 	 * </Ul>
 	 */
 	public enum PlayerState {
-		Standing, Jumping, Falling, Screwing, JumpingOffScrew, Dead, GrabMode, HeadStand
+		Standing, Running, Jumping, Falling,
+		Screwing, JumpingOffScrew, Dead, GrabMode, HeadStand
 	}
 
 	// CONSTRUCTORS
@@ -182,9 +195,12 @@ public class Player extends Entity {
 
 		jumpSound = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 				+ "/common/sounds/jump.ogg" );
-		sprite = new Sprite( "idle" ,"0");
-		sprite.setOrigin( 0.0f, 0.0f );
-		sprite.setScale( 0.66f );
+		
+		String gP = "_m";
+		String cP = "_r";
+		characterAtlas = WereScrewedGame.manager.get(
+				"player"+cP+gP+".pack", TextureAtlas.class);
+		sprite = new Sprite(characterAtlas, new PlayerAnimator(characterAtlas, this));
 	}
 
 	// PUBLIC METHODS
@@ -214,6 +230,7 @@ public class Player extends Entity {
 					&& playerState != PlayerState.GrabMode ) {
 				killPlayer( );
 			}
+
 			// TODO: death stuff
 			if ( controller != null ) {
 				if ( controllerListener.isGrabPressed( ) ) {
@@ -586,15 +603,6 @@ public class Player extends Entity {
 	}
 
 	/**
-	 * sets the body of some body that the player is hitting
-	 */
-	public void hitSolidObject( Body b ) {
-		if ( screwJumpTimeout == 0 ) {
-			platformBody = b;
-		}
-	}
-
-	/**
 	 * return s the current state of the player
 	 * 
 	 * @return playerState
@@ -707,6 +715,15 @@ public class Player extends Entity {
 			feet.setFriction( frictionCounter );
 		}
 
+	}
+
+	/**
+	 * sets the body of some body that the player is hitting
+	 */
+	public void hitSolidObject( Body b ) {
+		if ( screwJumpTimeout == 0 ) {
+			platformBody = b;
+		}
 	}
 
 	/**
@@ -1211,6 +1228,7 @@ public class Player extends Entity {
 			} else {
 				if ( body.getLinearVelocity( ).y > 0 ) {
 					playerState = PlayerState.Jumping;
+					//TODO: animating sprite test
 				} else {
 					playerState = PlayerState.Falling;
 				}

@@ -7,7 +7,6 @@ public class SimpleFrameAnimator implements IAnimator {
 	protected int frame;
 	protected float speed, time;
 	protected int start, frames;
-	
 	public enum LoopBehavior{
 		STOP(0),
 		LOOP(1),
@@ -19,7 +18,7 @@ public class SimpleFrameAnimator implements IAnimator {
 		public int toInt(){
 			return value;
 		}
-		public LoopBehavior fromInt(int v){
+		public static LoopBehavior fromInt(int v){
 			for (LoopBehavior b: LoopBehavior.values( )){
 				if (b.value == v)
 					return b;
@@ -29,7 +28,7 @@ public class SimpleFrameAnimator implements IAnimator {
 		
 	}
 	protected LoopBehavior loop;
-	
+	protected String prefix;
 	
 	public SimpleFrameAnimator( ) {
 		frame = 0;
@@ -37,6 +36,7 @@ public class SimpleFrameAnimator implements IAnimator {
 		time = 0.0f;
 		start = 0; frames = 0;
 		loop = LoopBehavior.LOOP;
+		prefix = "";
 	}
 
 
@@ -70,6 +70,11 @@ public class SimpleFrameAnimator implements IAnimator {
 		loop = b;
 		return this;
 	}
+
+	public SimpleFrameAnimator prefix(String p){
+		prefix = p;
+		return this;
+	}
 	
 	@Override
 	public void update( float dT ) {
@@ -81,26 +86,41 @@ public class SimpleFrameAnimator implements IAnimator {
 	@Override
 	public String getRegion( ) {
 		// TODO Auto-generated method stub
-		return Integer.toString(frame + start);
+		return prefix+Integer.toString(frame + start);
 	}
 
 	@Override
 	public void setRegion( String r ) {
-		setFrameNumber(Integer.valueOf( r ));
+		setIndex(Integer.valueOf( r ));
 	}
 
 	@Override
-	public int getFrameNumber( ) {
+	public int getIndex( ) {
+		return 0;
+	}
+
+	@Override
+	public void setIndex( int f ) {
+	}
+	
+	@Override
+	public int getFrame(){
 		return frame + start;
 	}
-
-	@Override
-	public void setFrameNumber( int f ) {
+	
+	public void setFrame( int f ){
 		frame = f - start;
 		time = (float)frame / frames;
 	}
 
-	public void incrementTime( float dT ){
+	@Override
+	public void reset(){
+		frame = 0;
+		time = 0.0f;
+		speed = 1.0f;
+	}
+	
+	protected void incrementTime( float dT ){
 		time += (dT * speed);
 		if (time < 0.0f){
 			switch (loop){
