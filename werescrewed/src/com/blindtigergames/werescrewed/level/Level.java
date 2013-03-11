@@ -38,8 +38,8 @@ public class Level {
 	public World world;
 	public MyContactListener myContactListener;
 	public Player player1, player2;
-	public RootSkeleton rootSkeleton;
-	public Skeleton root;
+	public RootSkeleton root;
+	//public Skeleton root;
 	public PolySprite polySprite;
 	
 	public Level( ){
@@ -82,9 +82,7 @@ public class Level {
 		
 		player1.update( deltaTime );
 		player2.update( deltaTime );
-		rootSkeleton.update( deltaTime );
-		
-		
+		root.update( deltaTime );
 
 	}
 	
@@ -93,7 +91,7 @@ public class Level {
 		
 		batch.begin();
 		//polySprite.draw( batch );
-		rootSkeleton.draw( batch );
+		root.draw( batch );
 		
 		player1.draw( batch );
 		player2.draw( batch );

@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import javax.swing.text.StyledEditorKit.ForegroundAction;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
@@ -338,8 +339,6 @@ public class Skeleton extends Platform {
      * @author stew
      */
     protected void updateChildSkeletonMovers( float deltaTime ){
-
-    	
     	for ( Skeleton skeleton : childSkeletonMap.values( ) ){
     		//Gdx.app.log( skeleton.name, childSkeletonMap.values( ).size( )+"" );
     		//System.exit( 0 );

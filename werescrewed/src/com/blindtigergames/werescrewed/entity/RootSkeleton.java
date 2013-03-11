@@ -2,6 +2,7 @@ package com.blindtigergames.werescrewed.entity;
 
 import java.util.ArrayList;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
@@ -21,24 +22,26 @@ public class RootSkeleton extends Skeleton {
 	 public void update( float deltaTime ) {
         //recursively update all skeleton movers
         updateChildSkeletonMovers( deltaTime );
-        
+
         //update all children platform IMovers on their imover local coord system
         updateEntityMovers( deltaTime );
-        
+
         //recursively move all children skeletons by this moved updated pos*rot.
         //setPosRotChildSkeletons( deltaTime );
         for ( Skeleton childSkeleton : childSkeletonMap.values( ) ){
+        	childSkeleton.setPosRotFromSkeleton( deltaTime, this );
         	childSkeleton.setPosRotChildSkeletons( deltaTime );
         }
         
       //Now we can rotate all kinematic entities connected by updated skeleton rot / position
         for ( Skeleton childSkeleton : childSkeletonMap.values( ) ){
+        	
         	if ( childSkeleton.fgSprite != null ){
-        		childSkeleton.fgSprite.setPosition( childSkeleton.body.getPosition( ).x, childSkeleton.body.getPosition( ).y );
+        		childSkeleton.fgSprite.setPosition( childSkeleton.getPositionPixel( ).x, childSkeleton.getPositionPixel( ).y );
         		childSkeleton.fgSprite.setRotation( MathUtils.radiansToDegrees * childSkeleton.body.getAngle( ) );
     		}
     		if ( childSkeleton.bgSprite != null ){
-    			childSkeleton.bgSprite.setPosition( childSkeleton.body.getPosition( ).x, childSkeleton.body.getPosition( ).y );
+    			childSkeleton.bgSprite.setPosition( childSkeleton.getPositionPixel( ).x, childSkeleton.getPositionPixel( ).y );
     			childSkeleton.bgSprite.setRotation( MathUtils.radiansToDegrees * childSkeleton.body.getAngle( ) );
     		}
         	childSkeleton.setPosRotAllKinematicPlatforms( deltaTime );
