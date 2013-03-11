@@ -303,8 +303,8 @@ public class Player extends Entity {
 					}
 				}
 			}
-		} else if ( ( topCrush && botCrush ) || ( leftCrush && rightCrush ) ) {
-			//this.killPlayer( );
+		} else if ( ( ( topCrush && botCrush ) || ( leftCrush && rightCrush ) ) && playerState != PlayerState.JumpingOffScrew) {
+			this.killPlayer( );
 			Gdx.app.log(name,": squish");
 		} else if ( steamCollide ) {
 			steamResolution( );
