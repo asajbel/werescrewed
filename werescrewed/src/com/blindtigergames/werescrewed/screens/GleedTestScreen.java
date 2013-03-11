@@ -1,13 +1,6 @@
 package com.blindtigergames.werescrewed.screens;
 
-import com.badlogic.gdx.graphics.Texture;
-import com.blindtigergames.werescrewed.WereScrewedGame;
-import com.blindtigergames.werescrewed.entity.RobotState;
-import com.blindtigergames.werescrewed.entity.Skeleton;
-import com.blindtigergames.werescrewed.entity.builders.SkeletonBuilder;
-import com.blindtigergames.werescrewed.entity.tween.PathBuilder;
 import com.blindtigergames.werescrewed.level.LevelFactory;
-import com.blindtigergames.werescrewed.rope.Rope;
 
 public class GleedTestScreen extends Screen {
 	public GleedTestScreen( String name ){
