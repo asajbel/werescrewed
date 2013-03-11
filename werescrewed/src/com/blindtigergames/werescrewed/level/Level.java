@@ -7,6 +7,7 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
+import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.camera.Camera;
 import com.blindtigergames.werescrewed.collisionManager.MyContactListener;
 import com.blindtigergames.werescrewed.debug.SBox2DDebugRenderer;
@@ -39,8 +40,7 @@ public class Level {
 	public World world;
 	public MyContactListener myContactListener;
 	public Player player1, player2;
-	public RootSkeleton rootSkeleton;
-	public Skeleton root;
+	public RootSkeleton root;
 	public PolySprite polySprite;
 	private boolean debugTest, debug;
 	
@@ -84,7 +84,7 @@ public class Level {
 		
 		player1.update( deltaTime );
 		player2.update( deltaTime );
-		rootSkeleton.update( deltaTime );
+		root.update( deltaTime );
 		
 		if ( Gdx.input.isKeyPressed( Keys.NUM_0 ) ) {
 			if ( debugTest )
@@ -101,7 +101,7 @@ public class Level {
 		
 		batch.begin();
 		//polySprite.draw( batch );
-		rootSkeleton.draw( batch );
+		root.draw( batch );
 		
 		player1.draw( batch );
 		player2.draw( batch );

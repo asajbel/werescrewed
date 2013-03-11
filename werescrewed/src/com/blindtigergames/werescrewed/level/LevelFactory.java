@@ -358,9 +358,9 @@ public class LevelFactory {
 	
 	private void constructSkeleton(Item item){
 		if(item.name.equals( "RootSkeleton" )){
-			level.rootSkeleton = new RootSkeleton(item.name, item.pos, null, level.world);
-			skeletons.put( item.name, level.rootSkeleton );
-			entities.put( item.name, level.rootSkeleton);
+			level.root = new RootSkeleton(item.name, item.pos, null, level.world);
+			skeletons.put( item.name, level.root );
+			entities.put( item.name, level.root);
 			
 		} else {
 			//attach skeleton to skeleton
