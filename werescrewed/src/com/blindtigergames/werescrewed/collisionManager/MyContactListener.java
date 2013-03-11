@@ -33,7 +33,6 @@ public class MyContactListener implements ContactListener {
 	private static int NUM_PLAYER2_CONTACTS = 0;
 	private Player p1;
 
-
 	/**
 	 * When two new objects start to touch
 	 */
@@ -83,7 +82,7 @@ public class MyContactListener implements ContactListener {
 								} else if ( player.name.equals( "player2" ) ) {
 									NUM_PLAYER2_CONTACTS++;
 								}
-								
+
 								player.hitSolidObject( objectFix.getBody( ) );
 								player.setGrounded( true );
 							}
@@ -105,14 +104,16 @@ public class MyContactListener implements ContactListener {
 									rScrew.hitPlayer( player );
 								}
 							}
-							
+
 							// }
 							break;
 						case PLAYER:
 							Player player2 = ( Player ) objectFix.getBody( )
 									.getUserData( );
 							if ( !player.isPlayerDead( )
-									&& !player2.isPlayerDead( ) ) {
+									&& !player2.isPlayerDead( )
+									&& ( player.getState( ) == PlayerState.Standing || player2
+											.getState( ) == PlayerState.Standing ) ) {
 								player.hitPlayer( player2 );
 								player2.hitPlayer( player );
 								player.setGrounded( true );
@@ -205,7 +206,7 @@ public class MyContactListener implements ContactListener {
 							// also make sure its not the player
 							if ( object.isSolid( )
 									&& playerFix.getShape( ) instanceof CircleShape ) {
-								if (  player.name.equals( "player1" ) ) {
+								if ( player.name.equals( "player1" ) ) {
 									p1 = player;
 									NUM_PLAYER1_CONTACTS--;
 									if ( NUM_PLAYER1_CONTACTS <= 0 ) {
@@ -213,7 +214,7 @@ public class MyContactListener implements ContactListener {
 											player.setGrounded( false );
 										}
 									}
-								} else if (  player.name.equals( "player2" ) ) {
+								} else if ( player.name.equals( "player2" ) ) {
 									NUM_PLAYER2_CONTACTS--;
 									if ( NUM_PLAYER2_CONTACTS <= 0 ) {
 										if ( player.getState( ) != PlayerState.HeadStand ) {
@@ -227,17 +228,17 @@ public class MyContactListener implements ContactListener {
 							}
 							break;
 						case SCREW:
-							if (  player.name.equals( "player1" ) ) {
+							if ( player.name.equals( "player1" ) ) {
 								p1 = player;
 								if ( player.getState( ) != PlayerState.Screwing ) {
 									player.hitScrew( null );
 								}
-							} else if (  player.name.equals( "player2" ) ) {
+							} else if ( player.name.equals( "player2" ) ) {
 								if ( player.getState( ) != PlayerState.Screwing ) {
 									player.hitScrew( null );
 
 								}
-								
+
 							}
 							break;
 						case PLAYER:
@@ -321,9 +322,6 @@ public class MyContactListener implements ContactListener {
 										contact.setEnabled( false );
 									}
 								}
-								if ( player.isTopPlayer( ) ) {
-									contact.setEnabled( false );
-								}
 							}
 							break;
 						case PLAYER:
@@ -402,6 +400,9 @@ public class MyContactListener implements ContactListener {
 									if ( platformPos.y > playerPos.y ) {
 										contact.setEnabled( false );
 									}
+								} 
+								if ( player.isTopPlayer( ) ) {
+									contact.setEnabled( false );
 								}
 							}
 							break;
