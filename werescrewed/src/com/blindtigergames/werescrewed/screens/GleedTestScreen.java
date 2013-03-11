@@ -2,6 +2,7 @@ package com.blindtigergames.werescrewed.screens;
 
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.Vector2;
 import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.RobotState;
@@ -11,12 +12,15 @@ import com.blindtigergames.werescrewed.entity.builders.RopeBuilder;
 import com.blindtigergames.werescrewed.entity.builders.SkeletonBuilder;
 import com.blindtigergames.werescrewed.entity.mover.LerpMover;
 import com.blindtigergames.werescrewed.entity.mover.LinearAxis;
+import com.blindtigergames.werescrewed.entity.mover.PuzzleType;
 import com.blindtigergames.werescrewed.entity.mover.RockingMover;
+import com.blindtigergames.werescrewed.entity.mover.puzzle.PuzzleRotateTweenMover;
 import com.blindtigergames.werescrewed.entity.tween.PathBuilder;
 import com.blindtigergames.werescrewed.level.LevelFactory;
 import com.blindtigergames.werescrewed.platforms.TiledPlatform;
 import com.blindtigergames.werescrewed.rope.Rope;
 import com.blindtigergames.werescrewed.screws.PuzzleScrew;
+import com.blindtigergames.werescrewed.util.Util;
 
 public class GleedTestScreen extends Screen {
 	
@@ -80,6 +84,7 @@ public class GleedTestScreen extends Screen {
 		skel2.addMover( new PathBuilder().begin( skel2 ).target( 100, 0, 1 )
 				.target( 100, 100, 1 ).target( 0, 100, 1 ).target( 0, 0, 1 )
 				.build( ), RobotState.IDLE );
+//		skel2.addMover( new RockingMover( -0.1f, 0.5f ), RobotState.IDLE);
 		skel2.setActive( true );
 		
 
@@ -105,17 +110,25 @@ public class GleedTestScreen extends Screen {
 				.buildTilePlatform( );
 		skel3.addKinematicPlatform( plat6 );
 		
-		TiledPlatform plat7 = platBuilder.position( 6300, 200 ).name( "plat146" )
+		TiledPlatform plat7 = platBuilder.position( 6200, 250 ).name( "plat146" )
 				.dimensions( 20, 1) .kinematic( )
 				.friction( 1.0f )
 				.buildTilePlatform( );
 		skel3.addKinematicPlatform( plat7 );
 		
-		TiledPlatform plat8 = platBuilder.position( 6100, 350 ).name( "plat146" )
+		TiledPlatform plat8 = platBuilder.position( 6100, 375 ).name( "plat146" )
 				.dimensions( 3, 1) .kinematic( )
 				.friction( 1.0f ).oneSided( true )
 				.buildTilePlatform( );
 		skel3.addKinematicPlatform( plat8 );
+		
+//		
+//		TiledPlatform plat9 = platBuilder.position( 6700, 600 ).name( "plat149" )
+//				.dimensions( 10, 1) .kinematic( )
+//				.friction( 1.0f )
+//				.buildTilePlatform( );
+//		skel3.addKinematicPlatform( plat9 );
+		
 		
 		RopeBuilder ropeBuilder = new RopeBuilder( level.world );
 		ropeBuilder.name( "rope1" ).position(6100, 1000 ).links( 5 )
@@ -125,8 +138,20 @@ public class GleedTestScreen extends Screen {
 		Rope rope = ropeBuilder.buildRope( );
 		skel3.addRope( rope );
 		
-
 		
+//
+//		PuzzleScrew shoulderJoint = new PuzzleScrew( "dynamic_skeleton_joint",
+//				new Vector2( 6700, 600 ), 100, plat9, level.world, 0,
+//				false );
+////		shoulderJoint.addStructureJoint( plat9 );
+////		shoulderJoint.addStructureJoint( plat6 );
+//		shoulderJoint.puzzleManager.addEntity( plat9 );
+//		//shoulderJoint.puzzleManager.addEntity( plat6 );
+//		PuzzleRotateTweenMover rtm2 = new PuzzleRotateTweenMover( 1,
+//				Util.PI / 2, true, PuzzleType.ON_OFF_MOVER );
+//		shoulderJoint.puzzleManager.addMover( rtm2 );
+//		
+//		skel3.addScrewForDraw( shoulderJoint );
 		level.root.addSkeleton( skel2 );
 		level.root.addSkeleton( skel3 );
 	}
@@ -145,6 +170,8 @@ public class GleedTestScreen extends Screen {
 
 	}
 }
+
+
 /*
 SkeletonBuilder b = new SkeletonBuilder( level.world );
 Skeleton s = b.name( "skelelele" ).position( 0,100 ).texBackground( WereScrewedGame.manager.get("data/common/robot/alphabot_tile_interior.png",Texture.class) ).vert( -100,-100 ).vert( -100,100 ).vert( 100,0 ).build( );
