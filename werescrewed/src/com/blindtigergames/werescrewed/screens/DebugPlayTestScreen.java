@@ -136,9 +136,14 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		floor7( );
 		initCheckPoints( );
 
-		testAnchor = new Anchor( new Vector2( 10000, 10 ) );
+		// Create anchor with start position and buffer as parameters
+		testAnchor = new Anchor( new Vector2( 10000, 10 ), new Vector2( 10000,
+				10000 ) );
+		// Add to the universally accessible anchor list
 		AnchorList.getInstance( ).addAnchor( testAnchor );
+		// Set timer in steps
 		testAnchor.setTimer( 200 );
+		// Activate it
 		testAnchor.activate( );
 
 		rootSkeleton.addSkeleton( skeleton );
