@@ -30,12 +30,16 @@ public class Camera {
 	// translation
 	// private static final float SPEED_TARGET_MODIFIER = 5f;
 	private static final float BUFFER_RATIO = .5f;
-	private static final float ACCELERATION_RATIO = .001f;
-	private static final float DECELERATION_RATIO = .002f;
-	private static final float ACCELERATION_BUFFER_RATIO = .1f;
-	private static final float TARGET_BUFFER_RATIO = .02f;
+	// private static final float ACCELERATION_RATIO = .0005f;
+	// private static final float DECELERATION_RATIO = .004f;
+	private static final float ACCELERATION_BUFFER_RATIO = .2f;
+	private static final float TARGET_BUFFER_RATIO = .03f;
 	private static final float MINIMUM_FOLLOW_SPEED = .1f;
-	private static final float MAX_ANGLE_DIFF = 45f;
+	private static final float MAX_ANGLE_DIFF = 100f;
+	private static final float MAX_SPEED = 15;
+	private static final float MIN_SPEED = 10f;
+	private static final float ACCELERATION = .1f;
+	private static final float DECELERATION = -.5f;
 	private float accelerationBuffer;
 	private Vector2 translateVelocity;
 	private float translateSpeed;
@@ -74,7 +78,7 @@ public class Camera {
 
 	private void initializeVars( float viewportWidth, float viewportHeight,
 			World world ) {
-		camera = new OrthographicCamera( 1, viewportHeight / viewportWidth );//1, viewportHeight / viewportWidth
+		camera = new OrthographicCamera( 1, viewportHeight / viewportWidth );
 		this.viewportHeight = Gdx.graphics.getHeight( );
 		this.viewportWidth = Gdx.graphics.getWidth( );
 		camera.viewportWidth = this.viewportWidth;
@@ -302,6 +306,9 @@ public class Camera {
 				tempAngle = anchorList.getMidpointVelocity( ).angle( )
 						- translateVelocity.angle( );
 				tempAngle = Math.abs( tempAngle );
+				if ( tempAngle > 180 ) {
+					tempAngle = 360 - tempAngle;
+				}
 				if ( trans_x || trans_y ) {
 					if ( trans_x )
 						camera.position.x = translateTarget.x;
@@ -356,31 +363,45 @@ public class Camera {
 		Vector2.tmp.sub( center2D );
 
 		if ( Vector2.tmp.len( ) > accelerationBuffer ) {
-			translateAcceleration = ( Vector2.tmp.len( ) * ACCELERATION_RATIO );
+			// translateAcceleration = ( Vector2.tmp.len( ) * ACCELERATION_RATIO
+			// );
+			translateAcceleration = ACCELERATION;
+
 		} else {
-			translateAcceleration = -1f * Vector2.tmp.len( )
-					* DECELERATION_RATIO;
+			// translateAcceleration = -1f * Vector2.tmp.len( )
+			// * DECELERATION_RATIO;
+			translateAcceleration = DECELERATION;
 		}
 
-		if ( ( translateSpeed + translateAcceleration ) < Vector2.tmp.len( ) - 1f )
-			translateSpeed += translateAcceleration;
-		else
-			translateSpeed = Vector2.tmp.len( ) - 1f;
+		float nextSpeed = translateSpeed + translateAcceleration;
+		if ( nextSpeed < Vector2.tmp.len( ) ) {
+			if ( nextSpeed > MIN_SPEED && nextSpeed < MAX_SPEED ) {
+				translateSpeed = nextSpeed;
+			} else if ( nextSpeed < MIN_SPEED ) {
+				translateSpeed = MIN_SPEED;
+			} else {
+				translateSpeed = MAX_SPEED;
+			}
+		} else {
+			translateSpeed = Vector2.tmp.len( );
+		}
 
-		// make sure camera never moves faster than the anchor midpoint
+		// make sure camera never moves slower than the anchor midpoint
 		if ( trans_x && trans_y ) {
 			if ( translateSpeed < anchorList.getMidpointVelocity( ).len( ) )
 				translateSpeed = anchorList.getMidpointVelocity( ).len( );
 		} else if ( trans_x ) {
 			if ( translateSpeed < Math.cos( anchorList.getMidpointVelocity( )
-					.len( ) ) )
+					.angle( ) ) * anchorList.getMidpointVelocity( ).len( ) )
 				translateSpeed = ( float ) Math.cos( anchorList
-						.getMidpointVelocity( ).len( ) );
+						.getMidpointVelocity( ).angle( ) )
+						* anchorList.getMidpointVelocity( ).len( );
 		} else if ( trans_y ) {
 			if ( translateSpeed < Math.sin( anchorList.getMidpointVelocity( )
-					.len( ) ) )
+					.angle( ) ) * anchorList.getMidpointVelocity( ).len( ) )
 				translateSpeed = ( float ) Math.sin( anchorList
-						.getMidpointVelocity( ).len( ) );
+						.getMidpointVelocity( ).angle( ) )
+						* anchorList.getMidpointVelocity( ).len( );
 		}
 
 		Vector2.tmp.nor( );
