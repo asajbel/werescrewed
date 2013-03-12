@@ -52,7 +52,6 @@ public class HazardScreen implements com.badlogic.gdx.Screen {
 	private Electricity elec;
 	private Saws saw;
 	private SpikesBuilder spikesBuilder;
-	private Spikes spikes, spikes2;
 	private boolean debug = true;
 	private boolean debugTest = true;
 
@@ -113,10 +112,13 @@ public class HazardScreen implements com.badlogic.gdx.Screen {
 		saw = new Saws( "Saw1", new Vector2( -2000.0f, 40.0f ),
 				2, world, true );
 		 */
-		spikes = new Spikes( "Spikes1", new Vector2( -1250.0f, -10.0f ), 
+		Spikes spikes = new Spikes( "Spikes1", new Vector2( -1250.0f, -10.0f ), 
 				1, 12, world, true, false, false );
-		spikes2 = spikesBuilder.position( -1050.0f, -10.0f ).dimensions( 1, 8 )
+		Spikes spikes2 = spikesBuilder.position( -1050.0f, -10.0f ).dimensions( 1, 8 )
 				.left( ).buildSpikes( );
+		//add the spikes to the skeleton
+		skeleton.addKinematicPlatform( spikes );
+		skeleton.addKinematicPlatform( spikes2 );
 	}
 
 	private void initCrushTest( ) {
@@ -172,15 +174,11 @@ public class HazardScreen implements com.badlogic.gdx.Screen {
 		player2.update( deltaTime );
 		progressManager.update( deltaTime );
 		rootSkeleton.update( deltaTime );
-		spikes.update( deltaTime );
-		spikes2.update( deltaTime );
 		batch.setProjectionMatrix( cam.combined( ) );
 		batch.begin( );
 
 		rootSkeleton.draw( batch );
 		progressManager.draw( batch );
-		spikes.draw( batch );
-		spikes2.draw( batch );
 		player1.draw( batch );
 		player2.draw( batch );
 
