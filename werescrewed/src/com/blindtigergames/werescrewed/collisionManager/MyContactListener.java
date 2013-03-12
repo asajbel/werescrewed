@@ -169,7 +169,6 @@ public class MyContactListener implements ContactListener {
 							.getUserData( );
 					Entity object = ( Entity ) objectFix.getBody( )
 							.getUserData( );
-					Gdx.app.log( "" + player.getEntityType( ) , "" + object.getEntityType( ) );
 					if ( player.getEntityType( ) != null
 							&& player.getEntityType( ) == EntityType.EVENTTRIGGER ) {
 						EventTrigger et = ( EventTrigger ) player;

@@ -386,8 +386,13 @@ public class Player extends Entity {
 			}
 		}
 		if ( ( ( topCrush && botCrush ) || ( leftCrush && rightCrush ) )
-				&& playerState != PlayerState.JumpingOffScrew ) {
+				&& ( playerState != PlayerState.JumpingOffScrew && playerState != PlayerState.Screwing ) ) {
+			Gdx.app.log( "test state:", " " + playerState );
 			this.killPlayer( );
+			Gdx.app.log( "\nright: ", "" + rightCrush );
+			Gdx.app.log( "left: ", "" + leftCrush );
+			Gdx.app.log( "top: ", "" + topCrush );
+			Gdx.app.log( "bottom: ", "" + botCrush );
 		} else if ( steamCollide ) {
 			steamResolution( );
 		}
@@ -1768,10 +1773,11 @@ public class Player extends Entity {
 			rightCrush = value;
 		else if ( fixture == leftSensor )
 			leftCrush = value;
-		// Gdx.app.log("\nright: ", "" + rightCrush);
-		// Gdx.app.log("left: ", "" + leftCrush);
-		// Gdx.app.log("top: ", "" + topCrush);
-		// Gdx.app.log("bottom: ", "" + botCrush);
+		 //Gdx.app.log("\nright: ", "" + rightCrush);
+		 //Gdx.app.log("left: ", "" + leftCrush);
+		 //Gdx.app.log("top: ", "" + topCrush);
+		 //Gdx.app.log("bottom: ", "" + botCrush);
+		 
 	}
 
 	/**
