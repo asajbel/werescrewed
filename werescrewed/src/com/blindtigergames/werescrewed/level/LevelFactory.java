@@ -14,6 +14,8 @@ import com.badlogic.gdx.utils.XmlReader;
 import com.badlogic.gdx.utils.XmlReader.Element;
 import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.camera.Camera;
+import com.blindtigergames.werescrewed.checkpoints.CheckPoint;
+import com.blindtigergames.werescrewed.checkpoints.ProgressManager;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityCategory;
 import com.blindtigergames.werescrewed.entity.EntityDef;
@@ -49,6 +51,7 @@ import com.blindtigergames.werescrewed.util.Util;
 public class LevelFactory {	
 	protected XmlReader reader;
 	protected Level level;
+	protected String levelName;
 	protected EnumMap<GleedTypeTag, LinkedHashMap<String, Item>> items;
 	protected LinkedHashMap<String,Entity> entities;
 	protected LinkedHashMap<String,TimelineTweenMover> movers;
@@ -83,7 +86,8 @@ public class LevelFactory {
 	}
 	
 	public Level load(String filename){
-		skeletons.put( "root", level.root );
+		levelName = filename;
+		//skeletons.put( "root", level.root );
 		Element root;
 		Array<Element> elements = new Array<Element>();
 
@@ -265,6 +269,8 @@ public class LevelFactory {
 			constructPath(item);
 		} else if (bluePrints.equals( "rope" )){
 			constructRope(item);
+		} else if (bluePrints.equals( "checkpoint" )){
+			constructCheckpoint(item);
 		}
 		
 		else if (item.getDefinition().getCategory( ) == EntityCategory.COMPLEX_PLATFORM ){
@@ -653,6 +659,19 @@ public class LevelFactory {
 		}
 		out.getCrushing( );
 
+	}
+	
+	
+	public void constructCheckpoint(Item item){
+		
+		if(level.progressManager == null){
+			level.progressManager = new ProgressManager(level.player1, level.player2, level.world);
+		}
+		String skel = item.skeleton;
+		Skeleton parent = loadSkeleton( skel );
+		level.progressManager
+		.addCheckPoint( new CheckPoint( item.name, item.pos, parent, level.world, level.progressManager,
+				levelName ) );
 	}
 	
 
