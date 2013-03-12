@@ -351,4 +351,11 @@ public class Platform extends Entity {
 				frameRate ) );
 		body.setAngularVelocity( ( newRotation - body.getAngle( ) ) * frameRate );
 	}
+	
+	@Override
+	public void setCrushing( boolean value ) {
+		crushing = value;
+		oneSided = false;
+	}
+	
 }

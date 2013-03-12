@@ -809,7 +809,7 @@ public class Entity implements GleedLoadable {
 	}
 
 	/**
-	 * sets flag to determine if an entity can crush
+	 * sets flag to determine if an entity can crush, also turns off OneSided
 	 * 
 	 * @param value
 	 *            boolean
