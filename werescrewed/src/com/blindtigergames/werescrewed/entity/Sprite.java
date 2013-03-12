@@ -42,7 +42,10 @@ public class Sprite extends com.badlogic.gdx.graphics.g2d.Sprite implements I_Dr
     	super();
     	atlas = a;
     	animator = anim;
-    	currentFrame = atlas.findRegion( anim.getRegion( ), anim.getIndex( ) );
+    	String regionName = anim.getRegion( );
+    	int regionIndex = anim.getIndex( );
+    	Gdx.app.log( "Sprite (Animated)", "Region:"+regionName+" Index:"+regionIndex );
+    	currentFrame = atlas.findRegion( regionName, regionIndex );
     	this.setRegion(currentFrame);
     	this.setBounds( 0.0f, 0.0f, currentFrame.getRegionWidth( ), currentFrame.getRegionHeight( ) );
     }

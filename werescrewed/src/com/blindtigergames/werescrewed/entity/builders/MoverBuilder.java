@@ -1,11 +1,12 @@
 package com.blindtigergames.werescrewed.entity.builders;
 
 import java.util.ArrayList;
-import java.util.regex.Pattern;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.Array;
-import com.blindtigergames.werescrewed.entity.mover.*;
+import com.blindtigergames.werescrewed.entity.mover.IMover;
+import com.blindtigergames.werescrewed.entity.mover.MoverType;
+import com.blindtigergames.werescrewed.entity.mover.RockingMover;
 
 public class MoverBuilder {
 

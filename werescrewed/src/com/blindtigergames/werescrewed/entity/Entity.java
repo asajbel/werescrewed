@@ -33,7 +33,7 @@ import com.blindtigergames.werescrewed.util.Util;
  */
 public class Entity implements GleedLoadable {
 	private static final int INITAL_CAPACITY = 3;
-	
+
 	public String name;
 	public EntityDef type;
 	public Sprite sprite;
@@ -49,9 +49,9 @@ public class Entity implements GleedLoadable {
 	protected boolean visible;
 	protected boolean maintained;
 	protected EntityType entityType;
+	private ArrayList< IMover > moverArray;
 	protected ArrayList<Sprite> decals;
 	protected ArrayList<Vector2> decalOffsets;
-	private ArrayList<IMover> moverArray;
 	private RobotState currentRobotState;
 	private EnumMap< RobotState, Integer > robotStateMap;
 
@@ -75,7 +75,7 @@ public class Entity implements GleedLoadable {
 	 */
 	public Entity( String name, EntityDef type, World world,
 			Vector2 positionPixels, float rot, Vector2 scale, Texture texture,
-			boolean solid, float anchRadius ) {
+			boolean solid ) {
 		this.construct( name, solid );
 		this.type = type;
 		this.world = world;
@@ -83,8 +83,8 @@ public class Entity implements GleedLoadable {
 		this.body = constructBodyByType( );
 		this.decals = new ArrayList<Sprite>();
 		this.decalOffsets = new ArrayList<Vector2>();
-		this.setPixelPosition( positionPixels );
-		createAnchor(anchRadius);
+		setPixelPosition( positionPixels );
+		createAnchor( );
 	}
 
 	/**
@@ -101,26 +101,33 @@ public class Entity implements GleedLoadable {
 	 *            boolean determining whether or not the player can stand on it
 	 */
 	public Entity( String name, Vector2 positionPixels, Texture texture,
-			Body body, boolean solid , float anchRadius) {
+			Body body, boolean solid ) {
 		this.construct( name, solid );
 		this.sprite = constructSprite( texture );
 		this.body = body;
 		if ( body != null ) {
 			world = body.getWorld( );
-			sprite.setScale( Util.PIXEL_TO_BOX );
+			// sprite.setScale( Util.PIXEL_TO_BOX );
 		}
 		this.setPixelPosition( positionPixels );
 	}
 
 	/**
 	 * Construct an entity that uses a PolySprite
-	 * @param name, oh you know.
-	 * @param positionPixels POSITION IN PIXELS
-	 * @param texture texture to fill the polysprite with
-	 * @param verts an Array<Vector2> of vertex points of the poly. 
-	 * 		Must be concave or it will look weird.
-	 * @param body - same old
-	 * @param solid same as it always was.
+	 * 
+	 * @param name
+	 *            , oh you know.
+	 * @param positionPixels
+	 *            POSITION IN PIXELS
+	 * @param texture
+	 *            texture to fill the polysprite with
+	 * @param verts
+	 *            an Array<Vector2> of vertex points of the poly. Must be
+	 *            concave or it will look weird.
+	 * @param body
+	 *            - same old
+	 * @param solid
+	 *            same as it always was.
 	 * @author stew
 	 */
 	public Entity( String name, Vector2 positionPixels, Texture texture,
@@ -132,11 +139,6 @@ public class Entity implements GleedLoadable {
 			world = body.getWorld( );
 		}
 		this.setPixelPosition( positionPixels );
-	}
-
-	public Entity( String name, Vector2 positionPixels, Texture texture,
-			Body body, boolean solid){
-		this(name, positionPixels, texture, body, solid, 0.0f);
 	}
 
 	/**
@@ -179,7 +181,7 @@ public class Entity implements GleedLoadable {
 		if ( pixels != null )
 			setPixelPosition( pixels.x, pixels.y );
 	}
-	
+
 	/**
 	 * Set position by meters!!
 	 * 
@@ -218,7 +220,7 @@ public class Entity implements GleedLoadable {
 		if ( sprite != null && visible ) {
 			sprite.draw( batch );
 		}
-		//drawOrigin(batch);
+		// drawOrigin(batch);
 	}
 
 	public void drawOrigin( SpriteBatch batch ) {
@@ -247,7 +249,7 @@ public class Entity implements GleedLoadable {
 			world.destroyBody( body );
 		}
 	}
-	
+
 	public void update( float deltaTime ) {
 		if ( body != null && anchor != null ) {
 			updateAnchor( );
@@ -317,6 +319,7 @@ public class Entity implements GleedLoadable {
 			// Definitions for loaded sprites
 			origin = new Vector2( type.origin.x, type.origin.y );
 			sprite.setScale( type.spriteScale.x, type.spriteScale.y );
+			this.offset.set( type.origin.x, type.origin.x );
 		} else {
 			// Definitions for non-loaded sprites
 			origin = new Vector2( sprite.getWidth( ) / 2,
@@ -732,15 +735,12 @@ public class Entity implements GleedLoadable {
 				+ body.isAwake( );
 	}
 
-
-	private void createAnchor( float anchRadius ){
-		if ( anchRadius >= 0 ) {
-			Vector2 centPos = new Vector2( body.getWorldCenter( ).x
-					* Util.BOX_TO_PIXEL, body.getWorldCenter( ).y
-					* Util.BOX_TO_PIXEL );
-			this.anchor = new Anchor( centPos, world, anchRadius );
-			AnchorList.getInstance( ).addAnchor( anchor );
-		}
+	private void createAnchor( ) {
+		Vector2 centPos = new Vector2( body.getWorldCenter( ).x
+				* Util.BOX_TO_PIXEL, body.getWorldCenter( ).y
+				* Util.BOX_TO_PIXEL );
+		this.anchor = new Anchor( centPos );
+		AnchorList.getInstance( ).addAnchor( anchor );
 	}
 
 	/**

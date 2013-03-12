@@ -96,7 +96,7 @@ public class SimpleFrameAnimator implements IAnimator {
 
 	@Override
 	public int getIndex( ) {
-		return 0;
+		return -1;
 	}
 
 	@Override

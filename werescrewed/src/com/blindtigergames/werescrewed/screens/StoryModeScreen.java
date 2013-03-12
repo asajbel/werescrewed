@@ -14,6 +14,7 @@ public class StoryModeScreen implements com.badlogic.gdx.Screen {
 	private SpriteBatch batch = null;
 	private OrthographicCamera camera = null;
 	private BitmapFont font = null;
+	private BitmapFont fancyFont = null;
 	private Texture logo = null;
 	private int lineHeight = 0;
 	private Label screenLabel = null;
@@ -28,15 +29,16 @@ public class StoryModeScreen implements com.badlogic.gdx.Screen {
 	public StoryModeScreen( ) {
 		batch = new SpriteBatch( );
 		font = new BitmapFont( );
+		fancyFont = WereScrewedGame.manager.getFont( "ornatique" );
 		logo =  WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-				 + "/common/blind_tiger_logo_720.png", Texture.class );
+				 + "/common/title_background.png", Texture.class );
 		lineHeight = Math.round( 2.5f * font.getCapHeight( ) );
-		screenLabel = new Label("STORY MODE", font);
-		newGameButton = new Button("New Game", font,
+		screenLabel = new Label("STORY MODE", fancyFont);
+		newGameButton = new Button("New Game", fancyFont,
 				new ScreenSwitchHandler(ScreenType.CHARACTER_SELECT));
-		loadGameButton = new Button("Load Game", font,
+		loadGameButton = new Button("Load Game", fancyFont,
 				new ScreenSwitchHandler(ScreenType.PLAYTEST));
-		backButton = new Button( "Back", font, new ScreenSwitchHandler(
+		backButton = new Button( "Back", fancyFont, new ScreenSwitchHandler(
 				ScreenType.MAIN_MENU ) );
 	}
 
@@ -83,7 +85,7 @@ public class StoryModeScreen implements com.badlogic.gdx.Screen {
 		int centerX = width / 2;
 		int centerY = height / 2;
 		screenLabel.setX( centerX - screenLabel.getWidth( )/2);
-		screenLabel.setY( centerY + 7 * lineHeight);
+		screenLabel.setY( centerY + 6 * lineHeight);
 		newGameButton.setX( centerX - newGameButton.getWidth( )/2);
 		newGameButton.setY( centerY + 4 * lineHeight);
 		loadGameButton.setX( centerX - loadGameButton.getWidth( )/2 );

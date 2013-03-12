@@ -32,19 +32,20 @@ class MainMenuScreen implements com.badlogic.gdx.Screen {
 		batch = new SpriteBatch( );
 		font = new BitmapFont( );
 		fancyFont = WereScrewedGame.manager.getFont( "ornatique" );
+		
 		//font = WereScrewedGame.manager.getFont( "ornatique" );
 		logo =  WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-				 + "/common/blind_tiger_logo_720.png", Texture.class );
+				 + "/common/title_background.png", Texture.class );
 		lineHeight = Math.round( 2.5f * font.getCapHeight( ) );
 		headingLabel = new Label( "We're Screwed!!", fancyFont );
 		
-		storyButton = new Button("Start", font,
+		storyButton = new Button("Start", fancyFont,
 				new ScreenSwitchHandler(ScreenType.STORY));
-		levelSelectButton = new Button( "Level Select", font,
+		levelSelectButton = new Button( "Level Select", fancyFont,
 				new ScreenSwitchHandler(ScreenType.LEVEL_SELECT));
-		optionsButton = new Button("Options", font,
+		optionsButton = new Button("Options", fancyFont,
 				new ScreenSwitchHandler( ScreenType.OPTIONS));
-		exitButton = new Button( "Exit", font, new ButtonHandler( ) {
+		exitButton = new Button( "Exit", fancyFont, new ButtonHandler( ) {
 			@Override
 			public void onClick( ) {
 				Gdx.app.exit( );
@@ -59,7 +60,7 @@ class MainMenuScreen implements com.badlogic.gdx.Screen {
 		Gdx.gl.glClear( GL10.GL_COLOR_BUFFER_BIT );
 		batch.begin( );
 		batch.draw(logo, 0, 0);
-		headingLabel.draw( batch );
+		//headingLabel.draw( batch );
 		storyButton.draw( batch, camera );
 		levelSelectButton.draw( batch, camera );
 		optionsButton.draw( batch, camera );

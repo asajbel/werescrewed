@@ -8,6 +8,7 @@ import java.util.LinkedHashMap;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.XmlReader;
 import com.badlogic.gdx.utils.XmlReader.Element;
@@ -19,12 +20,14 @@ import com.blindtigergames.werescrewed.entity.RobotState;
 import com.blindtigergames.werescrewed.entity.builders.EntityBuilder;
 import com.blindtigergames.werescrewed.entity.builders.PlatformBuilder;
 import com.blindtigergames.werescrewed.entity.builders.PlayerBuilder;
+import com.blindtigergames.werescrewed.entity.builders.RopeBuilder;
 import com.blindtigergames.werescrewed.entity.builders.ScrewBuilder;
 import com.blindtigergames.werescrewed.entity.builders.SkeletonBuilder;
 import com.blindtigergames.werescrewed.entity.mover.TimelineTweenMover;
 import com.blindtigergames.werescrewed.entity.tween.PathBuilder;
 import com.blindtigergames.werescrewed.platforms.Platform;
 import com.blindtigergames.werescrewed.platforms.TiledPlatform;
+import com.blindtigergames.werescrewed.rope.Rope;
 import com.blindtigergames.werescrewed.screws.BossScrew;
 import com.blindtigergames.werescrewed.screws.PuzzleScrew;
 import com.blindtigergames.werescrewed.screws.Screw;
@@ -254,6 +257,8 @@ public class LevelFactory {
 			constructPath(item);
 		} else if( bluePrints.equals(  "skeletonpoly" )){
 			
+		} else if (bluePrints.equals( "rope" )){
+			constuctRope(item);
 		}
 		
 		else if (item.getDefinition().getCategory( ) == EntityCategory.COMPLEX_PLATFORM ){
@@ -353,9 +358,9 @@ public class LevelFactory {
 	
 	private void constructSkeleton(Item item){
 		if(item.name.equals( "RootSkeleton" )){
-			level.rootSkeleton = new RootSkeleton(item.name, item.pos, null, level.world);
-			skeletons.put( item.name, level.rootSkeleton );
-			entities.put( item.name, level.rootSkeleton);
+			level.root = new RootSkeleton(item.name, item.pos, null, level.world);
+			skeletons.put( item.name, level.root );
+			entities.put( item.name, level.root);
 			
 		} else {
 			//attach skeleton to skeleton
@@ -400,7 +405,8 @@ public class LevelFactory {
 		float height = Gdx.graphics.getHeight( ) / zoom;
 		
 		level.camera =  new Camera( width, height, level.world);
-		
+
+		//level.camera.camera.lookAt(  item.pos.x, item.pos.y, 0f );
 		//add position to camera later
 	}
 	
@@ -475,6 +481,17 @@ public class LevelFactory {
 			isCrushable = true;
 		}
 		
+		boolean rotatingcenter = false;
+		boolean motor = false;
+		float speed = 1f;
+		if(item.props.containsKey( "rotatingcenter" )){
+			rotatingcenter = true;
+			if(item.props.get( "rotatingcenter" ).equals( "motor" )){
+				motor = true;
+				speed = Float.parseFloat( item.props.get("motorspeed") );
+
+			}
+		}
 		Platform out = new PlatformBuilder(level.world)
 		.name( item.name )
 		.type( item.getDefinition( ) )
@@ -491,6 +508,13 @@ public class LevelFactory {
 		Gdx.app.log("GleedLoader", "Complex Platform loaded:"+item.name);
 		Skeleton parent = loadSkeleton(item.skeleton);
 		if (isDynamic){
+			if(rotatingcenter){
+				if(motor){
+					parent.addPlatformRotatingCenterWithMot( out, speed );
+				}else{
+					parent.addPlatformRotatingCenter( out );
+				}
+			}
 			parent.addDynamicPlatform( out );
 		} else {
 			parent.addKinematicPlatform( out );
@@ -610,43 +634,57 @@ public class LevelFactory {
 //			times.set(pointElems.size-1, 1.0f);
 //		}
 		
+		if( item.props.containsKey( "delay" )){
+			float delay = Float.parseFloat( item.props.get("delay") );
+			pBuilder.delay( delay );
+			Gdx.app.log( "LevelFactory", "path has delay "+ delay);
+		}
+		
 		// Starts at one because first point on a path should start at 0,0 by default
 		for (int i = 1; i < pointElems.size; i++){
 			vElem = pointElems.get( i );
 			point = new Vector2(vElem.getFloat( "X" )*GLEED_TO_GDX_X, vElem.getFloat( "Y" )*GLEED_TO_GDX_Y);
 			pathPoints.add( point );
 			Gdx.app.log( "LevelFactory", "Point "+i+" has coordinates "+point.toString( )+".");
+			
+		}
+		for (int i = 1; i <= pathPoints.size; ++i){
 			timeTag = "point"+i+"time";
 			if (item.props.containsKey( timeTag )){
 				float time = Float.parseFloat( item.props.get( timeTag ));
 				if (time >= 0.0f){
-					times.set( i, time );
+					times.set( i-1, time );
 				}
 			}
-			Gdx.app.log( "GleedLoader", "Point "+i+" has time "+times.get(i)+".");
-//			if (times.get( i ) >= 0.0f){
-//				Gdx.app.log( "GleedLoader", "Point "+i+" has time "+times.get(i)+".");
-//				if (i > frontPoint+1){
-//					float div = (times.get( i ) - frontTime)/(float)(i - frontPoint);
-//					for (int j = i-1; j > frontPoint; j--){
-//						times.set(j, frontTime + div*(j-frontPoint));
-//						Gdx.app.log( "GleedLoader", "Backtracking: Setting point "+j+" to time "+times.get(j)+".");
-//					}
-//					frontPoint = i;
-//					frontTime = times.get( i );
-//				}
-//			}
+			Gdx.app.log( "LevelFactory", "Point "+i+" has time "+times.get(i)+".");
 		}
-
 		for (int i = 0; i < pathPoints.size; i++){
 			pBuilder.target( pathPoints.get(i).x, pathPoints.get(i).y, times.get(i).floatValue( ) );
 		}
+		
+		
+		
 		TimelineTweenMover out = pBuilder.build( );
 		movers.put(item.name, out);
 		p.addMover( out, RobotState.IDLE );
 		p.setActive( true );
 	}
 
+	public void constuctRope(Item item){
+		RopeBuilder ropeBuilder = new RopeBuilder( level.world );
+		ropeBuilder.name( item.name ).position(item.pos.x, item.pos.y ).links( 5 )
+				.createScrew( );
+		
+		
+		if(item.props.containsKey( "attachedto" )){
+			Entity e = loadEntity(item.props.get( "attachedto" ));
+			ropeBuilder.attachTo( e );
+		}
+		
+		Skeleton parent = loadSkeleton(item.skeleton);
+		Rope rope = ropeBuilder.buildRope( );
+		parent.addRope( rope );
+	}
 	public Screw loadScrew(Item item){
 		;
 		ScrewType sType = ScrewType.fromString( item.defName );

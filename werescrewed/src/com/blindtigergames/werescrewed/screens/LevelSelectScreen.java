@@ -17,6 +17,7 @@ public class LevelSelectScreen implements com.badlogic.gdx.Screen {
 	private SpriteBatch batch = null;
 	private OrthographicCamera camera = null;
 	private BitmapFont font = null;
+	private BitmapFont fancyFont = null;
 	private Texture logo = null;
 	private Label screenLabel = null;
 	private Button playButton = null;
@@ -36,26 +37,25 @@ public class LevelSelectScreen implements com.badlogic.gdx.Screen {
 	public LevelSelectScreen(){
 		batch = new SpriteBatch( );
 		font = new BitmapFont( );
+		fancyFont = WereScrewedGame.manager.getFont( "ornatique" );
 		logo =  WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-				 + "/common/blind_tiger_logo_720.png", Texture.class );
+				 + "/common/title_background.png", Texture.class );
 		lineHeight = Math.round( 2.5f * font.getCapHeight( ) );
-		screenLabel = new Label( "Level Select", font);
-		playButton = new Button( "Physics Test Screen", font,
+		screenLabel = new Label( "Level Select", fancyFont);
+		playButton = new Button( "Physics Test Screen", fancyFont,
 				new ScreenSwitchHandler( ScreenType.PHYSICS ) );
-		resurrectButton = new Button( "Parallax Test Screen", font,
+		resurrectButton = new Button( "Parallax Test Screen", fancyFont,
 				new ScreenSwitchHandler( ScreenType.RESURRECT ) );
-		hazardButton = new Button ( "Hazard Test Screen", font,
+		hazardButton = new Button ( "Hazard Test Screen", fancyFont,
 				new ScreenSwitchHandler( ScreenType.HAZARD ) );
-		testButton = new Button( "Playtest Screen", font,
+		testButton = new Button( "Playtest Screen", fancyFont,
 				new ScreenSwitchHandler( ScreenType.PLAYTEST ) );
-		gleedButton = new Button( "Gleed Screen", font,
+		gleedButton = new Button( "Gleed Screen", fancyFont,
 				new ScreenSwitchHandler( ScreenType.GLEED ) );
-		gleedButton = new Button( "PolySprite Screen", font,
-				new ScreenSwitchHandler( ScreenType.POLY ) );
-		level1Button = new Button( "Level 1", font, 
+		level1Button = new Button( "Level 1", fancyFont, 
 				new ScreenSwitchHandler(ScreenType.LOADING_1 ) );
 		
-		backButton = new Button( "Back", font, new ScreenSwitchHandler(
+		backButton = new Button( "Back", fancyFont, new ScreenSwitchHandler(
 				ScreenType.MAIN_MENU ) );
 		
 	}
@@ -108,7 +108,7 @@ public class LevelSelectScreen implements com.badlogic.gdx.Screen {
 		int centerX = width / 2;
 		int centerY = height / 2;
 		screenLabel.setX( centerX - screenLabel.getWidth( )/2);
-		screenLabel.setY( centerY + 7 * lineHeight);
+		screenLabel.setY( centerY + 6 * lineHeight);
 		testButton.setX( centerX - testButton.getWidth( ) / 2 );
 		testButton.setY( centerY + 3 * lineHeight );
 		playButton.setX( centerX - playButton.getWidth( ) / 2 );

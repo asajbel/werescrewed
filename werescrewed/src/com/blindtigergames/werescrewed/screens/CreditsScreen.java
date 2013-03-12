@@ -17,6 +17,7 @@ class CreditsScreen implements com.badlogic.gdx.Screen {
 	private SpriteBatch batch = null;
 	private OrthographicCamera camera = null;
 	private BitmapFont font = null;
+	private BitmapFont fancyFont = null;
 	private Texture logo = null;
 	private Label screenLabel = null;
 	private Label authorLabel = null;
@@ -28,14 +29,15 @@ class CreditsScreen implements com.badlogic.gdx.Screen {
 	public CreditsScreen( ) {
 		batch = new SpriteBatch( );
 		font = new BitmapFont( );
+		fancyFont = WereScrewedGame.manager.getFont( "ornatique" );
 		logo =  WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-				 + "/common/blind_tiger_logo_720.png", Texture.class );
+				 + "/common/title_background.png", Texture.class );
 		lineHeight = Math.round( 2.5f * font.getCapHeight( ) );
-		screenLabel = new Label("CREDITS",font);
+		screenLabel = new Label("CREDITS",fancyFont);
 		authorLabel = new Label( "", font );
 		licenseLabel = new Label( "", font );
 		versionLabel = new Label( "" + Version.VERSION, font );
-		backButton = new Button( "Back", font, new ScreenSwitchHandler(
+		backButton = new Button( "Back", fancyFont, new ScreenSwitchHandler(
 				ScreenType.MAIN_MENU ) );
 	}
 
@@ -61,7 +63,7 @@ class CreditsScreen implements com.badlogic.gdx.Screen {
 		int centerX = width / 2;
 		int centerY = height / 2;
 		screenLabel.setX( centerX - screenLabel.getWidth()/2);
-		screenLabel.setY( centerY + 7 * lineHeight );
+		screenLabel.setY( centerY + 6 * lineHeight );
 		authorLabel.setX( centerX - authorLabel.getWidth( ) / 2 );
 		authorLabel.setY( centerY + lineHeight );
 		licenseLabel.setX( centerX - licenseLabel.getWidth( ) / 2 );

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import aurelienribon.tweenengine.Tween;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -16,6 +17,9 @@ import com.blindtigergames.werescrewed.camera.Camera;
 import com.blindtigergames.werescrewed.collisionManager.MyContactListener;
 import com.blindtigergames.werescrewed.debug.SBox2DDebugRenderer;
 import com.blindtigergames.werescrewed.entity.Entity;
+import com.blindtigergames.werescrewed.entity.tween.EntityAccessor;
+import com.blindtigergames.werescrewed.entity.tween.PlatformAccessor;
+import com.blindtigergames.werescrewed.platforms.Platform;
 import com.blindtigergames.werescrewed.entity.PolySprite;
 import com.blindtigergames.werescrewed.entity.RootSkeleton;
 import com.blindtigergames.werescrewed.entity.Skeleton;
@@ -53,6 +57,7 @@ public class Level {
 	public Skeleton root;
 	ArrayList<Platform> platforms;
 	public PolySprite polySprite;
+	private boolean debugTest, debug;
 	
 	public Level( ){
 		
@@ -72,11 +77,27 @@ public class Level {
 			.buildPlayer() );
 		}
 
-		platforms = new ArrayList<Platform>();
-		root = new Skeleton("root", new Vector2(0,0), null, world);
+
+//		rootSkeleton = new RootSkeleton("root", new Vector2(0,0), null, world);
+//		root = new Skeleton("root1", new Vector2(0,0), null, world);
+//		rootSkeleton.addSkeleton( root );
 		
 		Tween.registerAccessor( Platform.class, new PlatformAccessor( ) );
 		Tween.registerAccessor( Entity.class, new EntityAccessor( ) );
+
+		
+		/*Array<Vector2> verts = new Array<Vector2>();
+		verts.add( new Vector2(-500,-500) );
+		verts.add( new Vector2(500.0f,-500.0f) );
+		verts.add( new Vector2(500.0f,500.0f) );
+		verts.add( new Vector2(-500.0f,500.0f) );
+		
+		Texture polyTex = WereScrewedGame.manager.get(
+				WereScrewedGame.dirHandle.path( ) + "/common/robot/alphabot_tile_interior.png",
+				Texture.class );
+		
+		polySprite = new PolySprite( polyTex, verts );*/
+		
 	}
 	
 	public void update( float deltaTime ){
@@ -85,10 +106,16 @@ public class Level {
 		for (Player player: players)
 			player.update( deltaTime );
 		root.update( deltaTime );
-		for (Platform p: platforms)
-			p.update( deltaTime );
+		if ( Gdx.input.isKeyPressed( Keys.NUM_0 ) ) {
+			if ( debugTest )
+				debug = !debug;
+			debugTest = false;
+		} else
+			debugTest = true;
 	}
 	
+
+
 	public void draw ( SpriteBatch sb, SBox2DDebugRenderer dr){
 		sb.setShader( WereScrewedGame.defaultShader );
 		sb.setBlendFunction( GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA );
@@ -96,8 +123,6 @@ public class Level {
 		sb.enableBlending( );
 		sb.begin();
 		root.draw( sb );
-		for (Platform p: platforms)
-			p.draw( sb );
 		for (Player player: players)
 			player.draw( sb );
 		sb.end();
@@ -133,4 +158,6 @@ public class Level {
 		return out;
 	}
 	
+	
+
 }

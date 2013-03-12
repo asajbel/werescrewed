@@ -21,6 +21,7 @@ import com.blindtigergames.werescrewed.util.Util;
  */
 public class Rope {
 
+	public String name;
 	private StrippedScrew screw;
 	private ArrayList< Link > linkParts;
 	private World world;
@@ -42,15 +43,16 @@ public class Rope {
 	 */
 	public Rope( String name, Vector2 pos, Vector2 widthHeight, int links,
 			Texture texture, World world ) {
+		this.name = name;
 		this.world = world;
 		linkParts = new ArrayList< Link >( );
 		constructRope( name, pos, widthHeight, links, texture, world );
 
-		screw = new StrippedScrew( "ropescrew",
-				new Vector2( pos.x, pos.y
-						- widthHeight.y * Util.PIXEL_TO_BOX * links )
-						.mul( Util.BOX_TO_PIXEL ), linkParts.get( linkParts
-						.size( ) - 1 ), world );
+//		screw = new StrippedScrew( "ropescrew",
+//				new Vector2( pos.x, pos.y
+//						- widthHeight.y * Util.PIXEL_TO_BOX * links )
+//						.mul( Util.BOX_TO_PIXEL ), linkParts.get( linkParts
+//						.size( ) - 1 ), world );
 
 	}
 
@@ -71,16 +73,17 @@ public class Rope {
 	 */
 	public Rope( String name, Entity entity, Vector2 widthHeight, int links,
 			Texture texture, World world ) {
+		this.name = name;
 		this.world = world;
 		linkParts = new ArrayList< Link >( );
 		constructRope( name, entity.getPosition( ), widthHeight, links,
 				texture, world );
 
-		screw = new StrippedScrew( "ropescrew",
-				new Vector2( entity.getPosition( ).x, entity.getPosition( ).y
-						- widthHeight.y * Util.PIXEL_TO_BOX * links )
-						.mul( Util.BOX_TO_PIXEL ), linkParts.get( linkParts
-						.size( ) - 1 ), world );
+//		screw = new StrippedScrew( "ropescrew",
+//				new Vector2( entity.getPosition( ).x, entity.getPosition( ).y
+//						- widthHeight.y * Util.PIXEL_TO_BOX * links )
+//						.mul( Util.BOX_TO_PIXEL ), linkParts.get( linkParts
+//						.size( ) - 1 ), world );
 
 	}
 

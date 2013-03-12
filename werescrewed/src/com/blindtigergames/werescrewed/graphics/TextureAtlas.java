@@ -176,7 +176,15 @@ public class TextureAtlas implements Disposable {
 						region.top = top;
 						region.width = width;
 						region.height = height;
-						region.name = line;
+						if (line.matches( "\\w+/\\d+" )){
+							String[] tokens = line.split( "/" );
+							region.name = tokens[0];
+							region.index = Integer.parseInt( tokens[1] );
+							Gdx.app.log( "TextureAtlas", "Reading index from region name. Name:"+region.name+" Index:"+region.index );
+						} else {
+							region.name = line;
+							region.index = -1;
+						}
 						region.rotate = rotate;
 						region.collideOffsetX = pageImage.collideOffsetX;
 						region.collideOffsetY = pageImage.collideOffsetY;
@@ -208,6 +216,8 @@ public class TextureAtlas implements Disposable {
 						//readTuple( reader );
 						String possibleLine = reader.readLine();
 
+						int index = -1;
+						
 						if (possibleLine.matches( "^\\s*offset:\\s*(\\d+)\\s*,\\s*(\\d+)$" )){
 							//read the values into the offset ints
 							Pattern p = Pattern.compile( "(\\d+)" );
@@ -217,11 +227,12 @@ public class TextureAtlas implements Disposable {
 							m.find();
 							region.offsetY = Integer.parseInt( m.group() );
 							
-							region.index = Integer.parseInt( readValue( reader ) );
+							index = Integer.parseInt( readValue( reader ) );
 						} else {
-							region.index = Integer.parseInt( parseValue( line ) );
+							index = Integer.parseInt( parseValue( line ) );
 						}
-
+						if (region.index == -1 && index != -1)
+							region.index = index;
 
 						if ( flip )
 							region.flip = true;

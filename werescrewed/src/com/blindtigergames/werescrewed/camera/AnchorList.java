@@ -2,6 +2,7 @@ package com.blindtigergames.werescrewed.camera;
 
 import java.util.ArrayList;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
@@ -64,6 +65,19 @@ public class AnchorList {
 	}
 
 	public void update( boolean debugRender ) {
+
+		// Update timers
+		for ( Anchor curAnchor : anchorList ) {
+			if ( curAnchor.getTimer( ) > 0 && curAnchor.activated == true )
+				Gdx.app.log( "timer", curAnchor.getTimer( ) + "" );
+				curAnchor.decrementTimer( );
+
+			// Safety check & deactivate
+			if ( curAnchor.getTimer( ) <= 0 ) {
+				curAnchor.setTimer( 0 );
+				curAnchor.deactivate( );
+			}
+		}
 
 		// update velocity of midpoint
 		setMidpoint( );
@@ -220,8 +234,84 @@ public class AnchorList {
 	public Vector2 getLongestXYDist( ) {
 		Vector2 vectDist = new Vector2( 0f, 0f );
 
-		// for now, just using distance between players
+		// Start with players (guaranteed to be present and active)
 		AnchorPair pair = getSpecialPair( );
+		
+		// Find longest x distance //
+
+		float longestXDistance = Math.abs( pair.first.position.x
+				- pair.second.position.x );
+		// For each anchor
+		for ( Anchor curAnchor : anchorList ) {
+			// Making sure its active and not the players (since we already
+			// included them)
+			if ( curAnchor.activated && !curAnchor.special ) {
+				// Find the distance between the checked anchor and the first of
+				// the pair we are tracking
+				float firstDistance = Math.abs( curAnchor.position.x
+						- pair.first.position.x );
+				// If the distance is longer, change the value
+				if ( firstDistance > longestXDistance ) {
+					longestXDistance = firstDistance;
+				}
+				// Find the distance between the checked anchor and the second
+				// of the pair we are tracking
+				float secondDistance = Math.abs( curAnchor.position.x
+						- pair.second.position.x );
+				// If the distance is longer, change the value
+				if ( secondDistance > longestXDistance ) {
+					longestXDistance = secondDistance;
+				}
+
+				if ( longestXDistance == firstDistance ) {
+					// If the distance between first and checked anchor is
+					// longest, change the second to the checked anchor
+					pair.second = curAnchor;
+				} else if ( longestXDistance == secondDistance ) {
+					// If the distance between second and checked anchor is
+					// longest, change the first to the checked anchor
+					pair.first = curAnchor;
+				}
+			}
+		}
+		
+		// Find longest y distance //
+
+		float longestYDistance = Math.abs( pair.first.position.y
+				- pair.second.position.y );
+		// For each anchor
+		for ( Anchor curAnchor : anchorList ) {
+			// Making sure its active and not the players (since we already
+			// included them)
+			if ( curAnchor.activated && !curAnchor.special ) {
+				// Find the distance between the checked anchor and the first of
+				// the pair we are tracking
+				float firstDistance = Math.abs( curAnchor.position.y
+						- pair.first.position.y );
+				// If the distance is longer, change the value
+				if ( firstDistance > longestYDistance ) {
+					longestYDistance = firstDistance;
+				}
+				// Find the distance between the checked anchor and the second
+				// of the pair we are tracking
+				float secondDistance = Math.abs( curAnchor.position.y
+						- pair.second.position.y );
+				// If the distance is longer, change the value
+				if ( secondDistance > longestYDistance ) {
+					longestYDistance = secondDistance;
+				}
+
+				if ( longestYDistance == firstDistance ) {
+					// If the distance between first and checked anchor is
+					// longest, change the second to the checked anchor
+					pair.second = curAnchor;
+				} else if ( longestYDistance == secondDistance ) {
+					// If the distance between second and checked anchor is
+					// longest, change the first to the checked anchor
+					pair.first = curAnchor;
+				}
+			}
+		}
 
 		if ( pair != null && pair.first != null && pair.second != null ) {
 			// set x distance

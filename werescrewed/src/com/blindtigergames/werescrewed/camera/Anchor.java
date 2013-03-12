@@ -2,12 +2,6 @@ package com.blindtigergames.werescrewed.camera;
 
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
-import com.badlogic.gdx.physics.box2d.CircleShape;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.World;
 import com.blindtigergames.werescrewed.util.Util;
 
 /*******************************************************************************
@@ -22,9 +16,8 @@ public class Anchor {
 	protected Vector2 positionBox;
 	protected Vector2 buffer;
 	protected boolean activated;
-	private Body body;
-	private World world;
-
+	// In steps
+	protected int timer;
 	static protected final Vector2 DEFAULT_BUFFER = new Vector2( 128f, 128f );
 
 	/**
@@ -32,15 +25,10 @@ public class Anchor {
 	 * 
 	 * @param position
 	 *            starting position of anchor (in pixels)
-	 * @param world
-	 *            the box2d world
 	 * 
-	 * @param radius
-	 *            the float radial size of the anchor's body for activating and
-	 *            deactivating
 	 */
-	public Anchor( Vector2 position, World world, float radius ) {
-		this( false, position, DEFAULT_BUFFER, world, radius );
+	public Anchor( Vector2 position ) {
+		this( false, position, DEFAULT_BUFFER );
 	}
 
 	/**
@@ -51,15 +39,9 @@ public class Anchor {
 	 * @param buffer
 	 *            buffer around anchor which must always stay within view
 	 * 
-	 * @param world
-	 *            the box2d world
-	 * 
-	 * @param radius
-	 *            the float radial size of the anchor's body for activating and
-	 *            deactivating
 	 */
-	public Anchor( Vector2 position, Vector2 buffer, World world, float radius ) {
-		this( false, position, buffer, world, radius );
+	public Anchor( Vector2 position, Vector2 buffer ) {
+		this( false, position, buffer );
 	}
 
 	/**
@@ -72,39 +54,14 @@ public class Anchor {
 	 * @param buffer
 	 *            buffer around anchor which must always stay within view
 	 */
-	public Anchor( boolean special, Vector2 position, Vector2 buffer,
-			World world, float radius ) {
+	public Anchor( boolean special, Vector2 position, Vector2 buffer ) {
 		this.special = special;
 		this.position = position;
 		this.positionBox = new Vector2( position.x * Util.PIXEL_TO_BOX,
 				position.y * Util.PIXEL_TO_BOX );
 		this.buffer = buffer;
-		this.world = world;
 		this.activated = false;
-		this.body = constructBody( radius );
-		this.body.setTransform( positionBox, body.getAngle( ) );
-	}
-
-	/**
-	 * Creates a body to hold the sensor fixture
-	 * 
-	 * @param world
-	 * @param radius
-	 * @return the reference to the body
-	 */
-	private Body constructBody( float radius ) {
-		BodyDef bodyDef = new BodyDef( );
-		bodyDef.type = BodyType.StaticBody;
-		Body body = this.world.createBody( bodyDef );
-		CircleShape sensorShape = new CircleShape( );
-		sensorShape.setRadius( radius );
-		FixtureDef sensor = new FixtureDef( );
-		sensor.shape = sensorShape;
-		sensor.isSensor = true;
-		body.createFixture( sensor );
-		body.setUserData( this );
-		sensorShape.dispose( );
-		return body;
+		this.timer = 0;
 	}
 
 	/**
@@ -165,5 +122,29 @@ public class Anchor {
 	 */
 	public void deactivate( ) {
 		activated = false;
+	}
+
+	/**
+	 * 
+	 * @return time left in timer (in steps)
+	 */
+	public int getTimer( ) {
+		return timer;
+	}
+
+	/**
+	 * Decrease the timer by one.
+	 */
+	public void decrementTimer( ) {
+		timer--;
+	}
+
+	/**
+	 * Reset the timer.
+	 * 
+	 * @param timer New time
+	 */
+	public void setTimer( int timer ) {
+		this.timer = timer;
 	}
 }
