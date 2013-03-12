@@ -25,6 +25,7 @@ import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.RobotState;
 import com.blindtigergames.werescrewed.entity.Skeleton;
 import com.blindtigergames.werescrewed.entity.action.MetricsStartTimeAction;
+import com.blindtigergames.werescrewed.entity.action.RemoveEntityAction;
 import com.blindtigergames.werescrewed.entity.builders.EventTriggerBuilder;
 import com.blindtigergames.werescrewed.entity.builders.PlatformBuilder;
 import com.blindtigergames.werescrewed.entity.builders.PlayerBuilder;
@@ -120,9 +121,9 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 
 		// Initialize players
 		player1 = new PlayerBuilder( ).name( "player1" ).world( world )
-				.position( 1 * TILE, 1 * TILE ).buildPlayer( );
+				.position( 115 * TILE, 50 * TILE ).buildPlayer( );
 		player2 = new PlayerBuilder( ).name( "player2" ).world( world )
-				.position( 1 * TILE, 1 * TILE ).buildPlayer( );
+				.position( 115 * TILE, 50 * TILE ).buildPlayer( );
 
 		// END: 175f * TILE, 96f * TILE
 		// START :: 1f * TILE, 1f * TILE
@@ -137,6 +138,15 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		floor7( );
 		initCheckPoints( );
 
+		//event trigger that will remove box2d entites when they collide with it
+		EventTriggerBuilder etb = new EventTriggerBuilder( world );
+		EventTrigger removeTrigger = etb.name( "removeEntity" ).rectangle( ).width( 10 ).height( 10000 )
+				.position( new Vector2( 100 * TILE, - 20 * TILE ) )
+				.beginAction( new RemoveEntityAction( ) )
+				.build( );
+		removeTrigger.setCategoryMask( Util.CATEGORY_PLAYER, Util.CATEGORY_EVERYTHING );
+		rootSkeleton.addEventTrigger( removeTrigger );
+		
 		// Create anchor with start position and buffer as parameters
 		testAnchor = new Anchor( new Vector2( 10000, 10 ), new Vector2( 10000,
 				10000 ) );
@@ -165,6 +175,7 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 				.position( new Vector2( 10 * TILE, 1.5f * TILE ) )
 				.beginAction( new MetricsStartTimeAction( skel1.name ) )
 				.build( );
+		
 		skel1.addEventTrigger( et );
 
 		ground = platBuilder.position( 50 * TILE, 0 ).name( "ground1" )

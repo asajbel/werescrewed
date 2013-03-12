@@ -93,7 +93,6 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 	public SpriteBatch particleBatch;
 	private EventTrigger et;
 	private TiledPlatform specialPlat;
-	private Spikes spikes;
 
 	// PolySprite polySprite;
 
@@ -335,8 +334,9 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 	 * Initializes hazards. At the moment only makes spikes.
 	 */
 	private void initHazards( ) {
-		//spikes = new Spikes( "Spikes1", new Vector2( -500.0f, -10.0f ), 1, 6,
-		//		world, true, false, true );
+		Spikes spikes = new Spikes( "Spikes1", new Vector2( -500.0f, -10.0f ), 1, 6,
+				world, true, false, true );
+		skeleton.addKinematicPlatform( spikes );
 	}
 
 	/**

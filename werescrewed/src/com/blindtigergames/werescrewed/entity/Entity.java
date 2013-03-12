@@ -47,6 +47,7 @@ public class Entity implements GleedLoadable {
 	protected boolean crushing;
 	protected boolean visible;
 	protected boolean maintained;
+	protected boolean removeNextStep = false;
 	protected EntityType entityType;
 	private ArrayList< IMover > moverArray;
 	private RobotState currentRobotState;
@@ -147,7 +148,7 @@ public class Entity implements GleedLoadable {
 		this.energy = 1.0f;
 		this.maintained = true;
 		this.visible = true;
-		this.active = false;
+		this.active = true;
 		setUpRobotState( );
 	}
 
@@ -212,7 +213,7 @@ public class Entity implements GleedLoadable {
 	}
 
 	public void draw( SpriteBatch batch ) {
-		if ( sprite != null && visible ) {
+		if ( sprite != null && visible && !removeNextStep ) {
 			sprite.draw( batch );
 		}
 		// drawOrigin(batch);
@@ -236,6 +237,24 @@ public class Entity implements GleedLoadable {
 		shapes.end( );
 	}
 
+	/**
+	 * this is called from event triggers during a world step so you dont remove
+	 * box2d data while the world is locked
+	 */
+	public void setRemoveNextStep( ) {
+		removeNextStep = true;
+	}
+
+	/**
+	 * if this entity is to be removed next step return true
+	 * used by skeletons to remove from thier list 
+	 * after updating this entity so that box2d is removed first
+	 * @return
+	 */
+	public boolean getRemoveNextStep( ) {
+		return removeNextStep;
+	}
+	
 	public void remove( ) {
 		if ( body != null ) {
 			while ( body.getJointList( ).iterator( ).hasNext( ) ) {
@@ -246,14 +265,19 @@ public class Entity implements GleedLoadable {
 	}
 
 	public void update( float deltaTime ) {
-		if ( body != null && anchor != null ) {
-			updateAnchor( );
-		}
-		// animation stuff may go here
-		Vector2 bodyPos = body.getPosition( ).mul( Util.BOX_TO_PIXEL );
-		if ( sprite != null ) {
-			sprite.setPosition( bodyPos.x - offset.x, bodyPos.y - offset.y );
-			sprite.setRotation( MathUtils.radiansToDegrees * body.getAngle( ) );
+		if ( removeNextStep ) {
+			remove( );
+		} else if ( body != null ) {
+			if ( anchor != null ) {
+				updateAnchor( );
+			}
+			// animation stuff may go here
+			Vector2 bodyPos = body.getPosition( ).mul( Util.BOX_TO_PIXEL );
+			if ( sprite != null ) {
+				sprite.setPosition( bodyPos.x - offset.x, bodyPos.y - offset.y );
+				sprite.setRotation( MathUtils.radiansToDegrees
+						* body.getAngle( ) );
+			}
 		}
 	}
 

@@ -9,6 +9,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.camera.Camera;
+import com.blindtigergames.werescrewed.checkpoints.ProgressManager;
 import com.blindtigergames.werescrewed.collisionManager.MyContactListener;
 import com.blindtigergames.werescrewed.debug.SBox2DDebugRenderer;
 import com.blindtigergames.werescrewed.entity.Entity;
@@ -43,12 +44,15 @@ public class Level {
 	public RootSkeleton root;
 	public PolySprite polySprite;
 	private boolean debugTest, debug;
+	private ProgressManager progressManager;
 	
 	public Level( ){
 		
 		world = new World( new Vector2( 0, GRAVITY ), true );
 		myContactListener = new MyContactListener();
 		world.setContactListener( myContactListener );
+		progressManager = new ProgressManager(player1, player2, world);
+		
 		
 //		camera = new Camera( width, height, world);
 //		player1 = new PlayerBuilder( ).name( "player1" ).world( world )
