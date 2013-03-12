@@ -66,8 +66,8 @@ public class Player extends Entity {
 	public final static Vector2 ANCHOR_BUFFER_SIZE = new Vector2( 200f, 128f );
 	public final static float STEAM_FORCE = .5f;
 	public final static float FRICTION_INCREMENT = 0.3f;
-	public final static float FEET_OFFSET_X = 39f * Util.PIXEL_TO_BOX;
-	public final static float FEET_OFFSET_Y = 15f * Util.PIXEL_TO_BOX;
+	public final static float FEET_OFFSET_X = 57f * Util.PIXEL_TO_BOX;
+	public final static float FEET_OFFSET_Y = 16f * Util.PIXEL_TO_BOX;
 	public final static float JUMP_DIRECTION_MULTIPLIER = 2f;
 	public final static float JUMP_DEFAULT_DIVISION = 1.0f;
 	public float directionJumpDivsion = JUMP_DEFAULT_DIVISION;
@@ -202,8 +202,14 @@ public class Player extends Entity {
 				+ "/common/sounds/jump.ogg" );
 		
 		//We can change these once blue and/or female sprites are ready.
-		String gP = "_m";
-		String cP = "_r";
+		String gP, cP;
+		if ( name.equals( "player1" ) ) {
+			gP = "_m";
+			cP = "_r";
+		} else {
+			gP = "_m";
+			cP = "_r";	
+		}
 		characterAtlas = WereScrewedGame.manager.getTextureAtlas("player"+cP+gP);
 		if (characterAtlas != null)
 			sprite = new Sprite(characterAtlas, new PlayerAnimator(characterAtlas, this));
@@ -299,8 +305,9 @@ public class Player extends Entity {
 			}
 		}
 		if ( sprite.getScaleX( ) < 0 ) {
-			sprite.translateX( 96f );
+			sprite.translateX( 128f );
 		}
+		sprite.translateY( -15f );
 		// switch between states
 		switch ( playerState ) {
 		case Dead:
@@ -1229,7 +1236,7 @@ public class Player extends Entity {
 				playerState = PlayerState.HeadStand;
 				this.setPosition( otherPlayer.body.getPosition( ).x,
 						otherPlayer.body.getPosition( ).y
-								+ ( otherPlayer.sprite.getHeight( ) / 2.0f )
+								+ ( otherPlayer.sprite.getHeight( ) - 8f )
 								* Util.PIXEL_TO_BOX );
 				// connect the players together with a joint
 				RevoluteJointDef revoluteJointDef = new RevoluteJointDef( );

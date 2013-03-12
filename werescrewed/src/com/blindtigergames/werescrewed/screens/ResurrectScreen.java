@@ -101,6 +101,13 @@ public class ResurrectScreen implements com.badlogic.gdx.Screen {
 
 		platBuilder = new PlatformBuilder( world );
 
+		
+		TiledPlatform wall = platBuilder.position( 256f, 320f ).name( "wall1" )
+				.dimensions( 5, 8 ).texture( testTexture ).kinematic( )
+				.oneSided( false ).restitution( 0.0f ).buildTilePlatform( );
+		wall.setCategoryMask( Util.KINEMATIC_OBJECTS, Util.CATEGORY_EVERYTHING );
+		skeleton.addKinematicPlatform( wall );
+		
 		// Initialize listeners
 		contactListener = new MyContactListener( );
 		world.setContactListener( contactListener );
