@@ -25,7 +25,7 @@
 /common/spikes.png
 /common/tileset/TilesetTest.png
 /common/blind_tiger_logo_720.png
-##/common/title_background.png
+/common/title_background.png
 /particles/particle.png
 /common/robot/alphabot_texture_skin.png
 /common/robot/alphabot_texture_tux.png
