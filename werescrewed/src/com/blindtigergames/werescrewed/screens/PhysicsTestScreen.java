@@ -50,6 +50,7 @@ import com.blindtigergames.werescrewed.entity.tween.PathBuilder;
 import com.blindtigergames.werescrewed.entity.tween.PlatformAccessor;
 import com.blindtigergames.werescrewed.eventTrigger.EventTrigger;
 import com.blindtigergames.werescrewed.hazard.Spikes;
+import com.blindtigergames.werescrewed.hazard.builders.SpikesBuilder;
 import com.blindtigergames.werescrewed.joint.JointFactory;
 import com.blindtigergames.werescrewed.joint.RevoluteJointBuilder;
 import com.blindtigergames.werescrewed.particles.Steam;
@@ -94,6 +95,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 	private EventTrigger et;
 	private TiledPlatform specialPlat;
 	private Spikes spikes;
+	private SpikesBuilder spikesBuilder;
 
 	// PolySprite polySprite;
 
@@ -133,6 +135,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		// ).start( )));
 		platBuilder = new PlatformBuilder( world );
 		ropeBuilder = new RopeBuilder( world );
+		spikesBuilder = new SpikesBuilder( world );
 
 		// testTexture = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 		// + "/common/tileset/TilesetTest.png", Texture.class );
@@ -335,8 +338,11 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 	 * Initializes hazards. At the moment only makes spikes.
 	 */
 	private void initHazards( ) {
+		spikes = spikesBuilder.position( -500.0f, -10.0f ).dimensions( 6, 1 )
+				.up( ).active().buildSpikes( );
 		//spikes = new Spikes( "Spikes1", new Vector2( -500.0f, -10.0f ), 1, 6,
 		//		world, true, false, true );
+		skeleton.addKinematicPlatform( spikes );
 	}
 
 	/**

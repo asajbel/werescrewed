@@ -6,7 +6,10 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.Array;
 import com.blindtigergames.werescrewed.entity.mover.IMover;
 import com.blindtigergames.werescrewed.entity.mover.MoverType;
+import com.blindtigergames.werescrewed.entity.mover.PuzzleType;
 import com.blindtigergames.werescrewed.entity.mover.RockingMover;
+import com.blindtigergames.werescrewed.entity.mover.puzzle.PuzzleRotateTweenMover;
+import com.blindtigergames.werescrewed.util.Util;
 
 public class MoverBuilder {
 
@@ -27,6 +30,8 @@ public class MoverBuilder {
 		switch(type){
 		case ROCKING:
 			return buildRockingMover();
+		case ROTATETWEEN:
+			return buildRotateTweenMover();
 		default:
 			break;
 		}
@@ -39,6 +44,10 @@ public class MoverBuilder {
 		return new RockingMover(floats.get(0), floats.get(1));
 	}
 
+	public PuzzleRotateTweenMover buildRotateTweenMover(){
+		return new PuzzleRotateTweenMover( 1,
+				Util.PI / 2, true, PuzzleType.ON_OFF_MOVER );
+	}
 	public MoverBuilder fromString( String text ) {
 		Array<String> blocks = new Array<String>(text.split( "\\s+" ));
 		this.type = MoverType.fromString( blocks.get(0) );

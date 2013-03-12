@@ -378,6 +378,16 @@ public class EventTrigger extends Entity{
 	}
 	
 	/**
+	 * gets the beginning action
+	 * couldn't run on any arbitrary entities
+	 * if they need to be in a list
+	 * used for removing entities
+	 */
+	public IAction getBeginAction( ) {
+		return beginAction;
+	}
+	
+	/**
 	 * calls act() with its begin action on every entity in this list
 	 * depending on if its repeatable or not
 	 * @author Ranveer
