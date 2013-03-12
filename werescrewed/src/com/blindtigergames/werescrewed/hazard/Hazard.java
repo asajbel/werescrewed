@@ -1,5 +1,6 @@
 package com.blindtigergames.werescrewed.hazard;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Fixture;
@@ -22,6 +23,7 @@ public class Hazard extends Platform {
 	public Hazard( String name, Vector2 pos, Texture texture, World world, boolean isActive ) {
 		super( name, pos, texture, world);
 		entityType = EntityType.HAZARD;
+		this.active = isActive;
 	}
 	
 	public Hazard( String name, EntityDef type, World world,
@@ -44,10 +46,13 @@ public class Hazard extends Platform {
 	 */
 	public void setActive ( boolean state ) {
 		this.active = state;
+		Gdx.app.log( "State changed", " " + active );
 	}
 	
 	//Performs check to see if a player has collided with a hazard.
 	public void performContact ( Player player, Fixture fixture ) {
-		player.killPlayer( );
+		if (active) {
+			player.killPlayer( );
+		}
 	}
 }
