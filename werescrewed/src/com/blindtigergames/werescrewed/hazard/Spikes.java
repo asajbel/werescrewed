@@ -3,7 +3,6 @@ package com.blindtigergames.werescrewed.hazard;
 import java.util.Iterator;
 import java.util.Vector;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
@@ -165,6 +164,8 @@ public class Spikes extends Hazard {
 	
 	@Override
 	public void update( float deltaTime ) {
+		super.update( deltaTime );
+		bodypos = body.getPosition( ).mul( Util.BOX_TO_PIXEL );
 		if (active) {
 			switch ( ori ) {
 			case RIGHT:
@@ -202,7 +203,6 @@ public class Spikes extends Hazard {
 		Iterator< Tile > v = tiles.listIterator( );
 		while ( v.hasNext( ) ) {
 			d = v.next( );
-
 			switch ( ori ) {
 			case RIGHT:
 				d.tileSprite.setOrigin( d.tileSprite.getWidth( ) / 2, d.tileSprite.getHeight( ) / 2 );
