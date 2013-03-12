@@ -15,8 +15,8 @@ import com.blindtigergames.werescrewed.entity.EntityType;
 import com.blindtigergames.werescrewed.util.Util;
 
 /**
- * screws that are used to hold removable pieces
- * together they can be un-screwed and will fall
+ * screws that are used to hold removable pieces together they can be un-screwed
+ * and will fall
  * 
  * @author Dennis
  * 
@@ -24,7 +24,8 @@ import com.blindtigergames.werescrewed.util.Util;
 
 public class StructureScrew extends Screw {
 
-	public StructureScrew( String name, Vector2 pos, int max, Entity entity, World world ) {
+	public StructureScrew( String name, Vector2 pos, int max, Entity entity,
+			World world ) {
 		super( name, pos, null );
 		this.world = world;
 		maxDepth = max;
@@ -35,7 +36,7 @@ public class StructureScrew extends Screw {
 		screwType = ScrewType.SCREW_STRUCTURAL;
 		entityType = EntityType.SCREW;
 		entity.body.setFixedRotation( false );
-		
+
 		constuctBody( pos );
 		addStructureJoint( entity );
 	}
@@ -51,7 +52,7 @@ public class StructureScrew extends Screw {
 	}
 
 	@Override
-	public void screwRight(int region) {
+	public void screwRight( int region ) {
 		if ( depth < maxDepth ) {
 			body.setAngularVelocity( -1 );
 			depth++;
@@ -59,32 +60,34 @@ public class StructureScrew extends Screw {
 			screwStep = depth + 6;
 		}
 	}
+
 	@Override
 	public void screwRight( int region, boolean switchedDirections ) {
-		if(switchedDirections){
+		if ( switchedDirections ) {
 			startRegion = region;
 			prevDiff = 0;
 		}
-		
+
 		if ( depth < maxDepth ) {
 			diff = startRegion - region;
 			newDiff = diff - prevDiff;
-			if(newDiff < -10){
+			if ( newDiff < -10 ) {
 				newDiff = 0;
 			}
 			prevDiff = diff;
-			
+
 			body.setAngularVelocity( -1 );
 			depth += newDiff;
-			if(diff != 0){
-				rotation += (-newDiff * 5);
+			if ( diff != 0 ) {
+				rotation += ( -newDiff * 5 );
 			}
 			screwStep = depth + 6;
 		}
-		
+
 	}
+
 	@Override
-	public void screwLeft(  ) {
+	public void screwLeft( ) {
 		if ( depth > -10 ) {
 			body.setAngularVelocity( 1 );
 			depth--;
@@ -95,31 +98,30 @@ public class StructureScrew extends Screw {
 
 	@Override
 	public void screwLeft( int region, boolean switchedDirections ) {
-		if(switchedDirections){
+		if ( switchedDirections ) {
 			startRegion = region;
 			prevDiff = 0;
 		}
-		
+
 		if ( depth > 0 ) {
 			diff = startRegion - region;
 			newDiff = diff - prevDiff;
-			if(newDiff > 10){
+			if ( newDiff > 10 ) {
 				newDiff = 0;
 			}
 			prevDiff = diff;
-			
-			
+
 			body.setAngularVelocity( 1 );
 			depth += newDiff;
 			spriteRegion += region;
-			if(diff != 0){
-				rotation += (-newDiff * 5);
+			if ( diff != 0 ) {
+				rotation += ( -newDiff * 5 );
 			}
 			screwStep = depth + 5;
 		}
-		
+
 	}
-	
+
 	@Override
 	public void screwRight( ) {
 		if ( depth < maxDepth ) {
@@ -129,55 +131,58 @@ public class StructureScrew extends Screw {
 			screwStep = depth + 6;
 		}
 	}
-	
+
 	@Override
 	public void update( float deltaTime ) {
 		super.update( deltaTime );
-		Vector2 bodyPos = body.getPosition( ).mul( Util.BOX_TO_PIXEL );
-		sprite.setPosition( bodyPos.x - offset.x, bodyPos.y - offset.y );
-		if ( depth <= 0 ) {
-			if ( fallTimeout == 0 ) {
-				for ( RevoluteJoint j : extraJoints ) {
-					world.destroyJoint( j );
+		if ( !removed ) {
+			Vector2 bodyPos = body.getPosition( ).mul( Util.BOX_TO_PIXEL );
+			sprite.setPosition( bodyPos.x - offset.x, bodyPos.y - offset.y );
+			if ( depth <= 0 ) {
+				if ( fallTimeout == 0 ) {
+					for ( RevoluteJoint j : extraJoints ) {
+						world.destroyJoint( j );
+					}
 				}
-			}
-			fallTimeout--;
-		} else {
-			fallTimeout = 70;
-		}
-		if ( depth > 0 ) {
-//			sprite.setPosition(
-//					sprite.getX( )
-//							+ ( .25f * ( float ) ( ( maxDepth - depth ) * ( Math
-//									.cos( body.getAngle( ) ) ) ) ),
-//					sprite.getY( )
-//							+ ( .25f * ( float ) ( ( maxDepth - depth ) * ( Math
-//									.sin( body.getAngle( ) ) ) ) ) );
-		} else if ( fallTimeout > 0 ) {
-			sprite.setPosition( sprite.getX( ) - 8f, sprite.getY( ) );
-			Vector2 spritePos = new Vector2( sprite.getX( ), sprite.getY( ) );
-			Vector2 target1 = new Vector2( sprite.getX( ) + 8f, sprite.getY( ) );
-			if ( fallTimeout % ( maxDepth / 5.0f ) == 0 ) {
-				if ( lerpUp ) {
-					lerpUp = false;
-				} else {
-					lerpUp = true;
-				}
-			}
-			if ( lerpUp ) {
-				alpha += 1f / ( maxDepth / 5.0f );
+				fallTimeout--;
 			} else {
-				alpha -= 1f / ( maxDepth / 5.0f );
+				fallTimeout = 70;
 			}
-			spritePos.lerp( target1, alpha );
-			sprite.setPosition( spritePos.x, spritePos.y );
-		}
-		sprite.setRotation( rotation );
-		if ( depth != screwStep ) {
-			screwStep--;
-		}
-		if ( depth == screwStep ) {
-			body.setAngularVelocity( 0 );
+			if ( depth > 0 ) {
+				// sprite.setPosition(
+				// sprite.getX( )
+				// + ( .25f * ( float ) ( ( maxDepth - depth ) * ( Math
+				// .cos( body.getAngle( ) ) ) ) ),
+				// sprite.getY( )
+				// + ( .25f * ( float ) ( ( maxDepth - depth ) * ( Math
+				// .sin( body.getAngle( ) ) ) ) ) );
+			} else if ( fallTimeout > 0 ) {
+				sprite.setPosition( sprite.getX( ) - 8f, sprite.getY( ) );
+				Vector2 spritePos = new Vector2( sprite.getX( ), sprite.getY( ) );
+				Vector2 target1 = new Vector2( sprite.getX( ) + 8f,
+						sprite.getY( ) );
+				if ( fallTimeout % ( maxDepth / 5.0f ) == 0 ) {
+					if ( lerpUp ) {
+						lerpUp = false;
+					} else {
+						lerpUp = true;
+					}
+				}
+				if ( lerpUp ) {
+					alpha += 1f / ( maxDepth / 5.0f );
+				} else {
+					alpha -= 1f / ( maxDepth / 5.0f );
+				}
+				spritePos.lerp( target1, alpha );
+				sprite.setPosition( spritePos.x, spritePos.y );
+			}
+			sprite.setRotation( rotation );
+			if ( depth != screwStep ) {
+				screwStep--;
+			}
+			if ( depth == screwStep ) {
+				body.setAngularVelocity( 0 );
+			}
 		}
 	}
 
@@ -187,7 +192,7 @@ public class StructureScrew extends Screw {
 			sprite.draw( batch );
 		}
 	}
-	
+
 	private void constuctBody( Vector2 pos ) {
 
 		// create the screw body
@@ -211,18 +216,19 @@ public class StructureScrew extends Screw {
 		screwShape.dispose( );
 		body.setUserData( this );
 
-		//we may want a radar depending on the size of the sprite...
+		// we may want a radar depending on the size of the sprite...
 		// add radar sensor to screw
-//		CircleShape radarShape = new CircleShape( );
-//		radarShape.setRadius( sprite.getWidth( ) * 1.1f * Util.PIXEL_TO_BOX );
-//		FixtureDef radarFixture = new FixtureDef( );
-//		radarFixture.shape = radarShape;
-//		radarFixture.isSensor = true;
-//		radarFixture.filter.categoryBits = Util.CATEGORY_SCREWS;
-//		radarFixture.filter.maskBits = Util.CATEGORY_PLAYER
-//				| Util.CATEGORY_SUBPLAYER;
-//		body.createFixture( radarFixture );
-//		radarShape.dispose( );
+		// CircleShape radarShape = new CircleShape( );
+		// radarShape.setRadius( sprite.getWidth( ) * 1.1f * Util.PIXEL_TO_BOX
+		// );
+		// FixtureDef radarFixture = new FixtureDef( );
+		// radarFixture.shape = radarShape;
+		// radarFixture.isSensor = true;
+		// radarFixture.filter.categoryBits = Util.CATEGORY_SCREWS;
+		// radarFixture.filter.maskBits = Util.CATEGORY_PLAYER
+		// | Util.CATEGORY_SUBPLAYER;
+		// body.createFixture( radarFixture );
+		// radarShape.dispose( );
 	}
 
 	private int fallTimeout;

@@ -21,7 +21,6 @@ import com.blindtigergames.werescrewed.entity.RobotState;
 import com.blindtigergames.werescrewed.entity.Skeleton;
 import com.blindtigergames.werescrewed.entity.builders.PlatformBuilder;
 import com.blindtigergames.werescrewed.entity.builders.PlayerBuilder;
-import com.blindtigergames.werescrewed.entity.mover.HazardMover;
 import com.blindtigergames.werescrewed.entity.tween.EntityAccessor;
 import com.blindtigergames.werescrewed.entity.tween.PlatformAccessor;
 import com.blindtigergames.werescrewed.hazard.*;
@@ -50,8 +49,8 @@ public class HazardScreen implements com.badlogic.gdx.Screen {
 	private Fire fire;
 	private Electricity elec;
 	private Saws saw;
-	private SpikesBuilder spikesBuilder;
 	private Spikes spikes, spikes2;
+	private SpikesBuilder spikesBuilder;
 	private boolean debug = true;
 	private boolean debugTest = true;
 
@@ -105,18 +104,19 @@ public class HazardScreen implements com.badlogic.gdx.Screen {
 
 	private void initHazards( ) {
 		fire = new Fire( "Fire1", new Vector2( -700.0f, -10.0f ), 
-				world, true, 15, 50 );
+				world, true, 25, 50 );
 		/*elec = new Electricity( "Elec1", new Vector2( 3000.0f, -10.0f ),
 				world, true );
 		saw = new Saws( "Saw1", new Vector2( -2000.0f, 40.0f ),
 				2, world, true );
 		 */
-		spikes = new Spikes( "Spikes1", new Vector2( -2000.0f, -100.0f ), 
-				8, 1, world, true, false, false );
-		spikes2 = spikesBuilder.position( -1500.0f, -10.0f ).dimensions( 5, 1 )
-				.up( ).active().buildSpikes( );
-		//spikes2.addMover( new HazardMover( spikes2.getPositionPixel().add(  0f, 256f ), spikes2.getOrientation() ), 
-		//		RobotState.IDLE );
+		spikes = new Spikes( "Spikes1", new Vector2( -1700.0f, 5.0f ), 
+				1, 6, world, true, false, false );
+		spikes2 = spikesBuilder.position( -1500.0f, 5.0f ).dimensions( 4, 1 )
+				.up( ).active( ).buildSpikes( );
+		//add the spikes to the skeleton
+		skeleton.addKinematicPlatform( spikes );
+		skeleton.addKinematicPlatform( spikes2 );
 	}
 
 	private void initCrushTest( ) {
@@ -161,32 +161,36 @@ public class HazardScreen implements com.badlogic.gdx.Screen {
 
 		cam.update( );
 
+		//Set hazards active
+		if ( Gdx.input.isKeyPressed( Input.Keys.NUM_1 ) ) {
+			fire.setActive( true );
+			spikes.setActive( true );
+			spikes2.setActive( true );
+		}
+		//Set hazards inactive
+		if ( Gdx.input.isKeyPressed( Input.Keys.NUM_2 ) ) {
+			fire.setActive( false );
+			spikes.setActive( false );
+			spikes2.setActive( false );
+		}
+		
 		if ( Gdx.input.isKeyPressed( Keys.NUM_0 ) ) {
 			if ( debugTest )
 				debug = !debug;
 			debugTest = false;
 		} else
 			debugTest = true;
-
-		if ( Gdx.input.isKeyPressed( Input.Keys.T ) ) {
-			spikes.setActive( !spikes.isActive() );
-			spikes2.setActive( !spikes2.isActive() );
-		}
 		
 		player1.update( deltaTime );
 		player2.update( deltaTime );
 		progressManager.update( deltaTime );
 		rootSkeleton.update( deltaTime );
-		spikes.update( deltaTime );
-		spikes2.update( deltaTime );
 		batch.setProjectionMatrix( cam.combined( ) );
 		batch.begin( );
 
 		rootSkeleton.draw( batch );
 		progressManager.draw( batch );
 		fire.draw(batch, deltaTime );
-		spikes.draw( batch );
-		spikes2.draw( batch );
 		player1.draw( batch );
 		player2.draw( batch );
 

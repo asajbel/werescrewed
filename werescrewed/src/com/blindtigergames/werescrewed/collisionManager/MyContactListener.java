@@ -11,6 +11,7 @@ import com.badlogic.gdx.physics.box2d.Manifold;
 import com.blindtigergames.werescrewed.camera.Anchor;
 import com.blindtigergames.werescrewed.checkpoints.CheckPoint;
 import com.blindtigergames.werescrewed.entity.Entity;
+import com.blindtigergames.werescrewed.entity.EntityType;
 import com.blindtigergames.werescrewed.eventTrigger.EventTrigger;
 import com.blindtigergames.werescrewed.hazard.Hazard;
 import com.blindtigergames.werescrewed.platforms.Platform;
@@ -56,6 +57,9 @@ public class MyContactListener implements ContactListener {
 				playerFix = x2;
 				objectFix = x1;
 				playerInvolved = true;
+			} else {
+				playerFix = x2;
+				objectFix = x1;
 			}
 			if ( playerInvolved ) {
 				Player player = ( Player ) playerFix.getBody( ).getUserData( );
@@ -108,8 +112,7 @@ public class MyContactListener implements ContactListener {
 							// }
 							break;
 						case PLAYER:
-							Player player2 = ( Player ) objectFix.getBody( )
-									.getUserData( );
+							Player player2 = ( Player ) object;
 							if ( !player.isPlayerDead( )
 									&& !player2.isPlayerDead( )
 									&& ( player.getState( ) == PlayerState.Standing || player2
@@ -123,8 +126,7 @@ public class MyContactListener implements ContactListener {
 						case HAZARD:
 							if ( player.getCurrentScrew( ) == null
 									|| player.getCurrentScrew( ).getScrewType( ) != ScrewType.SCREW_RESURRECT ) {
-								Hazard hazard = ( Hazard ) objectFix.getBody( )
-										.getUserData( );
+								Hazard hazard = ( Hazard ) object;
 								hazard.performContact( player, objectFix );
 							}
 							// Gdx.app.log( "Player " + player.name,
@@ -139,8 +141,7 @@ public class MyContactListener implements ContactListener {
 							player.setSteamCollide( true );
 							break;
 						case EVENTTRIGGER:
-							EventTrigger et = ( EventTrigger ) objectFix
-									.getBody( ).getUserData( );
+							EventTrigger et = ( EventTrigger ) object;
 							et.setActivated( true, player.name );
 							et.triggerBeginEvent( );
 							break;
@@ -157,6 +158,29 @@ public class MyContactListener implements ContactListener {
 							.getUserData( );
 					if ( !anchor.special )
 						anchor.activate( );
+				}
+			} else {
+
+				//checks if the object fix or player fix is an event trigger
+				//then applies the event to the object that is colliding with it
+				if ( playerFix.getBody( ).getUserData( ) instanceof Entity
+						&& objectFix.getBody( ).getUserData( ) instanceof Entity ) {
+					Entity player = ( Entity ) playerFix.getBody( )
+							.getUserData( );
+					Entity object = ( Entity ) objectFix.getBody( )
+							.getUserData( );
+					Gdx.app.log( "" + player.getEntityType( ) , "" + object.getEntityType( ) );
+					if ( player.getEntityType( ) != null
+							&& player.getEntityType( ) == EntityType.EVENTTRIGGER ) {
+						EventTrigger et = ( EventTrigger ) player;
+						//needs to get the action in order to act on just this object
+						et.getBeginAction( ).act( object );
+					} else if( object.getEntityType( ) != null 
+					&& object.getEntityType( ) == EntityType.EVENTTRIGGER ) {
+						EventTrigger et = ( EventTrigger ) object;
+						//needs to get the action in order to act on just this object
+						et.getBeginAction( ).act( player );				
+					}
 				}
 			}
 		}
@@ -400,7 +424,7 @@ public class MyContactListener implements ContactListener {
 									if ( platformPos.y > playerPos.y ) {
 										contact.setEnabled( false );
 									}
-								} 
+								}
 								if ( player.isTopPlayer( ) ) {
 									contact.setEnabled( false );
 								}
