@@ -104,20 +104,19 @@ public class HazardScreen implements com.badlogic.gdx.Screen {
 	}
 
 	private void initHazards( ) {
-		/*
-		fire = new Fire( "Fire1", new Vector2( -3000.0f, -10.0f ), 
-				world, true );
-		elec = new Electricity( "Elec1", new Vector2( 3000.0f, -10.0f ),
+		fire = new Fire( "Fire1", new Vector2( -700.0f, -10.0f ), 
+				world, true, 15, 50 );
+		/*elec = new Electricity( "Elec1", new Vector2( 3000.0f, -10.0f ),
 				world, true );
 		saw = new Saws( "Saw1", new Vector2( -2000.0f, 40.0f ),
 				2, world, true );
 		 */
-		spikes = new Spikes( "Spikes1", new Vector2( -2000.0f, -10.0f ), 
+		spikes = new Spikes( "Spikes1", new Vector2( -2000.0f, -100.0f ), 
 				8, 1, world, true, false, false );
-		spikes2 = spikesBuilder.position( -1500.0f, -10.0f ).dimensions( 8, 1 )
+		spikes2 = spikesBuilder.position( -1500.0f, -10.0f ).dimensions( 5, 1 )
 				.up( ).active().buildSpikes( );
-		spikes2.addMover( new HazardMover( spikes2.getPositionPixel().add(  0f, 256f ), spikes2.getOrientation() ), 
-				RobotState.IDLE );
+		//spikes2.addMover( new HazardMover( spikes2.getPositionPixel().add(  0f, 256f ), spikes2.getOrientation() ), 
+		//		RobotState.IDLE );
 	}
 
 	private void initCrushTest( ) {
@@ -185,6 +184,7 @@ public class HazardScreen implements com.badlogic.gdx.Screen {
 
 		rootSkeleton.draw( batch );
 		progressManager.draw( batch );
+		fire.draw(batch, deltaTime );
 		spikes.draw( batch );
 		spikes2.draw( batch );
 		player1.draw( batch );

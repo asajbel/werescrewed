@@ -338,13 +338,10 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 	 * Initializes hazards. At the moment only makes spikes.
 	 */
 	private void initHazards( ) {
-<<<<<<< HEAD
 		spikes = spikesBuilder.position( -500.0f, -10.0f ).dimensions( 6, 1 )
 				.up( ).active().buildSpikes( );
-=======
 		//spikes = new Spikes( "Spikes1", new Vector2( -500.0f, -10.0f ), 1, 6,
 		//		world, true, false, true );
->>>>>>> aaaee6a00107c4320005e440dd78a97c8eae137b
 	}
 
 	/**
