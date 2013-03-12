@@ -102,7 +102,7 @@ public class Metrics {
 	/**
 	 * Adds end time data to the list of time the players spend in a section of
 	 * a level. Should be called when a player enters a section using an event
-	 * trigger passed MetricsEndTimeAction( String Name ).
+	 * trigger passed MetricsEndTimeAction( ).
 	 * 
 	 * @param position
 	 *            The time when the player ends the section.
