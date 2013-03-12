@@ -122,8 +122,10 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		// Initialize players
 		player1 = new PlayerBuilder( ).name( "player1" ).world( world )
 				.position( 115 * TILE, 50 * TILE ).buildPlayer( );
+
 		player2 = new PlayerBuilder( ).name( "player2" ).world( world )
-				.position( 115 * TILE, 50 * TILE ).buildPlayer( );
+				.position( 1 * TILE, 1 * TILE ).buildPlayer( );
+
 
 		// END: 175f * TILE, 96f * TILE
 		// START :: 1f * TILE, 1f * TILE
@@ -598,12 +600,21 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		rotatingRoom.setActive( true );
 		skel3.addSkeleton( rotatingRoom );
 
+
 		// the gate platform
 		plat = platBuilder.position( 133.5f * TILE, 45 * TILE ).name( "plat10" )
 				.dimensions( 1, 6 ).texture( testTexture ).kinematic( )
 				.oneSided( false ).restitution( 0 ).buildTilePlatform( );
 		plat.setCategoryMask( Util.KINEMATIC_OBJECTS, Util.CATEGORY_EVERYTHING );
 		skel3.addKinematicPlatform( plat );
+
+		// the gate platform
+		plat = platBuilder.position( 133.5f * TILE, 45 * TILE ).name( "plat10" )
+				.dimensions( 1, 6 ).texture( testTexture ).kinematic( )
+				.oneSided( false ).restitution( 0 ).buildTilePlatform( );
+		plat.setCategoryMask( Util.KINEMATIC_OBJECTS, Util.CATEGORY_EVERYTHING );
+		skel3.addKinematicPlatform( plat );
+
 
 		// puzzle that controls the elevator of the room and the gate
 		PuzzleScrew elevatorscrew1 = new PuzzleScrew( "elevatorControlinside",

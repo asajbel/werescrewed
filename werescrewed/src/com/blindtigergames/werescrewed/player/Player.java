@@ -6,7 +6,6 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.controllers.PovDirection;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -18,12 +17,15 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJoint;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
+import com.blindtigergames.werescrewed.graphics.TextureAtlas;
 import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.camera.Anchor;
 import com.blindtigergames.werescrewed.camera.AnchorList;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityDef;
 import com.blindtigergames.werescrewed.entity.EntityType;
+import com.blindtigergames.werescrewed.entity.Sprite;
+import com.blindtigergames.werescrewed.entity.animator.PlayerAnimator;
 import com.blindtigergames.werescrewed.entity.mover.IMover;
 import com.blindtigergames.werescrewed.entity.mover.LerpMover;
 import com.blindtigergames.werescrewed.entity.mover.LinearAxis;
@@ -61,8 +63,8 @@ public class Player extends Entity {
 	public final static Vector2 ANCHOR_BUFFER_SIZE = new Vector2( 200f, 128f );
 	public final static float STEAM_FORCE = .5f;
 	public final static float FRICTION_INCREMENT = 0.3f;
-	public final static float FEET_OFFSET_X = 39f * Util.PIXEL_TO_BOX;
-	public final static float FEET_OFFSET_Y = 15f * Util.PIXEL_TO_BOX;
+	public final static float FEET_OFFSET_X = 57f * Util.PIXEL_TO_BOX;
+	public final static float FEET_OFFSET_Y = 16f * Util.PIXEL_TO_BOX;
 	public final static float JUMP_DIRECTION_MULTIPLIER = 2f;
 	public final static float JUMP_DEFAULT_DIVISION = 1.0f;
 	public float directionJumpDivsion = JUMP_DEFAULT_DIVISION;
@@ -200,6 +202,19 @@ public class Player extends Entity {
 		// The following will be fixed in another branch
 		// characterAtlas = WereScrewedGame.manager.get(
 		// "player_b_m_textureatlas.pack", TextureAtlas.class);
+		
+		//We can change these once blue and/or female sprites are ready.
+		String gP, cP;
+		if ( name.equals( "player1" ) ) {
+			gP = "_m";
+			cP = "_r";
+		} else {
+			gP = "_m";
+			cP = "_r";
+		}
+		characterAtlas = WereScrewedGame.manager.getTextureAtlas("player"+cP+gP);
+		if (characterAtlas != null)
+			sprite = new Sprite(characterAtlas, new PlayerAnimator(characterAtlas, this));
 	}
 
 	// PUBLIC METHODS
@@ -289,6 +304,19 @@ public class Player extends Entity {
 				&& Math.abs( body.getLinearVelocity( ).x ) < 0.0001f ) {
 			playerDirection = PlayerDirection.Idle;
 		}
+		if ( playerDirection != PlayerDirection.Idle ) {
+			if ( Math.abs( body.getLinearVelocity( ).x ) < 0.0001f ) {
+				playerDirection = PlayerDirection.Idle;
+			} else if ( playerDirection == PlayerDirection.Left && sprite.getScaleX( ) > 0 ) {
+					sprite.setScale( sprite.getScaleX( )*-1, sprite.getScaleY( ) );
+			} else if ( playerDirection == PlayerDirection.Right && sprite.getScaleX( ) < 0 ) {
+					sprite.setScale( sprite.getScaleX( )*-1, sprite.getScaleY( ) );	
+			}
+		}
+		if ( sprite.getScaleX( ) < 0 ) {
+			sprite.translateX( 128f );
+		}
+		sprite.translateY( -15f );
 		// switch between states
 		switch ( playerState ) {
 		case Dead:
@@ -697,6 +725,7 @@ public class Player extends Entity {
 	 * slowly increases friction to avoid that silly stopping bug. Call this
 	 * every player.update()
 	 */
+	@SuppressWarnings( "unused" )
 	private void updateFootFriction( ) {
 
 		if ( isGrounded( ) ) {
@@ -775,6 +804,7 @@ public class Player extends Entity {
 				&& currentScrew.body.getJointList( ).size( ) > 0
 				&& playerState != PlayerState.HeadStand
 				&& !currentScrew.isPlayerAttached( ) ) {
+			// Filter filter;
 			for ( Fixture f : body.getFixtureList( ) ) {
 				f.setSensor( true );
 			}
@@ -1220,7 +1250,7 @@ public class Player extends Entity {
 				playerState = PlayerState.HeadStand;
 				this.setPosition( otherPlayer.body.getPosition( ).x,
 						otherPlayer.body.getPosition( ).y
-								+ ( otherPlayer.sprite.getHeight( ) / 2.0f )
+								+ ( otherPlayer.sprite.getHeight( ) - 8f )
 								* Util.PIXEL_TO_BOX );
 				// connect the players together with a joint
 				RevoluteJointDef revoluteJointDef = new RevoluteJointDef( );
@@ -1707,6 +1737,7 @@ public class Player extends Entity {
 	 * @param value
 	 *            boolean
 	 */
+
 	public void setSteamCollide( boolean value ) {
 		steamCollide = value;
 	}

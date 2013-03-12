@@ -10,6 +10,7 @@ import com.blindtigergames.werescrewed.entity.mover.PuzzleType;
 import com.blindtigergames.werescrewed.entity.mover.RockingMover;
 import com.blindtigergames.werescrewed.entity.mover.puzzle.PuzzleRotateTweenMover;
 import com.blindtigergames.werescrewed.util.Util;
+import com.blindtigergames.werescrewed.entity.mover.RockingMover;
 
 public class MoverBuilder {
 

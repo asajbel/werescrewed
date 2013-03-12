@@ -9,7 +9,7 @@
 /common/TilesetTest.pack
 /common/tileset-teal.pack
 /common/autumn.pack
-/common/player_b_m_textureatlas.pack
+/common/animations/player_r_m.pack
 
 ##common texture
 /common/player_b_f.png
@@ -33,6 +33,7 @@
 /common/robot/alphabot_tile_interior.png
 /common/ropelink.png
 /common/gear.png
+/common/animations/player_r_m.png
 
 ##Fonts
 /debug/debug_font.fnt

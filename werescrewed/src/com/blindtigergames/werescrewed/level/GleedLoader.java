@@ -21,6 +21,7 @@ import com.blindtigergames.werescrewed.entity.builders.PlatformBuilder;
 import com.blindtigergames.werescrewed.entity.builders.ScrewBuilder;
 import com.blindtigergames.werescrewed.entity.mover.IMover;
 import com.blindtigergames.werescrewed.entity.mover.MoverType;
+import com.blindtigergames.werescrewed.entity.mover.PathPoint;
 import com.blindtigergames.werescrewed.entity.mover.TimelineTweenMover;
 import com.blindtigergames.werescrewed.entity.tween.PathBuilder;
 import com.blindtigergames.werescrewed.platforms.Platform;
@@ -29,7 +30,8 @@ import com.blindtigergames.werescrewed.screws.PuzzleScrew;
 import com.blindtigergames.werescrewed.screws.Screw;
 import com.blindtigergames.werescrewed.screws.ScrewType;
 import com.blindtigergames.werescrewed.util.ArrayHash;
-
+import com.blindtigergames.werescrewed.util.Util;
+import com.blindtigergames.werescrewed.entity.mover.Path;
 
 public class GleedLoader {	
 	protected XmlReader reader;
@@ -37,17 +39,13 @@ public class GleedLoader {
 	protected EnumMap<GleedTypeTag, HashMap<String, Item>> items;
 	protected HashMap<String,Entity> entities;
 	protected HashMap<String,TimelineTweenMover> movers;
+	protected HashMap<String,Path> paths;
 	protected HashMap<String,Skeleton> skeletons;
 	protected HashMap<String,PuzzleScrew> puzzleScrews;
 	protected int spawnPoints;
 	
 	protected static final float GLEED_TO_GDX_X = 1.0f;
 	protected static final float GLEED_TO_GDX_Y = -1.0f;
-	protected static final String screwTargetTag = "target";
-	public static final String startTime = "starttime";
-	public static final String endTime = "endtime";
-	protected static final String puzzleTag = "puzzle"; 
-	protected static final String dynamicTag = "dynamic";
 	
 	public GleedLoader(){
 		reader = new XmlReader();
@@ -57,6 +55,7 @@ public class GleedLoader {
 		}
 		entities = new HashMap<String, Entity>();
 		movers = new HashMap<String, TimelineTweenMover>();
+		paths = new HashMap<String, Path>();
 		skeletons = new HashMap<String, Skeleton>();
 		puzzleScrews = new HashMap<String, PuzzleScrew>();
 		level = new Level();
@@ -128,7 +127,8 @@ public class GleedLoader {
 		return level.root;
 	}
 	
-
+	public static final String startTime = "starttime";
+	public static final String endTime = "endtime";
 	
 	protected TimelineTweenMover loadMover (Item item, Entity entity){
 		item.checkLocked();
@@ -140,6 +140,7 @@ public class GleedLoader {
 			Array<Vector2> points = new Array<Vector2>(pointElems.size);
 			Array<Float> times = new Array<Float>(pointElems.size);
 			PathBuilder pBuilder = new PathBuilder().begin( (Platform)entity );
+			Path path = new Path();
 			
 			Element vElem; Vector2 point; String timeTag;
 			int frontPoint = 0; float frontTime = 0.0f;
@@ -187,9 +188,11 @@ public class GleedLoader {
 			}
 			for (int i = 0; i < points.size; i++){
 				pBuilder.target( points.get(i).x, points.get(i).y, times.get(i).floatValue( ) );
+				path.addPoint(new PathPoint().position( points.get(i) ).time( times.get(i) ));
 			}
 			TimelineTweenMover out = pBuilder.build( );
 			movers.put(item.name, out);
+			paths.put( item.name, path );
 			return out;
 		}
 		RuntimeException notPath = new RuntimeException(item.name+" is defined as a mover but is not a path object. Only paths can be defined as movers.");
@@ -215,13 +218,13 @@ public class GleedLoader {
 		return null;
 	}
 
-
 	/**
 	 * This funtion loads all sorts of objects after reading in the Item item (defined by the xml file)
 	 * under GleedTypeTag.ENTITY
 	 * @param item - Item
 	 * @return Entity
 	 */
+	protected static final String puzzleTag = "puzzle"; 
 	protected Entity loadEntity(Item item){
 		Entity out = null;
 		boolean isPlatform = false;
@@ -315,7 +318,7 @@ public class GleedLoader {
 		return out;
 	}
 	
-	
+	protected static final String dynamicTag = "dynamic";
 	
 	protected TiledPlatform loadTiledPlatform(Item item){
 		TiledPlatform out = null;
@@ -379,7 +382,7 @@ public class GleedLoader {
 	}
 
 	protected void loadPlayerSpawnPoint(Item item){
-		level.player1.setPixelPosition( item.pos ); 
+		level.players.get(spawnPoints).setPixelPosition( item.pos ); //Kevin: Who commented this out?
 		Gdx.app.log("GleedLoader", "Player Spawnpoint:"+item.pos.toString( ));
 	}
 	
@@ -395,7 +398,7 @@ public class GleedLoader {
 		return out;
 	}
 	
-
+	protected static final String screwTargetTag = "target";
 	public Screw loadScrew(Item item){
 		;
 		ScrewType sType = ScrewType.fromString( item.defName );
@@ -470,8 +473,8 @@ public class GleedLoader {
 			name = getName(e);
 			gleedType = getGleedType(e);
 			props = getCustomProperties(e);
-			if (props.containsKey( "definition" )){ //EntityDef.tag )){
-				defName = props.get( "definition" );  //EntityDef.tag );
+			if (props.containsKey( EntityDef.tag )){
+				defName = props.get( EntityDef.tag );
 			}
 			else {
 				defName = "";

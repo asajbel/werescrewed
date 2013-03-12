@@ -1,12 +1,11 @@
 package com.blindtigergames.werescrewed.asset;
 
-import java.io.FileNotFoundException;
 import java.util.HashMap;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.blindtigergames.werescrewed.graphics.TextureAtlasS;
+import com.blindtigergames.werescrewed.graphics.TextureAtlas;
 import com.blindtigergames.werescrewed.platforms.TileSet;
 
 /**
@@ -18,12 +17,12 @@ import com.blindtigergames.werescrewed.platforms.TileSet;
  */
 
 public class AssetManager extends com.badlogic.gdx.assets.AssetManager {
-	HashMap< String, TextureAtlasS > atlasMap;
+	HashMap< String, TextureAtlas > atlasMap;
 	HashMap< String, BitmapFont > fontMap;
 	
 	public AssetManager(){
 		super();
-		atlasMap = new HashMap< String, TextureAtlasS >( );
+		atlasMap = new HashMap< String, TextureAtlas >( );
 		fontMap = new HashMap<String, BitmapFont>();
 	}
 	
@@ -38,7 +37,11 @@ public class AssetManager extends com.badlogic.gdx.assets.AssetManager {
 	
 	public void loadAtlas( String fullPathToAtlas ){
 		FileHandle fileHandle = Gdx.files.internal( fullPathToAtlas );
-		atlasMap.put( fileHandle.nameWithoutExtension( ), new TextureAtlasS(fileHandle) );
+		atlasMap.put( fileHandle.nameWithoutExtension( ), new TextureAtlas(fileHandle) );
+	}
+	
+	public TextureAtlas getAtlas(String atlasPackName){
+		return atlasMap.get( atlasPackName );
 	}
 	
 	/**
@@ -53,7 +56,7 @@ public class AssetManager extends com.badlogic.gdx.assets.AssetManager {
 	 * @param atlasName name of texture atlas pack file without the extension
 	 * @return Texture Atlas pre-loaded during loading screen.
 	 */
-	public TextureAtlasS getTextureAtlas( String atlasName ){
+	public TextureAtlas getTextureAtlas( String atlasName ){
 		return atlasMap.get( atlasName );
 	}
 	
