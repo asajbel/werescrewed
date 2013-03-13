@@ -237,7 +237,7 @@ public class Player extends Entity {
 			// Gdx.app.log( "fixture" + i + " a sensor?", "" + f.isSensor( ) );
 			// i++;
 			// }
-			 Gdx.app.log( "player 1 state", "" + playerState + " , " + playerDirection );
+			// Gdx.app.log( "player 1 state", "" + playerState + " , " + playerDirection );
 			// if(contact != null)
 			// System.out.println("contact friction: " + contact.getFriction( )
 			// + "feet friction: " + feet.getFriction( ) );
