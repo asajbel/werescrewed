@@ -53,11 +53,13 @@ import com.blindtigergames.werescrewed.screws.Screw;
 import com.blindtigergames.werescrewed.screws.StrippedScrew;
 import com.blindtigergames.werescrewed.screws.StructureScrew;
 import com.blindtigergames.werescrewed.util.Metrics;
+import com.blindtigergames.werescrewed.util.MetricsRender;
 import com.blindtigergames.werescrewed.util.Util;
 
 public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 
 	private Camera cam;
+	private MetricsRender metRend; 
 	private SpriteBatch batch;
 	private Texture testTexture;
 	private World world;
@@ -99,6 +101,7 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		batch = new SpriteBatch( );
 		world = new World( new Vector2( 0, -35 ), true );
 		initCamera( );
+		metRend = new MetricsRender(LEVEL_NAME); 
 		skeleton = new Skeleton( "skeleton", Vector2.Zero, null, world );
 		rootSkeleton = new Skeleton( "root", Vector2.Zero, null, world );
 
@@ -1069,6 +1072,7 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		}
 
 		cam.update( );
+		metRend.render( cam.camera ); 
 
 		if ( Gdx.input.isKeyPressed( Input.Keys.ESCAPE ) ) {
 			ScreenManager.getInstance( ).show( ScreenType.PAUSE );

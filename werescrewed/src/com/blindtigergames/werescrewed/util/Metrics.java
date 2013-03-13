@@ -14,6 +14,7 @@ public class Metrics {
 
 	public static boolean activated = false;
 	public static boolean addToUnscrewListOnce = false;
+	public static final String FILE_APPEND = "_Metrics,json";
 	private static ArrayList< String > sectionNames = new ArrayList< String >( );
 	private static ArrayList< Vector2 > playerDeathPositions = new ArrayList< Vector2 >( );
 	private static ArrayList< Vector2 > playerJumpPositions = new ArrayList< Vector2 >( );
@@ -146,7 +147,7 @@ public class Metrics {
 
 		Json json = new Json( );
 		try {
-			File file = new File( levelName + "_Metrics.json" );
+			File file = new File( levelName + FILE_APPEND );
 			if ( !file.exists( ) ) {
 				file.createNewFile( );
 			}
