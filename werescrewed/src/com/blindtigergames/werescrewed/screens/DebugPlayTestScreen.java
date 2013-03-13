@@ -124,9 +124,9 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 
 		// Initialize players
 		player1 = new PlayerBuilder( ).name( "player1" ).world( world )
-				.position( 115 * TILE, 50 * TILE ).buildPlayer( );
+				.position( 175 * TILE, 96 * TILE ).buildPlayer( );
 		player2 = new PlayerBuilder( ).name( "player2" ).world( world )
-				.position( 115 * TILE, 50 * TILE ).buildPlayer( );
+				.position( 175 * TILE, 96 * TILE ).buildPlayer( );
 
 		// END: 175f * TILE, 96f * TILE
 		// START :: 1f * TILE, 1f * TILE
@@ -1072,7 +1072,6 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		}
 
 		cam.update( );
-		metRend.render( cam.camera ); 
 
 		if ( Gdx.input.isKeyPressed( Input.Keys.ESCAPE ) ) {
 			ScreenManager.getInstance( ).show( ScreenType.PAUSE );
@@ -1113,10 +1112,15 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 
 		// if(endLevelFlag)
 		if ( bossBolt.endLevelFlag( ) ) {
+			
 			if ( !inceptionhorn.isPlaying( ) ) {
 				inceptionhorn.play( );
 			}
 			if ( endgameCounter == 0f ) {
+
+				if ( Metrics.activated ) {
+					Metrics.printMetrics( LEVEL_NAME );
+				}
 				rootSkeleton.addMover( new RockingMover( -0.1f, 0.5f ),
 						RobotState.IDLE );
 				rootSkeleton.setActive( true );
@@ -1125,9 +1129,6 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 			endgameCounter += deltaTime;
 			cam.camera.zoom += 0.015f;
 			if ( endgameCounter > 10f ) {
-				if ( Metrics.activated ) {
-					Metrics.printMetrics( LEVEL_NAME );
-				}
 				Gdx.app.exit( );
 				// if we want want the game to go back to the main menu, comment
 				// the above line and uncomment the 2 lines below -Vic
@@ -1137,6 +1138,7 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		}
 
 		world.step( 1 / 60f, 6, 3 );
+		metRend.render( cam.camera ); 
 	}
 
 	@Override

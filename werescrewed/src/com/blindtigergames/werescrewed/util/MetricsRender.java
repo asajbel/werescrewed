@@ -27,12 +27,13 @@ public class MetricsRender {
 	private class Place {
 		float x;
 		float y;
-		Vector3 color;
+		Vector3 color = new Vector3();
 		int num;
 	}
 
 	private boolean fileExists = false;
 	private boolean render = false;
+	private boolean cycle = true; 
 	private ArrayList< MetricsOutput > runs;
 	private Map< String, Place > parsedJump;
 	private Map< String, Place > parsedDeath;
@@ -46,9 +47,10 @@ public class MetricsRender {
 	public MetricsRender( String LevelName ) {
 		whatToRender = Type.NONE;
 		alpha = 0.5f;
+		shapeRenderer = new ShapeRenderer( );
 		runs = new ArrayList< MetricsOutput >( );
-		Json json = new Json( );
 		File file = new File( LevelName + Metrics.FILE_APPEND );
+		Json json = new Json( );
 		if ( file.exists( ) ) {
 			fileExists = true;
 			try {
@@ -79,11 +81,13 @@ public class MetricsRender {
 	}
 
 	public void render( OrthographicCamera camera ) {
-		if ( Gdx.input.isKeyPressed( Input.Keys.RIGHT_BRACKET ) ) {
+		if ( Gdx.input.isKeyPressed( Input.Keys.RIGHT_BRACKET ) && cycle ) {
 			cycleRenderForward( );
+			cycle = false;
 		}
-		if ( Gdx.input.isKeyPressed( Input.Keys.LEFT_BRACKET ) ) {
+		if ( Gdx.input.isKeyPressed( Input.Keys.LEFT_BRACKET ) && cycle ) {
 			cycleRenderBackward( );
+			cycle = false; 
 		}
 
 		Map< String, Place > parsed;
@@ -116,8 +120,8 @@ public class MetricsRender {
 		}
 
 		if ( render && fileExists ) {
-			Gdx.gl.glEnable( GL10.GL_BLEND );
 			Gdx.gl.glBlendFunc( GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA );
+			Gdx.gl.glEnable( GL10.GL_BLEND );
 
 			for ( Map.Entry< String, Place > rend : parsed.entrySet( ) ) {
 				shapeRenderer.setProjectionMatrix( camera.combined );
@@ -137,7 +141,7 @@ public class MetricsRender {
 	private void cycleRenderForward( ) {
 		switch ( whatToRender ) {
 		case ATTACH:
-			render = true;
+			render = false;
 			whatToRender = Type.NONE;
 			break;
 		case DIE:
@@ -149,7 +153,7 @@ public class MetricsRender {
 			whatToRender = Type.DIE;
 			break;
 		case NONE:
-			render = false;
+			render = true;
 			whatToRender = Type.JUMP;
 			break;
 		case SCREW:
@@ -180,11 +184,11 @@ public class MetricsRender {
 			whatToRender = Type.JUMP;
 			break;
 		case JUMP:
-			render = true;
+			render = false;
 			whatToRender = Type.NONE;
 			break;
 		case NONE:
-			render = false;
+			render = true;
 			whatToRender = Type.ATTACH;
 			break;
 		case SCREW:
