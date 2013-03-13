@@ -282,9 +282,17 @@ public class Player extends Entity {
 		}
 		// test if player is still moving
 		//this will have to be updated to work with moving platforms
-		if ( playerDirection != PlayerDirection.Idle
-				&& Math.abs( body.getLinearVelocity( ).x ) < 0.0001f ) {
-			playerDirection = PlayerDirection.Idle;
+		if ( playerDirection != PlayerDirection.Idle ) {
+			if ( Math.abs( body.getLinearVelocity( ).x ) < 0.0001f ) {
+				playerDirection = PlayerDirection.Idle;
+			} else if ( playerDirection == PlayerDirection.Left && sprite.getScaleX( ) > 0 ) {
+					sprite.setScale( sprite.getScaleX( )*-1, sprite.getScaleY( ) );
+			} else if ( playerDirection == PlayerDirection.Right && sprite.getScaleX( ) < 0 ) {
+					sprite.setScale( sprite.getScaleX( )*-1, sprite.getScaleY( ) );	
+			}
+		}
+		if ( sprite.getScaleX( ) < 0 ) {
+			sprite.translateX( 96f );
 		}
 		// switch between states
 		switch ( playerState ) {
