@@ -423,6 +423,9 @@ public class MyContactListener implements ContactListener {
 									if ( platformPos.y > playerPos.y ) {
 										contact.setEnabled( false );
 									}
+								} 
+								if ( player.isTopPlayer( ) ) {
+									contact.setEnabled( false );
 								}
 								if ( player.isTopPlayer( ) ) {
 									contact.setEnabled( false );

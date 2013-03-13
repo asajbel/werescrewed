@@ -6,7 +6,6 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.controllers.PovDirection;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -18,12 +17,15 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJoint;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
+import com.blindtigergames.werescrewed.graphics.TextureAtlas;
 import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.camera.Anchor;
 import com.blindtigergames.werescrewed.camera.AnchorList;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityDef;
 import com.blindtigergames.werescrewed.entity.EntityType;
+import com.blindtigergames.werescrewed.entity.Sprite;
+import com.blindtigergames.werescrewed.entity.animator.PlayerAnimator;
 import com.blindtigergames.werescrewed.entity.mover.IMover;
 import com.blindtigergames.werescrewed.entity.mover.LerpMover;
 import com.blindtigergames.werescrewed.entity.mover.LinearAxis;
@@ -61,8 +63,8 @@ public class Player extends Entity {
 	public final static Vector2 ANCHOR_BUFFER_SIZE = new Vector2( 200f, 128f );
 	public final static float STEAM_FORCE = .5f;
 	public final static float FRICTION_INCREMENT = 0.3f;
-	public final static float FEET_OFFSET_X = 39f * Util.PIXEL_TO_BOX;
-	public final static float FEET_OFFSET_Y = 15f * Util.PIXEL_TO_BOX;
+	public final static float FEET_OFFSET_X = 58f * Util.PIXEL_TO_BOX;
+	public final static float FEET_OFFSET_Y = 20f * Util.PIXEL_TO_BOX;
 	public final static float JUMP_DIRECTION_MULTIPLIER = 2f;
 	public final static float JUMP_DEFAULT_DIVISION = 1.0f;
 	public float directionJumpDivsion = JUMP_DEFAULT_DIVISION;
@@ -84,6 +86,7 @@ public class Player extends Entity {
 	private PlayerInputHandler inputHandler;
 	private MyControllerListener controllerListener;
 	private PlayerState playerState;
+	private ConcurrentState extraState;
 	private PlayerDirection playerDirection;
 	private Controller controller;
 	private boolean controllerIsActive, controllerDebug;
@@ -147,9 +150,14 @@ public class Player extends Entity {
 	 * </Ul>
 	 */
 	public enum PlayerState {
-		Standing, Running, Jumping, Falling, Screwing, JumpingOffScrew, Dead, GrabMode, HeadStand
+		Standing, Running, Jumping, Falling, Screwing, JumpingOffScrew, Dead, GrabMode, HeadStand,
+		Landing
 	}
 
+	public enum ConcurrentState {
+		Ignore, HeadStandJumping, HeadStandFalling
+	}
+	
 	// enum to handle different states of movement
 	public enum PlayerDirection {
 		Idle, Left, Right
@@ -169,7 +177,7 @@ public class Player extends Entity {
 		super( name, EntityDef.getDefinition( name ), world, pos, 0.0f,
 				new Vector2( 1f, 1f ), null, true );
 		entityType = EntityType.PLAYER;
-		body.setGravityScale( 0.25f );
+		body.setGravityScale( 0.3f );
 		body.setFixedRotation( true );
 		body.setSleepingAllowed( false );
 		this.world = world;
@@ -200,6 +208,19 @@ public class Player extends Entity {
 		// The following will be fixed in another branch
 		// characterAtlas = WereScrewedGame.manager.get(
 		// "player_b_m_textureatlas.pack", TextureAtlas.class);
+		
+		//We can change these once blue and/or female sprites are ready.
+		String gP, cP;
+		if ( name.equals( "player1" ) ) {
+			gP = "_m";
+			cP = "_r";
+		} else {
+			gP = "_m";
+			cP = "_r";
+		}
+		characterAtlas = WereScrewedGame.manager.getTextureAtlas("player"+cP+gP);
+		if (characterAtlas != null)
+			sprite = new Sprite(characterAtlas, new PlayerAnimator(characterAtlas, this));
 	}
 
 	// PUBLIC METHODS
@@ -216,7 +237,7 @@ public class Player extends Entity {
 			// Gdx.app.log( "fixture" + i + " a sensor?", "" + f.isSensor( ) );
 			// i++;
 			// }
-			// Gdx.app.log( "player 1 state", "" + playerState );
+			// Gdx.app.log( "player 1 state", "" + playerState + " , " + playerDirection );
 			// if(contact != null)
 			// System.out.println("contact friction: " + contact.getFriction( )
 			// + "feet friction: " + feet.getFriction( ) );
@@ -289,6 +310,19 @@ public class Player extends Entity {
 				&& Math.abs( body.getLinearVelocity( ).x ) < 0.0001f ) {
 			playerDirection = PlayerDirection.Idle;
 		}
+		if ( playerDirection != PlayerDirection.Idle ) {
+			if ( Math.abs( body.getLinearVelocity( ).x ) < 0.0001f ) {
+				playerDirection = PlayerDirection.Idle;
+			} else if ( playerDirection == PlayerDirection.Left && sprite.getScaleX( ) > 0 ) {
+					sprite.setScale( sprite.getScaleX( )*-1, sprite.getScaleY( ) );
+			} else if ( playerDirection == PlayerDirection.Right && sprite.getScaleX( ) < 0 ) {
+					sprite.setScale( sprite.getScaleX( )*-1, sprite.getScaleY( ) );	
+			}
+		}
+		if ( sprite.getScaleX( ) < 0 ) {
+			sprite.translateX( 120f );
+		}
+		sprite.translateY( -10f );
 		// switch between states
 		switch ( playerState ) {
 		case Dead:
@@ -345,8 +379,12 @@ public class Player extends Entity {
 		if ( body.getLinearVelocity( ).y < -MIN_VELOCITY * 4f
 				&& platformBody == null && playerState != PlayerState.Screwing
 				&& playerState != PlayerState.JumpingOffScrew
-				&& playerState != PlayerState.HeadStand && !isDead ) {
-			playerState = PlayerState.Falling;
+				&& !isDead ) {
+			if ( playerState == PlayerState.HeadStand ) {
+				extraState = ConcurrentState.HeadStandFalling;
+			} else {
+				playerState = PlayerState.Falling;
+			}
 			setGrounded( false );
 		}
 		if ( otherPlayer != null && isHeadStandPossible( ) ) {
@@ -629,6 +667,13 @@ public class Player extends Entity {
 	}
 
 	/**
+	 * get concurrent player state
+	 */
+	public ConcurrentState getExtraState( ) {
+		return extraState;
+	}
+	
+	/**
 	 * return s the current state of the player
 	 * 
 	 * @return playerState
@@ -706,6 +751,7 @@ public class Player extends Entity {
 
 		if ( isGrounded( ) ) {
 			if ( feet.getFriction( ) < PLAYER_FRICTION ) {
+				playerState = PlayerState.Landing;
 				frictionCounter += FRICTION_INCREMENT;
 
 				CircleShape ps = new CircleShape( );
@@ -734,10 +780,11 @@ public class Player extends Entity {
 
 				}
 				// currentScrew = null;
-			}
+			} 
 		} else {
 			frictionCounter = 0f;
 			feet.setFriction( frictionCounter );
+			
 		}
 
 	}
@@ -780,6 +827,7 @@ public class Player extends Entity {
 				&& currentScrew.body.getJointList( ).size( ) > 0
 				&& playerState != PlayerState.HeadStand
 				&& !currentScrew.isPlayerAttached( ) ) {
+			// Filter filter;
 			for ( Fixture f : body.getFixtureList( ) ) {
 				f.setSensor( true );
 			}
@@ -889,6 +937,8 @@ public class Player extends Entity {
 				if ( playerState != PlayerState.JumpingOffScrew
 						&& playerState != PlayerState.HeadStand ) {
 					playerState = PlayerState.Jumping;
+				} else if ( playerState == PlayerState.HeadStand ) {
+					extraState = ConcurrentState.HeadStandJumping;
 				}
 				jump( );
 				jumpCounter++;
@@ -938,6 +988,8 @@ public class Player extends Entity {
 				if ( playerState != PlayerState.JumpingOffScrew
 						&& playerState != PlayerState.HeadStand ) {
 					playerState = PlayerState.Jumping;
+				} else if ( playerState == PlayerState.HeadStand ) {
+					extraState = ConcurrentState.HeadStandJumping;
 				}
 				jump( );
 				jumpCounter++;
@@ -1225,7 +1277,7 @@ public class Player extends Entity {
 				playerState = PlayerState.HeadStand;
 				this.setPosition( otherPlayer.body.getPosition( ).x,
 						otherPlayer.body.getPosition( ).y
-								+ ( otherPlayer.sprite.getHeight( ) / 2.0f )
+								+ ( otherPlayer.sprite.getHeight( ) - 8f )
 								* Util.PIXEL_TO_BOX );
 				// connect the players together with a joint
 				RevoluteJointDef revoluteJointDef = new RevoluteJointDef( );
@@ -1257,12 +1309,14 @@ public class Player extends Entity {
 				&& body.getJointList( ).size( ) == 0 ) {
 			if ( isGrounded( ) ) {
 				playerState = PlayerState.Standing;
+				extraState = ConcurrentState.Ignore;
 			} else {
 				if ( body.getLinearVelocity( ).y > 0 ) {
 					playerState = PlayerState.Jumping;
-					// TODO: animating sprite test
+					extraState = ConcurrentState.Ignore;
 				} else {
 					playerState = PlayerState.Falling;
+					extraState = ConcurrentState.Ignore;
 				}
 			}
 		}

@@ -87,7 +87,6 @@ public class Skeleton extends Platform {
 		// center of platform
 		new RevoluteJointBuilder( world ).skeleton( this ).bodyB( platform )
 				.build( );
-
 		addDynamicPlatform( platform );
 
 	}
@@ -206,23 +205,23 @@ public class Skeleton extends Platform {
 			event.name = event.name + "-CHANGE_MY_NAME" + entityCount;
 		}
 		eventMap.put( event.name, event );
-	}
-
-	/**
-	 * Add a skeleton to the sub skeleton list of this one.
-	 * 
-	 * @author stew
-	 */
-	public void addSkeleton( Skeleton skeleton ) {
-		// this.childSkeletons.add( skeleton );
-		childSkeletonMap.put( skeleton.name, skeleton );
-	}
-
-	/**
-	 * set skeleton to awake or not TODO: Do kinamtic platforms need sleeping?
-	 */
-	public void setSkeletonAwakeRec( boolean isAwake ) {
-		for ( Skeleton skeleton : childSkeletonMap.values( ) ) {
+	}    
+    
+    /**
+     * Add a skeleton to the sub skeleton list of this one.
+     * @author stew
+     */
+    public void addSkeleton( Skeleton skeleton ) {
+        //this.childSkeletons.add( skeleton );
+    	childSkeletonMap.put( skeleton.name, skeleton );
+    }
+    
+    /**
+     * set skeleton to awake or not
+     * TODO: Do kinamtic platforms need sleeping?
+     */
+    public void setSkeletonAwakeRec( boolean isAwake) {
+		for ( Skeleton skeleton : childSkeletonMap.values( ) ){
 			skeleton.setSkeletonAwakeRec( isAwake );
 		}
 		for ( Platform platform : dynamicPlatformMap.values( ) ) {
@@ -244,16 +243,14 @@ public class Skeleton extends Platform {
 		// ropeToUpdate.getValue( ).body.setAwake( isAwake );
 		// }
 	}
-
-	/**
-	 * setSkeletonActive() recursively sets all child skeletons active state to
-	 * isActive\
-	 * 
-	 * @author stew
-	 */
-	public void setSkeletonActiveRec( boolean isActive ) {
-		setSkeletonActive( isActive );
-		for ( Skeleton skeleton : childSkeletonMap.values( ) ) {
+    
+    /**
+     * setSkeletonActive() recursively sets all child skeletons active state to isActive\
+     * @author stew
+     */
+    public void setSkeletonActiveRec( boolean isActive) {
+    	setSkeletonActive(isActive);
+		for ( Skeleton skeleton : childSkeletonMap.values( ) ){
 			skeleton.setSkeletonActiveRec( isActive );
 		}
 	}
@@ -367,14 +364,14 @@ public class Skeleton extends Platform {
 		}
 	}
 
-	/**
-	 * Update movers of all children platforms
-	 * 
-	 * @param deltaTime
-	 * @author stew
-	 */
-	protected void updateEntityMovers( float deltaTime ) {
-		for ( Skeleton skeleton : childSkeletonMap.values( ) ) {
+    
+    /**
+     * Update movers of all children platforms
+     * @param deltaTime
+     * @author stew
+     */
+    protected void updateEntityMovers( float deltaTime ){
+    	for ( Skeleton skeleton : childSkeletonMap.values( ) ){
 			skeleton.updateEntityMovers( deltaTime );
 		}
 		for ( Platform platform : dynamicPlatformMap.values( ) ) {
@@ -415,6 +412,10 @@ public class Skeleton extends Platform {
 		for ( Screw screw : screwMap.values( ) ) {
 			screw.update( deltaTime );
 		}
+        for ( Rope rope : ropeMap.values() ){
+        	rope.update( deltaTime);
+        }
+        
         for ( Rope rope : ropeMap.values() ){
         	rope.update( deltaTime);
         }
@@ -488,14 +489,14 @@ public class Skeleton extends Platform {
 		default:
 			platform.draw( batch );
 		}
-	}
-
-	/**
-	 * update child skeletons based on rotation & position of this skeleton
-	 * TODO: OPTIMIZATION only call this when the skeleton has moved / rotated
-	 */
-	protected void setPosRotChildSkeletons( float deltaTime ) {
-		for ( Skeleton skeleton : childSkeletonMap.values( ) ) {
+	}    
+    
+    /**
+     * update child skeletons based on rotation & position of this skeleton
+     * TODO: OPTIMIZATION only call this when the skeleton has moved / rotated
+     */
+    protected void setPosRotChildSkeletons( float deltaTime ) {
+		for ( Skeleton skeleton : childSkeletonMap.values( ) ){
 			if ( skeleton.isKinematic( ) )
 				skeleton.setPosRotFromSkeleton( deltaTime, this );
 			// now recursively apply this change to child skeletons
