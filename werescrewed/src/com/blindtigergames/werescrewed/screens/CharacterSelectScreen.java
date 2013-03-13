@@ -10,7 +10,7 @@ import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.gui.Button;
 import com.blindtigergames.werescrewed.gui.Label;
 
-public class CharacterSelectScreen implements com.badlogic.gdx.Screen {
+public class CharacterSelectScreen extends Screen {
 	private SpriteBatch batch = null;
 	private OrthographicCamera camera = null;
 	private BitmapFont font = null;
@@ -28,7 +28,6 @@ public class CharacterSelectScreen implements com.badlogic.gdx.Screen {
 		batch = new SpriteBatch( );
 		font = new BitmapFont( );
 		fancyFont = WereScrewedGame.manager.getFont( "Screwball" );
-		//fancyFont = WereScrewedGame.manager.getFont( "ornatique" );
 		logo =  WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 				 + "/common/title_background.png", Texture.class );
 		lineHeight = Math.round( 2.5f * font.getCapHeight( ) );
@@ -59,6 +58,7 @@ public class CharacterSelectScreen implements com.badlogic.gdx.Screen {
 	@Override
 	public void render( float delta ) {
 		// TODO Auto-generated method stub
+		super.render( delta );
 		Gdx.gl.glClearColor( 0.1f, 0.1f, 0.1f, 1f );
 		Gdx.gl.glClear( GL10.GL_COLOR_BUFFER_BIT );
 		// TODO Auto-generated method stub

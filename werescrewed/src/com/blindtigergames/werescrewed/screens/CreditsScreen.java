@@ -12,8 +12,8 @@ import com.blindtigergames.werescrewed.gui.Button;
 import com.blindtigergames.werescrewed.gui.Label;
 import com.blindtigergames.werescrewed.screens.ScreenSwitchHandler;
 
-class CreditsScreen implements com.badlogic.gdx.Screen {
-
+class CreditsScreen  extends Screen {
+//implements com.badlogic.gdx.Screen
 	private SpriteBatch batch = null;
 	private OrthographicCamera camera = null;
 	private BitmapFont font = null;
