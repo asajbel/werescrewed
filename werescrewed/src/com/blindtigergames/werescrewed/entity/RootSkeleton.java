@@ -69,6 +69,19 @@ public class RootSkeleton extends Skeleton {
 		looseEntity.add( e );
 	}
 	
+	/**
+	 * finds the entity with this name
+	 */
+	public Entity getSubEntity( String name ) {
+		Entity entity = null;
+		for ( Entity e: looseEntity ) {
+			if ( e.name.equals( name ) ) {
+				entity = e;
+			}
+		}
+		return entity;
+	}
+	
     @Override
     public void draw( SpriteBatch batch ){
     	//possible bug: the draw order

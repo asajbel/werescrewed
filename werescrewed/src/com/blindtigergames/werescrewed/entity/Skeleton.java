@@ -306,6 +306,16 @@ public class Skeleton extends Platform {
 	}
 
 	/**
+	 * finds the skeleton with this name
+	 */
+	public Skeleton getSubSkeletonByName( String name ) {
+		if ( childSkeletonMap.containsKey( name ) ) {
+			return childSkeletonMap.get( name );
+		}
+		return null;
+	}
+	
+	/**
 	 * This update function is ONLY called on the very root skeleton, it takes
 	 * care of the child sksletons
 	 * 

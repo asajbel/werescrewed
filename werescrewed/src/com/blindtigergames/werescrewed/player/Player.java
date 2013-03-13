@@ -231,13 +231,13 @@ public class Player extends Entity {
 	public void update( float deltaTime ) {
 		super.update( deltaTime );
 
-		if ( name.equals( "player1" ) ) {
+		if ( name.equals( "player2" ) ) {
 			// int i = 0;
 			// for ( Fixture f : body.getFixtureList( ) ) {
 			// Gdx.app.log( "fixture" + i + " a sensor?", "" + f.isSensor( ) );
 			// i++;
 			// }
-			// Gdx.app.log( "player 1 state", "" + playerState + " , " + playerDirection );
+			//Gdx.app.log( "player 2 state", "" + playerState + " , " + playerDirection );
 			// if(contact != null)
 			// System.out.println("contact friction: " + contact.getFriction( )
 			// + "feet friction: " + feet.getFriction( ) );
@@ -751,7 +751,9 @@ public class Player extends Entity {
 
 		if ( isGrounded( ) ) {
 			if ( feet.getFriction( ) < PLAYER_FRICTION ) {
-				playerState = PlayerState.Landing;
+				if ( playerState != PlayerState.Screwing ) {
+					playerState = PlayerState.Landing;
+				}
 				frictionCounter += FRICTION_INCREMENT;
 
 				CircleShape ps = new CircleShape( );
@@ -1171,15 +1173,15 @@ public class Player extends Entity {
 						}
 					}
 				}
-
 			}
 		}
 
 		if ( mover == null
-				&& currentScrew.body.getJointList( ).size( ) <= 1
+				&& currentScrew.body.getJointList( ).size( ) == 0
 				|| ( currentScrew.getScrewType( ) == ScrewType.SCREW_BOSS && currentScrew
 						.getDepth( ) == 0 ) ) {
 			removePlayerToScrew( );
+			Gdx.app.log( "this shouldn't happen", "if screw is still attachecd 1" );
 			// JUMP COMMENTED OUT BECAUSE IT ADDS JUMP TO METRICS WHEN
 			// PLAYER DOESN'T ACTUALLY HIT THE JUMP BUTTON
 			// jump( );
