@@ -14,6 +14,7 @@ import com.badlogic.gdx.physics.box2d.JointEdge;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.blindtigergames.werescrewed.eventTrigger.EventTrigger;
+import com.blindtigergames.werescrewed.hazard.Hazard;
 import com.blindtigergames.werescrewed.joint.RevoluteJointBuilder;
 import com.blindtigergames.werescrewed.platforms.Platform;
 import com.blindtigergames.werescrewed.platforms.TiledPlatform;
@@ -54,6 +55,7 @@ public class Skeleton extends Platform {
 		this.world = world;
 		constructSkeleton( pos );
 		super.setSolid( false );
+		entityType = EntityType.SKELETON;
 	}
 
 	public void constructSkeleton( Vector2 pos ) {
@@ -173,7 +175,7 @@ public class Skeleton extends Platform {
 		entityCount++;
 		// this.dynamicPlatforms.add( platform );
 		if ( dynamicPlatformMap.containsKey( platform.name ) ) {
-			platform.name = platform.name + "-CHANGE_MY_NAME" + entityCount;
+			platform.name = getUniqueName(platform.name);
 		}
 		dynamicPlatformMap.put( platform.name, platform );
 	}
@@ -188,7 +190,7 @@ public class Skeleton extends Platform {
 		// kinematicPlatforms.add( platform );
 		entityCount++;
 		if ( kinematicPlatformMap.containsKey( platform.name ) ) {
-			platform.name = platform.name + "-CHANGE_MY_NAME" + entityCount;
+			platform.name = getUniqueName(platform.name);
 		}
 		kinematicPlatformMap.put( platform.name, platform );
 	}
@@ -202,10 +204,14 @@ public class Skeleton extends Platform {
 	public void addEventTrigger( EventTrigger event ) {
 		entityCount++;
 		if ( eventMap.containsKey( event.name ) ) {
-			event.name = event.name + "-CHANGE_MY_NAME" + entityCount;
+			event.name = getUniqueName(event.name);
 		}
 		eventMap.put( event.name, event );
-	}    
+	}  
+	
+	public void addHazard( Hazard h ){
+		addKinematicPlatform( h );
+	}
     
     /**
      * Add a skeleton to the sub skeleton list of this one.
@@ -263,16 +269,22 @@ public class Skeleton extends Platform {
 	 */
 	public void setSkeletonActive( boolean isActive ) {
 		body.setActive( isActive );
-
+		setActive( true );
 		for ( Platform platform : dynamicPlatformMap.values( ) ) {
 			platform.body.setActive( isActive );
+			platform.setActive( isActive );
 		}
 		for ( Platform platform : kinematicPlatformMap.values( ) ) {
 			platform.body.setActive( isActive );
+			platform.setActive( isActive );
 		}
 		for ( Screw screw : screwMap.values( ) ) {
 			screw.body.setActive( isActive );
+			screw.setActive( isActive );
 		}
+		//for ( Rope rope : ropeMap.values( ) ){
+			
+		//}
 		/* TODO: add ropes */
 	}
 
@@ -356,10 +368,9 @@ public class Skeleton extends Platform {
 	 */
 	protected void updateChildSkeletonMovers( float deltaTime ) {
 		for ( Skeleton skeleton : childSkeletonMap.values( ) ) {
-			// Gdx.app.log( skeleton.name, childSkeletonMap.values( ).size( )+""
-			// );
-			// System.exit( 0 );
-			skeleton.updateMover( deltaTime );
+			if ( skeleton.isActive( ) ){
+				skeleton.updateMover( deltaTime );
+			}
 			skeleton.updateChildSkeletonMovers( deltaTime );
 		}
 	}
@@ -374,12 +385,14 @@ public class Skeleton extends Platform {
     	for ( Skeleton skeleton : childSkeletonMap.values( ) ){
 			skeleton.updateEntityMovers( deltaTime );
 		}
-		for ( Platform platform : dynamicPlatformMap.values( ) ) {
-			platform.updateMover( deltaTime );
-		}
-		for ( Platform platform : kinematicPlatformMap.values( ) ) {
-			platform.updateMover( deltaTime );
-		}
+    	if ( this.isActive( ) ){
+    		for ( Platform platform : dynamicPlatformMap.values( ) ) {
+    			platform.updateMover( deltaTime );
+			}
+			for ( Platform platform : kinematicPlatformMap.values( ) ) {
+				platform.updateMover( deltaTime );
+			}
+    	}
 		/* TODO: add ropes and loose entity */
 	}
 
@@ -394,30 +407,32 @@ public class Skeleton extends Platform {
         for ( Skeleton skeleton : childSkeletonMap.values( ) ) {
             skeleton.update( deltaTime );
         }
-        for ( Platform p : dynamicPlatformMap.values( ) ) {
-        	p.update( deltaTime );
-        }
-        for ( Platform p : kinematicPlatformMap.values( ) ) {
-        	p.update( deltaTime );
-        }    	
-        //loop through screws update them
-        //and then delete them if necessary
-//        while ( screwMap.iterator( ).hasNext( ) ) {
-//        	Screw s = screwMap.iterator( ).next( );
-//    		s.update( deltaTime );
-//    		if ( s.getRemoveNextStep( ) ) {
-//    			screwMap.remove( s );
-//    		}
-//        }
-		for ( Screw screw : screwMap.values( ) ) {
-			screw.update( deltaTime );
-		}
-        for ( Rope rope : ropeMap.values() ){
-        	rope.update( deltaTime);
-        }
-        
-        for ( Rope rope : ropeMap.values() ){
-        	rope.update( deltaTime);
+        if ( this.isActive( ) ){
+	        for ( Platform p : dynamicPlatformMap.values( ) ) {
+	        	p.update( deltaTime );
+	        }
+	        for ( Platform p : kinematicPlatformMap.values( ) ) {
+	        	p.update( deltaTime );
+	        }    	
+	        //loop through screws update them
+	        //and then delete them if necessary
+	//        while ( screwMap.iterator( ).hasNext( ) ) {
+	//        	Screw s = screwMap.iterator( ).next( );
+	//    		s.update( deltaTime );
+	//    		if ( s.getRemoveNextStep( ) ) {
+	//    			screwMap.remove( s );
+	//    		}
+	//        }
+			for ( Screw screw : screwMap.values( ) ) {
+				screw.update( deltaTime );
+			}
+	        for ( Rope rope : ropeMap.values() ){
+	        	rope.update( deltaTime);
+	        }
+	        
+	        for ( Rope rope : ropeMap.values() ){
+	        	rope.update( deltaTime);
+	        }
         }
     }
 
@@ -497,7 +512,7 @@ public class Skeleton extends Platform {
      */
     protected void setPosRotChildSkeletons( float deltaTime ) {
 		for ( Skeleton skeleton : childSkeletonMap.values( ) ){
-			if ( skeleton.isKinematic( ) )
+			if ( skeleton.isKinematic( ) && skeleton.isActive() )
 				skeleton.setPosRotFromSkeleton( deltaTime, this );
 			// now recursively apply this change to child skeletons
 			skeleton.setPosRotChildSkeletons( deltaTime );
@@ -513,9 +528,15 @@ public class Skeleton extends Platform {
 			skeleton.setPosRotAllKinematicPlatforms( deltaTime );
 		}
 		// then set all kin platforms of this skeleton
-		for ( Platform platform : kinematicPlatformMap.values( ) ) {
-			platform.setPosRotFromSkeleton( deltaTime, this );
+		if( isActive( ) ){
+			for ( Platform platform : kinematicPlatformMap.values( ) ) {
+				platform.setPosRotFromSkeleton( deltaTime, this );
+			}
 		}
+	}
+	
+	private String getUniqueName(String nonUniqueName){
+		return nonUniqueName+"-NON-UNIQUE-NAME_"+entityCount;
 	}
 
 }

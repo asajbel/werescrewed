@@ -1,23 +1,31 @@
 package com.blindtigergames.werescrewed.entity.builders;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.PolygonSprite;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+import com.badlogic.gdx.scenes.scene2d.Event;
 import com.badlogic.gdx.utils.Array;
 import com.blindtigergames.werescrewed.entity.PolySprite;
 import com.blindtigergames.werescrewed.entity.RootSkeleton;
 import com.blindtigergames.werescrewed.entity.Skeleton;
+import com.blindtigergames.werescrewed.entity.action.ActivateSkeleton;
+import com.blindtigergames.werescrewed.entity.action.DeactivateSkeleton;
+import com.blindtigergames.werescrewed.entity.action.EntityActivateMoverAction;
+import com.blindtigergames.werescrewed.entity.action.EntityDeactivateMoverAction;
+import com.blindtigergames.werescrewed.eventTrigger.EventTrigger;
 
 public class SkeletonBuilder extends GenericEntityBuilder<SkeletonBuilder>{
 
 	protected Array< Vector2 > polyVertsFG, polyVertsBG;
 
 	protected float 	density;
-	private BodyType bodyType;
-	protected boolean onBGverts;
-	protected Texture texBackground, texForeground, texBody;
+	private BodyType 	bodyType;
+	protected boolean 	onBGverts;
+	protected Texture 	texBackground, texForeground, texBody;
+	protected boolean	hasDeactivateTrigger;
 	
 	public SkeletonBuilder(World world){
 		super();
@@ -37,6 +45,7 @@ public class SkeletonBuilder extends GenericEntityBuilder<SkeletonBuilder>{
 		this.texBackground = null;
 		this.texForeground = null;
 		this.texBody = null;
+		this.hasDeactivateTrigger = false;
 		return this;
 	}
 	
@@ -56,6 +65,11 @@ public class SkeletonBuilder extends GenericEntityBuilder<SkeletonBuilder>{
 	 */
 	public SkeletonBuilder fg(){
 		this.onBGverts = false;
+		return this;
+	}
+	
+	public SkeletonBuilder hasDeactiveTrigger(boolean hasTrigger){
+		this.hasDeactivateTrigger = hasTrigger;
 		return this;
 	}
 
@@ -171,6 +185,18 @@ public class SkeletonBuilder extends GenericEntityBuilder<SkeletonBuilder>{
 		}
 		out.body.setType( bodyType );
 		out.setDensity( this.density );
+		
+		if ( hasDeactivateTrigger && polyVertsBG != null ){
+			EventTriggerBuilder etb = new EventTriggerBuilder( world );
+			EventTrigger et = etb.name( name+"-activator" ).skelePolygon( polyVertsBG )
+					.position( pos ).addEntity( out )
+					.beginAction( new ActivateSkeleton( ) )
+					.endAction( new DeactivateSkeleton( ) ).repeatable( )
+					.twoPlayersToDeactivate( ).build( );
+			out.addEventTrigger( et );
+			Gdx.app.log( "SkeletonBuilder", "I just built an event trigger" );
+		}
+		
 		return out;
 	}
 }

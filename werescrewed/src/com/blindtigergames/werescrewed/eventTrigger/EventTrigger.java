@@ -10,6 +10,7 @@ import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.Array;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityType;
 import com.blindtigergames.werescrewed.entity.Skeleton;
@@ -84,6 +85,44 @@ public class EventTrigger extends Entity{
 		body.setFixedRotation( true );
 		body.setUserData( this );
 
+		polygon.dispose( );
+	}
+	
+	/**
+	 * For use with a skeleton
+	 * @param vertsPixels The skeleton background's polysprite points.
+	 * @param positionPixel
+	 */
+	public void constructSkeletonPolygonBody(Array< Vector2 > vertsPixels, Vector2 positionPixel ){
+		BodyDef bodyDef = new BodyDef( );
+		bodyDef.type = BodyType.KinematicBody;
+		bodyDef.position.set( positionPixel.mul( Util.PIXEL_TO_BOX ));
+		body = world.createBody( bodyDef );
+		
+		//Deep copy verts so we can turn the pixel position into meters.
+		//We also have to modify the size of the points to give the skeletons a buffer in which 
+		//they activate/deactivate.
+		Vector2[] vertsMeters = new Vector2[vertsPixels.size];
+		for(int i =0; i < vertsPixels.size; ++i ){
+			Vector2 newPoint = vertsPixels.get( i ).cpy( );
+			Vector2 norm = newPoint.cpy( ).nor( ).mul( Util.SKELETON_ACTIVE_BORDER );//may divide by 0
+			newPoint = newPoint.add( norm ).mul( Util.PIXEL_TO_BOX );
+			vertsMeters[i]= newPoint ;
+		}
+		
+		PolygonShape polygon = new PolygonShape();
+		polygon.set( vertsMeters );
+		
+		FixtureDef fixture = new FixtureDef( );
+		fixture.filter.categoryBits = Util.CATEGORY_SCREWS;
+		fixture.filter.maskBits = Util.CATEGORY_EVERYTHING;
+		fixture.isSensor = true;
+		fixture.shape = polygon;
+		
+		body.createFixture( fixture );
+		body.setFixedRotation( true );
+		body.setUserData( this );
+		
 		polygon.dispose( );
 	}
 	

@@ -29,8 +29,12 @@ public class RootSkeleton extends Skeleton {
         //recursively move all children skeletons by this moved updated pos*rot.
         //setPosRotChildSkeletons( deltaTime );
         for ( Skeleton childSkeleton : childSkeletonMap.values( ) ){
-        	childSkeleton.setPosRotFromSkeleton( deltaTime, this );
+        	//this could 
+        	if ( childSkeleton.isActive( ) ){
+        		childSkeleton.setPosRotFromSkeleton( deltaTime, this );
+        	}
         	childSkeleton.setPosRotChildSkeletons( deltaTime );
+        	
         }
         
       //Now we can rotate all kinematic entities connected by updated skeleton rot / position
