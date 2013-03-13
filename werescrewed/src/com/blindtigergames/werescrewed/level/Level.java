@@ -4,9 +4,11 @@ import aurelienribon.tweenengine.Tween;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
+import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.camera.Camera;
 import com.blindtigergames.werescrewed.checkpoints.ProgressManager;
 import com.blindtigergames.werescrewed.collisionManager.MyContactListener;
@@ -101,7 +103,10 @@ public class Level {
 	
 	public void draw ( SpriteBatch batch, SBox2DDebugRenderer debugRenderer){
 		batch.setProjectionMatrix( camera.combined() );
-		
+		batch.setShader( WereScrewedGame.defaultShader );
+		batch.setBlendFunction( GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA );
+		batch.setProjectionMatrix( camera.combined() );
+		batch.enableBlending( );
 		batch.begin();
 		//polySprite.draw( batch );
 		root.draw( batch );

@@ -25,6 +25,7 @@ import com.blindtigergames.werescrewed.entity.tween.EntityAccessor;
 import com.blindtigergames.werescrewed.entity.tween.PlatformAccessor;
 import com.blindtigergames.werescrewed.hazard.*;
 import com.blindtigergames.werescrewed.hazard.builders.*;
+import com.blindtigergames.werescrewed.particles.Steam;
 import com.blindtigergames.werescrewed.platforms.Platform;
 import com.blindtigergames.werescrewed.platforms.TiledPlatform;
 import com.blindtigergames.werescrewed.player.Player;
@@ -53,6 +54,7 @@ public class HazardScreen implements com.badlogic.gdx.Screen {
 	private SpikesBuilder spikesBuilder;
 	private boolean debug = true;
 	private boolean debugTest = true;
+	private Steam testSteam;
 
 	public HazardScreen( ) {
 		batch = new SpriteBatch( );
@@ -77,6 +79,7 @@ public class HazardScreen implements com.badlogic.gdx.Screen {
 		initHazards( );
 		initCheckPoints( );
 		initCrushTest( );
+		initParticleEffect( );
 
 		rootSkeleton.addSkeleton( skeleton );
 		debugRenderer = new SBox2DDebugRenderer( Util.BOX_TO_PIXEL );
@@ -119,6 +122,14 @@ public class HazardScreen implements com.badlogic.gdx.Screen {
 		skeleton.addKinematicPlatform( spikes2 );
 	}
 
+	/**
+	 * Initializes steam for testing, not on a skeleton at the moment
+	 */
+	private void initParticleEffect( ) {
+		testSteam = new Steam( "testSteam", new Vector2( -100f, 20f ), null,
+				null, false, 25, 50, world );
+	}
+	
 	private void initCrushTest( ) {
 		crusher = platBuilder.position( 400.0f, 100.0f ).name( "crusher" )
 				.dimensions( 6, 1 ).texture( testTexture ).dynamic( )
@@ -191,6 +202,7 @@ public class HazardScreen implements com.badlogic.gdx.Screen {
 		rootSkeleton.draw( batch );
 		progressManager.draw( batch );
 		fire.draw(batch, deltaTime );
+		testSteam.draw( batch, deltaTime );
 		player1.draw( batch );
 		player2.draw( batch );
 

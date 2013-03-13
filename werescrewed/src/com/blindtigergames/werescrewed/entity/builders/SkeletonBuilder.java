@@ -9,7 +9,6 @@ import com.badlogic.gdx.utils.Array;
 import com.blindtigergames.werescrewed.entity.PolySprite;
 import com.blindtigergames.werescrewed.entity.RootSkeleton;
 import com.blindtigergames.werescrewed.entity.Skeleton;
-import com.blindtigergames.werescrewed.graphics.TextureAtlasS;
 
 public class SkeletonBuilder extends GenericEntityBuilder<SkeletonBuilder>{
 
