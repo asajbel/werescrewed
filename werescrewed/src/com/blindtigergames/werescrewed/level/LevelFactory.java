@@ -275,7 +275,6 @@ public class LevelFactory {
 		
 		else if (item.getDefinition().getCategory( ) == EntityCategory.COMPLEX_PLATFORM ){
 			loadComplexPlatform(item);
-			System.out.println( item.defName );
 		}
 //		if (item.hasDefTag( )){
 //			//First check if the item's definition is a type of screw
