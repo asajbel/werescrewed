@@ -272,7 +272,6 @@ public class LevelFactory {
 		} else if (bluePrints.equals( "checkpoint" )){
 			constructCheckpoint(item);
 		}
-
 		
 		else if (item.getDefinition().getCategory( ) == EntityCategory.COMPLEX_PLATFORM ){
 			loadComplexPlatform(item);
@@ -422,12 +421,12 @@ public class LevelFactory {
 	private void constructPlayer(Item item){
 		if(item.name.equals("playerOne")){
 			level.player1 = new PlayerBuilder( ).name( "player1" ).world( level.world )
-					.position( item.pos ).buildPlayer( );
+					.position( item.pos.add( 200f, 0f ) ).buildPlayer( );
 			entities.put("player1", level.player1);
 		} else if(item.name.equals("playerTwo") ){
 			
-			level.player2 =  new PlayerBuilder( ).name( "player2" ).world( level.world )
-					.position( item.pos ).buildPlayer( );
+			level.player2 = new PlayerBuilder( ).name( "player2" ).world( level.world )
+					.position( item.pos.add( 100f, 0f ) ).buildPlayer( );
 		}
 		
 
@@ -715,12 +714,6 @@ public class LevelFactory {
 			Gdx.app.log( "LevelFactory", "path has delay "+ delay);
 		}
 		
-		if( item.props.containsKey( "delay" )){
-			float delay = Float.parseFloat( item.props.get("delay") );
-			pBuilder.delay( delay );
-			Gdx.app.log( "LevelFactory", "path has delay "+ delay);
-		}
-		
 		// Starts at one because first point on a path should start at 0,0 by default
 		for (int i = 1; i < pointElems.size; i++){
 			vElem = pointElems.get( i );
@@ -751,26 +744,19 @@ public class LevelFactory {
 		p.setActive( true );
 	}
 
-
-//	public void constructRope(Item item){
-//		RopeBuilder ropeBuilder = new RopeBuilder( level.world );
-//		ropeBuilder.name( item.name ).position(item.pos.x, item.pos.y ).createScrew( );
-//		
-//		if(item.props.containsKey( "links" )){
-//			int links = Integer.parseInt( item.props.get("links") );
-//			ropeBuilder.links( links );
-//		}
-//		
-////		if(item.props.containsKey( "numberofscrews" )){
-////			int num = Integer.parseInt( item.props.get("numberofscrews") );
-////			ropeBuilder.createScrew(num);
-////		}
-//	}
-	
 	public void constructRope(Item item){
 		RopeBuilder ropeBuilder = new RopeBuilder( level.world );
-		ropeBuilder.name( item.name ).position(item.pos.x, item.pos.y ).links( 5 )
-				.createScrew( );
+		ropeBuilder.name( item.name ).position(item.pos.x, item.pos.y ).createScrew( );
+		
+		if(item.props.containsKey( "links" )){
+			int links = Integer.parseInt( item.props.get("links") );
+			ropeBuilder.links( links );
+		}
+		
+//		if(item.props.containsKey( "numberofscrews" )){
+//			int num = Integer.parseInt( item.props.get("numberofscrews") );
+//			ropeBuilder.createScrew(num);
+//		}
 		
 		if(item.props.containsKey( "attachedto" )){
 			Entity e = loadEntity(item.props.get( "attachedto" ));
@@ -800,7 +786,6 @@ public class LevelFactory {
 		return pathPoints;
 		
 	}
-
 	public Screw loadScrew(Item item){
 		;
 		ScrewType sType = ScrewType.fromString( item.defName );

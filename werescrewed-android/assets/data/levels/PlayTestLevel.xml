@@ -36,12 +36,8 @@
                 </Item>
                 <Item xsi:type="PathItem" Name="skeleton1" Visible="true">
                     <Position>
-<<<<<<< HEAD
                         <X>832</X>
                         <Y>-192</Y>
-=======
-                        <X>800</X>
-                        <Y>-32</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -51,42 +47,6 @@
                             <string>RootSkeleton</string>
                         </Property>
                     </CustomProperties>
-                    <Rotation>0</Rotation>
-                    <Scale>
-                        <X>1</X>
-                        <Y>1</Y>
-                    </Scale>
-                    <TintColor>
-                        <R>255</R>
-                        <G>255</G>
-                        <B>255</B>
-                        <A>255</A>
-                        <PackedValue>4294967295</PackedValue>
-                    </TintColor>
-                    <FlipHorizontally>false</FlipHorizontally>
-                    <FlipVertically>false</FlipVertically>
-                    <texture_filename>Skeleton.png</texture_filename>
-                    <asset_name>Skeleton</asset_name>
-                    <Origin>
-                        <X>32</X>
-                        <Y>32</Y>
-                    </Origin>
-                </Item>
-                <Item xsi:type="TextureItem" Name="skeleton2" Visible="true">
-                    <Position>
-                        <X>3744</X>
-                        <Y>-160</Y>
->>>>>>> newBodyEditor
-                    </Position>
-                    <CustomProperties>
-                        <Property Name="Definition" Type="string" Description="">
-                            <string>skeleton</string>
-                        </Property>
-                        <Property Name="AttachToSkeleton" Type="string" Description="">
-                            <string>RootSkeleton</string>
-                        </Property>
-                    </CustomProperties>
-<<<<<<< HEAD
                     <LocalPoints>
                         <Vector2>
                             <X>0</X>
@@ -231,28 +191,6 @@
                         <A>145</A>
                         <PackedValue>2445279424</PackedValue>
                     </LineColor>
-=======
-                    <Rotation>0</Rotation>
-                    <Scale>
-                        <X>1</X>
-                        <Y>1</Y>
-                    </Scale>
-                    <TintColor>
-                        <R>255</R>
-                        <G>255</G>
-                        <B>255</B>
-                        <A>255</A>
-                        <PackedValue>4294967295</PackedValue>
-                    </TintColor>
-                    <FlipHorizontally>false</FlipHorizontally>
-                    <FlipVertically>false</FlipVertically>
-                    <texture_filename>Skeleton.png</texture_filename>
-                    <asset_name>Skeleton</asset_name>
-                    <Origin>
-                        <X>32</X>
-                        <Y>32</Y>
-                    </Origin>
->>>>>>> newBodyEditor
                 </Item>
                 <Item xsi:type="TextureItem" Name="cameraPosition" Visible="true">
                     <Position>
@@ -722,12 +660,9 @@
                         <Property Name="rotatingcenter" Type="string" Description="">
                             <string>motor</string>
                         </Property>
-<<<<<<< HEAD
                         <Property Name="motorspeed" Type="string" Description="">
                             <string>1f</string>
                         </Property>
-=======
->>>>>>> newBodyEditor
                     </CustomProperties>
                     <Rotation>0</Rotation>
                     <Scale>
@@ -768,12 +703,9 @@
                         <Property Name="rotatingcenter" Type="string" Description="">
                             <string />
                         </Property>
-<<<<<<< HEAD
                         <Property Name="motorspeed" Type="string" Description="">
                             <string>1f</string>
                         </Property>
-=======
->>>>>>> newBodyEditor
                     </CustomProperties>
                     <Rotation>0</Rotation>
                     <Scale>
@@ -967,11 +899,7 @@
                             <string>tiledPlatform</string>
                         </Property>
                         <Property Name="AttachToSkeleton" Type="string" Description="">
-<<<<<<< HEAD
                             <string>skeleton2</string>
-=======
-                            <string>skeleton1</string>
->>>>>>> newBodyEditor
                         </Property>
                     </CustomProperties>
                     <Width>2032</Width>
@@ -1118,7 +1046,6 @@
                         <Y>16</Y>
                     </Origin>
                 </Item>
-<<<<<<< HEAD
                 <Item xsi:type="TextureItem" Name="rope" Visible="true">
                     <Position>
                         <X>1824</X>
@@ -1202,10 +1129,6 @@
                         <Y>16</Y>
                     </Origin>
                 </Item>
-<<<<<<< HEAD
-=======
->>>>>>> newBodyEditor
-=======
                 <Item xsi:type="TextureItem" Name="checkpoint1" Visible="true">
                     <Position>
                         <X>704</X>
@@ -1274,7 +1197,6 @@
                         <Y>64</Y>
                     </Origin>
                 </Item>
->>>>>>> d6551d9a7f818436e713564420b4343abc762b74
             </Items>
             <ScrollSpeed>
                 <X>1</X>
@@ -1284,27 +1206,11 @@
     </Layers>
     <CustomProperties />
     <EditorRelated>
-<<<<<<< HEAD
-<<<<<<< HEAD
-        <NextItemNumber>40</NextItemNumber>
-        <ContentRootFolder>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures</ContentRootFolder>
-        <CameraPosition>
-            <X>1600.00269</X>
-            <Y>8.333174</Y>
-=======
-        <NextItemNumber>35</NextItemNumber>
-        <ContentRootFolder>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures</ContentRootFolder>
-        <CameraPosition>
-            <X>3249.99658</X>
-            <Y>-316.6671</Y>
->>>>>>> newBodyEditor
-=======
         <NextItemNumber>42</NextItemNumber>
         <ContentRootFolder>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures</ContentRootFolder>
         <CameraPosition>
-            <X>1041.66846</X>
-            <Y>-75.00033</Y>
->>>>>>> d6551d9a7f818436e713564420b4343abc762b74
+            <X>1116.6687</X>
+            <Y>-233.333984</Y>
         </CameraPosition>
         <Version>1.3.0.0</Version>
     </EditorRelated>
