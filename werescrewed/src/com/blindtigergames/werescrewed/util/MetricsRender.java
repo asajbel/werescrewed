@@ -13,11 +13,14 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Json;
+import com.blindtigergames.werescrewed.WereScrewedGame;
 
 public class MetricsRender {
 	private enum Type {
@@ -27,13 +30,16 @@ public class MetricsRender {
 	private class Place {
 		float x;
 		float y;
-		Vector3 color = new Vector3();
+		Vector3 color = new Vector3( );
 		int num;
 	}
 
 	private boolean fileExists = false;
 	private boolean render = false;
-	private boolean cycle = true; 
+	private boolean cycleForward = true;
+	private boolean cycleBackward = true;
+	private String mode;
+	private BitmapFont fancyFont = null;
 	private ArrayList< MetricsOutput > runs;
 	private Map< String, Place > parsedJump;
 	private Map< String, Place > parsedDeath;
@@ -49,6 +55,7 @@ public class MetricsRender {
 		alpha = 0.5f;
 		shapeRenderer = new ShapeRenderer( );
 		runs = new ArrayList< MetricsOutput >( );
+		fancyFont = WereScrewedGame.manager.getFont( "Screwball" );
 		File file = new File( LevelName + Metrics.FILE_APPEND );
 		Json json = new Json( );
 		if ( file.exists( ) ) {
@@ -80,41 +87,56 @@ public class MetricsRender {
 		}
 	}
 
-	public void render( OrthographicCamera camera ) {
-		if ( Gdx.input.isKeyPressed( Input.Keys.RIGHT_BRACKET ) && cycle ) {
-			cycleRenderForward( );
-			cycle = false;
-		}
-		if ( Gdx.input.isKeyPressed( Input.Keys.LEFT_BRACKET ) && cycle ) {
-			cycleRenderBackward( );
-			cycle = false; 
-		}
+	public void render( OrthographicCamera camera, SpriteBatch batch ) {
+		if ( Gdx.input.isKeyPressed( Input.Keys.RIGHT_BRACKET ) ) {
+			if ( cycleForward ) {
+				cycleRenderForward( );
+			}
+			cycleForward = false;
+		} else
+			cycleForward = true;
+
+		if ( Gdx.input.isKeyPressed( Input.Keys.LEFT_BRACKET ) ) {
+			if ( cycleForward ) {
+				cycleRenderBackward( );
+			}
+			cycleBackward = false;
+		} else
+			cycleBackward = true;
 
 		Map< String, Place > parsed;
 		switch ( whatToRender ) {
 		case ATTACH:
 			parsed = parsedAttach;
+			mode = "Attaching";
 			break;
 		case DIE:
 			parsed = parsedDeath;
+			mode = "Dieing";
 			break;
 		case JUMP:
 			parsed = parsedJump;
+			mode = "Jumping";
 			break;
 		case NONE:
 			parsed = new HashMap< String, Place >( );
+			mode = "";
 			break;
 		case SCREW:
 			parsed = parsedScrew;
+			mode = "Screwings";
 			break;
 		case TIME:
 			parsed = new HashMap< String, Place >( );
+			mode = "Time Spent in Sections";
 			break;
 		case UNSCREW:
 			parsed = parsedUnscrew;
+			mode = "Unscrewings";
 			break;
 		default:
 			parsed = new HashMap< String, Place >( );
+			mode = "";
 			break;
 
 		}
@@ -122,6 +144,8 @@ public class MetricsRender {
 		if ( render && fileExists ) {
 			Gdx.gl.glBlendFunc( GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA );
 			Gdx.gl.glEnable( GL10.GL_BLEND );
+			fancyFont.setColor( 1.0f, 1.0f, 1.0f, 1.0f );
+			fancyFont.draw( batch, mode, camera.position.x, camera.position.y );
 
 			for ( Map.Entry< String, Place > rend : parsed.entrySet( ) ) {
 				shapeRenderer.setProjectionMatrix( camera.combined );
@@ -265,6 +289,7 @@ public class MetricsRender {
 
 	private void interpolateColor( Place p ) {
 		int runsTimes = runs.size( );
+		float value = p.num / runsTimes;
 
 	}
 
