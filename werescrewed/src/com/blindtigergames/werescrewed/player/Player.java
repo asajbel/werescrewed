@@ -200,13 +200,6 @@ public class Player extends Entity {
 
 		jumpSound = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 				+ "/common/sounds/jump.ogg" );
-		
-		//We can change these once blue and/or female sprites are ready.
-		String gP = "_m";
-		String cP = "_r";
-		characterAtlas = WereScrewedGame.manager.getTextureAtlas("player"+cP+gP);
-		if (characterAtlas != null)
-			sprite = new Sprite(characterAtlas, new PlayerAnimator(characterAtlas, this));
 	}
 
 	// PUBLIC METHODS

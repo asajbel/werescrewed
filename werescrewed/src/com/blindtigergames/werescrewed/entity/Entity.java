@@ -20,8 +20,13 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.utils.Array;
 import com.blindtigergames.werescrewed.camera.Anchor;
 import com.blindtigergames.werescrewed.camera.AnchorList;
+import com.blindtigergames.werescrewed.entity.animator.IAnimator;
+import com.blindtigergames.werescrewed.entity.animator.PlayerAnimator;
+import com.blindtigergames.werescrewed.entity.animator.SimpleFrameAnimator;
 import com.blindtigergames.werescrewed.entity.mover.IMover;
+import com.blindtigergames.werescrewed.graphics.TextureAtlas;
 import com.blindtigergames.werescrewed.level.GleedLoadable;
+import com.blindtigergames.werescrewed.player.Player;
 import com.blindtigergames.werescrewed.util.Util;
 
 /**
@@ -79,7 +84,11 @@ public class Entity implements GleedLoadable {
 		this.construct( name, solid );
 		this.type = type;
 		this.world = world;
-		this.sprite = constructSprite( texture );
+		if (type.atlas != null ){
+			this.sprite = constructSprite( type.atlas );
+		} else {
+			this.sprite = constructSprite( texture );
+		}
 		this.body = constructBodyByType( );
 		this.decals = new ArrayList<Sprite>();
 		this.decalOffsets = new ArrayList<Vector2>();
@@ -331,7 +340,31 @@ public class Entity implements GleedLoadable {
 		sprite.setOrigin( origin.x, origin.y );
 		return sprite;
 	}
+	/**
+	 * Builds a sprite from a TextureAtlas. If the texture is null, it attempts to
+	 * load one from the XML definitions
+	 * 
+	 * @param texture
+	 *            from which a sprite can be generated, or null, if loading
+	 * @return the loaded/generated sprite, or null if neither applies
+	 */
+	protected Sprite constructSprite( TextureAtlas atlas ) {
+		Sprite sprite;
+		Vector2 origin;
 
+		IAnimator anim;
+		
+		if (type.animatorType.equals( "player" )){
+			anim = new PlayerAnimator(type.atlas, (Player)this);			
+		} else {
+			anim = new SimpleFrameAnimator().maxFrames( type.atlas.getRegions( ).size );
+		}
+		sprite = new Sprite(type.atlas, anim);
+		sprite.setScale( type.spriteScale.x, type.spriteScale.y );
+		origin = new Vector2( type.origin.x, type.origin.y );		
+		sprite.setOrigin( origin.x, origin.y );
+		return sprite;
+	}
 	public void Move( Vector2 vector ) {
 		Vector2 pos = body.getPosition( ).add( vector.mul( Util.PIXEL_TO_BOX ) );
 		setPosition( pos );
