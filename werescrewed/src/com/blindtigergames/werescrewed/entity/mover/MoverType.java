@@ -6,7 +6,8 @@ public enum MoverType {
 		ROCKING("rocking"),
 		LINEAR_AXIS("linear"),
 		ROTATETWEEN("rotatetween"),
-		ROTATEBYDEGREE("RotateByDegree")
+		ROTATEBYDEGREE("rotatebydegree"),
+		LERP("lerpmover")
 		//PuzzleRotateTweenMover
 	    ;
 	    /**

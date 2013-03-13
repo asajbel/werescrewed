@@ -34,9 +34,16 @@ public class GleedTestScreen extends Screen {
 		music = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 				+ "/common/sounds/TrainJob.mp3" );
 
-//		EventTrigger et = (EventTrigger) LevelFactory.entities.get( "et1" );
-//		
-//		System.out.println( et.name );
+		Skeleton skel = (Skeleton) LevelFactory.entities.get( "skeleton3" );
+		
+		PathBuilder pb = new PathBuilder( );
+		skel.addMover( pb.begin( skel ).target( 0, 150, 3 ).target( 0, 0, 3 )
+				.build( ), RobotState.IDLE );
+		
+//		skel.addMover( new RockingMover( -0.1f, 0.5f ),
+//				RobotState.IDLE );
+		
+		System.out.println( skel.name );
 	}
 	
 	@Override

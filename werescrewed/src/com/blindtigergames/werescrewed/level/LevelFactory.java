@@ -278,7 +278,10 @@ public class LevelFactory {
 			constructCheckpoint(item);
 		} else if (bluePrints.equals( "eventtrigger" )){
 			contstructEventTrigger(item);
-		}else if (item.getDefinition().getCategory( ) == EntityCategory.COMPLEX_PLATFORM ){
+		} else if (bluePrints.equals( "hazard" )){
+			constructHazard(item);
+		}
+		else if (item.getDefinition().getCategory( ) == EntityCategory.COMPLEX_PLATFORM ){
 			loadComplexPlatform(item);
 		}
 		
@@ -622,6 +625,7 @@ public class LevelFactory {
 					if (MoverType.fromString( movername ) != null){
 						mover = new MoverBuilder()
 						.fromString(movername)
+						.applyTo( attach )
 						.build( );
 						Gdx.app.log("LevelFactory", "attaching :" + movername + " to puzzle screw");
 					}
@@ -861,6 +865,14 @@ public class LevelFactory {
 		return pathPoints;
 		
 	}
+	
+	public void constructHazard( Item item ){
+		String skelAttach = item.skeleton;
+		Skeleton parent = loadSkeleton(skelAttach);
+		
+		
+	}
+	
 	public Screw loadScrew(Item item){
 		;
 		ScrewType sType = ScrewType.fromString( item.defName );
