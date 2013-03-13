@@ -111,7 +111,7 @@ public class HazardScreen implements com.badlogic.gdx.Screen {
 				2, world, true );
 		 */
 		spikes = new Spikes( "Spikes1", new Vector2( -1700.0f, 5.0f ), 
-				1, 6, world, true, false, false );
+				6, 1, world, true, false, false );
 		spikes2 = spikesBuilder.position( -1500.0f, 5.0f ).dimensions( 4, 1 )
 				.up( ).active( ).buildSpikes( );
 		//add the spikes to the skeleton
