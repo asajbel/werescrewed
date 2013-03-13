@@ -112,7 +112,7 @@ public class EntityDef {
 			fixtureDefs.addAll( fixes );
 		}
 	}
-
+	
 	@Override
 	public void finalize( ) throws Throwable {
 		if ( definitions.containsValue( this ) )

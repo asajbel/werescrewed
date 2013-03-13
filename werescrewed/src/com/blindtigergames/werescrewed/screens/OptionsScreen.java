@@ -25,6 +25,7 @@ class OptionsScreen implements com.badlogic.gdx.Screen{
 	private Label sound = null;
 	private Label voice = null;
 	private Label subtitles = null;
+	private Button creditsButton = null;
 	private Button backButton = null;
 	
 	/* Things needed...
@@ -38,6 +39,7 @@ class OptionsScreen implements com.badlogic.gdx.Screen{
 		batch = new SpriteBatch( );
 		font = new BitmapFont( );
 		fancyFont = WereScrewedGame.manager.getFont( "Screwball" );
+
 		logo =  WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 				 + "/common/title_background.png", Texture.class );
 		lineHeight = Math.round( 2.5f * font.getCapHeight( ) );
@@ -48,7 +50,8 @@ class OptionsScreen implements com.badlogic.gdx.Screen{
 		sound = new Label("Sound", fancyFont);
 		voice = new Label("Voice", fancyFont);
 		subtitles = new Label("Subtitles", fancyFont);
-		
+		creditsButton = new Button("Credits", fancyFont, 
+				new ScreenSwitchHandler(ScreenType.CREDITS));
 		backButton = new Button( "Back", fancyFont, new ScreenSwitchHandler(
 				ScreenType.MAIN_MENU ) );
 	}

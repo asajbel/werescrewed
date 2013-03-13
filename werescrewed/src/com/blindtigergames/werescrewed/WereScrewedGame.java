@@ -34,8 +34,11 @@ public class WereScrewedGame extends Game {
 	public void create( ) {
 		ScreenManager.getInstance( ).initialize( this );
 		
-		defaultShader = SpriteBatch.createDefaultShader( );
-
+		if (Gdx.graphics.isGL20Available( ))
+			defaultShader = SpriteBatch.createDefaultShader( );
+		else
+			defaultShader = null;
+		
 		// ScreenManager.getInstance().show(Screen.INTRO);
 
 		// ScreenManager.getInstance().show(Screen.LEVELTEST);
@@ -45,6 +48,7 @@ public class WereScrewedGame extends Game {
 		ScreenManager.getInstance( ).show( ScreenType.LOADING );
 
 		logger = new FPSLogger( );
+
 
 	}
 

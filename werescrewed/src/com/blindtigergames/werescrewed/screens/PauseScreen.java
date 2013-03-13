@@ -31,7 +31,9 @@ class PauseScreen implements com.badlogic.gdx.Screen {
 	public PauseScreen( ) {
 		batch = new SpriteBatch( );
 		font = new BitmapFont( );
+
 		fancyFont = WereScrewedGame.manager.getFont( "Screwball" );
+
 		logo =  WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 				 + "/common/title_background.png", Texture.class );
 		lineHeight = Math.round( 2.5f * font.getCapHeight( ) );

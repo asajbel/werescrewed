@@ -10,6 +10,7 @@ import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.Array;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityType;
 import com.blindtigergames.werescrewed.entity.Skeleton;
@@ -87,6 +88,37 @@ public class EventTrigger extends Entity{
 		polygon.dispose( );
 	}
 	
+	public void constructVertBody(Array<Vector2> vertices, Vector2 positionPixel){
+		BodyDef bodyDef = new BodyDef( );
+		bodyDef.type = BodyType.KinematicBody;
+		bodyDef.position.set( positionPixel.mul( Util.PIXEL_TO_BOX ));
+		body = world.createBody( bodyDef );
+		
+		PolygonShape polygon = new PolygonShape();
+		Vector2[] verts = new Vector2[vertices.size -1];
+		System.out.println(verts.length);
+		int i = 0;
+		for(int j = 0; j < vertices.size; j++){
+			if(j == vertices.size - 1) continue;
+			Vector2 v = vertices.get( j );
+			verts[i] = new Vector2(v.x * Util.PIXEL_TO_BOX, v.y * Util.PIXEL_TO_BOX);
+			System.out.println( "v: " + v + " verts[" + i + "] " + verts[i] );
+			++i;
+		}
+		polygon.set( verts );
+		
+		FixtureDef fixture = new FixtureDef( );
+		fixture.filter.categoryBits = Util.CATEGORY_SCREWS;
+		fixture.filter.maskBits = Util.CATEGORY_EVERYTHING;
+		fixture.isSensor = true;
+		fixture.shape = polygon;
+		
+		body.createFixture( fixture );
+		body.setFixedRotation( true );
+		body.setUserData( this );
+
+		polygon.dispose( );
+	}
 	public boolean isActingOnEntity(){
 		return actOnEntity;
 	}
@@ -399,6 +431,7 @@ public class EventTrigger extends Entity{
 					for(Entity e : entityList){
 						if(beginAction != null){
 							beginAction.act( e );
+							Gdx.app.log( this.name,  " begin action" );
 						}
 					}
 				}else{
@@ -415,6 +448,7 @@ public class EventTrigger extends Entity{
 					for(Entity e : entityList){
 						if(beginAction != null){
 							beginAction.act( e );
+							Gdx.app.log( this.name,  " begin action" );
 						}
 					}
 				}else{
@@ -439,6 +473,7 @@ public class EventTrigger extends Entity{
 					for(Entity e : entityList){
 						if(endAction != null){
 							endAction.act( e );
+							Gdx.app.log( this.name,  " end action" );
 						}
 					}
 				}else{
@@ -455,6 +490,7 @@ public class EventTrigger extends Entity{
 					for(Entity e : entityList){
 						if(endAction != null){
 							endAction.act( e );
+							Gdx.app.log( this.name,  " end action" );
 						}
 					}
 				}else{

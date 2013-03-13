@@ -20,7 +20,11 @@ import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityCategory;
 import com.blindtigergames.werescrewed.entity.EntityDef;
 import com.blindtigergames.werescrewed.entity.RobotState;
+import com.blindtigergames.werescrewed.entity.action.EntityActivateMoverAction;
+import com.blindtigergames.werescrewed.entity.action.EntityDeactivateMoverAction;
+import com.blindtigergames.werescrewed.entity.action.RemoveEntityAction;
 import com.blindtigergames.werescrewed.entity.builders.EntityBuilder;
+import com.blindtigergames.werescrewed.entity.builders.EventTriggerBuilder;
 import com.blindtigergames.werescrewed.entity.builders.MoverBuilder;
 import com.blindtigergames.werescrewed.entity.builders.PlatformBuilder;
 import com.blindtigergames.werescrewed.entity.builders.PlayerBuilder;
@@ -44,6 +48,7 @@ import com.blindtigergames.werescrewed.screws.StrippedScrew;
 import com.blindtigergames.werescrewed.screws.StructureScrew;
 import com.blindtigergames.werescrewed.entity.RootSkeleton;
 import com.blindtigergames.werescrewed.entity.Skeleton;
+import com.blindtigergames.werescrewed.eventTrigger.EventTrigger;
 import com.blindtigergames.werescrewed.util.ArrayHash;
 import com.blindtigergames.werescrewed.util.Util;
 
@@ -53,7 +58,7 @@ public class LevelFactory {
 	protected Level level;
 	protected String levelName;
 	protected EnumMap<GleedTypeTag, LinkedHashMap<String, Item>> items;
-	protected LinkedHashMap<String,Entity> entities;
+	public static LinkedHashMap<String,Entity> entities;
 	protected LinkedHashMap<String,TimelineTweenMover> movers;
 	protected LinkedHashMap<String,Skeleton> skeletons;
 	protected LinkedHashMap<String,PuzzleScrew> puzzleScrews;
@@ -271,12 +276,15 @@ public class LevelFactory {
 			constructRope(item);
 		} else if (bluePrints.equals( "checkpoint" )){
 			constructCheckpoint(item);
+		} else if (bluePrints.equals( "eventtrigger" )){
+			contstructEventTrigger(item);
+		} else if (bluePrints.equals( "hazard" )){
+			constructHazard(item);
 		}
-		
 		else if (item.getDefinition().getCategory( ) == EntityCategory.COMPLEX_PLATFORM ){
 			loadComplexPlatform(item);
-			System.out.println( item.defName );
 		}
+		
 //		if (item.hasDefTag( )){
 //			//First check if the item's definition is a type of screw
 //			if (ScrewType.fromString( item.defName ) != null){
@@ -617,6 +625,7 @@ public class LevelFactory {
 					if (MoverType.fromString( movername ) != null){
 						mover = new MoverBuilder()
 						.fromString(movername)
+						.applyTo( attach )
 						.build( );
 						Gdx.app.log("LevelFactory", "attaching :" + movername + " to puzzle screw");
 					}
@@ -786,6 +795,84 @@ public class LevelFactory {
 		return pathPoints;
 		
 	}
+	
+	public void contstructEventTrigger(Item item){
+		String skelAttach = item.skeleton;
+		Skeleton parent = loadSkeleton(skelAttach);
+		
+		EventTriggerBuilder etb = new EventTriggerBuilder( level.world );
+		
+		etb.name( item.name ).position( item.pos );
+		
+		if(item.props.containsKey( "attachto" )){
+			Array<String> connectTo = item.props.getAll( "attachto" );
+			
+			for(String s : connectTo){
+				Entity e = loadEntity(s);
+				etb.addEntity( e );
+			}
+		}
+		
+		if(item.props.containsKey( "beginaction" )){
+			etb.beginAction( new EntityActivateMoverAction() );
+		}
+		
+		if(item.props.containsKey( "endaction" )){
+			etb.beginAction( new EntityDeactivateMoverAction() );
+		}
+		
+		if(item.props.containsKey( "twoplayerstoactivate")) {
+			etb.twoPlayersToActivate( );
+		}
+		if(item.props.containsKey( "twoplayerstodeactivate")) {
+			etb.twoPlayersToDeactivate( );
+		}
+		
+		if(item.props.containsKey( "repeatable")) {
+			etb.repeatable( );
+		}
+		
+		if(item.props.containsKey( "circle")) {
+			float radius = Float.parseFloat( item.props.get( "circle" ) );
+			etb.circle( ).radius( radius );
+		} else{
+			
+			Array<Vector2> verts = constructArray(item);
+			
+			etb.setVerts( verts );
+		}
+		
+		EventTrigger et = etb.build( );
+		entities.put( item.name, et );
+		parent.addEventTrigger( et );
+	}
+	
+	public Array<Vector2> constructArray(Item item){
+		
+		Array<Element> pointElems = item.element.getChildByName( "LocalPoints" ).getChildrenByName( "Vector2" );
+		Gdx.app.log("LevelFactory", "Loading Array[]:"+pointElems.size+" points.");
+		Array<Vector2> pathPoints = new Array<Vector2>(pointElems.size);
+		
+		Element vElem; Vector2 point; 
+		for (int i = 1; i < pointElems.size; i++){
+			vElem = pointElems.get( i );
+			point = new Vector2(vElem.getFloat( "X" )*GLEED_TO_GDX_X, vElem.getFloat( "Y" )*GLEED_TO_GDX_Y);
+			pathPoints.add(point);
+			Gdx.app.log( "LevelFactory", "Point "+i+" has coordinates "+point.toString( )+".");
+			
+		}
+		
+		return pathPoints;
+		
+	}
+	
+	public void constructHazard( Item item ){
+		String skelAttach = item.skeleton;
+		Skeleton parent = loadSkeleton(skelAttach);
+		
+		
+	}
+	
 	public Screw loadScrew(Item item){
 		;
 		ScrewType sType = ScrewType.fromString( item.defName );
