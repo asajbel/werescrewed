@@ -150,7 +150,8 @@ public class Player extends Entity {
 	 * </Ul>
 	 */
 	public enum PlayerState {
-		Standing, Running, Jumping, Falling, Screwing, JumpingOffScrew, Dead, GrabMode, HeadStand
+		Standing, Running, Jumping, Falling, Screwing, JumpingOffScrew, Dead, GrabMode, HeadStand,
+		Landing
 	}
 
 	public enum ConcurrentState {
@@ -236,7 +237,7 @@ public class Player extends Entity {
 			// Gdx.app.log( "fixture" + i + " a sensor?", "" + f.isSensor( ) );
 			// i++;
 			// }
-			// Gdx.app.log( "player 1 state", "" + playerState );
+			 Gdx.app.log( "player 1 state", "" + playerState + " , " + playerDirection );
 			// if(contact != null)
 			// System.out.println("contact friction: " + contact.getFriction( )
 			// + "feet friction: " + feet.getFriction( ) );
@@ -750,6 +751,7 @@ public class Player extends Entity {
 
 		if ( isGrounded( ) ) {
 			if ( feet.getFriction( ) < PLAYER_FRICTION ) {
+				playerState = PlayerState.Landing;
 				frictionCounter += FRICTION_INCREMENT;
 
 				CircleShape ps = new CircleShape( );
@@ -778,10 +780,11 @@ public class Player extends Entity {
 
 				}
 				// currentScrew = null;
-			}
+			} 
 		} else {
 			frictionCounter = 0f;
 			feet.setFriction( frictionCounter );
+			
 		}
 
 	}
