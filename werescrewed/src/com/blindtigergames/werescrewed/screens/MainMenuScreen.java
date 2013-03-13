@@ -131,10 +131,10 @@ class MainMenuScreen implements com.badlogic.gdx.Screen {
 				Gdx.app.exit( );
 			}
 		} );
-		Buttons.add( storyButton );
-		Buttons.add( levelSelectButton );
-		Buttons.add( optionsButton );
-		Buttons.add( exitButton );
+		//Buttons.add( storyButton );
+		//Buttons.add( levelSelectButton );
+		//Buttons.add( optionsButton );
+		//Buttons.add( exitButton );
 	}
 
 	@Override
