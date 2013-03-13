@@ -8,6 +8,7 @@ import com.blindtigergames.werescrewed.entity.animator.SimpleFrameAnimator.LoopB
 import com.blindtigergames.werescrewed.graphics.TextureAtlas;
 import com.blindtigergames.werescrewed.graphics.TextureAtlas.AtlasRegion;
 import com.blindtigergames.werescrewed.player.Player;
+import com.blindtigergames.werescrewed.player.Player.ConcurrentState;
 import com.blindtigergames.werescrewed.player.Player.PlayerDirection;
 import com.blindtigergames.werescrewed.player.Player.PlayerState;
 
@@ -81,6 +82,12 @@ public class PlayerAnimator implements IAnimator {
 			return PlayerAnim.JUMP_UP;
 		case Falling:
 			return PlayerAnim.JUMP_DOWN;
+		case HeadStand:
+			if ( player.getExtraState( ) == ConcurrentState.HeadStandJumping ) {
+				return PlayerAnim.JUMP_UP;
+			} else if ( player.getExtraState( ) == ConcurrentState.HeadStandJumping ) {
+				return PlayerAnim.JUMP_DOWN;
+			} 
 		default:
 			return PlayerAnim.IDLE;			
 		}

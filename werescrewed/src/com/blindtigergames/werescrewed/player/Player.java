@@ -63,7 +63,7 @@ public class Player extends Entity {
 	public final static Vector2 ANCHOR_BUFFER_SIZE = new Vector2( 200f, 128f );
 	public final static float STEAM_FORCE = .5f;
 	public final static float FRICTION_INCREMENT = 0.3f;
-	public final static float FEET_OFFSET_X = 57f * Util.PIXEL_TO_BOX;
+	public final static float FEET_OFFSET_X = 60f * Util.PIXEL_TO_BOX;
 	public final static float FEET_OFFSET_Y = 16f * Util.PIXEL_TO_BOX;
 	public final static float JUMP_DIRECTION_MULTIPLIER = 2f;
 	public final static float JUMP_DEFAULT_DIVISION = 1.0f;
@@ -86,6 +86,7 @@ public class Player extends Entity {
 	private PlayerInputHandler inputHandler;
 	private MyControllerListener controllerListener;
 	private PlayerState playerState;
+	private ConcurrentState extraState;
 	private PlayerDirection playerDirection;
 	private Controller controller;
 	private boolean controllerIsActive, controllerDebug;
@@ -152,6 +153,10 @@ public class Player extends Entity {
 		Standing, Running, Jumping, Falling, Screwing, JumpingOffScrew, Dead, GrabMode, HeadStand
 	}
 
+	public enum ConcurrentState {
+		Ignore, HeadStandJumping, HeadStandFalling
+	}
+	
 	// enum to handle different states of movement
 	public enum PlayerDirection {
 		Idle, Left, Right
@@ -373,8 +378,12 @@ public class Player extends Entity {
 		if ( body.getLinearVelocity( ).y < -MIN_VELOCITY * 4f
 				&& platformBody == null && playerState != PlayerState.Screwing
 				&& playerState != PlayerState.JumpingOffScrew
-				&& playerState != PlayerState.HeadStand && !isDead ) {
-			playerState = PlayerState.Falling;
+				&& !isDead ) {
+			if ( playerState == PlayerState.HeadStand ) {
+				extraState = ConcurrentState.HeadStandFalling;
+			} else {
+				playerState = PlayerState.Falling;
+			}
 			setGrounded( false );
 		}
 		if ( otherPlayer != null && isHeadStandPossible( ) ) {
@@ -657,6 +666,13 @@ public class Player extends Entity {
 	}
 
 	/**
+	 * get concurrent player state
+	 */
+	public ConcurrentState getExtraState( ) {
+		return extraState;
+	}
+	
+	/**
 	 * return s the current state of the player
 	 * 
 	 * @return playerState
@@ -730,7 +746,6 @@ public class Player extends Entity {
 	 * slowly increases friction to avoid that silly stopping bug. Call this
 	 * every player.update()
 	 */
-	@SuppressWarnings( "unused" )
 	private void updateFootFriction( ) {
 
 		if ( isGrounded( ) ) {
@@ -919,6 +934,8 @@ public class Player extends Entity {
 				if ( playerState != PlayerState.JumpingOffScrew
 						&& playerState != PlayerState.HeadStand ) {
 					playerState = PlayerState.Jumping;
+				} else if ( playerState == PlayerState.HeadStand ) {
+					extraState = ConcurrentState.HeadStandJumping;
 				}
 				jump( );
 				jumpCounter++;
@@ -968,6 +985,8 @@ public class Player extends Entity {
 				if ( playerState != PlayerState.JumpingOffScrew
 						&& playerState != PlayerState.HeadStand ) {
 					playerState = PlayerState.Jumping;
+				} else if ( playerState == PlayerState.HeadStand ) {
+					extraState = ConcurrentState.HeadStandJumping;
 				}
 				jump( );
 				jumpCounter++;
@@ -1287,12 +1306,14 @@ public class Player extends Entity {
 				&& body.getJointList( ).size( ) == 0 ) {
 			if ( isGrounded( ) ) {
 				playerState = PlayerState.Standing;
+				extraState = ConcurrentState.Ignore;
 			} else {
 				if ( body.getLinearVelocity( ).y > 0 ) {
 					playerState = PlayerState.Jumping;
-					// TODO: animating sprite test
+					extraState = ConcurrentState.Ignore;
 				} else {
 					playerState = PlayerState.Falling;
+					extraState = ConcurrentState.Ignore;
 				}
 			}
 		}
@@ -1742,7 +1763,6 @@ public class Player extends Entity {
 	 * @param value
 	 *            boolean
 	 */
-
 	public void setSteamCollide( boolean value ) {
 		steamCollide = value;
 	}
