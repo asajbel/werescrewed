@@ -63,8 +63,8 @@ public class Player extends Entity {
 	public final static Vector2 ANCHOR_BUFFER_SIZE = new Vector2( 200f, 128f );
 	public final static float STEAM_FORCE = .5f;
 	public final static float FRICTION_INCREMENT = 0.3f;
-	public final static float FEET_OFFSET_X = 57f * Util.PIXEL_TO_BOX;
-	public final static float FEET_OFFSET_Y = 16f * Util.PIXEL_TO_BOX;
+	public final static float FEET_OFFSET_X = 58f * Util.PIXEL_TO_BOX;
+	public final static float FEET_OFFSET_Y = 20f * Util.PIXEL_TO_BOX;
 	public final static float JUMP_DIRECTION_MULTIPLIER = 2f;
 	public final static float JUMP_DEFAULT_DIVISION = 1.0f;
 	public float directionJumpDivsion = JUMP_DEFAULT_DIVISION;
@@ -171,7 +171,7 @@ public class Player extends Entity {
 		super( name, EntityDef.getDefinition( name ), world, pos, 0.0f,
 				new Vector2( 1f, 1f ), null, true );
 		entityType = EntityType.PLAYER;
-		body.setGravityScale( 0.25f );
+		body.setGravityScale( 0.3f );
 		body.setFixedRotation( true );
 		body.setSleepingAllowed( false );
 		this.world = world;
@@ -314,9 +314,9 @@ public class Player extends Entity {
 			}
 		}
 		if ( sprite.getScaleX( ) < 0 ) {
-			sprite.translateX( 128f );
+			sprite.translateX( 120f );
 		}
-		sprite.translateY( -15f );
+		sprite.translateY( -10f );
 		// switch between states
 		switch ( playerState ) {
 		case Dead:
