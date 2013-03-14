@@ -18,12 +18,12 @@ import com.blindtigergames.werescrewed.player.Player;
 
 public class Hazard extends Platform {
 
-	public boolean active;
+	public boolean activeHazard;
 	
-	public Hazard( String name, Vector2 pos, Texture texture, World world, boolean isActive ) {
+	public Hazard( String name, Vector2 pos, Texture texture, World world, boolean isHazardActive ) {
 		super( name, pos, texture, world);
 		entityType = EntityType.HAZARD;
-		this.active = isActive;
+		this.activeHazard = isHazardActive;
 	}
 	
 	public Hazard( String name, EntityDef type, World world,
@@ -35,23 +35,30 @@ public class Hazard extends Platform {
 		entityType = EntityType.HAZARD;
 	}
 
-	// Returns current state of hazard. active == true == on / active == false == off
-	public boolean isActive ( ) {
-		return active;
+	
+	/**
+	 * Returns current state of hazard. active == true == on / active == false == off
+	 */
+	public boolean isActiveHazard ( ) {
+		return activeHazard;
 	}
 	
 	/**
 	 * @param state
 	 * 		Determines if boolean active is on (true) or off (false).
 	 */
-	public void setActive ( boolean state ) {
-		this.active = state;
-		Gdx.app.log( "State changed", " " + active );
+	public void setActiveHazard ( boolean state ) {
+		this.activeHazard = state;
+		Gdx.app.log( "State changed", " " + activeHazard );
 	}
 	
-	//Performs check to see if a player has collided with a hazard.
+	/**
+	 * Performs check to see if a player has collided with a hazard.
+	 * @param player Player
+	 * @param fixture Fixture
+	 */
 	public void performContact ( Player player, Fixture fixture ) {
-		if (active) {
+		if (activeHazard) {
 			player.killPlayer( );
 		}
 	}
