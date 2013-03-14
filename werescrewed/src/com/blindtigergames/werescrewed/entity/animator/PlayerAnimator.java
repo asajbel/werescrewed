@@ -66,7 +66,10 @@ public class PlayerAnimator implements IAnimator {
 	
 	@Override
 	public void update( float dT ) {
-		current = getCurrentAnim();
+		if (current != getCurrentAnim()){
+			current = getCurrentAnim();
+			anims.get(current).reset();
+		}
 		anims.get(current).update( dT );
 	}
 
