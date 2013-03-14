@@ -5,7 +5,7 @@ import com.badlogic.gdx.Gdx;
 public class SimpleFrameAnimator implements IAnimator {
 
 	protected int frame;
-	protected float speed, time;
+	protected float speed, initialSpeed, time;
 	protected int start, frames;
 	public enum LoopBehavior{
 		STOP(0),
@@ -33,6 +33,7 @@ public class SimpleFrameAnimator implements IAnimator {
 	public SimpleFrameAnimator( ) {
 		frame = 0;
 		speed = 1.0f;
+		initialSpeed = 1.0f;
 		time = 0.0f;
 		start = 0; frames = 0;
 		loop = LoopBehavior.LOOP;
@@ -40,9 +41,15 @@ public class SimpleFrameAnimator implements IAnimator {
 	}
 
 
-	public SimpleFrameAnimator speed(float s){
+	public SimpleFrameAnimator speed(float s, boolean setInitial){
 		speed = s;
+		if (setInitial)
+			initialSpeed = s;
 		return this;
+	}
+	
+	public SimpleFrameAnimator speed(float s){
+		return this.speed( s, false );
 	}
 	
 	public SimpleFrameAnimator time(float t){
@@ -117,7 +124,7 @@ public class SimpleFrameAnimator implements IAnimator {
 	public void reset(){
 		frame = 0;
 		time = 0.0f;
-		speed = 1.0f;
+		speed = initialSpeed;
 	}
 	
 	protected void incrementTime( float dT ){
@@ -137,7 +144,7 @@ public class SimpleFrameAnimator implements IAnimator {
 				break;
 			}
 		}
-		if (time > 0.0f){
+		if (time > 1.0f){
 			switch (loop){
 			case STOP:
 				time = 1.0f;
