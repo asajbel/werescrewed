@@ -1,6 +1,5 @@
 package com.blindtigergames.werescrewed.asset;
 
-import java.io.FileNotFoundException;
 import java.util.HashMap;
 
 import com.badlogic.gdx.Gdx;

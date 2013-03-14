@@ -13,9 +13,9 @@
 	<tintAlpha>1.0f</tintAlpha>
 	
 	<body>playerTest</body>
-	<density>1.0f</density>
+	<density>0.2</density>
 	<friction>0.0f</friction>
 	<restitution>0.0f</restitution>
-	<bodyScale>0.3f</bodyScale>
+	<bodyScale>0.45f</bodyScale>
 	<fixedRotation>true</fixedRotation>
 </entity>

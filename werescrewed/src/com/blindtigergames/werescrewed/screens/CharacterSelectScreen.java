@@ -27,7 +27,8 @@ public class CharacterSelectScreen implements com.badlogic.gdx.Screen {
 	public CharacterSelectScreen(){
 		batch = new SpriteBatch( );
 		font = new BitmapFont( );
-		fancyFont = WereScrewedGame.manager.getFont( "ornatique" );
+		fancyFont = WereScrewedGame.manager.getFont( "Screwball" );
+		//fancyFont = WereScrewedGame.manager.getFont( "ornatique" );
 		logo =  WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 				 + "/common/title_background.png", Texture.class );
 		lineHeight = Math.round( 2.5f * font.getCapHeight( ) );

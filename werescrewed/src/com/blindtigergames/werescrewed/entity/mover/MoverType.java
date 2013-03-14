@@ -4,7 +4,10 @@ import com.badlogic.gdx.utils.Array;
 
 public enum MoverType {
 		ROCKING("rocking"),
-		LINEAR_AXIS("linear")
+		LINEAR_AXIS("linear"),
+		ROTATETWEEN("rotatetween"),
+		ROTATEBYDEGREE("RotateByDegree")
+		//PuzzleRotateTweenMover
 	    ;
 	    /**
 	     * @param text

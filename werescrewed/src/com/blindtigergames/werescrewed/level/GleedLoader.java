@@ -247,7 +247,7 @@ public class GleedLoader {
 						out = loadComplexPlatform(item);
 						isPlatform = true;
 					} else if (item.getDefinition().getCategory( ) == EntityCategory.PLAYER ){
-						loadPlayerSpawnPoint(item);
+						//loadPlayerSpawnPoint(item);
 					} else {
 						out = loadGeneralEntity(item);
 					}
@@ -381,10 +381,10 @@ public class GleedLoader {
 		return out;
 	}
 
-	protected void loadPlayerSpawnPoint(Item item){
-		level.players.get(spawnPoints).setPixelPosition( item.pos ); //Kevin: Who commented this out?
-		Gdx.app.log("GleedLoader", "Player Spawnpoint:"+item.pos.toString( ));
-	}
+//	protected void loadPlayerSpawnPoint(Item item){
+//		level.players.get(spawnPoints).setPixelPosition( item.pos ); //Kevin: Who commented this out?
+//		Gdx.app.log("GleedLoader", "Player Spawnpoint:"+item.pos.toString( ));
+//	}
 	
 	protected Entity loadGeneralEntity(Item item){
 		Entity out = new EntityBuilder()

@@ -12,18 +12,26 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.XmlReader;
 import com.badlogic.gdx.utils.XmlReader.Element;
+import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.camera.Camera;
+import com.blindtigergames.werescrewed.checkpoints.CheckPoint;
+import com.blindtigergames.werescrewed.checkpoints.ProgressManager;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityCategory;
 import com.blindtigergames.werescrewed.entity.EntityDef;
 import com.blindtigergames.werescrewed.entity.RobotState;
 import com.blindtigergames.werescrewed.entity.builders.EntityBuilder;
+import com.blindtigergames.werescrewed.entity.builders.MoverBuilder;
 import com.blindtigergames.werescrewed.entity.builders.PlatformBuilder;
 import com.blindtigergames.werescrewed.entity.builders.PlayerBuilder;
 import com.blindtigergames.werescrewed.entity.builders.RopeBuilder;
 import com.blindtigergames.werescrewed.entity.builders.ScrewBuilder;
 import com.blindtigergames.werescrewed.entity.builders.SkeletonBuilder;
+import com.blindtigergames.werescrewed.entity.mover.IMover;
+import com.blindtigergames.werescrewed.entity.mover.PuzzleType;
 import com.blindtigergames.werescrewed.entity.mover.TimelineTweenMover;
+import com.blindtigergames.werescrewed.entity.mover.puzzle.PuzzleRotateTweenMover;
+import com.blindtigergames.werescrewed.entity.mover.MoverType;
 import com.blindtigergames.werescrewed.entity.tween.PathBuilder;
 import com.blindtigergames.werescrewed.platforms.Platform;
 import com.blindtigergames.werescrewed.platforms.TiledPlatform;
@@ -43,11 +51,13 @@ import com.blindtigergames.werescrewed.util.Util;
 public class LevelFactory {	
 	protected XmlReader reader;
 	protected Level level;
+	protected String levelName;
 	protected EnumMap<GleedTypeTag, LinkedHashMap<String, Item>> items;
 	protected LinkedHashMap<String,Entity> entities;
 	protected LinkedHashMap<String,TimelineTweenMover> movers;
 	protected LinkedHashMap<String,Skeleton> skeletons;
 	protected LinkedHashMap<String,PuzzleScrew> puzzleScrews;
+	protected LinkedHashMap<String,Array<Vector2> > polySprites;
 	protected int spawnPoints;
 	
 	protected static final float GLEED_TO_GDX_X = 1.0f;
@@ -69,13 +79,15 @@ public class LevelFactory {
 		movers = new LinkedHashMap<String, TimelineTweenMover>();
 		skeletons = new LinkedHashMap<String, Skeleton>();
 		puzzleScrews = new LinkedHashMap<String, PuzzleScrew>();
+		polySprites = new LinkedHashMap<String, Array<Vector2> >();
 		level = new Level();
 		spawnPoints = 0;
 		
 	}
 	
 	public Level load(String filename){
-		skeletons.put( "root", level.root );
+		levelName = filename;
+		//skeletons.put( "root", level.root );
 		Element root;
 		Array<Element> elements = new Array<Element>();
 
@@ -237,7 +249,7 @@ public class LevelFactory {
 	protected Entity loadEntity(Item item){
 		Entity out = null;
 
-		//for example, player or tiledplatform
+		//for example, player or tiledplatform or screw
 		String bluePrints = item.defName;
 		Gdx.app.log( "LevelFactory, bluePrints ", bluePrints );
 		
@@ -255,15 +267,14 @@ public class LevelFactory {
 			constructScrew(item);
 		} else if( bluePrints.equals( "pathmover" )){
 			constructPath(item);
-		} else if( bluePrints.equals(  "skeletonpoly" )){
-			
 		} else if (bluePrints.equals( "rope" )){
-			constuctRope(item);
+			constructRope(item);
+		} else if (bluePrints.equals( "checkpoint" )){
+			constructCheckpoint(item);
 		}
 		
 		else if (item.getDefinition().getCategory( ) == EntityCategory.COMPLEX_PLATFORM ){
 			loadComplexPlatform(item);
-			System.out.println( item.defName );
 		}
 //		if (item.hasDefTag( )){
 //			//First check if the item's definition is a type of screw
@@ -365,11 +376,30 @@ public class LevelFactory {
 		} else {
 			//attach skeleton to skeleton
 			SkeletonBuilder skeleBuilder = new SkeletonBuilder( level.world );
+			System.out.println( "SKELETON: POS " + item.pos );
+			skeleBuilder.name( item.name )
+					.position( item.pos ).texture( null );
+			 
+			Array<Vector2> polySprite = contstructSkeletonPoly( item );
 			
-			Skeleton skeleton = skeleBuilder.name( item.name )
-					.position( item.pos ).texture( null )
-					.build( );
-			//Skeleton skeleton = new Skeleton( item.name, item.pos, null, level.world );
+			if(item.props.containsKey( "noforeground" )){
+				skeleBuilder.bg( ).setVerts( polySprite )
+				.texBackground( WereScrewedGame.manager.get
+						(WereScrewedGame.dirHandle+"/common/robot/alphabot_texture_skin.png",
+								Texture.class ));
+			}else{
+				skeleBuilder.bg( ).setVerts( polySprite )
+				.texBackground( WereScrewedGame.manager.get
+						(WereScrewedGame.dirHandle+"/common/robot/alphabot_texture_skin.png",
+								Texture.class ))
+				.fg( ).setVerts( polySprite );
+//				.texForeground( WereScrewedGame.manager.get
+//						(WereScrewedGame.dirHandle+"/common/robot/alphabot_texture_skin.png",
+//								Texture.class ));;
+			}
+			
+			Skeleton skeleton = skeleBuilder.build( );
+
 			skeletons.put( item.name, skeleton );
 			entities.put(  item.name, skeleton );
 			if(item.props.containsKey( "attachtoskeleton" )){
@@ -378,6 +408,8 @@ public class LevelFactory {
 				
 				parent.addSkeleton( skeleton );
 			}
+			
+			
 		}
 		
 		Gdx.app.log( "LevelFactory, Skeleton constucted ", item.name );
@@ -387,13 +419,13 @@ public class LevelFactory {
 	
 	private void constructPlayer(Item item){
 		if(item.name.equals("playerOne")){
-			level.players.set(0, new PlayerBuilder( ).name( "player1" ).world( level.world )
-					.position( item.pos.add( 200f, 0f ) ).buildPlayer( ));
-			entities.put("player1", level.players.get(0));
+			level.player1 = new PlayerBuilder( ).name( "player1" ).world( level.world )
+					.position( item.pos.add( 200f, 0f ) ).buildPlayer( );
+			entities.put("player1", level.player1);
 		} else if(item.name.equals("playerTwo") ){
 			
-			level.players.set(1, new PlayerBuilder( ).name( "player2" ).world( level.world )
-					.position( item.pos.add( 100f, 0f ) ).buildPlayer( ));
+			level.player2 = new PlayerBuilder( ).name( "player2" ).world( level.world )
+					.position( item.pos.add( 100f, 0f ) ).buildPlayer( );
 		}
 		
 
@@ -531,6 +563,23 @@ public class LevelFactory {
 //		SCREW_RESURRECT("ScrewResurrect"),
 //		SCREW_BOSS("ScrewBoss");
 		
+//		PUZZLE EXAMPLE:
+		
+//		plat = platBuilder.position( 143f * TILE, 89 * TILE ).name( "plat11" )
+//				.dimensions( 1, 6 ).texture( testTexture ).kinematic( )
+//				.friction( 1.0f ).oneSided( true ).restitution( 0 )
+//				.buildTilePlatform( );
+//		plat.setCategoryMask( Util.KINEMATIC_OBJECTS, Util.CATEGORY_EVERYTHING );
+//		skel9.addKinematicPlatform( plat );
+//
+//		PuzzleScrew puzzleScrew2 = new PuzzleScrew( "006", new Vector2(
+//				143f * TILE, 83 * TILE ), 100, skel9, world, 0, false );
+//		plat.setActive( true );
+//		puzzleScrew2.puzzleManager.addEntity( plat );
+//		PuzzleRotateTweenMover rtm2 = new PuzzleRotateTweenMover( 1,
+//				Util.PI / 2, true, PuzzleType.ON_OFF_MOVER );
+//		puzzleScrew2.puzzleManager.addMover( rtm2 );
+//		skeleton.addScrewForDraw( puzzleScrew2 );
 		ScrewType sType = ScrewType.fromString( item.props.get( "screwtype" ) );
 		ScrewBuilder builder = new ScrewBuilder()
 		.name( item.name )
@@ -553,8 +602,30 @@ public class LevelFactory {
 		switch (sType){
 			case SCREW_PUZZLE:
 				Gdx.app.log("LevelFactory", "Building puzzle screw "+ item.name + " at " + item.pos.toString( ));
+				
+				Entity attach = null;
+				if(item.props.containsKey( "controlthis" )){
+					String s = item.props.get( "controlthis");
+					attach = entities.get( s );
+					Gdx.app.log("LevelFactory", "attaching :" + attach.name + " to puzzle screw");
+				}
+				
+				IMover mover = null;
+				if(item.props.containsKey( "mover" )){
+					String movername = item.props.get( "mover" );
+					if (MoverType.fromString( movername ) != null){
+						mover = new MoverBuilder()
+						.fromString(movername)
+						.build( );
+						Gdx.app.log("LevelFactory", "attaching :" + movername + " to puzzle screw");
+					}
+				}
+				
 				PuzzleScrew p = builder.buildPuzzleScrew( );
-				entities.put(item.name, p);
+				puzzleScrews.put(item.name, p);
+				p.puzzleManager.addEntity( attach );
+				p.puzzleManager.addMover( mover );
+				
 				out = p;
 				break;
 			case SCREW_STRIPPED:
@@ -589,6 +660,19 @@ public class LevelFactory {
 
 	}
 	
+	
+	public void constructCheckpoint(Item item){
+		
+		if(level.progressManager == null){
+			level.progressManager = new ProgressManager(level.player1, level.player2, level.world);
+		}
+		String skel = item.skeleton;
+		Skeleton parent = loadSkeleton( skel );
+		level.progressManager
+		.addCheckPoint( new CheckPoint( item.name, item.pos, parent, level.world, level.progressManager,
+				levelName ) );
+	}
+	
 
 	
 	protected Entity loadGeneralEntity(Item item){
@@ -615,24 +699,13 @@ public class LevelFactory {
 		
 		
 		Element vElem; Vector2 point; String timeTag;
-		int frontPoint = 0; float frontTime = 0.0f;
+
 		//Set first and last point times with separate tags.
 		//If tags are not available, assume they will be at 0.0f and 1.0f, respectively.
 		//As points are loaded, these values may get overridden; this is fine.
 		for (int i = 0; i < pointElems.size; i++){
 			times.add( 1.0f );
 		}
-//		if (item.props.containsKey( startTime )){
-//			times.set(frontPoint, Float.parseFloat( item.props.get( startTime ) ) );
-//			frontTime = times.get(0);
-//		} else {
-//			times.set(frontPoint, frontTime); //By default, the first point should be at time 0.
-//		}
-//		if (item.props.containsKey( "EndTime" )){
-//			times.set(pointElems.size-1, Float.parseFloat( item.props.get( endTime ) ) );	
-//		} else {
-//			times.set(pointElems.size-1, 1.0f);
-//		}
 		
 		if( item.props.containsKey( "delay" )){
 			float delay = Float.parseFloat( item.props.get("delay") );
@@ -670,11 +743,19 @@ public class LevelFactory {
 		p.setActive( true );
 	}
 
-	public void constuctRope(Item item){
+	public void constructRope(Item item){
 		RopeBuilder ropeBuilder = new RopeBuilder( level.world );
-		ropeBuilder.name( item.name ).position(item.pos.x, item.pos.y ).links( 5 )
-				.createScrew( );
+		ropeBuilder.name( item.name ).position(item.pos.x, item.pos.y ).createScrew( );
 		
+		if(item.props.containsKey( "links" )){
+			int links = Integer.parseInt( item.props.get("links") );
+			ropeBuilder.links( links );
+		}
+		
+//		if(item.props.containsKey( "numberofscrews" )){
+//			int num = Integer.parseInt( item.props.get("numberofscrews") );
+//			ropeBuilder.createScrew(num);
+//		}
 		
 		if(item.props.containsKey( "attachedto" )){
 			Entity e = loadEntity(item.props.get( "attachedto" ));
@@ -684,6 +765,25 @@ public class LevelFactory {
 		Skeleton parent = loadSkeleton(item.skeleton);
 		Rope rope = ropeBuilder.buildRope( );
 		parent.addRope( rope );
+	}
+	
+	public Array<Vector2> contstructSkeletonPoly(Item item){
+		
+		Array<Element> pointElems = item.element.getChildByName( "LocalPoints" ).getChildrenByName( "Vector2" );
+		Gdx.app.log("LevelFactory", "Loading PolySprite:"+pointElems.size+" points.");
+		Array<Vector2> pathPoints = new Array<Vector2>(pointElems.size);
+		
+		Element vElem; Vector2 point; 
+		for (int i = 1; i < pointElems.size; i++){
+			vElem = pointElems.get( i );
+			point = new Vector2(vElem.getFloat( "X" )*GLEED_TO_GDX_X, vElem.getFloat( "Y" )*GLEED_TO_GDX_Y);
+			pathPoints.add( point );
+			Gdx.app.log( "LevelFactory", "Point "+i+" has coordinates "+point.toString( )+".");
+			
+		}
+		
+		return pathPoints;
+		
 	}
 	public Screw loadScrew(Item item){
 		;

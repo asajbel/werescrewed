@@ -53,10 +53,11 @@ public class Entity implements GleedLoadable {
 	protected boolean crushing;
 	protected boolean visible;
 	protected boolean maintained;
+	protected boolean removeNextStep = false;
 	protected EntityType entityType;
 	private ArrayList< IMover > moverArray;
-	protected ArrayList<Sprite> decals;
-	protected ArrayList<Vector2> decalOffsets;
+	protected ArrayList< Sprite > decals;
+	protected ArrayList< Vector2 > decalOffsets;
 	private RobotState currentRobotState;
 	private EnumMap< RobotState, Integer > robotStateMap;
 
@@ -90,8 +91,8 @@ public class Entity implements GleedLoadable {
 			this.sprite = constructSprite( texture );
 		}
 		this.body = constructBodyByType( );
-		this.decals = new ArrayList<Sprite>();
-		this.decalOffsets = new ArrayList<Vector2>();
+		this.decals = new ArrayList< Sprite >( );
+		this.decalOffsets = new ArrayList< Vector2 >( );
 		setPixelPosition( positionPixels );
 		createAnchor( );
 	}
@@ -161,7 +162,7 @@ public class Entity implements GleedLoadable {
 		this.energy = 1.0f;
 		this.maintained = true;
 		this.visible = true;
-		this.active = false;
+		this.active = true;
 		setUpRobotState( );
 	}
 
@@ -226,7 +227,7 @@ public class Entity implements GleedLoadable {
 	}
 
 	public void draw( SpriteBatch batch ) {
-		if ( sprite != null && visible ) {
+		if ( sprite != null && visible && !removeNextStep ) {
 			sprite.draw( batch );
 		}
 		// drawOrigin(batch);
@@ -249,8 +250,27 @@ public class Entity implements GleedLoadable {
 		}
 		shapes.end( );
 	}
-	
-	public void remove ( ) {
+
+	/**
+	 * this is called from event triggers during a world step so you dont remove
+	 * box2d data while the world is locked
+	 */
+	public void setRemoveNextStep( ) {
+		removeNextStep = true;
+	}
+
+	/**
+	 * if this entity is to be removed next step return true used by skeletons
+	 * to remove from thier list after updating this entity so that box2d is
+	 * removed first
+	 * 
+	 * @return
+	 */
+	public boolean getRemoveNextStep( ) {
+		return removeNextStep;
+	}
+
+	public void remove( ) {
 		if ( body != null ) {
 			while ( body.getJointList( ).iterator( ).hasNext( ) ) {
 				world.destroyJoint( body.getJointList( ).get( 0 ).joint );
@@ -260,15 +280,30 @@ public class Entity implements GleedLoadable {
 	}
 
 	public void update( float deltaTime ) {
-		if ( body != null && anchor != null ) {
-			updateAnchor( );
-		}
-		// animation stuff may go here
-		Vector2 bodyPos = body.getPosition( ).mul( Util.BOX_TO_PIXEL );
-		if ( sprite != null ) {
-			sprite.setPosition( bodyPos.x - offset.x, bodyPos.y - offset.y );
-			sprite.setRotation( MathUtils.radiansToDegrees * body.getAngle( ) );
-			sprite.update( deltaTime );
+		if ( removeNextStep ) {
+			remove( );
+		} else if ( body != null ) {
+			if ( anchor != null ) {
+				updateAnchor( );
+			}
+			// animation stuff may go here
+			Vector2 bodyPos = body.getPosition( ).mul( Util.BOX_TO_PIXEL );
+			if ( sprite != null ) {
+				sprite.setPosition( bodyPos.x - offset.x, bodyPos.y - offset.y );
+				sprite.setRotation( MathUtils.radiansToDegrees
+						* body.getAngle( ) );
+			}
+			if ( body != null && anchor != null ) {
+				updateAnchor( );
+			}
+			// animation stuff may go here
+			bodyPos = body.getPosition( ).mul( Util.BOX_TO_PIXEL );
+			if ( sprite != null ) {
+				sprite.setPosition( bodyPos.x - offset.x, bodyPos.y - offset.y );
+				sprite.setRotation( MathUtils.radiansToDegrees
+						* body.getAngle( ) );
+				sprite.update( deltaTime );
+			}
 		}
 	}
 
@@ -370,7 +405,6 @@ public class Entity implements GleedLoadable {
 		setPosition( pos );
 	}
 
-
 	/**
 	 * Builds the body associated with the entity's type.
 	 * 
@@ -389,8 +423,6 @@ public class Entity implements GleedLoadable {
 		}
 		return newBody;
 	}
-
-
 
 	/**
 	 * This function adds a mover to the entity, YOU MUST SPECIFIY WHICH STATE
@@ -801,53 +833,50 @@ public class Entity implements GleedLoadable {
 		// Initalize to idle
 		currentRobotState = RobotState.IDLE;
 	}
-	
+
 	/**
 	 * 
 	 */
-	public void addDecal(Sprite s, Vector2 offset){
+	public void addDecal( Sprite s, Vector2 offset ) {
 		this.decals.add( s );
 		this.decalOffsets.add( offset );
 	}
-	
-	public void addDecal(Sprite s){
-		addDecal(s, new Vector2(s.getX( ), s.getY( )));
+
+	public void addDecal( Sprite s ) {
+		addDecal( s, new Vector2( s.getX( ), s.getY( ) ) );
 	}
-	
-	
-	public void updateDecals( float deltaTime ){
+
+	public void updateDecals( float deltaTime ) {
 		Vector2 bodyPos = this.getPositionPixel( );
-		float angle = this.getAngle( ), 
-				cos = ( float ) Math.cos( angle ),
-				sin = ( float ) Math.sin( angle );
-		float x,y;
+		float angle = this.getAngle( ), cos = ( float ) Math.cos( angle ), sin = ( float ) Math
+				.sin( angle );
+		float x, y;
 		Vector2 offset;
 		Sprite decal;
-		for (int i = 0; i < decals.size(); i++){
+		for ( int i = 0; i < decals.size( ); i++ ) {
 			offset = decalOffsets.get( i );
 			decal = decals.get( i );
-			x = bodyPos.x + (cos * offset.x) + (sin * offset.y);
-			y = bodyPos.y + (cos * offset.x) - (sin * offset.y);
+			x = bodyPos.x + ( cos * offset.x ) + ( sin * offset.y );
+			y = bodyPos.y + ( cos * offset.x ) - ( sin * offset.y );
 			decal.setPosition( x, y );
 			decal.setRotation( angle );
-		}	
+		}
 	}
-	
+
 	/**
 	 * 
 	 */
-	public void drawDecals(SpriteBatch batch){
-		for (Sprite decal: decals){
+	public void drawDecals( SpriteBatch batch ) {
+		for ( Sprite decal : decals ) {
 			decal.draw( batch );
 		}
 	}
-	
-	public float getAngle( ){
-		if (body != null)
+
+	public float getAngle( ) {
+		if ( body != null )
 			return body.getAngle( );
 		return sprite.getRotation( );
 	}
-
 
 	/**
 	 * prints Fixture's index in FixtureList.
@@ -874,7 +903,7 @@ public class Entity implements GleedLoadable {
 	}
 
 	/**
-	 * sets flag to determine if an entity can crush
+	 * sets flag to determine if an entity can crush, also turns off OneSided
 	 * 
 	 * @param value
 	 *            boolean

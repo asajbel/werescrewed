@@ -88,11 +88,14 @@ public class Screw extends Entity {
 	 */
 	@Override
 	public void remove( ) {
-		while ( body.getJointList( ).iterator( ).hasNext( ) ) {
-			world.destroyJoint( body.getJointList( ).get( 0 ).joint );
+		if ( !removed ) {
+			while ( body.getJointList( ).iterator( ).hasNext( ) ) {
+				world.destroyJoint( body.getJointList( ).get( 0 ).joint );
+			}
+			world.destroyBody( body );
+			body = null;
+			removed = true;
 		}
-		world.destroyBody( body );
-		removed = true;
 	}
 
 	/**
@@ -123,6 +126,7 @@ public class Screw extends Entity {
 
 	public void screwLeft( int region, boolean switchedDirections ) {
 	}
+
 	public void screwLeft( ) {
 	}
 
@@ -137,7 +141,7 @@ public class Screw extends Entity {
 
 	public void screwRight( int region, boolean switchedDirections ) {
 	}
-	
+
 	public void screwRight( ) {
 	}
 

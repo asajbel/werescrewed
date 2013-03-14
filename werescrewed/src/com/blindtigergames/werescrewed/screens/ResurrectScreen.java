@@ -60,7 +60,6 @@ public class ResurrectScreen implements com.badlogic.gdx.Screen {
 	private boolean debug = true;
 	private boolean debugTest = true;
 	private ProgressManager progressManager;
-	private Spikes spikes;
 
 	// timeout for killing player input
 	// wont need this as there wont be a button to kill the player
@@ -101,6 +100,13 @@ public class ResurrectScreen implements com.badlogic.gdx.Screen {
 
 		platBuilder = new PlatformBuilder( world );
 
+		
+		TiledPlatform wall = platBuilder.position( 256f, 320f ).name( "wall1" )
+				.dimensions( 5, 8 ).texture( testTexture ).kinematic( )
+				.oneSided( false ).restitution( 0.0f ).buildTilePlatform( );
+		wall.setCategoryMask( Util.KINEMATIC_OBJECTS, Util.CATEGORY_EVERYTHING );
+		skeleton.addKinematicPlatform( wall );
+		
 		// Initialize listeners
 		contactListener = new MyContactListener( );
 		world.setContactListener( contactListener );
@@ -231,8 +237,11 @@ public class ResurrectScreen implements com.badlogic.gdx.Screen {
 	}
 
 	private void initHazards( ) {
-		spikes = new Spikes( "Spikes1", new Vector2( -1250.0f, -10.0f ), 1, 4,
+
+		Spikes spikes = new Spikes( "Spikes1", new Vector2( -1250.0f, -10.0f ), 1, 4,
 				world, true, false, true );
+		skeleton.addKinematicPlatform( spikes );
+
 	}
 
 	private void initTiledPlatforms( ) {
@@ -315,18 +324,17 @@ public class ResurrectScreen implements com.badlogic.gdx.Screen {
 		}
 
 		if ( Gdx.input.isKeyPressed( Input.Keys.C ) ) {
-			rootSkeleton.rotateBy( -0.01f );
+			rootSkeleton.rotateBy( 0.01f );
 		}
 
 		if ( Gdx.input.isKeyPressed( Input.Keys.V ) ) {
-			rootSkeleton.translateBy( 0.0f, 0.01f );
+			rootSkeleton.rotateBy( -0.01f );
 		}
 
 		player1.update( deltaTime );
 		player2.update( deltaTime );
 		rootSkeleton.update( deltaTime );
 		progressManager.update( deltaTime );
-		spikes.update( deltaTime );
 
 		// update background skeletons
 		bgRootSkel.update( deltaTime );
@@ -342,7 +350,6 @@ public class ResurrectScreen implements com.badlogic.gdx.Screen {
 		batch.begin( );
 		rootSkeleton.draw( batch );
 		progressManager.draw( batch );
-		spikes.draw( batch );
 		player1.draw( batch );
 		player2.draw( batch );
 		batch.end( );

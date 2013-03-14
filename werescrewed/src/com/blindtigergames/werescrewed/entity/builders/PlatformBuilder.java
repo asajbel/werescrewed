@@ -250,6 +250,7 @@ public class PlatformBuilder extends GenericEntityBuilder<PlatformBuilder> {
 		tp.setFriction( this.friction );
 		tp.setRestitution( this.restitution );
 		tp.setGravScale( this.gravScale );
+		tp.body.setFixedRotation( false );
 		return tp;
 		
 		
@@ -272,6 +273,7 @@ public class PlatformBuilder extends GenericEntityBuilder<PlatformBuilder> {
 		cp.setFriction( this.friction );
 		cp.setRestitution( this.restitution );
 		cp.setGravScale( this.gravScale );
+		cp.body.setFixedRotation( false );
 		return cp;
 	}
 
