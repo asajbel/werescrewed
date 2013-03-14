@@ -1,7 +1,11 @@
 package com.blindtigergames.werescrewed.screens;
 
+import java.util.ArrayList;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.controllers.Controller;
+import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -11,6 +15,7 @@ import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.gui.Button;
 import com.blindtigergames.werescrewed.gui.Button.ButtonHandler;
 import com.blindtigergames.werescrewed.gui.Label;
+import com.blindtigergames.werescrewed.input.MyControllerListener;
 
 class MainMenuScreen implements com.badlogic.gdx.Screen {
 	// extends Screen
@@ -23,10 +28,16 @@ class MainMenuScreen implements com.badlogic.gdx.Screen {
 	private Label headingLabel = null;
 	private Button exitButton = null;
 	private int lineHeight = 0;
+	private int ButtonIndex = 0;
+	private ArrayList<Button> Buttons;
 
 	private Button storyButton = null;
 	private Button levelSelectButton = null;
 	private Button optionsButton = null;
+	private Controller controller1;
+	private Controller controller2;
+	private MyControllerListener controllerListener;
+
 
 	public MainMenuScreen( ) {
 		batch = new SpriteBatch( );
@@ -34,29 +45,14 @@ class MainMenuScreen implements com.badlogic.gdx.Screen {
 		fancyFont = WereScrewedGame.manager.getFont( "Screwball" );
 		//fancyFont = WereScrewedGame.manager.getFont( "ornatique" );
 		
-		//font = WereScrewedGame.manager.getFont( "ornatique" );
-		logo =  WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-				 + "/common/title_background.png", Texture.class );
-		lineHeight = Math.round( 2.5f * font.getCapHeight( ) );
-		headingLabel = new Label( "We're Screwed!!", fancyFont );
-		
-		storyButton = new Button("Start", fancyFont,
-				new ScreenSwitchHandler(ScreenType.STORY));
-		levelSelectButton = new Button( "Level Select", fancyFont,
-				new ScreenSwitchHandler(ScreenType.LEVEL_SELECT));
-		optionsButton = new Button("Options", fancyFont,
-				new ScreenSwitchHandler( ScreenType.OPTIONS));
-		exitButton = new Button( "Exit", fancyFont, new ButtonHandler( ) {
-			@Override
-			public void onClick( ) {
-				Gdx.app.exit( );
-			}
-		} );
+		ControllerSetUp( );
+		loadButtons( );
 	}
 
 	@Override
 	public void render( float delta ) {
-		//super.render(delta);
+		//super.render(delta);		
+		Gdx.gl.glClearColor( 0.5f, 0.5f, 0.5f, 1f );
 		Gdx.gl.glClearColor( 0.0f, 0.0f, 0.0f, 1f );
 		Gdx.gl.glClear( GL10.GL_COLOR_BUFFER_BIT );
 		batch.begin( );
@@ -103,6 +99,44 @@ class MainMenuScreen implements com.badlogic.gdx.Screen {
 		// imoverButton.setY( centerY - lineHeight );
 		exitButton.setX( centerX - exitButton.getWidth( ) / 2 );
 		exitButton.setY( centerY + 2 * lineHeight );
+	}
+	
+	private void ControllerSetUp( ){
+		if( Controllers.getControllers( ).size > 0){
+			controllerListener = new MyControllerListener( );
+			controller1 = Controllers.getControllers( ).get( 0 );
+			controller1.addListener( controllerListener );
+		}
+		if( Controllers.getControllers( ).size > 1){
+			controllerListener = new MyControllerListener( );
+			controller2 = Controllers.getControllers( ).get( 1 );
+			controller2.addListener( controllerListener );
+		}
+	}
+	
+	private void loadButtons( ){
+		//font = WereScrewedGame.manager.getFont( "ornatique" );
+		logo =  WereScrewedGame.manager.get( WereScrewedGame.dirHandle
+				 + "/common/title_background.png", Texture.class );
+		lineHeight = Math.round( 2.5f * font.getCapHeight( ) );
+		headingLabel = new Label( "We're Screwed!!", fancyFont );
+		
+		storyButton = new Button("Start", fancyFont,
+				new ScreenSwitchHandler(ScreenType.STORY));
+		levelSelectButton = new Button( "Level Select", fancyFont,
+				new ScreenSwitchHandler(ScreenType.LEVEL_SELECT));
+		optionsButton = new Button("Options", fancyFont,
+				new ScreenSwitchHandler( ScreenType.OPTIONS));
+		exitButton = new Button( "Exit", fancyFont, new ButtonHandler( ) {
+			@Override
+			public void onClick( ) {
+				Gdx.app.exit( );
+			}
+		} );
+		//Buttons.add( storyButton );
+		//Buttons.add( levelSelectButton );
+		//Buttons.add( optionsButton );
+		//Buttons.add( exitButton );
 	}
 
 	@Override

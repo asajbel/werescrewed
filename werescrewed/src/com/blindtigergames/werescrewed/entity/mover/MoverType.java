@@ -7,8 +7,10 @@ public enum MoverType {
 		LINEAR_AXIS("linear"),
 		ROTATETWEEN("rotatetween"),
 		ROTATEBYDEGREE("rotatebydegree"),
-		LERP("lerpmover")
+		LERP("lerpmover"),
+		PUZZLEROTATETWEEN("puzzlerotatetween")
 		//PuzzleRotateTweenMover
+
 	    ;
 	    /**
 	     * @param text

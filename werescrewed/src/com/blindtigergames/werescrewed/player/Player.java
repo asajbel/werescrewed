@@ -66,6 +66,7 @@ public class Player extends Entity {
 	public final static int GRAB_COUNTER_STEPS = 5;
 	public final static Vector2 ANCHOR_BUFFER_SIZE = new Vector2( 200f, 128f );
 	public final static float STEAM_FORCE = .5f;
+	public final static float STEAM_IMPULSE = 0.20f;
 	public final static float FRICTION_INCREMENT = 0.3f;
 	public final static float FEET_OFFSET_X = 58f * Util.PIXEL_TO_BOX;
 	public final static float FEET_OFFSET_Y = 20f * Util.PIXEL_TO_BOX;
@@ -1775,13 +1776,14 @@ public class Player extends Entity {
 	}
 
 	/**
-	 * applys force to player
+	 * applies force to player
 	 */
 	private void steamResolution( ) {
 		if ( prevButton == null )
 			body.setLinearVelocity( new Vector2( 0f,
 					body.getLinearVelocity( ).y ) );
-		body.applyForceToCenter( 0f, STEAM_FORCE );
+		//body.applyForceToCenter( 0f, STEAM_FORCE );
+		body.applyLinearImpulse( new Vector2( 0 , STEAM_IMPULSE),  body.getWorldCenter( ));
 	}
 
 	/**
