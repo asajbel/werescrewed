@@ -2,7 +2,6 @@ package com.blindtigergames.werescrewed.entity;
 
 import java.util.ArrayList;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
@@ -13,6 +12,7 @@ public class RootSkeleton extends Skeleton {
 
 	private ArrayList< Entity > looseEntity;
 	private ArrayList< Skeleton > skeletonToSetActive, skeletonToSetInactive;
+	private ArrayList<Skeleton> skeletonsToDelete;
 
 	public RootSkeleton( String name, Vector2 positionPix, Texture tex,
 			World world ) {
@@ -21,17 +21,33 @@ public class RootSkeleton extends Skeleton {
 		looseEntity = new ArrayList< Entity >( );
 		skeletonToSetActive = new ArrayList< Skeleton >( );
 		skeletonToSetInactive = new ArrayList< Skeleton >( );
+		skeletonsToDelete = new ArrayList< Skeleton >( );
 	}
 
 	/**
-	 * Will add this entity to change it's active state, including it's body's active state
-	 * @param entityToChangeState
-	 * @param activeState true/false, true to activate the body, false to deactivate it
+	 * Delete a skeleton and all it's associated entities.
+	 * @param skeleToDelete
 	 */
-	public void setSkeletonActiveState( Skeleton skeletonToChangeState, boolean activeState ){
-		if ( activeState ){
+	public void destroySkeleton(Skeleton skeleToDelete){
+		skeletonsToDelete.add( skeleToDelete );
+	}
+	
+	/**
+	 * Never directly do skeleton.setSkeletonActive() because you may activate
+	 * it in the middle of a world.step() which crashes box2d. Instead, use this
+	 * method which will safely activate a skeleton.
+	 * 
+	 * @param skeletonToChangeState
+	 *            skeleton in which to de/activate the skeleton and all it's
+	 *            associated entities
+	 * @param activeState
+	 *            true/false, true to activate the body, false to deactivate it
+	 */
+	public void setSkeletonActiveState( Skeleton skeletonToChangeState,
+			boolean activeState ) {
+		if ( activeState ) {
 			skeletonToSetActive.add( skeletonToChangeState );
-		}else{
+		} else {
 			skeletonToSetInactive.add( skeletonToChangeState );
 		}
 	}
@@ -39,12 +55,25 @@ public class RootSkeleton extends Skeleton {
 	private void setSkeletonListActiveState( ArrayList< Skeleton > list,
 			boolean setToThisActiveState ) {
 		if ( list.size( ) > 0 ) {
-			// We do this so we're not toggling active states during the world
-			// step which crashes box2d.
+
 			for ( Skeleton s : list ) {
 				s.setSkeletonActive( setToThisActiveState );
 			}
 			list.clear( );
+		}
+	}
+	
+	private void deleteSkeletons(){
+		if ( skeletonsToDelete.size( ) > 0 ){
+			for ( Skeleton s : skeletonsToDelete ){
+				Skeleton newParent = s.getParentSkeleton( );
+				for ( Skeleton childsSkeleton : s.childSkeletonMap.values( ) ){
+					//childsSkeleton.setParentSkeleton( newParent );
+					newParent.addSkeleton( childsSkeleton );
+				}
+				newParent.childSkeletonMap.remove( s.name );
+				s.dispose();
+			}
 		}
 	}
 
@@ -53,6 +82,7 @@ public class RootSkeleton extends Skeleton {
 
 		setSkeletonListActiveState( skeletonToSetActive, true );
 		setSkeletonListActiveState( skeletonToSetInactive, false );
+		deleteSkeletons( );
 
 		// recursively update all skeleton movers
 		updateChildSkeletonMovers( deltaTime );

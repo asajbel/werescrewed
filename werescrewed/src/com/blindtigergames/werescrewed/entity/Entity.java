@@ -911,4 +911,13 @@ public class Entity implements GleedLoadable {
 	public void setCrushing( boolean value ) {
 		crushing = value;
 	}
+	
+	/**
+	 * Careful. You generally won't directly call this. Root skeleton can delete entire skeletons
+	 * so it would be better to just use RootSkeleton.destroySkeleton()
+	 * @author stew
+	 */
+	public void dispose(){
+		body.getWorld( ).destroyBody( body );
+	}
 }
