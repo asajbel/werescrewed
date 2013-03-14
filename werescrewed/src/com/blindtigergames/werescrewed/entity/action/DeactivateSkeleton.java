@@ -19,8 +19,10 @@ public class DeactivateSkeleton implements IAction {
 		timesRun +=1;
 		if ( entity.getEntityType( ) == EntityType.SKELETON ){
 			Skeleton skeleton = (Skeleton)entity;
+			Gdx.app.log( "DeActivateSkeleton", "Attempting to deactivate skele"+timesRun );
 			if ( skeleton.body.isActive( ) ){
-				skeleton.setSkeletonActive(false);
+				skeleton.getRoot( ).setSkeletonActiveState( skeleton, false );
+				//skeleton.setSkeletonActive(false);
 			}
 			Gdx.app.log( "DeActivateSkeleton", skeleton.name+" is now deactivated." );
 		}else{

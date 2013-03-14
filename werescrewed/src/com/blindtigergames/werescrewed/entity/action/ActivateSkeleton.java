@@ -18,9 +18,7 @@ public class ActivateSkeleton implements IAction {
 		timesRun +=1;
 		if ( entity.getEntityType( ) == EntityType.SKELETON ){
 			Skeleton skeleton = (Skeleton)entity;
-			if ( !skeleton.body.isActive( ) ){
-				skeleton.setSkeletonActive(true);
-			}
+			skeleton.getRoot( ).setSkeletonActiveState( skeleton, true );
 			Gdx.app.log( "ActivateSkeleton", skeleton.name+" is now activated. "+timesRun );
 		}else{
 			Gdx.app.log( "ActivateSkeleton", ""+timesRun );

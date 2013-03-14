@@ -6,6 +6,8 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.controllers.PovDirection;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -23,12 +25,14 @@ import com.blindtigergames.werescrewed.camera.Anchor;
 import com.blindtigergames.werescrewed.camera.AnchorList;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityDef;
+import com.blindtigergames.werescrewed.entity.Sprite;
 import com.blindtigergames.werescrewed.entity.EntityType;
 import com.blindtigergames.werescrewed.entity.Sprite;
 import com.blindtigergames.werescrewed.entity.animator.PlayerAnimator;
 import com.blindtigergames.werescrewed.entity.mover.IMover;
 import com.blindtigergames.werescrewed.entity.mover.LerpMover;
 import com.blindtigergames.werescrewed.entity.mover.LinearAxis;
+import com.blindtigergames.werescrewed.graphics.TextureAtlas;
 import com.blindtigergames.werescrewed.input.MyControllerListener;
 import com.blindtigergames.werescrewed.input.PlayerInputHandler;
 import com.blindtigergames.werescrewed.screws.ResurrectScrew;
@@ -150,7 +154,8 @@ public class Player extends Entity {
 	 * </Ul>
 	 */
 	public enum PlayerState {
-		Standing, Running, Jumping, Falling, Screwing, JumpingOffScrew, Dead, GrabMode, HeadStand
+		Standing, Running, Jumping, Falling, Screwing, JumpingOffScrew, Dead, GrabMode, HeadStand,
+		Landing
 	}
 
 	public enum ConcurrentState {
@@ -202,24 +207,6 @@ public class Player extends Entity {
 
 		jumpSound = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 				+ "/common/sounds/jump.ogg" );
-
-		// TODO: pick which texture atlas to use based on the character
-		// The following will be fixed in another branch
-		// characterAtlas = WereScrewedGame.manager.get(
-		// "player_b_m_textureatlas.pack", TextureAtlas.class);
-		
-		//We can change these once blue and/or female sprites are ready.
-		String gP, cP;
-		if ( name.equals( "player1" ) ) {
-			gP = "_m";
-			cP = "_r";
-		} else {
-			gP = "_m";
-			cP = "_r";
-		}
-		characterAtlas = WereScrewedGame.manager.getTextureAtlas("player"+cP+gP);
-		if (characterAtlas != null)
-			sprite = new Sprite(characterAtlas, new PlayerAnimator(characterAtlas, this));
 	}
 
 	// PUBLIC METHODS
@@ -230,13 +217,13 @@ public class Player extends Entity {
 	public void update( float deltaTime ) {
 		super.update( deltaTime );
 
-		if ( name.equals( "player1" ) ) {
+		if ( name.equals( "player2" ) ) {
 			// int i = 0;
 			// for ( Fixture f : body.getFixtureList( ) ) {
 			// Gdx.app.log( "fixture" + i + " a sensor?", "" + f.isSensor( ) );
 			// i++;
 			// }
-			// Gdx.app.log( "player 1 state", "" + playerState );
+			//Gdx.app.log( "player 2 state", "" + playerState + " , " + playerDirection );
 			// if(contact != null)
 			// System.out.println("contact friction: " + contact.getFriction( )
 			// + "feet friction: " + feet.getFriction( ) );
@@ -251,10 +238,6 @@ public class Player extends Entity {
 			kinematicTransform = false;
 		}
 		if ( isDead ) {
-			// body.setLinearVelocity( Vector2.Zero );
-			// body.setFixedRotation( false );
-			// body.setAngularVelocity( 0.1f )
-			// TODO: death stuff
 			if ( playerState != PlayerState.Dead
 					&& playerState != PlayerState.GrabMode ) {
 				killPlayer( );
@@ -318,10 +301,6 @@ public class Player extends Entity {
 					sprite.setScale( sprite.getScaleX( )*-1, sprite.getScaleY( ) );	
 			}
 		}
-		if ( sprite.getScaleX( ) < 0 ) {
-			sprite.translateX( 120f );
-		}
-		sprite.translateY( -10f );
 		// switch between states
 		switch ( playerState ) {
 		case Dead:
@@ -635,11 +614,6 @@ public class Player extends Entity {
 			body.applyLinearImpulse( new Vector2( 0.0f, JUMP_IMPULSE ),
 					body.getWorldCenter( ) );
 		}
-
-		// TODO: add the jumping sprite here
-		// This will work... soon.
-		// sprite = new Sprite(characterAtlas, "jumping", jumpFrames, jumpSpeed,
-		// Animation.NORMAL);
 	}
 
 	/**
@@ -746,10 +720,14 @@ public class Player extends Entity {
 	 * slowly increases friction to avoid that silly stopping bug. Call this
 	 * every player.update()
 	 */
+	@SuppressWarnings( "unused" )
 	private void updateFootFriction( ) {
 
 		if ( isGrounded( ) ) {
 			if ( feet.getFriction( ) < PLAYER_FRICTION ) {
+				if ( playerState != PlayerState.Screwing ) {
+					playerState = PlayerState.Landing;
+				}
 				frictionCounter += FRICTION_INCREMENT;
 
 				CircleShape ps = new CircleShape( );
@@ -1168,15 +1146,15 @@ public class Player extends Entity {
 						}
 					}
 				}
-
 			}
 		}
 
 		if ( mover == null
-				&& currentScrew.body.getJointList( ).size( ) <= 1
+				&& currentScrew.body.getJointList( ).size( ) == 0
 				|| ( currentScrew.getScrewType( ) == ScrewType.SCREW_BOSS && currentScrew
 						.getDepth( ) == 0 ) ) {
 			removePlayerToScrew( );
+			Gdx.app.log( "this shouldn't happen", "if screw is still attachecd 1" );
 			// JUMP COMMENTED OUT BECAUSE IT ADDS JUMP TO METRICS WHEN
 			// PLAYER DOESN'T ACTUALLY HIT THE JUMP BUTTON
 			// jump( );
@@ -1763,6 +1741,7 @@ public class Player extends Entity {
 	 * @param value
 	 *            boolean
 	 */
+
 	public void setSteamCollide( boolean value ) {
 		steamCollide = value;
 	}
@@ -1793,11 +1772,6 @@ public class Player extends Entity {
 			rightCrush = value;
 		else if ( fixture == leftSensor )
 			leftCrush = value;
-		 //Gdx.app.log("\nright: ", "" + rightCrush);
-		 //Gdx.app.log("left: ", "" + leftCrush);
-		 //Gdx.app.log("top: ", "" + topCrush);
-		 //Gdx.app.log("bottom: ", "" + botCrush);
-		 
 	}
 
 	/**

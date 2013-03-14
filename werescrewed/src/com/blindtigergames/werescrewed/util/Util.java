@@ -44,7 +44,7 @@ public class Util {
 	/**
 	 * Size outside of a skeleton that turns it on / off
 	 */
-	public static final float SKELETON_ACTIVE_BORDER = 6f;
+	public static final float SKELETON_ACTIVE_BORDER = 2000f;//in pixels
 	
 	/**
 	 * PointOnCircle()

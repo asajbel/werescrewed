@@ -46,7 +46,6 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.badlogic.gdx.utils.ObjectMap;
-
 /**
  * Loads images from texture atlases created by TexturePacker.<br>
  * <br>

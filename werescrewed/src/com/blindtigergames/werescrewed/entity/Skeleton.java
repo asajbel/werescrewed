@@ -90,7 +90,6 @@ public class Skeleton extends Platform {
 		new RevoluteJointBuilder( world ).skeleton( this ).bodyB( platform )
 				.build( );
 		addDynamicPlatform( platform );
-
 	}
 
 	/**
@@ -178,6 +177,7 @@ public class Skeleton extends Platform {
 			platform.name = getUniqueName(platform.name);
 		}
 		dynamicPlatformMap.put( platform.name, platform );
+		platform.setParentSkeleton( this );
 	}
 
 	/**
@@ -193,6 +193,7 @@ public class Skeleton extends Platform {
 			platform.name = getUniqueName(platform.name);
 		}
 		kinematicPlatformMap.put( platform.name, platform );
+		platform.setParentSkeleton( this );
 	}
 
 	/**
@@ -220,6 +221,7 @@ public class Skeleton extends Platform {
     public void addSkeleton( Skeleton skeleton ) {
         //this.childSkeletons.add( skeleton );
     	childSkeletonMap.put( skeleton.name, skeleton );
+    	skeleton.setParentSkeleton( this );
     }
     
     /**
@@ -263,13 +265,15 @@ public class Skeleton extends Platform {
 
 	/**
 	 * Sets this skeleton & all associated entity's active state to isActive
+	 * Don't use this, instead add all of the entity to root skeleton list
 	 * 
 	 * @param isActive
 	 * @author stew
 	 */
 	public void setSkeletonActive( boolean isActive ) {
-		body.setActive( isActive );
-		setActive( true );
+		if ( body.isActive( ) != isActive )
+			body.setActive( isActive );
+		setActive( isActive );
 		for ( Platform platform : dynamicPlatformMap.values( ) ) {
 			platform.body.setActive( isActive );
 			platform.setActive( isActive );
@@ -287,6 +291,16 @@ public class Skeleton extends Platform {
 		//}
 		/* TODO: add ropes */
 	}
+//	
+//	public ArrayList< Entity > getAllEntity(){ 
+//		ArrayList< Entity > entities = new ArrayList< Entity >( );
+//		for ( Platform platform : dynamicPlatformMap.values( ) ) {
+//			entities.add( platform );
+//		}
+//		for ( Platform platform : kinematicPlatformMap.values( ) ) {
+//			entities.add( platform );
+//		}
+//	}
 
 	/**
 	 * translate the skeletons with specified values
@@ -317,6 +331,16 @@ public class Skeleton extends Platform {
 		setSkeletonAwakeRec( true );
 	}
 
+	/**
+	 * finds the skeleton with this name
+	 */
+	public Skeleton getSubSkeletonByName( String name ) {
+		if ( childSkeletonMap.containsKey( name ) ) {
+			return childSkeletonMap.get( name );
+		}
+		return null;
+	}
+	
 	/**
 	 * This update function is ONLY called on the very root skeleton, it takes
 	 * care of the child sksletons
@@ -537,6 +561,15 @@ public class Skeleton extends Platform {
 	
 	private String getUniqueName(String nonUniqueName){
 		return nonUniqueName+"-NON-UNIQUE-NAME_"+entityCount;
+	}
+	
+	public RootSkeleton getRoot(){
+		if ( getParentSkeleton().entityType == EntityType.ROOTSKELETON ){
+			return ( RootSkeleton ) getParentSkeleton();
+		}else{
+			return getParentSkeleton().getRoot( );
+		}
+		
 	}
 
 }

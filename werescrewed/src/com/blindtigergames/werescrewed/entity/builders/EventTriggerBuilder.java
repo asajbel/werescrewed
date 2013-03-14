@@ -8,6 +8,7 @@ import com.badlogic.gdx.utils.Array;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.action.IAction;
 import com.blindtigergames.werescrewed.eventTrigger.EventTrigger;
+import com.blindtigergames.werescrewed.util.Util;
 
 public class EventTriggerBuilder extends
 		GenericEntityBuilder< EventTriggerBuilder > {
@@ -26,6 +27,7 @@ public class EventTriggerBuilder extends
 	private boolean repeatableAction;
 	private boolean twoPlayersToActivate;
 	private boolean twoPlayersToDeactive;
+	private Array<Vector2> verts;
 	private IAction beginAction;
 	private IAction endAction;
 	private ArrayList< Entity > entitiesToAdd;
@@ -37,6 +39,7 @@ public class EventTriggerBuilder extends
 		reset( );
 		super.world( world );
 		entitiesToAdd = new ArrayList< Entity >( );
+		
 	}
 
 	@Override
@@ -61,6 +64,7 @@ public class EventTriggerBuilder extends
 		this.offsetLeft = false;
 		this.attachedToEntity = false;
 		this.actOnEntity = false;
+		this.verts = null;
 		this.skeleVertsPix = null;
 		return this;
 	}
@@ -102,6 +106,11 @@ public class EventTriggerBuilder extends
 		return this;
 	}
 
+	public EventTriggerBuilder setVerts( Array<Vector2> vertices ) {
+		this.verts = vertices;
+		return this;
+	}
+	
 	public EventTriggerBuilder setPositionToEntity( Entity entity ) {
 		this.attachedToEntity = true;
 		this.pos = entity.getPositionPixel( );
@@ -168,6 +177,8 @@ public class EventTriggerBuilder extends
 
 		if ( this.circle ) {
 			if ( this.attachedToEntity ) {
+				
+				// depreciated 
 				if ( offsetAbove ) {
 					this.pos = new Vector2( this.pos.x, this.pos.y );
 				} else if ( offsetBelow ) {
@@ -194,6 +205,8 @@ public class EventTriggerBuilder extends
 			et.contructRectangleBody( this.height, this.width, this.pos );
 		}else if ( this.skelePolygon ){
 			et.constructSkeletonPolygonBody( skeleVertsPix, this.pos );
+		}else{
+			et.constructVertBody( verts, pos );
 		}
 
 		et.setRepeatable( this.repeatableAction );

@@ -60,7 +60,7 @@ public class Spikes extends Hazard {
 	public Spikes( String name, Vector2 pos, float height, float width,
 			World world, boolean isActive, boolean invert, boolean horizontal ) {
 		super( name, pos, ( Texture ) WereScrewedGame.manager
-				.get( WereScrewedGame.dirHandle + "/common/spikes.png" ),
+				.get( WereScrewedGame.dirHandle + "/common/spikes_01.png" ),
 				world, isActive );
 		entityType = EntityType.HAZARD;
 		
@@ -146,7 +146,7 @@ public class Spikes extends Hazard {
 		float offset_x, offset_y;
 		
 		Sprite temp = constructSprite( ( Texture ) WereScrewedGame.manager
-				.get( WereScrewedGame.dirHandle + "/common/spikes.png" ) );
+				.get( WereScrewedGame.dirHandle + "/common/spikes_01.png" ) );
 		for ( int i = 0; i < width; i++ ) {
 			offset_x = ( i - width / 2 + 1 ) * tileConstant;
 			for ( int j = 0; j < height; j++ ) {
