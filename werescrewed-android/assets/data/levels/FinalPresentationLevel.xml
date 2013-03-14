@@ -300,8 +300,8 @@
                 </Item>
                 <Item xsi:type="TextureItem" Name="playerOne" Visible="true">
                     <Position>
-                        <X>2240</X>
-                        <Y>-4416</Y>
+                        <X>272</X>
+                        <Y>-32</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -331,8 +331,8 @@
                 </Item>
                 <Item xsi:type="TextureItem" Name="playerTwo" Visible="true">
                     <Position>
-                        <X>2368</X>
-                        <Y>-4416</Y>
+                        <X>400</X>
+                        <Y>-32</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -2946,8 +2946,8 @@
         <NextItemNumber>138</NextItemNumber>
         <ContentRootFolder>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures</ContentRootFolder>
         <CameraPosition>
-            <X>2798.67383</X>
-            <Y>-2959.66919</Y>
+            <X>1365.336</X>
+            <Y>-234.656</Y>
         </CameraPosition>
         <Version>1.3.0.0</Version>
     </EditorRelated>
