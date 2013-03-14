@@ -80,7 +80,6 @@ public class SimpleFrameAnimator implements IAnimator {
 	public void update( float dT ) {
 		incrementTime(dT);
 		frame = (int)Math.floor( time * frames);
-		Gdx.app.log( "SimpleFrameAnimator", "Time: "+time+" Frame: "+frame );
 	}
 
 	@Override
