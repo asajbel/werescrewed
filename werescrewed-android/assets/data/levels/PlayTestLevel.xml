@@ -192,6 +192,89 @@
                         <PackedValue>2445279424</PackedValue>
                     </LineColor>
                 </Item>
+                <Item xsi:type="PathItem" Name="skeleton3" Visible="true">
+                    <Position>
+                        <X>2032</X>
+                        <Y>-592</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>skeleton</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>RootSkeleton</string>
+                        </Property>
+                    </CustomProperties>
+                    <LocalPoints>
+                        <Vector2>
+                            <X>0</X>
+                            <Y>0</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>-368</X>
+                            <Y>144</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>352</X>
+                            <Y>176</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>416</X>
+                            <Y>-272</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>48</X>
+                            <Y>-432</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>-384</X>
+                            <Y>-240</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>-368</X>
+                            <Y>144</Y>
+                        </Vector2>
+                    </LocalPoints>
+                    <WorldPoints>
+                        <Vector2>
+                            <X>2032</X>
+                            <Y>-592</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>1664</X>
+                            <Y>-448</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>2384</X>
+                            <Y>-416</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>2448</X>
+                            <Y>-864</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>2080</X>
+                            <Y>-1024</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>1648</X>
+                            <Y>-832</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>1664</X>
+                            <Y>-448</Y>
+                        </Vector2>
+                    </WorldPoints>
+                    <IsPolygon>false</IsPolygon>
+                    <LineWidth>4</LineWidth>
+                    <LineColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </LineColor>
+                </Item>
                 <Item xsi:type="TextureItem" Name="cameraPosition" Visible="true">
                     <Position>
                         <X>112</X>
@@ -226,7 +309,7 @@
                 <Item xsi:type="TextureItem" Name="playerOne" Visible="true">
                     <Position>
                         <X>448</X>
-                        <Y>0</Y>
+                        <Y>-48</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -257,7 +340,7 @@
                 <Item xsi:type="TextureItem" Name="playerTwo" Visible="true">
                     <Position>
                         <X>576</X>
-                        <Y>0</Y>
+                        <Y>-48</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -310,8 +393,8 @@
                 </Item>
                 <Item xsi:type="RectangleItem" Name="plat1" Visible="true">
                     <Position>
-                        <X>3184</X>
-                        <Y>-416</Y>
+                        <X>2832</X>
+                        <Y>16</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -327,8 +410,8 @@
                             <string />
                         </Property>
                     </CustomProperties>
-                    <Width>300</Width>
-                    <Height>55</Height>
+                    <Width>460</Width>
+                    <Height>39</Height>
                     <FillColor>
                         <R>192</R>
                         <G>0</G>
@@ -436,8 +519,8 @@
                 </Item>
                 <Item xsi:type="TextureItem" Name="structure1" Visible="true">
                     <Position>
-                        <X>3216</X>
-                        <Y>-384</Y>
+                        <X>2864</X>
+                        <Y>32</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -476,8 +559,8 @@
                 </Item>
                 <Item xsi:type="TextureItem" Name="strucutre2" Visible="true">
                     <Position>
-                        <X>3472</X>
-                        <Y>-384</Y>
+                        <X>3264</X>
+                        <Y>32</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -1105,7 +1188,7 @@
                             <string>plat4</string>
                         </Property>
                         <Property Name="mover" Type="string" Description="">
-                            <string>rotatetween</string>
+                            <string>lerpmover</string>
                         </Property>
                     </CustomProperties>
                     <Rotation>0</Rotation>
@@ -1197,99 +1280,6 @@
                         <Y>64</Y>
                     </Origin>
                 </Item>
-                <Item xsi:type="PathItem" Name="pathskeleton2" Visible="true">
-                    <Position>
-                        <X>3744</X>
-                        <Y>-144</Y>
-                    </Position>
-                    <CustomProperties>
-                        <Property Name="Definition" Type="string" Description="">
-                            <string>pathmover</string>
-                        </Property>
-                        <Property Name="point1time" Type="string" Description="">
-                            <string>3f</string>
-                        </Property>
-                        <Property Name="point2time" Type="string" Description="">
-                            <string>3f</string>
-                        </Property>
-                        <Property Name="point3time" Type="string" Description="">
-                            <string>3f</string>
-                        </Property>
-                        <Property Name="point4time" Type="string" Description="">
-                            <string>3f</string>
-                        </Property>
-                        <Property Name="point5time" Type="string" Description="">
-                            <string>3f</string>
-                        </Property>
-                        <Property Name="delay" Type="string" Description="">
-                            <string>1f</string>
-                        </Property>
-                        <Property Name="applyto" Type="string" Description="">
-                            <string>skeleton2</string>
-                        </Property>
-                    </CustomProperties>
-                    <LocalPoints>
-                        <Vector2>
-                            <X>0</X>
-                            <Y>0</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>1120</X>
-                            <Y>-32</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>656</X>
-                            <Y>-592</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>-800</X>
-                            <Y>-512</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>-800</X>
-                            <Y>32</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>0</X>
-                            <Y>0</Y>
-                        </Vector2>
-                    </LocalPoints>
-                    <WorldPoints>
-                        <Vector2>
-                            <X>3744</X>
-                            <Y>-144</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>4864</X>
-                            <Y>-176</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>4400</X>
-                            <Y>-736</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>2944</X>
-                            <Y>-656</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>2944</X>
-                            <Y>-112</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>3744</X>
-                            <Y>-144</Y>
-                        </Vector2>
-                    </WorldPoints>
-                    <IsPolygon>false</IsPolygon>
-                    <LineWidth>4</LineWidth>
-                    <LineColor>
-                        <R>192</R>
-                        <G>0</G>
-                        <B>192</B>
-                        <A>145</A>
-                        <PackedValue>2445279424</PackedValue>
-                    </LineColor>
-                </Item>
                 <Item xsi:type="PathItem" Name="et1" Visible="true">
                     <Position>
                         <X>1184</X>
@@ -1374,6 +1364,75 @@
                         <PackedValue>2445279424</PackedValue>
                     </LineColor>
                 </Item>
+                <Item xsi:type="RectangleItem" Name="Rectangle_0048" Visible="true">
+                    <Position>
+                        <X>1952</X>
+                        <Y>-528</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>tiledPlatform</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>skeleton3</string>
+                        </Property>
+                    </CustomProperties>
+                    <Width>380</Width>
+                    <Height>39</Height>
+                    <FillColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </FillColor>
+                </Item>
+                <Item xsi:type="RectangleItem" Name="Rectangle_0049" Visible="true">
+                    <Position>
+                        <X>1952</X>
+                        <Y>-640</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>tiledPlatform</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>skeleton3</string>
+                        </Property>
+                    </CustomProperties>
+                    <Width>44</Width>
+                    <Height>119</Height>
+                    <FillColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </FillColor>
+                </Item>
+                <Item xsi:type="RectangleItem" Name="Rectangle_0051" Visible="true">
+                    <Position>
+                        <X>1952</X>
+                        <Y>-672</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>tiledPlatform</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>skeleton3</string>
+                        </Property>
+                    </CustomProperties>
+                    <Width>380</Width>
+                    <Height>39</Height>
+                    <FillColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </FillColor>
+                </Item>
             </Items>
             <ScrollSpeed>
                 <X>1</X>
@@ -1383,11 +1442,11 @@
     </Layers>
     <CustomProperties />
     <EditorRelated>
-        <NextItemNumber>44</NextItemNumber>
+        <NextItemNumber>51</NextItemNumber>
         <ContentRootFolder>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures</ContentRootFolder>
         <CameraPosition>
-            <X>1149.98718</X>
-            <Y>-50.00035</Y>
+            <X>1958.33093</X>
+            <Y>-566.668457</Y>
         </CameraPosition>
         <Version>1.3.0.0</Version>
     </EditorRelated>

@@ -14,6 +14,7 @@ import com.blindtigergames.werescrewed.entity.mover.LerpMover;
 import com.blindtigergames.werescrewed.entity.mover.LinearAxis;
 import com.blindtigergames.werescrewed.entity.mover.PuzzleType;
 import com.blindtigergames.werescrewed.entity.mover.RockingMover;
+import com.blindtigergames.werescrewed.entity.mover.RotateTweenMover;
 import com.blindtigergames.werescrewed.entity.mover.puzzle.PuzzleRotateTweenMover;
 import com.blindtigergames.werescrewed.entity.tween.PathBuilder;
 import com.blindtigergames.werescrewed.eventTrigger.EventTrigger;
@@ -34,9 +35,17 @@ public class GleedTestScreen extends Screen {
 		music = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 				+ "/common/sounds/TrainJob.mp3" );
 
-//		EventTrigger et = (EventTrigger) LevelFactory.entities.get( "et1" );
-//		
-//		System.out.println( et.name );
+		Skeleton skel = (Skeleton) LevelFactory.entities.get( "skeleton3" );
+		
+//		PathBuilder pb = new PathBuilder( );
+//		skel.addMover( pb.begin( skel ).target( 0, 150, 3 ).target( 0, 0, 3 )
+//				.build( ), RobotState.IDLE );
+
+		skel.addMover( new RotateTweenMover( skel, 10f,
+				Util.PI, 2f, true ),
+				RobotState.IDLE );
+		
+		System.out.println( skel.name );
 	}
 	
 	@Override
