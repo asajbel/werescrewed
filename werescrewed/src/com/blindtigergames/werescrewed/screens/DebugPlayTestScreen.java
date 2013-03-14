@@ -122,10 +122,10 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		// Initialize players
 		player1 = new PlayerBuilder( ).name( "player1" ).world( world )
 
-				.position( 175 * TILE, 96 * TILE ).buildPlayer( );
+				.position( 1 * TILE, 10 * TILE ).buildPlayer( );
 
 		player2 = new PlayerBuilder( ).name( "player2" ).world( world )
-				.position( 175 * TILE, 96 * TILE ).buildPlayer( );
+				.position( 1 * TILE, 10 * TILE ).buildPlayer( );
 
 
 
@@ -378,8 +378,8 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 				.oneSided( false ).restitution( 0 ).buildTilePlatform( );
 		skel1.addKinematicPlatform( plat );
 		// gate platform
-		plat = platBuilder.position( 1500, 700 ).name( "armstop" )
-				.dimensions( 1, 32 ).texture( testTexture ).kinematic( )
+		plat = platBuilder.position( 1470, 700 ).name( "armstop" )
+				.dimensions( 5, 32 ).texture( testTexture ).kinematic( )
 				.oneSided( false ).restitution( 0 ).buildTilePlatform( );
 		pscrewtop.puzzleManager.addEntity( plat );
 		pscrewtop.puzzleManager.addMover( new LerpMover( plat
