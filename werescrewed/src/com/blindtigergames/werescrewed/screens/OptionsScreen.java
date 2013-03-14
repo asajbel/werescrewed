@@ -11,8 +11,8 @@ import com.blindtigergames.werescrewed.gui.Button;
 import com.blindtigergames.werescrewed.gui.Label;
 import com.blindtigergames.werescrewed.screens.ScreenSwitchHandler;
 
-class OptionsScreen implements com.badlogic.gdx.Screen{
-
+class OptionsScreen extends Screen{
+//implements com.badlogic.gdx.Screen
 	private SpriteBatch batch = null;
 	private BitmapFont font = null;
 	private BitmapFont fancyFont = null;
@@ -77,6 +77,7 @@ class OptionsScreen implements com.badlogic.gdx.Screen{
 
 	@Override
 	public void render( float delta ) {
+		super.render( delta );
 		Gdx.gl.glClearColor( 0.1f, 0.1f, 0.1f, 1f );
 		Gdx.gl.glClear( GL10.GL_COLOR_BUFFER_BIT );
 		// TODO Auto-generated method stub
@@ -88,6 +89,7 @@ class OptionsScreen implements com.badlogic.gdx.Screen{
 		sound.draw( batch );
 		voice.draw( batch );
 		subtitles.draw( batch );
+		creditsButton.draw(batch, camera);
 		backButton.draw( batch, camera );
 		batch.end( );
 
@@ -112,6 +114,8 @@ class OptionsScreen implements com.badlogic.gdx.Screen{
 		voice.setY( centerY - lineHeight  );
 		subtitles.setX( centerX - subtitles.getWidth( )/2);
 		subtitles.setY( centerY - 2 * lineHeight  );
+		creditsButton.setX( centerX - subtitles.getWidth( )/2);
+		creditsButton.setY( centerY - 3 * lineHeight  );
 		backButton.setX( centerX - backButton.getWidth( ) / 2 );
 		backButton.setY( 20 + backButton.getHeight( ) );
 		

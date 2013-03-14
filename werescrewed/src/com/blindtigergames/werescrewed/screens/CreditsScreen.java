@@ -44,6 +44,7 @@ class CreditsScreen  extends Screen {
 
 	@Override
 	public void render( float delta ) {
+		super.render( delta );
 		Gdx.gl.glClearColor( 0.5f, 0.5f, 0.5f, 1f );
 		Gdx.gl.glClear( GL10.GL_COLOR_BUFFER_BIT );
 		batch.begin( );

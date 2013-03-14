@@ -88,6 +88,7 @@ public class LevelSelectScreen implements com.badlogic.gdx.Screen {
 		// TODO Auto-generated method stub
 		batch.begin( );
 		batch.draw(logo, 0, 0);
+		//batch.draw(logo, -128, 0);
 		screenLabel.draw( batch );
 		playButton.draw( batch, camera );
 		gleedButton.draw( batch, camera );

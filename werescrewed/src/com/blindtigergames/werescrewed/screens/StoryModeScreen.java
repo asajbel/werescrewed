@@ -70,6 +70,7 @@ public class StoryModeScreen implements com.badlogic.gdx.Screen {
 		// TODO Auto-generated method stub
 		batch.begin( );
 		batch.draw(logo, 0, 0);
+		//batch.draw(logo, -128, 0);
 		screenLabel.draw( batch );
 		newGameButton.draw( batch, camera );
 		loadGameButton.draw( batch, camera );

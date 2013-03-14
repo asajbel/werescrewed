@@ -61,6 +61,7 @@ class MainMenuScreen implements com.badlogic.gdx.Screen {
 		Gdx.gl.glClear( GL10.GL_COLOR_BUFFER_BIT );
 		batch.begin( );
 		batch.draw(logo, 0, 0);
+		//batch.draw(logo, -128, 0);
 		//headingLabel.draw( batch );
 		storyButton.draw( batch, camera );
 		levelSelectButton.draw( batch, camera );
@@ -89,6 +90,7 @@ class MainMenuScreen implements com.badlogic.gdx.Screen {
 		batch.setProjectionMatrix( camera.combined );
 		int centerX = width / 2;
 		int centerY = height / 2;
+		
 		headingLabel.setX( centerX - headingLabel.getWidth( ) / 2 );
 		headingLabel.setY( centerY + 7 * lineHeight );
 		storyButton.setX( centerX  - storyButton.getWidth( )/2);
