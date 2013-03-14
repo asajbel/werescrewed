@@ -1,6 +1,6 @@
 <entity>
    	<category>TiledPlatform</category>
-	<tileset>TilesetTest</tileset>
+	<atlas>TilesetTest</atlas>
 	<initialAnim>default</initialAnim>
 	<originX>0.0f</originX>
 	<originY>0.0f</originY>

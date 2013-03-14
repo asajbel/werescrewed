@@ -278,7 +278,10 @@ public class LevelFactory {
 			constructCheckpoint(item);
 		} else if (bluePrints.equals( "eventtrigger" )){
 			contstructEventTrigger(item);
-		}else if (item.getDefinition().getCategory( ) == EntityCategory.COMPLEX_PLATFORM ){
+		} else if (bluePrints.equals( "hazard" )){
+			constructHazard(item);
+		}
+		else if (item.getDefinition().getCategory( ) == EntityCategory.COMPLEX_PLATFORM ){
 			loadComplexPlatform(item);
 		}
 		
@@ -406,6 +409,22 @@ public class LevelFactory {
 			
 			Skeleton skeleton = skeleBuilder.build( );
 
+//			IMover mover = null;
+//			if(item.props.containsKey( "mover" )){
+//				String movername = item.props.get( "mover" );
+//				if (MoverType.fromString( movername ) != null){
+//					mover = new MoverBuilder()
+//					.fromString(movername)
+//					.applyTo( skeleton )
+//					.build( );
+//					Gdx.app.log("LevelFactory", "attaching :" + movername + " to skeleton");
+//					
+////					ROTATETWEEN("rotatetween"),
+////					LERP("lerpmover")
+//				}
+//			}
+//			
+//			skeleton.addMover(  mover, RobotState.IDLE );
 			skeletons.put( item.name, skeleton );
 			entities.put(  item.name, skeleton );
 			if(item.props.containsKey( "attachtoskeleton" )){
@@ -492,6 +511,24 @@ public class LevelFactory {
 
 		entities.put( item.name, out);
 		out.setCrushing( isCrushable );
+		
+		IMover mover = null;
+		if(item.props.containsKey( "mover" )){
+			String movername = item.props.get( "mover" );
+			if (MoverType.fromString( movername ) != null){
+				mover = new MoverBuilder()
+				.fromString(movername)
+				.applyTo( out )
+				.build( );
+				Gdx.app.log("LevelFactory", "attaching :" + movername + " to platform");
+				
+//				ROTATETWEEN("rotatetween"),
+//				LERP("lerpmover")
+			}
+		}
+		
+		out.addMover(  mover, RobotState.IDLE );
+		
 		
 		Skeleton parent = loadSkeleton(item.skeleton);
 		
@@ -622,8 +659,12 @@ public class LevelFactory {
 					if (MoverType.fromString( movername ) != null){
 						mover = new MoverBuilder()
 						.fromString(movername)
+						.applyTo( attach )
 						.build( );
 						Gdx.app.log("LevelFactory", "attaching :" + movername + " to puzzle screw");
+						
+//						ROTATETWEEN("rotatetween"),
+//						LERP("lerpmover")
 					}
 				}
 				
@@ -861,6 +902,14 @@ public class LevelFactory {
 		return pathPoints;
 		
 	}
+	
+	public void constructHazard( Item item ){
+		String skelAttach = item.skeleton;
+		Skeleton parent = loadSkeleton(skelAttach);
+		
+		
+	}
+	
 	public Screw loadScrew(Item item){
 		;
 		ScrewType sType = ScrewType.fromString( item.defName );

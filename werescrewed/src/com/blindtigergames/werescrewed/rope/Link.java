@@ -85,4 +85,5 @@ public class Link extends Entity {
 		
 		this.sprite.draw( batch );
 	}
+	
 }

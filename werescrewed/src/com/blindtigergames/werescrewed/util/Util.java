@@ -42,6 +42,11 @@ public class Util {
 	public static final short CATEGORY_EVERYTHING = -1;
 	
 	/**
+	 * Size outside of a skeleton that turns it on / off
+	 */
+	public static final float SKELETON_ACTIVE_BORDER = 2000f;//in pixels
+	
+	/**
 	 * PointOnCircle()
 	 * @author stew
 	 * @param radius
