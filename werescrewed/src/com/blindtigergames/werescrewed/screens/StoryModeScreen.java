@@ -65,7 +65,7 @@ public class StoryModeScreen implements com.badlogic.gdx.Screen {
 	@Override
 	public void render( float delta ) {
 		// TODO Auto-generated method stub
-		Gdx.gl.glClearColor( 0.1f, 0.1f, 0.1f, 1f );
+		Gdx.gl.glClearColor( 0.0f, 0.0f, 0.0f, 1f );
 		Gdx.gl.glClear( GL10.GL_COLOR_BUFFER_BIT );
 		// TODO Auto-generated method stub
 		batch.begin( );
