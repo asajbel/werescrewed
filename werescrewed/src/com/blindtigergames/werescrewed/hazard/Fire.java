@@ -47,17 +47,17 @@ public class Fire extends Hazard {
 		FixtureDef steamFixtureDef = new FixtureDef( );
 		EdgeShape polygon = new EdgeShape( );
 		polygon.set( ( 0 ) * Util.PIXEL_TO_BOX, ( 0 ) * Util.PIXEL_TO_BOX, 
-				( width * 2 ) * Util.PIXEL_TO_BOX, ( height * 2 ) * Util.PIXEL_TO_BOX );
+				( width ) * Util.PIXEL_TO_BOX, ( height ) * Util.PIXEL_TO_BOX );
 		steamFixtureDef.shape = polygon;
 		steamFixtureDef.isSensor = true;
 		body.createFixture( steamFixtureDef );
 		polygon.set( ( 0 ) * Util.PIXEL_TO_BOX, ( 0 ) * Util.PIXEL_TO_BOX, 
-				( width * -2 ) * Util.PIXEL_TO_BOX, ( height * 2 ) * Util.PIXEL_TO_BOX );
+				( width * -1 ) * Util.PIXEL_TO_BOX, ( height ) * Util.PIXEL_TO_BOX );
 		steamFixtureDef.shape = polygon;
 		steamFixtureDef.isSensor = true;
 		body.createFixture( steamFixtureDef );
-		polygon.set( ( width * 2 ) * Util.PIXEL_TO_BOX, ( height * 2 ) * Util.PIXEL_TO_BOX, 
-				( width * -2 ) * Util.PIXEL_TO_BOX, ( height * 2 ) * Util.PIXEL_TO_BOX );
+		polygon.set( ( width ) * Util.PIXEL_TO_BOX, ( height ) * Util.PIXEL_TO_BOX, 
+				( width * -1 ) * Util.PIXEL_TO_BOX, ( height ) * Util.PIXEL_TO_BOX );
 		steamFixtureDef.shape = polygon;
 		steamFixtureDef.isSensor = true;
 		body.createFixture( steamFixtureDef );
