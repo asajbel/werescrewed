@@ -49,6 +49,8 @@ public class Platform extends Entity {
 	protected float localAngularVelocity; //
 	protected Vector2 originPosition; // world position that this platform spawns
 									// at, in pixels
+	
+	private Skeleton parentSkeleton; //pointer to parent skele
 
 	// ============================================
 	// Constructors
@@ -356,6 +358,14 @@ public class Platform extends Entity {
 	public void setCrushing( boolean value ) {
 		crushing = value;
 		oneSided = false;
+	}
+
+	public Skeleton getParentSkeleton( ) {
+		return parentSkeleton;
+	}
+
+	public void setParentSkeleton( Skeleton parentSkeleton ) {
+		this.parentSkeleton = parentSkeleton;
 	}
 	
 }

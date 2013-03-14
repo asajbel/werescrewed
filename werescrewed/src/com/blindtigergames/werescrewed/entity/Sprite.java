@@ -27,7 +27,7 @@ public class Sprite extends com.badlogic.gdx.graphics.g2d.Sprite implements I_Dr
 	protected static final int SPRITE_SIZE = 4 * VERTEX_SIZE;
 
 	//Set this to whatever global constant we eventually use.
-	protected static final float FPS = 60.0f;
+	protected static final float FPS = 30.0f;
 	
 	TextureAtlas atlas;
 	IAnimator animator;
@@ -122,11 +122,8 @@ public class Sprite extends com.badlogic.gdx.graphics.g2d.Sprite implements I_Dr
 	 * @author Nick Patti
 	 * 
 	 * @return void
-	 * 
-	 * TODO: currently does not do anything. fix this method
 	 */
 	public void reset( ) {
-		// TODO: find a way to have stateTime count from zero and up again.
 		Gdx.app.log( "AnimatedSprite.reset()", "reset called" );
 		animator.reset();
 	}
@@ -134,26 +131,4 @@ public class Sprite extends com.badlogic.gdx.graphics.g2d.Sprite implements I_Dr
 	public void setPosition( Vector2 pos ) {
 		super.setPosition(pos.x, pos.y);
 	}
-
-	/**
-	 * toString A handy util method which displays the name of the sprite that
-	 * is animating
-	 * 
-	 * public String toString(){ return animation.toString(); }
-	 */
 }
-
-/**** Below is code that is not completed yet *****/
-/**
- * TODO: Finish this constructor! A constructor which mimics the animation
- * class. TextureRegions, such as sprite sheet's n' stuff, go in here.
- * 
- * @param frameDuration
- * @param keyFrames
- */
-
-/**           public AnimatedSprite(float frameDuration, TextureRegion
- *            keyFrames){ this.animation = new Animation(frameDuration,
- *            keyFrames); }
- * 
- */

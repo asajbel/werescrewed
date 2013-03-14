@@ -17,18 +17,16 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJoint;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
-import com.blindtigergames.werescrewed.graphics.TextureAtlas;
 import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.camera.Anchor;
 import com.blindtigergames.werescrewed.camera.AnchorList;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityDef;
 import com.blindtigergames.werescrewed.entity.EntityType;
-import com.blindtigergames.werescrewed.entity.Sprite;
-import com.blindtigergames.werescrewed.entity.animator.PlayerAnimator;
 import com.blindtigergames.werescrewed.entity.mover.IMover;
 import com.blindtigergames.werescrewed.entity.mover.LerpMover;
 import com.blindtigergames.werescrewed.entity.mover.LinearAxis;
+import com.blindtigergames.werescrewed.graphics.TextureAtlas;
 import com.blindtigergames.werescrewed.input.MyControllerListener;
 import com.blindtigergames.werescrewed.input.PlayerInputHandler;
 import com.blindtigergames.werescrewed.screws.ResurrectScrew;
@@ -53,6 +51,7 @@ public class Player extends Entity {
 	public final static float JUMP_SCREW_IMPULSE = JUMP_IMPULSE * 5 / 4;
 	public final static float JUMP_SLOW_SPEED = 0.002f;
 	public final static int JUMP_COUNTER = 10;
+	public final static int RUN_COUNTER = 7;
 	public final static float ANALOG_DEADZONE = 0.2f;
 	public final static float ANALOG_MAX_RANGE = 1.0f;
 	public final static float PLAYER_FRICTION = 0.7f;
@@ -62,6 +61,7 @@ public class Player extends Entity {
 	public final static int GRAB_COUNTER_STEPS = 5;
 	public final static Vector2 ANCHOR_BUFFER_SIZE = new Vector2( 200f, 128f );
 	public final static float STEAM_FORCE = .5f;
+	public final static float STEAM_IMPULSE = 0.20f;
 	public final static float FRICTION_INCREMENT = 0.3f;
 	public final static float FEET_OFFSET_X = 58f * Util.PIXEL_TO_BOX;
 	public final static float FEET_OFFSET_Y = 20f * Util.PIXEL_TO_BOX;
@@ -109,6 +109,7 @@ public class Player extends Entity {
 	private boolean hitSolidObject;
 	private int screwJumpTimeout = 0;
 	private int headStandTimeout = 0;
+	private int runTimeout = 0;
 	private boolean grounded;
 	private boolean jumpPressedKeyboard;
 	private boolean jumpPressedController;
@@ -150,14 +151,13 @@ public class Player extends Entity {
 	 * </Ul>
 	 */
 	public enum PlayerState {
-		Standing, Running, Jumping, Falling, Screwing, JumpingOffScrew, Dead, GrabMode, HeadStand,
-		Landing
+		Standing, Running, Jumping, Falling, Screwing, JumpingOffScrew, Dead, GrabMode, HeadStand, Landing
 	}
 
 	public enum ConcurrentState {
 		Ignore, HeadStandJumping, HeadStandFalling
 	}
-	
+
 	// enum to handle different states of movement
 	public enum PlayerDirection {
 		Idle, Left, Right
@@ -203,24 +203,6 @@ public class Player extends Entity {
 
 		jumpSound = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 				+ "/common/sounds/jump.ogg" );
-
-		// TODO: pick which texture atlas to use based on the character
-		// The following will be fixed in another branch
-		// characterAtlas = WereScrewedGame.manager.get(
-		// "player_b_m_textureatlas.pack", TextureAtlas.class);
-		
-		//We can change these once blue and/or female sprites are ready.
-		String gP, cP;
-		if ( name.equals( "player1" ) ) {
-			gP = "_m";
-			cP = "_r";
-		} else {
-			gP = "_m";
-			cP = "_r";
-		}
-		characterAtlas = WereScrewedGame.manager.getTextureAtlas("player"+cP+gP);
-		if (characterAtlas != null)
-			sprite = new Sprite(characterAtlas, new PlayerAnimator(characterAtlas, this));
 	}
 
 	// PUBLIC METHODS
@@ -231,13 +213,14 @@ public class Player extends Entity {
 	public void update( float deltaTime ) {
 		super.update( deltaTime );
 
-		if ( name.equals( "player1" ) ) {
+		if ( name.equals( "player2" ) ) {
 			// int i = 0;
 			// for ( Fixture f : body.getFixtureList( ) ) {
 			// Gdx.app.log( "fixture" + i + " a sensor?", "" + f.isSensor( ) );
 			// i++;
 			// }
-			 Gdx.app.log( "player 1 state", "" + playerState + " , " + playerDirection );
+			// Gdx.app.log( "player 2 state", "" + playerState + " , " +
+			// playerDirection );
 			// if(contact != null)
 			// System.out.println("contact friction: " + contact.getFriction( )
 			// + "feet friction: " + feet.getFriction( ) );
@@ -252,10 +235,6 @@ public class Player extends Entity {
 			kinematicTransform = false;
 		}
 		if ( isDead ) {
-			// body.setLinearVelocity( Vector2.Zero );
-			// body.setFixedRotation( false );
-			// body.setAngularVelocity( 0.1f )
-			// TODO: death stuff
 			if ( playerState != PlayerState.Dead
 					&& playerState != PlayerState.GrabMode ) {
 				killPlayer( );
@@ -305,24 +284,20 @@ public class Player extends Entity {
 			controllerDebug = true;
 		}
 		// test if player is still moving
-		//this will have to be updated to work with moving platforms
-		if ( playerDirection != PlayerDirection.Idle
-				&& Math.abs( body.getLinearVelocity( ).x ) < 0.0001f ) {
-			playerDirection = PlayerDirection.Idle;
-		}
+		// this will have to be updated to work with moving platforms
 		if ( playerDirection != PlayerDirection.Idle ) {
-			if ( Math.abs( body.getLinearVelocity( ).x ) < 0.0001f ) {
+			if ( runTimeout == 0 ) {
 				playerDirection = PlayerDirection.Idle;
-			} else if ( playerDirection == PlayerDirection.Left && sprite.getScaleX( ) > 0 ) {
-					sprite.setScale( sprite.getScaleX( )*-1, sprite.getScaleY( ) );
-			} else if ( playerDirection == PlayerDirection.Right && sprite.getScaleX( ) < 0 ) {
-					sprite.setScale( sprite.getScaleX( )*-1, sprite.getScaleY( ) );	
+			} else if ( playerDirection == PlayerDirection.Left
+					&& sprite.getScaleX( ) > 0 ) {
+				sprite.setScale( sprite.getScaleX( ) * -1, sprite.getScaleY( ) );
+			} else if ( playerDirection == PlayerDirection.Right
+					&& sprite.getScaleX( ) < 0 ) {
+				sprite.setScale( sprite.getScaleX( ) * -1, sprite.getScaleY( ) );
+			} else {
+				runTimeout--;
 			}
 		}
-		if ( sprite.getScaleX( ) < 0 ) {
-			sprite.translateX( 120f );
-		}
-		sprite.translateY( -10f );
 		// switch between states
 		switch ( playerState ) {
 		case Dead:
@@ -348,10 +323,10 @@ public class Player extends Entity {
 				} else {
 					body.setTransform(
 							new Vector2( currentScrew.getPosition( ).x
-									- ( sprite.getWidth( ) / 4.0f )
+									- ( sprite.getWidth( ) / 2.0f )
 									* Util.PIXEL_TO_BOX, currentScrew
 									.getPosition( ).y
-									- ( sprite.getHeight( ) / 4.0f )
+									- ( sprite.getHeight( ) / 2.0f )
 									* Util.PIXEL_TO_BOX ), 0.0f );
 					RevoluteJointDef revoluteJointDef = new RevoluteJointDef( );
 					revoluteJointDef.initialize( body, currentScrew.body,
@@ -379,14 +354,18 @@ public class Player extends Entity {
 		if ( body.getLinearVelocity( ).y < -MIN_VELOCITY * 4f
 				&& platformBody == null && playerState != PlayerState.Screwing
 				&& playerState != PlayerState.JumpingOffScrew
-				&& !isDead ) {
+				&& platformBody == null && !isDead ) {
 			if ( playerState == PlayerState.HeadStand ) {
 				extraState = ConcurrentState.HeadStandFalling;
 			} else {
 				playerState = PlayerState.Falling;
 			}
 			setGrounded( false );
+		} else if ( playerState == PlayerState.Falling ) {
+			playerState = PlayerState.Standing;
+			setGrounded( true );
 		}
+
 		if ( otherPlayer != null && isHeadStandPossible( ) ) {
 			setHeadStand( );
 			otherPlayer.setHeadStand( );
@@ -501,6 +480,7 @@ public class Player extends Entity {
 			}
 		}
 		playerDirection = PlayerDirection.Right;
+		runTimeout = RUN_COUNTER;
 	}
 
 	/**
@@ -527,6 +507,7 @@ public class Player extends Entity {
 			}
 		}
 		playerDirection = PlayerDirection.Left;
+		runTimeout = RUN_COUNTER;
 	}
 
 	/**
@@ -550,6 +531,7 @@ public class Player extends Entity {
 					body.getWorldCenter( ) );
 		}
 		playerDirection = PlayerDirection.Right;
+		runTimeout = RUN_COUNTER;
 	}
 
 	/**
@@ -566,6 +548,7 @@ public class Player extends Entity {
 					body.getWorldCenter( ) );
 		}
 		playerDirection = PlayerDirection.Left;
+		runTimeout = RUN_COUNTER;
 	}
 
 	/**
@@ -636,11 +619,6 @@ public class Player extends Entity {
 			body.applyLinearImpulse( new Vector2( 0.0f, JUMP_IMPULSE ),
 					body.getWorldCenter( ) );
 		}
-
-		// TODO: add the jumping sprite here
-		// This will work... soon.
-		// sprite = new Sprite(characterAtlas, "jumping", jumpFrames, jumpSpeed,
-		// Animation.NORMAL);
 	}
 
 	/**
@@ -672,7 +650,7 @@ public class Player extends Entity {
 	public ConcurrentState getExtraState( ) {
 		return extraState;
 	}
-	
+
 	/**
 	 * return s the current state of the player
 	 * 
@@ -747,11 +725,14 @@ public class Player extends Entity {
 	 * slowly increases friction to avoid that silly stopping bug. Call this
 	 * every player.update()
 	 */
+	@SuppressWarnings( "unused" )
 	private void updateFootFriction( ) {
 
 		if ( isGrounded( ) ) {
 			if ( feet.getFriction( ) < PLAYER_FRICTION ) {
-				playerState = PlayerState.Landing;
+				if ( playerState != PlayerState.Screwing ) {
+					playerState = PlayerState.Landing;
+				}
 				frictionCounter += FRICTION_INCREMENT;
 
 				CircleShape ps = new CircleShape( );
@@ -780,11 +761,10 @@ public class Player extends Entity {
 
 				}
 				// currentScrew = null;
-			} 
+			}
 		} else {
 			frictionCounter = 0f;
 			feet.setFriction( frictionCounter );
-			
 		}
 
 	}
@@ -835,15 +815,15 @@ public class Player extends Entity {
 				mover = new LerpMover( body.getPosition( ).mul(
 						Util.BOX_TO_PIXEL ), new Vector2(
 						currentScrew.getPosition( ).x * Util.BOX_TO_PIXEL
-								- ( sprite.getWidth( ) / 4.0f ),
+								- ( sprite.getWidth( ) / 2.0f ),
 						currentScrew.getPosition( ).y * Util.BOX_TO_PIXEL
-								- ( sprite.getHeight( ) / 4.0f ) ),
+								- ( sprite.getHeight( ) / 2.0f ) ),
 						SCREW_ATTACH_SPEED, false, LinearAxis.DIAGONAL, 0 );
 			} else {
 				body.setTransform( new Vector2( currentScrew.getPosition( ).x
-						- ( sprite.getWidth( ) / 4.0f ) * Util.PIXEL_TO_BOX,
+						- ( sprite.getWidth( ) / 2.0f ) * Util.PIXEL_TO_BOX,
 						currentScrew.getPosition( ).y
-								- ( sprite.getHeight( ) / 4.0f )
+								- ( sprite.getHeight( ) / 2.0f )
 								* Util.PIXEL_TO_BOX ), 0.0f );
 				RevoluteJointDef revoluteJointDef = new RevoluteJointDef( );
 				revoluteJointDef.initialize( body, currentScrew.body,
@@ -897,22 +877,23 @@ public class Player extends Entity {
 					f.setFilterData( filter );
 				}
 			}
-		} else if ( screwJumpTimeout == SCREW_JUMP_STEPS ) {
-			// switch the player to not collide with the current platformBody
-			Filter filter = new Filter( );
-			for ( Fixture f : body.getFixtureList( ) ) {
-				if ( f != rightSensor && f != leftSensor && f != topSensor ) {
-					f.setSensor( false );
-				}
-				filter = f.getFilterData( );
-				// move player back to original category
-				filter.categoryBits = Util.CATEGORY_SUBPLAYER;
-				// player now collides with everything except the platform in
-				// the way
-				filter.maskBits = ~Util.CATEGORY_SUBPLATFORM;
-				f.setFilterData( filter );
-			}
-		}
+		} 
+//		else if ( screwJumpTimeout == SCREW_JUMP_STEPS ) {
+//			// switch the player to not collide with the current platformBody
+//			Filter filter = new Filter( );
+//			for ( Fixture f : body.getFixtureList( ) ) {
+//				if ( f != rightSensor && f != leftSensor && f != topSensor ) {
+//					f.setSensor( false );
+//				}
+//				filter = f.getFilterData( );
+//				// move player back to original category
+//				filter.categoryBits = Util.CATEGORY_SUBPLAYER;
+//				// player now collides with everything except the platform in
+//				// the way
+//				filter.maskBits = ~Util.CATEGORY_SUBPLATFORM;
+//				f.setFilterData( filter );
+//			}
+//		}
 	}
 
 	/**
@@ -1171,7 +1152,6 @@ public class Player extends Entity {
 						}
 					}
 				}
-
 			}
 		}
 
@@ -1377,6 +1357,46 @@ public class Player extends Entity {
 		for ( Fixture f : body.getFixtureList( ) ) {
 			if ( f != rightSensor && f != leftSensor && f != topSensor ) {
 				f.setSensor( false );
+			}
+		}
+		Filter filter = new Filter( );
+		if ( platformBody != null ) {
+			// set the bits of the platform back to everything
+			for ( Fixture f : platformBody.getFixtureList( ) ) {
+				filter = f.getFilterData( );
+				// move platform back to original category
+				if ( platformBody.getType( ) == BodyType.DynamicBody ) {
+					filter.categoryBits = Util.DYNAMIC_OBJECTS;
+				} else {
+					filter.categoryBits = Util.KINEMATIC_OBJECTS;
+				}
+				// platform now collides with everything
+				filter.maskBits = Util.CATEGORY_EVERYTHING;
+				f.setFilterData( filter );
+			}
+			for ( Fixture f : body.getFixtureList( ) ) {
+				if ( f != rightSensor && f != leftSensor && f != topSensor ) {
+					f.setSensor( false );
+				}
+				filter = f.getFilterData( );
+				// move player to sub category
+				filter.categoryBits = Util.CATEGORY_SUBPLAYER;
+				// player now collides with everything except the platform in
+				// the way
+				filter.maskBits = ~Util.CATEGORY_SUBPLATFORM;
+				f.setFilterData( filter );
+			}
+		} else {
+			for ( Fixture f : body.getFixtureList( ) ) {
+				if ( f != rightSensor && f != leftSensor && f != topSensor ) {
+					f.setSensor( false );
+				}
+				filter = f.getFilterData( );
+				// move player back to original category
+				filter.categoryBits = Util.CATEGORY_PLAYER;
+				// player now collides with everything
+				filter.maskBits = Util.CATEGORY_EVERYTHING;
+				f.setFilterData( filter );
 			}
 		}
 		mover = null;
@@ -1766,6 +1786,7 @@ public class Player extends Entity {
 	 * @param value
 	 *            boolean
 	 */
+
 	public void setSteamCollide( boolean value ) {
 		steamCollide = value;
 	}
@@ -1796,21 +1817,18 @@ public class Player extends Entity {
 			rightCrush = value;
 		else if ( fixture == leftSensor )
 			leftCrush = value;
-		 //Gdx.app.log("\nright: ", "" + rightCrush);
-		 //Gdx.app.log("left: ", "" + leftCrush);
-		 //Gdx.app.log("top: ", "" + topCrush);
-		 //Gdx.app.log("bottom: ", "" + botCrush);
-		 
 	}
 
 	/**
-	 * applys force to player
+	 * applies force to player
 	 */
 	private void steamResolution( ) {
 		if ( prevButton == null )
 			body.setLinearVelocity( new Vector2( 0f,
 					body.getLinearVelocity( ).y ) );
-		body.applyForceToCenter( 0f, STEAM_FORCE );
+		// body.applyForceToCenter( 0f, STEAM_FORCE );
+		body.applyLinearImpulse( new Vector2( 0, STEAM_IMPULSE ),
+				body.getWorldCenter( ) );
 	}
 
 	/**

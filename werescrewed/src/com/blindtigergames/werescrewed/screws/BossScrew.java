@@ -118,6 +118,7 @@ public class BossScrew extends Screw {
 	@Override
 	public void update( float deltaTime ) {
 		super.update( deltaTime );
+		if ( !removed ) {
 		Vector2 bodyPos = body.getPosition( ).mul( Util.BOX_TO_PIXEL );
 		sprite.setPosition( bodyPos.x - offset.x, bodyPos.y - offset.y );
 		if ( depth == 0 ) {
@@ -169,6 +170,7 @@ public class BossScrew extends Screw {
 			body.setAngularVelocity( 0 );
 		}
 		playerCount = 0;
+		}
 	}
 
 	@Override

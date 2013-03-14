@@ -4,9 +4,11 @@ import java.util.ArrayList;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.Array;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.action.IAction;
 import com.blindtigergames.werescrewed.eventTrigger.EventTrigger;
+import com.blindtigergames.werescrewed.util.Util;
 
 public class EventTriggerBuilder extends
 		GenericEntityBuilder< EventTriggerBuilder > {
@@ -14,6 +16,7 @@ public class EventTriggerBuilder extends
 	// name and pos in super
 	private boolean rectangle;
 	private boolean circle;
+	private boolean skelePolygon;
 	private float radius;
 	private float width, height;
 	private boolean offsetAbove, offsetBelow, offsetRight, offsetLeft;
@@ -24,15 +27,19 @@ public class EventTriggerBuilder extends
 	private boolean repeatableAction;
 	private boolean twoPlayersToActivate;
 	private boolean twoPlayersToDeactive;
+	private Array<Vector2> verts;
 	private IAction beginAction;
 	private IAction endAction;
 	private ArrayList< Entity > entitiesToAdd;
+	
+	private Array<Vector2> skeleVertsPix;
 
 	public EventTriggerBuilder( World world ) {
 		super( );
 		reset( );
 		super.world( world );
 		entitiesToAdd = new ArrayList< Entity >( );
+		
 	}
 
 	@Override
@@ -40,6 +47,7 @@ public class EventTriggerBuilder extends
 		super.resetInternal( );
 		this.rectangle = false;
 		this.circle = true;
+		this.skelePolygon = false;
 		this.radius = 100f;
 		this.width = 100f;
 		this.height = 100f;
@@ -56,6 +64,8 @@ public class EventTriggerBuilder extends
 		this.offsetLeft = false;
 		this.attachedToEntity = false;
 		this.actOnEntity = false;
+		this.verts = null;
+		this.skeleVertsPix = null;
 		return this;
 	}
 
@@ -77,15 +87,30 @@ public class EventTriggerBuilder extends
 	public EventTriggerBuilder circle( ) {
 		this.circle = true;
 		this.rectangle = false;
+		this.skelePolygon = false;
 		return this;
 	}
 
 	public EventTriggerBuilder rectangle( ) {
 		this.rectangle = true;
 		this.circle = false;
+		this.skelePolygon = false;
+		return this;
+	}
+	
+	public EventTriggerBuilder skelePolygon(Array< Vector2 > vertsPixels){
+		this.rectangle = false;
+		this.circle = false;
+		this.skelePolygon = true;
+		this.skeleVertsPix = vertsPixels;
 		return this;
 	}
 
+	public EventTriggerBuilder setVerts( Array<Vector2> vertices ) {
+		this.verts = vertices;
+		return this;
+	}
+	
 	public EventTriggerBuilder setPositionToEntity( Entity entity ) {
 		this.attachedToEntity = true;
 		this.pos = entity.getPositionPixel( );
@@ -152,6 +177,8 @@ public class EventTriggerBuilder extends
 
 		if ( this.circle ) {
 			if ( this.attachedToEntity ) {
+				
+				// depreciated 
 				if ( offsetAbove ) {
 					this.pos = new Vector2( this.pos.x, this.pos.y );
 				} else if ( offsetBelow ) {
@@ -176,6 +203,10 @@ public class EventTriggerBuilder extends
 				}
 			}
 			et.contructRectangleBody( this.height, this.width, this.pos );
+		}else if ( this.skelePolygon ){
+			et.constructSkeletonPolygonBody( skeleVertsPix, this.pos );
+		}else{
+			et.constructVertBody( verts, pos );
 		}
 
 		et.setRepeatable( this.repeatableAction );

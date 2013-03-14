@@ -1,5 +1,8 @@
 package com.blindtigergames.werescrewed.screens;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
@@ -51,22 +54,26 @@ public class LoadingScreen extends Screen {
 		// reads through the text file that is named
 		// the same thing as the screenTag
 		// and reads each line which is a path and loads that file
-		FileHandle handle = Gdx.files.internal( "data/" + screenTag + ".txt" );
+		FileHandle handle = Gdx.files.internal( "data/" + screenTag + ".txt" );		
 		String split[] = handle.readString( ).split( "\\r?\\n" );
 		for ( String s : split ) {
 			s.replaceAll( "\\s", "" );
 			if ( s.length( ) > 0 ) {
 				if ( s.charAt( 0 ) != '#' ) {
-					String file[] = s.split( "\\." );
-					if ( file.length > 1 ) {
+					String ext;
+					String fileAndExtension[] = s.split( "\\." );
+					if ( fileAndExtension.length > 1 ) {
 						// gets the extension
-						String extension = file[1];
+						ext = fileAndExtension[1];
 						// loads the file
-						loadCurrentFile( extension, WereScrewedGame.dirHandle
+						loadCurrentFile( ext, WereScrewedGame.dirHandle
 								+ s );
 					} else {
-						Gdx.app.log( "Loading screen: ", s + "doesn't have an extension" );
+						Gdx.app.log( "Loading screen: ", s + " doesn't have an extension" );
 					}
+					
+					/*
+					*/
 				}
 			}
 		}
@@ -155,8 +162,11 @@ public class LoadingScreen extends Screen {
 	 * @param fullPathName
 	 *            The full path name of the file to be passed into the load
 	 *            function
+ 	 * @param listedPathName
+ 	 * 			  The path to call when loading the texture from the AssetManager.
+ 	 * 			  Usually will be the same as fullPathName, but may differ for alt textures.            
 	 */
-	private void loadCurrentFile( String fileExtension, String fullPathName ) {
+	private void loadCurrentFile( String fileExtension, String fullPathName , String listedPathName) {
 		if ( fileExtension.equals( "png" ) ) {
 			WereScrewedGame.manager.load( fullPathName, Texture.class );
 			Gdx.app.log( "Texture file loaded", fullPathName );
@@ -179,6 +189,11 @@ public class LoadingScreen extends Screen {
 		}
 	}
 
+	//Simple overloading for when you only have an extension and pathname.
+	private void loadCurrentFile( String fE, String fPN){
+		loadCurrentFile( fE, fPN, fPN);
+	}
+	
 	/**
 	 * Runs every frame tick. Loads the assets that are queued in
 	 * WereScrewedGame.manager, and moves to the next screen. Shows how much of

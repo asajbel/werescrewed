@@ -10,6 +10,7 @@ public enum EntityType {
     PLAYER,
     EVENTTRIGGER,
     SKELETON,
+    ROOTSKELETON,
     ENTITY,
     PARTICLE_EMITTER
 }

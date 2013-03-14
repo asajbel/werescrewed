@@ -10,6 +10,7 @@ import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.Array;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityType;
 import com.blindtigergames.werescrewed.entity.Skeleton;
@@ -86,6 +87,79 @@ public class EventTrigger extends Entity{
 
 		polygon.dispose( );
 	}
+	
+	public void constructVertBody(Array<Vector2> vertices, Vector2 positionPixel){
+		BodyDef bodyDef = new BodyDef( );
+		bodyDef.type = BodyType.KinematicBody;
+		bodyDef.position.set( positionPixel.mul( Util.PIXEL_TO_BOX ));
+		body = world.createBody( bodyDef );
+		
+		PolygonShape polygon = new PolygonShape();
+		Vector2[] verts = new Vector2[vertices.size -1];
+		System.out.println(verts.length);
+		int i = 0;
+		for(int j = 0; j < vertices.size; j++){
+			if(j == vertices.size - 1) continue;
+			Vector2 v = vertices.get( j );
+			verts[i] = new Vector2(v.x * Util.PIXEL_TO_BOX, v.y * Util.PIXEL_TO_BOX);
+			System.out.println( "v: " + v + " verts[" + i + "] " + verts[i] );
+			++i;
+		}
+		polygon.set( verts );
+		
+		FixtureDef fixture = new FixtureDef( );
+		fixture.filter.categoryBits = Util.CATEGORY_SCREWS;
+		fixture.filter.maskBits = Util.CATEGORY_EVERYTHING;
+		fixture.isSensor = true;
+		fixture.shape = polygon;
+		
+		body.createFixture( fixture );
+		body.setFixedRotation( true );
+		body.setUserData( this );
+
+		polygon.dispose( );
+	}
+	
+	/**
+	 * For use with a skeleton
+	 * @param vertsPixels The skeleton background's polysprite points.
+	 * @param positionPixel
+	 */
+	public void constructSkeletonPolygonBody(Array< Vector2 > vertsPixels, Vector2 positionPixel ){
+		BodyDef bodyDef = new BodyDef( );
+		bodyDef.type = BodyType.KinematicBody;
+		bodyDef.position.set( positionPixel.mul( Util.PIXEL_TO_BOX ));
+		body = world.createBody( bodyDef );
+		
+		//Deep copy verts so we can turn the pixel position into meters.
+		//We also have to modify the size of the points to give the skeletons a buffer in which 
+		//they activate/deactivate.
+		Vector2[] vertsMeters = new Vector2[vertsPixels.size];
+		for(int i =0; i < vertsPixels.size; ++i ){
+			Vector2 newPoint = vertsPixels.get( i ).cpy( );
+			Vector2 norm = newPoint.cpy( ).nor( ).mul( Util.SKELETON_ACTIVE_BORDER );//may divide by 0
+			newPoint.add( norm ).mul( Util.PIXEL_TO_BOX );
+			vertsMeters[i]= newPoint ;
+			Gdx.app.log( "ET:", "From point"+vertsPixels.get( i ).cpy( ).mul( Util.PIXEL_TO_BOX )+" To:"+newPoint );
+		}
+		
+		PolygonShape polygon = new PolygonShape();
+		polygon.set( vertsMeters );
+		
+		FixtureDef fixture = new FixtureDef( );
+		fixture.filter.categoryBits = Util.CATEGORY_SCREWS;
+		fixture.filter.maskBits = Util.CATEGORY_EVERYTHING;
+		fixture.isSensor = true;
+		fixture.shape = polygon;
+		
+		body.createFixture( fixture );
+		body.setFixedRotation( true );
+		body.setUserData( this );
+		
+		polygon.dispose( );
+	}
+	
+	
 	
 	public boolean isActingOnEntity(){
 		return actOnEntity;
@@ -399,6 +473,7 @@ public class EventTrigger extends Entity{
 					for(Entity e : entityList){
 						if(beginAction != null){
 							beginAction.act( e );
+							Gdx.app.log( this.name,  " begin action" );
 						}
 					}
 				}else{
@@ -415,6 +490,7 @@ public class EventTrigger extends Entity{
 					for(Entity e : entityList){
 						if(beginAction != null){
 							beginAction.act( e );
+							Gdx.app.log( this.name,  " begin action" );
 						}
 					}
 				}else{
@@ -439,6 +515,7 @@ public class EventTrigger extends Entity{
 					for(Entity e : entityList){
 						if(endAction != null){
 							endAction.act( e );
+							Gdx.app.log( this.name,  " end action" );
 						}
 					}
 				}else{
@@ -455,6 +532,7 @@ public class EventTrigger extends Entity{
 					for(Entity e : entityList){
 						if(endAction != null){
 							endAction.act( e );
+							Gdx.app.log( this.name,  " end action" );
 						}
 					}
 				}else{

@@ -223,5 +223,13 @@ public class Rope {
 						- ( getLastLink( ).getHeight( ) ) ), getLastLink( ), world );
 
 	}
+	
+	public void dispose(){
+		for ( Link l : linkParts ){
+			l.dispose( );
+		}
+		linkParts.clear( );
+		screw.dispose();
+	}
 
 }

@@ -26,6 +26,7 @@ import com.blindtigergames.werescrewed.debug.SBox2DDebugRenderer;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.RootSkeleton;
 import com.blindtigergames.werescrewed.entity.Skeleton;
+import com.blindtigergames.werescrewed.entity.Sprite;
 import com.blindtigergames.werescrewed.entity.builders.PlatformBuilder;
 import com.blindtigergames.werescrewed.entity.builders.PlayerBuilder;
 import com.blindtigergames.werescrewed.entity.mover.ParallaxMover;
@@ -59,6 +60,7 @@ public class ResurrectScreen implements com.badlogic.gdx.Screen {
 	private PlatformBuilder platBuilder;
 	private boolean debug = true;
 	private boolean debugTest = true;
+	private boolean switchBg = false;
 	private ProgressManager progressManager;
 
 	// timeout for killing player input
@@ -303,6 +305,29 @@ public class ResurrectScreen implements com.badlogic.gdx.Screen {
 			System.exit( 0 );
 		}
 
+		if ( Gdx.input.isKeyPressed( Keys.SPACE ) ) {
+			if ( !switchBg ) {
+				bgRootSkel.getSubEntity( "bg_2_0" ).changeSprite( new Sprite ( WereScrewedGame.manager.get( WereScrewedGame.dirHandle
+						+ "/common/parallax_layer3_0.png",
+						Texture.class ) ) );
+				bgRootSkel.getSubEntity( "bg_2_1" ).changeSprite( new Sprite ( WereScrewedGame.manager.get( WereScrewedGame.dirHandle
+						+ "/common/parallax_layer3_1.png",
+						Texture.class ) ) );
+				switchBg = true;
+			}
+		}
+		if ( Gdx.input.isKeyPressed( Keys.B ) ) {
+			if ( switchBg ) {
+				bgRootSkel.getSubEntity( "bg_2_0" ).changeSprite( new Sprite ( WereScrewedGame.manager.get( WereScrewedGame.dirHandle
+						+ "/common/parallax_layer2_0.png",
+						Texture.class ) ) );
+				bgRootSkel.getSubEntity( "bg_2_1" ).changeSprite( new Sprite ( WereScrewedGame.manager.get( WereScrewedGame.dirHandle
+						+ "/common/parallax_layer2_1.png",
+						Texture.class ) ) );
+				switchBg = false;
+			}
+		}
+		
 		if ( Gdx.input.isKeyPressed( Keys.NUM_0 ) ) {
 			if ( debugTest )
 				debug = !debug;
