@@ -1,7 +1,5 @@
 package com.blindtigergames.werescrewed.entity.animator;
 
-import com.badlogic.gdx.Gdx;
-
 public class SimpleFrameAnimator implements IAnimator {
 
 	protected int frame;
@@ -56,7 +54,6 @@ public class SimpleFrameAnimator implements IAnimator {
 	}
 
 	public SimpleFrameAnimator maxFrames(int f){
-		Gdx.app.log("SimpleFrameAnimator", "Setting max frames to: "+f);
 		frames = f;
 		return this;
 	}
@@ -79,7 +76,7 @@ public class SimpleFrameAnimator implements IAnimator {
 	@Override
 	public void update( float dT ) {
 		incrementTime(dT);
-		frame = (int)Math.floor( time * frames);
+		frame = (int)Math.floor( time );
 		//Gdx.app.log( "SimpleFrameAnimator", "Time: "+time+" Frame: "+frame );
 	}
 
@@ -121,7 +118,7 @@ public class SimpleFrameAnimator implements IAnimator {
 	}
 	
 	protected void incrementTime( float dT ){
-		time += (dT * speed);
+		time += (dT * speed * frames);
 		if (time < 0.0f){
 			switch (loop){
 			case STOP:
@@ -129,7 +126,7 @@ public class SimpleFrameAnimator implements IAnimator {
 				speed = 0.0f;
 				break;
 			case LOOP:
-				time -= Math.floor( time );				
+				time -= Math.floor( time / frames ) * frames;				
 				break;
 			case YOYO:
 				time = 0.0f;
@@ -137,20 +134,26 @@ public class SimpleFrameAnimator implements IAnimator {
 				break;
 			}
 		}
-		if (time > 0.0f){
+		if (time > frames){
 			switch (loop){
 			case STOP:
-				time = 1.0f;
+				time = frames;
 				speed = 0.0f;
 				break;
 			case LOOP:
-				time -= Math.floor( time );				
+				time -= Math.floor( time / frames ) * frames;				
 				break;
 			case YOYO:
-				time = 1.0f;
+				time = frames;
 				speed *= -1.0f;
 				break;
 			}
 		}
+	}
+
+
+	public float getTime() {
+		// TODO Auto-generated method stub
+		return time;
 	}	
 }
