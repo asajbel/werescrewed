@@ -2,6 +2,7 @@ player_r_f.png
 format: RGBA8888
 filter: Linear,Linear
 repeat: none
+offset: 0,0
 jump_down/49
   rotate: false
   xy: 782, 1302
