@@ -51,7 +51,7 @@ public class Player extends Entity {
 	public final static float MAX_VELOCITY = 1.55f;
 	public final static float MIN_VELOCITY = 0.01f;
 	public final static float MOVEMENT_IMPULSE = 0.010f;
-	public final static float JUMP_IMPULSE = 0.10f;
+	public final static float JUMP_IMPULSE = 0.12f;
 	public final static float JUMP_SCREW_IMPULSE = JUMP_IMPULSE * 5 / 4;
 	public final static float JUMP_SLOW_SPEED = 0.002f;
 	public final static int JUMP_COUNTER = 10;
