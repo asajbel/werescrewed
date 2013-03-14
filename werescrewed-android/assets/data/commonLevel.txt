@@ -10,6 +10,8 @@
 /common/tileset-teal.pack
 /common/autumn.pack
 /common/animations/player_r_m.pack
+/common/animations/player_r_f.pack
+
 
 ##common texture
 /common/player_b_f.png
@@ -22,11 +24,13 @@
 /common/parallax_layer1_1.png
 /common/parallax_layer2_0.png
 /common/parallax_layer2_1.png
+/common/parallax_layer3_0.png
+/common/parallax_layer3_1.png
 /common/spikes_01.png
 /common/spikes_02.png
 /common/spikes_03.png
 /common/tileset/TilesetTest.png
-/common/blind_tiger_logo_720.png
+#/common/blind_tiger_logo_1024.png
 /common/title_background.png
 /particles/particle.png
 /common/robot/alphabot_texture_skin.png

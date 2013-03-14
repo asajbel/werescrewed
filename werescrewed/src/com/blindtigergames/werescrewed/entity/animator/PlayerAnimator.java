@@ -66,7 +66,10 @@ public class PlayerAnimator implements IAnimator {
 	
 	@Override
 	public void update( float dT ) {
-		current = getCurrentAnim();
+		if (current != getCurrentAnim()){
+			current = getCurrentAnim();
+			anims.get(current).reset();
+		}
 		anims.get(current).update( dT );
 	}
 
@@ -78,6 +81,12 @@ public class PlayerAnimator implements IAnimator {
 				return PlayerAnim.RUN;
 			} 
 			return PlayerAnim.IDLE;
+		case Landing:			
+			if ( player.getMoveState( ) == PlayerDirection.Left 
+				|| player.getMoveState( ) == PlayerDirection.Right ) {
+			return PlayerAnim.RUN;
+			} 
+			return PlayerAnim.IDLE;			
 		case Jumping:
 			return PlayerAnim.JUMP_UP;
 		case Falling:

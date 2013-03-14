@@ -10,7 +10,6 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.PolygonSprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
@@ -186,6 +185,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		// testRope.attachEntityToBottom( bottomPlatform, true );
 
 		buildSubSkeleton( );
+		buildOptimizeSkele();
 
 		// rope = new Rope( "rope", new Vector2 (2000.0f * Util.PIXEL_TO_BOX,
 		// 400.0f* Util.PIXEL_TO_BOX), null, world );
@@ -202,7 +202,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		initCheckPoints( );
 		// Add screws
 
-		PlatformBuilder pb = new PlatformBuilder( world );
+		/*PlatformBuilder pb = new PlatformBuilder( world );
 		pb.name( "tp2-1" ).position( 0, 200 ).tileSet( "autumn" )
 				.dimensions( 1, 1 ).oneSided( false ).moveable( true )
 				.kinematic( );
@@ -214,7 +214,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		skeleton.addKinematicPlatform( pb.name( "tp2-5" ).dimensions( 1, 3 )
 				.position( -100, 200 ).buildTilePlatform( ) );
 		skeleton.addKinematicPlatform( pb.name( "tp2-6" ).dimensions( 3, 4 )
-				.position( -300, 200 ).buildTilePlatform( ) );
+				.position( -300, 200 ).buildTilePlatform( ) );*/
 
 		rootSkeleton = new RootSkeleton( "Root Skeleton", new Vector2( 0, 0 ),
 				null, world );
@@ -244,6 +244,23 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 				WereScrewedGame.dirHandle.path( )
 						+ "/common/robot/alphabot_texture_skin.png",
 				Texture.class ), verts );
+	}
+	
+	private void buildOptimizeSkele( ) {
+		Skeleton skeleton;// = new Skeleton( "dynamicSkeleton", new Vector2(
+								// 0,
+		// 200 ), testTexture, world );
+		skeleton = new SkeletonBuilder( world ).position( -2000, 0 )
+				.texBackground( WereScrewedGame.manager.get(WereScrewedGame.dirHandle+"/common/robot/alphabot_texture_skin.png",Texture.class )).name( "dynamicSkeleton" )
+				.vert( -100, -100 ).vert( 100, -100 ).vert( 100, 100 ).vert( -100,100 )
+				.texForeground( WereScrewedGame.manager.get(WereScrewedGame.dirHandle+"/common/robot/alphabot_texture_tux.png",Texture.class ))
+				.fg( ).vert( 200,0 ).vert( 300,100 ).vert( 200,200 ).hasDeactiveTrigger( true )
+				.build( );
+		// dynSkeleton.body.createFixture( , density )
+
+		oldRootSkeleton.addSkeleton( skeleton );
+
+
 	}
 
 	private void buildSubSkeleton( ) {

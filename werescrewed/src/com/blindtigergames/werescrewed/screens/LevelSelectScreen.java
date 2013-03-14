@@ -83,11 +83,12 @@ public class LevelSelectScreen implements com.badlogic.gdx.Screen {
 	@Override
 	public void render( float delta ) {
 		// TODO Auto-generated method stub
-		Gdx.gl.glClearColor( 0.1f, 0.1f, 0.1f, 1f );
+		Gdx.gl.glClearColor( 0.0f, 0.0f, 0.0f, 1f );
 		Gdx.gl.glClear( GL10.GL_COLOR_BUFFER_BIT );
 		// TODO Auto-generated method stub
 		batch.begin( );
 		batch.draw(logo, 0, 0);
+		//batch.draw(logo, -128, 0);
 		screenLabel.draw( batch );
 		playButton.draw( batch, camera );
 		gleedButton.draw( batch, camera );

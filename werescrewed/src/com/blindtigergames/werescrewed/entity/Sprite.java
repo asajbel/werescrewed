@@ -27,7 +27,7 @@ public class Sprite extends com.badlogic.gdx.graphics.g2d.Sprite implements I_Dr
 	protected static final int SPRITE_SIZE = 4 * VERTEX_SIZE;
 
 	//Set this to whatever global constant we eventually use.
-	protected static final float FPS = 60.0f;
+	protected static final float FPS = 30.0f;
 	
 	TextureAtlas atlas;
 	IAnimator animator;

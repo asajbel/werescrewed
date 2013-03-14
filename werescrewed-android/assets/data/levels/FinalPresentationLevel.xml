@@ -1,0 +1,2954 @@
+<?xml version="1.0"?>
+<Level xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="Level_01" Visible="true">
+    <Layers>
+        <Layer Name="First Layer" Visible="true">
+            <Items>
+                <Item xsi:type="TextureItem" Name="RootSkeleton" Visible="true">
+                    <Position>
+                        <X>-320</X>
+                        <Y>-16</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>skeleton</string>
+                        </Property>
+                    </CustomProperties>
+                    <Rotation>0</Rotation>
+                    <Scale>
+                        <X>1</X>
+                        <Y>1</Y>
+                    </Scale>
+                    <TintColor>
+                        <R>255</R>
+                        <G>255</G>
+                        <B>255</B>
+                        <A>255</A>
+                        <PackedValue>4294967295</PackedValue>
+                    </TintColor>
+                    <FlipHorizontally>false</FlipHorizontally>
+                    <FlipVertically>false</FlipVertically>
+                    <texture_filename>rootSkeleton.png</texture_filename>
+                    <asset_name>rootSkeleton</asset_name>
+                    <Origin>
+                        <X>32</X>
+                        <Y>32</Y>
+                    </Origin>
+                </Item>
+                <Item xsi:type="PathItem" Name="skeleton1" Visible="true">
+                    <Position>
+                        <X>1664</X>
+                        <Y>-288</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>skeleton</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>RootSkeleton</string>
+                        </Property>
+                    </CustomProperties>
+                    <LocalPoints>
+                        <Vector2>
+                            <X>0</X>
+                            <Y>0</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>-1584</X>
+                            <Y>528</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>1648</X>
+                            <Y>528</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>1648</X>
+                            <Y>-1424</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>-1584</X>
+                            <Y>-1424</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>-1584</X>
+                            <Y>528</Y>
+                        </Vector2>
+                    </LocalPoints>
+                    <WorldPoints>
+                        <Vector2>
+                            <X>1664</X>
+                            <Y>-288</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>80</X>
+                            <Y>240</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>3312</X>
+                            <Y>240</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>3312</X>
+                            <Y>-1712</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>80</X>
+                            <Y>-1712</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>80</X>
+                            <Y>240</Y>
+                        </Vector2>
+                    </WorldPoints>
+                    <IsPolygon>false</IsPolygon>
+                    <LineWidth>4</LineWidth>
+                    <LineColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </LineColor>
+                </Item>
+                <Item xsi:type="PathItem" Name="skeleton3" Visible="true">
+                    <Position>
+                        <X>-1168</X>
+                        <Y>-304</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>skeleton</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>RootSkeleton</string>
+                        </Property>
+                    </CustomProperties>
+                    <LocalPoints>
+                        <Vector2>
+                            <X>0</X>
+                            <Y>0</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>-368</X>
+                            <Y>144</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>352</X>
+                            <Y>176</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>416</X>
+                            <Y>-272</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>48</X>
+                            <Y>-432</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>-384</X>
+                            <Y>-240</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>-368</X>
+                            <Y>144</Y>
+                        </Vector2>
+                    </LocalPoints>
+                    <WorldPoints>
+                        <Vector2>
+                            <X>-1168</X>
+                            <Y>-304</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>-1536</X>
+                            <Y>-160</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>-816</X>
+                            <Y>-128</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>-752</X>
+                            <Y>-576</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>-1120</X>
+                            <Y>-736</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>-1552</X>
+                            <Y>-544</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>-1536</X>
+                            <Y>-160</Y>
+                        </Vector2>
+                    </WorldPoints>
+                    <IsPolygon>false</IsPolygon>
+                    <LineWidth>4</LineWidth>
+                    <LineColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </LineColor>
+                </Item>
+                <Item xsi:type="PathItem" Name="skeleton4" Visible="true">
+                    <Position>
+                        <X>2032</X>
+                        <Y>-2672</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>skeleton</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>RootSkeleton</string>
+                        </Property>
+                    </CustomProperties>
+                    <LocalPoints>
+                        <Vector2>
+                            <X>0</X>
+                            <Y>0</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>-240</X>
+                            <Y>768</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>-240</X>
+                            <Y>-112</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>224</X>
+                            <Y>-112</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>224</X>
+                            <Y>768</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>-240</X>
+                            <Y>768</Y>
+                        </Vector2>
+                    </LocalPoints>
+                    <WorldPoints>
+                        <Vector2>
+                            <X>2032</X>
+                            <Y>-2672</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>1792</X>
+                            <Y>-1904</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>1792</X>
+                            <Y>-2784</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>2256</X>
+                            <Y>-2784</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>2256</X>
+                            <Y>-1904</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>1792</X>
+                            <Y>-1904</Y>
+                        </Vector2>
+                    </WorldPoints>
+                    <IsPolygon>false</IsPolygon>
+                    <LineWidth>4</LineWidth>
+                    <LineColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </LineColor>
+                </Item>
+                <Item xsi:type="TextureItem" Name="cameraPosition" Visible="true">
+                    <Position>
+                        <X>-208</X>
+                        <Y>-128</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>camera</string>
+                        </Property>
+                    </CustomProperties>
+                    <Rotation>0</Rotation>
+                    <Scale>
+                        <X>1</X>
+                        <Y>1</Y>
+                    </Scale>
+                    <TintColor>
+                        <R>255</R>
+                        <G>255</G>
+                        <B>255</B>
+                        <A>255</A>
+                        <PackedValue>4294967295</PackedValue>
+                    </TintColor>
+                    <FlipHorizontally>false</FlipHorizontally>
+                    <FlipVertically>false</FlipVertically>
+                    <texture_filename>cameraPosition.png</texture_filename>
+                    <asset_name>cameraPosition</asset_name>
+                    <Origin>
+                        <X>32</X>
+                        <Y>32</Y>
+                    </Origin>
+                </Item>
+                <Item xsi:type="TextureItem" Name="playerOne" Visible="true">
+                    <Position>
+                        <X>272</X>
+                        <Y>-32</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>player</string>
+                        </Property>
+                    </CustomProperties>
+                    <Rotation>0</Rotation>
+                    <Scale>
+                        <X>1</X>
+                        <Y>1</Y>
+                    </Scale>
+                    <TintColor>
+                        <R>255</R>
+                        <G>255</G>
+                        <B>255</B>
+                        <A>255</A>
+                        <PackedValue>4294967295</PackedValue>
+                    </TintColor>
+                    <FlipHorizontally>false</FlipHorizontally>
+                    <FlipVertically>false</FlipVertically>
+                    <texture_filename>playerOne.png</texture_filename>
+                    <asset_name>playerOne</asset_name>
+                    <Origin>
+                        <X>32</X>
+                        <Y>32</Y>
+                    </Origin>
+                </Item>
+                <Item xsi:type="TextureItem" Name="playerTwo" Visible="true">
+                    <Position>
+                        <X>400</X>
+                        <Y>-32</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>player</string>
+                        </Property>
+                    </CustomProperties>
+                    <Rotation>0</Rotation>
+                    <Scale>
+                        <X>1</X>
+                        <Y>1</Y>
+                    </Scale>
+                    <TintColor>
+                        <R>255</R>
+                        <G>255</G>
+                        <B>255</B>
+                        <A>255</A>
+                        <PackedValue>4294967295</PackedValue>
+                    </TintColor>
+                    <FlipHorizontally>false</FlipHorizontally>
+                    <FlipVertically>false</FlipVertically>
+                    <texture_filename>playerTwo.png</texture_filename>
+                    <asset_name>playerTwo</asset_name>
+                    <Origin>
+                        <X>32</X>
+                        <Y>32</Y>
+                    </Origin>
+                </Item>
+                <Item xsi:type="RectangleItem" Name="ground1" Visible="true">
+                    <Position>
+                        <X>96</X>
+                        <Y>128</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>tiledPlatform</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>skeleton1</string>
+                        </Property>
+                    </CustomProperties>
+                    <Width>3200</Width>
+                    <Height>96</Height>
+                    <FillColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </FillColor>
+                </Item>
+                <Item xsi:type="RectangleItem" Name="wall2" Visible="true">
+                    <Position>
+                        <X>96</X>
+                        <Y>-1600</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>tiledPlatform</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>skeleton1</string>
+                        </Property>
+                    </CustomProperties>
+                    <Width>96</Width>
+                    <Height>1728</Height>
+                    <FillColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </FillColor>
+                </Item>
+                <Item xsi:type="TextureItem" Name="gear1" Visible="true">
+                    <Position>
+                        <X>1056</X>
+                        <Y>-624</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>gearSmall</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>skeleton1</string>
+                        </Property>
+                        <Property Name="dynamic" Type="string" Description="">
+                            <string />
+                        </Property>
+                        <Property Name="rotatingcenter" Type="string" Description="">
+                            <string>motor</string>
+                        </Property>
+                        <Property Name="motorspeed" Type="string" Description="">
+                            <string>-1f</string>
+                        </Property>
+                        <Property Name="crushable" Type="string" Description="">
+                            <string />
+                        </Property>
+                    </CustomProperties>
+                    <Rotation>0</Rotation>
+                    <Scale>
+                        <X>1</X>
+                        <Y>1</Y>
+                    </Scale>
+                    <TintColor>
+                        <R>255</R>
+                        <G>255</G>
+                        <B>255</B>
+                        <A>255</A>
+                        <PackedValue>4294967295</PackedValue>
+                    </TintColor>
+                    <FlipHorizontally>false</FlipHorizontally>
+                    <FlipVertically>false</FlipVertically>
+                    <texture_filename>gear.png</texture_filename>
+                    <asset_name>gear</asset_name>
+                    <Origin>
+                        <X>140</X>
+                        <Y>140</Y>
+                    </Origin>
+                </Item>
+                <Item xsi:type="TextureItem" Name="gear2" Visible="true">
+                    <Position>
+                        <X>1296</X>
+                        <Y>-624</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>gearSmall</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>skeleton1</string>
+                        </Property>
+                        <Property Name="dynamic" Type="string" Description="">
+                            <string />
+                        </Property>
+                        <Property Name="rotatingcenter" Type="string" Description="">
+                            <string />
+                        </Property>
+                        <Property Name="crushable" Type="string" Description="">
+                            <string />
+                        </Property>
+                    </CustomProperties>
+                    <Rotation>0</Rotation>
+                    <Scale>
+                        <X>1</X>
+                        <Y>1</Y>
+                    </Scale>
+                    <TintColor>
+                        <R>255</R>
+                        <G>255</G>
+                        <B>255</B>
+                        <A>255</A>
+                        <PackedValue>4294967295</PackedValue>
+                    </TintColor>
+                    <FlipHorizontally>false</FlipHorizontally>
+                    <FlipVertically>false</FlipVertically>
+                    <texture_filename>gear.png</texture_filename>
+                    <asset_name>gear</asset_name>
+                    <Origin>
+                        <X>140</X>
+                        <Y>140</Y>
+                    </Origin>
+                </Item>
+                <Item xsi:type="RectangleItem" Name="plat3" Visible="true">
+                    <Position>
+                        <X>768</X>
+                        <Y>32</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>tiledPlatform</string>
+                        </Property>
+                        <Property Name="Onesided" Type="string" Description="">
+                            <string xsi:nil="true" />
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>skeleton1</string>
+                        </Property>
+                    </CustomProperties>
+                    <Width>220</Width>
+                    <Height>39</Height>
+                    <FillColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </FillColor>
+                </Item>
+                <Item xsi:type="RectangleItem" Name="plat4" Visible="true">
+                    <Position>
+                        <X>1072</X>
+                        <Y>-64</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>tiledPlatform</string>
+                        </Property>
+                        <Property Name="Onesided" Type="string" Description="">
+                            <string xsi:nil="true" />
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>skeleton1</string>
+                        </Property>
+                    </CustomProperties>
+                    <Width>204</Width>
+                    <Height>39</Height>
+                    <FillColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </FillColor>
+                </Item>
+                <Item xsi:type="RectangleItem" Name="horizontalplat" Visible="true">
+                    <Position>
+                        <X>1376</X>
+                        <Y>-112</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>tiledPlatform</string>
+                        </Property>
+                        <Property Name="Onesided" Type="string" Description="">
+                            <string xsi:nil="true" />
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>skeleton1</string>
+                        </Property>
+                    </CustomProperties>
+                    <Width>188</Width>
+                    <Height>39</Height>
+                    <FillColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </FillColor>
+                </Item>
+                <Item xsi:type="PathItem" Name="horizontalpath" Visible="true">
+                    <Position>
+                        <X>1376</X>
+                        <Y>-112</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>pathmover</string>
+                        </Property>
+                        <Property Name="point1time" Type="string" Description="">
+                            <string>2f</string>
+                        </Property>
+                        <Property Name="point2time" Type="string" Description="">
+                            <string>2f</string>
+                        </Property>
+                        <Property Name="applyto" Type="string" Description="">
+                            <string>horizontalplat</string>
+                        </Property>
+                        <Property Name="delay" Type="string" Description="">
+                            <string>1f</string>
+                        </Property>
+                    </CustomProperties>
+                    <LocalPoints>
+                        <Vector2>
+                            <X>0</X>
+                            <Y>0</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>544</X>
+                            <Y>0</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>0</X>
+                            <Y>0</Y>
+                        </Vector2>
+                    </LocalPoints>
+                    <WorldPoints>
+                        <Vector2>
+                            <X>1376</X>
+                            <Y>-112</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>1920</X>
+                            <Y>-112</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>1376</X>
+                            <Y>-112</Y>
+                        </Vector2>
+                    </WorldPoints>
+                    <IsPolygon>false</IsPolygon>
+                    <LineWidth>4</LineWidth>
+                    <LineColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </LineColor>
+                </Item>
+                <Item xsi:type="RectangleItem" Name="Rectangle_0032" Visible="true">
+                    <Position>
+                        <X>-592</X>
+                        <Y>-240</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>tiledPlatform</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>skeleton2</string>
+                        </Property>
+                    </CustomProperties>
+                    <Width>80</Width>
+                    <Height>224</Height>
+                    <FillColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </FillColor>
+                </Item>
+                <Item xsi:type="TextureItem" Name="rope" Visible="true">
+                    <Position>
+                        <X>1728</X>
+                        <Y>-736</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>rope</string>
+                        </Property>
+                        <Property Name="links" Type="string" Description="">
+                            <string>5</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>skeleton1</string>
+                        </Property>
+                        <Property Name="numberofscrews" Type="string" Description="">
+                            <string>1</string>
+                        </Property>
+                    </CustomProperties>
+                    <Rotation>0</Rotation>
+                    <Scale>
+                        <X>1</X>
+                        <Y>1</Y>
+                    </Scale>
+                    <TintColor>
+                        <R>255</R>
+                        <G>255</G>
+                        <B>255</B>
+                        <A>255</A>
+                        <PackedValue>4294967295</PackedValue>
+                    </TintColor>
+                    <FlipHorizontally>false</FlipHorizontally>
+                    <FlipVertically>false</FlipVertically>
+                    <texture_filename>rope.png</texture_filename>
+                    <asset_name>rope</asset_name>
+                    <Origin>
+                        <X>16</X>
+                        <Y>64</Y>
+                    </Origin>
+                </Item>
+                <Item xsi:type="TextureItem" Name="puzzlescrew1" Visible="true">
+                    <Position>
+                        <X>304</X>
+                        <Y>-512</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>screw</string>
+                        </Property>
+                        <Property Name="Screwtype" Type="string" Description="">
+                            <string>ScrewPuzzle</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>skeleton1</string>
+                        </Property>
+                        <Property Name="controlThis" Type="string" Description="">
+                            <string>plat4</string>
+                        </Property>
+                        <Property Name="mover" Type="string" Description="">
+                            <string>lerpmover</string>
+                        </Property>
+                    </CustomProperties>
+                    <Rotation>0</Rotation>
+                    <Scale>
+                        <X>1</X>
+                        <Y>1</Y>
+                    </Scale>
+                    <TintColor>
+                        <R>255</R>
+                        <G>255</G>
+                        <B>255</B>
+                        <A>255</A>
+                        <PackedValue>4294967295</PackedValue>
+                    </TintColor>
+                    <FlipHorizontally>false</FlipHorizontally>
+                    <FlipVertically>false</FlipVertically>
+                    <texture_filename>puzzlescrew.png</texture_filename>
+                    <asset_name>puzzlescrew</asset_name>
+                    <Origin>
+                        <X>16</X>
+                        <Y>16</Y>
+                    </Origin>
+                </Item>
+                <Item xsi:type="TextureItem" Name="checkpoint1" Visible="true">
+                    <Position>
+                        <X>672</X>
+                        <Y>48</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>skeleton1</string>
+                        </Property>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>checkpoint</string>
+                        </Property>
+                    </CustomProperties>
+                    <Rotation>0</Rotation>
+                    <Scale>
+                        <X>1</X>
+                        <Y>1</Y>
+                    </Scale>
+                    <TintColor>
+                        <R>255</R>
+                        <G>255</G>
+                        <B>255</B>
+                        <A>255</A>
+                        <PackedValue>4294967295</PackedValue>
+                    </TintColor>
+                    <FlipHorizontally>false</FlipHorizontally>
+                    <FlipVertically>false</FlipVertically>
+                    <texture_filename>cletter.png</texture_filename>
+                    <asset_name>cletter</asset_name>
+                    <Origin>
+                        <X>32</X>
+                        <Y>64</Y>
+                    </Origin>
+                </Item>
+                <Item xsi:type="TextureItem" Name="checkpoint2" Visible="true">
+                    <Position>
+                        <X>1568</X>
+                        <Y>-1200</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>skeleton1</string>
+                        </Property>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>checkpoint</string>
+                        </Property>
+                    </CustomProperties>
+                    <Rotation>0</Rotation>
+                    <Scale>
+                        <X>1</X>
+                        <Y>1</Y>
+                    </Scale>
+                    <TintColor>
+                        <R>255</R>
+                        <G>255</G>
+                        <B>255</B>
+                        <A>255</A>
+                        <PackedValue>4294967295</PackedValue>
+                    </TintColor>
+                    <FlipHorizontally>false</FlipHorizontally>
+                    <FlipVertically>false</FlipVertically>
+                    <texture_filename>cletter.png</texture_filename>
+                    <asset_name>cletter</asset_name>
+                    <Origin>
+                        <X>32</X>
+                        <Y>64</Y>
+                    </Origin>
+                </Item>
+                <Item xsi:type="PathItem" Name="et1" Visible="true">
+                    <Position>
+                        <X>-368</X>
+                        <Y>-496</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>eventtrigger</string>
+                        </Property>
+                        <Property Name="attachto" Type="string" Description="">
+                            <string>plat4</string>
+                        </Property>
+                        <Property Name="beginaction" Type="string" Description="">
+                            <string />
+                        </Property>
+                        <Property Name="endaction" Type="string" Description="">
+                            <string />
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>skeleton1</string>
+                        </Property>
+                    </CustomProperties>
+                    <LocalPoints>
+                        <Vector2>
+                            <X>0</X>
+                            <Y>0</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>-112</X>
+                            <Y>32</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>112</X>
+                            <Y>32</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>112</X>
+                            <Y>-64</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>-96</X>
+                            <Y>-64</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>-112</X>
+                            <Y>32</Y>
+                        </Vector2>
+                    </LocalPoints>
+                    <WorldPoints>
+                        <Vector2>
+                            <X>-368</X>
+                            <Y>-496</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>-480</X>
+                            <Y>-464</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>-256</X>
+                            <Y>-464</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>-256</X>
+                            <Y>-560</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>-464</X>
+                            <Y>-560</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>-480</X>
+                            <Y>-464</Y>
+                        </Vector2>
+                    </WorldPoints>
+                    <IsPolygon>false</IsPolygon>
+                    <LineWidth>4</LineWidth>
+                    <LineColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </LineColor>
+                </Item>
+                <Item xsi:type="RectangleItem" Name="Rectangle_0048" Visible="true">
+                    <Position>
+                        <X>-1248</X>
+                        <Y>-240</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>tiledPlatform</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>skeleton3</string>
+                        </Property>
+                    </CustomProperties>
+                    <Width>380</Width>
+                    <Height>39</Height>
+                    <FillColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </FillColor>
+                </Item>
+                <Item xsi:type="RectangleItem" Name="Rectangle_0049" Visible="true">
+                    <Position>
+                        <X>-1248</X>
+                        <Y>-352</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>tiledPlatform</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>skeleton3</string>
+                        </Property>
+                    </CustomProperties>
+                    <Width>44</Width>
+                    <Height>119</Height>
+                    <FillColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </FillColor>
+                </Item>
+                <Item xsi:type="RectangleItem" Name="verticalplat1" Visible="true">
+                    <Position>
+                        <X>2112</X>
+                        <Y>-176</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>tiledPlatform</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>skeleton1</string>
+                        </Property>
+                    </CustomProperties>
+                    <Width>384</Width>
+                    <Height>48</Height>
+                    <FillColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </FillColor>
+                </Item>
+                <Item xsi:type="TextureItem" Name="puzzle2" Visible="true">
+                    <Position>
+                        <X>2576</X>
+                        <Y>-560</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>screw</string>
+                        </Property>
+                        <Property Name="Screwtype" Type="string" Description="">
+                            <string>ScrewPuzzle</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>skeleton1</string>
+                        </Property>
+                        <Property Name="controlThis" Type="string" Description="">
+                            <string>verticalplat1</string>
+                        </Property>
+                        <Property Name="mover" Type="string" Description="">
+                            <string>lerpmover</string>
+                        </Property>
+                    </CustomProperties>
+                    <Rotation>0</Rotation>
+                    <Scale>
+                        <X>1</X>
+                        <Y>1</Y>
+                    </Scale>
+                    <TintColor>
+                        <R>255</R>
+                        <G>255</G>
+                        <B>255</B>
+                        <A>255</A>
+                        <PackedValue>4294967295</PackedValue>
+                    </TintColor>
+                    <FlipHorizontally>false</FlipHorizontally>
+                    <FlipVertically>false</FlipVertically>
+                    <texture_filename>puzzlescrew.png</texture_filename>
+                    <asset_name>puzzlescrew</asset_name>
+                    <Origin>
+                        <X>16</X>
+                        <Y>16</Y>
+                    </Origin>
+                </Item>
+                <Item xsi:type="RectangleItem" Name="middlewall" Visible="true">
+                    <Position>
+                        <X>2528</X>
+                        <Y>-512</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>tiledPlatform</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>skeleton1</string>
+                        </Property>
+                    </CustomProperties>
+                    <Width>128</Width>
+                    <Height>640</Height>
+                    <FillColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </FillColor>
+                </Item>
+                <Item xsi:type="RectangleItem" Name="secondfloor" Visible="true">
+                    <Position>
+                        <X>2144</X>
+                        <Y>-1136</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>tiledPlatform</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>skeleton1</string>
+                        </Property>
+                    </CustomProperties>
+                    <Width>560</Width>
+                    <Height>64</Height>
+                    <FillColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </FillColor>
+                </Item>
+                <Item xsi:type="TextureItem" Name="stripped8" Visible="true">
+                    <Position>
+                        <X>2864</X>
+                        <Y>-1072</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>screw</string>
+                        </Property>
+                        <Property Name="Screwtype" Type="string" Description="">
+                            <string>ScrewStripped</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>skeleton1</string>
+                        </Property>
+                    </CustomProperties>
+                    <Rotation>0</Rotation>
+                    <Scale>
+                        <X>1</X>
+                        <Y>1</Y>
+                    </Scale>
+                    <TintColor>
+                        <R>255</R>
+                        <G>255</G>
+                        <B>255</B>
+                        <A>255</A>
+                        <PackedValue>4294967295</PackedValue>
+                    </TintColor>
+                    <FlipHorizontally>false</FlipHorizontally>
+                    <FlipVertically>false</FlipVertically>
+                    <texture_filename>strippedscrews.png</texture_filename>
+                    <asset_name>strippedscrews</asset_name>
+                    <Origin>
+                        <X>16</X>
+                        <Y>16</Y>
+                    </Origin>
+                </Item>
+                <Item xsi:type="TextureItem" Name="stripped7" Visible="true">
+                    <Position>
+                        <X>3072</X>
+                        <Y>-944</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>screw</string>
+                        </Property>
+                        <Property Name="Screwtype" Type="string" Description="">
+                            <string>ScrewStripped</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>skeleton1</string>
+                        </Property>
+                    </CustomProperties>
+                    <Rotation>0</Rotation>
+                    <Scale>
+                        <X>1</X>
+                        <Y>1</Y>
+                    </Scale>
+                    <TintColor>
+                        <R>255</R>
+                        <G>255</G>
+                        <B>255</B>
+                        <A>255</A>
+                        <PackedValue>4294967295</PackedValue>
+                    </TintColor>
+                    <FlipHorizontally>false</FlipHorizontally>
+                    <FlipVertically>false</FlipVertically>
+                    <texture_filename>strippedscrews.png</texture_filename>
+                    <asset_name>strippedscrews</asset_name>
+                    <Origin>
+                        <X>16</X>
+                        <Y>16</Y>
+                    </Origin>
+                </Item>
+                <Item xsi:type="TextureItem" Name="stripped6" Visible="true">
+                    <Position>
+                        <X>2864</X>
+                        <Y>-768</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>screw</string>
+                        </Property>
+                        <Property Name="Screwtype" Type="string" Description="">
+                            <string>ScrewStripped</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>skeleton1</string>
+                        </Property>
+                    </CustomProperties>
+                    <Rotation>0</Rotation>
+                    <Scale>
+                        <X>1</X>
+                        <Y>1</Y>
+                    </Scale>
+                    <TintColor>
+                        <R>255</R>
+                        <G>255</G>
+                        <B>255</B>
+                        <A>255</A>
+                        <PackedValue>4294967295</PackedValue>
+                    </TintColor>
+                    <FlipHorizontally>false</FlipHorizontally>
+                    <FlipVertically>false</FlipVertically>
+                    <texture_filename>strippedscrews.png</texture_filename>
+                    <asset_name>strippedscrews</asset_name>
+                    <Origin>
+                        <X>16</X>
+                        <Y>16</Y>
+                    </Origin>
+                </Item>
+                <Item xsi:type="TextureItem" Name="stripped5" Visible="true">
+                    <Position>
+                        <X>3072</X>
+                        <Y>-640</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>screw</string>
+                        </Property>
+                        <Property Name="Screwtype" Type="string" Description="">
+                            <string>ScrewStripped</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>skeleton1</string>
+                        </Property>
+                    </CustomProperties>
+                    <Rotation>0</Rotation>
+                    <Scale>
+                        <X>1</X>
+                        <Y>1</Y>
+                    </Scale>
+                    <TintColor>
+                        <R>255</R>
+                        <G>255</G>
+                        <B>255</B>
+                        <A>255</A>
+                        <PackedValue>4294967295</PackedValue>
+                    </TintColor>
+                    <FlipHorizontally>false</FlipHorizontally>
+                    <FlipVertically>false</FlipVertically>
+                    <texture_filename>strippedscrews.png</texture_filename>
+                    <asset_name>strippedscrews</asset_name>
+                    <Origin>
+                        <X>16</X>
+                        <Y>16</Y>
+                    </Origin>
+                </Item>
+                <Item xsi:type="TextureItem" Name="stripped4" Visible="true">
+                    <Position>
+                        <X>2864</X>
+                        <Y>-480</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>screw</string>
+                        </Property>
+                        <Property Name="Screwtype" Type="string" Description="">
+                            <string>ScrewStripped</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>skeleton1</string>
+                        </Property>
+                    </CustomProperties>
+                    <Rotation>0</Rotation>
+                    <Scale>
+                        <X>1</X>
+                        <Y>1</Y>
+                    </Scale>
+                    <TintColor>
+                        <R>255</R>
+                        <G>255</G>
+                        <B>255</B>
+                        <A>255</A>
+                        <PackedValue>4294967295</PackedValue>
+                    </TintColor>
+                    <FlipHorizontally>false</FlipHorizontally>
+                    <FlipVertically>false</FlipVertically>
+                    <texture_filename>strippedscrews.png</texture_filename>
+                    <asset_name>strippedscrews</asset_name>
+                    <Origin>
+                        <X>16</X>
+                        <Y>16</Y>
+                    </Origin>
+                </Item>
+                <Item xsi:type="TextureItem" Name="stripped3" Visible="true">
+                    <Position>
+                        <X>3072</X>
+                        <Y>-320</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>screw</string>
+                        </Property>
+                        <Property Name="Screwtype" Type="string" Description="">
+                            <string>ScrewStripped</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>skeleton1</string>
+                        </Property>
+                    </CustomProperties>
+                    <Rotation>0</Rotation>
+                    <Scale>
+                        <X>1</X>
+                        <Y>1</Y>
+                    </Scale>
+                    <TintColor>
+                        <R>255</R>
+                        <G>255</G>
+                        <B>255</B>
+                        <A>255</A>
+                        <PackedValue>4294967295</PackedValue>
+                    </TintColor>
+                    <FlipHorizontally>false</FlipHorizontally>
+                    <FlipVertically>false</FlipVertically>
+                    <texture_filename>strippedscrews.png</texture_filename>
+                    <asset_name>strippedscrews</asset_name>
+                    <Origin>
+                        <X>16</X>
+                        <Y>16</Y>
+                    </Origin>
+                </Item>
+                <Item xsi:type="TextureItem" Name="stripped2" Visible="true">
+                    <Position>
+                        <X>2864</X>
+                        <Y>-160</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>screw</string>
+                        </Property>
+                        <Property Name="Screwtype" Type="string" Description="">
+                            <string>ScrewStripped</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>skeleton1</string>
+                        </Property>
+                    </CustomProperties>
+                    <Rotation>0</Rotation>
+                    <Scale>
+                        <X>1</X>
+                        <Y>1</Y>
+                    </Scale>
+                    <TintColor>
+                        <R>255</R>
+                        <G>255</G>
+                        <B>255</B>
+                        <A>255</A>
+                        <PackedValue>4294967295</PackedValue>
+                    </TintColor>
+                    <FlipHorizontally>false</FlipHorizontally>
+                    <FlipVertically>false</FlipVertically>
+                    <texture_filename>strippedscrews.png</texture_filename>
+                    <asset_name>strippedscrews</asset_name>
+                    <Origin>
+                        <X>16</X>
+                        <Y>16</Y>
+                    </Origin>
+                </Item>
+                <Item xsi:type="TextureItem" Name="stripped1" Visible="true">
+                    <Position>
+                        <X>3072</X>
+                        <Y>0</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>screw</string>
+                        </Property>
+                        <Property Name="Screwtype" Type="string" Description="">
+                            <string>ScrewStripped</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>skeleton1</string>
+                        </Property>
+                    </CustomProperties>
+                    <Rotation>0</Rotation>
+                    <Scale>
+                        <X>1</X>
+                        <Y>1</Y>
+                    </Scale>
+                    <TintColor>
+                        <R>255</R>
+                        <G>255</G>
+                        <B>255</B>
+                        <A>255</A>
+                        <PackedValue>4294967295</PackedValue>
+                    </TintColor>
+                    <FlipHorizontally>false</FlipHorizontally>
+                    <FlipVertically>false</FlipVertically>
+                    <texture_filename>strippedscrews.png</texture_filename>
+                    <asset_name>strippedscrews</asset_name>
+                    <Origin>
+                        <X>16</X>
+                        <Y>16</Y>
+                    </Origin>
+                </Item>
+                <Item xsi:type="RectangleItem" Name="outterwall" Visible="true">
+                    <Position>
+                        <X>3200</X>
+                        <Y>-1600</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>tiledPlatform</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>skeleton1</string>
+                        </Property>
+                    </CustomProperties>
+                    <Width>96</Width>
+                    <Height>1728</Height>
+                    <FillColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </FillColor>
+                </Item>
+                <Item xsi:type="RectangleItem" Name="rotatingplat1" Visible="true">
+                    <Position>
+                        <X>1216</X>
+                        <Y>-1136</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>tiledPlatform</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>skeleton1</string>
+                        </Property>
+                        <Property Name="mover" Type="string" Description="">
+                            <string>rotatetween</string>
+                        </Property>
+                    </CustomProperties>
+                    <Width>204</Width>
+                    <Height>39</Height>
+                    <FillColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </FillColor>
+                </Item>
+                <Item xsi:type="RectangleItem" Name="plat5" Visible="true">
+                    <Position>
+                        <X>976</X>
+                        <Y>-1136</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>tiledPlatform</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>skeleton1</string>
+                        </Property>
+                    </CustomProperties>
+                    <Width>204</Width>
+                    <Height>39</Height>
+                    <FillColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </FillColor>
+                </Item>
+                <Item xsi:type="RectangleItem" Name="rotatingplat2" Visible="true">
+                    <Position>
+                        <X>736</X>
+                        <Y>-1136</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>tiledPlatform</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>skeleton1</string>
+                        </Property>
+                        <Property Name="mover" Type="string" Description="">
+                            <string>rotatetween</string>
+                        </Property>
+                    </CustomProperties>
+                    <Width>204</Width>
+                    <Height>39</Height>
+                    <FillColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </FillColor>
+                </Item>
+                <Item xsi:type="RectangleItem" Name="plat6" Visible="true">
+                    <Position>
+                        <X>496</X>
+                        <Y>-1136</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>tiledPlatform</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>skeleton1</string>
+                        </Property>
+                    </CustomProperties>
+                    <Width>204</Width>
+                    <Height>39</Height>
+                    <FillColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </FillColor>
+                </Item>
+                <Item xsi:type="RectangleItem" Name="Rectangle_0069" Visible="true">
+                    <Position>
+                        <X>256</X>
+                        <Y>-1264</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>tiledPlatform</string>
+                        </Property>
+                        <Property Name="Onesided" Type="string" Description="">
+                            <string xsi:nil="true" />
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>skeleton1</string>
+                        </Property>
+                    </CustomProperties>
+                    <Width>204</Width>
+                    <Height>39</Height>
+                    <FillColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </FillColor>
+                </Item>
+                <Item xsi:type="RectangleItem" Name="foottop2" Visible="true">
+                    <Position>
+                        <X>576</X>
+                        <Y>-1696</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>tiledPlatform</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>skeleton1</string>
+                        </Property>
+                    </CustomProperties>
+                    <Width>2720</Width>
+                    <Height>96</Height>
+                    <FillColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </FillColor>
+                </Item>
+                <Item xsi:type="RectangleItem" Name="foottop1" Visible="true">
+                    <Position>
+                        <X>96</X>
+                        <Y>-1696</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>tiledPlatform</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>skeleton1</string>
+                        </Property>
+                    </CustomProperties>
+                    <Width>256</Width>
+                    <Height>96</Height>
+                    <FillColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </FillColor>
+                </Item>
+                <Item xsi:type="TextureItem" Name="stripped9" Visible="true">
+                    <Position>
+                        <X>448</X>
+                        <Y>-1632</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>screw</string>
+                        </Property>
+                        <Property Name="Screwtype" Type="string" Description="">
+                            <string>ScrewStripped</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>skeleton1</string>
+                        </Property>
+                    </CustomProperties>
+                    <Rotation>0</Rotation>
+                    <Scale>
+                        <X>1</X>
+                        <Y>1</Y>
+                    </Scale>
+                    <TintColor>
+                        <R>255</R>
+                        <G>255</G>
+                        <B>255</B>
+                        <A>255</A>
+                        <PackedValue>4294967295</PackedValue>
+                    </TintColor>
+                    <FlipHorizontally>false</FlipHorizontally>
+                    <FlipVertically>false</FlipVertically>
+                    <texture_filename>strippedscrews.png</texture_filename>
+                    <asset_name>strippedscrews</asset_name>
+                    <Origin>
+                        <X>16</X>
+                        <Y>16</Y>
+                    </Origin>
+                </Item>
+                <Item xsi:type="TextureItem" Name="checkpoint3" Visible="true">
+                    <Position>
+                        <X>672</X>
+                        <Y>-1776</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>skeleton1</string>
+                        </Property>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>checkpoint</string>
+                        </Property>
+                    </CustomProperties>
+                    <Rotation>0</Rotation>
+                    <Scale>
+                        <X>1</X>
+                        <Y>1</Y>
+                    </Scale>
+                    <TintColor>
+                        <R>255</R>
+                        <G>255</G>
+                        <B>255</B>
+                        <A>255</A>
+                        <PackedValue>4294967295</PackedValue>
+                    </TintColor>
+                    <FlipHorizontally>false</FlipHorizontally>
+                    <FlipVertically>false</FlipVertically>
+                    <texture_filename>cletter.png</texture_filename>
+                    <asset_name>cletter</asset_name>
+                    <Origin>
+                        <X>32</X>
+                        <Y>64</Y>
+                    </Origin>
+                </Item>
+                <Item xsi:type="RectangleItem" Name="structureplat" Visible="true">
+                    <Position>
+                        <X>1792</X>
+                        <Y>-1344</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>tiledPlatform</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>skeleton1</string>
+                        </Property>
+                        <Property Name="dynamic" Type="string" Description="">
+                            <string />
+                        </Property>
+                    </CustomProperties>
+                    <Width>416</Width>
+                    <Height>32</Height>
+                    <FillColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </FillColor>
+                </Item>
+                <Item xsi:type="TextureItem" Name="gear3" Visible="true">
+                    <Position>
+                        <X>576</X>
+                        <Y>-624</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>gearSmall</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>skeleton1</string>
+                        </Property>
+                        <Property Name="dynamic" Type="string" Description="">
+                            <string />
+                        </Property>
+                        <Property Name="rotatingcenter" Type="string" Description="">
+                            <string>motor</string>
+                        </Property>
+                        <Property Name="motorspeed" Type="string" Description="">
+                            <string>-1f</string>
+                        </Property>
+                        <Property Name="crushable" Type="string" Description="">
+                            <string />
+                        </Property>
+                    </CustomProperties>
+                    <Rotation>0</Rotation>
+                    <Scale>
+                        <X>1</X>
+                        <Y>1</Y>
+                    </Scale>
+                    <TintColor>
+                        <R>255</R>
+                        <G>255</G>
+                        <B>255</B>
+                        <A>255</A>
+                        <PackedValue>4294967295</PackedValue>
+                    </TintColor>
+                    <FlipHorizontally>false</FlipHorizontally>
+                    <FlipVertically>false</FlipVertically>
+                    <texture_filename>gear.png</texture_filename>
+                    <asset_name>gear</asset_name>
+                    <Origin>
+                        <X>140</X>
+                        <Y>140</Y>
+                    </Origin>
+                </Item>
+                <Item xsi:type="TextureItem" Name="gear4" Visible="true">
+                    <Position>
+                        <X>816</X>
+                        <Y>-624</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>gearSmall</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>skeleton1</string>
+                        </Property>
+                        <Property Name="dynamic" Type="string" Description="">
+                            <string />
+                        </Property>
+                        <Property Name="rotatingcenter" Type="string" Description="">
+                            <string />
+                        </Property>
+                        <Property Name="crushable" Type="string" Description="">
+                            <string />
+                        </Property>
+                    </CustomProperties>
+                    <Rotation>0</Rotation>
+                    <Scale>
+                        <X>1</X>
+                        <Y>1</Y>
+                    </Scale>
+                    <TintColor>
+                        <R>255</R>
+                        <G>255</G>
+                        <B>255</B>
+                        <A>255</A>
+                        <PackedValue>4294967295</PackedValue>
+                    </TintColor>
+                    <FlipHorizontally>false</FlipHorizontally>
+                    <FlipVertically>false</FlipVertically>
+                    <texture_filename>gear.png</texture_filename>
+                    <asset_name>gear</asset_name>
+                    <Origin>
+                        <X>140</X>
+                        <Y>140</Y>
+                    </Origin>
+                </Item>
+                <Item xsi:type="RectangleItem" Name="Rectangle_0077" Visible="true">
+                    <Position>
+                        <X>1472</X>
+                        <Y>-1136</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>tiledPlatform</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>skeleton1</string>
+                        </Property>
+                    </CustomProperties>
+                    <Width>384</Width>
+                    <Height>64</Height>
+                    <FillColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </FillColor>
+                </Item>
+                <Item xsi:type="RectangleItem" Name="Rectangle_0078" Visible="true">
+                    <Position>
+                        <X>1696</X>
+                        <Y>-1600</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>tiledPlatform</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>skeleton1</string>
+                        </Property>
+                    </CustomProperties>
+                    <Width>96</Width>
+                    <Height>288</Height>
+                    <FillColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </FillColor>
+                </Item>
+                <Item xsi:type="TextureItem" Name="structurescrew1" Visible="true">
+                    <Position>
+                        <X>2192</X>
+                        <Y>-1328</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Screwtype" Type="string" Description="">
+                            <string>ScrewStructural</string>
+                        </Property>
+                        <Property Name="target" Type="string" Description="">
+                            <string>structureplat</string>
+                        </Property>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>screw</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>skeleton1</string>
+                        </Property>
+                    </CustomProperties>
+                    <Rotation>0</Rotation>
+                    <Scale>
+                        <X>1</X>
+                        <Y>1</Y>
+                    </Scale>
+                    <TintColor>
+                        <R>255</R>
+                        <G>255</G>
+                        <B>255</B>
+                        <A>255</A>
+                        <PackedValue>4294967295</PackedValue>
+                    </TintColor>
+                    <FlipHorizontally>false</FlipHorizontally>
+                    <FlipVertically>false</FlipVertically>
+                    <texture_filename>structurescrew.png</texture_filename>
+                    <asset_name>structurescrew</asset_name>
+                    <Origin>
+                        <X>16</X>
+                        <Y>16</Y>
+                    </Origin>
+                </Item>
+                <Item xsi:type="TextureItem" Name="structurescrew2" Visible="true">
+                    <Position>
+                        <X>1824</X>
+                        <Y>-1328</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="ScrewType" Type="string" Description="">
+                            <string>ScrewStructural</string>
+                        </Property>
+                        <Property Name="target" Type="string" Description="">
+                            <string>structureplat</string>
+                        </Property>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>screw</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>skeleton1</string>
+                        </Property>
+                    </CustomProperties>
+                    <Rotation>0</Rotation>
+                    <Scale>
+                        <X>1</X>
+                        <Y>1</Y>
+                    </Scale>
+                    <TintColor>
+                        <R>255</R>
+                        <G>255</G>
+                        <B>255</B>
+                        <A>255</A>
+                        <PackedValue>4294967295</PackedValue>
+                    </TintColor>
+                    <FlipHorizontally>false</FlipHorizontally>
+                    <FlipVertically>false</FlipVertically>
+                    <texture_filename>structurescrew.png</texture_filename>
+                    <asset_name>structurescrew</asset_name>
+                    <Origin>
+                        <X>16</X>
+                        <Y>16</Y>
+                    </Origin>
+                </Item>
+                <Item xsi:type="TextureItem" Name="Texture_0081" Visible="true">
+                    <Position>
+                        <X>352</X>
+                        <Y>-1440</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>screw</string>
+                        </Property>
+                        <Property Name="Screwtype" Type="string" Description="">
+                            <string>ScrewStripped</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>skeleton1</string>
+                        </Property>
+                    </CustomProperties>
+                    <Rotation>0</Rotation>
+                    <Scale>
+                        <X>1</X>
+                        <Y>1</Y>
+                    </Scale>
+                    <TintColor>
+                        <R>255</R>
+                        <G>255</G>
+                        <B>255</B>
+                        <A>255</A>
+                        <PackedValue>4294967295</PackedValue>
+                    </TintColor>
+                    <FlipHorizontally>false</FlipHorizontally>
+                    <FlipVertically>false</FlipVertically>
+                    <texture_filename>strippedscrews.png</texture_filename>
+                    <asset_name>strippedscrews</asset_name>
+                    <Origin>
+                        <X>16</X>
+                        <Y>16</Y>
+                    </Origin>
+                </Item>
+                <Item xsi:type="TextureItem" Name="Texture_0082" Visible="true">
+                    <Position>
+                        <X>2368</X>
+                        <Y>-1328</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>screw</string>
+                        </Property>
+                        <Property Name="Screwtype" Type="string" Description="">
+                            <string>ScrewStripped</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>skeleton1</string>
+                        </Property>
+                    </CustomProperties>
+                    <Rotation>0</Rotation>
+                    <Scale>
+                        <X>1</X>
+                        <Y>1</Y>
+                    </Scale>
+                    <TintColor>
+                        <R>255</R>
+                        <G>255</G>
+                        <B>255</B>
+                        <A>255</A>
+                        <PackedValue>4294967295</PackedValue>
+                    </TintColor>
+                    <FlipHorizontally>false</FlipHorizontally>
+                    <FlipVertically>false</FlipVertically>
+                    <texture_filename>strippedscrews.png</texture_filename>
+                    <asset_name>strippedscrews</asset_name>
+                    <Origin>
+                        <X>16</X>
+                        <Y>16</Y>
+                    </Origin>
+                </Item>
+                <Item xsi:type="PathItem" Name="skeleton2" Visible="true">
+                    <Position>
+                        <X>2448</X>
+                        <Y>-3632</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>skeleton</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>RootSkeleton</string>
+                        </Property>
+                    </CustomProperties>
+                    <LocalPoints>
+                        <Vector2>
+                            <X>0</X>
+                            <Y>0</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>-608</X>
+                            <Y>528</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>576</X>
+                            <Y>544</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>576</X>
+                            <Y>-512</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>-608</X>
+                            <Y>-512</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>-608</X>
+                            <Y>528</Y>
+                        </Vector2>
+                    </LocalPoints>
+                    <WorldPoints>
+                        <Vector2>
+                            <X>2448</X>
+                            <Y>-3632</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>1840</X>
+                            <Y>-3104</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>3024</X>
+                            <Y>-3088</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>3024</X>
+                            <Y>-4144</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>1840</X>
+                            <Y>-4144</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>1840</X>
+                            <Y>-3104</Y>
+                        </Vector2>
+                    </WorldPoints>
+                    <IsPolygon>false</IsPolygon>
+                    <LineWidth>4</LineWidth>
+                    <LineColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </LineColor>
+                </Item>
+                <Item xsi:type="RectangleItem" Name="legrightwall" Visible="true">
+                    <Position>
+                        <X>3200</X>
+                        <Y>-4720</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>tiledPlatform</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>skeleton1</string>
+                        </Property>
+                    </CustomProperties>
+                    <Width>96</Width>
+                    <Height>3024</Height>
+                    <FillColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </FillColor>
+                </Item>
+                <Item xsi:type="RectangleItem" Name="legleftwall" Visible="true">
+                    <Position>
+                        <X>1600</X>
+                        <Y>-4704</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>tiledPlatform</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>skeleton1</string>
+                        </Property>
+                    </CustomProperties>
+                    <Width>96</Width>
+                    <Height>2848</Height>
+                    <FillColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </FillColor>
+                </Item>
+                <Item xsi:type="RectangleItem" Name="Rectangle_0086" Visible="true">
+                    <Position>
+                        <X>2928</X>
+                        <Y>-4112</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>tiledPlatform</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>skeleton2</string>
+                        </Property>
+                    </CustomProperties>
+                    <Width>64</Width>
+                    <Height>992</Height>
+                    <FillColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </FillColor>
+                </Item>
+                <Item xsi:type="RectangleItem" Name="Rectangle_0096" Visible="true">
+                    <Position>
+                        <X>2096</X>
+                        <Y>-3840</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>tiledPlatform</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>skeleton2</string>
+                        </Property>
+                    </CustomProperties>
+                    <Width>236</Width>
+                    <Height>39</Height>
+                    <FillColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </FillColor>
+                </Item>
+                <Item xsi:type="RectangleItem" Name="Rectangle_0100" Visible="true">
+                    <Position>
+                        <X>2176</X>
+                        <Y>-3936</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>tiledPlatform</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>skeleton2</string>
+                        </Property>
+                    </CustomProperties>
+                    <Width>44</Width>
+                    <Height>231</Height>
+                    <FillColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </FillColor>
+                </Item>
+                <Item xsi:type="TextureItem" Name="Texture_0103" Visible="true">
+                    <Position>
+                        <X>1952</X>
+                        <Y>-2096</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>screw</string>
+                        </Property>
+                        <Property Name="Screwtype" Type="string" Description="">
+                            <string>ScrewStripped</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>skeleton4</string>
+                        </Property>
+                    </CustomProperties>
+                    <Rotation>0</Rotation>
+                    <Scale>
+                        <X>1</X>
+                        <Y>1</Y>
+                    </Scale>
+                    <TintColor>
+                        <R>255</R>
+                        <G>255</G>
+                        <B>255</B>
+                        <A>255</A>
+                        <PackedValue>4294967295</PackedValue>
+                    </TintColor>
+                    <FlipHorizontally>false</FlipHorizontally>
+                    <FlipVertically>false</FlipVertically>
+                    <texture_filename>strippedscrews.png</texture_filename>
+                    <asset_name>strippedscrews</asset_name>
+                    <Origin>
+                        <X>16</X>
+                        <Y>16</Y>
+                    </Origin>
+                </Item>
+                <Item xsi:type="TextureItem" Name="Texture_0104" Visible="true">
+                    <Position>
+                        <X>2464</X>
+                        <Y>-4512</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>screw</string>
+                        </Property>
+                        <Property Name="Screwtype" Type="string" Description="">
+                            <string>ScrewStripped</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>skeleton1</string>
+                        </Property>
+                    </CustomProperties>
+                    <Rotation>0</Rotation>
+                    <Scale>
+                        <X>1</X>
+                        <Y>1</Y>
+                    </Scale>
+                    <TintColor>
+                        <R>255</R>
+                        <G>255</G>
+                        <B>255</B>
+                        <A>255</A>
+                        <PackedValue>4294967295</PackedValue>
+                    </TintColor>
+                    <FlipHorizontally>false</FlipHorizontally>
+                    <FlipVertically>false</FlipVertically>
+                    <texture_filename>strippedscrews.png</texture_filename>
+                    <asset_name>strippedscrews</asset_name>
+                    <Origin>
+                        <X>16</X>
+                        <Y>16</Y>
+                    </Origin>
+                </Item>
+                <Item xsi:type="RectangleItem" Name="Rectangle_0106" Visible="true">
+                    <Position>
+                        <X>2880</X>
+                        <Y>-2704</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>tiledPlatform</string>
+                        </Property>
+                        <Property Name="Onesided" Type="string" Description="">
+                            <string xsi:nil="true" />
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>skeleton1</string>
+                        </Property>
+                    </CustomProperties>
+                    <Width>236</Width>
+                    <Height>39</Height>
+                    <FillColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </FillColor>
+                </Item>
+                <Item xsi:type="RectangleItem" Name="Rectangle_0110" Visible="true">
+                    <Position>
+                        <X>1872</X>
+                        <Y>-4112</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>tiledPlatform</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>skeleton2</string>
+                        </Property>
+                    </CustomProperties>
+                    <Width>64</Width>
+                    <Height>992</Height>
+                    <FillColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </FillColor>
+                </Item>
+                <Item xsi:type="RectangleItem" Name="Rectangle_0111" Visible="true">
+                    <Position>
+                        <X>1936</X>
+                        <Y>-3184</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>tiledPlatform</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>skeleton2</string>
+                        </Property>
+                    </CustomProperties>
+                    <Width>800</Width>
+                    <Height>64</Height>
+                    <FillColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </FillColor>
+                </Item>
+                <Item xsi:type="TextureItem" Name="Texture_0116" Visible="true">
+                    <Position>
+                        <X>2832</X>
+                        <Y>-3152</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>screw</string>
+                        </Property>
+                        <Property Name="Screwtype" Type="string" Description="">
+                            <string>ScrewStripped</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>skeleton2</string>
+                        </Property>
+                    </CustomProperties>
+                    <Rotation>0</Rotation>
+                    <Scale>
+                        <X>1</X>
+                        <Y>1</Y>
+                    </Scale>
+                    <TintColor>
+                        <R>255</R>
+                        <G>255</G>
+                        <B>255</B>
+                        <A>255</A>
+                        <PackedValue>4294967295</PackedValue>
+                    </TintColor>
+                    <FlipHorizontally>false</FlipHorizontally>
+                    <FlipVertically>false</FlipVertically>
+                    <texture_filename>strippedscrews.png</texture_filename>
+                    <asset_name>strippedscrews</asset_name>
+                    <Origin>
+                        <X>16</X>
+                        <Y>16</Y>
+                    </Origin>
+                </Item>
+                <Item xsi:type="TextureItem" Name="Texture_0117" Visible="true">
+                    <Position>
+                        <X>2032</X>
+                        <Y>-4080</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>screw</string>
+                        </Property>
+                        <Property Name="Screwtype" Type="string" Description="">
+                            <string>ScrewStripped</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>skeleton2</string>
+                        </Property>
+                    </CustomProperties>
+                    <Rotation>0</Rotation>
+                    <Scale>
+                        <X>1</X>
+                        <Y>1</Y>
+                    </Scale>
+                    <TintColor>
+                        <R>255</R>
+                        <G>255</G>
+                        <B>255</B>
+                        <A>255</A>
+                        <PackedValue>4294967295</PackedValue>
+                    </TintColor>
+                    <FlipHorizontally>false</FlipHorizontally>
+                    <FlipVertically>false</FlipVertically>
+                    <texture_filename>strippedscrews.png</texture_filename>
+                    <asset_name>strippedscrews</asset_name>
+                    <Origin>
+                        <X>16</X>
+                        <Y>16</Y>
+                    </Origin>
+                </Item>
+                <Item xsi:type="RectangleItem" Name="Rectangle_0119" Visible="true">
+                    <Position>
+                        <X>1792</X>
+                        <Y>-2768</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>tiledPlatform</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>skeleton4</string>
+                        </Property>
+                    </CustomProperties>
+                    <Width>460</Width>
+                    <Height>39</Height>
+                    <FillColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </FillColor>
+                </Item>
+                <Item xsi:type="RectangleItem" Name="Rectangle_0120" Visible="true">
+                    <Position>
+                        <X>2208</X>
+                        <Y>-2736</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>tiledPlatform</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>skeleton4</string>
+                        </Property>
+                    </CustomProperties>
+                    <Width>44</Width>
+                    <Height>823</Height>
+                    <FillColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </FillColor>
+                </Item>
+                <Item xsi:type="RectangleItem" Name="Rectangle_0121" Visible="true">
+                    <Position>
+                        <X>1792</X>
+                        <Y>-2736</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>tiledPlatform</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>skeleton4</string>
+                        </Property>
+                    </CustomProperties>
+                    <Width>44</Width>
+                    <Height>823</Height>
+                    <FillColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </FillColor>
+                </Item>
+                <Item xsi:type="TextureItem" Name="Texture_0122" Visible="true">
+                    <Position>
+                        <X>2128</X>
+                        <Y>-2224</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>screw</string>
+                        </Property>
+                        <Property Name="Screwtype" Type="string" Description="">
+                            <string>ScrewStripped</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>skeleton4</string>
+                        </Property>
+                    </CustomProperties>
+                    <Rotation>0</Rotation>
+                    <Scale>
+                        <X>1</X>
+                        <Y>1</Y>
+                    </Scale>
+                    <TintColor>
+                        <R>255</R>
+                        <G>255</G>
+                        <B>255</B>
+                        <A>255</A>
+                        <PackedValue>4294967295</PackedValue>
+                    </TintColor>
+                    <FlipHorizontally>false</FlipHorizontally>
+                    <FlipVertically>false</FlipVertically>
+                    <texture_filename>strippedscrews.png</texture_filename>
+                    <asset_name>strippedscrews</asset_name>
+                    <Origin>
+                        <X>16</X>
+                        <Y>16</Y>
+                    </Origin>
+                </Item>
+                <Item xsi:type="TextureItem" Name="Texture_0123" Visible="true">
+                    <Position>
+                        <X>1952</X>
+                        <Y>-2368</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>screw</string>
+                        </Property>
+                        <Property Name="Screwtype" Type="string" Description="">
+                            <string>ScrewStripped</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>skeleton4</string>
+                        </Property>
+                    </CustomProperties>
+                    <Rotation>0</Rotation>
+                    <Scale>
+                        <X>1</X>
+                        <Y>1</Y>
+                    </Scale>
+                    <TintColor>
+                        <R>255</R>
+                        <G>255</G>
+                        <B>255</B>
+                        <A>255</A>
+                        <PackedValue>4294967295</PackedValue>
+                    </TintColor>
+                    <FlipHorizontally>false</FlipHorizontally>
+                    <FlipVertically>false</FlipVertically>
+                    <texture_filename>strippedscrews.png</texture_filename>
+                    <asset_name>strippedscrews</asset_name>
+                    <Origin>
+                        <X>16</X>
+                        <Y>16</Y>
+                    </Origin>
+                </Item>
+                <Item xsi:type="TextureItem" Name="Texture_0124" Visible="true">
+                    <Position>
+                        <X>2128</X>
+                        <Y>-2496</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>screw</string>
+                        </Property>
+                        <Property Name="Screwtype" Type="string" Description="">
+                            <string>ScrewStripped</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>skeleton4</string>
+                        </Property>
+                    </CustomProperties>
+                    <Rotation>0</Rotation>
+                    <Scale>
+                        <X>1</X>
+                        <Y>1</Y>
+                    </Scale>
+                    <TintColor>
+                        <R>255</R>
+                        <G>255</G>
+                        <B>255</B>
+                        <A>255</A>
+                        <PackedValue>4294967295</PackedValue>
+                    </TintColor>
+                    <FlipHorizontally>false</FlipHorizontally>
+                    <FlipVertically>false</FlipVertically>
+                    <texture_filename>strippedscrews.png</texture_filename>
+                    <asset_name>strippedscrews</asset_name>
+                    <Origin>
+                        <X>16</X>
+                        <Y>16</Y>
+                    </Origin>
+                </Item>
+                <Item xsi:type="TextureItem" Name="Texture_0125" Visible="true">
+                    <Position>
+                        <X>2128</X>
+                        <Y>-1936</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>screw</string>
+                        </Property>
+                        <Property Name="Screwtype" Type="string" Description="">
+                            <string>ScrewStripped</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>skeleton4</string>
+                        </Property>
+                    </CustomProperties>
+                    <Rotation>0</Rotation>
+                    <Scale>
+                        <X>1</X>
+                        <Y>1</Y>
+                    </Scale>
+                    <TintColor>
+                        <R>255</R>
+                        <G>255</G>
+                        <B>255</B>
+                        <A>255</A>
+                        <PackedValue>4294967295</PackedValue>
+                    </TintColor>
+                    <FlipHorizontally>false</FlipHorizontally>
+                    <FlipVertically>false</FlipVertically>
+                    <texture_filename>strippedscrews.png</texture_filename>
+                    <asset_name>strippedscrews</asset_name>
+                    <Origin>
+                        <X>16</X>
+                        <Y>16</Y>
+                    </Origin>
+                </Item>
+                <Item xsi:type="RectangleItem" Name="Rectangle_0126" Visible="true">
+                    <Position>
+                        <X>2128</X>
+                        <Y>-4112</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>tiledPlatform</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>skeleton2</string>
+                        </Property>
+                    </CustomProperties>
+                    <Width>800</Width>
+                    <Height>64</Height>
+                    <FillColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </FillColor>
+                </Item>
+                <Item xsi:type="TextureItem" Name="Texture_0127" Visible="true">
+                    <Position>
+                        <X>2928</X>
+                        <Y>-2464</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>screw</string>
+                        </Property>
+                        <Property Name="Screwtype" Type="string" Description="">
+                            <string>ScrewStripped</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>skeleton1</string>
+                        </Property>
+                    </CustomProperties>
+                    <Rotation>0</Rotation>
+                    <Scale>
+                        <X>1</X>
+                        <Y>1</Y>
+                    </Scale>
+                    <TintColor>
+                        <R>255</R>
+                        <G>255</G>
+                        <B>255</B>
+                        <A>255</A>
+                        <PackedValue>4294967295</PackedValue>
+                    </TintColor>
+                    <FlipHorizontally>false</FlipHorizontally>
+                    <FlipVertically>false</FlipVertically>
+                    <texture_filename>strippedscrews.png</texture_filename>
+                    <asset_name>strippedscrews</asset_name>
+                    <Origin>
+                        <X>16</X>
+                        <Y>16</Y>
+                    </Origin>
+                </Item>
+                <Item xsi:type="TextureItem" Name="Texture_0128" Visible="true">
+                    <Position>
+                        <X>2928</X>
+                        <Y>-2272</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>screw</string>
+                        </Property>
+                        <Property Name="Screwtype" Type="string" Description="">
+                            <string>ScrewStripped</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>skeleton1</string>
+                        </Property>
+                    </CustomProperties>
+                    <Rotation>0</Rotation>
+                    <Scale>
+                        <X>1</X>
+                        <Y>1</Y>
+                    </Scale>
+                    <TintColor>
+                        <R>255</R>
+                        <G>255</G>
+                        <B>255</B>
+                        <A>255</A>
+                        <PackedValue>4294967295</PackedValue>
+                    </TintColor>
+                    <FlipHorizontally>false</FlipHorizontally>
+                    <FlipVertically>false</FlipVertically>
+                    <texture_filename>strippedscrews.png</texture_filename>
+                    <asset_name>strippedscrews</asset_name>
+                    <Origin>
+                        <X>16</X>
+                        <Y>16</Y>
+                    </Origin>
+                </Item>
+                <Item xsi:type="TextureItem" Name="Texture_0129" Visible="true">
+                    <Position>
+                        <X>2928</X>
+                        <Y>-2048</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>screw</string>
+                        </Property>
+                        <Property Name="Screwtype" Type="string" Description="">
+                            <string>ScrewStripped</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>skeleton1</string>
+                        </Property>
+                    </CustomProperties>
+                    <Rotation>0</Rotation>
+                    <Scale>
+                        <X>1</X>
+                        <Y>1</Y>
+                    </Scale>
+                    <TintColor>
+                        <R>255</R>
+                        <G>255</G>
+                        <B>255</B>
+                        <A>255</A>
+                        <PackedValue>4294967295</PackedValue>
+                    </TintColor>
+                    <FlipHorizontally>false</FlipHorizontally>
+                    <FlipVertically>false</FlipVertically>
+                    <texture_filename>strippedscrews.png</texture_filename>
+                    <asset_name>strippedscrews</asset_name>
+                    <Origin>
+                        <X>16</X>
+                        <Y>16</Y>
+                    </Origin>
+                </Item>
+                <Item xsi:type="TextureItem" Name="Texture_0130" Visible="true">
+                    <Position>
+                        <X>2928</X>
+                        <Y>-1856</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>screw</string>
+                        </Property>
+                        <Property Name="Screwtype" Type="string" Description="">
+                            <string>ScrewStripped</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>skeleton1</string>
+                        </Property>
+                    </CustomProperties>
+                    <Rotation>0</Rotation>
+                    <Scale>
+                        <X>1</X>
+                        <Y>1</Y>
+                    </Scale>
+                    <TintColor>
+                        <R>255</R>
+                        <G>255</G>
+                        <B>255</B>
+                        <A>255</A>
+                        <PackedValue>4294967295</PackedValue>
+                    </TintColor>
+                    <FlipHorizontally>false</FlipHorizontally>
+                    <FlipVertically>false</FlipVertically>
+                    <texture_filename>strippedscrews.png</texture_filename>
+                    <asset_name>strippedscrews</asset_name>
+                    <Origin>
+                        <X>16</X>
+                        <Y>16</Y>
+                    </Origin>
+                </Item>
+                <Item xsi:type="TextureItem" Name="Texture_0131" Visible="true">
+                    <Position>
+                        <X>2864</X>
+                        <Y>-2976</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>screw</string>
+                        </Property>
+                        <Property Name="Screwtype" Type="string" Description="">
+                            <string>ScrewStripped</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>skeleton1</string>
+                        </Property>
+                    </CustomProperties>
+                    <Rotation>0</Rotation>
+                    <Scale>
+                        <X>1</X>
+                        <Y>1</Y>
+                    </Scale>
+                    <TintColor>
+                        <R>255</R>
+                        <G>255</G>
+                        <B>255</B>
+                        <A>255</A>
+                        <PackedValue>4294967295</PackedValue>
+                    </TintColor>
+                    <FlipHorizontally>false</FlipHorizontally>
+                    <FlipVertically>false</FlipVertically>
+                    <texture_filename>strippedscrews.png</texture_filename>
+                    <asset_name>strippedscrews</asset_name>
+                    <Origin>
+                        <X>16</X>
+                        <Y>16</Y>
+                    </Origin>
+                </Item>
+                <Item xsi:type="TextureItem" Name="Texture_0132" Visible="true">
+                    <Position>
+                        <X>2912</X>
+                        <Y>-2816</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>screw</string>
+                        </Property>
+                        <Property Name="Screwtype" Type="string" Description="">
+                            <string>ScrewStripped</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>skeleton1</string>
+                        </Property>
+                    </CustomProperties>
+                    <Rotation>0</Rotation>
+                    <Scale>
+                        <X>1</X>
+                        <Y>1</Y>
+                    </Scale>
+                    <TintColor>
+                        <R>255</R>
+                        <G>255</G>
+                        <B>255</B>
+                        <A>255</A>
+                        <PackedValue>4294967295</PackedValue>
+                    </TintColor>
+                    <FlipHorizontally>false</FlipHorizontally>
+                    <FlipVertically>false</FlipVertically>
+                    <texture_filename>strippedscrews.png</texture_filename>
+                    <asset_name>strippedscrews</asset_name>
+                    <Origin>
+                        <X>16</X>
+                        <Y>16</Y>
+                    </Origin>
+                </Item>
+                <Item xsi:type="RectangleItem" Name="Rectangle_0133" Visible="true">
+                    <Position>
+                        <X>2544</X>
+                        <Y>-3840</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>tiledPlatform</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>skeleton2</string>
+                        </Property>
+                    </CustomProperties>
+                    <Width>236</Width>
+                    <Height>39</Height>
+                    <FillColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </FillColor>
+                </Item>
+                <Item xsi:type="RectangleItem" Name="Rectangle_0134" Visible="true">
+                    <Position>
+                        <X>2640</X>
+                        <Y>-3936</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>tiledPlatform</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>skeleton2</string>
+                        </Property>
+                    </CustomProperties>
+                    <Width>44</Width>
+                    <Height>231</Height>
+                    <FillColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </FillColor>
+                </Item>
+                <Item xsi:type="RectangleItem" Name="Rectangle_0135" Visible="true">
+                    <Position>
+                        <X>2544</X>
+                        <Y>-3440</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>tiledPlatform</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>skeleton2</string>
+                        </Property>
+                    </CustomProperties>
+                    <Width>236</Width>
+                    <Height>39</Height>
+                    <FillColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </FillColor>
+                </Item>
+                <Item xsi:type="RectangleItem" Name="Rectangle_0136" Visible="true">
+                    <Position>
+                        <X>2640</X>
+                        <Y>-3536</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>tiledPlatform</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>skeleton2</string>
+                        </Property>
+                    </CustomProperties>
+                    <Width>44</Width>
+                    <Height>231</Height>
+                    <FillColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </FillColor>
+                </Item>
+                <Item xsi:type="RectangleItem" Name="Rectangle_0137" Visible="true">
+                    <Position>
+                        <X>2080</X>
+                        <Y>-3440</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>tiledPlatform</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>skeleton2</string>
+                        </Property>
+                    </CustomProperties>
+                    <Width>236</Width>
+                    <Height>39</Height>
+                    <FillColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </FillColor>
+                </Item>
+                <Item xsi:type="RectangleItem" Name="Rectangle_0138" Visible="true">
+                    <Position>
+                        <X>2176</X>
+                        <Y>-3536</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>tiledPlatform</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>skeleton2</string>
+                        </Property>
+                    </CustomProperties>
+                    <Width>44</Width>
+                    <Height>231</Height>
+                    <FillColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </FillColor>
+                </Item>
+            </Items>
+            <ScrollSpeed>
+                <X>1</X>
+                <Y>1</Y>
+            </ScrollSpeed>
+        </Layer>
+    </Layers>
+    <CustomProperties />
+    <EditorRelated>
+        <NextItemNumber>138</NextItemNumber>
+        <ContentRootFolder>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures</ContentRootFolder>
+        <CameraPosition>
+            <X>1365.336</X>
+            <Y>-234.656</Y>
+        </CameraPosition>
+        <Version>1.3.0.0</Version>
+    </EditorRelated>
+</Level>

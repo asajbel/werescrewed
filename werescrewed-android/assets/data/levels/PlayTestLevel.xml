@@ -1131,8 +1131,8 @@
                 </Item>
                 <Item xsi:type="TextureItem" Name="rope" Visible="true">
                     <Position>
-                        <X>1824</X>
-                        <Y>-432</Y>
+                        <X>1504</X>
+                        <Y>-576</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -1366,8 +1366,8 @@
                 </Item>
                 <Item xsi:type="RectangleItem" Name="Rectangle_0048" Visible="true">
                     <Position>
-                        <X>1968</X>
-                        <Y>-704</Y>
+                        <X>1952</X>
+                        <Y>-528</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -1377,7 +1377,53 @@
                             <string>skeleton3</string>
                         </Property>
                     </CustomProperties>
-                    <Width>204</Width>
+                    <Width>380</Width>
+                    <Height>39</Height>
+                    <FillColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </FillColor>
+                </Item>
+                <Item xsi:type="RectangleItem" Name="Rectangle_0049" Visible="true">
+                    <Position>
+                        <X>1952</X>
+                        <Y>-640</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>tiledPlatform</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>skeleton3</string>
+                        </Property>
+                    </CustomProperties>
+                    <Width>44</Width>
+                    <Height>119</Height>
+                    <FillColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </FillColor>
+                </Item>
+                <Item xsi:type="RectangleItem" Name="Rectangle_0051" Visible="true">
+                    <Position>
+                        <X>1952</X>
+                        <Y>-672</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>tiledPlatform</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>skeleton3</string>
+                        </Property>
+                    </CustomProperties>
+                    <Width>380</Width>
                     <Height>39</Height>
                     <FillColor>
                         <R>192</R>
@@ -1396,11 +1442,11 @@
     </Layers>
     <CustomProperties />
     <EditorRelated>
-        <NextItemNumber>48</NextItemNumber>
+        <NextItemNumber>51</NextItemNumber>
         <ContentRootFolder>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures</ContentRootFolder>
         <CameraPosition>
-            <X>1958.33093</X>
-            <Y>-566.668457</Y>
+            <X>1933.33057</X>
+            <Y>-58.3341751</Y>
         </CameraPosition>
         <Version>1.3.0.0</Version>
     </EditorRelated>

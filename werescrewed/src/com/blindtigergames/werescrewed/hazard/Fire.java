@@ -1,7 +1,9 @@
 package com.blindtigergames.werescrewed.hazard;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
+import com.badlogic.gdx.graphics.g2d.ParticleEmitter;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -10,14 +12,17 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+import com.badlogic.gdx.utils.Array;
 import com.blindtigergames.werescrewed.entity.EntityType;
 import com.blindtigergames.werescrewed.util.Util;
 
 public class Fire extends Hazard {
 
 	public ParticleEffect particleEffect;
+	public Array< ParticleEmitter > particleEmitter;
 	float width;
 	float height;
+	boolean upsideDown = true;
 	
 	public Fire( String name, Vector2 pos, World world, boolean isActive, 
 			float pixelWidth, float pixelHeight ) {
@@ -32,9 +37,10 @@ public class Fire extends Hazard {
 				Gdx.files.internal( "data/particles/steam" ),
 				Gdx.files.internal( "data/particles" ) );
 		particleEffect.setPosition( pos.x, pos.y);
-
+		particleEmitter = particleEffect.getEmitters( );
 		constructBody(pos);
-		
+		for( ParticleEmitter PE: particleEmitter)
+			PE.setContinuous( false );
 	}
 	
 	private void constructBody( Vector2 position ){
@@ -67,8 +73,26 @@ public class Fire extends Hazard {
 		body.setUserData( this );
 	}
 	
+	public void flip( ){
+		particleEffect.flipY( );
+		if(upsideDown){
+			body.setTransform( body.getPosition( ), (float) Math.PI  );
+		} else {
+			body.setTransform( body.getPosition( ), 0.0f  );
+		}
+		upsideDown = !upsideDown;
+	}
+	
+	
+	
 	public void draw( SpriteBatch batch, float deltaTime ) {
+		if (Gdx.input.isKeyPressed( Input.Keys.TAB ))
+			flip( );
+		if (Gdx.input.isKeyPressed( Input.Keys.BACKSLASH ))
+			setActiveHazard(!activeHazard);
 		particleEffect.draw( batch, deltaTime );
-		particleEffect.start( );
+		if(activeHazard){
+			particleEffect.start( );
+		}
 	}
 }
