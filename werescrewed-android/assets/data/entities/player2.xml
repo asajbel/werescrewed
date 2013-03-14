@@ -1,11 +1,12 @@
 <entity>
    	<category>Player</category>
-	<texture>common/player_b_f.png</texture>
+	<atlas>player_r_f</atlas>
+	<animator>player</animator>
 	<initialAnim>default</initialAnim>
-	<originX>0.0f</originX>
-	<originY>0.0f</originY>
-	<spriteScaleX>0.6f</spriteScaleX>
-	<spriteScaleY>0.6f</spriteScaleY>
+	<originX>64.0f</originX>
+	<originY>64.0f</originY>
+	<spriteScaleX>1.0f</spriteScaleX>
+	<spriteScaleY>1.0f</spriteScaleY>
 	<tintRed>1.0f</tintRed>
 	<tintGreen>1.0f</tintGreen>
 	<tintBlue>1.0f</tintBlue>
