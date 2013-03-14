@@ -34,6 +34,8 @@ public class MetricsRender {
 		int num;
 	}
 
+	private final int LIMIT = 5; 
+	private final float RADIUS = 64;
 	private boolean fileExists = false;
 	private boolean render = false;
 	private boolean cycleForward = true;
@@ -84,10 +86,15 @@ public class MetricsRender {
 			parseScrew( );
 			parseUnscrew( );
 			parseAttach( );
+			heatmap(parsedJump);
+			heatmap(parsedDeath);
+			heatmap(parsedScrew);
+			heatmap(parsedUnscrew);
+			heatmap(parsedAttach); 
 		}
 	}
 
-	public void render( OrthographicCamera camera, SpriteBatch batch ) {
+	public void render( OrthographicCamera camera ) {
 		if ( Gdx.input.isKeyPressed( Input.Keys.RIGHT_BRACKET ) ) {
 			if ( cycleForward ) {
 				cycleRenderForward( );
@@ -97,7 +104,7 @@ public class MetricsRender {
 			cycleForward = true;
 
 		if ( Gdx.input.isKeyPressed( Input.Keys.LEFT_BRACKET ) ) {
-			if ( cycleForward ) {
+			if ( cycleBackward ) {
 				cycleRenderBackward( );
 			}
 			cycleBackward = false;
@@ -142,8 +149,8 @@ public class MetricsRender {
 		}
 
 		if ( render && fileExists ) {
-			fancyFont.setColor( 1.0f, 1.0f, 1.0f, 1.0f );
-			fancyFont.draw( batch, mode, camera.position.x, camera.position.y );
+//			fancyFont.setColor( 1.0f, 1.0f, 1.0f, 1.0f );
+//			fancyFont.draw( batch, mode, camera.position.x, camera.position.y );
 
 			Gdx.gl.glBlendFunc( GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA );
 			Gdx.gl.glEnable( GL10.GL_BLEND );
@@ -155,7 +162,7 @@ public class MetricsRender {
 						rend.getValue( ).color.y, rend.getValue( ).color.z,
 						alpha );
 				shapeRenderer.filledCircle( rend.getValue( ).x,
-						rend.getValue( ).y, 16 );
+						rend.getValue( ).y, RADIUS );
 				shapeRenderer.end( );
 			}
 
@@ -167,26 +174,32 @@ public class MetricsRender {
 		switch ( whatToRender ) {
 		case NONE:
 			render = true;
+			Gdx.app.log( "Metric Shown: ", "Jumping" );
 			whatToRender = Type.JUMP;
 			break;
 		case JUMP:
 			render = true;
+			Gdx.app.log( "Metric Shown: ", "Dieing" );
 			whatToRender = Type.DIE;
 			break;
 		case DIE:
 			render = true;
+			Gdx.app.log( "Metric Shown: ", "Screwing" );
 			whatToRender = Type.SCREW;
 			break;
 		case SCREW:
 			render = true;
+			Gdx.app.log( "Metric Shown: ", "Unscrewing" );
 			whatToRender = Type.UNSCREW;
 			break;
 		case UNSCREW:
 			render = true;
+			Gdx.app.log( "Metric Shown: ", "Attaching" );
 			whatToRender = Type.ATTACH;
 			break;
 		case ATTACH:
 			render = false;
+			Gdx.app.log( "Metric Shown: ", "Nothing" );
 			whatToRender = Type.NONE;
 			break;
 		case TIME:
@@ -200,32 +213,38 @@ public class MetricsRender {
 
 	private void cycleRenderBackward( ) {
 		switch ( whatToRender ) {
-		case ATTACH:
+		case NONE:
 			render = true;
-			whatToRender = Type.UNSCREW;
-			break;
-		case DIE:
-			render = true;
-			whatToRender = Type.JUMP;
+			Gdx.app.log( "Metric Shown: ", "Attaching" );
+			whatToRender = Type.ATTACH;
 			break;
 		case JUMP:
 			render = false;
+			Gdx.app.log( "Metric Shown: ", "Nothing" );
 			whatToRender = Type.NONE;
 			break;
-		case NONE:
+		case DIE:
 			render = true;
-			whatToRender = Type.ATTACH;
+			Gdx.app.log( "Metric Shown: ", "Jumping" );
+			whatToRender = Type.JUMP;
 			break;
 		case SCREW:
 			render = true;
+			Gdx.app.log( "Metric Shown: ", "Dieing" );
 			whatToRender = Type.DIE;
-			break;
-		case TIME:
-			render = false;
 			break;
 		case UNSCREW:
 			render = true;
+			Gdx.app.log( "Metric Shown: ", "Screwing" );
 			whatToRender = Type.SCREW;
+			break;
+		case ATTACH:
+			render = true;
+			Gdx.app.log( "Metric Shown: ", "Unscrewing" );
+			whatToRender = Type.UNSCREW;
+			break;
+		case TIME:
+			render = false;
 			break;
 		default:
 			break;
@@ -287,11 +306,35 @@ public class MetricsRender {
 			parsed.put( key, p );
 		}
 	}
+	
+	private void heatmap (Map< String, Place > parsed) {
+		for ( Map.Entry< String, Place > heat : parsed.entrySet( ) ) {
+			interpolateColor( heat.getValue( ) );
+		}
+	}
 
 	private void interpolateColor( Place p ) {
-		int runsTimes = runs.size( );
+		float runsTimes = runs.size( );
 		float value = p.num / runsTimes;
+		float t = Math.min( value / LIMIT, 1.0f); 
+		Vector3 blue = new Vector3(0.0f, 0.0f, 1.0f);
+		Vector3 green = new Vector3(0.0f, 1.0f, 0.0f);
+		Vector3 red = new Vector3(1.0f, 0.0f, 0.0f); 
+		
+		Vector3 p1 = blue.mul( (1 - t) * (1 - t) );
+		Vector3 p2 = green.mul( 2 * (1 - t) * t );
+		Vector3 p3 = red.mul( t * t );
+		Vector3 color = p1.add( p2.add( p3 ) ); 
+		
+		p.color = color; 
+	}
 
+	private float round( float start ) {
+		float end = 0;
+		end = start / 64;
+		end = Math.round( end );
+		end = end * 64;
+		return end;
 	}
 
 	private void parseJump( ) {
@@ -338,13 +381,5 @@ public class MetricsRender {
 				addToMap( pos, parsedAttach );
 			}
 		}
-	}
-
-	private float round( float start ) {
-		float end = 0;
-		end = start * Util.PIXEL_TO_BOX;
-		end = Math.round( end );
-		end = end * Util.BOX_TO_PIXEL;
-		return end;
 	}
 }

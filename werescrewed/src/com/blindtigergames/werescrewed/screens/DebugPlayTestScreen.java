@@ -1119,7 +1119,6 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		testRope.draw( batch );
 		player1.draw( batch );
 		player2.draw( batch );
-		metRend.render( cam.camera, batch ); 
 
 		batch.end( );
 
@@ -1152,6 +1151,7 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 				// ScreenManager.getInstance( ).dispose( ScreenType.MAIN_MENU );
 			}
 		}
+		metRend.render( cam.camera ); 
 
 		world.step( 1 / 60f, 6, 3 );
 	}
