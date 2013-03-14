@@ -160,6 +160,13 @@ public class Metrics {
 			// TODO Auto-generated catch block
 			e.printStackTrace( );
 		}
-
+		
+		sectionNames.clear( );
+		playerDeathPositions.clear( );
+		playerJumpPositions.clear( );
+		playerAttachToScrewPositions.clear( );
+		playerScrewedPositions.clear( );
+		playerUnscrewedPositions.clear( );
+		playerTime.clear( ); 
 	}
 }

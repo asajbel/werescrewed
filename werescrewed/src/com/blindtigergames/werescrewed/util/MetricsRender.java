@@ -142,11 +142,12 @@ public class MetricsRender {
 		}
 
 		if ( render && fileExists ) {
-			Gdx.gl.glBlendFunc( GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA );
-			Gdx.gl.glEnable( GL10.GL_BLEND );
 			fancyFont.setColor( 1.0f, 1.0f, 1.0f, 1.0f );
 			fancyFont.draw( batch, mode, camera.position.x, camera.position.y );
 
+			Gdx.gl.glBlendFunc( GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA );
+			Gdx.gl.glEnable( GL10.GL_BLEND );
+			
 			for ( Map.Entry< String, Place > rend : parsed.entrySet( ) ) {
 				shapeRenderer.setProjectionMatrix( camera.combined );
 				shapeRenderer.begin( ShapeType.FilledCircle );
@@ -164,32 +165,32 @@ public class MetricsRender {
 
 	private void cycleRenderForward( ) {
 		switch ( whatToRender ) {
-		case ATTACH:
-			render = false;
-			whatToRender = Type.NONE;
-			break;
-		case DIE:
+		case NONE:
 			render = true;
-			whatToRender = Type.SCREW;
+			whatToRender = Type.JUMP;
 			break;
 		case JUMP:
 			render = true;
 			whatToRender = Type.DIE;
 			break;
-		case NONE:
+		case DIE:
 			render = true;
-			whatToRender = Type.JUMP;
+			whatToRender = Type.SCREW;
 			break;
 		case SCREW:
 			render = true;
 			whatToRender = Type.UNSCREW;
 			break;
-		case TIME:
-			render = false;
-			break;
 		case UNSCREW:
 			render = true;
 			whatToRender = Type.ATTACH;
+			break;
+		case ATTACH:
+			render = false;
+			whatToRender = Type.NONE;
+			break;
+		case TIME:
+			render = false;
 			break;
 		default:
 			break;
@@ -266,15 +267,15 @@ public class MetricsRender {
 	// }
 	// }
 
-	private void addToMap( Vector2 pos, Map< String, Place > parced ) {
+	private void addToMap( Vector2 pos, Map< String, Place > parsed ) {
 		float startX, startY, endX, endY;
 		startX = pos.x;
 		startY = pos.y;
 		endX = round( startX );
 		endY = round( startY );
 		String key = endX + ", " + endY;
-		if ( parsedJump.containsKey( key ) ) {
-			parsedJump.get( key ).num++;
+		if ( parsed.containsKey( key ) ) {
+			parsed.get( key ).num++;
 		} else {
 			Place p = new Place( );
 			p.x = endX;
@@ -283,7 +284,7 @@ public class MetricsRender {
 			p.color.y = 0.0f;
 			p.color.z = 1.0f;
 			p.num = 1;
-			parsedJump.put( key, p );
+			parsed.put( key, p );
 		}
 	}
 
