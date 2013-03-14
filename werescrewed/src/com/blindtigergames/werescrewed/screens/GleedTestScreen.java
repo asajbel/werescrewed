@@ -3,6 +3,7 @@ package com.blindtigergames.werescrewed.screens;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.camera.Anchor;
 import com.blindtigergames.werescrewed.camera.AnchorList;
@@ -43,9 +44,10 @@ public class GleedTestScreen extends Screen {
 
 		Skeleton skel = (Skeleton) LevelFactory.entities.get( "skeleton2" );
 		
-		skel.addMover( new RotateTweenMover(skel, 15f, Util.PI, 2f, true),
-				RobotState.IDLE );
+//		skel.addMover( new RotateTweenMover(skel, 15f, Util.PI, 2f, true),
+//				RobotState.IDLE );
 		
+
 		Skeleton skel2 = (Skeleton) LevelFactory.entities.get( "skeleton4" );
 		
 		
@@ -69,17 +71,19 @@ public class GleedTestScreen extends Screen {
 		testSteam = new Steam( "testSteam", new Vector2( 2913, 2770f ), null,
 				null, false, 25, 50, level.world );
 		
-		// Create anchor with start position and buffer as parameters
-		Anchor testAnchor = new Anchor( new Vector2(skel.getPositionPixel( ).x, skel.getPositionPixel( ).y ),
-				new Vector2( 1000,
-				1000 ) );
-		// Add to the universally accessible anchor list
-		AnchorList.getInstance( ).addAnchor( testAnchor );
-		// Set timer in steps
-		//testAnchor.setTimer( 200 );
-		// Activate it
-		testAnchor.activate( );
+//		// Create anchor with start position and buffer as parameters
+//		Anchor testAnchor = new Anchor( new Vector2(skel.getPositionPixel( ).x, skel.getPositionPixel( ).y ),
+//				new Vector2( 1000,
+//				1000 ) );
+//		// Add to the universally accessible anchor list
+//		AnchorList.getInstance( ).addAnchor( testAnchor );
+//		// Set timer in steps
+//		//testAnchor.setTimer( 200 );
+//		// Activate it
+//		testAnchor.activate( );
 		
+		Platform p = (Platform) LevelFactory.entities.get( "plat4" );
+		p.oneSided = true;
 		
 //		skel.addMover( new RotateTweenMover( skel, 5f,
 //				Util.PI / 2, 1f, true ),
