@@ -1,9 +1,11 @@
 package com.blindtigergames.werescrewed.entity.animator;
 
+import com.badlogic.gdx.Gdx;
+
 public class SimpleFrameAnimator implements IAnimator {
 
 	protected int frame;
-	protected float speed, time;
+	protected float speed, initialSpeed, time;
 	protected int start, frames;
 	public enum LoopBehavior{
 		STOP(0),
@@ -31,6 +33,7 @@ public class SimpleFrameAnimator implements IAnimator {
 	public SimpleFrameAnimator( ) {
 		frame = 0;
 		speed = 1.0f;
+		initialSpeed = 1.0f;
 		time = 0.0f;
 		start = 0; frames = 0;
 		loop = LoopBehavior.LOOP;
@@ -38,9 +41,15 @@ public class SimpleFrameAnimator implements IAnimator {
 	}
 
 
-	public SimpleFrameAnimator speed(float s){
+	public SimpleFrameAnimator speed(float s, boolean setInitial){
 		speed = s;
+		if (setInitial)
+			initialSpeed = s;
 		return this;
+	}
+	
+	public SimpleFrameAnimator speed(float s){
+		return this.speed( s, false );
 	}
 	
 	public SimpleFrameAnimator time(float t){
@@ -54,6 +63,7 @@ public class SimpleFrameAnimator implements IAnimator {
 	}
 
 	public SimpleFrameAnimator maxFrames(int f){
+		Gdx.app.log("SimpleFrameAnimator", "Setting max frames to: "+f);
 		frames = f;
 		return this;
 	}
@@ -76,7 +86,7 @@ public class SimpleFrameAnimator implements IAnimator {
 	@Override
 	public void update( float dT ) {
 		incrementTime(dT);
-		frame = (int)Math.floor( time );
+		frame = (int)Math.floor( time * frames);
 		//Gdx.app.log( "SimpleFrameAnimator", "Time: "+time+" Frame: "+frame );
 	}
 
@@ -114,7 +124,7 @@ public class SimpleFrameAnimator implements IAnimator {
 	public void reset(){
 		frame = 0;
 		time = 0.0f;
-		speed = 1.0f;
+		speed = initialSpeed;
 	}
 	
 	protected void incrementTime( float dT ){
@@ -150,7 +160,6 @@ public class SimpleFrameAnimator implements IAnimator {
 			}
 		}
 	}
-
 
 	public float getTime() {
 		// TODO Auto-generated method stub
