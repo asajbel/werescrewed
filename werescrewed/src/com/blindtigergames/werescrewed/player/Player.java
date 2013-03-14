@@ -59,7 +59,7 @@ public class Player extends Entity {
 	public final static int HEAD_JUMP_STEPS = 30;
 	public final static float SCREW_ATTACH_SPEED = 0.1f;
 	public final static int GRAB_COUNTER_STEPS = 5;
-	public final static Vector2 ANCHOR_BUFFER_SIZE = new Vector2( 200f, 128f );
+	public final static Vector2 ANCHOR_BUFFER_SIZE = new Vector2( 300f, 128f );
 	public final static float STEAM_FORCE = .5f;
 	public final static float STEAM_IMPULSE = 0.20f;
 	public final static float FRICTION_INCREMENT = 0.3f;
