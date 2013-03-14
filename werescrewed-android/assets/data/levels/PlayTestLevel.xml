@@ -1131,8 +1131,8 @@
                 </Item>
                 <Item xsi:type="TextureItem" Name="rope" Visible="true">
                     <Position>
-                        <X>1824</X>
-                        <Y>-432</Y>
+                        <X>1504</X>
+                        <Y>-576</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -1445,8 +1445,8 @@
         <NextItemNumber>51</NextItemNumber>
         <ContentRootFolder>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures</ContentRootFolder>
         <CameraPosition>
-            <X>1958.33093</X>
-            <Y>-566.668457</Y>
+            <X>1933.33057</X>
+            <Y>-58.3341751</Y>
         </CameraPosition>
         <Version>1.3.0.0</Version>
     </EditorRelated>

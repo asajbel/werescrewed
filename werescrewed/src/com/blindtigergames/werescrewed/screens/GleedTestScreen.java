@@ -4,6 +4,8 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.blindtigergames.werescrewed.WereScrewedGame;
+import com.blindtigergames.werescrewed.camera.Anchor;
+import com.blindtigergames.werescrewed.camera.AnchorList;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.RobotState;
 import com.blindtigergames.werescrewed.entity.Skeleton;
@@ -14,11 +16,14 @@ import com.blindtigergames.werescrewed.entity.mover.LerpMover;
 import com.blindtigergames.werescrewed.entity.mover.LinearAxis;
 import com.blindtigergames.werescrewed.entity.mover.PuzzleType;
 import com.blindtigergames.werescrewed.entity.mover.RockingMover;
+import com.blindtigergames.werescrewed.entity.mover.RotateByDegree;
 import com.blindtigergames.werescrewed.entity.mover.RotateTweenMover;
 import com.blindtigergames.werescrewed.entity.mover.puzzle.PuzzleRotateTweenMover;
 import com.blindtigergames.werescrewed.entity.tween.PathBuilder;
 import com.blindtigergames.werescrewed.eventTrigger.EventTrigger;
 import com.blindtigergames.werescrewed.level.LevelFactory;
+import com.blindtigergames.werescrewed.particles.Steam;
+import com.blindtigergames.werescrewed.platforms.Platform;
 import com.blindtigergames.werescrewed.platforms.TiledPlatform;
 import com.blindtigergames.werescrewed.rope.Rope;
 import com.blindtigergames.werescrewed.screws.PuzzleScrew;
@@ -27,6 +32,7 @@ import com.blindtigergames.werescrewed.util.Util;
 public class GleedTestScreen extends Screen {
 	
 	Music music;
+	Steam testSteam;
 	public GleedTestScreen( String name ){
 		super();
 		String filename = "data/levels/"+ name + ".xml";
@@ -35,22 +41,64 @@ public class GleedTestScreen extends Screen {
 		music = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 				+ "/common/sounds/TrainJob.mp3" );
 
-		Skeleton skel = (Skeleton) LevelFactory.entities.get( "skeleton3" );
+		Skeleton skel = (Skeleton) LevelFactory.entities.get( "skeleton2" );
+		
+		skel.addMover( new RotateTweenMover(skel, 15f, Util.PI, 2f, true),
+				RobotState.IDLE );
+		
+		Skeleton skel2 = (Skeleton) LevelFactory.entities.get( "skeleton4" );
+		
 		
 //		PathBuilder pb = new PathBuilder( );
 //		skel.addMover( pb.begin( skel ).target( 0, 150, 3 ).target( 0, 0, 3 )
 //				.build( ), RobotState.IDLE );
 
-		skel.addMover( new RotateTweenMover( skel, 10f,
-				Util.PI, 2f, true ),
-				RobotState.IDLE );
+		PuzzleScrew puzzleScrew = new PuzzleScrew( "006", new Vector2(
+				skel2.getPositionPixel( ).x, skel2.getPositionPixel( ).y ),
+				100, skel2, level.world, 0, false );
+
+		PuzzleRotateTweenMover rtm1 = new PuzzleRotateTweenMover( 1,
+				Util.PI / 2, true, PuzzleType.ON_OFF_MOVER );
+
+		puzzleScrew.puzzleManager.addEntity( skel2 );
+		puzzleScrew.puzzleManager.addMover( rtm1 );
+		skel2.addScrewForDraw( puzzleScrew );
 		
-		System.out.println( skel.name );
+		//2913, 2770
+		
+		testSteam = new Steam( "testSteam", new Vector2( 2913, 2770f ), null,
+				null, false, 25, 50, level.world );
+		
+		// Create anchor with start position and buffer as parameters
+		Anchor testAnchor = new Anchor( new Vector2(skel.getPositionPixel( ).x, skel.getPositionPixel( ).y ),
+				new Vector2( 1000,
+				1000 ) );
+		// Add to the universally accessible anchor list
+		AnchorList.getInstance( ).addAnchor( testAnchor );
+		// Set timer in steps
+		//testAnchor.setTimer( 200 );
+		// Activate it
+		testAnchor.activate( );
+		
+		
+//		skel.addMover( new RotateTweenMover( skel, 5f,
+//				Util.PI / 2, 1f, true ),
+//				RobotState.IDLE );
+		
+		
+		//2000, -80
+		//System.out.println( skel.name );
 	}
 	
 	@Override
 	public void render( float deltaTime ) {
 		super.render( deltaTime );
+		testSteam.update( deltaTime );
+		
+		batch.setProjectionMatrix( level.camera.combined( ) );
+		batch.begin( );
+		testSteam.draw( batch, deltaTime );
+		batch.end( );
 		
 		if(!music.isPlaying( )){
 			music.play( );
