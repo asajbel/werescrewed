@@ -107,7 +107,7 @@ public class HazardScreen implements com.badlogic.gdx.Screen {
 
 	private void initHazards( ) {
 		fire = new Fire( "Fire1", new Vector2( -700.0f, -10.0f ), 
-				world, true, 25, 50 );
+				world, true, 15, 60 );
 		/*elec = new Electricity( "Elec1", new Vector2( 3000.0f, -10.0f ),
 				world, true );
 		saw = new Saws( "Saw1", new Vector2( -2000.0f, 40.0f ),

@@ -24,6 +24,16 @@ public class Fire extends Hazard {
 	float height;
 	boolean upsideDown = true;
 	
+	/**
+	 * Constructor for fire
+	 * 
+	 * @param name String
+	 * @param pos Vector2
+	 * @param world World
+	 * @param isActive boolean
+	 * @param pixelWidth float
+	 * @param pixelHeight float
+	 */
 	public Fire( String name, Vector2 pos, World world, boolean isActive, 
 			float pixelWidth, float pixelHeight ) {
 		super( name, pos, null, world, isActive );
@@ -43,6 +53,11 @@ public class Fire extends Hazard {
 			PE.setContinuous( false );
 	}
 	
+	/**
+	 * sets up physics bodies
+	 * 
+	 * @param position Vector2
+	 */
 	private void constructBody( Vector2 position ){
 		BodyDef bodyDef = new BodyDef( );
 		bodyDef.type = BodyType.KinematicBody;
@@ -73,6 +88,9 @@ public class Fire extends Hazard {
 		body.setUserData( this );
 	}
 	
+	/**
+	 * flips vertical direction of fire
+	 */
 	public void flip( ){
 		particleEffect.flipY( );
 		if(upsideDown){
@@ -84,7 +102,12 @@ public class Fire extends Hazard {
 	}
 	
 	
-	
+	/**
+	 * draws fire particles
+	 * 
+	 * @param batch SpriteBatch
+	 * @param deltaTime float
+	 */
 	public void draw( SpriteBatch batch, float deltaTime ) {
 		if (Gdx.input.isKeyPressed( Input.Keys.TAB ))
 			flip( );
