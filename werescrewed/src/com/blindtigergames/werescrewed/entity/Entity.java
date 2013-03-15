@@ -16,7 +16,6 @@ import com.badlogic.gdx.physics.box2d.Filter;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.utils.Array;
 import com.blindtigergames.werescrewed.camera.Anchor;
 import com.blindtigergames.werescrewed.camera.AnchorList;
@@ -94,7 +93,6 @@ public class Entity implements GleedLoadable {
 		this.decals = new ArrayList< Sprite >( );
 		this.decalOffsets = new ArrayList< Vector2 >( );
 		setPixelPosition( positionPixels );
-		createAnchor( );
 	}
 
 	/**
@@ -283,9 +281,6 @@ public class Entity implements GleedLoadable {
 		if ( removeNextStep ) {
 			remove( );
 		} else if ( body != null ) {
-			if ( anchor != null ) {
-				updateAnchor( );
-			}
 			// animation stuff may go here
 			Vector2 bodyPos = body.getPosition( ).mul( Util.BOX_TO_PIXEL );
 			if ( sprite != null ) {
@@ -800,7 +795,7 @@ public class Entity implements GleedLoadable {
 				+ body.isAwake( );
 	}
 
-	private void createAnchor( ) {
+	public void createAnchor( ) {
 		Vector2 centPos = new Vector2( body.getWorldCenter( ).x
 				* Util.BOX_TO_PIXEL, body.getWorldCenter( ).y
 				* Util.BOX_TO_PIXEL );

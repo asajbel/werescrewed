@@ -451,6 +451,7 @@ public class LevelFactory {
 			
 			level.player2 = new PlayerBuilder( ).name( "player2" ).world( level.world )
 					.position( item.pos.add( 100f, 0f ) ).buildPlayer( );
+			entities.put("player2", level.player2);
 		}
 		
 
