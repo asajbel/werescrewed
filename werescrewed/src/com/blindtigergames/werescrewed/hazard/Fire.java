@@ -25,13 +25,14 @@ public class Fire extends Hazard {
 	boolean upsideDown = true;
 	
 	public Fire( String name, Vector2 pos, World world, boolean isActive, 
-			float pixelWidth, float pixelHeight ) {
-		super( name, pos, null, world, isActive );
+			float width, float height ) {
+		super( name, pos, null, world, width, height, isActive );
 		entityType = EntityType.HAZARD;
 		
-		width = pixelWidth;
-		height = pixelHeight;
+		this.width = width;
+		this.height = height;
 		this.world = world;
+		this.activeHazard = isActive;
 		particleEffect = new ParticleEffect( );
 		particleEffect.load(
 				Gdx.files.internal( "data/particles/steam" ),

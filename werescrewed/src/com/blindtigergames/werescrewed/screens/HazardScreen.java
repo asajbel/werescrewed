@@ -46,6 +46,7 @@ public class HazardScreen implements com.badlogic.gdx.Screen {
 	private TiledPlatform ground, crusher;
 	private StructureScrew struct1, struct2;
 	private PlatformBuilder platBuilder;
+	private Hazard hazard;
 	private Fire fire;
 	private Electricity elec;
 	private Saws saw;
@@ -105,6 +106,11 @@ public class HazardScreen implements com.badlogic.gdx.Screen {
 	}
 
 	private void initHazards( ) {
+		Vector2 tempPos = new Vector2( -1250.0f, 300.0f );
+		float tempWH = 100.0f;
+		hazard = new Hazard ( "Test", tempPos, null, 
+				world, tempWH, tempWH, true );
+		hazard.constructBody( tempPos, tempWH, tempWH );
 		fire = new Fire( "Fire1", new Vector2( -700.0f, -10.0f ), 
 				world, true, 50, 100 );
 		/*elec = new Electricity( "Elec1", new Vector2( 3000.0f, -10.0f ),
@@ -113,7 +119,7 @@ public class HazardScreen implements com.badlogic.gdx.Screen {
 				2, world, true );
 		 */
 		spikes = new Spikes( "Spikes1", new Vector2( -1700.0f, 5.0f ), 
-				6, 1, world, true, false, false );
+				1, 6, world, true, false, false );
 		spikes2 = spikesBuilder.position( -1500.0f, 5.0f ).dimensions( 4, 1 )
 				.up( ).active( ).buildSpikes( );
 		//add the spikes to the skeleton

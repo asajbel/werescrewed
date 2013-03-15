@@ -34,9 +34,9 @@ public class Saws extends Hazard {
 	protected Vector2 bodypos;
 	protected float tileConstant = 16.0f;
 	
-	public Saws( String name, Vector2 pos, int size,
+	public Saws( String name, Vector2 pos, float size,
 			World world, boolean isActive ) {
-		super( name, pos, null, world, isActive );
+		super( name, pos, null, world, size, size, isActive );
 		entityType = EntityType.HAZARD;
 
 		this.world = world;

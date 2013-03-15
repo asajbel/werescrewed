@@ -357,7 +357,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 	private void initHazards( ) {
 
 
-		Spikes spikes = new Spikes( "Spikes1", new Vector2( -500.0f, -10.0f ), 1, 6,
+		Spikes spikes = new Spikes( "Spikes1", new Vector2( -500.0f, -10.0f ), 6, 1,
 				world, true, false, true );
 
 		skeleton.addKinematicPlatform( spikes );
