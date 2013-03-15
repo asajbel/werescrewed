@@ -1,6 +1,7 @@
 package com.blindtigergames.werescrewed.particles;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -20,6 +21,7 @@ public class Steam extends Entity{
 	public ParticleEffect particleEffect;
 	float width;
 	float height;
+	boolean test;
 	
 	/**
 	 * Creates a steam vent which moves players up when they collide
@@ -42,7 +44,7 @@ public class Steam extends Entity{
 		this.world = world;
 		particleEffect = new ParticleEffect( );
 		particleEffect.load(
-				Gdx.files.internal( "data/particles/steam" ),
+				Gdx.files.internal( "data/particles/Steam" ),
 				Gdx.files.internal( "data/particles" ) );
 		particleEffect.setPosition( positionPixels.x, positionPixels.y - height);
 
@@ -56,7 +58,14 @@ public class Steam extends Entity{
 	 * @param deltaTime float
 	 */
 	public void draw( SpriteBatch batch, float deltaTime ) {
-			particleEffect.draw( batch, deltaTime );
+		//if ( Gdx.input.isKeyPressed( Keys.B ) ) {
+		//	if (test){
+				//particleEffect.start( );
+		//	}
+		//	test = false;
+		//}
+		//else test = true;
+		particleEffect.draw( batch, deltaTime );
 	}
 	
 	/**

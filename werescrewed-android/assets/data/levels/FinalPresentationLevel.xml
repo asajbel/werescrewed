@@ -300,8 +300,8 @@
                 </Item>
                 <Item xsi:type="TextureItem" Name="playerOne" Visible="true">
                     <Position>
-                        <X>272</X>
-                        <Y>-32</Y>
+                        <X>672</X>
+                        <Y>-1904</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -331,8 +331,8 @@
                 </Item>
                 <Item xsi:type="TextureItem" Name="playerTwo" Visible="true">
                     <Position>
-                        <X>400</X>
-                        <Y>-32</Y>
+                        <X>800</X>
+                        <Y>-1904</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">

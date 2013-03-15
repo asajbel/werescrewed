@@ -63,9 +63,9 @@ public class Player extends Entity {
 	public final static int HEAD_JUMP_STEPS = 30;
 	public final static float SCREW_ATTACH_SPEED = 0.1f;
 	public final static int GRAB_COUNTER_STEPS = 5;
-	public final static Vector2 ANCHOR_BUFFER_SIZE = new Vector2( 300f, 128f );
+	public final static Vector2 ANCHOR_BUFFER_SIZE = new Vector2( 300f, 200f );
 	public final static float STEAM_FORCE = .5f;
-	public final static float STEAM_IMPULSE = 0.20f;
+	public final static float STEAM_IMPULSE = 0.1f;
 	public final static float FRICTION_INCREMENT = 0.3f;
 	public final static float FEET_OFFSET_X = 58f * Util.PIXEL_TO_BOX;
 	public final static float FEET_OFFSET_Y = 20f * Util.PIXEL_TO_BOX;
@@ -123,6 +123,7 @@ public class Player extends Entity {
 	private boolean kinematicTransform = false;
 	private boolean changeDirectionsOnce = false;
 	private boolean steamCollide = false;
+	private boolean steamDone = false;
 
 	private IMover mover;
 
@@ -400,7 +401,11 @@ public class Player extends Entity {
 			Gdx.app.log( "top: ", "" + topCrush );
 			Gdx.app.log( "bottom: ", "" + botCrush );
 		} else if ( steamCollide ) {
-			steamResolution( );
+			if (!steamDone){
+				steamResolution( );
+				steamDone = true;
+			}
+			else steamDone = false;
 		}
 		terminalVelocityCheck( 15.0f );
 		// the jump doesn't work the first time on dynamic bodies so do it twice
@@ -415,8 +420,6 @@ public class Player extends Entity {
 	@Override
 	public void draw( SpriteBatch batch ) {
 		super.draw( batch );
-		Gdx.app.log( "hit cloud currentFrame", ""
-				+ hitCloud.sprite.getAnimator( ).getFrame( ) );
 		if ( hitCloud.sprite.getAnimator( ).getFrame( ) < 3 ) {
 			hitCloud.draw( batch );
 		}
@@ -725,7 +728,7 @@ public class Player extends Entity {
 						.sub( 0, 12f ) );
 				hitCloud.sprite.setColor( sprite.getColor( ).r,
 						sprite.getColor( ).g, sprite.getColor( ).b,
-						body.getLinearVelocity( ).y / (float)MAX_VELOCITY );
+						body.getLinearVelocity( ).y / (float)MAX_VELOCITY*.75f );
 				hitCloud.sprite.reset( );
 			}
 			this.grounded = newVal;
@@ -763,7 +766,6 @@ public class Player extends Entity {
 	 * slowly increases friction to avoid that silly stopping bug. Call this
 	 * every player.update()
 	 */
-	@SuppressWarnings( "unused" )
 	private void updateFootFriction( ) {
 
 		if ( isGrounded( ) ) {
@@ -1203,7 +1205,7 @@ public class Player extends Entity {
 			// jump( );
 			body.setLinearVelocity( new Vector2( body.getLinearVelocity( ).x,
 					0.0f ) );
-			body.applyLinearImpulse( new Vector2( 0.0f, JUMP_IMPULSE / 2 ),
+			body.applyLinearImpulse( new Vector2( 0.0f, JUMP_IMPULSE ),
 					body.getWorldCenter( ) );
 		}
 	}
@@ -1865,8 +1867,10 @@ public class Player extends Entity {
 			body.setLinearVelocity( new Vector2( 0f,
 					body.getLinearVelocity( ).y ) );
 		// body.applyForceToCenter( 0f, STEAM_FORCE );
+		//body.setLinearVelocity( new Vector2( body.getLinearVelocity( ).x, 0f ) );
 		body.applyLinearImpulse( new Vector2( 0, STEAM_IMPULSE ),
 				body.getWorldCenter( ) );
+		grounded = false;
 	}
 
 	/**

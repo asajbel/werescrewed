@@ -23,7 +23,18 @@ public class Button {
 	private int height = 0;
 	private Rectangle bounds = null;
 	private ButtonHandler handler = null;
+	private boolean selected = false;
+	private boolean colored = false;
 
+	/**
+	 * makes a new button instance
+	 * 
+	 * @param caption String
+	 * @param font BitmapFont
+	 * @param handler ButtonHandler
+	 * @param x int
+	 * @param y int
+	 */
 	public Button(String caption, BitmapFont font, ButtonHandler handler, int x, int y) {
 		this.caption = caption;
 		this.font = font;
@@ -33,14 +44,30 @@ public class Button {
 		calculateDimensions();
 	}
 	
+	/**
+	 * makes a new button instance
+	 * 
+	 * @param caption String
+	 * @param font BitmapFont
+	 * @param handler ButtonHandler
+	 */
 	public Button(String caption, BitmapFont font, ButtonHandler handler) {
 		this(caption, font, handler, 0, 0);
 	}
 	
+	/**
+	 * Gets phrase the button will say on screen
+	 * @return String
+	 */
 	public String getCaption() {
 		return caption;
 	}
 	
+	/**
+	 * Changes phrase the button will say on screen
+	 * 
+	 * @param caption String
+	 */
 	public void setCaption(String caption) {
 		this.caption = caption;
 		calculateDimensions();
@@ -72,15 +99,52 @@ public class Button {
 		return height;
 	}
 	
+	/**
+	 * used to press button
+	 * 
+	 * @param value boolean
+	 */
+	public void setSelected( boolean value ){
+		selected = value;
+	}
+	
+	/**
+	 * determines if button has been pressed
+	 * 
+	 * @return boolean
+	 */
+	public boolean isSelected(){
+		return selected;
+	}
+	
+	/**
+	 * determines if button will be colored
+	 * 
+	 * @param value boolean
+	 */
+	public void setColored( boolean value ){
+		colored = value;
+	}
+	
+	/**
+	 * determines if button will be colored
+	 * 
+	 * @return boolean
+	 */
+	public boolean isColored(){
+		return colored;
+	}
+	
 	public void draw(SpriteBatch batch, Camera camera) {
 		Color originalColor = font.getColor();
 		Vector3 cursorPosition = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
 		camera.unproject(cursorPosition);
 		boolean isIntersect = bounds.contains(cursorPosition.x, cursorPosition.y);
-		font.setColor(isIntersect ? HOVER_COLOR : NORMAL_COLOR);
+		font.setColor(colored ? HOVER_COLOR : NORMAL_COLOR);
 		font.draw(batch, caption, x, y);
 		font.setColor(originalColor);
-		if (isIntersect && (Gdx.input.isTouched() || Gdx.input.isButtonPressed(Buttons.LEFT))) {
+		if ((isIntersect && (Gdx.input.isTouched() || Gdx.input.isButtonPressed(Buttons.LEFT))) || selected) {
+			selected = false;
 			handler.onClick();
 		}
 	}
@@ -93,7 +157,6 @@ public class Button {
 	}
 	
 	public static interface ButtonHandler {
-		
 		public void onClick();
 		
 	}

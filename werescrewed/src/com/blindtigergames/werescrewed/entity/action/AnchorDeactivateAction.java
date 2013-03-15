@@ -8,15 +8,15 @@ import com.blindtigergames.werescrewed.particles.Steam;
 import com.blindtigergames.werescrewed.platforms.Platform;
 import com.blindtigergames.werescrewed.player.Player;
 
-public class AnchorActivateAction implements IAction{
+public class AnchorDeactivateAction implements IAction{
 
 	Anchor anchor = null;
-	public AnchorActivateAction(Anchor a){
+	public AnchorDeactivateAction(Anchor a){
 		anchor = a;
 	}
 	@Override
 	public void act( ) {
-		anchor.activate( );
+		anchor.deactivate( );
 		
 	}
 
