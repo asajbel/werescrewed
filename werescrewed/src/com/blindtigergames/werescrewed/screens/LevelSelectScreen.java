@@ -125,7 +125,6 @@ public class LevelSelectScreen implements com.badlogic.gdx.Screen {
 				}
 			}
 		}
-		Gdx.app.log( "buttonIndex: ", "" + buttonIndex );
 	}
 
 	@Override

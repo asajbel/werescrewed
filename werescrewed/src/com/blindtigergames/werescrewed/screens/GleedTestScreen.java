@@ -73,14 +73,14 @@ public class GleedTestScreen extends Screen {
 		
 		
 		f1 = new Fire( "Fire1", new Vector2( 600f, 1850.0f ), 
-				level.world, true, 25, 50 );
+				level.world, true, 15, 60 );
 		
 		f2 = new Fire( "Fire1", new Vector2( 900f, 1850.0f ), 
-				level.world, true, 25, 50 );
+				level.world, true, 15, 60 );
 		f2.flip( );
 		
 		f3 = new Fire( "Fire1", new Vector2( 1200f, 1850.0f ), 
-				level.world, true, 25, 50 );
+				level.world, true, 15, 60 );
 		
 		
 		et = ( EventTrigger ) LevelFactory.entities.get( "et1" );
@@ -135,8 +135,8 @@ public class GleedTestScreen extends Screen {
 
 		Platform p = ( Platform ) LevelFactory.entities.get( "plat4" );
 		p.oneSided = true;
-		Platform p2 = ( Platform ) LevelFactory.entities.get( "plat7" );
-		p2.oneSided = true;
+//		Platform p2 = ( Platform ) LevelFactory.entities.get( "plat7" );
+//		p2.oneSided = true;
 		
 		// skel.addMover( new RotateTweenMover( skel, 5f,
 		// Util.PI / 2, 1f, true ),
