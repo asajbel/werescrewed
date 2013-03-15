@@ -725,7 +725,6 @@ public class Player extends Entity {
 	 * slowly increases friction to avoid that silly stopping bug. Call this
 	 * every player.update()
 	 */
-	@SuppressWarnings( "unused" )
 	private void updateFootFriction( ) {
 
 		if ( isGrounded( ) ) {

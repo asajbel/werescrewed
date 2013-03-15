@@ -1,31 +1,17 @@
 package com.blindtigergames.werescrewed.screens;
 
 import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.camera.Anchor;
 import com.blindtigergames.werescrewed.camera.AnchorList;
-import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.RobotState;
 import com.blindtigergames.werescrewed.entity.Skeleton;
-import com.blindtigergames.werescrewed.entity.builders.PlatformBuilder;
-import com.blindtigergames.werescrewed.entity.builders.RopeBuilder;
-import com.blindtigergames.werescrewed.entity.builders.SkeletonBuilder;
-import com.blindtigergames.werescrewed.entity.mover.LerpMover;
-import com.blindtigergames.werescrewed.entity.mover.LinearAxis;
 import com.blindtigergames.werescrewed.entity.mover.PuzzleType;
-import com.blindtigergames.werescrewed.entity.mover.RockingMover;
-import com.blindtigergames.werescrewed.entity.mover.RotateByDegree;
 import com.blindtigergames.werescrewed.entity.mover.RotateTweenMover;
 import com.blindtigergames.werescrewed.entity.mover.puzzle.PuzzleRotateTweenMover;
-import com.blindtigergames.werescrewed.entity.tween.PathBuilder;
-import com.blindtigergames.werescrewed.eventTrigger.EventTrigger;
 import com.blindtigergames.werescrewed.level.LevelFactory;
 import com.blindtigergames.werescrewed.particles.Steam;
-import com.blindtigergames.werescrewed.platforms.Platform;
-import com.blindtigergames.werescrewed.platforms.TiledPlatform;
-import com.blindtigergames.werescrewed.rope.Rope;
 import com.blindtigergames.werescrewed.screws.PuzzleScrew;
 import com.blindtigergames.werescrewed.util.Util;
 
