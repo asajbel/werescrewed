@@ -68,10 +68,10 @@ public class Skeleton extends Platform {
 
 		FixtureDef dynFixtureDef = new FixtureDef( );
 		PolygonShape polygon = new PolygonShape( );
-		polygon.setAsBox( 1 * Util.PIXEL_TO_BOX, 1 * Util.PIXEL_TO_BOX );
+		polygon.setAsBox( 150 * Util.PIXEL_TO_BOX, 150 * Util.PIXEL_TO_BOX );
 		dynFixtureDef.shape = polygon;
 		dynFixtureDef.density = 100f;
-		dynFixtureDef.filter.categoryBits = Util.CATEGORY_SUBPLATFORM;
+		dynFixtureDef.filter.categoryBits = Util.CATEGORY_IGNORE;
 		dynFixtureDef.filter.maskBits = Util.CATEGORY_NOTHING;
 		body.createFixture( dynFixtureDef );
 		polygon.dispose( );

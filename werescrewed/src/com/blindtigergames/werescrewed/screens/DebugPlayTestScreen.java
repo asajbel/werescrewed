@@ -53,11 +53,13 @@ import com.blindtigergames.werescrewed.screws.Screw;
 import com.blindtigergames.werescrewed.screws.StrippedScrew;
 import com.blindtigergames.werescrewed.screws.StructureScrew;
 import com.blindtigergames.werescrewed.util.Metrics;
+import com.blindtigergames.werescrewed.util.MetricsRender;
 import com.blindtigergames.werescrewed.util.Util;
 
 public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 
 	private Camera cam;
+	private MetricsRender metRend; 
 	private SpriteBatch batch;
 	private Texture testTexture;
 	private World world;
@@ -99,6 +101,7 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		batch = new SpriteBatch( );
 		world = new World( new Vector2( 0, -35 ), true );
 		initCamera( );
+		metRend = new MetricsRender(LEVEL_NAME); 
 		skeleton = new Skeleton( "skeleton", Vector2.Zero, null, world );
 		rootSkeleton = new Skeleton( "root", Vector2.Zero, null, world );
 
@@ -122,10 +125,10 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		// Initialize players
 		player1 = new PlayerBuilder( ).name( "player1" ).world( world )
 
-				.position( 1 * TILE, 10 * TILE ).buildPlayer( );
+				.position( 175 * TILE, 96 * TILE ).buildPlayer( );
 
 		player2 = new PlayerBuilder( ).name( "player2" ).world( world )
-				.position( 1 * TILE, 10 * TILE ).buildPlayer( );
+				.position( 175 * TILE, 96 * TILE ).buildPlayer( );
 
 
 
@@ -1124,10 +1127,15 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 
 		// if(endLevelFlag)
 		if ( bossBolt.endLevelFlag( ) ) {
+			
 			if ( !inceptionhorn.isPlaying( ) ) {
 				inceptionhorn.play( );
 			}
 			if ( endgameCounter == 0f ) {
+
+				if ( Metrics.activated ) {
+					Metrics.printMetrics( LEVEL_NAME );
+				}
 				rootSkeleton.addMover( new RockingMover( -0.1f, 0.5f ),
 						RobotState.IDLE );
 				rootSkeleton.setActive( true );
@@ -1136,9 +1144,6 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 			endgameCounter += deltaTime;
 			cam.camera.zoom += 0.015f;
 			if ( endgameCounter > 10f ) {
-				if ( Metrics.activated ) {
-					Metrics.printMetrics( LEVEL_NAME );
-				}
 				Gdx.app.exit( );
 				// if we want want the game to go back to the main menu, comment
 				// the above line and uncomment the 2 lines below -Vic
@@ -1146,6 +1151,7 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 				// ScreenManager.getInstance( ).dispose( ScreenType.MAIN_MENU );
 			}
 		}
+		metRend.render( cam.camera ); 
 
 		world.step( 1 / 60f, 6, 3 );
 	}

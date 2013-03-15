@@ -61,7 +61,7 @@ public class Anchor {
 				position.y * Util.PIXEL_TO_BOX );
 		this.buffer = buffer;
 		this.activated = false;
-		this.timer = 0;
+		this.timer = -1;
 	}
 
 	/**
