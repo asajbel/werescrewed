@@ -150,7 +150,12 @@ public class Rope {
 	}
 
 	public void update( float deltaTime ) {
+		if ( screw != null ) {		
+		if ( !screw.isPlayerAttached( ) ){
+			stopRope( );
+		}
 		screw.update( deltaTime );
+		}
 		// if(Gdx.input.isKeyPressed( Keys.O ))
 		// pieces.get( pieces.size( )-1 ).applyLinearImpulse( new Vector2(0.5f,
 		// 0.0f),
@@ -222,6 +227,28 @@ public class Rope {
 				( getLastLink( ).body.getPosition( ).y * Util.BOX_TO_PIXEL )
 						- ( getLastLink( ).getHeight( ) ) ), getLastLink( ), world );
 
+	}
+	
+	public void stopRope( ) {
+		float velocity = getLastLink().body.getLinearVelocity( ).x;
+		if ( velocity != 0.0f ) {
+			if ( velocity < -0.1f )
+				getLastLink( ).body.applyLinearImpulse( new Vector2( 0.01f, 0.0f ),
+						getLastLink ( ).body.getWorldCenter( ) );
+			else if ( velocity > 0.1f )
+				getLastLink( ).body.applyLinearImpulse( new Vector2( -0.01f, 0.0f ),
+						getLastLink( ).body.getWorldCenter( ) );
+			else if ( velocity >= -0.1 && velocity <= 0.1f && velocity != 0.0f )
+				getLastLink( ).body.setLinearVelocity( 0.0f, getLastLink( ).body.getLinearVelocity( ).y );
+		}
+	}
+	
+	public void dispose(){
+		for ( Link l : linkParts ){
+			l.dispose( );
+		}
+		linkParts.clear( );
+		screw.dispose();
 	}
 
 }

@@ -2,7 +2,6 @@ package com.blindtigergames.werescrewed.camera;
 
 import java.util.ArrayList;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
@@ -19,10 +18,15 @@ public class AnchorList {
 	protected class AnchorPair {
 		protected Anchor first;
 		protected Anchor second;
+
+		protected void swap( ) {
+			Anchor temp = first;
+			first = second;
+			second = temp;
+		}
 	}
 
 	protected ArrayList< Anchor > anchorList;
-	private Vector2 sum;
 	private Vector2 midpoint2;
 	private Vector2 prevMidpoint;
 	private Vector2 midpointVelocity;
@@ -30,6 +34,8 @@ public class AnchorList {
 	private static AnchorList instance;
 	private ShapeRenderer shapeRenderer;
 	private OrthographicCamera camera;
+	private AnchorPair furthestX;
+	private AnchorPair furthestY;
 
 	private AnchorList( ) {
 		this( null );
@@ -37,7 +43,7 @@ public class AnchorList {
 
 	private AnchorList( OrthographicCamera camera ) {
 		anchorList = new ArrayList< Anchor >( );
-		sum = new Vector2( 0f, 0f );
+		new Vector2( 0f, 0f );
 		midpoint2 = new Vector2( 0f, 0f );
 		prevMidpoint = new Vector2( 0f, 0f );
 		midpointVelocity = new Vector2( 0f, 0f );
@@ -69,11 +75,11 @@ public class AnchorList {
 		// Update timers
 		for ( Anchor curAnchor : anchorList ) {
 			if ( curAnchor.getTimer( ) > 0 && curAnchor.activated == true )
-				Gdx.app.log( "timer", curAnchor.getTimer( ) + "" );
+				// Gdx.app.log( "timer", curAnchor.getTimer( ) + "" );
 				curAnchor.decrementTimer( );
 
 			// Safety check & deactivate
-			if ( curAnchor.getTimer( ) <= 0 ) {
+			if ( curAnchor.getTimer( ) == 0 ) {
 				curAnchor.setTimer( 0 );
 				curAnchor.deactivate( );
 			}
@@ -224,7 +230,7 @@ public class AnchorList {
 	}
 
 	/**
-	 * get longest x and y distance between anchors plus their buffer widths and
+	 * Get longest x and y distance between anchors plus their buffer widths and
 	 * heights respectively
 	 * 
 	 * @return a Vector 2 where: x = the longest x distance between anchors plus
@@ -236,7 +242,7 @@ public class AnchorList {
 
 		// Start with players (guaranteed to be present and active)
 		AnchorPair pair = getSpecialPair( );
-		
+
 		// Find longest x distance //
 
 		float longestXDistance = Math.abs( pair.first.position.x
@@ -274,8 +280,19 @@ public class AnchorList {
 				}
 			}
 		}
-		
+		if ( pair.first.position.x > pair.second.position.x )
+			pair.swap( );
+		furthestX = pair;
+
+		if ( pair != null && pair.first != null && pair.second != null ) {
+			// set x distance
+			vectDist.x = pair.first.position.x - pair.second.position.x;
+			vectDist.x = Math.abs( vectDist.x );
+			vectDist.x += ( pair.first.buffer.x + pair.second.buffer.x );
+		}
+
 		// Find longest y distance //
+		pair = getSpecialPair( );
 
 		float longestYDistance = Math.abs( pair.first.position.y
 				- pair.second.position.y );
@@ -312,13 +329,11 @@ public class AnchorList {
 				}
 			}
 		}
+		if ( pair.first.position.y > pair.second.position.y )
+			pair.swap( );
+		furthestY = pair;
 
 		if ( pair != null && pair.first != null && pair.second != null ) {
-			// set x distance
-			vectDist.x = pair.first.position.x - pair.second.position.x;
-			vectDist.x = Math.abs( vectDist.x );
-			vectDist.x += ( pair.first.buffer.x + pair.second.buffer.x );
-
 			// set y distance
 			vectDist.y = pair.first.position.y - pair.second.position.y;
 			vectDist.y = Math.abs( vectDist.y );
@@ -361,35 +376,41 @@ public class AnchorList {
 	}
 
 	private void setMidpoint( ) {
-		// TODO: discriminate by distance
-		int count = 0;
-		sum.x = 0f;
-		sum.y = 0f;
-		for ( Anchor curAnchor : anchorList ) {
-			if ( curAnchor != null
-					&& ( curAnchor.activated || curAnchor.special ) ) {
-				sum.add( curAnchor.position );
-				count++;
-			}
-		}
-		sum.div( ( float ) count );
-		midpoint2.x = sum.x;
-		midpoint2.y = sum.y;
-
-		// set special midpoint
-		count = 0;
-		sum.x = 0f;
-		sum.y = 0f;
-
-		for ( Anchor curAnchor : anchorList ) {
-			if ( curAnchor.special && curAnchor.activated ) {
-				sum.add( curAnchor.position );
-				count++;
-			}
-		}
-
-		sum.div( ( float ) count );
-		specialMidpoint.x = sum.y;
-		specialMidpoint.y = sum.y;
+		Vector2 longest = getLongestXYDist( );
+		midpoint2.x = furthestX.first.position.x;
+		midpoint2.x -= furthestX.first.buffer.x;
+		midpoint2.x += longest.x / 2;
+		midpoint2.y = furthestY.first.position.y;
+		midpoint2.y -= furthestY.first.buffer.y;
+		midpoint2.y += longest.y / 2;
+		// int count = 0;
+		// sum.x = 0f;
+		// sum.y = 0f;
+		// for ( Anchor curAnchor : anchorList ) {
+		// if ( curAnchor != null
+		// && ( curAnchor.activated || curAnchor.special ) ) {
+		// sum.add( curAnchor.position );
+		// count++;
+		// }
+		// }
+		// sum.div( ( float ) count );
+		// midpoint2.x = sum.x;
+		// midpoint2.y = sum.y;
+		//
+		// // set special midpoint
+		// int count = 0;
+		// sum.x = 0f;
+		// sum.y = 0f;
+		//
+		// for ( Anchor curAnchor : anchorList ) {
+		// if ( curAnchor.special && curAnchor.activated ) {
+		// sum.add( curAnchor.position );
+		// count++;
+		// }
+		// }
+		//
+		// sum.div( ( float ) count );
+		// specialMidpoint.x = sum.y;
+		// specialMidpoint.y = sum.y;
 	}
 }

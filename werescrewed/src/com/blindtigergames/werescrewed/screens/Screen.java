@@ -32,6 +32,8 @@ public class Screen implements com.badlogic.gdx.Screen {
 		level = null;
 		//if(WereScrewedGame.manager.isLoaded( "debug_font" ))
 			debug_font = WereScrewedGame.manager.getFont( "debug_font" );
+			
+	
 		logger = new FPSLoggerS( );
 		uiCamera = new OrthographicCamera(Gdx.graphics.getWidth( ), Gdx.graphics.getHeight( ));
 		uiCamera.position.set(0,0 , 0); //-Gdx.graphics.getWidth( ), -Gdx.graphics.getHeight( )
@@ -57,12 +59,14 @@ public class Screen implements com.badlogic.gdx.Screen {
 			level.update( delta );
 			level.draw( batch, debugRenderer );
 			
-			/*int FPS = logger.getFPS( );
+			int FPS = logger.getFPS( );
 			batch.setProjectionMatrix( uiCamera.combined );
 			batch.begin( );
-			if(debug_font != null)
-				debug_font.draw(batch, "FPS: "+FPS, -Gdx.graphics.getWidth( )/2, Gdx.graphics.getHeight( )/2);//-Gdx.graphics.getWidth( )/4, Gdx.graphics.getHeight( )/4
-			batch.end( );*/
+			if(debug_font != null){
+				//debug_font.draw(batch, "FPS: "+FPS, -Gdx.graphics.getWidth( )/2, Gdx.graphics.getHeight( )/2);//-Gdx.graphics.getWidth( )/4, Gdx.graphics.getHeight( )/4
+				debug_font.draw(batch, "ALPHA BUILD", -Gdx.graphics.getWidth( )/2, Gdx.graphics.getHeight( )/2);
+			}
+			batch.end( );
 			
 		}
 	}
