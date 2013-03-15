@@ -1,0 +1,19 @@
+hitCloud.png
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+offset: 0,0
+1
+  rotate: false
+  xy: 2, 2
+  size: 128, 64
+  orig: 128, 64
+  offset: 0, 0
+  index: -1
+2
+  rotate: false
+  xy: 2, 68
+  size: 128, 64
+  orig: 128, 64
+  offset: 0, 0
+  index: -1
