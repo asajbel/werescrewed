@@ -415,8 +415,6 @@ public class Player extends Entity {
 	@Override
 	public void draw( SpriteBatch batch ) {
 		super.draw( batch );
-		Gdx.app.log( "hit cloud currentFrame", ""
-				+ hitCloud.sprite.getAnimator( ).getFrame( ) );
 		if ( hitCloud.sprite.getAnimator( ).getFrame( ) < 3 ) {
 			hitCloud.draw( batch );
 		}
@@ -725,7 +723,7 @@ public class Player extends Entity {
 						.sub( 0, 12f ) );
 				hitCloud.sprite.setColor( sprite.getColor( ).r,
 						sprite.getColor( ).g, sprite.getColor( ).b,
-						body.getLinearVelocity( ).y / (float)MAX_VELOCITY );
+						body.getLinearVelocity( ).y / (float)MAX_VELOCITY*.75f );
 				hitCloud.sprite.reset( );
 			}
 			this.grounded = newVal;
