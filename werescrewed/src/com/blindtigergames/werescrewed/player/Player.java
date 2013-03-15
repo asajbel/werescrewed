@@ -61,7 +61,7 @@ public class Player extends Entity {
 	public final static int GRAB_COUNTER_STEPS = 5;
 	public final static Vector2 ANCHOR_BUFFER_SIZE = new Vector2( 300f, 128f );
 	public final static float STEAM_FORCE = .5f;
-	public final static float STEAM_IMPULSE = 0.20f;
+	public final static float STEAM_IMPULSE = 0.1f;
 	public final static float FRICTION_INCREMENT = 0.3f;
 	public final static float FEET_OFFSET_X = 58f * Util.PIXEL_TO_BOX;
 	public final static float FEET_OFFSET_Y = 20f * Util.PIXEL_TO_BOX;
@@ -118,6 +118,7 @@ public class Player extends Entity {
 	private boolean kinematicTransform = false;
 	private boolean changeDirectionsOnce = false;
 	private boolean steamCollide = false;
+	private boolean steamDone = false;
 
 	private IMover mover;
 
@@ -383,7 +384,11 @@ public class Player extends Entity {
 			Gdx.app.log( "top: ", "" + topCrush );
 			Gdx.app.log( "bottom: ", "" + botCrush );
 		} else if ( steamCollide ) {
-			steamResolution( );
+			if (!steamDone){
+				steamResolution( );
+				steamDone = true;
+			}
+			else steamDone = false;
 		}
 		terminalVelocityCheck( 15.0f );
 		// the jump doesn't work the first time on dynamic bodies so do it twice
