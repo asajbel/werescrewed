@@ -5,21 +5,14 @@ repeat: none
 offset: 0,0
 run/23
   rotate: false
-  xy: 1692, 1952
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
-jump_down/85
-  rotate: false
-  xy: 522, 1172
+  xy: 782, 1952
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: -1
 jump_up/14
   rotate: false
-  xy: 1822, 1302
+  xy: 1302, 1302
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
@@ -27,13 +20,6 @@ jump_up/14
 hang/12
   rotate: false
   xy: 522, 2
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
-jump_up/146
-  rotate: false
-  xy: 912, 1692
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
@@ -47,7 +33,7 @@ idle/0
   index: -1
 jump_up/5
   rotate: false
-  xy: 522, 1822
+  xy: 522, 1692
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
@@ -59,37 +45,9 @@ run/12
   orig: 128, 128
   offset: 0, 0
   index: -1
-run/199
-  rotate: false
-  xy: 392, 2212
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
-jump_up/105
-  rotate: false
-  xy: 1432, 1302
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
 jump_up/40
   rotate: false
-  xy: 1302, 1562
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
-jump_up/110
-  rotate: false
-  xy: 132, 1432
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
-jump_up/94
-  rotate: false
-  xy: 522, 1302
+  xy: 1172, 1562
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
@@ -108,16 +66,9 @@ idle/11
   orig: 128, 128
   offset: 0, 0
   index: -1
-jump_down/62
-  rotate: false
-  xy: 392, 1302
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
 jump_up/35
   rotate: false
-  xy: 652, 1562
+  xy: 392, 1562
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
@@ -125,13 +76,6 @@ jump_up/35
 hang/39
   rotate: false
   xy: 392, 262
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
-run/204
-  rotate: false
-  xy: 1042, 2212
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
@@ -145,21 +89,21 @@ idle/20
   index: -1
 run/35
   rotate: false
-  xy: 1302, 2082
+  xy: 522, 2082
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: -1
 run/7
   rotate: false
-  xy: 522, 1952
+  xy: 1692, 2212
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: -1
 jump_up/22
   rotate: false
-  xy: 912, 1432
+  xy: 522, 1432
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
@@ -180,35 +124,14 @@ jump_down/34
   index: -1
 run/24
   rotate: false
-  xy: 1822, 1952
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
-jump_down/80
-  rotate: false
-  xy: 1692, 1042
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
-run/183
-  rotate: false
-  xy: 262, 2082
+  xy: 912, 1952
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: -1
 jump_up/17
   rotate: false
-  xy: 262, 1432
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
-jump_up/131
-  rotate: false
-  xy: 912, 1562
+  xy: 1692, 1302
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
@@ -227,20 +150,6 @@ jump_up/0
   orig: 128, 128
   offset: 0, 0
   index: -1
-run/192
-  rotate: false
-  xy: 1432, 2082
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
-jump_up/108
-  rotate: false
-  xy: 1822, 1302
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
 idle/43
   rotate: false
   xy: 1172, 782
@@ -250,21 +159,14 @@ idle/43
   index: -1
 run/50
   rotate: false
-  xy: 1302, 2212
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
-run/157
-  rotate: false
-  xy: 1692, 1822
+  xy: 782, 2212
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: -1
 jump_up/43
   rotate: false
-  xy: 1692, 1562
+  xy: 1562, 1562
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
@@ -272,20 +174,6 @@ jump_up/43
 jump_down/4
   rotate: false
   xy: 1562, 1172
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
-jump_up/113
-  rotate: false
-  xy: 522, 1432
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
-jump_up/97
-  rotate: false
-  xy: 262, 1822
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
@@ -306,28 +194,14 @@ idle/12
   index: -1
 run/47
   rotate: false
-  xy: 912, 2212
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
-jump_down/61
-  rotate: false
-  xy: 262, 1302
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
-run/166
-  rotate: false
-  xy: 1042, 1822
+  xy: 262, 2212
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: -1
 jump_up/38
   rotate: false
-  xy: 1042, 1562
+  xy: 782, 1562
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
@@ -355,21 +229,14 @@ idle/29
   index: -1
 run/2
   rotate: false
-  xy: 1692, 1822
+  xy: 262, 1952
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: -1
 run/36
   rotate: false
-  xy: 1432, 2082
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
-run/175
-  rotate: false
-  xy: 1302, 1952
+  xy: 652, 2082
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
@@ -381,30 +248,9 @@ hang/11
   orig: 128, 128
   offset: 0, 0
   index: -1
-jump_down/87
-  rotate: false
-  xy: 782, 1172
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
-run/184
-  rotate: false
-  xy: 392, 2082
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
 hang/20
   rotate: false
   xy: 1692, 2
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
-jump_up/134
-  rotate: false
-  xy: 1302, 1562
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
@@ -423,20 +269,6 @@ idle/35
   orig: 128, 128
   offset: 0, 0
   index: -1
-jump_down/78
-  rotate: false
-  xy: 1432, 1042
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
-jump_up/129
-  rotate: false
-  xy: 652, 1562
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
 idle/44
   rotate: false
   xy: 1302, 782
@@ -451,30 +283,9 @@ hang/3
   orig: 128, 128
   offset: 0, 0
   index: -1
-run/158
-  rotate: false
-  xy: 1822, 1822
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
 jump_up/46
   rotate: false
-  xy: 132, 1692
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
-run/207
-  rotate: false
-  xy: 1432, 2212
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
-jump_up/116
-  rotate: false
-  xy: 912, 1432
+  xy: 2, 1692
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
@@ -488,14 +299,7 @@ jump_down/10
   index: -1
 run/48
   rotate: false
-  xy: 1042, 2212
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
-jump_down/59
-  rotate: false
-  xy: 2, 1302
+  xy: 392, 2212
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
@@ -507,37 +311,9 @@ jump_up/10
   orig: 128, 128
   offset: 0, 0
   index: -1
-jump_up/142
-  rotate: false
-  xy: 392, 1692
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
 jump_down/36
   rotate: false
   xy: 1042, 1172
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
-jump_down/90
-  rotate: false
-  xy: 1172, 1172
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
-jump_down/72
-  rotate: false
-  xy: 522, 1042
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
-jump_up/101
-  rotate: false
-  xy: 1042, 1302
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
@@ -549,9 +325,9 @@ hang/29
   orig: 128, 128
   offset: 0, 0
   index: -1
-jump_up/137
+jump_up/59
   rotate: false
-  xy: 1692, 1562
+  xy: 1822, 1692
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
@@ -559,13 +335,6 @@ jump_up/137
 idle/36
   rotate: false
   xy: 132, 782
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
-jump_up/59
-  rotate: false
-  xy: 1822, 1692
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
@@ -579,7 +348,7 @@ idle/50
   index: -1
 jump_up/6
   rotate: false
-  xy: 912, 1302
+  xy: 2, 1822
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
@@ -593,7 +362,7 @@ hang/8
   index: -1
 jump_up/31
   rotate: false
-  xy: 132, 1562
+  xy: 1822, 1432
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
@@ -612,13 +381,6 @@ jump_down/6
   orig: 128, 128
   offset: 0, 0
   index: -1
-run/208
-  rotate: false
-  xy: 1562, 2212
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
 jump_down/17
   rotate: false
   xy: 262, 1042
@@ -628,21 +390,7 @@ jump_down/17
   index: -1
 run/31
   rotate: false
-  xy: 782, 2082
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
-jump_down/53
-  rotate: false
-  xy: 1042, 912
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
-run/160
-  rotate: false
-  xy: 262, 1952
+  xy: 2, 2082
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
@@ -656,28 +404,14 @@ hang/44
   index: -1
 run/20
   rotate: false
-  xy: 1302, 1952
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
-jump_down/84
-  rotate: false
-  xy: 392, 1172
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
-run/187
-  rotate: false
-  xy: 782, 2082
+  xy: 392, 1952
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: -1
 jump_up/13
   rotate: false
-  xy: 1692, 1302
+  xy: 1172, 1302
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
@@ -698,35 +432,14 @@ idle/5
   index: -1
 jump_up/4
   rotate: false
-  xy: 392, 1822
+  xy: 1042, 1562
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: -1
 run/17
   rotate: false
-  xy: 912, 1952
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
-jump_down/71
-  rotate: false
-  xy: 392, 1042
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
-run/196
-  rotate: false
-  xy: 2, 2212
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
-jump_up/104
-  rotate: false
-  xy: 782, 1302
+  xy: 1822, 1822
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
@@ -747,21 +460,14 @@ jump_down/29
   index: -1
 run/43
   rotate: false
-  xy: 392, 2212
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
-jump_down/65
-  rotate: false
-  xy: 1562, 912
+  xy: 1692, 2082
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: -1
 jump_up/34
   rotate: false
-  xy: 522, 1562
+  xy: 262, 1562
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
@@ -769,13 +475,6 @@ jump_up/34
 hang/32
   rotate: false
   xy: 1432, 132
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
-run/201
-  rotate: false
-  xy: 652, 2212
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
@@ -796,63 +495,35 @@ idle/25
   index: -1
 run/32
   rotate: false
-  xy: 912, 2082
+  xy: 132, 2082
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: -1
 run/6
   rotate: false
-  xy: 392, 1952
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
-run/179
-  rotate: false
-  xy: 1692, 1952
+  xy: 1562, 2212
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: -1
 jump_up/29
   rotate: false
-  xy: 1822, 1432
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
-run/210
-  rotate: false
-  xy: 1822, 2212
+  xy: 1432, 1432
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: -1
 run/29
   rotate: false
-  xy: 522, 2082
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
-run/188
-  rotate: false
-  xy: 912, 2082
+  xy: 1562, 1952
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: -1
 jump_up/16
   rotate: false
-  xy: 132, 1432
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
-jump_up/130
-  rotate: false
-  xy: 782, 1562
+  xy: 1562, 1302
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
@@ -873,21 +544,7 @@ idle/31
   index: -1
 run/18
   rotate: false
-  xy: 1042, 1952
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
-jump_up/107
-  rotate: false
-  xy: 1692, 1302
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
-jump_up/125
-  rotate: false
-  xy: 132, 1562
+  xy: 2, 1952
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
@@ -908,28 +565,14 @@ idle/40
   index: -1
 run/55
   rotate: false
-  xy: 2, 2342
+  xy: 1432, 2212
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: -1
 jump_up/42
   rotate: false
-  xy: 1562, 1562
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
-jump_up/112
-  rotate: false
-  xy: 392, 1432
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
-jump_up/96
-  rotate: false
-  xy: 132, 1822
+  xy: 1432, 1562
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
@@ -950,28 +593,14 @@ idle/17
   index: -1
 run/44
   rotate: false
-  xy: 522, 2212
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
-jump_down/60
-  rotate: false
-  xy: 132, 1302
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
-run/163
-  rotate: false
-  xy: 652, 1952
+  xy: 1822, 2082
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: -1
 jump_up/37
   rotate: false
-  xy: 912, 1562
+  xy: 652, 1562
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
@@ -997,30 +626,9 @@ run/1
   orig: 128, 128
   offset: 0, 0
   index: -1
-run/172
-  rotate: false
-  xy: 912, 1952
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
 jump_up/60
   rotate: false
-  xy: 2, 1822
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
-jump_down/86
-  rotate: false
-  xy: 652, 1172
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
-run/181
-  rotate: false
-  xy: 2, 2082
+  xy: 132, 1822
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
@@ -1032,27 +640,6 @@ hang/25
   orig: 128, 128
   offset: 0, 0
   index: -1
-jump_up/133
-  rotate: false
-  xy: 1172, 1562
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
-jump_up/151
-  rotate: false
-  xy: 1562, 1692
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
-idle/32
-  rotate: false
-  xy: 1562, 652
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
 jump_up/55
   rotate: false
   xy: 1302, 1692
@@ -1060,16 +647,9 @@ jump_up/55
   orig: 128, 128
   offset: 0, 0
   index: -1
-run/190
+idle/32
   rotate: false
-  xy: 1172, 2082
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
-jump_up/128
-  rotate: false
-  xy: 522, 1562
+  xy: 1562, 652
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
@@ -1095,13 +675,6 @@ hang/4
   orig: 128, 128
   offset: 0, 0
   index: -1
-run/155
-  rotate: false
-  xy: 652, 1822
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
 hang/31
   rotate: false
   xy: 1302, 132
@@ -1112,20 +685,6 @@ hang/31
 idle/18
   rotate: false
   xy: 1432, 522
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
-jump_down/67
-  rotate: false
-  xy: 1822, 912
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
-run/164
-  rotate: false
-  xy: 782, 1952
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
@@ -1144,23 +703,9 @@ hang/56
   orig: 128, 128
   offset: 0, 0
   index: -1
-jump_down/58
-  rotate: false
-  xy: 1822, 1172
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
 hang/13
   rotate: false
   xy: 652, 2
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
-jump_up/149
-  rotate: false
-  xy: 1302, 1692
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
@@ -1186,37 +731,9 @@ run/13
   orig: 128, 128
   offset: 0, 0
   index: -1
-jump_down/75
-  rotate: false
-  xy: 1042, 1042
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
-jump_up/100
-  rotate: false
-  xy: 912, 1302
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
 hang/22
   rotate: false
   xy: 2, 132
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
-jump_up/136
-  rotate: false
-  xy: 1562, 1562
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
-jump_up/154
-  rotate: false
-  xy: 2, 1822
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
@@ -1230,7 +747,7 @@ jump_up/58
   index: -1
 jump_up/30
   rotate: false
-  xy: 2, 1562
+  xy: 1692, 1432
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
@@ -1238,13 +755,6 @@ jump_up/30
 jump_down/9
   rotate: false
   xy: 392, 1302
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
-run/205
-  rotate: false
-  xy: 1172, 2212
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
@@ -1265,7 +775,7 @@ idle/21
   index: -1
 jump_up/25
   rotate: false
-  xy: 1302, 1432
+  xy: 912, 1432
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
@@ -1286,14 +796,14 @@ jump_down/33
   index: -1
 run/25
   rotate: false
-  xy: 2, 2082
+  xy: 1042, 1952
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: -1
 jump_up/12
   rotate: false
-  xy: 1562, 1302
+  xy: 1042, 1302
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
@@ -1307,7 +817,7 @@ hang/18
   index: -1
 jump_up/3
   rotate: false
-  xy: 262, 1822
+  xy: 1562, 1432
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
@@ -1319,37 +829,9 @@ run/14
   orig: 128, 128
   offset: 0, 0
   index: -1
-jump_down/70
-  rotate: false
-  xy: 262, 1042
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
-run/193
-  rotate: false
-  xy: 1562, 2082
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
-jump_up/103
-  rotate: false
-  xy: 1302, 1302
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
-jump_up/121
-  rotate: false
-  xy: 1562, 1432
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
 run/51
   rotate: false
-  xy: 1432, 2212
+  xy: 912, 2212
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
@@ -1377,28 +859,14 @@ idle/13
   index: -1
 run/40
   rotate: false
-  xy: 2, 2212
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
-jump_down/64
-  rotate: false
-  xy: 1432, 912
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
-run/167
-  rotate: false
-  xy: 1172, 1822
+  xy: 1302, 2082
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: -1
 jump_up/33
   rotate: false
-  xy: 392, 1562
+  xy: 132, 1562
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
@@ -1426,28 +894,21 @@ idle/22
   index: -1
 run/37
   rotate: false
-  xy: 1562, 2082
+  xy: 782, 2082
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: -1
 run/5
   rotate: false
-  xy: 262, 1952
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
-run/176
-  rotate: false
-  xy: 1432, 1952
+  xy: 652, 2212
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: -1
 jump_up/28
   rotate: false
-  xy: 1692, 1432
+  xy: 1302, 1432
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
@@ -1461,14 +922,7 @@ hang/46
   index: -1
 run/26
   rotate: false
-  xy: 132, 2082
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
-run/185
-  rotate: false
-  xy: 522, 2082
+  xy: 1172, 1952
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
@@ -1494,34 +948,6 @@ jump_up/51
   orig: 128, 128
   offset: 0, 0
   index: -1
-jump_down/77
-  rotate: false
-  xy: 1302, 1042
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
-run/194
-  rotate: false
-  xy: 1692, 2082
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
-jump_up/106
-  rotate: false
-  xy: 1562, 1302
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
-jump_up/124
-  rotate: false
-  xy: 2, 1562
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
 jump_down/22
   rotate: false
   xy: 1042, 1042
@@ -1538,7 +964,7 @@ idle/45
   index: -1
 run/52
   rotate: false
-  xy: 1562, 2212
+  xy: 1042, 2212
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
@@ -1550,23 +976,9 @@ hang/0
   orig: 128, 128
   offset: 0, 0
   index: -1
-run/159
-  rotate: false
-  xy: 2, 1952
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
 jump_up/49
   rotate: false
-  xy: 522, 1692
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
-jump_up/119
-  rotate: false
-  xy: 1302, 1432
+  xy: 392, 1692
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
@@ -1580,21 +992,14 @@ idle/14
   index: -1
 run/49
   rotate: false
-  xy: 1172, 2212
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
-run/168
-  rotate: false
-  xy: 1302, 1822
+  xy: 522, 2212
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: -1
 jump_up/36
   rotate: false
-  xy: 782, 1562
+  xy: 522, 1562
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
@@ -1622,42 +1027,7 @@ run/0
   index: -1
 run/38
   rotate: false
-  xy: 1692, 2082
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
-jump_up/145
-  rotate: false
-  xy: 782, 1692
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
-jump_down/89
-  rotate: false
-  xy: 1042, 1172
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
-jump_up/132
-  rotate: false
-  xy: 1042, 1562
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
-jump_up/150
-  rotate: false
-  xy: 1432, 1692
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
-idle/37
-  rotate: false
-  xy: 262, 782
+  xy: 912, 2082
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
@@ -1665,6 +1035,13 @@ idle/37
 jump_up/54
   rotate: false
   xy: 1172, 1692
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: -1
+idle/37
+  rotate: false
+  xy: 262, 782
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
@@ -1678,14 +1055,7 @@ idle/51
   index: -1
 jump_up/9
   rotate: false
-  xy: 1302, 1302
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
-jump_up/127
-  rotate: false
-  xy: 392, 1562
+  xy: 522, 1822
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
@@ -1711,30 +1081,9 @@ hang/9
   orig: 128, 128
   offset: 0, 0
   index: -1
-run/209
-  rotate: false
-  xy: 1692, 2212
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
-jump_down/66
-  rotate: false
-  xy: 1692, 912
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
-run/161
-  rotate: false
-  xy: 392, 1952
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
 jump_up/21
   rotate: false
-  xy: 782, 1432
+  xy: 392, 1432
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
@@ -1748,21 +1097,7 @@ hang/45
   index: -1
 run/21
   rotate: false
-  xy: 1432, 1952
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
-jump_down/83
-  rotate: false
-  xy: 262, 1172
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
-run/170
-  rotate: false
-  xy: 1562, 1822
+  xy: 522, 1952
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
@@ -1770,13 +1105,6 @@ run/170
 hang/14
   rotate: false
   xy: 782, 2
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
-jump_up/148
-  rotate: false
-  xy: 1172, 1692
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
@@ -1795,20 +1123,6 @@ run/10
   orig: 128, 128
   offset: 0, 0
   index: -1
-jump_down/74
-  rotate: false
-  xy: 912, 1042
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
-run/197
-  rotate: false
-  xy: 132, 2212
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
 hang/27
   rotate: false
   xy: 652, 132
@@ -1816,23 +1130,16 @@ hang/27
   orig: 128, 128
   offset: 0, 0
   index: -1
-idle/38
-  rotate: false
-  xy: 392, 782
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
-jump_up/153
-  rotate: false
-  xy: 1822, 1692
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
 jump_up/57
   rotate: false
   xy: 1562, 1692
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: -1
+idle/38
+  rotate: false
+  xy: 392, 782
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
@@ -1865,13 +1172,6 @@ jump_down/8
   orig: 128, 128
   offset: 0, 0
   index: -1
-run/202
-  rotate: false
-  xy: 782, 2212
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
 hang/51
   rotate: false
   xy: 262, 392
@@ -1888,28 +1188,21 @@ jump_down/19
   index: -1
 run/33
   rotate: false
-  xy: 1042, 2082
+  xy: 262, 2082
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: -1
 run/9
   rotate: false
-  xy: 782, 1952
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
-jump_down/55
-  rotate: false
-  xy: 652, 1042
+  xy: 2, 2342
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: -1
 jump_up/24
   rotate: false
-  xy: 1172, 1432
+  xy: 782, 1432
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
@@ -1917,13 +1210,6 @@ jump_up/24
 hang/42
   rotate: false
   xy: 912, 262
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
-run/211
-  rotate: false
-  xy: 2, 2342
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
@@ -1944,21 +1230,14 @@ jump_down/32
   index: -1
 run/22
   rotate: false
-  xy: 1562, 1952
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
-run/189
-  rotate: false
-  xy: 1042, 2082
+  xy: 652, 1952
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: -1
 jump_up/19
   rotate: false
-  xy: 522, 1432
+  xy: 2, 1432
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
@@ -1972,35 +1251,14 @@ idle/3
   index: -1
 jump_up/2
   rotate: false
-  xy: 132, 1822
+  xy: 132, 1432
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: -1
 run/19
   rotate: false
-  xy: 1172, 1952
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
-run/198
-  rotate: false
-  xy: 262, 2212
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
-jump_up/102
-  rotate: false
-  xy: 1172, 1302
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
-jump_up/120
-  rotate: false
-  xy: 1432, 1432
+  xy: 132, 1952
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
@@ -2014,7 +1272,7 @@ idle/41
   index: -1
 jump_up/45
   rotate: false
-  xy: 2, 1692
+  xy: 1822, 1562
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
@@ -2022,20 +1280,6 @@ jump_up/45
 jump_down/2
   rotate: false
   xy: 652, 1042
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
-jump_up/115
-  rotate: false
-  xy: 782, 1432
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
-jump_up/99
-  rotate: false
-  xy: 522, 1822
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
@@ -2056,14 +1300,14 @@ idle/10
   index: -1
 run/45
   rotate: false
-  xy: 652, 2212
+  xy: 2, 2212
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: -1
 jump_up/32
   rotate: false
-  xy: 262, 1562
+  xy: 2, 1562
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
@@ -2082,37 +1326,23 @@ idle/27
   orig: 128, 128
   offset: 0, 0
   index: -1
-run/34
+run/4
   rotate: false
   xy: 1172, 2082
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: -1
-run/4
+run/34
   rotate: false
-  xy: 2, 1952
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
-run/173
-  rotate: false
-  xy: 1042, 1952
+  xy: 392, 2082
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: -1
 jump_up/27
   rotate: false
-  xy: 1562, 1432
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
-jump_up/141
-  rotate: false
-  xy: 262, 1692
+  xy: 1172, 1432
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
@@ -2124,30 +1354,9 @@ jump_down/31
   orig: 128, 128
   offset: 0, 0
   index: -1
-jump_down/93
-  rotate: false
-  xy: 1692, 1172
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
-run/182
-  rotate: false
-  xy: 132, 2082
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
 idle/8
   rotate: false
   xy: 782, 912
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
-idle/33
-  rotate: false
-  xy: 1692, 652
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
@@ -2159,23 +1368,9 @@ jump_up/50
   orig: 128, 128
   offset: 0, 0
   index: -1
-jump_down/76
+idle/33
   rotate: false
-  xy: 1172, 1042
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
-run/191
-  rotate: false
-  xy: 1302, 2082
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
-jump_up/123
-  rotate: false
-  xy: 1822, 1432
+  xy: 1692, 652
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
@@ -2201,16 +1396,9 @@ hang/5
   orig: 128, 128
   offset: 0, 0
   index: -1
-run/156
-  rotate: false
-  xy: 782, 1822
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
 jump_up/48
   rotate: false
-  xy: 392, 1692
+  xy: 262, 1692
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
@@ -2218,13 +1406,6 @@ jump_up/48
 jump_down/1
   rotate: false
   xy: 1172, 912
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
-jump_up/118
-  rotate: false
-  xy: 1172, 1432
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
@@ -2238,14 +1419,7 @@ idle/19
   index: -1
 run/46
   rotate: false
-  xy: 782, 2212
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
-run/165
-  rotate: false
-  xy: 912, 1822
+  xy: 132, 2212
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
@@ -2271,37 +1445,9 @@ idle/28
   orig: 128, 128
   offset: 0, 0
   index: -1
-jump_down/57
-  rotate: false
-  xy: 1562, 1172
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
-run/174
-  rotate: false
-  xy: 1172, 1952
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
 hang/10
   rotate: false
   xy: 262, 2
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
-jump_up/144
-  rotate: false
-  xy: 652, 1692
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
-jump_down/88
-  rotate: false
-  xy: 912, 1172
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
@@ -2313,9 +1459,9 @@ hang/23
   orig: 128, 128
   offset: 0, 0
   index: -1
-jump_up/139
+jump_up/53
   rotate: false
-  xy: 2, 1692
+  xy: 1042, 1692
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
@@ -2327,23 +1473,9 @@ idle/34
   orig: 128, 128
   offset: 0, 0
   index: -1
-jump_up/53
-  rotate: false
-  xy: 1042, 1692
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
 jump_up/8
   rotate: false
-  xy: 1172, 1302
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
-jump_up/126
-  rotate: false
-  xy: 262, 1562
+  xy: 392, 1822
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
@@ -2362,37 +1494,16 @@ hang/2
   orig: 128, 128
   offset: 0, 0
   index: -1
-run/206
-  rotate: false
-  xy: 1302, 2212
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
-jump_down/69
-  rotate: false
-  xy: 132, 1042
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
 jump_up/20
   rotate: false
-  xy: 652, 1432
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
-jump_down/82
-  rotate: false
-  xy: 2, 1172
+  xy: 262, 1432
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: -1
 jump_up/15
   rotate: false
-  xy: 2, 1432
+  xy: 1432, 1302
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
@@ -2400,13 +1511,6 @@ jump_up/15
 hang/19
   rotate: false
   xy: 1432, 2
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
-jump_up/147
-  rotate: false
-  xy: 1042, 1692
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
@@ -2425,13 +1529,6 @@ hang/28
   orig: 128, 128
   offset: 0, 0
   index: -1
-jump_up/152
-  rotate: false
-  xy: 1692, 1692
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
 jump_up/56
   rotate: false
   xy: 1432, 1692
@@ -2441,21 +1538,7 @@ jump_up/56
   index: -1
 jump_up/41
   rotate: false
-  xy: 1432, 1562
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
-jump_up/111
-  rotate: false
-  xy: 262, 1432
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
-jump_up/95
-  rotate: false
-  xy: 652, 1302
+  xy: 1302, 1562
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
@@ -2469,14 +1552,7 @@ jump_down/27
   index: -1
 run/41
   rotate: false
-  xy: 132, 2212
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
-jump_down/63
-  rotate: false
-  xy: 1302, 912
+  xy: 1432, 2082
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
@@ -2504,28 +1580,21 @@ idle/23
   index: -1
 run/30
   rotate: false
-  xy: 652, 2082
+  xy: 1822, 1952
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: -1
 run/8
   rotate: false
-  xy: 652, 1952
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
-jump_down/54
-  rotate: false
-  xy: 1172, 912
+  xy: 1822, 2212
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: -1
 jump_up/23
   rotate: false
-  xy: 1042, 1432
+  xy: 652, 1432
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
@@ -2546,28 +1615,14 @@ jump_down/35
   index: -1
 run/27
   rotate: false
-  xy: 262, 2082
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
-jump_down/81
-  rotate: false
-  xy: 1822, 1042
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
-run/186
-  rotate: false
-  xy: 652, 2082
+  xy: 1302, 1952
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: -1
 jump_up/18
   rotate: false
-  xy: 392, 1432
+  xy: 1822, 1302
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
@@ -2595,28 +1650,14 @@ jump_up/1
   index: -1
 run/16
   rotate: false
-  xy: 132, 1952
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
-run/195
-  rotate: false
-  xy: 1822, 2082
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
-jump_up/109
-  rotate: false
-  xy: 2, 1432
+  xy: 1692, 1822
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: -1
 run/53
   rotate: false
-  xy: 1692, 2212
+  xy: 1172, 2212
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
@@ -2630,7 +1671,7 @@ hang/1
   index: -1
 jump_up/44
   rotate: false
-  xy: 1822, 1562
+  xy: 1692, 1562
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
@@ -2638,20 +1679,6 @@ jump_up/44
 jump_down/5
   rotate: false
   xy: 1822, 1172
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
-jump_up/114
-  rotate: false
-  xy: 652, 1432
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
-jump_up/98
-  rotate: false
-  xy: 392, 1822
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
@@ -2672,28 +1699,14 @@ idle/15
   index: -1
 run/42
   rotate: false
-  xy: 262, 2212
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
-run/169
-  rotate: false
-  xy: 1432, 1822
+  xy: 1562, 2082
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: -1
 jump_up/39
   rotate: false
-  xy: 1172, 1562
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
-run/200
-  rotate: false
-  xy: 522, 2212
+  xy: 912, 1562
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
@@ -2714,35 +1727,21 @@ idle/24
   index: -1
 run/3
   rotate: false
-  xy: 1822, 1822
+  xy: 1692, 1952
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: -1
 run/39
   rotate: false
-  xy: 1822, 2082
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
-run/178
-  rotate: false
-  xy: 1562, 1952
+  xy: 1042, 2082
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: -1
 jump_up/26
   rotate: false
-  xy: 1432, 1432
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
-jump_up/140
-  rotate: false
-  xy: 132, 1692
+  xy: 1042, 1432
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
@@ -2754,23 +1753,9 @@ jump_down/30
   orig: 128, 128
   offset: 0, 0
   index: -1
-jump_down/92
-  rotate: false
-  xy: 1432, 1172
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
 run/28
   rotate: false
-  xy: 392, 2082
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
-jump_up/135
-  rotate: false
-  xy: 1432, 1562
+  xy: 1432, 1952
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
@@ -2778,20 +1763,6 @@ jump_up/135
 idle/30
   rotate: false
   xy: 1302, 652
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
-jump_down/79
-  rotate: false
-  xy: 1562, 1042
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
-jump_up/122
-  rotate: false
-  xy: 1692, 1432
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
@@ -2812,14 +1783,14 @@ idle/47
   index: -1
 run/54
   rotate: false
-  xy: 1822, 2212
+  xy: 1302, 2212
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: -1
 jump_up/47
   rotate: false
-  xy: 262, 1692
+  xy: 132, 1692
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
@@ -2827,13 +1798,6 @@ jump_up/47
 jump_down/0
   rotate: false
   xy: 1042, 912
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
-jump_up/117
-  rotate: false
-  xy: 1042, 1432
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
@@ -2852,13 +1816,6 @@ idle/16
   orig: 128, 128
   offset: 0, 0
   index: -1
-run/162
-  rotate: false
-  xy: 522, 1952
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
 hang/58
   rotate: false
   xy: 1172, 392
@@ -2866,23 +1823,9 @@ hang/58
   orig: 128, 128
   offset: 0, 0
   index: -1
-jump_down/56
-  rotate: false
-  xy: 132, 1172
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
-run/171
-  rotate: false
-  xy: 132, 1952
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
 jump_up/11
   rotate: false
-  xy: 1432, 1302
+  xy: 912, 1302
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
@@ -2894,23 +1837,9 @@ hang/15
   orig: 128, 128
   offset: 0, 0
   index: -1
-jump_up/143
-  rotate: false
-  xy: 522, 1692
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
 jump_down/37
   rotate: false
   xy: 1172, 1172
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
-jump_down/91
-  rotate: false
-  xy: 1302, 1172
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
@@ -2922,37 +1851,9 @@ run/11
   orig: 128, 128
   offset: 0, 0
   index: -1
-jump_down/73
-  rotate: false
-  xy: 782, 1042
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
-run/180
-  rotate: false
-  xy: 1822, 1952
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
 hang/24
   rotate: false
   xy: 262, 132
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
-jump_up/138
-  rotate: false
-  xy: 1822, 1562
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
-idle/39
-  rotate: false
-  xy: 522, 782
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
@@ -2964,9 +1865,16 @@ jump_up/52
   orig: 128, 128
   offset: 0, 0
   index: -1
+idle/39
+  rotate: false
+  xy: 522, 782
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: -1
 jump_up/7
   rotate: false
-  xy: 1042, 1302
+  xy: 262, 1822
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
@@ -2999,30 +1907,9 @@ jump_down/7
   orig: 128, 128
   offset: 0, 0
   index: -1
-run/203
-  rotate: false
-  xy: 912, 2212
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
-jump_down/68
-  rotate: false
-  xy: 2, 1042
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
 hang/43
   rotate: false
   xy: 1042, 262
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
-run/212
-  rotate: false
-  xy: 652, 1822
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
