@@ -266,7 +266,7 @@ public class Camera {
 			}
 		}
 		translateLogic( outside_x, outside_y );
-		if ( !debugTurnOffZoom )
+		if ( !debugInput )
 			zoom( );
 	}
 

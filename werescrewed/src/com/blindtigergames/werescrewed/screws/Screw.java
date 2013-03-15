@@ -44,7 +44,7 @@ public class Screw extends Entity {
 	protected boolean playerAttached = false;
 	protected boolean removed = false;
 	protected ScrewType screwType;
-	protected ArrayList< RevoluteJoint > extraJoints;
+	public ArrayList< RevoluteJoint > extraJoints;
 
 	/**
 	 * constructor to use if you want a cosmetic screw

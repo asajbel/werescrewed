@@ -1,16 +1,27 @@
 package com.blindtigergames.werescrewed.screens;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+import com.badlogic.gdx.physics.box2d.joints.RevoluteJoint;
+import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
 import com.blindtigergames.werescrewed.WereScrewedGame;
+import com.blindtigergames.werescrewed.entity.EntityDef;
 import com.blindtigergames.werescrewed.entity.Skeleton;
+import com.blindtigergames.werescrewed.entity.action.DestoryJointAction;
+import com.blindtigergames.werescrewed.entity.action.ScrewDestoryJointAction;
+import com.blindtigergames.werescrewed.entity.builders.PlatformBuilder;
 import com.blindtigergames.werescrewed.entity.mover.PuzzleType;
 import com.blindtigergames.werescrewed.entity.mover.puzzle.PuzzleRotateTweenMover;
+import com.blindtigergames.werescrewed.eventTrigger.EventTrigger;
+import com.blindtigergames.werescrewed.hazard.Fire;
 import com.blindtigergames.werescrewed.level.LevelFactory;
 import com.blindtigergames.werescrewed.particles.Steam;
 import com.blindtigergames.werescrewed.platforms.Platform;
 import com.blindtigergames.werescrewed.screws.PuzzleScrew;
+import com.blindtigergames.werescrewed.screws.StructureScrew;
 import com.blindtigergames.werescrewed.util.Util;
 
 public class GleedTestScreen extends Screen {
@@ -18,6 +29,13 @@ public class GleedTestScreen extends Screen {
 	Music music;
 	Steam testSteam;
 
+	Platform fallingGear1;
+	RevoluteJoint fg1;
+	Fire f1, f2, f3;
+	int fireCounter = 0;
+	EventTrigger et;
+	boolean etTriggered = false;
+	
 	public GleedTestScreen( String name ) {
 		super( );
 		String filename = "data/levels/" + name + ".xml";
@@ -25,11 +43,56 @@ public class GleedTestScreen extends Screen {
 
 		music = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 				+ "/common/sounds/TrainJob.mp3" );
+		
+		Platform plat = ( Platform ) LevelFactory.entities.get( "structureplat" );
+		plat.quickfixCollisions( );
 
+		//Platform fallinggear1 = (Platform) LevelFactory.entities.get( "fallinggear1" );
+		//System.out.println( fallinggear1.name + " , " + fallinggear1.getPositionPixel( ));
+		
+		Skeleton skel1 = ( Skeleton ) LevelFactory.entities.get( "skeleton1" );
+		
+		fallingGear1 = new PlatformBuilder(level.world)
+		.name( "fallingGear1" )
+		.type( EntityDef.getDefinition("gearSmall") )
+		.position( 496.0f, 400.0f )
+		.texture( EntityDef.getDefinition("gearSmall").getTexture() )
+		.solid( true )
+		.dynamic( true )
+		.buildComplexPlatform( );
+		
+		fallingGear1.setCrushing( true );
+		
+		RevoluteJointDef revoluteJointDef = new RevoluteJointDef( );
+		revoluteJointDef.initialize( fallingGear1.body, skel1.body, fallingGear1.body.getWorldCenter( ) );
+		revoluteJointDef.enableMotor = false;
+		fg1 = ( RevoluteJoint ) level.world
+				.createJoint( revoluteJointDef );
+		
+		
+		
+		//550, 1850
+		f1 = new Fire( "Fire1", new Vector2( 600f, 1850.0f ), 
+				level.world, true, 25, 50 );
+		
+		f2 = new Fire( "Fire1", new Vector2( 900f, 1850.0f ), 
+				level.world, true, 25, 50 );
+		f2.flip( );
+		
+		f3 = new Fire( "Fire1", new Vector2( 1200f, 1850.0f ), 
+				level.world, true, 25, 50 );
+		
+		
+		et = ( EventTrigger ) LevelFactory.entities.get( "et1" );
+		//StructureScrew ss = ( StructureScrew ) LevelFactory.entities.get( "structurescrew1" );
+		//et.addEntityToTrigger( ss );
+	//	et.addBeginIAction( new DestoryJointAction( fg1 ) );
+		
+		//fallinggear1.getParentSkeleton( ).
 		Skeleton skel = ( Skeleton ) LevelFactory.entities.get( "skeleton2" );
-		skel.body.setTransform( skel.body.getPosition( ).x, skel.body
-				.getPosition( ).sub( 0f, 720 ).y, 0 );
-		skel.body.setType( BodyType.DynamicBody );
+//		skel.body.setTransform( skel.body.getPosition( ).x, skel.body
+//				.getPosition( ).sub( 0f, 720 ).y, 0 );
+		//skel.body.setType( BodyType.DynamicBody );
 		// skel.addMover( new RotateTweenMover(skel, 15f, Util.PI, 2f, true),
 		// RobotState.IDLE );
 
@@ -47,7 +110,7 @@ public class GleedTestScreen extends Screen {
 				100, skel2, level.world, 0, false );
 
 		PuzzleRotateTweenMover rtm1 = new PuzzleRotateTweenMover( 1,
-				Util.PI / 2, true, PuzzleType.ON_OFF_MOVER );
+				 -1 * Util.PI / 2, true, PuzzleType.ON_OFF_MOVER );
 
 		puzzleScrew.puzzleManager.addEntity( skel2 );
 		puzzleScrew.puzzleManager.addMover( rtm1 );
@@ -84,10 +147,35 @@ public class GleedTestScreen extends Screen {
 	public void render( float deltaTime ) {
 		super.render( deltaTime );
 		testSteam.update( deltaTime );
-
+		fallingGear1.update( deltaTime );
+		
+		fireCounter++;
+		if( fireCounter > 100){
+			f1.flip( );
+			f2.flip( );
+			f3.flip( );
+			
+			fireCounter = 0;
+		}
+		
+		
+		if(!etTriggered){
+			if(et.isActivated( )){
+				if( fg1 != null){
+					level.world.destroyJoint( fg1 );
+					fg1 = null;
+					etTriggered = true;
+				}
+			}
+		}
+		
 		batch.setProjectionMatrix( level.camera.combined( ) );
 		batch.begin( );
 		testSteam.draw( batch, deltaTime );
+		fallingGear1.draw( batch );
+		f1.draw( batch, deltaTime );
+		f2.draw( batch, deltaTime );
+		f3.draw( batch, deltaTime );
 		batch.end( );
 
 		if ( !music.isPlaying( ) ) {

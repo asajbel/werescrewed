@@ -11,6 +11,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
+import com.blindtigergames.werescrewed.camera.Anchor;
+import com.blindtigergames.werescrewed.camera.AnchorList;
 import com.blindtigergames.werescrewed.camera.Camera;
 import com.blindtigergames.werescrewed.checkpoints.CheckPoint;
 import com.blindtigergames.werescrewed.checkpoints.ProgressManager;
@@ -19,10 +21,15 @@ import com.blindtigergames.werescrewed.debug.SBox2DDebugRenderer;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.RobotState;
 import com.blindtigergames.werescrewed.entity.Skeleton;
+import com.blindtigergames.werescrewed.entity.action.AnchorActivateAction;
+import com.blindtigergames.werescrewed.entity.action.AnchorDeactivateAction;
+import com.blindtigergames.werescrewed.entity.action.MetricsStartTimeAction;
+import com.blindtigergames.werescrewed.entity.builders.EventTriggerBuilder;
 import com.blindtigergames.werescrewed.entity.builders.PlatformBuilder;
 import com.blindtigergames.werescrewed.entity.builders.PlayerBuilder;
 import com.blindtigergames.werescrewed.entity.tween.EntityAccessor;
 import com.blindtigergames.werescrewed.entity.tween.PlatformAccessor;
+import com.blindtigergames.werescrewed.eventTrigger.EventTrigger;
 import com.blindtigergames.werescrewed.hazard.*;
 import com.blindtigergames.werescrewed.hazard.builders.*;
 import com.blindtigergames.werescrewed.particles.Steam;
@@ -71,9 +78,9 @@ public class HazardScreen implements com.badlogic.gdx.Screen {
 		world.setContactListener( contactListener );
 
 		player1 = new PlayerBuilder( ).name( "player1" ).world( world )
-				.position( -1000.0f, 100.0f ).buildPlayer( );
+				.position( 0f, 100f).buildPlayer( );
 		player2 = new PlayerBuilder( ).name( "player2" ).world( world )
-				.position( -950.0f, 100.0f ).buildPlayer( );
+				.position( 0.0f, 100.0f ).buildPlayer( );
 
 		initTiledPlatforms( );
 		initHazards( );
@@ -128,6 +135,35 @@ public class HazardScreen implements com.badlogic.gdx.Screen {
 	private void initParticleEffect( ) {
 		testSteam = new Steam( "testSteam", new Vector2( -100f, 20f ), null,
 				null, false, 25, 50, world );
+		
+		 // Create anchor with start position and buffer as parameters
+		 Anchor testAnchor = new Anchor( new Vector2(600f, 200f),
+		 new Vector2( -100f, 100f ) );
+		 // Add to the universally accessible anchor list
+		 AnchorList.getInstance( ).addAnchor( testAnchor );
+		 // Set timer in steps
+		 //testAnchor.setTimer( 200 );
+		 // Activate it
+		// testAnchor.activate( );
+		
+		EventTriggerBuilder etb = new EventTriggerBuilder( world );
+		EventTrigger et = etb.name( "event1" ).circle( ).radius( 100 )
+				.position( new Vector2( 900f, 20f ) ).repeatable()
+				.beginAction( new AnchorActivateAction( testAnchor ) )
+				.build( );
+		EventTriggerBuilder etb2 = new EventTriggerBuilder( world );
+		EventTrigger et2 = etb2.name( "event2" ).circle( ).radius( 100 )
+				.position( new Vector2( 500f, 20f ) ).repeatable( )
+				.beginAction( new AnchorDeactivateAction( testAnchor ) )
+				.build( );
+		
+		//AnchorDeactivateAction
+		
+		
+		
+		skeleton.addEventTrigger( et );
+		skeleton.addEventTrigger( et2 );
+
 	}
 	
 	private void initCrushTest( ) {
