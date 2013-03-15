@@ -44,7 +44,7 @@ public class Steam extends Entity{
 		this.world = world;
 		particleEffect = new ParticleEffect( );
 		particleEffect.load(
-				Gdx.files.internal( "data/particles/firetest" ),
+				Gdx.files.internal( "data/particles/Steam" ),
 				Gdx.files.internal( "data/particles" ) );
 		particleEffect.setPosition( positionPixels.x, positionPixels.y - height);
 
@@ -58,13 +58,13 @@ public class Steam extends Entity{
 	 * @param deltaTime float
 	 */
 	public void draw( SpriteBatch batch, float deltaTime ) {
-		if ( Gdx.input.isKeyPressed( Keys.B ) ) {
-			if (test){
-				particleEffect.start( );
-			}
-			test = false;
-		}
-		else test = true;
+		//if ( Gdx.input.isKeyPressed( Keys.B ) ) {
+		//	if (test){
+				//particleEffect.start( );
+		//	}
+		//	test = false;
+		//}
+		//else test = true;
 		particleEffect.draw( batch, deltaTime );
 	}
 	

@@ -1867,8 +1867,10 @@ public class Player extends Entity {
 			body.setLinearVelocity( new Vector2( 0f,
 					body.getLinearVelocity( ).y ) );
 		// body.applyForceToCenter( 0f, STEAM_FORCE );
+		//body.setLinearVelocity( new Vector2( body.getLinearVelocity( ).x, 0f ) );
 		body.applyLinearImpulse( new Vector2( 0, STEAM_IMPULSE ),
 				body.getWorldCenter( ) );
+		grounded = false;
 	}
 
 	/**
