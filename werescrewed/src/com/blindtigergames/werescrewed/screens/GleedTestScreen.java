@@ -34,15 +34,9 @@ public class GleedTestScreen extends Screen {
 		// RobotState.IDLE );
 
 		Skeleton skel2 = ( Skeleton ) LevelFactory.entities.get( "skeleton4" );
-		level.root.getSubSkeletonByName( "skeleton4" ).body
-				.setType( BodyType.DynamicBody );
+//		level.root.getSubSkeletonByName( "skeleton4" ).body
+//				.setType( BodyType.DynamicBody );
 
-		level.player1.setPixelPosition(
-				level.player1.getPositionPixel( ).x + 500,
-				level.player1.getPositionPixel( ).y + 2000 );
-		level.player2.setPixelPosition(
-				level.player2.getPositionPixel( ).x + 500,
-				level.player2.getPositionPixel( ).y + 2000 );
 
 		// PathBuilder pb = new PathBuilder( );
 		// skel.addMover( pb.begin( skel ).target( 0, 150, 3 ).target( 0, 0, 3 )
