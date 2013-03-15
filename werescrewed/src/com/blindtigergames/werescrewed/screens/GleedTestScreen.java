@@ -27,7 +27,7 @@ import com.blindtigergames.werescrewed.util.Util;
 public class GleedTestScreen extends Screen {
 
 	Music music;
-	Steam testSteam;
+	Steam testSteam, steam2;
 
 	Platform fallingGear1;
 	RevoluteJoint fg1;
@@ -71,7 +71,7 @@ public class GleedTestScreen extends Screen {
 		
 		
 		
-		//550, 1850
+		
 		f1 = new Fire( "Fire1", new Vector2( 600f, 1850.0f ), 
 				level.world, true, 25, 50 );
 		
@@ -116,11 +116,12 @@ public class GleedTestScreen extends Screen {
 		puzzleScrew.puzzleManager.addMover( rtm1 );
 		skel2.addScrewForDraw( puzzleScrew );
 
-		// 2913, 2770
+		//1680, 750
 
 		testSteam = new Steam( "testSteam", new Vector2( 2913, 2770f ), null,
 				null, false, 25, 50, level.world );
-
+		steam2 = new Steam( "steam2", new Vector2( 1680, 780 ), null,
+				null, false, 25, 50, level.world );
 		// // Create anchor with start position and buffer as parameters
 		// Anchor testAnchor = new Anchor( new Vector2(skel.getPositionPixel(
 		// ).x, skel.getPositionPixel( ).y ),
@@ -134,7 +135,8 @@ public class GleedTestScreen extends Screen {
 
 		Platform p = ( Platform ) LevelFactory.entities.get( "plat4" );
 		p.oneSided = true;
-
+		Platform p2 = ( Platform ) LevelFactory.entities.get( "plat7" );
+		p2.oneSided = true;
 		// skel.addMover( new RotateTweenMover( skel, 5f,
 		// Util.PI / 2, 1f, true ),
 		// RobotState.IDLE );
@@ -150,7 +152,7 @@ public class GleedTestScreen extends Screen {
 		fallingGear1.update( deltaTime );
 		
 		fireCounter++;
-		if( fireCounter > 100){
+		if( fireCounter > 150){
 			f1.flip( );
 			f2.flip( );
 			f3.flip( );
@@ -172,6 +174,7 @@ public class GleedTestScreen extends Screen {
 		batch.setProjectionMatrix( level.camera.combined( ) );
 		batch.begin( );
 		testSteam.draw( batch, deltaTime );
+		steam2.draw( batch, deltaTime );
 		fallingGear1.draw( batch );
 		f1.draw( batch, deltaTime );
 		f2.draw( batch, deltaTime );
