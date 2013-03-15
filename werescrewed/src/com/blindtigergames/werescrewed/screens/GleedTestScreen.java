@@ -137,12 +137,11 @@ public class GleedTestScreen extends Screen {
 		p.oneSided = true;
 		Platform p2 = ( Platform ) LevelFactory.entities.get( "plat7" );
 		p2.oneSided = true;
+		
 		// skel.addMover( new RotateTweenMover( skel, 5f,
 		// Util.PI / 2, 1f, true ),
 		// RobotState.IDLE );
 
-		// 2000, -80
-		// System.out.println( skel.name );
 	}
 
 	@Override
