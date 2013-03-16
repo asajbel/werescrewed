@@ -72,16 +72,22 @@ public class Fire extends Hazard {
 				( width ) * Util.PIXEL_TO_BOX, ( height ) * Util.PIXEL_TO_BOX );
 		steamFixtureDef.shape = polygon;
 		steamFixtureDef.isSensor = true;
+		steamFixtureDef.filter.categoryBits = Util.CATEGROY_HAZARD;
+		steamFixtureDef.filter.maskBits = Util.CATEGORY_PLAYER;
 		body.createFixture( steamFixtureDef );
 		polygon.set( ( 0 ) * Util.PIXEL_TO_BOX, ( 0 ) * Util.PIXEL_TO_BOX, 
 				( width * -1 ) * Util.PIXEL_TO_BOX, ( height ) * Util.PIXEL_TO_BOX );
 		steamFixtureDef.shape = polygon;
 		steamFixtureDef.isSensor = true;
+		steamFixtureDef.filter.categoryBits = Util.CATEGROY_HAZARD;
+		steamFixtureDef.filter.maskBits = Util.CATEGORY_PLAYER;
 		body.createFixture( steamFixtureDef );
 		polygon.set( ( width ) * Util.PIXEL_TO_BOX, ( height ) * Util.PIXEL_TO_BOX, 
 				( width * -1 ) * Util.PIXEL_TO_BOX, ( height ) * Util.PIXEL_TO_BOX );
 		steamFixtureDef.shape = polygon;
 		steamFixtureDef.isSensor = true;
+		steamFixtureDef.filter.categoryBits = Util.CATEGROY_HAZARD;
+		steamFixtureDef.filter.maskBits = Util.CATEGORY_PLAYER;
 		body.createFixture( steamFixtureDef );
 
 		polygon.dispose( );

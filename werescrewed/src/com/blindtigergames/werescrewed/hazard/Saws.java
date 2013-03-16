@@ -71,6 +71,8 @@ public class Saws extends Hazard {
 				* Util.PIXEL_TO_BOX );
 		FixtureDef spikeFixtureDef = new FixtureDef( );
 		spikeFixtureDef.shape = polygon;
+		spikeFixtureDef.filter.categoryBits = Util.CATEGROY_HAZARD;
+		spikeFixtureDef.filter.maskBits = Util.CATEGORY_PLAYER;
 		body.createFixture( spikeFixtureDef );
 
 		polygon.dispose( );

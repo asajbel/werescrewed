@@ -125,6 +125,8 @@ public class Spikes extends Hazard {
 		FixtureDef spikeFixtureDef = new FixtureDef( );
 		spikeFixtureDef.shape = polygon;
 		spikeFixtureDef.isSensor = true;
+		spikeFixtureDef.filter.categoryBits = Util.CATEGROY_HAZARD;
+		spikeFixtureDef.filter.maskBits = Util.CATEGORY_PLAYER;
 		body.createFixture( spikeFixtureDef );
 		
 		if ( hori ) {

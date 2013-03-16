@@ -180,6 +180,8 @@ public class LevelSelectScreen implements com.badlogic.gdx.Screen {
 			controllerListener = new MyControllerListener( );
 			controller2 = Controllers.getControllers( ).get( 1 );
 			controller2.addListener( controllerListener );
+		} else {
+			controllerListener = new MyControllerListener( );			
 		}
 	}
 	
