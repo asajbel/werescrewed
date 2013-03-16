@@ -1,7 +1,6 @@
 package com.blindtigergames.werescrewed.player;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.Controllers;
@@ -15,6 +14,7 @@ import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.Filter;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.JointEdge;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJoint;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
@@ -33,6 +33,7 @@ import com.blindtigergames.werescrewed.entity.mover.LinearAxis;
 import com.blindtigergames.werescrewed.graphics.TextureAtlas;
 import com.blindtigergames.werescrewed.input.MyControllerListener;
 import com.blindtigergames.werescrewed.input.PlayerInputHandler;
+import com.blindtigergames.werescrewed.rope.Link;
 import com.blindtigergames.werescrewed.screws.ResurrectScrew;
 import com.blindtigergames.werescrewed.screws.Screw;
 import com.blindtigergames.werescrewed.screws.ScrewType;
@@ -240,12 +241,12 @@ public class Player extends Entity {
 			// Gdx.app.log( "fixture" + i + " a sensor?", "" + f.isSensor( ) );
 			// i++;
 			// }
-			Gdx.app.log( "player 1 state", "" + playerState );
-
-			Gdx.app.log(
-					"player 1 mask bits",
-					""
-							+ body.getFixtureList( ).get( 0 ).getFilterData( ).maskBits );
+			// Gdx.app.log( "player 1 state", "" + playerState );
+			//
+			// Gdx.app.log(
+			// "player 1 mask bits",
+			// ""
+			// + body.getFixtureList( ).get( 0 ).getFilterData( ).maskBits );
 			// playerDirection );
 			// if(contact != null)
 			// System.out.println("contact friction: " + contact.getFriction( )
@@ -293,8 +294,8 @@ public class Player extends Entity {
 				updateKeyboard( deltaTime );
 			}
 		}
-		//if re-spawning decrement time out
-		//player will not die in this time
+		// if re-spawning decrement time out
+		// player will not die in this time
 		if ( respawnTimeout > 0 ) {
 			respawnTimeout--;
 		}
@@ -861,9 +862,10 @@ public class Player extends Entity {
 				&& currentScrew.body.getJointList( ).size( ) > 0
 				&& playerState != PlayerState.HeadStand
 				&& !currentScrew.isPlayerAttached( ) ) {
-			// Filter filter;
-			for ( Fixture f : body.getFixtureList( ) ) {
-				f.setSensor( true );
+			if ( currentScrew.playerNotSensor( ) ) {
+				for ( Fixture f : body.getFixtureList( ) ) {
+					f.setSensor( true );
+				}
 			}
 			if ( currentScrew.body.getLinearVelocity( ).len( ) < SCREW_ATTACH_SPEED ) {
 				mover = new LerpMover( body.getPosition( ).mul(
@@ -1841,7 +1843,6 @@ public class Player extends Entity {
 	 * @param value
 	 *            boolean
 	 */
-
 	public void setSteamCollide( boolean value ) {
 		steamCollide = value;
 	}

@@ -137,7 +137,7 @@ public class SimpleFrameAnimator implements IAnimator {
 				break;
 			}
 		}
-		if (time > 0.0f){
+		if (time > 1.0f){
 			switch (loop){
 			case STOP:
 				time = 1.0f;
