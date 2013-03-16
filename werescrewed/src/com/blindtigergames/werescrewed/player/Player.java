@@ -14,7 +14,6 @@ import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.Filter;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.JointEdge;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJoint;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
@@ -33,7 +32,6 @@ import com.blindtigergames.werescrewed.entity.mover.LinearAxis;
 import com.blindtigergames.werescrewed.graphics.TextureAtlas;
 import com.blindtigergames.werescrewed.input.MyControllerListener;
 import com.blindtigergames.werescrewed.input.PlayerInputHandler;
-import com.blindtigergames.werescrewed.rope.Link;
 import com.blindtigergames.werescrewed.screws.ResurrectScrew;
 import com.blindtigergames.werescrewed.screws.Screw;
 import com.blindtigergames.werescrewed.screws.ScrewType;
@@ -72,7 +70,7 @@ public class Player extends Entity {
 	public final static float FEET_OFFSET_X = 58f * Util.PIXEL_TO_BOX;
 	public final static float FEET_OFFSET_Y = 20f * Util.PIXEL_TO_BOX;
 	public final static float JUMP_DIRECTION_MULTIPLIER = 2f;
-	public final static float JUMP_DEFAULT_DIVISION = 1.0f;
+	public final static float JUMP_DEFAULT_DIVISION = 2.0f;
 	public float directionJumpDivsion = JUMP_DEFAULT_DIVISION;
 
 	public Fixture feet;
@@ -164,7 +162,7 @@ public class Player extends Entity {
 	}
 
 	public enum ConcurrentState {
-		Ignore, Extraumping, ExtraFalling
+		Ignore, ExtraJumping, ExtraFalling
 	}
 
 	// enum to handle different states of movement
@@ -303,7 +301,11 @@ public class Player extends Entity {
 		updateFootFriction( );
 		// test if player is still moving after timeout
 		if ( playerDirection != PlayerDirection.Idle ) {
-			if ( runTimeout == 0 ) {
+			if ( runTimeout == 0
+					&&  playerState != PlayerState.Jumping
+							&& playerState != PlayerState.Falling
+							&& extraState != ConcurrentState.ExtraFalling 
+							&& extraState != ConcurrentState.ExtraJumping ) {
 				playerDirection = PlayerDirection.Idle;
 			} else if ( playerDirection == PlayerDirection.Left
 					&& sprite.getScaleX( ) > 0 ) {
@@ -311,7 +313,10 @@ public class Player extends Entity {
 			} else if ( playerDirection == PlayerDirection.Right
 					&& sprite.getScaleX( ) < 0 ) {
 				sprite.setScale( sprite.getScaleX( ) * -1, sprite.getScaleY( ) );
-			} else {
+			} else if ( playerState != PlayerState.Jumping
+							&& playerState != PlayerState.Falling
+							&& extraState != ConcurrentState.ExtraFalling 
+							&& extraState != ConcurrentState.ExtraJumping ){
 				runTimeout--;
 			}
 		}
@@ -862,7 +867,7 @@ public class Player extends Entity {
 				&& currentScrew.body.getJointList( ).size( ) > 0
 				&& playerState != PlayerState.HeadStand
 				&& !currentScrew.isPlayerAttached( ) ) {
-			if ( currentScrew.playerNotSensor( ) ) {
+			if ( !currentScrew.playerNotSensor( ) ) {
 				for ( Fixture f : body.getFixtureList( ) ) {
 					f.setSensor( true );
 				}
@@ -975,7 +980,7 @@ public class Player extends Entity {
 						&& playerState != PlayerState.HeadStand ) {
 					playerState = PlayerState.Jumping;
 				} else if ( playerState == PlayerState.HeadStand ) {
-					extraState = ConcurrentState.Extraumping;
+					extraState = ConcurrentState.ExtraJumping;
 				}
 				jump( );
 				jumpCounter++;
@@ -1027,7 +1032,7 @@ public class Player extends Entity {
 					playerState = PlayerState.Jumping;
 				} else if ( playerState == PlayerState.HeadStand ) {
 					// don't change the actual player state use the extra state
-					extraState = ConcurrentState.Extraumping;
+					extraState = ConcurrentState.ExtraJumping;
 				}
 				jump( );
 				jumpCounter++;
