@@ -100,30 +100,31 @@ public class LevelSelectScreen implements com.badlogic.gdx.Screen {
 		if ( controllerTimer > 0 ) {
 			controllerTimer--;
 		} else {
-			if ( controllerListener.jumpPressed( )
-					|| Gdx.input.isKeyPressed( Keys.ENTER ) ) {
-				Buttons.get( buttonIndex ).setSelected( true );
-				controllerTimer = controllerMax;
-			} else if ( controllerListener.downPressed( )
-					|| Gdx.input.isKeyPressed( Keys.DOWN ) ) {
-				Buttons.get( buttonIndex ).setColored( false );
-				buttonIndex++;
-				buttonIndex = buttonIndex % Buttons.size( );
-				Buttons.get( buttonIndex ).setColored( true );
-				controllerTimer = controllerMax;
-			} else if ( controllerListener.upPressed( )
-					|| Gdx.input.isKeyPressed( Keys.UP ) ) {
-				Buttons.get( buttonIndex ).setColored( false );
-				if ( buttonIndex == 0 ) {
-					buttonIndex = Buttons.size( ) - 1;
-				} else {
-					buttonIndex--;
+			if(controller1 != null || controller2 != null){
+				if ( controllerListener.jumpPressed( )
+						|| Gdx.input.isKeyPressed( Keys.ENTER ) ) {
+					Buttons.get( buttonIndex ).setSelected( true );
+					controllerTimer = controllerMax;
+				} else if ( controllerListener.downPressed( )
+						|| Gdx.input.isKeyPressed( Keys.DOWN ) ) {
+					Buttons.get( buttonIndex ).setColored( false );
+					buttonIndex++;
+					buttonIndex = buttonIndex % Buttons.size( );
+					Buttons.get( buttonIndex ).setColored( true );
+					controllerTimer = controllerMax;
+				} else if ( controllerListener.upPressed( )
+						|| Gdx.input.isKeyPressed( Keys.UP ) ) {
+					Buttons.get( buttonIndex ).setColored( false );
+					if ( buttonIndex == 0 ) {
+						buttonIndex = Buttons.size( ) - 1;
+					} else {
+						buttonIndex--;
+					}
+					Buttons.get( buttonIndex ).setColored( true );
+					controllerTimer = controllerMax;
 				}
-				Buttons.get( buttonIndex ).setColored( true );
-				controllerTimer = controllerMax;
 			}
 		}
-		Gdx.app.log( "buttonIndex: ", "" + buttonIndex );
 	}
 
 	@Override
@@ -179,6 +180,8 @@ public class LevelSelectScreen implements com.badlogic.gdx.Screen {
 			controllerListener = new MyControllerListener( );
 			controller2 = Controllers.getControllers( ).get( 1 );
 			controller2.addListener( controllerListener );
+		} else {
+			controllerListener = new MyControllerListener( );			
 		}
 	}
 	

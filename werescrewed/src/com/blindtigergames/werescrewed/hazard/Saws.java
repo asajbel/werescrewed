@@ -34,9 +34,9 @@ public class Saws extends Hazard {
 	protected Vector2 bodypos;
 	protected float tileConstant = 16.0f;
 	
-	public Saws( String name, Vector2 pos, int size,
+	public Saws( String name, Vector2 pos, float size,
 			World world, boolean isActive ) {
-		super( name, pos, null, world, isActive );
+		super( name, pos, null, world, size, size, isActive );
 		entityType = EntityType.HAZARD;
 
 		this.world = world;
@@ -58,7 +58,7 @@ public class Saws extends Hazard {
 		Gdx.app.log( "Hello", "World" );
 	}
 
-	private void constructBody( Vector2 position, float height, float width ) {
+	public void constructBody( Vector2 position, float height, float width ) {
 		BodyDef bodyDef = new BodyDef( );
 		bodyDef.type = BodyType.KinematicBody;
 
@@ -71,6 +71,8 @@ public class Saws extends Hazard {
 				* Util.PIXEL_TO_BOX );
 		FixtureDef spikeFixtureDef = new FixtureDef( );
 		spikeFixtureDef.shape = polygon;
+		spikeFixtureDef.filter.categoryBits = Util.CATEGROY_HAZARD;
+		spikeFixtureDef.filter.maskBits = Util.CATEGORY_PLAYER;
 		body.createFixture( spikeFixtureDef );
 
 		polygon.dispose( );

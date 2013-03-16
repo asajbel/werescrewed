@@ -19,7 +19,6 @@ import com.blindtigergames.werescrewed.checkpoints.ProgressManager;
 import com.blindtigergames.werescrewed.collisionManager.MyContactListener;
 import com.blindtigergames.werescrewed.debug.SBox2DDebugRenderer;
 import com.blindtigergames.werescrewed.entity.Entity;
-import com.blindtigergames.werescrewed.entity.RobotState;
 import com.blindtigergames.werescrewed.entity.Skeleton;
 import com.blindtigergames.werescrewed.entity.action.AnchorActivateAction;
 import com.blindtigergames.werescrewed.entity.action.AnchorDeactivateAction;
@@ -54,6 +53,7 @@ public class HazardScreen implements com.badlogic.gdx.Screen {
 	private TiledPlatform ground, crusher;
 	private StructureScrew struct1, struct2;
 	private PlatformBuilder platBuilder;
+	private Hazard hazard;
 	private Fire fire;
 	private Electricity elec;
 	private Saws saw;
@@ -113,8 +113,13 @@ public class HazardScreen implements com.badlogic.gdx.Screen {
 	}
 
 	private void initHazards( ) {
+		Vector2 tempPos = new Vector2( -1250.0f, 300.0f );
+		float tempWH = 100.0f;
+		hazard = new Hazard ( "Test", tempPos, null, 
+				world, tempWH, tempWH, true );
+		hazard.constructBody( tempPos, tempWH, tempWH );
 		fire = new Fire( "Fire1", new Vector2( -700.0f, -10.0f ), 
-				world, true, 15, 60 );
+				world, true, 50, 100 );
 		/*elec = new Electricity( "Elec1", new Vector2( 3000.0f, -10.0f ),
 				world, true );
 		saw = new Saws( "Saw1", new Vector2( -2000.0f, 40.0f ),

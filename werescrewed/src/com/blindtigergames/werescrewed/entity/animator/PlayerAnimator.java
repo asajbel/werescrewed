@@ -92,9 +92,9 @@ public class PlayerAnimator implements IAnimator {
 		case Falling:
 			return PlayerAnim.JUMP_DOWN;
 		case HeadStand:
-			if ( player.getExtraState( ) == ConcurrentState.HeadStandJumping ) {
+			if ( player.getExtraState( ) == ConcurrentState.Extraumping ) {
 				return PlayerAnim.JUMP_UP;
-			} else if ( player.getExtraState( ) == ConcurrentState.HeadStandJumping ) {
+			} else if ( player.getExtraState( ) == ConcurrentState.ExtraFalling ) {
 				return PlayerAnim.JUMP_DOWN;
 			} 
 		default:

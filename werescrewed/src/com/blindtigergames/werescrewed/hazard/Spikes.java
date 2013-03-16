@@ -36,7 +36,6 @@ public class Spikes extends Hazard {
 	
 	protected Vector < Tile > tiles = new Vector <Tile>();
 	protected Vector2 bodypos;
-	protected Vector2 defaultPos;
 	protected float tileConstant = 32.0f;
 	protected boolean hori;
 	protected Orientation ori;
@@ -57,11 +56,11 @@ public class Spikes extends Hazard {
 	 * 		Meant for 1x1 spikes, determines orientation of spikes
 	 * 		i.e. facing up/down or left/right.
 	 */
-	public Spikes( String name, Vector2 pos, float height, float width,
+	public Spikes( String name, Vector2 pos, float width, float height,
 			World world, boolean isActive, boolean invert, boolean horizontal ) {
 		super( name, pos, ( Texture ) WereScrewedGame.manager
 				.get( WereScrewedGame.dirHandle + "/common/spikes_01.png" ),
-				world, isActive );
+				world, width, height, isActive );
 		entityType = EntityType.HAZARD;
 		
 		if ( height > width ) {
@@ -87,12 +86,11 @@ public class Spikes extends Hazard {
 				ori = Orientation.RIGHT;
 		}
 		
-		this.defaultPos = pos;
 		this.world = world;
-		this.active = isActive;
+		this.activeHazard = isActive;
 		// this.sprite = constructSprite( (Texture) WereScrewedGame.manager
 		// .get( WereScrewedGame.dirHandle + "/common/spikes.png" ) );
-		constructBody( pos, height, width );
+		constructBody( height, width, pos );
 		constructTile( pos, height, width );
 	}
 
@@ -102,7 +100,7 @@ public class Spikes extends Hazard {
 	
 	@Override
 	public void performContact( Player player, Fixture fixture ) {
-		if ( fixture == this.body.getFixtureList( ).get( 1 ) && active ){
+		if ( fixture == this.body.getFixtureList( ).get( 1 ) && activeHazard ){
 			player.killPlayer( );			
 		}
 	}
@@ -113,7 +111,7 @@ public class Spikes extends Hazard {
 	 * @param height float
 	 * @param width float
 	 */
-	private void constructBody( Vector2 position, float height, float width ) {
+	private void constructBody( float height, float width, Vector2 position ) {
 		BodyDef bodyDef = new BodyDef( );
 		bodyDef.type = BodyType.KinematicBody;
 		
@@ -127,6 +125,8 @@ public class Spikes extends Hazard {
 		FixtureDef spikeFixtureDef = new FixtureDef( );
 		spikeFixtureDef.shape = polygon;
 		spikeFixtureDef.isSensor = true;
+		spikeFixtureDef.filter.categoryBits = Util.CATEGROY_HAZARD;
+		spikeFixtureDef.filter.maskBits = Util.CATEGORY_PLAYER;
 		body.createFixture( spikeFixtureDef );
 		
 		if ( hori ) {

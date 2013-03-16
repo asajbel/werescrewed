@@ -35,13 +35,14 @@ public class Fire extends Hazard {
 	 * @param pixelHeight float
 	 */
 	public Fire( String name, Vector2 pos, World world, boolean isActive, 
-			float pixelWidth, float pixelHeight ) {
-		super( name, pos, null, world, isActive );
+			float width, float height ) {
+		super( name, pos, null, world, width, height, isActive );
 		entityType = EntityType.HAZARD;
 		
-		width = pixelWidth;
-		height = pixelHeight;
+		this.width = width;
+		this.height = height;
 		this.world = world;
+		this.activeHazard = isActive;
 		particleEffect = new ParticleEffect( );
 		particleEffect.load(
 				Gdx.files.internal( "data/particles/steam" ),
@@ -68,19 +69,25 @@ public class Fire extends Hazard {
 		FixtureDef steamFixtureDef = new FixtureDef( );
 		EdgeShape polygon = new EdgeShape( );
 		polygon.set( ( 0 ) * Util.PIXEL_TO_BOX, ( 0 ) * Util.PIXEL_TO_BOX, 
-				( width * 2 ) * Util.PIXEL_TO_BOX, ( height * 2 ) * Util.PIXEL_TO_BOX );
+				( width ) * Util.PIXEL_TO_BOX, ( height ) * Util.PIXEL_TO_BOX );
 		steamFixtureDef.shape = polygon;
 		steamFixtureDef.isSensor = true;
+		steamFixtureDef.filter.categoryBits = Util.CATEGROY_HAZARD;
+		steamFixtureDef.filter.maskBits = Util.CATEGORY_PLAYER;
 		body.createFixture( steamFixtureDef );
 		polygon.set( ( 0 ) * Util.PIXEL_TO_BOX, ( 0 ) * Util.PIXEL_TO_BOX, 
-				( width * -2 ) * Util.PIXEL_TO_BOX, ( height * 2 ) * Util.PIXEL_TO_BOX );
+				( width * -1 ) * Util.PIXEL_TO_BOX, ( height ) * Util.PIXEL_TO_BOX );
 		steamFixtureDef.shape = polygon;
 		steamFixtureDef.isSensor = true;
+		steamFixtureDef.filter.categoryBits = Util.CATEGROY_HAZARD;
+		steamFixtureDef.filter.maskBits = Util.CATEGORY_PLAYER;
 		body.createFixture( steamFixtureDef );
-		polygon.set( ( width * 2 ) * Util.PIXEL_TO_BOX, ( height * 2 ) * Util.PIXEL_TO_BOX, 
-				( width * -2 ) * Util.PIXEL_TO_BOX, ( height * 2 ) * Util.PIXEL_TO_BOX );
+		polygon.set( ( width ) * Util.PIXEL_TO_BOX, ( height ) * Util.PIXEL_TO_BOX, 
+				( width * -1 ) * Util.PIXEL_TO_BOX, ( height ) * Util.PIXEL_TO_BOX );
 		steamFixtureDef.shape = polygon;
 		steamFixtureDef.isSensor = true;
+		steamFixtureDef.filter.categoryBits = Util.CATEGROY_HAZARD;
+		steamFixtureDef.filter.maskBits = Util.CATEGORY_PLAYER;
 		body.createFixture( steamFixtureDef );
 
 		polygon.dispose( );

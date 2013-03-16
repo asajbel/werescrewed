@@ -10,6 +10,12 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Json;
 
+/**
+ * Static class for collecting metrics on a level.
+ * 
+ * @author Ranveer Anders
+ * 
+ */
 public class Metrics {
 
 	public static boolean activated = false;
@@ -160,13 +166,13 @@ public class Metrics {
 			// TODO Auto-generated catch block
 			e.printStackTrace( );
 		}
-		
+
 		sectionNames.clear( );
 		playerDeathPositions.clear( );
 		playerJumpPositions.clear( );
 		playerAttachToScrewPositions.clear( );
 		playerScrewedPositions.clear( );
 		playerUnscrewedPositions.clear( );
-		playerTime.clear( ); 
+		playerTime.clear( );
 	}
 }
