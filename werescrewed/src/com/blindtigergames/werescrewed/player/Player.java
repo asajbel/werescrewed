@@ -728,7 +728,7 @@ public class Player extends Entity {
 						.sub( 0, 12f ) );
 				hitCloud.sprite.setColor( sprite.getColor( ).r,
 						sprite.getColor( ).g, sprite.getColor( ).b,
-						body.getLinearVelocity( ).y / (float)MAX_VELOCITY*.75f );
+						body.getLinearVelocity( ).y / (float)MAX_VELOCITY );
 				hitCloud.sprite.reset( );
 			}
 			this.grounded = newVal;
