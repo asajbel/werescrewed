@@ -2,8 +2,8 @@ package com.blindtigergames.werescrewed.checkpoints;
 
 import java.util.ArrayList;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.JointEdge;
 import com.badlogic.gdx.physics.box2d.World;
 import com.blindtigergames.werescrewed.entity.Entity;
@@ -147,7 +147,7 @@ public class ProgressManager {
 			}
 			ScrewBuilder rezzBuilder = new ScrewBuilder( )
 					.screwType( ScrewType.SCREW_RESURRECT ).entity( entity )
-					.world( world ).playerOffset( true ).position( 0f, 150f );
+					.world( world ).playerOffset( true ).position( -100f, 150f );
 
 			if ( player1.isPlayerDead( ) ) {
 				// create new rez screw and attach
@@ -179,7 +179,6 @@ public class ProgressManager {
 				holdTime = 0;
 
 			} else if ( !playerMover ) {
-				Gdx.app.log(" init mover", "now");
 				player.setActive( true );
 				player.setMoverAtCurrentState( new LerpMover(
 						player.getPositionPixel( ).sub(
@@ -213,6 +212,7 @@ public class ProgressManager {
 		// move the player to the current checkpoint
 		player.body.setTransform( checkPoints.get( currentCheckPoint )
 				.getPosition( ), 0.0f );
+		player.body.setLinearVelocity( Vector2.Zero );
 	}
 
 	/**
