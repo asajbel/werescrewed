@@ -22,6 +22,12 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Json;
 import com.blindtigergames.werescrewed.WereScrewedGame;
 
+/**
+ * Class to show the metrics on screen during play.
+ * 
+ * @author Anders
+ * 
+ */
 public class MetricsRender {
 	private enum Type {
 		NONE, JUMP, DIE, SCREW, UNSCREW, ATTACH, TIME
@@ -34,7 +40,7 @@ public class MetricsRender {
 		int num;
 	}
 
-	private final int LIMIT = 5; 
+	private final int LIMIT = 5;
 	private final float RADIUS = 64;
 	private boolean fileExists = false;
 	private boolean render = false;
@@ -52,13 +58,21 @@ public class MetricsRender {
 	private Type whatToRender;
 	private float alpha;
 
-	public MetricsRender( String LevelName ) {
+	/**
+	 * Constructor for a metrics render object.
+	 * 
+	 * @param levelName
+	 *            The name of the level whose metrics are being checked. Should
+	 *            be the same string sent to Metrics.printMetrics for that
+	 *            level.
+	 */
+	public MetricsRender( String levelName ) {
 		whatToRender = Type.NONE;
 		alpha = 0.5f;
 		shapeRenderer = new ShapeRenderer( );
 		runs = new ArrayList< MetricsOutput >( );
 		fancyFont = WereScrewedGame.manager.getFont( "Screwball" );
-		File file = new File( LevelName + Metrics.FILE_APPEND );
+		File file = new File( levelName + Metrics.FILE_APPEND );
 		Json json = new Json( );
 		if ( file.exists( ) ) {
 			fileExists = true;
@@ -86,14 +100,21 @@ public class MetricsRender {
 			parseScrew( );
 			parseUnscrew( );
 			parseAttach( );
-			heatmap(parsedJump);
-			heatmap(parsedDeath);
-			heatmap(parsedScrew);
-			heatmap(parsedUnscrew);
-			heatmap(parsedAttach); 
+			heatmap( parsedJump );
+			heatmap( parsedDeath );
+			heatmap( parsedScrew );
+			heatmap( parsedUnscrew );
+			heatmap( parsedAttach );
 		}
 	}
 
+	/**
+	 * Renders the metrics on screen. Press right or left bracket to cycle
+	 * through them.
+	 * 
+	 * @param camera
+	 *            The camera created during level construction.
+	 */
 	public void render( OrthographicCamera camera ) {
 		if ( Gdx.input.isKeyPressed( Input.Keys.RIGHT_BRACKET ) ) {
 			if ( cycleForward ) {
@@ -149,12 +170,13 @@ public class MetricsRender {
 		}
 
 		if ( render && fileExists ) {
-//			fancyFont.setColor( 1.0f, 1.0f, 1.0f, 1.0f );
-//			fancyFont.draw( batch, mode, camera.position.x, camera.position.y );
+			// fancyFont.setColor( 1.0f, 1.0f, 1.0f, 1.0f );
+			// fancyFont.draw( batch, mode, camera.position.x, camera.position.y
+			// );
 
 			Gdx.gl.glBlendFunc( GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA );
 			Gdx.gl.glEnable( GL10.GL_BLEND );
-			
+
 			for ( Map.Entry< String, Place > rend : parsed.entrySet( ) ) {
 				shapeRenderer.setProjectionMatrix( camera.combined );
 				shapeRenderer.begin( ShapeType.FilledCircle );
@@ -306,8 +328,8 @@ public class MetricsRender {
 			parsed.put( key, p );
 		}
 	}
-	
-	private void heatmap (Map< String, Place > parsed) {
+
+	private void heatmap( Map< String, Place > parsed ) {
 		for ( Map.Entry< String, Place > heat : parsed.entrySet( ) ) {
 			interpolateColor( heat.getValue( ) );
 		}
@@ -316,17 +338,17 @@ public class MetricsRender {
 	private void interpolateColor( Place p ) {
 		float runsTimes = runs.size( );
 		float value = p.num / runsTimes;
-		float t = Math.min( value / LIMIT, 1.0f); 
-		Vector3 blue = new Vector3(0.0f, 0.0f, 1.0f);
-		Vector3 green = new Vector3(0.0f, 1.0f, 0.0f);
-		Vector3 red = new Vector3(1.0f, 0.0f, 0.0f); 
-		
-		Vector3 p1 = blue.mul( (1 - t) * (1 - t) );
-		Vector3 p2 = green.mul( 2 * (1 - t) * t );
+		float t = Math.min( value / LIMIT, 1.0f );
+		Vector3 blue = new Vector3( 0.0f, 0.0f, 1.0f );
+		Vector3 green = new Vector3( 0.0f, 1.0f, 0.0f );
+		Vector3 red = new Vector3( 1.0f, 0.0f, 0.0f );
+
+		Vector3 p1 = blue.mul( ( 1 - t ) * ( 1 - t ) );
+		Vector3 p2 = green.mul( 2 * ( 1 - t ) * t );
 		Vector3 p3 = red.mul( t * t );
-		Vector3 color = p1.add( p2.add( p3 ) ); 
-		
-		p.color = color; 
+		Vector3 color = p1.add( p2.add( p3 ) );
+
+		p.color = color;
 	}
 
 	private float round( float start ) {

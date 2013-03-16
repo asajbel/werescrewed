@@ -8,7 +8,7 @@ public class Electricity extends Hazard {
 
 	public Electricity( String name, Vector2 pos, World world,
 			boolean isActive ) {
-		super( name, pos, null, world, isActive );
+		super( name, pos, null, world, 0, 0, isActive );
 		
 		
 	}
