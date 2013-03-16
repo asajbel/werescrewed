@@ -56,14 +56,14 @@ public class Player extends Entity {
 	public final static float JUMP_SLOW_SPEED = 0.002f;
 	public final static int JUMP_COUNTER = 10;
 	public final static int RUN_COUNTER = 7;
-	public final static float ANALOG_DEADZONE = 0.2f;
+	public final static float ANALOG_DEADZONE = 0.4f;
 	public final static float ANALOG_MAX_RANGE = 1.0f;
 	public final static float PLAYER_FRICTION = 0.7f;
 	public final static int SCREW_JUMP_STEPS = 15;
 	public final static int HEAD_JUMP_STEPS = 30;
 	public final static float SCREW_ATTACH_SPEED = 0.1f;
 	public final static int GRAB_COUNTER_STEPS = 5;
-	public final static Vector2 ANCHOR_BUFFER_SIZE = new Vector2( 300f, 128f );
+	public final static Vector2 ANCHOR_BUFFER_SIZE = new Vector2( 300f, 200f );
 	public final static float STEAM_FORCE = .5f;
 	public final static float STEAM_IMPULSE = 0.1f;
 	public final static float FRICTION_INCREMENT = 0.3f;
@@ -465,6 +465,10 @@ public class Player extends Entity {
 	 * This function sets player in alive state
 	 */
 	public void respawnPlayer( ) {
+		topCrush = false;
+		botCrush = false;
+		leftCrush = false;
+		rightCrush = false;
 		Filter filter = new Filter( );
 		for ( Fixture f : body.getFixtureList( ) ) {
 			if ( f != rightSensor && f != leftSensor && f != topSensor ) {
@@ -1205,7 +1209,7 @@ public class Player extends Entity {
 			// jump( );
 			body.setLinearVelocity( new Vector2( body.getLinearVelocity( ).x,
 					0.0f ) );
-			body.applyLinearImpulse( new Vector2( 0.0f, JUMP_IMPULSE / 2 ),
+			body.applyLinearImpulse( new Vector2( 0.0f, JUMP_IMPULSE ),
 					body.getWorldCenter( ) );
 		}
 	}

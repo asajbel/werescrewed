@@ -124,7 +124,7 @@ public class Sprite extends com.badlogic.gdx.graphics.g2d.Sprite implements I_Dr
 	 * @return void
 	 */
 	public void reset( ) {
-		Gdx.app.log( "AnimatedSprite.reset()", "reset called" );
+		//Gdx.app.log( "AnimatedSprite.reset()", "reset called" );
 		animator.reset();
 	}
 
