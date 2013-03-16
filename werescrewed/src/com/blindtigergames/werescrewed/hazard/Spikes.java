@@ -105,6 +105,12 @@ public class Spikes extends Hazard {
 		}
 	}
 
+	/**
+	 * 
+	 * @param position Vector2
+	 * @param height float
+	 * @param width float
+	 */
 	private void constructBody( float height, float width, Vector2 position ) {
 		BodyDef bodyDef = new BodyDef( );
 		bodyDef.type = BodyType.KinematicBody;
@@ -118,6 +124,7 @@ public class Spikes extends Hazard {
 				* Util.PIXEL_TO_BOX );
 		FixtureDef spikeFixtureDef = new FixtureDef( );
 		spikeFixtureDef.shape = polygon;
+		spikeFixtureDef.isSensor = true;
 		body.createFixture( spikeFixtureDef );
 		
 		if ( hori ) {

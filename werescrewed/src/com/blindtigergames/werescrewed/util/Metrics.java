@@ -14,6 +14,7 @@ public class Metrics {
 
 	public static boolean activated = false;
 	public static boolean addToUnscrewListOnce = false;
+	public static final String FILE_APPEND = "_Metrics,json";
 	private static ArrayList< String > sectionNames = new ArrayList< String >( );
 	private static ArrayList< Vector2 > playerDeathPositions = new ArrayList< Vector2 >( );
 	private static ArrayList< Vector2 > playerJumpPositions = new ArrayList< Vector2 >( );
@@ -102,7 +103,7 @@ public class Metrics {
 	/**
 	 * Adds end time data to the list of time the players spend in a section of
 	 * a level. Should be called when a player enters a section using an event
-	 * trigger passed MetricsEndTimeAction( String Name ).
+	 * trigger passed MetricsEndTimeAction( ).
 	 * 
 	 * @param position
 	 *            The time when the player ends the section.
@@ -146,7 +147,7 @@ public class Metrics {
 
 		Json json = new Json( );
 		try {
-			File file = new File( levelName + "_Metrics.json" );
+			File file = new File( levelName + FILE_APPEND );
 			if ( !file.exists( ) ) {
 				file.createNewFile( );
 			}
@@ -159,6 +160,13 @@ public class Metrics {
 			// TODO Auto-generated catch block
 			e.printStackTrace( );
 		}
-
+		
+		sectionNames.clear( );
+		playerDeathPositions.clear( );
+		playerJumpPositions.clear( );
+		playerAttachToScrewPositions.clear( );
+		playerScrewedPositions.clear( );
+		playerUnscrewedPositions.clear( );
+		playerTime.clear( ); 
 	}
 }

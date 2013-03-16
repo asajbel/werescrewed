@@ -9,8 +9,11 @@ public class Main {
 		cfg.title = "WereScrewed";
 		//cfg.useGL20 = false; //Compatibility option for OpenGL 1.0
 		cfg.useGL20 = true;
-		cfg.width = 1280;
-		cfg.height = 720;
+		cfg.width = 1024;
+		cfg.height = 768;
+		
+		
+		cfg.fullscreen = true;
 		
 		new LwjglApplication(new WereScrewedGame(), cfg);
 	}

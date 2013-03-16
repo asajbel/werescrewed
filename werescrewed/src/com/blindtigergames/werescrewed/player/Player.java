@@ -6,6 +6,7 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.controllers.PovDirection;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -23,6 +24,9 @@ import com.blindtigergames.werescrewed.camera.AnchorList;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityDef;
 import com.blindtigergames.werescrewed.entity.EntityType;
+import com.blindtigergames.werescrewed.entity.Sprite;
+import com.blindtigergames.werescrewed.entity.animator.SimpleFrameAnimator;
+import com.blindtigergames.werescrewed.entity.animator.SimpleFrameAnimator.LoopBehavior;
 import com.blindtigergames.werescrewed.entity.mover.IMover;
 import com.blindtigergames.werescrewed.entity.mover.LerpMover;
 import com.blindtigergames.werescrewed.entity.mover.LinearAxis;
@@ -47,21 +51,21 @@ public class Player extends Entity {
 	public final static float MAX_VELOCITY = 1.55f;
 	public final static float MIN_VELOCITY = 0.01f;
 	public final static float MOVEMENT_IMPULSE = 0.010f;
-	public final static float JUMP_IMPULSE = 0.10f;
+	public final static float JUMP_IMPULSE = 0.12f;
 	public final static float JUMP_SCREW_IMPULSE = JUMP_IMPULSE * 5 / 4;
 	public final static float JUMP_SLOW_SPEED = 0.002f;
 	public final static int JUMP_COUNTER = 10;
 	public final static int RUN_COUNTER = 7;
-	public final static float ANALOG_DEADZONE = 0.2f;
+	public final static float ANALOG_DEADZONE = 0.4f;
 	public final static float ANALOG_MAX_RANGE = 1.0f;
 	public final static float PLAYER_FRICTION = 0.7f;
 	public final static int SCREW_JUMP_STEPS = 15;
 	public final static int HEAD_JUMP_STEPS = 30;
 	public final static float SCREW_ATTACH_SPEED = 0.1f;
 	public final static int GRAB_COUNTER_STEPS = 5;
-	public final static Vector2 ANCHOR_BUFFER_SIZE = new Vector2( 200f, 128f );
+	public final static Vector2 ANCHOR_BUFFER_SIZE = new Vector2( 300f, 200f );
 	public final static float STEAM_FORCE = .5f;
-	public final static float STEAM_IMPULSE = 0.20f;
+	public final static float STEAM_IMPULSE = 0.1f;
 	public final static float FRICTION_INCREMENT = 0.3f;
 	public final static float FEET_OFFSET_X = 58f * Util.PIXEL_TO_BOX;
 	public final static float FEET_OFFSET_Y = 20f * Util.PIXEL_TO_BOX;
@@ -104,6 +108,7 @@ public class Player extends Entity {
 	private Player otherPlayer;
 	private RevoluteJoint playerJoint;
 	private Body platformBody;
+	private Entity hitCloud;
 	private boolean topPlayer = false;
 	private boolean isDead = false, deadDebug;
 	private boolean hitSolidObject;
@@ -118,6 +123,7 @@ public class Player extends Entity {
 	private boolean kinematicTransform = false;
 	private boolean changeDirectionsOnce = false;
 	private boolean steamCollide = false;
+	private boolean steamDone = false;
 
 	private IMover mover;
 
@@ -192,6 +198,18 @@ public class Player extends Entity {
 		anchor.special = true;
 		AnchorList.getInstance( ).addAnchor( anchor );
 
+		// build the hit cloud entity and animation
+		hitCloud = new Entity( name + "_hitCloud", Vector2.Zero, null, null,
+				false );
+		SimpleFrameAnimator hitCloudAnimator = new SimpleFrameAnimator( )
+				.speed( 1f ).loop( LoopBehavior.STOP ).startFrame( 1 )
+				.maxFrames( 2 ).time( 0.0f );
+		hitCloud.sprite = new Sprite(
+				WereScrewedGame.manager.getTextureAtlas( "hitCloud" ),
+				hitCloudAnimator );
+		// set the frame to the last
+		hitCloud.sprite.getAnimator( ).setFrame( 3 );
+
 		setFixtures( );
 		maxFriction( );
 
@@ -212,7 +230,7 @@ public class Player extends Entity {
 	 */
 	public void update( float deltaTime ) {
 		super.update( deltaTime );
-
+		hitCloud.sprite.update( deltaTime );
 		if ( name.equals( "player2" ) ) {
 			// int i = 0;
 			// for ( Fixture f : body.getFixtureList( ) ) {
@@ -383,12 +401,27 @@ public class Player extends Entity {
 			Gdx.app.log( "top: ", "" + topCrush );
 			Gdx.app.log( "bottom: ", "" + botCrush );
 		} else if ( steamCollide ) {
-			steamResolution( );
+			if (!steamDone){
+				steamResolution( );
+				steamDone = true;
+			}
+			else steamDone = false;
 		}
 		terminalVelocityCheck( 15.0f );
 		// the jump doesn't work the first time on dynamic bodies so do it twice
 		if ( playerState == PlayerState.Jumping && isGrounded( ) ) {
 			jump( );
+		}
+	}
+
+	/**
+	 * draw calls super then draws player polish effects
+	 */
+	@Override
+	public void draw( SpriteBatch batch ) {
+		super.draw( batch );
+		if ( hitCloud.sprite.getAnimator( ).getFrame( ) < 3 ) {
+			hitCloud.draw( batch );
 		}
 	}
 
@@ -432,6 +465,10 @@ public class Player extends Entity {
 	 * This function sets player in alive state
 	 */
 	public void respawnPlayer( ) {
+		topCrush = false;
+		botCrush = false;
+		leftCrush = false;
+		rightCrush = false;
 		Filter filter = new Filter( );
 		for ( Fixture f : body.getFixtureList( ) ) {
 			if ( f != rightSensor && f != leftSensor && f != topSensor ) {
@@ -690,6 +727,14 @@ public class Player extends Entity {
 	 */
 	public void setGrounded( boolean newVal ) {
 		if ( !topPlayer ) {
+			if ( newVal != false && !grounded && otherPlayer == null ) {
+				hitCloud.setPixelPosition( this.getPositionPixel( )
+						.sub( 0, 12f ) );
+				hitCloud.sprite.setColor( sprite.getColor( ).r,
+						sprite.getColor( ).g, sprite.getColor( ).b,
+						body.getLinearVelocity( ).y / (float)MAX_VELOCITY*.75f );
+				hitCloud.sprite.reset( );
+			}
 			this.grounded = newVal;
 		}
 		if ( screwJumpTimeout == 0 ) {
@@ -725,7 +770,6 @@ public class Player extends Entity {
 	 * slowly increases friction to avoid that silly stopping bug. Call this
 	 * every player.update()
 	 */
-	@SuppressWarnings( "unused" )
 	private void updateFootFriction( ) {
 
 		if ( isGrounded( ) ) {
@@ -877,23 +921,23 @@ public class Player extends Entity {
 					f.setFilterData( filter );
 				}
 			}
-		} 
-//		else if ( screwJumpTimeout == SCREW_JUMP_STEPS ) {
-//			// switch the player to not collide with the current platformBody
-//			Filter filter = new Filter( );
-//			for ( Fixture f : body.getFixtureList( ) ) {
-//				if ( f != rightSensor && f != leftSensor && f != topSensor ) {
-//					f.setSensor( false );
-//				}
-//				filter = f.getFilterData( );
-//				// move player back to original category
-//				filter.categoryBits = Util.CATEGORY_SUBPLAYER;
-//				// player now collides with everything except the platform in
-//				// the way
-//				filter.maskBits = ~Util.CATEGORY_SUBPLATFORM;
-//				f.setFilterData( filter );
-//			}
-//		}
+		}
+		// else if ( screwJumpTimeout == SCREW_JUMP_STEPS ) {
+		// // switch the player to not collide with the current platformBody
+		// Filter filter = new Filter( );
+		// for ( Fixture f : body.getFixtureList( ) ) {
+		// if ( f != rightSensor && f != leftSensor && f != topSensor ) {
+		// f.setSensor( false );
+		// }
+		// filter = f.getFilterData( );
+		// // move player back to original category
+		// filter.categoryBits = Util.CATEGORY_SUBPLAYER;
+		// // player now collides with everything except the platform in
+		// // the way
+		// filter.maskBits = ~Util.CATEGORY_SUBPLATFORM;
+		// f.setFilterData( filter );
+		// }
+		// }
 	}
 
 	/**
@@ -1165,7 +1209,7 @@ public class Player extends Entity {
 			// jump( );
 			body.setLinearVelocity( new Vector2( body.getLinearVelocity( ).x,
 					0.0f ) );
-			body.applyLinearImpulse( new Vector2( 0.0f, JUMP_IMPULSE / 2 ),
+			body.applyLinearImpulse( new Vector2( 0.0f, JUMP_IMPULSE ),
 					body.getWorldCenter( ) );
 		}
 	}
@@ -1827,8 +1871,10 @@ public class Player extends Entity {
 			body.setLinearVelocity( new Vector2( 0f,
 					body.getLinearVelocity( ).y ) );
 		// body.applyForceToCenter( 0f, STEAM_FORCE );
+		//body.setLinearVelocity( new Vector2( body.getLinearVelocity( ).x, 0f ) );
 		body.applyLinearImpulse( new Vector2( 0, STEAM_IMPULSE ),
 				body.getWorldCenter( ) );
+		grounded = false;
 	}
 
 	/**

@@ -266,7 +266,7 @@ public class Camera {
 			}
 		}
 		translateLogic( outside_x, outside_y );
-		if ( !debugTurnOffZoom )
+		if ( !debugInput )
 			zoom( );
 	}
 
@@ -280,28 +280,26 @@ public class Camera {
 			boolean lock = false;
 
 			// lock when:
-			// - camera center is really close to target
-			// - camera center is really close to target.x when only translating
-			// on x axis
-			// - camera center is really close to target.y when only translating
-			// on y axis
 			if ( insideTargetBuffer )
+				// camera center is really close to target
 				lock = true;
 			else if ( trans_x
+					// camera center is really close to target.x when only
+					// translating on x axis
 					&& Math.abs( translateTarget.x - center2D.x ) < targetBuffer
 					&& !trans_y )
 				lock = true;
 			else if ( trans_y
 					&& Math.abs( translateTarget.y - center2D.y ) < targetBuffer
 					&& !trans_x )
+				// camera center is really close to target.y when only
+				// translating on y axis
 				lock = true;
 
 			// center of camera is within buffer from target, so camera
 			// locks to target
 			if ( lock ) {
 				// find angle between midpoint velocity and translate velocity
-				// if player stops moving or changes direction abruptly, disable
-				// lock
 				float tempAngle = 0f;
 				tempAngle = anchorList.getMidpointVelocity( ).angle( )
 						- translateVelocity.angle( );
@@ -318,6 +316,8 @@ public class Camera {
 					camera.position.x = translateTarget.x;
 					camera.position.y = translateTarget.y;
 				}
+				// if player stops moving or changes direction abruptly, disable
+				// lock
 				if ( anchorList.getMidpointVelocity( ).len( ) < MINIMUM_FOLLOW_SPEED
 						|| tempAngle > MAX_ANGLE_DIFF ) {
 					translateState = false;

@@ -58,7 +58,7 @@ public class Saws extends Hazard {
 		Gdx.app.log( "Hello", "World" );
 	}
 
-	private void constructBody( Vector2 position, float height, float width ) {
+	public void constructBody( Vector2 position, float height, float width ) {
 		BodyDef bodyDef = new BodyDef( );
 		bodyDef.type = BodyType.KinematicBody;
 

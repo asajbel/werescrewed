@@ -11,6 +11,7 @@
 /common/autumn.pack
 /common/animations/player_r_m.pack
 /common/animations/player_r_f.pack
+/common/animations/hitCloud.pack
 
 
 ##common texture
@@ -40,6 +41,7 @@
 /common/ropelink.png
 /common/gear.png
 /common/animations/player_r_m.png
+/common/animations/hitCloud.png
 
 ##Fonts
 /debug/debug_font.fnt
