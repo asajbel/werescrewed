@@ -148,21 +148,21 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		//event trigger that will remove box2d entites when they collide with it
 		EventTriggerBuilder etb = new EventTriggerBuilder( world );
 		EventTrigger removeTrigger = etb.name( "removeEntity" ).rectangle( ).width( 10 ).height( 10000 )
-				.position( new Vector2( 100 * TILE, - 20 * TILE ) )
+				.position( new Vector2( 100 * TILE, - 100 * TILE ) )
 				.beginAction( new RemoveEntityAction( ) )
 				.build( );
 		removeTrigger.setCategoryMask( Util.CATEGORY_PLAYER, Util.CATEGORY_EVERYTHING );
 		rootSkeleton.addEventTrigger( removeTrigger );
 		
 		// Create anchor with start position and buffer as parameters
-		testAnchor = new Anchor( new Vector2( 10000, 10 ), new Vector2( 10000,
-				10000 ) );
+		//testAnchor = new Anchor( new Vector2( 10000, 10 ), new Vector2( 10000,
+		//		10000 ) );
 		// Add to the universally accessible anchor list
-		AnchorList.getInstance( ).addAnchor( testAnchor );
+		//AnchorList.getInstance( ).addAnchor( testAnchor );
 		// Set timer in steps
-		testAnchor.setTimer( 200 );
+		//testAnchor.setTimer( 200 );
 		// Activate it
-		testAnchor.activate( );
+		//testAnchor.activate( );
 
 		rootSkeleton.addSkeleton( skeleton );
 		debugRenderer = new SBox2DDebugRenderer( Util.BOX_TO_PIXEL );
@@ -419,6 +419,7 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		// skeleton after elbow joint
 		Skeleton lowerArmSkeleton = new Skeleton( "dynamic2Skeleton",
 				new Vector2( 400, 800 ), testTexture, world );
+		lowerArmSkeleton.setDensity( 10f );
 		// platforms that represent the arms
 		TiledPlatform upperArm = platBuilder.dynamic( ).position( 850, 800 )
 				.dimensions( 9, 1 ).density( 1f ).oneSided( false )
