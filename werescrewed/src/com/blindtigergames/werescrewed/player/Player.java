@@ -134,8 +134,6 @@ public class Player extends Entity {
 	@SuppressWarnings( "unused" )
 	private Sound jumpSound;
 
-	private TextureAtlas characterAtlas;
-
 	// TODO: fill in the frames counts and frame rates for various animations
 	// like below
 	private int jumpFrames = 3;

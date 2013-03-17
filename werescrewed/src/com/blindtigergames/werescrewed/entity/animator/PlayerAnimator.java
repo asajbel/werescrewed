@@ -10,28 +10,26 @@ import com.blindtigergames.werescrewed.graphics.TextureAtlas.AtlasRegion;
 import com.blindtigergames.werescrewed.player.Player;
 import com.blindtigergames.werescrewed.player.Player.ConcurrentState;
 import com.blindtigergames.werescrewed.player.Player.PlayerDirection;
+import com.blindtigergames.werescrewed.player.Player.PlayerState;
 
 public class PlayerAnimator implements IAnimator {
 	public enum PlayerAnim{
-		IDLE("idle", 0)
-		,RUN("run", 0)
-		,HANG("hang", 0)
-		,JUMP_UP("jump_up", LoopBehavior.STOP, 1)
-		,JUMP_DOWN("jump_down", LoopBehavior.STOP, 1)
+		IDLE("idle")
+		,RUN("run")
+		,HANG("hang")
+		,JUMP_UP("jump_up", LoopBehavior.STOP)
+		,JUMP_DOWN("jump_down", LoopBehavior.STOP)
+		,DEATH_BEGIN("death_begin", LoopBehavior.STOP )
+		,DEATH("death_idle")
 		;
 		String text;
 		LoopBehavior loop;
-		int atlas;
 		PlayerAnim(String t){
-			this(t, 0);
+			this(t, LoopBehavior.LOOP);
 		}
-		PlayerAnim(String t, int a){
-			this(t, LoopBehavior.LOOP, a);
-		}
-		PlayerAnim(String t, LoopBehavior l, int a){
+		PlayerAnim(String t, LoopBehavior l){
 			text = t;
 			loop = l;
-			atlas = a;
 		}
 		public String toString(){
 			return text;
@@ -46,16 +44,20 @@ public class PlayerAnimator implements IAnimator {
 	}
 	
 	public EnumMap<PlayerAnim, IAnimator> anims;
+	public EnumMap<PlayerAnim, Integer> atlasNums;
 	public PlayerAnim current;
 	public Player player;
 	public String prefix;
+	public boolean deathBegin;
 	
 	public PlayerAnimator(Array<TextureAtlas> atlases, Player p){
 		player = p;
 		SimpleFrameAnimator anim;
 		Array<AtlasRegion> regions;
 		anims = new EnumMap<PlayerAnim, IAnimator>(PlayerAnim.class);
+		atlasNums = new EnumMap<PlayerAnim, Integer>(PlayerAnim.class);
 		current = PlayerAnim.IDLE;
+		deathBegin = true;
 		TextureAtlas atlas;
 		for (PlayerAnim a: PlayerAnim.values( )){
 			anim = null;
@@ -65,14 +67,16 @@ public class PlayerAnimator implements IAnimator {
 					regions = atlas.findRegions( a.text );
 					if (regions != null && regions.size > 0){
 						anim = new SimpleFrameAnimator()
-								.atlas( a.atlas )
-								.maxFrames( regions.size );
-								//.loop( a.loop );
+								.atlas( i )
+								.maxFrames( regions.size )
+								.loop( a.loop );
+						Gdx.app.log( "PlayerAnimator", "Found "+a.text+" in atlas "+i+"." );
 					}
 				}				
 			}
 			if (anim != null){
 				anims.put( a, anim);
+				atlasNums.put( a, anim.atlas);
 			} else {
 				Gdx.app.log( "PlayerAnimator", "Failed to find corresponding texture atlas for "+a.text+"." );
 			}
@@ -81,6 +85,8 @@ public class PlayerAnimator implements IAnimator {
 	
 	@Override
 	public void update( float dT ) {
+		if (player.getState( ) != PlayerState.Dead)
+			deathBegin = true;
 		if (current != getCurrentAnim()){
 			current = getCurrentAnim();
 			anims.get(current).reset();
@@ -111,7 +117,11 @@ public class PlayerAnimator implements IAnimator {
 				return PlayerAnim.JUMP_UP;
 			} else if ( player.getExtraState( ) == ConcurrentState.ExtraFalling ) {
 				return PlayerAnim.JUMP_DOWN;
-			} 
+			}
+		case Screwing:
+			return PlayerAnim.HANG;
+		case Dead:
+			return PlayerAnim.DEATH;
 		default:
 			return PlayerAnim.IDLE;			
 		}
@@ -153,7 +163,12 @@ public class PlayerAnimator implements IAnimator {
 
 	@Override
 	public int getAtlas( ){
-		return current.atlas;
+		return atlasNums.get( current );
+	}
+	
+	@Override
+	public float getTime(){
+		return anims.get( current ).getTime( );
 	}
 	
 	@Override
