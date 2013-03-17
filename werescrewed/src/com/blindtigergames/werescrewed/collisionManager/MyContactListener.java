@@ -88,7 +88,10 @@ public class MyContactListener implements ContactListener {
 								}
 
 								player.hitSolidObject( objectFix.getBody( ) );
-								player.setGrounded( true );
+								if ( player.getState( ) != PlayerState.JumpingOffScrew 
+										|| player.getState( ) != PlayerState.Screwing ) {
+									player.setGrounded( true );
+								}
 							}
 							break;
 						case SCREW:
@@ -115,8 +118,10 @@ public class MyContactListener implements ContactListener {
 							Player player2 = ( Player ) object;
 							if ( !player.isPlayerDead( )
 									&& !player2.isPlayerDead( )
-									&& ( player.getState( ) == PlayerState.Standing || player2
-											.getState( ) == PlayerState.Standing ) ) {
+									&& ( ( player.getState( ) == PlayerState.Standing && player2
+											.getState( ) == PlayerState.Falling ) || ( player2
+											.getState( ) == PlayerState.Standing && player
+											.getState( ) == PlayerState.Falling ) ) ) {
 								player.hitPlayer( player2 );
 								player2.hitPlayer( player );
 								player.setGrounded( true );
@@ -124,8 +129,9 @@ public class MyContactListener implements ContactListener {
 							}
 							break;
 						case HAZARD:
-							if ( player.getCurrentScrew( ) == null
-									|| player.getCurrentScrew( ).getScrewType( ) != ScrewType.SCREW_RESURRECT ) {
+//							if ( player.getCurrentScrew( ) == null
+//									|| player.getCurrentScrew( ).getScrewType( ) != ScrewType.SCREW_RESURRECT ) 
+							{
 								Hazard hazard = ( Hazard ) object;
 								hazard.performContact( player, objectFix );
 							}
@@ -276,7 +282,6 @@ public class MyContactListener implements ContactListener {
 							}
 							break;
 						case STEAM:
-							Gdx.app.log( "", "Big FLoppy Donkey Dick" );
 							player.setSteamCollide( false );
 							break;
 						case EVENTTRIGGER:
@@ -360,12 +365,14 @@ public class MyContactListener implements ContactListener {
 									.getState( ) != PlayerState.Falling )
 									|| !player.isHeadStandTimedOut( )
 									|| !player2.isHeadStandTimedOut( )
-									|| ( player.getState( ) == PlayerState.Falling && player
+									|| ( player.getState( ) == PlayerState.Falling
+											&& player2.getState( ) != PlayerState.Standing && player
 											.getPositionPixel( ).y < player2
 											.getPositionPixel( ).y
 											+ player2.sprite.getHeight( )
 											/ 1.5f )
-									|| ( player2.getState( ) == PlayerState.Falling && player2
+									|| ( player2.getState( ) == PlayerState.Falling
+											&& player.getState( ) != PlayerState.Standing && player2
 											.getPositionPixel( ).y < player
 											.getPositionPixel( ).y
 											+ player.sprite.getHeight( ) / 1.5f ) ) {

@@ -13,8 +13,10 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.Shape;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.badlogic.gdx.utils.XmlReader;
+import com.badlogic.gdx.utils.XmlReader.Element;
 import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.graphics.TextureAtlas;
 import com.blindtigergames.werescrewed.util.BodyEditorLoader;
@@ -35,9 +37,9 @@ public class EntityDef {
 
 	// Sprite Fields (i.e. everything needed to define just the sprite half)
 	protected Texture texture;
-	protected TextureAtlas atlas;
-	protected String animatorType;
 	protected String atlasName;
+	protected Array<TextureAtlas> atlases;
+	protected String animatorType;
 	protected String initialAnim;
 	protected Vector2 origin;
 	protected Vector2 spriteScale;
@@ -72,14 +74,13 @@ public class EntityDef {
 	protected EntityDef( String name ) {
 		// Sprite Data
 		setTexture( null );
-		atlasName = null;
 		initialAnim = "";
 		origin = new Vector2( 0, 0 );
 		spriteScale = new Vector2( 1, 1 );
 		tint = new Color( 1.0f, 1.0f, 1.0f, 1.0f );
 		
 		//Animation Data
-		atlas = null;
+		atlases = new Array<TextureAtlas>();
 		animatorType = "";
 
 		// Body Data
@@ -150,8 +151,8 @@ public class EntityDef {
 	}
 
 	public Texture getTexture( ) {
-		if ( texture == null && atlas != null ) {
-			texture = atlas.getTextures( ).iterator( ).next( );
+		if ( texture == null && atlases.size > 0 ) {
+			texture = atlases.get(0).getTextures( ).iterator( ).next( );
 		}
 		return texture;
 	}
@@ -257,15 +258,18 @@ public class EntityDef {
 			String texName = null;
 			String atlasName = null;
 			texName = xml.get( "texture", "" );
-			atlasName = xml.get( "atlas", "" );
-			if ( !atlasName.equals( "" )){
-				out.atlas = WereScrewedGame.manager.getTextureAtlas(atlasName);
-			} else if ( !texName.equals( "" ) ) {
-				out.setTexture( WereScrewedGame.manager.get(
-						WereScrewedGame.dirHandle.path( ) + "/" + texName,
-						Texture.class ) );
+			for (Element atlasElem : xml.getChildrenByName( "atlas" )){
+				Gdx.app.log( "EntityDef", "Getting texture atlas "+ atlasElem.getText() );
+				out.atlases.add( WereScrewedGame.manager.getAtlas( atlasElem.getText( ) ) );
 			}
-			out.atlasName = atlasName;
+			if (out.atlases.size < 1){
+				texName = xml.get( "texture" , "");
+				if ( !texName.equals( "" ) ) {
+					out.setTexture( WereScrewedGame.manager.get(
+							WereScrewedGame.dirHandle.path( ) + "/" + texName,
+							Texture.class ) );
+				}
+			}
 			out.initialAnim = xml.get( "initialAnim" );
 			out.animatorType = xml.get( "animator", "" );
 			out.origin.x = xml.getFloat( "originX" );

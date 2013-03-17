@@ -67,7 +67,7 @@ public class MoverBuilder {
 	}
 	
 	public RotateTweenMover buildRotateTweenMover(){
-		return new RotateTweenMover((Platform) entity, 2f, Util.PI * 2, 1f, true);
+		return new RotateTweenMover((Platform) entity, 2f, Util.PI, 1f, true);
 	}
 	
 	public LerpMover buildLerpMover(){
