@@ -273,7 +273,6 @@ public class MyContactListener implements ContactListener {
 							}
 							break;
 						case STEAM:
-							Gdx.app.log( "", "Big FLoppy Donkey Dick" );
 							player.setSteamCollide( false );
 							break;
 						case EVENTTRIGGER:
