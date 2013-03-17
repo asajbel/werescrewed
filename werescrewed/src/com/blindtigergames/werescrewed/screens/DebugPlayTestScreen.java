@@ -59,7 +59,7 @@ import com.blindtigergames.werescrewed.util.Util;
 public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 
 	private Camera cam;
-	private MetricsRender metRend; 
+	private MetricsRender metRend;
 	private SpriteBatch batch;
 	private Texture testTexture;
 	private World world;
@@ -101,7 +101,7 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		batch = new SpriteBatch( );
 		world = new World( new Vector2( 0, -35 ), true );
 		initCamera( );
-		metRend = new MetricsRender(LEVEL_NAME); 
+		metRend = new MetricsRender( LEVEL_NAME );
 		skeleton = new Skeleton( "skeleton", Vector2.Zero, null, world );
 		rootSkeleton = new Skeleton( "root", Vector2.Zero, null, world );
 
@@ -124,13 +124,10 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 
 		// Initialize players
 		player1 = new PlayerBuilder( ).name( "player1" ).world( world )
-
 				.position( 175 * TILE, 96 * TILE ).buildPlayer( );
 
 		player2 = new PlayerBuilder( ).name( "player2" ).world( world )
 				.position( 175 * TILE, 96 * TILE ).buildPlayer( );
-
-
 
 		// END: 175f * TILE, 96f * TILE
 		// START :: 1f * TILE, 1f * TILE
@@ -145,15 +142,17 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		floor7( );
 		initCheckPoints( );
 
-		//event trigger that will remove box2d entites when they collide with it
+		// event trigger that will remove box2d entites when they collide with
+		// it
 		EventTriggerBuilder etb = new EventTriggerBuilder( world );
-		EventTrigger removeTrigger = etb.name( "removeEntity" ).rectangle( ).width( 10 ).height( 10000 )
-				.position( new Vector2( 100 * TILE, - 20 * TILE ) )
-				.beginAction( new RemoveEntityAction( ) )
-				.build( );
-		removeTrigger.setCategoryMask( Util.CATEGORY_PLAYER, Util.CATEGORY_EVERYTHING );
+		EventTrigger removeTrigger = etb.name( "removeEntity" ).rectangle( )
+				.width( 10 ).height( 10000 )
+				.position( new Vector2( 100 * TILE, -20 * TILE ) )
+				.beginAction( new RemoveEntityAction( ) ).build( );
+		removeTrigger.setCategoryMask( Util.CATEGORY_PLAYER,
+				Util.CATEGORY_EVERYTHING );
 		rootSkeleton.addEventTrigger( removeTrigger );
-		
+
 		// Create anchor with start position and buffer as parameters
 		testAnchor = new Anchor( new Vector2( 10000, 10 ), new Vector2( 10000,
 				10000 ) );
@@ -182,7 +181,7 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 				.position( new Vector2( 10 * TILE, 1.5f * TILE ) )
 				.beginAction( new MetricsStartTimeAction( skel1.name ) )
 				.build( );
-		
+
 		skel1.addEventTrigger( et );
 
 		ground = platBuilder.position( 50 * TILE, 0 ).name( "ground1" )
@@ -605,7 +604,6 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		rotatingRoom.setActive( true );
 		skel3.addSkeleton( rotatingRoom );
 
-
 		// the gate platform
 		plat = platBuilder.position( 133.5f * TILE, 45 * TILE ).name( "plat10" )
 				.dimensions( 1, 6 ).texture( testTexture ).kinematic( )
@@ -619,7 +617,6 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 				.oneSided( false ).restitution( 0 ).buildTilePlatform( );
 		plat.setCategoryMask( Util.KINEMATIC_OBJECTS, Util.CATEGORY_EVERYTHING );
 		skel3.addKinematicPlatform( plat );
-
 
 		// puzzle that controls the elevator of the room and the gate
 		PuzzleScrew elevatorscrew1 = new PuzzleScrew( "elevatorControlinside",
@@ -955,7 +952,7 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 				.dimensions( 5, 1 ).texture( testTexture ).kinematic( )
 				.friction( 1.0f ).oneSided( true ).restitution( 0 )
 				.buildTilePlatform( );
-		
+
 		plat.setCrushing( true );
 		plat.setCategoryMask( Util.KINEMATIC_OBJECTS, Util.CATEGORY_EVERYTHING );
 		skel9.addKinematicPlatform( plat );
@@ -1119,7 +1116,7 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		testRope.draw( batch );
 		player1.draw( batch );
 		player2.draw( batch );
-
+		metRend.drawName( batch );
 		batch.end( );
 
 		if ( debug )
@@ -1127,7 +1124,7 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 
 		// if(endLevelFlag)
 		if ( bossBolt.endLevelFlag( ) ) {
-			
+
 			if ( !inceptionhorn.isPlaying( ) ) {
 				inceptionhorn.play( );
 			}
@@ -1151,7 +1148,7 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 				// ScreenManager.getInstance( ).dispose( ScreenType.MAIN_MENU );
 			}
 		}
-		metRend.render( cam.camera ); 
+		metRend.render( cam.camera );
 
 		world.step( 1 / 60f, 6, 3 );
 	}

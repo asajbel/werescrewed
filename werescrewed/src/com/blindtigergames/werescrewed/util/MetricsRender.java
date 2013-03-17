@@ -47,7 +47,7 @@ public class MetricsRender {
 	private boolean cycleForward = true;
 	private boolean cycleBackward = true;
 	private String mode;
-	private BitmapFont fancyFont = null;
+	private BitmapFont debug_font = null;
 	private ArrayList< MetricsOutput > runs;
 	private Map< String, Place > parsedJump;
 	private Map< String, Place > parsedDeath;
@@ -71,7 +71,7 @@ public class MetricsRender {
 		alpha = 0.5f;
 		shapeRenderer = new ShapeRenderer( );
 		runs = new ArrayList< MetricsOutput >( );
-		fancyFont = WereScrewedGame.manager.getFont( "Screwball" );
+		debug_font = WereScrewedGame.manager.getFont( "debug_font" );
 		File file = new File( levelName + Metrics.FILE_APPEND );
 		Json json = new Json( );
 		if ( file.exists( ) ) {
@@ -190,6 +190,11 @@ public class MetricsRender {
 
 			Gdx.gl.glDisable( GL10.GL_BLEND );
 		}
+	}
+	
+	public void drawName(SpriteBatch batch) {
+		debug_font.draw(batch, mode, -Gdx.graphics.getWidth( )/2, Gdx.graphics.getHeight( )/2 - debug_font.getLineHeight( ));
+		
 	}
 
 	private void cycleRenderForward( ) {
