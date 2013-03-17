@@ -241,10 +241,12 @@ public class Player extends Entity {
 			// }
 			// Gdx.app.log( "player 1 state", "" + playerState );
 			//
-			// Gdx.app.log(
-			// "player 1 mask bits",
-			// ""
-			// + body.getFixtureList( ).get( 0 ).getFilterData( ).maskBits );
+//			Gdx.app.log(
+//					"player 1 mask bits",
+//					""
+//							+ body.getFixtureList( ).get( 0 ).getFilterData( ).maskBits
+//							+ " is sensor: "
+//							+ body.getFixtureList( ).get( 0 ).isSensor( ) );
 			// playerDirection );
 			// if(contact != null)
 			// System.out.println("contact friction: " + contact.getFriction( )
@@ -301,11 +303,10 @@ public class Player extends Entity {
 		updateFootFriction( );
 		// test if player is still moving after timeout
 		if ( playerDirection != PlayerDirection.Idle ) {
-			if ( runTimeout == 0
-					&&  playerState != PlayerState.Jumping
-							&& playerState != PlayerState.Falling
-							&& extraState != ConcurrentState.ExtraFalling 
-							&& extraState != ConcurrentState.ExtraJumping ) {
+			if ( runTimeout == 0 && playerState != PlayerState.Jumping
+					&& playerState != PlayerState.Falling
+					&& extraState != ConcurrentState.ExtraFalling
+					&& extraState != ConcurrentState.ExtraJumping ) {
 				playerDirection = PlayerDirection.Idle;
 			} else if ( playerDirection == PlayerDirection.Left
 					&& sprite.getScaleX( ) > 0 ) {
@@ -314,9 +315,9 @@ public class Player extends Entity {
 					&& sprite.getScaleX( ) < 0 ) {
 				sprite.setScale( sprite.getScaleX( ) * -1, sprite.getScaleY( ) );
 			} else if ( playerState != PlayerState.Jumping
-							&& playerState != PlayerState.Falling
-							&& extraState != ConcurrentState.ExtraFalling 
-							&& extraState != ConcurrentState.ExtraJumping ){
+					&& playerState != PlayerState.Falling
+					&& extraState != ConcurrentState.ExtraFalling
+					&& extraState != ConcurrentState.ExtraJumping ) {
 				runTimeout--;
 			}
 		}

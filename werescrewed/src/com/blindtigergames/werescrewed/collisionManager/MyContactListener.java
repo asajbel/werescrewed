@@ -88,7 +88,10 @@ public class MyContactListener implements ContactListener {
 								}
 
 								player.hitSolidObject( objectFix.getBody( ) );
-								player.setGrounded( true );
+								if ( player.getState( ) != PlayerState.JumpingOffScrew 
+										|| player.getState( ) != PlayerState.Screwing ) {
+									player.setGrounded( true );
+								}
 							}
 							break;
 						case SCREW:
@@ -126,8 +129,9 @@ public class MyContactListener implements ContactListener {
 							}
 							break;
 						case HAZARD:
-							if ( player.getCurrentScrew( ) == null
-									|| player.getCurrentScrew( ).getScrewType( ) != ScrewType.SCREW_RESURRECT ) {
+//							if ( player.getCurrentScrew( ) == null
+//									|| player.getCurrentScrew( ).getScrewType( ) != ScrewType.SCREW_RESURRECT ) 
+							{
 								Hazard hazard = ( Hazard ) object;
 								hazard.performContact( player, objectFix );
 							}

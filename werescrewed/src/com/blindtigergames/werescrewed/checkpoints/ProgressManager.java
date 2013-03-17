@@ -147,18 +147,31 @@ public class ProgressManager {
 			}
 			ScrewBuilder rezzBuilder = new ScrewBuilder( )
 					.screwType( ScrewType.SCREW_RESURRECT ).entity( entity )
-					.world( world ).playerOffset( true ).position( -100f, 150f );
-
+					.world( world );
+			Vector2 screwPos = new Vector2( -100, 150 );
 			if ( player1.isPlayerDead( ) ) {
 				// create new rez screw and attach
 				// it to player1 as the dead player
 				rezzBuilder.player( player1 );
+				// get the players direction and offset to the opposite of that
+				if ( player1.body.getLinearVelocity( ).x < 0 ) {
+					screwPos = new Vector2( 200, 150 );
+				} else {
+					screwPos = new Vector2( -100, 150 );
+				}
 			} else {
 				// create new rez screw and attach
 				// it to player2 as the dead player
 				rezzBuilder.player( player2 );
+				// get the players direction and offset to the opposite of that
+				if ( player2.body.getLinearVelocity( ).x < 0 ) {
+					screwPos = new Vector2( 200, 150 );
+				} else {
+					screwPos = new Vector2( -100, 150 );
+				}
 			}
-			resurrectScrew = rezzBuilder.buildRezzScrew( );
+			resurrectScrew = rezzBuilder.playerOffset( true )
+					.position( screwPos ).buildRezzScrew( );
 		}
 	}
 
@@ -180,11 +193,11 @@ public class ProgressManager {
 
 			} else if ( !playerMover ) {
 				player.setActive( true );
-				player.setMoverAtCurrentState( new LerpMover(
-						player.getPositionPixel( ).sub(
-								player.sprite.getWidth( )/32.0f, 0 ), player
-								.getPositionPixel( ).add(
-										player.sprite.getWidth( )/32.0f, 0 ), .1f,
+				player.setMoverAtCurrentState( new LerpMover( player
+						.getPositionPixel( ).sub(
+								player.sprite.getWidth( ) / 32.0f, 0 ), player
+						.getPositionPixel( ).add(
+								player.sprite.getWidth( ) / 32.0f, 0 ), .1f,
 						true, LinearAxis.HORIZONTAL, 0 ) );
 				playerMover = true;
 			} else {
