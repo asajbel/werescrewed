@@ -11,6 +11,7 @@ import java.util.Map;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -48,7 +49,9 @@ public class MetricsRender {
 	private boolean cycleBackward = true;
 	private String mode;
 	private BitmapFont debug_font = null;
-	private Vector3 camPos; 
+	private Vector3 camPos;
+	private SpriteBatch batch; 
+	private Camera uiCamera; 
 	private ArrayList< MetricsOutput > runs;
 	private Map< String, Place > parsedJump;
 	private Map< String, Place > parsedDeath;
@@ -74,7 +77,13 @@ public class MetricsRender {
 		runs = new ArrayList< MetricsOutput >( );
 		debug_font = WereScrewedGame.manager.getFont( "debug_font" );
 		mode = "";
-		camPos = new Vector3(); 
+		
+		camPos = new Vector3( );
+		batch = new SpriteBatch(); 
+		
+		uiCamera = new OrthographicCamera(Gdx.graphics.getWidth( ), Gdx.graphics.getHeight( ));
+		uiCamera.position.set(0,0 , 0); //-Gdx.graphics.getWidth( ), -Gdx.graphics.getHeight( )
+		
 		File file = new File( levelName + Metrics.FILE_APPEND );
 		Json json = new Json( );
 		if ( file.exists( ) ) {
@@ -177,6 +186,17 @@ public class MetricsRender {
 			// fancyFont.draw( batch, mode, camera.position.x, camera.position.y
 			// );
 			camPos = camera.position;
+
+			batch.setProjectionMatrix( uiCamera.combined );
+			batch.begin( );
+
+			int x = -Gdx.graphics.getWidth( ) / 2;
+			int y = Gdx.graphics.getHeight( ) / 2;
+			float offset = debug_font.getLineHeight( );
+			debug_font.draw( batch, mode, x, y - offset );
+
+			batch.end( );
+
 			Gdx.gl.glBlendFunc( GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA );
 			Gdx.gl.glEnable( GL10.GL_BLEND );
 
@@ -194,12 +214,12 @@ public class MetricsRender {
 			Gdx.gl.glDisable( GL10.GL_BLEND );
 		}
 	}
-	
-	public void drawName(SpriteBatch batch) {
-		int x = -Gdx.graphics.getWidth( )/2;
-		int y = Gdx.graphics.getHeight( )/2;
-		float offset = debug_font.getLineHeight( ); 
-		debug_font.draw(batch, mode, camPos.x + x, camPos.y + y - offset);
+
+	public void drawName( SpriteBatch batch ) {
+		int x = -Gdx.graphics.getWidth( ) / 2;
+		int y = Gdx.graphics.getHeight( ) / 2;
+		float offset = debug_font.getLineHeight( );
+		debug_font.draw( batch, mode, camPos.x + x, camPos.y + y - offset );
 	}
 
 	private void cycleRenderForward( ) {

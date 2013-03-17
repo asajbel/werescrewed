@@ -1116,7 +1116,6 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		testRope.draw( batch );
 		player1.draw( batch );
 		player2.draw( batch );
-		metRend.drawName( batch );
 		batch.end( );
 
 		if ( debug )
