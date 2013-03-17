@@ -14,19 +14,25 @@ import com.blindtigergames.werescrewed.player.Player.PlayerState;
 
 public class PlayerAnimator implements IAnimator {
 	public enum PlayerAnim{
-		IDLE("idle")
-		,RUN("run")
-		,JUMP_UP("jump_up", LoopBehavior.STOP)
-		,JUMP_DOWN("jump_down", LoopBehavior.STOP)
+		IDLE("idle", 0)
+		,RUN("run", 0)
+		,HANG("hang", 0)
+		,JUMP_UP("jump_up", LoopBehavior.STOP, 1)
+		,JUMP_DOWN("jump_down", LoopBehavior.STOP, 1)
 		;
 		String text;
 		LoopBehavior loop;
+		int atlas;
 		PlayerAnim(String t){
-			this(t, LoopBehavior.LOOP);
+			this(t, 0);
 		}
-		PlayerAnim(String t, LoopBehavior l){
+		PlayerAnim(String t, int a){
+			this(t, LoopBehavior.LOOP, a);
+		}
+		PlayerAnim(String t, LoopBehavior l, int a){
 			text = t;
 			loop = l;
+			atlas = a;
 		}
 		public String toString(){
 			return text;
@@ -43,24 +49,34 @@ public class PlayerAnimator implements IAnimator {
 	public EnumMap<PlayerAnim, IAnimator> anims;
 	public PlayerAnim current;
 	public Player player;
+	public String prefix;
 	
-	public PlayerAnimator(TextureAtlas atlas, Player p){
+	public PlayerAnimator(Array<TextureAtlas> atlases, Player p){
 		player = p;
 		SimpleFrameAnimator anim;
 		Array<AtlasRegion> regions;
 		anims = new EnumMap<PlayerAnim, IAnimator>(PlayerAnim.class);
 		current = PlayerAnim.IDLE;
+		TextureAtlas atlas;
 		for (PlayerAnim a: PlayerAnim.values( )){
-			regions = atlas.findRegions( a.text );
-			if (regions != null && regions.size > 0){
-				anim = new SimpleFrameAnimator()
-						.prefix( a.toString( ) )
-						.maxFrames( regions.size );
-						//.loop( a.loop );
+			anim = null;
+			for (int i = 0; i < atlases.size && anim == null; i++){
+				atlas = atlases.get( i );
+				if (atlas != null){
+					regions = atlas.findRegions( a.text );
+					if (regions != null && regions.size > 0){
+						anim = new SimpleFrameAnimator()
+								.atlas( a.atlas )
+								.maxFrames( regions.size );
+								//.loop( a.loop );
+					}
+				}				
+			}
+			if (anim != null){
 				anims.put( a, anim);
 			} else {
-				  Gdx.app.log( "PlayerAnimator", "No region found for ["+a.text+"]." );
-			}			
+				Gdx.app.log( "PlayerAnimator", "Failed to find corresponding texture atlas for "+a.text+"." );
+			}
 		}
 	}
 	
@@ -130,6 +146,15 @@ public class PlayerAnimator implements IAnimator {
 	@Override
 	public void setFrame( int f ) {
 		anims.get( current ).setFrame( f );
+	}
+	
+	@Override
+	public void setAtlas( int a ){
+	}
+
+	@Override
+	public int getAtlas( ){
+		return current.atlas;
 	}
 	
 	@Override

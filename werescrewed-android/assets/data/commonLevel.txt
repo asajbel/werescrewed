@@ -9,8 +9,10 @@
 /common/TilesetTest.pack
 /common/tileset-teal.pack
 /common/autumn.pack
-/common/animations/player_r_m.pack
-/common/animations/player_r_f.pack
+/common/animations/player_r_m_1.pack
+/common/animations/player_r_m_2.pack
+/common/animations/player_r_f_1.pack
+/common/animations/player_r_f_2.pack
 /common/animations/hitCloud.pack
 
 
@@ -40,7 +42,6 @@
 /common/robot/alphabot_tile_interior.png
 /common/ropelink.png
 /common/gear.png
-/common/animations/player_r_m.png
 /common/animations/hitCloud.png
 
 ##Fonts

@@ -84,8 +84,8 @@ public class Entity implements GleedLoadable {
 		this.construct( name, solid );
 		this.type = type;
 		this.world = world;
-		if (type.atlas != null ){
-			this.sprite = constructSprite( type.atlas );
+		if (type.atlases.size > 0 ){
+			this.sprite = constructSprite( type.atlases.get( 0 ) );
 		} else {
 			this.sprite = constructSprite( texture );
 		}
@@ -385,11 +385,11 @@ public class Entity implements GleedLoadable {
 		IAnimator anim;
 		
 		if (type.animatorType.equals( "player" )){
-			anim = new PlayerAnimator(type.atlas, (Player)this);			
+			anim = new PlayerAnimator(type.atlases, (Player)this);			
 		} else {
-			anim = new SimpleFrameAnimator().maxFrames( type.atlas.getRegions( ).size );
+			anim = new SimpleFrameAnimator().maxFrames( type.atlases.get( 0 ).getRegions( ).size );
 		}
-		sprite = new Sprite(type.atlas, anim);
+		sprite = new Sprite(type.atlases, anim);
 		sprite.setScale( type.spriteScale.x, type.spriteScale.y );
 		origin = new Vector2( type.origin.x, type.origin.y );		
 		sprite.setOrigin( origin.x, origin.y );
