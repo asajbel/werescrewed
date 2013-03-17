@@ -144,14 +144,14 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 
 		// event trigger that will remove box2d entites when they collide with
 		// it
-		EventTriggerBuilder etb = new EventTriggerBuilder( world );
-		EventTrigger removeTrigger = etb.name( "removeEntity" ).rectangle( )
-				.width( 10 ).height( 10000 )
-				.position( new Vector2( 100 * TILE, -20 * TILE ) )
-				.beginAction( new RemoveEntityAction( ) ).build( );
-		removeTrigger.setCategoryMask( Util.CATEGORY_PLAYER,
-				Util.CATEGORY_EVERYTHING );
-		rootSkeleton.addEventTrigger( removeTrigger );
+//		EventTriggerBuilder etb = new EventTriggerBuilder( world );
+//		EventTrigger removeTrigger = etb.name( "removeEntity" ).rectangle( )
+//				.width( 10 ).height( 10000 )
+//				.position( new Vector2( 100 * TILE, -20 * TILE ) )
+//				.beginAction( new RemoveEntityAction( ) ).build( );
+//		removeTrigger.setCategoryMask( Util.CATEGORY_PLAYER,
+//				Util.CATEGORY_EVERYTHING );
+//		rootSkeleton.addEventTrigger( removeTrigger );
 
 		// Create anchor with start position and buffer as parameters
 		testAnchor = new Anchor( new Vector2( 10000, 10 ), new Vector2( 10000,

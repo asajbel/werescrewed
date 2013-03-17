@@ -48,6 +48,7 @@ public class MetricsRender {
 	private boolean cycleBackward = true;
 	private String mode;
 	private BitmapFont debug_font = null;
+	private Vector3 camPos; 
 	private ArrayList< MetricsOutput > runs;
 	private Map< String, Place > parsedJump;
 	private Map< String, Place > parsedDeath;
@@ -73,6 +74,7 @@ public class MetricsRender {
 		runs = new ArrayList< MetricsOutput >( );
 		debug_font = WereScrewedGame.manager.getFont( "debug_font" );
 		mode = "";
+		camPos = new Vector3(); 
 		File file = new File( levelName + Metrics.FILE_APPEND );
 		Json json = new Json( );
 		if ( file.exists( ) ) {
@@ -174,7 +176,7 @@ public class MetricsRender {
 			// fancyFont.setColor( 1.0f, 1.0f, 1.0f, 1.0f );
 			// fancyFont.draw( batch, mode, camera.position.x, camera.position.y
 			// );
-
+			camPos = camera.position;
 			Gdx.gl.glBlendFunc( GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA );
 			Gdx.gl.glEnable( GL10.GL_BLEND );
 
@@ -194,8 +196,10 @@ public class MetricsRender {
 	}
 	
 	public void drawName(SpriteBatch batch) {
-		debug_font.draw(batch, mode, -Gdx.graphics.getWidth( )/2, Gdx.graphics.getHeight( )/2 - debug_font.getLineHeight( ));
-		
+		int x = -Gdx.graphics.getWidth( )/2;
+		int y = Gdx.graphics.getHeight( )/2;
+		float offset = debug_font.getLineHeight( ); 
+		debug_font.draw(batch, mode, camPos.x + x, camPos.y + y - offset);
 	}
 
 	private void cycleRenderForward( ) {
