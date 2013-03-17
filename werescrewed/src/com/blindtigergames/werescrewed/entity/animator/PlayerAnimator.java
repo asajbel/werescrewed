@@ -118,6 +118,7 @@ public class PlayerAnimator implements IAnimator {
 			} else if ( player.getExtraState( ) == ConcurrentState.ExtraFalling ) {
 				return PlayerAnim.JUMP_DOWN;
 			}
+			return PlayerAnim.IDLE;
 		case Screwing:
 			return PlayerAnim.HANG;
 		case Dead:
