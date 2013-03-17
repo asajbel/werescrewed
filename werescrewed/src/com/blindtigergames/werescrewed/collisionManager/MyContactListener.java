@@ -115,8 +115,10 @@ public class MyContactListener implements ContactListener {
 							Player player2 = ( Player ) object;
 							if ( !player.isPlayerDead( )
 									&& !player2.isPlayerDead( )
-									&& ( player.getState( ) == PlayerState.Standing || player2
-											.getState( ) == PlayerState.Standing ) ) {
+									&& ( ( player.getState( ) == PlayerState.Standing && player2
+											.getState( ) == PlayerState.Falling ) || ( player2
+											.getState( ) == PlayerState.Standing && player
+											.getState( ) == PlayerState.Falling ) ) ) {
 								player.hitPlayer( player2 );
 								player2.hitPlayer( player );
 								player.setGrounded( true );
@@ -161,8 +163,9 @@ public class MyContactListener implements ContactListener {
 				}
 			} else {
 
-				//checks if the object fix or player fix is an event trigger
-				//then applies the event to the object that is colliding with it
+				// checks if the object fix or player fix is an event trigger
+				// then applies the event to the object that is colliding with
+				// it
 				if ( playerFix.getBody( ).getUserData( ) instanceof Entity
 						&& objectFix.getBody( ).getUserData( ) instanceof Entity ) {
 					Entity player = ( Entity ) playerFix.getBody( )
@@ -172,13 +175,15 @@ public class MyContactListener implements ContactListener {
 					if ( player.getEntityType( ) != null
 							&& player.getEntityType( ) == EntityType.EVENTTRIGGER ) {
 						EventTrigger et = ( EventTrigger ) player;
-						//needs to get the action in order to act on just this object
+						// needs to get the action in order to act on just this
+						// object
 						et.getBeginAction( ).act( object );
-					} else if( object.getEntityType( ) != null 
-					&& object.getEntityType( ) == EntityType.EVENTTRIGGER ) {
+					} else if ( object.getEntityType( ) != null
+							&& object.getEntityType( ) == EntityType.EVENTTRIGGER ) {
 						EventTrigger et = ( EventTrigger ) object;
-						//needs to get the action in order to act on just this object
-						et.getBeginAction( ).act( player );				
+						// needs to get the action in order to act on just this
+						// object
+						et.getBeginAction( ).act( player );
 					}
 				}
 			}
@@ -273,7 +278,6 @@ public class MyContactListener implements ContactListener {
 							}
 							break;
 						case STEAM:
-							Gdx.app.log( "", "Big FLoppy Donkey Dick" );
 							player.setSteamCollide( false );
 							break;
 						case EVENTTRIGGER:
@@ -357,12 +361,17 @@ public class MyContactListener implements ContactListener {
 									.getState( ) != PlayerState.Falling )
 									|| !player.isHeadStandTimedOut( )
 									|| !player2.isHeadStandTimedOut( )
-									|| ( player.getState( ) == PlayerState.Falling && player
+									|| ( player.getState( ) == PlayerState.Falling
+											&& player2.getState( ) != PlayerState.Standing && player
 											.getPositionPixel( ).y < player2
-											.getPositionPixel( ).y )
-									|| ( player2.getState( ) == PlayerState.Falling && player2
+											.getPositionPixel( ).y
+											+ player2.sprite.getHeight( )
+											/ 1.5f )
+									|| ( player2.getState( ) == PlayerState.Falling
+											&& player.getState( ) != PlayerState.Standing && player2
 											.getPositionPixel( ).y < player
-											.getPositionPixel( ).y ) ) {
+											.getPositionPixel( ).y
+											+ player.sprite.getHeight( ) / 1.5f ) ) {
 								contact.setEnabled( false );
 							}
 							break;
@@ -424,7 +433,7 @@ public class MyContactListener implements ContactListener {
 									if ( platformPos.y > playerPos.y ) {
 										contact.setEnabled( false );
 									}
-								} 
+								}
 								if ( player.isTopPlayer( ) ) {
 									contact.setEnabled( false );
 								}

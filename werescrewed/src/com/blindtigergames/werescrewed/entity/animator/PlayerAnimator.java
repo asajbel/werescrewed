@@ -10,7 +10,6 @@ import com.blindtigergames.werescrewed.graphics.TextureAtlas.AtlasRegion;
 import com.blindtigergames.werescrewed.player.Player;
 import com.blindtigergames.werescrewed.player.Player.ConcurrentState;
 import com.blindtigergames.werescrewed.player.Player.PlayerDirection;
-import com.blindtigergames.werescrewed.player.Player.PlayerState;
 
 public class PlayerAnimator implements IAnimator {
 	public enum PlayerAnim{
@@ -108,7 +107,7 @@ public class PlayerAnimator implements IAnimator {
 		case Falling:
 			return PlayerAnim.JUMP_DOWN;
 		case HeadStand:
-			if ( player.getExtraState( ) == ConcurrentState.Extraumping ) {
+			if ( player.getExtraState( ) == ConcurrentState.ExtraJumping ) {
 				return PlayerAnim.JUMP_UP;
 			} else if ( player.getExtraState( ) == ConcurrentState.ExtraFalling ) {
 				return PlayerAnim.JUMP_DOWN;

@@ -96,7 +96,7 @@ public class RootSkeleton extends Skeleton {
 		// setPosRotChildSkeletons( deltaTime );
 		for ( Skeleton childSkeleton : childSkeletonMap.values( ) ) {
 			// this could
-			if ( childSkeleton.isActive( ) ) {
+			if ( childSkeleton.isActive( ) && childSkeleton.isKinematic( ) ) {
 				childSkeleton.setPosRotFromSkeleton( deltaTime, this );
 			}
 			childSkeleton.setPosRotChildSkeletons( deltaTime );

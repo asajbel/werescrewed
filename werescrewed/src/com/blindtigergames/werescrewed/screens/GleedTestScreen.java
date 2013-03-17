@@ -1,17 +1,14 @@
 package com.blindtigergames.werescrewed.screens;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+import com.badlogic.gdx.physics.box2d.joints.PrismaticJointDef;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJoint;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
 import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.entity.EntityDef;
 import com.blindtigergames.werescrewed.entity.Skeleton;
-import com.blindtigergames.werescrewed.entity.action.DestoryJointAction;
-import com.blindtigergames.werescrewed.entity.action.ScrewDestoryJointAction;
 import com.blindtigergames.werescrewed.entity.builders.PlatformBuilder;
 import com.blindtigergames.werescrewed.entity.mover.PuzzleType;
 import com.blindtigergames.werescrewed.entity.mover.puzzle.PuzzleRotateTweenMover;
@@ -21,7 +18,6 @@ import com.blindtigergames.werescrewed.level.LevelFactory;
 import com.blindtigergames.werescrewed.particles.Steam;
 import com.blindtigergames.werescrewed.platforms.Platform;
 import com.blindtigergames.werescrewed.screws.PuzzleScrew;
-import com.blindtigergames.werescrewed.screws.StructureScrew;
 import com.blindtigergames.werescrewed.util.Util;
 
 public class GleedTestScreen extends Screen {
@@ -90,15 +86,21 @@ public class GleedTestScreen extends Screen {
 		
 		//fallinggear1.getParentSkeleton( ).
 		Skeleton skel = ( Skeleton ) LevelFactory.entities.get( "skeleton2" );
-//		skel.body.setTransform( skel.body.getPosition( ).x, skel.body
-//				.getPosition( ).sub( 0f, 720 ).y, 0 );
-		//skel.body.setType( BodyType.DynamicBody );
+//		skel.body.setType( BodyType.DynamicBody );
+//		PrismaticJointDef pj = new PrismaticJointDef( );
+//		pj.bodyA = level.root.body;
+//		pj.bodyB = skel.body;
+//		pj.collideConnected = false;
+//		pj.localAxisA.set( 0, 1 );
+//		pj.enableLimit =  false;
+//		pj.upperTranslation = 1024;
+//		pj.lowerTranslation = 0;
+//		level.world.createJoint( pj );
 		// skel.addMover( new RotateTweenMover(skel, 15f, Util.PI, 2f, true),
 		// RobotState.IDLE );
 
 		Skeleton skel2 = ( Skeleton ) LevelFactory.entities.get( "skeleton4" );
-//		level.root.getSubSkeletonByName( "skeleton4" ).body
-//				.setType( BodyType.DynamicBody );
+		//skel2.body.setType( BodyType.DynamicBody );
 
 
 		// PathBuilder pb = new PathBuilder( );

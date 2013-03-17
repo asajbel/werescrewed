@@ -38,7 +38,7 @@ public class Camera {
 	private static final float MAX_ANGLE_DIFF = 100f;
 	private static final float MAX_SPEED = 15;
 	private static final float MIN_SPEED = 10f;
-	private static final float ACCELERATION = .1f;
+	private static final float ACCELERATION = .015f;
 	private static final float DECELERATION = -.5f;
 	private float accelerationBuffer;
 	private Vector2 translateVelocity;
@@ -56,6 +56,7 @@ public class Camera {
 	private static final float ZOOM_MAX_SPEED = 1f;
 	private static final float ZOOM_SIG_DIFF = .00005f;
 	private static final float ZOOM_IN_FACTOR = .5f;
+	private static final float MIN_ZOOM = 1.2f;
 
 	private enum RectDirection {
 		X, Y, BOTH, NONE
@@ -107,6 +108,7 @@ public class Camera {
 		translateState = true;
 		insideTargetBuffer = false;
 		zoomSpeed = 0f;
+		camera.zoom = MIN_ZOOM;
 		anchorList = AnchorList.getInstance( camera );
 		anchorList.clear( );
 		if ( ANCHOR_TEST_MODE ) {
@@ -198,7 +200,7 @@ public class Camera {
 	}
 
 	/**
-	 * determine if any part of rect1 is outside of rect2
+	 * Determine if any part of rect1 is outside of rect2
 	 * 
 	 * @param rect1
 	 *            inner Rectangle
@@ -220,6 +222,8 @@ public class Camera {
 				returnDir = RectDirection.Y;
 		}
 
+		if ( returnDir == RectDirection.BOTH )
+			Gdx.app.log( "Direction", "BOTH" );
 		return returnDir;
 	}
 
@@ -260,12 +264,18 @@ public class Camera {
 			}
 		}
 
+		// If a buffer has left the screen
 		if ( outside_x || outside_y ) {
+			// And if the center of the camera is outside of the center of the
+			// midpoint (Not just opposite sides)
 			if ( !insideTargetBuffer ) {
+				// Then we translate
 				translateState = true;
 			}
 		}
+		// Does translate stuff
 		translateLogic( outside_x, outside_y );
+		// If the button to debug input isn't being held, zoom
 		if ( !debugInput )
 			zoom( );
 	}
@@ -466,7 +476,7 @@ public class Camera {
 				newZoom = targetZoom;
 		}
 
-		if ( newZoom > 1f )
+		if ( newZoom > MIN_ZOOM )
 			camera.zoom = newZoom;
 	}
 
