@@ -43,6 +43,7 @@ public class Screw extends Entity {
 	protected int diff;
 	protected boolean playerAttached = false;
 	protected boolean removed = false;
+	protected boolean playerNotSensor = false;
 	protected ScrewType screwType;
 	public ArrayList< RevoluteJoint > extraJoints;
 
@@ -105,6 +106,20 @@ public class Screw extends Entity {
 		return removed;
 	}
 
+	/**
+	 * returns true if this screw is on a rope
+	 */
+	public boolean playerNotSensor( ) {
+		return playerNotSensor;
+	}
+	
+	/**
+	 * sets this screw to being on a rope;
+	 */
+	public void setPlayerNotSensor( ) {
+		playerNotSensor = true;
+	}
+	
 	/**
 	 * returns the joint at this index
 	 */

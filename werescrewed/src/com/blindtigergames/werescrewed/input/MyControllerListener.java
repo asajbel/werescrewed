@@ -106,10 +106,12 @@ public class MyControllerListener implements ControllerListener {
 		// Setting Analog Direction
 		if ( axisLX > DEADZONE ) {
 			rightPressed = true;
+			leftPressed = false;
 			analogUsed = true;
 		}
 		if ( axisLX < -DEADZONE ) {
 			leftPressed = true;
+			rightPressed = false;
 			analogUsed = true;
 		}
 		if ( axisLY > DEADZONE ) {
