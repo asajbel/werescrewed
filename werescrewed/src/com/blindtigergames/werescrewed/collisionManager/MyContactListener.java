@@ -161,8 +161,9 @@ public class MyContactListener implements ContactListener {
 				}
 			} else {
 
-				//checks if the object fix or player fix is an event trigger
-				//then applies the event to the object that is colliding with it
+				// checks if the object fix or player fix is an event trigger
+				// then applies the event to the object that is colliding with
+				// it
 				if ( playerFix.getBody( ).getUserData( ) instanceof Entity
 						&& objectFix.getBody( ).getUserData( ) instanceof Entity ) {
 					Entity player = ( Entity ) playerFix.getBody( )
@@ -172,13 +173,15 @@ public class MyContactListener implements ContactListener {
 					if ( player.getEntityType( ) != null
 							&& player.getEntityType( ) == EntityType.EVENTTRIGGER ) {
 						EventTrigger et = ( EventTrigger ) player;
-						//needs to get the action in order to act on just this object
+						// needs to get the action in order to act on just this
+						// object
 						et.getBeginAction( ).act( object );
-					} else if( object.getEntityType( ) != null 
-					&& object.getEntityType( ) == EntityType.EVENTTRIGGER ) {
+					} else if ( object.getEntityType( ) != null
+							&& object.getEntityType( ) == EntityType.EVENTTRIGGER ) {
 						EventTrigger et = ( EventTrigger ) object;
-						//needs to get the action in order to act on just this object
-						et.getBeginAction( ).act( player );				
+						// needs to get the action in order to act on just this
+						// object
+						et.getBeginAction( ).act( player );
 					}
 				}
 			}
@@ -359,10 +362,13 @@ public class MyContactListener implements ContactListener {
 									|| !player2.isHeadStandTimedOut( )
 									|| ( player.getState( ) == PlayerState.Falling && player
 											.getPositionPixel( ).y < player2
-											.getPositionPixel( ).y )
+											.getPositionPixel( ).y
+											+ player2.sprite.getHeight( )
+											/ 1.5f )
 									|| ( player2.getState( ) == PlayerState.Falling && player2
 											.getPositionPixel( ).y < player
-											.getPositionPixel( ).y ) ) {
+											.getPositionPixel( ).y
+											+ player.sprite.getHeight( ) / 1.5f ) ) {
 								contact.setEnabled( false );
 							}
 							break;
@@ -424,7 +430,7 @@ public class MyContactListener implements ContactListener {
 									if ( platformPos.y > playerPos.y ) {
 										contact.setEnabled( false );
 									}
-								} 
+								}
 								if ( player.isTopPlayer( ) ) {
 									contact.setEnabled( false );
 								}
