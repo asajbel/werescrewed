@@ -381,10 +381,14 @@ public class Player extends Entity {
 			switch ( playerState ) {
 			case HeadStand:
 				// don't set the player state use the extra state
-				extraState = ConcurrentState.ExtraFalling;
+				if ( !topPlayer ) {
+					extraState = ConcurrentState.ExtraFalling;
+				}
+				runTimeout = 0;
 				break;
 			default:
 				playerState = PlayerState.Falling;
+				runTimeout = 0;
 				break;
 			}
 			setGrounded( false );
@@ -392,6 +396,11 @@ public class Player extends Entity {
 			// if the player is falling but y velocity is too slow
 			// the the player hit something
 			playerState = PlayerState.Standing;
+			setGrounded( true );
+		} else if ( extraState == ConcurrentState.ExtraFalling ) {
+			// if the player is falling but y velocity is too slow
+			// the the player hit something
+			extraState = ConcurrentState.Ignore;
 			setGrounded( true );
 		}
 		// check if the head stand requirements are met
