@@ -72,6 +72,7 @@ public class MetricsRender {
 		shapeRenderer = new ShapeRenderer( );
 		runs = new ArrayList< MetricsOutput >( );
 		debug_font = WereScrewedGame.manager.getFont( "debug_font" );
+		mode = "";
 		File file = new File( levelName + Metrics.FILE_APPEND );
 		Json json = new Json( );
 		if ( file.exists( ) ) {
