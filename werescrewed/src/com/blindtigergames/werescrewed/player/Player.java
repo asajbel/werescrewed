@@ -1,7 +1,6 @@
 package com.blindtigergames.werescrewed.player;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.Controllers;
@@ -71,7 +70,7 @@ public class Player extends Entity {
 	public final static float FEET_OFFSET_X = 58f * Util.PIXEL_TO_BOX;
 	public final static float FEET_OFFSET_Y = 20f * Util.PIXEL_TO_BOX;
 	public final static float JUMP_DIRECTION_MULTIPLIER = 2f;
-	public final static float JUMP_DEFAULT_DIVISION = 1.0f;
+	public final static float JUMP_DEFAULT_DIVISION = 2.0f;
 	public float directionJumpDivsion = JUMP_DEFAULT_DIVISION;
 
 	public Fixture feet;
@@ -163,7 +162,7 @@ public class Player extends Entity {
 	}
 
 	public enum ConcurrentState {
-		Ignore, Extraumping, ExtraFalling
+		Ignore, ExtraJumping, ExtraFalling
 	}
 
 	// enum to handle different states of movement
@@ -240,12 +239,12 @@ public class Player extends Entity {
 			// Gdx.app.log( "fixture" + i + " a sensor?", "" + f.isSensor( ) );
 			// i++;
 			// }
-			Gdx.app.log( "player 1 state", "" + playerState );
-
-			Gdx.app.log(
-					"player 1 mask bits",
-					""
-							+ body.getFixtureList( ).get( 0 ).getFilterData( ).maskBits );
+			// Gdx.app.log( "player 1 state", "" + playerState );
+			//
+			// Gdx.app.log(
+			// "player 1 mask bits",
+			// ""
+			// + body.getFixtureList( ).get( 0 ).getFilterData( ).maskBits );
 			// playerDirection );
 			// if(contact != null)
 			// System.out.println("contact friction: " + contact.getFriction( )
@@ -293,8 +292,8 @@ public class Player extends Entity {
 				updateKeyboard( deltaTime );
 			}
 		}
-		//if re-spawning decrement time out
-		//player will not die in this time
+		// if re-spawning decrement time out
+		// player will not die in this time
 		if ( respawnTimeout > 0 ) {
 			respawnTimeout--;
 		}
@@ -302,7 +301,11 @@ public class Player extends Entity {
 		updateFootFriction( );
 		// test if player is still moving after timeout
 		if ( playerDirection != PlayerDirection.Idle ) {
-			if ( runTimeout == 0 ) {
+			if ( runTimeout == 0
+					&&  playerState != PlayerState.Jumping
+							&& playerState != PlayerState.Falling
+							&& extraState != ConcurrentState.ExtraFalling 
+							&& extraState != ConcurrentState.ExtraJumping ) {
 				playerDirection = PlayerDirection.Idle;
 			} else if ( playerDirection == PlayerDirection.Left
 					&& sprite.getScaleX( ) > 0 ) {
@@ -310,7 +313,10 @@ public class Player extends Entity {
 			} else if ( playerDirection == PlayerDirection.Right
 					&& sprite.getScaleX( ) < 0 ) {
 				sprite.setScale( sprite.getScaleX( ) * -1, sprite.getScaleY( ) );
-			} else {
+			} else if ( playerState != PlayerState.Jumping
+							&& playerState != PlayerState.Falling
+							&& extraState != ConcurrentState.ExtraFalling 
+							&& extraState != ConcurrentState.ExtraJumping ){
 				runTimeout--;
 			}
 		}
@@ -375,10 +381,14 @@ public class Player extends Entity {
 			switch ( playerState ) {
 			case HeadStand:
 				// don't set the player state use the extra state
-				extraState = ConcurrentState.ExtraFalling;
+				if ( !topPlayer ) {
+					extraState = ConcurrentState.ExtraFalling;
+				}
+				runTimeout = 0;
 				break;
 			default:
 				playerState = PlayerState.Falling;
+				runTimeout = 0;
 				break;
 			}
 			setGrounded( false );
@@ -386,6 +396,11 @@ public class Player extends Entity {
 			// if the player is falling but y velocity is too slow
 			// the the player hit something
 			playerState = PlayerState.Standing;
+			setGrounded( true );
+		} else if ( extraState == ConcurrentState.ExtraFalling ) {
+			// if the player is falling but y velocity is too slow
+			// the the player hit something
+			extraState = ConcurrentState.Ignore;
 			setGrounded( true );
 		}
 		// check if the head stand requirements are met
@@ -861,9 +876,10 @@ public class Player extends Entity {
 				&& currentScrew.body.getJointList( ).size( ) > 0
 				&& playerState != PlayerState.HeadStand
 				&& !currentScrew.isPlayerAttached( ) ) {
-			// Filter filter;
-			for ( Fixture f : body.getFixtureList( ) ) {
-				f.setSensor( true );
+			if ( !currentScrew.playerNotSensor( ) ) {
+				for ( Fixture f : body.getFixtureList( ) ) {
+					f.setSensor( true );
+				}
 			}
 			if ( currentScrew.body.getLinearVelocity( ).len( ) < SCREW_ATTACH_SPEED ) {
 				mover = new LerpMover( body.getPosition( ).mul(
@@ -973,7 +989,7 @@ public class Player extends Entity {
 						&& playerState != PlayerState.HeadStand ) {
 					playerState = PlayerState.Jumping;
 				} else if ( playerState == PlayerState.HeadStand ) {
-					extraState = ConcurrentState.Extraumping;
+					extraState = ConcurrentState.ExtraJumping;
 				}
 				jump( );
 				jumpCounter++;
@@ -1025,7 +1041,7 @@ public class Player extends Entity {
 					playerState = PlayerState.Jumping;
 				} else if ( playerState == PlayerState.HeadStand ) {
 					// don't change the actual player state use the extra state
-					extraState = ConcurrentState.Extraumping;
+					extraState = ConcurrentState.ExtraJumping;
 				}
 				jump( );
 				jumpCounter++;
@@ -1841,7 +1857,6 @@ public class Player extends Entity {
 	 * @param value
 	 *            boolean
 	 */
-
 	public void setSteamCollide( boolean value ) {
 		steamCollide = value;
 	}

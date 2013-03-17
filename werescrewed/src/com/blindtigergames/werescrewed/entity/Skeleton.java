@@ -68,7 +68,7 @@ public class Skeleton extends Platform {
 
 		FixtureDef dynFixtureDef = new FixtureDef( );
 		PolygonShape polygon = new PolygonShape( );
-		polygon.setAsBox( 150 * Util.PIXEL_TO_BOX, 150 * Util.PIXEL_TO_BOX );
+		polygon.setAsBox( 1 * Util.PIXEL_TO_BOX, 1 * Util.PIXEL_TO_BOX );
 		dynFixtureDef.shape = polygon;
 		dynFixtureDef.density = 100f;
 		dynFixtureDef.filter.categoryBits = Util.CATEGORY_IGNORE;
@@ -394,7 +394,7 @@ public class Skeleton extends Platform {
 	 */
 	protected void updateChildSkeletonMovers( float deltaTime ) {
 		for ( Skeleton skeleton : childSkeletonMap.values( ) ) {
-			if ( skeleton.isActive( ) ) {
+			if ( skeleton.isActive( ) && skeleton.isKinematic( ) ) {
 				skeleton.updateMover( deltaTime );
 			}
 			skeleton.updateChildSkeletonMovers( deltaTime );
@@ -607,15 +607,15 @@ public class Skeleton extends Platform {
 			platform.body.getWorld( ).destroyBody( platform.body );
 		}
 		kinematicPlatformMap.clear( );
-		for ( Rope rope : ropeMap.values( ) ){
+		for ( Rope rope : ropeMap.values( ) ) {
 			rope.dispose( );
 		}
 		ropeMap.clear( );
-		for ( Screw screw : screwMap.values( ) ){
+		for ( Screw screw : screwMap.values( ) ) {
 			screw.dispose( );
 		}
 		screwMap.clear( );
-		for ( EventTrigger et : eventMap.values( ) ){
+		for ( EventTrigger et : eventMap.values( ) ) {
 			et.dispose( );
 		}
 		eventMap.clear( );

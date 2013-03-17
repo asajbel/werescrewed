@@ -226,6 +226,7 @@ public class Rope {
 				getLastLink( ).body.getPosition( ).x * Util.BOX_TO_PIXEL,
 				( getLastLink( ).body.getPosition( ).y * Util.BOX_TO_PIXEL )
 						- ( getLastLink( ).getHeight( ) ) ), getLastLink( ), world );
+		screw.setPlayerNotSensor( );
 
 	}
 	
