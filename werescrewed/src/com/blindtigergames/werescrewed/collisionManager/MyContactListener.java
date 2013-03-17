@@ -115,8 +115,10 @@ public class MyContactListener implements ContactListener {
 							Player player2 = ( Player ) object;
 							if ( !player.isPlayerDead( )
 									&& !player2.isPlayerDead( )
-									&& ( player.getState( ) == PlayerState.Standing || player2
-											.getState( ) == PlayerState.Standing ) ) {
+									&& ( ( player.getState( ) == PlayerState.Standing && player2
+											.getState( ) == PlayerState.Falling ) || ( player2
+											.getState( ) == PlayerState.Standing && player
+											.getState( ) == PlayerState.Falling ) ) ) {
 								player.hitPlayer( player2 );
 								player2.hitPlayer( player );
 								player.setGrounded( true );
@@ -360,12 +362,14 @@ public class MyContactListener implements ContactListener {
 									.getState( ) != PlayerState.Falling )
 									|| !player.isHeadStandTimedOut( )
 									|| !player2.isHeadStandTimedOut( )
-									|| ( player.getState( ) == PlayerState.Falling && player
+									|| ( player.getState( ) == PlayerState.Falling
+											&& player2.getState( ) != PlayerState.Standing && player
 											.getPositionPixel( ).y < player2
 											.getPositionPixel( ).y
 											+ player2.sprite.getHeight( )
 											/ 1.5f )
-									|| ( player2.getState( ) == PlayerState.Falling && player2
+									|| ( player2.getState( ) == PlayerState.Falling
+											&& player.getState( ) != PlayerState.Standing && player2
 											.getPositionPixel( ).y < player
 											.getPositionPixel( ).y
 											+ player.sprite.getHeight( ) / 1.5f ) ) {
