@@ -14,6 +14,8 @@
 /common/animations/player_r_f_1.pack
 /common/animations/player_r_f_2.pack
 /common/animations/hitCloud.pack
+/common/tileset/alphabot32.pack
+/common/tileset/alphabot32-bleed.pack
 
 
 ##common texture
@@ -50,3 +52,11 @@
 /common/ornatique.fnt
 /common/ArmenianCircus.fnt
 /common/Screwball.fnt
+
+
+##Palette Def
+##Define with <colorName>.palette
+##These are used to select bleed effects
+gold.palette
+white.palette
+black.palette

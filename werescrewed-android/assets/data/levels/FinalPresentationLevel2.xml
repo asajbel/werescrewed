@@ -1068,7 +1068,7 @@
                             <string>skeleton1</string>
                         </Property>
                     </CustomProperties>
-                    <Width>432</Width>
+                    <Width>416</Width>
                     <Height>64</Height>
                     <FillColor>
                         <R>192</R>
@@ -2191,8 +2191,8 @@
                             <string>skeleton4</string>
                         </Property>
                     </CustomProperties>
-                    <Width>44</Width>
-                    <Height>327</Height>
+                    <Width>32</Width>
+                    <Height>320</Height>
                     <FillColor>
                         <R>192</R>
                         <G>0</G>
@@ -3264,7 +3264,7 @@
     <CustomProperties />
     <EditorRelated>
         <NextItemNumber>162</NextItemNumber>
-        <ContentRootFolder>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures</ContentRootFolder>
+        <ContentRootFolder>\\vmware-host\Shared Folders\Documents\werescrewed\gleed-textures</ContentRootFolder>
         <CameraPosition>
             <X>3198.67725</X>
             <Y>-1676.32776</Y>

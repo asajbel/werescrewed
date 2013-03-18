@@ -502,7 +502,9 @@ public class LevelFactory {
 		pb.name( item.name )
 		.position( new Vector2(xPos, yPos) )
 		.dimensions( new Vector2(tileWidth, tileHeight) )
-		.tileSet( "autumn" );
+		.tileSet( "alphabot32" );
+		
+		
 		
 		if(isDynamic) pb.dynamic( );
 		else

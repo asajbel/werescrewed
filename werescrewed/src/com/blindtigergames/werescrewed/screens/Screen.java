@@ -1,5 +1,6 @@
 package com.blindtigergames.werescrewed.screens;
 
+import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Keys;
@@ -26,6 +27,9 @@ public class Screen implements com.badlogic.gdx.Screen {
 	public FPSLoggerS logger;
 	
 	public Screen( ){
+		
+		Gdx.app.log( "Screen", "Turning log level to none. SHHH" );
+		Gdx.app.setLogLevel( Application.LOG_NONE );
 
 		batch = new SpriteBatch( );
 		debugRenderer = new SBox2DDebugRenderer( Util.BOX_TO_PIXEL );
