@@ -28,8 +28,8 @@ public class Link extends Entity {
 		constructBody( pos );
 		Sprite temp = constructSprite( ( Texture ) WereScrewedGame.manager
 				.get( WereScrewedGame.dirHandle + "/common/chainlink.png" ) );
-		this.xOffset = (temp.getWidth( )/this.width)*this.width/2;
-		this.yOffset = (temp.getHeight( )/this.height)*this.height/2;
+		this.xOffset = (temp.getWidth( )/2);//+this.width/2;
+		this.yOffset = (temp.getHeight( )/2);//+this.height/2;
 		
 		this.changeSprite( temp );
 	}
@@ -77,9 +77,8 @@ public class Link extends Entity {
 	
 	@Override 
 	public void draw(SpriteBatch batch){
-		
-		float xpos =  body.getPosition( ).x  - (getWidth()/2 + xOffset) * Util.PIXEL_TO_BOX;
-		float ypos =  body.getPosition( ).y - (getHeight()/2 + yOffset) * Util.PIXEL_TO_BOX ;
+		float xpos =  body.getPosition( ).x - (xOffset * Util.PIXEL_TO_BOX);
+		float ypos =  body.getPosition( ).y - (yOffset * Util.PIXEL_TO_BOX);
 		
 		//this.sprite.setOrigin( this.sprite.getWidth( ) / 2, this.sprite.getHeight( ) / 2);
 		this.sprite.setPosition( xpos * Util.BOX_TO_PIXEL, ypos * Util.BOX_TO_PIXEL);
