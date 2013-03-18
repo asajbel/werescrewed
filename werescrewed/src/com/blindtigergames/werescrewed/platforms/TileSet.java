@@ -3,8 +3,10 @@
  */
 package com.blindtigergames.werescrewed.platforms;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.graphics.TextureAtlas;
 
 /**
@@ -15,22 +17,18 @@ import com.blindtigergames.werescrewed.graphics.TextureAtlas;
  */
 public class TileSet {
 	private TextureAtlas atlas;
+	private TextureAtlas bleedAtlas;
 	@SuppressWarnings( "unused" )
 	private int tileHeight, tileWidth;
 
-	/**
-	 * Creates a Tile Set for tiled Entities. Assumes all tiles are the w/h of the first tile
-	 *  and that the tileset is 4x4
-	 * 
-	 * @param texture
-	 *            The set of tiles that is needed for a tile set.
-	 * 
-	 */
-	public TileSet( TextureAtlas atlas ) {
+	
+	public TileSet( TextureAtlas atlas, TextureAtlas bleedAtlas ){
 		this.atlas = atlas;
-		Texture first = atlas.getTextures( ).iterator( ).next( );
-		this.tileHeight = first.getHeight( ) / 4;
-		this.tileWidth = first.getWidth( ) / 4;
+		this.bleedAtlas = bleedAtlas;
+	}
+
+	public boolean canBleed(){
+		return bleedAtlas != null;
 	}
 	
 	private enum TiIdx{
@@ -100,5 +98,63 @@ public class TileSet {
 	}
 	public Sprite getRectangleBottomRight( ) {
 		return ( atlas.createSprite( TiIdx.RectangleBottomRight.value+"" ) );
+	}
+	
+	
+	
+	/**
+	 * Bleed sprite functions
+	 */
+	private Sprite getBleedSprite(int position){
+		String randomColor = WereScrewedGame.manager.getRandomPaletteColor( );
+
+		//System.out.println( "GetRanColor:"+randomColor+position );
+		return ( bleedAtlas.createSprite( randomColor+position ) );
+	}
+	
+	public Sprite getHorizontalLeftTileBleed( ) {
+		return getBleedSprite( TiIdx.HorizontalLeft.value );
+	}
+	public Sprite getHorizontalMiddleTileBleed( ) {
+		return getBleedSprite( TiIdx.HorizontalMiddle.value );
+	}
+	public Sprite getHorizontalRightTileBleed( ) {
+		return getBleedSprite( TiIdx.HorizontalRight.value );
+	}
+	public Sprite getVerticalTopTileBleed( ) {
+		return getBleedSprite( TiIdx.VerticalTop.value);
+	}
+	public Sprite getVerticalMiddleTileBleed( ) {
+		return getBleedSprite( TiIdx.VerticalMiddle.value);
+	}
+	public Sprite getVerticalBottomTileBleed( ) {
+		return getBleedSprite(  TiIdx.VerticalBottom.value );
+	}
+	public Sprite getRectangleUpperLeftBleed( ) {
+		return getBleedSprite( TiIdx.RectangleUpperLeft.value );
+	}
+	public Sprite getRectangleUpperMiddleBleed( ) {
+		return getBleedSprite( TiIdx.RectangleUpperMiddle.value );
+	}
+	public Sprite getRectangleUpperRightBleed( ) {
+		return getBleedSprite( TiIdx.RectangleUpperRight.value );
+	}
+	public Sprite getRectangleMiddleLeftBleed( ) {
+		return getBleedSprite( TiIdx.RectangleMiddleLeft.value );
+	}
+	public Sprite getRectangleMiddleCenterBleed( ) {
+		return getBleedSprite( TiIdx.RectangleMiddleCenter.value);
+	}
+	public Sprite getRectangleMiddleRightBleed( ) {
+		return getBleedSprite( TiIdx.RectangleMiddleRight.value);
+	}
+	public Sprite getRectangleBottomLeftBleed( ) {
+		return getBleedSprite( TiIdx.RectangleBottomLeft.value );
+	}
+	public Sprite getRectangleBottomMiddleBleed( ) {
+		return getBleedSprite(  TiIdx.RectangleBottomMiddle.value );
+	}
+	public Sprite getRectangleBottomRightBleed( ) {
+		return getBleedSprite(  TiIdx.RectangleBottomRight.value );
 	}
 }

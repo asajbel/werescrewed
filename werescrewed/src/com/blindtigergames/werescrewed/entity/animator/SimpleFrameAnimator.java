@@ -7,6 +7,7 @@ public class SimpleFrameAnimator implements IAnimator {
 	protected int frame;
 	protected float speed, time;
 	protected int start, frames;
+	protected int atlas;
 	public enum LoopBehavior{
 		STOP(0),
 		LOOP(1),
@@ -37,6 +38,7 @@ public class SimpleFrameAnimator implements IAnimator {
 		start = 0; frames = 0;
 		loop = LoopBehavior.LOOP;
 		prefix = "";
+		atlas = 0;
 	}
 
 
@@ -73,6 +75,11 @@ public class SimpleFrameAnimator implements IAnimator {
 
 	public SimpleFrameAnimator prefix(String p){
 		prefix = p;
+		return this;
+	}
+	
+	public SimpleFrameAnimator atlas(int a){
+		setAtlas(a);
 		return this;
 	}
 	
@@ -114,10 +121,25 @@ public class SimpleFrameAnimator implements IAnimator {
 	}
 
 	@Override
+	public void setAtlas(int a){atlas = a;}
+	
+	@Override
+	public int getAtlas(){return atlas;}
+	
+	@Override
+	public float getTime(){
+		return time;
+	}
+	
+	@Override
 	public void reset(){
 		frame = 0;
 		time = 0.0f;
 		speed = 1.0f;
+	}
+	
+	public boolean isStopped(){
+		return (speed == 0.0f);
 	}
 	
 	protected void incrementTime( float dT ){
@@ -137,7 +159,7 @@ public class SimpleFrameAnimator implements IAnimator {
 				break;
 			}
 		}
-		if (time > 0.0f){
+		if (time > 1.0f){
 			switch (loop){
 			case STOP:
 				time = 1.0f;
@@ -152,5 +174,5 @@ public class SimpleFrameAnimator implements IAnimator {
 				break;
 			}
 		}
-	}	
+	}
 }

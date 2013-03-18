@@ -187,6 +187,12 @@ public class LoadingScreen extends Screen {
 			WereScrewedGame.manager.loadFont( fullPathName );
 			//Gdx.app.log( "Bitmap pack file loaded", fullPathName );
 		}
+		else if ( fileExtension.equals( "palette" )){
+			String[] path = fullPathName.split( "\\." );
+			String colorName = path[0].substring( WereScrewedGame.dirHandle.name( ).length( ) );
+			WereScrewedGame.manager.addToPalette( colorName );
+			Gdx.app.log( "Color Loaded", colorName );
+		}
 	}
 
 	//Simple overloading for when you only have an extension and pathname.

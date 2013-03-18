@@ -36,5 +36,17 @@ public interface IAnimator extends I_Updateable {
 	public int getFrame();
 	public void setFrame(int i);
 	
+	
+	/*
+	 * Gets the current texture atlas specified by the animator
+	 * No actual texture atlases should be stored in animator. That's Entity's job.
+	 * So these functions should simply return numbers. 
+	 * 
+	 */
+	public int getAtlas();
+	public void setAtlas(int a);
+	
 	public void reset();
+
+	public float getTime( );
 }

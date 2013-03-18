@@ -3,6 +3,7 @@ package com.blindtigergames.werescrewed.platforms;
 import java.util.Iterator;
 import java.util.Vector;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
@@ -33,6 +34,11 @@ public class TiledPlatform extends Platform {
 	protected Shape shape;// = Shape.SINGLE;
 
 	protected Vector< Tile > tiles;
+	protected Vector< Tile > bleedTiles=null;
+	
+	//private boolean doBleed;
+	
+	//private String tileSetName;
 
 	public TiledPlatform( String n, Vector2 pos, TileSet tileSet, float width,
 			float height, boolean isOneSided, boolean isMoveable, World world ) {
@@ -51,6 +57,7 @@ public class TiledPlatform extends Platform {
 		} else {
 			shape = Shape.SINGLE;
 		}
+		
 
 		this.width = tileWidth * tileConstant;
 		this.height = tileHeight * tileConstant;
@@ -59,6 +66,7 @@ public class TiledPlatform extends Platform {
 		setOneSided( isOneSided );
 		this.moveable = isMoveable;
 		tileBody( tileSet );
+		
 	}
 
 	private void constructTileBody( float x, float y, float width, float height ) {
@@ -91,6 +99,11 @@ public class TiledPlatform extends Platform {
 	private void tileBody( TileSet tileSet ) {
 		bodypos = body.getPosition( ).mul( Util.BOX_TO_PIXEL );
 		tiles = new Vector< Tile >( ( int ) ( tileHeight * tileWidth ) );
+		if ( tileSet.canBleed( ) ){
+			bleedTiles = new Vector<Tile>( ( int ) ( tileHeight * tileWidth ) );
+		}
+		//Gdx.app.log( "TP:"+name+":", doBleed+"" );
+		
 		Sprite temp;
 		Tile insub;
 		float offset_x, offset_y;
@@ -108,17 +121,20 @@ public class TiledPlatform extends Platform {
 			offset_y = ( 0 - tileHeight / 2 + 1 ) * tileConstant * 2;
 			insub = setTile( temp, offset_x, offset_y );
 			tiles.add( insub );
+			if ( bleedTiles!=null ) setBleedTile( tileSet.getVerticalTopTileBleed( ), offset_x, offset_y );
 			for ( int j = 1; j < tileHeight - 1; j++ ) {
 				temp = tileSet.getVerticalMiddleTile( );
 				offset_y = ( j - tileHeight / 2 + 1 ) * tileConstant * 2;
 				insub = setTile( temp, offset_x, offset_y );
 				tiles.add( insub );
+				if ( bleedTiles!=null ) setBleedTile( tileSet.getVerticalMiddleTileBleed( ), offset_x, offset_y );
 			}
 			temp = tileSet.getVerticalBottomTile( );
 			offset_y = ( ( tileHeight - 1 ) - tileHeight / 2 + 1 )
 					* tileConstant * 2;
 			insub = setTile( temp, offset_x, offset_y );
 			tiles.add( insub );
+			if ( bleedTiles!=null ) setBleedTile( tileSet.getVerticalBottomTileBleed( ), offset_x, offset_y );
 			break;
 		case HORIZONTAL:
 			temp = tileSet.getHorizontalRightTile( );
@@ -126,17 +142,20 @@ public class TiledPlatform extends Platform {
 			offset_y = ( 0 - tileHeight / 2 + 1 ) * tileConstant * 2;
 			insub = setTile( temp, offset_x, offset_y );
 			tiles.add( insub );
+			if ( bleedTiles!=null ) setBleedTile( tileSet.getHorizontalRightTileBleed( ), offset_x, offset_y );
 			for ( int i = 1; i < tileWidth - 1; i++ ) {
 				temp = tileSet.getHorizontalMiddleTile( );
 				offset_x = ( i - tileWidth / 2 + 1 ) * tileConstant * 2;
 				insub = setTile( temp, offset_x, offset_y );
 				tiles.add( insub );
+				if ( bleedTiles!=null ) setBleedTile( tileSet.getHorizontalMiddleTileBleed( ), offset_x, offset_y );
 			}
 			temp = tileSet.getHorizontalLeftTile( );
 			offset_x = ( ( tileWidth - 1 ) - tileWidth / 2 + 1 ) * tileConstant
 					* 2;
 			insub = setTile( temp, offset_x, offset_y );
 			tiles.add( insub );
+			if ( bleedTiles!=null ) setBleedTile( tileSet.getHorizontalLeftTileBleed( ), offset_x, offset_y );
 			break;
 		case RECTANGLE:
 			temp = tileSet.getRectangleUpperRight( );
@@ -144,17 +163,20 @@ public class TiledPlatform extends Platform {
 			offset_y = ( 0 - tileHeight / 2 + 1 ) * tileConstant * 2;
 			insub = setTile( temp, offset_x, offset_y );
 			tiles.add( insub );
+			if ( bleedTiles!=null ) setBleedTile( tileSet.getRectangleUpperRightBleed( ), offset_x, offset_y );
 			for ( int i = 1; i < tileWidth - 1; i++ ) {
 				temp = tileSet.getRectangleUpperMiddle( );
 				offset_x = ( i - tileWidth / 2 + 1 ) * tileConstant * 2;
 				insub = setTile( temp, offset_x, offset_y );
 				tiles.add( insub );
+				if ( bleedTiles!=null ) setBleedTile( tileSet.getRectangleUpperMiddleBleed( ), offset_x, offset_y );
 			}
 			temp = tileSet.getRectangleUpperLeft( );
 			offset_x = ( ( tileWidth - 1 ) - tileWidth / 2 + 1 ) * tileConstant
 					* 2;
 			insub = setTile( temp, offset_x, offset_y );
 			tiles.add( insub );
+			if ( bleedTiles!=null ) setBleedTile( tileSet.getRectangleUpperLeftBleed( ), offset_x, offset_y );
 
 			for ( int j = 1; j < tileHeight - 1; j++ ) {
 				temp = tileSet.getRectangleMiddleRight( );
@@ -162,17 +184,20 @@ public class TiledPlatform extends Platform {
 				offset_y = ( j - tileHeight / 2 + 1 ) * tileConstant * 2;
 				insub = setTile( temp, offset_x, offset_y );
 				tiles.add( insub );
+				if ( bleedTiles!=null ) setBleedTile( tileSet.getRectangleMiddleRightBleed( ), offset_x, offset_y );
 				for ( int i = 1; i < tileWidth - 1; i++ ) {
 					temp = tileSet.getRectangleMiddleCenter( );
 					offset_x = ( i - tileWidth / 2 + 1 ) * tileConstant * 2;
 					insub = setTile(temp,offset_x,offset_y);
 					tiles.add( insub );
+					if ( bleedTiles!=null ) setBleedTile( tileSet.getRectangleMiddleCenterBleed( ), offset_x, offset_y );
 				}
 				temp = tileSet.getRectangleMiddleLeft( );
 				offset_x = ( ( tileWidth - 1 ) - tileWidth / 2 + 1 )
 						* tileConstant * 2;
 				insub = setTile( temp, offset_x, offset_y );
 				tiles.add( insub );
+				if ( bleedTiles!=null ) setBleedTile( tileSet.getRectangleMiddleLeftBleed( ), offset_x, offset_y );
 			}
 
 			temp = tileSet.getRectangleBottomRight( );
@@ -181,17 +206,20 @@ public class TiledPlatform extends Platform {
 					* tileConstant * 2;
 			insub = setTile( temp, offset_x, offset_y );
 			tiles.add( insub );
+			if ( bleedTiles!=null ) setBleedTile( tileSet.getRectangleBottomRightBleed( ), offset_x, offset_y );
 			for ( int i = 1; i < tileWidth - 1; i++ ) {
 				temp = tileSet.getRectangleBottomMiddle( );
 				offset_x = ( i - tileWidth / 2 + 1 ) * tileConstant * 2;
 				insub = setTile( temp, offset_x, offset_y );
 				tiles.add( insub );
+				if ( bleedTiles!=null ) setBleedTile( tileSet.getRectangleBottomMiddleBleed( ), offset_x, offset_y );
 			}
 			temp = tileSet.getRectangleBottomLeft( );
 			offset_x = ( ( tileWidth - 1 ) - tileWidth / 2 + 1 ) * tileConstant
 					* 2;
 			insub = setTile( temp, offset_x, offset_y );
 			tiles.add( insub );
+			if ( bleedTiles!=null ) setBleedTile( tileSet.getRectangleBottomLeftBleed( ), offset_x, offset_y );
 			break;
 		default:
 			for ( int i = 0; i < tileWidth; i++ ) {
@@ -210,6 +238,18 @@ public class TiledPlatform extends Platform {
 			}
 			break;
 		}
+	}
+	
+	private void setBleedTile(Sprite temp, float offset_x, float offset_y){
+		offset_x += temp.getOriginX( );
+		offset_y += temp.getOriginY( );
+		temp.setOrigin( offset_x, offset_y );
+		temp.setPosition( bodypos.x - offset_x, bodypos.y - offset_y );
+		temp.setRotation( MathUtils.radiansToDegrees * body.getAngle( ) );
+		bleedTiles.add( new Tile( offset_x, offset_y, temp ) );
+
+		//Gdx.app.log( "TP:", "SETTTING BLEEEEEDD!!!!!!!!!" );
+		
 	}
 
 	private Tile setTile( Sprite temp, float offset_x, float offset_y ) {
@@ -241,6 +281,18 @@ public class TiledPlatform extends Platform {
 		}
 		for ( Screw s : screws )
 			s.draw( batch );
+		
+		if ( bleedTiles != null ){
+			v = bleedTiles.listIterator( );
+			while ( v.hasNext( ) ) {
+				d = v.next( );
+				d.tileSprite.setPosition( bodypos.x - d.xOffset, bodypos.y
+						- d.yOffset );
+				d.tileSprite.setRotation( MathUtils.radiansToDegrees
+						* body.getAngle( ) );
+				d.tileSprite.draw( batch );
+			}
+		}
 		//drawOrigin( batch );
 	}
 

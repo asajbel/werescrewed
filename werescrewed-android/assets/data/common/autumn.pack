@@ -42,7 +42,7 @@ offset: 7, 8
   rotate: false
   xy: 48, 48
   size: 48, 48
-  orig: 48, 48
+  orig: 100, 100
   offset: 0, 0
   index: -1
 7

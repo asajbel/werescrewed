@@ -1,7 +1,7 @@
 ##sounds
 /common/sounds/inceptionbutton.mp3
 /common/sounds/jump.ogg
-/common/sounds/WilhelmScream.mp3
+/common/sounds/WilhelmScream.ogg
 /common/sounds/TrainJob.mp3
 
 ##texture atlas
@@ -9,9 +9,18 @@
 /common/TilesetTest.pack
 /common/tileset-teal.pack
 /common/autumn.pack
-/common/animations/player_r_m.pack
-/common/animations/player_r_f.pack
+/common/animations/player_r_m_1.pack
+/common/animations/player_r_m_2.pack
+/common/animations/player_r_m_3.pack
+/common/animations/player_r_f_1.pack
+/common/animations/player_r_f_2.pack
+/common/animations/player_r_f_3.pack
 /common/animations/hitCloud.pack
+/common/tileset/alphabot32.pack
+/common/tileset/alphabot32-bleed.pack
+
+##checkpoint
+/common/checkpoint/checkpoint.pack
 
 
 ##common texture
@@ -33,14 +42,16 @@
 /common/tileset/TilesetTest.png
 #/common/blind_tiger_logo_1024.png
 /common/title_background.png
+/common/title_background_1024.png
+/common/title_background_original.png
 /particles/particle.png
 /common/robot/alphabot_texture_skin.png
 /common/robot/alphabot_texture_tux.png
 /common/robot/alphabot_tile_suit_main.png
 /common/robot/alphabot_tile_interior.png
 /common/ropelink.png
+/common/chainlink.png
 /common/gear.png
-/common/animations/player_r_m.png
 /common/animations/hitCloud.png
 
 ##Fonts
@@ -49,3 +60,11 @@
 /common/ornatique.fnt
 /common/ArmenianCircus.fnt
 /common/Screwball.fnt
+
+
+##Palette Def
+##Define with <colorName>.palette
+##These are used to select bleed effects
+gold.palette
+white.palette
+black.palette

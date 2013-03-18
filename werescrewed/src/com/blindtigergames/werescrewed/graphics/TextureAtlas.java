@@ -179,7 +179,7 @@ public class TextureAtlas implements Disposable {
 							String[] tokens = line.split( "/" );
 							region.name = tokens[0];
 							region.index = Integer.parseInt( tokens[1] );
-							Gdx.app.log( "TextureAtlas", "Reading index from region name. Name:"+region.name+" Index:"+region.index );
+							//Gdx.app.log( "TextureAtlas", "Reading index from region name. Name:"+region.name+" Index:"+region.index );
 						} else {
 							region.name = line;
 							region.index = -1;

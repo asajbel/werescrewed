@@ -17,6 +17,7 @@ import com.blindtigergames.werescrewed.util.Util;
 
 public class Link extends Entity {
 	private float width, height;
+	private float xOffset, yOffset;
 	
 	public Link( String name, World world, Vector2 pos, Texture texture, Vector2 widthHeight ) {
 		super( name, pos, texture, null, true );
@@ -26,7 +27,9 @@ public class Link extends Entity {
 
 		constructBody( pos );
 		Sprite temp = constructSprite( ( Texture ) WereScrewedGame.manager
-				.get( WereScrewedGame.dirHandle + "/common/ropelink.png" ) );
+				.get( WereScrewedGame.dirHandle + "/common/chainlink.png" ) );
+		this.xOffset = (temp.getWidth( )/2);//+this.width/2;
+		this.yOffset = (temp.getHeight( )/2);//+this.height/2;
 		
 		this.changeSprite( temp );
 	}
@@ -74,11 +77,10 @@ public class Link extends Entity {
 	
 	@Override 
 	public void draw(SpriteBatch batch){
+		float xpos =  body.getPosition( ).x - (xOffset * Util.PIXEL_TO_BOX);
+		float ypos =  body.getPosition( ).y - (yOffset * Util.PIXEL_TO_BOX);
 		
-		float xpos =  body.getPosition( ).x  - (getWidth()/2) * Util.PIXEL_TO_BOX;
-		float ypos =  body.getPosition( ).y - (getHeight()/2) *Util.PIXEL_TO_BOX ;
-		
-		this.sprite.setOrigin( this.sprite.getWidth( ) / 2, this.sprite.getHeight( ) / 2);
+		//this.sprite.setOrigin( this.sprite.getWidth( ) / 2, this.sprite.getHeight( ) / 2);
 		this.sprite.setPosition( xpos * Util.BOX_TO_PIXEL, ypos * Util.BOX_TO_PIXEL);
 		this.sprite.setRotation(  MathUtils.radiansToDegrees
 				* body.getAngle( ) );

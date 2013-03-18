@@ -16,8 +16,11 @@ public class PlayerAnimator implements IAnimator {
 	public enum PlayerAnim{
 		IDLE("idle")
 		,RUN("run")
+		,HANG("hang")
 		,JUMP_UP("jump_up", LoopBehavior.STOP)
 		,JUMP_DOWN("jump_down", LoopBehavior.STOP)
+		,DEATH_BEGIN("death_begin", LoopBehavior.STOP )
+		,DEATH("death_idle")
 		;
 		String text;
 		LoopBehavior loop;
@@ -41,31 +44,49 @@ public class PlayerAnimator implements IAnimator {
 	}
 	
 	public EnumMap<PlayerAnim, IAnimator> anims;
+	public EnumMap<PlayerAnim, Integer> atlasNums;
 	public PlayerAnim current;
 	public Player player;
+	public String prefix;
+	public boolean deathBegin;
 	
-	public PlayerAnimator(TextureAtlas atlas, Player p){
+	public PlayerAnimator(Array<TextureAtlas> atlases, Player p){
 		player = p;
 		SimpleFrameAnimator anim;
 		Array<AtlasRegion> regions;
 		anims = new EnumMap<PlayerAnim, IAnimator>(PlayerAnim.class);
+		atlasNums = new EnumMap<PlayerAnim, Integer>(PlayerAnim.class);
 		current = PlayerAnim.IDLE;
+		deathBegin = true;
+		TextureAtlas atlas;
 		for (PlayerAnim a: PlayerAnim.values( )){
-			regions = atlas.findRegions( a.text );
-			if (regions != null && regions.size > 0){
-				anim = new SimpleFrameAnimator()
-						.prefix( a.toString( ) )
-						.maxFrames( regions.size );
-						//.loop( a.loop );
+			anim = null;
+			for (int i = 0; i < atlases.size && anim == null; i++){
+				atlas = atlases.get( i );
+				if (atlas != null){
+					regions = atlas.findRegions( a.text );
+					if (regions != null && regions.size > 0){
+						anim = new SimpleFrameAnimator()
+								.atlas( i )
+								.maxFrames( regions.size )
+								.loop( a.loop );
+						Gdx.app.log( "PlayerAnimator", "Found "+a.text+" in atlas "+i+"." );
+					}
+				}				
+			}
+			if (anim != null){
 				anims.put( a, anim);
+				atlasNums.put( a, anim.atlas);
 			} else {
-				  Gdx.app.log( "PlayerAnimator", "No region found for ["+a.text+"]." );
-			}			
+				Gdx.app.log( "PlayerAnimator", "Failed to find corresponding texture atlas for "+a.text+"." );
+			}
 		}
 	}
 	
 	@Override
 	public void update( float dT ) {
+		if (player.getState( ) != PlayerState.Dead)
+			deathBegin = true;
 		if (current != getCurrentAnim()){
 			current = getCurrentAnim();
 			anims.get(current).reset();
@@ -92,11 +113,16 @@ public class PlayerAnimator implements IAnimator {
 		case Falling:
 			return PlayerAnim.JUMP_DOWN;
 		case HeadStand:
-			if ( player.getExtraState( ) == ConcurrentState.Extraumping ) {
+			if ( player.getExtraState( ) == ConcurrentState.ExtraJumping ) {
 				return PlayerAnim.JUMP_UP;
 			} else if ( player.getExtraState( ) == ConcurrentState.ExtraFalling ) {
 				return PlayerAnim.JUMP_DOWN;
-			} 
+			}
+			return PlayerAnim.IDLE;
+		case Screwing:
+			return PlayerAnim.HANG;
+		case Dead:
+			return PlayerAnim.DEATH;
 		default:
 			return PlayerAnim.IDLE;			
 		}
@@ -130,6 +156,20 @@ public class PlayerAnimator implements IAnimator {
 	@Override
 	public void setFrame( int f ) {
 		anims.get( current ).setFrame( f );
+	}
+	
+	@Override
+	public void setAtlas( int a ){
+	}
+
+	@Override
+	public int getAtlas( ){
+		return atlasNums.get( current );
+	}
+	
+	@Override
+	public float getTime(){
+		return anims.get( current ).getTime( );
 	}
 	
 	@Override
