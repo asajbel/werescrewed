@@ -472,7 +472,6 @@ public class Player extends Entity {
 					f.setFilterData( filter );
 				}
 				playerState = PlayerState.Dead;
-				body.setTransform( body.getPosition( ), 90f * Util.DEG_TO_RAD );
 				if ( Metrics.activated ) {
 					Metrics.addPlayerDeathPosition( this.getPositionPixel( ) );
 				}
