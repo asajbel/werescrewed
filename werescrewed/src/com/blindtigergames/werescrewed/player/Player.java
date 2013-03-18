@@ -29,7 +29,6 @@ import com.blindtigergames.werescrewed.entity.animator.SimpleFrameAnimator.LoopB
 import com.blindtigergames.werescrewed.entity.mover.IMover;
 import com.blindtigergames.werescrewed.entity.mover.LerpMover;
 import com.blindtigergames.werescrewed.entity.mover.LinearAxis;
-import com.blindtigergames.werescrewed.graphics.TextureAtlas;
 import com.blindtigergames.werescrewed.input.MyControllerListener;
 import com.blindtigergames.werescrewed.input.PlayerInputHandler;
 import com.blindtigergames.werescrewed.screws.ResurrectScrew;
@@ -219,7 +218,7 @@ public class Player extends Entity {
 		controllerDebug = true;
 
 		jumpSound = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-				+ "/common/sounds/jump.ogg" );
+				+ "/common/sounds/WilhelmScream.ogg" );
 	}
 
 	// PUBLIC METHODS
@@ -697,9 +696,9 @@ public class Player extends Entity {
 	 * @param otherPlayer
 	 *            the other player
 	 */
-	public void hitPlayer( Player otherPlayer ) {
-		if ( playerState != PlayerState.Screwing ) {
-			this.otherPlayer = otherPlayer;
+	public void hitPlayer( Player player ) {
+		if ( playerState != PlayerState.Screwing || player == null ) {
+			this.otherPlayer = player;
 		}
 	}
 
@@ -1413,6 +1412,7 @@ public class Player extends Entity {
 			playerJoint = null;
 			topPlayer = false;
 		}
+		otherPlayer = null;
 	}
 
 	/**
