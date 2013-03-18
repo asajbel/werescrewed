@@ -47,6 +47,7 @@
 /common/robot/alphabot_tile_suit_main.png
 /common/robot/alphabot_tile_interior.png
 /common/ropelink.png
+/common/chainlink.png
 /common/gear.png
 /common/animations/hitCloud.png
 
