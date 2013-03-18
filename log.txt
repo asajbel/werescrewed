@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 3/17/2013 7:53:23 PM.024 - Log File created.
 3/17/2013 7:53:23 PM.024 - Application started.
 3/17/2013 7:53:23 PM.196 - pictureBox1_Resize().
@@ -15,3 +16,22 @@
 3/17/2013 7:53:24 PM.466 - Creating new level.
 3/17/2013 7:53:24 PM.527 - New level created.
 3/17/2013 7:53:24 PM.528 - Editor creation ended.
+=======
+3/17/2013 4:36:07 PM.747 - Log File created.
+3/17/2013 4:36:07 PM.748 - Application started.
+3/17/2013 4:36:08 PM.002 - Creating Game1 object.
+3/17/2013 4:36:08 PM.095 - Game1 creation started.
+3/17/2013 4:36:08 PM.100 - Creating Winform.
+3/17/2013 4:36:08 PM.189 - Winform created.
+3/17/2013 4:36:08 PM.189 - Game1 creation ended.
+3/17/2013 4:36:08 PM.206 - Creating Editor object.
+3/17/2013 4:36:08 PM.233 - Editor creation started.
+3/17/2013 4:36:08 PM.234 - Loading Resources.
+3/17/2013 4:36:08 PM.261 - Resources loaded.
+3/17/2013 4:36:08 PM.261 - Loading Settings.
+3/17/2013 4:36:08 PM.453 - Settings loaded.
+3/17/2013 4:36:08 PM.454 - Creating new level.
+3/17/2013 4:36:08 PM.525 - New level created.
+3/17/2013 4:36:08 PM.525 - Editor creation ended.
+3/17/2013 4:36:40 PM.462 - pictureBox1_Resize().
+>>>>>>> master

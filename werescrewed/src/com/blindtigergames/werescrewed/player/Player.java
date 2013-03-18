@@ -134,8 +134,6 @@ public class Player extends Entity {
 	@SuppressWarnings( "unused" )
 	private Sound jumpSound;
 
-	private TextureAtlas characterAtlas;
-
 	// TODO: fill in the frames counts and frame rates for various animations
 	// like below
 	private int jumpFrames = 3;
@@ -474,7 +472,6 @@ public class Player extends Entity {
 					f.setFilterData( filter );
 				}
 				playerState = PlayerState.Dead;
-				body.setTransform( body.getPosition( ), 90f * Util.DEG_TO_RAD );
 				if ( Metrics.activated ) {
 					Metrics.addPlayerDeathPosition( this.getPositionPixel( ) );
 				}

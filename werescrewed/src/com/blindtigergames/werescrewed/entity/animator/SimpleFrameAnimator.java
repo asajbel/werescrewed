@@ -127,6 +127,11 @@ public class SimpleFrameAnimator implements IAnimator {
 	public int getAtlas(){return atlas;}
 	
 	@Override
+	public float getTime(){
+		return time;
+	}
+	
+	@Override
 	public void reset(){
 		frame = 0;
 		time = 0.0f;

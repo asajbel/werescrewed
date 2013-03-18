@@ -47,4 +47,6 @@ public interface IAnimator extends I_Updateable {
 	public void setAtlas(int a);
 	
 	public void reset();
+
+	public float getTime( );
 }

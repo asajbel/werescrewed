@@ -127,9 +127,7 @@ public class ProgressManager {
 			c.draw( batch );
 		}
 		if ( resurrectScrew != null ) {
-			if ( resurrectScrew.body.getJointList( ).size( ) <= 1 ) {
-				resurrectScrew.draw( batch );
-			}
+			resurrectScrew.draw( batch );
 		}
 	}
 

@@ -19,6 +19,8 @@ local.properties
 
 .metadata
 
+#gleed log file
+log.txt
 # Mac files
 .DS_STORE
 .DS_Store

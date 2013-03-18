@@ -211,7 +211,7 @@ public class ResurrectScrew extends Screw {
 				deadPlayer.body.setTransform(
 						this.getPositionPixel( )
 								.sub( deadPlayer.sprite.getWidth( ) / 3.0f,
-										0.0f ).mul( Util.PIXEL_TO_BOX ), 0.0f );
+										deadPlayer.sprite.getHeight( ) ).mul( Util.PIXEL_TO_BOX ), 0.0f );
 				deadPlayer.respawnPlayer( );
 				remove( );
 				active = false;
