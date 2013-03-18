@@ -586,8 +586,8 @@
                             <string>skeleton1</string>
                         </Property>
                     </CustomProperties>
-                    <Width>220</Width>
-                    <Height>39</Height>
+                    <Width>160</Width>
+                    <Height>32</Height>
                     <FillColor>
                         <R>192</R>
                         <G>0</G>
@@ -612,8 +612,8 @@
                             <string>skeleton1</string>
                         </Property>
                     </CustomProperties>
-                    <Width>204</Width>
-                    <Height>39</Height>
+                    <Width>192</Width>
+                    <Height>32</Height>
                     <FillColor>
                         <R>192</R>
                         <G>0</G>
@@ -638,8 +638,8 @@
                             <string>skeleton1</string>
                         </Property>
                     </CustomProperties>
-                    <Width>188</Width>
-                    <Height>39</Height>
+                    <Width>192</Width>
+                    <Height>32</Height>
                     <FillColor>
                         <R>192</R>
                         <G>0</G>
@@ -980,7 +980,7 @@
                         </Property>
                     </CustomProperties>
                     <Width>384</Width>
-                    <Height>48</Height>
+                    <Height>32</Height>
                     <FillColor>
                         <R>192</R>
                         <G>0</G>
@@ -1058,7 +1058,7 @@
                 <Item xsi:type="RectangleItem" Name="secondfloor" Visible="true">
                     <Position>
                         <X>2288</X>
-                        <Y>-1296</Y>
+                        <Y>-1280</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -1068,8 +1068,8 @@
                             <string>skeleton1</string>
                         </Property>
                     </CustomProperties>
-                    <Width>240</Width>
-                    <Height>48</Height>
+                    <Width>256</Width>
+                    <Height>32</Height>
                     <FillColor>
                         <R>192</R>
                         <G>0</G>
@@ -1339,8 +1339,8 @@
                             <string>rotatetween</string>
                         </Property>
                     </CustomProperties>
-                    <Width>204</Width>
-                    <Height>39</Height>
+                    <Width>192</Width>
+                    <Height>32</Height>
                     <FillColor>
                         <R>192</R>
                         <G>0</G>
@@ -1362,8 +1362,8 @@
                             <string>skeleton1</string>
                         </Property>
                     </CustomProperties>
-                    <Width>204</Width>
-                    <Height>39</Height>
+                    <Width>192</Width>
+                    <Height>32</Height>
                     <FillColor>
                         <R>192</R>
                         <G>0</G>
@@ -1388,8 +1388,8 @@
                             <string>rotatetween</string>
                         </Property>
                     </CustomProperties>
-                    <Width>204</Width>
-                    <Height>39</Height>
+                    <Width>192</Width>
+                    <Height>32</Height>
                     <FillColor>
                         <R>192</R>
                         <G>0</G>
@@ -1411,8 +1411,8 @@
                             <string>skeleton1</string>
                         </Property>
                     </CustomProperties>
-                    <Width>204</Width>
-                    <Height>39</Height>
+                    <Width>192</Width>
+                    <Height>32</Height>
                     <FillColor>
                         <R>192</R>
                         <G>0</G>
@@ -1437,8 +1437,8 @@
                             <string>skeleton1</string>
                         </Property>
                     </CustomProperties>
-                    <Width>204</Width>
-                    <Height>39</Height>
+                    <Width>192</Width>
+                    <Height>32</Height>
                     <FillColor>
                         <R>192</R>
                         <G>0</G>
@@ -1529,7 +1529,7 @@
                 </Item>
                 <Item xsi:type="RectangleItem" Name="structureplat" Visible="true">
                     <Position>
-                        <X>1840</X>
+                        <X>1856</X>
                         <Y>-1568</Y>
                     </Position>
                     <CustomProperties>
@@ -1610,7 +1610,7 @@
                         </Property>
                     </CustomProperties>
                     <Width>480</Width>
-                    <Height>48</Height>
+                    <Height>32</Height>
                     <FillColor>
                         <R>192</R>
                         <G>0</G>
@@ -1632,8 +1632,8 @@
                             <string>skeleton1</string>
                         </Property>
                     </CustomProperties>
-                    <Width>176</Width>
-                    <Height>496</Height>
+                    <Width>192</Width>
+                    <Height>480</Height>
                     <FillColor>
                         <R>192</R>
                         <G>0</G>
@@ -1644,7 +1644,7 @@
                 </Item>
                 <Item xsi:type="TextureItem" Name="structurescrew1" Visible="true">
                     <Position>
-                        <X>2352</X>
+                        <X>2368</X>
                         <Y>-1552</Y>
                     </Position>
                     <CustomProperties>
@@ -1684,7 +1684,7 @@
                 </Item>
                 <Item xsi:type="TextureItem" Name="structurescrew2" Visible="true">
                     <Position>
-                        <X>1872</X>
+                        <X>1888</X>
                         <Y>-1552</Y>
                     </Position>
                     <CustomProperties>
@@ -2134,7 +2134,7 @@
                 </Item>
                 <Item xsi:type="RectangleItem" Name="Rectangle_0119" Visible="true">
                     <Position>
-                        <X>2912</X>
+                        <X>2928</X>
                         <Y>-1568</Y>
                     </Position>
                     <CustomProperties>
@@ -2145,8 +2145,8 @@
                             <string>skeleton4</string>
                         </Property>
                     </CustomProperties>
-                    <Width>460</Width>
-                    <Height>39</Height>
+                    <Width>448</Width>
+                    <Height>32</Height>
                     <FillColor>
                         <R>192</R>
                         <G>0</G>
@@ -2157,7 +2157,7 @@
                 </Item>
                 <Item xsi:type="RectangleItem" Name="Rectangle_0120" Visible="true">
                     <Position>
-                        <X>3328</X>
+                        <X>3344</X>
                         <Y>-1536</Y>
                     </Position>
                     <CustomProperties>
@@ -2168,8 +2168,8 @@
                             <string>skeleton4</string>
                         </Property>
                     </CustomProperties>
-                    <Width>44</Width>
-                    <Height>695</Height>
+                    <Width>32</Width>
+                    <Height>704</Height>
                     <FillColor>
                         <R>192</R>
                         <G>0</G>
@@ -2180,7 +2180,7 @@
                 </Item>
                 <Item xsi:type="RectangleItem" Name="Rectangle_0121" Visible="true">
                     <Position>
-                        <X>2912</X>
+                        <X>2928</X>
                         <Y>-1536</Y>
                     </Position>
                     <CustomProperties>
@@ -2191,8 +2191,8 @@
                             <string>skeleton4</string>
                         </Property>
                     </CustomProperties>
-                    <Width>44</Width>
-                    <Height>327</Height>
+                    <Width>32</Width>
+                    <Height>320</Height>
                     <FillColor>
                         <R>192</R>
                         <G>0</G>
@@ -2709,7 +2709,7 @@
                         </Property>
                     </CustomProperties>
                     <Width>864</Width>
-                    <Height>48</Height>
+                    <Height>32</Height>
                     <FillColor>
                         <R>192</R>
                         <G>0</G>
@@ -2921,7 +2921,7 @@
                 </Item>
                 <Item xsi:type="RectangleItem" Name="Rectangle_0146" Visible="true">
                     <Position>
-                        <X>1760</X>
+                        <X>1776</X>
                         <Y>-896</Y>
                     </Position>
                     <CustomProperties>
@@ -2932,7 +2932,7 @@
                             <string>skeleton1</string>
                         </Property>
                     </CustomProperties>
-                    <Width>48</Width>
+                    <Width>32</Width>
                     <Height>240</Height>
                     <FillColor>
                         <R>192</R>
@@ -2944,8 +2944,8 @@
                 </Item>
                 <Item xsi:type="RectangleItem" Name="Rectangle_0147" Visible="true">
                     <Position>
-                        <X>1456</X>
-                        <Y>-704</Y>
+                        <X>1472</X>
+                        <Y>-688</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -2956,7 +2956,7 @@
                         </Property>
                     </CustomProperties>
                     <Width>304</Width>
-                    <Height>48</Height>
+                    <Height>32</Height>
                     <FillColor>
                         <R>192</R>
                         <G>0</G>
@@ -2968,7 +2968,7 @@
                 <Item xsi:type="RectangleItem" Name="Rectangle_0148" Visible="true">
                     <Position>
                         <X>1472</X>
-                        <Y>-1248</Y>
+                        <Y>-1264</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -2978,7 +2978,7 @@
                             <string>skeleton1</string>
                         </Property>
                     </CustomProperties>
-                    <Width>48</Width>
+                    <Width>32</Width>
                     <Height>304</Height>
                     <FillColor>
                         <R>192</R>
@@ -3068,7 +3068,7 @@
                         </Property>
                     </CustomProperties>
                     <Width>1216</Width>
-                    <Height>48</Height>
+                    <Height>64</Height>
                     <FillColor>
                         <R>192</R>
                         <G>0</G>
@@ -3187,7 +3187,7 @@
                 </Item>
                 <Item xsi:type="RectangleItem" Name="stairplat" Visible="true">
                     <Position>
-                        <X>1456</X>
+                        <X>1440</X>
                         <Y>-2192</Y>
                     </Position>
                     <CustomProperties>
@@ -3204,7 +3204,7 @@
                             <string />
                         </Property>
                     </CustomProperties>
-                    <Width>176</Width>
+                    <Width>192</Width>
                     <Height>192</Height>
                     <FillColor>
                         <R>192</R>
@@ -3266,8 +3266,8 @@
         <NextItemNumber>162</NextItemNumber>
         <ContentRootFolder>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures</ContentRootFolder>
         <CameraPosition>
-            <X>2698.68921</X>
-            <Y>-1234.66211</Y>
+            <X>1782.04346</X>
+            <Y>-1651.33325</Y>
         </CameraPosition>
         <Version>1.3.0.0</Version>
     </EditorRelated>

@@ -537,20 +537,16 @@ public class Camera {
 					* BUFFER_RATIO;
 		}
 		if ( Gdx.input.isKeyPressed( Input.Keys.LEFT ) ) {
-			if ( camera.position.x > 0 )
-				camera.translate( -3, 0, 0 );
+				camera.translate( -10, 0, 0 );
 		}
 		if ( Gdx.input.isKeyPressed( Input.Keys.RIGHT ) ) {
-			if ( camera.position.x < 1024 )
-				camera.translate( 3, 0, 0 );
+				camera.translate( 10, 0, 0 );
 		}
 		if ( Gdx.input.isKeyPressed( Input.Keys.DOWN ) ) {
-			if ( camera.position.y > 0 )
-				camera.translate( 0, -3, 0 );
+				camera.translate( 0, -10, 0 );
 		}
 		if ( Gdx.input.isKeyPressed( Input.Keys.UP ) ) {
-			if ( camera.position.y < 1024 )
-				camera.translate( 0, 3, 0 );
+				camera.translate( 0, 10, 0 );
 		}
 		if ( Gdx.input.isKeyPressed( Input.Keys.NUM_0 ) ) {
 			camera.zoom = .5f;
