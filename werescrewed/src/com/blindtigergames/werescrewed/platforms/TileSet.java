@@ -20,37 +20,13 @@ public class TileSet {
 	private TextureAtlas bleedAtlas;
 	@SuppressWarnings( "unused" )
 	private int tileHeight, tileWidth;
-	//private String atlasName;
 
-	/**
-	 * Creates a Tile Set for tiled Entities. Assumes all tiles are the w/h of the first tile
-	 *  and that the tileset is 4x4
-	 * 
-	 * @param texture
-	 *            The set of tiles that is needed for a tile set.
-	 * 
-	 */
-//	public TileSet( TextureAtlas atlas ) {
-//		this.atlas = atlas;
-//		//this.atlasName = atlasName;
-//		Texture first = atlas.getTextures( ).iterator( ).next( );
-//		this.tileHeight = first.getHeight( ) / 4;
-//		this.tileWidth = first.getWidth( ) / 4;
-//	}
 	
 	public TileSet( TextureAtlas atlas, TextureAtlas bleedAtlas ){
 		this.atlas = atlas;
-		//this.atlasName = atlasName;
-		Texture first = atlas.getTextures( ).iterator( ).next( );
-		this.tileHeight = first.getHeight( ) / 4;
-		this.tileWidth = first.getWidth( ) / 4;
 		this.bleedAtlas = bleedAtlas;
 	}
-	
-//	public String getName(){
-//		return atlasName;
-//	}
-	
+
 	public boolean canBleed(){
 		return bleedAtlas != null;
 	}

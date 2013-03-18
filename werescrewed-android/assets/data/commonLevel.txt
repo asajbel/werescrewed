@@ -19,6 +19,9 @@
 /common/tileset/alphabot32.pack
 /common/tileset/alphabot32-bleed.pack
 
+##checkpoint
+/common/checkpoint/checkpoint.pack
+
 
 ##common texture
 /common/player_b_f.png

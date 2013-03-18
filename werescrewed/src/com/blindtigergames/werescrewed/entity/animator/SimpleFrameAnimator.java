@@ -138,6 +138,10 @@ public class SimpleFrameAnimator implements IAnimator {
 		speed = 1.0f;
 	}
 	
+	public boolean isStopped(){
+		return (speed == 0.0f);
+	}
+	
 	protected void incrementTime( float dT ){
 		time += (dT * speed);
 		if (time < 0.0f){
@@ -170,5 +174,5 @@ public class SimpleFrameAnimator implements IAnimator {
 				break;
 			}
 		}
-	}	
+	}
 }

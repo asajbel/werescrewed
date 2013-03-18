@@ -1,5 +1,6 @@
 package com.blindtigergames.werescrewed.checkpoints;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
@@ -12,6 +13,10 @@ import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
 import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityType;
+import com.blindtigergames.werescrewed.entity.Sprite;
+import com.blindtigergames.werescrewed.entity.animator.SimpleFrameAnimator;
+import com.blindtigergames.werescrewed.entity.animator.SimpleFrameAnimator.LoopBehavior;
+import com.blindtigergames.werescrewed.graphics.TextureAtlas;
 import com.blindtigergames.werescrewed.util.Util;
 
 /**
@@ -28,6 +33,7 @@ public class CheckPoint extends Entity {
 	private boolean active = false;
 	private ProgressManager progressManager;
 	private boolean removed = false;
+	private SimpleFrameAnimator checkpointFrameAnimator;
 
 	/**
 	 * builds a checkpoint jointed to a skeleton
@@ -40,16 +46,31 @@ public class CheckPoint extends Entity {
 	 */
 	public CheckPoint( String name, Vector2 pos, Entity entity, World world,
 			ProgressManager pm, String levelToReload ) {
-		super( name, pos, WereScrewedGame.manager.get(
-				WereScrewedGame.dirHandle.path( ) + "/common/cletter.png",
-				Texture.class ), null, false );
+		super( name, pos,null
+				/*WereScrewedGame.manager.get( null
+												  WereScrewedGame.dirHandle.path
+												  ( ) + "/common/cletter.png"
+												 , Texture.class )*/, null,
+				false );
 		this.world = world;
 		this.progressManager = pm;
 		this.levelLoadStage = levelToReload;
 		this.entityType = EntityType.CHECKPOINT;
-		sprite.setColor( Color.PINK );
-		constructBody( pos );
-		connectScrewToEntity( entity );
+		
+
+		TextureAtlas atlas = WereScrewedGame.manager.getAtlas( "checkpoint" );
+		checkpointFrameAnimator = new SimpleFrameAnimator( ).speed( 1f )
+				.loop( LoopBehavior.STOP ).time( 0.0f ).startFrame( 0 )
+				.maxFrames( atlas.getRegions( ).size+1 );
+		Sprite sprite = new Sprite( atlas, checkpointFrameAnimator );
+		//sprite.setOrigin( -sprite.getWidth()/2, -sprite.getHeight( )/2 );
+		sprite.setOrigin( 1002, 1002 );
+		changeSprite( sprite );
+		super.offset = new Vector2(sprite.getWidth()/2, sprite.getHeight( )/2);
+		
+		//sprite.setColor( Color.PINK );
+				constructBody( pos );
+				connectScrewToEntity( entity );
 	}
 
 	/**
@@ -75,7 +96,8 @@ public class CheckPoint extends Entity {
 	 */
 	public void hitPlayer( ) {
 		if ( !active ) {
-			body.setAngularVelocity( 3f );
+			checkpointFrameAnimator.speed( 1.0f );
+			// body.setAngularVelocity( 3f );
 		}
 		active = true;
 		progressManager.hitNewCheckPoint( this );
@@ -95,19 +117,23 @@ public class CheckPoint extends Entity {
 	 */
 	public void deactivate( ) {
 		active = false;
-		body.setAngularVelocity( -3f );
+		checkpointFrameAnimator.speed( -1.0f );
+		// body.setAngularVelocity( -3f );
 	}
 
 	@Override
 	public void update( float deltaTime ) {
 		super.update( deltaTime );
-		if ( active ) {
-			if ( body.getAngle( ) >= 90f * Util.DEG_TO_RAD ) {
-				body.setAngularVelocity( 0.0f );
-			}
-		} else if ( body.getAngle( ) <= 0.0f ) {
-			body.setAngularVelocity( 0.0f );
-		}
+		//if ( !checkpointFrameAnimator.isStopped( ) )
+		checkpointFrameAnimator.update( deltaTime );
+		//System.out.println( checkpointFrameAnimator.getFrame( ) );
+		// if ( active ) {
+		// if ( body.getAngle( ) >= 90f * Util.DEG_TO_RAD ) {
+		// body.setAngularVelocity( 0.0f );
+		// }
+		// } else if ( body.getAngle( ) <= 0.0f ) {
+		// body.setAngularVelocity( 0.0f );
+		// }
 	}
 
 	private void constructBody( Vector2 pos ) {
