@@ -13,7 +13,7 @@ public class Main {
 		cfg.height = 768;
 		
 		
-		cfg.fullscreen = true;
+		//cfg.fullscreen = true;
 		
 		new LwjglApplication(new WereScrewedGame(), cfg);
 	}

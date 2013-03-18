@@ -29,6 +29,8 @@ public class Hazard extends Platform {
 			float width, float height, boolean isHazardActive ) {
 		super( name, pos, texture, world);
 		entityType = EntityType.HAZARD;
+		
+		this.world = world;
 		this.activeHazard = isHazardActive;
 	}
 	
@@ -58,7 +60,7 @@ public class Hazard extends Platform {
 		Gdx.app.log( "State changed", " " + activeHazard );
 	}
 	
-	public void constructBody( Vector2 position, float height, float width ) {
+	public void constructBody( Vector2 position, float width, float height ) {
 		BodyDef bodyDef = new BodyDef( );
 		bodyDef.type = BodyType.KinematicBody;
 		
@@ -68,9 +70,9 @@ public class Hazard extends Platform {
 
 		PolygonShape polygon = new PolygonShape( );
 		polygon.setAsBox( width * Util.PIXEL_TO_BOX, height * Util.PIXEL_TO_BOX );
-		FixtureDef spikeFixtureDef = new FixtureDef( );
-		spikeFixtureDef.shape = polygon;
-		body.createFixture( spikeFixtureDef );
+		FixtureDef hazardFixtureDef = new FixtureDef( );
+		hazardFixtureDef.shape = polygon;
+		body.createFixture( hazardFixtureDef );
 
 		polygon.dispose( );
 

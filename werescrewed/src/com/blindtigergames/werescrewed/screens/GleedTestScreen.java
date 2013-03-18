@@ -73,14 +73,14 @@ public class GleedTestScreen extends Screen {
 		
 		
 		f1 = new Fire( "Fire1", new Vector2( 600f, 1850.0f ), 
-				level.world, true, 15, 60 );
+				15, 60, level.world, true);
 		
 		f2 = new Fire( "Fire1", new Vector2( 900f, 1850.0f ), 
-				level.world, true, 15, 60 );
+				15, 60, level.world, true );
 		f2.flip( );
 		
 		f3 = new Fire( "Fire1", new Vector2( 1200f, 1850.0f ), 
-				level.world, true, 15, 60 );
+				15, 60, level.world, true );
 		
 		
 		et = ( EventTrigger ) LevelFactory.entities.get( "et1" );
