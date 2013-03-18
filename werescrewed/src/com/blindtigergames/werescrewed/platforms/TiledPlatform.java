@@ -190,7 +190,7 @@ public class TiledPlatform extends Platform {
 					offset_x = ( i - tileWidth / 2 + 1 ) * tileConstant * 2;
 					insub = setTile(temp,offset_x,offset_y);
 					tiles.add( insub );
-					if ( bleedTiles!=null ) setBleedTile( tileSet.getRectangleMiddleCenterBleed( ), offset_x, offset_y );
+					if ( bleedTiles!=null && Math.random( )>0.33 ) setBleedTile( tileSet.getRectangleMiddleCenterBleed( ), offset_x, offset_y );
 				}
 				temp = tileSet.getRectangleMiddleLeft( );
 				offset_x = ( ( tileWidth - 1 ) - tileWidth / 2 + 1 )

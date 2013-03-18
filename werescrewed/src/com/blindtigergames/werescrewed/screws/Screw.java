@@ -59,9 +59,10 @@ public class Screw extends Entity {
 	 */
 	public Screw( String name, Vector2 pos, Entity entity, World world ) {
 		super( name, pos, WereScrewedGame.manager.get(
-				WereScrewedGame.dirHandle.path( ) + "/common/screw1.png",
+				WereScrewedGame.dirHandle.path( ) + "/common/screw/screw.png",
 				Texture.class ), null, false );
 		this.world = world;
+		if(sprite!=null)sprite.rotate( ( float ) ( Math.random( )*360 ) );
 		screwType = ScrewType.SCREW_COSMETIC;
 		entityType = EntityType.SCREW;
 		extraJoints = new ArrayList< RevoluteJoint >( );
@@ -79,8 +80,9 @@ public class Screw extends Entity {
 	 */
 	public Screw( String name, Vector2 pos, Texture tex ) {
 		super( name, pos, ( tex == null ? WereScrewedGame.manager.get(
-				WereScrewedGame.dirHandle.path( ) + "/common/screw.png",
+				WereScrewedGame.dirHandle.path( ) + "/common/screw/screw.png",
 				Texture.class ) : tex ), null, false );
+		if(sprite!=null)sprite.rotate( ( float ) ( Math.random( )*360 ) );
 		entityType = EntityType.SCREW;
 	}
 
