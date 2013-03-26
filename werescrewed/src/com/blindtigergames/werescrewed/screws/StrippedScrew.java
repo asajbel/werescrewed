@@ -2,13 +2,18 @@ package com.blindtigergames.werescrewed.screws;
 
 import java.util.ArrayList;
 
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.Joint;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJoint;
+import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
+import com.badlogic.gdx.physics.box2d.joints.WeldJointDef;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityType;
 import com.blindtigergames.werescrewed.util.Util;
@@ -75,5 +80,27 @@ public class StrippedScrew extends Screw {
 		screwShape.dispose( );
 
 	}
+
+	/**
+	 * This particular draw is needed because I needed stripped screws to be able to 
+	 * rotate in place, I am refering to the whole body rotating, not just screwing/unscrewing
+	 * 
+	 * This will probably be put into Screw when need be
+	 * 
+	 * @author Ranveer
+	 */
+	@Override 
+	public void draw(SpriteBatch batch){
+		float xpos =  body.getPosition( ).x - (this.sprite.getWidth( )/2 * Util.PIXEL_TO_BOX);
+		float ypos =  body.getPosition( ).y - (this.sprite.getHeight( )/2 * Util.PIXEL_TO_BOX);
+		
+		this.sprite.setOrigin( this.sprite.getWidth( ) / 2, this.sprite.getHeight( ) / 2);
+		this.sprite.setPosition( xpos * Util.BOX_TO_PIXEL, ypos * Util.BOX_TO_PIXEL);
+		this.sprite.setRotation(  MathUtils.radiansToDegrees
+				* body.getAngle( ) );
+		
+		this.sprite.draw( batch );
+	}
+	
 
 }

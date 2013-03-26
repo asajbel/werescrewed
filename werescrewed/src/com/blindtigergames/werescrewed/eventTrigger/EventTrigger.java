@@ -13,20 +13,13 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityType;
-import com.blindtigergames.werescrewed.entity.Skeleton;
 import com.blindtigergames.werescrewed.entity.action.IAction;
-import com.blindtigergames.werescrewed.hazard.Hazard;
-import com.blindtigergames.werescrewed.particles.Steam;
-import com.blindtigergames.werescrewed.platforms.Platform;
-import com.blindtigergames.werescrewed.player.Player;
 import com.blindtigergames.werescrewed.util.Util;
 
 
 public class EventTrigger extends Entity{
 	
 	private boolean repeatable = false;
-	private boolean repeatBeginTriggeredOnce = false;
-	private boolean repeatEndTriggeredOnce = false;
 	private boolean activated = false;
 	private boolean beginTriggeredOnce = false, endTriggeredOnce = false;
 	private boolean twoPlayersToActivate = false, twoPlayersToDeactivate = false;
@@ -34,7 +27,6 @@ public class EventTrigger extends Entity{
 	private ArrayList<Entity> entityList;
 	private IAction beginAction, endAction;
 	private boolean actOnEntity = false;
-	private int playerOneCount = 0, playerTwoCount = 0;
 	
 	public EventTrigger(String name, World world){
 		super(name, null, null, null, false );
@@ -96,13 +88,14 @@ public class EventTrigger extends Entity{
 		
 		PolygonShape polygon = new PolygonShape();
 		Vector2[] verts = new Vector2[vertices.size -1];
-		System.out.println(verts.length);
+
+		//MAKE SURE START POINT IS IN THE MIDDLE
+		//AND SECOND AND END POINT ARE THE SAME POSITION
 		int i = 0;
 		for(int j = 0; j < vertices.size; j++){
 			if(j == vertices.size - 1) continue;
 			Vector2 v = vertices.get( j );
 			verts[i] = new Vector2(v.x * Util.PIXEL_TO_BOX, v.y * Util.PIXEL_TO_BOX);
-			System.out.println( "v: " + v + " verts[" + i + "] " + verts[i] );
 			++i;
 		}
 		polygon.set( verts );
@@ -296,83 +289,38 @@ public class EventTrigger extends Entity{
 		}
 		else if(active == false)
 		{
-//			//If the event isn't repeatable, then it should never turn back to false
-//			if(!repeatable){
-//				if(triggeredOnce){
-//					return;
-//					//Not repeatable so can't turn it off
-//					// later it will be deleted here
-//				}
-//			}
-//			else{
-//				//Else if it is repeatable, check if we ran it already
-//				// then check if it takes two players to deactivate or one player
-//				if(repeatTriggeredOnce)
-//				{
-					if(twoPlayersToDeactivate)
+			if(twoPlayersToActivate)
+			{
+				if(playerOneContact)
+				{
+					if(name.equals( "player1" ))
 					{
-						if(playerOneContact)
-						{
-							if(name.equals( "player1" ))
-							{
-								playerOneContact = false;
-							}
-						}
-						if(playerTwoContact)
-						{
-							if(name.equals( "player2" ))
-							{
-								playerTwoContact = false;
-							}
-						}
-						
-						if(!playerOneContact && !playerTwoContact)
-						{
-							repeatEndTriggeredOnce = false;
-							repeatBeginTriggeredOnce = false;
-							this.activated = false;
-						}
+						playerOneContact = false;
 					}
-					//else takes 1 player to deactivate
-					else
+				}
+				if(playerTwoContact)
+				{
+					if(name.equals( "player2" ))
 					{
-						if(name.equals( "player1" ))
-						{
-							playerOneContact = false;
-							playerOneCount++;
-						}
-						if(name.equals( "player2" ))
-						{
-							playerTwoContact = false;
-							playerTwoCount++;
-						}
-						if(playerOneCount == 2){
-							if(repeatEndTriggeredOnce){
-								if(!playerOneContact && !playerTwoContact)
-								{
-									repeatEndTriggeredOnce = false;
-								}
-							}
-							
-							repeatBeginTriggeredOnce = false;
-							this.activated = false;
-							playerOneCount = 0;
-						}
-						if( playerTwoCount == 2){
-							if(repeatEndTriggeredOnce){
-								if(!playerOneContact && !playerTwoContact)
-								{
-									repeatEndTriggeredOnce = false;
-								}
-							}
-							repeatBeginTriggeredOnce = false;
-							this.activated = false;
-							playerTwoCount = 0;
-						}
+						playerTwoContact = false;
 					}
-				//}
-			//}
-			
+				}
+				//When both players dont collide, then turn it off
+				if(!playerOneContact && !playerTwoContact){
+					this.activated = false;
+				}
+			//Else it takes only 1 player to turn it on
+			}else{
+				if(name.equals( "player2" ))
+				{
+					playerTwoContact = false;
+				}
+				if(name.equals( "player1" ))
+				{
+					playerOneContact = false;
+				}
+				this.activated = false;
+			}	
 		}
 	}
 	
@@ -383,34 +331,36 @@ public class EventTrigger extends Entity{
 	 * @author Ranveer
 	 */
 	public void update( float deltaTime ){
-		System.out.println( "p1: " + playerOneContact 
-				+ ", p2: " + playerTwoContact 
-				+ ", activated: " + this.activated
-				+ "repeatBegin: " + repeatBeginTriggeredOnce
-				+ "repeatEnd: " + repeatEndTriggeredOnce);
 		
-		//System.out.println( repeatTriggeredOnce );
 	}
 	
 	/**
 	 * triggers the beginning Action depending on if it takes two players to
 	 * run it or just one player
+	 * 
+	 *  NOTE: if it takes two players to deactivate, the trigger will still call
+	 *  begin event twice, if that isn't what you want, then make it take two players
+	 *  to activate 
 	 * @author Ranveer
 	 */
 	public void triggerBeginEvent(){
 		if(twoPlayersToActivate){
 			if(playerOneContact && playerTwoContact){
 				runBeginAction();
+				
 			}
-		}
-		else{
+		}else{
 			runBeginAction();
 		}
+		
 	}
 	
 	/**
 	 * triggers the ending Action depending on if it takes two players to
 	 * run it or just one player
+	 * 
+	 * NOTE: if it takes two players to activate the trigger, then it will only
+	 * call runEndAction, if it has been activated already
 	 * @author Ranveer
 	 */
 	public void triggerEndEvent(){
@@ -419,7 +369,10 @@ public class EventTrigger extends Entity{
 				runEndAction();
 			}
 		}
-		else{
+		else if(twoPlayersToActivate){ 
+			if(beginTriggeredOnce == true)
+				runEndAction();
+		}else{
 			runEndAction();
 		}
 	}
@@ -467,38 +420,59 @@ public class EventTrigger extends Entity{
 	 * @author Ranveer
 	 */
 	private void runBeginAction(){
-		if(!repeatable){
-			if(!beginTriggeredOnce){
-				if(actOnEntity){
-					for(Entity e : entityList){
-						if(beginAction != null){
+		if(!repeatable)
+		{
+			if(!beginTriggeredOnce)
+			{
+				if(actOnEntity)
+				{
+					for(Entity e : entityList)
+					{
+						if(beginAction != null)
+						{
 							beginAction.act( e );
+							beginTriggeredOnce = true;
+							endTriggeredOnce = false;
 							Gdx.app.log( this.name,  " begin action" );
 						}
 					}
-				}else{
-					if(beginAction != null){
+				}
+				else
+				{
+					if(beginAction != null)
+					{
 						beginAction.act( );
+						beginTriggeredOnce = true;
+						endTriggeredOnce = false;
+						Gdx.app.log( this.name,  " begin action" );
 					}
 				}
-				beginTriggeredOnce = true;
 			}
 		} 
-		if(repeatable){
-			if(!repeatBeginTriggeredOnce){
-				if(actOnEntity){
-					for(Entity e : entityList){
-						if(beginAction != null){
-							beginAction.act( e );
-							Gdx.app.log( this.name,  " begin action" );
-						}
-					}
-				}else{
-					if(beginAction != null){
-						beginAction.act( );
+		else if(repeatable)
+		{
+			if(actOnEntity)
+			{
+				for(Entity e : entityList)
+				{
+					if(beginAction != null)
+					{
+						beginAction.act( e );
+						beginTriggeredOnce = true;
+						endTriggeredOnce = false;
+						Gdx.app.log( this.name,  " begin action" );
 					}
 				}
-				repeatBeginTriggeredOnce = true;
+			}
+			else
+			{
+				if(beginAction != null)
+				{
+					beginAction.act( );
+					beginTriggeredOnce = true;
+					endTriggeredOnce = false;
+					Gdx.app.log( this.name,  " begin action" );
+				}
 			}
 		}
 	}
@@ -509,77 +483,62 @@ public class EventTrigger extends Entity{
 	 * @author Ranveer
 	 */
 	private void runEndAction(){
-		if(!repeatable){
-			if(!endTriggeredOnce){
-				if(actOnEntity){
-					for(Entity e : entityList){
-						if(endAction != null){
+		if(!repeatable)
+		{
+			if(!endTriggeredOnce)
+			{
+				if(actOnEntity)
+				{
+					for(Entity e : entityList)
+					{
+						if(endAction != null)
+						{
 							endAction.act( e );
+							endTriggeredOnce = true;
+							beginTriggeredOnce = false;
 							Gdx.app.log( this.name,  " end action" );
 						}
 					}
-				}else{
-					if(endAction != null){
+				}
+				else
+				{
+					if(endAction != null)
+					{
 						endAction.act( );
+						endTriggeredOnce = true;
+						beginTriggeredOnce = false;
+						Gdx.app.log( this.name,  " end action" );
 					}
 				}
-				endTriggeredOnce = true;
 			}
 		} 
-		if(repeatable){
-			if(!repeatEndTriggeredOnce){
-				if(actOnEntity){
-					for(Entity e : entityList){
-						if(endAction != null){
-							endAction.act( e );
-							Gdx.app.log( this.name,  " end action" );
-						}
-					}
-				}else{
-					if(endAction != null){
-						endAction.act( );
+		else if(repeatable)
+		{
+			if(actOnEntity)
+			{
+				for(Entity e : entityList)
+				{
+					if(endAction != null)
+					{
+						endAction.act( e );
+						endTriggeredOnce = true;
+						beginTriggeredOnce = false;
+						Gdx.app.log( this.name,  " end action" );
 					}
 				}
-				repeatEndTriggeredOnce = true;
 			}
+			else
+			{
+				if(endAction != null)
+				{
+					endAction.act( );
+					endTriggeredOnce = true;
+					beginTriggeredOnce = false;
+					Gdx.app.log( this.name,  " end action" );
+				}
+			}
+
 		}
 	}
-	/**
-	 * UNUSED
-	 * 
-	 * THe idea for this function was to call actions for certain 
-	 * types, but instead I changed IAction so that each 
-	 * implementation of IAction would do the casting itself
-	 * What this means is we have to be careful which entities are in which
-	 * EventTriggers with the correct IActions
-	 * 
-	 * Check out the IAction: HazardActivateAction.java 
-	 * to see the correct use
-	 * @param entity
-	 */
-	@SuppressWarnings( "unused" )
-	private void applyAction(Entity entity){
-		switch(entity.getEntityType( )){
-		case ENTITY:
-			beginAction.act(entity);
-			break;
-		case HAZARD:
-			beginAction.act( (Hazard) entity );
-			break;
-		case PLATFORM:
-			beginAction.act( (Platform) entity );
-			break;
-		case STEAM:
-			beginAction.act( (Steam) entity );
-			break;
-		case SKELETON:
-			beginAction.act( (Skeleton) entity );
-			break;
-		case PLAYER:
-			beginAction.act( (Player) entity );
-			break;
-		default:
-			Gdx.app.log("Cannot apply action to", entity.toString( ));
-		}
-	}
+	
 }

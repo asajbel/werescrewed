@@ -376,7 +376,7 @@
                 <Item xsi:type="TextureItem" Name="playerOne" Visible="true">
                     <Position>
                         <X>256</X>
-                        <Y>-64</Y>
+                        <Y>-48</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -407,7 +407,7 @@
                 <Item xsi:type="TextureItem" Name="playerTwo" Visible="true">
                     <Position>
                         <X>384</X>
-                        <Y>-64</Y>
+                        <Y>-48</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -579,7 +579,7 @@
                         <Property Name="Definition" Type="string" Description="">
                             <string>tiledPlatform</string>
                         </Property>
-                        <Property Name="onesided" Type="string" Description="">
+                        <Property Name="Onesided" Type="string" Description="">
                             <string />
                         </Property>
                         <Property Name="AttachToSkeleton" Type="string" Description="">
@@ -605,7 +605,7 @@
                         <Property Name="Definition" Type="string" Description="">
                             <string>tiledPlatform</string>
                         </Property>
-                        <Property Name="onesided" Type="string" Description="">
+                        <Property Name="Onesided" Type="string" Description="">
                             <string />
                         </Property>
                         <Property Name="AttachToSkeleton" Type="string" Description="">
@@ -3266,8 +3266,8 @@
         <NextItemNumber>162</NextItemNumber>
         <ContentRootFolder>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures</ContentRootFolder>
         <CameraPosition>
-            <X>1782.04346</X>
-            <Y>-1651.33325</Y>
+            <X>1248.70947</X>
+            <Y>132.003235</Y>
         </CameraPosition>
         <Version>1.3.0.0</Version>
     </EditorRelated>

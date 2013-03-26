@@ -1,37 +1,17 @@
-<<<<<<< HEAD
-3/17/2013 7:53:23 PM.024 - Log File created.
-3/17/2013 7:53:23 PM.024 - Application started.
-3/17/2013 7:53:23 PM.196 - pictureBox1_Resize().
-3/17/2013 7:53:23 PM.274 - Creating Game1 object.
-3/17/2013 7:53:23 PM.431 - Game1 creation started.
-3/17/2013 7:53:23 PM.431 - Creating Winform.
-3/17/2013 7:53:23 PM.478 - Winform created.
-3/17/2013 7:53:23 PM.478 - Game1 creation ended.
-3/17/2013 7:53:23 PM.510 - Creating Editor object.
-3/17/2013 7:53:23 PM.515 - Editor creation started.
-3/17/2013 7:53:23 PM.516 - Loading Resources.
-3/17/2013 7:53:23 PM.561 - Resources loaded.
-3/17/2013 7:53:23 PM.562 - Loading Settings.
-3/17/2013 7:53:24 PM.464 - Settings loaded.
-3/17/2013 7:53:24 PM.466 - Creating new level.
-3/17/2013 7:53:24 PM.527 - New level created.
-3/17/2013 7:53:24 PM.528 - Editor creation ended.
-=======
-3/17/2013 4:36:07 PM.747 - Log File created.
-3/17/2013 4:36:07 PM.748 - Application started.
-3/17/2013 4:36:08 PM.002 - Creating Game1 object.
-3/17/2013 4:36:08 PM.095 - Game1 creation started.
-3/17/2013 4:36:08 PM.100 - Creating Winform.
-3/17/2013 4:36:08 PM.189 - Winform created.
-3/17/2013 4:36:08 PM.189 - Game1 creation ended.
-3/17/2013 4:36:08 PM.206 - Creating Editor object.
-3/17/2013 4:36:08 PM.233 - Editor creation started.
-3/17/2013 4:36:08 PM.234 - Loading Resources.
-3/17/2013 4:36:08 PM.261 - Resources loaded.
-3/17/2013 4:36:08 PM.261 - Loading Settings.
-3/17/2013 4:36:08 PM.453 - Settings loaded.
-3/17/2013 4:36:08 PM.454 - Creating new level.
-3/17/2013 4:36:08 PM.525 - New level created.
-3/17/2013 4:36:08 PM.525 - Editor creation ended.
-3/17/2013 4:36:40 PM.462 - pictureBox1_Resize().
->>>>>>> master
+3/25/2013 9:37:12 PM.147 - Log File created.
+3/25/2013 9:37:12 PM.148 - Application started.
+3/25/2013 9:37:12 PM.478 - Creating Game1 object.
+3/25/2013 9:37:12 PM.606 - Game1 creation started.
+3/25/2013 9:37:12 PM.610 - Creating Winform.
+3/25/2013 9:37:12 PM.720 - Winform created.
+3/25/2013 9:37:12 PM.721 - Game1 creation ended.
+3/25/2013 9:37:12 PM.744 - Creating Editor object.
+3/25/2013 9:37:12 PM.780 - Editor creation started.
+3/25/2013 9:37:12 PM.781 - Loading Resources.
+3/25/2013 9:37:12 PM.808 - Resources loaded.
+3/25/2013 9:37:12 PM.808 - Loading Settings.
+3/25/2013 9:37:13 PM.048 - Settings loaded.
+3/25/2013 9:37:13 PM.048 - Creating new level.
+3/25/2013 9:37:13 PM.132 - New level created.
+3/25/2013 9:37:13 PM.132 - Editor creation ended.
+3/25/2013 10:55:57 PM.706 - Application ended.

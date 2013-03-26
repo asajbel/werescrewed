@@ -28,8 +28,8 @@ public class Screen implements com.badlogic.gdx.Screen {
 	
 	public Screen( ){
 		
-		Gdx.app.log( "Screen", "Turning log level to none. SHHH" );
-		Gdx.app.setLogLevel( Application.LOG_NONE );
+		//Gdx.app.log( "Screen", "Turning log level to none. SHHH" );
+		//Gdx.app.setLogLevel( Application.LOG_NONE );
 
 		batch = new SpriteBatch( );
 		debugRenderer = new SBox2DDebugRenderer( Util.BOX_TO_PIXEL );

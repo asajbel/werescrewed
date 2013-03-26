@@ -95,8 +95,8 @@ public class GleedTestScreen extends Screen {
 		// pj.upperTranslation = 1024;
 		// pj.lowerTranslation = 0;
 		// level.world.createJoint( pj );
-		// skel.addMover( new RotateTweenMover(skel, 15f, Util.PI, 2f, true),
-		// RobotState.IDLE );
+		 skel.addMover( new RotateTweenMover(skel, 15f, Util.PI, 2f, true),
+		 RobotState.IDLE );
 
 		Skeleton skel2 = ( Skeleton ) LevelFactory.entities.get( "skeleton4" );
 		// skel2.body.setType( BodyType.DynamicBody );
@@ -132,11 +132,6 @@ public class GleedTestScreen extends Screen {
 		// // testAnchor.setTimer( 200 );
 		// // Activate it
 		// testAnchor.activate( );
-
-		Platform p = ( Platform ) LevelFactory.entities.get( "plat4" );
-		p.oneSided = true;
-		// Platform p2 = ( Platform ) LevelFactory.entities.get( "plat7" );
-		// p2.oneSided = true;
 
 		// skel.addMover( new RotateTweenMover( skel, 5f,
 		// Util.PI / 2, 1f, true ),

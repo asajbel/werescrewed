@@ -58,7 +58,7 @@ public class SimpleFrameAnimator implements IAnimator {
 	}
 
 	public SimpleFrameAnimator maxFrames(int f){
-		Gdx.app.log("SimpleFrameAnimator", "Setting max frames to: "+f);
+	//	Gdx.app.log("SimpleFrameAnimator", "Setting max frames to: "+f);
 		frames = f;
 		return this;
 	}

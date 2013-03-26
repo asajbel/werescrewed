@@ -78,9 +78,9 @@ public class HazardScreen implements com.badlogic.gdx.Screen {
 		world.setContactListener( contactListener );
 
 		player1 = new PlayerBuilder( ).name( "player1" ).world( world )
-				.position( 0f, 100f).buildPlayer( );
+				.position(  1800f, 100f).buildPlayer( );
 		player2 = new PlayerBuilder( ).name( "player2" ).world( world )
-				.position( 0.0f, 100.0f ).buildPlayer( );
+				.position(  1900f, 100.0f ).buildPlayer( );
 
 		initTiledPlatforms( );
 		initHazards( );
@@ -153,15 +153,25 @@ public class HazardScreen implements com.badlogic.gdx.Screen {
 		
 		EventTriggerBuilder etb = new EventTriggerBuilder( world );
 		EventTrigger et = etb.name( "event1" ).circle( ).radius( 100 )
-				.position( new Vector2( 900f, 20f ) ).repeatable()
+				.position( new Vector2( 1200f, 20f ) ).repeatable()
 				.beginAction( new AnchorActivateAction( testAnchor ) )
+				.endAction( new AnchorActivateAction( testAnchor ) )
+				.twoPlayersToActivate( )
 				.build( );
 		EventTriggerBuilder etb2 = new EventTriggerBuilder( world );
 		EventTrigger et2 = etb2.name( "event2" ).circle( ).radius( 100 )
-				.position( new Vector2( 500f, 20f ) ).repeatable( )
+				.position( new Vector2(600f, 20f ) ).repeatable( )
 				.beginAction( new AnchorDeactivateAction( testAnchor ) )
+				.endAction( new AnchorDeactivateAction( testAnchor ) )
+				.twoPlayersToDeactivate( )
 				.build( );
 		
+		EventTriggerBuilder etb3 = new EventTriggerBuilder( world );
+		EventTrigger et3 = etb3.name( "event3" ).circle( ).radius( 100 )
+				.position( new Vector2( 1600f, 20f ) ).repeatable()
+				.beginAction( new AnchorActivateAction( testAnchor ) )
+				.endAction( new AnchorActivateAction( testAnchor ) )
+				.build( );
 		//AnchorDeactivateAction
 		
 		

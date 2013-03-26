@@ -348,6 +348,7 @@ public class Platform extends Entity {
 		Vector2 newPos = Util.PointOnCircle( radiusFromSkeleton,
 				newAngleFromSkeleton, skeleOrigin );
 
+		
 		float frameRate = 1 / deltaTime;
 		body.setLinearVelocity( newPos.sub( body.getPosition( ) ).mul(
 				frameRate ) );

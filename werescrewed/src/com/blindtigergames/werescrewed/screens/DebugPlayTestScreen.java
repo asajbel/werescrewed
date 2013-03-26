@@ -163,7 +163,7 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 
 		rootSkeleton.addSkeleton( skeleton );
 		debugRenderer = new SBox2DDebugRenderer( Util.BOX_TO_PIXEL );
-		debugRenderer.setDrawJoints( false );
+		//debugRenderer.setDrawJoints( false );
 
 		Gdx.app.setLogLevel( Application.LOG_DEBUG );
 

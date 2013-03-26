@@ -46,7 +46,7 @@ import com.blindtigergames.werescrewed.util.Util;
  */
 public class Player extends Entity {
 
-	public final static float MAX_VELOCITY = 1.55f;
+	public final static float MAX_VELOCITY = 1.60f;
 	public final static float MIN_VELOCITY = 0.01f;
 	public final static float MOVEMENT_IMPULSE = 0.010f;
 	public final static float JUMP_IMPULSE = 0.12f;

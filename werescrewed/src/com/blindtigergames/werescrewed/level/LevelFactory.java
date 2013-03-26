@@ -486,10 +486,6 @@ public class LevelFactory {
 		}
 
 
-		if(item.props.containsKey( "onesided" )){
-			pb.oneSided( true );
-		}
-
 		boolean isCrushable = false;
 		if(item.props.containsKey( "crushable" ) ){
 			isCrushable = true;
@@ -514,6 +510,11 @@ public class LevelFactory {
 
 		entities.put( item.name, out);
 		out.setCrushing( isCrushable );
+		
+		if(item.props.containsKey( "onesided" )){
+			out.oneSided = true;
+			System.out.println( "ONESIDED" );
+		}
 		
 		IMover mover = null;
 		if(item.props.containsKey( "mover" )){

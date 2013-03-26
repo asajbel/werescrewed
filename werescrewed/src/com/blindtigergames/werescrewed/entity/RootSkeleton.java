@@ -94,6 +94,10 @@ public class RootSkeleton extends Skeleton {
 		// recursively move all children skeletons by this moved updated
 		// pos*rot.
 		// setPosRotChildSkeletons( deltaTime );
+		
+		
+		//TODO: read this
+		//THIS CODE PREVENTS SKELETONS TO MOVE WITH TRANSLATE BY OR ROTATE BY
 		for ( Skeleton childSkeleton : childSkeletonMap.values( ) ) {
 			// this could
 			if ( childSkeleton.isActive( ) && childSkeleton.isKinematic( ) ) {
