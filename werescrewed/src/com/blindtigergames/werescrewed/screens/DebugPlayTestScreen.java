@@ -15,7 +15,6 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.World;
 import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.camera.Anchor;
-import com.blindtigergames.werescrewed.camera.AnchorList;
 import com.blindtigergames.werescrewed.camera.Camera;
 import com.blindtigergames.werescrewed.checkpoints.CheckPoint;
 import com.blindtigergames.werescrewed.checkpoints.ProgressManager;
@@ -32,6 +31,7 @@ import com.blindtigergames.werescrewed.entity.builders.PlayerBuilder;
 import com.blindtigergames.werescrewed.entity.builders.RopeBuilder;
 import com.blindtigergames.werescrewed.entity.builders.ScrewBuilder;
 import com.blindtigergames.werescrewed.entity.builders.SkeletonBuilder;
+import com.blindtigergames.werescrewed.entity.mover.AnalogRotateMover;
 import com.blindtigergames.werescrewed.entity.mover.LerpMover;
 import com.blindtigergames.werescrewed.entity.mover.LinearAxis;
 import com.blindtigergames.werescrewed.entity.mover.PuzzleType;
@@ -124,10 +124,10 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 
 		// Initialize players
 		player1 = new PlayerBuilder( ).name( "player1" ).world( world )
-				.position( 175 * TILE, 96 * TILE ).buildPlayer( );
+				.position( 1 * TILE, 9 * TILE ).buildPlayer( );
 
 		player2 = new PlayerBuilder( ).name( "player2" ).world( world )
-				.position( 175 * TILE, 96 * TILE ).buildPlayer( );
+				.position( 1 * TILE, 9 * TILE ).buildPlayer( );
 
 		// END: 175f * TILE, 96f * TILE
 		// START :: 1f * TILE, 1f * TILE
@@ -428,14 +428,15 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		lowerArm.body.setFixedRotation( false );
 		// mover that the arm initially has and also that the bottom
 		// puzzle screw can reset
-		RotateTweenMover rtm1 = new RotateTweenMover( upperArmSkeleton, 10f,
-				Util.PI, 2f, true );
-		upperArmSkeleton.setMoverAtCurrentState( rtm1 );
+//		RotateTweenMover rtm1 = new RotateTweenMover( upperArmSkeleton, 10f,
+//				Util.PI, 2f, true );
+		AnalogRotateMover anlgRot = new AnalogRotateMover( .6f );
+		upperArmSkeleton.setMoverAtCurrentState( anlgRot );
 		// puzzle screw that controls the initial arm move
 		PuzzleScrew pscrewbottom = new PuzzleScrew( "armpuzzle", new Vector2(
-				1200, 320 ), 50, skel1, world, 0, false );
+				1200, 320 ), 5000, skel1, world, 0, false );
 		pscrewbottom.puzzleManager.addEntity( upperArmSkeleton );
-		pscrewbottom.puzzleManager.addMover( rtm1 );
+		pscrewbottom.puzzleManager.addMover( anlgRot );
 		skel1.addScrewForDraw( pscrewbottom );
 		upperArmSkeleton.setActive( true );
 		upperArmSkeleton.body.setType( BodyType.KinematicBody );
@@ -443,13 +444,14 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		// joints the first dynamic skeleton to the parent skeleton
 		// puzzle screw that controls the analog arm puzzle
 		PuzzleScrew shoulderJoint = new PuzzleScrew( "dynamic_skeleton_joint",
-				new Vector2( 1000, 800 ), 500, upperArmSkeleton, world, 0,
+				new Vector2( 1000, 800 ), 5000, upperArmSkeleton, world, 0,
 				false );
 		shoulderJoint.addStructureJoint( skel1 );
 		shoulderJoint.addStructureJoint( upperArm );
 		shoulderJoint.puzzleManager.addEntity( upperArmSkeleton );
-		shoulderJoint.puzzleManager.addMover( new PuzzleRotateTweenMover( 2f,
-				-Util.PI / 4.0f, false, PuzzleType.PUZZLE_SCREW_CONTROL ) );
+		shoulderJoint.puzzleManager.addMover( anlgRot );
+				/*new PuzzleRotateTweenMover( 2f,
+				-Util.PI / 4.0f, false, PuzzleType.PUZZLE_SCREW_CONTROL ) );*/
 		// RevoluteJointBuilder jbBuilder = new RevoluteJointBuilder( world );
 		// jbBuilder.skeleton( middleArmSkeleton ).bodyB( upperArm ).motor(
 		// false ).build( );
