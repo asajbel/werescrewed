@@ -7,6 +7,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.Joint;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJoint;
 import com.blindtigergames.werescrewed.entity.Entity;
@@ -36,8 +37,8 @@ public class PuzzleScrew extends Screw {
 		puzzleManager = new PuzzleManager( this.name );
 		screwType = ScrewType.SCREW_PUZZLE;
 		entityType = EntityType.SCREW;
-		extraJoints = new ArrayList< RevoluteJoint >( );
-
+		extraJoints = new ArrayList< Joint >( );
+	
 		sprite.setColor( 16f / 255f, 215f / 255f, 96f / 255f, 1.0f );
 
 		constructBody( pos );

@@ -9,6 +9,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.Joint;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJoint;
 import com.blindtigergames.werescrewed.entity.Entity;
@@ -31,7 +32,7 @@ public class BossScrew extends Screw {
 		depth = max;
 		rotation = 0;
 		fallTimeout = 140;
-		extraJoints = new ArrayList< RevoluteJoint >( );
+		extraJoints = new ArrayList< Joint >( );
 		screwType = ScrewType.SCREW_BOSS;
 		entityType = EntityType.SCREW;
 
@@ -123,7 +124,7 @@ public class BossScrew extends Screw {
 		sprite.setPosition( bodyPos.x - offset.x, bodyPos.y - offset.y );
 		if ( depth == 0 ) {
 			if ( fallTimeout == 0 ) {
-				for ( RevoluteJoint j : extraJoints ) {
+				for ( Joint j : extraJoints ) {
 					world.destroyJoint( j );
 				}
 				Gdx.app.log( "Boss Screw Removed", "End Level" );

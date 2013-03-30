@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+import com.badlogic.gdx.physics.box2d.Joint;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.joints.PrismaticJoint;
 import com.badlogic.gdx.physics.box2d.joints.PrismaticJointDef;
@@ -82,7 +83,6 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 	private Skeleton dynSkel2;
 	private Skeleton s;
 	private Hazard saw;
-	
 
 	/**
 	 * Defines all necessary components in a screen for testing different
@@ -193,7 +193,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 
 		
 		TiledPlatform plat6 = platBuilder.name( "weld1" ).dynamic( )
-				.position( 600, 600 ).dimensions( 1, 6).oneSided( false )
+				.position( 600, 500 ).dimensions( 1, 12).oneSided( false )
 				.buildTilePlatform( );
 		plat6.body.setFixedRotation( false );
 		plat6.quickfixCollisions( );
@@ -226,10 +226,11 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 				.buildTilePlatform( );
 		skeleton.addKinematicPlatform(  test );
 		
-		StructureScrew s = new StructureScrew( "ss", new Vector2(800, 750), 100, test,
-				world );
-		s.addStructureJoint( plat8 );
-		dynSkel2.addScrewForDraw( s );
+				
+//		StructureScrew s = new StructureScrew( "ss", new Vector2(800, 750), 100, test,
+//				world );
+//		s.addStructureJoint( plat8 );
+//		dynSkel2.addScrewForDraw( s );
 		
 		
 		TiledPlatform plat9 = platBuilder.name( "weld4" ).dynamic( )
@@ -239,37 +240,67 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		plat9.quickfixCollisions( );
 		dynSkel2.addDynamicPlatform( plat9 );
 		
-		WeldJointDef wj1 = new WeldJointDef();
-		wj1.initialize( plat6.body, plat7.body, plat6.getPosition( ) );
-		world.createJoint( wj1 );
 		
-		WeldJointDef wj2 = new WeldJointDef();
-		wj2.initialize( plat7.body, plat9.body, plat7.getPosition( ) );
-		world.createJoint( wj2 );
 		
-		WeldJointDef wj3 = new WeldJointDef();
-		wj3.initialize( plat6.body, plat8.body, plat8.getPosition( ) );
-		world.createJoint( wj3 );
+		StructureScrew s = new StructureScrew( "ss", plat8.getPositionPixel( ).add(plat8.getPixelWidth( )/2, 0),
+				100, world );
+		s.addWeldJoint( plat8 );
+		s.addWeldJoint( plat9 );
+		dynSkel2.addScrewForDraw( s );
 		
-		WeldJointDef wj8 = new WeldJointDef();
-		wj8.initialize( plat9.body, plat8.body, plat9.getPosition( ) );
-		world.createJoint( wj8 );
 		
-		WeldJointDef wj4 = new WeldJointDef();
-		wj4.initialize( dynSkel2.body, plat9.body, dynSkel2.getPosition( ) );
-		world.createJoint( wj4 );
+		StructureScrew s1 = new StructureScrew( "s1", plat7.getPositionPixel( ).add(plat7.getPixelWidth( )/2, 0),
+				100, world );
+		s1.addWeldJoint( plat7 );
+		s1.addWeldJoint( plat9 );
+		dynSkel2.addScrewForDraw( s1 );
 		
-		WeldJointDef wj5 = new WeldJointDef();
-		wj5.initialize( dynSkel2.body, plat8.body, dynSkel2.getPosition( ) );
-		world.createJoint( wj5 );
+		StructureScrew s3 = new StructureScrew( "s2", plat8.getPositionPixel( ).sub(plat8.getPixelWidth( )/2, 0),
+				100, world );
+		s3.addWeldJoint( plat6 );
+		s3.addWeldJoint( plat8 );
+		dynSkel2.addScrewForDraw( s3 );
 		
-		WeldJointDef wj6 = new WeldJointDef();
-		wj6.initialize( dynSkel2.body, plat7.body, dynSkel2.getPosition( ) );
-		world.createJoint( wj6 );
+		StructureScrew s5 = new StructureScrew( "s23", plat7.getPositionPixel( ).sub(plat7.getPixelWidth( )/2, 0),
+				100, world );
+		s5.addWeldJoint( plat6 );
+		s5.addWeldJoint( plat7 );
+		dynSkel2.addScrewForDraw( s5 );
 		
-		WeldJointDef wj7 = new WeldJointDef();
-		wj7.initialize( dynSkel2.body, plat6.body, dynSkel2.getPosition( ) );
-		world.createJoint( wj7 );
+		
+		
+		
+//		WeldJointDef wj1 = new WeldJointDef();
+//		wj1.initialize( plat6.body, plat7.body, plat6.getPosition( ) );
+//		world.createJoint( wj1 );
+//		
+//		WeldJointDef wj2 = new WeldJointDef();
+//		wj2.initialize( plat7.body, plat9.body, plat7.getPosition( ) );
+//		world.createJoint( wj2 );
+//		
+//		WeldJointDef wj3 = new WeldJointDef();
+//		wj3.initialize( plat6.body, plat8.body, plat8.getPosition( ) );
+//		world.createJoint( wj3 );
+//		
+//		WeldJointDef wj8 = new WeldJointDef();
+//		wj8.initialize( plat9.body, plat8.body, plat9.getPosition( ) );
+//		world.createJoint( wj8 );
+//		
+//		WeldJointDef wj4 = new WeldJointDef();
+//		wj4.initialize( dynSkel2.body, plat9.body, dynSkel2.getPosition( ) );
+//		world.createJoint( wj4 );
+		
+//		WeldJointDef wj5 = new WeldJointDef();
+//		wj5.initialize( dynSkel2.body, plat8.body, dynSkel2.getPosition( ) );
+//		world.createJoint( wj5 );
+//		
+//		WeldJointDef wj6 = new WeldJointDef();
+//		wj6.initialize( dynSkel2.body, plat7.body, dynSkel2.getPosition( ) );
+//		world.createJoint( wj6 );
+//		
+//		WeldJointDef wj7 = new WeldJointDef();
+//		wj7.initialize( dynSkel2.body, plat6.body, dynSkel2.getPosition( ) );
+//		world.createJoint( wj7 );
 
 	}
 	
@@ -623,8 +654,9 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		}
 
 		if ( Gdx.input.isKeyPressed( Keys.NUM_0 ) ) {
-			if ( debugTest )
+			if ( debugTest ){
 				debug = !debug;
+			}
 			debugTest = false;
 		} else
 			debugTest = true;

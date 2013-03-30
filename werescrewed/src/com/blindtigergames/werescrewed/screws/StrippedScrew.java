@@ -34,7 +34,7 @@ public class StrippedScrew extends Screw {
 		this.world = world;
 		screwType = ScrewType.SCREW_STRIPPED;
 		entityType = EntityType.SCREW;
-		extraJoints = new ArrayList< RevoluteJoint >( );
+		extraJoints = new ArrayList< Joint >( );
 
 		sprite.setColor( 255f/255f, 112f/255f, 52f/255f, 1.0f ); //rust color pulled off a hexdecimal chart
 		sprite.setOrigin( 0.0f, 0.0f );
