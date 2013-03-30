@@ -89,7 +89,8 @@ public class LevelSelectScreen implements com.badlogic.gdx.Screen {
 		if ( controllerTimer > 0 ) {
 			controllerTimer--;
 		} else {
-			if(controller1 != null || controller2 != null){
+			if(controller1 != null || controller2 != null 
+					|| (controller1 == null && controller2 == null)){
 				if ( controllerListener.jumpPressed( )
 						|| Gdx.input.isKeyPressed( Keys.ENTER ) ) {
 					Buttons.get( buttonIndex ).setSelected( true );
