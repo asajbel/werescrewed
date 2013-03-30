@@ -2,7 +2,6 @@ package com.blindtigergames.werescrewed.entity.action;
 
 import com.badlogic.gdx.physics.box2d.Joint;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.physics.box2d.joints.RevoluteJoint;
 import com.blindtigergames.werescrewed.entity.Entity;
 
 public class DestoryJointAction implements IAction{

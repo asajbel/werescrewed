@@ -94,6 +94,7 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 	private float endgameCounter;
 	private Music inceptionhorn;
 
+	@SuppressWarnings( "unused" )
 	private Anchor testAnchor;
 	private static final String LEVEL_NAME = "Debug_Playtest";
 

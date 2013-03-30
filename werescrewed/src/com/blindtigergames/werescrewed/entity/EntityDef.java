@@ -14,7 +14,6 @@ import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.Shape;
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.badlogic.gdx.utils.XmlReader;
 import com.badlogic.gdx.utils.XmlReader.Element;
 import com.blindtigergames.werescrewed.WereScrewedGame;
@@ -256,6 +255,7 @@ public class EntityDef {
 			out.setCategory( xml.get( "category", "" ) ); // EntityCategory.tag, "" ) );
 			// Sprite Data
 			String texName = null;
+			@SuppressWarnings( "unused" )
 			String atlasName = null;
 			texName = xml.get( "texture", "" );
 			for (Element atlasElem : xml.getChildrenByName( "atlas" )){

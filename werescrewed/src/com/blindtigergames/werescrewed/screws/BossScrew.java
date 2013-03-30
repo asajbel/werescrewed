@@ -11,7 +11,6 @@ import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.Joint;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.physics.box2d.joints.RevoluteJoint;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityType;
 import com.blindtigergames.werescrewed.util.Util;
@@ -42,6 +41,36 @@ public class BossScrew extends Screw {
 		addStructureJoint( entity );
 	}
 
+	@Override
+	public void screwRight( int region, boolean switchedDirections ) {
+		if ( playerCount == 1 ) {
+			if ( depth < maxDepth ) {
+				body.setAngularVelocity( -1 );
+				depth++;
+				rotation -= 10;
+				screwStep = depth + 6;
+			}
+		} else {
+			playerCount++;
+		}
+
+	}
+
+	
+
+	@Override
+	public void screwLeft( int region, boolean switchedDirections ) {
+		if ( playerCount == 1 ) {
+			if ( depth > 0 ) {
+				body.setAngularVelocity( 15 );
+				depth--;
+				rotation = region * 5;
+				screwStep = depth + 5;
+			}
+		} else {
+			playerCount++;
+		}
+	}
 	@Override
 	public void screwLeft( int region) {
 		if ( playerCount == 1 ) {

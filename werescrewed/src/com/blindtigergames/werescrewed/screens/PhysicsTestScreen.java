@@ -11,7 +11,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
-import com.badlogic.gdx.physics.box2d.Joint;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.joints.PrismaticJoint;
 import com.badlogic.gdx.physics.box2d.joints.PrismaticJointDef;
@@ -27,7 +26,6 @@ import com.blindtigergames.werescrewed.collisionManager.MyContactListener;
 import com.blindtigergames.werescrewed.debug.SBox2DDebugRenderer;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityDef;
-import com.blindtigergames.werescrewed.entity.EntityType;
 import com.blindtigergames.werescrewed.entity.PolySprite;
 import com.blindtigergames.werescrewed.entity.RobotState;
 import com.blindtigergames.werescrewed.entity.RootSkeleton;
@@ -267,40 +265,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		s5.addWeldJoint( plat7 );
 		dynSkel2.addScrewForDraw( s5 );
 		
-		
-		
-		
-//		WeldJointDef wj1 = new WeldJointDef();
-//		wj1.initialize( plat6.body, plat7.body, plat6.getPosition( ) );
-//		world.createJoint( wj1 );
-//		
-//		WeldJointDef wj2 = new WeldJointDef();
-//		wj2.initialize( plat7.body, plat9.body, plat7.getPosition( ) );
-//		world.createJoint( wj2 );
-//		
-//		WeldJointDef wj3 = new WeldJointDef();
-//		wj3.initialize( plat6.body, plat8.body, plat8.getPosition( ) );
-//		world.createJoint( wj3 );
-//		
-//		WeldJointDef wj8 = new WeldJointDef();
-//		wj8.initialize( plat9.body, plat8.body, plat9.getPosition( ) );
-//		world.createJoint( wj8 );
-//		
-//		WeldJointDef wj4 = new WeldJointDef();
-//		wj4.initialize( dynSkel2.body, plat9.body, dynSkel2.getPosition( ) );
-//		world.createJoint( wj4 );
-		
-//		WeldJointDef wj5 = new WeldJointDef();
-//		wj5.initialize( dynSkel2.body, plat8.body, dynSkel2.getPosition( ) );
-//		world.createJoint( wj5 );
-//		
-//		WeldJointDef wj6 = new WeldJointDef();
-//		wj6.initialize( dynSkel2.body, plat7.body, dynSkel2.getPosition( ) );
-//		world.createJoint( wj6 );
-//		
-//		WeldJointDef wj7 = new WeldJointDef();
-//		wj7.initialize( dynSkel2.body, plat6.body, dynSkel2.getPosition( ) );
-//		world.createJoint( wj7 );
+
 
 	}
 	

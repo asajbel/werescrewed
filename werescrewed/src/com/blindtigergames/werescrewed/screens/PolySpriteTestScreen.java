@@ -2,12 +2,7 @@ package com.blindtigergames.werescrewed.screens;
 
 //import javax.vecmath.Vector4f;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.blindtigergames.werescrewed.WereScrewedGame;
@@ -34,6 +29,7 @@ public class PolySpriteTestScreen extends Screen {
 		verts.add( new Vector2(500.0f,500.0f) );
 		verts.add( new Vector2(-500.0f,500.0f) );
 		
+		@SuppressWarnings( "unused" )
 		Texture polyTex = WereScrewedGame.manager.get(
 				WereScrewedGame.dirHandle.path( ) + "/common/tileset/TilesetTest.png",
 				Texture.class );

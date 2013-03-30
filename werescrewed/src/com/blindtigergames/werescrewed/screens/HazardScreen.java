@@ -22,7 +22,6 @@ import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.Skeleton;
 import com.blindtigergames.werescrewed.entity.action.AnchorActivateAction;
 import com.blindtigergames.werescrewed.entity.action.AnchorDeactivateAction;
-import com.blindtigergames.werescrewed.entity.action.MetricsStartTimeAction;
 import com.blindtigergames.werescrewed.entity.builders.EventTriggerBuilder;
 import com.blindtigergames.werescrewed.entity.builders.PlatformBuilder;
 import com.blindtigergames.werescrewed.entity.builders.PlayerBuilder;
@@ -56,10 +55,8 @@ public class HazardScreen implements com.badlogic.gdx.Screen {
 	private PlatformBuilder platBuilder;
 	private Hazard hazard;
 	private Fire fire;
-	private Electricity elec;
-	private Saws saw;
 	private Spikes spikes, spikes2;
-	private SpikesBuilder spikesBuilder;
+	private HazardBuilder spikesBuilder;
 	private boolean debug = true;
 	private boolean debugTest = true;
 	private Steam testSteam;
@@ -74,7 +71,7 @@ public class HazardScreen implements com.badlogic.gdx.Screen {
 		skeleton = new Skeleton( "skeleton", Vector2.Zero, null, world );
 		rootSkeleton = new Skeleton( "root", Vector2.Zero, null, world );
 		platBuilder = new PlatformBuilder( world );
-		spikesBuilder = new SpikesBuilder( world );
+		spikesBuilder = new HazardBuilder( world );
 		contactListener = new MyContactListener( );
 		world.setContactListener( contactListener );
 
@@ -168,6 +165,7 @@ public class HazardScreen implements com.badlogic.gdx.Screen {
 				.build( );
 		
 		EventTriggerBuilder etb3 = new EventTriggerBuilder( world );
+		@SuppressWarnings( "unused" )
 		EventTrigger et3 = etb3.name( "event3" ).circle( ).radius( 100 )
 				.position( new Vector2( 1600f, 20f ) ).repeatable()
 				.beginAction( new AnchorActivateAction( testAnchor ) )

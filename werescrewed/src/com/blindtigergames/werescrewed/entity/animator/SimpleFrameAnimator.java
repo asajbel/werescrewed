@@ -1,7 +1,5 @@
 package com.blindtigergames.werescrewed.entity.animator;
 
-import com.badlogic.gdx.Gdx;
-
 public class SimpleFrameAnimator implements IAnimator {
 
 	protected int frame;

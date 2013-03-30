@@ -298,6 +298,7 @@ public class EntityDefTestScreen implements com.badlogic.gdx.Screen {
 					.buildTilePlatform( );
 
 			piston.body.setType( BodyType.DynamicBody );
+			@SuppressWarnings( "unused" )
 			PrismaticJoint pistonJoint = jointBuilder.bodyB( ( Entity ) piston )
 					.anchor( piston.body.getWorldCenter( ) ).build( );
 			// Something is still not quite right with this, try replacing 3
@@ -316,6 +317,7 @@ public class EntityDefTestScreen implements com.badlogic.gdx.Screen {
 		TiledPlatform elevator = builder.position( -1500, 150 ).moveable( true )
 				.buildTilePlatform( );
 		elevator.body.setType( BodyType.DynamicBody );
+		@SuppressWarnings( "unused" )
 		PrismaticJoint pistonJ = jointBuilder.bodyB( ( Entity ) elevator )
 				.anchor( elevator.body.getWorldCenter( ) ).build( );
 

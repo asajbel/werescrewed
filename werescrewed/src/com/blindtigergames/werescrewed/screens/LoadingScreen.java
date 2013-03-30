@@ -1,8 +1,5 @@
 package com.blindtigergames.werescrewed.screens;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
@@ -73,6 +70,7 @@ public class LoadingScreen extends Screen {
 	 * 
 	 * @return void
 	 */
+	@SuppressWarnings( "unused" )
 	private void loadFilesInDirectory( FileHandle currentDirectory,
 			String screenTag ) {
 		// Gdx.app.log( "GOING DOWN", "now inside " + currentDirectory.name( )

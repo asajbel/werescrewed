@@ -1,6 +1,5 @@
 package com.blindtigergames.werescrewed.screens;
 
-import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Keys;
@@ -62,6 +61,7 @@ public class Screen implements com.badlogic.gdx.Screen {
 			level.update( delta );
 			level.draw( batch, debugRenderer );
 			
+			@SuppressWarnings( "unused" )
 			int FPS = logger.getFPS( );
 			batch.setProjectionMatrix( uiCamera.combined );
 			batch.begin( );

@@ -28,6 +28,7 @@ public class WereScrewedGame extends Game {
 	
 	public static ShaderProgram defaultShader;
 	
+	@SuppressWarnings( "unused" )
 	private float fpsTime = 0;
 
 	@Override

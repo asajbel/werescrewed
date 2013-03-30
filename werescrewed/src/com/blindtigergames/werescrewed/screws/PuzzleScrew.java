@@ -9,7 +9,6 @@ import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.Joint;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.physics.box2d.joints.RevoluteJoint;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityType;
 import com.blindtigergames.werescrewed.puzzles.PuzzleManager;
@@ -94,7 +93,7 @@ public class PuzzleScrew extends Screw {
 	public void screwLeft( ) {
 		if ( depth > 0 ) {
 			body.setAngularVelocity( 1 );
-			depth--;
+			depth-= 2;
 			rotation += 10;
 			screwStep = depth + 5;
 			puzzleManager.runElement( this, ( float ) depth
@@ -150,7 +149,7 @@ public class PuzzleScrew extends Screw {
 	public void screwRight( ) {
 		if ( depth < maxDepth ) {
 			body.setAngularVelocity( -1 );
-			depth++;
+			depth += 2;
 			rotation -= 10;
 			screwStep = depth + 6;
 			puzzleManager.runElement( this, ( float ) depth

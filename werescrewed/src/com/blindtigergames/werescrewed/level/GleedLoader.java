@@ -30,7 +30,6 @@ import com.blindtigergames.werescrewed.screws.PuzzleScrew;
 import com.blindtigergames.werescrewed.screws.Screw;
 import com.blindtigergames.werescrewed.screws.ScrewType;
 import com.blindtigergames.werescrewed.util.ArrayHash;
-import com.blindtigergames.werescrewed.util.Util;
 import com.blindtigergames.werescrewed.entity.mover.Path;
 
 public class GleedLoader {	

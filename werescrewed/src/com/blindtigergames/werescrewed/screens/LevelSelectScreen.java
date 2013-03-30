@@ -14,7 +14,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.gui.Button;
 import com.blindtigergames.werescrewed.gui.Label;
-import com.blindtigergames.werescrewed.gui.Button.ButtonHandler;
 import com.blindtigergames.werescrewed.input.MyControllerListener;
 
 public class LevelSelectScreen implements com.badlogic.gdx.Screen {

@@ -10,7 +10,6 @@ import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.Joint;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.physics.box2d.joints.RevoluteJoint;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityType;
 import com.blindtigergames.werescrewed.util.Util;
@@ -105,7 +104,7 @@ public class StructureScrew extends Screw {
 	public void screwLeft( ) {
 		if ( depth > -10 ) {
 			body.setAngularVelocity( 1 );
-			depth--;
+			depth-= 2;
 			rotation += 10;
 			screwStep = depth + 5;
 		}
@@ -141,7 +140,7 @@ public class StructureScrew extends Screw {
 	public void screwRight( ) {
 		if ( depth < maxDepth ) {
 			body.setAngularVelocity( -1 );
-			depth++;
+			depth+= 2;
 			rotation -= 10;
 			screwStep = depth + 6;
 		}
