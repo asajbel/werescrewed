@@ -58,6 +58,7 @@ import com.blindtigergames.werescrewed.util.Util;
 
 public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 
+	public ScreenType screenType;
 	private Camera cam;
 	private MetricsRender metRend;
 	private SpriteBatch batch;
@@ -1084,9 +1085,7 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 
 		cam.update( );
 
-		if ( Gdx.input.isKeyPressed( Input.Keys.ESCAPE ) ) {
-			ScreenManager.getInstance( ).show( ScreenType.PAUSE );
-		}
+
 		if ( Gdx.input.isKeyPressed( Keys.P ) ) {
 			Gdx.app.exit( );
 		}
@@ -1140,15 +1139,18 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 			cam.camera.zoom += 0.015f;
 			if ( endgameCounter > 10f ) {
 				Gdx.app.exit( );
-				// if we want want the game to go back to the main menu, comment
-				// the above line and uncomment the 2 lines below -Vic
-				// ScreenManager.getInstance( ).show( ScreenType.MAIN_MENU );
-				// ScreenManager.getInstance( ).dispose( ScreenType.MAIN_MENU );
 			}
 		}
 		metRend.render( cam.camera );
 
 		world.step( 1 / 60f, 6, 3 );
+		
+		if ( Gdx.input.isKeyPressed( Input.Keys.ESCAPE ) ) {
+			if(!ScreenManager.escapeHeld){
+				ScreenManager.getInstance( ).show( ScreenType.PAUSE );
+			}
+		} else
+			ScreenManager.escapeHeld = false;
 	}
 
 	@Override

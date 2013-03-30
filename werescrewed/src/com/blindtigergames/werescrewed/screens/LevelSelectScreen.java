@@ -19,6 +19,7 @@ import com.blindtigergames.werescrewed.input.MyControllerListener;
 
 public class LevelSelectScreen implements com.badlogic.gdx.Screen {
 
+	public ScreenType screenType;
 	private SpriteBatch batch = null;
 	private OrthographicCamera camera = null;
 	private BitmapFont font = null;
@@ -46,23 +47,11 @@ public class LevelSelectScreen implements com.badlogic.gdx.Screen {
 	 * Things needed... Being able to select levels
 	 */
 	public LevelSelectScreen( ) {
-		batch = new SpriteBatch( );
-		font = new BitmapFont( );
-		fancyFont = WereScrewedGame.manager.getFont( "Screwball" );
-		// fancyFont = WereScrewedGame.manager.getFont( "ornatique" );
-		logo = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-				+ "/common/title_background.png", Texture.class );
-		lineHeight = Math.round( 2.5f * font.getCapHeight( ) );
-		screenLabel = new Label( "Level Select", fancyFont );
-		ControllerSetUp( );
-		loadButtons( );
+		
 	}
 
 	@Override
 	public void dispose( ) {
-		// TODO Auto-generated method stub
-		font.dispose( );
-		batch.dispose( );
 	}
 
 	@Override
@@ -163,7 +152,16 @@ public class LevelSelectScreen implements com.badlogic.gdx.Screen {
 
 	@Override
 	public void show( ) {
-		// TODO Auto-generated method stub
+		batch = new SpriteBatch( );
+		font = new BitmapFont( );
+		fancyFont = WereScrewedGame.manager.getFont( "Screwball" );
+		// fancyFont = WereScrewedGame.manager.getFont( "ornatique" );
+		logo = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
+				+ "/common/title_background.png", Texture.class );
+		lineHeight = Math.round( 2.5f * font.getCapHeight( ) );
+		screenLabel = new Label( "Level Select", fancyFont );
+		ControllerSetUp( );
+		loadButtons( );
 
 	}
 	

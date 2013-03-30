@@ -47,7 +47,7 @@ public class EntityDefTestScreen implements com.badlogic.gdx.Screen {
 	// FIELDS
 
 	// Variables
-
+	public ScreenType screenType;
 	private Camera cam;
 	private SpriteBatch batch;
 	private Texture testTexture;
@@ -353,9 +353,7 @@ public class EntityDefTestScreen implements com.badlogic.gdx.Screen {
 
 		cam.update( );
 
-		if ( Gdx.input.isKeyPressed( Input.Keys.ESCAPE ) ) {
-			ScreenManager.getInstance( ).show( ScreenType.PAUSE );
-		}
+
 		if ( Gdx.input.isKeyPressed( Keys.P ) ) {
 			System.exit( 0 );
 		}
@@ -383,6 +381,13 @@ public class EntityDefTestScreen implements com.badlogic.gdx.Screen {
 			debugRenderer.render( world, cam.combined( ) );
 
 		world.step( 1 / 60f, 6, 2 );
+		
+		if ( Gdx.input.isKeyPressed( Input.Keys.ESCAPE ) ) {
+			if(!ScreenManager.escapeHeld){
+				ScreenManager.getInstance( ).show( ScreenType.PAUSE );
+			}
+		} else
+			ScreenManager.escapeHeld = false;
 	}
 
 	@Override

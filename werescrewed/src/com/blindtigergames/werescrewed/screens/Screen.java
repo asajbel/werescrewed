@@ -17,6 +17,7 @@ import com.blindtigergames.werescrewed.util.Util;
 
 public class Screen implements com.badlogic.gdx.Screen {
 	
+	public ScreenType screenType;
 	protected Level level;
 	protected SpriteBatch batch;
 	protected SBox2DDebugRenderer debugRenderer;
@@ -53,9 +54,7 @@ public class Screen implements com.badlogic.gdx.Screen {
 			Gdx.gl10.glClear( GL20.GL_COLOR_BUFFER_BIT );
 		}
 
-		if ( Gdx.input.isKeyPressed( Input.Keys.ESCAPE ) ) {
-			ScreenManager.getInstance( ).show( ScreenType.PAUSE );
-		}
+
 		if ( Gdx.input.isKeyPressed( Keys.P ) ) {
 			System.exit( 0 );
 		}
@@ -73,6 +72,13 @@ public class Screen implements com.badlogic.gdx.Screen {
 			batch.end( );
 			
 		}
+		
+		if ( Gdx.input.isKeyPressed( Input.Keys.ESCAPE ) ) {
+			if(!ScreenManager.escapeHeld){
+				ScreenManager.getInstance( ).show( ScreenType.PAUSE );
+			}
+		} else
+			ScreenManager.escapeHeld = false;
 	}
 
 	@Override

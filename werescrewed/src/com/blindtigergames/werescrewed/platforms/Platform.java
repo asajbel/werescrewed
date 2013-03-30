@@ -49,7 +49,7 @@ public class Platform extends Entity {
 	protected float localAngularVelocity; //
 	protected Vector2 originPosition; // world position that this platform spawns
 									// at, in pixels
-	
+	protected Vector2 lastPosition;
 	private Skeleton parentSkeleton; //pointer to parent skele
 
 	// ============================================
@@ -89,6 +89,22 @@ public class Platform extends Entity {
 		entityType = EntityType.PLATFORM;
 		init( pos );
 	}
+	
+	/**
+	 * Loading a Complex platform, or used to load complex Hazard
+	 * 
+	 * (no scale or rotation because its defined in entitydef)
+	 * @param name
+	 * @param type
+	 * @param world
+	 * @param pos
+	 */
+	
+	public Platform( String name, EntityDef type, World world, Vector2 pos) {
+		super( name, type, world, pos, null);
+		entityType = EntityType.PLATFORM;
+		init( pos );
+	}
 
 	/**
 	 * Initialize things.
@@ -102,6 +118,7 @@ public class Platform extends Entity {
 		localLinearVelocity = new Vector2( 0, 0 );
 		localRotation = 0;
 		originPosition = pos.cpy( );
+		lastPosition = pos.cpy( );
 		platType = PlatformType.DEFAULT; // set to default unless subclass sets
 											// it later in a constructor
 	}
@@ -192,6 +209,10 @@ public class Platform extends Entity {
 	public float getLocAngularVel( ) {
 		return localAngularVelocity;
 	}
+	
+	public Vector2 getLastPosition(){
+		return lastPosition;
+	}
 
 	public void setLocAngularVel( float angVelMeter ) {
 		localAngularVelocity = angVelMeter;
@@ -233,6 +254,9 @@ public class Platform extends Entity {
 		for ( Screw s : screws ) {
 			s.update( deltaTime );
 		}
+		
+		lastPosition = body.getPosition( );
+		
 	}
 
 	/**
@@ -348,11 +372,11 @@ public class Platform extends Entity {
 		Vector2 newPos = Util.PointOnCircle( radiusFromSkeleton,
 				newAngleFromSkeleton, skeleOrigin );
 
-		
 		float frameRate = 1 / deltaTime;
-		body.setLinearVelocity( newPos.sub( body.getPosition( ) ).mul(
-				frameRate ) );
+		body.setLinearVelocity( newPos.sub( body.getPosition( ) ).mul(frameRate ) );
 		body.setAngularVelocity( ( newRotation - body.getAngle( ) ) * frameRate );
+		
+		
 	}
 	
 	@Override

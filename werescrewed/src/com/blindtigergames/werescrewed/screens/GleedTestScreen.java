@@ -24,7 +24,11 @@ import com.blindtigergames.werescrewed.util.Util;
 
 public class GleedTestScreen extends Screen {
 
+	public ScreenType screenType;
 	Music music;
+	Music intro, loop;
+	boolean introPlayed = false;
+	
 	Steam testSteam, steam2;
 
 	Platform fallingGear1;
@@ -42,6 +46,12 @@ public class GleedTestScreen extends Screen {
 		music = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 				+ "/common/sounds/TrainJob.mp3" );
 
+		loop = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
+				+ "/common/sounds/introTrain.mp3" );
+		
+		intro = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
+				+ "/common/sounds/loopTrain.mp3" );
+		
 		Platform plat = ( Platform ) LevelFactory.entities
 				.get( "structureplat" );
 		plat.quickfixCollisions( );
@@ -61,6 +71,7 @@ public class GleedTestScreen extends Screen {
 
 		fallingGear1.setCrushing( true );
 
+		
 		RevoluteJointDef revoluteJointDef = new RevoluteJointDef( );
 		revoluteJointDef.initialize( fallingGear1.body, skel1.body,
 				fallingGear1.body.getWorldCenter( ) );
@@ -145,7 +156,6 @@ public class GleedTestScreen extends Screen {
 		super.render( deltaTime );
 		testSteam.update( deltaTime );
 		fallingGear1.update( deltaTime );
-
 		fireCounter++;
 		if ( fireCounter > 150 ) {
 			f1.flip( );
@@ -175,12 +185,21 @@ public class GleedTestScreen extends Screen {
 		f3.draw( batch, deltaTime );
 		batch.end( );
 
-		if ( !music.isPlaying( ) ) {
-			music.play( );
-			music.setLooping( true );
-			music.setVolume( 0.3f );
+
+		// Doesn't work perfectly, but its okay
+		if(!introPlayed){
+			intro.play( );
+			introPlayed = true;
+		} else {
+			if(!intro.isPlaying( )){
+				if(!loop.isPlaying( )){
+					loop.play( );
+					loop.setLooping( true );
+				}
+			}
 		}
-		// music.setLooping( true);
+		
+		
 
 	}
 

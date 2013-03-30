@@ -40,6 +40,7 @@ import com.blindtigergames.werescrewed.util.Util;
 
 public class HazardScreen implements com.badlogic.gdx.Screen {
 
+	public ScreenType screenType;
 	private Camera cam;
 	private SpriteBatch batch;
 	private Texture testTexture;
@@ -217,9 +218,6 @@ public class HazardScreen implements com.badlogic.gdx.Screen {
 			Gdx.gl10.glClearColor( 0.0f, 0.0f, 0.0f, 1.0f );
 			Gdx.gl10.glClear( GL20.GL_COLOR_BUFFER_BIT );
 		}
-		if ( Gdx.input.isKeyPressed( Input.Keys.ESCAPE ) ) {
-			ScreenManager.getInstance( ).show( ScreenType.PAUSE );
-		}
 
 		cam.update( );
 
@@ -263,6 +261,15 @@ public class HazardScreen implements com.badlogic.gdx.Screen {
 			debugRenderer.render( world, cam.combined( ) );
 
 		world.step( 1 / 60f, 6, 6 );
+		
+		if ( Gdx.input.isKeyPressed( Input.Keys.ESCAPE ) ) {
+			if(!ScreenManager.escapeHeld){
+				ScreenManager.getInstance( ).show( ScreenType.PAUSE );
+			}
+		} else
+			ScreenManager.escapeHeld = false;
+		
+		
 	}
 
 	@Override

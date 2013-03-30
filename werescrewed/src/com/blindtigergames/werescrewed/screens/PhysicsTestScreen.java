@@ -25,6 +25,8 @@ import com.blindtigergames.werescrewed.checkpoints.ProgressManager;
 import com.blindtigergames.werescrewed.collisionManager.MyContactListener;
 import com.blindtigergames.werescrewed.debug.SBox2DDebugRenderer;
 import com.blindtigergames.werescrewed.entity.Entity;
+import com.blindtigergames.werescrewed.entity.EntityDef;
+import com.blindtigergames.werescrewed.entity.EntityType;
 import com.blindtigergames.werescrewed.entity.PolySprite;
 import com.blindtigergames.werescrewed.entity.RobotState;
 import com.blindtigergames.werescrewed.entity.RootSkeleton;
@@ -42,6 +44,7 @@ import com.blindtigergames.werescrewed.entity.mover.puzzle.PuzzlePistonTweenMove
 import com.blindtigergames.werescrewed.entity.tween.EntityAccessor;
 import com.blindtigergames.werescrewed.entity.tween.PathBuilder;
 import com.blindtigergames.werescrewed.entity.tween.PlatformAccessor;
+import com.blindtigergames.werescrewed.hazard.Hazard;
 import com.blindtigergames.werescrewed.joint.JointFactory;
 import com.blindtigergames.werescrewed.particles.Steam;
 import com.blindtigergames.werescrewed.platforms.Platform;
@@ -55,6 +58,7 @@ import com.blindtigergames.werescrewed.util.Util;
 public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 
 
+	public ScreenType screenType;
 	private Camera cam;
 	private SpriteBatch batch;
 	private World world;
@@ -77,6 +81,8 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 	
 	private Skeleton dynSkel2;
 	private Skeleton s;
+	private Hazard saw;
+	
 
 	/**
 	 * Defines all necessary components in a screen for testing different
@@ -87,6 +93,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		batch = new SpriteBatch( );
 		world = new World( new Vector2( 0, -35 ), true );
 
+		
 		// Initialize camera
 		initCamera( );
 		Tween.registerAccessor( Platform.class, new PlatformAccessor( ) );
@@ -267,7 +274,8 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 	}
 	
 	void movingSkeleton(){
-		s =  new Skeleton( "skeleton7", new Vector2( -500, 200 ), null, world );
+		s =  new Skeleton( "skeleton7", new Vector2( -700, 200 ), null, world );
+		
 		rootSkeleton.addSkeleton( s );
 //		PathBuilder pb = new PathBuilder();
 //		s.addMover( pb.begin( s ).target( 100, 0, 1 )
@@ -279,6 +287,59 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 				.position( -300, 300 ).dimensions( 1, 5).oneSided( false )
 				.buildTilePlatform( );
 		s.addKinematicPlatform(  test );
+		
+		
+		saw = new Hazard( "sawblade", EntityDef.getDefinition( "sawBlade" ), world,
+				new Vector2(-600.0f, 150.0f)); 
+		saw.body.setType( BodyType.DynamicBody );
+		s.addPlatformRotatingCenterWithMot( saw, 2f );
+		
+		
+		// 1000 - 1219 for perfect gears
+		Platform gear = platBuilder.name( "gear" ).position( -1400, 320 )
+				.texture( null ).setScale( 3f ).type( "gearSmall" ).dynamic( )
+				.buildComplexPlatform( );
+		s.addPlatformRotatingCenterWithMot( gear, 1f );
+		Platform gear2 = platBuilder.name( "gear2" ).position( -1165, 320 )
+				.texture( null ).setScale( 3f ).type( "gearSmall" ).dynamic( )
+				.buildComplexPlatform( );
+		s.addPlatformRotatingCenter( gear2 );
+		gear2.quickfixCollisions( );
+		
+
+		TiledPlatform piston = platBuilder.name( "piston" ).kinematic( )
+				.position( -100, 550 ).dimensions( 2, 5).oneSided( false )
+				.buildTilePlatform( );
+		piston.addMover( new PistonTweenMover( piston, new Vector2(
+				0, -350 ), 0.5f, 3f, 1f, 0f, 1f ), RobotState.IDLE );
+		s.addKinematicPlatform(  piston );
+		piston.setCrushing( true );
+
+		
+		TiledPlatform pivot = platBuilder.position( 100.0f, 75f ).name( "rev" )
+				.dimensions( 1, 2 )
+				.kinematic( ).oneSided( false ).restitution(0.0f )
+				.buildTilePlatform( );
+		s.addKinematicPlatform( pivot );
+		
+
+		//rfd.maxMotorTorque = 100.0f;
+		
+		TiledPlatform crank = platBuilder.position( 100f, 125f).name( "crank" )
+				.dimensions( 15, 1 )
+				.dynamic( ).oneSided( false ).restitution( 0.0f )
+				.buildTilePlatform( );
+		crank.quickfixCollisions( );
+		crank.setDensity( 0 );
+		crank.setCrushing( true );
+		s.addPlatform( crank );
+		
+		RevoluteJointDef rfd = new RevoluteJointDef( );
+		rfd.initialize( crank.body, pivot.body,
+				pivot.body.getPosition( ).add( new Vector2(0f, pivot.getMeterHeight( )/2) ) );
+		world.createJoint( rfd );
+
+		
 	}
 	
 	@SuppressWarnings( "unused" )
@@ -334,12 +395,15 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 				// .texture( testTexture )
 				.kinematic( ).oneSided( false ).restitution( 0.0f )
 				.buildTilePlatform( );
-		// THIS SHOULD BE SET IN EVERYTHING START USING THEM
-		// AND THINGS WILL STOP FALLING THROUGH OTHER THINGS
+
 		ground.setCategoryMask( Util.KINEMATIC_OBJECTS,
 				Util.CATEGORY_EVERYTHING );
+		ground.body.getFixtureList( ).get( 0 ).getShape( ).setRadius( 0 );
 		skeleton.addKinematicPlatform( ground );
+		ground.setCrushing( true );
 
+		
+		
 	}
 
 
@@ -481,16 +545,6 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 				// .texture( testTexture )
 				.friction( 1f );
 
-		// 1000 - 1219 for perfect gears
-		Platform gear = builder.name( "gear" ).position( -1800, 320 )
-				.texture( null ).setScale( 3f ).type( "gearSmall" )
-				.buildComplexPlatform( );
-		skeleton.addPlatformRotatingCenterWithMot( gear, 1f );
-		Platform gear2 = builder.name( "gear2" ).position( -1500, 300 )
-				.texture( null ).setScale( 3f ).type( "gearSmall" )
-				.buildComplexPlatform( );
-		skeleton.addPlatformRotatingCenter( gear2 );
-		gear2.quickfixCollisions( );
 	}
 
 	
@@ -537,7 +591,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 	private void initCheckPoints( ) {
 		progressManager = new ProgressManager( player1, player2, world );
 		progressManager
-				.addCheckPoint( new CheckPoint( "check_01", new Vector2( 0f,
+				.addCheckPoint( new CheckPoint( "check_01", new Vector2( -170f,
 						64f ), skeleton, world, progressManager,
 						"levelStage_0_0" ) );
 		progressManager
@@ -560,10 +614,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		
 		
 		cam.update( );
-
-		if ( Gdx.input.isKeyPressed( Input.Keys.ESCAPE ) ) {
-			ScreenManager.getInstance( ).show( ScreenType.PAUSE );
-		}
+		
 		if ( Gdx.input.isKeyPressed( Input.Keys.NUM_1 ) ) {
 			ScreenManager.getInstance( ).show( ScreenType.WIN );
 		}
@@ -601,7 +652,8 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 			//dynSkel2.body.applyAngularImpulse(  -0.1f ) ;
 		}
 
-
+		
+		
 		player1.update( deltaTime );
 		player2.update( deltaTime );
 		rootSkeleton.update( deltaTime );
@@ -621,6 +673,14 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 			debugRenderer.render( world, cam.combined( ) );
 
 		world.step( 1 / 60f, 6, 3 );
+		
+		if ( Gdx.input.isKeyPressed( Input.Keys.ESCAPE ) ) {
+			if(!ScreenManager.escapeHeld){
+				ScreenManager.getInstance( ).show( ScreenType.PAUSE );
+			}
+		} else
+			ScreenManager.escapeHeld = false;
+		
 	}
 
 	@Override
