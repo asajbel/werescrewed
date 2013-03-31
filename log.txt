@@ -14,3 +14,4 @@
 3/30/2013 1:25:07 PM.806 - Creating new level.
 3/30/2013 1:25:07 PM.874 - New level created.
 3/30/2013 1:25:07 PM.874 - Editor creation ended.
+3/30/2013 4:32:51 PM.774 - Application ended.

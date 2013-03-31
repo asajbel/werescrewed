@@ -40,6 +40,21 @@ public class StrippedScrew extends Screw {
 		addStructureJoint( entity );
 
 	}
+	
+	public StrippedScrew( String name, Vector2 pos, World world) {
+		super( name, pos, null );
+		this.world = world;
+		screwType = ScrewType.SCREW_STRIPPED;
+		entityType = EntityType.SCREW;
+		extraJoints = new ArrayList< Joint >( );
+
+		sprite.setColor( 255f/255f, 112f/255f, 52f/255f, 1.0f ); //rust color pulled off a hexdecimal chart
+		sprite.setOrigin( 0.0f, 0.0f );
+
+		constructBody( pos );
+		
+
+	}
 
 	private void constructBody( Vector2 pos ) {
 		// create the screw body

@@ -176,8 +176,8 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		dynSkel2.setDensity( 100f );
 		rootSkeleton.addSkeleton( dynSkel2 );
 		
-		StrippedScrew strScrew = new StrippedScrew( "strScrew3", new Vector2(700, 500 ), dynSkel2, 
-				world );
+		StrippedScrew strScrew = new StrippedScrew( "strScrew3", new Vector2(700, 500 ), world );
+		strScrew.addWeldJoint( dynSkel2 );
 		dynSkel2.addStrippedScrew( strScrew );
 		strScrew.body.setFixedRotation( false );
 		
