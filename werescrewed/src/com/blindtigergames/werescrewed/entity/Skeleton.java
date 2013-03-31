@@ -48,6 +48,11 @@ public class Skeleton extends Platform {
 	protected HashMap< String, EventTrigger > eventMap = new HashMap< String, EventTrigger >( );
 
 	private int entityCount = 0;
+	
+	protected RootSkeleton rootSkeleton;
+	protected Skeleton parentSkeleton;
+	
+	
 
 	public Skeleton( String n, Vector2 pos, Texture tex, World world ) {
 		super( n, pos, tex, world ); // not constructing body class
@@ -177,6 +182,7 @@ public class Skeleton extends Platform {
 		}
 		dynamicPlatformMap.put( platform.name, platform );
 		platform.setParentSkeleton( this );
+		platform.setOriginRelativeToSkeleton( platform.getPosition( ).cpy( ).sub( (getPosition( ) )));
 	}
 
 	/**
@@ -193,6 +199,7 @@ public class Skeleton extends Platform {
 		}
 		kinematicPlatformMap.put( platform.name, platform );
 		platform.setParentSkeleton( this );
+		platform.setOriginRelativeToSkeleton( platform.getPosition( ).cpy( ).sub( (getPosition( ) )));
 	}
 
 	/**
@@ -220,8 +227,11 @@ public class Skeleton extends Platform {
 	 */
 	public void addSkeleton( Skeleton skeleton ) {
 		// this.childSkeletons.add( skeleton );
+		skeleton.parentSkeleton = this;
+		skeleton.rootSkeleton = this.rootSkeleton;
 		childSkeletonMap.put( skeleton.name, skeleton );
 		skeleton.setParentSkeleton( this );
+		skeleton.setOriginRelativeToSkeleton( skeleton.getPosition( ).cpy( ).sub( (getPosition( ) )));
 	}
 
 	/**
@@ -353,37 +363,48 @@ public class Skeleton extends Platform {
 	public void update( float deltaTime ) {
 		// super.update( deltaTime );
 
-		Vector2 bodyPos = body.getPosition( ).mul( Util.BOX_TO_PIXEL );
-
-		if ( fgSprite != null ) {
-			fgSprite.setPosition( bodyPos.x - offset.x, bodyPos.y - offset.y );
-			fgSprite.setRotation( MathUtils.radiansToDegrees * body.getAngle( ) );
+		if ( isActive( ) ){
+			updateMover( deltaTime );
+			if ( !parentSkeleton.equals( rootSkeleton )){
+				super.setPosRotFromSkeleton( deltaTime, parentSkeleton );
+			}
+			updateEntityMovers(deltaTime);
+			setPosRotAllKinematicPlatforms( deltaTime );
 		}
-		if ( bgSprite != null ) {
-			bgSprite.setPosition( bodyPos.x - offset.x, bodyPos.y - offset.y );
-			bgSprite.setRotation( MathUtils.radiansToDegrees * body.getAngle( ) );
-		}
-
-		// update root skeleton imover
-		updateMover( deltaTime );
-		// followed by children skeleton imovers
-
-		updateChildSkeletonMovers( deltaTime );
-
-		// update all children platform IMovers on their imover local coord
-		// system
-		updateEntityMovers( deltaTime );
-
-		// recursively move all children skeletons by this moved updated
-		// pos*rot.
-		setPosRotChildSkeletons( deltaTime );
-
-		// Now we can rotate all kinematic entities connected by updated
-		// skeleton rot / position
-		setPosRotAllKinematicPlatforms( deltaTime );
-
-		// Update children animations and stuff
-		updateChildren( deltaTime );
+		
+		
+		//Everything below is the old skeleton update
+//		// update root skeleton imover
+//		updateMover( deltaTime );
+//		// followed by children skeleton imovers
+//
+//		updateChildSkeletonMovers( deltaTime );
+//
+//		// update all children platform IMovers on their imover local coord
+//		// system
+//		updateEntityMovers( deltaTime );
+//
+//		// recursively move all children skeletons by this moved updated
+//		// pos*rot.
+//		setPosRotChildSkeletons( deltaTime );
+//
+//		// Now we can rotate all kinematic entities connected by updated
+//		// skeleton rot / position
+//		setPosRotAllKinematicPlatforms( deltaTime );
+//
+//		// Update children animations and stuff
+//		updateChildren( deltaTime );
+//		
+//		Vector2 bodyPos = body.getPosition( ).mul( Util.BOX_TO_PIXEL );
+//
+//		if ( fgSprite != null ) {
+//			fgSprite.setPosition( bodyPos.x - offset.x, bodyPos.y - offset.y );
+//			fgSprite.setRotation( MathUtils.radiansToDegrees * body.getAngle( ) );
+//		}
+//		if ( bgSprite != null ) {
+//			bgSprite.setPosition( bodyPos.x - offset.x, bodyPos.y - offset.y );
+//			bgSprite.setRotation( MathUtils.radiansToDegrees * body.getAngle( ) );
+//		}
 	}
 
 	/**
@@ -407,18 +428,18 @@ public class Skeleton extends Platform {
 	 * @param deltaTime
 	 * @author stew
 	 */
-	protected void updateEntityMovers( float deltaTime ) {
-		for ( Skeleton skeleton : childSkeletonMap.values( ) ) {
+	private void updateEntityMovers( float deltaTime ) {
+		/*for ( Skeleton skeleton : childSkeletonMap.values( ) ) {
 			skeleton.updateEntityMovers( deltaTime );
 		}
-		if ( this.isActive( ) ) {
+		if ( this.isActive( ) ) {*/
 			for ( Platform platform : dynamicPlatformMap.values( ) ) {
 				platform.updateMover( deltaTime );
 			}
 			for ( Platform platform : kinematicPlatformMap.values( ) ) {
 				platform.updateMover( deltaTime );
 			}
-		}
+		//}
 		/* TODO: add ropes and loose entity */
 	}
 
@@ -431,7 +452,7 @@ public class Skeleton extends Platform {
 		// update sub skeleton and bones
 		// update( deltaTime );
 		for ( Skeleton skeleton : childSkeletonMap.values( ) ) {
-			skeleton.update( deltaTime );
+			skeleton.updateChildren( deltaTime );
 		}
 		if ( this.isActive( ) ) {
 			for ( Platform p : dynamicPlatformMap.values( ) ) {
@@ -538,9 +559,11 @@ public class Skeleton extends Platform {
 	 */
 	protected void setPosRotChildSkeletons( float deltaTime ) {
 		for ( Skeleton skeleton : childSkeletonMap.values( ) ) {
-			if ( skeleton.isKinematic( ) && skeleton.isActive( ) )
+			if ( skeleton.isKinematic( ) && skeleton.isActive( ) ){
 				skeleton.setPosRotFromSkeleton( deltaTime, this );
+			}
 			// now recursively apply this change to child skeletons
+			
 			skeleton.setPosRotChildSkeletons( deltaTime );
 		}
 	}
@@ -550,12 +573,13 @@ public class Skeleton extends Platform {
 	 */
 	protected void setPosRotAllKinematicPlatforms( float deltaTime ) {
 		// first recursively set all kin platforms position
-		for ( Skeleton skeleton : childSkeletonMap.values( ) ) {
-			skeleton.setPosRotAllKinematicPlatforms( deltaTime );
-		}
+//		for ( Skeleton skeleton : childSkeletonMap.values( ) ) {
+//			skeleton.setPosRotAllKinematicPlatforms( deltaTime );
+//		}
 		// then set all kin platforms of this skeleton
 		if ( isActive( ) ) {
 			for ( Platform platform : kinematicPlatformMap.values( ) ) {
+				System.out.println( name+": setting posRot for platform by name: "+platform.name );
 				platform.setPosRotFromSkeleton( deltaTime, this );
 			}
 		}
@@ -620,6 +644,18 @@ public class Skeleton extends Platform {
 		}
 		eventMap.clear( );
 		super.dispose( );
+	}
+	
+	/**
+	 * A platform calls this if it wants to be removed from a skeleton
+	 * @param platformToRemove
+	 */
+	public void remove(Platform platformToRemove){
+		if ( platformToRemove.isKinematic( ) ){
+			kinematicPlatformMap.remove( platformToRemove );
+		}else {
+			dynamicPlatformMap.remove( platformToRemove );
+		}
 	}
 
 }

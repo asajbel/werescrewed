@@ -181,6 +181,7 @@ public class SkeletonBuilder extends GenericEntityBuilder<SkeletonBuilder>{
 			out.fgSprite = new PolySprite( texForeground, polyVertsFG );
 		}
 		if ( polyVertsBG != null && texBackground != null){
+			System.out.println( name+": bbuilding bg polysprite" );
 			out.bgSprite = new PolySprite( texBackground, polyVertsBG );
 		}
 		out.body.setType( bodyType );

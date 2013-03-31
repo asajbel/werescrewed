@@ -22,6 +22,8 @@ public class RootSkeleton extends Skeleton {
 		skeletonToSetActive = new ArrayList< Skeleton >( );
 		skeletonToSetInactive = new ArrayList< Skeleton >( );
 		skeletonsToDelete = new ArrayList< Skeleton >( );
+		parentSkeleton = null;
+		rootSkeleton = this;
 	}
 
 	/**
@@ -87,9 +89,14 @@ public class RootSkeleton extends Skeleton {
 		// recursively update all skeleton movers
 		updateChildSkeletonMovers( deltaTime );
 
+		for ( Entity entity : looseEntity ) {
+			entity.updateMover( deltaTime );
+			entity.update( deltaTime );
+		}
 		// update all children platform IMovers on their imover local coord
 		// system
 		updateEntityMovers( deltaTime );
+		
 
 		// recursively move all children skeletons by this moved updated
 		// pos*rot.
@@ -131,10 +138,6 @@ public class RootSkeleton extends Skeleton {
 		// childSkeleton.updateChildren( deltaTime );
 		// }
 
-		for ( Entity entity : looseEntity ) {
-			entity.updateMover( deltaTime );
-			entity.update( deltaTime );
-		}
 		// super.update( deltaTime );
 	}
 
