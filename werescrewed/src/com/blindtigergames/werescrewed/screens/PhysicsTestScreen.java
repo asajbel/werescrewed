@@ -80,6 +80,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 	@SuppressWarnings( "unused" )
 	RootSkeleton rootSkeleton;
 	Skeleton s1;
+	Skeleton groundSkeleton;
 	PlatformBuilder platBuilder;
 
 	private boolean debug = true;
@@ -109,8 +110,8 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		// entityManager = new EntityManager( );
 		SkeletonBuilder sb = new SkeletonBuilder( world );
 		rootSkeleton = sb.buildRoot( );
-		Skeleton groundSkeleton = sb.name("groundSkele").build( );
-		s1 = sb.position( 200, 100 ).kinematic( ).name( "s1" ).vert( 0, 0 )
+		groundSkeleton = sb.name("groundSkele").build( );
+		s1 = sb.position( 200, 100 ).kinematic( ).name( "movingSkeleton" ).vert( 0, 0 )
 				.vert( 200, 0 ).vert( 200, 200 ).vert( 0, 200 ).texBackground( WereScrewedGame.manager.get( "data/common/robot/alphabot_texture_skin.png",Texture.class  )).build( );
 		s1.setMoverAtCurrentState( new PathBuilder().begin( s1 ).target( 0, 200, 2 ).target( -200, 200, 2 ).target(0,0,3).build( ) );
 		groundSkeleton.addSkeleton( s1 );
@@ -118,12 +119,16 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 
 		platBuilder = new PlatformBuilder( world );
 		
-		TiledPlatform ground = platBuilder.position( 0,-100 ).name("ground").dimensions( 100,1 ).buildTilePlatform( );
+		TiledPlatform ground = platBuilder.position( 0,0 ).name("ground").dimensions( 100,1 ).buildTilePlatform( );
 		groundSkeleton.addPlatform( ground );
 		
-		TiledPlatform plat = platBuilder.position( 250,100 ).name( "platform1" ).dimensions( 4,1 ).buildTilePlatform( );
+		TiledPlatform plat = platBuilder.position( 350,200 ).name( "platform1" ).dimensions( 4,1 ).buildTilePlatform( );
 		s1.addPlatform( plat );
-
+		
+		plat = platBuilder.position( -450, 250 ).name( "non-moving plat").buildTilePlatform( );
+		groundSkeleton.addPlatform( plat );
+		
+		groundSkeleton.addSkeleton( sb.name( "non-moving skeleton" ).position( -200,-400 ).build( ) );
 		
 		
 		// Initialize listeners
@@ -137,9 +142,9 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		Gdx.app.setLogLevel( Application.LOG_DEBUG );
 		
 		player1 = new PlayerBuilder( ).name( "player1" ).world( world )
-				.position( 0f, 100f).buildPlayer( );
+				.position( 0f, 500f).buildPlayer( );
 		player2 = new PlayerBuilder( ).name( "player2" ).world( world )
-				.position( 0.0f, 100.0f ).buildPlayer( );
+				.position( 0.0f, 500.0f ).buildPlayer( );
 
 	}
 
@@ -181,6 +186,19 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 			debugTest = false;
 		} else
 			debugTest = true;
+		
+		if ( Gdx.input.isKeyPressed( Input.Keys.Z ) ) {
+			groundSkeleton.changeLocalRotationBy(-0.001f);
+		}
+		if ( Gdx.input.isKeyPressed( Input.Keys.X ) ) {
+			groundSkeleton.changeLocalRotationBy(0.001f);
+		}
+		if ( Gdx.input.isKeyPressed( Keys.C ) ) {
+			groundSkeleton.changeLocalPositionBy(-1f,-1f);
+		}
+		if ( Gdx.input.isKeyPressed( Keys.V ) ) {
+			groundSkeleton.changeLocalPositionBy(1f,1f);
+		}
 
 		player1.update( deltaTime );
 		player2.update( deltaTime );
@@ -189,7 +207,6 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		//progressManager.update( deltaTime );
 		// spikes.update( deltaTime );
 		
-		System.out.println( "Done updating\n" );
 		
 		batch.setProjectionMatrix( cam.combined( ) );
 		batch.begin( );

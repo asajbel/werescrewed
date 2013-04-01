@@ -44,10 +44,10 @@ public class Platform extends Entity {
 	 * Used for kinematic movement connected to skeleton. Pixels.
 	 */
 	protected Vector2 localPosition; // in pixels, local coordinate system
-	protected float localRotation; // in radians, local rot system
+	private float localRotation; // in radians, local rot system
 	protected Vector2 localLinearVelocity; // in meters/step
 	protected float localAngularVelocity; //
-	//protected Vector2 originPosition; // world position that this platform
+	protected Vector2 originPosition; // world position that this platform
 										// spawns
 										// at, in pixels
 
@@ -55,8 +55,6 @@ public class Platform extends Entity {
 
 	private Vector2 originRelativeToSkeleton; // box meters
 	
-	protected Vector2 targetPosition; //meters
-	protected float targetRotation; //radians
 
 	// ============================================
 	// Constructors
@@ -107,9 +105,9 @@ public class Platform extends Entity {
 		localPosition = new Vector2( 0, 0 );
 		localLinearVelocity = new Vector2( 0, 0 );
 		localRotation = 0;
-		//originPosition = pos.cpy( );
-		targetPosition = pos.mul( Util.PIXEL_TO_BOX ).cpy( );
-		targetRotation = body.getAngle( );
+		originPosition = pos.cpy( );
+		//targetPosition = pos.cpy( ).mul( Util.PIXEL_TO_BOX );
+		//targetRotation = 0;//body.getAngle( );
 		platType = PlatformType.DEFAULT; // set to default unless subclass sets
 											// it later in a constructor
 	}
@@ -164,9 +162,9 @@ public class Platform extends Entity {
 	 * 
 	 * @return
 	 */
-	/*public Vector2 getOriginPos( ) {
+	public Vector2 getOriginPos( ) {
 		return originPosition;
-	}*/
+	}
 
 	/**
 	 * set Origin Position Vector2 in PIXELS!!!
@@ -174,7 +172,7 @@ public class Platform extends Entity {
 	 * @param newLocalPos
 	 *            in PIXELS
 	 */
-	/*public void setOriginPos( Vector2 newOriginPosPixel ) {
+	public void setOriginPos( Vector2 newOriginPosPixel ) {
 		originPosition.x = newOriginPosPixel.x;
 		originPosition.y = newOriginPosPixel.y;
 	}
@@ -182,7 +180,7 @@ public class Platform extends Entity {
 	public void setOriginPos( float xPixel, float yPixel ) {
 		originPosition.x = xPixel;
 		originPosition.y = yPixel;
-	}*/
+	}
 
 	public Vector2 getLocLinearVel( ) {
 		return localLinearVelocity;
@@ -346,10 +344,12 @@ public class Platform extends Entity {
 	 * Set the position and angle of the kinematic platform based on the parent
 	 * skeleton's pos/rot. Use originPos & originalLocalRot
 	 * 
+	 * @param frameRate which is typically 1/deltaTime.
 	 * @param skeleton
+	 * 
 	 * @author stew
 	 */
-	public void setPosRotFromSkeleton( float deltaTime, Skeleton skeleton ) {
+	public void setTargetPosRotFromSkeleton( float frameRate, Skeleton skeleton ) {
 		//System.out.println(name+": setting pos from skele: "+skeleton.name);
 		Vector2 posOnSkeleLocalMeter = originRelativeToSkeleton.cpy( ).add(
 				skeleton.localPosition.cpy( ).add( localPosition )
@@ -359,14 +359,17 @@ public class Platform extends Entity {
 		float newAngleFromSkeleton = skeleton.body.getAngle( )
 				+ Util.angleBetweenPoints( Vector2.Zero, posOnSkeleLocalMeter );
 
-		targetPosition = Util.PointOnCircle(
+		Vector2 targetPosition = Util.PointOnCircle(
 				radiusFromSkeletonMeters, newAngleFromSkeleton,
 				skeleton.getPosition( ) );
-		targetRotation = localRotation + skeleton.body.getAngle( );
+		float targetRotation = localRotation + skeleton.body.getAngle( );
 		
-		float frameRate = 1 / deltaTime;
 		body.setLinearVelocity( targetPosition.sub(body.getPosition( ) ).mul( frameRate ) );
 		body.setAngularVelocity( ( targetRotation - body.getAngle( ) ) * frameRate );
+		
+		//set the velocity targets based on framerate
+		//targetPosition.mul( frameRate );
+		//targetRotation *= frameRate;
 
 		/*
 		 * float radiusFromSkeleton = originPosition.cpy( ).sub(
@@ -407,6 +410,23 @@ public class Platform extends Entity {
 
 	public void setOriginRelativeToSkeleton( Vector2 originRelativeToSkeleton ) {
 		this.originRelativeToSkeleton = originRelativeToSkeleton;
+	}
+
+	/**
+	 * For debug purposes
+	 * @param changeInRadians
+	 */
+	public void changeLocalRotationBy(float changeInRadians ) {
+		localRotation += changeInRadians;
+	}
+
+	/**
+	 * For debug purposes
+	 * @param x pixel
+	 * @param y pixel
+	 */
+	public void changeLocalPositionBy(float xPixel, float yPixel){
+		localPosition.add( xPixel,yPixel );
 	}
 
 }

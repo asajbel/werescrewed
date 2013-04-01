@@ -22,7 +22,7 @@ public class RootSkeleton extends Skeleton {
 		skeletonToSetActive = new ArrayList< Skeleton >( );
 		skeletonToSetInactive = new ArrayList< Skeleton >( );
 		skeletonsToDelete = new ArrayList< Skeleton >( );
-		parentSkeleton = null;
+		parentSkeleton = this;
 		rootSkeleton = this;
 	}
 
@@ -85,60 +85,63 @@ public class RootSkeleton extends Skeleton {
 		setSkeletonListActiveState( skeletonToSetActive, true );
 		setSkeletonListActiveState( skeletonToSetInactive, false );
 		deleteSkeletons( );
-
-		// recursively update all skeleton movers
-		updateChildSkeletonMovers( deltaTime );
-
-		for ( Entity entity : looseEntity ) {
-			entity.updateMover( deltaTime );
-			entity.update( deltaTime );
-		}
-		// update all children platform IMovers on their imover local coord
-		// system
-		updateEntityMovers( deltaTime );
+		super.update( deltaTime );
 		
 
-		// recursively move all children skeletons by this moved updated
-		// pos*rot.
-		// setPosRotChildSkeletons( deltaTime );
-		for ( Skeleton childSkeleton : childSkeletonMap.values( ) ) {
-			// this could
-			if ( childSkeleton.isActive( ) && childSkeleton.isKinematic( ) ) {
-				childSkeleton.setPosRotFromSkeleton( deltaTime, this );
-			}
-			childSkeleton.setPosRotChildSkeletons( deltaTime );
-
-		}
-
-		// Now we can rotate all kinematic entities connected by updated
-		// skeleton rot / position
-		for ( Skeleton childSkeleton : childSkeletonMap.values( ) ) {
-
-			if ( childSkeleton.fgSprite != null ) {
-				childSkeleton.fgSprite.setPosition(
-						childSkeleton.getPositionPixel( ).x,
-						childSkeleton.getPositionPixel( ).y );
-				childSkeleton.fgSprite.setRotation( MathUtils.radiansToDegrees
-						* childSkeleton.body.getAngle( ) );
-			}
-			if ( childSkeleton.bgSprite != null ) {
-				childSkeleton.bgSprite.setPosition(
-						childSkeleton.getPositionPixel( ).x,
-						childSkeleton.getPositionPixel( ).y );
-				childSkeleton.bgSprite.setRotation( MathUtils.radiansToDegrees
-						* childSkeleton.body.getAngle( ) );
-			}
-			childSkeleton.setPosRotAllKinematicPlatforms( deltaTime );
-			// childSkeleton.update( deltaTime );
-			childSkeleton.updateChildren( deltaTime );
-		}
-
-		// Update children animations and stuff
-		// for ( Skeleton childSkeleton : childSkeletonMap.values( ) ){
-		// childSkeleton.updateChildren( deltaTime );
-		// }
-
-		// super.update( deltaTime );
+		//Everything below is the old RootSkeleton update
+//		// recursively update all skeleton movers
+//		updateChildSkeletonMovers( deltaTime );
+//
+//		for ( Entity entity : looseEntity ) {
+//			entity.updateMover( deltaTime );
+//			entity.update( deltaTime );
+//		}
+//		// update all children platform IMovers on their imover local coord
+//		// system
+//		updateEntityMovers( deltaTime );
+//		
+//
+//		// recursively move all children skeletons by this moved updated
+//		// pos*rot.
+//		// setPosRotChildSkeletons( deltaTime );
+//		for ( Skeleton childSkeleton : childSkeletonMap.values( ) ) {
+//			// this could
+//			if ( childSkeleton.isActive( ) && childSkeleton.isKinematic( ) ) {
+//				childSkeleton.setPosRotFromSkeleton( deltaTime, this );
+//			}
+//			childSkeleton.setPosRotChildSkeletons( deltaTime );
+//
+//		}
+//
+//		// Now we can rotate all kinematic entities connected by updated
+//		// skeleton rot / position
+//		for ( Skeleton childSkeleton : childSkeletonMap.values( ) ) {
+//
+//			if ( childSkeleton.fgSprite != null ) {
+//				childSkeleton.fgSprite.setPosition(
+//						childSkeleton.getPositionPixel( ).x,
+//						childSkeleton.getPositionPixel( ).y );
+//				childSkeleton.fgSprite.setRotation( MathUtils.radiansToDegrees
+//						* childSkeleton.body.getAngle( ) );
+//			}
+//			if ( childSkeleton.bgSprite != null ) {
+//				childSkeleton.bgSprite.setPosition(
+//						childSkeleton.getPositionPixel( ).x,
+//						childSkeleton.getPositionPixel( ).y );
+//				childSkeleton.bgSprite.setRotation( MathUtils.radiansToDegrees
+//						* childSkeleton.body.getAngle( ) );
+//			}
+//			childSkeleton.setPosRotAllKinematicPlatforms( deltaTime );
+//			// childSkeleton.update( deltaTime );
+//			childSkeleton.updateChildEntities( deltaTime );
+//		}
+//
+//		// Update children animations and stuff
+//		// for ( Skeleton childSkeleton : childSkeletonMap.values( ) ){
+//		// childSkeleton.updateChildren( deltaTime );
+//		// }
+//
+//		// super.update( deltaTime );
 	}
 
 	/**

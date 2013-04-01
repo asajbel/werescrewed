@@ -182,7 +182,7 @@ public class Skeleton extends Platform {
 		}
 		dynamicPlatformMap.put( platform.name, platform );
 		platform.setParentSkeleton( this );
-		platform.setOriginRelativeToSkeleton( platform.getPosition( ).cpy( ).sub( (getPosition( ) )));
+		platform.setOriginRelativeToSkeleton( platform.getPosition( ).cpy( ).sub( getPosition( ) ));
 	}
 
 	/**
@@ -361,17 +361,56 @@ public class Skeleton extends Platform {
 	 */
 	@Override
 	public void update( float deltaTime ) {
-		// super.update( deltaTime );
-
 		if ( isActive( ) ){
+			float frameRate = 1/deltaTime;
 			updateMover( deltaTime );
-			if ( !parentSkeleton.equals( rootSkeleton )){
-				super.setPosRotFromSkeleton( deltaTime, parentSkeleton );
+			if( entityType != EntityType.ROOTSKELETON ){
+				Skeleton target;
+				//if ( parentSkeleton.equals( rootSkeleton )){
+				//	target = this;
+				//}else{
+					target = parentSkeleton;
+				//}
+				super.setTargetPosRotFromSkeleton( frameRate, target );
 			}
 			updateEntityMovers(deltaTime);
-			setPosRotAllKinematicPlatforms( deltaTime );
+			for ( Platform platform : dynamicPlatformMap.values( ) ) {
+				platform.updateMover( deltaTime );
+				platform.update( deltaTime );
+			}
+			for ( Platform platform : kinematicPlatformMap.values( ) ) {
+				platform.updateMover( deltaTime );
+				platform.setTargetPosRotFromSkeleton( frameRate, this );
+				platform.update( deltaTime );
+			}
+			for ( Screw screw : screwMap.values( ) ) {
+				screw.update( deltaTime );
+			}
+			for ( Rope rope : ropeMap.values( ) ) {
+				rope.update( deltaTime );
+			}
+
+			for ( Rope rope : ropeMap.values( ) ) {
+				rope.update( deltaTime );
+			}
+
+			Vector2 pixelPos = null;
+			if ( fgSprite != null ) {
+				pixelPos = getPosition( ).mul( Util.BOX_TO_PIXEL );
+				fgSprite.setPosition( pixelPos.x - offset.x, pixelPos.y - offset.y );
+				fgSprite.setRotation( MathUtils.radiansToDegrees * getAngle( ) );
+			}
+			if ( bgSprite != null ) {
+				if(pixelPos==null)
+					pixelPos = getPosition().mul( Util.BOX_TO_PIXEL );
+				bgSprite.setPosition( pixelPos.x - offset.x, pixelPos.y - offset.y );
+				bgSprite.setRotation( MathUtils.radiansToDegrees * getAngle( ) );
+			}
 		}
-		
+		//recursively update child skeletons
+		for ( Skeleton skeleton : childSkeletonMap.values( ) ){
+			skeleton.update( deltaTime );
+		}
 		
 		//Everything below is the old skeleton update
 //		// update root skeleton imover
@@ -448,13 +487,12 @@ public class Skeleton extends Platform {
 	 * 
 	 * @author stew
 	 */
-	protected void updateChildren( float deltaTime ) {
+	protected void updateChildEntities( float deltaTime ) {
 		// update sub skeleton and bones
-		// update( deltaTime );
-		for ( Skeleton skeleton : childSkeletonMap.values( ) ) {
-			skeleton.updateChildren( deltaTime );
-		}
-		if ( this.isActive( ) ) {
+//		for ( Skeleton skeleton : childSkeletonMap.values( ) ) {
+//			skeleton.updateChildren( deltaTime );
+//		}
+//		if ( this.isActive( ) ) {
 			for ( Platform p : dynamicPlatformMap.values( ) ) {
 				p.update( deltaTime );
 			}
@@ -480,7 +518,7 @@ public class Skeleton extends Platform {
 			for ( Rope rope : ropeMap.values( ) ) {
 				rope.update( deltaTime );
 			}
-		}
+		//}
 	}
 
 	/**
@@ -560,7 +598,7 @@ public class Skeleton extends Platform {
 	protected void setPosRotChildSkeletons( float deltaTime ) {
 		for ( Skeleton skeleton : childSkeletonMap.values( ) ) {
 			if ( skeleton.isKinematic( ) && skeleton.isActive( ) ){
-				skeleton.setPosRotFromSkeleton( deltaTime, this );
+				skeleton.setTargetPosRotFromSkeleton( deltaTime, this );
 			}
 			// now recursively apply this change to child skeletons
 			
@@ -577,12 +615,12 @@ public class Skeleton extends Platform {
 //			skeleton.setPosRotAllKinematicPlatforms( deltaTime );
 //		}
 		// then set all kin platforms of this skeleton
-		if ( isActive( ) ) {
+		//if ( isActive( ) ) {
 			for ( Platform platform : kinematicPlatformMap.values( ) ) {
-				System.out.println( name+": setting posRot for platform by name: "+platform.name );
-				platform.setPosRotFromSkeleton( deltaTime, this );
+				//System.out.println( name+": setting posRot for platform by name: "+platform.name );
+				platform.setTargetPosRotFromSkeleton( deltaTime, this );
 			}
-		}
+		//}
 	}
 
 	private String getUniqueName( String nonUniqueName ) {
