@@ -373,7 +373,6 @@ public class Skeleton extends Platform {
 				//}
 				super.setTargetPosRotFromSkeleton( frameRate, target );
 			}
-			updateEntityMovers(deltaTime);
 			for ( Platform platform : dynamicPlatformMap.values( ) ) {
 				platform.updateMover( deltaTime );
 				platform.update( deltaTime );
@@ -386,10 +385,6 @@ public class Skeleton extends Platform {
 			for ( Screw screw : screwMap.values( ) ) {
 				screw.update( deltaTime );
 			}
-			for ( Rope rope : ropeMap.values( ) ) {
-				rope.update( deltaTime );
-			}
-
 			for ( Rope rope : ropeMap.values( ) ) {
 				rope.update( deltaTime );
 			}

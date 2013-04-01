@@ -125,10 +125,10 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		TiledPlatform plat = platBuilder.position( 350,200 ).name( "platform1" ).dimensions( 4,1 ).buildTilePlatform( );
 		s1.addPlatform( plat );
 		
-		plat = platBuilder.position( -450, 250 ).name( "non-moving plat").buildTilePlatform( );
-		groundSkeleton.addPlatform( plat );
+		//plat = platBuilder.position( -450, 250 ).name( "non-moving plat").buildTilePlatform( );
+		//groundSkeleton.addPlatform( plat );
 		
-		groundSkeleton.addSkeleton( sb.name( "non-moving skeleton" ).position( -200,-400 ).build( ) );
+		//groundSkeleton.addSkeleton( sb.name( "non-moving skeleton" ).position( -200,-400 ).build( ) );
 		
 		
 		// Initialize listeners
@@ -188,10 +188,10 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 			debugTest = true;
 		
 		if ( Gdx.input.isKeyPressed( Input.Keys.Z ) ) {
-			groundSkeleton.changeLocalRotationBy(-0.001f);
+			groundSkeleton.changeLocalRotationBy(-0.01f);
 		}
 		if ( Gdx.input.isKeyPressed( Input.Keys.X ) ) {
-			groundSkeleton.changeLocalRotationBy(0.001f);
+			groundSkeleton.changeLocalRotationBy(0.01f);
 		}
 		if ( Gdx.input.isKeyPressed( Keys.C ) ) {
 			groundSkeleton.changeLocalPositionBy(-1f,-1f);

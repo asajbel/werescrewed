@@ -350,26 +350,24 @@ public class Platform extends Entity {
 	 * @author stew
 	 */
 	public void setTargetPosRotFromSkeleton( float frameRate, Skeleton skeleton ) {
-		//System.out.println(name+": setting pos from skele: "+skeleton.name);
+		if(name.equals( "movingSkeleton" )){
+			System.out.println( "movingSkele: "+localPosition );
+		}
 		Vector2 posOnSkeleLocalMeter = originRelativeToSkeleton.cpy( ).add(
 				skeleton.localPosition.cpy( ).add( localPosition )
 						.mul( Util.PIXEL_TO_BOX ) );
 		float radiusFromSkeletonMeters = posOnSkeleLocalMeter.len( );
-		// skeleton's local rot already accounted for
 		float newAngleFromSkeleton = skeleton.body.getAngle( )
 				+ Util.angleBetweenPoints( Vector2.Zero, posOnSkeleLocalMeter );
 
 		Vector2 targetPosition = Util.PointOnCircle(
 				radiusFromSkeletonMeters, newAngleFromSkeleton,
-				skeleton.getPosition( ) );
-		float targetRotation = localRotation + skeleton.body.getAngle( );
+				skeleton.getPosition( ) ).sub(body.getPosition( ));
+		float targetRotation = localRotation + skeleton.body.getAngle( ) - body.getAngle( );
 		
-		body.setLinearVelocity( targetPosition.sub(body.getPosition( ) ).mul( frameRate ) );
-		body.setAngularVelocity( ( targetRotation - body.getAngle( ) ) * frameRate );
-		
-		//set the velocity targets based on framerate
-		//targetPosition.mul( frameRate );
-		//targetRotation *= frameRate;
+		body.setLinearVelocity( targetPosition.mul( frameRate ) );
+		body.setAngularVelocity(  targetRotation * frameRate );
+
 
 		/*
 		 * float radiusFromSkeleton = originPosition.cpy( ).sub(
