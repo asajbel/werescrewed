@@ -110,6 +110,7 @@ public class Platform extends Entity {
 		//targetRotation = 0;//body.getAngle( );
 		platType = PlatformType.DEFAULT; // set to default unless subclass sets
 											// it later in a constructor
+		originRelativeToSkeleton = new Vector2();
 	}
 
 	// ============================================
@@ -132,8 +133,7 @@ public class Platform extends Entity {
 	 *            in PIXELS
 	 */
 	public void setLocalPos( Vector2 newLocalPosPixel ) {
-		localPosition.x = newLocalPosPixel.x;
-		localPosition.y = newLocalPosPixel.y;
+		setLocalPos( newLocalPosPixel.x, newLocalPosPixel.y );
 	}
 
 	public void setLocalPos( float xPixel, float yPixel ) {
@@ -218,25 +218,6 @@ public class Platform extends Entity {
 	@Override
 	public void update( float deltaTime ) {
 		super.update( deltaTime );
-//		// Basic velocity so that platforms can do friction
-//		// Uhhhhhh... false && [anything] is false. This body never happens
-//		if ( false && body.getType( ) == BodyType.KinematicBody ) {
-//			body.setAngularVelocity( localAngularVelocity );
-//			float x = localLinearVelocity.x;
-//			float y = localLinearVelocity.y;
-//			float angle = body.getAngle( );
-//			// rotate a vector
-//			localLinearVelocity.x = ( float ) ( ( x * Math.cos( angle ) ) - ( y * Math
-//					.sin( angle ) ) );
-//			localLinearVelocity.y = ( float ) ( ( y * Math.cos( angle ) ) - ( x * Math
-//					.sin( angle ) ) );
-//			body.setLinearVelocity( localLinearVelocity );
-//			localPosition = localPosition.add( localLinearVelocity );
-//		}
-		
-
-		body.setActive( true );
-		body.setAwake( true );
 		for ( Screw s : screws ) {
 			s.update( deltaTime );
 		}
@@ -253,11 +234,6 @@ public class Platform extends Entity {
 		for ( Screw s : screws ) {
 			s.remove( );
 		}
-		/*while ( body.getJointList( ).iterator( ).hasNext( ) ) {
-			world.destroyJoint( body.getJointList( ).get( 0 ).joint );
-		}
-		world.destroyBody( body );*/
-		//the super entity.update() will have already removed this body
 		getParentSkeleton( ).remove( this );
 	}
 
@@ -342,7 +318,7 @@ public class Platform extends Entity {
 
 	/**
 	 * Set the position and angle of the kinematic platform based on the parent
-	 * skeleton's pos/rot. Use originPos & originalLocalRot
+	 * skeleton's pos/rot. Now better than ever!
 	 * 
 	 * @param frameRate which is typically 1/deltaTime.
 	 * @param skeleton
@@ -350,12 +326,9 @@ public class Platform extends Entity {
 	 * @author stew
 	 */
 	public void setTargetPosRotFromSkeleton( float frameRate, Skeleton skeleton ) {
-		if(name.equals( "movingSkeleton" )){
-			System.out.println( "movingSkele: "+localPosition );
-		}
+		if ( skeleton != null ){
 		Vector2 posOnSkeleLocalMeter = originRelativeToSkeleton.cpy( ).add(
-				skeleton.localPosition.cpy( ).add( localPosition )
-						.mul( Util.PIXEL_TO_BOX ) );
+				 localPosition.cpy().mul( Util.PIXEL_TO_BOX ) );
 		float radiusFromSkeletonMeters = posOnSkeleLocalMeter.len( );
 		float newAngleFromSkeleton = skeleton.body.getAngle( )
 				+ Util.angleBetweenPoints( Vector2.Zero, posOnSkeleLocalMeter );
@@ -367,25 +340,7 @@ public class Platform extends Entity {
 		
 		body.setLinearVelocity( targetPosition.mul( frameRate ) );
 		body.setAngularVelocity(  targetRotation * frameRate );
-
-
-		/*
-		 * float radiusFromSkeleton = originPosition.cpy( ).sub(
-		 * skeleton.originPosition ).add( localPosition ) .mul(
-		 * Util.PIXEL_TO_BOX ).len( ); // update angle between platform and
-		 * skeleton Vector2 skeleOrigin = skeleton.body.getPosition( ); float
-		 * newAngleFromSkeleton = skeleton.body.getAngle( ) +
-		 * Util.angleBetweenPoints( skeleOrigin, originPosition.cpy( ) .add(
-		 * localPosition ).mul( Util.PIXEL_TO_BOX ) );
-		 * 
-		 * float newRotation = localRotation + skeleton.body.getAngle( );
-		 * Vector2 newPos = Util.PointOnCircle( radiusFromSkeleton,
-		 * newAngleFromSkeleton, skeleOrigin );
-		 * 
-		 * float frameRate = 1 / deltaTime; body.setLinearVelocity( newPos.sub(
-		 * body.getPosition( ) ).mul( frameRate ) ); body.setAngularVelocity( (
-		 * newRotation - body.getAngle( ) ) * frameRate );
-		 */
+		}
 	}
 
 	@Override
@@ -410,21 +365,6 @@ public class Platform extends Entity {
 		this.originRelativeToSkeleton = originRelativeToSkeleton;
 	}
 
-	/**
-	 * For debug purposes
-	 * @param changeInRadians
-	 */
-	public void changeLocalRotationBy(float changeInRadians ) {
-		localRotation += changeInRadians;
-	}
 
-	/**
-	 * For debug purposes
-	 * @param x pixel
-	 * @param y pixel
-	 */
-	public void changeLocalPositionBy(float xPixel, float yPixel){
-		localPosition.add( xPixel,yPixel );
-	}
 
 }

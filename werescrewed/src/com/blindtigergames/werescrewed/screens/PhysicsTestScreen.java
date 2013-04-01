@@ -113,7 +113,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		groundSkeleton = sb.name("groundSkele").build( );
 		s1 = sb.position( 200, 100 ).kinematic( ).name( "movingSkeleton" ).vert( 0, 0 )
 				.vert( 200, 0 ).vert( 200, 200 ).vert( 0, 200 ).texBackground( WereScrewedGame.manager.get( "data/common/robot/alphabot_texture_skin.png",Texture.class  )).build( );
-		s1.setMoverAtCurrentState( new PathBuilder().begin( s1 ).target( 0, 200, 2 ).target( -200, 200, 2 ).target(0,0,3).build( ) );
+		//s1.setMoverAtCurrentState( new PathBuilder().begin( s1 ).target( 0, 200, 2 ).target( -200, 200, 2 ).target(0,0,3).build( ) );
 		groundSkeleton.addSkeleton( s1 );
 		rootSkeleton.addSkeleton( groundSkeleton );
 
@@ -122,8 +122,9 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		TiledPlatform ground = platBuilder.position( 0,0 ).name("ground").dimensions( 100,1 ).buildTilePlatform( );
 		groundSkeleton.addPlatform( ground );
 		
-		TiledPlatform plat = platBuilder.position( 350,200 ).name( "platform1" ).dimensions( 4,1 ).buildTilePlatform( );
+		TiledPlatform plat = platBuilder.position( 350,200 ).name( "movingPlat" ).dimensions( 4,1 ).buildTilePlatform( );
 		s1.addPlatform( plat );
+		plat.setMoverAtCurrentState( new PathBuilder( ).begin(plat).target( 100, 100, 1 ).target( -100, 100, 2 ).target( 0, 0, 1.7f ).target( -200, -200, 1.4f ).target( 0, 0, 1f ).build( ) );
 		
 		//plat = platBuilder.position( -450, 250 ).name( "non-moving plat").buildTilePlatform( );
 		//groundSkeleton.addPlatform( plat );
@@ -188,16 +189,16 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 			debugTest = true;
 		
 		if ( Gdx.input.isKeyPressed( Input.Keys.Z ) ) {
-			groundSkeleton.changeLocalRotationBy(-0.01f);
+			groundSkeleton.rotateBy( -0.01f );
 		}
 		if ( Gdx.input.isKeyPressed( Input.Keys.X ) ) {
-			groundSkeleton.changeLocalRotationBy(0.01f);
+			groundSkeleton.rotateBy( 0.01f);
 		}
 		if ( Gdx.input.isKeyPressed( Keys.C ) ) {
-			groundSkeleton.changeLocalPositionBy(-1f,-1f);
+			groundSkeleton.translateBy( -1f, -1f );
 		}
 		if ( Gdx.input.isKeyPressed( Keys.V ) ) {
-			groundSkeleton.changeLocalPositionBy(1f,1f);
+			groundSkeleton.translateBy( 1f, 1f );
 		}
 
 		player1.update( deltaTime );

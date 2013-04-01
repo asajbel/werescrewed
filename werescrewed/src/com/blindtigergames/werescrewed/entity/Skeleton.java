@@ -250,15 +250,6 @@ public class Skeleton extends Platform {
 		for ( Screw screw : screwMap.values( ) ) {
 			screw.body.setAwake( isAwake );
 		}
-
-		// //TODO: add ropes to this function
-		// Iterator< Map.Entry< String, Rope > > ropeIt = ropeMap.entrySet( )
-		// .iterator( );
-		// Map.Entry< String, Rope > ropeToUpdate;
-		// while ( ropeIt.hasNext( ) ) {
-		// ropeToUpdate = ropeIt.next( );
-		// ropeToUpdate.getValue( ).body.setAwake( isAwake );
-		// }
 	}
 
 	/**
@@ -303,45 +294,6 @@ public class Skeleton extends Platform {
 		/* TODO: add ropes */
 	}
 
-	//
-	// public ArrayList< Entity > getAllEntity(){
-	// ArrayList< Entity > entities = new ArrayList< Entity >( );
-	// for ( Platform platform : dynamicPlatformMap.values( ) ) {
-	// entities.add( platform );
-	// }
-	// for ( Platform platform : kinematicPlatformMap.values( ) ) {
-	// entities.add( platform );
-	// }
-	// }
-
-	/**
-	 * translate the skeletons with specified values
-	 * 
-	 * @param x
-	 *            - meters in X axis
-	 * @param y
-	 *            - meters in Y axis
-	 */
-	public void translateBy( float x, float y ) {
-		body.setTransform( body.getPosition( ).x + x,
-				body.getPosition( ).y + y, body.getAngle( ) );
-		setSkeletonAwakeRec( true );
-		// setSkeletonActive(true);
-	}
-
-	/**
-	 * Rotate skeleton in radians
-	 * 
-	 * @author stew
-	 */
-	public void rotateBy( float angleRadians ) {
-		/*
-		 * body.setTransform( body.getTransform( ) .getPosition( ),
-		 * body.getTransform( ).getRotation( )+angleRadians );
-		 */
-		body.setTransform( body.getPosition( ), body.getAngle( ) + angleRadians );
-		setSkeletonAwakeRec( true );
-	}
 
 	/**
 	 * finds the skeleton with this name
@@ -365,13 +317,7 @@ public class Skeleton extends Platform {
 			float frameRate = 1/deltaTime;
 			updateMover( deltaTime );
 			if( entityType != EntityType.ROOTSKELETON ){
-				Skeleton target;
-				//if ( parentSkeleton.equals( rootSkeleton )){
-				//	target = this;
-				//}else{
-					target = parentSkeleton;
-				//}
-				super.setTargetPosRotFromSkeleton( frameRate, target );
+				super.setTargetPosRotFromSkeleton( frameRate, parentSkeleton );
 			}
 			for ( Platform platform : dynamicPlatformMap.values( ) ) {
 				platform.updateMover( deltaTime );
@@ -406,115 +352,8 @@ public class Skeleton extends Platform {
 		for ( Skeleton skeleton : childSkeletonMap.values( ) ){
 			skeleton.update( deltaTime );
 		}
-		
-		//Everything below is the old skeleton update
-//		// update root skeleton imover
-//		updateMover( deltaTime );
-//		// followed by children skeleton imovers
-//
-//		updateChildSkeletonMovers( deltaTime );
-//
-//		// update all children platform IMovers on their imover local coord
-//		// system
-//		updateEntityMovers( deltaTime );
-//
-//		// recursively move all children skeletons by this moved updated
-//		// pos*rot.
-//		setPosRotChildSkeletons( deltaTime );
-//
-//		// Now we can rotate all kinematic entities connected by updated
-//		// skeleton rot / position
-//		setPosRotAllKinematicPlatforms( deltaTime );
-//
-//		// Update children animations and stuff
-//		updateChildren( deltaTime );
-//		
-//		Vector2 bodyPos = body.getPosition( ).mul( Util.BOX_TO_PIXEL );
-//
-//		if ( fgSprite != null ) {
-//			fgSprite.setPosition( bodyPos.x - offset.x, bodyPos.y - offset.y );
-//			fgSprite.setRotation( MathUtils.radiansToDegrees * body.getAngle( ) );
-//		}
-//		if ( bgSprite != null ) {
-//			bgSprite.setPosition( bodyPos.x - offset.x, bodyPos.y - offset.y );
-//			bgSprite.setRotation( MathUtils.radiansToDegrees * body.getAngle( ) );
-//		}
 	}
 
-	/**
-	 * Update all sub skeleton movers recursively
-	 * 
-	 * @param deltaTime
-	 * @author stew
-	 */
-	protected void updateChildSkeletonMovers( float deltaTime ) {
-		for ( Skeleton skeleton : childSkeletonMap.values( ) ) {
-			if ( skeleton.isActive( ) && skeleton.isKinematic( ) ) {
-				skeleton.updateMover( deltaTime );
-			}
-			skeleton.updateChildSkeletonMovers( deltaTime );
-		}
-	}
-
-	/**
-	 * Update movers of all children platforms
-	 * 
-	 * @param deltaTime
-	 * @author stew
-	 */
-	private void updateEntityMovers( float deltaTime ) {
-		/*for ( Skeleton skeleton : childSkeletonMap.values( ) ) {
-			skeleton.updateEntityMovers( deltaTime );
-		}
-		if ( this.isActive( ) ) {*/
-			for ( Platform platform : dynamicPlatformMap.values( ) ) {
-				platform.updateMover( deltaTime );
-			}
-			for ( Platform platform : kinematicPlatformMap.values( ) ) {
-				platform.updateMover( deltaTime );
-			}
-		//}
-		/* TODO: add ropes and loose entity */
-	}
-
-	/****
-	 * Update all sub-skeleton and bones on this skeleton
-	 * 
-	 * @author stew
-	 */
-	protected void updateChildEntities( float deltaTime ) {
-		// update sub skeleton and bones
-//		for ( Skeleton skeleton : childSkeletonMap.values( ) ) {
-//			skeleton.updateChildren( deltaTime );
-//		}
-//		if ( this.isActive( ) ) {
-			for ( Platform p : dynamicPlatformMap.values( ) ) {
-				p.update( deltaTime );
-			}
-			for ( Platform p : kinematicPlatformMap.values( ) ) {
-				p.update( deltaTime );
-			}
-			// loop through screws update them
-			// and then delete them if necessary
-			// while ( screwMap.iterator( ).hasNext( ) ) {
-			// Screw s = screwMap.iterator( ).next( );
-			// s.update( deltaTime );
-			// if ( s.getRemoveNextStep( ) ) {
-			// screwMap.remove( s );
-			// }
-			// }
-			for ( Screw screw : screwMap.values( ) ) {
-				screw.update( deltaTime );
-			}
-			for ( Rope rope : ropeMap.values( ) ) {
-				rope.update( deltaTime );
-			}
-
-			for ( Rope rope : ropeMap.values( ) ) {
-				rope.update( deltaTime );
-			}
-		//}
-	}
 
 	/**
 	 * removes the bodies and joints of all the skeletons children
@@ -586,49 +425,8 @@ public class Skeleton extends Platform {
 		}
 	}
 
-	/**
-	 * update child skeletons based on rotation & position of this skeleton
-	 * TODO: OPTIMIZATION only call this when the skeleton has moved / rotated
-	 */
-	protected void setPosRotChildSkeletons( float deltaTime ) {
-		for ( Skeleton skeleton : childSkeletonMap.values( ) ) {
-			if ( skeleton.isKinematic( ) && skeleton.isActive( ) ){
-				skeleton.setTargetPosRotFromSkeleton( deltaTime, this );
-			}
-			// now recursively apply this change to child skeletons
-			
-			skeleton.setPosRotChildSkeletons( deltaTime );
-		}
-	}
-
-	/**
-	 * @author stew
-	 */
-	protected void setPosRotAllKinematicPlatforms( float deltaTime ) {
-		// first recursively set all kin platforms position
-//		for ( Skeleton skeleton : childSkeletonMap.values( ) ) {
-//			skeleton.setPosRotAllKinematicPlatforms( deltaTime );
-//		}
-		// then set all kin platforms of this skeleton
-		//if ( isActive( ) ) {
-			for ( Platform platform : kinematicPlatformMap.values( ) ) {
-				//System.out.println( name+": setting posRot for platform by name: "+platform.name );
-				platform.setTargetPosRotFromSkeleton( deltaTime, this );
-			}
-		//}
-	}
-
 	private String getUniqueName( String nonUniqueName ) {
 		return nonUniqueName + "-NON-UNIQUE-NAME_" + entityCount;
-	}
-
-	public RootSkeleton getRoot( ) {
-		if ( getParentSkeleton( ).entityType == EntityType.ROOTSKELETON ) {
-			return ( RootSkeleton ) getParentSkeleton( );
-		} else {
-			return getParentSkeleton( ).getRoot( );
-		}
-
 	}
 
 	/**
@@ -641,7 +439,7 @@ public class Skeleton extends Platform {
 	public void deleteSkeletonByName( String skeleName ) {
 		for ( Skeleton s : childSkeletonMap.values( ) ) {
 			if ( s.name.equals( skeleName ) ) {
-				getRoot( ).destroySkeleton( s );
+				rootSkeleton.destroySkeleton( s );
 				break;
 			} else {
 				s.deleteSkeletonByName( skeleName );
@@ -690,5 +488,29 @@ public class Skeleton extends Platform {
 			dynamicPlatformMap.remove( platformToRemove );
 		}
 	}
+	
+	/**
+	 * Generally for debug purposes
+	 * @param angleInRadians
+	 */
+	public void rotateBy(float angleInRadians){
+		setLocalRot( getLocalRot( )+ angleInRadians );
+	}
+	
+	/**
+	 * For debugging
+	 * @param xPixel
+	 * @param yPixel
+	 */
+	public void translateBy(float xPixel, float yPixel ){
+		setLocalPos( getLocalPos( ).add( xPixel,yPixel ));
+	}
 
+	/**
+	 * A less recursive get root function!
+	 * @return Root skeleton of this skeleton
+	 */
+	public RootSkeleton getRoot(){
+		return rootSkeleton;
+	}
 }

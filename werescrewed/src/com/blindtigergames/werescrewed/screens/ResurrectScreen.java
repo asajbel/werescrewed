@@ -307,10 +307,10 @@ public class ResurrectScreen implements com.badlogic.gdx.Screen {
 
 		if ( Gdx.input.isKeyPressed( Keys.SPACE ) ) {
 			if ( !switchBg ) {
-				bgRootSkel.getSubEntity( "bg_2_0" ).changeSprite( new Sprite ( WereScrewedGame.manager.get( WereScrewedGame.dirHandle
+				bgRootSkel.getLooseEntity( "bg_2_0" ).changeSprite( new Sprite ( WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 						+ "/common/parallax_layer3_0.png",
 						Texture.class ) ) );
-				bgRootSkel.getSubEntity( "bg_2_1" ).changeSprite( new Sprite ( WereScrewedGame.manager.get( WereScrewedGame.dirHandle
+				bgRootSkel.getLooseEntity( "bg_2_1" ).changeSprite( new Sprite ( WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 						+ "/common/parallax_layer3_1.png",
 						Texture.class ) ) );
 				switchBg = true;
@@ -318,10 +318,10 @@ public class ResurrectScreen implements com.badlogic.gdx.Screen {
 		}
 		if ( Gdx.input.isKeyPressed( Keys.B ) ) {
 			if ( switchBg ) {
-				bgRootSkel.getSubEntity( "bg_2_0" ).changeSprite( new Sprite ( WereScrewedGame.manager.get( WereScrewedGame.dirHandle
+				bgRootSkel.getLooseEntity( "bg_2_0" ).changeSprite( new Sprite ( WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 						+ "/common/parallax_layer2_0.png",
 						Texture.class ) ) );
-				bgRootSkel.getSubEntity( "bg_2_1" ).changeSprite( new Sprite ( WereScrewedGame.manager.get( WereScrewedGame.dirHandle
+				bgRootSkel.getLooseEntity( "bg_2_1" ).changeSprite( new Sprite ( WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 						+ "/common/parallax_layer2_1.png",
 						Texture.class ) ) );
 				switchBg = false;
