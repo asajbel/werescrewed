@@ -1,8 +1,10 @@
 ##sounds
 /common/sounds/inceptionbutton.mp3
 /common/sounds/jump.ogg
-/common/sounds/WilhelmScream.mp3
+/common/sounds/WilhelmScream.ogg
 /common/sounds/TrainJob.mp3
+/common/sounds/loopTrain.mp3
+/common/sounds/introTrain.mp3
 
 ##texture atlas
 /common/tileset1.pack
@@ -19,12 +21,16 @@
 /common/tileset/alphabot32.pack
 /common/tileset/alphabot32-bleed.pack
 
+##checkpoint
+/common/checkpoint/checkpoint.pack
+
 
 ##common texture
 /common/player_b_f.png
 /common/player_r_m.png
 /common/screw.png
 /common/screw1.png
+/common/screw/screw.png
 /common/test01.png
 /common/cletter.png
 /common/parallax_layer1_0.png
@@ -49,6 +55,7 @@
 /common/ropelink.png
 /common/chainlink.png
 /common/gear.png
+/common/sawblade.png
 /common/animations/hitCloud.png
 
 ##Fonts

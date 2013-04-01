@@ -8,7 +8,6 @@ import com.badlogic.gdx.utils.Array;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.action.IAction;
 import com.blindtigergames.werescrewed.eventTrigger.EventTrigger;
-import com.blindtigergames.werescrewed.util.Util;
 
 public class EventTriggerBuilder extends
 		GenericEntityBuilder< EventTriggerBuilder > {

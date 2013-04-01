@@ -10,6 +10,7 @@ import com.blindtigergames.werescrewed.gui.Label;
 
 public class TrophyScreen implements com.badlogic.gdx.Screen{
 
+	public ScreenType screenType;
 	private SpriteBatch batch = null;
 	private OrthographicCamera camera = null;
 	private BitmapFont font = null;

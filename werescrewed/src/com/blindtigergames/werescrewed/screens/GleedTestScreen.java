@@ -5,8 +5,6 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJoint;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
 import com.blindtigergames.werescrewed.WereScrewedGame;
-import com.blindtigergames.werescrewed.camera.Anchor;
-import com.blindtigergames.werescrewed.camera.AnchorList;
 import com.blindtigergames.werescrewed.entity.EntityDef;
 import com.blindtigergames.werescrewed.entity.RobotState;
 import com.blindtigergames.werescrewed.entity.Skeleton;
@@ -24,7 +22,11 @@ import com.blindtigergames.werescrewed.util.Util;
 
 public class GleedTestScreen extends Screen {
 
+	public ScreenType screenType;
 	Music music;
+	Music intro, loop;
+	boolean introPlayed = false;
+	
 	Steam testSteam, steam2;
 
 	Platform fallingGear1;
@@ -42,6 +44,12 @@ public class GleedTestScreen extends Screen {
 		music = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 				+ "/common/sounds/TrainJob.mp3" );
 
+		loop = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
+				+ "/common/sounds/introTrain.mp3" );
+		
+		intro = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
+				+ "/common/sounds/loopTrain.mp3" );
+		
 		Platform plat = ( Platform ) LevelFactory.entities
 				.get( "structureplat" );
 		plat.quickfixCollisions( );
@@ -61,6 +69,7 @@ public class GleedTestScreen extends Screen {
 
 		fallingGear1.setCrushing( true );
 
+		
 		RevoluteJointDef revoluteJointDef = new RevoluteJointDef( );
 		revoluteJointDef.initialize( fallingGear1.body, skel1.body,
 				fallingGear1.body.getWorldCenter( ) );
@@ -95,8 +104,8 @@ public class GleedTestScreen extends Screen {
 		// pj.upperTranslation = 1024;
 		// pj.lowerTranslation = 0;
 		// level.world.createJoint( pj );
-		// skel.addMover( new RotateTweenMover(skel, 15f, Util.PI, 2f, true),
-		// RobotState.IDLE );
+		 skel.addMover( new RotateTweenMover(skel, 15f, Util.PI, 2f, true),
+		 RobotState.IDLE );
 
 		Skeleton skel2 = ( Skeleton ) LevelFactory.entities.get( "skeleton4" );
 		// skel2.body.setType( BodyType.DynamicBody );
@@ -133,11 +142,6 @@ public class GleedTestScreen extends Screen {
 		// // Activate it
 		// testAnchor.activate( );
 
-		Platform p = ( Platform ) LevelFactory.entities.get( "plat4" );
-		p.oneSided = true;
-		// Platform p2 = ( Platform ) LevelFactory.entities.get( "plat7" );
-		// p2.oneSided = true;
-
 		// skel.addMover( new RotateTweenMover( skel, 5f,
 		// Util.PI / 2, 1f, true ),
 		// RobotState.IDLE );
@@ -150,7 +154,6 @@ public class GleedTestScreen extends Screen {
 		super.render( deltaTime );
 		testSteam.update( deltaTime );
 		fallingGear1.update( deltaTime );
-
 		fireCounter++;
 		if ( fireCounter > 150 ) {
 			f1.flip( );
@@ -180,12 +183,21 @@ public class GleedTestScreen extends Screen {
 		f3.draw( batch, deltaTime );
 		batch.end( );
 
-		if ( !music.isPlaying( ) ) {
-			music.play( );
-			music.setLooping( true );
-			music.setVolume( 0.3f );
+
+		// Doesn't work perfectly, but its okay
+		if(!introPlayed){
+			intro.play( );
+			introPlayed = true;
+		} else {
+			if(!intro.isPlaying( )){
+				if(!loop.isPlaying( )){
+					loop.play( );
+					loop.setLooping( true );
+				}
+			}
 		}
-		// music.setLooping( true);
+		
+		
 
 	}
 

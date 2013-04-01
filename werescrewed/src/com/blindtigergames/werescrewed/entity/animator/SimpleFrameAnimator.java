@@ -1,7 +1,5 @@
 package com.blindtigergames.werescrewed.entity.animator;
 
-import com.badlogic.gdx.Gdx;
-
 public class SimpleFrameAnimator implements IAnimator {
 
 	protected int frame;
@@ -58,7 +56,7 @@ public class SimpleFrameAnimator implements IAnimator {
 	}
 
 	public SimpleFrameAnimator maxFrames(int f){
-		Gdx.app.log("SimpleFrameAnimator", "Setting max frames to: "+f);
+	//	Gdx.app.log("SimpleFrameAnimator", "Setting max frames to: "+f);
 		frames = f;
 		return this;
 	}
@@ -138,6 +136,10 @@ public class SimpleFrameAnimator implements IAnimator {
 		speed = 1.0f;
 	}
 	
+	public boolean isStopped(){
+		return (speed == 0.0f);
+	}
+	
 	protected void incrementTime( float dT ){
 		time += (dT * speed);
 		if (time < 0.0f){
@@ -170,5 +172,5 @@ public class SimpleFrameAnimator implements IAnimator {
 				break;
 			}
 		}
-	}	
+	}
 }

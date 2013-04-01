@@ -6,7 +6,6 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.platforms.Platform;
 import com.blindtigergames.werescrewed.platforms.PlatformType;
-import com.blindtigergames.werescrewed.platforms.TileSet;
 import com.blindtigergames.werescrewed.platforms.TiledPlatform;
 import com.blindtigergames.werescrewed.util.ArrayHash;
 
@@ -238,8 +237,8 @@ public class PlatformBuilder extends GenericEntityBuilder<PlatformBuilder> {
  * @return TiledPlatform
  */
 	public TiledPlatform buildTilePlatform( ) {
-		TileSet ts = WereScrewedGame.manager.getTileSet( tileSet );
-		//System.out.println(name+" canBleed:"+ts.canBleed( ));
+		//TileSet ts = WereScrewedGame.manager.getTileSet( tileSet );
+		
 		TiledPlatform tp = new TiledPlatform( this.name, 
 				                              this.pos, 
 				                              WereScrewedGame.manager.getTileSet( tileSet ), 

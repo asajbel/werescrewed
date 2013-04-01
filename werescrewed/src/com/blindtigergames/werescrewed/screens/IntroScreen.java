@@ -11,7 +11,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.blindtigergames.werescrewed.WereScrewedGame;
 
 class IntroScreen implements com.badlogic.gdx.Screen {
-
+	
+	public ScreenType screenType;
 	private SpriteBatch batch = null;
 	private BitmapFont font = null;
 	static Texture player = WereScrewedGame.manager.get(
