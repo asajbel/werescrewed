@@ -28,6 +28,7 @@ public class WereScrewedGame extends Game {
 	
 	public static ShaderProgram defaultShader;
 	
+	@SuppressWarnings( "unused" )
 	private float fpsTime = 0;
 
 	@Override
@@ -38,12 +39,6 @@ public class WereScrewedGame extends Game {
 			defaultShader = SpriteBatch.createDefaultShader( );
 		else
 			defaultShader = null;
-		
-		// ScreenManager.getInstance().show(Screen.INTRO);
-
-		// ScreenManager.getInstance().show(Screen.LEVELTEST);
-
-		// uncomment next line to bypass intro
 
 		ScreenManager.getInstance( ).show( ScreenType.LOADING );
 

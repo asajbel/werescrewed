@@ -3,6 +3,8 @@
 /common/sounds/jump.ogg
 /common/sounds/WilhelmScream.ogg
 /common/sounds/TrainJob.mp3
+/common/sounds/loopTrain.mp3
+/common/sounds/introTrain.mp3
 
 ##texture atlas
 /common/tileset1.pack
@@ -53,6 +55,7 @@
 /common/ropelink.png
 /common/chainlink.png
 /common/gear.png
+/common/sawblade.png
 /common/animations/hitCloud.png
 
 ##Fonts

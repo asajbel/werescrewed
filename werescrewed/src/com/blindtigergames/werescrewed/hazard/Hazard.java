@@ -34,13 +34,20 @@ public class Hazard extends Platform {
 		this.activeHazard = isHazardActive;
 	}
 	
+	/**
+	 * Used to load in a Complex hazard (via entityDef)
+	 * 
+	 * @param name - String
+	 * @param type - EntityDef
+	 * @param world - World
+	 * @param posPix - position in pixels
+	 */
 	public Hazard( String name, EntityDef type, World world,
-			Vector2 posPix, float rot, Vector2 scale, Texture texture,
-			boolean solid ) {
-		super( name, type, world, posPix, rot, scale );
-		this.sprite = constructSprite( texture );
-		//type used to determine what type of entity for collisions
+			Vector2 posPix) {
+		super( name, type, world, posPix);
+		
 		entityType = EntityType.HAZARD;
+		activeHazard = true;
 	}
 
 	

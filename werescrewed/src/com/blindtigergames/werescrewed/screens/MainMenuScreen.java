@@ -20,6 +20,7 @@ import com.blindtigergames.werescrewed.input.MyControllerListener;
 class MainMenuScreen implements com.badlogic.gdx.Screen {
 	// extends Screen
 
+	public ScreenType screenType;
 	private SpriteBatch batch = null;
 	private Texture logo = null;
 	private OrthographicCamera camera = null;
@@ -42,13 +43,7 @@ class MainMenuScreen implements com.badlogic.gdx.Screen {
 
 
 	public MainMenuScreen( ) {
-		batch = new SpriteBatch( );
-		font = new BitmapFont( );
-		fancyFont = WereScrewedGame.manager.getFont( "Screwball" );
-		//fancyFont = WereScrewedGame.manager.getFont( "ornatique" );
 		
-		ControllerSetUp( );
-		loadButtons( );
 	}
 
 	@Override
@@ -77,6 +72,10 @@ class MainMenuScreen implements com.badlogic.gdx.Screen {
 		
 		if ( Gdx.input.isKeyPressed( Keys.EQUALS ) ) {
 			ScreenManager.getInstance( ).show( ScreenType.GLEED );
+		}
+		
+		if ( Gdx.input.isKeyPressed( Keys.Z ) ) {
+			ScreenManager.getInstance( ).show( ScreenType.PHYSICS);
 		}
 		
 		if( controllerTimer > 0){
@@ -159,7 +158,7 @@ class MainMenuScreen implements com.badlogic.gdx.Screen {
 		headingLabel = new Label( "We're Screwed!!", fancyFont );
 		
 		storyButton = new Button("Start", fancyFont,
-				new ScreenSwitchHandler(ScreenType.STORY));
+				new ScreenSwitchHandler(ScreenType.PHYSICS));
 		levelSelectButton = new Button( "Level Select", fancyFont,
 				new ScreenSwitchHandler(ScreenType.LEVEL_SELECT));
 		optionsButton = new Button("Options", fancyFont,
@@ -180,7 +179,13 @@ class MainMenuScreen implements com.badlogic.gdx.Screen {
 
 	@Override
 	public void show( ) {
-
+		batch = new SpriteBatch( );
+		font = new BitmapFont( );
+		fancyFont = WereScrewedGame.manager.getFont( "Screwball" );
+		//fancyFont = WereScrewedGame.manager.getFont( "ornatique" );
+		
+		ControllerSetUp( );
+		loadButtons( );
 	}
 
 	@Override
@@ -200,8 +205,6 @@ class MainMenuScreen implements com.badlogic.gdx.Screen {
 
 	@Override
 	public void dispose( ) {
-		font.dispose( );
-		batch.dispose( );
 	}
 	
 	/*levelSelectButton = new Button( "Level Select", fancyFont,

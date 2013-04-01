@@ -70,6 +70,7 @@ public class Camera {
 	private boolean debugInput;
 	private boolean debugRender;
 	private ShapeRenderer shapeRenderer;
+	@SuppressWarnings( "unused" )
 	private boolean debugTurnOffZoom;
 
 	public Camera( float viewportWidth, float viewportHeight, World world ) {

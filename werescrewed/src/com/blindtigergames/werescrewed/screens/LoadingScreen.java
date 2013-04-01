@@ -1,8 +1,5 @@
 package com.blindtigergames.werescrewed.screens;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
@@ -15,6 +12,7 @@ import com.blindtigergames.werescrewed.gui.Label;
 
 public class LoadingScreen extends Screen {
 
+	public ScreenType screenType;
 	private BitmapFont font = null;
 	private int scaleSize = 7;
 	private Label loadingLabel = null;
@@ -33,50 +31,13 @@ public class LoadingScreen extends Screen {
 	 */
 	public LoadingScreen( String st ) {
 
-		font = new BitmapFont( );
-		font.scale( scaleSize );
-
-		loadingLabel = new Label( "Loading... 0%", font );
-		loadingCompleteLabel = new Label( "Press 'A'!!", font );
-		batch = new SpriteBatch( );
-
 		if ( st != null && !st.isEmpty( ) ) {
 			screenTag = st;
 		} else {
 			screenTag = "commonLevel";
 		}
 		Gdx.app.log( "Loading assets for", screenTag );
-
-		// THIS IS WHAT THE DIRECTORY SHOULD ALWAYS BE
-		// THERE SHOULDN"T BE TWO FOLDERS
-		WereScrewedGame.dirHandle = Gdx.files.internal( "data/" );
-
-		// reads through the text file that is named
-		// the same thing as the screenTag
-		// and reads each line which is a path and loads that file
-		FileHandle handle = Gdx.files.internal( "data/" + screenTag + ".txt" );		
-		String split[] = handle.readString( ).split( "\\r?\\n" );
-		for ( String s : split ) {
-			s.replaceAll( "\\s", "" );
-			if ( s.length( ) > 0 ) {
-				if ( s.charAt( 0 ) != '#' ) {
-					String ext;
-					String fileAndExtension[] = s.split( "\\." );
-					if ( fileAndExtension.length > 1 ) {
-						// gets the extension
-						ext = fileAndExtension[1];
-						// loads the file
-						loadCurrentFile( ext, WereScrewedGame.dirHandle
-								+ s );
-					} else {
-						Gdx.app.log( "Loading screen: ", s + " doesn't have an extension" );
-					}
-					
-					/*
-					*/
-				}
-			}
-		}
+		
 
 		// loadFilesInDirectory( WereScrewedGame.dirHandle, screenTag );
 
@@ -109,6 +70,7 @@ public class LoadingScreen extends Screen {
 	 * 
 	 * @return void
 	 */
+	@SuppressWarnings( "unused" )
 	private void loadFilesInDirectory( FileHandle currentDirectory,
 			String screenTag ) {
 		// Gdx.app.log( "GOING DOWN", "now inside " + currentDirectory.name( )
@@ -260,7 +222,49 @@ public class LoadingScreen extends Screen {
 
 	@Override
 	public void dispose( ) {
-		WereScrewedGame.manager.dispose( );
+		//WereScrewedGame.manager.dispose( );
 	}
 
+	@Override
+	public void show( ) {
+		font = new BitmapFont( );
+		font.scale( scaleSize );
+
+		loadingLabel = new Label( "Loading... 0%", font );
+		loadingCompleteLabel = new Label( "Press 'A'!!", font );
+		batch = new SpriteBatch( );
+
+
+
+		// THIS IS WHAT THE DIRECTORY SHOULD ALWAYS BE
+		// THERE SHOULDN"T BE TWO FOLDERS
+		WereScrewedGame.dirHandle = Gdx.files.internal( "data/" );
+
+		// reads through the text file that is named
+		// the same thing as the screenTag
+		// and reads each line which is a path and loads that file
+		FileHandle handle = Gdx.files.internal( "data/" + screenTag + ".txt" );		
+		String split[] = handle.readString( ).split( "\\r?\\n" );
+		for ( String s : split ) {
+			s.replaceAll( "\\s", "" );
+			if ( s.length( ) > 0 ) {
+				if ( s.charAt( 0 ) != '#' ) {
+					String ext;
+					String fileAndExtension[] = s.split( "\\." );
+					if ( fileAndExtension.length > 1 ) {
+						// gets the extension
+						ext = fileAndExtension[1];
+						// loads the file
+						loadCurrentFile( ext, WereScrewedGame.dirHandle
+								+ s );
+					} else {
+						Gdx.app.log( "Loading screen: ", s + " doesn't have an extension" );
+					}
+					
+					/*
+					*/
+				}
+			}
+		}
+	}
 }

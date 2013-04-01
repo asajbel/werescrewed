@@ -8,7 +8,6 @@ import java.util.LinkedHashMap;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.XmlReader;
 import com.badlogic.gdx.utils.XmlReader.Element;
@@ -22,8 +21,6 @@ import com.blindtigergames.werescrewed.entity.EntityDef;
 import com.blindtigergames.werescrewed.entity.RobotState;
 import com.blindtigergames.werescrewed.entity.action.EntityActivateMoverAction;
 import com.blindtigergames.werescrewed.entity.action.EntityDeactivateMoverAction;
-import com.blindtigergames.werescrewed.entity.action.RemoveEntityAction;
-import com.blindtigergames.werescrewed.entity.builders.EntityBuilder;
 import com.blindtigergames.werescrewed.entity.builders.EventTriggerBuilder;
 import com.blindtigergames.werescrewed.entity.builders.MoverBuilder;
 import com.blindtigergames.werescrewed.entity.builders.PlatformBuilder;
@@ -32,9 +29,7 @@ import com.blindtigergames.werescrewed.entity.builders.RopeBuilder;
 import com.blindtigergames.werescrewed.entity.builders.ScrewBuilder;
 import com.blindtigergames.werescrewed.entity.builders.SkeletonBuilder;
 import com.blindtigergames.werescrewed.entity.mover.IMover;
-import com.blindtigergames.werescrewed.entity.mover.PuzzleType;
 import com.blindtigergames.werescrewed.entity.mover.TimelineTweenMover;
-import com.blindtigergames.werescrewed.entity.mover.puzzle.PuzzleRotateTweenMover;
 import com.blindtigergames.werescrewed.entity.mover.MoverType;
 import com.blindtigergames.werescrewed.entity.tween.PathBuilder;
 import com.blindtigergames.werescrewed.platforms.Platform;
@@ -280,98 +275,10 @@ public class LevelFactory {
 			contstructEventTrigger(item);
 		} else if (bluePrints.equals( "hazard" )){
 			constructHazard(item);
-		}
-		else if (item.getDefinition().getCategory( ) == EntityCategory.COMPLEX_PLATFORM ){
+		}else if (item.getDefinition().getCategory( ) == EntityCategory.COMPLEX_PLATFORM ){
 			loadComplexPlatform(item);
 		}
 		
-//		if (item.hasDefTag( )){
-//			//First check if the item's definition is a type of screw
-//			if (ScrewType.fromString( item.defName ) != null){
-//				loadScrew(item);
-//			} else {
-//				
-//				/**
-//				 * check if it has a name, then get its EntityDef (if not loaded, it loads the xml)
-//				 * then check if its category is a tiled/complex plat
-//				 */
-//				
-//				if (item.isDefined( )){
-//					if (item.getDefinition().getCategory( ) == EntityCategory.TILED_PLATFORM ){
-//						out = loadTiledPlatform(item);
-//						isPlatform = true;
-//					} else if (item.getDefinition().getCategory( ) == EntityCategory.COMPLEX_PLATFORM ){
-//						out = loadComplexPlatform(item);
-//						isPlatform = true;
-//					} else if (item.getDefinition().getCategory( ) == EntityCategory.PLAYER ){
-//						loadPlayerSpawnPoint(item);
-//					} else {
-//						out = loadGeneralEntity(item);
-//					}
-//				}
-//			}
-//		}
-//		if (out != null){
-//			entities.put( item.name, out );
-//			
-//			//Load movers
-//			String moverName; IMover mover;
-//			for (RobotState state : RobotState.values( )){
-//				String tag = "mover"+state.toString( ).toLowerCase( );
-//				if (item.props.containsKey( tag )){
-//					moverName = item.props.get( tag );
-//					mover = null;
-//					if (MoverType.fromString( moverName ) != null){
-//						mover = new MoverBuilder()
-//						.fromString(moverName)
-//						.build( );
-//					} else if (isPlatform){
-//						mover = loadMover(moverName, out);
-//					}
-//					if (mover != null){
-//						Gdx.app.log( "GleedLoader", "Attaching mover ["+moverName+"] to "+item.name+"." );
-//						out.addMover( mover, state );
-//						out.setCurrentMover( RobotState.IDLE );
-//						out.setActive( true );
-//					}
-//				}
-//			}
-//			//Attach to puzzle manager
-//			if (item.props.containsKey( puzzleTag )){
-//				for (String puzzleString : item.props.getAll( puzzleTag )){
-//					Array<String> tokens = new Array<String>(puzzleString.split( "\\s+" ));
-//					String puzzleName = "";
-//					moverName = "";
-//					String token;
-//					for (int t = 0; t < tokens.size; t++){
-//						token = tokens.get( t );
-//						if (t == 0){
-//							puzzleName = token;
-//						} else {
-//							moverName = moverName.concat( token );
-//						}
-//					}
-//					if (!puzzleName.equals( item.name )){
-//						PuzzleScrew puzzle = loadPuzzle(puzzleName);
-//						if (puzzle != null){
-//							mover = null;
-//							if (MoverType.fromString( moverName ) != null){
-//								mover = new MoverBuilder()
-//								.fromString(moverName)
-//								.build( );
-//							} else if (isPlatform){
-//								mover = loadMover(moverName, out);
-//							}
-//							if (mover != null){
-//								Gdx.app.log( "GleedLoader", "Attaching "+item.name+" to puzzle screw "+puzzle.name+" with mover string ["+moverName+"]" );
-//								puzzle.puzzleManager.addEntity( out );
-//								puzzle.puzzleManager.addMover( mover );
-//							}
-//						}
-//					}
-//				}
-//			}
-//		}
 		return out;
 	}
 	
@@ -439,7 +346,7 @@ public class LevelFactory {
 		
 		Gdx.app.log( "LevelFactory, Skeleton constucted ", item.name );
 		
-		//Then check for movers or joints I guess
+		
 	}
 	
 	private void constructPlayer(Item item){
@@ -486,10 +393,6 @@ public class LevelFactory {
 		}
 
 
-		if(item.props.containsKey( "onesided" )){
-			pb.oneSided( true );
-		}
-
 		boolean isCrushable = false;
 		if(item.props.containsKey( "crushable" ) ){
 			isCrushable = true;
@@ -514,6 +417,11 @@ public class LevelFactory {
 
 		entities.put( item.name, out);
 		out.setCrushing( isCrushable );
+		
+		if(item.props.containsKey( "onesided" )){
+			out.oneSided = true;
+			System.out.println( "ONESIDED" );
+		}
 		
 		IMover mover = null;
 		if(item.props.containsKey( "mover" )){
@@ -570,6 +478,7 @@ public class LevelFactory {
 
 			}
 		}
+		
 		Platform out = new PlatformBuilder(level.world)
 		.name( item.name )
 		.type( item.getDefinition( ) )
@@ -626,6 +535,7 @@ public class LevelFactory {
 //				Util.PI / 2, true, PuzzleType.ON_OFF_MOVER );
 //		puzzleScrew2.puzzleManager.addMover( rtm2 );
 //		skeleton.addScrewForDraw( puzzleScrew2 );
+		
 		ScrewType sType = ScrewType.fromString( item.props.get( "screwtype" ) );
 		ScrewBuilder builder = new ScrewBuilder()
 		.name( item.name )
@@ -659,6 +569,8 @@ public class LevelFactory {
 				IMover mover = null;
 				if(item.props.containsKey( "mover" )){
 					String movername = item.props.get( "mover" );
+					
+					//TODO: add all movers to this mover builder
 					if (MoverType.fromString( movername ) != null){
 						mover = new MoverBuilder()
 						.fromString(movername)
@@ -725,18 +637,11 @@ public class LevelFactory {
 	
 
 	
-	protected Entity loadGeneralEntity(Item item){
-		Entity out = new EntityBuilder()
-		.type(item.getDefinition( ))
-		.name(item.name)
-		.world(level.world)
-		.position(item.pos)
-		.properties(item.props)
-		.build();
-		Gdx.app.log("GleedLoader", "General Entity loaded:"+item.name);
-		return out;
-	}
 	
+	/**
+	 * This function is for paths(in gleed) that represent pathmovers in the game
+	 * @param item
+	 */
 	public void constructPath(Item item){
 		
 		Array<Element> pointElems = item.element.getChildByName( "LocalPoints" ).getChildrenByName( "Vector2" );
@@ -887,6 +792,11 @@ public class LevelFactory {
 		parent.addEventTrigger( et );
 	}
 	
+	/**
+	 * Used to get path points from an item from the XML file
+	 * @param item
+	 * @return
+	 */
 	public Array<Vector2> constructArray(Item item){
 		
 		Array<Element> pointElems = item.element.getChildByName( "LocalPoints" ).getChildrenByName( "Vector2" );
@@ -907,54 +817,16 @@ public class LevelFactory {
 	}
 	
 	public void constructHazard( Item item ){
-		String skelAttach = item.skeleton;
-		Skeleton parent = loadSkeleton(skelAttach);
+		
+		//TODO: make hazard builder (not just spikes)
+		
+		//String skelAttach = item.skeleton;
+		//Skeleton parent = loadSkeleton(skelAttach);
 		
 		
 	}
 	
-	public Screw loadScrew(Item item){
-		;
-		ScrewType sType = ScrewType.fromString( item.defName );
-		ScrewBuilder builder = new ScrewBuilder()
-		.name( item.name )
-		.position( item.pos )
-		.world( level.world )
-		.screwType( sType )
-		.properties( item.props );
-		Skeleton parent = loadSkeleton(item.skeleton);
-		builder.skeleton( parent );
-		if (item.props.containsKey( screwTargetTag )){
-			builder.entity( loadEntity( item.props.get( screwTargetTag ) ) );
-		} else {
-			builder.entity( parent );
-		}
-		Screw out = null;
-		switch (sType){
-			case SCREW_PUZZLE:
-				Gdx.app.log("GleedLoader", "Building puzzle screw "+ item.name + " at " + item.pos.toString( ));
-				PuzzleScrew p = builder.buildPuzzleScrew( );
-				puzzleScrews.put(item.name, p);
-				out = p;
-				break;
-			default:
-				out = builder.buildScrew();
-				break;
-		}
-		return out;
-	}
 
-	public PuzzleScrew loadPuzzle(String name){
-		if (puzzleScrews.containsKey( name )){
-			return puzzleScrews.get( name );
-		} else if (items.get( GleedTypeTag.ENTITY ).containsKey( name )){
-			loadEntity( name ); //In loading the entity, we should get the puzzle screw loaded.
-			if (puzzleScrews.containsKey( name )){
-				return puzzleScrews.get( name );
-			}
-		}
-		return null;
-	}
 	
 	public Level getLevel(){return level;}
 	

@@ -2,19 +2,15 @@ package com.blindtigergames.werescrewed.entity.builders;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.PolygonSprite;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
-import com.badlogic.gdx.scenes.scene2d.Event;
 import com.badlogic.gdx.utils.Array;
 import com.blindtigergames.werescrewed.entity.PolySprite;
 import com.blindtigergames.werescrewed.entity.RootSkeleton;
 import com.blindtigergames.werescrewed.entity.Skeleton;
 import com.blindtigergames.werescrewed.entity.action.ActivateSkeleton;
 import com.blindtigergames.werescrewed.entity.action.DeactivateSkeleton;
-import com.blindtigergames.werescrewed.entity.action.EntityActivateMoverAction;
-import com.blindtigergames.werescrewed.entity.action.EntityDeactivateMoverAction;
 import com.blindtigergames.werescrewed.eventTrigger.EventTrigger;
 
 public class SkeletonBuilder extends GenericEntityBuilder<SkeletonBuilder>{
@@ -181,6 +177,7 @@ public class SkeletonBuilder extends GenericEntityBuilder<SkeletonBuilder>{
 			out.fgSprite = new PolySprite( texForeground, polyVertsFG );
 		}
 		if ( polyVertsBG != null && texBackground != null){
+			System.out.println( name+": bbuilding bg polysprite" );
 			out.bgSprite = new PolySprite( texBackground, polyVertsBG );
 		}
 		out.body.setType( bodyType );
