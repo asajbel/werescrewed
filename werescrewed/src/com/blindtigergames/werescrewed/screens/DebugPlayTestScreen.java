@@ -446,7 +446,7 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		// joints the first dynamic skeleton to the parent skeleton
 		// puzzle screw that controls the analog arm puzzle
 		PuzzleScrew shoulderJoint = new PuzzleScrew( "dynamic_skeleton_joint",
-				new Vector2( 1000, 800 ), 5000, upperArmSkeleton, world, 0,
+				new Vector2( 1000, 800 ), 5000, upperArmSkeleton, world, 5000,
 				false );
 		//joints the arm to the background
 		shoulderJoint.addStructureJoint( skel1 );
