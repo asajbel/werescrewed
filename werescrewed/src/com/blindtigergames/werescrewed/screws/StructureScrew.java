@@ -54,26 +54,6 @@ public class StructureScrew extends Screw {
 
 		constuctBody( pos );
 	}
-	
-	@Override
-	public void screwLeft( int region ) {
-		if ( depth > -10 ) {
-			body.setAngularVelocity( 1 );
-			depth--;
-			rotation = region * 5;
-			screwStep = depth + 5;
-		}
-	}
-
-	@Override
-	public void screwRight( int region ) {
-		if ( depth < maxDepth ) {
-			body.setAngularVelocity( -1 );
-			depth++;
-			rotation = region * 5;
-			screwStep = depth + 6;
-		}
-	}
 
 	@Override
 	public void screwRight( int region, boolean switchedDirections ) {

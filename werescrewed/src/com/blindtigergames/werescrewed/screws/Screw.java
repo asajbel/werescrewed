@@ -134,32 +134,30 @@ public class Screw extends Entity {
 	}
 
 	/**
-	 * Turns structural and puzzle screws to the left which decreases depth
-	 * structural screws will eventually fall out
-	 * 
-	 * @param
+	 * used by controller controls to screw left
+	 * @param region
+	 * @param switchedDirections
 	 */
-	public void screwLeft( int region ) {
-	}
-
 	public void screwLeft( int region, boolean switchedDirections ) {
 	}
 
+	/**
+	 * used by keyboard controls to screw left
+	 */
 	public void screwLeft( ) {
 	}
 
 	/**
-	 * Turns structural and puzzle screws to the right which increases depth and
-	 * tightens structural screws
-	 * 
-	 * @param
+	 * used by controller controls to screw right
+	 * @param region
+	 * @param switchedDirections
 	 */
-	public void screwRight( int region ) {
-	}
-
 	public void screwRight( int region, boolean switchedDirections ) {
 	}
 
+	/**
+	 * used by keyboard controls to screw right
+	 */
 	public void screwRight( ) {
 	}
 
@@ -215,7 +213,7 @@ public class Screw extends Entity {
 
 	/**
 	 * attaches any other object between this screw and the main entity that
-	 * this screw is attached
+	 * this screw is attached using a revolute joint
 	 * 
 	 * @param entity
 	 */
@@ -228,8 +226,11 @@ public class Screw extends Entity {
 		extraJoints.add( screwJoint );
 	}
 
+	/**
+	 * attaches another object using a weld joint
+	 * @param entity
+	 */
 	public void addWeldJoint( Entity entity ) {
-
 		WeldJointDef weldJointDef = new WeldJointDef();
 		weldJointDef.initialize( body, entity.body, body.getPosition( ) );
 		Joint screwJoint =  (Joint) world.createJoint( weldJointDef );
@@ -237,6 +238,10 @@ public class Screw extends Entity {
 		
 	}
 	
+	/**
+	 * builds the screw body
+	 * @param pos
+	 */
 	private void constructBody( Vector2 pos ) {
 		// create the screw body
 		BodyDef screwBodyDef = new BodyDef( );
