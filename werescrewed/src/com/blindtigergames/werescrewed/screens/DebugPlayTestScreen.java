@@ -369,6 +369,30 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 
 		buildArmSkeleton( );
 	}
+	
+	void buildArmSkeleton2(){
+		SkeletonBuilder skeleBuilder = new SkeletonBuilder( world );
+		// skeleton at shoulder joint
+		Skeleton armSkeleton = skeleBuilder
+				.position( 0, 400 )
+				.texBackground(
+						WereScrewedGame.manager.get( WereScrewedGame.dirHandle
+								+ "/common/robot/alphabot_texture_skin.png",
+								Texture.class ) ).vert( -100, -100 )
+				.vert( -100, 100 ).vert( 100, 100 ).vert( 100, -100 ).kinematic( )
+				.build( );
+		
+		skel1.addSkeleton( armSkeleton );
+		
+		TiledPlatform upperArm = platBuilder.dynamic( ).position( 850, 800 )
+				.dimensions( 9, 1 ).density( 1f ).oneSided( false )
+				.buildTilePlatform( );
+		TiledPlatform lowerArm = platBuilder.dynamic( ).position( 550, 800 )
+				.dimensions( 8, 1 ).density( 1f ).oneSided( false )
+				.buildTilePlatform( );
+		upperArm.body.setFixedRotation( false );
+		lowerArm.body.setFixedRotation( false );
+	}
 
 	private void buildArmSkeleton( ) {
 		// puzzle screw that controls the gate
