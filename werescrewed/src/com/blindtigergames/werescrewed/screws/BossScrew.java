@@ -24,6 +24,14 @@ import com.blindtigergames.werescrewed.util.Util;
 
 public class BossScrew extends Screw {
 
+	/**
+	 * 
+	 * @param name
+	 * @param pos
+	 * @param max
+	 * @param entity
+	 * @param world
+	 */
 	public BossScrew( String name, Vector2 pos, int max, Entity entity, World world ) {
 		super( name, pos, null );
 		this.world = world;
@@ -41,22 +49,6 @@ public class BossScrew extends Screw {
 		addStructureJoint( entity );
 	}
 
-	@Override
-	public void screwRight( int region, boolean switchedDirections ) {
-		if ( playerCount == 1 ) {
-			if ( depth < maxDepth ) {
-				body.setAngularVelocity( -1 );
-				depth++;
-				rotation -= 10;
-				screwStep = depth + 6;
-			}
-		} else {
-			playerCount++;
-		}
-
-	}
-
-	
 
 	@Override
 	public void screwLeft( int region, boolean switchedDirections ) {
@@ -71,19 +63,7 @@ public class BossScrew extends Screw {
 			playerCount++;
 		}
 	}
-	@Override
-	public void screwLeft( int region) {
-		if ( playerCount == 1 ) {
-			if ( depth > 0 ) {
-				body.setAngularVelocity( 15 );
-				depth--;
-				rotation = region * 5;
-				screwStep = depth + 5;
-			}
-		} else {
-			playerCount++;
-		}
-	}
+	
 	
 	@Override
 	public void screwLeft( ) {
@@ -112,19 +92,21 @@ public class BossScrew extends Screw {
 			playerCount++;
 		}
 	}
+
 	@Override
-	public void screwRight(int region ) {
+	public void screwRight( int region, boolean switchedDirections ) {
 		if ( playerCount == 1 ) {
 			if ( depth < maxDepth ) {
 				body.setAngularVelocity( -1 );
 				depth++;
-				rotation = region * 5;
+				rotation -= 10;
 				screwStep = depth + 6;
 			}
 		} else {
 			playerCount++;
 		}
-	}
+
+	}	
 
 	@Override
 	public boolean endLevelFlag( ) {

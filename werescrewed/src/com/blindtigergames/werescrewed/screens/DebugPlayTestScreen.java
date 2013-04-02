@@ -454,15 +454,15 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		lowerArm.body.setFixedRotation( false );
 		// mover that the arm initially has and also that the bottom
 		// puzzle screw can reset
-//		RotateTweenMover rtm1 = new RotateTweenMover( upperArmSkeleton, 10f,
-//				Util.PI, 2f, true );
+		RotateTweenMover rtm1 = new RotateTweenMover( upperArmSkeleton, 10f,
+				Util.PI, 2f, true );
 		AnalogRotateMover anlgRot = new AnalogRotateMover( .6f );
-		upperArmSkeleton.setMoverAtCurrentState( anlgRot );
+		upperArmSkeleton.setMoverAtCurrentState( rtm1 );
 		// puzzle screw that controls the initial arm move
 		PuzzleScrew pscrewbottom = new PuzzleScrew( "armpuzzle", new Vector2(
 				1200, 320 ), 5000, skel1, world, 0, false );
 		pscrewbottom.puzzleManager.addEntity( upperArmSkeleton );
-		pscrewbottom.puzzleManager.addMover( anlgRot );
+		pscrewbottom.puzzleManager.addMover( rtm1 );
 		skel1.addScrewForDraw( pscrewbottom );
 		upperArmSkeleton.setActive( true );
 		upperArmSkeleton.body.setType( BodyType.KinematicBody );
