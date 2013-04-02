@@ -463,7 +463,7 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		StrippedScrew platJoint1 = new StrippedScrew(
 				"dynamic_skeleton_joint2", new Vector2( 400, 800 ), lowerArm,
 				world );
-		platJoint1.addStructureJoint( lowerArmSkeleton );
+		//platJoint1.addStructureJoint( lowerArm );
 		skel1.addSkeleton( upperArmSkeleton );
 		skel1.addSkeleton( lowerArmSkeleton );
 		upperArmSkeleton.addDynamicPlatform( upperArm );
