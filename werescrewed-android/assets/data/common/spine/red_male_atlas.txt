@@ -1,0 +1,137 @@
+red_male_atlas.png
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+R_lower_arm
+  rotate: false
+  xy: 64, 23
+  size: 12, 20
+  orig: 12, 20
+  offset: 0, 0
+  index: -1
+F_hat
+  rotate: false
+  xy: 2, 77
+  size: 63, 39
+  orig: 63, 39
+  offset: 0, 0
+  index: -1
+coat_tail
+  rotate: false
+  xy: 91, 49
+  size: 32, 26
+  orig: 32, 26
+  offset: 0, 0
+  index: -1
+R_lower_leg
+  rotate: false
+  xy: 101, 2
+  size: 9, 19
+  orig: 9, 19
+  offset: 0, 0
+  index: -1
+R_boot
+  rotate: false
+  xy: 31, 2
+  size: 24, 17
+  orig: 24, 17
+  offset: 0, 0
+  index: -1
+R_upper_leg
+  rotate: false
+  xy: 38, 49
+  size: 24, 25
+  orig: 24, 25
+  offset: 0, 0
+  index: -1
+head
+  rotate: false
+  xy: 67, 77
+  size: 51, 44
+  orig: 51, 44
+  offset: 0, 0
+  index: -1
+L_upper_arm
+  rotate: false
+  xy: 2, 49
+  size: 15, 24
+  orig: 15, 24
+  offset: 0, 0
+  index: -1
+torso
+  rotate: false
+  xy: 2, 123
+  size: 38, 46
+  orig: 38, 46
+  offset: 0, 0
+  index: -1
+waist
+  rotate: false
+  xy: 2, 2
+  size: 27, 16
+  orig: 27, 16
+  offset: 0, 0
+  index: -1
+L_boot
+  rotate: false
+  xy: 57, 2
+  size: 24, 17
+  orig: 24, 17
+  offset: 0, 0
+  index: -1
+L_lower_arm
+  rotate: false
+  xy: 83, 2
+  size: 16, 17
+  orig: 16, 17
+  offset: 0, 0
+  index: -1
+B_hat
+  rotate: false
+  xy: 2, 23
+  size: 49, 19
+  orig: 49, 19
+  offset: 0, 0
+  index: -1
+L_lower_leg
+  rotate: false
+  xy: 53, 23
+  size: 9, 19
+  orig: 9, 19
+  offset: 0, 0
+  index: -1
+R_upper_arm
+  rotate: false
+  xy: 78, 23
+  size: 19, 21
+  orig: 19, 21
+  offset: 0, 0
+  index: -1
+R_glove
+  rotate: false
+  xy: 19, 49
+  size: 17, 24
+  orig: 17, 24
+  offset: 0, 0
+  index: -1
+L_upper_leg
+  rotate: false
+  xy: 99, 23
+  size: 18, 24
+  orig: 18, 24
+  offset: 0, 0
+  index: -1
+L_glove
+  rotate: false
+  xy: 64, 49
+  size: 25, 25
+  orig: 25, 25
+  offset: 0, 0
+  index: -1
+screw_driver
+  rotate: false
+  xy: 42, 123
+  size: 35, 83
+  orig: 35, 83
+  offset: 0, 0
+  index: -1
