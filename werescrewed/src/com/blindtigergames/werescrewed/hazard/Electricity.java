@@ -63,19 +63,21 @@ public class Electricity extends Hazard {
 			PE.setContinuous( false );
 	}
 	
-	private void setWidthHeight( Vector2 pos1, Vector2 pos2 ) {
+	private void setWidthHeight( Vector2 pos1, Vector2 pos2 ) {		
+		//this.width = Math.abs( Math.abs( pos1.x ) - Math.abs( pos2.x ) );
+		//this.height = Math.abs( Math.abs( pos1.y ) - Math.abs( pos2.y ) );
+		
+		this.width = -( pos1.x - pos2.x );
+		this.height = -( pos1.y - pos2.y );
+		
 		if ( isHori ) {
-			this.width = Math.abs( pos1.x - pos2.x );
-			this.height = Math.abs( pos1.y - pos2.y );
-			this.wSize = size;
-			this.hSize = 0;
+			this.wSize = 0;
+			this.hSize = size;
 			
 		}
 		else {
-			this.width = Math.abs( pos1.x - pos2.x );
-			this.height = Math.abs( pos1.y - pos2.y );
-			this.wSize = 0;
-			this.hSize = size;
+			this.wSize = size;
+			this.hSize = 0;
 		}
 	}
 	
@@ -89,7 +91,7 @@ public class Electricity extends Hazard {
 
 		FixtureDef elecFixtureDef = new FixtureDef( );
 		EdgeShape polygon = new EdgeShape( );
-		/*
+		
 		polygon.set( ( wSize ) * Util.PIXEL_TO_BOX, ( hSize ) * Util.PIXEL_TO_BOX, 
 				( -wSize ) * Util.PIXEL_TO_BOX, ( -hSize ) * Util.PIXEL_TO_BOX );
 		elecFixtureDef.shape = polygon;
@@ -97,7 +99,7 @@ public class Electricity extends Hazard {
 		elecFixtureDef.filter.categoryBits = Util.CATEGROY_HAZARD;
 		elecFixtureDef.filter.maskBits = Util.CATEGORY_PLAYER;
 		body.createFixture( elecFixtureDef );
-		*/
+		
 		polygon.set( ( wSize ) * Util.PIXEL_TO_BOX, ( hSize ) * Util.PIXEL_TO_BOX, 
 				( width + wSize ) * Util.PIXEL_TO_BOX, ( height + hSize ) * Util.PIXEL_TO_BOX );
 		elecFixtureDef.shape = polygon;
@@ -105,7 +107,7 @@ public class Electricity extends Hazard {
 		elecFixtureDef.filter.categoryBits = Util.CATEGROY_HAZARD;
 		elecFixtureDef.filter.maskBits = Util.CATEGORY_PLAYER;
 		body.createFixture( elecFixtureDef );
-		/*
+		
 		polygon.set( ( width + wSize ) * Util.PIXEL_TO_BOX, ( height + hSize ) * Util.PIXEL_TO_BOX, 
 				( width - wSize ) * Util.PIXEL_TO_BOX, ( height - hSize ) * Util.PIXEL_TO_BOX );
 		elecFixtureDef.shape = polygon;
@@ -121,7 +123,7 @@ public class Electricity extends Hazard {
 		elecFixtureDef.filter.categoryBits = Util.CATEGROY_HAZARD;
 		elecFixtureDef.filter.maskBits = Util.CATEGORY_PLAYER;
 		body.createFixture( elecFixtureDef );
-		*/
+		
 		polygon.dispose( );
 
 		body.setUserData( this );
