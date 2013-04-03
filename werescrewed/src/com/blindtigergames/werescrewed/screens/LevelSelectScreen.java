@@ -33,6 +33,7 @@ public class LevelSelectScreen implements com.badlogic.gdx.Screen {
 	private int lineHeight = 0;
 	private Button level1Button;
 	private Button backButton = null;
+	private Button dragonButton = null;
 
 	private int buttonIndex = 0;
 	private ArrayList< Button > Buttons;
@@ -81,6 +82,7 @@ public class LevelSelectScreen implements com.badlogic.gdx.Screen {
 		hazardButton.draw( batch, camera );
 		testButton.draw( batch, camera );
 		level1Button.draw( batch, camera );
+		dragonButton.draw(batch,camera);
 
 		backButton.draw( batch, camera );
 		batch.end( );
@@ -138,6 +140,8 @@ public class LevelSelectScreen implements com.badlogic.gdx.Screen {
 		hazardButton.setY( centerY - lineHeight );
 		level1Button.setX( centerX - level1Button.getWidth( ) / 2 );
 		level1Button.setY( centerY - lineHeight * 2 );
+		dragonButton.setX( centerX-dragonButton.getWidth()/2 );
+		dragonButton.setY(centerY-lineHeight*3);
 
 		backButton.setX( centerX - backButton.getWidth( ) / 2 );
 		backButton.setY( 20 + backButton.getHeight( ) );
@@ -199,6 +203,7 @@ public class LevelSelectScreen implements com.badlogic.gdx.Screen {
 				new ScreenSwitchHandler( ScreenType.GLEED ) );
 		level1Button = new Button( "Level 1", fancyFont,
 				new ScreenSwitchHandler( ScreenType.LOADING_1 ) );
+		dragonButton = new Button( "Dragon", fancyFont, new ScreenSwitchHandler( ScreenType.DRAGON ) );
 
 		backButton = new Button( "Back", fancyFont, new ScreenSwitchHandler(
 				ScreenType.MAIN_MENU ) );
@@ -210,6 +215,7 @@ public class LevelSelectScreen implements com.badlogic.gdx.Screen {
 		Buttons.add( resurrectButton );
 		Buttons.add( hazardButton );
 		Buttons.add( level1Button );
+		Buttons.add(dragonButton);
 		Buttons.add( backButton );
 
 	}

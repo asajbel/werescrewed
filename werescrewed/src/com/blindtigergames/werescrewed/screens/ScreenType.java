@@ -192,6 +192,15 @@ public enum ScreenType {
 		protected Screen getScreenInstance( ) {
 			return null;
 		}
+	},
+
+	DRAGON {
+		@Override
+		protected com.badlogic.gdx.Screen getScreenInstance( ) {
+			DragonScreen dragon = new DragonScreen( );
+			dragon.screenType = ScreenType.DRAGON;
+			return dragon;
+		}
 	};
 
 	protected abstract com.badlogic.gdx.Screen getScreenInstance( );

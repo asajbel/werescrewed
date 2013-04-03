@@ -493,8 +493,8 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		platJoint1.addStructureJoint( lowerArmSkeleton );
 		skel1.addSkeleton( upperArmSkeleton );
 		skel1.addSkeleton( lowerArmSkeleton );
-		skel1.addDynamicPlatform( upperArm );
-		skel1.addDynamicPlatform( lowerArm );
+		upperArmSkeleton.addDynamicPlatform( upperArm );
+		lowerArmSkeleton.addDynamicPlatform( lowerArm );
 		skel1.addScrewForDraw( platJoint1 );
 		skel1.addScrewForDraw( shoulderJoint );
 		skel1.addScrewForDraw( elbowJoint );
