@@ -103,15 +103,16 @@ public class DragonScreen extends Screen {
 		fixture.filter.maskBits = Util.CATEGORY_EVERYTHING;
 		fixture.isSensor = true;
 		fixture.shape = circle;
-		fixture.density = 1;
+		fixture.density = .1f;
 		
 		balloon.body.createFixture( fixture );
 		balloon.body.setFixedRotation( true );
 		balloon.body.setUserData( this );
+		balloon.body.setGravityScale( 0 );
 
 		circle.dispose( );
 		
-		balloon.setMoverAtCurrentState( new TargetImpulseMover( balloon.getPositionPixel( ), Vector2.Zero, 0.5f, false, 100 ) );
+		balloon.setMoverAtCurrentState( new TargetImpulseMover( balloon.getPositionPixel( ), Vector2.Zero, .85f, false, 100 ) );
 		
 		return balloon;
 	}

@@ -1,5 +1,6 @@
 package com.blindtigergames.werescrewed.entity.mover;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.blindtigergames.werescrewed.platforms.Platform;
@@ -57,7 +58,7 @@ public class TargetImpulseMover implements IMover {
 		// TODO Auto-generated method stub
 		Vector2 impulseTarget = targetPixel.cpy( ).sub( body.getWorldCenter( ).mul( Util.BOX_TO_PIXEL ));
 		
-		Vector2 newImpulsePoint = impulsePoint.cpy().rotate( body.getAngle( )*Util.RAD_TO_DEG );
+		//Vector2 newImpulsePoint = impulsePoint.cpy().rotate( body.getAngle( )*Util.RAD_TO_DEG );
 		
 		float disSq = impulseTarget.len2( );
 		
@@ -66,10 +67,11 @@ public class TargetImpulseMover implements IMover {
 			strength = impulseStrength;
 		}else if(disSq != 0){
 			//scale impulse by distance from center linearly.
-			strength = disSq*minImpulseRadiusSquared*impulseStrength;
+			strength = disSq/minImpulseRadiusSquared*impulseStrength;
 		}
+		Gdx.app.log( "TargetImpulse:", " "+strength );
 		impulseTarget.nor( ).mul( strength );
-		body.applyLinearImpulse( impulseTarget, newImpulsePoint );
+		body.applyLinearImpulse( impulseTarget, impulsePoint );
 	}
 
 	@Override
