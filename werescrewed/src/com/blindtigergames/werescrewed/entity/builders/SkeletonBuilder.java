@@ -172,7 +172,7 @@ public class SkeletonBuilder extends GenericEntityBuilder<SkeletonBuilder>{
 	
 	@Override
 	public Skeleton build(){
-		Skeleton out = new Skeleton( name, pos, null, super.world );
+		Skeleton out = new Skeleton( name, pos, null, super.world, bodyType );
 		if ( polyVertsFG != null && texForeground != null ){
 			out.fgSprite = new PolySprite( texForeground, polyVertsFG );
 		}
@@ -180,7 +180,8 @@ public class SkeletonBuilder extends GenericEntityBuilder<SkeletonBuilder>{
 			System.out.println( name+": bbuilding bg polysprite" );
 			out.bgSprite = new PolySprite( texBackground, polyVertsBG );
 		}
-		out.body.setType( bodyType );
+		
+		//out.body.setType( bodyType );
 		out.setDensity( this.density );
 		
 		if ( hasDeactivateTrigger && polyVertsBG != null ){

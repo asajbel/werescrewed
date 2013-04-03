@@ -193,13 +193,13 @@ public enum ScreenType {
 			return null;
 		}
 	},
-	
-	POLY {
+
+	DRAGON {
 		@Override
 		protected com.badlogic.gdx.Screen getScreenInstance( ) {
-			PolySpriteTestScreen psts = new PolySpriteTestScreen( "testLevel" );
-			psts.screenType = ScreenType.POLY;
-			return psts;
+			DragonScreen dragon = new DragonScreen( );
+			dragon.screenType = ScreenType.DRAGON;
+			return dragon;
 		}
 	};
 

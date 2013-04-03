@@ -52,26 +52,43 @@ public class Skeleton extends Platform {
 	protected RootSkeleton rootSkeleton;
 	protected Skeleton parentSkeleton;
 	
-	
-
-	public Skeleton( String n, Vector2 pos, Texture tex, World world ) {
+	/**
+	 * Constructor used by SkeletonBuilder
+	 * @param n
+	 * @param pos
+	 * @param tex
+	 * @param world
+	 * @param bodyType
+	 */
+	public Skeleton( String n, Vector2 pos, Texture tex, World world, BodyType bodyType ) {
 		super( n, pos, tex, world ); // not constructing body class
 		this.world = world;
-		constructSkeleton( pos );
+		constructSkeleton( pos, bodyType );
 		super.setSolid( false );
 		entityType = EntityType.SKELETON;
 	}
+	
+	/**
+	 * COnstructor to default to kinematic body type
+	 * @param n
+	 * @param pos
+	 * @param tex
+	 * @param world
+	 */
+	public Skeleton(String n, Vector2 pos, Texture tex, World world){
+		this( n, pos, tex, world, BodyType.KinematicBody );
+	}
 
-	public void constructSkeleton( Vector2 pos ) {
+	public void constructSkeleton( Vector2 pos, BodyType bodyType ) {
 		// Skeletons have no fixtures!!
 		BodyDef skeletonBodyDef = new BodyDef( );
-		skeletonBodyDef.type = BodyType.KinematicBody; // Kinematic so gravity
-														// doesn't effect it
+		skeletonBodyDef.type = bodyType;
+		
 		skeletonBodyDef.position.set( pos.mul( Util.PIXEL_TO_BOX ) );
 		body = world.createBody( skeletonBodyDef );
 		body.setUserData( this );
 
-		FixtureDef dynFixtureDef = new FixtureDef( );
+		/*FixtureDef dynFixtureDef = new FixtureDef( );
 		PolygonShape polygon = new PolygonShape( );
 		polygon.setAsBox( 1 * Util.PIXEL_TO_BOX, 1 * Util.PIXEL_TO_BOX );
 		dynFixtureDef.shape = polygon;
@@ -79,7 +96,7 @@ public class Skeleton extends Platform {
 		dynFixtureDef.filter.categoryBits = Util.CATEGORY_IGNORE;
 		dynFixtureDef.filter.maskBits = Util.CATEGORY_NOTHING;
 		body.createFixture( dynFixtureDef );
-		polygon.dispose( );
+		polygon.dispose( );*/
 	}
 
 	/**
@@ -316,7 +333,7 @@ public class Skeleton extends Platform {
 		if ( isActive( ) ){
 			float frameRate = 1/deltaTime;
 			updateMover( deltaTime );
-			if( entityType != EntityType.ROOTSKELETON ){
+			if( entityType != EntityType.ROOTSKELETON && isKinematic( ) ){
 				super.setTargetPosRotFromSkeleton( frameRate, parentSkeleton );
 			}
 			for ( Platform platform : dynamicPlatformMap.values( ) ) {
