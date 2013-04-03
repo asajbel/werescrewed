@@ -20,6 +20,8 @@
 /common/animations/hitCloud.pack
 /common/tileset/alphabot32.pack
 /common/tileset/alphabot32-bleed.pack
+/common/spine/red_female_atlas.pack
+/common/spine/red_male_atlas.pack
 
 ##checkpoint
 /common/checkpoint/checkpoint.pack
