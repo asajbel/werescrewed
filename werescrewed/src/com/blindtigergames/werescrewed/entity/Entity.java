@@ -53,7 +53,7 @@ public class Entity implements GleedLoadable {
 	protected boolean visible;
 	protected boolean maintained;
 	protected boolean removeNextStep = false;
-	protected EntityType entityType;
+	public EntityType entityType;
 	private ArrayList< IMover > moverArray;
 	protected ArrayList< Sprite > decals;
 	protected ArrayList< Vector2 > decalOffsets;
@@ -95,6 +95,29 @@ public class Entity implements GleedLoadable {
 		setPixelPosition( positionPixels );
 	}
 
+	/**
+	 * Same constructor as above but without scale or rotation
+	 * 
+	 * @param name
+	 * @param type
+	 * @param world
+	 * @param positionPixels
+	 * @param texture
+	 */
+	public Entity( String name, EntityDef type, World world, Vector2 positionPixels, Texture texture) {
+		this.construct( name, solid );
+		this.type = type;
+		this.world = world;
+		if (type.atlases.size > 0 ){
+			this.sprite = constructSprite( type.atlases.get( 0 ) );
+		} else {
+			this.sprite = constructSprite( texture );
+		}
+		this.body = constructBodyByType( );
+		this.decals = new ArrayList< Sprite >( );
+		this.decalOffsets = new ArrayList< Vector2 >( );
+		setPixelPosition( positionPixels );
+	}
 	/**
 	 * Create entity by body. Debug constructor: Should be removed eventually.
 	 * 

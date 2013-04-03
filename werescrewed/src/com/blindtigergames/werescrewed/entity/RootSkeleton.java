@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 
 public class RootSkeleton extends Skeleton {
 
@@ -16,12 +17,14 @@ public class RootSkeleton extends Skeleton {
 
 	public RootSkeleton( String name, Vector2 positionPix, Texture tex,
 			World world ) {
-		super( name, positionPix, tex, world );
+		super( name, positionPix, tex, world, BodyType.StaticBody );
 		entityType = EntityType.ROOTSKELETON;
 		looseEntity = new ArrayList< Entity >( );
 		skeletonToSetActive = new ArrayList< Skeleton >( );
 		skeletonToSetInactive = new ArrayList< Skeleton >( );
 		skeletonsToDelete = new ArrayList< Skeleton >( );
+		parentSkeleton = this;
+		rootSkeleton = this;
 	}
 
 	/**
@@ -79,63 +82,13 @@ public class RootSkeleton extends Skeleton {
 
 	@Override
 	public void update( float deltaTime ) {
-
 		setSkeletonListActiveState( skeletonToSetActive, true );
 		setSkeletonListActiveState( skeletonToSetInactive, false );
 		deleteSkeletons( );
-
-		// recursively update all skeleton movers
-		updateChildSkeletonMovers( deltaTime );
-
-		// update all children platform IMovers on their imover local coord
-		// system
-		updateEntityMovers( deltaTime );
-
-		// recursively move all children skeletons by this moved updated
-		// pos*rot.
-		// setPosRotChildSkeletons( deltaTime );
-		for ( Skeleton childSkeleton : childSkeletonMap.values( ) ) {
-			// this could
-			if ( childSkeleton.isActive( ) && childSkeleton.isKinematic( ) ) {
-				childSkeleton.setPosRotFromSkeleton( deltaTime, this );
-			}
-			childSkeleton.setPosRotChildSkeletons( deltaTime );
-
-		}
-
-		// Now we can rotate all kinematic entities connected by updated
-		// skeleton rot / position
-		for ( Skeleton childSkeleton : childSkeletonMap.values( ) ) {
-
-			if ( childSkeleton.fgSprite != null ) {
-				childSkeleton.fgSprite.setPosition(
-						childSkeleton.getPositionPixel( ).x,
-						childSkeleton.getPositionPixel( ).y );
-				childSkeleton.fgSprite.setRotation( MathUtils.radiansToDegrees
-						* childSkeleton.body.getAngle( ) );
-			}
-			if ( childSkeleton.bgSprite != null ) {
-				childSkeleton.bgSprite.setPosition(
-						childSkeleton.getPositionPixel( ).x,
-						childSkeleton.getPositionPixel( ).y );
-				childSkeleton.bgSprite.setRotation( MathUtils.radiansToDegrees
-						* childSkeleton.body.getAngle( ) );
-			}
-			childSkeleton.setPosRotAllKinematicPlatforms( deltaTime );
-			// childSkeleton.update( deltaTime );
-			childSkeleton.updateChildren( deltaTime );
-		}
-
-		// Update children animations and stuff
-		// for ( Skeleton childSkeleton : childSkeletonMap.values( ) ){
-		// childSkeleton.updateChildren( deltaTime );
-		// }
-
-		for ( Entity entity : looseEntity ) {
-			entity.updateMover( deltaTime );
+		super.update( deltaTime );
+		for( Entity entity : looseEntity ){
 			entity.update( deltaTime );
 		}
-		// super.update( deltaTime );
 	}
 
 	/**
@@ -150,7 +103,7 @@ public class RootSkeleton extends Skeleton {
 	/**
 	 * finds the entity with this name
 	 */
-	public Entity getSubEntity( String name ) {
+	public Entity getLooseEntity( String name ) {
 		Entity entity = null;
 		for ( Entity e : looseEntity ) {
 			if ( e.name.equals( name ) ) {

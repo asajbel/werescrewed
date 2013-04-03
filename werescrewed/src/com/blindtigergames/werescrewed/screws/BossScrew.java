@@ -9,8 +9,8 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.Joint;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.physics.box2d.joints.RevoluteJoint;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityType;
 import com.blindtigergames.werescrewed.util.Util;
@@ -24,6 +24,14 @@ import com.blindtigergames.werescrewed.util.Util;
 
 public class BossScrew extends Screw {
 
+	/**
+	 * 
+	 * @param name
+	 * @param pos
+	 * @param max
+	 * @param entity
+	 * @param world
+	 */
 	public BossScrew( String name, Vector2 pos, int max, Entity entity, World world ) {
 		super( name, pos, null );
 		this.world = world;
@@ -31,7 +39,7 @@ public class BossScrew extends Screw {
 		depth = max;
 		rotation = 0;
 		fallTimeout = 140;
-		extraJoints = new ArrayList< RevoluteJoint >( );
+		extraJoints = new ArrayList< Joint >( );
 		screwType = ScrewType.SCREW_BOSS;
 		entityType = EntityType.SCREW;
 
@@ -41,8 +49,9 @@ public class BossScrew extends Screw {
 		addStructureJoint( entity );
 	}
 
+
 	@Override
-	public void screwLeft( int region) {
+	public void screwLeft( int region, boolean switchedDirections ) {
 		if ( playerCount == 1 ) {
 			if ( depth > 0 ) {
 				body.setAngularVelocity( 15 );
@@ -54,6 +63,7 @@ public class BossScrew extends Screw {
 			playerCount++;
 		}
 	}
+	
 	
 	@Override
 	public void screwLeft( ) {
@@ -82,19 +92,21 @@ public class BossScrew extends Screw {
 			playerCount++;
 		}
 	}
+
 	@Override
-	public void screwRight(int region ) {
+	public void screwRight( int region, boolean switchedDirections ) {
 		if ( playerCount == 1 ) {
 			if ( depth < maxDepth ) {
 				body.setAngularVelocity( -1 );
 				depth++;
-				rotation = region * 5;
+				rotation -= 10;
 				screwStep = depth + 6;
 			}
 		} else {
 			playerCount++;
 		}
-	}
+
+	}	
 
 	@Override
 	public boolean endLevelFlag( ) {
@@ -123,7 +135,7 @@ public class BossScrew extends Screw {
 		sprite.setPosition( bodyPos.x - offset.x, bodyPos.y - offset.y );
 		if ( depth == 0 ) {
 			if ( fallTimeout == 0 ) {
-				for ( RevoluteJoint j : extraJoints ) {
+				for ( Joint j : extraJoints ) {
 					world.destroyJoint( j );
 				}
 				Gdx.app.log( "Boss Screw Removed", "End Level" );

@@ -67,19 +67,6 @@ public class Level {
 		
 		Tween.registerAccessor( Platform.class, new PlatformAccessor( ) );
 		Tween.registerAccessor( Entity.class, new EntityAccessor( ) );
-
-		
-		/*Array<Vector2> verts = new Array<Vector2>();
-		verts.add( new Vector2(-500,-500) );
-		verts.add( new Vector2(500.0f,-500.0f) );
-		verts.add( new Vector2(500.0f,500.0f) );
-		verts.add( new Vector2(-500.0f,500.0f) );
-		
-		Texture polyTex = WereScrewedGame.manager.get(
-				WereScrewedGame.dirHandle.path( ) + "/common/robot/alphabot_tile_interior.png",
-				Texture.class );
-		
-		polySprite = new PolySprite( polyTex, verts );*/
 		
 	}
 	
@@ -89,7 +76,7 @@ public class Level {
 		player1.update( deltaTime );
 		player2.update( deltaTime );
 		root.update( deltaTime );
-		progressManager.update( deltaTime );
+		if (progressManager!=null)progressManager.update( deltaTime );
 		
 		if ( Gdx.input.isKeyPressed( Keys.NUM_0 ) ) {
 			if ( debugTest )
@@ -110,7 +97,7 @@ public class Level {
 		batch.begin();
 		//polySprite.draw( batch );
 		root.draw( batch );
-		progressManager.draw( batch );
+		if (progressManager!=null)progressManager.draw( batch );
 		player1.draw( batch );
 		player2.draw( batch );
 		
@@ -118,7 +105,7 @@ public class Level {
 		
 		if(debug)
 			debugRenderer.render( world, camera.combined( ) );
-		world.step( 1 / 60f, 6,6 );
+		world.step( WereScrewedGame.oneOverTargetFrameRate, 6,6 );
 
 	}
 	

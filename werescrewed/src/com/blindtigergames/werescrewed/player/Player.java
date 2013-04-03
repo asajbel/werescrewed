@@ -30,7 +30,6 @@ import com.blindtigergames.werescrewed.entity.animator.SimpleFrameAnimator.LoopB
 import com.blindtigergames.werescrewed.entity.mover.IMover;
 import com.blindtigergames.werescrewed.entity.mover.LerpMover;
 import com.blindtigergames.werescrewed.entity.mover.LinearAxis;
-import com.blindtigergames.werescrewed.graphics.TextureAtlas;
 import com.blindtigergames.werescrewed.input.MyControllerListener;
 import com.blindtigergames.werescrewed.input.PlayerInputHandler;
 import com.blindtigergames.werescrewed.screws.ResurrectScrew;
@@ -48,7 +47,7 @@ import com.blindtigergames.werescrewed.util.Util;
  */
 public class Player extends Entity {
 
-	public final static float MAX_VELOCITY = 1.55f;
+	public final static float MAX_VELOCITY = 1.60f;
 	public final static float MIN_VELOCITY = 0.01f;
 	public final static float MOVEMENT_IMPULSE = 0.010f;
 	public final static float JUMP_IMPULSE = 0.12f;
@@ -94,6 +93,7 @@ public class Player extends Entity {
 	private ConcurrentState extraState;
 	private PlayerDirection playerDirection;
 	private Controller controller;
+	@SuppressWarnings( "unused" )
 	private boolean controllerIsActive, controllerDebug;
 	private float leftAnalogX;
 	@SuppressWarnings( "unused" )
@@ -111,7 +111,7 @@ public class Player extends Entity {
 	private Body platformBody;
 	private Entity hitCloud;
 	private boolean topPlayer = false;
-	private boolean isDead = false, deadDebug;
+	private boolean isDead = false;
 	private boolean hitSolidObject;
 	private int screwJumpTimeout = 0;
 	private int headStandTimeout = 0;
@@ -137,7 +137,9 @@ public class Player extends Entity {
 
 	// TODO: fill in the frames counts and frame rates for various animations
 	// like below
+	@SuppressWarnings( "unused" )
 	private int jumpFrames = 3;
+	@SuppressWarnings( "unused" )
 	private float jumpSpeed = 0.3f;
 
 	public float frictionCounter = 0;
@@ -220,7 +222,7 @@ public class Player extends Entity {
 		controllerDebug = true;
 
 		jumpSound = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-				+ "/common/sounds/jump.ogg" );
+				+ "/common/sounds/WilhelmScream.ogg" );
 	}
 
 	// PUBLIC METHODS
@@ -700,9 +702,9 @@ public class Player extends Entity {
 	 * @param otherPlayer
 	 *            the other player
 	 */
-	public void hitPlayer( Player otherPlayer ) {
-		if ( playerState != PlayerState.Screwing ) {
-			this.otherPlayer = otherPlayer;
+	public void hitPlayer( Player player ) {
+		if ( playerState != PlayerState.Screwing || player == null ) {
+			this.otherPlayer = player;
 		}
 	}
 
@@ -1416,6 +1418,7 @@ public class Player extends Entity {
 			playerJoint = null;
 			topPlayer = false;
 		}
+		otherPlayer = null;
 	}
 
 	/**

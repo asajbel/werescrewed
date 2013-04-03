@@ -1,162 +1,205 @@
 package com.blindtigergames.werescrewed.screens;
 
-public enum ScreenType {
-	CHARACTER_SELECT {
-		@Override
-		protected com.badlogic.gdx.Screen getScreenInstance( ) {
-			return new CharacterSelectScreen( );
-		}
-	},
-	
+import com.badlogic.gdx.Screen;
+
+public enum ScreenType {	
 	CREDITS {
 		@Override
 		protected com.badlogic.gdx.Screen getScreenInstance( ) {
-			return new CreditsScreen( );
+			CreditsScreen credits = new CreditsScreen( );
+			credits.screenType = ScreenType.CREDITS;
+			return credits;
 		}
 	},
 
-	GAME {
-		@Override
-		protected com.badlogic.gdx.Screen getScreenInstance( ) {
-			return new PhysicsTestScreen( );
-		}
-	},
+//	GAME {
+//		@Override
+//		protected com.badlogic.gdx.Screen getScreenInstance( ) {
+//			PhysicsTestScreen physics = new PhysicsTestScreen( );
+//			physics.screenType = ScreenType.GAME;
+//			return physics;
+//		}
+//	},
 	GLEED {
 		@Override
 		protected com.badlogic.gdx.Screen getScreenInstance( ) {
-			return new GleedTestScreen( "FinalPresentationLevel2" );
-			//return new GleedTestScreen( "PlayTestLevel" );
+			GleedTestScreen gleed = new GleedTestScreen( "FinalPresentationLevel2" );
+			gleed.screenType = ScreenType.GLEED;
+			return gleed;
 		}
 	},
 	INTRO {
 		@Override
 		protected com.badlogic.gdx.Screen getScreenInstance( ) {
-			return new IntroScreen( );
+			IntroScreen intro = new IntroScreen( );
+			intro.screenType = ScreenType.INTRO;
+			return intro;
 		}
 	},
 	LEVEL_1 {
 		@Override
 		protected com.badlogic.gdx.Screen getScreenInstance( ) {
-			return new Level1Screen( );
+			Level1Screen level1 = new Level1Screen( );
+			level1.screenType = ScreenType.LEVEL_1;
+			return level1;
 		}
 	},
 	LEVEL_SELECT {
 		@Override
 		protected com.badlogic.gdx.Screen getScreenInstance( ) {
-			return new LevelSelectScreen( );
+			LevelSelectScreen lss = new LevelSelectScreen( );
+			lss.screenType = ScreenType.LEVEL_SELECT;
+			return lss;
 		}
 	},
-	// TODO: Do we need different enums for each of the loading screens,
-	// since they'll each load different things depending on the level?
+
 	LOADING {
 		@Override
 		protected com.badlogic.gdx.Screen getScreenInstance( ) {
-			return new LoadingScreen( );
+			LoadingScreen loading = new LoadingScreen( );
+			loading.screenType = ScreenType.LOADING;
+			return loading;
 		}
 	},
 	LOADING_1 {
 		@Override
 		protected com.badlogic.gdx.Screen getScreenInstance( ) {
-			return new LoadingScreen( "level1" );
+			LoadingScreen loading = new LoadingScreen( "level1" );
+			loading.screenType = ScreenType.LOADING;
+			return loading;
 		}
 	},
 	LOADING_2 {
 		@Override
 		protected com.badlogic.gdx.Screen getScreenInstance( ) {
-			return new LoadingScreen( "level2" );
+			LoadingScreen loading = new LoadingScreen( "level2" );
+			loading.screenType = ScreenType.LOADING;
+			return loading;
 		}
 	},
 	LOADING_3 {
 		@Override
 		protected com.badlogic.gdx.Screen getScreenInstance( ) {
-			return new LoadingScreen( "level3" );
+			LoadingScreen loading = new LoadingScreen( "level3" );
+			loading.screenType = ScreenType.LOADING;
+			return loading;
 		}
 	},
 	LOADING_4 {
 		@Override
 		protected com.badlogic.gdx.Screen getScreenInstance( ) {
-			return new LoadingScreen( "level4" );
+			LoadingScreen loading = new LoadingScreen( "level4" );
+			loading.screenType = ScreenType.LOADING;
+			return loading;
 		}
 	},
 	LOADING_5 {
 		@Override
 		protected com.badlogic.gdx.Screen getScreenInstance( ) {
-			return new LoadingScreen( "level5" );
+			LoadingScreen loading = new LoadingScreen( "level5" );
+			loading.screenType = ScreenType.LOADING;
+			return loading;
 		}
 	},
 	LOADING_TEST {
 		@Override
 		protected com.badlogic.gdx.Screen getScreenInstance( ) {
-			return new LoadingScreen( "testLevel" );
+			LoadingScreen loading = new LoadingScreen( "testLevel" );
+			loading.screenType = ScreenType.LOADING;
+			return loading;
 		}
 	},
 	OPTIONS {
 		@Override
 		protected com.badlogic.gdx.Screen getScreenInstance( ) {
-			return new OptionsScreen( );
+			OptionsScreen options = new OptionsScreen( );
+			options.screenType = ScreenType.OPTIONS;
+			return options;
 		}
 	},
 	PAUSE {
 		@Override
 		protected com.badlogic.gdx.Screen getScreenInstance( ) {
-			return new PauseScreen( );
+			PauseScreen pause = new PauseScreen( );
+			pause.screenType = ScreenType.PAUSE;
+			return pause;
 		}
 	},
 	PLAYTEST {
 		@Override
 		protected com.badlogic.gdx.Screen getScreenInstance( ) {
-			return new DebugPlayTestScreen( );
+			DebugPlayTestScreen debug = new DebugPlayTestScreen( );
+			debug.screenType = ScreenType.PLAYTEST;
+			return debug;
 		}
 	},
 	PHYSICS {
 		@Override
 		protected com.badlogic.gdx.Screen getScreenInstance( ) {
-			return new PhysicsTestScreen( );
-		}
+			PhysicsTestScreen physics = new PhysicsTestScreen( );
+			physics.screenType = ScreenType.PHYSICS;
+			return physics;		}
 	},
 	RESURRECT {
 		@Override
 		protected com.badlogic.gdx.Screen getScreenInstance( ) {
-			return new ResurrectScreen( );
+			ResurrectScreen resurrect = new ResurrectScreen( );
+			resurrect.screenType = ScreenType.RESURRECT;
+			return resurrect;
 		}
 	},
 	HAZARD {
 		@Override
 		protected com.badlogic.gdx.Screen getScreenInstance( ) {
-			return new HazardScreen( );
+			HazardScreen hazard = new HazardScreen( );
+			hazard.screenType = ScreenType.HAZARD;
+			return hazard;
 		}
 	},
 	MAIN_MENU {
 		@Override
 		protected com.badlogic.gdx.Screen getScreenInstance( ) {
-			return new MainMenuScreen( );
+			MainMenuScreen menu = new MainMenuScreen( );
+			menu.screenType = ScreenType.MAIN_MENU;
+			return menu;
 		}
 	},
 	
-	STORY {
-		@Override
-		protected com.badlogic.gdx.Screen getScreenInstance( ) {
-			return new StoryModeScreen( );
-		}
-	},
 	WIN {
 		@Override
 		protected com.badlogic.gdx.Screen getScreenInstance( ) {
-			return new WinScreen( );
+			WinScreen winning = new WinScreen( );
+			winning.screenType = ScreenType.WIN;
+			return winning;
 		}
 	},
 
 	TROPHY {
 		@Override
 		protected com.badlogic.gdx.Screen getScreenInstance( ) {
-			return new TrophyScreen( );
+			TrophyScreen trophy = new TrophyScreen( );
+			trophy.screenType = ScreenType.TROPHY;
+			return trophy;
 		}
 	}, 
 	
-	POLY {
+	PREVSCREEN {
+		
+		// USED IN PAUSE SCREEN TO RETURN TO THE LAST SCREEN
+		// I COULDN'T THINK OF BETTER FIX, BUT THIS WORKS FINE
+		
+		@Override
+		protected Screen getScreenInstance( ) {
+			return null;
+		}
+	},
+
+	DRAGON {
 		@Override
 		protected com.badlogic.gdx.Screen getScreenInstance( ) {
-			return new PolySpriteTestScreen( "testLevel" );
+			DragonScreen dragon = new DragonScreen( );
+			dragon.screenType = ScreenType.DRAGON;
+			return dragon;
 		}
 	};
 

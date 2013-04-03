@@ -1,6 +1,5 @@
 package com.blindtigergames.werescrewed.screens;
 
-import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Keys;
@@ -17,6 +16,7 @@ import com.blindtigergames.werescrewed.util.Util;
 
 public class Screen implements com.badlogic.gdx.Screen {
 	
+	public ScreenType screenType;
 	protected Level level;
 	protected SpriteBatch batch;
 	protected SBox2DDebugRenderer debugRenderer;
@@ -53,9 +53,7 @@ public class Screen implements com.badlogic.gdx.Screen {
 			Gdx.gl10.glClear( GL20.GL_COLOR_BUFFER_BIT );
 		}
 
-		if ( Gdx.input.isKeyPressed( Input.Keys.ESCAPE ) ) {
-			ScreenManager.getInstance( ).show( ScreenType.PAUSE );
-		}
+
 		if ( Gdx.input.isKeyPressed( Keys.P ) ) {
 			System.exit( 0 );
 		}
@@ -63,15 +61,23 @@ public class Screen implements com.badlogic.gdx.Screen {
 			level.update( delta );
 			level.draw( batch, debugRenderer );
 			
+			@SuppressWarnings( "unused" )
 			int FPS = logger.getFPS( );
 			batch.setProjectionMatrix( uiCamera.combined );
 			batch.begin( );
 			if(debug_font != null){
-				//debug_font.draw(batch, "FPS: "+FPS, -Gdx.graphics.getWidth( )/2, Gdx.graphics.getHeight( )/2);//-Gdx.graphics.getWidth( )/4, Gdx.graphics.getHeight( )/4
-				debug_font.draw(batch, "ALPHA BUILD", -Gdx.graphics.getWidth( )/2, Gdx.graphics.getHeight( )/2);
+				debug_font.draw(batch, "FPS: "+FPS, -Gdx.graphics.getWidth( )/2, Gdx.graphics.getHeight( )/2);//-Gdx.graphics.getWidth( )/4, Gdx.graphics.getHeight( )/4
+				//debug_font.draw(batch, "ALPHA BUILD", -Gdx.graphics.getWidth( )/2, Gdx.graphics.getHeight( )/2);
 			}
 			batch.end( );
 		}
+		
+		if ( Gdx.input.isKeyPressed( Input.Keys.ESCAPE ) ) {
+			if(!ScreenManager.escapeHeld){
+				ScreenManager.getInstance( ).show( ScreenType.PAUSE );
+			}
+		} else
+			ScreenManager.escapeHeld = false;
 	}
 
 	@Override

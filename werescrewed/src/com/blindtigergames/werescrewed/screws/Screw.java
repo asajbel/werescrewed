@@ -8,9 +8,10 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.Joint;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.physics.box2d.joints.RevoluteJoint;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
+import com.badlogic.gdx.physics.box2d.joints.WeldJointDef;
 import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityType;
@@ -45,7 +46,7 @@ public class Screw extends Entity {
 	protected boolean removed = false;
 	protected boolean playerNotSensor = false;
 	protected ScrewType screwType;
-	public ArrayList< RevoluteJoint > extraJoints;
+	public ArrayList< Joint > extraJoints;
 
 	/**
 	 * constructor to use if you want a cosmetic screw
@@ -59,12 +60,13 @@ public class Screw extends Entity {
 	 */
 	public Screw( String name, Vector2 pos, Entity entity, World world ) {
 		super( name, pos, WereScrewedGame.manager.get(
-				WereScrewedGame.dirHandle.path( ) + "/common/screw1.png",
+				WereScrewedGame.dirHandle.path( ) + "/common/screw/screw.png",
 				Texture.class ), null, false );
 		this.world = world;
+		if(sprite!=null)sprite.rotate( ( float ) ( Math.random( )*360 ) );
 		screwType = ScrewType.SCREW_COSMETIC;
 		entityType = EntityType.SCREW;
-		extraJoints = new ArrayList< RevoluteJoint >( );
+		extraJoints = new ArrayList< Joint >( );
 
 		constructBody( pos );
 		addStructureJoint( entity );
@@ -79,8 +81,9 @@ public class Screw extends Entity {
 	 */
 	public Screw( String name, Vector2 pos, Texture tex ) {
 		super( name, pos, ( tex == null ? WereScrewedGame.manager.get(
-				WereScrewedGame.dirHandle.path( ) + "/common/screw.png",
+				WereScrewedGame.dirHandle.path( ) + "/common/screw/screw.png",
 				Texture.class ) : tex ), null, false );
+		if(sprite!=null)sprite.rotate( ( float ) ( Math.random( )*360 ) );
 		entityType = EntityType.SCREW;
 	}
 
@@ -123,7 +126,7 @@ public class Screw extends Entity {
 	/**
 	 * returns the joint at this index
 	 */
-	public RevoluteJoint getJoint( int index ) {
+	public Joint getJoint( int index ) {
 		if ( index < extraJoints.size( ) ) {
 			return extraJoints.get( index );
 		}
@@ -131,32 +134,30 @@ public class Screw extends Entity {
 	}
 
 	/**
-	 * Turns structural and puzzle screws to the left which decreases depth
-	 * structural screws will eventually fall out
-	 * 
-	 * @param
+	 * used by controller controls to screw left
+	 * @param region
+	 * @param switchedDirections
 	 */
-	public void screwLeft( int region ) {
-	}
-
 	public void screwLeft( int region, boolean switchedDirections ) {
 	}
 
+	/**
+	 * used by keyboard controls to screw left
+	 */
 	public void screwLeft( ) {
 	}
 
 	/**
-	 * Turns structural and puzzle screws to the right which increases depth and
-	 * tightens structural screws
-	 * 
-	 * @param
+	 * used by controller controls to screw right
+	 * @param region
+	 * @param switchedDirections
 	 */
-	public void screwRight( int region ) {
-	}
-
 	public void screwRight( int region, boolean switchedDirections ) {
 	}
 
+	/**
+	 * used by keyboard controls to screw right
+	 */
 	public void screwRight( ) {
 	}
 
@@ -212,7 +213,7 @@ public class Screw extends Entity {
 
 	/**
 	 * attaches any other object between this screw and the main entity that
-	 * this screw is attached
+	 * this screw is attached using a revolute joint
 	 * 
 	 * @param entity
 	 */
@@ -221,11 +222,26 @@ public class Screw extends Entity {
 		RevoluteJointDef revoluteJointDef = new RevoluteJointDef( );
 		revoluteJointDef.initialize( body, entity.body, body.getPosition( ) );
 		revoluteJointDef.enableMotor = false;
-		RevoluteJoint screwJoint = ( RevoluteJoint ) world
-				.createJoint( revoluteJointDef );
+		Joint screwJoint =  (Joint) world.createJoint( revoluteJointDef );
 		extraJoints.add( screwJoint );
 	}
 
+	/**
+	 * attaches another object using a weld joint
+	 * @param entity
+	 */
+	public void addWeldJoint( Entity entity ) {
+		WeldJointDef weldJointDef = new WeldJointDef();
+		weldJointDef.initialize( body, entity.body, body.getPosition( ) );
+		Joint screwJoint =  (Joint) world.createJoint( weldJointDef );
+		extraJoints.add( screwJoint );
+		
+	}
+	
+	/**
+	 * builds the screw body
+	 * @param pos
+	 */
 	private void constructBody( Vector2 pos ) {
 		// create the screw body
 		BodyDef screwBodyDef = new BodyDef( );

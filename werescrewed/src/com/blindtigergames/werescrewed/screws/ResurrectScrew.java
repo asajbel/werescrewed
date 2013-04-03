@@ -48,7 +48,7 @@ public class ResurrectScrew extends Screw {
 		screwType = ScrewType.SCREW_RESURRECT;
 		entityType = EntityType.SCREW;
 
-		sprite.setColor( 200f / 255f, 200f / 255f, 200f / 255f, 0.33f );
+		sprite.setColor( 255f / 255f, 0f / 255f, 0f / 255f, 1.0f );
 
 		constructBody( pos );
 		connectScrewToEntity( entity );
@@ -60,16 +60,6 @@ public class ResurrectScrew extends Screw {
 	 */
 	@Override
 	public void screwLeft( ) {
-		if ( pullLeft ) {
-			body.setAngularVelocity( 15 );
-			rotation += 10;
-			screwStep = depth + 5;
-			pulleyWeight.setLinearVelocity( new Vector2( -1f, 0f ) );
-		}
-	}
-
-	@Override
-	public void screwLeft( int region ) {
 		if ( pullLeft ) {
 			body.setAngularVelocity( 15 );
 			rotation += 10;
@@ -111,16 +101,6 @@ public class ResurrectScrew extends Screw {
 	 */
 	@Override
 	public void screwRight( ) {
-		if ( !pullLeft ) {
-			body.setAngularVelocity( -15 );
-			rotation -= 10;
-			screwStep = depth + 5;
-			pulleyWeight.setLinearVelocity( new Vector2( 1f, 0f ) );
-		}
-	}
-
-	@Override
-	public void screwRight( int region ) {
 		if ( !pullLeft ) {
 			body.setAngularVelocity( -15 );
 			rotation -= 10;

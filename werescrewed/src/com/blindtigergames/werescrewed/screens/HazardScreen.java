@@ -22,7 +22,6 @@ import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.Skeleton;
 import com.blindtigergames.werescrewed.entity.action.AnchorActivateAction;
 import com.blindtigergames.werescrewed.entity.action.AnchorDeactivateAction;
-import com.blindtigergames.werescrewed.entity.action.MetricsStartTimeAction;
 import com.blindtigergames.werescrewed.entity.builders.EventTriggerBuilder;
 import com.blindtigergames.werescrewed.entity.builders.PlatformBuilder;
 import com.blindtigergames.werescrewed.entity.builders.PlayerBuilder;
@@ -40,6 +39,7 @@ import com.blindtigergames.werescrewed.util.Util;
 
 public class HazardScreen implements com.badlogic.gdx.Screen {
 
+	public ScreenType screenType;
 	private Camera cam;
 	private SpriteBatch batch;
 	private Texture testTexture;
@@ -56,9 +56,8 @@ public class HazardScreen implements com.badlogic.gdx.Screen {
 	private Hazard hazard;
 	private Fire fire;
 	private Electricity elec;
-	private Saws saw;
 	private Spikes spikes, spikes2;
-	private SpikesBuilder spikesBuilder;
+	private HazardBuilder spikesBuilder;
 	private boolean debug = true;
 	private boolean debugTest = true;
 	private Steam testSteam;
@@ -73,14 +72,14 @@ public class HazardScreen implements com.badlogic.gdx.Screen {
 		skeleton = new Skeleton( "skeleton", Vector2.Zero, null, world );
 		rootSkeleton = new Skeleton( "root", Vector2.Zero, null, world );
 		platBuilder = new PlatformBuilder( world );
-		spikesBuilder = new SpikesBuilder( world );
+		spikesBuilder = new HazardBuilder( world );
 		contactListener = new MyContactListener( );
 		world.setContactListener( contactListener );
 
 		player1 = new PlayerBuilder( ).name( "player1" ).world( world )
-				.position( 0f, 100f).buildPlayer( );
+				.position(  1800f, 100f).buildPlayer( );
 		player2 = new PlayerBuilder( ).name( "player2" ).world( world )
-				.position( 0.0f, 100.0f ).buildPlayer( );
+				.position(  1900f, 100.0f ).buildPlayer( );
 
 		initTiledPlatforms( );
 		initHazards( );
@@ -113,16 +112,16 @@ public class HazardScreen implements com.badlogic.gdx.Screen {
 	}
 
 	private void initHazards( ) {
-		Vector2 tempPos = new Vector2( -1250.0f, 300.0f );
+		/*Vector2 tempPos = new Vector2( -1250.0f, 300.0f );
 		float tempWH = 100.0f;
 		hazard = new Hazard ( "Test", tempPos, null, 
 				world, tempWH, tempWH, true );
-		hazard.constructBody( tempPos, tempWH, tempWH );
+		hazard.constructBody( tempPos, tempWH, tempWH );*/
 		fire = new Fire( "Fire1", new Vector2( -700.0f, -10.0f ), 
-				world, true, 50, 100 );
-		/*elec = new Electricity( "Elec1", new Vector2( 3000.0f, -10.0f ),
-				world, true );
-		saw = new Saws( "Saw1", new Vector2( -2000.0f, 40.0f ),
+				50, 100, world, true );
+		elec = new Electricity( "Elec1", new Vector2( 700.0f, 0.0f ),
+				new Vector2( 700.0f, 50.0f ), world, true );
+		/*saw = new Saws( "Saw1", new Vector2( -2000.0f, 40.0f ),
 				2, world, true );
 		 */
 		spikes = new Spikes( "Spikes1", new Vector2( -1700.0f, 5.0f ), 
@@ -153,15 +152,26 @@ public class HazardScreen implements com.badlogic.gdx.Screen {
 		
 		EventTriggerBuilder etb = new EventTriggerBuilder( world );
 		EventTrigger et = etb.name( "event1" ).circle( ).radius( 100 )
-				.position( new Vector2( 900f, 20f ) ).repeatable()
+				.position( new Vector2( 1200f, 20f ) ).repeatable()
 				.beginAction( new AnchorActivateAction( testAnchor ) )
+				.endAction( new AnchorActivateAction( testAnchor ) )
+				.twoPlayersToActivate( )
 				.build( );
 		EventTriggerBuilder etb2 = new EventTriggerBuilder( world );
 		EventTrigger et2 = etb2.name( "event2" ).circle( ).radius( 100 )
-				.position( new Vector2( 500f, 20f ) ).repeatable( )
+				.position( new Vector2(600f, 20f ) ).repeatable( )
 				.beginAction( new AnchorDeactivateAction( testAnchor ) )
+				.endAction( new AnchorDeactivateAction( testAnchor ) )
+				.twoPlayersToDeactivate( )
 				.build( );
 		
+		EventTriggerBuilder etb3 = new EventTriggerBuilder( world );
+		@SuppressWarnings( "unused" )
+		EventTrigger et3 = etb3.name( "event3" ).circle( ).radius( 100 )
+				.position( new Vector2( 1600f, 20f ) ).repeatable()
+				.beginAction( new AnchorActivateAction( testAnchor ) )
+				.endAction( new AnchorActivateAction( testAnchor ) )
+				.build( );
 		//AnchorDeactivateAction
 		
 		
@@ -207,9 +217,6 @@ public class HazardScreen implements com.badlogic.gdx.Screen {
 			Gdx.gl10.glClearColor( 0.0f, 0.0f, 0.0f, 1.0f );
 			Gdx.gl10.glClear( GL20.GL_COLOR_BUFFER_BIT );
 		}
-		if ( Gdx.input.isKeyPressed( Input.Keys.ESCAPE ) ) {
-			ScreenManager.getInstance( ).show( ScreenType.PAUSE );
-		}
 
 		cam.update( );
 
@@ -243,6 +250,7 @@ public class HazardScreen implements com.badlogic.gdx.Screen {
 		rootSkeleton.draw( batch );
 		progressManager.draw( batch );
 		fire.draw(batch, deltaTime );
+		elec.draw( batch, deltaTime );
 		testSteam.draw( batch, deltaTime );
 		player1.draw( batch );
 		player2.draw( batch );
@@ -253,6 +261,15 @@ public class HazardScreen implements com.badlogic.gdx.Screen {
 			debugRenderer.render( world, cam.combined( ) );
 
 		world.step( 1 / 60f, 6, 6 );
+		
+		if ( Gdx.input.isKeyPressed( Input.Keys.ESCAPE ) ) {
+			if(!ScreenManager.escapeHeld){
+				ScreenManager.getInstance( ).show( ScreenType.PAUSE );
+			}
+		} else
+			ScreenManager.escapeHeld = false;
+		
+		
 	}
 
 	@Override

@@ -28,6 +28,7 @@ public class WereScrewedGame extends Game {
 	
 	public static ShaderProgram defaultShader;
 	
+	@SuppressWarnings( "unused" )
 	private float fpsTime = 0;
 
 	@Override
@@ -38,12 +39,6 @@ public class WereScrewedGame extends Game {
 			defaultShader = SpriteBatch.createDefaultShader( );
 		else
 			defaultShader = null;
-		
-		// ScreenManager.getInstance().show(Screen.INTRO);
-
-		// ScreenManager.getInstance().show(Screen.LEVELTEST);
-
-		// uncomment next line to bypass intro
 
 		ScreenManager.getInstance( ).show( ScreenType.LOADING );
 
@@ -60,7 +55,7 @@ public class WereScrewedGame extends Game {
 
 	@Override
 	public void render( ) {
-		update( 0 );
+		//update( 0 );
 		if ( Gdx.input.isKeyPressed( Keys.SHIFT_LEFT ) && Gdx.input.isKeyPressed( Keys.ESCAPE ) ){
 			if ( !restartFlag ){
 				restartFlag = true;
@@ -80,23 +75,28 @@ public class WereScrewedGame extends Game {
 			metricsFlag = false;
 		}
 		
-//		float deltaTime = Gdx.graphics.getDeltaTime( );
-//		fpsTime += deltaTime;
-//		if ( fpsTime >= oneOverTargetFrameRate ){
-//			Gdx.app.log( "FPS", ""+fpsTime+", "+ oneOverTargetFrameRate);
-//			fpsTime = fpsTime - oneOverTargetFrameRate;
-//			//Gdx.app.log( "Rendering", "Rendering");
-//			super.render( );
-//		}else{
-//			//fpsTime += deltaTime;
-//			//Gdx.app.log( "Not rendering", "");
-//		}
 		
-		super.render( );
+		
+		//super.render( );
 		if (Gdx.app.getType() == ApplicationType.Android) {
 			logger.log( ); 
 		}
 //		logger.log( );
+		
+		super.render( );
+		
+//		float deltaTime = Gdx.graphics.getDeltaTime( );
+//		fpsTime += deltaTime;
+//		if ( fpsTime >= oneOverTargetFrameRate ){
+//			//Gdx.app.log( "FPS", ""+fpsTime+", "+ oneOverTargetFrameRate);
+//			fpsTime = fpsTime - oneOverTargetFrameRate;
+//			//Gdx.app.log( "Rendering", "Rendering");
+//			super.render( );
+//		}else{
+//			return;
+//			//fpsTime += deltaTime;
+//			//Gdx.app.log( "Not rendering", "");
+//		}
 	}
 	
 	public void restart(){

@@ -2,6 +2,7 @@ package com.blindtigergames.werescrewed.screens;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.utils.IntMap;
 
 public final class ScreenManager {
@@ -11,6 +12,10 @@ public final class ScreenManager {
 	private Game game;
 
 	private IntMap< com.badlogic.gdx.Screen > screens;
+
+	private static ScreenType prevScreen = null;
+	private boolean pauseScreenShown = false;
+	public static boolean escapeHeld;
 
 	private ScreenManager( ) {
 		screens = new IntMap< com.badlogic.gdx.Screen >( );
@@ -23,18 +28,65 @@ public final class ScreenManager {
 		return instance;
 	}
 
+	public static ScreenType getPrevScreen( ) {
+		return prevScreen;
+	}
+
 	public void initialize( Game game ) {
 		this.game = game;
 	}
 
 	public void show( ScreenType screen ) {
+		if ( Gdx.input.isKeyPressed( Keys.ESCAPE ) ) {
+			ScreenManager.escapeHeld = true;
+		} else 
+			ScreenManager.escapeHeld = false;
+		
+		
 		if ( null == game )
 			return;
+
 		if ( !screens.containsKey( screen.ordinal( ) ) ) {
 			screens.put( screen.ordinal( ), screen.getScreenInstance( ) );
 		}
-		game.setScreen( screens.get( screen.ordinal( ) ) );
-		Gdx.app.log( "ScreenManager", screens.get( screen.ordinal( ) ).getClass( ).getSimpleName( )+" starting");
+
+		if ( screen != ScreenType.PAUSE ) {
+			if ( prevScreen != null ) {
+
+				if ( !pauseScreenShown ) {
+					Gdx.app.log( "disposing", screens
+							.get( prevScreen.ordinal( ) ).getClass( )
+							.getSimpleName( ) );
+					dispose( prevScreen );
+					pauseScreenShown = false;
+				}
+
+			}
+		}
+
+		if ( screen == ScreenType.PAUSE ) {
+			pauseScreenShown = true;
+			game.setScreen( screens.get( screen.ordinal( ) ) );
+		} else {
+			if ( screen == ScreenType.MAIN_MENU ) {
+				if ( pauseScreenShown ) {
+					Gdx.app.log( "disposing", screens
+							.get( prevScreen.ordinal( ) ).getClass( )
+							.getSimpleName( ) );
+					dispose( prevScreen );
+				}
+			}
+			
+			game.setScreen( screens.get( screen.ordinal( ) ) );
+			prevScreen = screen;
+		}
+
+		Gdx.app.log( "ScreenManager", screens.get( screen.ordinal( ) )
+				.getClass( ).getSimpleName( )
+				+ " starting" );
+
+		
+
 	}
 
 	public void dispose( ScreenType screen ) {

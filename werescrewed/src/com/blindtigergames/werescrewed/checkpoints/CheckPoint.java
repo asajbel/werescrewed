@@ -1,8 +1,5 @@
 package com.blindtigergames.werescrewed.checkpoints;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
@@ -59,8 +56,8 @@ public class CheckPoint extends Entity {
 		
 
 		TextureAtlas atlas = WereScrewedGame.manager.getAtlas( "checkpoint" );
-		checkpointFrameAnimator = new SimpleFrameAnimator( ).speed( 1f )
-				.loop( LoopBehavior.STOP ).time( 0.0f ).startFrame( 0 )
+		checkpointFrameAnimator = new SimpleFrameAnimator( ).speed(0f )
+				.loop( LoopBehavior.STOP ).time( 0.001f ).startFrame( 0 )
 				.maxFrames( atlas.getRegions( ).size+1 );
 		Sprite sprite = new Sprite( atlas, checkpointFrameAnimator );
 		//sprite.setOrigin( -sprite.getWidth()/2, -sprite.getHeight( )/2 );

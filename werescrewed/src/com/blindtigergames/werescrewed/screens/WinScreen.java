@@ -11,6 +11,7 @@ import com.blindtigergames.werescrewed.gui.Label;
 
 class WinScreen implements com.badlogic.gdx.Screen{
 
+	public ScreenType screenType;
 	private SpriteBatch batch = null;
 	private OrthographicCamera camera = null;
 	private BitmapFont font = null;
@@ -81,8 +82,6 @@ class WinScreen implements com.badlogic.gdx.Screen{
 
 	@Override
 	public void dispose( ) {
-		font.dispose( );
-		batch.dispose( );
 	}
 
 }

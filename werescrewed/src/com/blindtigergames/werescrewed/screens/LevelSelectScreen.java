@@ -14,11 +14,11 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.gui.Button;
 import com.blindtigergames.werescrewed.gui.Label;
-import com.blindtigergames.werescrewed.gui.Button.ButtonHandler;
 import com.blindtigergames.werescrewed.input.MyControllerListener;
 
 public class LevelSelectScreen implements com.badlogic.gdx.Screen {
 
+	public ScreenType screenType;
 	private SpriteBatch batch = null;
 	private OrthographicCamera camera = null;
 	private BitmapFont font = null;
@@ -33,6 +33,7 @@ public class LevelSelectScreen implements com.badlogic.gdx.Screen {
 	private int lineHeight = 0;
 	private Button level1Button;
 	private Button backButton = null;
+	private Button dragonButton = null;
 
 	private int buttonIndex = 0;
 	private ArrayList< Button > Buttons;
@@ -46,23 +47,11 @@ public class LevelSelectScreen implements com.badlogic.gdx.Screen {
 	 * Things needed... Being able to select levels
 	 */
 	public LevelSelectScreen( ) {
-		batch = new SpriteBatch( );
-		font = new BitmapFont( );
-		fancyFont = WereScrewedGame.manager.getFont( "Screwball" );
-		// fancyFont = WereScrewedGame.manager.getFont( "ornatique" );
-		logo = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-				+ "/common/title_background.png", Texture.class );
-		lineHeight = Math.round( 2.5f * font.getCapHeight( ) );
-		screenLabel = new Label( "Level Select", fancyFont );
-		ControllerSetUp( );
-		loadButtons( );
+		
 	}
 
 	@Override
 	public void dispose( ) {
-		// TODO Auto-generated method stub
-		font.dispose( );
-		batch.dispose( );
 	}
 
 	@Override
@@ -93,6 +82,7 @@ public class LevelSelectScreen implements com.badlogic.gdx.Screen {
 		hazardButton.draw( batch, camera );
 		testButton.draw( batch, camera );
 		level1Button.draw( batch, camera );
+		dragonButton.draw(batch,camera);
 
 		backButton.draw( batch, camera );
 		batch.end( );
@@ -100,7 +90,8 @@ public class LevelSelectScreen implements com.badlogic.gdx.Screen {
 		if ( controllerTimer > 0 ) {
 			controllerTimer--;
 		} else {
-			if(controller1 != null || controller2 != null){
+			if(controller1 != null || controller2 != null 
+					|| (controller1 == null && controller2 == null)){
 				if ( controllerListener.jumpPressed( )
 						|| Gdx.input.isKeyPressed( Keys.ENTER ) ) {
 					Buttons.get( buttonIndex ).setSelected( true );
@@ -149,6 +140,8 @@ public class LevelSelectScreen implements com.badlogic.gdx.Screen {
 		hazardButton.setY( centerY - lineHeight );
 		level1Button.setX( centerX - level1Button.getWidth( ) / 2 );
 		level1Button.setY( centerY - lineHeight * 2 );
+		dragonButton.setX( centerX-dragonButton.getWidth()/2 );
+		dragonButton.setY(centerY-lineHeight*3);
 
 		backButton.setX( centerX - backButton.getWidth( ) / 2 );
 		backButton.setY( 20 + backButton.getHeight( ) );
@@ -163,7 +156,16 @@ public class LevelSelectScreen implements com.badlogic.gdx.Screen {
 
 	@Override
 	public void show( ) {
-		// TODO Auto-generated method stub
+		batch = new SpriteBatch( );
+		font = new BitmapFont( );
+		fancyFont = WereScrewedGame.manager.getFont( "Screwball" );
+		// fancyFont = WereScrewedGame.manager.getFont( "ornatique" );
+		logo = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
+				+ "/common/title_background.png", Texture.class );
+		lineHeight = Math.round( 2.5f * font.getCapHeight( ) );
+		screenLabel = new Label( "Level Select", fancyFont );
+		ControllerSetUp( );
+		loadButtons( );
 
 	}
 	
@@ -198,6 +200,7 @@ public class LevelSelectScreen implements com.badlogic.gdx.Screen {
 				new ScreenSwitchHandler( ScreenType.GLEED ) );
 		level1Button = new Button( "Level 1", fancyFont,
 				new ScreenSwitchHandler( ScreenType.LOADING_1 ) );
+		dragonButton = new Button( "Dragon", fancyFont, new ScreenSwitchHandler( ScreenType.DRAGON ) );
 
 		backButton = new Button( "Back", fancyFont, new ScreenSwitchHandler(
 				ScreenType.MAIN_MENU ) );
@@ -209,6 +212,7 @@ public class LevelSelectScreen implements com.badlogic.gdx.Screen {
 		Buttons.add( resurrectButton );
 		Buttons.add( hazardButton );
 		Buttons.add( level1Button );
+		Buttons.add(dragonButton);
 		Buttons.add( backButton );
 
 	}

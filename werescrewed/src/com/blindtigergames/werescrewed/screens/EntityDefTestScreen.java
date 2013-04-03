@@ -47,7 +47,7 @@ public class EntityDefTestScreen implements com.badlogic.gdx.Screen {
 	// FIELDS
 
 	// Variables
-
+	public ScreenType screenType;
 	private Camera cam;
 	private SpriteBatch batch;
 	private Texture testTexture;
@@ -298,6 +298,7 @@ public class EntityDefTestScreen implements com.badlogic.gdx.Screen {
 					.buildTilePlatform( );
 
 			piston.body.setType( BodyType.DynamicBody );
+			@SuppressWarnings( "unused" )
 			PrismaticJoint pistonJoint = jointBuilder.bodyB( ( Entity ) piston )
 					.anchor( piston.body.getWorldCenter( ) ).build( );
 			// Something is still not quite right with this, try replacing 3
@@ -316,6 +317,7 @@ public class EntityDefTestScreen implements com.badlogic.gdx.Screen {
 		TiledPlatform elevator = builder.position( -1500, 150 ).moveable( true )
 				.buildTilePlatform( );
 		elevator.body.setType( BodyType.DynamicBody );
+		@SuppressWarnings( "unused" )
 		PrismaticJoint pistonJ = jointBuilder.bodyB( ( Entity ) elevator )
 				.anchor( elevator.body.getWorldCenter( ) ).build( );
 
@@ -353,9 +355,7 @@ public class EntityDefTestScreen implements com.badlogic.gdx.Screen {
 
 		cam.update( );
 
-		if ( Gdx.input.isKeyPressed( Input.Keys.ESCAPE ) ) {
-			ScreenManager.getInstance( ).show( ScreenType.PAUSE );
-		}
+
 		if ( Gdx.input.isKeyPressed( Keys.P ) ) {
 			System.exit( 0 );
 		}
@@ -383,6 +383,13 @@ public class EntityDefTestScreen implements com.badlogic.gdx.Screen {
 			debugRenderer.render( world, cam.combined( ) );
 
 		world.step( 1 / 60f, 6, 2 );
+		
+		if ( Gdx.input.isKeyPressed( Input.Keys.ESCAPE ) ) {
+			if(!ScreenManager.escapeHeld){
+				ScreenManager.getInstance( ).show( ScreenType.PAUSE );
+			}
+		} else
+			ScreenManager.escapeHeld = false;
 	}
 
 	@Override

@@ -149,7 +149,10 @@ public class MyContactListener implements ContactListener {
 						case EVENTTRIGGER:
 							EventTrigger et = ( EventTrigger ) object;
 							et.setActivated( true, player.name );
-							et.triggerBeginEvent( );
+							if(playerFix.getShape( ) instanceof CircleShape)
+							{
+								et.triggerBeginEvent( );
+							}
 							break;
 						default:
 							break;
@@ -167,6 +170,8 @@ public class MyContactListener implements ContactListener {
 				}
 			} else {
 
+				// Player are not involved in this section //
+				
 				// checks if the object fix or player fix is an event trigger
 				// then applies the event to the object that is colliding with
 				// it
@@ -287,7 +292,10 @@ public class MyContactListener implements ContactListener {
 						case EVENTTRIGGER:
 							EventTrigger et = ( EventTrigger ) objectFix
 									.getBody( ).getUserData( );
-							et.triggerEndEvent( );
+							if(playerFix.getShape( ) instanceof CircleShape)
+							{
+								et.triggerEndEvent( );
+							}
 							et.setActivated( false, player.name );
 							break;
 						default:

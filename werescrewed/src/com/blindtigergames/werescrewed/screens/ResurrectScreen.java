@@ -44,6 +44,7 @@ public class ResurrectScreen implements com.badlogic.gdx.Screen {
 
 	// Variables
 
+	public ScreenType screenType;
 	private Camera cam;
 	private OrthographicCamera bgCam;
 	private SpriteBatch batch;
@@ -151,7 +152,7 @@ public class ResurrectScreen implements com.badlogic.gdx.Screen {
 		Body body;
 		CircleShape screwShape;
 		FixtureDef screwFixture;
-		Entity bg_1_0 = new Entity( "bg_1_0", new Vector2( -264, 512 ),
+		Entity bg_1_0 = new Entity( "bg_1_0", new Vector2( 1920, 512 ),
 				WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 						+ "/common/parallax_layer1_0.png",
 						Texture.class ), null, false );
@@ -295,9 +296,6 @@ public class ResurrectScreen implements com.badlogic.gdx.Screen {
 		// bgCam.zoom = Math.min( 1.1f, zoomRatio );
 		bgCam.update( );
 
-		if ( Gdx.input.isKeyPressed( Input.Keys.ESCAPE ) ) {
-			ScreenManager.getInstance( ).show( ScreenType.PAUSE );
-		}
 		if ( Gdx.input.isKeyPressed( Input.Keys.NUM_1 ) ) {
 			ScreenManager.getInstance( ).show( ScreenType.WIN );
 		}
@@ -307,10 +305,10 @@ public class ResurrectScreen implements com.badlogic.gdx.Screen {
 
 		if ( Gdx.input.isKeyPressed( Keys.SPACE ) ) {
 			if ( !switchBg ) {
-				bgRootSkel.getSubEntity( "bg_2_0" ).changeSprite( new Sprite ( WereScrewedGame.manager.get( WereScrewedGame.dirHandle
+				bgRootSkel.getLooseEntity( "bg_2_0" ).changeSprite( new Sprite ( WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 						+ "/common/parallax_layer3_0.png",
 						Texture.class ) ) );
-				bgRootSkel.getSubEntity( "bg_2_1" ).changeSprite( new Sprite ( WereScrewedGame.manager.get( WereScrewedGame.dirHandle
+				bgRootSkel.getLooseEntity( "bg_2_1" ).changeSprite( new Sprite ( WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 						+ "/common/parallax_layer3_1.png",
 						Texture.class ) ) );
 				switchBg = true;
@@ -318,10 +316,10 @@ public class ResurrectScreen implements com.badlogic.gdx.Screen {
 		}
 		if ( Gdx.input.isKeyPressed( Keys.B ) ) {
 			if ( switchBg ) {
-				bgRootSkel.getSubEntity( "bg_2_0" ).changeSprite( new Sprite ( WereScrewedGame.manager.get( WereScrewedGame.dirHandle
+				bgRootSkel.getLooseEntity( "bg_2_0" ).changeSprite( new Sprite ( WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 						+ "/common/parallax_layer2_0.png",
 						Texture.class ) ) );
-				bgRootSkel.getSubEntity( "bg_2_1" ).changeSprite( new Sprite ( WereScrewedGame.manager.get( WereScrewedGame.dirHandle
+				bgRootSkel.getLooseEntity( "bg_2_1" ).changeSprite( new Sprite ( WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 						+ "/common/parallax_layer2_1.png",
 						Texture.class ) ) );
 				switchBg = false;
@@ -383,6 +381,13 @@ public class ResurrectScreen implements com.badlogic.gdx.Screen {
 			debugRenderer.render( world, cam.combined( ) );
 
 		world.step( 1 / 60f, 6, 6 );
+		
+		if ( Gdx.input.isKeyPressed( Input.Keys.ESCAPE ) ) {
+			if(!ScreenManager.escapeHeld){
+				ScreenManager.getInstance( ).show( ScreenType.PAUSE );
+			}
+		} else
+			ScreenManager.escapeHeld = false;
 	}
 
 	@Override

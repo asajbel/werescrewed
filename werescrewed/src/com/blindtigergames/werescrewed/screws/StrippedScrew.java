@@ -2,13 +2,15 @@ package com.blindtigergames.werescrewed.screws;
 
 import java.util.ArrayList;
 
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.Joint;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.physics.box2d.joints.RevoluteJoint;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityType;
 import com.blindtigergames.werescrewed.util.Util;
@@ -24,12 +26,19 @@ import com.blindtigergames.werescrewed.util.Util;
 
 public class StrippedScrew extends Screw {
 
+	/**
+	 *  create a stripped screw thats attached to an entity
+	 * @param name
+	 * @param pos
+	 * @param entity
+	 * @param world
+	 */
 	public StrippedScrew( String name, Vector2 pos, Entity entity, World world) {
 		super( name, pos, null );
 		this.world = world;
 		screwType = ScrewType.SCREW_STRIPPED;
 		entityType = EntityType.SCREW;
-		extraJoints = new ArrayList< RevoluteJoint >( );
+		extraJoints = new ArrayList< Joint >( );
 
 		sprite.setColor( 255f/255f, 112f/255f, 52f/255f, 1.0f ); //rust color pulled off a hexdecimal chart
 		sprite.setOrigin( 0.0f, 0.0f );
@@ -38,7 +47,30 @@ public class StrippedScrew extends Screw {
 		addStructureJoint( entity );
 
 	}
+	
+	/**
+	 * create a stripped screw that isn't connected to an entity
+	 * @param name
+	 * @param pos
+	 * @param world
+	 */
+	public StrippedScrew( String name, Vector2 pos, World world) {
+		super( name, pos, null );
+		this.world = world;
+		screwType = ScrewType.SCREW_STRIPPED;
+		entityType = EntityType.SCREW;
+		extraJoints = new ArrayList< Joint >( );
 
+		sprite.setColor( 255f/255f, 112f/255f, 52f/255f, 1.0f ); //rust color pulled off a hexdecimal chart
+		sprite.setOrigin( 0.0f, 0.0f );
+
+		constructBody( pos );
+	}
+
+	/**
+	 * create screw body
+	 * @param pos
+	 */
 	private void constructBody( Vector2 pos ) {
 		// create the screw body
 		BodyDef screwBodyDef = new BodyDef( );
@@ -75,5 +107,27 @@ public class StrippedScrew extends Screw {
 		screwShape.dispose( );
 
 	}
+
+	/**
+	 * This particular draw is needed because I needed stripped screws to be able to 
+	 * rotate in place, I am refering to the whole body rotating, not just screwing/unscrewing
+	 * 
+	 * This will probably be put into Screw when need be
+	 * 
+	 * @author Ranveer
+	 */
+	@Override 
+	public void draw(SpriteBatch batch){
+		float xpos =  body.getPosition( ).x - (this.sprite.getWidth( )/2 * Util.PIXEL_TO_BOX);
+		float ypos =  body.getPosition( ).y - (this.sprite.getHeight( )/2 * Util.PIXEL_TO_BOX);
+		
+		this.sprite.setOrigin( this.sprite.getWidth( ) / 2, this.sprite.getHeight( ) / 2);
+		this.sprite.setPosition( xpos * Util.BOX_TO_PIXEL, ypos * Util.BOX_TO_PIXEL);
+		this.sprite.setRotation(  MathUtils.radiansToDegrees
+				* body.getAngle( ) );
+		
+		this.sprite.draw( batch );
+	}
+	
 
 }

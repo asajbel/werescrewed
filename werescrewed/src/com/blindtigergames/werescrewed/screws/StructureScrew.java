@@ -8,8 +8,8 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.Joint;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.physics.box2d.joints.RevoluteJoint;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityType;
 import com.blindtigergames.werescrewed.util.Util;
@@ -32,7 +32,7 @@ public class StructureScrew extends Screw {
 		depth = max;
 		rotation = 0;
 		fallTimeout = 140;
-		extraJoints = new ArrayList< RevoluteJoint >( );
+		extraJoints = new ArrayList< Joint >( );
 		screwType = ScrewType.SCREW_STRUCTURAL;
 		entityType = EntityType.SCREW;
 		entity.body.setFixedRotation( false );
@@ -41,24 +41,18 @@ public class StructureScrew extends Screw {
 		addStructureJoint( entity );
 	}
 
-	@Override
-	public void screwLeft( int region ) {
-		if ( depth > -10 ) {
-			body.setAngularVelocity( 1 );
-			depth--;
-			rotation = region * 5;
-			screwStep = depth + 5;
-		}
-	}
+	public StructureScrew( String name, Vector2 pos, int max, World world ) {
+		super( name, pos, null );
+		this.world = world;
+		maxDepth = max;
+		depth = max;
+		rotation = 0;
+		fallTimeout = 140;
+		extraJoints = new ArrayList< Joint >( );
+		screwType = ScrewType.SCREW_STRUCTURAL;
+		entityType = EntityType.SCREW;
 
-	@Override
-	public void screwRight( int region ) {
-		if ( depth < maxDepth ) {
-			body.setAngularVelocity( -1 );
-			depth++;
-			rotation = region * 5;
-			screwStep = depth + 6;
-		}
+		constuctBody( pos );
 	}
 
 	@Override
@@ -90,7 +84,7 @@ public class StructureScrew extends Screw {
 	public void screwLeft( ) {
 		if ( depth > -10 ) {
 			body.setAngularVelocity( 1 );
-			depth--;
+			depth-= 2;
 			rotation += 10;
 			screwStep = depth + 5;
 		}
@@ -126,7 +120,7 @@ public class StructureScrew extends Screw {
 	public void screwRight( ) {
 		if ( depth < maxDepth ) {
 			body.setAngularVelocity( -1 );
-			depth++;
+			depth+= 2;
 			rotation -= 10;
 			screwStep = depth + 6;
 		}
@@ -140,8 +134,9 @@ public class StructureScrew extends Screw {
 			sprite.setPosition( bodyPos.x - offset.x, bodyPos.y - offset.y );
 			if ( depth <= 0 ) {
 				if ( fallTimeout == 0 ) {
-					for ( RevoluteJoint j : extraJoints ) {
+					for ( Joint j : extraJoints ) {
 						world.destroyJoint( j );
+						System.out.println( "destory joint" );
 					}
 				}
 				fallTimeout--;

@@ -9,7 +9,6 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.EdgeShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.utils.Array;
@@ -20,8 +19,8 @@ public class Fire extends Hazard {
 
 	public ParticleEffect particleEffect;
 	public Array< ParticleEmitter > particleEmitter;
-	float width;
-	float height;
+	protected float width;
+	protected float height;
 	boolean upsideDown = true;
 	
 	/**
@@ -34,8 +33,8 @@ public class Fire extends Hazard {
 	 * @param pixelWidth float
 	 * @param pixelHeight float
 	 */
-	public Fire( String name, Vector2 pos, World world, boolean isActive, 
-			float width, float height ) {
+	public Fire( String name, Vector2 pos, float width, float height,
+			World world, boolean isActive ) {
 		super( name, pos, null, world, width, height, isActive );
 		entityType = EntityType.HAZARD;
 		
@@ -49,7 +48,7 @@ public class Fire extends Hazard {
 				Gdx.files.internal( "data/particles" ) );
 		particleEffect.setPosition( pos.x, pos.y);
 		particleEmitter = particleEffect.getEmitters( );
-		constructBody(pos);
+		constructBody( pos );
 		for( ParticleEmitter PE: particleEmitter)
 			PE.setContinuous( false );
 	}
@@ -66,29 +65,29 @@ public class Fire extends Hazard {
 				position.y * Util.PIXEL_TO_BOX );
 		body = world.createBody( bodyDef );
 
-		FixtureDef steamFixtureDef = new FixtureDef( );
+		FixtureDef fireFixtureDef = new FixtureDef( );
 		EdgeShape polygon = new EdgeShape( );
 		polygon.set( ( 0 ) * Util.PIXEL_TO_BOX, ( 0 ) * Util.PIXEL_TO_BOX, 
 				( width ) * Util.PIXEL_TO_BOX, ( height ) * Util.PIXEL_TO_BOX );
-		steamFixtureDef.shape = polygon;
-		steamFixtureDef.isSensor = true;
-		steamFixtureDef.filter.categoryBits = Util.CATEGROY_HAZARD;
-		steamFixtureDef.filter.maskBits = Util.CATEGORY_PLAYER;
-		body.createFixture( steamFixtureDef );
+		fireFixtureDef.shape = polygon;
+		fireFixtureDef.isSensor = true;
+		fireFixtureDef.filter.categoryBits = Util.CATEGROY_HAZARD;
+		fireFixtureDef.filter.maskBits = Util.CATEGORY_PLAYER;
+		body.createFixture( fireFixtureDef );
 		polygon.set( ( 0 ) * Util.PIXEL_TO_BOX, ( 0 ) * Util.PIXEL_TO_BOX, 
 				( width * -1 ) * Util.PIXEL_TO_BOX, ( height ) * Util.PIXEL_TO_BOX );
-		steamFixtureDef.shape = polygon;
-		steamFixtureDef.isSensor = true;
-		steamFixtureDef.filter.categoryBits = Util.CATEGROY_HAZARD;
-		steamFixtureDef.filter.maskBits = Util.CATEGORY_PLAYER;
-		body.createFixture( steamFixtureDef );
+		fireFixtureDef.shape = polygon;
+		fireFixtureDef.isSensor = true;
+		fireFixtureDef.filter.categoryBits = Util.CATEGROY_HAZARD;
+		fireFixtureDef.filter.maskBits = Util.CATEGORY_PLAYER;
+		body.createFixture( fireFixtureDef );
 		polygon.set( ( width ) * Util.PIXEL_TO_BOX, ( height ) * Util.PIXEL_TO_BOX, 
 				( width * -1 ) * Util.PIXEL_TO_BOX, ( height ) * Util.PIXEL_TO_BOX );
-		steamFixtureDef.shape = polygon;
-		steamFixtureDef.isSensor = true;
-		steamFixtureDef.filter.categoryBits = Util.CATEGROY_HAZARD;
-		steamFixtureDef.filter.maskBits = Util.CATEGORY_PLAYER;
-		body.createFixture( steamFixtureDef );
+		fireFixtureDef.shape = polygon;
+		fireFixtureDef.isSensor = true;
+		fireFixtureDef.filter.categoryBits = Util.CATEGROY_HAZARD;
+		fireFixtureDef.filter.maskBits = Util.CATEGORY_PLAYER;
+		body.createFixture( fireFixtureDef );
 
 		polygon.dispose( );
 
