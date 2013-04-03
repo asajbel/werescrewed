@@ -19,6 +19,7 @@ import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityCategory;
 import com.blindtigergames.werescrewed.entity.EntityDef;
 import com.blindtigergames.werescrewed.entity.RobotState;
+import com.blindtigergames.werescrewed.entity.Sprite;
 import com.blindtigergames.werescrewed.entity.action.EntityActivateMoverAction;
 import com.blindtigergames.werescrewed.entity.action.EntityDeactivateMoverAction;
 import com.blindtigergames.werescrewed.entity.builders.EventTriggerBuilder;
@@ -44,6 +45,7 @@ import com.blindtigergames.werescrewed.screws.StructureScrew;
 import com.blindtigergames.werescrewed.entity.RootSkeleton;
 import com.blindtigergames.werescrewed.entity.Skeleton;
 import com.blindtigergames.werescrewed.eventTrigger.EventTrigger;
+import com.blindtigergames.werescrewed.hazard.Hazard;
 import com.blindtigergames.werescrewed.util.ArrayHash;
 import com.blindtigergames.werescrewed.util.Util;
 
@@ -256,15 +258,15 @@ public class LevelFactory {
 		
 
 		if( bluePrints.equals( "skeleton" )){
-			constructSkeleton(item);
+			out = constructSkeleton(item);
 		} else if( bluePrints.equals( "player" )){
 			constructPlayer(item);
 		} else if( bluePrints.equals( "camera" )){
 			placeCamera(item);
 		} else if( bluePrints.equals( "tiledPlatform" )){
-			constructTiledPlatform(item);
+			out = constructTiledPlatform(item);
 		} else if( bluePrints.equals( "screw" )){
-			constructScrew(item);
+			out = constructScrew(item);
 		} else if( bluePrints.equals( "pathmover" )){
 			constructPath(item);
 		} else if (bluePrints.equals( "rope" )){
@@ -274,16 +276,38 @@ public class LevelFactory {
 		} else if (bluePrints.equals( "eventtrigger" )){
 			contstructEventTrigger(item);
 		} else if (bluePrints.equals( "hazard" )){
-			constructHazard(item);
+			out = constructHazard(item);
 		}else if (item.getDefinition().getCategory( ) == EntityCategory.COMPLEX_PLATFORM ){
-			loadComplexPlatform(item);
+			out = loadComplexPlatform(item);
+		}
+		
+		if (out != null){
+			if (item.props.containsKey( "decal" )){
+				Array<String> tokens;
+				String decalImage;
+				Vector2 decalPosition = new Vector2();
+				Sprite decal;
+				for (String decalData : item.props.getAll( "decal" ) ){
+					tokens = new Array<String>(decalData.split( "\\s+" ));
+					if (tokens.size > 2){
+						decalImage = WereScrewedGame.dirHandle+tokens.get( 0 );
+						decalPosition.x = Float.parseFloat( tokens.get(1) );
+						decalPosition.y = Float.parseFloat( tokens.get(2) );
+						decal = new Sprite(WereScrewedGame.manager.get( decalImage, Texture.class ));
+						decal.setOrigin( decal.getWidth( )/2, decal.getHeight()/2 );
+						out.addDecal( decal, decalPosition);
+						Gdx.app.log("LoadEntity","Creating decal for ["+item.name+"]. Image:"+decalImage+" Position:"+decalPosition.toString( ));
+					}
+				}
+			}
 		}
 		
 		return out;
 	}
 	
 	
-	private void constructSkeleton(Item item){
+	private Skeleton constructSkeleton(Item item){
+		Skeleton skeleton = null;
 		if(item.name.equals( "RootSkeleton" )){
 			level.root = new RootSkeleton(item.name, item.pos, null, level.world);
 			skeletons.put( item.name, level.root );
@@ -314,7 +338,7 @@ public class LevelFactory {
 //								Texture.class ));;
 			}
 			
-			Skeleton skeleton = skeleBuilder.build( );
+			skeleton = skeleBuilder.build( );
 
 //			IMover mover = null;
 //			if(item.props.containsKey( "mover" )){
@@ -346,7 +370,7 @@ public class LevelFactory {
 		
 		Gdx.app.log( "LevelFactory, Skeleton constucted ", item.name );
 		
-		
+		return skeleton;
 	}
 	
 	private void constructPlayer(Item item){
@@ -375,7 +399,8 @@ public class LevelFactory {
 		//add position to camera later
 	}
 	
-	private void constructTiledPlatform(Item item){
+	private TiledPlatform constructTiledPlatform(Item item){
+		TiledPlatform out = null;
 		float width = item.element.getFloat( "Width" );
 		float height = item.element.getFloat( "Height" );
 		float tileWidth = width / 32f;
@@ -398,9 +423,6 @@ public class LevelFactory {
 			isCrushable = true;
 		}
 		
-
-		
-		TiledPlatform out = null;
 
 		pb.name( item.name )
 		.position( new Vector2(xPos, yPos) )
@@ -453,9 +475,11 @@ public class LevelFactory {
 			out.setCategoryMask( Util.KINEMATIC_OBJECTS,
 					Util.CATEGORY_EVERYTHING );
 		}
+		return out;
 	}
 	
-	protected void loadComplexPlatform(Item item){
+	protected Platform loadComplexPlatform(Item item){
+		Platform out = null;
 		
 		boolean isDynamic = false;
 		if(item.props.containsKey( "dynamic" ) ){
@@ -479,7 +503,7 @@ public class LevelFactory {
 			}
 		}
 		
-		Platform out = new PlatformBuilder(level.world)
+		out = new PlatformBuilder(level.world)
 		.name( item.name )
 		.type( item.getDefinition( ) )
 		.position( item.pos.x, item.pos.y )
@@ -506,9 +530,10 @@ public class LevelFactory {
 		} else {
 			parent.addKinematicPlatform( out );
 		}
-		
+		return out;
 	}
-	private void constructScrew(Item item){
+	
+	private Screw constructScrew(Item item){
 		
 //		ScrewTypes:
 //		SCREW_COSMETIC("ScrewCosmetic"),
@@ -619,7 +644,7 @@ public class LevelFactory {
 				break;
 		}
 		out.getCrushing( );
-
+		return out;
 	}
 	
 	
@@ -816,14 +841,14 @@ public class LevelFactory {
 		
 	}
 	
-	public void constructHazard( Item item ){
+	public Hazard constructHazard( Item item ){
 		
 		//TODO: make hazard builder (not just spikes)
 		
 		//String skelAttach = item.skeleton;
 		//Skeleton parent = loadSkeleton(skelAttach);
 		
-		
+		return null;
 	}
 	
 

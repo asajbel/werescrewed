@@ -57,6 +57,7 @@
 /common/gear.png
 /common/sawblade.png
 /common/animations/hitCloud.png
+/common/redScrewDriver.png
 
 ##Fonts
 /debug/debug_font.fnt

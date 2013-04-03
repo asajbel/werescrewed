@@ -352,6 +352,7 @@ public class Skeleton extends Platform {
 		for ( Skeleton skeleton : childSkeletonMap.values( ) ){
 			skeleton.update( deltaTime );
 		}
+		updateDecals(deltaTime);
 	}
 
 
@@ -380,7 +381,7 @@ public class Skeleton extends Platform {
 
 	@Override
 	public void draw( SpriteBatch batch ) {
-		// super.draw( batch );
+		//super.draw( batch );
 		if ( visible ) {
 			// draw bg
 			if ( bgSprite != null )
@@ -389,6 +390,7 @@ public class Skeleton extends Platform {
 			if ( fgSprite != null )
 				fgSprite.draw( batch );
 			// draw fg
+			drawDecals(batch);
 		}
 	}
 

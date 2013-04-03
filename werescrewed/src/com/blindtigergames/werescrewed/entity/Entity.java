@@ -90,8 +90,6 @@ public class Entity implements GleedLoadable {
 			this.sprite = constructSprite( texture );
 		}
 		this.body = constructBodyByType( );
-		this.decals = new ArrayList< Sprite >( );
-		this.decalOffsets = new ArrayList< Vector2 >( );
 		setPixelPosition( positionPixels );
 	}
 
@@ -184,6 +182,8 @@ public class Entity implements GleedLoadable {
 		this.maintained = true;
 		this.visible = true;
 		this.active = true;
+		this.decals = new ArrayList< Sprite >( );
+		this.decalOffsets = new ArrayList< Vector2 >( );
 		setUpRobotState( );
 	}
 
@@ -252,6 +252,7 @@ public class Entity implements GleedLoadable {
 			sprite.draw( batch );
 		}
 		// drawOrigin(batch);
+		drawDecals(batch);
 	}
 
 	public void drawOrigin( SpriteBatch batch ) {
@@ -322,6 +323,7 @@ public class Entity implements GleedLoadable {
 						* body.getAngle( ) );
 				sprite.update( deltaTime );
 			}
+			updateDecals(deltaTime);
 		}
 	}
 
@@ -868,16 +870,15 @@ public class Entity implements GleedLoadable {
 		Vector2 bodyPos = this.getPositionPixel( );
 		float angle = this.getAngle( ), cos = ( float ) Math.cos( angle ), sin = ( float ) Math
 				.sin( angle );
-		float x, y;
+		float x, y, r;
 		Vector2 offset;
 		Sprite decal;
 		for ( int i = 0; i < decals.size( ); i++ ) {
 			offset = decalOffsets.get( i );
 			decal = decals.get( i );
-			x = bodyPos.x + ( cos * offset.x ) + ( sin * offset.y );
-			y = bodyPos.y + ( cos * offset.x ) - ( sin * offset.y );
-			decal.setPosition( x, y );
-			decal.setRotation( angle );
+			r = offset.len( );
+			decal.setPosition( Util.PointOnCircle( r, angle, bodyPos ) );
+			decal.setRotation( angle * Util.RAD_TO_DEG );
 		}
 	}
 

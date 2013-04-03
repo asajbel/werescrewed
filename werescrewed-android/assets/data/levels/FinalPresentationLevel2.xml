@@ -46,6 +46,9 @@
                         <Property Name="AttachToSkeleton" Type="string" Description="">
                             <string>RootSkeleton</string>
                         </Property>
+                        <Property Name="decal" Type="string" Description="">
+                            <string>/common/redScrewDriver.png 10.0 10.0</string>
+                        </Property>
                     </CustomProperties>
                     <LocalPoints>
                         <Vector2>
@@ -3264,7 +3267,7 @@
     <CustomProperties />
     <EditorRelated>
         <NextItemNumber>162</NextItemNumber>
-        <ContentRootFolder>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures</ContentRootFolder>
+        <ContentRootFolder>C:\Users\Kevin Cameron\workspace\werescrewed\gleed-textures</ContentRootFolder>
         <CameraPosition>
             <X>1657.0437</X>
             <Y>-1301.33276</Y>
