@@ -26,6 +26,23 @@
 ##checkpoint
 /common/checkpoint/checkpoint.pack
 
+##spine animations
+/common/spine/female-death_begin.anim
+/common/spine/female-death_idle.anim
+/common/spine/female-hang.anim
+/common/spine/female-idle.anim
+/common/spine/female-jump_down.anim
+/common/spine/female-jump_up.anim
+/common/spine/female-run.anim
+/common/spine/female.skel
+/common/spine/male-begin death.anim
+/common/spine/male-death.anim
+/common/spine/male-hang.anim
+/common/spine/male-idle.anim
+/common/spine/male-jump_down.anim
+/common/spine/male-jump_up.anim
+/common/spine/male-run.anim
+/common/spine/male.skel
 
 ##common texture
 /common/player_b_f.png
