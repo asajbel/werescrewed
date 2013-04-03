@@ -223,7 +223,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 				.position( 600, 500 ).dimensions( 1, 12).oneSided( false )
 				.buildTilePlatform( );
 		plat6.body.setFixedRotation( false );
-		//plat6.quickfixCollisions( );
+		plat6.quickfixCollisions( );
 		dynSkel2.addDynamicPlatform( plat6 );
 		
 
@@ -236,14 +236,14 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 				.position( 800, 300 ).dimensions( 12, 1).oneSided( false )
 				.buildTilePlatform( );
 		plat7.body.setFixedRotation( false );
-		//plat7.quickfixCollisions( );
+		plat7.quickfixCollisions( );
 		dynSkel2.addDynamicPlatform( plat7 );
 		
 		TiledPlatform plat8 = platBuilder.name( "weld3" ).dynamic( )
 				.position( 800, 700 ).dimensions( 12, 1).oneSided( false )
 				.buildTilePlatform( );
 		plat8.body.setFixedRotation( false );
-		//plat8.quickfixCollisions( );
+		plat8.quickfixCollisions( );
 		dynSkel2.addDynamicPlatform( plat8 );
 		
 		TiledPlatform test = platBuilder.name( "strucTest" ).kinematic( )
@@ -262,7 +262,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 				.position( 1000, 500 ).dimensions( 1, 12).oneSided( false )
 				.buildTilePlatform( );
 		plat9.body.setFixedRotation( false );
-		//plat9.quickfixCollisions( );
+		plat9.quickfixCollisions( );
 		dynSkel2.addDynamicPlatform( plat9 );
 		
 		
