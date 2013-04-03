@@ -1,6 +1,7 @@
 package com.blindtigergames.werescrewed.player;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.Controllers;
@@ -65,7 +66,7 @@ public class Player extends Entity {
 	public final static int GRAB_COUNTER_STEPS = 5;
 	public final static Vector2 ANCHOR_BUFFER_SIZE = new Vector2( 300f, 200f );
 	public final static float STEAM_FORCE = .5f;
-	public final static float STEAM_IMPULSE = 0.1f;
+	public final static float STEAM_IMPULSE = 0.2f;
 	public final static float FRICTION_INCREMENT = 0.3f;
 	public final static float FEET_OFFSET_X = 58f * Util.PIXEL_TO_BOX;
 	public final static float FEET_OFFSET_Y = 20f * Util.PIXEL_TO_BOX;
@@ -229,6 +230,8 @@ public class Player extends Entity {
 	 */
 	public void update( float deltaTime ) {
 		super.update( deltaTime );
+		if(Gdx.input.isKeyPressed( Keys.G ))
+		Gdx.app.log( "steamCollide: " + steamCollide, "steamDone: " + steamDone );
 		// update the hit cloud if it exists
 		hitCloud.sprite.update( deltaTime );
 		if ( name.equals( "player1" ) ) {
@@ -424,9 +427,9 @@ public class Player extends Entity {
 			if ( !steamDone ) {
 				steamResolution( );
 				steamDone = true;
-			} else
-				steamDone = false;
-		}
+			}
+		} else
+			steamDone = false;
 		terminalVelocityCheck( 15.0f );
 		// the jump doesn't work the first time on dynamic bodies so do it twice
 		if ( playerState == PlayerState.Jumping && isGrounded( ) ) {
@@ -444,7 +447,7 @@ public class Player extends Entity {
 			hitCloud.draw( batch );
 		}
 	}
-
+	
 	/**
 	 * This function sets player in dead state
 	 */
@@ -1856,6 +1859,7 @@ public class Player extends Entity {
 	 *            boolean
 	 */
 	public void setSteamCollide( boolean value ) {
+		System.out.println( "help!" );
 		steamCollide = value;
 	}
 

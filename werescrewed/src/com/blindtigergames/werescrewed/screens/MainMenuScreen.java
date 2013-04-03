@@ -38,7 +38,7 @@ class MainMenuScreen implements com.badlogic.gdx.Screen {
 	private Controller controller2;
 	private MyControllerListener controllerListener;
 	private int controllerTimer;
-	private int controllerMax = 15;
+	private int controllerMax = 10;
 
 
 	public MainMenuScreen( ) {
@@ -70,9 +70,6 @@ class MainMenuScreen implements com.badlogic.gdx.Screen {
 
 		if ( Gdx.input.isKeyPressed( Keys.P ) ) {
 			System.exit( 1 );
-		}
-		if ( Gdx.input.isKeyPressed( Keys.ENTER ) ) {
-			ScreenManager.getInstance( ).show( ScreenType.PLAYTEST );
 		}
 		
 		if ( Gdx.input.isKeyPressed( Keys.EQUALS ) ) {
@@ -134,17 +131,14 @@ class MainMenuScreen implements com.badlogic.gdx.Screen {
 	 * sets up controller functionality
 	 */
 	private void ControllerSetUp( ){
+		controllerListener = new MyControllerListener( );
 		if( Controllers.getControllers( ).size > 0){
-			controllerListener = new MyControllerListener( );
 			controller1 = Controllers.getControllers( ).get( 0 );
 			controller1.addListener( controllerListener );
 		}
 		if( Controllers.getControllers( ).size > 1){
-			controllerListener = new MyControllerListener( );
 			controller2 = Controllers.getControllers( ).get( 1 );
 			controller2.addListener( controllerListener );
-		} else {
-			controllerListener = new MyControllerListener( );
 		}
 	}
 	
