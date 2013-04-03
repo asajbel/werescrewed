@@ -108,11 +108,11 @@ public class DragonScreen extends Screen {
 		balloon.body.createFixture( fixture );
 		balloon.body.setFixedRotation( true );
 		balloon.body.setUserData( this );
-		balloon.body.setGravityScale( 0 );
+		//balloon.body.setGravityScale( 0 );
 
 		circle.dispose( );
 		
-		balloon.setMoverAtCurrentState( new TargetImpulseMover( balloon.getPositionPixel( ), Vector2.Zero, .85f, false, 100 ) );
+		balloon.setMoverAtCurrentState( new TargetImpulseMover( balloon.getPositionPixel( ).add( 0,250 ), Vector2.Zero, .4f, true, 100 ) );
 		
 		return balloon;
 	}
