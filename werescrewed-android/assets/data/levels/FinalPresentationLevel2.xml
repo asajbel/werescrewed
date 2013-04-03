@@ -47,7 +47,7 @@
                             <string>RootSkeleton</string>
                         </Property>
                         <Property Name="decal" Type="string" Description="">
-                            <string>/common/redScrewDriver.png 10.0 10.0</string>
+                            <string>/common/redScrewDriver.png 0.0 -128.0 45.0</string>
                         </Property>
                     </CustomProperties>
                     <LocalPoints>

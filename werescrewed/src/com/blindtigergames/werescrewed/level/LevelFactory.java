@@ -287,6 +287,7 @@ public class LevelFactory {
 				String decalImage;
 				Vector2 decalPosition = new Vector2();
 				Sprite decal;
+				float r = 0.0f;
 				for (String decalData : item.props.getAll( "decal" ) ){
 					tokens = new Array<String>(decalData.split( "\\s+" ));
 					if (tokens.size > 2){
@@ -294,8 +295,21 @@ public class LevelFactory {
 						decalPosition.x = Float.parseFloat( tokens.get(1) );
 						decalPosition.y = Float.parseFloat( tokens.get(2) );
 						decal = new Sprite(WereScrewedGame.manager.get( decalImage, Texture.class ));
-						decal.setOrigin( decal.getWidth( )/2, decal.getHeight()/2 );
-						out.addDecal( decal, decalPosition);
+						decal.setOrigin( 0.0f, 0.0f );
+						Vector2 size = new Vector2 (1.0f, 1.0f);
+						if (tokens.size > 3){
+							r = Float.parseFloat( tokens.get(3) );
+						}
+						if (tokens.size > 4){
+							size.x = Float.parseFloat( tokens.get(4) );
+							if (tokens.size > 5){
+								size.y = Float.parseFloat( tokens.get(5) );
+							} else {
+								size.y = size.x;
+							}
+						}
+						decal.setScale(size.x , size.y);
+						out.addDecal( decal, decalPosition, r);
 						Gdx.app.log("LoadEntity","Creating decal for ["+item.name+"]. Image:"+decalImage+" Position:"+decalPosition.toString( ));
 					}
 				}
