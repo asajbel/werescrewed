@@ -43,6 +43,8 @@ import com.blindtigergames.werescrewed.entity.tween.EntityAccessor;
 import com.blindtigergames.werescrewed.entity.tween.PathBuilder;
 import com.blindtigergames.werescrewed.entity.tween.PlatformAccessor;
 import com.blindtigergames.werescrewed.eventTrigger.EventTrigger;
+import com.blindtigergames.werescrewed.hazard.Spikes;
+import com.blindtigergames.werescrewed.hazard.builders.HazardBuilder;
 import com.blindtigergames.werescrewed.platforms.Platform;
 import com.blindtigergames.werescrewed.platforms.TiledPlatform;
 import com.blindtigergames.werescrewed.player.Player;
@@ -426,8 +428,12 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		TiledPlatform lowerArm = platBuilder.dynamic( ).position( 550, 800 )
 				.dimensions( 8, 1 ).density( 1f ).oneSided( false )
 				.buildTilePlatform( );
-		upperArm.body.setFixedRotation( false );
-		lowerArm.body.setFixedRotation( false );
+		HazardBuilder spikesBuilder = new HazardBuilder( world );
+		//and spikes under the arms
+		Spikes secondUpArm = spikesBuilder.position( 850, 970).dimensions( 4, 1 )
+				.up( ).active( ).buildSpikes( );
+		Spikes secondLowArm = spikesBuilder.position( 550, 970).dimensions( 4, 1 )
+				.up( ).active( ).buildSpikes( );
 		// mover that the arm initially has and also that the bottom
 		// puzzle screw can reset
 		RotateTweenMover rtm1 = new RotateTweenMover( upperArmSkeleton, 10f,
@@ -463,11 +469,13 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		StrippedScrew platJoint1 = new StrippedScrew(
 				"dynamic_skeleton_joint2", new Vector2( 400, 800 ), lowerArm,
 				world );
-		//platJoint1.addStructureJoint( lowerArm );
+		platJoint1.addStructureJoint( secondLowArm );
 		skel1.addSkeleton( upperArmSkeleton );
 		skel1.addSkeleton( lowerArmSkeleton );
-		upperArmSkeleton.addDynamicPlatform( upperArm );
+		upperArmSkeleton.addKinematicPlatform( upperArm );
+		upperArmSkeleton.addKinematicPlatform( secondUpArm );
 		lowerArmSkeleton.addDynamicPlatform( lowerArm );
+		lowerArmSkeleton.addKinematicPlatform( secondLowArm );
 		lowerArmSkeleton.addScrewForDraw( platJoint1 );
 		upperArmSkeleton.addScrewForDraw( shoulderJoint );
 		upperArmSkeleton.addScrewForDraw( elbowJoint );
