@@ -1,6 +1,9 @@
 package com.blindtigergames.werescrewed.entity.mover;
 
 import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+import com.badlogic.gdx.physics.box2d.World;
 import com.blindtigergames.werescrewed.platforms.Platform;
 import com.blindtigergames.werescrewed.screws.PuzzleScrew;
 
@@ -11,6 +14,7 @@ public class AnalogRotateMover implements IMover {
 	private float speedSteps = 0;
 	private float speed;
 	private float lastVal = 0;
+	private Body transformBody;
 	
 	/**
 	 * 
@@ -19,8 +23,12 @@ public class AnalogRotateMover implements IMover {
 	 * @param offValue
 	 * @param onValue
 	 */
-	public AnalogRotateMover( float speed ) {
+	public AnalogRotateMover( float speed, World world ) {
 		this.speed = speed;
+		BodyDef bodyDef = new BodyDef( );
+		bodyDef.type = BodyType.KinematicBody;
+		bodyDef.fixedRotation = false;
+		transformBody = world.createBody( bodyDef );
 		puzzleType = PuzzleType.PUZZLE_SCREW_CONTROL;
 	}
 
@@ -29,12 +37,17 @@ public class AnalogRotateMover implements IMover {
 		if ( speedSteps > 0 ) {
 			speedSteps--;		
 			if ( clockWise ) {
-				body.setAngularVelocity( speed );
+				transformBody.setAngularVelocity( speed );
 			} else {
-				body.setAngularVelocity( -speed );
+				transformBody.setAngularVelocity( -speed );
 			}
 		} else {
-			body.setAngularVelocity( 0 );
+			transformBody.setAngularVelocity( 0 );
+		}
+		if ( body.getUserData( ) instanceof Platform ) {
+			Platform entity ;
+			entity = ( Platform ) body.getUserData( );
+			entity.setLocalRot( transformBody.getAngle( ) );
 		}
 	}
 
@@ -42,6 +55,7 @@ public class AnalogRotateMover implements IMover {
 	public void runPuzzleMovement( PuzzleScrew screw, float screwVal, Platform p ) {
 		if ( p.currentMover( ).getMoverType( ) != puzzleType ) {
 			p.setMoverAtCurrentState( this );
+			transformBody.setTransform( p.getPosition( ), p.getAngle( ) );
 		}
 		if ( screwVal > lastVal ) {
 			clockWise = true;

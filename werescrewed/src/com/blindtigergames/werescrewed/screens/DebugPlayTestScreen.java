@@ -456,7 +456,7 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		// puzzle screw can reset
 		RotateTweenMover rtm1 = new RotateTweenMover( upperArmSkeleton, 10f,
 				Util.PI, 2f, true );
-		AnalogRotateMover anlgRot = new AnalogRotateMover( .6f );
+		AnalogRotateMover anlgRot = new AnalogRotateMover( .6f, world );
 		upperArmSkeleton.setMoverAtCurrentState( rtm1 );
 		// puzzle screw that controls the initial arm move
 		PuzzleScrew pscrewbottom = new PuzzleScrew( "armpuzzle", new Vector2(
@@ -470,34 +470,31 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		// joints the first dynamic skeleton to the parent skeleton
 		// puzzle screw that controls the analog arm puzzle
 		PuzzleScrew shoulderJoint = new PuzzleScrew( "dynamic_skeleton_joint",
-				new Vector2( 1000, 800 ), 5000, upperArmSkeleton, world, 0,
+				new Vector2( 1000, 800 ), 5000, upperArmSkeleton, world, 5000,
 				false );
+		//joints the arm to the background
 		shoulderJoint.addStructureJoint( skel1 );
+		//joints the upper arm platform to the skeleton
 		shoulderJoint.addStructureJoint( upperArm );
 		shoulderJoint.puzzleManager.addEntity( upperArmSkeleton );
 		shoulderJoint.puzzleManager.addMover( anlgRot );
-				/*new PuzzleRotateTweenMover( 2f,
-				-Util.PI / 4.0f, false, PuzzleType.PUZZLE_SCREW_CONTROL ) );*/
-		// RevoluteJointBuilder jbBuilder = new RevoluteJointBuilder( world );
-		// jbBuilder.skeleton( middleArmSkeleton ).bodyB( upperArm ).motor(
-		// false ).build( );
 		// joints the first dynamic skeleton to the second dynamic skeleton
 		StrippedScrew elbowJoint = new StrippedScrew( "dynamic_skeleton_joint",
-				new Vector2( 700, 800 ), upperArm, world );
-		elbowJoint.addStructureJoint( upperArmSkeleton );
+				new Vector2( 700, 800 ), upperArmSkeleton, world );
+		elbowJoint.addStructureJoint( upperArm);
 		elbowJoint.addStructureJoint( lowerArm );
 		elbowJoint.addStructureJoint( lowerArmSkeleton );
 		StrippedScrew platJoint1 = new StrippedScrew(
 				"dynamic_skeleton_joint2", new Vector2( 400, 800 ), lowerArm,
 				world );
-		platJoint1.addStructureJoint( lowerArmSkeleton );
+		//platJoint1.addStructureJoint( lowerArm );
 		skel1.addSkeleton( upperArmSkeleton );
 		skel1.addSkeleton( lowerArmSkeleton );
 		upperArmSkeleton.addDynamicPlatform( upperArm );
 		lowerArmSkeleton.addDynamicPlatform( lowerArm );
-		skel1.addScrewForDraw( platJoint1 );
-		skel1.addScrewForDraw( shoulderJoint );
-		skel1.addScrewForDraw( elbowJoint );
+		lowerArmSkeleton.addScrewForDraw( platJoint1 );
+		upperArmSkeleton.addScrewForDraw( shoulderJoint );
+		upperArmSkeleton.addScrewForDraw( elbowJoint );
 
 	}
 
