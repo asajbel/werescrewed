@@ -2,7 +2,7 @@ package com.blindtigergames.werescrewed.entity.action;
 
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityType;
-import com.blindtigergames.werescrewed.hazard.Hazard;
+import com.blindtigergames.werescrewed.entity.hazard.Hazard;
 
 
 public class HazardActivateAction implements IAction{

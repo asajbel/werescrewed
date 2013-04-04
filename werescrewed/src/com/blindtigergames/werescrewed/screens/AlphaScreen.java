@@ -68,7 +68,7 @@ public class AlphaScreen extends Screen {
 		for( int i = 0; i < players.size( ); i++){
 			Player p = players.get( i );
 			p.update( deltaTime );
-			p.draw( batch );
+			p.draw( batch, deltaTime );
 			
 		}
 		

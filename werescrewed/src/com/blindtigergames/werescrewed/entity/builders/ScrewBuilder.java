@@ -3,8 +3,8 @@ package com.blindtigergames.werescrewed.entity.builders;
 import com.badlogic.gdx.math.Vector2;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.Skeleton;
+import com.blindtigergames.werescrewed.entity.screws.*;
 import com.blindtigergames.werescrewed.player.Player;
-import com.blindtigergames.werescrewed.screws.*;
 import com.blindtigergames.werescrewed.util.ArrayHash;
 
 public class ScrewBuilder extends GenericEntityBuilder< ScrewBuilder > {

@@ -32,14 +32,14 @@ import com.blindtigergames.werescrewed.entity.mover.LinearAxis;
 //import com.blindtigergames.werescrewed.entity.mover.PistonMover;
 import com.blindtigergames.werescrewed.entity.mover.PuzzleType;
 import com.blindtigergames.werescrewed.entity.mover.SlidingMotorMover;
+import com.blindtigergames.werescrewed.entity.platforms.Platform;
+import com.blindtigergames.werescrewed.entity.platforms.TiledPlatform;
+import com.blindtigergames.werescrewed.entity.screws.PuzzleScrew;
+import com.blindtigergames.werescrewed.entity.screws.StrippedScrew;
+import com.blindtigergames.werescrewed.entity.screws.StructureScrew;
 import com.blindtigergames.werescrewed.joint.JointFactory;
 import com.blindtigergames.werescrewed.joint.PrismaticJointBuilder;
-import com.blindtigergames.werescrewed.platforms.Platform;
-import com.blindtigergames.werescrewed.platforms.TiledPlatform;
 import com.blindtigergames.werescrewed.player.Player;
-import com.blindtigergames.werescrewed.screws.PuzzleScrew;
-import com.blindtigergames.werescrewed.screws.StrippedScrew;
-import com.blindtigergames.werescrewed.screws.StructureScrew;
 import com.blindtigergames.werescrewed.util.Util;
 
 public class EntityDefTestScreen implements com.badlogic.gdx.Screen {
@@ -374,9 +374,9 @@ public class EntityDefTestScreen implements com.badlogic.gdx.Screen {
 		batch.setProjectionMatrix( cam.combined( ) );
 		batch.begin( );
 
-		rootSkeleton.draw( batch );
-		player1.draw( batch );
-		player2.draw( batch );
+		rootSkeleton.draw( batch, deltaTime );
+		player1.draw( batch, deltaTime );
+		player2.draw( batch, deltaTime );
 		batch.end( );
 
 		if ( debug )

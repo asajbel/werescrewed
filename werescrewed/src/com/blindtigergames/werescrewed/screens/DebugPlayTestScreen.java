@@ -39,21 +39,21 @@ import com.blindtigergames.werescrewed.entity.mover.RockingMover;
 import com.blindtigergames.werescrewed.entity.mover.RotateByDegree;
 import com.blindtigergames.werescrewed.entity.mover.RotateTweenMover;
 import com.blindtigergames.werescrewed.entity.mover.puzzle.PuzzleRotateTweenMover;
+import com.blindtigergames.werescrewed.entity.screws.BossScrew;
+import com.blindtigergames.werescrewed.entity.screws.PuzzleScrew;
+import com.blindtigergames.werescrewed.entity.screws.Screw;
+import com.blindtigergames.werescrewed.entity.screws.StrippedScrew;
+import com.blindtigergames.werescrewed.entity.screws.StructureScrew;
 import com.blindtigergames.werescrewed.entity.tween.EntityAccessor;
 import com.blindtigergames.werescrewed.entity.tween.PathBuilder;
 import com.blindtigergames.werescrewed.entity.tween.PlatformAccessor;
 import com.blindtigergames.werescrewed.eventTrigger.EventTrigger;
-import com.blindtigergames.werescrewed.hazard.Spikes;
-import com.blindtigergames.werescrewed.hazard.builders.HazardBuilder;
-import com.blindtigergames.werescrewed.platforms.Platform;
-import com.blindtigergames.werescrewed.platforms.TiledPlatform;
+import com.blindtigergames.werescrewed.entity.hazard.Spikes;
+import com.blindtigergames.werescrewed.entity.hazard.builders.HazardBuilder;
 import com.blindtigergames.werescrewed.player.Player;
-import com.blindtigergames.werescrewed.rope.Rope;
-import com.blindtigergames.werescrewed.screws.BossScrew;
-import com.blindtigergames.werescrewed.screws.PuzzleScrew;
-import com.blindtigergames.werescrewed.screws.Screw;
-import com.blindtigergames.werescrewed.screws.StrippedScrew;
-import com.blindtigergames.werescrewed.screws.StructureScrew;
+import com.blindtigergames.werescrewed.entity.platforms.Platform;
+import com.blindtigergames.werescrewed.entity.platforms.TiledPlatform;
+import com.blindtigergames.werescrewed.entity.rope.Rope;
 import com.blindtigergames.werescrewed.util.Metrics;
 import com.blindtigergames.werescrewed.util.MetricsRender;
 import com.blindtigergames.werescrewed.util.Util;
@@ -1141,11 +1141,11 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		batch.setProjectionMatrix( cam.combined( ) );
 		batch.begin( );
 
-		rootSkeleton.draw( batch );
-		progressManager.draw( batch );
-		testRope.draw( batch );
-		player1.draw( batch );
-		player2.draw( batch );
+		rootSkeleton.draw( batch,  deltaTime );
+		progressManager.draw( batch, deltaTime );
+		testRope.draw( batch, deltaTime );
+		player1.draw( batch, deltaTime );
+		player2.draw( batch, deltaTime );
 		batch.end( );
 
 		if ( debug )

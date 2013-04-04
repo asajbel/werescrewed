@@ -40,18 +40,18 @@ import com.blindtigergames.werescrewed.entity.mover.PuzzleType;
 import com.blindtigergames.werescrewed.entity.mover.RotateByDegree;
 import com.blindtigergames.werescrewed.entity.mover.SlidingMotorMover;
 import com.blindtigergames.werescrewed.entity.mover.puzzle.PuzzlePistonTweenMover;
+import com.blindtigergames.werescrewed.entity.particles.Steam;
+import com.blindtigergames.werescrewed.entity.platforms.Platform;
+import com.blindtigergames.werescrewed.entity.platforms.TiledPlatform;
+import com.blindtigergames.werescrewed.entity.screws.PuzzleScrew;
+import com.blindtigergames.werescrewed.entity.screws.StrippedScrew;
+import com.blindtigergames.werescrewed.entity.screws.StructureScrew;
 import com.blindtigergames.werescrewed.entity.tween.EntityAccessor;
 import com.blindtigergames.werescrewed.entity.tween.PathBuilder;
 import com.blindtigergames.werescrewed.entity.tween.PlatformAccessor;
-import com.blindtigergames.werescrewed.hazard.Hazard;
+import com.blindtigergames.werescrewed.entity.hazard.Hazard;
 import com.blindtigergames.werescrewed.joint.JointFactory;
-import com.blindtigergames.werescrewed.particles.Steam;
-import com.blindtigergames.werescrewed.platforms.Platform;
-import com.blindtigergames.werescrewed.platforms.TiledPlatform;
 import com.blindtigergames.werescrewed.player.Player;
-import com.blindtigergames.werescrewed.screws.PuzzleScrew;
-import com.blindtigergames.werescrewed.screws.StrippedScrew;
-import com.blindtigergames.werescrewed.screws.StructureScrew;
 import com.blindtigergames.werescrewed.util.Util;
 
 public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
@@ -695,10 +695,10 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		batch.begin( );
 
 
-		if(progressManager!=null)progressManager.draw( batch );
-		rootSkeleton.draw( batch );
-		player1.draw( batch );
-		player2.draw( batch );
+		if(progressManager!=null)progressManager.draw( batch, deltaTime );
+		rootSkeleton.draw( batch, deltaTime );
+		player1.draw( batch, deltaTime );
+		player2.draw( batch, deltaTime );
 
 		batch.end( );
 
