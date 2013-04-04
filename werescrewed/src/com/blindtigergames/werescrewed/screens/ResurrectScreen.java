@@ -30,11 +30,11 @@ import com.blindtigergames.werescrewed.entity.Sprite;
 import com.blindtigergames.werescrewed.entity.builders.PlatformBuilder;
 import com.blindtigergames.werescrewed.entity.builders.PlayerBuilder;
 import com.blindtigergames.werescrewed.entity.mover.ParallaxMover;
+import com.blindtigergames.werescrewed.entity.platforms.Platform;
+import com.blindtigergames.werescrewed.entity.platforms.TiledPlatform;
 import com.blindtigergames.werescrewed.entity.tween.EntityAccessor;
 import com.blindtigergames.werescrewed.entity.tween.PlatformAccessor;
 import com.blindtigergames.werescrewed.entity.hazard.Spikes;
-import com.blindtigergames.werescrewed.platforms.Platform;
-import com.blindtigergames.werescrewed.platforms.TiledPlatform;
 import com.blindtigergames.werescrewed.player.Player;
 import com.blindtigergames.werescrewed.util.Util;
 

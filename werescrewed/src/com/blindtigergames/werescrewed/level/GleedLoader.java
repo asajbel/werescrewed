@@ -27,10 +27,10 @@ import com.blindtigergames.werescrewed.entity.screws.PuzzleScrew;
 import com.blindtigergames.werescrewed.entity.screws.Screw;
 import com.blindtigergames.werescrewed.entity.screws.ScrewType;
 import com.blindtigergames.werescrewed.entity.tween.PathBuilder;
-import com.blindtigergames.werescrewed.platforms.Platform;
-import com.blindtigergames.werescrewed.platforms.TiledPlatform;
 import com.blindtigergames.werescrewed.util.ArrayHash;
 import com.blindtigergames.werescrewed.entity.mover.Path;
+import com.blindtigergames.werescrewed.entity.platforms.Platform;
+import com.blindtigergames.werescrewed.entity.platforms.TiledPlatform;
 
 public class GleedLoader {	
 	protected XmlReader reader;

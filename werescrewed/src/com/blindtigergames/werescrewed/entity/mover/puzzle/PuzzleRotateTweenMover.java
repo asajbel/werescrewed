@@ -5,9 +5,9 @@ import aurelienribon.tweenengine.Tween;
 import com.blindtigergames.werescrewed.entity.mover.IMover;
 import com.blindtigergames.werescrewed.entity.mover.PuzzleType;
 import com.blindtigergames.werescrewed.entity.mover.TweenMover;
+import com.blindtigergames.werescrewed.entity.platforms.Platform;
 import com.blindtigergames.werescrewed.entity.screws.PuzzleScrew;
 import com.blindtigergames.werescrewed.entity.tween.PlatformAccessor;
-import com.blindtigergames.werescrewed.platforms.Platform;
 
 /**
  * Rotate a kinematic platform INDEFINETLY. this is a set and ignore kind of

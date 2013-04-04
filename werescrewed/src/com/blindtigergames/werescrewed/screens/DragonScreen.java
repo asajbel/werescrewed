@@ -17,9 +17,9 @@ import com.blindtigergames.werescrewed.entity.hazard.Fire;
 import com.blindtigergames.werescrewed.entity.hazard.builders.HazardBuilder;
 import com.blindtigergames.werescrewed.entity.mover.RotateTweenMover;
 import com.blindtigergames.werescrewed.entity.mover.TargetImpulseMover;
+import com.blindtigergames.werescrewed.entity.platforms.Platform;
+import com.blindtigergames.werescrewed.entity.platforms.TiledPlatform;
 import com.blindtigergames.werescrewed.level.Level;
-import com.blindtigergames.werescrewed.platforms.Platform;
-import com.blindtigergames.werescrewed.platforms.TiledPlatform;
 import com.blindtigergames.werescrewed.entity.screws.StructureScrew;
 import com.blindtigergames.werescrewed.util.Util;
 

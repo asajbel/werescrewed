@@ -13,11 +13,11 @@ import com.blindtigergames.werescrewed.entity.mover.PuzzleType;
 import com.blindtigergames.werescrewed.entity.mover.RotateTweenMover;
 import com.blindtigergames.werescrewed.entity.mover.puzzle.PuzzleRotateTweenMover;
 import com.blindtigergames.werescrewed.entity.particles.Steam;
+import com.blindtigergames.werescrewed.entity.platforms.Platform;
 import com.blindtigergames.werescrewed.entity.screws.PuzzleScrew;
 import com.blindtigergames.werescrewed.eventTrigger.EventTrigger;
 import com.blindtigergames.werescrewed.entity.hazard.Fire;
 import com.blindtigergames.werescrewed.level.LevelFactory;
-import com.blindtigergames.werescrewed.platforms.Platform;
 import com.blindtigergames.werescrewed.util.Util;
 
 public class GleedTestScreen extends Screen {

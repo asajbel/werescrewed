@@ -2,8 +2,8 @@ package com.blindtigergames.werescrewed.entity.mover;
 
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJoint;
+import com.blindtigergames.werescrewed.entity.platforms.Platform;
 import com.blindtigergames.werescrewed.entity.screws.PuzzleScrew;
-import com.blindtigergames.werescrewed.platforms.Platform;
 
 /**
  * This class may be totally uneccesary, for now let's see 

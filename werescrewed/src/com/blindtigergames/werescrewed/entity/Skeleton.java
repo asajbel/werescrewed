@@ -2,6 +2,7 @@ package com.blindtigergames.werescrewed.entity;
 
 import java.util.HashMap;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
@@ -16,9 +17,9 @@ import com.blindtigergames.werescrewed.eventTrigger.EventTrigger;
 import com.blindtigergames.werescrewed.entity.hazard.Fire;
 import com.blindtigergames.werescrewed.entity.hazard.Hazard;
 import com.blindtigergames.werescrewed.joint.RevoluteJointBuilder;
-import com.blindtigergames.werescrewed.platforms.Platform;
-import com.blindtigergames.werescrewed.platforms.PlatformType;
-import com.blindtigergames.werescrewed.platforms.TiledPlatform;
+import com.blindtigergames.werescrewed.entity.platforms.Platform;
+import com.blindtigergames.werescrewed.entity.platforms.PlatformType;
+import com.blindtigergames.werescrewed.entity.platforms.TiledPlatform;
 import com.blindtigergames.werescrewed.entity.rope.Rope;
 import com.blindtigergames.werescrewed.entity.screws.Screw;
 import com.blindtigergames.werescrewed.entity.screws.StrippedScrew;
@@ -444,16 +445,10 @@ public class Skeleton extends Platform {
 			}
 			break;
 		case HAZARD:
+			
 			drawHazard((Hazard)platform, batch, deltaTime );
 			break;
 		}
-//		switch ( platform.getPlatformType( ) ) {
-//		case TILED:
-//			( ( TiledPlatform ) platform ).draw( batch );
-//			break;
-//		default:
-//			platform.draw( batch );
-//		}
 	}
 	
 	private void drawHazard(Hazard hazard, SpriteBatch batch, float deltaTime){

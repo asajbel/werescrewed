@@ -11,7 +11,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.blindtigergames.werescrewed.entity.EntityDef;
 import com.blindtigergames.werescrewed.entity.EntityType;
-import com.blindtigergames.werescrewed.platforms.Platform;
+import com.blindtigergames.werescrewed.entity.platforms.Platform;
 import com.blindtigergames.werescrewed.player.Player;
 import com.blindtigergames.werescrewed.util.Util;
 
@@ -31,6 +31,7 @@ public class Hazard extends Platform {
 			float width, float height, boolean isHazardActive ) {
 		super( name, pos, texture, world);
 		entityType = EntityType.HAZARD;
+		hazardType = HazardType.HAZARD;
 		
 		this.world = world;
 		this.activeHazard = isHazardActive;
@@ -49,6 +50,7 @@ public class Hazard extends Platform {
 		super( name, type, world, posPix);
 		
 		entityType = EntityType.HAZARD;
+		hazardType = HazardType.HAZARD;
 		activeHazard = true;
 	}
 

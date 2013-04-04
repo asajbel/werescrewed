@@ -1,4 +1,4 @@
-package com.blindtigergames.werescrewed.platforms;
+package com.blindtigergames.werescrewed.entity.platforms;
 
 import java.util.ArrayList;
 

@@ -5,5 +5,6 @@ public enum HazardType {
 	STEAM,
 	SPIKES,
 	SAWS,
-	ELECTRICITY
+	ELECTRICITY,
+	HAZARD
 }

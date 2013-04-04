@@ -1,4 +1,4 @@
-package com.blindtigergames.werescrewed.platforms;
+package com.blindtigergames.werescrewed.entity.platforms;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 

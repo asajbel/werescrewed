@@ -26,14 +26,14 @@ import com.blindtigergames.werescrewed.entity.builders.EventTriggerBuilder;
 import com.blindtigergames.werescrewed.entity.builders.PlatformBuilder;
 import com.blindtigergames.werescrewed.entity.builders.PlayerBuilder;
 import com.blindtigergames.werescrewed.entity.particles.Steam;
+import com.blindtigergames.werescrewed.entity.platforms.Platform;
+import com.blindtigergames.werescrewed.entity.platforms.TiledPlatform;
 import com.blindtigergames.werescrewed.entity.screws.StructureScrew;
 import com.blindtigergames.werescrewed.entity.tween.EntityAccessor;
 import com.blindtigergames.werescrewed.entity.tween.PlatformAccessor;
 import com.blindtigergames.werescrewed.eventTrigger.EventTrigger;
 import com.blindtigergames.werescrewed.entity.hazard.*;
 import com.blindtigergames.werescrewed.entity.hazard.builders.*;
-import com.blindtigergames.werescrewed.platforms.Platform;
-import com.blindtigergames.werescrewed.platforms.TiledPlatform;
 import com.blindtigergames.werescrewed.player.Player;
 import com.blindtigergames.werescrewed.util.Util;
 

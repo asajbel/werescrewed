@@ -1,4 +1,4 @@
-package com.blindtigergames.werescrewed.platforms;
+package com.blindtigergames.werescrewed.entity.platforms;
 
 /**
  * Differentiate Platforms with this type
