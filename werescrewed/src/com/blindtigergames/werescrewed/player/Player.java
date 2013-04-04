@@ -87,7 +87,7 @@ public class Player extends Entity {
 	int check = 0;
 
 	private PovDirection prevButton;
-	private PlayerInputHandler inputHandler;
+	public PlayerInputHandler inputHandler;
 	private MyControllerListener controllerListener;
 	private PlayerState playerState;
 	private ConcurrentState extraState;
@@ -237,28 +237,7 @@ public class Player extends Entity {
 		// update the hit cloud if it exists
 		hitCloud.sprite.update( deltaTime );
 		if ( name.equals( "player1" ) ) {
-			// int i = 0;
-			// for ( Fixture f : body.getFixtureList( ) ) {
-			// Gdx.app.log( "fixture" + i + " a sensor?", "" + f.isSensor( ) );
-			// i++;
-			// }
-			// Gdx.app.log( "player 1 state", "" + playerState );
-			//
-//			Gdx.app.log(
-//					"player 1 mask bits",
-//					""
-//							+ body.getFixtureList( ).get( 0 ).getFilterData( ).maskBits
-//							+ " is sensor: "
-//							+ body.getFixtureList( ).get( 0 ).isSensor( ) );
-			// playerDirection );
-			// if(contact != null)
-			// System.out.println("contact friction: " + contact.getFriction( )
-			// + "feet friction: " + feet.getFriction( ) );
-
-			// System.out.println( "feet friction: " + feet.getFriction( )
-			// + " feet position: " + feet.getBody( ).getPosition( ) );
-
-			// System.out.println(isGrounded() + " jumpc " + jumpCounter);
+			
 		}
 		if ( kinematicTransform ) {
 			// setPlatformTransform( platformOffset );
@@ -294,7 +273,8 @@ public class Player extends Entity {
 			if ( controller != null ) {
 				updateController( deltaTime );
 			} else {
-				updateKeyboard( deltaTime );
+				if( inputHandler != null)
+					updateKeyboard( deltaTime );
 			}
 		}
 		// if re-spawning decrement time out
@@ -1926,5 +1906,25 @@ public class Player extends Entity {
 		rightSensor.setDensity( 0.0f );
 		leftSensor.setDensity( 0.0f );
 		topSensor.setDensity( 0.0f );
+	}
+	
+	public Controller getController(){
+		return controller;
+	}
+	
+	public void setControllerIndex( int i ){
+		controllerListener = new MyControllerListener( );
+		controller = Controllers.getControllers( ).get( i );
+		controller.addListener( controllerListener );
+	}
+	
+	public void setController( Controller c){
+		controller = c;
+	}
+	
+	public void setInputNull(){
+		inputHandler = null;
+		controller = null;
+		
 	}
 }
