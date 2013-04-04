@@ -89,7 +89,7 @@ public class Level {
 
 	}
 	
-	public void draw ( SpriteBatch batch, SBox2DDebugRenderer debugRenderer){
+	public void draw ( SpriteBatch batch, SBox2DDebugRenderer debugRenderer, float deltaTime){
 		batch.setProjectionMatrix( camera.combined() );
 		batch.setShader( WereScrewedGame.defaultShader );
 		batch.setBlendFunction( GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA );
@@ -97,10 +97,11 @@ public class Level {
 		batch.enableBlending( );
 		batch.begin();
 		
-		root.draw( batch );
-		if (progressManager!=null)progressManager.draw( batch );
-		if(player1 != null) player1.draw( batch );
-		if(player2 != null) player2.draw( batch );
+		//float deltaTime = Gdx.graphics.getDeltaTime( );
+		root.draw( batch, deltaTime );
+		if (progressManager!=null)progressManager.draw( batch, deltaTime );
+		if(player1 != null) player1.draw( batch, deltaTime );
+		if(player2 != null) player2.draw( batch, deltaTime );
 		
 		batch.end();
 		

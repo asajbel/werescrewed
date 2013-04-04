@@ -1,4 +1,4 @@
-package com.blindtigergames.werescrewed.hazard;
+package com.blindtigergames.werescrewed.entity.hazard;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -28,6 +28,7 @@ public class Electricity extends Hazard {
 			World world, boolean isActive ) {
 		super( name, pos1 , null, world, 0, 0, isActive );
 		entityType = EntityType.HAZARD;
+		hazardType = HazardType.ELECTRICITY;
 		
 		this.world = world;
 		this.activeHazard = isActive;

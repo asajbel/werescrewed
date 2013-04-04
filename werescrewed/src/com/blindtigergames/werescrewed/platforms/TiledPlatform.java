@@ -12,7 +12,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
-import com.blindtigergames.werescrewed.screws.Screw;
+import com.blindtigergames.werescrewed.entity.screws.Screw;
 import com.blindtigergames.werescrewed.util.Util;
 
 /**
@@ -267,7 +267,7 @@ public class TiledPlatform extends Platform {
 	}
 
 	@Override
-	public void draw( SpriteBatch batch ) {
+	public void draw( SpriteBatch batch, float deltaTime ) {
 		Tile d;
 		Iterator< Tile > v = tiles.listIterator( );
 		while ( v.hasNext( ) ) {
@@ -279,7 +279,7 @@ public class TiledPlatform extends Platform {
 			d.tileSprite.draw( batch );
 		}
 		for ( Screw s : screws )
-			s.draw( batch );
+			s.draw( batch, deltaTime );
 		
 		if ( bleedTiles != null ){
 			v = bleedTiles.listIterator( );

@@ -32,7 +32,7 @@ import com.blindtigergames.werescrewed.entity.builders.PlayerBuilder;
 import com.blindtigergames.werescrewed.entity.mover.ParallaxMover;
 import com.blindtigergames.werescrewed.entity.tween.EntityAccessor;
 import com.blindtigergames.werescrewed.entity.tween.PlatformAccessor;
-import com.blindtigergames.werescrewed.hazard.Spikes;
+import com.blindtigergames.werescrewed.entity.hazard.Spikes;
 import com.blindtigergames.werescrewed.platforms.Platform;
 import com.blindtigergames.werescrewed.platforms.TiledPlatform;
 import com.blindtigergames.werescrewed.player.Player;
@@ -365,16 +365,16 @@ public class ResurrectScreen implements com.badlogic.gdx.Screen {
 		// update background stuff which uses different transformation matrices
 		bgBatch.setProjectionMatrix( bgCam.combined );
 		bgBatch.begin( );
-		bgRootSkel.draw( bgBatch );
+		bgRootSkel.draw( bgBatch, deltaTime );
 		bgBatch.end( );
 
 		// use the camera matrix for things not in the background
 		batch.setProjectionMatrix( cam.combined( ) );
 		batch.begin( );
-		rootSkeleton.draw( batch );
-		progressManager.draw( batch );
-		player1.draw( batch );
-		player2.draw( batch );
+		rootSkeleton.draw( batch, deltaTime );
+		progressManager.draw( batch, deltaTime );
+		player1.draw( batch, deltaTime );
+		player2.draw( batch, deltaTime );
 		batch.end( );
 
 		if ( debug )

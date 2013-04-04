@@ -1,4 +1,4 @@
-package com.blindtigergames.werescrewed.hazard;
+package com.blindtigergames.werescrewed.entity.hazard;
 
 import java.util.Vector;
 
@@ -32,6 +32,7 @@ public class Saws extends Hazard {
 			World world, boolean isActive ) {
 		super( name, pos, null, world, size, size, isActive );
 		entityType = EntityType.HAZARD;
+		hazardType = HazardType.SAWS;
 
 		this.world = world;
 		this.active = isActive;

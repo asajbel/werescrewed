@@ -1,4 +1,4 @@
-package com.blindtigergames.werescrewed.rope;
+package com.blindtigergames.werescrewed.entity.rope;
 
 import java.util.ArrayList;
 
@@ -9,8 +9,8 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.blindtigergames.werescrewed.entity.Entity;
-import com.blindtigergames.werescrewed.screws.Screw;
-import com.blindtigergames.werescrewed.screws.StrippedScrew;
+import com.blindtigergames.werescrewed.entity.screws.Screw;
+import com.blindtigergames.werescrewed.entity.screws.StrippedScrew;
 import com.blindtigergames.werescrewed.util.Util;
 
 /** A chain of box fixtures that 
@@ -168,11 +168,11 @@ public class Rope {
 	 * 
 	 * @param batch sprite batch used for drawing the rope
 	 */
-	public void draw( SpriteBatch batch ) {
+	public void draw( SpriteBatch batch, float deltaTime ) {
 		if ( screw != null )
-			screw.draw( batch );
+			screw.draw( batch, deltaTime );
 		for ( int i = 0; i < linkParts.size( ); i++ ) {
-			getLink( i ).draw( batch );
+			getLink( i ).draw( batch, deltaTime );
 		}
 	}
 

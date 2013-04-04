@@ -1,4 +1,4 @@
-package com.blindtigergames.werescrewed.hazard;
+package com.blindtigergames.werescrewed.entity.hazard;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
@@ -24,6 +24,8 @@ import com.blindtigergames.werescrewed.util.Util;
 public class Hazard extends Platform {
 
 	public boolean activeHazard;
+	
+	public HazardType hazardType;
 	
 	public Hazard( String name, Vector2 pos, Texture texture, World world, 
 			float width, float height, boolean isHazardActive ) {

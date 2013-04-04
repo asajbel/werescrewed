@@ -1,4 +1,4 @@
-package com.blindtigergames.werescrewed.rope;
+package com.blindtigergames.werescrewed.entity.rope;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -76,7 +76,7 @@ public class Link extends Entity {
 	
 	
 	@Override 
-	public void draw(SpriteBatch batch){
+	public void draw(SpriteBatch batch, float deltaTime){
 		float xpos =  body.getPosition( ).x - (xOffset * Util.PIXEL_TO_BOX);
 		float ypos =  body.getPosition( ).y - (yOffset * Util.PIXEL_TO_BOX);
 		

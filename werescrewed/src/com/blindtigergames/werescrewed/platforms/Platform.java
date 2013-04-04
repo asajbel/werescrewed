@@ -13,7 +13,7 @@ import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityDef;
 import com.blindtigergames.werescrewed.entity.EntityType;
 import com.blindtigergames.werescrewed.entity.Skeleton;
-import com.blindtigergames.werescrewed.screws.Screw;
+import com.blindtigergames.werescrewed.entity.screws.Screw;
 import com.blindtigergames.werescrewed.util.Util;
 
 /**

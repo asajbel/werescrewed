@@ -1,9 +1,8 @@
-package com.blindtigergames.werescrewed.hazard;
+package com.blindtigergames.werescrewed.entity.hazard;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.g2d.ParticleEffect;
-import com.badlogic.gdx.graphics.g2d.ParticleEmitter;
+import com.blindtigergames.werescrewed.graphics.particle.*;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -37,6 +36,7 @@ public class Fire extends Hazard {
 			World world, boolean isActive ) {
 		super( name, pos, null, world, width, height, isActive );
 		entityType = EntityType.HAZARD;
+		hazardType = HazardType.FIRE;
 		
 		this.width = width;
 		this.height = height;
@@ -119,6 +119,11 @@ public class Fire extends Hazard {
 			flip( );
 		if (Gdx.input.isKeyPressed( Input.Keys.BACKSLASH ))
 			setActiveHazard(!activeHazard);
+		Vector2 pos = body.getPosition( ).mul( Util.BOX_TO_PIXEL );
+		particleEffect.setPosition( pos.x, pos.y );
+		for ( ParticleEmitter e: particleEffect.getEmitters( )){
+			e.setAngle( body.getAngle( ) );
+		}
 		particleEffect.draw( batch, deltaTime );
 		if(activeHazard){
 			particleEffect.start( );

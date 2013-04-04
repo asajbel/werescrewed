@@ -1,4 +1,4 @@
-package com.blindtigergames.werescrewed.particles;
+package com.blindtigergames.werescrewed.entity.particles;
 
 import com.badlogic.gdx.Gdx;
 import com.blindtigergames.werescrewed.entity.Entity;

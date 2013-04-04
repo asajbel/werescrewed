@@ -1,4 +1,4 @@
-package com.blindtigergames.werescrewed.screws;
+package com.blindtigergames.werescrewed.entity.screws;
 
 public enum ScrewType {
 	SCREW_COSMETIC("ScrewCosmetic"),

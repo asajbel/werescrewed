@@ -1,11 +1,12 @@
-package com.blindtigergames.werescrewed.hazard.builders;
+package com.blindtigergames.werescrewed.entity.hazard.builders;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.blindtigergames.werescrewed.entity.builders.GenericEntityBuilder;
-import com.blindtigergames.werescrewed.hazard.Spikes;
+import com.blindtigergames.werescrewed.entity.builders.PlatformBuilder;
+import com.blindtigergames.werescrewed.entity.hazard.Spikes;
 
-public class HazardBuilder extends GenericEntityBuilder< HazardBuilder > {
+public class SpikesBuilder extends GenericEntityBuilder< SpikesBuilder > {
 
 	protected float width;
 	protected float height;
@@ -18,7 +19,7 @@ public class HazardBuilder extends GenericEntityBuilder< HazardBuilder > {
 	 * @param world - Box2d world, only needs to be set once
 	 * @return SpikesBuilder
 	 */
-	public HazardBuilder ( World world ) {
+	public SpikesBuilder ( World world ) {
 		super();
 		reset();
 		super.world(  world );
@@ -29,7 +30,7 @@ public class HazardBuilder extends GenericEntityBuilder< HazardBuilder > {
 	 * @param h - set height with a float, default is 1
 	 * @return SpikesBuilder
 	 */	
-	public HazardBuilder height ( float h ) {
+	public SpikesBuilder height ( float h ) {
 		this.height = h;
 		return this;
 	}
@@ -39,7 +40,7 @@ public class HazardBuilder extends GenericEntityBuilder< HazardBuilder > {
 	 * @param w - set width with a float, default is 4
 	 * @return SpikesBuilder
 	 */	
-	public HazardBuilder width( float w ) {
+	public SpikesBuilder width( float w ) {
 		this.width = w;
 		return this;
 	}
@@ -49,7 +50,7 @@ public class HazardBuilder extends GenericEntityBuilder< HazardBuilder > {
 	 * @param dimension - set width/height with Vector2, default is (4,1)
 	 * @return SpikesBuilder
 	 */
-	public HazardBuilder dimensions( Vector2 dimension ) {
+	public SpikesBuilder dimensions( Vector2 dimension ) {
 		return this.width( dimension.x ).height( dimension.y );
 	}
 		
@@ -59,47 +60,47 @@ public class HazardBuilder extends GenericEntityBuilder< HazardBuilder > {
 	 * @param height - float height of platform
 	 * @return SpikesBuilder
 	 */
-	public HazardBuilder dimensions( float width, float height ) {
+	public SpikesBuilder dimensions( float width, float height ) {
 		return this.width( width ).height( height );
 	}
 	
 
-	public HazardBuilder active ( ) {
+	public SpikesBuilder active ( ) {
 		this.active = true;
 		return this;
 	}
 	
-	public HazardBuilder inactive ( ) {
+	public SpikesBuilder inactive ( ) {
 		this.active = false;
 		return this;
 	}
 	
-	public HazardBuilder up ( ) {
+	public SpikesBuilder up ( ) {
 		this.horizontal = true;
 		this.inverted = false;
 		return this;
 	}
 	
-	public HazardBuilder down ( ) {
+	public SpikesBuilder down ( ) {
 		this.horizontal = true;
 		this.inverted = true;
 		return this;
 	}
 	
-	public HazardBuilder left ( ) {
+	public SpikesBuilder left ( ) {
 		this.horizontal = false;
 		this.inverted = true;
 		return this;
 	}
 	
-	public HazardBuilder right ( ) {
+	public SpikesBuilder right ( ) {
 		this.horizontal = false;
 		this.inverted = false;
 		return this;
 	}
 	
 	@Override
-	public HazardBuilder reset(){
+	public SpikesBuilder reset(){
 		super.resetInternal( );
 		this.width = 2;
 		this.height = 1;
@@ -111,8 +112,8 @@ public class HazardBuilder extends GenericEntityBuilder< HazardBuilder > {
 	public Spikes buildSpikes ( ) {
 		Spikes spikes = new Spikes( this.name,
 									this.pos, 
-									this.width, 
-									this.height,
+									this.height, 
+									this.width,
 									this.world,
 									this.active,
 									this.inverted,

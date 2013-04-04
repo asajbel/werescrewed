@@ -1,4 +1,4 @@
-package com.blindtigergames.werescrewed.screws;
+package com.blindtigergames.werescrewed.entity.screws;
 
 import java.util.ArrayList;
 

@@ -12,12 +12,12 @@ import com.blindtigergames.werescrewed.entity.builders.PlatformBuilder;
 import com.blindtigergames.werescrewed.entity.mover.PuzzleType;
 import com.blindtigergames.werescrewed.entity.mover.RotateTweenMover;
 import com.blindtigergames.werescrewed.entity.mover.puzzle.PuzzleRotateTweenMover;
+import com.blindtigergames.werescrewed.entity.particles.Steam;
+import com.blindtigergames.werescrewed.entity.screws.PuzzleScrew;
 import com.blindtigergames.werescrewed.eventTrigger.EventTrigger;
-import com.blindtigergames.werescrewed.hazard.Fire;
+import com.blindtigergames.werescrewed.entity.hazard.Fire;
 import com.blindtigergames.werescrewed.level.LevelFactory;
-import com.blindtigergames.werescrewed.particles.Steam;
 import com.blindtigergames.werescrewed.platforms.Platform;
-import com.blindtigergames.werescrewed.screws.PuzzleScrew;
 import com.blindtigergames.werescrewed.util.Util;
 
 public class GleedTestScreen extends Screen {
@@ -178,7 +178,7 @@ public class GleedTestScreen extends Screen {
 		batch.begin( );
 		testSteam.draw( batch, deltaTime );
 		steam2.draw( batch, deltaTime );
-		fallingGear1.draw( batch );
+		fallingGear1.draw( batch, deltaTime );
 		f1.draw( batch, deltaTime );
 		f2.draw( batch, deltaTime );
 		f3.draw( batch, deltaTime );

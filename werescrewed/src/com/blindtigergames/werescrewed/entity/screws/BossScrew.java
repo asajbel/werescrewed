@@ -1,4 +1,4 @@
-package com.blindtigergames.werescrewed.screws;
+package com.blindtigergames.werescrewed.entity.screws;
 
 import java.util.ArrayList;
 
@@ -186,7 +186,7 @@ public class BossScrew extends Screw {
 	}
 
 	@Override
-	public void draw( SpriteBatch batch ) {
+	public void draw( SpriteBatch batch, float deltaTime ) {
 		if ( sprite != null ) {
 			sprite.draw( batch );
 		}

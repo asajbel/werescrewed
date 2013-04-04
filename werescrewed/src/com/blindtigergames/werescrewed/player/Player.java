@@ -30,11 +30,11 @@ import com.blindtigergames.werescrewed.entity.animator.SimpleFrameAnimator.LoopB
 import com.blindtigergames.werescrewed.entity.mover.IMover;
 import com.blindtigergames.werescrewed.entity.mover.LerpMover;
 import com.blindtigergames.werescrewed.entity.mover.LinearAxis;
+import com.blindtigergames.werescrewed.entity.screws.ResurrectScrew;
+import com.blindtigergames.werescrewed.entity.screws.Screw;
+import com.blindtigergames.werescrewed.entity.screws.ScrewType;
 import com.blindtigergames.werescrewed.input.MyControllerListener;
 import com.blindtigergames.werescrewed.input.PlayerInputHandler;
-import com.blindtigergames.werescrewed.screws.ResurrectScrew;
-import com.blindtigergames.werescrewed.screws.Screw;
-import com.blindtigergames.werescrewed.screws.ScrewType;
 import com.blindtigergames.werescrewed.util.Metrics;
 import com.blindtigergames.werescrewed.util.Util;
 
@@ -428,10 +428,10 @@ public class Player extends Entity {
 	 * draw calls super then draws player polish effects
 	 */
 	@Override
-	public void draw( SpriteBatch batch ) {
-		super.draw( batch );
+	public void draw( SpriteBatch batch, float deltaTime ) {
+		super.draw( batch,  deltaTime );
 		if ( hitCloud.sprite.getAnimator( ).getFrame( ) < 3 ) {
-			hitCloud.draw( batch );
+			hitCloud.draw( batch, deltaTime );
 		}
 	}
 

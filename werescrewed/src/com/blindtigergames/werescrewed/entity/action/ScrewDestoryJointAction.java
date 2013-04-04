@@ -3,7 +3,7 @@ package com.blindtigergames.werescrewed.entity.action;
 import com.badlogic.gdx.physics.box2d.Joint;
 import com.badlogic.gdx.physics.box2d.World;
 import com.blindtigergames.werescrewed.entity.Entity;
-import com.blindtigergames.werescrewed.screws.StructureScrew;
+import com.blindtigergames.werescrewed.entity.screws.StructureScrew;
 
 public class ScrewDestoryJointAction implements IAction{
 

@@ -1,46 +1,33 @@
 package com.blindtigergames.werescrewed.screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
-import com.badlogic.gdx.physics.box2d.joints.RevoluteJoint;
-import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
 import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.camera.Camera;
-import com.blindtigergames.werescrewed.entity.EntityDef;
-import com.blindtigergames.werescrewed.entity.RobotState;
-import com.blindtigergames.werescrewed.entity.RootSkeleton;
 import com.blindtigergames.werescrewed.entity.Skeleton;
 import com.blindtigergames.werescrewed.entity.builders.PlatformBuilder;
 import com.blindtigergames.werescrewed.entity.builders.PlayerBuilder;
 import com.blindtigergames.werescrewed.entity.builders.SkeletonBuilder;
-import com.blindtigergames.werescrewed.entity.mover.PuzzleType;
+import com.blindtigergames.werescrewed.entity.hazard.Fire;
+import com.blindtigergames.werescrewed.entity.hazard.builders.HazardBuilder;
 import com.blindtigergames.werescrewed.entity.mover.RotateTweenMover;
 import com.blindtigergames.werescrewed.entity.mover.TargetImpulseMover;
-import com.blindtigergames.werescrewed.entity.mover.puzzle.PuzzleRotateTweenMover;
-import com.blindtigergames.werescrewed.eventTrigger.EventTrigger;
-import com.blindtigergames.werescrewed.hazard.Fire;
 import com.blindtigergames.werescrewed.level.Level;
-import com.blindtigergames.werescrewed.level.LevelFactory;
-import com.blindtigergames.werescrewed.particles.Steam;
 import com.blindtigergames.werescrewed.platforms.Platform;
 import com.blindtigergames.werescrewed.platforms.TiledPlatform;
-import com.blindtigergames.werescrewed.screws.PuzzleScrew;
-import com.blindtigergames.werescrewed.screws.StructureScrew;
+import com.blindtigergames.werescrewed.entity.screws.StructureScrew;
 import com.blindtigergames.werescrewed.util.Util;
 
 public class DragonScreen extends Screen {
 
 	public DragonScreen( ) {
 		super( );
-		String filename = "data/levels/dragon.xml";
+		//String filename = "data/levels/dragon.xml";
 		//level = new LevelFactory( ).load( filename );
 		level = new Level( );
 		
@@ -53,7 +40,8 @@ public class DragonScreen extends Screen {
 		level.root = new SkeletonBuilder(level.world).buildRoot( );
 		
 		buildGround();
-		buildDynamicSkeleton();
+		//buildDynamicSkeleton();
+		buildHazardSkeleton();
 	}
 	
 	void buildGround(){
@@ -63,6 +51,18 @@ public class DragonScreen extends Screen {
 		TiledPlatform tp = pb.name( "ground" ).dimensions( 100,3 ).buildTilePlatform( );
 		skeleton.addPlatform( tp );
 		level.root.addSkeleton( skeleton );
+	}
+	
+	void buildHazardSkeleton(){
+		SkeletonBuilder sb = new SkeletonBuilder( level.world );
+		Skeleton skeleton = sb.name( "hazard_skel" ).position( 500,300 ).vert(-50,-50).vert( 50,-50 ).vert( 50,50 ).vert( -50,50 ).build( );
+		level.root.addSkeleton( skeleton );
+		skeleton.setMoverAtCurrentState(new RotateTweenMover(skeleton,10,Util.TWO_PI,0,true));
+		
+		//HazardBuilder hb = new HazardBuilder(level.world);
+		Fire f = new Fire("fire1", new Vector2(500,350), 100, 100, level.world, true);
+		skeleton.addHazard( f );
+		
 	}
 	
 	void buildDynamicSkeleton(){

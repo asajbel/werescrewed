@@ -1,4 +1,4 @@
-package com.blindtigergames.werescrewed.hazard;
+package com.blindtigergames.werescrewed.entity.hazard;
 
 import java.util.Iterator;
 import java.util.Vector;
@@ -64,6 +64,7 @@ public class Spikes extends Hazard {
 				.get( WereScrewedGame.dirHandle + "/common/spikes_01.png" ),
 				world, width, height, isActive );
 		entityType = EntityType.HAZARD;
+		hazardType = HazardType.SPIKES;
 
 		if ( height > width ) {
 			this.hori = false;
@@ -218,7 +219,7 @@ public class Spikes extends Hazard {
 	}
 
 	@Override
-	public void draw( SpriteBatch batch ) {
+	public void draw( SpriteBatch batch, float deltaTime) {
 		Tile d;
 		Iterator< Tile > v = tiles.listIterator( );
 		while ( v.hasNext( ) ) {

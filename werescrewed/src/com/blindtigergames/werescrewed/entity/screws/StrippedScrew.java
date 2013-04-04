@@ -1,4 +1,4 @@
-package com.blindtigergames.werescrewed.screws;
+package com.blindtigergames.werescrewed.entity.screws;
 
 import java.util.ArrayList;
 
@@ -117,7 +117,7 @@ public class StrippedScrew extends Screw {
 	 * @author Ranveer
 	 */
 	@Override 
-	public void draw(SpriteBatch batch){
+	public void draw(SpriteBatch batch, float deltaTime){
 		float xpos =  body.getPosition( ).x - (this.sprite.getWidth( )/2 * Util.PIXEL_TO_BOX);
 		float ypos =  body.getPosition( ).y - (this.sprite.getHeight( )/2 * Util.PIXEL_TO_BOX);
 		

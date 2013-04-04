@@ -1,4 +1,4 @@
-package com.blindtigergames.werescrewed.particles;
+package com.blindtigergames.werescrewed.entity.particles;
 
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.mover.IMover;

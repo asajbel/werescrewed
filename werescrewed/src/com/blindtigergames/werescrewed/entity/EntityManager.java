@@ -97,13 +97,13 @@ public class EntityManager {
 
 	}
 
-	public void draw( SpriteBatch batch ) {
+	public void draw( SpriteBatch batch, float deltaTime ) {
 		Iterator< Map.Entry< String, Entity > > eit = entityList.entrySet( )
 				.iterator( );
 		Map.Entry< String, Entity > eEntry;
 		while ( eit.hasNext( ) ) {
 			eEntry = eit.next( );
-			eEntry.getValue( ).draw( batch );
+			eEntry.getValue( ).draw( batch, deltaTime );
 		}
 
 		Iterator< Map.Entry< String, Skeleton > > sit = skeletonList.entrySet( )
@@ -111,7 +111,7 @@ public class EntityManager {
 		Map.Entry< String, Skeleton > sEntry;
 		while ( sit.hasNext( ) ) {
 			sEntry = sit.next( );
-			sEntry.getValue( ).draw( batch );
+			sEntry.getValue( ).draw( batch, deltaTime );
 		}
 	}
 
