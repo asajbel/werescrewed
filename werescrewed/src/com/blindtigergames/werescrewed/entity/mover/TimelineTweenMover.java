@@ -3,8 +3,8 @@ package com.blindtigergames.werescrewed.entity.mover;
 import aurelienribon.tweenengine.Timeline;
 
 import com.badlogic.gdx.physics.box2d.Body;
-import com.blindtigergames.werescrewed.platforms.Platform;
-import com.blindtigergames.werescrewed.screws.PuzzleScrew;
+import com.blindtigergames.werescrewed.entity.platforms.Platform;
+import com.blindtigergames.werescrewed.entity.screws.PuzzleScrew;
 
 public class TimelineTweenMover implements IMover {
 

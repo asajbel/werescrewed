@@ -67,8 +67,8 @@
 /common/tileset/TilesetTest.png
 #/common/blind_tiger_logo_1024.png
 /common/title_background.png
-/common/title_background_1024.png
-/common/title_background_original.png
+#/common/title_background_1024.png
+#/common/title_background_original.png
 /particles/particle.png
 /common/robot/alphabot_texture_skin.png
 /common/robot/alphabot_texture_tux.png
@@ -79,6 +79,7 @@
 /common/gear.png
 /common/sawblade.png
 /common/animations/hitCloud.png
+/common/redScrewDriver.png
 
 ##Fonts
 /debug/debug_font.fnt

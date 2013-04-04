@@ -7,8 +7,8 @@ import java.util.Random;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.blindtigergames.werescrewed.entity.platforms.TileSet;
 import com.blindtigergames.werescrewed.graphics.TextureAtlas;
-import com.blindtigergames.werescrewed.platforms.TileSet;
 
 /**
  * Wrapper to badlogic's AssetManager with added functionality

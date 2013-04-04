@@ -2,6 +2,7 @@ package com.blindtigergames.werescrewed.entity;
 
 import java.util.ArrayList;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
@@ -114,11 +115,12 @@ public class RootSkeleton extends Skeleton {
 	}
 
 	@Override
-	public void draw( SpriteBatch batch ) {
+	public void draw( SpriteBatch batch, float deltaTime ) {
 		// possible bug: the draw order
 		for ( Entity entity : looseEntity ) {
-			entity.draw( batch );
+			entity.draw( batch, deltaTime );
 		}
-		super.draw( batch );
+		super.draw( batch, deltaTime );
 	}
+
 }

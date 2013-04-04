@@ -57,6 +57,7 @@ public class Entity implements GleedLoadable {
 	private ArrayList< IMover > moverArray;
 	protected ArrayList< Sprite > decals;
 	protected ArrayList< Vector2 > decalOffsets;
+	protected ArrayList< Float > decalAngles;
 	private RobotState currentRobotState;
 	private EnumMap< RobotState, Integer > robotStateMap;
 
@@ -90,8 +91,6 @@ public class Entity implements GleedLoadable {
 			this.sprite = constructSprite( texture );
 		}
 		this.body = constructBodyByType( );
-		this.decals = new ArrayList< Sprite >( );
-		this.decalOffsets = new ArrayList< Vector2 >( );
 		setPixelPosition( positionPixels );
 	}
 
@@ -184,6 +183,9 @@ public class Entity implements GleedLoadable {
 		this.maintained = true;
 		this.visible = true;
 		this.active = true;
+		this.decals = new ArrayList< Sprite >( );
+		this.decalOffsets = new ArrayList< Vector2 >( );
+		this.decalAngles = new ArrayList< Float >( );
 		setUpRobotState( );
 	}
 
@@ -247,11 +249,12 @@ public class Entity implements GleedLoadable {
 		setPosition( pos );
 	}
 
-	public void draw( SpriteBatch batch ) {
+	public void draw( SpriteBatch batch, float deltaTime ) {
 		if ( sprite != null && visible && !removeNextStep ) {
 			sprite.draw( batch );
 		}
 		// drawOrigin(batch);
+		drawDecals(batch);
 	}
 
 	public void drawOrigin( SpriteBatch batch ) {
@@ -322,6 +325,7 @@ public class Entity implements GleedLoadable {
 						* body.getAngle( ) );
 				sprite.update( deltaTime );
 			}
+			updateDecals(deltaTime);
 		}
 	}
 
@@ -855,9 +859,14 @@ public class Entity implements GleedLoadable {
 	/**
 	 * 
 	 */
-	public void addDecal( Sprite s, Vector2 offset ) {
+	public void addDecal( Sprite s, Vector2 offset, float angle){
 		this.decals.add( s );
 		this.decalOffsets.add( offset );
+		this.decalAngles.add( angle );
+	}
+	
+	public void addDecal( Sprite s, Vector2 offset ) {
+		addDecal( s, offset, 0.0f);
 	}
 
 	public void addDecal( Sprite s ) {
@@ -868,16 +877,17 @@ public class Entity implements GleedLoadable {
 		Vector2 bodyPos = this.getPositionPixel( );
 		float angle = this.getAngle( ), cos = ( float ) Math.cos( angle ), sin = ( float ) Math
 				.sin( angle );
-		float x, y;
+		float x, y, r;
 		Vector2 offset;
 		Sprite decal;
 		for ( int i = 0; i < decals.size( ); i++ ) {
 			offset = decalOffsets.get( i );
 			decal = decals.get( i );
-			x = bodyPos.x + ( cos * offset.x ) + ( sin * offset.y );
-			y = bodyPos.y + ( cos * offset.x ) - ( sin * offset.y );
-			decal.setPosition( x, y );
-			decal.setRotation( angle );
+			r = decalAngles.get( i );
+			x = bodyPos.x + (offset.x * cos) - (offset.y * sin);
+			y = bodyPos.y + (offset.y * cos) + (offset.x * sin);
+			decal.setPosition( x , y );
+			decal.setRotation( r + (angle * Util.RAD_TO_DEG) );
 		}
 	}
 

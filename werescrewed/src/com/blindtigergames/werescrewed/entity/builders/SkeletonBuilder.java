@@ -6,6 +6,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.utils.Array;
+import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.entity.PolySprite;
 import com.blindtigergames.werescrewed.entity.RootSkeleton;
 import com.blindtigergames.werescrewed.entity.Skeleton;
@@ -38,7 +39,10 @@ public class SkeletonBuilder extends GenericEntityBuilder<SkeletonBuilder>{
 		this.bodyType = BodyType.KinematicBody;
 		this.density = 1.0f;
 		this.onBGverts = true;
-		this.texBackground = null;
+		this.texBackground = WereScrewedGame.manager.get(
+				WereScrewedGame.dirHandle.path( )
+				+ "/common/robot/alphabot_texture_skin.png",
+		Texture.class );
 		this.texForeground = null;
 		this.texBody = null;
 		this.hasDeactivateTrigger = false;

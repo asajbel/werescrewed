@@ -2,6 +2,7 @@ package com.blindtigergames.werescrewed.entity;
 
 import java.util.HashMap;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
@@ -13,13 +14,15 @@ import com.badlogic.gdx.physics.box2d.JointEdge;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.blindtigergames.werescrewed.eventTrigger.EventTrigger;
-import com.blindtigergames.werescrewed.hazard.Hazard;
+import com.blindtigergames.werescrewed.entity.hazard.Fire;
+import com.blindtigergames.werescrewed.entity.hazard.Hazard;
 import com.blindtigergames.werescrewed.joint.RevoluteJointBuilder;
-import com.blindtigergames.werescrewed.platforms.Platform;
-import com.blindtigergames.werescrewed.platforms.TiledPlatform;
-import com.blindtigergames.werescrewed.rope.Rope;
-import com.blindtigergames.werescrewed.screws.Screw;
-import com.blindtigergames.werescrewed.screws.StrippedScrew;
+import com.blindtigergames.werescrewed.entity.platforms.Platform;
+import com.blindtigergames.werescrewed.entity.platforms.PlatformType;
+import com.blindtigergames.werescrewed.entity.platforms.TiledPlatform;
+import com.blindtigergames.werescrewed.entity.rope.Rope;
+import com.blindtigergames.werescrewed.entity.screws.Screw;
+import com.blindtigergames.werescrewed.entity.screws.StrippedScrew;
 import com.blindtigergames.werescrewed.util.Util;
 
 /**
@@ -369,6 +372,7 @@ public class Skeleton extends Platform {
 		for ( Skeleton skeleton : childSkeletonMap.values( ) ){
 			skeleton.update( deltaTime );
 		}
+		updateDecals(deltaTime);
 	}
 
 
@@ -396,49 +400,68 @@ public class Skeleton extends Platform {
 	}
 
 	@Override
-	public void draw( SpriteBatch batch ) {
+	public void draw( SpriteBatch batch, float deltaTime ) {
 		// super.draw( batch );
 		if ( visible ) {
+			// draw decals before drawing children
+			drawDecals(batch);
 			// draw bg
 			if ( bgSprite != null )
 				bgSprite.draw( batch );
-			drawChildren( batch );
+			drawChildren( batch, deltaTime );
 			if ( fgSprite != null )
 				fgSprite.draw( batch );
 			// draw fg
 		}
 	}
 
-	private void drawChildren( SpriteBatch batch ) {
+	private void drawChildren( SpriteBatch batch, float deltaTime ) {
 		for ( Skeleton skeleton : childSkeletonMap.values( ) ) {
-			skeleton.draw( batch );
+			skeleton.draw( batch, deltaTime );
 		}
 		for ( Platform p : dynamicPlatformMap.values( ) ) {
-			drawPlatform( p, batch );
+			drawPlatform( p, batch, deltaTime );
 		}
 		for ( Platform p : kinematicPlatformMap.values( ) ) {
-			drawPlatform( p, batch );
+			drawPlatform( p, batch, deltaTime );
 		}
 		for ( Screw screw : screwMap.values( ) ) {
 			if ( !screw.getRemoveNextStep( ) ) {
-				screw.draw( batch );
+				screw.draw( batch, deltaTime );
 			}
 		}
 		for ( Rope rope : ropeMap.values( ) ) {
-			rope.draw( batch );
+			rope.draw( batch, deltaTime );
 		}
 	}
 
 	/**
-	 * Draw each child. Tiled platforms have unique draw calls
+	 * Draw each child. Tiled platforms have unique draw calls. Platforms can be hazards as well
 	 */
-	private void drawPlatform( Platform platform, SpriteBatch batch ) {
-		switch ( platform.getPlatformType( ) ) {
-		case TILED:
-			( ( TiledPlatform ) platform ).draw( batch );
+	private void drawPlatform( Platform platform, SpriteBatch batch, float deltaTime ) {
+		switch(platform.getEntityType( )){
+		case PLATFORM:
+			if ( platform.getPlatformType( ) == PlatformType.TILED ){
+				( ( TiledPlatform ) platform ).draw( batch, deltaTime );
+			}else{
+				platform.draw( batch, deltaTime );
+			}
+			break;
+		case HAZARD:
+			
+			drawHazard((Hazard)platform, batch, deltaTime );
+			break;
+		}
+	}
+	
+	private void drawHazard(Hazard hazard, SpriteBatch batch, float deltaTime){
+		switch(hazard.hazardType){
+		case FIRE:
+			((Fire)hazard).draw(batch,deltaTime);
 			break;
 		default:
-			platform.draw( batch );
+			hazard.draw(batch, deltaTime);
+			break;
 		}
 	}
 

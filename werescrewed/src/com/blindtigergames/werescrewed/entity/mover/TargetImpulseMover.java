@@ -3,8 +3,8 @@ package com.blindtigergames.werescrewed.entity.mover;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
-import com.blindtigergames.werescrewed.platforms.Platform;
-import com.blindtigergames.werescrewed.screws.PuzzleScrew;
+import com.blindtigergames.werescrewed.entity.platforms.Platform;
+import com.blindtigergames.werescrewed.entity.screws.PuzzleScrew;
 import com.blindtigergames.werescrewed.util.Util;
 
 /**
@@ -55,23 +55,25 @@ public class TargetImpulseMover implements IMover {
 
 	@Override
 	public void move( float deltaTime, Body body ) {
-		// TODO Auto-generated method stub
 		Vector2 impulseTarget = targetPixel.cpy( ).sub( body.getWorldCenter( ).mul( Util.BOX_TO_PIXEL ));
 		
 		//Vector2 newImpulsePoint = impulsePoint.cpy().rotate( body.getAngle( )*Util.RAD_TO_DEG );
 		
-		float disSq = impulseTarget.len2( );
-		
-		float strength = 0;
-		if ( disSq > minImpulseRadiusSquared ){
-			strength = impulseStrength;
-		}else if(disSq != 0){
-			//scale impulse by distance from center linearly.
-			strength = disSq/minImpulseRadiusSquared*impulseStrength;
+		if ( buoyant && impulseTarget.y > 0 ){
+			body.applyLinearImpulse( impulseTarget.mul( 0,impulseStrength ), impulsePoint );
+		}else{
+			float disSq = impulseTarget.len2( );
+			float strength = 0;
+			if ( disSq > minImpulseRadiusSquared ){
+				strength = impulseStrength;
+			}else if(disSq != 0){
+				//scale impulse by distance from center linearly.
+				strength = disSq/minImpulseRadiusSquared*impulseStrength;
+			}
+			//Gdx.app.log( "TargetImpulse:", " "+strength );
+			impulseTarget.nor( ).mul( strength );
+			body.applyLinearImpulse( impulseTarget, impulsePoint );
 		}
-		Gdx.app.log( "TargetImpulse:", " "+strength );
-		impulseTarget.nor( ).mul( strength );
-		body.applyLinearImpulse( impulseTarget, impulsePoint );
 	}
 
 	@Override

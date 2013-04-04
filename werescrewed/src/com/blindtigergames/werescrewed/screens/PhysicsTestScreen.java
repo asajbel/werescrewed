@@ -40,18 +40,18 @@ import com.blindtigergames.werescrewed.entity.mover.PuzzleType;
 import com.blindtigergames.werescrewed.entity.mover.RotateByDegree;
 import com.blindtigergames.werescrewed.entity.mover.SlidingMotorMover;
 import com.blindtigergames.werescrewed.entity.mover.puzzle.PuzzlePistonTweenMover;
+import com.blindtigergames.werescrewed.entity.particles.Steam;
+import com.blindtigergames.werescrewed.entity.platforms.Platform;
+import com.blindtigergames.werescrewed.entity.platforms.TiledPlatform;
+import com.blindtigergames.werescrewed.entity.screws.PuzzleScrew;
+import com.blindtigergames.werescrewed.entity.screws.StrippedScrew;
+import com.blindtigergames.werescrewed.entity.screws.StructureScrew;
 import com.blindtigergames.werescrewed.entity.tween.EntityAccessor;
 import com.blindtigergames.werescrewed.entity.tween.PathBuilder;
 import com.blindtigergames.werescrewed.entity.tween.PlatformAccessor;
-import com.blindtigergames.werescrewed.hazard.Hazard;
+import com.blindtigergames.werescrewed.entity.hazard.Hazard;
 import com.blindtigergames.werescrewed.joint.JointFactory;
-import com.blindtigergames.werescrewed.particles.Steam;
-import com.blindtigergames.werescrewed.platforms.Platform;
-import com.blindtigergames.werescrewed.platforms.TiledPlatform;
 import com.blindtigergames.werescrewed.player.Player;
-import com.blindtigergames.werescrewed.screws.PuzzleScrew;
-import com.blindtigergames.werescrewed.screws.StrippedScrew;
-import com.blindtigergames.werescrewed.screws.StructureScrew;
 import com.blindtigergames.werescrewed.util.Util;
 
 public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
@@ -116,9 +116,9 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 
 
 		player1 = new PlayerBuilder( ).name( "player1" ).world( world )
-				.position( 400.0f, 100f ).buildPlayer( );
+				.position( -700.0f, 100f ).buildPlayer( );
 		player2 = new PlayerBuilder( ).name( "player2" ).world( world )
-				.position( 300f, 100f ).buildPlayer( );
+				.position( -700f, 100f ).buildPlayer( );
 
 		rootSkeleton = new RootSkeleton( "Root Skeleton", new Vector2( 0, 0 ),
 				null, world );
@@ -297,14 +297,25 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 	}
 	
 	void movingSkeleton(){
-		s =  new Skeleton( "skeleton7", new Vector2( -700, 200 ), null, world, BodyType.KinematicBody );
+		s =  new Skeleton( "skeleton7", new Vector2( -700, 200 ), null, world, BodyType.DynamicBody );
+		
+		TiledPlatform ttt = platBuilder.name( "ttt" ).kinematic( )
+				.position( -700, 700 ).dimensions( 1, 5).oneSided( false )
+				.buildTilePlatform( ); 
+		rootSkeleton.addPlatform( ttt );
 		
 		rootSkeleton.addSkeleton( s );
-//		PathBuilder pb = new PathBuilder();
-//		s.addMover( pb.begin( s ).target( 100, 0, 1 )
-//				.target( 100, 100, 1 )
-//				.target( 100, 0, 1 )
-//				.target( 0, 0, 1 ).build( ), RobotState.IDLE);
+		
+		StructureScrew screw = new StructureScrew( "sdfasdf",
+				new Vector2(-700f, 500f),
+				100, world );
+		screw.addStructureJoint( s );
+		screw.addWeldJoint( ttt );
+		dynSkel2.addScrewForDraw( screw );
+		
+		PathBuilder pb = new PathBuilder();
+		ttt.addMover( pb.begin( ttt ).target( 100, 0, 1 )
+				.target( 0, 0, 1 ).build( ), RobotState.IDLE);
 		
 		TiledPlatform test = platBuilder.name( "movetest" ).kinematic( )
 				.position( -300, 300 ).dimensions( 1, 5).oneSided( false )
@@ -684,10 +695,10 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		batch.begin( );
 
 
-		if(progressManager!=null)progressManager.draw( batch );
-		rootSkeleton.draw( batch );
-		player1.draw( batch );
-		player2.draw( batch );
+		if(progressManager!=null)progressManager.draw( batch, deltaTime );
+		rootSkeleton.draw( batch, deltaTime );
+		player1.draw( batch, deltaTime );
+		player2.draw( batch, deltaTime );
 
 		batch.end( );
 

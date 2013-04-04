@@ -15,3 +15,5 @@
 4/3/2013 4:08:05 PM.962 - New level created.
 4/3/2013 4:08:05 PM.963 - Editor creation ended.
 4/3/2013 4:10:19 PM.102 - pictureBox1_Resize().
+4/3/2013 10:15:44 PM.080 - pictureBox1_Resize().
+4/3/2013 10:15:44 PM.165 - pictureBox1_Resize().
