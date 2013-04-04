@@ -454,10 +454,10 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 				.buildTilePlatform( );
 		HazardBuilder spikesBuilder = new HazardBuilder( world );
 		//and spikes under the arms
-		Spikes secondUpArm = spikesBuilder.position( 850, 970).dimensions( 4, 1 )
-				.up( ).active( ).buildSpikes( );
-		Spikes secondLowArm = spikesBuilder.position( 550, 970).dimensions( 4, 1 )
-				.up( ).active( ).buildSpikes( );
+//		Spikes secondUpArm = spikesBuilder.position( 850, 970).dimensions( 4, 1 )
+//				.up( ).active( ).buildSpikes( );
+//		Spikes secondLowArm = spikesBuilder.position( 550, 970).dimensions( 4, 1 )
+//				.up( ).active( ).buildSpikes( );
 		// mover that the arm initially has and also that the bottom
 		// puzzle screw can reset
 		RotateTweenMover rtm1 = new RotateTweenMover( upperArmSkeleton, 10f,
@@ -493,13 +493,13 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		StrippedScrew platJoint1 = new StrippedScrew(
 				"dynamic_skeleton_joint2", new Vector2( 400, 800 ), lowerArm,
 				world );
-		platJoint1.addStructureJoint( secondLowArm );
+		//platJoint1.addStructureJoint( secondLowArm );
 		skel1.addSkeleton( upperArmSkeleton );
 		skel1.addSkeleton( lowerArmSkeleton );
 		upperArmSkeleton.addKinematicPlatform( upperArm );
-		upperArmSkeleton.addKinematicPlatform( secondUpArm );
+		//upperArmSkeleton.addKinematicPlatform( secondUpArm );
 		lowerArmSkeleton.addDynamicPlatform( lowerArm );
-		lowerArmSkeleton.addKinematicPlatform( secondLowArm );
+		//lowerArmSkeleton.addKinematicPlatform( secondLowArm );
 		lowerArmSkeleton.addScrewForDraw( platJoint1 );
 		upperArmSkeleton.addScrewForDraw( shoulderJoint );
 		upperArmSkeleton.addScrewForDraw( elbowJoint );

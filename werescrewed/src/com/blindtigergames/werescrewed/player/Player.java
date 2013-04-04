@@ -113,6 +113,7 @@ public class Player extends Entity {
 	private boolean topPlayer = false;
 	private boolean isDead = false;
 	private boolean hitSolidObject;
+	private boolean knockedOff = false;
 	private int screwJumpTimeout = 0;
 	private int headStandTimeout = 0;
 	private int runTimeout = 0;
@@ -232,12 +233,13 @@ public class Player extends Entity {
 	 */
 	public void update( float deltaTime ) {
 		super.update( deltaTime );
-		if(Gdx.input.isKeyPressed( Keys.G ))
-		Gdx.app.log( "steamCollide: " + steamCollide, "steamDone: " + steamDone );
+		if ( Gdx.input.isKeyPressed( Keys.G ) )
+			Gdx.app.log( "steamCollide: " + steamCollide, "steamDone: "
+					+ steamDone );
 		// update the hit cloud if it exists
 		hitCloud.sprite.update( deltaTime );
 		if ( name.equals( "player1" ) ) {
-			
+
 		}
 		if ( kinematicTransform ) {
 			// setPlatformTransform( platformOffset );
@@ -273,7 +275,7 @@ public class Player extends Entity {
 			if ( controller != null ) {
 				updateController( deltaTime );
 			} else {
-				if( inputHandler != null)
+				if ( inputHandler != null )
 					updateKeyboard( deltaTime );
 			}
 		}
@@ -322,7 +324,10 @@ public class Player extends Entity {
 			}
 			break;
 		case Screwing:
-			if ( mover != null ) {
+			if ( knockedOff ) {
+				removePlayerToScrew( );
+				knockedOff = false;
+			} else if ( mover != null ) {
 				LerpMover lm = ( LerpMover ) mover;
 				if ( !lm.atEnd( ) ) {
 					lm.move( deltaTime, body );
@@ -429,7 +434,7 @@ public class Player extends Entity {
 			hitCloud.draw( batch );
 		}
 	}
-	
+
 	/**
 	 * This function sets player in dead state
 	 */
@@ -825,7 +830,11 @@ public class Player extends Entity {
 	 * sets the body of some body that the player is hitting
 	 */
 	public void hitSolidObject( Body b ) {
-		if ( screwJumpTimeout == 0 ) {
+		if ( platformBody == null && b != null
+				&& playerState == PlayerState.Screwing ) {
+			knockedOff = true;
+		}
+		else if ( screwJumpTimeout == 0 ) {
 			platformBody = b;
 			if ( playerState == PlayerState.Falling ) {
 				playerState = PlayerState.Standing;
@@ -833,6 +842,7 @@ public class Player extends Entity {
 		}
 		if ( b == null ) {
 			hitSolidObject = false;
+			knockedOff = false;
 		} else {
 			hitSolidObject = true;
 		}
@@ -1907,24 +1917,24 @@ public class Player extends Entity {
 		leftSensor.setDensity( 0.0f );
 		topSensor.setDensity( 0.0f );
 	}
-	
-	public Controller getController(){
+
+	public Controller getController( ) {
 		return controller;
 	}
-	
-	public void setControllerIndex( int i ){
+
+	public void setControllerIndex( int i ) {
 		controllerListener = new MyControllerListener( );
 		controller = Controllers.getControllers( ).get( i );
 		controller.addListener( controllerListener );
 	}
-	
-	public void setController( Controller c){
+
+	public void setController( Controller c ) {
 		controller = c;
 	}
-	
-	public void setInputNull(){
+
+	public void setInputNull( ) {
 		inputHandler = null;
 		controller = null;
-		
+
 	}
 }
