@@ -14,9 +14,9 @@ import com.blindtigergames.werescrewed.checkpoints.ProgressManager;
 import com.blindtigergames.werescrewed.collisionManager.MyContactListener;
 import com.blindtigergames.werescrewed.debug.SBox2DDebugRenderer;
 import com.blindtigergames.werescrewed.entity.Entity;
+import com.blindtigergames.werescrewed.entity.platforms.Platform;
 import com.blindtigergames.werescrewed.entity.tween.EntityAccessor;
 import com.blindtigergames.werescrewed.entity.tween.PlatformAccessor;
-import com.blindtigergames.werescrewed.platforms.Platform;
 import com.blindtigergames.werescrewed.entity.PolySprite;
 import com.blindtigergames.werescrewed.entity.RootSkeleton;
 import com.blindtigergames.werescrewed.player.Player;
@@ -67,29 +67,17 @@ public class Level {
 		
 		Tween.registerAccessor( Platform.class, new PlatformAccessor( ) );
 		Tween.registerAccessor( Entity.class, new EntityAccessor( ) );
-
-		
-		/*Array<Vector2> verts = new Array<Vector2>();
-		verts.add( new Vector2(-500,-500) );
-		verts.add( new Vector2(500.0f,-500.0f) );
-		verts.add( new Vector2(500.0f,500.0f) );
-		verts.add( new Vector2(-500.0f,500.0f) );
-		
-		Texture polyTex = WereScrewedGame.manager.get(
-				WereScrewedGame.dirHandle.path( ) + "/common/robot/alphabot_tile_interior.png",
-				Texture.class );
-		
-		polySprite = new PolySprite( polyTex, verts );*/
 		
 	}
 	
 	public void update( float deltaTime ){
 		camera.update( );
 		
-		player1.update( deltaTime );
-		player2.update( deltaTime );
+		if(player1 != null) player1.update( deltaTime );
+		if(player2 != null) player2.update( deltaTime );
+		
 		root.update( deltaTime );
-		progressManager.update( deltaTime );
+		if (progressManager!=null)progressManager.update( deltaTime );
 		
 		if ( Gdx.input.isKeyPressed( Keys.NUM_0 ) ) {
 			if ( debugTest )
@@ -101,24 +89,25 @@ public class Level {
 
 	}
 	
-	public void draw ( SpriteBatch batch, SBox2DDebugRenderer debugRenderer){
+	public void draw ( SpriteBatch batch, SBox2DDebugRenderer debugRenderer, float deltaTime){
 		batch.setProjectionMatrix( camera.combined() );
 		batch.setShader( WereScrewedGame.defaultShader );
 		batch.setBlendFunction( GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA );
 		batch.setProjectionMatrix( camera.combined() );
 		batch.enableBlending( );
 		batch.begin();
-		//polySprite.draw( batch );
-		root.draw( batch );
-		progressManager.draw( batch );
-		player1.draw( batch );
-		player2.draw( batch );
+		
+		//float deltaTime = Gdx.graphics.getDeltaTime( );
+		root.draw( batch, deltaTime );
+		if (progressManager!=null)progressManager.draw( batch, deltaTime );
+		if(player1 != null) player1.draw( batch, deltaTime );
+		if(player2 != null) player2.draw( batch, deltaTime );
 		
 		batch.end();
 		
 		if(debug)
 			debugRenderer.render( world, camera.combined( ) );
-		world.step( 1 / 60f, 6,6 );
+		world.step( WereScrewedGame.oneOverTargetFrameRate, 6,6 );
 
 	}
 	

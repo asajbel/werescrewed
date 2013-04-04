@@ -249,7 +249,7 @@ public class Entity implements GleedLoadable {
 		setPosition( pos );
 	}
 
-	public void draw( SpriteBatch batch ) {
+	public void draw( SpriteBatch batch, float deltaTime ) {
 		if ( sprite != null && visible && !removeNextStep ) {
 			sprite.draw( batch );
 		}

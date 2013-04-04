@@ -39,19 +39,21 @@ import com.blindtigergames.werescrewed.entity.mover.RockingMover;
 import com.blindtigergames.werescrewed.entity.mover.RotateByDegree;
 import com.blindtigergames.werescrewed.entity.mover.RotateTweenMover;
 import com.blindtigergames.werescrewed.entity.mover.puzzle.PuzzleRotateTweenMover;
+import com.blindtigergames.werescrewed.entity.screws.BossScrew;
+import com.blindtigergames.werescrewed.entity.screws.PuzzleScrew;
+import com.blindtigergames.werescrewed.entity.screws.Screw;
+import com.blindtigergames.werescrewed.entity.screws.StrippedScrew;
+import com.blindtigergames.werescrewed.entity.screws.StructureScrew;
 import com.blindtigergames.werescrewed.entity.tween.EntityAccessor;
 import com.blindtigergames.werescrewed.entity.tween.PathBuilder;
 import com.blindtigergames.werescrewed.entity.tween.PlatformAccessor;
 import com.blindtigergames.werescrewed.eventTrigger.EventTrigger;
-import com.blindtigergames.werescrewed.platforms.Platform;
-import com.blindtigergames.werescrewed.platforms.TiledPlatform;
+import com.blindtigergames.werescrewed.entity.hazard.Spikes;
+import com.blindtigergames.werescrewed.entity.hazard.builders.HazardBuilder;
 import com.blindtigergames.werescrewed.player.Player;
-import com.blindtigergames.werescrewed.rope.Rope;
-import com.blindtigergames.werescrewed.screws.BossScrew;
-import com.blindtigergames.werescrewed.screws.PuzzleScrew;
-import com.blindtigergames.werescrewed.screws.Screw;
-import com.blindtigergames.werescrewed.screws.StrippedScrew;
-import com.blindtigergames.werescrewed.screws.StructureScrew;
+import com.blindtigergames.werescrewed.entity.platforms.Platform;
+import com.blindtigergames.werescrewed.entity.platforms.TiledPlatform;
+import com.blindtigergames.werescrewed.entity.rope.Rope;
 import com.blindtigergames.werescrewed.util.Metrics;
 import com.blindtigergames.werescrewed.util.MetricsRender;
 import com.blindtigergames.werescrewed.util.Util;
@@ -126,12 +128,12 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 
 		// Initialize players
 		player1 = new PlayerBuilder( ).name( "player1" ).world( world )
-				.position( 1 * TILE, 9 * TILE ).buildPlayer( );
+				.position( 0 * TILE, 0 * TILE ).buildPlayer( );
 
 		player2 = new PlayerBuilder( ).name( "player2" ).world( world )
-				.position( 1 * TILE, 9 * TILE ).buildPlayer( );
+				.position( 0 * TILE, 0 * TILE ).buildPlayer( );
 
-		// END: 175f * TILE, 96f * TILE
+		// END: 175f * TILE, 96f * TILE 
 		// START :: 1f * TILE, 1f * TILE
 		// stripped screws: 170 * TILE, 17 * TILE
 		// puzzle screws: 145f * TILE, 86f * TILE
@@ -369,6 +371,30 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 
 		buildArmSkeleton( );
 	}
+	
+	void buildArmSkeleton2(){
+		SkeletonBuilder skeleBuilder = new SkeletonBuilder( world );
+		// skeleton at shoulder joint
+		Skeleton armSkeleton = skeleBuilder
+				.position( 0, 400 )
+				.texBackground(
+						WereScrewedGame.manager.get( WereScrewedGame.dirHandle
+								+ "/common/robot/alphabot_texture_skin.png",
+								Texture.class ) ).vert( -100, -100 )
+				.vert( -100, 100 ).vert( 100, 100 ).vert( 100, -100 ).kinematic( )
+				.build( );
+		
+		skel1.addSkeleton( armSkeleton );
+		
+		TiledPlatform upperArm = platBuilder.dynamic( ).position( 850, 800 )
+				.dimensions( 9, 1 ).density( 1f ).oneSided( false )
+				.buildTilePlatform( );
+		TiledPlatform lowerArm = platBuilder.dynamic( ).position( 550, 800 )
+				.dimensions( 8, 1 ).density( 1f ).oneSided( false )
+				.buildTilePlatform( );
+		upperArm.body.setFixedRotation( false );
+		lowerArm.body.setFixedRotation( false );
+	}
 
 	private void buildArmSkeleton( ) {
 		// puzzle screw that controls the gate
@@ -426,8 +452,12 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		TiledPlatform lowerArm = platBuilder.dynamic( ).position( 550, 800 )
 				.dimensions( 8, 1 ).density( 1f ).oneSided( false )
 				.buildTilePlatform( );
-		upperArm.body.setFixedRotation( false );
-		lowerArm.body.setFixedRotation( false );
+		HazardBuilder spikesBuilder = new HazardBuilder( world );
+		//and spikes under the arms
+//		Spikes secondUpArm = spikesBuilder.position( 850, 970).dimensions( 4, 1 )
+//				.up( ).active( ).buildSpikes( );
+//		Spikes secondLowArm = spikesBuilder.position( 550, 970).dimensions( 4, 1 )
+//				.up( ).active( ).buildSpikes( );
 		// mover that the arm initially has and also that the bottom
 		// puzzle screw can reset
 		RotateTweenMover rtm1 = new RotateTweenMover( upperArmSkeleton, 10f,
@@ -463,11 +493,13 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		StrippedScrew platJoint1 = new StrippedScrew(
 				"dynamic_skeleton_joint2", new Vector2( 400, 800 ), lowerArm,
 				world );
-		//platJoint1.addStructureJoint( lowerArm );
+		//platJoint1.addStructureJoint( secondLowArm );
 		skel1.addSkeleton( upperArmSkeleton );
 		skel1.addSkeleton( lowerArmSkeleton );
-		upperArmSkeleton.addDynamicPlatform( upperArm );
+		upperArmSkeleton.addKinematicPlatform( upperArm );
+		//upperArmSkeleton.addKinematicPlatform( secondUpArm );
 		lowerArmSkeleton.addDynamicPlatform( lowerArm );
+		//lowerArmSkeleton.addKinematicPlatform( secondLowArm );
 		lowerArmSkeleton.addScrewForDraw( platJoint1 );
 		upperArmSkeleton.addScrewForDraw( shoulderJoint );
 		upperArmSkeleton.addScrewForDraw( elbowJoint );
@@ -1109,11 +1141,11 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		batch.setProjectionMatrix( cam.combined( ) );
 		batch.begin( );
 
-		rootSkeleton.draw( batch );
-		progressManager.draw( batch );
-		testRope.draw( batch );
-		player1.draw( batch );
-		player2.draw( batch );
+		rootSkeleton.draw( batch,  deltaTime );
+		progressManager.draw( batch, deltaTime );
+		testRope.draw( batch, deltaTime );
+		player1.draw( batch, deltaTime );
+		player2.draw( batch, deltaTime );
 		batch.end( );
 
 		if ( debug )

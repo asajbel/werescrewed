@@ -33,14 +33,15 @@ public class LevelSelectScreen implements com.badlogic.gdx.Screen {
 	private int lineHeight = 0;
 	private Button level1Button;
 	private Button backButton = null;
+	private Button dragonButton = null;
 
 	private int buttonIndex = 0;
 	private ArrayList< Button > Buttons;
 	private Controller controller1;
 	private Controller controller2;
 	private MyControllerListener controllerListener;
-	private int controllerTimer;
-	private int controllerMax = 15;
+	private int controllerTimer = 10;
+	private int controllerMax = 10;
 
 	/*
 	 * Things needed... Being able to select levels
@@ -81,6 +82,7 @@ public class LevelSelectScreen implements com.badlogic.gdx.Screen {
 		hazardButton.draw( batch, camera );
 		testButton.draw( batch, camera );
 		level1Button.draw( batch, camera );
+		dragonButton.draw(batch,camera);
 
 		backButton.draw( batch, camera );
 		batch.end( );
@@ -138,6 +140,8 @@ public class LevelSelectScreen implements com.badlogic.gdx.Screen {
 		hazardButton.setY( centerY - lineHeight );
 		level1Button.setX( centerX - level1Button.getWidth( ) / 2 );
 		level1Button.setY( centerY - lineHeight * 2 );
+		dragonButton.setX( centerX-dragonButton.getWidth()/2 );
+		dragonButton.setY(centerY-lineHeight*3);
 
 		backButton.setX( centerX - backButton.getWidth( ) / 2 );
 		backButton.setY( 20 + backButton.getHeight( ) );
@@ -169,17 +173,14 @@ public class LevelSelectScreen implements com.badlogic.gdx.Screen {
 	 * sets up controller functionality
 	 */
 	private void ControllerSetUp( ) {
+		controllerListener = new MyControllerListener( );
 		if ( Controllers.getControllers( ).size > 0 ) {
-			controllerListener = new MyControllerListener( );
 			controller1 = Controllers.getControllers( ).get( 0 );
 			controller1.addListener( controllerListener );
 		}
 		if ( Controllers.getControllers( ).size > 1 ) {
-			controllerListener = new MyControllerListener( );
 			controller2 = Controllers.getControllers( ).get( 1 );
 			controller2.addListener( controllerListener );
-		} else {
-			controllerListener = new MyControllerListener( );			
 		}
 	}
 	
@@ -197,8 +198,9 @@ public class LevelSelectScreen implements com.badlogic.gdx.Screen {
 				new ScreenSwitchHandler( ScreenType.PLAYTEST ) );
 		gleedButton = new Button( "Gleed Screen", fancyFont,
 				new ScreenSwitchHandler( ScreenType.GLEED ) );
-		level1Button = new Button( "Level 1", fancyFont,
+		level1Button = new Button( "AlphaBot", fancyFont,
 				new ScreenSwitchHandler( ScreenType.LOADING_1 ) );
+		dragonButton = new Button( "Dragon", fancyFont, new ScreenSwitchHandler( ScreenType.DRAGON ) );
 
 		backButton = new Button( "Back", fancyFont, new ScreenSwitchHandler(
 				ScreenType.MAIN_MENU ) );
@@ -210,6 +212,7 @@ public class LevelSelectScreen implements com.badlogic.gdx.Screen {
 		Buttons.add( resurrectButton );
 		Buttons.add( hazardButton );
 		Buttons.add( level1Button );
+		Buttons.add(dragonButton);
 		Buttons.add( backButton );
 
 	}

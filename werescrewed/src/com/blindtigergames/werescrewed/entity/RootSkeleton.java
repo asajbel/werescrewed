@@ -2,11 +2,13 @@ package com.blindtigergames.werescrewed.entity;
 
 import java.util.ArrayList;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 
 public class RootSkeleton extends Skeleton {
 
@@ -16,7 +18,7 @@ public class RootSkeleton extends Skeleton {
 
 	public RootSkeleton( String name, Vector2 positionPix, Texture tex,
 			World world ) {
-		super( name, positionPix, tex, world );
+		super( name, positionPix, tex, world, BodyType.StaticBody );
 		entityType = EntityType.ROOTSKELETON;
 		looseEntity = new ArrayList< Entity >( );
 		skeletonToSetActive = new ArrayList< Skeleton >( );
@@ -113,11 +115,12 @@ public class RootSkeleton extends Skeleton {
 	}
 
 	@Override
-	public void draw( SpriteBatch batch ) {
+	public void draw( SpriteBatch batch, float deltaTime ) {
 		// possible bug: the draw order
 		for ( Entity entity : looseEntity ) {
-			entity.draw( batch );
+			entity.draw( batch, deltaTime );
 		}
-		super.draw( batch );
+		super.draw( batch, deltaTime );
 	}
+
 }

@@ -2,7 +2,7 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry exported="true" kind="lib" path="libs/gdx.jar" sourcepath="/home/kevin/workspace/libgdx">
+	<classpathentry exported="true" kind="lib" path="libs/gdx.jar" sourcepath="libs/gdx-sources.jar">
 		<attributes>
 			<attribute name="javadoc_location" value="file:/Users/stew/Documents/werescrewed/werescrewed/docs/api"/>
 		</attributes>

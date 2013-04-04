@@ -40,18 +40,18 @@ import com.blindtigergames.werescrewed.entity.mover.PuzzleType;
 import com.blindtigergames.werescrewed.entity.mover.RotateByDegree;
 import com.blindtigergames.werescrewed.entity.mover.SlidingMotorMover;
 import com.blindtigergames.werescrewed.entity.mover.puzzle.PuzzlePistonTweenMover;
+import com.blindtigergames.werescrewed.entity.particles.Steam;
+import com.blindtigergames.werescrewed.entity.platforms.Platform;
+import com.blindtigergames.werescrewed.entity.platforms.TiledPlatform;
+import com.blindtigergames.werescrewed.entity.screws.PuzzleScrew;
+import com.blindtigergames.werescrewed.entity.screws.StrippedScrew;
+import com.blindtigergames.werescrewed.entity.screws.StructureScrew;
 import com.blindtigergames.werescrewed.entity.tween.EntityAccessor;
 import com.blindtigergames.werescrewed.entity.tween.PathBuilder;
 import com.blindtigergames.werescrewed.entity.tween.PlatformAccessor;
-import com.blindtigergames.werescrewed.hazard.Hazard;
+import com.blindtigergames.werescrewed.entity.hazard.Hazard;
 import com.blindtigergames.werescrewed.joint.JointFactory;
-import com.blindtigergames.werescrewed.particles.Steam;
-import com.blindtigergames.werescrewed.platforms.Platform;
-import com.blindtigergames.werescrewed.platforms.TiledPlatform;
 import com.blindtigergames.werescrewed.player.Player;
-import com.blindtigergames.werescrewed.screws.PuzzleScrew;
-import com.blindtigergames.werescrewed.screws.StrippedScrew;
-import com.blindtigergames.werescrewed.screws.StructureScrew;
 import com.blindtigergames.werescrewed.util.Util;
 
 public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
@@ -97,10 +97,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		Tween.registerAccessor( Platform.class, new PlatformAccessor( ) );
 		Tween.registerAccessor( Entity.class, new EntityAccessor( ) );
 
-		// entityManager = new EntityManager( );
-		skeleton = new Skeleton( "skeleton", new Vector2( 500, 0 ), null, world );
-		// skeleton.body.setType( BodyType.DynamicBody );
-		//oldRootSkeleton = new Skeleton( "root", Vector2.Zero, null, world );
+		skeleton = new Skeleton( "skeleton", new Vector2( 500, 0 ), null, world, BodyType.KinematicBody );
 
 		platBuilder = new PlatformBuilder( world );
 
@@ -114,19 +111,15 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		contactListener = new MyContactListener( );
 		world.setContactListener( contactListener );
 
-		// Initialize platforms
-		initTiledPlatforms( );
+		// Initialize ground platformbb
+		
 
 
 		player1 = new PlayerBuilder( ).name( "player1" ).world( world )
-				.position( 400.0f, 100f ).buildPlayer( );
+				.position( -700.0f, 100f ).buildPlayer( );
 		player2 = new PlayerBuilder( ).name( "player2" ).world( world )
-				.position( 300f, 100f ).buildPlayer( );
+				.position( -700f, 100f ).buildPlayer( );
 
-		initCheckPoints( );
-
-
-		
 		rootSkeleton = new RootSkeleton( "Root Skeleton", new Vector2( 0, 0 ),
 				null, world );
 
@@ -139,8 +132,44 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		
 		Gdx.app.setLogLevel( Application.LOG_DEBUG );
 
-		connectedRoom();
-		movingSkeleton();
+		boolean stew = false;
+		if ( stew ){
+			stewTest( );
+		}else{
+			initCheckPoints( );
+			initTiledPlatforms( );
+			connectedRoom();
+			movingSkeleton();
+		}
+		//
+	}
+	
+	void stewTest(){
+		ground = platBuilder.position( 0.0f, -75 ).name( "ground" )
+				.dimensions( 200, 4 )
+				// .texture( testTexture )
+				.kinematic( ).oneSided( false ).restitution( 0.0f )
+				.buildTilePlatform( );
+
+		ground.setCategoryMask( Util.KINEMATIC_OBJECTS,
+				Util.CATEGORY_EVERYTHING );
+		ground.body.getFixtureList( ).get( 0 ).getShape( ).setRadius( 0 );
+		skeleton.addKinematicPlatform( ground );
+		
+		Skeleton dynSkel = new SkeletonBuilder( world ).position( 800, 500 ).dynamic( )
+				.name("dynSkele").build( );
+		//dynSkel.quickfixCollisions( );
+		rootSkeleton.addSkeleton(dynSkel);
+		
+		//platforms on dynamic skeleton
+		TiledPlatform plat6 = platBuilder.name( "dynPlat1" ).dynamic( )
+				.position( 600, 500 ).dimensions( 1, 12).oneSided( false )
+				.buildTilePlatform( );
+		plat6.body.setFixedRotation( false );
+		plat6.quickfixCollisions( );
+		dynSkel.addDynamicPlatformFixed( plat6 );
+		
+		
 	}
 
 	//This is how you make a whole room fall, by welding everything together
@@ -197,13 +226,11 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		plat6.quickfixCollisions( );
 		dynSkel2.addDynamicPlatform( plat6 );
 		
-		WeldJointDef s2 = new WeldJointDef();
-		s2.initialize( strScrew.body, plat6.body, plat6.getPosition( ) );
-		world.createJoint( s2 );
+
 		
-//		RevoluteJointDef r2 = new RevoluteJointDef( );
-//		r2.initialize( strScrew.body, plat6.body, plat6.getPosition( ) );
-//		world.createJoint( r2 );
+		RevoluteJointDef r2 = new RevoluteJointDef( );
+		r2.initialize( strScrew.body, plat6.body, plat6.getPosition( ) );
+		world.createJoint( r2 );
 		
 		TiledPlatform plat7 = platBuilder.name( "weld2" ).dynamic( )
 				.position( 800, 300 ).dimensions( 12, 1).oneSided( false )
@@ -270,14 +297,25 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 	}
 	
 	void movingSkeleton(){
-		s =  new Skeleton( "skeleton7", new Vector2( -700, 200 ), null, world );
+		s =  new Skeleton( "skeleton7", new Vector2( -700, 200 ), null, world, BodyType.DynamicBody );
+		
+		TiledPlatform ttt = platBuilder.name( "ttt" ).kinematic( )
+				.position( -700, 700 ).dimensions( 1, 5).oneSided( false )
+				.buildTilePlatform( ); 
+		rootSkeleton.addPlatform( ttt );
 		
 		rootSkeleton.addSkeleton( s );
-//		PathBuilder pb = new PathBuilder();
-//		s.addMover( pb.begin( s ).target( 100, 0, 1 )
-//				.target( 100, 100, 1 )
-//				.target( 100, 0, 1 )
-//				.target( 0, 0, 1 ).build( ), RobotState.IDLE);
+		
+		StructureScrew screw = new StructureScrew( "sdfasdf",
+				new Vector2(-700f, 500f),
+				100, world );
+		screw.addStructureJoint( s );
+		screw.addWeldJoint( ttt );
+		dynSkel2.addScrewForDraw( screw );
+		
+		PathBuilder pb = new PathBuilder();
+		ttt.addMover( pb.begin( ttt ).target( 100, 0, 1 )
+				.target( 0, 0, 1 ).build( ), RobotState.IDLE);
 		
 		TiledPlatform test = platBuilder.name( "movetest" ).kinematic( )
 				.position( -300, 300 ).dimensions( 1, 5).oneSided( false )
@@ -543,8 +581,6 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 
 	}
 
-	
-
 	public void initPulley( ) {
 		TiledPlatform singTile = platBuilder.position( -1200.0f, 400.0f )
 				.dimensions( 1, 1 )
@@ -627,25 +663,25 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 			debugTest = true;
 
 		if ( Gdx.input.isKeyPressed( Input.Keys.Z ) ) {
-			s.translateBy( 0.0f, 0.01f );
+			if(s!=null)s.translateBy( 0.0f, 0.01f );
 //			dynSkel2.body.applyLinearImpulse( new Vector2(0, .1f),
 //					dynSkel2.body.getPosition( ));
 			
 		}
 
 		if ( Gdx.input.isKeyPressed( Input.Keys.X ) ) {
-			s.translateBy( 0.0f, -0.01f );
+			if(s!=null)s.translateBy( 0.0f, -0.01f );
 //			dynSkel2.body.applyLinearImpulse( new Vector2(0, -.1f),
 //					dynSkel2.body.getPosition( ));
 		}
 
 		if ( Gdx.input.isKeyPressed( Input.Keys.C ) ) {
-			s.rotateBy( -0.01f );
+			if(s!=null)s.rotateBy( -0.01f );
 			//dynSkel2.body.applyAngularImpulse(  0.1f ) ;
 		}
 
 		if ( Gdx.input.isKeyPressed( Input.Keys.V ) ) {
-			s.rotateBy( 0.01f );
+			if(s!=null)s.rotateBy( 0.01f );
 			//dynSkel2.body.applyAngularImpulse(  -0.1f ) ;
 		}
 
@@ -654,15 +690,15 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		player1.update( deltaTime );
 		player2.update( deltaTime );
 		rootSkeleton.update( deltaTime );
-		progressManager.update( deltaTime );
+		if(progressManager!=null)progressManager.update( deltaTime );
 		batch.setProjectionMatrix( cam.combined( ) );
 		batch.begin( );
 
 
-		progressManager.draw( batch );
-		rootSkeleton.draw( batch );
-		player1.draw( batch );
-		player2.draw( batch );
+		if(progressManager!=null)progressManager.draw( batch, deltaTime );
+		rootSkeleton.draw( batch, deltaTime );
+		player1.draw( batch, deltaTime );
+		player2.draw( batch, deltaTime );
 
 		batch.end( );
 

@@ -32,16 +32,16 @@ import com.blindtigergames.werescrewed.entity.builders.SkeletonBuilder;
 import com.blindtigergames.werescrewed.entity.mover.IMover;
 import com.blindtigergames.werescrewed.entity.mover.TimelineTweenMover;
 import com.blindtigergames.werescrewed.entity.mover.MoverType;
+import com.blindtigergames.werescrewed.entity.screws.BossScrew;
+import com.blindtigergames.werescrewed.entity.screws.PuzzleScrew;
+import com.blindtigergames.werescrewed.entity.screws.Screw;
+import com.blindtigergames.werescrewed.entity.screws.ScrewType;
+import com.blindtigergames.werescrewed.entity.screws.StrippedScrew;
+import com.blindtigergames.werescrewed.entity.screws.StructureScrew;
 import com.blindtigergames.werescrewed.entity.tween.PathBuilder;
-import com.blindtigergames.werescrewed.platforms.Platform;
-import com.blindtigergames.werescrewed.platforms.TiledPlatform;
-import com.blindtigergames.werescrewed.rope.Rope;
-import com.blindtigergames.werescrewed.screws.BossScrew;
-import com.blindtigergames.werescrewed.screws.PuzzleScrew;
-import com.blindtigergames.werescrewed.screws.Screw;
-import com.blindtigergames.werescrewed.screws.ScrewType;
-import com.blindtigergames.werescrewed.screws.StrippedScrew;
-import com.blindtigergames.werescrewed.screws.StructureScrew;
+import com.blindtigergames.werescrewed.entity.platforms.Platform;
+import com.blindtigergames.werescrewed.entity.platforms.TiledPlatform;
+import com.blindtigergames.werescrewed.entity.rope.Rope;
 import com.blindtigergames.werescrewed.entity.RootSkeleton;
 import com.blindtigergames.werescrewed.entity.Skeleton;
 import com.blindtigergames.werescrewed.eventTrigger.EventTrigger;
@@ -390,12 +390,12 @@ public class LevelFactory {
 	private void constructPlayer(Item item){
 		if(item.name.equals("playerOne")){
 			level.player1 = new PlayerBuilder( ).name( "player1" ).world( level.world )
-					.position( item.pos.add( 200f, 0f ) ).buildPlayer( );
+					.position( item.pos ).buildPlayer( );
 			entities.put("player1", level.player1);
 		} else if(item.name.equals("playerTwo") ){
 			
 			level.player2 = new PlayerBuilder( ).name( "player2" ).world( level.world )
-					.position( item.pos.add( 100f, 0f ) ).buildPlayer( );
+					.position( item.pos ).buildPlayer( );
 			entities.put("player2", level.player2);
 		}
 		
