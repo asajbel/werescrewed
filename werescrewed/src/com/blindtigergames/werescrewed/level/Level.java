@@ -73,8 +73,9 @@ public class Level {
 	public void update( float deltaTime ){
 		camera.update( );
 		
-		player1.update( deltaTime );
-		player2.update( deltaTime );
+		if(player1 != null) player1.update( deltaTime );
+		if(player2 != null) player2.update( deltaTime );
+		
 		root.update( deltaTime );
 		if (progressManager!=null)progressManager.update( deltaTime );
 		
@@ -95,11 +96,11 @@ public class Level {
 		batch.setProjectionMatrix( camera.combined() );
 		batch.enableBlending( );
 		batch.begin();
-		//polySprite.draw( batch );
+		
 		root.draw( batch );
 		if (progressManager!=null)progressManager.draw( batch );
-		player1.draw( batch );
-		player2.draw( batch );
+		if(player1 != null) player1.draw( batch );
+		if(player2 != null) player2.draw( batch );
 		
 		batch.end();
 		

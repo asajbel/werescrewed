@@ -29,9 +29,6 @@ public class Electricity extends Hazard {
 		super( name, pos1 , null, world, 0, 0, isActive );
 		entityType = EntityType.HAZARD;
 		
-		//This is the Vector in between pos1 and pos2.
-		//Vector2 pos = new Vector2 ( ( pos1.x + pos2.x ) / 2, ( pos1.y + pos2.y ) / 2 );
-		
 		this.world = world;
 		this.activeHazard = isActive;
 		
@@ -64,9 +61,6 @@ public class Electricity extends Hazard {
 	}
 	
 	private void setWidthHeight( Vector2 pos1, Vector2 pos2 ) {		
-		//this.width = Math.abs( Math.abs( pos1.x ) - Math.abs( pos2.x ) );
-		//this.height = Math.abs( Math.abs( pos1.y ) - Math.abs( pos2.y ) );
-		
 		this.width = -( pos1.x - pos2.x );
 		this.height = -( pos1.y - pos2.y );
 		

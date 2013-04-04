@@ -16,13 +16,26 @@ class IntroScreen implements com.badlogic.gdx.Screen {
 	private SpriteBatch batch = null;
 	private BitmapFont font = null;
 	static Texture player = WereScrewedGame.manager.get(
-			WereScrewedGame.dirHandle.path( ) + "/common/TilesetTest.png", Texture.class);
+			WereScrewedGame.dirHandle.path( ) + "/common/screw/screw.png", Texture.class);
 
 	Stage stage;
 
 	public IntroScreen( ) {
 		batch = new SpriteBatch( );
 		font = new BitmapFont( );
+		
+		stage = new Stage( );
+		Gdx.input.setInputProcessor( stage );
+
+		Image splashImage = new Image( player );
+		// Image splashImage = new Image(Assets.logoTexture);
+		// splashImage.addAction(Actions.fadeIn( 2f ));
+		splashImage
+				.addAction( Actions.sequence( Actions.fadeOut( 0.001f ),
+						Actions.fadeIn( 2f ),
+						Actions.run( onSplashFinishedRunnable ) ) );
+
+		stage.addActor( splashImage );
 	}
 
 	@Override
@@ -50,18 +63,7 @@ class IntroScreen implements com.badlogic.gdx.Screen {
 	public void show( ) {
 		/* schedule to show main menu screen after 2 seconds */
 		// Timer.schedule(new ScreenSwitchTask(Screen.MAIN_MENU), 2f);
-		stage = new Stage( );
-		Gdx.input.setInputProcessor( stage );
-
-		Image splashImage = new Image( player );
-		// Image splashImage = new Image(Assets.logoTexture);
-		// splashImage.addAction(Actions.fadeIn( 2f ));
-		splashImage
-				.addAction( Actions.sequence( Actions.fadeOut( 0.001f ),
-						Actions.fadeIn( 2f ),
-						Actions.run( onSplashFinishedRunnable ) ) );
-
-		stage.addActor( splashImage );
+		
 	}
 
 	Runnable onSplashFinishedRunnable = new Runnable( ) {
@@ -70,7 +72,7 @@ class IntroScreen implements com.badlogic.gdx.Screen {
 		public void run( ) {
 			// TODO Auto-generated method stub
 			// game.setScreen(new MainMenuScreen(game));
-			ScreenManager.getInstance( ).show( ScreenType.MAIN_MENU );
+			ScreenManager.getInstance( ).show( ScreenType.LEVEL_1 );
 
 		}
 	};
@@ -78,7 +80,7 @@ class IntroScreen implements com.badlogic.gdx.Screen {
 	@Override
 	public void hide( ) {
 		/* dispose intro screen because it won't be needed anymore */
-		ScreenManager.getInstance( ).dispose( ScreenType.INTRO );
+		// ScreenManager.getInstance( ).dispose( ScreenType.INTRO );
 	}
 
 	@Override
@@ -91,8 +93,6 @@ class IntroScreen implements com.badlogic.gdx.Screen {
 
 	@Override
 	public void dispose( ) {
-		font.dispose( );
-		batch.dispose( );
 	}
 
 }

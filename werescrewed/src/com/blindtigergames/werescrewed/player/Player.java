@@ -1,6 +1,7 @@
 package com.blindtigergames.werescrewed.player;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.Controllers;
@@ -64,7 +65,7 @@ public class Player extends Entity {
 	public final static int GRAB_COUNTER_STEPS = 5;
 	public final static Vector2 ANCHOR_BUFFER_SIZE = new Vector2( 300f, 200f );
 	public final static float STEAM_FORCE = .5f;
-	public final static float STEAM_IMPULSE = 0.1f;
+	public final static float STEAM_IMPULSE = 0.2f;
 	public final static float FRICTION_INCREMENT = 0.3f;
 	public final static float FEET_OFFSET_X = 58f * Util.PIXEL_TO_BOX;
 	public final static float FEET_OFFSET_Y = 20f * Util.PIXEL_TO_BOX;
@@ -86,7 +87,7 @@ public class Player extends Entity {
 	int check = 0;
 
 	private PovDirection prevButton;
-	private PlayerInputHandler inputHandler;
+	public PlayerInputHandler inputHandler;
 	private MyControllerListener controllerListener;
 	private PlayerState playerState;
 	private ConcurrentState extraState;
@@ -112,6 +113,7 @@ public class Player extends Entity {
 	private boolean topPlayer = false;
 	private boolean isDead = false;
 	private boolean hitSolidObject;
+	private boolean knockedOff = false;
 	private int screwJumpTimeout = 0;
 	private int headStandTimeout = 0;
 	private int runTimeout = 0;
@@ -231,31 +233,13 @@ public class Player extends Entity {
 	 */
 	public void update( float deltaTime ) {
 		super.update( deltaTime );
+		if ( Gdx.input.isKeyPressed( Keys.G ) )
+			Gdx.app.log( "steamCollide: " + steamCollide, "steamDone: "
+					+ steamDone );
 		// update the hit cloud if it exists
 		hitCloud.sprite.update( deltaTime );
 		if ( name.equals( "player1" ) ) {
-			// int i = 0;
-			// for ( Fixture f : body.getFixtureList( ) ) {
-			// Gdx.app.log( "fixture" + i + " a sensor?", "" + f.isSensor( ) );
-			// i++;
-			// }
-			// Gdx.app.log( "player 1 state", "" + playerState );
-			//
-//			Gdx.app.log(
-//					"player 1 mask bits",
-//					""
-//							+ body.getFixtureList( ).get( 0 ).getFilterData( ).maskBits
-//							+ " is sensor: "
-//							+ body.getFixtureList( ).get( 0 ).isSensor( ) );
-			// playerDirection );
-			// if(contact != null)
-			// System.out.println("contact friction: " + contact.getFriction( )
-			// + "feet friction: " + feet.getFriction( ) );
 
-			// System.out.println( "feet friction: " + feet.getFriction( )
-			// + " feet position: " + feet.getBody( ).getPosition( ) );
-
-			// System.out.println(isGrounded() + " jumpc " + jumpCounter);
 		}
 		if ( kinematicTransform ) {
 			// setPlatformTransform( platformOffset );
@@ -291,7 +275,8 @@ public class Player extends Entity {
 			if ( controller != null ) {
 				updateController( deltaTime );
 			} else {
-				updateKeyboard( deltaTime );
+				if ( inputHandler != null )
+					updateKeyboard( deltaTime );
 			}
 		}
 		// if re-spawning decrement time out
@@ -339,7 +324,10 @@ public class Player extends Entity {
 			}
 			break;
 		case Screwing:
-			if ( mover != null ) {
+			if ( knockedOff ) {
+				removePlayerToScrew( );
+				knockedOff = false;
+			} else if ( mover != null ) {
 				LerpMover lm = ( LerpMover ) mover;
 				if ( !lm.atEnd( ) ) {
 					lm.move( deltaTime, body );
@@ -426,9 +414,9 @@ public class Player extends Entity {
 			if ( !steamDone ) {
 				steamResolution( );
 				steamDone = true;
-			} else
-				steamDone = false;
-		}
+			}
+		} else
+			steamDone = false;
 		terminalVelocityCheck( 15.0f );
 		// the jump doesn't work the first time on dynamic bodies so do it twice
 		if ( playerState == PlayerState.Jumping && isGrounded( ) ) {
@@ -842,7 +830,11 @@ public class Player extends Entity {
 	 * sets the body of some body that the player is hitting
 	 */
 	public void hitSolidObject( Body b ) {
-		if ( screwJumpTimeout == 0 ) {
+		if ( platformBody == null && b != null
+				&& playerState == PlayerState.Screwing ) {
+			knockedOff = true;
+		}
+		else if ( screwJumpTimeout == 0 ) {
 			platformBody = b;
 			if ( playerState == PlayerState.Falling ) {
 				playerState = PlayerState.Standing;
@@ -850,6 +842,7 @@ public class Player extends Entity {
 		}
 		if ( b == null ) {
 			hitSolidObject = false;
+			knockedOff = false;
 		} else {
 			hitSolidObject = true;
 		}
@@ -1859,6 +1852,7 @@ public class Player extends Entity {
 	 *            boolean
 	 */
 	public void setSteamCollide( boolean value ) {
+		System.out.println( "help!" );
 		steamCollide = value;
 	}
 
@@ -1922,5 +1916,25 @@ public class Player extends Entity {
 		rightSensor.setDensity( 0.0f );
 		leftSensor.setDensity( 0.0f );
 		topSensor.setDensity( 0.0f );
+	}
+
+	public Controller getController( ) {
+		return controller;
+	}
+
+	public void setControllerIndex( int i ) {
+		controllerListener = new MyControllerListener( );
+		controller = Controllers.getControllers( ).get( i );
+		controller.addListener( controllerListener );
+	}
+
+	public void setController( Controller c ) {
+		controller = c;
+	}
+
+	public void setInputNull( ) {
+		inputHandler = null;
+		controller = null;
+
 	}
 }
