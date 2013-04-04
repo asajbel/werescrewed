@@ -48,8 +48,8 @@ public class ResurrectScrew extends Screw {
 		screwType = ScrewType.SCREW_RESURRECT;
 		entityType = EntityType.SCREW;
 
-		sprite.setColor( 255f / 255f, 0f / 255f, 0f / 255f, 1.0f );
-
+		sprite.setColor( 255f / 255f, 0f / 255f, 0f / 255f, 0.5f );
+		
 		constructBody( pos );
 		connectScrewToEntity( entity );
 		constructPulley( );
