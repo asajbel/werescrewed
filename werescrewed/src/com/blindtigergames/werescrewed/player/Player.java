@@ -441,8 +441,6 @@ public class Player extends Entity {
 //			hitCloud.draw( batch, deltaTime );
 //		}
 		if (!land_cloud.isComplete( )){
-			Vector2 posPix = getPositionPixel( );
-			land_cloud.setPosition( posPix.x+50, posPix.y );
 			land_cloud.draw( batch, deltaTime );
 		}
 		
@@ -759,6 +757,8 @@ public class Player extends Entity {
 						/ ( float ) MAX_VELOCITY );
 				hitCloud.sprite.reset( );*/
 				land_cloud.start( );
+				Vector2 posPix = getPositionPixel( );
+				land_cloud.setPosition( posPix.x+50, posPix.y );
 			}
 			this.grounded = newVal;
 		}
