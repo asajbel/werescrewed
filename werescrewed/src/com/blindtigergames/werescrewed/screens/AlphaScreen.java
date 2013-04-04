@@ -3,14 +3,17 @@ package com.blindtigergames.werescrewed.screens;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.blindtigergames.werescrewed.WereScrewedGame;
+import com.blindtigergames.werescrewed.entity.Skeleton;
 import com.blindtigergames.werescrewed.entity.builders.PlayerBuilder;
 import com.blindtigergames.werescrewed.input.MyControllerListener;
+import com.blindtigergames.werescrewed.input.PlayerInputHandler;
 import com.blindtigergames.werescrewed.level.LevelFactory;
 import com.blindtigergames.werescrewed.player.Player;
 
@@ -35,6 +38,7 @@ public class AlphaScreen extends Screen {
 	private int screwIndex = 0;
 	
 	private boolean p1LeftHit, p1RightHit, p2LeftHit, p2RightHit;
+	private boolean noControllersAttached;
 
 	public AlphaScreen( ) {
 		super( );
@@ -49,6 +53,8 @@ public class AlphaScreen extends Screen {
 		
 		controllerSetUp( );
 		audience( );
+		
+		Skeleton skel2 = ( Skeleton ) LevelFactory.entities.get( "skeleton2" );
 		
 	}
 
@@ -76,10 +82,24 @@ public class AlphaScreen extends Screen {
 		controller1update();
 		controller2update();
 		
+		//keyboard + one controller, controller becomes player 1, keyboard becomes player2
+		updateKeyboardWithOneControllerAttached();
+		
+		// no controllers
 		if( controller1 == null && controller2 == null){
-			//TODO keyboard selection
+			noControllersAttached = true;
+			if(level.player1 == null){
+				level.player1 = new PlayerBuilder( ).world( level.world )
+				.position( 100f, 100f ).name( "player1" ).buildPlayer( );
+			}
+			if(level.player2 == null){
+				level.player2 = new PlayerBuilder( ).world( level.world )
+				.position( 100f, 100f ).name( "player2" ).buildPlayer( );
+			}
 		}
 
+		
+		
 	}
 	
 	private void updateMusic(){
@@ -138,7 +158,7 @@ public class AlphaScreen extends Screen {
 
 	}
 	
-	private void spawnPlayer( int controllerNum, int index ){
+	private void spawnPlayer( int playerNumber, int index, boolean controllerActive ){
 		
 		PlayerBuilder pb = new PlayerBuilder( ).world( level.world )
 				.position( 100f, 100f );
@@ -157,14 +177,28 @@ public class AlphaScreen extends Screen {
 			pb.name( "player2" );
 			break;
 		}
-		
-		if( controllerNum == 0){
+		//Player 1
+		if( playerNumber == 0 ){
 			level.player1 = pb.buildPlayer( );
-			level.player1.setControllerIndex( 0 );
+			if(controllerActive)
+				level.player1.setControllerIndex( playerNumber );
+			else{
+				level.player1.setController( null );
+			}
 		}
-		else if( controllerNum == 1 ){
+		//Player 2
+		else if( playerNumber == 1 ){
 			level.player2 = pb.buildPlayer( );
-			level.player2.setControllerIndex( 1 );
+			if(controllerActive)
+				level.player2.setControllerIndex( playerNumber );
+			else{
+				level.player2.setController( null );
+				
+				//If there is a controller, but we are spawning a player using keyboard to play
+				// then we want the player to use WASD not IJKL (as player 2)
+				if(!noControllersAttached)
+					level.player2.inputHandler = new PlayerInputHandler("player1");
+			}
 		}
 	}
 	
@@ -177,6 +211,7 @@ public class AlphaScreen extends Screen {
 					player1HitStart = true;
 					screwDraw = true;
 					screwIndex = 0;
+					
 				}
 			}else{
 				if(controllerListener1.leftPressed( )){
@@ -200,10 +235,11 @@ public class AlphaScreen extends Screen {
 				}
 				
 				if( controllerListener1.jumpPressed( )){
-					spawnPlayer( 0, screwIndex % players.size( ) );
+					spawnPlayer( 0, screwIndex % players.size( ), true );
 					screwDraw = false;
 					screwIndex = 0;
 					player1Spawned = true;
+					player1HitStart = false;
 				}
 			}
 		}
@@ -214,7 +250,6 @@ public class AlphaScreen extends Screen {
 			if(!player2HitStart&& !player1HitStart){
 				if(controllerListener2.pausePressed( )){
 					player2HitStart = true;
-					System.out.println( player2HitStart );
 					screwDraw = true;
 					screwIndex = 0;
 				}
@@ -240,16 +275,57 @@ public class AlphaScreen extends Screen {
 				}
 				
 				if( controllerListener2.jumpPressed( )){
-					spawnPlayer( 1, screwIndex % players.size( ) );
+					spawnPlayer( 1, screwIndex % players.size( ), true );
 					screwDraw = false;
 					screwIndex = 0;
 					player2Spawned = true;
+					player2HitStart = false;
 				}
 
 			}
 		}
 	}
 	
-	
+	private void updateKeyboardWithOneControllerAttached(){
+		if(controller1 != null && controller2 == null && !player2Spawned){
+			if(!player1HitStart && !player2HitStart){
+				if(Gdx.input.isKeyPressed( Keys.ENTER )){
+					player2HitStart = true;
+					screwDraw = true;
+					screwIndex = 0;
+				}
+			}else{
+				//Left
+				if(Gdx.input.isKeyPressed( Keys.A )){
+					if(!p2LeftHit){
+						p2LeftHit = true;
+						if(screwIndex == 0){
+							screwIndex = players.size()-1;
+						}else
+							screwIndex--;
+					}
+				}else{
+					p2LeftHit = false;
+				}
+				if(Gdx.input.isKeyPressed( Keys.D )){
+					if(!p2RightHit){
+						p2RightHit = true;
+						screwIndex++;
+					}
+				}else{
+					p2RightHit = false;
+				}
+				
+				if( Gdx.input.isKeyPressed( Keys.SPACE)){
+					spawnPlayer( 1, screwIndex % players.size( ), false );
+					screwDraw = false;
+					screwIndex = 0;
+					player2Spawned = true;
+					player2HitStart = false;
+				}
+
+			}
+		}
+	}
 	
 }

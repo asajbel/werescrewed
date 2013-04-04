@@ -116,9 +116,9 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 
 
 		player1 = new PlayerBuilder( ).name( "player1" ).world( world )
-				.position( 400.0f, 100f ).buildPlayer( );
+				.position( -700.0f, 100f ).buildPlayer( );
 		player2 = new PlayerBuilder( ).name( "player2" ).world( world )
-				.position( 300f, 100f ).buildPlayer( );
+				.position( -700f, 100f ).buildPlayer( );
 
 		rootSkeleton = new RootSkeleton( "Root Skeleton", new Vector2( 0, 0 ),
 				null, world );
@@ -297,14 +297,25 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 	}
 	
 	void movingSkeleton(){
-		s =  new Skeleton( "skeleton7", new Vector2( -700, 200 ), null, world, BodyType.KinematicBody );
+		s =  new Skeleton( "skeleton7", new Vector2( -700, 200 ), null, world, BodyType.DynamicBody );
+		
+		TiledPlatform ttt = platBuilder.name( "ttt" ).kinematic( )
+				.position( -700, 700 ).dimensions( 1, 5).oneSided( false )
+				.buildTilePlatform( ); 
+		rootSkeleton.addPlatform( ttt );
 		
 		rootSkeleton.addSkeleton( s );
-//		PathBuilder pb = new PathBuilder();
-//		s.addMover( pb.begin( s ).target( 100, 0, 1 )
-//				.target( 100, 100, 1 )
-//				.target( 100, 0, 1 )
-//				.target( 0, 0, 1 ).build( ), RobotState.IDLE);
+		
+		StructureScrew screw = new StructureScrew( "sdfasdf",
+				new Vector2(-700f, 500f),
+				100, world );
+		screw.addStructureJoint( s );
+		screw.addWeldJoint( ttt );
+		dynSkel2.addScrewForDraw( screw );
+		
+		PathBuilder pb = new PathBuilder();
+		ttt.addMover( pb.begin( ttt ).target( 100, 0, 1 )
+				.target( 0, 0, 1 ).build( ), RobotState.IDLE);
 		
 		TiledPlatform test = platBuilder.name( "movetest" ).kinematic( )
 				.position( -300, 300 ).dimensions( 1, 5).oneSided( false )
