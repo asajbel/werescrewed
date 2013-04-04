@@ -1,5 +1,6 @@
 package com.blindtigergames.werescrewed.checkpoints;
 
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
@@ -43,11 +44,7 @@ public class CheckPoint extends Entity {
 	 */
 	public CheckPoint( String name, Vector2 pos, Entity entity, World world,
 			ProgressManager pm, String levelToReload ) {
-		super( name, pos,null
-				/*WereScrewedGame.manager.get( null
-												  WereScrewedGame.dirHandle.path
-												  ( ) + "/common/cletter.png"
-												 , Texture.class )*/, null,
+		super( name, pos, WereScrewedGame.manager.get( WereScrewedGame.dirHandle.path( ) + "/common/cletter.png", Texture.class ), null,
 				false );
 		this.world = world;
 		this.progressManager = pm;
@@ -59,10 +56,10 @@ public class CheckPoint extends Entity {
 		checkpointFrameAnimator = new SimpleFrameAnimator( ).speed(0f )
 				.loop( LoopBehavior.STOP ).time( 0.001f ).startFrame( 0 )
 				.maxFrames( atlas.getRegions( ).size+1 );
-		Sprite sprite = new Sprite( atlas, checkpointFrameAnimator );
+		//Sprite sprite = new Sprite( atlas, checkpointFrameAnimator );
 		//sprite.setOrigin( -sprite.getWidth()/2, -sprite.getHeight( )/2 );
-		sprite.setOrigin( 1002, 1002 );
-		changeSprite( sprite );
+		//sprite.setOrigin( 1002, 1002 );
+		//changeSprite( sprite ); //avoid animations with change from Image to Sprite
 		super.offset = new Vector2(sprite.getWidth()/2, sprite.getHeight( )/2);
 		
 		//sprite.setColor( Color.PINK );
@@ -121,9 +118,9 @@ public class CheckPoint extends Entity {
 	@Override
 	public void update( float deltaTime ) {
 		super.update( deltaTime );
-		//if ( !checkpointFrameAnimator.isStopped( ) )
+		// if ( !checkpointFrameAnimator.isStopped( ) )
 		checkpointFrameAnimator.update( deltaTime );
-		//System.out.println( checkpointFrameAnimator.getFrame( ) );
+		// System.out.println( checkpointFrameAnimator.getFrame( ) );
 		// if ( active ) {
 		// if ( body.getAngle( ) >= 90f * Util.DEG_TO_RAD ) {
 		// body.setAngularVelocity( 0.0f );

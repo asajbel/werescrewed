@@ -13,9 +13,9 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.entity.EntityType;
-import com.blindtigergames.werescrewed.entity.Sprite;
 import com.blindtigergames.werescrewed.platforms.Tile;
 import com.blindtigergames.werescrewed.player.Player;
 import com.blindtigergames.werescrewed.util.Util;
@@ -152,7 +152,7 @@ public class Spikes extends Hazard {
 		Tile insub;
 		float offset_x, offset_y;
 		
-		Sprite temp = constructSprite( ( Texture ) WereScrewedGame.manager
+		Image temp = constructSprite( ( Texture ) WereScrewedGame.manager
 				.get( WereScrewedGame.dirHandle + "/common/spikes_01.png" ) );
 		for ( int i = 0; i < width; i++ ) {
 			offset_x = ( i - width / 2 + 1 ) * tileConstant;
@@ -219,7 +219,7 @@ public class Spikes extends Hazard {
 				d.tileSprite.setRotation( MathUtils.radiansToDegrees
 						* body.getAngle( ) );
 			}
-				d.tileSprite.draw( batch );
+				d.tileSprite.draw( batch, 1.0f );
 		}
 	}
 }

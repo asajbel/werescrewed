@@ -6,6 +6,7 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.controllers.PovDirection;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -201,16 +202,16 @@ public class Player extends Entity {
 		AnchorList.getInstance( ).addAnchor( anchor );
 
 		// build the hit cloud entity and animation
-		hitCloud = new Entity( name + "_hitCloud", Vector2.Zero, null, null,
-				false );
-		SimpleFrameAnimator hitCloudAnimator = new SimpleFrameAnimator( )
-				.speed( 1f ).loop( LoopBehavior.STOP ).startFrame( 1 )
-				.maxFrames( 2 ).time( 0.0f );
-		hitCloud.sprite = new Sprite(
-				WereScrewedGame.manager.getTextureAtlas( "hitCloud" ),
-				hitCloudAnimator );
+//		hitCloud = new Entity( name + "_hitCloud", Vector2.Zero, null, null, //avoid animations Sprite to Image change
+//				false );
+//		SimpleFrameAnimator hitCloudAnimator = new SimpleFrameAnimator( ) 
+//				.speed( 1f ).loop( LoopBehavior.STOP ).startFrame( 1 )
+//				.maxFrames( 2 ).time( 0.0f );
+//		hitCloud.sprite = new Sprite(                              
+//				WereScrewedGame.manager.getTextureAtlas( "hitCloud" ),  
+//				hitCloudAnimator );  
 		// set the frame to the last
-		hitCloud.sprite.getAnimator( ).setFrame( 3 );
+		//hitCloud.sprite.getAnimator( ).setFrame( 3 );  
 
 		setFixtures( );
 		maxFriction( );
@@ -235,7 +236,7 @@ public class Player extends Entity {
 		if(Gdx.input.isKeyPressed( Keys.G ))
 		Gdx.app.log( "steamCollide: " + steamCollide, "steamDone: " + steamDone );
 		// update the hit cloud if it exists
-		hitCloud.sprite.update( deltaTime );
+		//hitCloud.sprite.update( deltaTime );  //avoid animations Sprite to Image change
 		if ( name.equals( "player1" ) ) {
 			// int i = 0;
 			// for ( Fixture f : body.getFixtureList( ) ) {
@@ -305,6 +306,7 @@ public class Player extends Entity {
 		// build extra fixture to have new friction
 		updateFootFriction( );
 		// test if player is still moving after timeout
+		if ( sprite != null ) { //Sprite to Image change
 		if ( playerDirection != PlayerDirection.Idle ) {
 			if ( runTimeout == 0 && playerState != PlayerState.Jumping
 					&& playerState != PlayerState.Falling
@@ -323,6 +325,7 @@ public class Player extends Entity {
 					&& extraState != ConcurrentState.ExtraJumping ) {
 				runTimeout--;
 			}
+		}
 		}
 		// switch between states
 		switch ( playerState ) {
@@ -343,16 +346,25 @@ public class Player extends Entity {
 			break;
 		case Screwing:
 			if ( mover != null ) {
+				float width;
+				float height;
+				if ( sprite != null ) {
+					width = sprite.getWidth( );
+					height = sprite.getHeight( );
+				} else {
+					width = 32f;
+					height = 64f;
+				}
 				LerpMover lm = ( LerpMover ) mover;
 				if ( !lm.atEnd( ) ) {
 					lm.move( deltaTime, body );
 				} else {
 					body.setTransform(
 							new Vector2( currentScrew.getPosition( ).x
-									- ( sprite.getWidth( ) / 2.0f )
+									- ( width / 2.0f )
 									* Util.PIXEL_TO_BOX, currentScrew
 									.getPosition( ).y
-									- ( sprite.getHeight( ) / 2.0f )
+									- ( height / 2.0f )
 									* Util.PIXEL_TO_BOX ), 0.0f );
 					RevoluteJointDef revoluteJointDef = new RevoluteJointDef( );
 					revoluteJointDef.initialize( body, currentScrew.body,
@@ -445,9 +457,9 @@ public class Player extends Entity {
 	@Override
 	public void draw( SpriteBatch batch ) {
 		super.draw( batch );
-		if ( hitCloud.sprite.getAnimator( ).getFrame( ) < 3 ) {
-			hitCloud.draw( batch );
-		}
+//		if ( hitCloud.sprite.getAnimator( ).getFrame( ) < 3 ) {  //avoid animations Sprite to Image change
+//			hitCloud.draw( batch );  
+//		}  
 	}
 	
 	/**
@@ -755,11 +767,11 @@ public class Player extends Entity {
 	public void setGrounded( boolean newVal ) {
 		if ( !topPlayer ) {
 			if ( newVal != false && !grounded && otherPlayer == null ) {
-				hitCloud.setPixelPosition( this.getPositionPixel( )
-						.sub( 0, 12f ) );
-				hitCloud.sprite.setColor( 1, 1, 1, body.getLinearVelocity( ).y
-						/ ( float ) MAX_VELOCITY );
-				hitCloud.sprite.reset( );
+//				hitCloud.setPixelPosition( this.getPositionPixel( )  //avoid animations Sprite to Image change
+//						.sub( 0, 12f ) );
+//				hitCloud.sprite.setColor( 1, 1, 1, body.getLinearVelocity( ).y
+//						/ ( float ) MAX_VELOCITY );
+//				hitCloud.sprite.reset( );
 			}
 			this.grounded = newVal;
 		}
@@ -883,20 +895,29 @@ public class Player extends Entity {
 				for ( Fixture f : body.getFixtureList( ) ) {
 					f.setSensor( true );
 				}
+			}				
+			float width;
+			float height;
+			if ( sprite != null ) {
+				width = sprite.getWidth( );
+				height = sprite.getHeight( );
+			} else {
+				width = 32f;
+				height = 64f;
 			}
 			if ( currentScrew.body.getLinearVelocity( ).len( ) < SCREW_ATTACH_SPEED ) {
 				mover = new LerpMover( body.getPosition( ).mul(
 						Util.BOX_TO_PIXEL ), new Vector2(
 						currentScrew.getPosition( ).x * Util.BOX_TO_PIXEL
-								- ( sprite.getWidth( ) / 2.0f ),
+								- ( width / 2.0f ),
 						currentScrew.getPosition( ).y * Util.BOX_TO_PIXEL
-								- ( sprite.getHeight( ) / 2.0f ) ),
+								- ( height / 2.0f ) ),
 						SCREW_ATTACH_SPEED, false, LinearAxis.DIAGONAL, 0 );
 			} else {
 				body.setTransform( new Vector2( currentScrew.getPosition( ).x
-						- ( sprite.getWidth( ) / 2.0f ) * Util.PIXEL_TO_BOX,
+						- ( width / 2.0f ) * Util.PIXEL_TO_BOX,
 						currentScrew.getPosition( ).y
-								- ( sprite.getHeight( ) / 2.0f )
+								- ( height / 2.0f )
 								* Util.PIXEL_TO_BOX ), 0.0f );
 				RevoluteJointDef revoluteJointDef = new RevoluteJointDef( );
 				revoluteJointDef.initialize( body, currentScrew.body,
@@ -1282,6 +1303,7 @@ public class Player extends Entity {
 	 */
 	private boolean isHeadStandPossible( ) {
 		if ( playerState == PlayerState.Falling
+				&& sprite != null //Sprite to Image change
 				&& otherPlayer.getState( ) == PlayerState.Standing
 				&& !otherPlayer.isPlayerDead( ) && headStandTimeout == 0
 				&& otherPlayer.isHeadStandTimedOut( ) && platformBody == null ) {

@@ -184,7 +184,7 @@ public class StructureScrew extends Screw {
 	@Override
 	public void draw( SpriteBatch batch ) {
 		if ( sprite != null ) {
-			sprite.draw( batch );
+			sprite.draw( batch, 1.0f );
 		}
 	}
 

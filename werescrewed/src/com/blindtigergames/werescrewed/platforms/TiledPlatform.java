@@ -3,7 +3,6 @@ package com.blindtigergames.werescrewed.platforms;
 import java.util.Iterator;
 import java.util.Vector;
 
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
@@ -12,6 +11,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.blindtigergames.werescrewed.screws.Screw;
 import com.blindtigergames.werescrewed.util.Util;
 
@@ -103,7 +103,7 @@ public class TiledPlatform extends Platform {
 		}
 		//Gdx.app.log( "TP:"+name+":", doBleed+"" );
 		
-		Sprite temp;
+		Image temp;
 		Tile insub;
 		float offset_x, offset_y;
 		switch ( shape ) {
@@ -239,7 +239,7 @@ public class TiledPlatform extends Platform {
 		}
 	}
 	
-	private void setBleedTile(Sprite temp, float offset_x, float offset_y){
+	private void setBleedTile(Image temp, float offset_x, float offset_y){
 		offset_x += temp.getOriginX( );
 		offset_y += temp.getOriginY( );
 		temp.setOrigin( offset_x, offset_y );
@@ -251,7 +251,7 @@ public class TiledPlatform extends Platform {
 		
 	}
 
-	private Tile setTile( Sprite temp, float offset_x, float offset_y ) {
+	private Tile setTile( Image temp, float offset_x, float offset_y ) {
 		offset_x += temp.getOriginX( );
 		offset_y += temp.getOriginY( );
 		temp.setOrigin( offset_x, offset_y );
@@ -276,7 +276,7 @@ public class TiledPlatform extends Platform {
 					- d.yOffset );
 			d.tileSprite.setRotation( MathUtils.radiansToDegrees
 					* body.getAngle( ) );
-			d.tileSprite.draw( batch );
+			d.tileSprite.draw( batch, 1.0f );
 		}
 		for ( Screw s : screws )
 			s.draw( batch );
@@ -289,7 +289,7 @@ public class TiledPlatform extends Platform {
 						- d.yOffset );
 				d.tileSprite.setRotation( MathUtils.radiansToDegrees
 						* body.getAngle( ) );
-				d.tileSprite.draw( batch );
+				d.tileSprite.draw( batch, 1.0f );
 			}
 		}
 		//drawOrigin( batch );

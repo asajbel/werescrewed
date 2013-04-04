@@ -126,7 +126,7 @@ public class StrippedScrew extends Screw {
 		this.sprite.setRotation(  MathUtils.radiansToDegrees
 				* body.getAngle( ) );
 		
-		this.sprite.draw( batch );
+		this.sprite.draw( batch, 1.0f );
 	}
 	
 

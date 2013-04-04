@@ -5,14 +5,14 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
 import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.entity.Entity;
-import com.blindtigergames.werescrewed.entity.Sprite;
+import com.blindtigergames.werescrewed.entity.Image;
 import com.blindtigergames.werescrewed.util.Util;
 
 public class Link extends Entity {
@@ -26,7 +26,7 @@ public class Link extends Entity {
 		this.height = widthHeight.y;
 
 		constructBody( pos );
-		Sprite temp = constructSprite( ( Texture ) WereScrewedGame.manager
+		Image temp = constructSprite( ( Texture ) WereScrewedGame.manager
 				.get( WereScrewedGame.dirHandle + "/common/chainlink.png" ) );
 		this.xOffset = (temp.getWidth( )/2);//+this.width/2;
 		this.yOffset = (temp.getHeight( )/2);//+this.height/2;
@@ -85,7 +85,7 @@ public class Link extends Entity {
 		this.sprite.setRotation(  MathUtils.radiansToDegrees
 				* body.getAngle( ) );
 		
-		this.sprite.draw( batch );
+		this.sprite.draw( batch, 1.0f );
 	}
 	
 }

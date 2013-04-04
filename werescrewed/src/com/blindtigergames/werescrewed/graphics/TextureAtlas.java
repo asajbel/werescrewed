@@ -42,6 +42,7 @@ import com.badlogic.gdx.graphics.Texture.TextureWrap;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.GdxRuntimeException;
@@ -445,8 +446,8 @@ public class TextureAtlas implements Disposable {
 	 * 
 	 * @see #createSprite(String)
 	 */
-	public Array< Sprite > createSprites( ) {
-		Array< Sprite > sprites = new Array< Sprite >( regions.size );
+	public Array< Image > createSprites( ) {
+		Array< Image > sprites = new Array< Image >( regions.size );
 		for ( int i = 0, n = regions.size; i < n; i++ )
 			sprites.add( newSprite( regions.get( i ) ) );
 		return sprites;
@@ -462,7 +463,7 @@ public class TextureAtlas implements Disposable {
 	 * 
 	 * @return The sprite, or null.
 	 */
-	public Sprite createSprite( String name ) {
+	public Image createSprite( String name ) {
 		for ( int i = 0, n = regions.size; i < n; i++ )
 			if ( regions.get( i ).name.equals( name ) )
 				return newSprite( regions.get( i ) );
@@ -478,7 +479,7 @@ public class TextureAtlas implements Disposable {
 	 * @return The sprite, or null.
 	 * @see #createSprite(String)
 	 */
-	public Sprite createSprite( String name, int index ) {
+	public Image createSprite( String name, int index ) {
 		for ( int i = 0, n = regions.size; i < n; i++ ) {
 			AtlasRegion region = regions.get( i );
 			if ( !region.name.equals( name ) )
@@ -498,8 +499,8 @@ public class TextureAtlas implements Disposable {
 	 * 
 	 * @see #createSprite(String)
 	 */
-	public Array< Sprite > createSprites( String name ) {
-		Array< Sprite > matched = new Array< Sprite >( );
+	public Array< Image > createSprites( String name ) {
+		Array< Image > matched = new Array< Image >( );
 		for ( int i = 0, n = regions.size; i < n; i++ ) {
 			AtlasRegion region = regions.get( i );
 			if ( region.name.equals( name ) )
@@ -508,18 +509,19 @@ public class TextureAtlas implements Disposable {
 		return matched;
 	}
 
-	private Sprite newSprite( AtlasRegion region ) {
+	private Image newSprite( AtlasRegion region ) {
 		if ( region.packedWidth == region.originalWidth
 				&& region.packedHeight == region.originalHeight ) {
 			if ( region.rotate ) {
-				Sprite sprite = new Sprite( region );
+				Image sprite = new Image( region );
 				sprite.setOrigin( collideOffsetX, collideOffsetY );
 				sprite.setBounds( 0, 0, region.getRegionHeight( ),
 						region.getRegionWidth( ) );
-				sprite.rotate90( true );
+				//sprite.rotate90( true ); //Sprite to Image
+				sprite.setRotation( 90 );
 				return sprite;
 			}
-			Sprite sprite = new Sprite( region );
+			Image sprite = new Image( region );
 			sprite.setOrigin( collideOffsetX, collideOffsetY );
 			return sprite;
 		}
@@ -739,7 +741,7 @@ public class TextureAtlas implements Disposable {
 	 * packed, is automatically positioned as if whitespace had not been
 	 * stripped.
 	 */
-	static public class AtlasSprite extends Sprite {
+	static public class AtlasSprite extends Image {
 		final AtlasRegion region;
 		float originalOffsetX, originalOffsetY;
 
@@ -747,12 +749,13 @@ public class TextureAtlas implements Disposable {
 			this.region = new AtlasRegion( region );
 			originalOffsetX = region.offsetX;
 			originalOffsetY = region.offsetY;
-			setRegion( region );
+			//setRegion( region ); //Sprite to Image
 			setOrigin( region.originalWidth / 2f, region.originalHeight / 2f );
 			int width = region.getRegionWidth( );
 			int height = region.getRegionHeight( );
 			if ( region.rotate ) {
-				super.rotate90( true );
+				//super.rotate90( true ); //Sprite to Image
+				super.setRotation( 90 );
 				super.setBounds( region.offsetX, region.offsetY, height, width );
 			} else
 				super.setBounds( region.offsetX, region.offsetY, width, height );
@@ -763,7 +766,7 @@ public class TextureAtlas implements Disposable {
 			region = sprite.region;
 			this.originalOffsetX = sprite.originalOffsetX;
 			this.originalOffsetY = sprite.originalOffsetY;
-			set( sprite );
+			//set( sprite ); //Sprite to Image
 		}
 
 		public void setPosition( float x, float y ) {
@@ -794,7 +797,13 @@ public class TextureAtlas implements Disposable {
 		public void flip( boolean x, boolean y ) {
 			// Flip texture.
 
-			super.flip( x, y );
+			//super.flip( x, y ); //Sprite to Image
+			if ( x ) {
+				super.setScaleX( super.getScaleX( ) * -1 );
+			}
+			if ( y ) {
+				super.setScaleX( super.getScaleY( ) * -1 );
+			}
 
 			float oldOriginX = getOriginX( );
 			float oldOriginY = getOriginY( );
@@ -819,8 +828,9 @@ public class TextureAtlas implements Disposable {
 
 		public void rotate90( boolean clockwise ) {
 			// Rotate texture.
-			super.rotate90( clockwise );
-
+			//super.rotate90( clockwise ); //Sprite to Image
+			super.setRotation( 90 );
+			
 			float oldOriginX = getOriginX( );
 			float oldOriginY = getOriginY( );
 			float oldOffsetX = region.offsetX;

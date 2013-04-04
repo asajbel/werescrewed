@@ -40,7 +40,7 @@ public class Entity implements GleedLoadable {
 
 	public String name;
 	public EntityDef type;
-	public Sprite sprite;
+	public Image sprite;
 	public Vector2 offset;
 	public Vector2 bodyOffset;
 	public Body body;
@@ -85,7 +85,8 @@ public class Entity implements GleedLoadable {
 		this.type = type;
 		this.world = world;
 		if (type.atlases.size > 0 ){
-			this.sprite = constructSprite( type.atlases.get( 0 ) );
+			//this.sprite = constructSprite( type.atlases.get( 0 ) ); for now avoid animations
+			this.sprite = constructSprite( texture );
 		} else {
 			this.sprite = constructSprite( texture );
 		}
@@ -109,7 +110,8 @@ public class Entity implements GleedLoadable {
 		this.type = type;
 		this.world = world;
 		if (type.atlases.size > 0 ){
-			this.sprite = constructSprite( type.atlases.get( 0 ) );
+			//this.sprite = constructSprite( type.atlases.get( 0 ) ); for now avoid animations
+			this.sprite = constructSprite( texture );
 		} else {
 			this.sprite = constructSprite( texture );
 		}
@@ -249,7 +251,7 @@ public class Entity implements GleedLoadable {
 
 	public void draw( SpriteBatch batch ) {
 		if ( sprite != null && visible && !removeNextStep ) {
-			sprite.draw( batch );
+			sprite.draw( batch, 1.0f );
 		}
 		// drawOrigin(batch);
 	}
@@ -320,7 +322,7 @@ public class Entity implements GleedLoadable {
 				sprite.setPosition( bodyPos.x - offset.x, bodyPos.y - offset.y );
 				sprite.setRotation( MathUtils.radiansToDegrees
 						* body.getAngle( ) );
-				sprite.update( deltaTime );
+				//sprite.update( deltaTime ); images are updated in the stage
 			}
 		}
 	}
@@ -353,8 +355,8 @@ public class Entity implements GleedLoadable {
 	 *            from which a sprite can be generated, or null, if loading
 	 * @return the loaded/generated sprite, or null if neither applies
 	 */
-	protected Sprite constructSprite( Texture texture ) {
-		Sprite sprite;
+	protected Image constructSprite( Texture texture ) {
+		Image sprite;
 		Vector2 origin;
 		boolean loadTex;
 		boolean nullTex;
@@ -375,7 +377,7 @@ public class Entity implements GleedLoadable {
 		}
 
 		// Either the passed in or loaded texture defines a new Sprite
-		sprite = new Sprite( texture );
+		sprite = new Image( texture );
 
 		if ( loadTex ) {
 			// Definitions for loaded sprites
@@ -391,6 +393,8 @@ public class Entity implements GleedLoadable {
 			this.offset.set( sprite.getWidth( ) / 2, sprite.getHeight( ) / 2 );
 		}
 		sprite.setOrigin( origin.x, origin.y );
+		sprite.setWidth( texture.getWidth( ) );
+		sprite.setHeight( texture.getHeight( ) );
 		return sprite;
 	}
 	/**
@@ -401,8 +405,8 @@ public class Entity implements GleedLoadable {
 	 *            from which a sprite can be generated, or null, if loading
 	 * @return the loaded/generated sprite, or null if neither applies
 	 */
-	protected Sprite constructSprite( TextureAtlas atlas ) {
-		Sprite sprite;
+	protected Image constructSprite( TextureAtlas atlas ) {
+		Image sprite;
 		Vector2 origin;
 
 		IAnimator anim;
@@ -412,10 +416,12 @@ public class Entity implements GleedLoadable {
 		} else {
 			anim = new SimpleFrameAnimator().maxFrames( type.atlases.get( 0 ).getRegions( ).size );
 		}
-		sprite = new Sprite(type.atlases, anim);
+		sprite = new Image(type.atlases, anim);
 		sprite.setScale( type.spriteScale.x, type.spriteScale.y );
 		origin = new Vector2( type.origin.x, type.origin.y );		
 		sprite.setOrigin( origin.x, origin.y );
+		sprite.setWidth( 32f );
+		sprite.setHeight( 64f );
 		return sprite;
 	}
 	public void Move( Vector2 vector ) {
@@ -634,7 +640,7 @@ public class Entity implements GleedLoadable {
 	 * @param newSprite
 	 *            The new sprite that will be displayed on top of the entity
 	 */
-	public void changeSprite( Sprite newSprite ) {
+	public void changeSprite( Image newSprite ) {
 		this.sprite = newSprite;
 	}
 

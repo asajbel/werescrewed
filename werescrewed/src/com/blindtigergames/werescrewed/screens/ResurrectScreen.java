@@ -24,9 +24,9 @@ import com.blindtigergames.werescrewed.checkpoints.ProgressManager;
 import com.blindtigergames.werescrewed.collisionManager.MyContactListener;
 import com.blindtigergames.werescrewed.debug.SBox2DDebugRenderer;
 import com.blindtigergames.werescrewed.entity.Entity;
+import com.blindtigergames.werescrewed.entity.Image;
 import com.blindtigergames.werescrewed.entity.RootSkeleton;
 import com.blindtigergames.werescrewed.entity.Skeleton;
-import com.blindtigergames.werescrewed.entity.Sprite;
 import com.blindtigergames.werescrewed.entity.builders.PlatformBuilder;
 import com.blindtigergames.werescrewed.entity.builders.PlayerBuilder;
 import com.blindtigergames.werescrewed.entity.mover.ParallaxMover;
@@ -305,10 +305,10 @@ public class ResurrectScreen implements com.badlogic.gdx.Screen {
 
 		if ( Gdx.input.isKeyPressed( Keys.SPACE ) ) {
 			if ( !switchBg ) {
-				bgRootSkel.getLooseEntity( "bg_2_0" ).changeSprite( new Sprite ( WereScrewedGame.manager.get( WereScrewedGame.dirHandle
+				bgRootSkel.getLooseEntity( "bg_2_0" ).changeSprite( new Image ( WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 						+ "/common/parallax_layer3_0.png",
 						Texture.class ) ) );
-				bgRootSkel.getLooseEntity( "bg_2_1" ).changeSprite( new Sprite ( WereScrewedGame.manager.get( WereScrewedGame.dirHandle
+				bgRootSkel.getLooseEntity( "bg_2_1" ).changeSprite( new Image ( WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 						+ "/common/parallax_layer3_1.png",
 						Texture.class ) ) );
 				switchBg = true;
@@ -316,10 +316,10 @@ public class ResurrectScreen implements com.badlogic.gdx.Screen {
 		}
 		if ( Gdx.input.isKeyPressed( Keys.B ) ) {
 			if ( switchBg ) {
-				bgRootSkel.getLooseEntity( "bg_2_0" ).changeSprite( new Sprite ( WereScrewedGame.manager.get( WereScrewedGame.dirHandle
+				bgRootSkel.getLooseEntity( "bg_2_0" ).changeSprite( new Image ( WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 						+ "/common/parallax_layer2_0.png",
 						Texture.class ) ) );
-				bgRootSkel.getLooseEntity( "bg_2_1" ).changeSprite( new Sprite ( WereScrewedGame.manager.get( WereScrewedGame.dirHandle
+				bgRootSkel.getLooseEntity( "bg_2_1" ).changeSprite( new Image ( WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 						+ "/common/parallax_layer2_1.png",
 						Texture.class ) ) );
 				switchBg = false;

@@ -374,16 +374,19 @@ public class MyContactListener implements ContactListener {
 									|| !player.isHeadStandTimedOut( )
 									|| !player2.isHeadStandTimedOut( )
 									|| ( player.getState( ) == PlayerState.Falling
+											&& player2.sprite != null //Sprite to Image change
 											&& player2.getState( ) != PlayerState.Standing && player
 											.getPositionPixel( ).y < player2
 											.getPositionPixel( ).y
-											+ player2.sprite.getHeight( )
+											+ player2.sprite.getHeight( ) 
 											/ 1.5f )
 									|| ( player2.getState( ) == PlayerState.Falling
+										&& player.sprite != null //Sprite to Image change
 											&& player.getState( ) != PlayerState.Standing && player2
 											.getPositionPixel( ).y < player
 											.getPositionPixel( ).y
-											+ player.sprite.getHeight( ) / 1.5f ) ) {
+											+ player.sprite.getHeight( ) / 1.5f 
+											) ) {
 								contact.setEnabled( false );
 							}
 							break;

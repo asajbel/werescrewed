@@ -191,11 +191,17 @@ public class ProgressManager {
 
 			} else if ( !playerMover ) {
 				player.setActive( true );
+				float width; //Sprite to Image change
+				if ( player.sprite != null ) {
+					width = player.sprite.getWidth( );
+				} else {
+					width = 32f;
+				}
 				player.setMoverAtCurrentState( new LerpMover( player
 						.getPositionPixel( ).sub(
-								player.sprite.getWidth( ) / 32.0f, 0 ), player
+								width / 32.0f, 0 ), player
 						.getPositionPixel( ).add(
-								player.sprite.getWidth( ) / 32.0f, 0 ), .1f,
+								width / 32.0f, 0 ), .1f,
 						true, LinearAxis.HORIZONTAL, 0 ) );
 				playerMover = true;
 			} else {

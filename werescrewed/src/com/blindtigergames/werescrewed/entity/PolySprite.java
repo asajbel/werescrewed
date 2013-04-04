@@ -26,7 +26,7 @@ import com.blindtigergames.werescrewed.WereScrewedGame;
  * @author Stew & a little bit Kevin :D
  * 
  */
-public class PolySprite extends Sprite {
+public class PolySprite extends Image {
 
 	protected Mesh mesh;
 	protected ShaderProgram shader;
@@ -103,7 +103,7 @@ public class PolySprite extends Sprite {
 
 	/** Sets the x position relative to the current position where the sprite will be drawn. If origin, rotation, or scale are
 	 * changed, it is slightly more efficient to translate after those operations. */
-	@Override
+	//@Override this method doesn't exist for type Image only type Sprite
 	public void translateX (float xAmount) {
 		//this.x += xAmount;
 		translate( xAmount, 0 );
@@ -111,7 +111,7 @@ public class PolySprite extends Sprite {
 
 	/** Sets the y position relative to the current position where the sprite will be drawn. If origin, rotation, or scale are
 	 * changed, it is slightly more efficient to translate after those operations. */
-	@Override
+	//@Override this method doesn't exist for type Image only type Sprite
 	public void translateY (float yAmount) {
 		//y += yAmount;
 
@@ -151,7 +151,7 @@ public class PolySprite extends Sprite {
 		}
 	}
 
-	@Override
+	//@Override this method doesn't exist for type Image only type Sprite
 	public void setColor (float color) {
 		float[] vertices = this.verts;
 		for ( int i = 0; i < numVerts; i++ ) {
@@ -189,7 +189,7 @@ public class PolySprite extends Sprite {
 		mesh.setVertices( verts );
 	}
 	
-	@Override
+	//@Override this method doesn't exist for type Image only type Sprite
 	public Rectangle getBoundingRectangle () {
 
 		bounds.x = x;
@@ -198,7 +198,7 @@ public class PolySprite extends Sprite {
 		return bounds;
 	}
 	
-	@Override
+	//@Override this method doesn't exist for type Image only type Sprite
 	public void draw( SpriteBatch batch ) {
 		// this should be called in render()
 		if ( mesh == null )
@@ -214,8 +214,8 @@ public class PolySprite extends Sprite {
 			gl.glActiveTexture( GL20.GL_TEXTURE0 );
 			
 			//setWrap also binds the texture.
-			this.getTexture( ).setWrap( Texture.TextureWrap.Repeat,
-					Texture.TextureWrap.Repeat );
+			//this.getTexture( ).setWrap( Texture.TextureWrap.Repeat, //need to add this functionality to Image
+			//		Texture.TextureWrap.Repeat ); //this doesn't exist in Image
 			//camera * modelview
 			mesh.render( shader, GL20.GL_TRIANGLES );
 		}
@@ -304,8 +304,8 @@ public class PolySprite extends Sprite {
 	 */
 	private float[ ] createTexCoords( Array< Vector2 > verts ) {
 		float[ ] texCoords = new float[ verts.size * 2 ];
-		float texWidth = bounds.width / getTexture( ).getWidth( );
-		float texHeight = bounds.height / getTexture( ).getHeight( );
+		float texWidth = bounds.width / this.getImageWidth( ); // getTexture( ).getWidth( ); // change from Sprite to Image
+		float texHeight = bounds.height / this.getImageHeight( ); // getTexture( ).getHeight( ); // change from Sprite to Image
 		float halfTexWidth = texWidth / 2;
 		float halfTexHeight = texHeight / 2;
 
