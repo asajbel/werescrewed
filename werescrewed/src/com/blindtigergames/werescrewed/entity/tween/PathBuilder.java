@@ -6,7 +6,7 @@ import aurelienribon.tweenengine.TweenEquation;
 import aurelienribon.tweenengine.TweenEquations;
 
 import com.blindtigergames.werescrewed.entity.mover.TimelineTweenMover;
-import com.blindtigergames.werescrewed.platforms.Platform;
+import com.blindtigergames.werescrewed.entity.platforms.Platform;
 
 /**
  * Builds simple paths for platforms to move on. Use pixels for positions and

@@ -2,8 +2,8 @@ package com.blindtigergames.werescrewed.entity.mover;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
-import com.blindtigergames.werescrewed.platforms.Platform;
-import com.blindtigergames.werescrewed.screws.PuzzleScrew;
+import com.blindtigergames.werescrewed.entity.platforms.Platform;
+import com.blindtigergames.werescrewed.entity.screws.PuzzleScrew;
 import com.blindtigergames.werescrewed.util.Util;
 
 public class ParallaxMover implements IMover {

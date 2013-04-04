@@ -5,8 +5,8 @@ import java.util.Map;
 
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.mover.IMover;
-import com.blindtigergames.werescrewed.platforms.Platform;
-import com.blindtigergames.werescrewed.screws.PuzzleScrew;
+import com.blindtigergames.werescrewed.entity.platforms.Platform;
+import com.blindtigergames.werescrewed.entity.screws.PuzzleScrew;
 
 public class PuzzleManager {
 

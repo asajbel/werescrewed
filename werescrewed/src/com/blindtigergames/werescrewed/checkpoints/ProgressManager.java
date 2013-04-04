@@ -10,10 +10,10 @@ import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.builders.ScrewBuilder;
 import com.blindtigergames.werescrewed.entity.mover.LerpMover;
 import com.blindtigergames.werescrewed.entity.mover.LinearAxis;
+import com.blindtigergames.werescrewed.entity.screws.ResurrectScrew;
+import com.blindtigergames.werescrewed.entity.screws.ScrewType;
 import com.blindtigergames.werescrewed.player.Player;
 import com.blindtigergames.werescrewed.player.Player.PlayerState;
-import com.blindtigergames.werescrewed.screws.ResurrectScrew;
-import com.blindtigergames.werescrewed.screws.ScrewType;
 
 /**
  * handles all of the progress through checkpoints also handles re-spawning with
@@ -122,12 +122,12 @@ public class ProgressManager {
 	 * 
 	 * @param batch
 	 */
-	public void draw( SpriteBatch batch ) {
+	public void draw( SpriteBatch batch, float deltaTime) {
 		for ( CheckPoint c : checkPoints ) {
-			c.draw( batch );
+			c.draw( batch, deltaTime );
 		}
 		if ( resurrectScrew != null ) {
-			resurrectScrew.draw( batch );
+			resurrectScrew.draw( batch, deltaTime );
 		}
 	}
 

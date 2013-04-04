@@ -375,8 +375,8 @@
                 </Item>
                 <Item xsi:type="TextureItem" Name="playerOne" Visible="true">
                     <Position>
-                        <X>1952</X>
-                        <Y>-1808</Y>
+                        <X>1984</X>
+                        <Y>-1872</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -406,8 +406,8 @@
                 </Item>
                 <Item xsi:type="TextureItem" Name="playerTwo" Visible="true">
                     <Position>
-                        <X>2080</X>
-                        <Y>-1808</Y>
+                        <X>2112</X>
+                        <Y>-1872</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">

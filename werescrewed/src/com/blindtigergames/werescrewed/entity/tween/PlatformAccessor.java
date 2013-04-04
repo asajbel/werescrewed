@@ -3,7 +3,7 @@ package com.blindtigergames.werescrewed.entity.tween;
 import aurelienribon.tweenengine.TweenAccessor;
 
 import com.blindtigergames.werescrewed.entity.Entity;
-import com.blindtigergames.werescrewed.platforms.Platform;
+import com.blindtigergames.werescrewed.entity.platforms.Platform;
 
 /*******************************************************************************
  * Platform accessor for interfacing with the Universal tween engine.

@@ -6,8 +6,8 @@ import aurelienribon.tweenengine.Tween;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.physics.box2d.Body;
-import com.blindtigergames.werescrewed.platforms.Platform;
-import com.blindtigergames.werescrewed.screws.PuzzleScrew;
+import com.blindtigergames.werescrewed.entity.platforms.Platform;
+import com.blindtigergames.werescrewed.entity.screws.PuzzleScrew;
 
 /**
  * General purpose mover for building an arbitrary path.

@@ -59,7 +59,7 @@ public class Screen implements com.badlogic.gdx.Screen {
 		}
 		if (level != null){
 			level.update( delta );
-			level.draw( batch, debugRenderer );
+			level.draw( batch, debugRenderer, delta );
 			
 			@SuppressWarnings( "unused" )
 			int FPS = logger.getFPS( );
@@ -70,7 +70,6 @@ public class Screen implements com.badlogic.gdx.Screen {
 				//debug_font.draw(batch, "ALPHA BUILD", -Gdx.graphics.getWidth( )/2, Gdx.graphics.getHeight( )/2);
 			}
 			batch.end( );
-			
 		}
 		
 		if ( Gdx.input.isKeyPressed( Input.Keys.ESCAPE ) ) {

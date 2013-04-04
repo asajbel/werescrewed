@@ -4,9 +4,9 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.World;
 import com.blindtigergames.werescrewed.WereScrewedGame;
-import com.blindtigergames.werescrewed.platforms.Platform;
-import com.blindtigergames.werescrewed.platforms.PlatformType;
-import com.blindtigergames.werescrewed.platforms.TiledPlatform;
+import com.blindtigergames.werescrewed.entity.platforms.Platform;
+import com.blindtigergames.werescrewed.entity.platforms.PlatformType;
+import com.blindtigergames.werescrewed.entity.platforms.TiledPlatform;
 import com.blindtigergames.werescrewed.util.ArrayHash;
 
 /**

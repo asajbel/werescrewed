@@ -12,12 +12,12 @@ import com.blindtigergames.werescrewed.entity.builders.PlatformBuilder;
 import com.blindtigergames.werescrewed.entity.mover.PuzzleType;
 import com.blindtigergames.werescrewed.entity.mover.RotateTweenMover;
 import com.blindtigergames.werescrewed.entity.mover.puzzle.PuzzleRotateTweenMover;
+import com.blindtigergames.werescrewed.entity.particles.Steam;
+import com.blindtigergames.werescrewed.entity.platforms.Platform;
+import com.blindtigergames.werescrewed.entity.screws.PuzzleScrew;
 import com.blindtigergames.werescrewed.eventTrigger.EventTrigger;
-import com.blindtigergames.werescrewed.hazard.Fire;
+import com.blindtigergames.werescrewed.entity.hazard.Fire;
 import com.blindtigergames.werescrewed.level.LevelFactory;
-import com.blindtigergames.werescrewed.particles.Steam;
-import com.blindtigergames.werescrewed.platforms.Platform;
-import com.blindtigergames.werescrewed.screws.PuzzleScrew;
 import com.blindtigergames.werescrewed.util.Util;
 
 public class GleedTestScreen extends Screen {
@@ -74,18 +74,19 @@ public class GleedTestScreen extends Screen {
 		revoluteJointDef.initialize( fallingGear1.body, skel1.body,
 				fallingGear1.body.getWorldCenter( ) );
 		revoluteJointDef.enableMotor = false;
-		fg1 = ( RevoluteJoint ) level.world.createJoint( revoluteJointDef );
-
-		f1 = new Fire( "Fire1", new Vector2( 600f, 1850.0f ), level.world,
-				true, 15, 60 );
-
-		f2 = new Fire( "Fire1", new Vector2( 900f, 1850.0f ), level.world,
-				true, 15, 60 );
+		fg1 = ( RevoluteJoint ) level.world
+				.createJoint( revoluteJointDef );
+		
+		f1 = new Fire( "Fire1", new Vector2( 600f, 1850.0f ), 
+				15, 60, level.world, true);
+		
+		f2 = new Fire( "Fire1", new Vector2( 900f, 1850.0f ), 
+				15, 60, level.world, true );
 		f2.flip( );
-
-		f3 = new Fire( "Fire1", new Vector2( 1200f, 1850.0f ), level.world,
-				true, 15, 60 );
-
+		
+		f3 = new Fire( "Fire1", new Vector2( 1200f, 1850.0f ), 
+				15, 60, level.world, true );
+		
 		et = ( EventTrigger ) LevelFactory.entities.get( "et1" );
 		// StructureScrew ss = ( StructureScrew ) LevelFactory.entities.get(
 		// "structurescrew1" );
@@ -177,7 +178,7 @@ public class GleedTestScreen extends Screen {
 		batch.begin( );
 		testSteam.draw( batch, deltaTime );
 		steam2.draw( batch, deltaTime );
-		fallingGear1.draw( batch );
+		fallingGear1.draw( batch, deltaTime );
 		f1.draw( batch, deltaTime );
 		f2.draw( batch, deltaTime );
 		f3.draw( batch, deltaTime );
