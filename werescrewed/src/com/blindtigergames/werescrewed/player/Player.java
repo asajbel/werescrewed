@@ -15,6 +15,7 @@ import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.Filter;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.JointEdge;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJoint;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
@@ -429,7 +430,7 @@ public class Player extends Entity {
 	 */
 	@Override
 	public void draw( SpriteBatch batch, float deltaTime ) {
-		super.draw( batch,  deltaTime );
+		super.draw( batch, deltaTime );
 		if ( hitCloud.sprite.getAnimator( ).getFrame( ) < 3 ) {
 			hitCloud.draw( batch, deltaTime );
 		}
@@ -833,16 +834,17 @@ public class Player extends Entity {
 		if ( platformBody == null && b != null
 				&& playerState == PlayerState.Screwing ) {
 			knockedOff = true;
-		}
-		else if ( screwJumpTimeout == 0 ) {
-			platformBody = b;
+		} else if ( screwJumpTimeout == 0 ) {
+			if ( b != null || playerState != PlayerState.Screwing ) {
+				platformBody = b;
+			}
 			if ( playerState == PlayerState.Falling ) {
 				playerState = PlayerState.Standing;
 			}
 		}
 		if ( b == null ) {
-			hitSolidObject = false;
 			knockedOff = false;
+			hitSolidObject = false;
 		} else {
 			hitSolidObject = true;
 		}
@@ -898,6 +900,24 @@ public class Player extends Entity {
 			}
 			playerState = PlayerState.Screwing;
 			currentScrew.setPlayerAttached( true );
+			for ( JointEdge je : currentScrew.body.getJointList( ) ) {
+				// if this body is a platform but not a skeleton save the
+				// instance
+				if ( je.joint.getBodyA( ).getUserData( ) instanceof Entity ) {
+					Entity p = ( Entity ) je.joint.getBodyA( ).getUserData( );
+					if ( p.getEntityType( ) == EntityType.PLATFORM ) {
+						platformBody = je.joint.getBodyA( );
+					}
+				}
+				// if this body is a platform but not a skeleton save the
+				// instance
+				if ( je.joint.getBodyB( ).getUserData( ) instanceof Entity ) {
+					Entity p = ( Entity ) je.joint.getBodyB( ).getUserData( );
+					if ( p.getEntityType( ) == EntityType.PLATFORM ) {
+						platformBody = je.joint.getBodyB( );
+					}
+				}
+			}
 			setGrounded( false );
 			if ( Metrics.activated ) {
 				Metrics.addPlayerAttachToScrewPosition( this.getPositionPixel( ) );
@@ -1429,14 +1449,10 @@ public class Player extends Entity {
 			// set the bits of the platform back to everything
 			for ( Fixture f : platformBody.getFixtureList( ) ) {
 				filter = f.getFilterData( );
-				// move platform back to original category
-				if ( platformBody.getType( ) == BodyType.DynamicBody ) {
-					filter.categoryBits = Util.DYNAMIC_OBJECTS;
-				} else {
-					filter.categoryBits = Util.KINEMATIC_OBJECTS;
-				}
-				// platform now collides with everything
-				filter.maskBits = Util.CATEGORY_EVERYTHING;
+				// move platform to sub category
+				filter.categoryBits = Util.CATEGORY_SUBPLATFORM;
+				// platform only doesn't collide with player
+				filter.maskBits = ~Util.CATEGORY_SUBPLAYER;
 				f.setFilterData( filter );
 			}
 			for ( Fixture f : body.getFixtureList( ) ) {
