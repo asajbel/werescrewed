@@ -52,8 +52,6 @@ public class Platform extends Entity {
 										// spawns
 										// at, in pixels
 
-	private Skeleton parentSkeleton; // pointer to parent skele
-
 	private Vector2 originRelativeToSkeleton; // box meters
 	
 
@@ -249,7 +247,7 @@ public class Platform extends Entity {
 		for ( Screw s : screws ) {
 			s.remove( );
 		}
-		getParentSkeleton( ).remove( this );
+		super.remove( );
 	}
 
 	/**
@@ -364,13 +362,7 @@ public class Platform extends Entity {
 		oneSided = false;
 	}
 
-	public Skeleton getParentSkeleton( ) {
-		return parentSkeleton;
-	}
-
-	public void setParentSkeleton( Skeleton parentSkeleton ) {
-		this.parentSkeleton = parentSkeleton;
-	}
+	
 
 	public Vector2 getOriginRelativeToSkeleton( ) {
 		return originRelativeToSkeleton;

@@ -24,6 +24,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Writer;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -31,187 +32,227 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.GdxRuntimeException;
+import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.graphics.TextureAtlas;
 
-/** See <a href="http://www.badlogicgames.com/wordpress/?p=1255">http://www.badlogicgames.com/wordpress/?p=1255</a>
- * @author mzechner */
+/**
+ * See <a href="http://www.badlogicgames.com/wordpress/?p=1255">http://www.
+ * badlogicgames.com/wordpress/?p=1255</a>
+ * 
+ * @author mzechner
+ */
 public class ParticleEffect implements Disposable {
-	private final Array<ParticleEmitter> emitters;
+	private final Array< ParticleEmitter > emitters;
 
-	public ParticleEffect () {
-		emitters = new Array(8);
+	/**
+	 * Load a new particle effect by name. You must have the particle effect in
+	 * /data/particles with a .p extention and the particle image must be in the
+	 * texture atlas called particles.pack and the particle image in the .p file
+	 * should be specified without an extention, by name in the texture atlas
+	 * 
+	 * @param particleEffectName WITHOUT the .p extentions
+	 * @return a new particle effect
+	 * @author stew
+	 */
+	public static ParticleEffect loadEffect( String particleEffectName ) {
+		ParticleEffect effect = new ParticleEffect( );
+		effect.load(
+				Gdx.files.internal( "data/particles/" + particleEffectName
+						+ ".p" ),
+				WereScrewedGame.manager.getAtlas( "particles" ) );
+		return effect;
 	}
 
-	public ParticleEffect (ParticleEffect effect) {
-		emitters = new Array(true, effect.emitters.size);
-		for (int i = 0, n = effect.emitters.size; i < n; i++)
-			emitters.add(new ParticleEmitter(effect.emitters.get(i)));
+	public ParticleEffect( ) {
+		emitters = new Array( 8 );
 	}
 
-	public void start () {
-		for (int i = 0, n = emitters.size; i < n; i++)
-			emitters.get(i).start();
+	public ParticleEffect( ParticleEffect effect ) {
+		emitters = new Array( true, effect.emitters.size );
+		for ( int i = 0, n = effect.emitters.size; i < n; i++ )
+			emitters.add( new ParticleEmitter( effect.emitters.get( i ) ) );
 	}
 
-	public void reset () {
-		for (int i = 0, n = emitters.size; i < n; i++)
-			emitters.get(i).reset();
+	public void start( ) {
+		for ( int i = 0, n = emitters.size; i < n; i++ )
+			emitters.get( i ).start( );
 	}
 
-	public void update (float delta) {
-		for (int i = 0, n = emitters.size; i < n; i++)
-			emitters.get(i).update(delta);
+	public void reset( ) {
+		for ( int i = 0, n = emitters.size; i < n; i++ )
+			emitters.get( i ).reset( );
 	}
 
-	public void draw (SpriteBatch spriteBatch) {
-		for (int i = 0, n = emitters.size; i < n; i++)
-			emitters.get(i).draw(spriteBatch);
+	public void update( float delta ) {
+		for ( int i = 0, n = emitters.size; i < n; i++ )
+			emitters.get( i ).update( delta );
 	}
 
-	public void draw (SpriteBatch spriteBatch, float delta) {
-		for (int i = 0, n = emitters.size; i < n; i++)
-			emitters.get(i).draw(spriteBatch, delta);
+	public void draw( SpriteBatch spriteBatch ) {
+		for ( int i = 0, n = emitters.size; i < n; i++ )
+			emitters.get( i ).draw( spriteBatch );
 	}
 
-	public void allowCompletion () {
-		for (int i = 0, n = emitters.size; i < n; i++)
-			emitters.get(i).allowCompletion();
+	public void draw( SpriteBatch spriteBatch, float delta ) {
+		for ( int i = 0, n = emitters.size; i < n; i++ )
+			emitters.get( i ).draw( spriteBatch, delta );
 	}
 
-	public boolean isComplete () {
-		for (int i = 0, n = emitters.size; i < n; i++) {
-			ParticleEmitter emitter = emitters.get(i);
-			if (!emitter.isComplete()) return false;
+	public void allowCompletion( ) {
+		for ( int i = 0, n = emitters.size; i < n; i++ )
+			emitters.get( i ).allowCompletion( );
+	}
+
+	public boolean isComplete( ) {
+		for ( int i = 0, n = emitters.size; i < n; i++ ) {
+			ParticleEmitter emitter = emitters.get( i );
+			if ( !emitter.isComplete( ) )
+				return false;
 		}
 		return true;
 	}
 
-	public void setDuration (int duration) {
-		for (int i = 0, n = emitters.size; i < n; i++) {
-			ParticleEmitter emitter = emitters.get(i);
-			emitter.setContinuous(false);
+	public void setDuration( int duration ) {
+		for ( int i = 0, n = emitters.size; i < n; i++ ) {
+			ParticleEmitter emitter = emitters.get( i );
+			emitter.setContinuous( false );
 			emitter.duration = duration;
 			emitter.durationTimer = 0;
 		}
 	}
 
-	public void setPosition (float x, float y) {
-		for (int i = 0, n = emitters.size; i < n; i++)
-			emitters.get(i).setPosition(x, y);
+	public void setPosition( float x, float y ) {
+		for ( int i = 0, n = emitters.size; i < n; i++ )
+			emitters.get( i ).setPosition( x, y );
 	}
 
-	public void setFlip (boolean flipX, boolean flipY) {
-		for (int i = 0, n = emitters.size; i < n; i++)
-			emitters.get(i).setFlip(flipX, flipY);
+	public void setFlip( boolean flipX, boolean flipY ) {
+		for ( int i = 0, n = emitters.size; i < n; i++ )
+			emitters.get( i ).setFlip( flipX, flipY );
 	}
 
-	public void flipY () {
-		for (int i = 0, n = emitters.size; i < n; i++)
-			emitters.get(i).flipY();
+	public void flipY( ) {
+		for ( int i = 0, n = emitters.size; i < n; i++ )
+			emitters.get( i ).flipY( );
 	}
 
-	public Array<ParticleEmitter> getEmitters () {
+	public Array< ParticleEmitter > getEmitters( ) {
 		return emitters;
 	}
 
 	/** Returns the emitter with the specified name, or null. */
-	public ParticleEmitter findEmitter (String name) {
-		for (int i = 0, n = emitters.size; i < n; i++) {
-			ParticleEmitter emitter = emitters.get(i);
-			if (emitter.getName().equals(name)) return emitter;
+	public ParticleEmitter findEmitter( String name ) {
+		for ( int i = 0, n = emitters.size; i < n; i++ ) {
+			ParticleEmitter emitter = emitters.get( i );
+			if ( emitter.getName( ).equals( name ) )
+				return emitter;
 		}
 		return null;
 	}
 
-	public void save (File file) {
+	public void save( File file ) {
 		Writer output = null;
 		try {
-			output = new FileWriter(file);
+			output = new FileWriter( file );
 			int index = 0;
-			for (int i = 0, n = emitters.size; i < n; i++) {
-				ParticleEmitter emitter = emitters.get(i);
-				if (index++ > 0) output.write("\n\n");
-				emitter.save(output);
-				output.write("- Image Path -\n");
-				output.write(emitter.getImagePath() + "\n");
+			for ( int i = 0, n = emitters.size; i < n; i++ ) {
+				ParticleEmitter emitter = emitters.get( i );
+				if ( index++ > 0 )
+					output.write( "\n\n" );
+				emitter.save( output );
+				output.write( "- Image Path -\n" );
+				output.write( emitter.getImagePath( ) + "\n" );
 			}
-		} catch (IOException ex) {
-			throw new GdxRuntimeException("Error saving effect: " + file, ex);
+		} catch ( IOException ex ) {
+			throw new GdxRuntimeException( "Error saving effect: " + file, ex );
 		} finally {
 			try {
-				if (output != null) output.close();
-			} catch (IOException ex) {
+				if ( output != null )
+					output.close( );
+			} catch ( IOException ex ) {
 			}
 		}
 	}
 
-	public void load (FileHandle effectFile, FileHandle imagesDir) {
-		loadEmitters(effectFile);
-		loadEmitterImages(imagesDir);
+	public void load( FileHandle effectFile, FileHandle imagesDir ) {
+		loadEmitters( effectFile );
+		loadEmitterImages( imagesDir );
 	}
 
-	public void load (FileHandle effectFile, TextureAtlas atlas) {
-		loadEmitters(effectFile);
-		loadEmitterImages(atlas);
+	public void load( FileHandle effectFile, TextureAtlas atlas ) {
+		loadEmitters( effectFile );
+		loadEmitterImages( atlas );
 	}
 
-	public void loadEmitters (FileHandle effectFile) {
-		InputStream input = effectFile.read();
-		emitters.clear();
+	public void loadEmitters( FileHandle effectFile ) {
+		InputStream input = effectFile.read( );
+		emitters.clear( );
 		BufferedReader reader = null;
 		try {
-			reader = new BufferedReader(new InputStreamReader(input), 512);
-			while (true) {
-				ParticleEmitter emitter = new ParticleEmitter(reader);
-				reader.readLine();
-				emitter.setImagePath(reader.readLine());
-				emitters.add(emitter);
-				if (reader.readLine() == null) break;
-				if (reader.readLine() == null) break;
+			reader = new BufferedReader( new InputStreamReader( input ), 512 );
+			while ( true ) {
+				ParticleEmitter emitter = new ParticleEmitter( reader );
+				reader.readLine( );
+				emitter.setImagePath( reader.readLine( ) );
+				emitters.add( emitter );
+				if ( reader.readLine( ) == null )
+					break;
+				if ( reader.readLine( ) == null )
+					break;
 			}
-		} catch (IOException ex) {
-			throw new GdxRuntimeException("Error loading effect: " + effectFile, ex);
+		} catch ( IOException ex ) {
+			throw new GdxRuntimeException( "Error loading effect: "
+					+ effectFile, ex );
 		} finally {
 			try {
-				if (reader != null) reader.close();
-			} catch (IOException ex) {
+				if ( reader != null )
+					reader.close( );
+			} catch ( IOException ex ) {
 			}
 		}
 	}
 
-	public void loadEmitterImages (TextureAtlas atlas) {
-		for (int i = 0, n = emitters.size; i < n; i++) {
-			ParticleEmitter emitter = emitters.get(i);
-			String imagePath = emitter.getImagePath();
-			if (imagePath == null) continue;
-			String imageName = new File(imagePath.replace('\\', '/')).getName();
-			int lastDotIndex = imageName.lastIndexOf('.');
-			if (lastDotIndex != -1) imageName = imageName.substring(0, lastDotIndex);
-			Sprite sprite = atlas.createSprite(imageName);
-			if (sprite == null) throw new IllegalArgumentException("SpriteSheet missing image: " + imageName);
-			emitter.setSprite(sprite);
+	public void loadEmitterImages( TextureAtlas atlas ) {
+		for ( int i = 0, n = emitters.size; i < n; i++ ) {
+			ParticleEmitter emitter = emitters.get( i );
+			String imagePath = emitter.getImagePath( );
+			if ( imagePath == null )
+				continue;
+			String imageName = new File( imagePath.replace( '\\', '/' ) )
+					.getName( );
+			int lastDotIndex = imageName.lastIndexOf( '.' );
+			if ( lastDotIndex != -1 )
+				imageName = imageName.substring( 0, lastDotIndex );
+			Sprite sprite = atlas.createSprite( imageName );
+			if ( sprite == null )
+				throw new IllegalArgumentException(
+						"SpriteSheet missing image: " + imageName );
+			emitter.setSprite( sprite );
 		}
 	}
 
-	public void loadEmitterImages (FileHandle imagesDir) {
-		for (int i = 0, n = emitters.size; i < n; i++) {
-			ParticleEmitter emitter = emitters.get(i);
-			String imagePath = emitter.getImagePath();
-			if (imagePath == null) continue;
-			String imageName = new File(imagePath.replace('\\', '/')).getName();
-			emitter.setSprite(new Sprite(loadTexture(imagesDir.child(imageName))));
+	public void loadEmitterImages( FileHandle imagesDir ) {
+		for ( int i = 0, n = emitters.size; i < n; i++ ) {
+			ParticleEmitter emitter = emitters.get( i );
+			String imagePath = emitter.getImagePath( );
+			if ( imagePath == null )
+				continue;
+			String imageName = new File( imagePath.replace( '\\', '/' ) )
+					.getName( );
+			emitter.setSprite( new Sprite( loadTexture( imagesDir
+					.child( imageName ) ) ) );
 		}
 	}
 
-	protected Texture loadTexture (FileHandle file) {
-		return new Texture(file, false);
+	protected Texture loadTexture( FileHandle file ) {
+		return new Texture( file, false );
 	}
 
 	/** Disposes the texture for each sprite for each ParticleEmitter. */
-	public void dispose () {
-		for (int i = 0, n = emitters.size; i < n; i++) {
-			ParticleEmitter emitter = emitters.get(i);
-			emitter.getSprite().getTexture().dispose();
+	public void dispose( ) {
+		for ( int i = 0, n = emitters.size; i < n; i++ ) {
+			ParticleEmitter emitter = emitters.get( i );
+			emitter.getSprite( ).getTexture( ).dispose( );
 		}
 	}
 }

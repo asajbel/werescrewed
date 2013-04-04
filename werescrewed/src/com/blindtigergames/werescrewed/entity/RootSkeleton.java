@@ -12,7 +12,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 
 public class RootSkeleton extends Skeleton {
 
-	private ArrayList< Entity > looseEntity;
+	private ArrayList< Entity > looseEntity, entitiesToDelete;
 	private ArrayList< Skeleton > skeletonToSetActive, skeletonToSetInactive;
 	private ArrayList<Skeleton> skeletonsToDelete;
 
@@ -21,6 +21,7 @@ public class RootSkeleton extends Skeleton {
 		super( name, positionPix, tex, world, BodyType.StaticBody );
 		entityType = EntityType.ROOTSKELETON;
 		looseEntity = new ArrayList< Entity >( );
+		entitiesToDelete = new ArrayList< Entity >( );
 		skeletonToSetActive = new ArrayList< Skeleton >( );
 		skeletonToSetInactive = new ArrayList< Skeleton >( );
 		skeletonsToDelete = new ArrayList< Skeleton >( );
@@ -88,7 +89,18 @@ public class RootSkeleton extends Skeleton {
 		deleteSkeletons( );
 		super.update( deltaTime );
 		for( Entity entity : looseEntity ){
-			entity.update( deltaTime );
+			if ( entity.removeNextStep ){
+				entity.remove( );
+				entitiesToDelete.add( entity );
+			}else{
+				entity.update( deltaTime );
+			}
+		}
+		if ( entitiesToDelete.size( ) > 0 ){
+			for( Entity entity : entitiesToDelete ){
+				looseEntity.remove( entity );
+			}
+			entitiesToDelete.clear( );
 		}
 	}
 
@@ -99,6 +111,7 @@ public class RootSkeleton extends Skeleton {
 	 */
 	public void addLooseEntity( Entity e ) {
 		looseEntity.add( e );
+		e.setParentSkeleton( this );
 	}
 
 	/**

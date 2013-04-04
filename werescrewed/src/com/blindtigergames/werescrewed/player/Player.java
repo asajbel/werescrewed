@@ -6,6 +6,7 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.controllers.PovDirection;
+import com.badlogic.gdx.graphics.g2d.ParticleEmitter;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -34,6 +35,7 @@ import com.blindtigergames.werescrewed.entity.mover.LinearAxis;
 import com.blindtigergames.werescrewed.entity.screws.ResurrectScrew;
 import com.blindtigergames.werescrewed.entity.screws.Screw;
 import com.blindtigergames.werescrewed.entity.screws.ScrewType;
+import com.blindtigergames.werescrewed.graphics.particle.ParticleEffect;
 import com.blindtigergames.werescrewed.input.MyControllerListener;
 import com.blindtigergames.werescrewed.input.PlayerInputHandler;
 import com.blindtigergames.werescrewed.util.Metrics;
@@ -110,7 +112,7 @@ public class Player extends Entity {
 	private Player otherPlayer;
 	private RevoluteJoint playerJoint;
 	private Body platformBody;
-	private Entity hitCloud;
+	//private Entity hitCloud;
 	private boolean topPlayer = false;
 	private boolean isDead = false;
 	private boolean hitSolidObject;
@@ -133,6 +135,8 @@ public class Player extends Entity {
 
 	public int grabCounter = 0;
 	public int jumpCounter = 0;
+
+	private ParticleEffect land_cloud;
 
 	@SuppressWarnings( "unused" )
 	private Sound jumpSound;
@@ -203,7 +207,7 @@ public class Player extends Entity {
 		AnchorList.getInstance( ).addAnchor( anchor );
 
 		// build the hit cloud entity and animation
-		hitCloud = new Entity( name + "_hitCloud", Vector2.Zero, null, null,
+		/*hitCloud = new Entity( name + "_hitCloud", Vector2.Zero, null, null,
 				false );
 		SimpleFrameAnimator hitCloudAnimator = new SimpleFrameAnimator( )
 				.speed( 1f ).loop( LoopBehavior.STOP ).startFrame( 1 )
@@ -212,7 +216,7 @@ public class Player extends Entity {
 				WereScrewedGame.manager.getTextureAtlas( "hitCloud" ),
 				hitCloudAnimator );
 		// set the frame to the last
-		hitCloud.sprite.getAnimator( ).setFrame( 3 );
+		hitCloud.sprite.getAnimator( ).setFrame( 3 );*/
 
 		setFixtures( );
 		maxFriction( );
@@ -225,6 +229,8 @@ public class Player extends Entity {
 
 		jumpSound = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 				+ "/common/sounds/WilhelmScream.ogg" );
+
+		land_cloud = ParticleEffect.loadEffect( "land_cloud" );
 	}
 
 	// PUBLIC METHODS
@@ -238,7 +244,7 @@ public class Player extends Entity {
 			Gdx.app.log( "steamCollide: " + steamCollide, "steamDone: "
 					+ steamDone );
 		// update the hit cloud if it exists
-		hitCloud.sprite.update( deltaTime );
+		//hitCloud.sprite.update( deltaTime );
 		if ( name.equals( "player1" ) ) {
 
 		}
@@ -431,9 +437,15 @@ public class Player extends Entity {
 	@Override
 	public void draw( SpriteBatch batch, float deltaTime ) {
 		super.draw( batch, deltaTime );
-		if ( hitCloud.sprite.getAnimator( ).getFrame( ) < 3 ) {
-			hitCloud.draw( batch, deltaTime );
+//		if ( hitCloud.sprite.getAnimator( ).getFrame( ) < 3 ) {
+//			hitCloud.draw( batch, deltaTime );
+//		}
+		if (!land_cloud.isComplete( )){
+			Vector2 posPix = getPositionPixel( );
+			land_cloud.setPosition( posPix.x+50, posPix.y );
+			land_cloud.draw( batch, deltaTime );
 		}
+		
 	}
 
 	/**
@@ -741,11 +753,12 @@ public class Player extends Entity {
 	public void setGrounded( boolean newVal ) {
 		if ( !topPlayer ) {
 			if ( newVal != false && !grounded && otherPlayer == null ) {
-				hitCloud.setPixelPosition( this.getPositionPixel( )
+				/*hitCloud.setPixelPosition( this.getPositionPixel( )
 						.sub( 0, 12f ) );
 				hitCloud.sprite.setColor( 1, 1, 1, body.getLinearVelocity( ).y
 						/ ( float ) MAX_VELOCITY );
-				hitCloud.sprite.reset( );
+				hitCloud.sprite.reset( );*/
+				land_cloud.start( );
 			}
 			this.grounded = newVal;
 		}
