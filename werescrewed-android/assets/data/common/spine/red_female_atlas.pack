@@ -2,6 +2,7 @@ red_female_atlas.png
 format: RGBA8888
 filter: Linear,Linear
 repeat: none
+offset: 0,0
 L_lower_arm
   rotate: false
   xy: 24, 2

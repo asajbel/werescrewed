@@ -2,6 +2,7 @@ red_male_atlas.png
 format: RGBA8888
 filter: Linear,Linear
 repeat: none
+offset: 0,0
 R_lower_arm
   rotate: false
   xy: 64, 23
