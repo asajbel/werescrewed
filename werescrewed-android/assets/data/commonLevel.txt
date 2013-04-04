@@ -59,8 +59,11 @@
 /common/parallax_layer3_0.png
 /common/parallax_layer3_1.png
 /common/spikes_01.png
+/common/spikes_01r.png
 /common/spikes_02.png
+/common/spikes_02r.png
 /common/spikes_03.png
+/common/spikes_03r.png
 /common/tileset/TilesetTest.png
 #/common/blind_tiger_logo_1024.png
 /common/title_background.png

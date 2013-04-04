@@ -26,6 +26,13 @@ import com.blindtigergames.werescrewed.util.Util;
 
 public class StrippedScrew extends Screw {
 
+	/**
+	 *  create a stripped screw thats attached to an entity
+	 * @param name
+	 * @param pos
+	 * @param entity
+	 * @param world
+	 */
 	public StrippedScrew( String name, Vector2 pos, Entity entity, World world) {
 		super( name, pos, null );
 		this.world = world;
@@ -41,6 +48,12 @@ public class StrippedScrew extends Screw {
 
 	}
 	
+	/**
+	 * create a stripped screw that isn't connected to an entity
+	 * @param name
+	 * @param pos
+	 * @param world
+	 */
 	public StrippedScrew( String name, Vector2 pos, World world) {
 		super( name, pos, null );
 		this.world = world;
@@ -52,10 +65,12 @@ public class StrippedScrew extends Screw {
 		sprite.setOrigin( 0.0f, 0.0f );
 
 		constructBody( pos );
-		
-
 	}
 
+	/**
+	 * create screw body
+	 * @param pos
+	 */
 	private void constructBody( Vector2 pos ) {
 		// create the screw body
 		BodyDef screwBodyDef = new BodyDef( );

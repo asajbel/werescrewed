@@ -55,6 +55,7 @@ public class HazardScreen implements com.badlogic.gdx.Screen {
 	private PlatformBuilder platBuilder;
 	private Hazard hazard;
 	private Fire fire;
+	private Electricity elec;
 	private Spikes spikes, spikes2;
 	private HazardBuilder spikesBuilder;
 	private boolean debug = true;
@@ -111,16 +112,16 @@ public class HazardScreen implements com.badlogic.gdx.Screen {
 	}
 
 	private void initHazards( ) {
-		Vector2 tempPos = new Vector2( -1250.0f, 300.0f );
+		/*Vector2 tempPos = new Vector2( -1250.0f, 300.0f );
 		float tempWH = 100.0f;
 		hazard = new Hazard ( "Test", tempPos, null, 
 				world, tempWH, tempWH, true );
-		hazard.constructBody( tempPos, tempWH, tempWH );
+		hazard.constructBody( tempPos, tempWH, tempWH );*/
 		fire = new Fire( "Fire1", new Vector2( -700.0f, -10.0f ), 
-				world, true, 50, 100 );
-		/*elec = new Electricity( "Elec1", new Vector2( 3000.0f, -10.0f ),
-				world, true );
-		saw = new Saws( "Saw1", new Vector2( -2000.0f, 40.0f ),
+				50, 100, world, true );
+		elec = new Electricity( "Elec1", new Vector2( 700.0f, 0.0f ),
+				new Vector2( 700.0f, 50.0f ), world, true );
+		/*saw = new Saws( "Saw1", new Vector2( -2000.0f, 40.0f ),
 				2, world, true );
 		 */
 		spikes = new Spikes( "Spikes1", new Vector2( -1700.0f, 5.0f ), 
@@ -249,6 +250,7 @@ public class HazardScreen implements com.badlogic.gdx.Screen {
 		rootSkeleton.draw( batch );
 		progressManager.draw( batch );
 		fire.draw(batch, deltaTime );
+		elec.draw( batch, deltaTime );
 		testSteam.draw( batch, deltaTime );
 		player1.draw( batch );
 		player2.draw( batch );

@@ -111,8 +111,8 @@ public class HazardBuilder extends GenericEntityBuilder< HazardBuilder > {
 	public Spikes buildSpikes ( ) {
 		Spikes spikes = new Spikes( this.name,
 									this.pos, 
-									this.height, 
-									this.width,
+									this.width, 
+									this.height,
 									this.world,
 									this.active,
 									this.inverted,
