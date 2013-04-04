@@ -1,6 +1,8 @@
 package com.blindtigergames.werescrewed.screens;
 
 import aurelienribon.tweenengine.Tween;
+import aurelienribon.tweenengine.TweenEquation;
+import aurelienribon.tweenengine.TweenEquations;
 
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
@@ -314,8 +316,8 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		dynSkel2.addScrewForDraw( screw );
 		
 		PathBuilder pb = new PathBuilder();
-		ttt.addMover( pb.begin( ttt ).target( 100, 0, 1 )
-				.target( 0, 0, 1 ).build( ), RobotState.IDLE);
+		ttt.addMover( pb.begin( ttt ).ease( TweenEquations.easeInOutExpo ).target( -1000, 0, 20 )
+				.target( 0, 0, 20 ).build( ), RobotState.IDLE);
 		
 		TiledPlatform test = platBuilder.name( "movetest" ).kinematic( )
 				.position( -300, 300 ).dimensions( 1, 5).oneSided( false )
@@ -323,22 +325,22 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		s.addKinematicPlatform(  test );
 		
 		
-		saw = new Hazard( "sawblade", EntityDef.getDefinition( "sawBlade" ), world,
-				new Vector2(-600.0f, 150.0f)); 
-		saw.body.setType( BodyType.DynamicBody );
-		s.addPlatformRotatingCenterWithMot( saw, 2f );
+//		saw = new Hazard( "sawblade", EntityDef.getDefinition( "sawBlade" ), world,
+//				new Vector2(-600.0f, 150.0f)); 
+//		saw.body.setType( BodyType.DynamicBody );
+//		s.addPlatformRotatingCenterWithMot( saw, 2f );
 		
 		
 		// 1000 - 1219 for perfect gears
-		Platform gear = platBuilder.name( "gear" ).position( -1400, 320 )
-				.texture( null ).setScale( 3f ).type( "gearSmall" ).dynamic( )
-				.buildComplexPlatform( );
-		s.addPlatformRotatingCenterWithMot( gear, 1f );
-		Platform gear2 = platBuilder.name( "gear2" ).position( -1165, 320 )
-				.texture( null ).setScale( 3f ).type( "gearSmall" ).dynamic( )
-				.buildComplexPlatform( );
-		s.addPlatformRotatingCenter( gear2 );
-		gear2.quickfixCollisions( );
+//		Platform gear = platBuilder.name( "gear" ).position( -1400, 320 )
+//				.texture( null ).setScale( 3f ).type( "gearSmall" ).dynamic( )
+//				.buildComplexPlatform( );
+//		s.addPlatformRotatingCenterWithMot( gear, 1f );
+//		Platform gear2 = platBuilder.name( "gear2" ).position( -1165, 320 )
+//				.texture( null ).setScale( 3f ).type( "gearSmall" ).dynamic( )
+//				.buildComplexPlatform( );
+//		s.addPlatformRotatingCenter( gear2 );
+//		gear2.quickfixCollisions( );
 		
 
 		TiledPlatform piston = platBuilder.name( "piston" ).kinematic( )
@@ -350,28 +352,32 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		piston.setCrushing( true );
 
 		
-		TiledPlatform pivot = platBuilder.position( 100.0f, 75f ).name( "rev" )
-				.dimensions( 1, 2 )
-				.kinematic( ).oneSided( false ).restitution(0.0f )
-				.buildTilePlatform( );
-		s.addKinematicPlatform( pivot );
+//		TiledPlatform pivot = platBuilder.position( 100.0f, 75f ).name( "rev" )
+//				.dimensions( 1, 2 )
+//				.kinematic( ).oneSided( false ).restitution(0.0f )
+//				.buildTilePlatform( );
+//		s.addKinematicPlatform( pivot );
 		
 
 		//rfd.maxMotorTorque = 100.0f;
 		
-		TiledPlatform crank = platBuilder.position( 100f, 125f).name( "crank" )
-				.dimensions( 15, 1 )
-				.dynamic( ).oneSided( false ).restitution( 0.0f )
-				.buildTilePlatform( );
-		crank.quickfixCollisions( );
-		crank.setDensity( 0 );
-		crank.setCrushing( true );
-		s.addPlatform( crank );
+//		TiledPlatform crank = platBuilder.position( 100f, 125f).name( "crank" )
+//				.dimensions( 15, 1 )
+//				.dynamic( ).oneSided( false ).restitution( 0.0f )
+//				.buildTilePlatform( );
+//		crank.quickfixCollisions( );
+//		crank.setDensity( 0 );
+//		crank.setCrushing( true );
+//		s.addPlatform( crank );
+//		
+//		RevoluteJointDef rfd = new RevoluteJointDef( );
+//		rfd.initialize( crank.body, pivot.body,
+//				pivot.body.getPosition( ).add( new Vector2(0f, pivot.getMeterHeight( )/2) ) );
+//		world.createJoint( rfd );
 		
-		RevoluteJointDef rfd = new RevoluteJointDef( );
-		rfd.initialize( crank.body, pivot.body,
-				pivot.body.getPosition( ).add( new Vector2(0f, pivot.getMeterHeight( )/2) ) );
-		world.createJoint( rfd );
+		TiledPlatform dynPlatTest = platBuilder.position( -500,200 ).dynamic( ).dimensions( 5, 1 ).buildTilePlatform( );
+		s.addDynamicPlatformFixed( dynPlatTest );
+		dynPlatTest.quickfixCollisions( );
 
 		
 	}

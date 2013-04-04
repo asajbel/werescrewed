@@ -91,15 +91,17 @@ public class Skeleton extends Platform {
 		body = world.createBody( skeletonBodyDef );
 		body.setUserData( this );
 
-		/*FixtureDef dynFixtureDef = new FixtureDef( );
+		FixtureDef dynFixtureDef = new FixtureDef( );
 		PolygonShape polygon = new PolygonShape( );
-		polygon.setAsBox( 1 * Util.PIXEL_TO_BOX, 1 * Util.PIXEL_TO_BOX );
+		polygon.setAsBox( 100 * Util.PIXEL_TO_BOX, 100 * Util.PIXEL_TO_BOX );
 		dynFixtureDef.shape = polygon;
-		dynFixtureDef.density = 100f;
+		dynFixtureDef.density = 5f;
 		dynFixtureDef.filter.categoryBits = Util.CATEGORY_IGNORE;
 		dynFixtureDef.filter.maskBits = Util.CATEGORY_NOTHING;
 		body.createFixture( dynFixtureDef );
-		polygon.dispose( );*/
+		polygon.dispose( );
+		body.setGravityScale( 0.1f );
+		//this.quickfixCollisions( );
 	}
 
 	/**
