@@ -21,3 +21,6 @@
 /common/parallax_layer1_1.png
 /common/parallax_layer2_0.png
 /common/parallax_layer2_1.png
+
+/levels/level1/player_female_idle.png
+/levels/level1/player_male_idle.png

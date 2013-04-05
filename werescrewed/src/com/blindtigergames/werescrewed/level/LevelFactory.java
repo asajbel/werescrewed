@@ -8,6 +8,7 @@ import java.util.LinkedHashMap;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.XmlReader;
 import com.badlogic.gdx.utils.XmlReader.Element;
@@ -330,7 +331,6 @@ public class LevelFactory {
 		} else {
 			//attach skeleton to skeleton
 			SkeletonBuilder skeleBuilder = new SkeletonBuilder( level.world );
-			System.out.println( "SKELETON: POS " + item.pos );
 			skeleBuilder.name( item.name )
 					.position( item.pos ).texture( null );
 			 
@@ -352,8 +352,13 @@ public class LevelFactory {
 //								Texture.class ));;
 			}
 			
+			if(item.props.containsKey( "dynamic" )){
+				skeleBuilder.dynamic( );
+			}
+			
 			skeleton = skeleBuilder.build( );
 
+			
 //			IMover mover = null;
 //			if(item.props.containsKey( "mover" )){
 //				String movername = item.props.get( "mover" );
@@ -379,6 +384,15 @@ public class LevelFactory {
 				parent.addSkeleton( skeleton );
 			}
 			
+			if(item.props.containsKey( "jointto" )){
+				
+				String parentSkeleton = item.props.get( "jointto" );
+				Skeleton parent = skeletons.get( parentSkeleton );
+				
+				RevoluteJointDef revoluteJointDef = new RevoluteJointDef( );
+				revoluteJointDef.initialize( skeleton.body, parent.body, skeleton.getPosition( ) );
+				level.world.createJoint( revoluteJointDef );
+			}
 			
 		}
 		
