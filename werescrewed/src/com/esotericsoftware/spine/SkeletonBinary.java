@@ -25,6 +25,14 @@
 
 package com.esotericsoftware.spine;
 
+import java.io.IOException;
+
+import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.DataInput;
+import com.badlogic.gdx.utils.SerializationException;
+import com.blindtigergames.werescrewed.graphics.TextureAtlas;
 import com.esotericsoftware.spine.Animation.AttachmentTimeline;
 import com.esotericsoftware.spine.Animation.ColorTimeline;
 import com.esotericsoftware.spine.Animation.CurveTimeline;
@@ -32,19 +40,10 @@ import com.esotericsoftware.spine.Animation.RotateTimeline;
 import com.esotericsoftware.spine.Animation.ScaleTimeline;
 import com.esotericsoftware.spine.Animation.Timeline;
 import com.esotericsoftware.spine.Animation.TranslateTimeline;
+import com.esotericsoftware.spine.attachments.AtlasAttachmentLoader;
 import com.esotericsoftware.spine.attachments.RegionAttachment;
 import com.esotericsoftware.spine.attachments.RegionSequenceAttachment;
 import com.esotericsoftware.spine.attachments.RegionSequenceAttachment.Mode;
-import com.esotericsoftware.spine.attachments.AtlasAttachmentLoader;
-
-import com.badlogic.gdx.files.FileHandle;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.DataInput;
-import com.badlogic.gdx.utils.SerializationException;
-
-import java.io.IOException;
 
 public class SkeletonBinary {
 	static public final int TIMELINE_SCALE = 0;

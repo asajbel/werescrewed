@@ -37,12 +37,14 @@ public class EntityDef {
 	// Sprite Fields (i.e. everything needed to define just the sprite half)
 	protected Texture texture;
 	protected String atlasName;
-	protected Array<TextureAtlas> atlases;
+	protected Array< TextureAtlas > atlases;
 	protected String animatorType;
 	protected String initialAnim;
 	protected Vector2 origin;
 	protected Vector2 spriteScale;
 	protected Color tint;
+	protected String skeleton;
+	protected String color;
 
 	// Body Fields (i.e. everything needed to define just the body half)
 	protected BodyDef bodyDef;
@@ -77,9 +79,9 @@ public class EntityDef {
 		origin = new Vector2( 0, 0 );
 		spriteScale = new Vector2( 1, 1 );
 		tint = new Color( 1.0f, 1.0f, 1.0f, 1.0f );
-		
-		//Animation Data
-		atlases = new Array<TextureAtlas>();
+
+		// Animation Data
+		atlases = new Array< TextureAtlas >( );
 		animatorType = "";
 
 		// Body Data
@@ -119,7 +121,7 @@ public class EntityDef {
 			fixtureDefs.addAll( fixes );
 		}
 	}
-	
+
 	@Override
 	public void finalize( ) throws Throwable {
 		if ( definitions.containsValue( this ) )
@@ -151,7 +153,7 @@ public class EntityDef {
 
 	public Texture getTexture( ) {
 		if ( texture == null && atlases.size > 0 ) {
-			texture = atlases.get(0).getTextures( ).iterator( ).next( );
+			texture = atlases.get( 0 ).getTextures( ).iterator( ).next( );
 		}
 		return texture;
 	}
@@ -252,24 +254,30 @@ public class EntityDef {
 			EntityDef out = new EntityDef( id );
 
 			// Category Data, look for the row called category in xml
-			out.setCategory( xml.get( "category", "" ) ); // EntityCategory.tag, "" ) );
+			out.setCategory( xml.get( "category", "" ) ); // EntityCategory.tag,
+															// "" ) );
 			// Sprite Data
 			String texName = null;
 			@SuppressWarnings( "unused" )
 			String atlasName = null;
 			texName = xml.get( "texture", "" );
-			for (Element atlasElem : xml.getChildrenByName( "atlas" )){
-				Gdx.app.log( "EntityDef", "Getting texture atlas "+ atlasElem.getText() );
-				out.atlases.add( WereScrewedGame.manager.getAtlas( atlasElem.getText( ) ) );
+			for ( Element atlasElem : xml.getChildrenByName( "atlas" ) ) {
+				Gdx.app.log( "EntityDef",
+						"Getting texture atlas " + atlasElem.getText( ) );
+				out.atlases.add( WereScrewedGame.manager.getAtlas( atlasElem
+						.getText( ) ) );
 			}
-			if (out.atlases.size < 1){
-				texName = xml.get( "texture" , "");
+			if ( out.atlases.size < 1 ) {
+				texName = xml.get( "texture", "" );
 				if ( !texName.equals( "" ) ) {
 					out.setTexture( WereScrewedGame.manager.get(
 							WereScrewedGame.dirHandle.path( ) + "/" + texName,
 							Texture.class ) );
 				}
 			}
+			out.atlasName = xml.get( "atlas", "" ); 
+			out.color = xml.get( "color", "" );
+			out.skeleton = xml.get( "gender", "" );
 			out.initialAnim = xml.get( "initialAnim" );
 			out.animatorType = xml.get( "animator", "" );
 			out.origin.x = xml.getFloat( "originX" );
@@ -308,4 +316,35 @@ public class EntityDef {
 		return out;
 	}
 
+	public boolean isAnimatorType( String anim ) {
+		if ( animatorType.equals( anim ) ) {
+			return true;
+		}
+		return false;
+	}
+
+	public String getAtlasName( ) {
+		return atlasName;
+	}
+
+	public String getSkeleton( ) {
+		return skeleton;
+	}
+
+	public Vector2 getScale( ) {
+		return spriteScale;
+	}
+
+	public void setScale( float x ) {
+		spriteScale.x = x;
+	}
+
+	public void setScaleY( float y ) {
+		spriteScale.y = y;
+	}
+
+	public void setScale( float x, float y ) {
+		spriteScale.x = x;
+		spriteScale.y = y;
+	}
 }

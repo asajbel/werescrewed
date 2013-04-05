@@ -20,7 +20,9 @@ import com.badlogic.gdx.utils.Array;
 import com.blindtigergames.werescrewed.camera.Anchor;
 import com.blindtigergames.werescrewed.camera.AnchorList;
 import com.blindtigergames.werescrewed.entity.animator.IAnimator;
+import com.blindtigergames.werescrewed.entity.animator.ISpinemator;
 import com.blindtigergames.werescrewed.entity.animator.PlayerAnimator;
+import com.blindtigergames.werescrewed.entity.animator.PlayerSpinemator;
 import com.blindtigergames.werescrewed.entity.animator.SimpleFrameAnimator;
 import com.blindtigergames.werescrewed.entity.mover.IMover;
 import com.blindtigergames.werescrewed.graphics.TextureAtlas;
@@ -60,6 +62,7 @@ public class Entity implements GleedLoadable {
 	protected ArrayList< Float > decalAngles;
 	private RobotState currentRobotState;
 	private EnumMap< RobotState, Integer > robotStateMap;
+	protected ISpinemator spinemator;
 
 	/**
 	 * Create entity by definition
@@ -85,10 +88,12 @@ public class Entity implements GleedLoadable {
 		this.construct( name, solid );
 		this.type = type;
 		this.world = world;
-		if (type.atlases.size > 0 ){
-			this.sprite = constructSprite( type.atlases.get( 0 ) );
-		} else {
-			this.sprite = constructSprite( texture );
+		if ( !this.type.animatorType.equals( "spine" ) ) {
+			if ( type.atlases.size > 0 ) {
+				this.sprite = constructSprite( type.atlases.get( 0 ) );
+			} else {
+				this.sprite = constructSprite( texture );
+			}
 		}
 		this.body = constructBodyByType( );
 		setPixelPosition( positionPixels );
@@ -103,20 +108,25 @@ public class Entity implements GleedLoadable {
 	 * @param positionPixels
 	 * @param texture
 	 */
-	public Entity( String name, EntityDef type, World world, Vector2 positionPixels, Texture texture) {
+	public Entity( String name, EntityDef type, World world,
+			Vector2 positionPixels, Texture texture ) {
 		this.construct( name, solid );
 		this.type = type;
 		this.world = world;
-		if (type.atlases.size > 0 ){
-			this.sprite = constructSprite( type.atlases.get( 0 ) );
-		} else {
-			this.sprite = constructSprite( texture );
+
+		if ( !this.type.animatorType.equals( "spine" ) ) {
+			if ( type.atlases.size > 0 ) {
+				this.sprite = constructSprite( type.atlases.get( 0 ) );
+			} else {
+				this.sprite = constructSprite( texture );
+			}
 		}
 		this.body = constructBodyByType( );
 		this.decals = new ArrayList< Sprite >( );
 		this.decalOffsets = new ArrayList< Vector2 >( );
 		setPixelPosition( positionPixels );
 	}
+
 	/**
 	 * Create entity by body. Debug constructor: Should be removed eventually.
 	 * 
@@ -254,7 +264,10 @@ public class Entity implements GleedLoadable {
 			sprite.draw( batch );
 		}
 		// drawOrigin(batch);
-		drawDecals(batch);
+		drawDecals( batch );
+
+		if ( spinemator != null )
+			spinemator.draw( batch );
 	}
 
 	public void drawOrigin( SpriteBatch batch ) {
@@ -325,7 +338,13 @@ public class Entity implements GleedLoadable {
 						* body.getAngle( ) );
 				sprite.update( deltaTime );
 			}
-			updateDecals(deltaTime);
+			updateDecals( deltaTime );
+
+			if ( spinemator != null ) {
+				spinemator.setPosition( bodyPos );
+				spinemator.setScale(type.spriteScale);
+				spinemator.update( deltaTime );
+			}
 		}
 	}
 
@@ -397,9 +416,10 @@ public class Entity implements GleedLoadable {
 		sprite.setOrigin( origin.x, origin.y );
 		return sprite;
 	}
+
 	/**
-	 * Builds a sprite from a TextureAtlas. If the texture is null, it attempts to
-	 * load one from the XML definitions
+	 * Builds a sprite from a TextureAtlas. If the texture is null, it attempts
+	 * to load one from the XML definitions
 	 * 
 	 * @param texture
 	 *            from which a sprite can be generated, or null, if loading
@@ -410,18 +430,20 @@ public class Entity implements GleedLoadable {
 		Vector2 origin;
 
 		IAnimator anim;
-		
-		if (type.animatorType.equals( "player" )){
-			anim = new PlayerAnimator(type.atlases, (Player)this);			
+
+		if ( type.animatorType.equals( "player" ) ) {
+			anim = new PlayerAnimator( type.atlases, ( Player ) this );
 		} else {
-			anim = new SimpleFrameAnimator().maxFrames( type.atlases.get( 0 ).getRegions( ).size );
+			anim = new SimpleFrameAnimator( ).maxFrames( type.atlases.get( 0 )
+					.getRegions( ).size );
 		}
-		sprite = new Sprite(type.atlases, anim);
+		sprite = new Sprite( type.atlases, anim );
 		sprite.setScale( type.spriteScale.x, type.spriteScale.y );
-		origin = new Vector2( type.origin.x, type.origin.y );		
+		origin = new Vector2( type.origin.x, type.origin.y );
 		sprite.setOrigin( origin.x, origin.y );
 		return sprite;
 	}
+
 	public void Move( Vector2 vector ) {
 		Vector2 pos = body.getPosition( ).add( vector.mul( Util.PIXEL_TO_BOX ) );
 		setPosition( pos );
@@ -859,14 +881,14 @@ public class Entity implements GleedLoadable {
 	/**
 	 * 
 	 */
-	public void addDecal( Sprite s, Vector2 offset, float angle){
+	public void addDecal( Sprite s, Vector2 offset, float angle ) {
 		this.decals.add( s );
 		this.decalOffsets.add( offset );
 		this.decalAngles.add( angle );
 	}
-	
+
 	public void addDecal( Sprite s, Vector2 offset ) {
-		addDecal( s, offset, 0.0f);
+		addDecal( s, offset, 0.0f );
 	}
 
 	public void addDecal( Sprite s ) {
@@ -884,10 +906,10 @@ public class Entity implements GleedLoadable {
 			offset = decalOffsets.get( i );
 			decal = decals.get( i );
 			r = decalAngles.get( i );
-			x = bodyPos.x + (offset.x * cos) - (offset.y * sin);
-			y = bodyPos.y + (offset.y * cos) + (offset.x * sin);
-			decal.setPosition( x , y );
-			decal.setRotation( r + (angle * Util.RAD_TO_DEG) );
+			x = bodyPos.x + ( offset.x * cos ) - ( offset.y * sin );
+			y = bodyPos.y + ( offset.y * cos ) + ( offset.x * sin );
+			decal.setPosition( x, y );
+			decal.setRotation( r + ( angle * Util.RAD_TO_DEG ) );
 		}
 	}
 
@@ -939,13 +961,15 @@ public class Entity implements GleedLoadable {
 	public void setCrushing( boolean value ) {
 		crushing = value;
 	}
-	
+
 	/**
-	 * Careful. You generally won't directly call this. Root skeleton can delete entire skeletons
-	 * so it would be better to just use RootSkeleton.destroySkeleton()
+	 * Careful. You generally won't directly call this. Root skeleton can delete
+	 * entire skeletons so it would be better to just use
+	 * RootSkeleton.destroySkeleton()
+	 * 
 	 * @author stew
 	 */
-	public void dispose(){
+	public void dispose( ) {
 		body.getWorld( ).destroyBody( body );
 	}
 }

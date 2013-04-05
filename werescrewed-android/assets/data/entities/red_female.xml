@@ -1,0 +1,23 @@
+<entity>
+   	<category>Player</category>
+	<atlas>player_r_f_1</atlas>
+	<atlas>player_r_f_2</atlas>
+	<atlas>player_r_f_3</atlas>
+	<animator>player</animator>
+	<initialAnim>default</initialAnim>
+	<originX>64.0f</originX>
+	<originY>64.0f</originY>
+	<spriteScaleX>1.0f</spriteScaleX>
+	<spriteScaleY>1.0f</spriteScaleY>
+	<tintRed>1.0f</tintRed>
+	<tintGreen>1.0f</tintGreen>
+	<tintBlue>1.0f</tintBlue>
+	<tintAlpha>1.0f</tintAlpha>
+	
+	<body>playerTest</body>
+	<density>0.2f</density>
+	<friction>0.0f</friction>
+	<restitution>0.0f</restitution>
+	<bodyScale>0.45f</bodyScale>
+	<fixedRotation>true</fixedRotation>
+</entity>

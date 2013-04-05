@@ -26,6 +26,7 @@ import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityDef;
 import com.blindtigergames.werescrewed.entity.EntityType;
 import com.blindtigergames.werescrewed.entity.Sprite;
+import com.blindtigergames.werescrewed.entity.animator.PlayerSpinemator;
 import com.blindtigergames.werescrewed.entity.animator.SimpleFrameAnimator;
 import com.blindtigergames.werescrewed.entity.animator.SimpleFrameAnimator.LoopBehavior;
 import com.blindtigergames.werescrewed.entity.mover.IMover;
@@ -183,8 +184,8 @@ public class Player extends Entity {
 	 *            of the player in the world
 	 * @param name
 	 */
-	public Player( String name, World world, Vector2 pos ) {
-		super( name, EntityDef.getDefinition( name ), world, pos, 0.0f,
+	public Player( String name, String def, World world, Vector2 pos ) {
+		super( name, EntityDef.getDefinition( def ), world, pos, 0.0f,
 				new Vector2( 1f, 1f ), null, true );
 		entityType = EntityType.PLAYER;
 		body.setGravityScale( 0.3f );
@@ -201,6 +202,12 @@ public class Player extends Entity {
 				ANCHOR_BUFFER_SIZE.y ) );
 		anchor.special = true;
 		AnchorList.getInstance( ).addAnchor( anchor );
+		
+		//build spine animator
+		if ( this.type.isAnimatorType( "spine" ) ) {
+			spinemator = new PlayerSpinemator(this);
+			spinemator.setPosition( body.getWorldCenter( ) );
+		}
 
 		// build the hit cloud entity and animation
 		hitCloud = new Entity( name + "_hitCloud", Vector2.Zero, null, null,
@@ -239,9 +246,7 @@ public class Player extends Entity {
 					+ steamDone );
 		// update the hit cloud if it exists
 		hitCloud.sprite.update( deltaTime );
-		if ( name.equals( "player1" ) ) {
-
-		}
+		
 		if ( kinematicTransform ) {
 			// setPlatformTransform( platformOffset );
 			kinematicTransform = false;
@@ -275,8 +280,7 @@ public class Player extends Entity {
 			// else player is not dead update regular input
 			if ( controller != null ) {
 				updateController( deltaTime );
-			} else {
-				if ( inputHandler != null )
+			} else if ( inputHandler != null ) {
 					updateKeyboard( deltaTime );
 			}
 		}
@@ -295,11 +299,11 @@ public class Player extends Entity {
 					&& extraState != ConcurrentState.ExtraJumping ) {
 				playerDirection = PlayerDirection.Idle;
 			} else if ( playerDirection == PlayerDirection.Left
-					&& sprite.getScaleX( ) > 0 ) {
-				sprite.setScale( sprite.getScaleX( ) * -1, sprite.getScaleY( ) );
+					&& type.getScale( ).x > 0 ) {
+				type.setScale( type.getScale( ).x * -1, type.getScale( ).y );
 			} else if ( playerDirection == PlayerDirection.Right
-					&& sprite.getScaleX( ) < 0 ) {
-				sprite.setScale( sprite.getScaleX( ) * -1, sprite.getScaleY( ) );
+					&& type.getScale( ).x < 0 ) {
+				type.setScale( type.getScale( ).x * -1, type.getScale( ).y );
 			} else if ( playerState != PlayerState.Jumping
 					&& playerState != PlayerState.Falling
 					&& extraState != ConcurrentState.ExtraFalling
@@ -880,15 +884,15 @@ public class Player extends Entity {
 				mover = new LerpMover( body.getPosition( ).mul(
 						Util.BOX_TO_PIXEL ), new Vector2(
 						currentScrew.getPosition( ).x * Util.BOX_TO_PIXEL
-								- ( sprite.getWidth( ) / 2.0f ),
+								- ( 64 / 2.0f ),
 						currentScrew.getPosition( ).y * Util.BOX_TO_PIXEL
-								- ( sprite.getHeight( ) / 2.0f ) ),
+								- ( 128 / 2.0f ) ),
 						SCREW_ATTACH_SPEED, false, LinearAxis.DIAGONAL, 0 );
 			} else {
 				body.setTransform( new Vector2( currentScrew.getPosition( ).x
-						- ( sprite.getWidth( ) / 2.0f ) * Util.PIXEL_TO_BOX,
+						- ( 128 / 2.0f ) * Util.PIXEL_TO_BOX,
 						currentScrew.getPosition( ).y
-								- ( sprite.getHeight( ) / 2.0f )
+								- ( 128 / 2.0f )
 								* Util.PIXEL_TO_BOX ), 0.0f );
 				RevoluteJointDef revoluteJointDef = new RevoluteJointDef( );
 				revoluteJointDef.initialize( body, currentScrew.body,
@@ -1298,12 +1302,12 @@ public class Player extends Entity {
 			// check if the top player is in-line with the other players head
 			// and check if the top player is actually above the other player
 			if ( ( this.getPositionPixel( ).y > otherPlayer.getPositionPixel( )
-					.add( 0, sprite.getHeight( ) / 2f ).y )
+					.add( 0, 128 / 2f ).y )
 					&& ( otherPlayer.getPositionPixel( ).sub(
-							sprite.getWidth( ) / 3.0f, 0.0f ).x <= this
+							64 / 3.0f, 0.0f ).x <= this
 							.getPositionPixel( ).x )
 					&& ( otherPlayer.getPositionPixel( ).add(
-							sprite.getWidth( ) / 4.0f, 0.0f ).x > this
+							64 / 4.0f, 0.0f ).x > this
 							.getPositionPixel( ).x ) ) {
 				boolean isMoving = false;
 				// check if the player is using input
@@ -1341,7 +1345,7 @@ public class Player extends Entity {
 				playerState = PlayerState.HeadStand;
 				this.setPosition( otherPlayer.body.getPosition( ).x,
 						otherPlayer.body.getPosition( ).y
-								+ ( otherPlayer.sprite.getHeight( ) - 8f )
+								+ ( 128 - 8f )
 								* Util.PIXEL_TO_BOX );
 				// connect the players together with a joint
 				RevoluteJointDef revoluteJointDef = new RevoluteJointDef( );
@@ -1350,7 +1354,7 @@ public class Player extends Entity {
 						otherPlayer.body,
 						new Vector2( otherPlayer.body.getPosition( ).x,
 								otherPlayer.body.getPosition( ).y
-										- ( sprite.getHeight( ) )
+										- ( 128 )
 										* Util.PIXEL_TO_BOX ) );
 				revoluteJointDef.enableMotor = false;
 				playerJoint = ( RevoluteJoint ) world

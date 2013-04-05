@@ -25,12 +25,13 @@
 
 package com.esotericsoftware.spine.attachments;
 
+import com.blindtigergames.werescrewed.graphics.TextureAtlas;
+import com.blindtigergames.werescrewed.graphics.TextureAtlas.AtlasRegion;
 import com.esotericsoftware.spine.Attachment;
 import com.esotericsoftware.spine.AttachmentLoader;
 import com.esotericsoftware.spine.AttachmentType;
 
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
+
 
 public class AtlasAttachmentLoader implements AttachmentLoader {
 	private TextureAtlas atlas;
