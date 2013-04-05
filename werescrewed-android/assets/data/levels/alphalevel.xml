@@ -861,7 +861,10 @@
                             <string>customPlatform</string>
                         </Property>
                         <Property Name="AttachToSkeleton" Type="string" Description="">
-                            <string>RootSkeleton</string>
+                            <string>skeleton1</string>
+                        </Property>
+                        <Property Name="dynamic" Type="string" Description="">
+                            <string />
                         </Property>
                     </CustomProperties>
                     <LocalPoints>
@@ -926,6 +929,52 @@
                         <PackedValue>2445279424</PackedValue>
                     </LineColor>
                 </Item>
+                <Item xsi:type="TextureItem" Name="structurescrew1" Visible="true">
+                    <Position>
+                        <X>-80</X>
+                        <Y>-912</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Screwtype" Type="string" Description="">
+                            <string>ScrewStructural</string>
+                        </Property>
+                        <Property Name="target" Type="string" Description="">
+                            <string>customPlat1</string>
+                        </Property>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>screw</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>skeleton1</string>
+                        </Property>
+                        <Property Name="targetrev" Type="string" Description="">
+                            <string>customPlat1</string>
+                        </Property>
+                        <Property Name="skeltargetrev" Type="string" Description="">
+                            <string>skeleton1</string>
+                        </Property>
+                    </CustomProperties>
+                    <Rotation>0</Rotation>
+                    <Scale>
+                        <X>1</X>
+                        <Y>1</Y>
+                    </Scale>
+                    <TintColor>
+                        <R>255</R>
+                        <G>255</G>
+                        <B>255</B>
+                        <A>255</A>
+                        <PackedValue>4294967295</PackedValue>
+                    </TintColor>
+                    <FlipHorizontally>false</FlipHorizontally>
+                    <FlipVertically>false</FlipVertically>
+                    <texture_filename>structurescrew.png</texture_filename>
+                    <asset_name>structurescrew</asset_name>
+                    <Origin>
+                        <X>16</X>
+                        <Y>16</Y>
+                    </Origin>
+                </Item>
                 <Item xsi:type="PathItem" Name="Path_0195" Visible="true">
                     <Position>
                         <X>-144</X>
@@ -936,7 +985,7 @@
                             <string>customPlatform</string>
                         </Property>
                         <Property Name="AttachToSkeleton" Type="string" Description="">
-                            <string>RootSkeleton</string>
+                            <string>skeleton1</string>
                         </Property>
                     </CustomProperties>
                     <LocalPoints>
@@ -1029,8 +1078,8 @@
         <NextItemNumber>195</NextItemNumber>
         <ContentRootFolder>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures</ContentRootFolder>
         <CameraPosition>
-            <X>415.386719</X>
-            <Y>-1226.348</Y>
+            <X>-67.94922</X>
+            <Y>-693.0141</Y>
         </CameraPosition>
         <Version>1.3.0.0</Version>
     </EditorRelated>

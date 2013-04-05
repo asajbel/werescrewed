@@ -205,7 +205,7 @@ public class AnchorList {
 		return anchorList.get( id ).buffer;
 	}
 
-	public Vector2 getSepcialMidpoint( ) {
+	public Vector2 getSpecialMidpoint( ) {
 		return specialMidpoint;
 	}
 
@@ -239,75 +239,115 @@ public class AnchorList {
 	 */
 	public Vector2 getLongestXYDist( ) {
 		Vector2 vectDist = new Vector2( 0f, 0f );
+		int numActiveAnchors = 0;
 
-		// Start with players (guaranteed to be present and active)
-		AnchorPair pair = getSpecialPair( );
-
-		if ( pair.first.position.x > pair.second.position.x )
-			pair.swap( );
-
-		// Find anchor with left- and right-most buffers //
-
-		// For each anchor
-		for ( Anchor curAnchor : anchorList ) {
-			// Making sure its active and not the players (since we already
-			// included them)
-			if ( curAnchor.activated && !curAnchor.special ) {
-				// If the current anchor (minus the buffer) is to the left of
-				// the one tracked, replace it
-				if ( curAnchor.position.x - curAnchor.buffer.x < pair.first.position.x
-						- pair.first.buffer.x ) {
-					pair.first = curAnchor;
-				}
-				// If the current anchor (plus the buffer) is to the right of
-				// the one tracked, replace it
-				if ( curAnchor.position.x + curAnchor.buffer.x > pair.second.position.x
-						+ pair.second.buffer.x ) {
-					pair.second = curAnchor;
-				}
+		for ( Anchor anchor : anchorList ) {
+			if ( anchor.activated || anchor.special ) {
+				numActiveAnchors++;
 			}
 		}
-		furthestX = pair;
 
-		if ( pair != null && pair.first != null && pair.second != null ) {
-			// set x distance
-			vectDist.x = ( pair.second.position.x + pair.second.buffer.x )
-					- ( pair.first.position.x - pair.first.buffer.x );
-		}
-
-		// Find longest y distance //
-		pair = getSpecialPair( );
-
-		if ( pair.first.position.y > pair.second.position.y )
-			pair.swap( );
-
-		// Find anchor with top- and bottom-most buffers //
-
-		// For each anchor
-		for ( Anchor curAnchor : anchorList ) {
-			// Making sure its active and not the players (since we already
-			// included them)
-			if ( curAnchor.activated && !curAnchor.special ) {
-				// If the current anchor (minus the buffer) is below the one
-				// tracked, replace it
-				if ( curAnchor.position.y - curAnchor.buffer.y < pair.first.position.y
-						- pair.first.buffer.y ) {
-					pair.first = curAnchor;
-				}
-				// If the current anchor (plus the buffer) is above the one
-				// tracked, replace it
-				if ( curAnchor.position.y + curAnchor.buffer.y > pair.second.position.y
-						+ pair.second.buffer.y ) {
-					pair.second = curAnchor;
+		if ( numActiveAnchors > 1 ) {
+			// Start with players
+			AnchorPair pair = new AnchorPair( );
+			int j = 0;
+			for ( int i = 0; i < anchorList.size( ); i++ ) {
+				if ( anchorList.get( i ).activated || anchorList.get( i ).special ) {
+					pair.first = anchorList.get( i );
+					j = i;
+					break;
 				}
 			}
-		}
-		furthestY = pair;
+			for ( int i = j + 1; i < anchorList.size( ); i++ ) {
+				if ( anchorList.get( i ).activated || anchorList.get( i ).special ) {
+					pair.second = anchorList.get( i );
+					break;
+				}
+			}
 
-		if ( pair != null && pair.first != null && pair.second != null ) {
-			// set x distance
-			vectDist.y = ( pair.second.position.y + pair.second.buffer.y )
-					- ( pair.first.position.y - pair.first.buffer.y );
+			if ( pair.first.position.x > pair.second.position.x )
+				pair.swap( );
+
+			// Find anchor with left- and right-most buffers //
+
+			// For each anchor
+			for ( Anchor curAnchor : anchorList ) {
+				// Making sure its active and not the players (since we already
+				// included them)
+				if ( curAnchor.activated ) {
+					// If the current anchor (minus the buffer) is to the left
+					// of
+					// the one tracked, replace it
+					if ( curAnchor.position.x - curAnchor.buffer.x < pair.first.position.x
+							- pair.first.buffer.x ) {
+						pair.first = curAnchor;
+					}
+					// If the current anchor (plus the buffer) is to the right
+					// of
+					// the one tracked, replace it
+					if ( curAnchor.position.x + curAnchor.buffer.x > pair.second.position.x
+							+ pair.second.buffer.x ) {
+						pair.second = curAnchor;
+					}
+				}
+			}
+			furthestX = pair;
+
+			if ( pair != null && pair.first != null && pair.second != null ) {
+				// set x distance
+				vectDist.x = ( pair.second.position.x + pair.second.buffer.x )
+						- ( pair.first.position.x - pair.first.buffer.x );
+			}
+
+			// Find longest y distance //
+			pair = getSpecialPair( );
+
+			if ( pair.first.position.y > pair.second.position.y )
+				pair.swap( );
+
+			// Find anchor with top- and bottom-most buffers //
+
+			// For each anchor
+			for ( Anchor curAnchor : anchorList ) {
+				// Making sure its active and not the players (since we already
+				// included them)
+				if ( curAnchor.activated && !curAnchor.special ) {
+					// If the current anchor (minus the buffer) is below the one
+					// tracked, replace it
+					if ( curAnchor.position.y - curAnchor.buffer.y < pair.first.position.y
+							- pair.first.buffer.y ) {
+						pair.first = curAnchor;
+					}
+					// If the current anchor (plus the buffer) is above the one
+					// tracked, replace it
+					if ( curAnchor.position.y + curAnchor.buffer.y > pair.second.position.y
+							+ pair.second.buffer.y ) {
+						pair.second = curAnchor;
+					}
+				}
+			}
+			furthestY = pair;
+
+			if ( pair != null && pair.first != null && pair.second != null ) {
+				// set x distance
+				vectDist.y = ( pair.second.position.y + pair.second.buffer.y )
+						- ( pair.first.position.y - pair.first.buffer.y );
+			}
+
+		} else if ( numActiveAnchors == 1 ) {
+			Anchor onlyAnchor = anchorList.get( 0 );
+			vectDist.x = ( onlyAnchor.buffer.x * 2 );
+			vectDist.y = ( onlyAnchor.buffer.y * 2 );
+			furthestX = new AnchorPair( );
+			furthestX.first = onlyAnchor;
+			furthestX.second = onlyAnchor;
+			furthestY.first = onlyAnchor;
+			furthestY.second = onlyAnchor;
+		} else {
+			vectDist.x = 0;
+			vectDist.y = 0;
+			furthestX = null;
+			furthestY = null;
 		}
 
 		return vectDist;
@@ -347,40 +387,16 @@ public class AnchorList {
 
 	private void setMidpoint( ) {
 		Vector2 longest = getLongestXYDist( );
-		midpoint2.x = furthestX.first.position.x;
-		midpoint2.x -= furthestX.first.buffer.x;
-		midpoint2.x += longest.x / 2;
-		midpoint2.y = furthestY.first.position.y;
-		midpoint2.y -= furthestY.first.buffer.y;
-		midpoint2.y += longest.y / 2;
-		// int count = 0;
-		// sum.x = 0f;
-		// sum.y = 0f;
-		// for ( Anchor curAnchor : anchorList ) {
-		// if ( curAnchor != null
-		// && ( curAnchor.activated || curAnchor.special ) ) {
-		// sum.add( curAnchor.position );
-		// count++;
-		// }
-		// }
-		// sum.div( ( float ) count );
-		// midpoint2.x = sum.x;
-		// midpoint2.y = sum.y;
-		//
-		// // set special midpoint
-		// int count = 0;
-		// sum.x = 0f;
-		// sum.y = 0f;
-		//
-		// for ( Anchor curAnchor : anchorList ) {
-		// if ( curAnchor.special && curAnchor.activated ) {
-		// sum.add( curAnchor.position );
-		// count++;
-		// }
-		// }
-		//
-		// sum.div( ( float ) count );
-		// specialMidpoint.x = sum.y;
-		// specialMidpoint.y = sum.y;
+		if ( furthestX != null && furthestY != null ) {
+			midpoint2.x = furthestX.first.position.x;
+			midpoint2.x -= furthestX.first.buffer.x;
+			midpoint2.x += longest.x / 2;
+			midpoint2.y = furthestY.first.position.y;
+			midpoint2.y -= furthestY.first.buffer.y;
+			midpoint2.y += longest.y / 2;
+		} else {
+			midpoint2.x = 0;
+			midpoint2.y = 0;
+		}
 	}
 }

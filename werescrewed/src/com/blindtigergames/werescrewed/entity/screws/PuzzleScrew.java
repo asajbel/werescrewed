@@ -44,6 +44,24 @@ public class PuzzleScrew extends Screw {
 		addStructureJoint( entity );
 	}
 
+	public PuzzleScrew( String name, Vector2 pos, int max,
+			World world, int startDepth, boolean resetable ) {
+		super( name, pos, null );
+		this.world = world;
+		maxDepth = max;
+		this.startDepth = depth = startDepth;
+		resetAble = resetable;
+		puzzleManager = new PuzzleManager( this.name );
+		screwType = ScrewType.SCREW_PUZZLE;
+		entityType = EntityType.SCREW;
+		extraJoints = new ArrayList< Joint >( );
+	
+		sprite.setColor( 16f / 255f, 215f / 255f, 96f / 255f, 1.0f );
+
+		constructBody( pos );
+
+	}
+	
 	/**
 	 * screwing left calls the puzzle manager element and applies the screw
 	 * value to whatever movement is required

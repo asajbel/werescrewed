@@ -109,6 +109,14 @@ public class HazardScreen implements com.badlogic.gdx.Screen {
 				Util.CATEGORY_EVERYTHING );
 		ground.setCrushing( true );
 		skeleton.addKinematicPlatform( ground );
+		
+		ground = platBuilder.position( 1000, 150 ).name( "ground" )
+				.dimensions( 20, 1 ).texture( testTexture ).kinematic( )
+				.oneSided( true ).restitution( 0.0f ).buildTilePlatform( );
+		ground.setCategoryMask( Util.KINEMATIC_OBJECTS,
+				Util.CATEGORY_EVERYTHING );
+		skeleton.addKinematicPlatform( ground );
+		
 	}
 
 	private void initHazards( ) {

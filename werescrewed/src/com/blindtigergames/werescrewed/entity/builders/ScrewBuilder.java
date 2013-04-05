@@ -161,7 +161,7 @@ public class ScrewBuilder extends GenericEntityBuilder< ScrewBuilder > {
 		if (canBuild() && entity != null){
 			out = new Screw(name, pos, entity, world);
 			if (skeleton != null){
-				skeleton.addScrew(out);
+				//skeleton.addScrew(out);
 				skeleton.addScrewForDraw( out );
 			}
 		}
@@ -169,22 +169,26 @@ public class ScrewBuilder extends GenericEntityBuilder< ScrewBuilder > {
 	}
 	public StrippedScrew buildStrippedScrew(){
 		StrippedScrew out = null;
-		if (canBuild() && entity != null){
-			out = new StrippedScrew(name, pos, entity, world);
-			if (skeleton != null){
-				skeleton.addStrippedScrew( out );
-			}
+		if (canBuild() && skeleton != null){
+			
+			out = new StrippedScrew(name, pos, skeleton, world);
+			skeleton.addStrippedScrew( out );
+
 		}
 		return out;
 	}
 	
 	public StructureScrew buildStructureScrew(){
 		StructureScrew out = null;
-		if (canBuild() && entity != null){
-			out = new StructureScrew(name, pos, max, entity, world);
+		if (canBuild() ){
+			if( entity != null){
+				out = new StructureScrew(name, pos, max, entity, world);
+			}else{
+				out = new StructureScrew(name, pos, max, world);
+			}
+			
 			if (skeleton != null){
-				out.addStructureJoint( skeleton );
-				skeleton.addScrew(out);
+				//out.addStructureJoint( skeleton );
 				skeleton.addScrewForDraw( out );
 			}
 		}
@@ -193,11 +197,12 @@ public class ScrewBuilder extends GenericEntityBuilder< ScrewBuilder > {
 	
 	public PuzzleScrew buildPuzzleScrew(){
 		PuzzleScrew out = null;
-		if (canBuild() && entity != null){
-			out = new PuzzleScrew(name, pos, max, entity, world, startDepth, resetable);
+		if (canBuild() ){
+			out = new PuzzleScrew(name, pos, max, world, startDepth, resetable);
 			if (skeleton != null){
-				skeleton.addScrew(out);
+				//skeleton.addScrew(out);
 				skeleton.addScrewForDraw( out );
+				out.addStructureJoint( skeleton );
 			}
 		}
 		return out;
@@ -209,7 +214,7 @@ public class ScrewBuilder extends GenericEntityBuilder< ScrewBuilder > {
 			out = new BossScrew(name, pos, max, entity, world);
 			if (skeleton != null){
 				out.addStructureJoint( skeleton );
-				skeleton.addScrew(out);
+				//skeleton.addScrew(out);
 				skeleton.addScrewForDraw( out );
 			}
 		}

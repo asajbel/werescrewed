@@ -223,8 +223,8 @@ public class Camera {
 				returnDir = RectDirection.Y;
 		}
 
-		if ( returnDir == RectDirection.BOTH )
-			Gdx.app.log( "Direction", "BOTH" );
+		//if ( returnDir == RectDirection.BOTH )
+			//Gdx.app.log( "Direction", "BOTH" );
 		return returnDir;
 	}
 
