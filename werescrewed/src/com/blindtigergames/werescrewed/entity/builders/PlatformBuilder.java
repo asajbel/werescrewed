@@ -6,6 +6,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.blindtigergames.werescrewed.WereScrewedGame;
+import com.blindtigergames.werescrewed.entity.PolySprite;
 import com.blindtigergames.werescrewed.entity.platforms.Platform;
 import com.blindtigergames.werescrewed.entity.platforms.PlatformType;
 import com.blindtigergames.werescrewed.entity.platforms.TiledPlatform;
@@ -302,8 +303,11 @@ public class PlatformBuilder extends GenericEntityBuilder<PlatformBuilder> {
 		customPlat.setRestitution( this.restitution );
 		customPlat.setGravScale( this.gravScale );
 		customPlat.body.setFixedRotation( false );
-		return customPlat;
 		
+		PolySprite polySprite = new PolySprite( tex, verts );
+		customPlat.changeSprite( polySprite );
+		
+		return customPlat;
 	}
 
 
