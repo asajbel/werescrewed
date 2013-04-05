@@ -12,6 +12,7 @@ import com.blindtigergames.werescrewed.entity.RootSkeleton;
 import com.blindtigergames.werescrewed.entity.Skeleton;
 import com.blindtigergames.werescrewed.entity.action.ActivateSkeleton;
 import com.blindtigergames.werescrewed.entity.action.DeactivateSkeleton;
+import com.blindtigergames.werescrewed.entity.action.FadeFGAction;
 import com.blindtigergames.werescrewed.eventTrigger.EventTrigger;
 
 public class SkeletonBuilder extends GenericEntityBuilder<SkeletonBuilder>{
@@ -29,6 +30,7 @@ public class SkeletonBuilder extends GenericEntityBuilder<SkeletonBuilder>{
 		reset( );
 		super.world = world;
 	}
+	
 
 	
 	@Override
@@ -43,7 +45,7 @@ public class SkeletonBuilder extends GenericEntityBuilder<SkeletonBuilder>{
 				WereScrewedGame.dirHandle.path( )
 				+ "/common/robot/alphabot_texture_skin.png",
 		Texture.class );
-		this.texForeground = null;
+		this.texForeground = texBackground;
 		this.texBody = null;
 		this.hasDeactivateTrigger = false;
 		return this;
@@ -196,7 +198,17 @@ public class SkeletonBuilder extends GenericEntityBuilder<SkeletonBuilder>{
 					.endAction( new DeactivateSkeleton( ) ).repeatable( )
 					.twoPlayersToDeactivate( ).build( );
 			out.addEventTrigger( et );
-			Gdx.app.log( "SkeletonBuilder", "I just built an event trigger" );
+			//Gdx.app.log( "SkeletonBuilder", "I just built an event trigger" );
+		}
+		
+		if (out.fgSprite!=null){
+			EventTriggerBuilder etb = new EventTriggerBuilder( world );
+			EventTrigger et = etb.name( name+"-fg-fader" ).skelePolygon( polyVertsFG )
+					.position( pos ).addEntity( out )
+					.beginAction( new FadeFGAction(true) )
+					.endAction( new FadeFGAction(false) ).repeatable( )
+					.twoPlayersToDeactivate( ).build( );
+			out.addEventTrigger( et );
 		}
 		
 		return out;

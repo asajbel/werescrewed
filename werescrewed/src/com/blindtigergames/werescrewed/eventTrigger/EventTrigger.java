@@ -3,6 +3,7 @@ package com.blindtigergames.werescrewed.eventTrigger;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
@@ -30,6 +31,7 @@ public class EventTrigger extends Entity{
 	
 	public EventTrigger(String name, World world){
 		super(name, null, null, null, false );
+		//String name, Vector2 pos, Texture tex, World world
 		this.world = world;
 		entityType = EntityType.EVENTTRIGGER;
 		entityList = new ArrayList<Entity>();
