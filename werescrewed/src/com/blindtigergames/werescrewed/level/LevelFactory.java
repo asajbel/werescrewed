@@ -266,7 +266,9 @@ public class LevelFactory {
 			placeCamera(item);
 		} else if( bluePrints.equals( "tiledPlatform" )){
 			out = constructTiledPlatform(item);
-		} else if( bluePrints.equals( "screw" )){
+		} else if ( bluePrints.equals ("customPlatform" )){
+			out = constructCustomPlatform(item);
+		}else if( bluePrints.equals( "screw" )){
 			out = constructScrew(item);
 		} else if( bluePrints.equals( "pathmover" )){
 			constructPath(item);
@@ -463,14 +465,98 @@ public class LevelFactory {
 		else
 			pb.kinematic( );
 		
+		
+		
 		out = pb.buildTilePlatform( );
+		
 
-		entities.put( item.name, out);
+		entities.put( item.name, out );
 		out.setCrushing( isCrushable );
 		
 		if(item.props.containsKey( "onesided" )){
 			out.oneSided = true;
-			System.out.println( "ONESIDED" );
+		}
+		
+		IMover mover = null;
+		if(item.props.containsKey( "mover" )){
+			String movername = item.props.get( "mover" );
+			if (MoverType.fromString( movername ) != null){
+				mover = new MoverBuilder()
+				.fromString(movername)
+				.applyTo( out )
+				.build( );
+				Gdx.app.log("LevelFactory", "attaching :" + movername + " to platform");
+				
+//				ROTATETWEEN("rotatetween"),
+//				LERP("lerpmover")
+			}
+		}
+		
+		out.addMover(  mover, RobotState.IDLE );
+		
+		
+		Skeleton parent = loadSkeleton(item.skeleton);
+		
+		if (isDynamic){
+			Gdx.app.log("LevelFactory", "Tiled Dynamic platform loaded:"+out.name);
+			parent.addDynamicPlatform(  out );
+		} else {
+			Gdx.app.log("LevelFactory", "Tiled Kinematic platform loaded:"+out.name);
+			
+			parent.addKinematicPlatform( out );
+			out.setCategoryMask( Util.KINEMATIC_OBJECTS,
+					Util.CATEGORY_EVERYTHING );
+		}
+		return out;
+	}
+	
+	private Platform constructCustomPlatform(Item item){
+		Platform out = null;
+//		float width = item.element.getFloat( "Width" );
+//		float height = item.element.getFloat( "Height" );
+//		float tileWidth = width / 32f;
+//		float tileHeight = height / 32f;
+		
+//		float xPos = item.pos.x + (width/2);
+//		float yPos = item.pos.y - (height/2);
+		
+
+		PlatformBuilder pb = new PlatformBuilder(level.world);
+		
+		boolean isDynamic = false;
+		if(item.props.containsKey( "dynamic" )){
+			isDynamic = true;
+		}
+
+
+		boolean isCrushable = false;
+		if(item.props.containsKey( "crushable" ) ){
+			isCrushable = true;
+		}
+		
+
+		pb.name( item.name )
+		.position( item.pos )
+		.tileSet( "alphabot32" );
+		
+		
+		
+		if(isDynamic) pb.dynamic( );
+		else
+			pb.kinematic( );
+		
+		
+		Array<Vector2> verts = constructArray(item);
+		
+		pb.setVerts( verts );
+		out = pb.buildCustomPlatform( );
+		
+
+		entities.put( item.name, out );
+		out.setCrushing( isCrushable );
+		
+		if(item.props.containsKey( "onesided" )){
+			out.oneSided = true;
 		}
 		
 		IMover mover = null;

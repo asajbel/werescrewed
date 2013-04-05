@@ -2,13 +2,18 @@ package com.blindtigergames.werescrewed.entity.platforms;
 
 import java.util.ArrayList;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Filter;
 import com.badlogic.gdx.physics.box2d.Fixture;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.Array;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityDef;
 import com.blindtigergames.werescrewed.entity.EntityType;
@@ -373,5 +378,32 @@ public class Platform extends Entity {
 	}
 
 
+	public void constructBodyFromVerts( Array<Vector2> loadedVerts, Vector2 positionPixel ){
+		BodyDef bodyDef = new BodyDef( );
+		bodyDef.position.set( positionPixel.mul( Util.PIXEL_TO_BOX ));
+		body = world.createBody( bodyDef );
+		
+		PolygonShape polygon = new PolygonShape();
+		Vector2[] verts = new Vector2[loadedVerts.size -1];
+
+		//MAKE SURE START POINT IS IN THE MIDDLE
+		//AND SECOND AND END POINT ARE THE SAME POSITION
+		int i = 0;
+		for(int j = 0; j < loadedVerts.size; j++){
+			if(j == loadedVerts.size - 1) continue;
+			Vector2 v = loadedVerts.get( j );
+			verts[i] = new Vector2(v.x * Util.PIXEL_TO_BOX, v.y * Util.PIXEL_TO_BOX);
+			++i;
+		}
+		polygon.set( verts );
+		
+		FixtureDef fixture = new FixtureDef( );
+		fixture.shape = polygon;
+		
+		body.createFixture( fixture );
+		body.setUserData( this );
+
+		polygon.dispose( );
+	}
 
 }
