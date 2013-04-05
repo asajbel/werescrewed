@@ -304,7 +304,9 @@ public class PlatformBuilder extends GenericEntityBuilder<PlatformBuilder> {
 		customPlat.setGravScale( this.gravScale );
 		customPlat.body.setFixedRotation( false );
 		
-		PolySprite polySprite = new PolySprite( tex, verts );
+		if ( tex == null )//default texture
+			tex = WereScrewedGame.manager.get( "data/common/robot/alphabot_tile_interior.png",Texture.class );
+		PolySprite polySprite = new PolySprite( tex , verts );
 		customPlat.changeSprite( polySprite );
 		
 		return customPlat;
