@@ -341,8 +341,6 @@ public class Entity implements GleedLoadable {
 			updateDecals( deltaTime );
 
 			if ( spinemator != null ) {
-				spinemator.setPosition( bodyPos );
-				spinemator.setScale(type.spriteScale);
 				spinemator.update( deltaTime );
 			}
 		}

@@ -339,10 +339,10 @@ public class Player extends Entity {
 				} else {
 					body.setTransform(
 							new Vector2( currentScrew.getPosition( ).x
-									- ( sprite.getWidth( ) / 2.0f )
+									- ( 64 / 2.0f )
 									* Util.PIXEL_TO_BOX, currentScrew
 									.getPosition( ).y
-									- ( sprite.getHeight( ) / 2.0f )
+									- ( 128 / 2.0f )
 									* Util.PIXEL_TO_BOX ), 0.0f );
 					RevoluteJointDef revoluteJointDef = new RevoluteJointDef( );
 					revoluteJointDef.initialize( body, currentScrew.body,

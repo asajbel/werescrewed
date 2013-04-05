@@ -128,6 +128,10 @@ public class SkeletonBinary {
 			for (int i = 0, n = input.readInt(true); i < n; i++)
 				skeletonData.addSkin(readSkin(input, input.readString()));
 
+			// Animations.
+			for (int i = 0, n = input.readInt(true); i < n; i++)
+				readAnimation(input.readString(), input, skeletonData);
+
 			input.close();
 		} catch (IOException ex) {
 			throw new SerializationException("Error reading skeleton file.", ex);
@@ -182,19 +186,15 @@ public class SkeletonBinary {
 		return attachment;
 	}
 
-	public Animation readAnimation (FileHandle file, SkeletonData skeleton) {
-		if (file == null) throw new IllegalArgumentException("file cannot be null.");
-		if (skeleton == null) throw new IllegalArgumentException("skeleton cannot be null.");
-
+	private void readAnimation (String name, DataInput input, SkeletonData skeletonData) {
 		Array<Timeline> timelines = new Array();
 		float duration = 0;
 
-		DataInput input = new DataInput(file.read(512));
 		try {
 			int boneCount = input.readInt(true);
 			for (int i = 0; i < boneCount; i++) {
 				String boneName = input.readString();
-				int boneIndex = skeleton.findBoneIndex(boneName);
+				int boneIndex = skeletonData.findBoneIndex(boneName);
 				if (boneIndex == -1) throw new SerializationException("Bone not found: " + boneName);
 				int itemCount = input.readInt(true);
 				for (int ii = 0; ii < itemCount; ii++) {
@@ -240,7 +240,7 @@ public class SkeletonBinary {
 			int slotCount = input.readInt(true);
 			for (int i = 0; i < slotCount; i++) {
 				String slotName = input.readString();
-				int slotIndex = skeleton.findSlotIndex(slotName);
+				int slotIndex = skeletonData.findSlotIndex(slotName);
 				int itemCount = input.readInt(true);
 				for (int ii = 0; ii < itemCount; ii++) {
 					int timelineType = input.readByte();
@@ -277,9 +277,7 @@ public class SkeletonBinary {
 		}
 
 		timelines.shrink();
-		Animation animation = new Animation(timelines, duration);
-		animation.setName(file.nameWithoutExtension());
-		return animation;
+		skeletonData.addAnimation(new Animation(name, timelines, duration));
 	}
 
 	private void readCurve (DataInput input, int keyframeIndex, CurveTimeline timeline) throws IOException {
