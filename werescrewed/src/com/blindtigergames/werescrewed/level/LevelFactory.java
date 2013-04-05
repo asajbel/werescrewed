@@ -657,23 +657,7 @@ public class LevelFactory {
 //		SCREW_RESURRECT("ScrewResurrect"),
 //		SCREW_BOSS("ScrewBoss");
 		
-//		PUZZLE EXAMPLE:
-		
-//		plat = platBuilder.position( 143f * TILE, 89 * TILE ).name( "plat11" )
-//				.dimensions( 1, 6 ).texture( testTexture ).kinematic( )
-//				.friction( 1.0f ).oneSided( true ).restitution( 0 )
-//				.buildTilePlatform( );
-//		plat.setCategoryMask( Util.KINEMATIC_OBJECTS, Util.CATEGORY_EVERYTHING );
-//		skel9.addKinematicPlatform( plat );
-//
-//		PuzzleScrew puzzleScrew2 = new PuzzleScrew( "006", new Vector2(
-//				143f * TILE, 83 * TILE ), 100, skel9, world, 0, false );
-//		plat.setActive( true );
-//		puzzleScrew2.puzzleManager.addEntity( plat );
-//		PuzzleRotateTweenMover rtm2 = new PuzzleRotateTweenMover( 1,
-//				Util.PI / 2, true, PuzzleType.ON_OFF_MOVER );
-//		puzzleScrew2.puzzleManager.addMover( rtm2 );
-//		skeleton.addScrewForDraw( puzzleScrew2 );
+
 		
 		ScrewType sType = ScrewType.fromString( item.props.get( "screwtype" ) );
 		ScrewBuilder builder = new ScrewBuilder()
@@ -685,24 +669,22 @@ public class LevelFactory {
 		Skeleton parent = loadSkeleton(item.skeleton);
 		builder.skeleton( parent );
 		
-		if (item.props.containsKey( "target" )){
-			String s = item.props.get( "target" );
-			Entity e = entities.get( s );
-			builder.entity( e );
-		} else {
-			builder.entity( parent );
-		}
+		 
 		
 		Screw out = null;
 		switch (sType){
 			case SCREW_PUZZLE:
 				Gdx.app.log("LevelFactory", "Building puzzle screw "+ item.name + " at " + item.pos.toString( ));
 				
+				PuzzleScrew p = builder.buildPuzzleScrew( );
+				
 				Entity attach = null;
 				if(item.props.containsKey( "controlthis" )){
 					String s = item.props.get( "controlthis");
 					attach = entities.get( s );
 					Gdx.app.log("LevelFactory", "attaching :" + attach.name + " to puzzle screw");
+					
+					p.puzzleManager.addEntity( attach );
 				}
 				
 				IMover mover = null;
@@ -717,15 +699,17 @@ public class LevelFactory {
 						.build( );
 						Gdx.app.log("LevelFactory", "attaching :" + movername + " to puzzle screw");
 						
+						
+						p.puzzleManager.addMover( mover );
 //						ROTATETWEEN("rotatetween"),
 //						LERP("lerpmover")
 					}
 				}
 				
-				PuzzleScrew p = builder.buildPuzzleScrew( );
+				
 				puzzleScrews.put(item.name, p);
-				p.puzzleManager.addEntity( attach );
-				p.puzzleManager.addMover( mover );
+				
+				
 				
 				out = p;
 				break;
@@ -736,10 +720,33 @@ public class LevelFactory {
 				out = s;
 				break;
 			case SCREW_STRUCTURAL:
-				Gdx.app.log("LevelFactory", "Building structural screw "+ item.name + " at " + item.pos.toString( ));
+				Gdx.app.log("LevelFactory", "Building structural screw "+ item.name + " at " + item.pos.toString( ) );
+				
+
+				
 				StructureScrew ss = builder.buildStructureScrew( );
 				entities.put( item.name, ss );
+				
+				
+				
+				if (item.props.containsKey( "targetrev" )){
+					
+					String thisthing = item.props.get( "targetrev" );
+					Entity target = entities.get( thisthing );
+					
+					ss.addStructureJoint( target );
+				}
+				
+				if (item.props.containsKey( "skeltargetrev" )){
+					
+					String thisthing = item.props.get( "skeltargetrev" );
+					Skeleton target = skeletons.get( thisthing );
+					
+					ss.addStructureJoint( target );
+				}
+	
 				out = ss;
+				
 				break;
 			case SCREW_COSMETIC:
 				Gdx.app.log("LevelFactory", "Building cosmetic screw "+ item.name + " at " + item.pos.toString( ));
@@ -757,7 +764,7 @@ public class LevelFactory {
 				out = builder.buildScrew();
 				break;
 		}
-		out.getCrushing( );
+
 		return out;
 	}
 	
