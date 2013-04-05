@@ -8,6 +8,7 @@ import java.util.LinkedHashMap;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.XmlReader;
 import com.badlogic.gdx.utils.XmlReader.Element;
@@ -19,6 +20,7 @@ import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityCategory;
 import com.blindtigergames.werescrewed.entity.EntityDef;
 import com.blindtigergames.werescrewed.entity.RobotState;
+import com.blindtigergames.werescrewed.entity.Sprite;
 import com.blindtigergames.werescrewed.entity.action.EntityActivateMoverAction;
 import com.blindtigergames.werescrewed.entity.action.EntityDeactivateMoverAction;
 import com.blindtigergames.werescrewed.entity.builders.EventTriggerBuilder;
@@ -44,6 +46,7 @@ import com.blindtigergames.werescrewed.entity.rope.Rope;
 import com.blindtigergames.werescrewed.entity.RootSkeleton;
 import com.blindtigergames.werescrewed.entity.Skeleton;
 import com.blindtigergames.werescrewed.eventTrigger.EventTrigger;
+import com.blindtigergames.werescrewed.entity.hazard.Hazard;
 import com.blindtigergames.werescrewed.util.ArrayHash;
 import com.blindtigergames.werescrewed.util.Util;
 
@@ -256,15 +259,17 @@ public class LevelFactory {
 		
 
 		if( bluePrints.equals( "skeleton" )){
-			constructSkeleton(item);
+			out = constructSkeleton(item);
 		} else if( bluePrints.equals( "player" )){
 			constructPlayer(item);
 		} else if( bluePrints.equals( "camera" )){
 			placeCamera(item);
 		} else if( bluePrints.equals( "tiledPlatform" )){
-			constructTiledPlatform(item);
-		} else if( bluePrints.equals( "screw" )){
-			constructScrew(item);
+			out = constructTiledPlatform(item);
+		} else if ( bluePrints.equals ("customPlatform" )){
+			out = constructCustomPlatform(item);
+		}else if( bluePrints.equals( "screw" )){
+			out = constructScrew(item);
 		} else if( bluePrints.equals( "pathmover" )){
 			constructPath(item);
 		} else if (bluePrints.equals( "rope" )){
@@ -274,16 +279,52 @@ public class LevelFactory {
 		} else if (bluePrints.equals( "eventtrigger" )){
 			contstructEventTrigger(item);
 		} else if (bluePrints.equals( "hazard" )){
-			constructHazard(item);
+			out = constructHazard(item);
 		}else if (item.getDefinition().getCategory( ) == EntityCategory.COMPLEX_PLATFORM ){
-			loadComplexPlatform(item);
+			out = loadComplexPlatform(item);
+		}
+		
+		if (out != null){
+			if (item.props.containsKey( "decal" )){
+				Array<String> tokens;
+				String decalImage;
+				Vector2 decalPosition = new Vector2();
+				Sprite decal;
+				float r = 0.0f;
+				for (String decalData : item.props.getAll( "decal" ) ){
+					tokens = new Array<String>(decalData.split( "\\s+" ));
+					if (tokens.size > 2){
+						decalImage = WereScrewedGame.dirHandle+tokens.get( 0 );
+						decalPosition.x = Float.parseFloat( tokens.get(1) );
+						decalPosition.y = Float.parseFloat( tokens.get(2) );
+						decal = new Sprite(WereScrewedGame.manager.get( decalImage, Texture.class ));
+						decal.setOrigin( 0.0f, 0.0f );
+						Vector2 size = new Vector2 (1.0f, 1.0f);
+						if (tokens.size > 3){
+							r = Float.parseFloat( tokens.get(3) );
+						}
+						if (tokens.size > 4){
+							size.x = Float.parseFloat( tokens.get(4) );
+							if (tokens.size > 5){
+								size.y = Float.parseFloat( tokens.get(5) );
+							} else {
+								size.y = size.x;
+							}
+						}
+						decal.setScale(size.x , size.y);
+						out.addDecal( decal, decalPosition, r);
+						Gdx.app.log("LoadEntity","Creating decal for ["+item.name+"]. Image:"+decalImage+" Position:"+decalPosition.toString( ));
+					}
+				}
+			}
 		}
 		
 		return out;
 	}
 	
 	
-	private void constructSkeleton(Item item){
+	private Skeleton constructSkeleton(Item item){
+		Skeleton skeleton = null;
 		if(item.name.equals( "RootSkeleton" )){
 			level.root = new RootSkeleton(item.name, item.pos, null, level.world);
 			skeletons.put( item.name, level.root );
@@ -292,7 +333,6 @@ public class LevelFactory {
 		} else {
 			//attach skeleton to skeleton
 			SkeletonBuilder skeleBuilder = new SkeletonBuilder( level.world );
-			System.out.println( "SKELETON: POS " + item.pos );
 			skeleBuilder.name( item.name )
 					.position( item.pos ).texture( null );
 			 
@@ -314,8 +354,13 @@ public class LevelFactory {
 //								Texture.class ));;
 			}
 			
-			Skeleton skeleton = skeleBuilder.build( );
+			if(item.props.containsKey( "dynamic" )){
+				skeleBuilder.dynamic( );
+			}
+			
+			skeleton = skeleBuilder.build( );
 
+			
 //			IMover mover = null;
 //			if(item.props.containsKey( "mover" )){
 //				String movername = item.props.get( "mover" );
@@ -341,12 +386,21 @@ public class LevelFactory {
 				parent.addSkeleton( skeleton );
 			}
 			
+			if(item.props.containsKey( "jointto" )){
+				
+				String parentSkeleton = item.props.get( "jointto" );
+				Skeleton parent = skeletons.get( parentSkeleton );
+				
+				RevoluteJointDef revoluteJointDef = new RevoluteJointDef( );
+				revoluteJointDef.initialize( skeleton.body, parent.body, skeleton.getPosition( ) );
+				level.world.createJoint( revoluteJointDef );
+			}
 			
 		}
 		
 		Gdx.app.log( "LevelFactory, Skeleton constucted ", item.name );
 		
-		
+		return skeleton;
 	}
 	
 	private void constructPlayer(Item item){
@@ -375,7 +429,8 @@ public class LevelFactory {
 		//add position to camera later
 	}
 	
-	private void constructTiledPlatform(Item item){
+	private TiledPlatform constructTiledPlatform(Item item){
+		TiledPlatform out = null;
 		float width = item.element.getFloat( "Width" );
 		float height = item.element.getFloat( "Height" );
 		float tileWidth = width / 32f;
@@ -399,9 +454,6 @@ public class LevelFactory {
 		}
 		
 
-		
-		TiledPlatform out = null;
-
 		pb.name( item.name )
 		.position( new Vector2(xPos, yPos) )
 		.dimensions( new Vector2(tileWidth, tileHeight) )
@@ -413,14 +465,16 @@ public class LevelFactory {
 		else
 			pb.kinematic( );
 		
+		
+		
 		out = pb.buildTilePlatform( );
+		
 
-		entities.put( item.name, out);
+		entities.put( item.name, out );
 		out.setCrushing( isCrushable );
 		
 		if(item.props.containsKey( "onesided" )){
 			out.oneSided = true;
-			System.out.println( "ONESIDED" );
 		}
 		
 		IMover mover = null;
@@ -453,9 +507,93 @@ public class LevelFactory {
 			out.setCategoryMask( Util.KINEMATIC_OBJECTS,
 					Util.CATEGORY_EVERYTHING );
 		}
+		return out;
 	}
 	
-	protected void loadComplexPlatform(Item item){
+	private Platform constructCustomPlatform(Item item){
+		Platform out = null;
+//		float width = item.element.getFloat( "Width" );
+//		float height = item.element.getFloat( "Height" );
+//		float tileWidth = width / 32f;
+//		float tileHeight = height / 32f;
+		
+//		float xPos = item.pos.x + (width/2);
+//		float yPos = item.pos.y - (height/2);
+		
+
+		PlatformBuilder pb = new PlatformBuilder(level.world);
+		
+		boolean isDynamic = false;
+		if(item.props.containsKey( "dynamic" )){
+			isDynamic = true;
+		}
+
+
+		boolean isCrushable = false;
+		if(item.props.containsKey( "crushable" ) ){
+			isCrushable = true;
+		}
+		
+
+		pb.name( item.name )
+		.position( item.pos )
+		.tileSet( "alphabot32" );
+		
+		
+		
+		if(isDynamic) pb.dynamic( );
+		else
+			pb.kinematic( );
+		
+		
+		Array<Vector2> verts = constructArray(item);
+		
+		pb.setVerts( verts );
+		out = pb.buildCustomPlatform( );
+		
+
+		entities.put( item.name, out );
+		out.setCrushing( isCrushable );
+		
+		if(item.props.containsKey( "onesided" )){
+			out.oneSided = true;
+		}
+		
+		IMover mover = null;
+		if(item.props.containsKey( "mover" )){
+			String movername = item.props.get( "mover" );
+			if (MoverType.fromString( movername ) != null){
+				mover = new MoverBuilder()
+				.fromString(movername)
+				.applyTo( out )
+				.build( );
+				Gdx.app.log("LevelFactory", "attaching :" + movername + " to platform");
+				
+//				ROTATETWEEN("rotatetween"),
+//				LERP("lerpmover")
+			}
+		}
+		
+		out.addMover(  mover, RobotState.IDLE );
+		
+		
+		Skeleton parent = loadSkeleton(item.skeleton);
+		
+		if (isDynamic){
+			Gdx.app.log("LevelFactory", "Tiled Dynamic platform loaded:"+out.name);
+			parent.addDynamicPlatform(  out );
+		} else {
+			Gdx.app.log("LevelFactory", "Tiled Kinematic platform loaded:"+out.name);
+			
+			parent.addKinematicPlatform( out );
+			out.setCategoryMask( Util.KINEMATIC_OBJECTS,
+					Util.CATEGORY_EVERYTHING );
+		}
+		return out;
+	}
+	
+	protected Platform loadComplexPlatform(Item item){
+		Platform out = null;
 		
 		boolean isDynamic = false;
 		if(item.props.containsKey( "dynamic" ) ){
@@ -479,7 +617,7 @@ public class LevelFactory {
 			}
 		}
 		
-		Platform out = new PlatformBuilder(level.world)
+		out = new PlatformBuilder(level.world)
 		.name( item.name )
 		.type( item.getDefinition( ) )
 		.position( item.pos.x, item.pos.y )
@@ -506,9 +644,10 @@ public class LevelFactory {
 		} else {
 			parent.addKinematicPlatform( out );
 		}
-		
+		return out;
 	}
-	private void constructScrew(Item item){
+	
+	private Screw constructScrew(Item item){
 		
 //		ScrewTypes:
 //		SCREW_COSMETIC("ScrewCosmetic"),
@@ -518,23 +657,7 @@ public class LevelFactory {
 //		SCREW_RESURRECT("ScrewResurrect"),
 //		SCREW_BOSS("ScrewBoss");
 		
-//		PUZZLE EXAMPLE:
-		
-//		plat = platBuilder.position( 143f * TILE, 89 * TILE ).name( "plat11" )
-//				.dimensions( 1, 6 ).texture( testTexture ).kinematic( )
-//				.friction( 1.0f ).oneSided( true ).restitution( 0 )
-//				.buildTilePlatform( );
-//		plat.setCategoryMask( Util.KINEMATIC_OBJECTS, Util.CATEGORY_EVERYTHING );
-//		skel9.addKinematicPlatform( plat );
-//
-//		PuzzleScrew puzzleScrew2 = new PuzzleScrew( "006", new Vector2(
-//				143f * TILE, 83 * TILE ), 100, skel9, world, 0, false );
-//		plat.setActive( true );
-//		puzzleScrew2.puzzleManager.addEntity( plat );
-//		PuzzleRotateTweenMover rtm2 = new PuzzleRotateTweenMover( 1,
-//				Util.PI / 2, true, PuzzleType.ON_OFF_MOVER );
-//		puzzleScrew2.puzzleManager.addMover( rtm2 );
-//		skeleton.addScrewForDraw( puzzleScrew2 );
+
 		
 		ScrewType sType = ScrewType.fromString( item.props.get( "screwtype" ) );
 		ScrewBuilder builder = new ScrewBuilder()
@@ -546,24 +669,22 @@ public class LevelFactory {
 		Skeleton parent = loadSkeleton(item.skeleton);
 		builder.skeleton( parent );
 		
-		if (item.props.containsKey( "target" )){
-			String s = item.props.get( "target" );
-			Entity e = entities.get( s );
-			builder.entity( e );
-		} else {
-			builder.entity( parent );
-		}
+		 
 		
 		Screw out = null;
 		switch (sType){
 			case SCREW_PUZZLE:
 				Gdx.app.log("LevelFactory", "Building puzzle screw "+ item.name + " at " + item.pos.toString( ));
 				
+				PuzzleScrew p = builder.buildPuzzleScrew( );
+				
 				Entity attach = null;
 				if(item.props.containsKey( "controlthis" )){
 					String s = item.props.get( "controlthis");
 					attach = entities.get( s );
 					Gdx.app.log("LevelFactory", "attaching :" + attach.name + " to puzzle screw");
+					
+					p.puzzleManager.addEntity( attach );
 				}
 				
 				IMover mover = null;
@@ -578,15 +699,17 @@ public class LevelFactory {
 						.build( );
 						Gdx.app.log("LevelFactory", "attaching :" + movername + " to puzzle screw");
 						
+						
+						p.puzzleManager.addMover( mover );
 //						ROTATETWEEN("rotatetween"),
 //						LERP("lerpmover")
 					}
 				}
 				
-				PuzzleScrew p = builder.buildPuzzleScrew( );
+				
 				puzzleScrews.put(item.name, p);
-				p.puzzleManager.addEntity( attach );
-				p.puzzleManager.addMover( mover );
+				
+				
 				
 				out = p;
 				break;
@@ -597,10 +720,33 @@ public class LevelFactory {
 				out = s;
 				break;
 			case SCREW_STRUCTURAL:
-				Gdx.app.log("LevelFactory", "Building structural screw "+ item.name + " at " + item.pos.toString( ));
+				Gdx.app.log("LevelFactory", "Building structural screw "+ item.name + " at " + item.pos.toString( ) );
+				
+
+				
 				StructureScrew ss = builder.buildStructureScrew( );
 				entities.put( item.name, ss );
+				
+				
+				
+				if (item.props.containsKey( "targetrev" )){
+					
+					String thisthing = item.props.get( "targetrev" );
+					Entity target = entities.get( thisthing );
+					
+					ss.addStructureJoint( target );
+				}
+				
+				if (item.props.containsKey( "skeltargetrev" )){
+					
+					String thisthing = item.props.get( "skeltargetrev" );
+					Skeleton target = skeletons.get( thisthing );
+					
+					ss.addStructureJoint( target );
+				}
+	
 				out = ss;
+				
 				break;
 			case SCREW_COSMETIC:
 				Gdx.app.log("LevelFactory", "Building cosmetic screw "+ item.name + " at " + item.pos.toString( ));
@@ -618,8 +764,8 @@ public class LevelFactory {
 				out = builder.buildScrew();
 				break;
 		}
-		out.getCrushing( );
 
+		return out;
 	}
 	
 	
@@ -723,7 +869,7 @@ public class LevelFactory {
 	}
 	
 	public Array<Vector2> contstructSkeletonPoly(Item item){
-		
+
 		Array<Element> pointElems = item.element.getChildByName( "LocalPoints" ).getChildrenByName( "Vector2" );
 		Gdx.app.log("LevelFactory", "Loading PolySprite:"+pointElems.size+" points.");
 		Array<Vector2> pathPoints = new Array<Vector2>(pointElems.size);
@@ -816,14 +962,14 @@ public class LevelFactory {
 		
 	}
 	
-	public void constructHazard( Item item ){
+	public Hazard constructHazard( Item item ){
 		
 		//TODO: make hazard builder (not just spikes)
 		
 		//String skelAttach = item.skeleton;
 		//Skeleton parent = loadSkeleton(skelAttach);
 		
-		
+		return null;
 	}
 	
 

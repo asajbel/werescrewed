@@ -7,6 +7,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.utils.Array;
 import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.camera.Camera;
 import com.blindtigergames.werescrewed.entity.Skeleton;
@@ -42,6 +43,7 @@ public class DragonScreen extends Screen {
 		buildGround();
 		//buildDynamicSkeleton();
 		buildHazardSkeleton();
+		complexPlatform();
 	}
 	
 	void buildGround(){
@@ -115,5 +117,20 @@ public class DragonScreen extends Screen {
 		balloon.setMoverAtCurrentState( new TargetImpulseMover( balloon.getPositionPixel( ).add( 0,250 ), Vector2.Zero, .4f, true, 100 ) );
 		
 		return balloon;
+	}
+	
+	void complexPlatform(){
+		//SkeletonBuilder sb = new SkeletonBuilder( level.world );
+		//Skeleton dyn_skeleton = sb.name( "dyn_skeleton" ).position( -100,300 ).density( 0.1f ).dynamic( ).build( );
+		PlatformBuilder pb = new PlatformBuilder( level.world );
+		Array< Vector2 > verts = new Array<Vector2>();
+		verts.add( new Vector2(0,0) );
+		verts.add( new Vector2(1,1) );
+		verts.add( new Vector2( 100,100 ));
+		verts.add( new Vector2( 0,200 ));
+		verts.add( new Vector2( -100,100 ));
+		
+		Platform tp = pb.name( "custom_Plat" ).texture( WereScrewedGame.manager.get( "data/common/robot/alphabot_tile_interior.png",Texture.class ) ).position( 200,700 ).setVerts(verts ).buildCustomPlatform( );
+		level.root.addKinematicPlatform( tp );
 	}
 }

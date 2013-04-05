@@ -30,6 +30,14 @@ public class Screen implements com.badlogic.gdx.Screen {
 		
 		//Gdx.app.log( "Screen", "Turning log level to none. SHHH" );
 		//Gdx.app.setLogLevel( Application.LOG_NONE );
+		//TODO get depth test to work!!
+//		if ( Gdx.gl20 != null ) {
+//			Gdx.gl.glEnable(GL20.GL_DEPTH_TEST);
+//			Gdx.gl20.glDepthFunc(GL20.GL_LESS);
+//		} else {
+//			Gdx.gl.glEnable(GL20.GL_DEPTH_TEST);
+//			Gdx.gl10.glDepthFunc(GL20.GL_LESS);			
+//		}
 
 		batch = new SpriteBatch( );
 		debugRenderer = new SBox2DDebugRenderer( Util.BOX_TO_PIXEL );
@@ -47,9 +55,12 @@ public class Screen implements com.badlogic.gdx.Screen {
 	public void render( float delta ) {
 		if(Gdx.gl20 != null){
 			Gdx.gl20.glClearColor( 0.0f, 0f, 0.0f, 1.0f );
+			//TODO get depth test to work!!
+			//Gdx.gl20.glClear( GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT );
 			Gdx.gl20.glClear( GL20.GL_COLOR_BUFFER_BIT );
 		} else {
 			Gdx.gl10.glClearColor( 0.0f, 0f, 0.0f, 1.0f );
+			//Gdx.gl10.glClear( GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT );
 			Gdx.gl10.glClear( GL20.GL_COLOR_BUFFER_BIT );
 		}
 

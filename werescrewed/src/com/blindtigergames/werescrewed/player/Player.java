@@ -6,6 +6,7 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.controllers.PovDirection;
+import com.badlogic.gdx.graphics.g2d.ParticleEmitter;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -15,6 +16,7 @@ import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.Filter;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.JointEdge;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJoint;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
@@ -33,6 +35,7 @@ import com.blindtigergames.werescrewed.entity.mover.LinearAxis;
 import com.blindtigergames.werescrewed.entity.screws.ResurrectScrew;
 import com.blindtigergames.werescrewed.entity.screws.Screw;
 import com.blindtigergames.werescrewed.entity.screws.ScrewType;
+import com.blindtigergames.werescrewed.graphics.particle.ParticleEffect;
 import com.blindtigergames.werescrewed.input.MyControllerListener;
 import com.blindtigergames.werescrewed.input.PlayerInputHandler;
 import com.blindtigergames.werescrewed.util.Metrics;
@@ -109,7 +112,7 @@ public class Player extends Entity {
 	private Player otherPlayer;
 	private RevoluteJoint playerJoint;
 	private Body platformBody;
-	private Entity hitCloud;
+	//private Entity hitCloud;
 	private boolean topPlayer = false;
 	private boolean isDead = false;
 	private boolean hitSolidObject;
@@ -132,6 +135,8 @@ public class Player extends Entity {
 
 	public int grabCounter = 0;
 	public int jumpCounter = 0;
+
+	private ParticleEffect land_cloud;
 
 	@SuppressWarnings( "unused" )
 	private Sound jumpSound;
@@ -202,7 +207,7 @@ public class Player extends Entity {
 		AnchorList.getInstance( ).addAnchor( anchor );
 
 		// build the hit cloud entity and animation
-		hitCloud = new Entity( name + "_hitCloud", Vector2.Zero, null, null,
+		/*hitCloud = new Entity( name + "_hitCloud", Vector2.Zero, null, null,
 				false );
 		SimpleFrameAnimator hitCloudAnimator = new SimpleFrameAnimator( )
 				.speed( 1f ).loop( LoopBehavior.STOP ).startFrame( 1 )
@@ -211,7 +216,7 @@ public class Player extends Entity {
 				WereScrewedGame.manager.getTextureAtlas( "hitCloud" ),
 				hitCloudAnimator );
 		// set the frame to the last
-		hitCloud.sprite.getAnimator( ).setFrame( 3 );
+		hitCloud.sprite.getAnimator( ).setFrame( 3 );*/
 
 		setFixtures( );
 		maxFriction( );
@@ -224,6 +229,8 @@ public class Player extends Entity {
 
 		jumpSound = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 				+ "/common/sounds/WilhelmScream.ogg" );
+
+		land_cloud = ParticleEffect.loadEffect( "land_cloud" );
 	}
 
 	// PUBLIC METHODS
@@ -237,7 +244,7 @@ public class Player extends Entity {
 			Gdx.app.log( "steamCollide: " + steamCollide, "steamDone: "
 					+ steamDone );
 		// update the hit cloud if it exists
-		hitCloud.sprite.update( deltaTime );
+		//hitCloud.sprite.update( deltaTime );
 		if ( name.equals( "player1" ) ) {
 
 		}
@@ -429,10 +436,14 @@ public class Player extends Entity {
 	 */
 	@Override
 	public void draw( SpriteBatch batch, float deltaTime ) {
-		super.draw( batch,  deltaTime );
-		if ( hitCloud.sprite.getAnimator( ).getFrame( ) < 3 ) {
-			hitCloud.draw( batch, deltaTime );
+		super.draw( batch, deltaTime );
+//		if ( hitCloud.sprite.getAnimator( ).getFrame( ) < 3 ) {
+//			hitCloud.draw( batch, deltaTime );
+//		}
+		if (!land_cloud.isComplete( )){
+			land_cloud.draw( batch, deltaTime );
 		}
+		
 	}
 
 	/**
@@ -740,11 +751,14 @@ public class Player extends Entity {
 	public void setGrounded( boolean newVal ) {
 		if ( !topPlayer ) {
 			if ( newVal != false && !grounded && otherPlayer == null ) {
-				hitCloud.setPixelPosition( this.getPositionPixel( )
+				/*hitCloud.setPixelPosition( this.getPositionPixel( )
 						.sub( 0, 12f ) );
 				hitCloud.sprite.setColor( 1, 1, 1, body.getLinearVelocity( ).y
 						/ ( float ) MAX_VELOCITY );
-				hitCloud.sprite.reset( );
+				hitCloud.sprite.reset( );*/
+				land_cloud.start( );
+				Vector2 posPix = getPositionPixel( );
+				land_cloud.setPosition( posPix.x+50, posPix.y );
 			}
 			this.grounded = newVal;
 		}
@@ -833,16 +847,17 @@ public class Player extends Entity {
 		if ( platformBody == null && b != null
 				&& playerState == PlayerState.Screwing ) {
 			knockedOff = true;
-		}
-		else if ( screwJumpTimeout == 0 ) {
-			platformBody = b;
+		} else if ( screwJumpTimeout == 0 ) {
+			if ( b != null || playerState != PlayerState.Screwing ) {
+				platformBody = b;
+			}
 			if ( playerState == PlayerState.Falling ) {
 				playerState = PlayerState.Standing;
 			}
 		}
 		if ( b == null ) {
-			hitSolidObject = false;
 			knockedOff = false;
+			hitSolidObject = false;
 		} else {
 			hitSolidObject = true;
 		}
@@ -898,6 +913,24 @@ public class Player extends Entity {
 			}
 			playerState = PlayerState.Screwing;
 			currentScrew.setPlayerAttached( true );
+			for ( JointEdge je : currentScrew.body.getJointList( ) ) {
+				// if this body is a platform but not a skeleton save the
+				// instance
+				if ( je.joint.getBodyA( ).getUserData( ) instanceof Entity ) {
+					Entity p = ( Entity ) je.joint.getBodyA( ).getUserData( );
+					if ( p.getEntityType( ) == EntityType.PLATFORM ) {
+						platformBody = je.joint.getBodyA( );
+					}
+				}
+				// if this body is a platform but not a skeleton save the
+				// instance
+				if ( je.joint.getBodyB( ).getUserData( ) instanceof Entity ) {
+					Entity p = ( Entity ) je.joint.getBodyB( ).getUserData( );
+					if ( p.getEntityType( ) == EntityType.PLATFORM ) {
+						platformBody = je.joint.getBodyB( );
+					}
+				}
+			}
 			setGrounded( false );
 			if ( Metrics.activated ) {
 				Metrics.addPlayerAttachToScrewPosition( this.getPositionPixel( ) );
@@ -1429,14 +1462,10 @@ public class Player extends Entity {
 			// set the bits of the platform back to everything
 			for ( Fixture f : platformBody.getFixtureList( ) ) {
 				filter = f.getFilterData( );
-				// move platform back to original category
-				if ( platformBody.getType( ) == BodyType.DynamicBody ) {
-					filter.categoryBits = Util.DYNAMIC_OBJECTS;
-				} else {
-					filter.categoryBits = Util.KINEMATIC_OBJECTS;
-				}
-				// platform now collides with everything
-				filter.maskBits = Util.CATEGORY_EVERYTHING;
+				// move platform to sub category
+				filter.categoryBits = Util.CATEGORY_SUBPLATFORM;
+				// platform only doesn't collide with player
+				filter.maskBits = ~Util.CATEGORY_SUBPLAYER;
 				f.setFilterData( filter );
 			}
 			for ( Fixture f : body.getFixtureList( ) ) {
