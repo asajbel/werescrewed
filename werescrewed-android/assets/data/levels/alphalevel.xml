@@ -540,8 +540,8 @@
                 </Item>
                 <Item xsi:type="RectangleItem" Name="jumpHeight" Visible="true">
                     <Position>
-                        <X>-1312</X>
-                        <Y>-864</Y>
+                        <X>-1984</X>
+                        <Y>-512</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -563,8 +563,8 @@
                 </Item>
                 <Item xsi:type="RectangleItem" Name="doubleJumpHeight" Visible="true">
                     <Position>
-                        <X>-1168</X>
-                        <Y>-992</Y>
+                        <X>-1840</X>
+                        <Y>-640</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -586,8 +586,8 @@
                 </Item>
                 <Item xsi:type="RectangleItem" Name="playerHeight" Visible="true">
                     <Position>
-                        <X>-336</X>
-                        <Y>-832</Y>
+                        <X>-2096</X>
+                        <Y>-784</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -864,7 +864,7 @@
         <ContentRootFolder>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures</ContentRootFolder>
         <CameraPosition>
             <X>-759.615845</X>
-            <Y>-784.6819</Y>
+            <Y>-909.681763</Y>
         </CameraPosition>
         <Version>1.3.0.0</Version>
     </EditorRelated>
