@@ -260,7 +260,7 @@ public class MyContactListener implements ContactListener {
 									}
 								}
 								player.hitSolidObject( null );
-								contact.setEnabled( true );
+								//contact.setEnabled( true );
 
 							}
 							break;
@@ -356,7 +356,9 @@ public class MyContactListener implements ContactListener {
 								TiledPlatform tilePlat = ( TiledPlatform ) objectFix
 										.getBody( ).getUserData( );
 								Vector2 platformPos = tilePlat.getPosition( );
+								//Gdx.app.log("center: " + tilePlat.getPosition( ).y,"\nheight: " + tilePlat.getMeterHeight( ));
 								Vector2 playerPos = player.getPosition( );
+								//platformPos.y += tilePlat.getMeterHeight( );
 								if ( tilePlat.getOneSided( ) ) {
 									if ( platformPos.y > playerPos.y ) {
 										contact.setEnabled( false );
@@ -437,7 +439,7 @@ public class MyContactListener implements ContactListener {
 						case PLATFORM:
 							Platform plat = ( Platform ) object;
 							if ( plat.getPlatformType( ) == PlatformType.TILED ) {
-								TiledPlatform tilePlat = ( TiledPlatform ) objectFix
+								/*TiledPlatform tilePlat = ( TiledPlatform ) objectFix
 										.getBody( ).getUserData( );
 								Vector2 platformPos = tilePlat.getPosition( );
 								Vector2 playerPos = player.getPosition( );
@@ -448,10 +450,7 @@ public class MyContactListener implements ContactListener {
 								}
 								if ( player.isTopPlayer( ) ) {
 									contact.setEnabled( false );
-								}
-								if ( player.isTopPlayer( ) ) {
-									contact.setEnabled( false );
-								}
+								}*/
 							}
 							break;
 						default:
