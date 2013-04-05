@@ -3,6 +3,7 @@ package com.blindtigergames.werescrewed.entity;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -47,7 +48,7 @@ public class Skeleton extends Platform {
 	public PolySprite bgSprite, fgSprite;
 
 	SimpleFrameAnimator fgAlphaAnimator;
-	private final float fgFadeSpeed = 0.08f;
+	private final float fgFadeSpeed = 1f;
 
 	protected HashMap< String, Platform > dynamicPlatformMap = new HashMap< String, Platform >( );
 	protected HashMap< String, Skeleton > childSkeletonMap = new HashMap< String, Skeleton >( );
@@ -349,7 +350,7 @@ public class Skeleton extends Platform {
 	 */
 	@Override
 	public void update( float deltaTime ) {
-		fgAlphaAnimator.update( deltaTime );
+		
 		if ( isActive( ) ) {
 			float frameRate = 1 / deltaTime;
 			updateMover( deltaTime );
@@ -387,6 +388,8 @@ public class Skeleton extends Platform {
 
 			Vector2 pixelPos = null;
 			if ( fgSprite != null ) {
+				fgAlphaAnimator.update( deltaTime );
+				Gdx.app.log( name, "time:"+fgAlphaAnimator.getTime( ) );
 				pixelPos = getPosition( ).mul( Util.BOX_TO_PIXEL );
 				fgSprite.setPosition( pixelPos.x - offset.x, pixelPos.y
 						- offset.y );
@@ -478,11 +481,14 @@ public class Skeleton extends Platform {
 			// draw bg
 			if ( bgSprite != null )
 				bgSprite.draw( batch );
+			
 			drawChildren( batch, deltaTime );
-			if ( fgSprite != null ) {// draw fg
-				Color c = batch.getColor( );
-				batch.setColor( c.r, c.g, c.b, fgAlphaAnimator.getTime( ) );
+			
+			if ( fgSprite != null && fgAlphaAnimator.getTime( ) > 0 ) {
+				fgSprite.setAlpha( fgAlphaAnimator.getTime( ) );
+				//batch.setColor( c.r, c.g, c.b, fgAlphaAnimator.getTime( ) );
 				fgSprite.draw( batch );
+				//batch.setColor( c.r, c.g, c.b, oldAlpha );
 			}
 
 		}

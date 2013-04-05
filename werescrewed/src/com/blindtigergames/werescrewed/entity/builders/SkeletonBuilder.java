@@ -14,6 +14,7 @@ import com.blindtigergames.werescrewed.entity.action.ActivateSkeleton;
 import com.blindtigergames.werescrewed.entity.action.DeactivateSkeleton;
 import com.blindtigergames.werescrewed.entity.action.FadeFGAction;
 import com.blindtigergames.werescrewed.eventTrigger.EventTrigger;
+import com.blindtigergames.werescrewed.util.Util;
 
 public class SkeletonBuilder extends GenericEntityBuilder<SkeletonBuilder>{
 
@@ -203,7 +204,11 @@ public class SkeletonBuilder extends GenericEntityBuilder<SkeletonBuilder>{
 		
 		if (out.fgSprite!=null){
 			EventTriggerBuilder etb = new EventTriggerBuilder( world );
-			EventTrigger et = etb.name( name+"-fg-fader" ).skelePolygon( polyVertsFG )
+			Array< Vector2 > meterFGVerts = new Array< Vector2 >();
+			for( Vector2 v : polyVertsFG ){
+				meterFGVerts.add( v.cpy( ).mul( Util.PIXEL_TO_BOX ) );
+			}
+			EventTrigger et = etb.name( name+"-fg-fader" ).skelePolygon( meterFGVerts )
 					.position( pos ).addEntity( out )
 					.beginAction( new FadeFGAction(true) )
 					.endAction( new FadeFGAction(false) ).repeatable( )

@@ -1,5 +1,6 @@
 package com.blindtigergames.werescrewed.entity;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -32,6 +33,8 @@ public class Sprite extends com.badlogic.gdx.graphics.g2d.Sprite implements I_Dr
 	Array<TextureAtlas> atlases;
 	IAnimator animator;
 	TextureRegion currentFrame;
+	
+	protected float alpha = 1.0f;
 	
 	public Sprite(){
 		super();
@@ -127,7 +130,19 @@ public class Sprite extends com.badlogic.gdx.graphics.g2d.Sprite implements I_Dr
 			//We only need to update when the frame changes.
 			currentFrame = null;
 		}
+		Color c = batch.getColor( );
+		float oldAlpha = c.a;
+		batch.setColor( c.r, c.g, c.b, alpha );
 		super.draw( batch );
+		batch.setColor( c.r, c.g, c.b, oldAlpha );
+	}
+	
+	public void setAlpha(float newAlpha){
+		alpha = newAlpha;
+	}
+	
+	public float getAlpha(){
+		return alpha;
 	}
 
 	/**

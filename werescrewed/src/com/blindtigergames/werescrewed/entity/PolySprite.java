@@ -222,6 +222,15 @@ public class PolySprite extends Sprite {
 		}
 	}
 	
+	@Override
+	public void setAlpha(float newAlpha){
+		super.setAlpha( newAlpha );
+		for ( int i = 0; i < numVerts; i++ ) {
+			verts[ 9 * i + 6 ] = alpha;
+		}
+		mesh.setVertices( verts );
+	}
+	
 	private void constructMesh( Array< Vector2 > verts, float r, float g,
 			float b, float a ) {
 
