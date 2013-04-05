@@ -776,7 +776,7 @@ public class LevelFactory {
 	}
 	
 	public Array<Vector2> contstructSkeletonPoly(Item item){
-		
+
 		Array<Element> pointElems = item.element.getChildByName( "LocalPoints" ).getChildrenByName( "Vector2" );
 		Gdx.app.log("LevelFactory", "Loading PolySprite:"+pointElems.size+" points.");
 		Array<Vector2> pathPoints = new Array<Vector2>(pointElems.size);
