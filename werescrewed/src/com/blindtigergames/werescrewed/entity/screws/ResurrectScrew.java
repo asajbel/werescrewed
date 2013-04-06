@@ -48,8 +48,8 @@ public class ResurrectScrew extends Screw {
 		screwType = ScrewType.SCREW_RESURRECT;
 		entityType = EntityType.SCREW;
 
-		sprite.setColor( 255f / 255f, 0f / 255f, 0f / 255f, 0.5f );
-		
+		sprite.setColor( .7f, .7f, 1f, 0.7f );
+
 		constructBody( pos );
 		connectScrewToEntity( entity );
 		constructPulley( );
@@ -65,6 +65,7 @@ public class ResurrectScrew extends Screw {
 			rotation += 10;
 			screwStep = depth + 5;
 			pulleyWeight.setLinearVelocity( new Vector2( -1f, 0f ) );
+			deadPlayer.body.setType( BodyType.DynamicBody );
 		}
 	}
 
@@ -91,6 +92,7 @@ public class ResurrectScrew extends Screw {
 			}
 			screwStep = depth + 5;
 			pulleyWeight.setLinearVelocity( new Vector2( -1f, 0f ) );
+			deadPlayer.body.setType( BodyType.DynamicBody );
 		}
 
 	}
@@ -106,6 +108,7 @@ public class ResurrectScrew extends Screw {
 			rotation -= 10;
 			screwStep = depth + 5;
 			pulleyWeight.setLinearVelocity( new Vector2( 1f, 0f ) );
+			deadPlayer.body.setType( BodyType.DynamicBody );
 		}
 	}
 
@@ -131,6 +134,7 @@ public class ResurrectScrew extends Screw {
 			}
 			screwStep = depth + 5;
 			pulleyWeight.setLinearVelocity( new Vector2( 1f, 0f ) );
+			deadPlayer.body.setType( BodyType.DynamicBody );
 		}
 
 	}
@@ -145,6 +149,13 @@ public class ResurrectScrew extends Screw {
 		if ( player == deadPlayer ) {
 			destroyJoint = true;
 		}
+	}
+
+	/**
+	 * returns the dead player attached
+	 */
+	public Player getDeadPlayer( ) {
+		return deadPlayer;
 	}
 
 	/**
@@ -191,19 +202,26 @@ public class ResurrectScrew extends Screw {
 				deadPlayer.body.setTransform(
 						this.getPositionPixel( )
 								.sub( deadPlayer.sprite.getWidth( ) / 3.0f,
-										deadPlayer.sprite.getHeight( ) ).mul( Util.PIXEL_TO_BOX ), 0.0f );
+										deadPlayer.sprite.getHeight( ) )
+								.mul( Util.PIXEL_TO_BOX ), 0.0f );
 				deadPlayer.respawnPlayer( );
+				deadPlayer.body.setLinearVelocity( Vector2.Zero );
+				deadPlayer.body.setType( BodyType.DynamicBody );
 				remove( );
 				active = false;
 			}
-			sprite.setRotation( rotation );
-			if ( depth != screwStep ) {
-				screwStep--;
-			}
-			if ( depth == screwStep ) {
-				body.setAngularVelocity( 0 );
-				if ( pulleyWeight != null ) {
-					pulleyWeight.setLinearVelocity( new Vector2( 0f, 0f ) );
+			if ( active ) {
+				sprite.setRotation( rotation );
+				if ( depth != screwStep ) {
+					screwStep--;
+				}
+				if ( depth == screwStep ) {
+					body.setAngularVelocity( 0 );
+					if ( pulleyWeight != null ) {
+						pulleyWeight.setLinearVelocity( new Vector2( 0f, 0f ) );
+					}
+					deadPlayer.body.setLinearVelocity( Vector2.Zero );
+					deadPlayer.body.setType( BodyType.KinematicBody );
 				}
 			}
 		}
