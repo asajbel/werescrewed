@@ -6,7 +6,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.JointEdge;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.builders.ScrewBuilder;
 import com.blindtigergames.werescrewed.entity.mover.LerpMover;
@@ -178,7 +177,6 @@ public class ProgressManager {
 				} else {
 					screwPos = new Vector2( -100, 150 );
 				}
-				player1.body.setType( BodyType.KinematicBody );
 				player1.body.setLinearVelocity( Vector2.Zero );
 				resurrectScrew = rezzBuilder.playerOffset( true )
 						.position( screwPos ).buildRezzScrew( );
@@ -192,7 +190,6 @@ public class ProgressManager {
 				} else {
 					screwPos = new Vector2( -100, 150 );
 				}
-				player2.body.setType( BodyType.KinematicBody );
 				player2.body.setLinearVelocity( Vector2.Zero );
 				resurrectScrew = rezzBuilder.playerOffset( true )
 						.position( screwPos ).buildRezzScrew( );
@@ -221,7 +218,6 @@ public class ProgressManager {
 				} else {
 					screwPos = new Vector2( -100, 150 );
 				}
-				player2.body.setType( BodyType.KinematicBody );
 				player2.body.setLinearVelocity( Vector2.Zero );
 			} else {
 				// create new rez screw and attach
@@ -233,7 +229,6 @@ public class ProgressManager {
 				} else {
 					screwPos = new Vector2( -100, 150 );
 				}
-				player1.body.setType( BodyType.KinematicBody );
 				player1.body.setLinearVelocity( Vector2.Zero );
 			}
 			extraRezScrew = rezzBuilder.playerOffset( true )
@@ -314,7 +309,6 @@ public class ProgressManager {
 		player.body.setTransform( checkPoints.get( currentCheckPoint )
 				.getPosition( ), 0.0f );
 		player.body.setLinearVelocity( Vector2.Zero );
-		player.body.setType( BodyType.DynamicBody );
 	}
 
 	/**

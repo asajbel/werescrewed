@@ -65,7 +65,6 @@ public class ResurrectScrew extends Screw {
 			rotation += 10;
 			screwStep = depth + 5;
 			pulleyWeight.setLinearVelocity( new Vector2( -1f, 0f ) );
-			deadPlayer.body.setType( BodyType.DynamicBody );
 		}
 	}
 
@@ -206,7 +205,6 @@ public class ResurrectScrew extends Screw {
 								.mul( Util.PIXEL_TO_BOX ), 0.0f );
 				deadPlayer.respawnPlayer( );
 				deadPlayer.body.setLinearVelocity( Vector2.Zero );
-				deadPlayer.body.setType( BodyType.DynamicBody );
 				remove( );
 				active = false;
 			}
@@ -221,7 +219,6 @@ public class ResurrectScrew extends Screw {
 						pulleyWeight.setLinearVelocity( new Vector2( 0f, 0f ) );
 					}
 					deadPlayer.body.setLinearVelocity( Vector2.Zero );
-					deadPlayer.body.setType( BodyType.KinematicBody );
 				}
 			}
 		}

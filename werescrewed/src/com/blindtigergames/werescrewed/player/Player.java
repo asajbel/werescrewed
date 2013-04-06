@@ -452,12 +452,8 @@ public class Player extends Entity {
 	public void killPlayer( ) {
 		if ( respawnTimeout == 0 ) {
 			if ( !world.isLocked( ) ) {
-				if ( playerState == PlayerState.Screwing ) {
-					removePlayerToScrew( );
-				}
-				if ( playerState == PlayerState.HeadStand && topPlayer ) {
-					removePlayerToPlayer( );
-				}
+				removePlayerToScrew( );
+				removePlayerToPlayer( );
 				currentScrew = null;
 				mover = null;
 				Filter filter = new Filter( );
@@ -1494,7 +1490,9 @@ public class Player extends Entity {
 			}
 		}
 		mover = null;
-		currentScrew.setPlayerAttached( false );
+		if ( currentScrew != null ) {
+			currentScrew.setPlayerAttached( false );
+		}
 		currentScrew = null;
 		playerState = PlayerState.JumpingOffScrew;
 		screwJumpTimeout = SCREW_JUMP_STEPS;
