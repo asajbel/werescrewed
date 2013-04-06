@@ -457,21 +457,23 @@ public class Skeleton extends Platform {
 		// super.draw( batch );
 		if ( visible ) {
 			// draw decals before drawing children
-			drawDecals(batch);
+			//update z order : don't draw decals recursively 
+			//draw in queue before everything
+			//drawDecals(batch);
 			// draw bg
-			if ( bgSprite != null )
-				bgSprite.draw( batch );
+			//update z order : don't draw skeleton sprites recursively
+			//update z order : draw the background in a separate queue before everything
+//			if ( bgSprite != null )
+//				bgSprite.draw( batch );
 			drawChildren( batch, deltaTime );
-			if ( fgSprite != null )
-				fgSprite.draw( batch );
+			//update z order : draw the foreground in a separate queue after everything
+//			if ( fgSprite != null )
+//				fgSprite.draw( batch );
 			// draw fg
 		}
 	}
 
 	private void drawChildren( SpriteBatch batch, float deltaTime ) {
-		for ( Skeleton skeleton : childSkeletonMap.values( ) ) {
-			skeleton.draw( batch, deltaTime );
-		}
 		for ( Platform p : dynamicPlatformMap.values( ) ) {
 			drawPlatform( p, batch, deltaTime );
 		}
@@ -485,6 +487,10 @@ public class Skeleton extends Platform {
 		}
 		for ( Rope rope : ropeMap.values( ) ) {
 			rope.draw( batch, deltaTime );
+		}
+		//draw the entities of the parent skeleton before the entities of child skeletons
+		for ( Skeleton skeleton : childSkeletonMap.values( ) ) {
+			skeleton.draw( batch, deltaTime );
 		}
 	}
 

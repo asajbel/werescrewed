@@ -141,6 +141,8 @@ public class LevelFactory {
 			Skeleton parent = loadSkeleton(item.skeleton);
 			parent.addSkeleton( child );
 			skeletons.put( item.name, child );
+			//add the skeleton to the skeleton layer for drawing
+			level.skelLayer.add( child );
 			return child;
 		}
 	}
@@ -396,6 +398,8 @@ public class LevelFactory {
 				level.world.createJoint( revoluteJointDef );
 			}
 			
+			//add the skeleton to the skeleton layer for drawing
+			level.skelLayer.add( skeleton );
 		}
 		
 		Gdx.app.log( "LevelFactory, Skeleton constucted ", item.name );
