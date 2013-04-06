@@ -92,8 +92,8 @@ public class Level {
 	public void draw ( SpriteBatch batch, SBox2DDebugRenderer debugRenderer, float deltaTime){
 		batch.setShader( WereScrewedGame.defaultShader );
 		batch.setBlendFunction( GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA );
-		batch.setProjectionMatrix( camera.combined() );
 		batch.enableBlending( );
+		batch.setProjectionMatrix( camera.combined() );
 		batch.begin();
 		
 		//float deltaTime = Gdx.graphics.getDeltaTime( );

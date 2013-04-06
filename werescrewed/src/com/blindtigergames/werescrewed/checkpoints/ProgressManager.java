@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.JointEdge;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.builders.ScrewBuilder;
 import com.blindtigergames.werescrewed.entity.mover.LerpMover;
@@ -26,13 +27,16 @@ public class ProgressManager {
 
 	private ArrayList< CheckPoint > checkPoints;
 	private ResurrectScrew resurrectScrew;
+	private ResurrectScrew extraRezScrew;
 	private Player player1;
 	private Player player2;
 	private World world;
 	private int currentCheckPoint;
-	private int holdTime = 0;
+	private int p1holdTime = 0;
+	private int p2holdTime = 0;
 	private int respawnTime = 100;
-	private boolean playerMover = false;
+	private boolean player1Mover = false;
+	private boolean player2Mover = false;
 
 	/**
 	 * 
@@ -80,9 +84,11 @@ public class ProgressManager {
 		// if both players are dead
 		// automatically re-spawn at the last checkpoint
 		if ( player1.isPlayerDead( ) && player2.isPlayerDead( ) ) {
-			spawnAtCheckPoint( player1 );
-			spawnAtCheckPoint( player2 );
-			holdTime = 0;
+			// create a rez screw if it doesn't already exist
+			handleDeadPlayer( );
+			// handle dead player input to allow them to re-spawn
+			handleDeadPlayerInput( player1 );
+			handleDeadPlayerInput( player2 );
 		}
 		// if a single player is dead allow them to re-spawn
 		// and create a resurrection screw to let their
@@ -114,6 +120,9 @@ public class ProgressManager {
 		if ( resurrectScrew != null ) {
 			resurrectScrew.update( deltaTime );
 		}
+		if ( extraRezScrew != null ) {
+			extraRezScrew.update( deltaTime );
+		}
 	}
 
 	/**
@@ -122,12 +131,15 @@ public class ProgressManager {
 	 * 
 	 * @param batch
 	 */
-	public void draw( SpriteBatch batch, float deltaTime) {
+	public void draw( SpriteBatch batch, float deltaTime ) {
 		for ( CheckPoint c : checkPoints ) {
 			c.draw( batch, deltaTime );
 		}
 		if ( resurrectScrew != null ) {
 			resurrectScrew.draw( batch, deltaTime );
+		}
+		if ( extraRezScrew != null ) {
+			extraRezScrew.draw( batch, deltaTime );
 		}
 	}
 
@@ -147,7 +159,16 @@ public class ProgressManager {
 					.screwType( ScrewType.SCREW_RESURRECT ).entity( entity )
 					.world( world );
 			Vector2 screwPos = new Vector2( -100, 150 );
-			if ( player1.isPlayerDead( ) ) {
+			boolean isp1onExtraRezScrew = false;
+			boolean isp2onExtraRezScrew = false;
+			if ( extraRezScrew != null ) {
+				if ( extraRezScrew.getDeadPlayer( ) == player1 ) {
+					isp1onExtraRezScrew = true;
+				} else {
+					isp2onExtraRezScrew = true;
+				}
+			}
+			if ( player1.isPlayerDead( ) && !isp1onExtraRezScrew ) {
 				// create new rez screw and attach
 				// it to player1 as the dead player
 				rezzBuilder.player( player1 );
@@ -157,7 +178,11 @@ public class ProgressManager {
 				} else {
 					screwPos = new Vector2( -100, 150 );
 				}
-			} else {
+				player1.body.setType( BodyType.KinematicBody );
+				player1.body.setLinearVelocity( Vector2.Zero );
+				resurrectScrew = rezzBuilder.playerOffset( true )
+						.position( screwPos ).buildRezzScrew( );
+			} else if ( player2.isPlayerDead( ) && !isp2onExtraRezScrew ) {
 				// create new rez screw and attach
 				// it to player2 as the dead player
 				rezzBuilder.player( player2 );
@@ -167,8 +192,51 @@ public class ProgressManager {
 				} else {
 					screwPos = new Vector2( -100, 150 );
 				}
+				player2.body.setType( BodyType.KinematicBody );
+				player2.body.setLinearVelocity( Vector2.Zero );
+				resurrectScrew = rezzBuilder.playerOffset( true )
+						.position( screwPos ).buildRezzScrew( );
 			}
-			resurrectScrew = rezzBuilder.playerOffset( true )
+		}
+		if ( player1.isPlayerDead( ) && player2.isPlayerDead( )
+				&& extraRezScrew == null ) {
+			Entity entity = null;
+			// find the entity that the current checkpoint is jointed to
+			// and use it to connect the rez screw to
+			for ( JointEdge j : checkPoints.get( currentCheckPoint ).body
+					.getJointList( ) ) {
+				entity = ( Entity ) j.joint.getBodyB( ).getUserData( );
+			}
+			ScrewBuilder rezzBuilder = new ScrewBuilder( )
+					.screwType( ScrewType.SCREW_RESURRECT ).entity( entity )
+					.world( world );
+			Vector2 screwPos = new Vector2( -100, 150 );
+			if ( resurrectScrew.getDeadPlayer( ) == player1 ) {
+				// create new rez screw and attach
+				// it to player1 as the dead player
+				rezzBuilder.player( player2 );
+				// get the players direction and offset to the opposite of that
+				if ( player2.body.getLinearVelocity( ).x < 0 ) {
+					screwPos = new Vector2( 200, 150 );
+				} else {
+					screwPos = new Vector2( -100, 150 );
+				}
+				player2.body.setType( BodyType.KinematicBody );
+				player2.body.setLinearVelocity( Vector2.Zero );
+			} else {
+				// create new rez screw and attach
+				// it to player2 as the dead player
+				rezzBuilder.player( player1 );
+				// get the players direction and offset to the opposite of that
+				if ( player1.body.getLinearVelocity( ).x < 0 ) {
+					screwPos = new Vector2( 200, 150 );
+				} else {
+					screwPos = new Vector2( -100, 150 );
+				}
+				player1.body.setType( BodyType.KinematicBody );
+				player1.body.setLinearVelocity( Vector2.Zero );
+			}
+			extraRezScrew = rezzBuilder.playerOffset( true )
 					.position( screwPos ).buildRezzScrew( );
 		}
 	}
@@ -179,23 +247,37 @@ public class ProgressManager {
 	 * @param player
 	 */
 	private void handleDeadPlayerInput( Player player ) {
+		boolean playerMover = false;
 		if ( player.getState( ) == PlayerState.GrabMode ) {
-			holdTime++;
+			int holdTime = 0;
+			if ( player == player1 ) {
+				p1holdTime++;
+				holdTime = p1holdTime;
+				playerMover = player1Mover;
+			} else {
+				p2holdTime++;
+				holdTime = p2holdTime;
+				playerMover = player2Mover;
+			}
 			if ( holdTime > respawnTime ) {
 				playerMover = false;
 				player.setMoverNullAtCurrentState( );
 				// if the dead player has held the re-spawn button
 				// respawn them at the current check point
 				spawnAtCheckPoint( player );
-				holdTime = 0;
-
+				if ( player == player1 ) {
+					p1holdTime = 0;
+				} else {
+					p2holdTime = 0;
+				}
 			} else if ( !playerMover ) {
+				//TODO replace this mover with an animation
 				player.setActive( true );
 				player.setMoverAtCurrentState( new LerpMover( player
 						.getPositionPixel( ).sub(
 								player.sprite.getWidth( ) / 32.0f, 0 ), player
 						.getPositionPixel( ).add(
-								player.sprite.getWidth( ) / 32.0f, 0 ), .1f,
+								player.sprite.getWidth( ) / 32.0f, 0 ), .2f,
 						true, LinearAxis.HORIZONTAL, 0 ) );
 				playerMover = true;
 			} else {
@@ -203,10 +285,18 @@ public class ProgressManager {
 			}
 		} else {
 			// if the player lets go reset the time
-			holdTime = 0;
+			if ( player == player1 ) {
+				p1holdTime = 0;
+			} else {
+				p2holdTime = 0;
+			}
 			playerMover = false;
-			player.body.setLinearVelocity( 0f, 0f );
 			player.setMoverNullAtCurrentState( );
+		}
+		if ( player == player1 ) {
+			player1Mover = playerMover;
+		} else {
+			player2Mover = playerMover;
 		}
 	}
 
@@ -224,6 +314,7 @@ public class ProgressManager {
 		player.body.setTransform( checkPoints.get( currentCheckPoint )
 				.getPosition( ), 0.0f );
 		player.body.setLinearVelocity( Vector2.Zero );
+		player.body.setType( BodyType.DynamicBody );
 	}
 
 	/**
@@ -231,8 +322,8 @@ public class ProgressManager {
 	 */
 	private void removeRezScrew( ) {
 		// remove the rez screw if both players are alive
-		if ( resurrectScrew != null && !player1.isPlayerDead( )
-				&& !player2.isPlayerDead( ) ) {
+		if ( resurrectScrew != null
+				&& !resurrectScrew.getDeadPlayer( ).isPlayerDead( ) ) {
 			if ( !resurrectScrew.isPlayerAttached( ) ) {
 				resurrectScrew.remove( );
 				if ( resurrectScrew.isRemoved( ) ) {
@@ -240,6 +331,17 @@ public class ProgressManager {
 				}
 			} else {
 				resurrectScrew.setRemove( true );
+			}
+		}
+		if ( extraRezScrew != null
+				&& !extraRezScrew.getDeadPlayer( ).isPlayerDead( ) ) {
+			if ( !extraRezScrew.isPlayerAttached( ) ) {
+				extraRezScrew.remove( );
+				if ( extraRezScrew.isRemoved( ) ) {
+					extraRezScrew = null;
+				}
+			} else {
+				extraRezScrew.setRemove( true );
 			}
 		}
 	}

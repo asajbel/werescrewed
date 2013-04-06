@@ -218,7 +218,6 @@ public class PolySprite extends Sprite {
 					Texture.TextureWrap.Repeat );
 			//camera * modelview
 			mesh.render( shader, GL20.GL_TRIANGLES );
-			//Gdx.gl.glDisable(GL20.GL_DEPTH_TEST);
 		}
 	}
 	
@@ -250,8 +249,7 @@ public class PolySprite extends Sprite {
 			}
 			this.verts[ 9 * i ] = x; // x
 			this.verts[ 9 * i + 1 ] = y; // y
-			//TODO make this z coord active and translate the skeleton mesh backwards
-			this.verts[ 9 * i + 2 ] = -99.9f; // z
+			this.verts[ 9 * i + 2 ] = 0; // z
 
 			this.verts[ 9 * i + 3 ] = r; // r
 			this.verts[ 9 * i + 4 ] = g; // g
