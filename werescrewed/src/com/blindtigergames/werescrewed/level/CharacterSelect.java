@@ -52,11 +52,11 @@ public class CharacterSelect{
 			noControllersAttached = true;
 			if(level.player1 == null){
 				level.player1 = new PlayerBuilder( ).world( level.world )
-				.position( 100f, 100f ).name( "player1" ).buildPlayer( );
+				.position( -1000f, 100f ).name( "player1" ).buildPlayer( );
 			}
 			if(level.player2 == null){
 				level.player2 = new PlayerBuilder( ).world( level.world )
-				.position( 100f, 100f ).name( "player2" ).buildPlayer( );
+				.position( -1000f, 100f ).name( "player2" ).buildPlayer( );
 			}
 		}
 		

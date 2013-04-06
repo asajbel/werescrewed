@@ -1,19 +1,18 @@
-4/5/2013 11:15:21 AM.409 - Log File created.
-4/5/2013 11:15:21 AM.409 - Application started.
-4/5/2013 11:15:21 AM.675 - Creating Game1 object.
-4/5/2013 11:15:21 AM.784 - Game1 creation started.
-4/5/2013 11:15:21 AM.784 - Creating Winform.
-4/5/2013 11:15:21 AM.862 - Winform created.
-4/5/2013 11:15:21 AM.862 - Game1 creation ended.
-4/5/2013 11:15:21 AM.878 - Creating Editor object.
-4/5/2013 11:15:21 AM.878 - Editor creation started.
-4/5/2013 11:15:21 AM.878 - Loading Resources.
-4/5/2013 11:15:21 AM.916 - Resources loaded.
-4/5/2013 11:15:21 AM.917 - Loading Settings.
-4/5/2013 11:15:22 AM.105 - Settings loaded.
-4/5/2013 11:15:22 AM.106 - Creating new level.
-4/5/2013 11:15:22 AM.182 - New level created.
-4/5/2013 11:15:22 AM.182 - Editor creation ended.
-4/5/2013 11:15:34 AM.238 - pictureBox1_Resize().
-4/5/2013 1:07:42 PM.642 - pictureBox1_Resize().
-4/5/2013 1:07:42 PM.688 - pictureBox1_Resize().
+4/5/2013 10:54:19 PM.797 - Log File created.
+4/5/2013 10:54:19 PM.798 - Application started.
+4/5/2013 10:54:19 PM.996 - Creating Game1 object.
+4/5/2013 10:54:20 PM.080 - Game1 creation started.
+4/5/2013 10:54:20 PM.083 - Creating Winform.
+4/5/2013 10:54:20 PM.182 - Winform created.
+4/5/2013 10:54:20 PM.183 - Game1 creation ended.
+4/5/2013 10:54:20 PM.201 - Creating Editor object.
+4/5/2013 10:54:20 PM.228 - Editor creation started.
+4/5/2013 10:54:20 PM.228 - Loading Resources.
+4/5/2013 10:54:20 PM.255 - Resources loaded.
+4/5/2013 10:54:20 PM.255 - Loading Settings.
+4/5/2013 10:54:20 PM.442 - Settings loaded.
+4/5/2013 10:54:20 PM.442 - Creating new level.
+4/5/2013 10:54:20 PM.506 - New level created.
+4/5/2013 10:54:20 PM.506 - Editor creation ended.
+4/5/2013 10:54:24 PM.611 - pictureBox1_Resize().
+4/5/2013 11:29:54 PM.564 - Application ended.
