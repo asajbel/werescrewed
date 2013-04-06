@@ -469,9 +469,6 @@ public class Skeleton extends Platform {
 	}
 
 	private void drawChildren( SpriteBatch batch, float deltaTime ) {
-		for ( Skeleton skeleton : childSkeletonMap.values( ) ) {
-			skeleton.draw( batch, deltaTime );
-		}
 		for ( Platform p : dynamicPlatformMap.values( ) ) {
 			drawPlatform( p, batch, deltaTime );
 		}
@@ -485,6 +482,9 @@ public class Skeleton extends Platform {
 		}
 		for ( Rope rope : ropeMap.values( ) ) {
 			rope.draw( batch, deltaTime );
+		}
+		for ( Skeleton skeleton : childSkeletonMap.values( ) ) {
+			skeleton.draw( batch, deltaTime );
 		}
 	}
 
