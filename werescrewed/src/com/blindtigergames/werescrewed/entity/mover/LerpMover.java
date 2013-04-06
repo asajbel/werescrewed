@@ -4,7 +4,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.blindtigergames.werescrewed.entity.RobotState;
 import com.blindtigergames.werescrewed.entity.platforms.Platform;
-import com.blindtigergames.werescrewed.entity.screws.PuzzleScrew;
+import com.blindtigergames.werescrewed.entity.screws.Screw;
 import com.blindtigergames.werescrewed.util.Util;
 
 public class LerpMover implements IMover {
@@ -110,68 +110,72 @@ public class LerpMover implements IMover {
 
 	@Override
 	public void move( float deltaTime, Body body ) {
-		alpha += speed;
-		if ( alpha >= 1 ) {
-			if ( loop ) {
-				speed *= -1;
-			} else {
-				if ( loopTimes == 0 ) {
-					done = true;
-					reverse = false;
-					alpha = 1;
-				} else {
-					loopTimes--;
+		if ( puzzleType != PuzzleType.PUZZLE_SCREW_CONTROL ) {
+			alpha += speed;
+			if ( alpha >= 1 ) {
+				if ( loop ) {
 					speed *= -1;
+				} else {
+					if ( loopTimes == 0 ) {
+						done = true;
+						reverse = false;
+						alpha = 1;
+					} else {
+						loopTimes--;
+						speed *= -1;
+					}
+				}
+			} else if ( alpha < 0 ) {
+				if ( loop ) {
+					speed *= -1;
+				} else {
+					if ( loopTimes == 0 ) {
+						done = true;
+						reverse = false;
+						alpha = 0;
+					} else {
+						loopTimes--;
+						speed *= -1;
+					}
 				}
 			}
-		} else if ( alpha < 0 ) {
-			if ( loop ) {
-				speed *= -1;
-			} else {
-				if ( loopTimes == 0 ) {
-					done = true;
-					reverse = false;
-					alpha = 0;
+			Vector2 temp = beginningPoint.cpy( );
+			beginningPoint.lerp( endPoint, alpha );
+			if ( axis == LinearAxis.VERTICAL ) {
+				if ( body.getUserData( ) instanceof Platform ) {
+					Platform p = ( Platform ) body.getUserData( );
+					float newPos = Math.abs( p.getOriginPos( ).y
+							- beginningPoint.y );
+					p.setLocalPos( p.getLocalPos( ).x, newPos );
 				} else {
-					loopTimes--;
-					speed *= -1;
+					body.setTransform( body.getPosition( ).x, beginningPoint.y
+							* Util.PIXEL_TO_BOX, 0.0f );
+				}
+			} else if ( axis == LinearAxis.HORIZONTAL ) {
+				if ( body.getUserData( ) instanceof Platform ) {
+					Platform p = ( Platform ) body.getUserData( );
+					float newPos = Math.abs( p.getOriginPos( ).x
+							- beginningPoint.x );
+					p.setLocalPos( newPos, p.getLocalPos( ).y );
+				} else {
+					body.setTransform( beginningPoint.x * Util.PIXEL_TO_BOX,
+							body.getPosition( ).y, body.getAngle( ) );
+				}
+			} else {
+				if ( body.getUserData( ) instanceof Platform ) {
+					Platform p = ( Platform ) body.getUserData( );
+					float newX = Math.abs( p.getOriginPos( ).x
+							- beginningPoint.x );
+					float newY = Math.abs( p.getOriginPos( ).y
+							- beginningPoint.y );
+					p.setLocalPos( newX, newY );
+				} else {
+					body.setTransform( beginningPoint.mul( Util.PIXEL_TO_BOX ),
+							0.0f );
 				}
 			}
+			beginningPoint = temp;
 		}
-		Vector2 temp = beginningPoint.cpy( );
-		beginningPoint.lerp( endPoint, alpha );
-		if ( axis == LinearAxis.VERTICAL ) {
-			if ( body.getUserData( ) instanceof Platform ) {
-				Platform p = ( Platform ) body.getUserData( );
-				float newPos = Math
-						.abs( p.getOriginPos( ).y - beginningPoint.y );
-				p.setLocalPos( p.getLocalPos( ).x, newPos );
-			} else {
-				body.setTransform( body.getPosition( ).x, beginningPoint.y
-						* Util.PIXEL_TO_BOX, 0.0f );
-			}
-		} else if ( axis == LinearAxis.HORIZONTAL ) {
-			if ( body.getUserData( ) instanceof Platform ) {
-				Platform p = ( Platform ) body.getUserData( );
-				float newPos = Math
-						.abs( p.getOriginPos( ).x - beginningPoint.x );
-				p.setLocalPos( newPos, p.getLocalPos( ).y );
-			} else {
-				body.setTransform( beginningPoint.x * Util.PIXEL_TO_BOX,
-						body.getPosition( ).y, body.getAngle( ) );
-			}
-		} else {
-			if ( body.getUserData( ) instanceof Platform ) {
-				Platform p = ( Platform ) body.getUserData( );
-				float newX = Math.abs( p.getOriginPos( ).x - beginningPoint.x );
-				float newY = Math.abs( p.getOriginPos( ).y - beginningPoint.y );
-				p.setLocalPos( newX, newY );
-			} else {
-				body.setTransform( beginningPoint.mul( Util.PIXEL_TO_BOX ),
-						0.0f );
-			}
-		}
-		beginningPoint = temp;
 	}
 
 	public boolean atEnd( ) {
@@ -182,8 +186,18 @@ public class LerpMover implements IMover {
 		return alpha == 0;
 	}
 
+	/**
+	 * analog placement along a linear path
+	 */
+	public void moveAnalog( Screw screw, float screwVal, Body body ) {
+		Vector2 temp = new Vector2( beginningPoint.x, beginningPoint.y );
+		beginningPoint.lerp( endPoint, screwVal );
+		body.setTransform( beginningPoint.mul( Util.PIXEL_TO_BOX ), 0.0f );
+		beginningPoint = temp;
+	}
+	
 	@Override
-	public void runPuzzleMovement( PuzzleScrew screw, float screwVal, Platform p ) {
+	public void runPuzzleMovement( Screw screw, float screwVal, Platform p ) {
 		switch ( puzzleType ) {
 		case PUZZLE_SCREW_CONTROL:
 			Vector2 temp = new Vector2( beginningPoint.x, beginningPoint.y );
