@@ -6,7 +6,6 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.controllers.PovDirection;
-import com.badlogic.gdx.graphics.g2d.ParticleEmitter;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -26,9 +25,6 @@ import com.blindtigergames.werescrewed.camera.AnchorList;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityDef;
 import com.blindtigergames.werescrewed.entity.EntityType;
-import com.blindtigergames.werescrewed.entity.Sprite;
-import com.blindtigergames.werescrewed.entity.animator.SimpleFrameAnimator;
-import com.blindtigergames.werescrewed.entity.animator.SimpleFrameAnimator.LoopBehavior;
 import com.blindtigergames.werescrewed.entity.mover.IMover;
 import com.blindtigergames.werescrewed.entity.mover.LerpMover;
 import com.blindtigergames.werescrewed.entity.mover.LinearAxis;
@@ -165,7 +161,7 @@ public class Player extends Entity {
 	 * </Ul>
 	 */
 	public enum PlayerState {
-		Standing, Running, Jumping, Falling, Screwing, JumpingOffScrew, Dead, GrabMode, HeadStand, Landing
+		Standing, Running, Jumping, Falling, Screwing, JumpingOffScrew, Dead, GrabMode, HeadStand, Landing, RespawnMode
 	}
 
 	public enum ConcurrentState {
@@ -246,7 +242,7 @@ public class Player extends Entity {
 		// update the hit cloud if it exists
 		//hitCloud.sprite.update( deltaTime );
 		if ( name.equals( "player1" ) ) {
-
+			//Gdx.app.log( "player update", "playerstate: " + playerState );
 		}
 		if ( kinematicTransform ) {
 			// setPlatformTransform( platformOffset );
@@ -258,21 +254,21 @@ public class Player extends Entity {
 			// repeat kill player
 			// removes all the joints and stuff
 			if ( playerState != PlayerState.Dead
-					&& playerState != PlayerState.GrabMode ) {
+					&& playerState != PlayerState.RespawnMode ) {
 				killPlayer( );
 			}
 			// check input only for grab mode
 			// to allow player to re-spawn
 			if ( controller != null ) {
 				if ( controllerListener.isGrabPressed( ) ) {
-					playerState = PlayerState.GrabMode;
+					playerState = PlayerState.RespawnMode;
 				} else {
 					playerState = PlayerState.Dead;
 				}
 			} else {
 				inputHandler.update( );
 				if ( inputHandler.isGrabPressed( ) ) {
-					playerState = PlayerState.GrabMode;
+					playerState = PlayerState.RespawnMode;
 				} else {
 					playerState = PlayerState.Dead;
 				}
@@ -452,12 +448,8 @@ public class Player extends Entity {
 	public void killPlayer( ) {
 		if ( respawnTimeout == 0 ) {
 			if ( !world.isLocked( ) ) {
-				if ( playerState == PlayerState.Screwing ) {
-					removePlayerToScrew( );
-				}
-				if ( playerState == PlayerState.HeadStand && topPlayer ) {
-					removePlayerToPlayer( );
-				}
+				removePlayerToScrew( );
+				removePlayerToPlayer( );
 				currentScrew = null;
 				mover = null;
 				Filter filter = new Filter( );
@@ -499,9 +491,9 @@ public class Player extends Entity {
 			}
 			filter = f.getFilterData( );
 			// move player back to original category
-			filter.categoryBits = Util.CATEGORY_SUBPLAYER;
+			filter.categoryBits = Util.CATEGORY_PLAYER;
 			// player now collides with everything
-			filter.maskBits = ~Util.CATEGROY_HAZARD;
+			filter.maskBits = Util.CATEGORY_EVERYTHING;
 			f.setFilterData( filter );
 		}
 		playerState = PlayerState.Standing;
@@ -1494,7 +1486,9 @@ public class Player extends Entity {
 			}
 		}
 		mover = null;
-		currentScrew.setPlayerAttached( false );
+		if ( currentScrew != null ) {
+			currentScrew.setPlayerAttached( false );
+		}
 		currentScrew = null;
 		playerState = PlayerState.JumpingOffScrew;
 		screwJumpTimeout = SCREW_JUMP_STEPS;
