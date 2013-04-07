@@ -391,9 +391,20 @@ public class LevelFactory {
 				String parentSkeleton = item.props.get( "jointto" );
 				Skeleton parent = skeletons.get( parentSkeleton );
 				
+
 				RevoluteJointDef revoluteJointDef = new RevoluteJointDef( );
-				revoluteJointDef.initialize( skeleton.body, parent.body, skeleton.getPosition( ) );
+				revoluteJointDef.initialize( skeleton.body, parent.body,
+						skeleton.getPosition( ) );
+				
+				if(item.props.containsKey( "degreelimit" )){
+					int limit = Integer.parseInt( item.props.get("degreelimit") );
+					revoluteJointDef.enableLimit = true;
+					revoluteJointDef.upperAngle = limit * Util.DEG_TO_RAD;
+					revoluteJointDef.lowerAngle = -limit * Util.DEG_TO_RAD;
+				}
+				
 				level.world.createJoint( revoluteJointDef );
+				
 			}
 			
 		}
@@ -499,6 +510,7 @@ public class LevelFactory {
 		
 		if (isDynamic){
 			Gdx.app.log("LevelFactory", "Tiled Dynamic platform loaded:"+out.name);
+			out.quickfixCollisions( );
 			parent.addDynamicPlatform(  out );
 		} else {
 			Gdx.app.log("LevelFactory", "Tiled Kinematic platform loaded:"+out.name);
@@ -581,6 +593,7 @@ public class LevelFactory {
 		
 		if (isDynamic){
 			Gdx.app.log("LevelFactory", "Tiled Dynamic platform loaded:"+out.name);
+			out.quickfixCollisions( );
 			parent.addDynamicPlatform(  out );
 		} else {
 			Gdx.app.log("LevelFactory", "Tiled Kinematic platform loaded:"+out.name);
@@ -633,6 +646,7 @@ public class LevelFactory {
 		Gdx.app.log("GleedLoader", "Complex Platform loaded:"+item.name);
 		Skeleton parent = loadSkeleton(item.skeleton);
 		if (isDynamic){
+			out.quickfixCollisions( );
 			if(rotatingcenter){
 				if(motor){
 					parent.addPlatformRotatingCenterWithMot( out, speed );
@@ -669,7 +683,10 @@ public class LevelFactory {
 		Skeleton parent = loadSkeleton(item.skeleton);
 		builder.skeleton( parent );
 		
-		 
+		if(item.props.containsKey( "maxdepth" )){
+			int maxDepth = Integer.parseInt( item.props.get( "maxdepth" ) );
+			builder.max( maxDepth );
+		}
 		
 		Screw out = null;
 		switch (sType){
@@ -708,7 +725,7 @@ public class LevelFactory {
 				
 				
 				puzzleScrews.put(item.name, p);
-				
+				entities.put(item.name, p);
 				
 				
 				out = p;
@@ -725,7 +742,7 @@ public class LevelFactory {
 
 				
 				StructureScrew ss = builder.buildStructureScrew( );
-				entities.put( item.name, ss );
+				
 				
 				
 				
@@ -737,6 +754,15 @@ public class LevelFactory {
 					ss.addStructureJoint( target );
 				}
 				
+				if (item.props.containsKey( "targetrev2" )){
+					
+					String thisthing = item.props.get( "targetrev2" );
+					Entity target = entities.get( thisthing );
+					
+					ss.addStructureJoint( target );
+				}
+
+				
 				if (item.props.containsKey( "skeltargetrev" )){
 					
 					String thisthing = item.props.get( "skeltargetrev" );
@@ -744,7 +770,24 @@ public class LevelFactory {
 					
 					ss.addStructureJoint( target );
 				}
+				
+				if (item.props.containsKey( "targetweld" )){
+					
+					String thisthing = item.props.get( "targetweld" );
+					Entity target = entities.get( thisthing );
+					
+					ss.addWeldJoint( target );
+				}
+				
+				if (item.props.containsKey( "targetweld2" )){
+					
+					String thisthing = item.props.get( "targetweld2" );
+					Entity target = entities.get( thisthing );
+					
+					ss.addWeldJoint( target );
+				}
 	
+				entities.put( item.name, ss );
 				out = ss;
 				
 				break;

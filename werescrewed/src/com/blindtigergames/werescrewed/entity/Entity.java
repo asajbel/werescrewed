@@ -959,4 +959,13 @@ public class Entity implements GleedLoadable {
 	public void dispose(){
 		body.getWorld( ).destroyBody( body );
 	}
+	
+	public void setGroupIndex( short index ) {
+		Filter filter = new Filter();
+		filter.groupIndex = index;
+		if ( body != null ) {
+			for ( int i = 0; i < body.getFixtureList( ).size( ); ++i )
+				body.getFixtureList( ).get( i ).setFilterData( filter );
+		}
+	}
 }

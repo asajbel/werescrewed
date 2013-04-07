@@ -1447,7 +1447,7 @@ public class Player extends Entity {
 	/**
 	 * removes the player to screw joint
 	 */
-	private void removePlayerToScrew( ) {
+	public void removePlayerToScrew( ) {
 		if ( playerJoint != null ) {
 			world.destroyJoint( playerJoint );
 			playerJoint = null;

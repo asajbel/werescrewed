@@ -1,9 +1,18 @@
 package com.blindtigergames.werescrewed.screens;
 
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
+import com.blindtigergames.werescrewed.entity.RobotState;
 import com.blindtigergames.werescrewed.entity.Skeleton;
+import com.blindtigergames.werescrewed.entity.builders.PlayerBuilder;
+import com.blindtigergames.werescrewed.entity.mover.RotateTweenMover;
+import com.blindtigergames.werescrewed.entity.platforms.Platform;
+import com.blindtigergames.werescrewed.entity.platforms.TiledPlatform;
+import com.blindtigergames.werescrewed.entity.screws.Screw;
+import com.blindtigergames.werescrewed.entity.tween.PathBuilder;
 import com.blindtigergames.werescrewed.level.CharacterSelect;
 import com.blindtigergames.werescrewed.level.LevelFactory;
+import com.blindtigergames.werescrewed.util.Util;
 
 public class AlphaScreen extends Screen {
 
@@ -11,6 +20,9 @@ public class AlphaScreen extends Screen {
 
 	
 	private CharacterSelect characterSelect;
+	private Screw powerScrew1, powerScrew2;
+	private Skeleton footSkeleton, kneeSkeleton, thighSkeleton, hipSkeleton;
+	private TiledPlatform kneeMovingPlat;
 
 	public AlphaScreen( ) {
 		super( );
@@ -20,13 +32,20 @@ public class AlphaScreen extends Screen {
 		
 		characterSelect = new CharacterSelect(level);
 		
-		Skeleton skel = ( Skeleton ) LevelFactory.entities.get( "footSkeleton" );
+		createFootObjects();
+		createKneeObjects();
 		
-		Skeleton skel2 = ( Skeleton ) LevelFactory.entities.get( "kneeSkeleton" );
+		//-700f, 1800f
 		
-		skel.body.setType( BodyType.KinematicBody );
-		skel2.body.setType( BodyType.KinematicBody );
 		
+		if(level.player1 == null){
+			level.player1 = new PlayerBuilder( ).world( level.world )
+			.position( 0, 0 ).name( "player1" ).buildPlayer( );
+		}
+		if(level.player2 == null){
+			level.player2 = new PlayerBuilder( ).world( level.world )
+			.position( 0, 0 ).name( "player2" ).buildPlayer( );
+		}
 		
 	}
 
@@ -34,20 +53,81 @@ public class AlphaScreen extends Screen {
 	public void render( float deltaTime ) {
 		super.render( deltaTime );
 		
-		characterSelect.update( );
+	//	characterSelect.update( );
 		
-		characterSelect.draw( batch, deltaTime );
+		//characterSelect.draw( batch, deltaTime );
 		
-		
+		powerScrew1and2update();
 
 		
 		
 	}
 	
 
+	private void createFootObjects(){
+		footSkeleton = ( Skeleton ) LevelFactory.entities.get( "footSkeleton" );
+		
+		kneeSkeleton = ( Skeleton ) LevelFactory.entities.get( "kneeSkeleton" );
+		
+		hipSkeleton = ( Skeleton ) LevelFactory.entities.get( "hipSkeleton" );
+		
+		thighSkeleton = ( Skeleton ) LevelFactory.entities.get( "thighSkeleton" );
+		
+		footSkeleton.body.setType( BodyType.KinematicBody );
+		kneeSkeleton.body.setType( BodyType.KinematicBody );
+		thighSkeleton.body.setType( BodyType.KinematicBody );
+		
+		TiledPlatform structurePlat3 = (TiledPlatform) LevelFactory.entities.get( "structurePlat3" );
+		TiledPlatform pivotPlat1 = (TiledPlatform) LevelFactory.entities.get( "pivotPlat1" );
+		TiledPlatform footPlat6 = (TiledPlatform) LevelFactory.entities.get( "footPlat6" );
+		
+		RevoluteJointDef rjd = new RevoluteJointDef( );
+		rjd.initialize( structurePlat3.body, pivotPlat1.body, pivotPlat1.getPosition( )
+				.add( pivotPlat1.getMeterWidth( )/2, 0 ));
+		rjd.collideConnected = false;
+		level.world.createJoint( rjd );
+	
+		structurePlat3.setGroupIndex( ( short ) -5 );
+		footPlat6.setGroupIndex( ( short ) -5 );
+	}
 	
 	
+	private void createKneeObjects(){
+		kneeMovingPlat = (TiledPlatform) LevelFactory.entities.get( "kneeMovingPlat" );
+		kneeMovingPlat.setActive( false );
+		
+		powerScrew1 = ( Screw ) LevelFactory.entities.get( "powerScrew1" );
+		powerScrew2 = ( Screw ) LevelFactory.entities.get( "powerScrew2" );
+		
+		//removePlayerToScrew( )
+	}
 	
-	
+	private void powerScrew1and2update(){
+		
+		if( (powerScrew1.getDepth( ) == powerScrew1.getMaxDepth( )) &&
+				(powerScrew2.getDepth( ) == powerScrew2.getMaxDepth( )) ) {
+			kneeMovingPlat.setActive( true );
+			
+			footSkeleton.body.setType( BodyType.DynamicBody );
+			kneeSkeleton.body.setType( BodyType.DynamicBody );
+			thighSkeleton.body.setType( BodyType.DynamicBody );
+			
+			if(hipSkeleton.currentMover( ) == null){
+//				hipSkeleton.addMover(  new RotateTweenMover(hipSkeleton, 3f, -Util.PI / 2, 1f, true),
+//					RobotState.IDLE );
+				
+				PathBuilder pb = new PathBuilder( );
+				hipSkeleton.addMover(  pb.begin( hipSkeleton )
+						.target( 0, 100, 3 )
+						.delay( 1 )
+						.target( 0, -50, 3 )
+						.target( 0, 0, 3 )
+						.build( ),
+						RobotState.IDLE );
+				
+			}
+			
+		}
+	}
 	
 }

@@ -48,17 +48,6 @@ public class CharacterSelect{
 		controllerSetUp( );
 		audience( );
 		
-		if( controller1 == null && controller2 == null){
-			noControllersAttached = true;
-			if(level.player1 == null){
-				level.player1 = new PlayerBuilder( ).world( level.world )
-				.position( -1000f, 100f ).name( "player1" ).buildPlayer( );
-			}
-			if(level.player2 == null){
-				level.player2 = new PlayerBuilder( ).world( level.world )
-				.position( -1000f, 100f ).name( "player2" ).buildPlayer( );
-			}
-		}
 		
 	}
 	
@@ -70,17 +59,17 @@ public class CharacterSelect{
 		updateKeyboardWithOneControllerAttached();
 		
 		// no controllers
-//		if( controller1 == null && controller2 == null){
-//			noControllersAttached = true;
-//			if(level.player1 == null){
-//				level.player1 = new PlayerBuilder( ).world( level.world )
-//				.position( 100f, 100f ).name( "player1" ).buildPlayer( );
-//			}
-//			if(level.player2 == null){
-//				level.player2 = new PlayerBuilder( ).world( level.world )
-//				.position( 100f, 100f ).name( "player2" ).buildPlayer( );
-//			}
-//		}
+		if( controller1 == null && controller2 == null){
+			noControllersAttached = true;
+			if(level.player1 == null){
+				level.player1 = new PlayerBuilder( ).world( level.world )
+				.position( 100f, 100f ).name( "player1" ).buildPlayer( );
+			}
+			if(level.player2 == null){
+				level.player2 = new PlayerBuilder( ).world( level.world )
+				.position( 100f, 100f ).name( "player2" ).buildPlayer( );
+			}
+		}
 		
 	}
 	
@@ -140,25 +129,6 @@ public class CharacterSelect{
 		players.add( p4 );
 		
 		
-//		Player p1 =  new PlayerBuilder( ).name( "player1" ).world( level.world )
-//				.position( -200.0f, -150.0f ).buildPlayer( );
-//		p1.setInputNull();
-//		players.add( p1 );
-//		
-//		Player p2 =  new PlayerBuilder( ).name( "player2" ).world( level.world )
-//				.position( -100.0f, -150.0f ).buildPlayer( );
-//		p2.setInputNull();
-//		players.add( p2 );
-//		
-//		Player p3 =  new PlayerBuilder( ).name( "player1" ).world( level.world )
-//				.position( 0.0f, -150.0f ).buildPlayer( );
-//		p3.setInputNull();
-//		players.add( p3 );
-//		
-//		Player p4 =  new PlayerBuilder( ).name( "player2" ).world( level.world )
-//				.position( 100.0f, -150.0f ).buildPlayer( );
-//		p4.setInputNull();
-//		players.add( p4 );
 
 	}
 	
