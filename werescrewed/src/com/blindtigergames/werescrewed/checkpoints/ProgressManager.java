@@ -81,6 +81,7 @@ public class ProgressManager {
 	public void update( float deltaTime ) {
 		// if both players are dead
 		// automatically re-spawn at the last checkpoint
+		
 		if ( player1.isPlayerDead( ) && player2.isPlayerDead( ) ) {
 			// create a rez screw if it doesn't already exist
 			handleDeadPlayer( );
@@ -362,4 +363,12 @@ public class ProgressManager {
 		}
 	}
 
+	
+	public void addPlayerOne( Player p1 ){
+		this.player1 = p1;
+	}
+	
+	public void addPlayerTwo( Player p2 ){
+		this.player2 = p2;
+	}
 }

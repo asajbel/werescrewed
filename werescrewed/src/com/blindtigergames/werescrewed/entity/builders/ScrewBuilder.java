@@ -185,6 +185,8 @@ public class ScrewBuilder extends GenericEntityBuilder< ScrewBuilder > {
 		if (canBuild() && skeleton != null){
 			
 			out = new StrippedScrew(name, pos, skeleton, world);
+			//out = new StrippedScrew(name, pos, world);
+			//out.addWeldJoint( skeleton );
 			skeleton.addStrippedScrew( out );
 
 		}
@@ -215,7 +217,8 @@ public class ScrewBuilder extends GenericEntityBuilder< ScrewBuilder > {
 			if (skeleton != null){
 				//skeleton.addScrew(out);
 				skeleton.addScrewForDraw( out );
-				out.addStructureJoint( skeleton );
+				//out.addStructureJoint( skeleton );
+				//out.addWeldJoint( skeleton );
 			}
 		}
 		return out;

@@ -106,6 +106,9 @@ public class EventTriggerBuilder extends
 	}
 
 	public EventTriggerBuilder setVerts( Array<Vector2> vertices ) {
+		this.rectangle = false;
+		this.circle = false;
+		this.skelePolygon = false;
 		this.verts = vertices;
 		return this;
 	}

@@ -41,8 +41,10 @@ import com.blindtigergames.werescrewed.entity.mover.LinearAxis;
 import com.blindtigergames.werescrewed.entity.mover.PistonTweenMover;
 import com.blindtigergames.werescrewed.entity.mover.PuzzleType;
 import com.blindtigergames.werescrewed.entity.mover.RotateByDegree;
+import com.blindtigergames.werescrewed.entity.mover.RotateTweenMover;
 import com.blindtigergames.werescrewed.entity.mover.SlidingMotorMover;
 import com.blindtigergames.werescrewed.entity.mover.puzzle.PuzzlePistonTweenMover;
+import com.blindtigergames.werescrewed.entity.mover.puzzle.PuzzleRotateTweenMover;
 import com.blindtigergames.werescrewed.entity.particles.Steam;
 import com.blindtigergames.werescrewed.entity.platforms.Platform;
 import com.blindtigergames.werescrewed.entity.platforms.TiledPlatform;
@@ -300,15 +302,22 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 	}
 	
 	void movingSkeleton(){
-		s =  new Skeleton( "skeleton7", new Vector2( -700, 700 ), null, world, BodyType.DynamicBody );
+		
+		Skeleton top = new Skeleton( "skeleton7", new Vector2( -700,1200 ), null, world, BodyType.KinematicBody );
+		top.addMover(  new RotateTweenMover(top, 3f, -Util.PI / 2, 1f, true),
+		RobotState.IDLE );
+		rootSkeleton.addSkeleton( top );
+		
+		s =  new Skeleton( "skeleton7", new Vector2( -700, 700 ), null, world, BodyType.KinematicBody );
 		
 		TiledPlatform ttt = platBuilder.name( "ttt" ).kinematic( )
 				.position( -700, 1000 ).dimensions( 1, 5).oneSided( false )
 				.buildTilePlatform( ); 
-		rootSkeleton.addPlatform( ttt );
+		s.addPlatform( ttt );
 		
-		rootSkeleton.addSkeleton( s );
+		//rootSkeleton.addSkeleton( s );
 		
+		top.addKinematicPlatform( s );
 //		StructureScrew screw = new StructureScrew( "sdfasdf",
 //				new Vector2(-700f, 500f),
 //				100, world );
@@ -316,31 +325,34 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 //		screw.addWeldJoint( ttt );
 //		dynSkel2.addScrewForDraw( screw );
 		
-		RevoluteJointDef revoluteJointDef = new RevoluteJointDef( );
-		revoluteJointDef.initialize( s.body, ttt.body, ttt.getPosition( ) );
-		world.createJoint( revoluteJointDef );
+//		RevoluteJointDef revoluteJointDef = new RevoluteJointDef( );
+//		revoluteJointDef.initialize( s.body, ttt.body, ttt.getPosition( ) );
+//		world.createJoint( revoluteJointDef );
 	
 		Skeleton middleHang =  new Skeleton( "middleHang", new Vector2( -700, 400 ),
-				null, world, BodyType.DynamicBody );
-		rootSkeleton.addSkeleton( middleHang );
+				null, world, BodyType.KinematicBody );
+		//rootSkeleton.addSkeleton( middleHang );
+		s.addKinematicPlatform( middleHang );
 		
-		TiledPlatform test2 = platBuilder.name( "movetest2" ).kinematic( )
-				.position( -900, 500 ).dimensions( 1, 5).oneSided( false )
-				.buildTilePlatform( );
-		middleHang.addKinematicPlatform(  test2 );
+//		TiledPlatform test2 = platBuilder.name( "movetest2" ).kinematic( )
+//				.position( -900, 500 ).dimensions( 1, 5).oneSided( false )
+//				.buildTilePlatform( );
+//		middleHang.addKinematicPlatform(  test2 );
 		
-		RevoluteJointDef revoluteJointDef2 = new RevoluteJointDef( );
-		revoluteJointDef2.initialize( s.body, middleHang.body, s.getPosition( ) );
-		world.createJoint( revoluteJointDef2 );
+//		RevoluteJointDef revoluteJointDef2 = new RevoluteJointDef( );
+//		revoluteJointDef2.initialize( s.body, middleHang.body, s.getPosition( ) );
+//		world.createJoint( revoluteJointDef2 );
 		
 		PathBuilder pb = new PathBuilder();
-		ttt.addMover( pb.begin( ttt ).ease( TweenEquations.easeInOutExpo ).target( -1000, 0, 20 )
-				.target( 0, 0, 20 ).build( ), RobotState.IDLE);
+//		ttt.addMover( pb.begin( ttt ).ease( TweenEquations.easeInOutExpo ).target( -1000, 0, 20 )
+//				.target( 0, 0, 20 ).build( ), RobotState.IDLE);
 		
-		TiledPlatform test = platBuilder.name( "movetest" ).kinematic( )
-				.position( -300, 500 ).dimensions( 1, 5).oneSided( false )
-				.buildTilePlatform( );
-		s.addKinematicPlatform(  test );
+
+		
+//		TiledPlatform test = platBuilder.name( "movetest" ).kinematic( )
+//				.position( -300, 500 ).dimensions( 1, 5).oneSided( false )
+//				.buildTilePlatform( );
+//		s.addKinematicPlatform(  test );
 		
 		
 //		saw = new Hazard( "sawblade", EntityDef.getDefinition( "sawBlade" ), world,
@@ -361,13 +373,13 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 //		gear2.quickfixCollisions( );
 		
 
-		TiledPlatform piston = platBuilder.name( "piston" ).kinematic( )
-				.position( -100, 700 ).dimensions( 2, 5).oneSided( false )
-				.buildTilePlatform( );
-		piston.addMover( new PistonTweenMover( piston, new Vector2(
-				0, -350 ), 0.5f, 3f, 1f, 0f, 1f ), RobotState.IDLE );
-		s.addKinematicPlatform(  piston );
-		piston.setCrushing( true );
+//		TiledPlatform piston = platBuilder.name( "piston" ).kinematic( )
+//				.position( -100, 700 ).dimensions( 2, 5).oneSided( false )
+//				.buildTilePlatform( );
+//		piston.addMover( new PistonTweenMover( piston, new Vector2(
+//				0, -350 ), 0.5f, 3f, 1f, 0f, 1f ), RobotState.IDLE );
+//		s.addKinematicPlatform(  piston );
+//		piston.setCrushing( true );
 
 		
 //		TiledPlatform pivot = platBuilder.position( 100.0f, 75f ).name( "rev" )
@@ -393,11 +405,32 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 //				pivot.body.getPosition( ).add( new Vector2(0f, pivot.getMeterHeight( )/2) ) );
 //		world.createJoint( rfd );
 		
-		TiledPlatform dynPlatTest = platBuilder.position( -500,200 ).dynamic( ).dimensions( 5, 1 ).buildTilePlatform( );
-		s.addDynamicPlatformFixed( dynPlatTest );
-		dynPlatTest.quickfixCollisions( );
+//		TiledPlatform dynPlatTest = platBuilder.position( -500,200 ).dynamic( ).dimensions( 5, 1 ).buildTilePlatform( );
+//		s.addDynamicPlatformFixed( dynPlatTest );
+//		dynPlatTest.quickfixCollisions( );
 
 		
+		
+		TiledPlatform test = platBuilder.name( "movetest" ).kinematic( )
+				.position( -300, 300 ).dimensions( 5, 1).oneSided( false )
+				.buildTilePlatform( );
+		rootSkeleton.addKinematicPlatform(  test );
+		
+		PuzzleScrew puzzleScrew = new PuzzleScrew( "006", new Vector2(
+				-300, 400 ),
+				100, world, 0, false );
+		rootSkeleton.addScrewForDraw( puzzleScrew );
+		puzzleScrew.addStructureJoint( test );
+
+		LerpMover lm = new LerpMover( test.getPositionPixel( ),
+				new Vector2( test.getPositionPixel( ).x,
+						test.getPositionPixel( ).y - 300f),
+				LinearAxis.VERTICAL );
+
+		puzzleScrew.puzzleManager.addEntity( test );
+		puzzleScrew.puzzleManager.addMover( lm );
+		rootSkeleton.addScrewForDraw( puzzleScrew );
+
 	}
 	
 	@SuppressWarnings( "unused" )

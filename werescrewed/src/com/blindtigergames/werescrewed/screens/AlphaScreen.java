@@ -4,12 +4,14 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
 import com.blindtigergames.werescrewed.entity.RobotState;
 import com.blindtigergames.werescrewed.entity.Skeleton;
+import com.blindtigergames.werescrewed.entity.action.EntityActivateMoverAction;
 import com.blindtigergames.werescrewed.entity.builders.PlayerBuilder;
 import com.blindtigergames.werescrewed.entity.mover.RotateTweenMover;
 import com.blindtigergames.werescrewed.entity.platforms.Platform;
 import com.blindtigergames.werescrewed.entity.platforms.TiledPlatform;
 import com.blindtigergames.werescrewed.entity.screws.Screw;
 import com.blindtigergames.werescrewed.entity.tween.PathBuilder;
+import com.blindtigergames.werescrewed.eventTrigger.EventTrigger;
 import com.blindtigergames.werescrewed.level.CharacterSelect;
 import com.blindtigergames.werescrewed.level.LevelFactory;
 import com.blindtigergames.werescrewed.util.Util;
@@ -35,17 +37,24 @@ public class AlphaScreen extends Screen {
 		createFootObjects();
 		createKneeObjects();
 		
-		//-700f, 1800f
-		
+		//power screws: -700f, 1800f
+		//chest : -200f, 3800f 
 		
 		if(level.player1 == null){
 			level.player1 = new PlayerBuilder( ).world( level.world )
-			.position( 0, 0 ).name( "player1" ).buildPlayer( );
+			.position( -200f, 3800f ).name( "player1" ).buildPlayer( );
+			
+			level.progressManager.addPlayerOne( level.player1 );
 		}
 		if(level.player2 == null){
 			level.player2 = new PlayerBuilder( ).world( level.world )
-			.position( 0, 0 ).name( "player2" ).buildPlayer( );
+			.position( -200f, 3800f ).name( "player2" ).buildPlayer( );
+			
+			level.progressManager.addPlayerTwo( level.player2 );
 		}
+		
+		
+		initEventTriggers();
 		
 	}
 
@@ -128,6 +137,14 @@ public class AlphaScreen extends Screen {
 			}
 			
 		}
+	}
+	
+	private void initEventTriggers(){
+		EventTrigger et1 = ( EventTrigger ) LevelFactory.entities.get( "etChest1" );
+		
+		et1.addBeginIAction( new EntityActivateMoverAction() );
+		
+		TiledPlatform chestBlockPlat1 = (TiledPlatform) LevelFactory.entities.get( "chestBlockPlat1" );
 	}
 	
 }

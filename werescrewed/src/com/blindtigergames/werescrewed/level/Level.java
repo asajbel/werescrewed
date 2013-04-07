@@ -77,7 +77,8 @@ public class Level {
 		if(player2 != null) player2.update( deltaTime );
 		
 		root.update( deltaTime );
-		if (progressManager!=null)progressManager.update( deltaTime );
+		if (progressManager!=null && (player1 != null && player2 != null))
+			progressManager.update( deltaTime );
 		
 		if ( Gdx.input.isKeyPressed( Keys.NUM_0 ) ) {
 			if ( debugTest )

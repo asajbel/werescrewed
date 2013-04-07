@@ -704,16 +704,40 @@ public class LevelFactory {
 					p.puzzleManager.addEntity( attach );
 				}
 				
+
+				if(item.props.containsKey( "jointto" )){
+					String s = item.props.get( "jointto");
+					Entity plat  = entities.get( s );
+					
+					p.addStructureJoint( plat );
+				} else{
+					p.addStructureJoint( parent );
+				}
+				
 				IMover mover = null;
 				if(item.props.containsKey( "mover" )){
 					String movername = item.props.get( "mover" );
 					
 					//TODO: add all movers to this mover builder
 					if (MoverType.fromString( movername ) != null){
-						mover = new MoverBuilder()
+						
+						MoverBuilder moverBuilder = new MoverBuilder()
 						.fromString(movername)
-						.applyTo( attach )
-						.build( );
+						.applyTo( attach );
+						
+						if(item.props.containsKey( "vertical" )){
+							moverBuilder.vertical( );
+						} else if(item.props.containsKey( "horizontal" ) ){
+							moverBuilder.horizontal( );
+						}
+						
+						if(item.props.containsKey( "distance" )){
+							float dist = Float.parseFloat( item.props.get( "distance" ) );
+			
+							moverBuilder.distance( dist );
+						}
+						
+						mover = moverBuilder.build();
 						Gdx.app.log("LevelFactory", "attaching :" + movername + " to puzzle screw");
 						
 						
@@ -884,7 +908,11 @@ public class LevelFactory {
 		TimelineTweenMover out = pBuilder.build( );
 		movers.put(item.name, out);
 		p.addMover( out, RobotState.IDLE );
-		p.setActive( true );
+		
+		if(item.props.containsKey( "inactive" ))
+			p.setActive( false );
+		else
+			p.setActive( true );
 	}
 
 	public void constructRope(Item item){
@@ -938,13 +966,11 @@ public class LevelFactory {
 		
 		etb.name( item.name ).position( item.pos );
 		
-		if(item.props.containsKey( "attachto" )){
-			Array<String> connectTo = item.props.getAll( "attachto" );
+		if(item.props.containsKey( "applyto" )){
+			String connectTo = item.props.get( "applyto" );
 			
-			for(String s : connectTo){
-				Entity e = loadEntity(s);
-				etb.addEntity( e );
-			}
+			Entity e = loadEntity(connectTo);
+			etb.addEntity( e );
 		}
 		
 		if(item.props.containsKey( "beginaction" )){
@@ -974,7 +1000,7 @@ public class LevelFactory {
 			Array<Vector2> verts = constructArray(item);
 			
 			etb.setVerts( verts );
-		}
+	}
 		
 		EventTrigger et = etb.build( );
 		entities.put( item.name, et );

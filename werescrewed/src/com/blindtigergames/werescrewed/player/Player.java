@@ -66,8 +66,8 @@ public class Player extends Entity {
 	public final static float STEAM_FORCE = .5f;
 	public final static float STEAM_IMPULSE = 0.2f;
 	public final static float FRICTION_INCREMENT = 0.3f;
-	public final static float FEET_OFFSET_X = 58f * Util.PIXEL_TO_BOX;
-	public final static float FEET_OFFSET_Y = 20f * Util.PIXEL_TO_BOX;
+	public final static float FEET_OFFSET_X = 59f * Util.PIXEL_TO_BOX;
+	public final static float FEET_OFFSET_Y = 23.5f * Util.PIXEL_TO_BOX;
 	public final static float JUMP_DIRECTION_MULTIPLIER = 2f;
 	public final static float JUMP_DEFAULT_DIVISION = 2.0f;
 	public float directionJumpDivsion = JUMP_DEFAULT_DIVISION;
@@ -1875,7 +1875,6 @@ public class Player extends Entity {
 	 *            boolean
 	 */
 	public void setSteamCollide( boolean value ) {
-		System.out.println( "help!" );
 		steamCollide = value;
 	}
 
