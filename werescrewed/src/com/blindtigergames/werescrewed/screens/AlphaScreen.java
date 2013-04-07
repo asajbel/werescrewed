@@ -120,7 +120,7 @@ public class AlphaScreen extends Screen {
 				hipSkeleton.addMover(  pb.begin( hipSkeleton )
 						.target( 0, 100, 3 )
 						.delay( 1 )
-						.target( 0, -50, 3 )
+						.target( 0, -25, 3 )
 						.target( 0, 0, 3 )
 						.build( ),
 						RobotState.IDLE );
