@@ -74,6 +74,7 @@ public class Player extends Entity {
 	public final static float JUMP_DIRECTION_MULTIPLIER = 2f;
 	public final static float JUMP_DEFAULT_DIVISION = 2.0f;
 	public float directionJumpDivsion = JUMP_DEFAULT_DIVISION;
+	public boolean flipX = false; 
 
 	public Fixture feet;
 	public Fixture torso;
@@ -300,9 +301,11 @@ public class Player extends Entity {
 				playerDirection = PlayerDirection.Idle;
 			} else if ( playerDirection == PlayerDirection.Left
 					&& type.getScale( ).x > 0 ) {
+				flipX = true;
 				type.setScale( type.getScale( ).x * -1, type.getScale( ).y );
 			} else if ( playerDirection == PlayerDirection.Right
 					&& type.getScale( ).x < 0 ) {
+				flipX = false; 
 				type.setScale( type.getScale( ).x * -1, type.getScale( ).y );
 			} else if ( playerState != PlayerState.Jumping
 					&& playerState != PlayerState.Falling
