@@ -22,27 +22,11 @@
 /common/tileset/alphabot32-bleed.pack
 /common/spine/red_female_atlas.pack
 /common/spine/red_male_atlas.pack
+/particles/particles.pack
 
 ##checkpoint
 /common/checkpoint/checkpoint.pack
 
-##spine animations
-/common/spine/female-death_begin.anim
-/common/spine/female-death_idle.anim
-/common/spine/female-hang.anim
-/common/spine/female-idle.anim
-/common/spine/female-jump_down.anim
-/common/spine/female-jump_up.anim
-/common/spine/female-run.anim
-/common/spine/female.skel
-/common/spine/male-begin death.anim
-/common/spine/male-death.anim
-/common/spine/male-hang.anim
-/common/spine/male-idle.anim
-/common/spine/male-jump_down.anim
-/common/spine/male-jump_up.anim
-/common/spine/male-run.anim
-/common/spine/male.skel
 
 ##common texture
 /common/player_b_f.png
@@ -69,11 +53,12 @@
 /common/title_background.png
 #/common/title_background_1024.png
 #/common/title_background_original.png
-/particles/particle.png
+#/particles/particle.png
 /common/robot/alphabot_texture_skin.png
 /common/robot/alphabot_texture_tux.png
 /common/robot/alphabot_tile_suit_main.png
 /common/robot/alphabot_tile_interior.png
+/common/robot/metal.png
 /common/ropelink.png
 /common/chainlink.png
 /common/gear.png

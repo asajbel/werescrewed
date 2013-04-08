@@ -77,9 +77,9 @@ public class HazardScreen implements com.badlogic.gdx.Screen {
 		world.setContactListener( contactListener );
 
 		player1 = new PlayerBuilder( ).name( "player1" ).world( world )
-				.position(  1800f, 100f).buildPlayer( );
+				.position( 1800f, 100f ).buildPlayer( );
 		player2 = new PlayerBuilder( ).name( "player2" ).world( world )
-				.position(  1900f, 100.0f ).buildPlayer( );
+				.position( 1900f, 100.0f ).buildPlayer( );
 
 		initTiledPlatforms( );
 		initHazards( );
@@ -98,7 +98,8 @@ public class HazardScreen implements com.badlogic.gdx.Screen {
 		float zoom = 1.0f;
 		float width = Gdx.graphics.getWidth( ) / zoom;
 		float height = Gdx.graphics.getHeight( ) / zoom;
-		cam = new Camera( width, height, world );
+		cam = new Camera( new Vector2( Gdx.graphics.getWidth( ) * 5f,
+				Gdx.graphics.getHeight( ) * 5f ), width, height, world );
 	}
 
 	private void initTiledPlatforms( ) {
@@ -109,26 +110,35 @@ public class HazardScreen implements com.badlogic.gdx.Screen {
 				Util.CATEGORY_EVERYTHING );
 		ground.setCrushing( true );
 		skeleton.addKinematicPlatform( ground );
+
+		ground = platBuilder.position( 1000, 150 ).name( "ground" )
+				.dimensions( 20, 1 ).texture( testTexture ).kinematic( )
+				.oneSided( true ).restitution( 0.0f ).buildTilePlatform( );
+		ground.setCategoryMask( Util.KINEMATIC_OBJECTS,
+				Util.CATEGORY_EVERYTHING );
+		skeleton.addKinematicPlatform( ground );
+
 	}
 
 	private void initHazards( ) {
-		/*Vector2 tempPos = new Vector2( -1250.0f, 300.0f );
-		float tempWH = 100.0f;
-		hazard = new Hazard ( "Test", tempPos, null, 
-				world, tempWH, tempWH, true );
-		hazard.constructBody( tempPos, tempWH, tempWH );*/
-		fire = new Fire( "Fire1", new Vector2( -700.0f, -10.0f ), 
-				50, 100, world, true );
+		/*
+		 * Vector2 tempPos = new Vector2( -1250.0f, 300.0f ); float tempWH =
+		 * 100.0f; hazard = new Hazard ( "Test", tempPos, null, world, tempWH,
+		 * tempWH, true ); hazard.constructBody( tempPos, tempWH, tempWH );
+		 */
+		fire = new Fire( "Fire1", new Vector2( -700.0f, -10.0f ), 50, 100,
+				world, true );
 		elec = new Electricity( "Elec1", new Vector2( 700.0f, 0.0f ),
 				new Vector2( 700.0f, 50.0f ), world, true );
-		/*saw = new Saws( "Saw1", new Vector2( -2000.0f, 40.0f ),
-				2, world, true );
+		/*
+		 * saw = new Saws( "Saw1", new Vector2( -2000.0f, 40.0f ), 2, world,
+		 * true );
 		 */
-		spikes = new Spikes( "Spikes1", new Vector2( -1700.0f, 5.0f ), 
-				1, 6, world, true, false, false );
+		spikes = new Spikes( "Spikes1", new Vector2( -1700.0f, 5.0f ), 1, 6,
+				world, true, false, false );
 		spikes2 = spikesBuilder.position( -1500.0f, 5.0f ).dimensions( 4, 1 )
 				.up( ).active( ).buildSpikes( );
-		//add the spikes to the skeleton
+		// add the spikes to the skeleton
 		skeleton.addKinematicPlatform( spikes );
 		skeleton.addKinematicPlatform( spikes2 );
 	}
@@ -139,48 +149,43 @@ public class HazardScreen implements com.badlogic.gdx.Screen {
 	private void initParticleEffect( ) {
 		testSteam = new Steam( "testSteam", new Vector2( -100f, 20f ), null,
 				null, false, 25, 50, world );
-		
-		 // Create anchor with start position and buffer as parameters
-		 Anchor testAnchor = new Anchor( new Vector2(600f, 200f),
-		 new Vector2( -100f, 100f ) );
-		 // Add to the universally accessible anchor list
-		 AnchorList.getInstance( ).addAnchor( testAnchor );
-		 // Set timer in steps
-		 //testAnchor.setTimer( 200 );
-		 // Activate it
+
+		// Create anchor with start position and buffer as parameters
+		Anchor testAnchor = new Anchor( new Vector2( 600f, 200f ), new Vector2(
+				-100f, 100f ) );
+		// Add to the universally accessible anchor list
+		AnchorList.getInstance( ).addAnchor( testAnchor );
+		// Set timer in steps
+		// testAnchor.setTimer( 200 );
+		// Activate it
 		// testAnchor.activate( );
-		
+
 		EventTriggerBuilder etb = new EventTriggerBuilder( world );
 		EventTrigger et = etb.name( "event1" ).circle( ).radius( 100 )
-				.position( new Vector2( 1200f, 20f ) ).repeatable()
+				.position( new Vector2( 1200f, 20f ) ).repeatable( )
 				.beginAction( new AnchorActivateAction( testAnchor ) )
 				.endAction( new AnchorActivateAction( testAnchor ) )
-				.twoPlayersToActivate( )
-				.build( );
+				.twoPlayersToActivate( ).build( );
 		EventTriggerBuilder etb2 = new EventTriggerBuilder( world );
 		EventTrigger et2 = etb2.name( "event2" ).circle( ).radius( 100 )
-				.position( new Vector2(600f, 20f ) ).repeatable( )
+				.position( new Vector2( 600f, 20f ) ).repeatable( )
 				.beginAction( new AnchorDeactivateAction( testAnchor ) )
 				.endAction( new AnchorDeactivateAction( testAnchor ) )
-				.twoPlayersToDeactivate( )
-				.build( );
-		
+				.twoPlayersToDeactivate( ).build( );
+
 		EventTriggerBuilder etb3 = new EventTriggerBuilder( world );
 		@SuppressWarnings( "unused" )
 		EventTrigger et3 = etb3.name( "event3" ).circle( ).radius( 100 )
-				.position( new Vector2( 1600f, 20f ) ).repeatable()
+				.position( new Vector2( 1600f, 20f ) ).repeatable( )
 				.beginAction( new AnchorActivateAction( testAnchor ) )
-				.endAction( new AnchorActivateAction( testAnchor ) )
-				.build( );
-		//AnchorDeactivateAction
-		
-		
-		
+				.endAction( new AnchorActivateAction( testAnchor ) ).build( );
+		// AnchorDeactivateAction
+
 		skeleton.addEventTrigger( et );
 		skeleton.addEventTrigger( et2 );
 
 	}
-	
+
 	private void initCrushTest( ) {
 		crusher = platBuilder.position( 400.0f, 100.0f ).name( "crusher" )
 				.dimensions( 6, 1 ).texture( testTexture ).dynamic( )
@@ -220,26 +225,26 @@ public class HazardScreen implements com.badlogic.gdx.Screen {
 
 		cam.update( );
 
-		//Set hazards active
+		// Set hazards active
 		if ( Gdx.input.isKeyPressed( Input.Keys.NUM_1 ) ) {
 			fire.setActive( true );
 			spikes.setActive( true );
 			spikes2.setActive( true );
 		}
-		//Set hazards inactive
+		// Set hazards inactive
 		if ( Gdx.input.isKeyPressed( Input.Keys.NUM_2 ) ) {
 			fire.setActive( false );
 			spikes.setActive( false );
 			spikes2.setActive( false );
 		}
-		
+
 		if ( Gdx.input.isKeyPressed( Keys.NUM_0 ) ) {
 			if ( debugTest )
 				debug = !debug;
 			debugTest = false;
 		} else
 			debugTest = true;
-		
+
 		player1.update( deltaTime );
 		player2.update( deltaTime );
 		progressManager.update( deltaTime );
@@ -249,7 +254,7 @@ public class HazardScreen implements com.badlogic.gdx.Screen {
 
 		rootSkeleton.draw( batch, deltaTime );
 		progressManager.draw( batch, deltaTime );
-		fire.draw(batch, deltaTime );
+		fire.draw( batch, deltaTime );
 		elec.draw( batch, deltaTime );
 		testSteam.draw( batch, deltaTime );
 		player1.draw( batch, deltaTime );
@@ -261,15 +266,14 @@ public class HazardScreen implements com.badlogic.gdx.Screen {
 			debugRenderer.render( world, cam.combined( ) );
 
 		world.step( 1 / 60f, 6, 6 );
-		
+
 		if ( Gdx.input.isKeyPressed( Input.Keys.ESCAPE ) ) {
-			if(!ScreenManager.escapeHeld){
+			if ( !ScreenManager.escapeHeld ) {
 				ScreenManager.getInstance( ).show( ScreenType.PAUSE );
 			}
 		} else
 			ScreenManager.escapeHeld = false;
-		
-		
+
 	}
 
 	@Override

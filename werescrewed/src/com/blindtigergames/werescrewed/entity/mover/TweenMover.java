@@ -7,7 +7,7 @@ import aurelienribon.tweenengine.Tween;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.blindtigergames.werescrewed.entity.platforms.Platform;
-import com.blindtigergames.werescrewed.entity.screws.PuzzleScrew;
+import com.blindtigergames.werescrewed.entity.screws.Screw;
 
 /**
  * General purpose mover for building an arbitrary path.
@@ -90,7 +90,7 @@ public class TweenMover implements IMover {
     }
 
 	@Override
-	public void runPuzzleMovement( PuzzleScrew screw, float screwVal, Platform p ) {
+	public void runPuzzleMovement( Screw screw, float screwVal, Platform p ) {
 		// TODO Auto-generated method stub
 		Gdx.app.log( "tweenmover", "" );
 	}

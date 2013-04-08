@@ -1,5 +1,7 @@
 package com.blindtigergames.werescrewed.level;
 
+import java.util.ArrayList;
+
 import aurelienribon.tweenengine.Tween;
 
 import com.badlogic.gdx.Gdx;
@@ -7,6 +9,7 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Joint;
 import com.badlogic.gdx.physics.box2d.World;
 import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.camera.Camera;
@@ -45,6 +48,7 @@ public class Level {
 	public PolySprite polySprite;
 	private boolean debugTest, debug;
 	public ProgressManager progressManager;
+	public static ArrayList<Joint> jointsToRemove = new ArrayList<Joint>();
 	
 	public Level( ){
 		
@@ -77,7 +81,8 @@ public class Level {
 		if(player2 != null) player2.update( deltaTime );
 		
 		root.update( deltaTime );
-		if (progressManager!=null)progressManager.update( deltaTime );
+		if (progressManager!=null && (player1 != null && player2 != null))
+			progressManager.update( deltaTime );
 		
 		if ( Gdx.input.isKeyPressed( Keys.NUM_0 ) ) {
 			if ( debugTest )
@@ -87,14 +92,19 @@ public class Level {
 			debugTest = true;
 		
 
+		if ( jointsToRemove.size( ) > 0 ){
+			for ( Joint j: jointsToRemove ){
+				world.destroyJoint( j );
+			}
+			jointsToRemove.clear( );
+		}
 	}
 	
 	public void draw ( SpriteBatch batch, SBox2DDebugRenderer debugRenderer, float deltaTime){
-		batch.setProjectionMatrix( camera.combined() );
 		batch.setShader( WereScrewedGame.defaultShader );
 		batch.setBlendFunction( GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA );
-		batch.setProjectionMatrix( camera.combined() );
 		batch.enableBlending( );
+		batch.setProjectionMatrix( camera.combined() );
 		batch.begin();
 		
 		//float deltaTime = Gdx.graphics.getDeltaTime( );

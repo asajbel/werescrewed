@@ -35,6 +35,7 @@ import com.blindtigergames.werescrewed.entity.mover.LinearAxis;
 import com.blindtigergames.werescrewed.entity.screws.ResurrectScrew;
 import com.blindtigergames.werescrewed.entity.screws.Screw;
 import com.blindtigergames.werescrewed.entity.screws.ScrewType;
+import com.blindtigergames.werescrewed.graphics.particle.ParticleEffect;
 import com.blindtigergames.werescrewed.input.MyControllerListener;
 import com.blindtigergames.werescrewed.input.PlayerInputHandler;
 import com.blindtigergames.werescrewed.util.Metrics;
@@ -69,8 +70,8 @@ public class Player extends Entity {
 	public final static float STEAM_FORCE = .5f;
 	public final static float STEAM_IMPULSE = 0.2f;
 	public final static float FRICTION_INCREMENT = 0.3f;
-	public final static float FEET_OFFSET_X = 58f * Util.PIXEL_TO_BOX;
-	public final static float FEET_OFFSET_Y = 20f * Util.PIXEL_TO_BOX;
+	public final static float FEET_OFFSET_X = 59f * Util.PIXEL_TO_BOX;
+	public final static float FEET_OFFSET_Y = 23.5f * Util.PIXEL_TO_BOX;
 	public final static float JUMP_DIRECTION_MULTIPLIER = 2f;
 	public final static float JUMP_DEFAULT_DIVISION = 2.0f;
 	public float directionJumpDivsion = JUMP_DEFAULT_DIVISION;
@@ -112,7 +113,7 @@ public class Player extends Entity {
 	private Player otherPlayer;
 	private RevoluteJoint playerJoint;
 	private Body platformBody;
-	private Entity hitCloud;
+	//private Entity hitCloud;
 	private boolean topPlayer = false;
 	private boolean isDead = false;
 	private boolean hitSolidObject;
@@ -135,6 +136,8 @@ public class Player extends Entity {
 
 	public int grabCounter = 0;
 	public int jumpCounter = 0;
+
+	private ParticleEffect land_cloud;
 
 	@SuppressWarnings( "unused" )
 	private Sound jumpSound;
@@ -163,7 +166,7 @@ public class Player extends Entity {
 	 * </Ul>
 	 */
 	public enum PlayerState {
-		Standing, Running, Jumping, Falling, Screwing, JumpingOffScrew, Dead, GrabMode, HeadStand, Landing
+		Standing, Running, Jumping, Falling, Screwing, JumpingOffScrew, Dead, GrabMode, HeadStand, Landing, RespawnMode
 	}
 
 	public enum ConcurrentState {
@@ -211,7 +214,7 @@ public class Player extends Entity {
 		}
 
 		// build the hit cloud entity and animation
-		hitCloud = new Entity( name + "_hitCloud", Vector2.Zero, null, null,
+		/*hitCloud = new Entity( name + "_hitCloud", Vector2.Zero, null, null,
 				false );
 		SimpleFrameAnimator hitCloudAnimator = new SimpleFrameAnimator( )
 				.speed( 1f ).loop( LoopBehavior.STOP ).startFrame( 1 )
@@ -220,7 +223,7 @@ public class Player extends Entity {
 				WereScrewedGame.manager.getTextureAtlas( "hitCloud" ),
 				hitCloudAnimator );
 		// set the frame to the last
-		hitCloud.sprite.getAnimator( ).setFrame( 3 );
+		hitCloud.sprite.getAnimator( ).setFrame( 3 );*/
 
 		setFixtures( );
 		maxFriction( );
@@ -233,6 +236,8 @@ public class Player extends Entity {
 
 		jumpSound = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 				+ "/common/sounds/WilhelmScream.ogg" );
+
+		land_cloud = ParticleEffect.loadEffect( "land_cloud" );
 	}
 
 	// PUBLIC METHODS
@@ -258,21 +263,21 @@ public class Player extends Entity {
 			// repeat kill player
 			// removes all the joints and stuff
 			if ( playerState != PlayerState.Dead
-					&& playerState != PlayerState.GrabMode ) {
+					&& playerState != PlayerState.RespawnMode ) {
 				killPlayer( );
 			}
 			// check input only for grab mode
 			// to allow player to re-spawn
 			if ( controller != null ) {
 				if ( controllerListener.isGrabPressed( ) ) {
-					playerState = PlayerState.GrabMode;
+					playerState = PlayerState.RespawnMode;
 				} else {
 					playerState = PlayerState.Dead;
 				}
 			} else {
 				inputHandler.update( );
 				if ( inputHandler.isGrabPressed( ) ) {
-					playerState = PlayerState.GrabMode;
+					playerState = PlayerState.RespawnMode;
 				} else {
 					playerState = PlayerState.Dead;
 				}
@@ -438,9 +443,13 @@ public class Player extends Entity {
 	@Override
 	public void draw( SpriteBatch batch, float deltaTime ) {
 		super.draw( batch, deltaTime );
-		if ( hitCloud.sprite.getAnimator( ).getFrame( ) < 3 ) {
-			hitCloud.draw( batch, deltaTime );
+//		if ( hitCloud.sprite.getAnimator( ).getFrame( ) < 3 ) {
+//			hitCloud.draw( batch, deltaTime );
+//		}
+		if (!land_cloud.isComplete( )){
+			land_cloud.draw( batch, deltaTime );
 		}
+		
 	}
 
 	/**
@@ -449,12 +458,8 @@ public class Player extends Entity {
 	public void killPlayer( ) {
 		if ( respawnTimeout == 0 ) {
 			if ( !world.isLocked( ) ) {
-				if ( playerState == PlayerState.Screwing ) {
-					removePlayerToScrew( );
-				}
-				if ( playerState == PlayerState.HeadStand && topPlayer ) {
-					removePlayerToPlayer( );
-				}
+				removePlayerToScrew( );
+				removePlayerToPlayer( );
 				currentScrew = null;
 				mover = null;
 				Filter filter = new Filter( );
@@ -496,9 +501,9 @@ public class Player extends Entity {
 			}
 			filter = f.getFilterData( );
 			// move player back to original category
-			filter.categoryBits = Util.CATEGORY_SUBPLAYER;
+			filter.categoryBits = Util.CATEGORY_PLAYER;
 			// player now collides with everything
-			filter.maskBits = ~Util.CATEGROY_HAZARD;
+			filter.maskBits = Util.CATEGORY_EVERYTHING;
 			f.setFilterData( filter );
 		}
 		playerState = PlayerState.Standing;
@@ -748,11 +753,14 @@ public class Player extends Entity {
 	public void setGrounded( boolean newVal ) {
 		if ( !topPlayer ) {
 			if ( newVal != false && !grounded && otherPlayer == null ) {
-				hitCloud.setPixelPosition( this.getPositionPixel( )
+				/*hitCloud.setPixelPosition( this.getPositionPixel( )
 						.sub( 0, 12f ) );
 				hitCloud.sprite.setColor( 1, 1, 1, body.getLinearVelocity( ).y
 						/ ( float ) MAX_VELOCITY );
-				hitCloud.sprite.reset( );
+				hitCloud.sprite.reset( );*/
+				land_cloud.start( );
+				Vector2 posPix = getPositionPixel( );
+				land_cloud.setPosition( posPix.x+50, posPix.y );
 			}
 			this.grounded = newVal;
 		}
@@ -1441,7 +1449,7 @@ public class Player extends Entity {
 	/**
 	 * removes the player to screw joint
 	 */
-	private void removePlayerToScrew( ) {
+	public void removePlayerToScrew( ) {
 		if ( playerJoint != null ) {
 			world.destroyJoint( playerJoint );
 			playerJoint = null;
@@ -1488,7 +1496,9 @@ public class Player extends Entity {
 			}
 		}
 		mover = null;
-		currentScrew.setPlayerAttached( false );
+		if ( currentScrew != null ) {
+			currentScrew.setPlayerAttached( false );
+		}
 		currentScrew = null;
 		playerState = PlayerState.JumpingOffScrew;
 		screwJumpTimeout = SCREW_JUMP_STEPS;
@@ -1875,7 +1885,6 @@ public class Player extends Entity {
 	 *            boolean
 	 */
 	public void setSteamCollide( boolean value ) {
-		System.out.println( "help!" );
 		steamCollide = value;
 	}
 

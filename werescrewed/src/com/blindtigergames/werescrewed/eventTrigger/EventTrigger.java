@@ -433,7 +433,7 @@ public class EventTrigger extends Entity{
 							beginAction.act( e );
 							beginTriggeredOnce = true;
 							endTriggeredOnce = false;
-							Gdx.app.log( this.name,  " begin action" );
+							Gdx.app.log( this.name,  " begin action " + beginAction.getClass( ).getSimpleName( ) );
 						}
 					}
 				}
@@ -444,7 +444,7 @@ public class EventTrigger extends Entity{
 						beginAction.act( );
 						beginTriggeredOnce = true;
 						endTriggeredOnce = false;
-						Gdx.app.log( this.name,  " begin action" );
+						Gdx.app.log( this.name,  " begin action " + beginAction.getClass( ).getSimpleName( ) );
 					}
 				}
 			}
@@ -460,7 +460,7 @@ public class EventTrigger extends Entity{
 						beginAction.act( e );
 						beginTriggeredOnce = true;
 						endTriggeredOnce = false;
-						Gdx.app.log( this.name,  " begin action" );
+						Gdx.app.log( this.name,  " begin action " + beginAction.getClass( ).getSimpleName( ));
 					}
 				}
 			}
@@ -471,7 +471,7 @@ public class EventTrigger extends Entity{
 					beginAction.act( );
 					beginTriggeredOnce = true;
 					endTriggeredOnce = false;
-					Gdx.app.log( this.name,  " begin action" );
+					Gdx.app.log( this.name,  " begin action " + beginAction.getClass( ).getSimpleName( ) );
 				}
 			}
 		}
@@ -496,7 +496,7 @@ public class EventTrigger extends Entity{
 							endAction.act( e );
 							endTriggeredOnce = true;
 							beginTriggeredOnce = false;
-							Gdx.app.log( this.name,  " end action" );
+							Gdx.app.log( this.name,  " end action " + endAction.getClass( ).getSimpleName( ) );
 						}
 					}
 				}
@@ -507,7 +507,7 @@ public class EventTrigger extends Entity{
 						endAction.act( );
 						endTriggeredOnce = true;
 						beginTriggeredOnce = false;
-						Gdx.app.log( this.name,  " end action" );
+						Gdx.app.log( this.name,  " end action " + endAction.getClass( ).getSimpleName( ) );
 					}
 				}
 			}
@@ -523,7 +523,7 @@ public class EventTrigger extends Entity{
 						endAction.act( e );
 						endTriggeredOnce = true;
 						beginTriggeredOnce = false;
-						Gdx.app.log( this.name,  " end action" );
+						Gdx.app.log( this.name,  " end action " + endAction.getClass( ).getSimpleName( ) );
 					}
 				}
 			}
@@ -534,7 +534,7 @@ public class EventTrigger extends Entity{
 					endAction.act( );
 					endTriggeredOnce = true;
 					beginTriggeredOnce = false;
-					Gdx.app.log( this.name,  " end action" );
+					Gdx.app.log( this.name,  " end action " + endAction.getClass( ).getSimpleName( ) );
 				}
 			}
 

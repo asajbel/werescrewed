@@ -2,18 +2,27 @@ package com.blindtigergames.werescrewed.entity.platforms;
 
 import java.util.ArrayList;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+import com.badlogic.gdx.physics.box2d.joints.RevoluteJoint;
+import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Filter;
 import com.badlogic.gdx.physics.box2d.Fixture;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.Joint;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.Array;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityDef;
 import com.blindtigergames.werescrewed.entity.EntityType;
 import com.blindtigergames.werescrewed.entity.Skeleton;
 import com.blindtigergames.werescrewed.entity.screws.Screw;
+import com.blindtigergames.werescrewed.level.Level;
 import com.blindtigergames.werescrewed.util.Util;
 
 /**
@@ -52,10 +61,10 @@ public class Platform extends Entity {
 										// spawns
 										// at, in pixels
 
-	private Skeleton parentSkeleton; // pointer to parent skele
-
 	private Vector2 originRelativeToSkeleton; // box meters
 	
+	
+	protected Joint extraSkeletonJoint;
 
 	// ============================================
 	// Constructors
@@ -249,7 +258,7 @@ public class Platform extends Entity {
 		for ( Screw s : screws ) {
 			s.remove( );
 		}
-		getParentSkeleton( ).remove( this );
+		super.remove( );
 	}
 
 	/**
@@ -364,13 +373,7 @@ public class Platform extends Entity {
 		oneSided = false;
 	}
 
-	public Skeleton getParentSkeleton( ) {
-		return parentSkeleton;
-	}
-
-	public void setParentSkeleton( Skeleton parentSkeleton ) {
-		this.parentSkeleton = parentSkeleton;
-	}
+	
 
 	public Vector2 getOriginRelativeToSkeleton( ) {
 		return originRelativeToSkeleton;
@@ -381,5 +384,59 @@ public class Platform extends Entity {
 	}
 
 
+	public void constructBodyFromVerts( Array<Vector2> loadedVerts, Vector2 positionPixel ){
+		BodyDef bodyDef = new BodyDef( );
+		bodyDef.position.set( positionPixel.mul( Util.PIXEL_TO_BOX ));
+		body = world.createBody( bodyDef );
+		
+		PolygonShape polygon = new PolygonShape();
+		Vector2[] verts = new Vector2[loadedVerts.size -1];
+
+		//MAKE SURE START POINT IS IN THE MIDDLE
+		//AND SECOND AND END POINT ARE THE SAME POSITION
+		int i = 0;
+		for(int j = 0; j < loadedVerts.size; j++){
+			if(j == loadedVerts.size - 1) continue;
+			Vector2 v = loadedVerts.get( j );
+			verts[i] = new Vector2(v.x * Util.PIXEL_TO_BOX, v.y * Util.PIXEL_TO_BOX);
+			++i;
+		}
+		polygon.set( verts );
+		
+		FixtureDef fixture = new FixtureDef( );
+		fixture.shape = polygon;
+		
+		body.createFixture( fixture );
+		body.setUserData( this );
+
+		polygon.dispose( );
+	}
+	
+	/**
+	 * This function is used to joint a platform to a skeleton so that it stays in place
+	 * also this way we save the reference to that particular joint so we can delete it later
+	 * 
+	 * @param skel
+	 */
+	public void addJointToSkeleton( Skeleton skel ){
+		RevoluteJointDef rjd = new RevoluteJointDef( );
+		rjd.initialize( body, skel.body, this.getPosition( ) );
+		extraSkeletonJoint = ( Joint ) this.world.createJoint( rjd );
+	}
+	
+	/**
+	 * Adds the joint (connected to a skeleton) to the list to remove it when 
+	 * the Box2d world is not locked() (otherwise it crashes)
+	 * 
+	 * Only really used when level loading
+	 */
+	public void destorySkeletonJoint(){
+		if(extraSkeletonJoint != null){
+			Level.jointsToRemove.add(extraSkeletonJoint);
+			extraSkeletonJoint = null;
+		}
+		
+	
+	}
 
 }

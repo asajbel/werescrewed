@@ -1,9 +1,12 @@
 package com.blindtigergames.werescrewed.entity.builders;
 
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.Array;
 import com.blindtigergames.werescrewed.WereScrewedGame;
+import com.blindtigergames.werescrewed.entity.PolySprite;
 import com.blindtigergames.werescrewed.entity.platforms.Platform;
 import com.blindtigergames.werescrewed.entity.platforms.PlatformType;
 import com.blindtigergames.werescrewed.entity.platforms.TiledPlatform;
@@ -33,6 +36,7 @@ public class PlatformBuilder extends GenericEntityBuilder<PlatformBuilder> {
 	protected boolean 	moveable;
 	protected BodyType 	bodyType;
 	protected String 	tileSet;
+	protected Array<Vector2> verts;
 	
 /**
  * 
@@ -232,6 +236,12 @@ public class PlatformBuilder extends GenericEntityBuilder<PlatformBuilder> {
 		return this;
 	}
 	
+	public PlatformBuilder setVerts( Array<Vector2> verts){
+		this.verts = verts;
+		
+		return this;
+	}
+	
 /**
  * builds tile platform with specified numbers
  * @return TiledPlatform
@@ -279,5 +289,29 @@ public class PlatformBuilder extends GenericEntityBuilder<PlatformBuilder> {
 		cp.body.setFixedRotation( false );
 		return cp;
 	}
+	
+	public Platform buildCustomPlatform(){
+		Platform customPlat = new Platform( 
+				this.name, this.pos, null, this.world );
+		
+		customPlat.constructBodyFromVerts( verts, this.pos );
+		
+		customPlat.setPlatformType(PlatformType.COMPLEX);
+		customPlat.body.setType( bodyType );
+		customPlat.setDensity( this.density );
+		customPlat.setFriction( this.friction );
+		customPlat.setRestitution( this.restitution );
+		customPlat.setGravScale( this.gravScale );
+		customPlat.body.setFixedRotation( false );
+		
+		if ( tex == null )//default texture
+			tex = WereScrewedGame.manager.get( "data/common/robot/alphabot_tile_interior.png",Texture.class );
+		//tex = WereScrewedGame.manager.get( "data/common/robot/metal.png",Texture.class );
+		PolySprite polySprite = new PolySprite( tex , verts );
+		customPlat.changeSprite( polySprite );
+		
+		return customPlat;
+	}
+
 
 }

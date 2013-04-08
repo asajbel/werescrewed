@@ -178,7 +178,7 @@ aligned: false
 additive: true
 behind: true
 - Image Path -
-particle.png
+particle
 
 
 Untitled
@@ -314,4 +314,4 @@ aligned: false
 additive: true
 behind: false
 - Image Path -
-particle.png
+particle
