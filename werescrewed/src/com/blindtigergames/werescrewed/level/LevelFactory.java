@@ -21,6 +21,7 @@ import com.blindtigergames.werescrewed.entity.EntityCategory;
 import com.blindtigergames.werescrewed.entity.EntityDef;
 import com.blindtigergames.werescrewed.entity.RobotState;
 import com.blindtigergames.werescrewed.entity.Sprite;
+import com.blindtigergames.werescrewed.entity.action.DestoryPlatformJointAction;
 import com.blindtigergames.werescrewed.entity.action.EntityActivateMoverAction;
 import com.blindtigergames.werescrewed.entity.action.EntityDeactivateMoverAction;
 import com.blindtigergames.werescrewed.entity.builders.EventTriggerBuilder;
@@ -47,6 +48,7 @@ import com.blindtigergames.werescrewed.entity.RootSkeleton;
 import com.blindtigergames.werescrewed.entity.Skeleton;
 import com.blindtigergames.werescrewed.eventTrigger.EventTrigger;
 import com.blindtigergames.werescrewed.entity.hazard.Hazard;
+import com.blindtigergames.werescrewed.entity.hazard.builders.HazardBuilder;
 import com.blindtigergames.werescrewed.util.ArrayHash;
 import com.blindtigergames.werescrewed.util.Util;
 
@@ -467,8 +469,7 @@ public class LevelFactory {
 		float width = Gdx.graphics.getWidth( ) / zoom;
 		float height = Gdx.graphics.getHeight( ) / zoom;
 
-		level.camera = new Camera( new Vector2( Gdx.graphics.getWidth( ) * .5f,
-				Gdx.graphics.getHeight( ) * .5f ), width, height, level.world );
+		level.camera = new Camera( item.pos, width, height, level.world );
 
 		// level.camera.camera.lookAt( item.pos.x, item.pos.y, 0f );
 		// add position to camera later
@@ -537,6 +538,10 @@ public class LevelFactory {
 					+ out.name );
 			out.quickfixCollisions( );
 			parent.addDynamicPlatform( out );
+			
+			if ( item.props.containsKey( "jointtoskeleton" ) ) {
+				out.addJointToSkeleton( parent );
+			}
 		} else {
 			Gdx.app.log( "LevelFactory", "Tiled Kinematic platform loaded:"
 					+ out.name );
@@ -984,16 +989,28 @@ public class LevelFactory {
 		EventTriggerBuilder etb = new EventTriggerBuilder( level.world );
 
 		etb.name( item.name ).position( item.pos );
-
+		
 		if ( item.props.containsKey( "applyto" ) ) {
 			String connectTo = item.props.get( "applyto" );
 
-			Entity e = loadEntity( connectTo );
-			etb.addEntity( e );
+			Entity entity = loadEntity( connectTo );
+			etb.addEntity( entity );
 		}
 
+		if ( item.props.containsKey( "applyto1" ) ) {
+			String connectTo = item.props.get( "applyto1" );
+
+			Entity entity = loadEntity( connectTo );
+			etb.addEntity( entity );
+		}
+		
 		if ( item.props.containsKey( "beginaction" ) ) {
-			etb.beginAction( new EntityActivateMoverAction( ) );
+			String action = item.props.get( "beginaction" );
+			if(action.equals( "destoryjoint" )){
+				etb.beginAction( new DestoryPlatformJointAction( ) );
+			}else{
+				etb.beginAction( new EntityActivateMoverAction( ) );
+			}
 		}
 
 		if ( item.props.containsKey( "endaction" ) ) {
@@ -1058,12 +1075,38 @@ public class LevelFactory {
 
 	public Hazard constructHazard( Item item ) {
 
-		// TODO: make hazard builder (not just spikes)
 
-		// String skelAttach = item.skeleton;
-		// Skeleton parent = loadSkeleton(skelAttach);
+		String skelAttach = item.skeleton;
+		Skeleton parent = loadSkeleton(skelAttach);
+		 
+		float width = item.element.getFloat( "Width" );
+		float height = item.element.getFloat( "Height" );
+		float tileWidth = width / 32f;
+		float tileHeight = height / 32f;
 
-		return null;
+		float xPos = item.pos.x + ( width / 2 );
+		float yPos = item.pos.y - ( height / 2 );
+		
+		HazardBuilder hazardBuilder = new HazardBuilder( level.world );
+		
+		hazardBuilder.position( new Vector2(xPos, yPos) ).dimensions( tileWidth, tileHeight )
+		.active( );
+
+		if(item.props.containsKey( "right" )){
+			hazardBuilder.right( );
+		} else if(item.props.containsKey( "down" )){
+			hazardBuilder.down( );
+		} else if (item.props.containsKey( "left" ) ){
+			hazardBuilder.left( );
+		} else{
+			hazardBuilder.up( );
+		}
+		
+		
+		Hazard hazard = hazardBuilder.buildSpikes( );
+		parent.addKinematicPlatform( hazard );
+		
+		return hazard;
 	}
 
 	public Level getLevel( ) {
