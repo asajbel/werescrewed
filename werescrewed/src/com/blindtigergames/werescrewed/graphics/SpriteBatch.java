@@ -1,5 +1,6 @@
 package com.blindtigergames.werescrewed.graphics;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 
 public class SpriteBatch extends com.badlogic.gdx.graphics.g2d.SpriteBatch {
@@ -46,7 +47,7 @@ public class SpriteBatch extends com.badlogic.gdx.graphics.g2d.SpriteBatch {
 	
 	public SpriteBatch (int size, int buffers, ShaderProgram defaultShader) {
 		super(size, buffers, defaultShader);
-		if (defaultShader == null){
+		if (Gdx.graphics.isGL20Available() && defaultShader == null){
 			setShader(createDefaultShader());
 		}
 	}
