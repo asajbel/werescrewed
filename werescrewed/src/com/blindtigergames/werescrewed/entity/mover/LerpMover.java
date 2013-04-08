@@ -196,9 +196,18 @@ public class LerpMover implements IMover {
 	
 	/**
 	 * set the speed
+	 * @param speed
 	 */
 	public void setSpeed( float speed ) {
 		this.speed = speed;
+	}
+	
+	/**
+	 * set the end position and reset the beginning pos
+	 */
+	public void changeEndPos( Vector2 endPos ) {
+		this.endPoint = endPos;
+		alpha = 0;
 	}
 	
 	/**

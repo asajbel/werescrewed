@@ -76,6 +76,18 @@ public class ProgressManager {
 			for ( int i = 0; i < checkPoints.size( ); i++ ) {
 				if ( checkPoints.get( i ) == checkP ) {
 					currentCheckPoint = i;
+					if ( p1Ghost != null ) {
+						if ( p1Ghost.currentMover( ) instanceof LerpMover ) {
+							LerpMover lm = ( LerpMover ) p1Ghost.currentMover( );
+							lm.changeEndPos( checkPoints.get( i ).getPositionPixel( ) );
+						}
+					} 
+					if ( p2Ghost != null ) {
+						if ( p2Ghost.currentMover( ) instanceof LerpMover ) {
+							LerpMover lm = ( LerpMover ) p2Ghost.currentMover( );
+							lm.changeEndPos( checkPoints.get( i ).getPositionPixel( ) );
+						}
+					}
 					break;
 				}
 			}
