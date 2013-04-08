@@ -8,9 +8,11 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.JointEdge;
 import com.badlogic.gdx.physics.box2d.World;
 import com.blindtigergames.werescrewed.entity.Entity;
+import com.blindtigergames.werescrewed.entity.animator.SimpleFrameAnimator.LoopBehavior;
 import com.blindtigergames.werescrewed.entity.builders.ScrewBuilder;
 import com.blindtigergames.werescrewed.entity.mover.LerpMover;
 import com.blindtigergames.werescrewed.entity.mover.LinearAxis;
+import com.blindtigergames.werescrewed.entity.mover.MoverType;
 import com.blindtigergames.werescrewed.entity.screws.ResurrectScrew;
 import com.blindtigergames.werescrewed.entity.screws.ScrewType;
 import com.blindtigergames.werescrewed.player.Player;
@@ -30,6 +32,8 @@ public class ProgressManager {
 	private ResurrectScrew extraRezScrew;
 	private Player player1;
 	private Player player2;
+	private Entity p1Ghost;
+	private Entity p2Ghost;
 	private World world;
 	private int currentCheckPoint;
 	private int p1holdTime = 0;
@@ -81,13 +85,13 @@ public class ProgressManager {
 	public void update( float deltaTime ) {
 		// if both players are dead
 		// automatically re-spawn at the last checkpoint
-		
+
 		if ( player1.isPlayerDead( ) && player2.isPlayerDead( ) ) {
 			// create a rez screw if it doesn't already exist
 			handleDeadPlayer( );
 			// handle dead player input to allow them to re-spawn
-			handleDeadPlayerInput( player1 );
-			handleDeadPlayerInput( player2 );
+			// handleDeadPlayerInput( player1 );
+			// handleDeadPlayerInput( player2 );
 		}
 		// if a single player is dead allow them to re-spawn
 		// and create a resurrection screw to let their
@@ -95,17 +99,23 @@ public class ProgressManager {
 		else if ( player1.isPlayerDead( ) ) {
 			// create a rez screw if it doesn't already exist
 			handleDeadPlayer( );
+			p2Ghost = null;
 			// handle dead player input to allow them to re-spawn
-			handleDeadPlayerInput( player1 );
+			// handleDeadPlayerInput( player1 );
 		} else if ( player2.isPlayerDead( ) ) {
 			// create a rez screw if it doesn't already exist
 			handleDeadPlayer( );
+			p1Ghost = null;
 			// handle dead player input to allow them to re-spawn
-			handleDeadPlayerInput( player2 );
+			// handleDeadPlayerInput( player2 );
 		} else {
 			// if both players are alive then remove the current
 			// instance of the resurrection screw
-			removeRezScrew( );
+			if ( resurrectScrew != null || extraRezScrew != null ) {
+				removeRezScrew( );
+			}
+			p1Ghost = null;
+			p2Ghost = null;
 		}
 		for ( int i = 0; i < checkPoints.size( ); i++ ) {
 			if ( i != currentCheckPoint ) {
@@ -121,6 +131,28 @@ public class ProgressManager {
 		}
 		if ( extraRezScrew != null ) {
 			extraRezScrew.update( deltaTime );
+		}
+		if ( p1Ghost != null ) {
+			if ( p1Ghost.currentMover( ) instanceof LerpMover ) {
+				LerpMover lm = ( LerpMover ) p1Ghost.currentMover( );
+				if ( lm.atEnd( ) ) {
+					spawnAtCheckPoint( player1 );
+					p1Ghost = null;
+				} else {
+					p1Ghost.update( deltaTime );
+				}
+			}
+		}
+		if ( p2Ghost != null ) {
+			if ( p2Ghost.currentMover( ) instanceof LerpMover ) {
+				LerpMover lm = ( LerpMover ) p2Ghost.currentMover( );
+				if ( lm.atEnd( ) ) {
+					spawnAtCheckPoint( player2 );
+					p2Ghost = null;
+				} else {
+					p2Ghost.update( deltaTime );
+				}
+			}
 		}
 	}
 
@@ -139,6 +171,28 @@ public class ProgressManager {
 		}
 		if ( extraRezScrew != null ) {
 			extraRezScrew.draw( batch, deltaTime );
+		}
+		if ( p1Ghost != null ) {
+			if ( p1Ghost.currentMover( ) instanceof LerpMover ) {
+				LerpMover lm = ( LerpMover ) p1Ghost.currentMover( );
+				if ( player1.getState( ) == PlayerState.RespawnMode ) {
+					lm.moveStep( );
+				}
+				p1Ghost.sprite.setPosition( lm.getPos( ) );
+				p1Ghost.sprite.draw( batch, 0.6f );
+				player1.sprite.setPosition( player1.getPositionPixel( ) );
+			}
+		}
+		if ( p2Ghost != null ) {
+			if ( p2Ghost.currentMover( ) instanceof LerpMover ) {
+				LerpMover lm = ( LerpMover ) p2Ghost.currentMover( );
+				if ( player2.getState( ) == PlayerState.RespawnMode ) {
+					lm.moveStep( );
+				}
+				p2Ghost.sprite.setPosition( lm.getPos( ) );
+				p2Ghost.sprite.draw( batch, 0.6f );
+				player2.sprite.setPosition( player2.getPositionPixel( ) );
+			}
 		}
 	}
 
@@ -172,51 +226,81 @@ public class ProgressManager {
 				// it to player1 as the dead player
 				rezzBuilder.player( player1 );
 				// set lerp mover that will move the dead player
-				LerpMover lm;
+				LerpMover screwMover;
+				// create the ghost of the dead player
+				p1Ghost = new Entity( "player1Ghost",
+						player1.getPositionPixel( ), null, player1.body, false );
+				p1Ghost.sprite = player1.sprite;
+				LerpMover ghostMover = new LerpMover(
+						player1.getPositionPixel( ),
+						checkPoints.get( currentCheckPoint ).getPositionPixel( )
+								.sub( player1.sprite.getWidth( ) / 2.0f, 0.0f ),
+						LinearAxis.DIAGONAL );
+				ghostMover.setSpeed( 10f / checkPoints.get( currentCheckPoint )
+						.getPositionPixel( ).sub( player1.getPositionPixel( ) )
+						.len( ) );
+				p1Ghost.setMoverAtCurrentState( ghostMover );
 				// get the players direction and offset to the opposite of that
 				if ( player1.body.getLinearVelocity( ).x < 0 ) {
 					screwPos = new Vector2( 200, 150 );
-					lm = new LerpMover( player1.getPositionPixel( ), player1
-							.getPositionPixel( ).add( screwPos ),
+					screwMover = new LerpMover( player1.getPositionPixel( ),
+							player1.getPositionPixel( ).add( screwPos ),
 							LinearAxis.DIAGONAL );
 				} else {
 					screwPos = new Vector2( -100, 150 );
-					lm = new LerpMover( player1.getPositionPixel( ), player1
-							.getPositionPixel( )
-							.add( screwPos )
-							.sub( player1.sprite.getWidth( ),
-									player1.sprite.getHeight( ) / 3.0f ),
+					screwMover = new LerpMover(
+							player1.getPositionPixel( ),
+							player1.getPositionPixel( )
+									.add( screwPos )
+									.sub( player1.sprite.getWidth( ),
+											player1.sprite.getHeight( ) / 3.0f ),
 							LinearAxis.DIAGONAL );
 				}
 				player1.body.setLinearVelocity( Vector2.Zero );
 				player1.body.setType( BodyType.KinematicBody );
 				resurrectScrew = rezzBuilder.playerOffset( true )
-						.lerpMover( lm ).position( screwPos ).buildRezzScrew( );
+						.lerpMover( screwMover ).position( screwPos )
+						.buildRezzScrew( );
 			} else if ( player2.isPlayerDead( ) && !isp2onExtraRezScrew ) {
 				// create new rez screw and attach
 				// it to player2 as the dead player
 				rezzBuilder.player( player2 );
 				// set lerp mover that will move the dead player
-				LerpMover lm;
+				LerpMover screwMover;
+				// create the ghost of the dead player
+				p2Ghost = new Entity( "player2Ghost",
+						player2.getPositionPixel( ), null, null, false );
+				p2Ghost.sprite = player2.sprite;
+				LerpMover ghostMover = new LerpMover(
+						player2.getPositionPixel( ),
+						checkPoints.get( currentCheckPoint ).getPositionPixel( )
+								.sub( player2.sprite.getWidth( ) / 2.0f, 0.0f ),
+						LinearAxis.DIAGONAL );
+				ghostMover.setSpeed( 10f / checkPoints.get( currentCheckPoint )
+						.getPositionPixel( ).sub( player2.getPositionPixel( ) )
+						.len( ) );
+				p2Ghost.setMoverAtCurrentState( ghostMover );
 				// get the players direction and offset to the opposite of that
 				if ( player2.body.getLinearVelocity( ).x < 0 ) {
 					screwPos = new Vector2( 200, 150 );
-					lm = new LerpMover( player2.getPositionPixel( ), player2
-							.getPositionPixel( ).add( screwPos ),
+					screwMover = new LerpMover( player2.getPositionPixel( ),
+							player2.getPositionPixel( ).add( screwPos ),
 							LinearAxis.DIAGONAL );
 				} else {
 					screwPos = new Vector2( -100, 150 );
-					lm = new LerpMover( player2.getPositionPixel( ), player2
-							.getPositionPixel( )
-							.add( screwPos )
-							.sub( player2.sprite.getWidth( ),
-									player2.sprite.getHeight( ) / 3.0f ),
+					screwMover = new LerpMover(
+							player2.getPositionPixel( ),
+							player2.getPositionPixel( )
+									.add( screwPos )
+									.sub( player2.sprite.getWidth( ),
+											player2.sprite.getHeight( ) / 3.0f ),
 							LinearAxis.DIAGONAL );
 				}
 				player2.body.setLinearVelocity( Vector2.Zero );
 				player2.body.setType( BodyType.KinematicBody );
 				resurrectScrew = rezzBuilder.playerOffset( true )
-						.lerpMover( lm ).position( screwPos ).buildRezzScrew( );
+						.lerpMover( screwMover ).position( screwPos )
+						.buildRezzScrew( );
 			}
 		}
 		if ( player1.isPlayerDead( ) && player2.isPlayerDead( )
@@ -237,51 +321,81 @@ public class ProgressManager {
 				// it to player1 as the dead player
 				rezzBuilder.player( player2 );
 				// set lerp mover that will move the dead player
-				LerpMover lm;
+				LerpMover screwMover;
+				// create the ghost of the dead player
+				p2Ghost = new Entity( "player2Ghost",
+						player2.getPositionPixel( ), null, null, false );
+				p2Ghost.sprite = player2.sprite;
+				LerpMover ghostMover = new LerpMover(
+						player2.getPositionPixel( ),
+						checkPoints.get( currentCheckPoint ).getPositionPixel( )
+								.sub( player2.sprite.getWidth( ) / 2.0f, 0.0f ),
+						LinearAxis.DIAGONAL );
+				ghostMover.setSpeed( 10f / checkPoints.get( currentCheckPoint )
+						.getPositionPixel( ).sub( player2.getPositionPixel( ) )
+						.len( ) );
+				p2Ghost.setMoverAtCurrentState( ghostMover );
 				// get the players direction and offset to the opposite of that
 				if ( player2.body.getLinearVelocity( ).x < 0 ) {
 					screwPos = new Vector2( 200, 150 );
-					lm = new LerpMover( player2.getPositionPixel( ), player2
-							.getPositionPixel( ).add( screwPos ),
+					screwMover = new LerpMover( player2.getPositionPixel( ),
+							player2.getPositionPixel( ).add( screwPos ),
 							LinearAxis.DIAGONAL );
 				} else {
 					screwPos = new Vector2( -100, 150 );
-					lm = new LerpMover( player2.getPositionPixel( ), player2
-							.getPositionPixel( )
-							.add( screwPos )
-							.sub( player2.sprite.getWidth( ),
-									player2.sprite.getHeight( ) / 3.0f ),
+					screwMover = new LerpMover(
+							player2.getPositionPixel( ),
+							player2.getPositionPixel( )
+									.add( screwPos )
+									.sub( player2.sprite.getWidth( ),
+											player2.sprite.getHeight( ) / 3.0f ),
 							LinearAxis.DIAGONAL );
 				}
 				player2.body.setLinearVelocity( Vector2.Zero );
 				player2.body.setType( BodyType.KinematicBody );
-				extraRezScrew = rezzBuilder.playerOffset( true ).lerpMover( lm )
-						.position( screwPos ).buildRezzScrew( );
+				extraRezScrew = rezzBuilder.playerOffset( true )
+						.lerpMover( screwMover ).position( screwPos )
+						.buildRezzScrew( );
 			} else {
 				// create new rez screw and attach
 				// it to player2 as the dead player
 				rezzBuilder.player( player1 );
 				// set lerp mover that will move the dead player
-				LerpMover lm;
+				LerpMover screwMover;
+				// create the ghost of the dead player
+				p1Ghost = new Entity( "player1Ghost",
+						player2.getPositionPixel( ), null, null, false );
+				p1Ghost.sprite = player1.sprite;
+				LerpMover ghostMover = new LerpMover(
+						player1.getPositionPixel( ),
+						checkPoints.get( currentCheckPoint ).getPositionPixel( )
+								.sub( player1.sprite.getWidth( ) / 2.0f, 0.0f ),
+						LinearAxis.DIAGONAL );
+				ghostMover.setSpeed( 10f / checkPoints.get( currentCheckPoint )
+						.getPositionPixel( ).sub( player1.getPositionPixel( ) )
+						.len( ) );
+				p1Ghost.setMoverAtCurrentState( ghostMover );
 				// get the players direction and offset to the opposite of that
 				if ( player1.body.getLinearVelocity( ).x < 0 ) {
 					screwPos = new Vector2( 200, 150 );
-					lm = new LerpMover( player1.getPositionPixel( ), player1
-							.getPositionPixel( ).add( screwPos ),
+					screwMover = new LerpMover( player1.getPositionPixel( ),
+							player1.getPositionPixel( ).add( screwPos ),
 							LinearAxis.DIAGONAL );
 				} else {
 					screwPos = new Vector2( -100, 150 );
-					lm = new LerpMover( player1.getPositionPixel( ), player1
-							.getPositionPixel( )
-							.add( screwPos )
-							.sub( player1.sprite.getWidth( ),
-									player1.sprite.getHeight( ) / 3.0f ),
+					screwMover = new LerpMover(
+							player1.getPositionPixel( ),
+							player1.getPositionPixel( )
+									.add( screwPos )
+									.sub( player1.sprite.getWidth( ),
+											player1.sprite.getHeight( ) / 3.0f ),
 							LinearAxis.DIAGONAL );
 				}
 				player1.body.setLinearVelocity( Vector2.Zero );
 				player1.body.setType( BodyType.KinematicBody );
-				extraRezScrew = rezzBuilder.playerOffset( true ).lerpMover( lm )
-						.position( screwPos ).buildRezzScrew( );
+				extraRezScrew = rezzBuilder.playerOffset( true )
+						.lerpMover( screwMover ).position( screwPos )
+						.buildRezzScrew( );
 			}
 		}
 	}
@@ -291,6 +405,7 @@ public class ProgressManager {
 	 * 
 	 * @param player
 	 */
+	@SuppressWarnings( "unused" )
 	private void handleDeadPlayerInput( Player player ) {
 		if ( player.getState( ) == PlayerState.RespawnMode ) {
 			int holdTime = 0;
@@ -363,12 +478,11 @@ public class ProgressManager {
 		}
 	}
 
-	
-	public void addPlayerOne( Player p1 ){
+	public void addPlayerOne( Player p1 ) {
 		this.player1 = p1;
 	}
-	
-	public void addPlayerTwo( Player p2 ){
+
+	public void addPlayerTwo( Player p2 ) {
 		this.player2 = p2;
 	}
 }
