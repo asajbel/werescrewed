@@ -105,6 +105,7 @@ public class LerpMover implements IMover {
 		this.beginningPoint = beginningPoint.cpy( );
 		this.endPoint = endingPoint.cpy( );
 		this.axis = axis;
+		alpha = 0;
 		puzzleType = PuzzleType.PUZZLE_SCREW_CONTROL;
 	}
 
@@ -187,6 +188,47 @@ public class LerpMover implements IMover {
 	}
 
 	/**
+	 * take a step 
+	 */
+	public void moveStep( ) {
+		alpha += speed;
+	}
+	
+	/**
+	 * set the speed
+	 * @param speed
+	 */
+	public void setSpeed( float speed ) {
+		this.speed = speed;
+	}
+	
+	/**
+	 * set the end position and reset the beginning pos
+	 */
+	public void changeEndPos( Vector2 endPos ) {
+		this.endPoint = endPos;
+		alpha = 0;
+	}
+	
+	/**
+	 * get current location
+	 */
+	public Vector2 getPos( ) {
+		if ( alpha >= 1 ) {
+			done = true;
+			reverse = false;
+			alpha = 1;
+		} else if ( alpha < 0 ) {
+			done = true;
+			reverse = false;
+			alpha = 0;
+		}
+		Vector2 temp = new Vector2( beginningPoint.x, beginningPoint.y );
+		temp.lerp( endPoint, alpha );
+		return temp;
+	}
+
+	/**
 	 * analog placement along a linear path
 	 */
 	public void moveAnalog( Screw screw, float screwVal, Body body ) {
@@ -195,7 +237,7 @@ public class LerpMover implements IMover {
 		body.setTransform( beginningPoint.mul( Util.PIXEL_TO_BOX ), 0.0f );
 		beginningPoint = temp;
 	}
-	
+
 	@Override
 	public void runPuzzleMovement( Screw screw, float screwVal, Platform p ) {
 		switch ( puzzleType ) {
