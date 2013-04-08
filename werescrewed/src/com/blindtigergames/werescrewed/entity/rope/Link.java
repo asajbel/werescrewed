@@ -19,6 +19,8 @@ public class Link extends Entity {
 	private float width, height;
 	private float xOffset, yOffset;
 	
+	private static final float spriteScale = (22f/64f);
+	
 	public Link( String name, World world, Vector2 pos, Texture texture, Vector2 widthHeight ) {
 		super( name, pos, texture, null, true );
 		this.world = world;
@@ -28,9 +30,10 @@ public class Link extends Entity {
 		constructBody( pos );
 		Sprite temp = constructSprite( ( Texture ) WereScrewedGame.manager
 				.get( WereScrewedGame.dirHandle + "/common/chainlink.png" ) );
+		temp.scale( spriteScale );
 		this.xOffset = (temp.getWidth( )/2);//+this.width/2;
 		this.yOffset = (temp.getHeight( )/2);//+this.height/2;
-		
+
 		this.changeSprite( temp );
 	}
 
