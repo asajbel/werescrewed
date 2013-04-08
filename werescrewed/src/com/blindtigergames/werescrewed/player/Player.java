@@ -108,7 +108,7 @@ public class Player extends Entity {
 	private Player otherPlayer;
 	private RevoluteJoint playerJoint;
 	private Body platformBody;
-	//private Entity hitCloud;
+	// private Entity hitCloud;
 	private boolean topPlayer = false;
 	private boolean isDead = false;
 	private boolean hitSolidObject;
@@ -203,16 +203,15 @@ public class Player extends Entity {
 		AnchorList.getInstance( ).addAnchor( anchor );
 
 		// build the hit cloud entity and animation
-		/*hitCloud = new Entity( name + "_hitCloud", Vector2.Zero, null, null,
-				false );
-		SimpleFrameAnimator hitCloudAnimator = new SimpleFrameAnimator( )
-				.speed( 1f ).loop( LoopBehavior.STOP ).startFrame( 1 )
-				.maxFrames( 2 ).time( 0.0f );
-		hitCloud.sprite = new Sprite(
-				WereScrewedGame.manager.getTextureAtlas( "hitCloud" ),
-				hitCloudAnimator );
-		// set the frame to the last
-		hitCloud.sprite.getAnimator( ).setFrame( 3 );*/
+		/*
+		 * hitCloud = new Entity( name + "_hitCloud", Vector2.Zero, null, null,
+		 * false ); SimpleFrameAnimator hitCloudAnimator = new
+		 * SimpleFrameAnimator( ) .speed( 1f ).loop( LoopBehavior.STOP
+		 * ).startFrame( 1 ) .maxFrames( 2 ).time( 0.0f ); hitCloud.sprite = new
+		 * Sprite( WereScrewedGame.manager.getTextureAtlas( "hitCloud" ),
+		 * hitCloudAnimator ); // set the frame to the last
+		 * hitCloud.sprite.getAnimator( ).setFrame( 3 );
+		 */
 
 		setFixtures( );
 		maxFriction( );
@@ -240,9 +239,9 @@ public class Player extends Entity {
 			Gdx.app.log( "steamCollide: " + steamCollide, "steamDone: "
 					+ steamDone );
 		// update the hit cloud if it exists
-		//hitCloud.sprite.update( deltaTime );
-		if ( name.equals( "player1" ) ) {
-			//Gdx.app.log( "player update", "playerstate: " + playerState );
+		// hitCloud.sprite.update( deltaTime );
+		if ( name.equals( "player2" ) ) {
+			// Gdx.app.log( "player update", "playerstate: " + playerState );
 		}
 		if ( kinematicTransform ) {
 			// setPlatformTransform( platformOffset );
@@ -384,7 +383,7 @@ public class Player extends Entity {
 				break;
 			}
 			setGrounded( false );
-		} else if ( playerState == PlayerState.Falling ) {
+		} else if ( playerState == PlayerState.Falling && otherPlayer == null ) {
 			// if the player is falling but y velocity is too slow
 			// the the player hit something
 			playerState = PlayerState.Standing;
@@ -396,9 +395,15 @@ public class Player extends Entity {
 			setGrounded( true );
 		}
 		// check if the head stand requirements are met
-		if ( otherPlayer != null && isHeadStandPossible( ) ) {
-			setHeadStand( );
-			otherPlayer.setHeadStand( );
+		if ( otherPlayer != null ) {
+			Gdx.app.log( "player update", "other player is not null" );
+			if ( isHeadStandPossible( ) ) {
+				setHeadStand( );
+				otherPlayer.setHeadStand( );
+			} else{
+				otherPlayer.hitPlayer( null );
+				hitPlayer( null );
+			}
 		} else {
 			if ( headStandTimeout > 0 ) {
 				headStandTimeout--;
@@ -433,13 +438,13 @@ public class Player extends Entity {
 	@Override
 	public void draw( SpriteBatch batch, float deltaTime ) {
 		super.draw( batch, deltaTime );
-//		if ( hitCloud.sprite.getAnimator( ).getFrame( ) < 3 ) {
-//			hitCloud.draw( batch, deltaTime );
-//		}
-		if (!land_cloud.isComplete( )){
+		// if ( hitCloud.sprite.getAnimator( ).getFrame( ) < 3 ) {
+		// hitCloud.draw( batch, deltaTime );
+		// }
+		if ( !land_cloud.isComplete( ) ) {
 			land_cloud.draw( batch, deltaTime );
 		}
-		
+
 	}
 
 	/**
@@ -743,14 +748,15 @@ public class Player extends Entity {
 	public void setGrounded( boolean newVal ) {
 		if ( !topPlayer ) {
 			if ( newVal != false && !grounded && otherPlayer == null ) {
-				/*hitCloud.setPixelPosition( this.getPositionPixel( )
-						.sub( 0, 12f ) );
-				hitCloud.sprite.setColor( 1, 1, 1, body.getLinearVelocity( ).y
-						/ ( float ) MAX_VELOCITY );
-				hitCloud.sprite.reset( );*/
+				/*
+				 * hitCloud.setPixelPosition( this.getPositionPixel( ) .sub( 0,
+				 * 12f ) ); hitCloud.sprite.setColor( 1, 1, 1,
+				 * body.getLinearVelocity( ).y / ( float ) MAX_VELOCITY );
+				 * hitCloud.sprite.reset( );
+				 */
 				land_cloud.start( );
 				Vector2 posPix = getPositionPixel( );
-				land_cloud.setPosition( posPix.x+50, posPix.y );
+				land_cloud.setPosition( posPix.x + 50, posPix.y );
 			}
 			this.grounded = newVal;
 		}
@@ -791,9 +797,9 @@ public class Player extends Entity {
 
 		if ( isGrounded( ) ) {
 			if ( feet.getFriction( ) < PLAYER_FRICTION ) {
-				if ( playerState != PlayerState.Screwing ) {
-					playerState = PlayerState.Landing;
-				}
+//				if ( playerState != PlayerState.Screwing && otherPlayer == null ) {
+//					playerState = PlayerState.Landing;
+//				}
 				frictionCounter += FRICTION_INCREMENT;
 
 				CircleShape ps = new CircleShape( );
@@ -1024,13 +1030,13 @@ public class Player extends Entity {
 					jumpCounter = 0;
 					jumpPressedKeyboard = true;
 				}
+				playerState = PlayerState.Jumping;
 				// check if this player has the joint
 				removePlayerToPlayer( );
 				if ( otherPlayer != null ) {
 					otherPlayer.hitPlayer( null );
 				}
 				hitPlayer( null );
-				playerState = PlayerState.Jumping;
 			}
 		}
 	}
@@ -1150,7 +1156,7 @@ public class Player extends Entity {
 	private void handleScrewing( boolean controller ) {
 		// loosen and tighten screws and jump when the screw joint is gone
 		if ( controller ) {
-			if ( controllerListener.unscrewing( ) ) {
+			if ( controllerListener.unscrewing( ) && currentMover( ) == null ) {
 				if ( resetScrewing ) {
 					resetScrewing = false;
 				} else if ( isScrewing ) {
@@ -1176,7 +1182,8 @@ public class Player extends Entity {
 						}
 					}
 				}
-			} else if ( controllerListener.screwing( ) ) {
+			} else if ( controllerListener.screwing( )
+					&& currentMover( ) == null ) {
 				if ( resetScrewing ) {
 					resetScrewing = false;
 				} else if ( isUnscrewing ) {
@@ -1205,7 +1212,7 @@ public class Player extends Entity {
 				}
 			}
 		} else {
-			if ( inputHandler.unscrewing( ) ) {
+			if ( inputHandler.unscrewing( ) && currentMover( ) == null ) {
 				currentScrew.screwLeft( );
 				if ( Metrics.activated ) {
 					if ( currentScrew.getScrewType( ).toString( ) != ScrewType.SCREW_STRIPPED
@@ -1223,7 +1230,7 @@ public class Player extends Entity {
 					}
 				}
 
-			} else if ( inputHandler.screwing( ) ) {
+			} else if ( inputHandler.screwing( ) && currentMover( ) == null ) {
 				currentScrew.screwRight( );
 
 				if ( Metrics.activated ) {
@@ -1295,42 +1302,82 @@ public class Player extends Entity {
 	/**
 	 * checks if a head stand is possible
 	 */
-	private boolean isHeadStandPossible( ) {
-		if ( playerState == PlayerState.Falling
-				&& otherPlayer.getState( ) == PlayerState.Standing
-				&& !otherPlayer.isPlayerDead( ) && headStandTimeout == 0
-				&& otherPlayer.isHeadStandTimedOut( ) && platformBody == null ) {
-			// check if the top player is in-line with the other players head
-			// and check if the top player is actually above the other player
-			if ( ( this.getPositionPixel( ).y > otherPlayer.getPositionPixel( )
-					.add( 0, sprite.getHeight( ) / 2f ).y )
-					&& ( otherPlayer.getPositionPixel( ).sub(
-							sprite.getWidth( ) / 3.0f, 0.0f ).x <= this
-							.getPositionPixel( ).x )
-					&& ( otherPlayer.getPositionPixel( ).add(
-							sprite.getWidth( ) / 4.0f, 0.0f ).x > this
-							.getPositionPixel( ).x ) ) {
-				boolean isMoving = false;
-				// check if the player is using input
-				// to move either left or right
-				if ( controller != null ) {
-					if ( controllerListener.leftPressed( )
-							|| controllerListener.rightPressed( ) ) {
-						isMoving = true;
+	public boolean isHeadStandPossible( ) {
+		if ( otherPlayer != null
+				&& otherPlayer.getPositionPixel( )
+						.sub( this.getPositionPixel( ) ).len( ) < 150f ) {
+			Gdx.app.log( "player isHeadStandPossible", "player are close" );
+			if ( playerState == PlayerState.Falling ) {
+				Gdx.app.log( "player isHeadStandPossible", name + " is falling" );
+			} else {
+				Gdx.app.log( "player isHeadStandPossible", name + " is " + playerState );				
+			}
+			if ( otherPlayer.getState( ) == PlayerState.Standing ) {
+				Gdx.app.log( "player isHeadStandPossible", otherPlayer.name + " is standing" );
+			} else {
+				Gdx.app.log( "player isHeadStandPossible", otherPlayer.name + " is " + otherPlayer.getState( ) );				
+			}
+			if ( !otherPlayer.isPlayerDead( ) ) {
+				Gdx.app.log( "player isHeadStandPossible", otherPlayer.name + " is not dead" );
+				
+			}
+			if ( headStandTimeout == 0 ) {
+				Gdx.app.log( "player isHeadStandPossible", name + " head stand timed out" );
+				
+			}
+			if ( otherPlayer.isHeadStandTimedOut( ) ) {
+				Gdx.app.log( "player isHeadStandPossible", otherPlayer.name + " head stand timed out" );
+				
+			}
+			if ( platformBody == null ) {
+				Gdx.app.log( "player isHeadStandPossible", "platform is null" );
+				
+			}
+			if ( playerState == PlayerState.Falling
+					&& otherPlayer.getState( ) == PlayerState.Standing
+					&& !otherPlayer.isPlayerDead( ) && headStandTimeout == 0
+					&& otherPlayer.isHeadStandTimedOut( )
+					&& platformBody == null ) {
+				Gdx.app.log( "player headstand possible",
+						"first conditions are true" );
+				// check if the top player is in-line with the other players
+				// head
+				// and check if the top player is actually above the other
+				// player
+				if ( ( this.getPositionPixel( ).y > otherPlayer
+						.getPositionPixel( ).add( 0, sprite.getHeight( ) / 2f ).y )
+						&& ( otherPlayer.getPositionPixel( ).sub(
+								sprite.getWidth( ) / 3.0f, 0.0f ).x <= this
+								.getPositionPixel( ).x )
+						&& ( otherPlayer.getPositionPixel( ).add(
+								sprite.getWidth( ) / 4.0f, 0.0f ).x > this
+								.getPositionPixel( ).x ) ) {
+
+					Gdx.app.log( "player headstand possible",
+							"second conditions are true" );
+					boolean isMoving = false;
+					// check if the player is using input
+					// to move either left or right
+					if ( controller != null ) {
+						if ( controllerListener.leftPressed( )
+								|| controllerListener.rightPressed( ) ) {
+							isMoving = true;
+						}
+					} else {
+						if ( inputHandler.leftPressed( )
+								|| inputHandler.rightPressed( ) ) {
+							isMoving = true;
+						}
 					}
-				} else {
-					if ( inputHandler.leftPressed( )
-							|| inputHandler.rightPressed( ) ) {
-						isMoving = true;
+					if ( !isMoving ) {
+						topPlayer = true;
+						return true;
 					}
-				}
-				if ( !isMoving ) {
-					topPlayer = true;
-					return true;
 				}
 			}
 		}
 		return false;
+
 	}
 
 	/**

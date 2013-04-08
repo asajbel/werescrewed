@@ -88,7 +88,7 @@ public class MyContactListener implements ContactListener {
 								}
 
 								player.hitSolidObject( objectFix.getBody( ) );
-								if ( player.getState( ) != PlayerState.JumpingOffScrew 
+								if ( player.getState( ) != PlayerState.JumpingOffScrew
 										|| player.getState( ) != PlayerState.Screwing ) {
 									player.setGrounded( true );
 								}
@@ -116,25 +116,62 @@ public class MyContactListener implements ContactListener {
 							break;
 						case PLAYER:
 							Player player2 = ( Player ) object;
+//							if ( !player.isPlayerDead( ) ) {
+//								Gdx.app.log( "contact listener",
+//										"player1 is not dead" );
+//							}
+//							if ( !player2.isPlayerDead( ) ) {
+//								Gdx.app.log( "contact listener",
+//										"player2 is not dead" );
+//							}
+//							if ( player.getState( ) == PlayerState.Standing
+//									&& player2.getState( ) == PlayerState.Falling ) {
+//								Gdx.app.log( "contact listener", player.name
+//										+ " is standing " + "and "
+//										+ player2.name + " is falling" );
+//							} else {
+//								Gdx.app.log( "contact listener", player.name
+//										+ " is " + player.getState( ) + " and "
+//										+ player2.name + " is " + player2.getState( ) );								
+//							}
+//							if ( player2.getState( ) == PlayerState.Standing
+//									&& player.getState( ) == PlayerState.Falling ) {
+//								Gdx.app.log( "contact listener", player2.name
+//										+ " is standing " + "and "
+//										+ player.name + "is falling" );
+//							} else {
+//								Gdx.app.log( "contact listener", player2.name
+//										+ " is " + player2.getState( ) + " and "
+//										+ player.name + " is " + player.getState( ) );	
+//							}
 							if ( !player.isPlayerDead( )
-									&& !player2.isPlayerDead( )
-									&& ( ( player.getState( ) == PlayerState.Standing && player2
-											.getState( ) == PlayerState.Falling ) || ( player2
-											.getState( ) == PlayerState.Standing && player
-											.getState( ) == PlayerState.Falling ) ) ) {
+									&& !player2.isPlayerDead( ) ) {
+				
+									//&& ( ( player.getState( ) == PlayerState.Standing && player2
+//											.getState( ) == PlayerState.Falling ) || ( player2
+//											.getState( ) == PlayerState.Standing && player
+//											.getState( ) == PlayerState.Falling ) ) ) {
+								//Gdx.app.log( "contact listener", "set hit player to true" );
 								player.hitPlayer( player2 );
 								player2.hitPlayer( player );
-								player.setGrounded( true );
-								player2.setGrounded( true );
+								if ( !player.isHeadStandPossible( ) && !player2.isHeadStandPossible( ) ) {
+									player.hitPlayer( null );
+									player2.hitPlayer( null );
+								} else {
+									player.setGrounded( true );
+									player2.setGrounded( true );
+								}
 							}
+							//Gdx.app.log( "contact listener", "player contact" );
 							break;
 						case HAZARD:
-//							if ( player.getCurrentScrew( ) == null
-//									|| player.getCurrentScrew( ).getScrewType( ) != ScrewType.SCREW_RESURRECT ) 
-							{
-								Hazard hazard = ( Hazard ) object;
-								hazard.performContact( player, objectFix );
-							}
+						// if ( player.getCurrentScrew( ) == null
+						// || player.getCurrentScrew( ).getScrewType( ) !=
+						// ScrewType.SCREW_RESURRECT )
+						{
+							Hazard hazard = ( Hazard ) object;
+							hazard.performContact( player, objectFix );
+						}
 							// Gdx.app.log( "Player " + player.name,
 							// " Collided with Hazard" );
 							break;
@@ -149,8 +186,7 @@ public class MyContactListener implements ContactListener {
 						case EVENTTRIGGER:
 							EventTrigger et = ( EventTrigger ) object;
 							et.setActivated( true, player.name );
-							if(playerFix.getShape( ) instanceof CircleShape)
-							{
+							if ( playerFix.getShape( ) instanceof CircleShape ) {
 								et.triggerBeginEvent( );
 							}
 							break;
@@ -171,7 +207,7 @@ public class MyContactListener implements ContactListener {
 			} else {
 
 				// Player are not involved in this section //
-				
+
 				// checks if the object fix or player fix is an event trigger
 				// then applies the event to the object that is colliding with
 				// it
@@ -292,8 +328,7 @@ public class MyContactListener implements ContactListener {
 						case EVENTTRIGGER:
 							EventTrigger et = ( EventTrigger ) objectFix
 									.getBody( ).getUserData( );
-							if(playerFix.getShape( ) instanceof CircleShape)
-							{
+							if ( playerFix.getShape( ) instanceof CircleShape ) {
 								et.triggerEndEvent( );
 							}
 							et.setActivated( false, player.name );
@@ -356,9 +391,11 @@ public class MyContactListener implements ContactListener {
 								TiledPlatform tilePlat = ( TiledPlatform ) objectFix
 										.getBody( ).getUserData( );
 								Vector2 platformPos = tilePlat.getPosition( );
-								//Gdx.app.log("center: " + tilePlat.getPosition( ).y,"\nheight: " + tilePlat.getMeterHeight( ));
+								// Gdx.app.log("center: " +
+								// tilePlat.getPosition( ).y,"\nheight: " +
+								// tilePlat.getMeterHeight( ));
 								Vector2 playerPos = player.getPosition( );
-								//platformPos.y += tilePlat.getMeterHeight( );
+								// platformPos.y += tilePlat.getMeterHeight( );
 								if ( tilePlat.getOneSided( ) ) {
 									if ( platformPos.y > playerPos.y ) {
 										contact.setEnabled( false );
