@@ -756,6 +756,7 @@ public class Player extends Entity {
 				hitCloud.sprite.setColor( 1, 1, 1, body.getLinearVelocity( ).y
 						/ ( float ) MAX_VELOCITY );
 				hitCloud.sprite.reset( );*/
+				land_cloud.reset( );
 				land_cloud.start( );
 				Vector2 posPix = getPositionPixel( );
 				land_cloud.setPosition( posPix.x+50, posPix.y );

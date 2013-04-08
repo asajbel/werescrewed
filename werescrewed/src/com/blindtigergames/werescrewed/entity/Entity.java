@@ -2,6 +2,7 @@ package com.blindtigergames.werescrewed.entity;
 
 import java.util.ArrayList;
 import java.util.EnumMap;
+import java.util.HashMap;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
@@ -24,6 +25,7 @@ import com.blindtigergames.werescrewed.entity.animator.PlayerAnimator;
 import com.blindtigergames.werescrewed.entity.animator.SimpleFrameAnimator;
 import com.blindtigergames.werescrewed.entity.mover.IMover;
 import com.blindtigergames.werescrewed.graphics.TextureAtlas;
+import com.blindtigergames.werescrewed.graphics.particle.ParticleEffect;
 import com.blindtigergames.werescrewed.level.GleedLoadable;
 import com.blindtigergames.werescrewed.player.Player;
 import com.blindtigergames.werescrewed.util.Util;
@@ -60,8 +62,10 @@ public class Entity implements GleedLoadable {
 	protected ArrayList< Float > decalAngles;
 	private RobotState currentRobotState;
 	private EnumMap< RobotState, Integer > robotStateMap;
-	
+
 	private Skeleton parentSkeleton; // pointer to parent skele, set by skeleton
+
+	private HashMap< String, ParticleEffect > behindParticles, frontParticles;
 
 	/**
 	 * Create entity by definition
@@ -87,7 +91,7 @@ public class Entity implements GleedLoadable {
 		this.construct( name, solid );
 		this.type = type;
 		this.world = world;
-		if (type.atlases.size > 0 ){
+		if ( type.atlases.size > 0 ) {
 			this.sprite = constructSprite( type.atlases.get( 0 ) );
 		} else {
 			this.sprite = constructSprite( texture );
@@ -105,11 +109,12 @@ public class Entity implements GleedLoadable {
 	 * @param positionPixels
 	 * @param texture
 	 */
-	public Entity( String name, EntityDef type, World world, Vector2 positionPixels, Texture texture) {
+	public Entity( String name, EntityDef type, World world,
+			Vector2 positionPixels, Texture texture ) {
 		this.construct( name, solid );
 		this.type = type;
 		this.world = world;
-		if (type.atlases.size > 0 ){
+		if ( type.atlases.size > 0 ) {
 			this.sprite = constructSprite( type.atlases.get( 0 ) );
 		} else {
 			this.sprite = constructSprite( texture );
@@ -119,6 +124,7 @@ public class Entity implements GleedLoadable {
 		this.decalOffsets = new ArrayList< Vector2 >( );
 		setPixelPosition( positionPixels );
 	}
+
 	/**
 	 * Create entity by body. Debug constructor: Should be removed eventually.
 	 * 
@@ -252,11 +258,22 @@ public class Entity implements GleedLoadable {
 	}
 
 	public void draw( SpriteBatch batch, float deltaTime ) {
+		drawParticles( behindParticles, batch );
 		if ( sprite != null && visible && !removeNextStep ) {
 			sprite.draw( batch );
 		}
 		// drawOrigin(batch);
-		drawDecals(batch);
+		drawDecals( batch );
+		drawParticles( frontParticles, batch );
+	}
+
+	private void drawParticles( HashMap< String, ParticleEffect > map,
+			SpriteBatch batch ) {
+		if ( map != null ) {
+			for ( ParticleEffect e : map.values( ) ) {
+				e.draw( batch );
+			}
+		}
 	}
 
 	public void drawOrigin( SpriteBatch batch ) {
@@ -306,10 +323,7 @@ public class Entity implements GleedLoadable {
 	}
 
 	public void update( float deltaTime ) {
-//		if ( removeNextStep ) {
-//			remove( );
-//		} else 
-			if ( body != null ) {
+		if ( body != null ) {
 			// animation stuff may go here
 			Vector2 bodyPos = body.getPosition( ).mul( Util.BOX_TO_PIXEL );
 			if ( sprite != null ) {
@@ -328,7 +342,22 @@ public class Entity implements GleedLoadable {
 						* body.getAngle( ) );
 				sprite.update( deltaTime );
 			}
-			updateDecals(deltaTime);
+			updateDecals( deltaTime );
+		}
+
+		updateParticleEffect( deltaTime, frontParticles );
+		updateParticleEffect( deltaTime, behindParticles );
+	}
+
+	private void updateParticleEffect( float deltaTime,
+			HashMap< String, ParticleEffect > map ) {
+		if ( map != null ) {
+			Vector2 pos = getPositionPixel( );
+			for ( ParticleEffect e : map.values( ) ) {
+				e.setPosition( pos.x, pos.y );
+				e.setAngle( body.getAngle( ) );
+				e.update( deltaTime );
+			}
 		}
 	}
 
@@ -400,9 +429,10 @@ public class Entity implements GleedLoadable {
 		sprite.setOrigin( origin.x, origin.y );
 		return sprite;
 	}
+
 	/**
-	 * Builds a sprite from a TextureAtlas. If the texture is null, it attempts to
-	 * load one from the XML definitions
+	 * Builds a sprite from a TextureAtlas. If the texture is null, it attempts
+	 * to load one from the XML definitions
 	 * 
 	 * @param texture
 	 *            from which a sprite can be generated, or null, if loading
@@ -413,18 +443,20 @@ public class Entity implements GleedLoadable {
 		Vector2 origin;
 
 		IAnimator anim;
-		
-		if (type.animatorType.equals( "player" )){
-			anim = new PlayerAnimator(type.atlases, (Player)this);			
+
+		if ( type.animatorType.equals( "player" ) ) {
+			anim = new PlayerAnimator( type.atlases, ( Player ) this );
 		} else {
-			anim = new SimpleFrameAnimator().maxFrames( type.atlases.get( 0 ).getRegions( ).size );
+			anim = new SimpleFrameAnimator( ).maxFrames( type.atlases.get( 0 )
+					.getRegions( ).size );
 		}
-		sprite = new Sprite(type.atlases, anim);
+		sprite = new Sprite( type.atlases, anim );
 		sprite.setScale( type.spriteScale.x, type.spriteScale.y );
-		origin = new Vector2( type.origin.x, type.origin.y );		
+		origin = new Vector2( type.origin.x, type.origin.y );
 		sprite.setOrigin( origin.x, origin.y );
 		return sprite;
 	}
+
 	public void Move( Vector2 vector ) {
 		Vector2 pos = body.getPosition( ).add( vector.mul( Util.PIXEL_TO_BOX ) );
 		setPosition( pos );
@@ -862,14 +894,14 @@ public class Entity implements GleedLoadable {
 	/**
 	 * 
 	 */
-	public void addDecal( Sprite s, Vector2 offset, float angle){
+	public void addDecal( Sprite s, Vector2 offset, float angle ) {
 		this.decals.add( s );
 		this.decalOffsets.add( offset );
 		this.decalAngles.add( angle );
 	}
-	
+
 	public void addDecal( Sprite s, Vector2 offset ) {
-		addDecal( s, offset, 0.0f);
+		addDecal( s, offset, 0.0f );
 	}
 
 	public void addDecal( Sprite s ) {
@@ -887,10 +919,10 @@ public class Entity implements GleedLoadable {
 			offset = decalOffsets.get( i );
 			decal = decals.get( i );
 			r = decalAngles.get( i );
-			x = bodyPos.x + (offset.x * cos) - (offset.y * sin);
-			y = bodyPos.y + (offset.y * cos) + (offset.x * sin);
-			decal.setPosition( x , y );
-			decal.setRotation( r + (angle * Util.RAD_TO_DEG) );
+			x = bodyPos.x + ( offset.x * cos ) - ( offset.y * sin );
+			y = bodyPos.y + ( offset.y * cos ) + ( offset.x * sin );
+			decal.setPosition( x, y );
+			decal.setRotation( r + ( angle * Util.RAD_TO_DEG ) );
 		}
 	}
 
@@ -923,7 +955,7 @@ public class Entity implements GleedLoadable {
 			}
 		}
 	}
-	
+
 	public Skeleton getParentSkeleton( ) {
 		return parentSkeleton;
 	}
@@ -950,13 +982,49 @@ public class Entity implements GleedLoadable {
 	public void setCrushing( boolean value ) {
 		crushing = value;
 	}
-	
+
 	/**
-	 * Careful. You generally won't directly call this. Root skeleton can delete entire skeletons
-	 * so it would be better to just use RootSkeleton.destroySkeleton()
+	 * Careful. You generally won't directly call this. Root skeleton can delete
+	 * entire skeletons so it would be better to just use
+	 * RootSkeleton.destroySkeleton()
+	 * 
 	 * @author stew
 	 */
-	public void dispose(){
+	public void dispose( ) {
 		body.getWorld( ).destroyBody( body );
 	}
+
+	public void addBehindParticleEffect( String name ) {
+		if ( behindParticles == null ) {
+			behindParticles = new HashMap< String, ParticleEffect >( );
+		}
+		addParticleEffect( name, behindParticles );
+
+	}
+
+	public void addFrontParticleEffect( String name ) {
+		if ( frontParticles == null ) {
+			frontParticles = new HashMap< String, ParticleEffect >( );
+		}
+		addParticleEffect( name, frontParticles );
+	}
+
+	private void addParticleEffect( String name,
+			HashMap< String, ParticleEffect > map ) {
+		ParticleEffect effect = ParticleEffect.loadEffect( name );
+		map.put( name, effect );
+	}
+
+	public ParticleEffect getEffect( String name ) {
+		ParticleEffect out = behindParticles.get( name );
+		if ( out == null ) {
+			out = frontParticles.get( name );
+			if ( out == null ) {
+				throw new NullPointerException(
+						"No particle effect exists with name: " + name );
+			}
+		}
+		return out;
+	}
+
 }

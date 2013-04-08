@@ -71,7 +71,6 @@ public class DragonScreen extends Screen {
 		Fire f = new Fire( "fire1", new Vector2( 500, 350 ), 100, 100,
 				level.world, true );
 		skeleton.addHazard( f );
-
 	}
 
 	void buildDynamicSkeleton( ) {

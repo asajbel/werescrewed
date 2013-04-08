@@ -8,6 +8,7 @@ import com.badlogic.gdx.utils.Array;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.action.IAction;
 import com.blindtigergames.werescrewed.eventTrigger.EventTrigger;
+import com.blindtigergames.werescrewed.util.Util;
 
 public class EventTriggerBuilder extends
 		GenericEntityBuilder< EventTriggerBuilder > {
@@ -16,6 +17,7 @@ public class EventTriggerBuilder extends
 	private boolean rectangle;
 	private boolean circle;
 	private boolean skelePolygon;
+	private boolean vertBody;
 	private float radius;
 	private float width, height;
 	private boolean offsetAbove, offsetBelow, offsetRight, offsetLeft;
@@ -30,6 +32,7 @@ public class EventTriggerBuilder extends
 	private IAction beginAction;
 	private IAction endAction;
 	private ArrayList< Entity > entitiesToAdd;
+	private float polygonExtraBorder;
 	
 	private Array<Vector2> skeleVertsPix;
 
@@ -47,6 +50,7 @@ public class EventTriggerBuilder extends
 		this.rectangle = false;
 		this.circle = true;
 		this.skelePolygon = false;
+		this.vertBody = false;
 		this.radius = 100f;
 		this.width = 100f;
 		this.height = 100f;
@@ -65,6 +69,17 @@ public class EventTriggerBuilder extends
 		this.actOnEntity = false;
 		this.verts = null;
 		this.skeleVertsPix = null;
+		this.polygonExtraBorder = Util.SKELETON_ACTIVE_BORDER;
+		return this;
+	}
+	
+	/**
+	 * The extra border around a fg skeleton
+	 * @param extraPix
+	 * @return
+	 */
+	public EventTriggerBuilder extraBorder(float extraPix){
+		this.polygonExtraBorder = extraPix;
 		return this;
 	}
 
@@ -87,6 +102,7 @@ public class EventTriggerBuilder extends
 		this.circle = true;
 		this.rectangle = false;
 		this.skelePolygon = false;
+		this.vertBody = false;
 		return this;
 	}
 
@@ -94,18 +110,29 @@ public class EventTriggerBuilder extends
 		this.rectangle = true;
 		this.circle = false;
 		this.skelePolygon = false;
+		this.vertBody = false;
 		return this;
 	}
 	
+	/**
+	 * This is slightly different than setting verts
+	 * @param vertsPixels
+	 * @return
+	 */
 	public EventTriggerBuilder skelePolygon(Array< Vector2 > vertsPixels){
 		this.rectangle = false;
 		this.circle = false;
 		this.skelePolygon = true;
+		this.vertBody = false;
 		this.skeleVertsPix = vertsPixels;
 		return this;
 	}
 
 	public EventTriggerBuilder setVerts( Array<Vector2> vertices ) {
+		this.rectangle = false;
+		this.circle = false;
+		this.skelePolygon = false;
+		this.vertBody = true;
 		this.verts = vertices;
 		return this;
 	}
@@ -203,7 +230,7 @@ public class EventTriggerBuilder extends
 			}
 			et.contructRectangleBody( this.height, this.width, this.pos );
 		}else if ( this.skelePolygon ){
-			et.constructSkeletonPolygonBody( skeleVertsPix, this.pos );
+			et.constructPolygonBody( skeleVertsPix, this.pos, polygonExtraBorder );
 		}else{
 			et.constructVertBody( verts, pos );
 		}

@@ -100,7 +100,7 @@ public class Skeleton extends Platform {
 		BodyDef skeletonBodyDef = new BodyDef( );
 		skeletonBodyDef.type = bodyType;
 
-		skeletonBodyDef.position.set( pos.mul( Util.PIXEL_TO_BOX ) );
+		skeletonBodyDef.position.set( pos.cpy().mul( Util.PIXEL_TO_BOX ) );
 		body = world.createBody( skeletonBodyDef );
 		body.setUserData( this );
 
@@ -250,6 +250,9 @@ public class Skeleton extends Platform {
 		if ( eventMap.containsKey( event.name ) ) {
 			event.name = getUniqueName( event.name );
 		}
+		event.setParentSkeleton( this );
+		event.setOriginRelativeToSkeleton( event.getPosition( ).cpy( )
+				.sub( ( getPosition( ) ) ) );
 		eventMap.put( event.name, event );
 	}
 
@@ -385,11 +388,14 @@ public class Skeleton extends Platform {
 				// TODO: ropes need to be able to be deleted
 				rope.update( deltaTime );
 			}
+			for ( EventTrigger event: eventMap.values( )){
+				event.translatePosRotFromSKeleton( this );
+				//event.setTargetPosRotFromSkeleton( frameRate, this );
+			}
 
 			Vector2 pixelPos = null;
 			if ( fgSprite != null ) {
 				fgAlphaAnimator.update( deltaTime );
-				Gdx.app.log( name, "time:"+fgAlphaAnimator.getTime( ) );
 				pixelPos = getPosition( ).mul( Util.BOX_TO_PIXEL );
 				fgSprite.setPosition( pixelPos.x - offset.x, pixelPos.y
 						- offset.y );
