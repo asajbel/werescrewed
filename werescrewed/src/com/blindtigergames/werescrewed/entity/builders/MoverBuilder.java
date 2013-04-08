@@ -22,7 +22,17 @@ public class MoverBuilder {
 	protected ArrayList<Float> floats;
 	protected MoverType type;
 	protected Entity entity;
+	protected boolean vertical, horizontal;
+	protected float distance;
 	
+	public void reset(){
+		floats = new ArrayList<Float>();
+		type = null;
+		entity = null;
+		vertical = false;
+		horizontal = false;
+		distance = 0;
+	}
 	public MoverBuilder( ) {
 		floats = new ArrayList<Float>();
 		type = null;
@@ -35,6 +45,21 @@ public class MoverBuilder {
 	
 	public MoverBuilder applyTo( Entity e){
 		entity = e;
+		return this;
+	}
+	
+	public MoverBuilder vertical(){
+		this.vertical = true;
+		return this;
+	}
+	
+	public MoverBuilder horizontal(){
+		this.horizontal = true;
+		return this;
+	}
+	
+	public MoverBuilder distance( float dist ){
+		this.distance = dist;
 		return this;
 	}
 	
@@ -70,11 +95,25 @@ public class MoverBuilder {
 	}
 	
 	public LerpMover buildLerpMover(){
-		LerpMover lm = new LerpMover( new Vector2( entity.body.getPosition( ).x
-				* Util.BOX_TO_PIXEL, entity.body.getPosition( ).y
-				* Util.BOX_TO_PIXEL ), new Vector2( entity.body.getPosition( ).x,
-				entity.body.getPosition( ).y + 1.3f ).mul( Util.BOX_TO_PIXEL ),
-				LinearAxis.VERTICAL );
+		LerpMover lm = null;
+		
+		if(horizontal){
+			lm = new LerpMover( new Vector2( entity.getPositionPixel( )),
+					new Vector2( entity.getPositionPixel( ).x  + this.distance,
+					entity.getPositionPixel( ).y ),
+					LinearAxis.HORIZONTAL );
+		} else if( vertical ){
+			lm = new LerpMover( entity.getPositionPixel( ),
+					new Vector2( entity.getPositionPixel( ).x ,
+					entity.getPositionPixel( ).y  + this.distance),
+					LinearAxis.VERTICAL );
+		} else{
+			lm = new LerpMover( new Vector2( entity.body.getPosition( ).x
+					* Util.BOX_TO_PIXEL, entity.body.getPosition( ).y
+					* Util.BOX_TO_PIXEL ), new Vector2( entity.body.getPosition( ).x,
+					entity.body.getPosition( ).y + 1.3f ).mul( Util.BOX_TO_PIXEL ),
+					LinearAxis.VERTICAL );
+		}
 		
 		return lm;
 	}

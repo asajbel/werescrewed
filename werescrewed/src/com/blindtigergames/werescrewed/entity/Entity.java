@@ -60,6 +60,8 @@ public class Entity implements GleedLoadable {
 	protected ArrayList< Float > decalAngles;
 	private RobotState currentRobotState;
 	private EnumMap< RobotState, Integer > robotStateMap;
+	
+	private Skeleton parentSkeleton; // pointer to parent skele, set by skeleton
 
 	/**
 	 * Create entity by definition
@@ -304,9 +306,10 @@ public class Entity implements GleedLoadable {
 	}
 
 	public void update( float deltaTime ) {
-		if ( removeNextStep ) {
-			remove( );
-		} else if ( body != null ) {
+//		if ( removeNextStep ) {
+//			remove( );
+//		} else 
+			if ( body != null ) {
 			// animation stuff may go here
 			Vector2 bodyPos = body.getPosition( ).mul( Util.BOX_TO_PIXEL );
 			if ( sprite != null ) {
@@ -920,6 +923,14 @@ public class Entity implements GleedLoadable {
 			}
 		}
 	}
+	
+	public Skeleton getParentSkeleton( ) {
+		return parentSkeleton;
+	}
+
+	public void setParentSkeleton( Skeleton parentSkeleton ) {
+		this.parentSkeleton = parentSkeleton;
+	}
 
 	/**
 	 * returns whether an entity can crush the player
@@ -947,5 +958,14 @@ public class Entity implements GleedLoadable {
 	 */
 	public void dispose(){
 		body.getWorld( ).destroyBody( body );
+	}
+	
+	public void setGroupIndex( short index ) {
+		Filter filter = new Filter();
+		filter.groupIndex = index;
+		if ( body != null ) {
+			for ( int i = 0; i < body.getFixtureList( ).size( ); ++i )
+				body.getFixtureList( ).get( i ).setFilterData( filter );
+		}
 	}
 }

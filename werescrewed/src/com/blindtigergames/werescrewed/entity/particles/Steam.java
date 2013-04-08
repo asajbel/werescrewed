@@ -2,8 +2,7 @@ package com.blindtigergames.werescrewed.entity.particles;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.ParticleEffect;
-import com.blindtigergames.werescrewed.graphics.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -13,6 +12,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.World;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityType;
+import com.blindtigergames.werescrewed.graphics.particle.ParticleEffect;
 import com.blindtigergames.werescrewed.util.Util;
 
 public class Steam extends Entity{
@@ -41,10 +41,7 @@ public class Steam extends Entity{
 		width = pixelWidth;
 		height = pixelHeight;
 		this.world = world;
-		particleEffect = new ParticleEffect( );
-		particleEffect.load(
-				Gdx.files.internal( "data/particles/steam" ),
-				Gdx.files.internal( "data/particles" ) );
+		particleEffect = ParticleEffect.loadEffect("steam");
 		particleEffect.setPosition( positionPixels.x, positionPixels.y - height);
 
 		constructBody(positionPixels, pixelHeight, pixelWidth);

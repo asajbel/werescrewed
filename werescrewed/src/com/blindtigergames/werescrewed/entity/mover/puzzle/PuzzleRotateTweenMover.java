@@ -6,7 +6,7 @@ import com.blindtigergames.werescrewed.entity.mover.IMover;
 import com.blindtigergames.werescrewed.entity.mover.PuzzleType;
 import com.blindtigergames.werescrewed.entity.mover.TweenMover;
 import com.blindtigergames.werescrewed.entity.platforms.Platform;
-import com.blindtigergames.werescrewed.entity.screws.PuzzleScrew;
+import com.blindtigergames.werescrewed.entity.screws.Screw;
 import com.blindtigergames.werescrewed.entity.tween.PlatformAccessor;
 
 /**
@@ -49,7 +49,7 @@ public class PuzzleRotateTweenMover extends TweenMover implements IMover {
 	}
 
 	@Override
-	public void runPuzzleMovement( PuzzleScrew screw, float screwVal, Platform p ) {
+	public void runPuzzleMovement( Screw screw, float screwVal, Platform p ) {
 		if ( puzzleType == PuzzleType.ON_OFF_MOVER ) {
 			if ( p.currentMover( ) == null && hasNoTweens( ) ) {
 				if ( ( screwVal >= 0.9 && !isAtMaxScrewValue )

@@ -103,13 +103,12 @@ public class ResurrectScreen implements com.badlogic.gdx.Screen {
 
 		platBuilder = new PlatformBuilder( world );
 
-		
 		TiledPlatform wall = platBuilder.position( 256f, 320f ).name( "wall1" )
 				.dimensions( 5, 8 ).texture( testTexture ).kinematic( )
 				.oneSided( false ).restitution( 0.0f ).buildTilePlatform( );
 		wall.setCategoryMask( Util.KINEMATIC_OBJECTS, Util.CATEGORY_EVERYTHING );
 		skeleton.addKinematicPlatform( wall );
-		
+
 		// Initialize listeners
 		contactListener = new MyContactListener( );
 		world.setContactListener( contactListener );
@@ -138,7 +137,8 @@ public class ResurrectScreen implements com.badlogic.gdx.Screen {
 		float zoom = 1.0f;
 		float width = Gdx.graphics.getWidth( ) / zoom;
 		float height = Gdx.graphics.getHeight( ) / zoom;
-		cam = new Camera( width, height, world );
+		cam = new Camera( new Vector2( Gdx.graphics.getWidth( ) * 5f,
+				Gdx.graphics.getHeight( ) * 5f ), width, height, world );
 
 		bgCam = new OrthographicCamera( 1, width / height );
 		bgCam.viewportWidth = width;
@@ -154,8 +154,8 @@ public class ResurrectScreen implements com.badlogic.gdx.Screen {
 		FixtureDef screwFixture;
 		Entity bg_1_0 = new Entity( "bg_1_0", new Vector2( 1920, 512 ),
 				WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-						+ "/common/parallax_layer1_0.png",
-						Texture.class ), null, false );
+						+ "/common/parallax_layer1_0.png", Texture.class ),
+				null, false );
 		Entity bg_1_1 = new Entity( "bg_1_0", new Vector2( 1920, 512 ),
 				WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 						+ "/common/parallax_layer1_1.png", Texture.class ),
@@ -241,8 +241,8 @@ public class ResurrectScreen implements com.badlogic.gdx.Screen {
 
 	private void initHazards( ) {
 
-		Spikes spikes = new Spikes( "Spikes1", new Vector2( -1250.0f, 5.0f ), 4, 1,
-				world, true, false, true );
+		Spikes spikes = new Spikes( "Spikes1", new Vector2( -1250.0f, 5.0f ),
+				4, 1, world, true, false, true );
 		skeleton.addKinematicPlatform( spikes );
 
 	}
@@ -305,27 +305,35 @@ public class ResurrectScreen implements com.badlogic.gdx.Screen {
 
 		if ( Gdx.input.isKeyPressed( Keys.SPACE ) ) {
 			if ( !switchBg ) {
-				bgRootSkel.getLooseEntity( "bg_2_0" ).changeSprite( new Sprite ( WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-						+ "/common/parallax_layer3_0.png",
-						Texture.class ) ) );
-				bgRootSkel.getLooseEntity( "bg_2_1" ).changeSprite( new Sprite ( WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-						+ "/common/parallax_layer3_1.png",
-						Texture.class ) ) );
+				bgRootSkel.getLooseEntity( "bg_2_0" ).changeSprite(
+						new Sprite( WereScrewedGame.manager.get(
+								WereScrewedGame.dirHandle
+										+ "/common/parallax_layer3_0.png",
+								Texture.class ) ) );
+				bgRootSkel.getLooseEntity( "bg_2_1" ).changeSprite(
+						new Sprite( WereScrewedGame.manager.get(
+								WereScrewedGame.dirHandle
+										+ "/common/parallax_layer3_1.png",
+								Texture.class ) ) );
 				switchBg = true;
 			}
 		}
 		if ( Gdx.input.isKeyPressed( Keys.B ) ) {
 			if ( switchBg ) {
-				bgRootSkel.getLooseEntity( "bg_2_0" ).changeSprite( new Sprite ( WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-						+ "/common/parallax_layer2_0.png",
-						Texture.class ) ) );
-				bgRootSkel.getLooseEntity( "bg_2_1" ).changeSprite( new Sprite ( WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-						+ "/common/parallax_layer2_1.png",
-						Texture.class ) ) );
+				bgRootSkel.getLooseEntity( "bg_2_0" ).changeSprite(
+						new Sprite( WereScrewedGame.manager.get(
+								WereScrewedGame.dirHandle
+										+ "/common/parallax_layer2_0.png",
+								Texture.class ) ) );
+				bgRootSkel.getLooseEntity( "bg_2_1" ).changeSprite(
+						new Sprite( WereScrewedGame.manager.get(
+								WereScrewedGame.dirHandle
+										+ "/common/parallax_layer2_1.png",
+								Texture.class ) ) );
 				switchBg = false;
 			}
 		}
-		
+
 		if ( Gdx.input.isKeyPressed( Keys.NUM_0 ) ) {
 			if ( debugTest )
 				debug = !debug;
@@ -381,9 +389,9 @@ public class ResurrectScreen implements com.badlogic.gdx.Screen {
 			debugRenderer.render( world, cam.combined( ) );
 
 		world.step( 1 / 60f, 6, 6 );
-		
+
 		if ( Gdx.input.isKeyPressed( Input.Keys.ESCAPE ) ) {
-			if(!ScreenManager.escapeHeld){
+			if ( !ScreenManager.escapeHeld ) {
 				ScreenManager.getInstance( ).show( ScreenType.PAUSE );
 			}
 		} else
