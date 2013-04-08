@@ -1,6 +1,9 @@
 package com.blindtigergames.werescrewed.entity;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+
+import javax.management.RuntimeErrorException;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
@@ -49,6 +52,7 @@ public class Skeleton extends Platform {
 	protected HashMap< String, Rope > ropeMap = new HashMap< String, Rope >( );
 	protected HashMap< String, Screw > screwMap = new HashMap< String, Screw >( );
 	protected HashMap< String, EventTrigger > eventMap = new HashMap< String, EventTrigger >( );
+	private ArrayList<Entity> entitiesToRemove = new ArrayList<Entity>();
 
 	private int entityCount = 0;
 	
@@ -91,15 +95,17 @@ public class Skeleton extends Platform {
 		body = world.createBody( skeletonBodyDef );
 		body.setUserData( this );
 
-		/*FixtureDef dynFixtureDef = new FixtureDef( );
+		FixtureDef dynFixtureDef = new FixtureDef( );
 		PolygonShape polygon = new PolygonShape( );
-		polygon.setAsBox( 1 * Util.PIXEL_TO_BOX, 1 * Util.PIXEL_TO_BOX );
+		polygon.setAsBox( 100 * Util.PIXEL_TO_BOX, 100 * Util.PIXEL_TO_BOX );
 		dynFixtureDef.shape = polygon;
-		dynFixtureDef.density = 100f;
+		dynFixtureDef.density = 5f;
 		dynFixtureDef.filter.categoryBits = Util.CATEGORY_IGNORE;
 		dynFixtureDef.filter.maskBits = Util.CATEGORY_NOTHING;
 		body.createFixture( dynFixtureDef );
-		polygon.dispose( );*/
+		polygon.dispose( );
+		body.setGravityScale( 0.1f );
+		//this.quickfixCollisions( );
 	}
 
 	/**
@@ -183,7 +189,7 @@ public class Skeleton extends Platform {
 		// screws.add(s);
 		entityCount++;
 		screwMap.put( s.name + entityCount, s );
-		// screwMap.add( s );
+		s.setParentSkeleton( this );
 	}
 
 	/**
@@ -340,18 +346,31 @@ public class Skeleton extends Platform {
 				super.setTargetPosRotFromSkeleton( frameRate, parentSkeleton );
 			}
 			for ( Platform platform : dynamicPlatformMap.values( ) ) {
-				platform.updateMover( deltaTime );
-				platform.update( deltaTime );
+				if ( platform.removeNextStep ){
+					entitiesToRemove.add( platform );
+				}else{
+					platform.updateMover( deltaTime );
+					platform.update( deltaTime );
+				}
 			}
 			for ( Platform platform : kinematicPlatformMap.values( ) ) {
-				platform.updateMover( deltaTime );
-				platform.setTargetPosRotFromSkeleton( frameRate, this );
-				platform.update( deltaTime );
+				if ( platform.removeNextStep ){
+					entitiesToRemove.add( platform );
+				}else{
+					platform.updateMover( deltaTime );
+					platform.setTargetPosRotFromSkeleton( frameRate, this );
+					platform.update( deltaTime );
+				}
 			}
 			for ( Screw screw : screwMap.values( ) ) {
-				screw.update( deltaTime );
+				if ( screw.removeNextStep ){
+					entitiesToRemove.add( screw );
+				}else{
+					screw.update( deltaTime );
+				}
 			}
 			for ( Rope rope : ropeMap.values( ) ) {
+				//TODO: ropes need to be able to be deleted
 				rope.update( deltaTime );
 			}
 
@@ -370,8 +389,42 @@ public class Skeleton extends Platform {
 		}
 		//recursively update child skeletons
 		for ( Skeleton skeleton : childSkeletonMap.values( ) ){
-			skeleton.update( deltaTime );
+			if ( skeleton.removeNextStep ){
+				entitiesToRemove.add( skeleton );
+			}else{
+				skeleton.update( deltaTime );
+			}
 		}
+		
+		//remove stuff
+		if ( entitiesToRemove.size( ) > 0 ){
+			for ( Entity e: entitiesToRemove ){
+				switch ( e.entityType ){
+				case SKELETON:
+					Skeleton s = childSkeletonMap.remove( e.name );
+					s.remove( );
+					break;
+				case PLATFORM:
+					Platform p;
+					if ( e.isKinematic( ) ){
+						p = kinematicPlatformMap.remove( e.name );
+						p.remove( );
+					}else {
+						p = dynamicPlatformMap.remove( e.name );
+						p.remove( );
+					}
+					p.remove();
+					break;
+				case SCREW:
+					Screw sc = screwMap.remove( e.name );
+					sc.remove( );
+				default:
+					throw new RuntimeException( "You are trying to remove enity '"+e.name+"' but skeleton '"+this.name+"' can't determine it's type. This may be my fault for not adding a case. -stew" );
+				}
+			}
+			entitiesToRemove.clear( );
+		}
+		
 		updateDecals(deltaTime);
 	}
 
@@ -416,9 +469,6 @@ public class Skeleton extends Platform {
 	}
 
 	private void drawChildren( SpriteBatch batch, float deltaTime ) {
-		for ( Skeleton skeleton : childSkeletonMap.values( ) ) {
-			skeleton.draw( batch, deltaTime );
-		}
 		for ( Platform p : dynamicPlatformMap.values( ) ) {
 			drawPlatform( p, batch, deltaTime );
 		}
@@ -432,6 +482,9 @@ public class Skeleton extends Platform {
 		}
 		for ( Rope rope : ropeMap.values( ) ) {
 			rope.draw( batch, deltaTime );
+		}
+		for ( Skeleton skeleton : childSkeletonMap.values( ) ) {
+			skeleton.draw( batch, deltaTime );
 		}
 	}
 
@@ -516,18 +569,7 @@ public class Skeleton extends Platform {
 		eventMap.clear( );
 		super.dispose( );
 	}
-	
-	/**
-	 * A platform calls this if it wants to be removed from a skeleton
-	 * @param platformToRemove
-	 */
-	public void remove(Platform platformToRemove){
-		if ( platformToRemove.isKinematic( ) ){
-			kinematicPlatformMap.remove( platformToRemove );
-		}else {
-			dynamicPlatformMap.remove( platformToRemove );
-		}
-	}
+
 	
 	/**
 	 * Generally for debug purposes

@@ -2,8 +2,11 @@ package com.blindtigergames.werescrewed.entity.hazard;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.graphics.particle.*;
-import com.blindtigergames.werescrewed.graphics.SpriteBatch;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.EdgeShape;
@@ -44,13 +47,15 @@ public class Fire extends Hazard {
 		this.activeHazard = isActive;
 		particleEffect = new ParticleEffect( );
 		particleEffect.load(
-				Gdx.files.internal( "data/particles/steam" ),
-				Gdx.files.internal( "data/particles" ) );
+				Gdx.files.internal( "data/particles/steam.p" ),
+				WereScrewedGame.manager.getAtlas( "particles" ));//Gdx.files.internal( "data/particles" ));//WereScrewedGame.manager.getAtlas( "particles" )
 		particleEffect.setPosition( pos.x, pos.y);
 		particleEmitter = particleEffect.getEmitters( );
 		constructBody( pos );
 		for( ParticleEmitter PE: particleEmitter)
 			PE.setContinuous( false );
+		
+		//Sound s = WereScrewedGame.manager.get( "/data/sjfdsi.mp3", Sound.class );
 	}
 	
 	/**
@@ -129,4 +134,5 @@ public class Fire extends Hazard {
 			particleEffect.start( );
 		}
 	}
+	
 }

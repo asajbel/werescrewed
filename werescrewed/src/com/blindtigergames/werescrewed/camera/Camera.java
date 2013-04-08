@@ -73,21 +73,21 @@ public class Camera {
 	@SuppressWarnings( "unused" )
 	private boolean debugTurnOffZoom;
 
-	public Camera( float viewportWidth, float viewportHeight, World world ) {
-		initializeVars( viewportWidth, viewportHeight, world );
+	public Camera( Vector2 position, float viewportWidth, float viewportHeight, World world ) {
+		initializeVars( position, viewportWidth, viewportHeight, world );
 		camera.update( );
 	}
 
-	private void initializeVars( float viewportWidth, float viewportHeight,
+	private void initializeVars( Vector2 position, float viewportWidth, float viewportHeight,
 			World world ) {
 		camera = new OrthographicCamera( 1, viewportHeight / viewportWidth );
 		this.viewportHeight = Gdx.graphics.getHeight( );
 		this.viewportWidth = Gdx.graphics.getWidth( );
 		camera.viewportWidth = this.viewportWidth;
 		camera.viewportHeight = this.viewportHeight;
-		camera.position.set( this.viewportWidth * .5f,
-				this.viewportHeight * .5f, 0f );
-		position = camera.position;
+		camera.position.set( position.x,
+				position.y, 0f );
+		this.position = camera.position;
 		center2D = new Vector2( position.x, position.y );
 		screenBounds = new Rectangle( position.x - viewportWidth / 2,
 				position.y - viewportHeight / 2, viewportWidth, viewportHeight );
@@ -223,8 +223,8 @@ public class Camera {
 				returnDir = RectDirection.Y;
 		}
 
-		if ( returnDir == RectDirection.BOTH )
-			Gdx.app.log( "Direction", "BOTH" );
+		//if ( returnDir == RectDirection.BOTH )
+			//Gdx.app.log( "Direction", "BOTH" );
 		return returnDir;
 	}
 

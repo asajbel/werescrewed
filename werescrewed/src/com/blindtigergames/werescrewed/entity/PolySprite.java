@@ -249,7 +249,7 @@ public class PolySprite extends Sprite {
 			}
 			this.verts[ 9 * i ] = x; // x
 			this.verts[ 9 * i + 1 ] = y; // y
-			this.verts[ 9 * i + 2 ] = 0.0f; // z
+			this.verts[ 9 * i + 2 ] = 0; // z
 
 			this.verts[ 9 * i + 3 ] = r; // r
 			this.verts[ 9 * i + 4 ] = g; // g

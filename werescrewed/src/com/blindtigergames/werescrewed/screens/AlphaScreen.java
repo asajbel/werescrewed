@@ -1,331 +1,144 @@
 package com.blindtigergames.werescrewed.screens;
 
-import java.util.ArrayList;
-
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input.Keys;
-import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.controllers.Controller;
-import com.badlogic.gdx.controllers.Controllers;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.math.Vector2;
-import com.blindtigergames.werescrewed.WereScrewedGame;
+import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
+import com.blindtigergames.werescrewed.entity.RobotState;
 import com.blindtigergames.werescrewed.entity.Skeleton;
+import com.blindtigergames.werescrewed.entity.action.EntityActivateMoverAction;
 import com.blindtigergames.werescrewed.entity.builders.PlayerBuilder;
-import com.blindtigergames.werescrewed.input.MyControllerListener;
-import com.blindtigergames.werescrewed.input.PlayerInputHandler;
+import com.blindtigergames.werescrewed.entity.platforms.TiledPlatform;
+import com.blindtigergames.werescrewed.entity.screws.Screw;
+import com.blindtigergames.werescrewed.entity.tween.PathBuilder;
+import com.blindtigergames.werescrewed.eventTrigger.EventTrigger;
+import com.blindtigergames.werescrewed.level.CharacterSelect;
 import com.blindtigergames.werescrewed.level.LevelFactory;
-import com.blindtigergames.werescrewed.player.Player;
 
 public class AlphaScreen extends Screen {
 
 	public ScreenType screenType;
-	Music music;
-	Music intro, loop;
-	boolean introPlayed = false;
-	
-	private Controller controller1;
-	private Controller controller2;
-	private MyControllerListener controllerListener1, controllerListener2;
-	
-	private boolean player1Spawned = false, player2Spawned = false,
-			player1HitStart = false, player2HitStart = false;
-	private ArrayList<Player> players;
-	private Texture arrowSelection = WereScrewedGame.manager.get(
-			WereScrewedGame.dirHandle.path( ) + "/common/screw/screw.png",
-			Texture.class);
-	private boolean screwDraw = false;
-	private int screwIndex = 0;
-	
-	private boolean p1LeftHit, p1RightHit, p2LeftHit, p2RightHit;
-	private boolean noControllersAttached;
+
+	private CharacterSelect characterSelect;
+	private Screw powerScrew1, powerScrew2;
+	private Skeleton footSkeleton, kneeSkeleton, thighSkeleton, hipSkeleton;
+	private TiledPlatform kneeMovingPlat;
 
 	public AlphaScreen( ) {
 		super( );
 		String filename = "data/levels/alphalevel.xml";
 		level = new LevelFactory( ).load( filename );
-		music = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-				+ "/common/sounds/TrainJob.mp3" );
-		loop = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-				+ "/common/sounds/introTrain.mp3" );
-		intro = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-				+ "/common/sounds/loopTrain.mp3" );
-		
-		controllerSetUp( );
-		audience( );
-		
-		Skeleton skel2 = ( Skeleton ) LevelFactory.entities.get( "skeleton2" );
-		
+
+		characterSelect = new CharacterSelect( level );
+
+		createFootObjects( );
+		createKneeObjects( );
+
+		// power screws: -700f, 1800f
+		// chest : -200f, 3800f
+
+		if ( level.player1 == null ) {
+			level.player1 = new PlayerBuilder( ).world( level.world )
+					.position( -200f, 3800f ).name( "player1" ).buildPlayer( );
+
+			level.progressManager.addPlayerOne( level.player1 );
+		}
+		if ( level.player2 == null ) {
+			level.player2 = new PlayerBuilder( ).world( level.world )
+					.position( -200f, 3800f ).name( "player2" ).buildPlayer( );
+
+			level.progressManager.addPlayerTwo( level.player2 );
+		}
+
+		initEventTriggers( );
+
 	}
 
 	@Override
 	public void render( float deltaTime ) {
 		super.render( deltaTime );
-		//updateMusic();
-		
-		batch.setProjectionMatrix( level.camera.combined( ) );
-		batch.begin( );
-		for( int i = 0; i < players.size( ); i++){
-			Player p = players.get( i );
-			p.update( deltaTime );
-			p.draw( batch, deltaTime );
-			
-		}
-		
-		if(screwDraw){
-			Vector2 pos = players.get( screwIndex % players.size( ) ).getPositionPixel( );
-			batch.draw( arrowSelection, pos.x + 50f, pos.y + 150f );
-		}
-		
-		batch.end( );
-		
-		controller1update();
-		controller2update();
-		
-		//keyboard + one controller, controller becomes player 1, keyboard becomes player2
-		updateKeyboardWithOneControllerAttached();
-		
-		// no controllers
-		if( controller1 == null && controller2 == null){
-			noControllersAttached = true;
-			if(level.player1 == null){
-				level.player1 = new PlayerBuilder( ).world( level.world )
-				.position( 100f, 100f ).name( "player1" ).buildPlayer( );
-			}
-			if(level.player2 == null){
-				level.player2 = new PlayerBuilder( ).world( level.world )
-				.position( 100f, 100f ).name( "player2" ).buildPlayer( );
-			}
-		}
 
-		
-		
-	}
-	
-	private void updateMusic(){
-		// Doesn't work perfectly, but its okay
-		if(!introPlayed){
-			intro.play( );
-			introPlayed = true;
-		} else {
-			if(!intro.isPlaying( )){
-				if(!loop.isPlaying( )){
-					loop.play( );
-					loop.setLooping( true );
-				}
-			}
-		}
-	}
-	
-	
-	
-	private void controllerSetUp( ){
-		
-		if( Controllers.getControllers( ).size > 0){
-			controllerListener1 = new MyControllerListener( );
-			controller1 = Controllers.getControllers( ).get( 0 );
-			controller1.addListener( controllerListener1 );
-		}
-		if( Controllers.getControllers( ).size > 1){
-			controllerListener2 = new MyControllerListener( );
-			controller2 = Controllers.getControllers( ).get( 1 );
-			controller2.addListener( controllerListener2 );
-		}
-	}
-	
-	
-	private void audience(){
-		players = new ArrayList<Player>();
-		Player p1 =  new PlayerBuilder( ).name( "player1" ).world( level.world )
-				.position( -200.0f, -150.0f ).buildPlayer( );
-		p1.setInputNull();
-		players.add( p1 );
-		
-		Player p2 =  new PlayerBuilder( ).name( "player2" ).world( level.world )
-				.position( -100.0f, -150.0f ).buildPlayer( );
-		p2.setInputNull();
-		players.add( p2 );
-		
-		Player p3 =  new PlayerBuilder( ).name( "player1" ).world( level.world )
-				.position( 0.0f, -150.0f ).buildPlayer( );
-		p3.setInputNull();
-		players.add( p3 );
-		
-		Player p4 =  new PlayerBuilder( ).name( "player2" ).world( level.world )
-				.position( 100.0f, -150.0f ).buildPlayer( );
-		p4.setInputNull();
-		players.add( p4 );
+		// characterSelect.update( );
+
+		// characterSelect.draw( batch, deltaTime );
+
+		powerScrew1and2update( );
 
 	}
-	
-	private void spawnPlayer( int playerNumber, int index, boolean controllerActive ){
-		
-		PlayerBuilder pb = new PlayerBuilder( ).world( level.world )
-				.position( 100f, 100f );
-		
-		switch(index){
-		case 0:
-			pb.name( "player1" );
-			break;
-		case 1:
-			pb.name( "player2" );
-			break;
-		case 2: 
-			pb.name( "player1" );
-			break;
-		case 3:
-			pb.name( "player2" );
-			break;
-		}
-		//Player 1
-		if( playerNumber == 0 ){
-			level.player1 = pb.buildPlayer( );
-			if(controllerActive)
-				level.player1.setControllerIndex( playerNumber );
-			else{
-				level.player1.setController( null );
-			}
-		}
-		//Player 2
-		else if( playerNumber == 1 ){
-			level.player2 = pb.buildPlayer( );
-			if(controllerActive)
-				level.player2.setControllerIndex( playerNumber );
-			else{
-				level.player2.setController( null );
-				
-				//If there is a controller, but we are spawning a player using keyboard to play
-				// then we want the player to use WASD not IJKL (as player 2)
-				if(!noControllersAttached)
-					level.player2.inputHandler = new PlayerInputHandler("player1");
-			}
-		}
-	}
-	
 
-	private void controller1update(){
-		if(controller1 != null && !player1Spawned)
-		{
-			if(!player1HitStart && !player2HitStart){
-				if(controllerListener1.pausePressed( )){
-					player1HitStart = true;
-					screwDraw = true;
-					screwIndex = 0;
-					
-				}
-			}else{
-				if(controllerListener1.leftPressed( )){
-					if(!p1LeftHit){
-						p1LeftHit = true;
-						if(screwIndex == 0){
-							screwIndex = players.size()-1;
-						}else
-							screwIndex--;
-					}
-				}else{
-					p1LeftHit = false;
-				}
-				if(controllerListener1.rightPressed( )){
-					if(!p1RightHit){
-						p1RightHit = true;
-						screwIndex++;
-					}
-				}else{
-					p1RightHit = false;
-				}
-				
-				if( controllerListener1.jumpPressed( )){
-					spawnPlayer( 0, screwIndex % players.size( ), true );
-					screwDraw = false;
-					screwIndex = 0;
-					player1Spawned = true;
-					player1HitStart = false;
-				}
-			}
-		}
+	private void createFootObjects( ) {
+		footSkeleton = ( Skeleton ) LevelFactory.entities.get( "footSkeleton" );
+
+		kneeSkeleton = ( Skeleton ) LevelFactory.entities.get( "kneeSkeleton" );
+
+		hipSkeleton = ( Skeleton ) LevelFactory.entities.get( "hipSkeleton" );
+
+		thighSkeleton = ( Skeleton ) LevelFactory.entities
+				.get( "thighSkeleton" );
+
+		footSkeleton.body.setType( BodyType.KinematicBody );
+		kneeSkeleton.body.setType( BodyType.KinematicBody );
+		thighSkeleton.body.setType( BodyType.KinematicBody );
+
+		TiledPlatform structurePlat3 = ( TiledPlatform ) LevelFactory.entities
+				.get( "structurePlat3" );
+		TiledPlatform pivotPlat1 = ( TiledPlatform ) LevelFactory.entities
+				.get( "pivotPlat1" );
+		TiledPlatform footPlat6 = ( TiledPlatform ) LevelFactory.entities
+				.get( "footPlat6" );
+
+		RevoluteJointDef rjd = new RevoluteJointDef( );
+		rjd.initialize( structurePlat3.body, pivotPlat1.body, pivotPlat1
+				.getPosition( ).add( pivotPlat1.getMeterWidth( ) / 2, 0 ) );
+		rjd.collideConnected = false;
+		level.world.createJoint( rjd );
+
+		structurePlat3.setGroupIndex( ( short ) -5 );
+		footPlat6.setGroupIndex( ( short ) -5 );
 	}
-	
-	public void controller2update(){
-		if(controller2 != null && !player2Spawned ){
-			if(!player2HitStart&& !player1HitStart){
-				if(controllerListener2.pausePressed( )){
-					player2HitStart = true;
-					screwDraw = true;
-					screwIndex = 0;
-				}
-			}else{
-				if(controllerListener2.leftPressed( )){
-					if(!p2LeftHit){
-						p2LeftHit = true;
-						if(screwIndex == 0){
-							screwIndex = players.size()-1;
-						}else
-							screwIndex--;
-					}
-				}else{
-					p2LeftHit = false;
-				}
-				if(controllerListener2.rightPressed( )){
-					if(!p2RightHit){
-						p2RightHit = true;
-						screwIndex++;
-					}
-				}else{
-					p2RightHit = false;
-				}
-				
-				if( controllerListener2.jumpPressed( )){
-					spawnPlayer( 1, screwIndex % players.size( ), true );
-					screwDraw = false;
-					screwIndex = 0;
-					player2Spawned = true;
-					player2HitStart = false;
-				}
+
+	private void createKneeObjects( ) {
+		kneeMovingPlat = ( TiledPlatform ) LevelFactory.entities
+				.get( "kneeMovingPlat" );
+		kneeMovingPlat.setActive( false );
+
+		powerScrew1 = ( Screw ) LevelFactory.entities.get( "powerScrew1" );
+		powerScrew2 = ( Screw ) LevelFactory.entities.get( "powerScrew2" );
+
+		// removePlayerToScrew( )
+	}
+
+	private void powerScrew1and2update( ) {
+
+		if ( ( powerScrew1.getDepth( ) == powerScrew1.getMaxDepth( ) )
+				&& ( powerScrew2.getDepth( ) == powerScrew2.getMaxDepth( ) ) ) {
+			kneeMovingPlat.setActive( true );
+
+			footSkeleton.body.setType( BodyType.DynamicBody );
+			kneeSkeleton.body.setType( BodyType.DynamicBody );
+			thighSkeleton.body.setType( BodyType.DynamicBody );
+
+			if ( hipSkeleton.currentMover( ) == null ) {
+				// hipSkeleton.addMover( new RotateTweenMover(hipSkeleton, 3f,
+				// -Util.PI / 2, 1f, true),
+				// RobotState.IDLE );
+
+				PathBuilder pb = new PathBuilder( );
+				hipSkeleton.addMover( pb.begin( hipSkeleton )
+						.target( 0, 100, 3 ).delay( 1 ).target( 0, -25, 3 )
+						.target( 0, 0, 3 ).build( ), RobotState.IDLE );
 
 			}
-		}
-	}
-	
-	private void updateKeyboardWithOneControllerAttached(){
-		if(controller1 != null && controller2 == null && !player2Spawned){
-			if(!player1HitStart && !player2HitStart){
-				if(Gdx.input.isKeyPressed( Keys.ENTER )){
-					player2HitStart = true;
-					screwDraw = true;
-					screwIndex = 0;
-				}
-			}else{
-				//Left
-				if(Gdx.input.isKeyPressed( Keys.A )){
-					if(!p2LeftHit){
-						p2LeftHit = true;
-						if(screwIndex == 0){
-							screwIndex = players.size()-1;
-						}else
-							screwIndex--;
-					}
-				}else{
-					p2LeftHit = false;
-				}
-				if(Gdx.input.isKeyPressed( Keys.D )){
-					if(!p2RightHit){
-						p2RightHit = true;
-						screwIndex++;
-					}
-				}else{
-					p2RightHit = false;
-				}
-				
-				if( Gdx.input.isKeyPressed( Keys.SPACE)){
-					spawnPlayer( 1, screwIndex % players.size( ), false );
-					screwDraw = false;
-					screwIndex = 0;
-					player2Spawned = true;
-					player2HitStart = false;
-				}
 
-			}
 		}
 	}
-	
+
+	private void initEventTriggers( ) {
+		EventTrigger et1 = ( EventTrigger ) LevelFactory.entities
+				.get( "etChest1" );
+
+		et1.addBeginIAction( new EntityActivateMoverAction( ) );
+
+		TiledPlatform chestBlockPlat1 = ( TiledPlatform ) LevelFactory.entities
+				.get( "chestBlockPlat1" );
+	}
+
 }

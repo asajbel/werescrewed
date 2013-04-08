@@ -77,7 +77,8 @@ public class Level {
 		if(player2 != null) player2.update( deltaTime );
 		
 		root.update( deltaTime );
-		if (progressManager!=null)progressManager.update( deltaTime );
+		if (progressManager!=null && (player1 != null && player2 != null))
+			progressManager.update( deltaTime );
 		
 		if ( Gdx.input.isKeyPressed( Keys.NUM_0 ) ) {
 			if ( debugTest )
@@ -90,11 +91,10 @@ public class Level {
 	}
 	
 	public void draw ( SpriteBatch batch, SBox2DDebugRenderer debugRenderer, float deltaTime){
-		batch.setProjectionMatrix( camera.combined() );
 		batch.setShader( WereScrewedGame.defaultShader );
 		batch.setBlendFunction( GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA );
-		batch.setProjectionMatrix( camera.combined() );
 		batch.enableBlending( );
+		batch.setProjectionMatrix( camera.combined() );
 		batch.begin();
 		
 		//float deltaTime = Gdx.graphics.getDeltaTime( );

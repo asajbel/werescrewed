@@ -2,9 +2,7 @@ package com.blindtigergames.werescrewed.entity.hazard;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.g2d.ParticleEffect;
-import com.badlogic.gdx.graphics.g2d.ParticleEmitter;
-import com.blindtigergames.werescrewed.graphics.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.EdgeShape;
@@ -14,6 +12,8 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.utils.Array;
 import com.blindtigergames.werescrewed.entity.EntityType;
+import com.blindtigergames.werescrewed.graphics.particle.ParticleEmitter;
+import com.blindtigergames.werescrewed.graphics.particle.ParticleEffect;
 import com.blindtigergames.werescrewed.util.Util;
 
 public class Electricity extends Hazard {
@@ -49,15 +49,10 @@ public class Electricity extends Hazard {
 			this.isHori = false;
 		}
 		
-		particleEffect = new ParticleEffect( );
-		particleEffect.load(
-				Gdx.files.internal( "data/particles/steam" ),
-				Gdx.files.internal( "data/particles" ) );
-		particleEffect.setPosition( pos1.x, pos1.y);
-		particleEmitter = particleEffect.getEmitters( );
+		particleEffect = ParticleEffect.loadEffect("steam");
 		setWidthHeight( pos1, pos2 );
 		constructBody( pos1);
-		for( ParticleEmitter PE: particleEmitter)
+		for( ParticleEmitter PE: particleEffect.getEmitters( ))
 			PE.setContinuous( false );
 	}
 	

@@ -1,6 +1,8 @@
 package com.blindtigergames.werescrewed.screens;
 
 import aurelienribon.tweenengine.Tween;
+import aurelienribon.tweenengine.TweenEquation;
+import aurelienribon.tweenengine.TweenEquations;
 
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
@@ -11,6 +13,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+import com.badlogic.gdx.physics.box2d.Joint;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.joints.PrismaticJoint;
 import com.badlogic.gdx.physics.box2d.joints.PrismaticJointDef;
@@ -38,8 +41,10 @@ import com.blindtigergames.werescrewed.entity.mover.LinearAxis;
 import com.blindtigergames.werescrewed.entity.mover.PistonTweenMover;
 import com.blindtigergames.werescrewed.entity.mover.PuzzleType;
 import com.blindtigergames.werescrewed.entity.mover.RotateByDegree;
+import com.blindtigergames.werescrewed.entity.mover.RotateTweenMover;
 import com.blindtigergames.werescrewed.entity.mover.SlidingMotorMover;
 import com.blindtigergames.werescrewed.entity.mover.puzzle.PuzzlePistonTweenMover;
+import com.blindtigergames.werescrewed.entity.mover.puzzle.PuzzleRotateTweenMover;
 import com.blindtigergames.werescrewed.entity.particles.Steam;
 import com.blindtigergames.werescrewed.entity.platforms.Platform;
 import com.blindtigergames.werescrewed.entity.platforms.TiledPlatform;
@@ -55,7 +60,6 @@ import com.blindtigergames.werescrewed.player.Player;
 import com.blindtigergames.werescrewed.util.Util;
 
 public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
-
 
 	public ScreenType screenType;
 	private Camera cam;
@@ -77,7 +81,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 	public Steam testSteam;
 	public SpriteBatch particleBatch;
 	TiledPlatform test2;
-	
+
 	private Skeleton dynSkel2;
 	private Skeleton s;
 	private Hazard saw;
@@ -91,13 +95,13 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		batch = new SpriteBatch( );
 		world = new World( new Vector2( 0, -35 ), true );
 
-		
 		// Initialize camera
 		initCamera( );
 		Tween.registerAccessor( Platform.class, new PlatformAccessor( ) );
 		Tween.registerAccessor( Entity.class, new EntityAccessor( ) );
 
-		skeleton = new Skeleton( "skeleton", new Vector2( 500, 0 ), null, world, BodyType.KinematicBody );
+		skeleton = new Skeleton( "skeleton", new Vector2( 500, 0 ), null,
+				world, BodyType.KinematicBody );
 
 		platBuilder = new PlatformBuilder( world );
 
@@ -112,8 +116,6 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		world.setContactListener( contactListener );
 
 		// Initialize ground platformbb
-		
-
 
 		player1 = new PlayerBuilder( ).name( "player1" ).world( world )
 				.position( -700.0f, 100f ).buildPlayer( );
@@ -125,26 +127,25 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 
 		rootSkeleton.addSkeleton( skeleton );
 
-				
 		debugRenderer = new SBox2DDebugRenderer( Util.BOX_TO_PIXEL );
 
-		//debugRenderer.setDrawJoints( false );
-		
+		// debugRenderer.setDrawJoints( false );
+
 		Gdx.app.setLogLevel( Application.LOG_DEBUG );
 
 		boolean stew = false;
-		if ( stew ){
+		if ( stew ) {
 			stewTest( );
-		}else{
+		} else {
 			initCheckPoints( );
 			initTiledPlatforms( );
-			connectedRoom();
-			movingSkeleton();
+			connectedRoom( );
+			movingSkeleton( );
 		}
 		//
 	}
-	
-	void stewTest(){
+
+	void stewTest( ) {
 		ground = platBuilder.position( 0.0f, -75 ).name( "ground" )
 				.dimensions( 200, 4 )
 				// .texture( testTexture )
@@ -155,227 +156,268 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 				Util.CATEGORY_EVERYTHING );
 		ground.body.getFixtureList( ).get( 0 ).getShape( ).setRadius( 0 );
 		skeleton.addKinematicPlatform( ground );
-		
-		Skeleton dynSkel = new SkeletonBuilder( world ).position( 800, 500 ).dynamic( )
-				.name("dynSkele").build( );
-		//dynSkel.quickfixCollisions( );
-		rootSkeleton.addSkeleton(dynSkel);
-		
-		//platforms on dynamic skeleton
+
+		Skeleton dynSkel = new SkeletonBuilder( world ).position( 800, 500 )
+				.dynamic( ).name( "dynSkele" ).build( );
+		// dynSkel.quickfixCollisions( );
+		rootSkeleton.addSkeleton( dynSkel );
+
+		// platforms on dynamic skeleton
 		TiledPlatform plat6 = platBuilder.name( "dynPlat1" ).dynamic( )
-				.position( 600, 500 ).dimensions( 1, 12).oneSided( false )
+				.position( 600, 500 ).dimensions( 1, 12 ).oneSided( false )
 				.buildTilePlatform( );
 		plat6.body.setFixedRotation( false );
 		plat6.quickfixCollisions( );
 		dynSkel.addDynamicPlatformFixed( plat6 );
-		
-		
+
 	}
 
-	//This is how you make a whole room fall, by welding everything together
-	void connectedRoom(){
+	// This is how you make a whole room fall, by welding everything together
+	void connectedRoom( ) {
 		test2 = platBuilder.name( "strucTest9" ).kinematic( )
-				.position( 800, 100 ).dimensions( 5, 5).oneSided( false )
+				.position( 800, 100 ).dimensions( 5, 5 ).oneSided( false )
 				.buildTilePlatform( );
-		skeleton.addKinematicPlatform(  test2 );
+		skeleton.addKinematicPlatform( test2 );
 
-		
-		
-		StrippedScrew strScrew2 = new StrippedScrew( "strScrew4", new Vector2(500, 500 ), rootSkeleton, 
-				world );
+		StrippedScrew strScrew2 = new StrippedScrew( "strScrew4", new Vector2(
+				500, 500 ), rootSkeleton, world );
 		rootSkeleton.addStrippedScrew( strScrew2 );
-		
+
 		RevoluteJointDef revoluteJointDef = new RevoluteJointDef( );
 		revoluteJointDef.initialize( rootSkeleton.body, strScrew2.body,
 				rootSkeleton.body.getPosition( ) );
 		world.createJoint( revoluteJointDef );
-		
-		StrippedScrew strScrew4 = new StrippedScrew( "strScrew5", new Vector2(500, 700 ), rootSkeleton, 
-				world );
+
+		StrippedScrew strScrew4 = new StrippedScrew( "strScrew5", new Vector2(
+				500, 700 ), rootSkeleton, world );
 		rootSkeleton.addStrippedScrew( strScrew4 );
 		RevoluteJointDef revoluteJointDef2 = new RevoluteJointDef( );
 		revoluteJointDef2.initialize( rootSkeleton.body, strScrew4.body,
 				rootSkeleton.body.getPosition( ) );
 		world.createJoint( revoluteJointDef2 );
-		
-		dynSkel2 = new SkeletonBuilder( world ).position( 800, 500 )
-				.build( );
+
+		dynSkel2 = new SkeletonBuilder( world ).position( 800, 500 ).build( );
 		dynSkel2.body.setType( BodyType.DynamicBody );
 		dynSkel2.body.setGravityScale( 0.1f );
 		dynSkel2.setDensity( 100f );
 		rootSkeleton.addSkeleton( dynSkel2 );
-		
-		StrippedScrew strScrew = new StrippedScrew( "strScrew3", new Vector2(700, 500 ), world );
+
+		StrippedScrew strScrew = new StrippedScrew( "strScrew3", new Vector2(
+				700, 500 ), world );
 		strScrew.addWeldJoint( dynSkel2 );
 		dynSkel2.addStrippedScrew( strScrew );
 		strScrew.body.setFixedRotation( false );
-		
-//		WeldJointDef s1 = new WeldJointDef();
-//		s1.initialize( strScrew.body, dynSkel2.body, strScrew.getPosition( ) );
-//		world.createJoint( s1 );
-		
-//		RevoluteJointDef revoluteJointDef = new RevoluteJointDef( );
-//		revoluteJointDef.initialize( strScrew.body, dynSkel2.body, strScrew.getPosition( ) );
-//		world.createJoint( revoluteJointDef );
 
-		
+		// WeldJointDef s1 = new WeldJointDef();
+		// s1.initialize( strScrew.body, dynSkel2.body, strScrew.getPosition( )
+		// );
+		// world.createJoint( s1 );
+
+		// RevoluteJointDef revoluteJointDef = new RevoluteJointDef( );
+		// revoluteJointDef.initialize( strScrew.body, dynSkel2.body,
+		// strScrew.getPosition( ) );
+		// world.createJoint( revoluteJointDef );
+
 		TiledPlatform plat6 = platBuilder.name( "weld1" ).dynamic( )
-				.position( 600, 500 ).dimensions( 1, 12).oneSided( false )
+				.position( 600, 500 ).dimensions( 1, 12 ).oneSided( false )
 				.buildTilePlatform( );
 		plat6.body.setFixedRotation( false );
 		plat6.quickfixCollisions( );
 		dynSkel2.addDynamicPlatform( plat6 );
-		
 
-		
 		RevoluteJointDef r2 = new RevoluteJointDef( );
 		r2.initialize( strScrew.body, plat6.body, plat6.getPosition( ) );
 		world.createJoint( r2 );
-		
+
 		TiledPlatform plat7 = platBuilder.name( "weld2" ).dynamic( )
-				.position( 800, 300 ).dimensions( 12, 1).oneSided( false )
+				.position( 800, 300 ).dimensions( 12, 1 ).oneSided( false )
 				.buildTilePlatform( );
 		plat7.body.setFixedRotation( false );
 		plat7.quickfixCollisions( );
 		dynSkel2.addDynamicPlatform( plat7 );
-		
+
 		TiledPlatform plat8 = platBuilder.name( "weld3" ).dynamic( )
-				.position( 800, 700 ).dimensions( 12, 1).oneSided( false )
+				.position( 800, 700 ).dimensions( 12, 1 ).oneSided( false )
 				.buildTilePlatform( );
 		plat8.body.setFixedRotation( false );
 		plat8.quickfixCollisions( );
 		dynSkel2.addDynamicPlatform( plat8 );
-		
+
 		TiledPlatform test = platBuilder.name( "strucTest" ).kinematic( )
-				.position( 800, 900 ).dimensions( 1, 5).oneSided( false )
+				.position( 800, 900 ).dimensions( 1, 5 ).oneSided( false )
 				.buildTilePlatform( );
-		skeleton.addKinematicPlatform(  test );
-		
-				
-//		StructureScrew s = new StructureScrew( "ss", new Vector2(800, 750), 100, test,
-//				world );
-//		s.addStructureJoint( plat8 );
-//		dynSkel2.addScrewForDraw( s );
-		
-		
+		skeleton.addKinematicPlatform( test );
+
+		// StructureScrew s = new StructureScrew( "ss", new Vector2(800, 750),
+		// 100, test,
+		// world );
+		// s.addStructureJoint( plat8 );
+		// dynSkel2.addScrewForDraw( s );
+
 		TiledPlatform plat9 = platBuilder.name( "weld4" ).dynamic( )
-				.position( 1000, 500 ).dimensions( 1, 12).oneSided( false )
+				.position( 1000, 500 ).dimensions( 1, 12 ).oneSided( false )
 				.buildTilePlatform( );
 		plat9.body.setFixedRotation( false );
 		plat9.quickfixCollisions( );
 		dynSkel2.addDynamicPlatform( plat9 );
-		
-		
-		
-		StructureScrew s = new StructureScrew( "ss", plat8.getPositionPixel( ).add(plat8.getPixelWidth( )/2, 0),
-				100, world );
+
+		StructureScrew s = new StructureScrew( "ss", plat8.getPositionPixel( )
+				.add( plat8.getPixelWidth( ) / 2, 0 ), 100, world );
 		s.addWeldJoint( plat8 );
 		s.addWeldJoint( plat9 );
 		dynSkel2.addScrewForDraw( s );
-		
-		
-		StructureScrew s1 = new StructureScrew( "s1", plat7.getPositionPixel( ).add(plat7.getPixelWidth( )/2, 0),
-				100, world );
+
+		StructureScrew s1 = new StructureScrew( "s1", plat7.getPositionPixel( )
+				.add( plat7.getPixelWidth( ) / 2, 0 ), 100, world );
 		s1.addWeldJoint( plat7 );
 		s1.addWeldJoint( plat9 );
 		dynSkel2.addScrewForDraw( s1 );
-		
-		StructureScrew s3 = new StructureScrew( "s2", plat8.getPositionPixel( ).sub(plat8.getPixelWidth( )/2, 0),
-				100, world );
+
+		StructureScrew s3 = new StructureScrew( "s2", plat8.getPositionPixel( )
+				.sub( plat8.getPixelWidth( ) / 2, 0 ), 100, world );
 		s3.addWeldJoint( plat6 );
 		s3.addWeldJoint( plat8 );
 		dynSkel2.addScrewForDraw( s3 );
-		
-		StructureScrew s5 = new StructureScrew( "s23", plat7.getPositionPixel( ).sub(plat7.getPixelWidth( )/2, 0),
-				100, world );
+
+		StructureScrew s5 = new StructureScrew( "s23", plat7.getPositionPixel( )
+				.sub( plat7.getPixelWidth( ) / 2, 0 ), 100, world );
 		s5.addWeldJoint( plat6 );
 		s5.addWeldJoint( plat7 );
 		dynSkel2.addScrewForDraw( s5 );
-		
-
 
 	}
-	
-	void movingSkeleton(){
-		s =  new Skeleton( "skeleton7", new Vector2( -700, 200 ), null, world, BodyType.DynamicBody );
-		
+
+	void movingSkeleton( ) {
+
+		Skeleton top = new Skeleton( "skeleton7", new Vector2( -700, 1200 ),
+				null, world, BodyType.KinematicBody );
+		top.addMover( new RotateTweenMover( top, 3f, -Util.PI / 2, 1f, true ),
+				RobotState.IDLE );
+		rootSkeleton.addSkeleton( top );
+
+		s = new Skeleton( "skeleton7", new Vector2( -700, 700 ), null, world,
+				BodyType.KinematicBody );
+
 		TiledPlatform ttt = platBuilder.name( "ttt" ).kinematic( )
-				.position( -700, 700 ).dimensions( 1, 5).oneSided( false )
-				.buildTilePlatform( ); 
-		rootSkeleton.addPlatform( ttt );
-		
-		rootSkeleton.addSkeleton( s );
-		
-		StructureScrew screw = new StructureScrew( "sdfasdf",
-				new Vector2(-700f, 500f),
-				100, world );
-		screw.addStructureJoint( s );
-		screw.addWeldJoint( ttt );
-		dynSkel2.addScrewForDraw( screw );
-		
-		PathBuilder pb = new PathBuilder();
-		ttt.addMover( pb.begin( ttt ).target( 100, 0, 1 )
-				.target( 0, 0, 1 ).build( ), RobotState.IDLE);
-		
-		TiledPlatform test = platBuilder.name( "movetest" ).kinematic( )
-				.position( -300, 300 ).dimensions( 1, 5).oneSided( false )
+				.position( -700, 1000 ).dimensions( 1, 5 ).oneSided( false )
 				.buildTilePlatform( );
-		s.addKinematicPlatform(  test );
-		
-		
-		saw = new Hazard( "sawblade", EntityDef.getDefinition( "sawBlade" ), world,
-				new Vector2(-600.0f, 150.0f)); 
-		saw.body.setType( BodyType.DynamicBody );
-		s.addPlatformRotatingCenterWithMot( saw, 2f );
-		
-		
+		s.addPlatform( ttt );
+
+		// rootSkeleton.addSkeleton( s );
+
+		top.addKinematicPlatform( s );
+		// StructureScrew screw = new StructureScrew( "sdfasdf",
+		// new Vector2(-700f, 500f),
+		// 100, world );
+		// screw.addStructureJoint( s );
+		// screw.addWeldJoint( ttt );
+		// dynSkel2.addScrewForDraw( screw );
+
+		// RevoluteJointDef revoluteJointDef = new RevoluteJointDef( );
+		// revoluteJointDef.initialize( s.body, ttt.body, ttt.getPosition( ) );
+		// world.createJoint( revoluteJointDef );
+
+		Skeleton middleHang = new Skeleton( "middleHang", new Vector2( -700,
+				400 ), null, world, BodyType.KinematicBody );
+		// rootSkeleton.addSkeleton( middleHang );
+		s.addKinematicPlatform( middleHang );
+
+		// TiledPlatform test2 = platBuilder.name( "movetest2" ).kinematic( )
+		// .position( -900, 500 ).dimensions( 1, 5).oneSided( false )
+		// .buildTilePlatform( );
+		// middleHang.addKinematicPlatform( test2 );
+
+		// RevoluteJointDef revoluteJointDef2 = new RevoluteJointDef( );
+		// revoluteJointDef2.initialize( s.body, middleHang.body, s.getPosition(
+		// ) );
+		// world.createJoint( revoluteJointDef2 );
+
+		PathBuilder pb = new PathBuilder( );
+		// ttt.addMover( pb.begin( ttt ).ease( TweenEquations.easeInOutExpo
+		// ).target( -1000, 0, 20 )
+		// .target( 0, 0, 20 ).build( ), RobotState.IDLE);
+
+		// TiledPlatform test = platBuilder.name( "movetest" ).kinematic( )
+		// .position( -300, 500 ).dimensions( 1, 5).oneSided( false )
+		// .buildTilePlatform( );
+		// s.addKinematicPlatform( test );
+
+		// saw = new Hazard( "sawblade", EntityDef.getDefinition( "sawBlade" ),
+		// world,
+		// new Vector2(-600.0f, 150.0f));
+		// saw.body.setType( BodyType.DynamicBody );
+		// s.addPlatformRotatingCenterWithMot( saw, 2f );
+
 		// 1000 - 1219 for perfect gears
-		Platform gear = platBuilder.name( "gear" ).position( -1400, 320 )
-				.texture( null ).setScale( 3f ).type( "gearSmall" ).dynamic( )
-				.buildComplexPlatform( );
-		s.addPlatformRotatingCenterWithMot( gear, 1f );
-		Platform gear2 = platBuilder.name( "gear2" ).position( -1165, 320 )
-				.texture( null ).setScale( 3f ).type( "gearSmall" ).dynamic( )
-				.buildComplexPlatform( );
-		s.addPlatformRotatingCenter( gear2 );
-		gear2.quickfixCollisions( );
-		
+		// Platform gear = platBuilder.name( "gear" ).position( -1400, 320 )
+		// .texture( null ).setScale( 3f ).type( "gearSmall" ).dynamic( )
+		// .buildComplexPlatform( );
+		// s.addPlatformRotatingCenterWithMot( gear, 1f );
+		// Platform gear2 = platBuilder.name( "gear2" ).position( -1165, 320 )
+		// .texture( null ).setScale( 3f ).type( "gearSmall" ).dynamic( )
+		// .buildComplexPlatform( );
+		// s.addPlatformRotatingCenter( gear2 );
+		// gear2.quickfixCollisions( );
 
-		TiledPlatform piston = platBuilder.name( "piston" ).kinematic( )
-				.position( -100, 550 ).dimensions( 2, 5).oneSided( false )
+		// TiledPlatform piston = platBuilder.name( "piston" ).kinematic( )
+		// .position( -100, 700 ).dimensions( 2, 5).oneSided( false )
+		// .buildTilePlatform( );
+		// piston.addMover( new PistonTweenMover( piston, new Vector2(
+		// 0, -350 ), 0.5f, 3f, 1f, 0f, 1f ), RobotState.IDLE );
+		// s.addKinematicPlatform( piston );
+		// piston.setCrushing( true );
+
+		// TiledPlatform pivot = platBuilder.position( 100.0f, 75f ).name( "rev"
+		// )
+		// .dimensions( 1, 2 )
+		// .kinematic( ).oneSided( false ).restitution(0.0f )
+		// .buildTilePlatform( );
+		// s.addKinematicPlatform( pivot );
+
+		// rfd.maxMotorTorque = 100.0f;
+
+		// TiledPlatform crank = platBuilder.position( 100f, 125f).name( "crank"
+		// )
+		// .dimensions( 15, 1 )
+		// .dynamic( ).oneSided( false ).restitution( 0.0f )
+		// .buildTilePlatform( );
+		// crank.quickfixCollisions( );
+		// crank.setDensity( 0 );
+		// crank.setCrushing( true );
+		// s.addPlatform( crank );
+		//
+		// RevoluteJointDef rfd = new RevoluteJointDef( );
+		// rfd.initialize( crank.body, pivot.body,
+		// pivot.body.getPosition( ).add( new Vector2(0f, pivot.getMeterHeight(
+		// )/2) ) );
+		// world.createJoint( rfd );
+
+		// TiledPlatform dynPlatTest = platBuilder.position( -500,200 ).dynamic(
+		// ).dimensions( 5, 1 ).buildTilePlatform( );
+		// s.addDynamicPlatformFixed( dynPlatTest );
+		// dynPlatTest.quickfixCollisions( );
+
+		TiledPlatform test = platBuilder.name( "movetest" ).kinematic( )
+				.position( -300, 300 ).dimensions( 5, 1 ).oneSided( false )
 				.buildTilePlatform( );
-		piston.addMover( new PistonTweenMover( piston, new Vector2(
-				0, -350 ), 0.5f, 3f, 1f, 0f, 1f ), RobotState.IDLE );
-		s.addKinematicPlatform(  piston );
-		piston.setCrushing( true );
+		rootSkeleton.addKinematicPlatform( test );
 
-		
-		TiledPlatform pivot = platBuilder.position( 100.0f, 75f ).name( "rev" )
-				.dimensions( 1, 2 )
-				.kinematic( ).oneSided( false ).restitution(0.0f )
-				.buildTilePlatform( );
-		s.addKinematicPlatform( pivot );
-		
+		PuzzleScrew puzzleScrew = new PuzzleScrew( "006", new Vector2( -300,
+				400 ), 100, world, 0, false );
+		rootSkeleton.addScrewForDraw( puzzleScrew );
+		puzzleScrew.addStructureJoint( test );
 
-		//rfd.maxMotorTorque = 100.0f;
-		
-		TiledPlatform crank = platBuilder.position( 100f, 125f).name( "crank" )
-				.dimensions( 15, 1 )
-				.dynamic( ).oneSided( false ).restitution( 0.0f )
-				.buildTilePlatform( );
-		crank.quickfixCollisions( );
-		crank.setDensity( 0 );
-		crank.setCrushing( true );
-		s.addPlatform( crank );
-		
-		RevoluteJointDef rfd = new RevoluteJointDef( );
-		rfd.initialize( crank.body, pivot.body,
-				pivot.body.getPosition( ).add( new Vector2(0f, pivot.getMeterHeight( )/2) ) );
-		world.createJoint( rfd );
+		LerpMover lm = new LerpMover( test.getPositionPixel( ),
+				new Vector2( test.getPositionPixel( ).x, test
+						.getPositionPixel( ).y - 300f ),
+				LinearAxis.VERTICAL );
 
-		
+		puzzleScrew.puzzleManager.addEntity( test );
+		puzzleScrew.puzzleManager.addMover( lm );
+		rootSkeleton.addScrewForDraw( puzzleScrew );
+
 	}
-	
+
 	@SuppressWarnings( "unused" )
 	void buildPolySprite( ) {
 		Array< Vector2 > verts = new Array< Vector2 >( );
@@ -389,25 +431,34 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 						+ "/common/robot/alphabot_texture_skin.png",
 				Texture.class ), verts );
 	}
-	
+
 	@SuppressWarnings( "unused" )
 	private void buildOptimizeSkele( ) {
 		Skeleton skeleton;// = new Skeleton( "dynamicSkeleton", new Vector2(
-								// 0,
+							// 0,
 		// 200 ), testTexture, world );
-		skeleton = new SkeletonBuilder( world ).position( -2000, 0 )
-				.texBackground( WereScrewedGame.manager.get(WereScrewedGame.dirHandle+"/common/robot/alphabot_texture_skin.png",Texture.class )).name( "dynamicSkeleton" )
-				.vert( -100, -100 ).vert( 100, -100 ).vert( 100, 100 ).vert( -100,100 )
-				.texForeground( WereScrewedGame.manager.get(WereScrewedGame.dirHandle+"/common/robot/alphabot_texture_tux.png",Texture.class ))
-				.fg( ).vert( 200,0 ).vert( 300,100 ).vert( 200,200 ).hasDeactiveTrigger( true )
+		skeleton = new SkeletonBuilder( world )
+				.position( -2000, 0 )
+				.texBackground(
+						WereScrewedGame.manager.get( WereScrewedGame.dirHandle
+								+ "/common/robot/alphabot_texture_skin.png",
+								Texture.class ) )
+				.name( "dynamicSkeleton" )
+				.vert( -100, -100 )
+				.vert( 100, -100 )
+				.vert( 100, 100 )
+				.vert( -100, 100 )
+				.texForeground(
+						WereScrewedGame.manager.get( WereScrewedGame.dirHandle
+								+ "/common/robot/alphabot_texture_tux.png",
+								Texture.class ) ).fg( ).vert( 200, 0 )
+				.vert( 300, 100 ).vert( 200, 200 ).hasDeactiveTrigger( true )
 				.build( );
 		// dynSkeleton.body.createFixture( , density )
 
 		oldRootSkeleton.addSkeleton( skeleton );
 
-
 	}
-
 
 	/**
 	 * Initializes camera settings
@@ -416,14 +467,15 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		float zoom = 1.0f;
 		float width = Gdx.graphics.getWidth( ) / zoom;
 		float height = Gdx.graphics.getHeight( ) / zoom;
-		cam = new Camera( width, height, world );
+		cam = new Camera( new Vector2( Gdx.graphics.getWidth( ) * 5f,
+				Gdx.graphics.getHeight( ) * 5f ), width, height, world );
 	}
 
 	/**
 	 * Initializes tiled platforms' settings, and adds them to the skeleton
 	 */
 	private void initTiledPlatforms( ) {
-		
+
 		ground = platBuilder.position( 0.0f, -75 ).name( "ground" )
 				.dimensions( 200, 4 )
 				// .texture( testTexture )
@@ -436,12 +488,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		skeleton.addKinematicPlatform( ground );
 		ground.setCrushing( true );
 
-		
-		
 	}
-
-
-
 
 	/**
 	 * Initializes settings for puzzle screws
@@ -508,7 +555,6 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 
 	}
 
-	
 	/**
 	 * Initializes settings for moving platforms and adds them to the skeleton
 	 */
@@ -622,17 +668,14 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 
 	private void initCheckPoints( ) {
 		progressManager = new ProgressManager( player1, player2, world );
-		progressManager
-				.addCheckPoint( new CheckPoint( "check_01", new Vector2( -170f,
-						64f ), skeleton, world, progressManager,
-						"levelStage_0_0" ) );
+		progressManager.addCheckPoint( new CheckPoint( "check_01", new Vector2(
+				-170f, 64f ), skeleton, world, progressManager,
+				"levelStage_0_0" ) );
 		progressManager
 				.addCheckPoint( new CheckPoint( "check_01", new Vector2( 512,
 						64 ), skeleton, world, progressManager,
 						"levelStage_0_1" ) );
 	}
-
-	
 
 	@Override
 	public void render( float deltaTime ) {
@@ -643,10 +686,9 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 			Gdx.gl10.glClearColor( 0.0f, 0f, 0.0f, 1.0f );
 			Gdx.gl10.glClear( GL20.GL_COLOR_BUFFER_BIT );
 		}
-		
-		
+
 		cam.update( );
-		
+
 		if ( Gdx.input.isKeyPressed( Input.Keys.NUM_1 ) ) {
 			ScreenManager.getInstance( ).show( ScreenType.WIN );
 		}
@@ -655,7 +697,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		}
 
 		if ( Gdx.input.isKeyPressed( Keys.NUM_0 ) ) {
-			if ( debugTest ){
+			if ( debugTest ) {
 				debug = !debug;
 			}
 			debugTest = false;
@@ -663,39 +705,42 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 			debugTest = true;
 
 		if ( Gdx.input.isKeyPressed( Input.Keys.Z ) ) {
-			if(s!=null)s.translateBy( 0.0f, 0.01f );
-//			dynSkel2.body.applyLinearImpulse( new Vector2(0, .1f),
-//					dynSkel2.body.getPosition( ));
-			
+			if ( s != null )
+				s.translateBy( 0.0f, 0.01f );
+			// dynSkel2.body.applyLinearImpulse( new Vector2(0, .1f),
+			// dynSkel2.body.getPosition( ));
+
 		}
 
 		if ( Gdx.input.isKeyPressed( Input.Keys.X ) ) {
-			if(s!=null)s.translateBy( 0.0f, -0.01f );
-//			dynSkel2.body.applyLinearImpulse( new Vector2(0, -.1f),
-//					dynSkel2.body.getPosition( ));
+			if ( s != null )
+				s.translateBy( 0.0f, -0.01f );
+			// dynSkel2.body.applyLinearImpulse( new Vector2(0, -.1f),
+			// dynSkel2.body.getPosition( ));
 		}
 
 		if ( Gdx.input.isKeyPressed( Input.Keys.C ) ) {
-			if(s!=null)s.rotateBy( -0.01f );
-			//dynSkel2.body.applyAngularImpulse(  0.1f ) ;
+			if ( s != null )
+				s.rotateBy( -0.01f );
+			// dynSkel2.body.applyAngularImpulse( 0.1f ) ;
 		}
 
 		if ( Gdx.input.isKeyPressed( Input.Keys.V ) ) {
-			if(s!=null)s.rotateBy( 0.01f );
-			//dynSkel2.body.applyAngularImpulse(  -0.1f ) ;
+			if ( s != null )
+				s.rotateBy( 0.01f );
+			// dynSkel2.body.applyAngularImpulse( -0.1f ) ;
 		}
 
-		
-		
 		player1.update( deltaTime );
 		player2.update( deltaTime );
 		rootSkeleton.update( deltaTime );
-		if(progressManager!=null)progressManager.update( deltaTime );
+		if ( progressManager != null )
+			progressManager.update( deltaTime );
 		batch.setProjectionMatrix( cam.combined( ) );
 		batch.begin( );
 
-
-		if(progressManager!=null)progressManager.draw( batch, deltaTime );
+		if ( progressManager != null )
+			progressManager.draw( batch, deltaTime );
 		rootSkeleton.draw( batch, deltaTime );
 		player1.draw( batch, deltaTime );
 		player2.draw( batch, deltaTime );
@@ -706,14 +751,14 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 			debugRenderer.render( world, cam.combined( ) );
 
 		world.step( 1 / 60f, 6, 3 );
-		
+
 		if ( Gdx.input.isKeyPressed( Input.Keys.ESCAPE ) ) {
-			if(!ScreenManager.escapeHeld){
+			if ( !ScreenManager.escapeHeld ) {
 				ScreenManager.getInstance( ).show( ScreenType.PAUSE );
 			}
 		} else
 			ScreenManager.escapeHeld = false;
-		
+
 	}
 
 	@Override

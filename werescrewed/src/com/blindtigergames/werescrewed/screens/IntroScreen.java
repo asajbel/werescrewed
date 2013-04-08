@@ -72,7 +72,7 @@ class IntroScreen implements com.badlogic.gdx.Screen {
 		public void run( ) {
 			// TODO Auto-generated method stub
 			// game.setScreen(new MainMenuScreen(game));
-			ScreenManager.getInstance( ).show( ScreenType.LEVEL_1 );
+			ScreenManager.getInstance( ).show( ScreenType.LOADING_1 );
 
 		}
 	};

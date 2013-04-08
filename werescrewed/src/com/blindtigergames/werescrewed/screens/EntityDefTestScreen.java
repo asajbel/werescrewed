@@ -126,7 +126,8 @@ public class EntityDefTestScreen implements com.badlogic.gdx.Screen {
 		float zoom = 1.0f;
 		float width = Gdx.graphics.getWidth( ) / zoom;
 		float height = Gdx.graphics.getHeight( ) / zoom;
-		cam = new Camera( width, height, world );
+		cam = new Camera( new Vector2( Gdx.graphics.getWidth( ) * 5f,
+				Gdx.graphics.getHeight( ) * 5f ), width, height, world );
 	}
 
 	/**
@@ -216,7 +217,7 @@ public class EntityDefTestScreen implements com.badlogic.gdx.Screen {
 						.getPosition( ).y ).mul( Util.BOX_TO_PIXEL ),
 				new Vector2( movingTP.body.getPosition( ).x + 1.75f,
 						movingTP.body.getPosition( ).y )
-						.mul( Util.BOX_TO_PIXEL ), LinearAxis.HORIZONTAL);
+						.mul( Util.BOX_TO_PIXEL ), LinearAxis.HORIZONTAL );
 		puzzleScrew.puzzleManager.addMover( lm );
 		skeleton.addScrewForDraw( puzzleScrew );
 	}
@@ -232,11 +233,11 @@ public class EntityDefTestScreen implements com.badlogic.gdx.Screen {
 		float dy = 200f;
 		for ( int i = 0; i < 10; i++ ) {
 			if ( i % 2 == 0 ) {
-				climbingScrews.add( new StrippedScrew( "", new Vector2(
-						x1, y1 ), skeleton, world ) );
+				climbingScrews.add( new StrippedScrew( "",
+						new Vector2( x1, y1 ), skeleton, world ) );
 			} else {
-				climbingScrews.add( new StrippedScrew( "", new Vector2(
-						x2, y1 ), skeleton, world ) );
+				climbingScrews.add( new StrippedScrew( "",
+						new Vector2( x2, y1 ), skeleton, world ) );
 			}
 			y1 += dy;
 		}
@@ -303,8 +304,9 @@ public class EntityDefTestScreen implements com.badlogic.gdx.Screen {
 					.anchor( piston.body.getWorldCenter( ) ).build( );
 			// Something is still not quite right with this, try replacing 3
 			// with 0.
-			//piston.addMover( new PistonMover( pistonJoint, 0f, i / 10.0f + 2f ),
-			//		RobotState.IDLE );
+			// piston.addMover( new PistonMover( pistonJoint, 0f, i / 10.0f + 2f
+			// ),
+			// RobotState.IDLE );
 			piston.body.setSleepingAllowed( false );
 			skeleton.addDynamicPlatform( piston );
 		}
@@ -321,7 +323,8 @@ public class EntityDefTestScreen implements com.badlogic.gdx.Screen {
 		PrismaticJoint pistonJ = jointBuilder.bodyB( ( Entity ) elevator )
 				.anchor( elevator.body.getWorldCenter( ) ).build( );
 
-		//elevator.addMover( new PistonMover( pistonJ, 0f, 2f ), RobotState.IDLE );
+		// elevator.addMover( new PistonMover( pistonJ, 0f, 2f ),
+		// RobotState.IDLE );
 		elevator.body.setSleepingAllowed( false );
 		skeleton.addDynamicPlatform( elevator );
 
@@ -355,7 +358,6 @@ public class EntityDefTestScreen implements com.badlogic.gdx.Screen {
 
 		cam.update( );
 
-
 		if ( Gdx.input.isKeyPressed( Keys.P ) ) {
 			System.exit( 0 );
 		}
@@ -383,9 +385,9 @@ public class EntityDefTestScreen implements com.badlogic.gdx.Screen {
 			debugRenderer.render( world, cam.combined( ) );
 
 		world.step( 1 / 60f, 6, 2 );
-		
+
 		if ( Gdx.input.isKeyPressed( Input.Keys.ESCAPE ) ) {
-			if(!ScreenManager.escapeHeld){
+			if ( !ScreenManager.escapeHeld ) {
 				ScreenManager.getInstance( ).show( ScreenType.PAUSE );
 			}
 		} else

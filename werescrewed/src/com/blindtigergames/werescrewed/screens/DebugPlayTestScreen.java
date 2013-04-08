@@ -133,7 +133,7 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		player2 = new PlayerBuilder( ).name( "player2" ).world( world )
 				.position( 0 * TILE, 0 * TILE ).buildPlayer( );
 
-		// END: 175f * TILE, 96f * TILE 
+		// END: 175f * TILE, 96f * TILE
 		// START :: 1f * TILE, 1f * TILE
 		// stripped screws: 170 * TILE, 17 * TILE
 		// puzzle screws: 145f * TILE, 86f * TILE
@@ -146,28 +146,31 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		floor7( );
 		initCheckPoints( );
 
-		//event trigger that will remove box2d entites when they collide with it
+		// event trigger that will remove box2d entites when they collide with
+		// it
 		EventTriggerBuilder etb = new EventTriggerBuilder( world );
-		EventTrigger removeTrigger = etb.name( "removeEntity" ).rectangle( ).width( 10 ).height( 10000 )
-				.position( new Vector2( 100 * TILE, - 100 * TILE ) )
-				.beginAction( new RemoveEntityAction( ) )
-				.build( );
-		removeTrigger.setCategoryMask( Util.CATEGORY_PLAYER, Util.CATEGORY_EVERYTHING );
+		EventTrigger removeTrigger = etb.name( "removeEntity" ).rectangle( )
+				.width( 10 ).height( 10000 )
+				.position( new Vector2( 100 * TILE, -100 * TILE ) )
+				.beginAction( new RemoveEntityAction( ) ).build( );
+		removeTrigger.setCategoryMask( Util.CATEGORY_PLAYER,
+				Util.CATEGORY_EVERYTHING );
 		rootSkeleton.addEventTrigger( removeTrigger );
-		
+
 		// Create anchor with start position and buffer as parameters
-		//testAnchor = new Anchor( new Vector2( 10000, 10 ), new Vector2( 10000,
-		//		10000 ) );
+		// testAnchor = new Anchor( new Vector2( 10000, 10 ), new Vector2(
+		// 10000,
+		// 10000 ) );
 		// Add to the universally accessible anchor list
-		//AnchorList.getInstance( ).addAnchor( testAnchor );
+		// AnchorList.getInstance( ).addAnchor( testAnchor );
 		// Set timer in steps
-		//testAnchor.setTimer( 200 );
+		// testAnchor.setTimer( 200 );
 		// Activate it
-		//testAnchor.activate( );
+		// testAnchor.activate( );
 
 		rootSkeleton.addSkeleton( skeleton );
 		debugRenderer = new SBox2DDebugRenderer( Util.BOX_TO_PIXEL );
-		//debugRenderer.setDrawJoints( false );
+		// debugRenderer.setDrawJoints( false );
 
 		Gdx.app.setLogLevel( Application.LOG_DEBUG );
 
@@ -371,8 +374,8 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 
 		buildArmSkeleton( );
 	}
-	
-	void buildArmSkeleton2(){
+
+	void buildArmSkeleton2( ) {
 		SkeletonBuilder skeleBuilder = new SkeletonBuilder( world );
 		// skeleton at shoulder joint
 		Skeleton armSkeleton = skeleBuilder
@@ -381,11 +384,11 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 						WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 								+ "/common/robot/alphabot_texture_skin.png",
 								Texture.class ) ).vert( -100, -100 )
-				.vert( -100, 100 ).vert( 100, 100 ).vert( 100, -100 ).kinematic( )
-				.build( );
-		
+				.vert( -100, 100 ).vert( 100, 100 ).vert( 100, -100 )
+				.kinematic( ).build( );
+
 		skel1.addSkeleton( armSkeleton );
-		
+
 		TiledPlatform upperArm = platBuilder.dynamic( ).position( 850, 800 )
 				.dimensions( 9, 1 ).density( 1f ).oneSided( false )
 				.buildTilePlatform( );
@@ -453,11 +456,13 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 				.dimensions( 8, 1 ).density( 1f ).oneSided( false )
 				.buildTilePlatform( );
 		HazardBuilder spikesBuilder = new HazardBuilder( world );
-		//and spikes under the arms
-//		Spikes secondUpArm = spikesBuilder.position( 850, 970).dimensions( 4, 1 )
-//				.up( ).active( ).buildSpikes( );
-//		Spikes secondLowArm = spikesBuilder.position( 550, 970).dimensions( 4, 1 )
-//				.up( ).active( ).buildSpikes( );
+		// and spikes under the arms
+		// Spikes secondUpArm = spikesBuilder.position( 850, 970).dimensions( 4,
+		// 1 )
+		// .up( ).active( ).buildSpikes( );
+		// Spikes secondLowArm = spikesBuilder.position( 550, 970).dimensions(
+		// 4, 1 )
+		// .up( ).active( ).buildSpikes( );
 		// mover that the arm initially has and also that the bottom
 		// puzzle screw can reset
 		RotateTweenMover rtm1 = new RotateTweenMover( upperArmSkeleton, 10f,
@@ -478,28 +483,28 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		PuzzleScrew shoulderJoint = new PuzzleScrew( "dynamic_skeleton_joint",
 				new Vector2( 1000, 800 ), 5000, upperArmSkeleton, world, 5000,
 				false );
-		//joints the arm to the background
+		// joints the arm to the background
 		shoulderJoint.addStructureJoint( skel1 );
-		//joints the upper arm platform to the skeleton
+		// joints the upper arm platform to the skeleton
 		shoulderJoint.addStructureJoint( upperArm );
 		shoulderJoint.puzzleManager.addEntity( upperArmSkeleton );
 		shoulderJoint.puzzleManager.addMover( anlgRot );
 		// joints the first dynamic skeleton to the second dynamic skeleton
 		StrippedScrew elbowJoint = new StrippedScrew( "dynamic_skeleton_joint",
 				new Vector2( 700, 800 ), upperArmSkeleton, world );
-		elbowJoint.addStructureJoint( upperArm);
+		elbowJoint.addStructureJoint( upperArm );
 		elbowJoint.addStructureJoint( lowerArm );
 		elbowJoint.addStructureJoint( lowerArmSkeleton );
 		StrippedScrew platJoint1 = new StrippedScrew(
 				"dynamic_skeleton_joint2", new Vector2( 400, 800 ), lowerArm,
 				world );
-		//platJoint1.addStructureJoint( secondLowArm );
+		// platJoint1.addStructureJoint( secondLowArm );
 		skel1.addSkeleton( upperArmSkeleton );
 		skel1.addSkeleton( lowerArmSkeleton );
 		upperArmSkeleton.addKinematicPlatform( upperArm );
-		//upperArmSkeleton.addKinematicPlatform( secondUpArm );
+		// upperArmSkeleton.addKinematicPlatform( secondUpArm );
 		lowerArmSkeleton.addDynamicPlatform( lowerArm );
-		//lowerArmSkeleton.addKinematicPlatform( secondLowArm );
+		// lowerArmSkeleton.addKinematicPlatform( secondLowArm );
 		lowerArmSkeleton.addScrewForDraw( platJoint1 );
 		upperArmSkeleton.addScrewForDraw( shoulderJoint );
 		upperArmSkeleton.addScrewForDraw( elbowJoint );
@@ -1102,7 +1107,8 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		float zoom = 1.0f;
 		float width = Gdx.graphics.getWidth( ) / zoom;
 		float height = Gdx.graphics.getHeight( ) / zoom;
-		cam = new Camera( width, height, world );
+		cam = new Camera( new Vector2( Gdx.graphics.getWidth( ) * 5f,
+				Gdx.graphics.getHeight( ) * 5f ), width, height, world );
 	}
 
 	@Override
@@ -1116,7 +1122,6 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		}
 
 		cam.update( );
-
 
 		if ( Gdx.input.isKeyPressed( Keys.P ) ) {
 			Gdx.app.exit( );
@@ -1141,7 +1146,7 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		batch.setProjectionMatrix( cam.combined( ) );
 		batch.begin( );
 
-		rootSkeleton.draw( batch,  deltaTime );
+		rootSkeleton.draw( batch, deltaTime );
 		progressManager.draw( batch, deltaTime );
 		testRope.draw( batch, deltaTime );
 		player1.draw( batch, deltaTime );
@@ -1176,9 +1181,9 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		metRend.render( cam.camera );
 
 		world.step( 1 / 60f, 6, 3 );
-		
+
 		if ( Gdx.input.isKeyPressed( Input.Keys.ESCAPE ) ) {
-			if(!ScreenManager.escapeHeld){
+			if ( !ScreenManager.escapeHeld ) {
 				ScreenManager.getInstance( ).show( ScreenType.PAUSE );
 			}
 		} else
