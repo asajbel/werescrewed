@@ -146,7 +146,6 @@ public class MyContactListener implements ContactListener {
 //							}
 							if ( !player.isPlayerDead( )
 									&& !player2.isPlayerDead( ) ) {
-				
 									//&& ( ( player.getState( ) == PlayerState.Standing && player2
 //											.getState( ) == PlayerState.Falling ) || ( player2
 //											.getState( ) == PlayerState.Standing && player
@@ -162,7 +161,6 @@ public class MyContactListener implements ContactListener {
 									player2.setGrounded( true );
 								}
 							}
-							//Gdx.app.log( "contact listener", "player contact" );
 							break;
 						case HAZARD:
 						// if ( player.getCurrentScrew( ) == null

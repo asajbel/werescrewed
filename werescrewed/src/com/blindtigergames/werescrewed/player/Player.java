@@ -383,7 +383,7 @@ public class Player extends Entity {
 				break;
 			}
 			setGrounded( false );
-		} else if ( playerState == PlayerState.Falling && otherPlayer == null ) {
+		} else if ( playerState == PlayerState.Falling ) {
 			// if the player is falling but y velocity is too slow
 			// the the player hit something
 			playerState = PlayerState.Standing;
@@ -396,13 +396,13 @@ public class Player extends Entity {
 		}
 		// check if the head stand requirements are met
 		if ( otherPlayer != null ) {
-			Gdx.app.log( "player update", "other player is not null" );
+			//Gdx.app.log( "player update", "other player is not null" );
 			if ( isHeadStandPossible( ) ) {
 				setHeadStand( );
 				otherPlayer.setHeadStand( );
-			} else{
-				otherPlayer.hitPlayer( null );
-				hitPlayer( null );
+			} else if ( !otherPlayer.isHeadStandPossible( ) ){
+//				otherPlayer.hitPlayer( null );
+//				hitPlayer( null );
 			}
 		} else {
 			if ( headStandTimeout > 0 ) {
@@ -1306,40 +1306,40 @@ public class Player extends Entity {
 		if ( otherPlayer != null
 				&& otherPlayer.getPositionPixel( )
 						.sub( this.getPositionPixel( ) ).len( ) < 150f ) {
-			Gdx.app.log( "player isHeadStandPossible", "player are close" );
-			if ( playerState == PlayerState.Falling ) {
-				Gdx.app.log( "player isHeadStandPossible", name + " is falling" );
-			} else {
-				Gdx.app.log( "player isHeadStandPossible", name + " is " + playerState );				
-			}
-			if ( otherPlayer.getState( ) == PlayerState.Standing ) {
-				Gdx.app.log( "player isHeadStandPossible", otherPlayer.name + " is standing" );
-			} else {
-				Gdx.app.log( "player isHeadStandPossible", otherPlayer.name + " is " + otherPlayer.getState( ) );				
-			}
-			if ( !otherPlayer.isPlayerDead( ) ) {
-				Gdx.app.log( "player isHeadStandPossible", otherPlayer.name + " is not dead" );
-				
-			}
-			if ( headStandTimeout == 0 ) {
-				Gdx.app.log( "player isHeadStandPossible", name + " head stand timed out" );
-				
-			}
-			if ( otherPlayer.isHeadStandTimedOut( ) ) {
-				Gdx.app.log( "player isHeadStandPossible", otherPlayer.name + " head stand timed out" );
-				
-			}
-			if ( platformBody == null ) {
-				Gdx.app.log( "player isHeadStandPossible", "platform is null" );
-				
-			}
+//			Gdx.app.log( "player isHeadStandPossible", "player are close" );
+//			if ( playerState == PlayerState.Falling ) {
+//				Gdx.app.log( "player isHeadStandPossible", name + " is falling" );
+//			} else {
+//				Gdx.app.log( "player isHeadStandPossible", name + " is " + playerState );				
+//			}
+//			if ( otherPlayer.getState( ) == PlayerState.Standing ) {
+//				Gdx.app.log( "player isHeadStandPossible", otherPlayer.name + " is standing" );
+//			} else {
+//				Gdx.app.log( "player isHeadStandPossible", otherPlayer.name + " is " + otherPlayer.getState( ) );				
+//			}
+//			if ( !otherPlayer.isPlayerDead( ) ) {
+//				Gdx.app.log( "player isHeadStandPossible", otherPlayer.name + " is not dead" );
+//				
+//			}
+//			if ( headStandTimeout == 0 ) {
+//				Gdx.app.log( "player isHeadStandPossible", name + " head stand timed out" );
+//				
+//			}
+//			if ( otherPlayer.isHeadStandTimedOut( ) ) {
+//				Gdx.app.log( "player isHeadStandPossible", otherPlayer.name + " head stand timed out" );
+//				
+//			}
+//			if ( platformBody == null ) {
+//				Gdx.app.log( "player isHeadStandPossible", "platform is null" );
+//				
+//			}
 			if ( playerState == PlayerState.Falling
 					&& otherPlayer.getState( ) == PlayerState.Standing
 					&& !otherPlayer.isPlayerDead( ) && headStandTimeout == 0
 					&& otherPlayer.isHeadStandTimedOut( )
 					&& platformBody == null ) {
-				Gdx.app.log( "player headstand possible",
-						"first conditions are true" );
+//				Gdx.app.log( "player headstand possible",
+//						"first conditions are true" );
 				// check if the top player is in-line with the other players
 				// head
 				// and check if the top player is actually above the other
@@ -1353,8 +1353,8 @@ public class Player extends Entity {
 								sprite.getWidth( ) / 4.0f, 0.0f ).x > this
 								.getPositionPixel( ).x ) ) {
 
-					Gdx.app.log( "player headstand possible",
-							"second conditions are true" );
+//					Gdx.app.log( "player headstand possible",
+//							"second conditions are true" );
 					boolean isMoving = false;
 					// check if the player is using input
 					// to move either left or right
