@@ -402,18 +402,27 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 				.buildTilePlatform( );
 		rootSkeleton.addKinematicPlatform( test );
 
+		TiledPlatform test2 = platBuilder.name( "movetest2" ).kinematic( )
+				.position( -100, 300 ).dimensions( 5, 1 ).oneSided( false )
+				.buildTilePlatform( );
+		rootSkeleton.addKinematicPlatform( test2 );
+		
 		PuzzleScrew puzzleScrew = new PuzzleScrew( "006", new Vector2( -300,
 				100 ), 100, world, 0, false );
 		rootSkeleton.addScrewForDraw( puzzleScrew );
 		puzzleScrew.addStructureJoint( rootSkeleton );
 
-		LerpMover lm = new LerpMover(test.getPositionPixel( ),
-				new Vector2( test.getPositionPixel( ).x, test
-						.getPositionPixel( ).y - 300f ),
-				LinearAxis.VERTICAL );
+//		LerpMover lm = new LerpMover(test.getPositionPixel( ),
+//				new Vector2( test.getPositionPixel( ).x, test
+//						.getPositionPixel( ).y - 300f ),
+//				LinearAxis.VERTICAL );
 
+		PuzzleRotateTweenMover ptm = new PuzzleRotateTweenMover( 1,
+				Util.PI / 2, true, PuzzleType.ON_OFF_MOVER );
+		
 		puzzleScrew.puzzleManager.addEntity( test );
-		puzzleScrew.puzzleManager.addMover( lm );
+		puzzleScrew.puzzleManager.addEntity( test2 );
+		puzzleScrew.puzzleManager.addMover( ptm );
 		rootSkeleton.addScrewForDraw( puzzleScrew );
 
 	}
