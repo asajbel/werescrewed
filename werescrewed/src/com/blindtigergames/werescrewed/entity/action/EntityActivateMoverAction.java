@@ -15,7 +15,8 @@ public class EntityActivateMoverAction implements IAction{
 		entity.setActive( true );
 		
 	}
-	
+
+	@Override
 	public ActionType getActionType( ) {
 		return ActionType.FORPLAYER;
 	}

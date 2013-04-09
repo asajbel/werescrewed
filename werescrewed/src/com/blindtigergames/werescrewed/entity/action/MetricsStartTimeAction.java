@@ -31,7 +31,8 @@ public class MetricsStartTimeAction implements IAction {
 	public void act( Entity entity ) {
 
 	}
-	
+
+	@Override
 	public ActionType getActionType( ) {
 		return ActionType.FORPLAYER;
 	}

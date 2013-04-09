@@ -21,7 +21,8 @@ public class AnchorDeactivateAction implements IAction{
 		//TODO: figure out better way to make anchors
 		
 	}
-	
+
+	@Override
 	public ActionType getActionType( ) {
 		return ActionType.FORPLAYER;
 	}

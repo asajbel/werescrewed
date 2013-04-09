@@ -125,6 +125,15 @@ public class ParticleEffect implements Disposable {
 		for ( int i = 0, n = emitters.size; i < n; i++ )
 			emitters.get( i ).setPosition( x, y );
 	}
+	
+	/**
+	 * @author stew
+	 * @param radians
+	 */
+	public void setAngle(float radians){
+		for ( int i = 0, n = emitters.size; i < n; i++ )
+			emitters.get( i ).setAngle( radians );
+	}
 
 	public void setFlip( boolean flipX, boolean flipY ) {
 		for ( int i = 0, n = emitters.size; i < n; i++ )

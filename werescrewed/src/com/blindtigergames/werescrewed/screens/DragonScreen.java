@@ -62,7 +62,8 @@ public class DragonScreen extends Screen {
 		SkeletonBuilder sb = new SkeletonBuilder( level.world );
 		Skeleton skeleton = sb.name( "hazard_skel" ).position( 500, 300 )
 				.vert( -50, -50 ).vert( 50, -50 ).vert( 50, 50 ).vert( -50, 50 )
-				.build( );
+				.fg( ).vert( -100, -100 ).vert( 100, -100 ).vert( 100, 100 )
+				.vert( -100, 100 ).build( );
 		level.root.addSkeleton( skeleton );
 		skeleton.setMoverAtCurrentState( new RotateTweenMover( skeleton, 10,
 				Util.TWO_PI, 0, true ) );

@@ -29,7 +29,8 @@ public class DeactivateSkeleton implements IAction {
 			Gdx.app.log( "DeActivateSkeleton", ""+timesRun );
 		}
 	}
-	
+
+	@Override
 	public ActionType getActionType( ) {
 		return ActionType.FORPLAYER;
 	}

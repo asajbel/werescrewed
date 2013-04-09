@@ -19,8 +19,8 @@ import com.blindtigergames.werescrewed.util.Util;
 
 public class Fire extends Hazard {
 
-	public ParticleEffect particleEffect;
-	public Array< ParticleEmitter > particleEmitter;
+	//public ParticleEffect particleEffect;
+	//public Array< ParticleEmitter > particleEmitter;
 	protected float width;
 	protected float height;
 	boolean upsideDown = true;
@@ -45,15 +45,17 @@ public class Fire extends Hazard {
 		this.height = height;
 		this.world = world;
 		this.activeHazard = isActive;
-		particleEffect = new ParticleEffect( );
+		/*particleEffect = new ParticleEffect( );
 		particleEffect.load(
 				Gdx.files.internal( "data/particles/steam.p" ),
 				WereScrewedGame.manager.getAtlas( "particles" ));//Gdx.files.internal( "data/particles" ));//WereScrewedGame.manager.getAtlas( "particles" )
 		particleEffect.setPosition( pos.x, pos.y);
 		particleEmitter = particleEffect.getEmitters( );
+		*/
+		addFrontParticleEffect( "steam" );
 		constructBody( pos );
-		for( ParticleEmitter PE: particleEmitter)
-			PE.setContinuous( false );
+		//for( ParticleEmitter PE: particleEmitter)
+		//	PE.setContinuous( false );
 		
 		//Sound s = WereScrewedGame.manager.get( "/data/sjfdsi.mp3", Sound.class );
 	}
@@ -103,7 +105,8 @@ public class Fire extends Hazard {
 	 * flips vertical direction of fire
 	 */
 	public void flip( ){
-		particleEffect.flipY( );
+		//particleEffect.flipY( );
+		getEffect( "steam" ).flipY( );
 		if(upsideDown){
 			body.setTransform( body.getPosition( ), (float) Math.PI  );
 		} else {
@@ -120,19 +123,19 @@ public class Fire extends Hazard {
 	 * @param deltaTime float
 	 */
 	public void draw( SpriteBatch batch, float deltaTime ) {
+		super.draw(batch, deltaTime);
 		if (Gdx.input.isKeyPressed( Input.Keys.TAB ))
 			flip( );
 		if (Gdx.input.isKeyPressed( Input.Keys.BACKSLASH ))
 			setActiveHazard(!activeHazard);
-		Vector2 pos = body.getPosition( ).mul( Util.BOX_TO_PIXEL );
-		particleEffect.setPosition( pos.x, pos.y );
-		for ( ParticleEmitter e: particleEffect.getEmitters( )){
-			e.setAngle( body.getAngle( ) );
-		}
-		particleEffect.draw( batch, deltaTime );
-		if(activeHazard){
-			particleEffect.start( );
-		}
+		//Vector2 pos = body.getPosition( ).mul( Util.BOX_TO_PIXEL );
+		//particleEffect.setPosition( pos.x, pos.y );
+		//particleEffect.setAngle( body.getAngle( ) );
+		//particleEffect.draw( batch, deltaTime );
+		//if(activeHazard){
+		//	particleEffect.start( );
+		//}
+		//TODO: on/off switch for active hazard
 	}
 	
 }
