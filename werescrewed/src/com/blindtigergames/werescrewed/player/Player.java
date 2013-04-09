@@ -225,8 +225,12 @@ public class Player extends Entity {
 		if ( Gdx.input.isKeyPressed( Keys.G ) )
 			Gdx.app.log( "steamCollide: " + steamCollide, "steamDone: "
 					+ steamDone );
-		// if ( name.equals( "player1" ) ) {
-		// }
+//		 if ( name.equals( "player1" ) ) {
+//			 Gdx.app.log( "player update", name + " is " + playerState );
+//			 if ( platformBody != null ) {
+//				 //Gdx.app.log( "player update", "platformBody is not null" );				 
+//			 }
+//		 }
 		if ( kinematicTransform ) {
 			// setPlatformTransform( platformOffset );
 			kinematicTransform = false;
@@ -316,8 +320,8 @@ public class Player extends Entity {
 						&& currentScrew.getDetachDirection( ).len( ) != 0f ) {
 					body.setLinearVelocity( new Vector2( body
 							.getLinearVelocity( ).x, 0.0f ) );
-					body.applyLinearImpulse( currentScrew.getDetachDirection( )
-							.mul( JUMP_IMPULSE ), body.getWorldCenter( ) );
+					Vector2 temp = currentScrew.getDetachDirection( ).cpy( );
+					body.applyLinearImpulse( temp.mul( JUMP_IMPULSE ), body.getWorldCenter( ) );
 				}
 				removePlayerToScrew( );
 				knockedOff = false;
@@ -352,9 +356,8 @@ public class Player extends Entity {
 								&& currentScrew.getDetachDirection( ).len( ) != 0f ) {
 							body.setLinearVelocity( new Vector2( body
 									.getLinearVelocity( ).x, 0.0f ) );
-							body.applyLinearImpulse( currentScrew
-									.getDetachDirection( ).mul( JUMP_IMPULSE ),
-									body.getWorldCenter( ) );
+							Vector2 temp = currentScrew.getDetachDirection( ).cpy( );
+							body.applyLinearImpulse( temp.mul( JUMP_IMPULSE ), body.getWorldCenter( ) );
 						} else {
 							jump( );
 						}
@@ -1003,9 +1006,8 @@ public class Player extends Entity {
 							&& currentScrew.getDetachDirection( ).len( ) != 0f ) {
 						body.setLinearVelocity( new Vector2( body
 								.getLinearVelocity( ).x, 0.0f ) );
-						body.applyLinearImpulse( currentScrew
-								.getDetachDirection( ).mul( JUMP_IMPULSE ),
-								body.getWorldCenter( ) );
+						Vector2 temp = currentScrew.getDetachDirection( ).cpy( );
+						body.applyLinearImpulse( temp.mul( JUMP_IMPULSE ), body.getWorldCenter( ) );
 					} else {
 						jump( );
 					}
@@ -1064,9 +1066,8 @@ public class Player extends Entity {
 							&& currentScrew.getDetachDirection( ).len( ) != 0f ) {
 						body.setLinearVelocity( new Vector2( body
 								.getLinearVelocity( ).x, 0.0f ) );
-						body.applyLinearImpulse( currentScrew
-								.getDetachDirection( ).mul( JUMP_IMPULSE ),
-								body.getWorldCenter( ) );
+						Vector2 temp = currentScrew.getDetachDirection( ).cpy( );
+						body.applyLinearImpulse( temp.mul( JUMP_IMPULSE ), body.getWorldCenter( ) );
 					} else {
 						jump( );
 					}
@@ -1282,8 +1283,8 @@ public class Player extends Entity {
 					&& currentScrew.getDetachDirection( ).len( ) != 0f ) {
 				body.setLinearVelocity( new Vector2(
 						body.getLinearVelocity( ).x, 0.0f ) );
-				body.applyLinearImpulse( currentScrew.getDetachDirection( )
-						.mul( JUMP_IMPULSE ), body.getWorldCenter( ) );
+				Vector2 temp = currentScrew.getDetachDirection( ).cpy( );
+				body.applyLinearImpulse( temp.mul( JUMP_IMPULSE ), body.getWorldCenter( ) );
 			} else {
 				body.setLinearVelocity( new Vector2(
 						body.getLinearVelocity( ).x, 0.0f ) );
@@ -1320,14 +1321,23 @@ public class Player extends Entity {
 	private void processMovementDown( ) {
 		if ( playerState == PlayerState.Screwing ) {
 			if ( mover == null ) {
+				if ( platformBody != null ) {
+					Gdx.app.log( "player processJumpState", "platform is not null" );
+				}
+				if ( currentScrew.getDetachDirection( ) != null ) {
+					Gdx.app.log( "player processJumpState", "detatch direction is not null" );						
+				}
+				if ( currentScrew.getDetachDirection( ) != null
+						&& currentScrew.getDetachDirection( ).len( ) != 0f ){
+					Gdx.app.log( "player processJumpState", "detach direction is not null and has a value" );						
+				}
 				if ( platformBody != null
 						&& currentScrew != null
 						&& currentScrew.getDetachDirection( ) != null
 						&& currentScrew.getDetachDirection( ).len( ) != 0f ) {
-					body.setLinearVelocity( new Vector2( body
-							.getLinearVelocity( ).x, 0.0f ) );
-					body.applyLinearImpulse( currentScrew.getDetachDirection( )
-							.mul( JUMP_IMPULSE ), body.getWorldCenter( ) );
+					body.setLinearVelocity( Vector2.Zero );
+					Vector2 temp = currentScrew.getDetachDirection( ).cpy( );
+					body.applyLinearImpulse( temp.mul( JUMP_IMPULSE ), body.getWorldCenter( ) );
 				}
 				removePlayerToScrew( );
 			}
@@ -1757,9 +1767,8 @@ public class Player extends Entity {
 								&& currentScrew.getDetachDirection( ).len( ) != 0f ) {
 							body.setLinearVelocity( new Vector2( body
 									.getLinearVelocity( ).x, 0.0f ) );
-							body.applyLinearImpulse( currentScrew
-									.getDetachDirection( ).mul( JUMP_IMPULSE ),
-									body.getWorldCenter( ) );
+							Vector2 temp = currentScrew.getDetachDirection( ).cpy( );
+							body.applyLinearImpulse( temp.mul( JUMP_IMPULSE ), body.getWorldCenter( ) );
 						}
 						removePlayerToScrew( );
 					}
@@ -1898,8 +1907,8 @@ public class Player extends Entity {
 						&& currentScrew.getDetachDirection( ).len( ) != 0f ) {
 					body.setLinearVelocity( new Vector2( body
 							.getLinearVelocity( ).x, 0.0f ) );
-					body.applyLinearImpulse( currentScrew.getDetachDirection( )
-							.mul( JUMP_IMPULSE ), body.getWorldCenter( ) );
+					Vector2 temp = currentScrew.getDetachDirection( ).cpy( );
+					body.applyLinearImpulse( temp.mul( JUMP_IMPULSE ), body.getWorldCenter( ) );
 				}
 				removePlayerToScrew( );
 			}
