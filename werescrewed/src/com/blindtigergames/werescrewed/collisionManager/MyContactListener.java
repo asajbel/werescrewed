@@ -380,13 +380,12 @@ public class MyContactListener implements ContactListener {
 											&& player2.getState( ) != PlayerState.Standing && player
 											.getPositionPixel( ).y < player2
 											.getPositionPixel( ).y
-											/* + player2.sprite.getHeight( )/ 1.5f */
-											)
+											+ Player.HEIGHT / 1.5f )
 									|| ( player2.getState( ) == PlayerState.Falling
 											&& player.getState( ) != PlayerState.Standing && player2
 											.getPositionPixel( ).y < player
 											.getPositionPixel( ).y
-											/* + player.sprite.getHeight( ) / 1.5f */) ) {
+											+ Player.HEIGHT / 1.5f ) ) {
 								contact.setEnabled( false );
 							}
 							break;

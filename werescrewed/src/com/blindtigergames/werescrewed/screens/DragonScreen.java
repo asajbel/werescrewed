@@ -35,9 +35,9 @@ public class DragonScreen extends Screen {
 		level.camera = new Camera( new Vector2( Gdx.graphics.getWidth( ) * 5f,
 				Gdx.graphics.getHeight( ) * 5f ), Gdx.graphics.getWidth( ),
 				Gdx.graphics.getHeight( ), level.world );
-		level.player1 = new PlayerBuilder( ).name( "player1" )
+		level.player1 = new PlayerBuilder( ).name( "player1" ).definition( "red_male" )
 				.world( level.world ).position( 0, 100 ).buildPlayer( );
-		level.player2 = new PlayerBuilder( ).name( "player2" )
+		level.player2 = new PlayerBuilder( ).name( "player2" ).definition( "red_female" )
 				.world( level.world ).position( 0, 100 ).buildPlayer( );
 
 		level.root = new SkeletonBuilder( level.world ).buildRoot( );

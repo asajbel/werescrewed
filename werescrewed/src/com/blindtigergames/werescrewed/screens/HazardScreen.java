@@ -76,9 +76,9 @@ public class HazardScreen implements com.badlogic.gdx.Screen {
 		contactListener = new MyContactListener( );
 		world.setContactListener( contactListener );
 
-		player1 = new PlayerBuilder( ).name( "player1" ).world( world )
+		player1 = new PlayerBuilder( ).name( "player1" ).definition( "red_male" ).world( world )
 				.position( 1800f, 100f ).buildPlayer( );
-		player2 = new PlayerBuilder( ).name( "player2" ).world( world )
+		player2 = new PlayerBuilder( ).name( "player2" ).definition( "red_female" ).world( world )
 				.position( 1900f, 100.0f ).buildPlayer( );
 
 		initTiledPlatforms( );

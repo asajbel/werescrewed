@@ -76,6 +76,8 @@ public class Player extends Entity {
 	public final static float JUMP_DEFAULT_DIVISION = 2.0f;
 	public float directionJumpDivsion = JUMP_DEFAULT_DIVISION;
 	public boolean flipX = false; 
+	public final static float HEIGHT = 128;
+	public final static float WIDTH = 64;
 
 	public Fixture feet;
 	public Fixture torso;

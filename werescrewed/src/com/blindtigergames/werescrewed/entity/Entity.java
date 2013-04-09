@@ -62,7 +62,7 @@ public class Entity implements GleedLoadable {
 	protected ArrayList< Float > decalAngles;
 	private RobotState currentRobotState;
 	private EnumMap< RobotState, Integer > robotStateMap;
-	protected ISpinemator spinemator;
+	public ISpinemator spinemator;
 	
 	private Skeleton parentSkeleton; // pointer to parent skele, set by skeleton
 

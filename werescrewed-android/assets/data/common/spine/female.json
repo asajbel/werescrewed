@@ -25,7 +25,6 @@
 "slots": [
 	{ "name": "L_boot", "bone": "L_boot", "attachment": "left_boot" },
 	{ "name": "R_boot", "bone": "R_boot", "attachment": "right_boot" },
-	{ "name": "female_low", "bone": "root", "color": "0c00ff85", "attachment": "female_low" },
 	{ "name": "L_lower_arm", "bone": "L_lower_arm", "attachment": "L_lower_arm" },
 	{ "name": "L_upper_arm", "bone": "L_upper_arm", "attachment": "L_upper_arm" },
 	{ "name": "L_hand", "bone": "L_hand", "attachment": "L_hand" },
@@ -46,9 +45,6 @@
 		},
 		"R_boot": {
 			"right_boot": { "x": 3.16, "y": 2.33, "rotation": 21.71, "width": 13, "height": 12 }
-		},
-		"female_low": {
-			"female_low": { "x": 22.88, "y": 62.2, "width": 116, "height": 128 }
 		},
 		"L_lower_arm": {
 			"L_lower_arm": { "x": 4.75, "y": -0.12, "rotation": 13.12, "width": 13, "height": 5 }

@@ -117,9 +117,9 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 
 		// Initialize ground platformbb
 
-		player1 = new PlayerBuilder( ).name( "player1" ).world( world )
+		player1 = new PlayerBuilder( ).name( "player1" ).definition( "red_male" ).world( world )
 				.position( -700.0f, 100f ).buildPlayer( );
-		player2 = new PlayerBuilder( ).name( "player2" ).world( world )
+		player2 = new PlayerBuilder( ).name( "player2" ).definition( "red_female" ).world( world )
 				.position( -700f, 100f ).buildPlayer( );
 
 		rootSkeleton = new RootSkeleton( "Root Skeleton", new Vector2( 0, 0 ),
