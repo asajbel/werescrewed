@@ -293,6 +293,7 @@ public class TiledPlatform extends Platform {
 			}
 		}
 		//drawOrigin( batch );
+		drawDecals( batch );
 	}
 
 	/**

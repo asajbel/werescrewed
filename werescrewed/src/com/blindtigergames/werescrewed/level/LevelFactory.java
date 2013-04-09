@@ -19,6 +19,7 @@ import com.blindtigergames.werescrewed.checkpoints.ProgressManager;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityCategory;
 import com.blindtigergames.werescrewed.entity.EntityDef;
+import com.blindtigergames.werescrewed.entity.PolySprite;
 import com.blindtigergames.werescrewed.entity.RobotState;
 import com.blindtigergames.werescrewed.entity.Sprite;
 import com.blindtigergames.werescrewed.entity.action.DestoryPlatformJointAction;
@@ -263,7 +264,7 @@ public class LevelFactory {
 		return out;
 	}
 	
-	private Sprite constructDecal(Item item){
+	private Sprite constructDecal( Item item ){
 		Entity target = level.root;
 		String targetName = "root";
 		if (item.getProps().containsKey(targetTag)){
@@ -280,10 +281,21 @@ public class LevelFactory {
 		Vector2 scale = new Vector2(1.0f, 1.0f);
 		if (!item.getImageName( ).equals( "" )){
 			Texture tex = WereScrewedGame.manager.get( WereScrewedGame.dirHandle+item.getImageName(), Texture.class );
-			decal = new Sprite(tex);
-			decal.setOrigin( 0.0f, 0.0f );
-			scale.x = item.sca.x / tex.getWidth( );
-			scale.y = item.sca.y / tex.getHeight( );
+			if (item.getGleedType().equals( "PathItem" )){
+				Array< Element > pointElems = item.element.getChildByName(
+						"LocalPoints" ).getChildrenByName( "Vector2" );
+				Array<Vector2> points = new Array<Vector2>();
+				for (Element e: pointElems){
+					Vector2 v = new Vector2(e.getFloat( "X" )*GLEED_TO_GDX_X,e.getFloat( "Y" )*GLEED_TO_GDX_Y);
+					points.add( v );
+				}
+				decal = new PolySprite(tex, points);
+			} else {
+				decal = new Sprite(tex);
+				decal.setOrigin( 0.0f, 0.0f );
+				scale.x = item.sca.x / tex.getWidth( );
+				scale.y = item.sca.y / tex.getHeight( );
+			}
 		} else {
 			Gdx.app.log( "LoadDecal", "Could not find texture tag." );
 		}
