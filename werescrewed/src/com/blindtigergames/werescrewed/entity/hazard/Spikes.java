@@ -121,9 +121,9 @@ public class Spikes extends Hazard {
 		BodyDef bodyDef = new BodyDef( );
 		bodyDef.type = BodyType.KinematicBody;
 
-		bodyDef.position.set( ( position.x + ( width * tileConstant ) / 2 )
+		bodyDef.position.set( ( position.x )
 				* Util.PIXEL_TO_BOX,
-				( position.y + ( height * tileConstant ) / 2 )
+				( position.y  )
 						* Util.PIXEL_TO_BOX );
 		body = world.createBody( bodyDef );
 

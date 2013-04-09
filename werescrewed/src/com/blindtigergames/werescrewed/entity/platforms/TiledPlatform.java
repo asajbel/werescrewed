@@ -86,8 +86,8 @@ public class TiledPlatform extends Platform {
 
 		FixtureDef platformFixtureDef = new FixtureDef( );
 		platformFixtureDef.shape = polygon;
-		platformFixtureDef.filter.categoryBits = Util.DYNAMIC_OBJECTS;
-		platformFixtureDef.filter.maskBits = Util.DYNAMIC_OBJECTS
+		platformFixtureDef.filter.categoryBits = Util.CATEGORY_PLATFORMS;
+		platformFixtureDef.filter.maskBits = Util.CATEGORY_PLATFORMS
 				| Util.CATEGORY_PLAYER;
 		body.createFixture( platformFixtureDef );
 

@@ -1,5 +1,7 @@
 package com.blindtigergames.werescrewed.level;
 
+import java.util.ArrayList;
+
 import aurelienribon.tweenengine.Tween;
 
 import com.badlogic.gdx.Gdx;
@@ -7,6 +9,7 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.GL20;
 import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Joint;
 import com.badlogic.gdx.physics.box2d.World;
 import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.camera.Camera;
@@ -45,6 +48,7 @@ public class Level {
 	public PolySprite polySprite;
 	private boolean debugTest, debug;
 	public ProgressManager progressManager;
+	public static ArrayList<Joint> jointsToRemove = new ArrayList<Joint>();
 	
 	public Level( ){
 		
@@ -88,6 +92,12 @@ public class Level {
 			debugTest = true;
 		
 
+		if ( jointsToRemove.size( ) > 0 ){
+			for ( Joint j: jointsToRemove ){
+				world.destroyJoint( j );
+			}
+			jointsToRemove.clear( );
+		}
 	}
 	
 	public void draw ( SpriteBatch batch, SBox2DDebugRenderer debugRenderer, float deltaTime){

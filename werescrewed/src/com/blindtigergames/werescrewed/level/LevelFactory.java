@@ -21,6 +21,7 @@ import com.blindtigergames.werescrewed.entity.EntityCategory;
 import com.blindtigergames.werescrewed.entity.EntityDef;
 import com.blindtigergames.werescrewed.entity.RobotState;
 import com.blindtigergames.werescrewed.entity.Sprite;
+import com.blindtigergames.werescrewed.entity.action.DestoryPlatformJointAction;
 import com.blindtigergames.werescrewed.entity.action.EntityActivateMoverAction;
 import com.blindtigergames.werescrewed.entity.action.EntityDeactivateMoverAction;
 import com.blindtigergames.werescrewed.entity.builders.EventTriggerBuilder;
@@ -47,6 +48,7 @@ import com.blindtigergames.werescrewed.entity.RootSkeleton;
 import com.blindtigergames.werescrewed.entity.Skeleton;
 import com.blindtigergames.werescrewed.eventTrigger.EventTrigger;
 import com.blindtigergames.werescrewed.entity.hazard.Hazard;
+import com.blindtigergames.werescrewed.entity.hazard.builders.HazardBuilder;
 import com.blindtigergames.werescrewed.util.ArrayHash;
 import com.blindtigergames.werescrewed.util.Util;
 
@@ -162,104 +164,6 @@ public class LevelFactory {
 		return level.root;
 	}
 
-	protected TimelineTweenMover loadMover( Item item, Entity entity ) {
-		item.checkLocked( );
-		if ( movers.containsKey( item.name ) ) {
-			return movers.get( item.name );
-		} else if ( item.gleedType.equals( "PathItem" ) ) {
-			Array< Element > pointElems = item.element.getChildByName(
-					"LocalPoints" ).getChildrenByName( "Vector2" );
-			Gdx.app.log( "GleedLoader", "Loading Path Mover:" + pointElems.size
-					+ " points." );
-			Array< Vector2 > points = new Array< Vector2 >( pointElems.size );
-			Array< Float > times = new Array< Float >( pointElems.size );
-			PathBuilder pBuilder = new PathBuilder( )
-					.begin( ( Platform ) entity );
-
-			Element vElem;
-			Vector2 point;
-			String timeTag;
-			int frontPoint = 0;
-			float frontTime = 0.0f;
-			// Set first and last point times with separate tags.
-			// If tags are not available, assume they will be at 0.0f and 1.0f,
-			// respectively.
-			// As points are loaded, these values may get overridden; this is
-			// fine.
-			for ( int i = 0; i < pointElems.size; i++ ) {
-				times.add( -1.0f );
-			}
-			if ( item.props.containsKey( startTime ) ) {
-				times.set( frontPoint,
-						Float.parseFloat( item.props.get( startTime ) ) );
-				frontTime = times.get( 0 );
-			} else {
-				times.set( frontPoint, frontTime ); // By default, the first
-													// point should be at time
-													// 0.
-			}
-			if ( item.props.containsKey( "EndTime" ) ) {
-				times.set( pointElems.size - 1,
-						Float.parseFloat( item.props.get( endTime ) ) );
-			} else {
-				times.set( pointElems.size - 1, 1.0f );
-			}
-			for ( int i = 0; i < pointElems.size; i++ ) {
-				vElem = pointElems.get( i );
-				point = new Vector2( vElem.getFloat( "X" ) * GLEED_TO_GDX_X,
-						vElem.getFloat( "Y" ) * GLEED_TO_GDX_Y );
-				points.add( point );
-				Gdx.app.log( "GleedLoader", "Point " + i + " has coordinates "
-						+ point.toString( ) + "." );
-				timeTag = "point" + i + "time";
-				if ( item.props.containsKey( timeTag ) ) {
-					float time = Float.parseFloat( item.props.get( timeTag ) );
-					if ( time >= 0.0f ) {
-						times.set( i, time );
-					}
-				}
-				if ( times.get( i ) >= 0.0f ) {
-					Gdx.app.log( "GleedLoader", "Point " + i + " has time "
-							+ times.get( i ) + "." );
-					if ( i > frontPoint + 1 ) {
-						float div = ( times.get( i ) - frontTime )
-								/ ( float ) ( i - frontPoint );
-						for ( int j = i - 1; j > frontPoint; j-- ) {
-							times.set( j, frontTime + div * ( j - frontPoint ) );
-							Gdx.app.log( "GleedLoader",
-									"Backtracking: Setting point " + j
-											+ " to time " + times.get( j )
-											+ "." );
-						}
-						frontPoint = i;
-						frontTime = times.get( i );
-					}
-				}
-			}
-			for ( int i = 0; i < points.size; i++ ) {
-				pBuilder.target( points.get( i ).x, points.get( i ).y, times
-						.get( i ).floatValue( ) );
-			}
-			TimelineTweenMover out = pBuilder.build( );
-			movers.put( item.name, out );
-			return out;
-		}
-		RuntimeException notPath = new RuntimeException(
-				item.name
-						+ " is defined as a mover but is not a path object. Only paths can be defined as movers." );
-		Gdx.app.log( "GleedLoader", "", notPath );
-		throw notPath;
-	}
-
-	protected TimelineTweenMover loadMover( String name, Entity entity ) {
-		if ( movers.containsKey( name ) ) {
-			return movers.get( name );
-		} else if ( items.get( GleedTypeTag.MOVER ).containsKey( name ) ) {
-			return loadMover( items.get( GleedTypeTag.MOVER ).get( name ),
-					entity );
-		}
-		return null;
-	}
 
 	protected Entity loadEntity( String name ) {
 		if ( entities.containsKey( name ) ) {
@@ -515,8 +419,7 @@ public class LevelFactory {
 		float width = Gdx.graphics.getWidth( ) / zoom;
 		float height = Gdx.graphics.getHeight( ) / zoom;
 
-		level.camera = new Camera( new Vector2( Gdx.graphics.getWidth( ) * .5f,
-				Gdx.graphics.getHeight( ) * .5f ), width, height, level.world );
+		level.camera = new Camera( item.pos, width, height, level.world );
 
 		// level.camera.camera.lookAt( item.pos.x, item.pos.y, 0f );
 		// add position to camera later
@@ -585,12 +488,16 @@ public class LevelFactory {
 					+ out.name );
 			out.quickfixCollisions( );
 			parent.addDynamicPlatform( out );
+			
+			if ( item.props.containsKey( "jointtoskeleton" ) ) {
+				out.addJointToSkeleton( parent );
+			}
 		} else {
 			Gdx.app.log( "LevelFactory", "Tiled Kinematic platform loaded:"
 					+ out.name );
 
 			parent.addKinematicPlatform( out );
-			out.setCategoryMask( Util.KINEMATIC_OBJECTS,
+			out.setCategoryMask( Util.CATEGORY_PLATFORMS,
 					Util.CATEGORY_EVERYTHING );
 		}
 		return out;
@@ -665,7 +572,7 @@ public class LevelFactory {
 					+ out.name );
 
 			parent.addKinematicPlatform( out );
-			out.setCategoryMask( Util.KINEMATIC_OBJECTS,
+			out.setCategoryMask( Util.CATEGORY_PLATFORMS,
 					Util.CATEGORY_EVERYTHING );
 		}
 		return out;
@@ -783,19 +690,32 @@ public class LevelFactory {
 					MoverBuilder moverBuilder = new MoverBuilder( ).fromString(
 							movername ).applyTo( attach );
 
-					if ( item.props.containsKey( "vertical" ) ) {
-						moverBuilder.vertical( );
-					} else if ( item.props.containsKey( "horizontal" ) ) {
-						moverBuilder.horizontal( );
+					
+					if(movername.equals( "lerpmover" )){
+						if ( item.props.containsKey( "distance" ) ) {
+							float dist = Float.parseFloat( item.props
+									.get( "distance" ) );
+							moverBuilder.distance( dist );
+						}
+						
+						if ( item.props.containsKey( "vertical" ) ) {
+							moverBuilder.vertical( );
+						} else if ( item.props.containsKey( "horizontal" ) ) {
+							moverBuilder.horizontal( );
+						}
+					} else if( movername.equals( "puzzlerotatetween" )){
+						
+						
+						Entity attach2 = null;
+						if ( item.props.containsKey( "controlthis2" ) ) {
+							String s = item.props.get( "controlthis" );
+							attach2 = entities.get( s );
+							Gdx.app.log( "LevelFactory", "attaching :" + attach2.name
+									+ " to puzzle screw" );
+
+							p.puzzleManager.addEntity( attach2 );
+						}
 					}
-
-					if ( item.props.containsKey( "distance" ) ) {
-						float dist = Float.parseFloat( item.props
-								.get( "distance" ) );
-
-						moverBuilder.distance( dist );
-					}
-
 					mover = moverBuilder.build( );
 					Gdx.app.log( "LevelFactory", "attaching :" + movername
 							+ " to puzzle screw" );
@@ -806,6 +726,14 @@ public class LevelFactory {
 				}
 			}
 
+			
+			if ( item.props.containsKey( "addscrew" ) ) {
+				String screw =  item.props.get( "addscrew" );
+				PuzzleScrew puzzleScrew = ( PuzzleScrew ) entities.get( screw );
+				
+				p.puzzleManager.addScrew( puzzleScrew );
+				
+			}
 			puzzleScrews.put( item.name, p );
 			entities.put( item.name, p );
 
@@ -1032,16 +960,28 @@ public class LevelFactory {
 		EventTriggerBuilder etb = new EventTriggerBuilder( level.world );
 
 		etb.name( item.name ).position( item.pos );
-
+		
 		if ( item.props.containsKey( "applyto" ) ) {
 			String connectTo = item.props.get( "applyto" );
 
-			Entity e = loadEntity( connectTo );
-			etb.addEntity( e );
+			Entity entity = loadEntity( connectTo );
+			etb.addEntity( entity );
 		}
 
+		if ( item.props.containsKey( "applyto1" ) ) {
+			String connectTo = item.props.get( "applyto1" );
+
+			Entity entity = loadEntity( connectTo );
+			etb.addEntity( entity );
+		}
+		
 		if ( item.props.containsKey( "beginaction" ) ) {
-			etb.beginAction( new EntityActivateMoverAction( ) );
+			String action = item.props.get( "beginaction" );
+			if(action.equals( "destoryjoint" )){
+				etb.beginAction( new DestoryPlatformJointAction( ) );
+			}else{
+				etb.beginAction( new EntityActivateMoverAction( ) );
+			}
 		}
 
 		if ( item.props.containsKey( "endaction" ) ) {
@@ -1106,12 +1046,38 @@ public class LevelFactory {
 
 	public Hazard constructHazard( Item item ) {
 
-		// TODO: make hazard builder (not just spikes)
 
-		// String skelAttach = item.skeleton;
-		// Skeleton parent = loadSkeleton(skelAttach);
+		String skelAttach = item.skeleton;
+		Skeleton parent = loadSkeleton(skelAttach);
+		 
+		float width = item.element.getFloat( "Width" );
+		float height = item.element.getFloat( "Height" );
+		float tileWidth = width / 32f;
+		float tileHeight = height / 32f;
 
-		return null;
+		float xPos = item.pos.x + ( width / 2 );
+		float yPos = item.pos.y - ( height / 2 );
+		
+		HazardBuilder hazardBuilder = new HazardBuilder( level.world );
+		
+		hazardBuilder.position( new Vector2(xPos, yPos) ).dimensions( tileWidth, tileHeight )
+		.active( );
+
+		if(item.props.containsKey( "right" )){
+			hazardBuilder.right( );
+		} else if(item.props.containsKey( "down" )){
+			hazardBuilder.down( );
+		} else if (item.props.containsKey( "left" ) ){
+			hazardBuilder.left( );
+		} else{
+			hazardBuilder.up( );
+		}
+		
+		
+		Hazard hazard = hazardBuilder.buildSpikes( );
+		parent.addKinematicPlatform( hazard );
+		
+		return hazard;
 	}
 
 	public Level getLevel( ) {

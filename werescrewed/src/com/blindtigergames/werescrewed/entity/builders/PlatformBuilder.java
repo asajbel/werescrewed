@@ -306,6 +306,7 @@ public class PlatformBuilder extends GenericEntityBuilder<PlatformBuilder> {
 		
 		if ( tex == null )//default texture
 			tex = WereScrewedGame.manager.get( "data/common/robot/alphabot_tile_interior.png",Texture.class );
+		//tex = WereScrewedGame.manager.get( "data/common/robot/metal.png",Texture.class );
 		PolySprite polySprite = new PolySprite( tex , verts );
 		customPlat.changeSprite( polySprite );
 		

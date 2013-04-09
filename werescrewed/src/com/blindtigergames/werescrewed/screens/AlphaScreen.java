@@ -1,12 +1,14 @@
 package com.blindtigergames.werescrewed.screens;
 
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+import com.badlogic.gdx.physics.box2d.joints.RevoluteJoint;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
 import com.blindtigergames.werescrewed.entity.RobotState;
 import com.blindtigergames.werescrewed.entity.Skeleton;
 import com.blindtigergames.werescrewed.entity.action.EntityActivateMoverAction;
 import com.blindtigergames.werescrewed.entity.builders.PlayerBuilder;
 import com.blindtigergames.werescrewed.entity.platforms.TiledPlatform;
+import com.blindtigergames.werescrewed.entity.screws.PuzzleScrew;
 import com.blindtigergames.werescrewed.entity.screws.Screw;
 import com.blindtigergames.werescrewed.entity.tween.PathBuilder;
 import com.blindtigergames.werescrewed.eventTrigger.EventTrigger;
@@ -19,9 +21,11 @@ public class AlphaScreen extends Screen {
 
 	private CharacterSelect characterSelect;
 	private Screw powerScrew1, powerScrew2;
-	private Skeleton footSkeleton, kneeSkeleton, thighSkeleton, hipSkeleton;
+	private Skeleton footSkeleton, kneeSkeleton, thighSkeleton, hipSkeleton, chestSkeleton;
 	private TiledPlatform kneeMovingPlat;
-
+	private RevoluteJoint fallingBlockJoint, pathBlockingJoint;
+	private EventTrigger fallingBlockEvent;
+	
 	public AlphaScreen( ) {
 		super( );
 		String filename = "data/levels/alphalevel.xml";
@@ -37,18 +41,18 @@ public class AlphaScreen extends Screen {
 
 		if ( level.player1 == null ) {
 			level.player1 = new PlayerBuilder( ).world( level.world )
-					.position( -200f, 3800f ).name( "player1" ).buildPlayer( );
+					.position( 1000f, 6000f ).name( "player1" ).buildPlayer( );
 
 			level.progressManager.addPlayerOne( level.player1 );
 		}
 		if ( level.player2 == null ) {
 			level.player2 = new PlayerBuilder( ).world( level.world )
-					.position( -200f, 3800f ).name( "player2" ).buildPlayer( );
+					.position( 1000f, 6000f ).name( "player2" ).buildPlayer( );
 
 			level.progressManager.addPlayerTwo( level.player2 );
 		}
 
-		initEventTriggers( );
+		chestObjects( );
 
 	}
 
@@ -61,6 +65,7 @@ public class AlphaScreen extends Screen {
 		// characterSelect.draw( batch, deltaTime );
 
 		powerScrew1and2update( );
+		
 
 	}
 
@@ -131,14 +136,14 @@ public class AlphaScreen extends Screen {
 		}
 	}
 
-	private void initEventTriggers( ) {
-		EventTrigger et1 = ( EventTrigger ) LevelFactory.entities
-				.get( "etChest1" );
+	private void chestObjects( ) {
 
-		et1.addBeginIAction( new EntityActivateMoverAction( ) );
-
-		TiledPlatform chestBlockPlat1 = ( TiledPlatform ) LevelFactory.entities
-				.get( "chestBlockPlat1" );
+		PuzzleScrew chestScrew1 = ( PuzzleScrew ) LevelFactory.entities.get( "chestPuzzleScrew5" );
+		PuzzleScrew chestScrew2 = ( PuzzleScrew ) LevelFactory.entities.get( "chestPuzzleScrew6" );
+		
+		chestScrew1.puzzleManager.addScrew( chestScrew2 );
+		chestScrew2.puzzleManager.addScrew( chestScrew1 );
+	
 	}
 
 }

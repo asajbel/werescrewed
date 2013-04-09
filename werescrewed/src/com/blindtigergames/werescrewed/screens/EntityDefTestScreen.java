@@ -338,7 +338,7 @@ public class EntityDefTestScreen implements com.badlogic.gdx.Screen {
 			filter = f.getFilterData( );
 			// move player to another category so other objects stop
 			// colliding
-			filter.categoryBits = Util.DYNAMIC_OBJECTS;
+			filter.categoryBits = Util.CATEGORY_PLATFORMS;
 			// player still collides with sensor of screw
 			filter.maskBits = Util.CATEGORY_EVERYTHING;
 			f.setFilterData( filter );
