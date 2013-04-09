@@ -23,6 +23,7 @@ public class ScrewBuilder extends GenericEntityBuilder< ScrewBuilder > {
 	protected Player player;
 	protected boolean playerOffset;
 	protected LerpMover lerpMover;
+	protected Vector2 detachDirection;
 	
 	public ScrewBuilder(){
 		super();
@@ -119,6 +120,10 @@ public class ScrewBuilder extends GenericEntityBuilder< ScrewBuilder > {
 		return this;
 	}
 	
+	public ScrewBuilder detachDir( Vector2 detachDir ) {
+		detachDirection = detachDir;
+		return this;
+	}
 	public ScrewBuilder player(Player p){
 		this.player = p;
 		return this;
@@ -184,7 +189,7 @@ public class ScrewBuilder extends GenericEntityBuilder< ScrewBuilder > {
 		StrippedScrew out = null;
 		if (canBuild() && skeleton != null){
 			
-			out = new StrippedScrew(name, pos, skeleton, world);
+			out = new StrippedScrew(name, pos, skeleton, world, detachDirection);
 			//out = new StrippedScrew(name, pos, world);
 			//out.addWeldJoint( skeleton );
 			skeleton.addStrippedScrew( out );
@@ -197,9 +202,9 @@ public class ScrewBuilder extends GenericEntityBuilder< ScrewBuilder > {
 		StructureScrew out = null;
 		if (canBuild() ){
 			if( entity != null){
-				out = new StructureScrew(name, pos, max, entity, world);
+				out = new StructureScrew(name, pos, max, entity, world, detachDirection);
 			}else{
-				out = new StructureScrew(name, pos, max, world);
+				out = new StructureScrew(name, pos, max, world, detachDirection);
 			}
 			
 			if (skeleton != null){
@@ -227,7 +232,7 @@ public class ScrewBuilder extends GenericEntityBuilder< ScrewBuilder > {
 	public BossScrew buildBossScrew(){
 		BossScrew out = null;
 		if (canBuild() && entity != null){
-			out = new BossScrew(name, pos, max, entity, world);
+			out = new BossScrew(name, pos, max, entity, world, detachDirection);
 			if (skeleton != null){
 				out.addStructureJoint( skeleton );
 				//skeleton.addScrew(out);
