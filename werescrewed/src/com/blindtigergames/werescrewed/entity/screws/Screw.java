@@ -42,6 +42,7 @@ public class Screw extends Entity {
 	protected int prevDiff;
 	protected int startDepth;
 	protected int diff;
+	protected Vector2 detachDirection;
 	protected boolean playerAttached = false;
 	protected boolean removed = false;
 	protected boolean playerNotSensor = false;
@@ -109,6 +110,24 @@ public class Screw extends Entity {
 		return removed;
 	}
 
+	/**
+	 * sets the detach direction
+	 */
+	public void setDetachDirection( float x, float y ) {
+		detachDirection.x = x;
+		detachDirection.y = y;
+	}
+	
+	/**
+	 * gets the detach direction
+	 */
+	public Vector2 getDetachDirection( ) {
+		if ( detachDirection == null ) {
+			return Vector2.Zero;
+		} 
+		return detachDirection;
+	}
+	
 	/**
 	 * returns true if this screw is on a rope
 	 */

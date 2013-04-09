@@ -88,7 +88,7 @@ public class DragonScreen extends Screen {
 		dyn_skeleton.addDynamicPlatform( balloon );
 
 		StructureScrew s = new StructureScrew( "ss",
-				dyn_skeleton.getPositionPixel( ), 100, level.world );
+				dyn_skeleton.getPositionPixel( ), 100, level.world, Vector2.Zero );
 		s.addWeldJoint( dyn_skeleton );
 		s.addWeldJoint( balloon );
 		dyn_skeleton.addScrewForDraw( s );
