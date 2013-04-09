@@ -34,12 +34,12 @@
 /common/screw/screw.png
 /common/test01.png
 /common/cletter.png
-/common/parallax_layer1_0.png
-/common/parallax_layer1_1.png
-/common/parallax_layer2_0.png
-/common/parallax_layer2_1.png
-/common/parallax_layer3_0.png
-/common/parallax_layer3_1.png
+#/common/parallax_layer1_0.png
+#/common/parallax_layer1_1.png
+#/common/parallax_layer2_0.png
+#/common/parallax_layer2_1.png
+#/common/parallax_layer3_0.png
+#/common/parallax_layer3_1.png
 /common/spikes_01.png
 /common/spikes_01r.png
 /common/spikes_02.png
@@ -53,10 +53,11 @@
 #/common/title_background_original.png
 #/particles/particle.png
 /common/robot/alphabot_texture_skin.png
-/common/robot/alphabot_texture_tux.png
-/common/robot/alphabot_tile_suit_main.png
+#/common/robot/alphabot_texture_tux.png
+#/common/robot/alphabot_tile_suit_main.png
 /common/robot/alphabot_tile_interior.png
-/common/robot/metal.png
+/common/robot/sheetmetaltexture.png
+#/common/robot/metal.png
 /common/ropelink.png
 /common/chainlink.png
 /common/gear.png
@@ -66,8 +67,8 @@
 
 ##Fonts
 /debug/debug_font.fnt
-/common/ornatique-26.fnt
-/common/ornatique.fnt
+#/common/ornatique-26.fnt
+#/common/ornatique.fnt
 /common/ArmenianCircus.fnt
 /common/Screwball.fnt
 
