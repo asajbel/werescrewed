@@ -181,7 +181,7 @@ public class PuzzleScrew extends Screw {
 	 * 
 	 * @param otherScrew
 	 */
-	public void fixConcurrentScrew( PuzzleScrew otherScrew ) {
+	public void fixConcurrentScrew( Screw otherScrew ) {
 		depth = otherScrew.getDepth( );
 	}
 

@@ -6,7 +6,6 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.controllers.PovDirection;
-import com.badlogic.gdx.graphics.g2d.ParticleEmitter;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -26,9 +25,6 @@ import com.blindtigergames.werescrewed.camera.AnchorList;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityDef;
 import com.blindtigergames.werescrewed.entity.EntityType;
-import com.blindtigergames.werescrewed.entity.Sprite;
-import com.blindtigergames.werescrewed.entity.animator.SimpleFrameAnimator;
-import com.blindtigergames.werescrewed.entity.animator.SimpleFrameAnimator.LoopBehavior;
 import com.blindtigergames.werescrewed.entity.mover.IMover;
 import com.blindtigergames.werescrewed.entity.mover.LerpMover;
 import com.blindtigergames.werescrewed.entity.mover.LinearAxis;
@@ -70,8 +66,8 @@ public class Player extends Entity {
 	public final static float STEAM_FORCE = .5f;
 	public final static float STEAM_IMPULSE = 0.2f;
 	public final static float FRICTION_INCREMENT = 0.3f;
-	public final static float FEET_OFFSET_X = 58f * Util.PIXEL_TO_BOX;
-	public final static float FEET_OFFSET_Y = 20f * Util.PIXEL_TO_BOX;
+	public final static float FEET_OFFSET_X = 59f * Util.PIXEL_TO_BOX;
+	public final static float FEET_OFFSET_Y = 23.5f * Util.PIXEL_TO_BOX;
 	public final static float JUMP_DIRECTION_MULTIPLIER = 2f;
 	public final static float JUMP_DEFAULT_DIVISION = 2.0f;
 	public float directionJumpDivsion = JUMP_DEFAULT_DIVISION;
@@ -112,7 +108,7 @@ public class Player extends Entity {
 	private Player otherPlayer;
 	private RevoluteJoint playerJoint;
 	private Body platformBody;
-	//private Entity hitCloud;
+	// private Entity hitCloud;
 	private boolean topPlayer = false;
 	private boolean isDead = false;
 	private boolean hitSolidObject;
@@ -165,7 +161,7 @@ public class Player extends Entity {
 	 * </Ul>
 	 */
 	public enum PlayerState {
-		Standing, Running, Jumping, Falling, Screwing, JumpingOffScrew, Dead, GrabMode, HeadStand, Landing
+		Standing, Running, Jumping, Falling, Screwing, JumpingOffScrew, Dead, GrabMode, HeadStand, Landing, RespawnMode
 	}
 
 	public enum ConcurrentState {
@@ -207,16 +203,15 @@ public class Player extends Entity {
 		AnchorList.getInstance( ).addAnchor( anchor );
 
 		// build the hit cloud entity and animation
-		/*hitCloud = new Entity( name + "_hitCloud", Vector2.Zero, null, null,
-				false );
-		SimpleFrameAnimator hitCloudAnimator = new SimpleFrameAnimator( )
-				.speed( 1f ).loop( LoopBehavior.STOP ).startFrame( 1 )
-				.maxFrames( 2 ).time( 0.0f );
-		hitCloud.sprite = new Sprite(
-				WereScrewedGame.manager.getTextureAtlas( "hitCloud" ),
-				hitCloudAnimator );
-		// set the frame to the last
-		hitCloud.sprite.getAnimator( ).setFrame( 3 );*/
+		/*
+		 * hitCloud = new Entity( name + "_hitCloud", Vector2.Zero, null, null,
+		 * false ); SimpleFrameAnimator hitCloudAnimator = new
+		 * SimpleFrameAnimator( ) .speed( 1f ).loop( LoopBehavior.STOP
+		 * ).startFrame( 1 ) .maxFrames( 2 ).time( 0.0f ); hitCloud.sprite = new
+		 * Sprite( WereScrewedGame.manager.getTextureAtlas( "hitCloud" ),
+		 * hitCloudAnimator ); // set the frame to the last
+		 * hitCloud.sprite.getAnimator( ).setFrame( 3 );
+		 */
 
 		setFixtures( );
 		maxFriction( );
@@ -244,9 +239,9 @@ public class Player extends Entity {
 			Gdx.app.log( "steamCollide: " + steamCollide, "steamDone: "
 					+ steamDone );
 		// update the hit cloud if it exists
-		//hitCloud.sprite.update( deltaTime );
-		if ( name.equals( "player1" ) ) {
-
+		// hitCloud.sprite.update( deltaTime );
+		if ( name.equals( "player2" ) ) {
+			// Gdx.app.log( "player update", "playerstate: " + playerState );
 		}
 		if ( kinematicTransform ) {
 			// setPlatformTransform( platformOffset );
@@ -258,21 +253,21 @@ public class Player extends Entity {
 			// repeat kill player
 			// removes all the joints and stuff
 			if ( playerState != PlayerState.Dead
-					&& playerState != PlayerState.GrabMode ) {
+					&& playerState != PlayerState.RespawnMode ) {
 				killPlayer( );
 			}
 			// check input only for grab mode
 			// to allow player to re-spawn
 			if ( controller != null ) {
 				if ( controllerListener.isGrabPressed( ) ) {
-					playerState = PlayerState.GrabMode;
+					playerState = PlayerState.RespawnMode;
 				} else {
 					playerState = PlayerState.Dead;
 				}
 			} else {
 				inputHandler.update( );
 				if ( inputHandler.isGrabPressed( ) ) {
-					playerState = PlayerState.GrabMode;
+					playerState = PlayerState.RespawnMode;
 				} else {
 					playerState = PlayerState.Dead;
 				}
@@ -400,9 +395,15 @@ public class Player extends Entity {
 			setGrounded( true );
 		}
 		// check if the head stand requirements are met
-		if ( otherPlayer != null && isHeadStandPossible( ) ) {
-			setHeadStand( );
-			otherPlayer.setHeadStand( );
+		if ( otherPlayer != null ) {
+			//Gdx.app.log( "player update", "other player is not null" );
+			if ( isHeadStandPossible( ) ) {
+				setHeadStand( );
+				otherPlayer.setHeadStand( );
+			} else if ( !otherPlayer.isHeadStandPossible( ) ){
+//				otherPlayer.hitPlayer( null );
+//				hitPlayer( null );
+			}
 		} else {
 			if ( headStandTimeout > 0 ) {
 				headStandTimeout--;
@@ -437,13 +438,13 @@ public class Player extends Entity {
 	@Override
 	public void draw( SpriteBatch batch, float deltaTime ) {
 		super.draw( batch, deltaTime );
-//		if ( hitCloud.sprite.getAnimator( ).getFrame( ) < 3 ) {
-//			hitCloud.draw( batch, deltaTime );
-//		}
-		if (!land_cloud.isComplete( )){
+		// if ( hitCloud.sprite.getAnimator( ).getFrame( ) < 3 ) {
+		// hitCloud.draw( batch, deltaTime );
+		// }
+		if ( !land_cloud.isComplete( ) ) {
 			land_cloud.draw( batch, deltaTime );
 		}
-		
+
 	}
 
 	/**
@@ -452,12 +453,8 @@ public class Player extends Entity {
 	public void killPlayer( ) {
 		if ( respawnTimeout == 0 ) {
 			if ( !world.isLocked( ) ) {
-				if ( playerState == PlayerState.Screwing ) {
-					removePlayerToScrew( );
-				}
-				if ( playerState == PlayerState.HeadStand && topPlayer ) {
-					removePlayerToPlayer( );
-				}
+				removePlayerToScrew( );
+				removePlayerToPlayer( );
 				currentScrew = null;
 				mover = null;
 				Filter filter = new Filter( );
@@ -499,9 +496,9 @@ public class Player extends Entity {
 			}
 			filter = f.getFilterData( );
 			// move player back to original category
-			filter.categoryBits = Util.CATEGORY_SUBPLAYER;
+			filter.categoryBits = Util.CATEGORY_PLAYER;
 			// player now collides with everything
-			filter.maskBits = ~Util.CATEGROY_HAZARD;
+			filter.maskBits = Util.CATEGORY_EVERYTHING;
 			f.setFilterData( filter );
 		}
 		playerState = PlayerState.Standing;
@@ -800,9 +797,9 @@ public class Player extends Entity {
 
 		if ( isGrounded( ) ) {
 			if ( feet.getFriction( ) < PLAYER_FRICTION ) {
-				if ( playerState != PlayerState.Screwing ) {
-					playerState = PlayerState.Landing;
-				}
+//				if ( playerState != PlayerState.Screwing && otherPlayer == null ) {
+//					playerState = PlayerState.Landing;
+//				}
 				frictionCounter += FRICTION_INCREMENT;
 
 				CircleShape ps = new CircleShape( );
@@ -1033,13 +1030,13 @@ public class Player extends Entity {
 					jumpCounter = 0;
 					jumpPressedKeyboard = true;
 				}
+				playerState = PlayerState.Jumping;
 				// check if this player has the joint
 				removePlayerToPlayer( );
 				if ( otherPlayer != null ) {
 					otherPlayer.hitPlayer( null );
 				}
 				hitPlayer( null );
-				playerState = PlayerState.Jumping;
 			}
 		}
 	}
@@ -1159,7 +1156,7 @@ public class Player extends Entity {
 	private void handleScrewing( boolean controller ) {
 		// loosen and tighten screws and jump when the screw joint is gone
 		if ( controller ) {
-			if ( controllerListener.unscrewing( ) ) {
+			if ( controllerListener.unscrewing( ) && currentMover( ) == null ) {
 				if ( resetScrewing ) {
 					resetScrewing = false;
 				} else if ( isScrewing ) {
@@ -1185,7 +1182,8 @@ public class Player extends Entity {
 						}
 					}
 				}
-			} else if ( controllerListener.screwing( ) ) {
+			} else if ( controllerListener.screwing( )
+					&& currentMover( ) == null ) {
 				if ( resetScrewing ) {
 					resetScrewing = false;
 				} else if ( isUnscrewing ) {
@@ -1214,7 +1212,7 @@ public class Player extends Entity {
 				}
 			}
 		} else {
-			if ( inputHandler.unscrewing( ) ) {
+			if ( inputHandler.unscrewing( ) && currentMover( ) == null ) {
 				currentScrew.screwLeft( );
 				if ( Metrics.activated ) {
 					if ( currentScrew.getScrewType( ).toString( ) != ScrewType.SCREW_STRIPPED
@@ -1232,7 +1230,7 @@ public class Player extends Entity {
 					}
 				}
 
-			} else if ( inputHandler.screwing( ) ) {
+			} else if ( inputHandler.screwing( ) && currentMover( ) == null ) {
 				currentScrew.screwRight( );
 
 				if ( Metrics.activated ) {
@@ -1304,42 +1302,82 @@ public class Player extends Entity {
 	/**
 	 * checks if a head stand is possible
 	 */
-	private boolean isHeadStandPossible( ) {
-		if ( playerState == PlayerState.Falling
-				&& otherPlayer.getState( ) == PlayerState.Standing
-				&& !otherPlayer.isPlayerDead( ) && headStandTimeout == 0
-				&& otherPlayer.isHeadStandTimedOut( ) && platformBody == null ) {
-			// check if the top player is in-line with the other players head
-			// and check if the top player is actually above the other player
-			if ( ( this.getPositionPixel( ).y > otherPlayer.getPositionPixel( )
-					.add( 0, sprite.getHeight( ) / 2f ).y )
-					&& ( otherPlayer.getPositionPixel( ).sub(
-							sprite.getWidth( ) / 3.0f, 0.0f ).x <= this
-							.getPositionPixel( ).x )
-					&& ( otherPlayer.getPositionPixel( ).add(
-							sprite.getWidth( ) / 4.0f, 0.0f ).x > this
-							.getPositionPixel( ).x ) ) {
-				boolean isMoving = false;
-				// check if the player is using input
-				// to move either left or right
-				if ( controller != null ) {
-					if ( controllerListener.leftPressed( )
-							|| controllerListener.rightPressed( ) ) {
-						isMoving = true;
+	public boolean isHeadStandPossible( ) {
+		if ( otherPlayer != null
+				&& otherPlayer.getPositionPixel( )
+						.sub( this.getPositionPixel( ) ).len( ) < 150f ) {
+//			Gdx.app.log( "player isHeadStandPossible", "player are close" );
+//			if ( playerState == PlayerState.Falling ) {
+//				Gdx.app.log( "player isHeadStandPossible", name + " is falling" );
+//			} else {
+//				Gdx.app.log( "player isHeadStandPossible", name + " is " + playerState );				
+//			}
+//			if ( otherPlayer.getState( ) == PlayerState.Standing ) {
+//				Gdx.app.log( "player isHeadStandPossible", otherPlayer.name + " is standing" );
+//			} else {
+//				Gdx.app.log( "player isHeadStandPossible", otherPlayer.name + " is " + otherPlayer.getState( ) );				
+//			}
+//			if ( !otherPlayer.isPlayerDead( ) ) {
+//				Gdx.app.log( "player isHeadStandPossible", otherPlayer.name + " is not dead" );
+//				
+//			}
+//			if ( headStandTimeout == 0 ) {
+//				Gdx.app.log( "player isHeadStandPossible", name + " head stand timed out" );
+//				
+//			}
+//			if ( otherPlayer.isHeadStandTimedOut( ) ) {
+//				Gdx.app.log( "player isHeadStandPossible", otherPlayer.name + " head stand timed out" );
+//				
+//			}
+//			if ( platformBody == null ) {
+//				Gdx.app.log( "player isHeadStandPossible", "platform is null" );
+//				
+//			}
+			if ( playerState == PlayerState.Falling
+					&& otherPlayer.getState( ) == PlayerState.Standing
+					&& !otherPlayer.isPlayerDead( ) && headStandTimeout == 0
+					&& otherPlayer.isHeadStandTimedOut( )
+					&& platformBody == null ) {
+//				Gdx.app.log( "player headstand possible",
+//						"first conditions are true" );
+				// check if the top player is in-line with the other players
+				// head
+				// and check if the top player is actually above the other
+				// player
+				if ( ( this.getPositionPixel( ).y > otherPlayer
+						.getPositionPixel( ).add( 0, sprite.getHeight( ) / 2f ).y )
+						&& ( otherPlayer.getPositionPixel( ).sub(
+								sprite.getWidth( ) / 3.0f, 0.0f ).x <= this
+								.getPositionPixel( ).x )
+						&& ( otherPlayer.getPositionPixel( ).add(
+								sprite.getWidth( ) / 4.0f, 0.0f ).x > this
+								.getPositionPixel( ).x ) ) {
+
+//					Gdx.app.log( "player headstand possible",
+//							"second conditions are true" );
+					boolean isMoving = false;
+					// check if the player is using input
+					// to move either left or right
+					if ( controller != null ) {
+						if ( controllerListener.leftPressed( )
+								|| controllerListener.rightPressed( ) ) {
+							isMoving = true;
+						}
+					} else {
+						if ( inputHandler.leftPressed( )
+								|| inputHandler.rightPressed( ) ) {
+							isMoving = true;
+						}
 					}
-				} else {
-					if ( inputHandler.leftPressed( )
-							|| inputHandler.rightPressed( ) ) {
-						isMoving = true;
+					if ( !isMoving ) {
+						topPlayer = true;
+						return true;
 					}
-				}
-				if ( !isMoving ) {
-					topPlayer = true;
-					return true;
 				}
 			}
 		}
 		return false;
+
 	}
 
 	/**
@@ -1448,7 +1486,7 @@ public class Player extends Entity {
 	/**
 	 * removes the player to screw joint
 	 */
-	private void removePlayerToScrew( ) {
+	public void removePlayerToScrew( ) {
 		if ( playerJoint != null ) {
 			world.destroyJoint( playerJoint );
 			playerJoint = null;
@@ -1495,7 +1533,9 @@ public class Player extends Entity {
 			}
 		}
 		mover = null;
-		currentScrew.setPlayerAttached( false );
+		if ( currentScrew != null ) {
+			currentScrew.setPlayerAttached( false );
+		}
 		currentScrew = null;
 		playerState = PlayerState.JumpingOffScrew;
 		screwJumpTimeout = SCREW_JUMP_STEPS;
@@ -1882,7 +1922,6 @@ public class Player extends Entity {
 	 *            boolean
 	 */
 	public void setSteamCollide( boolean value ) {
-		System.out.println( "help!" );
 		steamCollide = value;
 	}
 

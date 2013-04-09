@@ -32,7 +32,8 @@ public class DragonScreen extends Screen {
 		// level = new LevelFactory( ).load( filename );
 		level = new Level( );
 
-		level.camera = new Camera( Gdx.graphics.getWidth( ),
+		level.camera = new Camera( new Vector2( Gdx.graphics.getWidth( ) * 5f,
+				Gdx.graphics.getHeight( ) * 5f ), Gdx.graphics.getWidth( ),
 				Gdx.graphics.getHeight( ), level.world );
 		level.player1 = new PlayerBuilder( ).name( "player1" )
 				.world( level.world ).position( 0, 100 ).buildPlayer( );
@@ -71,6 +72,7 @@ public class DragonScreen extends Screen {
 		Fire f = new Fire( "fire1", new Vector2( 500, 350 ), 100, 100,
 				level.world, true );
 		skeleton.addHazard( f );
+
 	}
 
 	void buildDynamicSkeleton( ) {

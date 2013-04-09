@@ -252,14 +252,16 @@ public class AnchorList {
 			AnchorPair pair = new AnchorPair( );
 			int j = 0;
 			for ( int i = 0; i < anchorList.size( ); i++ ) {
-				if ( anchorList.get( i ).activated || anchorList.get( i ).special ) {
+				if ( anchorList.get( i ).activated
+						|| anchorList.get( i ).special ) {
 					pair.first = anchorList.get( i );
 					j = i;
 					break;
 				}
 			}
 			for ( int i = j + 1; i < anchorList.size( ); i++ ) {
-				if ( anchorList.get( i ).activated || anchorList.get( i ).special ) {
+				if ( anchorList.get( i ).activated
+						|| anchorList.get( i ).special ) {
 					pair.second = anchorList.get( i );
 					break;
 				}
@@ -272,9 +274,8 @@ public class AnchorList {
 
 			// For each anchor
 			for ( Anchor curAnchor : anchorList ) {
-				// Making sure its active and not the players (since we already
-				// included them)
-				if ( curAnchor.activated ) {
+				// Making sure its active
+				if ( curAnchor.activated || curAnchor.special ) {
 					// If the current anchor (minus the buffer) is to the left
 					// of
 					// the one tracked, replace it
@@ -309,9 +310,8 @@ public class AnchorList {
 
 			// For each anchor
 			for ( Anchor curAnchor : anchorList ) {
-				// Making sure its active and not the players (since we already
-				// included them)
-				if ( curAnchor.activated && !curAnchor.special ) {
+				// Making sure its active
+				if ( curAnchor.activated || curAnchor.special ) {
 					// If the current anchor (minus the buffer) is below the one
 					// tracked, replace it
 					if ( curAnchor.position.y - curAnchor.buffer.y < pair.first.position.y
@@ -341,6 +341,7 @@ public class AnchorList {
 			furthestX = new AnchorPair( );
 			furthestX.first = onlyAnchor;
 			furthestX.second = onlyAnchor;
+			furthestY = new AnchorPair( );
 			furthestY.first = onlyAnchor;
 			furthestY.second = onlyAnchor;
 		} else {

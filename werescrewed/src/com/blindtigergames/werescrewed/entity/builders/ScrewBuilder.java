@@ -3,7 +3,14 @@ package com.blindtigergames.werescrewed.entity.builders;
 import com.badlogic.gdx.math.Vector2;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.Skeleton;
-import com.blindtigergames.werescrewed.entity.screws.*;
+import com.blindtigergames.werescrewed.entity.mover.LerpMover;
+import com.blindtigergames.werescrewed.entity.screws.BossScrew;
+import com.blindtigergames.werescrewed.entity.screws.PuzzleScrew;
+import com.blindtigergames.werescrewed.entity.screws.ResurrectScrew;
+import com.blindtigergames.werescrewed.entity.screws.Screw;
+import com.blindtigergames.werescrewed.entity.screws.ScrewType;
+import com.blindtigergames.werescrewed.entity.screws.StrippedScrew;
+import com.blindtigergames.werescrewed.entity.screws.StructureScrew;
 import com.blindtigergames.werescrewed.player.Player;
 import com.blindtigergames.werescrewed.util.ArrayHash;
 
@@ -15,6 +22,7 @@ public class ScrewBuilder extends GenericEntityBuilder< ScrewBuilder > {
 	protected boolean resetable;
 	protected Player player;
 	protected boolean playerOffset;
+	protected LerpMover lerpMover;
 	
 	public ScrewBuilder(){
 		super();
@@ -115,6 +123,11 @@ public class ScrewBuilder extends GenericEntityBuilder< ScrewBuilder > {
 		this.player = p;
 		return this;
 	}
+	
+	public ScrewBuilder lerpMover( LerpMover lm ) {
+		this.lerpMover = lm;
+		return this;
+	}
 
 	public ScrewBuilder playerOffset(boolean o){
 		this.playerOffset = o;
@@ -172,6 +185,8 @@ public class ScrewBuilder extends GenericEntityBuilder< ScrewBuilder > {
 		if (canBuild() && skeleton != null){
 			
 			out = new StrippedScrew(name, pos, skeleton, world);
+			//out = new StrippedScrew(name, pos, world);
+			//out.addWeldJoint( skeleton );
 			skeleton.addStrippedScrew( out );
 
 		}
@@ -202,7 +217,8 @@ public class ScrewBuilder extends GenericEntityBuilder< ScrewBuilder > {
 			if (skeleton != null){
 				//skeleton.addScrew(out);
 				skeleton.addScrewForDraw( out );
-				out.addStructureJoint( skeleton );
+				//out.addStructureJoint( skeleton );
+				//out.addWeldJoint( skeleton );
 			}
 		}
 		return out;
@@ -231,7 +247,7 @@ public class ScrewBuilder extends GenericEntityBuilder< ScrewBuilder > {
 				finalPos = this.pos;
 			}
 			out = new ResurrectScrew( finalPos, this.entity, this.world,
-					this.player );
+					this.player, lerpMover );
 		}
 		return out;
 	}

@@ -130,8 +130,13 @@ public class EventTrigger extends Platform{
 		//Deep copy verts so we can turn the pixel position into meters.
 		//We also have to modify the size of the points to give the skeletons a buffer in which 
 		//they activate/deactivate.
-		Vector2[] vertsMeters = new Vector2[vertsPixels.size];
-		for(int i =0; i < vertsPixels.size; ++i ){
+		Vector2[] vertsMeters;
+		if ( vertsPixels.get( vertsPixels.size-1 ).equals( vertsPixels.get(0) ) ){
+			vertsMeters = new Vector2[vertsPixels.size-1];
+		}else{
+			vertsMeters = new Vector2[vertsPixels.size];
+		}
+		for(int i =0; i < vertsMeters.length; ++i ){
 			Vector2 newPoint = vertsPixels.get( i ).cpy( ).mul(Util.PIXEL_TO_BOX);
 			Vector2 norm = newPoint.cpy( ).nor( ).mul( additionalBorderPix ).mul(Util.PIXEL_TO_BOX);//may divide by 0
 			newPoint.add( norm );
@@ -436,7 +441,7 @@ public class EventTrigger extends Platform{
 							beginAction.act( e );
 							beginTriggeredOnce = true;
 							endTriggeredOnce = false;
-							Gdx.app.log( this.name,  " begin action" );
+							Gdx.app.log( this.name,  " begin action " + beginAction.getClass( ).getSimpleName( ) );
 						}
 					}
 				}
@@ -447,7 +452,7 @@ public class EventTrigger extends Platform{
 						beginAction.act( );
 						beginTriggeredOnce = true;
 						endTriggeredOnce = false;
-						Gdx.app.log( this.name,  " begin action" );
+						Gdx.app.log( this.name,  " begin action " + beginAction.getClass( ).getSimpleName( ) );
 					}
 				}
 			}
@@ -463,7 +468,7 @@ public class EventTrigger extends Platform{
 						beginAction.act( e );
 						beginTriggeredOnce = true;
 						endTriggeredOnce = false;
-						Gdx.app.log( this.name,  " begin action" );
+						Gdx.app.log( this.name,  " begin action " + beginAction.getClass( ).getSimpleName( ));
 					}
 				}
 			}
@@ -474,7 +479,7 @@ public class EventTrigger extends Platform{
 					beginAction.act( );
 					beginTriggeredOnce = true;
 					endTriggeredOnce = false;
-					Gdx.app.log( this.name,  " begin action" );
+					Gdx.app.log( this.name,  " begin action " + beginAction.getClass( ).getSimpleName( ) );
 				}
 			}
 		}
@@ -499,7 +504,7 @@ public class EventTrigger extends Platform{
 							endAction.act( e );
 							endTriggeredOnce = true;
 							beginTriggeredOnce = false;
-							Gdx.app.log( this.name,  " end action" );
+							Gdx.app.log( this.name,  " end action " + endAction.getClass( ).getSimpleName( ) );
 						}
 					}
 				}
@@ -510,7 +515,7 @@ public class EventTrigger extends Platform{
 						endAction.act( );
 						endTriggeredOnce = true;
 						beginTriggeredOnce = false;
-						Gdx.app.log( this.name,  " end action" );
+						Gdx.app.log( this.name,  " end action " + endAction.getClass( ).getSimpleName( ) );
 					}
 				}
 			}
@@ -526,7 +531,7 @@ public class EventTrigger extends Platform{
 						endAction.act( e );
 						endTriggeredOnce = true;
 						beginTriggeredOnce = false;
-						Gdx.app.log( this.name,  " end action" );
+						Gdx.app.log( this.name,  " end action " + endAction.getClass( ).getSimpleName( ) );
 					}
 				}
 			}
@@ -537,7 +542,7 @@ public class EventTrigger extends Platform{
 					endAction.act( );
 					endTriggeredOnce = true;
 					beginTriggeredOnce = false;
-					Gdx.app.log( this.name,  " end action" );
+					Gdx.app.log( this.name,  " end action " + endAction.getClass( ).getSimpleName( ) );
 				}
 			}
 

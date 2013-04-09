@@ -5,7 +5,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.World;
 import com.blindtigergames.werescrewed.entity.platforms.Platform;
-import com.blindtigergames.werescrewed.entity.screws.PuzzleScrew;
+import com.blindtigergames.werescrewed.entity.screws.Screw;
 
 public class AnalogRotateMover implements IMover {
 
@@ -52,7 +52,7 @@ public class AnalogRotateMover implements IMover {
 	}
 
 	@Override
-	public void runPuzzleMovement( PuzzleScrew screw, float screwVal, Platform p ) {
+	public void runPuzzleMovement( Screw screw, float screwVal, Platform p ) {
 		if ( p.currentMover( ).getMoverType( ) != puzzleType ) {
 			p.setMoverAtCurrentState( this );
 			transformBody.setTransform( p.getPosition( ), p.getAngle( ) );

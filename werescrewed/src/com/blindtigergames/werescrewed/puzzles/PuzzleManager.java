@@ -7,11 +7,13 @@ import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.mover.IMover;
 import com.blindtigergames.werescrewed.entity.platforms.Platform;
 import com.blindtigergames.werescrewed.entity.screws.PuzzleScrew;
+import com.blindtigergames.werescrewed.entity.screws.Screw;
+import com.blindtigergames.werescrewed.entity.screws.ScrewType;
 
 public class PuzzleManager {
 
 	public PuzzleManager( String name ) {
-		puzzleScrews = new HashMap< String, PuzzleScrew >( );
+		puzzleScrews = new HashMap< String, Screw >( );
 		puzzleEntities = new HashMap< String, Entity >( );
 		puzzleMovers = new HashMap< String, IMover >( );
 		puzzleName = name;
@@ -70,7 +72,7 @@ public class PuzzleManager {
 	 * either be a percentage of movement or it can be a boolean < 0.5f is yes >
 	 * 0.5f is no
 	 */
-	public void runElement( PuzzleScrew screw, float screwVal ) {
+	public void runElement( Screw screw, float screwVal ) {
 		int elementID = 0;
 		String keyVal = puzzleName + "_" + elementID;
 		while ( puzzleEntities.containsKey( keyVal ) ) {
@@ -84,13 +86,16 @@ public class PuzzleManager {
 		elementID = 0;
 		keyVal = puzzleName + "_" + elementID;
 		while ( puzzleScrews.containsKey( keyVal ) ) {
-			puzzleScrews.get( keyVal ).fixConcurrentScrew( screw );
-			elementID++;
-			keyVal = puzzleName + "_" + elementID;
+			if ( puzzleScrews.get( keyVal ).getScrewType( ) == ScrewType.SCREW_PUZZLE ) {
+				PuzzleScrew pscrew = ( PuzzleScrew ) puzzleScrews.get( keyVal );
+				pscrew.fixConcurrentScrew( screw );
+				elementID++;
+				keyVal = puzzleName + "_" + elementID;
+			}
 		}
 	}
 
-	private Map< String, PuzzleScrew > puzzleScrews;
+	private Map< String, Screw > puzzleScrews;
 	private Map< String, Entity > puzzleEntities;
 	private Map< String, IMover > puzzleMovers;
 	private String puzzleName;
