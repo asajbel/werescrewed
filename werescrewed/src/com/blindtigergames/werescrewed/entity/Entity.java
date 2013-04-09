@@ -6,7 +6,7 @@ import java.util.HashMap;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.MathUtils;
@@ -993,9 +993,9 @@ public class Entity implements GleedLoadable {
 	public void dispose( ) {
 		body.getWorld( ).destroyBody( body );
 	}
-	
+
 	public void setGroupIndex( short index ) {
-		Filter filter = new Filter();
+		Filter filter = new Filter( );
 		filter.groupIndex = index;
 		if ( body != null ) {
 			for ( int i = 0; i < body.getFixtureList( ).size( ); ++i )

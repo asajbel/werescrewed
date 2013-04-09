@@ -73,6 +73,7 @@ public class RopeBuilder extends GenericEntityBuilder<RopeBuilder> {
 		this.linkHeight = 64.0f;
 		this.links = 5;
 		this.createScrew = false;
+		this.attachToTop = null;
 		return this;
 	}
 	
