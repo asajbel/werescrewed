@@ -32,8 +32,8 @@ public class DragonScreen extends Screen {
 		// level = new LevelFactory( ).load( filename );
 		level = new Level( );
 
-		level.camera = new Camera( new Vector2( Gdx.graphics.getWidth( ) * 5f,
-				Gdx.graphics.getHeight( ) * 5f ), Gdx.graphics.getWidth( ),
+		level.camera = new Camera( new Vector2( Gdx.graphics.getWidth( ) *.5f,
+				Gdx.graphics.getHeight( )*.5f  ), Gdx.graphics.getWidth( ),
 				Gdx.graphics.getHeight( ), level.world );
 		level.player1 = new PlayerBuilder( ).name( "player1" ).definition( "red_male" )
 				.world( level.world ).position( 0, 100 ).buildPlayer( );
@@ -62,7 +62,8 @@ public class DragonScreen extends Screen {
 		SkeletonBuilder sb = new SkeletonBuilder( level.world );
 		Skeleton skeleton = sb.name( "hazard_skel" ).position( 500, 300 )
 				.vert( -50, -50 ).vert( 50, -50 ).vert( 50, 50 ).vert( -50, 50 )
-				.build( );
+				.fg( ).vert( -100, -100 ).vert( 100, -100 ).vert( 100, 100 )
+				.vert( -100, 100 ).build( );
 		level.root.addSkeleton( skeleton );
 		skeleton.setMoverAtCurrentState( new RotateTweenMover( skeleton, 10,
 				Util.TWO_PI, 0, true ) );
@@ -88,7 +89,7 @@ public class DragonScreen extends Screen {
 		dyn_skeleton.addDynamicPlatform( balloon );
 
 		StructureScrew s = new StructureScrew( "ss",
-				dyn_skeleton.getPositionPixel( ), 100, level.world );
+				dyn_skeleton.getPositionPixel( ), 100, level.world, Vector2.Zero );
 		s.addWeldJoint( dyn_skeleton );
 		s.addWeldJoint( balloon );
 		dyn_skeleton.addScrewForDraw( s );

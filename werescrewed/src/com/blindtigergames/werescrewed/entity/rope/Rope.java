@@ -3,7 +3,7 @@ package com.blindtigergames.werescrewed.entity.rope;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
@@ -225,7 +225,7 @@ public class Rope {
 		screw = new StrippedScrew( "ropeScrew", new Vector2(
 				getLastLink( ).body.getPosition( ).x * Util.BOX_TO_PIXEL,
 				( getLastLink( ).body.getPosition( ).y * Util.BOX_TO_PIXEL )
-						- ( getLastLink( ).getHeight( ) ) ), getLastLink( ), world );
+						- ( getLastLink( ).getHeight( ) ) ), getLastLink( ), world, Vector2.Zero );
 		screw.setPlayerNotSensor( );
 
 	}

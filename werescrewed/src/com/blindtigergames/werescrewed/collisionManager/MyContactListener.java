@@ -13,6 +13,7 @@ import com.blindtigergames.werescrewed.checkpoints.CheckPoint;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityType;
 import com.blindtigergames.werescrewed.eventTrigger.EventTrigger;
+import com.blindtigergames.werescrewed.entity.action.ActionType;
 import com.blindtigergames.werescrewed.entity.hazard.Hazard;
 import com.blindtigergames.werescrewed.entity.platforms.Platform;
 import com.blindtigergames.werescrewed.entity.platforms.PlatformType;
@@ -114,20 +115,24 @@ public class MyContactListener implements ContactListener {
 
 							// }
 							break;
-						case PLAYER:
-							Player player2 = ( Player ) object;
-							if ( !player.isPlayerDead( )
-									&& !player2.isPlayerDead( )
-									&& ( ( player.getState( ) == PlayerState.Standing && player2
-											.getState( ) == PlayerState.Falling ) || ( player2
-											.getState( ) == PlayerState.Standing && player
-											.getState( ) == PlayerState.Falling ) ) ) {
-								player.hitPlayer( player2 );
-								player2.hitPlayer( player );
-								player.setGrounded( true );
-								player2.setGrounded( true );
-							}
-							break;
+						// case PLAYER:
+						// Player player2 = ( Player ) object;
+						// player.hitPlayer( player2 );
+						// player2.hitPlayer( player );
+						// if ( player.getState( ) != PlayerState.HeadStand
+						// && player2.getState( ) != PlayerState.HeadStand
+						// && !player.isHeadStandPossible( )
+						// && !player2.isHeadStandPossible( ) ) {
+						// player.hitPlayer( null );
+						// player2.hitPlayer( null );
+						// contact.setEnabled( false );
+						// } else if ( player.getState( ) !=
+						// PlayerState.HeadStand
+						// && player2.getState( ) != PlayerState.HeadStand ) {
+						// player.setGrounded( true );
+						// player2.setGrounded( true );
+						// }
+						// break;
 						case HAZARD:
 						// if ( player.getCurrentScrew( ) == null
 						// || player.getCurrentScrew( ).getScrewType( ) !=
@@ -169,9 +174,7 @@ public class MyContactListener implements ContactListener {
 						anchor.activate( );
 				}
 			} else {
-
 				// Player are not involved in this section //
-
 				// checks if the object fix or player fix is an event trigger
 				// then applies the event to the object that is colliding with
 				// it
@@ -184,15 +187,21 @@ public class MyContactListener implements ContactListener {
 					if ( player.getEntityType( ) != null
 							&& player.getEntityType( ) == EntityType.EVENTTRIGGER ) {
 						EventTrigger et = ( EventTrigger ) player;
-						// needs to get the action in order to act on just this
-						// object
-						et.getBeginAction( ).act( object );
+						if ( et.getBeginAction( ).getActionType( ) == ActionType.FORANYENTITY ) {
+							// needs to get the action in order to act on just
+							// this
+							// object
+							et.getBeginAction( ).act( object );
+						}
 					} else if ( object.getEntityType( ) != null
 							&& object.getEntityType( ) == EntityType.EVENTTRIGGER ) {
 						EventTrigger et = ( EventTrigger ) object;
-						// needs to get the action in order to act on just this
-						// object
-						et.getBeginAction( ).act( player );
+						if ( et.getBeginAction( ).getActionType( ) == ActionType.FORANYENTITY ) {
+							// needs to get the action in order to act on just
+							// this
+							// object
+							et.getBeginAction( ).act( player );
+						}
 					}
 				}
 			}
@@ -259,9 +268,10 @@ public class MyContactListener implements ContactListener {
 										}
 									}
 								}
-								player.hitSolidObject( null );
 								contact.setEnabled( true );
-
+							}
+							if ( player.getState( ) != PlayerState.JumpingOffScrew ) {
+								player.hitSolidObject( null );
 							}
 							break;
 						case SCREW:
@@ -369,25 +379,26 @@ public class MyContactListener implements ContactListener {
 							break;
 						case PLAYER:
 							Player player2 = ( Player ) object;
-							if ( player.getState( ) == PlayerState.GrabMode
-									|| player2.getState( ) == PlayerState.GrabMode ) {
-								contact.setEnabled( false );
-							} else if ( ( player.getState( ) != PlayerState.Falling && player2
-									.getState( ) != PlayerState.Falling )
-									|| !player.isHeadStandTimedOut( )
-									|| !player2.isHeadStandTimedOut( )
-									|| ( player.getState( ) == PlayerState.Falling
-											&& player2.getState( ) != PlayerState.Standing && player
-											.getPositionPixel( ).y < player2
-											.getPositionPixel( ).y
-											+ Player.HEIGHT / 1.5f )
-									|| ( player2.getState( ) == PlayerState.Falling
-											&& player.getState( ) != PlayerState.Standing && player2
-											.getPositionPixel( ).y < player
-											.getPositionPixel( ).y
-											+ Player.HEIGHT / 1.5f ) ) {
-								contact.setEnabled( false );
+							// if ( player.getState( ) == PlayerState.GrabMode
+							// || player2.getState( ) == PlayerState.GrabMode )
+							// {
+							// contact.setEnabled( false );
+							// } else {
+							if ( player.getState( ) != PlayerState.HeadStand
+									&& player2.getState( ) != PlayerState.HeadStand ) {
+								player.hitPlayer( player2 );
+								player2.hitPlayer( player );
+								if ( !player.isHeadStandPossible( )
+										&& !player2.isHeadStandPossible( ) ) {
+									player.hitPlayer( null );
+									player2.hitPlayer( null );
+									contact.setEnabled( false );
+								} else {
+									player.setGrounded( true );
+									player2.setGrounded( true );
+								}
 							}
+							// }
 							break;
 						default:
 							break;

@@ -1,18 +1,13 @@
-package com.blindtigergames.werescrewed.entity.mover;
+package com.blindtigergames.werescrewed.entity.action;
 
 import com.badlogic.gdx.utils.Array;
 
-public enum MoverType {
-	ROCKING( "rocking" ), LINEAR_AXIS( "linear" ), ROTATETWEEN( "rotatetween" ), ROTATEBYDEGREE(
-			"rotatebydegree" ), LERP( "lerpmover" ), PUZZLEROTATETWEEN(
-			"puzzlerotatetween" )
-	// PuzzleRotateTweenMover
-
-	;
+public enum ActionType {
+	FORANYENTITY( "foranyentity" ), FORPLAYER( "forplayer" ), ;
 	/**
 	 * @param text
 	 */
-	private MoverType( final String text ) {
+	private ActionType( final String text ) {
 		this.text = text;
 
 	}
@@ -24,7 +19,7 @@ public enum MoverType {
 		return text;
 	}
 
-	public static MoverType fromString( String s ) {
+	public static ActionType fromString( String s ) {
 		// We only want the first word. The rest could be parameters.
 		Array< String > tokens = new Array< String >( s.split( "\\w+" ) );
 		String front;
@@ -33,7 +28,7 @@ public enum MoverType {
 		} else {
 			front = s;
 		}
-		for ( MoverType tag : MoverType.values( ) ) {
+		for ( ActionType tag : ActionType.values( ) ) {
 			if ( tag.text.equals( front ) )
 				return tag;
 		}

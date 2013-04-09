@@ -2,7 +2,7 @@ package com.blindtigergames.werescrewed.entity.screws;
 
 import java.util.ArrayList;
 
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
@@ -25,9 +25,10 @@ import com.blindtigergames.werescrewed.util.Util;
 public class StructureScrew extends Screw {
 
 	public StructureScrew( String name, Vector2 pos, int max, Entity entity,
-			World world ) {
+			World world, Vector2 detachDirection ) {
 		super( name, pos, null );
 		this.world = world;
+		this.detachDirection = detachDirection;
 		maxDepth = max;
 		depth = max;
 		rotation = 0;
@@ -41,9 +42,10 @@ public class StructureScrew extends Screw {
 		addStructureJoint( entity );
 	}
 
-	public StructureScrew( String name, Vector2 pos, int max, World world ) {
+	public StructureScrew( String name, Vector2 pos, int max, World world, Vector2 detachDirection) {
 		super( name, pos, null );
 		this.world = world;
+		this.detachDirection = detachDirection;
 		maxDepth = max;
 		depth = max;
 		rotation = 0;
@@ -62,7 +64,7 @@ public class StructureScrew extends Screw {
 			prevDiff = 0;
 		}
 
-		if ( depth < maxDepth ) {
+		if ( depth < maxDepth  && depth > 0 ) {
 			diff = startRegion - region;
 			newDiff = diff - prevDiff;
 			if ( newDiff < -10 ) {
@@ -118,7 +120,7 @@ public class StructureScrew extends Screw {
 
 	@Override
 	public void screwRight( ) {
-		if ( depth < maxDepth ) {
+		if ( depth < maxDepth && depth > 0 ) {
 			body.setAngularVelocity( -1 );
 			depth+= 2;
 			rotation -= 10;

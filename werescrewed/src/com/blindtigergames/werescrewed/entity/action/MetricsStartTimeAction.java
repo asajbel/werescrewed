@@ -32,4 +32,9 @@ public class MetricsStartTimeAction implements IAction {
 
 	}
 
+	@Override
+	public ActionType getActionType( ) {
+		return ActionType.FORPLAYER;
+	}
+
 }

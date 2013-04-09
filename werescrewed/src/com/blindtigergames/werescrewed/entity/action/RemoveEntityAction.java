@@ -34,5 +34,10 @@ public class RemoveEntityAction implements IAction {
 		}
 	}
 
+	@Override
+	public ActionType getActionType( ) {
+		return ActionType.FORANYENTITY;
+	}
+
 	
 }

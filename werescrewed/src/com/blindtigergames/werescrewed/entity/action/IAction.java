@@ -8,6 +8,6 @@ public interface IAction{
 	
 	public void act(Entity entity);
 
-	
+	public ActionType getActionType( );
 	
 }

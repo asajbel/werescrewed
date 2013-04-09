@@ -3,7 +3,7 @@ package com.blindtigergames.werescrewed.entity.screws;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
@@ -32,9 +32,10 @@ public class BossScrew extends Screw {
 	 * @param entity
 	 * @param world
 	 */
-	public BossScrew( String name, Vector2 pos, int max, Entity entity, World world ) {
+	public BossScrew( String name, Vector2 pos, int max, Entity entity, World world, Vector2 detachDirection ) {
 		super( name, pos, null );
 		this.world = world;
+		this.detachDirection = detachDirection;
 		maxDepth = max;
 		depth = max;
 		rotation = 0;

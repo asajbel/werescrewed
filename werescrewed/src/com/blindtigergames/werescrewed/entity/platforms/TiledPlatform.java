@@ -4,7 +4,7 @@ import java.util.Iterator;
 import java.util.Vector;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -86,8 +86,8 @@ public class TiledPlatform extends Platform {
 
 		FixtureDef platformFixtureDef = new FixtureDef( );
 		platformFixtureDef.shape = polygon;
-		platformFixtureDef.filter.categoryBits = Util.DYNAMIC_OBJECTS;
-		platformFixtureDef.filter.maskBits = Util.DYNAMIC_OBJECTS
+		platformFixtureDef.filter.categoryBits = Util.CATEGORY_PLATFORMS;
+		platformFixtureDef.filter.maskBits = Util.CATEGORY_PLATFORMS
 				| Util.CATEGORY_PLAYER;
 		body.createFixture( platformFixtureDef );
 
@@ -293,6 +293,7 @@ public class TiledPlatform extends Platform {
 			}
 		}
 		//drawOrigin( batch );
+		drawDecals( batch );
 	}
 
 	/**

@@ -103,19 +103,20 @@ public class Platform extends Entity {
 		entityType = EntityType.PLATFORM;
 		init( pos );
 	}
-	
+
 	/**
 	 * Loading a Complex platform, or used to load complex Hazard
 	 * 
 	 * (no scale or rotation because its defined in entitydef)
+	 * 
 	 * @param name
 	 * @param type
 	 * @param world
 	 * @param pos
 	 */
-	
-	public Platform( String name, EntityDef type, World world, Vector2 pos) {
-		super( name, type, world, pos, null);
+
+	public Platform( String name, EntityDef type, World world, Vector2 pos ) {
+		super( name, type, world, pos, null );
 		entityType = EntityType.PLATFORM;
 		init( pos );
 	}
@@ -134,7 +135,7 @@ public class Platform extends Entity {
 		originPosition = pos.cpy( );
 		platType = PlatformType.DEFAULT; // set to default unless subclass sets
 											// it later in a constructor
-		originRelativeToSkeleton = new Vector2();
+		originRelativeToSkeleton = new Vector2( );
 	}
 
 	// ============================================
@@ -245,7 +246,7 @@ public class Platform extends Entity {
 		for ( Screw s : screws ) {
 			s.update( deltaTime );
 		}
-		if ( removeNextStep ){
+		if ( removeNextStep ) {
 			remove( );
 		}
 	}
@@ -268,26 +269,26 @@ public class Platform extends Entity {
 		dynamicType = !dynamicType;
 		if ( dynamicType ) {
 			body.setType( BodyType.DynamicBody );
-			Filter filter = new Filter( );
-			for ( Fixture f : body.getFixtureList( ) ) {
-				filter = f.getFilterData( );
-				// move player back to original category
-				filter.categoryBits = Util.DYNAMIC_OBJECTS;
-				// player now collides with everything
-				filter.maskBits = Util.CATEGORY_EVERYTHING;
-				f.setFilterData( filter );
-			}
+//			Filter filter = new Filter( );
+//			for ( Fixture f : body.getFixtureList( ) ) {
+//				filter = f.getFilterData( );
+//				// move player back to original category
+//				filter.categoryBits = Util.CATEGORY_PLATFORMS;
+//				// player now collides with everything
+//				filter.maskBits = Util.CATEGORY_EVERYTHING;
+//				f.setFilterData( filter );
+//			}
 		} else {
 			body.setType( BodyType.KinematicBody );
-			Filter filter = new Filter( );
-			for ( Fixture f : body.getFixtureList( ) ) {
-				filter = f.getFilterData( );
-				// move player back to original category
-				filter.categoryBits = Util.KINEMATIC_OBJECTS;
-				// player now collides with everything
-				filter.maskBits = Util.CATEGORY_EVERYTHING;
-				f.setFilterData( filter );
-			}
+//			Filter filter = new Filter( );
+//			for ( Fixture f : body.getFixtureList( ) ) {
+//				filter = f.getFilterData( );
+//				// move player back to original category
+//				filter.categoryBits = Util.CATEGORY_PLATFORMS;
+//				// player now collides with everything
+//				filter.maskBits = Util.CATEGORY_EVERYTHING;
+//				f.setFilterData( filter );
+//			}
 		}
 
 		body.setActive( false );
@@ -342,28 +343,64 @@ public class Platform extends Entity {
 
 	/**
 	 * Set the position and angle of the kinematic platform based on the parent
-	 * skeleton's pos/rot. Now better than ever!
+	 * skeleton's pos/rot. Now better than ever! Use this to set a platform's
+	 * velocity so the platform does normal phsyics.
 	 * 
-	 * @param frameRate which is typically 1/deltaTime.
+	 * @param frameRate
+	 *            which is typically 1/deltaTime.
 	 * @param skeleton
 	 * 
 	 * @author stew
 	 */
 	public void setTargetPosRotFromSkeleton( float frameRate, Skeleton skeleton ) {
-		if ( skeleton != null ){
-		Vector2 posOnSkeleLocalMeter = originRelativeToSkeleton.cpy( ).add(
-				 localPosition.cpy().mul( Util.PIXEL_TO_BOX ) );
-		float radiusFromSkeletonMeters = posOnSkeleLocalMeter.len( );
-		float newAngleFromSkeleton = skeleton.body.getAngle( )
-				+ Util.angleBetweenPoints( Vector2.Zero, posOnSkeleLocalMeter );
+		if ( skeleton != null ) {
+			Vector2 posOnSkeleLocalMeter = originRelativeToSkeleton.cpy( ).add(
+					localPosition.cpy( ).mul( Util.PIXEL_TO_BOX ) );
+			float radiusFromSkeletonMeters = posOnSkeleLocalMeter.len( );
+			float newAngleFromSkeleton = skeleton.body.getAngle( )
+					+ Util.angleBetweenPoints( Vector2.Zero,
+							posOnSkeleLocalMeter );
 
-		Vector2 targetPosition = Util.PointOnCircle(
-				radiusFromSkeletonMeters, newAngleFromSkeleton,
-				skeleton.getPosition( ) ).sub(body.getPosition( ));
-		float targetRotation = localRotation + skeleton.body.getAngle( ) - body.getAngle( );
-		
-		body.setLinearVelocity( targetPosition.mul( frameRate ) );
-		body.setAngularVelocity(  targetRotation * frameRate );
+			Vector2 targetPosition = Util.PointOnCircle(
+					radiusFromSkeletonMeters, newAngleFromSkeleton,
+					skeleton.getPosition( ) ).sub( body.getPosition( ) );
+			float targetRotation = localRotation + skeleton.body.getAngle( )
+					- body.getAngle( );
+
+			body.setLinearVelocity( targetPosition.mul( frameRate ) );
+			body.setAngularVelocity( targetRotation * frameRate );
+		}
+	}
+
+	/**
+	 * This function TRANSLATES a platform, so it won't act with normal physics.
+	 * This is mainly used for event triggers.
+	 * 
+	 * @param skeleton
+	 * @author stew
+	 */
+	public void translatePosRotFromSKeleton( Skeleton skeleton ) {
+		if ( skeleton != null ) {
+			Vector2 posOnSkeleLocalMeter = originRelativeToSkeleton.cpy( ).add(
+					localPosition.cpy( ).mul( Util.PIXEL_TO_BOX ) );
+			
+			if ( posOnSkeleLocalMeter.equals( Vector2.Zero )){
+				body.setTransform( skeleton.body.getPosition( ), localRotation + skeleton.body.getAngle( )
+						 );
+			}else{
+				float radiusFromSkeletonMeters = posOnSkeleLocalMeter.len( );
+				float newAngleFromSkeleton = skeleton.body.getAngle( );
+				newAngleFromSkeleton+= Util.angleBetweenPoints( Vector2.Zero,
+						posOnSkeleLocalMeter );
+
+				Vector2 targetPosition = Util.PointOnCircle(
+						radiusFromSkeletonMeters, newAngleFromSkeleton,
+						skeleton.getPosition( ) );
+				float targetRotation = localRotation + skeleton.body.getAngle( );
+
+				body.setTransform( targetPosition, targetRotation );
+			}
+			
 		}
 	}
 
@@ -373,8 +410,6 @@ public class Platform extends Entity {
 		oneSided = false;
 	}
 
-	
-
 	public Vector2 getOriginRelativeToSkeleton( ) {
 		return originRelativeToSkeleton;
 	}
@@ -383,29 +418,31 @@ public class Platform extends Entity {
 		this.originRelativeToSkeleton = originRelativeToSkeleton;
 	}
 
-
-	public void constructBodyFromVerts( Array<Vector2> loadedVerts, Vector2 positionPixel ){
+	public void constructBodyFromVerts( Array< Vector2 > loadedVerts,
+			Vector2 positionPixel ) {
 		BodyDef bodyDef = new BodyDef( );
-		bodyDef.position.set( positionPixel.mul( Util.PIXEL_TO_BOX ));
+		bodyDef.position.set( positionPixel.mul( Util.PIXEL_TO_BOX ) );
 		body = world.createBody( bodyDef );
-		
-		PolygonShape polygon = new PolygonShape();
-		Vector2[] verts = new Vector2[loadedVerts.size -1];
 
-		//MAKE SURE START POINT IS IN THE MIDDLE
-		//AND SECOND AND END POINT ARE THE SAME POSITION
+		PolygonShape polygon = new PolygonShape( );
+		Vector2[ ] verts = new Vector2[ loadedVerts.size - 1 ];
+
+		// MAKE SURE START POINT IS IN THE MIDDLE
+		// AND SECOND AND END POINT ARE THE SAME POSITION
 		int i = 0;
-		for(int j = 0; j < loadedVerts.size; j++){
-			if(j == loadedVerts.size - 1) continue;
+		for ( int j = 0; j < loadedVerts.size; j++ ) {
+			if ( j == loadedVerts.size - 1 )
+				continue;
 			Vector2 v = loadedVerts.get( j );
-			verts[i] = new Vector2(v.x * Util.PIXEL_TO_BOX, v.y * Util.PIXEL_TO_BOX);
+			verts[ i ] = new Vector2( v.x * Util.PIXEL_TO_BOX, v.y
+					* Util.PIXEL_TO_BOX );
 			++i;
 		}
 		polygon.set( verts );
-		
+
 		FixtureDef fixture = new FixtureDef( );
 		fixture.shape = polygon;
-		
+
 		body.createFixture( fixture );
 		body.setUserData( this );
 

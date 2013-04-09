@@ -17,4 +17,9 @@ public class EntityChangeToIdleAction implements IAction {
 
 	}
 
+	@Override
+	public ActionType getActionType( ) {
+		return ActionType.FORPLAYER;
+	}
+
 }

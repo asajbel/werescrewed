@@ -8,7 +8,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Mesh;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.VertexAttribute;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
@@ -219,6 +219,15 @@ public class PolySprite extends Sprite {
 			//camera * modelview
 			mesh.render( shader, GL20.GL_TRIANGLES );
 		}
+	}
+	
+	@Override
+	public void setAlpha(float newAlpha){
+		super.setAlpha( newAlpha );
+		for ( int i = 0; i < numVerts; i++ ) {
+			verts[ 9 * i + 6 ] = alpha;
+		}
+		mesh.setVertices( verts );
 	}
 	
 	private void constructMesh( Array< Vector2 > verts, float r, float g,
