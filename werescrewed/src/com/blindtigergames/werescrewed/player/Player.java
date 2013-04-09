@@ -90,6 +90,7 @@ public class Player extends Entity {
 	private PlayerState playerState;
 	private ConcurrentState extraState;
 	private PlayerDirection playerDirection;
+	private Vector2 screwAttachDirection;
 	private Controller controller;
 	@SuppressWarnings( "unused" )
 	private boolean controllerIsActive, controllerDebug;
@@ -171,10 +172,6 @@ public class Player extends Entity {
 		Idle, Left, Right
 	}
 
-	//handles the direction when attaching to a screw
-	public enum ScrewAttachDirection {
-		UP, DOWN, LEFT, RIGHT
-	}
 	// CONSTRUCTORS
 
 	/**
@@ -441,7 +438,8 @@ public class Player extends Entity {
 	public void killPlayer( ) {
 		if ( respawnTimeout == 0 ) {
 			if ( !world.isLocked( ) ) {
-				if ( otherPlayer != null && otherPlayer.getState( ) == PlayerState.HeadStand ) {
+				if ( otherPlayer != null
+						&& otherPlayer.getState( ) == PlayerState.HeadStand ) {
 					otherPlayer.checkHeadStandState( );
 				}
 				removePlayerToScrew( );
@@ -654,21 +652,9 @@ public class Player extends Entity {
 		// Regardless of how the player jumps, we shouldn't consider them
 		// grounded anymore.
 		setGrounded( false );
-		// if the player isn't in head stand mode or if the player
-		// is the top player then jump normally
-		if ( playerState != PlayerState.HeadStand || topPlayer ) {
-			body.setLinearVelocity( new Vector2( body.getLinearVelocity( ).x,
-					0.0f ) );
-			body.applyLinearImpulse( new Vector2( 0.0f, JUMP_IMPULSE ),
-					body.getWorldCenter( ) );
-		} else {
-			// if in head stand mode and this is the bottom player then jump
-			// with twice as much force
-			body.setLinearVelocity( new Vector2( body.getLinearVelocity( ).x,
-					0.0f ) );
-			body.applyLinearImpulse( new Vector2( 0.0f, JUMP_IMPULSE ),
-					body.getWorldCenter( ) );
-		}
+		body.setLinearVelocity( new Vector2( body.getLinearVelocity( ).x, 0.0f ) );
+		body.applyLinearImpulse( new Vector2( 0.0f, JUMP_IMPULSE ),
+				body.getWorldCenter( ) );
 	}
 
 	/**
@@ -891,7 +877,13 @@ public class Player extends Entity {
 						currentScrew.getPosition( ).y * Util.BOX_TO_PIXEL
 								- ( sprite.getHeight( ) / 2.0f ) ),
 						SCREW_ATTACH_SPEED, false, LinearAxis.DIAGONAL, 0 );
+				screwAttachDirection = null;
+				screwAttachDirection = getPositionPixel( )
+						.sub( currentScrew.getPositionPixel( ) ).nor( ).cpy( );
 			} else {
+				screwAttachDirection = null;
+				screwAttachDirection = getPositionPixel( )
+						.sub( currentScrew.getPositionPixel( ) ).nor( ).cpy( );
 				body.setTransform( new Vector2( currentScrew.getPosition( ).x
 						- ( sprite.getWidth( ) / 2.0f ) * Util.PIXEL_TO_BOX,
 						currentScrew.getPosition( ).y
@@ -1285,6 +1277,14 @@ public class Player extends Entity {
 		if ( playerState == PlayerState.Screwing ) {
 			if ( mover == null ) {
 				removePlayerToScrew( );
+				if ( platformBody != null ) {
+					// body.setLinearVelocity( new Vector2( body
+					// .getLinearVelocity( ).x, 0.0f ) );
+					// body.applyLinearImpulse( new Vector2(
+					// screwAttachDirection.x * JUMP_IMPULSE,
+					// screwAttachDirection.y * JUMP_IMPULSE ), body
+					// .getWorldCenter( ) );
+				}
 			}
 		} else {
 			processMovingState( );
@@ -1708,6 +1708,14 @@ public class Player extends Entity {
 				if ( !screwButtonHeld ) {
 					if ( mover == null ) {
 						removePlayerToScrew( );
+						if ( platformBody != null ) {
+							// body.setLinearVelocity( new Vector2( body
+							// .getLinearVelocity( ).x, 0.0f ) );
+							// body.applyLinearImpulse( new Vector2(
+							// screwAttachDirection.x * JUMP_IMPULSE,
+							// screwAttachDirection.y * JUMP_IMPULSE ),
+							// body.getWorldCenter( ) );
+						}
 					}
 				}
 			}
