@@ -40,13 +40,13 @@ public class AlphaScreen extends Screen {
 
 		if ( level.player1 == null ) {
 			level.player1 = new PlayerBuilder( ).world( level.world )
-					.position( 1400f, 3800f ).name( "player1" ).buildPlayer( );
+					.position( 600f, 4100f ).name( "player1" ).buildPlayer( );
 
 			level.progressManager.addPlayerOne( level.player1 );
 		}
 		if ( level.player2 == null ) {
 			level.player2 = new PlayerBuilder( ).world( level.world )
-					.position( 1500f, 3800f ).name( "player2" ).buildPlayer( );
+					.position( 600f, 4100f ).name( "player2" ).buildPlayer( );
 
 			level.progressManager.addPlayerTwo( level.player2 );
 		}

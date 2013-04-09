@@ -740,19 +740,21 @@ public class LevelFactory {
 					MoverBuilder moverBuilder = new MoverBuilder( ).fromString(
 							movername ).applyTo( attach );
 
-					if ( item.props.containsKey( "vertical" ) ) {
-						moverBuilder.vertical( );
-					} else if ( item.props.containsKey( "horizontal" ) ) {
-						moverBuilder.horizontal( );
+					
+					if(movername.equals( "lerpmover" )){
+						if ( item.props.containsKey( "distance" ) ) {
+							float dist = Float.parseFloat( item.props
+									.get( "distance" ) );
+	
+							moverBuilder.distance( dist );
+						}
+						
+						if ( item.props.containsKey( "vertical" ) ) {
+							moverBuilder.vertical( );
+						} else if ( item.props.containsKey( "horizontal" ) ) {
+							moverBuilder.horizontal( );
+						}
 					}
-
-					if ( item.props.containsKey( "distance" ) ) {
-						float dist = Float.parseFloat( item.props
-								.get( "distance" ) );
-
-						moverBuilder.distance( dist );
-					}
-
 					mover = moverBuilder.build( );
 					Gdx.app.log( "LevelFactory", "attaching :" + movername
 							+ " to puzzle screw" );
@@ -763,6 +765,14 @@ public class LevelFactory {
 				}
 			}
 
+			
+			if ( item.props.containsKey( "addscrew" ) ) {
+				String screw =  item.props.get( "addscrew" );
+				PuzzleScrew puzzleScrew = ( PuzzleScrew ) entities.get( screw );
+				
+				p.puzzleManager.addScrew( puzzleScrew );
+				
+			}
 			puzzleScrews.put( item.name, p );
 			entities.put( item.name, p );
 
