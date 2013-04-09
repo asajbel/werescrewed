@@ -25,10 +25,13 @@ public class PlayerSpinemator implements ISpinemator {
 	protected Skeleton skel;
 	protected PlayerAnim current;
 	protected PlayerAnim previous;
-	Animation walkAnimation;
-	Animation jumpAnimation;
+	protected PlayerAnim next;
+	protected Animation mixer;
+	protected boolean mixerLoop; 
 	protected Player player;
 	protected float time = 0f;
+	protected float mixTime = 0f;
+	protected float mixRatio = 0f; 
 	protected Bone root;
 
 	public PlayerSpinemator( Player thePlayer ) {
@@ -47,11 +50,10 @@ public class PlayerSpinemator implements ISpinemator {
 		for ( PlayerAnim a : PlayerAnim.values( ) ) {
 			anims.put( a, sd.findAnimation( a.text ) );
 		}
-		
-		jumpAnimation = sd.findAnimation( PlayerAnim.JUMP_UP.text );
-		walkAnimation = sd.findAnimation( PlayerAnim.RUN.text ); 
 
 		anim = anims.get( current );
+		mixer = anim; 
+		mixerLoop = current.loopBool; 
 		skel = new com.esotericsoftware.spine.Skeleton( sd );
 		skel.setToBindPose( );
 		root = skel.getRootBone( );
@@ -66,27 +68,22 @@ public class PlayerSpinemator implements ISpinemator {
 	@Override
 	public void update( float delta ) {
 		time += delta;
-		current = getCurrentAnim( );
-		anim = anims.get( previous );
+		mixTime += delta;
 		skel.setFlipX( player.flipX );
-		anim.apply( skel, time, true );
-//		if ( current != previous ) {
-//			float jumpTime = time - 1;
-//			float mixTime = anims.get( current ).getDuration( );
-//			if ( jumpTime > mixTime )
-//				anims.get( current ).apply( skel, jumpTime, false );
-//			else
-//				anims.get( current ).mix( skel, jumpTime, false,
-//						jumpTime / mixTime );
-//			if ( time > 4 )
-//				time = 0;
-//		}
+
+		next = getCurrentAnim( );
+		anim = anims.get( current ); 
+		//anim.apply( skel, time, previous.loopBool );
 		
-		if ( current != previous ) {
-			anim = anims.get( current );
-			anim.mix( skel, time, current.loopBool, 0.5f );
+		mixer = anims.get( next );
+		
+		if (mixTime < anim.getDuration( ) / 2) {
+			mixRatio = mixTime / anim.getDuration( );
+			mixer.mix( skel, time, mixerLoop, mixRatio );
 		} else {
-			anim.apply( skel, time, true );
+			//mixer.apply( skel, time, current.loopBool );
+			current = next;
+			mixTime = 0; 
 		}
 
 //		walkAnimation.apply(skel, time, true);
@@ -104,18 +101,7 @@ public class PlayerSpinemator implements ISpinemator {
 		root.setScaleX( 1f );
 		root.setScaleY( 1f );
 		skel.updateWorldTransform( );
-		previous = current;
-		
-
-		// // Position each attachment body.
-		// for (Slot slot : skel.getSlots()) {
-		// if (!(slot.getAttachment() instanceof Box2dAttachment)) continue;
-		// Box2dAttachment attachment = (Box2dAttachment)slot.getAttachment();
-		// if (attachment.body == null) continue;
-		// attachment.body.setTransform(slot.getBone().getWorldX(),
-		// slot.getBone().getWorldY(), slot.getBone().getWorldRotation()
-		// * MathUtils.degRad);
-		// }
+//		previous = current;
 	}
 
 	protected PlayerAnim getCurrentAnim( ) {

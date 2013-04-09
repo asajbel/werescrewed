@@ -251,7 +251,7 @@ public class Player extends Entity {
 			Gdx.app.log( "steamCollide: " + steamCollide, "steamDone: "
 					+ steamDone );
 		// update the hit cloud if it exists
-		hitCloud.sprite.update( deltaTime );
+//		hitCloud.sprite.update( deltaTime );
 		
 		if ( kinematicTransform ) {
 			// setPlatformTransform( platformOffset );

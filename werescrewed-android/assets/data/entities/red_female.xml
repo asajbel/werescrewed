@@ -1,10 +1,10 @@
 <entity>
    	<category>Player</category>
-	<atlas>player_r_f_1</atlas>
-	<atlas>player_r_f_2</atlas>
-	<atlas>player_r_f_3</atlas>
-	<animator>player</animator>
-	<initialAnim>default</initialAnim>
+	<atlas>red_female_atlas</atlas>
+	<animator>spine</animator>
+	<color>red</color>
+	<gender>female</gender>
+	<initialAnim>idle</initialAnim>
 	<originX>64.0f</originX>
 	<originY>64.0f</originY>
 	<spriteScaleX>1.0f</spriteScaleX>
