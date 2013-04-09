@@ -171,6 +171,10 @@ public class Player extends Entity {
 		Idle, Left, Right
 	}
 
+	//handles the direction when attaching to a screw
+	public enum ScrewAttachDirection {
+		UP, DOWN, LEFT, RIGHT
+	}
 	// CONSTRUCTORS
 
 	/**
