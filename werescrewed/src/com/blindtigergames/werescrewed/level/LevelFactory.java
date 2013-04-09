@@ -647,7 +647,6 @@ public class LevelFactory {
 						if ( item.props.containsKey( "distance" ) ) {
 							float dist = Float.parseFloat( item.props
 									.get( "distance" ) );
-	
 							moverBuilder.distance( dist );
 						}
 						
@@ -655,6 +654,18 @@ public class LevelFactory {
 							moverBuilder.vertical( );
 						} else if ( item.props.containsKey( "horizontal" ) ) {
 							moverBuilder.horizontal( );
+						}
+					} else if( movername.equals( "puzzlerotatetween" )){
+						
+						
+						Entity attach2 = null;
+						if ( item.props.containsKey( "controlthis2" ) ) {
+							String s = item.props.get( "controlthis" );
+							attach2 = entities.get( s );
+							Gdx.app.log( "LevelFactory", "attaching :" + attach2.name
+									+ " to puzzle screw" );
+
+							p.puzzleManager.addEntity( attach2 );
 						}
 					}
 					mover = moverBuilder.build( );
