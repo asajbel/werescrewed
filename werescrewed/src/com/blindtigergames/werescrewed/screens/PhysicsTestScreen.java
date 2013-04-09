@@ -180,7 +180,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		skeleton.addKinematicPlatform( test2 );
 
 		StrippedScrew strScrew2 = new StrippedScrew( "strScrew4", new Vector2(
-				500, 500 ), rootSkeleton, world );
+				500, 500 ), rootSkeleton, world, Vector2.Zero );
 		rootSkeleton.addStrippedScrew( strScrew2 );
 
 		RevoluteJointDef revoluteJointDef = new RevoluteJointDef( );
@@ -189,7 +189,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		world.createJoint( revoluteJointDef );
 
 		StrippedScrew strScrew4 = new StrippedScrew( "strScrew5", new Vector2(
-				500, 700 ), rootSkeleton, world );
+				500, 700 ), rootSkeleton, world, Vector2.Zero );
 		rootSkeleton.addStrippedScrew( strScrew4 );
 		RevoluteJointDef revoluteJointDef2 = new RevoluteJointDef( );
 		revoluteJointDef2.initialize( rootSkeleton.body, strScrew4.body,
@@ -262,25 +262,25 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		dynSkel2.addDynamicPlatform( plat9 );
 
 		StructureScrew s = new StructureScrew( "ss", plat8.getPositionPixel( )
-				.add( plat8.getPixelWidth( ) / 2, 0 ), 100, world );
+				.add( plat8.getPixelWidth( ) / 2, 0 ), 100, world, Vector2.Zero );
 		s.addWeldJoint( plat8 );
 		s.addWeldJoint( plat9 );
 		dynSkel2.addScrewForDraw( s );
 
 		StructureScrew s1 = new StructureScrew( "s1", plat7.getPositionPixel( )
-				.add( plat7.getPixelWidth( ) / 2, 0 ), 100, world );
+				.add( plat7.getPixelWidth( ) / 2, 0 ), 100, world, Vector2.Zero );
 		s1.addWeldJoint( plat7 );
 		s1.addWeldJoint( plat9 );
 		dynSkel2.addScrewForDraw( s1 );
 
 		StructureScrew s3 = new StructureScrew( "s2", plat8.getPositionPixel( )
-				.sub( plat8.getPixelWidth( ) / 2, 0 ), 100, world );
+				.sub( plat8.getPixelWidth( ) / 2, 0 ), 100, world, Vector2.Zero );
 		s3.addWeldJoint( plat6 );
 		s3.addWeldJoint( plat8 );
 		dynSkel2.addScrewForDraw( s3 );
 
 		StructureScrew s5 = new StructureScrew( "s23", plat7.getPositionPixel( )
-				.sub( plat7.getPixelWidth( ) / 2, 0 ), 100, world );
+				.sub( plat7.getPixelWidth( ) / 2, 0 ), 100, world, Vector2.Zero );
 		s5.addWeldJoint( plat6 );
 		s5.addWeldJoint( plat7 );
 		dynSkel2.addScrewForDraw( s5 );
@@ -529,7 +529,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		// rotate puzzle screw control
 		RotateByDegree rm = new RotateByDegree( 0.0f, -90.0f, 0, 0.5f );
 		PuzzleScrew puzzleScrew = new PuzzleScrew( "001",
-				new Vector2( 32f, 32f ), 50, skeleton, world, 0, false );
+				new Vector2( 32f, 32f ), 50, skeleton, world, 0, false, Vector2.Zero );
 		flipPlat1.setActive( true );
 		puzzleScrew.puzzleManager.addEntity( flipPlat1 );
 		puzzleScrew.puzzleManager.addMover( rm );
@@ -554,7 +554,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 
 		// lerp puzzle screw control
 		PuzzleScrew puzzleScrew2 = new PuzzleScrew( "002", new Vector2( 150f,
-				32f ), 50, skeleton, world, 0, false );
+				32f ), 50, skeleton, world, 0, false, Vector2.Zero );
 		LerpMover lm = new LerpMover( movingTP.body.getPosition( ).mul(
 				Util.BOX_TO_PIXEL ), new Vector2(
 				movingTP.body.getPosition( ).x + 1.75f,
@@ -670,12 +670,12 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		skeleton.addStrippedScrew( new StrippedScrew( "", new Vector2(
 				singTile.body.getPosition( ).x * Util.BOX_TO_PIXEL,
 				singTile.body.getPosition( ).y * Util.BOX_TO_PIXEL ), singTile,
-				world ) );
+				world, Vector2.Zero ) );
 
 		skeleton.addStrippedScrew( new StrippedScrew( "", new Vector2(
 				singTile2.body.getPosition( ).x * Util.BOX_TO_PIXEL,
 				singTile2.body.getPosition( ).y * Util.BOX_TO_PIXEL ),
-				singTile2, world ) );
+				singTile2, world, Vector2.Zero ) );
 	}
 
 	private void initCheckPoints( ) {

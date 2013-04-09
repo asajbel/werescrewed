@@ -182,14 +182,14 @@ public class EntityDefTestScreen implements com.badlogic.gdx.Screen {
 				tiledPlat.body.getPosition( ).x * Util.BOX_TO_PIXEL
 						- ( tiledPlat.sprite.getWidth( ) ),
 				tiledPlat.body.getPosition( ).y * Util.BOX_TO_PIXEL ), 50,
-				tiledPlat, world );
+				tiledPlat, world, Vector2.Zero );
 		leftPlatScrew.addStructureJoint( skeleton );
 
 		StructureScrew rightPlatScrew = new StructureScrew( "", new Vector2(
 				tiledPlat.body.getPosition( ).x * Util.BOX_TO_PIXEL
 						+ ( tiledPlat.sprite.getWidth( ) ),
 				tiledPlat.body.getPosition( ).y * Util.BOX_TO_PIXEL ), 50,
-				tiledPlat, world );
+				tiledPlat, world, Vector2.Zero );
 		rightPlatScrew.addStructureJoint( skeleton );
 		tiledPlat.addScrew( leftPlatScrew );
 		tiledPlat.addScrew( rightPlatScrew );
@@ -210,7 +210,7 @@ public class EntityDefTestScreen implements com.badlogic.gdx.Screen {
 		jointDef.upperTranslation = 3.0f;
 		jointDef.motorSpeed = 7.0f;
 		PuzzleScrew puzzleScrew = new PuzzleScrew( "001",
-				new Vector2( 32f, 32f ), 50, skeleton, world, 0, false );
+				new Vector2( 32f, 32f ), 50, skeleton, world, 0, false, Vector2.Zero );
 		puzzleScrew.puzzleManager.addEntity( movingTP );
 		LerpMover lm = new LerpMover(
 				new Vector2( movingTP.body.getPosition( ).x, movingTP.body
@@ -234,10 +234,10 @@ public class EntityDefTestScreen implements com.badlogic.gdx.Screen {
 		for ( int i = 0; i < 10; i++ ) {
 			if ( i % 2 == 0 ) {
 				climbingScrews.add( new StrippedScrew( "",
-						new Vector2( x1, y1 ), skeleton, world ) );
+						new Vector2( x1, y1 ), skeleton, world, Vector2.Zero ) );
 			} else {
 				climbingScrews.add( new StrippedScrew( "",
-						new Vector2( x2, y1 ), skeleton, world ) );
+						new Vector2( x2, y1 ), skeleton, world, Vector2.Zero ) );
 			}
 			y1 += dy;
 		}

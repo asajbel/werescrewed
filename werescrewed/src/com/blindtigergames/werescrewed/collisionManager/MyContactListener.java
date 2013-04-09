@@ -115,21 +115,23 @@ public class MyContactListener implements ContactListener {
 							// }
 							break;
 						case PLAYER:
-//							Player player2 = ( Player ) object;
-//							player.hitPlayer( player2 );
-//							player2.hitPlayer( player );
-//							if ( player.getState( ) != PlayerState.HeadStand
-//									&& player2.getState( ) != PlayerState.HeadStand
-//									&& !player.isHeadStandPossible( )
-//									&& !player2.isHeadStandPossible( ) ) {
-//								player.hitPlayer( null );
-//								player2.hitPlayer( null );
-//								contact.setEnabled( false );
-//							} else if ( player.getState( ) != PlayerState.HeadStand
-//									&& player2.getState( ) != PlayerState.HeadStand ) {
-//								player.setGrounded( true );
-//								player2.setGrounded( true );
-//							}
+							// Player player2 = ( Player ) object;
+							// player.hitPlayer( player2 );
+							// player2.hitPlayer( player );
+							// if ( player.getState( ) != PlayerState.HeadStand
+							// && player2.getState( ) != PlayerState.HeadStand
+							// && !player.isHeadStandPossible( )
+							// && !player2.isHeadStandPossible( ) ) {
+							// player.hitPlayer( null );
+							// player2.hitPlayer( null );
+							// contact.setEnabled( false );
+							// } else if ( player.getState( ) !=
+							// PlayerState.HeadStand
+							// && player2.getState( ) != PlayerState.HeadStand )
+							// {
+							// player.setGrounded( true );
+							// player2.setGrounded( true );
+							// }
 							break;
 						case HAZARD:
 						// if ( player.getCurrentScrew( ) == null
@@ -262,9 +264,10 @@ public class MyContactListener implements ContactListener {
 										}
 									}
 								}
-								player.hitSolidObject( null );
+								if ( player.getState( ) != PlayerState.JumpingOffScrew ) {
+									player.hitSolidObject( null );
+								}
 								contact.setEnabled( true );
-
 							}
 							break;
 						case SCREW:
