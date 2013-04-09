@@ -35,5 +35,10 @@ public class FadeFGAction implements IAction {
 			//Gdx.app.log( "FadeFGAction:", "Wrongly calling act(entity) on " + entity.name );
 		}
 	}
+	
+	@Override
+	public ActionType getActionType( ) {
+		return ActionType.FORPLAYER;
+	}
 
 }

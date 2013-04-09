@@ -5,19 +5,13 @@ import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityType;
 import com.blindtigergames.werescrewed.entity.Skeleton;
 
-public class SetActiveStateSkeleton implements IAction {
+public class DeactivateSkeleton implements IAction {
 
-	
 	int timesRun = 0;
-	private boolean isActive;
-	
-	public SetActiveStateSkeleton(boolean isActive){
-		this.isActive = isActive;
-	}
 	
 	@Override
 	public void act( ) {
-		//intentionally left blank
+		// Intentionally left blank
 	}
 
 	@Override
@@ -25,10 +19,14 @@ public class SetActiveStateSkeleton implements IAction {
 		timesRun +=1;
 		if ( entity.getEntityType( ) == EntityType.SKELETON ){
 			Skeleton skeleton = (Skeleton)entity;
-			skeleton.getRoot( ).setSkeletonActiveState( skeleton, isActive );
-			Gdx.app.log( "SetActiveStateSkeleton:", skeleton.name+" active state is: "+isActive+", "+timesRun );
+			Gdx.app.log( "DeActivateSkeleton", "Attempting to deactivate skele"+timesRun );
+			if ( skeleton.body.isActive( ) ){
+				skeleton.getRoot( ).setSkeletonActiveState( skeleton, false );
+				//skeleton.setSkeletonActive(false);
+			}
+			Gdx.app.log( "DeActivateSkeleton", skeleton.name+" is now deactivated." );
 		}else{
-			Gdx.app.log( "SetActiveStateSkeleton", ""+timesRun );
+			Gdx.app.log( "DeActivateSkeleton", ""+timesRun );
 		}
 	}
 
