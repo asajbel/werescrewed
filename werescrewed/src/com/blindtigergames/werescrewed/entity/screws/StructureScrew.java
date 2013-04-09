@@ -64,7 +64,7 @@ public class StructureScrew extends Screw {
 			prevDiff = 0;
 		}
 
-		if ( depth < maxDepth ) {
+		if ( depth < maxDepth  && depth > 0 ) {
 			diff = startRegion - region;
 			newDiff = diff - prevDiff;
 			if ( newDiff < -10 ) {
@@ -120,7 +120,7 @@ public class StructureScrew extends Screw {
 
 	@Override
 	public void screwRight( ) {
-		if ( depth < maxDepth ) {
+		if ( depth < maxDepth && depth > 0 ) {
 			body.setAngularVelocity( -1 );
 			depth+= 2;
 			rotation -= 10;
