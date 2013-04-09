@@ -64,12 +64,15 @@ public class LevelFactory {
 
 	protected static final float GLEED_TO_GDX_X = 1.0f;
 	protected static final float GLEED_TO_GDX_Y = -1.0f;
-	protected static final String screwTargetTag = "target";
-	public static final String startTime = "starttime";
-	public static final String endTime = "endtime";
-	protected static final String puzzleTag = "puzzle";
+	protected static final String targetTag = "target";
+	protected static final String startTime = "starttime";
+	protected static final String endTime = "endtime";
+	protected static final String puzzleTag = "puzzle"; 
 	protected static final String dynamicTag = "dynamic";
-
+	protected static final String decalTag = "decal";
+	protected static final String angleTag = "angle";
+	protected static final String imageTag = "image";
+	protected static final String gleedImageTag = "image";	
 	public LevelFactory( ) {
 		reader = new XmlReader( );
 		items = new EnumMap< GleedTypeTag, LinkedHashMap< String, Item >>(
@@ -284,6 +287,8 @@ public class LevelFactory {
 
 		if ( bluePrints.equals( "skeleton" ) ) {
 			out = constructSkeleton( item );
+		} else if( bluePrints.equals( decalTag )){
+			constructDecal(item);
 		} else if ( bluePrints.equals( "player" ) ) {
 			constructPlayer( item );
 		} else if ( bluePrints.equals( "camera" ) ) {
@@ -348,8 +353,51 @@ public class LevelFactory {
 
 		return out;
 	}
+	
+	private Sprite constructDecal(Item item){
+		Entity target = level.root;
+		String targetName = "root";
+		if (item.getProps().containsKey(targetTag)){
+			targetName = item.getProps().get( targetTag );
+			if (this.items.get(GleedTypeTag.SKELETON).containsKey( targetName )){
+				if (loadSkeleton(targetName) != null)
+					target = loadSkeleton(targetName);
+			} else if (this.items.get(GleedTypeTag.ENTITY).containsKey( targetName )){
+				if (loadEntity(targetName) != null)
+					target = loadEntity(targetName);
+			}
+		}
+		Sprite decal = null;
+		Vector2 scale = new Vector2(1.0f, 1.0f);
+		if (!item.getImageName( ).equals( "" )){
+			Texture tex = WereScrewedGame.manager.get( WereScrewedGame.dirHandle+item.getImageName(), Texture.class );
+			decal = new Sprite(tex);
+			decal.setOrigin( 0.0f, 0.0f );
+			scale.x = item.sca.x / tex.getWidth( );
+			scale.y = item.sca.y / tex.getHeight( );
+		} else {
+			Gdx.app.log( "LoadDecal", "Could not find texture tag." );
+		}
+		if (decal != null){
+			//Set position and rotation relative to the target. 
+			Vector2 targetPos = target.getPositionPixel( );
+			float targetRot =  target.getAngle( );
 
-	private Skeleton constructSkeleton( Item item ) {
+			Vector2 pos = item.pos.sub(targetPos);
+			pos.y -= item.sca.y;
+			
+			float rot = item.rot - targetRot;
+			
+			decal.setScale( scale.x, scale.y );
+			target.addDecal(decal, pos, rot);
+			Gdx.app.log( "LoadDecal", "Attaching decal "+item.name+" to "+targetName+"." );
+			target.updateDecals( 0.0f );
+			Gdx.app.log( "LoadDecal", "(X: "+decal.getX()+" Y: "+decal.getY()+" R: "+decal.getRotation()+" sX: "+item.sca.x+" sY: "+item.sca.y+")" );
+		}
+		return decal;
+	}
+	
+	private Skeleton constructSkeleton(Item item){
 		Skeleton skeleton = null;
 		if ( item.name.equals( "RootSkeleton" ) ) {
 			level.root = new RootSkeleton( item.name, item.pos, null,
@@ -1070,19 +1118,6 @@ public class LevelFactory {
 		return level;
 	}
 
-	protected static ArrayHash getCustomProperties( Element e ) {
-		ArrayHash out = new ArrayHash( );
-		Array< Element > properties = e.getChildByName( "CustomProperties" )
-				.getChildrenByName( "Property" );
-		String name;
-		String value;
-		for ( Element prop : properties ) {
-			name = prop.getAttribute( "Name" ).toLowerCase( );
-			value = prop.get( "string", "<no value>" );
-			out.add( name, value );
-		}
-		return out;
-	}
 
 	protected static HashMap< String, Element > getChildrenByNameHash(
 			Element e, String tag, String nameTag ) {
@@ -1099,129 +1134,148 @@ public class LevelFactory {
 	protected class Item {
 		public Item( Element e ) {
 			element = e;
-			name = getName( e );
-			gleedType = getGleedType( e );
-			props = getCustomProperties( e );
-			if ( props.containsKey( "definition" ) ) { // EntityDef.tag )){
-				defName = props.get( "definition" ); // EntityDef.tag );
-			} else {
+			name = getName();
+			gleedType = getGleedType();
+			props = getProps();
+			if (props.containsKey( "definition" )){ //EntityDef.tag )){
+				defName = props.get( "definition" );  //EntityDef.tag );
+			}
+			else {
 				defName = "";
 			}
 			def = null;
-			if ( props.containsKey( "attachtoskeleton" ) ) {
+			if (props.containsKey( "attachtoskeleton" )){
 				skeleton = props.get( "attachtoskeleton" );
-				Gdx.app.log( "LevelFactory, attaching skeleton " + skeleton,
-						"to " + name );
+				Gdx.app.log( "LevelFactory, attaching skeleton " + skeleton, "to " + name);
 			}
-			gleedTag = GleedTypeTag.fromString( props.get( "type" ) ); // GleedTypeTag.tag
-																		// ) );
-			pos = getPosition( e );
-			sca = getScale( e );
-			tex = getTexture( e );
+			gleedTag = GleedTypeTag.fromString( props.get( "type" ) ); //GleedTypeTag.tag ) );
+			pos = getPosition();
+			rot = getAngle();
+			sca = getScale();
+			image = getImageName();
 			locked = false;
 		}
-
 		public Element element;
-
+		
 		// name refers to the first name, right after xsi:type
 		public String name;
-		// In the xml, gleedType refers to type. for example: CircleItem,
-		// RectangleItem
+		//In the xml, gleedType refers to type. for example: CircleItem, RectangleItem
 		public String gleedType;
-
+		
 		// defName refers the string under the name under the CustomProperties
 		// <Property Name="Definition"...
-		// <string>tiledPlatform</string> <======= that is the defName
+		// 	 <string>tiledPlatform</string> <======= that is the defName
 		public String defName;
 		private EntityDef def;
 		public GleedTypeTag gleedTag;
-		public ArrayHash props;
+		private ArrayHash props;
 		public Vector2 pos;
+		public float rot;
 		public Vector2 origin;
 		public Vector2 sca;
 		public Texture tex;
 		public String skeleton;
+		public String image;
 		public boolean locked;
-
-		public void checkLocked( ) {
-			if ( locked ) {
-				RuntimeException oops = new RuntimeException(
-						"Cyclic Reference" );
-				Gdx.app.log( "GleedLoader", "While loading:" + name, oops );
+		
+		public void checkLocked(){
+			if (locked){
+				RuntimeException oops = new RuntimeException("Cyclic Reference");
+				Gdx.app.log("GleedLoader", "While loading:"+name, oops);
 				throw oops;
 			}
 			locked = true;
 		}
-
+		
+		protected ArrayHash getProps(){
+			if (props == null){
+				props = new ArrayHash();
+				Array<Element> properties = element.getChildByName("CustomProperties").getChildrenByName("Property");
+				String name; String value;
+				for (Element prop: properties){
+					name = prop.getAttribute("Name").toLowerCase( );
+					value = prop.get("string", "<no value>");
+					props.add( name, value );
+				}
+			}
+			return props;
+		}
+		
 		/**
-		 * getDefinition loads the correct XML file with the same time
-		 * (complexTest) complexText loads the bottle, gearSmall would load the
-		 * gear Remember to set them to kinematic or they just fall
+		 * getDefinition loads the correct XML file with the same time (complexTest)
+		 * complexText loads the bottle, gearSmall would load the gear
+		 * Remember to set them to kinematic or they just fall
 		 * 
 		 * @return EntityDef
 		 */
-		public EntityDef getDefinition( ) {
-			if ( def == null )
+		public EntityDef getDefinition(){
+			if (def == null)
 				def = EntityDef.getDefinition( defName );
 			return def;
 		}
-
+		
 		/**
 		 * checks if xml has a name under Definition
-		 * 
 		 * @return boolean
 		 */
-		public boolean hasDefTag( ) {
-			return !defName.equals( "" );
+		public boolean hasDefTag(){ return !defName.equals( "" );}
+		public boolean isDefined(){ return getDefinition() != null;}
+		
+		protected String getName(){
+			return element.getAttribute("Name");
 		}
 
-		public boolean isDefined( ) {
-			return getDefinition( ) != null;
+		protected Vector2 getPosition(){
+			Element posElem = element.getChildByName("Position");
+			return new Vector2(posElem.getFloat("X")*GLEED_TO_GDX_X, posElem.getFloat("Y")*GLEED_TO_GDX_Y);
 		}
-	}
 
-	protected static String getName( Element item ) {
-		return item.getAttribute( "Name" );
-	}
-
-	protected static Vector2 getPosition( Element item ) {
-		Element posElem = item.getChildByName( "Position" );
-		return new Vector2( posElem.getFloat( "X" ) * GLEED_TO_GDX_X,
-				posElem.getFloat( "Y" ) * GLEED_TO_GDX_Y );
-	}
-
-	protected static String getGleedType( Element item ) {
-		return item.get( "xsi:type" );
-	}
-
-	protected static Vector2 getScale( Element item ) {
-		Vector2 out = new Vector2( 1.0f, 1.0f );
-		try {
-			if ( getGleedType( item ).equals( "CircleItem" ) ) {
-				out.x = out.y = item.getFloat( "Radius" ) * 2.0f;
-			} else if ( getGleedType( item ).equals( "PathItem" ) ) {
-				float left = 0.0f, right = 0.0f, top = 0.0f, bottom = 0.0f;
-				// Fill this out later
-				out.x = left - right;
-				out.y = top - bottom;
-			} else if ( item.get( "xsi:type" ).equals( "TextureItem" ) ) {
-				// out.x = item.getFloat( "Width" );
-				// out.y = item.getFloat( "Height" );
+		protected float getAngle(){
+			if (getProps().containsKey(angleTag)){
+				return Float.parseFloat( getProps().get( angleTag ) );
 			}
-		} finally {
+			return 0.0f;
 		}
-		return out;
-	}
+		
+		protected String getGleedType(){
+			return element.get( "xsi:type" );
+		}
+		
+		protected Vector2 getScale(){
+			Vector2 out = new Vector2(1.0f,1.0f);
+			try{
+				if (getGleedType().equals( "CircleItem" )){
+					out.x = out.y = element.getFloat( "Radius" )*2.0f;
+				} else if (getGleedType().equals( "PathItem" )){
+					float left = 0.0f, right = 0.0f, top = 0.0f, bottom = 0.0f;
+					//Fill this out later
+					out.x = left-right;
+					out.y = top-bottom;
+				} else if (element.get( "xsi:type" ).equals( "RectangleItem" )){
+					out.x = element.getFloat( "Width" );
+					out.y = element.getFloat( "Height" );
+				} else if (element.get( "xsi:type" ).equals( "TextureItem" )){
+					//out.x = element.getFloat( "Width" );
+					//out.y = element.getFloat( "Height" );
+				}
+			} finally {
+			}
+			return out;
+		}
+		
+		protected String getImageName(){
+			if (getProps().containsKey( imageTag )){
+				return getProps().get( imageTag );
+			} else {
+				return element.getAttribute( gleedImageTag, "" );
+			}
+		}
 
-	protected static Texture getTexture( Element item ) {
-		return null;
-	}
-
-	protected static Vector2 getGleedOrigin( Element item ) {
-		Vector2 out = new Vector2( 0.0f, 0.0f );
-		return out;
-	}
-
+		protected Vector2 getGleedOrigin(){
+			Vector2 out = new Vector2(0.0f,0.0f);
+			return out;
+		}
+	}		
 	protected static final String typeTag = "Type";
 	protected static final String defTag = "Definition";
 
