@@ -247,14 +247,28 @@ public class LerpMover implements IMover {
 			if ( axis == LinearAxis.VERTICAL ) {
 				float newPos = Math
 						.abs( p.getOriginPos( ).y - beginningPoint.y );
-				p.setLocalPos( p.getLocalPos( ).x, newPos );
+				if ( temp.y > endPoint.y ) {
+					p.setLocalPos( p.getLocalPos( ).x, newPos );
+				} else {
+					p.setLocalPos( p.getLocalPos( ).x, newPos );
+				}
 			} else if ( axis == LinearAxis.HORIZONTAL ) {
 				float newPos = Math
 						.abs( p.getOriginPos( ).x - beginningPoint.x );
-				p.setLocalPos( newPos, p.getLocalPos( ).y );
+				if ( temp.x > endPoint.x ) {
+					p.setLocalPos( -newPos, p.getLocalPos( ).y );
+				} else {
+					p.setLocalPos( newPos, p.getLocalPos( ).y );
+				}
 			} else {
 				float newX = Math.abs( p.getOriginPos( ).x - beginningPoint.x );
 				float newY = Math.abs( p.getOriginPos( ).y - beginningPoint.y );
+				if ( temp.x > endPoint.x ) {
+					newX = -newX;
+				} 
+				if ( temp.y > endPoint.y ) {
+					newY = -newY;
+				}
 				p.setLocalPos( newX, newY );
 			}
 			beginningPoint = temp;

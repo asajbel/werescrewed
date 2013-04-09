@@ -547,7 +547,7 @@ public class LevelFactory {
 					+ out.name );
 
 			parent.addKinematicPlatform( out );
-			out.setCategoryMask( Util.KINEMATIC_OBJECTS,
+			out.setCategoryMask( Util.CATEGORY_PLATFORMS,
 					Util.CATEGORY_EVERYTHING );
 		}
 		return out;
@@ -622,7 +622,7 @@ public class LevelFactory {
 					+ out.name );
 
 			parent.addKinematicPlatform( out );
-			out.setCategoryMask( Util.KINEMATIC_OBJECTS,
+			out.setCategoryMask( Util.CATEGORY_PLATFORMS,
 					Util.CATEGORY_EVERYTHING );
 		}
 		return out;

@@ -31,8 +31,7 @@ public class Util {
 	 */
 	public static final short CATEGORY_PLAYER = 0x0002;
 	public static final short CATEGORY_SUBPLAYER = 0x0004;
-	public static final short DYNAMIC_OBJECTS = 0x0003;
-	public static final short KINEMATIC_OBJECTS = 0x0010;
+	public static final short CATEGORY_PLATFORMS = 0x0010;
 	public static final short CATEGORY_SUBPLATFORM = 0x0020;
 	public static final short CATEGORY_SCREWS = 0x0040;
 	public static final short CATEGORY_ROPE = 0x0080;

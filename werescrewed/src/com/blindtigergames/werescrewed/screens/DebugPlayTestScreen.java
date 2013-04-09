@@ -192,56 +192,56 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		ground = platBuilder.position( 50 * TILE, 0 ).name( "ground1" )
 				.dimensions( 250, 2 ).texture( testTexture ).kinematic( )
 				.buildTilePlatform( );
-		ground.setCategoryMask( Util.KINEMATIC_OBJECTS,
+		ground.setCategoryMask( Util.CATEGORY_PLATFORMS,
 				Util.CATEGORY_EVERYTHING );
 		skel1.addKinematicPlatform( ground );
 
 		wall = platBuilder.position( -77 * TILE, 100 * TILE ).name( "wall1" )
 				.dimensions( 2, 250 ).texture( testTexture ).kinematic( )
 				.oneSided( false ).restitution( 0.0f ).buildTilePlatform( );
-		wall.setCategoryMask( Util.KINEMATIC_OBJECTS, Util.CATEGORY_EVERYTHING );
+		wall.setCategoryMask( Util.CATEGORY_PLATFORMS, Util.CATEGORY_EVERYTHING );
 		skel1.addKinematicPlatform( wall );
 
 		obst = platBuilder.position( 15 * TILE, 1.5f * TILE ).name( "obst1" )
 				.dimensions( 2, 1 ).texture( testTexture ).kinematic( )
 				.oneSided( false ).restitution( 0 ).buildTilePlatform( );
-		obst.setCategoryMask( Util.KINEMATIC_OBJECTS, Util.CATEGORY_EVERYTHING );
+		obst.setCategoryMask( Util.CATEGORY_PLATFORMS, Util.CATEGORY_EVERYTHING );
 		skel1.addKinematicPlatform( obst );
 
 		obst = platBuilder.position( 20 * TILE, 2f * TILE ).name( "obst2" )
 				.dimensions( 2, 2 ).texture( testTexture ).kinematic( )
 				.oneSided( false ).restitution( 0 ).buildTilePlatform( );
-		obst.setCategoryMask( Util.KINEMATIC_OBJECTS, Util.CATEGORY_EVERYTHING );
+		obst.setCategoryMask( Util.CATEGORY_PLATFORMS, Util.CATEGORY_EVERYTHING );
 		skel1.addKinematicPlatform( obst );
 
 		obst = platBuilder.position( 25 * TILE, 2.5f * TILE ).name( "obst3" )
 				.dimensions( 2, 3 ).texture( testTexture ).kinematic( )
 				.oneSided( false ).restitution( 0 ).buildTilePlatform( );
-		obst.setCategoryMask( Util.KINEMATIC_OBJECTS, Util.CATEGORY_EVERYTHING );
+		obst.setCategoryMask( Util.CATEGORY_PLATFORMS, Util.CATEGORY_EVERYTHING );
 		skel1.addKinematicPlatform( obst );
 
 		obst = platBuilder.position( 30 * TILE, 3f * TILE ).name( "obst4" )
 				.dimensions( 2, 4 ).texture( testTexture ).kinematic( )
 				.oneSided( false ).restitution( 0 ).buildTilePlatform( );
-		obst.setCategoryMask( Util.KINEMATIC_OBJECTS, Util.CATEGORY_EVERYTHING );
+		obst.setCategoryMask( Util.CATEGORY_PLATFORMS, Util.CATEGORY_EVERYTHING );
 		skel1.addKinematicPlatform( obst );
 
 		obst = platBuilder.position( 35 * TILE, 3.5f * TILE ).name( "obst5" )
 				.dimensions( 2, 5 ).texture( testTexture ).kinematic( )
 				.oneSided( false ).restitution( 0 ).buildTilePlatform( );
-		obst.setCategoryMask( Util.KINEMATIC_OBJECTS, Util.CATEGORY_EVERYTHING );
+		obst.setCategoryMask( Util.CATEGORY_PLATFORMS, Util.CATEGORY_EVERYTHING );
 		skel1.addKinematicPlatform( obst );
 
 		obst = platBuilder.position( 40 * TILE, 3f * TILE ).name( "obst6" )
 				.dimensions( 2, 4 ).texture( testTexture ).kinematic( )
 				.oneSided( false ).restitution( 0 ).buildTilePlatform( );
-		obst.setCategoryMask( Util.KINEMATIC_OBJECTS, Util.CATEGORY_EVERYTHING );
+		obst.setCategoryMask( Util.CATEGORY_PLATFORMS, Util.CATEGORY_EVERYTHING );
 		skel1.addKinematicPlatform( obst );
 
 		obst = platBuilder.position( 45 * TILE, 3.5f * TILE ).name( "obst7" )
 				.dimensions( 2, 5 ).texture( testTexture ).kinematic( )
 				.oneSided( false ).restitution( 0 ).buildTilePlatform( );
-		obst.setCategoryMask( Util.KINEMATIC_OBJECTS, Util.CATEGORY_EVERYTHING );
+		obst.setCategoryMask( Util.CATEGORY_PLATFORMS, Util.CATEGORY_EVERYTHING );
 		skel1.addKinematicPlatform( obst );
 
 		// etb = new EventTriggerBuilder(world);
@@ -255,31 +255,31 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		plat = platBuilder.position( 55 * TILE, 4.5f * TILE ).name( "plat1" )
 				.dimensions( 4, 1 ).texture( testTexture ).kinematic( )
 				.oneSided( true ).restitution( 0 ).buildTilePlatform( );
-		plat.setCategoryMask( Util.KINEMATIC_OBJECTS, Util.CATEGORY_EVERYTHING );
+		plat.setCategoryMask( Util.CATEGORY_PLATFORMS, Util.CATEGORY_EVERYTHING );
 		skel1.addKinematicPlatform( plat );
 
 		plat = platBuilder.position( 67 * TILE, 4.5f * TILE ).name( "plat2" )
 				.dimensions( 4, 1 ).texture( testTexture ).kinematic( )
 				.oneSided( true ).restitution( 0 ).buildTilePlatform( );
-		plat.setCategoryMask( Util.KINEMATIC_OBJECTS, Util.CATEGORY_EVERYTHING );
+		plat.setCategoryMask( Util.CATEGORY_PLATFORMS, Util.CATEGORY_EVERYTHING );
 		skel1.addKinematicPlatform( plat );
 
 		plat = platBuilder.position( 55 * TILE, 8.5f * TILE ).name( "plat3" )
 				.dimensions( 4, 1 ).texture( testTexture ).kinematic( )
 				.oneSided( true ).restitution( 0 ).buildTilePlatform( );
-		plat.setCategoryMask( Util.KINEMATIC_OBJECTS, Util.CATEGORY_EVERYTHING );
+		plat.setCategoryMask( Util.CATEGORY_PLATFORMS, Util.CATEGORY_EVERYTHING );
 		skel1.addKinematicPlatform( plat );
 
 		plat = platBuilder.position( 67 * TILE, 8.5f * TILE ).name( "plat4" )
 				.dimensions( 4, 1 ).texture( testTexture ).kinematic( )
 				.oneSided( true ).restitution( 0 ).buildTilePlatform( );
-		plat.setCategoryMask( Util.KINEMATIC_OBJECTS, Util.CATEGORY_EVERYTHING );
+		plat.setCategoryMask( Util.CATEGORY_PLATFORMS, Util.CATEGORY_EVERYTHING );
 		skel1.addKinematicPlatform( plat );
 
 		plat = platBuilder.position( 61 * TILE, 6.5f * TILE ).name( "plat5" )
 				.dimensions( 4, 1 ).texture( testTexture ).kinematic( )
 				.oneSided( true ).restitution( 0 ).buildTilePlatform( );
-		plat.setCategoryMask( Util.KINEMATIC_OBJECTS, Util.CATEGORY_EVERYTHING );
+		plat.setCategoryMask( Util.CATEGORY_PLATFORMS, Util.CATEGORY_EVERYTHING );
 		skel1.addKinematicPlatform( plat );
 
 		// etb = new EventTriggerBuilder(world);
@@ -293,43 +293,43 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		stair = platBuilder.position( 77 * TILE, 2 * TILE ).name( "stair1" )
 				.dimensions( 8, 2 ).texture( testTexture ).kinematic( )
 				.oneSided( false ).restitution( 0 ).buildTilePlatform( );
-		stair.setCategoryMask( Util.KINEMATIC_OBJECTS, Util.CATEGORY_EVERYTHING );
+		stair.setCategoryMask( Util.CATEGORY_PLATFORMS, Util.CATEGORY_EVERYTHING );
 		skel1.addKinematicPlatform( stair );
 
 		stair = platBuilder.position( 78 * TILE, 4 * TILE ).name( "stair2" )
 				.dimensions( 6, 2 ).texture( testTexture ).kinematic( )
 				.oneSided( false ).restitution( 0 ).buildTilePlatform( );
-		stair.setCategoryMask( Util.KINEMATIC_OBJECTS, Util.CATEGORY_EVERYTHING );
+		stair.setCategoryMask( Util.CATEGORY_PLATFORMS, Util.CATEGORY_EVERYTHING );
 		skel1.addKinematicPlatform( stair );
 
 		stair = platBuilder.position( 79 * TILE, 6 * TILE ).name( "stair3" )
 				.dimensions( 4, 2 ).texture( testTexture ).kinematic( )
 				.oneSided( false ).restitution( 0 ).buildTilePlatform( );
-		stair.setCategoryMask( Util.KINEMATIC_OBJECTS, Util.CATEGORY_EVERYTHING );
+		stair.setCategoryMask( Util.CATEGORY_PLATFORMS, Util.CATEGORY_EVERYTHING );
 		skel1.addKinematicPlatform( stair );
 
 		stair = platBuilder.position( 80 * TILE, 8 * TILE ).name( "stair4" )
 				.dimensions( 2, 2 ).texture( testTexture ).kinematic( )
 				.oneSided( false ).restitution( 0 ).buildTilePlatform( );
-		stair.setCategoryMask( Util.KINEMATIC_OBJECTS, Util.CATEGORY_EVERYTHING );
+		stair.setCategoryMask( Util.CATEGORY_PLATFORMS, Util.CATEGORY_EVERYTHING );
 		skel1.addKinematicPlatform( stair );
 
 		stair = platBuilder.position( 82 * TILE, 2.5f * TILE ).name( "stair5" )
 				.dimensions( 2, 3 ).texture( testTexture ).kinematic( )
 				.oneSided( false ).restitution( 0 ).buildTilePlatform( );
-		stair.setCategoryMask( Util.KINEMATIC_OBJECTS, Util.CATEGORY_EVERYTHING );
+		stair.setCategoryMask( Util.CATEGORY_PLATFORMS, Util.CATEGORY_EVERYTHING );
 		skel1.addKinematicPlatform( stair );
 
 		plat = platBuilder.position( 93 * TILE, 5 * TILE ).name( "plat6" )
 				.dimensions( 2, 8 ).texture( testTexture ).kinematic( )
 				.oneSided( false ).restitution( 0 ).buildTilePlatform( );
-		stair.setCategoryMask( Util.KINEMATIC_OBJECTS, Util.CATEGORY_EVERYTHING );
+		stair.setCategoryMask( Util.CATEGORY_PLATFORMS, Util.CATEGORY_EVERYTHING );
 		skel1.addKinematicPlatform( plat );
 
 		stair = platBuilder.position( 95 * TILE, 2.5f * TILE ).name( "stair6" )
 				.dimensions( 2, 3 ).texture( testTexture ).kinematic( )
 				.oneSided( false ).restitution( 0 ).buildTilePlatform( );
-		stair.setCategoryMask( Util.KINEMATIC_OBJECTS, Util.CATEGORY_EVERYTHING );
+		stair.setCategoryMask( Util.CATEGORY_PLATFORMS, Util.CATEGORY_EVERYTHING );
 		skel1.addKinematicPlatform( stair );
 		// PUZZLE 4 //
 
@@ -354,20 +354,20 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		wall = platBuilder.position( 160 * TILE, 6.5f * TILE ).name( "wall2" )
 				.dimensions( 2, 11 ).texture( testTexture ).kinematic( )
 				.oneSided( false ).restitution( 0 ).buildTilePlatform( );
-		wall.setCategoryMask( Util.KINEMATIC_OBJECTS, Util.CATEGORY_EVERYTHING );
+		wall.setCategoryMask( Util.CATEGORY_PLATFORMS, Util.CATEGORY_EVERYTHING );
 		skel1.addKinematicPlatform( wall );
 
 		ground = platBuilder.position( 181 * TILE, 11 * TILE ).name( "ground2" )
 				.dimensions( 40, 2 ).texture( testTexture ).kinematic( )
 				.oneSided( false ).restitution( 0 ).buildTilePlatform( );
-		ground.setCategoryMask( Util.KINEMATIC_OBJECTS,
+		ground.setCategoryMask( Util.CATEGORY_PLATFORMS,
 				Util.CATEGORY_EVERYTHING );
 		skel1.addKinematicPlatform( ground );
 
 		wall = platBuilder.position( 202 * TILE, 25 * TILE ).name( "wall3" )
 				.dimensions( 2, 30 ).texture( testTexture ).kinematic( )
 				.oneSided( false ).restitution( 0 ).buildTilePlatform( );
-		wall.setCategoryMask( Util.KINEMATIC_OBJECTS, Util.CATEGORY_EVERYTHING );
+		wall.setCategoryMask( Util.CATEGORY_PLATFORMS, Util.CATEGORY_EVERYTHING );
 		skel1.addKinematicPlatform( wall );
 
 		rootSkeleton.addSkeleton( skel1 );
@@ -574,7 +574,7 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		ground = platBuilder.position( 131 * TILE, 22 * TILE ).name( "ground3" )
 				.dimensions( 68, 2 ).texture( testTexture ).kinematic( )
 				.oneSided( false ).restitution( 0 ).buildTilePlatform( );
-		ground.setCategoryMask( Util.KINEMATIC_OBJECTS,
+		ground.setCategoryMask( Util.CATEGORY_PLATFORMS,
 				Util.CATEGORY_EVERYTHING );
 		skel2.addKinematicPlatform( ground );
 
@@ -623,7 +623,7 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 				.name( "wall4" ).dimensions( 2, 100 ).texture( testTexture )
 				.kinematic( ).oneSided( false ).restitution( 0 )
 				.buildTilePlatform( );
-		wall.setCategoryMask( Util.KINEMATIC_OBJECTS, Util.CATEGORY_EVERYTHING );
+		wall.setCategoryMask( Util.CATEGORY_PLATFORMS, Util.CATEGORY_EVERYTHING );
 		skel2.addKinematicPlatform( wall );
 
 		rootSkeleton.addSkeleton( skel2 );
@@ -645,14 +645,14 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		plat = platBuilder.position( 133.5f * TILE, 45 * TILE ).name( "plat10" )
 				.dimensions( 1, 6 ).texture( testTexture ).kinematic( )
 				.oneSided( false ).restitution( 0 ).buildTilePlatform( );
-		plat.setCategoryMask( Util.KINEMATIC_OBJECTS, Util.CATEGORY_EVERYTHING );
+		plat.setCategoryMask( Util.CATEGORY_PLATFORMS, Util.CATEGORY_EVERYTHING );
 		skel3.addKinematicPlatform( plat );
 
 		// the gate platform
 		plat = platBuilder.position( 133.5f * TILE, 45 * TILE ).name( "plat10" )
 				.dimensions( 1, 6 ).texture( testTexture ).kinematic( )
 				.oneSided( false ).restitution( 0 ).buildTilePlatform( );
-		plat.setCategoryMask( Util.KINEMATIC_OBJECTS, Util.CATEGORY_EVERYTHING );
+		plat.setCategoryMask( Util.CATEGORY_PLATFORMS, Util.CATEGORY_EVERYTHING );
 		skel3.addKinematicPlatform( plat );
 
 		// puzzle that controls the elevator of the room and the gate
@@ -673,7 +673,7 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 				.name( "ground4" ).dimensions( 8, 1 ).texture( testTexture )
 				.kinematic( ).oneSided( false ).restitution( 0 )
 				.buildTilePlatform( );
-		ground.setCategoryMask( Util.KINEMATIC_OBJECTS,
+		ground.setCategoryMask( Util.CATEGORY_PLATFORMS,
 				Util.CATEGORY_EVERYTHING );
 		skel3.addKinematicPlatform( ground );
 
@@ -681,7 +681,7 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		plat = platBuilder.position( 129f * TILE, 49 * TILE ).name( "plat9" )
 				.dimensions( 3, 8 ).texture( testTexture ).dynamic( )
 				.oneSided( false ).restitution( 0 ).buildTilePlatform( );
-		plat.setCategoryMask( Util.DYNAMIC_OBJECTS, Util.CATEGORY_EVERYTHING );
+		plat.setCategoryMask( Util.CATEGORY_PLATFORMS, Util.CATEGORY_EVERYTHING );
 		plat.body.setFixedRotation( false );
 		rotatingRoom.addDynamicPlatform( plat );
 
@@ -708,7 +708,7 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		// "plat9" )
 		// .dimensions( 1, 7 ).texture( testTexture ).dynamic( )
 		// .oneSided( false ).restitution( 0 ).buildTilePlatform( );
-		// plat.setCategoryMask( Util.DYNAMIC_OBJECTS, Util.CATEGORY_PLAYER );
+		// plat.setCategoryMask( Util.CATEGORY_PLATFORMS, Util.CATEGORY_PLAYER );
 		// plat.body.setFixedRotation( false );
 		// rotatingRoom.addDynamicPlatform( plat );
 		//
@@ -732,7 +732,7 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		// plat = platBuilder.position( 118f * TILE, 52 * TILE ).name( "plat9" )
 		// .dimensions( 2, 1 ).texture( testTexture ).dynamic( )
 		// .oneSided( false ).restitution( 0 ).buildTilePlatform( );
-		// plat.setCategoryMask( Util.DYNAMIC_OBJECTS, Util.CATEGORY_EVERYTHING
+		// plat.setCategoryMask( Util.CATEGORY_PLATFORMS, Util.CATEGORY_EVERYTHING
 		// );
 		// plat.body.setFixedRotation( false );
 		// rotatingRoom.addDynamicPlatform( plat );
@@ -750,7 +750,7 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		plat = platBuilder.position( 123f * TILE, 43f * TILE ).name( "plat9" )
 				.dimensions( 7, 1 ).texture( testTexture ).dynamic( )
 				.oneSided( false ).restitution( 0 ).buildTilePlatform( );
-		plat.setCategoryMask( Util.DYNAMIC_OBJECTS, Util.CATEGORY_EVERYTHING );
+		plat.setCategoryMask( Util.CATEGORY_PLATFORMS, Util.CATEGORY_EVERYTHING );
 		plat.body.setFixedRotation( false );
 		rotatingRoom.addDynamicPlatform( plat );
 		Screw s3 = new ScrewBuilder( )
@@ -773,7 +773,7 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 				.name( "ground4" ).dimensions( 100, 1 ).texture( testTexture )
 				.kinematic( ).oneSided( false ).restitution( 0 )
 				.buildTilePlatform( );
-		ground.setCategoryMask( Util.KINEMATIC_OBJECTS,
+		ground.setCategoryMask( Util.CATEGORY_PLATFORMS,
 				Util.CATEGORY_EVERYTHING );
 		skel3.addKinematicPlatform( ground );
 
@@ -781,26 +781,26 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 				.name( "ground4" ).dimensions( 50, 1 ).texture( testTexture )
 				.kinematic( ).oneSided( false ).restitution( 0 )
 				.buildTilePlatform( );
-		ground.setCategoryMask( Util.KINEMATIC_OBJECTS,
+		ground.setCategoryMask( Util.CATEGORY_PLATFORMS,
 				Util.CATEGORY_EVERYTHING );
 		skel3.addKinematicPlatform( ground );
 
 		plat = platBuilder.position( 135f * TILE, 58 * TILE ).name( "plat9" )
 				.dimensions( 1, 25 ).texture( testTexture ).kinematic( )
 				.oneSided( false ).restitution( 0 ).buildTilePlatform( );
-		plat.setCategoryMask( Util.KINEMATIC_OBJECTS, Util.CATEGORY_EVERYTHING );
+		plat.setCategoryMask( Util.CATEGORY_PLATFORMS, Util.CATEGORY_EVERYTHING );
 		skel3.addKinematicPlatform( plat );
 
 		plat = platBuilder.position( 185f * TILE, 58 * TILE ).name( "plat9" )
 				.dimensions( 1, 25 ).texture( testTexture ).kinematic( )
 				.oneSided( false ).restitution( 0 ).buildTilePlatform( );
-		plat.setCategoryMask( Util.KINEMATIC_OBJECTS, Util.CATEGORY_EVERYTHING );
+		plat.setCategoryMask( Util.CATEGORY_PLATFORMS, Util.CATEGORY_EVERYTHING );
 		skel3.addKinematicPlatform( plat );
 
 		plat = platBuilder.position( 195f * TILE, 67 * TILE ).name( "plat9" )
 				.dimensions( 1, 50 ).texture( testTexture ).kinematic( )
 				.oneSided( false ).restitution( 0 ).buildTilePlatform( );
-		plat.setCategoryMask( Util.KINEMATIC_OBJECTS, Util.CATEGORY_EVERYTHING );
+		plat.setCategoryMask( Util.CATEGORY_PLATFORMS, Util.CATEGORY_EVERYTHING );
 		skel3.addKinematicPlatform( plat );
 
 		rootSkeleton.addSkeleton( skel3 );
@@ -825,7 +825,7 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		plat = platBuilder.position( 190f * TILE, 55 * TILE ).name( "plat9" )
 				.dimensions( 4, 1 ).texture( testTexture ).kinematic( )
 				.oneSided( true ).restitution( 0 ).buildTilePlatform( );
-		plat.setCategoryMask( Util.KINEMATIC_OBJECTS, Util.CATEGORY_EVERYTHING );
+		plat.setCategoryMask( Util.CATEGORY_PLATFORMS, Util.CATEGORY_EVERYTHING );
 		skel3.addKinematicPlatform( plat );
 
 		skel6 = new Skeleton( "skel6", new Vector2( 0, 0 ), null, world );
@@ -869,7 +869,7 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 				.dimensions( 7, 1 ).texture( testTexture ).kinematic( )
 				.friction( 1.0f ).oneSided( true ).restitution( 0 )
 				.buildTilePlatform( );
-		plat.setCategoryMask( Util.KINEMATIC_OBJECTS, Util.CATEGORY_EVERYTHING );
+		plat.setCategoryMask( Util.CATEGORY_PLATFORMS, Util.CATEGORY_EVERYTHING );
 		skel7.addKinematicPlatform( plat );
 
 		PathBuilder pb = new PathBuilder( );
@@ -881,7 +881,7 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 				.dimensions( 7, 1 ).texture( testTexture ).kinematic( )
 				.friction( 1.0f ).oneSided( true ).restitution( 0 )
 				.buildTilePlatform( );
-		plat.setCategoryMask( Util.KINEMATIC_OBJECTS, Util.CATEGORY_EVERYTHING );
+		plat.setCategoryMask( Util.CATEGORY_PLATFORMS, Util.CATEGORY_EVERYTHING );
 		skel7.addKinematicPlatform( plat );
 
 		PathBuilder pb2 = new PathBuilder( );
@@ -893,7 +893,7 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 				.dimensions( 7, 1 ).texture( testTexture ).kinematic( )
 				.friction( 1.0f ).oneSided( true ).restitution( 0 )
 				.buildTilePlatform( );
-		plat.setCategoryMask( Util.KINEMATIC_OBJECTS, Util.CATEGORY_EVERYTHING );
+		plat.setCategoryMask( Util.CATEGORY_PLATFORMS, Util.CATEGORY_EVERYTHING );
 		skel7.addKinematicPlatform( plat );
 
 		PathBuilder pb3 = new PathBuilder( );
@@ -905,7 +905,7 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 				.dimensions( 7, 1 ).texture( testTexture ).kinematic( )
 				.friction( 1.0f ).oneSided( true ).restitution( 0 )
 				.buildTilePlatform( );
-		plat.setCategoryMask( Util.KINEMATIC_OBJECTS, Util.CATEGORY_EVERYTHING );
+		plat.setCategoryMask( Util.CATEGORY_PLATFORMS, Util.CATEGORY_EVERYTHING );
 		skel7.addKinematicPlatform( plat );
 
 		PathBuilder pb4 = new PathBuilder( );
@@ -919,21 +919,21 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 				.dimensions( 37, 1 ).texture( testTexture ).kinematic( )
 				.friction( 1.0f ).oneSided( false ).restitution( 0 )
 				.buildTilePlatform( );
-		plat.setCategoryMask( Util.KINEMATIC_OBJECTS, Util.CATEGORY_EVERYTHING );
+		plat.setCategoryMask( Util.CATEGORY_PLATFORMS, Util.CATEGORY_EVERYTHING );
 		skel7.addKinematicPlatform( plat );
 
 		plat = platBuilder.position( 148f * TILE, 80 * TILE ).name( "plat9" )
 				.dimensions( 75, 1 ).texture( testTexture ).kinematic( )
 				.friction( 1.0f ).oneSided( false ).restitution( 0 )
 				.buildTilePlatform( );
-		plat.setCategoryMask( Util.KINEMATIC_OBJECTS, Util.CATEGORY_EVERYTHING );
+		plat.setCategoryMask( Util.CATEGORY_PLATFORMS, Util.CATEGORY_EVERYTHING );
 		skel7.addKinematicPlatform( plat );
 
 		plat = platBuilder.position( 185f * TILE, 92 * TILE ).name( "plat9" )
 				.dimensions( 1, 25 ).texture( testTexture ).kinematic( )
 				.friction( 1.0f ).oneSided( false ).restitution( 0 )
 				.buildTilePlatform( );
-		plat.setCategoryMask( Util.KINEMATIC_OBJECTS, Util.CATEGORY_EVERYTHING );
+		plat.setCategoryMask( Util.CATEGORY_PLATFORMS, Util.CATEGORY_EVERYTHING );
 		skel7.addKinematicPlatform( plat );
 
 		rootSkeleton.addSkeleton( skel7 );
@@ -947,7 +947,7 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 				.dimensions( 5, 1 ).texture( testTexture ).kinematic( )
 				.friction( 1.0f ).oneSided( true ).restitution( 0 )
 				.buildTilePlatform( );
-		plat.setCategoryMask( Util.KINEMATIC_OBJECTS, Util.CATEGORY_EVERYTHING );
+		plat.setCategoryMask( Util.CATEGORY_PLATFORMS, Util.CATEGORY_EVERYTHING );
 		skel8.addKinematicPlatform( plat );
 
 		PuzzleScrew puzzleScrew = new PuzzleScrew( "001", new Vector2(
@@ -991,14 +991,14 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 				.buildTilePlatform( );
 
 		plat.setCrushing( true );
-		plat.setCategoryMask( Util.KINEMATIC_OBJECTS, Util.CATEGORY_EVERYTHING );
+		plat.setCategoryMask( Util.CATEGORY_PLATFORMS, Util.CATEGORY_EVERYTHING );
 		skel9.addKinematicPlatform( plat );
 
 		plat = platBuilder.position( 130f * TILE, 89 * TILE ).name( "plat10" )
 				.dimensions( 1, 6 ).texture( testTexture ).kinematic( )
 				.friction( 1.0f ).oneSided( true ).restitution( 0 )
 				.buildTilePlatform( );
-		plat.setCategoryMask( Util.KINEMATIC_OBJECTS, Util.CATEGORY_EVERYTHING );
+		plat.setCategoryMask( Util.CATEGORY_PLATFORMS, Util.CATEGORY_EVERYTHING );
 		skel9.addKinematicPlatform( plat );
 
 		PuzzleScrew puzzleScrew = new PuzzleScrew( "004", new Vector2(
@@ -1017,7 +1017,7 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 				.dimensions( 1, 6 ).texture( testTexture ).kinematic( )
 				.friction( 1.0f ).oneSided( true ).restitution( 0 )
 				.buildTilePlatform( );
-		plat.setCategoryMask( Util.KINEMATIC_OBJECTS, Util.CATEGORY_EVERYTHING );
+		plat.setCategoryMask( Util.CATEGORY_PLATFORMS, Util.CATEGORY_EVERYTHING );
 		skel9.addKinematicPlatform( plat );
 
 		PuzzleScrew puzzleScrew2 = new PuzzleScrew( "006", new Vector2(
