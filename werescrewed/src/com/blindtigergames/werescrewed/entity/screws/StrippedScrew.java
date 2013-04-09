@@ -33,9 +33,10 @@ public class StrippedScrew extends Screw {
 	 * @param entity
 	 * @param world
 	 */
-	public StrippedScrew( String name, Vector2 pos, Entity entity, World world) {
+	public StrippedScrew( String name, Vector2 pos, Entity entity, World world, Vector2 detachDirection ) {
 		super( name, pos, null );
 		this.world = world;
+		this.detachDirection = detachDirection;
 		screwType = ScrewType.SCREW_STRIPPED;
 		entityType = EntityType.SCREW;
 		extraJoints = new ArrayList< Joint >( );

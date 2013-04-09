@@ -402,7 +402,7 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 	private void buildArmSkeleton( ) {
 		// puzzle screw that controls the gate
 		PuzzleScrew pscrewtop = new PuzzleScrew( "armpuzzle", new Vector2(
-				1670, 870 ), 50, skel1, world, 0, false );
+				1670, 870 ), 50, skel1, world, 0, false, Vector2.Zero );
 		// block platform
 		plat = platBuilder.position( 1800, 800 ).name( "armstop" )
 				.dimensions( 15, 1 ).texture( testTexture ).kinematic( )
@@ -471,7 +471,7 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		upperArmSkeleton.setMoverAtCurrentState( rtm1 );
 		// puzzle screw that controls the initial arm move
 		PuzzleScrew pscrewbottom = new PuzzleScrew( "armpuzzle", new Vector2(
-				1200, 320 ), 5000, skel1, world, 0, false );
+				1200, 320 ), 5000, skel1, world, 0, false, Vector2.Zero );
 		pscrewbottom.puzzleManager.addEntity( upperArmSkeleton );
 		pscrewbottom.puzzleManager.addMover( rtm1 );
 		skel1.addScrewForDraw( pscrewbottom );
@@ -482,7 +482,7 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		// puzzle screw that controls the analog arm puzzle
 		PuzzleScrew shoulderJoint = new PuzzleScrew( "dynamic_skeleton_joint",
 				new Vector2( 1000, 800 ), 5000, upperArmSkeleton, world, 5000,
-				false );
+				false, Vector2.Zero );
 		// joints the arm to the background
 		shoulderJoint.addStructureJoint( skel1 );
 		// joints the upper arm platform to the skeleton
@@ -491,13 +491,13 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		shoulderJoint.puzzleManager.addMover( anlgRot );
 		// joints the first dynamic skeleton to the second dynamic skeleton
 		StrippedScrew elbowJoint = new StrippedScrew( "dynamic_skeleton_joint",
-				new Vector2( 700, 800 ), upperArmSkeleton, world );
+				new Vector2( 700, 800 ), upperArmSkeleton, world, Vector2.Zero );
 		elbowJoint.addStructureJoint( upperArm );
 		elbowJoint.addStructureJoint( lowerArm );
 		elbowJoint.addStructureJoint( lowerArmSkeleton );
 		StrippedScrew platJoint1 = new StrippedScrew(
 				"dynamic_skeleton_joint2", new Vector2( 400, 800 ), lowerArm,
-				world );
+				world, Vector2.Zero );
 		// platJoint1.addStructureJoint( secondLowArm );
 		skel1.addSkeleton( upperArmSkeleton );
 		skel1.addSkeleton( lowerArmSkeleton );
@@ -517,15 +517,15 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		// PUZZLE 1 //
 
 		strScrew = new StrippedScrew( "strScrew1", new Vector2( 170 * TILE,
-				17 * TILE ), skel2, world );
+				17 * TILE ), skel2, world, Vector2.Zero );
 		skel2.addStrippedScrew( strScrew );
 
 		strScrew = new StrippedScrew( "strScrew2", new Vector2( 185 * TILE,
-				17 * TILE ), skel2, world );
+				17 * TILE ), skel2, world, Vector2.Zero );
 		skel2.addStrippedScrew( strScrew );
 
 		strScrew = new StrippedScrew( "strScrew3", new Vector2( 190 * TILE,
-				17 * TILE ), skel2, world );
+				17 * TILE ), skel2, world, Vector2.Zero );
 		skel2.addStrippedScrew( strScrew );
 
 		plat = platBuilder.position( 180 * TILE, 19 * TILE ).name( "plat6" )
@@ -539,11 +539,11 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		skel2.addKinematicPlatform( plat );
 
 		strScrew = new StrippedScrew( "strScrew3", new Vector2( 190 * TILE,
-				24 * TILE ), skel2, world );
+				24 * TILE ), skel2, world, Vector2.Zero );
 		skel2.addStrippedScrew( strScrew );
 
 		strScrew = new StrippedScrew( "strScrew3", new Vector2( 185 * TILE,
-				24 * TILE ), skel2, world );
+				24 * TILE ), skel2, world, Vector2.Zero );
 		skel2.addStrippedScrew( strScrew );
 
 		plat = platBuilder.position( 195 * TILE, 25 * TILE ).name( "plat7" )
@@ -564,11 +564,11 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		// PUZZLE 2 //
 
 		strScrew = new StrippedScrew( "strScrew4", new Vector2( 178 * TILE,
-				34 * TILE ), skel2, world );
+				34 * TILE ), skel2, world, Vector2.Zero );
 		skel2.addStrippedScrew( strScrew );
 
 		strScrew = new StrippedScrew( "strScrew5", new Vector2( 171 * TILE,
-				34 * TILE ), skel2, world );
+				34 * TILE ), skel2, world, Vector2.Zero );
 		skel2.addStrippedScrew( strScrew );
 
 		ground = platBuilder.position( 131 * TILE, 22 * TILE ).name( "ground3" )
@@ -586,37 +586,37 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		skel2.addKinematicPlatform( plat );
 
 		strScrew = new StrippedScrew( "strScrew6", new Vector2( 139 * TILE,
-				29 * TILE ), skel2, world );
+				29 * TILE ), skel2, world, Vector2.Zero );
 		skel2.addStrippedScrew( strScrew );
 
 		strScrew = new StrippedScrew( "strScrew7", new Vector2( 134 * TILE,
-				34 * TILE ), skel2, world );
+				34 * TILE ), skel2, world, Vector2.Zero );
 		skel2.addStrippedScrew( strScrew );
 
 		strScrew = new StrippedScrew( "strScrew8", new Vector2( 119 * TILE,
-				34 * TILE ), skel2, world );
+				34 * TILE ), skel2, world, Vector2.Zero );
 		skel2.addStrippedScrew( strScrew );
 
 		strScrew = new StrippedScrew( "strScrew9", new Vector2( 115 * TILE,
-				29 * TILE ), skel2, world );
+				29 * TILE ), skel2, world, Vector2.Zero );
 		skel2.addStrippedScrew( strScrew );
 
 		// PUZZLE 4 //
 
 		strScrew = new StrippedScrew( "strScrew10", new Vector2( 105 * TILE,
-				29 * TILE ), skel2, world );
+				29 * TILE ), skel2, world, Vector2.Zero );
 		skel2.addStrippedScrew( strScrew );
 
 		strScrew = new StrippedScrew( "strScrew11", new Vector2( 101 * TILE,
-				34 * TILE ), skel2, world );
+				34 * TILE ), skel2, world, Vector2.Zero );
 		skel2.addStrippedScrew( strScrew );
 
 		strScrew = new StrippedScrew( "strScrew12", new Vector2( 109 * TILE,
-				34 * TILE ), skel2, world );
+				34 * TILE ), skel2, world, Vector2.Zero );
 		skel2.addStrippedScrew( strScrew );
 
 		strScrew = new StrippedScrew( "strScrew13", new Vector2( 105 * TILE,
-				39 * TILE ), skel2, world );
+				39 * TILE ), skel2, world, Vector2.Zero );
 		skel2.addStrippedScrew( strScrew );
 
 		wall = platBuilder.position( 96.5f * TILE, 71.5f * TILE )
@@ -658,7 +658,7 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		// puzzle that controls the elevator of the room and the gate
 		PuzzleScrew elevatorscrew1 = new PuzzleScrew( "elevatorControlinside",
 				rotatingRoom.getPositionPixel( ).add( 64, -64 ), 500,
-				rotatingRoom, world, 0, false );
+				rotatingRoom, world, 0, false, Vector2.Zero );
 		// add the entities and movers
 		elevatorscrew1.puzzleManager.addEntity( rotatingRoom );
 		elevatorscrew1.puzzleManager.addMover( new PuzzleRotateTweenMover( 2f,
@@ -810,11 +810,11 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		skel4 = new Skeleton( "skel4", new Vector2( 0, 0 ), null, world );
 
 		strScrew = new StrippedScrew( "strScrew4", new Vector2( 192f * TILE,
-				46 * TILE ), skel4, world );
+				46 * TILE ), skel4, world, Vector2.Zero );
 		skel4.addStrippedScrew( strScrew );
 
 		strScrew = new StrippedScrew( "strScrew4", new Vector2( 188f * TILE,
-				46 * TILE ), skel4, world );
+				46 * TILE ), skel4, world, Vector2.Zero );
 		skel4.addStrippedScrew( strScrew );
 
 		PathBuilder pb = new PathBuilder( );
@@ -831,11 +831,11 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		skel6 = new Skeleton( "skel6", new Vector2( 0, 0 ), null, world );
 
 		strScrew = new StrippedScrew( "strScrew4", new Vector2( 192f * TILE,
-				65 * TILE ), skel6, world );
+				65 * TILE ), skel6, world, Vector2.Zero );
 		skel6.addStrippedScrew( strScrew );
 
 		strScrew = new StrippedScrew( "strScrew4", new Vector2( 188f * TILE,
-				65 * TILE ), skel6, world );
+				65 * TILE ), skel6, world, Vector2.Zero );
 		skel6.addStrippedScrew( strScrew );
 		PathBuilder pb3 = new PathBuilder( );
 		skel6.addMover( pb3.begin( skel6 ).target( 0, -150, 3 )
@@ -844,11 +844,11 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 
 		skel5 = new Skeleton( "skel5", new Vector2( 0, 0 ), null, world );
 		strScrew = new StrippedScrew( "strScrew4", new Vector2( 192f * TILE,
-				69 * TILE ), skel5, world );
+				69 * TILE ), skel5, world, Vector2.Zero );
 		skel5.addStrippedScrew( strScrew );
 
 		strScrew = new StrippedScrew( "strScrew4", new Vector2( 188f * TILE,
-				69 * TILE ), skel5, world );
+				69 * TILE ), skel5, world, Vector2.Zero );
 		skel5.addStrippedScrew( strScrew );
 
 		PathBuilder pb2 = new PathBuilder( );
@@ -951,7 +951,7 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		skel8.addKinematicPlatform( plat );
 
 		PuzzleScrew puzzleScrew = new PuzzleScrew( "001", new Vector2(
-				109f * TILE, 73 * TILE ), 100, skel8, world, 0, false );
+				109f * TILE, 73 * TILE ), 100, skel8, world, 0, false, Vector2.Zero );
 		LerpMover lm2 = new LerpMover( new Vector2( plat.body.getPosition( ).x
 				* Util.BOX_TO_PIXEL, plat.body.getPosition( ).y
 				* Util.BOX_TO_PIXEL ), new Vector2( plat.body.getPosition( ).x,
@@ -964,7 +964,7 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		skeleton.addScrewForDraw( puzzleScrew );
 
 		PuzzleScrew puzzleScrew2 = new PuzzleScrew( "001", new Vector2(
-				113f * TILE, 83 * TILE ), 100, skel8, world, 0, false );
+				113f * TILE, 83 * TILE ), 100, skel8, world, 0, false, Vector2.Zero );
 		// LerpMover lm3 = new LerpMover( new Vector2( plat.body.getPosition(
 		// ).x,
 		// plat.body.getPosition( ).y + 1.5f ).mul( Util.BOX_TO_PIXEL ),
@@ -1002,7 +1002,7 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		skel9.addKinematicPlatform( plat );
 
 		PuzzleScrew puzzleScrew = new PuzzleScrew( "004", new Vector2(
-				130f * TILE, 83 * TILE ), 100, skel9, world, 0, false );
+				130f * TILE, 83 * TILE ), 100, skel9, world, 0, false, Vector2.Zero );
 		@SuppressWarnings( "unused" )
 		RotateByDegree rm = new RotateByDegree( 0.0f, -90.0f, 0, 0.5f );
 
@@ -1021,7 +1021,7 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		skel9.addKinematicPlatform( plat );
 
 		PuzzleScrew puzzleScrew2 = new PuzzleScrew( "006", new Vector2(
-				143f * TILE, 83 * TILE ), 100, skel9, world, 0, false );
+				143f * TILE, 83 * TILE ), 100, skel9, world, 0, false, Vector2.Zero );
 		plat.setActive( true );
 		puzzleScrew2.puzzleManager.addEntity( plat );
 		PuzzleRotateTweenMover rtm2 = new PuzzleRotateTweenMover( 1,
@@ -1034,7 +1034,7 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		// texture only exists for 16x64 rope, which are default values for w/h
 		testRope = ropeBuilder.position( 154f * TILE, 104 * TILE ).links( 5 )
 				.createScrew( ).buildRope( );
-		skel9.addRope( testRope );
+		skel9.addRope( testRope, true );
 
 		// StrippedScrew ropeScrew = new StrippedScrew( "ropeScrew", world,
 		// new Vector2 ( 154f * TILE, 93 * TILE ), testRope.getLastLink( ) );
@@ -1048,7 +1048,7 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		bossBolt = new BossScrew( "", new Vector2( plat.body.getPosition( ).x
 				* Util.BOX_TO_PIXEL + ( plat.getMeterWidth( ) / 2 ),
 				plat.body.getPosition( ).y * Util.BOX_TO_PIXEL ), 50, plat,
-				world );
+				world, Vector2.Zero );
 		bossBolt.addStructureJoint( skel9 );
 		plat.addScrew( bossBolt );
 		// specialPlat = platBuilder.position( 175f * TILE, 84 * TILE ).name(

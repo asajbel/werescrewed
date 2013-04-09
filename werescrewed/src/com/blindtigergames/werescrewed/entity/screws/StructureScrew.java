@@ -25,9 +25,10 @@ import com.blindtigergames.werescrewed.util.Util;
 public class StructureScrew extends Screw {
 
 	public StructureScrew( String name, Vector2 pos, int max, Entity entity,
-			World world ) {
+			World world, Vector2 detachDirection ) {
 		super( name, pos, null );
 		this.world = world;
+		this.detachDirection = detachDirection;
 		maxDepth = max;
 		depth = max;
 		rotation = 0;
@@ -41,9 +42,10 @@ public class StructureScrew extends Screw {
 		addStructureJoint( entity );
 	}
 
-	public StructureScrew( String name, Vector2 pos, int max, World world ) {
+	public StructureScrew( String name, Vector2 pos, int max, World world, Vector2 detachDirection) {
 		super( name, pos, null );
 		this.world = world;
+		this.detachDirection = detachDirection;
 		maxDepth = max;
 		depth = max;
 		rotation = 0;

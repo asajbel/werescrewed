@@ -117,7 +117,7 @@ public class GleedTestScreen extends Screen {
 
 		PuzzleScrew puzzleScrew = new PuzzleScrew( "006", new Vector2(
 				skel2.getPositionPixel( ).x, skel2.getPositionPixel( ).y ),
-				100, skel2, level.world, 0, false );
+				100, skel2, level.world, 0, false, Vector2.Zero );
 
 		PuzzleRotateTweenMover rtm1 = new PuzzleRotateTweenMover( 1, -1
 				* Util.PI / 2, true, PuzzleType.ON_OFF_MOVER );

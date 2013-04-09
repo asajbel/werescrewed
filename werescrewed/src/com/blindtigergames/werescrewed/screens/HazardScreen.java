@@ -193,10 +193,10 @@ public class HazardScreen implements com.badlogic.gdx.Screen {
 		crusher.setCrushing( true );
 		skeleton.addDynamicPlatform( crusher );
 		struct1 = new StructureScrew( "struct1", crusher.getPositionPixel( )
-				.add( new Vector2( -50f, 0f ) ), 50, crusher, world );
+				.add( new Vector2( -50f, 0f ) ), 50, crusher, world, new Vector2( 0, 1 ) );
 		struct1.addStructureJoint( skeleton );
 		struct2 = new StructureScrew( "struct1", crusher.getPositionPixel( )
-				.add( new Vector2( 50f, 0f ) ), 50, crusher, world );
+				.add( new Vector2( 50f, 0f ) ), 50, crusher, world, new Vector2( 0, 1 ) );
 		struct2.addStructureJoint( skeleton );
 		skeleton.addScrewForDraw( struct1 );
 		skeleton.addScrewForDraw( struct2 );
