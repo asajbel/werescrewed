@@ -3,6 +3,7 @@ package com.blindtigergames.werescrewed.eventTrigger;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
@@ -14,10 +15,11 @@ import com.badlogic.gdx.utils.Array;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityType;
 import com.blindtigergames.werescrewed.entity.action.IAction;
+import com.blindtigergames.werescrewed.entity.platforms.Platform;
 import com.blindtigergames.werescrewed.util.Util;
 
 
-public class EventTrigger extends Entity{
+public class EventTrigger extends Platform{
 	
 	private boolean repeatable = false;
 	private boolean activated = false;
@@ -29,8 +31,9 @@ public class EventTrigger extends Entity{
 	private boolean actOnEntity = false;
 	
 	public EventTrigger(String name, World world){
-		super(name, null, null, null, false );
-		this.world = world;
+		super(name, Vector2.Zero, null, world );
+		//String name, Vector2 pos, Texture tex, World world
+		//this.world = world;
 		entityType = EntityType.EVENTTRIGGER;
 		entityList = new ArrayList<Entity>();
 	}
@@ -38,7 +41,7 @@ public class EventTrigger extends Entity{
 	public void constructCircleBody(float radiusPixel, Vector2 positionPixel){
 		
 		BodyDef bodyDef = new BodyDef( );
-		bodyDef.type = BodyType.KinematicBody;
+		bodyDef.type = BodyType.StaticBody;
 		bodyDef.position.set( positionPixel.mul( Util.PIXEL_TO_BOX ));
 		body = world.createBody( bodyDef );
 		
@@ -60,7 +63,7 @@ public class EventTrigger extends Entity{
 	
 	public void contructRectangleBody(float heightPixels, float widthPixels, Vector2 positionPixel){
 		BodyDef bodyDef = new BodyDef( );
-		bodyDef.type = BodyType.KinematicBody;
+		bodyDef.type = BodyType.StaticBody;
 		bodyDef.position.set( positionPixel.mul( Util.PIXEL_TO_BOX ));
 		body = world.createBody( bodyDef );
 		
@@ -80,9 +83,9 @@ public class EventTrigger extends Entity{
 		polygon.dispose( );
 	}
 	
-	public void constructVertBody(Array<Vector2> vertices, Vector2 positionPixel){
+	public void constructVertBody(Array<Vector2> vertices, Vector2 positionPixel, float additionalBorderPix){
 		BodyDef bodyDef = new BodyDef( );
-		bodyDef.type = BodyType.KinematicBody;
+		bodyDef.type = BodyType.StaticBody;
 		bodyDef.position.set( positionPixel.mul( Util.PIXEL_TO_BOX ));
 		body = world.createBody( bodyDef );
 		
@@ -96,6 +99,8 @@ public class EventTrigger extends Entity{
 			if(j == vertices.size - 1) continue;
 			Vector2 v = vertices.get( j );
 			verts[i] = new Vector2(v.x * Util.PIXEL_TO_BOX, v.y * Util.PIXEL_TO_BOX);
+			Vector2 norm = verts[i].cpy( ).nor( ).mul( additionalBorderPix ).mul(Util.PIXEL_TO_BOX);
+			verts[i].add( norm );
 			++i;
 		}
 		polygon.set( verts );
@@ -114,26 +119,33 @@ public class EventTrigger extends Entity{
 	}
 	
 	/**
-	 * For use with a skeleton
+	 * For use with a skeleton for fg and bg triggers
 	 * @param vertsPixels The skeleton background's polysprite points.
 	 * @param positionPixel
 	 */
-	public void constructSkeletonPolygonBody(Array< Vector2 > vertsPixels, Vector2 positionPixel ){
+	private void constructPolygonBody(Array< Vector2 > vertsPixels, Vector2 positionPixel, float additionalBorderPix ){
 		BodyDef bodyDef = new BodyDef( );
-		bodyDef.type = BodyType.KinematicBody;
-		bodyDef.position.set( positionPixel.mul( Util.PIXEL_TO_BOX ));
+		bodyDef.type = BodyType.StaticBody;
+		bodyDef.position.set( positionPixel.cpy().mul( Util.PIXEL_TO_BOX ));
 		body = world.createBody( bodyDef );
 		
 		//Deep copy verts so we can turn the pixel position into meters.
 		//We also have to modify the size of the points to give the skeletons a buffer in which 
 		//they activate/deactivate.
-		Vector2[] vertsMeters = new Vector2[vertsPixels.size];
-		for(int i =0; i < vertsPixels.size; ++i ){
-			Vector2 newPoint = vertsPixels.get( i ).cpy( );
-			Vector2 norm = newPoint.cpy( ).nor( ).mul( Util.SKELETON_ACTIVE_BORDER );//may divide by 0
-			newPoint.add( norm ).mul( Util.PIXEL_TO_BOX );
-			vertsMeters[i]= newPoint ;
-			Gdx.app.log( "ET:", "From point"+vertsPixels.get( i ).cpy( ).mul( Util.PIXEL_TO_BOX )+" To:"+newPoint );
+		Vector2[] vertsMeters;
+		int size = vertsPixels.size;
+		while(vertsPixels.get(size-1)==null) --size;
+		if ( vertsPixels.get( size-1 ).equals( vertsPixels.get(0) ) ){
+			size-=1;
+		}
+		vertsMeters = new Vector2[size];
+		
+		for(int i =0; i < vertsMeters.length; ++i ){
+			Vector2 newPoint = vertsPixels.get( i ).cpy( ).mul(Util.PIXEL_TO_BOX);
+			Vector2 norm = newPoint.cpy( ).nor( ).mul( additionalBorderPix ).mul(Util.PIXEL_TO_BOX);//may divide by 0
+			newPoint.add( norm );
+			vertsMeters[i] = newPoint;
+			//Gdx.app.log( "ET:", "From point"+vertsPixels.get( i ).cpy( ).mul( 1 )+" To:"+newPoint.cpy( ).mul( Util.BOX_TO_PIXEL ) );
 		}
 		
 		PolygonShape polygon = new PolygonShape();
@@ -330,9 +342,9 @@ public class EventTrigger extends Entity{
 	 * @param - float deltaTime
 	 * @author Ranveer
 	 */
-	public void update( float deltaTime ){
-		
-	}
+//	public void update( float deltaTime ){
+//		
+//	}
 	
 	/**
 	 * triggers the beginning Action depending on if it takes two players to
@@ -433,7 +445,7 @@ public class EventTrigger extends Entity{
 							beginAction.act( e );
 							beginTriggeredOnce = true;
 							endTriggeredOnce = false;
-							Gdx.app.log( this.name,  " begin action " + beginAction.getClass( ).getSimpleName( ) );
+							//Gdx.app.log( this.name,  " begin action " + beginAction.getClass( ).getSimpleName( ) );
 						}
 					}
 				}
@@ -444,7 +456,7 @@ public class EventTrigger extends Entity{
 						beginAction.act( );
 						beginTriggeredOnce = true;
 						endTriggeredOnce = false;
-						Gdx.app.log( this.name,  " begin action " + beginAction.getClass( ).getSimpleName( ) );
+						//Gdx.app.log( this.name,  " begin action " + beginAction.getClass( ).getSimpleName( ) );
 					}
 				}
 			}
@@ -460,7 +472,7 @@ public class EventTrigger extends Entity{
 						beginAction.act( e );
 						beginTriggeredOnce = true;
 						endTriggeredOnce = false;
-						Gdx.app.log( this.name,  " begin action " + beginAction.getClass( ).getSimpleName( ));
+						//Gdx.app.log( this.name,  " begin action " + beginAction.getClass( ).getSimpleName( ));
 					}
 				}
 			}
@@ -471,7 +483,7 @@ public class EventTrigger extends Entity{
 					beginAction.act( );
 					beginTriggeredOnce = true;
 					endTriggeredOnce = false;
-					Gdx.app.log( this.name,  " begin action " + beginAction.getClass( ).getSimpleName( ) );
+					//Gdx.app.log( this.name,  " begin action " + beginAction.getClass( ).getSimpleName( ) );
 				}
 			}
 		}

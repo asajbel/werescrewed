@@ -2,6 +2,7 @@ package com.blindtigergames.werescrewed.entity;
 
 import java.util.ArrayList;
 import java.util.EnumMap;
+import java.util.HashMap;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
@@ -24,6 +25,7 @@ import com.blindtigergames.werescrewed.entity.animator.PlayerAnimator;
 import com.blindtigergames.werescrewed.entity.animator.SimpleFrameAnimator;
 import com.blindtigergames.werescrewed.entity.mover.IMover;
 import com.blindtigergames.werescrewed.graphics.TextureAtlas;
+import com.blindtigergames.werescrewed.graphics.particle.ParticleEffect;
 import com.blindtigergames.werescrewed.level.GleedLoadable;
 import com.blindtigergames.werescrewed.player.Player;
 import com.blindtigergames.werescrewed.util.Util;
@@ -62,6 +64,8 @@ public class Entity implements GleedLoadable {
 	private EnumMap< RobotState, Integer > robotStateMap;
 
 	private Skeleton parentSkeleton; // pointer to parent skele, set by skeleton
+
+	private HashMap< String, ParticleEffect > behindParticles, frontParticles;
 
 	/**
 	 * Create entity by definition
@@ -254,11 +258,22 @@ public class Entity implements GleedLoadable {
 	}
 
 	public void draw( SpriteBatch batch, float deltaTime ) {
+		drawParticles( behindParticles, batch );
 		if ( sprite != null && visible && !removeNextStep ) {
 			sprite.draw( batch );
 		}
 		// drawOrigin(batch);
 		drawDecals( batch );
+		drawParticles( frontParticles, batch );
+	}
+
+	private void drawParticles( HashMap< String, ParticleEffect > map,
+			SpriteBatch batch ) {
+		if ( map != null ) {
+			for ( ParticleEffect e : map.values( ) ) {
+				e.draw( batch );
+			}
+		}
 	}
 
 	public void drawOrigin( SpriteBatch batch ) {
@@ -308,9 +323,6 @@ public class Entity implements GleedLoadable {
 	}
 
 	public void update( float deltaTime ) {
-		// if ( removeNextStep ) {
-		// remove( );
-		// } else
 		if ( body != null ) {
 			// animation stuff may go here
 			Vector2 bodyPos = body.getPosition( ).mul( Util.BOX_TO_PIXEL );
@@ -331,6 +343,21 @@ public class Entity implements GleedLoadable {
 				sprite.update( deltaTime );
 			}
 			updateDecals( deltaTime );
+		}
+
+		updateParticleEffect( deltaTime, frontParticles );
+		updateParticleEffect( deltaTime, behindParticles );
+	}
+
+	private void updateParticleEffect( float deltaTime,
+			HashMap< String, ParticleEffect > map ) {
+		if ( map != null ) {
+			Vector2 pos = getPositionPixel( );
+			for ( ParticleEffect e : map.values( ) ) {
+				e.setPosition( pos.x, pos.y );
+				e.setAngle( body.getAngle( ) );
+				e.update( deltaTime );
+			}
 		}
 	}
 
@@ -974,5 +1001,41 @@ public class Entity implements GleedLoadable {
 			for ( int i = 0; i < body.getFixtureList( ).size( ); ++i )
 				body.getFixtureList( ).get( i ).setFilterData( filter );
 		}
+	}
+
+	public void addBehindParticleEffect( String name ) {
+		if ( behindParticles == null ) {
+			behindParticles = new HashMap< String, ParticleEffect >( );
+		}
+		addParticleEffect( name, behindParticles );
+
+	}
+
+	public void addFrontParticleEffect( String name ) {
+		if ( frontParticles == null ) {
+			frontParticles = new HashMap< String, ParticleEffect >( );
+		}
+		addParticleEffect( name, frontParticles );
+	}
+
+	private void addParticleEffect( String name,
+			HashMap< String, ParticleEffect > map ) {
+		ParticleEffect effect = ParticleEffect.loadEffect( name );
+		map.put( name, effect );
+	}
+
+	public ParticleEffect getEffect( String name ) {
+		
+		ParticleEffect out = null;
+		if ( behindParticles!=null)
+			out = behindParticles.get( name );
+		if ( out == null && frontParticles!=null ) {
+			out = frontParticles.get( name );
+			if ( out == null ) {
+				throw new NullPointerException(
+						"No particle effect exists with name: " + name );
+			}
+		}
+		return out;
 	}
 }

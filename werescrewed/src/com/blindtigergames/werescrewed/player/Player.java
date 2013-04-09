@@ -754,9 +754,10 @@ public class Player extends Entity {
 				 * hitCloud.sprite.reset( );
 				 */
 				if ( !world.isLocked( ) ) {
+					land_cloud.reset( );
 					land_cloud.start( );
 					Vector2 posPix = getPositionPixel( );
-					land_cloud.setPosition( posPix.x + 50, posPix.y );
+					land_cloud.setPosition( posPix.x+50, posPix.y );
 				}
 			}
 			this.grounded = newVal;

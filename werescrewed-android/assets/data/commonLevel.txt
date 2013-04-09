@@ -9,7 +9,6 @@
 ##texture atlas
 /common/tileset1.pack
 /common/TilesetTest.pack
-/common/tileset-teal.pack
 /common/autumn.pack
 /common/animations/player_r_m_1.pack
 /common/animations/player_r_m_2.pack
