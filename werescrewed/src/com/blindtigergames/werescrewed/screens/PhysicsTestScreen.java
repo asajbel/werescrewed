@@ -152,7 +152,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 				.kinematic( ).oneSided( false ).restitution( 0.0f )
 				.buildTilePlatform( );
 
-		ground.setCategoryMask( Util.KINEMATIC_OBJECTS,
+		ground.setCategoryMask( Util.CATEGORY_PLATFORMS,
 				Util.CATEGORY_EVERYTHING );
 		ground.body.getFixtureList( ).get( 0 ).getShape( ).setRadius( 0 );
 		skeleton.addKinematicPlatform( ground );
@@ -482,7 +482,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 				.kinematic( ).oneSided( false ).restitution( 0.0f )
 				.buildTilePlatform( );
 
-		ground.setCategoryMask( Util.KINEMATIC_OBJECTS,
+		ground.setCategoryMask( Util.CATEGORY_PLATFORMS,
 				Util.CATEGORY_EVERYTHING );
 		ground.body.getFixtureList( ).get( 0 ).getShape( ).setRadius( 0 );
 		skeleton.addKinematicPlatform( ground );

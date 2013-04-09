@@ -10,7 +10,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.Filter;
 import com.badlogic.gdx.physics.box2d.Fixture;
@@ -108,7 +107,6 @@ public class Player extends Entity {
 	private Player otherPlayer;
 	private RevoluteJoint playerJoint;
 	private Body platformBody;
-	// private Entity hitCloud;
 	private boolean topPlayer = false;
 	private boolean isDead = false;
 	private boolean hitSolidObject;
@@ -202,17 +200,6 @@ public class Player extends Entity {
 		anchor.special = true;
 		AnchorList.getInstance( ).addAnchor( anchor );
 
-		// build the hit cloud entity and animation
-		/*
-		 * hitCloud = new Entity( name + "_hitCloud", Vector2.Zero, null, null,
-		 * false ); SimpleFrameAnimator hitCloudAnimator = new
-		 * SimpleFrameAnimator( ) .speed( 1f ).loop( LoopBehavior.STOP
-		 * ).startFrame( 1 ) .maxFrames( 2 ).time( 0.0f ); hitCloud.sprite = new
-		 * Sprite( WereScrewedGame.manager.getTextureAtlas( "hitCloud" ),
-		 * hitCloudAnimator ); // set the frame to the last
-		 * hitCloud.sprite.getAnimator( ).setFrame( 3 );
-		 */
-
 		setFixtures( );
 		maxFriction( );
 
@@ -238,11 +225,8 @@ public class Player extends Entity {
 		if ( Gdx.input.isKeyPressed( Keys.G ) )
 			Gdx.app.log( "steamCollide: " + steamCollide, "steamDone: "
 					+ steamDone );
-		// update the hit cloud if it exists
-		// hitCloud.sprite.update( deltaTime );
-		if ( name.equals( "player2" ) ) {
-			// Gdx.app.log( "player update", "playerstate: " + playerState );
-		}
+		// if ( name.equals( "player1" ) ) {
+		// }
 		if ( kinematicTransform ) {
 			// setPlatformTransform( platformOffset );
 			kinematicTransform = false;
@@ -366,7 +350,7 @@ public class Player extends Entity {
 		}
 		// if the player is falling
 		if ( body.getLinearVelocity( ).y < -MIN_VELOCITY * 4f
-				&& platformBody == null && playerState != PlayerState.Screwing
+				&& playerState != PlayerState.Screwing
 				&& playerState != PlayerState.JumpingOffScrew
 				&& platformBody == null && !isDead ) {
 			switch ( playerState ) {
@@ -383,7 +367,8 @@ public class Player extends Entity {
 				break;
 			}
 			setGrounded( false );
-		} else if ( playerState == PlayerState.Falling ) {
+		} else if ( playerState == PlayerState.Falling
+				&& !isHeadStandPossible( ) ) {
 			// if the player is falling but y velocity is too slow
 			// the the player hit something
 			playerState = PlayerState.Standing;
@@ -396,13 +381,12 @@ public class Player extends Entity {
 		}
 		// check if the head stand requirements are met
 		if ( otherPlayer != null ) {
-			//Gdx.app.log( "player update", "other player is not null" );
 			if ( isHeadStandPossible( ) ) {
 				setHeadStand( );
 				otherPlayer.setHeadStand( );
-			} else if ( !otherPlayer.isHeadStandPossible( ) ){
-//				otherPlayer.hitPlayer( null );
-//				hitPlayer( null );
+			} else if ( !otherPlayer.isHeadStandPossible( ) ) {
+				otherPlayer.hitPlayer( null );
+				hitPlayer( null );
 			}
 		} else {
 			if ( headStandTimeout > 0 ) {
@@ -453,9 +437,13 @@ public class Player extends Entity {
 	public void killPlayer( ) {
 		if ( respawnTimeout == 0 ) {
 			if ( !world.isLocked( ) ) {
+				if ( otherPlayer != null && otherPlayer.getState( ) == PlayerState.HeadStand ) {
+					otherPlayer.checkHeadStandState( );
+				}
 				removePlayerToScrew( );
 				removePlayerToPlayer( );
 				currentScrew = null;
+				platformBody = null;
 				mover = null;
 				Filter filter = new Filter( );
 				for ( Fixture f : body.getFixtureList( ) ) {
@@ -502,6 +490,7 @@ public class Player extends Entity {
 			f.setFilterData( filter );
 		}
 		playerState = PlayerState.Standing;
+		platformBody = null;
 		isDead = false;
 		respawnTimeout = DEAD_STEPS;
 	}
@@ -754,13 +743,15 @@ public class Player extends Entity {
 				 * body.getLinearVelocity( ).y / ( float ) MAX_VELOCITY );
 				 * hitCloud.sprite.reset( );
 				 */
-				land_cloud.start( );
-				Vector2 posPix = getPositionPixel( );
-				land_cloud.setPosition( posPix.x + 50, posPix.y );
+				if ( !world.isLocked( ) ) {
+					land_cloud.start( );
+					Vector2 posPix = getPositionPixel( );
+					land_cloud.setPosition( posPix.x + 50, posPix.y );
+				}
 			}
 			this.grounded = newVal;
 		}
-		if ( screwJumpTimeout == 0 ) {
+		if ( screwJumpTimeout == 0 && !world.isLocked( ) ) {
 			Filter filter = new Filter( );
 			for ( Fixture f : body.getFixtureList( ) ) {
 				filter = f.getFilterData( );
@@ -797,9 +788,10 @@ public class Player extends Entity {
 
 		if ( isGrounded( ) ) {
 			if ( feet.getFriction( ) < PLAYER_FRICTION ) {
-//				if ( playerState != PlayerState.Screwing && otherPlayer == null ) {
-//					playerState = PlayerState.Landing;
-//				}
+				// if ( playerState != PlayerState.Screwing && otherPlayer ==
+				// null ) {
+				// playerState = PlayerState.Landing;
+				// }
 				frictionCounter += FRICTION_INCREMENT;
 
 				CircleShape ps = new CircleShape( );
@@ -961,11 +953,7 @@ public class Player extends Entity {
 				for ( Fixture f : platformBody.getFixtureList( ) ) {
 					filter = f.getFilterData( );
 					// move platform back to original category
-					if ( platformBody.getType( ) == BodyType.DynamicBody ) {
-						filter.categoryBits = Util.DYNAMIC_OBJECTS;
-					} else {
-						filter.categoryBits = Util.KINEMATIC_OBJECTS;
-					}
+					filter.categoryBits = Util.CATEGORY_PLATFORMS;
 					// platform now collides with everything
 					filter.maskBits = Util.CATEGORY_EVERYTHING;
 					f.setFilterData( filter );
@@ -1306,40 +1294,11 @@ public class Player extends Entity {
 		if ( otherPlayer != null
 				&& otherPlayer.getPositionPixel( )
 						.sub( this.getPositionPixel( ) ).len( ) < 150f ) {
-//			Gdx.app.log( "player isHeadStandPossible", "player are close" );
-//			if ( playerState == PlayerState.Falling ) {
-//				Gdx.app.log( "player isHeadStandPossible", name + " is falling" );
-//			} else {
-//				Gdx.app.log( "player isHeadStandPossible", name + " is " + playerState );				
-//			}
-//			if ( otherPlayer.getState( ) == PlayerState.Standing ) {
-//				Gdx.app.log( "player isHeadStandPossible", otherPlayer.name + " is standing" );
-//			} else {
-//				Gdx.app.log( "player isHeadStandPossible", otherPlayer.name + " is " + otherPlayer.getState( ) );				
-//			}
-//			if ( !otherPlayer.isPlayerDead( ) ) {
-//				Gdx.app.log( "player isHeadStandPossible", otherPlayer.name + " is not dead" );
-//				
-//			}
-//			if ( headStandTimeout == 0 ) {
-//				Gdx.app.log( "player isHeadStandPossible", name + " head stand timed out" );
-//				
-//			}
-//			if ( otherPlayer.isHeadStandTimedOut( ) ) {
-//				Gdx.app.log( "player isHeadStandPossible", otherPlayer.name + " head stand timed out" );
-//				
-//			}
-//			if ( platformBody == null ) {
-//				Gdx.app.log( "player isHeadStandPossible", "platform is null" );
-//				
-//			}
 			if ( playerState == PlayerState.Falling
 					&& otherPlayer.getState( ) == PlayerState.Standing
 					&& !otherPlayer.isPlayerDead( ) && headStandTimeout == 0
 					&& otherPlayer.isHeadStandTimedOut( )
 					&& platformBody == null ) {
-//				Gdx.app.log( "player headstand possible",
-//						"first conditions are true" );
 				// check if the top player is in-line with the other players
 				// head
 				// and check if the top player is actually above the other
@@ -1352,9 +1311,6 @@ public class Player extends Entity {
 						&& ( otherPlayer.getPositionPixel( ).add(
 								sprite.getWidth( ) / 4.0f, 0.0f ).x > this
 								.getPositionPixel( ).x ) ) {
-
-//					Gdx.app.log( "player headstand possible",
-//							"second conditions are true" );
 					boolean isMoving = false;
 					// check if the player is using input
 					// to move either left or right
@@ -1600,7 +1556,7 @@ public class Player extends Entity {
 	}
 
 	/**
-	 * reseting jumpcounter and screw button being held and jump state and the
+	 * reseting jump counter and screw button being held and jump state and the
 	 * grab button
 	 */
 	private void resetScrewJumpGrab( ) {

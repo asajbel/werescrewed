@@ -106,7 +106,7 @@ public class ResurrectScreen implements com.badlogic.gdx.Screen {
 		TiledPlatform wall = platBuilder.position( 256f, 320f ).name( "wall1" )
 				.dimensions( 5, 8 ).texture( testTexture ).kinematic( )
 				.oneSided( false ).restitution( 0.0f ).buildTilePlatform( );
-		wall.setCategoryMask( Util.KINEMATIC_OBJECTS, Util.CATEGORY_EVERYTHING );
+		wall.setCategoryMask( Util.CATEGORY_PLATFORMS, Util.CATEGORY_EVERYTHING );
 		skeleton.addKinematicPlatform( wall );
 
 		// Initialize listeners
@@ -253,7 +253,7 @@ public class ResurrectScreen implements com.badlogic.gdx.Screen {
 				.oneSided( false ).restitution( 0.0f ).buildTilePlatform( );
 		// THIS SHOULD BE SET IN EVERYTHING START USING THEM
 		// AND THINGS WILL STOP FALLING THROUGH OTHER THINGS
-		ground.setCategoryMask( Util.KINEMATIC_OBJECTS,
+		ground.setCategoryMask( Util.CATEGORY_PLATFORMS,
 				Util.CATEGORY_EVERYTHING );
 		skeleton.addKinematicPlatform( ground );
 	}
