@@ -1,13 +1,13 @@
 package com.blindtigergames.werescrewed.entity;
 
 import com.badlogic.gdx.graphics.Texture;
-import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.entity.animator.IAnimator;
 import com.blindtigergames.werescrewed.entity.animator.SimpleFrameAnimator;
+import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 import com.blindtigergames.werescrewed.graphics.TextureAtlas;
 
 /**
@@ -19,7 +19,7 @@ import com.blindtigergames.werescrewed.graphics.TextureAtlas;
  *        data required for animation, such as frame rate and frame number.
  */
 
-public class Sprite extends com.badlogic.gdx.graphics.g2d.Sprite implements I_Drawable {
+public class Image extends com.badlogic.gdx.scenes.scene2d.ui.Image implements I_Drawable {
 	/* These constants are identical to the ones in LibGDX's sprite class
 	 * I just changed their visibility to protected instead of private.
 	 */
@@ -33,40 +33,40 @@ public class Sprite extends com.badlogic.gdx.graphics.g2d.Sprite implements I_Dr
 	IAnimator animator;
 	TextureRegion currentFrame;
 	
-	public Sprite(){
+	public Image(){
 		super();
     	initialize();
 	}
 	
-    public Sprite ( Array<TextureAtlas> a, IAnimator anim){
+    public Image ( Array<TextureAtlas> a, IAnimator anim){
     	this();
     	addAtlases(a);
     	setAnimator(anim);
     	updateFrame();
-    	this.setRegion(currentFrame);
+    	//this.setRegion(currentFrame);
     	this.setBounds( 0.0f, 0.0f, currentFrame.getRegionWidth( ), currentFrame.getRegionHeight( ) );
     }
     
-    public Sprite ( TextureAtlas a, IAnimator anim){
+    public Image ( TextureAtlas a, IAnimator anim){
     	this();
     	addAtlas(a);
     	setAnimator(anim);
     	updateFrame();
-    	this.setRegion(currentFrame);
+    	//this.setRegion(currentFrame);
     	this.setBounds( 0.0f, 0.0f, currentFrame.getRegionWidth( ), currentFrame.getRegionHeight( ) );
     }   
-    public Sprite (TextureAtlas a){
+    public Image (TextureAtlas a){
     	this(a,  new SimpleFrameAnimator()
 					 .maxFrames( a.getRegions( ).size )
     				 .speed( FPS / a.getRegions( ).size ));
     }
     
-    public Sprite (Texture tex){
+    public Image (Texture tex){
     	super(tex);
     	initialize();
     }
     
-    public Sprite (TextureRegion tex){
+    public Image (TextureRegion tex){
     	super(tex);
     	initialize();
     	currentFrame = tex;
@@ -88,7 +88,7 @@ public class Sprite extends com.badlogic.gdx.graphics.g2d.Sprite implements I_Dr
     	atlases.addAll( a );
     }
     
-    public Sprite (String atlasName){
+    public Image (String atlasName){
     	this(WereScrewedGame.manager.getAtlas( atlasName ));
     }
     
@@ -123,11 +123,11 @@ public class Sprite extends com.badlogic.gdx.graphics.g2d.Sprite implements I_Dr
 	@Override
 	public void draw( SpriteBatch batch ) {
 		if (currentFrame != null){
-			this.setRegion( currentFrame );
+			//this.setRegion( currentFrame );
 			//We only need to update when the frame changes.
 			currentFrame = null;
 		}
-		super.draw( batch );
+		super.draw( batch, 1.0f );
 	}
 
 	/**

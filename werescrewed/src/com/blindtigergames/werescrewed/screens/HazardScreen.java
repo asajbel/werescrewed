@@ -8,7 +8,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.blindtigergames.werescrewed.camera.Anchor;
@@ -106,7 +106,7 @@ public class HazardScreen implements com.badlogic.gdx.Screen {
 		ground = platBuilder.position( 0.0f, -75 ).name( "ground" )
 				.dimensions( 200, 4 ).texture( testTexture ).kinematic( )
 				.oneSided( false ).restitution( 0.0f ).buildTilePlatform( );
-		ground.setCategoryMask( Util.KINEMATIC_OBJECTS,
+		ground.setCategoryMask( Util.CATEGORY_PLATFORMS,
 				Util.CATEGORY_EVERYTHING );
 		ground.setCrushing( true );
 		skeleton.addKinematicPlatform( ground );
@@ -114,7 +114,7 @@ public class HazardScreen implements com.badlogic.gdx.Screen {
 		ground = platBuilder.position( 1000, 150 ).name( "ground" )
 				.dimensions( 20, 1 ).texture( testTexture ).kinematic( )
 				.oneSided( true ).restitution( 0.0f ).buildTilePlatform( );
-		ground.setCategoryMask( Util.KINEMATIC_OBJECTS,
+		ground.setCategoryMask( Util.CATEGORY_PLATFORMS,
 				Util.CATEGORY_EVERYTHING );
 		skeleton.addKinematicPlatform( ground );
 
@@ -193,10 +193,10 @@ public class HazardScreen implements com.badlogic.gdx.Screen {
 		crusher.setCrushing( true );
 		skeleton.addDynamicPlatform( crusher );
 		struct1 = new StructureScrew( "struct1", crusher.getPositionPixel( )
-				.add( new Vector2( -50f, 0f ) ), 50, crusher, world );
+				.add( new Vector2( -50f, 0f ) ), 50, crusher, world, new Vector2( 0, 1 ) );
 		struct1.addStructureJoint( skeleton );
 		struct2 = new StructureScrew( "struct1", crusher.getPositionPixel( )
-				.add( new Vector2( 50f, 0f ) ), 50, crusher, world );
+				.add( new Vector2( 50f, 0f ) ), 50, crusher, world, new Vector2( 0, 1 ) );
 		struct2.addStructureJoint( skeleton );
 		skeleton.addScrewForDraw( struct1 );
 		skeleton.addScrewForDraw( struct2 );

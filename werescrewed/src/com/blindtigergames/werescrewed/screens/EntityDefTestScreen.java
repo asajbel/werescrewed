@@ -9,7 +9,7 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.Filter;
@@ -182,14 +182,14 @@ public class EntityDefTestScreen implements com.badlogic.gdx.Screen {
 				tiledPlat.body.getPosition( ).x * Util.BOX_TO_PIXEL
 						- ( tiledPlat.sprite.getWidth( ) ),
 				tiledPlat.body.getPosition( ).y * Util.BOX_TO_PIXEL ), 50,
-				tiledPlat, world );
+				tiledPlat, world, Vector2.Zero );
 		leftPlatScrew.addStructureJoint( skeleton );
 
 		StructureScrew rightPlatScrew = new StructureScrew( "", new Vector2(
 				tiledPlat.body.getPosition( ).x * Util.BOX_TO_PIXEL
 						+ ( tiledPlat.sprite.getWidth( ) ),
 				tiledPlat.body.getPosition( ).y * Util.BOX_TO_PIXEL ), 50,
-				tiledPlat, world );
+				tiledPlat, world, Vector2.Zero );
 		rightPlatScrew.addStructureJoint( skeleton );
 		tiledPlat.addScrew( leftPlatScrew );
 		tiledPlat.addScrew( rightPlatScrew );
@@ -210,7 +210,7 @@ public class EntityDefTestScreen implements com.badlogic.gdx.Screen {
 		jointDef.upperTranslation = 3.0f;
 		jointDef.motorSpeed = 7.0f;
 		PuzzleScrew puzzleScrew = new PuzzleScrew( "001",
-				new Vector2( 32f, 32f ), 50, skeleton, world, 0, false );
+				new Vector2( 32f, 32f ), 50, skeleton, world, 0, false, Vector2.Zero );
 		puzzleScrew.puzzleManager.addEntity( movingTP );
 		LerpMover lm = new LerpMover(
 				new Vector2( movingTP.body.getPosition( ).x, movingTP.body
@@ -234,10 +234,10 @@ public class EntityDefTestScreen implements com.badlogic.gdx.Screen {
 		for ( int i = 0; i < 10; i++ ) {
 			if ( i % 2 == 0 ) {
 				climbingScrews.add( new StrippedScrew( "",
-						new Vector2( x1, y1 ), skeleton, world ) );
+						new Vector2( x1, y1 ), skeleton, world, Vector2.Zero ) );
 			} else {
 				climbingScrews.add( new StrippedScrew( "",
-						new Vector2( x2, y1 ), skeleton, world ) );
+						new Vector2( x2, y1 ), skeleton, world, Vector2.Zero ) );
 			}
 			y1 += dy;
 		}
@@ -338,7 +338,7 @@ public class EntityDefTestScreen implements com.badlogic.gdx.Screen {
 			filter = f.getFilterData( );
 			// move player to another category so other objects stop
 			// colliding
-			filter.categoryBits = Util.DYNAMIC_OBJECTS;
+			filter.categoryBits = Util.CATEGORY_PLATFORMS;
 			// player still collides with sensor of screw
 			filter.maskBits = Util.CATEGORY_EVERYTHING;
 			f.setFilterData( filter );

@@ -7,12 +7,17 @@ import com.blindtigergames.werescrewed.entity.RobotState;
 import com.blindtigergames.werescrewed.entity.Skeleton;
 import com.blindtigergames.werescrewed.entity.action.EntityActivateMoverAction;
 import com.blindtigergames.werescrewed.entity.builders.PlayerBuilder;
+import com.blindtigergames.werescrewed.entity.mover.AnalogRotateMover;
+import com.blindtigergames.werescrewed.entity.mover.RotateTweenMover;
 import com.blindtigergames.werescrewed.entity.platforms.TiledPlatform;
+import com.blindtigergames.werescrewed.entity.screws.PuzzleScrew;
 import com.blindtigergames.werescrewed.entity.screws.Screw;
+import com.blindtigergames.werescrewed.entity.screws.StructureScrew;
 import com.blindtigergames.werescrewed.entity.tween.PathBuilder;
 import com.blindtigergames.werescrewed.eventTrigger.EventTrigger;
 import com.blindtigergames.werescrewed.level.CharacterSelect;
 import com.blindtigergames.werescrewed.level.LevelFactory;
+import com.blindtigergames.werescrewed.util.Util;
 
 public class AlphaScreen extends Screen {
 
@@ -35,23 +40,26 @@ public class AlphaScreen extends Screen {
 		createFootObjects( );
 		createKneeObjects( );
 
+		// bottom: 0f, 0f
 		// power screws: -700f, 1800f
-		// chest : -200f, 3800f
+		// chest entrance : -200f, 3800f
+		// upper chest: 1300f, 6000f
+		// rope on left side of the robot <- -950f, 5100f
 
 		if ( level.player1 == null ) {
 			level.player1 = new PlayerBuilder( ).world( level.world )
-					.position( 1400f, 3800f ).name( "player1" ).buildPlayer( );
+					.position(-200f, 3800f).name( "player1" ).buildPlayer( );
 
 			level.progressManager.addPlayerOne( level.player1 );
 		}
 		if ( level.player2 == null ) {
 			level.player2 = new PlayerBuilder( ).world( level.world )
-					.position( 1500f, 3800f ).name( "player2" ).buildPlayer( );
+					.position( -200f, 3800f ).name( "player2" ).buildPlayer( );
 
 			level.progressManager.addPlayerTwo( level.player2 );
 		}
 
-		initEventTriggers( );
+		chestObjects( );
 
 	}
 
@@ -135,10 +143,34 @@ public class AlphaScreen extends Screen {
 		}
 	}
 
-	private void initEventTriggers( ) {
+	private void chestObjects( ) {
+
+		PuzzleScrew chestScrew1 = ( PuzzleScrew ) LevelFactory.entities.get( "chestPuzzleScrew5" );
+		PuzzleScrew chestScrew2 = ( PuzzleScrew ) LevelFactory.entities.get( "chestPuzzleScrew6" );
 
 		
+		PuzzleScrew chestScrew3 = ( PuzzleScrew ) LevelFactory.entities.get( "chestPuzzleScrew9" );
+		PuzzleScrew chestScrew4 = ( PuzzleScrew ) LevelFactory.entities.get( "chestPuzzleScrew10" );
 		
+		TiledPlatform chestRotatingPlat2 = ( TiledPlatform ) LevelFactory.entities
+				.get( "chestRotatePlat2" );
+		
+		AnalogRotateMover anlgRot = new AnalogRotateMover( .6f, level.world );
+		
+		RotateTweenMover rtm1 = new RotateTweenMover( chestRotatingPlat2, 10f,
+				Util.PI, 2f, true );
+		
+		chestRotatingPlat2.addMover( rtm1, RobotState.IDLE );
+		chestRotatingPlat2.setActive( true );
+		
+		chestScrew3.puzzleManager.addMover( anlgRot );
+		chestScrew4.puzzleManager.addMover( anlgRot );
+		
+		chestScrew1.puzzleManager.addScrew( chestScrew2 );
+		chestScrew2.puzzleManager.addScrew( chestScrew1 );
+	
+		StructureScrew stuctureScrew1 = (StructureScrew) LevelFactory.entities.get( "structureScrew1" );
+		//stuctureScrew1.setDetachDirection( 0, -1 );
 		
 	}
 

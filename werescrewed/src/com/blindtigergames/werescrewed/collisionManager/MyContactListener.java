@@ -115,52 +115,23 @@ public class MyContactListener implements ContactListener {
 							// }
 							break;
 						case PLAYER:
-							Player player2 = ( Player ) object;
-//							if ( !player.isPlayerDead( ) ) {
-//								Gdx.app.log( "contact listener",
-//										"player1 is not dead" );
-//							}
-//							if ( !player2.isPlayerDead( ) ) {
-//								Gdx.app.log( "contact listener",
-//										"player2 is not dead" );
-//							}
-//							if ( player.getState( ) == PlayerState.Standing
-//									&& player2.getState( ) == PlayerState.Falling ) {
-//								Gdx.app.log( "contact listener", player.name
-//										+ " is standing " + "and "
-//										+ player2.name + " is falling" );
-//							} else {
-//								Gdx.app.log( "contact listener", player.name
-//										+ " is " + player.getState( ) + " and "
-//										+ player2.name + " is " + player2.getState( ) );								
-//							}
-//							if ( player2.getState( ) == PlayerState.Standing
-//									&& player.getState( ) == PlayerState.Falling ) {
-//								Gdx.app.log( "contact listener", player2.name
-//										+ " is standing " + "and "
-//										+ player.name + "is falling" );
-//							} else {
-//								Gdx.app.log( "contact listener", player2.name
-//										+ " is " + player2.getState( ) + " and "
-//										+ player.name + " is " + player.getState( ) );	
-//							}
-							if ( !player.isPlayerDead( )
-									&& !player2.isPlayerDead( ) ) {
-									//&& ( ( player.getState( ) == PlayerState.Standing && player2
-//											.getState( ) == PlayerState.Falling ) || ( player2
-//											.getState( ) == PlayerState.Standing && player
-//											.getState( ) == PlayerState.Falling ) ) ) {
-								//Gdx.app.log( "contact listener", "set hit player to true" );
-								player.hitPlayer( player2 );
-								player2.hitPlayer( player );
-								if ( !player.isHeadStandPossible( ) && !player2.isHeadStandPossible( ) ) {
-									player.hitPlayer( null );
-									player2.hitPlayer( null );
-								} else {
-									player.setGrounded( true );
-									player2.setGrounded( true );
-								}
-							}
+							// Player player2 = ( Player ) object;
+							// player.hitPlayer( player2 );
+							// player2.hitPlayer( player );
+							// if ( player.getState( ) != PlayerState.HeadStand
+							// && player2.getState( ) != PlayerState.HeadStand
+							// && !player.isHeadStandPossible( )
+							// && !player2.isHeadStandPossible( ) ) {
+							// player.hitPlayer( null );
+							// player2.hitPlayer( null );
+							// contact.setEnabled( false );
+							// } else if ( player.getState( ) !=
+							// PlayerState.HeadStand
+							// && player2.getState( ) != PlayerState.HeadStand )
+							// {
+							// player.setGrounded( true );
+							// player2.setGrounded( true );
+							// }
 							break;
 						case HAZARD:
 						// if ( player.getCurrentScrew( ) == null
@@ -293,9 +264,10 @@ public class MyContactListener implements ContactListener {
 										}
 									}
 								}
-								player.hitSolidObject( null );
+								if ( player.getState( ) != PlayerState.JumpingOffScrew ) {
+									player.hitSolidObject( null );
+								}
 								contact.setEnabled( true );
-
 							}
 							break;
 						case SCREW:
@@ -406,22 +378,21 @@ public class MyContactListener implements ContactListener {
 							if ( player.getState( ) == PlayerState.GrabMode
 									|| player2.getState( ) == PlayerState.GrabMode ) {
 								contact.setEnabled( false );
-							} else if ( ( player.getState( ) != PlayerState.Falling && player2
-									.getState( ) != PlayerState.Falling )
-									|| !player.isHeadStandTimedOut( )
-									|| !player2.isHeadStandTimedOut( )
-									|| ( player.getState( ) == PlayerState.Falling
-											&& player2.getState( ) != PlayerState.Standing && player
-											.getPositionPixel( ).y < player2
-											.getPositionPixel( ).y
-											+ player2.sprite.getHeight( )
-											/ 1.5f )
-									|| ( player2.getState( ) == PlayerState.Falling
-											&& player.getState( ) != PlayerState.Standing && player2
-											.getPositionPixel( ).y < player
-											.getPositionPixel( ).y
-											+ player.sprite.getHeight( ) / 1.5f ) ) {
-								contact.setEnabled( false );
+							} else {
+								player.hitPlayer( player2 );
+								player2.hitPlayer( player );
+								if ( player.getState( ) != PlayerState.HeadStand
+										&& player2.getState( ) != PlayerState.HeadStand
+										&& !player.isHeadStandPossible( )
+										&& !player2.isHeadStandPossible( ) ) {
+									player.hitPlayer( null );
+									player2.hitPlayer( null );
+									contact.setEnabled( false );
+								} else if ( player.getState( ) != PlayerState.HeadStand
+										&& player2.getState( ) != PlayerState.HeadStand ) {
+									player.setGrounded( true );
+									player2.setGrounded( true );
+								}
 							}
 							break;
 						default:

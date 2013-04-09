@@ -32,8 +32,11 @@ import com.blindtigergames.werescrewed.entity.builders.RopeBuilder;
 import com.blindtigergames.werescrewed.entity.builders.ScrewBuilder;
 import com.blindtigergames.werescrewed.entity.builders.SkeletonBuilder;
 import com.blindtigergames.werescrewed.entity.mover.IMover;
+import com.blindtigergames.werescrewed.entity.mover.PistonTweenMover;
+import com.blindtigergames.werescrewed.entity.mover.PuzzleType;
 import com.blindtigergames.werescrewed.entity.mover.TimelineTweenMover;
 import com.blindtigergames.werescrewed.entity.mover.MoverType;
+import com.blindtigergames.werescrewed.entity.mover.puzzle.PuzzleRotateTweenMover;
 import com.blindtigergames.werescrewed.entity.screws.BossScrew;
 import com.blindtigergames.werescrewed.entity.screws.PuzzleScrew;
 import com.blindtigergames.werescrewed.entity.screws.Screw;
@@ -66,12 +69,15 @@ public class LevelFactory {
 
 	protected static final float GLEED_TO_GDX_X = 1.0f;
 	protected static final float GLEED_TO_GDX_Y = -1.0f;
-	protected static final String screwTargetTag = "target";
-	public static final String startTime = "starttime";
-	public static final String endTime = "endtime";
-	protected static final String puzzleTag = "puzzle";
+	protected static final String targetTag = "target";
+	protected static final String startTime = "starttime";
+	protected static final String endTime = "endtime";
+	protected static final String puzzleTag = "puzzle"; 
 	protected static final String dynamicTag = "dynamic";
-
+	protected static final String decalTag = "decal";
+	protected static final String angleTag = "angle";
+	protected static final String imageTag = "image";
+	protected static final String gleedImageTag = "image";	
 	public LevelFactory( ) {
 		reader = new XmlReader( );
 		items = new EnumMap< GleedTypeTag, LinkedHashMap< String, Item >>(
@@ -148,6 +154,8 @@ public class LevelFactory {
 			Skeleton parent = loadSkeleton( item.skeleton );
 			parent.addSkeleton( child );
 			skeletons.put( item.name, child );
+			//add the skeleton to the skeleton layer for drawing
+			level.skelLayer.add( child );
 			return child;
 		}
 	}
@@ -161,104 +169,6 @@ public class LevelFactory {
 		return level.root;
 	}
 
-	protected TimelineTweenMover loadMover( Item item, Entity entity ) {
-		item.checkLocked( );
-		if ( movers.containsKey( item.name ) ) {
-			return movers.get( item.name );
-		} else if ( item.gleedType.equals( "PathItem" ) ) {
-			Array< Element > pointElems = item.element.getChildByName(
-					"LocalPoints" ).getChildrenByName( "Vector2" );
-			Gdx.app.log( "GleedLoader", "Loading Path Mover:" + pointElems.size
-					+ " points." );
-			Array< Vector2 > points = new Array< Vector2 >( pointElems.size );
-			Array< Float > times = new Array< Float >( pointElems.size );
-			PathBuilder pBuilder = new PathBuilder( )
-					.begin( ( Platform ) entity );
-
-			Element vElem;
-			Vector2 point;
-			String timeTag;
-			int frontPoint = 0;
-			float frontTime = 0.0f;
-			// Set first and last point times with separate tags.
-			// If tags are not available, assume they will be at 0.0f and 1.0f,
-			// respectively.
-			// As points are loaded, these values may get overridden; this is
-			// fine.
-			for ( int i = 0; i < pointElems.size; i++ ) {
-				times.add( -1.0f );
-			}
-			if ( item.props.containsKey( startTime ) ) {
-				times.set( frontPoint,
-						Float.parseFloat( item.props.get( startTime ) ) );
-				frontTime = times.get( 0 );
-			} else {
-				times.set( frontPoint, frontTime ); // By default, the first
-													// point should be at time
-													// 0.
-			}
-			if ( item.props.containsKey( "EndTime" ) ) {
-				times.set( pointElems.size - 1,
-						Float.parseFloat( item.props.get( endTime ) ) );
-			} else {
-				times.set( pointElems.size - 1, 1.0f );
-			}
-			for ( int i = 0; i < pointElems.size; i++ ) {
-				vElem = pointElems.get( i );
-				point = new Vector2( vElem.getFloat( "X" ) * GLEED_TO_GDX_X,
-						vElem.getFloat( "Y" ) * GLEED_TO_GDX_Y );
-				points.add( point );
-				Gdx.app.log( "GleedLoader", "Point " + i + " has coordinates "
-						+ point.toString( ) + "." );
-				timeTag = "point" + i + "time";
-				if ( item.props.containsKey( timeTag ) ) {
-					float time = Float.parseFloat( item.props.get( timeTag ) );
-					if ( time >= 0.0f ) {
-						times.set( i, time );
-					}
-				}
-				if ( times.get( i ) >= 0.0f ) {
-					Gdx.app.log( "GleedLoader", "Point " + i + " has time "
-							+ times.get( i ) + "." );
-					if ( i > frontPoint + 1 ) {
-						float div = ( times.get( i ) - frontTime )
-								/ ( float ) ( i - frontPoint );
-						for ( int j = i - 1; j > frontPoint; j-- ) {
-							times.set( j, frontTime + div * ( j - frontPoint ) );
-							Gdx.app.log( "GleedLoader",
-									"Backtracking: Setting point " + j
-											+ " to time " + times.get( j )
-											+ "." );
-						}
-						frontPoint = i;
-						frontTime = times.get( i );
-					}
-				}
-			}
-			for ( int i = 0; i < points.size; i++ ) {
-				pBuilder.target( points.get( i ).x, points.get( i ).y, times
-						.get( i ).floatValue( ) );
-			}
-			TimelineTweenMover out = pBuilder.build( );
-			movers.put( item.name, out );
-			return out;
-		}
-		RuntimeException notPath = new RuntimeException(
-				item.name
-						+ " is defined as a mover but is not a path object. Only paths can be defined as movers." );
-		Gdx.app.log( "GleedLoader", "", notPath );
-		throw notPath;
-	}
-
-	protected TimelineTweenMover loadMover( String name, Entity entity ) {
-		if ( movers.containsKey( name ) ) {
-			return movers.get( name );
-		} else if ( items.get( GleedTypeTag.MOVER ).containsKey( name ) ) {
-			return loadMover( items.get( GleedTypeTag.MOVER ).get( name ),
-					entity );
-		}
-		return null;
-	}
 
 	protected Entity loadEntity( String name ) {
 		if ( entities.containsKey( name ) ) {
@@ -286,6 +196,8 @@ public class LevelFactory {
 
 		if ( bluePrints.equals( "skeleton" ) ) {
 			out = constructSkeleton( item );
+		} else if( bluePrints.equals( decalTag )){
+			constructDecal(item);
 		} else if ( bluePrints.equals( "player" ) ) {
 			constructPlayer( item );
 		} else if ( bluePrints.equals( "camera" ) ) {
@@ -350,8 +262,51 @@ public class LevelFactory {
 
 		return out;
 	}
+	
+	private Sprite constructDecal(Item item){
+		Entity target = level.root;
+		String targetName = "root";
+		if (item.getProps().containsKey(targetTag)){
+			targetName = item.getProps().get( targetTag );
+			if (this.items.get(GleedTypeTag.SKELETON).containsKey( targetName )){
+				if (loadSkeleton(targetName) != null)
+					target = loadSkeleton(targetName);
+			} else if (this.items.get(GleedTypeTag.ENTITY).containsKey( targetName )){
+				if (loadEntity(targetName) != null)
+					target = loadEntity(targetName);
+			}
+		}
+		Sprite decal = null;
+		Vector2 scale = new Vector2(1.0f, 1.0f);
+		if (!item.getImageName( ).equals( "" )){
+			Texture tex = WereScrewedGame.manager.get( WereScrewedGame.dirHandle+item.getImageName(), Texture.class );
+			decal = new Sprite(tex);
+			decal.setOrigin( 0.0f, 0.0f );
+			scale.x = item.sca.x / tex.getWidth( );
+			scale.y = item.sca.y / tex.getHeight( );
+		} else {
+			Gdx.app.log( "LoadDecal", "Could not find texture tag." );
+		}
+		if (decal != null){
+			//Set position and rotation relative to the target. 
+			Vector2 targetPos = target.getPositionPixel( );
+			float targetRot =  target.getAngle( );
 
-	private Skeleton constructSkeleton( Item item ) {
+			Vector2 pos = item.pos.sub(targetPos);
+			pos.y -= item.sca.y;
+			
+			float rot = item.rot - targetRot;
+			
+			decal.setScale( scale.x, scale.y );
+			target.addDecal(decal, pos, rot);
+			Gdx.app.log( "LoadDecal", "Attaching decal "+item.name+" to "+targetName+"." );
+			target.updateDecals( 0.0f );
+			Gdx.app.log( "LoadDecal", "(X: "+decal.getX()+" Y: "+decal.getY()+" R: "+decal.getRotation()+" sX: "+item.sca.x+" sY: "+item.sca.y+")" );
+		}
+		return decal;
+	}
+	
+	private Skeleton constructSkeleton(Item item){
 		Skeleton skeleton = null;
 		if ( item.name.equals( "RootSkeleton" ) ) {
 			level.root = new RootSkeleton( item.name, item.pos, null,
@@ -442,7 +397,8 @@ public class LevelFactory {
 				level.world.createJoint( revoluteJointDef );
 
 			}
-
+			//add the skeleton to the skeleton layer for drawing
+			level.skelLayer.add( skeleton );
 		}
 
 		Gdx.app.log( "LevelFactory, Skeleton constucted ", item.name );
@@ -517,8 +473,26 @@ public class LevelFactory {
 
 		IMover mover = null;
 		if ( item.props.containsKey( "mover" ) ) {
+			
+//			new PistonTweenMover( piston, new Vector2(
+//					 0, -350 ), 0.5f, 3f, 1f, 0f, 1f ), RobotState.IDLE
 			String movername = item.props.get( "mover" );
-			if ( MoverType.fromString( movername ) != null ) {
+			if(movername.equals( "pistonmover" )){
+				
+				float delay = 0f;
+				if ( item.props.containsKey( "delay" ) ) {
+					delay = Float.parseFloat( item.props.get( "delay" ) );
+				}
+				
+				float distance = 100f;
+				if ( item.props.containsKey( "distance" ) ) {
+					distance = Float.parseFloat( item.props.get( "distance" ) );
+				}
+				
+				 mover = new PistonTweenMover( out, new Vector2(
+						 0, distance ), 0.5f, 3f, 1f, 0f, delay );
+			}
+			else if ( MoverType.fromString( movername ) != null ) {
 				mover = new MoverBuilder( ).fromString( movername )
 						.applyTo( out ).build( );
 				Gdx.app.log( "LevelFactory", "attaching :" + movername
@@ -547,7 +521,7 @@ public class LevelFactory {
 					+ out.name );
 
 			parent.addKinematicPlatform( out );
-			out.setCategoryMask( Util.KINEMATIC_OBJECTS,
+			out.setCategoryMask( Util.CATEGORY_PLATFORMS,
 					Util.CATEGORY_EVERYTHING );
 		}
 		return out;
@@ -622,7 +596,7 @@ public class LevelFactory {
 					+ out.name );
 
 			parent.addKinematicPlatform( out );
-			out.setCategoryMask( Util.KINEMATIC_OBJECTS,
+			out.setCategoryMask( Util.CATEGORY_PLATFORMS,
 					Util.CATEGORY_EVERYTHING );
 		}
 		return out;
@@ -740,19 +714,40 @@ public class LevelFactory {
 					MoverBuilder moverBuilder = new MoverBuilder( ).fromString(
 							movername ).applyTo( attach );
 
-					if ( item.props.containsKey( "vertical" ) ) {
-						moverBuilder.vertical( );
-					} else if ( item.props.containsKey( "horizontal" ) ) {
-						moverBuilder.horizontal( );
+					
+					if(movername.equals( "lerpmover" )){
+						if ( item.props.containsKey( "distance" ) ) {
+							float dist = Float.parseFloat( item.props
+									.get( "distance" ) );
+							moverBuilder.distance( dist );
+						}
+						
+						if ( item.props.containsKey( "vertical" ) ) {
+							moverBuilder.vertical( );
+						} else if ( item.props.containsKey( "horizontal" ) ) {
+							moverBuilder.horizontal( );
+						}
+					} else if( movername.equals( "puzzlerotatetween" )){
+						
+						
+						Entity attach2 = null;
+						if ( item.props.containsKey( "controlthis2" ) ) {
+							String s = item.props.get( "controlthis2" );
+							attach2 = entities.get( s );
+							Gdx.app.log( "LevelFactory", "attaching :" + attach2.name
+									+ " to puzzle screw" );
+
+							p.puzzleManager.addEntity( attach2 );
+							
+							// HUGE NOTE: I HAVEN'T ADDED STUFF TO THIS MOVER 
+							// IN ITS BUILDER SO I'M HARDCODING IT FOR NOW
+							p.puzzleManager.addMover( new PuzzleRotateTweenMover( 1,
+									Util.PI / 2, true, PuzzleType.ON_OFF_MOVER ) );
+							
+							Gdx.app.log( "LevelFactory", "attaching :" + movername
+									+ " to puzzle screw" );
+						}
 					}
-
-					if ( item.props.containsKey( "distance" ) ) {
-						float dist = Float.parseFloat( item.props
-								.get( "distance" ) );
-
-						moverBuilder.distance( dist );
-					}
-
 					mover = moverBuilder.build( );
 					Gdx.app.log( "LevelFactory", "attaching :" + movername
 							+ " to puzzle screw" );
@@ -763,6 +758,14 @@ public class LevelFactory {
 				}
 			}
 
+			
+			if ( item.props.containsKey( "addscrew" ) ) {
+				String screw =  item.props.get( "addscrew" );
+				PuzzleScrew puzzleScrew = ( PuzzleScrew ) entities.get( screw );
+				
+				p.puzzleManager.addScrew( puzzleScrew );
+				
+			}
 			puzzleScrews.put( item.name, p );
 			entities.put( item.name, p );
 
@@ -948,14 +951,18 @@ public class LevelFactory {
 		// ropeBuilder.createScrew(num);
 		// }
 
+		boolean attachToEntity = false;
 		if ( item.props.containsKey( "attachedto" ) ) {
 			Entity e = loadEntity( item.props.get( "attachedto" ) );
-			ropeBuilder.attachTo( e );
+			ropeBuilder.attachToTop( e );
+			attachToEntity = true;
 		}
 
 		Skeleton parent = loadSkeleton( item.skeleton );
 		Rope rope = ropeBuilder.buildRope( );
-		parent.addRope( rope );
+		// if its attached to an entity, then send in false so it doesn't
+		// joint itself to the skeleton
+		parent.addRope( rope , !attachToEntity);
 	}
 
 	public Array< Vector2 > contstructSkeletonPoly( Item item ) {
@@ -1113,19 +1120,6 @@ public class LevelFactory {
 		return level;
 	}
 
-	protected static ArrayHash getCustomProperties( Element e ) {
-		ArrayHash out = new ArrayHash( );
-		Array< Element > properties = e.getChildByName( "CustomProperties" )
-				.getChildrenByName( "Property" );
-		String name;
-		String value;
-		for ( Element prop : properties ) {
-			name = prop.getAttribute( "Name" ).toLowerCase( );
-			value = prop.get( "string", "<no value>" );
-			out.add( name, value );
-		}
-		return out;
-	}
 
 	protected static HashMap< String, Element > getChildrenByNameHash(
 			Element e, String tag, String nameTag ) {
@@ -1142,129 +1136,148 @@ public class LevelFactory {
 	protected class Item {
 		public Item( Element e ) {
 			element = e;
-			name = getName( e );
-			gleedType = getGleedType( e );
-			props = getCustomProperties( e );
-			if ( props.containsKey( "definition" ) ) { // EntityDef.tag )){
-				defName = props.get( "definition" ); // EntityDef.tag );
-			} else {
+			name = getName();
+			gleedType = getGleedType();
+			props = getProps();
+			if (props.containsKey( "definition" )){ //EntityDef.tag )){
+				defName = props.get( "definition" );  //EntityDef.tag );
+			}
+			else {
 				defName = "";
 			}
 			def = null;
-			if ( props.containsKey( "attachtoskeleton" ) ) {
+			if (props.containsKey( "attachtoskeleton" )){
 				skeleton = props.get( "attachtoskeleton" );
-				Gdx.app.log( "LevelFactory, attaching skeleton " + skeleton,
-						"to " + name );
+				Gdx.app.log( "LevelFactory, attaching skeleton " + skeleton, "to " + name);
 			}
-			gleedTag = GleedTypeTag.fromString( props.get( "type" ) ); // GleedTypeTag.tag
-																		// ) );
-			pos = getPosition( e );
-			sca = getScale( e );
-			tex = getTexture( e );
+			gleedTag = GleedTypeTag.fromString( props.get( "type" ) ); //GleedTypeTag.tag ) );
+			pos = getPosition();
+			rot = getAngle();
+			sca = getScale();
+			image = getImageName();
 			locked = false;
 		}
-
 		public Element element;
-
+		
 		// name refers to the first name, right after xsi:type
 		public String name;
-		// In the xml, gleedType refers to type. for example: CircleItem,
-		// RectangleItem
+		//In the xml, gleedType refers to type. for example: CircleItem, RectangleItem
 		public String gleedType;
-
+		
 		// defName refers the string under the name under the CustomProperties
 		// <Property Name="Definition"...
-		// <string>tiledPlatform</string> <======= that is the defName
+		// 	 <string>tiledPlatform</string> <======= that is the defName
 		public String defName;
 		private EntityDef def;
 		public GleedTypeTag gleedTag;
-		public ArrayHash props;
+		private ArrayHash props;
 		public Vector2 pos;
+		public float rot;
 		public Vector2 origin;
 		public Vector2 sca;
 		public Texture tex;
 		public String skeleton;
+		public String image;
 		public boolean locked;
-
-		public void checkLocked( ) {
-			if ( locked ) {
-				RuntimeException oops = new RuntimeException(
-						"Cyclic Reference" );
-				Gdx.app.log( "GleedLoader", "While loading:" + name, oops );
+		
+		public void checkLocked(){
+			if (locked){
+				RuntimeException oops = new RuntimeException("Cyclic Reference");
+				Gdx.app.log("GleedLoader", "While loading:"+name, oops);
 				throw oops;
 			}
 			locked = true;
 		}
-
+		
+		protected ArrayHash getProps(){
+			if (props == null){
+				props = new ArrayHash();
+				Array<Element> properties = element.getChildByName("CustomProperties").getChildrenByName("Property");
+				String name; String value;
+				for (Element prop: properties){
+					name = prop.getAttribute("Name").toLowerCase( );
+					value = prop.get("string", "<no value>");
+					props.add( name, value );
+				}
+			}
+			return props;
+		}
+		
 		/**
-		 * getDefinition loads the correct XML file with the same time
-		 * (complexTest) complexText loads the bottle, gearSmall would load the
-		 * gear Remember to set them to kinematic or they just fall
+		 * getDefinition loads the correct XML file with the same time (complexTest)
+		 * complexText loads the bottle, gearSmall would load the gear
+		 * Remember to set them to kinematic or they just fall
 		 * 
 		 * @return EntityDef
 		 */
-		public EntityDef getDefinition( ) {
-			if ( def == null )
+		public EntityDef getDefinition(){
+			if (def == null)
 				def = EntityDef.getDefinition( defName );
 			return def;
 		}
-
+		
 		/**
 		 * checks if xml has a name under Definition
-		 * 
 		 * @return boolean
 		 */
-		public boolean hasDefTag( ) {
-			return !defName.equals( "" );
+		public boolean hasDefTag(){ return !defName.equals( "" );}
+		public boolean isDefined(){ return getDefinition() != null;}
+		
+		protected String getName(){
+			return element.getAttribute("Name");
 		}
 
-		public boolean isDefined( ) {
-			return getDefinition( ) != null;
+		protected Vector2 getPosition(){
+			Element posElem = element.getChildByName("Position");
+			return new Vector2(posElem.getFloat("X")*GLEED_TO_GDX_X, posElem.getFloat("Y")*GLEED_TO_GDX_Y);
 		}
-	}
 
-	protected static String getName( Element item ) {
-		return item.getAttribute( "Name" );
-	}
-
-	protected static Vector2 getPosition( Element item ) {
-		Element posElem = item.getChildByName( "Position" );
-		return new Vector2( posElem.getFloat( "X" ) * GLEED_TO_GDX_X,
-				posElem.getFloat( "Y" ) * GLEED_TO_GDX_Y );
-	}
-
-	protected static String getGleedType( Element item ) {
-		return item.get( "xsi:type" );
-	}
-
-	protected static Vector2 getScale( Element item ) {
-		Vector2 out = new Vector2( 1.0f, 1.0f );
-		try {
-			if ( getGleedType( item ).equals( "CircleItem" ) ) {
-				out.x = out.y = item.getFloat( "Radius" ) * 2.0f;
-			} else if ( getGleedType( item ).equals( "PathItem" ) ) {
-				float left = 0.0f, right = 0.0f, top = 0.0f, bottom = 0.0f;
-				// Fill this out later
-				out.x = left - right;
-				out.y = top - bottom;
-			} else if ( item.get( "xsi:type" ).equals( "TextureItem" ) ) {
-				// out.x = item.getFloat( "Width" );
-				// out.y = item.getFloat( "Height" );
+		protected float getAngle(){
+			if (getProps().containsKey(angleTag)){
+				return Float.parseFloat( getProps().get( angleTag ) );
 			}
-		} finally {
+			return 0.0f;
 		}
-		return out;
-	}
+		
+		protected String getGleedType(){
+			return element.get( "xsi:type" );
+		}
+		
+		protected Vector2 getScale(){
+			Vector2 out = new Vector2(1.0f,1.0f);
+			try{
+				if (getGleedType().equals( "CircleItem" )){
+					out.x = out.y = element.getFloat( "Radius" )*2.0f;
+				} else if (getGleedType().equals( "PathItem" )){
+					float left = 0.0f, right = 0.0f, top = 0.0f, bottom = 0.0f;
+					//Fill this out later
+					out.x = left-right;
+					out.y = top-bottom;
+				} else if (element.get( "xsi:type" ).equals( "RectangleItem" )){
+					out.x = element.getFloat( "Width" );
+					out.y = element.getFloat( "Height" );
+				} else if (element.get( "xsi:type" ).equals( "TextureItem" )){
+					//out.x = element.getFloat( "Width" );
+					//out.y = element.getFloat( "Height" );
+				}
+			} finally {
+			}
+			return out;
+		}
+		
+		protected String getImageName(){
+			if (getProps().containsKey( imageTag )){
+				return getProps().get( imageTag );
+			} else {
+				return element.getAttribute( gleedImageTag, "" );
+			}
+		}
 
-	protected static Texture getTexture( Element item ) {
-		return null;
-	}
-
-	protected static Vector2 getGleedOrigin( Element item ) {
-		Vector2 out = new Vector2( 0.0f, 0.0f );
-		return out;
-	}
-
+		protected Vector2 getGleedOrigin(){
+			Vector2 out = new Vector2(0.0f,0.0f);
+			return out;
+		}
+	}		
 	protected static final String typeTag = "Type";
 	protected static final String defTag = "Definition";
 

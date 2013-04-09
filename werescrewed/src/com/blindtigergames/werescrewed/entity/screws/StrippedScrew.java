@@ -2,7 +2,7 @@ package com.blindtigergames.werescrewed.entity.screws;
 
 import java.util.ArrayList;
 
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -33,9 +33,10 @@ public class StrippedScrew extends Screw {
 	 * @param entity
 	 * @param world
 	 */
-	public StrippedScrew( String name, Vector2 pos, Entity entity, World world) {
+	public StrippedScrew( String name, Vector2 pos, Entity entity, World world, Vector2 detachDirection ) {
 		super( name, pos, null );
 		this.world = world;
+		this.detachDirection = detachDirection;
 		screwType = ScrewType.SCREW_STRIPPED;
 		entityType = EntityType.SCREW;
 		extraJoints = new ArrayList< Joint >( );

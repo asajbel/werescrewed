@@ -7,7 +7,7 @@ import javax.management.RuntimeErrorException;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -163,10 +163,12 @@ public class Skeleton extends Platform {
 			addKinematicPlatform( platform );
 	}
 
-	public void addRope( Rope rope ) {
-		new RevoluteJointBuilder( world ).skeleton( this )
-				.bodyB( rope.getFirstLink( ) ).limit( true ).lower( 0 )
-				.upper( 0 ).build( );
+	public void addRope( Rope rope, boolean toJoint ) {
+		if(toJoint){
+			new RevoluteJointBuilder( world ).skeleton( this )
+					.bodyB( rope.getFirstLink( ) ).limit( true ).lower( 0 )
+					.upper( 0 ).build( );
+		}
 		// ropes.add( rope );
 		ropeMap.put( rope.name, rope );
 	}
@@ -457,13 +459,18 @@ public class Skeleton extends Platform {
 		// super.draw( batch );
 		if ( visible ) {
 			// draw decals before drawing children
-			drawDecals(batch);
+			//update z order : don't draw decals recursively 
+			//draw in queue before everything
+			//drawDecals(batch);
 			// draw bg
-			if ( bgSprite != null )
-				bgSprite.draw( batch );
+			//update z order : don't draw skeleton sprites recursively
+			//update z order : draw the background in a separate queue before everything
+//			if ( bgSprite != null )
+//				bgSprite.draw( batch );
 			drawChildren( batch, deltaTime );
-			if ( fgSprite != null )
-				fgSprite.draw( batch );
+			//update z order : draw the foreground in a separate queue after everything
+//			if ( fgSprite != null )
+//				fgSprite.draw( batch );
 			// draw fg
 		}
 	}
@@ -483,6 +490,7 @@ public class Skeleton extends Platform {
 		for ( Rope rope : ropeMap.values( ) ) {
 			rope.draw( batch, deltaTime );
 		}
+		//draw the entities of the parent skeleton before recursing through the child skeletons
 		for ( Skeleton skeleton : childSkeletonMap.values( ) ) {
 			skeleton.draw( batch, deltaTime );
 		}
