@@ -1025,8 +1025,11 @@ public class Entity implements GleedLoadable {
 	}
 
 	public ParticleEffect getEffect( String name ) {
-		ParticleEffect out = behindParticles.get( name );
-		if ( out == null ) {
+		
+		ParticleEffect out = null;
+		if ( behindParticles!=null)
+			out = behindParticles.get( name );
+		if ( out == null && frontParticles!=null ) {
 			out = frontParticles.get( name );
 			if ( out == null ) {
 				throw new NullPointerException(

@@ -60,21 +60,23 @@
                             <Y>672</Y>
                         </Vector2>
                         <Vector2>
-                            <X>-464</X>
-                            <Y>-128</Y>
+                            <X>368</X>
+                            <Y>672</Y>
                         </Vector2>
                         <Vector2>
                             <X>368</X>
                             <Y>-128</Y>
                         </Vector2>
+                        
                         <Vector2>
-                            <X>368</X>
-                            <Y>672</Y>
+                            <X>-464</X>
+                            <Y>-128</Y>
                         </Vector2>
                         <Vector2>
                             <X>-464</X>
                             <Y>672</Y>
                         </Vector2>
+                        
                     </LocalPoints>
                     <WorldPoints>
                         <Vector2>
