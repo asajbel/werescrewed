@@ -23,5 +23,9 @@ public class HazardActivateAction implements IAction{
 		}
 		
 	}
+	
+	public ActionType getActionType( ) {
+		return ActionType.FORPLAYER;
+	}
 
 }

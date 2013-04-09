@@ -24,5 +24,9 @@ public class ActivateSkeleton implements IAction {
 			Gdx.app.log( "ActivateSkeleton", ""+timesRun );
 		}
 	}
+	
+	public ActionType getActionType( ) {
+		return ActionType.FORPLAYER;
+	}
 
 }

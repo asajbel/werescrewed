@@ -3,6 +3,7 @@ package com.blindtigergames.werescrewed.entity.particles;
 import com.badlogic.gdx.Gdx;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityType;
+import com.blindtigergames.werescrewed.entity.action.ActionType;
 import com.blindtigergames.werescrewed.entity.action.IAction;
 
 public class ParticleActivator implements IAction{
@@ -24,5 +25,10 @@ public class ParticleActivator implements IAction{
 			pE.activate( );
 		else
 			pE.deactivate( );
+	}
+
+	
+	public ActionType getActionType( ) {
+		return ActionType.FORPLAYER;
 	}
 }

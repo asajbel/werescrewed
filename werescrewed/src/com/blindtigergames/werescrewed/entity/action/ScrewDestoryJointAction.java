@@ -23,4 +23,8 @@ public class ScrewDestoryJointAction implements IAction{
 		
 	}
 	
+	public ActionType getActionType( ) {
+		return ActionType.FORPLAYER;
+	}
+	
 }

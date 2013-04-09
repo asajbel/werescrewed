@@ -23,4 +23,8 @@ public class DestoryJointAction implements IAction{
 		
 	}
 	
+	public ActionType getActionType( ) {
+		return ActionType.FORPLAYER;
+	}
+	
 }

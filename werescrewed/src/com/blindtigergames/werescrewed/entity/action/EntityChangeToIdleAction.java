@@ -16,5 +16,9 @@ public class EntityChangeToIdleAction implements IAction {
 		entity.setCurrentMover( RobotState.IDLE );
 
 	}
+	
+	public ActionType getActionType( ) {
+		return ActionType.FORPLAYER;
+	}
 
 }

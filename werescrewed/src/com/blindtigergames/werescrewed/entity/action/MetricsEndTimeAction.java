@@ -18,4 +18,8 @@ public class MetricsEndTimeAction implements IAction{
 		
 	}
 	
+	public ActionType getActionType( ) {
+		return ActionType.FORPLAYER;
+	}
+	
 }

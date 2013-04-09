@@ -15,5 +15,9 @@ public class EntityDeactivateMoverAction implements IAction{
 		entity.setActive( false );
 		
 	}
+	
+	public ActionType getActionType( ) {
+		return ActionType.FORPLAYER;
+	}
 
 }

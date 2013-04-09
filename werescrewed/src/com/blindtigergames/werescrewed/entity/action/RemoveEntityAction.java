@@ -33,6 +33,10 @@ public class RemoveEntityAction implements IAction {
 			player.killPlayer( );
 		}
 	}
+	
+	public ActionType getActionType( ) {
+		return ActionType.FORANYENTITY;
+	}
 
 	
 }
