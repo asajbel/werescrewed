@@ -94,6 +94,7 @@ public class RootSkeleton extends Skeleton {
 				entitiesToDelete.add( entity );
 			}else{
 				entity.update( deltaTime );
+				entity.updateMover( deltaTime );
 			}
 		}
 		if ( entitiesToDelete.size( ) > 0 ){

@@ -313,9 +313,6 @@ public class Entity implements GleedLoadable {
 		// } else
 		if ( body != null ) {
 			// animation stuff may go here
-			if ( this.currentMover( ) != null ) {
-				this.currentMover( ).move( deltaTime, body );
-			}
 			Vector2 bodyPos = body.getPosition( ).mul( Util.BOX_TO_PIXEL );
 			if ( sprite != null ) {
 				sprite.setPosition( bodyPos.x - offset.x, bodyPos.y - offset.y );
