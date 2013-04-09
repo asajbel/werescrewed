@@ -65,7 +65,8 @@ public class Entity implements GleedLoadable {
 
 	private Skeleton parentSkeleton; // pointer to parent skele, set by skeleton
 
-	private HashMap< String, ParticleEffect > behindParticles, frontParticles;
+	protected HashMap< String, ParticleEffect > behindParticles, frontParticles;
+	//protected Array<ParticleEffect> tmpParticleEffect; 
 
 	/**
 	 * Create entity by definition
@@ -267,11 +268,12 @@ public class Entity implements GleedLoadable {
 		drawParticles( frontParticles, batch );
 	}
 
-	private void drawParticles( HashMap< String, ParticleEffect > map,
+	protected void drawParticles( HashMap< String, ParticleEffect > map,
 			SpriteBatch batch ) {
 		if ( map != null ) {
 			for ( ParticleEffect e : map.values( ) ) {
-				e.draw( batch );
+				if ( !e.isComplete( ) )
+					e.draw( batch );
 			}
 		}
 	}
@@ -351,12 +353,24 @@ public class Entity implements GleedLoadable {
 
 	private void updateParticleEffect( float deltaTime,
 			HashMap< String, ParticleEffect > map ) {
+		Array< String > removals = null;
 		if ( map != null ) {
 			Vector2 pos = getPositionPixel( );
 			for ( ParticleEffect e : map.values( ) ) {
-				e.setPosition( pos.x, pos.y );
-				e.setAngle( body.getAngle( ) );
-				e.update( deltaTime );
+				if ( e.updatePositionOnUpdate ){
+					e.setPosition( pos.x, pos.y );
+					e.setAngle( body.getAngle( ) );
+				}
+				if ( !e.isComplete( ) ){
+					e.update( deltaTime );
+				}else if ( e.removeOnComplete ){
+					if ( removals == null )
+						removals = new Array< String >();
+					removals.add( e.name );
+				}
+			}
+			if ( removals != null ){
+				for(String name : removals ) map.remove( name );
 			}
 		}
 	}
@@ -1003,25 +1017,27 @@ public class Entity implements GleedLoadable {
 		}
 	}
 
-	public void addBehindParticleEffect( String name ) {
+	public ParticleEffect addBehindParticleEffect( String name, boolean removeOnComplete, boolean updateWithParent ) {
 		if ( behindParticles == null ) {
 			behindParticles = new HashMap< String, ParticleEffect >( );
 		}
-		addParticleEffect( name, behindParticles );
-
+		return addParticleEffect( name, behindParticles, removeOnComplete, updateWithParent );
 	}
 
-	public void addFrontParticleEffect( String name ) {
+	public ParticleEffect addFrontParticleEffect( String name, boolean removeOnComplete, boolean updateWithParent ) {
 		if ( frontParticles == null ) {
 			frontParticles = new HashMap< String, ParticleEffect >( );
 		}
-		addParticleEffect( name, frontParticles );
+		return addParticleEffect( name, frontParticles, removeOnComplete, updateWithParent );
 	}
 
-	private void addParticleEffect( String name,
-			HashMap< String, ParticleEffect > map ) {
+	private ParticleEffect addParticleEffect( String name,
+			HashMap< String, ParticleEffect > map, boolean removeOnComplete, boolean updateWithParent ) {
 		ParticleEffect effect = ParticleEffect.loadEffect( name );
+		effect.removeOnComplete = removeOnComplete;
+		effect.updatePositionOnUpdate = updateWithParent;
 		map.put( name, effect );
+		return effect;
 	}
 
 	public ParticleEffect getEffect( String name ) {
@@ -1038,4 +1054,5 @@ public class Entity implements GleedLoadable {
 		}
 		return out;
 	}
+	
 }

@@ -52,7 +52,7 @@ public class Fire extends Hazard {
 		particleEffect.setPosition( pos.x, pos.y);
 		particleEmitter = particleEffect.getEmitters( );
 		*/
-		addFrontParticleEffect( "steam" );
+		addFrontParticleEffect( "steam", false, true );
 		constructBody( pos );
 		//for( ParticleEmitter PE: particleEmitter)
 		//	PE.setContinuous( false );

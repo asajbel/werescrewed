@@ -90,6 +90,8 @@ public class Player extends Entity {
 	private PlayerState playerState;
 	private ConcurrentState extraState;
 	private PlayerDirection playerDirection;
+	private boolean reachedMaxSpeed;
+	private PlayerDirection prevPlayerDir;
 	private Controller controller;
 	@SuppressWarnings( "unused" )
 	private boolean controllerIsActive, controllerDebug;
@@ -130,7 +132,7 @@ public class Player extends Entity {
 	public int grabCounter = 0;
 	public int jumpCounter = 0;
 
-	private ParticleEffect land_cloud;
+	//private ParticleEffect land_cloud;
 
 	@SuppressWarnings( "unused" )
 	private Sound jumpSound;
@@ -212,7 +214,10 @@ public class Player extends Entity {
 		jumpSound = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 				+ "/common/sounds/WilhelmScream.ogg" );
 
-		land_cloud = ParticleEffect.loadEffect( "land_cloud" );
+		addFrontParticleEffect( "land_cloud", false, false );
+		addFrontParticleEffect( "skid_left", false, false );
+		addFrontParticleEffect( "skid_right", false, false );
+		//land_cloud = ParticleEffect.loadEffect( "land_cloud" );
 	}
 
 	// PUBLIC METHODS
@@ -435,6 +440,8 @@ public class Player extends Entity {
 		if ( playerState == PlayerState.Jumping && isGrounded( ) ) {
 			jump( );
 		}
+		
+		prevPlayerDir = playerDirection;
 	}
 
 	/**
@@ -446,9 +453,9 @@ public class Player extends Entity {
 		// if ( hitCloud.sprite.getAnimator( ).getFrame( ) < 3 ) {
 		// hitCloud.draw( batch, deltaTime );
 		// }
-		if ( !land_cloud.isComplete( ) ) {
-			land_cloud.draw( batch, deltaTime );
-		}
+		//if ( !land_cloud.isComplete( ) ) {
+		//	land_cloud.draw( batch, deltaTime );
+		//}
 
 	}
 
@@ -545,9 +552,16 @@ public class Player extends Entity {
 			if ( body.getLinearVelocity( ).x < MAX_VELOCITY ) {
 				body.applyLinearImpulse( new Vector2( MOVEMENT_IMPULSE, 0.0f ),
 						body.getWorldCenter( ) );
+				if ( body.getLinearVelocity( ).x >= MAX_VELOCITY )
+					reachedMaxSpeed = true;
+				else
+					reachedMaxSpeed = false;
 			}
 		}
 		playerDirection = PlayerDirection.Right;
+		if ( grounded && playerDirection!=prevPlayerDir ){
+			getEffect( "skid_left" ).restartAt( getPositionPixel( ).add( 30,0 ) );
+		}
 		runTimeout = RUN_STEPS;
 	}
 
@@ -572,9 +586,16 @@ public class Player extends Entity {
 				body.applyLinearImpulse(
 						new Vector2( -MOVEMENT_IMPULSE, 0.0f ),
 						body.getWorldCenter( ) );
+				if ( body.getLinearVelocity( ).x >= MAX_VELOCITY )
+					reachedMaxSpeed = true;
+				else
+					reachedMaxSpeed = false;
 			}
 		}
 		playerDirection = PlayerDirection.Left;
+		if ( grounded && playerDirection!=prevPlayerDir ){
+			getEffect( "skid_right" ).restartAt( getPositionPixel( ).add( 100,0 ) );
+		}
 		runTimeout = RUN_STEPS;
 	}
 
@@ -753,12 +774,9 @@ public class Player extends Entity {
 				 * body.getLinearVelocity( ).y / ( float ) MAX_VELOCITY );
 				 * hitCloud.sprite.reset( );
 				 */
-				if ( !world.isLocked( ) ) {
-					land_cloud.reset( );
-					land_cloud.start( );
-					Vector2 posPix = getPositionPixel( );
-					land_cloud.setPosition( posPix.x+50, posPix.y );
-				}
+				//if ( !world.isLocked( ) ) {
+					getEffect( "land_cloud" ).restartAt( getPositionPixel( ).add( 50,0 ) );
+				//}
 			}
 			this.grounded = newVal;
 		}
