@@ -403,13 +403,15 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		rootSkeleton.addKinematicPlatform( test );
 
 		PuzzleScrew puzzleScrew = new PuzzleScrew( "006", new Vector2( -300,
-				400 ), 100, world, 0, false );
+				100 ), 100, world, 0, false );
 		rootSkeleton.addScrewForDraw( puzzleScrew );
-		puzzleScrew.addStructureJoint( test );
+		puzzleScrew.addStructureJoint( rootSkeleton );
 
-		LerpMover lm = new LerpMover( test.getPositionPixel( ),
+		LerpMover lm = new LerpMover(test.getPositionPixel( )
 				new Vector2( test.getPositionPixel( ).x, test
 						.getPositionPixel( ).y - 300f ),
+						 ,
+						
 				LinearAxis.VERTICAL );
 
 		puzzleScrew.puzzleManager.addEntity( test );
@@ -467,8 +469,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		float zoom = 1.0f;
 		float width = Gdx.graphics.getWidth( ) / zoom;
 		float height = Gdx.graphics.getHeight( ) / zoom;
-		cam = new Camera( new Vector2( Gdx.graphics.getWidth( ) * 5f,
-				Gdx.graphics.getHeight( ) * 5f ), width, height, world );
+		cam = new Camera( new Vector2( 0, 0 ), width, height, world );
 	}
 
 	/**
