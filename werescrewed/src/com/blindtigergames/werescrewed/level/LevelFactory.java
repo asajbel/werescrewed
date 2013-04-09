@@ -32,8 +32,11 @@ import com.blindtigergames.werescrewed.entity.builders.RopeBuilder;
 import com.blindtigergames.werescrewed.entity.builders.ScrewBuilder;
 import com.blindtigergames.werescrewed.entity.builders.SkeletonBuilder;
 import com.blindtigergames.werescrewed.entity.mover.IMover;
+import com.blindtigergames.werescrewed.entity.mover.PistonTweenMover;
+import com.blindtigergames.werescrewed.entity.mover.PuzzleType;
 import com.blindtigergames.werescrewed.entity.mover.TimelineTweenMover;
 import com.blindtigergames.werescrewed.entity.mover.MoverType;
+import com.blindtigergames.werescrewed.entity.mover.puzzle.PuzzleRotateTweenMover;
 import com.blindtigergames.werescrewed.entity.screws.BossScrew;
 import com.blindtigergames.werescrewed.entity.screws.PuzzleScrew;
 import com.blindtigergames.werescrewed.entity.screws.Screw;
@@ -419,8 +422,26 @@ public class LevelFactory {
 
 		IMover mover = null;
 		if ( item.props.containsKey( "mover" ) ) {
+			
+//			new PistonTweenMover( piston, new Vector2(
+//					 0, -350 ), 0.5f, 3f, 1f, 0f, 1f ), RobotState.IDLE
 			String movername = item.props.get( "mover" );
-			if ( MoverType.fromString( movername ) != null ) {
+			if(movername.equals( "pistonmover" )){
+				
+				float delay = 0f;
+				if ( item.props.containsKey( "delay" ) ) {
+					delay = Float.parseFloat( item.props.get( "delay" ) );
+				}
+				
+				float distance = 100f;
+				if ( item.props.containsKey( "distance" ) ) {
+					distance = Float.parseFloat( item.props.get( "distance" ) );
+				}
+				
+				 mover = new PistonTweenMover( out, new Vector2(
+						 0, distance ), 0.5f, 3f, 1f, 0f, delay );
+			}
+			else if ( MoverType.fromString( movername ) != null ) {
 				mover = new MoverBuilder( ).fromString( movername )
 						.applyTo( out ).build( );
 				Gdx.app.log( "LevelFactory", "attaching :" + movername
@@ -660,12 +681,20 @@ public class LevelFactory {
 						
 						Entity attach2 = null;
 						if ( item.props.containsKey( "controlthis2" ) ) {
-							String s = item.props.get( "controlthis" );
+							String s = item.props.get( "controlthis2" );
 							attach2 = entities.get( s );
 							Gdx.app.log( "LevelFactory", "attaching :" + attach2.name
 									+ " to puzzle screw" );
 
 							p.puzzleManager.addEntity( attach2 );
+							
+							// HUGE NOTE: I HAVEN'T ADDED STUFF TO THIS MOVER 
+							// IN ITS BUILDER SO I'M HARDCODING IT FOR NOW
+							p.puzzleManager.addMover( new PuzzleRotateTweenMover( 1,
+									Util.PI / 2, true, PuzzleType.ON_OFF_MOVER ) );
+							
+							Gdx.app.log( "LevelFactory", "attaching :" + movername
+									+ " to puzzle screw" );
 						}
 					}
 					mover = moverBuilder.build( );

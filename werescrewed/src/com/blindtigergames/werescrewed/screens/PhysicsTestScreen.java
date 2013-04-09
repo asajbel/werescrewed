@@ -359,13 +359,13 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		// s.addPlatformRotatingCenter( gear2 );
 		// gear2.quickfixCollisions( );
 
-		// TiledPlatform piston = platBuilder.name( "piston" ).kinematic( )
-		// .position( -100, 700 ).dimensions( 2, 5).oneSided( false )
-		// .buildTilePlatform( );
-		// piston.addMover( new PistonTweenMover( piston, new Vector2(
-		// 0, -350 ), 0.5f, 3f, 1f, 0f, 1f ), RobotState.IDLE );
-		// s.addKinematicPlatform( piston );
-		// piston.setCrushing( true );
+		 TiledPlatform piston = platBuilder.name( "piston" ).kinematic( )
+		 .position( -100, 700 ).dimensions( 2, 5).oneSided( false )
+		 .buildTilePlatform( );
+		 piston.addMover( new PistonTweenMover( piston, new Vector2(
+		 0, -350 ), 0.5f, 3f, 1f, 0f, 1f ), RobotState.IDLE );
+		 s.addKinematicPlatform( piston );
+		 piston.setCrushing( true );
 
 		// TiledPlatform pivot = platBuilder.position( 100.0f, 75f ).name( "rev"
 		// )
@@ -420,9 +420,13 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		PuzzleRotateTweenMover ptm = new PuzzleRotateTweenMover( 1,
 				Util.PI / 2, true, PuzzleType.ON_OFF_MOVER );
 		
+		PuzzleRotateTweenMover ptm2 = new PuzzleRotateTweenMover( 1,
+				Util.PI / 2, true, PuzzleType.ON_OFF_MOVER );
+		
 		puzzleScrew.puzzleManager.addEntity( test );
 		puzzleScrew.puzzleManager.addEntity( test2 );
 		puzzleScrew.puzzleManager.addMover( ptm );
+		puzzleScrew.puzzleManager.addMover( ptm2 );
 		rootSkeleton.addScrewForDraw( puzzleScrew );
 
 	}

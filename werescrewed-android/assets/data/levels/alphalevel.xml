@@ -609,7 +609,7 @@
                 </Item>
                 <Item xsi:type="RectangleItem" Name="jumpHeight" Visible="true">
                     <Position>
-                        <X>1440</X>
+                        <X>784</X>
                         <Y>-5648</Y>
                     </Position>
                     <CustomProperties>
@@ -632,8 +632,8 @@
                 </Item>
                 <Item xsi:type="RectangleItem" Name="doubleJumpHeight" Visible="true">
                     <Position>
-                        <X>-1440</X>
-                        <Y>-2992</Y>
+                        <X>1008</X>
+                        <Y>-5792</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -3579,7 +3579,7 @@
                 <Item xsi:type="RectangleItem" Name="heartPlatform" Visible="true">
                     <Position>
                         <X>1200</X>
-                        <Y>-5456</Y>
+                        <Y>-5328</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -3902,7 +3902,7 @@
                 <Item xsi:type="RectangleItem" Name="chestPlat6" Visible="true">
                     <Position>
                         <X>1232</X>
-                        <Y>-4656</Y>
+                        <Y>-4592</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -3927,8 +3927,8 @@
                 </Item>
                 <Item xsi:type="TextureItem" Name="Texture_0316" Visible="true">
                     <Position>
-                        <X>1920</X>
-                        <Y>-4912</Y>
+                        <X>1936</X>
+                        <Y>-4832</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -3965,7 +3965,7 @@
                 <Item xsi:type="RectangleItem" Name="Rectangle_0320" Visible="true">
                     <Position>
                         <X>816</X>
-                        <Y>-4976</Y>
+                        <Y>-4912</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -3990,8 +3990,8 @@
                 </Item>
                 <Item xsi:type="TextureItem" Name="chestRope1" Visible="true">
                     <Position>
-                        <X>1616</X>
-                        <Y>-5440</Y>
+                        <X>1648</X>
+                        <Y>-5312</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -4106,7 +4106,7 @@
                 <Item xsi:type="TextureItem" Name="Texture_0325" Visible="true">
                     <Position>
                         <X>-64</X>
-                        <Y>-5072</Y>
+                        <Y>-5008</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -4143,7 +4143,7 @@
                 <Item xsi:type="TextureItem" Name="Texture_0326" Visible="true">
                     <Position>
                         <X>368</X>
-                        <Y>-5056</Y>
+                        <Y>-4992</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -4180,7 +4180,7 @@
                 <Item xsi:type="TextureItem" Name="Texture_0327" Visible="true">
                     <Position>
                         <X>144</X>
-                        <Y>-5072</Y>
+                        <Y>-5008</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -4217,7 +4217,7 @@
                 <Item xsi:type="RectangleItem" Name="Rectangle_0328" Visible="true">
                     <Position>
                         <X>2064</X>
-                        <Y>-4992</Y>
+                        <Y>-4928</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -4243,7 +4243,7 @@
                 <Item xsi:type="RectangleItem" Name="Rectangle_0329" Visible="true">
                     <Position>
                         <X>-688</X>
-                        <Y>-4976</Y>
+                        <Y>-4912</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -4305,8 +4305,8 @@
                 </Item>
                 <Item xsi:type="TextureItem" Name="Texture_0331" Visible="true">
                     <Position>
-                        <X>-1008</X>
-                        <Y>-4688</Y>
+                        <X>-1088</X>
+                        <Y>-4640</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -4342,8 +4342,8 @@
                 </Item>
                 <Item xsi:type="TextureItem" Name="Texture_0332" Visible="true">
                     <Position>
-                        <X>-192</X>
-                        <Y>-5312</Y>
+                        <X>-816</X>
+                        <Y>-5280</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -4516,8 +4516,8 @@
                 </Item>
                 <Item xsi:type="TextureItem" Name="chestGear1" Visible="true">
                     <Position>
-                        <X>-832</X>
-                        <Y>-4672</Y>
+                        <X>-912</X>
+                        <Y>-4624</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -4562,8 +4562,8 @@
                 </Item>
                 <Item xsi:type="TextureItem" Name="Texture_0342" Visible="true">
                     <Position>
-                        <X>-592</X>
-                        <Y>-4672</Y>
+                        <X>-672</X>
+                        <Y>-4624</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -4605,8 +4605,8 @@
                 </Item>
                 <Item xsi:type="TextureItem" Name="Texture_0343" Visible="true">
                     <Position>
-                        <X>-352</X>
-                        <Y>-4672</Y>
+                        <X>-432</X>
+                        <Y>-4624</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -4651,8 +4651,8 @@
                 </Item>
                 <Item xsi:type="TextureItem" Name="Texture_0344" Visible="true">
                     <Position>
-                        <X>-112</X>
-                        <Y>-4672</Y>
+                        <X>-192</X>
+                        <Y>-4624</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -4773,7 +4773,7 @@
                 <Item xsi:type="RectangleItem" Name="chestPlat7" Visible="true">
                     <Position>
                         <X>1552</X>
-                        <Y>-4656</Y>
+                        <Y>-4592</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -4799,7 +4799,7 @@
                 <Item xsi:type="TextureItem" Name="chestPuzzleScrew3" Visible="true">
                     <Position>
                         <X>1696</X>
-                        <Y>-4752</Y>
+                        <Y>-4688</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -4906,7 +4906,7 @@
                 <Item xsi:type="RectangleItem" Name="chestPlat8" Visible="true">
                     <Position>
                         <X>-384</X>
-                        <Y>-4976</Y>
+                        <Y>-4912</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -4932,7 +4932,7 @@
                 <Item xsi:type="TextureItem" Name="chestPuzzleScrew5" Visible="true">
                     <Position>
                         <X>880</X>
-                        <Y>-5088</Y>
+                        <Y>-5024</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -4945,7 +4945,7 @@
                             <string>chestSkeleton</string>
                         </Property>
                         <Property Name="maxDepth" Type="string" Description="">
-                            <string>200</string>
+                            <string>500</string>
                         </Property>
                         <Property Name="mover" Type="string" Description="">
                             <string>lerpmover</string>
@@ -4984,7 +4984,7 @@
                 <Item xsi:type="TextureItem" Name="chestPuzzleScrew6" Visible="true">
                     <Position>
                         <X>-480</X>
-                        <Y>-5056</Y>
+                        <Y>-4992</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -4997,7 +4997,7 @@
                             <string>chestSkeleton</string>
                         </Property>
                         <Property Name="maxDepth" Type="string" Description="">
-                            <string>200</string>
+                            <string>500</string>
                         </Property>
                         <Property Name="mover" Type="string" Description="">
                             <string>lerpmover</string>
@@ -5036,7 +5036,7 @@
                 <Item xsi:type="TextureItem" Name="Texture_0359" Visible="true">
                     <Position>
                         <X>2304</X>
-                        <Y>-5360</Y>
+                        <Y>-5280</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -5072,8 +5072,8 @@
                 </Item>
                 <Item xsi:type="TextureItem" Name="Texture_0360" Visible="true">
                     <Position>
-                        <X>2400</X>
-                        <Y>-5200</Y>
+                        <X>2416</X>
+                        <Y>-5120</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -5207,7 +5207,7 @@
                 <Item xsi:type="TextureItem" Name="Texture_0364" Visible="true">
                     <Position>
                         <X>1440</X>
-                        <Y>-5872</Y>
+                        <Y>-5856</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -5244,7 +5244,7 @@
                 <Item xsi:type="TextureItem" Name="Texture_0365" Visible="true">
                     <Position>
                         <X>1440</X>
-                        <Y>-5680</Y>
+                        <Y>-5600</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -5566,6 +5566,208 @@
                         <Y>16</Y>
                     </Origin>
                 </Item>
+                <Item xsi:type="RectangleItem" Name="chestStructurePlat3" Visible="true">
+                    <Position>
+                        <X>1664</X>
+                        <Y>-5584</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>tiledPlatform</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>chestSkeleton</string>
+                        </Property>
+                        <Property Name="dynamic" Type="string" Description="">
+                            <string />
+                        </Property>
+                    </CustomProperties>
+                    <Width>176</Width>
+                    <Height>192</Height>
+                    <FillColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </FillColor>
+                </Item>
+                <Item xsi:type="TextureItem" Name="chestStructureScrew1" Visible="true">
+                    <Position>
+                        <X>1744</X>
+                        <Y>-5568</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Screwtype" Type="string" Description="">
+                            <string>ScrewStructural</string>
+                        </Property>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>screw</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>chestSkeleton</string>
+                        </Property>
+                        <Property Name="targetrev" Type="string" Description="">
+                            <string>chestStructurePlat3</string>
+                        </Property>
+                        <Property Name="skeltargetrev" Type="string" Description="">
+                            <string>chestSkeleton</string>
+                        </Property>
+                    </CustomProperties>
+                    <Rotation>0</Rotation>
+                    <Scale>
+                        <X>1</X>
+                        <Y>1</Y>
+                    </Scale>
+                    <TintColor>
+                        <R>255</R>
+                        <G>255</G>
+                        <B>255</B>
+                        <A>255</A>
+                        <PackedValue>4294967295</PackedValue>
+                    </TintColor>
+                    <FlipHorizontally>false</FlipHorizontally>
+                    <FlipVertically>false</FlipVertically>
+                    <texture_filename>structurescrew.png</texture_filename>
+                    <asset_name>structurescrew</asset_name>
+                    <Origin>
+                        <X>16</X>
+                        <Y>16</Y>
+                    </Origin>
+                </Item>
+                <Item xsi:type="RectangleItem" Name="chestPistonPlat1" Visible="true">
+                    <Position>
+                        <X>400</X>
+                        <Y>-5424</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>tiledPlatform</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>chestSkeleton</string>
+                        </Property>
+                        <Property Name="mover" Type="string" Description="">
+                            <string>pistonmover</string>
+                        </Property>
+                        <Property Name="distance" Type="string" Description="">
+                            <string>-350</string>
+                        </Property>
+                        <Property Name="crushable" Type="string" Description="">
+                            <string />
+                        </Property>
+                    </CustomProperties>
+                    <Width>112</Width>
+                    <Height>160</Height>
+                    <FillColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </FillColor>
+                </Item>
+                <Item xsi:type="RectangleItem" Name="chestPistonPlat2" Visible="true">
+                    <Position>
+                        <X>96</X>
+                        <Y>-5424</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>tiledPlatform</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>chestSkeleton</string>
+                        </Property>
+                        <Property Name="mover" Type="string" Description="">
+                            <string>pistonmover</string>
+                        </Property>
+                        <Property Name="delay" Type="string" Description="">
+                            <string>3f</string>
+                        </Property>
+                        <Property Name="distance" Type="string" Description="">
+                            <string>-350</string>
+                        </Property>
+                        <Property Name="crushable" Type="string" Description="">
+                            <string />
+                        </Property>
+                    </CustomProperties>
+                    <Width>112</Width>
+                    <Height>160</Height>
+                    <FillColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </FillColor>
+                </Item>
+                <Item xsi:type="RectangleItem" Name="chestPistonPlat3" Visible="true">
+                    <Position>
+                        <X>-192</X>
+                        <Y>-5424</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>tiledPlatform</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>chestSkeleton</string>
+                        </Property>
+                        <Property Name="mover" Type="string" Description="">
+                            <string>pistonmover</string>
+                        </Property>
+                        <Property Name="distance" Type="string" Description="">
+                            <string>-350</string>
+                        </Property>
+                        <Property Name="crushable" Type="string" Description="">
+                            <string />
+                        </Property>
+                    </CustomProperties>
+                    <Width>112</Width>
+                    <Height>160</Height>
+                    <FillColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </FillColor>
+                </Item>
+                <Item xsi:type="TextureItem" Name="checkpoint2" Visible="true">
+                    <Position>
+                        <X>1088</X>
+                        <Y>-4992</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>checkpoint</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>chestSkeleton</string>
+                        </Property>
+                    </CustomProperties>
+                    <Rotation>0</Rotation>
+                    <Scale>
+                        <X>1</X>
+                        <Y>1</Y>
+                    </Scale>
+                    <TintColor>
+                        <R>255</R>
+                        <G>255</G>
+                        <B>255</B>
+                        <A>255</A>
+                        <PackedValue>4294967295</PackedValue>
+                    </TintColor>
+                    <FlipHorizontally>false</FlipHorizontally>
+                    <FlipVertically>false</FlipVertically>
+                    <texture_filename>cletter.png</texture_filename>
+                    <asset_name>cletter</asset_name>
+                    <Origin>
+                        <X>32</X>
+                        <Y>64</Y>
+                    </Origin>
+                </Item>
             </Items>
             <ScrollSpeed>
                 <X>1</X>
@@ -5575,11 +5777,11 @@
     </Layers>
     <CustomProperties />
     <EditorRelated>
-        <NextItemNumber>376</NextItemNumber>
+        <NextItemNumber>382</NextItemNumber>
         <ContentRootFolder>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures</ContentRootFolder>
         <CameraPosition>
-            <X>-892.9679</X>
-            <Y>-601.330933</Y>
+            <X>298.7046</X>
+            <Y>-5118.006</Y>
         </CameraPosition>
         <Version>1.3.0.0</Version>
     </EditorRelated>
