@@ -855,9 +855,8 @@ public class LevelFactory {
 			point = new Vector2( vElem.getFloat( "X" ) * GLEED_TO_GDX_X,
 					vElem.getFloat( "Y" ) * GLEED_TO_GDX_Y );
 			pathPoints.add( point );
-			Gdx.app.log( "LevelFactory", "Point " + i + " has coordinates "
+			Gdx.app.log( "LevelFactory Path", "Point " + i + " has coordinates "
 					+ point.toString( ) + "." );
-
 		}
 		for ( int i = 1; i <= pathPoints.size; ++i ) {
 			timeTag = "point" + i + "time";
@@ -925,7 +924,7 @@ public class LevelFactory {
 			point = new Vector2( vElem.getFloat( "X" ) * GLEED_TO_GDX_X,
 					vElem.getFloat( "Y" ) * GLEED_TO_GDX_Y );
 			pathPoints.add( point );
-			Gdx.app.log( "LevelFactory", "Point " + i + " has coordinates "
+			Gdx.app.log( "LevelFactory SkelePoly", "Point " + i + " has coordinates "
 					+ point.toString( ) + "." );
 
 		}
@@ -1016,7 +1015,7 @@ public class LevelFactory {
 			point = new Vector2( vElem.getFloat( "X" ) * GLEED_TO_GDX_X,
 					vElem.getFloat( "Y" ) * GLEED_TO_GDX_Y );
 			pathPoints.add( point );
-			Gdx.app.log( "LevelFactory", "Point " + i + " has coordinates "
+			Gdx.app.log( "LevelFactory Array", "Point " + i + " has coordinates "
 					+ point.toString( ) + "." );
 
 		}

@@ -191,7 +191,7 @@ public class SkeletonBuilder extends GenericEntityBuilder<SkeletonBuilder>{
 		
 		if ( hasDeactivateTrigger && polyVertsBG != null ){
 			EventTriggerBuilder etb = new EventTriggerBuilder( world );
-			EventTrigger et = etb.name( name+"-activator" ).skelePolygon( polyVertsBG )
+			EventTrigger et = etb.name( name+"-activator" ).setVerts( polyVertsBG )
 					.position( pos ).addEntity( out )
 					.beginAction( new SetActiveStateSkeleton( true ) )
 					.endAction( new SetActiveStateSkeleton( false ) ).repeatable( )
@@ -207,7 +207,7 @@ public class SkeletonBuilder extends GenericEntityBuilder<SkeletonBuilder>{
 				meterFGVerts.add( v.cpy( ).mul( Util.PIXEL_TO_BOX ) );
 			}*/
 			
-			EventTrigger et = etb.name( name+"-fg-fader" ).skelePolygon( polyVertsFG )
+			EventTrigger et = etb.name( name+"-fg-fader" ).setVerts( polyVertsFG )
 					.extraBorder( 0f )
 					.position( pos.add( 10,10 ) ).addEntity( out )
 					.beginAction( new FadeFGAction(true) )

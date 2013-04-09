@@ -305,7 +305,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 
 		// rootSkeleton.addSkeleton( s );
 
-		top.addKinematicPlatform( s );
+		top.addSkeleton( s );
 		// StructureScrew screw = new StructureScrew( "sdfasdf",
 		// new Vector2(-700f, 500f),
 		// 100, world );
@@ -320,7 +320,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		Skeleton middleHang = new Skeleton( "middleHang", new Vector2( -700,
 				400 ), null, world, BodyType.KinematicBody );
 		// rootSkeleton.addSkeleton( middleHang );
-		s.addKinematicPlatform( middleHang );
+		s.addSkeleton( middleHang );
 
 		// TiledPlatform test2 = platBuilder.name( "movetest2" ).kinematic( )
 		// .position( -900, 500 ).dimensions( 1, 5).oneSided( false )

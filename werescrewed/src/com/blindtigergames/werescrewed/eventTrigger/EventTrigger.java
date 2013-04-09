@@ -83,7 +83,7 @@ public class EventTrigger extends Platform{
 		polygon.dispose( );
 	}
 	
-	public void constructVertBody(Array<Vector2> vertices, Vector2 positionPixel){
+	public void constructVertBody(Array<Vector2> vertices, Vector2 positionPixel, float additionalBorderPix){
 		BodyDef bodyDef = new BodyDef( );
 		bodyDef.type = BodyType.StaticBody;
 		bodyDef.position.set( positionPixel.mul( Util.PIXEL_TO_BOX ));
@@ -99,6 +99,8 @@ public class EventTrigger extends Platform{
 			if(j == vertices.size - 1) continue;
 			Vector2 v = vertices.get( j );
 			verts[i] = new Vector2(v.x * Util.PIXEL_TO_BOX, v.y * Util.PIXEL_TO_BOX);
+			Vector2 norm = verts[i].cpy( ).nor( ).mul( additionalBorderPix ).mul(Util.PIXEL_TO_BOX);
+			verts[i].add( norm );
 			++i;
 		}
 		polygon.set( verts );
@@ -121,7 +123,7 @@ public class EventTrigger extends Platform{
 	 * @param vertsPixels The skeleton background's polysprite points.
 	 * @param positionPixel
 	 */
-	public void constructPolygonBody(Array< Vector2 > vertsPixels, Vector2 positionPixel, float additionalBorderPix ){
+	private void constructPolygonBody(Array< Vector2 > vertsPixels, Vector2 positionPixel, float additionalBorderPix ){
 		BodyDef bodyDef = new BodyDef( );
 		bodyDef.type = BodyType.StaticBody;
 		bodyDef.position.set( positionPixel.cpy().mul( Util.PIXEL_TO_BOX ));
@@ -131,17 +133,19 @@ public class EventTrigger extends Platform{
 		//We also have to modify the size of the points to give the skeletons a buffer in which 
 		//they activate/deactivate.
 		Vector2[] vertsMeters;
-		if ( vertsPixels.get( vertsPixels.size-1 ).equals( vertsPixels.get(0) ) ){
-			vertsMeters = new Vector2[vertsPixels.size-1];
-		}else{
-			vertsMeters = new Vector2[vertsPixels.size];
+		int size = vertsPixels.size;
+		while(vertsPixels.get(size-1)==null) --size;
+		if ( vertsPixels.get( size-1 ).equals( vertsPixels.get(0) ) ){
+			size-=1;
 		}
+		vertsMeters = new Vector2[size];
+		
 		for(int i =0; i < vertsMeters.length; ++i ){
 			Vector2 newPoint = vertsPixels.get( i ).cpy( ).mul(Util.PIXEL_TO_BOX);
 			Vector2 norm = newPoint.cpy( ).nor( ).mul( additionalBorderPix ).mul(Util.PIXEL_TO_BOX);//may divide by 0
 			newPoint.add( norm );
-			vertsMeters[i] = newPoint ;
-			//Gdx.app.log( "ET:", "From point"+vertsPixels.get( i ).cpy( ).mul( Util.PIXEL_TO_BOX )+" To:"+newPoint );
+			vertsMeters[i] = newPoint;
+			//Gdx.app.log( "ET:", "From point"+vertsPixels.get( i ).cpy( ).mul( 1 )+" To:"+newPoint.cpy( ).mul( Util.BOX_TO_PIXEL ) );
 		}
 		
 		PolygonShape polygon = new PolygonShape();
@@ -441,7 +445,7 @@ public class EventTrigger extends Platform{
 							beginAction.act( e );
 							beginTriggeredOnce = true;
 							endTriggeredOnce = false;
-							Gdx.app.log( this.name,  " begin action " + beginAction.getClass( ).getSimpleName( ) );
+							//Gdx.app.log( this.name,  " begin action " + beginAction.getClass( ).getSimpleName( ) );
 						}
 					}
 				}
@@ -452,7 +456,7 @@ public class EventTrigger extends Platform{
 						beginAction.act( );
 						beginTriggeredOnce = true;
 						endTriggeredOnce = false;
-						Gdx.app.log( this.name,  " begin action " + beginAction.getClass( ).getSimpleName( ) );
+						//Gdx.app.log( this.name,  " begin action " + beginAction.getClass( ).getSimpleName( ) );
 					}
 				}
 			}
@@ -468,7 +472,7 @@ public class EventTrigger extends Platform{
 						beginAction.act( e );
 						beginTriggeredOnce = true;
 						endTriggeredOnce = false;
-						Gdx.app.log( this.name,  " begin action " + beginAction.getClass( ).getSimpleName( ));
+						//Gdx.app.log( this.name,  " begin action " + beginAction.getClass( ).getSimpleName( ));
 					}
 				}
 			}
@@ -479,7 +483,7 @@ public class EventTrigger extends Platform{
 					beginAction.act( );
 					beginTriggeredOnce = true;
 					endTriggeredOnce = false;
-					Gdx.app.log( this.name,  " begin action " + beginAction.getClass( ).getSimpleName( ) );
+					//Gdx.app.log( this.name,  " begin action " + beginAction.getClass( ).getSimpleName( ) );
 				}
 			}
 		}

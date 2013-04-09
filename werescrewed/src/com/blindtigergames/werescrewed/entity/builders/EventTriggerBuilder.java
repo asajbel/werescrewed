@@ -16,7 +16,6 @@ public class EventTriggerBuilder extends
 	// name and pos in super
 	private boolean rectangle;
 	private boolean circle;
-	private boolean skelePolygon;
 	private boolean vertBody;
 	private float radius;
 	private float width, height;
@@ -49,7 +48,6 @@ public class EventTriggerBuilder extends
 		super.resetInternal( );
 		this.rectangle = false;
 		this.circle = true;
-		this.skelePolygon = false;
 		this.vertBody = false;
 		this.radius = 100f;
 		this.width = 100f;
@@ -68,7 +66,6 @@ public class EventTriggerBuilder extends
 		this.attachedToEntity = false;
 		this.actOnEntity = false;
 		this.verts = null;
-		this.skeleVertsPix = null;
 		this.polygonExtraBorder = Util.SKELETON_ACTIVE_BORDER;
 		return this;
 	}
@@ -101,7 +98,6 @@ public class EventTriggerBuilder extends
 	public EventTriggerBuilder circle( ) {
 		this.circle = true;
 		this.rectangle = false;
-		this.skelePolygon = false;
 		this.vertBody = false;
 		return this;
 	}
@@ -109,7 +105,6 @@ public class EventTriggerBuilder extends
 	public EventTriggerBuilder rectangle( ) {
 		this.rectangle = true;
 		this.circle = false;
-		this.skelePolygon = false;
 		this.vertBody = false;
 		return this;
 	}
@@ -119,19 +114,18 @@ public class EventTriggerBuilder extends
 	 * @param vertsPixels
 	 * @return
 	 */
-	public EventTriggerBuilder skelePolygon(Array< Vector2 > vertsPixels){
-		this.rectangle = false;
-		this.circle = false;
-		this.skelePolygon = true;
-		this.vertBody = false;
-		this.skeleVertsPix = vertsPixels;
-		return this;
-	}
+//	public EventTriggerBuilder skelePolygon(Array< Vector2 > vertsPixels){
+//		this.rectangle = false;
+//		this.circle = false;
+//		this.skelePolygon = true;
+//		this.vertBody = false;
+//		this.skeleVertsPix = vertsPixels;
+//		return this;
+//	}
 
 	public EventTriggerBuilder setVerts( Array<Vector2> vertices ) {
 		this.rectangle = false;
 		this.circle = false;
-		this.skelePolygon = false;
 		this.vertBody = true;
 		this.verts = vertices;
 		return this;
@@ -229,10 +223,10 @@ public class EventTriggerBuilder extends
 				}
 			}
 			et.contructRectangleBody( this.height, this.width, this.pos );
-		}else if ( this.skelePolygon ){
-			et.constructPolygonBody( skeleVertsPix, this.pos, polygonExtraBorder );
-		}else{
-			et.constructVertBody( verts, pos );
+		//}else if ( this.skelePolygon ){
+		//	et.constructPolygonBody( skeleVertsPix, this.pos, polygonExtraBorder );
+		}else if ( this.vertBody ){
+			et.constructVertBody( verts, pos, polygonExtraBorder );
 		}
 
 		et.setRepeatable( this.repeatableAction );
