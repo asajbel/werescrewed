@@ -161,104 +161,6 @@ public class LevelFactory {
 		return level.root;
 	}
 
-	protected TimelineTweenMover loadMover( Item item, Entity entity ) {
-		item.checkLocked( );
-		if ( movers.containsKey( item.name ) ) {
-			return movers.get( item.name );
-		} else if ( item.gleedType.equals( "PathItem" ) ) {
-			Array< Element > pointElems = item.element.getChildByName(
-					"LocalPoints" ).getChildrenByName( "Vector2" );
-			Gdx.app.log( "GleedLoader", "Loading Path Mover:" + pointElems.size
-					+ " points." );
-			Array< Vector2 > points = new Array< Vector2 >( pointElems.size );
-			Array< Float > times = new Array< Float >( pointElems.size );
-			PathBuilder pBuilder = new PathBuilder( )
-					.begin( ( Platform ) entity );
-
-			Element vElem;
-			Vector2 point;
-			String timeTag;
-			int frontPoint = 0;
-			float frontTime = 0.0f;
-			// Set first and last point times with separate tags.
-			// If tags are not available, assume they will be at 0.0f and 1.0f,
-			// respectively.
-			// As points are loaded, these values may get overridden; this is
-			// fine.
-			for ( int i = 0; i < pointElems.size; i++ ) {
-				times.add( -1.0f );
-			}
-			if ( item.props.containsKey( startTime ) ) {
-				times.set( frontPoint,
-						Float.parseFloat( item.props.get( startTime ) ) );
-				frontTime = times.get( 0 );
-			} else {
-				times.set( frontPoint, frontTime ); // By default, the first
-													// point should be at time
-													// 0.
-			}
-			if ( item.props.containsKey( "EndTime" ) ) {
-				times.set( pointElems.size - 1,
-						Float.parseFloat( item.props.get( endTime ) ) );
-			} else {
-				times.set( pointElems.size - 1, 1.0f );
-			}
-			for ( int i = 0; i < pointElems.size; i++ ) {
-				vElem = pointElems.get( i );
-				point = new Vector2( vElem.getFloat( "X" ) * GLEED_TO_GDX_X,
-						vElem.getFloat( "Y" ) * GLEED_TO_GDX_Y );
-				points.add( point );
-				Gdx.app.log( "GleedLoader", "Point " + i + " has coordinates "
-						+ point.toString( ) + "." );
-				timeTag = "point" + i + "time";
-				if ( item.props.containsKey( timeTag ) ) {
-					float time = Float.parseFloat( item.props.get( timeTag ) );
-					if ( time >= 0.0f ) {
-						times.set( i, time );
-					}
-				}
-				if ( times.get( i ) >= 0.0f ) {
-					Gdx.app.log( "GleedLoader", "Point " + i + " has time "
-							+ times.get( i ) + "." );
-					if ( i > frontPoint + 1 ) {
-						float div = ( times.get( i ) - frontTime )
-								/ ( float ) ( i - frontPoint );
-						for ( int j = i - 1; j > frontPoint; j-- ) {
-							times.set( j, frontTime + div * ( j - frontPoint ) );
-							Gdx.app.log( "GleedLoader",
-									"Backtracking: Setting point " + j
-											+ " to time " + times.get( j )
-											+ "." );
-						}
-						frontPoint = i;
-						frontTime = times.get( i );
-					}
-				}
-			}
-			for ( int i = 0; i < points.size; i++ ) {
-				pBuilder.target( points.get( i ).x, points.get( i ).y, times
-						.get( i ).floatValue( ) );
-			}
-			TimelineTweenMover out = pBuilder.build( );
-			movers.put( item.name, out );
-			return out;
-		}
-		RuntimeException notPath = new RuntimeException(
-				item.name
-						+ " is defined as a mover but is not a path object. Only paths can be defined as movers." );
-		Gdx.app.log( "GleedLoader", "", notPath );
-		throw notPath;
-	}
-
-	protected TimelineTweenMover loadMover( String name, Entity entity ) {
-		if ( movers.containsKey( name ) ) {
-			return movers.get( name );
-		} else if ( items.get( GleedTypeTag.MOVER ).containsKey( name ) ) {
-			return loadMover( items.get( GleedTypeTag.MOVER ).get( name ),
-					entity );
-		}
-		return null;
-	}
 
 	protected Entity loadEntity( String name ) {
 		if ( entities.containsKey( name ) ) {
@@ -547,7 +449,7 @@ public class LevelFactory {
 					+ out.name );
 
 			parent.addKinematicPlatform( out );
-			out.setCategoryMask( Util.KINEMATIC_OBJECTS,
+			out.setCategoryMask( Util.CATEGORY_PLATFORMS,
 					Util.CATEGORY_EVERYTHING );
 		}
 		return out;
@@ -622,7 +524,7 @@ public class LevelFactory {
 					+ out.name );
 
 			parent.addKinematicPlatform( out );
-			out.setCategoryMask( Util.KINEMATIC_OBJECTS,
+			out.setCategoryMask( Util.CATEGORY_PLATFORMS,
 					Util.CATEGORY_EVERYTHING );
 		}
 		return out;
@@ -740,19 +642,32 @@ public class LevelFactory {
 					MoverBuilder moverBuilder = new MoverBuilder( ).fromString(
 							movername ).applyTo( attach );
 
-					if ( item.props.containsKey( "vertical" ) ) {
-						moverBuilder.vertical( );
-					} else if ( item.props.containsKey( "horizontal" ) ) {
-						moverBuilder.horizontal( );
+					
+					if(movername.equals( "lerpmover" )){
+						if ( item.props.containsKey( "distance" ) ) {
+							float dist = Float.parseFloat( item.props
+									.get( "distance" ) );
+							moverBuilder.distance( dist );
+						}
+						
+						if ( item.props.containsKey( "vertical" ) ) {
+							moverBuilder.vertical( );
+						} else if ( item.props.containsKey( "horizontal" ) ) {
+							moverBuilder.horizontal( );
+						}
+					} else if( movername.equals( "puzzlerotatetween" )){
+						
+						
+						Entity attach2 = null;
+						if ( item.props.containsKey( "controlthis2" ) ) {
+							String s = item.props.get( "controlthis" );
+							attach2 = entities.get( s );
+							Gdx.app.log( "LevelFactory", "attaching :" + attach2.name
+									+ " to puzzle screw" );
+
+							p.puzzleManager.addEntity( attach2 );
+						}
 					}
-
-					if ( item.props.containsKey( "distance" ) ) {
-						float dist = Float.parseFloat( item.props
-								.get( "distance" ) );
-
-						moverBuilder.distance( dist );
-					}
-
 					mover = moverBuilder.build( );
 					Gdx.app.log( "LevelFactory", "attaching :" + movername
 							+ " to puzzle screw" );
@@ -763,6 +678,14 @@ public class LevelFactory {
 				}
 			}
 
+			
+			if ( item.props.containsKey( "addscrew" ) ) {
+				String screw =  item.props.get( "addscrew" );
+				PuzzleScrew puzzleScrew = ( PuzzleScrew ) entities.get( screw );
+				
+				p.puzzleManager.addScrew( puzzleScrew );
+				
+			}
 			puzzleScrews.put( item.name, p );
 			entities.put( item.name, p );
 

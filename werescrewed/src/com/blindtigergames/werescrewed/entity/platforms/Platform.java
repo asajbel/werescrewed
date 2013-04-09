@@ -269,26 +269,26 @@ public class Platform extends Entity {
 		dynamicType = !dynamicType;
 		if ( dynamicType ) {
 			body.setType( BodyType.DynamicBody );
-			Filter filter = new Filter( );
-			for ( Fixture f : body.getFixtureList( ) ) {
-				filter = f.getFilterData( );
-				// move player back to original category
-				filter.categoryBits = Util.DYNAMIC_OBJECTS;
-				// player now collides with everything
-				filter.maskBits = Util.CATEGORY_EVERYTHING;
-				f.setFilterData( filter );
-			}
+//			Filter filter = new Filter( );
+//			for ( Fixture f : body.getFixtureList( ) ) {
+//				filter = f.getFilterData( );
+//				// move player back to original category
+//				filter.categoryBits = Util.CATEGORY_PLATFORMS;
+//				// player now collides with everything
+//				filter.maskBits = Util.CATEGORY_EVERYTHING;
+//				f.setFilterData( filter );
+//			}
 		} else {
 			body.setType( BodyType.KinematicBody );
-			Filter filter = new Filter( );
-			for ( Fixture f : body.getFixtureList( ) ) {
-				filter = f.getFilterData( );
-				// move player back to original category
-				filter.categoryBits = Util.KINEMATIC_OBJECTS;
-				// player now collides with everything
-				filter.maskBits = Util.CATEGORY_EVERYTHING;
-				f.setFilterData( filter );
-			}
+//			Filter filter = new Filter( );
+//			for ( Fixture f : body.getFixtureList( ) ) {
+//				filter = f.getFilterData( );
+//				// move player back to original category
+//				filter.categoryBits = Util.CATEGORY_PLATFORMS;
+//				// player now collides with everything
+//				filter.maskBits = Util.CATEGORY_EVERYTHING;
+//				f.setFilterData( filter );
+//			}
 		}
 
 		body.setActive( false );
