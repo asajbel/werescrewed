@@ -8,6 +8,7 @@ import com.blindtigergames.werescrewed.entity.Skeleton;
 import com.blindtigergames.werescrewed.entity.action.EntityActivateMoverAction;
 import com.blindtigergames.werescrewed.entity.builders.PlayerBuilder;
 import com.blindtigergames.werescrewed.entity.platforms.TiledPlatform;
+import com.blindtigergames.werescrewed.entity.screws.PuzzleScrew;
 import com.blindtigergames.werescrewed.entity.screws.Screw;
 import com.blindtigergames.werescrewed.entity.tween.PathBuilder;
 import com.blindtigergames.werescrewed.eventTrigger.EventTrigger;
@@ -51,7 +52,7 @@ public class AlphaScreen extends Screen {
 			level.progressManager.addPlayerTwo( level.player2 );
 		}
 
-		initEventTriggers( );
+		chestObjects( );
 
 	}
 
@@ -135,11 +136,14 @@ public class AlphaScreen extends Screen {
 		}
 	}
 
-	private void initEventTriggers( ) {
+	private void chestObjects( ) {
 
+		PuzzleScrew chestScrew1 = ( PuzzleScrew ) LevelFactory.entities.get( "chestPuzzleScrew5" );
+		PuzzleScrew chestScrew2 = ( PuzzleScrew ) LevelFactory.entities.get( "chestPuzzleScrew6" );
 		
-		
-		
+		chestScrew1.puzzleManager.addScrew( chestScrew2 );
+		chestScrew2.puzzleManager.addScrew( chestScrew1 );
+	
 	}
 
 }
