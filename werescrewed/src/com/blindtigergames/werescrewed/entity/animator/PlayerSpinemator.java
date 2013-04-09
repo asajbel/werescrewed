@@ -3,8 +3,7 @@ package com.blindtigergames.werescrewed.entity.animator;
 import java.util.EnumMap;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.GL10;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.graphics.TextureAtlas;
@@ -149,6 +148,7 @@ public class PlayerSpinemator implements ISpinemator {
 		root.setScaleX( scale.x );
 		root.setScaleY( scale.y );
 	}
+
 
 	// static class Box2dAttachment extends RegionAttachment {
 	// Body body;

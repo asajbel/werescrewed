@@ -840,6 +840,13 @@
 					{ "time": 0.9333, "x": 0.863, "y": 1 }
 				]
 			}
+		},
+		"slots": {
+			"screw_driver": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			}
 		}
 	},
 	"idle": {
@@ -1250,6 +1257,13 @@
 					{ "time": 0.8666, "x": 1, "y": 1 }
 				]
 			}
+		},
+		"slots": {
+			"screw_driver": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			}
 		}
 	},
 	"jump_up": {
@@ -1608,6 +1622,13 @@
 				"scale": [
 					{ "time": 0, "x": 1, "y": 0.939, "curve": "stepped" },
 					{ "time": 1, "x": 1, "y": 0.939 }
+				]
+			}
+		},
+		"slots": {
+			"screw_driver": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
 				]
 			}
 		}
@@ -1997,6 +2018,13 @@
 					{ "time": 1, "x": 1, "y": 0.939 }
 				]
 			}
+		},
+		"slots": {
+			"screw_driver": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			}
 		}
 	},
 	"death_idle": {
@@ -2281,6 +2309,13 @@
 					{ "time": 0.1666, "x": 1, "y": 1 }
 				]
 			}
+		},
+		"slots": {
+			"screw_driver": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			}
 		}
 	},
 	"death_begin": {
@@ -2503,6 +2538,13 @@
 				],
 				"scale": [
 					{ "time": 0, "x": 1, "y": 1 }
+				]
+			}
+		},
+		"slots": {
+			"screw_driver": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
 				]
 			}
 		}
