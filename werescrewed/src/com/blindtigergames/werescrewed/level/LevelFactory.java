@@ -900,14 +900,18 @@ public class LevelFactory {
 		// ropeBuilder.createScrew(num);
 		// }
 
+		boolean attachToEntity = false;
 		if ( item.props.containsKey( "attachedto" ) ) {
 			Entity e = loadEntity( item.props.get( "attachedto" ) );
-			ropeBuilder.attachTo( e );
+			ropeBuilder.attachToTop( e );
+			attachToEntity = true;
 		}
 
 		Skeleton parent = loadSkeleton( item.skeleton );
 		Rope rope = ropeBuilder.buildRope( );
-		parent.addRope( rope );
+		// if its attached to an entity, then send in false so it doesn't
+		// joint itself to the skeleton
+		parent.addRope( rope , !attachToEntity);
 	}
 
 	public Array< Vector2 > contstructSkeletonPoly( Item item ) {

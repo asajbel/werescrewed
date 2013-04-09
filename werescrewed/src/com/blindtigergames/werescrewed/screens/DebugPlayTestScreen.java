@@ -1034,7 +1034,7 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		// texture only exists for 16x64 rope, which are default values for w/h
 		testRope = ropeBuilder.position( 154f * TILE, 104 * TILE ).links( 5 )
 				.createScrew( ).buildRope( );
-		skel9.addRope( testRope );
+		skel9.addRope( testRope, true );
 
 		// StrippedScrew ropeScrew = new StrippedScrew( "ropeScrew", world,
 		// new Vector2 ( 154f * TILE, 93 * TILE ), testRope.getLastLink( ) );

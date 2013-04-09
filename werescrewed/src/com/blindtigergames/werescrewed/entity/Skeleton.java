@@ -163,10 +163,12 @@ public class Skeleton extends Platform {
 			addKinematicPlatform( platform );
 	}
 
-	public void addRope( Rope rope ) {
-		new RevoluteJointBuilder( world ).skeleton( this )
-				.bodyB( rope.getFirstLink( ) ).limit( true ).lower( 0 )
-				.upper( 0 ).build( );
+	public void addRope( Rope rope, boolean toJoint ) {
+		if(toJoint){
+			new RevoluteJointBuilder( world ).skeleton( this )
+					.bodyB( rope.getFirstLink( ) ).limit( true ).lower( 0 )
+					.upper( 0 ).build( );
+		}
 		// ropes.add( rope );
 		ropeMap.put( rope.name, rope );
 	}
