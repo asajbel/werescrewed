@@ -152,19 +152,19 @@ public class ResurrectScreen implements com.badlogic.gdx.Screen {
 		Body body;
 		CircleShape screwShape;
 		FixtureDef screwFixture;
-		Entity bg_1_0 = new Entity( "bg_1_0", new Vector2( 1920, 512 ),
+		Entity bg_1_0 = new Entity( "bg_1_0", new Vector2( 2304, 512 ),
 				WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 						+ "/common/parallax_layer1_0.png", Texture.class ),
 				null, false );
-		Entity bg_1_1 = new Entity( "bg_1_0", new Vector2( 1920, 512 ),
+		Entity bg_1_1 = new Entity( "bg_1_0", new Vector2( 2304, 512 ),
 				WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 						+ "/common/parallax_layer1_1.png", Texture.class ),
 				null, false );
-		Entity bg_2_0 = new Entity( "bg_1_0", new Vector2( 1920, 512 ),
+		Entity bg_2_0 = new Entity( "bg_1_0", new Vector2( 2304, 512 ),
 				WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 						+ "/common/parallax_layer1_0.png", Texture.class ),
 				null, false );
-		Entity bg_2_1 = new Entity( "bg_1_0", new Vector2( 1920, 512 ),
+		Entity bg_2_1 = new Entity( "bg_1_0", new Vector2( 2304, 512 ),
 				WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 						+ "/common/parallax_layer1_0.png", Texture.class ),
 				null, false );
@@ -185,25 +185,25 @@ public class ResurrectScreen implements com.badlogic.gdx.Screen {
 			body.setUserData( this );
 			switch ( i ) {
 			case 0:
-				bg_1_0 = new Entity( "bg_1_0", new Vector2( -264, 512 ),
+				bg_1_0 = new Entity( "bg_1_0", new Vector2( 2304, 512 ),
 						WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 								+ "/common/parallax_layer1_0.png",
 								Texture.class ), body, false );
 				break;
 			case 1:
-				bg_1_1 = new Entity( "bg_1_1", new Vector2( 0, 0 ),
+				bg_1_1 = new Entity( "bg_1_1", new Vector2( 2304, 512 ),
 						WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 								+ "/common/parallax_layer1_1.png",
 								Texture.class ), body, false );
 				break;
 			case 2:
-				bg_2_0 = new Entity( "bg_2_0", new Vector2( 0, 0 ),
+				bg_2_0 = new Entity( "bg_2_0", new Vector2( 2304, 512 ),
 						WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 								+ "/common/parallax_layer2_0.png",
 								Texture.class ), body, false );
 				break;
 			case 3:
-				bg_2_1 = new Entity( "bg_2_1", new Vector2( 0, 0 ),
+				bg_2_1 = new Entity( "bg_2_1", new Vector2( 2304, 512 ),
 						WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 								+ "/common/parallax_layer2_1.png",
 								Texture.class ), body, false );
