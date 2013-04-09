@@ -248,7 +248,7 @@ public class LerpMover implements IMover {
 				float newPos = Math
 						.abs( p.getOriginPos( ).y - beginningPoint.y );
 				if ( temp.y > endPoint.y ) {
-					p.setLocalPos( p.getLocalPos( ).x, newPos );
+					p.setLocalPos( p.getLocalPos( ).x, -newPos );
 				} else {
 					p.setLocalPos( p.getLocalPos( ).x, newPos );
 				}

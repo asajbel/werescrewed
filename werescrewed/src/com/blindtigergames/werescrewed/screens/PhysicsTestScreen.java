@@ -410,8 +410,6 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		LerpMover lm = new LerpMover(test.getPositionPixel( ),
 				new Vector2( test.getPositionPixel( ).x, test
 						.getPositionPixel( ).y - 300f ),
-						 
-						
 				LinearAxis.VERTICAL );
 
 		puzzleScrew.puzzleManager.addEntity( test );

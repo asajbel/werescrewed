@@ -653,14 +653,8 @@ public class Player extends Entity {
 		// grounded anymore.
 		setGrounded( false );
 		body.setLinearVelocity( new Vector2( body.getLinearVelocity( ).x, 0.0f ) );
-		if ( playerState == PlayerState.JumpingOffScrew && platformBody != null ) {
-			body.applyLinearImpulse( new Vector2( screwAttachDirection.x
-					* JUMP_IMPULSE, screwAttachDirection.y * JUMP_IMPULSE ),
-					body.getWorldCenter( ) );
-		} else {
-			body.applyLinearImpulse( new Vector2( 0.0f, JUMP_IMPULSE ),
-					body.getWorldCenter( ) );
-		}
+		body.applyLinearImpulse( new Vector2( 0.0f, JUMP_IMPULSE ),
+				body.getWorldCenter( ) );
 	}
 
 	/**
@@ -883,17 +877,13 @@ public class Player extends Entity {
 						currentScrew.getPosition( ).y * Util.BOX_TO_PIXEL
 								- ( sprite.getHeight( ) / 2.0f ) ),
 						SCREW_ATTACH_SPEED, false, LinearAxis.DIAGONAL, 0 );
+				screwAttachDirection = null;
 				screwAttachDirection = getPositionPixel( )
-						.sub( currentScrew.getPositionPixel( ) )
-						.div( getPositionPixel( ).sub(
-								currentScrew.getPositionPixel( ) ).len( ) )
-						.cpy( );
+						.sub( currentScrew.getPositionPixel( ) ).nor( ).cpy( );
 			} else {
+				screwAttachDirection = null;
 				screwAttachDirection = getPositionPixel( )
-						.sub( currentScrew.getPositionPixel( ) )
-						.div( getPositionPixel( ).sub(
-								currentScrew.getPositionPixel( ) ).len( ) )
-						.cpy( );
+						.sub( currentScrew.getPositionPixel( ) ).nor( ).cpy( );
 				body.setTransform( new Vector2( currentScrew.getPosition( ).x
 						- ( sprite.getWidth( ) / 2.0f ) * Util.PIXEL_TO_BOX,
 						currentScrew.getPosition( ).y
@@ -1255,15 +1245,8 @@ public class Player extends Entity {
 			// jump( );
 			body.setLinearVelocity( new Vector2( body.getLinearVelocity( ).x,
 					0.0f ) );
-			if ( platformBody != null ) {
-				body.applyLinearImpulse(
-						new Vector2( screwAttachDirection.x * JUMP_IMPULSE,
-								screwAttachDirection.y * JUMP_IMPULSE ), body
-								.getWorldCenter( ) );
-			} else {
-				body.applyLinearImpulse( new Vector2( 0.0f, JUMP_IMPULSE ),
-						body.getWorldCenter( ) );
-			}
+			body.applyLinearImpulse( new Vector2( 0.0f, JUMP_IMPULSE ),
+					body.getWorldCenter( ) );
 		}
 	}
 
@@ -1295,12 +1278,12 @@ public class Player extends Entity {
 			if ( mover == null ) {
 				removePlayerToScrew( );
 				if ( platformBody != null ) {
-					body.setLinearVelocity( new Vector2( body
-							.getLinearVelocity( ).x, 0.0f ) );
-					body.applyLinearImpulse( new Vector2(
-							screwAttachDirection.x * JUMP_IMPULSE,
-							screwAttachDirection.y * JUMP_IMPULSE ), body
-							.getWorldCenter( ) );
+					// body.setLinearVelocity( new Vector2( body
+					// .getLinearVelocity( ).x, 0.0f ) );
+					// body.applyLinearImpulse( new Vector2(
+					// screwAttachDirection.x * JUMP_IMPULSE,
+					// screwAttachDirection.y * JUMP_IMPULSE ), body
+					// .getWorldCenter( ) );
 				}
 			}
 		} else {
@@ -1726,12 +1709,12 @@ public class Player extends Entity {
 					if ( mover == null ) {
 						removePlayerToScrew( );
 						if ( platformBody != null ) {
-							body.setLinearVelocity( new Vector2( body
-									.getLinearVelocity( ).x, 0.0f ) );
-							body.applyLinearImpulse( new Vector2(
-									screwAttachDirection.x * JUMP_IMPULSE,
-									screwAttachDirection.y * JUMP_IMPULSE ), body
-									.getWorldCenter( ) );
+							// body.setLinearVelocity( new Vector2( body
+							// .getLinearVelocity( ).x, 0.0f ) );
+							// body.applyLinearImpulse( new Vector2(
+							// screwAttachDirection.x * JUMP_IMPULSE,
+							// screwAttachDirection.y * JUMP_IMPULSE ),
+							// body.getWorldCenter( ) );
 						}
 					}
 				}
