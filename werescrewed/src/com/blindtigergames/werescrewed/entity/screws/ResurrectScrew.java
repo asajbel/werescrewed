@@ -218,8 +218,8 @@ public class ResurrectScrew extends Screw {
 			if ( destroyJoint ) {
 				deadPlayer.body.setTransform(
 						this.getPositionPixel( )
-								.sub( deadPlayer.sprite.getWidth( ) / 3.0f,
-										deadPlayer.sprite.getHeight( ) )
+								.sub( Player.WIDTH / 3.0f,
+										Player.HEIGHT )
 								.mul( Util.PIXEL_TO_BOX ), 0.0f );
 				deadPlayer.body.setType( BodyType.DynamicBody );
 				deadPlayer.body.setLinearVelocity( Vector2.Zero );
