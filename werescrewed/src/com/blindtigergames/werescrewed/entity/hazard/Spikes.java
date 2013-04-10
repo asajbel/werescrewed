@@ -136,6 +136,7 @@ public class Spikes extends Hazard {
 		spikeFixtureDef.filter.categoryBits = Util.CATEGROY_HAZARD;
 		spikeFixtureDef.filter.maskBits = Util.CATEGORY_PLAYER;
 		body.createFixture( spikeFixtureDef );
+		body.setGravityScale( 0.1f );
 
 		if ( hori ) {
 			polygon.setAsBox( ( ( ( width * tileConstant ) / 2 ) - 6 )

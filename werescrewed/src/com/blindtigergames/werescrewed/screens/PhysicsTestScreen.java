@@ -55,6 +55,8 @@ import com.blindtigergames.werescrewed.entity.tween.EntityAccessor;
 import com.blindtigergames.werescrewed.entity.tween.PathBuilder;
 import com.blindtigergames.werescrewed.entity.tween.PlatformAccessor;
 import com.blindtigergames.werescrewed.entity.hazard.Hazard;
+import com.blindtigergames.werescrewed.entity.hazard.Spikes;
+import com.blindtigergames.werescrewed.entity.hazard.builders.HazardBuilder;
 import com.blindtigergames.werescrewed.joint.JointFactory;
 import com.blindtigergames.werescrewed.player.Player;
 import com.blindtigergames.werescrewed.util.Util;
@@ -118,9 +120,9 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		// Initialize ground platformbb
 
 		player1 = new PlayerBuilder( ).name( "player1" ).definition( "red_male" ).world( world )
-				.position( -700.0f, 100f ).buildPlayer( );
+				.position( 1400.0f, 100f ).buildPlayer( );
 		player2 = new PlayerBuilder( ).name( "player2" ).definition( "red_female" ).world( world )
-				.position( -700f, 100f ).buildPlayer( );
+				.position( 1400f, 100f ).buildPlayer( );
 
 		rootSkeleton = new RootSkeleton( "Root Skeleton", new Vector2( 0, 0 ),
 				null, world );
@@ -174,10 +176,6 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 
 	// This is how you make a whole room fall, by welding everything together
 	void connectedRoom( ) {
-		test2 = platBuilder.name( "strucTest9" ).kinematic( )
-				.position( 800, 100 ).dimensions( 5, 5 ).oneSided( false )
-				.buildTilePlatform( );
-		skeleton.addKinematicPlatform( test2 );
 
 		StrippedScrew strScrew2 = new StrippedScrew( "strScrew4", new Vector2(
 				500, 500 ), rootSkeleton, world, Vector2.Zero );
@@ -429,6 +427,29 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		puzzleScrew.puzzleManager.addMover( ptm2 );
 		rootSkeleton.addScrewForDraw( puzzleScrew );
 
+		
+		TiledPlatform spikePlat = platBuilder.name( "spikePlat" ).dynamic( )
+				.position( 1400, 200 ).dimensions( 6, 1 ).oneSided( false )
+				.buildTilePlatform( );
+		rootSkeleton.addDynamicPlatform( spikePlat );
+		spikePlat.addJointToSkeleton( rootSkeleton );
+		
+//		HazardBuilder spikesBuilder = new HazardBuilder( world );
+//		Spikes spikes = spikesBuilder.position( 800.0f, 250f ).dimensions( 6, 1 )
+//				.down( ).active( ).buildSpikes( );
+//		
+//		
+//		spikes.body.setType( BodyType.DynamicBody );
+//		spikes.body.setFixedRotation( false );
+//		rootSkeleton.addHazard( spikes );
+//		
+//		RevoluteJointDef revoluteJointDef = new RevoluteJointDef( );
+//		revoluteJointDef.initialize( spikes.body, spikePlat.body, spikePlat.getPosition( ) );
+//		revoluteJointDef.enableMotor = true;
+//		revoluteJointDef.maxMotorTorque = 1.0f;
+//		revoluteJointDef.motorSpeed = 0.0f;
+//		Joint screwJoint =  (Joint) world.createJoint( revoluteJointDef );
+		
 	}
 
 	@SuppressWarnings( "unused" )

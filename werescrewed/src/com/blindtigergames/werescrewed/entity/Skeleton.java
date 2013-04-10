@@ -259,7 +259,7 @@ public class Skeleton extends Platform {
 	}
 
 	public void addHazard( Hazard h ) {
-		addKinematicPlatform( h );
+		addPlatform( h );
 	}
 
 	/**

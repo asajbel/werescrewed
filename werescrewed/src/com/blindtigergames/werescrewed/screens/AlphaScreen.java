@@ -25,10 +25,10 @@ public class AlphaScreen extends Screen {
 
 	private CharacterSelect characterSelect;
 	private Screw powerScrew1, powerScrew2;
-	private Skeleton footSkeleton, kneeSkeleton, thighSkeleton, hipSkeleton, chestSkeleton;
-	private TiledPlatform kneeMovingPlat;
-	private RevoluteJoint fallingBlockJoint, pathBlockingJoint;
-	private EventTrigger fallingBlockEvent;
+	private Skeleton footSkeleton, kneeSkeleton, thighSkeleton, hipSkeleton, chestSkeleton,
+		leftShoulderSkeleton;
+	private TiledPlatform kneeMovingPlat, leftShoulderSideHatch;
+	private PuzzleScrew leftArmScrew;
 	
 	public AlphaScreen( ) {
 		super( );
@@ -48,16 +48,17 @@ public class AlphaScreen extends Screen {
 
 		if ( level.player1 == null ) {
 			level.player1 = new PlayerBuilder( ).world( level.world )
-					.position( -200f, 3800f ).name( "player1" ).definition( "red_male" ).buildPlayer( );
+					.position( -1650f, 6100f ).name( "player1" ).definition( "red_male" ).buildPlayer( );
 			level.progressManager.addPlayerOne( level.player1 );
 		}
 		if ( level.player2 == null ) {
 			level.player2 = new PlayerBuilder( ).world( level.world )
-					.position( -200f, 3800f ).name( "player2" ).definition( "red_female" ).buildPlayer( );
+					.position( -1650f, 6100f ).name( "player2" ).definition( "red_female" ).buildPlayer( );
 			level.progressManager.addPlayerTwo( level.player2 );
 		}
 
 		chestObjects( );
+		leftArm();
 
 	}
 
@@ -71,6 +72,10 @@ public class AlphaScreen extends Screen {
 
 		powerScrew1and2update( );
 		
+		if(leftArmScrew.getDepth( ) == leftArmScrew.getMaxDepth( )){
+			leftShoulderSkeleton.addMover( new RotateTweenMover( leftShoulderSkeleton, 10,
+					-Util.PI / 2, 0, false ), RobotState.IDLE);
+		}
 
 	}
 
@@ -155,11 +160,9 @@ public class AlphaScreen extends Screen {
 		
 		AnalogRotateMover anlgRot = new AnalogRotateMover( .6f, level.world );
 		
-		RotateTweenMover rtm1 = new RotateTweenMover( chestRotatingPlat2, 10f,
+		RotateTweenMover rtm1 = new RotateTweenMover( chestRotatingPlat2, 8f,
 				Util.PI, 2f, true );
-		
-		//chestRotatingPlat2.addMover( rtm1, RobotState.IDLE );
-		//chestRotatingPlat2.setActive( true );
+	
 		
 		chestScrew3.puzzleManager.addMover( anlgRot );
 		chestScrew4.puzzleManager.addMover( anlgRot );
@@ -175,6 +178,20 @@ public class AlphaScreen extends Screen {
 		StructureScrew stuctureScrew1 = (StructureScrew) LevelFactory.entities.get( "structureScrew1" );
 		//stuctureScrew1.setDetachDirection( 0, -1 );
 		
+	}
+	
+	private void leftArm(){
+		leftArmScrew = ( PuzzleScrew ) LevelFactory.entities.get( "leftShoulderPuzzleScrew1" );
+		
+		leftShoulderSkeleton = ( Skeleton ) LevelFactory.entities.get( "leftShoulderSkeleton" );
+		
+		leftShoulderSideHatch = ( TiledPlatform ) LevelFactory.entities
+				.get( "leftShoulderSideHatch" );
+		
+		RevoluteJointDef rjd = new RevoluteJointDef( );
+		rjd.initialize( leftShoulderSideHatch.body, leftShoulderSkeleton.body, leftShoulderSideHatch
+				.getPosition( ).sub( 0 , leftShoulderSideHatch.getMeterHeight( ) / 2 ) );
+		level.world.createJoint( rjd );
 	}
 
 }

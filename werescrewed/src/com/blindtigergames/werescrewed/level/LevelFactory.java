@@ -1056,6 +1056,8 @@ public class LevelFactory {
 			etb.setVerts( verts );
 		}
 
+		etb.extraBorder( 0f );
+		
 		EventTrigger et = etb.build( );
 		entities.put( item.name, et );
 		parent.addEventTrigger( et );
