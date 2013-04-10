@@ -1042,7 +1042,7 @@ public class Entity implements GleedLoadable {
 	}
 	
 	public ParticleEffect addBehindParticleEffect( String name, boolean removeOnComplete, boolean updateWithParent ) {
-		return addParticleEffect( name, behindParticles, removeOnComplete, updateWithParent, false );
+		return addBehindParticleEffect( name, removeOnComplete, updateWithParent, false );
 	}
 
 	public ParticleEffect addFrontParticleEffect( String name, boolean removeOnComplete, boolean updateWithParent, boolean updateAngleWithVelocity ) {
@@ -1053,7 +1053,7 @@ public class Entity implements GleedLoadable {
 	}
 	
 	public ParticleEffect addFrontParticleEffect( String name, boolean removeOnComplete, boolean updateWithParent ) {
-		return addParticleEffect( name, frontParticles, removeOnComplete, updateWithParent, false );
+		return addFrontParticleEffect( name, removeOnComplete, updateWithParent, false );
 	}
 
 	private ParticleEffect addParticleEffect( String name,
