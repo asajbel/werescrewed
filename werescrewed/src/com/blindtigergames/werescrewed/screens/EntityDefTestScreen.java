@@ -102,9 +102,9 @@ public class EntityDefTestScreen implements com.badlogic.gdx.Screen {
 		// Second player has to have the name "player2"
 		// Otherwise input handler breaks
 
-		player1 = new PlayerBuilder( ).name( "player1" ).world( world )
+		player1 = new PlayerBuilder( ).name( "player1" ).definition( "red_male" ).world( world )
 				.position( 1.0f, 1.0f ).buildPlayer( );
-		player2 = new PlayerBuilder( ).name( "player2" ).world( world )
+		player2 = new PlayerBuilder( ).name( "player2" ).definition( "red_female" ).world( world )
 				.position( 1.5f, 1.5f ).buildPlayer( );
 
 		// Add screws

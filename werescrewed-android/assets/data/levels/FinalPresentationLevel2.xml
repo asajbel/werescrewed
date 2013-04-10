@@ -52,29 +52,31 @@
                     </CustomProperties>
                     <LocalPoints>
                         <Vector2>
-                            <X>0</X>
-                            <Y>0</Y>
+                            <X>1</X>
+                            <Y>1</Y>
                         </Vector2>
                         <Vector2>
                             <X>-464</X>
                             <Y>672</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>-464</X>
-                            <Y>-128</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>368</X>
-                            <Y>-128</Y>
                         </Vector2>
                         <Vector2>
                             <X>368</X>
                             <Y>672</Y>
                         </Vector2>
                         <Vector2>
+                            <X>368</X>
+                            <Y>-128</Y>
+                        </Vector2>
+                        
+                        <Vector2>
+                            <X>-464</X>
+                            <Y>-128</Y>
+                        </Vector2>
+                        <Vector2>
                             <X>-464</X>
                             <Y>672</Y>
                         </Vector2>
+                        
                     </LocalPoints>
                     <WorldPoints>
                         <Vector2>

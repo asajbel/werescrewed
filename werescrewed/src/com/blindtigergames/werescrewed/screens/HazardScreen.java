@@ -76,9 +76,9 @@ public class HazardScreen implements com.badlogic.gdx.Screen {
 		contactListener = new MyContactListener( );
 		world.setContactListener( contactListener );
 
-		player1 = new PlayerBuilder( ).name( "player1" ).world( world )
+		player1 = new PlayerBuilder( ).name( "player1" ).definition( "red_male" ).world( world )
 				.position( 1800f, 100f ).buildPlayer( );
-		player2 = new PlayerBuilder( ).name( "player2" ).world( world )
+		player2 = new PlayerBuilder( ).name( "player2" ).definition( "red_female" ).world( world )
 				.position( 1900f, 100.0f ).buildPlayer( );
 
 		initTiledPlatforms( );
@@ -98,8 +98,7 @@ public class HazardScreen implements com.badlogic.gdx.Screen {
 		float zoom = 1.0f;
 		float width = Gdx.graphics.getWidth( ) / zoom;
 		float height = Gdx.graphics.getHeight( ) / zoom;
-		cam = new Camera( new Vector2( Gdx.graphics.getWidth( ) * 5f,
-				Gdx.graphics.getHeight( ) * 5f ), width, height, world );
+		cam = new Camera( new Vector2( 0, 0), width, height, world );
 	}
 
 	private void initTiledPlatforms( ) {

@@ -22,4 +22,9 @@ public class AnchorActivateAction implements IAction{
 		
 	}
 	
+	@Override
+	public ActionType getActionType( ) {
+		return ActionType.FORPLAYER;
+	}
+	
 }

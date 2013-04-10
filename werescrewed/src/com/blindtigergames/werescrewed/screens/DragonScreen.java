@@ -32,12 +32,12 @@ public class DragonScreen extends Screen {
 		// level = new LevelFactory( ).load( filename );
 		level = new Level( );
 
-		level.camera = new Camera( new Vector2( Gdx.graphics.getWidth( ) * 5f,
-				Gdx.graphics.getHeight( ) * 5f ), Gdx.graphics.getWidth( ),
+		level.camera = new Camera( new Vector2( Gdx.graphics.getWidth( ) *.5f,
+				Gdx.graphics.getHeight( )*.5f  ), Gdx.graphics.getWidth( ),
 				Gdx.graphics.getHeight( ), level.world );
-		level.player1 = new PlayerBuilder( ).name( "player1" )
+		level.player1 = new PlayerBuilder( ).name( "player1" ).definition( "red_male" )
 				.world( level.world ).position( 0, 100 ).buildPlayer( );
-		level.player2 = new PlayerBuilder( ).name( "player2" )
+		level.player2 = new PlayerBuilder( ).name( "player2" ).definition( "red_female" )
 				.world( level.world ).position( 0, 100 ).buildPlayer( );
 
 		level.root = new SkeletonBuilder( level.world ).buildRoot( );
@@ -62,7 +62,8 @@ public class DragonScreen extends Screen {
 		SkeletonBuilder sb = new SkeletonBuilder( level.world );
 		Skeleton skeleton = sb.name( "hazard_skel" ).position( 500, 300 )
 				.vert( -50, -50 ).vert( 50, -50 ).vert( 50, 50 ).vert( -50, 50 )
-				.build( );
+				.fg( ).vert( -100, -100 ).vert( 100, -100 ).vert( 100, 100 )
+				.vert( -100, 100 ).build( );
 		level.root.addSkeleton( skeleton );
 		skeleton.setMoverAtCurrentState( new RotateTweenMover( skeleton, 10,
 				Util.TWO_PI, 0, true ) );

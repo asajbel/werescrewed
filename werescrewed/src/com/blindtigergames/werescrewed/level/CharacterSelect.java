@@ -63,11 +63,11 @@ public class CharacterSelect{
 			noControllersAttached = true;
 			if(level.player1 == null){
 				level.player1 = new PlayerBuilder( ).world( level.world )
-				.position( 100f, 100f ).name( "player1" ).buildPlayer( );
+				.position( 100f, 100f ).name( "player1" ).definition( "ref_male" ).buildPlayer( );
 			}
 			if(level.player2 == null){
 				level.player2 = new PlayerBuilder( ).world( level.world )
-				.position( 100f, 100f ).name( "player2" ).buildPlayer( );
+				.position( 100f, 100f ).name( "player2" ).definition( "red_female" ).buildPlayer( );
 			}
 		}
 		
@@ -139,16 +139,16 @@ public class CharacterSelect{
 		
 		switch(index){
 		case 0:
-			pb.name( "player1" );
+			pb.definition( "red_male" );
 			break;
 		case 1:
-			pb.name( "player2" );
+			pb.definition( "red_female" );
 			break;
 		case 2: 
-			pb.name( "player1" );
+			pb.definition( "red_male" );
 			break;
 		case 3:
-			pb.name( "player2" );
+			pb.definition( "red_female" );
 			break;
 		}
 		//Player 1

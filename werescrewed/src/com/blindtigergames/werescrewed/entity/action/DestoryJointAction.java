@@ -22,5 +22,10 @@ public class DestoryJointAction implements IAction{
 		// TODO Auto-generated method stub
 		
 	}
+
+	@Override
+	public ActionType getActionType( ) {
+		return ActionType.FORPLAYER;
+	}
 	
 }

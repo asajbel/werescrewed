@@ -3,9 +3,8 @@ package com.blindtigergames.werescrewed.entity;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import javax.management.RuntimeErrorException;
-
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
@@ -16,16 +15,18 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.JointEdge;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
-import com.blindtigergames.werescrewed.eventTrigger.EventTrigger;
+import com.blindtigergames.werescrewed.entity.animator.SimpleFrameAnimator;
+import com.blindtigergames.werescrewed.entity.animator.SimpleFrameAnimator.LoopBehavior;
 import com.blindtigergames.werescrewed.entity.hazard.Fire;
 import com.blindtigergames.werescrewed.entity.hazard.Hazard;
-import com.blindtigergames.werescrewed.joint.RevoluteJointBuilder;
 import com.blindtigergames.werescrewed.entity.platforms.Platform;
 import com.blindtigergames.werescrewed.entity.platforms.PlatformType;
 import com.blindtigergames.werescrewed.entity.platforms.TiledPlatform;
 import com.blindtigergames.werescrewed.entity.rope.Rope;
 import com.blindtigergames.werescrewed.entity.screws.Screw;
 import com.blindtigergames.werescrewed.entity.screws.StrippedScrew;
+import com.blindtigergames.werescrewed.eventTrigger.EventTrigger;
+import com.blindtigergames.werescrewed.joint.RevoluteJointBuilder;
 import com.blindtigergames.werescrewed.util.Util;
 
 /**
@@ -46,43 +47,51 @@ public class Skeleton extends Platform {
 
 	public PolySprite bgSprite, fgSprite;
 
+	SimpleFrameAnimator fgAlphaAnimator;
+	private final float fgFadeSpeed = 1f;
+
 	protected HashMap< String, Platform > dynamicPlatformMap = new HashMap< String, Platform >( );
 	protected HashMap< String, Skeleton > childSkeletonMap = new HashMap< String, Skeleton >( );
 	protected HashMap< String, Platform > kinematicPlatformMap = new HashMap< String, Platform >( );
 	protected HashMap< String, Rope > ropeMap = new HashMap< String, Rope >( );
 	protected HashMap< String, Screw > screwMap = new HashMap< String, Screw >( );
 	protected HashMap< String, EventTrigger > eventMap = new HashMap< String, EventTrigger >( );
-	private ArrayList<Entity> entitiesToRemove = new ArrayList<Entity>();
+	private ArrayList< Entity > entitiesToRemove = new ArrayList< Entity >( );
 
 	private int entityCount = 0;
-	
+
 	protected RootSkeleton rootSkeleton;
 	protected Skeleton parentSkeleton;
-	
+
 	/**
 	 * Constructor used by SkeletonBuilder
+	 * 
 	 * @param n
 	 * @param pos
 	 * @param tex
 	 * @param world
 	 * @param bodyType
 	 */
-	public Skeleton( String n, Vector2 pos, Texture tex, World world, BodyType bodyType ) {
+	public Skeleton( String n, Vector2 pos, Texture tex, World world,
+			BodyType bodyType ) {
 		super( n, pos, tex, world ); // not constructing body class
 		this.world = world;
 		constructSkeleton( pos, bodyType );
 		super.setSolid( false );
 		entityType = EntityType.SKELETON;
+		fgAlphaAnimator = new SimpleFrameAnimator( ).speed( 0 )
+				.loop( LoopBehavior.STOP ).time( 1 );
 	}
-	
+
 	/**
 	 * COnstructor to default to kinematic body type
+	 * 
 	 * @param n
 	 * @param pos
 	 * @param tex
 	 * @param world
 	 */
-	public Skeleton(String n, Vector2 pos, Texture tex, World world){
+	public Skeleton( String n, Vector2 pos, Texture tex, World world ) {
 		this( n, pos, tex, world, BodyType.KinematicBody );
 	}
 
@@ -90,8 +99,8 @@ public class Skeleton extends Platform {
 		// Skeletons have no fixtures!!
 		BodyDef skeletonBodyDef = new BodyDef( );
 		skeletonBodyDef.type = bodyType;
-		
-		skeletonBodyDef.position.set( pos.mul( Util.PIXEL_TO_BOX ) );
+
+		skeletonBodyDef.position.set( pos.cpy().mul( Util.PIXEL_TO_BOX ) );
 		body = world.createBody( skeletonBodyDef );
 		body.setUserData( this );
 
@@ -105,7 +114,7 @@ public class Skeleton extends Platform {
 		body.createFixture( dynFixtureDef );
 		polygon.dispose( );
 		body.setGravityScale( 0.1f );
-		//this.quickfixCollisions( );
+		// this.quickfixCollisions( );
 	}
 
 	/**
@@ -210,7 +219,8 @@ public class Skeleton extends Platform {
 		}
 		dynamicPlatformMap.put( platform.name, platform );
 		platform.setParentSkeleton( this );
-		platform.setOriginRelativeToSkeleton( platform.getPosition( ).cpy( ).sub( getPosition( ) ));
+		platform.setOriginRelativeToSkeleton( platform.getPosition( ).cpy( )
+				.sub( getPosition( ) ) );
 	}
 
 	/**
@@ -227,7 +237,8 @@ public class Skeleton extends Platform {
 		}
 		kinematicPlatformMap.put( platform.name, platform );
 		platform.setParentSkeleton( this );
-		platform.setOriginRelativeToSkeleton( platform.getPosition( ).cpy( ).sub( (getPosition( ) )));
+		platform.setOriginRelativeToSkeleton( platform.getPosition( ).cpy( )
+				.sub( ( getPosition( ) ) ) );
 	}
 
 	/**
@@ -241,6 +252,9 @@ public class Skeleton extends Platform {
 		if ( eventMap.containsKey( event.name ) ) {
 			event.name = getUniqueName( event.name );
 		}
+		event.setParentSkeleton( this );
+		event.setOriginRelativeToSkeleton( event.getPosition( ).cpy( )
+				.sub( ( getPosition( ) ) ) );
 		eventMap.put( event.name, event );
 	}
 
@@ -259,7 +273,8 @@ public class Skeleton extends Platform {
 		skeleton.rootSkeleton = this.rootSkeleton;
 		childSkeletonMap.put( skeleton.name, skeleton );
 		skeleton.setParentSkeleton( this );
-		skeleton.setOriginRelativeToSkeleton( skeleton.getPosition( ).cpy( ).sub( (getPosition( ) )));
+		skeleton.setOriginRelativeToSkeleton( skeleton.getPosition( ).cpy( )
+				.sub( ( getPosition( ) ) ) );
 	}
 
 	/**
@@ -322,7 +337,6 @@ public class Skeleton extends Platform {
 		/* TODO: add ropes */
 	}
 
-
 	/**
 	 * finds the skeleton with this name
 	 */
@@ -341,95 +355,107 @@ public class Skeleton extends Platform {
 	 */
 	@Override
 	public void update( float deltaTime ) {
-		if ( isActive( ) ){
-			float frameRate = 1/deltaTime;
+		
+		if ( isActive( ) ) {
+			float frameRate = 1 / deltaTime;
 			updateMover( deltaTime );
-			if( entityType != EntityType.ROOTSKELETON && isKinematic( ) ){
+			if ( entityType != EntityType.ROOTSKELETON && isKinematic( ) ) {
 				super.setTargetPosRotFromSkeleton( frameRate, parentSkeleton );
 			}
 			for ( Platform platform : dynamicPlatformMap.values( ) ) {
-				if ( platform.removeNextStep ){
+				if ( platform.removeNextStep ) {
 					entitiesToRemove.add( platform );
-				}else{
+				} else {
 					platform.updateMover( deltaTime );
 					platform.update( deltaTime );
 				}
 			}
 			for ( Platform platform : kinematicPlatformMap.values( ) ) {
-				if ( platform.removeNextStep ){
+				if ( platform.removeNextStep ) {
 					entitiesToRemove.add( platform );
-				}else{
+				} else {
 					platform.updateMover( deltaTime );
 					platform.setTargetPosRotFromSkeleton( frameRate, this );
 					platform.update( deltaTime );
 				}
 			}
 			for ( Screw screw : screwMap.values( ) ) {
-				if ( screw.removeNextStep ){
+				if ( screw.removeNextStep ) {
 					entitiesToRemove.add( screw );
-				}else{
+				} else {
 					screw.update( deltaTime );
 				}
 			}
 			for ( Rope rope : ropeMap.values( ) ) {
-				//TODO: ropes need to be able to be deleted
+				// TODO: ropes need to be able to be deleted
 				rope.update( deltaTime );
+			}
+			for ( EventTrigger event: eventMap.values( )){
+				event.translatePosRotFromSKeleton( this );
+				//event.setTargetPosRotFromSkeleton( frameRate, this );
 			}
 
 			Vector2 pixelPos = null;
 			if ( fgSprite != null ) {
+				fgAlphaAnimator.update( deltaTime );
 				pixelPos = getPosition( ).mul( Util.BOX_TO_PIXEL );
-				fgSprite.setPosition( pixelPos.x - offset.x, pixelPos.y - offset.y );
+				fgSprite.setPosition( pixelPos.x - offset.x, pixelPos.y
+						- offset.y );
 				fgSprite.setRotation( MathUtils.radiansToDegrees * getAngle( ) );
 			}
 			if ( bgSprite != null ) {
-				if(pixelPos==null)
-					pixelPos = getPosition().mul( Util.BOX_TO_PIXEL );
-				bgSprite.setPosition( pixelPos.x - offset.x, pixelPos.y - offset.y );
+				if ( pixelPos == null )
+					pixelPos = getPosition( ).mul( Util.BOX_TO_PIXEL );
+				bgSprite.setPosition( pixelPos.x - offset.x, pixelPos.y
+						- offset.y );
 				bgSprite.setRotation( MathUtils.radiansToDegrees * getAngle( ) );
 			}
 		}
-		//recursively update child skeletons
-		for ( Skeleton skeleton : childSkeletonMap.values( ) ){
-			if ( skeleton.removeNextStep ){
+		// recursively update child skeletons
+		for ( Skeleton skeleton : childSkeletonMap.values( ) ) {
+			if ( skeleton.removeNextStep ) {
 				entitiesToRemove.add( skeleton );
-			}else{
+			} else {
 				skeleton.update( deltaTime );
 			}
 		}
-		
-		//remove stuff
-		if ( entitiesToRemove.size( ) > 0 ){
-			for ( Entity e: entitiesToRemove ){
-				switch ( e.entityType ){
+
+		// remove stuff
+		if ( entitiesToRemove.size( ) > 0 ) {
+			for ( Entity e : entitiesToRemove ) {
+				switch ( e.entityType ) {
 				case SKELETON:
 					Skeleton s = childSkeletonMap.remove( e.name );
 					s.remove( );
 					break;
 				case PLATFORM:
 					Platform p;
-					if ( e.isKinematic( ) ){
+					if ( e.isKinematic( ) ) {
 						p = kinematicPlatformMap.remove( e.name );
 						p.remove( );
-					}else {
+					} else {
 						p = dynamicPlatformMap.remove( e.name );
 						p.remove( );
 					}
-					p.remove();
+					p.remove( );
 					break;
 				case SCREW:
 					Screw sc = screwMap.remove( e.name );
 					sc.remove( );
 				default:
-					throw new RuntimeException( "You are trying to remove enity '"+e.name+"' but skeleton '"+this.name+"' can't determine it's type. This may be my fault for not adding a case. -stew" );
+					throw new RuntimeException(
+							"You are trying to remove enity '"
+									+ e.name
+									+ "' but skeleton '"
+									+ this.name
+									+ "' can't determine it's type. This may be my fault for not adding a case. -stew" );
 				}
 			}
 			entitiesToRemove.clear( );
 		}
-		
-		updateDecals(deltaTime);
-	}
 
+		updateDecals( deltaTime );
+	}
 
 	/**
 	 * removes the bodies and joints of all the skeletons children
@@ -469,9 +495,12 @@ public class Skeleton extends Platform {
 //				bgSprite.draw( batch );
 			drawChildren( batch, deltaTime );
 			//update z order : draw the foreground in a separate queue after everything
-//			if ( fgSprite != null )
-//				fgSprite.draw( batch );
-			// draw fg
+			if ( fgSprite != null && fgAlphaAnimator.getTime( ) > 0 ) {
+				fgSprite.setAlpha( fgAlphaAnimator.getTime( ) );
+				//batch.setColor( c.r, c.g, c.b, fgAlphaAnimator.getTime( ) );
+				//fgSprite.draw( batch );
+				//batch.setColor( c.r, c.g, c.b, oldAlpha );
+			}
 		}
 	}
 
@@ -497,31 +526,34 @@ public class Skeleton extends Platform {
 	}
 
 	/**
-	 * Draw each child. Tiled platforms have unique draw calls. Platforms can be hazards as well
+	 * Draw each child. Tiled platforms have unique draw calls. Platforms can be
+	 * hazards as well
 	 */
-	private void drawPlatform( Platform platform, SpriteBatch batch, float deltaTime ) {
-		switch(platform.getEntityType( )){
+	private void drawPlatform( Platform platform, SpriteBatch batch,
+			float deltaTime ) {
+		switch ( platform.getEntityType( ) ) {
 		case PLATFORM:
-			if ( platform.getPlatformType( ) == PlatformType.TILED ){
+			if ( platform.getPlatformType( ) == PlatformType.TILED ) {
 				( ( TiledPlatform ) platform ).draw( batch, deltaTime );
-			}else{
+			} else {
 				platform.draw( batch, deltaTime );
 			}
 			break;
 		case HAZARD:
-			
-			drawHazard((Hazard)platform, batch, deltaTime );
-			break;
-		}
-	}
-	
-	private void drawHazard(Hazard hazard, SpriteBatch batch, float deltaTime){
-		switch(hazard.hazardType){
-		case FIRE:
-			((Fire)hazard).draw(batch,deltaTime);
+			drawHazard( ( Hazard ) platform, batch, deltaTime );
 			break;
 		default:
-			hazard.draw(batch, deltaTime);
+			throw new RuntimeException("Skeleton: "+name+" doesn't know how to draw your platform: "+platform.name);
+		}
+	}
+
+	private void drawHazard( Hazard hazard, SpriteBatch batch, float deltaTime ) {
+		switch ( hazard.hazardType ) {
+		case FIRE:
+			( ( Fire ) hazard ).draw( batch, deltaTime );
+			break;
+		default:
+			hazard.draw( batch, deltaTime );
 			break;
 		}
 	}
@@ -578,29 +610,44 @@ public class Skeleton extends Platform {
 		super.dispose( );
 	}
 
-	
 	/**
 	 * Generally for debug purposes
+	 * 
 	 * @param angleInRadians
 	 */
-	public void rotateBy(float angleInRadians){
-		setLocalRot( getLocalRot( )+ angleInRadians );
+	public void rotateBy( float angleInRadians ) {
+		setLocalRot( getLocalRot( ) + angleInRadians );
 	}
-	
+
 	/**
 	 * For debugging
+	 * 
 	 * @param xPixel
 	 * @param yPixel
 	 */
-	public void translateBy(float xPixel, float yPixel ){
-		setLocalPos( getLocalPos( ).add( xPixel,yPixel ));
+	public void translateBy( float xPixel, float yPixel ) {
+		setLocalPos( getLocalPos( ).add( xPixel, yPixel ) );
 	}
 
 	/**
 	 * A less recursive get root function!
+	 * 
 	 * @return Root skeleton of this skeleton
 	 */
-	public RootSkeleton getRoot(){
+	public RootSkeleton getRoot( ) {
 		return rootSkeleton;
+	}
+
+	/**
+	 * 
+	 * @param hasTransparency
+	 *            true if you want to see into the robot
+	 */
+	public void setFGFade( boolean hasTransparency ) {
+		float speed = fgFadeSpeed;
+		if ( hasTransparency ) {
+			speed = -fgFadeSpeed;
+		}
+		fgAlphaAnimator.speed( speed );
 	}
 }

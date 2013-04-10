@@ -1,36 +1,40 @@
-run_right
+land_cloud
 - Delay -
 active: false
 - Duration - 
 lowMin: 250.0
 lowMax: 250.0
 - Count - 
-min: 1
-max: 5
+min: 2
+max: 4
 - Emission - 
 lowMin: 5.0
 lowMax: 5.0
 highMin: 5.0
 highMax: 5.0
 relative: false
-scalingCount: 1
+scalingCount: 2
 scaling0: 1.0
-timelineCount: 1
+scaling1: 0.0
+timelineCount: 2
 timeline0: 0.0
+timeline1: 0.0010
 - Life - 
-lowMin: 0.0
-lowMax: 0.0
+lowMin: 250.0
+lowMax: 250.0
 highMin: 500.0
-highMax: 1000.0
+highMax: 800.0
 relative: false
-scalingCount: 3
+scalingCount: 4
 scaling0: 1.0
 scaling1: 1.0
-scaling2: 1.0
-timelineCount: 3
+scaling2: 0.46938777
+scaling3: 0.26530612
+timelineCount: 4
 timeline0: 0.0
-timeline1: 0.66
-timeline2: 1.0
+timeline1: 0.42465752
+timeline2: 0.70547944
+timeline3: 1.0
 - Life Offset - 
 active: false
 - X Offset - 
@@ -42,8 +46,8 @@ shape: point
 - Spawn Width - 
 lowMin: 0.0
 lowMax: 0.0
-highMin: 0.0
-highMax: 0.0
+highMin: 50.0
+highMax: 50.0
 relative: false
 scalingCount: 1
 scaling0: 1.0
@@ -75,8 +79,8 @@ timeline1: 0.77397263
 active: true
 lowMin: 0.0
 lowMax: 0.0
-highMin: 50.0
-highMax: 100.0
+highMin: 40.0
+highMax: 120.0
 relative: false
 scalingCount: 2
 scaling0: 1.0
@@ -86,10 +90,10 @@ timeline0: 0.0
 timeline1: 1.0
 - Angle - 
 active: true
-lowMin: 0.0
-lowMax: 90.0
-highMin: 180.0
-highMax: 135.0
+lowMin: 100.0
+lowMax: 180.0
+highMin: 100.0
+highMax: 180.0
 relative: false
 scalingCount: 2
 scaling0: 1.0
@@ -144,4 +148,4 @@ aligned: false
 additive: false
 behind: false
 - Image Path -
-/Users/stew/Google Drive/We're Screwed!!/Art/Particles (1)/cloud.png
+cloud

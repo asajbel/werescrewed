@@ -10,9 +10,10 @@ import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.entity.PolySprite;
 import com.blindtigergames.werescrewed.entity.RootSkeleton;
 import com.blindtigergames.werescrewed.entity.Skeleton;
-import com.blindtigergames.werescrewed.entity.action.ActivateSkeleton;
-import com.blindtigergames.werescrewed.entity.action.DeactivateSkeleton;
+import com.blindtigergames.werescrewed.entity.action.SetActiveStateSkeleton;
+import com.blindtigergames.werescrewed.entity.action.FadeFGAction;
 import com.blindtigergames.werescrewed.eventTrigger.EventTrigger;
+import com.blindtigergames.werescrewed.util.Util;
 
 public class SkeletonBuilder extends GenericEntityBuilder<SkeletonBuilder>{
 
@@ -29,6 +30,7 @@ public class SkeletonBuilder extends GenericEntityBuilder<SkeletonBuilder>{
 		reset( );
 		super.world = world;
 	}
+	
 
 	
 	@Override
@@ -43,7 +45,7 @@ public class SkeletonBuilder extends GenericEntityBuilder<SkeletonBuilder>{
 				WereScrewedGame.dirHandle.path( )
 				+ "/common/robot/alphabot_texture_skin.png",
 		Texture.class );
-		this.texForeground = null;
+		this.texForeground = texBackground;
 		this.texBody = null;
 		this.hasDeactivateTrigger = false;
 		return this;
@@ -181,7 +183,6 @@ public class SkeletonBuilder extends GenericEntityBuilder<SkeletonBuilder>{
 			out.fgSprite = new PolySprite( texForeground, polyVertsFG );
 		}
 		if ( polyVertsBG != null && texBackground != null){
-			System.out.println( name+": bbuilding bg polysprite" );
 			out.bgSprite = new PolySprite( texBackground, polyVertsBG );
 		}
 		
@@ -190,13 +191,30 @@ public class SkeletonBuilder extends GenericEntityBuilder<SkeletonBuilder>{
 		
 		if ( hasDeactivateTrigger && polyVertsBG != null ){
 			EventTriggerBuilder etb = new EventTriggerBuilder( world );
-			EventTrigger et = etb.name( name+"-activator" ).skelePolygon( polyVertsBG )
+			EventTrigger et = etb.name( name+"-activator" ).setVerts( polyVertsBG )
 					.position( pos ).addEntity( out )
-					.beginAction( new ActivateSkeleton( ) )
-					.endAction( new DeactivateSkeleton( ) ).repeatable( )
+					.beginAction( new SetActiveStateSkeleton( true ) )
+					.endAction( new SetActiveStateSkeleton( false ) ).repeatable( )
 					.twoPlayersToDeactivate( ).build( );
 			out.addEventTrigger( et );
-			Gdx.app.log( "SkeletonBuilder", "I just built an event trigger" );
+			//Gdx.app.log( "SkeletonBuilder", "I just built an event trigger" );
+		}
+		
+		if (out.fgSprite!=null){
+			EventTriggerBuilder etb = new EventTriggerBuilder( world );
+			/*Array< Vector2 > meterFGVerts = new Array< Vector2 >();
+			for( Vector2 v : polyVertsFG ){
+				meterFGVerts.add( v.cpy( ).mul( Util.PIXEL_TO_BOX ) );
+			}*/
+			
+			EventTrigger et = etb.name( name+"-fg-fader" ).setVerts( polyVertsFG )
+					.extraBorder( 0f )
+					.position( pos.add( 10,10 ) ).addEntity( out )
+					.beginAction( new FadeFGAction(true) )
+					.endAction( new FadeFGAction(false) ).repeatable( )
+					.twoPlayersToDeactivate( )
+					.build( );
+			out.addEventTrigger( et );
 		}
 		
 		return out;

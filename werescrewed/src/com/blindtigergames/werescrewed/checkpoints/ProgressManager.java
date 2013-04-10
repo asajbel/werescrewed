@@ -190,9 +190,9 @@ public class ProgressManager {
 				if ( player1.getState( ) == PlayerState.RespawnMode ) {
 					lm.moveStep( );
 				}
-				p1Ghost.sprite.setPosition( lm.getPos( ) );
-				p1Ghost.sprite.draw( batch, 0.6f );
-				player1.sprite.setPosition( player1.getPositionPixel( ) );
+				p1Ghost.spinemator.setPosition( lm.getPos( ) );
+				p1Ghost.spinemator.draw( batch );
+				player1.spinemator.setPosition( player1.getPositionPixel( ) );
 			}
 		}
 		if ( p2Ghost != null ) {
@@ -201,9 +201,9 @@ public class ProgressManager {
 				if ( player2.getState( ) == PlayerState.RespawnMode ) {
 					lm.moveStep( );
 				}
-				p2Ghost.sprite.setPosition( lm.getPos( ) );
-				p2Ghost.sprite.draw( batch, 0.6f );
-				player2.sprite.setPosition( player2.getPositionPixel( ) );
+				p2Ghost.spinemator.setPosition( lm.getPos( ) );
+				p2Ghost.spinemator.draw( batch );
+				player2.spinemator.setPosition( player2.getPositionPixel( ) );
 			}
 		}
 	}
@@ -242,11 +242,11 @@ public class ProgressManager {
 				// create the ghost of the dead player
 				p1Ghost = new Entity( "player1Ghost",
 						player1.getPositionPixel( ), null, player1.body, false );
-				p1Ghost.sprite = player1.sprite;
+				p1Ghost.spinemator = player1.spinemator;
 				LerpMover ghostMover = new LerpMover(
 						player1.getPositionPixel( ),
 						checkPoints.get( currentCheckPoint ).getPositionPixel( )
-								.sub( player1.sprite.getWidth( ) / 2.0f, 0.0f ),
+								.sub( Player.WIDTH / 2.0f, 0.0f ),
 						LinearAxis.DIAGONAL );
 				ghostMover.setSpeed( 10f / checkPoints.get( currentCheckPoint )
 						.getPositionPixel( ).sub( player1.getPositionPixel( ) )
@@ -264,8 +264,8 @@ public class ProgressManager {
 							player1.getPositionPixel( ),
 							player1.getPositionPixel( )
 									.add( screwPos )
-									.sub( player1.sprite.getWidth( ),
-											player1.sprite.getHeight( ) / 3.0f ),
+									.sub( Player.WIDTH,
+											Player.HEIGHT / 3.0f ),
 							LinearAxis.DIAGONAL );
 				}
 				player1.body.setLinearVelocity( Vector2.Zero );
@@ -282,11 +282,11 @@ public class ProgressManager {
 				// create the ghost of the dead player
 				p2Ghost = new Entity( "player2Ghost",
 						player2.getPositionPixel( ), null, null, false );
-				p2Ghost.sprite = player2.sprite;
+				p2Ghost.spinemator = player2.spinemator;
 				LerpMover ghostMover = new LerpMover(
 						player2.getPositionPixel( ),
 						checkPoints.get( currentCheckPoint ).getPositionPixel( )
-								.sub( player2.sprite.getWidth( ) / 2.0f, 0.0f ),
+								.sub( Player.WIDTH / 2.0f, 0.0f ),
 						LinearAxis.DIAGONAL );
 				ghostMover.setSpeed( 10f / checkPoints.get( currentCheckPoint )
 						.getPositionPixel( ).sub( player2.getPositionPixel( ) )
@@ -304,8 +304,8 @@ public class ProgressManager {
 							player2.getPositionPixel( ),
 							player2.getPositionPixel( )
 									.add( screwPos )
-									.sub( player2.sprite.getWidth( ),
-											player2.sprite.getHeight( ) / 3.0f ),
+									.sub( Player.WIDTH,
+											Player.HEIGHT / 3.0f ),
 							LinearAxis.DIAGONAL );
 				}
 				player2.body.setLinearVelocity( Vector2.Zero );
@@ -337,11 +337,11 @@ public class ProgressManager {
 				// create the ghost of the dead player
 				p2Ghost = new Entity( "player2Ghost",
 						player2.getPositionPixel( ), null, null, false );
-				p2Ghost.sprite = player2.sprite;
+				p2Ghost.spinemator = player2.spinemator;
 				LerpMover ghostMover = new LerpMover(
 						player2.getPositionPixel( ),
 						checkPoints.get( currentCheckPoint ).getPositionPixel( )
-								.sub( player2.sprite.getWidth( ) / 2.0f, 0.0f ),
+								.sub( Player.WIDTH / 2.0f, 0.0f ),
 						LinearAxis.DIAGONAL );
 				ghostMover.setSpeed( 10f / checkPoints.get( currentCheckPoint )
 						.getPositionPixel( ).sub( player2.getPositionPixel( ) )
@@ -359,8 +359,8 @@ public class ProgressManager {
 							player2.getPositionPixel( ),
 							player2.getPositionPixel( )
 									.add( screwPos )
-									.sub( player2.sprite.getWidth( ),
-											player2.sprite.getHeight( ) / 3.0f ),
+									.sub( Player.WIDTH,
+											Player.HEIGHT / 3.0f ),
 							LinearAxis.DIAGONAL );
 				}
 				player2.body.setLinearVelocity( Vector2.Zero );
@@ -377,11 +377,11 @@ public class ProgressManager {
 				// create the ghost of the dead player
 				p1Ghost = new Entity( "player1Ghost",
 						player2.getPositionPixel( ), null, null, false );
-				p1Ghost.sprite = player1.sprite;
+				p1Ghost.spinemator = player1.spinemator;
 				LerpMover ghostMover = new LerpMover(
 						player1.getPositionPixel( ),
 						checkPoints.get( currentCheckPoint ).getPositionPixel( )
-								.sub( player1.sprite.getWidth( ) / 2.0f, 0.0f ),
+								.sub( Player.WIDTH / 2.0f, 0.0f ),
 						LinearAxis.DIAGONAL );
 				ghostMover.setSpeed( 10f / checkPoints.get( currentCheckPoint )
 						.getPositionPixel( ).sub( player1.getPositionPixel( ) )
@@ -399,8 +399,8 @@ public class ProgressManager {
 							player1.getPositionPixel( ),
 							player1.getPositionPixel( )
 									.add( screwPos )
-									.sub( player1.sprite.getWidth( ),
-											player1.sprite.getHeight( ) / 3.0f ),
+									.sub( Player.WIDTH,
+											Player.HEIGHT / 3.0f ),
 							LinearAxis.DIAGONAL );
 				}
 				player1.body.setLinearVelocity( Vector2.Zero );
