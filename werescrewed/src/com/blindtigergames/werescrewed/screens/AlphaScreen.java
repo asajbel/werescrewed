@@ -49,13 +49,11 @@ public class AlphaScreen extends Screen {
 		if ( level.player1 == null ) {
 			level.player1 = new PlayerBuilder( ).world( level.world )
 					.position( -200f, 3800f ).name( "player1" ).definition( "red_male" ).buildPlayer( );
-
 			level.progressManager.addPlayerOne( level.player1 );
 		}
 		if ( level.player2 == null ) {
 			level.player2 = new PlayerBuilder( ).world( level.world )
 					.position( -200f, 3800f ).name( "player2" ).definition( "red_female" ).buildPlayer( );
-
 			level.progressManager.addPlayerTwo( level.player2 );
 		}
 
@@ -160,11 +158,16 @@ public class AlphaScreen extends Screen {
 		RotateTweenMover rtm1 = new RotateTweenMover( chestRotatingPlat2, 10f,
 				Util.PI, 2f, true );
 		
-		chestRotatingPlat2.addMover( rtm1, RobotState.IDLE );
-		chestRotatingPlat2.setActive( true );
+		//chestRotatingPlat2.addMover( rtm1, RobotState.IDLE );
+		//chestRotatingPlat2.setActive( true );
 		
 		chestScrew3.puzzleManager.addMover( anlgRot );
 		chestScrew4.puzzleManager.addMover( anlgRot );
+		
+		
+		chestScrew3.puzzleManager.addScrew( chestScrew4 );
+		chestScrew4.puzzleManager.addScrew( chestScrew3 );
+		
 		
 		chestScrew1.puzzleManager.addScrew( chestScrew2 );
 		chestScrew2.puzzleManager.addScrew( chestScrew1 );

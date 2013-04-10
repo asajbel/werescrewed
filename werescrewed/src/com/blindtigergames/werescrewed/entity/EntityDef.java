@@ -330,6 +330,10 @@ public class EntityDef {
 	public String getSkeleton( ) {
 		return skeleton;
 	}
+	
+	public String getInitialAnimation () {
+		return initialAnim; 
+	}
 
 	public Vector2 getScale( ) {
 		return spriteScale;

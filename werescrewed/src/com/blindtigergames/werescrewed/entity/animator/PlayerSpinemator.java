@@ -1,5 +1,10 @@
 package com.blindtigergames.werescrewed.entity.animator;
 
+/**
+ * Holds and changes the spine animations for the player
+ * 
+ * @author Anders Sajbel
+ */
 import java.util.EnumMap;
 
 import com.badlogic.gdx.Gdx;
@@ -26,13 +31,21 @@ public class PlayerSpinemator implements ISpinemator {
 	protected PlayerAnim previous;
 	protected PlayerAnim next;
 	protected Animation mixer;
-	protected boolean mixerLoop; 
+	protected boolean mixerLoop;
 	protected Player player;
 	protected float time = 0f;
 	protected float mixTime = 0f;
-	protected float mixRatio = 0f; 
+	protected float mixRatio = 0f;
 	protected Bone root;
+	protected Vector2 position = null;
+	protected Vector2 scale = null;
 
+	/**
+	 * Constructor
+	 * 
+	 * @param thePlayer
+	 *            Player the animations will belong to.
+	 */
 	public PlayerSpinemator( Player thePlayer ) {
 		TextureAtlas atlas = WereScrewedGame.manager.getAtlas( thePlayer.type
 				.getAtlasName( ) );
@@ -51,8 +64,8 @@ public class PlayerSpinemator implements ISpinemator {
 		}
 
 		anim = anims.get( current );
-		mixer = anim; 
-		mixerLoop = current.loopBool; 
+		mixer = anim;
+		mixerLoop = current.loopBool;
 		skel = new com.esotericsoftware.spine.Skeleton( sd );
 		skel.setToBindPose( );
 		root = skel.getRootBone( );
@@ -71,38 +84,40 @@ public class PlayerSpinemator implements ISpinemator {
 		skel.setFlipX( player.flipX );
 
 		next = getCurrentAnim( );
-		anim = anims.get( current ); 
-		//anim.apply( skel, time, previous.loopBool );
-		
+		anim = anims.get( current );
+
 		mixer = anims.get( next );
-		
-		if (mixTime < anim.getDuration( ) / 2) {
+
+		if ( mixTime < anim.getDuration( ) / 2 ) {
 			mixRatio = mixTime / anim.getDuration( );
 			mixer.mix( skel, time, mixerLoop, mixRatio );
 		} else {
-			//mixer.apply( skel, time, current.loopBool );
 			current = next;
-			mixTime = 0; 
+			mixTime = 0;
 		}
-
-//		walkAnimation.apply(skel, time, true);
-//		if (time > 1) {
-//			float jumpTime = time - 1;
-//			float mixTime = 0.4f;
-//			if (jumpTime > mixTime)
-//				jumpAnimation.apply(skel, jumpTime, false);
-//			else
-//				jumpAnimation.mix(skel, jumpTime, false, jumpTime / mixTime);
-//			if (time > 4) time = 0;
-//		}
-		root.setX( player.body.getWorldCenter( ).x * Util.BOX_TO_PIXEL );
-		root.setY( player.body.getWorldCenter( ).y * Util.BOX_TO_PIXEL - 40 );
-		root.setScaleX( 1f );
-		root.setScaleY( 1f );
+		if ( position != null ) {
+			root.setX( position.x );
+			root.setY( position.y );
+		} else {
+			root.setX( player.body.getWorldCenter( ).x * Util.BOX_TO_PIXEL );
+			root.setY( player.body.getWorldCenter( ).y * Util.BOX_TO_PIXEL - 40 );
+		}
+		if ( scale != null ) {
+			root.setScaleX( scale.x );
+			root.setScaleY( scale.y );
+		} else {
+			root.setScaleX( 1f );
+			root.setScaleY( 1f );
+		}
 		skel.updateWorldTransform( );
-//		previous = current;
+		position = null;
 	}
 
+	/**
+	 * Returns the player animation that is currently used
+	 * 
+	 * @return The PlayerAnim value that is the current animation
+	 */
 	protected PlayerAnim getCurrentAnim( ) {
 		switch ( player.getState( ) ) {
 		case Standing:
@@ -139,23 +154,12 @@ public class PlayerSpinemator implements ISpinemator {
 
 	@Override
 	public void setPosition( Vector2 pos ) {
-		root.setX( pos.x );
-		root.setY( pos.y );
+		position = pos;
 	}
 
 	@Override
 	public void setScale( Vector2 scale ) {
-		root.setScaleX( scale.x );
-		root.setScaleY( scale.y );
+		this.scale = scale;
 	}
-
-
-	// static class Box2dAttachment extends RegionAttachment {
-	// Body body;
-	//
-	// public Box2dAttachment (String name) {
-	// super(name);
-	// }
-	// }
 
 }

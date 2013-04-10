@@ -421,12 +421,12 @@ public class LevelFactory {
 	private void constructPlayer( Item item ) {
 		if ( item.name.equals( "playerOne" ) ) {
 			level.player1 = new PlayerBuilder( ).name( "player1" )
-					.world( level.world ).position( item.pos ).buildPlayer( );
+					.world( level.world ).position( item.pos ).definition( "red_male" ).buildPlayer( );
 			entities.put( "player1", level.player1 );
 		} else if ( item.name.equals( "playerTwo" ) ) {
 
 			level.player2 = new PlayerBuilder( ).name( "player2" )
-					.world( level.world ).position( item.pos ).buildPlayer( );
+					.world( level.world ).position( item.pos ).definition( "red_female" ).buildPlayer( );
 			entities.put( "player2", level.player2 );
 		}
 

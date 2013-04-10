@@ -98,8 +98,7 @@ public class HazardScreen implements com.badlogic.gdx.Screen {
 		float zoom = 1.0f;
 		float width = Gdx.graphics.getWidth( ) / zoom;
 		float height = Gdx.graphics.getHeight( ) / zoom;
-		cam = new Camera( new Vector2( Gdx.graphics.getWidth( ) * 5f,
-				Gdx.graphics.getHeight( ) * 5f ), width, height, world );
+		cam = new Camera( new Vector2( 0, 0), width, height, world );
 	}
 
 	private void initTiledPlatforms( ) {
