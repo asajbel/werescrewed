@@ -7,7 +7,6 @@ import aurelienribon.tweenengine.Tween;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.GL20;
-import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Joint;
 import com.badlogic.gdx.physics.box2d.World;
@@ -19,10 +18,11 @@ import com.blindtigergames.werescrewed.debug.SBox2DDebugRenderer;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.PolySprite;
 import com.blindtigergames.werescrewed.entity.RootSkeleton;
-import com.blindtigergames.werescrewed.entity.Skeleton;
+import com.blindtigergames.werescrewed.entity.Sprite;
 import com.blindtigergames.werescrewed.entity.platforms.Platform;
 import com.blindtigergames.werescrewed.entity.tween.EntityAccessor;
 import com.blindtigergames.werescrewed.entity.tween.PlatformAccessor;
+import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 import com.blindtigergames.werescrewed.player.Player;
 
 /**
@@ -42,11 +42,14 @@ public class Level {
 	public MyContactListener myContactListener;
 	public Player player1, player2;
 	public RootSkeleton root;
-	public ArrayList< Skeleton > skelLayer;
 	public PolySprite polySprite;
 	private boolean debugTest, debug;
 	public ProgressManager progressManager;
 	public static ArrayList<Joint> jointsToRemove = new ArrayList<Joint>();
+	public ArrayList< Sprite > skelBGList;
+	public ArrayList< Sprite > skelFGList;
+	public ArrayList< Sprite > entityBGList;
+	public ArrayList< Sprite > entityFGList;
 	
 	public Level( ) {
 
@@ -54,7 +57,11 @@ public class Level {
 		myContactListener = new MyContactListener( );
 		world.setContactListener( myContactListener );
 
-		skelLayer = new ArrayList< Skeleton >( );
+		skelBGList = new ArrayList< Sprite >( );
+		skelFGList = new ArrayList< Sprite >( );
+		entityBGList = new ArrayList< Sprite >( );
+		entityFGList = new ArrayList< Sprite >( );
+
 		// progressManager = new ProgressManager(player1, player2, world);
 
 		// camera = new Camera( width, height, world);
@@ -116,11 +123,14 @@ public class Level {
 
 		// float deltaTime = Gdx.graphics.getDeltaTime( );
 		//draw all background of skeletons before everything
-		for ( Skeleton skel: skelLayer ) {
-			if ( skel.bgSprite != null ) {
-				skel.bgSprite.draw( batch );
-			}
+		for ( Sprite spr: skelBGList ) {
+			spr.draw( batch );
+		}		
+		//draw all background entity sprites after everything
+		for ( Sprite spr: entityBGList ) {
+			spr.draw( batch );
 		}
+		//draw all the normal sprites
 		root.draw( batch, deltaTime );
 		if ( progressManager != null )
 			progressManager.draw( batch, deltaTime );
@@ -128,13 +138,13 @@ public class Level {
 			player1.draw( batch, deltaTime );
 		if ( player2 != null )
 			player2.draw( batch, deltaTime );
-
-
-		//draw all foreground of skeletons after everything
-		for ( Skeleton skel: skelLayer ) {
-			if ( skel.fgSprite != null ) {
-				skel.fgSprite.draw( batch );
-			}
+		//draw all foreground skeleton sprites after everything
+		for ( Sprite spr: skelFGList ) {
+			spr.draw( batch );
+		}
+		//draw all foreground entity sprites after everything
+		for ( Sprite spr: entityFGList ) {
+			spr.draw( batch );
 		}
 		batch.end( );
 

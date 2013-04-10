@@ -44,7 +44,7 @@ public class Skeleton extends Platform {
 	public static final int foreground = 0;
 	public static final int background = 1;
 	public static final int midground = 2;
-
+	
 	public PolySprite bgSprite, fgSprite;
 
 	SimpleFrameAnimator fgAlphaAnimator;

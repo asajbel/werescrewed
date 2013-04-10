@@ -156,7 +156,12 @@ public class LevelFactory {
 			parent.addSkeleton( child );
 			skeletons.put( item.name, child );
 			//add the skeleton to the skeleton layer for drawing
-			level.skelLayer.add( child );
+			if ( child.bgSprite != null ) {
+				level.skelBGList.add( child.bgSprite );
+			}
+			if ( child.fgSprite != null ) {
+				level.skelFGList.add( child.fgSprite );
+			}
 			return child;
 		}
 	}
@@ -223,7 +228,16 @@ public class LevelFactory {
 			out = loadComplexPlatform( item );
 		}
 
+		//TODO add functionality for sorting these decals into foreground or background decals
+		//This either requires adding variables to the specific decal in gleed to what layer it is on
+		//or make two different loading keys such as fgdecal or bgdecal and handle them seperatley
 		if ( out != null ) {
+			//if ( item.propes.containsKey( "fgdecal" ) ) {
+			// level.entityFGList.add( decal );
+			//}
+			//if ( item.propes.containsKey( "bgdecal" ) ) {
+			// level.entityBGList.add( decal );
+			//}
 			if ( item.props.containsKey( "decal" ) ) {
 				Array< String > tokens;
 				String decalImage;
@@ -409,8 +423,13 @@ public class LevelFactory {
 				level.world.createJoint( revoluteJointDef );
 
 			}
-			//add the skeleton to the skeleton layer for drawing
-			level.skelLayer.add( skeleton );
+			//add the skeleton to the skeleton layer for drawing			
+			if ( skeleton.bgSprite != null ) {
+				level.skelBGList.add( skeleton.bgSprite );
+			} 		
+			if ( skeleton.fgSprite != null ) {
+				level.skelFGList.add( skeleton.fgSprite );
+			}
 		}
 
 		Gdx.app.log( "LevelFactory, Skeleton constucted ", item.name );

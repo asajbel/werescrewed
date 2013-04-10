@@ -35,6 +35,7 @@ public class Sprite extends com.badlogic.gdx.graphics.g2d.Sprite implements I_Dr
 	TextureRegion currentFrame;
 	
 	protected float alpha = 1.0f;
+	protected int zLayerIndex = 0;
 	
 	public Sprite(){
 		super();
