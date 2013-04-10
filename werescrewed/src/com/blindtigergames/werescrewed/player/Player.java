@@ -573,15 +573,16 @@ public class Player extends Entity {
 			if ( body.getLinearVelocity( ).x < MAX_VELOCITY ) {
 				body.applyLinearImpulse( new Vector2( MOVEMENT_IMPULSE, 0.0f ),
 						body.getWorldCenter( ) );
-				if ( body.getLinearVelocity( ).x >= MAX_VELOCITY )
+				if ( body.getLinearVelocity( ).x >= MAX_VELOCITY*0.99f )
 					reachedMaxSpeed = true;
 				else
 					reachedMaxSpeed = false;
 			}
 		}
 		playerDirection = PlayerDirection.Right;
-		if ( grounded && playerDirection!=prevPlayerDir ){
+		if ( grounded && prevPlayerDir== PlayerDirection.Left ){//&& reachedMaxSpeed ){
 			getEffect( "skid_left" ).restartAt( getPositionPixel( ).add( 30,0 ) );
+			reachedMaxSpeed = false;
 		}
 		runTimeout = RUN_STEPS;
 	}
@@ -607,15 +608,16 @@ public class Player extends Entity {
 				body.applyLinearImpulse(
 						new Vector2( -MOVEMENT_IMPULSE, 0.0f ),
 						body.getWorldCenter( ) );
-				if ( body.getLinearVelocity( ).x >= MAX_VELOCITY )
+				if ( body.getLinearVelocity( ).x <= -MAX_VELOCITY*0.99f )
 					reachedMaxSpeed = true;
 				else
 					reachedMaxSpeed = false;
 			}
 		}
 		playerDirection = PlayerDirection.Left;
-		if ( grounded && playerDirection!=prevPlayerDir ){
+		if ( grounded && prevPlayerDir == PlayerDirection.Right ){// && reachedMaxSpeed ){
 			getEffect( "skid_right" ).restartAt( getPositionPixel( ).add( 100,0 ) );
+			reachedMaxSpeed = false;
 		}
 		runTimeout = RUN_STEPS;
 	}

@@ -373,7 +373,10 @@ public class Entity implements GleedLoadable {
 			for ( ParticleEffect e : map.values( ) ) {
 				if ( e.updatePositionOnUpdate ){
 					e.setPosition( pos.x, pos.y );
-					e.setAngle( body.getAngle( ) );
+					if ( e.updateAngleBasedOnVelocity ){
+						
+					}else
+						e.setAngle( body.getAngle( ) );
 				}
 				if ( !e.isComplete( ) ){
 					e.update( deltaTime );
@@ -1031,25 +1034,34 @@ public class Entity implements GleedLoadable {
 		}
 	}
 
-	public ParticleEffect addBehindParticleEffect( String name, boolean removeOnComplete, boolean updateWithParent ) {
+	public ParticleEffect addBehindParticleEffect( String name, boolean removeOnComplete, boolean updateWithParent, boolean updateAngleWithVelocity ) {
 		if ( behindParticles == null ) {
 			behindParticles = new HashMap< String, ParticleEffect >( );
 		}
-		return addParticleEffect( name, behindParticles, removeOnComplete, updateWithParent );
+		return addParticleEffect( name, behindParticles, removeOnComplete, updateWithParent, updateAngleWithVelocity );
+	}
+	
+	public ParticleEffect addBehindParticleEffect( String name, boolean removeOnComplete, boolean updateWithParent ) {
+		return addParticleEffect( name, behindParticles, removeOnComplete, updateWithParent, false );
 	}
 
-	public ParticleEffect addFrontParticleEffect( String name, boolean removeOnComplete, boolean updateWithParent ) {
+	public ParticleEffect addFrontParticleEffect( String name, boolean removeOnComplete, boolean updateWithParent, boolean updateAngleWithVelocity ) {
 		if ( frontParticles == null ) {
 			frontParticles = new HashMap< String, ParticleEffect >( );
 		}
-		return addParticleEffect( name, frontParticles, removeOnComplete, updateWithParent );
+		return addParticleEffect( name, frontParticles, removeOnComplete, updateWithParent, updateAngleWithVelocity );
+	}
+	
+	public ParticleEffect addFrontParticleEffect( String name, boolean removeOnComplete, boolean updateWithParent ) {
+		return addParticleEffect( name, frontParticles, removeOnComplete, updateWithParent, false );
 	}
 
 	private ParticleEffect addParticleEffect( String name,
-			HashMap< String, ParticleEffect > map, boolean removeOnComplete, boolean updateWithParent ) {
+			HashMap< String, ParticleEffect > map, boolean removeOnComplete, boolean updateWithParent, boolean updateAngleWithVelocity ) {
 		ParticleEffect effect = ParticleEffect.loadEffect( name );
 		effect.removeOnComplete = removeOnComplete;
 		effect.updatePositionOnUpdate = updateWithParent;
+		effect.updateAngleBasedOnVelocity = updateAngleWithVelocity;
 		map.put( name, effect );
 		return effect;
 	}
