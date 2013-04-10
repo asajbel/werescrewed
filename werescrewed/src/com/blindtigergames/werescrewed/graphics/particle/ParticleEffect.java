@@ -47,7 +47,9 @@ public class ParticleEffect implements Disposable {
 	/**
 	 * If true, will update position and rotation when parent updates.
 	 */
-	public boolean updatePositionOnUpdate = true;
+	public boolean updatePositionOnUpdate = true;	
+	
+	public boolean updateAngleBasedOnVelocity = false;
 	/**
 	 * Flag for parent to delete this when it particle effect is complete
 	 */

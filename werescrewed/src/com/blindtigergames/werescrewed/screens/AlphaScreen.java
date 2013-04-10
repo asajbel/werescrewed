@@ -1,8 +1,11 @@
 package com.blindtigergames.werescrewed.screens;
 
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJoint;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
+import com.blindtigergames.werescrewed.camera.Anchor;
+import com.blindtigergames.werescrewed.camera.AnchorList;
 import com.blindtigergames.werescrewed.entity.RobotState;
 import com.blindtigergames.werescrewed.entity.Skeleton;
 import com.blindtigergames.werescrewed.entity.action.EntityActivateMoverAction;
@@ -77,6 +80,7 @@ public class AlphaScreen extends Screen {
 					-Util.PI / 2, 0, false ), RobotState.IDLE);
 		}
 
+
 	}
 
 	private void createFootObjects( ) {
@@ -148,36 +152,37 @@ public class AlphaScreen extends Screen {
 
 	private void chestObjects( ) {
 
-		PuzzleScrew chestScrew1 = ( PuzzleScrew ) LevelFactory.entities.get( "chestPuzzleScrew5" );
-		PuzzleScrew chestScrew2 = ( PuzzleScrew ) LevelFactory.entities.get( "chestPuzzleScrew6" );
+		PuzzleScrew chestScrew1 = ( PuzzleScrew ) LevelFactory.entities
+				.get( "chestPuzzleScrew5" );
+		PuzzleScrew chestScrew2 = ( PuzzleScrew ) LevelFactory.entities
+				.get( "chestPuzzleScrew6" );
 
-		
-		PuzzleScrew chestScrew3 = ( PuzzleScrew ) LevelFactory.entities.get( "chestPuzzleScrew9" );
-		PuzzleScrew chestScrew4 = ( PuzzleScrew ) LevelFactory.entities.get( "chestPuzzleScrew10" );
-		
+		PuzzleScrew chestScrew3 = ( PuzzleScrew ) LevelFactory.entities
+				.get( "chestPuzzleScrew9" );
+		PuzzleScrew chestScrew4 = ( PuzzleScrew ) LevelFactory.entities
+				.get( "chestPuzzleScrew10" );
+
 		TiledPlatform chestRotatingPlat2 = ( TiledPlatform ) LevelFactory.entities
 				.get( "chestRotatePlat2" );
-		
+
 		AnalogRotateMover anlgRot = new AnalogRotateMover( .6f, level.world );
 		
 		RotateTweenMover rtm1 = new RotateTweenMover( chestRotatingPlat2, 8f,
 				Util.PI, 2f, true );
-	
-		
+
 		chestScrew3.puzzleManager.addMover( anlgRot );
 		chestScrew4.puzzleManager.addMover( anlgRot );
-		
-		
+
 		chestScrew3.puzzleManager.addScrew( chestScrew4 );
 		chestScrew4.puzzleManager.addScrew( chestScrew3 );
-		
-		
+
 		chestScrew1.puzzleManager.addScrew( chestScrew2 );
 		chestScrew2.puzzleManager.addScrew( chestScrew1 );
-	
-		StructureScrew stuctureScrew1 = (StructureScrew) LevelFactory.entities.get( "structureScrew1" );
-		//stuctureScrew1.setDetachDirection( 0, -1 );
-		
+
+		StructureScrew stuctureScrew1 = ( StructureScrew ) LevelFactory.entities
+				.get( "structureScrew1" );
+		// stuctureScrew1.setDetachDirection( 0, -1 );
+
 	}
 	
 	private void leftArm(){

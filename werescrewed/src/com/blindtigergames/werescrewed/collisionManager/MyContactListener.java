@@ -180,10 +180,14 @@ public class MyContactListener implements ContactListener {
 				// it
 				if ( playerFix.getBody( ).getUserData( ) instanceof Entity
 						&& objectFix.getBody( ).getUserData( ) instanceof Entity ) {
+					
+					
 					Entity player = ( Entity ) playerFix.getBody( )
 							.getUserData( );
 					Entity object = ( Entity ) objectFix.getBody( )
 							.getUserData( );
+					
+					//EventTrigger stuff:
 					if ( player.getEntityType( ) != null
 							&& player.getEntityType( ) == EntityType.EVENTTRIGGER ) {
 						EventTrigger et = ( EventTrigger ) player;

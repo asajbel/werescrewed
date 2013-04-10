@@ -7,13 +7,20 @@ cloud
   rotate: false
   xy: 2, 2
   size: 83, 69
-  orig: 42, 35
+  orig: 41, 34
+  offset: 0, 0
+  index: -1
+spark
+  rotate: false
+  xy: 2, 73
+  size: 8, 92
+  orig: 4, 46
   offset: 0, 0
   index: -1
 particle
   rotate: false
   xy: 87, 2
-  size: 512, 512
-  orig: 256, 256
+  size: 32, 32
+  orig: 16, 16
   offset: 0, 0
   index: -1
