@@ -1,8 +1,11 @@
 package com.blindtigergames.werescrewed.screens;
 
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJoint;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
+import com.blindtigergames.werescrewed.camera.Anchor;
+import com.blindtigergames.werescrewed.camera.AnchorList;
 import com.blindtigergames.werescrewed.entity.RobotState;
 import com.blindtigergames.werescrewed.entity.Skeleton;
 import com.blindtigergames.werescrewed.entity.action.EntityActivateMoverAction;
@@ -25,11 +28,12 @@ public class AlphaScreen extends Screen {
 
 	private CharacterSelect characterSelect;
 	private Screw powerScrew1, powerScrew2;
-	private Skeleton footSkeleton, kneeSkeleton, thighSkeleton, hipSkeleton, chestSkeleton;
+	private Skeleton footSkeleton, kneeSkeleton, thighSkeleton, hipSkeleton,
+			chestSkeleton;
 	private TiledPlatform kneeMovingPlat;
 	private RevoluteJoint fallingBlockJoint, pathBlockingJoint;
 	private EventTrigger fallingBlockEvent;
-	
+
 	public AlphaScreen( ) {
 		super( );
 		String filename = "data/levels/alphalevel.xml";
@@ -48,12 +52,14 @@ public class AlphaScreen extends Screen {
 
 		if ( level.player1 == null ) {
 			level.player1 = new PlayerBuilder( ).world( level.world )
-					.position( -200f, 3800f ).name( "player1" ).definition( "red_male" ).buildPlayer( );
+					.position( -200f, 3800f ).name( "player1" )
+					.definition( "red_male" ).buildPlayer( );
 			level.progressManager.addPlayerOne( level.player1 );
 		}
 		if ( level.player2 == null ) {
 			level.player2 = new PlayerBuilder( ).world( level.world )
-					.position( -200f, 3800f ).name( "player2" ).definition( "red_female" ).buildPlayer( );
+					.position( -200f, 3800f ).name( "player2" )
+					.definition( "red_female" ).buildPlayer( );
 			level.progressManager.addPlayerTwo( level.player2 );
 		}
 
@@ -70,7 +76,6 @@ public class AlphaScreen extends Screen {
 		// characterSelect.draw( batch, deltaTime );
 
 		powerScrew1and2update( );
-		
 
 	}
 
@@ -143,38 +148,40 @@ public class AlphaScreen extends Screen {
 
 	private void chestObjects( ) {
 
-		PuzzleScrew chestScrew1 = ( PuzzleScrew ) LevelFactory.entities.get( "chestPuzzleScrew5" );
-		PuzzleScrew chestScrew2 = ( PuzzleScrew ) LevelFactory.entities.get( "chestPuzzleScrew6" );
+		PuzzleScrew chestScrew1 = ( PuzzleScrew ) LevelFactory.entities
+				.get( "chestPuzzleScrew5" );
+		PuzzleScrew chestScrew2 = ( PuzzleScrew ) LevelFactory.entities
+				.get( "chestPuzzleScrew6" );
 
-		
-		PuzzleScrew chestScrew3 = ( PuzzleScrew ) LevelFactory.entities.get( "chestPuzzleScrew9" );
-		PuzzleScrew chestScrew4 = ( PuzzleScrew ) LevelFactory.entities.get( "chestPuzzleScrew10" );
-		
+		PuzzleScrew chestScrew3 = ( PuzzleScrew ) LevelFactory.entities
+				.get( "chestPuzzleScrew9" );
+		PuzzleScrew chestScrew4 = ( PuzzleScrew ) LevelFactory.entities
+				.get( "chestPuzzleScrew10" );
+
 		TiledPlatform chestRotatingPlat2 = ( TiledPlatform ) LevelFactory.entities
 				.get( "chestRotatePlat2" );
-		
+
 		AnalogRotateMover anlgRot = new AnalogRotateMover( .6f, level.world );
-		
+
 		RotateTweenMover rtm1 = new RotateTweenMover( chestRotatingPlat2, 10f,
 				Util.PI, 2f, true );
-		
-		//chestRotatingPlat2.addMover( rtm1, RobotState.IDLE );
-		//chestRotatingPlat2.setActive( true );
-		
+
+		// chestRotatingPlat2.addMover( rtm1, RobotState.IDLE );
+		// chestRotatingPlat2.setActive( true );
+
 		chestScrew3.puzzleManager.addMover( anlgRot );
 		chestScrew4.puzzleManager.addMover( anlgRot );
-		
-		
+
 		chestScrew3.puzzleManager.addScrew( chestScrew4 );
 		chestScrew4.puzzleManager.addScrew( chestScrew3 );
-		
-		
+
 		chestScrew1.puzzleManager.addScrew( chestScrew2 );
 		chestScrew2.puzzleManager.addScrew( chestScrew1 );
-	
-		StructureScrew stuctureScrew1 = (StructureScrew) LevelFactory.entities.get( "structureScrew1" );
-		//stuctureScrew1.setDetachDirection( 0, -1 );
-		
+
+		StructureScrew stuctureScrew1 = ( StructureScrew ) LevelFactory.entities
+				.get( "structureScrew1" );
+		// stuctureScrew1.setDetachDirection( 0, -1 );
+
 	}
 
 }
