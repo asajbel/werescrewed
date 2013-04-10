@@ -2,7 +2,9 @@ package com.blindtigergames.werescrewed.checkpoints;
 
 import java.util.ArrayList;
 
+import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.graphics.SpriteBatch;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.JointEdge;
@@ -190,9 +192,8 @@ public class ProgressManager {
 				if ( player1.getState( ) == PlayerState.RespawnMode ) {
 					lm.moveStep( );
 				}
-				p1Ghost.spinemator.setPosition( lm.getPos( ) );
-				p1Ghost.spinemator.draw( batch );
-				player1.spinemator.setPosition( player1.getPositionPixel( ) );
+				p1Ghost.sprite.setPosition( lm.getPos( ) );
+				p1Ghost.sprite.draw( batch, 0.6f );
 			}
 		}
 		if ( p2Ghost != null ) {
@@ -201,9 +202,8 @@ public class ProgressManager {
 				if ( player2.getState( ) == PlayerState.RespawnMode ) {
 					lm.moveStep( );
 				}
-				p2Ghost.spinemator.setPosition( lm.getPos( ) );
-				p2Ghost.spinemator.draw( batch );
-				player2.spinemator.setPosition( player2.getPositionPixel( ) );
+				p2Ghost.sprite.setPosition( lm.getPos( ) );
+				p2Ghost.sprite.draw( batch, 0.6f );
 			}
 		}
 	}
@@ -241,8 +241,9 @@ public class ProgressManager {
 				LerpMover screwMover;
 				// create the ghost of the dead player
 				p1Ghost = new Entity( "player1Ghost",
-						player1.getPositionPixel( ), null, player1.body, false );
-				p1Ghost.spinemator = player1.spinemator;
+						player1.getPositionPixel( ), WereScrewedGame.manager.get(
+								WereScrewedGame.dirHandle.path( ) + "/common/player_r_m.png",
+								Texture.class ), null, false );
 				LerpMover ghostMover = new LerpMover(
 						player1.getPositionPixel( ),
 						checkPoints.get( currentCheckPoint ).getPositionPixel( )
@@ -281,8 +282,9 @@ public class ProgressManager {
 				LerpMover screwMover;
 				// create the ghost of the dead player
 				p2Ghost = new Entity( "player2Ghost",
-						player2.getPositionPixel( ), null, null, false );
-				p2Ghost.spinemator = player2.spinemator;
+						player2.getPositionPixel( ), WereScrewedGame.manager.get(
+								WereScrewedGame.dirHandle.path( ) + "/common/player_b_f.png",
+								Texture.class ), null, false );
 				LerpMover ghostMover = new LerpMover(
 						player2.getPositionPixel( ),
 						checkPoints.get( currentCheckPoint ).getPositionPixel( )
@@ -336,8 +338,9 @@ public class ProgressManager {
 				LerpMover screwMover;
 				// create the ghost of the dead player
 				p2Ghost = new Entity( "player2Ghost",
-						player2.getPositionPixel( ), null, null, false );
-				p2Ghost.spinemator = player2.spinemator;
+						player2.getPositionPixel( ), WereScrewedGame.manager.get(
+								WereScrewedGame.dirHandle.path( ) + "/common/player_b_f.png",
+								Texture.class ), null, false );
 				LerpMover ghostMover = new LerpMover(
 						player2.getPositionPixel( ),
 						checkPoints.get( currentCheckPoint ).getPositionPixel( )
@@ -376,8 +379,9 @@ public class ProgressManager {
 				LerpMover screwMover;
 				// create the ghost of the dead player
 				p1Ghost = new Entity( "player1Ghost",
-						player2.getPositionPixel( ), null, null, false );
-				p1Ghost.spinemator = player1.spinemator;
+						player2.getPositionPixel( ), WereScrewedGame.manager.get(
+								WereScrewedGame.dirHandle.path( ) + "/common/player_r_m.png",
+								Texture.class ), null, false );
 				LerpMover ghostMover = new LerpMover(
 						player1.getPositionPixel( ),
 						checkPoints.get( currentCheckPoint ).getPositionPixel( )
