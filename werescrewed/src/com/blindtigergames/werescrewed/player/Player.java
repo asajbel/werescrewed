@@ -243,15 +243,9 @@ public class Player extends Entity {
 		if ( Gdx.input.isKeyPressed( Keys.G ) )
 			Gdx.app.log( "steamCollide: " + steamCollide, "steamDone: "
 					+ steamDone );
-		if ( name.equals( "player1" ) ) {
-			if ( otherPlayer != null ) {
-				Gdx.app.log( "player update", "otherplayer is not null" );
-			}
-			// Gdx.app.log( "player update", name + " is " + playerState );
-			// if ( platformBody != null ) {
-			// Gdx.app.log( "player update", "platformBody is not null" );
-			// }
-		}
+//		if ( name.equals( "player1" ) ) {
+//
+//		}
 		if ( kinematicTransform ) {
 			// setPlatformTransform( platformOffset );
 			kinematicTransform = false;

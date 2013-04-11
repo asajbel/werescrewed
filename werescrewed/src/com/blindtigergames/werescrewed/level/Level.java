@@ -45,12 +45,12 @@ public class Level {
 	public PolySprite polySprite;
 	private boolean debugTest, debug;
 	public ProgressManager progressManager;
-	public static ArrayList<Joint> jointsToRemove = new ArrayList<Joint>();
+	public static ArrayList< Joint > jointsToRemove = new ArrayList< Joint >( );
 	public ArrayList< Sprite > skelBGList;
 	public ArrayList< Sprite > skelFGList;
 	public ArrayList< Sprite > entityBGList;
 	public ArrayList< Sprite > entityFGList;
-	
+
 	public Level( ) {
 
 		world = new World( new Vector2( 0, GRAVITY ), true );
@@ -90,13 +90,11 @@ public class Level {
 
 		root.update( deltaTime );
 
-		if (progressManager!=null && (player1 != null && player2 != null))
+		if ( progressManager != null && ( player1 != null && player2 != null ) )
 			progressManager.update( deltaTime );
-		
 
 		if ( progressManager != null )
 			progressManager.update( deltaTime );
-
 
 		if ( Gdx.input.isKeyPressed( Keys.NUM_0 ) ) {
 			if ( debugTest )
@@ -105,8 +103,8 @@ public class Level {
 		} else
 			debugTest = true;
 
-		if ( jointsToRemove.size( ) > 0 ){
-			for ( Joint j: jointsToRemove ){
+		if ( jointsToRemove.size( ) > 0 ) {
+			for ( Joint j : jointsToRemove ) {
 				world.destroyJoint( j );
 			}
 			jointsToRemove.clear( );
@@ -118,19 +116,19 @@ public class Level {
 		batch.setShader( WereScrewedGame.defaultShader );
 		batch.setBlendFunction( GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA );
 		batch.enableBlending( );
-		batch.setProjectionMatrix( camera.combined() );
-		batch.begin();
+		batch.setProjectionMatrix( camera.combined( ) );
+		batch.begin( );
 
 		// float deltaTime = Gdx.graphics.getDeltaTime( );
-		//draw all background of skeletons before everything
-		for ( Sprite spr: skelBGList ) {
-			spr.draw( batch );
-		}		
-		//draw all background entity sprites after everything
-		for ( Sprite spr: entityBGList ) {
+		// draw all background of skeletons before everything
+		for ( Sprite spr : skelBGList ) {
 			spr.draw( batch );
 		}
-		//draw all the normal sprites
+		// draw all background entity sprites after everything
+		// for ( Entity e: entityFGList ) {
+		// e.drawBGDecals( batch );
+		// }
+		// draw all the normal sprites
 		root.draw( batch, deltaTime );
 		if ( progressManager != null )
 			progressManager.draw( batch, deltaTime );
@@ -138,12 +136,12 @@ public class Level {
 			player1.draw( batch, deltaTime );
 		if ( player2 != null )
 			player2.draw( batch, deltaTime );
-		//draw all foreground skeleton sprites after everything
-		for ( Sprite spr: skelFGList ) {
-			spr.draw( batch );
-		}
-		//draw all foreground entity sprites after everything
-		for ( Sprite spr: entityFGList ) {
+		// draw all foreground entity sprites after everything
+		// for ( Entity e: entityFGList ) {
+		// e.drawFGDecals( batch );
+		// }
+		// draw all foreground skeleton sprites after everything
+		for ( Sprite spr : skelFGList ) {
 			spr.draw( batch );
 		}
 		batch.end( );
