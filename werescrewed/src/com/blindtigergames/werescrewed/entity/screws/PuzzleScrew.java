@@ -29,7 +29,7 @@ public class PuzzleScrew extends Screw {
 	public PuzzleScrew( String name, Vector2 pos, int max, Entity entity,
 			World world, int startDepth, boolean resetable, Vector2 detachDirection ) {
 		super( name, pos, null );
-		this.world = world;
+		this.world = world;		
 		this.detachDirection = detachDirection;
 		maxDepth = max;
 		this.startDepth = depth = startDepth;

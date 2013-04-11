@@ -181,7 +181,7 @@ public class AlphaScreen extends Screen {
 
 		StructureScrew stuctureScrew1 = ( StructureScrew ) LevelFactory.entities
 				.get( "structureScrew1" );
-		// stuctureScrew1.setDetachDirection( 0, -1 );
+		stuctureScrew1.setDetachDirection( 0, -1 );
 
 	}
 	
