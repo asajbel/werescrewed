@@ -230,6 +230,7 @@ public class Player extends Entity {
 		addFrontParticleEffect( "land_cloud", false, false );
 		addFrontParticleEffect( "skid_left", false, false );
 		addFrontParticleEffect( "skid_right", false, false );
+		addFrontParticleEffect( "blood", false, false );
 		// land_cloud = ParticleEffect.loadEffect( "land_cloud" );
 	}
 
@@ -497,6 +498,8 @@ public class Player extends Entity {
 				platformBody = null;
 			}
 			isDead = true;
+			ParticleEffect blood = getEffect("blood");
+			blood.restartAt( getPositionPixel() );
 		}
 	}
 

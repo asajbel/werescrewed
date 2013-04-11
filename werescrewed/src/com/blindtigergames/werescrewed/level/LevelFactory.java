@@ -889,9 +889,11 @@ public class LevelFactory {
 		}
 		String skel = item.skeleton;
 		Skeleton parent = loadSkeleton( skel );
+		CheckPoint chkpt = new CheckPoint( item.name, item.pos, parent,
+				level.world, level.progressManager, levelName );
 		level.progressManager
-				.addCheckPoint( new CheckPoint( item.name, item.pos, parent,
-						level.world, level.progressManager, levelName ) );
+				.addCheckPoint( chkpt );
+		//chkpt.setParentSkeleton( parent );
 	}
 
 	/**

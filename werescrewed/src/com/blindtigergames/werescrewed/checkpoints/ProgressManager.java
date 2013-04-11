@@ -130,12 +130,13 @@ public class ProgressManager {
 			p2Ghost = null;
 		}
 		for ( int i = 0; i < checkPoints.size( ); i++ ) {
+			CheckPoint chkpt = checkPoints.get( i );
 			if ( i != currentCheckPoint ) {
 				// deactivate all the checkpoints that are not
 				// the current checkpoint
-				checkPoints.get( i ).deactivate( );
+				chkpt.deactivate( );
 			}
-			checkPoints.get( i ).update( deltaTime );
+			chkpt.update( deltaTime );
 		}
 		// update the rez screw if it exists
 		if ( resurrectScrew != null ) {
