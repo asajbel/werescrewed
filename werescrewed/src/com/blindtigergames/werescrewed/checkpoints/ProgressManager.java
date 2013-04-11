@@ -466,6 +466,7 @@ public class ProgressManager {
 		player.body.setTransform(
 				checkPoints.get( currentCheckPoint ).body.getPosition( ), 0.0f );
 		player.body.setLinearVelocity( Vector2.Zero );
+		player.getEffect("revive").restartAt( player.getPositionPixel().add(60,-30) );
 	}
 
 	/**

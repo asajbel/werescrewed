@@ -1066,7 +1066,7 @@ public class Entity implements GleedLoadable {
 
 	private ParticleEffect addParticleEffect( String name,
 			HashMap< String, ParticleEffect > map, boolean removeOnComplete, boolean updateWithParent, boolean updateAngleWithVelocity ) {
-		ParticleEffect effect = WereScrewedGame.manager.getParticleEffect( name );//ParticleEffect.loadEffect( name );
+		ParticleEffect effect = WereScrewedGame.manager.getParticleEffect( name );
 		effect.removeOnComplete = removeOnComplete;
 		effect.updatePositionOnUpdate = updateWithParent;
 		effect.updateAngleBasedOnVelocity = updateAngleWithVelocity;
