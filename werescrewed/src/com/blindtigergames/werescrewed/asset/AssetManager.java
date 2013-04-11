@@ -7,8 +7,10 @@ import java.util.Random;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.entity.platforms.TileSet;
 import com.blindtigergames.werescrewed.graphics.TextureAtlas;
+import com.blindtigergames.werescrewed.graphics.particle.ParticleEffect;
 
 /**
  * Wrapper to badlogic's AssetManager with added functionality
@@ -23,6 +25,7 @@ public class AssetManager extends com.badlogic.gdx.assets.AssetManager {
 	HashMap< String, BitmapFont > fontMap;
 	ArrayList<String> palette;
 	Random random;
+	HashMap< String, ParticleEffect > particleEffects;
 	
 	public AssetManager(){
 		super();
@@ -30,6 +33,7 @@ public class AssetManager extends com.badlogic.gdx.assets.AssetManager {
 		fontMap = new HashMap<String, BitmapFont>();
 		palette = new ArrayList<String>();
 		random = new Random(0);//same seed so random will be predictable for debug purpose
+		particleEffects = new HashMap<String, ParticleEffect>();
 	}
 	
 	/**
@@ -110,6 +114,28 @@ public class AssetManager extends com.badlogic.gdx.assets.AssetManager {
 	
 	public boolean isAtlasLoaded(String atlasName){
 		return atlasMap.containsKey( atlasName );
+	}
+	
+	public void loadParticleEffect(String particleEffectName ){
+		ParticleEffect effect = new ParticleEffect( );
+		effect.load(
+				Gdx.files.internal( "data/particles/" + particleEffectName
+						+ ".p" ),
+				WereScrewedGame.manager.getAtlas( "particles" ) );
+		effect.name = particleEffectName;
+		particleEffects.put( particleEffectName, effect );
+	}
+	
+	/**
+	 * Return an instance of the named particle effect! You'll want to name it something unique
+	 * @param particleEffectName
+	 * @return
+	 */
+	public ParticleEffect getParticleEffect(String particleEffectName){
+		ParticleEffect out = particleEffects.get( particleEffectName );
+		if ( out == null )
+			throw new RuntimeException("AssetManager: no particle effect is loaded with the name '"+particleEffectName+"'");
+		return new ParticleEffect(out);
 	}
 	
 	@Override

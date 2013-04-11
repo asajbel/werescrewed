@@ -11,6 +11,7 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.utils.Array;
+import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.entity.EntityType;
 import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 import com.blindtigergames.werescrewed.graphics.particle.ParticleEmitter;
@@ -50,7 +51,7 @@ public class Electricity extends Hazard {
 			this.isHori = false;
 		}
 		
-		particleEffect = ParticleEffect.loadEffect("steam");
+		particleEffect = WereScrewedGame.manager.getParticleEffect( "steam" );// ParticleEffect.loadEffect("steam");
 		setWidthHeight( pos1, pos2 );
 		constructBody( pos1);
 		for( ParticleEmitter PE: particleEffect.getEmitters( ))

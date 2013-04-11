@@ -6,6 +6,7 @@ import java.util.HashMap;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
@@ -1058,7 +1059,7 @@ public class Entity implements GleedLoadable {
 
 	private ParticleEffect addParticleEffect( String name,
 			HashMap< String, ParticleEffect > map, boolean removeOnComplete, boolean updateWithParent, boolean updateAngleWithVelocity ) {
-		ParticleEffect effect = ParticleEffect.loadEffect( name );
+		ParticleEffect effect = WereScrewedGame.manager.getParticleEffect( name );//ParticleEffect.loadEffect( name );
 		effect.removeOnComplete = removeOnComplete;
 		effect.updatePositionOnUpdate = updateWithParent;
 		effect.updateAngleBasedOnVelocity = updateAngleWithVelocity;

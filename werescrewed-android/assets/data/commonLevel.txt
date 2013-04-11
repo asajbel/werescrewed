@@ -72,6 +72,13 @@
 /common/ArmenianCircus.fnt
 /common/Screwball.fnt
 
+##Particle effects
+blood.p
+land_cloud.p
+skid_left.p
+skid_right.p
+sparks.p
+steam.p
 
 ##Palette Def
 ##Define with <colorName>.palette

@@ -57,31 +57,16 @@ public class ParticleEffect implements Disposable {
 	
 	public String name;
 
-	/**
-	 * Load a new particle effect by name. You must have the particle effect in
-	 * /data/particles with a .p extention and the particle image must be in the
-	 * texture atlas called particles.pack and the particle image in the .p file
-	 * should be specified without an extention, by name in the texture atlas
-	 * 
-	 * @param particleEffectName WITHOUT the .p extentions
-	 * @return a new particle effect
-	 * @author stew
-	 */
-	public static ParticleEffect loadEffect( String particleEffectName ) {
-		ParticleEffect effect = new ParticleEffect( );
-		effect.load(
-				Gdx.files.internal( "data/particles/" + particleEffectName
-						+ ".p" ),
-				WereScrewedGame.manager.getAtlas( "particles" ) );
-		effect.name = particleEffectName;
-		return effect;
-	}
 
 	public ParticleEffect( ) {
 		emitters = new Array( 8 );
 	}
 
 	public ParticleEffect( ParticleEffect effect ) {
+		updateAngleBasedOnVelocity = effect.updateAngleBasedOnVelocity;
+		updatePositionOnUpdate = effect.updatePositionOnUpdate;
+		removeOnComplete = effect.removeOnComplete;
+		name = effect.name+"_instance";
 		emitters = new Array( true, effect.emitters.size );
 		for ( int i = 0, n = effect.emitters.size; i < n; i++ )
 			emitters.add( new ParticleEmitter( effect.emitters.get( i ) ) );
