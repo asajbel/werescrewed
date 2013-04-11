@@ -6,6 +6,7 @@ import java.util.HashMap;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.MathUtils;
@@ -458,6 +459,13 @@ public class Entity implements GleedLoadable {
 			this.offset.set( sprite.getWidth( ) / 2, sprite.getHeight( ) / 2 );
 		}
 		sprite.setOrigin( origin.x, origin.y );
+		return sprite;
+	}
+	
+	protected Sprite constructSprite(TextureRegion region){
+		Sprite sprite;
+		
+		sprite = new Sprite( region );
 		return sprite;
 	}
 

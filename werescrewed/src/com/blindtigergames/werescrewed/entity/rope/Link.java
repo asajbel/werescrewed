@@ -1,6 +1,7 @@
 package com.blindtigergames.werescrewed.entity.rope;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
@@ -19,6 +20,8 @@ public class Link extends Entity {
 	private float width, height;
 	private float xOffset, yOffset;
 	
+	private static TextureRegion chainLinkTexRegion =  WereScrewedGame.manager.getAtlas( "common-textures" ).findRegion( "chainlink" );
+	
 	private static final float spriteScale = (22f/64f);
 	
 	public Link( String name, World world, Vector2 pos, Texture texture, Vector2 widthHeight ) {
@@ -28,8 +31,7 @@ public class Link extends Entity {
 		this.height = widthHeight.y;
 
 		constructBody( pos );
-		Sprite temp = constructSprite( ( Texture ) WereScrewedGame.manager
-				.get( WereScrewedGame.dirHandle + "/common/chainlink.png" ) );
+		Sprite temp = constructSprite( chainLinkTexRegion );
 		temp.scale( spriteScale );
 		this.xOffset = (temp.getWidth( )/2);//+this.width/2;
 		this.yOffset = (temp.getHeight( )/2);//+this.height/2;

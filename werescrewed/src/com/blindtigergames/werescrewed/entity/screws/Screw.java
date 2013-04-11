@@ -3,6 +3,7 @@ package com.blindtigergames.werescrewed.entity.screws;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
@@ -48,6 +49,8 @@ public class Screw extends Entity {
 	protected boolean playerNotSensor = false;
 	protected ScrewType screwType;
 	public ArrayList< Joint > extraJoints;
+	
+	private static TextureRegion screwTexRegion = WereScrewedGame.manager.getAtlas( "common-textures" ).findRegion( "flat_head_circular" );
 
 	/**
 	 * constructor to use if you want a cosmetic screw
@@ -60,10 +63,9 @@ public class Screw extends Entity {
 	 * @param world
 	 */
 	public Screw( String name, Vector2 pos, Entity entity, World world ) {
-		super( name, pos, WereScrewedGame.manager.get(
-				WereScrewedGame.dirHandle.path( ) + "/common/screw/screw.png",
-				Texture.class ), null, false );
+		super( name, pos, null, null, false );
 		this.world = world;
+		this.sprite = constructSprite(screwTexRegion);
 		if(sprite!=null)sprite.rotate( ( float ) ( Math.random( )*360 ) );
 		screwType = ScrewType.SCREW_COSMETIC;
 		entityType = EntityType.SCREW;
@@ -81,9 +83,8 @@ public class Screw extends Entity {
 	 * @param tex
 	 */
 	public Screw( String name, Vector2 pos, Texture tex ) {
-		super( name, pos, ( tex == null ? WereScrewedGame.manager.get(
-				WereScrewedGame.dirHandle.path( ) + "/common/screw/screw.png",
-				Texture.class ) : tex ), null, false );
+		super( name, pos, null, null, false );
+		this.sprite = constructSprite(screwTexRegion);
 		if(sprite!=null)sprite.rotate( ( float ) ( Math.random( )*360 ) );
 		entityType = EntityType.SCREW;
 	}
