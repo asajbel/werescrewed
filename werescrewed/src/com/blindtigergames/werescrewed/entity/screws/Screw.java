@@ -114,8 +114,12 @@ public class Screw extends Entity {
 	 * sets the detach direction
 	 */
 	public void setDetachDirection( float x, float y ) {
-		detachDirection.x = x;
-		detachDirection.y = y;
+		if ( detachDirection != null ) {
+			detachDirection.x = x;
+			detachDirection.y = y;
+		} else {
+			detachDirection = new Vector2( x, y );
+		}
 	}
 	
 	/**

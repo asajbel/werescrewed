@@ -6,7 +6,6 @@ import java.util.HashMap;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
-import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.MathUtils;
@@ -18,14 +17,15 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
+import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.camera.Anchor;
 import com.blindtigergames.werescrewed.camera.AnchorList;
 import com.blindtigergames.werescrewed.entity.animator.IAnimator;
 import com.blindtigergames.werescrewed.entity.animator.ISpinemator;
 import com.blindtigergames.werescrewed.entity.animator.PlayerAnimator;
-import com.blindtigergames.werescrewed.entity.animator.PlayerSpinemator;
 import com.blindtigergames.werescrewed.entity.animator.SimpleFrameAnimator;
 import com.blindtigergames.werescrewed.entity.mover.IMover;
+import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 import com.blindtigergames.werescrewed.graphics.TextureAtlas;
 import com.blindtigergames.werescrewed.graphics.particle.ParticleEffect;
 import com.blindtigergames.werescrewed.level.GleedLoadable;
@@ -1058,7 +1058,7 @@ public class Entity implements GleedLoadable {
 
 	private ParticleEffect addParticleEffect( String name,
 			HashMap< String, ParticleEffect > map, boolean removeOnComplete, boolean updateWithParent, boolean updateAngleWithVelocity ) {
-		ParticleEffect effect = ParticleEffect.loadEffect( name );
+		ParticleEffect effect = WereScrewedGame.manager.getParticleEffect( name );//ParticleEffect.loadEffect( name );
 		effect.removeOnComplete = removeOnComplete;
 		effect.updatePositionOnUpdate = updateWithParent;
 		effect.updateAngleBasedOnVelocity = updateAngleWithVelocity;

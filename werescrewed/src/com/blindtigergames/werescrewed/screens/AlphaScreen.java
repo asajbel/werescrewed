@@ -183,6 +183,7 @@ public class AlphaScreen extends Screen {
 				.get( "structureScrew1" );
 		//stuctureScrew1.setDetachDirection( 0, -1 );
 
+
 	}
 	
 	private void leftArm(){

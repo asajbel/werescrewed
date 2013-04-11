@@ -131,11 +131,11 @@ public class LoadingScreen extends Screen {
 	private void loadCurrentFile( String fileExtension, String fullPathName , String listedPathName) {
 		if ( fileExtension.equals( "png" ) ) {
 			WereScrewedGame.manager.load( fullPathName, Texture.class );
-			Gdx.app.log( "Texture file loaded", fullPathName );
+			//Gdx.app.log( "Texture file loaded", fullPathName );
 
 		} else if ( fileExtension.equals( "ogg" ) ) {
 			WereScrewedGame.manager.load( fullPathName, Sound.class );
-			Gdx.app.log( "Sound file loaded", fullPathName );
+			//Gdx.app.log( "Sound file loaded", fullPathName );
 
 		} else if ( fileExtension.equals( "mp3" ) ) {
 			WereScrewedGame.manager.load( fullPathName, Music.class );
@@ -143,7 +143,7 @@ public class LoadingScreen extends Screen {
 
 		} else if ( fileExtension.equals( "pack" ) ) {
 			WereScrewedGame.manager.loadAtlas( fullPathName );
-			Gdx.app.log( "Atlas pack file loaded", fullPathName );
+			//Gdx.app.log( "Atlas pack file loaded", fullPathName );
 		}
 		else if ( fileExtension.equals( "fnt" )){
 			WereScrewedGame.manager.loadFont( fullPathName );
@@ -153,7 +153,13 @@ public class LoadingScreen extends Screen {
 			String[] path = fullPathName.split( "\\." );
 			String colorName = path[0].substring( WereScrewedGame.dirHandle.name( ).length( ) );
 			WereScrewedGame.manager.addToPalette( colorName );
-			Gdx.app.log( "Color Loaded", colorName );
+			//Gdx.app.log( "Color Loaded", colorName );
+		}
+		else if ( fileExtension.equals( "p" )){ //load a particle effect
+			String[] path = fullPathName.split( "\\." );
+			String effectName = path[0].substring( WereScrewedGame.dirHandle.name( ).length( ) );
+			WereScrewedGame.manager.loadParticleEffect( effectName );
+			//Gdx.app.log( "Color Loaded", colorName );
 		}
 	}
 
