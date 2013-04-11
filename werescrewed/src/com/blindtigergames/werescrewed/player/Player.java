@@ -244,15 +244,8 @@ public class Player extends Entity {
 		if ( Gdx.input.isKeyPressed( Keys.G ) )
 			Gdx.app.log( "steamCollide: " + steamCollide, "steamDone: "
 					+ steamDone );
-		if ( name.equals( "player1" ) ) {
-			if ( otherPlayer != null ) {
-				Gdx.app.log( "player update", "otherplayer is not null" );
-			}
-			// Gdx.app.log( "player update", name + " is " + playerState );
-			// if ( platformBody != null ) {
-			// Gdx.app.log( "player update", "platformBody is not null" );
-			// }
-		}
+//		if ( name.equals( "player1" ) ) {
+//		}
 		if ( kinematicTransform ) {
 			// setPlatformTransform( platformOffset );
 			kinematicTransform = false;
@@ -445,21 +438,6 @@ public class Player extends Entity {
 		}
 
 		prevPlayerDir = playerDirection;
-	}
-
-	/**
-	 * draw calls super then draws player polish effects
-	 */
-	@Override
-	public void draw( SpriteBatch batch, float deltaTime ) {
-		super.draw( batch, deltaTime );
-		// if ( hitCloud.sprite.getAnimator( ).getFrame( ) < 3 ) {
-		// hitCloud.draw( batch, deltaTime );
-		// }
-		// if ( !land_cloud.isComplete( ) ) {
-		// land_cloud.draw( batch, deltaTime );
-		// }
-
 	}
 
 	/**
