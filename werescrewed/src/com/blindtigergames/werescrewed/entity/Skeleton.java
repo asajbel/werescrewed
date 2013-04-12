@@ -440,7 +440,6 @@ public class Skeleton extends Platform {
 					p.remove( );
 					break;
 				case SCREW:
-					Gdx.app.log("here we are", e.name + "");
 					Screw sc = screwMap.remove( e.name );
 					sc.remove( );
 					break;

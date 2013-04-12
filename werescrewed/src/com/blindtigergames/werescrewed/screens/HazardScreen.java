@@ -127,7 +127,9 @@ public class HazardScreen implements com.badlogic.gdx.Screen {
 		EventTrigger removeTrigger = etb.name( "removeEntity" ).rectangle( )
 				.width( 10 ).height( 50000 )
 				.position( new Vector2( 0, -3200 ) )
-				.beginAction( new RemoveEntityAction( ) ).build( );
+				.beginAction( new RemoveEntityAction( ) )
+				.addEntity( player1 )
+				.addEntity( player2 ).build( );
 		removeTrigger.setCategoryMask( Util.CATEGORY_PLAYER,
 				Util.CATEGORY_EVERYTHING );
 		rootSkeleton.addEventTrigger( removeTrigger );

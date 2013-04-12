@@ -30,6 +30,8 @@ public class EventTrigger extends Platform{
 	private IAction beginAction, endAction;
 	private boolean actOnEntity = false;
 	
+	int counter = 0;
+	
 	public EventTrigger(String name, World world){
 		super(name, Vector2.Zero, null, world );
 		//String name, Vector2 pos, Texture tex, World world
