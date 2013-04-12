@@ -12,6 +12,7 @@
 
 ##common texture
 /common/player_b_f.png
+/common/player_female_idle.png
 /common/player_r_m.png
 /common/screw.png
 /common/screw1.png

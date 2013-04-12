@@ -466,8 +466,8 @@ public class LevelFactory {
 		TiledPlatform out = null;
 		float width = item.element.getFloat( "Width" );
 		float height = item.element.getFloat( "Height" );
-		float tileWidth = width / 32f;
-		float tileHeight = height / 32f;
+		int tileWidth = ( int ) ( width / Platform.tile );
+		int tileHeight = ( int ) ( height / Platform.tile );
 
 		float xPos = item.pos.x + ( width / 2 );
 		float yPos = item.pos.y - ( height / 2 );
@@ -486,7 +486,7 @@ public class LevelFactory {
 
 		pb.name( item.name ).position( new Vector2( xPos, yPos ) )
 				.dimensions( new Vector2( tileWidth, tileHeight ) )
-				.tileSet( "alphabot32" );
+				.tileSet( "alphabot" );
 
 		if ( isDynamic )
 			pb.dynamic( );
@@ -889,9 +889,11 @@ public class LevelFactory {
 		}
 		String skel = item.skeleton;
 		Skeleton parent = loadSkeleton( skel );
+		CheckPoint chkpt = new CheckPoint( item.name, item.pos, parent,
+				level.world, level.progressManager, levelName );
 		level.progressManager
-				.addCheckPoint( new CheckPoint( item.name, item.pos, parent,
-						level.world, level.progressManager, levelName ) );
+				.addCheckPoint( chkpt );
+		//chkpt.setParentSkeleton( parent );
 	}
 
 	/**

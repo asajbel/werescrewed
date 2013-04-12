@@ -1,0 +1,40 @@
+common-textures.png
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+offset: 0, 0
+rail3
+  rotate: false
+  xy: 140, 2
+  size: 50, 150
+  orig: 50, 150
+  offset: 0, 0
+  index: -1
+chainlink
+  rotate: false
+  xy: 2, 2
+  size: 32, 64
+  orig: 32, 64
+  offset: 0, 0
+  index: -1
+rail1
+  rotate: false
+  xy: 88, 2
+  size: 50, 150
+  orig: 50, 150
+  offset: 0, 0
+  index: -1
+flat_head_circular
+  rotate: false
+  xy: 2, 154
+  size: 75, 75
+  orig: 75, 75
+  offset: 0, 0
+  index: 75
+rail2
+  rotate: false
+  xy: 36, 2
+  size: 50, 150
+  orig: 50, 150
+  offset: 0, 0
+  index: -1

@@ -230,6 +230,8 @@ public class Player extends Entity {
 		addFrontParticleEffect( "land_cloud", false, false );
 		addFrontParticleEffect( "skid_left", false, false );
 		addFrontParticleEffect( "skid_right", false, false );
+		addFrontParticleEffect( "blood", false, false );
+		addBehindParticleEffect( "revive", false, false );
 		// land_cloud = ParticleEffect.loadEffect( "land_cloud" );
 	}
 
@@ -441,21 +443,6 @@ public class Player extends Entity {
 	}
 
 	/**
-	 * draw calls super then draws player polish effects
-	 */
-	@Override
-	public void draw( SpriteBatch batch, float deltaTime ) {
-		super.draw( batch, deltaTime );
-		// if ( hitCloud.sprite.getAnimator( ).getFrame( ) < 3 ) {
-		// hitCloud.draw( batch, deltaTime );
-		// }
-		// if ( !land_cloud.isComplete( ) ) {
-		// land_cloud.draw( batch, deltaTime );
-		// }
-
-	}
-
-	/**
 	 * This function sets player in dead state
 	 */
 	public void killPlayer( ) {
@@ -491,6 +478,8 @@ public class Player extends Entity {
 				platformBody = null;
 			}
 			isDead = true;
+			ParticleEffect blood = getEffect("blood");
+			blood.restartAt( getPositionPixel() );
 		}
 	}
 
@@ -519,6 +508,8 @@ public class Player extends Entity {
 		platformBody = null;
 		isDead = false;
 		respawnTimeout = DEAD_STEPS;
+		
+		getEffect("revive").restartAt( getPositionPixel() );
 	}
 
 	/**

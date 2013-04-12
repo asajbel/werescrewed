@@ -228,6 +228,7 @@ public class ResurrectScrew extends Screw {
 				active = false;
 			}
 			if ( active ) {
+				sprite.setPosition( this.getPositionPixel( ) );
 				sprite.setRotation( rotation );
 				if ( depth != screwStep ) {
 					screwStep--;

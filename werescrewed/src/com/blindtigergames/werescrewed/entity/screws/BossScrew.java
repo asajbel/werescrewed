@@ -3,7 +3,6 @@ package com.blindtigergames.werescrewed.entity.screws;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
-import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
@@ -186,13 +185,6 @@ public class BossScrew extends Screw {
 		}
 	}
 
-	@Override
-	public void draw( SpriteBatch batch, float deltaTime ) {
-		if ( sprite != null ) {
-			sprite.draw( batch );
-		}
-	}
-	
 	private void constuctBody( Vector2 pos ) {
 		// create the screw body
 		BodyDef screwBodyDef = new BodyDef( );

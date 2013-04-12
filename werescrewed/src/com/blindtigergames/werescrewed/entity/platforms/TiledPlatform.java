@@ -246,8 +246,6 @@ public class TiledPlatform extends Platform {
 		temp.setPosition( bodypos.x - offset_x, bodypos.y - offset_y );
 		temp.setRotation( MathUtils.radiansToDegrees * body.getAngle( ) );
 		bleedTiles.add( new Tile( offset_x, offset_y, temp ) );
-
-		//Gdx.app.log( "TP:", "SETTTING BLEEEEEDD!!!!!!!!!" );
 		
 	}
 

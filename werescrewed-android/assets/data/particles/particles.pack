@@ -12,9 +12,16 @@ cloud
   index: -1
 spark
   rotate: false
-  xy: 2, 73
+  xy: 68, 73
   size: 8, 92
   orig: 4, 46
+  offset: 0, 0
+  index: -1
+screw
+  rotate: false
+  xy: 2, 73
+  size: 64, 64
+  orig: 32, 32
   offset: 0, 0
   index: -1
 particle

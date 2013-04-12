@@ -168,7 +168,15 @@ public class ResurrectScreen implements com.badlogic.gdx.Screen {
 				WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 						+ "/common/parallax_layer1_0.png", Texture.class ),
 				null, false );
-		for ( int i = 0; i < 4; i++ ) {
+		Entity bg_3_0 = new Entity( "bg_1_0", new Vector2( 2304, 512 ),
+				WereScrewedGame.manager.get( WereScrewedGame.dirHandle
+						+ "/common/parallax_layer1_0.png", Texture.class ),
+				null, false );
+		Entity bg_3_1 = new Entity( "bg_1_0", new Vector2( 2304, 512 ),
+				WereScrewedGame.manager.get( WereScrewedGame.dirHandle
+						+ "/common/parallax_layer1_0.png", Texture.class ),
+				null, false );
+		for ( int i = 0; i < 6; i++ ) {
 			screwBodyDef = new BodyDef( );
 			screwBodyDef.type = BodyType.KinematicBody;
 			screwBodyDef.position.set( 0, 0 );
@@ -208,6 +216,18 @@ public class ResurrectScreen implements com.badlogic.gdx.Screen {
 								+ "/common/parallax_layer2_1.png",
 								Texture.class ), body, false );
 				break;
+			case 4:
+				bg_3_0 = new Entity( "bg_3_0", new Vector2( 2304, 512 ),
+						WereScrewedGame.manager.get( WereScrewedGame.dirHandle
+								+ "/common/parallax_layer3_0.png",
+								Texture.class ), body, false );
+				break;
+			case 5:
+				bg_3_1 = new Entity( "bg_3_1", new Vector2( 2304, 512 ),
+						WereScrewedGame.manager.get( WereScrewedGame.dirHandle
+								+ "/common/parallax_layer3_0.png",
+								Texture.class ), body, false );
+				break;
 			default:
 				break;
 			}
@@ -218,25 +238,35 @@ public class ResurrectScreen implements com.badlogic.gdx.Screen {
 		// bg_2_1.sprite.setScale( 1.9f );
 
 		bg_1_0.setMoverAtCurrentState( new ParallaxMover( new Vector2( 2304,
-				512 ), new Vector2( -264, 512 ), 0.0002f, .5f ) );
+				512 ), new Vector2( -264, 512 ), 0.0002f, .5f, cam, true  ));
 		bg_1_0.setActive( true );
 		bg_1_0.setVisible( true );
 		bg_1_1.setMoverAtCurrentState( new ParallaxMover( new Vector2( 2304,
-				512 ), new Vector2( -264, 512 ), 0.0002f, 0f ) );
+				512 ), new Vector2( -264, 512 ), 0.0002f, 0f, cam, true  ) );
 		bg_1_1.setActive( true );
 		bg_1_1.setVisible( true );
 		bg_2_0.setMoverAtCurrentState( new ParallaxMover( new Vector2( 2304,
-				512 ), new Vector2( -264, 512 ), 0.0001f, .5f ) );
+				512 ), new Vector2( -264, 512 ), 0.0001f, .5f, cam, true  ) );
 		bg_2_0.setActive( true );
 		bg_2_0.setVisible( true );
 		bg_2_1.setMoverAtCurrentState( new ParallaxMover( new Vector2( 2304,
-				512 ), new Vector2( -264, 512 ), 0.0001f, 0f ) );
+				512 ), new Vector2( -264, 512 ), 0.0001f, 0f, cam, true  ) );
 		bg_2_1.setActive( true );
 		bg_2_1.setVisible( true );
+		bg_3_0.setMoverAtCurrentState( new ParallaxMover( new Vector2( 2304,
+				512 ), new Vector2( -264, 512 ), 0.0004f, .5f, cam, true  ) );
+		bg_3_0.setActive( true );
+		bg_3_0.setVisible( true );
+		bg_3_1.setMoverAtCurrentState( new ParallaxMover( new Vector2( 2304,
+				512 ), new Vector2( -264, 512 ), 0.0004f, 0f, cam, true ) );
+		bg_3_1.setActive( true );
+		bg_3_1.setVisible( true );
 		bgRootSkel.addLooseEntity( bg_2_0 );
 		bgRootSkel.addLooseEntity( bg_2_1 );
 		bgRootSkel.addLooseEntity( bg_1_0 );
 		bgRootSkel.addLooseEntity( bg_1_1 );
+		bgRootSkel.addLooseEntity( bg_3_0 );
+		bgRootSkel.addLooseEntity( bg_3_1 );
 	}
 
 	private void initHazards( ) {

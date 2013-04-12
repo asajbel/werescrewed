@@ -46,7 +46,11 @@ public class Platform extends Entity {
 	protected ArrayList< Screw > screws;
 	// tileConstant is 16 for setasbox function which uses half width/height
 	// creates 32x32 objects
-	protected final int tileConstant = 16;
+	protected static final int tileConstant = 16;
+	/**
+	 * Use this for any tile size calculations
+	 */
+	public static final int tile = 32;
 
 	protected PlatformType platType;
 

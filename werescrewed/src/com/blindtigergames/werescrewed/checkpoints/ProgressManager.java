@@ -130,12 +130,13 @@ public class ProgressManager {
 			p2Ghost = null;
 		}
 		for ( int i = 0; i < checkPoints.size( ); i++ ) {
+			CheckPoint chkpt = checkPoints.get( i );
 			if ( i != currentCheckPoint ) {
 				// deactivate all the checkpoints that are not
 				// the current checkpoint
-				checkPoints.get( i ).deactivate( );
+				chkpt.deactivate( );
 			}
-			checkPoints.get( i ).update( deltaTime );
+			chkpt.update( deltaTime );
 		}
 		// update the rez screw if it exists
 		if ( resurrectScrew != null ) {
@@ -281,7 +282,7 @@ public class ProgressManager {
 				// create the ghost of the dead player
 				p2Ghost = new Entity( "player2Ghost",
 						player2.getPositionPixel( ), WereScrewedGame.manager.get(
-								WereScrewedGame.dirHandle.path( ) + "/common/player_b_f.png",
+								WereScrewedGame.dirHandle.path( ) + "/common/player_female_idle.png",
 								Texture.class ), null, false );
 				LerpMover ghostMover = new LerpMover(
 						player2.getPositionPixel( ),
@@ -337,7 +338,7 @@ public class ProgressManager {
 				// create the ghost of the dead player
 				p2Ghost = new Entity( "player2Ghost",
 						player2.getPositionPixel( ), WereScrewedGame.manager.get(
-								WereScrewedGame.dirHandle.path( ) + "/common/player_b_f.png",
+								WereScrewedGame.dirHandle.path( ) + "/common/player_female_idle.png",
 								Texture.class ), null, false );
 				LerpMover ghostMover = new LerpMover(
 						player2.getPositionPixel( ),
@@ -465,6 +466,7 @@ public class ProgressManager {
 		player.body.setTransform(
 				checkPoints.get( currentCheckPoint ).body.getPosition( ), 0.0f );
 		player.body.setLinearVelocity( Vector2.Zero );
+		player.getEffect("revive").restartAt( player.getPositionPixel().add(60,-30) );
 	}
 
 	/**
