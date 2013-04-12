@@ -36,7 +36,7 @@ public class Camera {
 	private static final float TARGET_BUFFER_RATIO = .03f;
 	private static final float MINIMUM_FOLLOW_SPEED = .1f;
 	private static final float MAX_ANGLE_DIFF = 100f;
-	private static final float MAX_SPEED = 15;
+	private static final float MAX_SPEED = 100f;
 	private static final float MIN_SPEED = 10f;
 	private static final float ACCELERATION = .015f;
 	private static final float DECELERATION = -.5f;
@@ -52,8 +52,8 @@ public class Camera {
 	private boolean insideTargetBuffer;
 
 	// zoom
-	private static final float ZOOM_ACCELERATION = .0001f;
-	private static final float ZOOM_MAX_SPEED = 1f;
+	private static final float ZOOM_ACCELERATION = .001f;
+	private static final float ZOOM_MAX_SPEED = 15f;
 	private static final float ZOOM_SIG_DIFF = .00005f;
 	private static final float ZOOM_IN_FACTOR = .5f;
 	private static final float MIN_ZOOM = 1.2f;
