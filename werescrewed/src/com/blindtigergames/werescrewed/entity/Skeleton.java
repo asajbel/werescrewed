@@ -199,7 +199,7 @@ public class Skeleton extends Platform {
 	public void addScrewForDraw( Screw s ) {
 		// screws.add(s);
 		entityCount++;
-		screwMap.put( s.name + entityCount, s );
+		screwMap.put( s.name, s );
 		s.setParentSkeleton( this );
 	}
 
@@ -440,8 +440,10 @@ public class Skeleton extends Platform {
 					p.remove( );
 					break;
 				case SCREW:
+					Gdx.app.log("here we are", e.name + "");
 					Screw sc = screwMap.remove( e.name );
 					sc.remove( );
+					break;
 				default:
 					throw new RuntimeException(
 							"You are trying to remove enity '"
