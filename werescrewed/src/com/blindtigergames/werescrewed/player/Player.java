@@ -79,6 +79,7 @@ public class Player extends Entity {
 	public boolean flipX = false;
 	public final static float HEIGHT = 128;
 	public final static float WIDTH = 64;
+	//public final static float 
 
 	public Fixture feet;
 	public Fixture torso;

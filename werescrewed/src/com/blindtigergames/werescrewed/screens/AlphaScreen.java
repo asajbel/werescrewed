@@ -9,6 +9,8 @@ import com.blindtigergames.werescrewed.camera.AnchorList;
 import com.blindtigergames.werescrewed.entity.RobotState;
 import com.blindtigergames.werescrewed.entity.Skeleton;
 import com.blindtigergames.werescrewed.entity.action.EntityActivateMoverAction;
+import com.blindtigergames.werescrewed.entity.action.RemoveEntityAction;
+import com.blindtigergames.werescrewed.entity.builders.EventTriggerBuilder;
 import com.blindtigergames.werescrewed.entity.builders.PlayerBuilder;
 import com.blindtigergames.werescrewed.entity.mover.AnalogRotateMover;
 import com.blindtigergames.werescrewed.entity.mover.RotateTweenMover;
@@ -37,6 +39,16 @@ public class AlphaScreen extends Screen {
 		super( );
 		String filename = "data/levels/alphalevel.xml";
 		level = new LevelFactory( ).load( filename );
+		
+		//death barrier
+		EventTriggerBuilder etb = new EventTriggerBuilder( level.world );
+		EventTrigger removeTrigger = etb.name( "removeEntity" ).rectangle( )
+				.width( 10 ).height( 50000 )
+				.position( new Vector2( 0, -3200 ) )
+				.beginAction( new RemoveEntityAction( ) ).build( );
+		removeTrigger.setCategoryMask( Util.CATEGORY_PLAYER,
+				Util.CATEGORY_EVERYTHING );
+		level.root.addEventTrigger( removeTrigger );
 
 		characterSelect = new CharacterSelect( level );
 

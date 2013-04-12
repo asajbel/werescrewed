@@ -14,6 +14,7 @@ import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityType;
 import com.blindtigergames.werescrewed.eventTrigger.EventTrigger;
 import com.blindtigergames.werescrewed.entity.action.ActionType;
+import com.blindtigergames.werescrewed.entity.action.RemoveEntityAction;
 import com.blindtigergames.werescrewed.entity.hazard.Hazard;
 import com.blindtigergames.werescrewed.entity.platforms.Platform;
 import com.blindtigergames.werescrewed.entity.platforms.PlatformType;
@@ -156,7 +157,11 @@ public class MyContactListener implements ContactListener {
 							EventTrigger et = ( EventTrigger ) object;
 							et.setActivated( true, player.name );
 							if ( playerFix.getShape( ) instanceof CircleShape ) {
-								et.triggerBeginEvent( );
+								//stops both players from dying
+								if(et.getBeginAction( ) instanceof RemoveEntityAction){
+									et.getBeginAction( ).act( player );
+								}
+								else et.triggerBeginEvent( );
 							}
 							break;
 						default:
