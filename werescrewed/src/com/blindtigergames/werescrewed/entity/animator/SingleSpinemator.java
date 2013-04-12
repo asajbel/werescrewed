@@ -1,4 +1,5 @@
 package com.blindtigergames.werescrewed.entity.animator;
+
 /**
  * Animates an object with a single spine animation
  * 
@@ -24,26 +25,38 @@ public class SingleSpinemator implements ISpinemator {
 	protected Vector2 position = null;
 	protected Vector2 scale = null;
 	protected float time = 0f;
-	
+
 	/**
 	 * Constructor
 	 * 
-	 * @param type EntityDef containing an atlas, skeleton and intial animation
+	 * @param type
+	 *            EntityDef containing an atlas, skeleton and intial animation
 	 */
-	public SingleSpinemator ( EntityDef type ) {
-		TextureAtlas atlas = WereScrewedGame.manager.getAtlas( type
-				.getAtlasName( ) );
+	public SingleSpinemator( EntityDef type ) {
+		this( type.getAtlasName( ), type.getSkeleton( ), type
+				.getInitialAnimation( ) );
+	}
+
+	/**
+	 * Constructor
+	 * 
+	 * @param atlasName Name of the atlas for the animation
+	 * @param skeletonName Name of the skeleton containing the animation
+	 * @param animationName Name of the animation
+	 */
+	public SingleSpinemator( String atlasName, String skeletonName,
+			String animationName ) {
+		TextureAtlas atlas = WereScrewedGame.manager.getAtlas( atlasName );
 		SkeletonBinary sb = new SkeletonBinary( atlas );
 		SkeletonData sd = sb.readSkeletonData( Gdx.files
-				.internal( "data/common/spine/" + type.getSkeleton( )
-						+ ".skel" ) );
-		anim = sd.findAnimation( type.getInitialAnimation( ) );
+				.internal( "data/common/spine/" + skeletonName + ".skel" ) );
+		anim = sd.findAnimation( animationName );
 		skel = new com.esotericsoftware.spine.Skeleton( sd );
 		skel.setToBindPose( );
 		root = skel.getRootBone( );
 		skel.updateWorldTransform( );
 	}
-	
+
 	@Override
 	public void draw( SpriteBatch b ) {
 		skel.draw( b );
