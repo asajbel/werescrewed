@@ -10384,11 +10384,11 @@
                             <Y>0</Y>
                         </Vector2>
                         <Vector2>
-                            <X>-128</X>
+                            <X>-112</X>
                             <Y>32</Y>
                         </Vector2>
                         <Vector2>
-                            <X>144</X>
+                            <X>112</X>
                             <Y>32</Y>
                         </Vector2>
                         <Vector2>
@@ -10400,7 +10400,7 @@
                             <Y>-768</Y>
                         </Vector2>
                         <Vector2>
-                            <X>-128</X>
+                            <X>-112</X>
                             <Y>32</Y>
                         </Vector2>
                     </LocalPoints>
@@ -10410,11 +10410,11 @@
                             <Y>-2848</Y>
                         </Vector2>
                         <Vector2>
-                            <X>512</X>
+                            <X>528</X>
                             <Y>-2816</Y>
                         </Vector2>
                         <Vector2>
-                            <X>784</X>
+                            <X>752</X>
                             <Y>-2816</Y>
                         </Vector2>
                         <Vector2>
@@ -10426,7 +10426,7 @@
                             <Y>-3616</Y>
                         </Vector2>
                         <Vector2>
-                            <X>512</X>
+                            <X>528</X>
                             <Y>-2816</Y>
                         </Vector2>
                     </WorldPoints>
