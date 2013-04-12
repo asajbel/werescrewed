@@ -1,5 +1,7 @@
 package com.blindtigergames.werescrewed.player;
 
+import java.util.Random;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.audio.Sound;
@@ -179,6 +181,9 @@ public class Player extends Entity {
 	public enum PlayerDirection {
 		Idle, Left, Right
 	}
+	
+	private String[] injuredParticles = {"injured/baf","injured/extra_crispy","injured/ooph"};
+	Random r;
 
 	// CONSTRUCTORS
 
@@ -227,10 +232,14 @@ public class Player extends Entity {
 		jumpSound = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 				+ "/common/sounds/WilhelmScream.ogg" );
 
-		addFrontParticleEffect( "land_cloud", false, false );
+		r = new Random();
+		addFrontParticleEffect( "land_cloud_new", false, false );
 		addFrontParticleEffect( "skid_left", false, false );
 		addFrontParticleEffect( "skid_right", false, false );
-		addFrontParticleEffect( "blood", false, false );
+		//addFrontParticleEffect( "blood", false, false );
+		for(String s : injuredParticles ){
+			addBehindParticleEffect( s, false, false );
+		}
 		addBehindParticleEffect( "revive", false, false );
 		// land_cloud = ParticleEffect.loadEffect( "land_cloud" );
 	}
@@ -478,7 +487,7 @@ public class Player extends Entity {
 				platformBody = null;
 			}
 			isDead = true;
-			ParticleEffect blood = getEffect("blood");
+			ParticleEffect blood = getEffect(injuredParticles[r.nextInt( injuredParticles.length )]);
 			blood.restartAt( getPositionPixel() );
 		}
 	}
@@ -765,7 +774,7 @@ public class Player extends Entity {
 				 * hitCloud.sprite.reset( );
 				 */
 				// if ( !world.isLocked( ) ) {
-				getEffect( "land_cloud" ).restartAt(
+				getEffect( "land_cloud_new" ).restartAt(
 						getPositionPixel( ).add( 50, 0 ) );
 				// }
 			}
