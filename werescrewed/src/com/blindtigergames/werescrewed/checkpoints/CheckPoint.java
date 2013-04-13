@@ -63,7 +63,6 @@ public class CheckPoint extends Entity {
 				.maxFrames( atlas.getRegions( ).size+1 );
 		Sprite sprite = new Sprite( atlas, checkpointFrameAnimator );
 		sprite.setOrigin( sprite.getWidth()/2, sprite.getHeight( )/2 );
-		//sprite.setOrigin( 1002, 1002 );
 		changeSprite( sprite );
 		super.offset = new Vector2(sprite.getWidth()/2, sprite.getHeight( )/2);
 		
