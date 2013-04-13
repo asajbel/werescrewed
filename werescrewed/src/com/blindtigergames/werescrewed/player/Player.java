@@ -849,9 +849,7 @@ public class Player extends Entity {
 		if ( platformBody == null && b != null
 				&& playerState == PlayerState.Screwing ) {
 			if ( mover == null ) {
-				knockedOff = true;
-			} else {
-				platformBody = null;
+				//knockedOff = true;
 			}
 		} else if ( screwJumpTimeout == 0 ) {
 			if ( b != null || playerState != PlayerState.Screwing ) {
@@ -920,29 +918,29 @@ public class Player extends Entity {
 			}
 			playerState = PlayerState.Screwing;
 			currentScrew.setPlayerAttached( true );
-//			platformBody = null;
-//			if ( currentScrew.getScrewType( ) == ScrewType.SCREW_STRUCTURAL ) {
-//				for ( JointEdge je : currentScrew.body.getJointList( ) ) {
-//					// if this body is a platform but not a skeleton save the
-//					// instance
-//					if ( je.joint.getBodyA( ).getUserData( ) instanceof Entity ) {
-//						Entity p = ( Entity ) je.joint.getBodyA( )
-//								.getUserData( );
-//						if ( p.getEntityType( ) == EntityType.PLATFORM ) {
-//							platformBody = je.joint.getBodyA( );
-//						}
-//					}
-//					// if this body is a platform but not a skeleton save the
-//					// instance
-//					if ( je.joint.getBodyB( ).getUserData( ) instanceof Entity ) {
-//						Entity p = ( Entity ) je.joint.getBodyB( )
-//								.getUserData( );
-//						if ( p.getEntityType( ) == EntityType.PLATFORM ) {
-//							platformBody = je.joint.getBodyB( );
-//						}
-//					}
-//				}
-//			}
+			platformBody = null;
+			if ( currentScrew.getScrewType( ) == ScrewType.SCREW_STRUCTURAL ) {
+				for ( JointEdge je : currentScrew.body.getJointList( ) ) {
+					// if this body is a platform but not a skeleton save the
+					// instance
+					if ( je.joint.getBodyA( ).getUserData( ) instanceof Entity ) {
+						Entity p = ( Entity ) je.joint.getBodyA( )
+								.getUserData( );
+						if ( p.getEntityType( ) == EntityType.PLATFORM ) {
+							platformBody = je.joint.getBodyA( );
+						}
+					}
+					// if this body is a platform but not a skeleton save the
+					// instance
+					if ( je.joint.getBodyB( ).getUserData( ) instanceof Entity ) {
+						Entity p = ( Entity ) je.joint.getBodyB( )
+								.getUserData( );
+						if ( p.getEntityType( ) == EntityType.PLATFORM ) {
+							platformBody = je.joint.getBodyB( );
+						}
+					}
+				}
+			}
 			setGrounded( false );
 			if ( Metrics.activated ) {
 				Metrics.addPlayerAttachToScrewPosition( this.getPositionPixel( ) );

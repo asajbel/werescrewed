@@ -1,0 +1,186 @@
+screwInterface.png
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+3
+  rotate: false
+  xy: 100, 69
+  size: 96, 65
+  orig: 96, 65
+  offset: 0, 0
+  index: -1
+25
+  rotate: false
+  xy: 198, 69
+  size: 96, 65
+  orig: 96, 65
+  offset: 0, 0
+  index: -1
+21
+  rotate: false
+  xy: 100, 136
+  size: 96, 65
+  orig: 96, 65
+  offset: 0, 0
+  index: -1
+19
+  rotate: false
+  xy: 394, 136
+  size: 96, 65
+  orig: 96, 65
+  offset: 0, 0
+  index: -1
+15
+  rotate: false
+  xy: 296, 203
+  size: 96, 65
+  orig: 96, 65
+  offset: 0, 0
+  index: -1
+11
+  rotate: false
+  xy: 198, 270
+  size: 96, 65
+  orig: 96, 65
+  offset: 0, 0
+  index: -1
+8
+  rotate: false
+  xy: 100, 2
+  size: 96, 65
+  orig: 96, 65
+  offset: 0, 0
+  index: -1
+4
+  rotate: false
+  xy: 2, 69
+  size: 96, 65
+  orig: 96, 65
+  offset: 0, 0
+  index: -1
+0
+  rotate: false
+  xy: 2, 337
+  size: 96, 65
+  orig: 96, 65
+  offset: 0, 0
+  index: -1
+22
+  rotate: false
+  xy: 2, 136
+  size: 96, 65
+  orig: 96, 65
+  offset: 0, 0
+  index: -1
+16
+  rotate: false
+  xy: 198, 203
+  size: 96, 65
+  orig: 96, 65
+  offset: 0, 0
+  index: -1
+12
+  rotate: false
+  xy: 100, 270
+  size: 96, 65
+  orig: 96, 65
+  offset: 0, 0
+  index: -1
+9
+  rotate: false
+  xy: 2, 2
+  size: 96, 65
+  orig: 96, 65
+  offset: 0, 0
+  index: -1
+5
+  rotate: false
+  xy: 394, 2
+  size: 96, 65
+  orig: 96, 65
+  offset: 0, 0
+  index: -1
+1
+  rotate: false
+  xy: 394, 270
+  size: 96, 65
+  orig: 96, 65
+  offset: 0, 0
+  index: -1
+23
+  rotate: false
+  xy: 394, 69
+  size: 96, 65
+  orig: 96, 65
+  offset: 0, 0
+  index: -1
+17
+  rotate: false
+  xy: 100, 203
+  size: 96, 65
+  orig: 96, 65
+  offset: 0, 0
+  index: -1
+13
+  rotate: false
+  xy: 2, 270
+  size: 96, 65
+  orig: 96, 65
+  offset: 0, 0
+  index: -1
+6
+  rotate: false
+  xy: 296, 2
+  size: 96, 65
+  orig: 96, 65
+  offset: 0, 0
+  index: -1
+2
+  rotate: false
+  xy: 296, 136
+  size: 96, 65
+  orig: 96, 65
+  offset: 0, 0
+  index: -1
+24
+  rotate: false
+  xy: 296, 69
+  size: 96, 65
+  orig: 96, 65
+  offset: 0, 0
+  index: -1
+20
+  rotate: false
+  xy: 198, 136
+  size: 96, 65
+  orig: 96, 65
+  offset: 0, 0
+  index: -1
+18
+  rotate: false
+  xy: 2, 203
+  size: 96, 65
+  orig: 96, 65
+  offset: 0, 0
+  index: -1
+14
+  rotate: false
+  xy: 394, 203
+  size: 96, 65
+  orig: 96, 65
+  offset: 0, 0
+  index: -1
+10
+  rotate: false
+  xy: 296, 270
+  size: 96, 65
+  orig: 96, 65
+  offset: 0, 0
+  index: -1
+7
+  rotate: false
+  xy: 198, 2
+  size: 96, 65
+  orig: 96, 65
+  offset: 0, 0
+  index: -1

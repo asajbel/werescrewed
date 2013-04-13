@@ -3,18 +3,19 @@ package com.blindtigergames.werescrewed.entity.screws;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.Joint;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.physics.box2d.joints.PulleyJoint;
-import com.badlogic.gdx.physics.box2d.joints.PulleyJointDef;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
+import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityType;
+import com.blindtigergames.werescrewed.entity.Sprite;
+import com.blindtigergames.werescrewed.entity.animator.SimpleFrameAnimator;
+import com.blindtigergames.werescrewed.entity.animator.SimpleFrameAnimator.LoopBehavior;
 import com.blindtigergames.werescrewed.entity.mover.LerpMover;
 import com.blindtigergames.werescrewed.player.Player;
 import com.blindtigergames.werescrewed.util.Util;
@@ -31,6 +32,7 @@ public class ResurrectScrew extends Screw {
 	private Vector2 playerOffset;
 	private boolean removeNextStep = false;
 	private LerpMover playerMover;
+	private Entity screwInterface;
 
 	/**
 	 * 
@@ -53,7 +55,14 @@ public class ResurrectScrew extends Screw {
 		active = true;
 		screwType = ScrewType.SCREW_RESURRECT;
 		entityType = EntityType.SCREW;
-
+		screwInterface = new Entity( name + "_screwInterface", pos, null, null,
+				false );
+		SimpleFrameAnimator interfaceAnimator = new SimpleFrameAnimator( )
+				.speed( 1f ).loop( LoopBehavior.STOP ).startFrame( 1 )
+				.maxFrames( 2 ).time( 0.0f );
+		screwInterface.sprite = new Sprite(
+				WereScrewedGame.manager.getTextureAtlas( "screwInterface" ),
+				interfaceAnimator );
 		sprite.setColor( 0f, 0f, 1f, 1f );
 
 		constructBody( pos );
@@ -78,6 +87,8 @@ public class ResurrectScrew extends Screw {
 				playerMover.moveAnalog( this, ( float ) depth
 						/ ( ( float ) maxDepth ), deadPlayer.body );
 			}
+			// int value = (int ) ( ( (float) depth / (float)maxDepth ) * 9f );
+			// screwInterface.sprite.getAnimator( ).setFrame( value );
 		}
 	}
 
@@ -107,6 +118,8 @@ public class ResurrectScrew extends Screw {
 				playerMover.moveAnalog( this, ( float ) depth
 						/ ( ( float ) maxDepth ), deadPlayer.body );
 			}
+			// int value = (int ) ( ( (float) depth / (float)maxDepth ) * 9f );
+			// screwInterface.sprite.getAnimator( ).setFrame( value );
 		}
 
 	}
@@ -126,6 +139,8 @@ public class ResurrectScrew extends Screw {
 				playerMover.moveAnalog( this, ( float ) depth
 						/ ( ( float ) maxDepth ), deadPlayer.body );
 			}
+			// int value = (int ) ( ( (float) depth / (float)maxDepth ) * 9f );
+			// screwInterface.sprite.getAnimator( ).setFrame( value );
 		}
 	}
 
@@ -154,6 +169,8 @@ public class ResurrectScrew extends Screw {
 				playerMover.moveAnalog( this, ( float ) depth
 						/ ( ( float ) maxDepth ), deadPlayer.body );
 			}
+			// int value = (int ) ( ( (float) depth / (float)maxDepth ) * 9f );
+			// screwInterface.sprite.getAnimator( ).setFrame( value );
 		}
 
 	}
@@ -211,6 +228,10 @@ public class ResurrectScrew extends Screw {
 	public void update( float deltaTime ) {
 		super.update( deltaTime );
 		if ( !removed ) {
+			// if ( playerAttached ) {
+//			screwInterface.sprite.setPosition( this.getPositionPixel( ) );
+//			screwInterface.sprite.update( deltaTime );
+			// }
 			if ( playerMover.atEnd( ) || depth == maxDepth ) {
 				deadPlayer.body.setTransform(
 						this.getPositionPixel( )

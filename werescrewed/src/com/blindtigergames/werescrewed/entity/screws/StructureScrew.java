@@ -2,6 +2,7 @@ package com.blindtigergames.werescrewed.entity.screws;
 
 import java.util.ArrayList;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
@@ -9,8 +10,13 @@ import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.Joint;
 import com.badlogic.gdx.physics.box2d.World;
+import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityType;
+import com.blindtigergames.werescrewed.entity.Sprite;
+import com.blindtigergames.werescrewed.entity.animator.SimpleFrameAnimator;
+import com.blindtigergames.werescrewed.entity.animator.SimpleFrameAnimator.LoopBehavior;
+import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 import com.blindtigergames.werescrewed.util.Util;
 
 /**
@@ -46,7 +52,13 @@ public class StructureScrew extends Screw {
 		screwType = ScrewType.SCREW_STRUCTURAL;
 		entityType = EntityType.SCREW;
 		entity.body.setFixedRotation( false );
-
+		screwInterface = new Entity( name + "_screwInterface", pos, null, null,
+				false );
+		SimpleFrameAnimator interfaceAnimator = new SimpleFrameAnimator( )
+				.speed( 1f ).loop( LoopBehavior.STOP ).startFrame( 1 ).time( 0.0f );
+		screwInterface.sprite = new Sprite(
+				WereScrewedGame.manager.getTextureAtlas( "screwInterface" ),
+				interfaceAnimator );
 		constuctBody( pos );
 		if ( sprite != null )
 			sprite.rotate( ( float ) ( Math.random( ) * 360 ) );
@@ -73,7 +85,13 @@ public class StructureScrew extends Screw {
 		extraJoints = new ArrayList< Joint >( );
 		screwType = ScrewType.SCREW_STRUCTURAL;
 		entityType = EntityType.SCREW;
-
+		screwInterface = new Entity( name + "_screwInterface", pos, null, null,
+				false );
+		SimpleFrameAnimator interfaceAnimator = new SimpleFrameAnimator( )
+				.speed( 1f ).loop( LoopBehavior.STOP );
+		screwInterface.sprite = new Sprite(
+				WereScrewedGame.manager.getTextureAtlas( "screwInterface" ),
+				interfaceAnimator );
 		constuctBody( pos );
 		if ( sprite != null )
 			sprite.rotate( ( float ) ( Math.random( ) * 360 ) );
@@ -102,6 +120,8 @@ public class StructureScrew extends Screw {
 				rotation += ( -newDiff * 5 );
 			}
 			screwStep = depth + 6;
+			 int value = (int ) ( ( (float) depth / (float)maxDepth ) * 9f ) + 15;
+			 screwInterface.sprite.getAnimator( ).setFrame( value );
 		}
 
 	}
@@ -113,6 +133,8 @@ public class StructureScrew extends Screw {
 			depth -= 2;
 			rotation += 10;
 			screwStep = depth + 5;
+			 int value = (int ) ( ( (float) depth / (float)maxDepth ) * 9f ) + 15;
+			 screwInterface.sprite.getAnimator( ).setFrame( value );
 		}
 	}
 
@@ -138,6 +160,8 @@ public class StructureScrew extends Screw {
 				rotation += ( -newDiff * 5 );
 			}
 			screwStep = depth + 5;
+			 int value = (int ) ( ( (float) depth / (float)maxDepth ) * 9f ) + 15;
+			 screwInterface.sprite.getAnimator( ).setFrame( value );
 		}
 
 	}
@@ -149,6 +173,8 @@ public class StructureScrew extends Screw {
 			depth += 2;
 			rotation -= 10;
 			screwStep = depth + 6;
+			 int value = (int ) ( ( (float) depth / (float)maxDepth ) * 9f ) + 15;
+			 screwInterface.sprite.getAnimator( ).setFrame( value );
 		}
 	}
 
@@ -156,6 +182,10 @@ public class StructureScrew extends Screw {
 	public void update( float deltaTime ) {
 		super.update( deltaTime );
 		if ( !removed ) {
+			if ( playerAttached ) {
+//				screwInterface.sprite.setPosition( this.getPositionPixel( ) );
+//				screwInterface.sprite.update( deltaTime );
+			}
 			if ( entity != null
 					&& ( getDetachDirection( ).x != 0 || getDetachDirection( ).y != 0 ) ) {
 				if ( upDownDetach ) {
@@ -218,6 +248,12 @@ public class StructureScrew extends Screw {
 		}
 	}
 
+	@Override
+	public void draw( SpriteBatch batch, float deltaTime ) {
+		super.draw( batch, deltaTime );
+		screwInterface.sprite.draw( batch, deltaTime );
+	}
+	
 	private void constuctBody( Vector2 pos ) {
 
 		// create the screw body
@@ -259,5 +295,6 @@ public class StructureScrew extends Screw {
 	private int fallTimeout;
 	private boolean lerpUp = true;
 	private float alpha = 0.0f;
+	private Entity screwInterface;
 
 }

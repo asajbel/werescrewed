@@ -9,8 +9,12 @@ import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.Joint;
 import com.badlogic.gdx.physics.box2d.World;
+import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityType;
+import com.blindtigergames.werescrewed.entity.Sprite;
+import com.blindtigergames.werescrewed.entity.animator.SimpleFrameAnimator;
+import com.blindtigergames.werescrewed.entity.animator.SimpleFrameAnimator.LoopBehavior;
 import com.blindtigergames.werescrewed.puzzles.PuzzleManager;
 import com.blindtigergames.werescrewed.util.Util;
 
@@ -25,6 +29,7 @@ import com.blindtigergames.werescrewed.util.Util;
 public class PuzzleScrew extends Screw {
 	public PuzzleManager puzzleManager;
 	private boolean resetAble;
+	private Entity screwInterface;
 
 	public PuzzleScrew( String name, Vector2 pos, int max, Entity entity,
 			World world, int startDepth, boolean resetable,
@@ -48,7 +53,14 @@ public class PuzzleScrew extends Screw {
 		screwType = ScrewType.SCREW_PUZZLE;
 		entityType = EntityType.SCREW;
 		extraJoints = new ArrayList< Joint >( );
-
+		screwInterface = new Entity( name + "_screwInterface", pos, null, null,
+				false );
+		SimpleFrameAnimator interfaceAnimator = new SimpleFrameAnimator( )
+				.speed( 1f ).loop( LoopBehavior.STOP ).startFrame( 1 )
+				.maxFrames( 2 ).time( 0.0f );
+		screwInterface.sprite = new Sprite(
+				WereScrewedGame.manager.getTextureAtlas( "screwInterface" ),
+				interfaceAnimator );
 		sprite.setColor( 16f / 255f, 215f / 255f, 96f / 255f, 1.0f );
 
 		constructBody( pos );
@@ -72,7 +84,13 @@ public class PuzzleScrew extends Screw {
 		extraJoints = new ArrayList< Joint >( );
 
 		sprite.setColor( 16f / 255f, 215f / 255f, 96f / 255f, 1.0f );
-
+		screwInterface = new Entity( name + "_screwInterface", pos, null, null,
+				false );
+		SimpleFrameAnimator interfaceAnimator = new SimpleFrameAnimator( )
+				.speed( 1f ).loop( LoopBehavior.STOP ).startFrame( 1 ).time( 0.0f );
+		screwInterface.sprite = new Sprite(
+				WereScrewedGame.manager.getTextureAtlas( "screwInterface" ),
+				interfaceAnimator );
 		constructBody( pos );
 		if ( sprite != null )
 			sprite.rotate( ( float ) ( Math.random( ) * 360 ) );
@@ -109,6 +127,8 @@ public class PuzzleScrew extends Screw {
 			screwStep = depth + 5;
 			puzzleManager.runElement( this, ( float ) depth
 					/ ( ( float ) maxDepth ) );
+			// int value = (int ) ( ( (float) depth / (float)maxDepth ) * 9f );
+			// screwInterface.sprite.getAnimator( ).setFrame( value );
 		}
 
 	}
@@ -122,6 +142,8 @@ public class PuzzleScrew extends Screw {
 			screwStep = depth + 5;
 			puzzleManager.runElement( this, ( float ) depth
 					/ ( ( float ) maxDepth ) );
+			// int value = (int ) ( ( (float) depth / (float)maxDepth ) * 9f );
+			// screwInterface.sprite.getAnimator( ).setFrame( value );
 		}
 	}
 
@@ -152,6 +174,8 @@ public class PuzzleScrew extends Screw {
 			screwStep = depth + 6;
 			puzzleManager.runElement( this, ( float ) depth
 					/ ( ( float ) maxDepth ) );
+			// int value = (int ) ( ( (float) depth / (float)maxDepth ) * 9f );
+			// screwInterface.sprite.getAnimator( ).setFrame( value );
 		}
 
 	}
@@ -165,6 +189,8 @@ public class PuzzleScrew extends Screw {
 			screwStep = depth + 6;
 			puzzleManager.runElement( this, ( float ) depth
 					/ ( ( float ) maxDepth ) );
+			// int value = (int ) ( ( (float) depth / (float)maxDepth ) * 9f );
+			// screwInterface.sprite.getAnimator( ).setFrame( value );
 		}
 	}
 
@@ -172,6 +198,10 @@ public class PuzzleScrew extends Screw {
 	public void update( float deltaTime ) {
 		super.update( deltaTime );
 		if ( !removed ) {
+			// if ( playerAttached ) {
+//			screwInterface.sprite.setPosition( this.getPositionPixel( ) );
+//			screwInterface.sprite.update( deltaTime );
+			// }
 			if ( entity != null
 					&& ( getDetachDirection( ).x != 0 || getDetachDirection( ).y != 0 ) ) {
 				if ( upDownDetach ) {
