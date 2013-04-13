@@ -252,7 +252,7 @@ public class ScrewBuilder extends GenericEntityBuilder< ScrewBuilder > {
 				finalPos = this.pos;
 			}
 			out = new ResurrectScrew( finalPos, this.entity, this.world,
-					this.player, lerpMover );
+					this.player, lerpMover, pos );
 		}
 		return out;
 	}

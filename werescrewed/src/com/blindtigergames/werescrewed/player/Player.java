@@ -77,7 +77,7 @@ public class Player extends Entity {
 	public boolean flipX = false;
 	public final static float HEIGHT = 128;
 	public final static float WIDTH = 64;
-	//public final static float 
+	// public final static float
 
 	public Fixture feet;
 	public Fixture torso;
@@ -246,9 +246,9 @@ public class Player extends Entity {
 		if ( Gdx.input.isKeyPressed( Keys.G ) )
 			Gdx.app.log( "steamCollide: " + steamCollide, "steamDone: "
 					+ steamDone );
-//		if ( name.equals( "player1" ) ) {
-//
-//		}
+		// if ( name.equals( "player1" ) ) {
+		//
+		// }
 		if ( kinematicTransform ) {
 			// setPlatformTransform( platformOffset );
 			kinematicTransform = false;
@@ -285,159 +285,161 @@ public class Player extends Entity {
 			} else if ( inputHandler != null ) {
 				updateKeyboard( deltaTime );
 			}
-		}
-		// if re-spawning decrement time out
-		// player will not die in this time
-		if ( respawnTimeout > 0 ) {
-			respawnTimeout--;
-		}
-		// build extra fixture to have new friction
-		updateFootFriction( );
-		// test if player is still moving after timeout
-		if ( playerDirection != PlayerDirection.Idle ) {
-			if ( runTimeout == 0 && playerState != PlayerState.Jumping
-					&& playerState != PlayerState.Falling
-					&& extraState != ConcurrentState.ExtraFalling
-					&& extraState != ConcurrentState.ExtraJumping ) {
-				playerDirection = PlayerDirection.Idle;
-			} else if ( playerDirection == PlayerDirection.Left
-					&& type.getScale( ).x > 0 ) {
-				flipX = true;
-				type.setScale( type.getScale( ).x * -1, type.getScale( ).y );
-			} else if ( playerDirection == PlayerDirection.Right
-					&& type.getScale( ).x < 0 ) {
-				flipX = false;
-				type.setScale( type.getScale( ).x * -1, type.getScale( ).y );
-			} else if ( playerState != PlayerState.Jumping
-					&& playerState != PlayerState.Falling
-					&& extraState != ConcurrentState.ExtraFalling
-					&& extraState != ConcurrentState.ExtraJumping ) {
-				runTimeout--;
+
+			// if re-spawning decrement time out
+			// player will not die in this time
+			if ( respawnTimeout > 0 ) {
+				respawnTimeout--;
 			}
-		}
-		// switch between states
-		switch ( playerState ) {
-		case Dead:
-			break;
-		case JumpingOffScrew:
-			resetJumpOffScrew( );
-			if ( playerState == PlayerState.JumpingOffScrew ) {
-				handleJumpOffScrew( );
-			}
-			break;
-		case HeadStand:
-			if ( hitSolidObject ) {
-				if ( topPlayer ) {
-					removePlayerToPlayer( );
+			// build extra fixture to have new friction
+			updateFootFriction( );
+			// test if player is still moving after timeout
+			if ( playerDirection != PlayerDirection.Idle ) {
+				if ( runTimeout == 0 && playerState != PlayerState.Jumping
+						&& playerState != PlayerState.Falling
+						&& extraState != ConcurrentState.ExtraFalling
+						&& extraState != ConcurrentState.ExtraJumping ) {
+					playerDirection = PlayerDirection.Idle;
+				} else if ( playerDirection == PlayerDirection.Left
+						&& type.getScale( ).x > 0 ) {
+					flipX = true;
+					type.setScale( type.getScale( ).x * -1, type.getScale( ).y );
+				} else if ( playerDirection == PlayerDirection.Right
+						&& type.getScale( ).x < 0 ) {
+					flipX = false;
+					type.setScale( type.getScale( ).x * -1, type.getScale( ).y );
+				} else if ( playerState != PlayerState.Jumping
+						&& playerState != PlayerState.Falling
+						&& extraState != ConcurrentState.ExtraFalling
+						&& extraState != ConcurrentState.ExtraJumping ) {
+					runTimeout--;
 				}
 			}
-			break;
-		case Screwing:
-			if ( knockedOff ) {
-				detachScrewImpulse( );
-				removePlayerToScrew( );
-				knockedOff = false;
-			} else if ( mover != null ) {
-				LerpMover lm = ( LerpMover ) mover;
-				if ( !lm.atEnd( ) ) {
-					lm.move( deltaTime, body );
-				} else {
-					body.setTransform(
-							new Vector2( currentScrew.getPosition( ).x
-									- ( WIDTH / 2.0f ) * Util.PIXEL_TO_BOX,
-									currentScrew.getPosition( ).y
-											- ( HEIGHT / 2.0f )
-											* Util.PIXEL_TO_BOX ), 0.0f );
-					RevoluteJointDef revoluteJointDef = new RevoluteJointDef( );
-					revoluteJointDef.initialize( body, currentScrew.body,
-							currentScrew.getPosition( ) );
-					revoluteJointDef.enableMotor = false;
-					playerJoint = ( RevoluteJoint ) world
-							.createJoint( revoluteJointDef );
-					playerState = PlayerState.Screwing;
-					mover = null;
+			// switch between states
+			switch ( playerState ) {
+			case Dead:
+				break;
+			case JumpingOffScrew:
+				resetJumpOffScrew( );
+				if ( playerState == PlayerState.JumpingOffScrew ) {
+					handleJumpOffScrew( );
 				}
-			} else {
-				// if resurrect screw and its not active remove the player joint
-				if ( currentScrew.getScrewType( ) == ScrewType.SCREW_RESURRECT ) {
-					ResurrectScrew rezScrew = ( ResurrectScrew ) currentScrew;
-					if ( rezScrew.deleteQueue( ) ) {
-						if ( !detachScrewImpulse( ) ) {
-							jump( );
-						}
-						removePlayerToScrew( );
+				break;
+			case HeadStand:
+				if ( hitSolidObject ) {
+					if ( topPlayer ) {
+						removePlayerToPlayer( );
 					}
 				}
-			}
-			break;
-		default:
-			break;
-		}
-		// if the player is falling
-		if ( body.getLinearVelocity( ).y < -MIN_VELOCITY * 4f
-				&& playerState != PlayerState.Screwing
-				&& playerState != PlayerState.JumpingOffScrew
-				&& platformBody == null && !isDead ) {
-			switch ( playerState ) {
-			case HeadStand:
-				// don't set the player state use the extra state
-				if ( !topPlayer ) {
-					extraState = ConcurrentState.ExtraFalling;
+				break;
+			case Screwing:
+				if ( knockedOff ) {
+					detachScrewImpulse( );
+					removePlayerToScrew( );
+					knockedOff = false;
+				} else if ( mover != null ) {
+					LerpMover lm = ( LerpMover ) mover;
+					if ( !lm.atEnd( ) ) {
+						lm.move( deltaTime, body );
+					} else {
+						body.setTransform(
+								new Vector2( currentScrew.getPosition( ).x
+										- ( WIDTH / 2.0f ) * Util.PIXEL_TO_BOX,
+										currentScrew.getPosition( ).y
+												- ( HEIGHT / 2.0f )
+												* Util.PIXEL_TO_BOX ), 0.0f );
+						RevoluteJointDef revoluteJointDef = new RevoluteJointDef( );
+						revoluteJointDef.initialize( body, currentScrew.body,
+								currentScrew.getPosition( ) );
+						revoluteJointDef.enableMotor = false;
+						playerJoint = ( RevoluteJoint ) world
+								.createJoint( revoluteJointDef );
+						playerState = PlayerState.Screwing;
+						mover = null;
+					}
+				} else {
+					// if resurrect screw and its not active remove the player
+					// joint
+					if ( currentScrew.getScrewType( ) == ScrewType.SCREW_RESURRECT ) {
+						ResurrectScrew rezScrew = ( ResurrectScrew ) currentScrew;
+						if ( rezScrew.deleteQueue( ) ) {
+							if ( !detachScrewImpulse( ) ) {
+								jump( );
+							}
+							removePlayerToScrew( );
+						}
+					}
 				}
-				runTimeout = 0;
 				break;
 			default:
-				playerState = PlayerState.Falling;
-				runTimeout = 0;
 				break;
 			}
-			setGrounded( false );
-		} else if ( playerState == PlayerState.Falling
-				&& !isHeadStandPossible( ) ) {
-			// if the player is falling but y velocity is too slow
-			// the the player hit something
-			playerState = PlayerState.Standing;
-			setGrounded( true );
-		} else if ( extraState == ConcurrentState.ExtraFalling ) {
-			// if the player is falling but y velocity is too slow
-			// the the player hit something
-			extraState = ConcurrentState.Ignore;
-			setGrounded( true );
-		}
-		// check if the head stand requirements are met
-		if ( otherPlayer != null && playerState != PlayerState.HeadStand ) {
-			if ( isHeadStandPossible( ) ) {
-				setHeadStand( );
-				otherPlayer.setHeadStand( );
-			} else if ( !otherPlayer.isHeadStandPossible( ) ) {
-				otherPlayer.hitPlayer( null );
-				hitPlayer( null );
+			// if the player is falling
+			if ( body.getLinearVelocity( ).y < -MIN_VELOCITY * 4f
+					&& playerState != PlayerState.Screwing
+					&& playerState != PlayerState.JumpingOffScrew
+					&& platformBody == null && !isDead ) {
+				switch ( playerState ) {
+				case HeadStand:
+					// don't set the player state use the extra state
+					if ( !topPlayer ) {
+						extraState = ConcurrentState.ExtraFalling;
+					}
+					runTimeout = 0;
+					break;
+				default:
+					playerState = PlayerState.Falling;
+					runTimeout = 0;
+					break;
+				}
+				setGrounded( false );
+			} else if ( playerState == PlayerState.Falling
+					&& !isHeadStandPossible( ) ) {
+				// if the player is falling but y velocity is too slow
+				// the the player hit something
+				playerState = PlayerState.Standing;
+				setGrounded( true );
+			} else if ( extraState == ConcurrentState.ExtraFalling ) {
+				// if the player is falling but y velocity is too slow
+				// the the player hit something
+				extraState = ConcurrentState.Ignore;
+				setGrounded( true );
 			}
-		} else {
-			if ( headStandTimeout > 0 ) {
-				headStandTimeout--;
+			// check if the head stand requirements are met
+			if ( otherPlayer != null && playerState != PlayerState.HeadStand ) {
+				if ( isHeadStandPossible( ) ) {
+					setHeadStand( );
+					otherPlayer.setHeadStand( );
+				} else if ( !otherPlayer.isHeadStandPossible( ) ) {
+					otherPlayer.hitPlayer( null );
+					hitPlayer( null );
+				}
+			} else {
+				if ( headStandTimeout > 0 ) {
+					headStandTimeout--;
+				}
 			}
-		}
-		// check for crushing stuff
-		if ( ( ( topCrush && botCrush ) || ( leftCrush && rightCrush ) )
-				&& ( playerState != PlayerState.JumpingOffScrew && playerState != PlayerState.Screwing ) ) {
-			Gdx.app.log( "test state:", " " + playerState );
-			this.killPlayer( );
-			// Gdx.app.log( "\nright: ", "" + rightCrush );
-			// Gdx.app.log( "left: ", "" + leftCrush );
-			// Gdx.app.log( "top: ", "" + topCrush );
-			// Gdx.app.log( "bottom: ", "" + botCrush );
-		} else if ( steamCollide ) {
-			if ( !steamDone ) {
-				steamResolution( );
-				steamDone = true;
+			// check for crushing stuff
+			if ( ( ( topCrush && botCrush ) || ( leftCrush && rightCrush ) )
+					&& ( playerState != PlayerState.JumpingOffScrew && playerState != PlayerState.Screwing ) ) {
+				this.killPlayer( );
+				// Gdx.app.log( "\nright: ", "" + rightCrush );
+				// Gdx.app.log( "left: ", "" + leftCrush );
+				// Gdx.app.log( "top: ", "" + topCrush );
+				// Gdx.app.log( "bottom: ", "" + botCrush );
+			} else if ( steamCollide ) {
+				if ( !steamDone ) {
+					steamResolution( );
+					steamDone = true;
+				}
+			} else
+				steamDone = false;
+			terminalVelocityCheck( 15.0f );
+			// the jump doesn't work the first time on dynamic bodies so do it
+			// twice
+			if ( playerState == PlayerState.Jumping && isGrounded( ) ) {
+				jump( );
 			}
-		} else
-			steamDone = false;
-		terminalVelocityCheck( 15.0f );
-		// the jump doesn't work the first time on dynamic bodies so do it twice
-		if ( playerState == PlayerState.Jumping && isGrounded( ) ) {
-			jump( );
 		}
 
 		prevPlayerDir = playerDirection;
@@ -479,8 +481,8 @@ public class Player extends Entity {
 				platformBody = null;
 			}
 			isDead = true;
-			ParticleEffect blood = getEffect("blood");
-			blood.restartAt( getPositionPixel() );
+			ParticleEffect blood = getEffect( "blood" );
+			blood.restartAt( getPositionPixel( ) );
 		}
 	}
 
@@ -509,8 +511,8 @@ public class Player extends Entity {
 		platformBody = null;
 		isDead = false;
 		respawnTimeout = DEAD_STEPS;
-		
-		getEffect("revive").restartAt( getPositionPixel() );
+
+		getEffect( "revive" ).restartAt( getPositionPixel( ) );
 	}
 
 	/**
@@ -541,15 +543,18 @@ public class Player extends Entity {
 			if ( body.getLinearVelocity( ).x < MAX_VELOCITY ) {
 				body.applyLinearImpulse( new Vector2( MOVEMENT_IMPULSE, 0.0f ),
 						body.getWorldCenter( ) );
-				if ( body.getLinearVelocity( ).x >= MAX_VELOCITY*0.99f )
+				if ( body.getLinearVelocity( ).x >= MAX_VELOCITY * 0.99f )
 					reachedMaxSpeed = true;
 				else
 					reachedMaxSpeed = false;
 			}
 		}
 		playerDirection = PlayerDirection.Right;
-		if ( grounded && prevPlayerDir== PlayerDirection.Left ){//&& reachedMaxSpeed ){
-			getEffect( "skid_left" ).restartAt( getPositionPixel( ).add( 30,0 ) );
+		if ( grounded && prevPlayerDir == PlayerDirection.Left ) {// &&
+																	// reachedMaxSpeed
+																	// ){
+			getEffect( "skid_left" )
+					.restartAt( getPositionPixel( ).add( 30, 0 ) );
 			reachedMaxSpeed = false;
 		}
 		runTimeout = RUN_STEPS;
@@ -576,15 +581,18 @@ public class Player extends Entity {
 				body.applyLinearImpulse(
 						new Vector2( -MOVEMENT_IMPULSE, 0.0f ),
 						body.getWorldCenter( ) );
-				if ( body.getLinearVelocity( ).x <= -MAX_VELOCITY*0.99f )
+				if ( body.getLinearVelocity( ).x <= -MAX_VELOCITY * 0.99f )
 					reachedMaxSpeed = true;
 				else
 					reachedMaxSpeed = false;
 			}
 		}
 		playerDirection = PlayerDirection.Left;
-		if ( grounded && prevPlayerDir == PlayerDirection.Right ){// && reachedMaxSpeed ){
-			getEffect( "skid_right" ).restartAt( getPositionPixel( ).add( 100,0 ) );
+		if ( grounded && prevPlayerDir == PlayerDirection.Right ) {// &&
+																	// reachedMaxSpeed
+																	// ){
+			getEffect( "skid_right" ).restartAt(
+					getPositionPixel( ).add( 100, 0 ) );
 			reachedMaxSpeed = false;
 		}
 		runTimeout = RUN_STEPS;
@@ -759,12 +767,6 @@ public class Player extends Entity {
 	public void setGrounded( boolean newVal ) {
 		if ( !topPlayer ) {
 			if ( newVal != false && !grounded && otherPlayer == null ) {
-				/*
-				 * hitCloud.setPixelPosition( this.getPositionPixel( ) .sub( 0,
-				 * 12f ) ); hitCloud.sprite.setColor( 1, 1, 1,
-				 * body.getLinearVelocity( ).y / ( float ) MAX_VELOCITY );
-				 * hitCloud.sprite.reset( );
-				 */
 				// if ( !world.isLocked( ) ) {
 				getEffect( "land_cloud" ).restartAt(
 						getPositionPixel( ).add( 50, 0 ) );
@@ -1299,14 +1301,10 @@ public class Player extends Entity {
 			if ( otherPlayer != null ) {
 				if ( !topPlayer ) {
 					otherPlayer.removePlayerToPlayer( );
-					Gdx.app.log( "process moving state",
-							"other player is not null" );
 				} else {
 					removePlayerToPlayer( );
 				}
 			} else {
-				Gdx.app.log( "process moving state",
-						"other player is null for some reason" );
 				removePlayerToPlayer( );
 			}
 		}

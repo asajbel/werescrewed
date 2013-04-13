@@ -18,6 +18,7 @@ import com.blindtigergames.werescrewed.debug.SBox2DDebugRenderer;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.PolySprite;
 import com.blindtigergames.werescrewed.entity.RootSkeleton;
+import com.blindtigergames.werescrewed.entity.Skeleton;
 import com.blindtigergames.werescrewed.entity.Sprite;
 import com.blindtigergames.werescrewed.entity.platforms.Platform;
 import com.blindtigergames.werescrewed.entity.tween.EntityAccessor;
@@ -46,10 +47,10 @@ public class Level {
 	private boolean debugTest, debug;
 	public ProgressManager progressManager;
 	public static ArrayList< Joint > jointsToRemove = new ArrayList< Joint >( );
-	public ArrayList< Sprite > skelBGList;
-	public ArrayList< Sprite > skelFGList;
-	public ArrayList< Sprite > entityBGList;
-	public ArrayList< Sprite > entityFGList;
+	public ArrayList< Skeleton > skelBGList;
+	public ArrayList< Skeleton > skelFGList;
+	public ArrayList< Entity > entityBGList;
+	public ArrayList< Entity > entityFGList;
 
 	public Level( ) {
 
@@ -57,10 +58,10 @@ public class Level {
 		myContactListener = new MyContactListener( );
 		world.setContactListener( myContactListener );
 
-		skelBGList = new ArrayList< Sprite >( );
-		skelFGList = new ArrayList< Sprite >( );
-		entityBGList = new ArrayList< Sprite >( );
-		entityFGList = new ArrayList< Sprite >( );
+		skelBGList = new ArrayList< Skeleton >( );
+		skelFGList = new ArrayList< Skeleton >( );
+		entityBGList = new ArrayList< Entity >( );
+		entityFGList = new ArrayList< Entity >( );
 
 		// progressManager = new ProgressManager(player1, player2, world);
 
@@ -121,12 +122,16 @@ public class Level {
 
 		// float deltaTime = Gdx.graphics.getDeltaTime( );
 		// draw all background of skeletons before everything
-		for ( Sprite spr : skelBGList ) {
-			spr.draw( batch );
+		for ( Skeleton skel : skelBGList ) {
+			if ( skel.isActive( ) ) {
+				skel.bgSprite.draw( batch );
+			}
 		}
 		// draw all background entity sprites after everything
 		// for ( Entity e: entityFGList ) {
+		// if ( e.isActive( ) ) {
 		// e.drawBGDecals( batch );
+		// }
 		// }
 		// draw all the normal sprites
 		root.draw( batch, deltaTime );
@@ -138,14 +143,18 @@ public class Level {
 			player2.draw( batch, deltaTime );
 		// draw all foreground entity sprites after everything
 		// for ( Entity e: entityFGList ) {
+		// if ( e.isActive( ) ) {
 		// e.drawFGDecals( batch );
 		// }
+		// }
 		// draw all foreground skeleton sprites after everything
-		for ( Sprite spr : skelFGList ) {
-			spr.draw( batch );
+		for ( Skeleton skel : skelFGList ) {
+			//if ( !skel.isActive( ) ) {
+				skel.fgSprite.draw( batch );
+			//}
 		}
 		batch.end( );
-
+		
 		if ( debug )
 			debugRenderer.render( world, camera.combined( ) );
 		world.step( WereScrewedGame.oneOverTargetFrameRate, 6, 6 );

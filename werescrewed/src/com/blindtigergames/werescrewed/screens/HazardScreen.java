@@ -202,7 +202,7 @@ public class HazardScreen implements com.badlogic.gdx.Screen {
 	}
 
 	private void initCrushTest( ) {
-		crusher = platBuilder.position( 400.0f, 100.0f ).name( "crusher" )
+		crusher = platBuilder.position( 400.0f, 200.0f ).name( "crusher" )
 				.dimensions( 6, 1 ).texture( testTexture ).dynamic( )
 				.oneSided( false ).restitution( 0.0f ).buildTilePlatform( );
 		crusher.setCrushing( true );
@@ -253,6 +253,16 @@ public class HazardScreen implements com.badlogic.gdx.Screen {
 			spikes2.setActive( false );
 		}
 
+		if ( Gdx.input.isKeyPressed( Input.Keys.C ) ) {
+			if ( skeleton != null )
+				skeleton.rotateBy( -0.01f );
+		}
+
+		if ( Gdx.input.isKeyPressed( Input.Keys.V ) ) {
+			if ( skeleton != null )
+				skeleton.rotateBy( 0.01f );
+		}
+		
 		if ( Gdx.input.isKeyPressed( Keys.NUM_0 ) ) {
 			if ( debugTest )
 				debug = !debug;

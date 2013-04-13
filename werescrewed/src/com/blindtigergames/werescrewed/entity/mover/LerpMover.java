@@ -188,28 +188,37 @@ public class LerpMover implements IMover {
 	}
 
 	/**
-	 * take a step 
+	 * take a step
 	 */
 	public void moveStep( ) {
 		alpha += speed;
 	}
-	
+
 	/**
 	 * set the speed
+	 * 
 	 * @param speed
 	 */
 	public void setSpeed( float speed ) {
 		this.speed = speed;
 	}
-	
+
 	/**
-	 * set the end position and reset the beginning pos
+	 * set the end position and reset to the beginning pos
 	 */
 	public void changeEndPos( Vector2 endPos ) {
-		this.endPoint = endPos;
+		this.endPoint = endPos.cpy( );
 		alpha = 0;
 	}
-	
+
+	/**
+	 * set the beginning position
+	 */
+	public void changeBeginPos( Vector2 beginPos ) {
+		this.beginningPoint = beginPos.cpy( );
+		alpha = 0;
+	}
+
 	/**
 	 * get current location
 	 */
@@ -265,7 +274,7 @@ public class LerpMover implements IMover {
 				float newY = Math.abs( p.getOriginPos( ).y - beginningPoint.y );
 				if ( temp.x > endPoint.x ) {
 					newX = -newX;
-				} 
+				}
 				if ( temp.y > endPoint.y ) {
 					newY = -newY;
 				}

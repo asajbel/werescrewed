@@ -31,10 +31,21 @@ public class BossScrew extends Screw {
 	 * @param entity
 	 * @param world
 	 */
-	public BossScrew( String name, Vector2 pos, int max, Entity entity, World world, Vector2 detachDirection ) {
+	public BossScrew( String name, Vector2 pos, int max, Entity entity,
+			World world, Vector2 detachDirection ) {
 		super( name, pos, null );
 		this.world = world;
 		this.detachDirection = detachDirection;
+		this.entity = entity;
+		if ( entity != null ) {
+			this.entityAngle = entity.getAngle( ) * Util.RAD_TO_DEG;
+		}
+		if ( detachDirection != null
+				&& Math.abs( detachDirection.y ) > Math.abs( detachDirection.x ) ) {
+			upDownDetach = true;
+		} else {
+			upDownDetach = false;
+		}
 		maxDepth = max;
 		depth = max;
 		rotation = 0;
@@ -43,12 +54,15 @@ public class BossScrew extends Screw {
 		screwType = ScrewType.SCREW_BOSS;
 		entityType = EntityType.SCREW;
 
-		sprite.setColor( 244f/255f, 215f/255f, 7f/255f, 1.0f);
-		
+		sprite.setColor( 244f / 255f, 215f / 255f, 7f / 255f, 1.0f );
+
 		constuctBody( pos );
+		if ( sprite != null )
+			sprite.rotate( ( float ) ( Math.random( ) * 360 ) );
+		body.setTransform( body.getPosition( ), sprite.getRotation( )
+				* Util.DEG_TO_RAD );
 		addStructureJoint( entity );
 	}
-
 
 	@Override
 	public void screwLeft( int region, boolean switchedDirections ) {
@@ -63,8 +77,7 @@ public class BossScrew extends Screw {
 			playerCount++;
 		}
 	}
-	
-	
+
 	@Override
 	public void screwLeft( ) {
 		if ( playerCount == 1 ) {
@@ -106,82 +119,97 @@ public class BossScrew extends Screw {
 			playerCount++;
 		}
 
-	}	
+	}
 
 	@Override
 	public boolean endLevelFlag( ) {
 		return endFlag;
 	}
-	
+
 	@Override
 	public int getDepth( ) {
 		return depth;
 	}
-	
+
 	/**
-	 * boss screws allow two players to attach
-	 * this function should always return false
+	 * boss screws allow two players to attach this function should always
+	 * return false
+	 * 
 	 * @return playerAttached
 	 */
 	public boolean isPlayerAttached( ) {
 		return false;
 	}
-	
+
 	@Override
 	public void update( float deltaTime ) {
 		super.update( deltaTime );
 		if ( !removed ) {
-		Vector2 bodyPos = body.getPosition( ).mul( Util.BOX_TO_PIXEL );
-		sprite.setPosition( bodyPos.x - offset.x, bodyPos.y - offset.y );
-		if ( depth == 0 ) {
-			if ( fallTimeout == 0 ) {
-				for ( Joint j : extraJoints ) {
-					world.destroyJoint( j );
-				}
-				Gdx.app.log( "Boss Screw Removed", "End Level" );
-				endFlag = true;
-				// if the number of joints is less than 3 set to dynamic body
-				// a joint for the screw and a joint to the skeleton or less
-			}
-			fallTimeout--;
-		} else {
-			fallTimeout = 70;
-		}
-		if ( depth > 0 ) {
-//			sprite.setPosition(
-//					sprite.getX( )
-//							+ ( .25f * ( float ) ( ( maxDepth - depth ) * ( Math
-//									.cos( body.getAngle( ) ) ) ) ),
-//					sprite.getY( )
-//							+ ( .25f * ( float ) ( ( maxDepth - depth ) * ( Math
-//									.sin( body.getAngle( ) ) ) ) ) );
-		} else if ( fallTimeout > 0 ) {
-			sprite.setPosition( sprite.getX( ) - 8f, sprite.getY( ) );
-			Vector2 spritePos = new Vector2( sprite.getX( ), sprite.getY( ) );
-			Vector2 target1 = new Vector2( sprite.getX( ) + 8f, sprite.getY( ) );
-			if ( fallTimeout % ( maxDepth / 5.0f ) == 0 ) {
-				if ( lerpUp ) {
-					lerpUp = false;
+			if ( entity != null
+					&& ( getDetachDirection( ).x != 0 || getDetachDirection( ).y != 0 ) ) {
+				if ( upDownDetach ) {
+					detachDirection.x = ( float ) Math.sin( entity.getAngle( ) );
+					detachDirection.y = Math.signum( detachDirection.y )
+							* ( float ) Math.cos( entity.getAngle( ) );
 				} else {
-					lerpUp = true;
+					detachDirection.x = Math.signum( detachDirection.y )
+							* ( float ) Math.cos( entity.getAngle( ) );
+					detachDirection.y = ( float ) Math.sin( entity.getAngle( ) );
 				}
 			}
-			if ( lerpUp ) {
-				alpha += 1f / ( maxDepth / 5.0f );
+			Vector2 bodyPos = body.getPosition( ).mul( Util.BOX_TO_PIXEL );
+			sprite.setPosition( bodyPos.x - offset.x, bodyPos.y - offset.y );
+			if ( depth == 0 ) {
+				if ( fallTimeout == 0 ) {
+					for ( Joint j : extraJoints ) {
+						world.destroyJoint( j );
+					}
+					Gdx.app.log( "Boss Screw Removed", "End Level" );
+					endFlag = true;
+					// if the number of joints is less than 3 set to dynamic
+					// body
+					// a joint for the screw and a joint to the skeleton or less
+				}
+				fallTimeout--;
 			} else {
-				alpha -= 1f / ( maxDepth / 5.0f );
+				fallTimeout = 70;
 			}
-			spritePos.lerp( target1, alpha );
-			sprite.setPosition( spritePos.x, spritePos.y );
-		}
-		sprite.setRotation( rotation );
-		if ( depth != screwStep ) {
-			screwStep--;
-		}
-		if ( depth == screwStep ) {
-			body.setAngularVelocity( 0 );
-		}
-		playerCount = 0;
+			if ( depth > 0 ) {
+				// sprite.setPosition(
+				// sprite.getX( )
+				// + ( .25f * ( float ) ( ( maxDepth - depth ) * ( Math
+				// .cos( body.getAngle( ) ) ) ) ),
+				// sprite.getY( )
+				// + ( .25f * ( float ) ( ( maxDepth - depth ) * ( Math
+				// .sin( body.getAngle( ) ) ) ) ) );
+			} else if ( fallTimeout > 0 ) {
+				sprite.setPosition( sprite.getX( ) - 8f, sprite.getY( ) );
+				Vector2 spritePos = new Vector2( sprite.getX( ), sprite.getY( ) );
+				Vector2 target1 = new Vector2( sprite.getX( ) + 8f,
+						sprite.getY( ) );
+				if ( fallTimeout % ( maxDepth / 5.0f ) == 0 ) {
+					if ( lerpUp ) {
+						lerpUp = false;
+					} else {
+						lerpUp = true;
+					}
+				}
+				if ( lerpUp ) {
+					alpha += 1f / ( maxDepth / 5.0f );
+				} else {
+					alpha -= 1f / ( maxDepth / 5.0f );
+				}
+				spritePos.lerp( target1, alpha );
+				sprite.setPosition( spritePos.x, spritePos.y );
+			}
+			sprite.setRotation( rotation );
+			if ( depth != screwStep ) {
+				screwStep--;
+			}
+			if ( depth == screwStep ) {
+				body.setAngularVelocity( 0 );
+			}
+			playerCount = 0;
 		}
 	}
 
@@ -207,20 +235,21 @@ public class BossScrew extends Screw {
 		screwShape.dispose( );
 		body.setUserData( this );
 
-		//we may want a radar depending on the size of the sprite...
+		// we may want a radar depending on the size of the sprite...
 		// add radar sensor to screw
-//		CircleShape radarShape = new CircleShape( );
-//		radarShape.setRadius( sprite.getWidth( ) * 1.1f * Util.PIXEL_TO_BOX );
-//		FixtureDef radarFixture = new FixtureDef( );
-//		radarFixture.shape = radarShape;
-//		radarFixture.isSensor = true;
-//		radarFixture.filter.categoryBits = Util.CATEGORY_SCREWS;
-//		radarFixture.filter.maskBits = Util.CATEGORY_PLAYER
-//				| Util.CATEGORY_SUBPLAYER;
-//		body.createFixture( radarFixture );
-//		radarShape.dispose( );
+		// CircleShape radarShape = new CircleShape( );
+		// radarShape.setRadius( sprite.getWidth( ) * 1.1f * Util.PIXEL_TO_BOX
+		// );
+		// FixtureDef radarFixture = new FixtureDef( );
+		// radarFixture.shape = radarShape;
+		// radarFixture.isSensor = true;
+		// radarFixture.filter.categoryBits = Util.CATEGORY_SCREWS;
+		// radarFixture.filter.maskBits = Util.CATEGORY_PLAYER
+		// | Util.CATEGORY_SUBPLAYER;
+		// body.createFixture( radarFixture );
+		// radarShape.dispose( );
 	}
-	
+
 	private int fallTimeout;
 	private boolean lerpUp = true;
 	private float alpha = 0.0f;

@@ -43,7 +43,10 @@ public class Screw extends Entity {
 	protected int prevDiff;
 	protected int startDepth;
 	protected int diff;
+	protected Entity entity;
 	protected Vector2 detachDirection;
+	protected boolean upDownDetach;
+	protected float entityAngle;
 	protected boolean playerAttached = false;
 	protected boolean removed = false;
 	protected boolean playerNotSensor = false;
@@ -66,12 +69,14 @@ public class Screw extends Entity {
 		super( name, pos, null, null, false );
 		this.world = world;
 		this.sprite = constructSprite(screwTexRegion);
-		if(sprite!=null)sprite.rotate( ( float ) ( Math.random( )*360 ) );
+		this.entity = entity;
+		this.entityAngle = entity.getAngle( );
 		screwType = ScrewType.SCREW_COSMETIC;
 		entityType = EntityType.SCREW;
 		extraJoints = new ArrayList< Joint >( );
-
 		constructBody( pos );
+		if(sprite!=null)sprite.rotate( ( float ) ( Math.random( )*360 ) );
+		body.setTransform( body.getPosition( ), sprite.getRotation( )*Util.DEG_TO_RAD );
 		addStructureJoint( entity );
 	}
 
@@ -248,6 +253,10 @@ public class Screw extends Entity {
 		revoluteJointDef.enableMotor = false;
 		Joint screwJoint =  (Joint) world.createJoint( revoluteJointDef );
 		extraJoints.add( screwJoint );
+		this.entity = entity;
+		if ( entity != null ) {
+			this.entityAngle = entity.getAngle( );
+		}
 	}
 
 	/**

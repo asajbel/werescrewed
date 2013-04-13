@@ -27,10 +27,20 @@ public class PuzzleScrew extends Screw {
 	private boolean resetAble;
 
 	public PuzzleScrew( String name, Vector2 pos, int max, Entity entity,
-			World world, int startDepth, boolean resetable, Vector2 detachDirection ) {
+			World world, int startDepth, boolean resetable,
+			Vector2 detachDirection ) {
 		super( name, pos, null );
-		this.world = world;		
+		this.world = world;
 		this.detachDirection = detachDirection;
+		this.entity = entity;
+		if ( entity != null ) {
+			this.entityAngle = entity.getAngle( ) * Util.RAD_TO_DEG;
+		}
+		if ( Math.abs( detachDirection.y ) > Math.abs( detachDirection.x ) ) {
+			upDownDetach = true;
+		} else {
+			upDownDetach = false;
+		}
 		maxDepth = max;
 		this.startDepth = depth = startDepth;
 		resetAble = resetable;
@@ -38,15 +48,19 @@ public class PuzzleScrew extends Screw {
 		screwType = ScrewType.SCREW_PUZZLE;
 		entityType = EntityType.SCREW;
 		extraJoints = new ArrayList< Joint >( );
-	
+
 		sprite.setColor( 16f / 255f, 215f / 255f, 96f / 255f, 1.0f );
 
 		constructBody( pos );
+		if ( sprite != null )
+			sprite.rotate( ( float ) ( Math.random( ) * 360 ) );
+		body.setTransform( body.getPosition( ), sprite.getRotation( )
+				* Util.DEG_TO_RAD );
 		addStructureJoint( entity );
 	}
 
-	public PuzzleScrew( String name, Vector2 pos, int max,
-			World world, int startDepth, boolean resetable ) {
+	public PuzzleScrew( String name, Vector2 pos, int max, World world,
+			int startDepth, boolean resetable ) {
 		super( name, pos, null );
 		this.world = world;
 		maxDepth = max;
@@ -56,13 +70,17 @@ public class PuzzleScrew extends Screw {
 		screwType = ScrewType.SCREW_PUZZLE;
 		entityType = EntityType.SCREW;
 		extraJoints = new ArrayList< Joint >( );
-	
+
 		sprite.setColor( 16f / 255f, 215f / 255f, 96f / 255f, 1.0f );
 
 		constructBody( pos );
+		if ( sprite != null )
+			sprite.rotate( ( float ) ( Math.random( ) * 360 ) );
+		body.setTransform( body.getPosition( ), sprite.getRotation( )
+				* Util.DEG_TO_RAD );
 
 	}
-	
+
 	/**
 	 * screwing left calls the puzzle manager element and applies the screw
 	 * value to whatever movement is required
@@ -99,7 +117,7 @@ public class PuzzleScrew extends Screw {
 	public void screwLeft( ) {
 		if ( depth > 0 ) {
 			body.setAngularVelocity( 1 );
-			depth-= 2;
+			depth -= 2;
 			rotation += 10;
 			screwStep = depth + 5;
 			puzzleManager.runElement( this, ( float ) depth
@@ -154,6 +172,18 @@ public class PuzzleScrew extends Screw {
 	public void update( float deltaTime ) {
 		super.update( deltaTime );
 		if ( !removed ) {
+			if ( entity != null
+					&& ( getDetachDirection( ).x != 0 || getDetachDirection( ).y != 0 ) ) {
+				if ( upDownDetach ) {
+					detachDirection.x = ( float ) Math.sin( entity.getAngle( ) );
+					detachDirection.y = Math.signum( detachDirection.y )
+							* ( float ) Math.cos( entity.getAngle( ) );
+				} else {
+					detachDirection.x = Math.signum( detachDirection.y )
+							* ( float ) Math.cos( entity.getAngle( ) );
+					detachDirection.y = ( float ) Math.sin( entity.getAngle( ) );
+				}
+			}
 			puzzleManager.update( deltaTime );
 			sprite.setRotation( rotation );
 			if ( depth != screwStep ) {

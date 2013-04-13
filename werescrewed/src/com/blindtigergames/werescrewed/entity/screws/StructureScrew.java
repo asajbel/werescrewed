@@ -28,6 +28,16 @@ public class StructureScrew extends Screw {
 		super( name, pos, null );
 		this.world = world;
 		this.detachDirection = detachDirection;
+		this.entity = entity;
+		if ( entity != null ) {
+			this.entityAngle = entity.getAngle( ) * Util.RAD_TO_DEG;
+		}
+		if ( detachDirection != null
+				&& Math.abs( detachDirection.y ) > Math.abs( detachDirection.x ) ) {
+			upDownDetach = true;
+		} else {
+			upDownDetach = false;
+		}
 		maxDepth = max;
 		depth = max;
 		rotation = 0;
@@ -38,13 +48,24 @@ public class StructureScrew extends Screw {
 		entity.body.setFixedRotation( false );
 
 		constuctBody( pos );
+		if ( sprite != null )
+			sprite.rotate( ( float ) ( Math.random( ) * 360 ) );
+		body.setTransform( body.getPosition( ), sprite.getRotation( )
+				* Util.DEG_TO_RAD );
 		addStructureJoint( entity );
 	}
 
-	public StructureScrew( String name, Vector2 pos, int max, World world, Vector2 detachDirection) {
+	public StructureScrew( String name, Vector2 pos, int max, World world,
+			Vector2 detachDirection ) {
 		super( name, pos, null );
 		this.world = world;
 		this.detachDirection = detachDirection;
+		if ( detachDirection != null
+				&& Math.abs( detachDirection.y ) > Math.abs( detachDirection.x ) ) {
+			upDownDetach = true;
+		} else {
+			upDownDetach = false;
+		}
 		maxDepth = max;
 		depth = max;
 		rotation = 0;
@@ -54,6 +75,10 @@ public class StructureScrew extends Screw {
 		entityType = EntityType.SCREW;
 
 		constuctBody( pos );
+		if ( sprite != null )
+			sprite.rotate( ( float ) ( Math.random( ) * 360 ) );
+		body.setTransform( body.getPosition( ), sprite.getRotation( )
+				* Util.DEG_TO_RAD );
 	}
 
 	@Override
@@ -63,7 +88,7 @@ public class StructureScrew extends Screw {
 			prevDiff = 0;
 		}
 
-		if ( depth < maxDepth  && depth > 0 ) {
+		if ( depth < maxDepth && depth > 0 ) {
 			diff = startRegion - region;
 			newDiff = diff - prevDiff;
 			if ( newDiff < -10 ) {
@@ -85,7 +110,7 @@ public class StructureScrew extends Screw {
 	public void screwLeft( ) {
 		if ( depth > -10 ) {
 			body.setAngularVelocity( 1 );
-			depth-= 2;
+			depth -= 2;
 			rotation += 10;
 			screwStep = depth + 5;
 		}
@@ -121,7 +146,7 @@ public class StructureScrew extends Screw {
 	public void screwRight( ) {
 		if ( depth < maxDepth && depth > 0 ) {
 			body.setAngularVelocity( -1 );
-			depth+= 2;
+			depth += 2;
 			rotation -= 10;
 			screwStep = depth + 6;
 		}
@@ -131,13 +156,24 @@ public class StructureScrew extends Screw {
 	public void update( float deltaTime ) {
 		super.update( deltaTime );
 		if ( !removed ) {
+			if ( entity != null
+					&& ( getDetachDirection( ).x != 0 || getDetachDirection( ).y != 0 ) ) {
+				if ( upDownDetach ) {
+					detachDirection.x = ( float ) Math.sin( entity.getAngle( ) );
+					detachDirection.y = Math.signum( detachDirection.y )
+							* ( float ) Math.cos( entity.getAngle( ) );
+				} else {
+					detachDirection.x = Math.signum( detachDirection.x )
+							* ( float ) Math.cos( entity.getAngle( ) );
+					detachDirection.y = ( float ) Math.sin( entity.getAngle( ) );
+				}
+			}
 			Vector2 bodyPos = body.getPosition( ).mul( Util.BOX_TO_PIXEL );
 			sprite.setPosition( bodyPos.x - offset.x, bodyPos.y - offset.y );
 			if ( depth <= 0 ) {
 				if ( fallTimeout == 0 ) {
 					for ( Joint j : extraJoints ) {
 						world.destroyJoint( j );
-						System.out.println( "destory joint" );
 					}
 				}
 				fallTimeout--;
@@ -145,13 +181,13 @@ public class StructureScrew extends Screw {
 				fallTimeout = 70;
 			}
 			if ( depth > 0 ) {
-				 sprite.setPosition(
-				 sprite.getX( )
-				 + ( .25f * ( float ) ( ( maxDepth - depth ) * ( Math
-				 .cos( body.getAngle( ) ) ) ) ),
-				 sprite.getY( )
-				 + ( .25f * ( float ) ( ( maxDepth - depth ) * ( Math
-				 .sin( body.getAngle( ) ) ) ) ) );
+				// sprite.setPosition(
+				// sprite.getX( )
+				// + ( .25f * ( float ) ( ( maxDepth - depth ) * ( Math
+				// .cos( body.getAngle( ) ) ) ) ),
+				// sprite.getY( )
+				// + ( .25f * ( float ) ( ( maxDepth - depth ) * ( Math
+				// .sin( body.getAngle( ) ) ) ) ) );
 			} else if ( fallTimeout > 0 ) {
 				sprite.setPosition( sprite.getX( ) - 8f, sprite.getY( ) );
 				Vector2 spritePos = new Vector2( sprite.getX( ), sprite.getY( ) );
