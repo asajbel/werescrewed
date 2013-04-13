@@ -1,11 +1,14 @@
 package com.blindtigergames.werescrewed.entity.screws;
 
+import java.util.ArrayList;
+
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.Joint;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.joints.PulleyJoint;
 import com.badlogic.gdx.physics.box2d.joints.PulleyJointDef;
@@ -26,7 +29,6 @@ import com.blindtigergames.werescrewed.util.Util;
 public class ResurrectScrew extends Screw {
 	private Player deadPlayer;
 	private Vector2 playerOffset;
-	private boolean destroyJoint = false;
 	private boolean removeNextStep = false;
 	private LerpMover playerMover;
 
@@ -45,8 +47,9 @@ public class ResurrectScrew extends Screw {
 		this.depth = 0;
 		this.maxDepth = 50;
 		this.deadPlayer = deadPlayer;
-		this.playerOffset = offset;
+		this.playerOffset = new Vector2 ( offset.x, offset.y );
 		playerMover = lm;
+		extraJoints = new ArrayList< Joint >( );
 		active = true;
 		screwType = ScrewType.SCREW_RESURRECT;
 		entityType = EntityType.SCREW;
@@ -229,13 +232,14 @@ public class ResurrectScrew extends Screw {
 					body.setAngularVelocity( 0 );
 				}
 				if ( deadPlayer.isPlayerDead( ) ) {
-					playerMover.changeEndPos( this.getPositionPixel( ) );
+					Vector2 temp = this.getPositionPixel( ).cpy( );
+					playerMover.changeEndPos( temp );
 					if ( playerOffset.x > 0 ) {
-						deadPlayer.body.setTransform( this.getPositionPixel( ).sub(
-								playerOffset ), 0.0f );
+						playerMover.changeBeginPos( temp.sub(
+								playerOffset ) );
 					} else {
-						deadPlayer.body.setTransform( this.getPositionPixel( ).add(
-								-playerOffset.x, -playerOffset.y ), 0.0f );				
+						playerMover.changeBeginPos( temp.sub(
+								playerOffset ) );
 					}
 					playerMover.moveAnalog( this, ( float ) depth
 							/ ( ( float ) maxDepth ), deadPlayer.body );

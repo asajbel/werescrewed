@@ -39,6 +39,7 @@ public class ProgressManager {
 	private int p1holdTime = 0;
 	private int p2holdTime = 0;
 	private int respawnTime = 100;
+	private boolean checkPointChange = false;
 
 	/**
 	 * 
@@ -76,16 +77,27 @@ public class ProgressManager {
 			for ( int i = 0; i < checkPoints.size( ); i++ ) {
 				if ( checkPoints.get( i ) == checkP ) {
 					currentCheckPoint = i;
+					checkPointChange = true;
 					if ( p1Ghost != null ) {
 						if ( p1Ghost.currentMover( ) instanceof LerpMover ) {
 							LerpMover lm = ( LerpMover ) p1Ghost.currentMover( );
-							lm.changeEndPos( checkPoints.get( i ).getPositionPixel( ) );
+							lm.changeEndPos( checkPoints.get( i )
+									.getPositionPixel( ) );
+							lm.setSpeed( 10f / checkPoints
+									.get( currentCheckPoint )
+									.getPositionPixel( )
+									.sub( player1.getPositionPixel( ) ).len( ) );
 						}
-					} 
+					}
 					if ( p2Ghost != null ) {
 						if ( p2Ghost.currentMover( ) instanceof LerpMover ) {
 							LerpMover lm = ( LerpMover ) p2Ghost.currentMover( );
-							lm.changeEndPos( checkPoints.get( i ).getPositionPixel( ) );
+							lm.changeEndPos( checkPoints.get( i )
+									.getPositionPixel( ) );
+							lm.setSpeed( 10f / checkPoints
+									.get( currentCheckPoint )
+									.getPositionPixel( )
+									.sub( player2.getPositionPixel( ) ).len( ) );
 						}
 					}
 					break;
@@ -140,14 +152,39 @@ public class ProgressManager {
 		}
 		// update the rez screw if it exists
 		if ( resurrectScrew != null ) {
+			if ( checkPointChange ) {
+				while ( resurrectScrew.body.getJointList( ).iterator( )
+						.hasNext( ) ) {
+					world.destroyJoint( resurrectScrew.body.getJointList( )
+							.get( 0 ).joint );
+				}
+				resurrectScrew.addStructureJoint( checkPoints
+						.get( currentCheckPoint ) );
+			}
 			resurrectScrew.update( deltaTime );
 		}
 		if ( extraRezScrew != null ) {
+			if ( checkPointChange ) {
+				while ( extraRezScrew.body.getJointList( ).iterator( )
+						.hasNext( ) ) {
+					world.destroyJoint( extraRezScrew.body.getJointList( ).get(
+							0 ).joint );
+				}
+				extraRezScrew.addStructureJoint( checkPoints
+						.get( currentCheckPoint ) );
+			}
 			extraRezScrew.update( deltaTime );
 		}
 		if ( p1Ghost != null ) {
 			if ( p1Ghost.currentMover( ) instanceof LerpMover ) {
 				LerpMover lm = ( LerpMover ) p1Ghost.currentMover( );
+				lm.changeBeginPos( player1.getPositionPixel( ) );
+				lm.changeEndPos( checkPoints.get( currentCheckPoint )
+						.getPositionPixel( ) );
+				lm.setSpeed( 10f / checkPoints
+						.get( currentCheckPoint )
+						.getPositionPixel( )
+						.sub( player1.getPositionPixel( ) ).len( ) );
 				if ( lm.atEnd( ) ) {
 					spawnAtCheckPoint( player1 );
 					p1Ghost = null;
@@ -159,6 +196,13 @@ public class ProgressManager {
 		if ( p2Ghost != null ) {
 			if ( p2Ghost.currentMover( ) instanceof LerpMover ) {
 				LerpMover lm = ( LerpMover ) p2Ghost.currentMover( );
+				lm.changeBeginPos( player2.getPositionPixel( ) );
+				lm.changeEndPos( checkPoints.get( currentCheckPoint )
+						.getPositionPixel( ) );
+				lm.setSpeed( 10f / checkPoints
+						.get( currentCheckPoint )
+						.getPositionPixel( )
+						.sub( player2.getPositionPixel( ) ).len( ) );
 				if ( lm.atEnd( ) ) {
 					spawnAtCheckPoint( player2 );
 					p2Ghost = null;
@@ -167,6 +211,7 @@ public class ProgressManager {
 				}
 			}
 		}
+		checkPointChange = false;
 	}
 
 	/**
@@ -240,12 +285,14 @@ public class ProgressManager {
 				LerpMover screwMover;
 				// create the ghost of the dead player
 				p1Ghost = new Entity( "player1Ghost",
-						player1.getPositionPixel( ), WereScrewedGame.manager.get(
-								WereScrewedGame.dirHandle.path( ) + "/common/player_r_m.png",
+						player1.getPositionPixel( ),
+						WereScrewedGame.manager.get(
+								WereScrewedGame.dirHandle.path( )
+										+ "/common/player_r_m.png",
 								Texture.class ), null, false );
 				LerpMover ghostMover = new LerpMover(
-						player1.getPositionPixel( ),
-						checkPoints.get( currentCheckPoint ).getPositionPixel( )
+						player1.getPositionPixel( ), checkPoints
+								.get( currentCheckPoint ).getPositionPixel( )
 								.sub( Player.WIDTH / 2.0f, 0.0f ),
 						LinearAxis.DIAGONAL );
 				ghostMover.setSpeed( 10f / checkPoints.get( currentCheckPoint )
@@ -254,18 +301,15 @@ public class ProgressManager {
 				p1Ghost.setMoverAtCurrentState( ghostMover );
 				// get the players direction and offset to the opposite of that
 				if ( player1.body.getLinearVelocity( ).x < 0 ) {
-					screwPos = new Vector2( 200, 150 );
+					screwPos = new Vector2( 270, 150 );
 					screwMover = new LerpMover( player1.getPositionPixel( ),
 							player1.getPositionPixel( ).add( screwPos ),
 							LinearAxis.DIAGONAL );
 				} else {
 					screwPos = new Vector2( -100, 150 );
-					screwMover = new LerpMover(
-							player1.getPositionPixel( ),
-							player1.getPositionPixel( )
-									.add( screwPos )
-									.sub( Player.WIDTH,
-											Player.HEIGHT / 3.0f ),
+					screwMover = new LerpMover( player1.getPositionPixel( ),
+							player1.getPositionPixel( ).add( screwPos )
+									.sub( Player.WIDTH, Player.HEIGHT / 3.0f ),
 							LinearAxis.DIAGONAL );
 				}
 				player1.body.setLinearVelocity( Vector2.Zero );
@@ -281,12 +325,14 @@ public class ProgressManager {
 				LerpMover screwMover;
 				// create the ghost of the dead player
 				p2Ghost = new Entity( "player2Ghost",
-						player2.getPositionPixel( ), WereScrewedGame.manager.get(
-								WereScrewedGame.dirHandle.path( ) + "/common/player_female_idle.png",
+						player2.getPositionPixel( ),
+						WereScrewedGame.manager.get(
+								WereScrewedGame.dirHandle.path( )
+										+ "/common/player_female_idle.png",
 								Texture.class ), null, false );
 				LerpMover ghostMover = new LerpMover(
-						player2.getPositionPixel( ),
-						checkPoints.get( currentCheckPoint ).getPositionPixel( )
+						player2.getPositionPixel( ), checkPoints
+								.get( currentCheckPoint ).getPositionPixel( )
 								.sub( Player.WIDTH / 2.0f, 0.0f ),
 						LinearAxis.DIAGONAL );
 				ghostMover.setSpeed( 10f / checkPoints.get( currentCheckPoint )
@@ -295,18 +341,15 @@ public class ProgressManager {
 				p2Ghost.setMoverAtCurrentState( ghostMover );
 				// get the players direction and offset to the opposite of that
 				if ( player2.body.getLinearVelocity( ).x < 0 ) {
-					screwPos = new Vector2( 200, 150 );
+					screwPos = new Vector2( 270, 150 );
 					screwMover = new LerpMover( player2.getPositionPixel( ),
 							player2.getPositionPixel( ).add( screwPos ),
 							LinearAxis.DIAGONAL );
 				} else {
 					screwPos = new Vector2( -100, 150 );
-					screwMover = new LerpMover(
-							player2.getPositionPixel( ),
-							player2.getPositionPixel( )
-									.add( screwPos )
-									.sub( Player.WIDTH,
-											Player.HEIGHT / 3.0f ),
+					screwMover = new LerpMover( player2.getPositionPixel( ),
+							player2.getPositionPixel( ).add( screwPos )
+									.sub( Player.WIDTH, Player.HEIGHT / 3.0f ),
 							LinearAxis.DIAGONAL );
 				}
 				player2.body.setLinearVelocity( Vector2.Zero );
@@ -337,12 +380,14 @@ public class ProgressManager {
 				LerpMover screwMover;
 				// create the ghost of the dead player
 				p2Ghost = new Entity( "player2Ghost",
-						player2.getPositionPixel( ), WereScrewedGame.manager.get(
-								WereScrewedGame.dirHandle.path( ) + "/common/player_female_idle.png",
+						player2.getPositionPixel( ),
+						WereScrewedGame.manager.get(
+								WereScrewedGame.dirHandle.path( )
+										+ "/common/player_female_idle.png",
 								Texture.class ), null, false );
 				LerpMover ghostMover = new LerpMover(
-						player2.getPositionPixel( ),
-						checkPoints.get( currentCheckPoint ).getPositionPixel( )
+						player2.getPositionPixel( ), checkPoints
+								.get( currentCheckPoint ).getPositionPixel( )
 								.sub( Player.WIDTH / 2.0f, 0.0f ),
 						LinearAxis.DIAGONAL );
 				ghostMover.setSpeed( 10f / checkPoints.get( currentCheckPoint )
@@ -351,18 +396,15 @@ public class ProgressManager {
 				p2Ghost.setMoverAtCurrentState( ghostMover );
 				// get the players direction and offset to the opposite of that
 				if ( player2.body.getLinearVelocity( ).x < 0 ) {
-					screwPos = new Vector2( 200, 150 );
+					screwPos = new Vector2( 270, 150 );
 					screwMover = new LerpMover( player2.getPositionPixel( ),
 							player2.getPositionPixel( ).add( screwPos ),
 							LinearAxis.DIAGONAL );
 				} else {
 					screwPos = new Vector2( -100, 150 );
-					screwMover = new LerpMover(
-							player2.getPositionPixel( ),
-							player2.getPositionPixel( )
-									.add( screwPos )
-									.sub( Player.WIDTH,
-											Player.HEIGHT / 3.0f ),
+					screwMover = new LerpMover( player2.getPositionPixel( ),
+							player2.getPositionPixel( ).add( screwPos )
+									.sub( Player.WIDTH, Player.HEIGHT / 3.0f ),
 							LinearAxis.DIAGONAL );
 				}
 				player2.body.setLinearVelocity( Vector2.Zero );
@@ -378,12 +420,14 @@ public class ProgressManager {
 				LerpMover screwMover;
 				// create the ghost of the dead player
 				p1Ghost = new Entity( "player1Ghost",
-						player2.getPositionPixel( ), WereScrewedGame.manager.get(
-								WereScrewedGame.dirHandle.path( ) + "/common/player_r_m.png",
+						player2.getPositionPixel( ),
+						WereScrewedGame.manager.get(
+								WereScrewedGame.dirHandle.path( )
+										+ "/common/player_r_m.png",
 								Texture.class ), null, false );
 				LerpMover ghostMover = new LerpMover(
-						player1.getPositionPixel( ),
-						checkPoints.get( currentCheckPoint ).getPositionPixel( )
+						player1.getPositionPixel( ), checkPoints
+								.get( currentCheckPoint ).getPositionPixel( )
 								.sub( Player.WIDTH / 2.0f, 0.0f ),
 						LinearAxis.DIAGONAL );
 				ghostMover.setSpeed( 10f / checkPoints.get( currentCheckPoint )
@@ -392,18 +436,15 @@ public class ProgressManager {
 				p1Ghost.setMoverAtCurrentState( ghostMover );
 				// get the players direction and offset to the opposite of that
 				if ( player1.body.getLinearVelocity( ).x < 0 ) {
-					screwPos = new Vector2( 200, 150 );
+					screwPos = new Vector2( 270, 150 );
 					screwMover = new LerpMover( player1.getPositionPixel( ),
 							player1.getPositionPixel( ).add( screwPos ),
 							LinearAxis.DIAGONAL );
 				} else {
 					screwPos = new Vector2( -100, 150 );
-					screwMover = new LerpMover(
-							player1.getPositionPixel( ),
-							player1.getPositionPixel( )
-									.add( screwPos )
-									.sub( Player.WIDTH,
-											Player.HEIGHT / 3.0f ),
+					screwMover = new LerpMover( player1.getPositionPixel( ),
+							player1.getPositionPixel( ).add( screwPos )
+									.sub( Player.WIDTH, Player.HEIGHT / 3.0f ),
 							LinearAxis.DIAGONAL );
 				}
 				player1.body.setLinearVelocity( Vector2.Zero );
@@ -466,7 +507,8 @@ public class ProgressManager {
 		player.body.setTransform(
 				checkPoints.get( currentCheckPoint ).body.getPosition( ), 0.0f );
 		player.body.setLinearVelocity( Vector2.Zero );
-		player.getEffect("revive").restartAt( player.getPositionPixel().add(60,-30) );
+		player.getEffect( "revive" ).restartAt(
+				player.getPositionPixel( ).add( 60, -30 ) );
 	}
 
 	/**

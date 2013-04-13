@@ -246,9 +246,9 @@ public class Player extends Entity {
 		if ( Gdx.input.isKeyPressed( Keys.G ) )
 			Gdx.app.log( "steamCollide: " + steamCollide, "steamDone: "
 					+ steamDone );
-		// if ( name.equals( "player1" ) ) {
-		//
-		// }
+//		if ( name.equals( "player2" ) ) {
+//			Gdx.app.log( "player update", name + " is " + playerState );
+//		}
 		if ( kinematicTransform ) {
 			// setPlatformTransform( platformOffset );
 			kinematicTransform = false;
@@ -315,131 +315,131 @@ public class Player extends Entity {
 					runTimeout--;
 				}
 			}
-			// switch between states
-			switch ( playerState ) {
-			case Dead:
-				break;
-			case JumpingOffScrew:
-				resetJumpOffScrew( );
-				if ( playerState == PlayerState.JumpingOffScrew ) {
-					handleJumpOffScrew( );
+		}
+		// switch between states
+		switch ( playerState ) {
+		case Dead:
+			break;
+		case JumpingOffScrew:
+			resetJumpOffScrew( );
+			if ( playerState == PlayerState.JumpingOffScrew ) {
+				handleJumpOffScrew( );
+			}
+			break;
+		case HeadStand:
+			if ( hitSolidObject ) {
+				if ( topPlayer ) {
+					removePlayerToPlayer( );
 				}
-				break;
-			case HeadStand:
-				if ( hitSolidObject ) {
-					if ( topPlayer ) {
-						removePlayerToPlayer( );
-					}
-				}
-				break;
-			case Screwing:
-				if ( knockedOff ) {
-					detachScrewImpulse( );
-					removePlayerToScrew( );
-					knockedOff = false;
-				} else if ( mover != null ) {
-					LerpMover lm = ( LerpMover ) mover;
-					if ( !lm.atEnd( ) ) {
-						lm.move( deltaTime, body );
-					} else {
-						body.setTransform(
-								new Vector2( currentScrew.getPosition( ).x
-										- ( WIDTH / 2.0f ) * Util.PIXEL_TO_BOX,
-										currentScrew.getPosition( ).y
-												- ( HEIGHT / 2.0f )
-												* Util.PIXEL_TO_BOX ), 0.0f );
-						RevoluteJointDef revoluteJointDef = new RevoluteJointDef( );
-						revoluteJointDef.initialize( body, currentScrew.body,
-								currentScrew.getPosition( ) );
-						revoluteJointDef.enableMotor = false;
-						playerJoint = ( RevoluteJoint ) world
-								.createJoint( revoluteJointDef );
-						playerState = PlayerState.Screwing;
-						mover = null;
-					}
+			}
+			break;
+		case Screwing:
+			if ( knockedOff ) {
+				detachScrewImpulse( );
+				removePlayerToScrew( );
+				knockedOff = false;
+			} else if ( mover != null ) {
+				LerpMover lm = ( LerpMover ) mover;
+				if ( !lm.atEnd( ) ) {
+					lm.move( deltaTime, body );
 				} else {
-					// if resurrect screw and its not active remove the player
-					// joint
-					if ( currentScrew.getScrewType( ) == ScrewType.SCREW_RESURRECT ) {
-						ResurrectScrew rezScrew = ( ResurrectScrew ) currentScrew;
-						if ( rezScrew.deleteQueue( ) ) {
-							if ( !detachScrewImpulse( ) ) {
-								jump( );
-							}
-							removePlayerToScrew( );
-						}
-					}
-				}
-				break;
-			default:
-				break;
-			}
-			// if the player is falling
-			if ( body.getLinearVelocity( ).y < -MIN_VELOCITY * 4f
-					&& playerState != PlayerState.Screwing
-					&& playerState != PlayerState.JumpingOffScrew
-					&& platformBody == null && !isDead ) {
-				switch ( playerState ) {
-				case HeadStand:
-					// don't set the player state use the extra state
-					if ( !topPlayer ) {
-						extraState = ConcurrentState.ExtraFalling;
-					}
-					runTimeout = 0;
-					break;
-				default:
-					playerState = PlayerState.Falling;
-					runTimeout = 0;
-					break;
-				}
-				setGrounded( false );
-			} else if ( playerState == PlayerState.Falling
-					&& !isHeadStandPossible( ) ) {
-				// if the player is falling but y velocity is too slow
-				// the the player hit something
-				playerState = PlayerState.Standing;
-				setGrounded( true );
-			} else if ( extraState == ConcurrentState.ExtraFalling ) {
-				// if the player is falling but y velocity is too slow
-				// the the player hit something
-				extraState = ConcurrentState.Ignore;
-				setGrounded( true );
-			}
-			// check if the head stand requirements are met
-			if ( otherPlayer != null && playerState != PlayerState.HeadStand ) {
-				if ( isHeadStandPossible( ) ) {
-					setHeadStand( );
-					otherPlayer.setHeadStand( );
-				} else if ( !otherPlayer.isHeadStandPossible( ) ) {
-					otherPlayer.hitPlayer( null );
-					hitPlayer( null );
+					body.setTransform(
+							new Vector2( currentScrew.getPosition( ).x
+									- ( WIDTH / 2.0f ) * Util.PIXEL_TO_BOX,
+									currentScrew.getPosition( ).y
+											- ( HEIGHT / 2.0f )
+											* Util.PIXEL_TO_BOX ), 0.0f );
+					RevoluteJointDef revoluteJointDef = new RevoluteJointDef( );
+					revoluteJointDef.initialize( body, currentScrew.body,
+							currentScrew.getPosition( ) );
+					revoluteJointDef.enableMotor = false;
+					playerJoint = ( RevoluteJoint ) world
+							.createJoint( revoluteJointDef );
+					playerState = PlayerState.Screwing;
+					mover = null;
 				}
 			} else {
-				if ( headStandTimeout > 0 ) {
-					headStandTimeout--;
+				// if resurrect screw and its not active remove the player
+				// joint
+				if ( currentScrew.getScrewType( ) == ScrewType.SCREW_RESURRECT ) {
+					ResurrectScrew rezScrew = ( ResurrectScrew ) currentScrew;
+					if ( rezScrew.deleteQueue( ) ) {
+						if ( !detachScrewImpulse( ) ) {
+							jump( );
+						}
+						removePlayerToScrew( );
+					}
 				}
 			}
-			// check for crushing stuff
-			if ( ( ( topCrush && botCrush ) || ( leftCrush && rightCrush ) )
-					&& ( playerState != PlayerState.JumpingOffScrew && playerState != PlayerState.Screwing ) ) {
-				this.killPlayer( );
-				// Gdx.app.log( "\nright: ", "" + rightCrush );
-				// Gdx.app.log( "left: ", "" + leftCrush );
-				// Gdx.app.log( "top: ", "" + topCrush );
-				// Gdx.app.log( "bottom: ", "" + botCrush );
-			} else if ( steamCollide ) {
-				if ( !steamDone ) {
-					steamResolution( );
-					steamDone = true;
+			break;
+		default:
+			break;
+		}
+		// if the player is falling
+		if ( body.getLinearVelocity( ).y < -MIN_VELOCITY * 4f
+				&& playerState != PlayerState.Screwing
+				&& playerState != PlayerState.JumpingOffScrew
+				&& platformBody == null && !isDead ) {
+			switch ( playerState ) {
+			case HeadStand:
+				// don't set the player state use the extra state
+				if ( !topPlayer ) {
+					extraState = ConcurrentState.ExtraFalling;
 				}
-			} else
-				steamDone = false;
-			terminalVelocityCheck( 15.0f );
-			// the jump doesn't work the first time on dynamic bodies so do it
-			// twice
-			if ( playerState == PlayerState.Jumping && isGrounded( ) ) {
-				jump( );
+				runTimeout = 0;
+				break;
+			default:
+				playerState = PlayerState.Falling;
+				runTimeout = 0;
+				break;
 			}
+			setGrounded( false );
+		} else if ( playerState == PlayerState.Falling
+				&& !isHeadStandPossible( ) ) {
+			// if the player is falling but y velocity is too slow
+			// the the player hit something
+			playerState = PlayerState.Standing;
+			setGrounded( true );
+		} else if ( extraState == ConcurrentState.ExtraFalling ) {
+			// if the player is falling but y velocity is too slow
+			// the the player hit something
+			extraState = ConcurrentState.Ignore;
+			setGrounded( true );
+		}
+		// check if the head stand requirements are met
+		if ( otherPlayer != null && playerState != PlayerState.HeadStand ) {
+			if ( isHeadStandPossible( ) ) {
+				setHeadStand( );
+				otherPlayer.setHeadStand( );
+			} else if ( !otherPlayer.isHeadStandPossible( ) ) {
+				otherPlayer.hitPlayer( null );
+				hitPlayer( null );
+			}
+		} else {
+			if ( headStandTimeout > 0 ) {
+				headStandTimeout--;
+			}
+		}
+		// check for crushing stuff
+		if ( ( ( topCrush && botCrush ) || ( leftCrush && rightCrush ) )
+				&& ( playerState != PlayerState.JumpingOffScrew && playerState != PlayerState.Screwing ) ) {
+			this.killPlayer( );
+			// Gdx.app.log( "\nright: ", "" + rightCrush );
+			// Gdx.app.log( "left: ", "" + leftCrush );
+			// Gdx.app.log( "top: ", "" + topCrush );
+			// Gdx.app.log( "bottom: ", "" + botCrush );
+		} else if ( steamCollide ) {
+			if ( !steamDone ) {
+				steamResolution( );
+				steamDone = true;
+			}
+		} else
+			steamDone = false;
+		terminalVelocityCheck( 15.0f );
+		// the jump doesn't work the first time on dynamic bodies so do it
+		// twice
+		if ( playerState == PlayerState.Jumping && isGrounded( ) ) {
+			jump( );
 		}
 
 		prevPlayerDir = playerDirection;
@@ -774,17 +774,6 @@ public class Player extends Entity {
 			}
 			this.grounded = newVal;
 		}
-		if ( screwJumpTimeout == 0 && !world.isLocked( ) ) {
-			Filter filter = new Filter( );
-			for ( Fixture f : body.getFixtureList( ) ) {
-				filter = f.getFilterData( );
-				// move player back to original category
-				filter.categoryBits = Util.CATEGORY_PLAYER;
-				// player now collides with everything
-				filter.maskBits = Util.CATEGORY_EVERYTHING;
-				f.setFilterData( filter );
-			}
-		}
 	}
 
 	/**
@@ -931,29 +920,29 @@ public class Player extends Entity {
 			}
 			playerState = PlayerState.Screwing;
 			currentScrew.setPlayerAttached( true );
-			platformBody = null;
-			if ( currentScrew.getScrewType( ) == ScrewType.SCREW_STRUCTURAL ) {
-				for ( JointEdge je : currentScrew.body.getJointList( ) ) {
-					// if this body is a platform but not a skeleton save the
-					// instance
-					if ( je.joint.getBodyA( ).getUserData( ) instanceof Entity ) {
-						Entity p = ( Entity ) je.joint.getBodyA( )
-								.getUserData( );
-						if ( p.getEntityType( ) == EntityType.PLATFORM ) {
-							platformBody = je.joint.getBodyA( );
-						}
-					}
-					// if this body is a platform but not a skeleton save the
-					// instance
-					if ( je.joint.getBodyB( ).getUserData( ) instanceof Entity ) {
-						Entity p = ( Entity ) je.joint.getBodyB( )
-								.getUserData( );
-						if ( p.getEntityType( ) == EntityType.PLATFORM ) {
-							platformBody = je.joint.getBodyB( );
-						}
-					}
-				}
-			}
+//			platformBody = null;
+//			if ( currentScrew.getScrewType( ) == ScrewType.SCREW_STRUCTURAL ) {
+//				for ( JointEdge je : currentScrew.body.getJointList( ) ) {
+//					// if this body is a platform but not a skeleton save the
+//					// instance
+//					if ( je.joint.getBodyA( ).getUserData( ) instanceof Entity ) {
+//						Entity p = ( Entity ) je.joint.getBodyA( )
+//								.getUserData( );
+//						if ( p.getEntityType( ) == EntityType.PLATFORM ) {
+//							platformBody = je.joint.getBodyA( );
+//						}
+//					}
+//					// if this body is a platform but not a skeleton save the
+//					// instance
+//					if ( je.joint.getBodyB( ).getUserData( ) instanceof Entity ) {
+//						Entity p = ( Entity ) je.joint.getBodyB( )
+//								.getUserData( );
+//						if ( p.getEntityType( ) == EntityType.PLATFORM ) {
+//							platformBody = je.joint.getBodyB( );
+//						}
+//					}
+//				}
+//			}
 			setGrounded( false );
 			if ( Metrics.activated ) {
 				Metrics.addPlayerAttachToScrewPosition( this.getPositionPixel( ) );
@@ -1129,7 +1118,7 @@ public class Player extends Entity {
 		} else if ( screwJumpTimeout == 0 ) {
 			if ( isGrounded( ) ) {
 				playerState = PlayerState.Standing;
-			} else if ( body.getLinearVelocity( ).y > 0 ) {
+			} else if ( body.getLinearVelocity( ).y > MIN_VELOCITY ) {
 				playerState = PlayerState.Jumping;
 			} else {
 				playerState = PlayerState.Falling;

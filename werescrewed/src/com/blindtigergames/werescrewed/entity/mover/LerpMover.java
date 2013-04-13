@@ -208,7 +208,6 @@ public class LerpMover implements IMover {
 	 */
 	public void changeEndPos( Vector2 endPos ) {
 		this.endPoint = endPos.cpy( );
-		alpha = 0;
 	}
 
 	/**
@@ -216,7 +215,6 @@ public class LerpMover implements IMover {
 	 */
 	public void changeBeginPos( Vector2 beginPos ) {
 		this.beginningPoint = beginPos.cpy( );
-		alpha = 0;
 	}
 
 	/**
