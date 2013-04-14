@@ -1170,7 +1170,6 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 				rootSkeleton.addMover( new RockingMover( -0.1f, 0.5f ),
 						RobotState.IDLE );
 				rootSkeleton.setActive( true );
-				cam.turnOffZoom( );
 			}
 			endgameCounter += deltaTime;
 			cam.camera.zoom += 0.015f;

@@ -11,7 +11,7 @@ import com.badlogic.gdx.math.Vector2;
 /*******************************************************************************
  * Stores a list of all current anchors in the world
  * 
- * @author Edward Ramirez
+ * @author Edward Ramirez and Dan Malear
  ******************************************************************************/
 public class AnchorList {
 
@@ -30,7 +30,6 @@ public class AnchorList {
 	private Vector2 midpoint2;
 	private Vector2 prevMidpoint;
 	private Vector2 midpointVelocity;
-	private Vector2 specialMidpoint;
 	private static AnchorList instance;
 	private ShapeRenderer shapeRenderer;
 	private OrthographicCamera camera;
@@ -47,7 +46,6 @@ public class AnchorList {
 		midpoint2 = new Vector2( 0f, 0f );
 		prevMidpoint = new Vector2( 0f, 0f );
 		midpointVelocity = new Vector2( 0f, 0f );
-		specialMidpoint = new Vector2( 0f, 0f );
 		shapeRenderer = new ShapeRenderer( );
 		this.camera = camera;
 	}
@@ -106,18 +104,14 @@ public class AnchorList {
 						drawRect.height );
 				shapeRenderer.end( );
 
-				// renders a cross through the square if the current anchor is
-				// special (i.e. the player)
-				if ( curAnchor.special ) {
+				// renders a cross through the square
 
-					shapeRenderer.begin( ShapeType.Line );
-					shapeRenderer.line( drawRect.x, drawRect.y, drawRect.x
-							+ drawRect.width, drawRect.y + drawRect.height );
-					shapeRenderer.line( drawRect.x, drawRect.y
-							+ drawRect.height, drawRect.x + drawRect.width,
-							drawRect.y );
-					shapeRenderer.end( );
-				}
+				shapeRenderer.begin( ShapeType.Line );
+				shapeRenderer.line( drawRect.x, drawRect.y, drawRect.x
+						+ drawRect.width, drawRect.y + drawRect.height );
+				shapeRenderer.line( drawRect.x, drawRect.y + drawRect.height,
+						drawRect.x + drawRect.width, drawRect.y );
+				shapeRenderer.end( );
 			}
 		}
 	}
@@ -205,30 +199,6 @@ public class AnchorList {
 		return anchorList.get( id ).buffer;
 	}
 
-	public Vector2 getSpecialMidpoint( ) {
-		return specialMidpoint;
-	}
-
-	public float specialDistance( ) {
-		if ( anchorList.size( ) < 2 )
-			return 0.0f;
-
-		boolean foundFirst = false;
-		for ( Anchor curAnchor : anchorList ) {
-			if ( curAnchor.special ) {
-				if ( !foundFirst ) {
-					foundFirst = true;
-					specialMidpoint.x = curAnchor.position.x;
-					specialMidpoint.y = curAnchor.position.y;
-				} else {
-					specialMidpoint.sub( curAnchor.position );
-				}
-			}
-		}
-
-		return specialMidpoint.len( );
-	}
-
 	/**
 	 * Get longest x and y distance between anchors plus their buffer widths and
 	 * heights respectively
@@ -242,26 +212,23 @@ public class AnchorList {
 		int numActiveAnchors = 0;
 
 		for ( Anchor anchor : anchorList ) {
-			if ( anchor.activated || anchor.special ) {
+			if ( anchor.activated ) {
 				numActiveAnchors++;
 			}
 		}
 
 		if ( numActiveAnchors > 1 ) {
-			// Start with players
 			AnchorPair pair = new AnchorPair( );
 			int j = 0;
 			for ( int i = 0; i < anchorList.size( ); i++ ) {
-				if ( anchorList.get( i ).activated
-						|| anchorList.get( i ).special ) {
+				if ( anchorList.get( i ).activated ) {
 					pair.first = anchorList.get( i );
 					j = i;
 					break;
 				}
 			}
 			for ( int i = j + 1; i < anchorList.size( ); i++ ) {
-				if ( anchorList.get( i ).activated
-						|| anchorList.get( i ).special ) {
+				if ( anchorList.get( i ).activated ) {
 					pair.second = anchorList.get( i );
 					break;
 				}
@@ -275,7 +242,7 @@ public class AnchorList {
 			// For each anchor
 			for ( Anchor curAnchor : anchorList ) {
 				// Making sure its active
-				if ( curAnchor.activated || curAnchor.special ) {
+				if ( curAnchor.activated ) {
 					// If the current anchor (minus the buffer) is to the left
 					// of
 					// the one tracked, replace it
@@ -301,7 +268,21 @@ public class AnchorList {
 			}
 
 			// Find longest y distance //
-			pair = getSpecialPair( );
+			pair = new AnchorPair( );
+			j = 0;
+			for ( int i = 0; i < anchorList.size( ); i++ ) {
+				if ( anchorList.get( i ).activated ) {
+					pair.first = anchorList.get( i );
+					j = i;
+					break;
+				}
+			}
+			for ( int i = j + 1; i < anchorList.size( ); i++ ) {
+				if ( anchorList.get( i ).activated ) {
+					pair.second = anchorList.get( i );
+					break;
+				}
+			}
 
 			if ( pair.first.position.y > pair.second.position.y )
 				pair.swap( );
@@ -311,7 +292,7 @@ public class AnchorList {
 			// For each anchor
 			for ( Anchor curAnchor : anchorList ) {
 				// Making sure its active
-				if ( curAnchor.activated || curAnchor.special ) {
+				if ( curAnchor.activated ) {
 					// If the current anchor (minus the buffer) is below the one
 					// tracked, replace it
 					if ( curAnchor.position.y - curAnchor.buffer.y < pair.first.position.y
@@ -360,30 +341,6 @@ public class AnchorList {
 
 	public Vector2 getMidpointVelocity( ) {
 		return midpointVelocity;
-	}
-
-	protected AnchorPair getSpecialPair( ) {
-		AnchorPair returnPair = new AnchorPair( );
-		returnPair.first = null;
-		returnPair.second = null;
-		boolean foundFirst = false;
-		// for now, just the first 2 special anchors (the players)
-		for ( Anchor curAnchor : anchorList ) {
-			if ( curAnchor.special ) {
-				if ( !foundFirst ) {
-					returnPair.first = curAnchor;
-					foundFirst = true;
-				} else {
-					returnPair.second = curAnchor;
-					break;
-				}
-			}
-		}
-
-		if ( returnPair.first != null && returnPair.second != null )
-			return returnPair;
-		else
-			return null;
 	}
 
 	private void setMidpoint( ) {
