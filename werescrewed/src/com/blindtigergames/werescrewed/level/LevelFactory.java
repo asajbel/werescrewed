@@ -1083,13 +1083,6 @@ public class LevelFactory {
 		entities.put( item.name, et );
 		parent.addEventTrigger( et );
 	}
-	
-	public void constructAnchor(Item item) {
-		float width = item.element.getFloat( "Width" );
-		float height = item.element.getFloat( "Height" );
-		Vector2 pos = item.pos;
-		
-	}
 
 	/**
 	 * Used to get path points from an item from the XML file
