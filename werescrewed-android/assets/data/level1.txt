@@ -10,8 +10,6 @@
 /common/player_female_idle.png
 /common/player_r_m.png
 /common/animations/screwInterface.png
-/common/screw.png
-/common/screw1.png
 /common/test01.png
 /common/cletter.png
 /common/parallax_layer1_0.png
