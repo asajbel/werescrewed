@@ -13,6 +13,8 @@ import com.blindtigergames.werescrewed.util.Util;
 public class Anchor {
 	protected Vector2 position;
 	protected Vector2 positionBox;
+	protected Vector2 offset;
+	protected Vector2 offsetBox;
 	protected Vector2 buffer;
 	protected boolean activated;
 	// In steps
@@ -27,7 +29,18 @@ public class Anchor {
 	 * 
 	 */
 	public Anchor( Vector2 position ) {
-		this( position, DEFAULT_BUFFER );
+		this( position, new Vector2( 0, 0 ), DEFAULT_BUFFER );
+	}
+
+	/**
+	 * Create a new Anchor
+	 * 
+	 * @param position
+	 *            starting position of anchor (in pixels)
+	 * 
+	 */
+	public Anchor( Vector2 position, Vector2 offset ) {
+		this( position, offset, DEFAULT_BUFFER );
 	}
 
 	/**
@@ -38,10 +51,14 @@ public class Anchor {
 	 * @param buffer
 	 *            buffer around anchor which must always stay within view
 	 */
-	public Anchor( Vector2 position, Vector2 buffer ) {
-		this.position = position;
+	public Anchor( Vector2 position, Vector2 offset, Vector2 buffer ) {
+		this.offset = offset;
+		this.position = position.add( this.offset );
 		this.positionBox = new Vector2( position.x * Util.PIXEL_TO_BOX,
 				position.y * Util.PIXEL_TO_BOX );
+		this.offsetBox = new Vector2( offset.x * Util.PIXEL_TO_BOX, offset.y
+				* Util.PIXEL_TO_BOX );
+		this.positionBox = this.positionBox.add( this.offsetBox );
 		this.buffer = buffer;
 		this.activated = false;
 		this.timer = -1;
@@ -64,10 +81,10 @@ public class Anchor {
 	 *            in pixels
 	 */
 	public void setPosition( Vector2 newPosition ) {
-		this.position.x = newPosition.x;
-		this.position.y = newPosition.y;
-		this.positionBox.x = newPosition.x * Util.PIXEL_TO_BOX;
-		this.positionBox.y = newPosition.y * Util.PIXEL_TO_BOX;
+		this.position.x = newPosition.x + this.offset.x;
+		this.position.y = newPosition.y + this.offset.y;
+		this.positionBox.x = newPosition.x * Util.PIXEL_TO_BOX + this.offsetBox.x;
+		this.positionBox.y = newPosition.y * Util.PIXEL_TO_BOX + this.offsetBox.y;
 	}
 
 	/**
@@ -77,10 +94,10 @@ public class Anchor {
 	 *            in meters
 	 */
 	public void setPositionBox( Vector2 newPosition ) {
-		this.positionBox.x = newPosition.x;
-		this.positionBox.y = newPosition.y;
-		this.position.x = newPosition.x * Util.BOX_TO_PIXEL;
-		this.position.y = newPosition.y * Util.BOX_TO_PIXEL;
+		this.positionBox.x = newPosition.x + this.offsetBox.x;
+		this.positionBox.y = newPosition.y + this.offsetBox.y;
+		this.position.x = newPosition.x * Util.BOX_TO_PIXEL + this.offset.x;
+		this.position.y = newPosition.y * Util.BOX_TO_PIXEL + this.offset.y;
 	}
 
 	/**
@@ -125,9 +142,21 @@ public class Anchor {
 	/**
 	 * Reset the timer.
 	 * 
-	 * @param timer New time
+	 * @param timer
+	 *            New time
 	 */
 	public void setTimer( int timer ) {
 		this.timer = timer;
+	}
+
+	/**
+	 * Set the offset from the center of parent object
+	 * 
+	 * @param x
+	 * @param y
+	 */
+	public void setOffset( float x, float y ) {
+		this.offset.x = x;
+		this.offset.y = y;
 	}
 }
