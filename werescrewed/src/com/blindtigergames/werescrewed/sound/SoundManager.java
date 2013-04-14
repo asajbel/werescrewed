@@ -1,5 +1,6 @@
 package com.blindtigergames.werescrewed.sound;
 
+import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.HashMap;
 
@@ -26,16 +27,16 @@ public class SoundManager implements I_Updateable {
 	}
 	
 	public EnumMap<SoundType, Float> volume;
-	public EnumMap<SoundType, HashMap<String, SoundRef>> refs;
+	public EnumMap<SoundType, ArrayList<SoundRef>> refs;
 	
 	protected Camera camera;
 	
 	public SoundManager( ) {
 		volume = new EnumMap<SoundType, Float>(SoundType.class);
-		refs = new EnumMap<SoundType, HashMap<String, SoundRef>>(SoundType.class);
+		refs = new EnumMap<SoundType, ArrayList<SoundRef>>(SoundType.class);
 		for (SoundType type: SoundType.values( )){
 			volume.put( type, 1.0f );
-			refs.put( type, new HashMap<String, SoundRef>() );
+			refs.put( type, new ArrayList<SoundRef>() );
 		}
 		camera = null;
 	}
@@ -44,7 +45,9 @@ public class SoundManager implements I_Updateable {
 	}
 	
 	public SoundRef getSound(SoundType t, String n){
-		return new SoundRef(this, t, n);
+		SoundRef out = new SoundRef(this, t, n);
+		refs.get( t ).add( out );
+		return out;
 	}
 	
 	public class SoundRef implements I_Updateable, Disposable {
