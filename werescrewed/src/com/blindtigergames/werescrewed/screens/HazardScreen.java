@@ -1,5 +1,7 @@
 package com.blindtigergames.werescrewed.screens;
 
+import java.util.ArrayList;
+
 import aurelienribon.tweenengine.Tween;
 
 import com.badlogic.gdx.Application;
@@ -30,6 +32,7 @@ import com.blindtigergames.werescrewed.entity.hazard.Fire;
 import com.blindtigergames.werescrewed.entity.hazard.Hazard;
 import com.blindtigergames.werescrewed.entity.hazard.Spikes;
 import com.blindtigergames.werescrewed.entity.hazard.builders.HazardBuilder;
+import com.blindtigergames.werescrewed.entity.mover.RotateTweenMover;
 import com.blindtigergames.werescrewed.entity.particles.Steam;
 import com.blindtigergames.werescrewed.entity.platforms.Platform;
 import com.blindtigergames.werescrewed.entity.platforms.TiledPlatform;
@@ -39,6 +42,7 @@ import com.blindtigergames.werescrewed.entity.tween.EntityAccessor;
 import com.blindtigergames.werescrewed.entity.tween.PlatformAccessor;
 import com.blindtigergames.werescrewed.eventTrigger.EventTrigger;
 import com.blindtigergames.werescrewed.graphics.SpriteBatch;
+import com.blindtigergames.werescrewed.entity.platforms.Pipe;
 import com.blindtigergames.werescrewed.player.Player;
 import com.blindtigergames.werescrewed.util.Util;
 
@@ -66,6 +70,7 @@ public class HazardScreen implements com.badlogic.gdx.Screen {
 	private boolean debug = true;
 	private boolean debugTest = true;
 	private Steam testSteam;
+	private Pipe testPipe;
 
 	public HazardScreen( ) {
 		batch = new SpriteBatch( );
@@ -86,6 +91,19 @@ public class HazardScreen implements com.badlogic.gdx.Screen {
 		player2 = new PlayerBuilder( ).name( "player2" ).definition( "red_female" ).world( world )
 				.position( 1900f, 100.0f ).buildPlayer( );
 
+		ArrayList < Vector2 > pipePath = new ArrayList < Vector2 >();
+		pipePath.add( new Vector2 (2, 0) );
+		pipePath.add( new Vector2 (0, -4) );
+		pipePath.add( new Vector2 (3, 0) );
+	
+		
+		testPipe = new Pipe("pipe", new Vector2 ( 800f, 0f ), pipePath, null, world);
+		skeleton.addKinematicPlatform( testPipe );
+		
+		RotateTweenMover rtm1 = new RotateTweenMover( testPipe, 10f,
+				Util.PI, 2f, true );
+		testPipe.setMoverAtCurrentState( rtm1 );
+		
 		initTiledPlatforms( );
 		initHazards( );
 		initCheckPoints( );
@@ -292,6 +310,7 @@ public class HazardScreen implements com.badlogic.gdx.Screen {
 		testSteam.draw( batch, deltaTime );
 		player1.draw( batch, deltaTime );
 		player2.draw( batch, deltaTime );
+		testPipe.draw( batch );
 
 		batch.end( );
 

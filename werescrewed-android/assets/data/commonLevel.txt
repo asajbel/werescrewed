@@ -37,6 +37,12 @@
 /common/gear.png
 /common/sawblade.png
 /common/redScrewDriver.png
+/common/pipe/pipeEndD.png
+/common/pipe/pipeEndL.png
+/common/pipe/pipeEndR.png
+/common/pipe/pipeEndU.png
+/common/pipe/pipeLR.png
+/common/pipe/pipeUD.png
 
 ##texture atlas
 ##please us texture packer to put all common textures in this pack file!
