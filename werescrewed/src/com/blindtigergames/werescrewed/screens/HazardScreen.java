@@ -8,7 +8,6 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
-import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.blindtigergames.werescrewed.camera.Anchor;
@@ -22,18 +21,24 @@ import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.Skeleton;
 import com.blindtigergames.werescrewed.entity.action.AnchorActivateAction;
 import com.blindtigergames.werescrewed.entity.action.AnchorDeactivateAction;
+import com.blindtigergames.werescrewed.entity.action.RemoveEntityAction;
 import com.blindtigergames.werescrewed.entity.builders.EventTriggerBuilder;
 import com.blindtigergames.werescrewed.entity.builders.PlatformBuilder;
 import com.blindtigergames.werescrewed.entity.builders.PlayerBuilder;
+import com.blindtigergames.werescrewed.entity.hazard.Electricity;
+import com.blindtigergames.werescrewed.entity.hazard.Fire;
+import com.blindtigergames.werescrewed.entity.hazard.Hazard;
+import com.blindtigergames.werescrewed.entity.hazard.Spikes;
+import com.blindtigergames.werescrewed.entity.hazard.builders.HazardBuilder;
 import com.blindtigergames.werescrewed.entity.particles.Steam;
 import com.blindtigergames.werescrewed.entity.platforms.Platform;
 import com.blindtigergames.werescrewed.entity.platforms.TiledPlatform;
+import com.blindtigergames.werescrewed.entity.screws.PuzzleScrew;
 import com.blindtigergames.werescrewed.entity.screws.StructureScrew;
 import com.blindtigergames.werescrewed.entity.tween.EntityAccessor;
 import com.blindtigergames.werescrewed.entity.tween.PlatformAccessor;
 import com.blindtigergames.werescrewed.eventTrigger.EventTrigger;
-import com.blindtigergames.werescrewed.entity.hazard.*;
-import com.blindtigergames.werescrewed.entity.hazard.builders.*;
+import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 import com.blindtigergames.werescrewed.player.Player;
 import com.blindtigergames.werescrewed.util.Util;
 
@@ -86,7 +91,12 @@ public class HazardScreen implements com.badlogic.gdx.Screen {
 		initCheckPoints( );
 		initCrushTest( );
 		initParticleEffect( );
-
+		initDeathBarrier( );
+		
+		PuzzleScrew pscrew = new PuzzleScrew( "pscrew1", new Vector2( 1550f, 200f), 100, skeleton,
+				world, 0, false, Vector2.Zero);
+		skeleton.addScrewForDraw( pscrew );
+		
 		rootSkeleton.addSkeleton( skeleton );
 		debugRenderer = new SBox2DDebugRenderer( Util.BOX_TO_PIXEL );
 		debugRenderer.setDrawJoints( false );
@@ -118,6 +128,20 @@ public class HazardScreen implements com.badlogic.gdx.Screen {
 		skeleton.addKinematicPlatform( ground );
 
 	}
+	
+	private void initDeathBarrier( ){
+		//death barrier
+		EventTriggerBuilder etb = new EventTriggerBuilder( world );
+		EventTrigger removeTrigger = etb.name( "removeEntity" ).rectangle( )
+				.width( 10 ).height( 50000 )
+				.position( new Vector2( 0, -3200 ) )
+				.beginAction( new RemoveEntityAction( ) )
+				.addEntity( player1 )
+				.addEntity( player2 ).build( );
+		removeTrigger.setCategoryMask( Util.CATEGORY_PLAYER,
+				Util.CATEGORY_EVERYTHING );
+		rootSkeleton.addEventTrigger( removeTrigger );
+	}
 
 	private void initHazards( ) {
 		/*
@@ -127,8 +151,8 @@ public class HazardScreen implements com.badlogic.gdx.Screen {
 		 */
 		fire = new Fire( "Fire1", new Vector2( -700.0f, -10.0f ), 50, 100,
 				world, true );
-		elec = new Electricity( "Elec1", new Vector2( 700.0f, 0.0f ),
-				new Vector2( 700.0f, 50.0f ), world, true );
+		//elec = new Electricity( "Elec1", new Vector2( 700.0f, 0.0f ),
+		//		new Vector2( 700.0f, 50.0f ), world, true );
 		/*
 		 * saw = new Saws( "Saw1", new Vector2( -2000.0f, 40.0f ), 2, world,
 		 * true );
@@ -186,7 +210,7 @@ public class HazardScreen implements com.badlogic.gdx.Screen {
 	}
 
 	private void initCrushTest( ) {
-		crusher = platBuilder.position( 400.0f, 100.0f ).name( "crusher" )
+		crusher = platBuilder.position( 400.0f, 200.0f ).name( "crusher" )
 				.dimensions( 6, 1 ).texture( testTexture ).dynamic( )
 				.oneSided( false ).restitution( 0.0f ).buildTilePlatform( );
 		crusher.setCrushing( true );
@@ -194,7 +218,7 @@ public class HazardScreen implements com.badlogic.gdx.Screen {
 		struct1 = new StructureScrew( "struct1", crusher.getPositionPixel( )
 				.add( new Vector2( -50f, 0f ) ), 50, crusher, world, new Vector2( 0, 1 ) );
 		struct1.addStructureJoint( skeleton );
-		struct2 = new StructureScrew( "struct1", crusher.getPositionPixel( )
+		struct2 = new StructureScrew( "struct2", crusher.getPositionPixel( )
 				.add( new Vector2( 50f, 0f ) ), 50, crusher, world, new Vector2( 0, 1 ) );
 		struct2.addStructureJoint( skeleton );
 		skeleton.addScrewForDraw( struct1 );
@@ -237,6 +261,16 @@ public class HazardScreen implements com.badlogic.gdx.Screen {
 			spikes2.setActive( false );
 		}
 
+		if ( Gdx.input.isKeyPressed( Input.Keys.C ) ) {
+			if ( skeleton != null )
+				skeleton.rotateBy( -0.01f );
+		}
+
+		if ( Gdx.input.isKeyPressed( Input.Keys.V ) ) {
+			if ( skeleton != null )
+				skeleton.rotateBy( 0.01f );
+		}
+		
 		if ( Gdx.input.isKeyPressed( Keys.NUM_0 ) ) {
 			if ( debugTest )
 				debug = !debug;
@@ -254,7 +288,7 @@ public class HazardScreen implements com.badlogic.gdx.Screen {
 		rootSkeleton.draw( batch, deltaTime );
 		progressManager.draw( batch, deltaTime );
 		fire.draw( batch, deltaTime );
-		elec.draw( batch, deltaTime );
+		//elec.draw( batch, deltaTime );
 		testSteam.draw( batch, deltaTime );
 		player1.draw( batch, deltaTime );
 		player2.draw( batch, deltaTime );

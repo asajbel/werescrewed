@@ -43,14 +43,17 @@ public class Screw extends Entity {
 	protected int prevDiff;
 	protected int startDepth;
 	protected int diff;
+	protected Entity entity;
 	protected Vector2 detachDirection;
+	protected boolean upDownDetach;
+	protected float entityAngle;
 	protected boolean playerAttached = false;
 	protected boolean removed = false;
 	protected boolean playerNotSensor = false;
 	protected ScrewType screwType;
 	public ArrayList< Joint > extraJoints;
 	
-	private static TextureRegion screwTexRegion = WereScrewedGame.manager.getAtlas( "common-textures" ).findRegion( "flat_head_circular" );
+	private static TextureRegion screwTexRegion = WereScrewedGame.manager.getAtlas( "common-textures" ).findRegion( "screw-flathead" );
 
 	/**
 	 * constructor to use if you want a cosmetic screw
@@ -66,12 +69,16 @@ public class Screw extends Entity {
 		super( name, pos, null, null, false );
 		this.world = world;
 		this.sprite = constructSprite(screwTexRegion);
-		if(sprite!=null)sprite.rotate( ( float ) ( Math.random( )*360 ) );
+		sprite.setOrigin( sprite.getWidth( )/2.0f, sprite.getHeight( )/2.0f );
+		this.offset = new Vector2 ( sprite.getOriginX( ), sprite.getOriginY( ) );
+		this.entity = entity;
+		this.entityAngle = entity.getAngle( );
 		screwType = ScrewType.SCREW_COSMETIC;
 		entityType = EntityType.SCREW;
 		extraJoints = new ArrayList< Joint >( );
-
 		constructBody( pos );
+		if(sprite!=null)sprite.rotate( ( float ) ( Math.random( )*360 ) );
+		body.setTransform( body.getPosition( ), sprite.getRotation( )*Util.DEG_TO_RAD );
 		addStructureJoint( entity );
 	}
 
@@ -85,7 +92,8 @@ public class Screw extends Entity {
 	public Screw( String name, Vector2 pos, Texture tex ) {
 		super( name, pos, null, null, false );
 		this.sprite = constructSprite(screwTexRegion);
-		if(sprite!=null)sprite.rotate( ( float ) ( Math.random( )*360 ) );
+		sprite.setOrigin( sprite.getWidth( )/2.0f, sprite.getHeight( )/2.0f );
+		this.offset = new Vector2 ( sprite.getOriginX( ), sprite.getOriginY( ) );
 		entityType = EntityType.SCREW;
 	}
 
@@ -248,6 +256,10 @@ public class Screw extends Entity {
 		revoluteJointDef.enableMotor = false;
 		Joint screwJoint =  (Joint) world.createJoint( revoluteJointDef );
 		extraJoints.add( screwJoint );
+		this.entity = entity;
+		if ( entity != null ) {
+			this.entityAngle = entity.getAngle( );
+		}
 	}
 
 	/**

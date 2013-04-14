@@ -14,6 +14,7 @@ import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityType;
 import com.blindtigergames.werescrewed.eventTrigger.EventTrigger;
 import com.blindtigergames.werescrewed.entity.action.ActionType;
+import com.blindtigergames.werescrewed.entity.action.RemoveEntityAction;
 import com.blindtigergames.werescrewed.entity.hazard.Hazard;
 import com.blindtigergames.werescrewed.entity.platforms.Platform;
 import com.blindtigergames.werescrewed.entity.platforms.PlatformType;
@@ -156,7 +157,11 @@ public class MyContactListener implements ContactListener {
 							EventTrigger et = ( EventTrigger ) object;
 							et.setActivated( true, player.name );
 							if ( playerFix.getShape( ) instanceof CircleShape ) {
-								et.triggerBeginEvent( );
+								// stops both players from dying
+								if ( et.getBeginAction( ) instanceof RemoveEntityAction ) {
+									et.getBeginAction( ).act( player );
+								} else
+									et.triggerBeginEvent( );
 							}
 							break;
 						default:
@@ -180,31 +185,31 @@ public class MyContactListener implements ContactListener {
 				// it
 				if ( playerFix.getBody( ).getUserData( ) instanceof Entity
 						&& objectFix.getBody( ).getUserData( ) instanceof Entity ) {
-					
-					
 					Entity player = ( Entity ) playerFix.getBody( )
 							.getUserData( );
 					Entity object = ( Entity ) objectFix.getBody( )
 							.getUserData( );
-					
-					//EventTrigger stuff:
-					if ( player.getEntityType( ) != null
-							&& player.getEntityType( ) == EntityType.EVENTTRIGGER ) {
-						EventTrigger et = ( EventTrigger ) player;
-						if ( et.getBeginAction( ).getActionType( ) == ActionType.FORANYENTITY ) {
-							// needs to get the action in order to act on just
-							// this
-							// object
-							et.getBeginAction( ).act( object );
-						}
-					} else if ( object.getEntityType( ) != null
-							&& object.getEntityType( ) == EntityType.EVENTTRIGGER ) {
-						EventTrigger et = ( EventTrigger ) object;
-						if ( et.getBeginAction( ).getActionType( ) == ActionType.FORANYENTITY ) {
-							// needs to get the action in order to act on just
-							// this
-							// object
-							et.getBeginAction( ).act( player );
+					if ( player.getEntityType( ) == EntityType.EVENTTRIGGER
+							|| object.getEntityType( ) == EntityType.EVENTTRIGGER ) {
+						// EventTrigger stuff:
+						if ( player.getEntityType( ) == EntityType.EVENTTRIGGER ) {
+							EventTrigger et = ( EventTrigger ) player;
+							if ( et.getBeginAction( ).getActionType( ) == ActionType.FORANYENTITY ) {
+								// needs to get the action in order to act on
+								// just
+								// this
+								// object
+								et.getBeginAction( ).act( object );
+							}
+						} else if ( object.getEntityType( ) == EntityType.EVENTTRIGGER ) {
+							EventTrigger et = ( EventTrigger ) object;
+							if ( et.getBeginAction( ).getActionType( ) == ActionType.FORANYENTITY ) {
+								// needs to get the action in order to act on
+								// just
+								// this
+								// object
+								et.getBeginAction( ).act( player );
+							}
 						}
 					}
 				}

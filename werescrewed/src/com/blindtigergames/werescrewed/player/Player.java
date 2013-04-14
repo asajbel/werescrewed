@@ -77,6 +77,7 @@ public class Player extends Entity {
 	public boolean flipX = false;
 	public final static float HEIGHT = 128;
 	public final static float WIDTH = 64;
+	// public final static float
 
 	public Fixture feet;
 	public Fixture torso;
@@ -245,8 +246,8 @@ public class Player extends Entity {
 		if ( Gdx.input.isKeyPressed( Keys.G ) )
 			Gdx.app.log( "steamCollide: " + steamCollide, "steamDone: "
 					+ steamDone );
-//		if ( name.equals( "player1" ) ) {
-//
+//		if ( name.equals( "player2" ) ) {
+//			Gdx.app.log( "player update", name + " is " + playerState );
 //		}
 		if ( kinematicTransform ) {
 			// setPlatformTransform( platformOffset );
@@ -284,34 +285,35 @@ public class Player extends Entity {
 			} else if ( inputHandler != null ) {
 				updateKeyboard( deltaTime );
 			}
-		}
-		// if re-spawning decrement time out
-		// player will not die in this time
-		if ( respawnTimeout > 0 ) {
-			respawnTimeout--;
-		}
-		// build extra fixture to have new friction
-		updateFootFriction( );
-		// test if player is still moving after timeout
-		if ( playerDirection != PlayerDirection.Idle ) {
-			if ( runTimeout == 0 && playerState != PlayerState.Jumping
-					&& playerState != PlayerState.Falling
-					&& extraState != ConcurrentState.ExtraFalling
-					&& extraState != ConcurrentState.ExtraJumping ) {
-				playerDirection = PlayerDirection.Idle;
-			} else if ( playerDirection == PlayerDirection.Left
-					&& type.getScale( ).x > 0 ) {
-				flipX = true;
-				type.setScale( type.getScale( ).x * -1, type.getScale( ).y );
-			} else if ( playerDirection == PlayerDirection.Right
-					&& type.getScale( ).x < 0 ) {
-				flipX = false;
-				type.setScale( type.getScale( ).x * -1, type.getScale( ).y );
-			} else if ( playerState != PlayerState.Jumping
-					&& playerState != PlayerState.Falling
-					&& extraState != ConcurrentState.ExtraFalling
-					&& extraState != ConcurrentState.ExtraJumping ) {
-				runTimeout--;
+
+			// if re-spawning decrement time out
+			// player will not die in this time
+			if ( respawnTimeout > 0 ) {
+				respawnTimeout--;
+			}
+			// build extra fixture to have new friction
+			updateFootFriction( );
+			// test if player is still moving after timeout
+			if ( playerDirection != PlayerDirection.Idle ) {
+				if ( runTimeout == 0 && playerState != PlayerState.Jumping
+						&& playerState != PlayerState.Falling
+						&& extraState != ConcurrentState.ExtraFalling
+						&& extraState != ConcurrentState.ExtraJumping ) {
+					playerDirection = PlayerDirection.Idle;
+				} else if ( playerDirection == PlayerDirection.Left
+						&& type.getScale( ).x > 0 ) {
+					flipX = true;
+					type.setScale( type.getScale( ).x * -1, type.getScale( ).y );
+				} else if ( playerDirection == PlayerDirection.Right
+						&& type.getScale( ).x < 0 ) {
+					flipX = false;
+					type.setScale( type.getScale( ).x * -1, type.getScale( ).y );
+				} else if ( playerState != PlayerState.Jumping
+						&& playerState != PlayerState.Falling
+						&& extraState != ConcurrentState.ExtraFalling
+						&& extraState != ConcurrentState.ExtraJumping ) {
+					runTimeout--;
+				}
 			}
 		}
 		// switch between states
@@ -357,7 +359,8 @@ public class Player extends Entity {
 					mover = null;
 				}
 			} else {
-				// if resurrect screw and its not active remove the player joint
+				// if resurrect screw and its not active remove the player
+				// joint
 				if ( currentScrew.getScrewType( ) == ScrewType.SCREW_RESURRECT ) {
 					ResurrectScrew rezScrew = ( ResurrectScrew ) currentScrew;
 					if ( rezScrew.deleteQueue( ) ) {
@@ -420,7 +423,6 @@ public class Player extends Entity {
 		// check for crushing stuff
 		if ( ( ( topCrush && botCrush ) || ( leftCrush && rightCrush ) )
 				&& ( playerState != PlayerState.JumpingOffScrew && playerState != PlayerState.Screwing ) ) {
-			Gdx.app.log( "test state:", " " + playerState );
 			this.killPlayer( );
 			// Gdx.app.log( "\nright: ", "" + rightCrush );
 			// Gdx.app.log( "left: ", "" + leftCrush );
@@ -434,7 +436,8 @@ public class Player extends Entity {
 		} else
 			steamDone = false;
 		terminalVelocityCheck( 15.0f );
-		// the jump doesn't work the first time on dynamic bodies so do it twice
+		// the jump doesn't work the first time on dynamic bodies so do it
+		// twice
 		if ( playerState == PlayerState.Jumping && isGrounded( ) ) {
 			jump( );
 		}
@@ -478,8 +481,8 @@ public class Player extends Entity {
 				platformBody = null;
 			}
 			isDead = true;
-			ParticleEffect blood = getEffect("blood");
-			blood.restartAt( getPositionPixel() );
+			ParticleEffect blood = getEffect( "blood" );
+			blood.restartAt( getPositionPixel( ) );
 		}
 	}
 
@@ -508,8 +511,8 @@ public class Player extends Entity {
 		platformBody = null;
 		isDead = false;
 		respawnTimeout = DEAD_STEPS;
-		
-		getEffect("revive").restartAt( getPositionPixel() );
+
+		getEffect( "revive" ).restartAt( getPositionPixel( ) );
 	}
 
 	/**
@@ -540,15 +543,18 @@ public class Player extends Entity {
 			if ( body.getLinearVelocity( ).x < MAX_VELOCITY ) {
 				body.applyLinearImpulse( new Vector2( MOVEMENT_IMPULSE, 0.0f ),
 						body.getWorldCenter( ) );
-				if ( body.getLinearVelocity( ).x >= MAX_VELOCITY*0.99f )
+				if ( body.getLinearVelocity( ).x >= MAX_VELOCITY * 0.99f )
 					reachedMaxSpeed = true;
 				else
 					reachedMaxSpeed = false;
 			}
 		}
 		playerDirection = PlayerDirection.Right;
-		if ( grounded && prevPlayerDir== PlayerDirection.Left ){//&& reachedMaxSpeed ){
-			getEffect( "skid_left" ).restartAt( getPositionPixel( ).add( 30,0 ) );
+		if ( grounded && prevPlayerDir == PlayerDirection.Left ) {// &&
+																	// reachedMaxSpeed
+																	// ){
+			getEffect( "skid_left" )
+					.restartAt( getPositionPixel( ).add( 30, 0 ) );
 			reachedMaxSpeed = false;
 		}
 		runTimeout = RUN_STEPS;
@@ -575,15 +581,18 @@ public class Player extends Entity {
 				body.applyLinearImpulse(
 						new Vector2( -MOVEMENT_IMPULSE, 0.0f ),
 						body.getWorldCenter( ) );
-				if ( body.getLinearVelocity( ).x <= -MAX_VELOCITY*0.99f )
+				if ( body.getLinearVelocity( ).x <= -MAX_VELOCITY * 0.99f )
 					reachedMaxSpeed = true;
 				else
 					reachedMaxSpeed = false;
 			}
 		}
 		playerDirection = PlayerDirection.Left;
-		if ( grounded && prevPlayerDir == PlayerDirection.Right ){// && reachedMaxSpeed ){
-			getEffect( "skid_right" ).restartAt( getPositionPixel( ).add( 100,0 ) );
+		if ( grounded && prevPlayerDir == PlayerDirection.Right ) {// &&
+																	// reachedMaxSpeed
+																	// ){
+			getEffect( "skid_right" ).restartAt(
+					getPositionPixel( ).add( 100, 0 ) );
 			reachedMaxSpeed = false;
 		}
 		runTimeout = RUN_STEPS;
@@ -758,29 +767,12 @@ public class Player extends Entity {
 	public void setGrounded( boolean newVal ) {
 		if ( !topPlayer ) {
 			if ( newVal != false && !grounded && otherPlayer == null ) {
-				/*
-				 * hitCloud.setPixelPosition( this.getPositionPixel( ) .sub( 0,
-				 * 12f ) ); hitCloud.sprite.setColor( 1, 1, 1,
-				 * body.getLinearVelocity( ).y / ( float ) MAX_VELOCITY );
-				 * hitCloud.sprite.reset( );
-				 */
 				// if ( !world.isLocked( ) ) {
 				getEffect( "land_cloud" ).restartAt(
 						getPositionPixel( ).add( 50, 0 ) );
 				// }
 			}
 			this.grounded = newVal;
-		}
-		if ( screwJumpTimeout == 0 && !world.isLocked( ) ) {
-			Filter filter = new Filter( );
-			for ( Fixture f : body.getFixtureList( ) ) {
-				filter = f.getFilterData( );
-				// move player back to original category
-				filter.categoryBits = Util.CATEGORY_PLAYER;
-				// player now collides with everything
-				filter.maskBits = Util.CATEGORY_EVERYTHING;
-				f.setFilterData( filter );
-			}
 		}
 	}
 
@@ -857,9 +849,7 @@ public class Player extends Entity {
 		if ( platformBody == null && b != null
 				&& playerState == PlayerState.Screwing ) {
 			if ( mover == null ) {
-				knockedOff = true;
-			} else {
-				platformBody = null;
+				//knockedOff = true;
 			}
 		} else if ( screwJumpTimeout == 0 ) {
 			if ( b != null || playerState != PlayerState.Screwing ) {
@@ -1126,7 +1116,7 @@ public class Player extends Entity {
 		} else if ( screwJumpTimeout == 0 ) {
 			if ( isGrounded( ) ) {
 				playerState = PlayerState.Standing;
-			} else if ( body.getLinearVelocity( ).y > 0 ) {
+			} else if ( body.getLinearVelocity( ).y > MIN_VELOCITY ) {
 				playerState = PlayerState.Jumping;
 			} else {
 				playerState = PlayerState.Falling;
@@ -1298,14 +1288,10 @@ public class Player extends Entity {
 			if ( otherPlayer != null ) {
 				if ( !topPlayer ) {
 					otherPlayer.removePlayerToPlayer( );
-					Gdx.app.log( "process moving state",
-							"other player is not null" );
 				} else {
 					removePlayerToPlayer( );
 				}
 			} else {
-				Gdx.app.log( "process moving state",
-						"other player is null for some reason" );
 				removePlayerToPlayer( );
 			}
 		}

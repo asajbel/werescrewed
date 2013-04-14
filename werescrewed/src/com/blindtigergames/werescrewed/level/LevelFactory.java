@@ -157,10 +157,10 @@ public class LevelFactory {
 			skeletons.put( item.name, child );
 			//add the skeleton to the skeleton layer for drawing
 			if ( child.bgSprite != null ) {
-				level.skelBGList.add( child.bgSprite );
+				level.skelBGList.add( child );
 			}
 			if ( child.fgSprite != null ) {
-				level.skelFGList.add( child.fgSprite );
+				level.skelFGList.add( child );
 			}
 			return child;
 		}
@@ -425,10 +425,10 @@ public class LevelFactory {
 			}
 			//add the skeleton to the skeleton layer for drawing			
 			if ( skeleton.bgSprite != null ) {
-				level.skelBGList.add( skeleton.bgSprite );
+				level.skelBGList.add( skeleton );
 			} 		
 			if ( skeleton.fgSprite != null ) {
-				level.skelFGList.add( skeleton.fgSprite );
+				level.skelFGList.add( skeleton );
 			}
 		}
 
