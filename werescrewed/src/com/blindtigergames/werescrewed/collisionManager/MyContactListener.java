@@ -8,11 +8,9 @@ import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.Manifold;
-import com.blindtigergames.werescrewed.camera.Anchor;
 import com.blindtigergames.werescrewed.checkpoints.CheckPoint;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityType;
-import com.blindtigergames.werescrewed.eventTrigger.EventTrigger;
 import com.blindtigergames.werescrewed.entity.action.ActionType;
 import com.blindtigergames.werescrewed.entity.action.RemoveEntityAction;
 import com.blindtigergames.werescrewed.entity.hazard.Hazard;
@@ -22,6 +20,7 @@ import com.blindtigergames.werescrewed.entity.platforms.TiledPlatform;
 import com.blindtigergames.werescrewed.entity.screws.ResurrectScrew;
 import com.blindtigergames.werescrewed.entity.screws.Screw;
 import com.blindtigergames.werescrewed.entity.screws.ScrewType;
+import com.blindtigergames.werescrewed.eventTrigger.EventTrigger;
 import com.blindtigergames.werescrewed.player.Player;
 import com.blindtigergames.werescrewed.player.Player.PlayerState;
 
@@ -172,11 +171,6 @@ public class MyContactListener implements ContactListener {
 								"please declare your entity with a type to the Entity Type enum",
 								"" );
 					}
-				} else if ( objectFix.getBody( ).getUserData( ) instanceof Anchor ) {
-					Anchor anchor = ( Anchor ) objectFix.getBody( )
-							.getUserData( );
-					if ( !anchor.special )
-						anchor.activate( );
 				}
 			} else {
 				// Player are not involved in this section //
@@ -324,11 +318,6 @@ public class MyContactListener implements ContactListener {
 								"please declare your entity with a type to the Entity Type enum",
 								"" );
 					}
-				} else if ( objectFix.getBody( ).getUserData( ) instanceof Anchor ) {
-					Anchor anchor = ( Anchor ) objectFix.getBody( )
-							.getUserData( );
-					if ( !anchor.special )
-						anchor.deactivate( );
 				}
 			}
 		}

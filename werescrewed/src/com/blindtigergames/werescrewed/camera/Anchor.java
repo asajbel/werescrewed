@@ -8,10 +8,9 @@ import com.blindtigergames.werescrewed.util.Util;
  * Anchors give the camera (via the AnchorList) a position and buffer to always
  * keep within the screen and to translate towards.
  * 
- * @author Edward Ramirez
+ * @author Edward Ramirez and Dan Malear
  ******************************************************************************/
 public class Anchor {
-	public boolean special;
 	protected Vector2 position;
 	protected Vector2 positionBox;
 	protected Vector2 buffer;
@@ -28,34 +27,18 @@ public class Anchor {
 	 * 
 	 */
 	public Anchor( Vector2 position ) {
-		this( false, position, DEFAULT_BUFFER );
+		this( position, DEFAULT_BUFFER );
 	}
 
 	/**
 	 * Create a new Anchor
 	 * 
-	 * @param position
-	 *            starting position of anchor (in pixels)
-	 * @param buffer
-	 *            buffer around anchor which must always stay within view
-	 * 
-	 */
-	public Anchor( Vector2 position, Vector2 buffer ) {
-		this( false, position, buffer );
-	}
-
-	/**
-	 * Create a new Anchor
-	 * 
-	 * @param special
-	 *            set true if this is a player anchor, false otherwise
 	 * @param position
 	 *            starting position of anchor (in pixels)
 	 * @param buffer
 	 *            buffer around anchor which must always stay within view
 	 */
-	public Anchor( boolean special, Vector2 position, Vector2 buffer ) {
-		this.special = special;
+	public Anchor( Vector2 position, Vector2 buffer ) {
 		this.position = position;
 		this.positionBox = new Vector2( position.x * Util.PIXEL_TO_BOX,
 				position.y * Util.PIXEL_TO_BOX );

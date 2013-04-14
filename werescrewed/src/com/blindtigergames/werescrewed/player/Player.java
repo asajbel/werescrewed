@@ -6,7 +6,6 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.controllers.PovDirection;
-import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -24,10 +23,7 @@ import com.blindtigergames.werescrewed.camera.AnchorList;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityDef;
 import com.blindtigergames.werescrewed.entity.EntityType;
-import com.blindtigergames.werescrewed.entity.Sprite;
 import com.blindtigergames.werescrewed.entity.animator.PlayerSpinemator;
-import com.blindtigergames.werescrewed.entity.animator.SimpleFrameAnimator;
-import com.blindtigergames.werescrewed.entity.animator.SimpleFrameAnimator.LoopBehavior;
 import com.blindtigergames.werescrewed.entity.mover.IMover;
 import com.blindtigergames.werescrewed.entity.mover.LerpMover;
 import com.blindtigergames.werescrewed.entity.mover.LinearAxis;
@@ -98,6 +94,7 @@ public class Player extends Entity {
 	private PlayerState playerState;
 	private ConcurrentState extraState;
 	private PlayerDirection playerDirection;
+	@SuppressWarnings( "unused" )
 	private boolean reachedMaxSpeed;
 	private PlayerDirection prevPlayerDir;
 	private Controller controller;
@@ -203,11 +200,11 @@ public class Player extends Entity {
 		body.setBullet( true );
 		playerState = PlayerState.Standing;
 		inputHandler = new PlayerInputHandler( this.name );
-		anchor = new Anchor( true, new Vector2( body.getWorldCenter( ).x
+		anchor = new Anchor( new Vector2( body.getWorldCenter( ).x
 				* Util.BOX_TO_PIXEL, body.getWorldCenter( ).y
 				* Util.BOX_TO_PIXEL ), new Vector2( ANCHOR_BUFFER_SIZE.x,
 				ANCHOR_BUFFER_SIZE.y ) );
-		anchor.special = true;
+		anchor.activate( );
 		AnchorList.getInstance( ).addAnchor( anchor );
 
 		// build spine animator
@@ -246,9 +243,9 @@ public class Player extends Entity {
 		if ( Gdx.input.isKeyPressed( Keys.G ) )
 			Gdx.app.log( "steamCollide: " + steamCollide, "steamDone: "
 					+ steamDone );
-//		if ( name.equals( "player2" ) ) {
-//			Gdx.app.log( "player update", name + " is " + playerState );
-//		}
+		// if ( name.equals( "player2" ) ) {
+		// Gdx.app.log( "player update", name + " is " + playerState );
+		// }
 		if ( kinematicTransform ) {
 			// setPlatformTransform( platformOffset );
 			kinematicTransform = false;
@@ -849,7 +846,7 @@ public class Player extends Entity {
 		if ( platformBody == null && b != null
 				&& playerState == PlayerState.Screwing ) {
 			if ( mover == null ) {
-				//knockedOff = true;
+				// knockedOff = true;
 			}
 		} else if ( screwJumpTimeout == 0 ) {
 			if ( b != null || playerState != PlayerState.Screwing ) {
