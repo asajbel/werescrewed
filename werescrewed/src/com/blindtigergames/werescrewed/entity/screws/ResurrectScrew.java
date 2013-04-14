@@ -17,6 +17,7 @@ import com.blindtigergames.werescrewed.entity.Sprite;
 import com.blindtigergames.werescrewed.entity.animator.SimpleFrameAnimator;
 import com.blindtigergames.werescrewed.entity.animator.SimpleFrameAnimator.LoopBehavior;
 import com.blindtigergames.werescrewed.entity.mover.LerpMover;
+import com.blindtigergames.werescrewed.graphics.TextureAtlas;
 import com.blindtigergames.werescrewed.player.Player;
 import com.blindtigergames.werescrewed.util.Util;
 
@@ -33,6 +34,7 @@ public class ResurrectScrew extends Screw {
 	private boolean removeNextStep = false;
 	private LerpMover playerMover;
 	private Entity screwInterface;
+	private SimpleFrameAnimator screwUIAnimator;
 
 	/**
 	 * 
@@ -57,19 +59,20 @@ public class ResurrectScrew extends Screw {
 		entityType = EntityType.SCREW;
 		screwInterface = new Entity( name + "_screwInterface", pos, null, null,
 				false );
-		SimpleFrameAnimator interfaceAnimator = new SimpleFrameAnimator( )
-				.speed( 1f ).loop( LoopBehavior.STOP ).startFrame( 1 )
-				.maxFrames( 2 ).time( 0.0f );
-		screwInterface.sprite = new Sprite(
-				WereScrewedGame.manager.getTextureAtlas( "screwInterface" ),
-				interfaceAnimator );
+		TextureAtlas atlas = WereScrewedGame.manager.getTextureAtlas( "screwInterface" );
+		screwUIAnimator = new SimpleFrameAnimator( ).speed(0f )
+				.loop( LoopBehavior.STOP ).time( 0.0f ).startFrame( 0 )
+				.maxFrames( 25 );
+		Sprite spr = new Sprite( atlas, screwUIAnimator );
+		spr.setOrigin( spr.getWidth( )/2.0f, spr.getHeight( )/2.0f );
+		screwInterface.changeSprite( spr );
 		sprite.setColor( 0f, 0f, 1f, 1f );
-
 		constructBody( pos );
 		if ( sprite != null )
 			sprite.rotate( ( float ) ( Math.random( ) * 360 ) );
 		body.setTransform( body.getPosition( ), sprite.getRotation( )
 				* Util.DEG_TO_RAD );
+		rotation = (int) ( body.getAngle( ) * Util.RAD_TO_DEG );
 		connectScrewToEntity( entity );
 	}
 
@@ -87,8 +90,8 @@ public class ResurrectScrew extends Screw {
 				playerMover.moveAnalog( this, ( float ) depth
 						/ ( ( float ) maxDepth ), deadPlayer.body );
 			}
-			// int value = (int ) ( ( (float) depth / (float)maxDepth ) * 9f );
-			// screwInterface.sprite.getAnimator( ).setFrame( value );
+			 int value = (int ) ( ( (float) depth / (float)maxDepth ) * 10f ) + 15;
+			 screwUIAnimator.setFrame( value );
 		}
 	}
 
@@ -118,8 +121,8 @@ public class ResurrectScrew extends Screw {
 				playerMover.moveAnalog( this, ( float ) depth
 						/ ( ( float ) maxDepth ), deadPlayer.body );
 			}
-			// int value = (int ) ( ( (float) depth / (float)maxDepth ) * 9f );
-			// screwInterface.sprite.getAnimator( ).setFrame( value );
+			 int value = (int ) ( ( (float) depth / (float)maxDepth ) * 10f ) + 15;
+			 screwUIAnimator.setFrame( value );
 		}
 
 	}
@@ -139,8 +142,8 @@ public class ResurrectScrew extends Screw {
 				playerMover.moveAnalog( this, ( float ) depth
 						/ ( ( float ) maxDepth ), deadPlayer.body );
 			}
-			// int value = (int ) ( ( (float) depth / (float)maxDepth ) * 9f );
-			// screwInterface.sprite.getAnimator( ).setFrame( value );
+			 int value = (int ) ( ( (float) depth / (float)maxDepth ) * 10f ) + 15;
+			 screwUIAnimator.setFrame( value );
 		}
 	}
 
@@ -169,8 +172,8 @@ public class ResurrectScrew extends Screw {
 				playerMover.moveAnalog( this, ( float ) depth
 						/ ( ( float ) maxDepth ), deadPlayer.body );
 			}
-			// int value = (int ) ( ( (float) depth / (float)maxDepth ) * 9f );
-			// screwInterface.sprite.getAnimator( ).setFrame( value );
+			 int value = (int ) ( ( (float) depth / (float)maxDepth ) * 10f ) + 15;
+			 screwUIAnimator.setFrame( value );
 		}
 
 	}
@@ -228,10 +231,6 @@ public class ResurrectScrew extends Screw {
 	public void update( float deltaTime ) {
 		super.update( deltaTime );
 		if ( !removed ) {
-			// if ( playerAttached ) {
-//			screwInterface.sprite.setPosition( this.getPositionPixel( ) );
-//			screwInterface.sprite.update( deltaTime );
-			// }
 			if ( playerMover.atEnd( ) || depth == maxDepth ) {
 				deadPlayer.body.setTransform(
 						this.getPositionPixel( )
@@ -265,6 +264,19 @@ public class ResurrectScrew extends Screw {
 					playerMover.moveAnalog( this, ( float ) depth
 							/ ( ( float ) maxDepth ), deadPlayer.body );
 				}
+				if ( playerAttached ) {
+					if ( screwInterface.sprite.getAnimator( ).getFrame( ) == 0 ) 
+					{
+						screwUIAnimator.speed( 1 );
+					} else if ( screwInterface.sprite.getAnimator( ).getFrame( ) > 14 ){
+						screwUIAnimator.speed( 0 );
+					}
+				} else {
+					screwUIAnimator.speed( -1 );
+				}
+				screwInterface.sprite.setPosition( this.getPositionPixel( ).sub( 52f, 4f ) );
+				screwInterface.sprite.update( deltaTime );
+				screwUIAnimator.update( deltaTime );
 			}
 		}
 	}

@@ -16,6 +16,8 @@ import com.blindtigergames.werescrewed.entity.EntityType;
 import com.blindtigergames.werescrewed.entity.Sprite;
 import com.blindtigergames.werescrewed.entity.animator.SimpleFrameAnimator;
 import com.blindtigergames.werescrewed.entity.animator.SimpleFrameAnimator.LoopBehavior;
+import com.blindtigergames.werescrewed.graphics.SpriteBatch;
+import com.blindtigergames.werescrewed.graphics.TextureAtlas;
 import com.blindtigergames.werescrewed.util.Util;
 
 /**
@@ -59,19 +61,20 @@ public class BossScrew extends Screw {
 		entityType = EntityType.SCREW;
 		screwInterface = new Entity( name + "_screwInterface", pos, null, null,
 				false );
-		SimpleFrameAnimator interfaceAnimator = new SimpleFrameAnimator( )
-				.speed( 1f ).loop( LoopBehavior.STOP ).startFrame( 1 )
-				.maxFrames( 2 ).time( 0.0f );
-		screwInterface.sprite = new Sprite(
-				WereScrewedGame.manager.getTextureAtlas( "screwInterface" ),
-				interfaceAnimator );
+		TextureAtlas atlas = WereScrewedGame.manager.getTextureAtlas( "screwInterface" );
+		screwUIAnimator = new SimpleFrameAnimator( ).speed(1f )
+				.loop( LoopBehavior.STOP ).time( 0.0f ).startFrame( 0 )
+				.maxFrames( 25 );
+		Sprite spr = new Sprite( atlas, screwUIAnimator );
+		spr.setOrigin( spr.getWidth( )/2.0f, spr.getHeight( )/2.0f );
+		screwInterface.changeSprite( spr );
 		sprite.setColor( 244f / 255f, 215f / 255f, 7f / 255f, 1.0f );
-
 		constuctBody( pos );
 		if ( sprite != null )
 			sprite.rotate( ( float ) ( Math.random( ) * 360 ) );
 		body.setTransform( body.getPosition( ), sprite.getRotation( )
 				* Util.DEG_TO_RAD );
+		rotation = (int) ( body.getAngle( ) * Util.RAD_TO_DEG );
 		addStructureJoint( entity );
 	}
 
@@ -83,9 +86,8 @@ public class BossScrew extends Screw {
 				depth--;
 				rotation = region * 5;
 				screwStep = depth + 5;
-				// int value = (int ) ( ( (float) depth / (float)maxDepth ) * 9f
-				// );
-				// screwInterface.sprite.getAnimator( ).setFrame( value );
+				 int value = (int ) ( ( (float) depth / (float)maxDepth ) * 10f ) + 15;
+				 screwUIAnimator.setFrame( value );
 			}
 		} else {
 			playerCount++;
@@ -100,9 +102,8 @@ public class BossScrew extends Screw {
 				depth--;
 				rotation += 10;
 				screwStep = depth + 5;
-				// int value = (int ) ( ( (float) depth / (float)maxDepth ) * 9f
-				// );
-				// screwInterface.sprite.getAnimator( ).setFrame( value );
+				 int value = (int ) ( ( (float) depth / (float)maxDepth ) * 10f ) + 15;
+				 screwUIAnimator.setFrame( value );
 			}
 		} else {
 			playerCount++;
@@ -117,9 +118,8 @@ public class BossScrew extends Screw {
 				depth++;
 				rotation -= 10;
 				screwStep = depth + 6;
-				// int value = (int ) ( ( (float) depth / (float)maxDepth ) * 9f
-				// );
-				// screwInterface.sprite.getAnimator( ).setFrame( value );
+				 int value = (int ) ( ( (float) depth / (float)maxDepth ) * 10f ) + 15;
+				 screwUIAnimator.setFrame( value );
 			}
 		} else {
 			playerCount++;
@@ -134,9 +134,8 @@ public class BossScrew extends Screw {
 				depth++;
 				rotation -= 10;
 				screwStep = depth + 6;
-				// int value = (int ) ( ( (float) depth / (float)maxDepth ) * 9f
-				// );
-				// screwInterface.sprite.getAnimator( ).setFrame( value );
+				 int value = (int ) ( ( (float) depth / (float)maxDepth ) * 10f ) + 15;
+				 screwUIAnimator.setFrame( value );
 			}
 		} else {
 			playerCount++;
@@ -168,10 +167,6 @@ public class BossScrew extends Screw {
 	public void update( float deltaTime ) {
 		super.update( deltaTime );
 		if ( !removed ) {
-			// if ( playerAttached ) {
-//			screwInterface.sprite.setPosition( this.getPositionPixel( ) );
-//			screwInterface.sprite.update( deltaTime );
-			// }
 			if ( entity != null
 					&& ( getDetachDirection( ).x != 0 || getDetachDirection( ).y != 0 ) ) {
 				if ( upDownDetach ) {
@@ -235,11 +230,38 @@ public class BossScrew extends Screw {
 			}
 			if ( depth == screwStep ) {
 				body.setAngularVelocity( 0 );
+			}			
+			if ( playerCount == 2 ) {
+				if ( screwInterface.sprite.getAnimator( ).getFrame( ) == 0 ) 
+				{
+					screwUIAnimator.speed( 1 );
+				} else if ( screwInterface.sprite.getAnimator( ).getFrame( ) > 14 ){
+					screwUIAnimator.speed( 0 );
+				}
+			} else {
+				screwUIAnimator.speed( -1 );
 			}
+			screwInterface.sprite.setPosition( this.getPositionPixel( ).sub( 52f, 4f ) );
+			screwInterface.sprite.update( deltaTime );
+			screwUIAnimator.update( deltaTime );
 			playerCount = 0;
 		}
 	}
 
+	@Override
+	public void draw( SpriteBatch batch, float deltaTime ) {
+		screwInterface.sprite.draw( batch );
+		drawParticles( behindParticles, batch );
+		if ( sprite != null && visible && !removeNextStep ) {
+			sprite.draw( batch );
+		}
+		// drawOrigin(batch);
+		drawDecals( batch );
+		if ( spinemator != null )
+			spinemator.draw( batch );
+		drawParticles( frontParticles, batch );
+	}
+	
 	private void constuctBody( Vector2 pos ) {
 		// create the screw body
 		BodyDef screwBodyDef = new BodyDef( );
@@ -283,4 +305,5 @@ public class BossScrew extends Screw {
 	private boolean endFlag = false;
 	private int playerCount = 0;
 	private Entity screwInterface;
+	private SimpleFrameAnimator screwUIAnimator;
 }

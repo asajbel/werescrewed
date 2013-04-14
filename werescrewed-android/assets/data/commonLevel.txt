@@ -6,19 +6,11 @@
 /common/sounds/loopTrain.mp3
 /common/sounds/introTrain.mp3
 
-##please us texture packer to put all common textures in this pack file!
-/common/common-textures.pack
-
-##checkpoint
-/common/checkpoint/checkpoint.pack
-
-
 ##Please don't add individual files, add them to the common-textures.pack file with texture packer!
 ##common texture
 /common/player_b_f.png
 /common/player_female_idle.png
 /common/player_r_m.png
-/common/animations/screwInterface.png
 /common/screw.png
 /common/screw1.png
 /common/screw/screw.png
@@ -52,6 +44,9 @@
 /common/redScrewDriver.png
 
 ##texture atlas
+##please us texture packer to put all common textures in this pack file!
+/common/common-textures.pack
+/common/checkpoint/checkpoint.pack
 /common/animations/screwInterface.pack
 /common/tileset1.pack
 /common/TilesetTest.pack

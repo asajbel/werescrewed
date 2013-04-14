@@ -2,7 +2,6 @@ package com.blindtigergames.werescrewed.entity.screws;
 
 import java.util.ArrayList;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
@@ -17,6 +16,7 @@ import com.blindtigergames.werescrewed.entity.Sprite;
 import com.blindtigergames.werescrewed.entity.animator.SimpleFrameAnimator;
 import com.blindtigergames.werescrewed.entity.animator.SimpleFrameAnimator.LoopBehavior;
 import com.blindtigergames.werescrewed.graphics.SpriteBatch;
+import com.blindtigergames.werescrewed.graphics.TextureAtlas;
 import com.blindtigergames.werescrewed.util.Util;
 
 /**
@@ -54,16 +54,20 @@ public class StructureScrew extends Screw {
 		entity.body.setFixedRotation( false );
 		screwInterface = new Entity( name + "_screwInterface", pos, null, null,
 				false );
-		SimpleFrameAnimator interfaceAnimator = new SimpleFrameAnimator( )
-				.speed( 1f ).loop( LoopBehavior.STOP ).startFrame( 1 ).time( 0.0f );
-		screwInterface.sprite = new Sprite(
-				WereScrewedGame.manager.getTextureAtlas( "screwInterface" ),
-				interfaceAnimator );
+		TextureAtlas atlas = WereScrewedGame.manager
+				.getTextureAtlas( "screwInterface" );
+		screwUIAnimator = new SimpleFrameAnimator( ).speed( 1f )
+				.loop( LoopBehavior.STOP ).time( 0.0f ).startFrame( 0 )
+				.maxFrames( 25 );
+		Sprite spr = new Sprite( atlas, screwUIAnimator );
+		spr.setOrigin( spr.getWidth( ) / 2.0f, spr.getHeight( ) / 2.0f );
+		screwInterface.changeSprite( spr );
 		constuctBody( pos );
 		if ( sprite != null )
 			sprite.rotate( ( float ) ( Math.random( ) * 360 ) );
 		body.setTransform( body.getPosition( ), sprite.getRotation( )
 				* Util.DEG_TO_RAD );
+		rotation = ( int ) ( body.getAngle( ) * Util.RAD_TO_DEG );
 		addStructureJoint( entity );
 	}
 
@@ -87,16 +91,20 @@ public class StructureScrew extends Screw {
 		entityType = EntityType.SCREW;
 		screwInterface = new Entity( name + "_screwInterface", pos, null, null,
 				false );
-		SimpleFrameAnimator interfaceAnimator = new SimpleFrameAnimator( )
-				.speed( 1f ).loop( LoopBehavior.STOP );
-		screwInterface.sprite = new Sprite(
-				WereScrewedGame.manager.getTextureAtlas( "screwInterface" ),
-				interfaceAnimator );
+		TextureAtlas atlas = WereScrewedGame.manager
+				.getTextureAtlas( "screwInterface" );
+		screwUIAnimator = new SimpleFrameAnimator( ).speed( 1f )
+				.loop( LoopBehavior.STOP ).time( 0.0f ).startFrame( 0 )
+				.maxFrames( 25 );
+		Sprite spr = new Sprite( atlas, screwUIAnimator );
+		spr.setOrigin( spr.getWidth( ) / 2.0f, spr.getHeight( ) / 2.0f );
+		screwInterface.changeSprite( spr );
 		constuctBody( pos );
 		if ( sprite != null )
 			sprite.rotate( ( float ) ( Math.random( ) * 360 ) );
 		body.setTransform( body.getPosition( ), sprite.getRotation( )
 				* Util.DEG_TO_RAD );
+		rotation = ( int ) ( body.getAngle( ) * Util.RAD_TO_DEG );
 	}
 
 	@Override
@@ -120,8 +128,8 @@ public class StructureScrew extends Screw {
 				rotation += ( -newDiff * 5 );
 			}
 			screwStep = depth + 6;
-			 int value = (int ) ( ( (float) depth / (float)maxDepth ) * 9f ) + 15;
-			 screwInterface.sprite.getAnimator( ).setFrame( value );
+			int value = ( int ) ( ( ( float ) ( maxDepth - depth ) / ( float ) maxDepth ) * 10f ) + 15;
+			screwUIAnimator.setFrame( value );
 		}
 
 	}
@@ -133,8 +141,8 @@ public class StructureScrew extends Screw {
 			depth -= 2;
 			rotation += 10;
 			screwStep = depth + 5;
-			 int value = (int ) ( ( (float) depth / (float)maxDepth ) * 9f ) + 15;
-			 screwInterface.sprite.getAnimator( ).setFrame( value );
+			int value = ( int ) ( ( ( float ) ( maxDepth - depth ) / ( float ) maxDepth ) * 10f ) + 15;
+			screwUIAnimator.setFrame( value );
 		}
 	}
 
@@ -160,8 +168,8 @@ public class StructureScrew extends Screw {
 				rotation += ( -newDiff * 5 );
 			}
 			screwStep = depth + 5;
-			 int value = (int ) ( ( (float) depth / (float)maxDepth ) * 9f ) + 15;
-			 screwInterface.sprite.getAnimator( ).setFrame( value );
+			int value = ( int ) ( ( ( float ) ( maxDepth - depth ) / ( float ) maxDepth ) * 10f ) + 15;
+			screwUIAnimator.setFrame( value );
 		}
 
 	}
@@ -173,8 +181,8 @@ public class StructureScrew extends Screw {
 			depth += 2;
 			rotation -= 10;
 			screwStep = depth + 6;
-			 int value = (int ) ( ( (float) depth / (float)maxDepth ) * 9f ) + 15;
-			 screwInterface.sprite.getAnimator( ).setFrame( value );
+			int value = ( int ) ( ( ( float ) ( maxDepth - depth ) / ( float ) maxDepth ) * 10f ) + 15;
+			screwUIAnimator.setFrame( value );
 		}
 	}
 
@@ -182,10 +190,6 @@ public class StructureScrew extends Screw {
 	public void update( float deltaTime ) {
 		super.update( deltaTime );
 		if ( !removed ) {
-			if ( playerAttached ) {
-//				screwInterface.sprite.setPosition( this.getPositionPixel( ) );
-//				screwInterface.sprite.update( deltaTime );
-			}
 			if ( entity != null
 					&& ( getDetachDirection( ).x != 0 || getDetachDirection( ).y != 0 ) ) {
 				if ( upDownDetach ) {
@@ -245,15 +249,36 @@ public class StructureScrew extends Screw {
 			if ( depth == screwStep ) {
 				body.setAngularVelocity( 0 );
 			}
+			if ( playerAttached ) {
+				if ( screwInterface.sprite.getAnimator( ).getFrame( ) == 0 ) {
+					screwUIAnimator.speed( 1 );
+				} else if ( screwInterface.sprite.getAnimator( ).getFrame( ) > 14 ) {
+					screwUIAnimator.speed( 0 );
+				}
+			} else {
+				screwUIAnimator.speed( -1 );
+			}
+			screwInterface.sprite.setPosition( this.getPositionPixel( ).sub(
+					52f, 4f ) );
+			screwInterface.sprite.update( deltaTime );
+			screwUIAnimator.update( deltaTime );
 		}
 	}
 
 	@Override
 	public void draw( SpriteBatch batch, float deltaTime ) {
-		super.draw( batch, deltaTime );
-		screwInterface.sprite.draw( batch, deltaTime );
+		screwInterface.sprite.draw( batch );
+		drawParticles( behindParticles, batch );
+		if ( sprite != null && visible && !removeNextStep ) {
+			sprite.draw( batch );
+		}
+		// drawOrigin(batch);
+		drawDecals( batch );
+		if ( spinemator != null )
+			spinemator.draw( batch );
+		drawParticles( frontParticles, batch );
 	}
-	
+
 	private void constuctBody( Vector2 pos ) {
 
 		// create the screw body
@@ -296,5 +321,6 @@ public class StructureScrew extends Screw {
 	private boolean lerpUp = true;
 	private float alpha = 0.0f;
 	private Entity screwInterface;
+	private SimpleFrameAnimator screwUIAnimator;
 
 }
