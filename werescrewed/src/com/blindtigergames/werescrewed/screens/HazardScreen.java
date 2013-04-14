@@ -202,7 +202,7 @@ public class HazardScreen implements com.badlogic.gdx.Screen {
 	}
 
 	private void initCrushTest( ) {
-		crusher = platBuilder.position( 400.0f, 100.0f ).name( "crusher" )
+		crusher = platBuilder.position( 400.0f, 200.0f ).name( "crusher" )
 				.dimensions( 6, 1 ).texture( testTexture ).dynamic( )
 				.oneSided( false ).restitution( 0.0f ).buildTilePlatform( );
 		crusher.setCrushing( true );
