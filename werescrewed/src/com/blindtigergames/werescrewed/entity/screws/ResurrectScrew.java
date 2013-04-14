@@ -1,18 +1,23 @@
 package com.blindtigergames.werescrewed.entity.screws;
 
+import java.util.ArrayList;
+
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.Joint;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.physics.box2d.joints.PulleyJoint;
-import com.badlogic.gdx.physics.box2d.joints.PulleyJointDef;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
+import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityType;
+import com.blindtigergames.werescrewed.entity.Sprite;
+import com.blindtigergames.werescrewed.entity.animator.SimpleFrameAnimator;
+import com.blindtigergames.werescrewed.entity.animator.SimpleFrameAnimator.LoopBehavior;
 import com.blindtigergames.werescrewed.entity.mover.LerpMover;
+import com.blindtigergames.werescrewed.graphics.TextureAtlas;
 import com.blindtigergames.werescrewed.player.Player;
 import com.blindtigergames.werescrewed.util.Util;
 
@@ -24,12 +29,12 @@ import com.blindtigergames.werescrewed.util.Util;
  * 
  */
 public class ResurrectScrew extends Screw {
-	private PulleyJoint pulleyJoint;
-	private Body pulleyWeight;
 	private Player deadPlayer;
-	private boolean destroyJoint = false;
+	private Vector2 playerOffset;
 	private boolean removeNextStep = false;
 	private LerpMover playerMover;
+	private Entity screwInterface;
+	private SimpleFrameAnimator screwUIAnimator;
 
 	/**
 	 * 
@@ -40,22 +45,35 @@ public class ResurrectScrew extends Screw {
 	 * @param deadPlayer
 	 */
 	public ResurrectScrew( Vector2 pos, Entity entity, World world,
-			Player deadPlayer, LerpMover lm ) {
+			Player deadPlayer, LerpMover lm, Vector2 offset ) {
 		super( "rezScrew", pos, null );
 		this.world = world;
 		this.depth = 0;
 		this.maxDepth = 50;
 		this.deadPlayer = deadPlayer;
+		this.playerOffset = new Vector2 ( offset.x, offset.y );
 		playerMover = lm;
+		extraJoints = new ArrayList< Joint >( );
 		active = true;
 		screwType = ScrewType.SCREW_RESURRECT;
 		entityType = EntityType.SCREW;
-
-		sprite.setColor( .7f, .7f, 1f, 0.7f );
-
+		screwInterface = new Entity( name + "_screwInterface", pos, null, null,
+				false );
+		TextureAtlas atlas = WereScrewedGame.manager.getTextureAtlas( "screwInterface" );
+		screwUIAnimator = new SimpleFrameAnimator( ).speed(0f )
+				.loop( LoopBehavior.STOP ).time( 0.0f ).startFrame( 0 )
+				.maxFrames( 25 );
+		Sprite spr = new Sprite( atlas, screwUIAnimator );
+		spr.setOrigin( spr.getWidth( )/2.0f, spr.getHeight( )/2.0f );
+		screwInterface.changeSprite( spr );
+		sprite.setColor( 0f, 0f, 1f, 1f );
 		constructBody( pos );
+		if ( sprite != null )
+			sprite.rotate( ( float ) ( Math.random( ) * 360 ) );
+		body.setTransform( body.getPosition( ), sprite.getRotation( )
+				* Util.DEG_TO_RAD );
+		rotation = (int) ( body.getAngle( ) * Util.RAD_TO_DEG );
 		connectScrewToEntity( entity );
-		constructPulley( );
 	}
 
 	/**
@@ -68,11 +86,12 @@ public class ResurrectScrew extends Screw {
 			body.setAngularVelocity( 15 );
 			rotation += 10;
 			screwStep = depth + 5;
-			pulleyWeight.setLinearVelocity( new Vector2( -1f, 0f ) );
 			if ( deadPlayer.isPlayerDead( ) ) {
 				playerMover.moveAnalog( this, ( float ) depth
 						/ ( ( float ) maxDepth ), deadPlayer.body );
 			}
+			 int value = (int ) ( ( (float) depth / (float)maxDepth ) * 10f ) + 15;
+			 screwUIAnimator.setFrame( value );
 		}
 	}
 
@@ -98,11 +117,12 @@ public class ResurrectScrew extends Screw {
 				rotation += ( -newDiff * 5 );
 			}
 			screwStep = depth + 5;
-			pulleyWeight.setLinearVelocity( new Vector2( -1f, 0f ) );
 			if ( deadPlayer.isPlayerDead( ) ) {
 				playerMover.moveAnalog( this, ( float ) depth
 						/ ( ( float ) maxDepth ), deadPlayer.body );
 			}
+			 int value = (int ) ( ( (float) depth / (float)maxDepth ) * 10f ) + 15;
+			 screwUIAnimator.setFrame( value );
 		}
 
 	}
@@ -118,11 +138,12 @@ public class ResurrectScrew extends Screw {
 			body.setAngularVelocity( -15 );
 			rotation -= 10;
 			screwStep = depth + 5;
-			pulleyWeight.setLinearVelocity( new Vector2( 1f, 0f ) );
 			if ( deadPlayer.isPlayerDead( ) ) {
 				playerMover.moveAnalog( this, ( float ) depth
 						/ ( ( float ) maxDepth ), deadPlayer.body );
 			}
+			 int value = (int ) ( ( (float) depth / (float)maxDepth ) * 10f ) + 15;
+			 screwUIAnimator.setFrame( value );
 		}
 	}
 
@@ -147,11 +168,12 @@ public class ResurrectScrew extends Screw {
 				rotation += ( -newDiff * 5 );
 			}
 			screwStep = depth + 5;
-			pulleyWeight.setLinearVelocity( new Vector2( 1f, 0f ) );
 			if ( deadPlayer.isPlayerDead( ) ) {
 				playerMover.moveAnalog( this, ( float ) depth
 						/ ( ( float ) maxDepth ), deadPlayer.body );
 			}
+			 int value = (int ) ( ( (float) depth / (float)maxDepth ) * 10f ) + 15;
+			 screwUIAnimator.setFrame( value );
 		}
 
 	}
@@ -163,9 +185,9 @@ public class ResurrectScrew extends Screw {
 	 * @param player
 	 */
 	public void hitPlayer( Player player ) {
-		if ( player == deadPlayer ) {
-			destroyJoint = true;
-		}
+//		if ( player == deadPlayer ) {
+//			destroyJoint = true;
+//		}
 	}
 
 	/**
@@ -195,18 +217,12 @@ public class ResurrectScrew extends Screw {
 	@Override
 	public void remove( ) {
 		if ( !removed ) {
-			if ( pulleyJoint != null ) {
-				world.destroyJoint( pulleyJoint );
-				pulleyJoint = null;
-			}
 			if ( !playerAttached ) {
 				while ( body.getJointList( ).iterator( ).hasNext( ) ) {
 					world.destroyJoint( body.getJointList( ).get( 0 ).joint );
 				}
 				world.destroyBody( body );
 				removed = true;
-				world.destroyBody( pulleyWeight );
-				pulleyWeight = null;
 			}
 		}
 	}
@@ -215,11 +231,10 @@ public class ResurrectScrew extends Screw {
 	public void update( float deltaTime ) {
 		super.update( deltaTime );
 		if ( !removed ) {
-			if ( destroyJoint ) {
+			if ( playerMover.atEnd( ) || depth == maxDepth ) {
 				deadPlayer.body.setTransform(
 						this.getPositionPixel( )
-								.sub( Player.WIDTH / 3.0f,
-										Player.HEIGHT )
+								.sub( Player.WIDTH / 3.0f, Player.HEIGHT )
 								.mul( Util.PIXEL_TO_BOX ), 0.0f );
 				deadPlayer.body.setType( BodyType.DynamicBody );
 				deadPlayer.body.setLinearVelocity( Vector2.Zero );
@@ -235,11 +250,33 @@ public class ResurrectScrew extends Screw {
 				}
 				if ( depth == screwStep ) {
 					body.setAngularVelocity( 0 );
-					if ( pulleyWeight != null ) {
-						pulleyWeight.setLinearVelocity( new Vector2( 0f, 0f ) );
-					}
-					deadPlayer.body.setLinearVelocity( Vector2.Zero );
 				}
+				if ( deadPlayer.isPlayerDead( ) ) {
+					Vector2 temp = this.getPositionPixel( ).cpy( );
+					playerMover.changeEndPos( temp );
+					if ( playerOffset.x > 0 ) {
+						playerMover.changeBeginPos( temp.sub(
+								playerOffset ) );
+					} else {
+						playerMover.changeBeginPos( temp.sub(
+								playerOffset ) );
+					}
+					playerMover.moveAnalog( this, ( float ) depth
+							/ ( ( float ) maxDepth ), deadPlayer.body );
+				}
+				if ( playerAttached ) {
+					if ( screwInterface.sprite.getAnimator( ).getFrame( ) == 0 ) 
+					{
+						screwUIAnimator.speed( 1 );
+					} else if ( screwInterface.sprite.getAnimator( ).getFrame( ) > 14 ){
+						screwUIAnimator.speed( 0 );
+					}
+				} else {
+					screwUIAnimator.speed( -1 );
+				}
+				screwInterface.sprite.setPosition( this.getPositionPixel( ).sub( 52f, 4f ) );
+				screwInterface.sprite.update( deltaTime );
+				screwUIAnimator.update( deltaTime );
 			}
 		}
 	}
@@ -286,24 +323,5 @@ public class ResurrectScrew extends Screw {
 		revoluteJointDef.initialize( body, entity.body, body.getPosition( ) );
 		revoluteJointDef.enableMotor = false;
 		world.createJoint( revoluteJointDef );
-	}
-
-	/**
-	 * constructs a pulley one side with a kinematic body that is controlled by
-	 * the screws rotation
-	 */
-	private void constructPulley( ) {
-		BodyDef screwBodyDef = new BodyDef( );
-		screwBodyDef.type = BodyType.KinematicBody;
-		screwBodyDef.position.set( body.getPosition( ) );
-		pulleyWeight = world.createBody( screwBodyDef );
-
-		PulleyJointDef pulleyJointDef = new PulleyJointDef( );
-		pulleyJointDef.initialize( pulleyWeight, deadPlayer.body,
-				body.getPosition( ), body.getPosition( ),
-				pulleyWeight.getWorldCenter( ),
-				deadPlayer.body.getWorldCenter( ), 1.0f );
-
-		pulleyJoint = ( PulleyJoint ) world.createJoint( pulleyJointDef );
 	}
 }

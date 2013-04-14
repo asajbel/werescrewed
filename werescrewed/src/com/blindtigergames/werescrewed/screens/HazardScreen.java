@@ -8,7 +8,6 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
-import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.blindtigergames.werescrewed.camera.Anchor;
@@ -26,15 +25,20 @@ import com.blindtigergames.werescrewed.entity.action.RemoveEntityAction;
 import com.blindtigergames.werescrewed.entity.builders.EventTriggerBuilder;
 import com.blindtigergames.werescrewed.entity.builders.PlatformBuilder;
 import com.blindtigergames.werescrewed.entity.builders.PlayerBuilder;
+import com.blindtigergames.werescrewed.entity.hazard.Electricity;
+import com.blindtigergames.werescrewed.entity.hazard.Fire;
+import com.blindtigergames.werescrewed.entity.hazard.Hazard;
+import com.blindtigergames.werescrewed.entity.hazard.Spikes;
+import com.blindtigergames.werescrewed.entity.hazard.builders.HazardBuilder;
 import com.blindtigergames.werescrewed.entity.particles.Steam;
 import com.blindtigergames.werescrewed.entity.platforms.Platform;
 import com.blindtigergames.werescrewed.entity.platforms.TiledPlatform;
+import com.blindtigergames.werescrewed.entity.screws.PuzzleScrew;
 import com.blindtigergames.werescrewed.entity.screws.StructureScrew;
 import com.blindtigergames.werescrewed.entity.tween.EntityAccessor;
 import com.blindtigergames.werescrewed.entity.tween.PlatformAccessor;
 import com.blindtigergames.werescrewed.eventTrigger.EventTrigger;
-import com.blindtigergames.werescrewed.entity.hazard.*;
-import com.blindtigergames.werescrewed.entity.hazard.builders.*;
+import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 import com.blindtigergames.werescrewed.player.Player;
 import com.blindtigergames.werescrewed.util.Util;
 
@@ -88,7 +92,11 @@ public class HazardScreen implements com.badlogic.gdx.Screen {
 		initCrushTest( );
 		initParticleEffect( );
 		initDeathBarrier( );
-
+		
+		PuzzleScrew pscrew = new PuzzleScrew( "pscrew1", new Vector2( 1550f, 200f), 100, skeleton,
+				world, 0, false, Vector2.Zero);
+		skeleton.addScrewForDraw( pscrew );
+		
 		rootSkeleton.addSkeleton( skeleton );
 		debugRenderer = new SBox2DDebugRenderer( Util.BOX_TO_PIXEL );
 		debugRenderer.setDrawJoints( false );
@@ -253,6 +261,16 @@ public class HazardScreen implements com.badlogic.gdx.Screen {
 			spikes2.setActive( false );
 		}
 
+		if ( Gdx.input.isKeyPressed( Input.Keys.C ) ) {
+			if ( skeleton != null )
+				skeleton.rotateBy( -0.01f );
+		}
+
+		if ( Gdx.input.isKeyPressed( Input.Keys.V ) ) {
+			if ( skeleton != null )
+				skeleton.rotateBy( 0.01f );
+		}
+		
 		if ( Gdx.input.isKeyPressed( Keys.NUM_0 ) ) {
 			if ( debugTest )
 				debug = !debug;

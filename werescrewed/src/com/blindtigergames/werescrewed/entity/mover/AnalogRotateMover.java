@@ -43,6 +43,11 @@ public class AnalogRotateMover implements IMover {
 			}
 		} else {
 			transformBody.setAngularVelocity( 0 );
+			if ( body.getUserData( ) instanceof Platform ) {
+				Platform entity ;
+				entity = ( Platform ) body.getUserData( );
+				transformBody.setTransform( body.getPosition( ), entity.getLocalRot( ) );
+			}
 		}
 		if ( body.getUserData( ) instanceof Platform ) {
 			Platform entity ;
