@@ -59,12 +59,13 @@ public class Screen implements com.badlogic.gdx.Screen {
 		}
 		if (level != null){			
 			level.update( delta );
-			
+
 			//background stuff
 			if ( level.backgroundRootSkeleton != null ) {
 				level.backgroundCam.update( );
 				level.backgroundRootSkeleton.update( delta );
 			}
+			
 			if ( level.backgroundRootSkeleton != null ) {
 				level.backgroundBatch.setProjectionMatrix( level.backgroundCam.combined );
 				level.backgroundBatch.begin( );

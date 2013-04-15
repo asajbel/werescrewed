@@ -2,24 +2,26 @@ package com.blindtigergames.werescrewed.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
-import com.badlogic.gdx.physics.box2d.joints.RevoluteJoint;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.CircleShape;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
 import com.blindtigergames.werescrewed.WereScrewedGame;
-import com.blindtigergames.werescrewed.camera.Anchor;
-import com.blindtigergames.werescrewed.camera.AnchorList;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.RobotState;
 import com.blindtigergames.werescrewed.entity.RootSkeleton;
 import com.blindtigergames.werescrewed.entity.Skeleton;
-import com.blindtigergames.werescrewed.entity.action.EntityActivateMoverAction;
 import com.blindtigergames.werescrewed.entity.action.RemoveEntityAction;
 import com.blindtigergames.werescrewed.entity.builders.EventTriggerBuilder;
 import com.blindtigergames.werescrewed.entity.builders.PlayerBuilder;
 import com.blindtigergames.werescrewed.entity.builders.SkeletonBuilder;
 import com.blindtigergames.werescrewed.entity.mover.AnalogRotateMover;
+import com.blindtigergames.werescrewed.entity.mover.LinearAxis;
 import com.blindtigergames.werescrewed.entity.mover.ParallaxMover;
 import com.blindtigergames.werescrewed.entity.mover.RotateTweenMover;
 import com.blindtigergames.werescrewed.entity.platforms.TiledPlatform;
@@ -127,44 +129,74 @@ public class AlphaScreen extends Screen {
 		Skeleton bgSkele = b.name( "bgSkele" ).position( 0, 0 ).build( );
 		TextureAtlas atlas = WereScrewedGame.manager
 				.getAtlas( "alphabot_floor_seats" );
-		bgSkele.addDecal( atlas.createSprite( "floor_left" ), new Vector2(
+		bgSkele.addFGDecal( atlas.createSprite( "floor_left" ), new Vector2(
 				-2048, 0 ) );
-		bgSkele.addDecal( atlas.createSprite( "floor_right" ), new Vector2( 0,
-				0 ) );
-		bgSkele.addDecal( atlas.createSprite( "seats_left" ), new Vector2(
+		bgSkele.addFGDecal( atlas.createSprite( "floor_right" ), new Vector2(
+				0, 0 ) );
+		bgSkele.addFGDecal( atlas.createSprite( "seats_left" ), new Vector2(
 				-2048, 0 ) );
-		bgSkele.addDecal( atlas.createSprite( "seats_middle" ), new Vector2( 0,
-				0 ) );
-		bgSkele.addDecal( atlas.createSprite( "seats_right" ), new Vector2(
+		bgSkele.addFGDecal( atlas.createSprite( "seats_middle" ), new Vector2(
+				0, 0 ) );
+		bgSkele.addFGDecal( atlas.createSprite( "seats_right" ), new Vector2(
 				2048, 0 ) );
 		level.root.addSkeleton( bgSkele );
 	}
 
 	private void initBackground( ) {
+		BodyDef screwBodyDef;
+		Body body;
+		CircleShape screwShape;
+		FixtureDef screwFixture;
+		Entity bg_1_0 = new Entity( "bg_1_0", new Vector2( 0, 720 ), null,
+				null, false );
+		Entity bg_1_1 = new Entity( "bg_1_1", new Vector2( 0, 720 ), null,
+				null, false );
+		for ( int i = 0; i < 2; i++ ) {
+			screwBodyDef = new BodyDef( );
+			screwBodyDef.type = BodyType.KinematicBody;
+			screwBodyDef.position.set( 0, 0 );
+			screwBodyDef.fixedRotation = true;
+			body = level.world.createBody( screwBodyDef );
+			screwShape = new CircleShape( );
+			screwShape.setRadius( 64 * Util.PIXEL_TO_BOX );
+			screwFixture = new FixtureDef( );
+			screwFixture.filter.categoryBits = Util.CATEGORY_IGNORE;
+			screwFixture.filter.maskBits = Util.CATEGORY_NOTHING;
+			screwFixture.shape = screwShape;
+			screwFixture.isSensor = true;
+			body.createFixture( screwFixture );
+			body.setUserData( this );
+			switch ( i ) {
+			case 0:
+				bg_1_0 = new Entity( "bg_1_0", new Vector2( 0, 720 ), null,
+						body, false );
+				break;
+			case 1:
+				bg_1_1 = new Entity( "bg_1_1", new Vector2( 0, 720 ), null,
+						body, false );
+				break;
+			}
+		}
 		TextureRegion tex1 = WereScrewedGame.manager.getAtlas( "bgCloud" )
 				.findRegion( "bgCloud1" );
 		TextureRegion tex2 = WereScrewedGame.manager.getAtlas( "bgCloud" )
 				.findRegion( "bgCloud2" );
-		Entity bg_1_0 = new Entity( "bg_1_0", new Vector2( 0, 720 ), null,
-				null, false );
-		bg_1_0.setActive( true );
 		bg_1_0.sprite = bg_1_0.constructSprite( tex1 );
 		bg_1_0.sprite.setOrigin( 0f, 0f );
 		bg_1_0.offset = new Vector2( bg_1_0.sprite.getOriginX( ),
 				bg_1_0.sprite.getOriginY( ) );
+		bg_1_0.sprite.setScale( 1f, 1.1f );
 		bg_1_0.setMoverAtCurrentState( new ParallaxMover(
-				new Vector2( 0, 720 ), new Vector2( 0, -304 ), 0.0004f, .5f,
-				level.camera, true ) );
-		Entity bg_1_1 = new Entity( "bg_1_1", new Vector2( 0, 720 ), null,
-				null, false );
-		bg_1_1.setActive( true );
+				new Vector2( 0, 1024 ), new Vector2( 0, -1024 ), 0.0004f, .5f,
+				level.camera, false, LinearAxis.VERTICAL ) );
 		bg_1_1.sprite = bg_1_1.constructSprite( tex2 );
 		bg_1_1.sprite.setOrigin( 0f, 0f );
 		bg_1_1.offset = new Vector2( bg_1_1.sprite.getOriginX( ),
 				bg_1_1.sprite.getOriginY( ) );
+		bg_1_1.sprite.setScale( 1f, 1.1f );
 		bg_1_1.setMoverAtCurrentState( new ParallaxMover(
-				new Vector2( 0, 720 ), new Vector2( 0, -304 ), 0.0004f, 0f,
-				level.camera, true ) );
+				new Vector2( 0, 1024 ), new Vector2( 0, -1024 ), 0.0004f, 0f,
+				level.camera, false, LinearAxis.VERTICAL ) );
 		level.backgroundRootSkeleton.addLooseEntity( bg_1_0 );
 		level.backgroundRootSkeleton.addLooseEntity( bg_1_1 );
 	}

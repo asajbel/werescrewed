@@ -131,6 +131,7 @@ public class Level {
 		for ( Skeleton skel : skelBGList ) {
 			if ( skel.isActive( ) ) {
 				skel.bgSprite.draw( batch );
+				skel.drawBGDecals( batch );
 			}
 		}
 		// draw all background entity sprites after everything
@@ -155,9 +156,10 @@ public class Level {
 		// }
 		// draw all foreground skeleton sprites after everything
 		for ( Skeleton skel : skelFGList ) {
-			//if ( !skel.isActive( ) ) {
+			if ( skel.fgSprite.getAlpha( ) != 0 ) {
 				skel.fgSprite.draw( batch );
-			//}
+				skel.drawFGDecals( batch );
+			}
 		}
 		batch.end( );
 		

@@ -19,6 +19,7 @@ public class ParallaxMover implements IMover {
 	private Vector3 oldCameraPos;
 	private boolean moveContinuous;
 	private float oneStep = 1.33f;
+	private LinearAxis axis;
 
 	/**
 	 * builds movement of a single layer of parallax scrolling
@@ -28,7 +29,7 @@ public class ParallaxMover implements IMover {
 	 * @param speed
 	 */
 	public ParallaxMover( Vector2 beginningPoint, Vector2 endingPoint,
-			float speed, float alpha, Camera camera, boolean moveContinuous ) {
+			float speed, float alpha, Camera camera, boolean moveContinuous, LinearAxis axis ) {
 		this.beginningPoint = beginningPoint.cpy( );
 		this.endPoint = endingPoint.cpy( );
 		this.speed = Math.abs( speed );
@@ -36,6 +37,7 @@ public class ParallaxMover implements IMover {
 		this.cameraControl = camera;
 		this.oldCameraPos = camera.position.cpy( );
 		this.moveContinuous = moveContinuous;
+		this.axis = axis;
 		puzzleType = PuzzleType.OVERRIDE_ENTITY_MOVER;
 	}
 
@@ -48,16 +50,16 @@ public class ParallaxMover implements IMover {
 			float steps = 0;
 			float newPos = 0;
 			float oldPos = 0;
-			if ( beginningPoint.x != endPoint.x ) {
+			if ( axis == LinearAxis.HORIZONTAL ) {
 				newPos = cameraControl.position.x;
 				oldPos = oldCameraPos.x;
-			} else if ( beginningPoint.y != endPoint.y ) {
+			} else if ( axis == LinearAxis.VERTICAL ) {
 				newPos = cameraControl.position.y;
 				oldPos = oldCameraPos.y;
 			}
 			if ( newPos > oldPos ) {
 				steps = ( newPos - oldPos ) / oneStep;
-				if ( beginningPoint.x != endPoint.x ) {
+				if ( axis == LinearAxis.HORIZONTAL ) {
 					if ( beginningPoint.x > endPoint.x ) {
 						alpha += steps * speed;
 					} else {
@@ -72,7 +74,7 @@ public class ParallaxMover implements IMover {
 				}
 			} else if ( newPos < oldPos ) {
 				steps = ( oldPos - newPos ) / oneStep;
-				if ( beginningPoint.x != endPoint.x ) {
+				if ( axis == LinearAxis.HORIZONTAL ) {
 					if ( beginningPoint.x > endPoint.x ) {
 						alpha -= steps * speed;
 					} else {
@@ -98,7 +100,7 @@ public class ParallaxMover implements IMover {
 		Vector2 temp = beginningPoint.cpy( );
 		beginningPoint.lerp( endPoint, alpha );
 		body.setTransform( beginningPoint.mul( Util.PIXEL_TO_BOX ), 0.0f );
-		beginningPoint = temp;
+		beginningPoint = temp.cpy( );
 	}
 
 	@Override
