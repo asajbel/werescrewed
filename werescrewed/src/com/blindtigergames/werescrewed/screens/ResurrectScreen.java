@@ -29,6 +29,7 @@ import com.blindtigergames.werescrewed.entity.Skeleton;
 import com.blindtigergames.werescrewed.entity.Sprite;
 import com.blindtigergames.werescrewed.entity.builders.PlatformBuilder;
 import com.blindtigergames.werescrewed.entity.builders.PlayerBuilder;
+import com.blindtigergames.werescrewed.entity.mover.LinearAxis;
 import com.blindtigergames.werescrewed.entity.mover.ParallaxMover;
 import com.blindtigergames.werescrewed.entity.platforms.Platform;
 import com.blindtigergames.werescrewed.entity.platforms.TiledPlatform;
@@ -238,27 +239,27 @@ public class ResurrectScreen implements com.badlogic.gdx.Screen {
 		// bg_2_1.sprite.setScale( 1.9f );
 
 		bg_1_0.setMoverAtCurrentState( new ParallaxMover( new Vector2( 2304,
-				512 ), new Vector2( -264, 512 ), 0.0002f, .5f, cam, true  ));
+				512 ), new Vector2( -264, 512 ), 0.0002f, .5f, cam, true, LinearAxis.HORIZONTAL  ));
 		bg_1_0.setActive( true );
 		bg_1_0.setVisible( true );
 		bg_1_1.setMoverAtCurrentState( new ParallaxMover( new Vector2( 2304,
-				512 ), new Vector2( -264, 512 ), 0.0002f, 0f, cam, true  ) );
+				512 ), new Vector2( -264, 512 ), 0.0002f, 0f, cam, true, LinearAxis.HORIZONTAL   ) );
 		bg_1_1.setActive( true );
 		bg_1_1.setVisible( true );
 		bg_2_0.setMoverAtCurrentState( new ParallaxMover( new Vector2( 2304,
-				512 ), new Vector2( -264, 512 ), 0.0001f, .5f, cam, true  ) );
+				512 ), new Vector2( -264, 512 ), 0.0001f, .5f, cam, true, LinearAxis.HORIZONTAL   ) );
 		bg_2_0.setActive( true );
 		bg_2_0.setVisible( true );
 		bg_2_1.setMoverAtCurrentState( new ParallaxMover( new Vector2( 2304,
-				512 ), new Vector2( -264, 512 ), 0.0001f, 0f, cam, true  ) );
+				512 ), new Vector2( -264, 512 ), 0.0001f, 0f, cam, true, LinearAxis.HORIZONTAL   ) );
 		bg_2_1.setActive( true );
 		bg_2_1.setVisible( true );
 		bg_3_0.setMoverAtCurrentState( new ParallaxMover( new Vector2( 2304,
-				512 ), new Vector2( -264, 512 ), 0.0004f, .5f, cam, true  ) );
+				512 ), new Vector2( -264, 512 ), 0.0004f, .5f, cam, true, LinearAxis.HORIZONTAL   ) );
 		bg_3_0.setActive( true );
 		bg_3_0.setVisible( true );
 		bg_3_1.setMoverAtCurrentState( new ParallaxMover( new Vector2( 2304,
-				512 ), new Vector2( -264, 512 ), 0.0004f, 0f, cam, true ) );
+				512 ), new Vector2( -264, 512 ), 0.0004f, 0f, cam, true, LinearAxis.HORIZONTAL  ) );
 		bg_3_1.setActive( true );
 		bg_3_1.setVisible( true );
 		bgRootSkel.addLooseEntity( bg_2_0 );
@@ -290,21 +291,21 @@ public class ResurrectScreen implements com.badlogic.gdx.Screen {
 
 	private void initCheckPoints( ) {
 		progressManager = new ProgressManager( player1, player2, world );
-		progressManager.addCheckPoint( new CheckPoint( "check_01", new Vector2(
+		skeleton.addCheckPoint( new CheckPoint( "check_01", new Vector2(
 				-512f, 32f ), skeleton, world, progressManager,
 				"levelStage_0_0" ) );
-		progressManager
-				.addCheckPoint( new CheckPoint( "check_01", new Vector2( 0f,
+		skeleton
+				.addCheckPoint( new CheckPoint( "check_02", new Vector2( 0f,
 						32f ), skeleton, world, progressManager,
 						"levelStage_0_1" ) );
-		progressManager
-				.addCheckPoint( new CheckPoint( "check_01", new Vector2( 512f,
+		skeleton
+				.addCheckPoint( new CheckPoint( "check_03", new Vector2( 512f,
 						32f ), skeleton, world, progressManager,
 						"levelStage_0_2" ) );
-		progressManager.addCheckPoint( new CheckPoint( "check_01", new Vector2(
+		skeleton.addCheckPoint( new CheckPoint( "check_04", new Vector2(
 				1024f, 32f ), skeleton, world, progressManager,
 				"levelStage_0_3" ) );
-		progressManager.addCheckPoint( new CheckPoint( "check_01", new Vector2(
+		skeleton.addCheckPoint( new CheckPoint( "check_05", new Vector2(
 				1512f, 32f ), skeleton, world, progressManager,
 				"levelStage_0_4" ) );
 	}

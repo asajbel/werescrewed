@@ -45,6 +45,7 @@ public class Screw extends Entity {
 	protected int diff;
 	protected Entity entity;
 	protected Vector2 detachDirection;
+	protected Vector2 interfaceOffset = new Vector2( 82f, 4f );
 	protected boolean upDownDetach;
 	protected float entityAngle;
 	protected boolean playerAttached = false;
@@ -69,8 +70,6 @@ public class Screw extends Entity {
 		super( name, pos, null, null, false );
 		this.world = world;
 		this.sprite = constructSprite(screwTexRegion);
-		sprite.setOrigin( sprite.getWidth( )/2.0f, sprite.getHeight( )/2.0f );
-		this.offset = new Vector2 ( sprite.getOriginX( ), sprite.getOriginY( ) );
 		this.entity = entity;
 		this.entityAngle = entity.getAngle( );
 		screwType = ScrewType.SCREW_COSMETIC;
@@ -92,8 +91,6 @@ public class Screw extends Entity {
 	public Screw( String name, Vector2 pos, Texture tex ) {
 		super( name, pos, null, null, false );
 		this.sprite = constructSprite(screwTexRegion);
-		sprite.setOrigin( sprite.getWidth( )/2.0f, sprite.getHeight( )/2.0f );
-		this.offset = new Vector2 ( sprite.getOriginX( ), sprite.getOriginY( ) );
 		entityType = EntityType.SCREW;
 	}
 
@@ -112,6 +109,11 @@ public class Screw extends Entity {
 		}
 	}
 
+	@Override
+	public void dispose( ) {
+		remove( );
+	}
+	
 	/**
 	 * returns true if the box2d stuff has been completely removed
 	 */

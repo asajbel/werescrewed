@@ -33,6 +33,8 @@ public class PuzzleScrew extends Screw {
 	private boolean resetAble;
 	private Entity screwInterface;
 	private SimpleFrameAnimator screwUIAnimator;
+	private int startFrame = 15;
+	private int lastMotionFrame = 14;
 
 	public PuzzleScrew( String name, Vector2 pos, int max, Entity entity,
 			World world, int startDepth, boolean resetable,
@@ -51,6 +53,9 @@ public class PuzzleScrew extends Screw {
 		}
 		maxDepth = max;
 		this.startDepth = depth = startDepth;
+		if ( startDepth == max ) {
+			startFrame = 25;
+		}
 		resetAble = resetable;
 		puzzleManager = new PuzzleManager( this.name );
 		screwType = ScrewType.SCREW_PUZZLE;
@@ -61,7 +66,7 @@ public class PuzzleScrew extends Screw {
 		TextureAtlas atlas = WereScrewedGame.manager.getTextureAtlas( "screwInterface" );
 		screwUIAnimator = new SimpleFrameAnimator( ).speed(0f )
 				.loop( LoopBehavior.STOP ).time( 0.0f ).startFrame( 0 )
-				.maxFrames( 25 );
+				.maxFrames( 35 );
 		Sprite spr = new Sprite( atlas, screwUIAnimator );
 		spr.setOrigin( spr.getWidth( )/2.0f, spr.getHeight( )/2.0f );
 		screwInterface.changeSprite( spr );
@@ -81,6 +86,9 @@ public class PuzzleScrew extends Screw {
 		this.world = world;
 		maxDepth = max;
 		this.startDepth = depth = startDepth;
+		if ( startDepth == max ) {
+			startFrame = 25;
+		}
 		resetAble = resetable;
 		puzzleManager = new PuzzleManager( this.name );
 		screwType = ScrewType.SCREW_PUZZLE;
@@ -92,7 +100,7 @@ public class PuzzleScrew extends Screw {
 		TextureAtlas atlas = WereScrewedGame.manager.getTextureAtlas( "screwInterface" );
 		screwUIAnimator = new SimpleFrameAnimator( ).speed(1f )
 				.loop( LoopBehavior.STOP ).time( 0.0f ).startFrame( 0 )
-				.maxFrames( 25 );
+				.maxFrames( 35 );
 		Sprite spr = new Sprite( atlas, screwUIAnimator );
 		spr.setOrigin( spr.getWidth( )/2.0f, spr.getHeight( )/2.0f );
 		screwInterface.changeSprite( spr );
@@ -132,8 +140,6 @@ public class PuzzleScrew extends Screw {
 			screwStep = depth + 5;
 			puzzleManager.runElement( this, ( float ) depth
 					/ ( ( float ) maxDepth ) );
-			 int value = (int ) ( ( (float) depth / (float)maxDepth ) * 10f ) + 15;
-			 screwUIAnimator.setFrame( value );
 		}
 
 	}
@@ -147,8 +153,6 @@ public class PuzzleScrew extends Screw {
 			screwStep = depth + 5;
 			puzzleManager.runElement( this, ( float ) depth
 					/ ( ( float ) maxDepth ) );
-			 int value = (int ) ( ( (float) depth / (float)maxDepth ) * 10f ) + 15;
-			 screwUIAnimator.setFrame( value );
 		}
 	}
 
@@ -179,8 +183,6 @@ public class PuzzleScrew extends Screw {
 			screwStep = depth + 6;
 			puzzleManager.runElement( this, ( float ) depth
 					/ ( ( float ) maxDepth ) );
-			 int value = (int ) ( ( (float) depth / (float)maxDepth ) * 10f ) + 15;
-			 screwUIAnimator.setFrame( value );
 		}
 
 	}
@@ -194,8 +196,6 @@ public class PuzzleScrew extends Screw {
 			screwStep = depth + 6;
 			puzzleManager.runElement( this, ( float ) depth
 					/ ( ( float ) maxDepth ) );
-			 int value = (int ) ( ( (float) depth / (float)maxDepth ) * 10f ) + 15;
-			 screwUIAnimator.setFrame( value );
 		}
 	}
 
@@ -227,13 +227,18 @@ public class PuzzleScrew extends Screw {
 				if ( screwInterface.sprite.getAnimator( ).getFrame( ) == 0 ) 
 				{
 					screwUIAnimator.speed( 1 );
-				} else if ( screwInterface.sprite.getAnimator( ).getFrame( ) > 14 ){
+				} else if ( screwInterface.sprite.getAnimator( ).getFrame( ) > lastMotionFrame ){
 					screwUIAnimator.speed( 0 );
+					int value = (int ) ( ( (float) depth / (float)maxDepth ) * 10f ) + startFrame;
+					screwUIAnimator.setFrame( value );
 				}
 			} else {
+				if ( screwInterface.sprite.getAnimator( ).getFrame( ) > lastMotionFrame ){
+					screwUIAnimator.setFrame( lastMotionFrame );
+				}
 				screwUIAnimator.speed( -1 );
 			}
-			screwInterface.sprite.setPosition( this.getPositionPixel( ).sub( 52f, 4f ) );
+			screwInterface.sprite.setPosition( this.getPositionPixel( ).sub( interfaceOffset ) );
 			screwInterface.sprite.update( deltaTime );
 			screwUIAnimator.update( deltaTime );
 		}
@@ -241,13 +246,14 @@ public class PuzzleScrew extends Screw {
 
 	@Override
 	public void draw( SpriteBatch batch, float deltaTime ) {
+		drawBGDecals( batch );
 		screwInterface.sprite.draw( batch );
 		drawParticles( behindParticles, batch );
 		if ( sprite != null && visible && !removeNextStep ) {
 			sprite.draw( batch );
 		}
 		// drawOrigin(batch);
-		drawDecals( batch );
+		drawFGDecals( batch );
 		if ( spinemator != null )
 			spinemator.draw( batch );
 		drawParticles( frontParticles, batch );

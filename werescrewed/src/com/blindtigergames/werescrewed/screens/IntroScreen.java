@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
@@ -15,8 +16,7 @@ class IntroScreen implements com.badlogic.gdx.Screen {
 	public ScreenType screenType;
 	private SpriteBatch batch = null;
 	private BitmapFont font = null;
-	static Texture player = WereScrewedGame.manager.get(
-			WereScrewedGame.dirHandle.path( ) + "/common/screw/screw.png", Texture.class);
+	static TextureRegion player = WereScrewedGame.manager.getAtlas( "common-textures" ).findRegion( "screw-flathead" );
 
 	Stage stage;
 

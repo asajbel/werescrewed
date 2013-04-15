@@ -59,9 +59,12 @@ public class Entity implements GleedLoadable {
 	protected boolean removeNextStep = false;
 	public EntityType entityType;
 	private ArrayList< IMover > moverArray;
-	protected ArrayList< Sprite > decals;
-	protected ArrayList< Vector2 > decalOffsets;
-	protected ArrayList< Float > decalAngles;
+	protected ArrayList< Sprite > fgDecals;
+	protected ArrayList< Vector2 > fgDecalOffsets;
+	protected ArrayList< Float > fgDecalAngles;
+	protected ArrayList< Sprite > bgDecals;
+	protected ArrayList< Vector2 > bgDecalOffsets;
+	protected ArrayList< Float > bgDecalAngles;
 	private RobotState currentRobotState;
 	private EnumMap< RobotState, Integer > robotStateMap;
 	public ISpinemator spinemator;
@@ -132,8 +135,10 @@ public class Entity implements GleedLoadable {
 			}
 		}
 		this.body = constructBodyByType( );
-		this.decals = new ArrayList< Sprite >( );
-		this.decalOffsets = new ArrayList< Vector2 >( );
+		this.fgDecals = new ArrayList< Sprite >( );
+		this.fgDecalOffsets = new ArrayList< Vector2 >( );
+		this.bgDecals = new ArrayList< Sprite >( );
+		this.bgDecalOffsets = new ArrayList< Vector2 >( );
 		setPixelPosition( positionPixels );
 		this.anchors = new ArrayList< Anchor >( );
 	}
@@ -204,9 +209,12 @@ public class Entity implements GleedLoadable {
 		this.maintained = true;
 		this.visible = true;
 		this.active = true;
-		this.decals = new ArrayList< Sprite >( );
-		this.decalOffsets = new ArrayList< Vector2 >( );
-		this.decalAngles = new ArrayList< Float >( );
+		this.fgDecals = new ArrayList< Sprite >( );
+		this.fgDecalOffsets = new ArrayList< Vector2 >( );
+		this.fgDecalAngles = new ArrayList< Float >( );
+		this.bgDecals = new ArrayList< Sprite >( );
+		this.bgDecalOffsets = new ArrayList< Vector2 >( );
+		this.bgDecalAngles = new ArrayList< Float >( );
 		setUpRobotState( );
 	}
 
@@ -271,12 +279,13 @@ public class Entity implements GleedLoadable {
 	}
 
 	public void draw( SpriteBatch batch, float deltaTime ) {
+		drawBGDecals( batch );
 		drawParticles( behindParticles, batch );
 		if ( sprite != null && visible && !removeNextStep ) {
 			sprite.draw( batch );
 		}
 		// drawOrigin(batch);
-		drawDecals( batch );
+		drawFGDecals( batch );
 		if ( spinemator != null )
 			spinemator.draw( batch );
 		drawParticles( frontParticles, batch );
@@ -467,10 +476,14 @@ public class Entity implements GleedLoadable {
 		return sprite;
 	}
 
-	protected Sprite constructSprite( TextureRegion region ) {
+	public Sprite constructSprite( TextureRegion region ) {
 		Sprite sprite;
 
 		sprite = new Sprite( region );
+
+		sprite.setOrigin( sprite.getWidth( ) / 2.0f, sprite.getHeight( ) / 2.0f );
+		this.offset = new Vector2( sprite.getOriginX( ), sprite.getOriginY( ) );
+
 		return sprite;
 	}
 
@@ -942,18 +955,35 @@ public class Entity implements GleedLoadable {
 	/**
 	 * 
 	 */
-	public void addDecal( Sprite s, Vector2 offset, float angle ) {
-		this.decals.add( s );
-		this.decalOffsets.add( offset );
-		this.decalAngles.add( angle );
+	public void addBGDecal( Sprite s, Vector2 offset, float angle ) {
+		this.bgDecals.add( s );
+		this.bgDecalOffsets.add( offset );
+		this.bgDecalAngles.add( angle );
 	}
 
-	public void addDecal( Sprite s, Vector2 offset ) {
-		addDecal( s, offset, 0.0f );
+	/**
+	 * 
+	 */
+	public void addFGDecal( Sprite s, Vector2 offset, float angle ) {
+		this.fgDecals.add( s );
+		this.fgDecalOffsets.add( offset );
+		this.fgDecalAngles.add( angle );
 	}
 
-	public void addDecal( Sprite s ) {
-		addDecal( s, new Vector2( s.getX( ), s.getY( ) ) );
+	public void addBGDecal( Sprite s, Vector2 offset ) {
+		addBGDecal( s, offset, 0.0f );
+	}
+
+	public void addFGDecal( Sprite s, Vector2 offset ) {
+		addFGDecal( s, offset, 0.0f );
+	}
+
+	public void addBGDecal( Sprite s ) {
+		addBGDecal( s, new Vector2( s.getX( ), s.getY( ) ) );
+	}
+
+	public void addFGDecal( Sprite s ) {
+		addFGDecal( s, new Vector2( s.getX( ), s.getY( ) ) );
 	}
 
 	public void updateDecals( float deltaTime ) {
@@ -963,10 +993,19 @@ public class Entity implements GleedLoadable {
 		float x, y, r;
 		Vector2 offset;
 		Sprite decal;
-		for ( int i = 0; i < decals.size( ); i++ ) {
-			offset = decalOffsets.get( i );
-			decal = decals.get( i );
-			r = decalAngles.get( i );
+		for ( int i = 0; i < fgDecals.size( ); i++ ) {
+			offset = fgDecalOffsets.get( i );
+			decal = fgDecals.get( i );
+			r = fgDecalAngles.get( i );
+			x = bodyPos.x + ( offset.x * cos ) - ( offset.y * sin );
+			y = bodyPos.y + ( offset.y * cos ) + ( offset.x * sin );
+			decal.setPosition( x, y );
+			decal.setRotation( r + ( angle * Util.RAD_TO_DEG ) );
+		}
+		for ( int i = 0; i < bgDecals.size( ); i++ ) {
+			offset = bgDecalOffsets.get( i );
+			decal = bgDecals.get( i );
+			r = bgDecalAngles.get( i );
 			x = bodyPos.x + ( offset.x * cos ) - ( offset.y * sin );
 			y = bodyPos.y + ( offset.y * cos ) + ( offset.x * sin );
 			decal.setPosition( x, y );
@@ -977,8 +1016,17 @@ public class Entity implements GleedLoadable {
 	/**
 	 * 
 	 */
-	public void drawDecals( SpriteBatch batch ) {
-		for ( Sprite decal : decals ) {
+	public void drawFGDecals( SpriteBatch batch ) {
+		for ( Sprite decal : fgDecals ) {
+			decal.draw( batch );
+		}
+	}
+
+	/**
+	 * 
+	 */
+	public void drawBGDecals( SpriteBatch batch ) {
+		for ( Sprite decal : bgDecals ) {
 			decal.draw( batch );
 		}
 	}

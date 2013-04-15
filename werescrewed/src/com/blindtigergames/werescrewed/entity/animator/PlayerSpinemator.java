@@ -100,7 +100,7 @@ public class PlayerSpinemator implements ISpinemator {
 			root.setY( position.y );
 		} else {
 			root.setX( player.body.getWorldCenter( ).x * Util.BOX_TO_PIXEL );
-			root.setY( player.body.getWorldCenter( ).y * Util.BOX_TO_PIXEL - 40 );
+			root.setY( player.body.getWorldCenter( ).y * Util.BOX_TO_PIXEL - 36 );
 		}
 		if ( scale != null ) {
 			root.setScaleX( scale.x );
