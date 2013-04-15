@@ -136,27 +136,27 @@ public class ProgressManager {
 		}
 		// update the rez screw if it exists
 		if ( resurrectScrew != null ) {
-			if ( checkPointChange ) {
-				while ( resurrectScrew.body.getJointList( ).iterator( )
-						.hasNext( ) ) {
-					world.destroyJoint( resurrectScrew.body.getJointList( )
-							.get( 0 ).joint );
-				}
-				resurrectScrew.addStructureJoint( checkPoints
-						.get( currentCheckPoint ) );
-			}
+//			if ( checkPointChange ) {
+//				while ( resurrectScrew.body.getJointList( ).iterator( )
+//						.hasNext( ) ) {
+//					world.destroyJoint( resurrectScrew.body.getJointList( )
+//							.get( 0 ).joint );
+//				}
+//				resurrectScrew.addStructureJoint( checkPoints
+//						.get( currentCheckPoint ).getEntity( ) );
+//			}
 			resurrectScrew.update( deltaTime );
 		}
 		if ( extraRezScrew != null ) {
-			if ( checkPointChange ) {
-				while ( extraRezScrew.body.getJointList( ).iterator( )
-						.hasNext( ) ) {
-					world.destroyJoint( extraRezScrew.body.getJointList( ).get(
-							0 ).joint );
-				}
-				extraRezScrew.addStructureJoint( checkPoints
-						.get( currentCheckPoint ) );
-			}
+//			if ( checkPointChange ) {
+//				while ( extraRezScrew.body.getJointList( ).iterator( )
+//						.hasNext( ) ) {
+//					world.destroyJoint( extraRezScrew.body.getJointList( ).get(
+//							0 ).joint );
+//				}
+//				extraRezScrew.addStructureJoint( checkPoints
+//						.get( currentCheckPoint ).getEntity( ) );
+//			}
 			extraRezScrew.update( deltaTime );
 		}
 		if ( p1Ghost != null ) {
@@ -243,10 +243,8 @@ public class ProgressManager {
 	 */
 	private void handleDeadPlayer( ) {
 		if ( resurrectScrew == null ) {
-			Entity entity = checkPoints.get( currentCheckPoint ).getEntity( );
 			ScrewBuilder rezzBuilder = new ScrewBuilder( )
-					.screwType( ScrewType.SCREW_RESURRECT ).entity( entity )
-					.world( world );
+					.screwType( ScrewType.SCREW_RESURRECT ).world( world );
 			Vector2 screwPos = new Vector2( -100, 150 );
 			boolean isp1onExtraRezScrew = false;
 			boolean isp2onExtraRezScrew = false;
@@ -296,7 +294,7 @@ public class ProgressManager {
 				player1.body.setLinearVelocity( Vector2.Zero );
 				player1.body.setType( BodyType.KinematicBody );
 				resurrectScrew = rezzBuilder.playerOffset( true )
-						.lerpMover( screwMover ).position( screwPos )
+						.lerpMover( screwMover ).position( screwPos ).entity( player1.getLastPlatform( ) )
 						.buildRezzScrew( );
 			} else if ( player2.isPlayerDead( ) && !isp2onExtraRezScrew ) {
 				// create new rez screw and attach
@@ -336,16 +334,15 @@ public class ProgressManager {
 				}
 				player2.body.setLinearVelocity( Vector2.Zero );
 				player2.body.setType( BodyType.KinematicBody );
-				resurrectScrew = rezzBuilder.playerOffset( true )
+				resurrectScrew = rezzBuilder.playerOffset( true ).entity( player1.getLastPlatform( ) )
 						.lerpMover( screwMover ).position( screwPos )
 						.buildRezzScrew( );
 			}
 		}
 		if ( player1.isPlayerDead( ) && player2.isPlayerDead( )
 				&& extraRezScrew == null ) {
-			Entity entity = checkPoints.get( currentCheckPoint ).getEntity( );
 			ScrewBuilder rezzBuilder = new ScrewBuilder( )
-					.screwType( ScrewType.SCREW_RESURRECT ).entity( entity )
+					.screwType( ScrewType.SCREW_RESURRECT )
 					.world( world );
 			Vector2 screwPos = new Vector2( -100, 150 );
 			if ( resurrectScrew.getDeadPlayer( ) == player1 ) {
@@ -386,7 +383,7 @@ public class ProgressManager {
 				}
 				player2.body.setLinearVelocity( Vector2.Zero );
 				player2.body.setType( BodyType.KinematicBody );
-				extraRezScrew = rezzBuilder.playerOffset( true )
+				extraRezScrew = rezzBuilder.playerOffset( true ).entity( player2.getLastPlatform( ) )
 						.lerpMover( screwMover ).position( screwPos )
 						.buildRezzScrew( );
 			} else {
@@ -427,7 +424,7 @@ public class ProgressManager {
 				}
 				player1.body.setLinearVelocity( Vector2.Zero );
 				player1.body.setType( BodyType.KinematicBody );
-				extraRezScrew = rezzBuilder.playerOffset( true )
+				extraRezScrew = rezzBuilder.playerOffset( true ).entity( player1.getLastPlatform( ) )
 						.lerpMover( screwMover ).position( screwPos )
 						.buildRezzScrew( );
 			}

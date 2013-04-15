@@ -254,8 +254,10 @@ public class StructureScrew extends Screw {
 					screwUIAnimator.speed( 1 );
 				} else if ( screwInterface.sprite.getAnimator( ).getFrame( ) > lastMotionFrame ) {
 					screwUIAnimator.speed( 0 );
-					int value = (int ) ( ( (float) depth / (float)maxDepth ) * 10f ) + startFrame;
-					screwUIAnimator.setFrame( value );
+					if ( depth >= 0 ) {
+						int value = (int ) ( ( (float) depth / (float)maxDepth ) * 10f ) + startFrame;
+						screwUIAnimator.setFrame( value );
+					}
 				}
 			} else {
 				if ( screwInterface.sprite.getAnimator( ).getFrame( ) > lastMotionFrame ) {

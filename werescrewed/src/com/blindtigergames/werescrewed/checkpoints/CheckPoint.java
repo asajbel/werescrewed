@@ -157,7 +157,7 @@ public class CheckPoint extends Entity {
 		checkPShape.setRadius( ( sprite.getWidth( ) / 2.0f )
 				* Util.PIXEL_TO_BOX );
 		FixtureDef checkPFixture = new FixtureDef( );
-		checkPFixture.filter.categoryBits = Util.CATEGORY_SCREWS;
+		checkPFixture.filter.categoryBits = Util.CATEGORY_CHECKPOINTS;
 		checkPFixture.filter.maskBits = Util.CATEGORY_PLAYER
 				| Util.CATEGORY_SUBPLAYER;
 		checkPFixture.shape = checkPShape;

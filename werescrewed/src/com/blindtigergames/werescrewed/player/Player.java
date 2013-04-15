@@ -27,10 +27,10 @@ import com.blindtigergames.werescrewed.entity.animator.PlayerSpinemator;
 import com.blindtigergames.werescrewed.entity.mover.IMover;
 import com.blindtigergames.werescrewed.entity.mover.LerpMover;
 import com.blindtigergames.werescrewed.entity.mover.LinearAxis;
+import com.blindtigergames.werescrewed.entity.platforms.Platform;
 import com.blindtigergames.werescrewed.entity.screws.ResurrectScrew;
 import com.blindtigergames.werescrewed.entity.screws.Screw;
 import com.blindtigergames.werescrewed.entity.screws.ScrewType;
-import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 import com.blindtigergames.werescrewed.graphics.particle.ParticleEffect;
 import com.blindtigergames.werescrewed.input.MyControllerListener;
 import com.blindtigergames.werescrewed.input.PlayerInputHandler;
@@ -114,7 +114,8 @@ public class Player extends Entity {
 	private Screw currentScrew;
 	private Player otherPlayer;
 	private RevoluteJoint playerJoint;
-	private Body platformBody;
+	private Platform currentPlatform;
+	private Platform lastPlatformHit;
 	private boolean topPlayer = false;
 	private boolean isDead = false;
 	private boolean hitSolidObject;
@@ -377,7 +378,7 @@ public class Player extends Entity {
 		if ( body.getLinearVelocity( ).y < -MIN_VELOCITY * 4f
 				&& playerState != PlayerState.Screwing
 				&& playerState != PlayerState.JumpingOffScrew
-				&& platformBody == null && !isDead ) {
+				&& currentPlatform == null && !isDead ) {
 			switch ( playerState ) {
 			case HeadStand:
 				// don't set the player state use the extra state
@@ -456,7 +457,7 @@ public class Player extends Entity {
 				removePlayerToScrew( );
 				removePlayerToPlayer( );
 				currentScrew = null;
-				platformBody = null;
+				currentPlatform = null;
 				mover = null;
 				Filter filter = new Filter( );
 				for ( Fixture f : body.getFixtureList( ) ) {
@@ -476,7 +477,7 @@ public class Player extends Entity {
 				}
 			} else {
 				playerState = PlayerState.Standing;
-				platformBody = null;
+				currentPlatform = null;
 			}
 			isDead = true;
 			ParticleEffect blood = getEffect( "blood" );
@@ -506,7 +507,7 @@ public class Player extends Entity {
 			f.setFilterData( filter );
 		}
 		playerState = PlayerState.Standing;
-		platformBody = null;
+		currentPlatform = null;
 		isDead = false;
 		respawnTimeout = DEAD_STEPS;
 
@@ -843,28 +844,34 @@ public class Player extends Entity {
 	/**
 	 * sets the body of some body that the player is hitting
 	 */
-	public void hitSolidObject( Body b ) {
-		if ( platformBody == null && b != null
+	public void hitSolidObject( Platform platform ) {
+		if ( currentPlatform == null && platform != null
 				&& playerState == PlayerState.Screwing ) {
-			if ( mover == null ) {
-				// knockedOff = true;
-			}
-		} else if ( screwJumpTimeout == 0 ) {
-			if ( b != null || playerState != PlayerState.Screwing ) {
-				platformBody = b;
-			}
+			knockedOff = true;
+		} else {
+			currentPlatform = platform;
 			if ( playerState == PlayerState.Falling ) {
 				playerState = PlayerState.Standing;
 			}
 		}
-		if ( b == null ) {
+		if ( platform == null ) {
 			knockedOff = false;
 			hitSolidObject = false;
 		} else {
+			if ( platform.isKinematic( ) ) {
+				lastPlatformHit = platform;
+			}
 			hitSolidObject = true;
 		}
 	}
 
+	/**
+	 * gets the last kinematic platform hit
+	 */
+	public Platform getLastPlatform( ) {
+		return lastPlatformHit;
+	}
+	
 	/**
 	 * Checks if the player is grounded
 	 * 
@@ -916,29 +923,30 @@ public class Player extends Entity {
 			}
 			playerState = PlayerState.Screwing;
 			currentScrew.setPlayerAttached( true );
-			platformBody = null;
-			if ( currentScrew.getScrewType( ) == ScrewType.SCREW_STRUCTURAL ) {
-				for ( JointEdge je : currentScrew.body.getJointList( ) ) {
-					// if this body is a platform but not a skeleton save the
-					// instance
-					if ( je.joint.getBodyA( ).getUserData( ) instanceof Entity ) {
-						Entity p = ( Entity ) je.joint.getBodyA( )
-								.getUserData( );
-						if ( p.getEntityType( ) == EntityType.PLATFORM ) {
-							platformBody = je.joint.getBodyA( );
-						}
-					}
-					// if this body is a platform but not a skeleton save the
-					// instance
-					if ( je.joint.getBodyB( ).getUserData( ) instanceof Entity ) {
-						Entity p = ( Entity ) je.joint.getBodyB( )
-								.getUserData( );
-						if ( p.getEntityType( ) == EntityType.PLATFORM ) {
-							platformBody = je.joint.getBodyB( );
-						}
-					}
-				}
-			}
+			currentPlatform = null;
+			// if ( currentScrew.getScrewType( ) == ScrewType.SCREW_STRUCTURAL )
+			// {
+			// for ( JointEdge je : currentScrew.body.getJointList( ) ) {
+			// // if this body is a platform but not a skeleton save the
+			// // instance
+			// if ( je.joint.getBodyA( ).getUserData( ) instanceof Entity ) {
+			// Entity p = ( Entity ) je.joint.getBodyA( )
+			// .getUserData( );
+			// if ( p.getEntityType( ) == EntityType.PLATFORM ) {
+			// platformBody = je.joint.getBodyA( );
+			// }
+			// }
+			// // if this body is a platform but not a skeleton save the
+			// // instance
+			// if ( je.joint.getBodyB( ).getUserData( ) instanceof Entity ) {
+			// Entity p = ( Entity ) je.joint.getBodyB( )
+			// .getUserData( );
+			// if ( p.getEntityType( ) == EntityType.PLATFORM ) {
+			// platformBody = je.joint.getBodyB( );
+			// }
+			// }
+			// }
+			// }
 			setGrounded( false );
 			if ( Metrics.activated ) {
 				Metrics.addPlayerAttachToScrewPosition( this.getPositionPixel( ) );
@@ -950,7 +958,7 @@ public class Player extends Entity {
 	 * applies the current screws directional impulse
 	 */
 	private boolean detachScrewImpulse( ) {
-		if ( platformBody != null && currentScrew.getDepth( ) >= 0
+		if ( currentPlatform != null && currentScrew.getDepth( ) >= 0
 				&& currentScrew.getDetachDirection( ) != null
 				&& currentScrew.getDetachDirection( ).len( ) != 0f ) {
 			body.setLinearVelocity( new Vector2( body.getLinearVelocity( ).x,
@@ -969,32 +977,32 @@ public class Player extends Entity {
 	 * 
 	 */
 	private void jumpOffScrew( ) {
-		if ( screwJumpTimeout == 0 ) {
-			Filter filter = new Filter( );
-			// set the bits of the player back to everything
-			for ( Fixture f : body.getFixtureList( ) ) {
-				if ( f != rightSensor && f != leftSensor && f != topSensor ) {
-					f.setSensor( false );
-				}
-				filter = f.getFilterData( );
-				// move player back to original category
-				filter.categoryBits = Util.CATEGORY_PLAYER;
-				// player now collides with everything
-				filter.maskBits = Util.CATEGORY_EVERYTHING;
-				f.setFilterData( filter );
-			}
-			if ( platformBody != null ) {
-				// set the bits of the platform back to everything
-				for ( Fixture f : platformBody.getFixtureList( ) ) {
-					filter = f.getFilterData( );
-					// move platform back to original category
-					filter.categoryBits = Util.CATEGORY_PLATFORMS;
-					// platform now collides with everything
-					filter.maskBits = Util.CATEGORY_EVERYTHING;
-					f.setFilterData( filter );
-				}
-			}
-		}
+		// if ( screwJumpTimeout == 0 ) {
+		// Filter filter = new Filter( );
+		// // set the bits of the player back to everything
+		// for ( Fixture f : body.getFixtureList( ) ) {
+		// if ( f != rightSensor && f != leftSensor && f != topSensor ) {
+		// f.setSensor( false );
+		// }
+		// filter = f.getFilterData( );
+		// // move player back to original category
+		// filter.categoryBits = Util.CATEGORY_PLAYER;
+		// // player now collides with everything
+		// filter.maskBits = Util.CATEGORY_EVERYTHING;
+		// f.setFilterData( filter );
+		// }
+		// // if ( currentPlatform != null ) {
+		// // // set the bits of the platform back to everything
+		// // for ( Fixture f : currentPlatform.body.getFixtureList( ) ) {
+		// // filter = f.getFilterData( );
+		// // // move platform back to original category
+		// // filter.categoryBits = Util.CATEGORY_PLATFORMS;
+		// // // platform now collides with everything
+		// // filter.maskBits = Util.CATEGORY_EVERYTHING;
+		// // f.setFilterData( filter );
+		// // }
+		// // }
+		// }
 	}
 
 	/**
@@ -1127,34 +1135,34 @@ public class Player extends Entity {
 	 * handle the Jumping off screw state and update the player accordingly
 	 */
 	private void handleJumpOffScrew( ) {
-		if ( screwJumpTimeout == 0 ) {
-			jumpOffScrew( );
-		} else if ( screwJumpTimeout == SCREW_JUMP_STEPS ) {
-			if ( platformBody != null ) {
-				Filter filter = new Filter( );
-				for ( Fixture f : platformBody.getFixtureList( ) ) {
-					filter = f.getFilterData( );
-					// move platform to its own single category
-					// it should be the only thing in this category
-					filter.categoryBits = Util.CATEGORY_SUBPLATFORM;
-					// set to collide with everything
-					filter.maskBits = ~Util.CATEGORY_SUBPLAYER;
-					f.setFilterData( filter );
-				}
-				jumpOffScrew( );
-				screwJumpTimeout--;
-			} else {
-				jumpOffScrew( );
-				screwJumpTimeout--;
-			}
-		} else {
-			if ( screwJumpTimeout > 0 ) {
-				screwJumpTimeout--;
-				jumpOffScrew( );
-			} else {
-				jumpOffScrew( );
-			}
-		}
+		// if ( screwJumpTimeout == 0 ) {
+		// jumpOffScrew( );
+		// } else if ( screwJumpTimeout == SCREW_JUMP_STEPS ) {
+		// if ( currentPlatform != null ) {
+		// Filter filter = new Filter( );
+		// for ( Fixture f : currentPlatform.body.getFixtureList( ) ) {
+		// filter = f.getFilterData( );
+		// // move platform to its own single category
+		// // it should be the only thing in this category
+		// filter.categoryBits = Util.CATEGORY_SUBPLATFORM;
+		// // set to collide with everything
+		// filter.maskBits = ~Util.CATEGORY_SUBPLAYER;
+		// f.setFilterData( filter );
+		// }
+		// jumpOffScrew( );
+		// screwJumpTimeout--;
+		// } else {
+		// jumpOffScrew( );
+		// screwJumpTimeout--;
+		// }
+		// } else {
+		// if ( screwJumpTimeout > 0 ) {
+		// screwJumpTimeout--;
+		// jumpOffScrew( );
+		// } else {
+		// jumpOffScrew( );
+		// }
+		// }
 	}
 
 	/**
@@ -1322,7 +1330,7 @@ public class Player extends Entity {
 					&& otherPlayer.getState( ) == PlayerState.Standing
 					&& !otherPlayer.isPlayerDead( ) && headStandTimeout == 0
 					&& otherPlayer.isHeadStandTimedOut( )
-					&& platformBody == null ) {
+					&& currentPlatform == null ) {
 				// check if the top player is in-line with the other players
 				// head
 				// and check if the top player is actually above the other
@@ -1473,48 +1481,48 @@ public class Player extends Entity {
 			}
 		}
 		Filter filter = new Filter( );
-		if ( platformBody != null ) {
-			// set the bits of the platform back to everything
-			for ( Fixture f : platformBody.getFixtureList( ) ) {
-				filter = f.getFilterData( );
-				// move platform to sub category
-				filter.categoryBits = Util.CATEGORY_SUBPLATFORM;
-				// platform only doesn't collide with player
-				filter.maskBits = ~Util.CATEGORY_SUBPLAYER;
-				f.setFilterData( filter );
+		// if ( currentPlatform != null ) {
+		// // set the bits of the platform back to everything
+		// for ( Fixture f : currentPlatform.body.getFixtureList( ) ) {
+		// filter = f.getFilterData( );
+		// // move platform to sub category
+		// filter.categoryBits = Util.CATEGORY_SUBPLATFORM;
+		// // platform only doesn't collide with player
+		// filter.maskBits = ~Util.CATEGORY_SUBPLAYER;
+		// f.setFilterData( filter );
+		// }
+		// for ( Fixture f : body.getFixtureList( ) ) {
+		// if ( f != rightSensor && f != leftSensor && f != topSensor ) {
+		// f.setSensor( false );
+		// }
+		// filter = f.getFilterData( );
+		// // move player to sub category
+		// filter.categoryBits = Util.CATEGORY_SUBPLAYER;
+		// // player now collides with everything except the platform in
+		// // the way
+		// filter.maskBits = ~Util.CATEGORY_SUBPLATFORM;
+		// f.setFilterData( filter );
+		// }
+		// } else {
+		for ( Fixture f : body.getFixtureList( ) ) {
+			if ( f != rightSensor && f != leftSensor && f != topSensor ) {
+				f.setSensor( false );
 			}
-			for ( Fixture f : body.getFixtureList( ) ) {
-				if ( f != rightSensor && f != leftSensor && f != topSensor ) {
-					f.setSensor( false );
-				}
-				filter = f.getFilterData( );
-				// move player to sub category
-				filter.categoryBits = Util.CATEGORY_SUBPLAYER;
-				// player now collides with everything except the platform in
-				// the way
-				filter.maskBits = ~Util.CATEGORY_SUBPLATFORM;
-				f.setFilterData( filter );
-			}
-		} else {
-			for ( Fixture f : body.getFixtureList( ) ) {
-				if ( f != rightSensor && f != leftSensor && f != topSensor ) {
-					f.setSensor( false );
-				}
-				filter = f.getFilterData( );
-				// move player back to original category
-				filter.categoryBits = Util.CATEGORY_PLAYER;
-				// player now collides with everything
-				filter.maskBits = Util.CATEGORY_EVERYTHING;
-				f.setFilterData( filter );
-			}
+			filter = f.getFilterData( );
+			// move player back to original category
+			filter.categoryBits = Util.CATEGORY_PLAYER;
+			// player now collides with everything
+			filter.maskBits = Util.CATEGORY_EVERYTHING;
+			f.setFilterData( filter );
 		}
+		// }
 		mover = null;
 		if ( currentScrew != null ) {
 			currentScrew.setPlayerAttached( false );
 		}
 		currentScrew = null;
-		playerState = PlayerState.JumpingOffScrew;
-		screwJumpTimeout = SCREW_JUMP_STEPS;
+		playerState = PlayerState.Jumping;
+		// screwJumpTimeout = SCREW_JUMP_STEPS;
 	}
 
 	/**

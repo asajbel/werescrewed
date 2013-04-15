@@ -87,8 +87,8 @@ public class MyContactListener implements ContactListener {
 								} else if ( player.name.equals( "player2" ) ) {
 									NUM_PLAYER2_CONTACTS++;
 								}
-
-								player.hitSolidObject( objectFix.getBody( ) );
+								Platform plat = ( Platform ) object;
+								player.hitSolidObject( plat );
 								if ( player.getState( ) != PlayerState.JumpingOffScrew
 										|| player.getState( ) != PlayerState.Screwing ) {
 									player.setGrounded( true );
