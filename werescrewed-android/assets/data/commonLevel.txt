@@ -6,40 +6,27 @@
 /common/sounds/loopTrain.mp3
 /common/sounds/introTrain.mp3
 
-##texture atlas
-/common/tileset1.pack
-/common/TilesetTest.pack
-/common/tileset-teal.pack
-/common/autumn.pack
-/common/animations/player_r_m_1.pack
-/common/animations/player_r_m_2.pack
-/common/animations/player_r_m_3.pack
-/common/animations/player_r_f_1.pack
-/common/animations/player_r_f_2.pack
-/common/animations/player_r_f_3.pack
-/common/animations/hitCloud.pack
-/common/tileset/alphabot32.pack
-/common/tileset/alphabot32-bleed.pack
-/particles/particles.pack
-
-##checkpoint
-/common/checkpoint/checkpoint.pack
-
-
+##Please don't add individual files, add them to the common-textures.pack file with texture packer!
 ##common texture
 /common/player_b_f.png
+/common/player_female_idle.png
 /common/player_r_m.png
-/common/screw.png
-/common/screw1.png
-/common/screw/screw.png
 /common/test01.png
 /common/cletter.png
+
 #/common/parallax_layer1_0.png
 #/common/parallax_layer1_1.png
 #/common/parallax_layer2_0.png
 #/common/parallax_layer2_1.png
 #/common/parallax_layer3_0.png
 #/common/parallax_layer3_1.png
+
+/common/parallax_layer1_0.png
+/common/parallax_layer1_1.png
+/common/parallax_layer2_0.png
+/common/parallax_layer2_1.png
+/common/parallax_layer3_0.png
+
 /common/spikes_01.png
 /common/spikes_01r.png
 /common/spikes_02.png
@@ -51,7 +38,6 @@
 /common/title_background.png
 #/common/title_background_1024.png
 #/common/title_background_original.png
-#/particles/particle.png
 /common/robot/alphabot_texture_skin.png
 #/common/robot/alphabot_texture_tux.png
 #/common/robot/alphabot_tile_suit_main.png
@@ -59,12 +45,39 @@
 /common/robot/sheetmetaltexture.png
 /common/robot/sheetmetaltextureblack.png
 #/common/robot/metal.png
-/common/ropelink.png
-/common/chainlink.png
+#/common/ropelink.png
+#/common/chainlink.png
+
+/common/robot/metal.png
 /common/gear.png
 /common/sawblade.png
-/common/animations/hitCloud.png
 /common/redScrewDriver.png
+/common/pipe/pipeEndD.png
+/common/pipe/pipeEndL.png
+/common/pipe/pipeEndR.png
+/common/pipe/pipeEndU.png
+/common/pipe/pipeLR.png
+/common/pipe/pipeUD.png
+
+##texture atlas
+##please us texture packer to put all common textures in this pack file!
+/common/common-textures.pack
+/common/checkpoint/checkpoint.pack
+/common/animations/screwInterface.pack
+/common/tileset1.pack
+/common/TilesetTest.pack
+/common/autumn.pack
+/common/animations/player_r_m_1.pack
+/common/animations/player_r_m_2.pack
+/common/animations/player_r_m_3.pack
+/common/animations/player_r_f_1.pack
+/common/animations/player_r_f_2.pack
+/common/animations/player_r_f_3.pack
+/common/tileset/alphabot.pack
+/common/tileset/alphabot-bleed.pack
+/common/spine/red_female_atlas.pack
+/common/spine/red_male_atlas.pack
+/particles/particles.pack
 
 ##Fonts
 /debug/debug_font.fnt
@@ -73,6 +86,17 @@
 /common/ArmenianCircus.fnt
 /common/Screwball.fnt
 
+##Particle effects
+land_cloud.p
+skid_left.p
+skid_right.p
+sparks.p
+steam.p
+revive.p
+land_cloud_new.p
+injured/baf.p
+injured/extra_crispy.p
+injured/ooph.p
 
 ##Palette Def
 ##Define with <colorName>.palette

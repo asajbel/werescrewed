@@ -31,6 +31,7 @@ public class GenericEntityBuilder< B extends GenericEntityBuilder< ? >> {
 	protected Vector2 sca;
 	protected IMover mover;
 	protected boolean solid;
+	protected String definition;
 
 	// Used for type+world construction
 	protected EntityDef type;
@@ -55,6 +56,7 @@ public class GenericEntityBuilder< B extends GenericEntityBuilder< ? >> {
 		world = null;
 		tex = null;
 		body = null;
+		definition = "";
 	}
 
 	// Simply resets the builder to initial state and returns it.
@@ -74,6 +76,18 @@ public class GenericEntityBuilder< B extends GenericEntityBuilder< ? >> {
 	public B name( String n ) {
 		name = n;
 		return ( B ) this;
+	}
+	
+	/**
+	 * 
+	 * @param definition
+	 *            - String XML name of entity, default is "noname"
+	 * @return EntityBuilder
+	 */
+	@SuppressWarnings( "unchecked" )
+	public B definition ( String d ) {
+		definition = d;
+		return ( B ) this; 
 	}
 
 	/**

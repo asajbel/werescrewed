@@ -31,7 +31,7 @@ public class PlayerBuilder extends GenericEntityBuilder<PlayerBuilder> {
 	}
 
 	public Player buildPlayer(){
-		Player out = new Player( name, world, pos );
+		Player out = new Player( name, definition, world, pos );
 		return out;
 	}
 }

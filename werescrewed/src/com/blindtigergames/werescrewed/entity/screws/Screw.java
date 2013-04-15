@@ -3,6 +3,7 @@ package com.blindtigergames.werescrewed.entity.screws;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
@@ -42,12 +43,18 @@ public class Screw extends Entity {
 	protected int prevDiff;
 	protected int startDepth;
 	protected int diff;
+	protected Entity entity;
 	protected Vector2 detachDirection;
+	protected Vector2 interfaceOffset = new Vector2( 82f, 4f );
+	protected boolean upDownDetach;
+	protected float entityAngle;
 	protected boolean playerAttached = false;
 	protected boolean removed = false;
 	protected boolean playerNotSensor = false;
 	protected ScrewType screwType;
 	public ArrayList< Joint > extraJoints;
+	
+	private static TextureRegion screwTexRegion = WereScrewedGame.manager.getAtlas( "common-textures" ).findRegion( "screw-flathead" );
 
 	/**
 	 * constructor to use if you want a cosmetic screw
@@ -60,16 +67,19 @@ public class Screw extends Entity {
 	 * @param world
 	 */
 	public Screw( String name, Vector2 pos, Entity entity, World world ) {
-		super( name, pos, WereScrewedGame.manager.get(
-				WereScrewedGame.dirHandle.path( ) + "/common/screw/screw.png",
-				Texture.class ), null, false );
+		super( name, pos, null, null, false );
 		this.world = world;
-		if(sprite!=null)sprite.rotate( ( float ) ( Math.random( )*360 ) );
+		this.sprite = constructSprite(screwTexRegion);
+		sprite.setOrigin( sprite.getWidth( )/2.0f, sprite.getHeight( )/2.0f );
+		this.offset = new Vector2 ( sprite.getOriginX( ), sprite.getOriginY( ) );
+		this.entity = entity;
+		this.entityAngle = entity.getAngle( );
 		screwType = ScrewType.SCREW_COSMETIC;
 		entityType = EntityType.SCREW;
 		extraJoints = new ArrayList< Joint >( );
-
 		constructBody( pos );
+		if(sprite!=null)sprite.rotate( ( float ) ( Math.random( )*360 ) );
+		body.setTransform( body.getPosition( ), sprite.getRotation( )*Util.DEG_TO_RAD );
 		addStructureJoint( entity );
 	}
 
@@ -81,10 +91,10 @@ public class Screw extends Entity {
 	 * @param tex
 	 */
 	public Screw( String name, Vector2 pos, Texture tex ) {
-		super( name, pos, ( tex == null ? WereScrewedGame.manager.get(
-				WereScrewedGame.dirHandle.path( ) + "/common/screw/screw.png",
-				Texture.class ) : tex ), null, false );
-		if(sprite!=null)sprite.rotate( ( float ) ( Math.random( )*360 ) );
+		super( name, pos, null, null, false );
+		this.sprite = constructSprite(screwTexRegion);
+		sprite.setOrigin( sprite.getWidth( )/2.0f, sprite.getHeight( )/2.0f );
+		this.offset = new Vector2 ( sprite.getOriginX( ), sprite.getOriginY( ) );
 		entityType = EntityType.SCREW;
 	}
 
@@ -103,6 +113,11 @@ public class Screw extends Entity {
 		}
 	}
 
+	@Override
+	public void dispose( ) {
+		remove( );
+	}
+	
 	/**
 	 * returns true if the box2d stuff has been completely removed
 	 */
@@ -114,8 +129,12 @@ public class Screw extends Entity {
 	 * sets the detach direction
 	 */
 	public void setDetachDirection( float x, float y ) {
-		detachDirection.x = x;
-		detachDirection.y = y;
+		if ( detachDirection != null ) {
+			detachDirection.x = x;
+			detachDirection.y = y;
+		} else {
+			detachDirection = new Vector2( x, y );
+		}
 	}
 	
 	/**
@@ -243,6 +262,10 @@ public class Screw extends Entity {
 		revoluteJointDef.enableMotor = false;
 		Joint screwJoint =  (Joint) world.createJoint( revoluteJointDef );
 		extraJoints.add( screwJoint );
+		this.entity = entity;
+		if ( entity != null ) {
+			this.entityAngle = entity.getAngle( );
+		}
 	}
 
 	/**

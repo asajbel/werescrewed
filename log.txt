@@ -1,20 +1,23 @@
-4/8/2013 5:56:03 PM.384 - Log File created.
-4/8/2013 5:56:03 PM.386 - Application started.
-4/8/2013 5:56:03 PM.665 - Creating Game1 object.
-4/8/2013 5:56:03 PM.763 - Game1 creation started.
-4/8/2013 5:56:03 PM.766 - Creating Winform.
-4/8/2013 5:56:03 PM.858 - Winform created.
-4/8/2013 5:56:03 PM.858 - Game1 creation ended.
-4/8/2013 5:56:03 PM.877 - Creating Editor object.
-4/8/2013 5:56:03 PM.906 - Editor creation started.
-4/8/2013 5:56:03 PM.906 - Loading Resources.
-4/8/2013 5:56:03 PM.932 - Resources loaded.
-4/8/2013 5:56:03 PM.932 - Loading Settings.
-4/8/2013 5:56:04 PM.127 - Settings loaded.
-4/8/2013 5:56:04 PM.128 - Creating new level.
-4/8/2013 5:56:04 PM.201 - New level created.
-4/8/2013 5:56:04 PM.202 - Editor creation ended.
-4/8/2013 5:56:08 PM.584 - pictureBox1_Resize().
-4/8/2013 6:05:32 PM.079 - pictureBox1_Resize().
-4/8/2013 6:05:32 PM.140 - pictureBox1_Resize().
-4/8/2013 6:06:16 PM.781 - pictureBox1_Resize().
+4/12/2013 1:07:32 PM.454 - Log File created.
+4/12/2013 1:07:32 PM.455 - Application started.
+4/12/2013 1:07:32 PM.924 - Creating Game1 object.
+4/12/2013 1:07:32 PM.990 - Game1 creation started.
+4/12/2013 1:07:32 PM.992 - Creating Winform.
+4/12/2013 1:07:33 PM.047 - Winform created.
+4/12/2013 1:07:33 PM.047 - Game1 creation ended.
+4/12/2013 1:07:33 PM.090 - Creating Editor object.
+4/12/2013 1:07:33 PM.094 - Editor creation started.
+4/12/2013 1:07:33 PM.095 - Loading Resources.
+4/12/2013 1:07:33 PM.111 - Resources loaded.
+4/12/2013 1:07:33 PM.112 - Loading Settings.
+4/12/2013 1:07:33 PM.883 - Settings loaded.
+4/12/2013 1:07:33 PM.883 - Creating new level.
+4/12/2013 1:07:33 PM.947 - New level created.
+4/12/2013 1:07:33 PM.947 - Editor creation ended.
+4/12/2013 1:07:35 PM.998 - pictureBox1_Resize().
+4/12/2013 1:09:52 PM.860 - pictureBox1_Resize().
+4/12/2013 1:09:52 PM.901 - pictureBox1_Resize().
+4/12/2013 1:10:13 PM.373 - pictureBox1_Resize().
+4/12/2013 1:10:19 PM.517 - pictureBox1_Resize().
+4/12/2013 1:10:21 PM.485 - pictureBox1_Resize().
+4/12/2013 1:10:22 PM.221 - pictureBox1_Resize().

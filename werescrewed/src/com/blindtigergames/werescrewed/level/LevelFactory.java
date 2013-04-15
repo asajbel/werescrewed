@@ -19,6 +19,7 @@ import com.blindtigergames.werescrewed.checkpoints.ProgressManager;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityCategory;
 import com.blindtigergames.werescrewed.entity.EntityDef;
+import com.blindtigergames.werescrewed.entity.PolySprite;
 import com.blindtigergames.werescrewed.entity.RobotState;
 import com.blindtigergames.werescrewed.entity.Sprite;
 import com.blindtigergames.werescrewed.entity.action.DestoryPlatformJointAction;
@@ -155,7 +156,12 @@ public class LevelFactory {
 			parent.addSkeleton( child );
 			skeletons.put( item.name, child );
 			//add the skeleton to the skeleton layer for drawing
-			level.skelLayer.add( child );
+			if ( child.bgSprite != null ) {
+				level.skelBGList.add( child );
+			}
+			if ( child.fgSprite != null ) {
+				level.skelFGList.add( child );
+			}
 			return child;
 		}
 	}
@@ -222,7 +228,16 @@ public class LevelFactory {
 			out = loadComplexPlatform( item );
 		}
 
+		//TODO add functionality for sorting these decals into foreground or background decals
+		//This either requires adding variables to the specific decal in gleed to what layer it is on
+		//or make two different loading keys such as fgdecal or bgdecal and handle them seperatley
 		if ( out != null ) {
+			//if ( item.propes.containsKey( "fgdecal" ) ) {
+			// level.entityFGList.add( decal );
+			//}
+			//if ( item.propes.containsKey( "bgdecal" ) ) {
+			// level.entityBGList.add( decal );
+			//}
 			if ( item.props.containsKey( "decal" ) ) {
 				Array< String > tokens;
 				String decalImage;
@@ -263,7 +278,7 @@ public class LevelFactory {
 		return out;
 	}
 	
-	private Sprite constructDecal(Item item){
+	private Sprite constructDecal( Item item ){
 		Entity target = level.root;
 		String targetName = "root";
 		if (item.getProps().containsKey(targetTag)){
@@ -280,10 +295,21 @@ public class LevelFactory {
 		Vector2 scale = new Vector2(1.0f, 1.0f);
 		if (!item.getImageName( ).equals( "" )){
 			Texture tex = WereScrewedGame.manager.get( WereScrewedGame.dirHandle+item.getImageName(), Texture.class );
-			decal = new Sprite(tex);
-			decal.setOrigin( 0.0f, 0.0f );
-			scale.x = item.sca.x / tex.getWidth( );
-			scale.y = item.sca.y / tex.getHeight( );
+			if (item.getGleedType().equals( "PathItem" )){
+				Array< Element > pointElems = item.element.getChildByName(
+						"LocalPoints" ).getChildrenByName( "Vector2" );
+				Array<Vector2> points = new Array<Vector2>();
+				for (Element e: pointElems){
+					Vector2 v = new Vector2(e.getFloat( "X" )*GLEED_TO_GDX_X,e.getFloat( "Y" )*GLEED_TO_GDX_Y);
+					points.add( v );
+				}
+				decal = new PolySprite(tex, points);
+			} else {
+				decal = new Sprite(tex);
+				decal.setOrigin( 0.0f, 0.0f );
+				scale.x = item.sca.x / tex.getWidth( );
+				scale.y = item.sca.y / tex.getHeight( );
+			}
 		} else {
 			Gdx.app.log( "LoadDecal", "Could not find texture tag." );
 		}
@@ -397,8 +423,13 @@ public class LevelFactory {
 				level.world.createJoint( revoluteJointDef );
 
 			}
-			//add the skeleton to the skeleton layer for drawing
-			level.skelLayer.add( skeleton );
+			//add the skeleton to the skeleton layer for drawing			
+			if ( skeleton.bgSprite != null ) {
+				level.skelBGList.add( skeleton );
+			} 		
+			if ( skeleton.fgSprite != null ) {
+				level.skelFGList.add( skeleton );
+			}
 		}
 
 		Gdx.app.log( "LevelFactory, Skeleton constucted ", item.name );
@@ -409,12 +440,12 @@ public class LevelFactory {
 	private void constructPlayer( Item item ) {
 		if ( item.name.equals( "playerOne" ) ) {
 			level.player1 = new PlayerBuilder( ).name( "player1" )
-					.world( level.world ).position( item.pos ).buildPlayer( );
+					.world( level.world ).position( item.pos ).definition( "red_male" ).buildPlayer( );
 			entities.put( "player1", level.player1 );
 		} else if ( item.name.equals( "playerTwo" ) ) {
 
 			level.player2 = new PlayerBuilder( ).name( "player2" )
-					.world( level.world ).position( item.pos ).buildPlayer( );
+					.world( level.world ).position( item.pos ).definition( "red_female" ).buildPlayer( );
 			entities.put( "player2", level.player2 );
 		}
 
@@ -435,8 +466,8 @@ public class LevelFactory {
 		TiledPlatform out = null;
 		float width = item.element.getFloat( "Width" );
 		float height = item.element.getFloat( "Height" );
-		float tileWidth = width / 32f;
-		float tileHeight = height / 32f;
+		int tileWidth = ( int ) ( width / Platform.tile );
+		int tileHeight = ( int ) ( height / Platform.tile );
 
 		float xPos = item.pos.x + ( width / 2 );
 		float yPos = item.pos.y - ( height / 2 );
@@ -455,7 +486,7 @@ public class LevelFactory {
 
 		pb.name( item.name ).position( new Vector2( xPos, yPos ) )
 				.dimensions( new Vector2( tileWidth, tileHeight ) )
-				.tileSet( "alphabot32" );
+				.tileSet( "alphabot" );
 
 		if ( isDynamic )
 			pb.dynamic( );
@@ -858,9 +889,12 @@ public class LevelFactory {
 		}
 		String skel = item.skeleton;
 		Skeleton parent = loadSkeleton( skel );
-		level.progressManager
-				.addCheckPoint( new CheckPoint( item.name, item.pos, parent,
-						level.world, level.progressManager, levelName ) );
+		CheckPoint chkpt = new CheckPoint( item.name, item.pos, parent,
+				level.world, level.progressManager, levelName );
+		//level.progressManager
+		//add checkpointto skeleton not progress manager
+		parent.addCheckPoint( chkpt );
+		//chkpt.setParentSkeleton( parent );
 	}
 
 	/**
@@ -906,9 +940,8 @@ public class LevelFactory {
 			point = new Vector2( vElem.getFloat( "X" ) * GLEED_TO_GDX_X,
 					vElem.getFloat( "Y" ) * GLEED_TO_GDX_Y );
 			pathPoints.add( point );
-			Gdx.app.log( "LevelFactory", "Point " + i + " has coordinates "
-					+ point.toString( ) + "." );
-
+			//Gdx.app.log( "LevelFactory Path", "Point " + i + " has coordinates "
+			//		+ point.toString( ) + "." );
 		}
 		for ( int i = 1; i <= pathPoints.size; ++i ) {
 			timeTag = "point" + i + "time";
@@ -980,8 +1013,8 @@ public class LevelFactory {
 			point = new Vector2( vElem.getFloat( "X" ) * GLEED_TO_GDX_X,
 					vElem.getFloat( "Y" ) * GLEED_TO_GDX_Y );
 			pathPoints.add( point );
-			Gdx.app.log( "LevelFactory", "Point " + i + " has coordinates "
-					+ point.toString( ) + "." );
+			//Gdx.app.log( "LevelFactory SkelePoly", "Point " + i + " has coordinates "
+			//		+ point.toString( ) + "." );
 
 		}
 
@@ -1045,6 +1078,8 @@ public class LevelFactory {
 			etb.setVerts( verts );
 		}
 
+		etb.extraBorder( 0f );
+		
 		EventTrigger et = etb.build( );
 		entities.put( item.name, et );
 		parent.addEventTrigger( et );
@@ -1071,8 +1106,8 @@ public class LevelFactory {
 			point = new Vector2( vElem.getFloat( "X" ) * GLEED_TO_GDX_X,
 					vElem.getFloat( "Y" ) * GLEED_TO_GDX_Y );
 			pathPoints.add( point );
-			Gdx.app.log( "LevelFactory", "Point " + i + " has coordinates "
-					+ point.toString( ) + "." );
+			//Gdx.app.log( "LevelFactory Array", "Point " + i + " has coordinates "
+			//		+ point.toString( ) + "." );
 
 		}
 

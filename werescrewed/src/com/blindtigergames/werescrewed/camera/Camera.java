@@ -15,7 +15,7 @@ import com.badlogic.gdx.physics.box2d.World;
 /*******************************************************************************
  * Camera class. Zooms and translates based on anchors. Max 30 anchors.
  * 
- * @author Edward Ramirez
+ * @author Edward Ramirez and Dan Malear
  ******************************************************************************/
 public class Camera {
 	private static final boolean ANCHOR_TEST_MODE = false;
@@ -36,7 +36,7 @@ public class Camera {
 	private static final float TARGET_BUFFER_RATIO = .03f;
 	private static final float MINIMUM_FOLLOW_SPEED = .1f;
 	private static final float MAX_ANGLE_DIFF = 100f;
-	private static final float MAX_SPEED = 15;
+	private static final float MAX_SPEED = 100f;
 	private static final float MIN_SPEED = 10f;
 	private static final float ACCELERATION = .015f;
 	private static final float DECELERATION = -.5f;
@@ -52,8 +52,8 @@ public class Camera {
 	private boolean insideTargetBuffer;
 
 	// zoom
-	private static final float ZOOM_ACCELERATION = .0001f;
-	private static final float ZOOM_MAX_SPEED = 1f;
+	private static final float ZOOM_ACCELERATION = .001f;
+	private static final float ZOOM_MAX_SPEED = 15f;
 	private static final float ZOOM_SIG_DIFF = .00005f;
 	private static final float ZOOM_IN_FACTOR = .5f;
 	private static final float MIN_ZOOM = 1.2f;
@@ -70,23 +70,20 @@ public class Camera {
 	private boolean debugInput;
 	private boolean debugRender;
 	private ShapeRenderer shapeRenderer;
-	@SuppressWarnings( "unused" )
-	private boolean debugTurnOffZoom;
-
-	public Camera( Vector2 position, float viewportWidth, float viewportHeight, World world ) {
+	public Camera( Vector2 position, float viewportWidth, float viewportHeight,
+			World world ) {
 		initializeVars( position, viewportWidth, viewportHeight, world );
 		camera.update( );
 	}
 
-	private void initializeVars( Vector2 position, float viewportWidth, float viewportHeight,
-			World world ) {
+	private void initializeVars( Vector2 position, float viewportWidth,
+			float viewportHeight, World world ) {
 		camera = new OrthographicCamera( 1, viewportHeight / viewportWidth );
 		this.viewportHeight = Gdx.graphics.getHeight( );
 		this.viewportWidth = Gdx.graphics.getWidth( );
 		camera.viewportWidth = this.viewportWidth;
 		camera.viewportHeight = this.viewportHeight;
-		camera.position.set( position.x,
-				position.y, 0f );
+		camera.position.set( position.x, position.y, 0f );
 		this.position = camera.position;
 		center2D = new Vector2( position.x, position.y );
 		screenBounds = new Rectangle( position.x - viewportWidth / 2,
@@ -120,7 +117,15 @@ public class Camera {
 		debugInput = false;
 		debugRender = false;
 		shapeRenderer = new ShapeRenderer( );
-		debugTurnOffZoom = false;
+	}
+
+	public void setPosition( Vector2 position ) {
+
+		camera.position.set( position.x, position.y, 0f );
+		this.position = camera.position;
+		center2D = new Vector2( position.x, position.y );
+		screenBounds = new Rectangle( position.x - viewportWidth / 2,
+				position.y - viewportHeight / 2, viewportWidth, viewportHeight );
 	}
 
 	/**
@@ -223,8 +228,8 @@ public class Camera {
 				returnDir = RectDirection.Y;
 		}
 
-		//if ( returnDir == RectDirection.BOTH )
-			//Gdx.app.log( "Direction", "BOTH" );
+		// if ( returnDir == RectDirection.BOTH )
+		// Gdx.app.log( "Direction", "BOTH" );
 		return returnDir;
 	}
 
@@ -238,8 +243,8 @@ public class Camera {
 
 		// Iterate through each anchor
 		for ( Anchor curAnchor : anchorList.anchorList ) {
-			// Only consider active and special (player) anchors
-			if ( curAnchor.activated || curAnchor.special ) {
+			// Only consider active anchors
+			if ( curAnchor.activated ) {
 				// Find the direction in which the buffer of the current anchor
 				// has exited the screen
 				RectDirection dir = rectOutsideRect(
@@ -538,16 +543,16 @@ public class Camera {
 					* BUFFER_RATIO;
 		}
 		if ( Gdx.input.isKeyPressed( Input.Keys.LEFT ) ) {
-				camera.translate( -10, 0, 0 );
+			camera.translate( -10, 0, 0 );
 		}
 		if ( Gdx.input.isKeyPressed( Input.Keys.RIGHT ) ) {
-				camera.translate( 10, 0, 0 );
+			camera.translate( 10, 0, 0 );
 		}
 		if ( Gdx.input.isKeyPressed( Input.Keys.DOWN ) ) {
-				camera.translate( 0, -10, 0 );
+			camera.translate( 0, -10, 0 );
 		}
 		if ( Gdx.input.isKeyPressed( Input.Keys.UP ) ) {
-				camera.translate( 0, 10, 0 );
+			camera.translate( 0, 10, 0 );
 		}
 		if ( Gdx.input.isKeyPressed( Input.Keys.NUM_0 ) ) {
 			camera.zoom = .5f;
@@ -558,9 +563,5 @@ public class Camera {
 		if ( Gdx.input.isKeyPressed( Input.Keys.NUM_2 ) ) {
 			camera.zoom = 2f;
 		}
-	}
-
-	public void turnOffZoom( ) {
-		debugTurnOffZoom = true;
 	}
 }

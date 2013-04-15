@@ -8,11 +8,11 @@ import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.Manifold;
-import com.blindtigergames.werescrewed.camera.Anchor;
 import com.blindtigergames.werescrewed.checkpoints.CheckPoint;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityType;
-import com.blindtigergames.werescrewed.eventTrigger.EventTrigger;
+import com.blindtigergames.werescrewed.entity.action.ActionType;
+import com.blindtigergames.werescrewed.entity.action.RemoveEntityAction;
 import com.blindtigergames.werescrewed.entity.hazard.Hazard;
 import com.blindtigergames.werescrewed.entity.platforms.Platform;
 import com.blindtigergames.werescrewed.entity.platforms.PlatformType;
@@ -20,6 +20,7 @@ import com.blindtigergames.werescrewed.entity.platforms.TiledPlatform;
 import com.blindtigergames.werescrewed.entity.screws.ResurrectScrew;
 import com.blindtigergames.werescrewed.entity.screws.Screw;
 import com.blindtigergames.werescrewed.entity.screws.ScrewType;
+import com.blindtigergames.werescrewed.eventTrigger.EventTrigger;
 import com.blindtigergames.werescrewed.player.Player;
 import com.blindtigergames.werescrewed.player.Player.PlayerState;
 
@@ -32,7 +33,6 @@ public class MyContactListener implements ContactListener {
 
 	private static int NUM_PLAYER1_CONTACTS = 0;
 	private static int NUM_PLAYER2_CONTACTS = 0;
-	private Player p1;
 
 	/**
 	 * When two new objects start to touch
@@ -86,63 +86,25 @@ public class MyContactListener implements ContactListener {
 								} else if ( player.name.equals( "player2" ) ) {
 									NUM_PLAYER2_CONTACTS++;
 								}
-
-								player.hitSolidObject( objectFix.getBody( ) );
-								if ( player.getState( ) != PlayerState.JumpingOffScrew
-										|| player.getState( ) != PlayerState.Screwing ) {
+								Platform plat = ( Platform ) object;
+								player.hitSolidObject( plat );
+								if ( player.getState( ) != PlayerState.Screwing ) {
 									player.setGrounded( true );
 								}
 							}
 							break;
 						case SCREW:
-							// if ( player.isPlayerDead( ) ) {
 							Screw screw = ( Screw ) object;
-							if ( p1 == null || p1 == player ) {
-								p1 = player;
-								player.hitScrew( screw );
-								if ( screw.getScrewType( ) == ScrewType.SCREW_RESURRECT ) {
-									ResurrectScrew rScrew = ( ResurrectScrew ) screw;
-									rScrew.hitPlayer( player );
-								}
-							} else if ( p1 != player ) {
-								player.hitScrew( screw );
-								if ( screw.getScrewType( ) == ScrewType.SCREW_RESURRECT ) {
-									ResurrectScrew rScrew = ( ResurrectScrew ) screw;
-									rScrew.hitPlayer( player );
-								}
+							player.hitScrew( screw );
+							if ( screw.getScrewType( ) == ScrewType.SCREW_RESURRECT ) {
+								ResurrectScrew rScrew = ( ResurrectScrew ) screw;
+								rScrew.hitPlayer( player );
 							}
-
-							// }
-							break;
-						case PLAYER:
-							// Player player2 = ( Player ) object;
-							// player.hitPlayer( player2 );
-							// player2.hitPlayer( player );
-							// if ( player.getState( ) != PlayerState.HeadStand
-							// && player2.getState( ) != PlayerState.HeadStand
-							// && !player.isHeadStandPossible( )
-							// && !player2.isHeadStandPossible( ) ) {
-							// player.hitPlayer( null );
-							// player2.hitPlayer( null );
-							// contact.setEnabled( false );
-							// } else if ( player.getState( ) !=
-							// PlayerState.HeadStand
-							// && player2.getState( ) != PlayerState.HeadStand )
-							// {
-							// player.setGrounded( true );
-							// player2.setGrounded( true );
-							// }
 							break;
 						case HAZARD:
-						// if ( player.getCurrentScrew( ) == null
-						// || player.getCurrentScrew( ).getScrewType( ) !=
-						// ScrewType.SCREW_RESURRECT )
-						{
+
 							Hazard hazard = ( Hazard ) object;
 							hazard.performContact( player, objectFix );
-						}
-							// Gdx.app.log( "Player " + player.name,
-							// " Collided with Hazard" );
 							break;
 						case CHECKPOINT:
 							CheckPoint checkP = ( CheckPoint ) objectFix
@@ -156,7 +118,11 @@ public class MyContactListener implements ContactListener {
 							EventTrigger et = ( EventTrigger ) object;
 							et.setActivated( true, player.name );
 							if ( playerFix.getShape( ) instanceof CircleShape ) {
-								et.triggerBeginEvent( );
+								// stops both players from dying
+								if ( et.getBeginAction( ) instanceof RemoveEntityAction ) {
+									et.getBeginAction( ).act( player );
+								} else
+									et.triggerBeginEvent( );
 							}
 							break;
 						default:
@@ -167,16 +133,9 @@ public class MyContactListener implements ContactListener {
 								"please declare your entity with a type to the Entity Type enum",
 								"" );
 					}
-				} else if ( objectFix.getBody( ).getUserData( ) instanceof Anchor ) {
-					Anchor anchor = ( Anchor ) objectFix.getBody( )
-							.getUserData( );
-					if ( !anchor.special )
-						anchor.activate( );
 				}
 			} else {
-
 				// Player are not involved in this section //
-
 				// checks if the object fix or player fix is an event trigger
 				// then applies the event to the object that is colliding with
 				// it
@@ -186,18 +145,28 @@ public class MyContactListener implements ContactListener {
 							.getUserData( );
 					Entity object = ( Entity ) objectFix.getBody( )
 							.getUserData( );
-					if ( player.getEntityType( ) != null
-							&& player.getEntityType( ) == EntityType.EVENTTRIGGER ) {
-						EventTrigger et = ( EventTrigger ) player;
-						// needs to get the action in order to act on just this
-						// object
-						et.getBeginAction( ).act( object );
-					} else if ( object.getEntityType( ) != null
-							&& object.getEntityType( ) == EntityType.EVENTTRIGGER ) {
-						EventTrigger et = ( EventTrigger ) object;
-						// needs to get the action in order to act on just this
-						// object
-						et.getBeginAction( ).act( player );
+					if ( player.getEntityType( ) == EntityType.EVENTTRIGGER
+							|| object.getEntityType( ) == EntityType.EVENTTRIGGER ) {
+						// EventTrigger stuff:
+						if ( player.getEntityType( ) == EntityType.EVENTTRIGGER ) {
+							EventTrigger et = ( EventTrigger ) player;
+							if ( et.getBeginAction( ).getActionType( ) == ActionType.FORANYENTITY ) {
+								// needs to get the action in order to act on
+								// just
+								// this
+								// object
+								et.getBeginAction( ).act( object );
+							}
+						} else if ( object.getEntityType( ) == EntityType.EVENTTRIGGER ) {
+							EventTrigger et = ( EventTrigger ) object;
+							if ( et.getBeginAction( ).getActionType( ) == ActionType.FORANYENTITY ) {
+								// needs to get the action in order to act on
+								// just
+								// this
+								// object
+								et.getBeginAction( ).act( player );
+							}
+						}
 					}
 				}
 			}
@@ -249,7 +218,6 @@ public class MyContactListener implements ContactListener {
 							if ( object.isSolid( )
 									&& playerFix.getShape( ) instanceof CircleShape ) {
 								if ( player.name.equals( "player1" ) ) {
-									p1 = player;
 									NUM_PLAYER1_CONTACTS--;
 									if ( NUM_PLAYER1_CONTACTS <= 0 ) {
 										if ( player.getState( ) != PlayerState.HeadStand ) {
@@ -264,24 +232,13 @@ public class MyContactListener implements ContactListener {
 										}
 									}
 								}
-								if ( player.getState( ) != PlayerState.JumpingOffScrew ) {
-									player.hitSolidObject( null );
-								}
 								contact.setEnabled( true );
 							}
+							player.hitSolidObject( null );
 							break;
 						case SCREW:
-							if ( player.name.equals( "player1" ) ) {
-								p1 = player;
-								if ( player.getState( ) != PlayerState.Screwing ) {
-									player.hitScrew( null );
-								}
-							} else if ( player.name.equals( "player2" ) ) {
-								if ( player.getState( ) != PlayerState.Screwing ) {
-									player.hitScrew( null );
-
-								}
-
+							if ( player.getState( ) != PlayerState.Screwing ) {
+								player.hitScrew( null );
 							}
 							break;
 						case PLAYER:
@@ -311,11 +268,6 @@ public class MyContactListener implements ContactListener {
 								"please declare your entity with a type to the Entity Type enum",
 								"" );
 					}
-				} else if ( objectFix.getBody( ).getUserData( ) instanceof Anchor ) {
-					Anchor anchor = ( Anchor ) objectFix.getBody( )
-							.getUserData( );
-					if ( !anchor.special )
-						anchor.deactivate( );
 				}
 			}
 		}
@@ -375,25 +327,26 @@ public class MyContactListener implements ContactListener {
 							break;
 						case PLAYER:
 							Player player2 = ( Player ) object;
-							if ( player.getState( ) == PlayerState.GrabMode
-									|| player2.getState( ) == PlayerState.GrabMode ) {
-								contact.setEnabled( false );
-							} else {
+							// if ( player.getState( ) == PlayerState.GrabMode
+							// || player2.getState( ) == PlayerState.GrabMode )
+							// {
+							// contact.setEnabled( false );
+							// } else {
+							if ( player.getState( ) != PlayerState.HeadStand
+									&& player2.getState( ) != PlayerState.HeadStand ) {
 								player.hitPlayer( player2 );
 								player2.hitPlayer( player );
-								if ( player.getState( ) != PlayerState.HeadStand
-										&& player2.getState( ) != PlayerState.HeadStand
-										&& !player.isHeadStandPossible( )
+								if ( !player.isHeadStandPossible( )
 										&& !player2.isHeadStandPossible( ) ) {
 									player.hitPlayer( null );
 									player2.hitPlayer( null );
 									contact.setEnabled( false );
-								} else if ( player.getState( ) != PlayerState.HeadStand
-										&& player2.getState( ) != PlayerState.HeadStand ) {
+								} else {
 									player.setGrounded( true );
 									player2.setGrounded( true );
 								}
 							}
+							// }
 							break;
 						default:
 							break;

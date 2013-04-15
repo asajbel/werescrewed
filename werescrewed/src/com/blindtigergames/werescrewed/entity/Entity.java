@@ -2,10 +2,11 @@ package com.blindtigergames.werescrewed.entity;
 
 import java.util.ArrayList;
 import java.util.EnumMap;
+import java.util.HashMap;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
-import com.blindtigergames.werescrewed.graphics.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.MathUtils;
@@ -17,13 +18,17 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
+import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.camera.Anchor;
 import com.blindtigergames.werescrewed.camera.AnchorList;
 import com.blindtigergames.werescrewed.entity.animator.IAnimator;
+import com.blindtigergames.werescrewed.entity.animator.ISpinemator;
 import com.blindtigergames.werescrewed.entity.animator.PlayerAnimator;
 import com.blindtigergames.werescrewed.entity.animator.SimpleFrameAnimator;
 import com.blindtigergames.werescrewed.entity.mover.IMover;
+import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 import com.blindtigergames.werescrewed.graphics.TextureAtlas;
+import com.blindtigergames.werescrewed.graphics.particle.ParticleEffect;
 import com.blindtigergames.werescrewed.level.GleedLoadable;
 import com.blindtigergames.werescrewed.player.Player;
 import com.blindtigergames.werescrewed.util.Util;
@@ -60,8 +65,12 @@ public class Entity implements GleedLoadable {
 	protected ArrayList< Float > decalAngles;
 	private RobotState currentRobotState;
 	private EnumMap< RobotState, Integer > robotStateMap;
-
+	public ISpinemator spinemator;
+	
 	private Skeleton parentSkeleton; // pointer to parent skele, set by skeleton
+
+	protected HashMap< String, ParticleEffect > behindParticles, frontParticles;
+	//protected Array<ParticleEffect> tmpParticleEffect; 
 
 	/**
 	 * Create entity by definition
@@ -87,10 +96,12 @@ public class Entity implements GleedLoadable {
 		this.construct( name, solid );
 		this.type = type;
 		this.world = world;
-		if ( type.atlases.size > 0 ) {
-			this.sprite = constructSprite( type.atlases.get( 0 ) );
-		} else {
-			this.sprite = constructSprite( texture );
+		if ( !this.type.animatorType.equals( "spine" ) ) {
+			if ( type.atlases.size > 0 ) {
+				this.sprite = constructSprite( type.atlases.get( 0 ) );
+			} else {
+				this.sprite = constructSprite( texture );
+			}
 		}
 		this.body = constructBodyByType( );
 		setPixelPosition( positionPixels );
@@ -110,10 +121,13 @@ public class Entity implements GleedLoadable {
 		this.construct( name, solid );
 		this.type = type;
 		this.world = world;
-		if ( type.atlases.size > 0 ) {
-			this.sprite = constructSprite( type.atlases.get( 0 ) );
-		} else {
-			this.sprite = constructSprite( texture );
+
+		if ( !this.type.animatorType.equals( "spine" ) ) {
+			if ( type.atlases.size > 0 ) {
+				this.sprite = constructSprite( type.atlases.get( 0 ) );
+			} else {
+				this.sprite = constructSprite( texture );
+			}
 		}
 		this.body = constructBodyByType( );
 		this.decals = new ArrayList< Sprite >( );
@@ -254,11 +268,25 @@ public class Entity implements GleedLoadable {
 	}
 
 	public void draw( SpriteBatch batch, float deltaTime ) {
+		drawParticles( behindParticles, batch );
 		if ( sprite != null && visible && !removeNextStep ) {
 			sprite.draw( batch );
 		}
 		// drawOrigin(batch);
 		drawDecals( batch );
+		if ( spinemator != null )
+			spinemator.draw( batch );
+		drawParticles( frontParticles, batch );
+	}
+
+	protected void drawParticles( HashMap< String, ParticleEffect > map,
+			SpriteBatch batch ) {
+		if ( map != null ) {
+			for ( ParticleEffect e : map.values( ) ) {
+				if ( !e.isComplete( ) )
+					e.draw( batch );
+			}
+		}
 	}
 
 	public void drawOrigin( SpriteBatch batch ) {
@@ -308,9 +336,6 @@ public class Entity implements GleedLoadable {
 	}
 
 	public void update( float deltaTime ) {
-		// if ( removeNextStep ) {
-		// remove( );
-		// } else
 		if ( body != null ) {
 			// animation stuff may go here
 			Vector2 bodyPos = body.getPosition( ).mul( Util.BOX_TO_PIXEL );
@@ -318,19 +343,54 @@ public class Entity implements GleedLoadable {
 				sprite.setPosition( bodyPos.x - offset.x, bodyPos.y - offset.y );
 				sprite.setRotation( MathUtils.radiansToDegrees
 						* body.getAngle( ) );
+				sprite.update( deltaTime );
 			}
 			if ( body != null && anchor != null ) {
 				updateAnchor( );
 			}
 			// animation stuff may go here
-			bodyPos = body.getPosition( ).mul( Util.BOX_TO_PIXEL );
-			if ( sprite != null ) {
-				sprite.setPosition( bodyPos.x - offset.x, bodyPos.y - offset.y );
-				sprite.setRotation( MathUtils.radiansToDegrees
-						* body.getAngle( ) );
-				sprite.update( deltaTime );
-			}
+//			bodyPos = body.getPosition( ).mul( Util.BOX_TO_PIXEL );
+//			if ( sprite != null ) {
+//				sprite.setPosition( bodyPos.x - offset.x, bodyPos.y - offset.y );
+//				sprite.setRotation( MathUtils.radiansToDegrees
+//						* body.getAngle( ) );
+//				sprite.update( deltaTime );
+//			}
 			updateDecals( deltaTime );
+
+			if ( spinemator != null ) {
+				spinemator.update( deltaTime );
+			}
+		}
+
+		updateParticleEffect( deltaTime, frontParticles );
+		updateParticleEffect( deltaTime, behindParticles );
+	}
+
+	private void updateParticleEffect( float deltaTime,
+			HashMap< String, ParticleEffect > map ) {
+		Array< String > removals = null;
+		if ( map != null ) {
+			Vector2 pos = getPositionPixel( );
+			for ( ParticleEffect e : map.values( ) ) {
+				if ( e.updatePositionOnUpdate ){
+					e.setPosition( pos.x, pos.y );
+					if ( e.updateAngleBasedOnVelocity ){
+						
+					}else
+						e.setAngle( body.getAngle( ) );
+				}
+				if ( !e.isComplete( ) ){
+					e.update( deltaTime );
+				}else if ( e.removeOnComplete ){
+					if ( removals == null )
+						removals = new Array< String >();
+					removals.add( e.name );
+				}
+			}
+			if ( removals != null ){
+				for(String name : removals ) map.remove( name );
+			}
 		}
 	}
 
@@ -400,6 +460,13 @@ public class Entity implements GleedLoadable {
 			this.offset.set( sprite.getWidth( ) / 2, sprite.getHeight( ) / 2 );
 		}
 		sprite.setOrigin( origin.x, origin.y );
+		return sprite;
+	}
+	
+	protected Sprite constructSprite(TextureRegion region){
+		Sprite sprite;
+		
+		sprite = new Sprite( region );
 		return sprite;
 	}
 
@@ -655,8 +722,12 @@ public class Entity implements GleedLoadable {
 	 * 
 	 * @author Edward Ramirez
 	 */
-	private void updateAnchor( ) {
-		anchor.setPositionBox( body.getWorldCenter( ) );
+	public void updateAnchor( ) {
+		if ( body != null ) {
+			anchor.setPositionBox( body.getWorldCenter( ) );
+		} else if ( sprite != null ){
+			anchor.setPosition( new Vector2 ( sprite.getX( ), sprite.getY( ) ) );
+		}
 	}
 
 	/**
@@ -831,11 +902,18 @@ public class Entity implements GleedLoadable {
 	}
 
 	public void createAnchor( ) {
-		Vector2 centPos = new Vector2( body.getWorldCenter( ).x
+		Vector2 centPos;
+		if ( body != null ) {
+			centPos = new Vector2( body.getWorldCenter( ).x
 				* Util.BOX_TO_PIXEL, body.getWorldCenter( ).y
 				* Util.BOX_TO_PIXEL );
-		this.anchor = new Anchor( centPos );
-		AnchorList.getInstance( ).addAnchor( anchor );
+			this.anchor = new Anchor( centPos );
+			AnchorList.getInstance( ).addAnchor( anchor );
+		} else if ( sprite != null ) {
+			centPos = new Vector2( sprite.getX( ), sprite.getY( ) );
+			this.anchor = new Anchor( centPos );
+			AnchorList.getInstance( ).addAnchor( anchor );
+		}
 	}
 
 	/**
@@ -975,4 +1053,52 @@ public class Entity implements GleedLoadable {
 				body.getFixtureList( ).get( i ).setFilterData( filter );
 		}
 	}
+
+	public ParticleEffect addBehindParticleEffect( String name, boolean removeOnComplete, boolean updateWithParent, boolean updateAngleWithVelocity ) {
+		if ( behindParticles == null ) {
+			behindParticles = new HashMap< String, ParticleEffect >( );
+		}
+		return addParticleEffect( name, behindParticles, removeOnComplete, updateWithParent, updateAngleWithVelocity );
+	}
+	
+	public ParticleEffect addBehindParticleEffect( String name, boolean removeOnComplete, boolean updateWithParent ) {
+		return addBehindParticleEffect( name, removeOnComplete, updateWithParent, false );
+	}
+
+	public ParticleEffect addFrontParticleEffect( String name, boolean removeOnComplete, boolean updateWithParent, boolean updateAngleWithVelocity ) {
+		if ( frontParticles == null ) {
+			frontParticles = new HashMap< String, ParticleEffect >( );
+		}
+		return addParticleEffect( name, frontParticles, removeOnComplete, updateWithParent, updateAngleWithVelocity );
+	}
+	
+	public ParticleEffect addFrontParticleEffect( String name, boolean removeOnComplete, boolean updateWithParent ) {
+		return addFrontParticleEffect( name, removeOnComplete, updateWithParent, false );
+	}
+
+	private ParticleEffect addParticleEffect( String name,
+			HashMap< String, ParticleEffect > map, boolean removeOnComplete, boolean updateWithParent, boolean updateAngleWithVelocity ) {
+		ParticleEffect effect = WereScrewedGame.manager.getParticleEffect( name );
+		effect.removeOnComplete = removeOnComplete;
+		effect.updatePositionOnUpdate = updateWithParent;
+		effect.updateAngleBasedOnVelocity = updateAngleWithVelocity;
+		map.put( name, effect );
+		return effect;
+	}
+
+	public ParticleEffect getEffect( String name ) {
+		
+		ParticleEffect out = null;
+		if ( behindParticles!=null)
+			out = behindParticles.get( name );
+		if ( out == null && frontParticles!=null ) {
+			out = frontParticles.get( name );
+			if ( out == null ) {
+				throw new NullPointerException(
+						"No particle effect exists with name: " + name );
+			}
+		}
+		return out;
+	}
+	
 }

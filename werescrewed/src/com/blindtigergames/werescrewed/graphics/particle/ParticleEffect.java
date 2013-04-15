@@ -28,6 +28,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.math.Vector2;
 import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
@@ -43,31 +44,29 @@ import com.blindtigergames.werescrewed.graphics.TextureAtlas;
  */
 public class ParticleEffect implements Disposable {
 	private final Array< ParticleEmitter > emitters;
-
 	/**
-	 * Load a new particle effect by name. You must have the particle effect in
-	 * /data/particles with a .p extention and the particle image must be in the
-	 * texture atlas called particles.pack and the particle image in the .p file
-	 * should be specified without an extention, by name in the texture atlas
-	 * 
-	 * @param particleEffectName WITHOUT the .p extentions
-	 * @return a new particle effect
-	 * @author stew
+	 * If true, will update position and rotation when parent updates.
 	 */
-	public static ParticleEffect loadEffect( String particleEffectName ) {
-		ParticleEffect effect = new ParticleEffect( );
-		effect.load(
-				Gdx.files.internal( "data/particles/" + particleEffectName
-						+ ".p" ),
-				WereScrewedGame.manager.getAtlas( "particles" ) );
-		return effect;
-	}
+	public boolean updatePositionOnUpdate = true;	
+	
+	public boolean updateAngleBasedOnVelocity = false;
+	/**
+	 * Flag for parent to delete this when it particle effect is complete
+	 */
+	public boolean removeOnComplete = false;
+	
+	public String name;
+
 
 	public ParticleEffect( ) {
 		emitters = new Array( 8 );
 	}
 
 	public ParticleEffect( ParticleEffect effect ) {
+		updateAngleBasedOnVelocity = effect.updateAngleBasedOnVelocity;
+		updatePositionOnUpdate = effect.updatePositionOnUpdate;
+		removeOnComplete = effect.removeOnComplete;
+		name = effect.name+"_instance";
 		emitters = new Array( true, effect.emitters.size );
 		for ( int i = 0, n = effect.emitters.size; i < n; i++ )
 			emitters.add( new ParticleEmitter( effect.emitters.get( i ) ) );
@@ -124,6 +123,15 @@ public class ParticleEffect implements Disposable {
 	public void setPosition( float x, float y ) {
 		for ( int i = 0, n = emitters.size; i < n; i++ )
 			emitters.get( i ).setPosition( x, y );
+	}
+	
+	/**
+	 * @author stew
+	 * @param radians
+	 */
+	public void setAngle(float radians){
+		for ( int i = 0, n = emitters.size; i < n; i++ )
+			emitters.get( i ).setAngle( radians );
 	}
 
 	public void setFlip( boolean flipX, boolean flipY ) {
@@ -254,5 +262,15 @@ public class ParticleEffect implements Disposable {
 			ParticleEmitter emitter = emitters.get( i );
 			emitter.getSprite( ).getTexture( ).dispose( );
 		}
+	}
+	
+	public void restartAt(float xPix, float yPix){
+		setPosition( xPix, yPix );
+		reset( );
+		start( );
+	}
+	
+	public void restartAt(Vector2 posPixels){
+		restartAt( posPixels.x, posPixels.y );
 	}
 }

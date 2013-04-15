@@ -30,4 +30,9 @@ public class DeactivateSkeleton implements IAction {
 		}
 	}
 
+	@Override
+	public ActionType getActionType( ) {
+		return ActionType.FORPLAYER;
+	}
+
 }
