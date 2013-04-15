@@ -172,7 +172,7 @@ public class Player extends Entity {
 	}
 
 	public enum ConcurrentState {
-		Ignore, ExtraJumping, ExtraFalling
+		Ignore, ExtraJumping, ExtraFalling, ScrewReady, ScrewStow
 	}
 
 	// enum to handle different states of movement

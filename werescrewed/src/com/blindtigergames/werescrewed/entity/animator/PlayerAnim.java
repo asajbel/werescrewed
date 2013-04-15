@@ -8,7 +8,7 @@ public enum PlayerAnim{
 	,HANG("hang")
 	,JUMP_UP("jump_end", LoopBehavior.STOP )
 	,FALL_BEGIN("fall_begin", LoopBehavior.STOP )
-	,FALL_IDLE("fall_idle", LoopBehavior.STOP, PlayerAnim.FALL_BEGIN )
+	,FALL_IDLE("fall_idle", LoopBehavior.LOOP, PlayerAnim.FALL_BEGIN )
 	,DEATH_BEGIN("death_begin", LoopBehavior.STOP )
 	,DEATH("death_idle", PlayerAnim.DEATH_BEGIN)
 	;

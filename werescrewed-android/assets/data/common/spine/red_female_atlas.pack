@@ -3,11 +3,11 @@ format: RGBA8888
 filter: Linear,Linear
 repeat: none
 offset: 0,0
-R_boot
+B_hat
   rotate: false
-  xy: 48, 2
-  size: 13, 12
-  orig: 13, 12
+  xy: 2, 93
+  size: 56, 39
+  orig: 56, 39
   offset: 0, 0
   index: -1
 L_lower_arm
@@ -19,7 +19,7 @@ L_lower_arm
   index: -1
 R_hand
   rotate: false
-  xy: 17, 2
+  xy: 26, 2
   size: 5, 6
   orig: 5, 6
   offset: 0, 0
@@ -33,7 +33,7 @@ L_upper_arm
   index: -1
 left_boot
   rotate: false
-  xy: 69, 2
+  xy: 54, 2
   size: 13, 12
   orig: 13, 12
   offset: 0, 0
@@ -45,9 +45,16 @@ torso
   orig: 23, 32
   offset: 0, 0
   index: -1
+F_hat
+  rotate: false
+  xy: 2, 179
+  size: 52, 49
+  orig: 52, 49
+  offset: 0, 0
+  index: -1
 L_hand
   rotate: false
-  xy: 24, 2
+  xy: 17, 2
   size: 7, 6
   orig: 7, 6
   offset: 0, 0
@@ -61,16 +68,9 @@ screw_driver
   index: -1
 R_lower_arm
   rotate: false
-  xy: 63, 2
+  xy: 48, 2
   size: 4, 12
   orig: 4, 12
-  offset: 0, 0
-  index: -1
-F_hat_color
-  rotate: false
-  xy: 2, 179
-  size: 52, 49
-  orig: 52, 49
   offset: 0, 0
   index: -1
 lower_skirt
@@ -80,11 +80,11 @@ lower_skirt
   orig: 69, 40
   offset: 0, 0
   index: -1
-B_hat_color
+right_boot
   rotate: false
-  xy: 2, 93
-  size: 56, 39
-  orig: 56, 39
+  xy: 69, 2
+  size: 13, 12
+  orig: 13, 12
   offset: 0, 0
   index: -1
 R_upper_arm
