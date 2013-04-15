@@ -115,6 +115,10 @@ public class HazardScreen implements com.badlogic.gdx.Screen {
 				world, 0, false, Vector2.Zero);
 		skeleton.addScrewForDraw( pscrew );
 		
+		pscrew = new PuzzleScrew( "pscrew2", new Vector2( 1850f, 200f), 100, skeleton,
+				world, 100, false, Vector2.Zero);
+		skeleton.addScrewForDraw( pscrew );
+		
 		rootSkeleton.addSkeleton( skeleton );
 		debugRenderer = new SBox2DDebugRenderer( Util.BOX_TO_PIXEL );
 		debugRenderer.setDrawJoints( false );
