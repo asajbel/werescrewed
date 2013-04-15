@@ -52,20 +52,22 @@ public class Anchor {
 	 *            buffer around anchor which must always stay within view
 	 */
 	public Anchor( Vector2 position, Vector2 offset, Vector2 buffer ) {
-		this.offset = offset;
-		this.position = position.add( this.offset );
+		this.offset = new Vector2( offset.x, offset.y );
+		this.position = new Vector2( position.x + offset.x, position.y
+				+ offset.y );
 		this.positionBox = new Vector2( position.x * Util.PIXEL_TO_BOX,
 				position.y * Util.PIXEL_TO_BOX );
 		this.offsetBox = new Vector2( offset.x * Util.PIXEL_TO_BOX, offset.y
 				* Util.PIXEL_TO_BOX );
-		this.positionBox = this.positionBox.add( this.offsetBox );
+		this.positionBox = new Vector2( this.positionBox.x + this.offsetBox.x,
+				this.positionBox.y + this.offsetBox.y );
 		this.buffer = buffer;
 		this.activated = false;
 		this.timer = -1;
 	}
 
 	/**
-	 * get the buffer as a rectangle in pixels
+	 * Get the buffer as a rectangle in pixels.
 	 * 
 	 * @return
 	 */
@@ -75,7 +77,7 @@ public class Anchor {
 	}
 
 	/**
-	 * set the position Vector2 in pixels
+	 * Set the position of the anchor in pixels.
 	 * 
 	 * @param newPosition
 	 *            in pixels
@@ -83,12 +85,14 @@ public class Anchor {
 	public void setPosition( Vector2 newPosition ) {
 		this.position.x = newPosition.x + this.offset.x;
 		this.position.y = newPosition.y + this.offset.y;
-		this.positionBox.x = newPosition.x * Util.PIXEL_TO_BOX + this.offsetBox.x;
-		this.positionBox.y = newPosition.y * Util.PIXEL_TO_BOX + this.offsetBox.y;
+		this.positionBox.x = newPosition.x * Util.PIXEL_TO_BOX
+				+ this.offsetBox.x;
+		this.positionBox.y = newPosition.y * Util.PIXEL_TO_BOX
+				+ this.offsetBox.y;
 	}
 
 	/**
-	 * set the position Vector2 in box units (meters)
+	 * Set the position Vector2 in box units (meters).
 	 * 
 	 * @param newPosition
 	 *            in meters
@@ -101,7 +105,7 @@ public class Anchor {
 	}
 
 	/**
-	 * set the buffer
+	 * Set the buffer in pixels.
 	 * 
 	 * @param buffer
 	 *            a Vector2 of the buffer's width and height
@@ -111,14 +115,14 @@ public class Anchor {
 	}
 
 	/**
-	 * activate the anchor
+	 * Activate the anchor.
 	 */
 	public void activate( ) {
 		activated = true;
 	}
 
 	/**
-	 * deactivate the anchor
+	 * Deactivate the anchor.
 	 */
 	public void deactivate( ) {
 		activated = false;

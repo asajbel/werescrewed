@@ -13,6 +13,8 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.XmlReader;
 import com.badlogic.gdx.utils.XmlReader.Element;
 import com.blindtigergames.werescrewed.WereScrewedGame;
+import com.blindtigergames.werescrewed.camera.Anchor;
+import com.blindtigergames.werescrewed.camera.AnchorList;
 import com.blindtigergames.werescrewed.camera.Camera;
 import com.blindtigergames.werescrewed.checkpoints.CheckPoint;
 import com.blindtigergames.werescrewed.checkpoints.ProgressManager;
@@ -135,7 +137,14 @@ public class LevelFactory {
 					+ filename, e1 );
 			e1.printStackTrace( );
 		}
-		// Load skeletons first.
+		// Load camera first.
+		for ( Item i : items.get( GleedTypeTag.ENTITY ).values( ) ) {
+			String bluePrints = i.defName;
+			if ( bluePrints.equals( "camera" ) ) {
+				placeCamera( i );
+			}
+		}
+		// Load skeletons second.
 		for ( Item i : items.get( GleedTypeTag.SKELETON ).values( ) ) {
 			loadSkeleton( i );
 		}
@@ -206,8 +215,6 @@ public class LevelFactory {
 			constructDecal( item );
 		} else if ( bluePrints.equals( "player" ) ) {
 			constructPlayer( item );
-		} else if ( bluePrints.equals( "camera" ) ) {
-			placeCamera( item );
 		} else if ( bluePrints.equals( "tiledPlatform" ) ) {
 			out = constructTiledPlatform( item );
 		} else if ( bluePrints.equals( "customPlatform" ) ) {
@@ -221,12 +228,11 @@ public class LevelFactory {
 		} else if ( bluePrints.equals( "checkpoint" ) ) {
 			constructCheckpoint( item );
 		} else if ( bluePrints.equals( "eventtrigger" ) ) {
-			contstructEventTrigger( item );
-		} else if ( bluePrints.equals( "anchor" ) ) {
-			constructAnchor( item );
+			constructEventTrigger( item );
 		} else if ( bluePrints.equals( "hazard" ) ) {
 			out = constructHazard( item );
-		} else if ( item.getDefinition( ).getCategory( ) == EntityCategory.COMPLEX_PLATFORM ) {
+		} else if ( !bluePrints.equals( "camera" )
+				&& item.getDefinition( ).getCategory( ) == EntityCategory.COMPLEX_PLATFORM ) {
 			out = loadComplexPlatform( item );
 		}
 
@@ -278,8 +284,45 @@ public class LevelFactory {
 					}
 				}
 			}
+			out = addAnchors( item, out );
 		}
 
+		return out;
+	}
+
+	private Entity addAnchors( Item item, Entity out ) {
+		RuntimeException exception = new RuntimeException(
+				"Anchor incorrectly defined. Be sure the format is: \"bufferWidth, bufferHeight, offsetX, offsetY\"" );
+		Anchor anchor;
+		for ( int i = 1; i < 50; i++ ) {
+			if ( item.props.containsKey( "anchor" + i ) ) {
+				String string = item.props.get( "anchor" + i );
+				String sValues[] = string.split( ", " );
+				if ( sValues.length != 4 )
+					throw exception;
+				float values[] = new float[ 4 ];
+				int j = 0;
+				for ( String value : sValues ) {
+					try {
+						values[ j ] = Float.parseFloat( value );
+						j++;
+					} catch ( NumberFormatException e ) {
+						throw exception;
+					}
+				}
+				float offsetX = values[ 0 ];
+				float offsetY = values[ 1 ];
+				float bufferWidth = values[ 2 ];
+				float bufferHeight = values[ 3 ];
+				anchor = new Anchor( item.pos, new Vector2( offsetX, offsetY ),
+						new Vector2( bufferWidth, bufferHeight ) );
+				AnchorList.getInstance( ).addAnchor( anchor );
+				out.addAnchor( anchor );
+				anchor.activate( );
+			} else {
+				break;
+			}
+		}
 		return out;
 	}
 
@@ -1037,7 +1080,7 @@ public class LevelFactory {
 
 	}
 
-	public void contstructEventTrigger( Item item ) {
+	public void constructEventTrigger( Item item ) {
 		String skelAttach = item.skeleton;
 		Skeleton parent = loadSkeleton( skelAttach );
 
@@ -1098,14 +1141,6 @@ public class LevelFactory {
 		EventTrigger et = etb.build( );
 		entities.put( item.name, et );
 		parent.addEventTrigger( et );
-	}
-
-	private void constructAnchor( Item item ) {
-		float width = item.element.getFloat( "Width" );
-		float height = item.element.getFloat( "Height" );
-		Vector2 pos = item.pos;
-		
-		
 	}
 
 	/**

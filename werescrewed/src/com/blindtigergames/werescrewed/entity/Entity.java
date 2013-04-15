@@ -724,7 +724,7 @@ public class Entity implements GleedLoadable {
 	/**
 	 * updates the entity's anchor
 	 * 
-	 * @author Edward Ramirez
+	 * @author Edward Ramirez and Dan Malear
 	 */
 	public void updateAnchors( ) {
 		if ( body != null ) {
@@ -909,26 +909,9 @@ public class Entity implements GleedLoadable {
 				+ body.isAwake( );
 	}
 
-	// public Anchor createAnchor( ) {
-	// Vector2 centPos;
-	// Anchor anchor = null;
-	// if ( body != null ) {
-	// centPos = new Vector2(
-	// body.getWorldCenter( ).x * Util.BOX_TO_PIXEL,
-	// body.getWorldCenter( ).y * Util.BOX_TO_PIXEL );
-	// anchor = new Anchor( centPos );
-	// AnchorList.getInstance( ).addAnchor( anchor );
-	// } else if ( sprite != null ) {
-	// centPos = new Vector2( sprite.getX( ), sprite.getY( ) );
-	// anchor = new Anchor( centPos );
-	// AnchorList.getInstance( ).addAnchor( anchor );
-	// }
-	// if ( anchor != null ) {
-	// anchors.add( anchor );
-	// AnchorList.getInstance( ).addAnchor( anchor );
-	// }
-	// return anchor;
-	// }
+	public void addAnchor( Anchor anchor ) {
+		this.anchors.add( anchor );
+	}
 
 	/**
 	 * Sets up moverArray and fills it with null and set up the EnumMap Idle = 0
