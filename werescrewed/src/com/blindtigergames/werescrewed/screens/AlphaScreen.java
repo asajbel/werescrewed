@@ -66,17 +66,19 @@ public class AlphaScreen extends Screen {
 
 		if ( level.player1 == null ) {
 			level.player1 = new PlayerBuilder( ).world( level.world )
-					.position( -1650f, 6100f ).name( "player1" ).definition( "red_male" ).buildPlayer( );
+					.position( 0, 0 ).name( "player1" ).definition( "red_male" ).buildPlayer( );
 			level.progressManager.addPlayerOne( level.player1 );
 		}
 		if ( level.player2 == null ) {
 			level.player2 = new PlayerBuilder( ).world( level.world )
-					.position( -1650f, 6100f ).name( "player2" ).definition( "red_female" ).buildPlayer( );
+					.position( 0, 0 ).name( "player2" ).definition( "red_female" ).buildPlayer( );
 			level.progressManager.addPlayerTwo( level.player2 );
 		}
 
 		chestObjects( );
 		leftArm();
+		
+		buildBackground();
 
 	}
 
@@ -102,7 +104,12 @@ public class AlphaScreen extends Screen {
 		SkeletonBuilder b = new SkeletonBuilder(level.world);
 		Skeleton bgSkele = b.name( "bgSkele" ).position( 0,0 ).build( );
 		TextureAtlas atlas = WereScrewedGame.manager.getAtlas("alphabot_floor_seats");
+		bgSkele.addDecal( atlas.createSprite( "floor_left" ), new Vector2(-2048,0 ) );
+		bgSkele.addDecal( atlas.createSprite( "floor_right" ), new Vector2( 0,0 ) );
 		bgSkele.addDecal( atlas.createSprite( "seats_left" ), new Vector2(-2048,0 ) );
+		bgSkele.addDecal( atlas.createSprite( "seats_middle" ), new Vector2( 0,0 ) );
+		bgSkele.addDecal( atlas.createSprite( "seats_right" ), new Vector2( 2048,0 ) );
+		level.root.addSkeleton(bgSkele);
 	}
 
 	private void createFootObjects( ) {
