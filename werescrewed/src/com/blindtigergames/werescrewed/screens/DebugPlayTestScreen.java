@@ -1082,11 +1082,11 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 
 	private void initCheckPoints( ) {
 		progressManager = new ProgressManager( player1, player2, world );
-		progressManager
+		skeleton
 				.addCheckPoint( new CheckPoint( "check_01", new Vector2( 0f,
 						64f ), skeleton, world, progressManager,
 						"levelStage_0_0" ) );
-		progressManager.addCheckPoint( new CheckPoint( "check_01", new Vector2(
+		skeleton.addCheckPoint( new CheckPoint( "check_02", new Vector2(
 				512 * TILE, 64 * TILE ), skeleton, world, progressManager,
 				"levelStage_0_1" ) );
 		// progressManager
@@ -1170,7 +1170,6 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 				rootSkeleton.addMover( new RockingMover( -0.1f, 0.5f ),
 						RobotState.IDLE );
 				rootSkeleton.setActive( true );
-				cam.turnOffZoom( );
 			}
 			endgameCounter += deltaTime;
 			cam.camera.zoom += 0.015f;

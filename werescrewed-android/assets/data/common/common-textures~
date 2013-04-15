@@ -17,7 +17,7 @@ chainlink
   orig: 32, 64
   offset: 0, 0
   index: -1
-screw-flathead
+screw
   rotate: false
   xy: 2, 154
   size: 64, 64

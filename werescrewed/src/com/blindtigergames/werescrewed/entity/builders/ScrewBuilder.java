@@ -247,12 +247,13 @@ public class ScrewBuilder extends GenericEntityBuilder< ScrewBuilder > {
 		if (canBuild() && entity != null && player != null){
 			Vector2 finalPos;
 			if (this.playerOffset){
-				finalPos = this.pos.add( player.getPositionPixel( ) );
+				Vector2 temp = pos.cpy( );
+				finalPos = temp.add( player.getPositionPixel( ) );
 			} else {
 				finalPos = this.pos;
 			}
 			out = new ResurrectScrew( finalPos, this.entity, this.world,
-					this.player, lerpMover );
+					this.player, lerpMover, pos );
 		}
 		return out;
 	}

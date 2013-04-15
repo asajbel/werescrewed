@@ -343,18 +343,19 @@ public class Entity implements GleedLoadable {
 				sprite.setPosition( bodyPos.x - offset.x, bodyPos.y - offset.y );
 				sprite.setRotation( MathUtils.radiansToDegrees
 						* body.getAngle( ) );
+				sprite.update( deltaTime );
 			}
 			if ( body != null && anchor != null ) {
 				updateAnchor( );
 			}
 			// animation stuff may go here
-			bodyPos = body.getPosition( ).mul( Util.BOX_TO_PIXEL );
-			if ( sprite != null ) {
-				sprite.setPosition( bodyPos.x - offset.x, bodyPos.y - offset.y );
-				sprite.setRotation( MathUtils.radiansToDegrees
-						* body.getAngle( ) );
-				sprite.update( deltaTime );
-			}
+//			bodyPos = body.getPosition( ).mul( Util.BOX_TO_PIXEL );
+//			if ( sprite != null ) {
+//				sprite.setPosition( bodyPos.x - offset.x, bodyPos.y - offset.y );
+//				sprite.setRotation( MathUtils.radiansToDegrees
+//						* body.getAngle( ) );
+//				sprite.update( deltaTime );
+//			}
 			updateDecals( deltaTime );
 
 			if ( spinemator != null ) {
@@ -721,8 +722,12 @@ public class Entity implements GleedLoadable {
 	 * 
 	 * @author Edward Ramirez
 	 */
-	private void updateAnchor( ) {
-		anchor.setPositionBox( body.getWorldCenter( ) );
+	public void updateAnchor( ) {
+		if ( body != null ) {
+			anchor.setPositionBox( body.getWorldCenter( ) );
+		} else if ( sprite != null ){
+			anchor.setPosition( new Vector2 ( sprite.getX( ), sprite.getY( ) ) );
+		}
 	}
 
 	/**
@@ -897,11 +902,18 @@ public class Entity implements GleedLoadable {
 	}
 
 	public void createAnchor( ) {
-		Vector2 centPos = new Vector2( body.getWorldCenter( ).x
+		Vector2 centPos;
+		if ( body != null ) {
+			centPos = new Vector2( body.getWorldCenter( ).x
 				* Util.BOX_TO_PIXEL, body.getWorldCenter( ).y
 				* Util.BOX_TO_PIXEL );
-		this.anchor = new Anchor( centPos );
-		AnchorList.getInstance( ).addAnchor( anchor );
+			this.anchor = new Anchor( centPos );
+			AnchorList.getInstance( ).addAnchor( anchor );
+		} else if ( sprite != null ) {
+			centPos = new Vector2( sprite.getX( ), sprite.getY( ) );
+			this.anchor = new Anchor( centPos );
+			AnchorList.getInstance( ).addAnchor( anchor );
+		}
 	}
 
 	/**

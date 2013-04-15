@@ -37,6 +37,15 @@ public class StrippedScrew extends Screw {
 		super( name, pos, null );
 		this.world = world;
 		this.detachDirection = detachDirection;
+		this.entity = entity;
+		if ( entity != null ) {
+			this.entityAngle = entity.getAngle( )*Util.RAD_TO_DEG;
+		}
+		if ( detachDirection != null && Math.abs( detachDirection.y ) > Math.abs( detachDirection.x ) ) {
+			upDownDetach = true;
+		} else {
+			upDownDetach = false;
+		}
 		screwType = ScrewType.SCREW_STRIPPED;
 		entityType = EntityType.SCREW;
 		extraJoints = new ArrayList< Joint >( );
@@ -45,6 +54,8 @@ public class StrippedScrew extends Screw {
 		sprite.setOrigin( 0.0f, 0.0f );
 
 		constructBody( pos );
+		if(sprite!=null)sprite.rotate( ( float ) ( Math.random( )*360 ) );
+		body.setTransform( body.getPosition( ), sprite.getRotation( )*Util.DEG_TO_RAD );
 		addStructureJoint( entity );
 
 	}
@@ -66,6 +77,8 @@ public class StrippedScrew extends Screw {
 		sprite.setOrigin( 0.0f, 0.0f );
 
 		constructBody( pos );
+		if(sprite!=null)sprite.rotate( ( float ) ( Math.random( )*360 ) );
+		body.setTransform( body.getPosition( ), sprite.getRotation( )*Util.DEG_TO_RAD );
 	}
 
 	/**
@@ -109,6 +122,20 @@ public class StrippedScrew extends Screw {
 
 	}
 
+	@Override
+	public void update( float deltaTime ) {
+		super.update( deltaTime );
+		if ( entity != null && ( getDetachDirection( ).x != 0 || getDetachDirection( ).y != 0 ) ) {
+			if ( upDownDetach ) {
+				detachDirection.x = (float)Math.sin( entity.getAngle( ) );
+				detachDirection.y = Math.signum( detachDirection.y ) * (float)Math.cos( entity.getAngle( ) );
+			} else {
+				detachDirection.x = Math.signum( detachDirection.y ) * (float)Math.cos( entity.getAngle( ) );
+				detachDirection.y = (float)Math.sin( entity.getAngle( ) );					
+			}
+		}
+	}
+	
 	/**
 	 * This particular draw is needed because I needed stripped screws to be able to 
 	 * rotate in place, I am refering to the whole body rotating, not just screwing/unscrewing

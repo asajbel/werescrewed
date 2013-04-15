@@ -1,5 +1,6 @@
 package com.blindtigergames.werescrewed.checkpoints;
 
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
@@ -31,6 +32,7 @@ public class CheckPoint extends Entity {
 	private ProgressManager progressManager;
 	private boolean removed = false;
 	private SimpleFrameAnimator checkpointFrameAnimator;
+	private Entity entity;
 
 	/**
 	 * builds a checkpoint jointed to a skeleton
@@ -53,15 +55,16 @@ public class CheckPoint extends Entity {
 		this.progressManager = pm;
 		this.levelLoadStage = levelToReload;
 		this.entityType = EntityType.CHECKPOINT;
-		
-
+		this.entity = entity;
+		if ( progressManager.currentCheckPoint == null ) {
+			progressManager.currentCheckPoint = this;
+		}
 		TextureAtlas atlas = WereScrewedGame.manager.getAtlas( "checkpoint" );
 		checkpointFrameAnimator = new SimpleFrameAnimator( ).speed(0f )
 				.loop( LoopBehavior.STOP ).time( 0.001f ).startFrame( 0 )
 				.maxFrames( atlas.getRegions( ).size+1 );
 		Sprite sprite = new Sprite( atlas, checkpointFrameAnimator );
-		//sprite.setOrigin( -sprite.getWidth()/2, -sprite.getHeight( )/2 );
-		sprite.setOrigin( 1002, 1002 );
+		sprite.setOrigin( sprite.getWidth()/2, sprite.getHeight( )/2 );
 		changeSprite( sprite );
 		super.offset = new Vector2(sprite.getWidth()/2, sprite.getHeight( )/2);
 		
@@ -73,6 +76,7 @@ public class CheckPoint extends Entity {
 	/**
 	 * destroys the joints
 	 */
+	@Override
 	public void remove( ) {
 		while ( body.getJointList( ).iterator( ).hasNext( ) ) {
 			world.destroyJoint( body.getJointList( ).get( 0 ).joint );
@@ -81,6 +85,11 @@ public class CheckPoint extends Entity {
 		removed = true;
 	}
 
+	@Override
+	public void dispose( ) {
+		remove( );
+	}
+	
 	/**
 	 * returns whether or not this entity has been removed
 	 */
@@ -100,6 +109,13 @@ public class CheckPoint extends Entity {
 		progressManager.hitNewCheckPoint( this );
 	}
 
+	/**
+	 * returns the entity this checkpoint is attached to
+	 */
+	public Entity getEntity( ) {
+		return entity;
+	}
+	
 	/**
 	 * returns whether the checkpoint is the most recent active checkpoint
 	 * 
@@ -121,6 +137,11 @@ public class CheckPoint extends Entity {
 	@Override
 	public void update( float deltaTime ) {
 		super.update( deltaTime );
+		//this.body.setTransform( body.getPosition( ), entity.getAngle( ) );
+		Vector2 bodyPos = body.getPosition( ).mul( Util.BOX_TO_PIXEL );		
+		sprite.setRotation( MathUtils.radiansToDegrees
+				* entity.getAngle( ) );
+		sprite.setPosition( bodyPos.x - offset.x, bodyPos.y - offset.y );
 		//if ( !checkpointFrameAnimator.isStopped( ) )
 		checkpointFrameAnimator.update( deltaTime );
 		//System.out.println( checkpointFrameAnimator.getFrame( ) );
@@ -144,7 +165,7 @@ public class CheckPoint extends Entity {
 		checkPShape.setRadius( ( sprite.getWidth( ) / 2.0f )
 				* Util.PIXEL_TO_BOX );
 		FixtureDef checkPFixture = new FixtureDef( );
-		checkPFixture.filter.categoryBits = Util.CATEGORY_SCREWS;
+		checkPFixture.filter.categoryBits = Util.CATEGORY_CHECKPOINTS;
 		checkPFixture.filter.maskBits = Util.CATEGORY_PLAYER
 				| Util.CATEGORY_SUBPLAYER;
 		checkPFixture.shape = checkPShape;

@@ -8,7 +8,6 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.controllers.PovDirection;
-import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -26,13 +25,11 @@ import com.blindtigergames.werescrewed.camera.AnchorList;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityDef;
 import com.blindtigergames.werescrewed.entity.EntityType;
-import com.blindtigergames.werescrewed.entity.Sprite;
 import com.blindtigergames.werescrewed.entity.animator.PlayerSpinemator;
-import com.blindtigergames.werescrewed.entity.animator.SimpleFrameAnimator;
-import com.blindtigergames.werescrewed.entity.animator.SimpleFrameAnimator.LoopBehavior;
 import com.blindtigergames.werescrewed.entity.mover.IMover;
 import com.blindtigergames.werescrewed.entity.mover.LerpMover;
 import com.blindtigergames.werescrewed.entity.mover.LinearAxis;
+import com.blindtigergames.werescrewed.entity.platforms.Platform;
 import com.blindtigergames.werescrewed.entity.screws.ResurrectScrew;
 import com.blindtigergames.werescrewed.entity.screws.Screw;
 import com.blindtigergames.werescrewed.entity.screws.ScrewType;
@@ -61,7 +58,7 @@ public class Player extends Entity {
 	public final static float ANALOG_DEADZONE = 0.4f;
 	public final static float ANALOG_MAX_RANGE = 1.0f;
 	public final static float PLAYER_FRICTION = 0.7f;
-	public final static int SCREW_JUMP_STEPS = 15;
+	public final static int SCREW_ATTACH_STEPS = 15;
 	public final static int HEAD_JUMP_STEPS = 30;
 	public final static int DEAD_STEPS = 0;
 	public final static int RUN_STEPS = 7;
@@ -79,7 +76,7 @@ public class Player extends Entity {
 	public boolean flipX = false;
 	public final static float HEIGHT = 128;
 	public final static float WIDTH = 64;
-	//public final static float 
+	// public final static float
 
 	public Fixture feet;
 	public Fixture torso;
@@ -100,6 +97,7 @@ public class Player extends Entity {
 	private PlayerState playerState;
 	private ConcurrentState extraState;
 	private PlayerDirection playerDirection;
+	@SuppressWarnings( "unused" )
 	private boolean reachedMaxSpeed;
 	private PlayerDirection prevPlayerDir;
 	private Controller controller;
@@ -118,12 +116,13 @@ public class Player extends Entity {
 	private Screw currentScrew;
 	private Player otherPlayer;
 	private RevoluteJoint playerJoint;
-	private Body platformBody;
+	private Platform currentPlatform;
+	private Platform lastPlatformHit;
 	private boolean topPlayer = false;
 	private boolean isDead = false;
 	private boolean hitSolidObject;
 	private boolean knockedOff = false;
-	private int screwJumpTimeout = 0;
+	private int screwAttachTimeout = 0;
 	private int headStandTimeout = 0;
 	private int runTimeout = 0;
 	private int respawnTimeout = 0;
@@ -208,11 +207,11 @@ public class Player extends Entity {
 		body.setBullet( true );
 		playerState = PlayerState.Standing;
 		inputHandler = new PlayerInputHandler( this.name );
-		anchor = new Anchor( true, new Vector2( body.getWorldCenter( ).x
+		anchor = new Anchor( new Vector2( body.getWorldCenter( ).x
 				* Util.BOX_TO_PIXEL, body.getWorldCenter( ).y
 				* Util.BOX_TO_PIXEL ), new Vector2( ANCHOR_BUFFER_SIZE.x,
 				ANCHOR_BUFFER_SIZE.y ) );
-		anchor.special = true;
+		anchor.activate( );
 		AnchorList.getInstance( ).addAnchor( anchor );
 
 		// build spine animator
@@ -255,12 +254,15 @@ public class Player extends Entity {
 		if ( Gdx.input.isKeyPressed( Keys.G ) )
 			Gdx.app.log( "steamCollide: " + steamCollide, "steamDone: "
 					+ steamDone );
-//		if ( name.equals( "player1" ) ) {
-//
-//		}
+		// if ( name.equals( "player2" ) ) {
+		// Gdx.app.log( "player update", name + " is " + playerState );
+		// }
 		if ( kinematicTransform ) {
 			// setPlatformTransform( platformOffset );
 			kinematicTransform = false;
+		}
+		if ( screwAttachTimeout > 0 ) {
+			screwAttachTimeout--;
 		}
 		// if dead do dead stuff
 		if ( isDead ) {
@@ -294,34 +296,35 @@ public class Player extends Entity {
 			} else if ( inputHandler != null ) {
 				updateKeyboard( deltaTime );
 			}
-		}
-		// if re-spawning decrement time out
-		// player will not die in this time
-		if ( respawnTimeout > 0 ) {
-			respawnTimeout--;
-		}
-		// build extra fixture to have new friction
-		updateFootFriction( );
-		// test if player is still moving after timeout
-		if ( playerDirection != PlayerDirection.Idle ) {
-			if ( runTimeout == 0 && playerState != PlayerState.Jumping
-					&& playerState != PlayerState.Falling
-					&& extraState != ConcurrentState.ExtraFalling
-					&& extraState != ConcurrentState.ExtraJumping ) {
-				playerDirection = PlayerDirection.Idle;
-			} else if ( playerDirection == PlayerDirection.Left
-					&& type.getScale( ).x > 0 ) {
-				flipX = true;
-				type.setScale( type.getScale( ).x * -1, type.getScale( ).y );
-			} else if ( playerDirection == PlayerDirection.Right
-					&& type.getScale( ).x < 0 ) {
-				flipX = false;
-				type.setScale( type.getScale( ).x * -1, type.getScale( ).y );
-			} else if ( playerState != PlayerState.Jumping
-					&& playerState != PlayerState.Falling
-					&& extraState != ConcurrentState.ExtraFalling
-					&& extraState != ConcurrentState.ExtraJumping ) {
-				runTimeout--;
+
+			// if re-spawning decrement time out
+			// player will not die in this time
+			if ( respawnTimeout > 0 ) {
+				respawnTimeout--;
+			}
+			// build extra fixture to have new friction
+			updateFootFriction( );
+			// test if player is still moving after timeout
+			if ( playerDirection != PlayerDirection.Idle ) {
+				if ( runTimeout == 0 && playerState != PlayerState.Jumping
+						&& playerState != PlayerState.Falling
+						&& extraState != ConcurrentState.ExtraFalling
+						&& extraState != ConcurrentState.ExtraJumping ) {
+					playerDirection = PlayerDirection.Idle;
+				} else if ( playerDirection == PlayerDirection.Left
+						&& type.getScale( ).x > 0 ) {
+					flipX = true;
+					type.setScale( type.getScale( ).x * -1, type.getScale( ).y );
+				} else if ( playerDirection == PlayerDirection.Right
+						&& type.getScale( ).x < 0 ) {
+					flipX = false;
+					type.setScale( type.getScale( ).x * -1, type.getScale( ).y );
+				} else if ( playerState != PlayerState.Jumping
+						&& playerState != PlayerState.Falling
+						&& extraState != ConcurrentState.ExtraFalling
+						&& extraState != ConcurrentState.ExtraJumping ) {
+					runTimeout--;
+				}
 			}
 		}
 		// switch between states
@@ -367,7 +370,8 @@ public class Player extends Entity {
 					mover = null;
 				}
 			} else {
-				// if resurrect screw and its not active remove the player joint
+				// if resurrect screw and its not active remove the player
+				// joint
 				if ( currentScrew.getScrewType( ) == ScrewType.SCREW_RESURRECT ) {
 					ResurrectScrew rezScrew = ( ResurrectScrew ) currentScrew;
 					if ( rezScrew.deleteQueue( ) ) {
@@ -386,7 +390,7 @@ public class Player extends Entity {
 		if ( body.getLinearVelocity( ).y < -MIN_VELOCITY * 4f
 				&& playerState != PlayerState.Screwing
 				&& playerState != PlayerState.JumpingOffScrew
-				&& platformBody == null && !isDead ) {
+				&& currentPlatform == null && !isDead ) {
 			switch ( playerState ) {
 			case HeadStand:
 				// don't set the player state use the extra state
@@ -430,7 +434,6 @@ public class Player extends Entity {
 		// check for crushing stuff
 		if ( ( ( topCrush && botCrush ) || ( leftCrush && rightCrush ) )
 				&& ( playerState != PlayerState.JumpingOffScrew && playerState != PlayerState.Screwing ) ) {
-			Gdx.app.log( "test state:", " " + playerState );
 			this.killPlayer( );
 			// Gdx.app.log( "\nright: ", "" + rightCrush );
 			// Gdx.app.log( "left: ", "" + leftCrush );
@@ -444,7 +447,8 @@ public class Player extends Entity {
 		} else
 			steamDone = false;
 		terminalVelocityCheck( 15.0f );
-		// the jump doesn't work the first time on dynamic bodies so do it twice
+		// the jump doesn't work the first time on dynamic bodies so do it
+		// twice
 		if ( playerState == PlayerState.Jumping && isGrounded( ) ) {
 			jump( );
 		}
@@ -465,7 +469,7 @@ public class Player extends Entity {
 				removePlayerToScrew( );
 				removePlayerToPlayer( );
 				currentScrew = null;
-				platformBody = null;
+				currentPlatform = null;
 				mover = null;
 				Filter filter = new Filter( );
 				for ( Fixture f : body.getFixtureList( ) ) {
@@ -485,7 +489,7 @@ public class Player extends Entity {
 				}
 			} else {
 				playerState = PlayerState.Standing;
-				platformBody = null;
+				currentPlatform = null;
 			}
 			isDead = true;
 			ParticleEffect blood = getEffect(injuredParticles[r.nextInt( injuredParticles.length )]);
@@ -515,11 +519,11 @@ public class Player extends Entity {
 			f.setFilterData( filter );
 		}
 		playerState = PlayerState.Standing;
-		platformBody = null;
+		currentPlatform = null;
 		isDead = false;
 		respawnTimeout = DEAD_STEPS;
-		
-		getEffect("revive").restartAt( getPositionPixel() );
+
+		getEffect( "revive" ).restartAt( getPositionPixel( ) );
 	}
 
 	/**
@@ -550,15 +554,18 @@ public class Player extends Entity {
 			if ( body.getLinearVelocity( ).x < MAX_VELOCITY ) {
 				body.applyLinearImpulse( new Vector2( MOVEMENT_IMPULSE, 0.0f ),
 						body.getWorldCenter( ) );
-				if ( body.getLinearVelocity( ).x >= MAX_VELOCITY*0.99f )
+				if ( body.getLinearVelocity( ).x >= MAX_VELOCITY * 0.99f )
 					reachedMaxSpeed = true;
 				else
 					reachedMaxSpeed = false;
 			}
 		}
 		playerDirection = PlayerDirection.Right;
-		if ( grounded && prevPlayerDir== PlayerDirection.Left ){//&& reachedMaxSpeed ){
-			getEffect( "skid_left" ).restartAt( getPositionPixel( ).add( 30,0 ) );
+		if ( grounded && prevPlayerDir == PlayerDirection.Left ) {// &&
+																	// reachedMaxSpeed
+																	// ){
+			getEffect( "skid_left" )
+					.restartAt( getPositionPixel( ).add( 30, 0 ) );
 			reachedMaxSpeed = false;
 		}
 		runTimeout = RUN_STEPS;
@@ -585,15 +592,18 @@ public class Player extends Entity {
 				body.applyLinearImpulse(
 						new Vector2( -MOVEMENT_IMPULSE, 0.0f ),
 						body.getWorldCenter( ) );
-				if ( body.getLinearVelocity( ).x <= -MAX_VELOCITY*0.99f )
+				if ( body.getLinearVelocity( ).x <= -MAX_VELOCITY * 0.99f )
 					reachedMaxSpeed = true;
 				else
 					reachedMaxSpeed = false;
 			}
 		}
 		playerDirection = PlayerDirection.Left;
-		if ( grounded && prevPlayerDir == PlayerDirection.Right ){// && reachedMaxSpeed ){
-			getEffect( "skid_right" ).restartAt( getPositionPixel( ).add( 100,0 ) );
+		if ( grounded && prevPlayerDir == PlayerDirection.Right ) {// &&
+																	// reachedMaxSpeed
+																	// ){
+			getEffect( "skid_right" ).restartAt(
+					getPositionPixel( ).add( 100, 0 ) );
 			reachedMaxSpeed = false;
 		}
 		runTimeout = RUN_STEPS;
@@ -768,29 +778,12 @@ public class Player extends Entity {
 	public void setGrounded( boolean newVal ) {
 		if ( !topPlayer ) {
 			if ( newVal != false && !grounded && otherPlayer == null ) {
-				/*
-				 * hitCloud.setPixelPosition( this.getPositionPixel( ) .sub( 0,
-				 * 12f ) ); hitCloud.sprite.setColor( 1, 1, 1,
-				 * body.getLinearVelocity( ).y / ( float ) MAX_VELOCITY );
-				 * hitCloud.sprite.reset( );
-				 */
 				// if ( !world.isLocked( ) ) {
 				getEffect( "land_cloud_new" ).restartAt(
 						getPositionPixel( ).add( 50, 0 ) );
 				// }
 			}
 			this.grounded = newVal;
-		}
-		if ( screwJumpTimeout == 0 && !world.isLocked( ) ) {
-			Filter filter = new Filter( );
-			for ( Fixture f : body.getFixtureList( ) ) {
-				filter = f.getFilterData( );
-				// move player back to original category
-				filter.categoryBits = Util.CATEGORY_PLAYER;
-				// player now collides with everything
-				filter.maskBits = Util.CATEGORY_EVERYTHING;
-				f.setFilterData( filter );
-			}
 		}
 	}
 
@@ -863,30 +856,34 @@ public class Player extends Entity {
 	/**
 	 * sets the body of some body that the player is hitting
 	 */
-	public void hitSolidObject( Body b ) {
-		if ( platformBody == null && b != null
+	public void hitSolidObject( Platform platform ) {
+		if ( currentPlatform == null && platform != null
 				&& playerState == PlayerState.Screwing ) {
-			if ( mover == null ) {
-				knockedOff = true;
-			} else {
-				platformBody = null;
-			}
-		} else if ( screwJumpTimeout == 0 ) {
-			if ( b != null || playerState != PlayerState.Screwing ) {
-				platformBody = b;
-			}
+			knockedOff = true;
+		} else {
+			currentPlatform = platform;
 			if ( playerState == PlayerState.Falling ) {
 				playerState = PlayerState.Standing;
 			}
 		}
-		if ( b == null ) {
+		if ( platform == null ) {
 			knockedOff = false;
 			hitSolidObject = false;
 		} else {
+			if ( platform.isKinematic( ) ) {
+				lastPlatformHit = platform;
+			}
 			hitSolidObject = true;
 		}
 	}
 
+	/**
+	 * gets the last kinematic platform hit
+	 */
+	public Platform getLastPlatform( ) {
+		return lastPlatformHit;
+	}
+	
 	/**
 	 * Checks if the player is grounded
 	 * 
@@ -905,6 +902,7 @@ public class Player extends Entity {
 	 */
 	private void attachToScrew( ) {
 		if ( currentScrew != null
+				&& screwAttachTimeout == 0
 				&& currentScrew.body.getJointList( ).size( ) > 0
 				&& playerState != PlayerState.HeadStand
 				&& !currentScrew.isPlayerAttached( ) ) {
@@ -938,29 +936,30 @@ public class Player extends Entity {
 			}
 			playerState = PlayerState.Screwing;
 			currentScrew.setPlayerAttached( true );
-			platformBody = null;
-			if ( currentScrew.getScrewType( ) == ScrewType.SCREW_STRUCTURAL ) {
-				for ( JointEdge je : currentScrew.body.getJointList( ) ) {
-					// if this body is a platform but not a skeleton save the
-					// instance
-					if ( je.joint.getBodyA( ).getUserData( ) instanceof Entity ) {
-						Entity p = ( Entity ) je.joint.getBodyA( )
-								.getUserData( );
-						if ( p.getEntityType( ) == EntityType.PLATFORM ) {
-							platformBody = je.joint.getBodyA( );
-						}
-					}
-					// if this body is a platform but not a skeleton save the
-					// instance
-					if ( je.joint.getBodyB( ).getUserData( ) instanceof Entity ) {
-						Entity p = ( Entity ) je.joint.getBodyB( )
-								.getUserData( );
-						if ( p.getEntityType( ) == EntityType.PLATFORM ) {
-							platformBody = je.joint.getBodyB( );
-						}
-					}
-				}
-			}
+			screwAttachTimeout = SCREW_ATTACH_STEPS;
+			// if ( currentScrew.getScrewType( ) == ScrewType.SCREW_STRUCTURAL )
+			// {
+			// for ( JointEdge je : currentScrew.body.getJointList( ) ) {
+			// // if this body is a platform but not a skeleton save the
+			// // instance
+			// if ( je.joint.getBodyA( ).getUserData( ) instanceof Entity ) {
+			// Entity p = ( Entity ) je.joint.getBodyA( )
+			// .getUserData( );
+			// if ( p.getEntityType( ) == EntityType.PLATFORM ) {
+			// platformBody = je.joint.getBodyA( );
+			// }
+			// }
+			// // if this body is a platform but not a skeleton save the
+			// // instance
+			// if ( je.joint.getBodyB( ).getUserData( ) instanceof Entity ) {
+			// Entity p = ( Entity ) je.joint.getBodyB( )
+			// .getUserData( );
+			// if ( p.getEntityType( ) == EntityType.PLATFORM ) {
+			// platformBody = je.joint.getBodyB( );
+			// }
+			// }
+			// }
+			// }
 			setGrounded( false );
 			if ( Metrics.activated ) {
 				Metrics.addPlayerAttachToScrewPosition( this.getPositionPixel( ) );
@@ -972,7 +971,7 @@ public class Player extends Entity {
 	 * applies the current screws directional impulse
 	 */
 	private boolean detachScrewImpulse( ) {
-		if ( platformBody != null && currentScrew.getDepth( ) >= 0
+		if ( currentPlatform != null && currentScrew.getDepth( ) >= 0
 				&& currentScrew.getDetachDirection( ) != null
 				&& currentScrew.getDetachDirection( ).len( ) != 0f ) {
 			body.setLinearVelocity( new Vector2( body.getLinearVelocity( ).x,
@@ -991,32 +990,32 @@ public class Player extends Entity {
 	 * 
 	 */
 	private void jumpOffScrew( ) {
-		if ( screwJumpTimeout == 0 ) {
-			Filter filter = new Filter( );
-			// set the bits of the player back to everything
-			for ( Fixture f : body.getFixtureList( ) ) {
-				if ( f != rightSensor && f != leftSensor && f != topSensor ) {
-					f.setSensor( false );
-				}
-				filter = f.getFilterData( );
-				// move player back to original category
-				filter.categoryBits = Util.CATEGORY_PLAYER;
-				// player now collides with everything
-				filter.maskBits = Util.CATEGORY_EVERYTHING;
-				f.setFilterData( filter );
-			}
-			if ( platformBody != null ) {
-				// set the bits of the platform back to everything
-				for ( Fixture f : platformBody.getFixtureList( ) ) {
-					filter = f.getFilterData( );
-					// move platform back to original category
-					filter.categoryBits = Util.CATEGORY_PLATFORMS;
-					// platform now collides with everything
-					filter.maskBits = Util.CATEGORY_EVERYTHING;
-					f.setFilterData( filter );
-				}
-			}
-		}
+		// if ( screwattachTimeout == 0 ) {
+		// Filter filter = new Filter( );
+		// // set the bits of the player back to everything
+		// for ( Fixture f : body.getFixtureList( ) ) {
+		// if ( f != rightSensor && f != leftSensor && f != topSensor ) {
+		// f.setSensor( false );
+		// }
+		// filter = f.getFilterData( );
+		// // move player back to original category
+		// filter.categoryBits = Util.CATEGORY_PLAYER;
+		// // player now collides with everything
+		// filter.maskBits = Util.CATEGORY_EVERYTHING;
+		// f.setFilterData( filter );
+		// }
+		// // if ( currentPlatform != null ) {
+		// // // set the bits of the platform back to everything
+		// // for ( Fixture f : currentPlatform.body.getFixtureList( ) ) {
+		// // filter = f.getFilterData( );
+		// // // move platform back to original category
+		// // filter.categoryBits = Util.CATEGORY_PLATFORMS;
+		// // // platform now collides with everything
+		// // filter.maskBits = Util.CATEGORY_EVERYTHING;
+		// // f.setFilterData( filter );
+		// // }
+		// // }
+		// }
 	}
 
 	/**
@@ -1130,13 +1129,13 @@ public class Player extends Entity {
 		// if state is jumping off screw
 		// and the player is grounded and done with
 		// the screw jump
-		if ( isGrounded( ) && screwJumpTimeout == 0 ) {
+		if ( isGrounded( ) && screwAttachTimeout == 0 ) {
 			playerState = PlayerState.Standing;
 			jumpOffScrew( );
-		} else if ( screwJumpTimeout == 0 ) {
+		} else if ( screwAttachTimeout == 0 ) {
 			if ( isGrounded( ) ) {
 				playerState = PlayerState.Standing;
-			} else if ( body.getLinearVelocity( ).y > 0 ) {
+			} else if ( body.getLinearVelocity( ).y > MIN_VELOCITY ) {
 				playerState = PlayerState.Jumping;
 			} else {
 				playerState = PlayerState.Falling;
@@ -1149,34 +1148,34 @@ public class Player extends Entity {
 	 * handle the Jumping off screw state and update the player accordingly
 	 */
 	private void handleJumpOffScrew( ) {
-		if ( screwJumpTimeout == 0 ) {
-			jumpOffScrew( );
-		} else if ( screwJumpTimeout == SCREW_JUMP_STEPS ) {
-			if ( platformBody != null ) {
-				Filter filter = new Filter( );
-				for ( Fixture f : platformBody.getFixtureList( ) ) {
-					filter = f.getFilterData( );
-					// move platform to its own single category
-					// it should be the only thing in this category
-					filter.categoryBits = Util.CATEGORY_SUBPLATFORM;
-					// set to collide with everything
-					filter.maskBits = ~Util.CATEGORY_SUBPLAYER;
-					f.setFilterData( filter );
-				}
-				jumpOffScrew( );
-				screwJumpTimeout--;
-			} else {
-				jumpOffScrew( );
-				screwJumpTimeout--;
-			}
-		} else {
-			if ( screwJumpTimeout > 0 ) {
-				screwJumpTimeout--;
-				jumpOffScrew( );
-			} else {
-				jumpOffScrew( );
-			}
-		}
+		// if ( screwJumpTimeout == 0 ) {
+		// jumpOffScrew( );
+		// } else if ( screwJumpTimeout == SCREW_JUMP_STEPS ) {
+		// if ( currentPlatform != null ) {
+		// Filter filter = new Filter( );
+		// for ( Fixture f : currentPlatform.body.getFixtureList( ) ) {
+		// filter = f.getFilterData( );
+		// // move platform to its own single category
+		// // it should be the only thing in this category
+		// filter.categoryBits = Util.CATEGORY_SUBPLATFORM;
+		// // set to collide with everything
+		// filter.maskBits = ~Util.CATEGORY_SUBPLAYER;
+		// f.setFilterData( filter );
+		// }
+		// jumpOffScrew( );
+		// screwJumpTimeout--;
+		// } else {
+		// jumpOffScrew( );
+		// screwJumpTimeout--;
+		// }
+		// } else {
+		// if ( screwJumpTimeout > 0 ) {
+		// screwJumpTimeout--;
+		// jumpOffScrew( );
+		// } else {
+		// jumpOffScrew( );
+		// }
+		// }
 	}
 
 	/**
@@ -1308,14 +1307,10 @@ public class Player extends Entity {
 			if ( otherPlayer != null ) {
 				if ( !topPlayer ) {
 					otherPlayer.removePlayerToPlayer( );
-					Gdx.app.log( "process moving state",
-							"other player is not null" );
 				} else {
 					removePlayerToPlayer( );
 				}
 			} else {
-				Gdx.app.log( "process moving state",
-						"other player is null for some reason" );
 				removePlayerToPlayer( );
 			}
 		}
@@ -1348,7 +1343,7 @@ public class Player extends Entity {
 					&& otherPlayer.getState( ) == PlayerState.Standing
 					&& !otherPlayer.isPlayerDead( ) && headStandTimeout == 0
 					&& otherPlayer.isHeadStandTimedOut( )
-					&& platformBody == null ) {
+					&& currentPlatform == null ) {
 				// check if the top player is in-line with the other players
 				// head
 				// and check if the top player is actually above the other
@@ -1499,48 +1494,48 @@ public class Player extends Entity {
 			}
 		}
 		Filter filter = new Filter( );
-		if ( platformBody != null ) {
-			// set the bits of the platform back to everything
-			for ( Fixture f : platformBody.getFixtureList( ) ) {
-				filter = f.getFilterData( );
-				// move platform to sub category
-				filter.categoryBits = Util.CATEGORY_SUBPLATFORM;
-				// platform only doesn't collide with player
-				filter.maskBits = ~Util.CATEGORY_SUBPLAYER;
-				f.setFilterData( filter );
+		// if ( currentPlatform != null ) {
+		// // set the bits of the platform back to everything
+		// for ( Fixture f : currentPlatform.body.getFixtureList( ) ) {
+		// filter = f.getFilterData( );
+		// // move platform to sub category
+		// filter.categoryBits = Util.CATEGORY_SUBPLATFORM;
+		// // platform only doesn't collide with player
+		// filter.maskBits = ~Util.CATEGORY_SUBPLAYER;
+		// f.setFilterData( filter );
+		// }
+		// for ( Fixture f : body.getFixtureList( ) ) {
+		// if ( f != rightSensor && f != leftSensor && f != topSensor ) {
+		// f.setSensor( false );
+		// }
+		// filter = f.getFilterData( );
+		// // move player to sub category
+		// filter.categoryBits = Util.CATEGORY_SUBPLAYER;
+		// // player now collides with everything except the platform in
+		// // the way
+		// filter.maskBits = ~Util.CATEGORY_SUBPLATFORM;
+		// f.setFilterData( filter );
+		// }
+		// } else {
+		for ( Fixture f : body.getFixtureList( ) ) {
+			if ( f != rightSensor && f != leftSensor && f != topSensor ) {
+				f.setSensor( false );
 			}
-			for ( Fixture f : body.getFixtureList( ) ) {
-				if ( f != rightSensor && f != leftSensor && f != topSensor ) {
-					f.setSensor( false );
-				}
-				filter = f.getFilterData( );
-				// move player to sub category
-				filter.categoryBits = Util.CATEGORY_SUBPLAYER;
-				// player now collides with everything except the platform in
-				// the way
-				filter.maskBits = ~Util.CATEGORY_SUBPLATFORM;
-				f.setFilterData( filter );
-			}
-		} else {
-			for ( Fixture f : body.getFixtureList( ) ) {
-				if ( f != rightSensor && f != leftSensor && f != topSensor ) {
-					f.setSensor( false );
-				}
-				filter = f.getFilterData( );
-				// move player back to original category
-				filter.categoryBits = Util.CATEGORY_PLAYER;
-				// player now collides with everything
-				filter.maskBits = Util.CATEGORY_EVERYTHING;
-				f.setFilterData( filter );
-			}
+			filter = f.getFilterData( );
+			// move player back to original category
+			filter.categoryBits = Util.CATEGORY_PLAYER;
+			// player now collides with everything
+			filter.maskBits = Util.CATEGORY_EVERYTHING;
+			f.setFilterData( filter );
 		}
+		// }
 		mover = null;
 		if ( currentScrew != null ) {
 			currentScrew.setPlayerAttached( false );
 		}
 		currentScrew = null;
-		playerState = PlayerState.JumpingOffScrew;
-		screwJumpTimeout = SCREW_JUMP_STEPS;
+		playerState = PlayerState.Jumping;
+		// screwJumpTimeout = SCREW_JUMP_STEPS;
 	}
 
 	/**
