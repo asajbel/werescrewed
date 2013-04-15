@@ -701,11 +701,11 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 
 	private void initCheckPoints( ) {
 		progressManager = new ProgressManager( player1, player2, world );
-		progressManager.addCheckPoint( new CheckPoint( "check_01", new Vector2(
+		skeleton.addCheckPoint( new CheckPoint( "check_01", new Vector2(
 				-170f, 64f ), skeleton, world, progressManager,
 				"levelStage_0_0" ) );
-		progressManager
-				.addCheckPoint( new CheckPoint( "check_01", new Vector2( 512,
+		skeleton
+				.addCheckPoint( new CheckPoint( "check_02", new Vector2( 512,
 						64 ), skeleton, world, progressManager,
 						"levelStage_0_1" ) );
 	}

@@ -249,11 +249,11 @@ public class HazardScreen implements com.badlogic.gdx.Screen {
 
 	private void initCheckPoints( ) {
 		progressManager = new ProgressManager( player1, player2, world );
-		progressManager.addCheckPoint( new CheckPoint( "check_01", new Vector2(
+		skeleton.addCheckPoint( new CheckPoint( "check_01", new Vector2(
 				-512f, 32f ), skeleton, world, progressManager,
 				"levelStage_0_0" ) );
-		progressManager
-				.addCheckPoint( new CheckPoint( "check_01", new Vector2( 0f,
+		skeleton
+				.addCheckPoint( new CheckPoint( "check_02", new Vector2( 0f,
 						32f ), skeleton, world, progressManager,
 						"levelStage_0_1" ) );
 	}

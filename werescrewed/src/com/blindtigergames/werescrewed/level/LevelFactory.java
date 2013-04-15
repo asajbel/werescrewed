@@ -891,8 +891,9 @@ public class LevelFactory {
 		Skeleton parent = loadSkeleton( skel );
 		CheckPoint chkpt = new CheckPoint( item.name, item.pos, parent,
 				level.world, level.progressManager, levelName );
-		level.progressManager
-				.addCheckPoint( chkpt );
+		//level.progressManager
+		//add checkpointto skeleton not progress manager
+		parent.addCheckPoint( chkpt );
 		//chkpt.setParentSkeleton( parent );
 	}
 

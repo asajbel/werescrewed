@@ -56,7 +56,9 @@ public class CheckPoint extends Entity {
 		this.levelLoadStage = levelToReload;
 		this.entityType = EntityType.CHECKPOINT;
 		this.entity = entity;
-
+		if ( progressManager.currentCheckPoint == null ) {
+			progressManager.currentCheckPoint = this;
+		}
 		TextureAtlas atlas = WereScrewedGame.manager.getAtlas( "checkpoint" );
 		checkpointFrameAnimator = new SimpleFrameAnimator( ).speed(0f )
 				.loop( LoopBehavior.STOP ).time( 0.001f ).startFrame( 0 )
@@ -74,6 +76,7 @@ public class CheckPoint extends Entity {
 	/**
 	 * destroys the joints
 	 */
+	@Override
 	public void remove( ) {
 		while ( body.getJointList( ).iterator( ).hasNext( ) ) {
 			world.destroyJoint( body.getJointList( ).get( 0 ).joint );
@@ -82,6 +85,11 @@ public class CheckPoint extends Entity {
 		removed = true;
 	}
 
+	@Override
+	public void dispose( ) {
+		remove( );
+	}
+	
 	/**
 	 * returns whether or not this entity has been removed
 	 */

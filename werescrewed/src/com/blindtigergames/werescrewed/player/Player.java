@@ -56,7 +56,7 @@ public class Player extends Entity {
 	public final static float ANALOG_DEADZONE = 0.4f;
 	public final static float ANALOG_MAX_RANGE = 1.0f;
 	public final static float PLAYER_FRICTION = 0.7f;
-	public final static int SCREW_JUMP_STEPS = 15;
+	public final static int SCREW_ATTACH_STEPS = 15;
 	public final static int HEAD_JUMP_STEPS = 30;
 	public final static int DEAD_STEPS = 0;
 	public final static int RUN_STEPS = 7;
@@ -120,7 +120,7 @@ public class Player extends Entity {
 	private boolean isDead = false;
 	private boolean hitSolidObject;
 	private boolean knockedOff = false;
-	private int screwJumpTimeout = 0;
+	private int screwAttachTimeout = 0;
 	private int headStandTimeout = 0;
 	private int runTimeout = 0;
 	private int respawnTimeout = 0;
@@ -251,6 +251,9 @@ public class Player extends Entity {
 		if ( kinematicTransform ) {
 			// setPlatformTransform( platformOffset );
 			kinematicTransform = false;
+		}
+		if ( screwAttachTimeout > 0 ) {
+			screwAttachTimeout--;
 		}
 		// if dead do dead stuff
 		if ( isDead ) {
@@ -890,6 +893,7 @@ public class Player extends Entity {
 	 */
 	private void attachToScrew( ) {
 		if ( currentScrew != null
+				&& screwAttachTimeout == 0
 				&& currentScrew.body.getJointList( ).size( ) > 0
 				&& playerState != PlayerState.HeadStand
 				&& !currentScrew.isPlayerAttached( ) ) {
@@ -923,7 +927,7 @@ public class Player extends Entity {
 			}
 			playerState = PlayerState.Screwing;
 			currentScrew.setPlayerAttached( true );
-			currentPlatform = null;
+			screwAttachTimeout = SCREW_ATTACH_STEPS;
 			// if ( currentScrew.getScrewType( ) == ScrewType.SCREW_STRUCTURAL )
 			// {
 			// for ( JointEdge je : currentScrew.body.getJointList( ) ) {
@@ -977,7 +981,7 @@ public class Player extends Entity {
 	 * 
 	 */
 	private void jumpOffScrew( ) {
-		// if ( screwJumpTimeout == 0 ) {
+		// if ( screwattachTimeout == 0 ) {
 		// Filter filter = new Filter( );
 		// // set the bits of the player back to everything
 		// for ( Fixture f : body.getFixtureList( ) ) {
@@ -1116,10 +1120,10 @@ public class Player extends Entity {
 		// if state is jumping off screw
 		// and the player is grounded and done with
 		// the screw jump
-		if ( isGrounded( ) && screwJumpTimeout == 0 ) {
+		if ( isGrounded( ) && screwAttachTimeout == 0 ) {
 			playerState = PlayerState.Standing;
 			jumpOffScrew( );
-		} else if ( screwJumpTimeout == 0 ) {
+		} else if ( screwAttachTimeout == 0 ) {
 			if ( isGrounded( ) ) {
 				playerState = PlayerState.Standing;
 			} else if ( body.getLinearVelocity( ).y > MIN_VELOCITY ) {

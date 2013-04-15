@@ -113,6 +113,11 @@ public class Screw extends Entity {
 		}
 	}
 
+	@Override
+	public void dispose( ) {
+		remove( );
+	}
+	
 	/**
 	 * returns true if the box2d stuff has been completely removed
 	 */

@@ -3,10 +3,7 @@ package com.blindtigergames.werescrewed.entity;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
-import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -15,6 +12,7 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.JointEdge;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
+import com.blindtigergames.werescrewed.checkpoints.CheckPoint;
 import com.blindtigergames.werescrewed.entity.animator.SimpleFrameAnimator;
 import com.blindtigergames.werescrewed.entity.animator.SimpleFrameAnimator.LoopBehavior;
 import com.blindtigergames.werescrewed.entity.hazard.Fire;
@@ -26,6 +24,7 @@ import com.blindtigergames.werescrewed.entity.rope.Rope;
 import com.blindtigergames.werescrewed.entity.screws.Screw;
 import com.blindtigergames.werescrewed.entity.screws.StrippedScrew;
 import com.blindtigergames.werescrewed.eventTrigger.EventTrigger;
+import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 import com.blindtigergames.werescrewed.joint.RevoluteJointBuilder;
 import com.blindtigergames.werescrewed.util.Util;
 
@@ -55,6 +54,7 @@ public class Skeleton extends Platform {
 	protected HashMap< String, Platform > kinematicPlatformMap = new HashMap< String, Platform >( );
 	protected HashMap< String, Rope > ropeMap = new HashMap< String, Rope >( );
 	protected HashMap< String, Screw > screwMap = new HashMap< String, Screw >( );
+	protected HashMap< String, CheckPoint> checkpointMap = new HashMap< String, CheckPoint >( );
 	protected HashMap< String, EventTrigger > eventMap = new HashMap< String, EventTrigger >( );
 	private ArrayList< Entity > entitiesToRemove = new ArrayList< Entity >( );
 
@@ -202,6 +202,16 @@ public class Skeleton extends Platform {
 		screwMap.put( s.name, s );
 		s.setParentSkeleton( this );
 	}
+	
+	/**
+	 * add checkpoint to be drawn
+	 */
+	public void addCheckPoint( CheckPoint chkpt ) {
+		entityCount++;
+		checkpointMap.put( chkpt.name, chkpt );
+		chkpt.setParentSkeleton( this );
+	}
+	
 
 	/**
 	 * Simply adds a platform to the list, without explicitly attaching it to
@@ -293,6 +303,9 @@ public class Skeleton extends Platform {
 		for ( Screw screw : screwMap.values( ) ) {
 			screw.body.setAwake( isAwake );
 		}
+		for ( CheckPoint chkpt: checkpointMap.values( ) ) {
+			chkpt.body.setAwake( isAwake );
+		}
 	}
 
 	/**
@@ -331,6 +344,10 @@ public class Skeleton extends Platform {
 			screw.body.setActive( isActive );
 			screw.setActive( isActive );
 		}
+		for ( CheckPoint chkpt : checkpointMap.values( ) ) {
+			chkpt.body.setActive( isActive );
+			chkpt.setActive( isActive );
+		}
 		// for ( Rope rope : ropeMap.values( ) ){
 
 		// }
@@ -355,7 +372,6 @@ public class Skeleton extends Platform {
 	 */
 	@Override
 	public void update( float deltaTime ) {
-		
 		if ( isActive( ) ) {
 			float frameRate = 1 / deltaTime;
 			updateMover( deltaTime );
@@ -384,6 +400,13 @@ public class Skeleton extends Platform {
 					entitiesToRemove.add( screw );
 				} else {
 					screw.update( deltaTime );
+				}
+			}
+			for ( CheckPoint chkpt: checkpointMap.values( ) ) {
+				if ( chkpt.removeNextStep ) {
+					entitiesToRemove.add( chkpt );
+				} else {
+					chkpt.update( deltaTime );
 				}
 			}
 			for ( Rope rope : ropeMap.values( ) ) {
@@ -443,6 +466,9 @@ public class Skeleton extends Platform {
 					Screw sc = screwMap.remove( e.name );
 					sc.remove( );
 					break;
+				case CHECKPOINT:
+					CheckPoint chkpt = checkpointMap.remove( e.name );
+					chkpt.remove( );
 				default:
 					throw new RuntimeException(
 							"You are trying to remove enity '"
@@ -474,6 +500,9 @@ public class Skeleton extends Platform {
 		}
 		for ( Screw screw : screwMap.values( ) ) {
 			screw.remove( );
+		}
+		for ( CheckPoint chkpt: checkpointMap.values( ) ) {
+			chkpt.remove( );
 		}
 		for ( JointEdge j : body.getJointList( ) ) {
 			world.destroyJoint( j.joint );
@@ -515,6 +544,11 @@ public class Skeleton extends Platform {
 		for ( Screw screw : screwMap.values( ) ) {
 			if ( !screw.getRemoveNextStep( ) ) {
 				screw.draw( batch, deltaTime );
+			}
+		}
+		for ( CheckPoint chkpt: checkpointMap.values( ) ) {
+			if ( !chkpt.getRemoveNextStep( ) ) {
+				chkpt.draw( batch, deltaTime );
 			}
 		}
 		for ( Rope rope : ropeMap.values( ) ) {
@@ -603,11 +637,18 @@ public class Skeleton extends Platform {
 		for ( Screw screw : screwMap.values( ) ) {
 			screw.dispose( );
 		}
+		for ( CheckPoint chkpt: checkpointMap.values( ) ) {
+			chkpt.dispose( );
+		}
 		screwMap.clear( );
 		for ( EventTrigger et : eventMap.values( ) ) {
 			et.dispose( );
 		}
 		eventMap.clear( );
+		for ( CheckPoint chkpt: checkpointMap.values( ) ) {
+			chkpt.dispose( );
+		}
+		checkpointMap.clear( );
 		super.dispose( );
 	}
 
