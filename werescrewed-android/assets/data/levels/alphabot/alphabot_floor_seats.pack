@@ -1,0 +1,40 @@
+alphabot_floor_seats.png
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+offset: 0, 0
+seats_middle
+  rotate: false
+  xy: 0, 558
+  size: 2048, 477
+  orig: 2048, 477
+  offset: 0, 0
+  index: -1
+floor_left
+  rotate: false
+  xy: 0, 0
+  size: 2048, 278
+  orig: 2048, 278
+  offset: 0, 0
+  index: -1
+floor_right
+  rotate: false
+  xy: 0, 278
+  size: 765, 280
+  orig: 765, 280
+  offset: 0, 0
+  index: -1
+seats_right
+  rotate: false
+  xy: 0, 1514
+  size: 904, 475
+  orig: 904, 475
+  offset: 0, 0
+  index: -1
+seats_left
+  rotate: false
+  xy: 0, 1035
+  size: 2048, 479
+  orig: 2048, 479
+  offset: 0, 0
+  index: -1

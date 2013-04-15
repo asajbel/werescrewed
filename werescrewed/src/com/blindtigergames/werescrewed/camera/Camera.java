@@ -15,7 +15,7 @@ import com.badlogic.gdx.physics.box2d.World;
 /*******************************************************************************
  * Camera class. Zooms and translates based on anchors. Max 30 anchors.
  * 
- * @author Edward Ramirez
+ * @author Edward Ramirez and Dan Malear
  ******************************************************************************/
 public class Camera {
 	private static final boolean ANCHOR_TEST_MODE = false;
@@ -70,9 +70,6 @@ public class Camera {
 	private boolean debugInput;
 	private boolean debugRender;
 	private ShapeRenderer shapeRenderer;
-	@SuppressWarnings( "unused" )
-	private boolean debugTurnOffZoom;
-
 	public Camera( Vector2 position, float viewportWidth, float viewportHeight,
 			World world ) {
 		initializeVars( position, viewportWidth, viewportHeight, world );
@@ -120,7 +117,6 @@ public class Camera {
 		debugInput = false;
 		debugRender = false;
 		shapeRenderer = new ShapeRenderer( );
-		debugTurnOffZoom = false;
 	}
 
 	public void setPosition( Vector2 position ) {
@@ -247,8 +243,8 @@ public class Camera {
 
 		// Iterate through each anchor
 		for ( Anchor curAnchor : anchorList.anchorList ) {
-			// Only consider active and special (player) anchors
-			if ( curAnchor.activated || curAnchor.special ) {
+			// Only consider active anchors
+			if ( curAnchor.activated ) {
 				// Find the direction in which the buffer of the current anchor
 				// has exited the screen
 				RectDirection dir = rectOutsideRect(
@@ -567,9 +563,5 @@ public class Camera {
 		if ( Gdx.input.isKeyPressed( Input.Keys.NUM_2 ) ) {
 			camera.zoom = 2f;
 		}
-	}
-
-	public void turnOffZoom( ) {
-		debugTurnOffZoom = true;
 	}
 }

@@ -4,6 +4,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJoint;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
+import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.camera.Anchor;
 import com.blindtigergames.werescrewed.camera.AnchorList;
 import com.blindtigergames.werescrewed.entity.RobotState;
@@ -12,6 +13,7 @@ import com.blindtigergames.werescrewed.entity.action.EntityActivateMoverAction;
 import com.blindtigergames.werescrewed.entity.action.RemoveEntityAction;
 import com.blindtigergames.werescrewed.entity.builders.EventTriggerBuilder;
 import com.blindtigergames.werescrewed.entity.builders.PlayerBuilder;
+import com.blindtigergames.werescrewed.entity.builders.SkeletonBuilder;
 import com.blindtigergames.werescrewed.entity.mover.AnalogRotateMover;
 import com.blindtigergames.werescrewed.entity.mover.RotateTweenMover;
 import com.blindtigergames.werescrewed.entity.platforms.TiledPlatform;
@@ -20,6 +22,7 @@ import com.blindtigergames.werescrewed.entity.screws.Screw;
 import com.blindtigergames.werescrewed.entity.screws.StructureScrew;
 import com.blindtigergames.werescrewed.entity.tween.PathBuilder;
 import com.blindtigergames.werescrewed.eventTrigger.EventTrigger;
+import com.blindtigergames.werescrewed.graphics.TextureAtlas;
 import com.blindtigergames.werescrewed.level.CharacterSelect;
 import com.blindtigergames.werescrewed.level.LevelFactory;
 import com.blindtigergames.werescrewed.util.Util;
@@ -63,17 +66,19 @@ public class AlphaScreen extends Screen {
 
 		if ( level.player1 == null ) {
 			level.player1 = new PlayerBuilder( ).world( level.world )
-					.position( -1650f, 6100f ).name( "player1" ).definition( "red_male" ).buildPlayer( );
+					.position( 0, 0 ).name( "player1" ).definition( "red_male" ).buildPlayer( );
 			level.progressManager.addPlayerOne( level.player1 );
 		}
 		if ( level.player2 == null ) {
 			level.player2 = new PlayerBuilder( ).world( level.world )
-					.position( -1650f, 6100f ).name( "player2" ).definition( "red_female" ).buildPlayer( );
+					.position( 0, 0 ).name( "player2" ).definition( "red_female" ).buildPlayer( );
 			level.progressManager.addPlayerTwo( level.player2 );
 		}
 
 		chestObjects( );
 		leftArm();
+		
+		buildBackground();
 
 	}
 
@@ -93,6 +98,18 @@ public class AlphaScreen extends Screen {
 		}
 
 
+	}
+	
+	private void buildBackground(){
+		SkeletonBuilder b = new SkeletonBuilder(level.world);
+		Skeleton bgSkele = b.name( "bgSkele" ).position( 0,0 ).build( );
+		TextureAtlas atlas = WereScrewedGame.manager.getAtlas("alphabot_floor_seats");
+		bgSkele.addDecal( atlas.createSprite( "floor_left" ), new Vector2(-2048,0 ) );
+		bgSkele.addDecal( atlas.createSprite( "floor_right" ), new Vector2( 0,0 ) );
+		bgSkele.addDecal( atlas.createSprite( "seats_left" ), new Vector2(-2048,0 ) );
+		bgSkele.addDecal( atlas.createSprite( "seats_middle" ), new Vector2( 0,0 ) );
+		bgSkele.addDecal( atlas.createSprite( "seats_right" ), new Vector2( 2048,0 ) );
+		level.root.addSkeleton(bgSkele);
 	}
 
 	private void createFootObjects( ) {

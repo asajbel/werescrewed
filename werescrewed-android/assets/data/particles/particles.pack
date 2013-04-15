@@ -5,29 +5,50 @@ repeat: none
 offset: 0, 0
 cloud
   rotate: false
-  xy: 2, 2
+  xy: 112, 2
   size: 83, 69
   orig: 41, 34
   offset: 0, 0
   index: -1
+extra_crispy
+  rotate: false
+  xy: 2, 326
+  size: 189, 129
+  orig: 94, 64
+  offset: 0, 0
+  index: -1
 spark
   rotate: false
-  xy: 68, 73
+  xy: 2, 2
   size: 8, 92
   orig: 4, 46
   offset: 0, 0
   index: -1
 screw
   rotate: false
-  xy: 2, 73
+  xy: 46, 2
   size: 64, 64
   orig: 32, 32
   offset: 0, 0
   index: -1
+baf
+  rotate: false
+  xy: 2, 198
+  size: 175, 126
+  orig: 87, 63
+  offset: 0, 0
+  index: -1
 particle
   rotate: false
-  xy: 87, 2
+  xy: 12, 2
   size: 32, 32
   orig: 16, 16
+  offset: 0, 0
+  index: -1
+ooph
+  rotate: false
+  xy: 2, 96
+  size: 150, 100
+  orig: 75, 50
   offset: 0, 0
   index: -1

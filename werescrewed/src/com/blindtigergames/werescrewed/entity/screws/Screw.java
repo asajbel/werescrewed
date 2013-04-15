@@ -45,6 +45,7 @@ public class Screw extends Entity {
 	protected int diff;
 	protected Entity entity;
 	protected Vector2 detachDirection;
+	protected Vector2 interfaceOffset = new Vector2( 82f, 4f );
 	protected boolean upDownDetach;
 	protected float entityAngle;
 	protected boolean playerAttached = false;
@@ -112,6 +113,11 @@ public class Screw extends Entity {
 		}
 	}
 
+	@Override
+	public void dispose( ) {
+		remove( );
+	}
+	
 	/**
 	 * returns true if the box2d stuff has been completely removed
 	 */

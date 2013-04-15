@@ -37,6 +37,12 @@
 /common/gear.png
 /common/sawblade.png
 /common/redScrewDriver.png
+/common/pipe/pipeEndD.png
+/common/pipe/pipeEndL.png
+/common/pipe/pipeEndR.png
+/common/pipe/pipeEndU.png
+/common/pipe/pipeLR.png
+/common/pipe/pipeUD.png
 
 ##texture atlas
 ##please us texture packer to put all common textures in this pack file!
@@ -66,13 +72,16 @@
 /common/Screwball.fnt
 
 ##Particle effects
-blood.p
 land_cloud.p
 skid_left.p
 skid_right.p
 sparks.p
 steam.p
 revive.p
+land_cloud_new.p
+injured/baf.p
+injured/extra_crispy.p
+injured/ooph.p
 
 ##Palette Def
 ##Define with <colorName>.palette
