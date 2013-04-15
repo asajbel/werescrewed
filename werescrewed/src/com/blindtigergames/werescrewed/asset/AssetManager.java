@@ -73,6 +73,10 @@ public class AssetManager extends com.badlogic.gdx.assets.AssetManager {
 	}
 	
 	public TextureAtlas getAtlas(String atlasPackName){
+		TextureAtlas out = atlasMap.get(atlasPackName);
+		if ( out == null ){
+			throw new RuntimeException("AssetManager:getAtlas() no texture atlas by name "+atlasPackName+" is loaded");
+		}
 		return atlasMap.get( atlasPackName );
 	}
 	

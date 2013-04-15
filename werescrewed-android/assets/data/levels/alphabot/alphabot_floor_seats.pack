@@ -3,38 +3,38 @@ format: RGBA8888
 filter: Linear,Linear
 repeat: none
 offset: 0, 0
-seats_middle
-  rotate: false
-  xy: 0, 558
-  size: 2048, 477
-  orig: 2048, 477
-  offset: 0, 0
-  index: -1
 floor_left
   rotate: false
-  xy: 0, 0
-  size: 2048, 278
-  orig: 2048, 278
+  xy: 4, 980
+  size: 2034, 282
+  orig: 2034, 282
   offset: 0, 0
   index: -1
 floor_right
   rotate: false
-  xy: 0, 278
-  size: 765, 280
-  orig: 765, 280
+  xy: 4, 1753
+  size: 788, 284
+  orig: 788, 284
   offset: 0, 0
   index: -1
 seats_right
   rotate: false
-  xy: 0, 1514
-  size: 904, 475
-  orig: 904, 475
+  xy: 4, 1268
+  size: 944, 479
+  orig: 944, 479
   offset: 0, 0
   index: -1
 seats_left
   rotate: false
-  xy: 0, 1035
-  size: 2048, 479
-  orig: 2048, 479
+  xy: 4, 4
+  size: 2034, 483
+  orig: 2034, 483
+  offset: 0, 0
+  index: -1
+seats_middle
+  rotate: false
+  xy: 4, 493
+  size: 2034, 481
+  orig: 2034, 481
   offset: 0, 0
   index: -1

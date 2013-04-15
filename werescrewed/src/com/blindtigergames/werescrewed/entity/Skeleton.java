@@ -531,6 +531,7 @@ public class Skeleton extends Platform {
 				//fgSprite.draw( batch );
 				//batch.setColor( c.r, c.g, c.b, oldAlpha );
 			}
+			drawDecals( batch );
 		}
 	}
 

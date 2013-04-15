@@ -532,8 +532,8 @@
                 </Item>
                 <Item xsi:type="TextureItem" Name="cameraPosition" Visible="true">
                     <Position>
-                        <X>512</X>
-                        <Y>-3792</Y>
+                        <X>0</X>
+                        <Y>0</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -10450,7 +10450,7 @@
     <CustomProperties />
     <EditorRelated>
         <NextItemNumber>513</NextItemNumber>
-        <ContentRootFolder>C:\Users\William Pacini\Documents\GitHub\werescrewed\gleed-textures</ContentRootFolder>
+        <ContentRootFolder>\\vmware-host\Shared Folders\Documents\werescrewed\gleed-textures</ContentRootFolder>
         <CameraPosition>
             <X>473.7118</X>
             <Y>-3042.88818</Y>
