@@ -1,3 +1,5 @@
+## alphabot specific assets index
+
 ##sounds
 /common/sounds/inceptionbutton.mp3
 /common/sounds/jump.ogg
@@ -18,10 +20,12 @@
 /common/parallax_layer2_1.png
 
 ##texture atlas
-/common/animations/screwInterface.pack
-/common/tileset1.pack
-/common/TilesetTest.pack
-/particles/particles.pack
+##/common/animations/screwInterface.pack
+##/common/tileset1.pack
+##/common/TilesetTest.pack
+##/particles/particles.pack
+
+/levels/alphabot/alphabot_floor_seats.pack
 
 /levels/level1/player_female_idle.png
 /levels/level1/player_male_idle.png
