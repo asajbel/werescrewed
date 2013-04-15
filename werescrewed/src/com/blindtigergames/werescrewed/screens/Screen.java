@@ -57,8 +57,21 @@ public class Screen implements com.badlogic.gdx.Screen {
 		if ( Gdx.input.isKeyPressed( Keys.P ) ) {
 			System.exit( 0 );
 		}
-		if (level != null){
+		if (level != null){			
 			level.update( delta );
+			
+			//background stuff
+			if ( level.backgroundRootSkeleton != null ) {
+				level.backgroundCam.update( );
+				level.backgroundRootSkeleton.update( delta );
+			}
+			if ( level.backgroundRootSkeleton != null ) {
+				level.backgroundBatch.setProjectionMatrix( level.backgroundCam.combined );
+				level.backgroundBatch.begin( );
+				level.backgroundRootSkeleton.draw( level.backgroundBatch, delta );
+				level.backgroundBatch.end( );
+			}
+			
 			level.draw( batch, debugRenderer, delta );
 			
 			@SuppressWarnings( "unused" )

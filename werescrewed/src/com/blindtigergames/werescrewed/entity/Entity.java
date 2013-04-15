@@ -463,7 +463,7 @@ public class Entity implements GleedLoadable {
 		return sprite;
 	}
 	
-	protected Sprite constructSprite(TextureRegion region){
+	public Sprite constructSprite(TextureRegion region){
 		Sprite sprite;
 		
 		sprite = new Sprite( region );
