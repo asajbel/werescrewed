@@ -266,13 +266,14 @@ public class BossScrew extends Screw {
 
 	@Override
 	public void draw( SpriteBatch batch, float deltaTime ) {
+		drawBGDecals( batch );
 		screwInterface.sprite.draw( batch );
 		drawParticles( behindParticles, batch );
 		if ( sprite != null && visible && !removeNextStep ) {
 			sprite.draw( batch );
 		}
 		// drawOrigin(batch);
-		drawDecals( batch );
+		drawFGDecals( batch );
 		if ( spinemator != null )
 			spinemator.draw( batch );
 		drawParticles( frontParticles, batch );

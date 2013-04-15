@@ -104,11 +104,11 @@ public class AlphaScreen extends Screen {
 		SkeletonBuilder b = new SkeletonBuilder(level.world);
 		Skeleton bgSkele = b.name( "bgSkele" ).position( 0,0 ).build( );
 		TextureAtlas atlas = WereScrewedGame.manager.getAtlas("alphabot_floor_seats");
-		bgSkele.addDecal( atlas.createSprite( "floor_left" ), new Vector2(-2048,0 ) );
-		bgSkele.addDecal( atlas.createSprite( "floor_right" ), new Vector2( 0,0 ) );
-		bgSkele.addDecal( atlas.createSprite( "seats_left" ), new Vector2(-2048,0 ) );
-		bgSkele.addDecal( atlas.createSprite( "seats_middle" ), new Vector2( 0,0 ) );
-		bgSkele.addDecal( atlas.createSprite( "seats_right" ), new Vector2( 2048,0 ) );
+		bgSkele.addFGDecal( atlas.createSprite( "floor_left" ), new Vector2(-2048,0 ) );
+		bgSkele.addFGDecal( atlas.createSprite( "floor_right" ), new Vector2( 0,0 ) );
+		bgSkele.addFGDecal( atlas.createSprite( "seats_left" ), new Vector2(-2048,0 ) );
+		bgSkele.addFGDecal( atlas.createSprite( "seats_middle" ), new Vector2( 0,0 ) );
+		bgSkele.addFGDecal( atlas.createSprite( "seats_right" ), new Vector2( 2048,0 ) );
 		level.root.addSkeleton(bgSkele);
 	}
 

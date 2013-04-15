@@ -76,6 +76,7 @@ public class LevelFactory {
 	protected static final String puzzleTag = "puzzle"; 
 	protected static final String dynamicTag = "dynamic";
 	protected static final String decalTag = "decal";
+	protected static final String decalBGTag = "bgdecal";
 	protected static final String angleTag = "angle";
 	protected static final String imageTag = "image";
 	protected static final String gleedImageTag = "image";	
@@ -238,7 +239,7 @@ public class LevelFactory {
 			//if ( item.propes.containsKey( "bgdecal" ) ) {
 			// level.entityBGList.add( decal );
 			//}
-			if ( item.props.containsKey( "decal" ) ) {
+			if ( item.props.containsKey( "decal" ) || item.props.containsKey( "bgdecal" ) ) {
 				Array< String > tokens;
 				String decalImage;
 				Vector2 decalPosition = new Vector2( );
@@ -266,8 +267,36 @@ public class LevelFactory {
 							}
 						}
 						decal.setScale( size.x, size.y );
-						out.addDecal( decal, decalPosition, r );
-						Gdx.app.log( "LoadEntity", "Creating decal for ["
+						out.addFGDecal( decal, decalPosition, r );
+						Gdx.app.log( "LoadEntity", "Creating foreground decal for ["
+								+ item.name + "]. Image:" + decalImage
+								+ " Position:" + decalPosition.toString( ) );
+					}
+				}
+				for ( String decalData : item.props.getAll( "bgdecal" ) ) {
+					tokens = new Array< String >( decalData.split( "\\s+" ) );
+					if ( tokens.size > 2 ) {
+						decalImage = WereScrewedGame.dirHandle + tokens.get( 0 );
+						decalPosition.x = Float.parseFloat( tokens.get( 1 ) );
+						decalPosition.y = Float.parseFloat( tokens.get( 2 ) );
+						decal = new Sprite( WereScrewedGame.manager.get(
+								decalImage, Texture.class ) );
+						decal.setOrigin( 0.0f, 0.0f );
+						Vector2 size = new Vector2( 1.0f, 1.0f );
+						if ( tokens.size > 3 ) {
+							r = Float.parseFloat( tokens.get( 3 ) );
+						}
+						if ( tokens.size > 4 ) {
+							size.x = Float.parseFloat( tokens.get( 4 ) );
+							if ( tokens.size > 5 ) {
+								size.y = Float.parseFloat( tokens.get( 5 ) );
+							} else {
+								size.y = size.x;
+							}
+						}
+						decal.setScale( size.x, size.y );
+						out.addBGDecal( decal, decalPosition, r );
+						Gdx.app.log( "LoadEntity", "Creating background decal for ["
 								+ item.name + "]. Image:" + decalImage
 								+ " Position:" + decalPosition.toString( ) );
 					}
@@ -324,7 +353,7 @@ public class LevelFactory {
 			float rot = item.rot - targetRot;
 			
 			decal.setScale( scale.x, scale.y );
-			target.addDecal(decal, pos, rot);
+			target.addFGDecal(decal, pos, rot);
 			Gdx.app.log( "LoadDecal", "Attaching decal "+item.name+" to "+targetName+"." );
 			target.updateDecals( 0.0f );
 			Gdx.app.log( "LoadDecal", "(X: "+decal.getX()+" Y: "+decal.getY()+" R: "+decal.getRotation()+" sX: "+item.sca.x+" sY: "+item.sca.y+")" );
