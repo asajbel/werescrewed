@@ -36,7 +36,7 @@ public class StructureScrew extends Screw {
 	private SimpleFrameAnimator screwUIAnimator;
 	private int startFrame = 25;
 	private int lastMotionFrame = 14;
-	
+
 	public StructureScrew( String name, Vector2 pos, int max, Entity entity,
 			World world, Vector2 detachDirection ) {
 		super( name, pos, null );
@@ -255,7 +255,8 @@ public class StructureScrew extends Screw {
 				} else if ( screwInterface.sprite.getAnimator( ).getFrame( ) > lastMotionFrame ) {
 					screwUIAnimator.speed( 0 );
 					if ( depth >= 0 ) {
-						int value = (int ) ( ( (float) depth / (float)maxDepth ) * 10f ) + startFrame;
+						int value = ( int ) ( ( ( float ) depth / ( float ) maxDepth ) * 10f )
+								+ startFrame;
 						screwUIAnimator.setFrame( value );
 					}
 				}
@@ -265,7 +266,8 @@ public class StructureScrew extends Screw {
 				}
 				screwUIAnimator.speed( -1 );
 			}
-			screwInterface.sprite.setPosition( this.getPositionPixel( ).sub( interfaceOffset ) );
+			screwInterface.sprite.setPosition( this.getPositionPixel( ).sub(
+					interfaceOffset ) );
 			screwInterface.sprite.update( deltaTime );
 			screwUIAnimator.update( deltaTime );
 		}
@@ -310,16 +312,15 @@ public class StructureScrew extends Screw {
 
 		// we may want a radar depending on the size of the sprite...
 		// add radar sensor to screw
-		// CircleShape radarShape = new CircleShape( );
-		// radarShape.setRadius( sprite.getWidth( ) * 1.1f * Util.PIXEL_TO_BOX
-		// );
-		// FixtureDef radarFixture = new FixtureDef( );
-		// radarFixture.shape = radarShape;
-		// radarFixture.isSensor = true;
-		// radarFixture.filter.categoryBits = Util.CATEGORY_SCREWS;
-		// radarFixture.filter.maskBits = Util.CATEGORY_PLAYER
-		// | Util.CATEGORY_SUBPLAYER;
-		// body.createFixture( radarFixture );
-		// radarShape.dispose( );
+		CircleShape radarShape = new CircleShape( );
+		radarShape.setRadius( sprite.getWidth( ) * 1.1f * Util.PIXEL_TO_BOX );
+		FixtureDef radarFixture = new FixtureDef( );
+		radarFixture.shape = radarShape;
+		radarFixture.isSensor = true;
+		radarFixture.filter.categoryBits = Util.CATEGORY_SCREWS;
+		radarFixture.filter.maskBits = Util.CATEGORY_PLAYER
+				| Util.CATEGORY_SUBPLAYER;
+		body.createFixture( radarFixture );
+		radarShape.dispose( );
 	}
 }

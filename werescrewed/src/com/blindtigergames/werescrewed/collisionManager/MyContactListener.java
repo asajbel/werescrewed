@@ -33,7 +33,6 @@ public class MyContactListener implements ContactListener {
 
 	private static int NUM_PLAYER1_CONTACTS = 0;
 	private static int NUM_PLAYER2_CONTACTS = 0;
-	private Player p1;
 
 	/**
 	 * When two new objects start to touch
@@ -89,60 +88,23 @@ public class MyContactListener implements ContactListener {
 								}
 								Platform plat = ( Platform ) object;
 								player.hitSolidObject( plat );
-								if ( player.getState( ) != PlayerState.JumpingOffScrew
-										|| player.getState( ) != PlayerState.Screwing ) {
+								if ( player.getState( ) != PlayerState.Screwing ) {
 									player.setGrounded( true );
 								}
 							}
 							break;
 						case SCREW:
-							// if ( player.isPlayerDead( ) ) {
 							Screw screw = ( Screw ) object;
-							if ( p1 == null || p1 == player ) {
-								p1 = player;
-								player.hitScrew( screw );
-								if ( screw.getScrewType( ) == ScrewType.SCREW_RESURRECT ) {
-									ResurrectScrew rScrew = ( ResurrectScrew ) screw;
-									rScrew.hitPlayer( player );
-								}
-							} else if ( p1 != player ) {
-								player.hitScrew( screw );
-								if ( screw.getScrewType( ) == ScrewType.SCREW_RESURRECT ) {
-									ResurrectScrew rScrew = ( ResurrectScrew ) screw;
-									rScrew.hitPlayer( player );
-								}
+							player.hitScrew( screw );
+							if ( screw.getScrewType( ) == ScrewType.SCREW_RESURRECT ) {
+								ResurrectScrew rScrew = ( ResurrectScrew ) screw;
+								rScrew.hitPlayer( player );
 							}
-
-							// }
 							break;
-						// case PLAYER:
-						// Player player2 = ( Player ) object;
-						// player.hitPlayer( player2 );
-						// player2.hitPlayer( player );
-						// if ( player.getState( ) != PlayerState.HeadStand
-						// && player2.getState( ) != PlayerState.HeadStand
-						// && !player.isHeadStandPossible( )
-						// && !player2.isHeadStandPossible( ) ) {
-						// player.hitPlayer( null );
-						// player2.hitPlayer( null );
-						// contact.setEnabled( false );
-						// } else if ( player.getState( ) !=
-						// PlayerState.HeadStand
-						// && player2.getState( ) != PlayerState.HeadStand ) {
-						// player.setGrounded( true );
-						// player2.setGrounded( true );
-						// }
-						// break;
 						case HAZARD:
-						// if ( player.getCurrentScrew( ) == null
-						// || player.getCurrentScrew( ).getScrewType( ) !=
-						// ScrewType.SCREW_RESURRECT )
-						{
+
 							Hazard hazard = ( Hazard ) object;
 							hazard.performContact( player, objectFix );
-						}
-							// Gdx.app.log( "Player " + player.name,
-							// " Collided with Hazard" );
 							break;
 						case CHECKPOINT:
 							CheckPoint checkP = ( CheckPoint ) objectFix
@@ -256,7 +218,6 @@ public class MyContactListener implements ContactListener {
 							if ( object.isSolid( )
 									&& playerFix.getShape( ) instanceof CircleShape ) {
 								if ( player.name.equals( "player1" ) ) {
-									p1 = player;
 									NUM_PLAYER1_CONTACTS--;
 									if ( NUM_PLAYER1_CONTACTS <= 0 ) {
 										if ( player.getState( ) != PlayerState.HeadStand ) {
@@ -273,22 +234,11 @@ public class MyContactListener implements ContactListener {
 								}
 								contact.setEnabled( true );
 							}
-							if ( player.getState( ) != PlayerState.JumpingOffScrew ) {
-								player.hitSolidObject( null );
-							}
+							player.hitSolidObject( null );
 							break;
 						case SCREW:
-							if ( player.name.equals( "player1" ) ) {
-								p1 = player;
-								if ( player.getState( ) != PlayerState.Screwing ) {
-									player.hitScrew( null );
-								}
-							} else if ( player.name.equals( "player2" ) ) {
-								if ( player.getState( ) != PlayerState.Screwing ) {
-									player.hitScrew( null );
-
-								}
-
+							if ( player.getState( ) != PlayerState.Screwing ) {
+								player.hitScrew( null );
 							}
 							break;
 						case PLAYER:
