@@ -150,7 +150,7 @@ public class ProgressManager {
 					p1Ghost = null;
 				} else {
 					// p1Ghost.update( deltaTime );
-					p1Ghost.updateAnchor( );
+					p1Ghost.updateAnchors( );
 				}
 			}
 		}
@@ -166,7 +166,7 @@ public class ProgressManager {
 					p2Ghost = null;
 				} else {
 					// p2Ghost.update( deltaTime );
-					p2Ghost.updateAnchor( );
+					p2Ghost.updateAnchors( );
 				}
 			}
 		}
@@ -249,7 +249,7 @@ public class ProgressManager {
 				ghostMover.setSpeed( 10f / currentCheckPoint.getPositionPixel( )
 						.sub( player1.getPositionPixel( ) ).len( ) );
 				p1Ghost.setMoverAtCurrentState( ghostMover );
-				p1Ghost.createAnchor( );
+				// p1Ghost.createAnchor( );
 				// get the players direction and offset to the opposite of that
 				if ( player1.body.getLinearVelocity( ).x < 0 ) {
 					screwPos = new Vector2( 270, 150 );
@@ -288,7 +288,7 @@ public class ProgressManager {
 				ghostMover.setSpeed( 10f / currentCheckPoint.getPositionPixel( )
 						.sub( player2.getPositionPixel( ) ).len( ) );
 				p2Ghost.setMoverAtCurrentState( ghostMover );
-				p2Ghost.createAnchor( );
+				// p2Ghost.createAnchor( );
 				// get the players direction and offset to the opposite of that
 				if ( player2.body.getLinearVelocity( ).x < 0 ) {
 					screwPos = new Vector2( 270, 150 );
@@ -335,7 +335,7 @@ public class ProgressManager {
 				ghostMover.setSpeed( 10f / currentCheckPoint.getPositionPixel( )
 						.sub( player2.getPositionPixel( ) ).len( ) );
 				p2Ghost.setMoverAtCurrentState( ghostMover );
-				p2Ghost.createAnchor( );
+				// p2Ghost.createAnchor( );
 				// get the players direction and offset to the opposite of that
 				if ( player2.body.getLinearVelocity( ).x < 0 ) {
 					screwPos = new Vector2( 270, 150 );
@@ -375,7 +375,7 @@ public class ProgressManager {
 				ghostMover.setSpeed( 10f / currentCheckPoint.getPositionPixel( )
 						.sub( player1.getPositionPixel( ) ).len( ) );
 				p1Ghost.setMoverAtCurrentState( ghostMover );
-				p1Ghost.createAnchor( );
+				// p1Ghost.createAnchor( );
 				// get the players direction and offset to the opposite of that
 				if ( player1.body.getLinearVelocity( ).x < 0 ) {
 					screwPos = new Vector2( 270, 150 );
