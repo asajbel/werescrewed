@@ -18,7 +18,7 @@ public class WereScrewedGame extends Game {
 	public static final int targetFrameRate = 60;
 	public static final float oneOverTargetFrameRate = 1f/targetFrameRate;
 	
-	public static AssetManager manager = new AssetManager( );
+	public static AssetManager manager;
 	public static FileHandle dirHandle;
 
 	public FPSLogger logger;
@@ -33,6 +33,8 @@ public class WereScrewedGame extends Game {
 
 	@Override
 	public void create( ) {
+		manager = new AssetManager( );
+		
 		ScreenManager.getInstance( ).initialize( this );
 		
 		if (Gdx.graphics.isGL20Available( ))
@@ -44,7 +46,7 @@ public class WereScrewedGame extends Game {
 
 		logger = new FPSLogger( );
 
-
+		manager.loadDummyAssets( );
 	}
 
 	@Override
