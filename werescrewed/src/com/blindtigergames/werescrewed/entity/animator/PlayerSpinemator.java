@@ -135,12 +135,12 @@ public class PlayerSpinemator implements ISpinemator {
 		case Jumping:
 			return PlayerAnim.JUMP_UP;
 		case Falling:
-			return PlayerAnim.JUMP_DOWN;
+			return PlayerAnim.FALL_IDLE;
 		case HeadStand:
 			if ( player.getExtraState( ) == ConcurrentState.ExtraJumping ) {
 				return PlayerAnim.JUMP_UP;
 			} else if ( player.getExtraState( ) == ConcurrentState.ExtraFalling ) {
-				return PlayerAnim.JUMP_DOWN;
+				return PlayerAnim.FALL_IDLE;
 			}
 			return PlayerAnim.IDLE;
 		case Screwing:
