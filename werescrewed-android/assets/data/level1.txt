@@ -31,3 +31,15 @@
 
 /levels/level1/player_female_idle.png
 /levels/level1/player_male_idle.png
+
+##Alphabot skeleton textures
+/levels/alphabot/alphabot_texture_skin.png
+/levels/alphabot/alphabot_texture_tux.png
+/levels/alphabot/alphabot_tile_suit_main.png
+/levels/alphabot/alphabot_tile_interior.png
+/levels/alphabot/sheetmetaltexture.png
+/levels/alphabot/sheetmetaltextureblack.png
+
+/levels/alphabot/shoe_testing/shoe_interior_512_bothalphas.png
+/levels/alphabot/shoe_testing/shoe_interior_512_skinnyalphas.png
+/levels/alphabot/shoe_testing/shoe_interior_512_thickalphas.png

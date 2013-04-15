@@ -43,7 +43,7 @@ public class SkeletonBuilder extends GenericEntityBuilder<SkeletonBuilder>{
 		this.onBGverts = true;
 		this.texBackground = WereScrewedGame.manager.get(
 				WereScrewedGame.dirHandle.path( )
-				+ "/common/robot/alphabot_texture_skin.png",
+				+ "/levels/alphabot/shoe_testing/shoe_interior_512_skinnyalphas.png",
 		Texture.class );
 		this.texForeground = texBackground;
 		this.texBody = null;
