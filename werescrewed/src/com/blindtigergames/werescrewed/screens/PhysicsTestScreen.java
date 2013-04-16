@@ -289,8 +289,8 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 
 		Skeleton top = new Skeleton( "skeleton7", new Vector2( -700, 1200 ),
 				null, world, BodyType.KinematicBody );
-		top.addMover( new RotateTweenMover( top, 3f, -Util.PI / 2, 1f, true ),
-				RobotState.IDLE );
+		//top.addMover( new RotateTweenMover( top, 3f, -Util.PI / 2, 1f, true ),
+		//		RobotState.IDLE );
 		rootSkeleton.addSkeleton( top );
 
 		s = new Skeleton( "skeleton7", new Vector2( -700, 700 ), null, world,
@@ -358,10 +358,10 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		// gear2.quickfixCollisions( );
 
 		 TiledPlatform piston = platBuilder.name( "piston" ).kinematic( )
-		 .position( -100, 700 ).dimensions( 2, 5).oneSided( false )
+		 .position( 1400, 100 ).dimensions( 2, 5).oneSided( false )
 		 .buildTilePlatform( );
 		 piston.addMover( new PistonTweenMover( piston, new Vector2(
-		 0, -350 ), 0.5f, 3f, 1f, 0f, 1f ), RobotState.IDLE );
+		  350, 0 ), 0.5f, 3f, 1f, 0f, 1f ), RobotState.IDLE );
 		 s.addKinematicPlatform( piston );
 		 piston.setCrushing( true );
 
@@ -450,6 +450,25 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 //		revoluteJointDef.motorSpeed = 0.0f;
 //		Joint screwJoint =  (Joint) world.createJoint( revoluteJointDef );
 		
+		
+			
+		TiledPlatform struc1 = platBuilder.name( "stuc1" ).dynamic( )
+		.position(1800.0f, 450f ).dimensions( 30, 1 ).oneSided( false )
+		.buildTilePlatform( );
+		rootSkeleton.addDynamicPlatform( struc1 );
+		
+		StructureScrew s = new StructureScrew( "ss", struc1.getPositionPixel( )
+				.add( struc1.getPixelWidth( ) / 2, 0 ), 100, world, Vector2.Zero );
+		s.addStructureJoint( struc1 );
+		s.addStructureJoint( rootSkeleton );
+		rootSkeleton.addScrewForDraw( s );
+		
+		StructureScrew s2 = new StructureScrew( "ss2", struc1.getPositionPixel( )
+				.sub( struc1.getPixelWidth( ) / 2, 0 ), 100, world, Vector2.Zero );
+		s2.addStructureJoint( struc1 );
+		s2.addStructureJoint( rootSkeleton );
+		rootSkeleton.addScrewForDraw( s2 );
+		
 	}
 
 	@SuppressWarnings( "unused" )
@@ -501,7 +520,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		float zoom = 1.0f;
 		float width = Gdx.graphics.getWidth( ) / zoom;
 		float height = Gdx.graphics.getHeight( ) / zoom;
-		cam = new Camera( new Vector2( 0, 0 ), width, height, world );
+		cam = new Camera( new Vector2(1400.0f, 100f ), width, height, world );
 	}
 
 	/**

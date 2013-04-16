@@ -275,13 +275,14 @@ public class StructureScrew extends Screw {
 
 	@Override
 	public void draw( SpriteBatch batch, float deltaTime ) {
+		drawBGDecals( batch );
 		screwInterface.sprite.draw( batch );
 		drawParticles( behindParticles, batch );
 		if ( sprite != null && visible && !removeNextStep ) {
 			sprite.draw( batch );
 		}
 		// drawOrigin(batch);
-		drawDecals( batch );
+		drawFGDecals( batch );
 		if ( spinemator != null )
 			spinemator.draw( batch );
 		drawParticles( frontParticles, batch );
@@ -312,15 +313,16 @@ public class StructureScrew extends Screw {
 
 		// we may want a radar depending on the size of the sprite...
 		// add radar sensor to screw
-		CircleShape radarShape = new CircleShape( );
-		radarShape.setRadius( sprite.getWidth( ) * 1.1f * Util.PIXEL_TO_BOX );
-		FixtureDef radarFixture = new FixtureDef( );
-		radarFixture.shape = radarShape;
-		radarFixture.isSensor = true;
-		radarFixture.filter.categoryBits = Util.CATEGORY_SCREWS;
-		radarFixture.filter.maskBits = Util.CATEGORY_PLAYER
-				| Util.CATEGORY_SUBPLAYER;
-		body.createFixture( radarFixture );
-		radarShape.dispose( );
+		// CircleShape radarShape = new CircleShape( );
+		// radarShape.setRadius( sprite.getWidth( ) * 1.1f * Util.PIXEL_TO_BOX
+		// );
+		// FixtureDef radarFixture = new FixtureDef( );
+		// radarFixture.shape = radarShape;
+		// radarFixture.isSensor = true;
+		// radarFixture.filter.categoryBits = Util.CATEGORY_SCREWS;
+		// radarFixture.filter.maskBits = Util.CATEGORY_PLAYER
+		// | Util.CATEGORY_SUBPLAYER;
+		// body.createFixture( radarFixture );
+		// radarShape.dispose( );
 	}
 }
