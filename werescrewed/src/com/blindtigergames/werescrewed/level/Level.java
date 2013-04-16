@@ -7,6 +7,7 @@ import aurelienribon.tweenengine.Tween;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Joint;
 import com.badlogic.gdx.physics.box2d.World;
@@ -50,6 +51,10 @@ public class Level {
 	public ArrayList< Skeleton > skelFGList;
 	public ArrayList< Entity > entityBGList;
 	public ArrayList< Entity > entityFGList;
+	// background stuff
+	public OrthographicCamera backgroundCam;
+	public RootSkeleton backgroundRootSkeleton;
+	public SpriteBatch backgroundBatch;
 
 	public Level( ) {
 
@@ -63,7 +68,6 @@ public class Level {
 		entityFGList = new ArrayList< Entity >( );
 
 		// progressManager = new ProgressManager(player1, player2, world);
-
 		// camera = new Camera( width, height, world);
 		// player1 = new PlayerBuilder( ).name( "player1" ).world( world )
 		// .position( 0, 0 ).buildPlayer( );
@@ -123,12 +127,14 @@ public class Level {
 		// draw all background of skeletons before everything
 		for ( Skeleton skel : skelBGList ) {
 			if ( skel.isActive( ) ) {
-				skel.bgSprite.draw( batch );
+				if ( skel.bgSprite != null ) {
+					skel.bgSprite.draw( batch );
+				}
 				skel.drawBGDecals( batch );
 			}
 		}
 		// draw all background entity sprites after everything
-		// for ( Entity e: entityFGList ) {
+		// for ( Entity e : entityFGList ) {
 		// if ( e.isActive( ) ) {
 		// e.drawBGDecals( batch );
 		// }
@@ -142,20 +148,22 @@ public class Level {
 		if ( player2 != null )
 			player2.draw( batch, deltaTime );
 		// draw all foreground entity sprites after everything
-		// for ( Entity e: entityFGList ) {
-		// if ( e.isActive( ) ) {
-		// e.drawFGDecals( batch );
-		// }
-		// }
-		// draw all foreground skeleton sprites after everything
-		for ( Skeleton skel : skelFGList ) {
-			if ( skel.fgSprite.getAlpha( ) != 0 ) {
-				skel.fgSprite.draw( batch );
-				skel.drawFGDecals( batch );
+		for ( Entity e : entityFGList ) {
+			if ( e.isActive( ) ) {
+				e.drawFGDecals( batch );
 			}
 		}
+		// draw all foreground skeleton sprites after everything
+		for ( Skeleton skel : skelFGList ) {
+			if ( skel.fgSprite != null ) {
+				if ( skel.fgSprite.getAlpha( ) != 0 ) {
+					skel.fgSprite.draw( batch );
+				}
+			} 
+			skel.drawFGDecals( batch );
+		}
 		batch.end( );
-		
+
 		if ( debug )
 			debugRenderer.render( world, camera.combined( ) );
 		world.step( WereScrewedGame.oneOverTargetFrameRate, 6, 6 );
