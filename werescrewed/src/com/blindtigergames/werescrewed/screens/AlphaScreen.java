@@ -102,7 +102,7 @@ public class AlphaScreen extends Screen {
 		chestObjects( );
 		leftArm( );
 
-		//buildBackground( );
+		buildBackground( );
 		// new background stuff
 		initBackground( );
 
@@ -133,6 +133,8 @@ public class AlphaScreen extends Screen {
 		TextureAtlas stage_pillar = WereScrewedGame.manager.getAtlas( "stage_pillar");
 		TextureAtlas stage_upperleft = WereScrewedGame.manager.getAtlas("stage_upperleft");
 		TextureAtlas stage_upperright = WereScrewedGame.manager.getAtlas("stage_upperright");
+		TextureAtlas stage_light = WereScrewedGame.manager.getAtlas( "stage_light" );
+		
 		int max = 2030;
 		int offsetX = 400;
 		int offsetY = 0;
@@ -142,10 +144,16 @@ public class AlphaScreen extends Screen {
 		int floorX = -max+offsetX;
 		int stage_pillarY = -202 + offsetY;
 		int stage_pillarX = floorX-530;
+		int lightX = offsetX-1966;
+		int lightY = offsetY+50;
 		
 		//floor
 		bgSkele.addBGDecal( floor_seats.createSprite( "floor_left" ), new Vector2(floorX,floorY ) );
 		bgSkele.addBGDecal( floor_seats.createSprite( "floor_right" ), new Vector2( floorX+max,floorY ) );
+		//lights
+		bgSkele.addBGDecal( stage_light.createSprite( "light_left" ), new Vector2(lightX,lightY ) );
+		bgSkele.addBGDecal( stage_light.createSprite( "light_right" ), new Vector2(lightX+2035,lightY ) );
+		
 		//stage is in between floor & seats
 		bgSkele.addFGDecal( stage_pillar.createSprite( "stage_left" ), new Vector2(stage_pillarX,stage_pillarY) );
 		bgSkele.addFGDecal(stage_upperleft.createSprite( "stage_upperleft"), new Vector2(stage_pillarX+2, 1647+stage_pillarY ) );//1647 is height of left pillar
@@ -155,8 +163,6 @@ public class AlphaScreen extends Screen {
 		bgSkele.addFGDecal( floor_seats.createSprite( "seats_left" ), new Vector2(-max+seatsX,seatsY ) );
 		bgSkele.addFGDecal( floor_seats.createSprite( "seats_middle" ), new Vector2( 0+seatsX,seatsY ) );
 		bgSkele.addFGDecal( floor_seats.createSprite( "seats_right" ), new Vector2( max+seatsX,seatsY ) );
-		
-		
 		
 		level.root.addSkeleton(bgSkele);
 	}

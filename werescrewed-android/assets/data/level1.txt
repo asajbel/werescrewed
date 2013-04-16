@@ -32,6 +32,7 @@
 /levels/alphabot/stage_pillar.pack
 /levels/alphabot/stage_upperleft.pack
 /levels/alphabot/stage_upperright.pack
+/levels/alphabot/stage_light.pack
 
 /levels/level1/player_female_idle.png
 /levels/level1/player_male_idle.png
