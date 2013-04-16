@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -20,6 +21,7 @@ public class Screen implements com.badlogic.gdx.Screen {
 	protected Level level;
 	protected SpriteBatch batch;
 	protected SBox2DDebugRenderer debugRenderer;
+	private Color clearColor = new Color(0,0,0,1);
 	
 	BitmapFont debug_font;
 	Camera uiCamera;
@@ -46,10 +48,10 @@ public class Screen implements com.badlogic.gdx.Screen {
 	@Override
 	public void render( float delta ) {
 		if(Gdx.gl20 != null){
-			Gdx.gl20.glClearColor( 0.0f, 0f, 0.0f, 1.0f );
+			Gdx.gl20.glClearColor( clearColor.r, clearColor.g, clearColor.b, clearColor.a );
 			Gdx.gl20.glClear( GL20.GL_COLOR_BUFFER_BIT );
 		} else {
-			Gdx.gl10.glClearColor( 0.0f, 0f, 0.0f, 1.0f );
+			Gdx.gl10.glClearColor( clearColor.r, clearColor.g, clearColor.b, clearColor.a );
 			Gdx.gl10.glClear( GL20.GL_COLOR_BUFFER_BIT );
 		}
 
@@ -128,6 +130,10 @@ public class Screen implements com.badlogic.gdx.Screen {
 	public void dispose( ) {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	public void setClearColor(float r, float g, float b, float a){
+		clearColor = new Color(r,g,b,a);
 	}
 
 }
