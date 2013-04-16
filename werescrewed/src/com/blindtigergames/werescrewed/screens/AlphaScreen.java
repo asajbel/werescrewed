@@ -246,20 +246,20 @@ public class AlphaScreen extends Screen {
 		TextureRegion tex2 = WereScrewedGame.manager.getAtlas( "bgCloud" )
 				.findRegion( "bgCloud2" );
 		bg_1_0.sprite = bg_1_0.constructSprite( tex1 );
-		bg_1_0.sprite.setOrigin( 0f, 0f );
+		bg_1_0.sprite.setOrigin( bg_1_0.sprite.getWidth( )/4.0f, bg_1_0.sprite.getHeight( )/2.0f );
 		bg_1_0.offset = new Vector2( bg_1_0.sprite.getOriginX( ),
 				bg_1_0.sprite.getOriginY( ) );
-		bg_1_0.sprite.setScale( 1f, 1.1f );
+		//bg_1_0.sprite.setScale( 1.05f, 1.1f );
 		bg_1_0.setMoverAtCurrentState( new ParallaxMover(
-				new Vector2( 0, 1024 ), new Vector2( 0, -1024 ), 0.0004f, .5f,
+				new Vector2( 512, 1530 ), new Vector2( 512, -512 ), 0.0001f, .5f,
 				level.camera, false, LinearAxis.VERTICAL ) );
 		bg_1_1.sprite = bg_1_1.constructSprite( tex2 );
-		bg_1_1.sprite.setOrigin( 0f, 0f );
+		bg_1_1.sprite.setOrigin( bg_1_1.sprite.getWidth( )/4.0f, bg_1_1.sprite.getHeight( )/2.0f );
 		bg_1_1.offset = new Vector2( bg_1_1.sprite.getOriginX( ),
 				bg_1_1.sprite.getOriginY( ) );
-		bg_1_1.sprite.setScale( 1f, 1.1f );
+		//bg_1_1.sprite.setScale( 1.05f, 1.1f );
 		bg_1_1.setMoverAtCurrentState( new ParallaxMover(
-				new Vector2( 0, 1024 ), new Vector2( 0, -1024 ), 0.0004f, 0f,
+				new Vector2( 512, 1530 ), new Vector2( 512, -512 ), 0.0001f, 1f,
 				level.camera, false, LinearAxis.VERTICAL ) );
 		level.backgroundRootSkeleton.addLooseEntity( bg_1_0 );
 		level.backgroundRootSkeleton.addLooseEntity( bg_1_1 );
