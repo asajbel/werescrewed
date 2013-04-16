@@ -45,6 +45,4 @@
 /levels/alphabot/sheetmetaltexture.png
 /levels/alphabot/sheetmetaltextureblack.png
 
-/levels/alphabot/shoe_testing/shoe_interior_512_bothalphas.png
-/levels/alphabot/shoe_testing/shoe_interior_512_skinnyalphas.png
-/levels/alphabot/shoe_testing/shoe_interior_512_thickalphas.png
+/levels/alphabot/shoe_testing/shoe_background_1024.png

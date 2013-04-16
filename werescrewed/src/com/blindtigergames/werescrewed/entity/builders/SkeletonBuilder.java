@@ -42,9 +42,10 @@ public class SkeletonBuilder extends GenericEntityBuilder<SkeletonBuilder>{
 		this.bodyType = BodyType.KinematicBody;
 		this.density = 1.0f;
 		this.onBGverts = true;
+		//background textures
 		this.texBackground = WereScrewedGame.manager.get(
 				WereScrewedGame.dirHandle.path( )
-				+ "/levels/alphabot/shoe_testing/shoe_interior_512_skinnyalphas.png",
+				+ "/levels/alphabot/shoe_testing/shoe_background_1024.png",
 		Texture.class );
 		this.texForeground = texBackground;
 		this.texBody = null;
