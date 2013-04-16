@@ -128,7 +128,8 @@ public class AlphaScreen extends Screen {
 
 	private void buildBackground(){
 		SkeletonBuilder b = new SkeletonBuilder(level.world);
-		Skeleton bgSkele = b.name( "bgSkele" ).position( 0,0 ).build( );
+		Skeleton bgSkele = b.name( "stageSkeleton" ).position( 0,0 ).build( );
+		//bgSkele = ( Skeleton ) LevelFactory.entities.get( "stageSkeleton" );
 		TextureAtlas floor_seats = WereScrewedGame.manager.getAtlas("alphabot_floor_seats");
 		TextureAtlas stage_pillar = WereScrewedGame.manager.getAtlas( "stage_pillar");
 		TextureAtlas stage_upperleft = WereScrewedGame.manager.getAtlas("stage_upperleft");
