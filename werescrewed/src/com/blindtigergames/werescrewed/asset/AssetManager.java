@@ -5,8 +5,12 @@ import java.util.HashMap;
 import java.util.Random;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.RefCountedContainer;
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.utils.GdxRuntimeException;
+import com.badlogic.gdx.utils.ObjectMap;
 import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.entity.platforms.TileSet;
 import com.blindtigergames.werescrewed.graphics.TextureAtlas;
@@ -26,6 +30,8 @@ public class AssetManager extends com.badlogic.gdx.assets.AssetManager {
 	ArrayList<String> palette;
 	Random random;
 	HashMap< String, ParticleEffect > particleEffects;
+	HashMap<Class<?>, String > dummyAssets;
+	
 	
 	public AssetManager(){
 		super();
@@ -34,6 +40,7 @@ public class AssetManager extends com.badlogic.gdx.assets.AssetManager {
 		palette = new ArrayList<String>();
 		random = new Random(0);//same seed so random will be predictable for debug purpose
 		particleEffects = new HashMap<String, ParticleEffect>();
+		dummyAssets = new HashMap<Class<?>, String >();
 	}
 	
 	/**
@@ -147,4 +154,32 @@ public class AssetManager extends com.badlogic.gdx.assets.AssetManager {
 		super.dispose( );
 		atlasMap.clear( );
 	}
+	
+	/** @param fileName the asset file name
+	 * @return the asset */
+	@Override
+	public synchronized <T> T get (String fileName, Class<T> type){
+		return get( fileName, type, true);
+	}
+
+	@SuppressWarnings( "unchecked" )
+	public synchronized <T> T get (String fileName, Class<T> type, boolean loadDummies) {
+		try{
+			return super.get( fileName, type );
+		} catch ( GdxRuntimeException err ) {
+			if (loadDummies && dummyAssets.containsKey( type ) && !dummyAssets.get(type).equalsIgnoreCase( fileName )){
+				Gdx.app.log( "AssetManager", "Loading Exception:", err);
+				return get( dummyAssets.get( type ) );
+			} else {
+				throw err;
+			}
+		}
+	}
+	
+	public void loadDummyAssets( ) {
+		String filename = WereScrewedGame.dirHandle + "/common/fail.png";
+		dummyAssets.put( Texture.class, filename );
+		this.load( filename, Texture.class );
+	}
+
 }

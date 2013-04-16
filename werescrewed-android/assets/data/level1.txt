@@ -18,12 +18,14 @@
 /common/parallax_layer1_1.png
 /common/parallax_layer2_0.png
 /common/parallax_layer2_1.png
+/levels/alphabot/bgCloud.png
 
 ##texture atlas
 ##/common/animations/screwInterface.pack
 ##/common/tileset1.pack
 ##/common/TilesetTest.pack
 ##/particles/particles.pack
+/levels/alphabot/bgCloud.pack
 
 ##stage assets
 /levels/alphabot/alphabot_floor_seats.pack
