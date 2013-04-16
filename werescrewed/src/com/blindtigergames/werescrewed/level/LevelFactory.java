@@ -1205,7 +1205,7 @@ public class LevelFactory {
 		public String defName;
 		private EntityDef def;
 		public GleedTypeTag gleedTag;
-		private ArrayHash props;
+		private ArrayHash<String, String> props;
 		public Vector2 pos;
 		public float rot;
 		public Vector2 origin;
@@ -1224,9 +1224,9 @@ public class LevelFactory {
 			locked = true;
 		}
 		
-		protected ArrayHash getProps(){
+		protected ArrayHash<String, String> getProps(){
 			if (props == null){
-				props = new ArrayHash();
+				props = new ArrayHash<String, String>();
 				Array<Element> properties = element.getChildByName("CustomProperties").getChildrenByName("Property");
 				String name; String value;
 				for (Element prop: properties){

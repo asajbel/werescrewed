@@ -5,6 +5,7 @@ import java.util.EnumMap;
 import java.util.HashMap;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -31,6 +32,7 @@ import com.blindtigergames.werescrewed.graphics.TextureAtlas;
 import com.blindtigergames.werescrewed.graphics.particle.ParticleEffect;
 import com.blindtigergames.werescrewed.level.GleedLoadable;
 import com.blindtigergames.werescrewed.player.Player;
+import com.blindtigergames.werescrewed.sound.SoundManager;
 import com.blindtigergames.werescrewed.util.Util;
 
 /**
@@ -72,6 +74,8 @@ public class Entity implements GleedLoadable {
 	protected HashMap< String, ParticleEffect > behindParticles, frontParticles;
 	//protected Array<ParticleEffect> tmpParticleEffect; 
 
+	protected SoundManager sounds;
+	
 	/**
 	 * Create entity by definition
 	 * 
@@ -204,6 +208,7 @@ public class Entity implements GleedLoadable {
 		this.decals = new ArrayList< Sprite >( );
 		this.decalOffsets = new ArrayList< Vector2 >( );
 		this.decalAngles = new ArrayList< Float >( );
+		this.sounds = null;
 		setUpRobotState( );
 	}
 
@@ -223,7 +228,7 @@ public class Entity implements GleedLoadable {
 					* Util.BOX_TO_PIXEL );
 		}
 	}
-
+	
 	public void setPixelPosition( float x, float y ) {
 		setPosition( x * Util.PIXEL_TO_BOX, y * Util.PIXEL_TO_BOX );
 	}
@@ -348,14 +353,6 @@ public class Entity implements GleedLoadable {
 			if ( body != null && anchor != null ) {
 				updateAnchor( );
 			}
-			// animation stuff may go here
-//			bodyPos = body.getPosition( ).mul( Util.BOX_TO_PIXEL );
-//			if ( sprite != null ) {
-//				sprite.setPosition( bodyPos.x - offset.x, bodyPos.y - offset.y );
-//				sprite.setRotation( MathUtils.radiansToDegrees
-//						* body.getAngle( ) );
-//				sprite.update( deltaTime );
-//			}
 			updateDecals( deltaTime );
 
 			if ( spinemator != null ) {
@@ -366,7 +363,7 @@ public class Entity implements GleedLoadable {
 		updateParticleEffect( deltaTime, frontParticles );
 		updateParticleEffect( deltaTime, behindParticles );
 	}
-
+	
 	private void updateParticleEffect( float deltaTime,
 			HashMap< String, ParticleEffect > map ) {
 		Array< String > removals = null;
@@ -1101,4 +1098,32 @@ public class Entity implements GleedLoadable {
 		return out;
 	}
 	
+	public void setSoundManager(SoundManager s){
+		sounds = s;
+	}
+	
+	public SoundManager getSoundManager(){
+		return sounds;
+	}
+	
+	// Idle sound
+	public void idleSound(){
+		if (sounds != null && sounds.hasSound("idle")){
+			sounds.loopSound("idle");
+		}
+	}
+	// Generic collision sound
+	public void collisionSound(){
+		if (sounds != null && sounds.hasSound("collision")){
+			sounds.playSound("collision");
+		}
+	}
+	// If there isn't a more specific function, then just play the generic sound 
+	public void collisionSound( Entity other ){
+		collisionSound();
+	}
+	//Call this function after all your sprites, sounds, etc. are loaded.
+	public void postLoad(){
+		idleSound();
+	}
 }

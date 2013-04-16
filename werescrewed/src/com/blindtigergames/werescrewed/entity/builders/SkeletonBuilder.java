@@ -216,7 +216,7 @@ public class SkeletonBuilder extends GenericEntityBuilder<SkeletonBuilder>{
 					.build( );
 			out.addEventTrigger( et );
 		}
-		
+		prepareEntity(out);
 		return out;
 	}
 }

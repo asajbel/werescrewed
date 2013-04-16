@@ -34,6 +34,7 @@ import com.blindtigergames.werescrewed.entity.screws.ScrewType;
 import com.blindtigergames.werescrewed.graphics.particle.ParticleEffect;
 import com.blindtigergames.werescrewed.input.MyControllerListener;
 import com.blindtigergames.werescrewed.input.PlayerInputHandler;
+import com.blindtigergames.werescrewed.sound.SoundManager;
 import com.blindtigergames.werescrewed.util.Metrics;
 import com.blindtigergames.werescrewed.util.Util;
 
@@ -234,8 +235,10 @@ public class Player extends Entity {
 		setUpController( );
 		controllerDebug = true;
 
-		jumpSound = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-				+ "/common/sounds/WilhelmScream.ogg" );
+		if (sounds == null){
+			sounds = new SoundManager();
+		}
+		sounds.getSound( "jump", WereScrewedGame.dirHandle + "/common/sounds/jump.ogg" );
 
 		r = new Random( );
 		addFrontParticleEffect( "land_cloud_new", false, false );
@@ -695,6 +698,9 @@ public class Player extends Entity {
 		if ( Metrics.activated
 				&& ( grounded || playerState == PlayerState.Screwing ) ) {
 			Metrics.addPlayerJumpPosition( this.getPositionPixel( ) );
+		}
+		if ( grounded || playerState == PlayerState.HeadStand ){
+			sounds.playSound( "jump" );
 		}
 		// Regardless of how the player jumps, we shouldn't consider them
 		// grounded anymore.

@@ -443,8 +443,8 @@ public class GleedLoader {
 	
 	public Level getLevel(){return level;}
 	
-	protected static ArrayHash getCustomProperties(Element e){
-		ArrayHash out = new ArrayHash();
+	protected static ArrayHash<String,String> getCustomProperties(Element e){
+		ArrayHash out = new ArrayHash<String,String>();
 		Array<Element> properties = e.getChildByName("CustomProperties").getChildrenByName("Property");
 		String name; String value;
 		for (Element prop: properties){
@@ -500,7 +500,7 @@ public class GleedLoader {
 		public String defName;
 		private EntityDef def;
 		public GleedTypeTag gleedTag;
-		public ArrayHash props;
+		public ArrayHash<String,String> props;
 		public Vector2 pos;
 		public Vector2 origin;
 		public Vector2 sca;

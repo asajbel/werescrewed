@@ -74,7 +74,7 @@ public class ScrewBuilder extends GenericEntityBuilder< ScrewBuilder > {
 	protected static final String screwMaxTag = "screwmax";
 	protected static final String screwResetTag = "resetable";
 	@Override
-	public ScrewBuilder properties(ArrayHash props){
+	public ScrewBuilder properties(ArrayHash<String, String> props){
 		super.properties( props );
 		if (props.containsKey( screwTypeTag )){
 			this.screwType(props.get( screwTypeTag ));
@@ -167,10 +167,8 @@ public class ScrewBuilder extends GenericEntityBuilder< ScrewBuilder > {
 			default:
 				break;
 		}
-		if (screwType.equals( ScrewType.SCREW_STRIPPED )){
-		} else if (screwType.equals( ScrewType.SCREW_STRUCTURAL )){
-		} else if (screwType.equals( ScrewType.SCREW_PUZZLE )){
-		} else if (screwType.equals( ScrewType.SCREW_BOSS )){
+		if (out != null){
+			out.postLoad( );
 		}
 		return out;
 	}

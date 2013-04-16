@@ -1,14 +1,17 @@
 package com.blindtigergames.werescrewed.entity.builders;
 
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
+import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityCategory;
 import com.blindtigergames.werescrewed.entity.EntityDef;
 import com.blindtigergames.werescrewed.entity.RobotState;
 import com.blindtigergames.werescrewed.entity.mover.IMover;
+import com.blindtigergames.werescrewed.sound.SoundManager;
 import com.blindtigergames.werescrewed.util.ArrayHash;
 /**
  * EntityBuilder is meant to simplify creating entities and allow for extension
@@ -24,6 +27,9 @@ import com.blindtigergames.werescrewed.util.ArrayHash;
  * 
  */
 public class GenericEntityBuilder< B extends GenericEntityBuilder< ? >> {
+	private static final String IDLE_SOUND = "idlesound";
+	private static final String COLLISION_SOUND = "collisionsound";
+
 	// Common to all builders
 	protected String name;
 	protected Vector2 pos; //in pixels
@@ -32,6 +38,7 @@ public class GenericEntityBuilder< B extends GenericEntityBuilder< ? >> {
 	protected IMover mover;
 	protected boolean solid;
 	protected String definition;
+	protected SoundManager sounds;
 
 	// Used for type+world construction
 	protected EntityDef type;
@@ -56,6 +63,7 @@ public class GenericEntityBuilder< B extends GenericEntityBuilder< ? >> {
 		world = null;
 		tex = null;
 		body = null;
+		sounds = null;
 		definition = "";
 	}
 
@@ -233,8 +241,15 @@ public class GenericEntityBuilder< B extends GenericEntityBuilder< ? >> {
 	 *            - Strind/String hashmap containing the data
 	 * @return EntityBuilder
 	 */
+	
 	@SuppressWarnings( "unchecked" )
-	public B properties( ArrayHash props ) {
+	public B properties( ArrayHash<String,String> props ) {
+		if (props.containsKey(IDLE_SOUND)){
+			this.addSound("idle", props.get(IDLE_SOUND));
+		}
+		if (props.containsKey(COLLISION_SOUND)){
+			this.addSound("collision", props.get(COLLISION_SOUND));
+		}
 		return ( B ) this;
 	}
 
@@ -301,13 +316,30 @@ public class GenericEntityBuilder< B extends GenericEntityBuilder< ? >> {
 			} else {
 				out = new Entity( name, pos, tex, body, solid );
 			}
-			if ( mover != null ) {
-				out.addMover( mover, RobotState.IDLE );
-			}
 		}
+		prepareEntity(out);
 		return out;
 	}
 
+	protected void prepareEntity(Entity out){
+		if (out != null){
+			if ( mover != null ) {
+				out.addMover( mover, RobotState.IDLE );
+			}
+			if ( sounds != null ) {
+				out.setSoundManager( sounds );
+			}
+			out.postLoad( );
+		}
+	}
+	
+	public void addSound(String tag, String assetName){
+		if (sounds == null){
+			sounds = new SoundManager();
+		}
+		sounds.getSound( tag, assetName );
+	}
+	
 	protected static final String nameTag = "Name";
 	protected static final String typeTag = "Definition";
 	protected static final String xTag = "X";
