@@ -313,7 +313,6 @@ public class Player extends Entity {
 			
 			// build extra fixture to have new friction
 			
-			updateFootFrictionNew();
 			
 			//updateFootFriction( );
 			
@@ -340,6 +339,8 @@ public class Player extends Entity {
 				}
 			}
 		}
+
+		updateFootFrictionNew();
 		// switch between states
 		switch ( playerState ) {
 		case Dead:
