@@ -867,10 +867,6 @@ public class Player extends Entity {
 
 	private void updateFootFrictionNew(){
 
-		
-		if(name.equals("player1")){
-			System.out.println(frictionCounter);
-		}
 	
 		
 		if(prevButton != null){
