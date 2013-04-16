@@ -29,7 +29,8 @@ public class ParallaxMover implements IMover {
 	 * @param speed
 	 */
 	public ParallaxMover( Vector2 beginningPoint, Vector2 endingPoint,
-			float speed, float alpha, Camera camera, boolean moveContinuous, LinearAxis axis ) {
+			float speed, float alpha, Camera camera, boolean moveContinuous,
+			LinearAxis axis ) {
 		this.beginningPoint = beginningPoint.cpy( );
 		this.endPoint = endingPoint.cpy( );
 		this.speed = Math.abs( speed );
@@ -57,7 +58,7 @@ public class ParallaxMover implements IMover {
 				newPos = cameraControl.position.y;
 				oldPos = oldCameraPos.y;
 			}
-			if ( newPos > oldPos ) {
+			if ( oldPos != newPos ) {
 				steps = ( newPos - oldPos ) / oneStep;
 				if ( axis == LinearAxis.HORIZONTAL ) {
 					if ( beginningPoint.x > endPoint.x ) {
@@ -67,24 +68,9 @@ public class ParallaxMover implements IMover {
 					}
 				} else {
 					if ( beginningPoint.y > endPoint.y ) {
-						alpha -= steps * speed;
-					} else {
 						alpha += steps * speed;
-					}
-				}
-			} else if ( newPos < oldPos ) {
-				steps = ( oldPos - newPos ) / oneStep;
-				if ( axis == LinearAxis.HORIZONTAL ) {
-					if ( beginningPoint.x > endPoint.x ) {
-						alpha -= steps * speed;
 					} else {
-						alpha += steps * speed;
-					}
-				} else {
-					if ( beginningPoint.y > endPoint.y ) {
 						alpha -= steps * speed;
-					} else {
-						alpha += steps * speed;
 					}
 				}
 			}

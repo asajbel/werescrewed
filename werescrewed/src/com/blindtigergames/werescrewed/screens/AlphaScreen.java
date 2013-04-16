@@ -16,6 +16,7 @@ import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.RobotState;
 import com.blindtigergames.werescrewed.entity.RootSkeleton;
 import com.blindtigergames.werescrewed.entity.Skeleton;
+import com.blindtigergames.werescrewed.entity.Sprite;
 import com.blindtigergames.werescrewed.entity.action.RemoveEntityAction;
 import com.blindtigergames.werescrewed.entity.builders.EventTriggerBuilder;
 import com.blindtigergames.werescrewed.entity.builders.PlayerBuilder;
@@ -49,6 +50,9 @@ public class AlphaScreen extends Screen {
 
 	public AlphaScreen( ) {
 		super( );
+		
+		setClearColor( 79.0f/255.0f, 82.0f/255.0f, 104.0f/255.0f, 1.0f );
+		
 		String filename = "data/levels/alphalevel.xml";
 		level = new LevelFactory( ).load( filename );
 		
@@ -102,9 +106,9 @@ public class AlphaScreen extends Screen {
 		chestObjects( );
 		leftArm( );
 
-		//buildBackground( );
+		buildBackground( );
 		// new background stuff
-		initBackground( );
+		//initBackground( );
 
 	}
 
@@ -127,14 +131,21 @@ public class AlphaScreen extends Screen {
 	}
 
 	private void buildBackground(){
-		SkeletonBuilder b = new SkeletonBuilder(level.world);
-		Skeleton bgSkele = b.name( "stageSkeleton" ).position( 0,0 ).build( );
-		//bgSkele = ( Skeleton ) LevelFactory.entities.get( "stageSkeleton" );
+		//SkeletonBuilder b = new SkeletonBuilder(level.world);
+		Skeleton bgSkele;// = b.name( "stageSkeleton" ).position( 0,0 ).build( );
+		bgSkele = ( Skeleton ) LevelFactory.entities.get( "stageSkeleton" );
 		TextureAtlas floor_seats = WereScrewedGame.manager.getAtlas("alphabot_floor_seats");
 		TextureAtlas stage_pillar = WereScrewedGame.manager.getAtlas( "stage_pillar");
 		TextureAtlas stage_upperleft = WereScrewedGame.manager.getAtlas("stage_upperleft");
 		TextureAtlas stage_upperright = WereScrewedGame.manager.getAtlas("stage_upperright");
 		TextureAtlas stage_light = WereScrewedGame.manager.getAtlas( "stage_light" );
+		TextureAtlas support_left = WereScrewedGame.manager.getAtlas( "support_left" );
+		TextureAtlas support_middle_right = WereScrewedGame.manager.getAtlas( "support_middle_right" );
+		int numDomes = 10;
+		TextureAtlas[] dome = new TextureAtlas[numDomes];
+		for(int i = 1; i <= numDomes; ++i ){
+			dome[i-1]=  WereScrewedGame.manager.getAtlas( "dome"+i );
+		}
 		
 		int max = 2030;
 		int offsetX = 400;
@@ -147,6 +158,31 @@ public class AlphaScreen extends Screen {
 		int stage_pillarX = floorX-530;
 		int lightX = offsetX-1966;
 		int lightY = offsetY+50;
+		
+		int domeSliceX = 1234*2;
+		int domeSliceY = 1638;
+		
+		int supportY = 6500+offsetY;
+		int supportX = 0+offsetX;
+		
+		Vector2 pos;
+		for(int i = numDomes; i > 0; --i ){
+			int yStep = (int)((10-i)/2);
+			pos = new Vector2(-max+seatsX,seatsY+domeSliceY*yStep);//dome starts at floor
+			int flipX = 4;
+			if ( i % 2 == 0 ){//even
+				pos.x+=domeSliceX;
+				flipX = 2;
+			}
+			Sprite a = dome[i-1].createSprite( "dome"+i );
+			a.setScale(2,1);
+			bgSkele.addBGDecal( a , pos );
+			Sprite b = dome[i-1].createSprite( "dome"+i );
+			b.setScale( -2, 1 );
+			bgSkele.addBGDecal(b, pos.cpy().add( flipX*domeSliceX, 0 ) );
+		}
+		
+		bgSkele.addBGDecal(support_left.createSprite( "support_left" ), new Vector2(supportX,supportY) );
 		
 		//floor
 		bgSkele.addBGDecal( floor_seats.createSprite( "floor_left" ), new Vector2(floorX,floorY ) );
@@ -210,20 +246,20 @@ public class AlphaScreen extends Screen {
 		TextureRegion tex2 = WereScrewedGame.manager.getAtlas( "bgCloud" )
 				.findRegion( "bgCloud2" );
 		bg_1_0.sprite = bg_1_0.constructSprite( tex1 );
-		bg_1_0.sprite.setOrigin( 0f, 0f );
+		bg_1_0.sprite.setOrigin( bg_1_0.sprite.getWidth( )/4.0f, bg_1_0.sprite.getHeight( )/2.0f );
 		bg_1_0.offset = new Vector2( bg_1_0.sprite.getOriginX( ),
 				bg_1_0.sprite.getOriginY( ) );
-		bg_1_0.sprite.setScale( 1f, 1.1f );
+		//bg_1_0.sprite.setScale( 1.05f, 1.1f );
 		bg_1_0.setMoverAtCurrentState( new ParallaxMover(
-				new Vector2( 0, 1024 ), new Vector2( 0, -1024 ), 0.0004f, .5f,
+				new Vector2( 512, 1530 ), new Vector2( 512, -512 ), 0.0001f, .5f,
 				level.camera, false, LinearAxis.VERTICAL ) );
 		bg_1_1.sprite = bg_1_1.constructSprite( tex2 );
-		bg_1_1.sprite.setOrigin( 0f, 0f );
+		bg_1_1.sprite.setOrigin( bg_1_1.sprite.getWidth( )/4.0f, bg_1_1.sprite.getHeight( )/2.0f );
 		bg_1_1.offset = new Vector2( bg_1_1.sprite.getOriginX( ),
 				bg_1_1.sprite.getOriginY( ) );
-		bg_1_1.sprite.setScale( 1f, 1.1f );
+		//bg_1_1.sprite.setScale( 1.05f, 1.1f );
 		bg_1_1.setMoverAtCurrentState( new ParallaxMover(
-				new Vector2( 0, 1024 ), new Vector2( 0, -1024 ), 0.0004f, 0f,
+				new Vector2( 512, 1530 ), new Vector2( 512, -512 ), 0.0001f, 1f,
 				level.camera, false, LinearAxis.VERTICAL ) );
 		level.backgroundRootSkeleton.addLooseEntity( bg_1_0 );
 		level.backgroundRootSkeleton.addLooseEntity( bg_1_1 );
