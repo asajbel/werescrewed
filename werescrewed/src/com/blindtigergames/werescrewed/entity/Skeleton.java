@@ -516,7 +516,7 @@ public class Skeleton extends Platform {
 	public void draw( SpriteBatch batch, float deltaTime ) {
 		// super.draw( batch );
 		if ( visible ) {
-			drawBGDecals( batch );
+			//drawBGDecals( batch );
 			// draw decals before drawing children
 			//update z order : don't draw decals recursively 
 			//draw in queue before everything
@@ -538,7 +538,7 @@ public class Skeleton extends Platform {
 			if ( applyFadeToFGDecals ){
 				fadeFGDecals();
 			}
-			drawFGDecals( batch );
+			//drawFGDecals( batch );
 		}
 	}
 
