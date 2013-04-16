@@ -250,7 +250,8 @@ public class Player extends Entity {
 		addBehindParticleEffect( "revive", false, false );
 		// land_cloud = ParticleEffect.loadEffect( "land_cloud" );
 		
-		
+		createCircle(PLAYER_FRICTION);
+		frictionCounter = PLAYER_FRICTION;
 	}
 
 	// PUBLIC METHODS
@@ -868,7 +869,6 @@ public class Player extends Entity {
 	private void updateFootFrictionNew(){
 
 	
-		
 		if(prevButton != null){
 			if(body.getLinearVelocity().x > MAX_VELOCITY){
 				body.setLinearVelocity( MAX_VELOCITY, body.getLinearVelocity().y );
@@ -876,6 +876,7 @@ public class Player extends Entity {
 				body.setLinearVelocity( -MAX_VELOCITY, body.getLinearVelocity().y );
 			}
 		}
+		
 		if(prevButton == null){
 			
 
@@ -888,61 +889,15 @@ public class Player extends Entity {
 
 				}
 			
-				CircleShape ps = new CircleShape( );
-				ps.setRadius( feet.getShape( ).getRadius( ) );
-		
-				ps.setPosition( ps.getPosition( ).add( FEET_OFFSET_X,
-						FEET_OFFSET_Y ) );
-				FixtureDef fd = new FixtureDef( );
-		
-				
-				fd.shape = ps;
-				fd.density = 1f;
-				fd.restitution = 0.001f;
-				fd.friction = frictionCounter;
-		
-				if ( playerState == PlayerState.Screwing ) {
-					fd.isSensor = true;
-				}
-		
-				fd.filter.categoryBits = Util.CATEGORY_PLAYER;
-				fd.filter.maskBits = Util.CATEGORY_EVERYTHING;
-		
-				body.destroyFixture( feet );
-		
-				feet = body.createFixture( fd );
+				createCircle(frictionCounter);
 			
 				
 			}
 		} else {
 			
 			if(grounded && (prevPlayerDir != playerDirection)){
-				CircleShape ps = new CircleShape( );
-				ps.setRadius( feet.getShape( ).getRadius( ) );
-		
-				ps.setPosition( ps.getPosition( ).add( FEET_OFFSET_X,
-						FEET_OFFSET_Y ) );
-				FixtureDef fd = new FixtureDef( );
-		
-				
-				fd.shape = ps;
-				fd.density = 1f;
-				fd.restitution = 0.001f;
-				fd.friction = PLAYER_FRICTION;
+				createCircle(PLAYER_FRICTION);
 				frictionCounter = PLAYER_FRICTION;
-				
-		
-				if ( playerState == PlayerState.Screwing ) {
-					fd.isSensor = true;
-				}
-		
-				fd.filter.categoryBits = Util.CATEGORY_PLAYER;
-				fd.filter.maskBits = Util.CATEGORY_EVERYTHING;
-		
-				body.destroyFixture( feet );
-		
-				feet = body.createFixture( fd );
-				
 			}
 				
 			
@@ -952,29 +907,7 @@ public class Player extends Entity {
 				if ( frictionCounter < 0 ) {
 					frictionCounter = 0;
 				}
-				CircleShape ps = new CircleShape( );
-				ps.setRadius( feet.getShape( ).getRadius( ) );
-		
-				ps.setPosition( ps.getPosition( ).add( FEET_OFFSET_X,
-						FEET_OFFSET_Y ) );
-				FixtureDef fd = new FixtureDef( );
-		
-				fd.shape = ps;
-				fd.density = 1f;
-				fd.restitution = 0.001f;
-				fd.friction = frictionCounter;
-		
-				if ( playerState == PlayerState.Screwing ) {
-					fd.isSensor = true;
-				}
-		
-				fd.filter.categoryBits = Util.CATEGORY_PLAYER;
-				fd.filter.maskBits = Util.CATEGORY_EVERYTHING;
-		
-				body.destroyFixture( feet );
-		
-				feet = body.createFixture( fd );
-				
+				createCircle(frictionCounter);
 				
 			}
 		}
@@ -1940,5 +1873,35 @@ public class Player extends Entity {
 		inputHandler = null;
 		controller = null;
 
+	}
+	
+	private void createCircle(float friction){
+		CircleShape ps = new CircleShape( );
+		ps.setRadius( feet.getShape( ).getRadius( ) );
+
+		ps.setPosition( ps.getPosition( ).add( FEET_OFFSET_X,
+				FEET_OFFSET_Y ) );
+		FixtureDef fd = new FixtureDef( );
+
+		
+		fd.shape = ps;
+		fd.density = 1f;
+		fd.restitution = 0.001f;
+		fd.friction = friction;
+		
+		
+
+		if ( playerState == PlayerState.Screwing ) {
+			fd.isSensor = true;
+		}
+
+		fd.filter.categoryBits = Util.CATEGORY_PLAYER;
+		fd.filter.maskBits = Util.CATEGORY_EVERYTHING;
+
+		body.destroyFixture( feet );
+
+		feet = body.createFixture( fd );
+
+	
 	}
 }
