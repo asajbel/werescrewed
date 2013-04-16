@@ -232,6 +232,8 @@ public class LevelFactory {
 			constructEventTrigger( item );
 		} else if ( bluePrints.equals( "hazard" ) ) {
 			out = constructHazard( item );
+		} else if(bluePrints.equals("fixture")){ 
+			constructFixture(item);
 		} else if ( !bluePrints.equals( "camera" )
 				&& item.getDefinition( ).getCategory( ) == EntityCategory.COMPLEX_PLATFORM ) {
 			out = loadComplexPlatform( item );
@@ -441,14 +443,17 @@ public class LevelFactory {
 
 			Array< Vector2 > polySprite = contstructSkeletonPoly( item );
 
-			if ( item.props.containsKey( "noforeground" ) ) {
+			if ( item.props.containsKey( "invisible" ) ){
+				skeleBuilder.invisibleVerts( polySprite );
+			}
+			else if ( item.props.containsKey( "noforeground" ) ) {
 				skeleBuilder
 						.bg( )
 						.setVerts( polySprite )
 						.texBackground(
 								WereScrewedGame.manager
 										.get( WereScrewedGame.dirHandle
-												+ "/common/robot/alphabot_texture_skin.png",
+												+ "/levels/alphabot/alphabot_texture_skin.png",
 												Texture.class ) );
 			} else {
 				skeleBuilder
@@ -457,7 +462,7 @@ public class LevelFactory {
 						.texBackground(
 								WereScrewedGame.manager
 										.get( WereScrewedGame.dirHandle
-												+ "/common/robot/alphabot_texture_skin.png",
+												+ "/levels/alphabot/alphabot_texture_skin.png",
 												Texture.class ) ).fg( )
 						.setVerts( polySprite );
 				// .texForeground( WereScrewedGame.manager.get
@@ -467,6 +472,10 @@ public class LevelFactory {
 
 			if ( item.props.containsKey( "dynamic" ) ) {
 				skeleBuilder.dynamic( );
+			}
+			
+			if ( item.props.containsKey("fade_fg_decals")){
+				skeleBuilder.fadeFgDecals( true );
 			}
 
 			skeleton = skeleBuilder.build( );
@@ -556,6 +565,13 @@ public class LevelFactory {
 
 		// level.camera.camera.lookAt( item.pos.x, item.pos.y, 0f );
 		// add position to camera later
+	}
+	
+	private void constructFixture(Item item){
+		Array< Vector2 > verts = constructArray( item );
+		Entity addFixtureTo = entities.get( item.props.get( "fixtureof" ) );
+		addFixtureTo.addFixture( verts, item.pos );
+		
 	}
 
 	private TiledPlatform constructTiledPlatform( Item item ) {

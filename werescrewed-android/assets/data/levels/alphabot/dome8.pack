@@ -1,0 +1,12 @@
+dome8.png
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+offset: 0, 0
+dome8
+  rotate: false
+  xy: 4, 4
+  size: 1238, 1643
+  orig: 1238, 1643
+  offset: 0, 0
+  index: -1

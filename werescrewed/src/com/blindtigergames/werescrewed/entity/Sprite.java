@@ -130,11 +130,11 @@ public class Sprite extends com.badlogic.gdx.graphics.g2d.Sprite implements I_Dr
 			//We only need to update when the frame changes.
 			currentFrame = null;
 		}
-		Color c = batch.getColor( );
-		float oldAlpha = c.a;
-		batch.setColor( c.r, c.g, c.b, alpha );
-		super.draw( batch );
-		batch.setColor( c.r, c.g, c.b, oldAlpha );
+		//Color c = batch.getColor( );
+		//float oldAlpha = c.a;
+		//batch.setColor( c.r, c.g, c.b, alpha );
+		super.draw( batch, alpha );
+		//batch.setColor( c.r, c.g, c.b, oldAlpha );
 	}
 	
 	public void setAlpha(float newAlpha){

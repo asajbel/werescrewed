@@ -28,6 +28,45 @@ public class Metrics {
 	private static ArrayList< Vector2 > playerUnscrewedPositions = new ArrayList< Vector2 >( );
 	private static ArrayList< Vector2 > playerScrewedPositions = new ArrayList< Vector2 >( );
 	private static ArrayList< Float > playerTime = new ArrayList< Float >( );
+	
+	private static float p1RunDist = 0;
+	private static float p2RunDist = 0;
+	private static float p1Unscrewed = 0;
+	private static float p2Unscrewed = 0;
+	private static float p1AirTime = 0;
+	private static float p2AirTime = 0;
+	private static float p1FallDeaths = 0;
+	private static float p2FallDeaths = 0;
+	private static float p1PuzzleTime = 0;
+	private static float p2PuzzleTime = 0;
+	private static float p1Deaths = 0;
+	private static float p2Deaths = 0;
+	private static float p1HeadStands = 0;
+	private static float p2HeadStands = 0;
+	private static float p1Revives = 0;
+	private static float p2Revives = 0;
+	private static float p1TeamDeaths = 0;
+	private static float p2TeamDeaths = 0;
+	private static float p1IdleTime = 0;
+	private static float p2IdleTime = 0;
+	private static float p1CrushDeaths = 0;
+	private static float p2CrushDeaths = 0;
+	private static float p1ElecDeaths = 0;
+	private static float p2ElecDeaths = 0;
+	private static float p1GroundTime = 0;
+	private static float p2GroundTime = 0;
+	private static float p1Jumps = 0;
+	private static float p2Jumps = 0;
+	private static float p1SpikeDeaths = 0;
+	private static float p2SpikeDeaths = 0;
+	private static float p1FireDeaths = 0;
+	private static float p2FireDeaths = 0;
+	private static float p1DeadTime = 0;
+	private static float p2DeadTime = 0;
+	private static float p1SteamJumps = 0;
+	private static float p2SteamJumps = 0;
+	private static float p1StripAttach = 0;
+	private static float p2StripAttach = 0;
 
 	/**
 	 * Adds position data to the list of player deaths. Should be called when a
@@ -175,4 +214,12 @@ public class Metrics {
 		playerUnscrewedPositions.clear( );
 		playerTime.clear( );
 	}
+	
+	/*
+	 * All methods below are for incrementing trophy metrics. 
+	 * 
+	 * @param i
+	 *		The amount by which to increment the metric.
+	 */
+	
 }
