@@ -453,7 +453,7 @@ public class LevelFactory {
 						.texBackground(
 								WereScrewedGame.manager
 										.get( WereScrewedGame.dirHandle
-												+ "/common/robot/alphabot_texture_skin.png",
+												+ "/levels/alphabot/alphabot_texture_skin.png",
 												Texture.class ) );
 			} else {
 				skeleBuilder
@@ -462,7 +462,7 @@ public class LevelFactory {
 						.texBackground(
 								WereScrewedGame.manager
 										.get( WereScrewedGame.dirHandle
-												+ "/common/robot/alphabot_texture_skin.png",
+												+ "/levels/alphabot/alphabot_texture_skin.png",
 												Texture.class ) ).fg( )
 						.setVerts( polySprite );
 				// .texForeground( WereScrewedGame.manager.get
