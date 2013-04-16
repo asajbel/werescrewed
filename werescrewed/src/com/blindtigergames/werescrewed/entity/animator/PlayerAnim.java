@@ -6,17 +6,22 @@ public enum PlayerAnim{
 	IDLE("idle")
 	,RUN("run")
 	,HANG("hang")
-	,JUMP_UP("jump_up", LoopBehavior.STOP )
-	,JUMP_DOWN("jump_down", LoopBehavior.STOP )
+	,JUMP_UP("jump_end", LoopBehavior.STOP )
+	,FALL_BEGIN("fall_begin", LoopBehavior.STOP )
+	,FALL_IDLE("fall_idle", LoopBehavior.LOOP, PlayerAnim.FALL_BEGIN )
 	,DEATH_BEGIN("death_begin", LoopBehavior.STOP )
-	,DEATH("death_idle")
+	,DEATH("death_idle", PlayerAnim.DEATH_BEGIN)
 	;
 	String text;
+	PlayerAnim start = null; 
 	LoopBehavior loop;
 	boolean loopBool;
 	PlayerAnim(String t){
 		this(t, LoopBehavior.LOOP);
 		loopBool = true;
+	}
+	PlayerAnim(String t, PlayerAnim s){
+		this(t, LoopBehavior.LOOP, s);
 	}
 	PlayerAnim(String t, LoopBehavior l){
 		text = t;
@@ -24,6 +29,10 @@ public enum PlayerAnim{
 		if (l == LoopBehavior.STOP) {
 			loopBool = false;
 		} else loopBool = true;
+	}
+	PlayerAnim(String t, LoopBehavior l, PlayerAnim s){
+		this(t,l); 
+		start = s; 
 	}
 	PlayerAnim(String t, boolean loop){
 		text = t;

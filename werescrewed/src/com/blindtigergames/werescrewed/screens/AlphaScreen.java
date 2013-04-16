@@ -102,7 +102,7 @@ public class AlphaScreen extends Screen {
 		chestObjects( );
 		leftArm( );
 
-		buildBackground( );
+		//buildBackground( );
 		// new background stuff
 		initBackground( );
 
