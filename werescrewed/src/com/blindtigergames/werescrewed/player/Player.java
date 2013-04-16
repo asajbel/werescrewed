@@ -46,7 +46,7 @@ import com.blindtigergames.werescrewed.util.Util;
  */
 public class Player extends Entity {
 
-	public final static float MAX_VELOCITY = 1.60f;
+	public final static float MAX_VELOCITY = 1.50f;
 	public final static float MIN_VELOCITY = 0.01f;
 	public final static float MOVEMENT_IMPULSE = 0.010f;
 	public final static float JUMP_IMPULSE = 0.12f;
@@ -55,7 +55,8 @@ public class Player extends Entity {
 	public final static int JUMP_COUNTER = 10;
 	public final static float ANALOG_DEADZONE = 0.4f;
 	public final static float ANALOG_MAX_RANGE = 1.0f;
-	public final static float PLAYER_FRICTION = 0.7f;
+	public final static float PLAYER_FRICTION = 1.0f;
+	public final static float FRICTION_INCREMENT = 0.2f;
 	public final static int SCREW_ATTACH_STEPS = 15;
 	public final static int HEAD_JUMP_STEPS = 30;
 	public final static int DEAD_STEPS = 0;
@@ -65,7 +66,6 @@ public class Player extends Entity {
 	public final static Vector2 ANCHOR_BUFFER_SIZE = new Vector2( 300f, 200f );
 	public final static float STEAM_FORCE = .5f;
 	public final static float STEAM_IMPULSE = 0.2f;
-	public final static float FRICTION_INCREMENT = 0.3f;
 	public final static float FEET_OFFSET_X = 59f * Util.PIXEL_TO_BOX;
 	public final static float FEET_OFFSET_Y = 23.5f * Util.PIXEL_TO_BOX;
 	public final static float JUMP_DIRECTION_MULTIPLIER = 2f;
@@ -130,7 +130,8 @@ public class Player extends Entity {
 	private boolean canJumpOffScrew;
 	private boolean screwButtonHeld;
 	private boolean kinematicTransform = false;
-	private boolean changeDirectionsOnce = false;
+	private boolean changeDirectionsOnceInAir = false;
+	private boolean changeDirections = false;
 	private boolean steamCollide = false;
 	private boolean steamDone = false;
 
@@ -304,8 +305,13 @@ public class Player extends Entity {
 			if ( respawnTimeout > 0 ) {
 				respawnTimeout--;
 			}
+			
 			// build extra fixture to have new friction
-			updateFootFriction( );
+			if(name.equals( "player1" ))
+				updateFootFrictionNew();
+			else
+				updateFootFriction( );
+			
 			// test if player is still moving after timeout
 			if ( playerDirection != PlayerDirection.Idle ) {
 				if ( runTimeout == 0 && playerState != PlayerState.Jumping
@@ -538,9 +544,9 @@ public class Player extends Entity {
 	public void moveRight( ) {
 		if ( playerState == PlayerState.Falling
 				|| playerState == PlayerState.Jumping ) {
-			if ( changeDirectionsOnce && prevButton == PovDirection.west ) {
+			if ( changeDirectionsOnceInAir && prevButton == PovDirection.west ) {
 				directionJumpDivsion *= JUMP_DIRECTION_MULTIPLIER;
-				changeDirectionsOnce = false;
+				changeDirectionsOnceInAir = false;
 			}
 			if ( body.getLinearVelocity( ).x < MAX_VELOCITY ) {
 				body.applyLinearImpulse( new Vector2( MOVEMENT_IMPULSE
@@ -557,9 +563,7 @@ public class Player extends Entity {
 			}
 		}
 		playerDirection = PlayerDirection.Right;
-		if ( grounded && prevPlayerDir == PlayerDirection.Left ) {// &&
-																	// reachedMaxSpeed
-																	// ){
+		if ( grounded && prevPlayerDir == PlayerDirection.Left ) {
 			getEffect( "skid_left" )
 					.restartAt( getPositionPixel( ).add( 30, 0 ) );
 			reachedMaxSpeed = false;
@@ -575,9 +579,9 @@ public class Player extends Entity {
 	public void moveLeft( ) {
 		if ( playerState == PlayerState.Falling
 				|| playerState == PlayerState.Jumping ) {
-			if ( changeDirectionsOnce && prevButton == PovDirection.east ) {
+			if ( changeDirectionsOnceInAir && prevButton == PovDirection.east ) {
 				directionJumpDivsion *= JUMP_DIRECTION_MULTIPLIER;
-				changeDirectionsOnce = false;
+				changeDirectionsOnceInAir = false;
 			}
 			if ( body.getLinearVelocity( ).x > -MAX_VELOCITY ) {
 				body.applyLinearImpulse( new Vector2( -MOVEMENT_IMPULSE
@@ -595,9 +599,7 @@ public class Player extends Entity {
 			}
 		}
 		playerDirection = PlayerDirection.Left;
-		if ( grounded && prevPlayerDir == PlayerDirection.Right ) {// &&
-																	// reachedMaxSpeed
-																	// ){
+		if ( grounded && prevPlayerDir == PlayerDirection.Right ) {
 			getEffect( "skid_right" ).restartAt(
 					getPositionPixel( ).add( 100, 0 ) );
 			reachedMaxSpeed = false;
@@ -626,6 +628,11 @@ public class Player extends Entity {
 					body.getWorldCenter( ) );
 		}
 		playerDirection = PlayerDirection.Right;
+		if ( grounded && prevPlayerDir == PlayerDirection.Left ) {
+			getEffect( "skid_left" )
+					.restartAt( getPositionPixel( ).add( 30, 0 ) );
+			reachedMaxSpeed = false;
+		}
 		runTimeout = RUN_STEPS;
 	}
 
@@ -643,6 +650,11 @@ public class Player extends Entity {
 					body.getWorldCenter( ) );
 		}
 		playerDirection = PlayerDirection.Left;
+		if ( grounded && prevPlayerDir == PlayerDirection.Right ) {
+			getEffect( "skid_right" ).restartAt(
+					getPositionPixel( ).add( 100, 0 ) );
+			reachedMaxSpeed = false;
+		}
 		runTimeout = RUN_STEPS;
 	}
 
@@ -653,9 +665,9 @@ public class Player extends Entity {
 	 */
 	public void moveAnalogRightInAir( ) {
 
-		if ( changeDirectionsOnce && prevButton == PovDirection.west ) {
+		if ( changeDirectionsOnceInAir && prevButton == PovDirection.west ) {
 			directionJumpDivsion *= JUMP_DIRECTION_MULTIPLIER;
-			changeDirectionsOnce = false;
+			changeDirectionsOnceInAir = false;
 		}
 		leftAnalogX = controllerListener.analogLeftAxisX( );
 		float temp = ( ( ( leftAnalogX - ANALOG_DEADZONE ) / ( ANALOG_MAX_RANGE - ANALOG_DEADZONE ) ) * ( MAX_VELOCITY - MIN_VELOCITY ) )
@@ -673,9 +685,9 @@ public class Player extends Entity {
 	 * @author Ranveer
 	 */
 	public void moveAnalogLeftInAir( ) {
-		if ( changeDirectionsOnce && prevButton == PovDirection.east ) {
+		if ( changeDirectionsOnceInAir && prevButton == PovDirection.east ) {
 			directionJumpDivsion *= JUMP_DIRECTION_MULTIPLIER;
-			changeDirectionsOnce = false;
+			changeDirectionsOnceInAir = false;
 		}
 		leftAnalogX = controllerListener.analogLeftAxisX( );
 		float temp = ( ( ( leftAnalogX + ANALOG_DEADZONE ) / ( ANALOG_MAX_RANGE - ANALOG_DEADZONE ) ) * ( MAX_VELOCITY - MIN_VELOCITY ) )
@@ -849,6 +861,120 @@ public class Player extends Entity {
 
 	}
 
+	private void updateFootFrictionNew(){
+
+		System.out.println(feet.getFriction( ));
+		if(grounded && prevPlayerDir != playerDirection){
+			CircleShape ps = new CircleShape( );
+			ps.setRadius( feet.getShape( ).getRadius( ) );
+	
+			ps.setPosition( ps.getPosition( ).add( FEET_OFFSET_X,
+					FEET_OFFSET_Y ) );
+			FixtureDef fd = new FixtureDef( );
+	
+			
+			fd.shape = ps;
+			fd.density = 1f;
+			fd.restitution = 0.001f;
+			fd.friction = PLAYER_FRICTION;
+			frictionCounter = PLAYER_FRICTION;
+			
+	
+			if ( playerState == PlayerState.Screwing ) {
+				fd.isSensor = true;
+			}
+	
+			fd.filter.categoryBits = Util.CATEGORY_PLAYER;
+			fd.filter.maskBits = Util.CATEGORY_EVERYTHING;
+	
+			body.destroyFixture( feet );
+	
+			feet = body.createFixture( fd );
+			
+		}
+		
+		if(prevButton != null){
+			if(body.getLinearVelocity().x > MAX_VELOCITY){
+				body.setLinearVelocity( MAX_VELOCITY, body.getLinearVelocity().y );
+			} else if (body.getLinearVelocity().x < -MAX_VELOCITY){
+				body.setLinearVelocity( -MAX_VELOCITY, body.getLinearVelocity().y );
+			}
+		}
+		if(prevButton == null){
+			
+			
+			if ( feet.getFriction( ) < PLAYER_FRICTION ) {
+				frictionCounter += FRICTION_INCREMENT;
+			
+				if ( frictionCounter > PLAYER_FRICTION ) {
+					frictionCounter =  PLAYER_FRICTION ;
+
+				}
+			
+				CircleShape ps = new CircleShape( );
+				ps.setRadius( feet.getShape( ).getRadius( ) );
+		
+				ps.setPosition( ps.getPosition( ).add( FEET_OFFSET_X,
+						FEET_OFFSET_Y ) );
+				FixtureDef fd = new FixtureDef( );
+		
+				
+				fd.shape = ps;
+				fd.density = 1f;
+				fd.restitution = 0.001f;
+				fd.friction = frictionCounter;
+		
+				if ( playerState == PlayerState.Screwing ) {
+					fd.isSensor = true;
+				}
+		
+				fd.filter.categoryBits = Util.CATEGORY_PLAYER;
+				fd.filter.maskBits = Util.CATEGORY_EVERYTHING;
+		
+				body.destroyFixture( feet );
+		
+				feet = body.createFixture( fd );
+			
+				
+			}
+		} else {
+			
+			
+			if ( feet.getFriction( ) > 0 ) {
+				frictionCounter -= FRICTION_INCREMENT;
+				if ( frictionCounter < 0 ) {
+					frictionCounter = 0;
+				}
+				CircleShape ps = new CircleShape( );
+				ps.setRadius( feet.getShape( ).getRadius( ) );
+		
+				ps.setPosition( ps.getPosition( ).add( FEET_OFFSET_X,
+						FEET_OFFSET_Y ) );
+				FixtureDef fd = new FixtureDef( );
+		
+				fd.shape = ps;
+				fd.density = 1f;
+				fd.restitution = 0.001f;
+				fd.friction = frictionCounter;
+		
+				if ( playerState == PlayerState.Screwing ) {
+					fd.isSensor = true;
+				}
+		
+				fd.filter.categoryBits = Util.CATEGORY_PLAYER;
+				fd.filter.maskBits = Util.CATEGORY_EVERYTHING;
+		
+				body.destroyFixture( feet );
+		
+				feet = body.createFixture( fd );
+				
+				
+			}
+		}
+		
+
+	}
+	
 	/**
 	 * sets the body of some body that the player is hitting
 	 */
@@ -1442,7 +1568,7 @@ public class Player extends Entity {
 		if ( isGrounded( ) ) {
 			jumpCounter = 0;
 			directionJumpDivsion = JUMP_DEFAULT_DIVISION;
-			changeDirectionsOnce = true;
+			changeDirectionsOnceInAir = true;
 			prevButton = null;
 			// switchedScrewingDirection = false;
 		}
@@ -1468,7 +1594,7 @@ public class Player extends Entity {
 		if ( isGrounded( ) ) {
 			jumpCounter = 0;
 			directionJumpDivsion = JUMP_DEFAULT_DIVISION;
-			changeDirectionsOnce = true;
+			changeDirectionsOnceInAir = true;
 			prevButton = null;
 		}
 		if ( !inputHandler.screwPressed( ) ) {
