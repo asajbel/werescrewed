@@ -11,7 +11,7 @@ import com.blindtigergames.werescrewed.entity.PolySprite;
 import com.blindtigergames.werescrewed.entity.RootSkeleton;
 import com.blindtigergames.werescrewed.entity.Skeleton;
 import com.blindtigergames.werescrewed.entity.action.SetActiveStateSkeleton;
-import com.blindtigergames.werescrewed.entity.action.FadeFGAction;
+import com.blindtigergames.werescrewed.entity.action.FadeSkeletonAction;
 import com.blindtigergames.werescrewed.eventTrigger.EventTrigger;
 import com.blindtigergames.werescrewed.util.Util;
 
@@ -24,6 +24,7 @@ public class SkeletonBuilder extends GenericEntityBuilder<SkeletonBuilder>{
 	protected boolean 	onBGverts;
 	protected Texture 	texBackground, texForeground, texBody;
 	protected boolean	hasDeactivateTrigger;
+	protected boolean	fadeFgDecals;
 	
 	public SkeletonBuilder(World world){
 		super();
@@ -48,6 +49,7 @@ public class SkeletonBuilder extends GenericEntityBuilder<SkeletonBuilder>{
 		this.texForeground = texBackground;
 		this.texBody = null;
 		this.hasDeactivateTrigger = false;
+		this.fadeFgDecals = false;
 		return this;
 	}
 	
@@ -159,6 +161,11 @@ public class SkeletonBuilder extends GenericEntityBuilder<SkeletonBuilder>{
 		return this;
 	}
 	
+	public SkeletonBuilder fadeFgDecals(boolean applyFadeToFgDecals){
+		this.fadeFgDecals = applyFadeToFgDecals;
+		return this;
+	}
+	
 	/**
 	 * 	
 	 * @param density - float used for density, default is 1.0f
@@ -175,6 +182,8 @@ public class SkeletonBuilder extends GenericEntityBuilder<SkeletonBuilder>{
 	public RootSkeleton buildRoot(){
 		return new RootSkeleton( "root", new Vector2(), null, world );
 	}	
+	
+	
 	
 	@Override
 	public Skeleton build(){
@@ -210,11 +219,15 @@ public class SkeletonBuilder extends GenericEntityBuilder<SkeletonBuilder>{
 			EventTrigger et = etb.name( name+"-fg-fader" ).setVerts( polyVertsFG )
 					.extraBorder( 0f )
 					.position( pos.add( 10,10 ) ).addEntity( out )
-					.beginAction( new FadeFGAction(true) )
-					.endAction( new FadeFGAction(false) ).repeatable( )
+					.beginAction( new FadeSkeletonAction(true, fadeFgDecals) )
+					.endAction( new FadeSkeletonAction(false, fadeFgDecals) ).repeatable( )
 					.twoPlayersToDeactivate( )
 					.build( );
 			out.addEventTrigger( et );
+		}
+		
+		if ( fadeFgDecals ){
+			out.setFgFade(fadeFgDecals);
 		}
 		
 		return out;

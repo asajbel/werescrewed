@@ -532,8 +532,8 @@
                 </Item>
                 <Item xsi:type="TextureItem" Name="cameraPosition" Visible="true">
                     <Position>
-                        <X>512</X>
-                        <Y>-3792</Y>
+                        <X>0</X>
+                        <Y>0</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">

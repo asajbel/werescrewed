@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
@@ -50,8 +51,10 @@ public class AlphaScreen extends Screen {
 		super( );
 		String filename = "data/levels/alphalevel.xml";
 		level = new LevelFactory( ).load( filename );
-
-		// death barrier
+		
+		level.camera.position = new Vector3(0,0,0);
+		
+		//death barrier
 		EventTriggerBuilder etb = new EventTriggerBuilder( level.world );
 		EventTrigger removeTrigger = etb.name( "removeEntity" ).rectangle( )
 				.width( 10 ).height( 50000 ).position( new Vector2( 0, -3200 ) )
@@ -99,7 +102,7 @@ public class AlphaScreen extends Screen {
 		chestObjects( );
 		leftArm( );
 
-		buildBackground( );
+		//buildBackground( );
 		// new background stuff
 		initBackground( );
 
@@ -123,22 +126,48 @@ public class AlphaScreen extends Screen {
 
 	}
 
-	private void buildBackground( ) {
-		SkeletonBuilder b = new SkeletonBuilder( level.world );
-		Skeleton bgSkele = b.name( "bgSkele" ).position( 0, 0 ).build( );
-		TextureAtlas atlas = WereScrewedGame.manager
-				.getAtlas( "alphabot_floor_seats" );
-		bgSkele.addFGDecal( atlas.createSprite( "floor_left" ), new Vector2(
-				-2048, 0 ) );
-		bgSkele.addFGDecal( atlas.createSprite( "floor_right" ), new Vector2(
-				0, 0 ) );
-		bgSkele.addFGDecal( atlas.createSprite( "seats_left" ), new Vector2(
-				-2048, 0 ) );
-		bgSkele.addFGDecal( atlas.createSprite( "seats_middle" ), new Vector2(
-				0, 0 ) );
-		bgSkele.addFGDecal( atlas.createSprite( "seats_right" ), new Vector2(
-				2048, 0 ) );
-		level.root.addSkeleton( bgSkele );
+	private void buildBackground(){
+		SkeletonBuilder b = new SkeletonBuilder(level.world);
+		Skeleton bgSkele = b.name( "stageSkeleton" ).position( 0,0 ).build( );
+		//bgSkele = ( Skeleton ) LevelFactory.entities.get( "stageSkeleton" );
+		TextureAtlas floor_seats = WereScrewedGame.manager.getAtlas("alphabot_floor_seats");
+		TextureAtlas stage_pillar = WereScrewedGame.manager.getAtlas( "stage_pillar");
+		TextureAtlas stage_upperleft = WereScrewedGame.manager.getAtlas("stage_upperleft");
+		TextureAtlas stage_upperright = WereScrewedGame.manager.getAtlas("stage_upperright");
+		TextureAtlas stage_light = WereScrewedGame.manager.getAtlas( "stage_light" );
+		
+		int max = 2030;
+		int offsetX = 400;
+		int offsetY = 0;
+		int floorY = -199 + offsetY;
+		int seatsY = -583 + offsetY;
+		int seatsX = -1180+offsetX;//-1180
+		int floorX = -max+offsetX;
+		int stage_pillarY = -202 + offsetY;
+		int stage_pillarX = floorX-530;
+		int lightX = offsetX-1966;
+		int lightY = offsetY+50;
+		
+		//floor
+		bgSkele.addBGDecal( floor_seats.createSprite( "floor_left" ), new Vector2(floorX,floorY ) );
+		bgSkele.addBGDecal( floor_seats.createSprite( "floor_right" ), new Vector2( floorX+max,floorY ) );
+		//lights
+		bgSkele.addBGDecal( stage_light.createSprite( "light_left" ), new Vector2(lightX,lightY ) );
+		bgSkele.addBGDecal( stage_light.createSprite( "light_right" ), new Vector2(lightX+2035,lightY ) );
+		
+		//stage is in between floor & seats
+		bgSkele.addFGDecal( stage_pillar.createSprite( "stage_left" ), new Vector2(stage_pillarX,stage_pillarY) );
+		bgSkele.addFGDecal(stage_upperleft.createSprite( "stage_upperleft"), new Vector2(stage_pillarX+2, 1647+stage_pillarY ) );//1647 is height of left pillar
+		bgSkele.addFGDecal( stage_pillar.createSprite( "stage_right" ), new Vector2(stage_pillarX+3204, stage_pillarY) );//3204 is difference between left & right pillar
+		bgSkele.addFGDecal( stage_upperright.createSprite( "stage_upperright" ), new Vector2(stage_pillarX+2004, stage_pillarY+1616) );//1617 works
+		//seats
+		bgSkele.addFGDecal( floor_seats.createSprite( "seats_left" ), new Vector2(-max+seatsX,seatsY ) );
+		bgSkele.addFGDecal( floor_seats.createSprite( "seats_middle" ), new Vector2( 0+seatsX,seatsY ) );
+		bgSkele.addFGDecal( floor_seats.createSprite( "seats_right" ), new Vector2( max+seatsX,seatsY ) );
+		
+		level.skelBGList.add( bgSkele );
+		level.skelFGList.add( bgSkele );
+		level.root.addSkeleton(bgSkele);
 	}
 
 	private void initBackground( ) {
