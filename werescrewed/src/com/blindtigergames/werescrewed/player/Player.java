@@ -89,15 +89,15 @@ public class Player extends Entity {
 
 	int check = 0;
 
-	private PovDirection prevButton;
+	private PovDirection prevButton = null;
 	public PlayerInputHandler inputHandler;
 	private MyControllerListener controllerListener;
 	private PlayerState playerState;
 	private ConcurrentState extraState;
-	private PlayerDirection playerDirection;
+	private PlayerDirection playerDirection = PlayerDirection.Idle;
 	@SuppressWarnings( "unused" )
 	private boolean reachedMaxSpeed;
-	private PlayerDirection prevPlayerDir;
+	private PlayerDirection prevPlayerDir = PlayerDirection.Idle;
 	private Controller controller;
 	@SuppressWarnings( "unused" )
 	private boolean controllerIsActive, controllerDebug;
@@ -152,7 +152,7 @@ public class Player extends Entity {
 	@SuppressWarnings( "unused" )
 	private float jumpSpeed = 0.3f;
 
-	public float frictionCounter = 0;
+	public float frictionCounter = PLAYER_FRICTION;
 
 	// Enums
 	/**
@@ -249,6 +249,8 @@ public class Player extends Entity {
 		}
 		addBehindParticleEffect( "revive", false, false );
 		// land_cloud = ParticleEffect.loadEffect( "land_cloud" );
+		
+		
 	}
 
 	// PUBLIC METHODS
@@ -258,6 +260,7 @@ public class Player extends Entity {
 	 */
 	public void update( float deltaTime ) {
 		super.update( deltaTime );
+		
 		if ( Gdx.input.isKeyPressed( Keys.G ) )
 			Gdx.app.log( "steamCollide: " + steamCollide, "steamDone: "
 					+ steamDone );
@@ -864,35 +867,11 @@ public class Player extends Entity {
 
 	private void updateFootFrictionNew(){
 
-		System.out.println(feet.getFriction( ));
-		if(grounded && prevPlayerDir != playerDirection){
-			CircleShape ps = new CircleShape( );
-			ps.setRadius( feet.getShape( ).getRadius( ) );
-	
-			ps.setPosition( ps.getPosition( ).add( FEET_OFFSET_X,
-					FEET_OFFSET_Y ) );
-			FixtureDef fd = new FixtureDef( );
-	
-			
-			fd.shape = ps;
-			fd.density = 1f;
-			fd.restitution = 0.001f;
-			fd.friction = PLAYER_FRICTION;
-			frictionCounter = PLAYER_FRICTION;
-			
-	
-			if ( playerState == PlayerState.Screwing ) {
-				fd.isSensor = true;
-			}
-	
-			fd.filter.categoryBits = Util.CATEGORY_PLAYER;
-			fd.filter.maskBits = Util.CATEGORY_EVERYTHING;
-	
-			body.destroyFixture( feet );
-	
-			feet = body.createFixture( fd );
-			
+		
+		if(name.equals("player1")){
+			System.out.println(frictionCounter);
 		}
+	
 		
 		if(prevButton != null){
 			if(body.getLinearVelocity().x > MAX_VELOCITY){
@@ -903,8 +882,9 @@ public class Player extends Entity {
 		}
 		if(prevButton == null){
 			
-			
+
 			if ( feet.getFriction( ) < PLAYER_FRICTION ) {
+				
 				frictionCounter += FRICTION_INCREMENT;
 			
 				if ( frictionCounter > PLAYER_FRICTION ) {
@@ -940,8 +920,38 @@ public class Player extends Entity {
 			}
 		} else {
 			
+			if(grounded && (prevPlayerDir != playerDirection)){
+				CircleShape ps = new CircleShape( );
+				ps.setRadius( feet.getShape( ).getRadius( ) );
+		
+				ps.setPosition( ps.getPosition( ).add( FEET_OFFSET_X,
+						FEET_OFFSET_Y ) );
+				FixtureDef fd = new FixtureDef( );
+		
+				
+				fd.shape = ps;
+				fd.density = 1f;
+				fd.restitution = 0.001f;
+				fd.friction = PLAYER_FRICTION;
+				frictionCounter = PLAYER_FRICTION;
+				
+		
+				if ( playerState == PlayerState.Screwing ) {
+					fd.isSensor = true;
+				}
+		
+				fd.filter.categoryBits = Util.CATEGORY_PLAYER;
+				fd.filter.maskBits = Util.CATEGORY_EVERYTHING;
+		
+				body.destroyFixture( feet );
+		
+				feet = body.createFixture( fd );
+				
+			}
+				
 			
 			if ( feet.getFriction( ) > 0 ) {
+				
 				frictionCounter -= FRICTION_INCREMENT;
 				if ( frictionCounter < 0 ) {
 					frictionCounter = 0;
@@ -972,6 +982,7 @@ public class Player extends Entity {
 				
 			}
 		}
+		
 		
 
 	}
