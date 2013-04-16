@@ -307,10 +307,10 @@ public class Player extends Entity {
 			}
 			
 			// build extra fixture to have new friction
-			if(name.equals( "player1" ))
-				updateFootFrictionNew();
-			else
-				updateFootFriction( );
+			
+			updateFootFrictionNew();
+			
+			//updateFootFriction( );
 			
 			// test if player is still moving after timeout
 			if ( playerDirection != PlayerDirection.Idle ) {
