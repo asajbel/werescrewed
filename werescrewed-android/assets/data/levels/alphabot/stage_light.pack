@@ -1,0 +1,19 @@
+stage_light.png
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+offset: 0, 0
+light_left
+  rotate: false
+  xy: 4, 4
+  size: 2034, 950
+  orig: 2034, 950
+  offset: 0, 0
+  index: -1
+light_right
+  rotate: false
+  xy: 4, 960
+  size: 625, 952
+  orig: 625, 952
+  offset: 0, 0
+  index: -1

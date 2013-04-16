@@ -35,6 +35,7 @@ public class PlayerSpinemator implements ISpinemator {
 	protected Player player;
 	protected float time = 0f;
 	protected float mixTime = 0f;
+	protected float startTime = 0f;
 	protected float mixRatio = 0f;
 	protected Bone root;
 	protected Vector2 position = null;
@@ -83,18 +84,31 @@ public class PlayerSpinemator implements ISpinemator {
 		mixTime += delta;
 		skel.setFlipX( player.flipX );
 
-		next = getCurrentAnim( );
+		if ( next != getCurrentAnim( ) ) {
+			next = getCurrentAnim( );
+			time = 0f;
+			startTime = 0f;
+			mixTime = 0; 
+		}
 		anim = anims.get( current );
 
-		mixer = anims.get( next );
+		if ( next.start != null && startTime < mixer.getDuration( ) ) {
+			mixer = anims.get( next.start );
+			startTime += delta;
+		} else {
+			mixer = anims.get( next );
+		}
+
+		mixRatio = mixTime / anim.getDuration( );
+		mixer.mix( skel, time, next.loopBool, mixRatio );
 
 		if ( mixTime < anim.getDuration( ) / 2 ) {
-			mixRatio = mixTime / anim.getDuration( );
-			mixer.mix( skel, time, mixerLoop, mixRatio );
+			// mixer.mix( skel, time, next.loopBool, mixRatio );
 		} else {
 			current = next;
 			mixTime = 0;
 		}
+
 		if ( position != null ) {
 			root.setX( position.x );
 			root.setY( position.y );
@@ -135,12 +149,12 @@ public class PlayerSpinemator implements ISpinemator {
 		case Jumping:
 			return PlayerAnim.JUMP_UP;
 		case Falling:
-			return PlayerAnim.JUMP_DOWN;
+			return PlayerAnim.FALL_IDLE;
 		case HeadStand:
 			if ( player.getExtraState( ) == ConcurrentState.ExtraJumping ) {
 				return PlayerAnim.JUMP_UP;
 			} else if ( player.getExtraState( ) == ConcurrentState.ExtraFalling ) {
-				return PlayerAnim.JUMP_DOWN;
+				return PlayerAnim.FALL_IDLE;
 			}
 			return PlayerAnim.IDLE;
 		case Screwing:

@@ -1,0 +1,12 @@
+stage_upperleft.png
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+offset: 0, 0
+stage_upperleft
+  rotate: false
+  xy: 4, 4
+  size: 2032, 1295
+  orig: 2032, 1295
+  offset: 0, 0
+  index: -1

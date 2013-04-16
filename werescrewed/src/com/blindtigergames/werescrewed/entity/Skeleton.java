@@ -46,8 +46,8 @@ public class Skeleton extends Platform {
 	
 	public PolySprite bgSprite, fgSprite;
 
-	SimpleFrameAnimator fgAlphaAnimator;
-	private final float fgFadeSpeed = 1f;
+	SimpleFrameAnimator alphaFadeAnimator;
+	private final float fadeSpeed = 1f;
 
 	protected HashMap< String, Platform > dynamicPlatformMap = new HashMap< String, Platform >( );
 	protected HashMap< String, Skeleton > childSkeletonMap = new HashMap< String, Skeleton >( );
@@ -62,6 +62,8 @@ public class Skeleton extends Platform {
 
 	protected RootSkeleton rootSkeleton;
 	protected Skeleton parentSkeleton;
+	
+	protected boolean applyFadeToFGDecals = false;
 
 	/**
 	 * Constructor used by SkeletonBuilder
@@ -79,7 +81,7 @@ public class Skeleton extends Platform {
 		constructSkeleton( pos, bodyType );
 		super.setSolid( false );
 		entityType = EntityType.SKELETON;
-		fgAlphaAnimator = new SimpleFrameAnimator( ).speed( 0 )
+		alphaFadeAnimator = new SimpleFrameAnimator( ).speed( 0 )
 				.loop( LoopBehavior.STOP ).time( 1 );
 	}
 
@@ -418,9 +420,9 @@ public class Skeleton extends Platform {
 				//event.setTargetPosRotFromSkeleton( frameRate, this );
 			}
 
+			alphaFadeAnimator.update( deltaTime );
 			Vector2 pixelPos = null;
 			if ( fgSprite != null ) {
-				fgAlphaAnimator.update( deltaTime );
 				pixelPos = getPosition( ).mul( Util.BOX_TO_PIXEL );
 				fgSprite.setPosition( pixelPos.x - offset.x, pixelPos.y
 						- offset.y );
@@ -514,6 +516,7 @@ public class Skeleton extends Platform {
 	public void draw( SpriteBatch batch, float deltaTime ) {
 		// super.draw( batch );
 		if ( visible ) {
+			//drawBGDecals( batch );
 			// draw decals before drawing children
 			//update z order : don't draw decals recursively 
 			//draw in queue before everything
@@ -525,12 +528,17 @@ public class Skeleton extends Platform {
 //				bgSprite.draw( batch );
 			drawChildren( batch, deltaTime );
 			//update z order : draw the foreground in a separate queue after everything
-			if ( fgSprite != null && fgAlphaAnimator.getTime( ) > 0 ) {
-				fgSprite.setAlpha( fgAlphaAnimator.getTime( ) );
+			if ( fgSprite != null && alphaFadeAnimator.getTime( ) > 0 ) {
+				fgSprite.setAlpha( alphaFadeAnimator.getTime( ) );
+				
 				//batch.setColor( c.r, c.g, c.b, fgAlphaAnimator.getTime( ) );
 				//fgSprite.draw( batch );
 				//batch.setColor( c.r, c.g, c.b, oldAlpha );
 			}
+			if ( applyFadeToFGDecals ){
+				fadeFGDecals();
+			}
+			//drawFGDecals( batch );
 		}
 	}
 
@@ -686,10 +694,23 @@ public class Skeleton extends Platform {
 	 *            true if you want to see into the robot
 	 */
 	public void setFGFade( boolean hasTransparency ) {
-		float speed = fgFadeSpeed;
+		float speed = fadeSpeed;
 		if ( hasTransparency ) {
-			speed = -fgFadeSpeed;
+			speed = -fadeSpeed;
 		}
-		fgAlphaAnimator.speed( speed );
+		alphaFadeAnimator.speed( speed );
+	}
+	
+	private void fadeFGDecals(){
+		float alpha = alphaFadeAnimator.getTime();
+		for( Sprite decal : fgDecals ){
+			if ( decal.getAlpha() != alpha ){
+				decal.setAlpha( alpha );
+			}
+		}
+	}
+	
+	public void setFgFade(boolean applyFadeToFGDecals){
+		this.applyFadeToFGDecals = applyFadeToFGDecals;
 	}
 }
