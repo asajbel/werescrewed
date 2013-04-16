@@ -173,7 +173,7 @@ public class Player extends Entity {
 	}
 
 	public enum ConcurrentState {
-		Ignore, ExtraJumping, ExtraFalling
+		Ignore, ExtraJumping, ExtraFalling, ScrewReady, ScrewStow
 	}
 
 	// enum to handle different states of movement
@@ -207,11 +207,12 @@ public class Player extends Entity {
 		body.setBullet( true );
 		playerState = PlayerState.Standing;
 		inputHandler = new PlayerInputHandler( this.name );
-		anchor = new Anchor( new Vector2( body.getWorldCenter( ).x
+		Anchor anchor = new Anchor( new Vector2( body.getWorldCenter( ).x
 				* Util.BOX_TO_PIXEL, body.getWorldCenter( ).y
-				* Util.BOX_TO_PIXEL ), new Vector2( ANCHOR_BUFFER_SIZE.x,
-				ANCHOR_BUFFER_SIZE.y ) );
+				* Util.BOX_TO_PIXEL ), new Vector2( 0, 0 ), new Vector2(
+				ANCHOR_BUFFER_SIZE.x, ANCHOR_BUFFER_SIZE.y ) );
 		anchor.activate( );
+		anchors.add( anchor );
 		AnchorList.getInstance( ).addAnchor( anchor );
 
 		// build spine animator

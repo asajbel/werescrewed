@@ -1,0 +1,12 @@
+stage_upperright.png
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+offset: 0, 0
+stage_upperright
+  rotate: false
+  xy: 4, 4
+  size: 1774, 1330
+  orig: 1774, 1330
+  offset: 0, 0
+  index: -1

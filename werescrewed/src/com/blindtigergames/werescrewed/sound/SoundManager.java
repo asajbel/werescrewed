@@ -79,7 +79,7 @@ public class SoundManager implements I_Updateable {
 			if (loopIds.containsKey(s)){
 				s.stop(loopIds.get( s ));
 			}
-			loopIds.put(s, s.play( getNoiseVolume() ));
+			loopIds.put(s, s.loop( getNoiseVolume() ));
 		}
 	}
 

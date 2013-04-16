@@ -1,6 +1,5 @@
 package com.blindtigergames.werescrewed.entity.builders;
 
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -233,9 +232,7 @@ public class GenericEntityBuilder< B extends GenericEntityBuilder< ? >> {
 	}
 
 	/**
-	 * Loads an entity's special properties from a hashmap. For generic
-	 * entities, this only loads movers from a hashmap. This is basically a placeholder for
-	 * subclasses to inherit.
+	 * Loads an entity's special properties from a hashmap.
 	 * 
 	 * @param props
 	 *            - Strind/String hashmap containing the data
@@ -244,6 +241,9 @@ public class GenericEntityBuilder< B extends GenericEntityBuilder< ? >> {
 	
 	@SuppressWarnings( "unchecked" )
 	public B properties( ArrayHash<String,String> props ) {
+		if (props.containsKey( "texture" )){
+			this.texture( WereScrewedGame.manager.get( props.get( "texture" ), Texture.class ) );
+		}
 		if (props.containsKey(IDLE_SOUND)){
 			this.addSound("idle", props.get(IDLE_SOUND));
 		}

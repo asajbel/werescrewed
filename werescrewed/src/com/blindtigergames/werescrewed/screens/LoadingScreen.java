@@ -161,6 +161,11 @@ public class LoadingScreen extends Screen {
 			WereScrewedGame.manager.loadParticleEffect( effectName );
 			//Gdx.app.log( "Color Loaded", colorName );
 		}
+//		else if ( fileExtension.equals( "skel" )){
+//			String[] path = fullPathName.split( "\\." );
+//			String skelName = path[0].substring( WereScrewedGame.dirHandle.name( ).length( ) );
+//			WereScrewedGame.manager.loadSpineSkeleton( skeletonName, atlas )
+//		}
 	}
 
 	//Simple overloading for when you only have an extension and pathname.
