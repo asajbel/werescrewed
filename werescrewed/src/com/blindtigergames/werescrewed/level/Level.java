@@ -54,7 +54,7 @@ public class Level {
 	public ArrayList< Skeleton > skelFGList;
 	public ArrayList< Entity > entityBGList;
 	public ArrayList< Entity > entityFGList;
-	//background stuff
+	// background stuff
 	public OrthographicCamera backgroundCam;
 	public RootSkeleton backgroundRootSkeleton;
 	public SpriteBatch backgroundBatch;
@@ -69,7 +69,7 @@ public class Level {
 		skelFGList = new ArrayList< Skeleton >( );
 		entityBGList = new ArrayList< Entity >( );
 		entityFGList = new ArrayList< Entity >( );
-		
+
 		// progressManager = new ProgressManager(player1, player2, world);
 		// camera = new Camera( width, height, world);
 		// player1 = new PlayerBuilder( ).name( "player1" ).world( world )
@@ -86,7 +86,7 @@ public class Level {
 		Tween.registerAccessor( Entity.class, new EntityAccessor( ) );
 
 	}
-	
+
 	public void update( float deltaTime ) {
 		camera.update( );
 
@@ -130,12 +130,14 @@ public class Level {
 		// draw all background of skeletons before everything
 		for ( Skeleton skel : skelBGList ) {
 			if ( skel.isActive( ) ) {
-				skel.bgSprite.draw( batch );
+				if ( skel.bgSprite != null ) {
+					skel.bgSprite.draw( batch );
+				}
 				skel.drawBGDecals( batch );
 			}
 		}
 		// draw all background entity sprites after everything
-		// for ( Entity e: entityFGList ) {
+		// for ( Entity e : entityFGList ) {
 		// if ( e.isActive( ) ) {
 		// e.drawBGDecals( batch );
 		// }
@@ -149,20 +151,22 @@ public class Level {
 		if ( player2 != null )
 			player2.draw( batch, deltaTime );
 		// draw all foreground entity sprites after everything
-		// for ( Entity e: entityFGList ) {
-		// if ( e.isActive( ) ) {
-		// e.drawFGDecals( batch );
-		// }
-		// }
-		// draw all foreground skeleton sprites after everything
-		for ( Skeleton skel : skelFGList ) {
-			if ( skel.fgSprite.getAlpha( ) != 0 ) {
-				skel.fgSprite.draw( batch );
-				skel.drawFGDecals( batch );
+		for ( Entity e : entityFGList ) {
+			if ( e.isActive( ) ) {
+				e.drawFGDecals( batch );
 			}
 		}
+		// draw all foreground skeleton sprites after everything
+		for ( Skeleton skel : skelFGList ) {
+			if ( skel.fgSprite != null ) {
+				if ( skel.fgSprite.getAlpha( ) != 0 ) {
+					skel.fgSprite.draw( batch );
+				}
+			} 
+			skel.drawFGDecals( batch );
+		}
 		batch.end( );
-		
+
 		if ( debug )
 			debugRenderer.render( world, camera.combined( ) );
 		world.step( WereScrewedGame.oneOverTargetFrameRate, 6, 6 );

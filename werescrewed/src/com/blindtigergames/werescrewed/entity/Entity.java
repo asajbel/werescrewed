@@ -285,7 +285,7 @@ public class Entity implements GleedLoadable {
 			sprite.draw( batch );
 		}
 		// drawOrigin(batch);
-		drawFGDecals( batch );
+		//drawFGDecals( batch );
 		if ( spinemator != null )
 			spinemator.draw( batch );
 		drawParticles( frontParticles, batch );
@@ -1027,6 +1027,8 @@ public class Entity implements GleedLoadable {
 	 */
 	public void drawBGDecals( SpriteBatch batch ) {
 		for ( Sprite decal : bgDecals ) {
+
+			Gdx.app.log( "level draw", this.name + " drawing background " );
 			decal.draw( batch );
 		}
 	}

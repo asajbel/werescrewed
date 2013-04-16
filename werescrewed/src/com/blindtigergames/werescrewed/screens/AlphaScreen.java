@@ -164,6 +164,8 @@ public class AlphaScreen extends Screen {
 		bgSkele.addFGDecal( floor_seats.createSprite( "seats_middle" ), new Vector2( 0+seatsX,seatsY ) );
 		bgSkele.addFGDecal( floor_seats.createSprite( "seats_right" ), new Vector2( max+seatsX,seatsY ) );
 		
+		level.skelBGList.add( bgSkele );
+		level.skelFGList.add( bgSkele );
 		level.root.addSkeleton(bgSkele);
 	}
 
