@@ -14,6 +14,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.Filter;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
@@ -293,6 +294,10 @@ public class Entity implements GleedLoadable {
 		if ( spinemator != null )
 			spinemator.draw( batch );
 		drawParticles( frontParticles, batch );
+		if (sounds != null && sounds.hasSound( "idle" )){
+			//set volume to have a radial falloff from the center of the screen
+			//and a linear falloff with zoom.
+		}
 	}
 
 	protected void drawParticles( HashMap< String, ParticleEffect > map,
@@ -1178,18 +1183,20 @@ public class Entity implements GleedLoadable {
 			sounds.loopSound("idle");
 		}
 	}
-	// Generic collision sound
-	public void collisionSound(){
-		if (sounds != null && sounds.hasSound("collision")){
-			sounds.playSound("collision");
-		}
-	}
-	// If there isn't a more specific function, then just play the generic sound 
-	public void collisionSound( Entity other ){
-		collisionSound();
-	}
+
 	//Call this function after all your sprites, sounds, etc. are loaded.
 	public void postLoad(){
 		idleSound();
+	}
+	
+	public void collide( Object that , Contact contact){
+		this.collide();
+	}
+	
+	//This function handles collision when we do not care what the other object is.
+	public void collide(){
+		if (sounds != null && sounds.hasSound("collision")){
+			sounds.playSound("collision");
+		}
 	}
 }

@@ -11,6 +11,7 @@ import com.badlogic.gdx.controllers.PovDirection;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
+import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.Filter;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
@@ -24,6 +25,7 @@ import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityDef;
 import com.blindtigergames.werescrewed.entity.EntityType;
 import com.blindtigergames.werescrewed.entity.animator.PlayerSpinemator;
+import com.blindtigergames.werescrewed.entity.hazard.Hazard;
 import com.blindtigergames.werescrewed.entity.mover.IMover;
 import com.blindtigergames.werescrewed.entity.mover.LerpMover;
 import com.blindtigergames.werescrewed.entity.mover.LinearAxis;
@@ -1813,5 +1815,30 @@ public class Player extends Entity {
 		inputHandler = null;
 		controller = null;
 
+	}
+	
+	public void collide( Platform that , Contact contact){
+		// Ensure the object is solid and involves the
+		// player's
+		// feet
+		// also make sure its not the player
+		Fixture playerFix;
+		if (contact.getFixtureB( ).getUserData( ).equals( this )){
+			playerFix = contact.getFixtureB( );
+		} else {
+			playerFix = contact.getFixtureA( );
+		}
+		if ( that.isSolid( ) ){
+			if (playerFix.getShape( ) instanceof CircleShape ) {
+				//this.contacts++;
+				hitSolidObject( that );
+				if ( getState( ) != PlayerState.Screwing ) {
+					setGrounded( true );
+					sounds.playSound("land");
+				}
+			} else {
+				collide( (Entity) that, contact );
+			}
+		}
 	}
 }

@@ -4,12 +4,13 @@ import java.util.EnumMap;
 import java.util.HashMap;
 
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.utils.Array;
 import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.camera.Camera;
 import com.blindtigergames.werescrewed.entity.I_Updateable;
 import com.blindtigergames.werescrewed.util.ArrayHash;
 
-public class SoundManager implements I_Updateable {
+public class SoundManager {
 	public enum SoundType{
 		/* Background music, as you can expect. */
 		MUSIC,
@@ -25,9 +26,7 @@ public class SoundManager implements I_Updateable {
 	}
 	
 	public static EnumMap<SoundType, Float> globalVolume;
-	public HashMap<String, Sound> sounds;
-	public ArrayHash<Sound, Long> soundIds;
-	public HashMap<Sound, Long> loopIds;
+	public HashMap<String, SoundRef> sounds;
 	
 	static {
 		globalVolume = new EnumMap<SoundType, Float>(SoundType.class);
@@ -39,27 +38,22 @@ public class SoundManager implements I_Updateable {
 	protected Camera camera;
 	
 	public SoundManager( ) {
-		sounds = new HashMap<String, Sound>();
-		soundIds = new ArrayHash<Sound, Long>();
-		loopIds = new HashMap<Sound, Long>();
+		sounds = new HashMap<String, SoundRef>();
 	}
 
-	public Sound getSound(String id, String assetName){
-		if (!sounds.containsKey( id )){
+	public SoundRef getSound(String id, String assetName){
+		if (!hasSound(id)){
 			Sound s = WereScrewedGame.manager.get( assetName, Sound.class );
-			sounds.put( id, s);
+			sounds.put( id, new SoundRef(s));
 		}
 		return sounds.get( id );
 	}
 	
-	public Sound getSound(String id){
-		if (sounds.containsKey( id )){
+	public SoundRef getSound(String id){
+		if (hasSound(id)){
 			return sounds.get( id );
 		}
 		return null;
-	}
-	
-	public void update( float deltaTime ){
 	}
 	
 	public boolean hasSound(String tag){
@@ -67,28 +61,85 @@ public class SoundManager implements I_Updateable {
 	}
 
 	public void playSound( String id ) {
-		if (sounds.containsKey( id )) {
-			Sound s = sounds.get( id );
-			soundIds.add( s, s.play( getSoundVolume() ) );
+		if (hasSound(id)) {
+			sounds.get( id ).play( );
 		}
 	}
 
 	public void loopSound( String id ) {
-		if (sounds.containsKey( id )) {
-			Sound s = sounds.get( id );
-			if (loopIds.containsKey(s)){
-				s.stop(loopIds.get( s ));
-			}
-			loopIds.put(s, s.loop( getNoiseVolume() ));
+		if (hasSound(id)) {
+			sounds.get( id ).loop( );
 		}
 	}
 
-	public float getSoundVolume(){
+	public void setSoundVolume(String id, float v){
+		if (hasSound(id)){
+			sounds.get(id).volume = v;
+		}
+	}
+
+	public void setSoundPitch(String id, float v){
+		if (hasSound(id)){
+			sounds.get(id).pitch = v;
+		}
+	}
+	public void setSoundPan(String id, float v){
+		if (hasSound(id)){
+			sounds.get(id).pan = v;
+		}
+	}
+	
+	public static float getSoundVolume(){
 		return globalVolume.get( SoundType.SFX );
 	}
 
-	public float getNoiseVolume(){
+	public static float getNoiseVolume(){
 		return globalVolume.get( SoundType.NOISE );
+	}
+	
+	protected class SoundRef{
+		public Sound sound;
+		protected Array<Long> soundIds;
+		protected long loopId;
+		protected float volume;
+		protected float pitch;
+		protected float pan;
+		
+		public SoundRef(Sound s){
+			volume = 1.0f;
+			pitch = 1.0f;
+			pan = 0.0f;
+			soundIds = new Array<Long>();
+			loopId = -1;
+			sound = s;
+		}
+		
+		protected long play(){
+			long id = sound.play( getSoundVolume() * volume, pitch, pan);
+			soundIds.add( id );
+			return id;
+		}
+		
+		protected long loop(){
+			if (loopId >= 0){
+				sound.stop(loopId);
+			}
+			loopId = sound.loop( getNoiseVolume() * volume);
+			return loopId;
+		}
+		
+		protected void stop(){
+			sound.stop( );
+			loopId = -1;
+		}
+		
+		protected void update(){
+			if (loopId >= 0){
+				sound.setVolume( loopId, getNoiseVolume() * volume );
+				sound.setPitch( loopId, pitch );
+				sound.setPan( loopId, pan, volume );
+			}
+		}
 	}
 	
 }
