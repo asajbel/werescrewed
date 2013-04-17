@@ -5,10 +5,12 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.EnumMap;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Json;
+import com.blindtigergames.werescrewed.player.Player;
 
 /**
  * Static class for collecting metrics on a level.
@@ -29,44 +31,76 @@ public class Metrics {
 	private static ArrayList< Vector2 > playerScrewedPositions = new ArrayList< Vector2 >( );
 	private static ArrayList< Float > playerTime = new ArrayList< Float >( );
 	
-	private static float p1RunDist = 0;
-	private static float p2RunDist = 0;
-	private static float p1Unscrewed = 0;
-	private static float p2Unscrewed = 0;
-	private static float p1AirTime = 0;
-	private static float p2AirTime = 0;
-	private static float p1FallDeaths = 0;
-	private static float p2FallDeaths = 0;
-	private static float p1PuzzleTime = 0;
-	private static float p2PuzzleTime = 0;
-	private static float p1Deaths = 0;
-	private static float p2Deaths = 0;
-	private static float p1HeadStands = 0;
-	private static float p2HeadStands = 0;
-	private static float p1Revives = 0;
-	private static float p2Revives = 0;
-	private static float p1TeamDeaths = 0;
-	private static float p2TeamDeaths = 0;
-	private static float p1IdleTime = 0;
-	private static float p2IdleTime = 0;
-	private static float p1CrushDeaths = 0;
-	private static float p2CrushDeaths = 0;
-	private static float p1ElecDeaths = 0;
-	private static float p2ElecDeaths = 0;
-	private static float p1GroundTime = 0;
-	private static float p2GroundTime = 0;
-	private static float p1Jumps = 0;
-	private static float p2Jumps = 0;
-	private static float p1SpikeDeaths = 0;
-	private static float p2SpikeDeaths = 0;
-	private static float p1FireDeaths = 0;
-	private static float p2FireDeaths = 0;
-	private static float p1DeadTime = 0;
-	private static float p2DeadTime = 0;
-	private static float p1SteamJumps = 0;
-	private static float p2SteamJumps = 0;
-	private static float p1StripAttach = 0;
-	private static float p2StripAttach = 0;
+	private static String player1Name;
+	private static String player2Name;
+	
+	public enum TrophyMetric{
+		P1RUNDIST, P2RUNDIST,
+		P1UNSCREWED, P2UNSCREWED,
+		P1AIRTIME, P2AIRTIME,
+		P1FALLDEATHS, P2FALLDEATHS,
+		P1PUZZLETIME, P2PUZZLETIME,
+		P1DEATHS, P2DEATHS,
+		P1HEADSTANDS, P2HEADSTANDS,
+		P1REVIVES, P2REVIVES,
+		P1TEAMDEATHS, P2TEAMDEATHS,
+		P1IDLETIME, P2IDLETIME,
+		P1CRUSHDEATHS, P2CRUSHDEATHS,
+		P1ELECDEATHS, P2ELECDEATHS,
+		P1GROUNDTIME, P2GROUNDTIME,
+		P1JUMPS, P2JUMPS,
+		P1SPIKEDEATHS, P2SPIKEDEATHS,
+		P1FIREDEATHS, P2FIREDEATHS,
+		P1DEADTIME, P2DEADTIME,
+		P1STEAMJUMPS, P2STEAMJUMPS,
+		P1STRIPATTACH, P2STRIPATTACH,
+		
+	}
+	
+	private static EnumMap<TrophyMetric, Float> trophyMetrics;
+	
+	static{
+		trophyMetrics = new EnumMap<TrophyMetric, Float>(TrophyMetric.class);
+		for (TrophyMetric t: TrophyMetric.values()){
+			trophyMetrics.put( t, 0.0f);
+		}
+		player1Name = "player1";
+		player2Name = "player2";
+	}
+	
+	public static void resetTrophyMetric (){
+		for (TrophyMetric t: TrophyMetric.values()){
+			trophyMetrics.put(t, 0.0f);
+		}
+	}
+	
+	public static void setTrophyMetric(TrophyMetric t, float v){
+		trophyMetrics.put( t, v);
+	}
+
+	public static void incTrophyMetric(TrophyMetric t, float v){
+		trophyMetrics.put( t, trophyMetrics.get(t) + v);
+	}
+	
+	public static float getTrophyMetric(TrophyMetric t){
+		return trophyMetrics.get(t);
+	}
+	
+	public static void registerPlayer1 (String name){
+		player1Name = name;
+	}
+	
+	public static void registerPlayer2 (String name){
+		player2Name = name;
+	}
+	
+	public static String player1 (){
+		return player1Name;
+	}
+	
+	public static String player2 (){
+		return player2Name;
+	}
 
 	/**
 	 * Adds position data to the list of player deaths. Should be called when a
@@ -214,12 +248,5 @@ public class Metrics {
 		playerUnscrewedPositions.clear( );
 		playerTime.clear( );
 	}
-	
-	/*
-	 * All methods below are for incrementing trophy metrics. 
-	 * 
-	 * @param i
-	 *		The amount by which to increment the metric.
-	 */
-	
+		
 }

@@ -105,6 +105,7 @@ public class LerpMover implements IMover {
 		this.beginningPoint = beginningPoint.cpy( );
 		this.endPoint = endingPoint.cpy( );
 		this.axis = axis;
+		this.loopTimes = 0;
 		alpha = 0;
 		puzzleType = PuzzleType.PUZZLE_SCREW_CONTROL;
 	}

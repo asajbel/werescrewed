@@ -44,6 +44,7 @@ import com.blindtigergames.werescrewed.eventTrigger.EventTrigger;
 import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 import com.blindtigergames.werescrewed.entity.platforms.Pipe;
 import com.blindtigergames.werescrewed.player.Player;
+import com.blindtigergames.werescrewed.util.Metrics;
 import com.blindtigergames.werescrewed.util.Util;
 
 public class HazardScreen implements com.badlogic.gdx.Screen {
@@ -90,6 +91,9 @@ public class HazardScreen implements com.badlogic.gdx.Screen {
 				.position( 1800f, 100f ).buildPlayer( );
 		player2 = new PlayerBuilder( ).name( "player2" ).definition( "red_female" ).world( world )
 				.position( 1900f, 100.0f ).buildPlayer( );
+		
+		Metrics.registerPlayer1( player1.name );
+		Metrics.registerPlayer2( player2.name );
 
 		ArrayList < Vector2 > pipePath = new ArrayList < Vector2 >();
 		pipePath.add( new Vector2 (2, 0) );
