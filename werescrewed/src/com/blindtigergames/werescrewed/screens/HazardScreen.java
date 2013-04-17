@@ -130,7 +130,7 @@ public class HazardScreen implements com.badlogic.gdx.Screen {
 		float zoom = 1.0f;
 		float width = Gdx.graphics.getWidth( ) / zoom;
 		float height = Gdx.graphics.getHeight( ) / zoom;
-		cam = new Camera( new Vector2( 0, 0), width, height, world );
+		cam = new Camera( new Vector2( 1000, 0), width, height, world );
 	}
 
 	private void initTiledPlatforms( ) {
@@ -179,9 +179,9 @@ public class HazardScreen implements com.badlogic.gdx.Screen {
 		 * saw = new Saws( "Saw1", new Vector2( -2000.0f, 40.0f ), 2, world,
 		 * true );
 		 */
-		spikes = new Spikes( "Spikes1", new Vector2( -1700.0f, 5.0f ), 1, 6,
+		spikes = new Spikes( "Spikes1", new Vector2( 1700.0f, 100f ), 1, 6,
 				world, true, false, false );
-		spikes2 = spikesBuilder.position( -1500.0f, 5.0f ).dimensions( 4, 1 )
+		spikes2 = spikesBuilder.position( 1500.0f, 100f ).dimensions( 4, 1 )
 				.up( ).active( ).buildSpikes( );
 		// add the spikes to the skeleton
 		skeleton.addKinematicPlatform( spikes );
@@ -253,8 +253,8 @@ public class HazardScreen implements com.badlogic.gdx.Screen {
 				-512f, 32f ), skeleton, world, progressManager,
 				"levelStage_0_0" ) );
 		skeleton
-				.addCheckPoint( new CheckPoint( "check_02", new Vector2( 0f,
-						32f ), skeleton, world, progressManager,
+				.addCheckPoint( new CheckPoint( "check_02", new Vector2(1900.0f, 5.0f ),
+						skeleton, world, progressManager,
 						"levelStage_0_1" ) );
 	}
 
@@ -321,6 +321,10 @@ public class HazardScreen implements com.badlogic.gdx.Screen {
 		if ( debug )
 			debugRenderer.render( world, cam.combined( ) );
 
+		if ( Gdx.input.isKeyPressed( Keys.P ) ) {
+			System.exit( 0 );
+		}
+		
 		world.step( 1 / 60f, 6, 6 );
 
 		if ( Gdx.input.isKeyPressed( Input.Keys.ESCAPE ) ) {

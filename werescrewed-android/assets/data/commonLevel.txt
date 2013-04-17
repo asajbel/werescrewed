@@ -27,6 +27,8 @@
 /common/parallax_layer2_1.png
 /common/parallax_layer3_0.png
 
+/common/spikes.png
+/common/spikes_rotated.png
 /common/spikes_01.png
 /common/spikes_01r.png
 /common/spikes_02.png
