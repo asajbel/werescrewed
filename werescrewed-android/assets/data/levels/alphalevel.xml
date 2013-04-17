@@ -2622,11 +2622,11 @@
                         </Vector2>
                         <Vector2>
                             <X>192</X>
-                            <Y>-672</Y>
+                            <Y>-656</Y>
                         </Vector2>
                         <Vector2>
                             <X>128</X>
-                            <Y>-688</Y>
+                            <Y>-656</Y>
                         </Vector2>
                         <Vector2>
                             <X>-384</X>
@@ -2648,11 +2648,11 @@
                         </Vector2>
                         <Vector2>
                             <X>2848</X>
-                            <Y>-5920</Y>
+                            <Y>-5904</Y>
                         </Vector2>
                         <Vector2>
                             <X>2784</X>
-                            <Y>-5936</Y>
+                            <Y>-5904</Y>
                         </Vector2>
                         <Vector2>
                             <X>2272</X>
@@ -5831,8 +5831,8 @@
                 </Item>
                 <Item xsi:type="PathItem" Name="leftShoulder" Visible="true">
                     <Position>
-                        <X>2288</X>
-                        <Y>-6304</Y>
+                        <X>2144</X>
+                        <Y>-6352</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -5848,50 +5848,50 @@
                             <Y>0</Y>
                         </Vector2>
                         <Vector2>
-                            <X>-1088</X>
+                            <X>-944</X>
                             <Y>32</Y>
                         </Vector2>
                         <Vector2>
-                            <X>528</X>
+                            <X>672</X>
                             <Y>32</Y>
                         </Vector2>
                         <Vector2>
-                            <X>528</X>
-                            <Y>-96</Y>
+                            <X>672</X>
+                            <Y>-64</Y>
                         </Vector2>
                         <Vector2>
-                            <X>-1088</X>
-                            <Y>-96</Y>
+                            <X>-944</X>
+                            <Y>-64</Y>
                         </Vector2>
                         <Vector2>
-                            <X>-1088</X>
+                            <X>-944</X>
                             <Y>32</Y>
                         </Vector2>
                     </LocalPoints>
                     <WorldPoints>
                         <Vector2>
-                            <X>2288</X>
-                            <Y>-6304</Y>
+                            <X>2144</X>
+                            <Y>-6352</Y>
                         </Vector2>
                         <Vector2>
                             <X>1200</X>
-                            <Y>-6272</Y>
+                            <Y>-6320</Y>
                         </Vector2>
                         <Vector2>
                             <X>2816</X>
-                            <Y>-6272</Y>
+                            <Y>-6320</Y>
                         </Vector2>
                         <Vector2>
                             <X>2816</X>
-                            <Y>-6400</Y>
+                            <Y>-6416</Y>
                         </Vector2>
                         <Vector2>
                             <X>1200</X>
-                            <Y>-6400</Y>
+                            <Y>-6416</Y>
                         </Vector2>
                         <Vector2>
                             <X>1200</X>
-                            <Y>-6272</Y>
+                            <Y>-6320</Y>
                         </Vector2>
                     </WorldPoints>
                     <IsPolygon>false</IsPolygon>
@@ -8833,11 +8833,11 @@
                         </Vector2>
                         <Vector2>
                             <X>32</X>
-                            <Y>-656</Y>
+                            <Y>-608</Y>
                         </Vector2>
                         <Vector2>
                             <X>-32</X>
-                            <Y>-656</Y>
+                            <Y>-608</Y>
                         </Vector2>
                         <Vector2>
                             <X>-32</X>
@@ -8859,11 +8859,11 @@
                         </Vector2>
                         <Vector2>
                             <X>2912</X>
-                            <Y>-5952</Y>
+                            <Y>-5904</Y>
                         </Vector2>
                         <Vector2>
                             <X>2848</X>
-                            <Y>-5952</Y>
+                            <Y>-5904</Y>
                         </Vector2>
                         <Vector2>
                             <X>2848</X>
@@ -10224,12 +10224,12 @@
                             <Y>-976</Y>
                         </Vector2>
                         <Vector2>
-                            <X>1360</X>
-                            <Y>-32</Y>
+                            <X>1408</X>
+                            <Y>-960</Y>
                         </Vector2>
                         <Vector2>
-                            <X>2384</X>
-                            <Y>-64</Y>
+                            <X>4608</X>
+                            <Y>-2400</Y>
                         </Vector2>
                         <Vector2>
                             <X>2656</X>
@@ -10280,6 +10280,158 @@
                         <PackedValue>2445279424</PackedValue>
                     </FillColor>
                 </Item>
+                <Item xsi:type="RectangleItem" Name="rightArmDoor" Visible="true">
+                    <Position>
+                        <X>2848</X>
+                        <Y>-6320</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="definition" Type="string" Description="">
+                            <string>tiledPlatform</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>rightShoulderSkeleton</string>
+                        </Property>
+                        <Property Name="dynamic" Type="string" Description="">
+                            <string />
+                        </Property>
+                    </CustomProperties>
+                    <Width>64</Width>
+                    <Height>336</Height>
+                    <FillColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </FillColor>
+                </Item>
+                <Item xsi:type="RectangleItem" Name="rightArmDoorCatch" Visible="true">
+                    <Position>
+                        <X>3104</X>
+                        <Y>-5904</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="definition" Type="string" Description="">
+                            <string>tiledPlatform</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>rightShoulderSkeleton</string>
+                        </Property>
+                    </CustomProperties>
+                    <Width>32</Width>
+                    <Height>32</Height>
+                    <FillColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </FillColor>
+                </Item>
+                <Item xsi:type="TextureItem" Name="rightArmDoorScrew" Visible="true">
+                    <Position>
+                        <X>2816</X>
+                        <Y>-6272</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Screwtype" Type="string" Description="">
+                            <string>ScrewStructural</string>
+                        </Property>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>screw</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>rightShoulderSkeleton</string>
+                        </Property>
+                        <Property Name="targetrev" Type="string" Description="">
+                            <string>rightArmDoor</string>
+                        </Property>
+                        <Property Name="skeltargetrev" Type="string" Description="">
+                            <string>rightShoulderSkeleton</string>
+                        </Property>
+                    </CustomProperties>
+                    <Rotation>0</Rotation>
+                    <Scale>
+                        <X>1</X>
+                        <Y>1</Y>
+                    </Scale>
+                    <TintColor>
+                        <R>255</R>
+                        <G>255</G>
+                        <B>255</B>
+                        <A>255</A>
+                        <PackedValue>4294967295</PackedValue>
+                    </TintColor>
+                    <FlipHorizontally>false</FlipHorizontally>
+                    <FlipVertically>false</FlipVertically>
+                    <texture_filename>structurescrew.png</texture_filename>
+                    <asset_name>structurescrew</asset_name>
+                    <Origin>
+                        <X>32</X>
+                        <Y>32</Y>
+                    </Origin>
+                </Item>
+                <Item xsi:type="TextureItem" Name="rightArmDoorHinge" Visible="true">
+                    <Position>
+                        <X>2816</X>
+                        <Y>-6016</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>screw</string>
+                        </Property>
+                        <Property Name="Screwtype" Type="string" Description="">
+                            <string>ScrewStripped</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>rightShoulderSkeleton</string>
+                        </Property>
+                    </CustomProperties>
+                    <Rotation>0</Rotation>
+                    <Scale>
+                        <X>1</X>
+                        <Y>1</Y>
+                    </Scale>
+                    <TintColor>
+                        <R>255</R>
+                        <G>255</G>
+                        <B>255</B>
+                        <A>255</A>
+                        <PackedValue>4294967295</PackedValue>
+                    </TintColor>
+                    <FlipHorizontally>false</FlipHorizontally>
+                    <FlipVertically>false</FlipVertically>
+                    <texture_filename>strippedscrews.png</texture_filename>
+                    <asset_name>strippedscrews</asset_name>
+                    <Origin>
+                        <X>32</X>
+                        <Y>32</Y>
+                    </Origin>
+                </Item>
+                <Item xsi:type="RectangleItem" Name="testHazard" Visible="true">
+                    <Position>
+                        <X>288</X>
+                        <Y>-32</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="definition" Type="string" Description="">
+                            <string>hazard</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>RootSkeleton</string>
+                        </Property>
+                    </CustomProperties>
+                    <Width>224</Width>
+                    <Height>32</Height>
+                    <FillColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </FillColor>
+                </Item>
             </Items>
             <ScrollSpeed>
                 <X>1</X>
@@ -10289,11 +10441,11 @@
     </Layers>
     <CustomProperties />
     <EditorRelated>
-        <NextItemNumber>519</NextItemNumber>
-        <ContentRootFolder>\\vmware-host\Shared Folders\Documents\werescrewed\gleed-textures</ContentRootFolder>
+        <NextItemNumber>524</NextItemNumber>
+        <ContentRootFolder>C:\Users\Dan\Documents\GitHub\werescrewed\gleed-textures</ContentRootFolder>
         <CameraPosition>
-            <X>1240.38232</X>
-            <Y>-2892.89185</Y>
+            <X>3012.99829</X>
+            <Y>-5873.68945</Y>
         </CameraPosition>
         <Version>1.3.0.0</Version>
     </EditorRelated>
