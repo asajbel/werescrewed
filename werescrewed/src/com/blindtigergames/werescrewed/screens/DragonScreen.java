@@ -43,7 +43,7 @@ public class DragonScreen extends Screen {
 		level.root = new SkeletonBuilder( level.world ).buildRoot( );
 
 		buildGround( );
-		// buildDynamicSkeleton();
+		buildDynamicSkeleton();
 		buildHazardSkeleton( );
 		complexPlatform( );
 	}
@@ -69,15 +69,15 @@ public class DragonScreen extends Screen {
 				Util.TWO_PI, 0, true ) );
 
 		// HazardBuilder hb = new HazardBuilder(level.world);
-		Fire f = new Fire( "fire1", new Vector2( 500, 350 ), 100, 100,
-				level.world, true );
-		skeleton.addHazard( f );
+//		Fire f = new Fire( "fire1", new Vector2( 500, 350 ), 100, 100,
+//				level.world, true );
+//		skeleton.addHazard( f );
 
 	}
 
 	void buildDynamicSkeleton( ) {
 		SkeletonBuilder sb = new SkeletonBuilder( level.world );
-		Skeleton dyn_skeleton = sb.name( "dyn_skeleton" ).position( -100, 300 )
+		Skeleton dyn_skeleton = sb.name( "dyn_skeleton" ).position( -100, 400 )
 				.density( 0.1f ).dynamic( ).build( );
 		PlatformBuilder pb = new PlatformBuilder( level.world );
 

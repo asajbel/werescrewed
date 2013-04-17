@@ -492,6 +492,9 @@
                         <Property Name="AttachToSkeleton" Type="string" Description="">
                             <string>skeleton1</string>
                         </Property>
+                        <Property Name="invisible" Type="string" Description="">
+                            <string />
+                        </Property>
                     </CustomProperties>
                     <Width>4368</Width>
                     <Height>96</Height>
@@ -514,6 +517,9 @@
                         </Property>
                         <Property Name="AttachToSkeleton" Type="string" Description="">
                             <string>skeleton1</string>
+                        </Property>
+                        <Property Name="invisible" Type="string" Description="">
+                            <string />
                         </Property>
                     </CustomProperties>
                     <Width>4368</Width>
@@ -10260,8 +10266,8 @@
         <NextItemNumber>518</NextItemNumber>
         <ContentRootFolder>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures</ContentRootFolder>
         <CameraPosition>
-            <X>732.0463</X>
-            <Y>-1867.89478</Y>
+            <X>665.3796</X>
+            <Y>165.441742</Y>
         </CameraPosition>
         <Version>1.3.0.0</Version>
     </EditorRelated>

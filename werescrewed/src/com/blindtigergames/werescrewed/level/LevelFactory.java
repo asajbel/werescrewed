@@ -649,22 +649,24 @@ public class LevelFactory {
 
 		Skeleton parent = loadSkeleton( item.skeleton );
 
-		if ( isDynamic ) {
-			Gdx.app.log( "LevelFactory", "Tiled Dynamic platform loaded:"
-					+ out.name );
-			out.quickfixCollisions( );
-			parent.addDynamicPlatform( out );
-
-			if ( item.props.containsKey( "jointtoskeleton" ) ) {
-				out.addJointToSkeleton( parent );
+		if ( !item.props.containsKey( "invisible" ) ) {
+			if ( isDynamic ) {
+				Gdx.app.log( "LevelFactory", "Tiled Dynamic platform loaded:"
+						+ out.name );
+				out.quickfixCollisions( );
+				parent.addDynamicPlatform( out );
+	
+				if ( item.props.containsKey( "jointtoskeleton" ) ) {
+					out.addJointToSkeleton( parent );
+				}
+			} else {
+				Gdx.app.log( "LevelFactory", "Tiled Kinematic platform loaded:"
+						+ out.name );
+	
+				parent.addKinematicPlatform( out );
+				out.setCategoryMask( Util.CATEGORY_PLATFORMS,
+						Util.CATEGORY_EVERYTHING );
 			}
-		} else {
-			Gdx.app.log( "LevelFactory", "Tiled Kinematic platform loaded:"
-					+ out.name );
-
-			parent.addKinematicPlatform( out );
-			out.setCategoryMask( Util.CATEGORY_PLATFORMS,
-					Util.CATEGORY_EVERYTHING );
 		}
 		return out;
 	}
