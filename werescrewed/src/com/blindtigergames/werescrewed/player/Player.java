@@ -35,6 +35,7 @@ import com.blindtigergames.werescrewed.graphics.particle.ParticleEffect;
 import com.blindtigergames.werescrewed.input.MyControllerListener;
 import com.blindtigergames.werescrewed.input.PlayerInputHandler;
 import com.blindtigergames.werescrewed.util.Metrics;
+import com.blindtigergames.werescrewed.util.Metrics.TrophyMetric;
 import com.blindtigergames.werescrewed.util.Util;
 
 /**
@@ -555,6 +556,12 @@ public class Player extends Entity {
 						/ directionJumpDivsion, 0.0f ), body.getWorldCenter( ) );
 			}
 		} else {
+			if ( this.name == Metrics.player1( ) && playerState != PlayerState.Screwing ){
+				Metrics.incTrophyMetric( TrophyMetric.P1RUNDIST, 1 );
+			} else if ( this.name == Metrics.player2() && playerState != PlayerState.Screwing ){
+				Metrics.incTrophyMetric( TrophyMetric.P2RUNDIST, 1 );
+			}
+			
 			if ( body.getLinearVelocity( ).x < MAX_VELOCITY ) {
 				body.applyLinearImpulse( new Vector2( MOVEMENT_IMPULSE, 0.0f ),
 						body.getWorldCenter( ) );
@@ -590,6 +597,12 @@ public class Player extends Entity {
 						/ directionJumpDivsion, 0.0f ), body.getWorldCenter( ) );
 			}
 		} else {
+			if ( this.name == Metrics.player1( ) && playerState != PlayerState.Screwing ){
+				Metrics.incTrophyMetric( TrophyMetric.P1RUNDIST, 1 );
+			} else if ( this.name == Metrics.player2() && playerState != PlayerState.Screwing ){
+				Metrics.incTrophyMetric( TrophyMetric.P2RUNDIST, 1 );
+			}
+
 			if ( body.getLinearVelocity( ).x > -MAX_VELOCITY ) {
 				body.applyLinearImpulse(
 						new Vector2( -MOVEMENT_IMPULSE, 0.0f ),

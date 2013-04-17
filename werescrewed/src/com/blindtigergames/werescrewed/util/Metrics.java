@@ -93,6 +93,14 @@ public class Metrics {
 	public static void registerPlayer2 (String name){
 		player2Name = name;
 	}
+	
+	public static String player1 (){
+		return player1Name;
+	}
+	
+	public static String player2 (){
+		return player2Name;
+	}
 
 	/**
 	 * Adds position data to the list of player deaths. Should be called when a
