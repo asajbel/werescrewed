@@ -699,6 +699,10 @@ public class LevelFactory {
 		}
 
 		pb.name( item.name ).position( item.pos ).tileSet( "alphabot32" );
+		pb.texture( WereScrewedGame.manager
+										.get( WereScrewedGame.dirHandle
+												+ "/levels/alphabot/alphabot_texture_skin.png",
+												Texture.class ) );
 
 		if ( isDynamic )
 			pb.dynamic( );
@@ -710,7 +714,7 @@ public class LevelFactory {
 		pb.setVerts( verts );
 		out = pb.buildCustomPlatform( );
 
-		entities.put( item.name, out );
+		
 		out.setCrushing( isCrushable );
 
 		if ( item.props.containsKey( "onesided" ) ) {
@@ -748,6 +752,7 @@ public class LevelFactory {
 			out.setCategoryMask( Util.CATEGORY_PLATFORMS,
 					Util.CATEGORY_EVERYTHING );
 		}
+		entities.put( item.name, out );
 		return out;
 	}
 

@@ -10,6 +10,7 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.utils.Array;
 import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.camera.Camera;
+import com.blindtigergames.werescrewed.entity.RobotState;
 import com.blindtigergames.werescrewed.entity.Skeleton;
 import com.blindtigergames.werescrewed.entity.builders.PlatformBuilder;
 import com.blindtigergames.werescrewed.entity.builders.PlayerBuilder;
@@ -21,6 +22,7 @@ import com.blindtigergames.werescrewed.entity.mover.TargetImpulseMover;
 import com.blindtigergames.werescrewed.entity.platforms.Platform;
 import com.blindtigergames.werescrewed.entity.platforms.TiledPlatform;
 import com.blindtigergames.werescrewed.level.Level;
+import com.blindtigergames.werescrewed.level.LevelFactory;
 import com.blindtigergames.werescrewed.entity.screws.StructureScrew;
 import com.blindtigergames.werescrewed.util.Util;
 
@@ -28,24 +30,20 @@ public class DragonScreen extends Screen {
 
 	public DragonScreen( ) {
 		super( );
-		// String filename = "data/levels/dragon.xml";
-		// level = new LevelFactory( ).load( filename );
-		level = new Level( );
-
-		level.camera = new Camera( new Vector2( Gdx.graphics.getWidth( ) *.5f,
-				Gdx.graphics.getHeight( )*.5f  ), Gdx.graphics.getWidth( ),
-				Gdx.graphics.getHeight( ), level.world );
-		level.player1 = new PlayerBuilder( ).name( "player1" ).definition( "red_male" )
-				.world( level.world ).position( 0, 100 ).buildPlayer( );
-		level.player2 = new PlayerBuilder( ).name( "player2" ).definition( "red_female" )
-				.world( level.world ).position( 0, 100 ).buildPlayer( );
-
-		level.root = new SkeletonBuilder( level.world ).buildRoot( );
-
-		buildGround( );
-		buildDynamicSkeleton();
-		//buildHazardSkeleton( );
-		complexPlatform( );
+		String filename = "data/levels/dragonlevel.xml";
+		level = new LevelFactory( ).load( filename );
+		
+		buildBalloon();
+		
+	}
+	
+	void buildBalloon(){
+		Platform balloon1 = (Platform) LevelFactory.entities.get( "balloon1" );
+		
+		TargetImpulseMover tim = new TargetImpulseMover(new Vector2(0, 600f), Vector2.Zero,
+				0.1f, true, 100f);
+		balloon1.addMover( tim, RobotState.IDLE );
+		
 	}
 
 	void buildGround( ) {

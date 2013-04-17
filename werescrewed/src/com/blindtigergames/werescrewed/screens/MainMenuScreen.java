@@ -76,7 +76,7 @@ class MainMenuScreen implements com.badlogic.gdx.Screen {
 		}
 		
 		if ( Gdx.input.isKeyPressed( Keys.D ) ) {
-			ScreenManager.getInstance( ).show( ScreenType.DRAGON);
+			ScreenManager.getInstance( ).show( ScreenType.LOADING_2);
 		}
 		
 		if ( Gdx.input.isKeyPressed( Keys.A ) ) {

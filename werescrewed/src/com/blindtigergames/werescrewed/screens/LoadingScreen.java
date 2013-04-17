@@ -202,7 +202,9 @@ public class LoadingScreen extends Screen {
 			// TODO: Use the screenTag to pick which screen to go to next
 			if ( screenTag != null && screenTag.equals( "level1" ) ) {
 				ScreenManager.getInstance( ).show( ScreenType.LEVEL_1 );
-			} else {
+			} else if ( screenTag != null && screenTag.equals( "level2" ) ) {
+				ScreenManager.getInstance( ).show( ScreenType.DRAGON );
+			}else {
 				ScreenManager.getInstance( ).show( ScreenType.MAIN_MENU );
 			}
 			
