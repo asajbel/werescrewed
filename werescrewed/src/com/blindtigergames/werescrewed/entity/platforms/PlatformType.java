@@ -9,5 +9,5 @@ public enum PlatformType {
 	COMPLEX,
 	TILED,
 	DEFAULT,
-	SHAPE
+	SHAPE,
 }

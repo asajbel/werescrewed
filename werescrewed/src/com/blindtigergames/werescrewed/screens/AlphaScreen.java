@@ -149,6 +149,8 @@ public class AlphaScreen extends Screen {
 				.getAtlas( "support_left" );
 		TextureAtlas support_middle_right = WereScrewedGame.manager
 				.getAtlas( "support_middle_right" );
+		TextureAtlas curtains = WereScrewedGame.manager
+				.getAtlas( "curtains" );
 		int numDomes = 10;
 		TextureAtlas[ ] dome = new TextureAtlas[ numDomes ];
 		for ( int i = 1; i <= numDomes; ++i ) {
@@ -156,7 +158,7 @@ public class AlphaScreen extends Screen {
 		}
 
 		int max = 2030;
-		int offsetX = 400;
+		int offsetX = 200;
 		int offsetY = 0;
 		int floorY = -199 + offsetY;
 		int seatsY = -583 + offsetY;
@@ -171,7 +173,10 @@ public class AlphaScreen extends Screen {
 		int domeSliceY = 1638;
 
 		int supportY = 6500 + offsetY;
-		int supportX = 0 + offsetX;
+		int supportX = -max + seatsX;
+		
+		int curtainX = seatsX-max+1230;
+		int curtainY = seatsY+585;
 
 		Vector2 pos;
 		for ( int i = numDomes; i > 0; --i ) {
@@ -193,9 +198,26 @@ public class AlphaScreen extends Screen {
 			bgSkele.addBGDecal( b, pos.cpy( ).add( flipX * domeSliceX, 0 ) );
 		}
 
+		//support beam
 		bgSkele.addBGDecal( support_left.createSprite( "support_left" ),
 				new Vector2( supportX, supportY ) );
+		bgSkele.addBGDecal( support_middle_right.createSprite( "support_middle" ),
+				new Vector2( supportX+max, supportY+216 ) );
+		bgSkele.addBGDecal( support_middle_right.createSprite( "support_right" ),
+				new Vector2( supportX+2*max, supportY ) );
 
+		//curtains
+		bgSkele.addFGDecal( curtains.createSprite( "curtains_bottom_left" ),
+				new Vector2( curtainX, curtainY ) );
+		bgSkele.addFGDecal( curtains.createSprite( "curtains_top_left" ),
+				new Vector2( curtainX, curtainY+830 ) );
+		bgSkele.addFGDecal( curtains.createSprite( "curtains_middle" ),
+				new Vector2( curtainX+304, curtainY+1011 ) );
+		bgSkele.addFGDecal( curtains.createSprite( "curtains_top_right" ),
+				new Vector2( curtainX+2333, curtainY+834 ) );
+		bgSkele.addFGDecal( curtains.createSprite( "curtains_bottom_right" ),
+				new Vector2( curtainX+2398, curtainY ) );
+		
 		// floor
 		bgSkele.addBGDecal( floor_seats.createSprite( "floor_left" ),
 				new Vector2( floorX, floorY ) );

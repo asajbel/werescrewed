@@ -45,6 +45,7 @@
 /levels/alphabot/dome10.pack
 /levels/alphabot/support_left.pack
 /levels/alphabot/support_middle_right.pack
+/levels/alphabot/curtains.pack
 
 
 /levels/level1/player_female_idle.png
