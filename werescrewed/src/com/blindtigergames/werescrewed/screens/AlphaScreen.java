@@ -179,26 +179,9 @@ public class AlphaScreen extends Screen {
 		
 		int curtainX = seatsX-max+1230;
 		int curtainY = seatsY+585;
-
-		Vector2 pos;
-		for ( int i = numDomes; i > 0; --i ) {
-			int yStep = ( int ) ( ( 10 - i ) / 2 );
-			pos = new Vector2( -max + seatsX, seatsY + domeSliceY * yStep );// dome
-																			// starts
-																			// at
-																			// floor
-			int flipX = 4;
-			if ( i % 2 == 0 ) {// even
-				pos.x += domeSliceX;
-				flipX = 2;
-			}
-			Sprite a = dome[ i - 1 ].createSprite( "dome" + i );
-			a.setScale( 2, 1 );
-			bgSkele.addBGDecal( a, pos );
-			Sprite b = dome[ i - 1 ].createSprite( "dome" + i );
-			b.setScale( -2, 1 );
-			bgSkele.addBGDecal( b, pos.cpy( ).add( flipX * domeSliceX, 0 ) );
-		}
+		
+		initBackground(dome, numDomes, domeSliceX, domeSliceY, -max+seatsX,seatsY);
+		
 
 		//support beam
 		bgSkele.addBGDecal( support_left.createSprite( "support_left" ),
@@ -229,7 +212,7 @@ public class AlphaScreen extends Screen {
 		bgSkele.addBGDecal( stage_light.createSprite( "light_left" ),
 				new Vector2( lightX, lightY ) );
 		bgSkele.addBGDecal( stage_light.createSprite( "light_right" ),
-				new Vector2( lightX + 2035, lightY ) );
+				new Vector2( lightX + 2030, lightY ) );
 
 		// stage is in between floor & seats
 		bgSkele.addFGDecal( stage_pillar.createSprite( "stage_left" ),
@@ -262,13 +245,12 @@ public class AlphaScreen extends Screen {
 				new Vector2( max + seatsX, seatsY ) );
 		
 		
-		int decalX = -1475;
-		int decalY = 8;
+		int decalX = -738;//-482;//587
+		int decalY = -714;//-558;//536
 		Skeleton foot = (Skeleton)LevelFactory.entities.get( "footSkeleton" );
-		bgSkele.addBGDecal( decals.createSprite( "foot_mechanisms_and_pipes_NOCOLOR" ), new Vector2(decalX,decalY) );
-		bgSkele.addBGDecal( decals.createSprite( "shin_pipes_NOCOLOR" ), new Vector2(400+decalX,424+decalY) );
+		foot.addBGDecal( decals.createSprite( "foot_mechanisms_and_pipes_NOCOLOR" ), new Vector2(decalX,decalY) );
+		foot.addBGDecal( decals.createSprite( "shin_pipes_NOCOLOR" ), new Vector2(400+decalX,424+decalY) );
 		//bgSkele.addBGDecal( decals.createSprite( "foot_support_structureNOCOLOR" ), new Vector2(decalX,decalY) );
-		//shin_pipes_NOCOLOR
 		
 		
 		
@@ -278,12 +260,63 @@ public class AlphaScreen extends Screen {
 		level.root.addSkeleton( bgSkele );
 	}
 
-	private void initBackground( ) {
+	private void initBackground(TextureAtlas[] dome, int numDomes, int domeSliceX, int domeSliceY, int startX, int startY ) {
+		
 		BodyDef screwBodyDef;
 		Body body;
 		CircleShape screwShape;
 		FixtureDef screwFixture;
-		Entity bg_1_0 = new Entity( "bg_1_0", new Vector2( 0, 720 ), null,
+		Entity e1, e2;
+		Vector2 pos;
+		for ( int i = numDomes; i > 0; --i ) {
+			int yStep = ( int ) ( ( 10 - i ) / 2 );
+			pos = new Vector2( startX, startY + domeSliceY * yStep );
+			int flipX = 4;
+			if ( i % 2 == 0 ) {// even
+				pos.x += domeSliceX;
+				flipX = 2;
+			}
+			Sprite a = dome[ i - 1 ].createSprite( "dome" + i );
+			a.setScale( 2, 1 );
+			//bgSkele.addBGDecal( a, pos );
+			Sprite b = dome[ i - 1 ].createSprite( "dome" + i );
+			b.setScale( -2, 1 );
+			//bgSkele.addBGDecal( b, pos.cpy( ).add( flipX * domeSliceX, 0 ) );
+			
+			
+			screwBodyDef = new BodyDef( );
+			screwBodyDef.type = BodyType.KinematicBody;
+			screwBodyDef.position.set( 0, 0 );
+			screwBodyDef.fixedRotation = true;
+			body = level.world.createBody( screwBodyDef );
+			screwShape = new CircleShape( );
+			screwShape.setRadius( 64 * Util.PIXEL_TO_BOX );
+			screwFixture = new FixtureDef( );
+			screwFixture.filter.categoryBits = Util.CATEGORY_IGNORE;
+			screwFixture.filter.maskBits = Util.CATEGORY_NOTHING;
+			screwFixture.shape = screwShape;
+			screwFixture.isSensor = true;
+			body.createFixture( screwFixture );
+			body.setUserData( this );
+			//the position of each entity and sprite is set at this point.
+			e1 = new Entity("bg_1_"+i, pos, null, body, false);
+			e1.sprite = a;
+			e2 = new Entity("bg_2_"+i,pos.cpy( ).add( flipX * domeSliceX, 0 ), null, body, false);
+			e2.sprite = b;
+			//DENNIS: What should I set all these numbers to??
+			//if it helps, each bg piece is 1238x1642
+			e1.setMoverAtCurrentState( new ParallaxMover( new Vector2( 512,
+					1530 ), new Vector2( 512, -512 ), 0.0002f, .5f, level.camera,
+					false, LinearAxis.VERTICAL ) );
+			e2.setMoverAtCurrentState( new ParallaxMover( new Vector2( 512,
+					1530 ), new Vector2( 512, -512 ), 0.0002f, .5f, level.camera,
+					false, LinearAxis.VERTICAL ) );
+			level.backgroundRootSkeleton.addLooseEntity( e1 );
+			level.backgroundRootSkeleton.addLooseEntity( e2 );
+		}
+		
+		
+		/*Entity bg_1_0 = new Entity( "bg_1_0", new Vector2( 0, 720 ), null,
 				null, false );
 		Entity bg_1_1 = new Entity( "bg_1_1", new Vector2( 0, 720 ), null,
 				null, false );
@@ -336,7 +369,7 @@ public class AlphaScreen extends Screen {
 				1530 ), new Vector2( 512, -512 ), 0.0002f, 1f, level.camera,
 				false, LinearAxis.VERTICAL ) );
 		level.backgroundRootSkeleton.addLooseEntity( bg_1_0 );
-		level.backgroundRootSkeleton.addLooseEntity( bg_1_1 );
+		level.backgroundRootSkeleton.addLooseEntity( bg_1_1 );*/
 	}
 
 	private void createFootObjects( ) {
