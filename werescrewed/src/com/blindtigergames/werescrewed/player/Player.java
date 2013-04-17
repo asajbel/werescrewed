@@ -1851,7 +1851,7 @@ public class Player extends Entity {
 		feet = body.getFixtureList( ).get( 4 );
 		feet.setRestitution( 0.001f );
 		torso.getShape( ).setRadius( 0 );
-		torso.setFriction( 0.7f );
+		//torso.setFriction( 0.5f );
 		rightSensor.setSensor( true );
 		leftSensor.setSensor( true );
 		topSensor.setSensor( true );
