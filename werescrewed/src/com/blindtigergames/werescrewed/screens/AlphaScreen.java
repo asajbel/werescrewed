@@ -108,8 +108,8 @@ public class AlphaScreen extends Screen {
 
 		buildBackground( );
 		// new background stuff
+		//initBackground( );
 		// initBackground( );
-
 	}
 
 	@Override
@@ -288,7 +288,7 @@ public class AlphaScreen extends Screen {
 				bg_1_0.sprite.getOriginY( ) );
 		// bg_1_0.sprite.setScale( 1.05f, 1.1f );
 		bg_1_0.setMoverAtCurrentState( new ParallaxMover( new Vector2( 512,
-				1530 ), new Vector2( 512, -512 ), 0.0001f, .5f, level.camera,
+				1530 ), new Vector2( 512, -512 ), 0.0002f, .5f, level.camera,
 				false, LinearAxis.VERTICAL ) );
 		bg_1_1.sprite = bg_1_1.constructSprite( tex2 );
 		bg_1_1.sprite.setOrigin( bg_1_1.sprite.getWidth( ) / 4.0f,
@@ -297,7 +297,7 @@ public class AlphaScreen extends Screen {
 				bg_1_1.sprite.getOriginY( ) );
 		// bg_1_1.sprite.setScale( 1.05f, 1.1f );
 		bg_1_1.setMoverAtCurrentState( new ParallaxMover( new Vector2( 512,
-				1530 ), new Vector2( 512, -512 ), 0.0001f, 1f, level.camera,
+				1530 ), new Vector2( 512, -512 ), 0.0002f, 1f, level.camera,
 				false, LinearAxis.VERTICAL ) );
 		level.backgroundRootSkeleton.addLooseEntity( bg_1_0 );
 		level.backgroundRootSkeleton.addLooseEntity( bg_1_1 );
