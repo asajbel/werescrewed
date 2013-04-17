@@ -1626,6 +1626,7 @@ public class Player extends Entity {
 
 		if ( !inputHandler.screwPressed( ) ) {
 			screwButtonHeld = false;
+			extraState = ConcurrentState.Ignore; 
 		}
 		// attach to screws when attach button is pushed
 		if ( inputHandler.screwPressed( ) ) {
@@ -1639,7 +1640,7 @@ public class Player extends Entity {
 					if ( inputHandler.screwPressed( ) ) {
 						screwButtonHeld = true;
 					}
-				}
+				} else extraState = ConcurrentState.ScrewReady; 
 			} else {
 				if ( !screwButtonHeld ) {
 					if ( mover == null ) {
@@ -1742,6 +1743,7 @@ public class Player extends Entity {
 
 				jumpCounter = 0;
 			}
+			else extraState = ConcurrentState.ScrewReady;
 		}
 		// If the button is let go, then the player is dropped
 		// Basically you have to hold attach button to stick to screw
