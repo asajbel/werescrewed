@@ -105,13 +105,7 @@ public class AlphaScreen extends Screen {
 		//buildBackground( );
 		// new background stuff
 		initBackground( );
-		
-		//analog rotate mover fix add as initial mover
-//		TiledPlatform plat = ( TiledPlatform ) LevelFactory.entities
-//				.get( "chestRotatePlat2" );
-		PuzzleScrew pscrew = ( PuzzleScrew ) LevelFactory.entities.get( "chestPuzzleScrew9" );
-		pscrew.puzzleManager.runElement( pscrew, 0 );
-
+	
 	}
 
 	@Override
