@@ -27,6 +27,7 @@ import com.blindtigergames.werescrewed.entity.animator.ISpinemator;
 import com.blindtigergames.werescrewed.entity.animator.PlayerAnimator;
 import com.blindtigergames.werescrewed.entity.animator.SimpleFrameAnimator;
 import com.blindtigergames.werescrewed.entity.mover.IMover;
+import com.blindtigergames.werescrewed.entity.platforms.Platform;
 import com.blindtigergames.werescrewed.eventTrigger.EventTrigger;
 import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 import com.blindtigergames.werescrewed.graphics.TextureAtlas;
@@ -1182,8 +1183,8 @@ public class Entity implements GleedLoadable {
 			if ( j == loadedVerts.size - 1 )
 				continue;
 			Vector2 v = loadedVerts.get( j );
-			verts[ i ] = new Vector2( (v.x+positionPixel.x/*+getPositionPixel( ).x*/) * Util.PIXEL_TO_BOX,
-					(v.y+positionPixel.y/*+getPositionPixel( ).y*/) * Util.PIXEL_TO_BOX );
+			verts[ i ] = new Vector2( (v.x+positionPixel.x-getPositionPixel( ).x) * Util.PIXEL_TO_BOX,
+					(v.y+positionPixel.y-getPositionPixel( ).y) * Util.PIXEL_TO_BOX );
 			++i;
 		}
 		polygon.set( verts );
@@ -1209,6 +1210,12 @@ public class Entity implements GleedLoadable {
 			f.setFilterData( filter );
 		}
 		body.setType( body.getType( ) );
+		
+		
+		if ( entityType == EntityType.PLATFORM ){
+			Platform p = (Platform)this;
+			
+		}
 	}
 
 }

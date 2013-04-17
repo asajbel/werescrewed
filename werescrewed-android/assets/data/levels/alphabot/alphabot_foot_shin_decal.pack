@@ -1,0 +1,33 @@
+alphabot_foot_shin_decal.png
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+offset: 0, 0
+foot_ceiling_light_NOCOLOR
+  rotate: false
+  xy: 1693, 2
+  size: 141, 190
+  orig: 141, 190
+  offset: 0, 0
+  index: -1
+shin_pipes_NOCOLOR
+  rotate: false
+  xy: 2, 2
+  size: 659, 974
+  orig: 659, 974
+  offset: 0, 0
+  index: -1
+foot_mechanisms_and_pipes_NOCOLOR
+  rotate: false
+  xy: 663, 2
+  size: 1028, 452
+  orig: 1084, 484
+  offset: 17, 32
+  index: -1
+foot_support_structureNOCOLOR
+  rotate: false
+  xy: 663, 456
+  size: 939, 457
+  orig: 939, 457
+  offset: 0, 0
+  index: -1
