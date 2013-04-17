@@ -272,9 +272,6 @@ public class Player extends Entity {
 		if ( playerState != PlayerState.Screwing && screwAttachTimeout > 0 ) {
 			screwAttachTimeout--;
 		}
-		if ( name.equals( "player1" ) ) {
-			Gdx.app.log( "player update", name + " is " + playerState );
-		}
 		// if dead do dead stuff
 		if ( isDead ) {
 			// if player is dead but state is not dead
