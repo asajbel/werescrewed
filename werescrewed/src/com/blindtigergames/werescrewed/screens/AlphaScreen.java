@@ -305,11 +305,9 @@ public class AlphaScreen extends Screen {
 			e2.sprite = b;
 			//DENNIS: What should I set all these numbers to??
 			//if it helps, each bg piece is 1238x1642
-			e1.setMoverAtCurrentState( new ParallaxMover( new Vector2( 512,
-					1530 ), new Vector2( 512, -512 ), 0.0002f, .5f, level.camera,
+			e1.setMoverAtCurrentState( new ParallaxMover( new Vector2( e1.getPositionPixel( ) ), new Vector2( e1.getPositionPixel( ).sub( 0f, 512f ) ), 0.0002f, .5f, level.camera,
 					false, LinearAxis.VERTICAL ) );
-			e2.setMoverAtCurrentState( new ParallaxMover( new Vector2( 512,
-					1530 ), new Vector2( 512, -512 ), 0.0002f, .5f, level.camera,
+			e2.setMoverAtCurrentState( new ParallaxMover( new Vector2( e2.getPositionPixel( ) ), new Vector2( e2.getPositionPixel( ).sub( 0f, 512f ) ), 0.0002f, .5f, level.camera,
 					false, LinearAxis.VERTICAL ) );
 			level.backgroundRootSkeleton.addLooseEntity( e1 );
 			level.backgroundRootSkeleton.addLooseEntity( e2 );

@@ -221,7 +221,7 @@ public class Player extends Entity {
 			spinemator.setPosition( body.getWorldCenter( ) );
 		}
 		Filter filter = new Filter( );
-		for ( Fixture f: body.getFixtureList( ) ) {
+		for ( Fixture f : body.getFixtureList( ) ) {
 			filter.categoryBits = Util.CATEGORY_PLAYER;
 			filter.maskBits = Util.CATEGORY_EVERYTHING;
 			f.setFilterData( filter );
@@ -249,8 +249,8 @@ public class Player extends Entity {
 		}
 		addBehindParticleEffect( "revive", false, false );
 		// land_cloud = ParticleEffect.loadEffect( "land_cloud" );
-		
-		createCircle(PLAYER_FRICTION);
+
+		createCircle( PLAYER_FRICTION );
 		frictionCounter = PLAYER_FRICTION;
 	}
 
@@ -261,7 +261,7 @@ public class Player extends Entity {
 	 */
 	public void update( float deltaTime ) {
 		super.update( deltaTime );
-		
+
 		if ( Gdx.input.isKeyPressed( Keys.G ) )
 			Gdx.app.log( "steamCollide: " + steamCollide, "steamDone: "
 					+ steamDone );
@@ -310,12 +310,11 @@ public class Player extends Entity {
 			if ( respawnTimeout > 0 ) {
 				respawnTimeout--;
 			}
-			
+
 			// build extra fixture to have new friction
-			
-			
-			//updateFootFriction( );
-			
+
+			// updateFootFriction( );
+
 			// test if player is still moving after timeout
 			if ( playerDirection != PlayerDirection.Idle ) {
 				if ( runTimeout == 0 && playerState != PlayerState.Jumping
@@ -340,7 +339,7 @@ public class Player extends Entity {
 			}
 		}
 
-		updateFootFrictionNew();
+		updateFootFrictionNew( );
 		// switch between states
 		switch ( playerState ) {
 		case Dead:
@@ -354,7 +353,6 @@ public class Player extends Entity {
 			break;
 		case Screwing:
 			if ( knockedOff ) {
-				detachScrewImpulse( );
 				removePlayerToScrew( );
 				knockedOff = false;
 			} else if ( mover != null ) {
@@ -383,9 +381,7 @@ public class Player extends Entity {
 				if ( currentScrew.getScrewType( ) == ScrewType.SCREW_RESURRECT ) {
 					ResurrectScrew rezScrew = ( ResurrectScrew ) currentScrew;
 					if ( rezScrew.deleteQueue( ) ) {
-						if ( !detachScrewImpulse( ) ) {
-							jump( );
-						}
+						jump( );
 						removePlayerToScrew( );
 					}
 				}
@@ -867,56 +863,52 @@ public class Player extends Entity {
 
 	}
 
-	private void updateFootFrictionNew(){
+	private void updateFootFrictionNew( ) {
 
-	
-		if(prevButton != null){
-			if(body.getLinearVelocity().x > MAX_VELOCITY){
-				body.setLinearVelocity( MAX_VELOCITY, body.getLinearVelocity().y );
-			} else if (body.getLinearVelocity().x < -MAX_VELOCITY){
-				body.setLinearVelocity( -MAX_VELOCITY, body.getLinearVelocity().y );
+		if ( prevButton != null ) {
+			if ( body.getLinearVelocity( ).x > MAX_VELOCITY ) {
+				body.setLinearVelocity( MAX_VELOCITY,
+						body.getLinearVelocity( ).y );
+			} else if ( body.getLinearVelocity( ).x < -MAX_VELOCITY ) {
+				body.setLinearVelocity( -MAX_VELOCITY,
+						body.getLinearVelocity( ).y );
 			}
 		}
-		
-		if(prevButton == null){
-			
+
+		if ( prevButton == null ) {
 
 			if ( feet.getFriction( ) < PLAYER_FRICTION ) {
-				
+
 				frictionCounter += FRICTION_INCREMENT;
-			
+
 				if ( frictionCounter > PLAYER_FRICTION ) {
-					frictionCounter =  PLAYER_FRICTION ;
+					frictionCounter = PLAYER_FRICTION;
 
 				}
-			
-				createCircle(frictionCounter);
-			
-				
+
+				createCircle( frictionCounter );
+
 			}
 		} else {
-			
-			if(grounded && (prevPlayerDir != playerDirection)){
-				createCircle(PLAYER_FRICTION);
+
+			if ( grounded && ( prevPlayerDir != playerDirection ) ) {
+				createCircle( PLAYER_FRICTION );
 				frictionCounter = PLAYER_FRICTION;
 			}
-				
-			
+
 			if ( feet.getFriction( ) > 0 ) {
-				
+
 				frictionCounter -= FRICTION_INCREMENT;
 				if ( frictionCounter < 0 ) {
 					frictionCounter = 0;
 				}
-				createCircle(frictionCounter);
-				
+				createCircle( frictionCounter );
+
 			}
 		}
-		
-		
 
 	}
-	
+
 	/**
 	 * sets the body of some body that the player is hitting
 	 */
@@ -926,7 +918,7 @@ public class Player extends Entity {
 			// if on a screw that isn't already over a platform and a platform
 			// hits you
 			// you get knocked off
-			//knockedOff = true;
+			// knockedOff = true;
 		} else {
 			currentPlatform = platform;
 			if ( playerState == PlayerState.Falling ) {
@@ -1014,23 +1006,6 @@ public class Player extends Entity {
 	}
 
 	/**
-	 * applies the current screws directional impulse
-	 */
-	private boolean detachScrewImpulse( ) {
-		if ( currentPlatform != null && currentScrew.getDepth( ) >= 0
-				&& currentScrew.getDetachDirection( ) != null
-				&& currentScrew.getDetachDirection( ).len( ) != 0f ) {
-			body.setLinearVelocity( new Vector2( body.getLinearVelocity( ).x,
-					0.0f ) );
-			Vector2 temp = currentScrew.getDetachDirection( ).cpy( );
-			body.applyLinearImpulse( temp.mul( JUMP_IMPULSE ),
-					body.getWorldCenter( ) );
-			return true;
-		}
-		return false;
-	}
-
-	/**
 	 * jump logic for every time the jump button is pushed before applying an
 	 * actual jump
 	 */
@@ -1039,12 +1014,12 @@ public class Player extends Entity {
 			if ( canJumpOffScrew ) {
 				if ( mover == null ) {
 					// jumpPressedKeyboard = true;
-					if ( !detachScrewImpulse( ) ) {
+					if ( currentScrew.getScrewType( ) != ScrewType.SCREW_STRUCTURAL
+							|| currentScrew.getDepth( ) >= 0 ) {
 						jump( );
-					}
-					if ( currentScrew.getDepth( ) >= 0 ) {
 						removePlayerToScrew( );
 					}
+					removePlayerToScrew( );
 					if ( Metrics.activated ) {
 						Metrics.addPlayerJumpPosition( this.getPositionPixel( ) );
 						Metrics.addToUnscrewListOnce = false;
@@ -1089,10 +1064,9 @@ public class Player extends Entity {
 			if ( canJumpOffScrew ) {
 				if ( mover == null ) {
 					// jumpPressedController = true;
-					if ( !detachScrewImpulse( ) ) {
+					if ( currentScrew.getScrewType( ) != ScrewType.SCREW_STRUCTURAL
+							|| currentScrew.getDepth( ) >= 0 ) {
 						jump( );
-					}
-					if ( currentScrew.getDepth( ) >= 0 ) {
 						removePlayerToScrew( );
 					}
 					if ( Metrics.activated ) {
@@ -1273,8 +1247,8 @@ public class Player extends Entity {
 	private void processMovementDown( ) {
 		if ( playerState == PlayerState.Screwing ) {
 			if ( mover == null ) {
-				detachScrewImpulse( );
-				if ( currentScrew.getDepth( ) >= 0 ) {
+				if ( currentScrew.getScrewType( ) != ScrewType.SCREW_STRUCTURAL
+						|| currentScrew.getDepth( ) >= 0 ) {
 					removePlayerToScrew( );
 				}
 			}
@@ -1515,6 +1489,7 @@ public class Player extends Entity {
 			// switchedScrewingDirection = false;
 		}
 		if ( !controllerListener.screwPressed( ) ) {
+			extraState = ConcurrentState.Ignore;
 			screwButtonHeld = false;
 		}
 		if ( !controllerListener.isGrabPressed( ) ) {
@@ -1623,7 +1598,7 @@ public class Player extends Entity {
 
 		if ( !inputHandler.screwPressed( ) ) {
 			screwButtonHeld = false;
-			extraState = ConcurrentState.Ignore; 
+			extraState = ConcurrentState.Ignore;
 		}
 		// attach to screws when attach button is pushed
 		if ( inputHandler.screwPressed( ) ) {
@@ -1637,12 +1612,14 @@ public class Player extends Entity {
 					if ( inputHandler.screwPressed( ) ) {
 						screwButtonHeld = true;
 					}
-				} else extraState = ConcurrentState.ScrewReady; 
+				} else
+					extraState = ConcurrentState.ScrewReady;
 			} else {
 				if ( !screwButtonHeld ) {
 					if ( mover == null ) {
-						detachScrewImpulse( );
-						if ( currentScrew.getDepth( ) >= 0 ) {
+						if ( currentScrew != null
+								&& currentScrew.getScrewType( ) != ScrewType.SCREW_STRUCTURAL
+								|| currentScrew.getDepth( ) >= 0 ) {
 							removePlayerToScrew( );
 						}
 					}
@@ -1739,16 +1716,16 @@ public class Player extends Entity {
 				}
 
 				jumpCounter = 0;
-			}
-			else extraState = ConcurrentState.ScrewReady;
+			} else
+				extraState = ConcurrentState.ScrewReady;
 		}
 		// If the button is let go, then the player is dropped
 		// Basically you have to hold attach button to stick to screw
 		if ( !controllerListener.screwPressed( )
 				&& playerState == PlayerState.Screwing ) {
 			if ( mover == null ) {
-				detachScrewImpulse( );
-				if ( currentScrew.getDepth( ) >= 0 ) {
+				if ( currentScrew.getScrewType( ) != ScrewType.SCREW_STRUCTURAL
+						|| currentScrew.getDepth( ) >= 0 ) {
 					removePlayerToScrew( );
 				}
 			}
@@ -1850,7 +1827,7 @@ public class Player extends Entity {
 		feet = body.getFixtureList( ).get( 4 );
 		feet.setRestitution( 0.001f );
 		torso.getShape( ).setRadius( 0 );
-		//torso.setFriction( 0.5f );
+		// torso.setFriction( 0.5f );
 		rightSensor.setSensor( true );
 		leftSensor.setSensor( true );
 		topSensor.setSensor( true );
@@ -1878,22 +1855,18 @@ public class Player extends Entity {
 		controller = null;
 
 	}
-	
-	private void createCircle(float friction){
+
+	private void createCircle( float friction ) {
 		CircleShape ps = new CircleShape( );
 		ps.setRadius( feet.getShape( ).getRadius( ) );
 
-		ps.setPosition( ps.getPosition( ).add( FEET_OFFSET_X,
-				FEET_OFFSET_Y ) );
+		ps.setPosition( ps.getPosition( ).add( FEET_OFFSET_X, FEET_OFFSET_Y ) );
 		FixtureDef fd = new FixtureDef( );
 
-		
 		fd.shape = ps;
 		fd.density = 1f;
 		fd.restitution = 0.001f;
 		fd.friction = friction;
-		
-		
 
 		if ( playerState == PlayerState.Screwing ) {
 			fd.isSensor = true;
@@ -1906,6 +1879,5 @@ public class Player extends Entity {
 
 		feet = body.createFixture( fd );
 
-	
 	}
 }

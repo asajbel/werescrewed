@@ -1,7 +1,5 @@
 package com.blindtigergames.werescrewed.checkpoints;
 
-import java.util.ArrayList;
-
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
@@ -77,8 +75,6 @@ public class ProgressManager {
 				}
 			}
 		}
-		// }
-		// }
 	}
 
 	public void update( float deltaTime ) {
@@ -102,40 +98,11 @@ public class ProgressManager {
 			p1Ghost = null;
 			p2Ghost = null;
 		}
-		// for ( int i = 0; i < checkPoints.size( ); i++ ) {
-		// CheckPoint chkpt = checkPoints.get( i );
-		// if ( chkpt.getEntity( ).isActive( ) ) {
-		// if ( i != currentCheckPoint ) {
-		// // deactivate all the checkpoints that are not
-		// // the current checkpoint
-		// chkpt.deactivate( );
-		// }
-		//currentCheckPoint.update( deltaTime );
-		// }
-		// }
 		// update the rez screw if it exists
 		if ( resurrectScrew != null ) {
-			// if ( checkPointChange ) {
-			// while ( resurrectScrew.body.getJointList( ).iterator( )
-			// .hasNext( ) ) {
-			// world.destroyJoint( resurrectScrew.body.getJointList( )
-			// .get( 0 ).joint );
-			// }
-			// resurrectScrew.addStructureJoint( checkPoints
-			// .get( currentCheckPoint ).getEntity( ) );
-			// }
 			resurrectScrew.update( deltaTime );
 		}
 		if ( extraRezScrew != null ) {
-			// if ( checkPointChange ) {
-			// while ( extraRezScrew.body.getJointList( ).iterator( )
-			// .hasNext( ) ) {
-			// world.destroyJoint( extraRezScrew.body.getJointList( ).get(
-			// 0 ).joint );
-			// }
-			// extraRezScrew.addStructureJoint( checkPoints
-			// .get( currentCheckPoint ).getEntity( ) );
-			// }
 			extraRezScrew.update( deltaTime );
 		}
 		if ( p1Ghost != null ) {
@@ -179,11 +146,6 @@ public class ProgressManager {
 	 * @param batch
 	 */
 	public void draw( SpriteBatch batch, float deltaTime ) {
-		// for ( CheckPoint c : checkPoints ) {
-		// if ( c.getEntity( ).isActive( ) ) {
-		//currentCheckPoint.draw( batch, deltaTime );
-		// }
-		// }
 		if ( resurrectScrew != null ) {
 			resurrectScrew.draw( batch, deltaTime );
 		}
