@@ -44,7 +44,7 @@ public class DragonScreen extends Screen {
 
 		buildGround( );
 		buildDynamicSkeleton();
-		buildHazardSkeleton( );
+		//buildHazardSkeleton( );
 		complexPlatform( );
 	}
 
@@ -78,7 +78,7 @@ public class DragonScreen extends Screen {
 	void buildDynamicSkeleton( ) {
 		SkeletonBuilder sb = new SkeletonBuilder( level.world );
 		Skeleton dyn_skeleton = sb.name( "dyn_skeleton" ).position( -100, 400 )
-				.density( 0.1f ).dynamic( ).build( );
+				.dynamic( ).build( );
 		PlatformBuilder pb = new PlatformBuilder( level.world );
 
 		Platform tp = pb.name( "kin_on_dyn_skele" ).dimensions( 5, 1 )
@@ -126,7 +126,7 @@ public class DragonScreen extends Screen {
 		circle.dispose( );
 
 		balloon.setMoverAtCurrentState( new TargetImpulseMover( balloon
-				.getPositionPixel( ).add( 0, 250 ), Vector2.Zero, .4f, true,
+				.getPositionPixel( ).add( 0, 0 ), Vector2.Zero, .4f, true,
 				100 ) );
 
 		return balloon;
