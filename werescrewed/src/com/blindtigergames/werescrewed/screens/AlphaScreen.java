@@ -151,6 +151,8 @@ public class AlphaScreen extends Screen {
 				.getAtlas( "support_middle_right" );
 		TextureAtlas curtains = WereScrewedGame.manager
 				.getAtlas( "curtains" );
+		TextureAtlas decals = WereScrewedGame.manager
+				.getAtlas( "alphabot_foot_shin_decal" );
 		int numDomes = 10;
 		TextureAtlas[ ] dome = new TextureAtlas[ numDomes ];
 		for ( int i = 1; i <= numDomes; ++i ) {
@@ -258,6 +260,18 @@ public class AlphaScreen extends Screen {
 				new Vector2( 0 + seatsX, seatsY ) );
 		bgSkele.addFGDecal( floor_seats.createSprite( "seats_right" ),
 				new Vector2( max + seatsX, seatsY ) );
+		
+		
+		int decalX = -1475;
+		int decalY = 8;
+		Skeleton foot = (Skeleton)LevelFactory.entities.get( "footSkeleton" );
+		bgSkele.addBGDecal( decals.createSprite( "foot_mechanisms_and_pipes_NOCOLOR" ), new Vector2(decalX,decalY) );
+		bgSkele.addBGDecal( decals.createSprite( "shin_pipes_NOCOLOR" ), new Vector2(400+decalX,424+decalY) );
+		//bgSkele.addBGDecal( decals.createSprite( "foot_support_structureNOCOLOR" ), new Vector2(decalX,decalY) );
+		//shin_pipes_NOCOLOR
+		
+		
+		
 
 		level.skelBGList.add( bgSkele );
 		level.skelFGList.add( bgSkele );
