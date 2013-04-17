@@ -36,7 +36,7 @@
 	{ "name": "B_hat", "bone": "hat", "attachment": "B_hat" },
 	{ "name": "head", "bone": "head", "attachment": "head" },
 	{ "name": "F_hat", "bone": "hat", "attachment": "F_hat" },
-	{ "name": "screw_driver_ready", "bone": "screw_driver_ready", "attachment": "screw_driver" },
+	{ "name": "screw_driver_ready", "bone": "screw_driver", "attachment": "screw_driver" },
 	{ "name": "R_upper_arm", "bone": "R_upper_arm", "attachment": "R_upper_arm" },
 	{ "name": "R_lower_arm", "bone": "R_lower_arm", "attachment": "R_lower_arm" },
 	{ "name": "R_hand", "bone": "R_hand", "attachment": "R_hand" }
@@ -80,7 +80,7 @@
 			"F_hat": { "x": 16.87, "y": -1.92, "rotation": -19.35, "width": 52, "height": 49 }
 		},
 		"screw_driver_ready": {
-			"screw_driver": { "x": 48.79, "y": -0.22, "rotation": -17.17, "width": 101, "height": 39 }
+			"screw_driver": { "x": 34.7, "y": 1.43, "rotation": -14.62, "width": 101, "height": 39 }
 		},
 		"R_upper_arm": {
 			"R_upper_arm": { "x": 3.93, "y": -0.46, "rotation": 154.8, "width": 13, "height": 7 }
