@@ -324,11 +324,11 @@ public class AlphaScreen extends Screen {
 		TiledPlatform footPlat6 = ( TiledPlatform ) LevelFactory.entities
 				.get( "footPlat6" );
 
-		RevoluteJointDef rjd = new RevoluteJointDef( );
-		rjd.initialize( structurePlat3.body, pivotPlat1.body, pivotPlat1
-				.getPosition( ).add( pivotPlat1.getMeterWidth( ) / 2, 0 ) );
-		rjd.collideConnected = false;
-		level.world.createJoint( rjd );
+		// RevoluteJointDef rjd = new RevoluteJointDef( );
+		// rjd.initialize( structurePlat3.body, pivotPlat1.body, pivotPlat1
+		// .getPosition( ).add( pivotPlat1.getMeterWidth( ) / 2, 0 ) );
+		// rjd.collideConnected = false;
+		// level.world.createJoint( rjd );
 
 		structurePlat3.setGroupIndex( ( short ) -5 );
 		footPlat6.setGroupIndex( ( short ) -5 );
