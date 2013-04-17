@@ -117,11 +117,10 @@ public class MyContactListener implements ContactListener {
 						case EVENTTRIGGER:
 							EventTrigger et = ( EventTrigger ) object;
 							et.setActivated( true, player.name );
+							if ( et.getBeginAction( ) instanceof RemoveEntityAction ) {
+								et.getBeginAction( ).act( player );
+							}
 							if ( playerFix == player.torso ) {
-								// stops both players from dying
-								if ( et.getBeginAction( ) instanceof RemoveEntityAction ) {
-									et.getBeginAction( ).act( player );
-								} else
 									et.triggerBeginEvent( );
 							}
 							break;

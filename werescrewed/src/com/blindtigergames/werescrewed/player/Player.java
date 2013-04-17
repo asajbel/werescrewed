@@ -269,8 +269,11 @@ public class Player extends Entity {
 			// setPlatformTransform( platformOffset );
 			kinematicTransform = false;
 		}
-		if ( screwAttachTimeout > 0 ) {
+		if ( playerState != PlayerState.Screwing && screwAttachTimeout > 0 ) {
 			screwAttachTimeout--;
+		}
+		if ( name.equals( "player1" ) ) {
+			Gdx.app.log( "player update", name + " is " + playerState );
 		}
 		// if dead do dead stuff
 		if ( isDead ) {
@@ -1623,10 +1626,11 @@ public class Player extends Entity {
 
 		if ( !inputHandler.screwPressed( ) ) {
 			screwButtonHeld = false;
+			extraState = ConcurrentState.Ignore; 
 		}
 		// attach to screws when attach button is pushed
 		if ( inputHandler.screwPressed( ) ) {
-			if ( playerState != PlayerState.Screwing ) {
+			if ( playerState != PlayerState.Screwing && screwAttachTimeout == 0 ) {
 				if ( currentScrew != null ) {
 					attachToScrew( );
 					jumpCounter = 0;
@@ -1636,7 +1640,7 @@ public class Player extends Entity {
 					if ( inputHandler.screwPressed( ) ) {
 						screwButtonHeld = true;
 					}
-				}
+				} else extraState = ConcurrentState.ScrewReady; 
 			} else {
 				if ( !screwButtonHeld ) {
 					if ( mover == null ) {
@@ -1729,7 +1733,7 @@ public class Player extends Entity {
 		}
 		// If player hits the screw button and is in distance
 		// then attach the player to the screw
-		if ( ( controllerListener.screwPressed( ) )
+		if ( ( controllerListener.screwPressed( ) && screwAttachTimeout == 0 )
 				&& ( playerState != PlayerState.Screwing ) ) {
 			if ( currentScrew != null ) {
 				attachToScrew( );
@@ -1739,6 +1743,7 @@ public class Player extends Entity {
 
 				jumpCounter = 0;
 			}
+			else extraState = ConcurrentState.ScrewReady;
 		}
 		// If the button is let go, then the player is dropped
 		// Basically you have to hold attach button to stick to screw
@@ -1848,6 +1853,7 @@ public class Player extends Entity {
 		feet = body.getFixtureList( ).get( 4 );
 		feet.setRestitution( 0.001f );
 		torso.getShape( ).setRadius( 0 );
+		//torso.setFriction( 0.5f );
 		rightSensor.setSensor( true );
 		leftSensor.setSensor( true );
 		topSensor.setSensor( true );

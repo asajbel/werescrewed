@@ -10194,12 +10194,12 @@
                             <Y>-960</Y>
                         </Vector2>
                         <Vector2>
-                            <X>1376</X>
-                            <Y>-16</Y>
+                            <X>1424</X>
+                            <Y>-944</Y>
                         </Vector2>
                         <Vector2>
-                            <X>2400</X>
-                            <Y>-48</Y>
+                            <X>4624</X>
+                            <Y>-2384</Y>
                         </Vector2>
                         <Vector2>
                             <X>2672</X>
@@ -10254,6 +10254,32 @@
                         <PackedValue>2445279424</PackedValue>
                     </LineColor>
                 </Item>
+                <Item xsi:type="RectangleItem" Name="stageWall" Visible="true">
+                    <Position>
+                        <X>832</X>
+                        <Y>-1056</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="definition" Type="string" Description="">
+                            <string>tiledPlatform</string>
+                        </Property>
+                        <Property Name="attatchtoskeleton" Type="string" Description="">
+                            <string>skeleton1</string>
+                        </Property>
+                        <Property Name="invisible" Type="string" Description="">
+                            <string />
+                        </Property>
+                    </CustomProperties>
+                    <Width>32</Width>
+                    <Height>1072</Height>
+                    <FillColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </FillColor>
+                </Item>
             </Items>
             <ScrollSpeed>
                 <X>1</X>
@@ -10263,11 +10289,11 @@
     </Layers>
     <CustomProperties />
     <EditorRelated>
-        <NextItemNumber>520</NextItemNumber>
-        <ContentRootFolder>C:\Users\Bryan\Documents\GitHub\werescrewed\gleed-textures</ContentRootFolder>
+        <NextItemNumber>519</NextItemNumber>
+        <ContentRootFolder>\\vmware-host\Shared Folders\Documents\werescrewed\gleed-textures</ContentRootFolder>
         <CameraPosition>
-            <X>-2451.29419</X>
-            <Y>-2917.8916</Y>
+            <X>1240.38232</X>
+            <Y>-2892.89185</Y>
         </CameraPosition>
         <Version>1.3.0.0</Version>
     </EditorRelated>

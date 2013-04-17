@@ -182,6 +182,13 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		StrippedScrew strScrew2 = new StrippedScrew( "strScrew4", new Vector2(
 				500, 500 ), rootSkeleton, world, Vector2.Zero );
 		rootSkeleton.addStrippedScrew( strScrew2 );
+		
+		StrippedScrew strScrew6 = new StrippedScrew( "strScrew422", new Vector2(
+				2000, 300 ), rootSkeleton, world, Vector2.Zero );
+		rootSkeleton.addStrippedScrew( strScrew6 );
+		StrippedScrew strScrew5 = new StrippedScrew( "strScrew442", new Vector2(
+				2200, 100 ), rootSkeleton, world, Vector2.Zero );
+		rootSkeleton.addStrippedScrew( strScrew5 );
 
 		RevoluteJointDef revoluteJointDef = new RevoluteJointDef( );
 		revoluteJointDef.initialize( rootSkeleton.body, strScrew2.body,

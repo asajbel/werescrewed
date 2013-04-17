@@ -31,6 +31,9 @@ public class PlayerSpinemator implements ISpinemator {
 	protected PlayerAnim previous;
 	protected PlayerAnim next;
 	protected Animation mixer;
+	protected boolean screwReady;
+	protected static final String READY = "_screw_ready";
+	protected String addScrewReady = ""; 
 	protected boolean mixerLoop;
 	protected Player player;
 	protected float time = 0f;
@@ -86,7 +89,7 @@ public class PlayerSpinemator implements ISpinemator {
 
 		if ( next != getCurrentAnim( ) ) {
 			next = getCurrentAnim( );
-			time = 0f;
+//			time = 0f;
 			startTime = 0f;
 			mixTime = 0; 
 		}
@@ -101,7 +104,7 @@ public class PlayerSpinemator implements ISpinemator {
 
 		mixRatio = mixTime / anim.getDuration( );
 		mixer.mix( skel, time, next.loopBool, mixRatio );
-
+//		mixer.apply( skel, time, next.loopBool ); 
 		if ( mixTime < anim.getDuration( ) / 2 ) {
 			// mixer.mix( skel, time, next.loopBool, mixRatio );
 		} else {
@@ -137,18 +140,36 @@ public class PlayerSpinemator implements ISpinemator {
 		case Standing:
 			if ( player.getMoveState( ) == PlayerDirection.Left
 					|| player.getMoveState( ) == PlayerDirection.Right ) {
+				if ( player.getExtraState( ) == ConcurrentState.ScrewReady) {
+					return PlayerAnim.RUN_SCREW;
+				}
 				return PlayerAnim.RUN;
+			}
+			if ( player.getExtraState( ) == ConcurrentState.ScrewReady) {
+				return PlayerAnim.IDLE_SCREW;
 			}
 			return PlayerAnim.IDLE;
 		case Landing:
 			if ( player.getMoveState( ) == PlayerDirection.Left
 					|| player.getMoveState( ) == PlayerDirection.Right ) {
+				if ( player.getExtraState( ) == ConcurrentState.ScrewReady) {
+					return PlayerAnim.RUN_SCREW;
+				}
 				return PlayerAnim.RUN;
+			}
+			if ( player.getExtraState( ) == ConcurrentState.ScrewReady) {
+				return PlayerAnim.IDLE_SCREW;
 			}
 			return PlayerAnim.IDLE;
 		case Jumping:
+			if ( player.getExtraState( ) == ConcurrentState.ScrewReady) {
+				return PlayerAnim.JUMP_UP_SCREW;
+			}
 			return PlayerAnim.JUMP_UP;
 		case Falling:
+			if ( player.getExtraState( ) == ConcurrentState.ScrewReady) {
+				return PlayerAnim.FALL_SCREW;
+			}
 			return PlayerAnim.FALL_IDLE;
 		case HeadStand:
 			if ( player.getExtraState( ) == ConcurrentState.ExtraJumping ) {
@@ -162,6 +183,9 @@ public class PlayerSpinemator implements ISpinemator {
 		case Dead:
 			return PlayerAnim.DEATH;
 		default:
+			if ( player.getExtraState( ) == ConcurrentState.ScrewReady) {
+				return PlayerAnim.IDLE_SCREW;
+			}
 			return PlayerAnim.IDLE;
 		}
 	}
