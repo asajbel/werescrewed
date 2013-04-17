@@ -3,6 +3,7 @@ package com.blindtigergames.werescrewed.entity;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
@@ -514,6 +515,7 @@ public class Skeleton extends Platform {
 
 	@Override
 	public void draw( SpriteBatch batch, float deltaTime ) {
+		
 		// super.draw( batch );
 		if ( visible ) {
 			//drawBGDecals( batch );
@@ -536,6 +538,7 @@ public class Skeleton extends Platform {
 				//batch.setColor( c.r, c.g, c.b, oldAlpha );
 			}
 			if ( applyFadeToFGDecals ){
+				
 				fadeFGDecals();
 			}
 			//drawFGDecals( batch );
@@ -693,11 +696,22 @@ public class Skeleton extends Platform {
 	 * @param hasTransparency
 	 *            true if you want to see into the robot
 	 */
-	public void setFGFade( boolean hasTransparency ) {
+	public void setFade( boolean hasTransparency ) {
 		float speed = fadeSpeed;
+		//if ( !hasTransparency ){
+		//	Gdx.app.log("stageSkeleton","NO TRANSPARENCY");
+		//}
 		if ( hasTransparency ) {
 			speed = -fadeSpeed;
 		}
+		/*else{
+			if(name.equals("stageSkeleton")){
+				
+				//speed = fadeSpeed;
+			}
+		}
+		if(name.equals("stageSkeleton"))
+			Gdx.app.log("stageSkeleton","Speed: "+speed+" Time:"+alphaFadeAnimator.getTime( ));*/
 		alphaFadeAnimator.speed( speed );
 	}
 	
