@@ -273,7 +273,7 @@ public class Player extends Entity {
 			screwAttachTimeout--;
 		}
 		if ( name.equals( "player1" ) ) {
-			Gdx.app.log( "player update", name + " is " + playerState );
+//			Gdx.app.log( "player update", name + " is " + playerState );
 		}
 		// if dead do dead stuff
 		if ( isDead ) {
@@ -1518,6 +1518,7 @@ public class Player extends Entity {
 			// switchedScrewingDirection = false;
 		}
 		if ( !controllerListener.screwPressed( ) ) {
+			extraState = ConcurrentState.Ignore; 
 			screwButtonHeld = false;
 		}
 		if ( !controllerListener.isGrabPressed( ) ) {
