@@ -60,10 +60,7 @@ public class AnalogRotateMover implements IMover {
 	public void runPuzzleMovement( Screw screw, float screwVal, Platform p ) {
 		if (p.currentMover( ) == null || p.currentMover( ).getMoverType( ) != puzzleType ) {
 			p.setMoverAtCurrentState( this );
-			transformBody.setTransform( p.getPosition( ), p.getAngle( ) );
-		}
-		if ( speedSteps == 0 ) {
-			transformBody.setTransform( p.getPosition( ), p.getAngle( ) );			
+			transformBody.setTransform( p.getPosition( ), p.getLocalRot( ) );
 		}
 		if ( screwVal > lastVal ) {
 			clockWise = true;
