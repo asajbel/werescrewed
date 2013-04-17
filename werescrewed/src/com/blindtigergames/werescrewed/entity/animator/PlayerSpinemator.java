@@ -89,7 +89,7 @@ public class PlayerSpinemator implements ISpinemator {
 
 		if ( next != getCurrentAnim( ) ) {
 			next = getCurrentAnim( );
-			time = 0f;
+//			time = 0f;
 			startTime = 0f;
 			mixTime = 0; 
 		}
@@ -104,7 +104,7 @@ public class PlayerSpinemator implements ISpinemator {
 
 		mixRatio = mixTime / anim.getDuration( );
 		mixer.mix( skel, time, next.loopBool, mixRatio );
-
+//		mixer.apply( skel, time, next.loopBool ); 
 		if ( mixTime < anim.getDuration( ) / 2 ) {
 			// mixer.mix( skel, time, next.loopBool, mixRatio );
 		} else {

@@ -34,7 +34,7 @@
 	{ "name": "screw_driver", "bone": "screw_driver", "attachment": "screw_driver" },
 	{ "name": "B_hat", "bone": "hat", "attachment": "B_hat" },
 	{ "name": "head", "bone": "head", "attachment": "head" },
-	{ "name": "screw_driver2", "bone": "screw_driver", "attachment": "screw_driver" },
+	{ "name": "screw_driver2", "bone": "screw_driver", "color": "ffffff00", "attachment": "screw_driver" },
 	{ "name": "F_hat", "bone": "hat", "attachment": "F_hat" },
 	{ "name": "R_lower_leg", "bone": "R_lower_leg", "attachment": "R_lower_leg" },
 	{ "name": "R_boot", "bone": "R_boot", "attachment": "R_boot" },
@@ -738,11 +738,14 @@
 			}
 		},
 		"slots": {
+			"screw_driver2": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
 			"screw_driver": {
 				"color": [
-					{ "time": 0, "color": "ffffff00", "curve": "stepped" },
-					{ "time": 0.1, "color": "ffffff00", "curve": "stepped" },
-					{ "time": 0.9333, "color": "ffffff00" }
+					{ "time": 0, "color": "ffffffff" }
 				]
 			}
 		}
@@ -1220,14 +1223,12 @@
 		"slots": {
 			"screw_driver2": {
 				"color": [
-					{ "time": 0, "color": "ffffff00", "curve": "stepped" },
-					{ "time": 1.2666, "color": "ffffff00" }
+					{ "time": 0, "color": "ffffff00" }
 				]
 			},
 			"screw_driver": {
 				"color": [
-					{ "time": 0, "color": "ffffffff", "curve": "stepped" },
-					{ "time": 1.2666, "color": "ffffffff" }
+					{ "time": 0, "color": "ffffffff" }
 				]
 			}
 		}
@@ -1549,6 +1550,12 @@
 			}
 		},
 		"slots": {
+			"screw_driver2": {
+				"color": [
+					{ "time": 0, "color": "ffffff00", "curve": "stepped" },
+					{ "time": 1, "color": "ffffff00" }
+				]
+			},
 			"screw_driver": {
 				"color": [
 					{ "time": 0, "color": "ffffffff" }
@@ -1930,6 +1937,11 @@
 			}
 		},
 		"slots": {
+			"screw_driver2": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
 			"screw_driver": {
 				"color": [
 					{ "time": 0, "color": "ffffffff" }
@@ -2255,6 +2267,11 @@
 			}
 		},
 		"slots": {
+			"screw_driver2": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
 			"screw_driver": {
 				"color": [
 					{ "time": 0, "color": "ffffffff" }
@@ -2596,6 +2613,11 @@
 			}
 		},
 		"slots": {
+			"screw_driver2": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
 			"screw_driver": {
 				"color": [
 					{ "time": 0, "color": "ffffffff" }
@@ -2862,6 +2884,11 @@
 			}
 		},
 		"slots": {
+			"screw_driver2": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
 			"screw_driver": {
 				"color": [
 					{ "time": 0, "color": "ffffff00" }
@@ -3124,6 +3151,11 @@
 			}
 		},
 		"slots": {
+			"screw_driver2": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
 			"screw_driver": {
 				"color": [
 					{ "time": 0, "color": "ffffffff" }
@@ -3167,6 +3199,11 @@
 			}
 		},
 		"slots": {
+			"screw_driver2": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
 			"screw_driver": {
 				"color": [
 					{ "time": 0, "color": "ffffff00" }
@@ -3179,11 +3216,13 @@
 			"screw_driver": {
 				"rotate": [
 					{ "time": 0, "angle": 237.58, "curve": "stepped" },
-					{ "time": 0.1666, "angle": 155.94 }
+					{ "time": 0.1666, "angle": 155.94 },
+					{ "time": 0.3666, "angle": 138.94 }
 				],
 				"translate": [
 					{ "time": 0, "x": 0.18, "y": -6.53, "curve": "stepped" },
-					{ "time": 0.1666, "x": -20.46, "y": -10.2 }
+					{ "time": 0.1666, "x": -20.46, "y": -10.2 },
+					{ "time": 0.3666, "x": -56.08, "y": -12.01 }
 				],
 				"scale": [
 					{ "time": 0, "x": 1, "y": 1 }
@@ -3254,10 +3293,14 @@
 			}
 		},
 		"slots": {
+			"screw_driver2": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
 			"screw_driver": {
 				"color": [
-					{ "time": 0, "color": "ffffffff", "curve": "stepped" },
-					{ "time": 0.1666, "color": "ffffff00" }
+					{ "time": 0, "color": "ffffffff" }
 				]
 			}
 		}
@@ -4009,6 +4052,11 @@
 			}
 		},
 		"slots": {
+			"screw_driver2": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
 			"screw_driver": {
 				"color": [
 					{ "time": 0, "color": "ffffffff" }
@@ -4022,7 +4070,7 @@
 				"rotate": [
 					{
 						"time": 0,
-						"angle": 237.58,
+						"angle": 141.05,
 						"curve": [ 0.295, 0.38, 0.641, 0.71 ]
 					},
 					{
@@ -4035,8 +4083,8 @@
 				"translate": [
 					{
 						"time": 0,
-						"x": 0.18,
-						"y": -6.53,
+						"x": -53.79,
+						"y": -11.27,
 						"curve": [ 0.295, 0.38, 0.641, 0.71 ]
 					},
 					{
@@ -4104,12 +4152,14 @@
 			}
 		},
 		"slots": {
+			"screw_driver2": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
 			"screw_driver": {
 				"color": [
-					{ "time": 0, "color": "ffffff00", "curve": "stepped" },
-					{ "time": 0.1333, "color": "ffffff00" },
-					{ "time": 0.1666, "color": "ffffffff", "curve": "stepped" },
-					{ "time": 0.3666, "color": "ffffffff" }
+					{ "time": 0, "color": "ffffffff" }
 				]
 			}
 		}
@@ -4430,10 +4480,14 @@
 			}
 		},
 		"slots": {
+			"screw_driver2": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
 			"screw_driver": {
 				"color": [
-					{ "time": 0, "color": "ffffffff", "curve": "stepped" },
-					{ "time": 1, "color": "ffffffff" }
+					{ "time": 0, "color": "ffffff00" }
 				]
 			}
 		}
@@ -4696,10 +4750,14 @@
 			}
 		},
 		"slots": {
+			"screw_driver2": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
 			"screw_driver": {
 				"color": [
-					{ "time": 0, "color": "ffffffff", "curve": "stepped" },
-					{ "time": 0.6666, "color": "ffffffff" }
+					{ "time": 0, "color": "ffffffff" }
 				]
 			}
 		}
@@ -4948,10 +5006,14 @@
 			}
 		},
 		"slots": {
+			"screw_driver2": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
 			"screw_driver": {
 				"color": [
-					{ "time": 0, "color": "ffffffff", "curve": "stepped" },
-					{ "time": 1, "color": "ffffffff" }
+					{ "time": 0, "color": "ffffff00" }
 				]
 			}
 		}
@@ -5398,10 +5460,14 @@
 			}
 		},
 		"slots": {
+			"screw_driver2": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
 			"screw_driver": {
 				"color": [
-					{ "time": 0, "color": "ffffffff", "curve": "stepped" },
-					{ "time": 1.2666, "color": "ffffffff" }
+					{ "time": 0, "color": "ffffffff" }
 				]
 			}
 		}
