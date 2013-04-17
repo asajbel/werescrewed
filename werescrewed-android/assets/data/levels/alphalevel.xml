@@ -1292,7 +1292,7 @@
                             <string>tiledPlatform</string>
                         </Property>
                         <Property Name="AttachToSkeleton" Type="string" Description="">
-                            <string>RootSkeleton</string>
+                            <string>footSkeleton</string>
                         </Property>
                         <Property Name="dynamic" Type="string" Description="">
                             <string />
