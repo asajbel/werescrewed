@@ -146,13 +146,13 @@ public class Camera {
 	 */
 	public void update( ) {
 		// Tracks player holding "B"
-		debugInput = false;
+		//debugInput = false;
 		// Tracks player holding "N"
 		debugRender = false;
 		// debugMode = true;
 		// check debug keys
 		if ( Gdx.input.isKeyPressed( Keys.B ) ) {
-			debugInput = true;
+			debugInput = !debugInput;//now camera is a toggle
 		}
 		if ( Gdx.input.isKeyPressed( Keys.N ) ) {
 			debugRender = true;

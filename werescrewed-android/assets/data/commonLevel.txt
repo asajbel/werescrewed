@@ -89,3 +89,4 @@ injured/ooph.p
 gold.palette
 white.palette
 black.palette
+grey.palette
