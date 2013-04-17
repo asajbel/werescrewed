@@ -221,7 +221,7 @@ public class HazardScreen implements com.badlogic.gdx.Screen {
 		EventTriggerBuilder etb3 = new EventTriggerBuilder( world );
 		@SuppressWarnings( "unused" )
 		EventTrigger et3 = etb3.name( "event3" ).circle( ).radius( 100 )
-				.position( new Vector2( 1600f, 20f ) ).repeatable( )
+				.position( new Vector2( 1900f, 20f ) ).repeatable( )
 				.beginAction( new AnchorActivateAction( testAnchor ) )
 				.endAction( new AnchorActivateAction( testAnchor ) ).build( );
 		// AnchorDeactivateAction
