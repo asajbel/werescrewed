@@ -272,6 +272,9 @@ public class Player extends Entity {
 		if ( playerState != PlayerState.Screwing && screwAttachTimeout > 0 ) {
 			screwAttachTimeout--;
 		}
+		if ( name.equals( "player1" ) ) {
+			Gdx.app.log( "player update", name + " is " + playerState );
+		}
 		// if dead do dead stuff
 		if ( isDead ) {
 			// if player is dead but state is not dead
@@ -1626,7 +1629,7 @@ public class Player extends Entity {
 		}
 		// attach to screws when attach button is pushed
 		if ( inputHandler.screwPressed( ) ) {
-			if ( playerState != PlayerState.Screwing ) {
+			if ( playerState != PlayerState.Screwing && screwAttachTimeout == 0 ) {
 				if ( currentScrew != null ) {
 					attachToScrew( );
 					jumpCounter = 0;
@@ -1729,7 +1732,7 @@ public class Player extends Entity {
 		}
 		// If player hits the screw button and is in distance
 		// then attach the player to the screw
-		if ( ( controllerListener.screwPressed( ) )
+		if ( ( controllerListener.screwPressed( ) && screwAttachTimeout == 0 )
 				&& ( playerState != PlayerState.Screwing ) ) {
 			if ( currentScrew != null ) {
 				attachToScrew( );
