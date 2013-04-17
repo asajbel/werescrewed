@@ -232,8 +232,8 @@ public class LevelFactory {
 			constructEventTrigger( item );
 		} else if ( bluePrints.equals( "hazard" ) ) {
 			out = constructHazard( item );
-		} else if(bluePrints.equals("fixture")){ 
-			constructFixture(item);
+		} else if ( bluePrints.equals( "fixture" ) ) {
+			constructFixture( item );
 		} else if ( !bluePrints.equals( "camera" )
 				&& item.getDefinition( ).getCategory( ) == EntityCategory.COMPLEX_PLATFORM ) {
 			out = loadComplexPlatform( item );
@@ -252,8 +252,7 @@ public class LevelFactory {
 			// if ( item.propes.containsKey( "bgdecal" ) ) {
 			// level.entityBGList.add( decal );
 			// }
-			if ( item.props.containsKey( "decal" )
-					|| item.props.containsKey( "bgdecal" ) ) {
+			if ( item.props.containsKey( "decal" ) ) {
 				Array< String > tokens;
 				String decalImage;
 				Vector2 decalPosition = new Vector2( );
@@ -290,6 +289,13 @@ public class LevelFactory {
 										+ decalPosition.toString( ) );
 					}
 				}
+			}
+			if ( item.props.containsKey( "bgdecal" ) ) {
+				Array< String > tokens;
+				String decalImage;
+				Vector2 decalPosition = new Vector2( );
+				Sprite decal;
+				float r = 0.0f;
 				for ( String decalData : item.props.getAll( "bgdecal" ) ) {
 					tokens = new Array< String >( decalData.split( "\\s+" ) );
 					if ( tokens.size > 2 ) {
@@ -443,10 +449,9 @@ public class LevelFactory {
 
 			Array< Vector2 > polySprite = contstructSkeletonPoly( item );
 
-			if ( item.props.containsKey( "invisible" ) ){
+			if ( item.props.containsKey( "invisible" ) ) {
 				skeleBuilder.invisibleVerts( polySprite );
-			}
-			else if ( item.props.containsKey( "noforeground" ) ) {
+			} else if ( item.props.containsKey( "noforeground" ) ) {
 				skeleBuilder
 						.bg( )
 						.setVerts( polySprite )
@@ -473,8 +478,8 @@ public class LevelFactory {
 			if ( item.props.containsKey( "dynamic" ) ) {
 				skeleBuilder.dynamic( );
 			}
-			
-			if ( item.props.containsKey("fade_fg_decals")){
+
+			if ( item.props.containsKey( "fade_fg_decals" ) ) {
 				skeleBuilder.fadeFgDecals( true );
 			}
 
@@ -566,12 +571,12 @@ public class LevelFactory {
 		// level.camera.camera.lookAt( item.pos.x, item.pos.y, 0f );
 		// add position to camera later
 	}
-	
-	private void constructFixture(Item item){
+
+	private void constructFixture( Item item ) {
 		Array< Vector2 > verts = constructArray( item );
 		Entity addFixtureTo = entities.get( item.props.get( "fixtureof" ) );
 		addFixtureTo.addFixture( verts, item.pos );
-		
+
 	}
 
 	private TiledPlatform constructTiledPlatform( Item item ) {
@@ -655,14 +660,14 @@ public class LevelFactory {
 						+ out.name );
 				out.quickfixCollisions( );
 				parent.addDynamicPlatform( out );
-	
+
 				if ( item.props.containsKey( "jointtoskeleton" ) ) {
 					out.addJointToSkeleton( parent );
 				}
 			} else {
 				Gdx.app.log( "LevelFactory", "Tiled Kinematic platform loaded:"
 						+ out.name );
-	
+
 				parent.addKinematicPlatform( out );
 				out.setCategoryMask( Util.CATEGORY_PLATFORMS,
 						Util.CATEGORY_EVERYTHING );
