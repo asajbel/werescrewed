@@ -76,13 +76,13 @@ public class AlphaScreen extends Screen {
 
 		if ( level.player1 == null ) {
 			level.player1 = new PlayerBuilder( ).world( level.world )
-					.position( 0, 0 ).name( "player1" ).definition( "red_male" )
+					.position( -2000, 6000 ).name( "player1" ).definition( "red_male" )
 					.buildPlayer( );
 			level.progressManager.addPlayerOne( level.player1 );
 		}
 		if ( level.player2 == null ) {
 			level.player2 = new PlayerBuilder( ).world( level.world )
-					.position( 0, 0 ).name( "player2" )
+					.position( -2000, 6000 ).name( "player2" )
 					.definition( "red_female" ).buildPlayer( );
 			level.progressManager.addPlayerTwo( level.player2 );
 		}
@@ -105,6 +105,12 @@ public class AlphaScreen extends Screen {
 		//buildBackground( );
 		// new background stuff
 		initBackground( );
+		
+		//analog rotate mover fix add as initial mover
+//		TiledPlatform plat = ( TiledPlatform ) LevelFactory.entities
+//				.get( "chestRotatePlat2" );
+		PuzzleScrew pscrew = ( PuzzleScrew ) LevelFactory.entities.get( "chestPuzzleScrew9" );
+		pscrew.puzzleManager.runElement( pscrew, 0 );
 
 	}
 
