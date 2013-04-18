@@ -53,8 +53,6 @@ public class ProgressManager {
 	 * @param checkP
 	 */
 	public void hitNewCheckPoint( CheckPoint checkP ) {
-		// if ( checkP != checkPoints.get( currentCheckPoint ) ) {
-		// for ( int i = 0; i < checkPoints.size( ); i++ ) {
 		if ( currentCheckPoint != checkP ) {
 			currentCheckPoint.deactivate( );
 			currentCheckPoint = checkP;
@@ -64,6 +62,9 @@ public class ProgressManager {
 					lm.changeEndPos( currentCheckPoint.getPositionPixel( ) );
 					lm.setSpeed( 10f / currentCheckPoint.getPositionPixel( )
 							.sub( player1.getPositionPixel( ) ).len( ) );
+					if ( currentCheckPoint.getPositionPixel( ).x < p1Ghost.getPositionPixel( ).x ) {
+						p1Ghost.sprite.setScale( -1, 1 );
+					}
 				}
 			}
 			if ( p2Ghost != null ) {
@@ -72,6 +73,9 @@ public class ProgressManager {
 					lm.changeEndPos( currentCheckPoint.getPositionPixel( ) );
 					lm.setSpeed( 10f / currentCheckPoint.getPositionPixel( )
 							.sub( player2.getPositionPixel( ) ).len( ) );
+					if ( currentCheckPoint.getPositionPixel( ).x < p2Ghost.getPositionPixel( ).x ) {
+						p2Ghost.sprite.setScale( -1, 1 );
+					}
 				}
 			}
 		}
@@ -112,6 +116,9 @@ public class ProgressManager {
 				lm.changeEndPos( currentCheckPoint.getPositionPixel( ) );
 				lm.setSpeed( 10f / currentCheckPoint.getPositionPixel( )
 						.sub( player1.getPositionPixel( ) ).len( ) );
+				if ( currentCheckPoint.getPositionPixel( ).x < p1Ghost.getPositionPixel( ).x ) {
+					p1Ghost.sprite.setScale( -1, 1 );
+				}
 				if ( lm.atEnd( ) ) {
 					spawnAtCheckPoint( player1 );
 					p1Ghost = null;
@@ -128,6 +135,9 @@ public class ProgressManager {
 				lm.changeEndPos( currentCheckPoint.getPositionPixel( ) );
 				lm.setSpeed( 10f / currentCheckPoint.getPositionPixel( )
 						.sub( player2.getPositionPixel( ) ).len( ) );
+				if ( currentCheckPoint.getPositionPixel( ).x < p2Ghost.getPositionPixel( ).x ) {
+					p2Ghost.sprite.setScale( -1, 1 );
+				}
 				if ( lm.atEnd( ) ) {
 					spawnAtCheckPoint( player2 );
 					p2Ghost = null;
@@ -159,7 +169,7 @@ public class ProgressManager {
 					lm.moveStep( );
 				}
 				p1Ghost.sprite.setPosition( lm.getPos( ) );
-				p1Ghost.sprite.draw( batch, 0.6f );
+				p1Ghost.sprite.draw( batch, 1f );
 			}
 		}
 		if ( p2Ghost != null ) {
@@ -169,7 +179,7 @@ public class ProgressManager {
 					lm.moveStep( );
 				}
 				p2Ghost.sprite.setPosition( lm.getPos( ) );
-				p2Ghost.sprite.draw( batch, 0.6f );
+				p2Ghost.sprite.draw( batch, 1f );
 			}
 		}
 	}
@@ -202,7 +212,7 @@ public class ProgressManager {
 						player1.getPositionPixel( ),
 						WereScrewedGame.manager.get(
 								WereScrewedGame.dirHandle.path( )
-										+ "/common/player_r_m.png",
+										+ "/common/player_r_m_ghost.png",
 								Texture.class ), null, false );
 				LerpMover ghostMover = new LerpMover(
 						player1.getPositionPixel( ), currentCheckPoint
@@ -211,6 +221,9 @@ public class ProgressManager {
 				ghostMover.setSpeed( 10f / currentCheckPoint.getPositionPixel( )
 						.sub( player1.getPositionPixel( ) ).len( ) );
 				p1Ghost.setMoverAtCurrentState( ghostMover );
+				if ( currentCheckPoint.getPositionPixel( ).x < p1Ghost.getPositionPixel( ).x ) {
+					p1Ghost.sprite.setScale( -1, 1 );
+				}
 				// p1Ghost.createAnchor( );
 				// get the players direction and offset to the opposite of that
 				if ( player1.body.getLinearVelocity( ).x < 0 ) {
@@ -241,7 +254,7 @@ public class ProgressManager {
 						player2.getPositionPixel( ),
 						WereScrewedGame.manager.get(
 								WereScrewedGame.dirHandle.path( )
-										+ "/common/player_female_idle.png",
+										+ "/common/player_female_idle_ghost.png",
 								Texture.class ), null, false );
 				LerpMover ghostMover = new LerpMover(
 						player2.getPositionPixel( ), currentCheckPoint
@@ -250,6 +263,9 @@ public class ProgressManager {
 				ghostMover.setSpeed( 10f / currentCheckPoint.getPositionPixel( )
 						.sub( player2.getPositionPixel( ) ).len( ) );
 				p2Ghost.setMoverAtCurrentState( ghostMover );
+				if ( currentCheckPoint.getPositionPixel( ).x < p2Ghost.getPositionPixel( ).x ) {
+					p2Ghost.sprite.setScale( -1, 1 );
+				}
 				// p2Ghost.createAnchor( );
 				// get the players direction and offset to the opposite of that
 				if ( player2.body.getLinearVelocity( ).x < 0 ) {
@@ -288,7 +304,7 @@ public class ProgressManager {
 						player2.getPositionPixel( ),
 						WereScrewedGame.manager.get(
 								WereScrewedGame.dirHandle.path( )
-										+ "/common/player_female_idle.png",
+										+ "/common/player_female_idle_ghost.png",
 								Texture.class ), null, false );
 				LerpMover ghostMover = new LerpMover(
 						player2.getPositionPixel( ), currentCheckPoint
@@ -297,6 +313,9 @@ public class ProgressManager {
 				ghostMover.setSpeed( 10f / currentCheckPoint.getPositionPixel( )
 						.sub( player2.getPositionPixel( ) ).len( ) );
 				p2Ghost.setMoverAtCurrentState( ghostMover );
+				if ( currentCheckPoint.getPositionPixel( ).x < p2Ghost.getPositionPixel( ).x ) {
+					p2Ghost.sprite.setScale( -1, 1 );
+				}
 				// p2Ghost.createAnchor( );
 				// get the players direction and offset to the opposite of that
 				if ( player2.body.getLinearVelocity( ).x < 0 ) {
@@ -328,7 +347,7 @@ public class ProgressManager {
 						player2.getPositionPixel( ),
 						WereScrewedGame.manager.get(
 								WereScrewedGame.dirHandle.path( )
-										+ "/common/player_r_m.png",
+										+ "/common/player_r_m_ghost.png",
 								Texture.class ), null, false );
 				LerpMover ghostMover = new LerpMover(
 						player1.getPositionPixel( ), currentCheckPoint
@@ -337,6 +356,9 @@ public class ProgressManager {
 				ghostMover.setSpeed( 10f / currentCheckPoint.getPositionPixel( )
 						.sub( player1.getPositionPixel( ) ).len( ) );
 				p1Ghost.setMoverAtCurrentState( ghostMover );
+				if ( currentCheckPoint.getPositionPixel( ).x < p1Ghost.getPositionPixel( ).x ) {
+					p1Ghost.sprite.setScale( -1, 1 );
+				}
 				// p1Ghost.createAnchor( );
 				// get the players direction and offset to the opposite of that
 				if ( player1.body.getLinearVelocity( ).x < 0 ) {

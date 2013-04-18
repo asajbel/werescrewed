@@ -279,7 +279,12 @@ public class Entity implements GleedLoadable {
 	 * @return world position of origin in PIXELS
 	 */
 	public Vector2 getPositionPixel( ) {
-		return body.getPosition( ).cpy( ).mul( Util.BOX_TO_PIXEL );
+		if ( body != null ) {
+			return body.getPosition( ).cpy( ).mul( Util.BOX_TO_PIXEL );
+		} else if ( sprite != null ) {
+			return new Vector2( sprite.getX( ), sprite.getY( ) );
+		}
+		return Vector2.Zero;
 	}
 
 	public void move( Vector2 vector ) {
