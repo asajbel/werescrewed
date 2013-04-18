@@ -439,6 +439,9 @@ public class LevelFactory {
 		if ( item.name.equals( "RootSkeleton" ) ) {
 			level.root = new RootSkeleton( item.name, item.pos, null,
 					level.world );
+			//DELETE THESE TWO LINES WHEN THE STAGE WORKS PROPERLY WITH GLEED
+			level.skelBGList.add( level.root );
+			level.skelFGList.add( level.root );
 			skeletons.put( item.name, level.root );
 			entities.put( item.name, level.root );
 
