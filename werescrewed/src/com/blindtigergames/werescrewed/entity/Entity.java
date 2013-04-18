@@ -568,6 +568,10 @@ public class Entity implements GleedLoadable {
 		int index = robotStateMap.get( robotState );
 		moverArray.set( index, mover );
 	}
+	
+	public void addMover( IMover mover) {
+		addMover( mover, RobotState.IDLE );
+	}
 
 	/**
 	 * Changes robotState from current to the argument
