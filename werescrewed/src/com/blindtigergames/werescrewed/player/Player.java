@@ -1625,14 +1625,15 @@ public class Player extends Entity {
 					if ( inputHandler.screwPressed( ) ) {
 						screwButtonHeld = true;
 					}
-				} else
+				} else {
 					extraState = ConcurrentState.ScrewReady;
+				}
 			} else {
 				if ( !screwButtonHeld ) {
 					if ( mover == null ) {
 						if ( currentScrew != null
-								&& currentScrew.getScrewType( ) != ScrewType.SCREW_STRUCTURAL
-								|| currentScrew.getDepth( ) >= 0 ) {
+								&& ( currentScrew.getScrewType( ) != ScrewType.SCREW_STRUCTURAL
+								|| currentScrew.getDepth( ) >= 0 ) ) {
 							removePlayerToScrew( );
 						}
 					}

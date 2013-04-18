@@ -155,12 +155,12 @@ public class Level {
 		}
 		// draw all foreground skeleton sprites after everything
 		for ( Skeleton skel : skelFGList ) {
-			if ( skel.fgSprite != null ) {
-				if ( skel.fgSprite.getAlpha( ) != 0 ) {
-					skel.fgSprite.draw( batch );
-				}
-			} 
-			skel.drawFGDecals( batch );
+			if ( skel.fgSprite != null && skel.fgSprite.getAlpha( ) != 0 ) {
+				skel.fgSprite.draw( batch );
+			}
+			if ( !skel.isActive( ) ) {
+				skel.drawFGDecals( batch );
+			}
 		}
 		batch.end( );
 

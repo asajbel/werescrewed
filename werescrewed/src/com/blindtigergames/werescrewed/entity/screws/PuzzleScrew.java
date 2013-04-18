@@ -269,7 +269,7 @@ public class PuzzleScrew extends Screw {
 			depth = startDepth;
 		}
 	}
-
+	
 	/**
 	 * fixes puzzle mechanics when this screw is being used in a puzzle with
 	 * multiple puzzle screws
