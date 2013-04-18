@@ -45,7 +45,7 @@ public class Screw extends Entity {
 	protected int diff;
 	protected Entity entity;
 	protected Vector2 detachDirection;
-	protected Vector2 interfaceOffset = new Vector2( 88f, 14f );
+	protected Vector2 interfaceOffset = new Vector2( 87f, -10f );
 	protected boolean upDownDetach;
 	protected float entityAngle;
 	protected boolean playerAttached = false;

@@ -475,17 +475,10 @@ public class Player extends Entity {
 				currentScrew = null;
 				currentPlatform = null;
 				mover = null;
-				Filter filter = new Filter( );
 				for ( Fixture f : body.getFixtureList( ) ) {
 					if ( f != rightSensor && f != leftSensor && f != topSensor ) {
-						f.setSensor( false );
+						f.setSensor( true );
 					}
-					filter = f.getFilterData( );
-					// move player back to original category
-					filter.categoryBits = Util.CATEGORY_PLAYER;
-					// player now collides with everything
-					filter.maskBits = Util.CATEGORY_SCREWS;
-					f.setFilterData( filter );
 				}
 				playerState = PlayerState.Dead;
 				if ( Metrics.activated ) {
@@ -511,17 +504,10 @@ public class Player extends Entity {
 		leftCrush = false;
 		rightCrush = false;
 		body.setTransform( body.getPosition( ), 0f );
-		Filter filter = new Filter( );
 		for ( Fixture f : body.getFixtureList( ) ) {
 			if ( f != rightSensor && f != leftSensor && f != topSensor ) {
 				f.setSensor( false );
 			}
-			filter = f.getFilterData( );
-			// move player back to original category
-			filter.categoryBits = Util.CATEGORY_PLAYER;
-			// player now collides with everything
-			filter.maskBits = Util.CATEGORY_EVERYTHING;
-			f.setFilterData( filter );
 		}
 		playerState = PlayerState.Standing;
 		currentPlatform = null;

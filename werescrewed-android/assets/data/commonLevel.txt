@@ -41,8 +41,6 @@
 #/common/title_background_1024.png
 #/common/title_background_original.png
 #/common/robot/metal.png
-#/common/ropelink.png
-#/common/chainlink.png
 
 /common/robot/metal.png
 /common/gear.png
@@ -59,6 +57,7 @@
 ##please us texture packer to put all common textures in this pack file!
 /common/common-textures.pack
 /common/checkpoint/checkpoint.pack
+/common/animations/pushButton.pack
 /common/animations/screwInterface.pack
 /common/tileset1.pack
 /common/TilesetTest.pack

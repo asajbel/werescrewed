@@ -34,15 +34,16 @@ import com.blindtigergames.werescrewed.entity.hazard.Spikes;
 import com.blindtigergames.werescrewed.entity.hazard.builders.HazardBuilder;
 import com.blindtigergames.werescrewed.entity.mover.RotateTweenMover;
 import com.blindtigergames.werescrewed.entity.particles.Steam;
+import com.blindtigergames.werescrewed.entity.platforms.Pipe;
 import com.blindtigergames.werescrewed.entity.platforms.Platform;
 import com.blindtigergames.werescrewed.entity.platforms.TiledPlatform;
+import com.blindtigergames.werescrewed.entity.screws.PowerScrew;
 import com.blindtigergames.werescrewed.entity.screws.PuzzleScrew;
 import com.blindtigergames.werescrewed.entity.screws.StructureScrew;
 import com.blindtigergames.werescrewed.entity.tween.EntityAccessor;
 import com.blindtigergames.werescrewed.entity.tween.PlatformAccessor;
 import com.blindtigergames.werescrewed.eventTrigger.EventTrigger;
 import com.blindtigergames.werescrewed.graphics.SpriteBatch;
-import com.blindtigergames.werescrewed.entity.platforms.Pipe;
 import com.blindtigergames.werescrewed.player.Player;
 import com.blindtigergames.werescrewed.util.Metrics;
 import com.blindtigergames.werescrewed.util.Util;
@@ -114,6 +115,7 @@ public class HazardScreen implements com.badlogic.gdx.Screen {
 		initCrushTest( );
 		initParticleEffect( );
 		initDeathBarrier( );
+		initPowerScrew( );
 		
 		PuzzleScrew pscrew = new PuzzleScrew( "pscrew1", new Vector2( 1550f, 200f), 100, skeleton,
 				world, 0, false, Vector2.Zero);
@@ -153,6 +155,11 @@ public class HazardScreen implements com.badlogic.gdx.Screen {
 				Util.CATEGORY_EVERYTHING );
 		skeleton.addKinematicPlatform( ground );
 
+	}
+	
+	private void initPowerScrew( ) {
+		PowerScrew pscrew = new PowerScrew("powerscrewtest", new Vector2( 1800, 100), skeleton, world );
+		skeleton.addScrewForDraw( pscrew );
 	}
 	
 	private void initDeathBarrier( ){
