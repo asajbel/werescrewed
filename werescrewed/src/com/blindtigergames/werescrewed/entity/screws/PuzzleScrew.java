@@ -133,6 +133,7 @@ public class PuzzleScrew extends Screw {
 
 			body.setAngularVelocity( 1 );
 			depth += newDiff;
+			if(depth < 0) depth = 0;
 			spriteRegion += region;
 			if ( diff != 0 ) {
 				rotation += ( -newDiff * 5 );
@@ -177,6 +178,7 @@ public class PuzzleScrew extends Screw {
 
 			body.setAngularVelocity( -1 );
 			depth += newDiff;
+			if(depth > maxDepth) depth = maxDepth;
 			if ( diff != 0 ) {
 				rotation += ( -newDiff * 5 );
 			}

@@ -117,6 +117,7 @@ public class StructureScrew extends Screw {
 
 	@Override
 	public void screwRight( int region, boolean switchedDirections ) {
+		
 		if ( switchedDirections ) {
 			startRegion = region;
 			prevDiff = 0;
@@ -152,6 +153,7 @@ public class StructureScrew extends Screw {
 
 	@Override
 	public void screwLeft( int region, boolean switchedDirections ) {
+		
 		if ( switchedDirections ) {
 			startRegion = region;
 			prevDiff = 0;

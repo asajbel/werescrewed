@@ -1124,6 +1124,7 @@ public class Player extends Entity {
 	private void handleScrewing( boolean controller ) {
 		// loosen and tighten screws and jump when the screw joint is gone
 		if ( controller ) {
+			
 			if ( controllerListener.unscrewing( ) && currentMover( ) == null ) {
 				if ( resetScrewing ) {
 					resetScrewing = false;
@@ -1487,13 +1488,26 @@ public class Player extends Entity {
 	 * grab button
 	 */
 	private void resetScrewJumpGrab( ) {
-		if ( ( controllerListener.analogRightAxisX( ) < 0.7 && controllerListener
-				.analogRightAxisY( ) < 0.7 )
-				&& ( controllerListener.analogRightAxisX( ) > -0.7 && controllerListener
-						.analogRightAxisY( ) > -0.7 ) ) {
-			switchedScrewingDirection = true;
-			resetScrewing = true;
+		
+		if(controllerListener.checkLeftStickForScrewing()){
+			if ( ( controllerListener.analogLeftAxisX( ) < 0.7 && controllerListener
+					.analogLeftAxisY( ) < 0.7 )
+					&& ( controllerListener.analogLeftAxisX( ) > -0.7 && controllerListener
+							.analogLeftAxisY( ) > -0.7 ) ) {
+				switchedScrewingDirection = true;
+				resetScrewing = true;
+			}
 		}
+		 else if(controllerListener.checkRightStickForScrewing()){
+				if ( ( controllerListener.analogRightAxisX( ) < 0.7 && controllerListener
+						.analogRightAxisY( ) < 0.7 )
+						&& ( controllerListener.analogRightAxisX( ) > -0.7 && controllerListener
+								.analogRightAxisY( ) > -0.7 ) ) {
+					switchedScrewingDirection = true;
+					resetScrewing = true;
+				}
+			}
+		
 		if ( isGrounded( ) ) {
 			jumpCounter = 0;
 			directionJumpDivsion = JUMP_DEFAULT_DIVISION;
