@@ -40,8 +40,6 @@ public class PolySprite extends Sprite {
 	//private Matrix4 modelMat; //holds position and rotation for the polygon.
 	//private Matrix4 rotationMat;
 	
-
-
 	/**
 	 * Construct a polysprite with a given texture and color
 	 * @param texture, size/shape doesn't matter, it will be repeated

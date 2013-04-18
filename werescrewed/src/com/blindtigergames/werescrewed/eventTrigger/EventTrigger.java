@@ -510,7 +510,7 @@ public class EventTrigger extends Platform{
 							endAction.act( e );
 							endTriggeredOnce = true;
 							beginTriggeredOnce = false;
-							Gdx.app.log( this.name,  " end action " + endAction.getClass( ).getSimpleName( ) );
+							//Gdx.app.log( this.name,  " end action " + endAction.getClass( ).getSimpleName( ) );
 						}
 					}
 				}
@@ -521,7 +521,7 @@ public class EventTrigger extends Platform{
 						endAction.act( );
 						endTriggeredOnce = true;
 						beginTriggeredOnce = false;
-						Gdx.app.log( this.name,  " end action " + endAction.getClass( ).getSimpleName( ) );
+						//Gdx.app.log( this.name,  " end action " + endAction.getClass( ).getSimpleName( ) );
 					}
 				}
 			}
@@ -537,7 +537,7 @@ public class EventTrigger extends Platform{
 						endAction.act( e );
 						endTriggeredOnce = true;
 						beginTriggeredOnce = false;
-						Gdx.app.log( this.name,  " end action " + endAction.getClass( ).getSimpleName( ) );
+						//Gdx.app.log( this.name,  " end action " + endAction.getClass( ).getSimpleName( ) );
 					}
 				}
 			}
@@ -548,7 +548,7 @@ public class EventTrigger extends Platform{
 					endAction.act( );
 					endTriggeredOnce = true;
 					beginTriggeredOnce = false;
-					Gdx.app.log( this.name,  " end action " + endAction.getClass( ).getSimpleName( ) );
+					//Gdx.app.log( this.name,  " end action " + endAction.getClass( ).getSimpleName( ) );
 				}
 			}
 

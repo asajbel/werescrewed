@@ -8,9 +8,9 @@ package com.blindtigergames.werescrewed.entity.animator;
 import java.util.EnumMap;
 
 import com.badlogic.gdx.Gdx;
-import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.blindtigergames.werescrewed.WereScrewedGame;
+import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 import com.blindtigergames.werescrewed.graphics.TextureAtlas;
 import com.blindtigergames.werescrewed.player.Player;
 import com.blindtigergames.werescrewed.player.Player.ConcurrentState;
@@ -21,25 +21,39 @@ import com.esotericsoftware.spine.Bone;
 import com.esotericsoftware.spine.Skeleton;
 import com.esotericsoftware.spine.SkeletonBinary;
 import com.esotericsoftware.spine.SkeletonData;
+import com.esotericsoftware.spine.SkeletonRenderer;
 
 public class PlayerSpinemator implements ISpinemator {
 
 	protected EnumMap< PlayerAnim, Animation > anims;
 	protected Animation anim;
 	protected Skeleton skel;
+	protected SkeletonRenderer skelDraw = new SkeletonRenderer( );
 	protected PlayerAnim current;
 	protected PlayerAnim previous;
 	protected PlayerAnim next;
 	protected Animation mixer;
+	private Animation draw;
+	private Animation stow;
+	protected static final String READY = "_screw_ready";
+	protected String addScrewReady = "";
 	protected boolean mixerLoop;
 	protected Player player;
 	protected float time = 0f;
 	protected float mixTime = 0f;
 	protected float startTime = 0f;
+	protected float readyTime = 0f;
 	protected float mixRatio = 0f;
 	protected Bone root;
 	protected Vector2 position = null;
 	protected Vector2 scale = null;
+
+	private enum ScrewState {
+		IGNORE, READY, DRAW, STOW
+	}
+
+	ScrewState playerState = ScrewState.IGNORE;
+	ScrewState animState = ScrewState.IGNORE;
 
 	/**
 	 * Constructor
@@ -64,6 +78,9 @@ public class PlayerSpinemator implements ISpinemator {
 			anims.put( a, sd.findAnimation( a.text ) );
 		}
 
+		draw = anims.get( PlayerAnim.SCREW_DRAW );
+		stow = anims.get( PlayerAnim.SCREW_STOW );
+
 		anim = anims.get( current );
 		mixer = anim;
 		mixerLoop = current.loopBool;
@@ -75,7 +92,7 @@ public class PlayerSpinemator implements ISpinemator {
 
 	@Override
 	public void draw( SpriteBatch batch ) {
-		skel.draw( batch );
+		skelDraw.draw( batch, skel );
 	}
 
 	@Override
@@ -84,29 +101,96 @@ public class PlayerSpinemator implements ISpinemator {
 		mixTime += delta;
 		skel.setFlipX( player.flipX );
 
-		if ( next != getCurrentAnim( ) ) {
-			next = getCurrentAnim( );
-			time = 0f;
-			startTime = 0f;
-			mixTime = 0; 
-		}
-		anim = anims.get( current );
+		next = getCurrentAnim( );
 
-		if ( next.start != null && startTime < mixer.getDuration( ) ) {
-			mixer = anims.get( next.start );
+		if ( current != next ) {
+			current = next;
+			// time = 0f;
+			startTime = 0f;
+			mixTime = 0;
+		}
+		anim = anims.get( previous );
+
+		if ( current.start != null && startTime < mixer.getDuration( ) ) {
+			mixer = anims.get( current.start );
 			startTime += delta;
 		} else {
-			mixer = anims.get( next );
+			mixer = anims.get( current );
+		}
+		
+		if ( current == PlayerAnim.RUN || current == PlayerAnim.RUN_SCREW ) {
+			mixRatio = player.getAbsAnalogXRatio( );
+			anims.get( PlayerAnim.IDLE ).apply( skel, time,
+					PlayerAnim.IDLE.loopBool );
+			mixer.mix( skel, time, current.loopBool, mixRatio );
+		} else {
+			mixRatio = mixTime / anim.getDuration( );
+			mixer.mix( skel, time, next.loopBool, mixRatio );
+			if ( mixTime < anim.getDuration( ) / 2 ) {
+			} else {
+				previous = current;
+				mixTime = 0;
+			}
 		}
 
-		mixRatio = mixTime / anim.getDuration( );
-		mixer.mix( skel, time, next.loopBool, mixRatio );
+		if ( player.getExtraState( ) == ConcurrentState.ScrewReady ) {
+			switch ( animState ) {
+			case IGNORE:
+				readyTime = 0f;
+				draw.apply( skel, readyTime, PlayerAnim.SCREW_DRAW.loopBool );
+				animState = ScrewState.DRAW;
+				break;
+			case DRAW:
+				if ( readyTime < draw.getDuration( ) ) {
+					draw.apply( skel, readyTime, PlayerAnim.SCREW_DRAW.loopBool );
+					readyTime += delta;
+				} else {
+					animState = ScrewState.READY;
+				}
+				break;
+			case READY:
+				readyTime = 0f;
+				break;
+			case STOW:
+				float alpha = 1 - readyTime / stow.getDuration( );
+				readyTime = draw.getDuration( ) * alpha;
+				draw.mix( skel, readyTime, PlayerAnim.SCREW_DRAW.loopBool,
+						alpha );
+				animState = ScrewState.DRAW;
+				break;
+			default:
+				break;
 
-		if ( mixTime < anim.getDuration( ) / 2 ) {
-			// mixer.mix( skel, time, next.loopBool, mixRatio );
+			}
 		} else {
-			current = next;
-			mixTime = 0;
+			switch ( animState ) {
+			case IGNORE:
+				readyTime = 0f;
+				break;
+			case DRAW:
+				float alpha = 1 - readyTime / draw.getDuration( );
+				readyTime = stow.getDuration( ) * alpha;
+				stow.mix( skel, readyTime, PlayerAnim.SCREW_STOW.loopBool,
+						alpha );
+				animState = ScrewState.STOW;
+				break;
+			case READY:
+				readyTime = 0f;
+				stow.apply( skel, readyTime, PlayerAnim.SCREW_STOW.loopBool );
+				animState = ScrewState.STOW;
+				break;
+			case STOW:
+				if ( readyTime < draw.getDuration( ) ) {
+					readyTime += delta;
+					stow.apply( skel, readyTime, PlayerAnim.SCREW_STOW.loopBool );
+				} else {
+					animState = ScrewState.IGNORE;
+				}
+				break;
+			default:
+				break;
+
+			}
 		}
 
 		if ( position != null ) {
@@ -114,7 +198,7 @@ public class PlayerSpinemator implements ISpinemator {
 			root.setY( position.y );
 		} else {
 			root.setX( player.body.getWorldCenter( ).x * Util.BOX_TO_PIXEL );
-			root.setY( player.body.getWorldCenter( ).y * Util.BOX_TO_PIXEL - 36 );
+			root.setY( player.body.getWorldCenter( ).y * Util.BOX_TO_PIXEL - 39 );
 		}
 		if ( scale != null ) {
 			root.setScaleX( scale.x );
@@ -137,24 +221,51 @@ public class PlayerSpinemator implements ISpinemator {
 		case Standing:
 			if ( player.getMoveState( ) == PlayerDirection.Left
 					|| player.getMoveState( ) == PlayerDirection.Right ) {
+				if ( player.getExtraState( ) == ConcurrentState.ScrewReady ) {
+					playerState = ScrewState.READY;
+					return PlayerAnim.RUN_SCREW;
+				}
 				return PlayerAnim.RUN;
+			}
+			if ( player.getExtraState( ) == ConcurrentState.ScrewReady ) {
+				playerState = ScrewState.READY;
+				return PlayerAnim.IDLE_SCREW;
 			}
 			return PlayerAnim.IDLE;
 		case Landing:
 			if ( player.getMoveState( ) == PlayerDirection.Left
 					|| player.getMoveState( ) == PlayerDirection.Right ) {
+				if ( player.getExtraState( ) == ConcurrentState.ScrewReady ) {
+					playerState = ScrewState.READY;
+					return PlayerAnim.RUN_SCREW;
+				}
 				return PlayerAnim.RUN;
+			}
+			if ( player.getExtraState( ) == ConcurrentState.ScrewReady ) {
+				playerState = ScrewState.READY;
+				return PlayerAnim.IDLE_SCREW;
 			}
 			return PlayerAnim.IDLE;
 		case Jumping:
+			if ( player.getExtraState( ) == ConcurrentState.ScrewReady ) {
+				playerState = ScrewState.READY;
+				return PlayerAnim.JUMP_UP_SCREW;
+			}
 			return PlayerAnim.JUMP_UP;
 		case Falling:
+			if ( player.getExtraState( ) == ConcurrentState.ScrewReady ) {
+				playerState = ScrewState.READY;
+				return PlayerAnim.FALL_SCREW;
+			}
 			return PlayerAnim.FALL_IDLE;
 		case HeadStand:
 			if ( player.getExtraState( ) == ConcurrentState.ExtraJumping ) {
 				return PlayerAnim.JUMP_UP;
 			} else if ( player.getExtraState( ) == ConcurrentState.ExtraFalling ) {
 				return PlayerAnim.FALL_IDLE;
+			} else if ( player.getExtraState( ) == ConcurrentState.ScrewReady ) {
+				playerState = ScrewState.READY;
+				return PlayerAnim.IDLE_SCREW;
 			}
 			return PlayerAnim.IDLE;
 		case Screwing:
@@ -162,6 +273,10 @@ public class PlayerSpinemator implements ISpinemator {
 		case Dead:
 			return PlayerAnim.DEATH;
 		default:
+			if ( player.getExtraState( ) == ConcurrentState.ScrewReady ) {
+				playerState = ScrewState.READY;
+				return PlayerAnim.IDLE_SCREW;
+			}
 			return PlayerAnim.IDLE;
 		}
 	}

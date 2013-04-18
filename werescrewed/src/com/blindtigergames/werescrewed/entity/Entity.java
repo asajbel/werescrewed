@@ -14,10 +14,12 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.Filter;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.blindtigergames.werescrewed.WereScrewedGame;
@@ -28,6 +30,8 @@ import com.blindtigergames.werescrewed.entity.animator.ISpinemator;
 import com.blindtigergames.werescrewed.entity.animator.PlayerAnimator;
 import com.blindtigergames.werescrewed.entity.animator.SimpleFrameAnimator;
 import com.blindtigergames.werescrewed.entity.mover.IMover;
+import com.blindtigergames.werescrewed.entity.platforms.Platform;
+import com.blindtigergames.werescrewed.eventTrigger.EventTrigger;
 import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 import com.blindtigergames.werescrewed.graphics.TextureAtlas;
 import com.blindtigergames.werescrewed.graphics.particle.ParticleEffect;
@@ -1181,6 +1185,60 @@ public class Entity implements GleedLoadable {
 	public void idleSound(){
 		if (sounds != null && sounds.hasSound("idle")){
 			sounds.loopSound("idle");
+		}
+	}
+	
+	/**
+	 * Add a fixture from a gleed path. This ignores the last vert.
+	 * 
+	 * @param loadedVerts are world coordinate vertices.
+	 * @param positionPixel
+	 */
+	public void addFixture(Array< Vector2 > loadedVerts,
+			Vector2 positionPixel){
+
+		PolygonShape polygon = new PolygonShape( );
+		Vector2[ ] verts = new Vector2[ loadedVerts.size - 1 ];
+
+		// MAKE SURE START POINT IS IN THE MIDDLE
+		// AND SECOND AND END POINT ARE THE SAME POSITION
+		int i = 0;
+		for ( int j = 0; j < loadedVerts.size; j++ ) {
+			if ( j == loadedVerts.size - 1 )
+				continue;
+			Vector2 v = loadedVerts.get( j );
+			verts[ i ] = new Vector2( (v.x+positionPixel.x-getPositionPixel( ).x) * Util.PIXEL_TO_BOX,
+					(v.y+positionPixel.y-getPositionPixel( ).y) * Util.PIXEL_TO_BOX );
+			++i;
+		}
+		polygon.set( verts );
+
+		FixtureDef fixtureDef = new FixtureDef( );
+		fixtureDef.shape = polygon;
+		
+		body.createFixture( fixtureDef );
+		polygon.dispose( );
+		
+		
+		
+		//Possible bug, changes all collision bits to that of the first body
+		Filter data = body.getFixtureList( ).get( 0 ).getFilterData( );
+		Filter filter;
+		for ( Fixture f : body.getFixtureList( ) ) {
+			filter = f.getFilterData( );
+			// move player to another category so other objects stop
+			// colliding
+			filter.categoryBits = data.categoryBits;
+			// player still collides with sensor of screw
+			filter.maskBits = data.maskBits;
+			f.setFilterData( filter );
+		}
+		body.setType( body.getType( ) );
+		
+		
+		if ( entityType == EntityType.PLATFORM ){
+			Platform p = (Platform)this;
+			
 		}
 	}
 

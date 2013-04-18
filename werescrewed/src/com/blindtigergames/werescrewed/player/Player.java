@@ -38,6 +38,7 @@ import com.blindtigergames.werescrewed.input.MyControllerListener;
 import com.blindtigergames.werescrewed.input.PlayerInputHandler;
 import com.blindtigergames.werescrewed.sound.SoundManager;
 import com.blindtigergames.werescrewed.util.Metrics;
+import com.blindtigergames.werescrewed.util.Metrics.TrophyMetric;
 import com.blindtigergames.werescrewed.util.Util;
 
 /**
@@ -49,7 +50,7 @@ import com.blindtigergames.werescrewed.util.Util;
  */
 public class Player extends Entity {
 
-	public final static float MAX_VELOCITY = 1.60f;
+	public final static float MAX_VELOCITY = 1.50f;
 	public final static float MIN_VELOCITY = 0.01f;
 	public final static float MOVEMENT_IMPULSE = 0.010f;
 	public final static float JUMP_IMPULSE = 0.12f;
@@ -58,7 +59,8 @@ public class Player extends Entity {
 	public final static int JUMP_COUNTER = 10;
 	public final static float ANALOG_DEADZONE = 0.4f;
 	public final static float ANALOG_MAX_RANGE = 1.0f;
-	public final static float PLAYER_FRICTION = 0.7f;
+	public final static float PLAYER_FRICTION = 1.0f;
+	public final static float FRICTION_INCREMENT = 0.2f;
 	public final static int SCREW_ATTACH_STEPS = 15;
 	public final static int HEAD_JUMP_STEPS = 30;
 	public final static int DEAD_STEPS = 0;
@@ -68,7 +70,6 @@ public class Player extends Entity {
 	public final static Vector2 ANCHOR_BUFFER_SIZE = new Vector2( 300f, 200f );
 	public final static float STEAM_FORCE = .5f;
 	public final static float STEAM_IMPULSE = 0.2f;
-	public final static float FRICTION_INCREMENT = 0.3f;
 	public final static float FEET_OFFSET_X = 59f * Util.PIXEL_TO_BOX;
 	public final static float FEET_OFFSET_Y = 23.5f * Util.PIXEL_TO_BOX;
 	public final static float JUMP_DIRECTION_MULTIPLIER = 2f;
@@ -92,15 +93,15 @@ public class Player extends Entity {
 
 	int check = 0;
 
-	private PovDirection prevButton;
+	private PovDirection prevButton = null;
 	public PlayerInputHandler inputHandler;
 	private MyControllerListener controllerListener;
 	private PlayerState playerState;
 	private ConcurrentState extraState;
-	private PlayerDirection playerDirection;
+	private PlayerDirection playerDirection = PlayerDirection.Idle;
 	@SuppressWarnings( "unused" )
 	private boolean reachedMaxSpeed;
-	private PlayerDirection prevPlayerDir;
+	private PlayerDirection prevPlayerDir = PlayerDirection.Idle;
 	private Controller controller;
 	@SuppressWarnings( "unused" )
 	private boolean controllerIsActive, controllerDebug;
@@ -133,7 +134,8 @@ public class Player extends Entity {
 	private boolean canJumpOffScrew;
 	private boolean screwButtonHeld;
 	private boolean kinematicTransform = false;
-	private boolean changeDirectionsOnce = false;
+	private boolean changeDirectionsOnceInAir = false;
+	private boolean changeDirections = false;
 	private boolean steamCollide = false;
 	private boolean steamDone = false;
 
@@ -154,7 +156,7 @@ public class Player extends Entity {
 	@SuppressWarnings( "unused" )
 	private float jumpSpeed = 0.3f;
 
-	public float frictionCounter = 0;
+	public float frictionCounter = PLAYER_FRICTION;
 
 	// Enums
 	/**
@@ -223,7 +225,7 @@ public class Player extends Entity {
 			spinemator.setPosition( body.getWorldCenter( ) );
 		}
 		Filter filter = new Filter( );
-		for ( Fixture f: body.getFixtureList( ) ) {
+		for ( Fixture f : body.getFixtureList( ) ) {
 			filter.categoryBits = Util.CATEGORY_PLAYER;
 			filter.maskBits = Util.CATEGORY_EVERYTHING;
 			f.setFilterData( filter );
@@ -253,6 +255,9 @@ public class Player extends Entity {
 		}
 		addBehindParticleEffect( "revive", false, false );
 		// land_cloud = ParticleEffect.loadEffect( "land_cloud" );
+
+		createCircle( PLAYER_FRICTION );
+		frictionCounter = PLAYER_FRICTION;
 	}
 
 	// PUBLIC METHODS
@@ -262,6 +267,7 @@ public class Player extends Entity {
 	 */
 	public void update( float deltaTime ) {
 		super.update( deltaTime );
+
 		if ( Gdx.input.isKeyPressed( Keys.G ) )
 			Gdx.app.log( "steamCollide: " + steamCollide, "steamDone: "
 					+ steamDone );
@@ -269,7 +275,7 @@ public class Player extends Entity {
 			// setPlatformTransform( platformOffset );
 			kinematicTransform = false;
 		}
-		if ( screwAttachTimeout > 0 ) {
+		if ( playerState != PlayerState.Screwing && screwAttachTimeout > 0 ) {
 			screwAttachTimeout--;
 		}
 		// if dead do dead stuff
@@ -310,8 +316,11 @@ public class Player extends Entity {
 			if ( respawnTimeout > 0 ) {
 				respawnTimeout--;
 			}
+
 			// build extra fixture to have new friction
-			updateFootFriction( );
+
+			// updateFootFriction( );
+
 			// test if player is still moving after timeout
 			if ( playerDirection != PlayerDirection.Idle ) {
 				if ( runTimeout == 0 && playerState != PlayerState.Jumping
@@ -335,6 +344,8 @@ public class Player extends Entity {
 				}
 			}
 		}
+
+		updateFootFrictionNew( );
 		// switch between states
 		switch ( playerState ) {
 		case Dead:
@@ -348,7 +359,6 @@ public class Player extends Entity {
 			break;
 		case Screwing:
 			if ( knockedOff ) {
-				detachScrewImpulse( );
 				removePlayerToScrew( );
 				knockedOff = false;
 			} else if ( mover != null ) {
@@ -377,9 +387,7 @@ public class Player extends Entity {
 				if ( currentScrew.getScrewType( ) == ScrewType.SCREW_RESURRECT ) {
 					ResurrectScrew rezScrew = ( ResurrectScrew ) currentScrew;
 					if ( rezScrew.deleteQueue( ) ) {
-						if ( !detachScrewImpulse( ) ) {
-							jump( );
-						}
+						jump( );
 						removePlayerToScrew( );
 					}
 				}
@@ -544,15 +552,21 @@ public class Player extends Entity {
 	public void moveRight( ) {
 		if ( playerState == PlayerState.Falling
 				|| playerState == PlayerState.Jumping ) {
-			if ( changeDirectionsOnce && prevButton == PovDirection.west ) {
+			if ( changeDirectionsOnceInAir && prevButton == PovDirection.west ) {
 				directionJumpDivsion *= JUMP_DIRECTION_MULTIPLIER;
-				changeDirectionsOnce = false;
+				changeDirectionsOnceInAir = false;
 			}
 			if ( body.getLinearVelocity( ).x < MAX_VELOCITY ) {
 				body.applyLinearImpulse( new Vector2( MOVEMENT_IMPULSE
 						/ directionJumpDivsion, 0.0f ), body.getWorldCenter( ) );
 			}
 		} else {
+			if ( this.name == Metrics.player1( ) && playerState != PlayerState.Screwing ){
+				Metrics.incTrophyMetric( TrophyMetric.P1RUNDIST, 1 );
+			} else if ( this.name == Metrics.player2() && playerState != PlayerState.Screwing ){
+				Metrics.incTrophyMetric( TrophyMetric.P2RUNDIST, 1 );
+			}
+			
 			if ( body.getLinearVelocity( ).x < MAX_VELOCITY ) {
 				body.applyLinearImpulse( new Vector2( MOVEMENT_IMPULSE, 0.0f ),
 						body.getWorldCenter( ) );
@@ -563,9 +577,7 @@ public class Player extends Entity {
 			}
 		}
 		playerDirection = PlayerDirection.Right;
-		if ( grounded && prevPlayerDir == PlayerDirection.Left ) {// &&
-																	// reachedMaxSpeed
-																	// ){
+		if ( grounded && prevPlayerDir == PlayerDirection.Left ) {
 			getEffect( "skid_left" )
 					.restartAt( getPositionPixel( ).add( 30, 0 ) );
 			reachedMaxSpeed = false;
@@ -581,15 +593,21 @@ public class Player extends Entity {
 	public void moveLeft( ) {
 		if ( playerState == PlayerState.Falling
 				|| playerState == PlayerState.Jumping ) {
-			if ( changeDirectionsOnce && prevButton == PovDirection.east ) {
+			if ( changeDirectionsOnceInAir && prevButton == PovDirection.east ) {
 				directionJumpDivsion *= JUMP_DIRECTION_MULTIPLIER;
-				changeDirectionsOnce = false;
+				changeDirectionsOnceInAir = false;
 			}
 			if ( body.getLinearVelocity( ).x > -MAX_VELOCITY ) {
 				body.applyLinearImpulse( new Vector2( -MOVEMENT_IMPULSE
 						/ directionJumpDivsion, 0.0f ), body.getWorldCenter( ) );
 			}
 		} else {
+			if ( this.name == Metrics.player1( ) && playerState != PlayerState.Screwing ){
+				Metrics.incTrophyMetric( TrophyMetric.P1RUNDIST, 1 );
+			} else if ( this.name == Metrics.player2() && playerState != PlayerState.Screwing ){
+				Metrics.incTrophyMetric( TrophyMetric.P2RUNDIST, 1 );
+			}
+
 			if ( body.getLinearVelocity( ).x > -MAX_VELOCITY ) {
 				body.applyLinearImpulse(
 						new Vector2( -MOVEMENT_IMPULSE, 0.0f ),
@@ -601,9 +619,7 @@ public class Player extends Entity {
 			}
 		}
 		playerDirection = PlayerDirection.Left;
-		if ( grounded && prevPlayerDir == PlayerDirection.Right ) {// &&
-																	// reachedMaxSpeed
-																	// ){
+		if ( grounded && prevPlayerDir == PlayerDirection.Right ) {
 			getEffect( "skid_right" ).restartAt(
 					getPositionPixel( ).add( 100, 0 ) );
 			reachedMaxSpeed = false;
@@ -632,6 +648,11 @@ public class Player extends Entity {
 					body.getWorldCenter( ) );
 		}
 		playerDirection = PlayerDirection.Right;
+		if ( grounded && prevPlayerDir == PlayerDirection.Left ) {
+			getEffect( "skid_left" )
+					.restartAt( getPositionPixel( ).add( 30, 0 ) );
+			reachedMaxSpeed = false;
+		}
 		runTimeout = RUN_STEPS;
 	}
 
@@ -649,6 +670,11 @@ public class Player extends Entity {
 					body.getWorldCenter( ) );
 		}
 		playerDirection = PlayerDirection.Left;
+		if ( grounded && prevPlayerDir == PlayerDirection.Right ) {
+			getEffect( "skid_right" ).restartAt(
+					getPositionPixel( ).add( 100, 0 ) );
+			reachedMaxSpeed = false;
+		}
 		runTimeout = RUN_STEPS;
 	}
 
@@ -659,9 +685,9 @@ public class Player extends Entity {
 	 */
 	public void moveAnalogRightInAir( ) {
 
-		if ( changeDirectionsOnce && prevButton == PovDirection.west ) {
+		if ( changeDirectionsOnceInAir && prevButton == PovDirection.west ) {
 			directionJumpDivsion *= JUMP_DIRECTION_MULTIPLIER;
-			changeDirectionsOnce = false;
+			changeDirectionsOnceInAir = false;
 		}
 		leftAnalogX = controllerListener.analogLeftAxisX( );
 		float temp = ( ( ( leftAnalogX - ANALOG_DEADZONE ) / ( ANALOG_MAX_RANGE - ANALOG_DEADZONE ) ) * ( MAX_VELOCITY - MIN_VELOCITY ) )
@@ -679,9 +705,9 @@ public class Player extends Entity {
 	 * @author Ranveer
 	 */
 	public void moveAnalogLeftInAir( ) {
-		if ( changeDirectionsOnce && prevButton == PovDirection.east ) {
+		if ( changeDirectionsOnceInAir && prevButton == PovDirection.east ) {
 			directionJumpDivsion *= JUMP_DIRECTION_MULTIPLIER;
-			changeDirectionsOnce = false;
+			changeDirectionsOnceInAir = false;
 		}
 		leftAnalogX = controllerListener.analogLeftAxisX( );
 		float temp = ( ( ( leftAnalogX + ANALOG_DEADZONE ) / ( ANALOG_MAX_RANGE - ANALOG_DEADZONE ) ) * ( MAX_VELOCITY - MIN_VELOCITY ) )
@@ -858,6 +884,52 @@ public class Player extends Entity {
 
 	}
 
+	private void updateFootFrictionNew( ) {
+
+		if ( prevButton != null ) {
+			if ( body.getLinearVelocity( ).x > MAX_VELOCITY ) {
+				body.setLinearVelocity( MAX_VELOCITY,
+						body.getLinearVelocity( ).y );
+			} else if ( body.getLinearVelocity( ).x < -MAX_VELOCITY ) {
+				body.setLinearVelocity( -MAX_VELOCITY,
+						body.getLinearVelocity( ).y );
+			}
+		}
+
+		if ( prevButton == null ) {
+
+			if ( feet.getFriction( ) < PLAYER_FRICTION ) {
+
+				frictionCounter += FRICTION_INCREMENT;
+
+				if ( frictionCounter > PLAYER_FRICTION ) {
+					frictionCounter = PLAYER_FRICTION;
+
+				}
+
+				createCircle( frictionCounter );
+
+			}
+		} else {
+
+			if ( grounded && ( prevPlayerDir != playerDirection ) ) {
+				createCircle( PLAYER_FRICTION );
+				frictionCounter = PLAYER_FRICTION;
+			}
+
+			if ( feet.getFriction( ) > 0 ) {
+
+				frictionCounter -= FRICTION_INCREMENT;
+				if ( frictionCounter < 0 ) {
+					frictionCounter = 0;
+				}
+				createCircle( frictionCounter );
+
+			}
+		}
+
+	}
+
 	/**
 	 * sets the body of some body that the player is hitting
 	 */
@@ -867,7 +939,7 @@ public class Player extends Entity {
 			// if on a screw that isn't already over a platform and a platform
 			// hits you
 			// you get knocked off
-			//knockedOff = true;
+			// knockedOff = true;
 		} else {
 			currentPlatform = platform;
 			if ( playerState == PlayerState.Falling ) {
@@ -955,23 +1027,6 @@ public class Player extends Entity {
 	}
 
 	/**
-	 * applies the current screws directional impulse
-	 */
-	private boolean detachScrewImpulse( ) {
-		if ( currentPlatform != null && currentScrew.getDepth( ) >= 0
-				&& currentScrew.getDetachDirection( ) != null
-				&& currentScrew.getDetachDirection( ).len( ) != 0f ) {
-			body.setLinearVelocity( new Vector2( body.getLinearVelocity( ).x,
-					0.0f ) );
-			Vector2 temp = currentScrew.getDetachDirection( ).cpy( );
-			body.applyLinearImpulse( temp.mul( JUMP_IMPULSE ),
-					body.getWorldCenter( ) );
-			return true;
-		}
-		return false;
-	}
-
-	/**
 	 * jump logic for every time the jump button is pushed before applying an
 	 * actual jump
 	 */
@@ -980,12 +1035,12 @@ public class Player extends Entity {
 			if ( canJumpOffScrew ) {
 				if ( mover == null ) {
 					// jumpPressedKeyboard = true;
-					if ( !detachScrewImpulse( ) ) {
+					if ( currentScrew.getScrewType( ) != ScrewType.SCREW_STRUCTURAL
+							|| currentScrew.getDepth( ) >= 0 ) {
 						jump( );
-					}
-					if ( currentScrew.getDepth( ) >= 0 ) {
 						removePlayerToScrew( );
 					}
+					removePlayerToScrew( );
 					if ( Metrics.activated ) {
 						Metrics.addPlayerJumpPosition( this.getPositionPixel( ) );
 						Metrics.addToUnscrewListOnce = false;
@@ -1030,10 +1085,9 @@ public class Player extends Entity {
 			if ( canJumpOffScrew ) {
 				if ( mover == null ) {
 					// jumpPressedController = true;
-					if ( !detachScrewImpulse( ) ) {
+					if ( currentScrew.getScrewType( ) != ScrewType.SCREW_STRUCTURAL
+							|| currentScrew.getDepth( ) >= 0 ) {
 						jump( );
-					}
-					if ( currentScrew.getDepth( ) >= 0 ) {
 						removePlayerToScrew( );
 					}
 					if ( Metrics.activated ) {
@@ -1078,6 +1132,7 @@ public class Player extends Entity {
 	private void handleScrewing( boolean controller ) {
 		// loosen and tighten screws and jump when the screw joint is gone
 		if ( controller ) {
+			
 			if ( controllerListener.unscrewing( ) && currentMover( ) == null ) {
 				if ( resetScrewing ) {
 					resetScrewing = false;
@@ -1214,8 +1269,8 @@ public class Player extends Entity {
 	private void processMovementDown( ) {
 		if ( playerState == PlayerState.Screwing ) {
 			if ( mover == null ) {
-				detachScrewImpulse( );
-				if ( currentScrew.getDepth( ) >= 0 ) {
+				if ( currentScrew.getScrewType( ) != ScrewType.SCREW_STRUCTURAL
+						|| currentScrew.getDepth( ) >= 0 ) {
 					removePlayerToScrew( );
 				}
 			}
@@ -1441,21 +1496,35 @@ public class Player extends Entity {
 	 * grab button
 	 */
 	private void resetScrewJumpGrab( ) {
-		if ( ( controllerListener.analogRightAxisX( ) < 0.7 && controllerListener
-				.analogRightAxisY( ) < 0.7 )
-				&& ( controllerListener.analogRightAxisX( ) > -0.7 && controllerListener
-						.analogRightAxisY( ) > -0.7 ) ) {
-			switchedScrewingDirection = true;
-			resetScrewing = true;
+		
+		if(controllerListener.checkLeftStickForScrewing()){
+			if ( ( controllerListener.analogLeftAxisX( ) < 0.7 && controllerListener
+					.analogLeftAxisY( ) < 0.7 )
+					&& ( controllerListener.analogLeftAxisX( ) > -0.7 && controllerListener
+							.analogLeftAxisY( ) > -0.7 ) ) {
+				switchedScrewingDirection = true;
+				resetScrewing = true;
+			}
 		}
+		 else if(controllerListener.checkRightStickForScrewing()){
+				if ( ( controllerListener.analogRightAxisX( ) < 0.7 && controllerListener
+						.analogRightAxisY( ) < 0.7 )
+						&& ( controllerListener.analogRightAxisX( ) > -0.7 && controllerListener
+								.analogRightAxisY( ) > -0.7 ) ) {
+					switchedScrewingDirection = true;
+					resetScrewing = true;
+				}
+			}
+		
 		if ( isGrounded( ) ) {
 			jumpCounter = 0;
 			directionJumpDivsion = JUMP_DEFAULT_DIVISION;
-			changeDirectionsOnce = true;
+			changeDirectionsOnceInAir = true;
 			prevButton = null;
 			// switchedScrewingDirection = false;
 		}
 		if ( !controllerListener.screwPressed( ) ) {
+			extraState = ConcurrentState.Ignore;
 			screwButtonHeld = false;
 		}
 		if ( !controllerListener.isGrabPressed( ) ) {
@@ -1477,7 +1546,7 @@ public class Player extends Entity {
 		if ( isGrounded( ) ) {
 			jumpCounter = 0;
 			directionJumpDivsion = JUMP_DEFAULT_DIVISION;
-			changeDirectionsOnce = true;
+			changeDirectionsOnceInAir = true;
 			prevButton = null;
 		}
 		if ( !inputHandler.screwPressed( ) ) {
@@ -1564,10 +1633,11 @@ public class Player extends Entity {
 
 		if ( !inputHandler.screwPressed( ) ) {
 			screwButtonHeld = false;
+			extraState = ConcurrentState.Ignore;
 		}
 		// attach to screws when attach button is pushed
 		if ( inputHandler.screwPressed( ) ) {
-			if ( playerState != PlayerState.Screwing ) {
+			if ( playerState != PlayerState.Screwing && screwAttachTimeout == 0 ) {
 				if ( currentScrew != null ) {
 					attachToScrew( );
 					jumpCounter = 0;
@@ -1577,12 +1647,14 @@ public class Player extends Entity {
 					if ( inputHandler.screwPressed( ) ) {
 						screwButtonHeld = true;
 					}
-				}
+				} else
+					extraState = ConcurrentState.ScrewReady;
 			} else {
 				if ( !screwButtonHeld ) {
 					if ( mover == null ) {
-						detachScrewImpulse( );
-						if ( currentScrew.getDepth( ) >= 0 ) {
+						if ( currentScrew != null
+								&& currentScrew.getScrewType( ) != ScrewType.SCREW_STRUCTURAL
+								|| currentScrew.getDepth( ) >= 0 ) {
 							removePlayerToScrew( );
 						}
 					}
@@ -1670,7 +1742,7 @@ public class Player extends Entity {
 		}
 		// If player hits the screw button and is in distance
 		// then attach the player to the screw
-		if ( ( controllerListener.screwPressed( ) )
+		if ( ( controllerListener.screwPressed( ) && screwAttachTimeout == 0 )
 				&& ( playerState != PlayerState.Screwing ) ) {
 			if ( currentScrew != null ) {
 				attachToScrew( );
@@ -1679,15 +1751,16 @@ public class Player extends Entity {
 				}
 
 				jumpCounter = 0;
-			}
+			} else
+				extraState = ConcurrentState.ScrewReady;
 		}
 		// If the button is let go, then the player is dropped
 		// Basically you have to hold attach button to stick to screw
 		if ( !controllerListener.screwPressed( )
 				&& playerState == PlayerState.Screwing ) {
 			if ( mover == null ) {
-				detachScrewImpulse( );
-				if ( currentScrew.getDepth( ) >= 0 ) {
+				if ( currentScrew.getScrewType( ) != ScrewType.SCREW_STRUCTURAL
+						|| currentScrew.getDepth( ) >= 0 ) {
 					removePlayerToScrew( );
 				}
 			}
@@ -1789,6 +1862,7 @@ public class Player extends Entity {
 		feet = body.getFixtureList( ).get( 4 );
 		feet.setRestitution( 0.001f );
 		torso.getShape( ).setRadius( 0 );
+		// torso.setFriction( 0.5f );
 		rightSensor.setSensor( true );
 		leftSensor.setSensor( true );
 		topSensor.setSensor( true );
@@ -1815,6 +1889,42 @@ public class Player extends Entity {
 		inputHandler = null;
 		controller = null;
 
+	}
+
+	private void createCircle( float friction ) {
+		CircleShape ps = new CircleShape( );
+		ps.setRadius( feet.getShape( ).getRadius( ) );
+
+		ps.setPosition( ps.getPosition( ).add( FEET_OFFSET_X, FEET_OFFSET_Y ) );
+		FixtureDef fd = new FixtureDef( );
+
+		fd.shape = ps;
+		fd.density = 1f;
+		fd.restitution = 0.001f;
+		fd.friction = friction;
+
+		if ( playerState == PlayerState.Screwing ) {
+			fd.isSensor = true;
+		}
+
+		fd.filter.categoryBits = Util.CATEGORY_PLAYER;
+		fd.filter.maskBits = Util.CATEGORY_EVERYTHING;
+
+		body.destroyFixture( feet );
+
+		feet = body.createFixture( fd );
+
+	}
+	
+	public float getAbsAnalogXRatio ( ) {
+		if (controllerListener != null){
+			float x = Math.abs( controllerListener.analogLeftAxisX( ) );
+			if ( x > 0.4 ) {
+				return x / 1;
+			}
+			return 0;
+		}
+		return 1f; 
 	}
 	
 	public void collide( Platform that , Contact contact){

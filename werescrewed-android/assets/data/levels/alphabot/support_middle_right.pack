@@ -1,0 +1,19 @@
+support_middle_right.png
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+offset: 0, 0
+support_right
+  rotate: false
+  xy: 4, 848
+  size: 944, 931
+  orig: 944, 931
+  offset: 0, 0
+  index: -1
+support_middle
+  rotate: false
+  xy: 4, 4
+  size: 2034, 838
+  orig: 2034, 838
+  offset: 0, 0
+  index: -1

@@ -1,0 +1,12 @@
+support_left.png
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+offset: 0, 0
+support_left
+  rotate: false
+  xy: 4, 4
+  size: 2034, 1043
+  orig: 2034, 1043
+  offset: 0, 0
+  index: -1

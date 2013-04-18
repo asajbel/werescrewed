@@ -44,6 +44,7 @@ import com.blindtigergames.werescrewed.eventTrigger.EventTrigger;
 import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 import com.blindtigergames.werescrewed.entity.platforms.Pipe;
 import com.blindtigergames.werescrewed.player.Player;
+import com.blindtigergames.werescrewed.util.Metrics;
 import com.blindtigergames.werescrewed.util.Util;
 
 public class HazardScreen implements com.badlogic.gdx.Screen {
@@ -90,6 +91,9 @@ public class HazardScreen implements com.badlogic.gdx.Screen {
 				.position( 1800f, 100f ).buildPlayer( );
 		player2 = new PlayerBuilder( ).name( "player2" ).definition( "red_female" ).world( world )
 				.position( 1900f, 100.0f ).buildPlayer( );
+		
+		Metrics.registerPlayer1( player1.name );
+		Metrics.registerPlayer2( player2.name );
 
 		ArrayList < Vector2 > pipePath = new ArrayList < Vector2 >();
 		pipePath.add( new Vector2 (2, 0) );
@@ -130,7 +134,7 @@ public class HazardScreen implements com.badlogic.gdx.Screen {
 		float zoom = 1.0f;
 		float width = Gdx.graphics.getWidth( ) / zoom;
 		float height = Gdx.graphics.getHeight( ) / zoom;
-		cam = new Camera( new Vector2( 0, 0), width, height, world );
+		cam = new Camera( new Vector2( 1000, 0), width, height, world );
 	}
 
 	private void initTiledPlatforms( ) {
@@ -179,9 +183,9 @@ public class HazardScreen implements com.badlogic.gdx.Screen {
 		 * saw = new Saws( "Saw1", new Vector2( -2000.0f, 40.0f ), 2, world,
 		 * true );
 		 */
-		spikes = new Spikes( "Spikes1", new Vector2( -1700.0f, 5.0f ), 1, 6,
+		spikes = new Spikes( "Spikes1", new Vector2( 1700.0f, 100f ), 1, 6,
 				world, true, false, false );
-		spikes2 = spikesBuilder.position( -1500.0f, 5.0f ).dimensions( 4, 1 )
+		spikes2 = spikesBuilder.position( 1500.0f, 100f ).dimensions( 4, 1 )
 				.up( ).active( ).buildSpikes( );
 		// add the spikes to the skeleton
 		skeleton.addKinematicPlatform( spikes );
@@ -221,7 +225,7 @@ public class HazardScreen implements com.badlogic.gdx.Screen {
 		EventTriggerBuilder etb3 = new EventTriggerBuilder( world );
 		@SuppressWarnings( "unused" )
 		EventTrigger et3 = etb3.name( "event3" ).circle( ).radius( 100 )
-				.position( new Vector2( 1600f, 20f ) ).repeatable( )
+				.position( new Vector2( 1900f, 20f ) ).repeatable( )
 				.beginAction( new AnchorActivateAction( testAnchor ) )
 				.endAction( new AnchorActivateAction( testAnchor ) ).build( );
 		// AnchorDeactivateAction
@@ -253,8 +257,8 @@ public class HazardScreen implements com.badlogic.gdx.Screen {
 				-512f, 32f ), skeleton, world, progressManager,
 				"levelStage_0_0" ) );
 		skeleton
-				.addCheckPoint( new CheckPoint( "check_02", new Vector2( 0f,
-						32f ), skeleton, world, progressManager,
+				.addCheckPoint( new CheckPoint( "check_02", new Vector2(1900.0f, 5.0f ),
+						skeleton, world, progressManager,
 						"levelStage_0_1" ) );
 	}
 
@@ -321,6 +325,10 @@ public class HazardScreen implements com.badlogic.gdx.Screen {
 		if ( debug )
 			debugRenderer.render( world, cam.combined( ) );
 
+		if ( Gdx.input.isKeyPressed( Keys.P ) ) {
+			System.exit( 0 );
+		}
+		
 		world.step( 1 / 60f, 6, 6 );
 
 		if ( Gdx.input.isKeyPressed( Input.Keys.ESCAPE ) ) {

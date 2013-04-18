@@ -8,14 +8,12 @@ import com.blindtigergames.werescrewed.entity.Skeleton;
 public class FadeSkeletonAction implements IAction {
 
 	private boolean hasFadeOut;
-	private boolean applyToFGDecal;
 	
 	/**
 	 * @param hasFadeOut if true, this action will fade the skeleton fg out to transparent.
 	 */
-	public FadeSkeletonAction(boolean hasFadeOut, boolean applyToFGDecal){
+	public FadeSkeletonAction(boolean hasFadeOut){
 		this.hasFadeOut = hasFadeOut;
-		this.applyToFGDecal = applyToFGDecal;
 	}
 	
 	@Override
@@ -30,7 +28,7 @@ public class FadeSkeletonAction implements IAction {
 		
 		if ( entity.entityType == EntityType.SKELETON ){
 			Skeleton s = (Skeleton)entity;
-			s.setFGFade( hasFadeOut );
+			s.setFade( hasFadeOut );
 		}else{
 			//THIS SHOULD NEVER RUN,
 			//TODO Fix this bug!

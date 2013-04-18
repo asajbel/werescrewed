@@ -130,11 +130,10 @@ public class MyContactListener implements ContactListener {
 						case EVENTTRIGGER:
 							EventTrigger et = ( EventTrigger ) object;
 							et.setActivated( true, player.name );
-							if ( playerFix.getShape( ) instanceof CircleShape ) {
-								// stops both players from dying
-								if ( et.getBeginAction( ) instanceof RemoveEntityAction ) {
-									et.getBeginAction( ).act( player );
-								} else
+							if ( et.getBeginAction( ) instanceof RemoveEntityAction ) {
+								et.getBeginAction( ).act( player );
+							}
+							if ( playerFix == player.torso ) {
 									et.triggerBeginEvent( );
 							}
 							break;
@@ -268,7 +267,7 @@ public class MyContactListener implements ContactListener {
 						case EVENTTRIGGER:
 							EventTrigger et = ( EventTrigger ) objectFix
 									.getBody( ).getUserData( );
-							if ( playerFix.getShape( ) instanceof CircleShape ) {
+							if ( playerFix == player.torso ) {
 								et.triggerEndEvent( );
 							}
 							et.setActivated( false, player.name );

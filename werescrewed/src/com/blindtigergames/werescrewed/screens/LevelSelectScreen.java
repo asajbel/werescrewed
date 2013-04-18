@@ -200,7 +200,7 @@ public class LevelSelectScreen implements com.badlogic.gdx.Screen {
 				new ScreenSwitchHandler( ScreenType.GLEED ) );
 		level1Button = new Button( "AlphaBot", fancyFont,
 				new ScreenSwitchHandler( ScreenType.LOADING_1 ) );
-		dragonButton = new Button( "Dragon", fancyFont, new ScreenSwitchHandler( ScreenType.DRAGON ) );
+		dragonButton = new Button( "Dragon", fancyFont, new ScreenSwitchHandler( ScreenType.LOADING_2 ) );
 
 		backButton = new Button( "Back", fancyFont, new ScreenSwitchHandler(
 				ScreenType.MAIN_MENU ) );

@@ -33,6 +33,31 @@
 /levels/alphabot/stage_upperleft.pack
 /levels/alphabot/stage_upperright.pack
 /levels/alphabot/stage_light.pack
+/levels/alphabot/dome1.pack
+/levels/alphabot/dome2.pack
+/levels/alphabot/dome3.pack
+/levels/alphabot/dome4.pack
+/levels/alphabot/dome5.pack
+/levels/alphabot/dome6.pack
+/levels/alphabot/dome7.pack
+/levels/alphabot/dome8.pack
+/levels/alphabot/dome9.pack
+/levels/alphabot/dome10.pack
+/levels/alphabot/support_left.pack
+/levels/alphabot/support_middle_right.pack
+/levels/alphabot/curtains.pack
+/levels/alphabot/alphabot_foot_shin_decal.pack
+
 
 /levels/level1/player_female_idle.png
 /levels/level1/player_male_idle.png
+
+##Alphabot skeleton textures
+/levels/alphabot/alphabot_texture_skin.png
+/levels/alphabot/alphabot_texture_tux.png
+/levels/alphabot/alphabot_tile_suit_main.png
+/levels/alphabot/alphabot_tile_interior.png
+/levels/alphabot/sheetmetaltexture.png
+/levels/alphabot/sheetmetaltextureblack.png
+
+/levels/alphabot/shoe_testing/shoe_background_1024.png

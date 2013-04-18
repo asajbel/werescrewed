@@ -57,6 +57,7 @@ public final class ScreenManager {
 					Gdx.app.log( "disposing", screens
 							.get( prevScreen.ordinal( ) ).getClass( )
 							.getSimpleName( ) );
+					screens.get( prevScreen.ordinal( ) ).dispose( );
 					dispose( prevScreen );
 					pauseScreenShown = false;
 				}
@@ -73,6 +74,7 @@ public final class ScreenManager {
 					Gdx.app.log( "disposing", screens
 							.get( prevScreen.ordinal( ) ).getClass( )
 							.getSimpleName( ) );
+					screens.get( prevScreen.ordinal( ) ).dispose( );
 					dispose( prevScreen );
 				}
 			}

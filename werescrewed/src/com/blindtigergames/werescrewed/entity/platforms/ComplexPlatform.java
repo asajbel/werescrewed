@@ -12,6 +12,7 @@ import com.blindtigergames.werescrewed.entity.EntityDef;
  *            blah blah
  * 
  * @author Ranveer
+ * @deprecated
  * 
  */
 

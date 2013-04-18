@@ -17,7 +17,7 @@ import com.blindtigergames.werescrewed.util.Util;
 
 public class SkeletonBuilder extends GenericEntityBuilder<SkeletonBuilder>{
 
-	protected Array< Vector2 > polyVertsFG, polyVertsBG;
+	protected Array< Vector2 > polyVertsFG, polyVertsBG, invisibleVerts;
 
 	protected float 	density;
 	private BodyType 	bodyType;
@@ -42,14 +42,16 @@ public class SkeletonBuilder extends GenericEntityBuilder<SkeletonBuilder>{
 		this.bodyType = BodyType.KinematicBody;
 		this.density = 1.0f;
 		this.onBGverts = true;
+		//background textures
 		this.texBackground = WereScrewedGame.manager.get(
 				WereScrewedGame.dirHandle.path( )
-				+ "/common/robot/alphabot_texture_skin.png",
+				+ "/levels/alphabot/shoe_testing/shoe_background_1024.png",
 		Texture.class );
 		this.texForeground = texBackground;
 		this.texBody = null;
 		this.hasDeactivateTrigger = false;
 		this.fadeFgDecals = false;
+		this.invisibleVerts = null;
 		return this;
 	}
 	
@@ -104,6 +106,11 @@ public class SkeletonBuilder extends GenericEntityBuilder<SkeletonBuilder>{
 		}else{
 			this.polyVertsFG = verts;
 		}
+		return this;
+	}
+	
+	public SkeletonBuilder invisibleVerts(Array<Vector2> verts ){
+		this.invisibleVerts = verts;
 		return this;
 	}
 
@@ -198,32 +205,43 @@ public class SkeletonBuilder extends GenericEntityBuilder<SkeletonBuilder>{
 		//out.body.setType( bodyType );
 		out.setDensity( this.density );
 		
-		if ( hasDeactivateTrigger && polyVertsBG != null ){
-			EventTriggerBuilder etb = new EventTriggerBuilder( world );
-			EventTrigger et = etb.name( name+"-activator" ).setVerts( polyVertsBG )
-					.position( pos ).addEntity( out )
-					.beginAction( new SetActiveStateSkeleton( true ) )
-					.endAction( new SetActiveStateSkeleton( false ) ).repeatable( )
-					.twoPlayersToDeactivate( ).build( );
-			out.addEventTrigger( et );
-			//Gdx.app.log( "SkeletonBuilder", "I just built an event trigger" );
-		}
 		
-		if (out.fgSprite!=null){
+		if ( invisibleVerts != null ){
 			EventTriggerBuilder etb = new EventTriggerBuilder( world );
-			/*Array< Vector2 > meterFGVerts = new Array< Vector2 >();
-			for( Vector2 v : polyVertsFG ){
-				meterFGVerts.add( v.cpy( ).mul( Util.PIXEL_TO_BOX ) );
-			}*/
-			
-			EventTrigger et = etb.name( name+"-fg-fader" ).setVerts( polyVertsFG )
+			//THE END ACTION IS NEVER BEING CALLED HERE:
+			EventTrigger et = etb.name( name+"-invisible-fader" ).setVerts( invisibleVerts )
 					.extraBorder( 0f )
-					.position( pos.add( 10,10 ) ).addEntity( out )
-					.beginAction( new FadeSkeletonAction(true, fadeFgDecals) )
-					.endAction( new FadeSkeletonAction(false, fadeFgDecals) ).repeatable( )
+					.position( pos.add( 0,0 ) ).addEntity( out )
+					.beginAction( new FadeSkeletonAction(true) )
+					.endAction( new FadeSkeletonAction(false) ).repeatable( )
 					.twoPlayersToDeactivate( )
 					.build( );
 			out.addEventTrigger( et );
+		}else{
+		
+			if ( hasDeactivateTrigger && polyVertsBG != null ){
+				EventTriggerBuilder etb = new EventTriggerBuilder( world );
+				EventTrigger et = etb.name( name+"-activator" ).setVerts( polyVertsBG )
+						.position( pos ).addEntity( out )
+						.beginAction( new SetActiveStateSkeleton( true ) )
+						.endAction( new SetActiveStateSkeleton( false ) ).repeatable( )
+						.twoPlayersToDeactivate( ).build( );
+				out.addEventTrigger( et );
+				//Gdx.app.log( "SkeletonBuilder", "I just built an event trigger" );
+			}
+		
+			if (out.fgSprite!=null){
+				EventTriggerBuilder etb = new EventTriggerBuilder( world );
+			
+				EventTrigger et = etb.name( name+"-fg-fader" ).setVerts( polyVertsFG )
+						.extraBorder( 0f )
+						.position( pos.add( 0,0 ) ).addEntity( out )
+						.beginAction( new FadeSkeletonAction(true) )
+						.endAction( new FadeSkeletonAction(false) ).repeatable( )
+						.twoPlayersToDeactivate( )
+						.build( );
+				out.addEventTrigger( et );
+			}
 		}
 		
 		if ( fadeFgDecals ){

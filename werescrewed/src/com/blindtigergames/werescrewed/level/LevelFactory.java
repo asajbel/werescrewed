@@ -232,6 +232,8 @@ public class LevelFactory {
 			constructEventTrigger( item );
 		} else if ( bluePrints.equals( "hazard" ) ) {
 			out = constructHazard( item );
+		} else if ( bluePrints.equals( "fixture" ) ) {
+			constructFixture( item );
 		} else if ( !bluePrints.equals( "camera" )
 				&& item.getDefinition( ).getCategory( ) == EntityCategory.COMPLEX_PLATFORM ) {
 			out = loadComplexPlatform( item );
@@ -250,8 +252,7 @@ public class LevelFactory {
 			// if ( item.propes.containsKey( "bgdecal" ) ) {
 			// level.entityBGList.add( decal );
 			// }
-			if ( item.props.containsKey( "decal" )
-					|| item.props.containsKey( "bgdecal" ) ) {
+			if ( item.props.containsKey( "decal" ) ) {
 				Array< String > tokens;
 				String decalImage;
 				Vector2 decalPosition = new Vector2( );
@@ -288,6 +289,13 @@ public class LevelFactory {
 										+ decalPosition.toString( ) );
 					}
 				}
+			}
+			if ( item.props.containsKey( "bgdecal" ) ) {
+				Array< String > tokens;
+				String decalImage;
+				Vector2 decalPosition = new Vector2( );
+				Sprite decal;
+				float r = 0.0f;
 				for ( String decalData : item.props.getAll( "bgdecal" ) ) {
 					tokens = new Array< String >( decalData.split( "\\s+" ) );
 					if ( tokens.size > 2 ) {
@@ -441,14 +449,16 @@ public class LevelFactory {
 
 			Array< Vector2 > polySprite = contstructSkeletonPoly( item );
 
-			if ( item.props.containsKey( "noforeground" ) ) {
+			if ( item.props.containsKey( "invisible" ) ) {
+				skeleBuilder.invisibleVerts( polySprite );
+			} else if ( item.props.containsKey( "noforeground" ) ) {
 				skeleBuilder
 						.bg( )
 						.setVerts( polySprite )
 						.texBackground(
 								WereScrewedGame.manager
 										.get( WereScrewedGame.dirHandle
-												+ "/common/robot/alphabot_texture_skin.png",
+												+ "/levels/alphabot/alphabot_texture_skin.png",
 												Texture.class ) );
 			} else {
 				skeleBuilder
@@ -457,7 +467,7 @@ public class LevelFactory {
 						.texBackground(
 								WereScrewedGame.manager
 										.get( WereScrewedGame.dirHandle
-												+ "/common/robot/alphabot_texture_skin.png",
+												+ "/levels/alphabot/alphabot_texture_skin.png",
 												Texture.class ) ).fg( )
 						.setVerts( polySprite );
 				// .texForeground( WereScrewedGame.manager.get
@@ -467,6 +477,10 @@ public class LevelFactory {
 
 			if ( item.props.containsKey( "dynamic" ) ) {
 				skeleBuilder.dynamic( );
+			}
+
+			if ( item.props.containsKey( "fade_fg_decals" ) ) {
+				skeleBuilder.fadeFgDecals( true );
 			}
 
 			skeleton = skeleBuilder.build( );
@@ -558,6 +572,13 @@ public class LevelFactory {
 		// add position to camera later
 	}
 
+	private void constructFixture( Item item ) {
+		Array< Vector2 > verts = constructArray( item );
+		Entity addFixtureTo = entities.get( item.props.get( "fixtureof" ) );
+		addFixtureTo.addFixture( verts, item.pos );
+
+	}
+
 	private TiledPlatform constructTiledPlatform( Item item ) {
 		TiledPlatform out = null;
 		float width = item.element.getFloat( "Width" );
@@ -633,22 +654,24 @@ public class LevelFactory {
 
 		Skeleton parent = loadSkeleton( item.skeleton );
 
-		if ( isDynamic ) {
-			Gdx.app.log( "LevelFactory", "Tiled Dynamic platform loaded:"
-					+ out.name );
-			out.quickfixCollisions( );
-			parent.addDynamicPlatform( out );
+		if ( !item.props.containsKey( "invisible" ) ) {
+			if ( isDynamic ) {
+				Gdx.app.log( "LevelFactory", "Tiled Dynamic platform loaded:"
+						+ out.name );
+				out.quickfixCollisions( );
+				parent.addDynamicPlatform( out );
 
-			if ( item.props.containsKey( "jointtoskeleton" ) ) {
-				out.addJointToSkeleton( parent );
+				if ( item.props.containsKey( "jointtoskeleton" ) ) {
+					out.addJointToSkeleton( parent );
+				}
+			} else {
+				Gdx.app.log( "LevelFactory", "Tiled Kinematic platform loaded:"
+						+ out.name );
+
+				parent.addKinematicPlatform( out );
+				out.setCategoryMask( Util.CATEGORY_PLATFORMS,
+						Util.CATEGORY_EVERYTHING );
 			}
-		} else {
-			Gdx.app.log( "LevelFactory", "Tiled Kinematic platform loaded:"
-					+ out.name );
-
-			parent.addKinematicPlatform( out );
-			out.setCategoryMask( Util.CATEGORY_PLATFORMS,
-					Util.CATEGORY_EVERYTHING );
 		}
 		return out;
 	}
@@ -676,6 +699,10 @@ public class LevelFactory {
 		}
 
 		pb.name( item.name ).position( item.pos ).tileSet( "alphabot32" ).properties( item.props );
+		pb.texture( WereScrewedGame.manager
+										.get( WereScrewedGame.dirHandle
+												+ "/levels/alphabot/alphabot_texture_skin.png",
+												Texture.class ) );
 
 		if ( isDynamic )
 			pb.dynamic( );
@@ -687,7 +714,7 @@ public class LevelFactory {
 		pb.setVerts( verts );
 		out = pb.buildCustomPlatform( );
 
-		entities.put( item.name, out );
+		
 		out.setCrushing( isCrushable );
 
 		if ( item.props.containsKey( "onesided" ) ) {
@@ -725,6 +752,7 @@ public class LevelFactory {
 			out.setCategoryMask( Util.CATEGORY_PLATFORMS,
 					Util.CATEGORY_EVERYTHING );
 		}
+		entities.put( item.name, out );
 		return out;
 	}
 
