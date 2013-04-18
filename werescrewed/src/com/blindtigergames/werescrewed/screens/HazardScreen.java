@@ -272,7 +272,7 @@ public class HazardScreen implements com.badlogic.gdx.Screen {
 	@Override
 	public void render( float deltaTime ) {
 		if ( Gdx.gl20 != null ) {
-			Gdx.gl20.glClearColor( 0.0f, 0.0f, 0.0f, 1.0f );
+			Gdx.gl20.glClearColor( 1.0f, 1.0f, 1.0f, 1.0f );
 			Gdx.gl20.glClear( GL20.GL_COLOR_BUFFER_BIT );
 		} else {
 			Gdx.gl10.glClearColor( 0.0f, 0.0f, 0.0f, 1.0f );

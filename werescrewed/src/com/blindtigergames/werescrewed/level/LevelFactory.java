@@ -600,11 +600,17 @@ public class LevelFactory {
 		if ( item.props.containsKey( "crushable" ) ) {
 			isCrushable = true;
 		}
-
+		
 		pb.name( item.name ).position( new Vector2( xPos, yPos ) )
 				.dimensions( new Vector2( tileWidth, tileHeight ) )
 				.tileSet( "alphabot" ).properties( item.props );
 
+		float gravScale = 0f;
+		if ( item.props.containsKey( "gravscale" ) ) {
+			gravScale = Float.parseFloat( item.props.get( "gravscale" ) );
+		}
+		pb.gravityScale( gravScale );
+		
 		if ( isDynamic )
 			pb.dynamic( );
 		else
@@ -651,7 +657,9 @@ public class LevelFactory {
 		}
 
 		out.addMover( mover, RobotState.IDLE );
-
+		
+		
+		
 		Skeleton parent = loadSkeleton( item.skeleton );
 
 		if ( !item.props.containsKey( "invisible" ) ) {
@@ -704,6 +712,12 @@ public class LevelFactory {
 												+ "/levels/alphabot/alphabot_texture_skin.png",
 												Texture.class ) );
 
+		float gravScale = 0f;
+		if ( item.props.containsKey( "gravscale" ) ) {
+			gravScale = Float.parseFloat( item.props.get( "gravscale" ) );
+		}
+		pb.gravityScale( gravScale );
+		
 		if ( isDynamic )
 			pb.dynamic( );
 		else

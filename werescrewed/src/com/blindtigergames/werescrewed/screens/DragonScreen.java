@@ -17,6 +17,7 @@ import com.blindtigergames.werescrewed.entity.builders.PlayerBuilder;
 import com.blindtigergames.werescrewed.entity.builders.SkeletonBuilder;
 import com.blindtigergames.werescrewed.entity.hazard.Fire;
 import com.blindtigergames.werescrewed.entity.hazard.builders.HazardBuilder;
+import com.blindtigergames.werescrewed.entity.mover.RockingMover;
 import com.blindtigergames.werescrewed.entity.mover.RotateTweenMover;
 import com.blindtigergames.werescrewed.entity.mover.TargetImpulseMover;
 import com.blindtigergames.werescrewed.entity.platforms.Platform;
@@ -24,10 +25,13 @@ import com.blindtigergames.werescrewed.entity.platforms.TiledPlatform;
 import com.blindtigergames.werescrewed.level.Level;
 import com.blindtigergames.werescrewed.level.LevelFactory;
 import com.blindtigergames.werescrewed.entity.screws.StructureScrew;
+import com.blindtigergames.werescrewed.entity.tween.PathBuilder;
 import com.blindtigergames.werescrewed.util.Util;
 
 public class DragonScreen extends Screen {
 
+	Platform balloon1 = null;
+	
 	public DragonScreen( ) {
 		super( );
 		String filename = "data/levels/dragonlevel.xml";
@@ -38,11 +42,30 @@ public class DragonScreen extends Screen {
 	}
 	
 	void buildBalloon(){
-		Platform balloon1 = (Platform) LevelFactory.entities.get( "balloon1" );
+		balloon1 = (Platform) LevelFactory.entities.get( "balloon1" );
+		balloon1.body.setGravityScale( 0 );
 		
-		TargetImpulseMover tim = new TargetImpulseMover(new Vector2(0, 600f), Vector2.Zero,
-				0.1f, true, 100f);
-		balloon1.addMover( tim, RobotState.IDLE );
+		Skeleton balloon2_skeleton = ( Skeleton ) LevelFactory.entities.get( "balloon2_skeleton" );
+		//balloon1_skeleton.body.setLinearVelocity( new Vector2(0,5f) );
+		
+		PathBuilder pb = new PathBuilder( );
+		balloon2_skeleton.setActive( true );
+//		balloon2_skeleton.addMover( pb.begin( balloon2_skeleton ).target( 300, 0, 5 )
+//				.target( 300, 300, 5 ).target( 0, 300, 5 ).target( 0, 0, 5 )
+//				.build( ), RobotState.IDLE );
+		//balloon2_skeleton.addMover(new RockingMover(1f, 1f), RobotState.IDLE);
+		//balloon2_skeleton.body.setAngularVelocity( 5 );
+		
+		balloon2_skeleton.addMover( new RotateTweenMover(balloon2_skeleton, 5f, Util.PI / 2, 5f, true),
+				RobotState.IDLE); 
+		balloon1.body.applyForce( new Vector2(0, 200f), balloon1.body.getWorldCenter( ) );
+		
+		//balloon1.body.setLinearVelocity( new Vector2(0, 50f) );
+		
+		
+//		TargetImpulseMover tim = new TargetImpulseMover(new Vector2(0, 600f), Vector2.Zero,
+//				0.1f, true, 100f);
+//		balloon1.addMover( tim, RobotState.IDLE );
 		
 	}
 
@@ -150,5 +173,30 @@ public class DragonScreen extends Screen {
 								Texture.class ) ).position( 200, 700 )
 				.setVerts( verts ).buildCustomPlatform( );
 		level.root.addKinematicPlatform( tp );
+	}
+	
+	float time;
+	boolean restart = false;
+	@Override
+	public void render( float deltaTime ) {
+		super.render( deltaTime );
+		time += deltaTime * 1000;
+		
+		if(time > 5000){
+			balloon1.body.applyForce( new Vector2(0f, 400f), balloon1.body.getWorldCenter( ));
+			time = 0;
+		}
+		
+		
+//		if(balloon1.body.getLinearVelocity( ).y < 5 && !restart){
+//			balloon1.body.applyForce( new Vector2(0, 20f), balloon1.body.getWorldCenter( ) );
+//			time = 0;
+//		} else {
+//			restart = true;
+//			time += deltaTime * 1000;
+//			if(time > 2000) restart = false;
+//		}
+//		
+//		System.out.println( balloon1.body.getLinearVelocity( ) );
 	}
 }
