@@ -190,9 +190,9 @@ public class HazardScreen implements com.badlogic.gdx.Screen {
 		 * saw = new Saws( "Saw1", new Vector2( -2000.0f, 40.0f ), 2, world,
 		 * true );
 		 */
-		spikes = new Spikes( "Spikes1", new Vector2( 1700.0f, 100f ), 1, 6,
+		spikes = new Spikes( "Spikes1", new Vector2( 1700.0f, 100f ), 1, 3,
 				world, true, false, false );
-		spikes2 = spikesBuilder.position( 1500.0f, 100f ).dimensions( 4, 1 )
+		spikes2 = spikesBuilder.position( 1500.0f, 100f ).dimensions( 2, 1 )
 				.up( ).active( ).buildSpikes( );
 		// add the spikes to the skeleton
 		skeleton.addKinematicPlatform( spikes );
