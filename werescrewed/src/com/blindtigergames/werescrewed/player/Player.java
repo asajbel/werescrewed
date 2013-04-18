@@ -1886,8 +1886,12 @@ public class Player extends Entity {
 	public float getAbsAnalogXRatio( ) {
 		if ( controllerListener != null ) {
 			float x = Math.abs( controllerListener.analogLeftAxisX( ) );
-			if ( x > 0.4 ) {
+			if ( x > MyControllerListener.DEADZONE ) {
+				x = (  x - MyControllerListener.DEADZONE ) 
+						/ (1 - MyControllerListener.DEADZONE );
 				return x / 1;
+			} else if ( controllerListener.leftPressed( ) || controllerListener.rightPressed( ) ) {
+				return 1f; 
 			}
 			return 0;
 		}

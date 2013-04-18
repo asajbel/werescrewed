@@ -3215,17 +3215,14 @@
 		"bones": {
 			"screw_driver": {
 				"rotate": [
-					{ "time": 0, "angle": 237.58, "curve": "stepped" },
-					{ "time": 0.1666, "angle": 155.94 },
+					{ "time": 0, "angle": 237.58 },
+					{ "time": 0.2, "angle": 155.94 },
 					{ "time": 0.3666, "angle": 138.94 }
 				],
 				"translate": [
-					{ "time": 0, "x": 0.18, "y": -6.53, "curve": "stepped" },
-					{ "time": 0.1666, "x": -20.46, "y": -10.2 },
+					{ "time": 0, "x": 0.18, "y": -6.53 },
+					{ "time": 0.2, "x": -20.46, "y": -10.2 },
 					{ "time": 0.3666, "x": -56.08, "y": -12.01 }
-				],
-				"scale": [
-					{ "time": 0, "x": 1, "y": 1 }
 				]
 			},
 			"L_lower_arm": {
@@ -3295,12 +3292,16 @@
 		"slots": {
 			"screw_driver2": {
 				"color": [
-					{ "time": 0, "color": "ffffff00" }
+					{ "time": 0, "color": "ffffff00", "curve": "stepped" },
+					{ "time": 0.1666, "color": "ffffff00" },
+					{ "time": 0.2, "color": "ffffffff" }
 				]
 			},
 			"screw_driver": {
 				"color": [
-					{ "time": 0, "color": "ffffffff" }
+					{ "time": 0, "color": "ffffffff", "curve": "stepped" },
+					{ "time": 0.1666, "color": "ffffffff" },
+					{ "time": 0.2, "color": "ffffff00" }
 				]
 			}
 		}

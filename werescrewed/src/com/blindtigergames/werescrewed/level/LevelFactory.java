@@ -605,11 +605,14 @@ public class LevelFactory {
 				.dimensions( new Vector2( tileWidth, tileHeight ) )
 				.tileSet( "alphabot" ).properties( item.props );
 
+		boolean gravBoolean = false;
 		float gravScale = 0f;
 		if ( item.props.containsKey( "gravscale" ) ) {
 			gravScale = Float.parseFloat( item.props.get( "gravscale" ) );
+			gravBoolean = true;
 		}
-		pb.gravityScale( gravScale );
+		if(gravBoolean)
+			pb.gravityScale( gravScale );
 		
 		if ( isDynamic )
 			pb.dynamic( );
