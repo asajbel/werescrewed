@@ -453,6 +453,9 @@ public class LevelFactory {
 		if ( item.name.equals( "RootSkeleton" ) ) {
 			level.root = new RootSkeleton( item.name, item.pos, null,
 					level.world );
+			//DELETE THESE TWO LINES WHEN THE STAGE WORKS PROPERLY WITH GLEED
+			level.skelBGList.add( level.root );
+			level.skelFGList.add( level.root );
 			skeletons.put( item.name, level.root );
 			entities.put( item.name, level.root );
 
@@ -619,11 +622,12 @@ public class LevelFactory {
 				.dimensions( new Vector2( tileWidth, tileHeight ) )
 				.tileSet( "alphabot" ).properties( item.props );
 
-		float gravScale = 0f;
+
 		if ( item.props.containsKey( "gravscale" ) ) {
-			gravScale = Float.parseFloat( item.props.get( "gravscale" ) );
+			float gravScale = Float.parseFloat( item.props.get( "gravscale" ) );
+			pb.gravityScale( gravScale );
 		}
-		pb.gravityScale( gravScale );
+
 		
 		if ( isDynamic )
 			pb.dynamic( );
@@ -726,11 +730,10 @@ public class LevelFactory {
 												+ "/levels/alphabot/alphabot_texture_skin.png",
 												Texture.class ) );
 
-		float gravScale = 0f;
 		if ( item.props.containsKey( "gravscale" ) ) {
-			gravScale = Float.parseFloat( item.props.get( "gravscale" ) );
+			float gravScale = Float.parseFloat( item.props.get( "gravscale" ) );
+			pb.gravityScale( gravScale );
 		}
-		pb.gravityScale( gravScale );
 		
 		if ( isDynamic )
 			pb.dynamic( );
