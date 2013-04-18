@@ -7,6 +7,7 @@ import java.util.LinkedHashMap;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
 import com.badlogic.gdx.utils.Array;
@@ -55,6 +56,7 @@ import com.blindtigergames.werescrewed.entity.Skeleton;
 import com.blindtigergames.werescrewed.eventTrigger.EventTrigger;
 import com.blindtigergames.werescrewed.entity.hazard.Hazard;
 import com.blindtigergames.werescrewed.entity.hazard.builders.HazardBuilder;
+import com.blindtigergames.werescrewed.graphics.TextureAtlas;
 import com.blindtigergames.werescrewed.util.ArrayHash;
 import com.blindtigergames.werescrewed.util.Util;
 
@@ -82,6 +84,7 @@ public class LevelFactory {
 	protected static final String angleTag = "angle";
 	protected static final String imageTag = "image";
 	protected static final String gleedImageTag = "image";
+	protected static final String atlasTag = "atlas";
 
 	public LevelFactory( ) {
 		reader = new XmlReader( );
@@ -388,25 +391,36 @@ public class LevelFactory {
 		Sprite decal = null;
 		Vector2 scale = new Vector2( 1.0f, 1.0f );
 		if ( !item.getImageName( ).equals( "" ) ) {
-			Texture tex = WereScrewedGame.manager.get(
-					WereScrewedGame.dirHandle + item.getImageName( ),
-					Texture.class );
-			if ( item.getGleedType( ).equals( "PathItem" ) ) {
-				Array< Element > pointElems = item.element.getChildByName(
-						"LocalPoints" ).getChildrenByName( "Vector2" );
-				Array< Vector2 > points = new Array< Vector2 >( );
-				for ( Element e : pointElems ) {
-					Vector2 v = new Vector2(
-							e.getFloat( "X" ) * GLEED_TO_GDX_X,
-							e.getFloat( "Y" ) * GLEED_TO_GDX_Y );
-					points.add( v );
+			if ( item.getAtlasName() != null ){
+				if ( item.getGleedType( ).equals( "PathItem" ) ) {
+					throw new RuntimeException("LevelFactory constructDecal(): You can't build a polysprite decal with a texture atlas, sorry. -Stew");
 				}
-				decal = new PolySprite( tex, points );
-			} else {
-				decal = new Sprite( tex );
+				TextureAtlas atlas = WereScrewedGame.manager.getAtlas(  item.getAtlasName() );
+				decal = atlas.createSprite( item.getImageName( ) );
 				decal.setOrigin( 0.0f, 0.0f );
-				scale.x = item.sca.x / tex.getWidth( );
-				scale.y = item.sca.y / tex.getHeight( );
+				scale.x = item.sca.x / decal.getWidth( );
+				scale.y = item.sca.y / decal.getHeight( );
+			}else{
+				Texture tex = WereScrewedGame.manager.get(
+						WereScrewedGame.dirHandle + item.getImageName( ),
+						Texture.class );
+				if ( item.getGleedType( ).equals( "PathItem" ) ) {
+					Array< Element > pointElems = item.element.getChildByName(
+							"LocalPoints" ).getChildrenByName( "Vector2" );
+					Array< Vector2 > points = new Array< Vector2 >( );
+					for ( Element e : pointElems ) {
+						Vector2 v = new Vector2(
+								e.getFloat( "X" ) * GLEED_TO_GDX_X,
+								e.getFloat( "Y" ) * GLEED_TO_GDX_Y );
+						points.add( v );
+					}
+					decal = new PolySprite( tex, points );
+				} else {
+					decal = new Sprite( tex );
+					decal.setOrigin( 0.0f, 0.0f );
+					scale.x = item.sca.x / tex.getWidth( );
+					scale.y = item.sca.y / tex.getHeight( );
+				}
 			}
 		} else {
 			Gdx.app.log( "LoadDecal", "Could not find texture tag." );
@@ -1448,6 +1462,13 @@ public class LevelFactory {
 			} finally {
 			}
 			return out;
+		}
+		
+		protected String getAtlasName(){
+			if ( getProps( ).containsKey( atlasTag ) ) {
+				return getProps( ).get( atlasTag );
+			}
+			return null;
 		}
 
 		protected String getImageName( ) {

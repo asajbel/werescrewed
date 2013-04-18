@@ -54,7 +54,7 @@ public class Screw extends Entity {
 	protected ScrewType screwType;
 	public ArrayList< Joint > extraJoints;
 	
-	private static TextureRegion screwTexRegion = WereScrewedGame.manager.getAtlas( "common-textures" ).findRegion( "screw-flathead" );
+	private static TextureRegion screwTexRegion = WereScrewedGame.manager.getAtlas( "common-textures" ).findRegion( "flat_head_circular" );
 
 	/**
 	 * constructor to use if you want a cosmetic screw

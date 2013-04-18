@@ -267,6 +267,10 @@ public class AlphaScreen extends Screen {
 		level.skelBGList.add( bgSkele );
 		level.skelFGList.add( bgSkele );
 		level.root.addSkeleton( bgSkele );
+		
+		Sprite s = WereScrewedGame.manager.getAtlas("common-textures").createSprite( "rail_vert_middle" );
+		
+		bgSkele.addBGDecal( s , new Vector2(-3000,0) );
 	}
 
 	private void initBackground( TextureAtlas[ ] dome, int numDomes,

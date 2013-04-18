@@ -29,6 +29,11 @@ public class FadeSkeletonAction implements IAction {
 		if ( entity.entityType == EntityType.SKELETON ){
 			Skeleton s = (Skeleton)entity;
 			s.setFade( hasFadeOut );
+			boolean isSkeleActive = s.isActive( );
+			if ( (hasFadeOut && !isSkeleActive) || (isSkeleActive && !hasFadeOut) ){
+				s.setActive( hasFadeOut );
+			}
+			
 		}else{
 			//THIS SHOULD NEVER RUN,
 			//TODO Fix this bug!
