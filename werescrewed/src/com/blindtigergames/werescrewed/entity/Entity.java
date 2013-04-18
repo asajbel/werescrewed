@@ -12,6 +12,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -304,8 +305,6 @@ public class Entity implements GleedLoadable {
 			spinemator.draw( batch );
 		drawParticles( frontParticles, batch );
 		if (sounds != null && sounds.hasSound( "idle" )){
-			//set volume to have a radial falloff from the center of the screen
-			//and a linear falloff with zoom.
 		}
 	}
 

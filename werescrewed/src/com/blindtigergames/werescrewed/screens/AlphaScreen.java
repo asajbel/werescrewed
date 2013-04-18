@@ -255,11 +255,13 @@ public class AlphaScreen extends Screen {
 
 		int decalX = -738;// -482;//587
 		int decalY = -714;// -558;//536
+		Sprite footBG = decals.createSprite( "foot_mechanisms_and_pipes_NOCOLOR" );
+		Sprite legBG = decals.createSprite( "shin_pipes_NOCOLOR" );
 		Skeleton foot = ( Skeleton ) LevelFactory.entities.get( "footSkeleton" );
-		foot.addBGDecal(
-				decals.createSprite( "foot_mechanisms_and_pipes_NOCOLOR" ),
+		foot.addBGDecal( footBG,
 				new Vector2( decalX, decalY ) );
-		foot.addBGDecal( decals.createSprite( "shin_pipes_NOCOLOR" ),
+		footBG.setOrigin( 0f, 0f );
+		foot.addBGDecal( legBG,
 				new Vector2( 400 + decalX, 424 + decalY ) );
 		// bgSkele.addBGDecal( decals.createSprite(
 		// "foot_support_structureNOCOLOR" ), new Vector2(decalX,decalY) );

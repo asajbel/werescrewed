@@ -713,7 +713,7 @@ public class Player extends Entity {
 				&& ( grounded || playerState == PlayerState.Screwing ) ) {
 			Metrics.addPlayerJumpPosition( this.getPositionPixel( ) );
 		}
-		if ( grounded || playerState == PlayerState.HeadStand ){
+		if ( grounded || (playerState == PlayerState.HeadStand && this.isTopPlayer( ))){
 			sounds.playSound( "jump" );
 		}
 		// Regardless of how the player jumps, we shouldn't consider them
