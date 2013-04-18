@@ -32,6 +32,9 @@ public class PlayerBuilder extends GenericEntityBuilder<PlayerBuilder> {
 
 	public Player buildPlayer(){
 		Player out = new Player( name, definition, world, pos );
+		if (out != null){
+			out.postLoad( );
+		}
 		return out;
 	}
 }

@@ -230,7 +230,7 @@ public class PlatformBuilder extends GenericEntityBuilder<PlatformBuilder> {
 	}
 	
 	@Override
-	public PlatformBuilder properties(ArrayHash props){
+	public PlatformBuilder properties(ArrayHash<String,String> props){
 		super.properties( props );
 		
 		return this;
@@ -264,6 +264,7 @@ public class PlatformBuilder extends GenericEntityBuilder<PlatformBuilder> {
 		tp.setRestitution( this.restitution );
 		tp.setGravScale( this.gravScale );
 		tp.body.setFixedRotation( false );
+		prepareEntity(tp);
 		return tp;
 		
 		
@@ -287,6 +288,7 @@ public class PlatformBuilder extends GenericEntityBuilder<PlatformBuilder> {
 		cp.setRestitution( this.restitution );
 		cp.setGravScale( this.gravScale );
 		cp.body.setFixedRotation( false );
+		prepareEntity(cp);
 		return cp;
 	}
 	
@@ -310,6 +312,7 @@ public class PlatformBuilder extends GenericEntityBuilder<PlatformBuilder> {
 		PolySprite polySprite = new PolySprite( tex , verts );
 		customPlat.changeSprite( polySprite );
 		
+		prepareEntity(customPlat);
 		return customPlat;
 	}
 

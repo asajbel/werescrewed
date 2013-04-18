@@ -11,6 +11,7 @@ import com.badlogic.gdx.controllers.PovDirection;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
+import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.Filter;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
@@ -24,6 +25,7 @@ import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityDef;
 import com.blindtigergames.werescrewed.entity.EntityType;
 import com.blindtigergames.werescrewed.entity.animator.PlayerSpinemator;
+import com.blindtigergames.werescrewed.entity.hazard.Hazard;
 import com.blindtigergames.werescrewed.entity.mover.IMover;
 import com.blindtigergames.werescrewed.entity.mover.LerpMover;
 import com.blindtigergames.werescrewed.entity.mover.LinearAxis;
@@ -34,6 +36,7 @@ import com.blindtigergames.werescrewed.entity.screws.ScrewType;
 import com.blindtigergames.werescrewed.graphics.particle.ParticleEffect;
 import com.blindtigergames.werescrewed.input.MyControllerListener;
 import com.blindtigergames.werescrewed.input.PlayerInputHandler;
+import com.blindtigergames.werescrewed.sound.SoundManager;
 import com.blindtigergames.werescrewed.util.Metrics;
 import com.blindtigergames.werescrewed.util.Metrics.TrophyMetric;
 import com.blindtigergames.werescrewed.util.Util;
@@ -237,8 +240,10 @@ public class Player extends Entity {
 		setUpController( );
 		controllerDebug = true;
 
-		jumpSound = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-				+ "/common/sounds/WilhelmScream.ogg" );
+		if (sounds == null){
+			sounds = new SoundManager();
+		}
+		sounds.getSound( "jump", WereScrewedGame.dirHandle + "/common/sounds/jump.ogg" );
 
 		r = new Random( );
 		addFrontParticleEffect( "land_cloud_new", false, false );
@@ -709,6 +714,9 @@ public class Player extends Entity {
 				&& ( grounded || playerState == PlayerState.Screwing ) ) {
 			Metrics.addPlayerJumpPosition( this.getPositionPixel( ) );
 		}
+		if ( grounded || playerState == PlayerState.HeadStand ){
+			sounds.playSound( "jump" );
+		}
 		// Regardless of how the player jumps, we shouldn't consider them
 		// grounded anymore.
 		setGrounded( false );
@@ -1110,6 +1118,7 @@ public class Player extends Entity {
 	private void handleScrewing( boolean controller ) {
 		// loosen and tighten screws and jump when the screw joint is gone
 		if ( controller ) {
+			
 			if ( controllerListener.unscrewing( ) && currentMover( ) == null ) {
 				if ( resetScrewing ) {
 					resetScrewing = false;
@@ -1473,13 +1482,26 @@ public class Player extends Entity {
 	 * grab button
 	 */
 	private void resetScrewJumpGrab( ) {
-		if ( ( controllerListener.analogRightAxisX( ) < 0.7 && controllerListener
-				.analogRightAxisY( ) < 0.7 )
-				&& ( controllerListener.analogRightAxisX( ) > -0.7 && controllerListener
-						.analogRightAxisY( ) > -0.7 ) ) {
-			switchedScrewingDirection = true;
-			resetScrewing = true;
+		
+		if(controllerListener.checkLeftStickForScrewing()){
+			if ( ( controllerListener.analogLeftAxisX( ) < 0.7 && controllerListener
+					.analogLeftAxisY( ) < 0.7 )
+					&& ( controllerListener.analogLeftAxisX( ) > -0.7 && controllerListener
+							.analogLeftAxisY( ) > -0.7 ) ) {
+				switchedScrewingDirection = true;
+				resetScrewing = true;
+			}
 		}
+		 else if(controllerListener.checkRightStickForScrewing()){
+				if ( ( controllerListener.analogRightAxisX( ) < 0.7 && controllerListener
+						.analogRightAxisY( ) < 0.7 )
+						&& ( controllerListener.analogRightAxisX( ) > -0.7 && controllerListener
+								.analogRightAxisY( ) > -0.7 ) ) {
+					switchedScrewingDirection = true;
+					resetScrewing = true;
+				}
+			}
+		
 		if ( isGrounded( ) ) {
 			jumpCounter = 0;
 			directionJumpDivsion = JUMP_DEFAULT_DIVISION;
@@ -1879,5 +1901,41 @@ public class Player extends Entity {
 
 		feet = body.createFixture( fd );
 
+	}
+	
+	public float getAbsAnalogXRatio ( ) {
+		if (controllerListener != null){
+			float x = Math.abs( controllerListener.analogLeftAxisX( ) );
+			if ( x > 0.4 ) {
+				return x / 1;
+			}
+			return 0;
+		}
+		return 1f; 
+	}
+	
+	public void collide( Platform that , Contact contact){
+		// Ensure the object is solid and involves the
+		// player's
+		// feet
+		// also make sure its not the player
+		Fixture playerFix;
+		if (contact.getFixtureB( ).getUserData( ).equals( this )){
+			playerFix = contact.getFixtureB( );
+		} else {
+			playerFix = contact.getFixtureA( );
+		}
+		if ( that.isSolid( ) ){
+			if (playerFix.getShape( ) instanceof CircleShape ) {
+				//this.contacts++;
+				hitSolidObject( that );
+				if ( getState( ) != PlayerState.Screwing ) {
+					setGrounded( true );
+					sounds.playSound("land");
+				}
+			} else {
+				collide( (Entity) that, contact );
+			}
+		}
 	}
 }

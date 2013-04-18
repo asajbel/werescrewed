@@ -5,6 +5,7 @@ import java.util.EnumMap;
 import java.util.HashMap;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -14,6 +15,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.Filter;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
@@ -22,6 +24,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.camera.Anchor;
+import com.blindtigergames.werescrewed.camera.AnchorList;
 import com.blindtigergames.werescrewed.entity.animator.IAnimator;
 import com.blindtigergames.werescrewed.entity.animator.ISpinemator;
 import com.blindtigergames.werescrewed.entity.animator.PlayerAnimator;
@@ -34,6 +37,7 @@ import com.blindtigergames.werescrewed.graphics.TextureAtlas;
 import com.blindtigergames.werescrewed.graphics.particle.ParticleEffect;
 import com.blindtigergames.werescrewed.level.GleedLoadable;
 import com.blindtigergames.werescrewed.player.Player;
+import com.blindtigergames.werescrewed.sound.SoundManager;
 import com.blindtigergames.werescrewed.util.Util;
 
 /**
@@ -78,8 +82,8 @@ public class Entity implements GleedLoadable {
 	protected HashMap< String, ParticleEffect > behindParticles,
 			frontParticles;
 
-	// protected Array<ParticleEffect> tmpParticleEffect;
-
+	protected SoundManager sounds;
+	
 	/**
 	 * Create entity by definition
 	 * 
@@ -219,6 +223,7 @@ public class Entity implements GleedLoadable {
 		this.bgDecals = new ArrayList< Sprite >( );
 		this.bgDecalOffsets = new ArrayList< Vector2 >( );
 		this.bgDecalAngles = new ArrayList< Float >( );
+		this.sounds = null;
 		setUpRobotState( );
 	}
 
@@ -293,6 +298,10 @@ public class Entity implements GleedLoadable {
 		if ( spinemator != null )
 			spinemator.draw( batch );
 		drawParticles( frontParticles, batch );
+		if (sounds != null && sounds.hasSound( "idle" )){
+			//set volume to have a radial falloff from the center of the screen
+			//and a linear falloff with zoom.
+		}
 	}
 
 	protected void drawParticles( HashMap< String, ParticleEffect > map,
@@ -1164,6 +1173,21 @@ public class Entity implements GleedLoadable {
 		return out;
 	}
 	
+	public void setSoundManager(SoundManager s){
+		sounds = s;
+	}
+	
+	public SoundManager getSoundManager(){
+		return sounds;
+	}
+	
+	// Idle sound
+	public void idleSound(){
+		if (sounds != null && sounds.hasSound("idle")){
+			sounds.loopSound("idle");
+		}
+	}
+	
 	/**
 	 * Add a fixture from a gleed path. This ignores the last vert.
 	 * 
@@ -1218,4 +1242,19 @@ public class Entity implements GleedLoadable {
 		}
 	}
 
+	//Call this function after all your sprites, sounds, etc. are loaded.
+	public void postLoad(){
+		idleSound();
+	}
+	
+	public void collide( Object that , Contact contact){
+		this.collide();
+	}
+	
+	//This function handles collision when we do not care what the other object is.
+	public void collide(){
+		if (sounds != null && sounds.hasSound("collision")){
+			sounds.playSound("collision");
+		}
+	}
 }

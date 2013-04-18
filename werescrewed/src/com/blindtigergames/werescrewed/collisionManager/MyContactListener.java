@@ -31,6 +31,7 @@ import com.blindtigergames.werescrewed.player.Player.PlayerState;
  */
 public class MyContactListener implements ContactListener {
 
+	// These should be in Player or Entity, not hardcoded.
 	private static int NUM_PLAYER1_CONTACTS = 0;
 	private static int NUM_PLAYER2_CONTACTS = 0;
 
@@ -39,9 +40,21 @@ public class MyContactListener implements ContactListener {
 	 */
 	@Override
 	public void beginContact( Contact contact ) {
+		//Object objectA = contact.getFixtureA( ).getUserData( );
+		//Object objectB = contact.getFixtureB( ).getUserData( );
 		final Fixture x1 = contact.getFixtureA( );
 		final Fixture x2 = contact.getFixtureB( );
-
+		/* Will replace current code with this when I'm not working on other tasks.
+		 * ~Kevin
+		if (objectA != null && objectB != null){
+			if (objectA instanceof Entity && objectB instanceof Entity){
+				Class<? extends Entity> classA = objectA.getClass( ).asSubclass( Entity.class );
+				Class<? extends Entity> classB = objectB.getClass( ).asSubclass( Entity.class );
+				classA.cast( objectA ).collide( classB.cast( objectB ), contact );
+				classB.cast( objectB ).collide( classA.cast( objectA ), contact );
+			}
+		}
+		*/
 		Fixture playerFix = null;
 		Fixture objectFix = null;
 
@@ -171,7 +184,7 @@ public class MyContactListener implements ContactListener {
 			}
 		}
 	}
-
+	
 	/**
 	 * When two objects stop touching
 	 */

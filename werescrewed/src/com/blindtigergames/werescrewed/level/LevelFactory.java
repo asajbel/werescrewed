@@ -603,7 +603,7 @@ public class LevelFactory {
 
 		pb.name( item.name ).position( new Vector2( xPos, yPos ) )
 				.dimensions( new Vector2( tileWidth, tileHeight ) )
-				.tileSet( "alphabot" );
+				.tileSet( "alphabot" ).properties( item.props );
 
 		if ( isDynamic )
 			pb.dynamic( );
@@ -698,7 +698,7 @@ public class LevelFactory {
 			isCrushable = true;
 		}
 
-		pb.name( item.name ).position( item.pos ).tileSet( "alphabot32" );
+		pb.name( item.name ).position( item.pos ).tileSet( "alphabot32" ).properties( item.props );
 		pb.texture( WereScrewedGame.manager
 										.get( WereScrewedGame.dirHandle
 												+ "/levels/alphabot/alphabot_texture_skin.png",
@@ -785,7 +785,7 @@ public class LevelFactory {
 				.type( item.getDefinition( ) )
 				.position( item.pos.x, item.pos.y )
 				.texture( item.getDefinition( ).getTexture( ) ).solid( true )
-				.dynamic( isDynamic ).buildComplexPlatform( );
+				.dynamic( isDynamic ).properties( item.props ).buildComplexPlatform( );
 
 		entities.put( item.name, out );
 
@@ -1254,7 +1254,9 @@ public class LevelFactory {
 		float yPos = item.pos.y - ( height / 2 );
 
 		HazardBuilder hazardBuilder = new HazardBuilder( level.world );
-
+		
+		hazardBuilder.position( new Vector2(xPos, yPos) ).dimensions( tileWidth, tileHeight )
+		.active( );
 		hazardBuilder.position( new Vector2( xPos, yPos ) )
 				.dimensions( tileWidth, tileHeight ).active( );
 
@@ -1277,6 +1279,7 @@ public class LevelFactory {
 	public Level getLevel( ) {
 		return level;
 	}
+
 
 	protected static HashMap< String, Element > getChildrenByNameHash(
 			Element e, String tag, String nameTag ) {
@@ -1330,7 +1333,7 @@ public class LevelFactory {
 		public String defName;
 		private EntityDef def;
 		public GleedTypeTag gleedTag;
-		private ArrayHash props;
+		private ArrayHash<String, String> props;
 		public Vector2 pos;
 		public float rot;
 		public Vector2 origin;
@@ -1349,17 +1352,15 @@ public class LevelFactory {
 			}
 			locked = true;
 		}
-
-		protected ArrayHash getProps( ) {
-			if ( props == null ) {
-				props = new ArrayHash( );
-				Array< Element > properties = element.getChildByName(
-						"CustomProperties" ).getChildrenByName( "Property" );
-				String name;
-				String value;
-				for ( Element prop : properties ) {
-					name = prop.getAttribute( "Name" ).toLowerCase( );
-					value = prop.get( "string", "<no value>" );
+		
+		protected ArrayHash<String, String> getProps(){
+			if (props == null){
+				props = new ArrayHash<String, String>();
+				Array<Element> properties = element.getChildByName("CustomProperties").getChildrenByName("Property");
+				String name; String value;
+				for (Element prop: properties){
+					name = prop.getAttribute("Name").toLowerCase( );
+					value = prop.get("string", "<no value>");
 					props.add( name, value );
 				}
 			}
@@ -1367,9 +1368,9 @@ public class LevelFactory {
 		}
 
 		/**
-		 * getDefinition loads the correct XML file with the same time
-		 * (complexTest) complexText loads the bottle, gearSmall would load the
-		 * gear Remember to set them to kinematic or they just fall
+		 * getDefinition loads the correct XML file with the same time (complexTest)
+		 * complexText loads the bottle, gearSmall would load the gear
+		 * Remember to set them to kinematic or they just fall
 		 * 
 		 * @return EntityDef
 		 */

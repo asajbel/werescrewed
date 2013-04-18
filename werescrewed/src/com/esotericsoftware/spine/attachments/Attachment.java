@@ -25,39 +25,23 @@
 
 package com.esotericsoftware.spine.attachments;
 
-import com.esotericsoftware.spine.Skin;
+import com.esotericsoftware.spine.Slot;
 
-import com.blindtigergames.werescrewed.graphics.TextureAtlas;
-import com.blindtigergames.werescrewed.graphics.TextureAtlas.AtlasRegion;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-public class AtlasAttachmentLoader implements AttachmentLoader {
-	private TextureAtlas atlas;
+abstract public class Attachment {
+	final String name;
 
-	public AtlasAttachmentLoader (TextureAtlas atlas2) {
-		if (atlas2 == null) throw new IllegalArgumentException("atlas cannot be null.");
-		this.atlas = atlas2;
+	public Attachment (String name) {
+		if (name == null) throw new IllegalArgumentException("name cannot be null.");
+		this.name = name;
 	}
 
-	public Attachment newAttachment (Skin skin, AttachmentType type, String name) {
-		Attachment attachment = null;
-		switch (type) {
-		case region:
-			attachment = new RegionAttachment(name);
-			break;
-		case regionSequence:
-			attachment = new RegionSequenceAttachment(name);
-			break;
-		default:
-			throw new IllegalArgumentException("Unknown attachment type: " + type);
-		}
+	public String getName () {
+		return name;
+	}
 
-		if (attachment instanceof RegionAttachment) {
-			AtlasRegion region = atlas.findRegion(attachment.getName());
-			if (region == null)
-				throw new RuntimeException("Region not found in atlas: " + attachment + " (" + type + " attachment: " + name + ")");
-			((RegionAttachment)attachment).setRegion(region);
-		}
-
-		return attachment;
+	public String toString () {
+		return name;
 	}
 }
