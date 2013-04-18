@@ -605,14 +605,12 @@ public class LevelFactory {
 				.dimensions( new Vector2( tileWidth, tileHeight ) )
 				.tileSet( "alphabot" ).properties( item.props );
 
-		boolean gravBoolean = false;
-		float gravScale = 0f;
+
 		if ( item.props.containsKey( "gravscale" ) ) {
-			gravScale = Float.parseFloat( item.props.get( "gravscale" ) );
-			gravBoolean = true;
-		}
-		if(gravBoolean)
+			float gravScale = Float.parseFloat( item.props.get( "gravscale" ) );
 			pb.gravityScale( gravScale );
+		}
+
 		
 		if ( isDynamic )
 			pb.dynamic( );
@@ -715,11 +713,10 @@ public class LevelFactory {
 												+ "/levels/alphabot/alphabot_texture_skin.png",
 												Texture.class ) );
 
-		float gravScale = 0f;
 		if ( item.props.containsKey( "gravscale" ) ) {
-			gravScale = Float.parseFloat( item.props.get( "gravscale" ) );
+			float gravScale = Float.parseFloat( item.props.get( "gravscale" ) );
+			pb.gravityScale( gravScale );
 		}
-		pb.gravityScale( gravScale );
 		
 		if ( isDynamic )
 			pb.dynamic( );
