@@ -5935,7 +5935,7 @@
                 <Item xsi:type="RectangleItem" Name="box_decal" Visible="true">
                     <Position>
                         <X>96</X>
-                        <Y>-4286</Y>
+                        <Y>-4288</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="definition" Type="string" Description="">
@@ -10553,6 +10553,35 @@
                         <Y>32</Y>
                     </Origin>
                 </Item>
+                <Item xsi:type="RectangleItem" Name="decalzippertop1" Visible="true">
+                    <Position>
+                        <X>1280</X>
+                        <Y>-4608</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="definition" Type="string" Description="">
+                            <string>decal</string>
+                        </Property>
+                        <Property Name="atlas" Type="string" Description="">
+                            <string>common-textures</string>
+                        </Property>
+                        <Property Name="image" Type="string" Description="">
+                            <string>rail_vert_top</string>
+                        </Property>
+                        <Property Name="target" Type="string" Description="">
+                            <string>chestPlat6</string>
+                        </Property>
+                    </CustomProperties>
+                    <Width>150</Width>
+                    <Height>50</Height>
+                    <FillColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </FillColor>
+                </Item>
             </Items>
             <ScrollSpeed>
                 <X>1</X>
@@ -10562,11 +10591,11 @@
     </Layers>
     <CustomProperties />
     <EditorRelated>
-        <NextItemNumber>524</NextItemNumber>
-        <ContentRootFolder>C:\Users\Dan\Documents\GitHub\werescrewed\gleed-textures</ContentRootFolder>
+        <NextItemNumber>525</NextItemNumber>
+        <ContentRootFolder>\\vmware-host\Shared Folders\Documents\werescrewed\gleed-textures</ContentRootFolder>
         <CameraPosition>
-            <X>3012.99829</X>
-            <Y>-5873.68945</Y>
+            <X>1354.6709</X>
+            <Y>-4565.33057</Y>
         </CameraPosition>
         <Version>1.3.0.0</Version>
     </EditorRelated>
