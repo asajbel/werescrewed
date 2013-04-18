@@ -56,8 +56,8 @@ public class DragonScreen extends Screen {
 		//balloon2_skeleton.addMover(new RockingMover(1f, 1f), RobotState.IDLE);
 		//balloon2_skeleton.body.setAngularVelocity( 5 );
 		
-		balloon2_skeleton.addMover( new RotateTweenMover(balloon2_skeleton, 5f, Util.PI / 2, 5f, true),
-				RobotState.IDLE); 
+//		balloon2_skeleton.addMover( new RotateTweenMover(balloon2_skeleton, 5f, Util.PI / 2, 5f, true),
+//				RobotState.IDLE); 
 		balloon1.body.applyForce( new Vector2(0, 200f), balloon1.body.getWorldCenter( ) );
 		
 		//balloon1.body.setLinearVelocity( new Vector2(0, 50f) );
