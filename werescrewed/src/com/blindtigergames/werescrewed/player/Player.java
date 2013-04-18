@@ -1907,4 +1907,12 @@ public class Player extends Entity {
 		feet = body.createFixture( fd );
 
 	}
+	
+	public float getAbsAnalogXRatio ( ) {
+		float x = Math.abs( controllerListener.analogLeftAxisX( ) );
+		if ( x > 0.4 ) {
+			return x / 1;
+		}
+		return 0; 
+	}
 }
