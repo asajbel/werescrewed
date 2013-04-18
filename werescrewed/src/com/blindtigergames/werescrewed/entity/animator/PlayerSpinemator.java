@@ -117,11 +117,16 @@ public class PlayerSpinemator implements ISpinemator {
 		} else {
 			mixer = anims.get( current );
 		}
-		
+
 		if ( current == PlayerAnim.RUN || current == PlayerAnim.RUN_SCREW ) {
 			mixRatio = player.getAbsAnalogXRatio( );
-			anims.get( PlayerAnim.IDLE ).apply( skel, time,
-					PlayerAnim.IDLE.loopBool );
+			if ( current == PlayerAnim.RUN_SCREW ) {
+				anims.get( PlayerAnim.IDLE_SCREW ).apply( skel, time,
+						PlayerAnim.IDLE_SCREW.loopBool );
+			} else {
+				anims.get( PlayerAnim.IDLE ).apply( skel, time,
+						PlayerAnim.IDLE.loopBool );
+			}
 			mixer.mix( skel, time, current.loopBool, mixRatio );
 		} else {
 			mixRatio = mixTime / anim.getDuration( );
