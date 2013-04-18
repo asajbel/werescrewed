@@ -248,9 +248,9 @@ public class AlphaScreen extends Screen {
 		bgSkele.addBGDecal( floor_seats.createSprite( "floor_right" ),
 				new Vector2( floorX + max, floorY ) );
 		// lights
-		level.root.addBGDecal( stage_light.createSprite( "light_left" ),
+		bgSkele.addBGDecal( stage_light.createSprite( "light_left" ),
 				new Vector2( lightX, lightY ) );
-		level.root.addBGDecal( stage_light.createSprite( "light_right" ),
+		bgSkele.addBGDecal( stage_light.createSprite( "light_right" ),
 				new Vector2( lightX + 2030, lightY ) );
 		
 		initBackground( dome, numDomes, domeSliceX, domeSliceY, -max + seatsX,
