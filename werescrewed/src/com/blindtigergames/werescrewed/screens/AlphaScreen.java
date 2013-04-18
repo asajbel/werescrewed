@@ -2,11 +2,13 @@ package com.blindtigergames.werescrewed.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
@@ -186,20 +188,7 @@ public class AlphaScreen extends Screen {
 
 		int curtainX = seatsX - max + 1230;
 		int curtainY = seatsY + 585;
-
-		initBackground( dome, numDomes, domeSliceX, domeSliceY, -max + seatsX,
-				seatsY );
-
-		// support beam
-		bgSkele.addBGDecal( support_left.createSprite( "support_left" ),
-				new Vector2( supportX, supportY ) );
-		bgSkele.addBGDecal(
-				support_middle_right.createSprite( "support_middle" ),
-				new Vector2( supportX + max, supportY + 216 ) );
-		bgSkele.addBGDecal(
-				support_middle_right.createSprite( "support_right" ),
-				new Vector2( supportX + 2 * max, supportY ) );
-
+		
 		// curtains
 		bgSkele.addFGDecal( curtains.createSprite( "curtains_bottom_left" ),
 				new Vector2( curtainX, curtainY ) );
@@ -212,18 +201,16 @@ public class AlphaScreen extends Screen {
 		bgSkele.addFGDecal( curtains.createSprite( "curtains_bottom_right" ),
 				new Vector2( curtainX + 2398, curtainY ) );
 
-		// floor
-		bgSkele.addBGDecal( floor_seats.createSprite( "floor_left" ),
-				new Vector2( floorX, floorY ) );
-		bgSkele.addBGDecal( floor_seats.createSprite( "floor_right" ),
-				new Vector2( floorX + max, floorY ) );
-		// lights
-		bgSkele.addBGDecal( stage_light.createSprite( "light_left" ),
-				new Vector2( lightX, lightY ) );
-		bgSkele.addBGDecal( stage_light.createSprite( "light_right" ),
-				new Vector2( lightX + 2030, lightY ) );
-
 		// stage is in between floor & seats
+															// works
+		// seats
+		bgSkele.addFGDecal( floor_seats.createSprite( "seats_left" ),
+				new Vector2( -max + seatsX, seatsY ) );
+		bgSkele.addFGDecal( floor_seats.createSprite( "seats_middle" ),
+				new Vector2( 0 + seatsX, seatsY ) );
+		bgSkele.addFGDecal( floor_seats.createSprite( "seats_right" ),
+				new Vector2( max + seatsX, seatsY ) );
+		
 		bgSkele.addFGDecal( stage_pillar.createSprite( "stage_left" ),
 				new Vector2( stage_pillarX, stage_pillarY ) );
 		bgSkele.addFGDecal( stage_upperleft.createSprite( "stage_upperleft" ),
@@ -244,15 +231,31 @@ public class AlphaScreen extends Screen {
 		bgSkele.addFGDecal(
 				stage_upperright.createSprite( "stage_upperright" ),
 				new Vector2( stage_pillarX + 2004, stage_pillarY + 1616 ) );// 1617
-																			// works
-		// seats
-		bgSkele.addFGDecal( floor_seats.createSprite( "seats_left" ),
-				new Vector2( -max + seatsX, seatsY ) );
-		bgSkele.addFGDecal( floor_seats.createSprite( "seats_middle" ),
-				new Vector2( 0 + seatsX, seatsY ) );
-		bgSkele.addFGDecal( floor_seats.createSprite( "seats_right" ),
-				new Vector2( max + seatsX, seatsY ) );
-
+				
+		// support beam
+		level.root.addBGDecal( support_left.createSprite( "support_left" ),
+				new Vector2( supportX, supportY ) );
+		level.root.addBGDecal(
+				support_middle_right.createSprite( "support_middle" ),
+				new Vector2( supportX + max, supportY + 216 ) );
+		level.root.addBGDecal(
+				support_middle_right.createSprite( "support_right" ),
+				new Vector2( supportX + 2 * max, supportY ) );
+		
+		// floor
+		bgSkele.addBGDecal( floor_seats.createSprite( "floor_left" ),
+				new Vector2( floorX, floorY ) );
+		bgSkele.addBGDecal( floor_seats.createSprite( "floor_right" ),
+				new Vector2( floorX + max, floorY ) );
+		// lights
+		bgSkele.addBGDecal( stage_light.createSprite( "light_left" ),
+				new Vector2( lightX, lightY ) );
+		bgSkele.addBGDecal( stage_light.createSprite( "light_right" ),
+				new Vector2( lightX + 2030, lightY ) );
+		
+		initBackground( dome, numDomes, domeSliceX, domeSliceY, -max + seatsX,
+				seatsY );
+		
 		int decalX = -738;// -482;//587
 		int decalY = -714;// -558;//536
 		Sprite footBG = decals.createSprite( "foot_mechanisms_and_pipes_NOCOLOR" );
@@ -263,6 +266,7 @@ public class AlphaScreen extends Screen {
 		footBG.setOrigin( 0f, 0f );
 		foot.addBGDecal( legBG,
 				new Vector2( 400 + decalX, 424 + decalY ) );
+		
 		// bgSkele.addBGDecal( decals.createSprite(
 		// "foot_support_structureNOCOLOR" ), new Vector2(decalX,decalY) );
 
