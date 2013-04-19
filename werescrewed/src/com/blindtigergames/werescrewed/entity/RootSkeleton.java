@@ -27,6 +27,7 @@ public class RootSkeleton extends Skeleton {
 		skeletonsToDelete = new ArrayList< Skeleton >( );
 		parentSkeleton = this;
 		rootSkeleton = this;
+		isMacroSkeleton = true;
 	}
 
 	/**

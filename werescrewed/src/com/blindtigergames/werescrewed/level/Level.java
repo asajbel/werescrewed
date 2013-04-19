@@ -145,7 +145,7 @@ public class Level {
 			player2.draw( batch, deltaTime );
 		// draw all foreground entity sprites after everything
 		for ( Entity e : entityFGList ) {
-			//if ( e.isActive( ) ) 
+			if ( e.isActive( ) ) 
 			{
 				e.drawFGDecals( batch );
 			}
@@ -155,7 +155,7 @@ public class Level {
 			if ( skel.fgSprite != null && skel.fgSprite.getAlpha( ) != 0 ) {
 				skel.fgSprite.draw( batch );
 			}
-			//if ( !skel.isActive( ) ) {
+			//if ( skel.isActive( ) ) {
 				skel.drawFGDecals( batch );
 			//}
 		}
