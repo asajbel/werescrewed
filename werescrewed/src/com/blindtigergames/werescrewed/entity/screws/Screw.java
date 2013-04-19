@@ -16,6 +16,7 @@ import com.badlogic.gdx.physics.box2d.joints.WeldJointDef;
 import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityType;
+import com.blindtigergames.werescrewed.sound.SoundManager;
 import com.blindtigergames.werescrewed.util.Util;
 
 /**
@@ -68,6 +69,7 @@ public class Screw extends Entity {
 	 */
 	public Screw( String name, Vector2 pos, Entity entity, World world ) {
 		super( name, pos, null, null, false );
+		loadSounds();
 		this.world = world;
 		this.sprite = constructSprite(screwTexRegion);
 		this.entity = entity;
@@ -79,6 +81,14 @@ public class Screw extends Entity {
 		if(sprite!=null)sprite.rotate( ( float ) ( Math.random( )*360 ) );
 		body.setTransform( body.getPosition( ), sprite.getRotation( )*Util.DEG_TO_RAD );
 		addStructureJoint( entity );
+	}
+
+	protected void loadSounds( ) {
+		sounds = new SoundManager();
+		sounds.getSound( "screwing" , WereScrewedGame.dirHandle
+				+ "/common/sounds/screwing.ogg");
+		sounds.getSound( "unscrewing" , WereScrewedGame.dirHandle
+				+ "/common/sounds/unscrewing.ogg");
 	}
 
 	/**
@@ -173,12 +183,14 @@ public class Screw extends Entity {
 	 * @param switchedDirections
 	 */
 	public void screwLeft( int region, boolean switchedDirections ) {
+		sounds.loopSound( "unscrewing" , false );
 	}
 
 	/**
 	 * used by keyboard controls to screw left
 	 */
 	public void screwLeft( ) {
+		sounds.loopSound( "unscrewing" , false );
 	}
 
 	/**
@@ -187,14 +199,27 @@ public class Screw extends Entity {
 	 * @param switchedDirections
 	 */
 	public void screwRight( int region, boolean switchedDirections ) {
+		sounds.loopSound( "screwing" , false);
 	}
 
 	/**
 	 * used by keyboard controls to screw right
 	 */
 	public void screwRight( ) {
+		sounds.loopSound( "screwing" , false);
 	}
 
+	
+	/**
+	 * used when the player is not screwing either left or right.
+	 * 
+	 */
+	public void stopScrewing(){
+		if (sounds != null){
+			sounds.stopSound("screwing");
+			sounds.stopSound("unscrewing");
+		}
+	}
 	/**
 	 * returns true if the screws body is jointed to a player
 	 * 

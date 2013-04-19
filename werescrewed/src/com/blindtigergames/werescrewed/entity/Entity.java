@@ -1186,6 +1186,10 @@ public class Entity implements GleedLoadable {
 		sounds = s;
 	}
 	
+	public boolean hasSoundManager(){
+		return sounds != null;
+	}
+	
 	public SoundManager getSoundManager(){
 		return sounds;
 	}

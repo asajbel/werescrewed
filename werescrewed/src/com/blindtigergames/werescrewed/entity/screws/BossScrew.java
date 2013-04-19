@@ -49,6 +49,7 @@ public class BossScrew extends Screw {
 	public BossScrew( String name, Vector2 pos, int max, Entity entity,
 			World world, Vector2 detachDirection ) {
 		super( name, pos, null );
+		loadSounds();
 		this.world = world;
 		this.detachDirection = detachDirection;
 		this.entity = entity;
@@ -86,6 +87,7 @@ public class BossScrew extends Screw {
 				* Util.DEG_TO_RAD );
 		rotation = ( int ) ( body.getAngle( ) * Util.RAD_TO_DEG );
 		addStructureJoint( entity );
+		loadSounds();
 	}
 
 	@Override

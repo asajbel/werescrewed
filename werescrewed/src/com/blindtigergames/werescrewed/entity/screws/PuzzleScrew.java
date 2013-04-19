@@ -40,6 +40,7 @@ public class PuzzleScrew extends Screw {
 			World world, int startDepth, boolean resetable,
 			Vector2 detachDirection ) {
 		super( name, pos, null );
+		loadSounds();
 		this.world = world;
 		this.detachDirection = detachDirection;
 		this.entity = entity;
@@ -83,6 +84,7 @@ public class PuzzleScrew extends Screw {
 	public PuzzleScrew( String name, Vector2 pos, int max, World world,
 			int startDepth, boolean resetable ) {
 		super( name, pos, null );
+		loadSounds();
 		this.world = world;
 		maxDepth = max;
 		this.startDepth = depth = startDepth;
@@ -118,6 +120,7 @@ public class PuzzleScrew extends Screw {
 	 */
 	@Override
 	public void screwLeft( int region, boolean switchedDirections ) {
+		super.screwLeft(region, switchedDirections);
 		if ( switchedDirections ) {
 			startRegion = region;
 			prevDiff = 0;
@@ -147,6 +150,7 @@ public class PuzzleScrew extends Screw {
 
 	@Override
 	public void screwLeft( ) {
+		super.screwLeft();
 		if ( depth > 0 ) {
 			body.setAngularVelocity( 1 );
 			depth -= 2;
@@ -163,6 +167,7 @@ public class PuzzleScrew extends Screw {
 	 */
 	@Override
 	public void screwRight( int region, boolean switchedDirections ) {
+		super.screwRight( region, switchedDirections );
 		if ( switchedDirections ) {
 			startRegion = region;
 			prevDiff = 0;
@@ -191,6 +196,7 @@ public class PuzzleScrew extends Screw {
 
 	@Override
 	public void screwRight( ) {
+		super.screwRight( );
 		if ( depth < maxDepth ) {
 			body.setAngularVelocity( -1 );
 			depth += 2;

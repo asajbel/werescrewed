@@ -66,12 +66,33 @@ public class SoundManager {
 		}
 	}
 
-	public void loopSound( String id ) {
+	public void loopSound( String id ){
+		loopSound(id, true);
+	}
+	
+	public void loopSound( String id , boolean override) {
 		if (hasSound(id)) {
-			sounds.get( id ).loop( );
+			sounds.get( id ).loop( override );
 		}
 	}
 
+	public void stopSound( String id ) {
+		if (hasSound(id)) {
+			sounds.get( id ).stop( );
+			if (isLooping(id)){
+				sounds.get( id ).loopId = -1;
+			}
+		}
+	}
+
+	public boolean isLooping( String id ){
+		if (hasSound(id)){
+			if (sounds.get(id).loopId >= 0)
+				return true;
+		}
+		return false;
+	}
+	
 	public void setSoundVolume(String id, float v){
 		if (hasSound(id)){
 			sounds.get(id).volume = v;
@@ -120,11 +141,13 @@ public class SoundManager {
 			return id;
 		}
 		
-		protected long loop(){
-			if (loopId >= 0){
+		protected long loop( boolean override ){
+			if (override && loopId >= 0){
 				sound.stop(loopId);
+				loopId = sound.loop( getNoiseVolume() * volume);
+			} else if (loopId < 0){
+				loopId = sound.loop( getNoiseVolume() * volume);
 			}
-			loopId = sound.loop( getNoiseVolume() * volume);
 			return loopId;
 		}
 		

@@ -243,8 +243,7 @@ public class Player extends Entity {
 		if ( sounds == null ) {
 			sounds = new SoundManager( );
 		}
-		sounds.getSound( "jump", WereScrewedGame.dirHandle
-				+ "/common/sounds/jump.ogg" );
+		loadSounds();
 
 		r = new Random( );
 		addFrontParticleEffect( "land_cloud_new", false, false );
@@ -1164,6 +1163,8 @@ public class Player extends Entity {
 						}
 					}
 				}
+			} else {
+				currentScrew.stopScrewing();
 			}
 		} else {
 			if ( inputHandler.unscrewing( ) && currentMover( ) == null ) {
@@ -1202,6 +1203,8 @@ public class Player extends Entity {
 						}
 					}
 				}
+			} else {
+				currentScrew.stopScrewing();
 			}
 		}
 
@@ -1940,5 +1943,16 @@ public class Player extends Entity {
 				collide( ( Entity ) that, contact );
 			}
 		}
+	}
+	
+	public void loadSounds(){
+		sounds.getSound( "jump", WereScrewedGame.dirHandle
+				+ "/common/sounds/jump.ogg" );
+		sounds.getSound( "footstep1" , WereScrewedGame.dirHandle
+				+ "/common/sounds/footstep1.ogg");
+		sounds.getSound( "footstep2" , WereScrewedGame.dirHandle
+				+ "/common/sounds/footstep2.ogg");
+		sounds.getSound( "land" , WereScrewedGame.dirHandle
+				+ "/common/sounds/land.ogg");
 	}
 }
