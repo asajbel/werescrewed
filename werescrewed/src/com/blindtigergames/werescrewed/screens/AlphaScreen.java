@@ -60,7 +60,7 @@ public class AlphaScreen extends Screen {
 	public AlphaScreen( ) {
 		super( );
 
-		setClearColor( 79.0f / 255.0f, 82.0f / 255.0f, 104.0f / 255.0f, 1.0f );
+		setClearColor( 79.0f / 255.0f, 82.0f / 255.0f, 104.0f / 255.0f, 1.0f ); //purple-ish
 
 		String filename = "data/levels/alphalevel.xml";
 		level = new LevelFactory( ).load( filename );
@@ -89,13 +89,13 @@ public class AlphaScreen extends Screen {
 
 		if ( level.player1 == null ) {
 			level.player1 = new PlayerBuilder( ).world( level.world )
-					.position( 1300, 6000 ).name( "player1" ).definition( "red_male" )
+					.position( 0, 0 ).name( "player1" ).definition( "red_male" )
 					.buildPlayer( );
 			level.progressManager.addPlayerOne( level.player1 );
 		}
 		if ( level.player2 == null ) {
 			level.player2 = new PlayerBuilder( ).world( level.world )
-					.position( 1300, 6000 ).name( "player2" )
+					.position( 0, 0 ).name( "player2" )
 					.definition( "red_female" ).buildPlayer( );
 			level.progressManager.addPlayerTwo( level.player2 );
 		}
