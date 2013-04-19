@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.Mesh;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.VertexAttribute;
 import com.blindtigergames.werescrewed.graphics.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
@@ -39,6 +40,8 @@ public class PolySprite extends Sprite {
 	private float rotation;
 	//private Matrix4 modelMat; //holds position and rotation for the polygon.
 	//private Matrix4 rotationMat;
+	
+	private final int R = 3, G = 4, B = 5, A = 6, U = 7, V = 8, X = 0, Y = 1, Z = 2;
 	
 	/**
 	 * Construct a polysprite with a given texture and color
@@ -142,10 +145,10 @@ public class PolySprite extends Sprite {
 		float[] vertices = this.verts;	
 		
 		for ( int i = 0; i < numVerts; i++ ) {
-			vertices[ 9 * i + 3 ] = color; // r
-			vertices[ 9 * i + 4 ] = color; // g
-			vertices[ 9 * i + 5 ] = color; // b
-			vertices[ 9 * i + 6 ] = color; // a
+			vertices[ 9 * i + R ] = color; // r
+			vertices[ 9 * i + G ] = color; // g
+			vertices[ 9 * i + B ] = color; // b
+			vertices[ 9 * i + A ] = color; // a
 		}
 	}
 
@@ -153,10 +156,10 @@ public class PolySprite extends Sprite {
 	public void setColor (float color) {
 		float[] vertices = this.verts;
 		for ( int i = 0; i < numVerts; i++ ) {
-			vertices[ 9 * i + 3 ] = color; // r
-			vertices[ 9 * i + 4 ] = color; // g
-			vertices[ 9 * i + 5 ] = color; // b
-			vertices[ 9 * i + 6 ] = color; // a
+			vertices[ 9 * i + R ] = color; // r
+			vertices[ 9 * i + G ] = color; // g
+			vertices[ 9 * i + B ] = color; // b
+			vertices[ 9 * i + A ] = color; // a
 		}
 	}
 	
@@ -181,8 +184,8 @@ public class PolySprite extends Sprite {
 		for ( int i = 0; i < numVerts; i++ ) {
 			float oldx = localVerts.get( i).x;
 			float oldy = localVerts.get( i).y;
-			verts[ 9 * i + 0 ] = (oldx)*cos - (oldy)*sin + this.x;
-			verts[ 9 * i + 1 ] = (oldx)*sin + (oldy)*cos + this.y;
+			verts[ 9 * i + X ] = (oldx)*cos - (oldy)*sin + this.x;
+			verts[ 9 * i + Y ] = (oldx)*sin + (oldy)*cos + this.y;
 		}
 		mesh.setVertices( verts );
 	}
@@ -223,7 +226,7 @@ public class PolySprite extends Sprite {
 	public void setAlpha(float newAlpha){
 		super.setAlpha( newAlpha );
 		for ( int i = 0; i < numVerts; i++ ) {
-			verts[ 9 * i + 6 ] = alpha;
+			verts[ 9 * i + A ] = alpha;
 		}
 		mesh.setVertices( verts );
 	}
@@ -254,14 +257,14 @@ public class PolySprite extends Sprite {
 			} else if ( y > maxY ) {
 				maxY = y;
 			}
-			this.verts[ 9 * i ] = x; // x
-			this.verts[ 9 * i + 1 ] = y; // y
-			this.verts[ 9 * i + 2 ] = 0; // z
+			this.verts[ 9 * i + X ] = x; // x
+			this.verts[ 9 * i + Y ] = y; // y
+			this.verts[ 9 * i + Z ] = 0; // z
 
-			this.verts[ 9 * i + 3 ] = r; // r
-			this.verts[ 9 * i + 4 ] = g; // g
-			this.verts[ 9 * i + 5 ] = b; // b
-			this.verts[ 9 * i + 6 ] = a; // a
+			this.verts[ 9 * i + R ] = r; // r
+			this.verts[ 9 * i + G ] = g; // g
+			this.verts[ 9 * i + B ] = b; // b
+			this.verts[ 9 * i + A ] = a; // a
 		}
 
 		this.bounds = new Rectangle( minX, minY, maxX - minX, maxY - minY );
@@ -271,8 +274,8 @@ public class PolySprite extends Sprite {
 		float[ ] texCoords = createTexCoords( verts );
 
 		for ( int i = 0; i < numVerts; i++ ) {
-			this.verts[ 9 * i + 7 ] = texCoords[ 2 * i ]; // uv
-			this.verts[ 9 * i + 8 ] = texCoords[ 2 * i + 1 ]; // uw
+			this.verts[ 9 * i + U ] = texCoords[ 2 * i ]; // u
+			this.verts[ 9 * i + V ] = texCoords[ 2 * i + 1 ]; // v
 		}
 		mesh = new Mesh( true, numVerts, ( numVerts - 2 ) * 3,
 				VertexAttribute.Position( ), VertexAttribute.ColorUnpacked( ),
@@ -297,11 +300,19 @@ public class PolySprite extends Sprite {
 		indices[ 2 ] = 2;
 		// then do the rest of the triangles:
 		for ( short i = 1; i < numTriangles; ++i ) {
-			indices[ i * 3 ] = ( short ) ( i + 1 );
-			indices[ i * 3 + 1 ] = ( short ) ( i + 2 );
-			indices[ i * 3 + 2 ] = 0;
+			indices[ i * 3 + X ] = ( short ) ( i + 1 );
+			indices[ i * 3 + Y ] = ( short ) ( i + 2 );
+			indices[ i * 3 + Z ] = 0;
 		}
 		return indices;
+	}
+	
+	int getTextureWidth(){
+		return getTexture().getWidth();
+	}
+	
+	int getTextureHeight(){
+		return getTexture().getHeight();
 	}
 
 	/**
@@ -311,16 +322,15 @@ public class PolySprite extends Sprite {
 	 */
 	private float[ ] createTexCoords( Array< Vector2 > verts ) {
 		float[ ] texCoords = new float[ verts.size * 2 ];
-		float texWidth = bounds.width / getTexture( ).getWidth( );
-		float texHeight = bounds.height / getTexture( ).getHeight( );
+		float texWidth = bounds.width / getTextureWidth();
+		float texHeight = bounds.height / getTextureHeight();
 		float halfTexWidth = texWidth / 2;
 		float halfTexHeight = texHeight / 2;
 
 		for ( int i = 0; i < verts.size; ++i ) {
 			texCoords[ 2 * i ] = verts.get( i ).x / bounds.width * texWidth
-					- halfTexWidth;
-			texCoords[ 2 * i + 1 ] = verts.get( i ).y / bounds.height
-					* texHeight - halfTexHeight;
+				 - halfTexWidth;
+			texCoords[ 2 * i + 1 ] = verts.get( i ).y / bounds.height * texHeight - halfTexHeight;
 		}
 		return texCoords;
 	}

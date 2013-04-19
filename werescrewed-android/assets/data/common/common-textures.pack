@@ -3,13 +3,20 @@ format: RGBA8888
 filter: Linear,Linear
 repeat: none
 offset: 0, 0
-rail
+rail_vert_top
   rotate: false
-  xy: 140, 2
-  size: 50, 150
-  orig: 50, 150
+  xy: 2, 358
+  size: 150, 50
+  orig: 150, 50
   offset: 0, 0
-  index: 3
+  index: -1
+rail_vert_middle
+  rotate: false
+  xy: 2, 306
+  size: 150, 50
+  orig: 150, 50
+  offset: 0, 0
+  index: -1
 chainlink
   rotate: false
   xy: 2, 2
@@ -17,24 +24,38 @@ chainlink
   orig: 32, 64
   offset: 0, 0
   index: -1
-screw-flathead
+rail_horz_left
   rotate: false
-  xy: 2, 154
-  size: 64, 64
-  orig: 64, 64
+  xy: 113, 2
+  size: 50, 150
+  orig: 50, 150
   offset: 0, 0
   index: -1
-rail
+rail_horz_right
+  rotate: false
+  xy: 2, 154
+  size: 50, 150
+  orig: 50, 150
+  offset: 0, 0
+  index: -1
+rail_horz_middle
+  rotate: false
+  xy: 165, 2
+  size: 50, 150
+  orig: 50, 150
+  offset: 0, 0
+  index: -1
+rail_vert_bottom
+  rotate: false
+  xy: 54, 154
+  size: 150, 50
+  orig: 150, 50
+  offset: 0, 0
+  index: -1
+flat_head_circular
   rotate: false
   xy: 36, 2
-  size: 50, 150
-  orig: 50, 150
+  size: 75, 75
+  orig: 75, 75
   offset: 0, 0
-  index: 1
-rail
-  rotate: false
-  xy: 88, 2
-  size: 50, 150
-  orig: 50, 150
-  offset: 0, 0
-  index: 2
+  index: 75
