@@ -5,14 +5,35 @@ repeat: none
 offset: 0, 0
 rail_vert_top
   rotate: false
-  xy: 2, 358
+  xy: 2, 402
   size: 150, 50
   orig: 150, 50
   offset: 0, 0
   index: -1
+pipeEndD
+  rotate: false
+  xy: 113, 2
+  size: 64, 65
+  orig: 64, 65
+  offset: 0, 0
+  index: -1
+pipeEndU
+  rotate: false
+  xy: 70, 79
+  size: 63, 65
+  orig: 63, 65
+  offset: 0, 0
+  index: -1
+pipeUD
+  rotate: false
+  xy: 2, 146
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
 rail_vert_middle
   rotate: false
-  xy: 2, 306
+  xy: 2, 350
   size: 150, 50
   orig: 150, 50
   offset: 0, 0
@@ -24,32 +45,46 @@ chainlink
   orig: 32, 64
   offset: 0, 0
   index: -1
+pipeEndL
+  rotate: false
+  xy: 179, 2
+  size: 66, 63
+  orig: 66, 63
+  offset: 0, 0
+  index: -1
 rail_horz_left
   rotate: false
-  xy: 113, 2
+  xy: 68, 146
   size: 50, 150
   orig: 50, 150
   offset: 0, 0
   index: -1
 rail_horz_right
   rotate: false
-  xy: 2, 154
+  xy: 172, 146
   size: 50, 150
   orig: 50, 150
   offset: 0, 0
   index: -1
 rail_horz_middle
   rotate: false
-  xy: 165, 2
+  xy: 120, 146
   size: 50, 150
   orig: 50, 150
   offset: 0, 0
   index: -1
 rail_vert_bottom
   rotate: false
-  xy: 54, 154
+  xy: 2, 298
   size: 150, 50
   orig: 150, 50
+  offset: 0, 0
+  index: -1
+pipeLR
+  rotate: false
+  xy: 135, 79
+  size: 66, 64
+  orig: 66, 64
   offset: 0, 0
   index: -1
 flat_head_circular
@@ -59,3 +94,10 @@ flat_head_circular
   orig: 75, 75
   offset: 0, 0
   index: 75
+pipeEndR
+  rotate: false
+  xy: 2, 79
+  size: 66, 64
+  orig: 66, 64
+  offset: 0, 0
+  index: -1

@@ -14,6 +14,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.entity.Sprite;
+import com.blindtigergames.werescrewed.graphics.TextureAtlas;
 import com.blindtigergames.werescrewed.util.Util;
 
 public class Pipe extends Platform {
@@ -105,26 +106,25 @@ public class Pipe extends Platform {
 		start.x = currentPos.x;
 		start.y = currentPos.y; 
 		
+		TextureAtlas commonTextures = WereScrewedGame.manager.getAtlas( "common-textures" );
+		String texName = "";
+		
 		switch ( currentDirection ){
 		case LEFT:
-			texture = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-					+ "/common/pipe/pipeEndR.png", Texture.class );
+			texName = "pipeEndR";
 			break;
 		case RIGHT:
-			texture = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-					+ "/common/pipe/pipeEndL.png", Texture.class );
+			texName = "pipeEndL";
 			break;
 		case UP:
-			texture = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-					+ "/common/pipe/pipeEndD.png", Texture.class );
+			texName = "pipeEndD";
 			break;
 		case DOWN:
-			texture = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-					+ "/common/pipe/pipeEndU.png", Texture.class );
+			texName = "pipeEndU";
 			break;
 		}
 		
-		tempSprite = new Sprite(texture); 
+		tempSprite = commonTextures.createSprite( texName );
 		offset_x = currentPos.x * Util.BOX_TO_PIXEL;
 		offset_y = currentPos.y * Util.BOX_TO_PIXEL;
 		tempSprite.setOrigin( -offset_x + tileSize, -offset_y + tileSize );
@@ -197,37 +197,31 @@ public class Pipe extends Platform {
 				switch ( currentDirection ){
 				case LEFT:
 				case RIGHT:
-					texture = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-							+ "/common/pipe/pipeLR.png", Texture.class );
+					texName = "pipeLR";
 					break;
 				case UP:
 				case DOWN:
-					texture = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-							+ "/common/pipe/pipeUD.png", Texture.class );
+					texName = "pipeUD";
 					break;
 				}
 			} else {
 				switch ( currentDirection ){
 				case LEFT:
-					texture = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-							+ "/common/pipe/pipeEndL.png", Texture.class );
+					texName = "pipeEndL";
 					break;
 				case RIGHT:
-					texture = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-							+ "/common/pipe/pipeEndR.png", Texture.class );
+					texName = "pipeEndR";
 					break;
 				case UP:
-					texture = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-							+ "/common/pipe/pipeEndU.png", Texture.class );
+					texName = "pipeEndU";
 					break;
 				case DOWN:
-					texture = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-							+ "/common/pipe/pipeEndD.png", Texture.class );
+					texName = "pipeEndD";
 					break;
 				}
 			}
 			
-			tempSprite = new Sprite( texture );
+			tempSprite = commonTextures.createSprite( texName );
 			if (currentDirection == Direction.RIGHT || currentDirection == Direction.LEFT) {
 				offset_x = (start.x + ( i / (float) numberOfSegments ) * distance.x)
 					* Util.BOX_TO_PIXEL;
