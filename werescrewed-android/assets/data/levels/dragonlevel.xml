@@ -586,7 +586,7 @@
                             <string>customPlatform</string>
                         </Property>
                         <Property Name="AttachToSkeleton" Type="string" Description="">
-                            <string>balloon2_skeleton</string>
+                            <string>RootSkeleton</string>
                         </Property>
                     </CustomProperties>
                     <LocalPoints>
@@ -2100,8 +2100,8 @@
         <NextItemNumber>584</NextItemNumber>
         <ContentRootFolder>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures</ContentRootFolder>
         <CameraPosition>
-            <X>1457.02246</X>
-            <Y>-2034.57434</Y>
+            <X>1848.698</X>
+            <Y>-2576.24219</Y>
         </CameraPosition>
         <Version>1.3.0.0</Version>
     </EditorRelated>
