@@ -5,6 +5,7 @@ import aurelienribon.tweenengine.Tween;
 import aurelienribon.tweenengine.TweenEquations;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -52,11 +53,12 @@ public class DragonScreen extends Screen {
 	
 	void buildBalloon(){
 		balloon2 = (Platform) LevelFactory.entities.get( "balloon2" );
-		balloon2.body.setGravityScale( 0 );
+		//balloon2.body.setGravityScale( 0 );
 		
 		balloon3_skeleton = ( Skeleton ) LevelFactory.entities.get( "balloon3_skeleton" );
 		Skeleton balloon4_skeleton = ( Skeleton ) LevelFactory.entities.get( "balloon4_skeleton" );
 		Skeleton balloon5_skeleton = ( Skeleton ) LevelFactory.entities.get( "balloon5_skeleton" );
+		Skeleton balloon2_skeleton = ( Skeleton ) LevelFactory.entities.get( "balloon2_skeleton" );
 		//balloon2_skeleton.body.setGravityScale( 0.0f );
 		//balloon1_skeleton.body.setLinearVelocity( new Vector2(0,5f) );
 		
@@ -65,6 +67,7 @@ public class DragonScreen extends Screen {
 		//balloon3_skeleton.setActive( true );
 		
 		
+		balloon2.addMover( balloonMover(balloon2, 600, Util.PI/32, 4) );
 		balloon3_skeleton.addMover( balloonMover(balloon3_skeleton, 600, Util.PI/8, 4) );
 		balloon4_skeleton.addMover( balloonMover(balloon4_skeleton, 700, Util.PI/16, 2) );
 		balloon5_skeleton.addMover( balloonMover(balloon5_skeleton, 800, Util.PI/32, 0) );

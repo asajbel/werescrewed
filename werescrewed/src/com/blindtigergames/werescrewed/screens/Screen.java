@@ -128,7 +128,7 @@ public class Screen implements com.badlogic.gdx.Screen {
 
 	@Override
 	public void dispose( ) {
-		// TODO Auto-generated method stub
+		level.resetPhysicsWorld( );
 		
 	}
 	
@@ -136,4 +136,5 @@ public class Screen implements com.badlogic.gdx.Screen {
 		clearColor = new Color(r,g,b,a);
 	}
 
+	
 }
