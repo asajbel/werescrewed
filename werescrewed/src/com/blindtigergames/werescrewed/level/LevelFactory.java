@@ -500,8 +500,14 @@ public class LevelFactory {
 				skeleBuilder.fadeFgDecals( true );
 			}
 
+			
 			skeleton = skeleBuilder.build( );
 
+			if ( item.props.containsKey( "gravscale" ) ) {
+				float gravScale = Float.parseFloat( item.props.get( "gravscale" ) );
+				skeleton.body.setGravityScale( gravScale );
+			}
+			
 			// IMover mover = null;
 			// if(item.props.containsKey( "mover" )){
 			// String movername = item.props.get( "mover" );
