@@ -45,12 +45,11 @@ public class CheckPoint extends Entity {
 	 */
 	public CheckPoint( String name, Vector2 pos, Entity entity, World world,
 			ProgressManager pm, String levelToReload ) {
-		super( name, pos,null
-				/*WereScrewedGame.manager.get( null
-												  WereScrewedGame.dirHandle.path
-												  ( ) + "/common/cletter.png"
-												 , Texture.class )*/, null,
-				false );
+		super( name, pos, null
+		/*
+		 * WereScrewedGame.manager.get( null WereScrewedGame.dirHandle.path ( )
+		 * + "/common/cletter.png" , Texture.class )
+		 */, null, false );
 		this.world = world;
 		this.progressManager = pm;
 		this.levelLoadStage = levelToReload;
@@ -60,17 +59,18 @@ public class CheckPoint extends Entity {
 			progressManager.currentCheckPoint = this;
 		}
 		TextureAtlas atlas = WereScrewedGame.manager.getAtlas( "checkpoint" );
-		checkpointFrameAnimator = new SimpleFrameAnimator( ).speed(0f )
+		checkpointFrameAnimator = new SimpleFrameAnimator( ).speed( 0f )
 				.loop( LoopBehavior.STOP ).time( 0.001f ).startFrame( 0 )
-				.maxFrames( atlas.getRegions( ).size+1 );
+				.maxFrames( atlas.getRegions( ).size + 1 );
 		Sprite sprite = new Sprite( atlas, checkpointFrameAnimator );
-		sprite.setOrigin( sprite.getWidth()/2, sprite.getHeight( )/2 );
+		sprite.setOrigin( sprite.getWidth( ) / 2, sprite.getHeight( ) / 2 );
 		changeSprite( sprite );
-		super.offset = new Vector2(sprite.getWidth()/2, sprite.getHeight( )/2);
-		
-		//sprite.setColor( Color.PINK );
-				constructBody( pos );
-				connectScrewToEntity( entity );
+		super.offset = new Vector2( sprite.getWidth( ) / 2,
+				sprite.getHeight( ) / 2 );
+
+		// sprite.setColor( Color.PINK );
+		constructBody( pos );
+		connectScrewToEntity( entity );
 	}
 
 	/**
@@ -78,18 +78,21 @@ public class CheckPoint extends Entity {
 	 */
 	@Override
 	public void remove( ) {
-		while ( body.getJointList( ).iterator( ).hasNext( ) ) {
-			world.destroyJoint( body.getJointList( ).get( 0 ).joint );
+		if ( body != null ) {
+			while ( body.getJointList( ).iterator( ).hasNext( ) ) {
+				world.destroyJoint( body.getJointList( ).get( 0 ).joint );
+			}
+			world.destroyBody( body );
+			body = null;
+			removed = true;
 		}
-		world.destroyBody( body );
-		removed = true;
 	}
 
 	@Override
 	public void dispose( ) {
 		remove( );
 	}
-	
+
 	/**
 	 * returns whether or not this entity has been removed
 	 */
@@ -115,7 +118,7 @@ public class CheckPoint extends Entity {
 	public Entity getEntity( ) {
 		return entity;
 	}
-	
+
 	/**
 	 * returns whether the checkpoint is the most recent active checkpoint
 	 * 
@@ -137,14 +140,13 @@ public class CheckPoint extends Entity {
 	@Override
 	public void update( float deltaTime ) {
 		super.update( deltaTime );
-		//this.body.setTransform( body.getPosition( ), entity.getAngle( ) );
-		Vector2 bodyPos = body.getPosition( ).mul( Util.BOX_TO_PIXEL );		
-		sprite.setRotation( MathUtils.radiansToDegrees
-				* entity.getAngle( ) );
+		// this.body.setTransform( body.getPosition( ), entity.getAngle( ) );
+		Vector2 bodyPos = body.getPosition( ).mul( Util.BOX_TO_PIXEL );
+		sprite.setRotation( MathUtils.radiansToDegrees * entity.getAngle( ) );
 		sprite.setPosition( bodyPos.x - offset.x, bodyPos.y - offset.y );
-		//if ( !checkpointFrameAnimator.isStopped( ) )
+		// if ( !checkpointFrameAnimator.isStopped( ) )
 		checkpointFrameAnimator.update( deltaTime );
-		//System.out.println( checkpointFrameAnimator.getFrame( ) );
+		// System.out.println( checkpointFrameAnimator.getFrame( ) );
 		// if ( active ) {
 		// if ( body.getAngle( ) >= 90f * Util.DEG_TO_RAD ) {
 		// body.setAngularVelocity( 0.0f );
