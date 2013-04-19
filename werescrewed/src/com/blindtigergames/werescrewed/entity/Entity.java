@@ -361,6 +361,7 @@ public class Entity implements GleedLoadable {
 				world.destroyJoint( body.getJointList( ).get( 0 ).joint );
 			}
 			world.destroyBody( body );
+			body = null;
 		}
 	}
 

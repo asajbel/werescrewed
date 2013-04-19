@@ -458,10 +458,8 @@ public class Skeleton extends Platform {
 					Platform p;
 					if ( e.isKinematic( ) ) {
 						p = kinematicPlatformMap.remove( e.name );
-						p.remove( );
 					} else {
 						p = dynamicPlatformMap.remove( e.name );
-						p.remove( );
 					}
 					p.remove( );
 					break;
