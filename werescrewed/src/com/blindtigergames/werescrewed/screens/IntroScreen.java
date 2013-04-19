@@ -16,7 +16,7 @@ class IntroScreen implements com.badlogic.gdx.Screen {
 	public ScreenType screenType;
 	private SpriteBatch batch = null;
 	private BitmapFont font = null;
-	static TextureRegion player = WereScrewedGame.manager.getAtlas( "common-textures" ).findRegion( "screw-flathead" );
+	static TextureRegion player = WereScrewedGame.manager.getAtlas( "common-textures" ).findRegion( "flat_head_circular" );
 
 	Stage stage;
 
