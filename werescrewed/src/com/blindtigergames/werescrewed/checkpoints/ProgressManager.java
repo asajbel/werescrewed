@@ -112,7 +112,7 @@ public class ProgressManager {
 		if ( p1Ghost != null ) {
 			if ( p1Ghost.currentMover( ) instanceof LerpMover ) {
 				LerpMover lm = ( LerpMover ) p1Ghost.currentMover( );
-				lm.changeBeginPos( player1.getPositionPixel( ) );
+				lm.changeBeginPos( player1.getPositionPixel( ).cpy( ).add( -64f, 64f ) );
 				lm.changeEndPos( currentCheckPoint.getPositionPixel( ) );
 				lm.setSpeed( 10f / currentCheckPoint.getPositionPixel( )
 						.sub( player1.getPositionPixel( ) ).len( ) );
@@ -131,7 +131,7 @@ public class ProgressManager {
 		if ( p2Ghost != null ) {
 			if ( p2Ghost.currentMover( ) instanceof LerpMover ) {
 				LerpMover lm = ( LerpMover ) p2Ghost.currentMover( );
-				lm.changeBeginPos( player2.getPositionPixel( ) );
+				lm.changeBeginPos( player2.getPositionPixel( ).cpy( ).add( -64f, 64f ) );
 				lm.changeEndPos( currentCheckPoint.getPositionPixel( ) );
 				lm.setSpeed( 10f / currentCheckPoint.getPositionPixel( )
 						.sub( player2.getPositionPixel( ) ).len( ) );
@@ -209,13 +209,13 @@ public class ProgressManager {
 				LerpMover screwMover;
 				// create the ghost of the dead player
 				p1Ghost = new Entity( "player1Ghost",
-						player1.getPositionPixel( ),
+						player1.getPositionPixel( ).cpy( ).add( -64f, 64f ),
 						WereScrewedGame.manager.get(
 								WereScrewedGame.dirHandle.path( )
 										+ "/common/player_r_m_ghost.png",
 								Texture.class ), null, false );
 				LerpMover ghostMover = new LerpMover(
-						player1.getPositionPixel( ), currentCheckPoint
+						player1.getPositionPixel( ).cpy( ).add( -64f, 64f ), currentCheckPoint
 								.getPositionPixel( ).sub( Player.WIDTH / 2.0f,
 										0.0f ), LinearAxis.DIAGONAL );
 				ghostMover.setSpeed( 10f / currentCheckPoint.getPositionPixel( )
@@ -251,13 +251,13 @@ public class ProgressManager {
 				LerpMover screwMover;
 				// create the ghost of the dead player
 				p2Ghost = new Entity( "player2Ghost",
-						player2.getPositionPixel( ),
+						player2.getPositionPixel( ).cpy( ).add( -64f, 64f ),
 						WereScrewedGame.manager.get(
 								WereScrewedGame.dirHandle.path( )
 										+ "/common/player_female_idle_ghost.png",
 								Texture.class ), null, false );
 				LerpMover ghostMover = new LerpMover(
-						player2.getPositionPixel( ), currentCheckPoint
+						player2.getPositionPixel( ).cpy( ).add( -64f, 64f ), currentCheckPoint
 								.getPositionPixel( ).sub( Player.WIDTH / 2.0f,
 										0.0f ), LinearAxis.DIAGONAL );
 				ghostMover.setSpeed( 10f / currentCheckPoint.getPositionPixel( )
@@ -301,13 +301,13 @@ public class ProgressManager {
 				LerpMover screwMover;
 				// create the ghost of the dead player
 				p2Ghost = new Entity( "player2Ghost",
-						player2.getPositionPixel( ),
+						player2.getPositionPixel( ).cpy( ).add( -64f, 64f ),
 						WereScrewedGame.manager.get(
 								WereScrewedGame.dirHandle.path( )
 										+ "/common/player_female_idle_ghost.png",
 								Texture.class ), null, false );
 				LerpMover ghostMover = new LerpMover(
-						player2.getPositionPixel( ), currentCheckPoint
+						player2.getPositionPixel( ).cpy( ).add( -64f, 64f ), currentCheckPoint
 								.getPositionPixel( ).sub( Player.WIDTH / 2.0f,
 										0.0f ), LinearAxis.DIAGONAL );
 				ghostMover.setSpeed( 10f / currentCheckPoint.getPositionPixel( )
@@ -344,13 +344,13 @@ public class ProgressManager {
 				LerpMover screwMover;
 				// create the ghost of the dead player
 				p1Ghost = new Entity( "player1Ghost",
-						player2.getPositionPixel( ),
+						player2.getPositionPixel( ).cpy( ).add( -64f, 64f ),
 						WereScrewedGame.manager.get(
 								WereScrewedGame.dirHandle.path( )
 										+ "/common/player_r_m_ghost.png",
 								Texture.class ), null, false );
 				LerpMover ghostMover = new LerpMover(
-						player1.getPositionPixel( ), currentCheckPoint
+						player1.getPositionPixel( ).cpy( ).add( -64f, 64f ), currentCheckPoint
 								.getPositionPixel( ).sub( Player.WIDTH / 2.0f,
 										0.0f ), LinearAxis.DIAGONAL );
 				ghostMover.setSpeed( 10f / currentCheckPoint.getPositionPixel( )

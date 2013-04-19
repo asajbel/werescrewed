@@ -117,9 +117,10 @@ public class MyContactListener implements ContactListener {
 							}
 							break;
 						case HAZARD:
-
-							Hazard hazard = ( Hazard ) object;
-							hazard.performContact( player, objectFix );
+							if ( !player.isPlayerDead( ) ) {
+								Hazard hazard = ( Hazard ) object;
+								hazard.performContact( player, objectFix );
+							}
 							break;
 						case CHECKPOINT:
 							CheckPoint checkP = ( CheckPoint ) objectFix
