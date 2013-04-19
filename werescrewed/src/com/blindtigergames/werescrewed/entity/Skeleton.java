@@ -375,7 +375,7 @@ public class Skeleton extends Platform {
 	 */
 	@Override
 	public void update( float deltaTime ) {
-		if ( isActive( ) ) {
+		//if ( isActive( ) ) {
 			float frameRate = 1 / deltaTime;
 			updateMover( deltaTime );
 			if ( entityType != EntityType.ROOTSKELETON && isKinematic( ) ) {
@@ -436,7 +436,7 @@ public class Skeleton extends Platform {
 						- offset.y );
 				bgSprite.setRotation( MathUtils.radiansToDegrees * getAngle( ) );
 			}
-		}
+		//}
 		// recursively update child skeletons
 		for ( Skeleton skeleton : childSkeletonMap.values( ) ) {
 			if ( skeleton.removeNextStep ) {

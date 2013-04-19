@@ -89,13 +89,13 @@ public class AlphaScreen extends Screen {
 
 		if ( level.player1 == null ) {
 			level.player1 = new PlayerBuilder( ).world( level.world )
-					.position( 0, 0 ).name( "player1" ).definition( "red_male" )
+					.position( 1300, 6000 ).name( "player1" ).definition( "red_male" )
 					.buildPlayer( );
 			level.progressManager.addPlayerOne( level.player1 );
 		}
 		if ( level.player2 == null ) {
 			level.player2 = new PlayerBuilder( ).world( level.world )
-					.position( 0, 0 ).name( "player2" )
+					.position( 1300, 6000 ).name( "player2" )
 					.definition( "red_female" ).buildPlayer( );
 			level.progressManager.addPlayerTwo( level.player2 );
 		}
@@ -248,9 +248,9 @@ public class AlphaScreen extends Screen {
 		bgSkele.addBGDecal( floor_seats.createSprite( "floor_right" ),
 				new Vector2( floorX + max, floorY ) );
 		// lights
-		bgSkele.addBGDecal( stage_light.createSprite( "light_left" ),
+		level.root.addBGDecal( stage_light.createSprite( "light_left" ),
 				new Vector2( lightX, lightY ) );
-		bgSkele.addBGDecal( stage_light.createSprite( "light_right" ),
+		level.root.addBGDecal( stage_light.createSprite( "light_right" ),
 				new Vector2( lightX + 2030, lightY ) );
 		
 		initBackground( dome, numDomes, domeSliceX, domeSliceY, -max + seatsX,
@@ -272,7 +272,6 @@ public class AlphaScreen extends Screen {
 
 		level.skelBGList.add( bgSkele );
 		level.skelFGList.add( bgSkele );
-		level.root.addSkeleton( bgSkele );
 		
 		Sprite s = WereScrewedGame.manager.getAtlas("common-textures").createSprite( "rail_vert_middle" );
 		

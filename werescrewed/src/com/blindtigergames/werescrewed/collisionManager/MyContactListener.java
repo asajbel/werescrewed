@@ -43,21 +43,20 @@ public class MyContactListener implements ContactListener {
 	 */
 	@Override
 	public void beginContact( Contact contact ) {
-		//Object objectA = contact.getFixtureA( ).getUserData( );
-		//Object objectB = contact.getFixtureB( ).getUserData( );
+		// Object objectA = contact.getFixtureA( ).getUserData( );
+		// Object objectB = contact.getFixtureB( ).getUserData( );
 		final Fixture x1 = contact.getFixtureA( );
 		final Fixture x2 = contact.getFixtureB( );
-		/* Will replace current code with this when I'm not working on other tasks.
-		 * ~Kevin
-		if (objectA != null && objectB != null){
-			if (objectA instanceof Entity && objectB instanceof Entity){
-				Class<? extends Entity> classA = objectA.getClass( ).asSubclass( Entity.class );
-				Class<? extends Entity> classB = objectB.getClass( ).asSubclass( Entity.class );
-				classA.cast( objectA ).collide( classB.cast( objectB ), contact );
-				classB.cast( objectB ).collide( classA.cast( objectA ), contact );
-			}
-		}
-		*/
+		/*
+		 * Will replace current code with this when I'm not working on other
+		 * tasks. ~Kevin if (objectA != null && objectB != null){ if (objectA
+		 * instanceof Entity && objectB instanceof Entity){ Class<? extends
+		 * Entity> classA = objectA.getClass( ).asSubclass( Entity.class );
+		 * Class<? extends Entity> classB = objectB.getClass( ).asSubclass(
+		 * Entity.class ); classA.cast( objectA ).collide( classB.cast( objectB
+		 * ), contact ); classB.cast( objectB ).collide( classA.cast( objectA ),
+		 * contact ); } }
+		 */
 		Fixture playerFix = null;
 		Fixture objectFix = null;
 
@@ -137,7 +136,7 @@ public class MyContactListener implements ContactListener {
 								et.getBeginAction( ).act( player );
 							}
 							if ( playerFix == player.torso ) {
-									et.triggerBeginEvent( );
+								et.triggerBeginEvent( );
 							}
 							break;
 						default:
@@ -187,7 +186,7 @@ public class MyContactListener implements ContactListener {
 			}
 		}
 	}
-	
+
 	/**
 	 * When two objects stop touching
 	 */
@@ -268,12 +267,14 @@ public class MyContactListener implements ContactListener {
 							player.setSteamCollide( false );
 							break;
 						case EVENTTRIGGER:
-							EventTrigger et = ( EventTrigger ) objectFix
-									.getBody( ).getUserData( );
-							if ( playerFix == player.torso ) {
-								et.triggerEndEvent( );
+							if ( !player.isPlayerDead( ) ) {
+								EventTrigger et = ( EventTrigger ) objectFix
+										.getBody( ).getUserData( );
+								if ( playerFix == player.torso ) {
+									et.triggerEndEvent( );
+								}
+								et.setActivated( false, player.name );
 							}
-							et.setActivated( false, player.name );
 							break;
 						default:
 							break;

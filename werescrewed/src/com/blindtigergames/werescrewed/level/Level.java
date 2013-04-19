@@ -66,7 +66,7 @@ public class Level {
 		skelFGList = new ArrayList< Skeleton >( );
 		entityBGList = new ArrayList< Entity >( );
 		entityFGList = new ArrayList< Entity >( );
-		
+
 		// progressManager = new ProgressManager(player1, player2, world);
 		// camera = new Camera( width, height, world);
 		// player1 = new PlayerBuilder( ).name( "player1" ).world( world )
@@ -128,17 +128,11 @@ public class Level {
 		for ( Skeleton skel : skelBGList ) {
 			if ( skel.isActive( ) ) {
 				if ( skel.bgSprite != null ) {
-					//skel.bgSprite.draw( batch );
+					skel.bgSprite.draw( batch );
 				}
+				skel.drawBGDecals( batch );
 			}
-			skel.drawBGDecals( batch );
 		}
-		// draw all background entity sprites after everything
-		// for ( Entity e : entityFGList ) {
-		// if ( e.isActive( ) ) {
-		// e.drawBGDecals( batch );
-		// }
-		// }
 		// draw all the normal sprites
 		root.draw( batch, deltaTime );
 		if ( progressManager != null )
@@ -149,7 +143,8 @@ public class Level {
 			player2.draw( batch, deltaTime );
 		// draw all foreground entity sprites after everything
 		for ( Entity e : entityFGList ) {
-			if ( e.isActive( ) ) {
+			//if ( e.isActive( ) ) 
+			{
 				e.drawFGDecals( batch );
 			}
 		}
@@ -158,10 +153,9 @@ public class Level {
 			if ( skel.fgSprite != null && skel.fgSprite.getAlpha( ) != 0 ) {
 				skel.fgSprite.draw( batch );
 			}
-			//if ( !skel.isActive( ) )
-			{
+			//if ( !skel.isActive( ) ) {
 				skel.drawFGDecals( batch );
-			}
+			//}
 		}
 		batch.end( );
 
