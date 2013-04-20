@@ -19,7 +19,6 @@ import com.badlogic.gdx.physics.box2d.joints.RevoluteJoint;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
 import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.camera.Anchor;
-import com.blindtigergames.werescrewed.camera.AnchorList;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityDef;
 import com.blindtigergames.werescrewed.entity.EntityType;
@@ -213,8 +212,7 @@ public class Player extends Entity {
 				* Util.BOX_TO_PIXEL ), new Vector2( 0, 0 ), new Vector2(
 				ANCHOR_BUFFER_SIZE.x, ANCHOR_BUFFER_SIZE.y ) );
 		anchor.activate( );
-		anchors.add( anchor );
-		AnchorList.getInstance( ).addAnchor( anchor );
+		addAnchor(anchor);
 
 		// build spine animator
 		if ( this.type.isAnimatorType( "spine" ) ) {
