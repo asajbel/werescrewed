@@ -34,7 +34,7 @@ public class StructureScrew extends Screw {
 	private float alpha = 0.0f;
 	private Entity screwInterface;
 	private SimpleFrameAnimator screwUIAnimator;
-	private int startFrame = 25;
+	private int startFrame = 15;
 	private int lastMotionFrame = 14;
 
 	public StructureScrew( String name, Vector2 pos, int max, Entity entity,
@@ -117,6 +117,7 @@ public class StructureScrew extends Screw {
 
 	@Override
 	public void screwRight( int region, boolean switchedDirections ) {
+		
 		if ( switchedDirections ) {
 			startRegion = region;
 			prevDiff = 0;
@@ -152,6 +153,7 @@ public class StructureScrew extends Screw {
 
 	@Override
 	public void screwLeft( int region, boolean switchedDirections ) {
+		
 		if ( switchedDirections ) {
 			startRegion = region;
 			prevDiff = 0;

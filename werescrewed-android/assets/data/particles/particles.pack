@@ -3,52 +3,66 @@ format: RGBA8888
 filter: Linear,Linear
 repeat: none
 offset: 0, 0
-cloud
+cloud1
   rotate: false
-  xy: 112, 2
-  size: 83, 69
-  orig: 41, 34
+  xy: 132, 2
+  size: 50, 40
+  orig: 25, 20
   offset: 0, 0
   index: -1
-extra_crispy
+doof
   rotate: false
-  xy: 2, 326
-  size: 189, 129
-  orig: 94, 64
+  xy: 2, 121
+  size: 128, 64
+  orig: 64, 32
   offset: 0, 0
   index: -1
 spark
   rotate: false
-  xy: 2, 2
+  xy: 232, 187
   size: 8, 92
   orig: 4, 46
   offset: 0, 0
   index: -1
 screw
   rotate: false
-  xy: 46, 2
+  xy: 166, 187
   size: 64, 64
   orig: 32, 32
   offset: 0, 0
   index: -1
-baf
+oof
   rotate: false
-  xy: 2, 198
-  size: 175, 126
-  orig: 87, 63
+  xy: 2, 187
+  size: 128, 64
+  orig: 61, 32
+  offset: 0, 0
+  index: -1
+arg
+  rotate: false
+  xy: 2, 2
+  size: 128, 64
+  orig: 64, 32
+  offset: 0, 0
+  index: -1
+cloud2
+  rotate: false
+  xy: 2, 68
+  size: 77, 51
+  orig: 38, 25
   offset: 0, 0
   index: -1
 particle
   rotate: false
-  xy: 12, 2
+  xy: 132, 187
   size: 32, 32
   orig: 16, 16
   offset: 0, 0
   index: -1
-ooph
+cloud3
   rotate: false
-  xy: 2, 96
-  size: 150, 100
-  orig: 75, 50
+  xy: 81, 68
+  size: 48, 39
+  orig: 24, 19
   offset: 0, 0
   index: -1

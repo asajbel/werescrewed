@@ -41,10 +41,10 @@ import com.blindtigergames.werescrewed.util.Util;
 
 public class Skeleton extends Platform {
 
-	//public static final int foreground = 0;
-	//public static final int background = 1;
-	//public static final int midground = 2;
-	
+	// public static final int foreground = 0;
+	// public static final int background = 1;
+	// public static final int midground = 2;
+
 	public PolySprite bgSprite, fgSprite;
 
 	SimpleFrameAnimator alphaFadeAnimator;
@@ -55,7 +55,7 @@ public class Skeleton extends Platform {
 	protected HashMap< String, Platform > kinematicPlatformMap = new HashMap< String, Platform >( );
 	protected HashMap< String, Rope > ropeMap = new HashMap< String, Rope >( );
 	protected HashMap< String, Screw > screwMap = new HashMap< String, Screw >( );
-	protected HashMap< String, CheckPoint> checkpointMap = new HashMap< String, CheckPoint >( );
+	protected HashMap< String, CheckPoint > checkpointMap = new HashMap< String, CheckPoint >( );
 	protected HashMap< String, EventTrigger > eventMap = new HashMap< String, EventTrigger >( );
 	private ArrayList< Entity > entitiesToRemove = new ArrayList< Entity >( );
 
@@ -63,8 +63,9 @@ public class Skeleton extends Platform {
 
 	protected RootSkeleton rootSkeleton;
 	protected Skeleton parentSkeleton;
-	
+
 	protected boolean applyFadeToFGDecals = false;
+	protected boolean isMacroSkeleton = false;
 
 	/**
 	 * Constructor used by SkeletonBuilder
@@ -103,7 +104,7 @@ public class Skeleton extends Platform {
 		BodyDef skeletonBodyDef = new BodyDef( );
 		skeletonBodyDef.type = bodyType;
 
-		skeletonBodyDef.position.set( pos.cpy().mul( Util.PIXEL_TO_BOX ) );
+		skeletonBodyDef.position.set( pos.cpy( ).mul( Util.PIXEL_TO_BOX ) );
 		body = world.createBody( skeletonBodyDef );
 		body.setUserData( this );
 
@@ -176,13 +177,21 @@ public class Skeleton extends Platform {
 	}
 
 	public void addRope( Rope rope, boolean toJoint ) {
-		if(toJoint){
+		if ( toJoint ) {
 			new RevoluteJointBuilder( world ).skeleton( this )
 					.bodyB( rope.getFirstLink( ) ).limit( true ).lower( 0 )
 					.upper( 0 ).build( );
 		}
 		// ropes.add( rope );
 		ropeMap.put( rope.name, rope );
+	}
+
+	public boolean isMacroSkel( ) {
+		return isMacroSkeleton;
+	}
+
+	public void setMacroSkel( boolean macroSkel ) {
+		isMacroSkeleton = macroSkel;
 	}
 
 	/**
@@ -205,7 +214,7 @@ public class Skeleton extends Platform {
 		screwMap.put( s.name, s );
 		s.setParentSkeleton( this );
 	}
-	
+
 	/**
 	 * add checkpoint to be drawn
 	 */
@@ -214,7 +223,6 @@ public class Skeleton extends Platform {
 		checkpointMap.put( chkpt.name, chkpt );
 		chkpt.setParentSkeleton( this );
 	}
-	
 
 	/**
 	 * Simply adds a platform to the list, without explicitly attaching it to
@@ -282,6 +290,9 @@ public class Skeleton extends Platform {
 	 */
 	public void addSkeleton( Skeleton skeleton ) {
 		// this.childSkeletons.add( skeleton );
+		if ( this == rootSkeleton ) {
+			skeleton.setMacroSkel( true );
+		}
 		skeleton.parentSkeleton = this;
 		skeleton.rootSkeleton = this.rootSkeleton;
 		childSkeletonMap.put( skeleton.name, skeleton );
@@ -306,7 +317,7 @@ public class Skeleton extends Platform {
 		for ( Screw screw : screwMap.values( ) ) {
 			screw.body.setAwake( isAwake );
 		}
-		for ( CheckPoint chkpt: checkpointMap.values( ) ) {
+		for ( CheckPoint chkpt : checkpointMap.values( ) ) {
 			chkpt.body.setAwake( isAwake );
 		}
 	}
@@ -375,12 +386,14 @@ public class Skeleton extends Platform {
 	 */
 	@Override
 	public void update( float deltaTime ) {
-		if ( isActive( ) ) {
-			float frameRate = 1 / deltaTime;
+		float frameRate = 1 / deltaTime;
+		if ( isActive( ) || isMacroSkeleton ) {
 			updateMover( deltaTime );
 			if ( entityType != EntityType.ROOTSKELETON && isKinematic( ) ) {
 				super.setTargetPosRotFromSkeleton( frameRate, parentSkeleton );
 			}
+		}
+		if ( isActive( ) ) {
 			for ( Platform platform : dynamicPlatformMap.values( ) ) {
 				if ( platform.removeNextStep ) {
 					entitiesToRemove.add( platform );
@@ -405,7 +418,7 @@ public class Skeleton extends Platform {
 					screw.update( deltaTime );
 				}
 			}
-			for ( CheckPoint chkpt: checkpointMap.values( ) ) {
+			for ( CheckPoint chkpt : checkpointMap.values( ) ) {
 				if ( chkpt.removeNextStep ) {
 					entitiesToRemove.add( chkpt );
 				} else {
@@ -416,11 +429,13 @@ public class Skeleton extends Platform {
 				// TODO: ropes need to be able to be deleted
 				rope.update( deltaTime );
 			}
-			for ( EventTrigger event: eventMap.values( )){
-				event.translatePosRotFromSKeleton( this );
-				//event.setTargetPosRotFromSkeleton( frameRate, this );
-			}
+		}
+		for ( EventTrigger event : eventMap.values( ) ) {
+			event.translatePosRotFromSKeleton( this );
+			// event.setTargetPosRotFromSkeleton( frameRate, this );
+		}
 
+		if ( isActive( ) || isMacroSkeleton ) {
 			alphaFadeAnimator.update( deltaTime );
 			Vector2 pixelPos = null;
 			if ( fgSprite != null ) {
@@ -436,7 +451,10 @@ public class Skeleton extends Platform {
 						- offset.y );
 				bgSprite.setRotation( MathUtils.radiansToDegrees * getAngle( ) );
 			}
+			updateDecals( deltaTime );
 		}
+
+		// }
 		// recursively update child skeletons
 		for ( Skeleton skeleton : childSkeletonMap.values( ) ) {
 			if ( skeleton.removeNextStep ) {
@@ -458,10 +476,8 @@ public class Skeleton extends Platform {
 					Platform p;
 					if ( e.isKinematic( ) ) {
 						p = kinematicPlatformMap.remove( e.name );
-						p.remove( );
 					} else {
 						p = dynamicPlatformMap.remove( e.name );
-						p.remove( );
 					}
 					p.remove( );
 					break;
@@ -483,8 +499,6 @@ public class Skeleton extends Platform {
 			}
 			entitiesToRemove.clear( );
 		}
-
-		updateDecals( deltaTime );
 	}
 
 	/**
@@ -504,7 +518,7 @@ public class Skeleton extends Platform {
 		for ( Screw screw : screwMap.values( ) ) {
 			screw.remove( );
 		}
-		for ( CheckPoint chkpt: checkpointMap.values( ) ) {
+		for ( CheckPoint chkpt : checkpointMap.values( ) ) {
 			chkpt.remove( );
 		}
 		for ( JointEdge j : body.getJointList( ) ) {
@@ -515,33 +529,37 @@ public class Skeleton extends Platform {
 
 	@Override
 	public void draw( SpriteBatch batch, float deltaTime ) {
-		
 		// super.draw( batch );
 		if ( visible ) {
-			//drawBGDecals( batch );
+			// drawBGDecals( batch );
 			// draw decals before drawing children
-			//update z order : don't draw decals recursively 
-			//draw in queue before everything
-			//drawDecals(batch);
+			// update z order : don't draw decals recursively
+			// draw in queue before everything
+			// drawDecals(batch);
 			// draw bg
-			//update z order : don't draw skeleton sprites recursively
-			//update z order : draw the background in a separate queue before everything
-//			if ( bgSprite != null )
-//				bgSprite.draw( batch );
-			drawChildren( batch, deltaTime );
-			//update z order : draw the foreground in a separate queue after everything
-			if ( fgSprite != null && alphaFadeAnimator.getTime( ) > 0 ) {
-				fgSprite.setAlpha( alphaFadeAnimator.getTime( ) );
-				
-				//batch.setColor( c.r, c.g, c.b, fgAlphaAnimator.getTime( ) );
-				//fgSprite.draw( batch );
-				//batch.setColor( c.r, c.g, c.b, oldAlpha );
+			// update z order : don't draw skeleton sprites recursively
+			// update z order : draw the background in a separate queue before
+			// everything
+			// if ( bgSprite != null )
+			// bgSprite.draw( batch );
+			if ( isActive( ) ) {
+				drawChildren( batch, deltaTime );
 			}
-			if ( applyFadeToFGDecals ){
-				
-				fadeFGDecals();
+			// update z order : draw the foreground in a separate queue after
+			// everything
+			if ( isActive( ) || isMacroSkeleton ) {
+				if ( fgSprite != null && alphaFadeAnimator.getTime( ) > 0 ) {
+					fgSprite.setAlpha( alphaFadeAnimator.getTime( ) );
+					// batch.setColor( c.r, c.g, c.b, fgAlphaAnimator.getTime( )
+					// );
+					// fgSprite.draw( batch );
+					// batch.setColor( c.r, c.g, c.b, oldAlpha );
+				}
+				if ( applyFadeToFGDecals ) {
+					fadeFGDecals( );
+				}
 			}
-			//drawFGDecals( batch );
+			// drawFGDecals( batch );
 		}
 	}
 
@@ -557,7 +575,7 @@ public class Skeleton extends Platform {
 				screw.draw( batch, deltaTime );
 			}
 		}
-		for ( CheckPoint chkpt: checkpointMap.values( ) ) {
+		for ( CheckPoint chkpt : checkpointMap.values( ) ) {
 			if ( !chkpt.getRemoveNextStep( ) ) {
 				chkpt.draw( batch, deltaTime );
 			}
@@ -565,7 +583,8 @@ public class Skeleton extends Platform {
 		for ( Rope rope : ropeMap.values( ) ) {
 			rope.draw( batch, deltaTime );
 		}
-		//draw the entities of the parent skeleton before recursing through the child skeletons
+		// draw the entities of the parent skeleton before recursing through the
+		// child skeletons
 		for ( Skeleton skeleton : childSkeletonMap.values( ) ) {
 			skeleton.draw( batch, deltaTime );
 		}
@@ -589,7 +608,9 @@ public class Skeleton extends Platform {
 			drawHazard( ( Hazard ) platform, batch, deltaTime );
 			break;
 		default:
-			throw new RuntimeException("Skeleton: "+name+" doesn't know how to draw your platform: "+platform.name);
+			throw new RuntimeException( "Skeleton: " + name
+					+ " doesn't know how to draw your platform: "
+					+ platform.name );
 		}
 	}
 
@@ -648,7 +669,7 @@ public class Skeleton extends Platform {
 		for ( Screw screw : screwMap.values( ) ) {
 			screw.dispose( );
 		}
-		for ( CheckPoint chkpt: checkpointMap.values( ) ) {
+		for ( CheckPoint chkpt : checkpointMap.values( ) ) {
 			chkpt.dispose( );
 		}
 		screwMap.clear( );
@@ -656,7 +677,7 @@ public class Skeleton extends Platform {
 			et.dispose( );
 		}
 		eventMap.clear( );
-		for ( CheckPoint chkpt: checkpointMap.values( ) ) {
+		for ( CheckPoint chkpt : checkpointMap.values( ) ) {
 			chkpt.dispose( );
 		}
 		checkpointMap.clear( );
@@ -698,33 +719,33 @@ public class Skeleton extends Platform {
 	 */
 	public void setFade( boolean hasTransparency ) {
 		float speed = fadeSpeed;
-		//if ( !hasTransparency ){
-		//	Gdx.app.log("stageSkeleton","NO TRANSPARENCY");
-		//}
+		// if ( !hasTransparency ){
+		// Gdx.app.log("stageSkeleton","NO TRANSPARENCY");
+		// }
 		if ( hasTransparency ) {
 			speed = -fadeSpeed;
 		}
-		/*else{
-			if(name.equals("stageSkeleton")){
-				
-				//speed = fadeSpeed;
-			}
-		}
-		if(name.equals("stageSkeleton"))
-			Gdx.app.log("stageSkeleton","Speed: "+speed+" Time:"+alphaFadeAnimator.getTime( ));*/
+		/*
+		 * else{ if(name.equals("stageSkeleton")){
+		 * 
+		 * //speed = fadeSpeed; } } if(name.equals("stageSkeleton"))
+		 * Gdx.app.log(
+		 * "stageSkeleton","Speed: "+speed+" Time:"+alphaFadeAnimator.getTime(
+		 * ));
+		 */
 		alphaFadeAnimator.speed( speed );
 	}
-	
-	private void fadeFGDecals(){
-		float alpha = alphaFadeAnimator.getTime();
-		for( Sprite decal : fgDecals ){
-			if ( decal.getAlpha() != alpha ){
+
+	private void fadeFGDecals( ) {
+		float alpha = alphaFadeAnimator.getTime( );
+		for ( Sprite decal : fgDecals ) {
+			if ( decal.getAlpha( ) != alpha ) {
 				decal.setAlpha( alpha );
 			}
 		}
 	}
-	
-	public void setFgFade(boolean applyFadeToFGDecals){
+
+	public void setFgFade( boolean applyFadeToFGDecals ) {
 		this.applyFadeToFGDecals = applyFadeToFGDecals;
 	}
 }

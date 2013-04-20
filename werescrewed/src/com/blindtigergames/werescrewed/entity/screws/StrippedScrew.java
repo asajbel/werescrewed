@@ -38,6 +38,7 @@ public class StrippedScrew extends Screw {
 		this.world = world;
 		this.detachDirection = detachDirection;
 		this.entity = entity;
+		this.depth = 0;
 		if ( entity != null ) {
 			this.entityAngle = entity.getAngle( )*Util.RAD_TO_DEG;
 		}
@@ -69,6 +70,7 @@ public class StrippedScrew extends Screw {
 	public StrippedScrew( String name, Vector2 pos, World world) {
 		super( name, pos, null );
 		this.world = world;
+		this.depth = 0;
 		screwType = ScrewType.SCREW_STRIPPED;
 		entityType = EntityType.SCREW;
 		extraJoints = new ArrayList< Joint >( );

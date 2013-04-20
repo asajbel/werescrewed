@@ -45,7 +45,7 @@ public class Screw extends Entity {
 	protected int diff;
 	protected Entity entity;
 	protected Vector2 detachDirection;
-	protected Vector2 interfaceOffset = new Vector2( 88f, 14f );
+	protected Vector2 interfaceOffset = new Vector2( 87f, -10f );
 	protected boolean upDownDetach;
 	protected float entityAngle;
 	protected boolean playerAttached = false;
@@ -54,7 +54,7 @@ public class Screw extends Entity {
 	protected ScrewType screwType;
 	public ArrayList< Joint > extraJoints;
 	
-	private static TextureRegion screwTexRegion = WereScrewedGame.manager.getAtlas( "common-textures" ).findRegion( "screw-flathead" );
+	private static TextureRegion screwTexRegion = WereScrewedGame.manager.getAtlas( "common-textures" ).findRegion( "flat_head_circular" );
 
 	/**
 	 * constructor to use if you want a cosmetic screw

@@ -1,5 +1,7 @@
 package com.blindtigergames.werescrewed.screens;
 
+import java.util.Iterator;
+
 import aurelienribon.tweenengine.Tween;
 import aurelienribon.tweenengine.TweenEquation;
 import aurelienribon.tweenengine.TweenEquations;
@@ -10,8 +12,10 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.Joint;
 import com.badlogic.gdx.physics.box2d.World;
@@ -87,6 +91,7 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 	private Skeleton dynSkel2;
 	private Skeleton s;
 	private Hazard saw;
+	
 
 	/**
 	 * Defines all necessary components in a screen for testing different
@@ -147,6 +152,10 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 			movingSkeleton( );
 		}
 		//
+		
+		
+		
+		
 	}
 
 	void stewTest( ) {
@@ -844,6 +853,26 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 
 	@Override
 	public void dispose( ) {
+		resetPhysicsWorld();
+		//world.dispose( );
+		//world = null;
 	}
 
+	public void resetPhysicsWorld() {
+		world.clearForces();
+
+		 for (Iterator<Body> iter = world.getBodies(); iter.hasNext();) {
+             Body body = iter.next();
+             if(body!=null)
+            	 world.destroyBody(body);
+		 }
+		 for (Iterator<Joint> iter = world.getJoints(); iter.hasNext();) {
+             Joint joint = iter.next();
+             if(joint!=null)
+            	 world.destroyJoint(joint);
+		 }
+		 
+		 
+	}
+	
 }

@@ -25,14 +25,6 @@
 
 package com.esotericsoftware.spine;
 
-import java.io.IOException;
-
-import com.badlogic.gdx.files.FileHandle;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.DataInput;
-import com.badlogic.gdx.utils.SerializationException;
-import com.blindtigergames.werescrewed.graphics.TextureAtlas;
 import com.esotericsoftware.spine.Animation.AttachmentTimeline;
 import com.esotericsoftware.spine.Animation.ColorTimeline;
 import com.esotericsoftware.spine.Animation.CurveTimeline;
@@ -40,10 +32,23 @@ import com.esotericsoftware.spine.Animation.RotateTimeline;
 import com.esotericsoftware.spine.Animation.ScaleTimeline;
 import com.esotericsoftware.spine.Animation.Timeline;
 import com.esotericsoftware.spine.Animation.TranslateTimeline;
-import com.esotericsoftware.spine.attachments.AtlasAttachmentLoader;
+import com.esotericsoftware.spine.attachments.Attachment;
+import com.esotericsoftware.spine.attachments.AttachmentLoader;
+import com.esotericsoftware.spine.attachments.AttachmentType;
 import com.esotericsoftware.spine.attachments.RegionAttachment;
 import com.esotericsoftware.spine.attachments.RegionSequenceAttachment;
 import com.esotericsoftware.spine.attachments.RegionSequenceAttachment.Mode;
+import com.esotericsoftware.spine.attachments.AtlasAttachmentLoader;
+
+import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.DataInput;
+import com.badlogic.gdx.utils.OrderedMap;
+import com.badlogic.gdx.utils.SerializationException;
+import com.blindtigergames.werescrewed.graphics.TextureAtlas;
+
+import java.io.IOException;
 
 public class SkeletonBinary {
 	static public final int TIMELINE_SCALE = 0;
@@ -152,18 +157,18 @@ public class SkeletonBinary {
 			int attachmentCount = input.readInt(true);
 			for (int ii = 0; ii < attachmentCount; ii++) {
 				String name = input.readString();
-				skin.addAttachment(slotIndex, name, readAttachment(input, name));
+				skin.addAttachment(slotIndex, name, readAttachment(input, skin, name));
 			}
 		}
 		return skin;
 	}
 
-	private Attachment readAttachment (DataInput input, String attachmentName) throws IOException {
+	private Attachment readAttachment (DataInput input, Skin skin, String attachmentName) throws IOException {
 		String name = input.readString();
 		if (name == null) name = attachmentName;
 
 		AttachmentType type = AttachmentType.values()[input.readByte()];
-		Attachment attachment = attachmentLoader.newAttachment(type, name);
+		Attachment attachment = attachmentLoader.newAttachment(skin, type, name);
 
 		if (attachment instanceof RegionSequenceAttachment) {
 			RegionSequenceAttachment regionSequenceAttachment = (RegionSequenceAttachment)attachment;

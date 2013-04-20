@@ -55,7 +55,7 @@ public class AlphaScreen extends Screen {
 	public AlphaScreen( ) {
 		super( );
 
-		setClearColor( 79.0f / 255.0f, 82.0f / 255.0f, 104.0f / 255.0f, 1.0f );
+		setClearColor( 79.0f / 255.0f, 82.0f / 255.0f, 104.0f / 255.0f, 1.0f ); //purple-ish
 
 		String filename = "data/levels/alphalevel.xml";
 		level = new LevelFactory( ).load( filename );
@@ -183,20 +183,7 @@ public class AlphaScreen extends Screen {
 
 		int curtainX = seatsX - max + 1230;
 		int curtainY = seatsY + 585;
-
-		initBackground( dome, numDomes, domeSliceX, domeSliceY, -max + seatsX,
-				seatsY );
-
-		// support beam
-		bgSkele.addBGDecal( support_left.createSprite( "support_left" ),
-				new Vector2( supportX, supportY ) );
-		bgSkele.addBGDecal(
-				support_middle_right.createSprite( "support_middle" ),
-				new Vector2( supportX + max, supportY + 216 ) );
-		bgSkele.addBGDecal(
-				support_middle_right.createSprite( "support_right" ),
-				new Vector2( supportX + 2 * max, supportY ) );
-
+		
 		// curtains
 		bgSkele.addFGDecal( curtains.createSprite( "curtains_bottom_left" ),
 				new Vector2( curtainX, curtainY ) );
@@ -209,18 +196,16 @@ public class AlphaScreen extends Screen {
 		bgSkele.addFGDecal( curtains.createSprite( "curtains_bottom_right" ),
 				new Vector2( curtainX + 2398, curtainY ) );
 
-		// floor
-		bgSkele.addBGDecal( floor_seats.createSprite( "floor_left" ),
-				new Vector2( floorX, floorY ) );
-		bgSkele.addBGDecal( floor_seats.createSprite( "floor_right" ),
-				new Vector2( floorX + max, floorY ) );
-		// lights
-		bgSkele.addBGDecal( stage_light.createSprite( "light_left" ),
-				new Vector2( lightX, lightY ) );
-		bgSkele.addBGDecal( stage_light.createSprite( "light_right" ),
-				new Vector2( lightX + 2030, lightY ) );
-
 		// stage is in between floor & seats
+															// works
+		// seats
+		bgSkele.addFGDecal( floor_seats.createSprite( "seats_left" ),
+				new Vector2( -max + seatsX, seatsY ) );
+		bgSkele.addFGDecal( floor_seats.createSprite( "seats_middle" ),
+				new Vector2( 0 + seatsX, seatsY ) );
+		bgSkele.addFGDecal( floor_seats.createSprite( "seats_right" ),
+				new Vector2( max + seatsX, seatsY ) );
+		
 		bgSkele.addFGDecal( stage_pillar.createSprite( "stage_left" ),
 				new Vector2( stage_pillarX, stage_pillarY ) );
 		bgSkele.addFGDecal( stage_upperleft.createSprite( "stage_upperleft" ),
@@ -241,29 +226,51 @@ public class AlphaScreen extends Screen {
 		bgSkele.addFGDecal(
 				stage_upperright.createSprite( "stage_upperright" ),
 				new Vector2( stage_pillarX + 2004, stage_pillarY + 1616 ) );// 1617
-																			// works
-		// seats
-		bgSkele.addFGDecal( floor_seats.createSprite( "seats_left" ),
-				new Vector2( -max + seatsX, seatsY ) );
-		bgSkele.addFGDecal( floor_seats.createSprite( "seats_middle" ),
-				new Vector2( 0 + seatsX, seatsY ) );
-		bgSkele.addFGDecal( floor_seats.createSprite( "seats_right" ),
-				new Vector2( max + seatsX, seatsY ) );
-
+				
+		// support beam
+		level.root.addBGDecal( support_left.createSprite( "support_left" ),
+				new Vector2( supportX, supportY ) );
+		level.root.addBGDecal(
+				support_middle_right.createSprite( "support_middle" ),
+				new Vector2( supportX + max, supportY + 216 ) );
+		level.root.addBGDecal(
+				support_middle_right.createSprite( "support_right" ),
+				new Vector2( supportX + 2 * max, supportY ) );
+		
+		// floor
+		bgSkele.addBGDecal( floor_seats.createSprite( "floor_left" ),
+				new Vector2( floorX, floorY ) );
+		bgSkele.addBGDecal( floor_seats.createSprite( "floor_right" ),
+				new Vector2( floorX + max, floorY ) );
+		// lights
+		level.root.addBGDecal( stage_light.createSprite( "light_left" ),
+				new Vector2( lightX, lightY ) );
+		level.root.addBGDecal( stage_light.createSprite( "light_right" ),
+				new Vector2( lightX + 2030, lightY ) );
+		
+		initBackground( dome, numDomes, domeSliceX, domeSliceY, -max + seatsX,
+				seatsY );
+		
 		int decalX = -738;// -482;//587
 		int decalY = -714;// -558;//536
+		Sprite footBG = decals.createSprite( "foot_mechanisms_and_pipes_NOCOLOR" );
+		Sprite legBG = decals.createSprite( "shin_pipes_NOCOLOR" );
 		Skeleton foot = ( Skeleton ) LevelFactory.entities.get( "footSkeleton" );
-		foot.addBGDecal(
-				decals.createSprite( "foot_mechanisms_and_pipes_NOCOLOR" ),
+		foot.addBGDecal( footBG,
 				new Vector2( decalX, decalY ) );
-		foot.addBGDecal( decals.createSprite( "shin_pipes_NOCOLOR" ),
+		footBG.setOrigin( 0f, 0f );
+		foot.addBGDecal( legBG,
 				new Vector2( 400 + decalX, 424 + decalY ) );
+		
 		// bgSkele.addBGDecal( decals.createSprite(
 		// "foot_support_structureNOCOLOR" ), new Vector2(decalX,decalY) );
 
 		level.skelBGList.add( bgSkele );
 		level.skelFGList.add( bgSkele );
-		level.root.addSkeleton( bgSkele );
+		
+		Sprite s = WereScrewedGame.manager.getAtlas("common-textures").createSprite( "rail_vert_middle" );
+		
+		bgSkele.addBGDecal( s , new Vector2(-3000,0) );
 	}
 
 	private void initBackground( TextureAtlas[ ] dome, int numDomes,

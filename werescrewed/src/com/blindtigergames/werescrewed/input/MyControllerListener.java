@@ -45,6 +45,7 @@ public class MyControllerListener implements ControllerListener {
 
 	// Angles and directions for screwing
 	private int currRightAnalogAngle = 0;
+	private int currLeftAnalogAngle = 0;
 	private int screwCounter = 0;
 
 	private int prevRegion;
@@ -54,9 +55,12 @@ public class MyControllerListener implements ControllerListener {
 	private final static int SCREW_COUNTER = 10;
 
 	// Analog deadzone and center
-	private final static float DEADZONE = 0.2f;
+	public final static float DEADZONE = 0.2f;
 	private final static float TRIGGER_DEADZONE = 0.3f;
 	private final static float ANALOG_CENTER = 0.7f;
+	
+	private boolean checkLeftStickForScrewing = false;
+	private boolean checkRightStickForScrewing = false;
 
 	/**
 	 * This function checks the analog sticks to see if they moved
@@ -122,17 +126,39 @@ public class MyControllerListener implements ControllerListener {
 		}
 
 		// Resetting Right Stick
+		if ( ( axisLX < ANALOG_CENTER && axisLY < ANALOG_CENTER )
+				&& ( axisLX > -ANALOG_CENTER && axisLY > -ANALOG_CENTER ) ) {
+			screwingPressed = false;
+			unscrewingPressed = false;
+			screwCounter = 0;
+			currLeftAnalogAngle = 0;
+			checkLeftStickForScrewing = false;
+		} else{
+			checkLeftStickForScrewing = true;
+		}
+		
+		// Resetting Right Stick
 		if ( ( axisRX < ANALOG_CENTER && axisRY < ANALOG_CENTER )
 				&& ( axisRX > -ANALOG_CENTER && axisRY > -ANALOG_CENTER ) ) {
 			screwingPressed = false;
 			unscrewingPressed = false;
 			screwCounter = 0;
 			currRightAnalogAngle = 0;
-			// prevRegion = -1;
-		} else
-			// Updating Right Stick Screwing
-			rightStickScrew( );
-
+			checkRightStickForScrewing = false;
+		} else{
+			checkRightStickForScrewing = true;
+		}
+		
+		if(checkLeftStickForScrewing && checkRightStickForScrewing){
+			leftStickScrew( );
+			
+		} else if (checkLeftStickForScrewing){
+			leftStickScrew( );
+			
+		}else {
+			rightStickScrew();
+		}
+		
 		return false;
 	}
 
@@ -486,16 +512,10 @@ public class MyControllerListener implements ControllerListener {
 		currRightAnalogAngle = ( int ) Math.toDegrees( Math.atan2( -axisRY,
 				-axisRX ) ) + 180;
 
-		// if ( prevRegion == -1 ) {
-		// unscrewingPressed = false;
-		// screwingPressed = false;
-		// prevRegion = currRegion;
-		// return;
-		// }
-
+		
 		prevRegion = currRegion;
 		currRegion = currRightAnalogAngle / 5;
-
+		
 		if ( currRegion - prevRegion > 60 ) {
 			unscrewingPressed = false;
 			screwingPressed = true;
@@ -511,5 +531,38 @@ public class MyControllerListener implements ControllerListener {
 		}
 
 	}
+	
+	private void leftStickScrew( ) {
+		axisLY *= -1;
+		currLeftAnalogAngle = ( int ) Math.toDegrees( Math.atan2( -axisLY,
+				-axisLX ) ) + 180;
+		
+		
+		prevRegion = currRegion;
+		currRegion = currLeftAnalogAngle / 5;
 
+		
+		if ( currRegion - prevRegion > 60 ) {
+			unscrewingPressed = false;
+			screwingPressed = true;
+		} else if ( currRegion - prevRegion < -60 ) {
+			unscrewingPressed = true;
+			screwingPressed = false;
+		} else if ( currRegion > prevRegion ) {
+			unscrewingPressed = true;
+			screwingPressed = false;
+		} else if ( currRegion < prevRegion ) {
+			unscrewingPressed = false;
+			screwingPressed = true;
+		}
+
+	}
+	
+	public boolean checkRightStickForScrewing(){
+		return checkRightStickForScrewing;
+	}
+	
+	public boolean checkLeftStickForScrewing(){
+		return checkLeftStickForScrewing;
+	}
 }

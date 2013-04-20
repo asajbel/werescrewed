@@ -6,6 +6,7 @@ import java.util.Random;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.RefCountedContainer;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -215,9 +216,12 @@ public class AssetManager extends com.badlogic.gdx.assets.AssetManager {
 	}
 	
 	public void loadDummyAssets( ) {
-		String filename = WereScrewedGame.dirHandle + "/common/fail.png";
-		dummyAssets.put( Texture.class, filename );
-		this.load( filename, Texture.class );
+		//String filename = WereScrewedGame.dirHandle + "/common/fail.png";
+		dummyAssets.put( Texture.class, WereScrewedGame.dirHandle + "/common/fail.png" );
+		dummyAssets.put( Sound.class, WereScrewedGame.dirHandle + "/common/fail.wav" );
+		for (Class<?> type: dummyAssets.keySet()){
+			this.load( dummyAssets.get( type ), type );
+		}
 	}
 
 }

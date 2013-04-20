@@ -102,12 +102,12 @@ public class Spikes extends Hazard {
 		return this.ori;
 	}
 
-	@Override
-	public void performContact( Player player, Fixture fixture ) {
-		if ( fixture == this.body.getFixtureList( ).get( 0 ) && activeHazard ) {
-			player.killPlayer( );
-		}
-	}
+//	@Override
+//	public void performContact( Player player, Fixture fixture ) {
+//		if ( fixture == this.body.getFixtureList( ).get( 0 ) && activeHazard ) {
+//			player.killPlayer( );
+//		}
+//	}
 
 	/**
 	 * 

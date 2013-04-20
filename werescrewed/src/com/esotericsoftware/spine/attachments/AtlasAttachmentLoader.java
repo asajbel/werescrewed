@@ -25,23 +25,20 @@
 
 package com.esotericsoftware.spine.attachments;
 
+import com.esotericsoftware.spine.Skin;
+
 import com.blindtigergames.werescrewed.graphics.TextureAtlas;
 import com.blindtigergames.werescrewed.graphics.TextureAtlas.AtlasRegion;
-import com.esotericsoftware.spine.Attachment;
-import com.esotericsoftware.spine.AttachmentLoader;
-import com.esotericsoftware.spine.AttachmentType;
-
-
 
 public class AtlasAttachmentLoader implements AttachmentLoader {
 	private TextureAtlas atlas;
 
-	public AtlasAttachmentLoader (TextureAtlas atlas) {
-		if (atlas == null) throw new IllegalArgumentException("atlas cannot be null.");
-		this.atlas = atlas;
+	public AtlasAttachmentLoader (TextureAtlas atlas2) {
+		if (atlas2 == null) throw new IllegalArgumentException("atlas cannot be null.");
+		this.atlas = atlas2;
 	}
 
-	public Attachment newAttachment (AttachmentType type, String name) {
+	public Attachment newAttachment (Skin skin, AttachmentType type, String name) {
 		Attachment attachment = null;
 		switch (type) {
 		case region:

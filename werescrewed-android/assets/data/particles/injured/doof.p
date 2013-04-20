@@ -1,11 +1,11 @@
-extra_crispy
+doof
 - Delay -
 active: false
 - Duration - 
-lowMin: 5000.0
-lowMax: 5000.0
+lowMin: 1.0
+lowMax: 1.0
 - Count - 
-min: 0
+min: 1
 max: 1
 - Emission - 
 lowMin: 0.0
@@ -23,20 +23,25 @@ lowMax: 0.0
 highMin: 4000.0
 highMax: 5000.0
 relative: false
-scalingCount: 3
+scalingCount: 1
 scaling0: 1.0
-scaling1: 1.0
-scaling2: 0.3
-timelineCount: 3
+timelineCount: 1
 timeline0: 0.0
-timeline1: 0.66
-timeline2: 1.0
 - Life Offset - 
 active: false
 - X Offset - 
 active: false
 - Y Offset - 
-active: false
+active: true
+lowMin: 100.0
+lowMax: 100.0
+highMin: 0.0
+highMax: 0.0
+relative: false
+scalingCount: 1
+scaling0: 1.0
+timelineCount: 1
+timeline0: 0.0
 - Spawn Shape - 
 shape: point
 - Spawn Width - 
@@ -62,13 +67,15 @@ timeline0: 0.0
 - Scale - 
 lowMin: 0.0
 lowMax: 0.0
-highMin: 92.0
-highMax: 92.0
+highMin: 128.0
+highMax: 128.0
 relative: false
-scalingCount: 1
-scaling0: 1.0
-timelineCount: 1
+scalingCount: 2
+scaling0: 0.1632653
+scaling1: 1.0
+timelineCount: 2
 timeline0: 0.0
+timeline1: 0.061643835
 - Velocity - 
 active: true
 lowMin: 0.0
@@ -97,10 +104,10 @@ timeline1: 0.5
 timeline2: 1.0
 - Rotation - 
 active: true
-lowMin: 0.0
-lowMax: 0.0
-highMin: 0.0
-highMax: 30.0
+lowMin: -30.0
+lowMax: 30.0
+highMin: -60.0
+highMax: 60.0
 relative: false
 scalingCount: 2
 scaling0: 0.0
@@ -132,14 +139,14 @@ scaling2: 0.75
 scaling3: 0.0
 timelineCount: 4
 timeline0: 0.0
-timeline1: 0.2
+timeline1: 0.07534247
 timeline2: 0.8
 timeline3: 1.0
 - Options - 
 attached: false
-continuous: true
+continuous: false
 aligned: false
 additive: false
 behind: false
 - Image Path -
-extra_crispy
+doof

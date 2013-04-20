@@ -54,6 +54,7 @@ import com.blindtigergames.werescrewed.entity.screws.StrippedScrew;
 import com.blindtigergames.werescrewed.entity.screws.StructureScrew;
 import com.blindtigergames.werescrewed.entity.tween.PathBuilder;
 import com.blindtigergames.werescrewed.eventTrigger.EventTrigger;
+import com.blindtigergames.werescrewed.graphics.TextureAtlas;
 import com.blindtigergames.werescrewed.util.ArrayHash;
 import com.blindtigergames.werescrewed.util.Util;
 
@@ -81,6 +82,7 @@ public class LevelFactory {
 	protected static final String angleTag = "angle";
 	protected static final String imageTag = "image";
 	protected static final String gleedImageTag = "image";
+	protected static final String atlasTag = "atlas";
 
 	public LevelFactory( ) {
 		reader = new XmlReader( );
@@ -387,25 +389,36 @@ public class LevelFactory {
 		Sprite decal = null;
 		Vector2 scale = new Vector2( 1.0f, 1.0f );
 		if ( !item.getImageName( ).equals( "" ) ) {
-			Texture tex = WereScrewedGame.manager.get(
-					WereScrewedGame.dirHandle + item.getImageName( ),
-					Texture.class );
-			if ( item.getGleedType( ).equals( "PathItem" ) ) {
-				Array< Element > pointElems = item.element.getChildByName(
-						"LocalPoints" ).getChildrenByName( "Vector2" );
-				Array< Vector2 > points = new Array< Vector2 >( );
-				for ( Element e : pointElems ) {
-					Vector2 v = new Vector2(
-							e.getFloat( "X" ) * GLEED_TO_GDX_X,
-							e.getFloat( "Y" ) * GLEED_TO_GDX_Y );
-					points.add( v );
+			if ( item.getAtlasName() != null ){
+				if ( item.getGleedType( ).equals( "PathItem" ) ) {
+					throw new RuntimeException("LevelFactory constructDecal(): You can't build a polysprite decal with a texture atlas, sorry. -Stew");
 				}
-				decal = new PolySprite( tex, points );
-			} else {
-				decal = new Sprite( tex );
+				TextureAtlas atlas = WereScrewedGame.manager.getAtlas(  item.getAtlasName() );
+				decal = atlas.createSprite( item.getImageName( ) );
 				decal.setOrigin( 0.0f, 0.0f );
-				scale.x = item.sca.x / tex.getWidth( );
-				scale.y = item.sca.y / tex.getHeight( );
+				scale.x = item.sca.x / decal.getWidth( );
+				scale.y = item.sca.y / decal.getHeight( );
+			}else{
+				Texture tex = WereScrewedGame.manager.get(
+						WereScrewedGame.dirHandle + item.getImageName( ),
+						Texture.class );
+				if ( item.getGleedType( ).equals( "PathItem" ) ) {
+					Array< Element > pointElems = item.element.getChildByName(
+							"LocalPoints" ).getChildrenByName( "Vector2" );
+					Array< Vector2 > points = new Array< Vector2 >( );
+					for ( Element e : pointElems ) {
+						Vector2 v = new Vector2(
+								e.getFloat( "X" ) * GLEED_TO_GDX_X,
+								e.getFloat( "Y" ) * GLEED_TO_GDX_Y );
+						points.add( v );
+					}
+					decal = new PolySprite( tex, points );
+				} else {
+					decal = new Sprite( tex );
+					decal.setOrigin( 0.0f, 0.0f );
+					scale.x = item.sca.x / tex.getWidth( );
+					scale.y = item.sca.y / tex.getHeight( );
+				}
 			}
 		} else {
 			Gdx.app.log( "LoadDecal", "Could not find texture tag." );
@@ -438,6 +451,9 @@ public class LevelFactory {
 		if ( item.name.equals( "RootSkeleton" ) ) {
 			level.root = new RootSkeleton( item.name, item.pos, null,
 					level.world );
+			//DELETE THESE TWO LINES WHEN THE STAGE WORKS PROPERLY WITH GLEED
+			level.skelBGList.add( level.root );
+			level.skelFGList.add( level.root );
 			skeletons.put( item.name, level.root );
 			entities.put( item.name, level.root );
 
@@ -482,8 +498,14 @@ public class LevelFactory {
 				skeleBuilder.fadeFgDecals( true );
 			}
 
+			
 			skeleton = skeleBuilder.build( );
 
+			if ( item.props.containsKey( "gravscale" ) ) {
+				float gravScale = Float.parseFloat( item.props.get( "gravscale" ) );
+				skeleton.body.setGravityScale( gravScale );
+			}
+			
 			// IMover mover = null;
 			// if(item.props.containsKey( "mover" )){
 			// String movername = item.props.get( "mover" );
@@ -599,11 +621,18 @@ public class LevelFactory {
 		if ( item.props.containsKey( "crushable" ) ) {
 			isCrushable = true;
 		}
-
+		
 		pb.name( item.name ).position( new Vector2( xPos, yPos ) )
 				.dimensions( new Vector2( tileWidth, tileHeight ) )
-				.tileSet( "alphabot" );
+				.tileSet( "alphabot" ).properties( item.props );
 
+
+		if ( item.props.containsKey( "gravscale" ) ) {
+			float gravScale = Float.parseFloat( item.props.get( "gravscale" ) );
+			pb.gravityScale( gravScale );
+		}
+
+		
 		if ( isDynamic )
 			pb.dynamic( );
 		else
@@ -650,7 +679,9 @@ public class LevelFactory {
 		}
 
 		out.addMover( mover, RobotState.IDLE );
-
+		
+		
+		
 		Skeleton parent = loadSkeleton( item.skeleton );
 
 		if ( !item.props.containsKey( "invisible" ) ) {
@@ -697,12 +728,17 @@ public class LevelFactory {
 			isCrushable = true;
 		}
 
-		pb.name( item.name ).position( item.pos ).tileSet( "alphabot32" );
+		pb.name( item.name ).position( item.pos ).tileSet( "alphabot32" ).properties( item.props );
 		pb.texture( WereScrewedGame.manager
 										.get( WereScrewedGame.dirHandle
 												+ "/levels/alphabot/alphabot_texture_skin.png",
 												Texture.class ) );
 
+		if ( item.props.containsKey( "gravscale" ) ) {
+			float gravScale = Float.parseFloat( item.props.get( "gravscale" ) );
+			pb.gravityScale( gravScale );
+		}
+		
 		if ( isDynamic )
 			pb.dynamic( );
 		else
@@ -784,7 +820,7 @@ public class LevelFactory {
 				.type( item.getDefinition( ) )
 				.position( item.pos.x, item.pos.y )
 				.texture( item.getDefinition( ).getTexture( ) ).solid( true )
-				.dynamic( isDynamic ).buildComplexPlatform( );
+				.dynamic( isDynamic ).properties( item.props ).buildComplexPlatform( );
 
 		entities.put( item.name, out );
 
@@ -1253,7 +1289,9 @@ public class LevelFactory {
 		float yPos = item.pos.y - ( height / 2 );
 
 		HazardBuilder hazardBuilder = new HazardBuilder( level.world );
-
+		
+		hazardBuilder.position( new Vector2(xPos, yPos) ).dimensions( tileWidth, tileHeight )
+		.active( );
 		hazardBuilder.position( new Vector2( xPos, yPos ) )
 				.dimensions( tileWidth, tileHeight ).active( );
 
@@ -1276,6 +1314,7 @@ public class LevelFactory {
 	public Level getLevel( ) {
 		return level;
 	}
+
 
 	protected static HashMap< String, Element > getChildrenByNameHash(
 			Element e, String tag, String nameTag ) {
@@ -1329,7 +1368,7 @@ public class LevelFactory {
 		public String defName;
 		private EntityDef def;
 		public GleedTypeTag gleedTag;
-		private ArrayHash props;
+		private ArrayHash<String, String> props;
 		public Vector2 pos;
 		public float rot;
 		public Vector2 origin;
@@ -1348,17 +1387,15 @@ public class LevelFactory {
 			}
 			locked = true;
 		}
-
-		protected ArrayHash getProps( ) {
-			if ( props == null ) {
-				props = new ArrayHash( );
-				Array< Element > properties = element.getChildByName(
-						"CustomProperties" ).getChildrenByName( "Property" );
-				String name;
-				String value;
-				for ( Element prop : properties ) {
-					name = prop.getAttribute( "Name" ).toLowerCase( );
-					value = prop.get( "string", "<no value>" );
+		
+		protected ArrayHash<String, String> getProps(){
+			if (props == null){
+				props = new ArrayHash<String, String>();
+				Array<Element> properties = element.getChildByName("CustomProperties").getChildrenByName("Property");
+				String name; String value;
+				for (Element prop: properties){
+					name = prop.getAttribute("Name").toLowerCase( );
+					value = prop.get("string", "<no value>");
 					props.add( name, value );
 				}
 			}
@@ -1366,9 +1403,9 @@ public class LevelFactory {
 		}
 
 		/**
-		 * getDefinition loads the correct XML file with the same time
-		 * (complexTest) complexText loads the bottle, gearSmall would load the
-		 * gear Remember to set them to kinematic or they just fall
+		 * getDefinition loads the correct XML file with the same time (complexTest)
+		 * complexText loads the bottle, gearSmall would load the gear
+		 * Remember to set them to kinematic or they just fall
 		 * 
 		 * @return EntityDef
 		 */
@@ -1432,6 +1469,13 @@ public class LevelFactory {
 			} finally {
 			}
 			return out;
+		}
+		
+		protected String getAtlasName(){
+			if ( getProps( ).containsKey( atlasTag ) ) {
+				return getProps( ).get( atlasTag );
+			}
+			return null;
 		}
 
 		protected String getImageName( ) {

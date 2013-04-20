@@ -14,6 +14,7 @@ import com.blindtigergames.werescrewed.entity.EntityType;
 import com.blindtigergames.werescrewed.entity.action.ActionType;
 import com.blindtigergames.werescrewed.entity.action.RemoveEntityAction;
 import com.blindtigergames.werescrewed.entity.hazard.Hazard;
+import com.blindtigergames.werescrewed.entity.hazard.HazardType;
 import com.blindtigergames.werescrewed.entity.platforms.Platform;
 import com.blindtigergames.werescrewed.entity.platforms.PlatformType;
 import com.blindtigergames.werescrewed.entity.platforms.TiledPlatform;
@@ -23,6 +24,8 @@ import com.blindtigergames.werescrewed.entity.screws.ScrewType;
 import com.blindtigergames.werescrewed.eventTrigger.EventTrigger;
 import com.blindtigergames.werescrewed.player.Player;
 import com.blindtigergames.werescrewed.player.Player.PlayerState;
+import com.blindtigergames.werescrewed.util.Metrics;
+import com.blindtigergames.werescrewed.util.Metrics.TrophyMetric;
 
 /**
  * 
@@ -31,6 +34,7 @@ import com.blindtigergames.werescrewed.player.Player.PlayerState;
  */
 public class MyContactListener implements ContactListener {
 
+	// These should be in Player or Entity, not hardcoded.
 	private static int NUM_PLAYER1_CONTACTS = 0;
 	private static int NUM_PLAYER2_CONTACTS = 0;
 
@@ -39,9 +43,20 @@ public class MyContactListener implements ContactListener {
 	 */
 	@Override
 	public void beginContact( Contact contact ) {
+		// Object objectA = contact.getFixtureA( ).getUserData( );
+		// Object objectB = contact.getFixtureB( ).getUserData( );
 		final Fixture x1 = contact.getFixtureA( );
 		final Fixture x2 = contact.getFixtureB( );
-
+		/*
+		 * Will replace current code with this when I'm not working on other
+		 * tasks. ~Kevin if (objectA != null && objectB != null){ if (objectA
+		 * instanceof Entity && objectB instanceof Entity){ Class<? extends
+		 * Entity> classA = objectA.getClass( ).asSubclass( Entity.class );
+		 * Class<? extends Entity> classB = objectB.getClass( ).asSubclass(
+		 * Entity.class ); classA.cast( objectA ).collide( classB.cast( objectB
+		 * ), contact ); classB.cast( objectB ).collide( classA.cast( objectA ),
+		 * contact ); } }
+		 */
 		Fixture playerFix = null;
 		Fixture objectFix = null;
 
@@ -102,9 +117,10 @@ public class MyContactListener implements ContactListener {
 							}
 							break;
 						case HAZARD:
-
-							Hazard hazard = ( Hazard ) object;
-							hazard.performContact( player, objectFix );
+							if ( !player.isPlayerDead( ) ) {
+								Hazard hazard = ( Hazard ) object;
+								hazard.performContact( player, objectFix );
+							}
 							break;
 						case CHECKPOINT:
 							CheckPoint checkP = ( CheckPoint ) objectFix
@@ -121,7 +137,7 @@ public class MyContactListener implements ContactListener {
 								et.getBeginAction( ).act( player );
 							}
 							if ( playerFix == player.torso ) {
-									et.triggerBeginEvent( );
+								et.triggerBeginEvent( );
 							}
 							break;
 						default:
@@ -252,12 +268,14 @@ public class MyContactListener implements ContactListener {
 							player.setSteamCollide( false );
 							break;
 						case EVENTTRIGGER:
-							EventTrigger et = ( EventTrigger ) objectFix
-									.getBody( ).getUserData( );
-							if ( playerFix == player.torso ) {
-								et.triggerEndEvent( );
+							if ( !player.isPlayerDead( ) ) {
+								EventTrigger et = ( EventTrigger ) objectFix
+										.getBody( ).getUserData( );
+								if ( playerFix == player.torso ) {
+									et.triggerEndEvent( );
+								}
+								et.setActivated( false, player.name );
 							}
-							et.setActivated( false, player.name );
 							break;
 						default:
 							break;

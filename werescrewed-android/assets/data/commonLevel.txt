@@ -10,9 +10,11 @@
 ##common texture
 /common/player_b_f.png
 /common/player_female_idle.png
+/common/player_female_idle_ghost.png
 /common/player_r_m.png
-/common/test01.png
-/common/cletter.png
+/common/player_r_m_ghost.png
+#/common/test01.png
+#/common/cletter.png
 
 #/common/parallax_layer1_0.png
 #/common/parallax_layer1_1.png
@@ -41,8 +43,6 @@
 #/common/title_background_1024.png
 #/common/title_background_original.png
 #/common/robot/metal.png
-#/common/ropelink.png
-#/common/chainlink.png
 
 /common/robot/metal.png
 /common/gear.png
@@ -59,6 +59,7 @@
 ##please us texture packer to put all common textures in this pack file!
 /common/common-textures.pack
 /common/checkpoint/checkpoint.pack
+/common/animations/pushButton.pack
 /common/animations/screwInterface.pack
 /common/tileset1.pack
 /common/TilesetTest.pack
@@ -83,16 +84,15 @@
 /common/Screwball.fnt
 
 ##Particle effects
-land_cloud.p
 skid_left.p
 skid_right.p
 sparks.p
 steam.p
 revive.p
-land_cloud_new.p
-injured/baf.p
-injured/extra_crispy.p
-injured/ooph.p
+land_cloud.p
+injured/arg.p
+injured/doof.p
+injured/oof.p
 
 ##Palette Def
 ##Define with <colorName>.palette

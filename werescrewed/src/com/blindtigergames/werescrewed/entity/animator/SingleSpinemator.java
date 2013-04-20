@@ -16,11 +16,13 @@ import com.esotericsoftware.spine.Bone;
 import com.esotericsoftware.spine.Skeleton;
 import com.esotericsoftware.spine.SkeletonBinary;
 import com.esotericsoftware.spine.SkeletonData;
+import com.esotericsoftware.spine.SkeletonRenderer;
 
 public class SingleSpinemator implements ISpinemator {
 
 	protected Animation anim;
 	protected Skeleton skel;
+	protected SkeletonRenderer skelDraw = new SkeletonRenderer( );
 	protected Bone root;
 	protected Vector2 position = null;
 	protected Vector2 scale = null;
@@ -59,7 +61,7 @@ public class SingleSpinemator implements ISpinemator {
 
 	@Override
 	public void draw( SpriteBatch b ) {
-		skel.draw( b );
+		skelDraw.draw( b, skel );
 	}
 
 	@Override
