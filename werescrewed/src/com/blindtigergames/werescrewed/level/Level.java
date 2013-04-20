@@ -135,6 +135,12 @@ public class Level {
 				skel.drawBGDecals( batch );
 			}
 		}
+//		for ( Entity e : entityFGList ) {
+//			if ( e.isActive( ) ) 
+//			{
+//				e.drawBGDecals( batch );
+//			}
+//		}
 		// draw all the normal sprites
 		root.draw( batch, deltaTime );
 		if ( progressManager != null )
@@ -145,7 +151,8 @@ public class Level {
 			player2.draw( batch, deltaTime );
 		// draw all foreground entity sprites after everything
 		for ( Entity e : entityFGList ) {
-			if ( e.isActive( ) ) {
+			if ( e.isActive( ) ) 
+			{
 				e.drawFGDecals( batch );
 			}
 		}
@@ -154,8 +161,9 @@ public class Level {
 			if ( skel.fgSprite != null && skel.fgSprite.getAlpha( ) != 0 ) {
 				skel.fgSprite.draw( batch );
 			}
-			//if ( ( !skel.isActive( ) && skel.getParentSkeleton( ).isActive( ) )
-			//		|| ( skel.isMacroSkel( ) && !skel.isActive( ) ) ) 
+			// if ( ( !skel.isActive( ) && skel.getParentSkeleton( ).isActive( )
+			// )
+			// || ( skel.isMacroSkel( ) && !skel.isActive( ) ) )
 			{
 				skel.drawFGDecals( batch );
 			}
@@ -167,22 +175,21 @@ public class Level {
 		world.step( WereScrewedGame.oneOverTargetFrameRate, 6, 6 );
 
 	}
-	
-	public void resetPhysicsWorld() {
-		world.clearForces();
 
-		 for (Iterator<Body> iter = world.getBodies(); iter.hasNext();) {
-             Body body = iter.next();
-             if(body!=null)
-            	 world.destroyBody(body);
-		 }
-		 for (Iterator<Joint> iter = world.getJoints(); iter.hasNext();) {
-             Joint joint = iter.next();
-             if(joint!=null)
-            	 world.destroyJoint(joint);
-		 }
-		 
-		 
+	public void resetPhysicsWorld( ) {
+		world.clearForces( );
+
+		for ( Iterator< Body > iter = world.getBodies( ); iter.hasNext( ); ) {
+			Body body = iter.next( );
+			if ( body != null )
+				world.destroyBody( body );
+		}
+		for ( Iterator< Joint > iter = world.getJoints( ); iter.hasNext( ); ) {
+			Joint joint = iter.next( );
+			if ( joint != null )
+				world.destroyJoint( joint );
+		}
+
 	}
 
 }

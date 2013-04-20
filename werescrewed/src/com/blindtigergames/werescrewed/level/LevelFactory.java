@@ -213,6 +213,8 @@ public class LevelFactory {
 
 		if ( bluePrints.equals( "skeleton" ) ) {
 			out = constructSkeleton( item );
+		} else if ( bluePrints.equals( decalBGTag ) ) {
+			constructDecal( item );
 		} else if ( bluePrints.equals( decalTag ) ) {
 			constructDecal( item );
 		} else if ( bluePrints.equals( "player" ) ) {
@@ -240,19 +242,7 @@ public class LevelFactory {
 			out = loadComplexPlatform( item );
 		}
 
-		// TODO add functionality for sorting these decals into foreground or
-		// background decals
-		// This either requires adding variables to the specific decal in gleed
-		// to what layer it is on
-		// or make two different loading keys such as fgdecal or bgdecal and
-		// handle them seperatley
 		if ( out != null ) {
-			// if ( item.propes.containsKey( "fgdecal" ) ) {
-			// level.entityFGList.add( decal );
-			// }
-			// if ( item.propes.containsKey( "bgdecal" ) ) {
-			// level.entityBGList.add( decal );
-			// }
 			if ( item.props.containsKey( "decal" ) ) {
 				Array< String > tokens;
 				String decalImage;
@@ -282,6 +272,7 @@ public class LevelFactory {
 						}
 						decal.setScale( size.x, size.y );
 						out.addFGDecal( decal, decalPosition, r );
+						level.entityFGList.add( out );
 						Gdx.app.log(
 								"LoadEntity",
 								"Creating foreground decal for [" + item.name
@@ -290,8 +281,7 @@ public class LevelFactory {
 										+ decalPosition.toString( ) );
 					}
 				}
-			}
-			if ( item.props.containsKey( "bgdecal" ) ) {
+			} else if ( item.props.containsKey( "bgdecal" ) ) {
 				Array< String > tokens;
 				String decalImage;
 				Vector2 decalPosition = new Vector2( );
@@ -320,6 +310,7 @@ public class LevelFactory {
 						}
 						decal.setScale( size.x, size.y );
 						out.addBGDecal( decal, decalPosition, r );
+						level.entityBGList.add( out );
 						Gdx.app.log(
 								"LoadEntity",
 								"Creating background decal for [" + item.name
@@ -434,7 +425,14 @@ public class LevelFactory {
 			float rot = item.rot - targetRot;
 
 			decal.setScale( scale.x, scale.y );
-			target.addFGDecal( decal, pos, rot );
+			if ( item.props.containsKey( "decal" ) ) {
+				target.addFGDecal( decal, pos, rot );
+				level.entityFGList.add( target );
+			} else {
+				Gdx.app.log( "level factory", "hello world" );
+				target.addBGDecal( decal, pos, rot );
+				level.entityBGList.add( target );
+			}
 			Gdx.app.log( "LoadDecal", "Attaching decal " + item.name + " to "
 					+ targetName + "." );
 			target.updateDecals( 0.0f );
