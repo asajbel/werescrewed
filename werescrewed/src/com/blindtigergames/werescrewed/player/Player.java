@@ -443,6 +443,14 @@ public class Player extends Entity {
 		// check for crushing stuff
 		if ( ( ( topCrush && botCrush ) || ( leftCrush && rightCrush ) )
 				&& ( playerState != PlayerState.Screwing ) ) {
+			//increments crush death metrics
+			if ( this.name == Metrics.player1( ) ){
+				Metrics.incTrophyMetric( TrophyMetric.P1CRUSHDEATHS, 1 );
+			}
+			else if (this.name == Metrics.player2( ) ){
+				Metrics.incTrophyMetric( TrophyMetric.P2CRUSHDEATHS, 1 );
+			}
+			
 			this.killPlayer( );
 			// Gdx.app.log( "\nright: ", "" + rightCrush );
 			// Gdx.app.log( "left: ", "" + leftCrush );
