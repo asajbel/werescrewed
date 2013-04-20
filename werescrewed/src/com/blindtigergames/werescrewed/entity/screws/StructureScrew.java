@@ -2,7 +2,6 @@ package com.blindtigergames.werescrewed.entity.screws;
 
 import java.util.ArrayList;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
@@ -265,17 +264,19 @@ public class StructureScrew extends Screw {
 
 	@Override
 	public void draw( SpriteBatch batch, float deltaTime ) {
-		drawBGDecals( batch );
-		screwInterface.sprite.draw( batch );
-		drawParticles( behindParticles, batch );
+		//drawBGDecals( batch );
+		if ( playerAttached ) {
+			screwInterface.sprite.draw( batch );
+		}
+		//drawParticles( behindParticles, batch );
 		if ( sprite != null && visible && !removeNextStep ) {
 			sprite.draw( batch );
 		}
 		// drawOrigin(batch);
-		drawFGDecals( batch );
-		if ( spinemator != null )
-			spinemator.draw( batch );
-		drawParticles( frontParticles, batch );
+		//drawFGDecals( batch );
+		//if ( spinemator != null )
+		//	spinemator.draw( batch );
+		//drawParticles( frontParticles, batch );
 	}
 
 	private void constuctBody( Vector2 pos ) {
