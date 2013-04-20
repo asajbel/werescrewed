@@ -85,7 +85,7 @@ public class AlphaScreen extends Screen {
 
 		if ( level.player1 == null ) {
 			level.player1 = new PlayerBuilder( ).world( level.world )
-					.position( -200f, 3800f ).name( "player1" ).definition( "red_male" )
+					.position( 0f, 0f ).name( "player1" ).definition( "red_male" )
 					.buildPlayer( );
 			level.progressManager.addPlayerOne( level.player1 );
 		}

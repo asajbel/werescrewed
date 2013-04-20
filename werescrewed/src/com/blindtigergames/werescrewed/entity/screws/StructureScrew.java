@@ -192,18 +192,6 @@ public class StructureScrew extends Screw {
 	public void update( float deltaTime ) {
 		super.update( deltaTime );
 		if ( !removed ) {
-			if ( entity != null
-					&& ( getDetachDirection( ).x != 0 || getDetachDirection( ).y != 0 ) ) {
-				if ( upDownDetach ) {
-					detachDirection.x = ( float ) Math.sin( entity.getAngle( ) );
-					detachDirection.y = Math.signum( detachDirection.y )
-							* ( float ) Math.cos( entity.getAngle( ) );
-				} else {
-					detachDirection.x = Math.signum( detachDirection.x )
-							* ( float ) Math.cos( entity.getAngle( ) );
-					detachDirection.y = ( float ) Math.sin( entity.getAngle( ) );
-				}
-			}
 			Vector2 bodyPos = body.getPosition( ).mul( Util.BOX_TO_PIXEL );
 			sprite.setPosition( bodyPos.x - offset.x, bodyPos.y - offset.y );
 			if ( depth <= 0 ) {

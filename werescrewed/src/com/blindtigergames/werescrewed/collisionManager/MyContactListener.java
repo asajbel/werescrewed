@@ -111,10 +111,6 @@ public class MyContactListener implements ContactListener {
 						case SCREW:
 							Screw screw = ( Screw ) object;
 							player.hitScrew( screw );
-							if ( screw.getScrewType( ) == ScrewType.SCREW_RESURRECT ) {
-								ResurrectScrew rScrew = ( ResurrectScrew ) screw;
-								rScrew.hitPlayer( player );
-							}
 							break;
 						case HAZARD:
 							if ( !player.isPlayerDead( ) ) {

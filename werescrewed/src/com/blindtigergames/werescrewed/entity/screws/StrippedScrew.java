@@ -123,20 +123,6 @@ public class StrippedScrew extends Screw {
 		screwShape.dispose( );
 
 	}
-
-	@Override
-	public void update( float deltaTime ) {
-		super.update( deltaTime );
-		if ( entity != null && ( getDetachDirection( ).x != 0 || getDetachDirection( ).y != 0 ) ) {
-			if ( upDownDetach ) {
-				detachDirection.x = (float)Math.sin( entity.getAngle( ) );
-				detachDirection.y = Math.signum( detachDirection.y ) * (float)Math.cos( entity.getAngle( ) );
-			} else {
-				detachDirection.x = Math.signum( detachDirection.y ) * (float)Math.cos( entity.getAngle( ) );
-				detachDirection.y = (float)Math.sin( entity.getAngle( ) );					
-			}
-		}
-	}
 	
 	/**
 	 * This particular draw is needed because I needed stripped screws to be able to 

@@ -310,31 +310,30 @@ public class Player extends Entity {
 			} else if ( inputHandler != null ) {
 				updateKeyboard( deltaTime );
 			}
-
 			// if re-spawning decrement time out
 			// player will not die in this time
 			if ( respawnTimeout > 0 ) {
 				respawnTimeout--;
 			}
-
 			// build extra fixture to have new friction
-
 			// updateFootFriction( );
-
 			// test if player is still moving after timeout
-			if ( playerDirection != PlayerDirection.Idle
-					&& playerState != PlayerState.Screwing ) {
+			if ( playerDirection != PlayerDirection.Idle && playerState != PlayerState.Screwing ) {
 				if ( runTimeout == 0 && playerState != PlayerState.Jumping
 						&& playerState != PlayerState.Falling
 						&& extraState != ConcurrentState.ExtraFalling
 						&& extraState != ConcurrentState.ExtraJumping ) {
 					playerDirection = PlayerDirection.Idle;
-				} else if ( playerDirection == PlayerDirection.Left
-						&& type.getScale( ).x > 0 ) {
+				} else if ( playerDirection == PlayerDirection.Left 
+						&& prevPlayerDir != PlayerDirection.Left) {
+						//&& type.getScale( ).x > 0 ) {
+					prevPlayerDir = PlayerDirection.Left;
 					flipX = true;
 					type.setScale( type.getScale( ).x * -1, type.getScale( ).y );
-				} else if ( playerDirection == PlayerDirection.Right
-						&& type.getScale( ).x < 0 ) {
+				} else if ( playerDirection == PlayerDirection.Right 
+						&& prevPlayerDir != PlayerDirection.Right ) {
+					prevPlayerDir = PlayerDirection.Right;
+						//&& type.getScale( ).x < 0 ) {
 					flipX = false;
 					type.setScale( type.getScale( ).x * -1, type.getScale( ).y );
 				} else if ( playerState != PlayerState.Jumping
@@ -345,7 +344,6 @@ public class Player extends Entity {
 				}
 			}
 		}
-
 		updateFootFrictionNew( );
 		// switch between states
 		switch ( playerState ) {
@@ -583,7 +581,9 @@ public class Player extends Entity {
 					reachedMaxSpeed = false;
 			}
 		}
-		playerDirection = PlayerDirection.Right;
+		if ( playerState != PlayerState.Screwing ) {
+			playerDirection = PlayerDirection.Right;
+		}
 		if ( grounded && prevPlayerDir == PlayerDirection.Left ) {
 			getEffect( "skid_left" )
 					.restartAt( getPositionPixel( ).add( 30, 0 ) );
@@ -627,7 +627,9 @@ public class Player extends Entity {
 					reachedMaxSpeed = false;
 			}
 		}
-		playerDirection = PlayerDirection.Left;
+		if ( playerState != PlayerState.Screwing ) {
+			playerDirection = PlayerDirection.Left;
+		}
 		if ( grounded && prevPlayerDir == PlayerDirection.Right ) {
 			getEffect( "skid_right" ).restartAt(
 					getPositionPixel( ).add( 100, 0 ) );

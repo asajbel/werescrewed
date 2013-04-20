@@ -205,18 +205,6 @@ public class PuzzleScrew extends Screw {
 	public void update( float deltaTime ) {
 		super.update( deltaTime );
 		if ( !removed ) {
-			if ( entity != null
-					&& ( getDetachDirection( ).x != 0 || getDetachDirection( ).y != 0 ) ) {
-				if ( upDownDetach ) {
-					detachDirection.x = ( float ) Math.sin( entity.getAngle( ) );
-					detachDirection.y = Math.signum( detachDirection.y )
-							* ( float ) Math.cos( entity.getAngle( ) );
-				} else {
-					detachDirection.x = Math.signum( detachDirection.y )
-							* ( float ) Math.cos( entity.getAngle( ) );
-					detachDirection.y = ( float ) Math.sin( entity.getAngle( ) );
-				}
-			}
 			puzzleManager.update( deltaTime );
 			sprite.setRotation( rotation );
 			if ( depth != screwStep ) {

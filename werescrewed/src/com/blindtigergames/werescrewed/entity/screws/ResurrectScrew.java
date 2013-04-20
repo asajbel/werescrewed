@@ -175,18 +175,6 @@ public class ResurrectScrew extends Screw {
 	}
 
 	/**
-	 * look at collisions with the screw and determine if it is the dead player
-	 * if so bring the player back to life
-	 * 
-	 * @param player
-	 */
-	public void hitPlayer( Player player ) {
-		// if ( player == deadPlayer ) {
-		// destroyJoint = true;
-		// }
-	}
-
-	/**
 	 * returns the dead player attached
 	 */
 	public Player getDeadPlayer( ) {
