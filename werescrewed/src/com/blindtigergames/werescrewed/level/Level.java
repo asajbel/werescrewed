@@ -135,12 +135,12 @@ public class Level {
 				skel.drawBGDecals( batch );
 			}
 		}
-//		for ( Entity e : entityFGList ) {
-//			if ( e.isActive( ) ) 
-//			{
-//				e.drawBGDecals( batch );
-//			}
-//		}
+		for ( Entity e : entityBGList ) {
+			if ( e.isActive( ) ) 
+			{
+				e.drawBGDecals( batch );
+			}
+		}
 		// draw all the normal sprites
 		root.draw( batch, deltaTime );
 		if ( progressManager != null )
