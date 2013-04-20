@@ -1842,6 +1842,14 @@ public class Player extends Entity {
 		// ) );
 		body.applyLinearImpulse( new Vector2( 0, STEAM_IMPULSE ),
 				body.getWorldCenter( ) );
+		
+		//increments steam jump trophy metric
+		if ( this.name == Metrics.player1( ) ){
+			Metrics.incTrophyMetric( TrophyMetric.P1STEAMJUMPS, 1 );
+		}
+		else if ( this.name == Metrics.player2( ) ){
+			Metrics.incTrophyMetric( TrophyMetric.P2STEAMJUMPS, 1 );
+		}
 		grounded = false;
 	}
 
