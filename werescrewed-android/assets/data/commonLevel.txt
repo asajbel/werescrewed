@@ -84,16 +84,15 @@
 /common/Screwball.fnt
 
 ##Particle effects
-land_cloud.p
 skid_left.p
 skid_right.p
 sparks.p
 steam.p
 revive.p
-land_cloud_new.p
-injured/baf.p
-injured/extra_crispy.p
-injured/ooph.p
+land_cloud.p
+injured/arg.p
+injured/doof.p
+injured/oof.p
 
 ##Palette Def
 ##Define with <colorName>.palette

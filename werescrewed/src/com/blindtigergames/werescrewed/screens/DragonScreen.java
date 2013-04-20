@@ -231,10 +231,10 @@ public class DragonScreen extends Screen {
 		t.push( Tween
 				.to( skel, PlatformAccessor.LOCAL_POS_XY, 3f )
 				.delay( 0f ).target( 0, yPos )
-				.ease( TweenEquations.easeNone ).start( ) );
+				.ease( TweenEquations.easeInOutQuad ).start( ) );
 		
 		t.push( Tween.to( skel, PlatformAccessor.LOCAL_ROT, 2f )
-				   .ease(TweenEquations.easeNone)
+				   .ease(TweenEquations.easeInOutQuad)
 				   .target( angle ).delay( 0f )
 				   .start()
 				   );
@@ -257,10 +257,10 @@ public class DragonScreen extends Screen {
 		t.push( Tween
 				.to( skel, PlatformAccessor.LOCAL_POS_XY, 3f )
 				.delay( 0f ).target( 0, 0f )
-				.ease( TweenEquations.easeNone ).start( ) );
+				.ease( TweenEquations.easeInOutQuad ).start( ) );
 		
 		t.push( Tween.to( skel, PlatformAccessor.LOCAL_ROT, 2f )
-				   .ease(TweenEquations.easeNone)
+				   .ease(TweenEquations.easeInOutQuad)
 				   .target( -angle ).delay( 0f )
 				   .start()
 				   );
@@ -272,7 +272,7 @@ public class DragonScreen extends Screen {
 
 		
 		t.push( Tween.to( skel, PlatformAccessor.LOCAL_ROT, 3f )
-				   .ease(TweenEquations.easeNone)
+				   .ease(TweenEquations.easeInOutQuad)
 				   .target( 0 ).delay( 0f )
 				   .start()
 				   );

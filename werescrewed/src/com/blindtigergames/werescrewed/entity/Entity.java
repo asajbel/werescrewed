@@ -5,17 +5,14 @@ import java.util.EnumMap;
 import java.util.HashMap;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
-import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.Filter;
 import com.badlogic.gdx.physics.box2d.Fixture;
@@ -32,7 +29,6 @@ import com.blindtigergames.werescrewed.entity.animator.PlayerAnimator;
 import com.blindtigergames.werescrewed.entity.animator.SimpleFrameAnimator;
 import com.blindtigergames.werescrewed.entity.mover.IMover;
 import com.blindtigergames.werescrewed.entity.platforms.Platform;
-import com.blindtigergames.werescrewed.eventTrigger.EventTrigger;
 import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 import com.blindtigergames.werescrewed.graphics.TextureAtlas;
 import com.blindtigergames.werescrewed.graphics.particle.ParticleEffect;
@@ -294,13 +290,13 @@ public class Entity implements GleedLoadable {
 	}
 
 	public void draw( SpriteBatch batch, float deltaTime ) {
-		drawBGDecals( batch );
+		//drawBGDecals( batch );
 		drawParticles( behindParticles, batch );
 		if ( sprite != null && visible && !removeNextStep ) {
 			sprite.draw( batch );
 		}
 		// drawOrigin(batch);
-		//drawFGDecals( batch );
+		// drawFGDecals( batch );
 		if ( spinemator != null )
 			spinemator.draw( batch );
 		drawParticles( frontParticles, batch );
@@ -944,8 +940,46 @@ public class Entity implements GleedLoadable {
 				+ body.isAwake( );
 	}
 
+	/**
+	 * Adds an anchor to the Entity AND ADDS IT TO ANCHORLIST.
+	 * 
+	 * @param anchor
+	 */
 	public void addAnchor( Anchor anchor ) {
+		AnchorList.getInstance( ).addAnchor( anchor );
 		this.anchors.add( anchor );
+	}
+
+	/**
+	 * Removes an anchor by reference AND DELETES IT FRM ANCHORLIST.
+	 * 
+	 * @param anchor
+	 */
+	public void removeAnchor( Anchor anchor ) {
+		AnchorList.getInstance( ).removeAnchor( anchor );
+		int index = this.anchors.indexOf( anchor );
+		this.anchors.remove( index );
+	}
+
+	/**
+	 * Removes an anchor by index (not recommended). ALSO DELETES IT FROM
+	 * ANCHORLIST.
+	 * 
+	 * @param index
+	 */
+	public void removeAnchor( int index ) {
+		Anchor anchor = this.anchors.get( index );
+		this.removeAnchor( anchor );
+	}
+
+	/**
+	 * Clears out all the anchors AND REMOVES THEM FROM ANCHORLIST.
+	 */
+	public void clearAnchors( ) {
+		for ( Anchor anchor : anchors ) {
+			AnchorList.getInstance( ).removeAnchor( anchor );
+		}
+		this.anchors.clear( );
 	}
 
 	/**
@@ -1050,7 +1084,7 @@ public class Entity implements GleedLoadable {
 	public void drawBGDecals( SpriteBatch batch ) {
 		for ( Sprite decal : bgDecals ) {
 
-			//Gdx.app.log( "level draw", this.name + " drawing background " );
+			// Gdx.app.log( "level draw", this.name + " drawing background " );
 			decal.draw( batch );
 		}
 	}
@@ -1196,15 +1230,14 @@ public class Entity implements GleedLoadable {
 			sounds.loopSound("idle");
 		}
 	}
-	
 	/**
 	 * Add a fixture from a gleed path. This ignores the last vert.
 	 * 
-	 * @param loadedVerts are world coordinate vertices.
+	 * @param loadedVerts
+	 *            are world coordinate vertices.
 	 * @param positionPixel
 	 */
-	public void addFixture(Array< Vector2 > loadedVerts,
-			Vector2 positionPixel){
+	public void addFixture( Array< Vector2 > loadedVerts, Vector2 positionPixel ) {
 
 		PolygonShape polygon = new PolygonShape( );
 		Vector2[ ] verts = new Vector2[ loadedVerts.size - 1 ];
@@ -1216,21 +1249,22 @@ public class Entity implements GleedLoadable {
 			if ( j == loadedVerts.size - 1 )
 				continue;
 			Vector2 v = loadedVerts.get( j );
-			verts[ i ] = new Vector2( (v.x+positionPixel.x-getPositionPixel( ).x) * Util.PIXEL_TO_BOX,
-					(v.y+positionPixel.y-getPositionPixel( ).y) * Util.PIXEL_TO_BOX );
+			verts[ i ] = new Vector2(
+					( v.x + positionPixel.x - getPositionPixel( ).x )
+							* Util.PIXEL_TO_BOX,
+					( v.y + positionPixel.y - getPositionPixel( ).y )
+							* Util.PIXEL_TO_BOX );
 			++i;
 		}
 		polygon.set( verts );
 
 		FixtureDef fixtureDef = new FixtureDef( );
 		fixtureDef.shape = polygon;
-		
+
 		body.createFixture( fixtureDef );
 		polygon.dispose( );
-		
-		
-		
-		//Possible bug, changes all collision bits to that of the first body
+
+		// Possible bug, changes all collision bits to that of the first body
 		Filter data = body.getFixtureList( ).get( 0 ).getFilterData( );
 		Filter filter;
 		for ( Fixture f : body.getFixtureList( ) ) {
@@ -1243,11 +1277,10 @@ public class Entity implements GleedLoadable {
 			f.setFilterData( filter );
 		}
 		body.setType( body.getType( ) );
-		
-		
-		if ( entityType == EntityType.PLATFORM ){
-			Platform p = (Platform)this;
-			
+
+		if ( entityType == EntityType.PLATFORM ) {
+			Platform p = ( Platform ) this;
+
 		}
 	}
 

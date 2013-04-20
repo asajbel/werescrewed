@@ -2,13 +2,10 @@ package com.blindtigergames.werescrewed.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
@@ -22,7 +19,6 @@ import com.blindtigergames.werescrewed.entity.Sprite;
 import com.blindtigergames.werescrewed.entity.action.RemoveEntityAction;
 import com.blindtigergames.werescrewed.entity.builders.EventTriggerBuilder;
 import com.blindtigergames.werescrewed.entity.builders.PlayerBuilder;
-import com.blindtigergames.werescrewed.entity.builders.SkeletonBuilder;
 import com.blindtigergames.werescrewed.entity.mover.AnalogRotateMover;
 import com.blindtigergames.werescrewed.entity.mover.LinearAxis;
 import com.blindtigergames.werescrewed.entity.mover.ParallaxMover;
@@ -32,7 +28,6 @@ import com.blindtigergames.werescrewed.entity.screws.PuzzleScrew;
 import com.blindtigergames.werescrewed.entity.screws.Screw;
 import com.blindtigergames.werescrewed.entity.screws.StrippedScrew;
 import com.blindtigergames.werescrewed.entity.screws.StructureScrew;
-import com.blindtigergames.werescrewed.entity.tween.PathBuilder;
 import com.blindtigergames.werescrewed.eventTrigger.EventTrigger;
 import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 import com.blindtigergames.werescrewed.graphics.TextureAtlas;
@@ -203,15 +198,6 @@ public class AlphaScreen extends Screen {
 				new Vector2( curtainX + 2398, curtainY ) );
 
 		// stage is in between floor & seats
-															// works
-		// seats
-		bgSkele.addFGDecal( floor_seats.createSprite( "seats_left" ),
-				new Vector2( -max + seatsX, seatsY ) );
-		bgSkele.addFGDecal( floor_seats.createSprite( "seats_middle" ),
-				new Vector2( 0 + seatsX, seatsY ) );
-		bgSkele.addFGDecal( floor_seats.createSprite( "seats_right" ),
-				new Vector2( max + seatsX, seatsY ) );
-		
 		bgSkele.addFGDecal( stage_pillar.createSprite( "stage_left" ),
 				new Vector2( stage_pillarX, stage_pillarY ) );
 		bgSkele.addFGDecal( stage_upperleft.createSprite( "stage_upperleft" ),
@@ -229,6 +215,15 @@ public class AlphaScreen extends Screen {
 																		// &
 																		// right
 																		// pillar
+															// works
+		// seats
+		bgSkele.addFGDecal( floor_seats.createSprite( "seats_left" ),
+				new Vector2( -max + seatsX, seatsY ) );
+		bgSkele.addFGDecal( floor_seats.createSprite( "seats_middle" ),
+				new Vector2( 0 + seatsX, seatsY ) );
+		bgSkele.addFGDecal( floor_seats.createSprite( "seats_right" ),
+				new Vector2( max + seatsX, seatsY ) );
+
 		bgSkele.addFGDecal(
 				stage_upperright.createSprite( "stage_upperright" ),
 				new Vector2( stage_pillarX + 2004, stage_pillarY + 1616 ) );// 1617
