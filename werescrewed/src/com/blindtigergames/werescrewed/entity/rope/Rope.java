@@ -25,6 +25,7 @@ public class Rope {
 	private StrippedScrew screw;
 	private ArrayList< Link > linkParts;
 	private World world;
+	private final float ROPE_DEACCELERATION_RATE = 0.6f;
 
 	/**
 	 * Constructs a rope at a given position
@@ -231,17 +232,20 @@ public class Rope {
 	}
 	
 	public void stopRope( ) {
-		float velocity = getLastLink().body.getLinearVelocity( ).x;
-		if ( velocity != 0.0f ) {
-			if ( velocity < -0.1f )
-				getLastLink( ).body.applyLinearImpulse( new Vector2( 0.01f, 0.0f ),
-						getLastLink ( ).body.getWorldCenter( ) );
-			else if ( velocity > 0.1f )
-				getLastLink( ).body.applyLinearImpulse( new Vector2( -0.01f, 0.0f ),
-						getLastLink( ).body.getWorldCenter( ) );
-			else if ( velocity >= -0.1 && velocity <= 0.1f && velocity != 0.0f )
-				getLastLink( ).body.setLinearVelocity( 0.0f, getLastLink( ).body.getLinearVelocity( ).y );
-		}
+		getLastLink().body.setLinearVelocity( getLastLink().body.getLinearVelocity( ).x * ROPE_DEACCELERATION_RATE,
+				getLastLink().body.getLinearVelocity( ).y );
+		
+//		float velocity = getLastLink().body.getLinearVelocity( ).x;
+//		if ( velocity != 0.0f ) {
+//			if ( velocity < -0.1f )
+//				getLastLink( ).body.applyLinearImpulse( new Vector2( 0.01f, 0.0f ),
+//						getLastLink ( ).body.getWorldCenter( ) );
+//			else if ( velocity > 0.1f )
+//				getLastLink( ).body.applyLinearImpulse( new Vector2( -0.01f, 0.0f ),
+//						getLastLink( ).body.getWorldCenter( ) );
+//			else if ( velocity >= -0.1 && velocity <= 0.1f && velocity != 0.0f )
+//				getLastLink( ).body.setLinearVelocity( 0.0f, getLastLink( ).body.getLinearVelocity( ).y );
+//		}
 	}
 	
 	public void dispose(){
