@@ -14,7 +14,7 @@ public class PrismaticJointBuilder {
 	 * Required parameters
 	 */
 	World world;
-	Skeleton skeleton;
+	Entity bodyA;
 	Entity bodyB;
 	Vector2 anchor;
 	Vector2 axis;
@@ -46,12 +46,12 @@ public class PrismaticJointBuilder {
 	}
 
 	/**
-	 * Creates prismatic joint, adds it to world, and to the skeleton
+	 * Creates prismatic joint, adds it to world
 	 * 
 	 * @return
 	 */
 	public PrismaticJoint build( ) {
-		if ( bodyB == null || skeleton == null ) {
+		if ( bodyB == null || bodyA == null ) {
 			Gdx.app.error( "PrismaticJointBuilder",
 					"You didn't initialize bodyB and/or skeleton, you doofus!" );
 		}
@@ -62,7 +62,7 @@ public class PrismaticJointBuilder {
 			axis = new Vector2( 1, 0 ); // default value if axis isn't specified
 		}
 		PrismaticJointDef prismaticJointDef = new PrismaticJointDef( );
-		prismaticJointDef.initialize( skeleton.body, bodyB.body, anchor, axis );
+		prismaticJointDef.initialize( bodyA.body, bodyB.body, anchor, axis );
 		prismaticJointDef.enableLimit = enableLimit;
 		prismaticJointDef.lowerTranslation = lowerTranslation;
 		prismaticJointDef.upperTranslation = upperTranslation;
@@ -79,13 +79,10 @@ public class PrismaticJointBuilder {
 	}
 
 	/**
-	 * Enforce Skeleton, since I'm under the impression everything is attached
-	 * to a skeleton
-	 * 
-	 * @param _skeleton
+	 * FIrst body involved in joint
 	 */
-	public PrismaticJointBuilder skeleton( Skeleton _skeleton ) {
-		this.skeleton = _skeleton;
+	public PrismaticJointBuilder bodyA( Entity bodyA ) {
+		this.bodyA = bodyA;
 		return this;
 	}
 

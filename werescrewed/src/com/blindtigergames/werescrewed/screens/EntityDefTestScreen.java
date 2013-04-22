@@ -292,7 +292,7 @@ public class EntityDefTestScreen implements com.badlogic.gdx.Screen {
 		// .buildTilePlatform( world );
 
 		PrismaticJointBuilder jointBuilder = new PrismaticJointBuilder( world )
-				.skeleton( skeleton ).axis( 0, 1 ).motor( true ).limit( true )
+				.bodyA( skeleton ).axis( 0, 1 ).motor( true ).limit( true )
 				.upper( 1 ).motorSpeed( 1 );
 		for ( int i = 0; i < 10; ++i ) {
 			TiledPlatform piston = builder.position( ( -100f - i * 40 ), 220f )

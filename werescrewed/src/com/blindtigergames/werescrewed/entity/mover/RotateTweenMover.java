@@ -36,19 +36,16 @@ public class RotateTweenMover extends TweenMover implements IMover {
 		this.rotAmount = rotAmountRadians;
 		this.delay = delay;
 		this.isYoyoRepeat = isYoyoRepeat;
+		Tween t = Tween.to( platform, PlatformAccessor.LOCAL_ROT, duration )
+				   .ease(TweenEquations.easeNone) //no ease for smooth lerp
+				   .target( rotAmountRadians );
+				   
 		if ( isYoyoRepeat ){
-			addTween( Tween.to( platform, PlatformAccessor.LOCAL_ROT, duration )
-						   .ease(TweenEquations.easeNone) //no ease for smooth lerp
-						   .target( rotAmountRadians )
-						   .repeatYoyo( Tween.INFINITY, delay ).start()
-						   );
+			t = t.repeatYoyo( Tween.INFINITY, delay );
 		}else{
-			addTween( Tween.to( platform, PlatformAccessor.LOCAL_ROT, duration )
-						.ease(TweenEquations.easeNone) //no ease for smooth lerp
-					   .target( rotAmountRadians )
-					   .repeat( Tween.INFINITY, delay ).start()
-					   );
+			t = t.repeat( Tween.INFINITY, delay );
 		}
+		addTween(t.start());
 	}
 	
 	/**
@@ -57,7 +54,7 @@ public class RotateTweenMover extends TweenMover implements IMover {
 	public RotateTweenMover( Platform platform ){
 		this(platform,10f,Util.TWO_PI,0f,false);
 	}
-
+	
 	@Override
 	public void runPuzzleMovement( Screw screw, float screwVal, Platform p ) {
 		//p.mover = this;
