@@ -1086,7 +1086,6 @@ public class Entity implements GleedLoadable {
 	 */
 	public void drawBGDecals( SpriteBatch batch, Rectangle camBounds ) {
 		for ( Sprite decal : bgDecals ) {
-			// Gdx.app.log( "level draw", this.name + " drawing background " );
 			if ( camBounds.overlaps( decal.getBoundingRectangle( ) ) ) {
 				decal.draw( batch );
 			}
