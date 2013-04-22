@@ -107,9 +107,9 @@ public class SoundManager {
 	
 	public void handleSoundPosition(String id, Vector2 cameraPos, Vector2 soundPos, float zoom){
 		if (hasSound(id)){
-			float dist = soundPos.dst( cameraPos )*zoom;
+			float dist = cameraPos.dst( soundPos );
 			float xPan = soundPos.sub( cameraPos ).nor().x;
-			float vol = sounds.get(id).falloff/(dist*dist);
+			float vol = sounds.get(id).falloff/(dist*dist*zoom);
 			setSoundVolume(id, vol);
 			setSoundPan(id, xPan);
 			Gdx.app.log( "Handle Sound Position", "Dist:"+dist+" Vol:"+vol+" Pan:"+xPan );
