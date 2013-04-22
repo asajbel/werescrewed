@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
@@ -1072,20 +1073,23 @@ public class Entity implements GleedLoadable {
 	/**
 	 * 
 	 */
-	public void drawFGDecals( SpriteBatch batch ) {
+	public void drawFGDecals( SpriteBatch batch, Rectangle camBounds ) {
 		for ( Sprite decal : fgDecals ) {
-			decal.draw( batch );
+			if ( camBounds.overlaps( decal.getBoundingRectangle( ) ) ) {
+				decal.draw( batch );
+			}
 		}
 	}
 
 	/**
 	 * 
 	 */
-	public void drawBGDecals( SpriteBatch batch ) {
+	public void drawBGDecals( SpriteBatch batch, Rectangle camBounds ) {
 		for ( Sprite decal : bgDecals ) {
-
 			// Gdx.app.log( "level draw", this.name + " drawing background " );
-			decal.draw( batch );
+			if ( camBounds.overlaps( decal.getBoundingRectangle( ) ) ) {
+				decal.draw( batch );
+			}
 		}
 	}
 

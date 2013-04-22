@@ -3,17 +3,17 @@ package com.blindtigergames.werescrewed.entity.platforms;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.entity.Sprite;
+import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 import com.blindtigergames.werescrewed.graphics.TextureAtlas;
 import com.blindtigergames.werescrewed.util.Util;
 
@@ -34,7 +34,7 @@ public class Pipe extends Platform {
 	protected Direction previousDirection;
 	protected Texture texture;
 
-	protected final float tileSize = 32.0f;
+	public static final float TILE_SIZE = 32.0f;
 
 	public Pipe( String name, Vector2 pos, ArrayList< Vector2 > path,
 			Texture tex, World world ) {
@@ -57,10 +57,14 @@ public class Pipe extends Platform {
 		bodyDef.gravityScale = 0.1f;
 		body = world.createBody( bodyDef );
 		body.setUserData( this );
+		
+		Vector2 previousPair = new Vector2(); 
 
 		for ( int i = 0; i < path.size( ); i++ ) {
-
-			currentPair = path.get( i );
+			
+			currentPair = new Vector2(path.get( i ));
+			currentPair = currentPair.sub( previousPair );
+			previousPair = path.get( i ); 
 
 			// error-check coordinate pairs, only allowing for movement in one
 			// direction
@@ -127,26 +131,26 @@ public class Pipe extends Platform {
 		tempSprite = commonTextures.createSprite( texName );
 		offset_x = currentPos.x * Util.BOX_TO_PIXEL;
 		offset_y = currentPos.y * Util.BOX_TO_PIXEL;
-		tempSprite.setOrigin( -offset_x + tileSize, -offset_y + tileSize );
+		tempSprite.setOrigin( -offset_x + TILE_SIZE, -offset_y + TILE_SIZE );
 		temp = new Tile( offset_x, offset_y, tempSprite );
 		tiles.add( temp );
 
 
 		switch ( currentDirection ) {
 		case LEFT:
-			currentPos.x -= tileSize * ( numberOfSegments - 1 )
+			currentPos.x -= TILE_SIZE * ( numberOfSegments - 1 )
 					* Util.PIXEL_TO_BOX;
 			break;
 		case RIGHT:
-			currentPos.x += tileSize * ( numberOfSegments - 1 )
+			currentPos.x += TILE_SIZE * ( numberOfSegments - 1 )
 					* Util.PIXEL_TO_BOX;
 			break;
 		case UP:
-			currentPos.y += tileSize * ( numberOfSegments - 1 )
+			currentPos.y += TILE_SIZE * ( numberOfSegments - 1 )
 					* Util.PIXEL_TO_BOX;
 			break;
 		case DOWN:
-			currentPos.y -= tileSize * ( numberOfSegments - 1 )
+			currentPos.y -= TILE_SIZE * ( numberOfSegments - 1 )
 					* Util.PIXEL_TO_BOX;
 			break;
 		}
@@ -154,12 +158,12 @@ public class Pipe extends Platform {
 		PolygonShape polygonShape = new PolygonShape( );
 		if ( currentDirection == Direction.LEFT
 				|| currentDirection == Direction.RIGHT ) {
-			polygonShape.setAsBox( numberOfSegments * tileSize
-					* Util.PIXEL_TO_BOX, tileSize * Util.PIXEL_TO_BOX,
+			polygonShape.setAsBox( numberOfSegments * TILE_SIZE
+					* Util.PIXEL_TO_BOX, TILE_SIZE * Util.PIXEL_TO_BOX,
 					currentPos, body.getAngle( ) );
 		} else {
-			polygonShape.setAsBox( tileSize * Util.PIXEL_TO_BOX,
-					numberOfSegments * tileSize * Util.PIXEL_TO_BOX,
+			polygonShape.setAsBox( TILE_SIZE * Util.PIXEL_TO_BOX,
+					numberOfSegments * TILE_SIZE * Util.PIXEL_TO_BOX,
 					currentPos, body.getAngle( ) );
 		}
 		FixtureDef fixtureDef = new FixtureDef( );
@@ -173,19 +177,19 @@ public class Pipe extends Platform {
 
 		switch ( currentDirection ) {
 		case LEFT:
-			currentPos.x -= tileSize * ( numberOfSegments + 1 )
+			currentPos.x -= TILE_SIZE * ( numberOfSegments + 1 )
 					* Util.PIXEL_TO_BOX;
 			break;
 		case RIGHT:
-			currentPos.x += tileSize * ( numberOfSegments + 1 )
+			currentPos.x += TILE_SIZE * ( numberOfSegments + 1 )
 					* Util.PIXEL_TO_BOX;
 			break;
 		case UP:
-			currentPos.y += tileSize * ( numberOfSegments + 1 )
+			currentPos.y += TILE_SIZE * ( numberOfSegments + 1 )
 					* Util.PIXEL_TO_BOX;
 			break;
 		case DOWN:
-			currentPos.y -= tileSize * ( numberOfSegments + 1 )
+			currentPos.y -= TILE_SIZE * ( numberOfSegments + 1 )
 					* Util.PIXEL_TO_BOX;
 			break;
 		}
@@ -231,7 +235,7 @@ public class Pipe extends Platform {
 				offset_y = (start.y + ( i / (float) numberOfSegments ) * distance.y)
 					* Util.BOX_TO_PIXEL;
 			}
-			tempSprite.setOrigin( -offset_x + tileSize, -offset_y + tileSize );
+			tempSprite.setOrigin( -offset_x + TILE_SIZE, -offset_y + TILE_SIZE );
 			temp = new Tile( offset_x, offset_y, tempSprite );
 			tiles.add( temp );
 
@@ -319,14 +323,15 @@ public class Pipe extends Platform {
 		 */
 	}
 
-	public void draw( SpriteBatch batch ) {
+	@Override 
+	public void draw( SpriteBatch batch , float deltaTime ) {
 
 		// for ( int i = 0; i < segments.size(); i++ )
 		// segments.get( i ).draw( batch );
 		for ( Tile a : tiles ) {
 			a.tileSprite.setPosition( 
-					body.getPosition( ).x * Util.BOX_TO_PIXEL - tileSize + a.xOffset,
-					body.getPosition( ).y * Util.BOX_TO_PIXEL - tileSize + a.yOffset );
+					body.getPosition( ).x * Util.BOX_TO_PIXEL - TILE_SIZE + a.xOffset,
+					body.getPosition( ).y * Util.BOX_TO_PIXEL - TILE_SIZE + a.yOffset );
 			a.tileSprite.setRotation( MathUtils.radiansToDegrees
 					* body.getAngle( ) );
 			a.tileSprite.draw( batch );

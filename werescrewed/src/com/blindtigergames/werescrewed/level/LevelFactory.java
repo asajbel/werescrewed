@@ -1,6 +1,7 @@
 package com.blindtigergames.werescrewed.level;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -30,6 +31,7 @@ import com.blindtigergames.werescrewed.entity.action.EntityActivateMoverAction;
 import com.blindtigergames.werescrewed.entity.action.EntityDeactivateMoverAction;
 import com.blindtigergames.werescrewed.entity.builders.EventTriggerBuilder;
 import com.blindtigergames.werescrewed.entity.builders.MoverBuilder;
+import com.blindtigergames.werescrewed.entity.builders.PipeBuilder;
 import com.blindtigergames.werescrewed.entity.builders.PlatformBuilder;
 import com.blindtigergames.werescrewed.entity.builders.PlayerBuilder;
 import com.blindtigergames.werescrewed.entity.builders.RopeBuilder;
@@ -54,6 +56,7 @@ import com.blindtigergames.werescrewed.entity.screws.ScrewType;
 import com.blindtigergames.werescrewed.entity.screws.StrippedScrew;
 import com.blindtigergames.werescrewed.entity.screws.StructureScrew;
 import com.blindtigergames.werescrewed.entity.tween.PathBuilder;
+import com.blindtigergames.werescrewed.entity.platforms.Pipe;
 import com.blindtigergames.werescrewed.eventTrigger.EventTrigger;
 import com.blindtigergames.werescrewed.graphics.TextureAtlas;
 import com.blindtigergames.werescrewed.util.ArrayHash;
@@ -224,7 +227,9 @@ public class LevelFactory {
 			out = constructTiledPlatform( item );
 		} else if ( bluePrints.equals( "customPlatform" ) ) {
 			out = constructCustomPlatform( item );
-		} else if ( bluePrints.equals( "screw" ) ) {
+		} else if ( bluePrints.equals( "pipe" ) ) {
+			out = constructPipe( item ); 
+		}else if ( bluePrints.equals( "screw" ) ) {
 			out = constructScrew( item );
 		} else if ( bluePrints.equals( "pathmover" ) ) {
 			constructPath( item );
@@ -326,6 +331,123 @@ public class LevelFactory {
 			out = addAnchors( item, out );
 		}
 
+		return out;
+	}
+
+	private Pipe constructPipe( Item item ) {
+		Array< Element > pointElems = item.element.getChildByName(
+				"LocalPoints" ).getChildrenByName( "Vector2" );
+		ArrayList< Vector2 > pathPoints = new ArrayList< Vector2 >( pointElems.size );
+		Pipe out = null; 
+		Element vElem;
+		Vector2 point;
+
+		PipeBuilder pb = new PipeBuilder( level.world );
+		
+//		vElem = pointElems.get( 0 );
+//		point = new Vector2( vElem.getFloat( "X" ) * GLEED_TO_GDX_X,
+//				vElem.getFloat( "Y" ) * GLEED_TO_GDX_Y );
+
+//		float xPos = item.pos.x;  
+//		float yPos = point.y;
+		
+		for ( int i = 1; i < pointElems.size; i++ ) {
+			vElem = pointElems.get( i );
+			point = new Vector2( vElem.getFloat( "X" ) * GLEED_TO_GDX_X,
+					vElem.getFloat( "Y" ) * GLEED_TO_GDX_Y );
+			point.div( 2 * Pipe.TILE_SIZE ); 
+			pathPoints.add( point );
+		}
+ 
+		
+		pb.path( pathPoints ); 
+
+		boolean isDynamic = false;
+		if ( item.props.containsKey( "dynamic" ) ) {
+			isDynamic = true;
+		}
+
+		boolean isCrushable = false;
+		if ( item.props.containsKey( "crushable" ) ) {
+			isCrushable = true;
+		}
+		
+		pb.name( item.name ).position( new Vector2( item.pos.x, item.pos.y ) ).properties( item.props );
+
+
+		if ( item.props.containsKey( "gravscale" ) ) {
+			float gravScale = Float.parseFloat( item.props.get( "gravscale" ) );
+			pb.gravityScale( gravScale );
+		}
+
+		
+		pb.dynamic( isDynamic ); 
+
+		out = pb.build( );
+
+		entities.put( item.name, out );
+		out.setCrushing( isCrushable );
+
+		if ( item.props.containsKey( "onesided" ) ) {
+			out.oneSided = true;
+		}
+
+		IMover mover = null;
+		if ( item.props.containsKey( "mover" ) ) {
+
+			// new PistonTweenMover( piston, new Vector2(
+			// 0, -350 ), 0.5f, 3f, 1f, 0f, 1f ), RobotState.IDLE
+			String movername = item.props.get( "mover" );
+			if ( movername.equals( "pistonmover" ) ) {
+
+				float delay = 0f;
+				if ( item.props.containsKey( "delay" ) ) {
+					delay = Float.parseFloat( item.props.get( "delay" ) );
+				}
+
+				float distance = 100f;
+				if ( item.props.containsKey( "distance" ) ) {
+					distance = Float.parseFloat( item.props.get( "distance" ) );
+				}
+
+				mover = new PistonTweenMover( out, new Vector2( 0, distance ),
+						0.5f, 3f, 1f, 0f, delay );
+			} else if ( MoverType.fromString( movername ) != null ) {
+				mover = new MoverBuilder( ).fromString( movername )
+						.applyTo( out ).build( );
+				Gdx.app.log( "LevelFactory", "attaching :" + movername
+						+ " to platform" );
+
+				// ROTATETWEEN("rotatetween"),
+				// LERP("lerpmover")
+			}
+		}
+
+		out.addMover( mover, RobotState.IDLE );
+		
+		
+		
+		Skeleton parent = loadSkeleton( item.skeleton );
+
+		if ( !item.props.containsKey( "invisible" ) ) {
+			if ( isDynamic ) {
+				Gdx.app.log( "LevelFactory", "Tiled Dynamic platform loaded:"
+						+ out.name );
+				out.quickfixCollisions( );
+				parent.addDynamicPlatform( out );
+
+				if ( item.props.containsKey( "jointtoskeleton" ) ) {
+					out.addJointToSkeleton( parent );
+				}
+			} else {
+				Gdx.app.log( "LevelFactory", "Tiled Kinematic platform loaded:"
+						+ out.name );
+
+				parent.addKinematicPlatform( out );
+				out.setCategoryMask( Util.CATEGORY_PLATFORMS,
+						Util.CATEGORY_EVERYTHING );
+			}
+		}
 		return out;
 	}
 
