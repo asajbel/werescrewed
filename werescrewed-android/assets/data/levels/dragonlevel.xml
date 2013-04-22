@@ -3139,9 +3139,9 @@
         </Layer>
     </Layers>
     <CustomProperties />
-    <EditorRelated>
+    <EditorRelated
         <NextItemNumber>663</NextItemNumber>
-        <ContentRootFolder>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures</ContentRootFolder>
+        <ContentRootFolder>gleed-textures</ContentRootFolder>
         <CameraPosition>
             <X>640.3977</X>
             <Y>-1284.51636</Y>
