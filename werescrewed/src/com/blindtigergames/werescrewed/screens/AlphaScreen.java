@@ -93,16 +93,18 @@ public class AlphaScreen extends Screen {
 		// top left: -1582f, 6150f
 		// head: 480f,  6688f
 		// right arm: 2600f, 6000f
+		
+		Vector2 spawnPos = new Vector2(0f, 0f);
 
 		if ( level.player1 == null ) {
 			level.player1 = new PlayerBuilder( ).world( level.world )
-					.position(2600f, 6000f ).name( "player1" ).definition( "red_male" )
+					.position(spawnPos.cpy()).name( "player1" ).definition( "red_male" )
 					.buildPlayer( );
 			level.progressManager.addPlayerOne( level.player1 );
 		}
 		if ( level.player2 == null ) {
 			level.player2 = new PlayerBuilder( ).world( level.world )
-					.position( 2600f, 6000f ).name( "player2" )
+					.position( spawnPos.cpy() ).name( "player2" )
 					.definition( "red_female" ).buildPlayer( );
 			level.progressManager.addPlayerTwo( level.player2 );
 		}
@@ -266,28 +268,10 @@ public class AlphaScreen extends Screen {
 		initBackground( dome, numDomes, domeSliceX, domeSliceY, -max + seatsX,
 				seatsY );
 		
-		int decalX = -738;// -482;//587
-		int decalY = -714;// -558;//536
-		Sprite footBG = decals.createSprite( "foot_mechanisms_and_pipes_NOCOLOR" );
-		Sprite legBG = decals.createSprite( "shin_pipes_NOCOLOR" );
-		Skeleton foot = ( Skeleton ) LevelFactory.entities.get( "footSkeleton" );
-		foot.addBGDecal( footBG,
-				new Vector2( decalX, decalY ) );
-		footBG.setOrigin( 0f, 0f );
-		foot.addBGDecal( legBG,
-				new Vector2( 400 + decalX, 424 + decalY ) );
 		
-		// bgSkele.addBGDecal( decals.createSprite(
-		// "foot_support_structureNOCOLOR" ), new Vector2(decalX,decalY) );
-
-		level.skelBGList.add( bgSkele );
-		level.skelFGList.add( bgSkele );
-		
-		Sprite s = WereScrewedGame.manager.getAtlas("common-textures").createSprite( "rail_vert_middle" );
-		
-		bgSkele.addBGDecal( s , new Vector2(-3000,0) );
 	}
 
+	//Called by BuildBackground()
 	private void initBackground( TextureAtlas[ ] dome, int numDomes,
 			int domeSliceX, int domeSliceY, int startX, int startY ) {
 
@@ -385,6 +369,11 @@ public class AlphaScreen extends Screen {
 	}
 
 	private void createFootObjects( ) {
+		Skeleton bgSkele;
+		bgSkele = ( Skeleton ) LevelFactory.entities.get( "stageSkeleton" );
+		TextureAtlas decals = WereScrewedGame.manager
+				.getAtlas( "alphabot_foot_shin_decal" );
+		
 		footSkeleton = ( Skeleton ) LevelFactory.entities.get( "footSkeleton" );
 
 		kneeSkeleton = ( Skeleton ) LevelFactory.entities.get( "kneeSkeleton" );
@@ -413,6 +402,25 @@ public class AlphaScreen extends Screen {
 
 		structurePlat3.setGroupIndex( ( short ) -5 );
 		footPlat6.setGroupIndex( ( short ) -5 );
+		
+		
+		//DECALS for Foot / Shin
+		int decalX = -738;// -482;//587
+		int decalY = -714;// -558;//536
+		Sprite footBG = decals.createSprite( "foot_mechanisms_and_pipes_NOCOLOR" );
+		Sprite legBG = decals.createSprite( "shin_pipes_NOCOLOR" );
+		Skeleton foot = ( Skeleton ) LevelFactory.entities.get( "footSkeleton" );
+		foot.addBGDecal( footBG,
+				new Vector2( decalX, decalY ) );
+		footBG.setOrigin( 0f, 0f );
+		foot.addBGDecal( legBG,
+				new Vector2( 400 + decalX, 424 + decalY ) );
+
+		level.skelBGList.add( bgSkele );
+		level.skelFGList.add( bgSkele );
+		
+		
+		
 	}
 
 	private void createKneeObjects( ) {
