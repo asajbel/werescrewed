@@ -14,7 +14,6 @@ import com.badlogic.gdx.utils.XmlReader;
 import com.badlogic.gdx.utils.XmlReader.Element;
 import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.camera.Anchor;
-import com.blindtigergames.werescrewed.camera.AnchorList;
 import com.blindtigergames.werescrewed.camera.Camera;
 import com.blindtigergames.werescrewed.checkpoints.CheckPoint;
 import com.blindtigergames.werescrewed.checkpoints.ProgressManager;
@@ -23,6 +22,8 @@ import com.blindtigergames.werescrewed.entity.EntityCategory;
 import com.blindtigergames.werescrewed.entity.EntityDef;
 import com.blindtigergames.werescrewed.entity.PolySprite;
 import com.blindtigergames.werescrewed.entity.RobotState;
+import com.blindtigergames.werescrewed.entity.RootSkeleton;
+import com.blindtigergames.werescrewed.entity.Skeleton;
 import com.blindtigergames.werescrewed.entity.Sprite;
 import com.blindtigergames.werescrewed.entity.action.DestoryPlatformJointAction;
 import com.blindtigergames.werescrewed.entity.action.EntityActivateMoverAction;
@@ -34,12 +35,17 @@ import com.blindtigergames.werescrewed.entity.builders.PlayerBuilder;
 import com.blindtigergames.werescrewed.entity.builders.RopeBuilder;
 import com.blindtigergames.werescrewed.entity.builders.ScrewBuilder;
 import com.blindtigergames.werescrewed.entity.builders.SkeletonBuilder;
+import com.blindtigergames.werescrewed.entity.hazard.Hazard;
+import com.blindtigergames.werescrewed.entity.hazard.builders.HazardBuilder;
 import com.blindtigergames.werescrewed.entity.mover.IMover;
+import com.blindtigergames.werescrewed.entity.mover.MoverType;
 import com.blindtigergames.werescrewed.entity.mover.PistonTweenMover;
 import com.blindtigergames.werescrewed.entity.mover.PuzzleType;
 import com.blindtigergames.werescrewed.entity.mover.TimelineTweenMover;
-import com.blindtigergames.werescrewed.entity.mover.MoverType;
 import com.blindtigergames.werescrewed.entity.mover.puzzle.PuzzleRotateTweenMover;
+import com.blindtigergames.werescrewed.entity.platforms.Platform;
+import com.blindtigergames.werescrewed.entity.platforms.TiledPlatform;
+import com.blindtigergames.werescrewed.entity.rope.Rope;
 import com.blindtigergames.werescrewed.entity.screws.BossScrew;
 import com.blindtigergames.werescrewed.entity.screws.PuzzleScrew;
 import com.blindtigergames.werescrewed.entity.screws.Screw;
@@ -47,14 +53,8 @@ import com.blindtigergames.werescrewed.entity.screws.ScrewType;
 import com.blindtigergames.werescrewed.entity.screws.StrippedScrew;
 import com.blindtigergames.werescrewed.entity.screws.StructureScrew;
 import com.blindtigergames.werescrewed.entity.tween.PathBuilder;
-import com.blindtigergames.werescrewed.entity.platforms.Platform;
-import com.blindtigergames.werescrewed.entity.platforms.TiledPlatform;
-import com.blindtigergames.werescrewed.entity.rope.Rope;
-import com.blindtigergames.werescrewed.entity.RootSkeleton;
-import com.blindtigergames.werescrewed.entity.Skeleton;
 import com.blindtigergames.werescrewed.eventTrigger.EventTrigger;
-import com.blindtigergames.werescrewed.entity.hazard.Hazard;
-import com.blindtigergames.werescrewed.entity.hazard.builders.HazardBuilder;
+import com.blindtigergames.werescrewed.graphics.TextureAtlas;
 import com.blindtigergames.werescrewed.util.ArrayHash;
 import com.blindtigergames.werescrewed.util.Util;
 
@@ -82,6 +82,7 @@ public class LevelFactory {
 	protected static final String angleTag = "angle";
 	protected static final String imageTag = "image";
 	protected static final String gleedImageTag = "image";
+	protected static final String atlasTag = "atlas";
 
 	public LevelFactory( ) {
 		reader = new XmlReader( );
@@ -212,6 +213,8 @@ public class LevelFactory {
 
 		if ( bluePrints.equals( "skeleton" ) ) {
 			out = constructSkeleton( item );
+		} else if ( bluePrints.equals( decalBGTag ) ) {
+			constructDecal( item );
 		} else if ( bluePrints.equals( decalTag ) ) {
 			constructDecal( item );
 		} else if ( bluePrints.equals( "player" ) ) {
@@ -237,21 +240,11 @@ public class LevelFactory {
 		} else if ( !bluePrints.equals( "camera" )
 				&& item.getDefinition( ).getCategory( ) == EntityCategory.COMPLEX_PLATFORM ) {
 			out = loadComplexPlatform( item );
+		} else{
+			out = null;
 		}
 
-		// TODO add functionality for sorting these decals into foreground or
-		// background decals
-		// This either requires adding variables to the specific decal in gleed
-		// to what layer it is on
-		// or make two different loading keys such as fgdecal or bgdecal and
-		// handle them seperatley
 		if ( out != null ) {
-			// if ( item.propes.containsKey( "fgdecal" ) ) {
-			// level.entityFGList.add( decal );
-			// }
-			// if ( item.propes.containsKey( "bgdecal" ) ) {
-			// level.entityBGList.add( decal );
-			// }
 			if ( item.props.containsKey( "decal" ) ) {
 				Array< String > tokens;
 				String decalImage;
@@ -281,6 +274,7 @@ public class LevelFactory {
 						}
 						decal.setScale( size.x, size.y );
 						out.addFGDecal( decal, decalPosition, r );
+						level.entityFGList.add( out );
 						Gdx.app.log(
 								"LoadEntity",
 								"Creating foreground decal for [" + item.name
@@ -289,8 +283,7 @@ public class LevelFactory {
 										+ decalPosition.toString( ) );
 					}
 				}
-			}
-			if ( item.props.containsKey( "bgdecal" ) ) {
+			} else if ( item.props.containsKey( "bgdecal" ) ) {
 				Array< String > tokens;
 				String decalImage;
 				Vector2 decalPosition = new Vector2( );
@@ -319,6 +312,7 @@ public class LevelFactory {
 						}
 						decal.setScale( size.x, size.y );
 						out.addBGDecal( decal, decalPosition, r );
+						level.entityBGList.add( out );
 						Gdx.app.log(
 								"LoadEntity",
 								"Creating background decal for [" + item.name
@@ -360,8 +354,8 @@ public class LevelFactory {
 				float bufferHeight = values[ 3 ];
 				anchor = new Anchor( item.pos, new Vector2( offsetX, offsetY ),
 						new Vector2( bufferWidth, bufferHeight ) );
-				AnchorList.getInstance( ).addAnchor( anchor );
 				out.addAnchor( anchor );
+				// Comment line below to make anchors inactive by default
 				anchor.activate( );
 			} else {
 				break;
@@ -388,25 +382,36 @@ public class LevelFactory {
 		Sprite decal = null;
 		Vector2 scale = new Vector2( 1.0f, 1.0f );
 		if ( !item.getImageName( ).equals( "" ) ) {
-			Texture tex = WereScrewedGame.manager.get(
-					WereScrewedGame.dirHandle + item.getImageName( ),
-					Texture.class );
-			if ( item.getGleedType( ).equals( "PathItem" ) ) {
-				Array< Element > pointElems = item.element.getChildByName(
-						"LocalPoints" ).getChildrenByName( "Vector2" );
-				Array< Vector2 > points = new Array< Vector2 >( );
-				for ( Element e : pointElems ) {
-					Vector2 v = new Vector2(
-							e.getFloat( "X" ) * GLEED_TO_GDX_X,
-							e.getFloat( "Y" ) * GLEED_TO_GDX_Y );
-					points.add( v );
+			if ( item.getAtlasName() != null ){
+				if ( item.getGleedType( ).equals( "PathItem" ) ) {
+					throw new RuntimeException("LevelFactory constructDecal(): You can't build a polysprite decal with a texture atlas, sorry. -Stew");
 				}
-				decal = new PolySprite( tex, points );
-			} else {
-				decal = new Sprite( tex );
+				TextureAtlas atlas = WereScrewedGame.manager.getAtlas(  item.getAtlasName() );
+				decal = atlas.createSprite( item.getImageName( ) );
 				decal.setOrigin( 0.0f, 0.0f );
-				scale.x = item.sca.x / tex.getWidth( );
-				scale.y = item.sca.y / tex.getHeight( );
+				scale.x = item.sca.x / decal.getWidth( );
+				scale.y = item.sca.y / decal.getHeight( );
+			}else{
+				Texture tex = WereScrewedGame.manager.get(
+						WereScrewedGame.dirHandle + item.getImageName( ),
+						Texture.class );
+				if ( item.getGleedType( ).equals( "PathItem" ) ) {
+					Array< Element > pointElems = item.element.getChildByName(
+							"LocalPoints" ).getChildrenByName( "Vector2" );
+					Array< Vector2 > points = new Array< Vector2 >( );
+					for ( Element e : pointElems ) {
+						Vector2 v = new Vector2(
+								e.getFloat( "X" ) * GLEED_TO_GDX_X,
+								e.getFloat( "Y" ) * GLEED_TO_GDX_Y );
+						points.add( v );
+					}
+					decal = new PolySprite( tex, points );
+				} else {
+					decal = new Sprite( tex );
+					decal.setOrigin( 0.0f, 0.0f );
+					scale.x = item.sca.x / tex.getWidth( );
+					scale.y = item.sca.y / tex.getHeight( );
+				}
 			}
 		} else {
 			Gdx.app.log( "LoadDecal", "Could not find texture tag." );
@@ -422,7 +427,14 @@ public class LevelFactory {
 			float rot = item.rot - targetRot;
 
 			decal.setScale( scale.x, scale.y );
-			target.addFGDecal( decal, pos, rot );
+			if ( item.props.containsKey( "decal" ) ) {
+				target.addFGDecal( decal, pos, rot );
+				level.entityFGList.add( target );
+			} else {
+				Gdx.app.log( "level factory", "hello world" );
+				target.addBGDecal( decal, pos, rot );
+				level.entityBGList.add( target );
+			}
 			Gdx.app.log( "LoadDecal", "Attaching decal " + item.name + " to "
 					+ targetName + "." );
 			target.updateDecals( 0.0f );
@@ -439,6 +451,9 @@ public class LevelFactory {
 		if ( item.name.equals( "RootSkeleton" ) ) {
 			level.root = new RootSkeleton( item.name, item.pos, null,
 					level.world );
+			//DELETE THESE TWO LINES WHEN THE STAGE WORKS PROPERLY WITH GLEED
+			level.skelBGList.add( level.root );
+			level.skelFGList.add( level.root );
 			skeletons.put( item.name, level.root );
 			entities.put( item.name, level.root );
 
@@ -483,8 +498,14 @@ public class LevelFactory {
 				skeleBuilder.fadeFgDecals( true );
 			}
 
+			
 			skeleton = skeleBuilder.build( );
 
+			if ( item.props.containsKey( "gravscale" ) ) {
+				float gravScale = Float.parseFloat( item.props.get( "gravscale" ) );
+				skeleton.body.setGravityScale( gravScale );
+			}
+			
 			// IMover mover = null;
 			// if(item.props.containsKey( "mover" )){
 			// String movername = item.props.get( "mover" );
@@ -605,11 +626,12 @@ public class LevelFactory {
 				.dimensions( new Vector2( tileWidth, tileHeight ) )
 				.tileSet( "alphabot" ).properties( item.props );
 
-		float gravScale = 0f;
+
 		if ( item.props.containsKey( "gravscale" ) ) {
-			gravScale = Float.parseFloat( item.props.get( "gravscale" ) );
+			float gravScale = Float.parseFloat( item.props.get( "gravscale" ) );
+			pb.gravityScale( gravScale );
 		}
-		pb.gravityScale( gravScale );
+
 		
 		if ( isDynamic )
 			pb.dynamic( );
@@ -712,11 +734,10 @@ public class LevelFactory {
 												+ "/levels/alphabot/alphabot_texture_skin.png",
 												Texture.class ) );
 
-		float gravScale = 0f;
 		if ( item.props.containsKey( "gravscale" ) ) {
-			gravScale = Float.parseFloat( item.props.get( "gravscale" ) );
+			float gravScale = Float.parseFloat( item.props.get( "gravscale" ) );
+			pb.gravityScale( gravScale );
 		}
-		pb.gravityScale( gravScale );
 		
 		if ( isDynamic )
 			pb.dynamic( );
@@ -956,7 +977,12 @@ public class LevelFactory {
 				String thisthing = item.props.get( "targetrev" );
 				Entity target = entities.get( thisthing );
 
-				ss.addStructureJoint( target );
+				if ( item.props.containsKey( "degreelimit" ) ) {
+					float limit = Float.parseFloat( item.props.get( "degreelimit" ) );
+					ss.addStructureJoint( target, limit );
+					
+				}else
+					ss.addStructureJoint( target );
 			}
 
 			if ( item.props.containsKey( "targetrev2" ) ) {
@@ -964,7 +990,12 @@ public class LevelFactory {
 				String thisthing = item.props.get( "targetrev2" );
 				Entity target = entities.get( thisthing );
 
-				ss.addStructureJoint( target );
+				if ( item.props.containsKey( "degreelimit" ) ) {
+					float limit = Float.parseFloat( item.props.get( "degreelimit" ) );
+					ss.addStructureJoint( target, limit );
+					
+				}else
+					ss.addStructureJoint( target );
 			}
 
 			if ( item.props.containsKey( "skeltargetrev" ) ) {
@@ -972,7 +1003,25 @@ public class LevelFactory {
 				String thisthing = item.props.get( "skeltargetrev" );
 				Skeleton target = skeletons.get( thisthing );
 
-				ss.addStructureJoint( target );
+				if ( item.props.containsKey( "degreelimit" ) ) {
+					float limit = Float.parseFloat( item.props.get( "degreelimit" ) );
+					ss.addStructureJoint( target, limit );
+					
+				}else
+					ss.addStructureJoint( target );
+			}
+			
+			if ( item.props.containsKey( "skeltargetrev2" ) ) {
+
+				String thisthing = item.props.get( "skeltargetrev2" );
+				Skeleton target = skeletons.get( thisthing );
+
+				if ( item.props.containsKey( "degreelimit" ) ) {
+					float limit = Float.parseFloat( item.props.get( "degreelimit" ) );
+					ss.addStructureJoint( target, limit );
+					
+				}else
+					ss.addStructureJoint( target );
 			}
 
 			if ( item.props.containsKey( "targetweld" ) ) {
@@ -1448,6 +1497,13 @@ public class LevelFactory {
 			} finally {
 			}
 			return out;
+		}
+		
+		protected String getAtlasName(){
+			if ( getProps( ).containsKey( atlasTag ) ) {
+				return getProps( ).get( atlasTag );
+			}
+			return null;
 		}
 
 		protected String getImageName( ) {

@@ -13,7 +13,10 @@ import com.blindtigergames.werescrewed.entity.EntityDef;
 import com.blindtigergames.werescrewed.entity.EntityType;
 import com.blindtigergames.werescrewed.entity.platforms.Platform;
 import com.blindtigergames.werescrewed.player.Player;
+import com.blindtigergames.werescrewed.player.Player.PlayerState;
+import com.blindtigergames.werescrewed.util.Metrics;
 import com.blindtigergames.werescrewed.util.Util;
+import com.blindtigergames.werescrewed.util.Metrics.TrophyMetric;
 
 /**
  * 
@@ -97,7 +100,31 @@ public class Hazard extends Platform {
 	 */
 	public void performContact ( Player player, Fixture fixture ) {
 		if (activeHazard) {
-			player.killPlayer( );
+			
+			// Conditionals for determining which hazard a player hit, in order to increment the proper trophy metric
+			if ( player.name == Metrics.player1( ) ) {
+				if ( this.hazardType == HazardType.SPIKES && !player.isPlayerDead( ) ){
+					Metrics.incTrophyMetric( TrophyMetric.P1SPIKEDEATHS, 1 );
+				}
+				else if ( this.hazardType == HazardType.FIRE && !player.isPlayerDead( ) ){
+					Metrics.incTrophyMetric( TrophyMetric.P1FIREDEATHS, 1 );
+				}
+				else if ( this.hazardType == HazardType.ELECTRICITY && !player.isPlayerDead( ) ){
+					Metrics.incTrophyMetric( TrophyMetric.P1ELECDEATHS, 1 );
+				}
+			} else if (player.name == Metrics.player2( ) ){
+				if ( this.hazardType == HazardType.SPIKES  && !player.isPlayerDead( ) ){
+					Metrics.incTrophyMetric( TrophyMetric.P2SPIKEDEATHS, 1 );
+				}
+				else if ( this.hazardType == HazardType.FIRE && !player.isPlayerDead( ) ){
+					Metrics.incTrophyMetric( TrophyMetric.P2FIREDEATHS, 1 );
+				}
+				else if ( this.hazardType == HazardType.ELECTRICITY &&  !player.isPlayerDead( ) ){
+					Metrics.incTrophyMetric( TrophyMetric.P2ELECDEATHS, 1 );
+				}
+			}
+			
+			player.killPlayer( );			
 		}
 	}
 }

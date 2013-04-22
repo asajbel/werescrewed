@@ -70,7 +70,7 @@ public class ResurrectScrew extends Screw {
 		Sprite spr = new Sprite( atlas, screwUIAnimator );
 		spr.setOrigin( spr.getWidth( ) / 2.0f, spr.getHeight( ) / 2.0f );
 		screwInterface.changeSprite( spr );
-		sprite.setColor( 0f, 0f, 1f, 1f );
+		sprite.setColor( 98f/255f, 146f/255f, 169f/255f, 0.6f );
 		constructBody( pos );
 		if ( sprite != null )
 			sprite.rotate( ( float ) ( Math.random( ) * 360 ) );
@@ -175,18 +175,6 @@ public class ResurrectScrew extends Screw {
 	}
 
 	/**
-	 * look at collisions with the screw and determine if it is the dead player
-	 * if so bring the player back to life
-	 * 
-	 * @param player
-	 */
-	public void hitPlayer( Player player ) {
-		// if ( player == deadPlayer ) {
-		// destroyJoint = true;
-		// }
-	}
-
-	/**
 	 * returns the dead player attached
 	 */
 	public Player getDeadPlayer( ) {
@@ -230,7 +218,7 @@ public class ResurrectScrew extends Screw {
 			if ( playerMover.atEnd( ) || depth == maxDepth ) {
 				deadPlayer.body.setTransform(
 						this.getPositionPixel( )
-								.sub( Player.WIDTH / 3.0f, Player.HEIGHT + 70f )
+								.sub( Player.WIDTH / 3.0f, Player.HEIGHT/2.0f )
 								.mul( Util.PIXEL_TO_BOX ), 0.0f );
 				deadPlayer.body.setType( BodyType.DynamicBody );
 				deadPlayer.body.setLinearVelocity( Vector2.Zero );
@@ -281,13 +269,15 @@ public class ResurrectScrew extends Screw {
 
 	@Override
 	public void draw( SpriteBatch batch, float deltaTime ) {
-		screwInterface.sprite.draw( batch );
-		drawParticles( behindParticles, batch );
+		if ( playerAttached ) {
+			screwInterface.sprite.draw( batch );
+		}
+		//drawParticles( behindParticles, batch );
 		if ( sprite != null && visible && !removeNextStep ) {
 			sprite.draw( batch );
 		}
 		// drawOrigin(batch);
-		drawParticles( frontParticles, batch );
+		//drawParticles( frontParticles, batch );
 	}
 	
 	private void constructBody( Vector2 pos ) {

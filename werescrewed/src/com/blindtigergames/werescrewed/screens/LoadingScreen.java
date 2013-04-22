@@ -130,23 +130,35 @@ public class LoadingScreen extends Screen {
 	 */
 	private void loadCurrentFile( String fileExtension, String fullPathName , String listedPathName) {
 		if ( fileExtension.equals( "png" ) ) {
-			WereScrewedGame.manager.load( fullPathName, Texture.class );
-			//Gdx.app.log( "Texture file loaded", fullPathName );
+			if(!WereScrewedGame.manager.isLoaded( fullPathName, Texture.class )){
+				WereScrewedGame.manager.load( fullPathName, Texture.class );
+				//Gdx.app.log( "Texture file loaded", fullPathName );
+			}
 
 		} else if ( fileExtension.equals( "ogg" ) ) {
-			WereScrewedGame.manager.load( fullPathName, Sound.class );
-			//Gdx.app.log( "Sound file loaded", fullPathName );
+			if(!WereScrewedGame.manager.isLoaded( fullPathName, Sound.class )){
+				WereScrewedGame.manager.load( fullPathName, Sound.class );
+				//Gdx.app.log( "Sound file loaded", fullPathName );
+			}
 
 		} else if ( fileExtension.equals( "mp3" ) ) {
-			WereScrewedGame.manager.load( fullPathName, Music.class );
-			//Gdx.app.log( "Music file loaded", fullPathName );
+			if(!WereScrewedGame.manager.isLoaded( fullPathName, Music.class )){
+				WereScrewedGame.manager.load( fullPathName, Music.class );
+				//Gdx.app.log( "Music file loaded", fullPathName );
+			}
 
 		} else if ( fileExtension.equals( "pack" ) ) {
-			WereScrewedGame.manager.loadAtlas( fullPathName );
-			//Gdx.app.log( "Atlas pack file loaded", fullPathName );
+			FileHandle fileHandle = Gdx.files.internal( fullPathName );
+			
+			if(!WereScrewedGame.manager.isAtlasLoaded( fileHandle.nameWithoutExtension( ) )){
+				WereScrewedGame.manager.loadAtlas( fullPathName );
+				//Gdx.app.log( "Atlas pack file loaded", fullPathName );
+			}
 		}
 		else if ( fileExtension.equals( "fnt" )){
-			WereScrewedGame.manager.loadFont( fullPathName );
+			if(!WereScrewedGame.manager.isLoaded( fullPathName )){
+				WereScrewedGame.manager.loadFont( fullPathName );
+			}
 			//Gdx.app.log( "Bitmap pack file loaded", fullPathName );
 		}
 		else if ( fileExtension.equals( "palette" )){

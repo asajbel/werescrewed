@@ -54,7 +54,7 @@ public class Screw extends Entity {
 	protected ScrewType screwType;
 	public ArrayList< Joint > extraJoints;
 	
-	private static TextureRegion screwTexRegion = WereScrewedGame.manager.getAtlas( "common-textures" ).findRegion( "screw-flathead" );
+	private static TextureRegion screwTexRegion = WereScrewedGame.manager.getAtlas( "common-textures" ).findRegion( "flat_head_circular" );
 
 	/**
 	 * constructor to use if you want a cosmetic screw
@@ -264,6 +264,27 @@ public class Screw extends Entity {
 		}
 	}
 
+	public void addStructureJoint( Entity entity, float degreeLimit ) {
+		// connect other structure to structure screw
+		RevoluteJointDef revoluteJointDef = new RevoluteJointDef( );
+		revoluteJointDef.initialize( entity.body, body, body.getPosition( ) );
+		revoluteJointDef.enableMotor = true;
+		revoluteJointDef.enableLimit = true;
+		revoluteJointDef.upperAngle = degreeLimit * Util.DEG_TO_RAD;
+		revoluteJointDef.lowerAngle = -degreeLimit * Util.DEG_TO_RAD;
+
+		revoluteJointDef.maxMotorTorque = 30f;
+		revoluteJointDef.motorSpeed = 0.1f;
+		body.setFixedRotation( true );
+		
+		Joint screwJoint =  (Joint) world.createJoint( revoluteJointDef );
+		
+		extraJoints.add( screwJoint );
+		this.entity = entity;
+		if ( entity != null ) {
+			this.entityAngle = entity.getAngle( );
+		}
+	}
 	/**
 	 * attaches another object using a weld joint
 	 * @param entity

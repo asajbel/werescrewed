@@ -146,13 +146,13 @@ public class Camera {
 	 */
 	public void update( ) {
 		// Tracks player holding "B"
-		//debugInput = false;
+		debugInput = false;
 		// Tracks player holding "N"
 		debugRender = false;
 		// debugMode = true;
 		// check debug keys
 		if ( Gdx.input.isKeyPressed( Keys.B ) ) {
-			debugInput = !debugInput;//now camera is a toggle
+			debugInput = true;//now camera is a toggle
 		}
 		if ( Gdx.input.isKeyPressed( Keys.N ) ) {
 			debugRender = true;
@@ -554,7 +554,7 @@ public class Camera {
 		if ( Gdx.input.isKeyPressed( Input.Keys.UP ) ) {
 			camera.translate( 0, 10, 0 );
 		}
-		if ( Gdx.input.isKeyPressed( Input.Keys.NUM_0 ) ) {
+		if ( Gdx.input.isKeyPressed( Input.Keys.NUM_3 ) ) {
 			camera.zoom = .5f;
 		}
 		if ( Gdx.input.isKeyPressed( Input.Keys.NUM_1 ) ) {

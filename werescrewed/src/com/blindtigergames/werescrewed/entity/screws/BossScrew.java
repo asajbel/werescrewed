@@ -96,7 +96,8 @@ public class BossScrew extends Screw {
 				depth--;
 				rotation = region * 5;
 				screwStep = depth + 5;
-				int value = (int ) ( ( (float) depth / (float)maxDepth ) * 10f ) + startFrame;
+				int value = ( int ) ( ( ( float ) depth / ( float ) maxDepth ) * 10f )
+						+ startFrame;
 				screwUIAnimator.setFrame( value );
 			}
 		} else {
@@ -112,7 +113,8 @@ public class BossScrew extends Screw {
 				depth--;
 				rotation += 10;
 				screwStep = depth + 5;
-				int value = (int ) ( ( (float) depth / (float)maxDepth ) * 10f ) + startFrame;
+				int value = ( int ) ( ( ( float ) depth / ( float ) maxDepth ) * 10f )
+						+ startFrame;
 				screwUIAnimator.setFrame( value );
 			}
 		} else {
@@ -128,7 +130,8 @@ public class BossScrew extends Screw {
 				depth++;
 				rotation -= 10;
 				screwStep = depth + 6;
-				int value = (int ) ( ( (float) depth / (float)maxDepth ) * 10f ) + startFrame;
+				int value = ( int ) ( ( ( float ) depth / ( float ) maxDepth ) * 10f )
+						+ startFrame;
 				screwUIAnimator.setFrame( value );
 			}
 		} else {
@@ -144,7 +147,8 @@ public class BossScrew extends Screw {
 				depth++;
 				rotation -= 10;
 				screwStep = depth + 6;
-				int value = (int ) ( ( (float) depth / (float)maxDepth ) * 10f ) + startFrame;
+				int value = ( int ) ( ( ( float ) depth / ( float ) maxDepth ) * 10f )
+						+ startFrame;
 				screwUIAnimator.setFrame( value );
 			}
 		} else {
@@ -169,6 +173,7 @@ public class BossScrew extends Screw {
 	 * 
 	 * @return playerAttached
 	 */
+	@Override
 	public boolean isPlayerAttached( ) {
 		return false;
 	}
@@ -177,18 +182,6 @@ public class BossScrew extends Screw {
 	public void update( float deltaTime ) {
 		super.update( deltaTime );
 		if ( !removed ) {
-			if ( entity != null
-					&& ( getDetachDirection( ).x != 0 || getDetachDirection( ).y != 0 ) ) {
-				if ( upDownDetach ) {
-					detachDirection.x = ( float ) Math.sin( entity.getAngle( ) );
-					detachDirection.y = Math.signum( detachDirection.y )
-							* ( float ) Math.cos( entity.getAngle( ) );
-				} else {
-					detachDirection.x = Math.signum( detachDirection.y )
-							* ( float ) Math.cos( entity.getAngle( ) );
-					detachDirection.y = ( float ) Math.sin( entity.getAngle( ) );
-				}
-			}
 			Vector2 bodyPos = body.getPosition( ).mul( Util.BOX_TO_PIXEL );
 			sprite.setPosition( bodyPos.x - offset.x, bodyPos.y - offset.y );
 			if ( depth == 0 ) {
@@ -266,17 +259,19 @@ public class BossScrew extends Screw {
 
 	@Override
 	public void draw( SpriteBatch batch, float deltaTime ) {
-		drawBGDecals( batch );
-		screwInterface.sprite.draw( batch );
-		drawParticles( behindParticles, batch );
+		// drawBGDecals( batch );
+		if ( playerAttached ) {
+			screwInterface.sprite.draw( batch );
+		}
+		// drawParticles( behindParticles, batch );
 		if ( sprite != null && visible && !removeNextStep ) {
 			sprite.draw( batch );
 		}
 		// drawOrigin(batch);
-		drawFGDecals( batch );
-		if ( spinemator != null )
-			spinemator.draw( batch );
-		drawParticles( frontParticles, batch );
+		// drawFGDecals( batch );
+		// if ( spinemator != null )
+		// spinemator.draw( batch );
+		// drawParticles( frontParticles, batch );
 	}
 
 	private void constuctBody( Vector2 pos ) {

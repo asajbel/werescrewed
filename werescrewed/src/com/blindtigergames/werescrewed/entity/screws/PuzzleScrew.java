@@ -63,12 +63,13 @@ public class PuzzleScrew extends Screw {
 		extraJoints = new ArrayList< Joint >( );
 		screwInterface = new Entity( name + "_screwInterface", pos, null, null,
 				false );
-		TextureAtlas atlas = WereScrewedGame.manager.getTextureAtlas( "screwInterface" );
-		screwUIAnimator = new SimpleFrameAnimator( ).speed(0f )
+		TextureAtlas atlas = WereScrewedGame.manager
+				.getTextureAtlas( "screwInterface" );
+		screwUIAnimator = new SimpleFrameAnimator( ).speed( 0f )
 				.loop( LoopBehavior.STOP ).time( 0.0f ).startFrame( 0 )
 				.maxFrames( 35 );
 		Sprite spr = new Sprite( atlas, screwUIAnimator );
-		spr.setOrigin( spr.getWidth( )/2.0f, spr.getHeight( )/2.0f );
+		spr.setOrigin( spr.getWidth( ) / 2.0f, spr.getHeight( ) / 2.0f );
 		screwInterface.changeSprite( spr );
 		sprite.setColor( 16f / 255f, 215f / 255f, 96f / 255f, 1.0f );
 		constructBody( pos );
@@ -76,7 +77,7 @@ public class PuzzleScrew extends Screw {
 			sprite.rotate( ( float ) ( Math.random( ) * 360 ) );
 		body.setTransform( body.getPosition( ), sprite.getRotation( )
 				* Util.DEG_TO_RAD );
-		rotation = (int) ( body.getAngle( ) * Util.RAD_TO_DEG );
+		rotation = ( int ) ( body.getAngle( ) * Util.RAD_TO_DEG );
 		addStructureJoint( entity );
 	}
 
@@ -97,19 +98,20 @@ public class PuzzleScrew extends Screw {
 		sprite.setColor( 16f / 255f, 215f / 255f, 96f / 255f, 1.0f );
 		screwInterface = new Entity( name + "_screwInterface", pos, null, null,
 				false );
-		TextureAtlas atlas = WereScrewedGame.manager.getTextureAtlas( "screwInterface" );
-		screwUIAnimator = new SimpleFrameAnimator( ).speed(1f )
+		TextureAtlas atlas = WereScrewedGame.manager
+				.getTextureAtlas( "screwInterface" );
+		screwUIAnimator = new SimpleFrameAnimator( ).speed( 1f )
 				.loop( LoopBehavior.STOP ).time( 0.0f ).startFrame( 0 )
 				.maxFrames( 35 );
 		Sprite spr = new Sprite( atlas, screwUIAnimator );
-		spr.setOrigin( spr.getWidth( )/2.0f, spr.getHeight( )/2.0f );
+		spr.setOrigin( spr.getWidth( ) / 2.0f, spr.getHeight( ) / 2.0f );
 		screwInterface.changeSprite( spr );
 		constructBody( pos );
 		if ( sprite != null )
 			sprite.rotate( ( float ) ( Math.random( ) * 360 ) );
 		body.setTransform( body.getPosition( ), sprite.getRotation( )
 				* Util.DEG_TO_RAD );
-		rotation = (int) ( body.getAngle( ) * Util.RAD_TO_DEG );
+		rotation = ( int ) ( body.getAngle( ) * Util.RAD_TO_DEG );
 	}
 
 	/**
@@ -133,7 +135,8 @@ public class PuzzleScrew extends Screw {
 
 			body.setAngularVelocity( 1 );
 			depth += newDiff;
-			if(depth < 0) depth = 0;
+			if ( depth < 0 )
+				depth = 0;
 			spriteRegion += region;
 			if ( diff != 0 ) {
 				rotation += ( -newDiff * 5 );
@@ -178,7 +181,8 @@ public class PuzzleScrew extends Screw {
 
 			body.setAngularVelocity( -1 );
 			depth += newDiff;
-			if(depth > maxDepth) depth = maxDepth;
+			if ( depth > maxDepth )
+				depth = maxDepth;
 			if ( diff != 0 ) {
 				rotation += ( -newDiff * 5 );
 			}
@@ -205,18 +209,6 @@ public class PuzzleScrew extends Screw {
 	public void update( float deltaTime ) {
 		super.update( deltaTime );
 		if ( !removed ) {
-			if ( entity != null
-					&& ( getDetachDirection( ).x != 0 || getDetachDirection( ).y != 0 ) ) {
-				if ( upDownDetach ) {
-					detachDirection.x = ( float ) Math.sin( entity.getAngle( ) );
-					detachDirection.y = Math.signum( detachDirection.y )
-							* ( float ) Math.cos( entity.getAngle( ) );
-				} else {
-					detachDirection.x = Math.signum( detachDirection.y )
-							* ( float ) Math.cos( entity.getAngle( ) );
-					detachDirection.y = ( float ) Math.sin( entity.getAngle( ) );
-				}
-			}
 			puzzleManager.update( deltaTime );
 			sprite.setRotation( rotation );
 			if ( depth != screwStep ) {
@@ -226,21 +218,22 @@ public class PuzzleScrew extends Screw {
 				body.setAngularVelocity( 0 );
 			}
 			if ( playerAttached ) {
-				if ( screwInterface.sprite.getAnimator( ).getFrame( ) == 0 ) 
-				{
+				if ( screwInterface.sprite.getAnimator( ).getFrame( ) == 0 ) {
 					screwUIAnimator.speed( 1 );
-				} else if ( screwInterface.sprite.getAnimator( ).getFrame( ) > lastMotionFrame ){
+				} else if ( screwInterface.sprite.getAnimator( ).getFrame( ) > lastMotionFrame ) {
 					screwUIAnimator.speed( 0 );
-					int value = (int ) ( ( (float) depth / (float)maxDepth ) * 10f ) + startFrame;
+					int value = ( int ) ( ( ( float ) depth / ( float ) maxDepth ) * 10f )
+							+ startFrame;
 					screwUIAnimator.setFrame( value );
 				}
 			} else {
-				if ( screwInterface.sprite.getAnimator( ).getFrame( ) > lastMotionFrame ){
+				if ( screwInterface.sprite.getAnimator( ).getFrame( ) > lastMotionFrame ) {
 					screwUIAnimator.setFrame( lastMotionFrame );
 				}
 				screwUIAnimator.speed( -1 );
 			}
-			screwInterface.sprite.setPosition( this.getPositionPixel( ).sub( interfaceOffset ) );
+			screwInterface.sprite.setPosition( this.getPositionPixel( ).sub(
+					interfaceOffset ) );
 			screwInterface.sprite.update( deltaTime );
 			screwUIAnimator.update( deltaTime );
 		}
@@ -248,19 +241,21 @@ public class PuzzleScrew extends Screw {
 
 	@Override
 	public void draw( SpriteBatch batch, float deltaTime ) {
-		drawBGDecals( batch );
-		screwInterface.sprite.draw( batch );
-		drawParticles( behindParticles, batch );
+		// drawBGDecals( batch );
+		if ( playerAttached ) {
+			screwInterface.sprite.draw( batch );
+		}
+		// drawParticles( behindParticles, batch );
 		if ( sprite != null && visible && !removeNextStep ) {
 			sprite.draw( batch );
 		}
 		// drawOrigin(batch);
-		drawFGDecals( batch );
-		if ( spinemator != null )
-			spinemator.draw( batch );
-		drawParticles( frontParticles, batch );
+		// drawFGDecals( batch );
+		// if ( spinemator != null )
+		// spinemator.draw( batch );
+		// drawParticles( frontParticles, batch );
 	}
-	
+
 	/**
 	 * resets this screw back to its initial position
 	 * 
@@ -271,7 +266,7 @@ public class PuzzleScrew extends Screw {
 			depth = startDepth;
 		}
 	}
-	
+
 	/**
 	 * fixes puzzle mechanics when this screw is being used in a puzzle with
 	 * multiple puzzle screws

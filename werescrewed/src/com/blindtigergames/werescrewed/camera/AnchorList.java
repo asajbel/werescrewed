@@ -120,6 +120,15 @@ public class AnchorList {
 		anchorList.add( newAnchor );
 	}
 
+	public void removeAnchor( Anchor anchor ) {
+		while ( anchorList.remove( anchor ) )
+			continue;
+	}
+
+	public void removeAnchor( int index ) {
+		anchorList.remove( index );
+	}
+
 	public void clear( ) {
 		anchorList.clear( );
 	}
