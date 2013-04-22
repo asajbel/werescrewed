@@ -116,33 +116,33 @@ public class Pipe extends Platform {
 		switch ( currentDirection ){
 		case LEFT:
 			if ( previousDirection == Direction.UP) {
-				texName = "pipeUL";
-			} else if ( previousDirection == Direction.DOWN ) {
 				texName = "pipeDL";
+			} else if ( previousDirection == Direction.DOWN ) {
+				texName = "pipeUL";
 			} else 
 				texName = "pipeEndR";
 			break;
 		case RIGHT:
 			if ( previousDirection == Direction.UP) {
-				texName = "pipeUR";
-			} else if ( previousDirection == Direction.DOWN ) {
 				texName = "pipeDR";
+			} else if ( previousDirection == Direction.DOWN ) {
+				texName = "pipeUR";
 			} else 
 				texName = "pipeEndL";
 			break;
 		case UP:
 			if ( previousDirection == Direction.LEFT) {
-				texName = "pipeUL";
+				texName = "pipeUR";
 			} else if ( previousDirection == Direction.RIGHT ) {
-				texName = "pipUR";
+				texName = "pipeUL";
 			} else 
 				texName = "pipeEndD";
 			break;
 		case DOWN:
 			if ( previousDirection == Direction.LEFT) {
-				texName = "pipeDL";
+				texName = "pipeDR";
 			} else if ( previousDirection == Direction.RIGHT ) {
-				texName = "pipDR";
+				texName = "pipeDL";
 			} else 
 				texName = "pipeEndU";
 			break;
@@ -217,7 +217,7 @@ public class Pipe extends Platform {
 		Vector2 distance = new Vector2(currentPos.x - start.x, currentPos.y - start.y); 
 		
 		for ( int i = 1; i < numberOfSegments; i++ ) {
-			if ( i != numberOfSegments - 1) {
+			if ( i != numberOfSegments ) {
 				switch ( currentDirection ){
 				case LEFT:
 				case RIGHT:
@@ -250,12 +250,15 @@ public class Pipe extends Platform {
 				offset_x = (start.x + ( i / (float) numberOfSegments ) * distance.x)
 					* Util.BOX_TO_PIXEL;
 				offset_y = currentPos.y * (float) Util.BOX_TO_PIXEL;
+				tempSprite.setOrigin( -offset_x + TILE_SIZE, -offset_y + TILE_SIZE );
+				tempSprite.setScale( 1.0f, 1.2f );
 			} else {
 				offset_x = currentPos.x * (float) Util.BOX_TO_PIXEL;
 				offset_y = (start.y + ( i / (float) numberOfSegments ) * distance.y)
 					* Util.BOX_TO_PIXEL;
+				tempSprite.setOrigin( -offset_x + TILE_SIZE, -offset_y + TILE_SIZE );
+				tempSprite.setScale( 1.2f, 1.0f ); 
 			}
-			tempSprite.setOrigin( -offset_x + TILE_SIZE, -offset_y + TILE_SIZE );
 			temp = new Tile( offset_x, offset_y, tempSprite );
 			tiles.add( temp );
 
@@ -354,6 +357,7 @@ public class Pipe extends Platform {
 					body.getPosition( ).y * Util.BOX_TO_PIXEL - TILE_SIZE + a.yOffset );
 			a.tileSprite.setRotation( MathUtils.radiansToDegrees
 					* body.getAngle( ) );
+			a.tileSprite.setScale( 1.4f );
 			a.tileSprite.draw( batch );
 		}
 	}
