@@ -115,16 +115,36 @@ public class Pipe extends Platform {
 		
 		switch ( currentDirection ){
 		case LEFT:
-			texName = "pipeEndR";
+			if ( previousDirection == Direction.UP) {
+				texName = "pipeUL";
+			} else if ( previousDirection == Direction.DOWN ) {
+				texName = "pipeDL";
+			} else 
+				texName = "pipeEndR";
 			break;
 		case RIGHT:
-			texName = "pipeEndL";
+			if ( previousDirection == Direction.UP) {
+				texName = "pipeUR";
+			} else if ( previousDirection == Direction.DOWN ) {
+				texName = "pipeDR";
+			} else 
+				texName = "pipeEndL";
 			break;
 		case UP:
-			texName = "pipeEndD";
+			if ( previousDirection == Direction.LEFT) {
+				texName = "pipeUL";
+			} else if ( previousDirection == Direction.RIGHT ) {
+				texName = "pipUR";
+			} else 
+				texName = "pipeEndD";
 			break;
 		case DOWN:
-			texName = "pipeEndU";
+			if ( previousDirection == Direction.LEFT) {
+				texName = "pipeDL";
+			} else if ( previousDirection == Direction.RIGHT ) {
+				texName = "pipDR";
+			} else 
+				texName = "pipeEndU";
 			break;
 		}
 		
