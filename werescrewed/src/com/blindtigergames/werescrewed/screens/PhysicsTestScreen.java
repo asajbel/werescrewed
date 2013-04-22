@@ -74,6 +74,9 @@ public class PhysicsTestScreen extends Screen {
 
 	private Skeleton dynSkel2;
 	private Skeleton s;
+	
+	StructureScrew limit;
+	
 
 	/**
 	 * Defines all necessary components in a screen for testing different
@@ -331,28 +334,6 @@ public class PhysicsTestScreen extends Screen {
 		return out;
 	}
 
-	private Body buildWheelBody( Vector2 pos, float radiusMeter ) {
-		BodyDef wheelBodyDef = new BodyDef( );
-		wheelBodyDef.type = BodyType.DynamicBody;
-		wheelBodyDef.position.set( pos.cpy( ).mul( Util.PIXEL_TO_BOX ) );
-		wheelBodyDef.fixedRotation = false;
-		wheelBodyDef.gravityScale = 0.07f;
-		Body wheelBody = world.createBody( wheelBodyDef );
-		;
-
-		CircleShape wheelShape = new CircleShape( );
-		wheelShape.setRadius( radiusMeter );
-		FixtureDef wheelFixture = new FixtureDef( );
-		// wheelFixture.filter.categoryBits = Util.CATEGORY_SCREWS;
-		// wheelFixture.filter.maskBits = Util.CATEGORY_NOTHING;
-		wheelFixture.shape = wheelShape;
-		wheelBody.createFixture( wheelFixture );
-
-		wheelShape.dispose( );
-
-		return wheelBody;
-	}
-
 	void stewTest( ) {
 		ground = platBuilder.position( 0.0f, -75 ).name( "ground" )
 				.dimensions( 200, 4 )
@@ -495,6 +476,21 @@ public class PhysicsTestScreen extends Screen {
 		s5.addWeldJoint( plat6 );
 		s5.addWeldJoint( plat7 );
 		dynSkel2.addScrewForDraw( s5 );
+		
+		
+		TiledPlatform box = platBuilder.name( "box" ).dynamic( )
+				.position( 2500, 250 ).dimensions( 3, 3 ).oneSided( false )
+				.buildTilePlatform( );
+		box.body.setFixedRotation( false );
+		box.quickfixCollisions( );
+		rootSkeleton.addDynamicPlatform( box );
+		
+		limit = new StructureScrew( "box", new Vector2(2700, 250), 100, world, Vector2.Zero );
+		limit.addStructureJoint( box, 45f );
+		limit.addStructureJoint( rootSkeleton );
+		rootSkeleton.addScrewForDraw( limit );
+
+		
 
 	}
 

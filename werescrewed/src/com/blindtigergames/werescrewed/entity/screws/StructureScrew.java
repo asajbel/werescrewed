@@ -2,7 +2,6 @@ package com.blindtigergames.werescrewed.entity.screws;
 
 import java.util.ArrayList;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
@@ -131,7 +130,7 @@ public class StructureScrew extends Screw {
 			}
 			prevDiff = diff;
 
-			body.setAngularVelocity( -1 );
+			//body.setAngularVelocity( -1 );
 			depth += newDiff;
 			if ( diff != 0 ) {
 				rotation += ( -newDiff * 5 );
@@ -144,7 +143,7 @@ public class StructureScrew extends Screw {
 	@Override
 	public void screwLeft( ) {
 		if ( depth > -10 ) {
-			body.setAngularVelocity( 1 );
+			//body.setAngularVelocity( 1 );
 			depth -= 2;
 			rotation += 10;
 			screwStep = depth + 5;
@@ -167,7 +166,7 @@ public class StructureScrew extends Screw {
 			}
 			prevDiff = diff;
 
-			body.setAngularVelocity( 1 );
+			//body.setAngularVelocity( 1 );
 			depth += newDiff;
 			spriteRegion += region;
 			if ( diff != 0 ) {
@@ -181,7 +180,7 @@ public class StructureScrew extends Screw {
 	@Override
 	public void screwRight( ) {
 		if ( depth < maxDepth && depth > 0 ) {
-			body.setAngularVelocity( -1 );
+			//body.setAngularVelocity( -1 );
 			depth += 2;
 			rotation -= 10;
 			screwStep = depth + 6;
@@ -265,17 +264,19 @@ public class StructureScrew extends Screw {
 
 	@Override
 	public void draw( SpriteBatch batch, float deltaTime ) {
-		drawBGDecals( batch );
-		screwInterface.sprite.draw( batch );
-		drawParticles( behindParticles, batch );
+		//drawBGDecals( batch );
+		if ( playerAttached ) {
+			screwInterface.sprite.draw( batch );
+		}
+		//drawParticles( behindParticles, batch );
 		if ( sprite != null && visible && !removeNextStep ) {
 			sprite.draw( batch );
 		}
 		// drawOrigin(batch);
-		drawFGDecals( batch );
-		if ( spinemator != null )
-			spinemator.draw( batch );
-		drawParticles( frontParticles, batch );
+		//drawFGDecals( batch );
+		//if ( spinemator != null )
+		//	spinemator.draw( batch );
+		//drawParticles( frontParticles, batch );
 	}
 
 	private void constuctBody( Vector2 pos ) {

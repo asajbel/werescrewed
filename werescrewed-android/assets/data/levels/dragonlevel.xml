@@ -90,8 +90,8 @@
                 </Item>
                 <Item xsi:type="RectangleItem" Name="jumpHeight" Visible="true">
                     <Position>
-                        <X>-1360</X>
-                        <Y>-256</Y>
+                        <X>3856</X>
+                        <Y>-2752</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -136,8 +136,8 @@
                 </Item>
                 <Item xsi:type="RectangleItem" Name="playerHeight" Visible="true">
                     <Position>
-                        <X>-1440</X>
-                        <Y>-256</Y>
+                        <X>-1168</X>
+                        <Y>-208</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -159,8 +159,8 @@
                 </Item>
                 <Item xsi:type="TextureItem" Name="playerOne" Visible="true">
                     <Position>
-                        <X>832</X>
-                        <Y>-2144</Y>
+                        <X>1392</X>
+                        <Y>-2128</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -190,8 +190,8 @@
                 </Item>
                 <Item xsi:type="TextureItem" Name="playerTwo" Visible="true">
                     <Position>
-                        <X>1440</X>
-                        <Y>-2128</Y>
+                        <X>1552</X>
+                        <Y>-2176</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -219,223 +219,10 @@
                         <Y>32</Y>
                     </Origin>
                 </Item>
-                <Item xsi:type="PathItem" Name="balloon1" Visible="true">
-                    <Position>
-                        <X>-416</X>
-                        <Y>-1472</Y>
-                    </Position>
-                    <CustomProperties>
-                        <Property Name="Definition" Type="string" Description="">
-                            <string>customPlatform</string>
-                        </Property>
-                        <Property Name="AttachToSkeleton" Type="string" Description="">
-                            <string>balloon1_skeleton</string>
-                        </Property>
-                        <Property Name="dynamic" Type="string" Description="">
-                            <string />
-                        </Property>
-                        <Property Name="gravscale" Type="string" Description="">
-                            <string>0f</string>
-                        </Property>
-                    </CustomProperties>
-                    <LocalPoints>
-                        <Vector2>
-                            <X>0</X>
-                            <Y>0</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>-498.562439</X>
-                            <Y>0</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>-249.281219</X>
-                            <Y>226.619324</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>226.619324</X>
-                            <Y>226.619324</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>521.2244</X>
-                            <Y>0</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>226.619324</X>
-                            <Y>-249.281219</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>-226.619324</X>
-                            <Y>-249.281219</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>-498.562439</X>
-                            <Y>0</Y>
-                        </Vector2>
-                    </LocalPoints>
-                    <WorldPoints>
-                        <Vector2>
-                            <X>-416</X>
-                            <Y>-1472</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>-914.562439</X>
-                            <Y>-1472</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>-665.28125</X>
-                            <Y>-1245.38062</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>-189.380676</X>
-                            <Y>-1245.38062</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>105.224426</X>
-                            <Y>-1472</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>-189.380676</X>
-                            <Y>-1721.28125</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>-642.6193</X>
-                            <Y>-1721.28125</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>-914.562439</X>
-                            <Y>-1472</Y>
-                        </Vector2>
-                    </WorldPoints>
-                    <IsPolygon>false</IsPolygon>
-                    <LineWidth>4</LineWidth>
-                    <LineColor>
-                        <R>192</R>
-                        <G>0</G>
-                        <B>192</B>
-                        <A>145</A>
-                        <PackedValue>2445279424</PackedValue>
-                    </LineColor>
-                </Item>
-                <Item xsi:type="RectangleItem" Name="balloon_top" Visible="true">
-                    <Position>
-                        <X>-976</X>
-                        <Y>-1024</Y>
-                    </Position>
-                    <CustomProperties>
-                        <Property Name="Definition" Type="string" Description="">
-                            <string>tiledPlatform</string>
-                        </Property>
-                        <Property Name="AttachToSkeleton" Type="string" Description="">
-                            <string>balloon1_skeleton</string>
-                        </Property>
-                        <Property Name="dynamic" Type="string" Description="">
-                            <string />
-                        </Property>
-                        <Property Name="gravscale" Type="string" Description="">
-                            <string>0f</string>
-                        </Property>
-                    </CustomProperties>
-                    <Width>1104</Width>
-                    <Height>48</Height>
-                    <FillColor>
-                        <R>192</R>
-                        <G>0</G>
-                        <B>192</B>
-                        <A>145</A>
-                        <PackedValue>2445279424</PackedValue>
-                    </FillColor>
-                </Item>
-                <Item xsi:type="RectangleItem" Name="balloon_left" Visible="true">
-                    <Position>
-                        <X>-1024</X>
-                        <Y>-1024</Y>
-                    </Position>
-                    <CustomProperties>
-                        <Property Name="Definition" Type="string" Description="">
-                            <string>tiledPlatform</string>
-                        </Property>
-                        <Property Name="AttachToSkeleton" Type="string" Description="">
-                            <string>balloon1_skeleton</string>
-                        </Property>
-                        <Property Name="dynamic" Type="string" Description="">
-                            <string />
-                        </Property>
-                        <Property Name="gravscale" Type="string" Description="">
-                            <string>0f</string>
-                        </Property>
-                    </CustomProperties>
-                    <Width>48</Width>
-                    <Height>640</Height>
-                    <FillColor>
-                        <R>192</R>
-                        <G>0</G>
-                        <B>192</B>
-                        <A>145</A>
-                        <PackedValue>2445279424</PackedValue>
-                    </FillColor>
-                </Item>
-                <Item xsi:type="RectangleItem" Name="balloon_right" Visible="true">
-                    <Position>
-                        <X>128</X>
-                        <Y>-1024</Y>
-                    </Position>
-                    <CustomProperties>
-                        <Property Name="Definition" Type="string" Description="">
-                            <string>tiledPlatform</string>
-                        </Property>
-                        <Property Name="AttachToSkeleton" Type="string" Description="">
-                            <string>balloon1_skeleton</string>
-                        </Property>
-                        <Property Name="dynamic" Type="string" Description="">
-                            <string />
-                        </Property>
-                        <Property Name="gravscale" Type="string" Description="">
-                            <string>0f</string>
-                        </Property>
-                    </CustomProperties>
-                    <Width>48</Width>
-                    <Height>832</Height>
-                    <FillColor>
-                        <R>192</R>
-                        <G>0</G>
-                        <B>192</B>
-                        <A>145</A>
-                        <PackedValue>2445279424</PackedValue>
-                    </FillColor>
-                </Item>
-                <Item xsi:type="RectangleItem" Name="balloon_bot" Visible="true">
-                    <Position>
-                        <X>-1024</X>
-                        <Y>-192</Y>
-                    </Position>
-                    <CustomProperties>
-                        <Property Name="Definition" Type="string" Description="">
-                            <string>tiledPlatform</string>
-                        </Property>
-                        <Property Name="AttachToSkeleton" Type="string" Description="">
-                            <string>balloon1_skeleton</string>
-                        </Property>
-                        <Property Name="dynamic" Type="string" Description="">
-                            <string />
-                        </Property>
-                        <Property Name="gravscale" Type="string" Description="">
-                            <string>0f</string>
-                        </Property>
-                    </CustomProperties>
-                    <Width>1200</Width>
-                    <Height>48</Height>
-                    <FillColor>
-                        <R>192</R>
-                        <G>0</G>
-                        <B>192</B>
-                        <A>145</A>
-                        <PackedValue>2445279424</PackedValue>
-                    </FillColor>
-                </Item>
                 <Item xsi:type="RectangleItem" Name="player_height" Visible="true">
                     <Position>
-                        <X>304</X>
-                        <Y>-1376</Y>
+                        <X>-1280</X>
+                        <Y>-240</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -455,50 +242,7 @@
                         <PackedValue>2445279424</PackedValue>
                     </FillColor>
                 </Item>
-                <Item xsi:type="TextureItem" Name="structure1" Visible="true">
-                    <Position>
-                        <X>-992</X>
-                        <Y>-992</Y>
-                    </Position>
-                    <CustomProperties>
-                        <Property Name="Definition" Type="string" Description="">
-                            <string>screw</string>
-                        </Property>
-                        <Property Name="AttachToSkeleton" Type="string" Description="">
-                            <string>balloon1_skeleton</string>
-                        </Property>
-                        <Property Name="targetweld" Type="string" Description="">
-                            <string>balloon_top</string>
-                        </Property>
-                        <Property Name="targetweld2" Type="string" Description="">
-                            <string>balloon_left</string>
-                        </Property>
-                        <Property Name="screwtype" Type="string" Description="">
-                            <string>ScrewStructural</string>
-                        </Property>
-                    </CustomProperties>
-                    <Rotation>0</Rotation>
-                    <Scale>
-                        <X>1</X>
-                        <Y>1</Y>
-                    </Scale>
-                    <TintColor>
-                        <R>255</R>
-                        <G>255</G>
-                        <B>255</B>
-                        <A>255</A>
-                        <PackedValue>4294967295</PackedValue>
-                    </TintColor>
-                    <FlipHorizontally>false</FlipHorizontally>
-                    <FlipVertically>true</FlipVertically>
-                    <texture_filename>structurescrew.png</texture_filename>
-                    <asset_name>structurescrew</asset_name>
-                    <Origin>
-                        <X>32</X>
-                        <Y>32</Y>
-                    </Origin>
-                </Item>
-                <Item xsi:type="PathItem" Name="balloon2_skeleton" Visible="true">
+                <Item xsi:type="PathItem" Name="balloon1_skeleton" Visible="true">
                     <Position>
                         <X>1104</X>
                         <Y>-1696</Y>
@@ -576,7 +320,7 @@
                         <PackedValue>2445279424</PackedValue>
                     </LineColor>
                 </Item>
-                <Item xsi:type="PathItem" Name="balloon2" Visible="true">
+                <Item xsi:type="PathItem" Name="balloon1" Visible="true">
                     <Position>
                         <X>1120</X>
                         <Y>-2464</Y>
@@ -667,178 +411,6 @@
                         <PackedValue>2445279424</PackedValue>
                     </LineColor>
                 </Item>
-                <Item xsi:type="TextureItem" Name="Texture_0531" Visible="true">
-                    <Position>
-                        <X>144</X>
-                        <Y>-992</Y>
-                    </Position>
-                    <CustomProperties>
-                        <Property Name="Definition" Type="string" Description="">
-                            <string>screw</string>
-                        </Property>
-                        <Property Name="AttachToSkeleton" Type="string" Description="">
-                            <string>balloon1_skeleton</string>
-                        </Property>
-                        <Property Name="targetweld" Type="string" Description="">
-                            <string>balloon_top</string>
-                        </Property>
-                        <Property Name="targetweld2" Type="string" Description="">
-                            <string>balloon_right</string>
-                        </Property>
-                        <Property Name="screwtype" Type="string" Description="">
-                            <string>ScrewStructural</string>
-                        </Property>
-                    </CustomProperties>
-                    <Rotation>0</Rotation>
-                    <Scale>
-                        <X>1</X>
-                        <Y>1</Y>
-                    </Scale>
-                    <TintColor>
-                        <R>255</R>
-                        <G>255</G>
-                        <B>255</B>
-                        <A>255</A>
-                        <PackedValue>4294967295</PackedValue>
-                    </TintColor>
-                    <FlipHorizontally>false</FlipHorizontally>
-                    <FlipVertically>true</FlipVertically>
-                    <texture_filename>structurescrew.png</texture_filename>
-                    <asset_name>structurescrew</asset_name>
-                    <Origin>
-                        <X>32</X>
-                        <Y>32</Y>
-                    </Origin>
-                </Item>
-                <Item xsi:type="TextureItem" Name="Texture_0532" Visible="true">
-                    <Position>
-                        <X>160</X>
-                        <Y>-160</Y>
-                    </Position>
-                    <CustomProperties>
-                        <Property Name="Definition" Type="string" Description="">
-                            <string>screw</string>
-                        </Property>
-                        <Property Name="AttachToSkeleton" Type="string" Description="">
-                            <string>balloon1_skeleton</string>
-                        </Property>
-                        <Property Name="targetweld" Type="string" Description="">
-                            <string>balloon_bot</string>
-                        </Property>
-                        <Property Name="targetweld2" Type="string" Description="">
-                            <string>balloon_right</string>
-                        </Property>
-                        <Property Name="screwtype" Type="string" Description="">
-                            <string>ScrewStructural</string>
-                        </Property>
-                    </CustomProperties>
-                    <Rotation>0</Rotation>
-                    <Scale>
-                        <X>1</X>
-                        <Y>1</Y>
-                    </Scale>
-                    <TintColor>
-                        <R>255</R>
-                        <G>255</G>
-                        <B>255</B>
-                        <A>255</A>
-                        <PackedValue>4294967295</PackedValue>
-                    </TintColor>
-                    <FlipHorizontally>false</FlipHorizontally>
-                    <FlipVertically>true</FlipVertically>
-                    <texture_filename>structurescrew.png</texture_filename>
-                    <asset_name>structurescrew</asset_name>
-                    <Origin>
-                        <X>32</X>
-                        <Y>32</Y>
-                    </Origin>
-                </Item>
-                <Item xsi:type="TextureItem" Name="Texture_0533" Visible="true">
-                    <Position>
-                        <X>-992</X>
-                        <Y>-416</Y>
-                    </Position>
-                    <CustomProperties>
-                        <Property Name="Definition" Type="string" Description="">
-                            <string>screw</string>
-                        </Property>
-                        <Property Name="AttachToSkeleton" Type="string" Description="">
-                            <string>balloon1_skeleton</string>
-                        </Property>
-                        <Property Name="targetweld" Type="string" Description="">
-                            <string>balloon_bot</string>
-                        </Property>
-                        <Property Name="targetweld2" Type="string" Description="">
-                            <string>balloon_left</string>
-                        </Property>
-                        <Property Name="screwtype" Type="string" Description="">
-                            <string>ScrewStructural</string>
-                        </Property>
-                    </CustomProperties>
-                    <Rotation>0</Rotation>
-                    <Scale>
-                        <X>1</X>
-                        <Y>1</Y>
-                    </Scale>
-                    <TintColor>
-                        <R>255</R>
-                        <G>255</G>
-                        <B>255</B>
-                        <A>255</A>
-                        <PackedValue>4294967295</PackedValue>
-                    </TintColor>
-                    <FlipHorizontally>false</FlipHorizontally>
-                    <FlipVertically>true</FlipVertically>
-                    <texture_filename>structurescrew.png</texture_filename>
-                    <asset_name>structurescrew</asset_name>
-                    <Origin>
-                        <X>32</X>
-                        <Y>32</Y>
-                    </Origin>
-                </Item>
-                <Item xsi:type="TextureItem" Name="Texture_0534" Visible="true">
-                    <Position>
-                        <X>-672</X>
-                        <Y>-1088</Y>
-                    </Position>
-                    <CustomProperties>
-                        <Property Name="Definition" Type="string" Description="">
-                            <string>screw</string>
-                        </Property>
-                        <Property Name="AttachToSkeleton" Type="string" Description="">
-                            <string>balloon1_skeleton</string>
-                        </Property>
-                        <Property Name="targetrev2" Type="string" Description="">
-                            <string>balloon1</string>
-                        </Property>
-                        <Property Name="targetrev" Type="string" Description="">
-                            <string>balloon_top</string>
-                        </Property>
-                        <Property Name="screwtype" Type="string" Description="">
-                            <string>ScrewStructural</string>
-                        </Property>
-                    </CustomProperties>
-                    <Rotation>0</Rotation>
-                    <Scale>
-                        <X>1</X>
-                        <Y>1</Y>
-                    </Scale>
-                    <TintColor>
-                        <R>255</R>
-                        <G>255</G>
-                        <B>255</B>
-                        <A>255</A>
-                        <PackedValue>4294967295</PackedValue>
-                    </TintColor>
-                    <FlipHorizontally>false</FlipHorizontally>
-                    <FlipVertically>true</FlipVertically>
-                    <texture_filename>structurescrew.png</texture_filename>
-                    <asset_name>structurescrew</asset_name>
-                    <Origin>
-                        <X>32</X>
-                        <Y>32</Y>
-                    </Origin>
-                </Item>
                 <Item xsi:type="TextureItem" Name="Texture_0535" Visible="true">
                     <Position>
                         <X>1424</X>
@@ -849,13 +421,13 @@
                             <string>screw</string>
                         </Property>
                         <Property Name="AttachToSkeleton" Type="string" Description="">
-                            <string>balloon2_skeleton</string>
+                            <string>balloon1_skeleton</string>
                         </Property>
                         <Property Name="skeltargetrev" Type="string" Description="">
-                            <string>balloon2_skeleton</string>
+                            <string>balloon1_skeleton</string>
                         </Property>
                         <Property Name="targetrev" Type="string" Description="">
-                            <string>balloon2</string>
+                            <string>balloon1</string>
                         </Property>
                         <Property Name="screwtype" Type="string" Description="">
                             <string>ScrewStructural</string>
@@ -881,81 +453,6 @@
                         <X>32</X>
                         <Y>32</Y>
                     </Origin>
-                </Item>
-                <Item xsi:type="PathItem" Name="balloon1_skeleton" Visible="true">
-                    <Position>
-                        <X>-432</X>
-                        <Y>-640</Y>
-                    </Position>
-                    <CustomProperties>
-                        <Property Name="Definition" Type="string" Description="">
-                            <string>skeleton</string>
-                        </Property>
-                        <Property Name="AttachToSkeleton" Type="string" Description="">
-                            <string>RootSkeleton</string>
-                        </Property>
-                    </CustomProperties>
-                    <LocalPoints>
-                        <Vector2>
-                            <X>0</X>
-                            <Y>0</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>-288</X>
-                            <Y>240</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>304</X>
-                            <Y>240</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>304</X>
-                            <Y>-128</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>-288</X>
-                            <Y>-128</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>-288</X>
-                            <Y>240</Y>
-                        </Vector2>
-                    </LocalPoints>
-                    <WorldPoints>
-                        <Vector2>
-                            <X>-432</X>
-                            <Y>-640</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>-720</X>
-                            <Y>-400</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>-128</X>
-                            <Y>-400</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>-128</X>
-                            <Y>-768</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>-720</X>
-                            <Y>-768</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>-720</X>
-                            <Y>-400</Y>
-                        </Vector2>
-                    </WorldPoints>
-                    <IsPolygon>false</IsPolygon>
-                    <LineWidth>4</LineWidth>
-                    <LineColor>
-                        <R>192</R>
-                        <G>0</G>
-                        <B>192</B>
-                        <A>145</A>
-                        <PackedValue>2445279424</PackedValue>
-                    </LineColor>
                 </Item>
                 <Item xsi:type="RectangleItem" Name="Rectangle_0537" Visible="true">
                     <Position>
@@ -967,7 +464,7 @@
                             <string>tiledPlatform</string>
                         </Property>
                         <Property Name="AttachToSkeleton" Type="string" Description="">
-                            <string>balloon2_skeleton</string>
+                            <string>balloon1_skeleton</string>
                         </Property>
                     </CustomProperties>
                     <Width>1104</Width>
@@ -990,7 +487,7 @@
                             <string>tiledPlatform</string>
                         </Property>
                         <Property Name="AttachToSkeleton" Type="string" Description="">
-                            <string>balloon2_skeleton</string>
+                            <string>balloon1_skeleton</string>
                         </Property>
                     </CustomProperties>
                     <Width>1104</Width>
@@ -1013,7 +510,7 @@
                             <string>tiledPlatform</string>
                         </Property>
                         <Property Name="AttachToSkeleton" Type="string" Description="">
-                            <string>balloon2_skeleton</string>
+                            <string>balloon1_skeleton</string>
                         </Property>
                     </CustomProperties>
                     <Width>48</Width>
@@ -1036,7 +533,7 @@
                             <string>tiledPlatform</string>
                         </Property>
                         <Property Name="AttachToSkeleton" Type="string" Description="">
-                            <string>balloon2_skeleton</string>
+                            <string>balloon1_skeleton</string>
                         </Property>
                     </CustomProperties>
                     <Width>48</Width>
@@ -1053,6 +550,427 @@
                     <Position>
                         <X>848</X>
                         <Y>-2080</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>screw</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>balloon1_skeleton</string>
+                        </Property>
+                        <Property Name="skeltargetrev" Type="string" Description="">
+                            <string>balloon1_skeleton</string>
+                        </Property>
+                        <Property Name="targetrev" Type="string" Description="">
+                            <string>balloon1</string>
+                        </Property>
+                        <Property Name="screwtype" Type="string" Description="">
+                            <string>ScrewStructural</string>
+                        </Property>
+                    </CustomProperties>
+                    <Rotation>0</Rotation>
+                    <Scale>
+                        <X>1</X>
+                        <Y>1</Y>
+                    </Scale>
+                    <TintColor>
+                        <R>255</R>
+                        <G>255</G>
+                        <B>255</B>
+                        <A>255</A>
+                        <PackedValue>4294967295</PackedValue>
+                    </TintColor>
+                    <FlipHorizontally>false</FlipHorizontally>
+                    <FlipVertically>true</FlipVertically>
+                    <texture_filename>structurescrew.png</texture_filename>
+                    <asset_name>structurescrew</asset_name>
+                    <Origin>
+                        <X>32</X>
+                        <Y>32</Y>
+                    </Origin>
+                </Item>
+                <Item xsi:type="PathItem" Name="balloon2_skeleton" Visible="true">
+                    <Position>
+                        <X>2864</X>
+                        <Y>-2032</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>skeleton</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>RootSkeleton</string>
+                        </Property>
+                        <Property Name="dynamic" Type="string" Description="">
+                            <string />
+                        </Property>
+                    </CustomProperties>
+                    <LocalPoints>
+                        <Vector2>
+                            <X>0</X>
+                            <Y>0</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>-96</X>
+                            <Y>96</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>144</X>
+                            <Y>128</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>112</X>
+                            <Y>-48</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>-96</X>
+                            <Y>-48</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>-96</X>
+                            <Y>96</Y>
+                        </Vector2>
+                    </LocalPoints>
+                    <WorldPoints>
+                        <Vector2>
+                            <X>2864</X>
+                            <Y>-2032</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>2768</X>
+                            <Y>-1936</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>3008</X>
+                            <Y>-1904</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>2976</X>
+                            <Y>-2080</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>2768</X>
+                            <Y>-2080</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>2768</X>
+                            <Y>-1936</Y>
+                        </Vector2>
+                    </WorldPoints>
+                    <IsPolygon>false</IsPolygon>
+                    <LineWidth>4</LineWidth>
+                    <LineColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </LineColor>
+                </Item>
+                <Item xsi:type="PathItem" Name="Path_0585" Visible="true">
+                    <Position>
+                        <X>3040</X>
+                        <Y>-2160</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>customPlatform</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>balloon2_skeleton</string>
+                        </Property>
+                    </CustomProperties>
+                    <LocalPoints>
+                        <Vector2>
+                            <X>0</X>
+                            <Y>0</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>-1159.05469</X>
+                            <Y>193.646</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>499.9978</X>
+                            <Y>-64.23511</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>499.9978</X>
+                            <Y>-129.175781</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>-1159.05469</X>
+                            <Y>193.646</Y>
+                        </Vector2>
+                    </LocalPoints>
+                    <WorldPoints>
+                        <Vector2>
+                            <X>3040</X>
+                            <Y>-2160</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>1880.94531</X>
+                            <Y>-1966.354</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>3539.9978</X>
+                            <Y>-2224.235</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>3539.9978</X>
+                            <Y>-2289.17578</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>1880.94531</X>
+                            <Y>-1966.354</Y>
+                        </Vector2>
+                    </WorldPoints>
+                    <IsPolygon>false</IsPolygon>
+                    <LineWidth>4</LineWidth>
+                    <LineColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </LineColor>
+                </Item>
+                <Item xsi:type="PathItem" Name="Path_0588" Visible="true">
+                    <Position>
+                        <X>3504</X>
+                        <Y>-1968</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>customPlatform</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>balloon2_skeleton</string>
+                        </Property>
+                    </CustomProperties>
+                    <LocalPoints>
+                        <Vector2>
+                            <X>0</X>
+                            <Y>0</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>-56.9919434</X>
+                            <Y>143.956421</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>30.9863281</X>
+                            <Y>159.956421</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>36.9890137</X>
+                            <Y>-262.9619</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>-56.99183</X>
+                            <Y>-246.964554</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>-56.9919434</X>
+                            <Y>143.956421</Y>
+                        </Vector2>
+                    </LocalPoints>
+                    <WorldPoints>
+                        <Vector2>
+                            <X>3504</X>
+                            <Y>-1968</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>3447.008</X>
+                            <Y>-1824.04358</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>3534.98633</X>
+                            <Y>-1808.04358</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>3540.989</X>
+                            <Y>-2230.962</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>3447.008</X>
+                            <Y>-2214.9646</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>3447.008</X>
+                            <Y>-1824.04358</Y>
+                        </Vector2>
+                    </WorldPoints>
+                    <IsPolygon>false</IsPolygon>
+                    <LineWidth>4</LineWidth>
+                    <LineColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </LineColor>
+                </Item>
+                <Item xsi:type="PathItem" Name="Path_0589" Visible="true">
+                    <Position>
+                        <X>3088</X>
+                        <Y>-1824</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>customPlatform</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>balloon2_skeleton</string>
+                        </Property>
+                    </CustomProperties>
+                    <LocalPoints>
+                        <Vector2>
+                            <X>0</X>
+                            <Y>0</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>-1197.86841</X>
+                            <Y>-126.960693</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>449.786377</X>
+                            <Y>75.36279</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>453.197266</X>
+                            <Y>12.8339844</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>-1197.86841</X>
+                            <Y>-126.960693</Y>
+                        </Vector2>
+                    </LocalPoints>
+                    <WorldPoints>
+                        <Vector2>
+                            <X>3088</X>
+                            <Y>-1824</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>1890.13159</X>
+                            <Y>-1950.96069</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>3537.78638</X>
+                            <Y>-1748.63721</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>3541.19727</X>
+                            <Y>-1811.166</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>1890.13159</X>
+                            <Y>-1950.96069</Y>
+                        </Vector2>
+                    </WorldPoints>
+                    <IsPolygon>false</IsPolygon>
+                    <LineWidth>4</LineWidth>
+                    <LineColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </LineColor>
+                </Item>
+                <Item xsi:type="PathItem" Name="balloon2" Visible="true">
+                    <Position>
+                        <X>2768</X>
+                        <Y>-2688</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>customPlatform</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>RootSkeleton</string>
+                        </Property>
+                    </CustomProperties>
+                    <LocalPoints>
+                        <Vector2>
+                            <X>0</X>
+                            <Y>0</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>-498.562439</X>
+                            <Y>0</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>-249.281219</X>
+                            <Y>226.619324</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>226.619324</X>
+                            <Y>226.619324</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>521.2244</X>
+                            <Y>0</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>226.619324</X>
+                            <Y>-249.281219</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>-226.619324</X>
+                            <Y>-249.281219</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>-498.562439</X>
+                            <Y>0</Y>
+                        </Vector2>
+                    </LocalPoints>
+                    <WorldPoints>
+                        <Vector2>
+                            <X>2768</X>
+                            <Y>-2688</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>2269.4375</X>
+                            <Y>-2688</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>2518.71875</X>
+                            <Y>-2461.38062</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>2994.61938</X>
+                            <Y>-2461.38062</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>3289.22437</X>
+                            <Y>-2688</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>2994.61938</X>
+                            <Y>-2937.28125</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>2541.38062</X>
+                            <Y>-2937.28125</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>2269.4375</X>
+                            <Y>-2688</Y>
+                        </Vector2>
+                    </WorldPoints>
+                    <IsPolygon>false</IsPolygon>
+                    <LineWidth>4</LineWidth>
+                    <LineColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </LineColor>
+                </Item>
+                <Item xsi:type="TextureItem" Name="Texture_0592" Visible="true">
+                    <Position>
+                        <X>2544</X>
+                        <Y>-2304</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -1092,23 +1010,23 @@
                         <Y>32</Y>
                     </Origin>
                 </Item>
-                <Item xsi:type="TextureItem" Name="Texture_0543" Visible="true">
+                <Item xsi:type="TextureItem" Name="Texture_0593" Visible="true">
                     <Position>
-                        <X>-176</X>
-                        <Y>-1088</Y>
+                        <X>3008</X>
+                        <Y>-2336</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
                             <string>screw</string>
                         </Property>
                         <Property Name="AttachToSkeleton" Type="string" Description="">
-                            <string>balloon1_skeleton</string>
+                            <string>balloon2_skeleton</string>
                         </Property>
-                        <Property Name="targetrev2" Type="string" Description="">
-                            <string>balloon1</string>
+                        <Property Name="skeltargetrev" Type="string" Description="">
+                            <string>balloon2_skeleton</string>
                         </Property>
                         <Property Name="targetrev" Type="string" Description="">
-                            <string>balloon_top</string>
+                            <string>balloon2</string>
                         </Property>
                         <Property Name="screwtype" Type="string" Description="">
                             <string>ScrewStructural</string>
@@ -1135,33 +1053,85 @@
                         <Y>32</Y>
                     </Origin>
                 </Item>
-                <Item xsi:type="RectangleItem" Name="Rectangle_0544" Visible="true">
+                <Item xsi:type="PathItem" Name="ledge" Visible="true">
                     <Position>
-                        <X>-912</X>
-                        <Y>-608</Y>
+                        <X>3904</X>
+                        <Y>-1968</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
-                            <string>tiledPlatform</string>
+                            <string>customPlatform</string>
                         </Property>
                         <Property Name="AttachToSkeleton" Type="string" Description="">
-                            <string>balloon1_skeleton</string>
+                            <string>RootSkeleton</string>
                         </Property>
                     </CustomProperties>
-                    <Width>272</Width>
-                    <Height>48</Height>
-                    <FillColor>
+                    <LocalPoints>
+                        <Vector2>
+                            <X>0</X>
+                            <Y>0</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>303.09787</X>
+                            <Y>61.3935623</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>305.301758</X>
+                            <Y>-74.5686</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>-248.832031</X>
+                            <Y>-79.83789</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>-247.765076</X>
+                            <Y>53.4045143</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>303.097656</X>
+                            <Y>61.3935547</Y>
+                        </Vector2>
+                    </LocalPoints>
+                    <WorldPoints>
+                        <Vector2>
+                            <X>3904</X>
+                            <Y>-1968</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>4207.09766</X>
+                            <Y>-1906.60645</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>4209.302</X>
+                            <Y>-2042.5686</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>3655.168</X>
+                            <Y>-2047.83789</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>3656.23486</X>
+                            <Y>-1914.59546</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>4207.09766</X>
+                            <Y>-1906.60645</Y>
+                        </Vector2>
+                    </WorldPoints>
+                    <IsPolygon>false</IsPolygon>
+                    <LineWidth>4</LineWidth>
+                    <LineColor>
                         <R>192</R>
                         <G>0</G>
                         <B>192</B>
                         <A>145</A>
                         <PackedValue>2445279424</PackedValue>
-                    </FillColor>
+                    </LineColor>
                 </Item>
                 <Item xsi:type="PathItem" Name="balloon3_skeleton" Visible="true">
                     <Position>
-                        <X>3232</X>
-                        <Y>-592</Y>
+                        <X>5024</X>
+                        <Y>-2096</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -1170,6 +1140,9 @@
                         <Property Name="AttachToSkeleton" Type="string" Description="">
                             <string>RootSkeleton</string>
                         </Property>
+                        <Property Name="dynamic" Type="string" Description="">
+                            <string />
+                        </Property>
                     </CustomProperties>
                     <LocalPoints>
                         <Vector2>
@@ -1177,50 +1150,50 @@
                             <Y>0</Y>
                         </Vector2>
                         <Vector2>
-                            <X>-288</X>
-                            <Y>240</Y>
+                            <X>-96</X>
+                            <Y>96</Y>
                         </Vector2>
                         <Vector2>
-                            <X>304</X>
-                            <Y>240</Y>
+                            <X>144</X>
+                            <Y>128</Y>
                         </Vector2>
                         <Vector2>
-                            <X>304</X>
-                            <Y>-128</Y>
+                            <X>112</X>
+                            <Y>-48</Y>
                         </Vector2>
                         <Vector2>
-                            <X>-288</X>
-                            <Y>-128</Y>
+                            <X>-96</X>
+                            <Y>-48</Y>
                         </Vector2>
                         <Vector2>
-                            <X>-288</X>
-                            <Y>240</Y>
+                            <X>-96</X>
+                            <Y>96</Y>
                         </Vector2>
                     </LocalPoints>
                     <WorldPoints>
                         <Vector2>
-                            <X>3232</X>
-                            <Y>-592</Y>
+                            <X>5024</X>
+                            <Y>-2096</Y>
                         </Vector2>
                         <Vector2>
-                            <X>2944</X>
-                            <Y>-352</Y>
+                            <X>4928</X>
+                            <Y>-2000</Y>
                         </Vector2>
                         <Vector2>
-                            <X>3536</X>
-                            <Y>-352</Y>
+                            <X>5168</X>
+                            <Y>-1968</Y>
                         </Vector2>
                         <Vector2>
-                            <X>3536</X>
-                            <Y>-720</Y>
+                            <X>5136</X>
+                            <Y>-2144</Y>
                         </Vector2>
                         <Vector2>
-                            <X>2944</X>
-                            <Y>-720</Y>
+                            <X>4928</X>
+                            <Y>-2144</Y>
                         </Vector2>
                         <Vector2>
-                            <X>2944</X>
-                            <Y>-352</Y>
+                            <X>4928</X>
+                            <Y>-2000</Y>
                         </Vector2>
                     </WorldPoints>
                     <IsPolygon>false</IsPolygon>
@@ -1233,79 +1206,10 @@
                         <PackedValue>2445279424</PackedValue>
                     </LineColor>
                 </Item>
-                <Item xsi:type="RectangleItem" Name="Rectangle_0546" Visible="true">
+                <Item xsi:type="PathItem" Name="Path_0602" Visible="true">
                     <Position>
-                        <X>3728</X>
-                        <Y>-720</Y>
-                    </Position>
-                    <CustomProperties>
-                        <Property Name="Definition" Type="string" Description="">
-                            <string>tiledPlatform</string>
-                        </Property>
-                        <Property Name="AttachToSkeleton" Type="string" Description="">
-                            <string>balloon3_skeleton</string>
-                        </Property>
-                    </CustomProperties>
-                    <Width>48</Width>
-                    <Height>400</Height>
-                    <FillColor>
-                        <R>192</R>
-                        <G>0</G>
-                        <B>192</B>
-                        <A>145</A>
-                        <PackedValue>2445279424</PackedValue>
-                    </FillColor>
-                </Item>
-                <Item xsi:type="RectangleItem" Name="Rectangle_0547" Visible="true">
-                    <Position>
-                        <X>2672</X>
-                        <Y>-320</Y>
-                    </Position>
-                    <CustomProperties>
-                        <Property Name="Definition" Type="string" Description="">
-                            <string>tiledPlatform</string>
-                        </Property>
-                        <Property Name="AttachToSkeleton" Type="string" Description="">
-                            <string>balloon3_skeleton</string>
-                        </Property>
-                    </CustomProperties>
-                    <Width>1104</Width>
-                    <Height>48</Height>
-                    <FillColor>
-                        <R>192</R>
-                        <G>0</G>
-                        <B>192</B>
-                        <A>145</A>
-                        <PackedValue>2445279424</PackedValue>
-                    </FillColor>
-                </Item>
-                <Item xsi:type="RectangleItem" Name="Rectangle_0548" Visible="true">
-                    <Position>
-                        <X>2640</X>
-                        <Y>-416</Y>
-                    </Position>
-                    <CustomProperties>
-                        <Property Name="Definition" Type="string" Description="">
-                            <string>tiledPlatform</string>
-                        </Property>
-                        <Property Name="AttachToSkeleton" Type="string" Description="">
-                            <string>balloon3_skeleton</string>
-                        </Property>
-                    </CustomProperties>
-                    <Width>48</Width>
-                    <Height>144</Height>
-                    <FillColor>
-                        <R>192</R>
-                        <G>0</G>
-                        <B>192</B>
-                        <A>145</A>
-                        <PackedValue>2445279424</PackedValue>
-                    </FillColor>
-                </Item>
-                <Item xsi:type="PathItem" Name="Path_0550" Visible="true">
-                    <Position>
-                        <X>3200</X>
-                        <Y>-1136</Y>
+                        <X>4304</X>
+                        <Y>-2080</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -1321,66 +1225,50 @@
                             <Y>0</Y>
                         </Vector2>
                         <Vector2>
-                            <X>-498.562439</X>
-                            <Y>0</Y>
+                            <X>68.09469</X>
+                            <Y>-182.2714</Y>
                         </Vector2>
                         <Vector2>
-                            <X>-249.281219</X>
-                            <Y>226.619324</Y>
+                            <X>-42.840374</X>
+                            <Y>-200.226776</Y>
                         </Vector2>
                         <Vector2>
-                            <X>226.619324</X>
-                            <Y>226.619324</Y>
+                            <X>-40.0548134</X>
+                            <Y>331.312958</Y>
                         </Vector2>
                         <Vector2>
-                            <X>521.2244</X>
-                            <Y>0</Y>
+                            <X>77.64065</X>
+                            <Y>308.9178</Y>
                         </Vector2>
                         <Vector2>
-                            <X>226.619324</X>
-                            <Y>-249.281219</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>-226.619324</X>
-                            <Y>-249.281219</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>-498.562439</X>
-                            <Y>0</Y>
+                            <X>68.09469</X>
+                            <Y>-182.2714</Y>
                         </Vector2>
                     </LocalPoints>
                     <WorldPoints>
                         <Vector2>
-                            <X>3200</X>
-                            <Y>-1136</Y>
+                            <X>4304</X>
+                            <Y>-2080</Y>
                         </Vector2>
                         <Vector2>
-                            <X>2701.4375</X>
-                            <Y>-1136</Y>
+                            <X>4372.09473</X>
+                            <Y>-2262.27148</Y>
                         </Vector2>
                         <Vector2>
-                            <X>2950.71875</X>
-                            <Y>-909.3807</Y>
+                            <X>4261.15967</X>
+                            <Y>-2280.22681</Y>
                         </Vector2>
                         <Vector2>
-                            <X>3426.61938</X>
-                            <Y>-909.3807</Y>
+                            <X>4263.94531</X>
+                            <Y>-1748.687</Y>
                         </Vector2>
                         <Vector2>
-                            <X>3721.22437</X>
-                            <Y>-1136</Y>
+                            <X>4381.64063</X>
+                            <Y>-1771.08228</Y>
                         </Vector2>
                         <Vector2>
-                            <X>3426.61938</X>
-                            <Y>-1385.28125</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>2973.38062</X>
-                            <Y>-1385.28125</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>2701.4375</X>
-                            <Y>-1136</Y>
+                            <X>4372.09473</X>
+                            <Y>-2262.27148</Y>
                         </Vector2>
                     </WorldPoints>
                     <IsPolygon>false</IsPolygon>
@@ -1392,11 +1280,518 @@
                         <A>145</A>
                         <PackedValue>2445279424</PackedValue>
                     </LineColor>
+                </Item>
+                <Item xsi:type="PathItem" Name="Path_0603" Visible="true">
+                    <Position>
+                        <X>5216</X>
+                        <Y>-2416</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>customPlatform</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>balloon3_skeleton</string>
+                        </Property>
+                    </CustomProperties>
+                    <LocalPoints>
+                        <Vector2>
+                            <X>0</X>
+                            <Y>0</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>-944</X>
+                            <Y>256</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>752</X>
+                            <Y>-80</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>752</X>
+                            <Y>-160</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>-944</X>
+                            <Y>144</Y>
+                        </Vector2>
+                    </LocalPoints>
+                    <WorldPoints>
+                        <Vector2>
+                            <X>5216</X>
+                            <Y>-2416</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>4272</X>
+                            <Y>-2160</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>5968</X>
+                            <Y>-2496</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>5968</X>
+                            <Y>-2576</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>4272</X>
+                            <Y>-2272</Y>
+                        </Vector2>
+                    </WorldPoints>
+                    <IsPolygon>false</IsPolygon>
+                    <LineWidth>4</LineWidth>
+                    <LineColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </LineColor>
+                </Item>
+                <Item xsi:type="PathItem" Name="Path_0604" Visible="true">
+                    <Position>
+                        <X>5280</X>
+                        <Y>-1664</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>customPlatform</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>balloon3_skeleton</string>
+                        </Property>
+                    </CustomProperties>
+                    <LocalPoints>
+                        <Vector2>
+                            <X>0</X>
+                            <Y>0</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>-1008</X>
+                            <Y>-96</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>688</X>
+                            <Y>144</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>688</X>
+                            <Y>48</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>-1008</X>
+                            <Y>-192</Y>
+                        </Vector2>
+                    </LocalPoints>
+                    <WorldPoints>
+                        <Vector2>
+                            <X>5280</X>
+                            <Y>-1664</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>4272</X>
+                            <Y>-1760</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>5968</X>
+                            <Y>-1520</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>5968</X>
+                            <Y>-1616</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>4272</X>
+                            <Y>-1856</Y>
+                        </Vector2>
+                    </WorldPoints>
+                    <IsPolygon>false</IsPolygon>
+                    <LineWidth>4</LineWidth>
+                    <LineColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </LineColor>
+                </Item>
+                <Item xsi:type="PathItem" Name="Path_0605" Visible="true">
+                    <Position>
+                        <X>5888</X>
+                        <Y>-2096</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>customPlatform</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>balloon3_skeleton</string>
+                        </Property>
+                    </CustomProperties>
+                    <LocalPoints>
+                        <Vector2>
+                            <X>0</X>
+                            <Y>0</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>-51.6176758</X>
+                            <Y>461.458252</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>68.19629</X>
+                            <Y>476.851685</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>71.24121</X>
+                            <Y>-389.165039</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>-60.37207</X>
+                            <Y>-353.7036</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>-51.6176758</X>
+                            <Y>461.458252</Y>
+                        </Vector2>
+                    </LocalPoints>
+                    <WorldPoints>
+                        <Vector2>
+                            <X>5888</X>
+                            <Y>-2096</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>5836.38232</X>
+                            <Y>-1634.54175</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>5956.19629</X>
+                            <Y>-1619.14832</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>5959.241</X>
+                            <Y>-2485.165</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>5827.628</X>
+                            <Y>-2449.70361</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>5836.38232</X>
+                            <Y>-1634.54175</Y>
+                        </Vector2>
+                    </WorldPoints>
+                    <IsPolygon>false</IsPolygon>
+                    <LineWidth>4</LineWidth>
+                    <LineColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </LineColor>
+                </Item>
+                <Item xsi:type="PathItem" Name="balloon3" Visible="true">
+                    <Position>
+                        <X>5088</X>
+                        <Y>-3008</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>customPlatform</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>RootSkeleton</string>
+                        </Property>
+                    </CustomProperties>
+                    <LocalPoints>
+                        <Vector2>
+                            <X>0</X>
+                            <Y>0</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>-568.045959</X>
+                            <Y>0</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>-284.02298</X>
+                            <Y>258.202728</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>258.202728</X>
+                            <Y>258.202728</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>593.8663</X>
+                            <Y>0</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>258.202728</X>
+                            <Y>-284.02298</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>-258.202728</X>
+                            <Y>-284.02298</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>-568.045959</X>
+                            <Y>0</Y>
+                        </Vector2>
+                    </LocalPoints>
+                    <WorldPoints>
+                        <Vector2>
+                            <X>5088</X>
+                            <Y>-3008</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>4519.954</X>
+                            <Y>-3008</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>4803.977</X>
+                            <Y>-2749.79736</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>5346.20264</X>
+                            <Y>-2749.79736</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>5681.866</X>
+                            <Y>-3008</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>5346.20264</X>
+                            <Y>-3292.023</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>4829.79736</X>
+                            <Y>-3292.023</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>4519.954</X>
+                            <Y>-3008</Y>
+                        </Vector2>
+                    </WorldPoints>
+                    <IsPolygon>false</IsPolygon>
+                    <LineWidth>4</LineWidth>
+                    <LineColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </LineColor>
+                </Item>
+                <Item xsi:type="TextureItem" Name="Texture_0608" Visible="true">
+                    <Position>
+                        <X>5312</X>
+                        <Y>-2576</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>screw</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>balloon3_skeleton</string>
+                        </Property>
+                        <Property Name="skeltargetrev" Type="string" Description="">
+                            <string>balloon3_skeleton</string>
+                        </Property>
+                        <Property Name="targetrev" Type="string" Description="">
+                            <string>balloon3</string>
+                        </Property>
+                        <Property Name="screwtype" Type="string" Description="">
+                            <string>ScrewStructural</string>
+                        </Property>
+                    </CustomProperties>
+                    <Rotation>0</Rotation>
+                    <Scale>
+                        <X>1</X>
+                        <Y>1</Y>
+                    </Scale>
+                    <TintColor>
+                        <R>255</R>
+                        <G>255</G>
+                        <B>255</B>
+                        <A>255</A>
+                        <PackedValue>4294967295</PackedValue>
+                    </TintColor>
+                    <FlipHorizontally>false</FlipHorizontally>
+                    <FlipVertically>true</FlipVertically>
+                    <texture_filename>structurescrew.png</texture_filename>
+                    <asset_name>structurescrew</asset_name>
+                    <Origin>
+                        <X>32</X>
+                        <Y>32</Y>
+                    </Origin>
+                </Item>
+                <Item xsi:type="TextureItem" Name="Texture_0609" Visible="true">
+                    <Position>
+                        <X>4832</X>
+                        <Y>-2544</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>screw</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>balloon3_skeleton</string>
+                        </Property>
+                        <Property Name="skeltargetrev" Type="string" Description="">
+                            <string>balloon3_skeleton</string>
+                        </Property>
+                        <Property Name="targetrev" Type="string" Description="">
+                            <string>balloon3</string>
+                        </Property>
+                        <Property Name="screwtype" Type="string" Description="">
+                            <string>ScrewStructural</string>
+                        </Property>
+                    </CustomProperties>
+                    <Rotation>0</Rotation>
+                    <Scale>
+                        <X>1</X>
+                        <Y>1</Y>
+                    </Scale>
+                    <TintColor>
+                        <R>255</R>
+                        <G>255</G>
+                        <B>255</B>
+                        <A>255</A>
+                        <PackedValue>4294967295</PackedValue>
+                    </TintColor>
+                    <FlipHorizontally>false</FlipHorizontally>
+                    <FlipVertically>true</FlipVertically>
+                    <texture_filename>structurescrew.png</texture_filename>
+                    <asset_name>structurescrew</asset_name>
+                    <Origin>
+                        <X>32</X>
+                        <Y>32</Y>
+                    </Origin>
+                </Item>
+                <Item xsi:type="PathItem" Name="ledge2" Visible="true">
+                    <Position>
+                        <X>6288</X>
+                        <Y>-2112</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>customPlatform</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>RootSkeleton</string>
+                        </Property>
+                    </CustomProperties>
+                    <LocalPoints>
+                        <Vector2>
+                            <X>0</X>
+                            <Y>0</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>303.09787</X>
+                            <Y>61.3935623</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>305.301758</X>
+                            <Y>-74.5686</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>-248.832031</X>
+                            <Y>-79.83789</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>-247.765076</X>
+                            <Y>53.4045143</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>303.097656</X>
+                            <Y>61.3935547</Y>
+                        </Vector2>
+                    </LocalPoints>
+                    <WorldPoints>
+                        <Vector2>
+                            <X>6288</X>
+                            <Y>-2112</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>6591.09766</X>
+                            <Y>-2050.60645</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>6593.302</X>
+                            <Y>-2186.5686</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>6039.168</X>
+                            <Y>-2191.838</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>6040.235</X>
+                            <Y>-2058.59546</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>6591.09766</X>
+                            <Y>-2050.60645</Y>
+                        </Vector2>
+                    </WorldPoints>
+                    <IsPolygon>false</IsPolygon>
+                    <LineWidth>4</LineWidth>
+                    <LineColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </LineColor>
+                </Item>
+                <Item xsi:type="TextureItem" Name="SS_b2_to_b3" Visible="true">
+                    <Position>
+                        <X>3904</X>
+                        <Y>-2096</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>screw</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>balloon2_skeleton</string>
+                        </Property>
+                        <Property Name="skeltargetrev" Type="string" Description="">
+                            <string>balloon2_skeleton</string>
+                        </Property>
+                        <Property Name="skeltargetrev2" Type="string" Description="">
+                            <string>balloon3_skeleton</string>
+                        </Property>
+                        <Property Name="screwtype" Type="string" Description="">
+                            <string>ScrewStructural</string>
+                        </Property>
+                        <Property Name="degreelimit" Type="string" Description="">
+                            <string>15f</string>
+                        </Property>
+                    </CustomProperties>
+                    <Rotation>0</Rotation>
+                    <Scale>
+                        <X>1</X>
+                        <Y>1</Y>
+                    </Scale>
+                    <TintColor>
+                        <R>255</R>
+                        <G>255</G>
+                        <B>255</B>
+                        <A>255</A>
+                        <PackedValue>4294967295</PackedValue>
+                    </TintColor>
+                    <FlipHorizontally>false</FlipHorizontally>
+                    <FlipVertically>true</FlipVertically>
+                    <texture_filename>structurescrew.png</texture_filename>
+                    <asset_name>structurescrew</asset_name>
+                    <Origin>
+                        <X>32</X>
+                        <Y>32</Y>
+                    </Origin>
                 </Item>
                 <Item xsi:type="PathItem" Name="balloon4_skeleton" Visible="true">
                     <Position>
-                        <X>4608</X>
-                        <Y>-656</Y>
+                        <X>7968</X>
+                        <Y>-2144</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -1405,6 +1800,9 @@
                         <Property Name="AttachToSkeleton" Type="string" Description="">
                             <string>RootSkeleton</string>
                         </Property>
+                        <Property Name="dynamic" Type="string" Description="">
+                            <string />
+                        </Property>
                     </CustomProperties>
                     <LocalPoints>
                         <Vector2>
@@ -1412,50 +1810,50 @@
                             <Y>0</Y>
                         </Vector2>
                         <Vector2>
-                            <X>-288</X>
-                            <Y>240</Y>
+                            <X>-96</X>
+                            <Y>96</Y>
                         </Vector2>
                         <Vector2>
-                            <X>304</X>
-                            <Y>240</Y>
+                            <X>144</X>
+                            <Y>128</Y>
                         </Vector2>
                         <Vector2>
-                            <X>304</X>
-                            <Y>-128</Y>
+                            <X>112</X>
+                            <Y>-48</Y>
                         </Vector2>
                         <Vector2>
-                            <X>-288</X>
-                            <Y>-128</Y>
+                            <X>-96</X>
+                            <Y>-48</Y>
                         </Vector2>
                         <Vector2>
-                            <X>-288</X>
-                            <Y>240</Y>
+                            <X>-96</X>
+                            <Y>96</Y>
                         </Vector2>
                     </LocalPoints>
                     <WorldPoints>
                         <Vector2>
-                            <X>4608</X>
-                            <Y>-656</Y>
+                            <X>7968</X>
+                            <Y>-2144</Y>
                         </Vector2>
                         <Vector2>
-                            <X>4320</X>
-                            <Y>-416</Y>
+                            <X>7872</X>
+                            <Y>-2048</Y>
                         </Vector2>
                         <Vector2>
-                            <X>4912</X>
-                            <Y>-416</Y>
+                            <X>8112</X>
+                            <Y>-2016</Y>
                         </Vector2>
                         <Vector2>
-                            <X>4912</X>
-                            <Y>-784</Y>
+                            <X>8080</X>
+                            <Y>-2192</Y>
                         </Vector2>
                         <Vector2>
-                            <X>4320</X>
-                            <Y>-784</Y>
+                            <X>7872</X>
+                            <Y>-2192</Y>
                         </Vector2>
                         <Vector2>
-                            <X>4320</X>
-                            <Y>-416</Y>
+                            <X>7872</X>
+                            <Y>-2048</Y>
                         </Vector2>
                     </WorldPoints>
                     <IsPolygon>false</IsPolygon>
@@ -1468,480 +1866,56 @@
                         <PackedValue>2445279424</PackedValue>
                     </LineColor>
                 </Item>
-                <Item xsi:type="RectangleItem" Name="Rectangle_0570" Visible="true">
+                <Item xsi:type="TextureItem" Name="SS_b3_to_b4" Visible="true">
                     <Position>
-                        <X>5136</X>
-                        <Y>-848</Y>
+                        <X>6288</X>
+                        <Y>-2240</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
-                            <string>tiledPlatform</string>
-                        </Property>
-                        <Property Name="AttachToSkeleton" Type="string" Description="">
-                            <string>balloon4_skeleton</string>
-                        </Property>
-                    </CustomProperties>
-                    <Width>48</Width>
-                    <Height>512</Height>
-                    <FillColor>
-                        <R>192</R>
-                        <G>0</G>
-                        <B>192</B>
-                        <A>145</A>
-                        <PackedValue>2445279424</PackedValue>
-                    </FillColor>
-                </Item>
-                <Item xsi:type="RectangleItem" Name="Rectangle_0571" Visible="true">
-                    <Position>
-                        <X>4048</X>
-                        <Y>-352</Y>
-                    </Position>
-                    <CustomProperties>
-                        <Property Name="Definition" Type="string" Description="">
-                            <string>tiledPlatform</string>
-                        </Property>
-                        <Property Name="AttachToSkeleton" Type="string" Description="">
-                            <string>balloon4_skeleton</string>
-                        </Property>
-                    </CustomProperties>
-                    <Width>1104</Width>
-                    <Height>48</Height>
-                    <FillColor>
-                        <R>192</R>
-                        <G>0</G>
-                        <B>192</B>
-                        <A>145</A>
-                        <PackedValue>2445279424</PackedValue>
-                    </FillColor>
-                </Item>
-                <Item xsi:type="PathItem" Name="Path_0574" Visible="true">
-                    <Position>
-                        <X>4560</X>
-                        <Y>-1280</Y>
-                    </Position>
-                    <CustomProperties>
-                        <Property Name="Definition" Type="string" Description="">
-                            <string>customPlatform</string>
-                        </Property>
-                        <Property Name="AttachToSkeleton" Type="string" Description="">
-                            <string>balloon4_skeleton</string>
-                        </Property>
-                    </CustomProperties>
-                    <LocalPoints>
-                        <Vector2>
-                            <X>0</X>
-                            <Y>0</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>-498.562439</X>
-                            <Y>0</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>-249.281219</X>
-                            <Y>226.619324</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>226.619324</X>
-                            <Y>226.619324</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>521.2244</X>
-                            <Y>0</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>226.619324</X>
-                            <Y>-249.281219</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>-226.619324</X>
-                            <Y>-249.281219</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>-498.562439</X>
-                            <Y>0</Y>
-                        </Vector2>
-                    </LocalPoints>
-                    <WorldPoints>
-                        <Vector2>
-                            <X>4560</X>
-                            <Y>-1280</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>4061.4375</X>
-                            <Y>-1280</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>4310.71875</X>
-                            <Y>-1053.38062</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>4786.619</X>
-                            <Y>-1053.38062</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>5081.22461</X>
-                            <Y>-1280</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>4786.619</X>
-                            <Y>-1529.28125</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>4333.381</X>
-                            <Y>-1529.28125</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>4061.4375</X>
-                            <Y>-1280</Y>
-                        </Vector2>
-                    </WorldPoints>
-                    <IsPolygon>false</IsPolygon>
-                    <LineWidth>4</LineWidth>
-                    <LineColor>
-                        <R>192</R>
-                        <G>0</G>
-                        <B>192</B>
-                        <A>145</A>
-                        <PackedValue>2445279424</PackedValue>
-                    </LineColor>
-                </Item>
-                <Item xsi:type="RectangleItem" Name="Rectangle_0575" Visible="true">
-                    <Position>
-                        <X>3984</X>
-                        <Y>-672</Y>
-                    </Position>
-                    <CustomProperties>
-                        <Property Name="Definition" Type="string" Description="">
-                            <string>tiledPlatform</string>
-                        </Property>
-                        <Property Name="AttachToSkeleton" Type="string" Description="">
-                            <string>balloon4_skeleton</string>
-                        </Property>
-                    </CustomProperties>
-                    <Width>48</Width>
-                    <Height>336</Height>
-                    <FillColor>
-                        <R>192</R>
-                        <G>0</G>
-                        <B>192</B>
-                        <A>145</A>
-                        <PackedValue>2445279424</PackedValue>
-                    </FillColor>
-                </Item>
-                <Item xsi:type="PathItem" Name="balloon5_skeleton" Visible="true">
-                    <Position>
-                        <X>6000</X>
-                        <Y>-736</Y>
-                    </Position>
-                    <CustomProperties>
-                        <Property Name="Definition" Type="string" Description="">
-                            <string>skeleton</string>
-                        </Property>
-                        <Property Name="AttachToSkeleton" Type="string" Description="">
-                            <string>RootSkeleton</string>
-                        </Property>
-                    </CustomProperties>
-                    <LocalPoints>
-                        <Vector2>
-                            <X>0</X>
-                            <Y>0</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>-288</X>
-                            <Y>240</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>304</X>
-                            <Y>240</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>304</X>
-                            <Y>-128</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>-288</X>
-                            <Y>-128</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>-288</X>
-                            <Y>240</Y>
-                        </Vector2>
-                    </LocalPoints>
-                    <WorldPoints>
-                        <Vector2>
-                            <X>6000</X>
-                            <Y>-736</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>5712</X>
-                            <Y>-496</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>6304</X>
-                            <Y>-496</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>6304</X>
-                            <Y>-864</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>5712</X>
-                            <Y>-864</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>5712</X>
-                            <Y>-496</Y>
-                        </Vector2>
-                    </WorldPoints>
-                    <IsPolygon>false</IsPolygon>
-                    <LineWidth>4</LineWidth>
-                    <LineColor>
-                        <R>192</R>
-                        <G>0</G>
-                        <B>192</B>
-                        <A>145</A>
-                        <PackedValue>2445279424</PackedValue>
-                    </LineColor>
-                </Item>
-                <Item xsi:type="RectangleItem" Name="Rectangle_0577" Visible="true">
-                    <Position>
-                        <X>6496</X>
-                        <Y>-1072</Y>
-                    </Position>
-                    <CustomProperties>
-                        <Property Name="Definition" Type="string" Description="">
-                            <string>tiledPlatform</string>
-                        </Property>
-                        <Property Name="AttachToSkeleton" Type="string" Description="">
-                            <string>balloon5_skeleton</string>
-                        </Property>
-                    </CustomProperties>
-                    <Width>48</Width>
-                    <Height>736</Height>
-                    <FillColor>
-                        <R>192</R>
-                        <G>0</G>
-                        <B>192</B>
-                        <A>145</A>
-                        <PackedValue>2445279424</PackedValue>
-                    </FillColor>
-                </Item>
-                <Item xsi:type="RectangleItem" Name="Rectangle_0578" Visible="true">
-                    <Position>
-                        <X>5440</X>
-                        <Y>-352</Y>
-                    </Position>
-                    <CustomProperties>
-                        <Property Name="Definition" Type="string" Description="">
-                            <string>tiledPlatform</string>
-                        </Property>
-                        <Property Name="AttachToSkeleton" Type="string" Description="">
-                            <string>balloon5_skeleton</string>
-                        </Property>
-                    </CustomProperties>
-                    <Width>1104</Width>
-                    <Height>48</Height>
-                    <FillColor>
-                        <R>192</R>
-                        <G>0</G>
-                        <B>192</B>
-                        <A>145</A>
-                        <PackedValue>2445279424</PackedValue>
-                    </FillColor>
-                </Item>
-                <Item xsi:type="PathItem" Name="Path_0580" Visible="true">
-                    <Position>
-                        <X>6000</X>
-                        <Y>-1552</Y>
-                    </Position>
-                    <CustomProperties>
-                        <Property Name="Definition" Type="string" Description="">
-                            <string>customPlatform</string>
-                        </Property>
-                        <Property Name="AttachToSkeleton" Type="string" Description="">
-                            <string>balloon5_skeleton</string>
-                        </Property>
-                    </CustomProperties>
-                    <LocalPoints>
-                        <Vector2>
-                            <X>0</X>
-                            <Y>0</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>-498.562439</X>
-                            <Y>0</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>-249.281219</X>
-                            <Y>226.619324</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>226.619324</X>
-                            <Y>226.619324</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>521.2244</X>
-                            <Y>0</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>226.619324</X>
-                            <Y>-249.281219</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>-226.619324</X>
-                            <Y>-249.281219</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>-498.562439</X>
-                            <Y>0</Y>
-                        </Vector2>
-                    </LocalPoints>
-                    <WorldPoints>
-                        <Vector2>
-                            <X>6000</X>
-                            <Y>-1552</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>5501.4375</X>
-                            <Y>-1552</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>5750.71875</X>
-                            <Y>-1325.38062</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>6226.619</X>
-                            <Y>-1325.38062</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>6521.22461</X>
-                            <Y>-1552</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>6226.619</X>
-                            <Y>-1801.28125</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>5773.381</X>
-                            <Y>-1801.28125</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>5501.4375</X>
-                            <Y>-1552</Y>
-                        </Vector2>
-                    </WorldPoints>
-                    <IsPolygon>false</IsPolygon>
-                    <LineWidth>4</LineWidth>
-                    <LineColor>
-                        <R>192</R>
-                        <G>0</G>
-                        <B>192</B>
-                        <A>145</A>
-                        <PackedValue>2445279424</PackedValue>
-                    </LineColor>
-                </Item>
-                <Item xsi:type="RectangleItem" Name="Rectangle_0581" Visible="true">
-                    <Position>
-                        <X>5376</X>
-                        <Y>-992</Y>
-                    </Position>
-                    <CustomProperties>
-                        <Property Name="Definition" Type="string" Description="">
-                            <string>tiledPlatform</string>
-                        </Property>
-                        <Property Name="AttachToSkeleton" Type="string" Description="">
-                            <string>balloon5_skeleton</string>
-                        </Property>
-                    </CustomProperties>
-                    <Width>48</Width>
-                    <Height>656</Height>
-                    <FillColor>
-                        <R>192</R>
-                        <G>0</G>
-                        <B>192</B>
-                        <A>145</A>
-                        <PackedValue>2445279424</PackedValue>
-                    </FillColor>
-                </Item>
-                <Item xsi:type="PathItem" Name="Path_0582" Visible="true">
-                    <Position>
-                        <X>3216</X>
-                        <Y>-672</Y>
-                    </Position>
-                    <CustomProperties>
-                        <Property Name="Definition" Type="string" Description="">
-                            <string>customPlatform</string>
+                            <string>screw</string>
                         </Property>
                         <Property Name="AttachToSkeleton" Type="string" Description="">
                             <string>balloon3_skeleton</string>
                         </Property>
+                        <Property Name="skeltargetrev" Type="string" Description="">
+                            <string>balloon3_skeleton</string>
+                        </Property>
+                        <Property Name="skeltargetrev2" Type="string" Description="">
+                            <string>balloon4_skeleton</string>
+                        </Property>
+                        <Property Name="screwtype" Type="string" Description="">
+                            <string>ScrewStructural</string>
+                        </Property>
+                        <Property Name="degreelimit" Type="string" Description="">
+                            <string>25f</string>
+                        </Property>
                     </CustomProperties>
-                    <LocalPoints>
-                        <Vector2>
-                            <X>0</X>
-                            <Y>0</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>-576</X>
-                            <Y>96</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>560</X>
-                            <Y>-64</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>560</X>
-                            <Y>-240</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>-576</X>
-                            <Y>48</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>-576</X>
-                            <Y>96</Y>
-                        </Vector2>
-                    </LocalPoints>
-                    <WorldPoints>
-                        <Vector2>
-                            <X>3216</X>
-                            <Y>-672</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>2640</X>
-                            <Y>-576</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>3776</X>
-                            <Y>-736</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>3776</X>
-                            <Y>-912</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>2640</X>
-                            <Y>-624</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>2640</X>
-                            <Y>-576</Y>
-                        </Vector2>
-                    </WorldPoints>
-                    <IsPolygon>false</IsPolygon>
-                    <LineWidth>4</LineWidth>
-                    <LineColor>
-                        <R>192</R>
-                        <G>0</G>
-                        <B>192</B>
-                        <A>145</A>
-                        <PackedValue>2445279424</PackedValue>
-                    </LineColor>
+                    <Rotation>0</Rotation>
+                    <Scale>
+                        <X>1</X>
+                        <Y>1</Y>
+                    </Scale>
+                    <TintColor>
+                        <R>255</R>
+                        <G>255</G>
+                        <B>255</B>
+                        <A>255</A>
+                        <PackedValue>4294967295</PackedValue>
+                    </TintColor>
+                    <FlipHorizontally>false</FlipHorizontally>
+                    <FlipVertically>true</FlipVertically>
+                    <texture_filename>structurescrew.png</texture_filename>
+                    <asset_name>structurescrew</asset_name>
+                    <Origin>
+                        <X>32</X>
+                        <Y>32</Y>
+                    </Origin>
                 </Item>
-                <Item xsi:type="PathItem" Name="Path_0583" Visible="true">
+                <Item xsi:type="PathItem" Name="Path_0613" Visible="true">
                     <Position>
-                        <X>4560</X>
-                        <Y>-800</Y>
+                        <X>6736</X>
+                        <Y>-2160</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -1957,50 +1931,50 @@
                             <Y>0</Y>
                         </Vector2>
                         <Vector2>
-                            <X>-576</X>
-                            <Y>96</Y>
+                            <X>63.0361328</X>
+                            <Y>-398.869141</Y>
                         </Vector2>
                         <Vector2>
-                            <X>560</X>
-                            <Y>-64</Y>
+                            <X>-89.9880753</X>
+                            <Y>-420.5852</Y>
                         </Vector2>
                         <Vector2>
-                            <X>560</X>
-                            <Y>-240</Y>
+                            <X>-84.13691</X>
+                            <Y>695.9378</Y>
                         </Vector2>
                         <Vector2>
-                            <X>-576</X>
-                            <Y>48</Y>
+                            <X>67.0874</X>
+                            <Y>664.8956</Y>
                         </Vector2>
                         <Vector2>
-                            <X>-576</X>
-                            <Y>96</Y>
+                            <X>63.0361328</X>
+                            <Y>-398.869141</Y>
                         </Vector2>
                     </LocalPoints>
                     <WorldPoints>
                         <Vector2>
-                            <X>4560</X>
-                            <Y>-800</Y>
+                            <X>6736</X>
+                            <Y>-2160</Y>
                         </Vector2>
                         <Vector2>
-                            <X>3984</X>
-                            <Y>-704</Y>
+                            <X>6799.036</X>
+                            <Y>-2558.86914</Y>
                         </Vector2>
                         <Vector2>
-                            <X>5120</X>
-                            <Y>-864</Y>
+                            <X>6646.01172</X>
+                            <Y>-2580.58521</Y>
                         </Vector2>
                         <Vector2>
-                            <X>5120</X>
-                            <Y>-1040</Y>
+                            <X>6651.86328</X>
+                            <Y>-1464.06226</Y>
                         </Vector2>
                         <Vector2>
-                            <X>3984</X>
-                            <Y>-752</Y>
+                            <X>6803.0874</X>
+                            <Y>-1495.10437</Y>
                         </Vector2>
                         <Vector2>
-                            <X>3984</X>
-                            <Y>-704</Y>
+                            <X>6799.036</X>
+                            <Y>-2558.86914</Y>
                         </Vector2>
                     </WorldPoints>
                     <IsPolygon>false</IsPolygon>
@@ -2013,17 +1987,17 @@
                         <PackedValue>2445279424</PackedValue>
                     </LineColor>
                 </Item>
-                <Item xsi:type="PathItem" Name="Path_0584" Visible="true">
+                <Item xsi:type="PathItem" Name="Path_0614" Visible="true">
                     <Position>
-                        <X>5952</X>
-                        <Y>-1088</Y>
+                        <X>8368</X>
+                        <Y>-2768</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
                             <string>customPlatform</string>
                         </Property>
                         <Property Name="AttachToSkeleton" Type="string" Description="">
-                            <string>balloon5_skeleton</string>
+                            <string>balloon4_skeleton</string>
                         </Property>
                     </CustomProperties>
                     <LocalPoints>
@@ -2032,50 +2006,42 @@
                             <Y>0</Y>
                         </Vector2>
                         <Vector2>
-                            <X>-576</X>
-                            <Y>96</Y>
+                            <X>-1296</X>
+                            <Y>160</Y>
                         </Vector2>
                         <Vector2>
-                            <X>560</X>
-                            <Y>-64</Y>
+                            <X>832</X>
+                            <Y>-48</Y>
                         </Vector2>
                         <Vector2>
-                            <X>560</X>
-                            <Y>-240</Y>
+                            <X>816</X>
+                            <Y>-112</Y>
                         </Vector2>
                         <Vector2>
-                            <X>-576</X>
-                            <Y>48</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>-576</X>
+                            <X>-1312</X>
                             <Y>96</Y>
                         </Vector2>
                     </LocalPoints>
                     <WorldPoints>
                         <Vector2>
-                            <X>5952</X>
-                            <Y>-1088</Y>
+                            <X>8368</X>
+                            <Y>-2768</Y>
                         </Vector2>
                         <Vector2>
-                            <X>5376</X>
-                            <Y>-992</Y>
+                            <X>7072</X>
+                            <Y>-2608</Y>
                         </Vector2>
                         <Vector2>
-                            <X>6512</X>
-                            <Y>-1152</Y>
+                            <X>9200</X>
+                            <Y>-2816</Y>
                         </Vector2>
                         <Vector2>
-                            <X>6512</X>
-                            <Y>-1328</Y>
+                            <X>9184</X>
+                            <Y>-2880</Y>
                         </Vector2>
                         <Vector2>
-                            <X>5376</X>
-                            <Y>-1040</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>5376</X>
-                            <Y>-992</Y>
+                            <X>7056</X>
+                            <Y>-2672</Y>
                         </Vector2>
                     </WorldPoints>
                     <IsPolygon>false</IsPolygon>
@@ -2087,6 +2053,446 @@
                         <A>145</A>
                         <PackedValue>2445279424</PackedValue>
                     </LineColor>
+                </Item>
+                <Item xsi:type="PathItem" Name="Path_0615" Visible="true">
+                    <Position>
+                        <X>8160</X>
+                        <Y>-1376</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>customPlatform</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>balloon4_skeleton</string>
+                        </Property>
+                    </CustomProperties>
+                    <LocalPoints>
+                        <Vector2>
+                            <X>0</X>
+                            <Y>0</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>-1488</X>
+                            <Y>-96</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>1040</X>
+                            <Y>80</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>1040</X>
+                            <Y>0</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>-1488</X>
+                            <Y>-176</Y>
+                        </Vector2>
+                    </LocalPoints>
+                    <WorldPoints>
+                        <Vector2>
+                            <X>8160</X>
+                            <Y>-1376</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>6672</X>
+                            <Y>-1472</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>9200</X>
+                            <Y>-1296</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>9200</X>
+                            <Y>-1376</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>6672</X>
+                            <Y>-1552</Y>
+                        </Vector2>
+                    </WorldPoints>
+                    <IsPolygon>false</IsPolygon>
+                    <LineWidth>4</LineWidth>
+                    <LineColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </LineColor>
+                </Item>
+                <Item xsi:type="PathItem" Name="Path_0616" Visible="true">
+                    <Position>
+                        <X>9088</X>
+                        <Y>-2160</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>customPlatform</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>balloon4_skeleton</string>
+                        </Property>
+                    </CustomProperties>
+                    <LocalPoints>
+                        <Vector2>
+                            <X>0</X>
+                            <Y>0</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>-84.61485</X>
+                            <Y>756.4508</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>111.791534</X>
+                            <Y>781.684448</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>116.782974</X>
+                            <Y>-637.9432</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>-98.96561</X>
+                            <Y>-579.8127</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>-84.61485</X>
+                            <Y>756.4508</Y>
+                        </Vector2>
+                    </LocalPoints>
+                    <WorldPoints>
+                        <Vector2>
+                            <X>9088</X>
+                            <Y>-2160</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>9003.385</X>
+                            <Y>-1403.54919</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>9199.792</X>
+                            <Y>-1378.31555</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>9204.783</X>
+                            <Y>-2797.943</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>8989.034</X>
+                            <Y>-2739.81274</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>9003.385</X>
+                            <Y>-1403.54919</Y>
+                        </Vector2>
+                    </WorldPoints>
+                    <IsPolygon>false</IsPolygon>
+                    <LineWidth>4</LineWidth>
+                    <LineColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </LineColor>
+                </Item>
+                <Item xsi:type="PathItem" Name="balloon4" Visible="true">
+                    <Position>
+                        <X>7984</X>
+                        <Y>-3488</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>customPlatform</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>RootSkeleton</string>
+                        </Property>
+                    </CustomProperties>
+                    <LocalPoints>
+                        <Vector2>
+                            <X>0</X>
+                            <Y>0</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>-776.5839</X>
+                            <Y>0</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>-388.291962</X>
+                            <Y>352.9928</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>352.9928</X>
+                            <Y>352.9928</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>811.8834</X>
+                            <Y>0</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>352.9928</X>
+                            <Y>-388.291962</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>-352.9928</X>
+                            <Y>-388.291962</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>-776.5839</X>
+                            <Y>0</Y>
+                        </Vector2>
+                    </LocalPoints>
+                    <WorldPoints>
+                        <Vector2>
+                            <X>7984</X>
+                            <Y>-3488</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>7207.416</X>
+                            <Y>-3488</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>7595.708</X>
+                            <Y>-3135.00732</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>8336.993</X>
+                            <Y>-3135.00732</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>8795.884</X>
+                            <Y>-3488</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>8336.993</X>
+                            <Y>-3876.292</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>7631.00732</X>
+                            <Y>-3876.292</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>7207.416</X>
+                            <Y>-3488</Y>
+                        </Vector2>
+                    </WorldPoints>
+                    <IsPolygon>false</IsPolygon>
+                    <LineWidth>4</LineWidth>
+                    <LineColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </LineColor>
+                </Item>
+                <Item xsi:type="TextureItem" Name="Texture_0618" Visible="true">
+                    <Position>
+                        <X>8368</X>
+                        <Y>-2912</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>screw</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>balloon4_skeleton</string>
+                        </Property>
+                        <Property Name="skeltargetrev" Type="string" Description="">
+                            <string>balloon4_skeleton</string>
+                        </Property>
+                        <Property Name="targetrev" Type="string" Description="">
+                            <string>balloon4</string>
+                        </Property>
+                        <Property Name="screwtype" Type="string" Description="">
+                            <string>ScrewStructural</string>
+                        </Property>
+                    </CustomProperties>
+                    <Rotation>0</Rotation>
+                    <Scale>
+                        <X>1</X>
+                        <Y>1</Y>
+                    </Scale>
+                    <TintColor>
+                        <R>255</R>
+                        <G>255</G>
+                        <B>255</B>
+                        <A>255</A>
+                        <PackedValue>4294967295</PackedValue>
+                    </TintColor>
+                    <FlipHorizontally>false</FlipHorizontally>
+                    <FlipVertically>true</FlipVertically>
+                    <texture_filename>structurescrew.png</texture_filename>
+                    <asset_name>structurescrew</asset_name>
+                    <Origin>
+                        <X>32</X>
+                        <Y>32</Y>
+                    </Origin>
+                </Item>
+                <Item xsi:type="TextureItem" Name="Texture_0619" Visible="true">
+                    <Position>
+                        <X>7616</X>
+                        <Y>-2896</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>screw</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>balloon4_skeleton</string>
+                        </Property>
+                        <Property Name="skeltargetrev" Type="string" Description="">
+                            <string>balloon4_skeleton</string>
+                        </Property>
+                        <Property Name="targetrev" Type="string" Description="">
+                            <string>balloon4</string>
+                        </Property>
+                        <Property Name="screwtype" Type="string" Description="">
+                            <string>ScrewStructural</string>
+                        </Property>
+                    </CustomProperties>
+                    <Rotation>0</Rotation>
+                    <Scale>
+                        <X>1</X>
+                        <Y>1</Y>
+                    </Scale>
+                    <TintColor>
+                        <R>255</R>
+                        <G>255</G>
+                        <B>255</B>
+                        <A>255</A>
+                        <PackedValue>4294967295</PackedValue>
+                    </TintColor>
+                    <FlipHorizontally>false</FlipHorizontally>
+                    <FlipVertically>true</FlipVertically>
+                    <texture_filename>structurescrew.png</texture_filename>
+                    <asset_name>structurescrew</asset_name>
+                    <Origin>
+                        <X>32</X>
+                        <Y>32</Y>
+                    </Origin>
+                </Item>
+                <Item xsi:type="PathItem" Name="ledge3" Visible="true">
+                    <Position>
+                        <X>9536</X>
+                        <Y>-2336</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>customPlatform</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>RootSkeleton</string>
+                        </Property>
+                    </CustomProperties>
+                    <LocalPoints>
+                        <Vector2>
+                            <X>0</X>
+                            <Y>0</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>303.09787</X>
+                            <Y>61.3935623</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>305.301758</X>
+                            <Y>-74.5686</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>-248.832031</X>
+                            <Y>-79.83789</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>-247.765076</X>
+                            <Y>53.4045143</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>303.097656</X>
+                            <Y>61.3935547</Y>
+                        </Vector2>
+                    </LocalPoints>
+                    <WorldPoints>
+                        <Vector2>
+                            <X>9536</X>
+                            <Y>-2336</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>9839.098</X>
+                            <Y>-2274.60645</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>9841.302</X>
+                            <Y>-2410.5686</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>9287.168</X>
+                            <Y>-2415.838</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>9288.235</X>
+                            <Y>-2282.59546</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>9839.098</X>
+                            <Y>-2274.60645</Y>
+                        </Vector2>
+                    </WorldPoints>
+                    <IsPolygon>false</IsPolygon>
+                    <LineWidth>4</LineWidth>
+                    <LineColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </LineColor>
+                </Item>
+                <Item xsi:type="TextureItem" Name="Texture_0621" Visible="true">
+                    <Position>
+                        <X>9536</X>
+                        <Y>-2464</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>screw</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>balloon4_skeleton</string>
+                        </Property>
+                        <Property Name="skeltargetrev" Type="string" Description="">
+                            <string>balloon4_skeleton</string>
+                        </Property>
+                        <Property Name="targetrev" Type="string" Description="">
+                            <string>ledge3</string>
+                        </Property>
+                        <Property Name="screwtype" Type="string" Description="">
+                            <string>ScrewStructural</string>
+                        </Property>
+                        <Property Name="degreelimit" Type="string" Description="">
+                            <string>35f</string>
+                        </Property>
+                    </CustomProperties>
+                    <Rotation>0</Rotation>
+                    <Scale>
+                        <X>1</X>
+                        <Y>1</Y>
+                    </Scale>
+                    <TintColor>
+                        <R>255</R>
+                        <G>255</G>
+                        <B>255</B>
+                        <A>255</A>
+                        <PackedValue>4294967295</PackedValue>
+                    </TintColor>
+                    <FlipHorizontally>false</FlipHorizontally>
+                    <FlipVertically>true</FlipVertically>
+                    <texture_filename>structurescrew.png</texture_filename>
+                    <asset_name>structurescrew</asset_name>
+                    <Origin>
+                        <X>32</X>
+                        <Y>32</Y>
+                    </Origin>
                 </Item>
             </Items>
             <ScrollSpeed>
@@ -2097,11 +2503,11 @@
     </Layers>
     <CustomProperties />
     <EditorRelated>
-        <NextItemNumber>584</NextItemNumber>
+        <NextItemNumber>621</NextItemNumber>
         <ContentRootFolder>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures</ContentRootFolder>
         <CameraPosition>
-            <X>1848.698</X>
-            <Y>-2576.24219</Y>
+            <X>5965.336</X>
+            <Y>-2167.90186</Y>
         </CameraPosition>
         <Version>1.3.0.0</Version>
     </EditorRelated>

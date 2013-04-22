@@ -70,7 +70,7 @@ public class ResurrectScrew extends Screw {
 		Sprite spr = new Sprite( atlas, screwUIAnimator );
 		spr.setOrigin( spr.getWidth( ) / 2.0f, spr.getHeight( ) / 2.0f );
 		screwInterface.changeSprite( spr );
-		sprite.setColor( 0f, 0f, 1f, 1f );
+		sprite.setColor( 98f/255f, 146f/255f, 169f/255f, 0.6f );
 		constructBody( pos );
 		if ( sprite != null )
 			sprite.rotate( ( float ) ( Math.random( ) * 360 ) );
@@ -269,13 +269,15 @@ public class ResurrectScrew extends Screw {
 
 	@Override
 	public void draw( SpriteBatch batch, float deltaTime ) {
-		screwInterface.sprite.draw( batch );
-		drawParticles( behindParticles, batch );
+		if ( playerAttached ) {
+			screwInterface.sprite.draw( batch );
+		}
+		//drawParticles( behindParticles, batch );
 		if ( sprite != null && visible && !removeNextStep ) {
 			sprite.draw( batch );
 		}
 		// drawOrigin(batch);
-		drawParticles( frontParticles, batch );
+		//drawParticles( frontParticles, batch );
 	}
 	
 	private void constructBody( Vector2 pos ) {

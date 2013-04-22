@@ -240,6 +240,8 @@ public class LevelFactory {
 		} else if ( !bluePrints.equals( "camera" )
 				&& item.getDefinition( ).getCategory( ) == EntityCategory.COMPLEX_PLATFORM ) {
 			out = loadComplexPlatform( item );
+		} else{
+			out = null;
 		}
 
 		if ( out != null ) {
@@ -975,7 +977,12 @@ public class LevelFactory {
 				String thisthing = item.props.get( "targetrev" );
 				Entity target = entities.get( thisthing );
 
-				ss.addStructureJoint( target );
+				if ( item.props.containsKey( "degreelimit" ) ) {
+					float limit = Float.parseFloat( item.props.get( "degreelimit" ) );
+					ss.addStructureJoint( target, limit );
+					
+				}else
+					ss.addStructureJoint( target );
 			}
 
 			if ( item.props.containsKey( "targetrev2" ) ) {
@@ -983,7 +990,12 @@ public class LevelFactory {
 				String thisthing = item.props.get( "targetrev2" );
 				Entity target = entities.get( thisthing );
 
-				ss.addStructureJoint( target );
+				if ( item.props.containsKey( "degreelimit" ) ) {
+					float limit = Float.parseFloat( item.props.get( "degreelimit" ) );
+					ss.addStructureJoint( target, limit );
+					
+				}else
+					ss.addStructureJoint( target );
 			}
 
 			if ( item.props.containsKey( "skeltargetrev" ) ) {
@@ -991,7 +1003,25 @@ public class LevelFactory {
 				String thisthing = item.props.get( "skeltargetrev" );
 				Skeleton target = skeletons.get( thisthing );
 
-				ss.addStructureJoint( target );
+				if ( item.props.containsKey( "degreelimit" ) ) {
+					float limit = Float.parseFloat( item.props.get( "degreelimit" ) );
+					ss.addStructureJoint( target, limit );
+					
+				}else
+					ss.addStructureJoint( target );
+			}
+			
+			if ( item.props.containsKey( "skeltargetrev2" ) ) {
+
+				String thisthing = item.props.get( "skeltargetrev2" );
+				Skeleton target = skeletons.get( thisthing );
+
+				if ( item.props.containsKey( "degreelimit" ) ) {
+					float limit = Float.parseFloat( item.props.get( "degreelimit" ) );
+					ss.addStructureJoint( target, limit );
+					
+				}else
+					ss.addStructureJoint( target );
 			}
 
 			if ( item.props.containsKey( "targetweld" ) ) {
