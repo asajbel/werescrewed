@@ -476,8 +476,8 @@ public class Platform extends Entity {
 			Level.jointsToRemove.add(extraSkeletonJoint);
 			extraSkeletonJoint = null;
 		}
-		
-	
 	}
+	
+	
 
 }
