@@ -92,6 +92,8 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 	private Skeleton s;
 	private Hazard saw;
 	
+	StructureScrew limit;
+	
 
 	/**
 	 * Defines all necessary components in a screen for testing different
@@ -300,6 +302,21 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 		s5.addWeldJoint( plat6 );
 		s5.addWeldJoint( plat7 );
 		dynSkel2.addScrewForDraw( s5 );
+		
+		
+		TiledPlatform box = platBuilder.name( "box" ).dynamic( )
+				.position( 2500, 250 ).dimensions( 3, 3 ).oneSided( false )
+				.buildTilePlatform( );
+		box.body.setFixedRotation( false );
+		box.quickfixCollisions( );
+		rootSkeleton.addDynamicPlatform( box );
+		
+		limit = new StructureScrew( "box", new Vector2(2700, 250), 100, world, Vector2.Zero );
+		limit.addStructureJoint( box, 45f );
+		limit.addStructureJoint( rootSkeleton );
+		rootSkeleton.addScrewForDraw( limit );
+
+		
 
 	}
 
@@ -766,6 +783,8 @@ public class PhysicsTestScreen implements com.badlogic.gdx.Screen {
 			System.exit( 0 );
 		}
 
+		
+		
 		if ( Gdx.input.isKeyPressed( Keys.NUM_0 ) ) {
 			if ( debugTest ) {
 				debug = !debug;

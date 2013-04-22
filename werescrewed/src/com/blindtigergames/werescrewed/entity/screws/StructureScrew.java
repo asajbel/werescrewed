@@ -130,7 +130,7 @@ public class StructureScrew extends Screw {
 			}
 			prevDiff = diff;
 
-			body.setAngularVelocity( -1 );
+			//body.setAngularVelocity( -1 );
 			depth += newDiff;
 			if ( diff != 0 ) {
 				rotation += ( -newDiff * 5 );
@@ -143,7 +143,7 @@ public class StructureScrew extends Screw {
 	@Override
 	public void screwLeft( ) {
 		if ( depth > -10 ) {
-			body.setAngularVelocity( 1 );
+			//body.setAngularVelocity( 1 );
 			depth -= 2;
 			rotation += 10;
 			screwStep = depth + 5;
@@ -166,7 +166,7 @@ public class StructureScrew extends Screw {
 			}
 			prevDiff = diff;
 
-			body.setAngularVelocity( 1 );
+			//body.setAngularVelocity( 1 );
 			depth += newDiff;
 			spriteRegion += region;
 			if ( diff != 0 ) {
@@ -180,7 +180,7 @@ public class StructureScrew extends Screw {
 	@Override
 	public void screwRight( ) {
 		if ( depth < maxDepth && depth > 0 ) {
-			body.setAngularVelocity( -1 );
+			//body.setAngularVelocity( -1 );
 			depth += 2;
 			rotation -= 10;
 			screwStep = depth + 6;
