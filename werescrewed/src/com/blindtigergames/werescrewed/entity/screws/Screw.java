@@ -55,6 +55,9 @@ public class Screw extends Entity {
 	protected ScrewType screwType;
 	public ArrayList< Joint > extraJoints;
 	
+	public static float SCREW_SOUND_DELAY = 1.0f;
+	public static float UNSCREW_SOUND_DELAY = 1.0f;
+	
 	private static TextureRegion screwTexRegion = WereScrewedGame.manager.getAtlas( "common-textures" ).findRegion( "flat_head_circular" );
 
 	/**
@@ -183,14 +186,14 @@ public class Screw extends Entity {
 	 * @param switchedDirections
 	 */
 	public void screwLeft( int region, boolean switchedDirections ) {
-		sounds.loopSound( "unscrewing" , false );
+		sounds.playSound( "unscrewing" , UNSCREW_SOUND_DELAY );
 	}
 
 	/**
 	 * used by keyboard controls to screw left
 	 */
 	public void screwLeft( ) {
-		sounds.loopSound( "unscrewing" , false );
+		sounds.playSound( "unscrewing" , UNSCREW_SOUND_DELAY );
 	}
 
 	/**
@@ -199,14 +202,14 @@ public class Screw extends Entity {
 	 * @param switchedDirections
 	 */
 	public void screwRight( int region, boolean switchedDirections ) {
-		sounds.loopSound( "screwing" , false);
+		sounds.playSound( "screwing" , SCREW_SOUND_DELAY );
 	}
 
 	/**
 	 * used by keyboard controls to screw right
 	 */
 	public void screwRight( ) {
-		sounds.loopSound( "screwing" , false);
+		sounds.playSound( "screwing" , SCREW_SOUND_DELAY );
 	}
 
 	

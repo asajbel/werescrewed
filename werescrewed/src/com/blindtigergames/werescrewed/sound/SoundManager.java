@@ -3,7 +3,9 @@ package com.blindtigergames.werescrewed.sound;
 import java.util.EnumMap;
 import java.util.HashMap;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.camera.Camera;
@@ -60,9 +62,13 @@ public class SoundManager {
 		return sounds.containsKey( tag );
 	}
 
-	public void playSound( String id ) {
+	public void playSound( String id ){
+		playSound(id, 0.0f);
+	}
+	
+	public void playSound( String id, float delay ) {
 		if (hasSound(id)) {
-			sounds.get( id ).play( );
+			sounds.get( id ).play( delay );
 		}
 	}
 
@@ -95,10 +101,22 @@ public class SoundManager {
 	
 	public void setSoundVolume(String id, float v){
 		if (hasSound(id)){
-			sounds.get(id).volume = v;
+			sounds.get(id).volume = (float)(Math.min( 2.0f, Math.max( v, 0.0f) ));
 		}
 	}
-
+	
+	public void handleSoundPosition(String id, Vector2 cameraPos, Vector2 soundPos, float zoom){
+		if (hasSound(id)){
+			float dist = soundPos.dst( cameraPos )*zoom;
+			float xPan = soundPos.sub( cameraPos ).nor().x;
+			float vol = sounds.get(id).falloff/(dist*dist);
+			setSoundVolume(id, vol);
+			setSoundPan(id, xPan);
+			Gdx.app.log( "Handle Sound Position", "Dist:"+dist+" Vol:"+vol+" Pan:"+xPan );
+			sounds.get( id ).update(0.0f);
+		}
+	}
+	
 	public void setSoundPitch(String id, float v){
 		if (hasSound(id)){
 			sounds.get(id).pitch = v;
@@ -107,6 +125,18 @@ public class SoundManager {
 	public void setSoundPan(String id, float v){
 		if (hasSound(id)){
 			sounds.get(id).pan = v;
+		}
+	}
+	
+	public void setSoundFalloff(String id, float v){
+		if (hasSound(id)){
+			sounds.get(id).falloff = v;
+		}		
+	}
+	
+	public void update(float dT){
+		for (SoundRef ref : sounds.values( )){
+			ref.update( dT );
 		}
 	}
 	
@@ -125,6 +155,10 @@ public class SoundManager {
 		protected float volume;
 		protected float pitch;
 		protected float pan;
+		protected float delay;
+		protected float falloff;
+		
+		protected static final float DELAY_MINIMUM = 0.0001f;
 		
 		public SoundRef(Sound s){
 			volume = 1.0f;
@@ -133,11 +167,16 @@ public class SoundManager {
 			soundIds = new Array<Long>();
 			loopId = -1;
 			sound = s;
+			falloff = 1.0f;
 		}
 		
-		protected long play(){
-			long id = sound.play( getSoundVolume() * volume, pitch, pan);
-			soundIds.add( id );
+		protected long play( float delayAmount){
+			long id = -1;
+			if (delay < DELAY_MINIMUM){
+				id = sound.play( getSoundVolume() * volume, pitch, pan);
+				soundIds.add( id );
+				delay += delayAmount;
+			}
 			return id;
 		}
 		
@@ -154,14 +193,16 @@ public class SoundManager {
 		protected void stop(){
 			sound.stop( );
 			loopId = -1;
+			delay = 0.0f;
 		}
 		
-		protected void update(){
+		protected void update( float dT ){
 			if (loopId >= 0){
 				sound.setVolume( loopId, getNoiseVolume() * volume );
 				sound.setPitch( loopId, pitch );
 				sound.setPan( loopId, pan, volume );
 			}
+			delay = (float)(Math.max( delay - dT, 0.0f ));
 		}
 	}
 	
