@@ -19,12 +19,13 @@ public class RevoluteJointBuilder {
     Vector2 anchor;
 
     // Default parameter values
-    boolean enableLimit = false;
-    float lowerAngle = 0.0f;
-    float upperAngle = 90 * Util.DEG_TO_RAD;
-    boolean enableMotor = false;
-    float maxMotorTorque = 500;// high max motor force yields a very strong motor
-    float motorSpeed = 1; // 1 is relatively slow
+    boolean enableLimit;
+    float lowerAngle;
+    float upperAngle;
+    boolean enableMotor;
+    float maxMotorTorque;
+    float motorSpeed;
+    boolean collideConnected;
 
     /**
      * empty constructor is private to force passing in world when building this
@@ -41,6 +42,18 @@ public class RevoluteJointBuilder {
     public RevoluteJointBuilder( World _world ) {
         // TODO Auto-generated constructor stub
         this.world = _world;
+        reset();
+    }
+    
+    public RevoluteJointBuilder reset(){
+    	enableLimit = false;
+        lowerAngle = 0.0f;
+        upperAngle = 90 * Util.DEG_TO_RAD;
+        enableMotor = false;
+        maxMotorTorque = 500;// high max motor force yields a very strong motor
+        motorSpeed = 1; // 1 is relatively slow
+        collideConnected = true;
+        return this;
     }
 
     /**
@@ -60,6 +73,7 @@ public class RevoluteJointBuilder {
         revoluteJointDef.enableLimit = enableLimit;
         revoluteJointDef.lowerAngle = lowerAngle;
         revoluteJointDef.upperAngle = upperAngle;
+        revoluteJointDef.collideConnected = collideConnected;
         revoluteJointDef.enableMotor = enableMotor;
         revoluteJointDef.maxMotorTorque = maxMotorTorque;// high max motor force
                                                         // yields a
@@ -150,5 +164,10 @@ public class RevoluteJointBuilder {
     public RevoluteJointBuilder motorSpeed( float _motorSpeed ) {
         this.motorSpeed = _motorSpeed;
         return this;
+    }
+    
+    public RevoluteJointBuilder collideConnected(boolean collideConnected){
+    	this.collideConnected = collideConnected;
+    	return this;
     }
 }
