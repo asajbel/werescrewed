@@ -9,20 +9,24 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.joints.RevoluteJoint;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
 import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.entity.Entity;
+import com.blindtigergames.werescrewed.entity.EntityDef;
 import com.blindtigergames.werescrewed.entity.RobotState;
 import com.blindtigergames.werescrewed.entity.RootSkeleton;
 import com.blindtigergames.werescrewed.entity.Skeleton;
 import com.blindtigergames.werescrewed.entity.Sprite;
 import com.blindtigergames.werescrewed.entity.action.RemoveEntityAction;
 import com.blindtigergames.werescrewed.entity.builders.EventTriggerBuilder;
+import com.blindtigergames.werescrewed.entity.builders.PlatformBuilder;
 import com.blindtigergames.werescrewed.entity.builders.PlayerBuilder;
 import com.blindtigergames.werescrewed.entity.mover.AnalogRotateMover;
 import com.blindtigergames.werescrewed.entity.mover.LinearAxis;
 import com.blindtigergames.werescrewed.entity.mover.ParallaxMover;
 import com.blindtigergames.werescrewed.entity.mover.RotateTweenMover;
+import com.blindtigergames.werescrewed.entity.platforms.Platform;
 import com.blindtigergames.werescrewed.entity.platforms.TiledPlatform;
 import com.blindtigergames.werescrewed.entity.screws.PuzzleScrew;
 import com.blindtigergames.werescrewed.entity.screws.Screw;
@@ -45,6 +49,8 @@ public class AlphaScreen extends Screen {
 			chestSkeleton, leftShoulderSkeleton;
 	private TiledPlatform kneeMovingPlat, leftShoulderSideHatch;
 	private PuzzleScrew leftArmScrew;
+	
+	private boolean etTriggered = false;
 
 	private Skeleton rightShoulderSkeleton;
 
@@ -81,17 +87,19 @@ public class AlphaScreen extends Screen {
 		// chest entrance : -200f, 3800f
 		// upper chest: 1300f, 6000f
 		// rope on left side of the robot <- -950f, 5100f
-		// top left: -1582, 6150
+		// top left: -1582f, 6150f
+		// head: 480f,  6688f
+		//right arm: 2600f, 6000f
 
 		if ( level.player1 == null ) {
 			level.player1 = new PlayerBuilder( ).world( level.world )
-					.position( 0f, 0f ).name( "player1" ).definition( "red_male" )
+					.position( 2600f, 6000f ).name( "player1" ).definition( "red_male" )
 					.buildPlayer( );
 			level.progressManager.addPlayerOne( level.player1 );
 		}
 		if ( level.player2 == null ) {
 			level.player2 = new PlayerBuilder( ).world( level.world )
-					.position( 0f, 0f ).name( "player2" )
+					.position( 2600f, 6000f ).name( "player2" )
 					.definition( "red_female" ).buildPlayer( );
 			level.progressManager.addPlayerTwo( level.player2 );
 		}
@@ -467,8 +475,10 @@ public class AlphaScreen extends Screen {
 
 		StructureScrew stuctureScrew1 = ( StructureScrew ) LevelFactory.entities
 				.get( "structureScrew1" );
-		// stuctureScrew1.setDetachDirection( 0, -1 );
-
+		
+		EventTrigger etGearFall = ( EventTrigger ) LevelFactory.entities.get( "et1" );
+		
+			
 	}
 
 	private void leftArm( ) {

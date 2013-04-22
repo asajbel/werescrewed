@@ -188,6 +188,15 @@ public class LerpMover implements IMover {
 		return alpha == 0;
 	}
 
+	public void setAlpha( float value ) {
+		alpha = value;
+		if ( alpha > 1 ) {
+			alpha = 1;
+		}
+		else if ( alpha < 0 ) {
+			alpha = 0;
+		}
+	}
 	/**
 	 * take a step
 	 */
