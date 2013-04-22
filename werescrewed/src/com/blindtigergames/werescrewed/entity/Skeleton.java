@@ -48,7 +48,7 @@ public class Skeleton extends Platform {
 	public PolySprite bgSprite, fgSprite;
 
 	SimpleFrameAnimator alphaFadeAnimator;
-	private final float fadeSpeed = 1f;
+	private final float fadeSpeed = 3f;
 
 	protected HashMap< String, Platform > dynamicPlatformMap = new HashMap< String, Platform >( );
 	protected HashMap< String, Skeleton > childSkeletonMap = new HashMap< String, Skeleton >( );
@@ -64,7 +64,7 @@ public class Skeleton extends Platform {
 	protected RootSkeleton rootSkeleton;
 	protected Skeleton parentSkeleton;
 
-	protected boolean applyFadeToFGDecals = false;
+	protected boolean applyFadeToFGDecals = true;
 	protected boolean isMacroSkeleton = false;
 
 	/**
@@ -744,6 +744,7 @@ public class Skeleton extends Platform {
 
 	private void fadeFGDecals( ) {
 		float alpha = alphaFadeAnimator.getTime( );
+		alpha *= alpha;
 		for ( Sprite decal : fgDecals ) {
 			if ( decal.getAlpha( ) != alpha ) {
 				decal.setAlpha( alpha );

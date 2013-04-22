@@ -1,0 +1,12 @@
+alphabot_knee_decal.png
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+offset: 0, 0
+knee_mechanisms_and_pipesNOCOLOR
+  rotate: false
+  xy: 2, 2
+  size: 1124, 1044
+  orig: 1124, 1044
+  offset: 0, 0
+  index: -1
