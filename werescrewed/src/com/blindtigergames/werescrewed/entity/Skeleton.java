@@ -130,7 +130,7 @@ public class Skeleton extends Platform {
 	public void addPlatformRotatingCenter( Platform platform ) {
 		// Default values of the builder will allow rotation with anchor at
 		// center of platform
-		new RevoluteJointBuilder( world ).skeleton( this ).bodyB( platform )
+		new RevoluteJointBuilder( world ).entityA( this ).entityB( platform )
 				.build( );
 		addDynamicPlatform( platform );
 	}
@@ -145,7 +145,7 @@ public class Skeleton extends Platform {
 			float rotSpeedInMeters ) {
 		// Default values of the builder will allow rotation with anchor at
 		// center of platform
-		new RevoluteJointBuilder( world ).skeleton( this ).bodyB( platform )
+		new RevoluteJointBuilder( world ).entityA( this ).entityB( platform )
 				.motor( true ).motorSpeed( rotSpeedInMeters ).build( );
 
 		addDynamicPlatform( platform );
@@ -158,7 +158,7 @@ public class Skeleton extends Platform {
 	 * @param platform
 	 */
 	public void addDynamicPlatformFixed( Platform platform ) {
-		new RevoluteJointBuilder( world ).skeleton( this ).bodyB( platform )
+		new RevoluteJointBuilder( world ).entityA( this ).entityB( platform )
 				.limit( true ).lower( 0 ).upper( 0 ).build( );
 		addDynamicPlatform( platform );
 	}
@@ -175,11 +175,17 @@ public class Skeleton extends Platform {
 		else
 			addKinematicPlatform( platform );
 	}
+	
+	public void addPlatforms(Platform... platforms){
+		for( Platform p : platforms ){
+			addPlatform( p );
+		}
+	}
 
 	public void addRope( Rope rope, boolean toJoint ) {
 		if ( toJoint ) {
-			new RevoluteJointBuilder( world ).skeleton( this )
-					.bodyB( rope.getFirstLink( ) ).limit( true ).lower( 0 )
+			new RevoluteJointBuilder( world ).entityA( this )
+					.entityB( rope.getFirstLink( ) ).limit( true ).lower( 0 )
 					.upper( 0 ).build( );
 		}
 		// ropes.add( rope );

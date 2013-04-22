@@ -267,21 +267,9 @@ public class TiledPlatform extends Platform {
 	@Override
 	public void draw( SpriteBatch batch, float deltaTime ) {
 		//drawBGDecals( batch );
-		Tile d;
-		Iterator< Tile > v = tiles.listIterator( );
-		while ( v.hasNext( ) ) {
-			d = v.next( );
-			d.tileSprite.setPosition( bodypos.x - d.xOffset, bodypos.y
-					- d.yOffset );
-			d.tileSprite.setRotation( MathUtils.radiansToDegrees
-					* body.getAngle( ) );
-			d.tileSprite.draw( batch );
-		}
-		for ( Screw s : screws )
-			s.draw( batch, deltaTime );
-		
-		if ( bleedTiles != null ){
-			v = bleedTiles.listIterator( );
+		if ( visible ){
+			Tile d;
+			Iterator< Tile > v = tiles.listIterator( );
 			while ( v.hasNext( ) ) {
 				d = v.next( );
 				d.tileSprite.setPosition( bodypos.x - d.xOffset, bodypos.y
@@ -289,6 +277,20 @@ public class TiledPlatform extends Platform {
 				d.tileSprite.setRotation( MathUtils.radiansToDegrees
 						* body.getAngle( ) );
 				d.tileSprite.draw( batch );
+			}
+			for ( Screw s : screws )
+				s.draw( batch, deltaTime );
+			
+			if ( bleedTiles != null ){
+				v = bleedTiles.listIterator( );
+				while ( v.hasNext( ) ) {
+					d = v.next( );
+					d.tileSprite.setPosition( bodypos.x - d.xOffset, bodypos.y
+							- d.yOffset );
+					d.tileSprite.setRotation( MathUtils.radiansToDegrees
+							* body.getAngle( ) );
+					d.tileSprite.draw( batch );
+				}
 			}
 		}
 		//drawOrigin( batch );

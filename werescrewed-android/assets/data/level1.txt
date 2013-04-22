@@ -48,7 +48,11 @@
 /levels/alphabot/support_left.pack
 /levels/alphabot/support_middle_right.pack
 /levels/alphabot/curtains.pack
+
+
+##decals and such
 /levels/alphabot/alphabot_foot_shin_decal.pack
+/levels/alphabot/engine.pack
 
 
 /levels/level1/player_female_idle.png

@@ -11,7 +11,7 @@ public class RopeBuilder extends GenericEntityBuilder<RopeBuilder> {
 	protected float linkWidth;
 	protected float linkHeight;
 	protected int links;
-	protected boolean createScrew;
+	protected boolean createScrew, createScrewSecondToLastLink, moveToEntity;
 	protected Entity attachToTop;
 	
 	public RopeBuilder ( World world ){
@@ -47,6 +47,18 @@ public class RopeBuilder extends GenericEntityBuilder<RopeBuilder> {
 	}
 	public RopeBuilder createScrew(){
 		createScrew = true;
+		createScrewSecondToLastLink = false;
+		return this;
+	}
+	
+	public RopeBuilder createScrewSecondToLastLink(){
+		createScrewSecondToLastLink = true;
+		createScrew = false;
+		return this;
+	}
+	
+	public RopeBuilder moveToEntity(){
+		moveToEntity = true;
 		return this;
 	}
 	
@@ -62,7 +74,8 @@ public class RopeBuilder extends GenericEntityBuilder<RopeBuilder> {
 							  this.tex,
 							  this.world );
 		if(createScrew) rope.createScrew( );
-		if(this.attachToTop != null) rope.attachEntityToTop( attachToTop, true );
+		else if (createScrewSecondToLastLink) rope.createScrewSecondToLastLink( );
+		if(this.attachToTop != null) rope.attachEntityToTop( attachToTop, moveToEntity );
 		return rope;
 	}
 	
@@ -73,7 +86,9 @@ public class RopeBuilder extends GenericEntityBuilder<RopeBuilder> {
 		this.linkHeight = 64.0f;
 		this.links = 5;
 		this.createScrew = false;
+		this.createScrewSecondToLastLink = false;
 		this.attachToTop = null;
+		this.moveToEntity = false;
 		return this;
 	}
 	

@@ -45,6 +45,7 @@ import com.blindtigergames.werescrewed.entity.mover.TimelineTweenMover;
 import com.blindtigergames.werescrewed.entity.mover.puzzle.PuzzleRotateTweenMover;
 import com.blindtigergames.werescrewed.entity.platforms.Platform;
 import com.blindtigergames.werescrewed.entity.platforms.TiledPlatform;
+import com.blindtigergames.werescrewed.entity.rope.Link;
 import com.blindtigergames.werescrewed.entity.rope.Rope;
 import com.blindtigergames.werescrewed.entity.screws.BossScrew;
 import com.blindtigergames.werescrewed.entity.screws.PuzzleScrew;
@@ -1024,6 +1025,15 @@ public class LevelFactory {
 					ss.addStructureJoint( target );
 			}
 
+			if ( item.props.containsKey( "ropetargetrev" ) ) {
+
+				String thisthing = item.props.get( "ropetargetrev" );
+				Link target = (Link) entities.get( thisthing );
+
+				//target.body.setTransform( ss.getPosition( ), target.body.getAngle( ) );
+				ss.addStructureJoint( target );
+			}
+			
 			if ( item.props.containsKey( "targetweld" ) ) {
 
 				String thisthing = item.props.get( "targetweld" );
@@ -1157,9 +1167,14 @@ public class LevelFactory {
 
 	public void constructRope( Item item ) {
 		RopeBuilder ropeBuilder = new RopeBuilder( level.world );
-		ropeBuilder.name( item.name ).position( item.pos.x, item.pos.y )
-				.createScrew( );
+		ropeBuilder.name( item.name ).position( item.pos.x, item.pos.y );
 
+		if ( item.props.containsKey( "createscrew" ) ) {
+			ropeBuilder.createScrew( );
+		}
+		if ( item.props.containsKey( "createscrewsecond" ) ) {
+			ropeBuilder.createScrewSecondToLastLink( );
+		}
 		if ( item.props.containsKey( "links" ) ) {
 			int links = Integer.parseInt( item.props.get( "links" ) );
 			ropeBuilder.links( links );
@@ -1174,6 +1189,9 @@ public class LevelFactory {
 		if ( item.props.containsKey( "attachedto" ) ) {
 			Entity e = loadEntity( item.props.get( "attachedto" ) );
 			ropeBuilder.attachToTop( e );
+			if ( item.props.containsKey( "move" ) ) {
+				ropeBuilder.moveToEntity( );
+			}
 			attachToEntity = true;
 		}
 
@@ -1182,6 +1200,8 @@ public class LevelFactory {
 		// if its attached to an entity, then send in false so it doesn't
 		// joint itself to the skeleton
 		parent.addRope( rope, !attachToEntity );
+		
+		entities.put( item.name, rope.getLastLink( ) );
 	}
 
 	public Array< Vector2 > contstructSkeletonPoly( Item item ) {

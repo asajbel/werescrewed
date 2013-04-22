@@ -45,7 +45,6 @@ public class Level {
 	public MyContactListener myContactListener;
 	public Player player1, player2;
 	public RootSkeleton root;
-	public PolySprite polySprite;
 	private boolean debugTest, debug;
 	public ProgressManager progressManager;
 	public static ArrayList< Joint > jointsToRemove = new ArrayList< Joint >( );

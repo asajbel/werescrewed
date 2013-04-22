@@ -151,11 +151,13 @@ public class Rope {
 	}
 
 	public void update( float deltaTime ) {
-		if ( screw != null ) {		
-		if ( !screw.isPlayerAttached( ) ){
-			stopRope( );
-		}
-		screw.update( deltaTime );
+		if ( screw != null ) {	
+			
+			if ( !screw.isPlayerAttached( ) ){
+				stopRope( );
+			}
+			
+			screw.update( deltaTime );
 		}
 		// if(Gdx.input.isKeyPressed( Keys.O ))
 		// pieces.get( pieces.size( )-1 ).applyLinearImpulse( new Vector2(0.5f,
@@ -170,11 +172,12 @@ public class Rope {
 	 * @param batch sprite batch used for drawing the rope
 	 */
 	public void draw( SpriteBatch batch, float deltaTime ) {
-		if ( screw != null )
-			screw.draw( batch, deltaTime );
+		
 		for ( int i = 0; i < linkParts.size( ); i++ ) {
 			getLink( i ).draw( batch, deltaTime );
 		}
+		if ( screw != null )
+			screw.draw( batch, deltaTime );
 	}
 
 
@@ -200,6 +203,10 @@ public class Rope {
 	 */
 	public Link getLastLink( ) {
 		return linkParts.get( linkParts.size( ) - 1 );
+	}
+	
+	public Link getSecondedToLastLink( ) {
+		return linkParts.get( linkParts.size( ) - 3 );
 	}
 
 	/**
@@ -227,6 +234,15 @@ public class Rope {
 				getLastLink( ).body.getPosition( ).x * Util.BOX_TO_PIXEL,
 				( getLastLink( ).body.getPosition( ).y * Util.BOX_TO_PIXEL )
 						- ( getLastLink( ).getHeight( ) ) ), getLastLink( ), world, Vector2.Zero );
+		screw.setPlayerNotSensor( );
+
+	}
+	
+	public void createScrewSecondToLastLink( ) {
+		screw = new StrippedScrew( "ropeScrew", new Vector2(
+				getSecondedToLastLink( ).body.getPosition( ).x * Util.BOX_TO_PIXEL,
+				( getSecondedToLastLink( ).body.getPosition( ).y * Util.BOX_TO_PIXEL )
+						 ), getSecondedToLastLink( ), world, Vector2.Zero );
 		screw.setPlayerNotSensor( );
 
 	}
