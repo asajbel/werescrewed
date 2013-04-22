@@ -77,7 +77,6 @@ public class Screen implements com.badlogic.gdx.Screen {
 			
 			level.draw( batch, debugRenderer, delta );
 			
-			@SuppressWarnings( "unused" )
 			int FPS = logger.getFPS( );
 			batch.setProjectionMatrix( uiCamera.combined );
 			batch.begin( );
@@ -128,12 +127,23 @@ public class Screen implements com.badlogic.gdx.Screen {
 
 	@Override
 	public void dispose( ) {
-		// TODO Auto-generated method stub
+		level.resetPhysicsWorld( );
 		
 	}
 	
+	/**
+	 * Set clear color with values in 0-1 range
+	 */
 	public void setClearColor(float r, float g, float b, float a){
 		clearColor = new Color(r,g,b,a);
 	}
+	
+	/**
+	 * Set clear color with values in 0-255 range
+	 */
+	public void setClearColor(int r, int g, int b, int a){
+		setClearColor(r/255f,g/255f,b/255f,a/255f);
+	}
 
+	
 }

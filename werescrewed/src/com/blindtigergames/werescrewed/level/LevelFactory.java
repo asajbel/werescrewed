@@ -8,7 +8,6 @@ import java.util.LinkedHashMap;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
 import com.badlogic.gdx.utils.Array;
@@ -16,7 +15,6 @@ import com.badlogic.gdx.utils.XmlReader;
 import com.badlogic.gdx.utils.XmlReader.Element;
 import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.camera.Anchor;
-import com.blindtigergames.werescrewed.camera.AnchorList;
 import com.blindtigergames.werescrewed.camera.Camera;
 import com.blindtigergames.werescrewed.checkpoints.CheckPoint;
 import com.blindtigergames.werescrewed.checkpoints.ProgressManager;
@@ -25,6 +23,8 @@ import com.blindtigergames.werescrewed.entity.EntityCategory;
 import com.blindtigergames.werescrewed.entity.EntityDef;
 import com.blindtigergames.werescrewed.entity.PolySprite;
 import com.blindtigergames.werescrewed.entity.RobotState;
+import com.blindtigergames.werescrewed.entity.RootSkeleton;
+import com.blindtigergames.werescrewed.entity.Skeleton;
 import com.blindtigergames.werescrewed.entity.Sprite;
 import com.blindtigergames.werescrewed.entity.action.DestoryPlatformJointAction;
 import com.blindtigergames.werescrewed.entity.action.EntityActivateMoverAction;
@@ -37,12 +37,18 @@ import com.blindtigergames.werescrewed.entity.builders.PlayerBuilder;
 import com.blindtigergames.werescrewed.entity.builders.RopeBuilder;
 import com.blindtigergames.werescrewed.entity.builders.ScrewBuilder;
 import com.blindtigergames.werescrewed.entity.builders.SkeletonBuilder;
+import com.blindtigergames.werescrewed.entity.hazard.Hazard;
+import com.blindtigergames.werescrewed.entity.hazard.builders.HazardBuilder;
 import com.blindtigergames.werescrewed.entity.mover.IMover;
+import com.blindtigergames.werescrewed.entity.mover.MoverType;
 import com.blindtigergames.werescrewed.entity.mover.PistonTweenMover;
 import com.blindtigergames.werescrewed.entity.mover.PuzzleType;
 import com.blindtigergames.werescrewed.entity.mover.TimelineTweenMover;
-import com.blindtigergames.werescrewed.entity.mover.MoverType;
 import com.blindtigergames.werescrewed.entity.mover.puzzle.PuzzleRotateTweenMover;
+import com.blindtigergames.werescrewed.entity.platforms.Platform;
+import com.blindtigergames.werescrewed.entity.platforms.TiledPlatform;
+import com.blindtigergames.werescrewed.entity.rope.Link;
+import com.blindtigergames.werescrewed.entity.rope.Rope;
 import com.blindtigergames.werescrewed.entity.screws.BossScrew;
 import com.blindtigergames.werescrewed.entity.screws.PuzzleScrew;
 import com.blindtigergames.werescrewed.entity.screws.Screw;
@@ -51,14 +57,7 @@ import com.blindtigergames.werescrewed.entity.screws.StrippedScrew;
 import com.blindtigergames.werescrewed.entity.screws.StructureScrew;
 import com.blindtigergames.werescrewed.entity.tween.PathBuilder;
 import com.blindtigergames.werescrewed.entity.platforms.Pipe;
-import com.blindtigergames.werescrewed.entity.platforms.Platform;
-import com.blindtigergames.werescrewed.entity.platforms.TiledPlatform;
-import com.blindtigergames.werescrewed.entity.rope.Rope;
-import com.blindtigergames.werescrewed.entity.RootSkeleton;
-import com.blindtigergames.werescrewed.entity.Skeleton;
 import com.blindtigergames.werescrewed.eventTrigger.EventTrigger;
-import com.blindtigergames.werescrewed.entity.hazard.Hazard;
-import com.blindtigergames.werescrewed.entity.hazard.builders.HazardBuilder;
 import com.blindtigergames.werescrewed.graphics.TextureAtlas;
 import com.blindtigergames.werescrewed.util.ArrayHash;
 import com.blindtigergames.werescrewed.util.Util;
@@ -218,6 +217,8 @@ public class LevelFactory {
 
 		if ( bluePrints.equals( "skeleton" ) ) {
 			out = constructSkeleton( item );
+		} else if ( bluePrints.equals( decalBGTag ) ) {
+			constructDecal( item );
 		} else if ( bluePrints.equals( decalTag ) ) {
 			constructDecal( item );
 		} else if ( bluePrints.equals( "player" ) ) {
@@ -245,21 +246,11 @@ public class LevelFactory {
 		} else if ( !bluePrints.equals( "camera" )
 				&& item.getDefinition( ).getCategory( ) == EntityCategory.COMPLEX_PLATFORM ) {
 			out = loadComplexPlatform( item );
+		} else{
+			out = null;
 		}
 
-		// TODO add functionality for sorting these decals into foreground or
-		// background decals
-		// This either requires adding variables to the specific decal in gleed
-		// to what layer it is on
-		// or make two different loading keys such as fgdecal or bgdecal and
-		// handle them seperatley
 		if ( out != null ) {
-			// if ( item.propes.containsKey( "fgdecal" ) ) {
-			// level.entityFGList.add( decal );
-			// }
-			// if ( item.propes.containsKey( "bgdecal" ) ) {
-			// level.entityBGList.add( decal );
-			// }
 			if ( item.props.containsKey( "decal" ) ) {
 				Array< String > tokens;
 				String decalImage;
@@ -289,6 +280,7 @@ public class LevelFactory {
 						}
 						decal.setScale( size.x, size.y );
 						out.addFGDecal( decal, decalPosition, r );
+						level.entityFGList.add( out );
 						Gdx.app.log(
 								"LoadEntity",
 								"Creating foreground decal for [" + item.name
@@ -297,8 +289,7 @@ public class LevelFactory {
 										+ decalPosition.toString( ) );
 					}
 				}
-			}
-			if ( item.props.containsKey( "bgdecal" ) ) {
+			} else if ( item.props.containsKey( "bgdecal" ) ) {
 				Array< String > tokens;
 				String decalImage;
 				Vector2 decalPosition = new Vector2( );
@@ -327,6 +318,7 @@ public class LevelFactory {
 						}
 						decal.setScale( size.x, size.y );
 						out.addBGDecal( decal, decalPosition, r );
+						level.entityBGList.add( out );
 						Gdx.app.log(
 								"LoadEntity",
 								"Creating background decal for [" + item.name
@@ -485,8 +477,8 @@ public class LevelFactory {
 				float bufferHeight = values[ 3 ];
 				anchor = new Anchor( item.pos, new Vector2( offsetX, offsetY ),
 						new Vector2( bufferWidth, bufferHeight ) );
-				AnchorList.getInstance( ).addAnchor( anchor );
 				out.addAnchor( anchor );
+				// Comment line below to make anchors inactive by default
 				anchor.activate( );
 			} else {
 				break;
@@ -558,7 +550,14 @@ public class LevelFactory {
 			float rot = item.rot - targetRot;
 
 			decal.setScale( scale.x, scale.y );
-			target.addFGDecal( decal, pos, rot );
+			if ( item.props.containsKey( "decal" ) ) {
+				target.addFGDecal( decal, pos, rot );
+				level.entityFGList.add( target );
+			} else {
+				Gdx.app.log( "level factory", "hello world" );
+				target.addBGDecal( decal, pos, rot );
+				level.entityBGList.add( target );
+			}
 			Gdx.app.log( "LoadDecal", "Attaching decal " + item.name + " to "
 					+ targetName + "." );
 			target.updateDecals( 0.0f );
@@ -1101,7 +1100,12 @@ public class LevelFactory {
 				String thisthing = item.props.get( "targetrev" );
 				Entity target = entities.get( thisthing );
 
-				ss.addStructureJoint( target );
+				if ( item.props.containsKey( "degreelimit" ) ) {
+					float limit = Float.parseFloat( item.props.get( "degreelimit" ) );
+					ss.addStructureJoint( target, limit );
+					
+				}else
+					ss.addStructureJoint( target );
 			}
 
 			if ( item.props.containsKey( "targetrev2" ) ) {
@@ -1109,7 +1113,12 @@ public class LevelFactory {
 				String thisthing = item.props.get( "targetrev2" );
 				Entity target = entities.get( thisthing );
 
-				ss.addStructureJoint( target );
+				if ( item.props.containsKey( "degreelimit" ) ) {
+					float limit = Float.parseFloat( item.props.get( "degreelimit" ) );
+					ss.addStructureJoint( target, limit );
+					
+				}else
+					ss.addStructureJoint( target );
 			}
 
 			if ( item.props.containsKey( "skeltargetrev" ) ) {
@@ -1117,9 +1126,36 @@ public class LevelFactory {
 				String thisthing = item.props.get( "skeltargetrev" );
 				Skeleton target = skeletons.get( thisthing );
 
-				ss.addStructureJoint( target );
+				if ( item.props.containsKey( "degreelimit" ) ) {
+					float limit = Float.parseFloat( item.props.get( "degreelimit" ) );
+					ss.addStructureJoint( target, limit );
+					
+				}else
+					ss.addStructureJoint( target );
+			}
+			
+			if ( item.props.containsKey( "skeltargetrev2" ) ) {
+
+				String thisthing = item.props.get( "skeltargetrev2" );
+				Skeleton target = skeletons.get( thisthing );
+
+				if ( item.props.containsKey( "degreelimit" ) ) {
+					float limit = Float.parseFloat( item.props.get( "degreelimit" ) );
+					ss.addStructureJoint( target, limit );
+					
+				}else
+					ss.addStructureJoint( target );
 			}
 
+			if ( item.props.containsKey( "ropetargetrev" ) ) {
+
+				String thisthing = item.props.get( "ropetargetrev" );
+				Link target = (Link) entities.get( thisthing );
+
+				//target.body.setTransform( ss.getPosition( ), target.body.getAngle( ) );
+				ss.addStructureJoint( target );
+			}
+			
 			if ( item.props.containsKey( "targetweld" ) ) {
 
 				String thisthing = item.props.get( "targetweld" );
@@ -1253,9 +1289,14 @@ public class LevelFactory {
 
 	public void constructRope( Item item ) {
 		RopeBuilder ropeBuilder = new RopeBuilder( level.world );
-		ropeBuilder.name( item.name ).position( item.pos.x, item.pos.y )
-				.createScrew( );
+		ropeBuilder.name( item.name ).position( item.pos.x, item.pos.y );
 
+		if ( item.props.containsKey( "createscrew" ) ) {
+			ropeBuilder.createScrew( );
+		}
+		if ( item.props.containsKey( "createscrewsecond" ) ) {
+			ropeBuilder.createScrewSecondToLastLink( );
+		}
 		if ( item.props.containsKey( "links" ) ) {
 			int links = Integer.parseInt( item.props.get( "links" ) );
 			ropeBuilder.links( links );
@@ -1270,6 +1311,9 @@ public class LevelFactory {
 		if ( item.props.containsKey( "attachedto" ) ) {
 			Entity e = loadEntity( item.props.get( "attachedto" ) );
 			ropeBuilder.attachToTop( e );
+			if ( item.props.containsKey( "move" ) ) {
+				ropeBuilder.moveToEntity( );
+			}
 			attachToEntity = true;
 		}
 
@@ -1278,6 +1322,8 @@ public class LevelFactory {
 		// if its attached to an entity, then send in false so it doesn't
 		// joint itself to the skeleton
 		parent.addRope( rope, !attachToEntity );
+		
+		entities.put( item.name, rope.getLastLink( ) );
 	}
 
 	public Array< Vector2 > contstructSkeletonPoly( Item item ) {

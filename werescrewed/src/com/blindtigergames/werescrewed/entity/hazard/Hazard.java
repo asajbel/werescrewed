@@ -103,7 +103,6 @@ public class Hazard extends Platform {
 			
 			// Conditionals for determining which hazard a player hit, in order to increment the proper trophy metric
 			if ( player.name == Metrics.player1( ) ) {
-				System.out.println("Checking player1");
 				if ( this.hazardType == HazardType.SPIKES && !player.isPlayerDead( ) ){
 					Metrics.incTrophyMetric( TrophyMetric.P1SPIKEDEATHS, 1 );
 				}

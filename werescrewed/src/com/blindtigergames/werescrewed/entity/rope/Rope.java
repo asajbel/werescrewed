@@ -25,6 +25,7 @@ public class Rope {
 	private StrippedScrew screw;
 	private ArrayList< Link > linkParts;
 	private World world;
+	private final float ROPE_DEACCELERATION_RATE = 0.6f;
 
 	/**
 	 * Constructs a rope at a given position
@@ -150,11 +151,13 @@ public class Rope {
 	}
 
 	public void update( float deltaTime ) {
-		if ( screw != null ) {		
-		if ( !screw.isPlayerAttached( ) ){
-			stopRope( );
-		}
-		screw.update( deltaTime );
+		if ( screw != null ) {	
+			
+			if ( !screw.isPlayerAttached( ) ){
+				stopRope( );
+			}
+			
+			screw.update( deltaTime );
 		}
 		// if(Gdx.input.isKeyPressed( Keys.O ))
 		// pieces.get( pieces.size( )-1 ).applyLinearImpulse( new Vector2(0.5f,
@@ -169,11 +172,12 @@ public class Rope {
 	 * @param batch sprite batch used for drawing the rope
 	 */
 	public void draw( SpriteBatch batch, float deltaTime ) {
-		if ( screw != null )
-			screw.draw( batch, deltaTime );
+		
 		for ( int i = 0; i < linkParts.size( ); i++ ) {
 			getLink( i ).draw( batch, deltaTime );
 		}
+		if ( screw != null )
+			screw.draw( batch, deltaTime );
 	}
 
 
@@ -199,6 +203,10 @@ public class Rope {
 	 */
 	public Link getLastLink( ) {
 		return linkParts.get( linkParts.size( ) - 1 );
+	}
+	
+	public Link getSecondedToLastLink( ) {
+		return linkParts.get( linkParts.size( ) - 3 );
 	}
 
 	/**
@@ -230,18 +238,30 @@ public class Rope {
 
 	}
 	
+	public void createScrewSecondToLastLink( ) {
+		screw = new StrippedScrew( "ropeScrew", new Vector2(
+				getSecondedToLastLink( ).body.getPosition( ).x * Util.BOX_TO_PIXEL,
+				( getSecondedToLastLink( ).body.getPosition( ).y * Util.BOX_TO_PIXEL )
+						 ), getSecondedToLastLink( ), world, Vector2.Zero );
+		screw.setPlayerNotSensor( );
+
+	}
+	
 	public void stopRope( ) {
-		float velocity = getLastLink().body.getLinearVelocity( ).x;
-		if ( velocity != 0.0f ) {
-			if ( velocity < -0.1f )
-				getLastLink( ).body.applyLinearImpulse( new Vector2( 0.01f, 0.0f ),
-						getLastLink ( ).body.getWorldCenter( ) );
-			else if ( velocity > 0.1f )
-				getLastLink( ).body.applyLinearImpulse( new Vector2( -0.01f, 0.0f ),
-						getLastLink( ).body.getWorldCenter( ) );
-			else if ( velocity >= -0.1 && velocity <= 0.1f && velocity != 0.0f )
-				getLastLink( ).body.setLinearVelocity( 0.0f, getLastLink( ).body.getLinearVelocity( ).y );
-		}
+		getLastLink().body.setLinearVelocity( getLastLink().body.getLinearVelocity( ).x * ROPE_DEACCELERATION_RATE,
+				getLastLink().body.getLinearVelocity( ).y );
+		
+//		float velocity = getLastLink().body.getLinearVelocity( ).x;
+//		if ( velocity != 0.0f ) {
+//			if ( velocity < -0.1f )
+//				getLastLink( ).body.applyLinearImpulse( new Vector2( 0.01f, 0.0f ),
+//						getLastLink ( ).body.getWorldCenter( ) );
+//			else if ( velocity > 0.1f )
+//				getLastLink( ).body.applyLinearImpulse( new Vector2( -0.01f, 0.0f ),
+//						getLastLink( ).body.getWorldCenter( ) );
+//			else if ( velocity >= -0.1 && velocity <= 0.1f && velocity != 0.0f )
+//				getLastLink( ).body.setLinearVelocity( 0.0f, getLastLink( ).body.getLinearVelocity( ).y );
+//		}
 	}
 	
 	public void dispose(){
