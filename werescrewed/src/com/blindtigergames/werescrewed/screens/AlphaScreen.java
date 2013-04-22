@@ -527,7 +527,7 @@ public class AlphaScreen extends Screen {
 				level.world );
 		level.root.addSkeleton( engineSkeleton );
 		int pistonDistanceApart = 280;
-		
+		float engineSpeed = 2.5f;
 		
 
 		TextureAtlas engineAtlas = WereScrewedGame.manager.getAtlas( "engine" );
@@ -537,13 +537,13 @@ public class AlphaScreen extends Screen {
 
 		for ( int i = 0; i < 3; ++i ) {
 			buildPiston( engineSkeleton, engineAtlas,
-					posPix.cpy( ).add( pistonDistanceApart * i, 0 ), i );
+					posPix.cpy( ).add( pistonDistanceApart * i, 0 ), i, engineSpeed );
 		}
 
 	}
 
 	private void buildPiston( Skeleton engineSkeleton,
-			TextureAtlas engineAtlas, Vector2 posPix, int index ) {
+			TextureAtlas engineAtlas, Vector2 posPix, int index, float engineSpeed ) {
 		Vector2 posMeter = posPix.cpy( ).mul( Util.PIXEL_TO_BOX );
 		// Build wheel
 		Sprite wheelSprite = engineAtlas.createSprite( "wheel" );
@@ -555,7 +555,7 @@ public class AlphaScreen extends Screen {
 		engineSkeleton.addPlatform( wheel1 );
 		// Make wheel rotate
 		new RevoluteJointBuilder( level.world ).entityA( engineSkeleton )
-				.entityB( wheel1 ).motor( true ).motorSpeed( 1f )
+				.entityB( wheel1 ).motor( true ).motorSpeed( engineSpeed )
 				.maxTorque( 5000 ).build( );
 
 		// setup for building girder
