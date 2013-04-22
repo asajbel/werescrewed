@@ -96,13 +96,13 @@ public class AlphaScreen extends Screen {
 
 		if ( level.player1 == null ) {
 			level.player1 = new PlayerBuilder( ).world( level.world )
-					.position(-1582f, 6150f ).name( "player1" ).definition( "red_male" )
+					.position(2600f, 6000f ).name( "player1" ).definition( "red_male" )
 					.buildPlayer( );
 			level.progressManager.addPlayerOne( level.player1 );
 		}
 		if ( level.player2 == null ) {
 			level.player2 = new PlayerBuilder( ).world( level.world )
-					.position( -1582f, 6150f ).name( "player2" )
+					.position( 2600f, 6000f ).name( "player2" )
 					.definition( "red_female" ).buildPlayer( );
 			level.progressManager.addPlayerTwo( level.player2 );
 		}
@@ -129,7 +129,7 @@ public class AlphaScreen extends Screen {
 		// initBackground( );
 		// initBackground( );
 		
-		buildEngineHeart(new Vector2(0,5424));
+		buildEngineHeart(new Vector2(0,5450));
 	}
 
 	@Override
@@ -526,18 +526,24 @@ public class AlphaScreen extends Screen {
 		Skeleton engineSkeleton = new Skeleton( "engineSkeleton", posPix, null,
 				level.world );
 		level.root.addSkeleton( engineSkeleton );
+		int pistonDistanceApart = 280;
+		float engineSpeed = 2.5f;
+		
 
 		TextureAtlas engineAtlas = WereScrewedGame.manager.getAtlas( "engine" );
+		Vector2 decalPos = engineSkeleton.getPositionPixel( ).sub( posPix ).add( -230,-360 );
+		engineSkeleton.addBGDecal( engineAtlas.createSprite("chest-engine"), new Vector2(decalPos) );
+		level.entityBGList.add(engineSkeleton);
 
 		for ( int i = 0; i < 3; ++i ) {
 			buildPiston( engineSkeleton, engineAtlas,
-					posPix.cpy( ).add( 250 * i, 0 ), i );
+					posPix.cpy( ).add( pistonDistanceApart * i, 0 ), i, engineSpeed );
 		}
 
 	}
 
 	private void buildPiston( Skeleton engineSkeleton,
-			TextureAtlas engineAtlas, Vector2 posPix, int index ) {
+			TextureAtlas engineAtlas, Vector2 posPix, int index, float engineSpeed ) {
 		Vector2 posMeter = posPix.cpy( ).mul( Util.PIXEL_TO_BOX );
 		// Build wheel
 		Sprite wheelSprite = engineAtlas.createSprite( "wheel" );
@@ -549,7 +555,7 @@ public class AlphaScreen extends Screen {
 		engineSkeleton.addPlatform( wheel1 );
 		// Make wheel rotate
 		new RevoluteJointBuilder( level.world ).entityA( engineSkeleton )
-				.entityB( wheel1 ).motor( true ).motorSpeed( 3f )
+				.entityB( wheel1 ).motor( true ).motorSpeed( engineSpeed )
 				.maxTorque( 5000 ).build( );
 
 		// setup for building girder
