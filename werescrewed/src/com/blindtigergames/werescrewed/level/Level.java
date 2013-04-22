@@ -22,6 +22,7 @@ import com.blindtigergames.werescrewed.debug.SBox2DDebugRenderer;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.RootSkeleton;
 import com.blindtigergames.werescrewed.entity.Skeleton;
+import com.blindtigergames.werescrewed.entity.Sprite;
 import com.blindtigergames.werescrewed.entity.platforms.Platform;
 import com.blindtigergames.werescrewed.entity.tween.EntityAccessor;
 import com.blindtigergames.werescrewed.entity.tween.PlatformAccessor;
@@ -130,16 +131,16 @@ public class Level {
 			if ( skel.isActive( ) ) {
 				if ( skel.bgSprite != null ) {
 					if ( camera.getBounds( ).overlaps(
-							skel.fgSprite.getBoundingRectangle( ) ) ) {
+							skel.bgSprite.getBoundingRectangle( ) ) ) {
 						skel.bgSprite.draw( batch );
-					}
+					} 
 				}
-				skel.drawBGDecals( batch, camera.getBounds( )  );
+				skel.drawBGDecals( batch, camera.getBounds( ) );
 			}
 		}
 		for ( Entity e : entityBGList ) {
 			if ( e.isActive( ) ) {
-				e.drawBGDecals( batch, camera.getBounds( )  );
+				e.drawBGDecals( batch, camera.getBounds( ) );
 			}
 		}
 		// draw all the normal sprites
@@ -172,6 +173,8 @@ public class Level {
 
 			}
 		}
+
+		//camera.renderBuffers( );
 		batch.end( );
 
 		if ( debug )

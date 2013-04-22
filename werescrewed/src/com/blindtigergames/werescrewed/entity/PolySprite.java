@@ -192,8 +192,8 @@ public class PolySprite extends Sprite {
 	@Override
 	public Rectangle getBoundingRectangle () {
 
-		bounds.x = x;
-		bounds.y = y;
+		bounds.x = x-bounds.getWidth( )/2.0f;
+		bounds.y = y-bounds.getHeight( )/2.0f;
 		
 		return bounds;
 	}
