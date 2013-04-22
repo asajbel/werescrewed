@@ -1,6 +1,8 @@
 ##sounds
 /common/sounds/inceptionbutton.mp3
 /common/sounds/jump.ogg
+/common/sounds/footstep1.ogg
+/common/sounds/footstep2.ogg
 /common/sounds/WilhelmScream.ogg
 /common/sounds/TrainJob.mp3
 /common/sounds/loopTrain.mp3

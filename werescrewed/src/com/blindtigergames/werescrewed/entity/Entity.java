@@ -80,7 +80,7 @@ public class Entity implements GleedLoadable {
 	protected HashMap< String, ParticleEffect > behindParticles,
 			frontParticles;
 
-	protected SoundManager sounds;
+	public SoundManager sounds;
 	
 	/**
 	 * Create entity by definition
@@ -1240,6 +1240,7 @@ public class Entity implements GleedLoadable {
 	// Idle sound
 	public void idleSound(){
 		if (sounds != null && sounds.hasSound("idle")){
+			sounds.setSoundVolume( "idle", 0.0f );
 			sounds.loopSound("idle");
 		}
 	}

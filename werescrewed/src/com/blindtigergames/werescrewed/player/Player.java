@@ -589,6 +589,10 @@ public class Player extends Entity {
 			reachedMaxSpeed = false;
 		}
 		runTimeout = RUN_STEPS;
+		sounds.playSound( "footstep1" , 1.0f);
+		if (sounds.getDelay( "footsteps1" ) > 0.0f && sounds.getDelay( "footsteps1" ) < 0.5f){
+			sounds.playSound( "footstep2" , 1.0f);	
+		}
 	}
 
 	/**
@@ -635,6 +639,10 @@ public class Player extends Entity {
 			reachedMaxSpeed = false;
 		}
 		runTimeout = RUN_STEPS;
+		sounds.playSound( "footstep1" , 1.0f);
+		if (sounds.getDelay( "footsteps1" ) > 0.0f && sounds.getDelay( "footsteps1" ) < 0.5f){
+			sounds.playSound( "footstep2" , 1.0f);	
+		}
 	}
 
 	/**
@@ -1955,7 +1963,6 @@ public class Player extends Entity {
 				hitSolidObject( that );
 				if ( getState( ) != PlayerState.Screwing ) {
 					setGrounded( true );
-					sounds.playSound( "land" );
 				}
 			} else {
 				collide( ( Entity ) that, contact );

@@ -112,7 +112,7 @@ public class SoundManager {
 			float vol = sounds.get(id).falloff/(dist*dist*zoom);
 			setSoundVolume(id, vol);
 			setSoundPan(id, xPan);
-			Gdx.app.log( "Handle Sound Position", "Dist:"+dist+" Vol:"+vol+" Pan:"+xPan );
+			//Gdx.app.log( "Handle Sound Position", "Dist:"+dist+" Vol:"+vol+" Pan:"+xPan );
 			sounds.get( id ).update(0.0f);
 		}
 	}
@@ -138,6 +138,13 @@ public class SoundManager {
 		for (SoundRef ref : sounds.values( )){
 			ref.update( dT );
 		}
+	}
+	
+	public float getDelay(String id){
+		if (hasSound(id)){
+			return sounds.get(id).delay;
+		}
+		return 0.0f;
 	}
 	
 	public static float getSoundVolume(){

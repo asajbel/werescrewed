@@ -61,7 +61,7 @@ public class MyContactListener implements ContactListener {
 		Fixture objectFix = null;
 
 		boolean playerInvolved = false;
-
+		
 		if ( x1.getBody( ).getUserData( ) != null
 				&& x2.getBody( ).getUserData( ) != null ) {
 			if ( x1.getBody( ).getUserData( ) instanceof Player ) {
@@ -104,6 +104,8 @@ public class MyContactListener implements ContactListener {
 								Platform plat = ( Platform ) object;
 								player.hitSolidObject( plat );
 								if ( player.getState( ) != PlayerState.Screwing ) {
+									if (!player.isGrounded( ))
+										player.sounds.playSound( "land" , 0.5f);
 									player.setGrounded( true );
 								}
 							}
