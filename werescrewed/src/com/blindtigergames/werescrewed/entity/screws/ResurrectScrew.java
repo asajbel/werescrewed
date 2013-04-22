@@ -176,18 +176,6 @@ public class ResurrectScrew extends Screw {
 	}
 
 	/**
-	 * look at collisions with the screw and determine if it is the dead player
-	 * if so bring the player back to life
-	 * 
-	 * @param player
-	 */
-	public void hitPlayer( Player player ) {
-		// if ( player == deadPlayer ) {
-		// destroyJoint = true;
-		// }
-	}
-
-	/**
 	 * returns the dead player attached
 	 */
 	public Player getDeadPlayer( ) {
@@ -231,7 +219,7 @@ public class ResurrectScrew extends Screw {
 			if ( playerMover.atEnd( ) || depth == maxDepth ) {
 				deadPlayer.body.setTransform(
 						this.getPositionPixel( )
-								.sub( Player.WIDTH / 3.0f, Player.HEIGHT + 70f )
+								.sub( Player.WIDTH / 3.0f, Player.HEIGHT/2.0f )
 								.mul( Util.PIXEL_TO_BOX ), 0.0f );
 				deadPlayer.body.setType( BodyType.DynamicBody );
 				deadPlayer.body.setLinearVelocity( Vector2.Zero );

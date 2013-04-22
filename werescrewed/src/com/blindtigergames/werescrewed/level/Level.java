@@ -1,6 +1,7 @@
 package com.blindtigergames.werescrewed.level;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import aurelienribon.tweenengine.Tween;
 
@@ -9,6 +10,7 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Joint;
 import com.badlogic.gdx.physics.box2d.World;
 import com.blindtigergames.werescrewed.WereScrewedGame;
@@ -133,6 +135,12 @@ public class Level {
 				skel.drawBGDecals( batch );
 			}
 		}
+		for ( Entity e : entityBGList ) {
+			if ( e.isActive( ) ) 
+			{
+				e.drawBGDecals( batch );
+			}
+		}
 		// draw all the normal sprites
 		root.draw( batch, deltaTime );
 		if ( progressManager != null )
@@ -143,7 +151,7 @@ public class Level {
 			player2.draw( batch, deltaTime );
 		// draw all foreground entity sprites after everything
 		for ( Entity e : entityFGList ) {
-			//if ( e.isActive( ) ) 
+			if ( e.isActive( ) ) 
 			{
 				e.drawFGDecals( batch );
 			}
@@ -153,15 +161,34 @@ public class Level {
 			if ( skel.fgSprite != null && skel.fgSprite.getAlpha( ) != 0 ) {
 				skel.fgSprite.draw( batch );
 			}
-			//if ( !skel.isActive( ) ) {
+			// if ( ( !skel.isActive( ) && skel.getParentSkeleton( ).isActive( )
+			// )
+			// || ( skel.isMacroSkel( ) && !skel.isActive( ) ) )
+			{
 				skel.drawFGDecals( batch );
-			//}
+			}
 		}
 		batch.end( );
 
 		if ( debug )
 			debugRenderer.render( world, camera.combined( ) );
 		world.step( WereScrewedGame.oneOverTargetFrameRate, 6, 6 );
+
+	}
+
+	public void resetPhysicsWorld( ) {
+		world.clearForces( );
+
+		for ( Iterator< Body > iter = world.getBodies( ); iter.hasNext( ); ) {
+			Body body = iter.next( );
+			if ( body != null )
+				world.destroyBody( body );
+		}
+		for ( Iterator< Joint > iter = world.getJoints( ); iter.hasNext( ); ) {
+			Joint joint = iter.next( );
+			if ( joint != null )
+				world.destroyJoint( joint );
+		}
 
 	}
 

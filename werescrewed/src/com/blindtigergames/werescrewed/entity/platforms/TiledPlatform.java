@@ -266,7 +266,7 @@ public class TiledPlatform extends Platform {
 
 	@Override
 	public void draw( SpriteBatch batch, float deltaTime ) {
-		drawBGDecals( batch );
+		//drawBGDecals( batch );
 		Tile d;
 		Iterator< Tile > v = tiles.listIterator( );
 		while ( v.hasNext( ) ) {
@@ -292,7 +292,7 @@ public class TiledPlatform extends Platform {
 			}
 		}
 		//drawOrigin( batch );
-		drawFGDecals( batch );
+		//drawFGDecals( batch );
 	}
 
 	/**

@@ -20,7 +20,6 @@ import com.badlogic.gdx.physics.box2d.joints.RevoluteJoint;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
 import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.camera.Anchor;
-import com.blindtigergames.werescrewed.camera.AnchorList;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityDef;
 import com.blindtigergames.werescrewed.entity.EntityType;
@@ -185,8 +184,9 @@ public class Player extends Entity {
 		Idle, Left, Right
 	}
 
-	private String[ ] injuredParticles = { "injured/baf",
-			"injured/extra_crispy", "injured/ooph" };
+	private String landCloudName = "land_cloud";
+	private String[ ] injuredParticles = { "injured/oof",
+			"injured/arg", "injured/doof" };
 	Random r;
 
 	// CONSTRUCTORS
@@ -216,8 +216,7 @@ public class Player extends Entity {
 				* Util.BOX_TO_PIXEL ), new Vector2( 0, 0 ), new Vector2(
 				ANCHOR_BUFFER_SIZE.x, ANCHOR_BUFFER_SIZE.y ) );
 		anchor.activate( );
-		anchors.add( anchor );
-		AnchorList.getInstance( ).addAnchor( anchor );
+		addAnchor(anchor);
 
 		// build spine animator
 		if ( this.type.isAnimatorType( "spine" ) ) {
@@ -246,12 +245,12 @@ public class Player extends Entity {
 		loadSounds();
 
 		r = new Random( );
-		addFrontParticleEffect( "land_cloud_new", false, false );
+		addBehindParticleEffect( landCloudName, false, false );
 		addFrontParticleEffect( "skid_left", false, false );
 		addFrontParticleEffect( "skid_right", false, false );
-		// addFrontParticleEffect( "blood", false, false );
 		for ( String s : injuredParticles ) {
 			addBehindParticleEffect( s, false, false );
+			getEffect( s ).allowCompletion( );
 		}
 		addBehindParticleEffect( "revive", false, false );
 		// land_cloud = ParticleEffect.loadEffect( "land_cloud" );
@@ -310,31 +309,30 @@ public class Player extends Entity {
 			} else if ( inputHandler != null ) {
 				updateKeyboard( deltaTime );
 			}
-
 			// if re-spawning decrement time out
 			// player will not die in this time
 			if ( respawnTimeout > 0 ) {
 				respawnTimeout--;
 			}
-
 			// build extra fixture to have new friction
-
 			// updateFootFriction( );
-
 			// test if player is still moving after timeout
-			if ( playerDirection != PlayerDirection.Idle
-					&& playerState != PlayerState.Screwing ) {
+			if ( playerDirection != PlayerDirection.Idle && playerState != PlayerState.Screwing ) {
 				if ( runTimeout == 0 && playerState != PlayerState.Jumping
 						&& playerState != PlayerState.Falling
 						&& extraState != ConcurrentState.ExtraFalling
 						&& extraState != ConcurrentState.ExtraJumping ) {
 					playerDirection = PlayerDirection.Idle;
-				} else if ( playerDirection == PlayerDirection.Left
-						&& type.getScale( ).x > 0 ) {
+				} else if ( playerDirection == PlayerDirection.Left 
+						&& prevPlayerDir != PlayerDirection.Left) {
+						//&& type.getScale( ).x > 0 ) {
+					prevPlayerDir = PlayerDirection.Left;
 					flipX = true;
 					type.setScale( type.getScale( ).x * -1, type.getScale( ).y );
-				} else if ( playerDirection == PlayerDirection.Right
-						&& type.getScale( ).x < 0 ) {
+				} else if ( playerDirection == PlayerDirection.Right 
+						&& prevPlayerDir != PlayerDirection.Right ) {
+					prevPlayerDir = PlayerDirection.Right;
+						//&& type.getScale( ).x < 0 ) {
 					flipX = false;
 					type.setScale( type.getScale( ).x * -1, type.getScale( ).y );
 				} else if ( playerState != PlayerState.Jumping
@@ -345,7 +343,6 @@ public class Player extends Entity {
 				}
 			}
 		}
-
 		updateFootFrictionNew( );
 		// switch between states
 		switch ( playerState ) {
@@ -387,7 +384,7 @@ public class Player extends Entity {
 				if ( currentScrew.getScrewType( ) == ScrewType.SCREW_RESURRECT ) {
 					ResurrectScrew rezScrew = ( ResurrectScrew ) currentScrew;
 					if ( rezScrew.deleteQueue( ) ) {
-						jump( );
+						//jump( );
 						removePlayerToScrew( );
 					}
 				}
@@ -443,6 +440,14 @@ public class Player extends Entity {
 		// check for crushing stuff
 		if ( ( ( topCrush && botCrush ) || ( leftCrush && rightCrush ) )
 				&& ( playerState != PlayerState.Screwing ) ) {
+			//increments crush death metrics
+			if ( this.name == Metrics.player1( ) ){
+				Metrics.incTrophyMetric( TrophyMetric.P1CRUSHDEATHS, 1 );
+			}
+			else if (this.name == Metrics.player2( ) ){
+				Metrics.incTrophyMetric( TrophyMetric.P2CRUSHDEATHS, 1 );
+			}
+			
 			this.killPlayer( );
 			// Gdx.app.log( "\nright: ", "" + rightCrush );
 			// Gdx.app.log( "left: ", "" + leftCrush );
@@ -497,10 +502,13 @@ public class Player extends Entity {
 				playerState = PlayerState.Standing;
 				currentPlatform = null;
 			}
+			
+			if (!isDead){
+				ParticleEffect blood = getEffect( injuredParticles[ r
+			                                                    .nextInt( injuredParticles.length ) ] );
+				blood.restartAt( getPositionPixel( ) );
+			}
 			isDead = true;
-			ParticleEffect blood = getEffect( injuredParticles[ r
-					.nextInt( injuredParticles.length ) ] );
-			blood.restartAt( getPositionPixel( ) );
 		}
 	}
 
@@ -527,7 +535,7 @@ public class Player extends Entity {
 		isDead = false;
 		respawnTimeout = DEAD_STEPS;
 
-		getEffect( "revive" ).restartAt( getPositionPixel( ) );
+		getEffect( "revive" ).restartAt( getPositionPixel( ).add( 0, 500 ) );
 	}
 
 	/**
@@ -572,7 +580,9 @@ public class Player extends Entity {
 					reachedMaxSpeed = false;
 			}
 		}
-		playerDirection = PlayerDirection.Right;
+		if ( playerState != PlayerState.Screwing ) {
+			playerDirection = PlayerDirection.Right;
+		}
 		if ( grounded && prevPlayerDir == PlayerDirection.Left ) {
 			getEffect( "skid_left" )
 					.restartAt( getPositionPixel( ).add( 30, 0 ) );
@@ -616,7 +626,9 @@ public class Player extends Entity {
 					reachedMaxSpeed = false;
 			}
 		}
-		playerDirection = PlayerDirection.Left;
+		if ( playerState != PlayerState.Screwing ) {
+			playerDirection = PlayerDirection.Left;
+		}
 		if ( grounded && prevPlayerDir == PlayerDirection.Right ) {
 			getEffect( "skid_right" ).restartAt(
 					getPositionPixel( ).add( 100, 0 ) );
@@ -807,10 +819,8 @@ public class Player extends Entity {
 	public void setGrounded( boolean newVal ) {
 		if ( !topPlayer ) {
 			if ( newVal != false && !grounded && otherPlayer == null ) {
-				// if ( !world.isLocked( ) ) {
-				getEffect( "land_cloud_new" ).restartAt(
+				getEffect( landCloudName ).restartAt(
 						getPositionPixel( ).add( 50, 0 ) );
-				// }
 			}
 			this.grounded = newVal;
 		}
@@ -1837,6 +1847,14 @@ public class Player extends Entity {
 		// ) );
 		body.applyLinearImpulse( new Vector2( 0, STEAM_IMPULSE ),
 				body.getWorldCenter( ) );
+		
+		//increments steam jump trophy metric
+		if ( this.name == Metrics.player1( ) ){
+			Metrics.incTrophyMetric( TrophyMetric.P1STEAMJUMPS, 1 );
+		}
+		else if ( this.name == Metrics.player2( ) ){
+			Metrics.incTrophyMetric( TrophyMetric.P2STEAMJUMPS, 1 );
+		}
 		grounded = false;
 	}
 
