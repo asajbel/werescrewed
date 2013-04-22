@@ -92,17 +92,17 @@ public class AlphaScreen extends Screen {
 		// rope on left side of the robot <- -950f, 5100f
 		// top left: -1582f, 6150f
 		// head: 480f,  6688f
-		//right arm: 2600f, 6000f
+		// right arm: 2600f, 6000f
 
 		if ( level.player1 == null ) {
 			level.player1 = new PlayerBuilder( ).world( level.world )
-					.position( 2600f, 6000f ).name( "player1" ).definition( "red_male" )
+					.position(-1582f, 6150f ).name( "player1" ).definition( "red_male" )
 					.buildPlayer( );
 			level.progressManager.addPlayerOne( level.player1 );
 		}
 		if ( level.player2 == null ) {
 			level.player2 = new PlayerBuilder( ).world( level.world )
-					.position( 2600f, 6000f ).name( "player2" )
+					.position( -1582f, 6150f ).name( "player2" )
 					.definition( "red_female" ).buildPlayer( );
 			level.progressManager.addPlayerTwo( level.player2 );
 		}
@@ -144,7 +144,7 @@ public class AlphaScreen extends Screen {
 
 		if ( leftArmScrew.getDepth( ) == leftArmScrew.getMaxDepth( ) ) {
 			leftShoulderSkeleton.addMover( new RotateTweenMover(
-					leftShoulderSkeleton, 10, -Util.PI / 2, 0, false ),
+					leftShoulderSkeleton, 5f, -Util.PI / 2, 0, false ),
 					RobotState.IDLE );
 		}
 
