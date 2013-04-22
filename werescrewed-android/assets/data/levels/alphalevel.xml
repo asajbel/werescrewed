@@ -10736,7 +10736,7 @@
     <CustomProperties />
     <EditorRelated>
         <NextItemNumber>538</NextItemNumber>
-        <ContentRootFolder>C:\Users\William Pacini\Documents\GitHub\werescrewed\gleed-textures</ContentRootFolder>
+        <ContentRootFolder>\\vmware-host\Shared Folders\Documents\werescrewed\gleed-textures</ContentRootFolder>
         <CameraPosition>
             <X>1763.0105</X>
             <Y>-3506.895</Y>

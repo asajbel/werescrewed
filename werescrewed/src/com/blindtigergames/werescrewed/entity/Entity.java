@@ -1018,7 +1018,7 @@ public class Entity implements GleedLoadable {
 	}
 
 	/**
-	 * 
+	 * @param angle in radian
 	 */
 	public void addFGDecal( Sprite s, Vector2 offset, float angle ) {
 		this.fgDecals.add( s );

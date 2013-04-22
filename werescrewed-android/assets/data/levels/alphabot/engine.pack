@@ -1,0 +1,89 @@
+engine.png
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+offset: 0, 0
+piston_middle
+  rotate: false
+  xy: 237, 543
+  size: 123, 156
+  orig: 123, 156
+  offset: 0, 0
+  index: -1
+girder2
+  rotate: false
+  xy: 48, 543
+  size: 49, 338
+  orig: 49, 338
+  offset: 0, 0
+  index: -1
+piston_left
+  rotate: false
+  xy: 99, 543
+  size: 136, 158
+  orig: 136, 158
+  offset: 0, 0
+  index: -1
+piston_right
+  rotate: false
+  xy: 362, 543
+  size: 101, 155
+  orig: 101, 155
+  offset: 0, 0
+  index: -1
+girder0
+  rotate: false
+  xy: 978, 65
+  size: 42, 339
+  orig: 42, 339
+  offset: 0, 0
+  index: -1
+bolt0
+  rotate: false
+  xy: 2, 2
+  size: 84, 45
+  orig: 84, 45
+  offset: 0, 0
+  index: -1
+chest-engine
+  rotate: false
+  xy: 2, 65
+  size: 974, 476
+  orig: 974, 476
+  offset: 0, 0
+  index: -1
+girder1
+  rotate: false
+  xy: 2, 543
+  size: 44, 340
+  orig: 44, 340
+  offset: 0, 0
+  index: -1
+bolt1
+  rotate: false
+  xy: 88, 2
+  size: 53, 56
+  orig: 53, 56
+  offset: 0, 0
+  index: -1
+bolt2
+  rotate: false
+  xy: 143, 2
+  size: 57, 60
+  orig: 57, 60
+  offset: 0, 0
+  index: -1
+bolt3
+  rotate: false
+  xy: 202, 2
+  size: 58, 61
+  orig: 58, 61
+  offset: 0, 0
+  index: -1
+wheel
+  rotate: false
+  xy: 465, 543
+  size: 215, 213
+  orig: 215, 213
+  offset: 0, 0
+  index: -1

@@ -113,6 +113,7 @@ public class AlphaScreen extends Screen {
 		rightArm( );
 
 		buildBackground( );
+		//buildEngineHeart();
 		// new background stuff
 		// initBackground( );
 		// initBackground( );
@@ -506,4 +507,6 @@ public class AlphaScreen extends Screen {
 		level.world.createJoint( rjd );
 	}
 
+	
+	
 }

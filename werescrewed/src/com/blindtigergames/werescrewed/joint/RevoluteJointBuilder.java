@@ -6,7 +6,6 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJoint;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
 import com.blindtigergames.werescrewed.entity.Entity;
-import com.blindtigergames.werescrewed.entity.Skeleton;
 import com.blindtigergames.werescrewed.util.Util;
 
 public class RevoluteJointBuilder {
@@ -15,8 +14,8 @@ public class RevoluteJointBuilder {
      * Required parameters
      */
     World world;
-    Skeleton skeleton;
-    Entity bodyB;
+    Entity entityA;
+    Entity entityB;
     Vector2 anchor;
 
     // Default parameter values
@@ -45,58 +44,53 @@ public class RevoluteJointBuilder {
     }
 
     /**
-     * Creates prismatic joint, adds it to world, and to the skeleton
+     * Creates revolute joint, adds it to world
      * @return
      */
     public RevoluteJoint build() {
-        if ( bodyB == null || skeleton == null ) {
+        if ( entityB == null || entityA == null ) {
             Gdx.app.error( "RevoluteJointBuilder",
-                    "You didn't initialize bodyB and/or skeleton, you doofus!" );
+                    "You didn't initialize both of the entities, you doofus!" );
         }
         if ( anchor == null ) {
-            anchor = bodyB.body.getWorldCenter();
+            anchor = entityB.body.getWorldCenter();
         }
         RevoluteJointDef revoluteJointDef = new RevoluteJointDef();
-        revoluteJointDef.initialize( skeleton.body, bodyB.body, anchor );
+        revoluteJointDef.initialize( entityA.body, entityB.body, anchor );
         revoluteJointDef.enableLimit = enableLimit;
         revoluteJointDef.lowerAngle = lowerAngle;
         revoluteJointDef.upperAngle = upperAngle;
         revoluteJointDef.enableMotor = enableMotor;
         revoluteJointDef.maxMotorTorque = maxMotorTorque;// high max motor force
                                                         // yields a
+        
         // very strong motor
         revoluteJointDef.motorSpeed = motorSpeed;
 
         RevoluteJoint joint = (RevoluteJoint) world
                 .createJoint( revoluteJointDef );
         
-        //Take this line out if you don't want skeleton to keep track of children
-        //skeleton.addBoneAndJoint( bodyB, joint );
-        
         return joint;
     }
 
     /**
-     * Enforce Skeleton, since I'm under the impression everything is attached
-     * to a skeleton
-     * 
-     * @param _skeleton
+     * First body to attact the joint to
      */
-    public RevoluteJointBuilder skeleton( Skeleton _skeleton ) {
-        this.skeleton = _skeleton;
+    public RevoluteJointBuilder entityA( Entity bodyA ) {
+        this.entityA = bodyA;
         return this;
     }
 
     /**
      * bodyB is required to properly build this joint
      */
-    public RevoluteJointBuilder bodyB( Entity _bodyB ) {
-        this.bodyB = _bodyB;
+    public RevoluteJointBuilder entityB( Entity _bodyB ) {
+        this.entityB = _bodyB;
         return this;
     }
 
     /**
-     * Optional, default anchor is the center of bodyB.
+     * Optional, default anchor is the center of entityB.
      * 
      * @param _anchor
      */
