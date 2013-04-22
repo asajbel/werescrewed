@@ -95,7 +95,7 @@ public class AlphaScreen extends Screen {
 		// head: 480f,  6688f
 		// right arm: 2600f, 6000f
 		
-		Vector2 spawnPos = new Vector2(0f, 0f);
+		Vector2 spawnPos = new Vector2(-1582f, 6150f);
 
 		if ( level.player1 == null ) {
 			level.player1 = new PlayerBuilder( ).world( level.world )
