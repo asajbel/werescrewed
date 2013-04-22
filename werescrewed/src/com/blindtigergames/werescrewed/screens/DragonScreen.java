@@ -31,6 +31,7 @@ import com.blindtigergames.werescrewed.entity.platforms.Platform;
 import com.blindtigergames.werescrewed.entity.platforms.TiledPlatform;
 import com.blindtigergames.werescrewed.level.Level;
 import com.blindtigergames.werescrewed.level.LevelFactory;
+import com.blindtigergames.werescrewed.entity.screws.PuzzleScrew;
 import com.blindtigergames.werescrewed.entity.screws.StructureScrew;
 import com.blindtigergames.werescrewed.entity.tween.PathBuilder;
 import com.blindtigergames.werescrewed.entity.tween.PlatformAccessor;
@@ -38,7 +39,8 @@ import com.blindtigergames.werescrewed.util.Util;
 
 public class DragonScreen extends Screen {
 
-	
+	PuzzleScrew puzzle_screw_balloon1;
+	Platform balloon1;
 	
 	public DragonScreen( ) {
 		super( );
@@ -51,7 +53,7 @@ public class DragonScreen extends Screen {
 	}
 	
 	void buildBalloon(){
-		Platform balloon1 = (Platform) LevelFactory.entities.get( "balloon1" );
+		balloon1 = (Platform) LevelFactory.entities.get( "balloon1" );
 		Platform balloon2 = (Platform) LevelFactory.entities.get( "balloon2" );
 		Platform balloon3 = (Platform) LevelFactory.entities.get( "balloon3" );
 		Platform balloon4 = (Platform) LevelFactory.entities.get( "balloon4" );
@@ -59,7 +61,8 @@ public class DragonScreen extends Screen {
 		Skeleton balloon1_skeleton = ( Skeleton ) LevelFactory.entities.get( "balloon1_skeleton" );
 
 		
-
+		puzzle_screw_balloon1 = (PuzzleScrew) LevelFactory.entities.get( "puzzle_screw_balloon1" );
+		
 		
 	//	balloon1.addMover( balloonMover(balloon1, 800, Util.PI/32, 0) );
 		balloon2.addMover( balloonMover(balloon2, 800, 0, 4) );
@@ -91,6 +94,52 @@ public class DragonScreen extends Screen {
 			time = 0;
 		}
 		
+		if(puzzle_screw_balloon1.getDepth( ) == puzzle_screw_balloon1.getMaxDepth( )){
+			if(balloon1.currentMover() == null){
+				Timeline t = Timeline.createSequence( );
+				
+				
+				t.beginParallel( );
+				t.push( Tween
+						.to( balloon1, PlatformAccessor.LOCAL_POS_XY, 8f )
+						.delay( 0f ).target( 0, 800 )
+						.ease( TweenEquations.easeNone ).start( ) );
+				
+				t.push( Tween.to( balloon1, PlatformAccessor.LOCAL_ROT, 4f )
+						   .ease(TweenEquations.easeNone)
+						   .target( Util.PI / 32 ).delay( 0f )
+						   .start()
+						   );
+				
+				t.end( );
+				
+				
+				t.beginParallel( );
+				
+				t.push( Tween
+						.to( balloon1, PlatformAccessor.LOCAL_POS_XY, 8f )
+						.delay( 0f ).target( 0, 1600f )
+						.ease( TweenEquations.easeNone ).start( ) );
+				
+				t.push( Tween.to( balloon1, PlatformAccessor.LOCAL_ROT, 4f )
+						   .ease(TweenEquations.easeNone)
+						   .target( -Util.PI / 32 ).delay( 0f )
+						   .start()
+						   );
+				
+				t.end( );
+
+				t.beginSequence( );
+				t.push( Tween.to( balloon1, PlatformAccessor.LOCAL_ROT, 4f )
+						   .ease(TweenEquations.easeNone)
+						   .target( 0 ).delay( 0f )
+						   .start()
+						   );
+				 t.end( );
+				balloon1.addMover( new TimelineTweenMover( t.start( ) ) );
+			}
+			
+		}
 		
 	}
 	
