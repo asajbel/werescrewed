@@ -102,6 +102,7 @@ public class Player extends Entity {
 	private Controller controller;
 	@SuppressWarnings( "unused" )
 	private boolean controllerIsActive, controllerDebug;
+	private boolean flyDebug = false;
 	private float leftAnalogX;
 	@SuppressWarnings( "unused" )
 	private float leftAnalogY;
@@ -269,6 +270,10 @@ public class Player extends Entity {
 		if ( Gdx.input.isKeyPressed( Keys.G ) )
 			Gdx.app.log( "steamCollide: " + steamCollide, "steamDone: "
 					+ steamDone );
+		if ( Gdx.input.isKeyPressed( Keys.NUM_7 )) 
+			flyDebug = !flyDebug;
+		if ( flyDebug ) 
+			grounded = true;
 		if ( kinematicTransform ) {
 			// setPlatformTransform( platformOffset );
 			kinematicTransform = false;
