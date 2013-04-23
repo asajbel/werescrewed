@@ -147,6 +147,35 @@ public class SoundManager {
 		return 0.0f;
 	}
 	
+	public boolean isDelayed(String id){
+		if (hasSound(id)){
+			return sounds.get(id).delay >= SoundRef.DELAY_MINIMUM;
+		}
+		return false;
+	}
+	
+	public void addDelay(String id, float amount){
+		if (hasSound(id)){
+			if (hasSound(id)){
+				sounds.get(id).delay += amount;
+			}			
+		}		
+	}
+	
+	public void setDelay(String id, float amount){
+		if (hasSound(id)){
+			sounds.get(id).delay = amount;
+		}
+	}
+	
+	public void delay(String id, float amount){
+		if (hasSound(id)){
+			if (sounds.get(id).delay < amount){
+				sounds.get(id).delay = amount;				
+			}
+		}
+	}
+	
 	public static float getSoundVolume(){
 		return globalVolume.get( SoundType.SFX );
 	}

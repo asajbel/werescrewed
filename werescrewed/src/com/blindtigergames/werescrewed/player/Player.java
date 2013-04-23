@@ -589,10 +589,7 @@ public class Player extends Entity {
 			reachedMaxSpeed = false;
 		}
 		runTimeout = RUN_STEPS;
-		sounds.playSound( "footstep1" , 1.0f);
-		if (sounds.getDelay( "footsteps1" ) > 0.0f && sounds.getDelay( "footsteps1" ) < 0.5f){
-			sounds.playSound( "footstep2" , 1.0f);	
-		}
+		footstepSound();
 	}
 
 	/**
@@ -639,10 +636,7 @@ public class Player extends Entity {
 			reachedMaxSpeed = false;
 		}
 		runTimeout = RUN_STEPS;
-		sounds.playSound( "footstep1" , 1.0f);
-		if (sounds.getDelay( "footsteps1" ) > 0.0f && sounds.getDelay( "footsteps1" ) < 0.5f){
-			sounds.playSound( "footstep2" , 1.0f);	
-		}
+		footstepSound();
 	}
 
 	/**
@@ -1966,6 +1960,17 @@ public class Player extends Entity {
 				}
 			} else {
 				collide( ( Entity ) that, contact );
+			}
+		}
+	}
+	
+	public void footstepSound(){
+		if (isGrounded()){
+			if (sounds.isDelayed( "footstep1" )){
+				sounds.playSound( "footstep2", 1.0f );
+			} else {
+				sounds.playSound( "footstep1", 1.0f );
+				sounds.setDelay( "footstep2", 0.5f );
 			}
 		}
 	}
