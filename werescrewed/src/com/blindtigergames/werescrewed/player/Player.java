@@ -26,8 +26,6 @@ import com.blindtigergames.werescrewed.entity.EntityType;
 import com.blindtigergames.werescrewed.entity.animator.PlayerSpinemator;
 import com.blindtigergames.werescrewed.entity.mover.FollowEntityMover;
 import com.blindtigergames.werescrewed.entity.mover.IMover;
-import com.blindtigergames.werescrewed.entity.mover.LerpMover;
-import com.blindtigergames.werescrewed.entity.mover.LinearAxis;
 import com.blindtigergames.werescrewed.entity.platforms.Platform;
 import com.blindtigergames.werescrewed.entity.screws.ResurrectScrew;
 import com.blindtigergames.werescrewed.entity.screws.Screw;
@@ -104,6 +102,7 @@ public class Player extends Entity {
 	private Controller controller;
 	@SuppressWarnings( "unused" )
 	private boolean controllerIsActive, controllerDebug;
+	private boolean flyDebug = false;
 	private float leftAnalogX;
 	@SuppressWarnings( "unused" )
 	private float leftAnalogY;
@@ -185,8 +184,8 @@ public class Player extends Entity {
 	}
 
 	private String landCloudName = "land_cloud";
-	private String[ ] injuredParticles = { "injured/oof",
-			"injured/arg", "injured/doof" };
+	private String[ ] injuredParticles = { "injured/oof", "injured/arg",
+			"injured/doof" };
 	Random r;
 
 	// CONSTRUCTORS
@@ -216,7 +215,7 @@ public class Player extends Entity {
 				* Util.BOX_TO_PIXEL ), new Vector2( 0, 0 ), new Vector2(
 				ANCHOR_BUFFER_SIZE.x, ANCHOR_BUFFER_SIZE.y ) );
 		anchor.activate( );
-		addAnchor(anchor);
+		addAnchor( anchor );
 
 		// build spine animator
 		if ( this.type.isAnimatorType( "spine" ) ) {
@@ -270,6 +269,10 @@ public class Player extends Entity {
 		if ( Gdx.input.isKeyPressed( Keys.G ) )
 			Gdx.app.log( "steamCollide: " + steamCollide, "steamDone: "
 					+ steamDone );
+		if ( Gdx.input.isKeyPressed( Keys.NUM_7 )) 
+			flyDebug = !flyDebug;
+		if ( flyDebug ) 
+			grounded = true;
 		if ( kinematicTransform ) {
 			// setPlatformTransform( platformOffset );
 			kinematicTransform = false;
@@ -279,6 +282,13 @@ public class Player extends Entity {
 		}
 		// if dead do dead stuff
 		if ( isDead ) {
+			// Trophy check for time spent dead
+			if ( this.name == Metrics.player1( ) ) {
+				Metrics.incTrophyMetric( TrophyMetric.P1DEADTIME, 0.01f );
+			} else if ( this.name == Metrics.player2( ) ) {
+				Metrics.incTrophyMetric( TrophyMetric.P2DEADTIME, 0.01f );
+			}
+
 			// if player is dead but state is not dead
 			// repeat kill player
 			// removes all the joints and stuff
@@ -317,22 +327,23 @@ public class Player extends Entity {
 			// build extra fixture to have new friction
 			// updateFootFriction( );
 			// test if player is still moving after timeout
-			if ( playerDirection != PlayerDirection.Idle && playerState != PlayerState.Screwing ) {
+			if ( playerDirection != PlayerDirection.Idle
+					&& playerState != PlayerState.Screwing ) {
 				if ( runTimeout == 0 && playerState != PlayerState.Jumping
 						&& playerState != PlayerState.Falling
 						&& extraState != ConcurrentState.ExtraFalling
 						&& extraState != ConcurrentState.ExtraJumping ) {
 					playerDirection = PlayerDirection.Idle;
-				} else if ( playerDirection == PlayerDirection.Left 
-						&& prevPlayerDir != PlayerDirection.Left) {
-						//&& type.getScale( ).x > 0 ) {
+				} else if ( playerDirection == PlayerDirection.Left
+						&& prevPlayerDir != PlayerDirection.Left ) {
+					// && type.getScale( ).x > 0 ) {
 					prevPlayerDir = PlayerDirection.Left;
 					flipX = true;
 					type.setScale( type.getScale( ).x * -1, type.getScale( ).y );
-				} else if ( playerDirection == PlayerDirection.Right 
+				} else if ( playerDirection == PlayerDirection.Right
 						&& prevPlayerDir != PlayerDirection.Right ) {
 					prevPlayerDir = PlayerDirection.Right;
-						//&& type.getScale( ).x < 0 ) {
+					// && type.getScale( ).x < 0 ) {
 					flipX = false;
 					type.setScale( type.getScale( ).x * -1, type.getScale( ).y );
 				} else if ( playerState != PlayerState.Jumping
@@ -384,7 +395,7 @@ public class Player extends Entity {
 				if ( currentScrew.getScrewType( ) == ScrewType.SCREW_RESURRECT ) {
 					ResurrectScrew rezScrew = ( ResurrectScrew ) currentScrew;
 					if ( rezScrew.deleteQueue( ) ) {
-						//jump( );
+						// jump( );
 						removePlayerToScrew( );
 					}
 				}
@@ -440,14 +451,13 @@ public class Player extends Entity {
 		// check for crushing stuff
 		if ( ( ( topCrush && botCrush ) || ( leftCrush && rightCrush ) )
 				&& ( playerState != PlayerState.Screwing ) ) {
-			//increments crush death metrics
-			if ( this.name == Metrics.player1( ) ){
+			// increments crush death metrics
+			if ( this.name == Metrics.player1( ) ) {
 				Metrics.incTrophyMetric( TrophyMetric.P1CRUSHDEATHS, 1 );
-			}
-			else if (this.name == Metrics.player2( ) ){
+			} else if ( this.name == Metrics.player2( ) ) {
 				Metrics.incTrophyMetric( TrophyMetric.P2CRUSHDEATHS, 1 );
 			}
-			
+
 			this.killPlayer( );
 			// Gdx.app.log( "\nright: ", "" + rightCrush );
 			// Gdx.app.log( "left: ", "" + leftCrush );
@@ -465,6 +475,37 @@ public class Player extends Entity {
 		// twice
 		if ( playerState == PlayerState.Jumping && isGrounded( ) ) {
 			jump( );
+		}
+
+		// Trophy checks for certain player states
+		// if true increments time counter for that state
+		if ( grounded ) {
+			if ( this.name == Metrics.player1( ) ) {
+				Metrics.incTrophyMetric( TrophyMetric.P1GROUNDTIME, 0.01f );
+				if ( playerDirection == PlayerDirection.Idle ) {
+					Metrics.incTrophyMetric( TrophyMetric.P1IDLETIME, 0.01f );
+				}
+			} else if ( this.name == Metrics.player2( ) ) {
+				Metrics.incTrophyMetric( TrophyMetric.P2GROUNDTIME, 0.01f );
+				if ( playerDirection == PlayerDirection.Idle ) {
+					Metrics.incTrophyMetric( TrophyMetric.P2IDLETIME, 0.01f );
+				}
+			}
+		} else if ( playerState == PlayerState.Falling
+				|| playerState == PlayerState.Jumping ) {
+			if ( this.name == Metrics.player1( ) ) {
+				Metrics.incTrophyMetric( TrophyMetric.P1AIRTIME, 0.01f );
+			} else if ( this.name == Metrics.player2( ) ) {
+				Metrics.incTrophyMetric( TrophyMetric.P2AIRTIME, 0.01f );
+			}
+		} else if ( playerState == PlayerState.Screwing
+				&& currentScrew.getScrewType( ) == ScrewType.SCREW_PUZZLE ) {
+			if ( this.name == Metrics.player1( ) ) {
+				Metrics.incTrophyMetric( TrophyMetric.P1PUZZLETIME, 0.01f );
+			}
+			else if ( this.name == Metrics.player2( ) ) {
+				Metrics.incTrophyMetric( TrophyMetric.P2PUZZLETIME, 0.01f );
+			}
 		}
 
 		prevPlayerDir = playerDirection;
@@ -495,6 +536,26 @@ public class Player extends Entity {
 					f.setFilterData( filter );
 				}
 				playerState = PlayerState.Dead;
+				// Trophy Check, Figures out which player died and increments
+				// death count by 1
+				// If player died after the other player, increment team death
+				// count by 1
+				if ( this.name == Metrics.player1( ) ) {
+					Metrics.incTrophyMetric( TrophyMetric.P1DEATHS, 1.0f );
+					
+					if ( otherPlayer != null
+							&& otherPlayer.getState( ) == PlayerState.Dead ) {
+						Metrics.incTrophyMetric( TrophyMetric.P1TEAMDEATHS,
+								1.0f );
+					}
+				} else if ( this.name == Metrics.player2( ) ) {
+					Metrics.incTrophyMetric( TrophyMetric.P2DEATHS, 1.0f );
+					if ( otherPlayer != null
+							&& otherPlayer.getState( ) == PlayerState.Dead ) {
+						Metrics.incTrophyMetric( TrophyMetric.P2TEAMDEATHS,
+								1.0f );
+					}
+				}
 				if ( Metrics.activated ) {
 					Metrics.addPlayerDeathPosition( this.getPositionPixel( ) );
 				}
@@ -502,10 +563,10 @@ public class Player extends Entity {
 				playerState = PlayerState.Standing;
 				currentPlatform = null;
 			}
-			
-			if (!isDead){
+
+			if ( !isDead ) {
 				ParticleEffect blood = getEffect( injuredParticles[ r
-			                                                    .nextInt( injuredParticles.length ) ] );
+						.nextInt( injuredParticles.length ) ] );
 				blood.restartAt( getPositionPixel( ) );
 			}
 			isDead = true;
@@ -563,12 +624,14 @@ public class Player extends Entity {
 						/ directionJumpDivsion, 0.0f ), body.getWorldCenter( ) );
 			}
 		} else {
+			// Trophy check for player movement, checks which player and
+			// increments time running
 			if ( this.name == Metrics.player1( )
 					&& playerState != PlayerState.Screwing ) {
-				Metrics.incTrophyMetric( TrophyMetric.P1RUNDIST, 1 );
+				Metrics.incTrophyMetric( TrophyMetric.P1RUNDIST, 0.01f );
 			} else if ( this.name == Metrics.player2( )
 					&& playerState != PlayerState.Screwing ) {
-				Metrics.incTrophyMetric( TrophyMetric.P2RUNDIST, 1 );
+				Metrics.incTrophyMetric( TrophyMetric.P2RUNDIST, 0.01f );
 			}
 
 			if ( body.getLinearVelocity( ).x < MAX_VELOCITY ) {
@@ -609,12 +672,14 @@ public class Player extends Entity {
 						/ directionJumpDivsion, 0.0f ), body.getWorldCenter( ) );
 			}
 		} else {
+			// Trophy check for player movement, checks which player and
+			// increments time running
 			if ( this.name == Metrics.player1( )
 					&& playerState != PlayerState.Screwing ) {
-				Metrics.incTrophyMetric( TrophyMetric.P1RUNDIST, 1 );
+				Metrics.incTrophyMetric( TrophyMetric.P1RUNDIST, 0.01f );
 			} else if ( this.name == Metrics.player2( )
 					&& playerState != PlayerState.Screwing ) {
-				Metrics.incTrophyMetric( TrophyMetric.P2RUNDIST, 1 );
+				Metrics.incTrophyMetric( TrophyMetric.P2RUNDIST, 0.01f );
 			}
 
 			if ( body.getLinearVelocity( ).x > -MAX_VELOCITY ) {
@@ -666,6 +731,16 @@ public class Player extends Entity {
 			reachedMaxSpeed = false;
 		}
 		runTimeout = RUN_STEPS;
+
+		// Trophy check for player movement, checks which player and increments
+		// time running
+		if ( this.name == Metrics.player1( )
+				&& playerState != PlayerState.Screwing ) {
+			Metrics.incTrophyMetric( TrophyMetric.P1RUNDIST, 0.01f );
+		} else if ( this.name == Metrics.player2( )
+				&& playerState != PlayerState.Screwing ) {
+			Metrics.incTrophyMetric( TrophyMetric.P2RUNDIST, 0.01f );
+		}
 	}
 
 	/**
@@ -688,6 +763,16 @@ public class Player extends Entity {
 			reachedMaxSpeed = false;
 		}
 		runTimeout = RUN_STEPS;
+
+		// Trophy check for player movement, checks which player and increments
+		// time running
+		if ( this.name == Metrics.player1( )
+				&& playerState != PlayerState.Screwing ) {
+			Metrics.incTrophyMetric( TrophyMetric.P1RUNDIST, 0.01f );
+		} else if ( this.name == Metrics.player2( )
+				&& playerState != PlayerState.Screwing ) {
+			Metrics.incTrophyMetric( TrophyMetric.P2RUNDIST, 0.01f );
+		}
 	}
 
 	/**
@@ -740,8 +825,21 @@ public class Player extends Entity {
 				&& ( grounded || playerState == PlayerState.Screwing ) ) {
 			Metrics.addPlayerJumpPosition( this.getPositionPixel( ) );
 		}
-		if ( grounded || (playerState == PlayerState.HeadStand && this.isTopPlayer( ))){
+		if ( grounded
+				|| ( playerState == PlayerState.HeadStand && this.isTopPlayer( ) ) ) {
 			sounds.playSound( "jump" );
+			// Trophy check for player jumps
+			if ( this.name == Metrics.player1( ) ) {
+				Metrics.incTrophyMetric( TrophyMetric.P1JUMPS, 1.0f );
+				if ( playerState == PlayerState.HeadStand ) {
+					Metrics.incTrophyMetric( TrophyMetric.P1HEADSTANDS, 1.0f );
+				}
+			} else if ( this.name == Metrics.player2( ) ) {
+				Metrics.incTrophyMetric( TrophyMetric.P2JUMPS, 1.0f );
+				if ( playerState == PlayerState.HeadStand ) {
+					Metrics.incTrophyMetric( TrophyMetric.P2HEADSTANDS, 1.0f );
+				}
+			}
 		}
 		// Regardless of how the player jumps, we shouldn't consider them
 		// grounded anymore.
@@ -754,11 +852,23 @@ public class Player extends Entity {
 	/**
 	 * Sets the current screw
 	 * 
-	 * @author dennis
 	 */
 	public void hitScrew( Screw screw ) {
 		if ( playerState != PlayerState.Screwing ) {
 			currentScrew = screw;
+
+			// Trophy check for if player attaches to a stripped screw
+			if ( screw != null ) {
+				if ( currentScrew.getScrewType( ) == ScrewType.SCREW_STRIPPED ) {
+					if ( this.name == Metrics.player1( ) ) {
+						Metrics.incTrophyMetric( TrophyMetric.P1STRIPATTACH,
+								1.0f );
+					} else if ( this.name == Metrics.player2( ) ) {
+						Metrics.incTrophyMetric( TrophyMetric.P2STRIPATTACH,
+								1.0f );
+					}
+				}
+			}
 		}
 	}
 
@@ -1142,6 +1252,14 @@ public class Player extends Entity {
 										.getPositionPixel( ) );
 								Metrics.addToUnscrewListOnce = true;
 							}
+							// Trophy check for unscrewed screws
+							if ( this.name == Metrics.player1( ) ) {
+								Metrics.incTrophyMetric(
+										TrophyMetric.P1UNSCREWED, 1.0f );
+							} else if ( this.name == Metrics.player2( ) ) {
+								Metrics.incTrophyMetric(
+										TrophyMetric.P2UNSCREWED, 1.0f );
+							}
 						} else {
 							Metrics.addToUnscrewListOnce = false;
 						}
@@ -1189,6 +1307,14 @@ public class Player extends Entity {
 								Metrics.addPlayerUnscrewedScrewPosition( this
 										.getPositionPixel( ) );
 								Metrics.addToUnscrewListOnce = true;
+							}
+							// Trophy check for unscrewed screws
+							if ( this.name == Metrics.player1( ) ) {
+								Metrics.incTrophyMetric(
+										TrophyMetric.P1UNSCREWED, 1.0f );
+							} else if ( this.name == Metrics.player2( ) ) {
+								Metrics.incTrophyMetric(
+										TrophyMetric.P2UNSCREWED, 1.0f );
 							}
 						} else {
 							Metrics.addToUnscrewListOnce = false;
@@ -1505,17 +1631,16 @@ public class Player extends Entity {
 				switchedScrewingDirection = true;
 				resetScrewing = true;
 			}
-		}
-		 else if(controllerListener.checkRightStickForScrewing()){
-				if ( ( controllerListener.analogRightAxisX( ) < 0.7 && controllerListener
-						.analogRightAxisY( ) < 0.7 )
-						&& ( controllerListener.analogRightAxisX( ) > -0.7 && controllerListener
-								.analogRightAxisY( ) > -0.7 ) ) {
-					switchedScrewingDirection = true;
-					resetScrewing = true;
-				}
+		} else if ( controllerListener.checkRightStickForScrewing( ) ) {
+			if ( ( controllerListener.analogRightAxisX( ) < 0.7 && controllerListener
+					.analogRightAxisY( ) < 0.7 )
+					&& ( controllerListener.analogRightAxisX( ) > -0.7 && controllerListener
+							.analogRightAxisY( ) > -0.7 ) ) {
+				switchedScrewingDirection = true;
+				resetScrewing = true;
 			}
-		
+		}
+
 		if ( isGrounded( ) ) {
 			jumpCounter = 0;
 			directionJumpDivsion = JUMP_DEFAULT_DIVISION;
@@ -1849,12 +1974,11 @@ public class Player extends Entity {
 		// ) );
 		body.applyLinearImpulse( new Vector2( 0, STEAM_IMPULSE ),
 				body.getWorldCenter( ) );
-		
-		//increments steam jump trophy metric
-		if ( this.name == Metrics.player1( ) ){
+
+		// increments steam jump trophy metric
+		if ( this.name == Metrics.player1( ) ) {
 			Metrics.incTrophyMetric( TrophyMetric.P1STEAMJUMPS, 1 );
-		}
-		else if ( this.name == Metrics.player2( ) ){
+		} else if ( this.name == Metrics.player2( ) ) {
 			Metrics.incTrophyMetric( TrophyMetric.P2STEAMJUMPS, 1 );
 		}
 		grounded = false;
@@ -1929,11 +2053,12 @@ public class Player extends Entity {
 		if ( controllerListener != null ) {
 			float x = Math.abs( controllerListener.analogLeftAxisX( ) );
 			if ( x > MyControllerListener.DEADZONE ) {
-				x = (  x - MyControllerListener.DEADZONE ) 
-						/ (1 - MyControllerListener.DEADZONE );
+				x = ( x - MyControllerListener.DEADZONE )
+						/ ( 1 - MyControllerListener.DEADZONE );
 				return x / 1;
-			} else if ( controllerListener.leftPressed( ) || controllerListener.rightPressed( ) ) {
-				return 1f; 
+			} else if ( controllerListener.leftPressed( )
+					|| controllerListener.rightPressed( ) ) {
+				return 1f;
 			}
 			return 0;
 		}
@@ -1965,7 +2090,7 @@ public class Player extends Entity {
 	}
 	
 	public void footstepSound(){
-		if (isGrounded()){
+		if (isGrounded() && this.playerState != PlayerState.Screwing){
 			if (sounds.isDelayed( "footstep1" )){
 				sounds.playSound( "footstep2", 1.0f );
 			} else {

@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
@@ -56,7 +57,7 @@ public class Entity implements GleedLoadable {
 	public Body body;
 	protected World world;
 	protected boolean solid;
-	protected ArrayList< Anchor > anchors;
+	public ArrayList< Anchor > anchors;
 	protected float energy;
 	protected boolean active;
 	protected boolean crushing;
@@ -362,8 +363,6 @@ public class Entity implements GleedLoadable {
 
 	public void update( float deltaTime ) {
 		Vector2 bodyPos = null;
-		Vector2 camPos = new Vector2(Camera.getCurrentCameraCoords( ).x, Camera.getCurrentCameraCoords().y);
-		float zoom = Camera.getCurrentCameraCoords( ).z;
 		if ( body != null ) {
 			// animation stuff may go here
 			bodyPos = body.getPosition( ).mul( Util.BOX_TO_PIXEL );
@@ -397,7 +396,7 @@ public class Entity implements GleedLoadable {
 		updateParticleEffect( deltaTime, behindParticles );
 		
 		if (sounds != null){
-			sounds.handleSoundPosition("idle", camPos, bodyPos, zoom);
+			sounds.handleSoundPosition("idle", bodyPos, Camera.CAMERA_RECT);
 			sounds.update( deltaTime );
 		}
 	}
@@ -1021,15 +1020,21 @@ public class Entity implements GleedLoadable {
 	 * 
 	 */
 	public void addBGDecal( Sprite s, Vector2 offset, float angle ) {
+		if ( s == null ){
+			throw new RuntimeException("Entity.addBGDecal(): Adding null sprite");
+		}
 		this.bgDecals.add( s );
 		this.bgDecalOffsets.add( offset );
 		this.bgDecalAngles.add( angle );
 	}
 
 	/**
-	 * 
+	 * @param angle in radian
 	 */
 	public void addFGDecal( Sprite s, Vector2 offset, float angle ) {
+		if ( s == null ){
+			throw new RuntimeException("Entity.addFGDecal(): Adding null sprite");
+		}
 		this.fgDecals.add( s );
 		this.fgDecalOffsets.add( offset );
 		this.fgDecalAngles.add( angle );
@@ -1041,6 +1046,48 @@ public class Entity implements GleedLoadable {
 
 	public void addFGDecal( Sprite s, Vector2 offset ) {
 		addFGDecal( s, offset, 0.0f );
+	}
+	
+	public void addFGDecalBack(Sprite s, Vector2 offset ){
+		addDecalBack( s, offset, true );
+	}
+	
+	public void addBGDecalBack(Sprite s, Vector2 offset ){
+		addDecalBack( s, offset, false );
+	}
+	
+	private void addDecalBack(Sprite s, Vector2 offset, boolean isFG){
+		ArrayList< Sprite > decalsList = (isFG)?this.fgDecals:this.bgDecals;
+		ArrayList< Vector2 > offsetList = (isFG)?this.fgDecalOffsets:this.bgDecalOffsets;
+		ArrayList< Float > angleList = (isFG)?this.fgDecalAngles:this.bgDecalAngles;
+		
+		ArrayList< Sprite > newSprites = new ArrayList<Sprite>(decalsList.size( )+1);
+		newSprites.add(s);
+		for(Sprite sprite:decalsList)newSprites.add(sprite);
+		decalsList.clear( );
+		decalsList = newSprites;
+		
+		ArrayList< Vector2 > newOffsets = new ArrayList<Vector2>(offsetList.size( )+1);
+		newOffsets.add(offset);
+		for(Vector2 o:offsetList)newOffsets.add(o);
+		offsetList.clear( );
+		offsetList = newOffsets;
+		
+		ArrayList< Float > newAngles = new ArrayList<Float>(angleList.size( )+1);
+		newAngles.add(0.0f);
+		for(Float f:angleList)newAngles.add(f);
+		angleList.clear();
+		angleList = newAngles;
+		
+		if(isFG){
+			this.fgDecals = decalsList;
+			this.fgDecalOffsets = offsetList;
+			this.fgDecalAngles = angleList;
+		}else{
+			this.bgDecals = decalsList;
+			this.bgDecalOffsets = offsetList;
+			this.bgDecalAngles = angleList;
+		}
 	}
 
 	public void addBGDecal( Sprite s ) {
@@ -1081,20 +1128,22 @@ public class Entity implements GleedLoadable {
 	/**
 	 * 
 	 */
-	public void drawFGDecals( SpriteBatch batch ) {
+	public void drawFGDecals( SpriteBatch batch, Rectangle camBounds ) {
 		for ( Sprite decal : fgDecals ) {
-			decal.draw( batch );
+			if ( camBounds.overlaps( decal.getBoundingRectangle( ) ) ) {
+				decal.draw( batch );
+			}
 		}
 	}
 
 	/**
 	 * 
 	 */
-	public void drawBGDecals( SpriteBatch batch ) {
+	public void drawBGDecals( SpriteBatch batch, Rectangle camBounds ) {
 		for ( Sprite decal : bgDecals ) {
-
-			// Gdx.app.log( "level draw", this.name + " drawing background " );
-			decal.draw( batch );
+			if ( camBounds.overlaps( decal.getBoundingRectangle( ) ) ) {
+				decal.draw( batch );
+			}
 		}
 	}
 

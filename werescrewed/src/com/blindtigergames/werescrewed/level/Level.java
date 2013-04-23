@@ -19,7 +19,6 @@ import com.blindtigergames.werescrewed.checkpoints.ProgressManager;
 import com.blindtigergames.werescrewed.collisionManager.MyContactListener;
 import com.blindtigergames.werescrewed.debug.SBox2DDebugRenderer;
 import com.blindtigergames.werescrewed.entity.Entity;
-import com.blindtigergames.werescrewed.entity.PolySprite;
 import com.blindtigergames.werescrewed.entity.RootSkeleton;
 import com.blindtigergames.werescrewed.entity.Skeleton;
 import com.blindtigergames.werescrewed.entity.platforms.Platform;
@@ -45,7 +44,6 @@ public class Level {
 	public MyContactListener myContactListener;
 	public Player player1, player2;
 	public RootSkeleton root;
-	public PolySprite polySprite;
 	private boolean debugTest, debug;
 	public ProgressManager progressManager;
 	public static ArrayList< Joint > jointsToRemove = new ArrayList< Joint >( );
@@ -130,15 +128,17 @@ public class Level {
 		for ( Skeleton skel : skelBGList ) {
 			if ( skel.isActive( ) ) {
 				if ( skel.bgSprite != null ) {
-					skel.bgSprite.draw( batch );
+					if ( camera.getBounds( ).overlaps(
+							skel.bgSprite.getBoundingRectangle( ) ) ) {
+						skel.bgSprite.draw( batch );
+					} 
 				}
-				skel.drawBGDecals( batch );
+				skel.drawBGDecals( batch, camera.getBounds( ) );
 			}
 		}
 		for ( Entity e : entityBGList ) {
-			if ( e.isActive( ) ) 
-			{
-				e.drawBGDecals( batch );
+			if ( e.isActive( ) ) {
+				e.drawBGDecals( batch, camera.getBounds( ) );
 			}
 		}
 		// draw all the normal sprites
@@ -151,23 +151,28 @@ public class Level {
 			player2.draw( batch, deltaTime );
 		// draw all foreground entity sprites after everything
 		for ( Entity e : entityFGList ) {
-			if ( e.isActive( ) ) 
-			{
-				e.drawFGDecals( batch );
+			if ( e.isActive( ) ) {
+				e.drawFGDecals( batch, camera.getBounds( ) );
 			}
 		}
 		// draw all foreground skeleton sprites after everything
 		for ( Skeleton skel : skelFGList ) {
 			if ( skel.fgSprite != null && skel.fgSprite.getAlpha( ) != 0 ) {
-				skel.fgSprite.draw( batch );
+				if ( camera.getBounds( ).overlaps(
+						skel.fgSprite.getBoundingRectangle( ) ) ) {
+					skel.fgSprite.draw( batch );
+				}
 			}
 			// if ( ( !skel.isActive( ) && skel.getParentSkeleton( ).isActive( )
 			// )
 			// || ( skel.isMacroSkel( ) && !skel.isActive( ) ) )
 			{
-				skel.drawFGDecals( batch );
+				skel.drawFGDecals( batch, camera.getBounds( ) );
+
 			}
 		}
+
+		//camera.renderBuffers( );
 		batch.end( );
 
 		if ( debug )

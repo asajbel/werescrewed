@@ -5,6 +5,7 @@ import java.util.HashMap;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.blindtigergames.werescrewed.WereScrewedGame;
@@ -105,10 +106,20 @@ public class SoundManager {
 		}
 	}
 	
-	public void handleSoundPosition(String id, Vector2 cameraPos, Vector2 soundPos, float zoom){
+	public void handleSoundPosition(String id, Vector2 soundPos, Rectangle cameraBox){
 		if (hasSound(id)){
-			float dist = cameraPos.dst( soundPos );
-			float xPan = soundPos.sub( cameraPos ).nor().x;
+			Vector2 camPos = new Vector2(
+					cameraBox.getX(),
+					cameraBox.getY()
+				);
+			Vector2 scale = new Vector2(
+					cameraBox.getWidth( ),
+					cameraBox.getHeight( )
+				);
+			Vector2 center = camPos.cpy().add( scale.cpy( ).mul( 0.5f ) );
+			float dist = center.dst( soundPos );
+			float xPan = center.cpy( ).sub( soundPos ).x/cameraBox.width;
+			float zoom = scale.len( );
 			float vol = sounds.get(id).falloff/(dist*dist*zoom);
 			setSoundVolume(id, vol);
 			setSoundPan(id, xPan);

@@ -48,7 +48,7 @@ public class Skeleton extends Platform {
 	public PolySprite bgSprite, fgSprite;
 
 	SimpleFrameAnimator alphaFadeAnimator;
-	private final float fadeSpeed = 1f;
+	private final float fadeSpeed = 3f;
 
 	protected HashMap< String, Platform > dynamicPlatformMap = new HashMap< String, Platform >( );
 	protected HashMap< String, Skeleton > childSkeletonMap = new HashMap< String, Skeleton >( );
@@ -64,7 +64,7 @@ public class Skeleton extends Platform {
 	protected RootSkeleton rootSkeleton;
 	protected Skeleton parentSkeleton;
 
-	protected boolean applyFadeToFGDecals = false;
+	protected boolean applyFadeToFGDecals = true;
 	protected boolean isMacroSkeleton = false;
 
 	/**
@@ -130,7 +130,7 @@ public class Skeleton extends Platform {
 	public void addPlatformRotatingCenter( Platform platform ) {
 		// Default values of the builder will allow rotation with anchor at
 		// center of platform
-		new RevoluteJointBuilder( world ).skeleton( this ).bodyB( platform )
+		new RevoluteJointBuilder( world ).entityA( this ).entityB( platform )
 				.build( );
 		addDynamicPlatform( platform );
 	}
@@ -145,7 +145,7 @@ public class Skeleton extends Platform {
 			float rotSpeedInMeters ) {
 		// Default values of the builder will allow rotation with anchor at
 		// center of platform
-		new RevoluteJointBuilder( world ).skeleton( this ).bodyB( platform )
+		new RevoluteJointBuilder( world ).entityA( this ).entityB( platform )
 				.motor( true ).motorSpeed( rotSpeedInMeters ).build( );
 
 		addDynamicPlatform( platform );
@@ -158,7 +158,7 @@ public class Skeleton extends Platform {
 	 * @param platform
 	 */
 	public void addDynamicPlatformFixed( Platform platform ) {
-		new RevoluteJointBuilder( world ).skeleton( this ).bodyB( platform )
+		new RevoluteJointBuilder( world ).entityA( this ).entityB( platform )
 				.limit( true ).lower( 0 ).upper( 0 ).build( );
 		addDynamicPlatform( platform );
 	}
@@ -175,11 +175,17 @@ public class Skeleton extends Platform {
 		else
 			addKinematicPlatform( platform );
 	}
+	
+	public void addPlatforms(Platform... platforms){
+		for( Platform p : platforms ){
+			addPlatform( p );
+		}
+	}
 
 	public void addRope( Rope rope, boolean toJoint ) {
 		if ( toJoint ) {
-			new RevoluteJointBuilder( world ).skeleton( this )
-					.bodyB( rope.getFirstLink( ) ).limit( true ).lower( 0 )
+			new RevoluteJointBuilder( world ).entityA( this )
+					.entityB( rope.getFirstLink( ) ).limit( true ).lower( 0 )
 					.upper( 0 ).build( );
 		}
 		// ropes.add( rope );
@@ -738,6 +744,7 @@ public class Skeleton extends Platform {
 
 	private void fadeFGDecals( ) {
 		float alpha = alphaFadeAnimator.getTime( );
+		alpha *= alpha;
 		for ( Sprite decal : fgDecals ) {
 			if ( decal.getAlpha( ) != alpha ) {
 				decal.setAlpha( alpha );

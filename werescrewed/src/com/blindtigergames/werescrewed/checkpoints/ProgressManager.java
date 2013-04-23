@@ -67,10 +67,12 @@ public class ProgressManager {
 				if ( p1Ghost.currentMover( ) instanceof LerpMover ) {
 					LerpMover lm = ( LerpMover ) p1Ghost.currentMover( );
 					// Change the destination
+					lm.changeBeginPos( p1Ghost.getPositionPixel( ) );
+					lm.setAlpha( 0 );
 					lm.changeEndPos( currentCheckPoint.getPositionPixel( ) );
 					// Adjust the speed
 					lm.setSpeed( 10f / currentCheckPoint.getPositionPixel( )
-							.sub( player1.getPositionPixel( ) ).len( ) );
+							.sub( p1Ghost.getPositionPixel( ) ).len( ) );
 					if ( currentCheckPoint.getPositionPixel( ).x < p1Ghost
 							.getPositionPixel( ).x ) {
 						p1Ghost.sprite.setScale( -1, 1 );
@@ -81,9 +83,11 @@ public class ProgressManager {
 			if ( p2Ghost != null ) {
 				if ( p2Ghost.currentMover( ) instanceof LerpMover ) {
 					LerpMover lm = ( LerpMover ) p2Ghost.currentMover( );
+					lm.changeBeginPos( p2Ghost.getPositionPixel( ) );
+					lm.setAlpha( 0 );
 					lm.changeEndPos( currentCheckPoint.getPositionPixel( ) );
 					lm.setSpeed( 10f / currentCheckPoint.getPositionPixel( )
-							.sub( player2.getPositionPixel( ) ).len( ) );
+							.sub( p2Ghost.getPositionPixel( ) ).len( ) );
 					if ( currentCheckPoint.getPositionPixel( ).x < p2Ghost
 							.getPositionPixel( ).x ) {
 						p2Ghost.sprite.setScale( -1, 1 );
@@ -132,8 +136,8 @@ public class ProgressManager {
 		if ( p1Ghost != null ) {
 			if ( p1Ghost.currentMover( ) instanceof LerpMover ) {
 				LerpMover lm = ( LerpMover ) p1Ghost.currentMover( );
-				lm.changeBeginPos( player1.getPositionPixel( ).cpy( )
-						.add( -64f, 64f ) );
+				//lm.changeBeginPos( player1.getPositionPixel( ).cpy( )
+				//		.add( -64f, 64f ) );
 				lm.changeEndPos( currentCheckPoint.getPositionPixel( ) );
 				lm.setSpeed( 10f / currentCheckPoint.getPositionPixel( )
 						.sub( player1.getPositionPixel( ) ).len( ) );
@@ -154,8 +158,8 @@ public class ProgressManager {
 		if ( p2Ghost != null ) {
 			if ( p2Ghost.currentMover( ) instanceof LerpMover ) {
 				LerpMover lm = ( LerpMover ) p2Ghost.currentMover( );
-				lm.changeBeginPos( player2.getPositionPixel( ).cpy( )
-						.add( -64f, 64f ) );
+				//lm.changeBeginPos( player2.getPositionPixel( ).cpy( )
+				//		.add( -64f, 64f ) );
 				lm.changeEndPos( currentCheckPoint.getPositionPixel( ) );
 				lm.setSpeed( 10f / currentCheckPoint.getPositionPixel( )
 						.sub( player2.getPositionPixel( ) ).len( ) );

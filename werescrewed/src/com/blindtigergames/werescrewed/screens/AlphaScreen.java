@@ -9,6 +9,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
 import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.entity.Entity;
@@ -18,11 +19,14 @@ import com.blindtigergames.werescrewed.entity.Skeleton;
 import com.blindtigergames.werescrewed.entity.Sprite;
 import com.blindtigergames.werescrewed.entity.action.RemoveEntityAction;
 import com.blindtigergames.werescrewed.entity.builders.EventTriggerBuilder;
+import com.blindtigergames.werescrewed.entity.builders.GenericEntityBuilder;
+import com.blindtigergames.werescrewed.entity.builders.PlatformBuilder;
 import com.blindtigergames.werescrewed.entity.builders.PlayerBuilder;
 import com.blindtigergames.werescrewed.entity.mover.AnalogRotateMover;
 import com.blindtigergames.werescrewed.entity.mover.LinearAxis;
 import com.blindtigergames.werescrewed.entity.mover.ParallaxMover;
 import com.blindtigergames.werescrewed.entity.mover.RotateTweenMover;
+import com.blindtigergames.werescrewed.entity.platforms.Platform;
 import com.blindtigergames.werescrewed.entity.platforms.TiledPlatform;
 import com.blindtigergames.werescrewed.entity.screws.PuzzleScrew;
 import com.blindtigergames.werescrewed.entity.screws.Screw;
@@ -31,6 +35,8 @@ import com.blindtigergames.werescrewed.entity.screws.StructureScrew;
 import com.blindtigergames.werescrewed.eventTrigger.EventTrigger;
 import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 import com.blindtigergames.werescrewed.graphics.TextureAtlas;
+import com.blindtigergames.werescrewed.joint.PrismaticJointBuilder;
+import com.blindtigergames.werescrewed.joint.RevoluteJointBuilder;
 import com.blindtigergames.werescrewed.level.CharacterSelect;
 import com.blindtigergames.werescrewed.level.LevelFactory;
 import com.blindtigergames.werescrewed.util.Util;
@@ -45,6 +51,8 @@ public class AlphaScreen extends Screen {
 			chestSkeleton, leftShoulderSkeleton;
 	private TiledPlatform kneeMovingPlat, leftShoulderSideHatch;
 	private PuzzleScrew leftArmScrew;
+	
+	private boolean etTriggered = false;
 
 	private Skeleton rightShoulderSkeleton;
 
@@ -60,7 +68,7 @@ public class AlphaScreen extends Screen {
 		String filename = "data/levels/alphalevel.xml";
 		level = new LevelFactory( ).load( filename );
 
-		level.camera.position = new Vector3( 0, 0, 0 );
+		//level.camera.position = new Vector3( 0, 0, 0 );
 
 		// death barrier
 		EventTriggerBuilder etb = new EventTriggerBuilder( level.world );
@@ -75,23 +83,28 @@ public class AlphaScreen extends Screen {
 
 		createFootObjects( );
 		createKneeObjects( );
+		thighDecals(thighSkeleton);//createFootObjects initializes thighSkeleton
 
 		// bottom: 0f, 0f
 		// power screws: -700f, 1800f
 		// chest entrance : -200f, 3800f
 		// upper chest: 1300f, 6000f
 		// rope on left side of the robot <- -950f, 5100f
-		// top left: -1582, 6150
+		// top left: -1582f, 6150f
+		// head: 480f,  6688f
+		// right arm: 2600f, 6000f
+		
+		Vector2 spawnPos = new Vector2(-128, 3712);
 
 		if ( level.player1 == null ) {
 			level.player1 = new PlayerBuilder( ).world( level.world )
-					.position( 0f, 0f ).name( "player1" ).definition( "red_male" )
+					.position(spawnPos.cpy()).name( "player1" ).definition( "red_male" )
 					.buildPlayer( );
 			level.progressManager.addPlayerOne( level.player1 );
 		}
 		if ( level.player2 == null ) {
 			level.player2 = new PlayerBuilder( ).world( level.world )
-					.position( 0f, 0f ).name( "player2" )
+					.position( spawnPos.cpy() ).name( "player2" )
 					.definition( "red_female" ).buildPlayer( );
 			level.progressManager.addPlayerTwo( level.player2 );
 		}
@@ -113,9 +126,8 @@ public class AlphaScreen extends Screen {
 		rightArm( );
 
 		buildBackground( );
-		// new background stuff
-		// initBackground( );
-		// initBackground( );
+		
+		buildEngineHeart(new Vector2(0,5450));
 	}
 
 	@Override
@@ -130,16 +142,14 @@ public class AlphaScreen extends Screen {
 
 		if ( leftArmScrew.getDepth( ) == leftArmScrew.getMaxDepth( ) ) {
 			leftShoulderSkeleton.addMover( new RotateTweenMover(
-					leftShoulderSkeleton, 10, -Util.PI / 2, 0, false ),
+					leftShoulderSkeleton, 5f, -Util.PI / 2, 0, false ),
 					RobotState.IDLE );
 		}
 
 	}
 
 	private void buildBackground( ) {
-		// SkeletonBuilder b = new SkeletonBuilder(level.world);
-		Skeleton bgSkele;// = b.name( "stageSkeleton" ).position( 0,0 ).build(
-							// );
+		Skeleton bgSkele;
 		bgSkele = ( Skeleton ) LevelFactory.entities.get( "stageSkeleton" );
 		TextureAtlas floor_seats = WereScrewedGame.manager
 				.getAtlas( "alphabot_floor_seats" );
@@ -156,8 +166,6 @@ public class AlphaScreen extends Screen {
 		TextureAtlas support_middle_right = WereScrewedGame.manager
 				.getAtlas( "support_middle_right" );
 		TextureAtlas curtains = WereScrewedGame.manager.getAtlas( "curtains" );
-		TextureAtlas decals = WereScrewedGame.manager
-				.getAtlas( "alphabot_foot_shin_decal" );
 		int numDomes = 10;
 		TextureAtlas[ ] dome = new TextureAtlas[ numDomes ];
 		for ( int i = 1; i <= numDomes; ++i ) {
@@ -173,8 +181,8 @@ public class AlphaScreen extends Screen {
 		int floorX = -max + offsetX;
 		int stage_pillarY = -202 + offsetY;
 		int stage_pillarX = floorX - 530;
-		int lightX = offsetX - 1966;
-		int lightY = offsetY + 50;
+		int lightX = offsetX - 1905;
+		int lightY = offsetY + 615;
 
 		int domeSliceX = 1234 * 2;
 		int domeSliceY = 1638;
@@ -252,33 +260,18 @@ public class AlphaScreen extends Screen {
 		initBackground( dome, numDomes, domeSliceX, domeSliceY, -max + seatsX,
 				seatsY );
 		
-		int decalX = -738;// -482;//587
-		int decalY = -714;// -558;//536
-		Sprite footBG = decals.createSprite( "foot_mechanisms_and_pipes_NOCOLOR" );
-		Sprite legBG = decals.createSprite( "shin_pipes_NOCOLOR" );
-		Skeleton foot = ( Skeleton ) LevelFactory.entities.get( "footSkeleton" );
-		foot.addBGDecal( footBG,
-				new Vector2( decalX, decalY ) );
-		footBG.setOrigin( 0f, 0f );
-		foot.addBGDecal( legBG,
-				new Vector2( 400 + decalX, 424 + decalY ) );
+		level.entityFGList.add(bgSkele);
+		level.entityBGList.add(bgSkele);
 		
-		// bgSkele.addBGDecal( decals.createSprite(
-		// "foot_support_structureNOCOLOR" ), new Vector2(decalX,decalY) );
-
-		level.skelBGList.add( bgSkele );
-		level.skelFGList.add( bgSkele );
 		
-		Sprite s = WereScrewedGame.manager.getAtlas("common-textures").createSprite( "rail_vert_middle" );
-		
-		bgSkele.addBGDecal( s , new Vector2(-3000,0) );
 	}
 
+	//Called by BuildBackground()
 	private void initBackground( TextureAtlas[ ] dome, int numDomes,
 			int domeSliceX, int domeSliceY, int startX, int startY ) {
 
 		BodyDef screwBodyDef;
-		Body body;
+		Body[] body = new Body[2];
 		CircleShape screwShape;
 		FixtureDef screwFixture;
 		Entity e1, e2;
@@ -293,42 +286,46 @@ public class AlphaScreen extends Screen {
 			}
 			Sprite a = dome[ i - 1 ].createSprite( "dome" + i );
 			a.setScale( 2, 1 );
-			// bgSkele.addBGDecal( a, pos );
 			Sprite b = dome[ i - 1 ].createSprite( "dome" + i );
 			b.setScale( -2, 1 );
-			// bgSkele.addBGDecal( b, pos.cpy( ).add( flipX * domeSliceX, 0 ) );
 
-			screwBodyDef = new BodyDef( );
-			screwBodyDef.type = BodyType.KinematicBody;
-			screwBodyDef.position.set( 0, 0 );
-			screwBodyDef.fixedRotation = true;
-			body = level.world.createBody( screwBodyDef );
-			screwShape = new CircleShape( );
-			screwShape.setRadius( 64 * Util.PIXEL_TO_BOX );
-			screwFixture = new FixtureDef( );
-			screwFixture.filter.categoryBits = Util.CATEGORY_IGNORE;
-			screwFixture.filter.maskBits = Util.CATEGORY_NOTHING;
-			screwFixture.shape = screwShape;
-			screwFixture.isSensor = true;
-			body.createFixture( screwFixture );
-			body.setUserData( this );
+			for(int j = 0; j < 2; ++j){
+				screwBodyDef = new BodyDef( );
+				screwBodyDef.type = BodyType.KinematicBody;
+				Vector2 bodyPos = pos.cpy( );
+				if ( j==1) bodyPos.add(flipX*domeSliceX,0);
+				screwBodyDef.position.set( bodyPos );
+				screwBodyDef.fixedRotation = true;
+				body[j] = level.world.createBody( screwBodyDef );
+				screwShape = new CircleShape( );
+				screwShape.setRadius( 64 * Util.PIXEL_TO_BOX );
+				screwFixture = new FixtureDef( );
+				screwFixture.filter.categoryBits = Util.CATEGORY_IGNORE;
+				screwFixture.filter.maskBits = Util.CATEGORY_NOTHING;
+				screwFixture.shape = screwShape;
+				screwFixture.isSensor = true;
+				body[j].createFixture( screwFixture );
+				body[j].setUserData( this );
+				screwShape.dispose( );
+			}
 			// the position of each entity and sprite is set at this point.
-			e1 = new Entity( "bg_1_" + i, pos, null, body, false );
+			e1 = new Entity( "bg_1_" + i, pos, null, body[0], false );
 			e1.sprite = a;
+			e1.setMoverAtCurrentState( new ParallaxMover( new Vector2( e1
+					.getPositionPixel( ) ), new Vector2( e1.getPositionPixel( )
+					.add( 0f, 512f ) ), 0.0002f, .5f, level.camera, false,
+					LinearAxis.VERTICAL ) );
+			level.backgroundRootSkeleton.addLooseEntity( e1 );
+			
 			e2 = new Entity( "bg_2_" + i, pos.cpy( )
-					.add( flipX * domeSliceX, 0 ), null, body, false );
+					.add( flipX * domeSliceX, 0 ), null, body[1], false );
 			e2.sprite = b;
 			// DENNIS: What should I set all these numbers to??
 			// if it helps, each bg piece is 1238x1642
-			e1.setMoverAtCurrentState( new ParallaxMover( new Vector2( e1
-					.getPositionPixel( ) ), new Vector2( e1.getPositionPixel( )
-					.sub( 0f, 512f ) ), 0.0002f, .5f, level.camera, false,
-					LinearAxis.VERTICAL ) );
 			e2.setMoverAtCurrentState( new ParallaxMover( new Vector2( e2
 					.getPositionPixel( ) ), new Vector2( e2.getPositionPixel( )
-					.sub( 0f, 512f ) ), 0.0002f, .5f, level.camera, false,
+					.add( 0f, 512f ) ), 0.0002f, .5f, level.camera, false,
 					LinearAxis.VERTICAL ) );
-			level.backgroundRootSkeleton.addLooseEntity( e1 );
 			level.backgroundRootSkeleton.addLooseEntity( e2 );
 		}
 
@@ -370,8 +367,20 @@ public class AlphaScreen extends Screen {
 		 */
 	}
 
+	private void thighDecals(Skeleton thighSkeleton){
+		TextureAtlas decals = WereScrewedGame.manager
+				.getAtlas( "alphabot_thigh_decal" );
+		//level.entityBGList.add(thighSkeleton);
+		thighSkeleton.addBGDecalBack( decals.createSprite( "thigh_mechanisms_and_pipesNOCOLOR" ), new Vector2(-425,-1117) );
+		//380,1117
+	}
+	
 	private void createFootObjects( ) {
+		TextureAtlas decals = WereScrewedGame.manager
+				.getAtlas( "alphabot_foot_shin_decal" );
+		
 		footSkeleton = ( Skeleton ) LevelFactory.entities.get( "footSkeleton" );
+		footSkeleton.setFgFade( true );
 
 		kneeSkeleton = ( Skeleton ) LevelFactory.entities.get( "kneeSkeleton" );
 
@@ -397,18 +406,52 @@ public class AlphaScreen extends Screen {
 		// rjd.collideConnected = false;
 		// level.world.createJoint( rjd );
 
-		structurePlat3.setGroupIndex( ( short ) -5 );
+//		structurePlat3.setGroupIndex( ( short ) -5 );
 		footPlat6.setGroupIndex( ( short ) -5 );
+		
+		
+		//DECALS for Foot / Shin
+		int decalX = -648;// -482;//587
+		int decalY = -654;// -558;//536
+		Sprite footBG = decals.createSprite( "foot_mechanisms_and_pipes_NOCOLOR" );
+		Sprite legBG = decals.createSprite( "shin_pipes_NOCOLOR" );
+		Skeleton foot = ( Skeleton ) LevelFactory.entities.get( "footSkeleton" );
+		foot.addBGDecal( footBG,
+				new Vector2( decalX, decalY ) );
+		footBG.setOrigin( 0f, 0f );
+		foot.addBGDecal( legBG,
+				new Vector2( 400 + decalX, 424 + decalY ) );
+
+		level.skelBGList.add( footSkeleton );
+		level.skelFGList.add( footSkeleton );
+		
+		Vector2 footFGPos = new Vector2( decalX-30, decalY+10 );
+		foot.addFGDecal( decals.createSprite("foot_exterior"), footFGPos );
+		foot.addFGDecal( decals.createSprite( "shin_exterior_shorter" ), footFGPos.cpy().add(400,386) );
+		
 	}
 
 	private void createKneeObjects( ) {
+		TextureAtlas decals = WereScrewedGame.manager
+				.getAtlas( "alphabot_foot_shin_decal" );
+		TextureAtlas knee_exterior = WereScrewedGame.manager
+				.getAtlas( "alphabot_knee_decal" );
+		
 		kneeMovingPlat = ( TiledPlatform ) LevelFactory.entities
 				.get( "kneeMovingPlat" );
 		kneeMovingPlat.setActive( false );
 
+		//-157,98
 		powerScrew1 = ( Screw ) LevelFactory.entities.get( "powerScrew1" );
 		powerScrew2 = ( Screw ) LevelFactory.entities.get( "powerScrew2" );
-
+		
+		kneeSkeleton = (Skeleton)LevelFactory.entities.get("kneeSkeleton");
+		
+		Vector2 kneeDecalPos = kneeSkeleton.getPositionPixel( ).add(230	,-2339 ); //this is horrible I know know why knee is here even
+		kneeSkeleton.addFGDecal( decals.createSprite( "knee_exterior" ), kneeDecalPos.cpy() );
+		//level.skelFGList.add( kneeSkeleton );
+		
+		kneeSkeleton.addBGDecalBack( knee_exterior.createSprite( "knee_mechanisms_and_pipesNOCOLOR" ), kneeDecalPos.cpy());
 		// removePlayerToScrew( )
 	}
 
@@ -467,8 +510,10 @@ public class AlphaScreen extends Screen {
 
 		StructureScrew stuctureScrew1 = ( StructureScrew ) LevelFactory.entities
 				.get( "structureScrew1" );
-		// stuctureScrew1.setDetachDirection( 0, -1 );
-
+		
+		EventTrigger etGearFall = ( EventTrigger ) LevelFactory.entities.get( "et1" );
+		
+			
 	}
 
 	private void leftArm( ) {
@@ -506,4 +551,214 @@ public class AlphaScreen extends Screen {
 		level.world.createJoint( rjd );
 	}
 
+	private void buildEngineHeart( Vector2 posPix ) {
+		Skeleton engineSkeleton = new Skeleton( "engineSkeleton", posPix, null,
+				level.world );
+		level.root.addSkeleton( engineSkeleton );
+		int pistonDistanceApart = 280;
+		float engineSpeed = 2.5f;
+		
+		//Got to set the right bits
+//		PlatformBuilder platBuilder = new PlatformBuilder(level.world);
+//		Platform chestEngine = platBuilder .name( "chestEngine" ).position(-250,5100 )
+//		 .texture( null ).type( "chestEngine" )
+//		 .buildComplexPlatform( );
+//		
+//
+//		engineSkeleton.addPlatform( chestEngine );
+		
+		TextureAtlas engineAtlas = WereScrewedGame.manager.getAtlas( "engine" );
+		Vector2 decalPos = engineSkeleton.getPositionPixel( ).sub( posPix ).add( -230,-360 );
+		engineSkeleton.addBGDecal( engineAtlas.createSprite("chest-engine"), new Vector2(decalPos) );
+		level.entityBGList.add(engineSkeleton);
+
+		for ( int i = 0; i < 3; ++i ) {
+			buildPiston( engineSkeleton, engineAtlas,
+					posPix.cpy( ).add( pistonDistanceApart * i, 0 ), i, engineSpeed );
+		}
+
+	}
+
+	private void buildPiston( Skeleton engineSkeleton,
+			TextureAtlas engineAtlas, Vector2 posPix, int index, float engineSpeed ) {
+		Vector2 posMeter = posPix.cpy( ).mul( Util.PIXEL_TO_BOX );
+		// Build wheel
+		Sprite wheelSprite = engineAtlas.createSprite( "wheel" );
+		float radiusPix = wheelSprite.getWidth( ) / 2;
+		float radiusMeter = radiusPix * Util.PIXEL_TO_BOX;
+		Platform wheel1 = buildWheel( posPix.cpy( ), radiusMeter );
+		// Attach wheel decal
+
+		engineSkeleton.addPlatform( wheel1 );
+		// Make wheel rotate
+		new RevoluteJointBuilder( level.world ).entityA( engineSkeleton )
+				.entityB( wheel1 ).motor( true ).motorSpeed( engineSpeed )
+				.maxTorque( 5000 ).build( );
+
+		// setup for building girder
+		Sprite girderSprite = engineAtlas.createSprite( "girder0" );
+		// girderSprite.scale( .8f );
+		float girderInset = 0.97f;
+		float pistonDistApartMetre = girderSprite.getHeight( ) * girderInset
+				* Util.PIXEL_TO_BOX;
+		// float pistonDistApartMetre = girderSprite.getHeight(
+		// )*Util.PIXEL_TO_BOX;
+		Sprite wheelBolt = engineAtlas.createSprite( "bolt0" );
+		// Build GIRDER!
+		float targetRadiusOnWheelMeter = ( radiusPix - wheelBolt.getHeight( ) / 3 )
+				* Util.PIXEL_TO_BOX;
+		boolean isDown = ( index % 2 == 0 );
+		// wheel1.getPosition().add((wheelBoltOffset+wheelBolt.getWidth(
+		// )/2)*Util.PIXEL_TO_BOX,0);
+
+		Vector2 wheelJointPosMeter = new Vector2( posMeter );
+		if ( isDown ) {
+			wheelJointPosMeter.sub( 0, targetRadiusOnWheelMeter );
+		} else {
+			wheelJointPosMeter.add( 0, targetRadiusOnWheelMeter );
+		}
+		// Build girter!!
+		Platform girder1 = buildGirder( girderSprite, wheelJointPosMeter,
+				pistonDistApartMetre );
+		engineSkeleton.addPlatform( girder1 );
+
+		/*
+		 * DistanceJointDef dJoint = new DistanceJointDef(); dJoint.initialize(
+		 * wheel1.body, piston.body, wheelJointPosMeter, piston.getPosition( )
+		 * ); dJoint.collideConnected = false; world.createJoint( dJoint );
+		 */
+
+		// Build piston!!
+		Vector2 pistonJointPosMeter = wheelJointPosMeter.cpy( ).sub( 0,
+				pistonDistApartMetre );
+		PlatformBuilder pBuilder = new PlatformBuilder( level.world );
+		TiledPlatform piston = pBuilder
+				.position( pistonJointPosMeter.cpy( ).mul( Util.BOX_TO_PIXEL ) )
+				.dynamic( ).dimensions( 4, 5 )// 3.71,4.75
+				.buildTilePlatform( );
+		piston.setCrushing( true );
+		piston.setVisible( false );// only draw decals, not tiled body!
+		engineSkeleton.addDynamicPlatform( piston );
+
+		// Setup prismatic joint for piston!
+		new PrismaticJointBuilder( level.world ).bodyA( engineSkeleton )
+				.bodyB( piston ).axis( new Vector2( 0, 1 ) ).build( );
+
+		// setup bolt on wheel image
+		Vector2 boltPosPix = new Vector2( -wheelBolt.getWidth( ) / 2, 0 );
+		if ( isDown ) {
+			boltPosPix.sub( 0, targetRadiusOnWheelMeter * Util.BOX_TO_PIXEL
+					+ wheelBolt.getHeight( ) / 2 );
+		} else {
+			boltPosPix.add( 0, targetRadiusOnWheelMeter * Util.BOX_TO_PIXEL
+					- wheelBolt.getHeight( ) / 2 );
+		}
+
+		// Bolt everything together
+		RevoluteJointBuilder rBuilder = new RevoluteJointBuilder( level.world )
+				.collideConnected( false );
+		rBuilder.entityA( girder1 ).entityB( wheel1 )
+				.anchor( wheelJointPosMeter ).build( );
+		rBuilder.entityB( piston ).anchor( pistonJointPosMeter ).build( );// entity
+																			// a
+																			// is
+																			// still
+																			// girder
+
+		engineSkeleton.addPlatforms( girder1 );
+
+		Sprite boltSprite;
+		Sprite pistonSprite;
+		switch ( index ) {
+		case 0:
+			pistonSprite = engineAtlas.createSprite( "piston_left" );
+			boltSprite = engineAtlas.createSprite( "bolt" + ( index + 1 ) );
+			break;
+		case 1:
+			pistonSprite = engineAtlas.createSprite( "piston_middle" );
+			boltSprite = engineAtlas.createSprite( "bolt" + ( index + 1 ) );
+			break;
+		case 2:
+			pistonSprite = engineAtlas.createSprite( "piston_right" );
+			boltSprite = engineAtlas.createSprite( "bolt" + ( index + 1 ) );
+			break;
+		default:
+			pistonSprite = engineAtlas.createSprite( "piston_middle" );
+			boltSprite = engineAtlas.createSprite( "bolt1" );
+			break;
+		}
+
+		// Draw order:
+		wheel1.addFGDecal( wheelSprite, new Vector2(
+				-wheelSprite.getWidth( ) / 2, -wheelSprite.getHeight( ) / 2 ) );
+		girder1.addFGDecal( girderSprite, new Vector2(
+				-girderSprite.getWidth( ) / 2, -girderSprite.getHeight( ) / 2 ) );
+
+		piston.addFGDecal( pistonSprite, new Vector2(
+				-piston.getPixelWidth( ) / 2, -piston.getPixelHeight( ) / 2 ) );
+		piston.addFGDecal( boltSprite, new Vector2(
+				-boltSprite.getWidth( ) / 2, -boltSprite.getHeight( ) / 2 ) );
+		wheel1.addFGDecal( wheelBolt, boltPosPix );
+		level.entityFGList.add( wheel1 );
+		level.entityFGList.add( piston );
+		level.entityFGList.add( girder1 );
+	}
+
+	private Platform buildGirder( Sprite girder, Vector2 topMeter,
+			float pistonDistApartMeter ) {
+
+		Vector2 pos = topMeter.cpy( ).sub( 0, pistonDistApartMeter / 2 );
+
+		BodyDef girderBodyDef = new BodyDef( );
+		girderBodyDef.type = BodyType.DynamicBody;
+		girderBodyDef.position.set( pos );
+		girderBodyDef.fixedRotation = false;
+		girderBodyDef.gravityScale = 1f; // doesn't need gravity
+		Body girderBody = level.world.createBody( girderBodyDef );
+
+		PolygonShape girderShape = new PolygonShape( );
+		Vector2 shape = new Vector2( 0.01f, pistonDistApartMeter / 2 );
+		float distPix = pistonDistApartMeter * Util.BOX_TO_PIXEL;
+		girderShape.setAsBox( shape.x, shape.y );
+		FixtureDef wheelFixture = new FixtureDef( );
+		// wheelFixture.filter.categoryBits = Util.CATEGORY_SCREWS;
+		// wheelFixture.filter.maskBits = Util.CATEGORY_NOTHING;
+		wheelFixture.shape = girderShape;
+		wheelFixture.density = 0.1f;
+		girderBody.createFixture( wheelFixture );
+
+		Platform out = new Platform( "girder", pos, null, level.world );
+		out.body = girderBody;
+		return out;
+
+	}
+
+	private Platform buildWheel( Vector2 pos, float radiusMeter ) {
+		BodyDef wheelBodyDef = new BodyDef( );
+		wheelBodyDef.type = BodyType.DynamicBody;
+		wheelBodyDef.position.set( pos.cpy( ).mul( Util.PIXEL_TO_BOX ) );
+		wheelBodyDef.fixedRotation = false;
+		wheelBodyDef.gravityScale = 0.07f;
+		Body wheelBody = level.world.createBody( wheelBodyDef );
+
+		CircleShape wheelShape = new CircleShape( );
+		wheelShape.setRadius( radiusMeter );
+		FixtureDef wheelFixture = new FixtureDef( );
+		// wheelFixture.filter.categoryBits = Util.CATEGORY_SCREWS;
+		// wheelFixture.filter.maskBits = Util.CATEGORY_NOTHING;
+		wheelFixture.shape = wheelShape;
+		wheelFixture.density = 0.1f;
+		wheelBody.createFixture( wheelFixture );
+
+		wheelShape.dispose( );
+
+		Platform out = new Platform( "wheel", pos, null, level.world );
+		out.body = wheelBody;
+		// RotateTweenMover m = new RotateTweenMover(out, 4, Util.PI*2, 0, false
+		// );
+		// out.setMoverAtCurrentState( new RotateTweenMover( out ) );
+
+		return out;
+	}
+	
 }

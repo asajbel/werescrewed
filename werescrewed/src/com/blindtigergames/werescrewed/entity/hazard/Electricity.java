@@ -22,7 +22,7 @@ public class Electricity extends Hazard {
 
 	public ParticleEffect particleEffect;
 	public Array< ParticleEmitter > particleEmitter;
-	protected final float size = 10.0f;
+	protected final float size = 20.0f;
 	protected float width, height, hSize, wSize;
 	protected boolean isHori;
 	

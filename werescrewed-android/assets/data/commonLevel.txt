@@ -3,6 +3,8 @@
 /common/sounds/jump.ogg
 /common/sounds/footstep1.ogg
 /common/sounds/footstep2.ogg
+/common/sounds/screwing.ogg
+/common/sounds/unscrewing.ogg
 /common/sounds/land.ogg
 /common/sounds/WilhelmScream.ogg
 /common/sounds/TrainJob.mp3
@@ -50,6 +52,7 @@
 /common/robot/metal.png
 /common/gear.png
 /common/sawblade.png
+/common/chest-engine.png
 /common/redScrewDriver.png
 /common/pipe/pipeEndD.png
 /common/pipe/pipeEndL.png
@@ -96,6 +99,10 @@ land_cloud.p
 injured/arg.p
 injured/doof.p
 injured/oof.p
+
+## debug for testing engine in phys screen. Remove before release! -stew
+/levels/alphabot/engine.pack
+
 
 ##Palette Def
 ##Define with <colorName>.palette

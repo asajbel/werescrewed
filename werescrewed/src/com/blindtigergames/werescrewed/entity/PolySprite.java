@@ -8,8 +8,6 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Mesh;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.VertexAttribute;
-import com.blindtigergames.werescrewed.graphics.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
@@ -17,6 +15,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.NumberUtils;
 import com.blindtigergames.werescrewed.WereScrewedGame;
+import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 
 /**
  * A sprite that fills a texture inside a CONVEX polygon.
@@ -193,8 +192,8 @@ public class PolySprite extends Sprite {
 	@Override
 	public Rectangle getBoundingRectangle () {
 
-		bounds.x = x;
-		bounds.y = y;
+		bounds.x = x-bounds.getWidth( )/2.0f;
+		bounds.y = y-bounds.getHeight( )/2.0f;
 		
 		return bounds;
 	}

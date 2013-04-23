@@ -6,7 +6,7 @@
   <SaveLevelStartApplication>false</SaveLevelStartApplication>
   <SaveLevelApplicationToStart />
   <SaveLevelAppendLevelFilename>false</SaveLevelAppendLevelFilename>
-  <ShowGrid>false</ShowGrid>
+  <ShowGrid>true</ShowGrid>
   <SnapToGrid>true</SnapToGrid>
   <ShowWorldOrigin>true</ShowWorldOrigin>
   <ColorSelectionFirst>
@@ -82,7 +82,7 @@
   <GridLineThickness>1</GridLineThickness>
   <GridNumberOfGridLines>500</GridNumberOfGridLines>
   <GridSpacing>
-    <X>16</X>
-    <Y>16</Y>
+    <X>64</X>
+    <Y>64</Y>
   </GridSpacing>
 </Constants>
