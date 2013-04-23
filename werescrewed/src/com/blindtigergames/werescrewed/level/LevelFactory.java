@@ -1,6 +1,7 @@
 package com.blindtigergames.werescrewed.level;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -25,11 +26,14 @@ import com.blindtigergames.werescrewed.entity.RobotState;
 import com.blindtigergames.werescrewed.entity.RootSkeleton;
 import com.blindtigergames.werescrewed.entity.Skeleton;
 import com.blindtigergames.werescrewed.entity.Sprite;
+import com.blindtigergames.werescrewed.entity.action.AnchorActivateAction;
+import com.blindtigergames.werescrewed.entity.action.AnchorDeactivateAction;
 import com.blindtigergames.werescrewed.entity.action.DestoryPlatformJointAction;
 import com.blindtigergames.werescrewed.entity.action.EntityActivateMoverAction;
 import com.blindtigergames.werescrewed.entity.action.EntityDeactivateMoverAction;
 import com.blindtigergames.werescrewed.entity.builders.EventTriggerBuilder;
 import com.blindtigergames.werescrewed.entity.builders.MoverBuilder;
+import com.blindtigergames.werescrewed.entity.builders.PipeBuilder;
 import com.blindtigergames.werescrewed.entity.builders.PlatformBuilder;
 import com.blindtigergames.werescrewed.entity.builders.PlayerBuilder;
 import com.blindtigergames.werescrewed.entity.builders.RopeBuilder;
@@ -54,6 +58,7 @@ import com.blindtigergames.werescrewed.entity.screws.ScrewType;
 import com.blindtigergames.werescrewed.entity.screws.StrippedScrew;
 import com.blindtigergames.werescrewed.entity.screws.StructureScrew;
 import com.blindtigergames.werescrewed.entity.tween.PathBuilder;
+import com.blindtigergames.werescrewed.entity.platforms.Pipe;
 import com.blindtigergames.werescrewed.eventTrigger.EventTrigger;
 import com.blindtigergames.werescrewed.graphics.TextureAtlas;
 import com.blindtigergames.werescrewed.util.ArrayHash;
@@ -224,7 +229,9 @@ public class LevelFactory {
 			out = constructTiledPlatform( item );
 		} else if ( bluePrints.equals( "customPlatform" ) ) {
 			out = constructCustomPlatform( item );
-		} else if ( bluePrints.equals( "screw" ) ) {
+		} else if ( bluePrints.equals( "pipe" ) ) {
+			out = constructPipe( item ); 
+		}else if ( bluePrints.equals( "screw" ) ) {
 			out = constructScrew( item );
 		} else if ( bluePrints.equals( "pathmover" ) ) {
 			constructPath( item );
@@ -241,7 +248,7 @@ public class LevelFactory {
 		} else if ( !bluePrints.equals( "camera" )
 				&& item.getDefinition( ).getCategory( ) == EntityCategory.COMPLEX_PLATFORM ) {
 			out = loadComplexPlatform( item );
-		} else{
+		} else {
 			out = null;
 		}
 
@@ -329,6 +336,123 @@ public class LevelFactory {
 		return out;
 	}
 
+	private Pipe constructPipe( Item item ) {
+		Array< Element > pointElems = item.element.getChildByName(
+				"LocalPoints" ).getChildrenByName( "Vector2" );
+		ArrayList< Vector2 > pathPoints = new ArrayList< Vector2 >( pointElems.size );
+		Pipe out = null; 
+		Element vElem;
+		Vector2 point;
+
+		PipeBuilder pb = new PipeBuilder( level.world );
+		
+//		vElem = pointElems.get( 0 );
+//		point = new Vector2( vElem.getFloat( "X" ) * GLEED_TO_GDX_X,
+//				vElem.getFloat( "Y" ) * GLEED_TO_GDX_Y );
+
+//		float xPos = item.pos.x;  
+//		float yPos = point.y;
+		
+		for ( int i = 1; i < pointElems.size; i++ ) {
+			vElem = pointElems.get( i );
+			point = new Vector2( vElem.getFloat( "X" ) * GLEED_TO_GDX_X,
+					vElem.getFloat( "Y" ) * GLEED_TO_GDX_Y );
+			point.div( 2 * Pipe.TILE_SIZE ); 
+			pathPoints.add( point );
+		}
+ 
+		
+		pb.path( pathPoints ); 
+
+		boolean isDynamic = false;
+		if ( item.props.containsKey( "dynamic" ) ) {
+			isDynamic = true;
+		}
+
+		boolean isCrushable = false;
+		if ( item.props.containsKey( "crushable" ) ) {
+			isCrushable = true;
+		}
+		
+		pb.name( item.name ).position( new Vector2( item.pos.x, item.pos.y ) ).properties( item.props );
+
+
+		if ( item.props.containsKey( "gravscale" ) ) {
+			float gravScale = Float.parseFloat( item.props.get( "gravscale" ) );
+			pb.gravityScale( gravScale );
+		}
+
+		
+		pb.dynamic( isDynamic ); 
+
+		out = pb.build( );
+
+		entities.put( item.name, out );
+		out.setCrushing( isCrushable );
+
+		if ( item.props.containsKey( "onesided" ) ) {
+			out.oneSided = true;
+		}
+
+		IMover mover = null;
+		if ( item.props.containsKey( "mover" ) ) {
+
+			// new PistonTweenMover( piston, new Vector2(
+			// 0, -350 ), 0.5f, 3f, 1f, 0f, 1f ), RobotState.IDLE
+			String movername = item.props.get( "mover" );
+			if ( movername.equals( "pistonmover" ) ) {
+
+				float delay = 0f;
+				if ( item.props.containsKey( "delay" ) ) {
+					delay = Float.parseFloat( item.props.get( "delay" ) );
+				}
+
+				float distance = 100f;
+				if ( item.props.containsKey( "distance" ) ) {
+					distance = Float.parseFloat( item.props.get( "distance" ) );
+				}
+
+				mover = new PistonTweenMover( out, new Vector2( 0, distance ),
+						0.5f, 3f, 1f, 0f, delay );
+			} else if ( MoverType.fromString( movername ) != null ) {
+				mover = new MoverBuilder( ).fromString( movername )
+						.applyTo( out ).build( );
+				Gdx.app.log( "LevelFactory", "attaching :" + movername
+						+ " to platform" );
+
+				// ROTATETWEEN("rotatetween"),
+				// LERP("lerpmover")
+			}
+		}
+
+		out.addMover( mover, RobotState.IDLE );
+		
+		
+		
+		Skeleton parent = loadSkeleton( item.skeleton );
+
+		if ( !item.props.containsKey( "invisible" ) ) {
+			if ( isDynamic ) {
+				Gdx.app.log( "LevelFactory", "Tiled Dynamic platform loaded:"
+						+ out.name );
+				out.quickfixCollisions( );
+				parent.addDynamicPlatform( out );
+
+				if ( item.props.containsKey( "jointtoskeleton" ) ) {
+					out.addJointToSkeleton( parent );
+				}
+			} else {
+				Gdx.app.log( "LevelFactory", "Tiled Kinematic platform loaded:"
+						+ out.name );
+
+				parent.addKinematicPlatform( out );
+				out.setCategoryMask( Util.CATEGORY_PLATFORMS,
+						Util.CATEGORY_EVERYTHING );
+			}
+		}
+		return out;
+	}
+
 	private Entity addAnchors( Item item, Entity out ) {
 		RuntimeException exception = new RuntimeException(
 				"Anchor incorrectly defined. Be sure the format is: \"bufferWidth, bufferHeight, offsetX, offsetY\"" );
@@ -357,7 +481,7 @@ public class LevelFactory {
 						new Vector2( bufferWidth, bufferHeight ) );
 				out.addAnchor( anchor );
 				// Comment line below to make anchors inactive by default
-				anchor.activate( );
+				// anchor.activate( );
 			} else {
 				break;
 			}
@@ -383,16 +507,18 @@ public class LevelFactory {
 		Sprite decal = null;
 		Vector2 scale = new Vector2( 1.0f, 1.0f );
 		if ( !item.getImageName( ).equals( "" ) ) {
-			if ( item.getAtlasName() != null ){
+			if ( item.getAtlasName( ) != null ) {
 				if ( item.getGleedType( ).equals( "PathItem" ) ) {
-					throw new RuntimeException("LevelFactory constructDecal(): You can't build a polysprite decal with a texture atlas, sorry. -Stew");
+					throw new RuntimeException(
+							"LevelFactory constructDecal(): You can't build a polysprite decal with a texture atlas, sorry. -Stew" );
 				}
-				TextureAtlas atlas = WereScrewedGame.manager.getAtlas(  item.getAtlasName() );
+				TextureAtlas atlas = WereScrewedGame.manager.getAtlas( item
+						.getAtlasName( ) );
 				decal = atlas.createSprite( item.getImageName( ) );
 				decal.setOrigin( 0.0f, 0.0f );
 				scale.x = item.sca.x / decal.getWidth( );
 				scale.y = item.sca.y / decal.getHeight( );
-			}else{
+			} else {
 				Texture tex = WereScrewedGame.manager.get(
 						WereScrewedGame.dirHandle + item.getImageName( ),
 						Texture.class );
@@ -401,9 +527,9 @@ public class LevelFactory {
 							"LocalPoints" ).getChildrenByName( "Vector2" );
 					Array< Vector2 > points = new Array< Vector2 >( );
 					for ( Element e : pointElems ) {
-						Vector2 v = new Vector2(
-								e.getFloat( "X" ) * GLEED_TO_GDX_X,
-								e.getFloat( "Y" ) * GLEED_TO_GDX_Y );
+						Vector2 v = new Vector2( e.getFloat( "X" )
+								* GLEED_TO_GDX_X, e.getFloat( "Y" )
+								* GLEED_TO_GDX_Y );
 						points.add( v );
 					}
 					decal = new PolySprite( tex, points );
@@ -452,7 +578,7 @@ public class LevelFactory {
 		if ( item.name.equals( "RootSkeleton" ) ) {
 			level.root = new RootSkeleton( item.name, item.pos, null,
 					level.world );
-			//DELETE THESE TWO LINES WHEN THE STAGE WORKS PROPERLY WITH GLEED
+			// DELETE THESE TWO LINES WHEN THE STAGE WORKS PROPERLY WITH GLEED
 			level.skelBGList.add( level.root );
 			level.skelFGList.add( level.root );
 			skeletons.put( item.name, level.root );
@@ -499,14 +625,14 @@ public class LevelFactory {
 				skeleBuilder.fadeFgDecals( true );
 			}
 
-			
 			skeleton = skeleBuilder.build( );
 
 			if ( item.props.containsKey( "gravscale" ) ) {
-				float gravScale = Float.parseFloat( item.props.get( "gravscale" ) );
+				float gravScale = Float.parseFloat( item.props
+						.get( "gravscale" ) );
 				skeleton.body.setGravityScale( gravScale );
 			}
-			
+
 			// IMover mover = null;
 			// if(item.props.containsKey( "mover" )){
 			// String movername = item.props.get( "mover" );
@@ -622,18 +748,16 @@ public class LevelFactory {
 		if ( item.props.containsKey( "crushable" ) ) {
 			isCrushable = true;
 		}
-		
+
 		pb.name( item.name ).position( new Vector2( xPos, yPos ) )
 				.dimensions( new Vector2( tileWidth, tileHeight ) )
 				.tileSet( "alphabot" ).properties( item.props );
-
 
 		if ( item.props.containsKey( "gravscale" ) ) {
 			float gravScale = Float.parseFloat( item.props.get( "gravscale" ) );
 			pb.gravityScale( gravScale );
 		}
 
-		
 		if ( isDynamic )
 			pb.dynamic( );
 		else
@@ -680,9 +804,7 @@ public class LevelFactory {
 		}
 
 		out.addMover( mover, RobotState.IDLE );
-		
-		
-		
+
 		Skeleton parent = loadSkeleton( item.skeleton );
 
 		if ( !item.props.containsKey( "invisible" ) ) {
@@ -729,17 +851,16 @@ public class LevelFactory {
 			isCrushable = true;
 		}
 
-		pb.name( item.name ).position( item.pos ).tileSet( "alphabot32" ).properties( item.props );
-		pb.texture( WereScrewedGame.manager
-										.get( WereScrewedGame.dirHandle
-												+ "/levels/alphabot/alphabot_texture_skin.png",
-												Texture.class ) );
+		pb.name( item.name ).position( item.pos ).tileSet( "alphabot32" )
+				.properties( item.props );
+		pb.texture( WereScrewedGame.manager.get( WereScrewedGame.dirHandle
+				+ "/levels/alphabot/alphabot_texture_skin.png", Texture.class ) );
 
 		if ( item.props.containsKey( "gravscale" ) ) {
 			float gravScale = Float.parseFloat( item.props.get( "gravscale" ) );
 			pb.gravityScale( gravScale );
 		}
-		
+
 		if ( isDynamic )
 			pb.dynamic( );
 		else
@@ -750,7 +871,6 @@ public class LevelFactory {
 		pb.setVerts( verts );
 		out = pb.buildCustomPlatform( );
 
-		
 		out.setCrushing( isCrushable );
 
 		if ( item.props.containsKey( "onesided" ) ) {
@@ -821,7 +941,8 @@ public class LevelFactory {
 				.type( item.getDefinition( ) )
 				.position( item.pos.x, item.pos.y )
 				.texture( item.getDefinition( ).getTexture( ) ).solid( true )
-				.dynamic( isDynamic ).properties( item.props ).buildComplexPlatform( );
+				.dynamic( isDynamic ).properties( item.props )
+				.buildComplexPlatform( );
 
 		entities.put( item.name, out );
 
@@ -979,10 +1100,11 @@ public class LevelFactory {
 				Entity target = entities.get( thisthing );
 
 				if ( item.props.containsKey( "degreelimit" ) ) {
-					float limit = Float.parseFloat( item.props.get( "degreelimit" ) );
+					float limit = Float.parseFloat( item.props
+							.get( "degreelimit" ) );
 					ss.addStructureJoint( target, limit );
-					
-				}else
+
+				} else
 					ss.addStructureJoint( target );
 			}
 
@@ -992,10 +1114,11 @@ public class LevelFactory {
 				Entity target = entities.get( thisthing );
 
 				if ( item.props.containsKey( "degreelimit" ) ) {
-					float limit = Float.parseFloat( item.props.get( "degreelimit" ) );
+					float limit = Float.parseFloat( item.props
+							.get( "degreelimit" ) );
 					ss.addStructureJoint( target, limit );
-					
-				}else
+
+				} else
 					ss.addStructureJoint( target );
 			}
 
@@ -1005,35 +1128,38 @@ public class LevelFactory {
 				Skeleton target = skeletons.get( thisthing );
 
 				if ( item.props.containsKey( "degreelimit" ) ) {
-					float limit = Float.parseFloat( item.props.get( "degreelimit" ) );
+					float limit = Float.parseFloat( item.props
+							.get( "degreelimit" ) );
 					ss.addStructureJoint( target, limit );
-					
-				}else
+
+				} else
 					ss.addStructureJoint( target );
 			}
-			
+
 			if ( item.props.containsKey( "skeltargetrev2" ) ) {
 
 				String thisthing = item.props.get( "skeltargetrev2" );
 				Skeleton target = skeletons.get( thisthing );
 
 				if ( item.props.containsKey( "degreelimit" ) ) {
-					float limit = Float.parseFloat( item.props.get( "degreelimit" ) );
+					float limit = Float.parseFloat( item.props
+							.get( "degreelimit" ) );
 					ss.addStructureJoint( target, limit );
-					
-				}else
+
+				} else
 					ss.addStructureJoint( target );
 			}
 
 			if ( item.props.containsKey( "ropetargetrev" ) ) {
 
 				String thisthing = item.props.get( "ropetargetrev" );
-				Link target = (Link) entities.get( thisthing );
+				Link target = ( Link ) entities.get( thisthing );
 
-				//target.body.setTransform( ss.getPosition( ), target.body.getAngle( ) );
+				// target.body.setTransform( ss.getPosition( ),
+				// target.body.getAngle( ) );
 				ss.addStructureJoint( target );
 			}
-			
+
 			if ( item.props.containsKey( "targetweld" ) ) {
 
 				String thisthing = item.props.get( "targetweld" );
@@ -1200,7 +1326,7 @@ public class LevelFactory {
 		// if its attached to an entity, then send in false so it doesn't
 		// joint itself to the skeleton
 		parent.addRope( rope, !attachToEntity );
-		
+
 		entities.put( item.name, rope.getLastLink( ) );
 	}
 
@@ -1255,13 +1381,34 @@ public class LevelFactory {
 			String action = item.props.get( "beginaction" );
 			if ( action.equals( "destoryjoint" ) ) {
 				etb.beginAction( new DestoryPlatformJointAction( ) );
+			} else if ( action.contains( "activate_anchor" ) ) {
+				String tokens[] = action.split( " " );
+				int i = Integer.parseInt( tokens[ 2 ] ) - 1;
+				Anchor anchor = LevelFactory.entities.get( tokens[ 1 ] ).anchors
+						.get( i );
+				etb.beginAction( new AnchorActivateAction( anchor ) );
+			} else if ( action.contains( "deactivate_anchor" ) ) {
+				String tokens[] = action.split( " " );
+				int i = Integer.parseInt( tokens[ 2 ] ) - 1;
+				Anchor anchor = LevelFactory.entities.get( tokens[ 1 ] ).anchors
+						.get( i );
+				etb.beginAction( new AnchorDeactivateAction( anchor ) );
 			} else {
 				etb.beginAction( new EntityActivateMoverAction( ) );
 			}
 		}
 
 		if ( item.props.containsKey( "endaction" ) ) {
-			etb.beginAction( new EntityDeactivateMoverAction( ) );
+			String action = item.props.get( "endaction" );
+			if ( action.contains( "deactivate_anchor" ) ) {
+				String tokens[] = action.split( " " );
+				int i = Integer.parseInt( tokens[ 2 ] ) - 1;
+				Anchor anchor = LevelFactory.entities.get( tokens[ 1 ] ).anchors
+						.get( i );
+				etb.endAction( new AnchorDeactivateAction( anchor ) );
+			} else {
+				etb.endAction( new EntityDeactivateMoverAction( ) );
+			}
 		}
 
 		if ( item.props.containsKey( "twoplayerstoactivate" ) ) {
@@ -1337,9 +1484,9 @@ public class LevelFactory {
 		float yPos = item.pos.y - ( height / 2 );
 
 		HazardBuilder hazardBuilder = new HazardBuilder( level.world );
-		
-		hazardBuilder.position( new Vector2(xPos, yPos) ).dimensions( tileWidth, tileHeight )
-		.active( );
+
+		hazardBuilder.position( new Vector2( xPos, yPos ) )
+				.dimensions( tileWidth, tileHeight ).active( );
 		hazardBuilder.position( new Vector2( xPos, yPos ) )
 				.dimensions( tileWidth, tileHeight ).active( );
 
@@ -1362,7 +1509,6 @@ public class LevelFactory {
 	public Level getLevel( ) {
 		return level;
 	}
-
 
 	protected static HashMap< String, Element > getChildrenByNameHash(
 			Element e, String tag, String nameTag ) {
@@ -1416,7 +1562,7 @@ public class LevelFactory {
 		public String defName;
 		private EntityDef def;
 		public GleedTypeTag gleedTag;
-		private ArrayHash<String, String> props;
+		private ArrayHash< String, String > props;
 		public Vector2 pos;
 		public float rot;
 		public Vector2 origin;
@@ -1435,15 +1581,17 @@ public class LevelFactory {
 			}
 			locked = true;
 		}
-		
-		protected ArrayHash<String, String> getProps(){
-			if (props == null){
-				props = new ArrayHash<String, String>();
-				Array<Element> properties = element.getChildByName("CustomProperties").getChildrenByName("Property");
-				String name; String value;
-				for (Element prop: properties){
-					name = prop.getAttribute("Name").toLowerCase( );
-					value = prop.get("string", "<no value>");
+
+		protected ArrayHash< String, String > getProps( ) {
+			if ( props == null ) {
+				props = new ArrayHash< String, String >( );
+				Array< Element > properties = element.getChildByName(
+						"CustomProperties" ).getChildrenByName( "Property" );
+				String name;
+				String value;
+				for ( Element prop : properties ) {
+					name = prop.getAttribute( "Name" ).toLowerCase( );
+					value = prop.get( "string", "<no value>" );
 					props.add( name, value );
 				}
 			}
@@ -1451,9 +1599,9 @@ public class LevelFactory {
 		}
 
 		/**
-		 * getDefinition loads the correct XML file with the same time (complexTest)
-		 * complexText loads the bottle, gearSmall would load the gear
-		 * Remember to set them to kinematic or they just fall
+		 * getDefinition loads the correct XML file with the same time
+		 * (complexTest) complexText loads the bottle, gearSmall would load the
+		 * gear Remember to set them to kinematic or they just fall
 		 * 
 		 * @return EntityDef
 		 */
@@ -1518,8 +1666,8 @@ public class LevelFactory {
 			}
 			return out;
 		}
-		
-		protected String getAtlasName(){
+
+		protected String getAtlasName( ) {
 			if ( getProps( ).containsKey( atlasTag ) ) {
 				return getProps( ).get( atlasTag );
 			}

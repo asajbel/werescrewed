@@ -498,12 +498,8 @@ public class Player extends Entity {
 				&& currentScrew.getScrewType( ) == ScrewType.SCREW_PUZZLE ) {
 			if ( this.name == Metrics.player1( ) ) {
 				Metrics.incTrophyMetric( TrophyMetric.P1PUZZLETIME, 0.01f );
-				Gdx.app.log(
-						"player1 puzzling",
-						" "
-								+ Metrics
-										.getTrophyMetric( TrophyMetric.P1PUZZLETIME ) );
-			} else if ( this.name == Metrics.player2( ) ) {
+			}
+			else if ( this.name == Metrics.player2( ) ) {
 				Metrics.incTrophyMetric( TrophyMetric.P2PUZZLETIME, 0.01f );
 			}
 		}
@@ -542,15 +538,11 @@ public class Player extends Entity {
 				// count by 1
 				if ( this.name == Metrics.player1( ) ) {
 					Metrics.incTrophyMetric( TrophyMetric.P1DEATHS, 1.0f );
+					
 					if ( otherPlayer != null
 							&& otherPlayer.getState( ) == PlayerState.Dead ) {
 						Metrics.incTrophyMetric( TrophyMetric.P1TEAMDEATHS,
 								1.0f );
-						Gdx.app.log(
-								"Player1",
-								"after deaths "
-										+ Metrics
-												.getTrophyMetric( TrophyMetric.P1TEAMDEATHS ) );
 					}
 				} else if ( this.name == Metrics.player2( ) ) {
 					Metrics.incTrophyMetric( TrophyMetric.P2DEATHS, 1.0f );
@@ -858,17 +850,13 @@ public class Player extends Entity {
 	public void hitScrew( Screw screw ) {
 		if ( playerState != PlayerState.Screwing ) {
 			currentScrew = screw;
+
 			// Trophy check for if player attaches to a stripped screw
 			if ( screw != null ) {
 				if ( currentScrew.getScrewType( ) == ScrewType.SCREW_STRIPPED ) {
 					if ( this.name == Metrics.player1( ) ) {
 						Metrics.incTrophyMetric( TrophyMetric.P1STRIPATTACH,
 								1.0f );
-						Gdx.app.log(
-								"player1 attach",
-								" "
-										+ Metrics
-												.getTrophyMetric( TrophyMetric.P1STRIPATTACH ) );
 					} else if ( this.name == Metrics.player2( ) ) {
 						Metrics.incTrophyMetric( TrophyMetric.P2STRIPATTACH,
 								1.0f );

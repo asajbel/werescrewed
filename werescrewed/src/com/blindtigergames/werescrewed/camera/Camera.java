@@ -18,8 +18,6 @@ import com.badlogic.gdx.physics.box2d.World;
  * @author Edward Ramirez and Dan Malear
  ******************************************************************************/
 public class Camera {
-	private static final boolean ANCHOR_TEST_MODE = false;
-	// private static final boolean ANCHOR_TEST_MODE= true;
 	public OrthographicCamera camera;
 	public float viewportHeight;
 	public float viewportWidth;
@@ -56,7 +54,7 @@ public class Camera {
 	private static final float ZOOM_MAX_SPEED = 15f;
 	private static final float ZOOM_SIG_DIFF = .00005f;
 	private static final float ZOOM_IN_FACTOR = .5f;
-	private static final float MIN_ZOOM = 1.2f;
+	private static final float MIN_ZOOM = 1f;
 
 	private enum RectDirection {
 		X, Y, BOTH, NONE
@@ -70,6 +68,7 @@ public class Camera {
 	private boolean debugInput;
 	private boolean debugRender;
 	private ShapeRenderer shapeRenderer;
+
 	public Camera( Vector2 position, float viewportWidth, float viewportHeight,
 			World world ) {
 		initializeVars( position, viewportWidth, viewportHeight, world );
@@ -109,9 +108,6 @@ public class Camera {
 		camera.zoom = MIN_ZOOM;
 		anchorList = AnchorList.getInstance( camera );
 		anchorList.clear( );
-		if ( ANCHOR_TEST_MODE ) {
-			createTestAnchors( world );
-		}
 
 		// debug
 		debugInput = false;
@@ -119,6 +115,11 @@ public class Camera {
 		shapeRenderer = new ShapeRenderer( );
 	}
 
+	/**
+	 * Sets the camera's position manually (no translation)
+	 * 
+	 * @param position
+	 */
 	public void setPosition( Vector2 position ) {
 
 		camera.position.set( position.x, position.y, 0f );
@@ -152,7 +153,7 @@ public class Camera {
 		// debugMode = true;
 		// check debug keys
 		if ( Gdx.input.isKeyPressed( Keys.B ) ) {
-			debugInput = true;//now camera is a toggle
+			debugInput = true;// now camera is a toggle
 		}
 		if ( Gdx.input.isKeyPressed( Keys.N ) ) {
 			debugRender = true;
@@ -228,8 +229,6 @@ public class Camera {
 				returnDir = RectDirection.Y;
 		}
 
-		// if ( returnDir == RectDirection.BOTH )
-		// Gdx.app.log( "Direction", "BOTH" );
 		return returnDir;
 	}
 
@@ -359,26 +358,38 @@ public class Camera {
 	 * translate the camera towards the translate target
 	 */
 	private void translate( boolean trans_x, boolean trans_y ) {
-		// only account for translate target on axis which is being translated
-		// on
-		if ( trans_x || trans_y ) {
-			if ( trans_x )
-				Vector2.tmp.x = translateTarget.x;
-			else
-				Vector2.tmp.x = center2D.x;
+		// only account for translate target on relevant axes
 
-			if ( trans_y )
-				Vector2.tmp.y = translateTarget.y;
-			else
-				Vector2.tmp.y = center2D.y;
+		Vector2 temp = new Vector2( );
+		if ( trans_x || trans_y ) {
+			// If a buffer has exited the screen
+			if ( trans_x ) {
+				// In the x direction
+				temp.x = translateTarget.x;
+			} else {
+				// Only in the y direction
+				temp.x = center2D.x;
+			}
+			if ( trans_y ) {
+				// In the y direction
+				temp.y = translateTarget.y;
+			} else {
+				// Only in the x direction
+				temp.y = center2D.y;
+			}
 		} else {
-			Vector2.tmp.x = translateTarget.x;
-			Vector2.tmp.y = translateTarget.y;
+			// Buffer still in screen
+			temp.x = translateTarget.x;
+			temp.y = translateTarget.y;
 		}
 
-		Vector2.tmp.sub( center2D );
+		// temp is now the difference between the translate target and the
+		// center of the camera on only the relevant axes
+		temp = new Vector2( temp.x - center2D.x, temp.y - center2D.y );
 
-		if ( Vector2.tmp.len( ) > accelerationBuffer ) {
+		// Handles acceleration - accelerate when not close, decelerate when
+		// close
+		if ( temp.len( ) > accelerationBuffer ) {
 			// translateAcceleration = ( Vector2.tmp.len( ) * ACCELERATION_RATIO
 			// );
 			translateAcceleration = ACCELERATION;
@@ -390,39 +401,52 @@ public class Camera {
 		}
 
 		float nextSpeed = translateSpeed + translateAcceleration;
-		if ( nextSpeed < Vector2.tmp.len( ) ) {
+		if ( nextSpeed < temp.len( ) ) {
+			// If the speed wouldn't take the camera past the target
 			if ( nextSpeed > MIN_SPEED && nextSpeed < MAX_SPEED ) {
+				// If we're in range, go ahead and ac/decelerate
 				translateSpeed = nextSpeed;
 			} else if ( nextSpeed < MIN_SPEED ) {
+				// If we would go under the min, set to min
 				translateSpeed = MIN_SPEED;
 			} else {
+				// If we would go over max, set to max
 				translateSpeed = MAX_SPEED;
 			}
 		} else {
-			translateSpeed = Vector2.tmp.len( );
+			// If the speed takes us past the target, just make it go to the
+			// target
+			translateSpeed = temp.len( );
 		}
 
-		// make sure camera never moves slower than the anchor midpoint
-		if ( trans_x && trans_y ) {
-			if ( translateSpeed < anchorList.getMidpointVelocity( ).len( ) )
-				translateSpeed = anchorList.getMidpointVelocity( ).len( );
-		} else if ( trans_x ) {
-			if ( translateSpeed < Math.cos( anchorList.getMidpointVelocity( )
-					.angle( ) ) * anchorList.getMidpointVelocity( ).len( ) )
-				translateSpeed = ( float ) Math.cos( anchorList
-						.getMidpointVelocity( ).angle( ) )
-						* anchorList.getMidpointVelocity( ).len( );
-		} else if ( trans_y ) {
-			if ( translateSpeed < Math.sin( anchorList.getMidpointVelocity( )
-					.angle( ) ) * anchorList.getMidpointVelocity( ).len( ) )
-				translateSpeed = ( float ) Math.sin( anchorList
-						.getMidpointVelocity( ).angle( ) )
-						* anchorList.getMidpointVelocity( ).len( );
-		}
+		// Make sure camera never moves slower than the anchor midpoint
+		// Causes problems, but keeping in comments (for now) in case commenting
+		// causes more
 
-		Vector2.tmp.nor( );
-		translateVelocity.x = Vector2.tmp.x;
-		translateVelocity.y = Vector2.tmp.y;
+		// if ( trans_x && trans_y ) {
+		// // If we're translating in both directions
+		// // if ( translateSpeed < anchorList.getMidpointVelocity( ).len( ) )
+		// // {
+		// // // And translate speed is slower than the midpoint
+		// // translateSpeed = anchorList.getMidpointVelocity( ).len( );
+		// // }
+		// } else if ( trans_x ) {
+		// if ( translateSpeed < Math.cos( anchorList.getMidpointVelocity( )
+		// .angle( ) ) * anchorList.getMidpointVelocity( ).len( ) )
+		// translateSpeed = ( float ) Math.cos( anchorList
+		// .getMidpointVelocity( ).angle( ) )
+		// * anchorList.getMidpointVelocity( ).len( );
+		// } else if ( trans_y ) {
+		// if ( translateSpeed < Math.sin( anchorList.getMidpointVelocity( )
+		// .angle( ) ) * anchorList.getMidpointVelocity( ).len( ) )
+		// translateSpeed = ( float ) Math.sin( anchorList
+		// .getMidpointVelocity( ).angle( ) )
+		// * anchorList.getMidpointVelocity( ).len( );
+		// }
+
+		temp.nor( );
+		translateVelocity.x = temp.x;
+		translateVelocity.y = temp.y;
 		translateVelocity.mul( translateSpeed );
 		camera.translate( translateVelocity );
 	}
@@ -486,16 +510,11 @@ public class Camera {
 			camera.zoom = newZoom;
 	}
 
-	private void createTestAnchors( World world ) {
-		// anchorList.addAnchor( false, new Vector2(0f, 0f) );
-		// anchorList.addAnchor( false, new Vector2( -128f, 128f ), world, 3f );
-	}
-
 	/**
 	 * Render rectangles and circles representing various buffers. Use for
 	 * camera debugging.
 	 */
-	private void renderBuffers( ) {
+	public void renderBuffers( ) {
 		// render the translation buffer
 		shapeRenderer.setProjectionMatrix( camera.combined );
 		shapeRenderer.begin( ShapeType.Rectangle );
@@ -510,6 +529,22 @@ public class Camera {
 		shapeRenderer.line( translateBuffer.x, translateBuffer.y
 				+ translateBuffer.height, translateBuffer.x
 				+ translateBuffer.width, translateBuffer.y );
+		shapeRenderer.end( );
+
+		// bounding box
+		shapeRenderer.begin( ShapeType.Line );
+		shapeRenderer.line( getBounds( ).x + 20, getBounds( ).y + 20,
+				getBounds( ).x + getBounds( ).width - 20, getBounds( ).y + 20 );
+		shapeRenderer.line( getBounds( ).x + 20, getBounds( ).y
+				+ getBounds( ).height,
+				getBounds( ).x + getBounds( ).width - 20, getBounds( ).y
+						+ getBounds( ).height );
+
+		shapeRenderer.line( getBounds( ).x + 20, getBounds( ).y + 20,
+				getBounds( ).x + 20, getBounds( ).y + getBounds( ).height - 20 );
+		shapeRenderer.line( getBounds( ).x + getBounds( ).width - 20, getBounds( ).y + 20,
+				getBounds( ).x + getBounds( ).width - 20, getBounds( ).y + getBounds( ).height
+						- 20 );
 		shapeRenderer.end( );
 
 		// render the translation target buffer
