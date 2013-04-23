@@ -514,7 +514,7 @@ public class Camera {
 	 * Render rectangles and circles representing various buffers. Use for
 	 * camera debugging.
 	 */
-	private void renderBuffers( ) {
+	public void renderBuffers( ) {
 		// render the translation buffer
 		shapeRenderer.setProjectionMatrix( camera.combined );
 		shapeRenderer.begin( ShapeType.Rectangle );
@@ -529,6 +529,22 @@ public class Camera {
 		shapeRenderer.line( translateBuffer.x, translateBuffer.y
 				+ translateBuffer.height, translateBuffer.x
 				+ translateBuffer.width, translateBuffer.y );
+		shapeRenderer.end( );
+
+		// bounding box
+		shapeRenderer.begin( ShapeType.Line );
+		shapeRenderer.line( getBounds( ).x + 20, getBounds( ).y + 20,
+				getBounds( ).x + getBounds( ).width - 20, getBounds( ).y + 20 );
+		shapeRenderer.line( getBounds( ).x + 20, getBounds( ).y
+				+ getBounds( ).height,
+				getBounds( ).x + getBounds( ).width - 20, getBounds( ).y
+						+ getBounds( ).height );
+
+		shapeRenderer.line( getBounds( ).x + 20, getBounds( ).y + 20,
+				getBounds( ).x + 20, getBounds( ).y + getBounds( ).height - 20 );
+		shapeRenderer.line( getBounds( ).x + getBounds( ).width - 20, getBounds( ).y + 20,
+				getBounds( ).x + getBounds( ).width - 20, getBounds( ).y + getBounds( ).height
+						- 20 );
 		shapeRenderer.end( );
 
 		// render the translation target buffer

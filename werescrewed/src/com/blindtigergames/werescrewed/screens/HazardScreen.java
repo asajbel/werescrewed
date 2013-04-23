@@ -325,7 +325,7 @@ public class HazardScreen implements com.badlogic.gdx.Screen {
 		testSteam.draw( batch, deltaTime );
 		player1.draw( batch, deltaTime );
 		player2.draw( batch, deltaTime );
-		testPipe.draw( batch );
+		testPipe.draw( batch, deltaTime );
 
 		batch.end( );
 
