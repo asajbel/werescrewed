@@ -81,7 +81,7 @@ public class Entity implements GleedLoadable {
 			frontParticles;
 
 	protected SoundManager sounds;
-	
+
 	/**
 	 * Create entity by definition
 	 * 
@@ -291,7 +291,7 @@ public class Entity implements GleedLoadable {
 	}
 
 	public void draw( SpriteBatch batch, float deltaTime ) {
-		//drawBGDecals( batch );
+		// drawBGDecals( batch );
 		drawParticles( behindParticles, batch );
 		if ( sprite != null && visible && !removeNextStep ) {
 			sprite.draw( batch );
@@ -301,7 +301,7 @@ public class Entity implements GleedLoadable {
 		if ( spinemator != null )
 			spinemator.draw( batch );
 		drawParticles( frontParticles, batch );
-		if (sounds != null && sounds.hasSound( "idle" )){
+		if ( sounds != null && sounds.hasSound( "idle" ) ) {
 		}
 	}
 
@@ -570,8 +570,8 @@ public class Entity implements GleedLoadable {
 		int index = robotStateMap.get( robotState );
 		moverArray.set( index, mover );
 	}
-	
-	public void addMover( IMover mover) {
+
+	public void addMover( IMover mover ) {
 		addMover( mover, RobotState.IDLE );
 	}
 
@@ -1013,8 +1013,9 @@ public class Entity implements GleedLoadable {
 	 * 
 	 */
 	public void addBGDecal( Sprite s, Vector2 offset, float angle ) {
-		if ( s == null ){
-			throw new RuntimeException("Entity.addBGDecal(): Adding null sprite");
+		if ( s == null ) {
+			throw new RuntimeException(
+					"Entity.addBGDecal(): Adding null sprite" );
 		}
 		this.bgDecals.add( s );
 		this.bgDecalOffsets.add( offset );
@@ -1022,11 +1023,13 @@ public class Entity implements GleedLoadable {
 	}
 
 	/**
-	 * @param angle in radian
+	 * @param angle
+	 *            in radian
 	 */
 	public void addFGDecal( Sprite s, Vector2 offset, float angle ) {
-		if ( s == null ){
-			throw new RuntimeException("Entity.addFGDecal(): Adding null sprite");
+		if ( s == null ) {
+			throw new RuntimeException(
+					"Entity.addFGDecal(): Adding null sprite" );
 		}
 		this.fgDecals.add( s );
 		this.fgDecalOffsets.add( offset );
@@ -1040,43 +1043,58 @@ public class Entity implements GleedLoadable {
 	public void addFGDecal( Sprite s, Vector2 offset ) {
 		addFGDecal( s, offset, 0.0f );
 	}
-	
-	public void addFGDecalBack(Sprite s, Vector2 offset ){
-		addDecalBack( s, offset, true );
+
+	public void addFGDecalBack( Sprite s, Vector2 offset ) {
+		fgDecals.add( 0, s );
+		fgDecalOffsets.add( 0, offset );
+		fgDecalAngles.add( 0, 0.0f );
+		// addDecalBack( s, offset, true );
 	}
-	
-	public void addBGDecalBack(Sprite s, Vector2 offset ){
-		addDecalBack( s, offset, false );
+
+	public void addBGDecalBack( Sprite s, Vector2 offset ) {
+		bgDecals.add( 0, s );
+		bgDecalOffsets.add( 0, offset );
+		bgDecalAngles.add( 0, 0.0f );
+		// addDecalBack( s, offset, false );
 	}
-	
-	private void addDecalBack(Sprite s, Vector2 offset, boolean isFG){
-		ArrayList< Sprite > decalsList = (isFG)?this.fgDecals:this.bgDecals;
-		ArrayList< Vector2 > offsetList = (isFG)?this.fgDecalOffsets:this.bgDecalOffsets;
-		ArrayList< Float > angleList = (isFG)?this.fgDecalAngles:this.bgDecalAngles;
-		
-		ArrayList< Sprite > newSprites = new ArrayList<Sprite>(decalsList.size( )+1);
-		newSprites.add(s);
-		for(Sprite sprite:decalsList)newSprites.add(sprite);
+
+	private void addDecalBack( Sprite s, Vector2 offset, boolean isFG ) {
+		ArrayList< Sprite > decalsList = ( isFG ) ? this.fgDecals
+				: this.bgDecals;
+		ArrayList< Vector2 > offsetList = ( isFG ) ? this.fgDecalOffsets
+				: this.bgDecalOffsets;
+		ArrayList< Float > angleList = ( isFG ) ? this.fgDecalAngles
+				: this.bgDecalAngles;
+
+		ArrayList< Sprite > newSprites = new ArrayList< Sprite >(
+				decalsList.size( ) + 1 );
+		newSprites.add( s );
+		for ( Sprite sprite : decalsList )
+			newSprites.add( sprite );
 		decalsList.clear( );
 		decalsList = newSprites;
-		
-		ArrayList< Vector2 > newOffsets = new ArrayList<Vector2>(offsetList.size( )+1);
-		newOffsets.add(offset);
-		for(Vector2 o:offsetList)newOffsets.add(o);
+
+		ArrayList< Vector2 > newOffsets = new ArrayList< Vector2 >(
+				offsetList.size( ) + 1 );
+		newOffsets.add( offset );
+		for ( Vector2 o : offsetList )
+			newOffsets.add( o );
 		offsetList.clear( );
 		offsetList = newOffsets;
-		
-		ArrayList< Float > newAngles = new ArrayList<Float>(angleList.size( )+1);
-		newAngles.add(0.0f);
-		for(Float f:angleList)newAngles.add(f);
-		angleList.clear();
+
+		ArrayList< Float > newAngles = new ArrayList< Float >(
+				angleList.size( ) + 1 );
+		newAngles.add( 0.0f );
+		for ( Float f : angleList )
+			newAngles.add( f );
+		angleList.clear( );
 		angleList = newAngles;
-		
-		if(isFG){
+
+		if ( isFG ) {
 			this.fgDecals = decalsList;
 			this.fgDecalOffsets = offsetList;
 			this.fgDecalAngles = angleList;
-		}else{
+		} else {
 			this.bgDecals = decalsList;
 			this.bgDecalOffsets = offsetList;
 			this.bgDecalAngles = angleList;
@@ -1266,21 +1284,22 @@ public class Entity implements GleedLoadable {
 		}
 		return out;
 	}
-	
-	public void setSoundManager(SoundManager s){
+
+	public void setSoundManager( SoundManager s ) {
 		sounds = s;
 	}
-	
-	public SoundManager getSoundManager(){
+
+	public SoundManager getSoundManager( ) {
 		return sounds;
 	}
-	
+
 	// Idle sound
-	public void idleSound(){
-		if (sounds != null && sounds.hasSound("idle")){
-			sounds.loopSound("idle");
+	public void idleSound( ) {
+		if ( sounds != null && sounds.hasSound( "idle" ) ) {
+			sounds.loopSound( "idle" );
 		}
 	}
+
 	/**
 	 * Add a fixture from a gleed path. This ignores the last vert.
 	 * 
@@ -1335,19 +1354,20 @@ public class Entity implements GleedLoadable {
 		}
 	}
 
-	//Call this function after all your sprites, sounds, etc. are loaded.
-	public void postLoad(){
-		idleSound();
+	// Call this function after all your sprites, sounds, etc. are loaded.
+	public void postLoad( ) {
+		idleSound( );
 	}
-	
-	public void collide( Object that , Contact contact){
-		this.collide();
+
+	public void collide( Object that, Contact contact ) {
+		this.collide( );
 	}
-	
-	//This function handles collision when we do not care what the other object is.
-	public void collide(){
-		if (sounds != null && sounds.hasSound("collision")){
-			sounds.playSound("collision");
+
+	// This function handles collision when we do not care what the other object
+	// is.
+	public void collide( ) {
+		if ( sounds != null && sounds.hasSound( "collision" ) ) {
+			sounds.playSound( "collision" );
 		}
 	}
 }

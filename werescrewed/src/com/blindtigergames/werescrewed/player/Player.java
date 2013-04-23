@@ -508,7 +508,18 @@ public class Player extends Entity {
 				Metrics.incTrophyMetric( TrophyMetric.P2PUZZLETIME, 0.01f );
 			}
 		}
-
+		//debug no collision while holding 7
+		if ( Gdx.input.isKeyPressed( Keys.NUM_8 ) ) {
+			for ( Fixture f: body.getFixtureList( ) ) {
+				f.setSensor( true );
+			}
+		} else {
+			for ( Fixture f: body.getFixtureList( ) ) {
+				if ( f != rightSensor && f != leftSensor && f != topSensor ) {
+					f.setSensor( false );
+				}
+			}
+		}
 		prevPlayerDir = playerDirection;
 	}
 
