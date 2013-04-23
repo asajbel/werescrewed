@@ -2,7 +2,9 @@ package com.blindtigergames.werescrewed.entity.screws;
 
 import java.util.ArrayList;
 
+import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.graphics.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -33,8 +35,10 @@ public class StrippedScrew extends Screw {
 	 * @param entity
 	 * @param world
 	 */
+	private static TextureRegion screwTex = WereScrewedGame.manager.getAtlas( "common-textures" ).findRegion( "flat_head_circular2" );
+	
 	public StrippedScrew( String name, Vector2 pos, Entity entity, World world, Vector2 detachDirection ) {
-		super( name, pos, null );
+		super( name, pos, screwTex );
 		this.world = world;
 		this.detachDirection = detachDirection;
 		this.entity = entity;
@@ -68,7 +72,7 @@ public class StrippedScrew extends Screw {
 	 * @param world
 	 */
 	public StrippedScrew( String name, Vector2 pos, World world) {
-		super( name, pos, null );
+		super( name, pos, screwTex );
 		this.world = world;
 		this.depth = 0;
 		screwType = ScrewType.SCREW_STRIPPED;

@@ -54,7 +54,7 @@ public class Screw extends Entity {
 	protected ScrewType screwType;
 	public ArrayList< Joint > extraJoints;
 	
-	private static TextureRegion screwTexRegion = WereScrewedGame.manager.getAtlas( "common-textures" ).findRegion( "flat_head_circular" );
+	
 
 	/**
 	 * constructor to use if you want a cosmetic screw
@@ -69,7 +69,7 @@ public class Screw extends Entity {
 	public Screw( String name, Vector2 pos, Entity entity, World world ) {
 		super( name, pos, null, null, false );
 		this.world = world;
-		this.sprite = constructSprite(screwTexRegion);
+		this.sprite = constructSprite(WereScrewedGame.manager.getAtlas( "common-textures" ).findRegion( "flat_head_circular" ));
 		this.entity = entity;
 		this.entityAngle = entity.getAngle( );
 		screwType = ScrewType.SCREW_COSMETIC;
@@ -88,9 +88,10 @@ public class Screw extends Entity {
 	 * @param pos
 	 * @param tex
 	 */
-	public Screw( String name, Vector2 pos, Texture tex ) {
+	public Screw( String name, Vector2 pos, TextureRegion tex ) {
 		super( name, pos, null, null, false );
-		this.sprite = constructSprite(screwTexRegion);
+		if (tex == null)tex = WereScrewedGame.manager.getAtlas( "common-textures" ).findRegion( "flat_head_circular" );
+		this.sprite = constructSprite(tex);
 		entityType = EntityType.SCREW;
 	}
 

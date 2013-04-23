@@ -6,10 +6,12 @@ import java.util.Iterator;
 import aurelienribon.tweenengine.Tween;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Joint;
 import com.badlogic.gdx.physics.box2d.World;
@@ -19,6 +21,7 @@ import com.blindtigergames.werescrewed.checkpoints.ProgressManager;
 import com.blindtigergames.werescrewed.collisionManager.MyContactListener;
 import com.blindtigergames.werescrewed.debug.SBox2DDebugRenderer;
 import com.blindtigergames.werescrewed.entity.Entity;
+import com.blindtigergames.werescrewed.entity.EntityType;
 import com.blindtigergames.werescrewed.entity.RootSkeleton;
 import com.blindtigergames.werescrewed.entity.Skeleton;
 import com.blindtigergames.werescrewed.entity.platforms.Platform;
@@ -26,6 +29,7 @@ import com.blindtigergames.werescrewed.entity.tween.EntityAccessor;
 import com.blindtigergames.werescrewed.entity.tween.PlatformAccessor;
 import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 import com.blindtigergames.werescrewed.player.Player;
+import com.blindtigergames.werescrewed.util.Util;
 
 /**
  * @param name
@@ -91,6 +95,17 @@ public class Level {
 			player1.update( deltaTime );
 		if ( player2 != null )
 			player2.update( deltaTime );
+		
+		
+		if (Gdx.input.isTouched() || Gdx.input.isButtonPressed(Buttons.LEFT)) {
+			Vector3 cursorPosition = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
+			camera.camera.unproject(cursorPosition);
+			cursorPosition.mul( Util.PIXEL_TO_BOX );
+			if ( player1 != null && player2 != null ){
+				player1.body.setTransform( cursorPosition.x, cursorPosition.y, 0 );
+				player2.body.setTransform( cursorPosition.x, cursorPosition.y, 0 );
+			}
+		}
 
 		root.update( deltaTime );
 
@@ -127,6 +142,9 @@ public class Level {
 		// draw all background of skeletons before everything
 		for ( Skeleton skel : skelBGList ) {
 			if ( skel.isActive( ) ) {
+				if ( skel.entityType == EntityType.ROOTSKELETON){
+					skel.isActive( );
+				}
 				if ( skel.bgSprite != null ) {
 					if ( camera.getBounds( ).overlaps(
 							skel.bgSprite.getBoundingRectangle( ) ) ) {
@@ -138,6 +156,9 @@ public class Level {
 		}
 		for ( Entity e : entityBGList ) {
 			if ( e.isActive( ) ) {
+				if ( e.entityType == EntityType.ROOTSKELETON){
+					e.isActive( );
+				}
 				e.drawBGDecals( batch, camera.getBounds( ) );
 			}
 		}

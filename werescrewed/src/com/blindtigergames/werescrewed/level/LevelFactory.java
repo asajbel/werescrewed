@@ -89,6 +89,8 @@ public class LevelFactory {
 	protected static final String imageTag = "image";
 	protected static final String gleedImageTag = "image";
 	protected static final String atlasTag = "atlas";
+	
+	private final String robotTexBG = "/levels/alphabot/alphabot-interior.png";
 
 	public LevelFactory( ) {
 		reader = new XmlReader( );
@@ -583,8 +585,8 @@ public class LevelFactory {
 			level.root = new RootSkeleton( item.name, item.pos, null,
 					level.world );
 			// DELETE THESE TWO LINES WHEN THE STAGE WORKS PROPERLY WITH GLEED
-			level.skelBGList.add( level.root );
-			level.skelFGList.add( level.root );
+			level.skelBGList.add(0, level.root );
+			level.skelFGList.add(0, level.root );
 			skeletons.put( item.name, level.root );
 			entities.put( item.name, level.root );
 
@@ -604,7 +606,7 @@ public class LevelFactory {
 						.texBackground(
 								WereScrewedGame.manager
 										.get( WereScrewedGame.dirHandle
-												+ "/levels/alphabot/alphabot_texture_skin.png",
+												+ robotTexBG,
 												Texture.class ) );
 			} else {
 				skeleBuilder
@@ -613,7 +615,7 @@ public class LevelFactory {
 						.texBackground(
 								WereScrewedGame.manager
 										.get( WereScrewedGame.dirHandle
-												+ "/levels/alphabot/alphabot_texture_skin.png",
+												+ robotTexBG,
 												Texture.class ) ).fg( )
 						.setVerts( polySprite );
 				// .texForeground( WereScrewedGame.manager.get
@@ -858,7 +860,7 @@ public class LevelFactory {
 		pb.name( item.name ).position( item.pos ).tileSet( "alphabot32" )
 				.properties( item.props );
 		pb.texture( WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-				+ "/levels/alphabot/alphabot_texture_skin.png", Texture.class ) );
+				+ robotTexBG, Texture.class ) );
 
 		if ( item.props.containsKey( "gravscale" ) ) {
 			float gravScale = Float.parseFloat( item.props.get( "gravscale" ) );
