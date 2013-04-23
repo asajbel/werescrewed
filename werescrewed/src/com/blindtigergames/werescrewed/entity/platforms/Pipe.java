@@ -176,9 +176,9 @@ public class Pipe extends Platform {
 		}
 		
 		tempSprite = commonTextures.createSprite( texName );
-		offset_x = currentPos.x * Util.BOX_TO_PIXEL;
-		offset_y = currentPos.y * Util.BOX_TO_PIXEL;
-		tempSprite.setOrigin( -offset_x + tempSprite.getWidth( ) / 2, -offset_y + tempSprite.getHeight( ) );
+		offset_x = currentPos.x * Util.BOX_TO_PIXEL - tempSprite.getWidth( ) / 2;
+		offset_y = currentPos.y * Util.BOX_TO_PIXEL - tempSprite.getHeight( ) / 2;
+		tempSprite.setOrigin( -offset_x, -offset_y );
 		temp = new Tile( offset_x, offset_y, tempSprite );
 		tiles.add( temp );
 
@@ -274,99 +274,18 @@ public class Pipe extends Platform {
 			tempSprite = commonTextures.createSprite( texName );
 			if (currentDirection == Direction.RIGHT || currentDirection == Direction.LEFT) {
 				offset_x = (start.x + ( i / (float) numberOfSegments ) * distance.x)
-					* Util.BOX_TO_PIXEL;
-				offset_y = currentPos.y * (float) Util.BOX_TO_PIXEL;
+					* Util.BOX_TO_PIXEL  - tempSprite.getWidth( ) / 2;
+				offset_y = currentPos.y * (float) Util.BOX_TO_PIXEL - tempSprite.getHeight( ) / 2;
 			} else {
-				offset_x = currentPos.x * (float) Util.BOX_TO_PIXEL;
+				offset_x = currentPos.x * (float) Util.BOX_TO_PIXEL  - tempSprite.getWidth( ) / 2;
 				offset_y = (start.y + ( i / (float) numberOfSegments ) * distance.y)
-					* Util.BOX_TO_PIXEL;
+					* Util.BOX_TO_PIXEL - tempSprite.getHeight( ) / 2;
 			}
-			tempSprite.setOrigin( -offset_x + tempSprite.getWidth( ) / 2, -offset_y + tempSprite.getHeight( ) / 2 );
+			tempSprite.setOrigin( -offset_x, -offset_y);
 			temp = new Tile( offset_x, offset_y, tempSprite );
 			tiles.add( temp );
 
 		}
-
-		/*
-		 * for ( int i = 0; i < numberOfSegments; i++ ){ Sprite tempSprite;
-		 * System.out.println(startPos.x + ", " + startPos.y); PipeTile temp =
-		 * new PipeTile(name, world, startPos, null );
-		 * 
-		 * //for first pipe in each segment if ( i == 0 ){ if (
-		 * previousDirection != null ){ //if not the first segment, change pipe
-		 * to elbow sprite switch ( previousDirection ){ case LEFT: if (
-		 * currentDirection == Direction.UP ){ tempSprite = constructSprite( (
-		 * Texture ) WereScrewedGame.manager .get( WereScrewedGame.dirHandle +
-		 * "/common/pipe/pipeUR.png" ) ); temp.changeSprite( tempSprite ); }
-		 * else if ( currentDirection == Direction.DOWN ){ tempSprite =
-		 * constructSprite( ( Texture ) WereScrewedGame.manager .get(
-		 * WereScrewedGame.dirHandle + "/common/pipe/pipeRD.png" ) );
-		 * temp.changeSprite( tempSprite ); } break; case RIGHT: if (
-		 * currentDirection == Direction.UP ){ tempSprite = constructSprite( (
-		 * Texture ) WereScrewedGame.manager .get( WereScrewedGame.dirHandle +
-		 * "/common/pipe/pipeLU.png" ) ); temp.changeSprite( tempSprite ); }
-		 * else if ( currentDirection == Direction.DOWN ){ tempSprite =
-		 * constructSprite( ( Texture ) WereScrewedGame.manager .get(
-		 * WereScrewedGame.dirHandle + "/common/pipe/pipeDL.png" ) );
-		 * temp.changeSprite( tempSprite ); } break; case UP: if (
-		 * currentDirection == Direction.LEFT ){ tempSprite = constructSprite( (
-		 * Texture ) WereScrewedGame.manager .get( WereScrewedGame.dirHandle +
-		 * "/common/pipe/pipeDL.png" ) ); temp.changeSprite( tempSprite ); }
-		 * else if ( currentDirection == Direction.RIGHT ) { tempSprite =
-		 * constructSprite( ( Texture ) WereScrewedGame.manager .get(
-		 * WereScrewedGame.dirHandle + "/common/pipe/pipeRD.png" ) );
-		 * temp.changeSprite( tempSprite ); } break; case DOWN: if (
-		 * currentDirection == Direction.LEFT ){ tempSprite = constructSprite( (
-		 * Texture ) WereScrewedGame.manager .get( WereScrewedGame.dirHandle +
-		 * "/common/pipe/pipeLU.png" ) ); temp.changeSprite( tempSprite ); }
-		 * else if ( currentDirection == Direction.RIGHT ) { tempSprite =
-		 * constructSprite( ( Texture ) WereScrewedGame.manager .get(
-		 * WereScrewedGame.dirHandle + "/common/pipe/pipeUR.png" ) );
-		 * temp.changeSprite( tempSprite ); } break; } } else { //if first
-		 * segment, change pipe to end sprite switch ( currentDirection ){ case
-		 * LEFT: tempSprite = constructSprite( ( Texture )
-		 * WereScrewedGame.manager .get( WereScrewedGame.dirHandle +
-		 * "/common/pipe/pipeEndR.png" ) ); temp.changeSprite( tempSprite );
-		 * break; case RIGHT: tempSprite = constructSprite( ( Texture )
-		 * WereScrewedGame.manager .get( WereScrewedGame.dirHandle +
-		 * "/common/pipe/pipeEndL.png" ) ); temp.changeSprite( tempSprite );
-		 * break; case UP: tempSprite = constructSprite( ( Texture )
-		 * WereScrewedGame.manager .get( WereScrewedGame.dirHandle +
-		 * "/common/pipe/pipeEndD.png" ) ); temp.changeSprite( tempSprite );
-		 * break; case DOWN: tempSprite = constructSprite( ( Texture )
-		 * WereScrewedGame.manager .get( WereScrewedGame.dirHandle +
-		 * "/common/pipe/pipeEndU.png" ) ); temp.changeSprite( tempSprite );
-		 * break; } } } else { //if not first pipe, change sprite to appropriate
-		 * direction switch ( currentDirection ){ case LEFT: case RIGHT:
-		 * tempSprite = constructSprite( ( Texture ) WereScrewedGame.manager
-		 * .get( WereScrewedGame.dirHandle + "/common/pipe/pipeLR.png" ) );
-		 * temp.changeSprite( tempSprite ); break; case UP: case DOWN:
-		 * tempSprite = constructSprite( ( Texture ) WereScrewedGame.manager
-		 * .get( WereScrewedGame.dirHandle + "/common/pipe/pipeUD.png" ) );
-		 * temp.changeSprite( tempSprite ); break; } }
-		 * 
-		 * //if last pipe && last segment, change sprite to appropriate end
-		 * sprite if ( lastSegment && i == numberOfSegments - 1 ){ switch (
-		 * currentDirection ){ case LEFT: tempSprite = constructSprite( (
-		 * Texture ) WereScrewedGame.manager .get( WereScrewedGame.dirHandle +
-		 * "/common/pipe/pipeEndL.png" ) ); temp.changeSprite( tempSprite );
-		 * break; case RIGHT: tempSprite = constructSprite( ( Texture )
-		 * WereScrewedGame.manager .get( WereScrewedGame.dirHandle +
-		 * "/common/pipe/pipeEndR.png" ) ); temp.changeSprite( tempSprite );
-		 * break; case UP: tempSprite = constructSprite( ( Texture )
-		 * WereScrewedGame.manager .get( WereScrewedGame.dirHandle +
-		 * "/common/pipe/pipeEndU.png" ) ); temp.changeSprite( tempSprite );
-		 * break; case DOWN: tempSprite = constructSprite( ( Texture )
-		 * WereScrewedGame.manager .get( WereScrewedGame.dirHandle +
-		 * "/common/pipe/pipeEndD.png" ) ); temp.changeSprite( tempSprite );
-		 * break; } }
-		 * 
-		 * switch ( currentDirection ){ case LEFT: startPos.x -= 32.0f; break;
-		 * case RIGHT: startPos.x += 32.0f; break; case UP: startPos.y -= 32.0f;
-		 * break; case DOWN: startPos.y += 32.0f; break; }
-		 * 
-		 * segments.add( temp ); }
-		 */
 	}
 
 	@Override 
@@ -376,8 +295,8 @@ public class Pipe extends Platform {
 		// segments.get( i ).draw( batch );
 		for ( Tile a : tiles ) {
 			a.tileSprite.setPosition( 
-					body.getPosition( ).x * Util.BOX_TO_PIXEL - a.tileSprite.getWidth( ) / 2 + a.xOffset,
-					body.getPosition( ).y * Util.BOX_TO_PIXEL - a.tileSprite.getHeight( ) / 2 + a.yOffset );
+					body.getPosition( ).x * Util.BOX_TO_PIXEL + a.xOffset,
+					body.getPosition( ).y * Util.BOX_TO_PIXEL + a.yOffset );
 			a.tileSprite.setRotation( MathUtils.radiansToDegrees
 					* body.getAngle( ) );
 			a.tileSprite.draw( batch );
