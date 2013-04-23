@@ -149,6 +149,12 @@ public class PhysicsTestScreen extends Screen {
 			buildPiston( engineSkeleton, engineAtlas,
 					posPix.cpy( ).add( 250 * i, 0 ), i );
 		}
+		
+		Platform chestEngine = platBuilder.name( "chestEngine" ).position( -1000, 520 )
+				 .texture( null ).type( "chestEngine" )
+				 .buildComplexPlatform( );
+		
+		engineSkeleton.addPlatform( chestEngine );
 
 	}
 
@@ -239,6 +245,8 @@ public class PhysicsTestScreen extends Screen {
 																			// girder
 
 		engineSkeleton.addPlatforms( girder1 );
+		
+		
 
 		Sprite boltSprite;
 		Sprite pistonSprite;

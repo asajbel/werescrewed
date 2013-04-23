@@ -14,6 +14,7 @@ public class PipeBuilder extends GenericEntityBuilder< PipeBuilder > {
 	private float restitution = 0;
 	private float density = 1f;
 	private float friction = 1.0f;
+	private boolean open = false; 
 
 	/**
 	 * 
@@ -32,7 +33,8 @@ public class PipeBuilder extends GenericEntityBuilder< PipeBuilder > {
 				this.pos, 
 				this.path, 
 				this.tex,
-				this.world );
+				this.world,
+				open);
 		
 		out.body.setType( bodyType );
 		out.setDensity( this.density );
@@ -89,5 +91,10 @@ public class PipeBuilder extends GenericEntityBuilder< PipeBuilder > {
 	public PipeBuilder kinematic(){
 		bodyType = BodyType.KinematicBody;
 		return this;
+	}
+	
+	public PipeBuilder openEnded() {
+		open = true;
+		return this; 
 	}
 }

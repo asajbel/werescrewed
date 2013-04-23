@@ -374,6 +374,10 @@ public class LevelFactory {
 			isCrushable = true;
 		}
 		
+		if ( item.props.containsKey( "open" ) ) {
+			pb.openEnded( ); 
+		}
+		
 		pb.name( item.name ).position( new Vector2( item.pos.x, item.pos.y ) ).properties( item.props );
 
 
