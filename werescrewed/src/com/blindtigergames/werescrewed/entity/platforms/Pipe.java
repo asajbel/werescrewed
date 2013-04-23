@@ -33,14 +33,14 @@ public class Pipe extends Platform {
 	protected Direction nextDirection;
 	protected Direction previousDirection;
 	protected Texture texture;
+	protected boolean open; 
 
 	public static final float TILE_SIZE = 32.0f;
 
 	public Pipe( String name, Vector2 pos, ArrayList< Vector2 > path,
-			Texture tex, World world ) {
+			Texture tex, World world, boolean openEnded ) {
 		super( name, pos, tex, world );
-		position = new Vector2( pos.x * Util.PIXEL_TO_BOX, pos.y
-				* Util.PIXEL_TO_BOX );
+		open = openEnded; 
 		this.path = path;
 		this.currentPos = new Vector2( );
 		start = new Vector2( );
@@ -51,12 +51,7 @@ public class Pipe extends Platform {
 		int numberOfSegments;
 		previousDirection = null;
 
-		BodyDef bodyDef = new BodyDef( );
-		bodyDef.position.set( position );
-		bodyDef.type = BodyType.KinematicBody;
-		bodyDef.gravityScale = 0.1f;
-		body = world.createBody( bodyDef );
-		body.setUserData( this );
+		boolean bodymake = true; 
 		
 		Vector2 previousPair = new Vector2(); 
 
@@ -74,7 +69,7 @@ public class Pipe extends Platform {
 			}
 
 			// determine which direction this segment of pipe will run
-			if ( currentPair.x < 0 )
+			if ( currentPair.x < 0 ) 
 				currentDirection = Direction.LEFT;
 			else if ( currentPair.x > 0 )
 				currentDirection = Direction.RIGHT;
@@ -82,6 +77,38 @@ public class Pipe extends Platform {
 				currentDirection = Direction.DOWN;
 			else if ( currentPair.y > 0 )
 				currentDirection = Direction.UP;
+			
+			if (bodymake) {
+
+				switch (currentDirection) {
+				case DOWN:
+					position = new Vector2( pos.x * Util.PIXEL_TO_BOX,
+							(pos.y - TILE_SIZE) * Util.PIXEL_TO_BOX ); 
+					break;
+				case LEFT:
+					position = new Vector2( ( pos.x - TILE_SIZE) * Util.PIXEL_TO_BOX,
+						pos.y * Util.PIXEL_TO_BOX ); 
+					break;
+				case RIGHT:
+					position = new Vector2( ( pos.x + TILE_SIZE) * Util.PIXEL_TO_BOX,
+							pos.y * Util.PIXEL_TO_BOX ); 
+					break;
+				case UP:
+					position = new Vector2( pos.x * Util.PIXEL_TO_BOX,
+							(pos.y + TILE_SIZE) * Util.PIXEL_TO_BOX ); 
+					break;
+				default:
+					break;
+				
+				}
+				BodyDef bodyDef = new BodyDef( );
+				bodyDef.position.set( position );
+				bodyDef.type = BodyType.KinematicBody;
+				bodyDef.gravityScale = 0.1f;
+				body = world.createBody( bodyDef );
+				body.setUserData( this );
+				bodymake = false; 
+			}
 
 			if ( currentPair.x != 0 )
 				numberOfSegments = ( int ) Math.abs( currentPair.x );
@@ -151,7 +178,7 @@ public class Pipe extends Platform {
 		tempSprite = commonTextures.createSprite( texName );
 		offset_x = currentPos.x * Util.BOX_TO_PIXEL;
 		offset_y = currentPos.y * Util.BOX_TO_PIXEL;
-		tempSprite.setOrigin( -offset_x + TILE_SIZE, -offset_y + TILE_SIZE );
+		tempSprite.setOrigin( -offset_x + tempSprite.getWidth( ) / 2, -offset_y + tempSprite.getHeight( ) );
 		temp = new Tile( offset_x, offset_y, tempSprite );
 		tiles.add( temp );
 
@@ -217,7 +244,17 @@ public class Pipe extends Platform {
 		Vector2 distance = new Vector2(currentPos.x - start.x, currentPos.y - start.y); 
 		
 		for ( int i = 1; i < numberOfSegments; i++ ) {
-			if ( i == numberOfSegments - 1 && lastSegment ) {
+				switch ( currentDirection ){
+				case LEFT:
+				case RIGHT:
+					texName = "pipeLR";
+					break;
+				case UP:
+				case DOWN:
+					texName = "pipeUD";
+					break;
+				}
+			if ( i == numberOfSegments - 1 && lastSegment && !open ){
 				switch ( currentDirection ){
 				case LEFT:
 					texName = "pipeEndL";
@@ -239,13 +276,12 @@ public class Pipe extends Platform {
 				offset_x = (start.x + ( i / (float) numberOfSegments ) * distance.x)
 					* Util.BOX_TO_PIXEL;
 				offset_y = currentPos.y * (float) Util.BOX_TO_PIXEL;
-				tempSprite.setOrigin( -offset_x + TILE_SIZE, -offset_y + TILE_SIZE );
 			} else {
 				offset_x = currentPos.x * (float) Util.BOX_TO_PIXEL;
 				offset_y = (start.y + ( i / (float) numberOfSegments ) * distance.y)
 					* Util.BOX_TO_PIXEL;
-				tempSprite.setOrigin( -offset_x + TILE_SIZE, -offset_y + TILE_SIZE );
 			}
+			tempSprite.setOrigin( -offset_x + tempSprite.getWidth( ) / 2, -offset_y + tempSprite.getHeight( ) / 2 );
 			temp = new Tile( offset_x, offset_y, tempSprite );
 			tiles.add( temp );
 
@@ -340,12 +376,16 @@ public class Pipe extends Platform {
 		// segments.get( i ).draw( batch );
 		for ( Tile a : tiles ) {
 			a.tileSprite.setPosition( 
-					body.getPosition( ).x * Util.BOX_TO_PIXEL - TILE_SIZE + a.xOffset,
-					body.getPosition( ).y * Util.BOX_TO_PIXEL - TILE_SIZE + a.yOffset );
+					body.getPosition( ).x * Util.BOX_TO_PIXEL - a.tileSprite.getWidth( ) / 2 + a.xOffset,
+					body.getPosition( ).y * Util.BOX_TO_PIXEL - a.tileSprite.getHeight( ) / 2 + a.yOffset );
 			a.tileSprite.setRotation( MathUtils.radiansToDegrees
 					* body.getAngle( ) );
 			a.tileSprite.draw( batch );
 		}
+	}
+
+	public void setOpen( boolean open2 ) {
+		open = open2; 
 	}
 
 }

@@ -102,7 +102,7 @@ public class HazardScreen implements com.badlogic.gdx.Screen {
 		pipePath.add( new Vector2 (3, 0) );
 	
 		
-		testPipe = new Pipe("pipe", new Vector2 ( 800f, 0f ), pipePath, null, world);
+		testPipe = new Pipe("pipe", new Vector2 ( 800f, 0f ), pipePath, null, world, false);
 		skeleton.addKinematicPlatform( testPipe );
 		
 		RotateTweenMover rtm1 = new RotateTweenMover( testPipe, 10f,

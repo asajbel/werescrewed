@@ -746,8 +746,8 @@
                         <Property Name="AttachToSkeleton" Type="string" Description="">
                             <string>skeleton1</string>
                         </Property>
-                        <Property Name="createscrew" Type="string" Description="">
-                            <string />
+                        <Property Name="numberofscrews" Type="string" Description="">
+                            <string>1</string>
                         </Property>
                     </CustomProperties>
                     <Rotation>0</Rotation>
@@ -3032,8 +3032,8 @@
                         <Property Name="AttachToSkeleton" Type="string" Description="">
                             <string>skeleton1</string>
                         </Property>
-                        <Property Name="createscrew" Type="string" Description="">
-                            <string />
+                        <Property Name="numberofscrews" Type="string" Description="">
+                            <string>1</string>
                         </Property>
                     </CustomProperties>
                     <Rotation>0</Rotation>
@@ -3350,6 +3350,9 @@
                         <Property Name="AttachToSkeleton" Type="string" Description="">
                             <string>skeleton1</string>
                         </Property>
+                        <Property Name="open" Type="string" Description="">
+                            <string />
+                        </Property>
                     </CustomProperties>
                     <LocalPoints>
                         <Vector2>
@@ -3511,8 +3514,8 @@
         <NextItemNumber>166</NextItemNumber>
         <ContentRootFolder>gleed-textures</ContentRootFolder>
         <CameraPosition>
-            <X>2240.37744</X>
-            <Y>-626.330566</Y>
+            <X>440.379547</X>
+            <Y>-34.6611023</Y>
         </CameraPosition>
         <Version>1.3.0.0</Version>
     </EditorRelated>
