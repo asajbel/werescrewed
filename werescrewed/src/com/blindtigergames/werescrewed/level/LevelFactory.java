@@ -686,7 +686,7 @@ public class LevelFactory {
 			// add the skeleton to the skeleton layer for drawing
 			if ( skeleton.bgSprite != null ) {
 				level.skelBGList.add( skeleton );
-			}
+			} 
 			if ( skeleton.fgSprite != null ) {
 				level.skelFGList.add( skeleton );
 			}

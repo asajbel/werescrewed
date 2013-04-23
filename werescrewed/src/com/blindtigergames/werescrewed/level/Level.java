@@ -131,7 +131,7 @@ public class Level {
 					if ( camera.getBounds( ).overlaps(
 							skel.bgSprite.getBoundingRectangle( ) ) ) {
 						skel.bgSprite.draw( batch );
-					} 
+					}
 				}
 				skel.drawBGDecals( batch, camera.getBounds( ) );
 			}
@@ -163,16 +163,14 @@ public class Level {
 					skel.fgSprite.draw( batch );
 				}
 			}
-			// if ( ( !skel.isActive( ) && skel.getParentSkeleton( ).isActive( )
-			// )
-			// || ( skel.isMacroSkel( ) && !skel.isActive( ) ) )
+//			if ( ( !skel.isActive( ) && skel.getParentSkeleton( ).isActive( ) )
+//					|| ( skel.isMacroSkel( ) && !skel.isActive( ) ) ) 
 			{
 				skel.drawFGDecals( batch, camera.getBounds( ) );
-
 			}
 		}
 
-		//camera.renderBuffers( );
+		// camera.renderBuffers( );
 		batch.end( );
 
 		if ( debug )
