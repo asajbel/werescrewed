@@ -56,7 +56,7 @@ public class Entity implements GleedLoadable {
 	public Body body;
 	protected World world;
 	protected boolean solid;
-	protected ArrayList< Anchor > anchors;
+	public ArrayList< Anchor > anchors;
 	protected float energy;
 	protected boolean active;
 	protected boolean crushing;
