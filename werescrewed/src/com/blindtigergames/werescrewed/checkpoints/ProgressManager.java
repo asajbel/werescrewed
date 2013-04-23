@@ -34,6 +34,7 @@ public class ProgressManager {
 	private Entity p2Ghost;
 	private World world;
 	private Vector2 chkptOffset = new Vector2( 16, 8 );
+	private Vector2 oldChkptPos;
 
 	/**
 	 * 
@@ -60,6 +61,7 @@ public class ProgressManager {
 		if ( currentCheckPoint != checkPoint ) {
 			// Deactivate the current checkpoint
 			currentCheckPoint.deactivate( );
+			oldChkptPos = currentCheckPoint.getPositionPixel( ).cpy( );
 			// Then set it to the one the players hit
 			currentCheckPoint = checkPoint;
 			// If player 1's Ghost is active
@@ -76,11 +78,12 @@ public class ProgressManager {
 					lm.setSpeed( 10f / currentCheckPoint.getPositionPixel( )
 							.sub( p1Ghost.getPositionPixel( ) ).len( ) );
 					if ( currentCheckPoint.getPositionPixel( ).x < p1Ghost
-							.getPositionPixel( ).x ) {
-						if ( p1Ghost.sprite.getScaleX( ) > 0 ) {
-							p1Ghost.sprite.setScale( -1, 1 );
-						}
-					} else if ( p1Ghost.sprite.getScaleX( ) < 0 ) {
+							.getPositionPixel( ).x
+							&& oldChkptPos.x > p1Ghost.getPositionPixel( ).x ) {
+						p1Ghost.sprite.setScale( -1, 1 );
+					} else if ( currentCheckPoint.getPositionPixel( ).x > p1Ghost
+							.getPositionPixel( ).x
+							&& oldChkptPos.x < p1Ghost.getPositionPixel( ).x ) {
 						p1Ghost.sprite.setScale( -1, 1 );
 					}
 				}
@@ -96,11 +99,12 @@ public class ProgressManager {
 					lm.setSpeed( 10f / currentCheckPoint.getPositionPixel( )
 							.sub( p2Ghost.getPositionPixel( ) ).len( ) );
 					if ( currentCheckPoint.getPositionPixel( ).x < p2Ghost
-							.getPositionPixel( ).x ) {
-						if ( p2Ghost.sprite.getScaleX( ) > 0 ) {
-							p2Ghost.sprite.setScale( -1, 1 );
-						}
-					} else if ( p2Ghost.sprite.getScaleX( ) < 0 ) {
+							.getPositionPixel( ).x
+							&& oldChkptPos.x > p2Ghost.getPositionPixel( ).x ) {
+						p2Ghost.sprite.setScale( -1, 1 );
+					} else if ( currentCheckPoint.getPositionPixel( ).x > p2Ghost
+							.getPositionPixel( ).x
+							&& oldChkptPos.x < p2Ghost.getPositionPixel( ).x ) {
 						p2Ghost.sprite.setScale( -1, 1 );
 					}
 				}
@@ -145,59 +149,12 @@ public class ProgressManager {
 			extraRezScrew.update( deltaTime );
 		}
 		if ( p1Ghost != null ) {
-			if ( p1Ghost.currentMover( ) instanceof LerpMover ) {
-				LerpMover lm = ( LerpMover ) p1Ghost.currentMover( );
-				// lm.changeBeginPos( player1.getPositionPixel( ).cpy( )
-				// .add( -64f, 64f ) );
-				lm.changeEndPos( currentCheckPoint.getPositionPixel( ).sub(
-						chkptOffset ) );
-				lm.setSpeed( 10f / currentCheckPoint.getPositionPixel( )
-						.sub( player1.getPositionPixel( ) ).len( ) );
-				if ( currentCheckPoint.getPositionPixel( ).x < p1Ghost
-						.getPositionPixel( ).x ) {
-					if ( p1Ghost.sprite.getScaleX( ) > 0 ) {
-						p1Ghost.sprite.setScale( -1, 1 );
-					}
-				} else if ( p1Ghost.sprite.getScaleX( ) < 0 ) {
-					p1Ghost.sprite.setScale( -1, 1 );
-				}
-				if ( lm.atEnd( ) ) {
-					spawnAtCheckPoint( player1 );
-					p1Ghost.clearAnchors( );
-					p1Ghost = null;
-				} else {
-					// p1Ghost.update( deltaTime );
-					p1Ghost.updateAnchors( );
-				}
-			}
+			updateGhost( player1 );
 		}
 		if ( p2Ghost != null ) {
-			if ( p2Ghost.currentMover( ) instanceof LerpMover ) {
-				LerpMover lm = ( LerpMover ) p2Ghost.currentMover( );
-				// lm.changeBeginPos( player2.getPositionPixel( ).cpy( )
-				// .add( -64f, 64f ) );
-				lm.changeEndPos( currentCheckPoint.getPositionPixel( ).sub(
-						chkptOffset ) );
-				lm.setSpeed( 10f / currentCheckPoint.getPositionPixel( )
-						.sub( player2.getPositionPixel( ) ).len( ) );
-				if ( currentCheckPoint.getPositionPixel( ).x < p2Ghost
-						.getPositionPixel( ).x ) {
-					if ( p2Ghost.sprite.getScaleX( ) > 0 ) {
-						p2Ghost.sprite.setScale( -1, 1 );
-					}
-				} else if ( p2Ghost.sprite.getScaleX( ) < 0 ) {
-					p2Ghost.sprite.setScale( -1, 1 );
-				}
-				if ( lm.atEnd( ) ) {
-					spawnAtCheckPoint( player2 );
-					p2Ghost.clearAnchors( );
-					p2Ghost = null;
-				} else {
-					// p2Ghost.update( deltaTime );
-					p2Ghost.updateAnchors( );
-				}
-			}
+			updateGhost( player2 );
 		}
+		oldChkptPos = currentCheckPoint.getPositionPixel( ).cpy( );
 	}
 
 	/**
@@ -387,6 +344,64 @@ public class ProgressManager {
 		extraRezScrew = rezzBuilder.playerOffset( true )
 				.entity( player.getLastPlatform( ) ).lerpMover( screwMover )
 				.position( screwPos ).buildRezzScrew( );
+	}
+
+	private void updateGhost( Player player ) {
+		if ( player == player1 ) {
+			if ( p1Ghost.currentMover( ) instanceof LerpMover ) {
+				LerpMover lm = ( LerpMover ) p1Ghost.currentMover( );
+				// lm.changeBeginPos( player1.getPositionPixel( ).cpy( )
+				// .add( -64f, 64f ) );
+				lm.changeEndPos( currentCheckPoint.getPositionPixel( ).sub(
+						chkptOffset ) );
+				lm.setSpeed( 10f / currentCheckPoint.getPositionPixel( )
+						.sub( player1.getPositionPixel( ) ).len( ) );
+				if ( currentCheckPoint.getPositionPixel( ).x < p1Ghost
+						.getPositionPixel( ).x
+						&& oldChkptPos.x > p1Ghost.getPositionPixel( ).x ) {
+					p1Ghost.sprite.setScale( -1, 1 );
+				} else if ( currentCheckPoint.getPositionPixel( ).x > p1Ghost
+						.getPositionPixel( ).x
+						&& oldChkptPos.x < p1Ghost.getPositionPixel( ).x ) {
+					p1Ghost.sprite.setScale( -1, 1 );
+				}
+				if ( lm.atEnd( ) ) {
+					spawnAtCheckPoint( player1 );
+					p1Ghost.clearAnchors( );
+					p1Ghost = null;
+				} else {
+					// p1Ghost.update( deltaTime );
+					p1Ghost.updateAnchors( );
+				}
+			}
+		} else {
+			if ( p2Ghost.currentMover( ) instanceof LerpMover ) {
+				LerpMover lm = ( LerpMover ) p2Ghost.currentMover( );
+				// lm.changeBeginPos( player2.getPositionPixel( ).cpy( )
+				// .add( -64f, 64f ) );
+				lm.changeEndPos( currentCheckPoint.getPositionPixel( ).sub(
+						chkptOffset ) );
+				lm.setSpeed( 10f / currentCheckPoint.getPositionPixel( )
+						.sub( player2.getPositionPixel( ) ).len( ) );
+				if ( currentCheckPoint.getPositionPixel( ).x < p2Ghost
+						.getPositionPixel( ).x
+						&& oldChkptPos.x > p2Ghost.getPositionPixel( ).x ) {
+					p2Ghost.sprite.setScale( -1, 1 );
+				} else if ( currentCheckPoint.getPositionPixel( ).x > p2Ghost
+						.getPositionPixel( ).x
+						&& oldChkptPos.x < p2Ghost.getPositionPixel( ).x ) {
+					p2Ghost.sprite.setScale( -1, 1 );
+				}
+				if ( lm.atEnd( ) ) {
+					spawnAtCheckPoint( player2 );
+					p2Ghost.clearAnchors( );
+					p2Ghost = null;
+				} else {
+					// p2Ghost.update( deltaTime );
+					p2Ghost.updateAnchors( );
+				}
+			}
+		}
 	}
 
 	/**
