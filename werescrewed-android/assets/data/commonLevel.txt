@@ -47,6 +47,7 @@
 /common/robot/metal.png
 /common/gear.png
 /common/sawblade.png
+/common/chest-engine.png
 /common/redScrewDriver.png
 /common/pipe/pipeEndD.png
 /common/pipe/pipeEndL.png

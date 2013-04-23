@@ -21,6 +21,7 @@ import com.blindtigergames.werescrewed.entity.Skeleton;
 import com.blindtigergames.werescrewed.entity.Sprite;
 import com.blindtigergames.werescrewed.entity.action.RemoveEntityAction;
 import com.blindtigergames.werescrewed.entity.builders.EventTriggerBuilder;
+import com.blindtigergames.werescrewed.entity.builders.GenericEntityBuilder;
 import com.blindtigergames.werescrewed.entity.builders.PlatformBuilder;
 import com.blindtigergames.werescrewed.entity.builders.PlayerBuilder;
 import com.blindtigergames.werescrewed.entity.mover.AnalogRotateMover;
@@ -69,7 +70,7 @@ public class AlphaScreen extends Screen {
 		String filename = "data/levels/alphalevel.xml";
 		level = new LevelFactory( ).load( filename );
 
-		level.camera.position = new Vector3( 0, 0, 0 );
+		//level.camera.position = new Vector3( 0, 0, 0 );
 
 		// death barrier
 		EventTriggerBuilder etb = new EventTriggerBuilder( level.world );
@@ -95,7 +96,7 @@ public class AlphaScreen extends Screen {
 		// head: 480f,  6688f
 		// right arm: 2600f, 6000f
 		
-		Vector2 spawnPos = new Vector2(-1582f, 6150f);
+		Vector2 spawnPos = new Vector2(-128, 3712);
 
 		if ( level.player1 == null ) {
 			level.player1 = new PlayerBuilder( ).world( level.world )
@@ -407,7 +408,7 @@ public class AlphaScreen extends Screen {
 		// rjd.collideConnected = false;
 		// level.world.createJoint( rjd );
 
-		structurePlat3.setGroupIndex( ( short ) -5 );
+//		structurePlat3.setGroupIndex( ( short ) -5 );
 		footPlat6.setGroupIndex( ( short ) -5 );
 		
 		
@@ -559,7 +560,15 @@ public class AlphaScreen extends Screen {
 		int pistonDistanceApart = 280;
 		float engineSpeed = 2.5f;
 		
-
+		//Got to set the right bits
+//		PlatformBuilder platBuilder = new PlatformBuilder(level.world);
+//		Platform chestEngine = platBuilder .name( "chestEngine" ).position(-250,5100 )
+//		 .texture( null ).type( "chestEngine" )
+//		 .buildComplexPlatform( );
+//		
+//
+//		engineSkeleton.addPlatform( chestEngine );
+		
 		TextureAtlas engineAtlas = WereScrewedGame.manager.getAtlas( "engine" );
 		Vector2 decalPos = engineSkeleton.getPositionPixel( ).sub( posPix ).add( -230,-360 );
 		engineSkeleton.addBGDecal( engineAtlas.createSprite("chest-engine"), new Vector2(decalPos) );
