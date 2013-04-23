@@ -24,6 +24,7 @@ import com.badlogic.gdx.utils.Array;
 import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.camera.Anchor;
 import com.blindtigergames.werescrewed.camera.AnchorList;
+import com.blindtigergames.werescrewed.camera.Camera;
 import com.blindtigergames.werescrewed.entity.animator.IAnimator;
 import com.blindtigergames.werescrewed.entity.animator.ISpinemator;
 import com.blindtigergames.werescrewed.entity.animator.PlayerAnimator;
@@ -80,7 +81,7 @@ public class Entity implements GleedLoadable {
 	protected HashMap< String, ParticleEffect > behindParticles,
 			frontParticles;
 
-	protected SoundManager sounds;
+	public SoundManager sounds;
 
 	/**
 	 * Create entity by definition
@@ -301,8 +302,6 @@ public class Entity implements GleedLoadable {
 		if ( spinemator != null )
 			spinemator.draw( batch );
 		drawParticles( frontParticles, batch );
-		if ( sounds != null && sounds.hasSound( "idle" ) ) {
-		}
 	}
 
 	protected void drawParticles( HashMap< String, ParticleEffect > map,
@@ -363,9 +362,11 @@ public class Entity implements GleedLoadable {
 	}
 
 	public void update( float deltaTime ) {
+		Vector2 bodyPos = null;
 		if ( body != null ) {
 			// animation stuff may go here
-			Vector2 bodyPos = body.getPosition( ).mul( Util.BOX_TO_PIXEL );
+			bodyPos = body.getPosition( ).mul( Util.BOX_TO_PIXEL );
+
 			if ( sprite != null ) {
 				sprite.setPosition( bodyPos.x - offset.x, bodyPos.y - offset.y );
 				sprite.setRotation( MathUtils.radiansToDegrees
@@ -388,10 +389,16 @@ public class Entity implements GleedLoadable {
 			if ( spinemator != null ) {
 				spinemator.update( deltaTime );
 			}
+
 		}
 
 		updateParticleEffect( deltaTime, frontParticles );
 		updateParticleEffect( deltaTime, behindParticles );
+		
+		if (sounds != null){
+			sounds.handleSoundPosition("idle", bodyPos, Camera.CAMERA_RECT);
+			sounds.update( deltaTime );
+		}
 	}
 
 	private void updateParticleEffect( float deltaTime,
@@ -1288,15 +1295,20 @@ public class Entity implements GleedLoadable {
 	public void setSoundManager( SoundManager s ) {
 		sounds = s;
 	}
-
-	public SoundManager getSoundManager( ) {
+	
+	public boolean hasSoundManager(){
+		return sounds != null;
+	}
+	
+	public SoundManager getSoundManager(){
 		return sounds;
 	}
 
 	// Idle sound
-	public void idleSound( ) {
-		if ( sounds != null && sounds.hasSound( "idle" ) ) {
-			sounds.loopSound( "idle" );
+	public void idleSound(){
+		if (sounds != null && sounds.hasSound("idle")){
+			sounds.setSoundVolume( "idle", 0.0f );
+			sounds.loopSound("idle");
 		}
 	}
 

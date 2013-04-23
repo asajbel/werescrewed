@@ -52,6 +52,7 @@ public class ResurrectScrew extends Screw {
 	public ResurrectScrew( Vector2 pos, Entity entity, World world,
 			Player deadPlayer, LerpMover lm, Vector2 offset ) {
 		super( "rezScrew", pos, null );
+		loadSounds();
 		this.world = world;
 		this.depth = 0;
 		this.maxDepth = 50;

@@ -241,8 +241,7 @@ public class Player extends Entity {
 		if ( sounds == null ) {
 			sounds = new SoundManager( );
 		}
-		sounds.getSound( "jump", WereScrewedGame.dirHandle
-				+ "/common/sounds/jump.ogg" );
+		loadSounds();
 
 		r = new Random( );
 		addBehindParticleEffect( landCloudName, false, false );
@@ -664,6 +663,7 @@ public class Player extends Entity {
 			reachedMaxSpeed = false;
 		}
 		runTimeout = RUN_STEPS;
+		footstepSound();
 	}
 
 	/**
@@ -712,6 +712,7 @@ public class Player extends Entity {
 			reachedMaxSpeed = false;
 		}
 		runTimeout = RUN_STEPS;
+		footstepSound();
 	}
 
 	/**
@@ -1303,6 +1304,8 @@ public class Player extends Entity {
 						}
 					}
 				}
+			} else {
+				currentScrew.stopScrewing();
 			}
 		} else {
 			if ( inputHandler.unscrewing( ) && currentMover( ) == null ) {
@@ -1349,6 +1352,8 @@ public class Player extends Entity {
 						}
 					}
 				}
+			} else {
+				currentScrew.stopScrewing();
 			}
 		}
 
@@ -2088,11 +2093,32 @@ public class Player extends Entity {
 				hitSolidObject( that );
 				if ( getState( ) != PlayerState.Screwing ) {
 					setGrounded( true );
-					sounds.playSound( "land" );
 				}
 			} else {
 				collide( ( Entity ) that, contact );
 			}
 		}
+	}
+	
+	public void footstepSound(){
+		if (isGrounded() && this.playerState != PlayerState.Screwing){
+			if (sounds.isDelayed( "footstep1" )){
+				sounds.playSound( "footstep2", 1.0f );
+			} else {
+				sounds.playSound( "footstep1", 1.0f );
+				sounds.setDelay( "footstep2", 0.5f );
+			}
+		}
+	}
+	
+	public void loadSounds(){
+		sounds.getSound( "jump", WereScrewedGame.dirHandle
+				+ "/common/sounds/jump.ogg" );
+		sounds.getSound( "footstep1" , WereScrewedGame.dirHandle
+				+ "/common/sounds/footstep1.ogg");
+		sounds.getSound( "footstep2" , WereScrewedGame.dirHandle
+				+ "/common/sounds/footstep2.ogg");
+		sounds.getSound( "land" , WereScrewedGame.dirHandle
+				+ "/common/sounds/land.ogg");
 	}
 }

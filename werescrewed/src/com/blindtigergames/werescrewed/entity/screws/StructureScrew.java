@@ -39,6 +39,7 @@ public class StructureScrew extends Screw {
 	public StructureScrew( String name, Vector2 pos, int max, Entity entity,
 			World world, Vector2 detachDirection ) {
 		super( name, pos, null );
+		loadSounds();
 		this.world = world;
 		this.detachDirection = detachDirection;
 		this.entity = entity;
@@ -81,6 +82,7 @@ public class StructureScrew extends Screw {
 	public StructureScrew( String name, Vector2 pos, int max, World world,
 			Vector2 detachDirection ) {
 		super( name, pos, null );
+		loadSounds();
 		this.world = world;
 		this.detachDirection = detachDirection;
 		if ( detachDirection != null
@@ -116,7 +118,7 @@ public class StructureScrew extends Screw {
 
 	@Override
 	public void screwRight( int region, boolean switchedDirections ) {
-		
+		super.screwRight( region, switchedDirections );
 		if ( switchedDirections ) {
 			startRegion = region;
 			prevDiff = 0;
@@ -142,6 +144,7 @@ public class StructureScrew extends Screw {
 
 	@Override
 	public void screwLeft( ) {
+		super.screwLeft( );
 		if ( depth > -10 ) {
 			//body.setAngularVelocity( 1 );
 			depth -= 2;
@@ -152,7 +155,7 @@ public class StructureScrew extends Screw {
 
 	@Override
 	public void screwLeft( int region, boolean switchedDirections ) {
-		
+		super.screwLeft( region, switchedDirections );
 		if ( switchedDirections ) {
 			startRegion = region;
 			prevDiff = 0;
@@ -179,6 +182,7 @@ public class StructureScrew extends Screw {
 
 	@Override
 	public void screwRight( ) {
+		super.screwRight( );
 		if ( depth < maxDepth && depth > 0 ) {
 			//body.setAngularVelocity( -1 );
 			depth += 2;
@@ -259,6 +263,9 @@ public class StructureScrew extends Screw {
 					interfaceOffset ) );
 			screwInterface.sprite.update( deltaTime );
 			screwUIAnimator.update( deltaTime );
+		} else {
+			sounds.stopSound("screwing");
+			sounds.stopSound("unscrewing");
 		}
 	}
 
