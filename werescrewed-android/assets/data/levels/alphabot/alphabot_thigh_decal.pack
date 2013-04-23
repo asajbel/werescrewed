@@ -1,0 +1,12 @@
+alphabot_thigh_decal.png
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+offset: 0, 0
+thigh_mechanisms_and_pipesNOCOLOR
+  rotate: false
+  xy: 2, 2
+  size: 964, 1404
+  orig: 964, 1404
+  offset: 0, 0
+  index: -1
