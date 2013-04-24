@@ -123,6 +123,7 @@ public class PuzzleScrew extends Screw {
 	 */
 	@Override
 	public void screwLeft( int region, boolean switchedDirections ) {
+		super.screwLeft(region, switchedDirections);
 		if ( switchedDirections ) {
 			startRegion = region;
 			prevDiff = 0;
@@ -153,6 +154,7 @@ public class PuzzleScrew extends Screw {
 
 	@Override
 	public void screwLeft( ) {
+		super.screwLeft();
 		if ( depth > 0 ) {
 			body.setAngularVelocity( 1 );
 			depth -= 2;
@@ -169,6 +171,7 @@ public class PuzzleScrew extends Screw {
 	 */
 	@Override
 	public void screwRight( int region, boolean switchedDirections ) {
+		super.screwRight( region, switchedDirections );
 		if ( switchedDirections ) {
 			startRegion = region;
 			prevDiff = 0;
@@ -198,6 +201,7 @@ public class PuzzleScrew extends Screw {
 
 	@Override
 	public void screwRight( ) {
+		super.screwRight( );
 		if ( depth < maxDepth ) {
 			body.setAngularVelocity( -1 );
 			depth += 2;

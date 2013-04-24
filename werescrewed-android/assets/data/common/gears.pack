@@ -1,0 +1,47 @@
+gears.png
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+offset: 0, 0
+gear2
+  rotate: false
+  xy: 520, 2
+  size: 516, 516
+  orig: 516, 516
+  offset: 0, 0
+  index: -1
+gear3
+  rotate: false
+  xy: 2, 1038
+  size: 516, 516
+  orig: 516, 516
+  offset: 0, 0
+  index: -1
+gear4
+  rotate: false
+  xy: 2, 520
+  size: 516, 516
+  orig: 516, 516
+  offset: 0, 0
+  index: -1
+gear5
+  rotate: false
+  xy: 2, 2
+  size: 516, 516
+  orig: 516, 516
+  offset: 0, 0
+  index: -1
+gear
+  rotate: false
+  xy: 520, 520
+  size: 516, 516
+  orig: 516, 516
+  offset: 0, 0
+  index: -1
+gear1
+  rotate: false
+  xy: 1038, 2
+  size: 516, 516
+  orig: 516, 516
+  offset: 0, 0
+  index: -1

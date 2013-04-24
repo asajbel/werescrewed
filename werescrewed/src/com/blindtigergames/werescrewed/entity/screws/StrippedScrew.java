@@ -149,5 +149,39 @@ public class StrippedScrew extends Screw {
 		this.sprite.draw( batch );
 	}
 	
+	/**
+	 * used by controller controls to screw left
+	 * @param region
+	 * @param switchedDirections
+	 */
+	@Override
+	public void screwLeft( int region, boolean switchedDirections ) {
+	}
 
+	/**
+	 * used by keyboard controls to screw left
+	 */
+	@Override
+	public void screwLeft( ) {
+	}
+
+	/**
+	 * used by controller controls to screw right
+	 * @param region
+	 * @param switchedDirections
+	 */
+	@Override
+	public void screwRight( int region, boolean switchedDirections ) {
+	}
+
+	/**
+	 * used by keyboard controls to screw right
+	 */
+	@Override
+	public void screwRight( ) {
+	}
+	
+	@Override
+	public void loadSounds( ) {
+	}
 }
