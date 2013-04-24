@@ -36,6 +36,7 @@ import com.blindtigergames.werescrewed.entity.mover.RotateTweenMover;
 import com.blindtigergames.werescrewed.entity.particles.Steam;
 import com.blindtigergames.werescrewed.entity.platforms.Pipe;
 import com.blindtigergames.werescrewed.entity.platforms.Platform;
+import com.blindtigergames.werescrewed.entity.platforms.PowerSwitch;
 import com.blindtigergames.werescrewed.entity.platforms.TiledPlatform;
 import com.blindtigergames.werescrewed.entity.screws.PowerScrew;
 import com.blindtigergames.werescrewed.entity.screws.PuzzleScrew;
@@ -190,9 +191,9 @@ public class HazardScreen implements com.badlogic.gdx.Screen {
 		 * saw = new Saws( "Saw1", new Vector2( -2000.0f, 40.0f ), 2, world,
 		 * true );
 		 */
-		spikes = new Spikes( "Spikes1", new Vector2( 1700.0f, 100f ), 1, 3,
+		spikes = new Spikes( "Spikes1", new Vector2( 1700.0f, 500f ), 1, 3,
 				world, true, false, false );
-		spikes2 = spikesBuilder.position( 1500.0f, 100f ).dimensions( 2, 1 )
+		spikes2 = spikesBuilder.position( 1500.0f, 500f ).dimensions( 2, 1 )
 				.up( ).active( ).buildSpikes( );
 		// add the spikes to the skeleton
 		skeleton.addKinematicPlatform( spikes );
@@ -228,17 +229,21 @@ public class HazardScreen implements com.badlogic.gdx.Screen {
 				.beginAction( new AnchorDeactivateAction( testAnchor ) )
 				.endAction( new AnchorDeactivateAction( testAnchor ) )
 				.twoPlayersToDeactivate( ).build( );
-
 		EventTriggerBuilder etb3 = new EventTriggerBuilder( world );
-		@SuppressWarnings( "unused" )
 		EventTrigger et3 = etb3.name( "event3" ).circle( ).radius( 100 )
-				.position( new Vector2( 1900f, 20f ) ).repeatable( )
-				.beginAction( new AnchorActivateAction( testAnchor ) )
-				.endAction( new AnchorActivateAction( testAnchor ) ).build( );
+				.position( new Vector2( 2100f, 20f ) ).repeatable( )
+				.beginAction( new AnchorDeactivateAction( testAnchor ) )
+				.endAction( new AnchorDeactivateAction( testAnchor ) ).build( );
+
+		PowerSwitch ps = new PowerSwitch( "power1" , new Vector2(-1000f, 100), world);
+				ps.addBeginIAction( new AnchorDeactivateAction( testAnchor ) );
+				ps.addEndIAction ( new AnchorDeactivateAction( testAnchor ) );
 		// AnchorDeactivateAction
 
 		skeleton.addEventTrigger( et );
 		skeleton.addEventTrigger( et2 );
+		skeleton.addEventTrigger( et3 );
+		skeleton.addEventTrigger( ps );
 
 	}
 

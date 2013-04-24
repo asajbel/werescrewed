@@ -22,9 +22,33 @@ import com.blindtigergames.werescrewed.util.Util;
 
 public class PowerSwitch extends EventTrigger{
 
+	private boolean state;
+	
+	/**
+	 * creates a PowerSwitch at location position
+	 * 
+	 * @param name String
+	 * @param position Vector2
+	 * @param world World
+	 */
 	public PowerSwitch( String name, Vector2 position, World world ) {
 		super( name, world );
 		contructRectangleBody(64, 64, position);
+		entityType = EntityType.POWERSWITCH;
+	}
+	
+	public void doAction(){
+		if(state == false){
+			runBeginAction();
+			state = true;
+		}
+		else{
+			runEndAction();
+			state = false;
+		}
+		
 	}
 }
-	
+
+
+
