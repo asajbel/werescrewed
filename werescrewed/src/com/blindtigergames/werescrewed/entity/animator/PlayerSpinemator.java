@@ -47,12 +47,12 @@ public class PlayerSpinemator implements ISpinemator {
 	protected Bone root;
 	protected Vector2 position = null;
 	protected Vector2 scale = null;
+	protected boolean flipX = false; 
 
 	private enum ScrewState {
 		IGNORE, READY, DRAW, STOW
 	}
 
-	ScrewState playerState = ScrewState.IGNORE;
 	ScrewState animState = ScrewState.IGNORE;
 
 	/**
@@ -99,7 +99,7 @@ public class PlayerSpinemator implements ISpinemator {
 	public void update( float delta ) {
 		time += delta;
 		mixTime += delta;
-		skel.setFlipX( player.flipX );
+		skel.setFlipX( flipX );
 
 		next = getCurrentAnim( );
 
@@ -226,40 +226,70 @@ public class PlayerSpinemator implements ISpinemator {
 		case Standing:
 			if ( player.getMoveState( ) == PlayerDirection.Left
 					|| player.getMoveState( ) == PlayerDirection.Right ) {
+				switch (player.getMoveState( )) {
+				case Idle:
+					break;
+				case Left:
+					flipX = true;
+					break;
+				case Right:
+					flipX = false; 
+					break;
+				default:
+					break;
+				}
 				if ( player.getExtraState( ) == ConcurrentState.ScrewReady ) {
-					playerState = ScrewState.READY;
 					return PlayerAnim.RUN_SCREW;
 				}
 				return PlayerAnim.RUN;
 			}
 			if ( player.getExtraState( ) == ConcurrentState.ScrewReady ) {
-				playerState = ScrewState.READY;
 				return PlayerAnim.IDLE_SCREW;
 			}
 			return PlayerAnim.IDLE;
 		case Landing:
 			if ( player.getMoveState( ) == PlayerDirection.Left
 					|| player.getMoveState( ) == PlayerDirection.Right ) {
+				switch (player.getMoveState( )) {
+				case Idle:
+					break;
+				case Left:
+					flipX = true;
+					break;
+				case Right:
+					flipX = false; 
+					break;
+				default:
+					break;
+				}
 				if ( player.getExtraState( ) == ConcurrentState.ScrewReady ) {
-					playerState = ScrewState.READY;
 					return PlayerAnim.RUN_SCREW;
 				}
 				return PlayerAnim.RUN;
 			}
 			if ( player.getExtraState( ) == ConcurrentState.ScrewReady ) {
-				playerState = ScrewState.READY;
 				return PlayerAnim.IDLE_SCREW;
 			}
 			return PlayerAnim.IDLE;
 		case Jumping:
+			switch (player.getMoveState( )) {
+			case Idle:
+				break;
+			case Left:
+				flipX = true;
+				break;
+			case Right:
+				flipX = false; 
+				break;
+			default:
+				break;
+			}
 			if ( player.getExtraState( ) == ConcurrentState.ScrewReady ) {
-				playerState = ScrewState.READY;
 				return PlayerAnim.JUMP_UP_SCREW;
 			}
 			return PlayerAnim.JUMP_UP;
 		case Falling:
 			if ( player.getExtraState( ) == ConcurrentState.ScrewReady ) {
-				playerState = ScrewState.READY;
 				return PlayerAnim.FALL_SCREW;
 			}
 			return PlayerAnim.FALL_IDLE;
@@ -269,7 +299,6 @@ public class PlayerSpinemator implements ISpinemator {
 			} else if ( player.getExtraState( ) == ConcurrentState.ExtraFalling ) {
 				return PlayerAnim.FALL_IDLE;
 			} else if ( player.getExtraState( ) == ConcurrentState.ScrewReady ) {
-				playerState = ScrewState.READY;
 				return PlayerAnim.IDLE_SCREW;
 			}
 			return PlayerAnim.IDLE;
@@ -279,7 +308,6 @@ public class PlayerSpinemator implements ISpinemator {
 			return PlayerAnim.DEATH;
 		default:
 			if ( player.getExtraState( ) == ConcurrentState.ScrewReady ) {
-				playerState = ScrewState.READY;
 				return PlayerAnim.IDLE_SCREW;
 			}
 			return PlayerAnim.IDLE;
