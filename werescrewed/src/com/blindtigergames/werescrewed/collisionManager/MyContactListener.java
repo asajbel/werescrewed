@@ -104,6 +104,8 @@ public class MyContactListener implements ContactListener {
 							// player's
 							// feet
 							// also make sure its not the player
+							Platform plat = ( Platform ) object;
+							player.hitSolidObject( plat );
 							if ( object.isSolid( )
 									&& playerFix.getShape( ) instanceof CircleShape ) {
 								if ( player.name.equals( "player1" ) ) {
@@ -111,8 +113,8 @@ public class MyContactListener implements ContactListener {
 								} else if ( player.name.equals( "player2" ) ) {
 									NUM_PLAYER2_CONTACTS++;
 								}
-								Platform plat = ( Platform ) object;
-								player.hitSolidObject( plat );
+								//Platform plat = ( Platform ) object;
+								//player.hitSolidObject( plat );
 								if ( player.getState( ) != PlayerState.Screwing ) {
 									if (!player.isGrounded( )){
 										Gdx.app.log( "Player Landing Force", Float.toString( (float)Math.pow(force * LAND_VOLUME, LAND_FALLOFF) ) );
