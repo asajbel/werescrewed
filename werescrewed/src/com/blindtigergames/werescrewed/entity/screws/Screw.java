@@ -219,8 +219,8 @@ public class Screw extends Entity {
 	 */
 	public void stopScrewing(){
 		if (sounds != null){
-			sounds.stopSound("screwing");
-			sounds.stopSound("unscrewing");
+			//sounds.stopSound("screwing");
+			//sounds.stopSound("unscrewing");
 		}
 	}
 	/**
@@ -349,5 +349,14 @@ public class Screw extends Entity {
 
 		// You dont dispose the fixturedef, you dispose the shape
 		screwShape.dispose( );
+	}
+	
+	void changeDepth(float deltaD){
+		depth += deltaD;
+		if (depth > 0.f){
+			
+		} else {
+			
+		}
 	}
 }

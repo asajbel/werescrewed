@@ -75,6 +75,10 @@ public class Player extends Entity {
 	public boolean flipX = false;
 	public final static float HEIGHT = 128;
 	public final static float WIDTH = 64;
+	public final static float FOOTSTEP_DELAY = 1.0f;
+	public final static float FOOTSTEP_PITCH_DROP = 0.75f;
+	public final static float FOOTSTEP_VOLUME_DROP = 0.0f;
+	
 	// public final static float
 
 	public Fixture feet;
@@ -663,7 +667,7 @@ public class Player extends Entity {
 			reachedMaxSpeed = false;
 		}
 		runTimeout = RUN_STEPS;
-		footstepSound();
+		footstepSound(1.0f);
 	}
 
 	/**
@@ -712,7 +716,7 @@ public class Player extends Entity {
 			reachedMaxSpeed = false;
 		}
 		runTimeout = RUN_STEPS;
-		footstepSound();
+		footstepSound(1.0f);
 	}
 
 	/**
@@ -752,6 +756,7 @@ public class Player extends Entity {
 				&& playerState != PlayerState.Screwing ) {
 			Metrics.incTrophyMetric( TrophyMetric.P2RUNDIST, 0.01f );
 		}
+		footstepSound(leftAnalogX);
 	}
 
 	/**
@@ -784,6 +789,7 @@ public class Player extends Entity {
 				&& playerState != PlayerState.Screwing ) {
 			Metrics.incTrophyMetric( TrophyMetric.P2RUNDIST, 0.01f );
 		}
+		footstepSound(leftAnalogX);
 	}
 
 	/**
@@ -805,6 +811,7 @@ public class Player extends Entity {
 					/ directionJumpDivsion, 0.0f ), body.getWorldCenter( ) );
 		}
 		playerDirection = PlayerDirection.Right;
+		footstepSound(leftAnalogX);
 	}
 
 	/**
@@ -2100,13 +2107,21 @@ public class Player extends Entity {
 		}
 	}
 	
-	public void footstepSound(){
+	public void footstepSound( float a ){
+		float amount = (float)Math.pow( Math.abs( a ), 2.0);
 		if (isGrounded() && this.playerState != PlayerState.Screwing){
+			float rate = FOOTSTEP_DELAY;
+			float pitch = FOOTSTEP_PITCH_DROP + amount * (1.0f - FOOTSTEP_PITCH_DROP);
+			float vol = FOOTSTEP_VOLUME_DROP + amount * (1.0f - FOOTSTEP_VOLUME_DROP);
 			if (sounds.isDelayed( "footstep1" )){
-				sounds.playSound( "footstep2", 1.0f );
+				sounds.setSoundVolume( "footstep2", vol );
+				sounds.setSoundPitch( "footstep2", pitch );
+				sounds.playSound( "footstep2", rate );
 			} else {
-				sounds.playSound( "footstep1", 1.0f );
-				sounds.setDelay( "footstep2", 0.5f );
+				sounds.setSoundVolume( "footstep1", vol );
+				sounds.setSoundPitch( "footstep1", pitch );
+				sounds.playSound( "footstep1", rate );
+				sounds.setDelay( "footstep2", 0.5f * rate );
 			}
 		}
 	}
