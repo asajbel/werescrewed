@@ -59,8 +59,6 @@ class OptionsScreen extends Screen{
 	@Override
 	public void dispose( ) {
 		// TODO Auto-generated method stub
-		font.dispose( );
-		batch.dispose( );
 	}
 
 	@Override

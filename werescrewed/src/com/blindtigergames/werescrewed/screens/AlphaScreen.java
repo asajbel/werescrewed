@@ -60,7 +60,7 @@ public class AlphaScreen extends Screen {
 	private TiledPlatform kneeMovingPlat;
 
 	Platform leftShoulderSideHatch;
-	private PuzzleScrew leftArmScrew;
+	private PuzzleScrew leftArmScrew, rightElbowPuzzleScrew;
 	
 	private boolean etTriggered = false;
 
@@ -510,6 +510,39 @@ public class AlphaScreen extends Screen {
 //				&& ( powerScrew4.getDepth( ) == powerScrew4.getMaxDepth( ) ) ) {
 //			
 //		}
+		
+		
+		if (  rightElbowPuzzleScrew.getDepth( ) == rightElbowPuzzleScrew.getMaxDepth( )  ) {
+			Skeleton rightElbowSkeleton = ( Skeleton ) LevelFactory.entities.get( "rightElbowSkeleton" );
+			Skeleton rightShoulderSkeleton = ( Skeleton ) LevelFactory.entities.get( "rightShoulderSkeleton" );
+			
+			if(rightElbowSkeleton.currentMover( ) == null 
+					&& rightShoulderSkeleton.currentMover() == null){
+				
+				Timeline t = Timeline.createSequence( );
+	
+				
+				t.push( Tween.to( rightElbowSkeleton, PlatformAccessor.LOCAL_ROT, 10f )
+						   .ease(TweenEquations.easeInOutQuad)
+						   .target( (Util.PI / 2) ).delay( 0f )
+						   .start()
+						   );
+				
+				rightElbowSkeleton.addMover( new TimelineTweenMover( t.start( ) ) );
+				
+				Timeline t2 = Timeline.createSequence( );
+	
+				
+				t2.push( Tween.to( rightShoulderSkeleton, PlatformAccessor.LOCAL_ROT, 10f )
+						   .ease(TweenEquations.easeInOutQuad)
+						   .target( (Util.PI / 2) ).delay( 10f )
+						   .start()
+						   );
+				
+				rightShoulderSkeleton.addMover( new TimelineTweenMover( t2.start( ) ) );
+			}
+		}
+		
 	}
 	
 	private void knee2Objects(){
@@ -604,6 +637,10 @@ public class AlphaScreen extends Screen {
 		rjd.initialize( rightArmDoor.body, rightShoulderSkeleton.body,
 				rightArmDoorHinge.body.getWorldCenter( ) );
 		level.world.createJoint( rjd );
+		
+		
+		rightElbowPuzzleScrew = ( PuzzleScrew ) LevelFactory.entities
+		.get( "rightElbowPuzzleScrew" );
 	}
 
 	private void buildEngineHeart( Vector2 posPix ) {
