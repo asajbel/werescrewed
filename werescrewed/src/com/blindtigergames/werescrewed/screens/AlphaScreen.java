@@ -1,5 +1,9 @@
 package com.blindtigergames.werescrewed.screens;
 
+import aurelienribon.tweenengine.Timeline;
+import aurelienribon.tweenengine.Tween;
+import aurelienribon.tweenengine.TweenEquations;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
@@ -25,13 +29,17 @@ import com.blindtigergames.werescrewed.entity.builders.PlayerBuilder;
 import com.blindtigergames.werescrewed.entity.mover.AnalogRotateMover;
 import com.blindtigergames.werescrewed.entity.mover.LinearAxis;
 import com.blindtigergames.werescrewed.entity.mover.ParallaxMover;
+import com.blindtigergames.werescrewed.entity.mover.PuzzleType;
 import com.blindtigergames.werescrewed.entity.mover.RotateTweenMover;
+import com.blindtigergames.werescrewed.entity.mover.TimelineTweenMover;
+import com.blindtigergames.werescrewed.entity.mover.puzzle.PuzzleRotateTweenMover;
 import com.blindtigergames.werescrewed.entity.platforms.Platform;
 import com.blindtigergames.werescrewed.entity.platforms.TiledPlatform;
 import com.blindtigergames.werescrewed.entity.screws.PuzzleScrew;
 import com.blindtigergames.werescrewed.entity.screws.Screw;
 import com.blindtigergames.werescrewed.entity.screws.StrippedScrew;
 import com.blindtigergames.werescrewed.entity.screws.StructureScrew;
+import com.blindtigergames.werescrewed.entity.tween.PlatformAccessor;
 import com.blindtigergames.werescrewed.eventTrigger.EventTrigger;
 import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 import com.blindtigergames.werescrewed.graphics.TextureAtlas;
@@ -46,10 +54,12 @@ public class AlphaScreen extends Screen {
 	public ScreenType screenType;
 
 	private CharacterSelect characterSelect;
-	private Screw powerScrew1, powerScrew2;
+	private Screw powerScrew1, powerScrew2, powerScrew3, powerScrew4;
 	private Skeleton footSkeleton, kneeSkeleton, thighSkeleton, hipSkeleton,
 			chestSkeleton, leftShoulderSkeleton;
-	private TiledPlatform kneeMovingPlat, leftShoulderSideHatch;
+	private TiledPlatform kneeMovingPlat;
+
+	Platform leftShoulderSideHatch;
 	private PuzzleScrew leftArmScrew;
 	
 	private boolean etTriggered = false;
@@ -94,7 +104,7 @@ public class AlphaScreen extends Screen {
 		// head: 480f,  6688f
 		// right arm: 2600f, 6000f
 		
-		Vector2 spawnPos = new Vector2(-128, 3712);
+		Vector2 spawnPos = new Vector2(-2224, 3008);
 
 		if ( level.player1 == null ) {
 			level.player1 = new PlayerBuilder( ).world( level.world )
@@ -124,8 +134,9 @@ public class AlphaScreen extends Screen {
 		chestObjects( );
 		leftArm( );
 		rightArm( );
-
+		knee2Objects();
 		buildBackground( );
+		initPowerScrews();
 		
 		buildEngineHeart(new Vector2(0,5450));
 	}
@@ -138,14 +149,9 @@ public class AlphaScreen extends Screen {
 
 		// characterSelect.draw( batch, deltaTime );
 
-		powerScrew1and2update( );
+		powerScrewupdate( );
 
-		if ( leftArmScrew.getDepth( ) == leftArmScrew.getMaxDepth( ) ) {
-			leftShoulderSkeleton.addMover( new RotateTweenMover(
-					leftShoulderSkeleton, 5f, -Util.PI / 2, 0, false ),
-					RobotState.IDLE );
-		}
-
+		
 	}
 
 	private void buildBackground( ) {
@@ -441,9 +447,6 @@ public class AlphaScreen extends Screen {
 				.get( "kneeMovingPlat" );
 		kneeMovingPlat.setActive( false );
 
-		//-157,98
-		powerScrew1 = ( Screw ) LevelFactory.entities.get( "powerScrew1" );
-		powerScrew2 = ( Screw ) LevelFactory.entities.get( "powerScrew2" );
 		
 		kneeSkeleton = (Skeleton)LevelFactory.entities.get("kneeSkeleton");
 		
@@ -455,7 +458,15 @@ public class AlphaScreen extends Screen {
 		// removePlayerToScrew( )
 	}
 
-	private void powerScrew1and2update( ) {
+	private void initPowerScrews(){
+		
+		powerScrew1 = ( Screw ) LevelFactory.entities.get( "powerScrew1" );
+		powerScrew2 = ( Screw ) LevelFactory.entities.get( "powerScrew2" );
+		
+		powerScrew3 = ( Screw ) LevelFactory.entities.get( "powerScrew3" );
+		powerScrew4 = ( Screw ) LevelFactory.entities.get( "powerScrew4" );
+	}
+	private void powerScrewupdate( ) {
 
 		if ( ( powerScrew1.getDepth( ) == powerScrew1.getMaxDepth( ) )
 				&& ( powerScrew2.getDepth( ) == powerScrew2.getMaxDepth( ) ) ) {
@@ -477,6 +488,50 @@ public class AlphaScreen extends Screen {
 			}
 
 		}
+		
+		if ( leftArmScrew.getDepth( ) == leftArmScrew.getMaxDepth( )
+				&& leftShoulderSkeleton.currentMover( ) == null) {
+			
+			Timeline t = Timeline.createSequence( );
+
+			
+			t.push( Tween.to( leftShoulderSkeleton, PlatformAccessor.LOCAL_ROT, 20f )
+					   .ease(TweenEquations.easeInOutQuad)
+					   .target( (-Util.PI / 2) ).delay( 1f )
+					   .start()
+					   );
+
+			 leftShoulderSkeleton.addMover( new TimelineTweenMover( t.start( ) ) );
+		}
+
+		
+//		if ( ( powerScrew3.getDepth( ) == powerScrew3.getMaxDepth( ) )
+//				&& ( powerScrew4.getDepth( ) == powerScrew4.getMaxDepth( ) ) ) {
+//			
+//		}
+	}
+	
+	private void knee2Objects(){
+		
+		PuzzleRotateTweenMover m1 = new PuzzleRotateTweenMover( 2, Util.PI / 2, true,
+				PuzzleType.ON_OFF_MOVER );
+		PuzzleRotateTweenMover m2 = new PuzzleRotateTweenMover( 2, -Util.PI / 2, true,
+				PuzzleType.ON_OFF_MOVER );
+		
+		PuzzleScrew knee2rotateScrew1 = ( PuzzleScrew ) LevelFactory.entities
+		.get( "knee2rotateScrew1" );
+		
+		knee2rotateScrew1.puzzleManager.addMover(m1);
+		
+		PuzzleScrew knee2rotateScrew2 = ( PuzzleScrew ) LevelFactory.entities
+				.get( "knee2rotateScrew2" );
+		
+		knee2rotateScrew2.puzzleManager.addMover(m2);
+		
+		
+		
+		
+		
 	}
 
 	private void chestObjects( ) {
@@ -523,15 +578,14 @@ public class AlphaScreen extends Screen {
 		leftShoulderSkeleton = ( Skeleton ) LevelFactory.entities
 				.get( "leftShoulderSkeleton" );
 
-		leftShoulderSideHatch = ( TiledPlatform ) LevelFactory.entities
-				.get( "leftShoulderSideHatch" );
+		leftShoulderSideHatch = ( Platform ) LevelFactory.entities
+				.get( "leftShoulderTopHatch1" );
 
 		RevoluteJointDef rjd = new RevoluteJointDef( );
 		rjd.initialize(
 				leftShoulderSideHatch.body,
 				leftShoulderSkeleton.body,
-				leftShoulderSideHatch.getPosition( ).sub( 0,
-						leftShoulderSideHatch.getMeterHeight( ) / 2 ) );
+				new Vector2(-1748, 6080).mul( Util.PIXEL_TO_BOX )  );
 		level.world.createJoint( rjd );
 	}
 

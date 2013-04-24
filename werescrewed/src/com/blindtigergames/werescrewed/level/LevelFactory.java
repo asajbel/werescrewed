@@ -857,8 +857,13 @@ public class LevelFactory {
 
 		pb.name( item.name ).position( item.pos ).tileSet( "alphabot32" )
 				.properties( item.props );
-		pb.texture( WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-				+ "/levels/alphabot/alphabot_texture_skin.png", Texture.class ) );
+		if(item.props.containsKey( "tux" )){
+			pb.texture( WereScrewedGame.manager.get( WereScrewedGame.dirHandle
+					+ "/common/robot/alphabot_texture_tux.png", Texture.class ) );
+		}else{
+			pb.texture( WereScrewedGame.manager.get( WereScrewedGame.dirHandle
+					+ "/levels/alphabot/alphabot_texture_skin.png", Texture.class ) );
+		}
 
 		if ( item.props.containsKey( "gravscale" ) ) {
 			float gravScale = Float.parseFloat( item.props.get( "gravscale" ) );
@@ -1052,8 +1057,6 @@ public class LevelFactory {
 
 							p.puzzleManager.addEntity( attach2 );
 
-							// HUGE NOTE: I HAVEN'T ADDED STUFF TO THIS MOVER
-							// IN ITS BUILDER SO I'M HARDCODING IT FOR NOW
 							p.puzzleManager
 									.addMover( new PuzzleRotateTweenMover( 1,
 											Util.PI / 2, true,
