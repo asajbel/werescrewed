@@ -8,6 +8,7 @@ import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.Manifold;
+import com.badlogic.gdx.physics.box2d.Manifold.ManifoldPoint;
 import com.blindtigergames.werescrewed.checkpoints.CheckPoint;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityType;
@@ -32,6 +33,9 @@ public class MyContactListener implements ContactListener {
 	// These should be in Player or Entity, not hardcoded.
 	private static int NUM_PLAYER1_CONTACTS = 0;
 	private static int NUM_PLAYER2_CONTACTS = 0;
+	private static final float LAND_DELAY = 0;
+	private static final float LAND_VOLUME = 0.10f;
+	private static final float LAND_FALLOFF = 2.5f;
 
 	/**
 	 * When two new objects start to touch
@@ -54,9 +58,20 @@ public class MyContactListener implements ContactListener {
 		 */
 		Fixture playerFix = null;
 		Fixture objectFix = null;
-
-		boolean playerInvolved = false;
-
+		
+        boolean playerInvolved = false;
+		
+        Vector2 contactPos;
+        int contactPoints = contact.getWorldManifold( ).getPoints().length;
+        Vector2 forceVector = new Vector2(0,0);
+        for (int c = 0; c < contactPoints; c++){
+        	contactPos = contact.getWorldManifold( ).getPoints()[c];
+        	forceVector.add( x1.getBody().getLinearVelocityFromWorldPoint(contactPos) );
+        	forceVector.sub( x2.getBody().getLinearVelocityFromWorldPoint(contactPos) );
+        }
+        
+        float force = forceVector.len()/contactPoints;
+        
 		if ( x1.getBody( ).getUserData( ) != null
 				&& x2.getBody( ).getUserData( ) != null ) {
 			if ( x1.getBody( ).getUserData( ) instanceof Player ) {
@@ -99,6 +114,11 @@ public class MyContactListener implements ContactListener {
 								Platform plat = ( Platform ) object;
 								player.hitSolidObject( plat );
 								if ( player.getState( ) != PlayerState.Screwing ) {
+									if (!player.isGrounded( )){
+										Gdx.app.log( "Player Landing Force", Float.toString( (float)Math.pow(force * LAND_VOLUME, LAND_FALLOFF) ) );
+										player.sounds.setSoundVolume( "land", (float)Math.pow(force * LAND_VOLUME, LAND_FALLOFF) );
+										player.sounds.playSound( "land" , LAND_DELAY);
+									}
 									player.setGrounded( true );
 								}
 							}
@@ -293,8 +313,8 @@ public class MyContactListener implements ContactListener {
 		Fixture objectFix = null;
 
 		boolean playerInvolved = false;
-
-		if ( x1.getBody( ).getUserData( ) != null
+		
+        if ( x1.getBody( ).getUserData( ) != null
 				&& x2.getBody( ).getUserData( ) != null ) {
 			if ( x1.getBody( ).getUserData( ) instanceof Player ) {
 				playerFix = x1;

@@ -451,8 +451,8 @@ public class AlphaScreen extends Screen {
 		kneeSkeleton = (Skeleton)LevelFactory.entities.get("kneeSkeleton");
 		
 		Vector2 kneeDecalPos = kneeSkeleton.getPositionPixel( ).add(230	,-2339 ); //this is horrible I know know why knee is here even
-		kneeSkeleton.addFGDecal( decals.createSprite( "knee_exterior" ), kneeDecalPos.cpy() );
-		//level.skelFGList.add( kneeSkeleton );
+		kneeSkeleton.addFGDecalBack( decals.createSprite( "knee_exterior" ), kneeDecalPos.cpy() );
+		level.skelFGList.add( kneeSkeleton );
 		
 		kneeSkeleton.addBGDecalBack( knee_exterior.createSprite( "knee_mechanisms_and_pipesNOCOLOR" ), kneeDecalPos.cpy());
 		// removePlayerToScrew( )
@@ -613,13 +613,13 @@ public class AlphaScreen extends Screen {
 		float engineSpeed = 2.5f;
 		
 		//Got to set the right bits
-//		PlatformBuilder platBuilder = new PlatformBuilder(level.world);
-//		Platform chestEngine = platBuilder .name( "chestEngine" ).position(-250,5100 )
-//		 .texture( null ).type( "chestEngine" )
-//		 .buildComplexPlatform( );
-//		
-//
-//		engineSkeleton.addPlatform( chestEngine );
+		PlatformBuilder platBuilder = new PlatformBuilder(level.world);
+		Platform chestEngine = platBuilder .name( "chestEngine" ).position(-250,5100 )
+		 .texture( null ).type( "chestEngine" )
+		 .buildComplexPlatform( );
+		chestEngine.setCategoryMask( Util.CATEGORY_PLATFORMS, Util.CATEGORY_PLAYER );
+
+		engineSkeleton.addPlatform( chestEngine );
 		
 		TextureAtlas engineAtlas = WereScrewedGame.manager.getAtlas( "engine" );
 		Vector2 decalPos = engineSkeleton.getPositionPixel( ).sub( posPix ).add( -230,-360 );
