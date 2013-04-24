@@ -231,11 +231,11 @@ public class ResurrectScrew extends Screw {
 				//Trophy check for revived player
 				if ( deadPlayer.name == Metrics.player1( ) ){
 					//If player 1 is revived, give player 2 the point
-					Metrics.incTrophyMetric( TrophyMetric.P2REVIVES, 1.0f );
-					//Gdx.app.log("player1 attach", " " + Metrics.getTrophyMetric( TrophyMetric.P1STRIPATTACH ) );
+					Metrics.incTrophyMetric( TrophyMetric.P2REVIVES, 0.5f );
+					//System.out.println("player1 revive " + Metrics.getTrophyMetric( TrophyMetric.P2REVIVES ) );
 				} else if ( deadPlayer.name == Metrics.player2() ){
 					//If player 2 is revived, give player 1 the point
-					Metrics.incTrophyMetric( TrophyMetric.P1REVIVES, 1.0f );
+					Metrics.incTrophyMetric( TrophyMetric.P1REVIVES, 0.5f );
 				}
 			}
 			if ( active ) {
