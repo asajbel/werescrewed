@@ -244,7 +244,7 @@ public class AlphaScreen extends Screen {
 				new Vector2( supportX + max, supportY + 216 ) );
 		level.root.addBGDecal(
 				support_middle_right.createSprite( "support_right" ),
-				new Vector2( supportX + 2 * max, supportY ) );
+				new Vector2( supportX + 2 * max, supportY ) ); 
 		
 		// floor
 		bgSkele.addBGDecal( floor_seats.createSprite( "floor_left" ),
@@ -257,8 +257,7 @@ public class AlphaScreen extends Screen {
 		level.root.addBGDecal( stage_light.createSprite( "light_right" ),
 				new Vector2( lightX + 2030, lightY ) );
 		
-		initBackground( dome, numDomes, domeSliceX, domeSliceY, -max + seatsX,
-				seatsY );
+		initBackground( dome, numDomes, domeSliceX, domeSliceY, 100,100);//-max + seatsX, seatsY );
 		
 		level.entityFGList.add(bgSkele);
 		level.entityBGList.add(bgSkele);
@@ -276,6 +275,7 @@ public class AlphaScreen extends Screen {
 		FixtureDef screwFixture;
 		Entity e1, e2;
 		Vector2 pos;
+		Vector2 offset = new Vector2(-4000,0);
 		for ( int i = numDomes; i > 0; --i ) {
 			int yStep = ( int ) ( ( 10 - i ) / 2 );
 			pos = new Vector2( startX, startY + domeSliceY * yStep );
@@ -289,7 +289,7 @@ public class AlphaScreen extends Screen {
 			Sprite b = dome[ i - 1 ].createSprite( "dome" + i );
 			b.setScale( -2, 1 );
 
-			for(int j = 0; j < 2; ++j){
+			/*for(int j = 0; j < 2; ++j){
 				screwBodyDef = new BodyDef( );
 				screwBodyDef.type = BodyType.KinematicBody;
 				Vector2 bodyPos = pos.cpy( );
@@ -307,26 +307,28 @@ public class AlphaScreen extends Screen {
 				body[j].createFixture( screwFixture );
 				body[j].setUserData( this );
 				screwShape.dispose( );
-			}
+			}*/
 			// the position of each entity and sprite is set at this point.
-			e1 = new Entity( "bg_1_" + i, pos, null, body[0], false );
-			e1.sprite = a;
-			e1.setMoverAtCurrentState( new ParallaxMover( new Vector2( e1
-					.getPositionPixel( ) ), new Vector2( e1.getPositionPixel( )
-					.add( 0f, 512f ) ), 0.0002f, .5f, level.camera, false,
-					LinearAxis.VERTICAL ) );
-			level.backgroundRootSkeleton.addLooseEntity( e1 );
+			//e1 = new Entity( "bg_1_" + i, pos, null, body[0], false );
+			//e1.sprite = a;
+			//e1.setMoverAtCurrentState( new ParallaxMover( new Vector2( e1
+			//		.getPositionPixel( ) ), new Vector2( e1.getPositionPixel( )
+			//		.add( 0f, 512f ) ), 0.0002f, .5f, level.camera, false,
+			//		LinearAxis.VERTICAL ) );
+			pos.add(offset);
+			level.root.addBGDecalBack( a, pos );
 			
-			e2 = new Entity( "bg_2_" + i, pos.cpy( )
-					.add( flipX * domeSliceX, 0 ), null, body[1], false );
-			e2.sprite = b;
+			//e2 = new Entity( "bg_2_" + i, pos.cpy( )
+			//		.add( flipX * domeSliceX, 0 ), null, body[1], false );
+			//e2.sprite = b;
 			// DENNIS: What should I set all these numbers to??
 			// if it helps, each bg piece is 1238x1642
-			e2.setMoverAtCurrentState( new ParallaxMover( new Vector2( e2
-					.getPositionPixel( ) ), new Vector2( e2.getPositionPixel( )
-					.add( 0f, 512f ) ), 0.0002f, .5f, level.camera, false,
-					LinearAxis.VERTICAL ) );
-			level.backgroundRootSkeleton.addLooseEntity( e2 );
+			//e2.setMoverAtCurrentState( new ParallaxMover( new Vector2( e2
+			//		.getPositionPixel( ) ), new Vector2( e2.getPositionPixel( )
+			//		.add( 0f, 512f ) ), 0.0002f, .5f, level.camera, false,
+			//		LinearAxis.VERTICAL ) );
+			//level.backgroundRootSkeleton.addLooseEntity( e2 );
+			level.root.addBGDecalBack(b, pos.cpy().add( flipX * domeSliceX, 0 ));
 		}
 
 		/*
