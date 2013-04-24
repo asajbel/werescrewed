@@ -3,7 +3,10 @@ package com.blindtigergames.werescrewed.sound;
 import java.util.EnumMap;
 import java.util.HashMap;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.camera.Camera;
@@ -60,24 +63,71 @@ public class SoundManager {
 		return sounds.containsKey( tag );
 	}
 
-	public void playSound( String id ) {
+	public void playSound( String id ){
+		playSound(id, 0.0f);
+	}
+	
+	public void playSound( String id, float delay ) {
 		if (hasSound(id)) {
-			sounds.get( id ).play( );
+			sounds.get( id ).play( delay );
 		}
 	}
 
-	public void loopSound( String id ) {
+	public void loopSound( String id ){
+		loopSound(id, true);
+	}
+	
+	public void loopSound( String id , boolean override) {
 		if (hasSound(id)) {
-			sounds.get( id ).loop( );
+			sounds.get( id ).loop( override );
 		}
 	}
 
+	public void stopSound( String id ) {
+		if (hasSound(id)) {
+			sounds.get( id ).stop( );
+			if (isLooping(id)){
+				sounds.get( id ).loopId = -1;
+			}
+		}
+	}
+
+	public boolean isLooping( String id ){
+		if (hasSound(id)){
+			if (sounds.get(id).loopId >= 0)
+				return true;
+		}
+		return false;
+	}
+	
 	public void setSoundVolume(String id, float v){
 		if (hasSound(id)){
-			sounds.get(id).volume = v;
+			sounds.get(id).volume = (float)(Math.min( 2.0f, Math.max( v, 0.0f) ));
 		}
 	}
-
+	
+	public void handleSoundPosition(String id, Vector2 soundPos, Rectangle cameraBox){
+		if (hasSound(id)){
+			Vector2 camPos = new Vector2(
+					cameraBox.getX(),
+					cameraBox.getY()
+				);
+			Vector2 scale = new Vector2(
+					cameraBox.getWidth( ),
+					cameraBox.getHeight( )
+				);
+			Vector2 center = camPos.cpy().add( scale.cpy( ).mul( 0.5f ) );
+			float dist = center.dst( soundPos );
+			float xPan = center.cpy( ).sub( soundPos ).x/cameraBox.width;
+			float zoom = scale.len( );
+			float vol = sounds.get(id).falloff/(dist*dist*zoom);
+			setSoundVolume(id, vol);
+			setSoundPan(id, xPan);
+			//Gdx.app.log( "Handle Sound Position", "Dist:"+dist+" Vol:"+vol+" Pan:"+xPan );
+			sounds.get( id ).update(0.0f);
+		}
+	}
+	
 	public void setSoundPitch(String id, float v){
 		if (hasSound(id)){
 			sounds.get(id).pitch = v;
@@ -86,6 +136,54 @@ public class SoundManager {
 	public void setSoundPan(String id, float v){
 		if (hasSound(id)){
 			sounds.get(id).pan = v;
+		}
+	}
+	
+	public void setSoundFalloff(String id, float v){
+		if (hasSound(id)){
+			sounds.get(id).falloff = v;
+		}		
+	}
+	
+	public void update(float dT){
+		for (SoundRef ref : sounds.values( )){
+			ref.update( dT );
+		}
+	}
+	
+	public float getDelay(String id){
+		if (hasSound(id)){
+			return sounds.get(id).delay;
+		}
+		return 0.0f;
+	}
+	
+	public boolean isDelayed(String id){
+		if (hasSound(id)){
+			return sounds.get(id).delay >= SoundRef.DELAY_MINIMUM;
+		}
+		return false;
+	}
+	
+	public void addDelay(String id, float amount){
+		if (hasSound(id)){
+			if (hasSound(id)){
+				sounds.get(id).delay += amount;
+			}			
+		}		
+	}
+	
+	public void setDelay(String id, float amount){
+		if (hasSound(id)){
+			sounds.get(id).delay = amount;
+		}
+	}
+	
+	public void delay(String id, float amount){
+		if (hasSound(id)){
+			if (sounds.get(id).delay < amount){
+				sounds.get(id).delay = amount;				
+			}
 		}
 	}
 	
@@ -104,6 +202,10 @@ public class SoundManager {
 		protected float volume;
 		protected float pitch;
 		protected float pan;
+		protected float delay;
+		protected float falloff;
+		
+		protected static final float DELAY_MINIMUM = 0.0001f;
 		
 		public SoundRef(Sound s){
 			volume = 1.0f;
@@ -112,33 +214,42 @@ public class SoundManager {
 			soundIds = new Array<Long>();
 			loopId = -1;
 			sound = s;
+			falloff = 1.0f;
 		}
 		
-		protected long play(){
-			long id = sound.play( getSoundVolume() * volume, pitch, pan);
-			soundIds.add( id );
+		protected long play( float delayAmount){
+			long id = -1;
+			if (delay < DELAY_MINIMUM){
+				id = sound.play( getSoundVolume() * volume, pitch, pan);
+				soundIds.add( id );
+				delay += delayAmount;
+			}
 			return id;
 		}
 		
-		protected long loop(){
-			if (loopId >= 0){
+		protected long loop( boolean override ){
+			if (override && loopId >= 0){
 				sound.stop(loopId);
+				loopId = sound.loop( getNoiseVolume() * volume);
+			} else if (loopId < 0){
+				loopId = sound.loop( getNoiseVolume() * volume);
 			}
-			loopId = sound.loop( getNoiseVolume() * volume);
 			return loopId;
 		}
 		
 		protected void stop(){
 			sound.stop( );
 			loopId = -1;
+			delay = 0.0f;
 		}
 		
-		protected void update(){
+		protected void update( float dT ){
 			if (loopId >= 0){
 				sound.setVolume( loopId, getNoiseVolume() * volume );
 				sound.setPitch( loopId, pitch );
 				sound.setPan( loopId, pan, volume );
 			}
+			delay = (float)(Math.max( delay - dT, 0.0f ));
 		}
 	}
 	

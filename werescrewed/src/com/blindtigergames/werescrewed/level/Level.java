@@ -9,6 +9,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Joint;
@@ -128,10 +129,19 @@ public class Level {
 		for ( Skeleton skel : skelBGList ) {
 			if ( skel.isActive( ) ) {
 				if ( skel.bgSprite != null ) {
-					if ( camera.getBounds( ).overlaps(
-							skel.bgSprite.getBoundingRectangle( ) ) ) {
+//					if ( camera.getBounds( ).overlaps(
+//							new Rectangle(
+//									skel.bgSprite.getBoundingRectangle( ).x
+//											- skel.offset.x, skel.bgSprite
+//											.getBoundingRectangle( ).y
+//											- skel.offset.y, skel.bgSprite
+//											.getBoundingRectangle( ).width
+//											- skel.offset.x, skel.bgSprite
+//											.getBoundingRectangle( ).height
+//											- skel.offset.y ) ) ) 
+					{
 						skel.bgSprite.draw( batch );
-					} 
+					}
 				}
 				skel.drawBGDecals( batch, camera.getBounds( ) );
 			}
@@ -158,8 +168,9 @@ public class Level {
 		// draw all foreground skeleton sprites after everything
 		for ( Skeleton skel : skelFGList ) {
 			if ( skel.fgSprite != null && skel.fgSprite.getAlpha( ) != 0 ) {
-				if ( camera.getBounds( ).overlaps(
-						skel.fgSprite.getBoundingRectangle( ) ) ) {
+				//if ( camera.getBounds( ).overlaps(
+				//		skel.fgSprite.getBoundingRectangle( ) ) ) 
+				{
 					skel.fgSprite.draw( batch );
 				}
 			}
@@ -168,11 +179,10 @@ public class Level {
 			// || ( skel.isMacroSkel( ) && !skel.isActive( ) ) )
 			{
 				skel.drawFGDecals( batch, camera.getBounds( ) );
-
 			}
 		}
 
-		//camera.renderBuffers( );
+		// camera.renderBuffers( );
 		batch.end( );
 
 		if ( debug )
