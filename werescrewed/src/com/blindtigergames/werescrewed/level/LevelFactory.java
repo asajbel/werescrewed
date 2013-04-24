@@ -583,8 +583,8 @@ public class LevelFactory {
 			level.root = new RootSkeleton( item.name, item.pos, null,
 					level.world );
 			// DELETE THESE TWO LINES WHEN THE STAGE WORKS PROPERLY WITH GLEED
-			level.skelBGList.add( level.root );
-			level.skelFGList.add( level.root );
+			//level.skelBGList.add( level.root );
+			//level.skelFGList.add( level.root );
 			skeletons.put( item.name, level.root );
 			entities.put( item.name, level.root );
 
@@ -686,7 +686,7 @@ public class LevelFactory {
 			// add the skeleton to the skeleton layer for drawing
 			if ( skeleton.bgSprite != null ) {
 				level.skelBGList.add( skeleton );
-			}
+			} 
 			if ( skeleton.fgSprite != null ) {
 				level.skelFGList.add( skeleton );
 			}

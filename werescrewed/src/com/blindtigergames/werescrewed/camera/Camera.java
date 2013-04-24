@@ -56,6 +56,16 @@ public class Camera {
 	private static final float ZOOM_IN_FACTOR = .5f;
 	private static final float MIN_ZOOM = 1f;
 
+	// globals for calculating screen space
+	protected static Vector3 CURRENT_CAMERA;
+	public static Rectangle CAMERA_RECT;
+	static{
+		CURRENT_CAMERA = new Vector3();
+		CAMERA_RECT = new Rectangle();
+	}
+	//Reading the camera data is fine, but we don't want anyone to write to it.
+	public static Vector3 getCurrentCameraCoords(){return CURRENT_CAMERA.cpy( );}	
+	
 	private enum RectDirection {
 		X, Y, BOTH, NONE
 	};
@@ -192,6 +202,12 @@ public class Camera {
 
 		// also render anchors if debugRender == true
 		anchorList.update( debugRender );
+		
+		CURRENT_CAMERA.x = position.x;
+		CURRENT_CAMERA.y = position.y;
+		CURRENT_CAMERA.z = camera.zoom;
+		
+		CAMERA_RECT = screenBounds;
 	}
 
 	/**

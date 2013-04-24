@@ -326,7 +326,7 @@ public class GenericEntityBuilder< B extends GenericEntityBuilder< ? >> {
 			if ( mover != null ) {
 				out.addMover( mover, RobotState.IDLE );
 			}
-			if ( sounds != null ) {
+			if ( !out.hasSoundManager() && sounds != null ) {
 				out.setSoundManager( sounds );
 			}
 			out.postLoad( );

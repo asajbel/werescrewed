@@ -163,8 +163,9 @@ public class Level {
 					skel.fgSprite.draw( batch );
 				}
 			}
-			if ( ( !skel.isActive( ) && skel.getParentSkeleton( ).isActive( ) )
-					|| ( skel.isMacroSkel( ) && !skel.isActive( ) ) ) {
+//			if ( ( !skel.isActive( ) && skel.getParentSkeleton( ).isActive( ) )
+//					|| ( skel.isMacroSkel( ) && !skel.isActive( ) ) ) 
+			{
 				skel.drawFGDecals( batch, camera.getBounds( ) );
 			}
 		}
