@@ -103,8 +103,9 @@ public class AlphaScreen extends Screen {
 		// top left: -1582f, 6150f
 		// head: 480f,  6688f
 		// right arm: 2600f, 6000f
+		//left side hand <- -2224, 3008
 		
-		Vector2 spawnPos = new Vector2(-2224, 3008);
+		Vector2 spawnPos = new Vector2(-1497, 6152);
 
 		if ( level.player1 == null ) {
 			level.player1 = new PlayerBuilder( ).world( level.world )
@@ -585,7 +586,7 @@ public class AlphaScreen extends Screen {
 		rjd.initialize(
 				leftShoulderSideHatch.body,
 				leftShoulderSkeleton.body,
-				new Vector2(-1748, 6080).mul( Util.PIXEL_TO_BOX )  );
+				new Vector2(-1748, 5980).mul( Util.PIXEL_TO_BOX )  );
 		level.world.createJoint( rjd );
 	}
 
@@ -614,7 +615,7 @@ public class AlphaScreen extends Screen {
 		
 		//Got to set the right bits
 		PlatformBuilder platBuilder = new PlatformBuilder(level.world);
-		Platform chestEngine = platBuilder .name( "chestEngine" ).position(-250,5100 )
+		Platform chestEngine = platBuilder .name( "chestEngine" ).position(-200,5100 )
 		 .texture( null ).type( "chestEngine" )
 		 .buildComplexPlatform( );
 		chestEngine.setCategoryMask( Util.CATEGORY_PLATFORMS, Util.CATEGORY_PLAYER );
