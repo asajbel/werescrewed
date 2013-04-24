@@ -66,7 +66,7 @@ public class AlphaScreen extends Screen {
 
 	private Skeleton rightShoulderSkeleton;
 
-	private TiledPlatform rightArmDoor;
+	private Platform rightArmDoor;
 
 	private StrippedScrew rightArmDoorHinge;
 
@@ -100,12 +100,12 @@ public class AlphaScreen extends Screen {
 		// chest entrance : -200f, 3800f
 		// upper chest: 1300f, 6000f
 		// rope on left side of the robot <- -950f, 5100f
-		// top left: -1582f, 6150f
+		// top left: -1582f, 6150f <<<< side
 		// head: 480f,  6688f
-		// right arm: 2600f, 6000f
+		// right arm: 2600f, 6000f >>>> side
 		//left side hand <- -2224, 3008
 		
-		Vector2 spawnPos = new Vector2(-1497, 6152);
+		Vector2 spawnPos = new Vector2(0f, 0f);
 
 		if ( level.player1 == null ) {
 			level.player1 = new PlayerBuilder( ).world( level.world )
@@ -535,7 +535,7 @@ public class AlphaScreen extends Screen {
 				
 				t2.push( Tween.to( rightShoulderSkeleton, PlatformAccessor.LOCAL_ROT, 10f )
 						   .ease(TweenEquations.easeInOutQuad)
-						   .target( (Util.PI / 2) ).delay( 10f )
+						   .target( (Util.PI / 2) ).delay( 13f )
 						   .start()
 						   );
 				
@@ -627,15 +627,15 @@ public class AlphaScreen extends Screen {
 		rightShoulderSkeleton = ( Skeleton ) LevelFactory.entities
 				.get( "rightShoulderSkeleton" );
 
-		rightArmDoor = ( TiledPlatform ) LevelFactory.entities
-				.get( "rightArmDoor" );
+		rightArmDoor = ( Platform ) LevelFactory.entities
+				.get( "rightShoulderTopHatch1" );
 
-		rightArmDoorHinge = ( StrippedScrew ) LevelFactory.entities
-				.get( "rightArmDoorHinge" );
+//		rightArmDoorHinge = ( StrippedScrew ) LevelFactory.entities
+//				.get( "rightShoulderTopHatch1" );
 
 		RevoluteJointDef rjd = new RevoluteJointDef( );
 		rjd.initialize( rightArmDoor.body, rightShoulderSkeleton.body,
-				rightArmDoorHinge.body.getWorldCenter( ) );
+				new Vector2(2850f, 5908f).mul( Util.PIXEL_TO_BOX ) );
 		level.world.createJoint( rjd );
 		
 		

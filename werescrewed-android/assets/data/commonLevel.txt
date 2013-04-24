@@ -49,6 +49,9 @@
 #/common/title_background_original.png
 #/common/robot/metal.png
 
+
+/common/moustache.png
+
 /common/robot/metal.png
 /common/gear.png
 /common/sawblade.png

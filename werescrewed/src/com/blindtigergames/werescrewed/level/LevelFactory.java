@@ -996,7 +996,11 @@ public class LevelFactory {
 			int maxDepth = Integer.parseInt( item.props.get( "maxdepth" ) );
 			builder.max( maxDepth );
 		}
-
+		if ( item.props.containsKey( "startdepth" ) ) {
+			int startDepth = Integer.parseInt( item.props.get( "startdepth" ) );
+			builder.startDepth( startDepth );
+		}
+		
 		Screw out = null;
 		switch ( sType ) {
 		case SCREW_PUZZLE:
