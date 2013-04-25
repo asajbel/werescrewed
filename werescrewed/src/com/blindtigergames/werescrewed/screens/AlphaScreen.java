@@ -189,8 +189,8 @@ public class AlphaScreen extends Screen {
 		int floorX = -max + offsetX;
 		int stage_pillarY = -202 + offsetY;
 		int stage_pillarX = floorX - 530;
-		int lightX = offsetX - 1905;
-		int lightY = offsetY + 615;
+		int lightX = offsetX - 1970;
+		int lightY = offsetY + 40;
 
 		int domeSliceX = 1234 * 2;
 		int domeSliceY = 1638;
@@ -201,6 +201,28 @@ public class AlphaScreen extends Screen {
 		int curtainX = seatsX - max + 1230;
 		int curtainY = seatsY + 585;
 
+		// support beam
+		bgSkele.addBGDecal( support_left.createSprite( "support_left" ),
+				new Vector2( supportX, supportY ) );
+		bgSkele.addBGDecal(
+				support_middle_right.createSprite( "support_middle" ),
+				new Vector2( supportX + max, supportY + 216 ) );
+		bgSkele.addBGDecal(
+				support_middle_right.createSprite( "support_right" ),
+				new Vector2( supportX + 2 * max, supportY ) );
+		
+		// lights
+		bgSkele.addBGDecal( stage_light.createSprite( "light_left" ),
+				new Vector2( lightX, lightY ) );
+		bgSkele.addBGDecal( stage_light.createSprite( "light_right" ),
+				new Vector2( lightX + 2030, lightY ) );
+			
+		// floor
+		bgSkele.addBGDecal( floor_seats.createSprite( "floor_left" ),
+				new Vector2( floorX, floorY ) );
+		bgSkele.addBGDecal( floor_seats.createSprite( "floor_right" ),
+				new Vector2( floorX + max, floorY ) );
+		
 		// curtains
 		bgSkele.addFGDecal( curtains.createSprite( "curtains_bottom_left" ),
 				new Vector2( curtainX, curtainY ) );
@@ -223,6 +245,7 @@ public class AlphaScreen extends Screen {
 																			// of
 																			// left
 																			// pillar
+
 		bgSkele.addFGDecal( stage_pillar.createSprite( "stage_right" ),
 				new Vector2( stage_pillarX + 3204, stage_pillarY ) );// 3204 is
 																		// difference
@@ -230,7 +253,10 @@ public class AlphaScreen extends Screen {
 																		// left
 																		// &
 																		// right
-																		// pillar
+		bgSkele.addFGDecal(
+				stage_upperright.createSprite( "stage_upperright" ),
+				new Vector2( stage_pillarX + 2004, stage_pillarY + 1616 ) );// 1617
+
 		// works
 		// seats
 		bgSkele.addFGDecal( floor_seats.createSprite( "seats_left" ),
@@ -240,35 +266,16 @@ public class AlphaScreen extends Screen {
 		bgSkele.addFGDecal( floor_seats.createSprite( "seats_right" ),
 				new Vector2( max + seatsX, seatsY ) );
 
-		bgSkele.addFGDecal(
-				stage_upperright.createSprite( "stage_upperright" ),
-				new Vector2( stage_pillarX + 2004, stage_pillarY + 1616 ) );// 1617
-
-		// support beam
-		level.root.addBGDecal( support_left.createSprite( "support_left" ),
-				new Vector2( supportX, supportY ) );
-		level.root.addBGDecal(
-				support_middle_right.createSprite( "support_middle" ),
-				new Vector2( supportX + max, supportY + 216 ) );
-		level.root.addBGDecal(
-				support_middle_right.createSprite( "support_right" ),
-				new Vector2( supportX + 2 * max, supportY ) );
-
-		// floor
-		bgSkele.addBGDecal( floor_seats.createSprite( "floor_left" ),
-				new Vector2( floorX, floorY ) );
-		bgSkele.addBGDecal( floor_seats.createSprite( "floor_right" ),
-				new Vector2( floorX + max, floorY ) );
-		// lights
-		level.root.addBGDecal( stage_light.createSprite( "light_left" ),
-				new Vector2( lightX, lightY ) );
-		level.root.addBGDecal( stage_light.createSprite( "light_right" ),
-				new Vector2( lightX + 2030, lightY ) );
 		
-		initBackground( dome, numDomes, domeSliceX, domeSliceY, 100,100);//-max + seatsX, seatsY );
 		
-		level.entityFGList.add(bgSkele);
-		level.entityBGList.add(bgSkele);
+		level.skelBGList.add(bgSkele);
+		level.skelFGList.add(bgSkele);
+		
+		
+		//initBackground( dome, numDomes, domeSliceX, domeSliceY, 100,100);//-max + seatsX, seatsY );
+		
+		//level.entityFGList.add(bgSkele);
+		//level.entityBGList.add(bgSkele);
 		
 		level.entityBGList.remove( level.root );
 		level.entityFGList.remove( level.root );
