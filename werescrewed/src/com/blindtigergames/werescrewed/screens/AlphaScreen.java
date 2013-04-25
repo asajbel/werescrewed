@@ -160,7 +160,10 @@ public class AlphaScreen extends Screen {
 	private void buildBackground( ) {
 		Skeleton bgSkele;
 		bgSkele = ( Skeleton ) LevelFactory.entities.get( "stageSkeleton" );
-		Skeleton light_skel = new Skeleton( "light_skeleton", new Vector2(), null, level.world );
+		
+		Gdx.app.log( "bgSKele", bgSkele.getPositionPixel( ) +"");
+		Skeleton light_skel = ( Skeleton ) LevelFactory.entities.get( "lightSkeleton" );
+		addBackGroundSkeletonToBack( light_skel );
 		//level.skelBGList.put( key, value )
 		TextureAtlas floor_seats = WereScrewedGame.manager
 				.getAtlas( "alphabot_floor_seats" );
@@ -192,8 +195,8 @@ public class AlphaScreen extends Screen {
 		int floorX = -max + offsetX;
 		int stage_pillarY = -202 + offsetY;
 		int stage_pillarX = floorX - 530;
-		int lightX = offsetX - 1970;
-		int lightY = offsetY + 40;
+		int lightX = offsetX - 1986;
+		int lightY = offsetY + 24;
 
 		int domeSliceX = 1234 * 2;
 		int domeSliceY = 1638;
@@ -215,9 +218,9 @@ public class AlphaScreen extends Screen {
 				new Vector2( supportX + 2 * max, supportY ) );
 
 		// lights
-		bgSkele.addBGDecal( stage_light.createSprite( "light_left" ),
+		light_skel.addBGDecal( stage_light.createSprite( "light_left" ),
 				new Vector2( lightX, lightY ) );
-		bgSkele.addBGDecal( stage_light.createSprite( "light_right" ),
+		light_skel.addBGDecal( stage_light.createSprite( "light_right" ),
 				new Vector2( lightX + 2030, lightY ) );
 
 		// floor
@@ -275,6 +278,11 @@ public class AlphaScreen extends Screen {
 		// initBackground( dome, numDomes, domeSliceX, domeSliceY,
 		// 100,100);//-max + seatsX, seatsY );
 		initParallaxBackground( );
+		// level.entityFGList.add(bgSkele);
+		// level.entityBGList.add(bgSkele);
+
+		// level.entityBGList.remove( level.root );
+		// level.entityFGList.remove( level.root );
 
 	}
 
@@ -653,10 +661,10 @@ public class AlphaScreen extends Screen {
 	
 	private void createChestDecals(){
 		TextureAtlas chest_powerscrew = WereScrewedGame.manager.getAtlas( "chest_powerscrew" );
-		//Skeleton chestSkeleton = (Skeleton)LevelFactory.entities.get( "chestSkeleton" );
-		//chestSkeleton.addBGDecal( 
-		//		chest_powerscrew.createSprite( "chest_powerscrew_pipes_to_engineNOCOLOR" ), 
-		//		new Vector2(-453,-970) );
+		Skeleton chestSkeleton = (Skeleton)LevelFactory.entities.get( "chestSkeleton" );
+		chestSkeleton.addBGDecal( 
+				chest_powerscrew.createSprite( "chest_powerscrew_pipes_to_engineNOCOLOR" ), 
+				new Vector2(-453,-970) );
 	}
 
 	private void leftArm( ) {

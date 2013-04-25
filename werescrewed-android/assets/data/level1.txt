@@ -70,5 +70,6 @@
 /levels/alphabot/alphabot_tile_interior.png
 /levels/alphabot/sheetmetaltexture.png
 /levels/alphabot/sheetmetaltextureblack.png
+/levels/alphabot/alphabot-outline.png
 
 /levels/alphabot/shoe_testing/shoe_background_1024.png
