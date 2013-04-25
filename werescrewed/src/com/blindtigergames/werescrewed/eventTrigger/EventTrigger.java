@@ -28,7 +28,7 @@ public class EventTrigger extends Platform{
 	private boolean playerOneContact = false, playerTwoContact = false;
 	private ArrayList<Entity> entityList;
 	private IAction beginAction, endAction;
-	private boolean actOnEntity = false;
+	public boolean actOnEntity = false;
 	
 	int counter = 0;
 	

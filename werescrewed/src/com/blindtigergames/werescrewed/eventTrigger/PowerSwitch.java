@@ -1,4 +1,4 @@
-package com.blindtigergames.werescrewed.entity.platforms;
+package com.blindtigergames.werescrewed.eventTrigger;
 
 import java.util.ArrayList;
 
@@ -16,7 +16,6 @@ import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityType;
 import com.blindtigergames.werescrewed.entity.action.IAction;
 import com.blindtigergames.werescrewed.entity.platforms.Platform;
-import com.blindtigergames.werescrewed.eventTrigger.EventTrigger;
 import com.blindtigergames.werescrewed.util.Util;
 
 

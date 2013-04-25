@@ -17,10 +17,12 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
 import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.entity.Entity;
+import com.blindtigergames.werescrewed.entity.EntityDef;
 import com.blindtigergames.werescrewed.entity.RobotState;
 import com.blindtigergames.werescrewed.entity.RootSkeleton;
 import com.blindtigergames.werescrewed.entity.Skeleton;
 import com.blindtigergames.werescrewed.entity.Sprite;
+import com.blindtigergames.werescrewed.entity.action.DestoryPlatformJointAction;
 import com.blindtigergames.werescrewed.entity.action.RemoveEntityAction;
 import com.blindtigergames.werescrewed.entity.builders.EventTriggerBuilder;
 import com.blindtigergames.werescrewed.entity.builders.GenericEntityBuilder;
@@ -41,6 +43,7 @@ import com.blindtigergames.werescrewed.entity.screws.StrippedScrew;
 import com.blindtigergames.werescrewed.entity.screws.StructureScrew;
 import com.blindtigergames.werescrewed.entity.tween.PlatformAccessor;
 import com.blindtigergames.werescrewed.eventTrigger.EventTrigger;
+import com.blindtigergames.werescrewed.eventTrigger.PowerSwitch;
 import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 import com.blindtigergames.werescrewed.graphics.TextureAtlas;
 import com.blindtigergames.werescrewed.joint.PrismaticJointBuilder;
@@ -141,8 +144,8 @@ public class AlphaScreen extends Screen {
 		initPowerScrews( );
 
 		buildEngineHeart( new Vector2( 0, 5450 ) );
-		
 		createChestDecals();
+		//powerSwitch();
 	}
 
 	@Override
@@ -624,7 +627,8 @@ public class AlphaScreen extends Screen {
 	}
 
 	private void chestObjects( ) {
-
+		chestSkeleton = ( Skeleton ) LevelFactory.entities
+				.get( "chestSkeleton" );
 		PuzzleScrew chestScrew1 = ( PuzzleScrew ) LevelFactory.entities
 				.get( "chestPuzzleScrew5" );
 		PuzzleScrew chestScrew2 = ( PuzzleScrew ) LevelFactory.entities
@@ -920,4 +924,23 @@ public class AlphaScreen extends Screen {
 		return out;
 	}
 
+	private void powerSwitch(){
+		Platform fallingGear1 = new PlatformBuilder(level.world ).name( "fallingGear1" )
+				.type( EntityDef.getDefinition( "gearSmall" ) )
+				.position( 0.0f, 400.0f )
+				.texture( EntityDef.getDefinition( "gearSmall" ).getTexture( ) )
+				.solid( true ).dynamic( ).buildComplexPlatform( );
+		chestSkeleton.addDynamicPlatform( fallingGear1 );
+		
+		fallingGear1.addJointToSkeleton(chestSkeleton);
+		
+		PowerSwitch ps = new PowerSwitch( "power1" , new Vector2(0, 100), level.world);
+				ps.addEntityToTrigger( fallingGear1 );
+				ps.actOnEntity = true;
+				ps.addBeginIAction( new DestoryPlatformJointAction( ) );
+				ps.addEndIAction ( new DestoryPlatformJointAction( ) );
+		// AnchorDeactivateAction
+				
+		chestSkeleton.addEventTrigger( ps );
+	}
 }

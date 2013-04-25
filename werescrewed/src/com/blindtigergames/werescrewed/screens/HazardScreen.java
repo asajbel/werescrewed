@@ -20,9 +20,11 @@ import com.blindtigergames.werescrewed.checkpoints.ProgressManager;
 import com.blindtigergames.werescrewed.collisionManager.MyContactListener;
 import com.blindtigergames.werescrewed.debug.SBox2DDebugRenderer;
 import com.blindtigergames.werescrewed.entity.Entity;
+import com.blindtigergames.werescrewed.entity.EntityDef;
 import com.blindtigergames.werescrewed.entity.Skeleton;
 import com.blindtigergames.werescrewed.entity.action.AnchorActivateAction;
 import com.blindtigergames.werescrewed.entity.action.AnchorDeactivateAction;
+import com.blindtigergames.werescrewed.entity.action.DestoryPlatformJointAction;
 import com.blindtigergames.werescrewed.entity.action.RemoveEntityAction;
 import com.blindtigergames.werescrewed.entity.builders.EventTriggerBuilder;
 import com.blindtigergames.werescrewed.entity.builders.PlatformBuilder;
@@ -36,7 +38,6 @@ import com.blindtigergames.werescrewed.entity.mover.RotateTweenMover;
 import com.blindtigergames.werescrewed.entity.particles.Steam;
 import com.blindtigergames.werescrewed.entity.platforms.Pipe;
 import com.blindtigergames.werescrewed.entity.platforms.Platform;
-import com.blindtigergames.werescrewed.entity.platforms.PowerSwitch;
 import com.blindtigergames.werescrewed.entity.platforms.TiledPlatform;
 import com.blindtigergames.werescrewed.entity.screws.PowerScrew;
 import com.blindtigergames.werescrewed.entity.screws.PuzzleScrew;
@@ -44,7 +45,9 @@ import com.blindtigergames.werescrewed.entity.screws.StructureScrew;
 import com.blindtigergames.werescrewed.entity.tween.EntityAccessor;
 import com.blindtigergames.werescrewed.entity.tween.PlatformAccessor;
 import com.blindtigergames.werescrewed.eventTrigger.EventTrigger;
+import com.blindtigergames.werescrewed.eventTrigger.PowerSwitch;
 import com.blindtigergames.werescrewed.graphics.SpriteBatch;
+import com.blindtigergames.werescrewed.level.Level;
 import com.blindtigergames.werescrewed.player.Player;
 import com.blindtigergames.werescrewed.util.Metrics;
 import com.blindtigergames.werescrewed.util.Util;
@@ -74,10 +77,14 @@ public class HazardScreen implements com.badlogic.gdx.Screen {
 	private boolean debugTest = true;
 	private Steam testSteam;
 	private Pipe testPipe;
+	
+	Platform fallingGear1;
 
+	private Level level;
 	public HazardScreen( ) {
 		batch = new SpriteBatch( );
 		world = new World( new Vector2( 0, -35 ), true );
+		level = new Level();
 		initCamera( );
 		Tween.registerAccessor( Platform.class, new PlatformAccessor( ) );
 		Tween.registerAccessor( Entity.class, new EntityAccessor( ) );
@@ -234,10 +241,21 @@ public class HazardScreen implements com.badlogic.gdx.Screen {
 				.position( new Vector2( 2100f, 20f ) ).repeatable( )
 				.beginAction( new AnchorDeactivateAction( testAnchor ) )
 				.endAction( new AnchorDeactivateAction( testAnchor ) ).build( );
-
+		
+		fallingGear1 = new PlatformBuilder( world ).name( "fallingGear1" )
+				.type( EntityDef.getDefinition( "gearSmall" ) )
+				.position( 496.0f, 400.0f )
+				.texture( EntityDef.getDefinition( "gearSmall" ).getTexture( ) )
+				.solid( true ).dynamic( ).buildComplexPlatform( );
+		skeleton.addDynamicPlatform( fallingGear1 );
+		
+		fallingGear1.addJointToSkeleton(skeleton);
+		
 		PowerSwitch ps = new PowerSwitch( "power1" , new Vector2(-1000f, 100), world);
-				ps.addBeginIAction( new AnchorDeactivateAction( testAnchor ) );
-				ps.addEndIAction ( new AnchorDeactivateAction( testAnchor ) );
+				ps.addEntityToTrigger( fallingGear1 );
+				ps.actOnEntity = true;
+				ps.addBeginIAction( new DestoryPlatformJointAction( ) );
+				ps.addEndIAction ( new DestoryPlatformJointAction( ) );
 		// AnchorDeactivateAction
 
 		skeleton.addEventTrigger( et );
@@ -277,7 +295,7 @@ public class HazardScreen implements com.badlogic.gdx.Screen {
 	@Override
 	public void render( float deltaTime ) {
 		if ( Gdx.gl20 != null ) {
-			Gdx.gl20.glClearColor( 1.0f, 1.0f, 1.0f, 1.0f );
+			Gdx.gl20.glClearColor( 0.0f, 0.0f, 0.0f, 1.0f );
 			Gdx.gl20.glClear( GL20.GL_COLOR_BUFFER_BIT );
 		} else {
 			Gdx.gl10.glClearColor( 0.0f, 0.0f, 0.0f, 1.0f );

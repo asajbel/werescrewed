@@ -27,10 +27,10 @@ import com.blindtigergames.werescrewed.entity.animator.PlayerSpinemator;
 import com.blindtigergames.werescrewed.entity.mover.FollowEntityMover;
 import com.blindtigergames.werescrewed.entity.mover.IMover;
 import com.blindtigergames.werescrewed.entity.platforms.Platform;
-import com.blindtigergames.werescrewed.entity.platforms.PowerSwitch;
 import com.blindtigergames.werescrewed.entity.screws.ResurrectScrew;
 import com.blindtigergames.werescrewed.entity.screws.Screw;
 import com.blindtigergames.werescrewed.entity.screws.ScrewType;
+import com.blindtigergames.werescrewed.eventTrigger.PowerSwitch;
 import com.blindtigergames.werescrewed.graphics.particle.ParticleEffect;
 import com.blindtigergames.werescrewed.input.MyControllerListener;
 import com.blindtigergames.werescrewed.input.PlayerInputHandler;
@@ -1814,6 +1814,7 @@ public class Player extends Entity {
 						screwButtonHeld = true;
 					}
 				} else if (currentSwitch != null && switchTimer == 0){
+					Gdx.app.log("currentSwitch: ","" + currentSwitch);
 					currentSwitch.doAction( );
 					switchTimer = 60;
 				} else {
@@ -1921,6 +1922,10 @@ public class Player extends Entity {
 				}
 
 				jumpCounter = 0;
+			} else if (currentSwitch != null && switchTimer == 0){
+				Gdx.app.log("currentSwitch: ","" + currentSwitch);
+				currentSwitch.doAction( );
+				switchTimer = 60;
 			} else
 				extraState = ConcurrentState.ScrewReady;
 		}
