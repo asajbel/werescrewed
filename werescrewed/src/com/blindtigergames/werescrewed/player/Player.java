@@ -741,7 +741,9 @@ public class Player extends Entity {
 			body.applyLinearImpulse( new Vector2( MOVEMENT_IMPULSE, 0.0f ),
 					body.getWorldCenter( ) );
 		}
-		playerDirection = PlayerDirection.Right;
+		if ( playerState != PlayerState.Screwing ) {
+			playerDirection = PlayerDirection.Right;
+		}
 		if ( grounded && prevPlayerDir == PlayerDirection.Left ) {
 			getEffect( "skid_left" )
 					.restartAt( getPositionPixel( ).add( 30, 0 ) );
@@ -773,7 +775,10 @@ public class Player extends Entity {
 			body.applyLinearImpulse( new Vector2( -MOVEMENT_IMPULSE, 0.0f ),
 					body.getWorldCenter( ) );
 		}
-		playerDirection = PlayerDirection.Left;
+
+		if ( playerState != PlayerState.Screwing ) {
+			playerDirection = PlayerDirection.Left;
+		}
 		if ( grounded && prevPlayerDir == PlayerDirection.Right ) {
 			getEffect( "skid_right" ).restartAt(
 					getPositionPixel( ).add( 100, 0 ) );
@@ -810,7 +815,9 @@ public class Player extends Entity {
 			body.applyLinearImpulse( new Vector2( MOVEMENT_IMPULSE
 					/ directionJumpDivsion, 0.0f ), body.getWorldCenter( ) );
 		}
-		playerDirection = PlayerDirection.Right;
+		if ( playerState != PlayerState.Screwing ) {
+			playerDirection = PlayerDirection.Right;
+		}
 	}
 
 	/**
@@ -830,7 +837,9 @@ public class Player extends Entity {
 			body.applyLinearImpulse( new Vector2( -MOVEMENT_IMPULSE
 					/ directionJumpDivsion, 0.0f ), body.getWorldCenter( ) );
 		}
-		playerDirection = PlayerDirection.Left;
+		if ( playerState != PlayerState.Screwing ) {
+			playerDirection = PlayerDirection.Left;
+		}
 	}
 
 	/**

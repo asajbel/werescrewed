@@ -136,6 +136,8 @@ public class StructureScrew extends Screw {
 			prevDiff = diff;
 
 			//body.setAngularVelocity( -1 );
+			if(newDiff != 0)
+				newDiff /= newDiff;
 			depth += newDiff;
 			if ( diff != 0 ) {
 				rotation += ( -newDiff * 5 );
@@ -173,6 +175,9 @@ public class StructureScrew extends Screw {
 			prevDiff = diff;
 
 			//body.setAngularVelocity( 1 );
+			if(newDiff != 0)
+				newDiff /= newDiff;
+			newDiff *= -1;
 			depth += newDiff;
 			spriteRegion += region;
 			if ( diff != 0 ) {

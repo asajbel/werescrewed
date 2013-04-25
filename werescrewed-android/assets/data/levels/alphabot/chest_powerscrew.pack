@@ -1,0 +1,12 @@
+chest_powerscrew.png
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+offset: 0, 0
+chest_powerscrew_pipes_to_engineNOCOLOR
+  rotate: false
+  xy: 4, 4
+  size: 1027, 1058
+  orig: 1027, 1058
+  offset: 0, 0
+  index: -1
