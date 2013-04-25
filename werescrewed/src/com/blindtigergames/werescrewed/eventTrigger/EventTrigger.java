@@ -441,7 +441,7 @@ public class EventTrigger extends Platform{
 	 * depending on if its repeatable or not
 	 * @author Ranveer
 	 */
-	private void runBeginAction(){
+	protected void runBeginAction(){
 		if(!repeatable)
 		{
 			if(!beginTriggeredOnce)
@@ -504,7 +504,7 @@ public class EventTrigger extends Platform{
 	 * depending on if its repeatable or not
 	 * @author Ranveer
 	 */
-	private void runEndAction(){
+	protected void runEndAction(){
 		if(!repeatable)
 		{
 			if(!endTriggeredOnce)

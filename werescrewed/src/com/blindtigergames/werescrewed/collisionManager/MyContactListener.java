@@ -17,6 +17,7 @@ import com.blindtigergames.werescrewed.entity.action.RemoveEntityAction;
 import com.blindtigergames.werescrewed.entity.hazard.Hazard;
 import com.blindtigergames.werescrewed.entity.platforms.Platform;
 import com.blindtigergames.werescrewed.entity.platforms.PlatformType;
+import com.blindtigergames.werescrewed.entity.platforms.PowerSwitch;
 import com.blindtigergames.werescrewed.entity.platforms.TiledPlatform;
 import com.blindtigergames.werescrewed.entity.screws.Screw;
 import com.blindtigergames.werescrewed.eventTrigger.EventTrigger;
@@ -117,7 +118,7 @@ public class MyContactListener implements ContactListener {
 								//player.hitSolidObject( plat );
 								if ( player.getState( ) != PlayerState.Screwing ) {
 									if (!player.isGrounded( )){
-										Gdx.app.log( "Player Landing Force", Float.toString( (float)Math.pow(force * LAND_VOLUME, LAND_FALLOFF) ) );
+										//Gdx.app.log( "Player Landing Force", Float.toString( (float)Math.pow(force * LAND_VOLUME, LAND_FALLOFF) ) );
 										player.sounds.setSoundVolume( "land", (float)Math.pow(force * LAND_VOLUME, LAND_FALLOFF) );
 										player.sounds.playSound( "land" , LAND_DELAY);
 									}
@@ -152,6 +153,10 @@ public class MyContactListener implements ContactListener {
 							if ( playerFix == player.torso ) {
 								et.triggerBeginEvent( );
 							}
+							break;
+						case POWERSWITCH:
+							PowerSwitch ps = ( PowerSwitch ) object;
+							player.setPowerSwitch( ps );
 							break;
 						default:
 							break;
@@ -289,6 +294,9 @@ public class MyContactListener implements ContactListener {
 								}
 								et.setActivated( false, player.name );
 							}
+							break;
+						case POWERSWITCH:
+							player.setPowerSwitch( null );
 							break;
 						default:
 							break;

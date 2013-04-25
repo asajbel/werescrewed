@@ -461,7 +461,7 @@ public class Platform extends Entity {
 	 */
 	public void addJointToSkeleton( Skeleton skel ){
 		RevoluteJointDef rjd = new RevoluteJointDef( );
-		rjd.initialize( body, skel.body, this.getPosition( ) );
+		rjd.initialize( body, skel.body, body.getWorldCenter( ) );
 		extraSkeletonJoint = ( Joint ) this.world.createJoint( rjd );
 	}
 	

@@ -49,6 +49,7 @@
 /levels/alphabot/support_left.pack
 /levels/alphabot/support_middle_right.pack
 /levels/alphabot/curtains.pack
+/levels/alphabot/dome_small.pack
 
 
 ##decals and such
@@ -62,7 +63,7 @@
 /levels/level1/player_male_idle.png
 
 ##Alphabot skeleton textures
-/levels/alphabot/alphabot_texture_skin.png
+#/levels/alphabot/alphabot_texture_skin.png
 /levels/alphabot/alphabot_texture_tux.png
 /levels/alphabot/alphabot_tile_suit_main.png
 /levels/alphabot/alphabot_tile_interior.png
