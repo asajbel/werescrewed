@@ -103,6 +103,7 @@ public class Screw extends Entity {
 	 */
 	public Screw( String name, Vector2 pos, TextureRegion tex ) {
 		super( name, pos, null, null, false );
+		loadSounds();
 		if (tex == null)tex = WereScrewedGame.manager.getAtlas( "common-textures" ).findRegion( "flat_head_circular" );
 		this.sprite = constructSprite(tex);
 		entityType = EntityType.SCREW;
