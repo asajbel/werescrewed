@@ -12,5 +12,6 @@ public enum EntityType {
     SKELETON,
     ROOTSKELETON,
     ENTITY,
-    PARTICLE_EMITTER
+    PARTICLE_EMITTER,
+    POWERSWITCH
 }
