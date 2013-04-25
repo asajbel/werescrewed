@@ -50,6 +50,7 @@
 /levels/alphabot/support_middle_right.pack
 /levels/alphabot/curtains.pack
 /levels/alphabot/dome_small.pack
+/levels/alphabot/chest_powerscrew.pack
 
 
 ##decals and such

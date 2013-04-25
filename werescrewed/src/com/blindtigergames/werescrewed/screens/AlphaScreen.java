@@ -141,6 +141,8 @@ public class AlphaScreen extends Screen {
 		initPowerScrews( );
 
 		buildEngineHeart( new Vector2( 0, 5450 ) );
+		
+		createChestDecals();
 	}
 
 	@Override
@@ -647,6 +649,14 @@ public class AlphaScreen extends Screen {
 		EventTrigger etGearFall = ( EventTrigger ) LevelFactory.entities
 				.get( "et1" );
 
+	}
+	
+	private void createChestDecals(){
+		TextureAtlas chest_powerscrew = WereScrewedGame.manager.getAtlas( "chest_powerscrew" );
+		//Skeleton chestSkeleton = (Skeleton)LevelFactory.entities.get( "chestSkeleton" );
+		//chestSkeleton.addBGDecal( 
+		//		chest_powerscrew.createSprite( "chest_powerscrew_pipes_to_engineNOCOLOR" ), 
+		//		new Vector2(-453,-970) );
 	}
 
 	private void leftArm( ) {

@@ -38,7 +38,7 @@ public class PuzzleScrew extends Screw {
 	private int lastMotionFrame = 14;
 	private int soundCounter = 0;
 	
-	private static TextureRegion screwTex = WereScrewedGame.manager.getAtlas( "common-textures" ).findRegion( "flat_head_circular" );
+	private static TextureRegion screwTex = WereScrewedGame.manager.getAtlas( "common-textures" ).findRegion( "hex_screw" );
 
 	public PuzzleScrew( String name, Vector2 pos, int max, Entity entity,
 			World world, int startDepth, boolean resetable,
