@@ -7,11 +7,13 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.camera.Camera;
 import com.blindtigergames.werescrewed.entity.I_Updateable;
 import com.blindtigergames.werescrewed.util.ArrayHash;
+import com.blindtigergames.werescrewed.util.Util;
 
 public class SoundManager {
 	public enum SoundType{
@@ -70,6 +72,8 @@ public class SoundManager {
 	public void playSound( String id, float delay ) {
 		if (hasSound(id)) {
 			sounds.get( id ).play( delay );
+		} else {
+			Gdx.app.log( "SoundManager", "No sound loaded for tag: "+id );
 		}
 	}
 
@@ -116,14 +120,25 @@ public class SoundManager {
 					cameraBox.getWidth( ),
 					cameraBox.getHeight( )
 				);
+			float zoom = scale.len( )/Camera.SCREEN_TO_ZOOM;
 			Vector2 center = camPos.cpy().add( scale.cpy( ).mul( 0.5f ) );
-			float dist = center.dst( soundPos );
+			Vector3 center3 = new Vector3(
+						camPos.x + 0.5f*scale.x,
+						camPos.y + 0.5f*scale.y,
+						zoom
+			);
+			Vector3 sound3 = new Vector3(
+					soundPos.x,
+					soundPos.y,
+					Camera.MIN_ZOOM
+			);
+			float dist = center3.dst( sound3 );
 			float xPan = center.cpy( ).sub( soundPos ).x/cameraBox.width;
-			float zoom = scale.len( );
-			float vol = sounds.get(id).falloff/(dist*dist*zoom);
+			float vol = (float)Math.pow( Math.max((1f - dist/sounds.get( id ).range), 0f), sounds.get(id).falloff );
 			setSoundVolume(id, vol);
 			setSoundPan(id, xPan);
-			//Gdx.app.log( "Handle Sound Position", "Dist:"+dist+" Vol:"+vol+" Pan:"+xPan );
+			Gdx.app.log( "Handle Sound Position", center.toString( )+"->"+soundPos.toString()+"="+dist );
+			Gdx.app.log( "Handle Sound Position", "Pan:"+xPan+" Vol:"+vol );
 			sounds.get( id ).update(0.0f);
 		}
 	}
@@ -141,7 +156,7 @@ public class SoundManager {
 	
 	public void setSoundFalloff(String id, float v){
 		if (hasSound(id)){
-			sounds.get(id).falloff = v;
+			sounds.get(id).range = v;
 		}		
 	}
 	
@@ -187,6 +202,12 @@ public class SoundManager {
 		}
 	}
 	
+	public void copyRefs(SoundManager that){
+		for (String name: that.sounds.keySet()){
+			sounds.put( name, that.sounds.get(name) );
+		}
+	}
+	
 	public static float getSoundVolume(){
 		return globalVolume.get( SoundType.SFX );
 	}
@@ -201,8 +222,10 @@ public class SoundManager {
 		protected long loopId;
 		protected float volume;
 		protected float pitch;
+		protected float pitchVariance;
 		protected float pan;
 		protected float delay;
+		protected float range;
 		protected float falloff;
 		
 		protected static final float DELAY_MINIMUM = 0.0001f;
@@ -214,7 +237,8 @@ public class SoundManager {
 			soundIds = new Array<Long>();
 			loopId = -1;
 			sound = s;
-			falloff = 1.0f;
+			range = 500.0f;
+			falloff = 2.0f;
 		}
 		
 		protected long play( float delayAmount){

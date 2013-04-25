@@ -54,7 +54,8 @@ public class Camera {
 	private static final float ZOOM_MAX_SPEED = 15f;
 	private static final float ZOOM_SIG_DIFF = .00005f;
 	private static final float ZOOM_IN_FACTOR = .5f;
-	private static final float MIN_ZOOM = 1f;
+	public static final float MIN_ZOOM = 1f;
+	public static final float SCREEN_TO_ZOOM = 1468.6f;
 
 	// globals for calculating screen space
 	protected static Vector3 CURRENT_CAMERA;

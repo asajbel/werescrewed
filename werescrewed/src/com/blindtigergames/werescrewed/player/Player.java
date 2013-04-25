@@ -1254,6 +1254,7 @@ public class Player extends Entity {
 					resetScrewing = false;
 				} else if ( isScrewing ) {
 					switchedScrewingDirection = true;
+					sounds.playSound( "switchDirection", 1.0f );
 					isUnscrewing = true;
 					isScrewing = false;
 				} else {
@@ -1289,6 +1290,7 @@ public class Player extends Entity {
 					resetScrewing = false;
 				} else if ( isUnscrewing ) {
 					switchedScrewingDirection = true;
+					sounds.playSound( "switchDirection", 1.0f );
 					isScrewing = true;
 					isUnscrewing = false;
 				} else {

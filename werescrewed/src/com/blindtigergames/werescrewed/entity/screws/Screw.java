@@ -359,12 +359,4 @@ public class Screw extends Entity {
 		screwShape.dispose( );
 	}
 	
-	void changeDepth(float deltaD){
-		depth += deltaD;
-		if (depth > 0.f){
-			
-		} else {
-			
-		}
-	}
 }

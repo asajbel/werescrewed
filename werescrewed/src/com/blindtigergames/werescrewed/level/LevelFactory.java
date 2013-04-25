@@ -982,7 +982,7 @@ public class LevelFactory {
 
 		ScrewType sType = ScrewType.fromString( item.props.get( "screwtype" ) );
 		ScrewBuilder builder = new ScrewBuilder( ).name( item.name )
-				.position( item.pos ).world( level.world ).screwType( sType );
+				.position( item.pos ).world( level.world ).screwType( sType ).properties( item.props );
 
 		Skeleton parent = loadSkeleton( item.skeleton );
 		builder.skeleton( parent );
