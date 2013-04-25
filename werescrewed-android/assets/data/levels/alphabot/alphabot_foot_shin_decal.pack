@@ -3,13 +3,6 @@ format: RGBA8888
 filter: Linear,Linear
 repeat: none
 offset: 0, 0
-shin_exterior_shorter
-  rotate: false
-  xy: 1128, 2
-  size: 784, 1004
-  orig: 784, 1004
-  offset: 0, 0
-  index: -1
 knee_exterior
   rotate: false
   xy: 2, 2
@@ -36,6 +29,13 @@ foot_exterior
   xy: 663, 1534
   size: 1084, 484
   orig: 1084, 484
+  offset: 0, 0
+  index: -1
+shin_exterior
+  rotate: false
+  xy: 1128, 2
+  size: 784, 1004
+  orig: 784, 1004
   offset: 0, 0
   index: -1
 foot_mechanisms_and_pipes_NOCOLOR
