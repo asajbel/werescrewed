@@ -49,6 +49,8 @@
 #/common/title_background_original.png
 #/common/robot/metal.png
 
+##Alphabot BG texture as default
+/levels/alphabot/alphabot-interior.png
 
 /common/moustache.png
 
@@ -102,6 +104,8 @@ land_cloud.p
 injured/arg.p
 injured/doof.p
 injured/oof.p
+fastSteam.p
+slowSteam.p
 
 ## debug for testing engine in phys screen. Remove before release! -stew
 /levels/alphabot/engine.pack

@@ -90,6 +90,8 @@ public class LevelFactory {
 	protected static final String gleedImageTag = "image";
 	protected static final String atlasTag = "atlas";
 
+	private final String robotTexBG = "/levels/alphabot/alphabot-interior.png";
+
 	public LevelFactory( ) {
 		reader = new XmlReader( );
 		items = new EnumMap< GleedTypeTag, LinkedHashMap< String, Item >>(
@@ -175,10 +177,14 @@ public class LevelFactory {
 			skeletons.put( item.name, child );
 			// add the skeleton to the skeleton layer for drawing
 			if ( child.bgSprite != null ) {
-				level.skelBGList.add( child );
+				if ( !level.skelBGList.containsKey( child.name ) ) {
+					level.skelBGList.put( child.name, child );
+				}
 			}
 			if ( child.fgSprite != null ) {
-				level.skelFGList.add( child );
+				if ( !level.skelFGList.containsKey( child.name ) ) {
+					level.skelFGList.put( child.name, child );
+				}
 			}
 			return child;
 		}
@@ -230,8 +236,8 @@ public class LevelFactory {
 		} else if ( bluePrints.equals( "customPlatform" ) ) {
 			out = constructCustomPlatform( item );
 		} else if ( bluePrints.equals( "pipe" ) ) {
-			out = constructPipe( item ); 
-		}else if ( bluePrints.equals( "screw" ) ) {
+			out = constructPipe( item );
+		} else if ( bluePrints.equals( "screw" ) ) {
 			out = constructScrew( item );
 		} else if ( bluePrints.equals( "pathmover" ) ) {
 			constructPath( item );
@@ -282,7 +288,9 @@ public class LevelFactory {
 						}
 						decal.setScale( size.x, size.y );
 						out.addFGDecal( decal, decalPosition, r );
-						level.entityFGList.add( out );
+						if ( !level.entityFGList.containsKey( out.name ) ) {
+							level.entityFGList.put( out.name, out );
+						}
 						Gdx.app.log(
 								"LoadEntity",
 								"Creating foreground decal for [" + item.name
@@ -320,7 +328,9 @@ public class LevelFactory {
 						}
 						decal.setScale( size.x, size.y );
 						out.addBGDecal( decal, decalPosition, r );
-						level.entityBGList.add( out );
+						if ( !level.entityBGList.containsKey( out.name ) ) {
+							level.entityBGList.put( out.name, out );
+						}
 						Gdx.app.log(
 								"LoadEntity",
 								"Creating background decal for [" + item.name
@@ -339,30 +349,30 @@ public class LevelFactory {
 	private Pipe constructPipe( Item item ) {
 		Array< Element > pointElems = item.element.getChildByName(
 				"LocalPoints" ).getChildrenByName( "Vector2" );
-		ArrayList< Vector2 > pathPoints = new ArrayList< Vector2 >( pointElems.size );
-		Pipe out = null; 
+		ArrayList< Vector2 > pathPoints = new ArrayList< Vector2 >(
+				pointElems.size );
+		Pipe out = null;
 		Element vElem;
 		Vector2 point;
 
 		PipeBuilder pb = new PipeBuilder( level.world );
-		
-//		vElem = pointElems.get( 0 );
-//		point = new Vector2( vElem.getFloat( "X" ) * GLEED_TO_GDX_X,
-//				vElem.getFloat( "Y" ) * GLEED_TO_GDX_Y );
 
-//		float xPos = item.pos.x;  
-//		float yPos = point.y;
-		
+		// vElem = pointElems.get( 0 );
+		// point = new Vector2( vElem.getFloat( "X" ) * GLEED_TO_GDX_X,
+		// vElem.getFloat( "Y" ) * GLEED_TO_GDX_Y );
+
+		// float xPos = item.pos.x;
+		// float yPos = point.y;
+
 		for ( int i = 1; i < pointElems.size; i++ ) {
 			vElem = pointElems.get( i );
 			point = new Vector2( vElem.getFloat( "X" ) * GLEED_TO_GDX_X,
 					vElem.getFloat( "Y" ) * GLEED_TO_GDX_Y );
-			point.div( 2 * Pipe.TILE_SIZE ); 
+			point.div( 2 * Pipe.TILE_SIZE );
 			pathPoints.add( point );
 		}
- 
-		
-		pb.path( pathPoints ); 
+
+		pb.path( pathPoints );
 
 		boolean isDynamic = false;
 		if ( item.props.containsKey( "dynamic" ) ) {
@@ -373,21 +383,20 @@ public class LevelFactory {
 		if ( item.props.containsKey( "crushable" ) ) {
 			isCrushable = true;
 		}
-		
-		if ( item.props.containsKey( "open" ) ) {
-			pb.openEnded( ); 
-		}
-		
-		pb.name( item.name ).position( new Vector2( item.pos.x, item.pos.y ) ).properties( item.props );
 
+		if ( item.props.containsKey( "open" ) ) {
+			pb.openEnded( );
+		}
+
+		pb.name( item.name ).position( new Vector2( item.pos.x, item.pos.y ) )
+				.properties( item.props );
 
 		if ( item.props.containsKey( "gravscale" ) ) {
 			float gravScale = Float.parseFloat( item.props.get( "gravscale" ) );
 			pb.gravityScale( gravScale );
 		}
 
-		
-		pb.dynamic( isDynamic ); 
+		pb.dynamic( isDynamic );
 
 		out = pb.build( );
 
@@ -430,9 +439,7 @@ public class LevelFactory {
 		}
 
 		out.addMover( mover, RobotState.IDLE );
-		
-		
-		
+
 		Skeleton parent = loadSkeleton( item.skeleton );
 
 		if ( !item.props.containsKey( "invisible" ) ) {
@@ -560,11 +567,15 @@ public class LevelFactory {
 			decal.setScale( scale.x, scale.y );
 			if ( item.props.containsKey( "decal" ) ) {
 				target.addFGDecal( decal, pos, rot );
-				level.entityFGList.add( target );
+				if ( !level.entityFGList.containsKey( target.name ) ) {
+					level.entityFGList.put( target.name, target );
+				}
 			} else {
 				Gdx.app.log( "level factory", "hello world" );
 				target.addBGDecal( decal, pos, rot );
-				level.entityBGList.add( target );
+				if ( !level.entityBGList.containsKey( target.name ) ) {
+					level.entityBGList.put( target.name, target );
+				}
 			}
 			Gdx.app.log( "LoadDecal", "Attaching decal " + item.name + " to "
 					+ targetName + "." );
@@ -582,9 +593,6 @@ public class LevelFactory {
 		if ( item.name.equals( "RootSkeleton" ) ) {
 			level.root = new RootSkeleton( item.name, item.pos, null,
 					level.world );
-			// DELETE THESE TWO LINES WHEN THE STAGE WORKS PROPERLY WITH GLEED
-			//level.skelBGList.add( level.root );
-			//level.skelFGList.add( level.root );
 			skeletons.put( item.name, level.root );
 			entities.put( item.name, level.root );
 
@@ -602,19 +610,17 @@ public class LevelFactory {
 						.bg( )
 						.setVerts( polySprite )
 						.texBackground(
-								WereScrewedGame.manager
-										.get( WereScrewedGame.dirHandle
-												+ "/levels/alphabot/alphabot_texture_skin.png",
-												Texture.class ) );
+								WereScrewedGame.manager.get(
+										WereScrewedGame.dirHandle + robotTexBG,
+										Texture.class ) );
 			} else {
 				skeleBuilder
 						.bg( )
 						.setVerts( polySprite )
 						.texBackground(
-								WereScrewedGame.manager
-										.get( WereScrewedGame.dirHandle
-												+ "/levels/alphabot/alphabot_texture_skin.png",
-												Texture.class ) ).fg( )
+								WereScrewedGame.manager.get(
+										WereScrewedGame.dirHandle + robotTexBG,
+										Texture.class ) ).fg( )
 						.setVerts( polySprite );
 				// .texForeground( WereScrewedGame.manager.get
 				// (WereScrewedGame.dirHandle+"/common/robot/alphabot_texture_skin.png",
@@ -685,10 +691,14 @@ public class LevelFactory {
 			}
 			// add the skeleton to the skeleton layer for drawing
 			if ( skeleton.bgSprite != null ) {
-				level.skelBGList.add( skeleton );
-			} 
+				if ( !level.skelBGList.containsKey( skeleton.name ) ) {
+					level.skelBGList.put( skeleton.name, skeleton );
+				}
+			}
 			if ( skeleton.fgSprite != null ) {
-				level.skelFGList.add( skeleton );
+				if ( !level.skelFGList.containsKey( skeleton.name ) ) {
+					level.skelFGList.put( skeleton.name, skeleton );
+				}
 			}
 		}
 
@@ -857,12 +867,12 @@ public class LevelFactory {
 
 		pb.name( item.name ).position( item.pos ).tileSet( "alphabot32" )
 				.properties( item.props );
-		if(item.props.containsKey( "tux" )){
+		if ( item.props.containsKey( "tux" ) ) {
 			pb.texture( WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 					+ "/common/robot/alphabot_texture_tux.png", Texture.class ) );
-		}else{
+		} else {
 			pb.texture( WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-					+ "/levels/alphabot/alphabot_texture_skin.png", Texture.class ) );
+					+ robotTexBG, Texture.class ) );
 		}
 
 		if ( item.props.containsKey( "gravscale" ) ) {
@@ -1007,7 +1017,7 @@ public class LevelFactory {
 			int startDepth = Integer.parseInt( item.props.get( "startdepth" ) );
 			builder.startDepth( startDepth );
 		}
-		
+
 		Screw out = null;
 		switch ( sType ) {
 		case SCREW_PUZZLE:
