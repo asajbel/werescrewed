@@ -135,6 +135,7 @@ public class PuzzleScrew extends Screw {
 				newDiff = 0;
 			}
 			prevDiff = diff;
+			unscrewSound(diff, 5);
 
 			body.setAngularVelocity( 1 );
 			depth += newDiff;
@@ -157,6 +158,8 @@ public class PuzzleScrew extends Screw {
 		if ( depth > 0 ) {
 			body.setAngularVelocity( 1 );
 			depth -= 2;
+			unscrewSound(2,2);
+
 			rotation += 10;
 			screwStep = depth + 5;
 			puzzleManager.runElement( this, ( float ) depth
@@ -183,6 +186,7 @@ public class PuzzleScrew extends Screw {
 				newDiff = 0;
 			}
 			prevDiff = diff;
+			screwSound(diff,5);
 
 			body.setAngularVelocity( -1 );
 			depth += newDiff;
@@ -204,6 +208,7 @@ public class PuzzleScrew extends Screw {
 		if ( depth < maxDepth ) {
 			body.setAngularVelocity( -1 );
 			depth += 2;
+			screwSound(2,2);
 			rotation -= 10;
 			screwStep = depth + 6;
 			puzzleManager.runElement( this, ( float ) depth

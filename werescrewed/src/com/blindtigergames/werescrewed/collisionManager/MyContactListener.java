@@ -34,8 +34,8 @@ public class MyContactListener implements ContactListener {
 	private static int NUM_PLAYER1_CONTACTS = 0;
 	private static int NUM_PLAYER2_CONTACTS = 0;
 	private static final float LAND_DELAY = 0;
-	private static final float LAND_VOLUME = 0.10f;
-	private static final float LAND_FALLOFF = 2.5f;
+	private static final float LAND_VOLUME = 0.15f;
+	private static final float LAND_FALLOFF = 3.0f;
 
 	/**
 	 * When two new objects start to touch
