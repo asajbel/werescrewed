@@ -13,6 +13,7 @@ import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.debug.FPSLoggerS;
 import com.blindtigergames.werescrewed.debug.SBox2DDebugRenderer;
 import com.blindtigergames.werescrewed.entity.Entity;
+import com.blindtigergames.werescrewed.entity.Skeleton;
 import com.blindtigergames.werescrewed.level.Level;
 import com.blindtigergames.werescrewed.util.Util;
 
@@ -97,6 +98,54 @@ public class Screen implements com.badlogic.gdx.Screen {
 			ScreenManager.escapeHeld = false;
 	}
 
+	protected void addForeGroundSkeleton( Skeleton skel ) {
+		if ( !level.skelFGList.contains( skel ) ) {
+			level.skelFGList.add( 0, skel );
+		}
+	}
+	
+	protected void addForeGroundSkeletonToBack( Skeleton skel ) {
+		if ( !level.skelFGList.contains( skel ) ) {
+			level.skelFGList.add( skel );
+		}
+	}
+	
+	protected void addBackGroundSkeleton( Skeleton skel ) {
+		if ( !level.skelBGList.contains( skel ) ) {
+			level.skelBGList.add( skel );
+		}
+	}
+	
+	protected void addBackGroundSkeletonToBack( Skeleton skel ) {
+		if ( !level.skelBGList.contains( skel ) ) {
+			level.skelBGList.add( 0, skel );
+		}
+	}
+	
+	protected void addForeGroundEntity( Entity entity ) {
+		if ( !level.entityFGList.contains( entity ) ) {
+			level.entityFGList.add( entity );
+		}
+	}
+	
+	protected void addForeGroundEntityToBack( Entity entity ) {
+		if ( !level.entityFGList.contains( entity ) ) {
+			level.entityFGList.add( 0, entity );
+		}
+	}
+	
+	protected void addBackGroundEntity( Entity entity ) {
+		if ( !level.entityBGList.contains( entity ) ) {
+			level.entityBGList.add( entity );
+		}
+	}
+	
+	protected void addBackGroundEntityToBack( Entity entity ) {
+		if ( !level.entityBGList.contains( entity ) ) {
+			level.entityBGList.add( 0, entity );
+		}
+	}
+	
 	@Override
 	public void resize( int width, int height ) {
 		// TODO Auto-generated method stub
