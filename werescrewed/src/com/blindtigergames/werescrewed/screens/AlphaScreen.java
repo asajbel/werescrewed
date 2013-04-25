@@ -158,6 +158,8 @@ public class AlphaScreen extends Screen {
 	private void buildBackground( ) {
 		Skeleton bgSkele;
 		bgSkele = ( Skeleton ) LevelFactory.entities.get( "stageSkeleton" );
+		Skeleton light_skel = new Skeleton( "light_skeleton", new Vector2(), null, level.world );
+		//level.skelBGList.put( key, value )
 		TextureAtlas floor_seats = WereScrewedGame.manager
 				.getAtlas( "alphabot_floor_seats" );
 		TextureAtlas stage_pillar = WereScrewedGame.manager
@@ -474,7 +476,7 @@ public class AlphaScreen extends Screen {
 		
 		Vector2 footFGPos = new Vector2( decalX - 30, decalY + 10 );
 		foot.addFGDecal( decals.createSprite( "foot_exterior" ), footFGPos );
-		foot.addFGDecal( decals.createSprite( "shin_exterior_shorter" ),
+		foot.addFGDecal( decals.createSprite( "shin_exterior" ),
 				footFGPos.cpy( ).add( 400, 386 ) );
 
 	}
