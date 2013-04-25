@@ -72,7 +72,7 @@ public class Screen implements com.badlogic.gdx.Screen {
 			if ( level.backgroundRootSkeleton != null ) {
 				level.backgroundBatch.setProjectionMatrix( level.backgroundCam.combined );
 				level.backgroundBatch.begin( );
-				level.backgroundRootSkeleton.drawBGDecals( level.backgroundBatch, level.camera.getBounds( ) );
+				level.backgroundRootSkeleton.drawBGDecals( level.backgroundBatch, level.camera );
 				level.backgroundRootSkeleton.draw( level.backgroundBatch, delta );
 				level.backgroundBatch.end( );
 			}
