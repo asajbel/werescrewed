@@ -163,7 +163,8 @@ public class AlphaScreen extends Screen {
 		
 		Gdx.app.log( "bgSKele", bgSkele.getPositionPixel( ) +"");
 		Skeleton light_skel = ( Skeleton ) LevelFactory.entities.get( "lightSkeleton" );
-		addBackGroundSkeletonToBack( light_skel );
+		addBackGroundSkeletonToBack( light_skel ); 
+		
 		//level.skelBGList.put( key, value )
 		TextureAtlas floor_seats = WereScrewedGame.manager
 				.getAtlas( "alphabot_floor_seats" );
@@ -208,12 +209,12 @@ public class AlphaScreen extends Screen {
 		int curtainY = seatsY + 585;
 
 		// support beam
-		bgSkele.addBGDecalBack( support_left.createSprite( "support_left" ),
+		light_skel.addBGDecalBack( support_left.createSprite( "support_left" ),
 				new Vector2( supportX, supportY ) );
-		bgSkele.addBGDecalBack(
+		light_skel.addBGDecalBack(
 				support_middle_right.createSprite( "support_middle" ),
 				new Vector2( supportX + max, supportY + 216 ) );
-		bgSkele.addBGDecalBack(
+		light_skel.addBGDecalBack(
 				support_middle_right.createSprite( "support_right" ),
 				new Vector2( supportX + 2 * max, supportY ) );
 
@@ -296,7 +297,7 @@ public class AlphaScreen extends Screen {
 
 		screwBodyDef = new BodyDef( );
 		screwBodyDef.type = BodyType.KinematicBody;
-		Vector2 bodyPos = new Vector2( 0, -1028 );
+		Vector2 bodyPos = new Vector2( 0, -512 );
 		screwBodyDef.position.set( bodyPos.cpy( ).mul( Util.PIXEL_TO_BOX ) );
 		screwBodyDef.fixedRotation = true;
 		body = level.world.createBody( screwBodyDef );
@@ -315,7 +316,7 @@ public class AlphaScreen extends Screen {
 		e1.sprite = dome.createSprite( "dome_small" );
 		e1.setMoverAtCurrentState( new ParallaxMover( new Vector2( e1
 				.getPositionPixel( ) ), new Vector2( e1.getPositionPixel( )
-				.add( 0f, 2048f ) ), 0.00002f, .5f, level.camera, false,
+				.add( 0f, 512f ) ), 0.0002f, .5f, level.camera, false,
 				LinearAxis.VERTICAL ) );
 		level.backgroundRootSkeleton.addLooseEntity( e1 );
 	}

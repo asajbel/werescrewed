@@ -3,6 +3,8 @@
  */
 package com.blindtigergames.werescrewed.entity.platforms;
 
+import java.util.Random;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.blindtigergames.werescrewed.WereScrewedGame;
@@ -19,11 +21,15 @@ public class TileSet {
 	private TextureAtlas bleedAtlas;
 	@SuppressWarnings( "unused" )
 	private int tileHeight, tileWidth;
+	int r = 1;
 
 	
 	public TileSet( TextureAtlas atlas, TextureAtlas bleedAtlas ){
 		this.atlas = atlas;
 		this.bleedAtlas = bleedAtlas;
+		this.bleedAtlas = WereScrewedGame.manager.getAtlas( "common-textures" );
+		
+		
 	}
 
 	public boolean canBleed(){
@@ -109,7 +115,9 @@ public class TileSet {
 
 		//System.out.println( "GetRanColor:"+randomColor+position );
 		//Gdx.app.log( "TileSet", "Attempting to fetch: "+randomColor+" "+position );
-		return ( bleedAtlas.createSprite( randomColor+position ) );
+		if(r==1)r=2;
+		else r = 1;
+		return ( bleedAtlas.createSprite( "tiletexture"+(r) ));// bleedAtlas.createSprite( randomColor+position )
 	}
 	
 	public Sprite getHorizontalLeftTileBleed( ) {

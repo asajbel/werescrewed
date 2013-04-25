@@ -4,7 +4,9 @@ import java.util.Iterator;
 import java.util.Vector;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.graphics.SpriteBatch;
+import com.blindtigergames.werescrewed.graphics.TextureAtlas;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -34,6 +36,7 @@ public class TiledPlatform extends Platform {
 
 	protected Vector< Tile > tiles;
 	protected Vector< Tile > bleedTiles=null;
+	protected Vector<Tile>decal;
 	
 	//private boolean doBleed;
 	
@@ -98,6 +101,7 @@ public class TiledPlatform extends Platform {
 	private void tileBody( TileSet tileSet ) {
 		bodypos = body.getPosition( ).mul( Util.BOX_TO_PIXEL );
 		tiles = new Vector< Tile >( ( int ) ( tileHeight * tileWidth ) );
+		decal = new Vector< Tile >( ( int ) ( tileHeight * tileWidth ) );
 		if ( tileSet.canBleed( ) ){
 			bleedTiles = new Vector<Tile>( ( int ) ( tileHeight * tileWidth ) );
 		}
@@ -255,6 +259,7 @@ public class TiledPlatform extends Platform {
 		temp.setOrigin( offset_x, offset_y );
 		temp.setPosition( bodypos.x - offset_x, bodypos.y - offset_y );
 		temp.setRotation( MathUtils.radiansToDegrees * body.getAngle( ) );
+		
 		return ( new Tile( offset_x, offset_y, temp ) );
 	}
 
