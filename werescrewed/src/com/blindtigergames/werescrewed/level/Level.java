@@ -143,9 +143,6 @@ public class Level {
 		// draw all background of skeletons before everything
 		for ( Skeleton skel : skelBGList ) {
 			if ( skel.isActive( ) ) {
-//				if ( skel.entityType == EntityType.ROOTSKELETON){
-//					skel.isActive( );
-//				}
 				if ( skel.bgSprite != null ) {
 //					if ( camera.getBounds( ).overlaps(
 //							new Rectangle(
@@ -166,9 +163,6 @@ public class Level {
 		}
 		for ( Entity e : entityBGList ) {
 			if ( e.isActive( ) ) {
-//				if ( e.entityType == EntityType.ROOTSKELETON){
-//					e.isActive( );
-//				}
 				e.drawBGDecals( batch, camera.getBounds( ) );
 			}
 		}

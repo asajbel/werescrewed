@@ -49,6 +49,7 @@
 /levels/alphabot/support_left.pack
 /levels/alphabot/support_middle_right.pack
 /levels/alphabot/curtains.pack
+/levels/alphabot/dome_small.pack
 
 
 ##decals and such

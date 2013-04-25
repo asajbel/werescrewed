@@ -12,6 +12,7 @@ import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.debug.FPSLoggerS;
 import com.blindtigergames.werescrewed.debug.SBox2DDebugRenderer;
+import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.level.Level;
 import com.blindtigergames.werescrewed.util.Util;
 
@@ -71,6 +72,7 @@ public class Screen implements com.badlogic.gdx.Screen {
 			if ( level.backgroundRootSkeleton != null ) {
 				level.backgroundBatch.setProjectionMatrix( level.backgroundCam.combined );
 				level.backgroundBatch.begin( );
+				level.backgroundRootSkeleton.drawBGDecals( level.backgroundBatch, level.camera.getBounds( ) );
 				level.backgroundRootSkeleton.draw( level.backgroundBatch, delta );
 				level.backgroundBatch.end( );
 			}
