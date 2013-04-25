@@ -271,11 +271,6 @@ public class AlphaScreen extends Screen {
 		// initBackground( dome, numDomes, domeSliceX, domeSliceY,
 		// 100,100);//-max + seatsX, seatsY );
 		initParallaxBackground( );
-		// level.entityFGList.add(bgSkele);
-		// level.entityBGList.add(bgSkele);
-
-		// level.entityBGList.remove( level.root );
-		// level.entityFGList.remove( level.root );
 
 	}
 
