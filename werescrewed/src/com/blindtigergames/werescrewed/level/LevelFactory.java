@@ -177,14 +177,10 @@ public class LevelFactory {
 			skeletons.put( item.name, child );
 			// add the skeleton to the skeleton layer for drawing
 			if ( child.bgSprite != null ) {
-				if ( !level.skelBGList.containsKey( child.name ) ) {
-					level.skelBGList.put( child.name, child );
-				}
+				addBackGroundSkeleton( child );
 			}
 			if ( child.fgSprite != null ) {
-				if ( !level.skelFGList.containsKey( child.name ) ) {
-					level.skelFGList.put( child.name, child );
-				}
+				addForeGroundSkeleton( child );
 			}
 			return child;
 		}
@@ -288,9 +284,7 @@ public class LevelFactory {
 						}
 						decal.setScale( size.x, size.y );
 						out.addFGDecal( decal, decalPosition, r );
-						if ( !level.entityFGList.containsKey( out.name ) ) {
-							level.entityFGList.put( out.name, out );
-						}
+						addForeGroundEntity( out );
 						Gdx.app.log(
 								"LoadEntity",
 								"Creating foreground decal for [" + item.name
@@ -328,9 +322,7 @@ public class LevelFactory {
 						}
 						decal.setScale( size.x, size.y );
 						out.addBGDecal( decal, decalPosition, r );
-						if ( !level.entityBGList.containsKey( out.name ) ) {
-							level.entityBGList.put( out.name, out );
-						}
+						addBackGroundEntity( out );
 						Gdx.app.log(
 								"LoadEntity",
 								"Creating background decal for [" + item.name
@@ -567,15 +559,11 @@ public class LevelFactory {
 			decal.setScale( scale.x, scale.y );
 			if ( item.props.containsKey( "decal" ) ) {
 				target.addFGDecal( decal, pos, rot );
-				if ( !level.entityFGList.containsKey( target.name ) ) {
-					level.entityFGList.put( target.name, target );
-				}
+				addForeGroundEntity( target );
 			} else {
 				Gdx.app.log( "level factory", "hello world" );
 				target.addBGDecal( decal, pos, rot );
-				if ( !level.entityBGList.containsKey( target.name ) ) {
-					level.entityBGList.put( target.name, target );
-				}
+				addBackGroundEntity( target );
 			}
 			Gdx.app.log( "LoadDecal", "Attaching decal " + item.name + " to "
 					+ targetName + "." );
@@ -691,14 +679,10 @@ public class LevelFactory {
 			}
 			// add the skeleton to the skeleton layer for drawing
 			if ( skeleton.bgSprite != null ) {
-				if ( !level.skelBGList.containsKey( skeleton.name ) ) {
-					level.skelBGList.put( skeleton.name, skeleton );
-				}
+				addBackGroundSkeleton( skeleton );
 			}
 			if ( skeleton.fgSprite != null ) {
-				if ( !level.skelFGList.containsKey( skeleton.name ) ) {
-					level.skelFGList.put( skeleton.name, skeleton );
-				}
+				addForeGroundSkeleton( skeleton );
 			}
 		}
 
@@ -1716,6 +1700,30 @@ public class LevelFactory {
 		}
 	}
 
+	private void addForeGroundSkeleton( Skeleton skel ) {
+		if ( !level.skelFGList.contains( skel ) ) {
+			level.skelFGList.add( skel );
+		}
+	}
+	
+	private void addBackGroundSkeleton( Skeleton skel ) {
+		if ( !level.skelBGList.contains( skel ) ) {
+			level.skelBGList.add( skel );
+		}
+	}
+	
+	private void addForeGroundEntity( Entity entity ) {
+		if ( !level.entityFGList.contains( entity ) ) {
+			level.entityFGList.add( entity );
+		}
+	}
+	
+	private void addBackGroundEntity( Entity entity ) {
+		if ( !level.entityBGList.contains( entity ) ) {
+			level.entityBGList.add( entity );
+		}
+	}
+	
 	protected static final String typeTag = "Type";
 	protected static final String defTag = "Definition";
 

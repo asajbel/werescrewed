@@ -265,12 +265,8 @@ public class AlphaScreen extends Screen {
 		bgSkele.addFGDecal( floor_seats.createSprite( "seats_right" ),
 				new Vector2( max + seatsX, seatsY ) );
 
-		if ( !level.entityBGList.containsKey( bgSkele.name ) ) {
-			level.entityBGList.put( bgSkele.name, bgSkele );
-		}
-		if ( !level.entityFGList.containsKey( bgSkele.name ) ) {
-			level.entityFGList.put( bgSkele.name, bgSkele );
-		}
+		addBackGroundEntity( bgSkele );
+		addForeGroundEntity( bgSkele );
 
 		// initBackground( dome, numDomes, domeSliceX, domeSliceY,
 		// 100,100);//-max + seatsX, seatsY );
@@ -478,13 +474,9 @@ public class AlphaScreen extends Screen {
 		footBG.setOrigin( 0f, 0f );
 		foot.addBGDecal( legBG, new Vector2( 400 + decalX, 424 + decalY ) );
 
-		if ( !level.entityBGList.containsKey( footSkeleton.name ) ) {
-			level.entityBGList.put( footSkeleton.name, footSkeleton );
-		}
-		if ( !level.entityFGList.containsKey( footSkeleton.name ) ) {
-			level.entityFGList.put( footSkeleton.name, footSkeleton );
-		}
-
+		addBackGroundEntity( footSkeleton );
+		addForeGroundEntity( footSkeleton );
+		
 		Vector2 footFGPos = new Vector2( decalX - 30, decalY + 10 );
 		foot.addFGDecal( decals.createSprite( "foot_exterior" ), footFGPos );
 		foot.addFGDecal( decals.createSprite( "shin_exterior_shorter" ),
@@ -509,9 +501,7 @@ public class AlphaScreen extends Screen {
 									// here even
 		kneeSkeleton.addFGDecalBack( decals.createSprite( "knee_exterior" ),
 				kneeDecalPos.cpy( ) );
-		if ( !level.entityFGList.containsKey( kneeSkeleton.name ) ) {
-			level.entityFGList.put( kneeSkeleton.name, footSkeleton );
-		}
+		addForeGroundEntity( kneeSkeleton );
 
 		kneeSkeleton
 				.addBGDecalBack( knee_exterior
@@ -719,9 +709,7 @@ public class AlphaScreen extends Screen {
 				.add( -230, -360 );
 		engineSkeleton.addBGDecal( engineAtlas.createSprite( "chest-engine" ),
 				new Vector2( decalPos ) );
-		if ( !level.entityBGList.containsKey( engineSkeleton.name ) ) {
-			level.entityBGList.put( engineSkeleton.name, engineSkeleton );
-		}
+		addForeGroundEntity( engineSkeleton );
 
 		for ( int i = 0; i < 3; ++i ) {
 			buildPiston( engineSkeleton, engineAtlas,
@@ -854,15 +842,9 @@ public class AlphaScreen extends Screen {
 		wheel1.addFGDecal( wheelBolt, boltPosPix );
 		
 
-		if ( !level.entityFGList.containsKey( wheel1.name ) ) {
-			level.entityFGList.put( wheel1.name, wheel1 );
-		}
-		if ( !level.entityFGList.containsKey( piston.name ) ) {
-			level.entityFGList.put( piston.name, piston );
-		}
-		if ( !level.entityFGList.containsKey( girder1.name ) ) {
-			level.entityFGList.put( girder1.name, girder1 );
-		}
+		addForeGroundEntity( wheel1 );
+		addForeGroundEntity( piston );
+		addForeGroundEntity( girder1 );
 	}
 
 	private Platform buildGirder( Sprite girder, Vector2 topMeter,

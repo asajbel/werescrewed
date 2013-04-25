@@ -287,15 +287,9 @@ public class PhysicsTestScreen extends Screen {
 				-boltSprite.getWidth( ) / 2, -boltSprite.getHeight( ) / 2 ) );
 		wheel1.addFGDecal( wheelBolt, boltPosPix );
 
-		if ( !level.entityFGList.containsKey( wheel1.name ) ) {
-			level.entityFGList.put( wheel1.name, wheel1 );
-		}
-		if ( !level.entityFGList.containsKey( piston.name ) ) {
-			level.entityFGList.put( piston.name, piston );
-		}
-		if ( !level.entityFGList.containsKey( girder1.name ) ) {
-			level.entityFGList.put( girder1.name, girder1 );
-		}
+		addForeGroundEntity( wheel1 );
+		addForeGroundEntity( piston );
+		addForeGroundEntity( girder1 );
 	}
 
 	private Platform buildGirder( Sprite girder, Vector2 topMeter,

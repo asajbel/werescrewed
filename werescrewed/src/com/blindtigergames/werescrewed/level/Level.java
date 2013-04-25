@@ -51,10 +51,10 @@ public class Level {
 	private boolean debugTest, debug;
 	public ProgressManager progressManager;
 	public static ArrayList< Joint > jointsToRemove = new ArrayList< Joint >( );
-	public HashMap< String, Skeleton > skelBGList;
-	public HashMap< String, Skeleton > skelFGList;
-	public HashMap< String, Entity > entityBGList;
-	public HashMap< String, Entity > entityFGList;
+	public ArrayList< Skeleton > skelBGList;
+	public ArrayList< Skeleton > skelFGList;
+	public ArrayList< Entity > entityBGList;
+	public ArrayList< Entity > entityFGList;
 	// background stuff
 	public OrthographicCamera backgroundCam;
 	public RootSkeleton backgroundRootSkeleton;
@@ -66,10 +66,10 @@ public class Level {
 		myContactListener = new MyContactListener( );
 		world.setContactListener( myContactListener );
 
-		skelBGList = new HashMap< String, Skeleton >( );
-		skelFGList = new HashMap< String, Skeleton >( );
-		entityBGList = new HashMap< String, Entity >( );
-		entityFGList = new HashMap< String, Entity >( );
+		skelBGList = new ArrayList< Skeleton >( );
+		skelFGList = new ArrayList< Skeleton >( );
+		entityBGList = new ArrayList< Entity >( );
+		entityFGList = new ArrayList< Entity >( );
 
 		// progressManager = new ProgressManager(player1, player2, world);
 		// camera = new Camera( width, height, world);
@@ -164,7 +164,7 @@ public class Level {
 	}
 
 	private void drawBGStuff( SpriteBatch batch, float deltaTime ) {
-		for ( Skeleton skel : skelBGList.values( ) ) {
+		for ( Skeleton skel : skelBGList ) {
 			if ( skel.isActive( ) ) {
 				if ( skel.bgSprite != null ) {
 					// Vector2 spritePos = new Vector2(
@@ -181,7 +181,7 @@ public class Level {
 				skel.drawBGDecals( batch, camera );
 			}
 		}
-		for ( Entity e : entityBGList.values( ) ) {
+		for ( Entity e : entityBGList ) {
 			if ( e.isActive( ) ) {
 				{
 					e.drawBGDecals( batch, camera );
@@ -191,12 +191,12 @@ public class Level {
 	}
 
 	private void drawFGStuff( SpriteBatch batch ) {
-		for ( Entity e : entityFGList.values( ) ) {
+		for ( Entity e : entityFGList ) {
 			if ( e.isActive( ) ) {
 				e.drawFGDecals( batch, camera );
 			}
 		}
-		for ( Skeleton skel : skelFGList.values( ) ) {
+		for ( Skeleton skel : skelFGList ) {
 			if ( skel.fgSprite != null && skel.fgSprite.getAlpha( ) != 0 ) {
 				// Vector2 spritePos = new Vector2( skel.fgSprite.getX( ),
 				// skel.fgSprite.getY( ) );
