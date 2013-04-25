@@ -38,11 +38,14 @@ public class PowerSwitch extends EventTrigger{
 	}
 	
 	public void doAction(){
+		Gdx.app.log("doAction ","");
 		if(state == false){
+			Gdx.app.log("doAction: ","if");
 			runBeginAction();
 			state = true;
 		}
 		else{
+			Gdx.app.log("doAction ","else");
 			runEndAction();
 			state = false;
 		}

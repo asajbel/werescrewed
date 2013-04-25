@@ -1805,6 +1805,7 @@ public class Player extends Entity {
 						screwButtonHeld = true;
 					}
 				} else if (currentSwitch != null && switchTimer == 0){
+					Gdx.app.log("currentSwitch: ","" + currentSwitch);
 					currentSwitch.doAction( );
 					switchTimer = 60;
 				} else {

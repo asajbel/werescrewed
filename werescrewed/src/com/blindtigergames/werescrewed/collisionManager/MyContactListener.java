@@ -155,8 +155,10 @@ public class MyContactListener implements ContactListener {
 							}
 							break;
 						case POWERSWITCH:
-							PowerSwitch ps = ( PowerSwitch ) object;
-							player.setPowerSwitch( ps );
+							if(playerFix == player.torso){
+								PowerSwitch ps = ( PowerSwitch ) object;
+								player.setPowerSwitch( ps );
+							}
 							break;
 						default:
 							break;
@@ -296,7 +298,9 @@ public class MyContactListener implements ContactListener {
 							}
 							break;
 						case POWERSWITCH:
-							player.setPowerSwitch( null );
+							if(playerFix == player.torso){
+								player.setPowerSwitch( null );
+							}
 							break;
 						default:
 							break;
