@@ -145,7 +145,7 @@ public class AlphaScreen extends Screen {
 
 		buildEngineHeart( new Vector2( 0, 5450 ) );
 		createChestDecals();
-		powerSwitch();
+		//powerSwitch();
 	}
 
 	@Override
