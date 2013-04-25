@@ -90,7 +90,7 @@ public class ResurrectScrew extends Screw {
 	@Override
 	public void screwLeft( ) {
 		if ( depth > 0 ) {
-			depth -= 2;
+			depth -= 1;
 			body.setAngularVelocity( 15 );
 			rotation += 10;
 			screwStep = depth + 5;
