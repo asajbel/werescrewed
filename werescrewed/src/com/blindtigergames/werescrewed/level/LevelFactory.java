@@ -909,6 +909,10 @@ public class LevelFactory {
 					+ out.name );
 			out.quickfixCollisions( );
 			parent.addDynamicPlatform( out );
+			
+			if ( item.props.containsKey( "jointtoskeleton" ) ) {
+				out.addJointToSkeleton( parent );
+			}
 		} else {
 			Gdx.app.log( "LevelFactory", "Tiled Kinematic platform loaded:"
 					+ out.name );
@@ -969,6 +973,9 @@ public class LevelFactory {
 				}
 			}
 			parent.addDynamicPlatform( out );
+			if ( item.props.containsKey( "jointtoskeleton" ) ) {
+				out.addJointToSkeleton( parent );
+			}
 		} else {
 			parent.addKinematicPlatform( out );
 		}

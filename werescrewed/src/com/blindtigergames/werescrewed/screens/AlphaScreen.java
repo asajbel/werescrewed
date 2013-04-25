@@ -96,7 +96,7 @@ public class AlphaScreen extends Screen {
 		thighDecals( thighSkeleton );// createFootObjects initializes
 										// thighSkeleton
 
-		// bottom: 0f, 0f
+		// start: 512, 256
 		// power screws: -700f, 1800f
 		// chest entrance : -200f, 3800f
 		// upper chest: 1300f, 6000f
@@ -106,7 +106,7 @@ public class AlphaScreen extends Screen {
 		// right arm: 2600f, 6000f >>>> side
 		//left side hand <- -2224, 3008
 		
-		Vector2 spawnPos = new Vector2(0f, 0f);
+		Vector2 spawnPos = new Vector2(512, 256);
 
 
 		if ( level.player1 == null ) {
