@@ -187,14 +187,16 @@ public class Screw extends Entity {
 	 * @param switchedDirections
 	 */
 	public void screwLeft( int region, boolean switchedDirections ) {
-		sounds.playSound( "unscrewing" , UNSCREW_SOUND_DELAY );
+		//Sorry this crashes my system so I'm commenting it out. -stew
+		//sounds.playSound( "unscrewing" , UNSCREW_SOUND_DELAY );
 	}
 
 	/**
 	 * used by keyboard controls to screw left
 	 */
 	public void screwLeft( ) {
-		sounds.playSound( "unscrewing" , UNSCREW_SOUND_DELAY );
+		//Sorry this crashes my system so I'm commenting it out. -stew
+		//sounds.playSound( "unscrewing" , UNSCREW_SOUND_DELAY );
 	}
 
 	/**
@@ -203,14 +205,16 @@ public class Screw extends Entity {
 	 * @param switchedDirections
 	 */
 	public void screwRight( int region, boolean switchedDirections ) {
-		sounds.playSound( "screwing" , SCREW_SOUND_DELAY );
+		//Sorry this crashes my system so I'm commenting it out. -stew
+		//sounds.playSound( "screwing" , SCREW_SOUND_DELAY );
 	}
 
 	/**
 	 * used by keyboard controls to screw right
 	 */
 	public void screwRight( ) {
-		sounds.playSound( "screwing" , SCREW_SOUND_DELAY );
+		//Sorry this crashes my system so I'm commenting it out. -stew
+		//sounds.playSound( "screwing" , SCREW_SOUND_DELAY );
 	}
 
 	
