@@ -1341,8 +1341,8 @@
                 </Item>
                 <Item xsi:type="TextureItem" Name="cameraPosition" Visible="true">
                     <Position>
-                        <X>-1152</X>
-                        <Y>-5632</Y>
+                        <X>464</X>
+                        <Y>-784</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -3709,7 +3709,7 @@
                 </Item>
                 <Item xsi:type="RectangleItem" Name="heartPlatform" Visible="true">
                     <Position>
-                        <X>1088</X>
+                        <X>1136</X>
                         <Y>-5328</Y>
                     </Position>
                     <CustomProperties>
@@ -3720,7 +3720,7 @@
                             <string>chestSkeleton</string>
                         </Property>
                     </CustomProperties>
-                    <Width>1088</Width>
+                    <Width>1040</Width>
                     <Height>32</Height>
                     <FillColor>
                         <R>192</R>
@@ -4840,7 +4840,7 @@
                             <string>chestSkeleton</string>
                         </Property>
                         <Property Name="maxDepth" Type="string" Description="">
-                            <string>800</string>
+                            <string>300</string>
                         </Property>
                         <Property Name="mover" Type="string" Description="">
                             <string>lerpmover</string>
@@ -4918,7 +4918,7 @@
                             <string>chestSkeleton</string>
                         </Property>
                         <Property Name="maxDepth" Type="string" Description="">
-                            <string>500</string>
+                            <string>300</string>
                         </Property>
                         <Property Name="mover" Type="string" Description="">
                             <string>lerpmover</string>
@@ -4970,7 +4970,7 @@
                             <string>chestSkeleton</string>
                         </Property>
                         <Property Name="maxDepth" Type="string" Description="">
-                            <string>500</string>
+                            <string>300</string>
                         </Property>
                         <Property Name="mover" Type="string" Description="">
                             <string>lerpmover</string>
@@ -4998,7 +4998,7 @@
                         <PackedValue>4294967295</PackedValue>
                     </TintColor>
                     <FlipHorizontally>false</FlipHorizontally>
-                    <FlipVertically>false</FlipVertically>
+                    <FlipVertically>true</FlipVertically>
                     <texture_filename>puzzlescrew.png</texture_filename>
                     <asset_name>puzzlescrew</asset_name>
                     <Origin>
@@ -13211,7 +13211,7 @@
                 <Item xsi:type="PathItem" Name="chestEnginePipe3" Visible="true">
                     <Position>
                         <X>128</X>
-                        <Y>-5440</Y>
+                        <Y>-5504</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -13228,21 +13228,21 @@
                         </Vector2>
                         <Vector2>
                             <X>0</X>
-                            <Y>-320</Y>
+                            <Y>-256</Y>
                         </Vector2>
                         <Vector2>
                             <X>-320</X>
-                            <Y>-320</Y>
+                            <Y>-256</Y>
                         </Vector2>
                         <Vector2>
                             <X>-320</X>
-                            <Y>-480</Y>
+                            <Y>-416</Y>
                         </Vector2>
                     </LocalPoints>
                     <WorldPoints>
                         <Vector2>
                             <X>128</X>
-                            <Y>-5440</Y>
+                            <Y>-5504</Y>
                         </Vector2>
                         <Vector2>
                             <X>128</X>
@@ -13321,7 +13321,7 @@
                 <Item xsi:type="PathItem" Name="chestEnginePipe1" Visible="true">
                     <Position>
                         <X>448</X>
-                        <Y>-5392</Y>
+                        <Y>-5504</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -13338,25 +13338,25 @@
                         </Vector2>
                         <Vector2>
                             <X>0</X>
-                            <Y>-208</Y>
+                            <Y>-96</Y>
                         </Vector2>
                         <Vector2>
                             <X>256</X>
-                            <Y>-208</Y>
+                            <Y>-96</Y>
                         </Vector2>
                         <Vector2>
                             <X>256</X>
-                            <Y>-368</Y>
+                            <Y>-256</Y>
                         </Vector2>
                         <Vector2>
                             <X>640</X>
-                            <Y>-368</Y>
+                            <Y>-256</Y>
                         </Vector2>
                     </LocalPoints>
                     <WorldPoints>
                         <Vector2>
                             <X>448</X>
-                            <Y>-5392</Y>
+                            <Y>-5504</Y>
                         </Vector2>
                         <Vector2>
                             <X>448</X>
@@ -14709,7 +14709,7 @@
                 </Item>
                 <Item xsi:type="PathItem" Name="Path_0803" Visible="true">
                     <Position>
-                        <X>-96</X>
+                        <X>-144</X>
                         <Y>-5344</Y>
                     </Position>
                     <CustomProperties>
@@ -14726,33 +14726,33 @@
                             <Y>0</Y>
                         </Vector2>
                         <Vector2>
-                            <X>-272</X>
+                            <X>-224</X>
                             <Y>0</Y>
                         </Vector2>
                         <Vector2>
+                            <X>-224</X>
+                            <Y>96</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>-464</X>
+                            <Y>96</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>-464</X>
+                            <Y>-416</Y>
+                        </Vector2>
+                        <Vector2>
                             <X>-272</X>
-                            <Y>96</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>-512</X>
-                            <Y>96</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>-512</X>
                             <Y>-416</Y>
                         </Vector2>
                         <Vector2>
-                            <X>-320</X>
-                            <Y>-416</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>-320</X>
+                            <X>-272</X>
                             <Y>-688</Y>
                         </Vector2>
                     </LocalPoints>
                     <WorldPoints>
                         <Vector2>
-                            <X>-96</X>
+                            <X>-144</X>
                             <Y>-5344</Y>
                         </Vector2>
                         <Vector2>
@@ -15177,8 +15177,8 @@
         <NextItemNumber>809</NextItemNumber>
         <ContentRootFolder>gleed-textures</ContentRootFolder>
         <CameraPosition>
-            <X>1479.0188</X>
-            <Y>-4990.316</Y>
+            <X>720.6863</X>
+            <Y>-965.315552</Y>
         </CameraPosition>
         <Version>1.3.0.0</Version>
     </EditorRelated>
