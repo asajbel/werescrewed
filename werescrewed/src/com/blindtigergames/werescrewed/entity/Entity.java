@@ -1158,9 +1158,9 @@ public class Entity implements GleedLoadable {
 			 * decal.getBoundingRectangle( ), camera.getBounds( ), decalPos,
 			 * camPos ) )
 			 */
-			//if ( this.entityType != EntityType.SKELETON
-			//		|| decal.getBoundingRectangle( ).overlaps(
-			//				camera.getBounds( ) ) ) 
+			if ( this.entityType != EntityType.SKELETON
+					|| decal.getBoundingRectangle( ).overlaps(
+							camera.getBounds( ) ) ) 
 			{
 				decal.draw( batch );
 			}
