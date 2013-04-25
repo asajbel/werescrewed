@@ -585,8 +585,8 @@ public class LevelFactory {
 			level.root = new RootSkeleton( item.name, item.pos, null,
 					level.world );
 			// DELETE THESE TWO LINES WHEN THE STAGE WORKS PROPERLY WITH GLEED
-			level.skelBGList.add(0, level.root );
-			level.skelFGList.add(0, level.root );
+			//level.skelBGList.add( level.root );
+			//level.skelFGList.add( level.root );
 			skeletons.put( item.name, level.root );
 			entities.put( item.name, level.root );
 
@@ -859,8 +859,13 @@ public class LevelFactory {
 
 		pb.name( item.name ).position( item.pos ).tileSet( "alphabot32" )
 				.properties( item.props );
-		pb.texture( WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-				+ robotTexBG, Texture.class ) );
+		if(item.props.containsKey( "tux" )){
+			pb.texture( WereScrewedGame.manager.get( WereScrewedGame.dirHandle
+					+ "/common/robot/alphabot_texture_tux.png", Texture.class ) );
+		}else{
+			pb.texture( WereScrewedGame.manager.get( WereScrewedGame.dirHandle
+					+ robotTexBG, Texture.class ) );
+		}
 
 		if ( item.props.containsKey( "gravscale" ) ) {
 			float gravScale = Float.parseFloat( item.props.get( "gravscale" ) );
@@ -993,7 +998,11 @@ public class LevelFactory {
 			int maxDepth = Integer.parseInt( item.props.get( "maxdepth" ) );
 			builder.max( maxDepth );
 		}
-
+		if ( item.props.containsKey( "startdepth" ) ) {
+			int startDepth = Integer.parseInt( item.props.get( "startdepth" ) );
+			builder.startDepth( startDepth );
+		}
+		
 		Screw out = null;
 		switch ( sType ) {
 		case SCREW_PUZZLE:
@@ -1054,8 +1063,6 @@ public class LevelFactory {
 
 							p.puzzleManager.addEntity( attach2 );
 
-							// HUGE NOTE: I HAVEN'T ADDED STUFF TO THIS MOVER
-							// IN ITS BUILDER SO I'M HARDCODING IT FOR NOW
 							p.puzzleManager
 									.addMover( new PuzzleRotateTweenMover( 1,
 											Util.PI / 2, true,

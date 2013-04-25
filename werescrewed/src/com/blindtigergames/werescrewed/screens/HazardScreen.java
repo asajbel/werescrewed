@@ -304,6 +304,10 @@ public class HazardScreen implements com.badlogic.gdx.Screen {
 				skeleton.rotateBy( 0.01f );
 		}
 		
+		if ( Gdx.input.isKeyPressed( Input.Keys.BACKSPACE ) ) {
+			ScreenManager.getInstance( ).show( ScreenType.TROPHY );
+		}
+		
 		if ( Gdx.input.isKeyPressed( Keys.NUM_0 ) ) {
 			if ( debugTest )
 				debug = !debug;

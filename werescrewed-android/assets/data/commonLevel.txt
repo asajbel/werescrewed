@@ -52,6 +52,8 @@
 ##Alphabot BG texture as default
 /levels/alphabot/alphabot-interior.png
 
+/common/moustache.png
+
 /common/robot/metal.png
 /common/gear.png
 /common/sawblade.png

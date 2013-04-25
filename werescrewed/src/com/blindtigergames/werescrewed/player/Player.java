@@ -865,7 +865,7 @@ public class Player extends Entity {
 	 * 
 	 */
 	public void hitScrew( Screw screw ) {
-		if ( playerState != PlayerState.Screwing ) {
+		if ( playerState != PlayerState.Screwing && mover == null ) {
 			currentScrew = screw;
 
 			// Trophy check for if player attaches to a stripped screw
@@ -1070,7 +1070,7 @@ public class Player extends Entity {
 			// if on a screw that isn't already over a platform and a platform
 			// hits you
 			// you get knocked off
-			// knockedOff = true;
+			knockedOff = true;
 		} else {
 			currentPlatform = platform;
 			if ( playerState == PlayerState.Falling ) {
@@ -1078,10 +1078,10 @@ public class Player extends Entity {
 			}
 		}
 		if ( platform == null ) {
-			knockedOff = false;
+			//knockedOff = false;
 			hitSolidObject = false;
 		} else {
-			if ( platform.isKinematic( ) ) {
+			if ( platform.isKinematic( ) && platform.currentMover( ) == null ) {
 				lastPlatformHit = platform;
 			}
 			hitSolidObject = true;

@@ -1159,7 +1159,8 @@ public class Entity implements GleedLoadable {
 	 */
 	public void drawBGDecals( SpriteBatch batch, Rectangle camBounds ) {
 		for ( Sprite decal : bgDecals ) {
-			if ( camBounds.overlaps( decal.getBoundingRectangle( ) ) ) {
+			if ( camBounds.overlaps( decal.getBoundingRectangle( ) ) ) 
+			{
 				decal.draw( batch );
 			}
 		}
