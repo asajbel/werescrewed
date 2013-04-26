@@ -35,7 +35,8 @@ public class PuzzleScrew extends Screw {
 	private Entity screwInterface;
 	private SimpleFrameAnimator screwUIAnimator;
 	private int startFrame = 15;
-	private int lastMotionFrame = 14;
+	private final int lastMotionFrame = 14;
+	private final int animeSteps = 12;
 	private int soundCounter = 0;
 	
 	private static TextureRegion screwTex = WereScrewedGame.manager.getAtlas( "common-textures" ).findRegion( "hex_screw" );
@@ -251,7 +252,7 @@ public class PuzzleScrew extends Screw {
 					screwUIAnimator.speed( 1 );
 				} else if ( screwInterface.sprite.getAnimator( ).getFrame( ) > lastMotionFrame ) {
 					screwUIAnimator.speed( 0 );
-					int value = ( int ) ( ( ( float ) depth / ( float ) maxDepth ) * 10f )
+					int value = ( int ) ( ( ( float ) depth / ( float ) maxDepth ) * animeSteps )
 							+ startFrame;
 					screwUIAnimator.setFrame( value );
 				}

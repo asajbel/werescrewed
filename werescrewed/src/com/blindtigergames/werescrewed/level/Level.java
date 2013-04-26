@@ -100,7 +100,8 @@ public class Level {
 			Vector3 cursorPosition = new Vector3( Gdx.input.getX( ),
 					Gdx.input.getY( ), 0 );
 			camera.camera.unproject( cursorPosition );
-			//Gdx.app.log( "Mouse Position in Pixels", cursorPosition.toString( ) );
+			// Gdx.app.log( "Mouse Position in Pixels", cursorPosition.toString(
+			// ) );
 			cursorPosition.mul( Util.PIXEL_TO_BOX );
 			if ( player1 != null && player2 != null ) {
 				player1.body.setTransform( cursorPosition.x, cursorPosition.y,

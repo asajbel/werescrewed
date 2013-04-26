@@ -42,7 +42,7 @@ public class Steam extends Entity{
 		width = pixelWidth;
 		height = pixelHeight;
 		this.world = world;
-		particleEffect = WereScrewedGame.manager.getParticleEffect( "steam" );//ParticleEffect.loadEffect("steam");
+		particleEffect = WereScrewedGame.manager.getParticleEffect( "fastSteam" );//ParticleEffect.loadEffect("steam");
 		particleEffect.setPosition( positionPixels.x, positionPixels.y - height);
 
 		constructBody(positionPixels, pixelHeight, pixelWidth);
@@ -90,5 +90,4 @@ public class Steam extends Entity{
 
 		body.setUserData( this );
 	}
-
 }

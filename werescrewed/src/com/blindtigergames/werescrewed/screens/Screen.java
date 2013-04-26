@@ -100,13 +100,13 @@ public class Screen implements com.badlogic.gdx.Screen {
 
 	protected void addForeGroundSkeleton( Skeleton skel ) {
 		if ( !level.skelFGList.contains( skel ) ) {
-			level.skelFGList.add( 0, skel );
+			level.skelFGList.add( skel );
 		}
 	}
 	
 	protected void addForeGroundSkeletonToBack( Skeleton skel ) {
 		if ( !level.skelFGList.contains( skel ) ) {
-			level.skelFGList.add( skel );
+			level.skelFGList.add( 0, skel );
 		}
 	}
 	

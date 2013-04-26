@@ -12,6 +12,7 @@ import com.blindtigergames.werescrewed.entity.EntityType;
 import com.blindtigergames.werescrewed.entity.mover.IMover;
 import com.blindtigergames.werescrewed.util.Util;
 
+@Deprecated
 public class ParticleEmitter extends Entity{
 	
 
