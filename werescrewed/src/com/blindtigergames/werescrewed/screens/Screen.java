@@ -1,5 +1,7 @@
 package com.blindtigergames.werescrewed.screens;
 
+import java.util.ArrayList;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Keys;
@@ -99,50 +101,72 @@ public class Screen implements com.badlogic.gdx.Screen {
 	}
 
 	protected void addForeGroundSkeleton( Skeleton skel ) {
-		if ( !level.skelFGList.contains( skel ) ) {
-			level.skelFGList.add( 0, skel );
-		}
+//		if ( !level.skelFGList.contains( skel ) ) {
+//			level.skelFGList.add( skel );
+//		}
+		addToSkelList(level.skelFGList,skel,false);
 	}
 	
 	protected void addForeGroundSkeletonToBack( Skeleton skel ) {
-		if ( !level.skelFGList.contains( skel ) ) {
-			level.skelFGList.add( skel );
-		}
+//		if ( !level.skelFGList.contains( skel ) ) {
+//			level.skelFGList.add( skel );
+//		}
+		addToSkelList(level.skelFGList,skel,true);
 	}
 	
 	protected void addBackGroundSkeleton( Skeleton skel ) {
-		if ( !level.skelBGList.contains( skel ) ) {
-			level.skelBGList.add( skel );
-		}
+//		if ( !level.skelBGList.contains( skel ) ) {
+//			level.skelBGList.add( skel );
+//		}
+		addToSkelList(level.skelBGList,skel,false);
 	}
 	
 	protected void addBackGroundSkeletonToBack( Skeleton skel ) {
-		if ( !level.skelBGList.contains( skel ) ) {
-			level.skelBGList.add( 0, skel );
-		}
+//		if ( !level.skelBGList.contains( skel ) ) {
+//			level.skelBGList.add( 0, skel );
+//		}
+		addToSkelList(level.skelBGList,skel,true);
 	}
 	
 	protected void addForeGroundEntity( Entity entity ) {
-		if ( !level.entityFGList.contains( entity ) ) {
-			level.entityFGList.add( entity );
-		}
+//		if ( !level.entityFGList.contains( entity ) ) {
+//			level.entityFGList.add( entity );
+//		}
+		addToEntityList(level.entityFGList,entity,false);
 	}
 	
 	protected void addForeGroundEntityToBack( Entity entity ) {
-		if ( !level.entityFGList.contains( entity ) ) {
-			level.entityFGList.add( 0, entity );
-		}
+//		if ( !level.entityFGList.contains( entity ) ) {
+//			level.entityFGList.add( 0, entity );
+//		}
+		addToEntityList(level.entityFGList,entity,true);
 	}
 	
 	protected void addBackGroundEntity( Entity entity ) {
-		if ( !level.entityBGList.contains( entity ) ) {
-			level.entityBGList.add( entity );
-		}
+//		if ( !level.entityBGList.contains( entity ) ) {
+//			level.entityBGList.add( entity );
+//		}
+		addToEntityList(level.entityBGList,entity,false);
 	}
 	
 	protected void addBackGroundEntityToBack( Entity entity ) {
-		if ( !level.entityBGList.contains( entity ) ) {
-			level.entityBGList.add( 0, entity );
+//		if ( !level.entityBGList.contains( entity ) ) {
+//			level.entityBGList.add( 0, entity );
+//		}
+		addToEntityList(level.entityBGList,entity,true);
+	}
+	
+	private void addToEntityList(ArrayList< Entity > list, Entity e, boolean isBack){
+		if(!list.contains( e )){
+			if(isBack)list.add( 0,e );
+			else list.add(e);
+		}
+	}
+	
+	private void addToSkelList(ArrayList< Skeleton > list, Skeleton s, boolean isBack){
+		if(!list.contains( s )){
+			if(isBack)list.add( 0,s );
+			else list.add(s);
 		}
 	}
 	

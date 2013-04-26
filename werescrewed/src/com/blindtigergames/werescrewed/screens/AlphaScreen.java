@@ -184,11 +184,6 @@ public class AlphaScreen extends Screen {
 		TextureAtlas support_middle_right = WereScrewedGame.manager
 				.getAtlas( "support_middle_right" );
 		TextureAtlas curtains = WereScrewedGame.manager.getAtlas( "curtains" );
-		int numDomes = 10;
-		TextureAtlas[ ] dome = new TextureAtlas[ numDomes ];
-		for ( int i = 1; i <= numDomes; ++i ) {
-			dome[ i - 1 ] = WereScrewedGame.manager.getAtlas( "dome" + i );
-		}
 
 		int max = 2030;
 		int offsetX = 200;
@@ -228,9 +223,9 @@ public class AlphaScreen extends Screen {
 				new Vector2( lightX + 2030, lightY ) );
 
 		// floor
-		bgSkele.addBGDecal( floor_seats.createSprite( "floor_left" ),
+		light_skel.addBGDecal( floor_seats.createSprite( "floor_left" ),
 				new Vector2( floorX, floorY ) );
-		bgSkele.addBGDecal( floor_seats.createSprite( "floor_right" ),
+		light_skel.addBGDecal( floor_seats.createSprite( "floor_right" ),
 				new Vector2( floorX + max, floorY ) );
 
 		// curtains
@@ -269,25 +264,35 @@ public class AlphaScreen extends Screen {
 
 		// works
 		// seats
-		bgSkele.addFGDecal( floor_seats.createSprite( "seats_left" ),
+		light_skel.addFGDecal( floor_seats.createSprite( "seats_left" ),
 				new Vector2( -max + seatsX, seatsY ) );
-		bgSkele.addFGDecal( floor_seats.createSprite( "seats_middle" ),
+		light_skel.addFGDecal( floor_seats.createSprite( "seats_middle" ),
 				new Vector2( 0 + seatsX, seatsY ) );
-		bgSkele.addFGDecal( floor_seats.createSprite( "seats_right" ),
+		light_skel.addFGDecal( floor_seats.createSprite( "seats_right" ),
 				new Vector2( max + seatsX, seatsY ) );
 
-		addBackGroundEntity( bgSkele );
-		addForeGroundEntity( bgSkele );
+		//addBackGroundEntity( bgSkele );
+		//addForeGroundEntity( bgSkele );
+		
 
 		// initBackground( dome, numDomes, domeSliceX, domeSliceY,
 		// 100,100);//-max + seatsX, seatsY );
-		initParallaxBackground( );
+		initParallaxBackground( ); 
 		// level.entityFGList.add(bgSkele);
 		// level.entityBGList.add(bgSkele);
 
 		// level.entityBGList.remove( level.root );
 		// level.entityFGList.remove( level.root );
-
+		
+		
+		addBackGroundSkeletonToBack( bgSkele );
+		addForeGroundSkeleton( bgSkele );
+		level.skelFGList.remove( light_skel );
+		addForeGroundSkeleton(light_skel);
+		for(Skeleton s:level.skelFGList){
+			Gdx.app.log( "fgList", s.name );
+		}
+		light_skel.setFgFade( false );
 	}
 
 	private void initParallaxBackground( ) {
@@ -319,7 +324,7 @@ public class AlphaScreen extends Screen {
 		e1.sprite = dome.createSprite( "dome_small" );
 		e1.setMoverAtCurrentState( new ParallaxMover( new Vector2( e1
 				.getPositionPixel( ) ), new Vector2( e1.getPositionPixel( )
-				.add( 0f, 512f ) ), 0.0002f, .5f, level.camera, false,
+				.add( 0f, 312f ) ), 0.00005f, .5f, level.camera, false,
 				LinearAxis.VERTICAL ) );
 		level.backgroundRootSkeleton.addLooseEntity( e1 );
 	}
@@ -475,20 +480,20 @@ public class AlphaScreen extends Screen {
 		footPlat6.setGroupIndex( ( short ) -5 );
 
 		// DECALS for Foot / Shin
-		int decalX = -648;// -482;//587
-		int decalY = -654;// -558;//536
+		int decalX = -686;// -482;//587
+		int decalY = -614;// -558;//536
 		Sprite footBG = decals
-				.createSprite( "foot_mechanisms_and_pipes_NOCOLOR" );
-		Sprite legBG = decals.createSprite( "shin_pipes_NOCOLOR" );
+				.createSprite( "foot-interior" );
+		Sprite legBG = decals.createSprite( "shin-interior" );
 		Skeleton foot = ( Skeleton ) LevelFactory.entities.get( "footSkeleton" );
 		foot.addBGDecal( footBG, new Vector2( decalX, decalY ) );
 		footBG.setOrigin( 0f, 0f );
-		foot.addBGDecal( legBG, new Vector2( 400 + decalX, 424 + decalY ) );
+		foot.addBGDecal( legBG, new Vector2( 410 + decalX, 432 + decalY ) );
 
 		addBackGroundEntity( footSkeleton );
 		addForeGroundEntity( footSkeleton );
 		
-		Vector2 footFGPos = new Vector2( decalX - 30, decalY + 10 );
+		Vector2 footFGPos = new Vector2( decalX - 0, decalY -10 );
 		foot.addFGDecal( decals.createSprite( "foot_exterior" ), footFGPos );
 		foot.addFGDecal( decals.createSprite( "shin_exterior" ),
 				footFGPos.cpy( ).add( 400, 386 ) );
@@ -686,6 +691,12 @@ public class AlphaScreen extends Screen {
 		rjd.initialize( leftShoulderSideHatch.body, leftShoulderSkeleton.body,
 				new Vector2( -1748, 5980 ).mul( Util.PIXEL_TO_BOX ) );
 		level.world.createJoint( rjd );
+		
+		
+		TextureAtlas left_arm = WereScrewedGame.manager.getAtlas( "left-arm" );
+		Vector2 pos = new Vector2(-455,-3250);
+		leftShoulderSkeleton.addBGDecal( left_arm.createSprite( "left-arm-bottom" ), pos );
+		leftShoulderSkeleton.addBGDecal( left_arm.createSprite( "left-arm-top" ), pos.cpy().add(0,1721) );
 	}
 
 	private void rightArm( ) {
