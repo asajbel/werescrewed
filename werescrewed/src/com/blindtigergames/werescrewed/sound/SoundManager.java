@@ -125,7 +125,7 @@ public class SoundManager {
 			Vector3 center3 = new Vector3(
 						camPos.x + 0.5f*scale.x,
 						camPos.y + 0.5f*scale.y,
-						zoom
+						(float)Math.pow( zoom, 2.0f )
 			);
 			Vector3 sound3 = new Vector3(
 					soundPos.x,
@@ -133,7 +133,7 @@ public class SoundManager {
 					Camera.MIN_ZOOM
 			);
 			float dist = center3.dst( sound3 );
-			float xPan = center.cpy( ).sub( soundPos ).x/cameraBox.width;
+			float xPan = (float)Math.max( Math.min((Math.pow(center.cpy( ).sub( soundPos ).x/cameraBox.width, 2.0)), 1.0), -1.0);
 			float vol = (float)Math.pow( Math.max((1f - dist/sounds.get( id ).range), 0f), sounds.get(id).falloff );
 			setSoundVolume(id, vol);
 			setSoundPan(id, xPan);

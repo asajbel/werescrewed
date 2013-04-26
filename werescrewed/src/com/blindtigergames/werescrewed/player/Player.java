@@ -76,9 +76,9 @@ public class Player extends Entity {
 	public final static float HEIGHT = 128;
 	public final static float WIDTH = 64;
 	public final static float FOOTSTEP_DELAY = 1.0f;
-	public final static float FOOTSTEP_PITCH_DROP = 1.0f;
-	public final static float FOOTSTEP_PITCH_VARIANCE = 0.0f;
-	public final static float FOOTSTEP_VOLUME_DROP = 1.0f;
+	public final static float FOOTSTEP_PITCH_DROP = 0.75f;
+	public final static float FOOTSTEP_PITCH_VARIANCE = 0.02f;
+	public final static float FOOTSTEP_VOLUME_DROP = 0.01f;
 	
 	// public final static float
 
@@ -2112,9 +2112,9 @@ public class Player extends Entity {
 		float amount = (float)Math.pow( Math.abs( a ), 2.0);
 		if (isGrounded() && this.playerState != PlayerState.Screwing){
 			float rate = FOOTSTEP_DELAY;
-			float pitch = FOOTSTEP_PITCH_DROP + 
-							(amount * (1.0f - FOOTSTEP_PITCH_DROP)); 
-								//(FOOTSTEP_PITCH_VARIANCE * ((2.f * WereScrewedGame.random.nextFloat()) -1f));
+			float pitch = FOOTSTEP_PITCH_DROP 
+							+ (amount * (1.0f - FOOTSTEP_PITCH_DROP))
+								+ (FOOTSTEP_PITCH_VARIANCE * ((2.f * WereScrewedGame.random.nextFloat()) -1f));
 			float vol = FOOTSTEP_VOLUME_DROP + amount * (1.0f - FOOTSTEP_VOLUME_DROP);
 			if (sounds.isDelayed( "footstep1" )){
 				sounds.setSoundVolume( "footstep2", vol );
