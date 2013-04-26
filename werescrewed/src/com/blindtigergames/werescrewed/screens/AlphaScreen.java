@@ -276,7 +276,7 @@ public class AlphaScreen extends Screen {
 		bgSkele.addFGDecal( floor_seats.createSprite( "seats_right" ),
 				new Vector2( max + seatsX, seatsY ) );
 
-		addBackGroundEntity( bgSkele );
+		addBackGroundEntityToBack( bgSkele );
 		addForeGroundEntity( bgSkele );
 
 		// initBackground( dome, numDomes, domeSliceX, domeSliceY,
