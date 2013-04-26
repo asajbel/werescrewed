@@ -589,6 +589,9 @@ public class Skeleton extends Platform {
 		for ( Rope rope : ropeMap.values( ) ) {
 			rope.draw( batch, deltaTime );
 		}
+		for ( EventTrigger et : eventMap.values( ) ) {
+			et.draw( batch, deltaTime );
+		}
 		// draw the entities of the parent skeleton before recursing through the
 		// child skeletons
 		for ( Skeleton skeleton : childSkeletonMap.values( ) ) {

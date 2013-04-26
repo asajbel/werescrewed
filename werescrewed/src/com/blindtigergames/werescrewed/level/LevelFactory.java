@@ -60,6 +60,7 @@ import com.blindtigergames.werescrewed.entity.screws.StructureScrew;
 import com.blindtigergames.werescrewed.entity.tween.PathBuilder;
 import com.blindtigergames.werescrewed.entity.platforms.Pipe;
 import com.blindtigergames.werescrewed.eventTrigger.EventTrigger;
+import com.blindtigergames.werescrewed.eventTrigger.PowerSwitch;
 import com.blindtigergames.werescrewed.graphics.TextureAtlas;
 import com.blindtigergames.werescrewed.util.ArrayHash;
 import com.blindtigergames.werescrewed.util.Util;
@@ -244,7 +245,9 @@ public class LevelFactory {
 			constructCheckpoint( item );
 		} else if ( bluePrints.equals( "eventtrigger" ) ) {
 			constructEventTrigger( item );
-		} else if ( bluePrints.equals( "hazard" ) ) {
+		} else if (bluePrints.equals( "powerswitch" )){
+			constructPowerSwitch(item);
+		}else if ( bluePrints.equals( "hazard" ) ) {
 			out = constructHazard( item );
 		} else if ( bluePrints.equals( "fixture" ) ) {
 			constructFixture( item );
@@ -1519,6 +1522,21 @@ public class LevelFactory {
 		return hazard;
 	}
 
+	public PowerSwitch constructPowerSwitch(Item item){
+		PowerSwitch ps = new PowerSwitch( item.name , item.pos, level.world);
+		
+		String skelAttach = item.skeleton;
+		Skeleton parent = loadSkeleton( skelAttach );
+		
+		if ( item.props.containsKey( "repeatable" ) ) {
+			ps.setRepeatable( true );
+		}
+		
+		parent.addEventTrigger( ps );
+		entities.put( item.name, ps );
+		
+		return ps;
+	}
 	public Level getLevel( ) {
 		return level;
 	}

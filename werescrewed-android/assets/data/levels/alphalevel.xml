@@ -15077,6 +15077,74 @@
                         <PackedValue>2445279424</PackedValue>
                     </LineColor>
                 </Item>
+                <Item xsi:type="TextureItem" Name="powerSwitch1" Visible="true">
+                    <Position>
+                        <X>-880</X>
+                        <Y>-1744</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>powerswitch</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>kneeSkeleton</string>
+                        </Property>
+                    </CustomProperties>
+                    <Rotation>0</Rotation>
+                    <Scale>
+                        <X>1</X>
+                        <Y>1</Y>
+                    </Scale>
+                    <TintColor>
+                        <R>255</R>
+                        <G>255</G>
+                        <B>255</B>
+                        <A>255</A>
+                        <PackedValue>4294967295</PackedValue>
+                    </TintColor>
+                    <FlipHorizontally>false</FlipHorizontally>
+                    <FlipVertically>false</FlipVertically>
+                    <texture_filename>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\powerswitch.png</texture_filename>
+                    <asset_name>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\powerswitch</asset_name>
+                    <Origin>
+                        <X>32</X>
+                        <Y>32</Y>
+                    </Origin>
+                </Item>
+                <Item xsi:type="TextureItem" Name="powerSwitch2" Visible="true">
+                    <Position>
+                        <X>-464</X>
+                        <Y>-1744</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>powerswitch</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>kneeSkeleton</string>
+                        </Property>
+                    </CustomProperties>
+                    <Rotation>0</Rotation>
+                    <Scale>
+                        <X>1</X>
+                        <Y>1</Y>
+                    </Scale>
+                    <TintColor>
+                        <R>255</R>
+                        <G>255</G>
+                        <B>255</B>
+                        <A>255</A>
+                        <PackedValue>4294967295</PackedValue>
+                    </TintColor>
+                    <FlipHorizontally>false</FlipHorizontally>
+                    <FlipVertically>false</FlipVertically>
+                    <texture_filename>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\powerswitch.png</texture_filename>
+                    <asset_name>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\powerswitch</asset_name>
+                    <Origin>
+                        <X>32</X>
+                        <Y>32</Y>
+                    </Origin>
+                </Item>
             </Items>
             <ScrollSpeed>
                 <X>1</X>
@@ -15093,11 +15161,11 @@
     </Layers>
     <CustomProperties />
     <EditorRelated>
-        <NextItemNumber>809</NextItemNumber>
+        <NextItemNumber>811</NextItemNumber>
         <ContentRootFolder>gleed-textures</ContentRootFolder>
         <CameraPosition>
-            <X>-4.31731033</X>
-            <Y>-431.971527</Y>
+            <X>-420.984344</X>
+            <Y>-1823.6366</Y>
         </CameraPosition>
         <Version>1.3.0.0</Version>
     </EditorRelated>
