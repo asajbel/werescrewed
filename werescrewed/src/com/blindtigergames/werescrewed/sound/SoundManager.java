@@ -137,8 +137,8 @@ public class SoundManager {
 			float vol = (float)Math.pow( Math.max((1f - dist/sounds.get( id ).range), 0f), sounds.get(id).falloff );
 			setSoundVolume(id, vol);
 			setSoundPan(id, xPan);
-			Gdx.app.log( "Handle Sound Position", center.toString( )+"->"+soundPos.toString()+"="+dist );
-			Gdx.app.log( "Handle Sound Position", "Pan:"+xPan+" Vol:"+vol );
+			//Gdx.app.log( "Handle Sound Position", center.toString( )+"->"+soundPos.toString()+"="+dist );
+			//Gdx.app.log( "Handle Sound Position", "Pan:"+xPan+" Vol:"+vol );
 			sounds.get( id ).update(0.0f);
 		}
 	}

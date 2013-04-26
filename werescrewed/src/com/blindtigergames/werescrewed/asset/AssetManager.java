@@ -31,7 +31,6 @@ public class AssetManager extends com.badlogic.gdx.assets.AssetManager {
 	HashMap< String, TextureAtlas > atlasMap;
 	HashMap< String, BitmapFont > fontMap;
 	ArrayList< String > palette;
-	Random random;
 	HashMap< String, ParticleEffect > particleEffects;
 	HashMap< String, SkeletonData > spineSkeletons;
 	HashMap<Class<?>, String > dummyAssets;
@@ -41,7 +40,6 @@ public class AssetManager extends com.badlogic.gdx.assets.AssetManager {
 		atlasMap = new HashMap< String, TextureAtlas >( );
 		fontMap = new HashMap<String, BitmapFont>();
 		palette = new ArrayList<String>();
-		random = new Random(0);//same seed so random will be predictable for debug purpose
 		particleEffects = new HashMap<String, ParticleEffect>();
 		dummyAssets = new HashMap<Class<?>, String >();
 	}
@@ -79,7 +77,7 @@ public class AssetManager extends com.badlogic.gdx.assets.AssetManager {
 	 * <colorname>.palette
 	 */
 	public String getRandomPaletteColor( ) {
-		return palette.get( random.nextInt( palette.size( ) ) );
+		return palette.get( WereScrewedGame.random.nextInt( palette.size( ) ) );
 	}
 
 	public void loadAtlas( String fullPathToAtlas ) {

@@ -1,5 +1,7 @@
 package com.blindtigergames.werescrewed;
 
+import java.util.Random;
+
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Application.ApplicationType;
@@ -28,11 +30,14 @@ public class WereScrewedGame extends Game {
 	
 	public static ShaderProgram defaultShader;
 	
+	public static Random random;
+	
 	@SuppressWarnings( "unused" )
 	private float fpsTime = 0;
 
 	@Override
 	public void create( ) {
+		random = new Random(0);
 		manager = new AssetManager( );
 		
 		ScreenManager.getInstance( ).initialize( this );

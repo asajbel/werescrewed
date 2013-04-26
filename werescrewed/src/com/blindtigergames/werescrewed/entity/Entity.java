@@ -393,9 +393,10 @@ public class Entity implements GleedLoadable {
 		updateParticleEffect( deltaTime, frontParticles );
 		updateParticleEffect( deltaTime, behindParticles );
 		
-		if (sounds != null && sounds.hasSound( "idle" )){
-			//Gdx.app.log( name, "Playing Idle Sound" );
-			sounds.handleSoundPosition("idle", this.getPositionPixel( ), Camera.CAMERA_RECT);
+		if (sounds != null){
+			if (sounds.hasSound( "idle" )){
+				sounds.handleSoundPosition("idle", this.getPositionPixel( ), Camera.CAMERA_RECT);
+			}
 			sounds.update( deltaTime );
 		}
 	}
