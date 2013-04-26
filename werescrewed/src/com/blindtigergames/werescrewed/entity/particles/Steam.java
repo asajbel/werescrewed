@@ -12,11 +12,12 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityType;
+import com.blindtigergames.werescrewed.entity.platforms.Platform;
 import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 import com.blindtigergames.werescrewed.graphics.particle.ParticleEffect;
 import com.blindtigergames.werescrewed.util.Util;
 
-public class Steam extends Entity{
+public class Steam extends Platform{
 
 	public ParticleEffect particleEffect;
 	float width;
@@ -34,17 +35,17 @@ public class Steam extends Entity{
 	 * @param pixelWidth float
 	 * @param pixelHeight float
 	 */
-	public Steam( String name, Vector2 positionPixels, Texture texture, Body body,
-			boolean solid, float pixelWidth, float pixelHeight, World world ) {
+	public Steam( String name, Vector2 positionPixels,
+			float pixelWidth, float pixelHeight, World world ) {
 
-		super( name, positionPixels, texture, body, false );
+		super( name, positionPixels, null, null );
 		entityType = EntityType.STEAM;
 		width = pixelWidth;
 		height = pixelHeight;
 		this.world = world;
 		particleEffect = WereScrewedGame.manager.getParticleEffect( "fastSteam" );//ParticleEffect.loadEffect("steam");
-		particleEffect.setPosition( positionPixels.x, positionPixels.y - height);
-
+		particleEffect.setOffset(0f, -92f);
+		particleEffect.setPosition( positionPixels.x, positionPixels.y);
 		constructBody(positionPixels, pixelHeight, pixelWidth);
 	}
 	
@@ -55,14 +56,11 @@ public class Steam extends Entity{
 	 * @param deltaTime float
 	 */
 	public void draw( SpriteBatch batch, float deltaTime ) {
-		//if ( Gdx.input.isKeyPressed( Keys.B ) ) {
-		//	if (test){
-				//particleEffect.start( );
-		//	}
-		//	test = false;
-		//}
-		//else test = true;
+
+		particleEffect.setPosition( this.getPositionPixel( ).x, this.getPositionPixel().y);
+		particleEffect.setAngle( body.getAngle( ) );
 		particleEffect.draw( batch, deltaTime );
+		
 	}
 	
 	/**
