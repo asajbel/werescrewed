@@ -95,14 +95,10 @@ public class WereScrewedGame extends Game {
 //		float deltaTime = Gdx.graphics.getDeltaTime( );
 //		fpsTime += deltaTime;
 //		if ( fpsTime >= oneOverTargetFrameRate ){
-//			//Gdx.app.log( "FPS", ""+fpsTime+", "+ oneOverTargetFrameRate);
 //			fpsTime = fpsTime - oneOverTargetFrameRate;
-//			//Gdx.app.log( "Rendering", "Rendering");
 //			super.render( );
 //		}else{
 //			return;
-//			//fpsTime += deltaTime;
-//			//Gdx.app.log( "Not rendering", "");
 //		}
 	}
 	

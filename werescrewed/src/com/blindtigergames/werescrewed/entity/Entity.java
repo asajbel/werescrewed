@@ -12,6 +12,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.Contact;
@@ -1145,10 +1146,22 @@ public class Entity implements GleedLoadable {
 
 	/**
 	 * 
+	 * @param batch
+	 * @param camera
 	 */
-	public void drawFGDecals( SpriteBatch batch, Rectangle camBounds ) {
+	public void drawFGDecals( SpriteBatch batch, Camera camera ) {
 		for ( Sprite decal : fgDecals ) {
-			if ( camBounds.overlaps( decal.getBoundingRectangle( ) ) ) {
+			/*
+			 * Vector2 decalPos = new Vector2( decal.getX( ), decal.getY( ) );
+			 * Vector2 camPos = new Vector2( camera.position.x,
+			 * camera.position.y ); if ( insideRadius(
+			 * decal.getBoundingRectangle( ), camera.getBounds( ), decalPos,
+			 * camPos ) )
+			 */
+			//if ( this.entityType != EntityType.SKELETON
+			//		|| decal.getBoundingRectangle( ).overlaps(
+			//				camera.getBounds( ) ) ) 
+			{
 				decal.draw( batch );
 			}
 		}
@@ -1156,13 +1169,54 @@ public class Entity implements GleedLoadable {
 
 	/**
 	 * 
+	 * @param batch
+	 * @param camera
 	 */
-	public void drawBGDecals( SpriteBatch batch, Rectangle camBounds ) {
+	public void drawBGDecals( SpriteBatch batch, Camera camera ) {
 		for ( Sprite decal : bgDecals ) {
-			if ( camBounds.overlaps( decal.getBoundingRectangle( ) ) ) {
+			/*
+			 * Vector2 decalPos = new Vector2( decal.getX( ), decal.getY( ) );
+			 * Vector2 camPos = new Vector2( camera.position.x,
+			 * camera.position.y ); if ( insideRadius(
+			 * decal.getBoundingRectangle( ), camera.getBounds( ), decalPos,
+			 * camPos ) )
+			 */
+			if ( this.entityType != EntityType.SKELETON
+					|| decal.getBoundingRectangle( ).overlaps(
+							camera.getBounds( ) ) ) {
 				decal.draw( batch );
 			}
 		}
+	}
+
+	/**
+	 * 
+	 * @param spriteBounds
+	 * @param camBounds
+	 * @param spritePos
+	 * @param cameraPos
+	 * @return
+	 */
+	protected boolean insideRadius( Rectangle spriteBounds,
+			Rectangle camBounds, Vector2 spritePos, Vector3 cameraPos ) {
+		float magDecalRadiusX = ( spriteBounds.width / 2.0f
+				* spriteBounds.width / 2.0f );
+		float magDecalRadiusY = ( spriteBounds.height / 2.0f
+				* spriteBounds.height / 2.0f );
+		float magDecalRadius = magDecalRadiusX + magDecalRadiusY;
+
+		float magCamRadiusX = ( camBounds.width / 2.0f * camBounds.width / 2.0f );
+		float magCamRadiusY = ( camBounds.height / 2.0f * camBounds.height / 2.0f );
+		float magCamRadius = magCamRadiusX + magCamRadiusY;
+
+		float dx = cameraPos.x - spritePos.x;
+		float dy = cameraPos.y - spritePos.y;
+		float mag = dx * dx + dy * dy;
+		float sumRadius = magDecalRadius + magCamRadius;
+		if ( sumRadius >= mag ) {
+			return true;
+		}
+		return false;
 	}
 
 	public float getAngle( ) {
@@ -1295,20 +1349,20 @@ public class Entity implements GleedLoadable {
 	public void setSoundManager( SoundManager s ) {
 		sounds = s;
 	}
-	
-	public boolean hasSoundManager(){
+
+	public boolean hasSoundManager( ) {
 		return sounds != null;
 	}
-	
-	public SoundManager getSoundManager(){
+
+	public SoundManager getSoundManager( ) {
 		return sounds;
 	}
 
 	// Idle sound
-	public void idleSound(){
-		if (sounds != null && sounds.hasSound("idle")){
+	public void idleSound( ) {
+		if ( sounds != null && sounds.hasSound( "idle" ) ) {
 			sounds.setSoundVolume( "idle", 0.0f );
-			sounds.loopSound("idle");
+			sounds.loopSound( "idle" );
 			Gdx.app.log( name, "Starting Idle Sound" );
 		}
 	}

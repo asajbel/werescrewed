@@ -155,6 +155,12 @@ public class PhysicsTestScreen extends Screen {
 				 .buildComplexPlatform( );
 		
 		engineSkeleton.addPlatform( chestEngine );
+		
+		Platform moustache = platBuilder.name( "moustache" ).position( 0, 50 )
+				 .texture( null ).type( "moustache" )
+				 .buildComplexPlatform( );
+		
+		engineSkeleton.addPlatform( moustache );
 
 	}
 
@@ -280,9 +286,16 @@ public class PhysicsTestScreen extends Screen {
 		piston.addFGDecal( boltSprite, new Vector2(
 				-boltSprite.getWidth( ) / 2, -boltSprite.getHeight( ) / 2 ) );
 		wheel1.addFGDecal( wheelBolt, boltPosPix );
-		level.entityFGList.add( wheel1 );
-		level.entityFGList.add( piston );
-		level.entityFGList.add( girder1 );
+
+		if ( !level.entityFGList.containsKey( wheel1.name ) ) {
+			level.entityFGList.put( wheel1.name, wheel1 );
+		}
+		if ( !level.entityFGList.containsKey( piston.name ) ) {
+			level.entityFGList.put( piston.name, piston );
+		}
+		if ( !level.entityFGList.containsKey( girder1.name ) ) {
+			level.entityFGList.put( girder1.name, girder1 );
+		}
 	}
 
 	private Platform buildGirder( Sprite girder, Vector2 topMeter,

@@ -1,15 +1,18 @@
 package com.blindtigergames.werescrewed.level;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 
 import aurelienribon.tweenengine.Tween;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Joint;
 import com.badlogic.gdx.physics.box2d.World;
@@ -26,6 +29,7 @@ import com.blindtigergames.werescrewed.entity.tween.EntityAccessor;
 import com.blindtigergames.werescrewed.entity.tween.PlatformAccessor;
 import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 import com.blindtigergames.werescrewed.player.Player;
+import com.blindtigergames.werescrewed.util.Util;
 
 /**
  * @param name
@@ -47,10 +51,10 @@ public class Level {
 	private boolean debugTest, debug;
 	public ProgressManager progressManager;
 	public static ArrayList< Joint > jointsToRemove = new ArrayList< Joint >( );
-	public ArrayList< Skeleton > skelBGList;
-	public ArrayList< Skeleton > skelFGList;
-	public ArrayList< Entity > entityBGList;
-	public ArrayList< Entity > entityFGList;
+	public HashMap< String, Skeleton > skelBGList;
+	public HashMap< String, Skeleton > skelFGList;
+	public HashMap< String, Entity > entityBGList;
+	public HashMap< String, Entity > entityFGList;
 	// background stuff
 	public OrthographicCamera backgroundCam;
 	public RootSkeleton backgroundRootSkeleton;
@@ -62,10 +66,10 @@ public class Level {
 		myContactListener = new MyContactListener( );
 		world.setContactListener( myContactListener );
 
-		skelBGList = new ArrayList< Skeleton >( );
-		skelFGList = new ArrayList< Skeleton >( );
-		entityBGList = new ArrayList< Entity >( );
-		entityFGList = new ArrayList< Entity >( );
+		skelBGList = new HashMap< String, Skeleton >( );
+		skelFGList = new HashMap< String, Skeleton >( );
+		entityBGList = new HashMap< String, Entity >( );
+		entityFGList = new HashMap< String, Entity >( );
 
 		// progressManager = new ProgressManager(player1, player2, world);
 		// camera = new Camera( width, height, world);
@@ -91,6 +95,19 @@ public class Level {
 			player1.update( deltaTime );
 		if ( player2 != null )
 			player2.update( deltaTime );
+
+		if ( Gdx.input.isTouched( ) || Gdx.input.isButtonPressed( Buttons.LEFT ) ) {
+			Vector3 cursorPosition = new Vector3( Gdx.input.getX( ),
+					Gdx.input.getY( ), 0 );
+			camera.camera.unproject( cursorPosition );
+			cursorPosition.mul( Util.PIXEL_TO_BOX );
+			if ( player1 != null && player2 != null ) {
+				player1.body.setTransform( cursorPosition.x, cursorPosition.y,
+						0 );
+				player2.body.setTransform( cursorPosition.x, cursorPosition.y,
+						0 );
+			}
+		}
 
 		root.update( deltaTime );
 
@@ -124,23 +141,8 @@ public class Level {
 		batch.begin( );
 
 		// float deltaTime = Gdx.graphics.getDeltaTime( );
-		// draw all background of skeletons before everything
-		for ( Skeleton skel : skelBGList ) {
-			if ( skel.isActive( ) ) {
-				if ( skel.bgSprite != null ) {
-					if ( camera.getBounds( ).overlaps(
-							skel.bgSprite.getBoundingRectangle( ) ) ) {
-						skel.bgSprite.draw( batch );
-					}
-				}
-				skel.drawBGDecals( batch, camera.getBounds( ) );
-			}
-		}
-		for ( Entity e : entityBGList ) {
-			if ( e.isActive( ) ) {
-				e.drawBGDecals( batch, camera.getBounds( ) );
-			}
-		}
+		drawBGStuff( batch, deltaTime );
+
 		// draw all the normal sprites
 		root.draw( batch, deltaTime );
 		if ( progressManager != null )
@@ -149,26 +151,8 @@ public class Level {
 			player1.draw( batch, deltaTime );
 		if ( player2 != null )
 			player2.draw( batch, deltaTime );
-		// draw all foreground entity sprites after everything
-		for ( Entity e : entityFGList ) {
-			if ( e.isActive( ) ) {
-				e.drawFGDecals( batch, camera.getBounds( ) );
-			}
-		}
-		// draw all foreground skeleton sprites after everything
-		for ( Skeleton skel : skelFGList ) {
-			if ( skel.fgSprite != null && skel.fgSprite.getAlpha( ) != 0 ) {
-				if ( camera.getBounds( ).overlaps(
-						skel.fgSprite.getBoundingRectangle( ) ) ) {
-					skel.fgSprite.draw( batch );
-				}
-			}
-//			if ( ( !skel.isActive( ) && skel.getParentSkeleton( ).isActive( ) )
-//					|| ( skel.isMacroSkel( ) && !skel.isActive( ) ) ) 
-			{
-				skel.drawFGDecals( batch, camera.getBounds( ) );
-			}
-		}
+
+		drawFGStuff( batch );
 
 		// camera.renderBuffers( );
 		batch.end( );
@@ -177,6 +161,57 @@ public class Level {
 			debugRenderer.render( world, camera.combined( ) );
 		world.step( WereScrewedGame.oneOverTargetFrameRate, 6, 6 );
 
+	}
+
+	private void drawBGStuff( SpriteBatch batch, float deltaTime ) {
+		for ( Skeleton skel : skelBGList.values( ) ) {
+			if ( skel.isActive( ) ) {
+				if ( skel.bgSprite != null ) {
+					// Vector2 spritePos = new Vector2(
+					// skel.bgSprite.getBoundingRectangle( ).width / 2.0f,
+					// skel.bgSprite.getBoundingRectangle( ).height / 2.0f );
+					// Vector2 camPos = new Vector2( camera.position.x,
+					// camera.position.y );
+					// // if ( insideRadius( skel.bgSprite.getRadius( ),
+					// // camera.getBounds( ), spritePos, camPos ) )
+					// {
+					skel.bgSprite.draw( batch );
+					// }
+				}
+				skel.drawBGDecals( batch, camera );
+			}
+		}
+		for ( Entity e : entityBGList.values( ) ) {
+			if ( e.isActive( ) ) {
+				{
+					e.drawBGDecals( batch, camera );
+				}
+			}
+		}
+	}
+
+	private void drawFGStuff( SpriteBatch batch ) {
+		for ( Entity e : entityFGList.values( ) ) {
+			if ( e.isActive( ) ) {
+				e.drawFGDecals( batch, camera );
+			}
+		}
+		for ( Skeleton skel : skelFGList.values( ) ) {
+			if ( skel.fgSprite != null && skel.fgSprite.getAlpha( ) != 0 ) {
+				// Vector2 spritePos = new Vector2( skel.fgSprite.getX( ),
+				// skel.fgSprite.getY( ) );
+				// Vector2 camPos = new Vector2( camera.position.x,
+				// camera.position.y );
+				// if ( insideRadius( skel.fgSprite.getRadius( ),
+				// camera.getBounds( ), spritePos, camPos ) ) {
+				skel.fgSprite.draw( batch );
+				// }
+			}
+			// if ( !skel.isActive( ) )
+			{
+				skel.drawFGDecals( batch, camera );
+			}
+		}
 	}
 
 	public void resetPhysicsWorld( ) {

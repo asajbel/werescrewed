@@ -11,6 +11,7 @@ public class Main {
 		cfg.useGL20 = true;
 		cfg.width = 1280;
 		cfg.height = 720;
+		cfg.vSyncEnabled = true;
 
 		
 		//cfg.useCPUSynch = false;

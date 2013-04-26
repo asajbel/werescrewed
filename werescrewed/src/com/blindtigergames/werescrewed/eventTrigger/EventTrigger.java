@@ -167,14 +167,22 @@ public class EventTrigger extends Platform{
 	}
 	
 	
-	
+	/**tells whether the action applies to an entity or not
+	 * 
+	 * @return boolean
+	 */
 	public boolean isActingOnEntity(){
 		return actOnEntity;
 	}
 	
-	public void setActingOnEntity(boolean b){
-		actOnEntity = b;
+	/**sets whether the action applies to an entity or not
+	 *	
+	 * @param boolean
+	 */
+	public void setActingOnEntity(boolean value){
+		actOnEntity = value;
 	}
+	
 	/**
 	 * checks whether this EventTrigger is repeatable,
 	 * which means player can exit the sensor and then collide again
@@ -433,7 +441,7 @@ public class EventTrigger extends Platform{
 	 * depending on if its repeatable or not
 	 * @author Ranveer
 	 */
-	private void runBeginAction(){
+	protected void runBeginAction(){
 		if(!repeatable)
 		{
 			if(!beginTriggeredOnce)
@@ -496,7 +504,7 @@ public class EventTrigger extends Platform{
 	 * depending on if its repeatable or not
 	 * @author Ranveer
 	 */
-	private void runEndAction(){
+	protected void runEndAction(){
 		if(!repeatable)
 		{
 			if(!endTriggeredOnce)

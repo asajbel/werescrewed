@@ -17,6 +17,7 @@ import com.blindtigergames.werescrewed.entity.action.RemoveEntityAction;
 import com.blindtigergames.werescrewed.entity.hazard.Hazard;
 import com.blindtigergames.werescrewed.entity.platforms.Platform;
 import com.blindtigergames.werescrewed.entity.platforms.PlatformType;
+import com.blindtigergames.werescrewed.entity.platforms.PowerSwitch;
 import com.blindtigergames.werescrewed.entity.platforms.TiledPlatform;
 import com.blindtigergames.werescrewed.entity.screws.Screw;
 import com.blindtigergames.werescrewed.eventTrigger.EventTrigger;
@@ -104,6 +105,8 @@ public class MyContactListener implements ContactListener {
 							// player's
 							// feet
 							// also make sure its not the player
+							Platform plat = ( Platform ) object;
+							player.hitSolidObject( plat );
 							if ( object.isSolid( )
 									&& playerFix.getShape( ) instanceof CircleShape ) {
 								if ( player.name.equals( "player1" ) ) {
@@ -111,8 +114,8 @@ public class MyContactListener implements ContactListener {
 								} else if ( player.name.equals( "player2" ) ) {
 									NUM_PLAYER2_CONTACTS++;
 								}
-								Platform plat = ( Platform ) object;
-								player.hitSolidObject( plat );
+								//Platform plat = ( Platform ) object;
+								//player.hitSolidObject( plat );
 								if ( player.getState( ) != PlayerState.Screwing ) {
 									if (!player.isGrounded( )){
 										player.sounds.setSoundVolume( "land", (float)Math.pow(force * LAND_VOLUME, LAND_FALLOFF) );
@@ -149,6 +152,10 @@ public class MyContactListener implements ContactListener {
 							if ( playerFix == player.torso ) {
 								et.triggerBeginEvent( );
 							}
+							break;
+						case POWERSWITCH:
+							PowerSwitch ps = ( PowerSwitch ) object;
+							player.setPowerSwitch( ps );
 							break;
 						default:
 							break;
@@ -286,6 +293,9 @@ public class MyContactListener implements ContactListener {
 								}
 								et.setActivated( false, player.name );
 							}
+							break;
+						case POWERSWITCH:
+							player.setPowerSwitch( null );
 							break;
 						default:
 							break;

@@ -2,6 +2,7 @@ package com.blindtigergames.werescrewed.entity.screws;
 
 import java.util.ArrayList;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
@@ -52,7 +53,7 @@ public class ResurrectScrew extends Screw {
 	public ResurrectScrew( Vector2 pos, Entity entity, World world,
 			Player deadPlayer, LerpMover lm, Vector2 offset ) {
 		super( "rezScrew", pos, null );
-		loadSounds();
+		loadSounds( );
 		this.world = world;
 		this.depth = 0;
 		this.maxDepth = 50;
@@ -73,7 +74,7 @@ public class ResurrectScrew extends Screw {
 		Sprite spr = new Sprite( atlas, screwUIAnimator );
 		spr.setOrigin( spr.getWidth( ) / 2.0f, spr.getHeight( ) / 2.0f );
 		screwInterface.changeSprite( spr );
-		sprite.setColor( 98f/255f, 146f/255f, 169f/255f, 0.6f );
+		sprite.setColor( 98f / 255f, 146f / 255f, 169f / 255f, 0.6f );
 		constructBody( pos );
 		if ( sprite != null )
 			sprite.rotate( ( float ) ( Math.random( ) * 360 ) );
@@ -205,11 +206,16 @@ public class ResurrectScrew extends Screw {
 	public void remove( ) {
 		if ( !removed ) {
 			if ( !playerAttached ) {
-				while ( body.getJointList( ).iterator( ).hasNext( ) ) {
-					world.destroyJoint( body.getJointList( ).get( 0 ).joint );
+				if ( body != null ) {
+					while ( body.getJointList( ).iterator( ).hasNext( ) ) {
+						world.destroyJoint( body.getJointList( ).get( 0 ).joint );
+					}
+					world.destroyBody( body );
+					removed = true;
+					body = null;
 				}
-				world.destroyBody( body );
-				removed = true;
+			} else {
+				removeNextStep = true;
 			}
 		}
 	}
@@ -219,10 +225,12 @@ public class ResurrectScrew extends Screw {
 		super.update( deltaTime );
 		if ( !removed ) {
 			if ( playerMover.atEnd( ) || depth == maxDepth ) {
-				deadPlayer.body.setTransform(
-						this.getPositionPixel( )
-								.sub( Player.WIDTH / 3.0f, Player.HEIGHT/2.0f )
-								.mul( Util.PIXEL_TO_BOX ), 0.0f );
+				deadPlayer.body
+						.setTransform(
+								this.getPositionPixel( )
+										.sub( Player.WIDTH / 3.0f,
+												Player.HEIGHT / 2.0f )
+										.mul( Util.PIXEL_TO_BOX ), 0.0f );
 				deadPlayer.body.setType( BodyType.DynamicBody );
 				deadPlayer.body.setLinearVelocity( Vector2.Zero );
 				deadPlayer.respawnPlayer( );
@@ -232,11 +240,11 @@ public class ResurrectScrew extends Screw {
 				//Trophy check for revived player
 				if ( deadPlayer.name == Metrics.player1( ) ){
 					//If player 1 is revived, give player 2 the point
-					Metrics.incTrophyMetric( TrophyMetric.P2REVIVES, 1.0f );
-					//Gdx.app.log("player1 attach", " " + Metrics.getTrophyMetric( TrophyMetric.P1STRIPATTACH ) );
+					Metrics.incTrophyMetric( TrophyMetric.P2REVIVES, 0.5f );
+					//System.out.println("player1 revive " + Metrics.getTrophyMetric( TrophyMetric.P2REVIVES ) );
 				} else if ( deadPlayer.name == Metrics.player2() ){
 					//If player 2 is revived, give player 1 the point
-					Metrics.incTrophyMetric( TrophyMetric.P1REVIVES, 1.0f );
+					Metrics.incTrophyMetric( TrophyMetric.P1REVIVES, 0.5f );
 				}
 			}
 			if ( active ) {
@@ -263,7 +271,8 @@ public class ResurrectScrew extends Screw {
 						screwUIAnimator.speed( 1 );
 					} else if ( screwInterface.sprite.getAnimator( ).getFrame( ) > lastMotionFrame ) {
 						screwUIAnimator.speed( 0 );
-						int value = (int ) ( ( (float) depth / (float)maxDepth ) * 10f ) + startFrame;
+						int value = ( int ) ( ( ( float ) depth / ( float ) maxDepth ) * 10f )
+								+ startFrame;
 						screwUIAnimator.setFrame( value );
 					}
 				} else {
@@ -285,14 +294,14 @@ public class ResurrectScrew extends Screw {
 		if ( playerAttached ) {
 			screwInterface.sprite.draw( batch );
 		}
-		//drawParticles( behindParticles, batch );
+		// drawParticles( behindParticles, batch );
 		if ( sprite != null && visible && !removeNextStep ) {
 			sprite.draw( batch );
 		}
 		// drawOrigin(batch);
-		//drawParticles( frontParticles, batch );
+		// drawParticles( frontParticles, batch );
 	}
-	
+
 	private void constructBody( Vector2 pos ) {
 		// create the screw body
 		BodyDef screwBodyDef = new BodyDef( );

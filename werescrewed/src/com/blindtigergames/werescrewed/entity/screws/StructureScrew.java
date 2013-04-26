@@ -2,6 +2,7 @@ package com.blindtigergames.werescrewed.entity.screws;
 
 import java.util.ArrayList;
 
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
@@ -35,10 +36,12 @@ public class StructureScrew extends Screw {
 	private SimpleFrameAnimator screwUIAnimator;
 	private int startFrame = 15;
 	private int lastMotionFrame = 14;
+	
+	private static TextureRegion screwTex = WereScrewedGame.manager.getAtlas( "common-textures" ).findRegion( "flat_head_circular" );
 
 	public StructureScrew( String name, Vector2 pos, int max, Entity entity,
 			World world, Vector2 detachDirection ) {
-		super( name, pos, null );
+		super( name, pos, screwTex );
 		loadSounds();
 		this.world = world;
 		this.detachDirection = detachDirection;
@@ -81,7 +84,7 @@ public class StructureScrew extends Screw {
 
 	public StructureScrew( String name, Vector2 pos, int max, World world,
 			Vector2 detachDirection ) {
-		super( name, pos, null );
+		super( name, pos, screwTex );
 		loadSounds();
 		this.world = world;
 		this.detachDirection = detachDirection;

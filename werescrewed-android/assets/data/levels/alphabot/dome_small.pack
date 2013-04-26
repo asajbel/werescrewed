@@ -1,0 +1,12 @@
+dome_small.png
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+offset: 0, 0
+dome_small
+  rotate: false
+  xy: 0, 0
+  size: 1280, 2048
+  orig: 1280, 2048
+  offset: 0, 0
+  index: -1
