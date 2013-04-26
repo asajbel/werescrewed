@@ -118,7 +118,6 @@ public class MyContactListener implements ContactListener {
 								//player.hitSolidObject( plat );
 								if ( player.getState( ) != PlayerState.Screwing ) {
 									if (!player.isGrounded( )){
-										//Gdx.app.log( "Player Landing Force", Float.toString( (float)Math.pow(force * LAND_VOLUME, LAND_FALLOFF) ) );
 										player.sounds.setSoundVolume( "land", (float)Math.pow(force * LAND_VOLUME, LAND_FALLOFF) );
 										player.sounds.playSound( "land" , LAND_DELAY);
 									}

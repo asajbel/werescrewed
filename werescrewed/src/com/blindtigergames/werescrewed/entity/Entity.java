@@ -363,10 +363,9 @@ public class Entity implements GleedLoadable {
 	}
 
 	public void update( float deltaTime ) {
-		Vector2 bodyPos = null;
 		if ( body != null ) {
 			// animation stuff may go here
-			bodyPos = body.getPosition( ).mul( Util.BOX_TO_PIXEL );
+			Vector2 bodyPos = body.getPosition( ).mul( Util.BOX_TO_PIXEL );
 
 			if ( sprite != null ) {
 				sprite.setPosition( bodyPos.x - offset.x, bodyPos.y - offset.y );
@@ -390,14 +389,14 @@ public class Entity implements GleedLoadable {
 			if ( spinemator != null ) {
 				spinemator.update( deltaTime );
 			}
-
 		}
-
+		
 		updateParticleEffect( deltaTime, frontParticles );
 		updateParticleEffect( deltaTime, behindParticles );
-
-		if ( sounds != null ) {
-			sounds.handleSoundPosition( "idle", bodyPos, Camera.CAMERA_RECT );
+		
+		if (sounds != null && sounds.hasSound( "idle" )){
+			//Gdx.app.log( name, "Playing Idle Sound" );
+			sounds.handleSoundPosition("idle", this.getPositionPixel( ), Camera.CAMERA_RECT);
 			sounds.update( deltaTime );
 		}
 	}
@@ -1363,7 +1362,7 @@ public class Entity implements GleedLoadable {
 		if ( sounds != null && sounds.hasSound( "idle" ) ) {
 			sounds.setSoundVolume( "idle", 0.0f );
 			sounds.loopSound( "idle" );
-			Gdx.app.log( "Entity", "Playing Idle Sound" );
+			Gdx.app.log( name, "Starting Idle Sound" );
 		}
 	}
 

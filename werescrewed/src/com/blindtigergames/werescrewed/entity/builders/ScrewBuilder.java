@@ -167,9 +167,6 @@ public class ScrewBuilder extends GenericEntityBuilder< ScrewBuilder > {
 			default:
 				break;
 		}
-		if (out != null){
-			out.postLoad( );
-		}
 		return out;
 	}
 	public Screw buildCosmeticScrew(){
@@ -179,6 +176,10 @@ public class ScrewBuilder extends GenericEntityBuilder< ScrewBuilder > {
 			if (skeleton != null){
 				//skeleton.addScrew(out);
 				skeleton.addScrewForDraw( out );
+			}
+			prepareEntity(out);
+			if (out != null){
+				out.postLoad( );
 			}
 		}
 		return out;
@@ -191,7 +192,11 @@ public class ScrewBuilder extends GenericEntityBuilder< ScrewBuilder > {
 			//out = new StrippedScrew(name, pos, world);
 			//out.addWeldJoint( skeleton );
 			skeleton.addStrippedScrew( out );
-
+			
+			prepareEntity(out);
+			if (out != null){
+				out.postLoad( );
+			}
 		}
 		return out;
 	}
@@ -209,6 +214,11 @@ public class ScrewBuilder extends GenericEntityBuilder< ScrewBuilder > {
 				//out.addStructureJoint( skeleton );
 				skeleton.addScrewForDraw( out );
 			}
+			
+			prepareEntity(out);
+			if (out != null){
+				out.postLoad( );
+			}
 		}
 		return out;
 	}
@@ -223,6 +233,10 @@ public class ScrewBuilder extends GenericEntityBuilder< ScrewBuilder > {
 				//out.addStructureJoint( skeleton );
 				//out.addWeldJoint( skeleton );
 			}
+			prepareEntity(out);
+			if (out != null){
+				out.postLoad( );
+			}
 		}
 		return out;
 	}
@@ -235,6 +249,10 @@ public class ScrewBuilder extends GenericEntityBuilder< ScrewBuilder > {
 				out.addStructureJoint( skeleton );
 				//skeleton.addScrew(out);
 				skeleton.addScrewForDraw( out );
+			}
+			prepareEntity(out);
+			if (out != null){
+				out.postLoad( );
 			}
 		}
 		return out;
@@ -252,6 +270,10 @@ public class ScrewBuilder extends GenericEntityBuilder< ScrewBuilder > {
 			}
 			out = new ResurrectScrew( finalPos, this.entity, this.world,
 					this.player, lerpMover, pos );
+			prepareEntity(out);
+			if (out != null){
+				out.postLoad( );
+			}
 		}
 		return out;
 	}

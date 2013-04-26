@@ -1,5 +1,8 @@
 package com.blindtigergames.werescrewed.entity.builders;
 
+import java.util.HashMap;
+
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -37,7 +40,7 @@ public class GenericEntityBuilder< B extends GenericEntityBuilder< ? >> {
 	protected IMover mover;
 	protected boolean solid;
 	protected String definition;
-	protected SoundManager sounds;
+	protected HashMap<String, String> sounds;
 
 	// Used for type+world construction
 	protected EntityDef type;
@@ -62,7 +65,7 @@ public class GenericEntityBuilder< B extends GenericEntityBuilder< ? >> {
 		world = null;
 		tex = null;
 		body = null;
-		sounds = null;
+		sounds = new HashMap<String,String>();
 		definition = "";
 	}
 
@@ -246,6 +249,7 @@ public class GenericEntityBuilder< B extends GenericEntityBuilder< ? >> {
 		}
 		if (props.containsKey(IDLE_SOUND)){
 			this.addSound("idle", props.get(IDLE_SOUND));
+			Gdx.app.log( "EntityBuilder", "Adding Idle Sound" );
 		}
 		if (props.containsKey(COLLISION_SOUND)){
 			this.addSound("collision", props.get(COLLISION_SOUND));
@@ -326,18 +330,22 @@ public class GenericEntityBuilder< B extends GenericEntityBuilder< ? >> {
 			if ( mover != null ) {
 				out.addMover( mover, RobotState.IDLE );
 			}
-			if ( !out.hasSoundManager() && sounds != null ) {
-				out.setSoundManager( sounds );
+			if ( sounds.size() > 0){
+				SoundManager soundMan = out.getSoundManager( );
+				if (soundMan == null){
+					soundMan = new SoundManager();
+					out.setSoundManager( soundMan );
+				}
+				for (String name: sounds.keySet()){
+					soundMan.getSound( name, sounds.get(name) );
+				}
 			}
 			out.postLoad( );
 		}
 	}
 	
 	public void addSound(String tag, String assetName){
-		if (sounds == null){
-			sounds = new SoundManager();
-		}
-		sounds.getSound( tag, assetName );
+		sounds.put( tag, WereScrewedGame.dirHandle + assetName );
 	}
 	
 	protected static final String nameTag = "Name";
