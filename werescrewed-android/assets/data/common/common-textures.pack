@@ -5,49 +5,49 @@ repeat: none
 offset: 0, 0
 hex_screw
   rotate: false
-  xy: 208, 2
+  xy: 365, 2
   size: 79, 79
   orig: 79, 79
   offset: 0, 0
   index: -1
 pipeLR
   rotate: false
-  xy: 380, 158
+  xy: 194, 254
   size: 94, 94
   orig: 94, 94
   offset: 0, 0
   index: -1
 pipeUR
   rotate: false
-  xy: 188, 158
+  xy: 98, 350
   size: 94, 94
   orig: 94, 94
   offset: 0, 0
   index: -1
 rail_horz_right
   rotate: false
-  xy: 96, 2
+  xy: 172, 2
   size: 54, 154
   orig: 54, 154
   offset: 0, 0
   index: -1
 flat_head_circular2
   rotate: false
-  xy: 2, 158
+  xy: 83, 158
   size: 88, 88
   orig: 88, 88
   offset: 0, 0
   index: -1
 power_screw
   rotate: false
-  xy: 289, 2
+  xy: 2, 158
   size: 79, 79
   orig: 79, 79
   offset: 0, 0
   index: -1
 pipeEndL
   rotate: false
-  xy: 386, 254
+  xy: 173, 158
   size: 94, 94
   orig: 94, 94
   offset: 0, 0
@@ -59,6 +59,13 @@ pipeEndD
   orig: 94, 94
   offset: 0, 0
   index: -1
+tiletexture2
+  rotate: false
+  xy: 40, 2
+  size: 36, 36
+  orig: 36, 36
+  offset: 0, 0
+  index: -1
 rail_vert_bottom
   rotate: false
   xy: 2, 446
@@ -68,84 +75,91 @@ rail_vert_bottom
   index: -1
 chainlink
   rotate: false
-  xy: 2, 2
+  xy: 78, 2
   size: 36, 68
   orig: 36, 68
   offset: 0, 0
   index: -1
 pipeEndU
   rotate: false
-  xy: 290, 254
+  xy: 269, 158
   size: 94, 94
   orig: 94, 94
   offset: 0, 0
   index: -1
 pipeDL
   rotate: false
-  xy: 2, 254
+  xy: 365, 158
   size: 94, 94
   orig: 94, 94
   offset: 0, 0
   index: -1
+tiletexture1
+  rotate: false
+  xy: 2, 2
+  size: 36, 36
+  orig: 36, 36
+  offset: 0, 0
+  index: -1
 flat_head_circular
   rotate: false
-  xy: 370, 2
+  xy: 284, 2
   size: 79, 79
   orig: 79, 79
   offset: 0, 0
   index: 75
 pipeUD
   rotate: false
-  xy: 284, 158
+  xy: 290, 254
   size: 94, 94
   orig: 94, 94
   offset: 0, 0
   index: -1
 rail_horz_left
   rotate: false
-  xy: 40, 2
+  xy: 228, 2
   size: 54, 154
   orig: 54, 154
   offset: 0, 0
   index: -1
 pipeUL
   rotate: false
-  xy: 92, 158
+  xy: 2, 350
   size: 94, 94
   orig: 94, 94
   offset: 0, 0
   index: -1
 rail_horz_middle
   rotate: false
-  xy: 152, 2
+  xy: 116, 2
   size: 54, 154
   orig: 54, 154
   offset: 0, 0
   index: -1
 pipeEndR
   rotate: false
-  xy: 2, 350
+  xy: 386, 254
   size: 94, 94
   orig: 94, 94
   offset: 0, 0
   index: -1
 rail_vert_top
   rotate: false
-  xy: 98, 350
+  xy: 194, 350
   size: 154, 54
   orig: 154, 54
   offset: 0, 0
   index: -1
 pipeDR
   rotate: false
-  xy: 194, 254
+  xy: 2, 254
   size: 94, 94
   orig: 94, 94
   offset: 0, 0
   index: -1
 rail_vert_middle
   rotate: false
-  xy: 254, 350
+  xy: 350, 350
   size: 154, 54
   orig: 154, 54
   offset: 0, 0

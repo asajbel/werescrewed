@@ -287,7 +287,7 @@ public class LoadingScreen extends Screen {
 					}
 					
 					/*
-					*/
+					*/ 
 				}
 			}
 		}

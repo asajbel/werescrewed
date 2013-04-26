@@ -91,6 +91,7 @@ public class LevelFactory {
 	protected static final String atlasTag = "atlas";
 
 	private final String robotTexBG = "/levels/alphabot/alphabot-interior.png";
+	private final String robotOutlineTex = "/levels/alphabot/alphabot-outline.png";
 
 	public LevelFactory( ) {
 		reader = new XmlReader( );
@@ -856,7 +857,7 @@ public class LevelFactory {
 					+ "/common/robot/alphabot_texture_tux.png", Texture.class ) );
 		} else {
 			pb.texture( WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-					+ robotTexBG, Texture.class ) );
+					+ robotOutlineTex, Texture.class ) );
 		}
 
 		if ( item.props.containsKey( "gravscale" ) ) {
