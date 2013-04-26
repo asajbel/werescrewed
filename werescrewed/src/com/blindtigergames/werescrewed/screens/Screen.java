@@ -82,6 +82,8 @@ public class Screen implements com.badlogic.gdx.Screen {
 			
 			level.draw( batch, debugRenderer, delta );
 			
+			level.camera.update( );
+			
 			int FPS = logger.getFPS( );
 			batch.setProjectionMatrix( uiCamera.combined );
 			batch.begin( );
@@ -100,59 +102,35 @@ public class Screen implements com.badlogic.gdx.Screen {
 			ScreenManager.escapeHeld = false;
 	}
 
-	protected void addForeGroundSkeleton( Skeleton skel ) {
-//		if ( !level.skelFGList.contains( skel ) ) {
-//			level.skelFGList.add( skel );
-//		}
+	protected void addFGSkeleton( Skeleton skel ) {
 		addToSkelList(level.skelFGList,skel,false);
 	}
 	
-	protected void addForeGroundSkeletonToBack( Skeleton skel ) {
-//		if ( !level.skelFGList.contains( skel ) ) {
-//			level.skelFGList.add( skel );
-//		}
+	protected void addFGSkeletonBack( Skeleton skel ) {
 		addToSkelList(level.skelFGList,skel,true);
 	}
 	
-	protected void addBackGroundSkeleton( Skeleton skel ) {
-//		if ( !level.skelBGList.contains( skel ) ) {
-//			level.skelBGList.add( skel );
-//		}
+	protected void addBGSkeleton( Skeleton skel ) {
 		addToSkelList(level.skelBGList,skel,false);
 	}
 	
-	protected void addBackGroundSkeletonToBack( Skeleton skel ) {
-//		if ( !level.skelBGList.contains( skel ) ) {
-//			level.skelBGList.add( 0, skel );
-//		}
+	protected void addBGSkeletonBack( Skeleton skel ) {
 		addToSkelList(level.skelBGList,skel,true);
 	}
 	
-	protected void addForeGroundEntity( Entity entity ) {
-//		if ( !level.entityFGList.contains( entity ) ) {
-//			level.entityFGList.add( entity );
-//		}
+	protected void addFGEntity( Entity entity ) {
 		addToEntityList(level.entityFGList,entity,false);
 	}
 	
-	protected void addForeGroundEntityToBack( Entity entity ) {
-//		if ( !level.entityFGList.contains( entity ) ) {
-//			level.entityFGList.add( 0, entity );
-//		}
+	protected void addFGEntityToBack( Entity entity ) {
 		addToEntityList(level.entityFGList,entity,true);
 	}
 	
-	protected void addBackGroundEntity( Entity entity ) {
-//		if ( !level.entityBGList.contains( entity ) ) {
-//			level.entityBGList.add( entity );
-//		}
+	protected void addBGEntity( Entity entity ) {
 		addToEntityList(level.entityBGList,entity,false);
 	}
 	
-	protected void addBackGroundEntityToBack( Entity entity ) {
-//		if ( !level.entityBGList.contains( entity ) ) {
-//			level.entityBGList.add( 0, entity );
-//		}
+	protected void addBGEntityToBack( Entity entity ) {
 		addToEntityList(level.entityBGList,entity,true);
 	}
 	

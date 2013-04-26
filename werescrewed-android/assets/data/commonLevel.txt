@@ -66,6 +66,9 @@
 /common/pipe/pipeLR.png
 /common/pipe/pipeUD.png
 
+/common/powerswitches/on.png
+/common/powerswitches/off.png
+
 ##texture atlas
 ##please us texture packer to put all common textures in this pack file!
 /common/common-textures.pack

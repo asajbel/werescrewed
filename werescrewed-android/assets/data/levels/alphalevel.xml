@@ -2502,86 +2502,6 @@
                         <PackedValue>2445279424</PackedValue>
                     </LineColor>
                 </Item>
-                <Item xsi:type="TextureItem" Name="powerScrew1" Visible="true">
-                    <Position>
-                        <X>-389</X>
-                        <Y>-1949</Y>
-                    </Position>
-                    <CustomProperties>
-                        <Property Name="Definition" Type="string" Description="">
-                            <string>screw</string>
-                        </Property>
-                        <Property Name="ScrewType" Type="string" Description="">
-                            <string>ScrewPuzzle</string>
-                        </Property>
-                        <Property Name="AttachToSkeleton" Type="string" Description="">
-                            <string>kneeSkeleton</string>
-                        </Property>
-                        <Property Name="maxDepth" Type="string" Description="">
-                            <string>200</string>
-                        </Property>
-                    </CustomProperties>
-                    <Rotation>0</Rotation>
-                    <Scale>
-                        <X>1</X>
-                        <Y>1</Y>
-                    </Scale>
-                    <TintColor>
-                        <R>255</R>
-                        <G>255</G>
-                        <B>255</B>
-                        <A>255</A>
-                        <PackedValue>4294967295</PackedValue>
-                    </TintColor>
-                    <FlipHorizontally>false</FlipHorizontally>
-                    <FlipVertically>false</FlipVertically>
-                    <texture_filename>puzzlescrew.png</texture_filename>
-                    <asset_name>puzzlescrew</asset_name>
-                    <Origin>
-                        <X>32</X>
-                        <Y>32</Y>
-                    </Origin>
-                </Item>
-                <Item xsi:type="TextureItem" Name="powerScrew2" Visible="true">
-                    <Position>
-                        <X>-981</X>
-                        <Y>-1947</Y>
-                    </Position>
-                    <CustomProperties>
-                        <Property Name="Definition" Type="string" Description="">
-                            <string>screw</string>
-                        </Property>
-                        <Property Name="ScrewType" Type="string" Description="">
-                            <string>ScrewPuzzle</string>
-                        </Property>
-                        <Property Name="AttachToSkeleton" Type="string" Description="">
-                            <string>kneeSkeleton</string>
-                        </Property>
-                        <Property Name="maxDepth" Type="string" Description="">
-                            <string>200</string>
-                        </Property>
-                    </CustomProperties>
-                    <Rotation>0</Rotation>
-                    <Scale>
-                        <X>1</X>
-                        <Y>1</Y>
-                    </Scale>
-                    <TintColor>
-                        <R>255</R>
-                        <G>255</G>
-                        <B>255</B>
-                        <A>255</A>
-                        <PackedValue>4294967295</PackedValue>
-                    </TintColor>
-                    <FlipHorizontally>false</FlipHorizontally>
-                    <FlipVertically>false</FlipVertically>
-                    <texture_filename>puzzlescrew.png</texture_filename>
-                    <asset_name>puzzlescrew</asset_name>
-                    <Origin>
-                        <X>32</X>
-                        <Y>32</Y>
-                    </Origin>
-                </Item>
                 <Item xsi:type="PathItem" Name="thighPlat1" Visible="true">
                     <Position>
                         <X>-1056</X>
@@ -11229,87 +11149,6 @@
                         <PackedValue>2445279424</PackedValue>
                     </FillColor>
                 </Item>
-                <Item xsi:type="PathItem" Name="chest_anchor_trigger" Visible="true">
-                    <Position>
-                        <X>160</X>
-                        <Y>-736</Y>
-                    </Position>
-                    <CustomProperties>
-                        <Property Name="Definition" Type="string" Description="">
-                            <string>eventtrigger</string>
-                        </Property>
-                        <Property Name="AttachToSkeleton" Type="string" Description="">
-                            <string>chestSkeleton</string>
-                        </Property>
-                        <Property Name="beginaction" Type="string" Description="">
-                            <string>activate_anchor chestSkeleton 1</string>
-                        </Property>
-                        <Property Name="endaction" Type="string" Description="">
-                            <string>deactivate_anchor chestSkeleton 1</string>
-                        </Property>
-                    </CustomProperties>
-                    <LocalPoints>
-                        <Vector2>
-                            <X>0</X>
-                            <Y>0</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>184.560547</X>
-                            <Y>110.736282</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>184.560547</X>
-                            <Y>-112.054596</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>-188.515335</X>
-                            <Y>-112.054596</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>-188.515335</X>
-                            <Y>110.736282</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>184.560547</X>
-                            <Y>110.736282</Y>
-                        </Vector2>
-                    </LocalPoints>
-                    <WorldPoints>
-                        <Vector2>
-                            <X>160</X>
-                            <Y>-736</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>344.560547</X>
-                            <Y>-625.263733</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>344.560547</X>
-                            <Y>-848.054565</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>-28.5153351</X>
-                            <Y>-848.054565</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>-28.5153351</X>
-                            <Y>-625.263733</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>344.560547</X>
-                            <Y>-625.263733</Y>
-                        </Vector2>
-                    </WorldPoints>
-                    <IsPolygon>false</IsPolygon>
-                    <LineWidth>4</LineWidth>
-                    <LineColor>
-                        <R>192</R>
-                        <G>0</G>
-                        <B>192</B>
-                        <A>145</A>
-                        <PackedValue>2445279424</PackedValue>
-                    </LineColor>
-                </Item>
                 <Item xsi:type="PathItem" Name="Path_0687" Visible="true">
                     <Position>
                         <X>-1383</X>
@@ -11710,19 +11549,19 @@
                             <Y>-320</Y>
                         </Vector2>
                         <Vector2>
-                            <X>448</X>
+                            <X>432</X>
                             <Y>-320</Y>
                         </Vector2>
                         <Vector2>
-                            <X>448</X>
+                            <X>432</X>
                             <Y>-192</Y>
                         </Vector2>
                         <Vector2>
-                            <X>704</X>
+                            <X>752</X>
                             <Y>-192</Y>
                         </Vector2>
                         <Vector2>
-                            <X>704</X>
+                            <X>752</X>
                             <Y>-320</Y>
                         </Vector2>
                         <Vector2>
@@ -11752,19 +11591,19 @@
                             <Y>-3968</Y>
                         </Vector2>
                         <Vector2>
-                            <X>448</X>
+                            <X>432</X>
                             <Y>-3968</Y>
                         </Vector2>
                         <Vector2>
-                            <X>448</X>
+                            <X>432</X>
                             <Y>-3840</Y>
                         </Vector2>
                         <Vector2>
-                            <X>704</X>
+                            <X>752</X>
                             <Y>-3840</Y>
                         </Vector2>
                         <Vector2>
-                            <X>704</X>
+                            <X>752</X>
                             <Y>-3968</Y>
                         </Vector2>
                         <Vector2>
@@ -11844,86 +11683,6 @@
                     <FlipVertically>false</FlipVertically>
                     <texture_filename>strippedscrews.png</texture_filename>
                     <asset_name>strippedscrews</asset_name>
-                    <Origin>
-                        <X>32</X>
-                        <Y>32</Y>
-                    </Origin>
-                </Item>
-                <Item xsi:type="TextureItem" Name="powerScrew3" Visible="true">
-                    <Position>
-                        <X>2048</X>
-                        <Y>-1472</Y>
-                    </Position>
-                    <CustomProperties>
-                        <Property Name="Definition" Type="string" Description="">
-                            <string>screw</string>
-                        </Property>
-                        <Property Name="ScrewType" Type="string" Description="">
-                            <string>ScrewPuzzle</string>
-                        </Property>
-                        <Property Name="AttachToSkeleton" Type="string" Description="">
-                            <string>kneeSkeleton2</string>
-                        </Property>
-                        <Property Name="maxDepth" Type="string" Description="">
-                            <string>200</string>
-                        </Property>
-                    </CustomProperties>
-                    <Rotation>0</Rotation>
-                    <Scale>
-                        <X>1</X>
-                        <Y>1</Y>
-                    </Scale>
-                    <TintColor>
-                        <R>255</R>
-                        <G>255</G>
-                        <B>255</B>
-                        <A>255</A>
-                        <PackedValue>4294967295</PackedValue>
-                    </TintColor>
-                    <FlipHorizontally>false</FlipHorizontally>
-                    <FlipVertically>false</FlipVertically>
-                    <texture_filename>puzzlescrew.png</texture_filename>
-                    <asset_name>puzzlescrew</asset_name>
-                    <Origin>
-                        <X>32</X>
-                        <Y>32</Y>
-                    </Origin>
-                </Item>
-                <Item xsi:type="TextureItem" Name="powerScrew4" Visible="true">
-                    <Position>
-                        <X>1792</X>
-                        <Y>-1472</Y>
-                    </Position>
-                    <CustomProperties>
-                        <Property Name="Definition" Type="string" Description="">
-                            <string>screw</string>
-                        </Property>
-                        <Property Name="ScrewType" Type="string" Description="">
-                            <string>ScrewPuzzle</string>
-                        </Property>
-                        <Property Name="AttachToSkeleton" Type="string" Description="">
-                            <string>kneeSkeleton2</string>
-                        </Property>
-                        <Property Name="maxDepth" Type="string" Description="">
-                            <string>200</string>
-                        </Property>
-                    </CustomProperties>
-                    <Rotation>0</Rotation>
-                    <Scale>
-                        <X>1</X>
-                        <Y>1</Y>
-                    </Scale>
-                    <TintColor>
-                        <R>255</R>
-                        <G>255</G>
-                        <B>255</B>
-                        <A>255</A>
-                        <PackedValue>4294967295</PackedValue>
-                    </TintColor>
-                    <FlipHorizontally>false</FlipHorizontally>
-                    <FlipVertically>false</FlipVertically>
-                    <texture_filename>puzzlescrew.png</texture_filename>
-                    <asset_name>puzzlescrew</asset_name>
                     <Origin>
                         <X>32</X>
                         <Y>32</Y>
@@ -12133,8 +11892,8 @@
                 </Item>
                 <Item xsi:type="TextureItem" Name="knee2rotateScrew2" Visible="true">
                     <Position>
-                        <X>1491</X>
-                        <Y>-1453</Y>
+                        <X>1488</X>
+                        <Y>-1456</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -12361,7 +12120,7 @@
                         </Vector2>
                         <Vector2>
                             <X>-192</X>
-                            <Y>-64</Y>
+                            <Y>-96</Y>
                         </Vector2>
                     </LocalPoints>
                     <WorldPoints>
@@ -12375,7 +12134,7 @@
                         </Vector2>
                         <Vector2>
                             <X>2048</X>
-                            <Y>-2688</Y>
+                            <Y>-2720</Y>
                         </Vector2>
                     </WorldPoints>
                     <IsPolygon>false</IsPolygon>
@@ -14843,6 +14602,9 @@
                         <Property Name="twoplayerstodeactivate" Type="string" Description="">
                             <string />
                         </Property>
+                        <Property Name="repeatable" Type="string" Description="">
+                            <string />
+                        </Property>
                     </CustomProperties>
                     <LocalPoints>
                         <Vector2>
@@ -14925,6 +14687,9 @@
                             <string>deactivate_anchor kneeSkeleton 1</string>
                         </Property>
                         <Property Name="twoplayerstodeactivate" Type="string" Description="">
+                            <string />
+                        </Property>
+                        <Property Name="repeatable" Type="string" Description="">
                             <string />
                         </Property>
                     </CustomProperties>
@@ -15014,6 +14779,9 @@
                         <Property Name="twoplayerstoactivate" Type="string" Description="">
                             <string />
                         </Property>
+                        <Property Name="repeatable" Type="string" Description="">
+                            <string />
+                        </Property>
                     </CustomProperties>
                     <LocalPoints>
                         <Vector2>
@@ -15095,6 +14863,9 @@
                         <Property Name="endaction" Type="string" Description="">
                             <string>deactivate_anchor hipSkeleton 1</string>
                         </Property>
+                        <Property Name="repeatable" Type="string" Description="">
+                            <string />
+                        </Property>
                     </CustomProperties>
                     <LocalPoints>
                         <Vector2>
@@ -15158,6 +14929,278 @@
                         <PackedValue>2445279424</PackedValue>
                     </LineColor>
                 </Item>
+                <Item xsi:type="TextureItem" Name="powerSwitch1" Visible="true">
+                    <Position>
+                        <X>-880</X>
+                        <Y>-1744</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>powerswitch</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>kneeSkeleton</string>
+                        </Property>
+                    </CustomProperties>
+                    <Rotation>0</Rotation>
+                    <Scale>
+                        <X>1</X>
+                        <Y>1</Y>
+                    </Scale>
+                    <TintColor>
+                        <R>255</R>
+                        <G>255</G>
+                        <B>255</B>
+                        <A>255</A>
+                        <PackedValue>4294967295</PackedValue>
+                    </TintColor>
+                    <FlipHorizontally>false</FlipHorizontally>
+                    <FlipVertically>false</FlipVertically>
+                    <texture_filename>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\powerswitch.png</texture_filename>
+                    <asset_name>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\powerswitch</asset_name>
+                    <Origin>
+                        <X>32</X>
+                        <Y>32</Y>
+                    </Origin>
+                </Item>
+                <Item xsi:type="TextureItem" Name="powerSwitch2" Visible="true">
+                    <Position>
+                        <X>-464</X>
+                        <Y>-1744</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>powerswitch</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>kneeSkeleton</string>
+                        </Property>
+                    </CustomProperties>
+                    <Rotation>0</Rotation>
+                    <Scale>
+                        <X>1</X>
+                        <Y>1</Y>
+                    </Scale>
+                    <TintColor>
+                        <R>255</R>
+                        <G>255</G>
+                        <B>255</B>
+                        <A>255</A>
+                        <PackedValue>4294967295</PackedValue>
+                    </TintColor>
+                    <FlipHorizontally>false</FlipHorizontally>
+                    <FlipVertically>false</FlipVertically>
+                    <texture_filename>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\powerswitch.png</texture_filename>
+                    <asset_name>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\powerswitch</asset_name>
+                    <Origin>
+                        <X>32</X>
+                        <Y>32</Y>
+                    </Origin>
+                </Item>
+                <Item xsi:type="TextureItem" Name="powerSwitch3" Visible="true">
+                    <Position>
+                        <X>512</X>
+                        <Y>-3920</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>powerswitch</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>chestSkeleton</string>
+                        </Property>
+                    </CustomProperties>
+                    <Rotation>0</Rotation>
+                    <Scale>
+                        <X>1</X>
+                        <Y>1</Y>
+                    </Scale>
+                    <TintColor>
+                        <R>255</R>
+                        <G>255</G>
+                        <B>255</B>
+                        <A>255</A>
+                        <PackedValue>4294967295</PackedValue>
+                    </TintColor>
+                    <FlipHorizontally>false</FlipHorizontally>
+                    <FlipVertically>false</FlipVertically>
+                    <texture_filename>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\powerswitch.png</texture_filename>
+                    <asset_name>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\powerswitch</asset_name>
+                    <Origin>
+                        <X>32</X>
+                        <Y>32</Y>
+                    </Origin>
+                </Item>
+                <Item xsi:type="TextureItem" Name="powerSwitch4" Visible="true">
+                    <Position>
+                        <X>672</X>
+                        <Y>-3920</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>powerswitch</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>chestSkeleton</string>
+                        </Property>
+                    </CustomProperties>
+                    <Rotation>0</Rotation>
+                    <Scale>
+                        <X>1</X>
+                        <Y>1</Y>
+                    </Scale>
+                    <TintColor>
+                        <R>255</R>
+                        <G>255</G>
+                        <B>255</B>
+                        <A>255</A>
+                        <PackedValue>4294967295</PackedValue>
+                    </TintColor>
+                    <FlipHorizontally>false</FlipHorizontally>
+                    <FlipVertically>false</FlipVertically>
+                    <texture_filename>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\powerswitch.png</texture_filename>
+                    <asset_name>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\powerswitch</asset_name>
+                    <Origin>
+                        <X>32</X>
+                        <Y>32</Y>
+                    </Origin>
+                </Item>
+                <Item xsi:type="TextureItem" Name="powerSwitch5" Visible="true">
+                    <Position>
+                        <X>1776</X>
+                        <Y>-1472</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>powerswitch</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>kneeSkeleton2</string>
+                        </Property>
+                    </CustomProperties>
+                    <Rotation>0</Rotation>
+                    <Scale>
+                        <X>1</X>
+                        <Y>1</Y>
+                    </Scale>
+                    <TintColor>
+                        <R>255</R>
+                        <G>255</G>
+                        <B>255</B>
+                        <A>255</A>
+                        <PackedValue>4294967295</PackedValue>
+                    </TintColor>
+                    <FlipHorizontally>false</FlipHorizontally>
+                    <FlipVertically>false</FlipVertically>
+                    <texture_filename>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\powerswitch.png</texture_filename>
+                    <asset_name>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\powerswitch</asset_name>
+                    <Origin>
+                        <X>32</X>
+                        <Y>32</Y>
+                    </Origin>
+                </Item>
+                <Item xsi:type="TextureItem" Name="powerSwitch6" Visible="true">
+                    <Position>
+                        <X>2048</X>
+                        <Y>-1472</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>powerswitch</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>kneeSkeleton2</string>
+                        </Property>
+                    </CustomProperties>
+                    <Rotation>0</Rotation>
+                    <Scale>
+                        <X>1</X>
+                        <Y>1</Y>
+                    </Scale>
+                    <TintColor>
+                        <R>255</R>
+                        <G>255</G>
+                        <B>255</B>
+                        <A>255</A>
+                        <PackedValue>4294967295</PackedValue>
+                    </TintColor>
+                    <FlipHorizontally>false</FlipHorizontally>
+                    <FlipVertically>false</FlipVertically>
+                    <texture_filename>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\powerswitch.png</texture_filename>
+                    <asset_name>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\powerswitch</asset_name>
+                    <Origin>
+                        <X>32</X>
+                        <Y>32</Y>
+                    </Origin>
+                </Item>
+                <Item xsi:type="TextureItem" Name="powerSwitch7" Visible="true">
+                    <Position>
+                        <X>-2352</X>
+                        <Y>-3008</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>powerswitch</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>leftShoulderSkeleton</string>
+                        </Property>
+                    </CustomProperties>
+                    <Rotation>0</Rotation>
+                    <Scale>
+                        <X>1</X>
+                        <Y>1</Y>
+                    </Scale>
+                    <TintColor>
+                        <R>255</R>
+                        <G>255</G>
+                        <B>255</B>
+                        <A>255</A>
+                        <PackedValue>4294967295</PackedValue>
+                    </TintColor>
+                    <FlipHorizontally>false</FlipHorizontally>
+                    <FlipVertically>false</FlipVertically>
+                    <texture_filename>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\powerswitch.png</texture_filename>
+                    <asset_name>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\powerswitch</asset_name>
+                    <Origin>
+                        <X>32</X>
+                        <Y>32</Y>
+                    </Origin>
+                </Item>
+                <Item xsi:type="TextureItem" Name="powerSwitch8" Visible="true">
+                    <Position>
+                        <X>-2080</X>
+                        <Y>-3008</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>powerswitch</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>leftShoulderSkeleton</string>
+                        </Property>
+                    </CustomProperties>
+                    <Rotation>0</Rotation>
+                    <Scale>
+                        <X>1</X>
+                        <Y>1</Y>
+                    </Scale>
+                    <TintColor>
+                        <R>255</R>
+                        <G>255</G>
+                        <B>255</B>
+                        <A>255</A>
+                        <PackedValue>4294967295</PackedValue>
+                    </TintColor>
+                    <FlipHorizontally>false</FlipHorizontally>
+                    <FlipVertically>false</FlipVertically>
+                    <texture_filename>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\powerswitch.png</texture_filename>
+                    <asset_name>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\powerswitch</asset_name>
+                    <Origin>
+                        <X>32</X>
+                        <Y>32</Y>
+                    </Origin>
+                </Item>
             </Items>
             <ScrollSpeed>
                 <X>1</X>
@@ -15174,11 +15217,11 @@
     </Layers>
     <CustomProperties />
     <EditorRelated>
-        <NextItemNumber>809</NextItemNumber>
+        <NextItemNumber>817</NextItemNumber>
         <ContentRootFolder>gleed-textures</ContentRootFolder>
         <CameraPosition>
-            <X>720.6863</X>
-            <Y>-965.315552</Y>
+            <X>-957.3366</X>
+            <Y>-1722.00208</Y>
         </CameraPosition>
         <Version>1.3.0.0</Version>
     </EditorRelated>
