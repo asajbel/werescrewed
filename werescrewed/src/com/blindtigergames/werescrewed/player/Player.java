@@ -27,6 +27,7 @@ import com.blindtigergames.werescrewed.entity.animator.PlayerSpinemator;
 import com.blindtigergames.werescrewed.entity.mover.FollowEntityMover;
 import com.blindtigergames.werescrewed.entity.mover.IMover;
 import com.blindtigergames.werescrewed.entity.platforms.Platform;
+import com.blindtigergames.werescrewed.entity.platforms.PowerSwitch;
 import com.blindtigergames.werescrewed.entity.screws.ResurrectScrew;
 import com.blindtigergames.werescrewed.entity.screws.Screw;
 import com.blindtigergames.werescrewed.entity.screws.ScrewType;
@@ -118,6 +119,9 @@ public class Player extends Entity {
 	private boolean resetScrewing;
 
 	private Screw currentScrew;
+	private PowerSwitch currentSwitch;
+	private static int switchTimer = 0;
+	
 	private Player otherPlayer;
 	private RevoluteJoint playerJoint;
 	private Platform currentPlatform;
@@ -269,6 +273,8 @@ public class Player extends Entity {
 	 */
 	public void update( float deltaTime ) {
 		super.update( deltaTime );
+		
+		if (switchTimer > 0) --switchTimer;
 
 		if ( Gdx.input.isKeyPressed( Keys.G ) )
 			Gdx.app.log( "steamCollide: " + steamCollide, "steamDone: "
@@ -872,7 +878,7 @@ public class Player extends Entity {
 	 * 
 	 */
 	public void hitScrew( Screw screw ) {
-		if ( playerState != PlayerState.Screwing ) {
+		if ( playerState != PlayerState.Screwing && mover == null ) {
 			currentScrew = screw;
 
 			// Trophy check for if player attaches to a stripped screw
@@ -924,6 +930,14 @@ public class Player extends Entity {
 	public Screw getCurrentScrew( ) {
 		return currentScrew;
 	}
+	
+	/**
+	 * returns the powerswitch being collided by the player
+	 * @return PowerSwitch
+	 */
+	public PowerSwitch getSwitch( ) {
+		return currentSwitch;
+	}
 
 	/**
 	 * returns true if this is the top player in the head stand
@@ -970,6 +984,13 @@ public class Player extends Entity {
 	public void noFriction( ) {
 		feet.setFriction( 0.0f );
 
+	}
+	
+	/**
+	 * sets the power switch being held by player
+	 */
+	public void setPowerSwitch( PowerSwitch powerSwitch ){
+		currentSwitch = powerSwitch;
 	}
 
 	/**
@@ -1077,7 +1098,7 @@ public class Player extends Entity {
 			// if on a screw that isn't already over a platform and a platform
 			// hits you
 			// you get knocked off
-			// knockedOff = true;
+			knockedOff = true;
 		} else {
 			currentPlatform = platform;
 			if ( playerState == PlayerState.Falling ) {
@@ -1085,10 +1106,10 @@ public class Player extends Entity {
 			}
 		}
 		if ( platform == null ) {
-			knockedOff = false;
+			//knockedOff = false;
 			hitSolidObject = false;
 		} else {
-			if ( platform.isKinematic( ) ) {
+			if ( platform.isKinematic( ) && platform.currentMover( ) == null ) {
 				lastPlatformHit = platform;
 			}
 			hitSolidObject = true;
@@ -1790,6 +1811,9 @@ public class Player extends Entity {
 					if ( inputHandler.screwPressed( ) ) {
 						screwButtonHeld = true;
 					}
+				} else if (currentSwitch != null && switchTimer == 0){
+					currentSwitch.doAction( );
+					switchTimer = 60;
 				} else {
 					extraState = ConcurrentState.ScrewReady;
 				}
@@ -2066,6 +2090,8 @@ public class Player extends Entity {
 		feet = body.createFixture( fd );
 
 	}
+	
+	
 
 	public float getAbsAnalogXRatio( ) {
 		if ( controllerListener != null ) {

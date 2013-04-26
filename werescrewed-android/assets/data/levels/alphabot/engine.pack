@@ -5,7 +5,7 @@ repeat: none
 offset: 0, 0
 piston_middle
   rotate: false
-  xy: 237, 543
+  xy: 222, 543
   size: 123, 156
   orig: 123, 156
   offset: 0, 0
@@ -20,15 +20,15 @@ girder2
 piston_left
   rotate: false
   xy: 99, 543
-  size: 136, 158
-  orig: 136, 158
+  size: 121, 158
+  orig: 121, 158
   offset: 0, 0
   index: -1
 piston_right
   rotate: false
-  xy: 362, 543
-  size: 101, 155
-  orig: 101, 155
+  xy: 347, 543
+  size: 136, 158
+  orig: 136, 158
   offset: 0, 0
   index: -1
 girder0
@@ -82,7 +82,7 @@ bolt3
   index: -1
 wheel
   rotate: false
-  xy: 465, 543
+  xy: 485, 543
   size: 215, 213
   orig: 215, 213
   offset: 0, 0
