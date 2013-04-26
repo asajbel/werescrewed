@@ -80,6 +80,8 @@ public class Screen implements com.badlogic.gdx.Screen {
 			
 			level.draw( batch, debugRenderer, delta );
 			
+			level.camera.update( );
+			
 			int FPS = logger.getFPS( );
 			batch.setProjectionMatrix( uiCamera.combined );
 			batch.begin( );

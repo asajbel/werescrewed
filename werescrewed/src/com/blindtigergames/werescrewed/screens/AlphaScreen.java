@@ -58,6 +58,8 @@ public class AlphaScreen extends Screen {
 
 	private CharacterSelect characterSelect;
 	private Screw powerScrew1, powerScrew2, powerScrew3, powerScrew4;
+	private PowerSwitch powerSwitch1, powerSwitch2, powerSwitch3, powerSwitch4, powerSwitch5, powerSwitch6,
+		powerSwitch7, powerSwitch8;
 	private Skeleton footSkeleton, kneeSkeleton, thighSkeleton, hipSkeleton,
 			chestSkeleton, leftShoulderSkeleton;
 	private TiledPlatform kneeMovingPlat;
@@ -392,42 +394,6 @@ public class AlphaScreen extends Screen {
 			// domeSliceX, 0 ));
 		}
 
-		/*
-		 * Entity bg_1_0 = new Entity( "bg_1_0", new Vector2( 0, 720 ), null,
-		 * null, false ); Entity bg_1_1 = new Entity( "bg_1_1", new Vector2( 0,
-		 * 720 ), null, null, false ); for ( int i = 0; i < 2; i++ ) {
-		 * screwBodyDef = new BodyDef( ); screwBodyDef.type =
-		 * BodyType.KinematicBody; screwBodyDef.position.set( 0, 0 );
-		 * screwBodyDef.fixedRotation = true; body = level.world.createBody(
-		 * screwBodyDef ); screwShape = new CircleShape( );
-		 * screwShape.setRadius( 64 * Util.PIXEL_TO_BOX ); screwFixture = new
-		 * FixtureDef( ); screwFixture.filter.categoryBits =
-		 * Util.CATEGORY_IGNORE; screwFixture.filter.maskBits =
-		 * Util.CATEGORY_NOTHING; screwFixture.shape = screwShape;
-		 * screwFixture.isSensor = true; body.createFixture( screwFixture );
-		 * body.setUserData( this ); switch ( i ) { case 0: bg_1_0 = new Entity(
-		 * "bg_1_0", new Vector2( 0, 720 ), null, body, false ); break; case 1:
-		 * bg_1_1 = new Entity( "bg_1_1", new Vector2( 0, 720 ), null, body,
-		 * false ); break; } } TextureRegion tex1 =
-		 * WereScrewedGame.manager.getAtlas( "bgCloud" ) .findRegion( "bgCloud1"
-		 * ); TextureRegion tex2 = WereScrewedGame.manager.getAtlas( "bgCloud" )
-		 * .findRegion( "bgCloud2" ); bg_1_0.sprite = bg_1_0.constructSprite(
-		 * tex1 ); bg_1_0.sprite.setOrigin( bg_1_0.sprite.getWidth( ) / 4.0f,
-		 * bg_1_0.sprite.getHeight( ) / 2.0f ); bg_1_0.offset = new Vector2(
-		 * bg_1_0.sprite.getOriginX( ), bg_1_0.sprite.getOriginY( ) ); //
-		 * bg_1_0.sprite.setScale( 1.05f, 1.1f ); bg_1_0.setMoverAtCurrentState(
-		 * new ParallaxMover( new Vector2( 512, 1530 ), new Vector2( 512, -512
-		 * ), 0.0002f, .5f, level.camera, false, LinearAxis.VERTICAL ) );
-		 * bg_1_1.sprite = bg_1_1.constructSprite( tex2 );
-		 * bg_1_1.sprite.setOrigin( bg_1_1.sprite.getWidth( ) / 4.0f,
-		 * bg_1_1.sprite.getHeight( ) / 2.0f ); bg_1_1.offset = new Vector2(
-		 * bg_1_1.sprite.getOriginX( ), bg_1_1.sprite.getOriginY( ) ); //
-		 * bg_1_1.sprite.setScale( 1.05f, 1.1f ); bg_1_1.setMoverAtCurrentState(
-		 * new ParallaxMover( new Vector2( 512, 1530 ), new Vector2( 512, -512
-		 * ), 0.0002f, 1f, level.camera, false, LinearAxis.VERTICAL ) );
-		 * level.backgroundRootSkeleton.addLooseEntity( bg_1_0 );
-		 * level.backgroundRootSkeleton.addLooseEntity( bg_1_1 );
-		 */
 	}
 
 	private void thighDecals( Skeleton thighSkeleton ) {
@@ -528,17 +494,16 @@ public class AlphaScreen extends Screen {
 
 		powerScrew3 = ( Screw ) LevelFactory.entities.get( "powerScrew3" );
 		powerScrew4 = ( Screw ) LevelFactory.entities.get( "powerScrew4" );
+		
+		powerSwitch1 = (PowerSwitch) LevelFactory.entities.get( "powerSwitch1" );
+		powerSwitch2 = (PowerSwitch) LevelFactory.entities.get( "powerSwitch2" );
 	}
 
 	private void powerScrewupdate( ) {
 
-		if ( ( powerScrew1.getDepth( ) == powerScrew1.getMaxDepth( ) )
-				&& ( powerScrew2.getDepth( ) == powerScrew2.getMaxDepth( ) ) ) {
+		if (  powerSwitch1.isTurnedOn( )  && powerSwitch2.isTurnedOn( ) ) {
 			kneeMovingPlat.setActive( true );
 
-			footSkeleton.body.setType( BodyType.KinematicBody );
-			kneeSkeleton.body.setType( BodyType.KinematicBody );
-			thighSkeleton.body.setType( BodyType.KinematicBody );
 
 			if ( hipSkeleton.currentMover( ) == null ) {
 				hipSkeleton.addMover( new RotateTweenMover( hipSkeleton, 3f,
