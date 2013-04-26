@@ -1053,6 +1053,10 @@ public class Entity implements GleedLoadable {
 	}
 
 	public void addFGDecalBack( Sprite s, Vector2 offset ) {
+		if ( s == null ) {
+			throw new RuntimeException(
+					"Entity.addFGDecal(): Adding null sprite" );
+		}
 		fgDecals.add( 0, s );
 		fgDecalOffsets.add( 0, offset );
 		fgDecalAngles.add( 0, 0.0f );
@@ -1060,6 +1064,10 @@ public class Entity implements GleedLoadable {
 	}
 
 	public void addBGDecalBack( Sprite s, Vector2 offset ) {
+		if ( s == null ) {
+			throw new RuntimeException(
+					"Entity.addFGDecal(): Adding null sprite" );
+		}
 		bgDecals.add( 0, s );
 		bgDecalOffsets.add( 0, offset );
 		bgDecalAngles.add( 0, 0.0f );

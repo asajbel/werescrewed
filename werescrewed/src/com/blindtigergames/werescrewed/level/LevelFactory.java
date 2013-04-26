@@ -21,6 +21,7 @@ import com.blindtigergames.werescrewed.checkpoints.ProgressManager;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityCategory;
 import com.blindtigergames.werescrewed.entity.EntityDef;
+import com.blindtigergames.werescrewed.entity.EntityType;
 import com.blindtigergames.werescrewed.entity.PolySprite;
 import com.blindtigergames.werescrewed.entity.RobotState;
 import com.blindtigergames.werescrewed.entity.RootSkeleton;
@@ -285,7 +286,11 @@ public class LevelFactory {
 						}
 						decal.setScale( size.x, size.y );
 						out.addFGDecal( decal, decalPosition, r );
-						addForeGroundEntity( out );
+						if ( out.getEntityType( ) == EntityType.SKELETON ) {
+							addForeGroundSkeleton( ( Skeleton ) out );
+						} else {
+							addForeGroundEntity( out );
+						}
 						Gdx.app.log(
 								"LoadEntity",
 								"Creating foreground decal for [" + item.name
@@ -323,7 +328,11 @@ public class LevelFactory {
 						}
 						decal.setScale( size.x, size.y );
 						out.addBGDecal( decal, decalPosition, r );
-						addBackGroundEntity( out );
+						if ( out.getEntityType( ) == EntityType.SKELETON ) {
+							addBackGroundSkeleton( ( Skeleton ) out );
+						}else {
+							addBackGroundEntity( out );
+						}
 						Gdx.app.log(
 								"LoadEntity",
 								"Creating background decal for [" + item.name
@@ -560,11 +569,19 @@ public class LevelFactory {
 			decal.setScale( scale.x, scale.y );
 			if ( item.props.containsKey( "decal" ) ) {
 				target.addFGDecal( decal, pos, rot );
-				addForeGroundEntity( target );
+				if ( target.getEntityType( ) == EntityType.SKELETON ) {
+					addForeGroundSkeleton( ( Skeleton ) target );
+				} else{
+					addForeGroundEntity( target );
+				}
 			} else {
 				Gdx.app.log( "level factory", "hello world" );
 				target.addBGDecal( decal, pos, rot );
-				addBackGroundEntity( target );
+				if ( target.getEntityType( ) == EntityType.SKELETON ) {
+					addBackGroundSkeleton( ( Skeleton ) target );
+				} else {
+					addBackGroundEntity( target );
+				}
 			}
 			Gdx.app.log( "LoadDecal", "Attaching decal " + item.name + " to "
 					+ targetName + "." );

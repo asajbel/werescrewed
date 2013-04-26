@@ -34,8 +34,9 @@ public class StructureScrew extends Screw {
 	private float alpha = 0.0f;
 	private Entity screwInterface;
 	private SimpleFrameAnimator screwUIAnimator;
-	private int startFrame = 15;
-	private int lastMotionFrame = 14;
+	private final int startFrame = 15;
+	private final int lastMotionFrame = 14;
+	private final int animeSteps = 12;
 	
 	private static TextureRegion screwTex = WereScrewedGame.manager.getAtlas( "common-textures" ).findRegion( "flat_head_circular" );
 
@@ -256,7 +257,7 @@ public class StructureScrew extends Screw {
 				} else if ( screwInterface.sprite.getAnimator( ).getFrame( ) > lastMotionFrame ) {
 					screwUIAnimator.speed( 0 );
 					if ( depth >= 0 ) {
-						int value = ( int ) ( ( ( float ) depth / ( float ) maxDepth ) * 10f )
+						int value = ( int ) ( ( ( float ) depth / ( float ) maxDepth ) * animeSteps )
 								+ startFrame;
 						screwUIAnimator.setFrame( value );
 					}
