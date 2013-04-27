@@ -586,8 +586,8 @@ public class AlphaScreen extends Screen {
 			chestSteamTriggered = true;
 			EventTriggerBuilder etb = new EventTriggerBuilder( level.world );
 			
-			etb.name( "chestPuzzle_event_anchor").rectangle( ).height( 300f ).width( 300f )
-			.position(new Vector2( 544, 3904));
+			etb.name( "chestPuzzle_event_anchor").rectangle( ).height( 400f ).width( 600f )
+			.position(new Vector2( 570, 4000));
 			
 			Anchor anchor = chestPuzzleScrew2.anchors.get( 0 );
 			etb.beginAction(  new AnchorActivateAction( anchor ) );
@@ -596,14 +596,15 @@ public class AlphaScreen extends Screen {
 			EventTrigger et = etb.repeatable( ).twoPlayersToActivate( ).twoPlayersToDeactivate( ).build( );
 			chestSkeleton.addEventTrigger( et );
 			
-			Steam steam = new Steam( "steamChest1", new Vector2( 576, 3900 ), 25, 120, level.world );
+			Steam steam = new Steam( "steamChest1", new Vector2( 576, 4000 ), 25, 225, level.world );
 			chestSkeleton.addSteam(steam);
 			
 			
 			
-//			Steam steam2 = new Steam( "steamChest2", new Vector2( 512, 4064 ), 25, 120, level.world );
-//			steam2.body.setTransform( steam2.getPosition( ), 45 * Util.DEG_TO_RAD );
-//			chestSkeleton.addSteam(steam2);
+			
+			Steam steam2 = new Steam( "steamChest2", new Vector2( 350, 4410 ), 25, 120, level.world );
+//			steam2.setLocalRot(  270 * Util.DEG_TO_RAD );
+			chestSkeleton.addSteam(steam2);
 			
 			
 		}
