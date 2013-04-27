@@ -166,6 +166,7 @@ public class Level {
 	}
 
 	private void drawBGStuff( SpriteBatch batch, float deltaTime ) {
+		int i =0;
 		for ( Skeleton skel : skelBGList ) {
 			if ( skel.isActive( ) ) {
 				if ( skel.bgSprite != null ) {
@@ -179,7 +180,11 @@ public class Level {
 					// {
 					skel.bgSprite.draw( batch );
 					// }
+					Gdx.app.log( "drawbgstuff", skel.name + " : " + i);
+				} else {
+					Gdx.app.log( "drawbgstuff", skel.name + " : " + i);
 				}
+				i++;
 				skel.drawBGDecals( batch, camera );
 			}
 		}
@@ -188,7 +193,7 @@ public class Level {
 				{
 					e.drawBGDecals( batch, camera );
 				}
-			}
+			} 
 		}
 	}
 
