@@ -89,7 +89,7 @@ public class Level {
 	}
 
 	public void update( float deltaTime ) {
-		camera.update( );
+		//camera.update( );
 
 		if ( player1 != null )
 			player1.update( deltaTime );

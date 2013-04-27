@@ -649,6 +649,15 @@ public class ParticleEmitter {
 		rotationValue.setLow( angleDeg - diffLowHalf, angleDeg + diffLowHalf );
 	}
 
+	public void setOffset(float xOffset, float yOffset){
+		xOffsetValue.active = true;
+		yOffsetValue.active = true; 
+		float xDiffLowHalf = xOffsetValue.getLowMax( ) - xOffsetValue.getLowMin( );
+		float yDiffLowHalf = yOffsetValue.getLowMax( ) - yOffsetValue.getLowMin( );
+		xOffsetValue.setLow( xOffset - xDiffLowHalf, xOffset + xDiffLowHalf );
+		yOffsetValue.setLow( yOffset - yDiffLowHalf, yOffset + yDiffLowHalf );
+	}
+	
 	public ScaledNumericValue getEmission () {
 		return emissionValue;
 	}

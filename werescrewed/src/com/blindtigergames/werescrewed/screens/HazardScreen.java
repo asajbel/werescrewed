@@ -21,6 +21,7 @@ import com.blindtigergames.werescrewed.collisionManager.MyContactListener;
 import com.blindtigergames.werescrewed.debug.SBox2DDebugRenderer;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityDef;
+import com.blindtigergames.werescrewed.entity.RobotState;
 import com.blindtigergames.werescrewed.entity.Skeleton;
 import com.blindtigergames.werescrewed.entity.action.AnchorActivateAction;
 import com.blindtigergames.werescrewed.entity.action.AnchorDeactivateAction;
@@ -211,9 +212,14 @@ public class HazardScreen implements com.badlogic.gdx.Screen {
 	 * Initializes steam for testing, not on a skeleton at the moment
 	 */
 	private void initParticleEffect( ) {
-		testSteam = new Steam( "testSteam", new Vector2( -100f, 20f ), null,
-				null, false, 25, 50, world );
-
+		testSteam = new Steam( "testSteam", new Vector2( 2000f, 100f ), 25, 100, world );
+		Skeleton steamSkel = new Skeleton("steam", new Vector2(2000f, 100f), null, world);
+		rootSkeleton.addSkeleton( steamSkel );
+		
+		steamSkel.addMover( new RotateTweenMover( steamSkel, 3f,
+						-Util.PI / 4, 1f, true ), RobotState.IDLE);
+		
+		steamSkel.addSteam(testSteam);
 		// Create anchor with start position and buffer as parameters
 		Anchor testAnchor = new Anchor( new Vector2( 600f, 200f ), new Vector2(
 				-100f, 100f ) );
@@ -349,7 +355,7 @@ public class HazardScreen implements com.badlogic.gdx.Screen {
 		progressManager.draw( batch, deltaTime );
 		fire.draw( batch, deltaTime );
 		//elec.draw( batch, deltaTime );
-		testSteam.draw( batch, deltaTime );
+		//testSteam.draw( batch, deltaTime );
 		player1.draw( batch, deltaTime );
 		player2.draw( batch, deltaTime );
 		testPipe.draw( batch, deltaTime );

@@ -18,6 +18,9 @@ public enum PlayerAnim{
 	,FALL_IDLE("fall_idle", LoopBehavior.LOOP, PlayerAnim.FALL_BEGIN )
 	,DEATH_BEGIN("death_begin", LoopBehavior.STOP )
 	,DEATH("death_idle", PlayerAnim.DEATH_BEGIN)
+	,WAVE("wave")
+	,SCREWING_HANG("screwing_hang")
+	,SCREWING_GROUND("screwing_ground")
 	;
 	String text;
 	PlayerAnim start = null; 

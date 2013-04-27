@@ -2,6 +2,11 @@ package com.blindtigergames.werescrewed.screens;
 
 import java.util.ArrayList;
 
+import aurelienribon.tweenengine.Tween;
+import aurelienribon.tweenengine.TweenEquation;
+import aurelienribon.tweenengine.TweenEquations;
+import aurelienribon.tweenengine.TweenManager;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.controllers.Controller;
@@ -10,10 +15,13 @@ import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.blindtigergames.werescrewed.entity.platforms.Platform;
+import com.blindtigergames.werescrewed.entity.tween.PlatformAccessor;
 import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.gui.Button;
 import com.blindtigergames.werescrewed.gui.Button.ButtonHandler;
+import com.blindtigergames.werescrewed.gui.ButtonTweenAccessor;
 import com.blindtigergames.werescrewed.gui.Label;
 import com.blindtigergames.werescrewed.input.MyControllerListener;
 
@@ -40,9 +48,12 @@ class MainMenuScreen implements com.badlogic.gdx.Screen {
 	private MyControllerListener controllerListener;
 	private int controllerTimer;
 	private int controllerMax = 10;
+	
+	TweenManager manager = new TweenManager( );
 
 
 	public MainMenuScreen( ) {
+		Tween.registerAccessor( Button.class, new ButtonTweenAccessor( ) );
 		
 	}
 
@@ -52,6 +63,7 @@ class MainMenuScreen implements com.badlogic.gdx.Screen {
 		Gdx.gl.glClearColor( 0.5f, 0.5f, 0.5f, 1f );
 		Gdx.gl.glClearColor( 0.0f, 0.0f, 0.0f, 1f );
 		Gdx.gl.glClear( GL10.GL_COLOR_BUFFER_BIT );
+		manager.update( delta );
 		batch.begin( );
 		batch.draw(logo, 0, 0);
 		//batch.draw(logo, -128, 0);
@@ -81,6 +93,9 @@ class MainMenuScreen implements com.badlogic.gdx.Screen {
 		
 		if ( Gdx.input.isKeyPressed( Keys.A ) ) {
 			ScreenManager.getInstance( ).show( ScreenType.LOADING_1);
+		}
+		if ( Gdx.input.isKeyPressed( Keys.H ) ) {
+			ScreenManager.getInstance( ).show( ScreenType.HAZARD);
 		}
 		
 		
@@ -123,7 +138,7 @@ class MainMenuScreen implements com.badlogic.gdx.Screen {
 		
 		headingLabel.setX( centerX - headingLabel.getWidth( ) / 2 );
 		headingLabel.setY( centerY + 7 * lineHeight );
-		storyButton.setX( centerX  - storyButton.getWidth( )/2);
+		storyButton.setX(-200 );//centerX  - storyButton.getWidth( )/2
 		storyButton.setY( centerY + 5 * lineHeight);
 		levelSelectButton.setX( centerX - levelSelectButton.getWidth( )/2 );
 		levelSelectButton.setY( centerY + 4 * lineHeight);
@@ -133,6 +148,8 @@ class MainMenuScreen implements com.badlogic.gdx.Screen {
 		// imoverButton.setY( centerY - lineHeight );
 		exitButton.setX( centerX - exitButton.getWidth( ) / 2 );
 		exitButton.setY( centerY + 2 * lineHeight );
+		
+		Tween.to( storyButton, ButtonTweenAccessor.POSITION_X, 1 ).ease( TweenEquations.easeInBounce ).target( centerX  - storyButton.getWidth( )/2 ).start( manager );
 	}
 	
 	/**
