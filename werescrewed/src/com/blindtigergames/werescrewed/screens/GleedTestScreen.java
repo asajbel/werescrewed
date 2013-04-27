@@ -128,10 +128,8 @@ public class GleedTestScreen extends Screen {
 
 		// 1680, 750
 
-		testSteam = new Steam( "testSteam", new Vector2( 2913, 2770f ), null,
-				null, false, 25, 50, level.world );
-		steam2 = new Steam( "steam2", new Vector2( 1680, 780 ), null, null,
-				false, 25, 50, level.world );
+		testSteam = new Steam( "testSteam", new Vector2( 2913, 2770f ), 25, 50, level.world );
+		steam2 = new Steam( "steam2", new Vector2( 1680, 780 ), 25, 50, level.world );
 		// // Create anchor with start position and buffer as parameters
 		// Anchor testAnchor = new Anchor( new Vector2(
 		// skel.getPositionPixel( ).x, skel.getPositionPixel( ).y ),

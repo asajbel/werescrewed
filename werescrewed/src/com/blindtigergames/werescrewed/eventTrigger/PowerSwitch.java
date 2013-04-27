@@ -83,6 +83,10 @@ public class PowerSwitch extends EventTrigger{
 		}
 		
 	}
+	
+	public boolean isTurnedOn(){
+		return state;
+	}
 }
 
 
