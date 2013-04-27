@@ -14772,8 +14772,8 @@
                     </TintColor>
                     <FlipHorizontally>false</FlipHorizontally>
                     <FlipVertically>false</FlipVertically>
-                    <texture_filename>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\powerswitch.png</texture_filename>
-                    <asset_name>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\powerswitch</asset_name>
+                    <texture_filename>powerswitch.png</texture_filename>
+                    <asset_name>powerswitch</asset_name>
                     <Origin>
                         <X>32</X>
                         <Y>32</Y>
@@ -14806,8 +14806,8 @@
                     </TintColor>
                     <FlipHorizontally>false</FlipHorizontally>
                     <FlipVertically>false</FlipVertically>
-                    <texture_filename>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\powerswitch.png</texture_filename>
-                    <asset_name>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\powerswitch</asset_name>
+                    <texture_filename>powerswitch.png</texture_filename>
+                    <asset_name>powerswitch</asset_name>
                     <Origin>
                         <X>32</X>
                         <Y>32</Y>
@@ -14840,8 +14840,8 @@
                     </TintColor>
                     <FlipHorizontally>false</FlipHorizontally>
                     <FlipVertically>false</FlipVertically>
-                    <texture_filename>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\powerswitch.png</texture_filename>
-                    <asset_name>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\powerswitch</asset_name>
+                    <texture_filename>powerswitch.png</texture_filename>
+                    <asset_name>powerswitch</asset_name>
                     <Origin>
                         <X>0</X>
                         <Y>0</Y>
@@ -14874,8 +14874,8 @@
                     </TintColor>
                     <FlipHorizontally>false</FlipHorizontally>
                     <FlipVertically>false</FlipVertically>
-                    <texture_filename>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\powerswitch.png</texture_filename>
-                    <asset_name>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\powerswitch</asset_name>
+                    <texture_filename>powerswitch.png</texture_filename>
+                    <asset_name>powerswitch</asset_name>
                     <Origin>
                         <X>0</X>
                         <Y>0</Y>
@@ -14908,8 +14908,8 @@
                     </TintColor>
                     <FlipHorizontally>false</FlipHorizontally>
                     <FlipVertically>false</FlipVertically>
-                    <texture_filename>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\powerswitch.png</texture_filename>
-                    <asset_name>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\powerswitch</asset_name>
+                    <texture_filename>powerswitch.png</texture_filename>
+                    <asset_name>powerswitch</asset_name>
                     <Origin>
                         <X>32</X>
                         <Y>32</Y>
@@ -14942,8 +14942,8 @@
                     </TintColor>
                     <FlipHorizontally>false</FlipHorizontally>
                     <FlipVertically>false</FlipVertically>
-                    <texture_filename>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\powerswitch.png</texture_filename>
-                    <asset_name>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\powerswitch</asset_name>
+                    <texture_filename>powerswitch.png</texture_filename>
+                    <asset_name>powerswitch</asset_name>
                     <Origin>
                         <X>32</X>
                         <Y>32</Y>
@@ -14976,8 +14976,8 @@
                     </TintColor>
                     <FlipHorizontally>false</FlipHorizontally>
                     <FlipVertically>false</FlipVertically>
-                    <texture_filename>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\powerswitch.png</texture_filename>
-                    <asset_name>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\powerswitch</asset_name>
+                    <texture_filename>powerswitch.png</texture_filename>
+                    <asset_name>powerswitch</asset_name>
                     <Origin>
                         <X>32</X>
                         <Y>32</Y>
@@ -15010,8 +15010,8 @@
                     </TintColor>
                     <FlipHorizontally>false</FlipHorizontally>
                     <FlipVertically>false</FlipVertically>
-                    <texture_filename>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\powerswitch.png</texture_filename>
-                    <asset_name>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\powerswitch</asset_name>
+                    <texture_filename>powerswitch.png</texture_filename>
+                    <asset_name>powerswitch</asset_name>
                     <Origin>
                         <X>32</X>
                         <Y>32</Y>
@@ -15390,13 +15390,1687 @@
                         <Y>32</Y>
                     </Origin>
                 </Item>
+                <Item xsi:type="CircleItem" Name="rivet" Visible="true">
+                    <Position>
+                        <X>-418</X>
+                        <Y>-292</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="definition" Type="string" Description="">
+                            <string>decal</string>
+                        </Property>
+                        <Property Name="target" Type="string" Description="">
+                            <string>footWall2</string>
+                        </Property>
+                        <Property Name="atlas" Type="string" Description="">
+                            <string>common-textures</string>
+                        </Property>
+                        <Property Name="image" Type="string" Description="">
+                            <string>rivet</string>
+                        </Property>
+                        <Property Name="decal" Type="string" Description="">
+                            <string />
+                        </Property>
+                    </CustomProperties>
+                    <Radius>22</Radius>
+                    <FillColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </FillColor>
+                </Item>
+                <Item xsi:type="CircleItem" Name="Copy of rivet" Visible="true">
+                    <Position>
+                        <X>-405</X>
+                        <Y>-489</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="definition" Type="string" Description="">
+                            <string>decal</string>
+                        </Property>
+                        <Property Name="target" Type="string" Description="">
+                            <string>footWall2</string>
+                        </Property>
+                        <Property Name="atlas" Type="string" Description="">
+                            <string>common-textures</string>
+                        </Property>
+                        <Property Name="image" Type="string" Description="">
+                            <string>rivet</string>
+                        </Property>
+                        <Property Name="decal" Type="string" Description="">
+                            <string />
+                        </Property>
+                    </CustomProperties>
+                    <Radius>22</Radius>
+                    <FillColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </FillColor>
+                </Item>
+                <Item xsi:type="CircleItem" Name="Copy of Copy of rivet" Visible="true">
+                    <Position>
+                        <X>-390</X>
+                        <Y>-690</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="definition" Type="string" Description="">
+                            <string>decal</string>
+                        </Property>
+                        <Property Name="target" Type="string" Description="">
+                            <string>footWall2</string>
+                        </Property>
+                        <Property Name="atlas" Type="string" Description="">
+                            <string>common-textures</string>
+                        </Property>
+                        <Property Name="image" Type="string" Description="">
+                            <string>rivet</string>
+                        </Property>
+                        <Property Name="decal" Type="string" Description="">
+                            <string />
+                        </Property>
+                    </CustomProperties>
+                    <Radius>22</Radius>
+                    <FillColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </FillColor>
+                </Item>
+                <Item xsi:type="CircleItem" Name="Copy of Copy of Copy of rivet" Visible="true">
+                    <Position>
+                        <X>-382</X>
+                        <Y>-902</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="definition" Type="string" Description="">
+                            <string>decal</string>
+                        </Property>
+                        <Property Name="target" Type="string" Description="">
+                            <string>footWall2</string>
+                        </Property>
+                        <Property Name="atlas" Type="string" Description="">
+                            <string>common-textures</string>
+                        </Property>
+                        <Property Name="image" Type="string" Description="">
+                            <string>rivet</string>
+                        </Property>
+                        <Property Name="decal" Type="string" Description="">
+                            <string />
+                        </Property>
+                    </CustomProperties>
+                    <Radius>22</Radius>
+                    <FillColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </FillColor>
+                </Item>
+                <Item xsi:type="CircleItem" Name="Copy of Copy of Copy of Copy of rivet" Visible="true">
+                    <Position>
+                        <X>-362</X>
+                        <Y>-1149</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="definition" Type="string" Description="">
+                            <string>decal</string>
+                        </Property>
+                        <Property Name="target" Type="string" Description="">
+                            <string>footWall2</string>
+                        </Property>
+                        <Property Name="atlas" Type="string" Description="">
+                            <string>common-textures</string>
+                        </Property>
+                        <Property Name="image" Type="string" Description="">
+                            <string>rivet</string>
+                        </Property>
+                        <Property Name="decal" Type="string" Description="">
+                            <string />
+                        </Property>
+                    </CustomProperties>
+                    <Radius>22</Radius>
+                    <FillColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </FillColor>
+                </Item>
+                <Item xsi:type="CircleItem" Name="Copy of Copy of Copy of Copy of Copy of rivet" Visible="true">
+                    <Position>
+                        <X>-356</X>
+                        <Y>-1322</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="definition" Type="string" Description="">
+                            <string>decal</string>
+                        </Property>
+                        <Property Name="target" Type="string" Description="">
+                            <string>footWall2</string>
+                        </Property>
+                        <Property Name="atlas" Type="string" Description="">
+                            <string>common-textures</string>
+                        </Property>
+                        <Property Name="image" Type="string" Description="">
+                            <string>rivet</string>
+                        </Property>
+                        <Property Name="decal" Type="string" Description="">
+                            <string />
+                        </Property>
+                    </CustomProperties>
+                    <Radius>22</Radius>
+                    <FillColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </FillColor>
+                </Item>
+                <Item xsi:type="CircleItem" Name="Copy(0) of rivet" Visible="true">
+                    <Position>
+                        <X>-970</X>
+                        <Y>-458</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="definition" Type="string" Description="">
+                            <string>decal</string>
+                        </Property>
+                        <Property Name="target" Type="string" Description="">
+                            <string>footWall2</string>
+                        </Property>
+                        <Property Name="atlas" Type="string" Description="">
+                            <string>common-textures</string>
+                        </Property>
+                        <Property Name="image" Type="string" Description="">
+                            <string>rivet</string>
+                        </Property>
+                        <Property Name="decal" Type="string" Description="">
+                            <string />
+                        </Property>
+                    </CustomProperties>
+                    <Radius>22</Radius>
+                    <FillColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </FillColor>
+                </Item>
+                <Item xsi:type="CircleItem" Name="Copy of Copy(0) of rivet" Visible="true">
+                    <Position>
+                        <X>-1207</X>
+                        <Y>-453</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="definition" Type="string" Description="">
+                            <string>decal</string>
+                        </Property>
+                        <Property Name="target" Type="string" Description="">
+                            <string>footWall2</string>
+                        </Property>
+                        <Property Name="atlas" Type="string" Description="">
+                            <string>common-textures</string>
+                        </Property>
+                        <Property Name="image" Type="string" Description="">
+                            <string>rivet</string>
+                        </Property>
+                        <Property Name="decal" Type="string" Description="">
+                            <string />
+                        </Property>
+                    </CustomProperties>
+                    <Radius>22</Radius>
+                    <FillColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </FillColor>
+                </Item>
+                <Item xsi:type="CircleItem" Name="Copy of Copy of Copy(0) of rivet" Visible="true">
+                    <Position>
+                        <X>-1337</X>
+                        <Y>-408</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="definition" Type="string" Description="">
+                            <string>decal</string>
+                        </Property>
+                        <Property Name="target" Type="string" Description="">
+                            <string>footWall2</string>
+                        </Property>
+                        <Property Name="atlas" Type="string" Description="">
+                            <string>common-textures</string>
+                        </Property>
+                        <Property Name="image" Type="string" Description="">
+                            <string>rivet</string>
+                        </Property>
+                        <Property Name="decal" Type="string" Description="">
+                            <string />
+                        </Property>
+                    </CustomProperties>
+                    <Radius>22</Radius>
+                    <FillColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </FillColor>
+                </Item>
+                <Item xsi:type="CircleItem" Name="rivet2" Visible="true">
+                    <Position>
+                        <X>-1445</X>
+                        <Y>-285</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="definition" Type="string" Description="">
+                            <string>decal</string>
+                        </Property>
+                        <Property Name="target" Type="string" Description="">
+                            <string>footWall2</string>
+                        </Property>
+                        <Property Name="atlas" Type="string" Description="">
+                            <string>common-textures</string>
+                        </Property>
+                        <Property Name="image" Type="string" Description="">
+                            <string>rivet</string>
+                        </Property>
+                        <Property Name="decal" Type="string" Description="">
+                            <string />
+                        </Property>
+                    </CustomProperties>
+                    <Radius>22</Radius>
+                    <FillColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </FillColor>
+                </Item>
+                <Item xsi:type="CircleItem" Name="Copy of rivet2" Visible="true">
+                    <Position>
+                        <X>-1440</X>
+                        <Y>-41</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="definition" Type="string" Description="">
+                            <string>decal</string>
+                        </Property>
+                        <Property Name="target" Type="string" Description="">
+                            <string>footWall2</string>
+                        </Property>
+                        <Property Name="atlas" Type="string" Description="">
+                            <string>common-textures</string>
+                        </Property>
+                        <Property Name="image" Type="string" Description="">
+                            <string>rivet</string>
+                        </Property>
+                        <Property Name="decal" Type="string" Description="">
+                            <string />
+                        </Property>
+                    </CustomProperties>
+                    <Radius>22</Radius>
+                    <FillColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </FillColor>
+                </Item>
+                <Item xsi:type="CircleItem" Name="Copy of Copy of rivet2" Visible="true">
+                    <Position>
+                        <X>-984</X>
+                        <Y>-702</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="definition" Type="string" Description="">
+                            <string>decal</string>
+                        </Property>
+                        <Property Name="target" Type="string" Description="">
+                            <string>footWall2</string>
+                        </Property>
+                        <Property Name="atlas" Type="string" Description="">
+                            <string>common-textures</string>
+                        </Property>
+                        <Property Name="image" Type="string" Description="">
+                            <string>rivet</string>
+                        </Property>
+                        <Property Name="decal" Type="string" Description="">
+                            <string />
+                        </Property>
+                    </CustomProperties>
+                    <Radius>22</Radius>
+                    <FillColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </FillColor>
+                </Item>
+                <Item xsi:type="CircleItem" Name="rivet3" Visible="true">
+                    <Position>
+                        <X>-1001</X>
+                        <Y>-927</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="definition" Type="string" Description="">
+                            <string>decal</string>
+                        </Property>
+                        <Property Name="target" Type="string" Description="">
+                            <string>footWall2</string>
+                        </Property>
+                        <Property Name="atlas" Type="string" Description="">
+                            <string>common-textures</string>
+                        </Property>
+                        <Property Name="image" Type="string" Description="">
+                            <string>rivet</string>
+                        </Property>
+                        <Property Name="decal" Type="string" Description="">
+                            <string />
+                        </Property>
+                    </CustomProperties>
+                    <Radius>22</Radius>
+                    <FillColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </FillColor>
+                </Item>
+                <Item xsi:type="CircleItem" Name="Copy of rivet3" Visible="true">
+                    <Position>
+                        <X>-1021</X>
+                        <Y>-1169</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="definition" Type="string" Description="">
+                            <string>decal</string>
+                        </Property>
+                        <Property Name="target" Type="string" Description="">
+                            <string>footWall2</string>
+                        </Property>
+                        <Property Name="atlas" Type="string" Description="">
+                            <string>common-textures</string>
+                        </Property>
+                        <Property Name="image" Type="string" Description="">
+                            <string>rivet</string>
+                        </Property>
+                        <Property Name="decal" Type="string" Description="">
+                            <string />
+                        </Property>
+                    </CustomProperties>
+                    <Radius>22</Radius>
+                    <FillColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </FillColor>
+                </Item>
+                <Item xsi:type="CircleItem" Name="Copy of Copy of rivet3" Visible="true">
+                    <Position>
+                        <X>-1034</X>
+                        <Y>-1333</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="definition" Type="string" Description="">
+                            <string>decal</string>
+                        </Property>
+                        <Property Name="target" Type="string" Description="">
+                            <string>footWall2</string>
+                        </Property>
+                        <Property Name="atlas" Type="string" Description="">
+                            <string>common-textures</string>
+                        </Property>
+                        <Property Name="image" Type="string" Description="">
+                            <string>rivet</string>
+                        </Property>
+                        <Property Name="decal" Type="string" Description="">
+                            <string />
+                        </Property>
+                    </CustomProperties>
+                    <Radius>22</Radius>
+                    <FillColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </FillColor>
+                </Item>
+                <Item xsi:type="CircleItem" Name="Copy of Copy of Copy of rivet3" Visible="true">
+                    <Position>
+                        <X>-1189</X>
+                        <Y>-1338</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="definition" Type="string" Description="">
+                            <string>decal</string>
+                        </Property>
+                        <Property Name="target" Type="string" Description="">
+                            <string>footWall2</string>
+                        </Property>
+                        <Property Name="atlas" Type="string" Description="">
+                            <string>common-textures</string>
+                        </Property>
+                        <Property Name="image" Type="string" Description="">
+                            <string>rivet</string>
+                        </Property>
+                        <Property Name="decal" Type="string" Description="">
+                            <string />
+                        </Property>
+                    </CustomProperties>
+                    <Radius>22</Radius>
+                    <FillColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </FillColor>
+                </Item>
+                <Item xsi:type="CircleItem" Name="Copy of Copy of Copy of Copy of rivet3" Visible="true">
+                    <Position>
+                        <X>-1194</X>
+                        <Y>-1525</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="definition" Type="string" Description="">
+                            <string>decal</string>
+                        </Property>
+                        <Property Name="target" Type="string" Description="">
+                            <string>footWall2</string>
+                        </Property>
+                        <Property Name="atlas" Type="string" Description="">
+                            <string>common-textures</string>
+                        </Property>
+                        <Property Name="image" Type="string" Description="">
+                            <string>rivet</string>
+                        </Property>
+                        <Property Name="decal" Type="string" Description="">
+                            <string />
+                        </Property>
+                    </CustomProperties>
+                    <Radius>22</Radius>
+                    <FillColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </FillColor>
+                </Item>
+                <Item xsi:type="CircleItem" Name="Copy of Copy of Copy of Copy of Copy of rivet3" Visible="true">
+                    <Position>
+                        <X>-1195</X>
+                        <Y>-1708</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="definition" Type="string" Description="">
+                            <string>decal</string>
+                        </Property>
+                        <Property Name="target" Type="string" Description="">
+                            <string>footWall2</string>
+                        </Property>
+                        <Property Name="atlas" Type="string" Description="">
+                            <string>common-textures</string>
+                        </Property>
+                        <Property Name="image" Type="string" Description="">
+                            <string>rivet</string>
+                        </Property>
+                        <Property Name="decal" Type="string" Description="">
+                            <string />
+                        </Property>
+                    </CustomProperties>
+                    <Radius>22</Radius>
+                    <FillColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </FillColor>
+                </Item>
+                <Item xsi:type="CircleItem" Name="Copy of Copy of Copy of Copy of Copy of Copy of rivet3" Visible="true">
+                    <Position>
+                        <X>-1194</X>
+                        <Y>-1894</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="definition" Type="string" Description="">
+                            <string>decal</string>
+                        </Property>
+                        <Property Name="target" Type="string" Description="">
+                            <string>footWall2</string>
+                        </Property>
+                        <Property Name="atlas" Type="string" Description="">
+                            <string>common-textures</string>
+                        </Property>
+                        <Property Name="image" Type="string" Description="">
+                            <string>rivet</string>
+                        </Property>
+                        <Property Name="decal" Type="string" Description="">
+                            <string />
+                        </Property>
+                    </CustomProperties>
+                    <Radius>22</Radius>
+                    <FillColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </FillColor>
+                </Item>
+                <Item xsi:type="CircleItem" Name="Copy of Copy of Copy of Copy of Copy of Copy of Copy of rivet3" Visible="true">
+                    <Position>
+                        <X>-1195</X>
+                        <Y>-2084</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="definition" Type="string" Description="">
+                            <string>decal</string>
+                        </Property>
+                        <Property Name="target" Type="string" Description="">
+                            <string>footWall2</string>
+                        </Property>
+                        <Property Name="atlas" Type="string" Description="">
+                            <string>common-textures</string>
+                        </Property>
+                        <Property Name="image" Type="string" Description="">
+                            <string>rivet</string>
+                        </Property>
+                        <Property Name="decal" Type="string" Description="">
+                            <string />
+                        </Property>
+                    </CustomProperties>
+                    <Radius>22</Radius>
+                    <FillColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </FillColor>
+                </Item>
+                <Item xsi:type="CircleItem" Name="Copy of Copy of Copy of Copy of Copy of Copy of Copy of Copy of rivet3" Visible="true">
+                    <Position>
+                        <X>-1191</X>
+                        <Y>-2272</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="definition" Type="string" Description="">
+                            <string>decal</string>
+                        </Property>
+                        <Property Name="target" Type="string" Description="">
+                            <string>footWall2</string>
+                        </Property>
+                        <Property Name="atlas" Type="string" Description="">
+                            <string>common-textures</string>
+                        </Property>
+                        <Property Name="image" Type="string" Description="">
+                            <string>rivet</string>
+                        </Property>
+                        <Property Name="decal" Type="string" Description="">
+                            <string />
+                        </Property>
+                    </CustomProperties>
+                    <Radius>22</Radius>
+                    <FillColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </FillColor>
+                </Item>
+                <Item xsi:type="CircleItem" Name="Copy of Copy of Copy of Copy of Copy of Copy of Copy of Copy of Copy of rivet3" Visible="true">
+                    <Position>
+                        <X>-872</X>
+                        <Y>-2277</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="definition" Type="string" Description="">
+                            <string>decal</string>
+                        </Property>
+                        <Property Name="target" Type="string" Description="">
+                            <string>footWall2</string>
+                        </Property>
+                        <Property Name="atlas" Type="string" Description="">
+                            <string>common-textures</string>
+                        </Property>
+                        <Property Name="image" Type="string" Description="">
+                            <string>rivet</string>
+                        </Property>
+                        <Property Name="decal" Type="string" Description="">
+                            <string />
+                        </Property>
+                    </CustomProperties>
+                    <Radius>22</Radius>
+                    <FillColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </FillColor>
+                </Item>
+                <Item xsi:type="CircleItem" Name="Copy of Copy of Copy of Copy of Copy of Copy of Copy of Copy of Copy of Copy of rivet3" Visible="true">
+                    <Position>
+                        <X>-1021</X>
+                        <Y>-2275</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="definition" Type="string" Description="">
+                            <string>decal</string>
+                        </Property>
+                        <Property Name="target" Type="string" Description="">
+                            <string>footWall2</string>
+                        </Property>
+                        <Property Name="atlas" Type="string" Description="">
+                            <string>common-textures</string>
+                        </Property>
+                        <Property Name="image" Type="string" Description="">
+                            <string>rivet</string>
+                        </Property>
+                        <Property Name="decal" Type="string" Description="">
+                            <string />
+                        </Property>
+                    </CustomProperties>
+                    <Radius>22</Radius>
+                    <FillColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </FillColor>
+                </Item>
+                <Item xsi:type="CircleItem" Name="rivet4" Visible="true">
+                    <Position>
+                        <X>-462</X>
+                        <Y>-2282</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="definition" Type="string" Description="">
+                            <string>decal</string>
+                        </Property>
+                        <Property Name="target" Type="string" Description="">
+                            <string>footWall2</string>
+                        </Property>
+                        <Property Name="atlas" Type="string" Description="">
+                            <string>common-textures</string>
+                        </Property>
+                        <Property Name="image" Type="string" Description="">
+                            <string>rivet</string>
+                        </Property>
+                        <Property Name="decal" Type="string" Description="">
+                            <string />
+                        </Property>
+                    </CustomProperties>
+                    <Radius>22</Radius>
+                    <FillColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </FillColor>
+                </Item>
+                <Item xsi:type="CircleItem" Name="Copy of rivet4" Visible="true">
+                    <Position>
+                        <X>-189</X>
+                        <Y>-2275</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="definition" Type="string" Description="">
+                            <string>decal</string>
+                        </Property>
+                        <Property Name="target" Type="string" Description="">
+                            <string>footWall2</string>
+                        </Property>
+                        <Property Name="atlas" Type="string" Description="">
+                            <string>common-textures</string>
+                        </Property>
+                        <Property Name="image" Type="string" Description="">
+                            <string>rivet</string>
+                        </Property>
+                        <Property Name="decal" Type="string" Description="">
+                            <string />
+                        </Property>
+                    </CustomProperties>
+                    <Radius>22</Radius>
+                    <FillColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </FillColor>
+                </Item>
+                <Item xsi:type="CircleItem" Name="Copy of Copy of rivet4" Visible="true">
+                    <Position>
+                        <X>-182</X>
+                        <Y>-2089</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="definition" Type="string" Description="">
+                            <string>decal</string>
+                        </Property>
+                        <Property Name="target" Type="string" Description="">
+                            <string>footWall2</string>
+                        </Property>
+                        <Property Name="atlas" Type="string" Description="">
+                            <string>common-textures</string>
+                        </Property>
+                        <Property Name="image" Type="string" Description="">
+                            <string>rivet</string>
+                        </Property>
+                        <Property Name="decal" Type="string" Description="">
+                            <string />
+                        </Property>
+                    </CustomProperties>
+                    <Radius>22</Radius>
+                    <FillColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </FillColor>
+                </Item>
+                <Item xsi:type="CircleItem" Name="Copy of Copy of Copy of rivet4" Visible="true">
+                    <Position>
+                        <X>-181</X>
+                        <Y>-1893</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="definition" Type="string" Description="">
+                            <string>decal</string>
+                        </Property>
+                        <Property Name="target" Type="string" Description="">
+                            <string>footWall2</string>
+                        </Property>
+                        <Property Name="atlas" Type="string" Description="">
+                            <string>common-textures</string>
+                        </Property>
+                        <Property Name="image" Type="string" Description="">
+                            <string>rivet</string>
+                        </Property>
+                        <Property Name="decal" Type="string" Description="">
+                            <string />
+                        </Property>
+                    </CustomProperties>
+                    <Radius>22</Radius>
+                    <FillColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </FillColor>
+                </Item>
+                <Item xsi:type="CircleItem" Name="Copy of Copy of Copy of Copy of rivet4" Visible="true">
+                    <Position>
+                        <X>-183</X>
+                        <Y>-1706</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="definition" Type="string" Description="">
+                            <string>decal</string>
+                        </Property>
+                        <Property Name="target" Type="string" Description="">
+                            <string>footWall2</string>
+                        </Property>
+                        <Property Name="atlas" Type="string" Description="">
+                            <string>common-textures</string>
+                        </Property>
+                        <Property Name="image" Type="string" Description="">
+                            <string>rivet</string>
+                        </Property>
+                        <Property Name="decal" Type="string" Description="">
+                            <string />
+                        </Property>
+                    </CustomProperties>
+                    <Radius>22</Radius>
+                    <FillColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </FillColor>
+                </Item>
+                <Item xsi:type="CircleItem" Name="Copy of Copy of Copy of Copy of Copy of rivet4" Visible="true">
+                    <Position>
+                        <X>-183</X>
+                        <Y>-1530</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="definition" Type="string" Description="">
+                            <string>decal</string>
+                        </Property>
+                        <Property Name="target" Type="string" Description="">
+                            <string>footWall2</string>
+                        </Property>
+                        <Property Name="atlas" Type="string" Description="">
+                            <string>common-textures</string>
+                        </Property>
+                        <Property Name="image" Type="string" Description="">
+                            <string>rivet</string>
+                        </Property>
+                        <Property Name="decal" Type="string" Description="">
+                            <string />
+                        </Property>
+                    </CustomProperties>
+                    <Radius>22</Radius>
+                    <FillColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </FillColor>
+                </Item>
+                <Item xsi:type="CircleItem" Name="Copy of Copy of Copy of Copy of Copy of Copy of rivet4" Visible="true">
+                    <Position>
+                        <X>-188</X>
+                        <Y>-1340</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="definition" Type="string" Description="">
+                            <string>decal</string>
+                        </Property>
+                        <Property Name="target" Type="string" Description="">
+                            <string>footWall2</string>
+                        </Property>
+                        <Property Name="atlas" Type="string" Description="">
+                            <string>common-textures</string>
+                        </Property>
+                        <Property Name="image" Type="string" Description="">
+                            <string>rivet</string>
+                        </Property>
+                        <Property Name="decal" Type="string" Description="">
+                            <string />
+                        </Property>
+                    </CustomProperties>
+                    <Radius>22</Radius>
+                    <FillColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </FillColor>
+                </Item>
+                <Item xsi:type="CircleItem" Name="rivet5" Visible="true">
+                    <Position>
+                        <X>-1026</X>
+                        <Y>-2469</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="definition" Type="string" Description="">
+                            <string>decal</string>
+                        </Property>
+                        <Property Name="target" Type="string" Description="">
+                            <string>footWall2</string>
+                        </Property>
+                        <Property Name="atlas" Type="string" Description="">
+                            <string>common-textures</string>
+                        </Property>
+                        <Property Name="image" Type="string" Description="">
+                            <string>rivet</string>
+                        </Property>
+                        <Property Name="decal" Type="string" Description="">
+                            <string />
+                        </Property>
+                    </CustomProperties>
+                    <Radius>22</Radius>
+                    <FillColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </FillColor>
+                </Item>
+                <Item xsi:type="CircleItem" Name="Copy of rivet5" Visible="true">
+                    <Position>
+                        <X>-312</X>
+                        <Y>-2477</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="definition" Type="string" Description="">
+                            <string>decal</string>
+                        </Property>
+                        <Property Name="target" Type="string" Description="">
+                            <string>footWall2</string>
+                        </Property>
+                        <Property Name="atlas" Type="string" Description="">
+                            <string>common-textures</string>
+                        </Property>
+                        <Property Name="image" Type="string" Description="">
+                            <string>rivet</string>
+                        </Property>
+                        <Property Name="decal" Type="string" Description="">
+                            <string />
+                        </Property>
+                    </CustomProperties>
+                    <Radius>22</Radius>
+                    <FillColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </FillColor>
+                </Item>
+                <Item xsi:type="CircleItem" Name="Copy of Copy of rivet5" Visible="true">
+                    <Position>
+                        <X>-304</X>
+                        <Y>-2687</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="definition" Type="string" Description="">
+                            <string>decal</string>
+                        </Property>
+                        <Property Name="target" Type="string" Description="">
+                            <string>footWall2</string>
+                        </Property>
+                        <Property Name="atlas" Type="string" Description="">
+                            <string>common-textures</string>
+                        </Property>
+                        <Property Name="image" Type="string" Description="">
+                            <string>rivet</string>
+                        </Property>
+                        <Property Name="decal" Type="string" Description="">
+                            <string />
+                        </Property>
+                    </CustomProperties>
+                    <Radius>22</Radius>
+                    <FillColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </FillColor>
+                </Item>
+                <Item xsi:type="CircleItem" Name="Copy of Copy of Copy of rivet5" Visible="true">
+                    <Position>
+                        <X>-1046</X>
+                        <Y>-2697</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="definition" Type="string" Description="">
+                            <string>decal</string>
+                        </Property>
+                        <Property Name="target" Type="string" Description="">
+                            <string>footWall2</string>
+                        </Property>
+                        <Property Name="atlas" Type="string" Description="">
+                            <string>common-textures</string>
+                        </Property>
+                        <Property Name="image" Type="string" Description="">
+                            <string>rivet</string>
+                        </Property>
+                        <Property Name="decal" Type="string" Description="">
+                            <string />
+                        </Property>
+                    </CustomProperties>
+                    <Radius>22</Radius>
+                    <FillColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </FillColor>
+                </Item>
+                <Item xsi:type="CircleItem" Name="Copy of Copy of Copy of Copy of rivet5" Visible="true">
+                    <Position>
+                        <X>-284</X>
+                        <Y>-2917</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="definition" Type="string" Description="">
+                            <string>decal</string>
+                        </Property>
+                        <Property Name="target" Type="string" Description="">
+                            <string>footWall2</string>
+                        </Property>
+                        <Property Name="atlas" Type="string" Description="">
+                            <string>common-textures</string>
+                        </Property>
+                        <Property Name="image" Type="string" Description="">
+                            <string>rivet</string>
+                        </Property>
+                        <Property Name="decal" Type="string" Description="">
+                            <string />
+                        </Property>
+                    </CustomProperties>
+                    <Radius>22</Radius>
+                    <FillColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </FillColor>
+                </Item>
+                <Item xsi:type="CircleItem" Name="Copy of Copy of Copy of Copy of Copy of rivet5" Visible="true">
+                    <Position>
+                        <X>-1056</X>
+                        <Y>-2933</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="definition" Type="string" Description="">
+                            <string>decal</string>
+                        </Property>
+                        <Property Name="target" Type="string" Description="">
+                            <string>footWall2</string>
+                        </Property>
+                        <Property Name="atlas" Type="string" Description="">
+                            <string>common-textures</string>
+                        </Property>
+                        <Property Name="image" Type="string" Description="">
+                            <string>rivet</string>
+                        </Property>
+                        <Property Name="decal" Type="string" Description="">
+                            <string />
+                        </Property>
+                    </CustomProperties>
+                    <Radius>22</Radius>
+                    <FillColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </FillColor>
+                </Item>
+                <Item xsi:type="CircleItem" Name="Copy of Copy of Copy of Copy of Copy of Copy of rivet5" Visible="true">
+                    <Position>
+                        <X>-1070</X>
+                        <Y>-3161</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="definition" Type="string" Description="">
+                            <string>decal</string>
+                        </Property>
+                        <Property Name="target" Type="string" Description="">
+                            <string>footWall2</string>
+                        </Property>
+                        <Property Name="atlas" Type="string" Description="">
+                            <string>common-textures</string>
+                        </Property>
+                        <Property Name="image" Type="string" Description="">
+                            <string>rivet</string>
+                        </Property>
+                        <Property Name="decal" Type="string" Description="">
+                            <string />
+                        </Property>
+                    </CustomProperties>
+                    <Radius>22</Radius>
+                    <FillColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </FillColor>
+                </Item>
+                <Item xsi:type="CircleItem" Name="Copy of Copy of Copy of Copy of Copy of Copy of Copy of rivet5" Visible="true">
+                    <Position>
+                        <X>-272</X>
+                        <Y>-3173</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="definition" Type="string" Description="">
+                            <string>decal</string>
+                        </Property>
+                        <Property Name="target" Type="string" Description="">
+                            <string>footWall2</string>
+                        </Property>
+                        <Property Name="atlas" Type="string" Description="">
+                            <string>common-textures</string>
+                        </Property>
+                        <Property Name="image" Type="string" Description="">
+                            <string>rivet</string>
+                        </Property>
+                        <Property Name="decal" Type="string" Description="">
+                            <string />
+                        </Property>
+                    </CustomProperties>
+                    <Radius>22</Radius>
+                    <FillColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </FillColor>
+                </Item>
+                <Item xsi:type="CircleItem" Name="Copy of Copy of Copy of Copy of Copy of Copy of Copy of Copy of rivet5" Visible="true">
+                    <Position>
+                        <X>-1084</X>
+                        <Y>-3373</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="definition" Type="string" Description="">
+                            <string>decal</string>
+                        </Property>
+                        <Property Name="target" Type="string" Description="">
+                            <string>footWall2</string>
+                        </Property>
+                        <Property Name="atlas" Type="string" Description="">
+                            <string>common-textures</string>
+                        </Property>
+                        <Property Name="image" Type="string" Description="">
+                            <string>rivet</string>
+                        </Property>
+                        <Property Name="decal" Type="string" Description="">
+                            <string />
+                        </Property>
+                    </CustomProperties>
+                    <Radius>22</Radius>
+                    <FillColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </FillColor>
+                </Item>
+                <Item xsi:type="CircleItem" Name="Copy of Copy of Copy of Copy of Copy of Copy of Copy of Copy of Copy of rivet5" Visible="true">
+                    <Position>
+                        <X>-264</X>
+                        <Y>-3375</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="definition" Type="string" Description="">
+                            <string>decal</string>
+                        </Property>
+                        <Property Name="target" Type="string" Description="">
+                            <string>footWall2</string>
+                        </Property>
+                        <Property Name="atlas" Type="string" Description="">
+                            <string>common-textures</string>
+                        </Property>
+                        <Property Name="image" Type="string" Description="">
+                            <string>rivet</string>
+                        </Property>
+                        <Property Name="decal" Type="string" Description="">
+                            <string />
+                        </Property>
+                    </CustomProperties>
+                    <Radius>22</Radius>
+                    <FillColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </FillColor>
+                </Item>
+                <Item xsi:type="CircleItem" Name="Copy(0) of Copy of Copy of Copy of Copy of Copy of Copy of Copy of Copy of rivet5" Visible="true">
+                    <Position>
+                        <X>-1096</X>
+                        <Y>-3612</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="definition" Type="string" Description="">
+                            <string>decal</string>
+                        </Property>
+                        <Property Name="target" Type="string" Description="">
+                            <string>footWall2</string>
+                        </Property>
+                        <Property Name="atlas" Type="string" Description="">
+                            <string>common-textures</string>
+                        </Property>
+                        <Property Name="image" Type="string" Description="">
+                            <string>rivet</string>
+                        </Property>
+                        <Property Name="decal" Type="string" Description="">
+                            <string />
+                        </Property>
+                    </CustomProperties>
+                    <Radius>22</Radius>
+                    <FillColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </FillColor>
+                </Item>
+                <Item xsi:type="CircleItem" Name="Copy of Copy(0) of Copy of Copy of Copy of Copy of Copy of Copy of Copy of Copy of rivet5" Visible="true">
+                    <Position>
+                        <X>-248</X>
+                        <Y>-3599</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="definition" Type="string" Description="">
+                            <string>decal</string>
+                        </Property>
+                        <Property Name="target" Type="string" Description="">
+                            <string>footWall2</string>
+                        </Property>
+                        <Property Name="atlas" Type="string" Description="">
+                            <string>common-textures</string>
+                        </Property>
+                        <Property Name="image" Type="string" Description="">
+                            <string>rivet</string>
+                        </Property>
+                        <Property Name="decal" Type="string" Description="">
+                            <string />
+                        </Property>
+                    </CustomProperties>
+                    <Radius>22</Radius>
+                    <FillColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </FillColor>
+                </Item>
+                <Item xsi:type="CircleItem" Name="rivet6" Visible="true">
+                    <Position>
+                        <X>-1143</X>
+                        <Y>-3784</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="definition" Type="string" Description="">
+                            <string>decal</string>
+                        </Property>
+                        <Property Name="target" Type="string" Description="">
+                            <string>chestPlatLeft1</string>
+                        </Property>
+                        <Property Name="atlas" Type="string" Description="">
+                            <string>common-textures</string>
+                        </Property>
+                        <Property Name="image" Type="string" Description="">
+                            <string>rivet</string>
+                        </Property>
+                        <Property Name="decal" Type="string" Description="">
+                            <string />
+                        </Property>
+                    </CustomProperties>
+                    <Radius>22</Radius>
+                    <FillColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </FillColor>
+                </Item>
+                <Item xsi:type="CircleItem" Name="Copy of rivet6" Visible="true">
+                    <Position>
+                        <X>-1196</X>
+                        <Y>-3983</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="definition" Type="string" Description="">
+                            <string>decal</string>
+                        </Property>
+                        <Property Name="target" Type="string" Description="">
+                            <string>chestPlatLeft1</string>
+                        </Property>
+                        <Property Name="atlas" Type="string" Description="">
+                            <string>common-textures</string>
+                        </Property>
+                        <Property Name="image" Type="string" Description="">
+                            <string>rivet</string>
+                        </Property>
+                        <Property Name="decal" Type="string" Description="">
+                            <string />
+                        </Property>
+                    </CustomProperties>
+                    <Radius>22</Radius>
+                    <FillColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </FillColor>
+                </Item>
+                <Item xsi:type="CircleItem" Name="Copy of Copy of rivet6" Visible="true">
+                    <Position>
+                        <X>-1246</X>
+                        <Y>-4189</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="definition" Type="string" Description="">
+                            <string>decal</string>
+                        </Property>
+                        <Property Name="target" Type="string" Description="">
+                            <string>chestPlatLeft1</string>
+                        </Property>
+                        <Property Name="atlas" Type="string" Description="">
+                            <string>common-textures</string>
+                        </Property>
+                        <Property Name="image" Type="string" Description="">
+                            <string>rivet</string>
+                        </Property>
+                        <Property Name="decal" Type="string" Description="">
+                            <string />
+                        </Property>
+                    </CustomProperties>
+                    <Radius>22</Radius>
+                    <FillColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </FillColor>
+                </Item>
+                <Item xsi:type="CircleItem" Name="Copy of Copy of Copy of rivet6" Visible="true">
+                    <Position>
+                        <X>-1293</X>
+                        <Y>-4358</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="definition" Type="string" Description="">
+                            <string>decal</string>
+                        </Property>
+                        <Property Name="target" Type="string" Description="">
+                            <string>chestPlatLeft1</string>
+                        </Property>
+                        <Property Name="atlas" Type="string" Description="">
+                            <string>common-textures</string>
+                        </Property>
+                        <Property Name="image" Type="string" Description="">
+                            <string>rivet</string>
+                        </Property>
+                        <Property Name="decal" Type="string" Description="">
+                            <string />
+                        </Property>
+                    </CustomProperties>
+                    <Radius>22</Radius>
+                    <FillColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </FillColor>
+                </Item>
+                <Item xsi:type="CircleItem" Name="Copy of Copy of Copy of Copy of rivet6" Visible="true">
+                    <Position>
+                        <X>-1341</X>
+                        <Y>-4548</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="definition" Type="string" Description="">
+                            <string>decal</string>
+                        </Property>
+                        <Property Name="target" Type="string" Description="">
+                            <string>chestPlatLeft1</string>
+                        </Property>
+                        <Property Name="atlas" Type="string" Description="">
+                            <string>common-textures</string>
+                        </Property>
+                        <Property Name="image" Type="string" Description="">
+                            <string>rivet</string>
+                        </Property>
+                        <Property Name="decal" Type="string" Description="">
+                            <string />
+                        </Property>
+                    </CustomProperties>
+                    <Radius>22</Radius>
+                    <FillColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </FillColor>
+                </Item>
+                <Item xsi:type="CircleItem" Name="Copy of Copy of Copy of Copy of Copy of rivet6" Visible="true">
+                    <Position>
+                        <X>-1397</X>
+                        <Y>-4748</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="definition" Type="string" Description="">
+                            <string>decal</string>
+                        </Property>
+                        <Property Name="target" Type="string" Description="">
+                            <string>chestPlatLeft1</string>
+                        </Property>
+                        <Property Name="atlas" Type="string" Description="">
+                            <string>common-textures</string>
+                        </Property>
+                        <Property Name="image" Type="string" Description="">
+                            <string>rivet</string>
+                        </Property>
+                        <Property Name="decal" Type="string" Description="">
+                            <string />
+                        </Property>
+                    </CustomProperties>
+                    <Radius>22</Radius>
+                    <FillColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </FillColor>
+                </Item>
+                <Item xsi:type="CircleItem" Name="Copy of Copy of Copy of Copy of Copy of Copy of rivet6" Visible="true">
+                    <Position>
+                        <X>-1455</X>
+                        <Y>-4960</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="definition" Type="string" Description="">
+                            <string>decal</string>
+                        </Property>
+                        <Property Name="target" Type="string" Description="">
+                            <string>chestPlatLeft1</string>
+                        </Property>
+                        <Property Name="atlas" Type="string" Description="">
+                            <string>common-textures</string>
+                        </Property>
+                        <Property Name="image" Type="string" Description="">
+                            <string>rivet</string>
+                        </Property>
+                        <Property Name="decal" Type="string" Description="">
+                            <string />
+                        </Property>
+                    </CustomProperties>
+                    <Radius>22</Radius>
+                    <FillColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </FillColor>
+                </Item>
+                <Item xsi:type="CircleItem" Name="Copy of Copy of Copy of Copy of Copy of Copy of Copy of rivet6" Visible="true">
+                    <Position>
+                        <X>-1504</X>
+                        <Y>-5160</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="definition" Type="string" Description="">
+                            <string>decal</string>
+                        </Property>
+                        <Property Name="target" Type="string" Description="">
+                            <string>chestPlatLeft1</string>
+                        </Property>
+                        <Property Name="atlas" Type="string" Description="">
+                            <string>common-textures</string>
+                        </Property>
+                        <Property Name="image" Type="string" Description="">
+                            <string>rivet</string>
+                        </Property>
+                        <Property Name="decal" Type="string" Description="">
+                            <string />
+                        </Property>
+                    </CustomProperties>
+                    <Radius>22</Radius>
+                    <FillColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </FillColor>
+                </Item>
+                <Item xsi:type="CircleItem" Name="Copy of Copy of Copy of Copy of Copy of Copy of Copy of Copy of rivet6" Visible="true">
+                    <Position>
+                        <X>-1554</X>
+                        <Y>-5359</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="definition" Type="string" Description="">
+                            <string>decal</string>
+                        </Property>
+                        <Property Name="target" Type="string" Description="">
+                            <string>chestPlatLeft1</string>
+                        </Property>
+                        <Property Name="atlas" Type="string" Description="">
+                            <string>common-textures</string>
+                        </Property>
+                        <Property Name="image" Type="string" Description="">
+                            <string>rivet</string>
+                        </Property>
+                        <Property Name="decal" Type="string" Description="">
+                            <string />
+                        </Property>
+                    </CustomProperties>
+                    <Radius>22</Radius>
+                    <FillColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </FillColor>
+                </Item>
+                <Item xsi:type="CircleItem" Name="Copy of Copy of Copy of Copy of Copy of Copy of Copy of Copy of Copy of rivet6" Visible="true">
+                    <Position>
+                        <X>-1600</X>
+                        <Y>-5509</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="definition" Type="string" Description="">
+                            <string>decal</string>
+                        </Property>
+                        <Property Name="target" Type="string" Description="">
+                            <string>chestPlatLeft1</string>
+                        </Property>
+                        <Property Name="atlas" Type="string" Description="">
+                            <string>common-textures</string>
+                        </Property>
+                        <Property Name="image" Type="string" Description="">
+                            <string>rivet</string>
+                        </Property>
+                        <Property Name="decal" Type="string" Description="">
+                            <string />
+                        </Property>
+                    </CustomProperties>
+                    <Radius>22</Radius>
+                    <FillColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </FillColor>
+                </Item>
+                <Item xsi:type="CircleItem" Name="Copy of Copy of Copy of Copy of Copy of Copy of Copy of Copy of Copy of Copy of rivet6" Visible="true">
+                    <Position>
+                        <X>-1640</X>
+                        <Y>-5679</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="definition" Type="string" Description="">
+                            <string>decal</string>
+                        </Property>
+                        <Property Name="target" Type="string" Description="">
+                            <string>chestPlatLeft1</string>
+                        </Property>
+                        <Property Name="atlas" Type="string" Description="">
+                            <string>common-textures</string>
+                        </Property>
+                        <Property Name="image" Type="string" Description="">
+                            <string>rivet</string>
+                        </Property>
+                        <Property Name="decal" Type="string" Description="">
+                            <string />
+                        </Property>
+                    </CustomProperties>
+                    <Radius>22</Radius>
+                    <FillColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </FillColor>
+                </Item>
+                <Item xsi:type="CircleItem" Name="Copy of Copy of Copy of Copy of Copy of Copy of Copy of Copy of Copy of Copy of Copy of rivet6" Visible="true">
+                    <Position>
+                        <X>-1687</X>
+                        <Y>-5859</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="definition" Type="string" Description="">
+                            <string>decal</string>
+                        </Property>
+                        <Property Name="target" Type="string" Description="">
+                            <string>chestPlatLeft1</string>
+                        </Property>
+                        <Property Name="atlas" Type="string" Description="">
+                            <string>common-textures</string>
+                        </Property>
+                        <Property Name="image" Type="string" Description="">
+                            <string>rivet</string>
+                        </Property>
+                        <Property Name="decal" Type="string" Description="">
+                            <string />
+                        </Property>
+                    </CustomProperties>
+                    <Radius>22</Radius>
+                    <FillColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </FillColor>
+                </Item>
             </Items>
             <ScrollSpeed>
                 <X>1</X>
                 <Y>1</Y>
             </ScrollSpeed>
         </Layer>
-        <Layer Name="engine_block" Visible="true">
+        <Layer Name="engine_block" Visible="false">
             <Items />
             <ScrollSpeed>
                 <X>1</X>
@@ -15406,11 +17080,11 @@
     </Layers>
     <CustomProperties />
     <EditorRelated>
-        <NextItemNumber>831</NextItemNumber>
+        <NextItemNumber>832</NextItemNumber>
         <ContentRootFolder>gleed-textures</ContentRootFolder>
         <CameraPosition>
-            <X>1726.00049</X>
-            <Y>-4305.35254</Y>
+            <X>825.9961</X>
+            <Y>-3805.35132</Y>
         </CameraPosition>
         <Version>1.3.0.0</Version>
     </EditorRelated>

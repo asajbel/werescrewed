@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.Random;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
@@ -91,6 +92,8 @@ public class LevelFactory {
 	protected static final String imageTag = "image";
 	protected static final String gleedImageTag = "image";
 	protected static final String atlasTag = "atlas";
+	
+	private Random random;
 
 	private final String robotTexBG = "/levels/alphabot/alphabot-interior.png";
 	private final String robotOutlineTex = "/levels/alphabot/alphabot-outline.png";
@@ -109,7 +112,7 @@ public class LevelFactory {
 		polySprites = new LinkedHashMap< String, Array< Vector2 > >( );
 		level = new Level( );
 		spawnPoints = 0;
-
+		random = new Random();
 	}
 
 	public Level load( String filename ) {
@@ -522,6 +525,7 @@ public class LevelFactory {
 		}
 		Sprite decal = null;
 		Vector2 scale = new Vector2( 1.0f, 1.0f );
+		boolean isRivet = false;
 		if ( !item.getImageName( ).equals( "" ) ) {
 			if ( item.getAtlasName( ) != null ) {
 				if ( item.getGleedType( ).equals( "PathItem" ) ) {
@@ -530,7 +534,12 @@ public class LevelFactory {
 				}
 				TextureAtlas atlas = WereScrewedGame.manager.getAtlas( item
 						.getAtlasName( ) );
-				decal = atlas.createSprite( item.getImageName( ) );
+				String imgName = item.getImageName( );
+				if(imgName.equals("rivet")){
+					imgName = WereScrewedGame.manager.getRandomRivetName( );
+					isRivet = true;
+				}
+				decal = atlas.createSprite( imgName );
 				decal.setOrigin( 0.0f, 0.0f );
 				scale.x = item.sca.x / decal.getWidth( );
 				scale.y = item.sca.y / decal.getHeight( );
@@ -566,8 +575,14 @@ public class LevelFactory {
 
 			Vector2 pos = item.pos.sub( targetPos );
 			pos.y -= item.sca.y;
-
 			float rot = item.rot - targetRot;
+			
+			if(isRivet){
+				pos.add( -decal.getWidth( )/2, decal.getHeight( )/2 );
+				//rot += random.nextFloat( )*360;
+				//can't apply random rotation because decals rotate about their position, not their offset
+				//TODO: put this back in once decal rotation is fixed.
+			}
 
 			decal.setScale( scale.x, scale.y );
 			if ( item.props.containsKey( "decal" ) ) {
@@ -578,7 +593,7 @@ public class LevelFactory {
 					addForeGroundEntity( target );
 				}
 			} else {
-				Gdx.app.log( "level factory", "hello world" );
+				//Gdx.app.log( "level factory", "hello world" );
 				target.addBGDecal( decal, pos, rot );
 				if ( target.getEntityType( ) == EntityType.SKELETON ) {
 					addBackGroundSkeleton( ( Skeleton ) target );
