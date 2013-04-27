@@ -93,7 +93,7 @@ public class DragonScreen extends Screen {
 			//balloon2.body.applyForce( new Vector2(0f, 100f), balloon2.body.getWorldCenter( ));
 			time = 0;
 		}
-		
+
 		if(puzzle_screw_balloon1.getDepth( ) == puzzle_screw_balloon1.getMaxDepth( )){
 			if(balloon1.currentMover() == null){
 				Timeline t = Timeline.createSequence( );

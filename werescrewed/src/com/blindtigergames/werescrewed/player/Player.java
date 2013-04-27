@@ -69,6 +69,7 @@ public class Player extends Entity {
 	public final static Vector2 ANCHOR_BUFFER_SIZE = new Vector2( 300f, 200f );
 	public final static float STEAM_FORCE = .5f;
 	public final static float STEAM_IMPULSE = 0.2f;
+	public final static float STEAM_MAX_Y_VELOCITY = 2.5f;
 	public final static float FEET_OFFSET_X = 59f * Util.PIXEL_TO_BOX;
 	public final static float FEET_OFFSET_Y = 23.5f * Util.PIXEL_TO_BOX;
 	public final static float JUMP_DIRECTION_MULTIPLIER = 2f;
@@ -274,9 +275,12 @@ public class Player extends Entity {
 		
 		if (switchTimer > 0) --switchTimer;
 
-		if ( Gdx.input.isKeyPressed( Keys.G ) )
-			Gdx.app.log( "steamCollide: " + steamCollide, "steamDone: "
-					+ steamDone );
+		if ( Gdx.input.isKeyPressed( Keys.G ) ){
+			if(name.equals( "player1" )){
+				Gdx.app.log( "steamCollide: " + steamCollide, "steamDone: "
+						+ steamDone );
+			}
+		}
 		if ( Gdx.input.isKeyPressed( Keys.NUM_7 )) 
 			flyDebug = !flyDebug;
 		if ( flyDebug ) 
@@ -472,10 +476,10 @@ public class Player extends Entity {
 			// Gdx.app.log( "top: ", "" + topCrush );
 			// Gdx.app.log( "bottom: ", "" + botCrush );
 		} else if ( steamCollide ) {
-			if ( !steamDone ) {
+			//if ( !steamDone ) {
 				steamResolution( );
 				steamDone = true;
-			}
+			//}
 		} else
 			steamDone = false;
 		terminalVelocityCheck( 15.0f );
@@ -2018,7 +2022,7 @@ public class Player extends Entity {
 	 * applies force to player
 	 */
 	private void steamResolution( ) {
-		setGrounded(false);
+		//setGrounded(true);
 		float steamAngle, xImpulse = 0, yImpulse = 0;
 		if(currentSteam != null){
 			steamAngle = currentSteam.getAngle( );
@@ -2032,15 +2036,28 @@ public class Player extends Entity {
 			}
 		}
 		
-//		if ( prevButton == null ){
-//			body.setLinearVelocity( new Vector2( 0f,
-//					body.getLinearVelocity( ).y ) );
-//		}
+
 		// body.applyForceToCenter( 0f, STEAM_FORCE );
 		// body.setLinearVelocity( new Vector2( body.getLinearVelocity( ).x, 0f
 		// ) );
+		
+		
+		
+		xImpulse *= 0.09f;
+		yImpulse *= 0.09f;
+		
 		body.applyLinearImpulse( new Vector2( -1 * xImpulse, yImpulse ),
 				body.getWorldCenter( ) );
+		
+		if ( prevButton == null ){
+			body.setLinearVelocity( new Vector2( 0f,
+					body.getLinearVelocity( ).y ) );
+		}
+		if ( body.getLinearVelocity( ).y > STEAM_MAX_Y_VELOCITY ) {
+			body.setLinearVelocity( body.getLinearVelocity( ).x, STEAM_MAX_Y_VELOCITY );
+		}
+		
+//		body.applyForce( new Vector2( -1 * xImpulse, yImpulse ), body.getWorldCenter( ) );
 
 		// increments steam jump trophy metric
 		if ( this.name == Metrics.player1( ) ) {

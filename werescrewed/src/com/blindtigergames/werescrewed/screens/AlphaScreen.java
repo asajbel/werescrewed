@@ -115,7 +115,7 @@ public class AlphaScreen extends Screen {
 		// right arm: 2600f, 6000f >>>> side
 		//left side hand <- -2224, 3008
 		
-		Vector2 spawnPos = new Vector2(512, 256);
+		Vector2 spawnPos = new Vector2( -200f, 3800f);
 
 		if ( level.player1 == null ) {
 			level.player1 = new PlayerBuilder( ).world( level.world )
@@ -593,11 +593,19 @@ public class AlphaScreen extends Screen {
 			etb.beginAction(  new AnchorActivateAction( anchor ) );
 			etb.endAction( new AnchorDeactivateAction(anchor) );
 			
-			EventTrigger et = etb.repeatable( ).build( );
+			EventTrigger et = etb.repeatable( ).twoPlayersToActivate( ).twoPlayersToDeactivate( ).build( );
 			chestSkeleton.addEventTrigger( et );
 			
-			Steam steam = new Steam( "steamChest1", new Vector2( 576, 3850 ), 25, 100, level.world );
+			Steam steam = new Steam( "steamChest1", new Vector2( 576, 3900 ), 25, 120, level.world );
 			chestSkeleton.addSteam(steam);
+			
+			
+			
+//			Steam steam2 = new Steam( "steamChest2", new Vector2( 512, 4064 ), 25, 120, level.world );
+//			steam2.body.setTransform( steam2.getPosition( ), 45 * Util.DEG_TO_RAD );
+//			chestSkeleton.addSteam(steam2);
+			
+			
 		}
 
 	}

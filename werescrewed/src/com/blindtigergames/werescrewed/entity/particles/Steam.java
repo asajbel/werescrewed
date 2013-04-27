@@ -87,5 +87,6 @@ public class Steam extends Platform{
 		polygon.dispose( );
 
 		body.setUserData( this );
+		
 	}
 }

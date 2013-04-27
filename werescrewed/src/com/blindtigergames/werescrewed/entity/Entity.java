@@ -31,6 +31,7 @@ import com.blindtigergames.werescrewed.entity.animator.ISpinemator;
 import com.blindtigergames.werescrewed.entity.animator.PlayerAnimator;
 import com.blindtigergames.werescrewed.entity.animator.SimpleFrameAnimator;
 import com.blindtigergames.werescrewed.entity.mover.IMover;
+import com.blindtigergames.werescrewed.entity.mover.TimelineTweenMover;
 import com.blindtigergames.werescrewed.entity.platforms.Platform;
 import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 import com.blindtigergames.werescrewed.graphics.TextureAtlas;
@@ -446,6 +447,12 @@ public class Entity implements GleedLoadable {
 		}
 	}
 
+	public boolean isTimeLineMoverFinished(){
+		if(currentMover() instanceof TimelineTweenMover){
+			return ( ( TimelineTweenMover ) currentMover() ).timeline.isFinished();
+		}
+		return false;
+	}
 	protected String generateName( ) {
 		return type.getName( );
 	}
