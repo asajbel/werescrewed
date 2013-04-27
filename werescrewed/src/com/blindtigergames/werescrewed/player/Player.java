@@ -26,6 +26,7 @@ import com.blindtigergames.werescrewed.entity.EntityType;
 import com.blindtigergames.werescrewed.entity.animator.PlayerSpinemator;
 import com.blindtigergames.werescrewed.entity.mover.FollowEntityMover;
 import com.blindtigergames.werescrewed.entity.mover.IMover;
+import com.blindtigergames.werescrewed.entity.particles.Steam;
 import com.blindtigergames.werescrewed.entity.platforms.Platform;
 import com.blindtigergames.werescrewed.entity.screws.ResurrectScrew;
 import com.blindtigergames.werescrewed.entity.screws.Screw;
@@ -116,6 +117,7 @@ public class Player extends Entity {
 
 	private Screw currentScrew;
 	private PowerSwitch currentSwitch;
+	private Steam currentSteam;
 	private static int switchTimer = 0;
 	
 	private Player otherPlayer;
@@ -1979,7 +1981,8 @@ public class Player extends Entity {
 	 * @param value
 	 *            boolean
 	 */
-	public void setSteamCollide( boolean value ) {
+	public void setSteamCollide( Steam steam, boolean value ) {
+		this.currentSteam = steam;
 		steamCollide = value;
 	}
 
@@ -2015,13 +2018,28 @@ public class Player extends Entity {
 	 * applies force to player
 	 */
 	private void steamResolution( ) {
-		if ( prevButton == null )
-			body.setLinearVelocity( new Vector2( 0f,
-					body.getLinearVelocity( ).y ) );
+		setGrounded(false);
+		float steamAngle, xImpulse = 0, yImpulse = 0;
+		if(currentSteam != null){
+			steamAngle = currentSteam.getAngle( );
+			
+			xImpulse = ( float ) ( Math.sin( steamAngle ) * STEAM_IMPULSE );
+			yImpulse = ( float ) ( Math.cos( steamAngle ) * STEAM_IMPULSE );
+			
+			//System.out.println( "x: " + xImpulse + ", y: "  + yImpulse);
+			if(name.equals( "player1" )){
+				//System.out.println( body.getLinearVelocity( ) );
+			}
+		}
+		
+//		if ( prevButton == null ){
+//			body.setLinearVelocity( new Vector2( 0f,
+//					body.getLinearVelocity( ).y ) );
+//		}
 		// body.applyForceToCenter( 0f, STEAM_FORCE );
 		// body.setLinearVelocity( new Vector2( body.getLinearVelocity( ).x, 0f
 		// ) );
-		body.applyLinearImpulse( new Vector2( 0, STEAM_IMPULSE ),
+		body.applyLinearImpulse( new Vector2( -1 * xImpulse, yImpulse ),
 				body.getWorldCenter( ) );
 
 		// increments steam jump trophy metric
@@ -2030,7 +2048,7 @@ public class Player extends Entity {
 		} else if ( this.name == Metrics.player2( ) ) {
 			Metrics.incTrophyMetric( TrophyMetric.P2STEAMJUMPS, 1 );
 		}
-		grounded = false;
+		
 	}
 
 	/**

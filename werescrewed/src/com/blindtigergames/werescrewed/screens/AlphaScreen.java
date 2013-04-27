@@ -16,12 +16,15 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
 import com.blindtigergames.werescrewed.WereScrewedGame;
+import com.blindtigergames.werescrewed.camera.Anchor;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityDef;
 import com.blindtigergames.werescrewed.entity.RobotState;
 import com.blindtigergames.werescrewed.entity.RootSkeleton;
 import com.blindtigergames.werescrewed.entity.Skeleton;
 import com.blindtigergames.werescrewed.entity.Sprite;
+import com.blindtigergames.werescrewed.entity.action.AnchorActivateAction;
+import com.blindtigergames.werescrewed.entity.action.AnchorDeactivateAction;
 import com.blindtigergames.werescrewed.entity.action.DestoryPlatformJointAction;
 import com.blindtigergames.werescrewed.entity.action.RemoveEntityAction;
 import com.blindtigergames.werescrewed.entity.builders.EventTriggerBuilder;
@@ -35,6 +38,7 @@ import com.blindtigergames.werescrewed.entity.mover.PuzzleType;
 import com.blindtigergames.werescrewed.entity.mover.RotateTweenMover;
 import com.blindtigergames.werescrewed.entity.mover.TimelineTweenMover;
 import com.blindtigergames.werescrewed.entity.mover.puzzle.PuzzleRotateTweenMover;
+import com.blindtigergames.werescrewed.entity.particles.Steam;
 import com.blindtigergames.werescrewed.entity.platforms.Platform;
 import com.blindtigergames.werescrewed.entity.platforms.TiledPlatform;
 import com.blindtigergames.werescrewed.entity.screws.PuzzleScrew;
@@ -65,9 +69,9 @@ public class AlphaScreen extends Screen {
 	private TiledPlatform kneeMovingPlat;
 
 	Platform leftShoulderSideHatch;
-	private PuzzleScrew leftArmScrew, rightElbowPuzzleScrew;
+	private PuzzleScrew leftArmScrew, rightElbowPuzzleScrew, chestPuzzleScrew2;
 
-	private boolean etTriggered = false;
+	private boolean chestSteamTriggered = false;
 
 	private Skeleton rightShoulderSkeleton;
 
@@ -111,7 +115,7 @@ public class AlphaScreen extends Screen {
 		// right arm: 2600f, 6000f >>>> side
 		//left side hand <- -2224, 3008
 		
-		Vector2 spawnPos = new Vector2(512, 256);
+		Vector2 spawnPos = new Vector2( -200f, 3800f);
 
 		if ( level.player1 == null ) {
 			level.player1 = new PlayerBuilder( ).world( level.world )
@@ -497,6 +501,9 @@ public class AlphaScreen extends Screen {
 		
 		powerSwitch1 = (PowerSwitch) LevelFactory.entities.get( "powerSwitch1" );
 		powerSwitch2 = (PowerSwitch) LevelFactory.entities.get( "powerSwitch2" );
+		
+		powerSwitch3 = (PowerSwitch) LevelFactory.entities.get( "powerSwitch3" );
+		powerSwitch4 = (PowerSwitch) LevelFactory.entities.get( "powerSwitch4" );
 	}
 
 	private void powerScrewupdate( ) {
@@ -569,6 +576,24 @@ public class AlphaScreen extends Screen {
 
 			}
 		}
+		
+		if (  powerSwitch3.isTurnedOn( )  && powerSwitch4.isTurnedOn( ) && !chestSteamTriggered) {
+			chestSteamTriggered = true;
+			EventTriggerBuilder etb = new EventTriggerBuilder( level.world );
+			
+			etb.name( "chestPuzzle_event_anchor").rectangle( ).height( 300f ).width( 300f )
+			.position(new Vector2( 544, 3904));
+			
+			Anchor anchor = chestPuzzleScrew2.anchors.get( 0 );
+			etb.beginAction(  new AnchorActivateAction( anchor ) );
+			etb.endAction( new AnchorDeactivateAction(anchor) );
+			
+			EventTrigger et = etb.repeatable( ).build( );
+			chestSkeleton.addEventTrigger( et );
+			
+			Steam steam = new Steam( "steamChest1", new Vector2( 576, 3850 ), 25, 100, level.world );
+			chestSkeleton.addSteam(steam);
+		}
 
 	}
 
@@ -626,6 +651,10 @@ public class AlphaScreen extends Screen {
 
 		EventTrigger etGearFall = ( EventTrigger ) LevelFactory.entities
 				.get( "et1" );
+		
+		//it has the anchor I need when power switches 3-4 are on
+		chestPuzzleScrew2 = ( PuzzleScrew ) LevelFactory.entities
+		.get( "chestPuzzleScrew2" );
 
 	}
 	

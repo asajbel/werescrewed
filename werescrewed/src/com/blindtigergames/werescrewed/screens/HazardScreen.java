@@ -216,8 +216,8 @@ public class HazardScreen implements com.badlogic.gdx.Screen {
 		Skeleton steamSkel = new Skeleton("steam", new Vector2(2000f, 100f), null, world);
 		rootSkeleton.addSkeleton( steamSkel );
 		
-		steamSkel.addMover( new RotateTweenMover( steamSkel, 3f,
-						-Util.PI / 4, 1f, true ), RobotState.IDLE);
+//		steamSkel.addMover( new RotateTweenMover( steamSkel, 6f,
+//						-Util.PI * 2, 1f, true ), RobotState.IDLE);
 		
 		steamSkel.addSteam(testSteam);
 		// Create anchor with start position and buffer as parameters
