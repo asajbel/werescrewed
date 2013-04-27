@@ -15,6 +15,7 @@ import com.blindtigergames.werescrewed.entity.EntityType;
 import com.blindtigergames.werescrewed.entity.action.ActionType;
 import com.blindtigergames.werescrewed.entity.action.RemoveEntityAction;
 import com.blindtigergames.werescrewed.entity.hazard.Hazard;
+import com.blindtigergames.werescrewed.entity.particles.Steam;
 import com.blindtigergames.werescrewed.entity.platforms.Platform;
 import com.blindtigergames.werescrewed.entity.platforms.PlatformType;
 import com.blindtigergames.werescrewed.entity.platforms.TiledPlatform;
@@ -31,7 +32,6 @@ import com.blindtigergames.werescrewed.player.Player.PlayerState;
  */
 public class MyContactListener implements ContactListener {
 
-	// These should be in Player or Entity, not hardcoded.
 	private static int NUM_PLAYER1_CONTACTS = 0;
 	private static int NUM_PLAYER2_CONTACTS = 0;
 	private static final float LAND_DELAY = 0;
@@ -142,7 +142,10 @@ public class MyContactListener implements ContactListener {
 							checkP.hitPlayer( );
 							break;
 						case STEAM:
-							player.setSteamCollide( true );
+							if ( playerFix == player.torso ) {
+								Steam steam = (Steam) object;
+								player.setSteamCollide(steam, true );
+							}
 							break;
 						case EVENTTRIGGER:
 							EventTrigger et = ( EventTrigger ) object;
@@ -285,7 +288,9 @@ public class MyContactListener implements ContactListener {
 							}
 							break;
 						case STEAM:
-							player.setSteamCollide( false );
+							if ( playerFix == player.torso ) {
+								player.setSteamCollide(null, false );
+							}
 							break;
 						case EVENTTRIGGER:
 							if ( !player.isPlayerDead( ) ) {

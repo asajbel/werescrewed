@@ -212,12 +212,12 @@ public class HazardScreen implements com.badlogic.gdx.Screen {
 	 * Initializes steam for testing, not on a skeleton at the moment
 	 */
 	private void initParticleEffect( ) {
-		testSteam = new Steam( "testSteam", new Vector2( 2000f, 100f ), 25, 100, world );
+		testSteam = new Steam( "testSteam", new Vector2( 2000f, 120f ), 25, 120, world );
 		Skeleton steamSkel = new Skeleton("steam", new Vector2(2000f, 100f), null, world);
 		rootSkeleton.addSkeleton( steamSkel );
 		
-		steamSkel.addMover( new RotateTweenMover( steamSkel, 3f,
-						-Util.PI / 4, 1f, true ), RobotState.IDLE);
+//		steamSkel.addMover( new RotateTweenMover( steamSkel, 6f,
+//						-Util.PI * 2, 1f, true ), RobotState.IDLE);
 		
 		steamSkel.addSteam(testSteam);
 		// Create anchor with start position and buffer as parameters

@@ -217,7 +217,7 @@ public class LoadingScreen extends Screen {
 			} else if ( screenTag != null && screenTag.equals( "level2" ) ) {
 				ScreenManager.getInstance( ).show( ScreenType.DRAGON );
 			}else {
-				ScreenManager.getInstance( ).show( ScreenType.MAIN_MENU );
+				ScreenManager.getInstance( ).show( ScreenType.MAIN_MENU ); 
 			}
 			
 		}
