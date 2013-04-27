@@ -1,5 +1,7 @@
 package com.blindtigergames.werescrewed.screens;
 
+import java.util.ArrayList;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Keys;
@@ -100,51 +102,49 @@ public class Screen implements com.badlogic.gdx.Screen {
 			ScreenManager.escapeHeld = false;
 	}
 
-	protected void addForeGroundSkeleton( Skeleton skel ) {
-		if ( !level.skelFGList.contains( skel ) ) {
-			level.skelFGList.add( skel );
+	protected void addFGSkeleton( Skeleton skel ) {
+		addToSkelList(level.skelFGList,skel,false);
+	}
+	
+	protected void addFGSkeletonBack( Skeleton skel ) {
+		addToSkelList(level.skelFGList,skel,true);
+	}
+	
+	protected void addBGSkeleton( Skeleton skel ) {
+		addToSkelList(level.skelBGList,skel,false);
+	}
+	
+	protected void addBGSkeletonBack( Skeleton skel ) {
+		addToSkelList(level.skelBGList,skel,true);
+	}
+	
+	protected void addFGEntity( Entity entity ) {
+		addToEntityList(level.entityFGList,entity,false);
+	}
+	
+	protected void addFGEntityToBack( Entity entity ) {
+		addToEntityList(level.entityFGList,entity,true);
+	}
+	
+	protected void addBGEntity( Entity entity ) {
+		addToEntityList(level.entityBGList,entity,false);
+	}
+	
+	protected void addBGEntityToBack( Entity entity ) {
+		addToEntityList(level.entityBGList,entity,true);
+	}
+	
+	private void addToEntityList(ArrayList< Entity > list, Entity e, boolean isBack){
+		if(!list.contains( e )){
+			if(isBack)list.add( 0,e );
+			else list.add(e);
 		}
 	}
 	
-	protected void addForeGroundSkeletonToBack( Skeleton skel ) {
-		if ( !level.skelFGList.contains( skel ) ) {
-			level.skelFGList.add( 0, skel );
-		}
-	}
-	
-	protected void addBackGroundSkeleton( Skeleton skel ) {
-		if ( !level.skelBGList.contains( skel ) ) {
-			level.skelBGList.add( skel );
-		}
-	}
-	
-	protected void addBackGroundSkeletonToBack( Skeleton skel ) {
-		if ( !level.skelBGList.contains( skel ) ) {
-			level.skelBGList.add( 0, skel );
-		}
-	}
-	
-	protected void addForeGroundEntity( Entity entity ) {
-		if ( !level.entityFGList.contains( entity ) ) {
-			level.entityFGList.add( entity );
-		}
-	}
-	
-	protected void addForeGroundEntityToBack( Entity entity ) {
-		if ( !level.entityFGList.contains( entity ) ) {
-			level.entityFGList.add( 0, entity );
-		}
-	}
-	
-	protected void addBackGroundEntity( Entity entity ) {
-		if ( !level.entityBGList.contains( entity ) ) {
-			level.entityBGList.add( entity );
-		}
-	}
-	
-	protected void addBackGroundEntityToBack( Entity entity ) {
-		if ( !level.entityBGList.contains( entity ) ) {
-			level.entityBGList.add( 0, entity );
+	private void addToSkelList(ArrayList< Skeleton > list, Skeleton s, boolean isBack){
+		if(!list.contains( s )){
+			if(isBack)list.add( 0,s );
+			else list.add(s);
 		}
 	}
 	

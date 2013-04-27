@@ -287,9 +287,9 @@ public class PhysicsTestScreen extends Screen {
 				-boltSprite.getWidth( ) / 2, -boltSprite.getHeight( ) / 2 ) );
 		wheel1.addFGDecal( wheelBolt, boltPosPix );
 
-		addForeGroundEntity( wheel1 );
-		addForeGroundEntity( piston );
-		addForeGroundEntity( girder1 );
+		addFGEntity( wheel1 );
+		addFGEntity( piston );
+		addFGEntity( girder1 );
 	}
 
 	private Platform buildGirder( Sprite girder, Vector2 topMeter,
