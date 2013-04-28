@@ -4,8 +4,12 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.BitmapFont.TextBounds;
+import com.blindtigergames.werescrewed.WereScrewedGame;
+import com.blindtigergames.werescrewed.entity.Sprite;
 import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
@@ -17,6 +21,11 @@ public class Button {
 	
 	private String caption = null;
 	private BitmapFont font = null;
+	private static TextureRegion screwTex = WereScrewedGame.manager
+			.getAtlas( "common-textures" ).findRegion( "flat_head_circular" );
+	private Sprite screwL = new Sprite( screwTex );
+	private Sprite screwR = new Sprite( screwTex );
+	private float screwSize = screwL.getHeight( );
 	private int x = 0;
 	private int y = 0;
 	private int width = 0;
@@ -41,7 +50,7 @@ public class Button {
 		this.x = x;
 		this.y = y;
 		this.handler = handler;
-		calculateDimensions();
+		calculateDimensions( );
 	}
 	
 	/**
@@ -143,6 +152,18 @@ public class Button {
 		font.setColor(colored ? HOVER_COLOR : NORMAL_COLOR);
 		font.draw(batch, caption, x, y);
 		font.setColor(originalColor);
+		screwL.setPosition( x - width, y - height - 10 );
+		screwR.setPosition( x + width + 10, y - height - 10 );
+		screwL.setSize( screwSize / 2, screwSize / 2 );
+		screwR.setSize( screwSize / 2, screwSize / 2 );
+		screwL.setOrigin( screwL.getWidth( ) / 2, screwL.getHeight( ) / 2 );
+		screwR.setOrigin( screwR.getWidth( ) / 2, screwR.getHeight( ) / 2 );
+		if ( isColored( ) ) {
+			screwL.draw( batch );
+			screwR.draw( batch );
+			screwL.rotate( 5.0f );
+			screwR.rotate( 5.0f );
+		}
 		if ((isIntersect && (Gdx.input.isTouched() || Gdx.input.isButtonPressed(Buttons.LEFT))) || selected) {
 			selected = false;
 			handler.onClick();
@@ -154,6 +175,7 @@ public class Button {
 		width = Math.round(dimensions.width);
 		height = Math.round(dimensions.height);
 		bounds = new Rectangle(x, y - height, width, height);
+		
 	}
 	
 	public static interface ButtonHandler {

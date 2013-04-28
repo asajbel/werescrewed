@@ -40,6 +40,7 @@ public class TrophyScreen implements com.badlogic.gdx.Screen{
 		
 		emptyTrophies( );
 		addTrophies( );
+		Metrics.resetTrophyMetric( );
 	}
 	
 	/**
