@@ -34,9 +34,9 @@ public class Camera {
 	private static final float MINIMUM_FOLLOW_SPEED = .1f;
 	private static final float MAX_ANGLE_DIFF = 100f;
 	/**
-	 * Time to get to ideal camera position/zoom
+	 * Time to get to ideal camera position/zoom per hundred pixels of distance
 	 */
-	private static final float TIME = 120;
+	private static final float TIME_PER_PIX = .1f;
 	private float timeLeft;
 
 	// private float accelerationBuffer;
@@ -297,29 +297,39 @@ public class Camera {
 	private void translateLogic( boolean trans_x, boolean trans_y ) {
 		// determine whether to translate, lock, or do nothing
 		if ( translateState ) {
-			boolean lock = false;
+
+			boolean lockX = false;
+			boolean lockY = false;
 
 			// lock when:
 			if ( insideTargetBuffer ) {
 				// camera center is really close to target
-				lock = true;
+				lockX = true;
+				lockY = true;
 			} else if ( trans_x
 					&& !trans_y
 					&& Math.abs( translateTarget.x - center2D.x ) < targetBuffer ) {
 				// camera center is really close to target.x when only
 				// translating on x axis
-				lock = true;
+				lockX = true;
 			} else if ( trans_y
 					&& !trans_x
 					&& Math.abs( translateTarget.y - center2D.y ) < targetBuffer ) {
 				// camera center is really close to target.y when only
 				// translating on y axis
-				lock = true;
+				lockY = true;
 			}
 
 			// center of camera is within buffer from target, so camera
 			// locks to target
-			if ( lock ) {
+			if ( lockX || lockY ) {
+				this.timeLeft = 0;
+
+				if ( lockX )
+					camera.position.x = translateTarget.x;
+				if ( lockY )
+					camera.position.y = translateTarget.y;
+				
 				// find angle between midpoint velocity and translate velocity
 				float tempAngle = 0f;
 				tempAngle = anchorList.getMidpointVelocity( ).angle( )
@@ -327,15 +337,6 @@ public class Camera {
 				tempAngle = Math.abs( tempAngle );
 				if ( tempAngle > 180 ) {
 					tempAngle = 360 - tempAngle;
-				}
-				if ( trans_x || trans_y ) {
-					if ( trans_x )
-						camera.position.x = translateTarget.x;
-					if ( trans_y )
-						camera.position.y = translateTarget.y;
-				} else {
-					camera.position.x = translateTarget.x;
-					camera.position.y = translateTarget.y;
 				}
 				// if player stops moving or changes direction abruptly, disable
 				// lock
@@ -348,6 +349,7 @@ public class Camera {
 			} else {
 				translate( trans_x, trans_y );
 			}
+			timeLeft--;
 		} else {
 			translateVelocity.x = 0f;
 			translateVelocity.y = 0f;
@@ -388,23 +390,36 @@ public class Camera {
 		relevantDist = new Vector2( relevantDist.x - center2D.x, relevantDist.y
 				- center2D.y );
 
+		// Manage time
+
+		if ( timeLeft <= 0 ) {
+			// timeLeft being zero while still translating means we've just
+			// started moving
+			timeLeft = TIME_PER_PIX * Math.abs( relevantDist.len( ) );
+		} else {
+			// Otherwise, just add the time to cover the new distance
+			timeLeft += Math.abs( AnchorList.getInstance( )
+					.getMidpointVelocity( ).len( ) )
+					* TIME_PER_PIX;
+		}
+
 		Vector2 acceleration = calcAcceleration( relevantDist );
-		if ( Math.abs( translateVelocity.x + acceleration.x ) > Math
+		if ( Math.abs( this.translateVelocity.x + acceleration.x ) > Math
 				.abs( relevantDist.x ) ) {
-			translateVelocity.x = relevantDist.x;
+			this.translateVelocity.x = relevantDist.x;
 			acceleration.x = 0;
 		}
-		if ( Math.abs( translateVelocity.y + acceleration.y ) > Math
+		if ( Math.abs( this.translateVelocity.y + acceleration.y ) > Math
 				.abs( relevantDist.y ) ) {
-			translateVelocity.y = relevantDist.y;
+			this.translateVelocity.y = relevantDist.y;
 			acceleration.y = 0;
 		}
 		this.translateVelocity.add( acceleration );
-		camera.translate( translateVelocity );
+		this.camera.translate( this.translateVelocity );
 	}
 
 	/**
-	 * Get the acceleration for this step, based on TIME and timeLeft
+	 * Get the acceleration for this step, based on timeLeft
 	 * 
 	 * @param relevantDist
 	 *            the distance between the camera's current position and the
@@ -413,17 +428,11 @@ public class Camera {
 	 */
 	private Vector2 calcAcceleration( Vector2 relevantDist ) {
 		Vector2 acceleration = new Vector2( 0, 0 );
-		if ( timeLeft == 0 ) {
-			timeLeft = TIME;
-		}
-		if ( timeLeft != 0 ) {
-			acceleration.x = relevantDist.x;
-			acceleration.y = relevantDist.y;
-			acceleration.div( timeLeft );
-			acceleration.sub( this.translateVelocity );
-			acceleration.div( timeLeft );
-		}
-		timeLeft--;
+		acceleration.x = relevantDist.x;
+		acceleration.y = relevantDist.y;
+		acceleration.div( this.timeLeft );
+		acceleration.sub( this.translateVelocity );
+		acceleration.div( this.timeLeft );
 		return acceleration;
 	}
 

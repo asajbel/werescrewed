@@ -117,7 +117,7 @@ public class Player extends Entity {
 	private Screw currentScrew;
 	private PowerSwitch currentSwitch;
 	private static int switchTimer = 0;
-	
+
 	private Player otherPlayer;
 	private RevoluteJoint playerJoint;
 	private Platform currentPlatform;
@@ -218,6 +218,7 @@ public class Player extends Entity {
 				* Util.BOX_TO_PIXEL, body.getWorldCenter( ).y
 				* Util.BOX_TO_PIXEL ), new Vector2( 0, 0 ), new Vector2(
 				ANCHOR_BUFFER_SIZE.x, ANCHOR_BUFFER_SIZE.y ) );
+		anchor.setOffset( 0, ANCHOR_BUFFER_SIZE.y / 2 );
 		anchor.activate( );
 		addAnchor( anchor );
 
@@ -245,7 +246,7 @@ public class Player extends Entity {
 		if ( sounds == null ) {
 			sounds = new SoundManager( );
 		}
-		loadSounds();
+		loadSounds( );
 
 		r = new Random( );
 		addBehindParticleEffect( landCloudName, false, false );
@@ -269,15 +270,16 @@ public class Player extends Entity {
 	 */
 	public void update( float deltaTime ) {
 		super.update( deltaTime );
-		
-		if (switchTimer > 0) --switchTimer;
+
+		if ( switchTimer > 0 )
+			--switchTimer;
 
 		if ( Gdx.input.isKeyPressed( Keys.G ) )
 			Gdx.app.log( "steamCollide: " + steamCollide, "steamDone: "
 					+ steamDone );
-		if ( Gdx.input.isKeyPressed( Keys.NUM_7 )) 
+		if ( Gdx.input.isKeyPressed( Keys.NUM_7 ) )
 			flyDebug = !flyDebug;
-		if ( flyDebug ) 
+		if ( flyDebug )
 			grounded = true;
 		if ( kinematicTransform ) {
 			// setPlatformTransform( platformOffset );
@@ -508,18 +510,17 @@ public class Player extends Entity {
 				&& currentScrew.getScrewType( ) == ScrewType.SCREW_PUZZLE ) {
 			if ( this.name == Metrics.player1( ) ) {
 				Metrics.incTrophyMetric( TrophyMetric.P1PUZZLETIME, 0.01f );
-			}
-			else if ( this.name == Metrics.player2( ) ) {
+			} else if ( this.name == Metrics.player2( ) ) {
 				Metrics.incTrophyMetric( TrophyMetric.P2PUZZLETIME, 0.01f );
 			}
 		}
-		//debug no collision while holding 7
+		// debug no collision while holding 7
 		if ( Gdx.input.isKeyPressed( Keys.NUM_8 ) ) {
-			for ( Fixture f: body.getFixtureList( ) ) {
+			for ( Fixture f : body.getFixtureList( ) ) {
 				f.setSensor( true );
 			}
 		} else {
-			for ( Fixture f: body.getFixtureList( ) ) {
+			for ( Fixture f : body.getFixtureList( ) ) {
 				if ( f != rightSensor && f != leftSensor && f != topSensor ) {
 					f.setSensor( false );
 				}
@@ -559,7 +560,7 @@ public class Player extends Entity {
 				// count by 1
 				if ( this.name == Metrics.player1( ) ) {
 					Metrics.incTrophyMetric( TrophyMetric.P1DEATHS, 1.0f );
-					
+
 					if ( otherPlayer != null
 							&& otherPlayer.getState( ) == PlayerState.Dead ) {
 						Metrics.incTrophyMetric( TrophyMetric.P1TEAMDEATHS,
@@ -669,7 +670,7 @@ public class Player extends Entity {
 			reachedMaxSpeed = false;
 		}
 		runTimeout = RUN_STEPS;
-		footstepSound();
+		footstepSound( );
 	}
 
 	/**
@@ -718,7 +719,7 @@ public class Player extends Entity {
 			reachedMaxSpeed = false;
 		}
 		runTimeout = RUN_STEPS;
-		footstepSound();
+		footstepSound( );
 	}
 
 	/**
@@ -932,9 +933,10 @@ public class Player extends Entity {
 	public Screw getCurrentScrew( ) {
 		return currentScrew;
 	}
-	
+
 	/**
 	 * returns the powerswitch being collided by the player
+	 * 
 	 * @return PowerSwitch
 	 */
 	public PowerSwitch getSwitch( ) {
@@ -987,11 +989,11 @@ public class Player extends Entity {
 		feet.setFriction( 0.0f );
 
 	}
-	
+
 	/**
 	 * sets the power switch being held by player
 	 */
-	public void setPowerSwitch( PowerSwitch powerSwitch ){
+	public void setPowerSwitch( PowerSwitch powerSwitch ) {
 		currentSwitch = powerSwitch;
 	}
 
@@ -1108,7 +1110,7 @@ public class Player extends Entity {
 			}
 		}
 		if ( platform == null ) {
-			//knockedOff = false;
+			// knockedOff = false;
 			hitSolidObject = false;
 		} else {
 			if ( platform.isKinematic( ) && platform.currentMover( ) == null ) {
@@ -1335,7 +1337,7 @@ public class Player extends Entity {
 					}
 				}
 			} else {
-				currentScrew.stopScrewing();
+				currentScrew.stopScrewing( );
 			}
 		} else {
 			if ( inputHandler.unscrewing( ) && currentMover( ) == null ) {
@@ -1383,7 +1385,7 @@ public class Player extends Entity {
 					}
 				}
 			} else {
-				currentScrew.stopScrewing();
+				currentScrew.stopScrewing( );
 			}
 		}
 
@@ -1813,8 +1815,8 @@ public class Player extends Entity {
 					if ( inputHandler.screwPressed( ) ) {
 						screwButtonHeld = true;
 					}
-				} else if (currentSwitch != null && switchTimer == 0){
-					Gdx.app.log("currentSwitch: ","" + currentSwitch);
+				} else if ( currentSwitch != null && switchTimer == 0 ) {
+					Gdx.app.log( "currentSwitch: ", "" + currentSwitch );
 					currentSwitch.doAction( );
 					switchTimer = 60;
 				} else {
@@ -1922,8 +1924,8 @@ public class Player extends Entity {
 				}
 
 				jumpCounter = 0;
-			} else if (currentSwitch != null && switchTimer == 0){
-				Gdx.app.log("currentSwitch: ","" + currentSwitch);
+			} else if ( currentSwitch != null && switchTimer == 0 ) {
+				Gdx.app.log( "currentSwitch: ", "" + currentSwitch );
 				currentSwitch.doAction( );
 				switchTimer = 60;
 			} else
@@ -2097,8 +2099,6 @@ public class Player extends Entity {
 		feet = body.createFixture( fd );
 
 	}
-	
-	
 
 	public float getAbsAnalogXRatio( ) {
 		if ( controllerListener != null ) {
@@ -2139,10 +2139,10 @@ public class Player extends Entity {
 			}
 		}
 	}
-	
-	public void footstepSound(){
-		if (isGrounded() && this.playerState != PlayerState.Screwing){
-			if (sounds.isDelayed( "footstep1" )){
+
+	public void footstepSound( ) {
+		if ( isGrounded( ) && this.playerState != PlayerState.Screwing ) {
+			if ( sounds.isDelayed( "footstep1" ) ) {
 				sounds.playSound( "footstep2", 1.0f );
 			} else {
 				sounds.playSound( "footstep1", 1.0f );
@@ -2150,15 +2150,15 @@ public class Player extends Entity {
 			}
 		}
 	}
-	
-	public void loadSounds(){
+
+	public void loadSounds( ) {
 		sounds.getSound( "jump", WereScrewedGame.dirHandle
 				+ "/common/sounds/jump.ogg" );
-		sounds.getSound( "footstep1" , WereScrewedGame.dirHandle
-				+ "/common/sounds/footstep1.ogg");
-		sounds.getSound( "footstep2" , WereScrewedGame.dirHandle
-				+ "/common/sounds/footstep2.ogg");
-		sounds.getSound( "land" , WereScrewedGame.dirHandle
-				+ "/common/sounds/land.ogg");
+		sounds.getSound( "footstep1", WereScrewedGame.dirHandle
+				+ "/common/sounds/footstep1.ogg" );
+		sounds.getSound( "footstep2", WereScrewedGame.dirHandle
+				+ "/common/sounds/footstep2.ogg" );
+		sounds.getSound( "land", WereScrewedGame.dirHandle
+				+ "/common/sounds/land.ogg" );
 	}
 }
