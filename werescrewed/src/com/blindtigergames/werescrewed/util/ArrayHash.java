@@ -1,6 +1,8 @@
 package com.blindtigergames.werescrewed.util;
 
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.Set;
 
 import com.badlogic.gdx.utils.Array;
 
@@ -76,5 +78,13 @@ public class ArrayHash<K,V> {
 			}
 		}
 		return out;
+	}
+	
+	public Collection< Array<V> > arrays(){
+		return data.values( );
+	}
+
+	public Set<K> keySet( ) {
+		return data.keySet( );
 	}
 }

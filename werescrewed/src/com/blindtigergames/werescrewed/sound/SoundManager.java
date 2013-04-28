@@ -31,7 +31,7 @@ public class SoundManager {
 	}
 	
 	public static EnumMap<SoundType, Float> globalVolume;
-	public HashMap<String, SoundRef> sounds;
+	public ArrayHash<String, SoundRef> sounds;
 	
 	static {
 		globalVolume = new EnumMap<SoundType, Float>(SoundType.class);
@@ -43,13 +43,13 @@ public class SoundManager {
 	protected Camera camera;
 	
 	public SoundManager( ) {
-		sounds = new HashMap<String, SoundRef>();
+		sounds = new ArrayHash<String, SoundRef>();
 	}
 
 	public SoundRef getSound(String id, String assetName){
 		if (!hasSound(id)){
 			Sound s = WereScrewedGame.manager.get( assetName, Sound.class );
-			sounds.put( id, new SoundRef(s));
+			sounds.add( id, new SoundRef(s));
 		}
 		return sounds.get( id );
 	}
@@ -64,25 +64,27 @@ public class SoundManager {
 	public boolean hasSound(String tag){
 		return sounds.containsKey( tag );
 	}
-
-	public void playSound( String id ){
-		playSound(id, 0.0f);
-	}
 	
-	public void playSound( String id, float delay ) {
-		if (hasSound(id)) {
-			sounds.get( id ).play( delay );
+	public boolean hasSound(String tag, int index){
+		return (sounds.containsKey( tag ) && sounds.getAll( tag ).size > index);
+	}
+
+	public void playSound( String id ){ playSound(id, 0, 0f); }
+	public void playSound( String id , float delay){ playSound(id, 0, delay); }
+	
+	public void playSound( String id, int index, float delay ) {
+		if (hasSound(id , index)) {
+			sounds.get( id, index ).play( delay );
 		} else {
-			Gdx.app.log( "SoundManager", "No sound loaded for tag: "+id );
+			Gdx.app.log( "SoundManager", "No sound loaded for tag: "+id+"/"+index );
 		}
 	}
 
-	public void loopSound( String id ){
-		loopSound(id, true);
-	}
+	public void loopSound( String id ){ loopSound(id, 0, true); }
+	public void loopSound( String id , int index){ loopSound(id, index, true); }
 	
-	public void loopSound( String id , boolean override) {
-		if (hasSound(id)) {
+	public void loopSound( String id , int index, boolean override) {
+		if (hasSound(id, index)) {
 			sounds.get( id ).loop( override );
 		}
 	}
@@ -161,8 +163,10 @@ public class SoundManager {
 	}
 	
 	public void update(float dT){
-		for (SoundRef ref : sounds.values( )){
-			ref.update( dT );
+		for (Array<SoundRef> refs : sounds.arrays( )){
+			for (SoundRef ref: refs){
+				ref.update( dT );
+			}
 		}
 	}
 	
@@ -204,7 +208,7 @@ public class SoundManager {
 	
 	public void copyRefs(SoundManager that){
 		for (String name: that.sounds.keySet()){
-			sounds.put( name, that.sounds.get(name) );
+			sounds.add( name, that.sounds.get(name) );
 		}
 	}
 	
