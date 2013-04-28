@@ -40,7 +40,17 @@
 	{ "name": "R_boot", "bone": "R_boot", "attachment": "R_boot" },
 	{ "name": "R_upper_arm", "bone": "R_upper_arm", "attachment": "R_upper_arm" },
 	{ "name": "R_lower_arm", "bone": "R_lower_arm", "attachment": "R_lower_arm" },
-	{ "name": "R_glove", "bone": "R_glove", "attachment": "R_glove" }
+	{ "name": "R_glove", "bone": "R_glove", "attachment": "R_glove" },
+	{ "name": "L_upper_arm_back", "bone": "R_upper_arm", "attachment": "back/L_upper_arm_back" },
+	{ "name": "L_lower_arm_back", "bone": "R_lower_arm", "attachment": "back/L_lower_arm_back" },
+	{ "name": "L_glove_back", "bone": "R_glove", "attachment": "back/L_glove_back" },
+	{ "name": "torso_back", "bone": "torso", "attachment": "back/torso_back" },
+	{ "name": "head_back", "bone": "head", "attachment": "back/head_back" },
+	{ "name": "hat_back", "bone": "hat", "attachment": "back/hat_back" },
+	{ "name": "coat_tail_back", "bone": "coat_tail", "attachment": "back/coat_tail_back" },
+	{ "name": "R_upper_arm_back", "bone": "L_upper_arm", "attachment": "back/R_upper_arm_back" },
+	{ "name": "R_lower_arm_back", "bone": "L_lower_arm", "attachment": "back/R_lower_arm_back" },
+	{ "name": "R_glove_back", "bone": "L_glove", "attachment": "back/R_glove_back" }
 ],
 "skins": {
 	"default": {
@@ -103,6 +113,36 @@
 		},
 		"R_glove": {
 			"R_glove": { "x": 6.08, "y": 1.93, "rotation": 90.55, "width": 17, "height": 24 }
+		},
+		"L_upper_arm_back": {
+			"back/L_upper_arm_back": { "x": 1.82, "y": -0.28, "rotation": 130.5, "width": 19, "height": 21 }
+		},
+		"L_lower_arm_back": {
+			"back/L_lower_arm_back": { "x": 6.29, "y": 1.31, "rotation": 96.41, "width": 12, "height": 20 }
+		},
+		"L_glove_back": {
+			"back/L_glove_back": { "x": 7.17, "y": 2.23, "rotation": 90.55, "width": 17, "height": 25 }
+		},
+		"torso_back": {
+			"back/torso_back": { "x": 10.61, "y": -2.89, "rotation": -98.5, "width": 38, "height": 46 }
+		},
+		"head_back": {
+			"back/head_back": { "x": 19.9, "y": -2.47, "rotation": -93.11, "width": 52, "height": 46 }
+		},
+		"hat_back": {
+			"back/hat_back": { "x": 20.79, "y": 0.72, "rotation": -3.56, "width": 63, "height": 39 }
+		},
+		"coat_tail_back": {
+			"back/coat_tail_back": { "x": 13.56, "y": -0.12, "rotation": 106, "width": 32, "height": 26 }
+		},
+		"R_upper_arm_back": {
+			"back/R_upper_arm_back": { "x": 7.85, "y": -1.42, "rotation": 74.28, "width": 15, "height": 24 }
+		},
+		"R_lower_arm_back": {
+			"back/R_lower_arm_back": { "x": 8.39, "y": -1.9, "rotation": 54.66, "width": 16, "height": 17 }
+		},
+		"R_glove_back": {
+			"back/R_glove_back": { "x": 7.03, "y": 0.2, "rotation": 46.27, "width": 24, "height": 23 }
 		}
 	}
 },
@@ -738,7 +778,143 @@
 			}
 		},
 		"slots": {
+			"R_glove_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"B_hat": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"F_hat": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"R_glove": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"R_lower_arm": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"R_upper_arm": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
 			"screw_driver2": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"head": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"torso": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"waist": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"L_upper_arm": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"L_lower_arm": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"L_glove": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"R_upper_leg": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"L_glove_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"R_lower_leg": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"L_lower_arm_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"R_boot": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"L_upper_arm_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"L_upper_leg": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"torso_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"L_lower_leg": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"head_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"L_boot": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"hat_back": {
+				"attachment": [
+					{ "time": 0, "name": "back/hat_back" }
+				],
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"coat_tail": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"coat_tail_back": {
+				"attachment": [
+					{ "time": 0, "name": "back/coat_tail_back" }
+				],
 				"color": [
 					{ "time": 0, "color": "ffffff00" }
 				]
@@ -746,6 +922,16 @@
 			"screw_driver": {
 				"color": [
 					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"R_upper_arm_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"R_lower_arm_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
 				]
 			}
 		}
@@ -1221,7 +1407,137 @@
 			}
 		},
 		"slots": {
+			"R_glove_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"B_hat": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"F_hat": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"R_glove": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"R_lower_arm": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"R_upper_arm": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
 			"screw_driver2": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"head": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"torso": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"waist": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"L_upper_arm": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"L_lower_arm": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"L_glove": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"R_upper_leg": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"L_glove_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"R_lower_leg": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"L_lower_arm_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"R_boot": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"L_upper_arm_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"L_upper_leg": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"torso_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"L_lower_leg": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"head_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"L_boot": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"hat_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"coat_tail": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"coat_tail_back": {
 				"color": [
 					{ "time": 0, "color": "ffffff00" }
 				]
@@ -1229,6 +1545,16 @@
 			"screw_driver": {
 				"color": [
 					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"R_upper_arm_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"R_lower_arm_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
 				]
 			}
 		}
@@ -1550,15 +1876,155 @@
 			}
 		},
 		"slots": {
+			"R_glove_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"B_hat": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"F_hat": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"R_glove": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"R_lower_arm": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"R_upper_arm": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
 			"screw_driver2": {
 				"color": [
 					{ "time": 0, "color": "ffffff00", "curve": "stepped" },
 					{ "time": 1, "color": "ffffff00" }
 				]
 			},
+			"head": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"torso": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"waist": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"L_upper_arm": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"L_lower_arm": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"L_glove": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"R_upper_leg": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"L_glove_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"R_lower_leg": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"L_lower_arm_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"R_boot": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"L_upper_arm_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"L_upper_leg": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"torso_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"L_lower_leg": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"head_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"L_boot": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"hat_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"coat_tail": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"coat_tail_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
 			"screw_driver": {
 				"color": [
 					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"R_upper_arm_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"R_lower_arm_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
 				]
 			}
 		}
@@ -1937,7 +2403,137 @@
 			}
 		},
 		"slots": {
+			"R_glove_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"B_hat": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"F_hat": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"R_glove": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"R_lower_arm": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"R_upper_arm": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
 			"screw_driver2": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"head": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"torso": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"waist": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"L_upper_arm": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"L_lower_arm": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"L_glove": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"R_upper_leg": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"L_glove_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"R_lower_leg": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"L_lower_arm_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"R_boot": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"L_upper_arm_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"L_upper_leg": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"torso_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"L_lower_leg": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"head_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"L_boot": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"hat_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"coat_tail": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"coat_tail_back": {
 				"color": [
 					{ "time": 0, "color": "ffffff00" }
 				]
@@ -1945,6 +2541,16 @@
 			"screw_driver": {
 				"color": [
 					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"R_upper_arm_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"R_lower_arm_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
 				]
 			}
 		}
@@ -2267,7 +2873,137 @@
 			}
 		},
 		"slots": {
+			"R_glove_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"B_hat": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"F_hat": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"R_glove": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"R_lower_arm": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"R_upper_arm": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
 			"screw_driver2": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"head": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"torso": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"waist": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"L_upper_arm": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"L_lower_arm": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"L_glove": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"R_upper_leg": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"L_glove_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"R_lower_leg": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"L_lower_arm_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"R_boot": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"L_upper_arm_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"L_upper_leg": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"torso_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"L_lower_leg": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"head_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"L_boot": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"hat_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"coat_tail": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"coat_tail_back": {
 				"color": [
 					{ "time": 0, "color": "ffffff00" }
 				]
@@ -2275,6 +3011,16 @@
 			"screw_driver": {
 				"color": [
 					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"R_upper_arm_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"R_lower_arm_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
 				]
 			}
 		}
@@ -2613,7 +3359,137 @@
 			}
 		},
 		"slots": {
+			"R_glove_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"B_hat": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"F_hat": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"R_glove": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"R_lower_arm": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"R_upper_arm": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
 			"screw_driver2": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"head": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"torso": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"waist": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"L_upper_arm": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"L_lower_arm": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"L_glove": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"R_upper_leg": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"L_glove_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"R_lower_leg": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"L_lower_arm_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"R_boot": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"L_upper_arm_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"L_upper_leg": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"torso_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"L_lower_leg": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"head_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"L_boot": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"hat_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"coat_tail": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"coat_tail_back": {
 				"color": [
 					{ "time": 0, "color": "ffffff00" }
 				]
@@ -2621,6 +3497,16 @@
 			"screw_driver": {
 				"color": [
 					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"R_upper_arm_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"R_lower_arm_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
 				]
 			}
 		}
@@ -2884,12 +3770,152 @@
 			}
 		},
 		"slots": {
+			"R_glove_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"B_hat": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"F_hat": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"R_glove": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"R_lower_arm": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"R_upper_arm": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
 			"screw_driver2": {
 				"color": [
 					{ "time": 0, "color": "ffffff00" }
 				]
 			},
+			"head": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"torso": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"waist": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"L_upper_arm": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"L_lower_arm": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"L_glove": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"R_upper_leg": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"L_glove_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"R_lower_leg": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"L_lower_arm_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"R_boot": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"L_upper_arm_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"L_upper_leg": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"torso_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"L_lower_leg": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"head_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"L_boot": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"hat_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"coat_tail": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"coat_tail_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
 			"screw_driver": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"R_upper_arm_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"R_lower_arm_back": {
 				"color": [
 					{ "time": 0, "color": "ffffff00" }
 				]
@@ -3151,7 +4177,137 @@
 			}
 		},
 		"slots": {
+			"R_glove_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"B_hat": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"F_hat": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"R_glove": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"R_lower_arm": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"R_upper_arm": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
 			"screw_driver2": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"head": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"torso": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"waist": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"L_upper_arm": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"L_lower_arm": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"L_glove": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"R_upper_leg": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"L_glove_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"R_lower_leg": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"L_lower_arm_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"R_boot": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"L_upper_arm_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"L_upper_leg": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"torso_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"L_lower_leg": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"head_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"L_boot": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"hat_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"coat_tail": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"coat_tail_back": {
 				"color": [
 					{ "time": 0, "color": "ffffff00" }
 				]
@@ -3159,6 +4315,16 @@
 			"screw_driver": {
 				"color": [
 					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"R_upper_arm_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"R_lower_arm_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
 				]
 			}
 		}
@@ -3199,12 +4365,152 @@
 			}
 		},
 		"slots": {
+			"R_glove_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"B_hat": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"F_hat": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"R_glove": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"R_lower_arm": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"R_upper_arm": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
 			"screw_driver2": {
 				"color": [
 					{ "time": 0, "color": "ffffffff" }
 				]
 			},
+			"head": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"torso": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"waist": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"L_upper_arm": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"L_lower_arm": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"L_glove": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"R_upper_leg": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"L_glove_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"R_lower_leg": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"L_lower_arm_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"R_boot": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"L_upper_arm_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"L_upper_leg": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"torso_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"L_lower_leg": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"head_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"L_boot": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"hat_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"coat_tail": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"coat_tail_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
 			"screw_driver": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"R_upper_arm_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"R_lower_arm_back": {
 				"color": [
 					{ "time": 0, "color": "ffffff00" }
 				]
@@ -3290,6 +4596,36 @@
 			}
 		},
 		"slots": {
+			"R_glove_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"B_hat": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"F_hat": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"R_glove": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"R_lower_arm": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"R_upper_arm": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
 			"screw_driver2": {
 				"color": [
 					{ "time": 0, "color": "ffffff00", "curve": "stepped" },
@@ -3297,11 +4633,121 @@
 					{ "time": 0.2, "color": "ffffffff" }
 				]
 			},
+			"head": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"torso": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"waist": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"L_upper_arm": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"L_lower_arm": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"L_glove": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"R_upper_leg": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"L_glove_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"R_lower_leg": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"L_lower_arm_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"R_boot": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"L_upper_arm_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"L_upper_leg": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"torso_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"L_lower_leg": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"head_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"L_boot": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"hat_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"coat_tail": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"coat_tail_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
 			"screw_driver": {
 				"color": [
 					{ "time": 0, "color": "ffffffff", "curve": "stepped" },
 					{ "time": 0.1666, "color": "ffffffff" },
 					{ "time": 0.2, "color": "ffffff00" }
+				]
+			},
+			"R_upper_arm_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"R_lower_arm_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
 				]
 			}
 		}
@@ -4053,7 +5499,137 @@
 			}
 		},
 		"slots": {
+			"R_glove_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"B_hat": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"F_hat": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"R_glove": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"R_lower_arm": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"R_upper_arm": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
 			"screw_driver2": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"head": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"torso": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"waist": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"L_upper_arm": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"L_lower_arm": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"L_glove": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"R_upper_leg": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"L_glove_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"R_lower_leg": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"L_lower_arm_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"R_boot": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"L_upper_arm_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"L_upper_leg": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"torso_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"L_lower_leg": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"head_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"L_boot": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"hat_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"coat_tail": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"coat_tail_back": {
 				"color": [
 					{ "time": 0, "color": "ffffff00" }
 				]
@@ -4061,6 +5637,16 @@
 			"screw_driver": {
 				"color": [
 					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"R_upper_arm_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"R_lower_arm_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
 				]
 			}
 		}
@@ -4153,7 +5739,137 @@
 			}
 		},
 		"slots": {
+			"R_glove_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"B_hat": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"F_hat": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"R_glove": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"R_lower_arm": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"R_upper_arm": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
 			"screw_driver2": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"head": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"torso": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"waist": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"L_upper_arm": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"L_lower_arm": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"L_glove": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"R_upper_leg": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"L_glove_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"R_lower_leg": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"L_lower_arm_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"R_boot": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"L_upper_arm_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"L_upper_leg": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"torso_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"L_lower_leg": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"head_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"L_boot": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"hat_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"coat_tail": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"coat_tail_back": {
 				"color": [
 					{ "time": 0, "color": "ffffff00" }
 				]
@@ -4161,6 +5877,16 @@
 			"screw_driver": {
 				"color": [
 					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"R_upper_arm_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"R_lower_arm_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
 				]
 			}
 		}
@@ -4481,12 +6207,152 @@
 			}
 		},
 		"slots": {
+			"R_glove_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"B_hat": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"F_hat": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"R_glove": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"R_lower_arm": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"R_upper_arm": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
 			"screw_driver2": {
 				"color": [
 					{ "time": 0, "color": "ffffffff" }
 				]
 			},
+			"head": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"torso": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"waist": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"L_upper_arm": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"L_lower_arm": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"L_glove": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"R_upper_leg": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"L_glove_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"R_lower_leg": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"L_lower_arm_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"R_boot": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"L_upper_arm_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"L_upper_leg": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"torso_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"L_lower_leg": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"head_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"L_boot": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"hat_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"coat_tail": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"coat_tail_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
 			"screw_driver": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"R_upper_arm_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"R_lower_arm_back": {
 				"color": [
 					{ "time": 0, "color": "ffffff00" }
 				]
@@ -4751,14 +6617,154 @@
 			}
 		},
 		"slots": {
+			"R_glove_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"B_hat": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"F_hat": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"R_glove": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"R_lower_arm": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"R_upper_arm": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
 			"screw_driver2": {
 				"color": [
 					{ "time": 0, "color": "ffffffff" }
 				]
 			},
+			"head": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"torso": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"waist": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"L_upper_arm": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"L_lower_arm": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"L_glove": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"R_upper_leg": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"L_glove_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"R_lower_leg": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"L_lower_arm_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"R_boot": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"L_upper_arm_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"L_upper_leg": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"torso_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"L_lower_leg": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"head_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"L_boot": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"hat_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"coat_tail": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"coat_tail_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
 			"screw_driver": {
 				"color": [
 					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"R_upper_arm_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"R_lower_arm_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
 				]
 			}
 		}
@@ -5007,12 +7013,152 @@
 			}
 		},
 		"slots": {
+			"R_glove_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"B_hat": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"F_hat": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"R_glove": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"R_lower_arm": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"R_upper_arm": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
 			"screw_driver2": {
 				"color": [
 					{ "time": 0, "color": "ffffffff" }
 				]
 			},
+			"head": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"torso": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"waist": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"L_upper_arm": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"L_lower_arm": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"L_glove": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"R_upper_leg": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"L_glove_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"R_lower_leg": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"L_lower_arm_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"R_boot": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"L_upper_arm_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"L_upper_leg": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"torso_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"L_lower_leg": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"head_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"L_boot": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"hat_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"coat_tail": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"coat_tail_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
 			"screw_driver": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"R_upper_arm_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"R_lower_arm_back": {
 				"color": [
 					{ "time": 0, "color": "ffffff00" }
 				]
@@ -5461,7 +7607,137 @@
 			}
 		},
 		"slots": {
+			"R_glove_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"B_hat": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"F_hat": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"R_glove": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"R_lower_arm": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"R_upper_arm": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
 			"screw_driver2": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"head": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"torso": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"waist": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"L_upper_arm": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"L_lower_arm": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"L_glove": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"R_upper_leg": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"L_glove_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"R_lower_leg": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"L_lower_arm_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"R_boot": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"L_upper_arm_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"L_upper_leg": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"torso_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"L_lower_leg": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"head_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"L_boot": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"hat_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"coat_tail": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"coat_tail_back": {
 				"color": [
 					{ "time": 0, "color": "ffffff00" }
 				]
@@ -5470,11 +7746,845 @@
 				"color": [
 					{ "time": 0, "color": "ffffffff" }
 				]
+			},
+			"R_upper_arm_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"R_lower_arm_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
 			}
 		}
 	},
-	"screwing_ground": {},
-	"screwing_hang": {},
-	"wave": {}
+	"screwing_ground": {
+		"bones": {
+			"L_upper_arm": {
+				"rotate": [
+					{ "time": 0, "angle": 286.18 },
+					{ "time": 0.2666, "angle": 36.33 },
+					{ "time": 0.5333, "angle": 31.01 },
+					{ "time": 0.8, "angle": 288.44 },
+					{ "time": 1.0666, "angle": 286.18 }
+				],
+				"translate": [
+					{ "time": 0, "x": 2.99, "y": -1.9 },
+					{ "time": 0.2666, "x": 0.29, "y": 1.95 },
+					{ "time": 0.8, "x": 1.8, "y": -1.3 },
+					{ "time": 1.0666, "x": 2.99, "y": -1.9 }
+				]
+			},
+			"L_upper_leg": {
+				"rotate": [
+					{ "time": 0, "angle": 69.97, "curve": "stepped" },
+					{ "time": 1.0666, "angle": 69.97 }
+				]
+			},
+			"L_lower_leg": {
+				"rotate": [
+					{ "time": 0, "angle": -88.19, "curve": "stepped" },
+					{ "time": 1.0666, "angle": -88.19 }
+				],
+				"translate": [
+					{ "time": 0, "x": 3.19, "y": -0.33, "curve": "stepped" },
+					{ "time": 1.0666, "x": 3.19, "y": -0.33 }
+				]
+			},
+			"L_boot": {
+				"rotate": [
+					{ "time": 0, "angle": 17.31, "curve": "stepped" },
+					{ "time": 1.0666, "angle": 17.31 }
+				]
+			},
+			"R_upper_leg": {
+				"rotate": [
+					{ "time": 0, "angle": 27.64, "curve": "stepped" },
+					{ "time": 1.0666, "angle": 27.64 }
+				]
+			},
+			"R_lower_leg": {
+				"rotate": [
+					{ "time": 0, "angle": -131.58, "curve": "stepped" },
+					{ "time": 1.0666, "angle": -131.58 }
+				]
+			},
+			"L_lower_arm": {
+				"rotate": [
+					{ "time": 0, "angle": 52.2 },
+					{ "time": 0.2666, "angle": -15.87 },
+					{ "time": 0.5333, "angle": -62.97 },
+					{ "time": 0.8, "angle": 3.21 },
+					{ "time": 1.0666, "angle": 52.2 }
+				]
+			},
+			"waist": {
+				"translate": [
+					{ "time": 0, "x": -0.65, "y": -16.4, "curve": "stepped" },
+					{ "time": 1.0666, "x": -0.65, "y": -16.4 }
+				]
+			},
+			"torso": {
+				"rotate": [
+					{ "time": 0, "angle": -10.79 },
+					{ "time": 0.4, "angle": -16 },
+					{ "time": 1.0666, "angle": -10.79 }
+				]
+			},
+			"head": {
+				"rotate": [
+					{ "time": 0, "angle": 2.22 },
+					{ "time": 0.4, "angle": -1.34 },
+					{ "time": 1.0666, "angle": 2.22 }
+				],
+				"translate": [
+					{ "time": 0, "x": -0.11, "y": 2.86 },
+					{ "time": 0.4, "x": -0.86, "y": -0.75 },
+					{ "time": 1.0666, "x": -0.11, "y": 2.86 }
+				]
+			},
+			"R_upper_arm": {
+				"rotate": [
+					{ "time": 0, "angle": 43.9, "curve": "stepped" },
+					{ "time": 1.0666, "angle": 43.9 }
+				],
+				"translate": [
+					{ "time": 0, "x": 0.1, "y": -0.95, "curve": "stepped" },
+					{ "time": 1.0666, "x": 0.1, "y": -0.95 }
+				]
+			},
+			"R_lower_arm": {
+				"rotate": [
+					{ "time": 0, "angle": 58.73, "curve": "stepped" },
+					{ "time": 1.0666, "angle": 58.73 }
+				]
+			},
+			"R_glove": {
+				"rotate": [
+					{ "time": 0, "angle": 10.52, "curve": "stepped" },
+					{ "time": 1.0666, "angle": 10.52 }
+				]
+			},
+			"root": {
+				"translate": [
+					{ "time": 0, "x": -22.74, "y": 0 }
+				]
+			}
+		},
+		"slots": {
+			"R_glove_back": {
+				"color": [
+					{ "time": 0, "color": "ffffffff", "curve": "stepped" },
+					{ "time": 1.0666, "color": "ffffffff" }
+				]
+			},
+			"B_hat": {
+				"color": [
+					{ "time": 0, "color": "ffffff00", "curve": "stepped" },
+					{ "time": 1.0666, "color": "ffffff00" }
+				]
+			},
+			"F_hat": {
+				"color": [
+					{ "time": 0, "color": "ffffff00", "curve": "stepped" },
+					{ "time": 1.0666, "color": "ffffff00" }
+				]
+			},
+			"R_glove": {
+				"color": [
+					{ "time": 0, "color": "ffffff00", "curve": "stepped" },
+					{ "time": 1.0666, "color": "ffffff00" }
+				]
+			},
+			"R_lower_arm": {
+				"color": [
+					{ "time": 0, "color": "ffffff00", "curve": "stepped" },
+					{ "time": 1.0666, "color": "ffffff00" }
+				]
+			},
+			"R_upper_arm": {
+				"color": [
+					{ "time": 0, "color": "ffffff00", "curve": "stepped" },
+					{ "time": 1.0666, "color": "ffffff00" }
+				]
+			},
+			"screw_driver2": {
+				"color": [
+					{ "time": 0, "color": "ffffff00", "curve": "stepped" },
+					{ "time": 1.0666, "color": "ffffff00" }
+				]
+			},
+			"head": {
+				"color": [
+					{ "time": 0, "color": "ffffff00", "curve": "stepped" },
+					{ "time": 1.0666, "color": "ffffff00" }
+				]
+			},
+			"torso": {
+				"color": [
+					{ "time": 0, "color": "ffffff00", "curve": "stepped" },
+					{ "time": 1.0666, "color": "ffffff00" }
+				]
+			},
+			"waist": {
+				"color": [
+					{ "time": 0, "color": "ffffffff", "curve": "stepped" },
+					{ "time": 1.0666, "color": "ffffffff" }
+				]
+			},
+			"L_upper_arm": {
+				"color": [
+					{ "time": 0, "color": "ffffff00", "curve": "stepped" },
+					{ "time": 1.0666, "color": "ffffff00" }
+				]
+			},
+			"L_lower_arm": {
+				"color": [
+					{ "time": 0, "color": "ffffff00", "curve": "stepped" },
+					{ "time": 1.0666, "color": "ffffff00" }
+				]
+			},
+			"L_glove": {
+				"color": [
+					{ "time": 0, "color": "ffffff00", "curve": "stepped" },
+					{ "time": 1.0666, "color": "ffffff00" }
+				]
+			},
+			"R_upper_leg": {
+				"color": [
+					{ "time": 0, "color": "ffffffff", "curve": "stepped" },
+					{ "time": 1.0666, "color": "ffffffff" }
+				]
+			},
+			"L_glove_back": {
+				"color": [
+					{ "time": 0, "color": "ffffffff", "curve": "stepped" },
+					{ "time": 1.0666, "color": "ffffffff" }
+				]
+			},
+			"R_lower_leg": {
+				"color": [
+					{ "time": 0, "color": "ffffffff", "curve": "stepped" },
+					{ "time": 1.0666, "color": "ffffffff" }
+				]
+			},
+			"L_lower_arm_back": {
+				"color": [
+					{ "time": 0, "color": "ffffffff", "curve": "stepped" },
+					{ "time": 1.0666, "color": "ffffffff" }
+				]
+			},
+			"R_boot": {
+				"color": [
+					{ "time": 0, "color": "ffffffff", "curve": "stepped" },
+					{ "time": 1.0666, "color": "ffffffff" }
+				]
+			},
+			"L_upper_arm_back": {
+				"color": [
+					{ "time": 0, "color": "ffffffff", "curve": "stepped" },
+					{ "time": 1.0666, "color": "ffffffff" }
+				]
+			},
+			"L_upper_leg": {
+				"color": [
+					{ "time": 0, "color": "ffffffff", "curve": "stepped" },
+					{ "time": 1.0666, "color": "ffffffff" }
+				]
+			},
+			"torso_back": {
+				"color": [
+					{ "time": 0, "color": "ffffffff", "curve": "stepped" },
+					{ "time": 1.0666, "color": "ffffffff" }
+				]
+			},
+			"L_lower_leg": {
+				"color": [
+					{ "time": 0, "color": "ffffffff", "curve": "stepped" },
+					{ "time": 1.0666, "color": "ffffffff" }
+				]
+			},
+			"head_back": {
+				"color": [
+					{ "time": 0, "color": "ffffffff", "curve": "stepped" },
+					{ "time": 1.0666, "color": "ffffffff" }
+				]
+			},
+			"L_boot": {
+				"color": [
+					{ "time": 0, "color": "ffffffff", "curve": "stepped" },
+					{ "time": 1.0666, "color": "ffffffff" }
+				]
+			},
+			"hat_back": {
+				"color": [
+					{ "time": 0, "color": "ffffffff", "curve": "stepped" },
+					{ "time": 1.0666, "color": "ffffffff" }
+				]
+			},
+			"coat_tail": {
+				"color": [
+					{ "time": 0, "color": "ffffff00", "curve": "stepped" },
+					{ "time": 1.0666, "color": "ffffff00" }
+				]
+			},
+			"coat_tail_back": {
+				"color": [
+					{ "time": 0, "color": "ffffffff", "curve": "stepped" },
+					{ "time": 1.0666, "color": "ffffffff" }
+				]
+			},
+			"screw_driver": {
+				"color": [
+					{ "time": 0, "color": "ffffff00", "curve": "stepped" },
+					{ "time": 1.0666, "color": "ffffff00" }
+				]
+			},
+			"R_upper_arm_back": {
+				"color": [
+					{ "time": 0, "color": "ffffffff", "curve": "stepped" },
+					{ "time": 1.0666, "color": "ffffffff" }
+				]
+			},
+			"R_lower_arm_back": {
+				"color": [
+					{ "time": 0, "color": "ffffffff", "curve": "stepped" },
+					{ "time": 1.0666, "color": "ffffffff" }
+				]
+			}
+		}
+	},
+	"screwing_hang": {
+		"bones": {
+			"L_upper_arm": {
+				"rotate": [
+					{ "time": 0, "angle": 286.18 },
+					{ "time": 0.2666, "angle": 36.33 },
+					{ "time": 0.5333, "angle": 31.01 },
+					{ "time": 0.8, "angle": 288.44 },
+					{ "time": 1.0666, "angle": 286.18 }
+				],
+				"translate": [
+					{ "time": 0, "x": 5.82, "y": -2.32 },
+					{ "time": 0.2666, "x": 0.7, "y": 4.72 },
+					{ "time": 0.5333, "x": 1.61, "y": 4.07 },
+					{ "time": 0.8, "x": 5.47, "y": -1.04 },
+					{ "time": 1.0666, "x": 5.82, "y": -2.32 }
+				]
+			},
+			"L_lower_arm": {
+				"rotate": [
+					{ "time": 0, "angle": 52.2 },
+					{ "time": 0.2666, "angle": -15.87 },
+					{ "time": 0.5333, "angle": -62.97 },
+					{ "time": 0.8, "angle": 3.21 },
+					{ "time": 1.0666, "angle": 52.2 }
+				]
+			},
+			"L_upper_leg": {
+				"rotate": [
+					{
+						"time": 0,
+						"angle": 47.65,
+						"curve": [ 0.502, 0.01, 0.597, 0.95 ]
+					},
+					{
+						"time": 0.6,
+						"angle": 1.84,
+						"curve": [ 0.459, 0.05, 0.62, 0.92 ]
+					},
+					{ "time": 1.0666, "angle": 47.65 }
+				]
+			},
+			"L_lower_leg": {
+				"rotate": [
+					{
+						"time": 0,
+						"angle": -77.04,
+						"curve": [ 0.502, 0.01, 0.597, 0.95 ]
+					},
+					{
+						"time": 0.6,
+						"angle": -23.98,
+						"curve": [ 0.459, 0.05, 0.62, 0.92 ]
+					},
+					{ "time": 1.0666, "angle": -77.04 }
+				],
+				"translate": [
+					{ "time": 0, "x": 3.43, "y": -0.96, "curve": "stepped" },
+					{ "time": 1.0666, "x": 3.43, "y": -0.96 }
+				]
+			},
+			"L_boot": {
+				"rotate": [
+					{ "time": 0, "angle": -10.01, "curve": "stepped" },
+					{ "time": 1.0666, "angle": -10.01 }
+				]
+			},
+			"R_upper_leg": {
+				"rotate": [
+					{
+						"time": 0,
+						"angle": 49.35,
+						"curve": [ 0.502, 0.01, 0.597, 0.95 ]
+					},
+					{
+						"time": 0.3,
+						"angle": 13.23,
+						"curve": [ 0.459, 0.05, 0.62, 0.92 ]
+					},
+					{ "time": 1.0666, "angle": 49.35 }
+				]
+			},
+			"waist": {
+				"rotate": [
+					{
+						"time": 0,
+						"angle": 16.22,
+						"curve": [ 0.393, 0, 0.66, 0.96 ]
+					},
+					{
+						"time": 0.4333,
+						"angle": 2.27,
+						"curve": [ 0.431, 0.01, 0.583, 0.97 ]
+					},
+					{ "time": 1.0666, "angle": 16.22 }
+				]
+			},
+			"torso": {
+				"rotate": [
+					{
+						"time": 0,
+						"angle": -16.15,
+						"curve": [ 0.551, 0.01, 0.64, 0.93 ]
+					},
+					{
+						"time": 0.4333,
+						"angle": -5.64,
+						"curve": [ 0.502, 0.04, 0.62, 0.9 ]
+					},
+					{ "time": 1.0666, "angle": -16.15 }
+				]
+			},
+			"head": {
+				"rotate": [
+					{
+						"time": 0,
+						"angle": -7.27,
+						"curve": [ 0.491, 0, 0.6, 0.98 ]
+					},
+					{
+						"time": 0.4333,
+						"angle": 0,
+						"curve": [ 0.482, 0.01, 0.543, 0.93 ]
+					},
+					{ "time": 1.0666, "angle": -7.27 }
+				],
+				"translate": [
+					{
+						"time": 0,
+						"x": -0.17,
+						"y": -1.18,
+						"curve": [ 0.491, 0, 0.6, 0.98 ]
+					},
+					{
+						"time": 0.4333,
+						"x": 0,
+						"y": 0,
+						"curve": [ 0.482, 0.01, 0.543, 0.93 ]
+					},
+					{ "time": 1.0666, "x": -0.17, "y": -1.18 }
+				]
+			},
+			"R_lower_leg": {
+				"rotate": [
+					{
+						"time": 0,
+						"angle": -94.48,
+						"curve": [ 0.502, 0.01, 0.597, 0.95 ]
+					},
+					{
+						"time": 0.3,
+						"angle": -27.9,
+						"curve": [ 0.459, 0.05, 0.62, 0.92 ]
+					},
+					{ "time": 1.0666, "angle": -94.48 }
+				]
+			},
+			"R_boot": {
+				"rotate": [
+					{ "time": 0, "angle": -10.64, "curve": "stepped" },
+					{ "time": 1.0666, "angle": -10.64 }
+				],
+				"translate": [
+					{ "time": 0, "x": -1.18, "y": -1.2, "curve": "stepped" },
+					{ "time": 1.0666, "x": -1.18, "y": -1.2 }
+				]
+			},
+			"R_upper_arm": {
+				"rotate": [
+					{ "time": 0, "angle": -299.25, "curve": "stepped" },
+					{ "time": 1.0666, "angle": -299.25 }
+				],
+				"translate": [
+					{ "time": 0, "x": -0.28, "y": -1.89, "curve": "stepped" },
+					{ "time": 1.0666, "x": -0.28, "y": -1.89 }
+				]
+			},
+			"R_lower_arm": {
+				"rotate": [
+					{ "time": 0, "angle": 61.72, "curve": "stepped" },
+					{ "time": 1.0666, "angle": 61.72 }
+				],
+				"translate": [
+					{ "time": 0, "x": 0, "y": 0, "curve": "stepped" },
+					{ "time": 1.0666, "x": 0, "y": 0 }
+				]
+			},
+			"root": {
+				"translate": [
+					{ "time": 0, "x": -22.74, "y": 0, "curve": "stepped" },
+					{ "time": 1.0666, "x": -22.74, "y": 0 }
+				]
+			}
+		},
+		"slots": {
+			"R_glove_back": {
+				"color": [
+					{ "time": 0, "color": "ffffffff", "curve": "stepped" },
+					{ "time": 1.0666, "color": "ffffffff" }
+				]
+			},
+			"B_hat": {
+				"color": [
+					{ "time": 0, "color": "ffffff00", "curve": "stepped" },
+					{ "time": 1.0666, "color": "ffffff00" }
+				]
+			},
+			"F_hat": {
+				"color": [
+					{ "time": 0, "color": "ffffff00", "curve": "stepped" },
+					{ "time": 1.0666, "color": "ffffff00" }
+				]
+			},
+			"R_glove": {
+				"color": [
+					{ "time": 0, "color": "ffffff00", "curve": "stepped" },
+					{ "time": 1.0666, "color": "ffffff00" }
+				]
+			},
+			"R_lower_arm": {
+				"color": [
+					{ "time": 0, "color": "ffffff00", "curve": "stepped" },
+					{ "time": 1.0666, "color": "ffffff00" }
+				]
+			},
+			"R_upper_arm": {
+				"color": [
+					{ "time": 0, "color": "ffffff00", "curve": "stepped" },
+					{ "time": 1.0666, "color": "ffffff00" }
+				]
+			},
+			"screw_driver2": {
+				"color": [
+					{ "time": 0, "color": "ffffff00", "curve": "stepped" },
+					{ "time": 1.0666, "color": "ffffff00" }
+				]
+			},
+			"head": {
+				"color": [
+					{ "time": 0, "color": "ffffff00", "curve": "stepped" },
+					{ "time": 1.0666, "color": "ffffff00" }
+				]
+			},
+			"torso": {
+				"color": [
+					{ "time": 0, "color": "ffffff00", "curve": "stepped" },
+					{ "time": 1.0666, "color": "ffffff00" }
+				]
+			},
+			"waist": {
+				"color": [
+					{ "time": 0, "color": "ffffffff", "curve": "stepped" },
+					{ "time": 1.0666, "color": "ffffffff" }
+				]
+			},
+			"L_upper_arm": {
+				"color": [
+					{ "time": 0, "color": "ffffff00", "curve": "stepped" },
+					{ "time": 1.0666, "color": "ffffff00" }
+				]
+			},
+			"L_lower_arm": {
+				"color": [
+					{ "time": 0, "color": "ffffff00", "curve": "stepped" },
+					{ "time": 1.0666, "color": "ffffff00" }
+				]
+			},
+			"L_glove": {
+				"color": [
+					{ "time": 0, "color": "ffffff00", "curve": "stepped" },
+					{ "time": 1.0666, "color": "ffffff00" }
+				]
+			},
+			"R_upper_leg": {
+				"color": [
+					{ "time": 0, "color": "ffffffff", "curve": "stepped" },
+					{ "time": 1.0666, "color": "ffffffff" }
+				]
+			},
+			"L_glove_back": {
+				"color": [
+					{ "time": 0, "color": "ffffffff", "curve": "stepped" },
+					{ "time": 1.0666, "color": "ffffffff" }
+				]
+			},
+			"R_lower_leg": {
+				"color": [
+					{ "time": 0, "color": "ffffffff", "curve": "stepped" },
+					{ "time": 1.0666, "color": "ffffffff" }
+				]
+			},
+			"L_lower_arm_back": {
+				"color": [
+					{ "time": 0, "color": "ffffffff", "curve": "stepped" },
+					{ "time": 1.0666, "color": "ffffffff" }
+				]
+			},
+			"R_boot": {
+				"color": [
+					{ "time": 0, "color": "ffffffff", "curve": "stepped" },
+					{ "time": 1.0666, "color": "ffffffff" }
+				]
+			},
+			"L_upper_arm_back": {
+				"color": [
+					{ "time": 0, "color": "ffffffff", "curve": "stepped" },
+					{ "time": 1.0666, "color": "ffffffff" }
+				]
+			},
+			"L_upper_leg": {
+				"color": [
+					{ "time": 0, "color": "ffffffff", "curve": "stepped" },
+					{ "time": 1.0666, "color": "ffffffff" }
+				]
+			},
+			"torso_back": {
+				"color": [
+					{ "time": 0, "color": "ffffffff", "curve": "stepped" },
+					{ "time": 1.0666, "color": "ffffffff" }
+				]
+			},
+			"L_lower_leg": {
+				"color": [
+					{ "time": 0, "color": "ffffffff", "curve": "stepped" },
+					{ "time": 1.0666, "color": "ffffffff" }
+				]
+			},
+			"head_back": {
+				"color": [
+					{ "time": 0, "color": "ffffffff", "curve": "stepped" },
+					{ "time": 1.0666, "color": "ffffffff" }
+				]
+			},
+			"L_boot": {
+				"color": [
+					{ "time": 0, "color": "ffffffff", "curve": "stepped" },
+					{ "time": 1.0666, "color": "ffffffff" }
+				]
+			},
+			"hat_back": {
+				"color": [
+					{ "time": 0, "color": "ffffffff", "curve": "stepped" },
+					{ "time": 1.0666, "color": "ffffffff" }
+				]
+			},
+			"coat_tail": {
+				"color": [
+					{ "time": 0, "color": "ffffff00", "curve": "stepped" },
+					{ "time": 1.0666, "color": "ffffff00" }
+				]
+			},
+			"coat_tail_back": {
+				"color": [
+					{ "time": 0, "color": "ffffffff", "curve": "stepped" },
+					{ "time": 1.0666, "color": "ffffffff" }
+				]
+			},
+			"screw_driver": {
+				"color": [
+					{ "time": 0, "color": "ffffff00", "curve": "stepped" },
+					{ "time": 1.0666, "color": "ffffff00" }
+				]
+			},
+			"R_upper_arm_back": {
+				"color": [
+					{ "time": 0, "color": "ffffffff", "curve": "stepped" },
+					{ "time": 1.0666, "color": "ffffffff" }
+				]
+			},
+			"R_lower_arm_back": {
+				"color": [
+					{ "time": 0, "color": "ffffffff", "curve": "stepped" },
+					{ "time": 1.0666, "color": "ffffffff" }
+				]
+			}
+		}
+	},
+	"wave": {
+		"slots": {
+			"R_glove_back": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"B_hat": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"F_hat": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"R_glove": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"R_lower_arm": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"R_upper_arm": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"screw_driver2": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"head": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"torso": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"waist": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"L_upper_arm": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"L_lower_arm": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"L_glove": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"R_upper_leg": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"L_glove_back": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"R_lower_leg": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"L_lower_arm_back": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"R_boot": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"L_upper_arm_back": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"L_upper_leg": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"torso_back": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"L_lower_leg": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"head_back": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"L_boot": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"hat_back": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"coat_tail": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"coat_tail_back": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"screw_driver": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"R_upper_arm_back": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"R_lower_arm_back": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			}
+		}
+	}
 }
 }
