@@ -246,7 +246,7 @@ public class LevelFactory {
 		} else if ( bluePrints.equals( "rope" ) ) {
 			constructRope( item );
 		} else if ( bluePrints.equals( "checkpoint" ) ) {
-			constructCheckpoint( item );
+			out = constructCheckpoint( item );
 		} else if ( bluePrints.equals( "eventtrigger" ) ) {
 			constructEventTrigger( item );
 		} else if (bluePrints.equals( "powerswitch" )){
@@ -1250,7 +1250,7 @@ public class LevelFactory {
 		return out;
 	}
 
-	public void constructCheckpoint( Item item ) {
+	public CheckPoint constructCheckpoint( Item item ) {
 
 		if ( level.progressManager == null ) {
 			level.progressManager = new ProgressManager( level.player1,
@@ -1264,6 +1264,10 @@ public class LevelFactory {
 		// add checkpointto skeleton not progress manager
 		parent.addCheckPoint( chkpt );
 		// chkpt.setParentSkeleton( parent );
+		
+		entities.put( item.name, chkpt );
+		
+		return chkpt;
 	}
 
 	/**
