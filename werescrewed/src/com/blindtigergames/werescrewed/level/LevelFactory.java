@@ -782,7 +782,12 @@ public class LevelFactory {
 		if ( item.props.containsKey( "crushable" ) ) {
 			isCrushable = true;
 		}
-
+		
+		if ( item.props.containsKey( "density" ) ) {
+			float density = Float.parseFloat( item.props.get( "density" ) );
+			pb.density( density );
+		}
+		
 		pb.name( item.name ).position( new Vector2( xPos, yPos ) )
 				.dimensions( new Vector2( tileWidth, tileHeight ) )
 				.tileSet( "alphabot" ).properties( item.props );

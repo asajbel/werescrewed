@@ -2031,8 +2031,9 @@ public class Player extends Entity {
 	 */
 	private void steamResolution( ) {
 		//setGrounded(true);
-		float steamAngle, xImpulse = 0, yImpulse = 0;
-		if(currentSteam != null){
+		if(currentSteam != null && currentSteam.isActive()){
+			
+			float steamAngle, xImpulse = 0, yImpulse = 0;
 			steamAngle = currentSteam.getAngle( );
 			
 			xImpulse = ( float ) ( Math.sin( steamAngle ) * STEAM_IMPULSE );
@@ -2042,36 +2043,37 @@ public class Player extends Entity {
 			if(name.equals( "player1" )){
 				//System.out.println( body.getLinearVelocity( ) );
 			}
-		}
 		
-
-		// body.applyForceToCenter( 0f, STEAM_FORCE );
-		// body.setLinearVelocity( new Vector2( body.getLinearVelocity( ).x, 0f
-		// ) );
-		
-		
-		
-		xImpulse *= 0.09f;
-		yImpulse *= 0.09f;
-		
-		body.applyLinearImpulse( new Vector2( -1 * xImpulse, yImpulse ),
-				body.getWorldCenter( ) );
-		
-		if ( prevButton == null ){
-			body.setLinearVelocity( new Vector2( 0f,
-					body.getLinearVelocity( ).y ) );
-		}
-		if ( body.getLinearVelocity( ).y > STEAM_MAX_Y_VELOCITY ) {
-			body.setLinearVelocity( body.getLinearVelocity( ).x, STEAM_MAX_Y_VELOCITY );
-		}
-		
-//		body.applyForce( new Vector2( -1 * xImpulse, yImpulse ), body.getWorldCenter( ) );
-
-		// increments steam jump trophy metric
-		if ( this.name == Metrics.player1( ) ) {
-			Metrics.incTrophyMetric( TrophyMetric.P1STEAMJUMPS, 1 );
-		} else if ( this.name == Metrics.player2( ) ) {
-			Metrics.incTrophyMetric( TrophyMetric.P2STEAMJUMPS, 1 );
+			
+	
+			// body.applyForceToCenter( 0f, STEAM_FORCE );
+			// body.setLinearVelocity( new Vector2( body.getLinearVelocity( ).x, 0f
+			// ) );
+			
+			
+			
+			xImpulse *= 0.09f;
+			yImpulse *= 0.09f;
+			
+			body.applyLinearImpulse( new Vector2( -1 * xImpulse, yImpulse ),
+					body.getWorldCenter( ) );
+			
+			if ( prevButton == null ){
+				body.setLinearVelocity( new Vector2( 0f,
+						body.getLinearVelocity( ).y ) );
+			}
+			if ( body.getLinearVelocity( ).y > STEAM_MAX_Y_VELOCITY ) {
+				body.setLinearVelocity( body.getLinearVelocity( ).x, STEAM_MAX_Y_VELOCITY );
+			}
+			
+	//		body.applyForce( new Vector2( -1 * xImpulse, yImpulse ), body.getWorldCenter( ) );
+	
+			// increments steam jump trophy metric
+			if ( this.name == Metrics.player1( ) ) {
+				Metrics.incTrophyMetric( TrophyMetric.P1STEAMJUMPS, 1 );
+			} else if ( this.name == Metrics.player2( ) ) {
+				Metrics.incTrophyMetric( TrophyMetric.P2STEAMJUMPS, 1 );
+			}
 		}
 		
 	}

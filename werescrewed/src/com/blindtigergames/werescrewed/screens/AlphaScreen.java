@@ -26,6 +26,8 @@ import com.blindtigergames.werescrewed.entity.Sprite;
 import com.blindtigergames.werescrewed.entity.action.AnchorActivateAction;
 import com.blindtigergames.werescrewed.entity.action.AnchorDeactivateAction;
 import com.blindtigergames.werescrewed.entity.action.DestoryPlatformJointAction;
+import com.blindtigergames.werescrewed.entity.action.EntityActivateMoverAction;
+import com.blindtigergames.werescrewed.entity.action.EntityDeactivateMoverAction;
 import com.blindtigergames.werescrewed.entity.action.RemoveEntityAction;
 import com.blindtigergames.werescrewed.entity.builders.EventTriggerBuilder;
 import com.blindtigergames.werescrewed.entity.builders.GenericEntityBuilder;
@@ -39,6 +41,7 @@ import com.blindtigergames.werescrewed.entity.mover.RotateTweenMover;
 import com.blindtigergames.werescrewed.entity.mover.TimelineTweenMover;
 import com.blindtigergames.werescrewed.entity.mover.puzzle.PuzzleRotateTweenMover;
 import com.blindtigergames.werescrewed.entity.particles.Steam;
+import com.blindtigergames.werescrewed.entity.platforms.Pipe;
 import com.blindtigergames.werescrewed.entity.platforms.Platform;
 import com.blindtigergames.werescrewed.entity.platforms.TiledPlatform;
 import com.blindtigergames.werescrewed.entity.screws.PuzzleScrew;
@@ -63,13 +66,15 @@ public class AlphaScreen extends Screen {
 	private CharacterSelect characterSelect;
 	private Screw powerScrew1, powerScrew2, powerScrew3, powerScrew4;
 	private PowerSwitch powerSwitch1, powerSwitch2, powerSwitch3, powerSwitch4, powerSwitch5, powerSwitch6,
-		powerSwitch7, powerSwitch8;
+		powerSwitch7, powerSwitch8, chestSteamPowerSwitch;
 	private Skeleton footSkeleton, kneeSkeleton, thighSkeleton, hipSkeleton,
 			chestSkeleton, leftShoulderSkeleton;
 	private TiledPlatform kneeMovingPlat;
 
 	Platform leftShoulderSideHatch;
 	private PuzzleScrew leftArmScrew, rightElbowPuzzleScrew, chestPuzzleScrew2;
+	
+	private Steam engineSteam;
 
 	private boolean chestSteamTriggered = false;
 
@@ -115,7 +120,7 @@ public class AlphaScreen extends Screen {
 		// right arm: 2600f, 6000f >>>> side
 		//left side hand <- -2224, 3008
 		
-		Vector2 spawnPos = new Vector2( 2256, 5008);
+		Vector2 spawnPos = new Vector2( -200f, 3800f);
 
 		if ( level.player1 == null ) {
 			level.player1 = new PlayerBuilder( ).world( level.world )
@@ -509,6 +514,14 @@ public class AlphaScreen extends Screen {
 		
 		powerSwitch3 = (PowerSwitch) LevelFactory.entities.get( "powerSwitch3" );
 		powerSwitch4 = (PowerSwitch) LevelFactory.entities.get( "powerSwitch4" );
+		
+		chestSteamPowerSwitch = (PowerSwitch) LevelFactory.entities.get( "chestSteamPowerSwitch" );
+		chestSteamPowerSwitch.setState( true );
+		chestSteamPowerSwitch.addEntityToTrigger( engineSteam );
+		chestSteamPowerSwitch.actOnEntity = true;
+		chestSteamPowerSwitch.addBeginIAction( new EntityActivateMoverAction() );
+		chestSteamPowerSwitch.addEndIAction( new EntityDeactivateMoverAction() );
+		
 	}
 
 	private void powerScrewupdate( ) {
@@ -607,6 +620,8 @@ public class AlphaScreen extends Screen {
 			chestSkeleton.addSteam(steam2);
 			
 			
+			
+			
 		}
 
 	}
@@ -669,6 +684,16 @@ public class AlphaScreen extends Screen {
 		//it has the anchor I need when power switches 3-4 are on
 		chestPuzzleScrew2 = ( PuzzleScrew ) LevelFactory.entities
 		.get( "chestPuzzleScrew2" );
+		
+		
+		engineSteam = new Steam( "steamChest3", new Vector2( -420, 5035 ), 25, 120, level.world );
+		chestSkeleton.addSteam(engineSteam);
+		
+		Pipe chestPipe3 = ( Pipe ) LevelFactory.entities
+				.get( "chestPipe3" );
+		
+//		chestPipe3.setCategoryMask( Util.CATEGORY_PLATFORMS,
+//				Util.CATEGORY_PLAYER );
 
 	}
 	

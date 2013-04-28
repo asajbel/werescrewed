@@ -47,6 +47,8 @@ public class Steam extends Platform{
 		particleEffect.setOffset(0f, -92f);
 		particleEffect.setPosition( positionPixels.x, positionPixels.y);
 		constructBody(positionPixels, pixelHeight, pixelWidth);
+		
+		this.active = true;
 	}
 	
 	/**
@@ -56,10 +58,11 @@ public class Steam extends Platform{
 	 * @param deltaTime float
 	 */
 	public void draw( SpriteBatch batch, float deltaTime ) {
-
-		particleEffect.setPosition( this.getPositionPixel( ).x, this.getPositionPixel().y);
-		particleEffect.setAngle( body.getAngle( ) );
-		particleEffect.draw( batch, deltaTime );
+		if(this.active){
+			particleEffect.setPosition( this.getPositionPixel( ).x, this.getPositionPixel().y);
+			particleEffect.setAngle( body.getAngle( ) );
+			particleEffect.draw( batch, deltaTime );
+		}
 		
 	}
 	
