@@ -39,9 +39,10 @@ public class ResurrectScrew extends Screw {
 	private LerpMover playerMover;
 	private Entity screwInterface;
 	private SimpleFrameAnimator screwUIAnimator;
-	private int startFrame = 15;
-	private int lastMotionFrame = 14;
-
+	private final int startFrame = 15;
+	private final int lastMotionFrame = 14;
+	private final int animeSteps = 12;
+	
 	/**
 	 * 
 	 * @param name
@@ -90,7 +91,7 @@ public class ResurrectScrew extends Screw {
 	@Override
 	public void screwLeft( ) {
 		if ( depth > 0 ) {
-			depth -= 2;
+			depth -= 1;
 			body.setAngularVelocity( 15 );
 			rotation += 10;
 			screwStep = depth + 5;
@@ -117,6 +118,9 @@ public class ResurrectScrew extends Screw {
 			prevDiff = diff;
 
 			body.setAngularVelocity( 1 );
+			if(newDiff != 0)
+				newDiff /= newDiff;
+			newDiff *= -1;
 			depth += newDiff;
 			spriteRegion += region;
 			if ( diff != 0 ) {
@@ -165,6 +169,8 @@ public class ResurrectScrew extends Screw {
 			prevDiff = diff;
 
 			body.setAngularVelocity( -1 );
+			if(newDiff != 0)
+				newDiff /= newDiff;
 			depth += newDiff;
 			if ( diff != 0 ) {
 				rotation += ( -newDiff * 5 );
@@ -271,7 +277,7 @@ public class ResurrectScrew extends Screw {
 						screwUIAnimator.speed( 1 );
 					} else if ( screwInterface.sprite.getAnimator( ).getFrame( ) > lastMotionFrame ) {
 						screwUIAnimator.speed( 0 );
-						int value = ( int ) ( ( ( float ) depth / ( float ) maxDepth ) * 10f )
+						int value = ( int ) ( ( ( float ) depth / ( float ) maxDepth ) * animeSteps )
 								+ startFrame;
 						screwUIAnimator.setFrame( value );
 					}

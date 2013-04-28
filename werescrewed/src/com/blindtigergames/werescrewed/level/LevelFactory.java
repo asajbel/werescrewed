@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.Random;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
@@ -21,6 +22,7 @@ import com.blindtigergames.werescrewed.checkpoints.ProgressManager;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityCategory;
 import com.blindtigergames.werescrewed.entity.EntityDef;
+import com.blindtigergames.werescrewed.entity.EntityType;
 import com.blindtigergames.werescrewed.entity.PolySprite;
 import com.blindtigergames.werescrewed.entity.RobotState;
 import com.blindtigergames.werescrewed.entity.RootSkeleton;
@@ -60,6 +62,7 @@ import com.blindtigergames.werescrewed.entity.screws.StructureScrew;
 import com.blindtigergames.werescrewed.entity.tween.PathBuilder;
 import com.blindtigergames.werescrewed.entity.platforms.Pipe;
 import com.blindtigergames.werescrewed.eventTrigger.EventTrigger;
+import com.blindtigergames.werescrewed.eventTrigger.PowerSwitch;
 import com.blindtigergames.werescrewed.graphics.TextureAtlas;
 import com.blindtigergames.werescrewed.util.ArrayHash;
 import com.blindtigergames.werescrewed.util.Util;
@@ -89,8 +92,11 @@ public class LevelFactory {
 	protected static final String imageTag = "image";
 	protected static final String gleedImageTag = "image";
 	protected static final String atlasTag = "atlas";
+	
+	private Random random;
 
 	private final String robotTexBG = "/levels/alphabot/alphabot-interior.png";
+	private final String robotOutlineTex = "/levels/alphabot/alphabot-outline.png";
 
 	public LevelFactory( ) {
 		reader = new XmlReader( );
@@ -106,7 +112,7 @@ public class LevelFactory {
 		polySprites = new LinkedHashMap< String, Array< Vector2 > >( );
 		level = new Level( );
 		spawnPoints = 0;
-
+		random = new Random();
 	}
 
 	public Level load( String filename ) {
@@ -177,14 +183,10 @@ public class LevelFactory {
 			skeletons.put( item.name, child );
 			// add the skeleton to the skeleton layer for drawing
 			if ( child.bgSprite != null ) {
-				if ( !level.skelBGList.containsKey( child.name ) ) {
-					level.skelBGList.put( child.name, child );
-				}
+				addBackGroundSkeleton( child );
 			}
 			if ( child.fgSprite != null ) {
-				if ( !level.skelFGList.containsKey( child.name ) ) {
-					level.skelFGList.put( child.name, child );
-				}
+				addForeGroundSkeleton( child );
 			}
 			return child;
 		}
@@ -247,7 +249,9 @@ public class LevelFactory {
 			constructCheckpoint( item );
 		} else if ( bluePrints.equals( "eventtrigger" ) ) {
 			constructEventTrigger( item );
-		} else if ( bluePrints.equals( "hazard" ) ) {
+		} else if (bluePrints.equals( "powerswitch" )){
+			constructPowerSwitch(item);
+		}else if ( bluePrints.equals( "hazard" ) ) {
 			out = constructHazard( item );
 		} else if ( bluePrints.equals( "fixture" ) ) {
 			constructFixture( item );
@@ -288,8 +292,10 @@ public class LevelFactory {
 						}
 						decal.setScale( size.x, size.y );
 						out.addFGDecal( decal, decalPosition, r );
-						if ( !level.entityFGList.containsKey( out.name ) ) {
-							level.entityFGList.put( out.name, out );
+						if ( out.getEntityType( ) == EntityType.SKELETON ) {
+							addForeGroundSkeleton( ( Skeleton ) out );
+						} else {
+							addForeGroundEntity( out );
 						}
 						Gdx.app.log(
 								"LoadEntity",
@@ -328,8 +334,10 @@ public class LevelFactory {
 						}
 						decal.setScale( size.x, size.y );
 						out.addBGDecal( decal, decalPosition, r );
-						if ( !level.entityBGList.containsKey( out.name ) ) {
-							level.entityBGList.put( out.name, out );
+						if ( out.getEntityType( ) == EntityType.SKELETON ) {
+							addBackGroundSkeleton( ( Skeleton ) out );
+						}else {
+							addBackGroundEntity( out );
 						}
 						Gdx.app.log(
 								"LoadEntity",
@@ -517,6 +525,7 @@ public class LevelFactory {
 		}
 		Sprite decal = null;
 		Vector2 scale = new Vector2( 1.0f, 1.0f );
+		boolean isRivet = false;
 		if ( !item.getImageName( ).equals( "" ) ) {
 			if ( item.getAtlasName( ) != null ) {
 				if ( item.getGleedType( ).equals( "PathItem" ) ) {
@@ -525,7 +534,12 @@ public class LevelFactory {
 				}
 				TextureAtlas atlas = WereScrewedGame.manager.getAtlas( item
 						.getAtlasName( ) );
-				decal = atlas.createSprite( item.getImageName( ) );
+				String imgName = item.getImageName( );
+				if(imgName.equals("rivet")){
+					imgName = WereScrewedGame.manager.getRandomRivetName( );
+					isRivet = true;
+				}
+				decal = atlas.createSprite( imgName );
 				decal.setOrigin( 0.0f, 0.0f );
 				scale.x = item.sca.x / decal.getWidth( );
 				scale.y = item.sca.y / decal.getHeight( );
@@ -561,20 +575,30 @@ public class LevelFactory {
 
 			Vector2 pos = item.pos.sub( targetPos );
 			pos.y -= item.sca.y;
-
 			float rot = item.rot - targetRot;
+			
+			if(isRivet){
+				pos.add( -decal.getWidth( )/2, decal.getHeight( )/2 );
+				//rot += random.nextFloat( )*360;
+				//can't apply random rotation because decals rotate about their position, not their offset
+				//TODO: put this back in once decal rotation is fixed.
+			}
 
 			decal.setScale( scale.x, scale.y );
 			if ( item.props.containsKey( "decal" ) ) {
 				target.addFGDecal( decal, pos, rot );
-				if ( !level.entityFGList.containsKey( target.name ) ) {
-					level.entityFGList.put( target.name, target );
+				if ( target.getEntityType( ) == EntityType.SKELETON ) {
+					addForeGroundSkeleton( ( Skeleton ) target );
+				} else{
+					addForeGroundEntity( target );
 				}
 			} else {
-				Gdx.app.log( "level factory", "hello world" );
+				//Gdx.app.log( "level factory", "hello world" );
 				target.addBGDecal( decal, pos, rot );
-				if ( !level.entityBGList.containsKey( target.name ) ) {
-					level.entityBGList.put( target.name, target );
+				if ( target.getEntityType( ) == EntityType.SKELETON ) {
+					addBackGroundSkeleton( ( Skeleton ) target );
+				} else {
+					addBackGroundEntity( target );
 				}
 			}
 			Gdx.app.log( "LoadDecal", "Attaching decal " + item.name + " to "
@@ -691,14 +715,10 @@ public class LevelFactory {
 			}
 			// add the skeleton to the skeleton layer for drawing
 			if ( skeleton.bgSprite != null ) {
-				if ( !level.skelBGList.containsKey( skeleton.name ) ) {
-					level.skelBGList.put( skeleton.name, skeleton );
-				}
+				addBackGroundSkeleton( skeleton );
 			}
 			if ( skeleton.fgSprite != null ) {
-				if ( !level.skelFGList.containsKey( skeleton.name ) ) {
-					level.skelFGList.put( skeleton.name, skeleton );
-				}
+				addForeGroundSkeleton( skeleton );
 			}
 		}
 
@@ -872,7 +892,7 @@ public class LevelFactory {
 					+ "/common/robot/alphabot_texture_tux.png", Texture.class ) );
 		} else {
 			pb.texture( WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-					+ robotTexBG, Texture.class ) );
+					+ robotOutlineTex, Texture.class ) );
 		}
 
 		if ( item.props.containsKey( "gravscale" ) ) {
@@ -919,6 +939,10 @@ public class LevelFactory {
 					+ out.name );
 			out.quickfixCollisions( );
 			parent.addDynamicPlatform( out );
+			
+			if ( item.props.containsKey( "jointtoskeleton" ) ) {
+				out.addJointToSkeleton( parent );
+			}
 		} else {
 			Gdx.app.log( "LevelFactory", "Tiled Kinematic platform loaded:"
 					+ out.name );
@@ -979,6 +1003,9 @@ public class LevelFactory {
 				}
 			}
 			parent.addDynamicPlatform( out );
+			if ( item.props.containsKey( "jointtoskeleton" ) ) {
+				out.addJointToSkeleton( parent );
+			}
 		} else {
 			parent.addKinematicPlatform( out );
 		}
@@ -1527,6 +1554,21 @@ public class LevelFactory {
 		return hazard;
 	}
 
+	public PowerSwitch constructPowerSwitch(Item item){
+		PowerSwitch ps = new PowerSwitch( item.name , item.pos, level.world);
+		
+		String skelAttach = item.skeleton;
+		Skeleton parent = loadSkeleton( skelAttach );
+		
+		if ( item.props.containsKey( "repeatable" ) ) {
+			ps.setRepeatable( true );
+		}
+		
+		parent.addEventTrigger( ps );
+		entities.put( item.name, ps );
+		
+		return ps;
+	}
 	public Level getLevel( ) {
 		return level;
 	}
@@ -1709,6 +1751,30 @@ public class LevelFactory {
 		}
 	}
 
+	private void addForeGroundSkeleton( Skeleton skel ) {
+		if ( !level.skelFGList.contains( skel ) ) {
+			level.skelFGList.add( skel );
+		}
+	}
+	
+	private void addBackGroundSkeleton( Skeleton skel ) {
+		if ( !level.skelBGList.contains( skel ) ) {
+			level.skelBGList.add( skel );
+		}
+	}
+	
+	private void addForeGroundEntity( Entity entity ) {
+		if ( !level.entityFGList.contains( entity ) ) {
+			level.entityFGList.add( entity );
+		}
+	}
+	
+	private void addBackGroundEntity( Entity entity ) {
+		if ( !level.entityBGList.contains( entity ) ) {
+			level.entityBGList.add( entity );
+		}
+	}
+	
 	protected static final String typeTag = "Type";
 	protected static final String defTag = "Definition";
 

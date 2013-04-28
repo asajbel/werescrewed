@@ -34,8 +34,9 @@ public class StructureScrew extends Screw {
 	private float alpha = 0.0f;
 	private Entity screwInterface;
 	private SimpleFrameAnimator screwUIAnimator;
-	private int startFrame = 15;
-	private int lastMotionFrame = 14;
+	private final int startFrame = 15;
+	private final int lastMotionFrame = 14;
+	private final int animeSteps = 12;
 	
 	private static TextureRegion screwTex = WereScrewedGame.manager.getAtlas( "common-textures" ).findRegion( "flat_head_circular" );
 
@@ -136,6 +137,8 @@ public class StructureScrew extends Screw {
 			prevDiff = diff;
 
 			//body.setAngularVelocity( -1 );
+			if(newDiff != 0)
+				newDiff /= newDiff;
 			depth += newDiff;
 			if ( diff != 0 ) {
 				rotation += ( -newDiff * 5 );
@@ -150,7 +153,7 @@ public class StructureScrew extends Screw {
 		super.screwLeft( );
 		if ( depth > -10 ) {
 			//body.setAngularVelocity( 1 );
-			depth -= 2;
+			depth -= 1;
 			rotation += 10;
 			screwStep = depth + 5;
 		}
@@ -173,6 +176,9 @@ public class StructureScrew extends Screw {
 			prevDiff = diff;
 
 			//body.setAngularVelocity( 1 );
+			if(newDiff != 0)
+				newDiff /= newDiff;
+			newDiff *= -1;
 			depth += newDiff;
 			spriteRegion += region;
 			if ( diff != 0 ) {
@@ -188,7 +194,7 @@ public class StructureScrew extends Screw {
 		super.screwRight( );
 		if ( depth < maxDepth && depth > 0 ) {
 			//body.setAngularVelocity( -1 );
-			depth += 2;
+			depth += 1;
 			rotation -= 10;
 			screwStep = depth + 6;
 		}
@@ -251,7 +257,7 @@ public class StructureScrew extends Screw {
 				} else if ( screwInterface.sprite.getAnimator( ).getFrame( ) > lastMotionFrame ) {
 					screwUIAnimator.speed( 0 );
 					if ( depth >= 0 ) {
-						int value = ( int ) ( ( ( float ) depth / ( float ) maxDepth ) * 10f )
+						int value = ( int ) ( ( ( float ) depth / ( float ) maxDepth ) * animeSteps )
 								+ startFrame;
 						screwUIAnimator.setFrame( value );
 					}

@@ -16,19 +16,20 @@ import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityType;
 import com.blindtigergames.werescrewed.entity.action.IAction;
 import com.blindtigergames.werescrewed.entity.platforms.Platform;
+import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 import com.blindtigergames.werescrewed.util.Util;
 
 
 public class EventTrigger extends Platform{
 	
-	private boolean repeatable = false;
-	private boolean activated = false;
-	private boolean beginTriggeredOnce = false, endTriggeredOnce = false;
-	private boolean twoPlayersToActivate = false, twoPlayersToDeactivate = false;
-	private boolean playerOneContact = false, playerTwoContact = false;
-	private ArrayList<Entity> entityList;
-	private IAction beginAction, endAction;
-	private boolean actOnEntity = false;
+	protected boolean repeatable = false;
+	protected boolean activated = false;
+	protected boolean beginTriggeredOnce = false, endTriggeredOnce = false;
+	protected boolean twoPlayersToActivate = false, twoPlayersToDeactivate = false;
+	protected boolean playerOneContact = false, playerTwoContact = false;
+	protected ArrayList<Entity> entityList;
+	protected IAction beginAction, endAction;
+	public boolean actOnEntity = false;
 	
 	int counter = 0;
 	
@@ -454,7 +455,7 @@ public class EventTrigger extends Platform{
 						{
 							beginAction.act( e );
 							beginTriggeredOnce = true;
-							endTriggeredOnce = false;
+							//endTriggeredOnce = false;
 							//Gdx.app.log( this.name,  " begin action " + beginAction.getClass( ).getSimpleName( ) );
 						}
 					}
@@ -465,7 +466,7 @@ public class EventTrigger extends Platform{
 					{
 						beginAction.act( );
 						beginTriggeredOnce = true;
-						endTriggeredOnce = false;
+						//endTriggeredOnce = false;
 						//Gdx.app.log( this.name,  " begin action " + beginAction.getClass( ).getSimpleName( ) );
 					}
 				}
@@ -517,7 +518,7 @@ public class EventTrigger extends Platform{
 						{
 							endAction.act( e );
 							endTriggeredOnce = true;
-							beginTriggeredOnce = false;
+							//beginTriggeredOnce = false;
 							//Gdx.app.log( this.name,  " end action " + endAction.getClass( ).getSimpleName( ) );
 						}
 					}
@@ -528,7 +529,7 @@ public class EventTrigger extends Platform{
 					{
 						endAction.act( );
 						endTriggeredOnce = true;
-						beginTriggeredOnce = false;
+						//beginTriggeredOnce = false;
 						//Gdx.app.log( this.name,  " end action " + endAction.getClass( ).getSimpleName( ) );
 					}
 				}
@@ -561,6 +562,10 @@ public class EventTrigger extends Platform{
 			}
 
 		}
+	}
+	
+	public void draw( SpriteBatch batch, float deltaTime){
+		super.draw( batch, deltaTime );
 	}
 	
 }

@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Writer;
+import java.util.Iterator;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
@@ -126,12 +127,46 @@ public class ParticleEffect implements Disposable {
 	}
 	
 	/**
+	 * Sets the angle of the emitters of the effect 
+	 * 
 	 * @author stew
 	 * @param radians
+	 *				The angle of rotation in radians; 
 	 */
 	public void setAngle(float radians){
 		for ( int i = 0, n = emitters.size; i < n; i++ )
 			emitters.get( i ).setAngle( radians );
+	}
+	
+	/**
+	 * Sets the rotation of the sprites of the effect 
+	 * 
+	 * @author Anders
+	 * @param radians
+	 *				The angle of rotation in radians; 
+	 */
+	public void setRotation(float radians){
+		for ( int i = 0; i < emitters.size; i++ )
+			emitters.get( i ).setRotation( radians ); 
+	}
+	
+	/**
+	 * Sets the angle of the entire effect setting 
+	 * both the emitter angle and sprite rotation
+	 * 
+	 * @author Anders
+	 * @param radians
+	 * 				The angle of rotation in radians;
+	 */
+	public void setEffectAngle(float radians){
+		setAngle(radians);
+		setRotation(radians); 
+	}
+	
+	public void setOffset(float xOffset, float yOffset) {
+		for ( int i = 0; i < emitters.size; i++ )
+			emitters.get( i ).setOffset( xOffset, yOffset ); 
+
 	}
 
 	public void setFlip( boolean flipX, boolean flipY ) {
@@ -273,4 +308,5 @@ public class ParticleEffect implements Disposable {
 	public void restartAt(Vector2 posPixels){
 		restartAt( posPixels.x, posPixels.y );
 	}
+	
 }

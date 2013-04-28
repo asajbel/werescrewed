@@ -35,9 +35,11 @@ public class PuzzleScrew extends Screw {
 	private Entity screwInterface;
 	private SimpleFrameAnimator screwUIAnimator;
 	private int startFrame = 15;
-	private int lastMotionFrame = 14;
+	private final int lastMotionFrame = 14;
+	private final int animeSteps = 12;
+	private int soundCounter = 0;
 	
-	private static TextureRegion screwTex = WereScrewedGame.manager.getAtlas( "common-textures" ).findRegion( "flat_head_circular" );
+	private static TextureRegion screwTex = WereScrewedGame.manager.getAtlas( "common-textures" ).findRegion( "hex_screw" );
 
 	public PuzzleScrew( String name, Vector2 pos, int max, Entity entity,
 			World world, int startDepth, boolean resetable,
@@ -127,6 +129,7 @@ public class PuzzleScrew extends Screw {
 		if ( switchedDirections ) {
 			startRegion = region;
 			prevDiff = 0;
+			soundCounter = 0;
 		}
 
 		if ( depth > 0 ) {
@@ -139,7 +142,17 @@ public class PuzzleScrew extends Screw {
 			unscrewSound(diff, 5);
 
 			body.setAngularVelocity( 1 );
+			if(newDiff != 0)
+				newDiff /= newDiff;
+			newDiff *= -1;
 			depth += newDiff;
+			soundCounter += Math.abs(newDiff);
+//			System.out.println( soundCounter);
+//			if( soundCounter  > maxDepth/8) {
+//				sounds.playSound( "unscrewing" , 0 );
+//				soundCounter = 0;
+//				System.out.println( soundCounter);
+//			}
 			if ( depth < 0 )
 				depth = 0;
 			spriteRegion += region;
@@ -158,7 +171,7 @@ public class PuzzleScrew extends Screw {
 		super.screwLeft();
 		if ( depth > 0 ) {
 			body.setAngularVelocity( 1 );
-			depth -= 2;
+			depth -= 1;
 			unscrewSound(2,2);
 
 			rotation += 10;
@@ -178,6 +191,7 @@ public class PuzzleScrew extends Screw {
 		if ( switchedDirections ) {
 			startRegion = region;
 			prevDiff = 0;
+			soundCounter = 0;
 		}
 
 		if ( depth < maxDepth ) {
@@ -190,7 +204,16 @@ public class PuzzleScrew extends Screw {
 			screwSound(diff,5);
 
 			body.setAngularVelocity( -1 );
+			if(newDiff != 0)
+				newDiff /= newDiff;
 			depth += newDiff;
+			soundCounter += newDiff;
+//			System.out.println( soundCounter);
+//			if(soundCounter > maxDepth/8) {
+//				sounds.playSound( "screwing" , 0 );
+//				soundCounter = 0;
+//				System.out.println( soundCounter);
+//			}
 			if ( depth > maxDepth )
 				depth = maxDepth;
 			if ( diff != 0 ) {
@@ -208,7 +231,7 @@ public class PuzzleScrew extends Screw {
 		super.screwRight( );
 		if ( depth < maxDepth ) {
 			body.setAngularVelocity( -1 );
-			depth += 2;
+			depth += 1;
 			screwSound(2,2);
 			rotation -= 10;
 			screwStep = depth + 6;
@@ -234,7 +257,7 @@ public class PuzzleScrew extends Screw {
 					screwUIAnimator.speed( 1 );
 				} else if ( screwInterface.sprite.getAnimator( ).getFrame( ) > lastMotionFrame ) {
 					screwUIAnimator.speed( 0 );
-					int value = ( int ) ( ( ( float ) depth / ( float ) maxDepth ) * 10f )
+					int value = ( int ) ( ( ( float ) depth / ( float ) maxDepth ) * animeSteps )
 							+ startFrame;
 					screwUIAnimator.setFrame( value );
 				}

@@ -31,6 +31,7 @@ import com.blindtigergames.werescrewed.entity.animator.ISpinemator;
 import com.blindtigergames.werescrewed.entity.animator.PlayerAnimator;
 import com.blindtigergames.werescrewed.entity.animator.SimpleFrameAnimator;
 import com.blindtigergames.werescrewed.entity.mover.IMover;
+import com.blindtigergames.werescrewed.entity.mover.TimelineTweenMover;
 import com.blindtigergames.werescrewed.entity.platforms.Platform;
 import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 import com.blindtigergames.werescrewed.graphics.TextureAtlas;
@@ -446,6 +447,12 @@ public class Entity implements GleedLoadable {
 		}
 	}
 
+	public boolean isTimeLineMoverFinished(){
+		if(currentMover() instanceof TimelineTweenMover){
+			return ( ( TimelineTweenMover ) currentMover() ).timeline.isFinished();
+		}
+		return false;
+	}
 	protected String generateName( ) {
 		return type.getName( );
 	}
@@ -1053,6 +1060,10 @@ public class Entity implements GleedLoadable {
 	}
 
 	public void addFGDecalBack( Sprite s, Vector2 offset ) {
+		if ( s == null ) {
+			throw new RuntimeException(
+					"Entity.addFGDecal(): Adding null sprite" );
+		}
 		fgDecals.add( 0, s );
 		fgDecalOffsets.add( 0, offset );
 		fgDecalAngles.add( 0, 0.0f );
@@ -1060,6 +1071,10 @@ public class Entity implements GleedLoadable {
 	}
 
 	public void addBGDecalBack( Sprite s, Vector2 offset ) {
+		if ( s == null ) {
+			throw new RuntimeException(
+					"Entity.addFGDecal(): Adding null sprite" );
+		}
 		bgDecals.add( 0, s );
 		bgDecalOffsets.add( 0, offset );
 		bgDecalAngles.add( 0, 0.0f );
@@ -1158,9 +1173,9 @@ public class Entity implements GleedLoadable {
 			 * decal.getBoundingRectangle( ), camera.getBounds( ), decalPos,
 			 * camPos ) )
 			 */
-			//if ( this.entityType != EntityType.SKELETON
-			//		|| decal.getBoundingRectangle( ).overlaps(
-			//				camera.getBounds( ) ) ) 
+			if ( this.entityType != EntityType.SKELETON
+					|| decal.getBoundingRectangle( ).overlaps(
+							camera.getBounds( ) ) ) 
 			{
 				decal.draw( batch );
 			}

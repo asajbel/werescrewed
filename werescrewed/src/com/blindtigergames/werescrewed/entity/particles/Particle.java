@@ -3,6 +3,7 @@ package com.blindtigergames.werescrewed.entity.particles;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.mover.IMover;
 
+@Deprecated
 public class Particle {
 
 	private float lifeSpan;

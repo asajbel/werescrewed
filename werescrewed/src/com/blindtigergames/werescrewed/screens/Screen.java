@@ -1,5 +1,7 @@
 package com.blindtigergames.werescrewed.screens;
 
+import java.util.ArrayList;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Keys;
@@ -13,6 +15,7 @@ import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.debug.FPSLoggerS;
 import com.blindtigergames.werescrewed.debug.SBox2DDebugRenderer;
 import com.blindtigergames.werescrewed.entity.Entity;
+import com.blindtigergames.werescrewed.entity.Skeleton;
 import com.blindtigergames.werescrewed.level.Level;
 import com.blindtigergames.werescrewed.util.Util;
 
@@ -79,6 +82,8 @@ public class Screen implements com.badlogic.gdx.Screen {
 			
 			level.draw( batch, debugRenderer, delta );
 			
+			level.camera.update( );
+			
 			int FPS = logger.getFPS( );
 			batch.setProjectionMatrix( uiCamera.combined );
 			batch.begin( );
@@ -97,6 +102,52 @@ public class Screen implements com.badlogic.gdx.Screen {
 			ScreenManager.escapeHeld = false;
 	}
 
+	protected void addFGSkeleton( Skeleton skel ) {
+		addToSkelList(level.skelFGList,skel,false);
+	}
+	
+	protected void addFGSkeletonBack( Skeleton skel ) {
+		addToSkelList(level.skelFGList,skel,true);
+	}
+	
+	protected void addBGSkeleton( Skeleton skel ) {
+		addToSkelList(level.skelBGList,skel,false);
+	}
+	
+	protected void addBGSkeletonBack( Skeleton skel ) {
+		addToSkelList(level.skelBGList,skel,true);
+	}
+	
+	protected void addFGEntity( Entity entity ) {
+		addToEntityList(level.entityFGList,entity,false);
+	}
+	
+	protected void addFGEntityToBack( Entity entity ) {
+		addToEntityList(level.entityFGList,entity,true);
+	}
+	
+	protected void addBGEntity( Entity entity ) {
+		addToEntityList(level.entityBGList,entity,false);
+	}
+	
+	protected void addBGEntityToBack( Entity entity ) {
+		addToEntityList(level.entityBGList,entity,true);
+	}
+	
+	private void addToEntityList(ArrayList< Entity > list, Entity e, boolean isBack){
+		if(!list.contains( e )){
+			if(isBack)list.add( 0,e );
+			else list.add(e);
+		}
+	}
+	
+	private void addToSkelList(ArrayList< Skeleton > list, Skeleton s, boolean isBack){
+		if(!list.contains( s )){
+			if(isBack)list.add( 0,s );
+			else list.add(s);
+		}
+	}
+	
 	@Override
 	public void resize( int width, int height ) {
 		// TODO Auto-generated method stub

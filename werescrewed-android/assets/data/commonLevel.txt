@@ -66,6 +66,9 @@
 /common/pipe/pipeLR.png
 /common/pipe/pipeUD.png
 
+/common/powerswitches/on.png
+/common/powerswitches/off.png
+
 ##texture atlas
 ##please us texture packer to put all common textures in this pack file!
 /common/common-textures.pack
@@ -104,6 +107,8 @@ land_cloud.p
 injured/arg.p
 injured/doof.p
 injured/oof.p
+fastSteam.p
+slowSteam.p
 
 ## debug for testing engine in phys screen. Remove before release! -stew
 /levels/alphabot/engine.pack

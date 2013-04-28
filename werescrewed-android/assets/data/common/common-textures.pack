@@ -3,135 +3,191 @@ format: RGBA8888
 filter: Linear,Linear
 repeat: none
 offset: 0, 0
+hex_screw
+  rotate: false
+  xy: 2, 158
+  size: 79, 79
+  orig: 79, 79
+  offset: 0, 0
+  index: -1
 pipeLR
   rotate: false
-  xy: 290, 98
+  xy: 98, 350
   size: 94, 94
   orig: 94, 94
   offset: 0, 0
   index: -1
 pipeUR
   rotate: false
-  xy: 98, 194
+  xy: 194, 254
   size: 94, 94
   orig: 94, 94
   offset: 0, 0
   index: -1
 rail_horz_right
   rotate: false
-  xy: 306, 194
+  xy: 379, 2
   size: 54, 154
   orig: 54, 154
   offset: 0, 0
   index: -1
 flat_head_circular2
   rotate: false
-  xy: 40, 2
+  xy: 245, 158
   size: 88, 88
   orig: 88, 88
   offset: 0, 0
   index: -1
+power_screw
+  rotate: false
+  xy: 83, 158
+  size: 79, 79
+  orig: 79, 79
+  offset: 0, 0
+  index: -1
+rivet4
+  rotate: false
+  xy: 113, 2
+  size: 36, 36
+  orig: 36, 36
+  offset: 0, 0
+  index: -1
 pipeEndL
   rotate: false
-  xy: 2, 98
+  xy: 2, 350
   size: 94, 94
   orig: 94, 94
   offset: 0, 0
   index: -1
 pipeEndD
   rotate: false
-  xy: 403, 2
+  xy: 386, 254
   size: 94, 94
   orig: 94, 94
   offset: 0, 0
   index: -1
+rivet3
+  rotate: false
+  xy: 227, 2
+  size: 38, 35
+  orig: 38, 35
+  offset: 0, 0
+  index: -1
+tiletexture2
+  rotate: false
+  xy: 151, 2
+  size: 36, 36
+  orig: 36, 36
+  offset: 0, 0
+  index: -1
 rail_vert_bottom
   rotate: false
-  xy: 2, 350
+  xy: 158, 446
   size: 154, 54
   orig: 154, 54
   offset: 0, 0
   index: -1
 chainlink
   rotate: false
-  xy: 2, 2
+  xy: 189, 2
   size: 36, 68
   orig: 36, 68
   offset: 0, 0
   index: -1
 pipeEndU
   rotate: false
-  xy: 194, 98
+  xy: 98, 254
   size: 94, 94
   orig: 94, 94
   offset: 0, 0
   index: -1
 pipeDL
   rotate: false
-  xy: 211, 2
+  xy: 335, 158
   size: 94, 94
   orig: 94, 94
   offset: 0, 0
   index: -1
+tiletexture1
+  rotate: false
+  xy: 75, 2
+  size: 36, 36
+  orig: 36, 36
+  offset: 0, 0
+  index: -1
 flat_head_circular
   rotate: false
-  xy: 130, 2
+  xy: 164, 158
   size: 79, 79
   orig: 79, 79
   offset: 0, 0
   index: 75
 pipeUD
   rotate: false
-  xy: 386, 98
+  xy: 194, 350
   size: 94, 94
   orig: 94, 94
   offset: 0, 0
   index: -1
+rivet2
+  rotate: false
+  xy: 2, 2
+  size: 34, 36
+  orig: 34, 36
+  offset: 0, 0
+  index: -1
 rail_horz_left
   rotate: false
-  xy: 194, 194
+  xy: 267, 2
   size: 54, 154
   orig: 54, 154
   offset: 0, 0
   index: -1
 pipeUL
   rotate: false
-  xy: 2, 194
+  xy: 290, 350
   size: 94, 94
   orig: 94, 94
   offset: 0, 0
   index: -1
 rail_horz_middle
   rotate: false
-  xy: 250, 194
+  xy: 323, 2
   size: 54, 154
   orig: 54, 154
   offset: 0, 0
   index: -1
 pipeEndR
   rotate: false
-  xy: 98, 98
+  xy: 290, 254
   size: 94, 94
   orig: 94, 94
   offset: 0, 0
   index: -1
 rail_vert_top
   rotate: false
-  xy: 314, 350
+  xy: 314, 446
   size: 154, 54
   orig: 154, 54
   offset: 0, 0
   index: -1
 pipeDR
   rotate: false
-  xy: 307, 2
+  xy: 2, 254
   size: 94, 94
   orig: 94, 94
   offset: 0, 0
   index: -1
+rivet1
+  rotate: false
+  xy: 38, 2
+  size: 35, 36
+  orig: 35, 36
+  offset: 0, 0
+  index: -1
 rail_vert_middle
   rotate: false
-  xy: 158, 350
+  xy: 2, 446
   size: 154, 54
   orig: 154, 54
   offset: 0, 0

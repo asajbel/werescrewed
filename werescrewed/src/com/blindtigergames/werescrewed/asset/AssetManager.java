@@ -221,5 +221,14 @@ public class AssetManager extends com.badlogic.gdx.assets.AssetManager {
 			this.load( dummyAssets.get( type ), type );
 		}
 	}
+	
+	/**
+	 * Get a random rivet by name. then do commom-textures.createSprite(random rivet name)
+	 * @author Stew
+	 * @return
+	 */
+	public String getRandomRivetName(){
+		return "rivet"+(WereScrewedGame.random.nextInt( 4 )+1);//there's only 4 rivets in common-textures.
+	}
 
 }

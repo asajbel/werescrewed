@@ -18,6 +18,7 @@ import com.blindtigergames.werescrewed.entity.animator.SimpleFrameAnimator;
 import com.blindtigergames.werescrewed.entity.animator.SimpleFrameAnimator.LoopBehavior;
 import com.blindtigergames.werescrewed.entity.hazard.Fire;
 import com.blindtigergames.werescrewed.entity.hazard.Hazard;
+import com.blindtigergames.werescrewed.entity.particles.Steam;
 import com.blindtigergames.werescrewed.entity.platforms.Platform;
 import com.blindtigergames.werescrewed.entity.platforms.PlatformType;
 import com.blindtigergames.werescrewed.entity.platforms.TiledPlatform;
@@ -266,6 +267,10 @@ public class Skeleton extends Platform {
 		platform.setParentSkeleton( this );
 		platform.setOriginRelativeToSkeleton( platform.getPosition( ).cpy( )
 				.sub( ( getPosition( ) ) ) );
+	}
+	
+	public void addSteam(Steam steam){
+		addKinematicPlatform(steam);
 	}
 
 	/**
@@ -561,9 +566,9 @@ public class Skeleton extends Platform {
 					// fgSprite.draw( batch );
 					// batch.setColor( c.r, c.g, c.b, oldAlpha );
 				}
-				if ( applyFadeToFGDecals ) {
-					fadeFGDecals( );
-				}
+			}
+			if ( applyFadeToFGDecals ) {
+				fadeFGDecals( );
 			}
 			// drawFGDecals( batch );
 		}
@@ -589,6 +594,11 @@ public class Skeleton extends Platform {
 		for ( Rope rope : ropeMap.values( ) ) {
 			rope.draw( batch, deltaTime );
 		}
+		for ( EventTrigger et : eventMap.values( ) ) {
+			et.draw( batch, deltaTime );
+		}
+
+		
 		// draw the entities of the parent skeleton before recursing through the
 		// child skeletons
 		for ( Skeleton skeleton : childSkeletonMap.values( ) ) {
@@ -612,6 +622,10 @@ public class Skeleton extends Platform {
 			break;
 		case HAZARD:
 			drawHazard( ( Hazard ) platform, batch, deltaTime );
+			break;
+		case STEAM:
+			Steam steam = (Steam) platform;
+			steam.draw( batch, deltaTime );
 			break;
 		default:
 			throw new RuntimeException( "Skeleton: " + name
