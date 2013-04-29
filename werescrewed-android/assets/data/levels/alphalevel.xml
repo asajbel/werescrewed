@@ -487,6 +487,9 @@
                         <Property Name="anchor1" Type="string" Description="">
                             <string>-200, 0, 700, 1000</string>
                         </Property>
+                        <Property Name="invisible" Type="string" Description="">
+                            <string />
+                        </Property>
                     </CustomProperties>
                     <LocalPoints>
                         <Vector2>
@@ -2113,8 +2116,8 @@
                 </Item>
                 <Item xsi:type="RectangleItem" Name="kneePlat2" Visible="true">
                     <Position>
-                        <X>-1168</X>
-                        <Y>-1507</Y>
+                        <X>-1169</X>
+                        <Y>-1515</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -8461,8 +8464,8 @@
                             <Y>72.01627</Y>
                         </Vector2>
                         <Vector2>
-                            <X>115.610046</X>
-                            <Y>-220.637848</Y>
+                            <X>76.61005</X>
+                            <Y>-231.637848</Y>
                         </Vector2>
                         <Vector2>
                             <X>-3.241883</X>
@@ -8487,8 +8490,8 @@
                             <Y>-44.9837265</Y>
                         </Vector2>
                         <Vector2>
-                            <X>-261.389954</X>
-                            <Y>-337.637848</Y>
+                            <X>-300.389954</X>
+                            <Y>-348.637848</Y>
                         </Vector2>
                         <Vector2>
                             <X>-380.241882</X>
@@ -8558,8 +8561,8 @@
                 </Item>
                 <Item xsi:type="TextureItem" Name="structureScrew1" Visible="true">
                     <Position>
-                        <X>-212</X>
-                        <Y>-331</Y>
+                        <X>-251</X>
+                        <Y>-342</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Screwtype" Type="string" Description="">
@@ -14005,6 +14008,9 @@
                         <Property Name="repeatable" Type="string" Description="">
                             <string />
                         </Property>
+                        <Property Name="twoplayerstoactivate" Type="string" Description="">
+                            <string />
+                        </Property>
                     </CustomProperties>
                     <LocalPoints>
                         <Vector2>
@@ -18706,8 +18712,8 @@
         <NextItemNumber>897</NextItemNumber>
         <ContentRootFolder>gleed-textures</ContentRootFolder>
         <CameraPosition>
-            <X>1008.34229</X>
-            <Y>-466.035736</Y>
+            <X>-33.3260422</X>
+            <Y>-191.034943</Y>
         </CameraPosition>
         <Version>1.3.0.0</Version>
     </EditorRelated>

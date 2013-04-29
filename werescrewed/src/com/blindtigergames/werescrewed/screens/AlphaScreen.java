@@ -81,7 +81,7 @@ public class AlphaScreen extends Screen {
 		chestRotatePlat3, headEntrancePlatform4,
 		headEyebrow1, headEyebrow2;
 
-	Platform leftShoulderSideHatch;
+	Platform leftShoulderSideHatch, ankleHatch;
 	private PuzzleScrew leftArmScrew, chestPuzzleScrew2;
 	
 	private Steam engineSteam;
@@ -545,6 +545,8 @@ public class AlphaScreen extends Screen {
 		kneeSkeleton.body.setType( BodyType.KinematicBody );
 		thighSkeleton.body.setType( BodyType.KinematicBody );
 
+		ankleHatch = ( Platform ) LevelFactory.entities
+				.get( "ankle_hatch" );
 		TiledPlatform structurePlat3 = ( TiledPlatform ) LevelFactory.entities
 				.get( "structurePlat3" );
 		TiledPlatform pivotPlat1 = ( TiledPlatform ) LevelFactory.entities
