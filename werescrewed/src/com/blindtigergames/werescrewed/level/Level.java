@@ -42,7 +42,6 @@ import com.blindtigergames.werescrewed.util.Util;
 public class Level {
 
 	public static int GRAVITY = -35;
-
 	public Camera camera;
 	public World world;
 	public MyContactListener myContactListener;

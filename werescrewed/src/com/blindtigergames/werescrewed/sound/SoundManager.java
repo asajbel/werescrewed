@@ -113,35 +113,53 @@ public class SoundManager {
 	
 	public void handleSoundPosition(String id, Vector2 soundPos, Rectangle cameraBox){
 		if (hasSound(id)){
-			Vector2 camPos = new Vector2(
-					cameraBox.getX(),
-					cameraBox.getY()
-				);
-			Vector2 scale = new Vector2(
-					cameraBox.getWidth( ),
-					cameraBox.getHeight( )
-				);
-			float zoom = scale.len( )/Camera.SCREEN_TO_ZOOM;
-			Vector2 center = camPos.cpy().add( scale.cpy( ).mul( 0.5f ) );
-			Vector3 center3 = new Vector3(
-						camPos.x + 0.5f*scale.x,
-						camPos.y + 0.5f*scale.y,
-						(float)Math.pow( zoom, 2.0f )
-			);
-			Vector3 sound3 = new Vector3(
-					soundPos.x,
-					soundPos.y,
-					Camera.MIN_ZOOM
-			);
-			float dist = center3.dst( sound3 );
-			float xPan = (float)Math.max( Math.min((Math.pow(center.cpy( ).sub( soundPos ).x/cameraBox.width, 2.0)), 1.0), -1.0);
-			float vol = (float)Math.pow( Math.max((1f - dist/sounds.get( id ).range), 0f), sounds.get(id).falloff );
+			float xPan = calculatePositionalPan(soundPos, cameraBox);
+			float vol = calculatePositionalVolume(soundPos, cameraBox, sounds.get( id ).range, sounds.get( id ).falloff);
 			setSoundVolume(id, vol);
 			setSoundPan(id, xPan);
 			//Gdx.app.log( "Handle Sound Position", center.toString( )+"->"+soundPos.toString()+"="+dist );
 			//Gdx.app.log( "Handle Sound Position", "Pan:"+xPan+" Vol:"+vol );
 			sounds.get( id ).update(0.0f);
 		}
+	}
+	
+	public static float calculatePositionalVolume(Vector2 soundPos, Rectangle cameraBox, float range, float falloff){
+		Vector2 camPos = new Vector2(
+				cameraBox.getX(),
+				cameraBox.getY()
+			);
+		Vector2 scale = new Vector2(
+				cameraBox.getWidth( ),
+				cameraBox.getHeight( )
+			);
+		float zoom = scale.len( )/Camera.SCREEN_TO_ZOOM;
+		Vector3 center3 = new Vector3(
+					camPos.x + 0.5f*scale.x,
+					camPos.y + 0.5f*scale.y,
+					(float)Math.pow( zoom, 2.0f )
+		);
+		Vector3 sound3 = new Vector3(
+				soundPos.x,
+				soundPos.y,
+				Camera.MIN_ZOOM
+		);
+		float dist = center3.dst( sound3 );
+		float vol = (float)Math.pow( Math.max((1f - dist/range), 0f), falloff );
+		return vol;		
+	}
+	
+	public static float calculatePositionalPan(Vector2 soundPos, Rectangle cameraBox){
+		Vector2 camPos = new Vector2(
+				cameraBox.getX(),
+				cameraBox.getY()
+			);
+		Vector2 scale = new Vector2(
+				cameraBox.getWidth( ),
+				cameraBox.getHeight( )
+			);
+		Vector2 center = camPos.cpy().add( scale.cpy( ).mul( 0.5f ) );
+		float xPan = (float)Math.max( Math.min((Math.pow(center.cpy( ).sub( soundPos ).x/cameraBox.width, 2.0)), 1.0), -1.0);
+		return xPan;
 	}
 	
 	public void setSoundPitch(String id, float v){

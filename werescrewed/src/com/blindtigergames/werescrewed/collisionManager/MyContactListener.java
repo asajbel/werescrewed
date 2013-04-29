@@ -9,6 +9,7 @@ import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.physics.box2d.Manifold.ManifoldPoint;
+import com.blindtigergames.werescrewed.camera.Camera;
 import com.blindtigergames.werescrewed.checkpoints.CheckPoint;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityType;
@@ -22,6 +23,7 @@ import com.blindtigergames.werescrewed.entity.platforms.TiledPlatform;
 import com.blindtigergames.werescrewed.entity.screws.Screw;
 import com.blindtigergames.werescrewed.eventTrigger.EventTrigger;
 import com.blindtigergames.werescrewed.eventTrigger.PowerSwitch;
+import com.blindtigergames.werescrewed.level.Level;
 import com.blindtigergames.werescrewed.player.Player;
 import com.blindtigergames.werescrewed.player.Player.PlayerState;
 
@@ -78,7 +80,7 @@ public class MyContactListener implements ContactListener {
 		if ( objectA != null
 				&& objectB != null ) {
 			if (objectA instanceof Entity && objectB instanceof Entity){
-				handleCollisionSounds( (Entity) objectA, (Entity) objectB , contact);
+				handleCollisionSounds( (Entity) objectA, (Entity) objectB , contact, force);
 			}
 			if ( x1.getBody( ).getUserData( ) instanceof Player ) {
 				playerFix = x1;
@@ -479,7 +481,7 @@ public class MyContactListener implements ContactListener {
 		}
 	}
 	
-	public void handleCollisionSounds(Entity objectA, Entity objectB, Contact contact){
+	public void handleCollisionSounds(Entity objectA, Entity objectB, Contact contact, float force){
 		/*
 		 * Generally, we want to avoid playing the same sound twice with any one collision.
 		 * So we'll use two soundref variables to store the sounds coming from both entities,
@@ -513,11 +515,13 @@ public class MyContactListener implements ContactListener {
 	
 			//Play soundA
 			if (playSoundA){
+				objectA.sounds.handleSoundPosition(soundA, objectA.getPositionPixel( ), Camera.CAMERA_RECT);
 				objectA.sounds.playSound( soundA, indexA , COLLISION_SOUND_DELAY);
 			}
 			
 			//Play soundB
 			if (playSoundB){
+				objectB.sounds.handleSoundPosition(soundB, objectB.getPositionPixel( ), Camera.CAMERA_RECT);
 				objectB.sounds.playSound( soundB, indexB , COLLISION_SOUND_DELAY);
 			}
 		}

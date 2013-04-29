@@ -343,6 +343,9 @@ public class GenericEntityBuilder< B extends GenericEntityBuilder< ? >> {
 				}
 				for (String name: sounds.keySet()){
 					soundMan.getSound( name, sounds.get(name) );
+					if (name.equals("collision")){
+						soundMan.setDelay( name, 1.0f );
+					}
 				}
 			}
 			out.postLoad( );
