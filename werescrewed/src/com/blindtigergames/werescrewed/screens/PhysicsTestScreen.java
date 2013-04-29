@@ -24,6 +24,7 @@ import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.camera.Camera;
 import com.blindtigergames.werescrewed.checkpoints.CheckPoint;
 import com.blindtigergames.werescrewed.checkpoints.ProgressManager;
+import com.blindtigergames.werescrewed.entity.EntityDef;
 import com.blindtigergames.werescrewed.entity.PolySprite;
 import com.blindtigergames.werescrewed.entity.RobotState;
 import com.blindtigergames.werescrewed.entity.RootSkeleton;
@@ -161,6 +162,19 @@ public class PhysicsTestScreen extends Screen {
 				 .buildComplexPlatform( );
 		
 		engineSkeleton.addPlatform( moustache );
+		
+//		PlatformBuilder pBuilder = new PlatformBuilder(level.world ).name( "piston"  )
+//				.position( 2400, 50 )
+//				.texture( null )
+//				.dynamic( );
+//
+//		pBuilder.type( EntityDef.getDefinition( "pistonLeft" ) );
+//	
+//		
+//		Platform piston = pBuilder.buildComplexPlatform( );
+//		piston.setCrushing( true );
+//		piston.setVisible( false );// only draw decals, not tiled body!
+//		engineSkeleton.addDynamicPlatform( piston );
 
 	}
 
@@ -216,11 +230,26 @@ public class PhysicsTestScreen extends Screen {
 		// Build piston!!
 		Vector2 pistonJointPosMeter = wheelJointPosMeter.cpy( ).sub( 0,
 				pistonDistApartMetre );
-		PlatformBuilder pBuilder = new PlatformBuilder( world );
-		TiledPlatform piston = pBuilder
-				.position( pistonJointPosMeter.cpy( ).mul( Util.BOX_TO_PIXEL ) )
-				.dynamic( ).dimensions( 4, 5 )// 3.71,4.75
-				.buildTilePlatform( );
+//		PlatformBuilder pBuilder = new PlatformBuilder( world );
+//		TiledPlatform piston = pBuilder
+//				.position( pistonJointPosMeter.cpy( ).mul( Util.BOX_TO_PIXEL ) )
+//				.dynamic( ).dimensions( 4, 5 )// 3.71,4.75
+//				.buildTilePlatform( );
+//		piston.setCrushing( true );
+//		piston.setVisible( false );// only draw decals, not tiled body!
+//		engineSkeleton.addDynamicPlatform( piston );
+		
+		Vector2 finalPos = pistonJointPosMeter.cpy( ).mul( Util.BOX_TO_PIXEL );
+		finalPos = finalPos.sub( 58f, 90f );
+		PlatformBuilder pBuilder = new PlatformBuilder(world ).name( "piston"  )
+				.position( finalPos )
+				.texture( null )
+				.dynamic( );
+
+		pBuilder.type( EntityDef.getDefinition( "pistonLeft" ) );
+	
+		
+		Platform piston = pBuilder.buildComplexPlatform( );
 		piston.setCrushing( true );
 		piston.setVisible( false );// only draw decals, not tiled body!
 		engineSkeleton.addDynamicPlatform( piston );
@@ -281,10 +310,8 @@ public class PhysicsTestScreen extends Screen {
 		girder1.addFGDecal( girderSprite, new Vector2(
 				-girderSprite.getWidth( ) / 2, -girderSprite.getHeight( ) / 2 ) );
 
-		piston.addFGDecal( pistonSprite, new Vector2(
-				-piston.getPixelWidth( ) / 2, -piston.getPixelHeight( ) / 2 ) );
-		piston.addFGDecal( boltSprite, new Vector2(
-				-boltSprite.getWidth( ) / 2, -boltSprite.getHeight( ) / 2 ) );
+		piston.addFGDecal( pistonSprite, Vector2.Zero );
+		piston.addFGDecal( boltSprite, new Vector2(32f, 48f) );
 		wheel1.addFGDecal( wheelBolt, boltPosPix );
 
 		addFGEntity( wheel1 );

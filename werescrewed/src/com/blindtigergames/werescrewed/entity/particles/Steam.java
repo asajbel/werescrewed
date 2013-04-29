@@ -22,7 +22,7 @@ public class Steam extends Platform{
 	public ParticleEffect particleEffect;
 	float width;
 	float height;
-	boolean test;
+	boolean started, tempCheckForCollision = true; //remove temp when the particles fit the size correctly;
 	
 	/**
 	 * Creates a steam vent which moves players up when they collide
@@ -44,12 +44,15 @@ public class Steam extends Platform{
 		height = pixelHeight;
 		this.world = world;
 		particleEffect = WereScrewedGame.manager.getParticleEffect( "fastSteam" );//ParticleEffect.loadEffect("steam");
-		particleEffect.setOffset(0f, -92f);
+		particleEffect.setOffset(0f, -pixelHeight + 20);
 		particleEffect.setPosition( positionPixels.x, positionPixels.y);
 		constructBody(positionPixels, pixelHeight, pixelWidth);
 		
 		this.active = true;
+		particleEffect.start( );
+		started = true;
 	}
+	
 	
 	/**
 	 * Draws the particles for steam from the base of its body
@@ -59,6 +62,17 @@ public class Steam extends Platform{
 	 */
 	public void draw( SpriteBatch batch, float deltaTime ) {
 		if(this.active){
+			if(!started){
+				particleEffect.start( );
+				started = true;
+			}
+			particleEffect.setPosition( this.getPositionPixel( ).x, this.getPositionPixel().y);
+			particleEffect.setAngle( body.getAngle( ) );
+			particleEffect.draw( batch, deltaTime );
+			
+		}else{
+			started = false;
+			particleEffect.allowCompletion( );
 			particleEffect.setPosition( this.getPositionPixel( ).x, this.getPositionPixel().y);
 			particleEffect.setAngle( body.getAngle( ) );
 			particleEffect.draw( batch, deltaTime );
@@ -91,5 +105,17 @@ public class Steam extends Platform{
 
 		body.setUserData( this );
 		
+	}
+	
+	/**
+	 * : GET RID OF TEMPCOLLISION WHEN STEAM PARTICLES MATCH THE BODY
+	 * ALSO GET RID OF THE TEMPCOLLISION IN CONTACT LISTENER
+	 */
+	public void setTempCollision(boolean b){
+		this.tempCheckForCollision = b;
+	}
+	
+	public boolean getTempCollision(){
+		return this.tempCheckForCollision;
 	}
 }

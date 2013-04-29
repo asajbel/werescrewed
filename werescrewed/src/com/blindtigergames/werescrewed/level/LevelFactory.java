@@ -684,6 +684,7 @@ public class LevelFactory {
 			// }
 			//
 			// skeleton.addMover( mover, RobotState.IDLE );
+			
 			skeletons.put( item.name, skeleton );
 			entities.put( item.name, skeleton );
 			if ( item.props.containsKey( "attachtoskeleton" ) ) {

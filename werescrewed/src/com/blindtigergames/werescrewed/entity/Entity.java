@@ -452,6 +452,17 @@ public class Entity implements GleedLoadable {
 			return ( ( TimelineTweenMover ) currentMover() ).timeline.isFinished();
 		}
 		return false;
+		
+	}
+	
+	
+	
+	public boolean isTimeLineMoverStarted(){
+		if(currentMover() instanceof TimelineTweenMover){
+			return ( ( TimelineTweenMover ) currentMover() ).timeline.isStarted( );
+		}
+		return false;
+		
 	}
 	protected String generateName( ) {
 		return type.getName( );

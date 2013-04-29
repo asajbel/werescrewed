@@ -392,7 +392,7 @@ public class Player extends Entity {
 				} else {
 					body.setTransform(
 							new Vector2( currentScrew.getPositionPixel( ).x
-									- ( WIDTH / 2.0f ), currentScrew
+									- ( WIDTH ), currentScrew
 									.getPositionPixel( ).y - ( HEIGHT / 2.0f ) )
 									.mul( Util.PIXEL_TO_BOX ), 0.0f );
 					RevoluteJointDef revoluteJointDef = new RevoluteJointDef( );
@@ -1146,7 +1146,6 @@ public class Player extends Entity {
 		return grounded;
 	}
 
-	// PRIVATE METHODS
 
 	/**
 	 * Attaches a player to the current screw
@@ -1166,7 +1165,7 @@ public class Player extends Entity {
 			}
 			mover = new FollowEntityMover( body.getPosition( ).mul(
 					Util.BOX_TO_PIXEL ), currentScrew, new Vector2(
-					-WIDTH / 2.0f, -HEIGHT / 2.0f ), SCREW_ATTACH_SPEED );
+					-WIDTH , -HEIGHT / 2.0f ), SCREW_ATTACH_SPEED );
 			playerState = PlayerState.Screwing;
 			currentScrew.setPlayerAttached( true );
 			screwAttachTimeout = SCREW_ATTACH_STEPS;

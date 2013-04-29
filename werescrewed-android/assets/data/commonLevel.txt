@@ -97,6 +97,12 @@
 /common/ArmenianCircus.fnt
 /common/Screwball.fnt
 
+#slides
+/common/slides/slide1_intro.png
+/common/slides/slide2_audience.png
+/common/slides/slide3_alphabot.png
+/common/slides/slide4_players.png
+
 ##Particle effects
 skid_left.p
 skid_right.p

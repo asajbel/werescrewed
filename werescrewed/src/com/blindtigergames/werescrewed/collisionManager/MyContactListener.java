@@ -141,8 +141,10 @@ public class MyContactListener implements ContactListener {
 							checkP.hitPlayer( );
 							break;
 						case STEAM:
-							if ( playerFix == player.torso ) {
-								Steam steam = (Steam) object;
+							//TODO: GET RID OF TEMPCOLLISION WHEN STEAM PARTICLES MATCH THE BODY
+							Steam steam = (Steam) object;
+							if ( playerFix == player.torso && steam.getTempCollision( )) {
+								
 								player.setSteamCollide(steam, true );
 							}
 							break;
@@ -287,7 +289,9 @@ public class MyContactListener implements ContactListener {
 							}
 							break;
 						case STEAM:
-							if ( playerFix == player.torso ) {
+							//TODO: GET RID OF TEMPCOLLISION WHEN STEAM PARTICLES MATCH THE BODY
+							Steam steam = (Steam) object;
+							if ( playerFix == player.torso && steam.getTempCollision( )) {
 								player.setSteamCollide(null, false );
 							}
 							break;
