@@ -8440,8 +8440,8 @@
                 </Item>
                 <Item xsi:type="PathItem" Name="ankle_hatch" Visible="true">
                     <Position>
-                        <X>-377</X>
-                        <Y>-117</Y>
+                        <X>-374</X>
+                        <Y>-124</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -8482,28 +8482,28 @@
                     </LocalPoints>
                     <WorldPoints>
                         <Vector2>
-                            <X>-377</X>
-                            <Y>-117</Y>
+                            <X>-374</X>
+                            <Y>-124</Y>
                         </Vector2>
                         <Vector2>
-                            <X>-377.098724</X>
-                            <Y>-44.9837265</Y>
+                            <X>-374.098724</X>
+                            <Y>-51.9837265</Y>
                         </Vector2>
                         <Vector2>
-                            <X>-330.389954</X>
-                            <Y>-355.637848</Y>
+                            <X>-327.389954</X>
+                            <Y>-362.637848</Y>
                         </Vector2>
                         <Vector2>
-                            <X>-380.241882</X>
-                            <Y>-363.051819</Y>
+                            <X>-377.241882</X>
+                            <Y>-370.051819</Y>
                         </Vector2>
                         <Vector2>
-                            <X>-408.9957</X>
-                            <Y>-49.36432</Y>
+                            <X>-405.9957</X>
+                            <Y>-56.36432</Y>
                         </Vector2>
                         <Vector2>
-                            <X>-378.098541</X>
-                            <Y>-44.0173721</Y>
+                            <X>-375.098541</X>
+                            <Y>-51.0173721</Y>
                         </Vector2>
                     </WorldPoints>
                     <IsPolygon>false</IsPolygon>
@@ -8561,7 +8561,7 @@
                 </Item>
                 <Item xsi:type="TextureItem" Name="structureScrew1" Visible="true">
                     <Position>
-                        <X>-287</X>
+                        <X>-283</X>
                         <Y>-353</Y>
                     </Position>
                     <CustomProperties>
@@ -18712,8 +18712,8 @@
         <NextItemNumber>897</NextItemNumber>
         <ContentRootFolder>gleed-textures</ContentRootFolder>
         <CameraPosition>
-            <X>-641.6603</X>
-            <Y>-5357.71973</Y>
+            <X>-291.6598</X>
+            <Y>-207.703552</Y>
         </CameraPosition>
         <Version>1.3.0.0</Version>
     </EditorRelated>
