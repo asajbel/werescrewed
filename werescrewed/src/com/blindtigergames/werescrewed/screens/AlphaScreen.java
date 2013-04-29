@@ -545,8 +545,14 @@ public class AlphaScreen extends Screen {
 		kneeSkeleton.body.setType( BodyType.KinematicBody );
 		thighSkeleton.body.setType( BodyType.KinematicBody );
 
+		//414, 48
 		ankleHatch = ( Platform ) LevelFactory.entities
 				.get( "ankle_hatch" );
+		RevoluteJointDef rjd = new RevoluteJointDef( );
+		rjd.initialize( ankleHatch.body, footSkeleton.body,
+				new Vector2( -414, 48 ).mul( Util.PIXEL_TO_BOX ) );
+		level.world.createJoint( rjd );
+		
 		TiledPlatform structurePlat3 = ( TiledPlatform ) LevelFactory.entities
 				.get( "structurePlat3" );
 		TiledPlatform pivotPlat1 = ( TiledPlatform ) LevelFactory.entities

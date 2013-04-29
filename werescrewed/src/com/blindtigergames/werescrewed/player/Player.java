@@ -68,7 +68,7 @@ public class Player extends Entity {
 	public final static int GRAB_COUNTER_STEPS = 5;
 	public final static Vector2 ANCHOR_BUFFER_SIZE = new Vector2( 300f, 200f );
 	public final static float STEAM_FORCE = .5f;
-	public final static float STEAM_IMPULSE = 0.2f;
+	public final static float STEAM_IMPULSE = 0.4f;
 	public final static float STEAM_MAX_Y_VELOCITY = 2.5f;
 	public final static float FEET_OFFSET_X = 59f * Util.PIXEL_TO_BOX;
 	public final static float FEET_OFFSET_Y = 23.5f * Util.PIXEL_TO_BOX;
