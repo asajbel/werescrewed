@@ -263,7 +263,7 @@ public class AlphaScreen extends Screen {
 		}
 
 	
-		if(Gdx.input.isKeyPressed( Keys.O )){
+		if(Gdx.input.isKeyPressed( Keys.NUM_9 )){
 			powerSwitch1.setState( true );
 			powerSwitch2.setState( true );
 			powerSwitch3.setState( true );
@@ -778,9 +778,9 @@ public class AlphaScreen extends Screen {
 			temp2.setTempCollision( false );
 			chestSkeleton.addSteam(temp);
 			
-			Steam steam2 = new Steam( "steamChest2", new Vector2( 350, 4450 ), 25, 120, level.world );
-//			steam2.setLocalRot(  270 * Util.DEG_TO_RAD );
-			chestSkeleton.addSteam(steam2);
+//			Steam steam2 = new Steam( "steamChest2", new Vector2( 350, 4450 ), 25, 120, level.world );
+////			steam2.setLocalRot(  270 * Util.DEG_TO_RAD );
+//			chestSkeleton.addSteam(steam2);
 			
 			
 			

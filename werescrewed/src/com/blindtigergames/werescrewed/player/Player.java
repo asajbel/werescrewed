@@ -1469,9 +1469,9 @@ public class Player extends Entity {
 				// player
 				if ( ( this.getPositionPixel( ).y > otherPlayer
 						.getPositionPixel( ).add( 0, HEIGHT / 2f ).y )
-						&& ( otherPlayer.getPositionPixel( ).sub( WIDTH / 3.0f,
+						&& ( otherPlayer.getPositionPixel( ).sub( ( WIDTH / 3.0f )+ 1.2f,
 								0.0f ).x <= this.getPositionPixel( ).x )
-						&& ( otherPlayer.getPositionPixel( ).add( WIDTH / 4.0f,
+						&& ( otherPlayer.getPositionPixel( ).add( ( WIDTH / 4.0f )+ 1.2f,
 								0.0f ).x > this.getPositionPixel( ).x ) ) {
 					boolean isMoving = false;
 					// check if the player is using input
