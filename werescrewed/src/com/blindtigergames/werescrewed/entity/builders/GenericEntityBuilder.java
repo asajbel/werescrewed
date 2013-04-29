@@ -247,12 +247,17 @@ public class GenericEntityBuilder< B extends GenericEntityBuilder< ? >> {
 		if (props.containsKey( "texture" )){
 			this.texture( WereScrewedGame.manager.get( props.get( "texture" ), Texture.class ) );
 		}
-		if (props.containsKey(IDLE_SOUND)){
-			this.addSound("idle", props.get(IDLE_SOUND));
-			Gdx.app.log( "EntityBuilder", "Adding Idle Sound" );
-		}
-		if (props.containsKey(COLLISION_SOUND)){
-			this.addSound("collision", props.get(COLLISION_SOUND));
+		if (props.containsKey("sound")){
+			for (String line : props.getAll( "sound" )){
+				String[] tokens = line.split("\\s*\\:\\s*");
+				if (tokens.length >= 2){
+					this.addSound(tokens[0], tokens[1]);
+					Gdx.app.log( "EntityBuilder", "Adding \""+tokens[0]+"\" sound:\""+tokens[1]+"\"" );
+				} else {
+					Gdx.app.log( "EntityBuilder", "Malformed sound line:\""+line+"\"." );
+				}
+			}
+			
 		}
 		return ( B ) this;
 	}

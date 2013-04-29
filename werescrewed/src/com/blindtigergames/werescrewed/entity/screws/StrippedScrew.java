@@ -164,8 +164,6 @@ public class StrippedScrew extends Screw {
 	 */
 	@Override
 	public void screwLeft( ) {
-		depth -= 1;
-		rotation += 10;
 	}
 
 	/**
@@ -182,8 +180,6 @@ public class StrippedScrew extends Screw {
 	 */
 	@Override
 	public void screwRight( ) {
-		depth += 1;
-		rotation -= 10;
 	}
 	
 	@Override

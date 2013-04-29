@@ -5501,6 +5501,9 @@
                         <Property Name="crushable" Type="string" Description="">
                             <string />
                         </Property>
+                        <Property Name="sound" Type="string" Description="">
+                            <string>collision: /common/sounds/platformCollide.ogg</string>
+                        </Property>
                     </CustomProperties>
                     <Width>192</Width>
                     <Height>80</Height>
@@ -17083,8 +17086,8 @@
         <NextItemNumber>832</NextItemNumber>
         <ContentRootFolder>gleed-textures</ContentRootFolder>
         <CameraPosition>
-            <X>825.9961</X>
-            <Y>-3805.35132</Y>
+            <X>-32.3395538</X>
+            <Y>-5080.36768</Y>
         </CameraPosition>
         <Version>1.3.0.0</Version>
     </EditorRelated>

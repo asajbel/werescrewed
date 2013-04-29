@@ -29,7 +29,6 @@ public class SoundManager {
 		 * how far we can break up each sound file.*/
 		SPEECH
 	}
-	
 	public static EnumMap<SoundType, Float> globalVolume;
 	public ArrayHash<String, SoundRef> sounds;
 	
@@ -211,6 +210,13 @@ public class SoundManager {
 			sounds.add( name, that.sounds.get(name) );
 		}
 	}
+
+	public Sound getGDXSound(String id, int index){
+		if (hasSound(id, index)){
+			return sounds.get(id, index).sound;
+		}
+		return null;
+	}
 	
 	public static float getSoundVolume(){
 		return globalVolume.get( SoundType.SFX );
@@ -219,7 +225,7 @@ public class SoundManager {
 	public static float getNoiseVolume(){
 		return globalVolume.get( SoundType.NOISE );
 	}
-	
+
 	protected class SoundRef{
 		public Sound sound;
 		protected Array<Long> soundIds;
@@ -233,11 +239,17 @@ public class SoundManager {
 		protected float falloff;
 		
 		protected static final float DELAY_MINIMUM = 0.0001f;
+		/*
+		 * Puts an initial delay on all sounds when they're first loaded.
+		 * This is meant to keep collision or idle sounds from playing immediately on startup.
+		 */
+		public static final float INITIAL_DELAY = 0.1f;
 		
-		public SoundRef(Sound s){
+		protected SoundRef(Sound s){
 			volume = 1.0f;
 			pitch = 1.0f;
 			pan = 0.0f;
+			delay = INITIAL_DELAY;
 			soundIds = new Array<Long>();
 			loopId = -1;
 			sound = s;
@@ -279,6 +291,9 @@ public class SoundManager {
 			}
 			delay = (float)(Math.max( delay - dT, 0.0f ));
 		}
-	}
-	
+		
+		public Sound getSound(){
+			return sound;
+		}
+	}	
 }
