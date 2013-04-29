@@ -81,7 +81,7 @@ public class AlphaScreen extends Screen {
 		chestRotatePlat3, headEntrancePlatform4,
 		headEyebrow1, headEyebrow2;
 
-	Platform leftShoulderSideHatch;
+	Platform leftShoulderSideHatch, ankleHatch;
 	private PuzzleScrew leftArmScrew, chestPuzzleScrew2;
 	
 	private Steam engineSteam;
@@ -263,7 +263,7 @@ public class AlphaScreen extends Screen {
 		}
 
 	
-		if(Gdx.input.isKeyPressed( Keys.O )){
+		if(Gdx.input.isKeyPressed( Keys.NUM_9 )){
 			powerSwitch1.setState( true );
 			powerSwitch2.setState( true );
 			powerSwitch3.setState( true );
@@ -545,6 +545,14 @@ public class AlphaScreen extends Screen {
 		kneeSkeleton.body.setType( BodyType.KinematicBody );
 		thighSkeleton.body.setType( BodyType.KinematicBody );
 
+		//414, 48
+		ankleHatch = ( Platform ) LevelFactory.entities
+				.get( "ankle_hatch" );
+		RevoluteJointDef rjd = new RevoluteJointDef( );
+		rjd.initialize( ankleHatch.body, footSkeleton.body,
+				new Vector2( -414, 48 ).mul( Util.PIXEL_TO_BOX ) );
+		level.world.createJoint( rjd );
+		
 		TiledPlatform structurePlat3 = ( TiledPlatform ) LevelFactory.entities
 				.get( "structurePlat3" );
 		TiledPlatform pivotPlat1 = ( TiledPlatform ) LevelFactory.entities
@@ -778,9 +786,9 @@ public class AlphaScreen extends Screen {
 			temp2.setTempCollision( false );
 			chestSkeleton.addSteam(temp);
 			
-			Steam steam2 = new Steam( "steamChest2", new Vector2( 350, 4450 ), 25, 120, level.world );
-//			steam2.setLocalRot(  270 * Util.DEG_TO_RAD );
-			chestSkeleton.addSteam(steam2);
+//			Steam steam2 = new Steam( "steamChest2", new Vector2( 350, 4450 ), 25, 120, level.world );
+////			steam2.setLocalRot(  270 * Util.DEG_TO_RAD );
+//			chestSkeleton.addSteam(steam2);
 			
 			
 			

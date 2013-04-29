@@ -68,7 +68,7 @@ public class Player extends Entity {
 	public final static int GRAB_COUNTER_STEPS = 5;
 	public final static Vector2 ANCHOR_BUFFER_SIZE = new Vector2( 300f, 200f );
 	public final static float STEAM_FORCE = .5f;
-	public final static float STEAM_IMPULSE = 0.2f;
+	public final static float STEAM_IMPULSE = 0.4f;
 	public final static float STEAM_MAX_Y_VELOCITY = 2.5f;
 	public final static float FEET_OFFSET_X = 59f * Util.PIXEL_TO_BOX;
 	public final static float FEET_OFFSET_Y = 23.5f * Util.PIXEL_TO_BOX;
@@ -1469,9 +1469,9 @@ public class Player extends Entity {
 				// player
 				if ( ( this.getPositionPixel( ).y > otherPlayer
 						.getPositionPixel( ).add( 0, HEIGHT / 2f ).y )
-						&& ( otherPlayer.getPositionPixel( ).sub( WIDTH / 3.0f,
+						&& ( otherPlayer.getPositionPixel( ).sub( ( WIDTH / 3.0f )+ 1.2f,
 								0.0f ).x <= this.getPositionPixel( ).x )
-						&& ( otherPlayer.getPositionPixel( ).add( WIDTH / 4.0f,
+						&& ( otherPlayer.getPositionPixel( ).add( ( WIDTH / 4.0f )+ 1.2f,
 								0.0f ).x > this.getPositionPixel( ).x ) ) {
 					boolean isMoving = false;
 					// check if the player is using input

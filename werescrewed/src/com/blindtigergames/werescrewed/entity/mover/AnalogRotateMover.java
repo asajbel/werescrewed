@@ -37,9 +37,9 @@ public class AnalogRotateMover implements IMover {
 		if ( speedSteps > 0 ) {
 			speedSteps--;		
 			if ( clockWise ) {
-				transformBody.setAngularVelocity( speed );
-			} else {
 				transformBody.setAngularVelocity( -speed );
+			} else {
+				transformBody.setAngularVelocity( speed );
 			}
 		} else {
 			transformBody.setAngularVelocity( 0 );
