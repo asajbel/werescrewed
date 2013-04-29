@@ -27,6 +27,7 @@ import com.blindtigergames.werescrewed.eventTrigger.PowerSwitch;
 import com.blindtigergames.werescrewed.level.Level;
 import com.blindtigergames.werescrewed.player.Player;
 import com.blindtigergames.werescrewed.player.Player.PlayerState;
+import com.blindtigergames.werescrewed.sound.SoundManager;
 
 /**
  * 
@@ -39,8 +40,12 @@ public class MyContactListener implements ContactListener {
 	private static int NUM_PLAYER2_CONTACTS = 0;
 	private static final float LAND_DELAY = 0;
 	private static final float LAND_VOLUME = 0.15f;
+	private static final float COLLISION_VOLUME = 5.0f;
 	private static final float LAND_FALLOFF = 3.0f;
-	private static final float COLLISION_SOUND_DELAY = 1.0f;
+	private static final float COLLISION_SOUND_DELAY = 0.2f;
+	private static final float COLLISION_FORCE_FALLOFF = 3.0f;
+	private static final float COLLISION_SCREEN_FALLOFF = 1.0f;
+
 
 	/**
 	 * When two new objects start to touch
@@ -140,8 +145,10 @@ public class MyContactListener implements ContactListener {
 							checkP.hitPlayer( );
 							break;
 						case STEAM:
-							if ( playerFix == player.torso ) {
-								Steam steam = (Steam) object;
+							//TODO: GET RID OF TEMPCOLLISION WHEN STEAM PARTICLES MATCH THE BODY
+							Steam steam = (Steam) object;
+							if ( playerFix == player.torso && steam.getTempCollision( )) {
+								
 								player.setSteamCollide(steam, true );
 							}
 							break;
@@ -286,7 +293,9 @@ public class MyContactListener implements ContactListener {
 							}
 							break;
 						case STEAM:
-							if ( playerFix == player.torso ) {
+							//TODO: GET RID OF TEMPCOLLISION WHEN STEAM PARTICLES MATCH THE BODY
+							Steam steam = (Steam) object;
+							if ( playerFix == player.torso && steam.getTempCollision( )) {
 								player.setSteamCollide(null, false );
 							}
 							break;
@@ -522,19 +531,34 @@ public class MyContactListener implements ContactListener {
 					playSoundB = false;
 				}
 			}
-	
+			
+			//Stop gears from making a sound when they collide with each other.
+			if (objectA.type != null && objectB.type != null){
+				if (objectA.type.getName().toLowerCase().contains( "gear" ) && objectB.type.getName().toLowerCase().contains( "gear" )){
+					playSoundA = playSoundB = false;
+				}
+				//Stop gears from making a sound when they collide with the player.
+				if (objectA.type.getName().toLowerCase().contains( "gear" ) && objectB instanceof Player){
+					playSoundA = false;
+				}
+				if (objectB.type.getName().toLowerCase().contains( "gear" ) && objectA instanceof Player){
+					playSoundB = false;
+				}
+
+			}
+			
+			float v = Math.min( Math.max( (float)Math.pow(force * COLLISION_VOLUME, COLLISION_FORCE_FALLOFF), 0.0f ), 2.0f);
 			//Play soundA
 			if (playSoundA){
-				//objectA.sounds.handleSoundPosition(soundA, objectA.getPositionPixel( ), Camera.CAMERA_RECT);
-				float v = Math.min( Math.max( (float)Math.pow(force, 1.0f), 0.0f ), 2.0f);
-				objectA.sounds.setSoundVolume( soundA, v );
+				float vA = v * SoundManager.calculatePositionalVolume( objectA.getPositionPixel( ), Camera.CAMERA_RECT, 800, COLLISION_SCREEN_FALLOFF );
+				objectA.sounds.setSoundVolume( soundA, vA);
 				objectA.sounds.playSound( soundA, indexA , COLLISION_SOUND_DELAY);
 			}
 			
 			//Play soundB
 			if (playSoundB){
-				float v = Math.min( Math.max( (float)Math.pow(force * LAND_VOLUME, LAND_FALLOFF), 0.0f ), 2.0f);
-				objectB.sounds.setSoundVolume( soundB, v );
+				float vB = v * SoundManager.calculatePositionalVolume( objectB.getPositionPixel( ), Camera.CAMERA_RECT, 800, 0.5f );
+				objectB.sounds.setSoundVolume( soundB, vB);
 				objectB.sounds.playSound( soundB, indexB , COLLISION_SOUND_DELAY);
 			}
 		}

@@ -136,6 +136,7 @@ public class PlayerSpinemator implements ISpinemator {
 			break;
 		case SCREWING_GROUND:
 		case SCREWING_HANG:
+			flipX = true; 
 			float screwAmount = mixer.getDuration( ) - (float) player.getCurrentScrew( ).getDepth( ) / (float) player.getCurrentScrew( ).getMaxDepth( ) * mixer.getDuration( );
 			if (!Float.isNaN( screwAmount )) {
 				mixer.apply( skel, screwAmount, next.loopBool );

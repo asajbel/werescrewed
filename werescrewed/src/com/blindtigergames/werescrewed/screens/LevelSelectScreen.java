@@ -73,7 +73,7 @@ public class LevelSelectScreen implements com.badlogic.gdx.Screen {
 		Gdx.gl.glClear( GL10.GL_COLOR_BUFFER_BIT );
 		// TODO Auto-generated method stub
 		batch.begin( );
-		batch.draw( logo, 0, 0 );
+		batch.draw( logo, 0, 200 );
 		// batch.draw(logo, -128, 0);
 		screenLabel.draw( batch );
 		playButton.draw( batch, camera );
@@ -124,26 +124,26 @@ public class LevelSelectScreen implements com.badlogic.gdx.Screen {
 		camera = new OrthographicCamera( );
 		camera.setToOrtho( false, width, height );
 		batch.setProjectionMatrix( camera.combined );
-		int centerX = width / 2;
+		int leftX = width / 5;
 		int centerY = height / 2;
-		screenLabel.setX( centerX - screenLabel.getWidth( ) / 2 );
-		screenLabel.setY( centerY + 6 * lineHeight );
-		testButton.setX( centerX - testButton.getWidth( ) / 2 );
+		screenLabel.setX( leftX - screenLabel.getWidth( ) / 2 );
+		screenLabel.setY( centerY + 4 * lineHeight );
+		testButton.setX( leftX - testButton.getWidth( ) / 2 );
 		testButton.setY( centerY + 3 * lineHeight );
-		playButton.setX( centerX - playButton.getWidth( ) / 2 );
+		playButton.setX( leftX - playButton.getWidth( ) / 2 );
 		playButton.setY( centerY + 2 * lineHeight );
-		gleedButton.setX( centerX - gleedButton.getWidth( ) / 2 );
+		gleedButton.setX( leftX - gleedButton.getWidth( ) / 2 );
 		gleedButton.setY( centerY + lineHeight );
-		resurrectButton.setX( centerX - resurrectButton.getWidth( ) / 2 );
+		resurrectButton.setX( leftX - resurrectButton.getWidth( ) / 2 );
 		resurrectButton.setY( centerY );
-		hazardButton.setX( centerX - hazardButton.getWidth( ) / 2 );
+		hazardButton.setX( leftX - hazardButton.getWidth( ) / 2 );
 		hazardButton.setY( centerY - lineHeight );
-		level1Button.setX( centerX - level1Button.getWidth( ) / 2 );
+		level1Button.setX( leftX - level1Button.getWidth( ) / 2 );
 		level1Button.setY( centerY - lineHeight * 2 );
-		dragonButton.setX( centerX-dragonButton.getWidth()/2 );
+		dragonButton.setX( leftX-dragonButton.getWidth()/2 );
 		dragonButton.setY(centerY-lineHeight*3);
 
-		backButton.setX( centerX - backButton.getWidth( ) / 2 );
+		backButton.setX( leftX - backButton.getWidth( ) / 2 );
 		backButton.setY( 20 + backButton.getHeight( ) );
 
 	}
@@ -162,7 +162,7 @@ public class LevelSelectScreen implements com.badlogic.gdx.Screen {
 		// fancyFont = WereScrewedGame.manager.getFont( "ornatique" );
 		logo = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 				+ "/common/title_background.png", Texture.class );
-		lineHeight = Math.round( 2.5f * font.getCapHeight( ) );
+		lineHeight = Math.round( 2.5f * font.getCapHeight( ) + 20 );
 		screenLabel = new Label( "Level Select", fancyFont );
 		ControllerSetUp( );
 		loadButtons( );
@@ -212,7 +212,7 @@ public class LevelSelectScreen implements com.badlogic.gdx.Screen {
 		Buttons.add( resurrectButton );
 		Buttons.add( hazardButton );
 		Buttons.add( level1Button );
-		Buttons.add(dragonButton);
+		Buttons.add( dragonButton );
 		Buttons.add( backButton );
 
 	}

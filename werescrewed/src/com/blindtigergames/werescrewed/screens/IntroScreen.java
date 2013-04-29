@@ -17,25 +17,62 @@ class IntroScreen implements com.badlogic.gdx.Screen {
 	private SpriteBatch batch = null;
 	private BitmapFont font = null;
 	static TextureRegion player = WereScrewedGame.manager.getAtlas( "common-textures" ).findRegion( "flat_head_circular" );
-
+	private Texture intro, audience, alphabot, players;
 	Stage stage;
 
 	public IntroScreen( ) {
 		batch = new SpriteBatch( );
 		font = new BitmapFont( );
+		WereScrewedGame.manager.load( "data/common/slides/slide1_intro.png", Texture.class );
+		WereScrewedGame.manager.load( "data/common/slides/slide2_audience.png", Texture.class );
+		WereScrewedGame.manager.load( "data/common/slides/slide3_alphabot.png", Texture.class );
+		WereScrewedGame.manager.load( "data/common/slides/slide4_players.png", Texture.class );
+		
+		intro = WereScrewedGame.manager.get( "data/common/slides/slide1_intro.png", Texture.class );
+		audience =  WereScrewedGame.manager.get( "data/common/slides/slide2_audience.png", Texture.class );
+		alphabot=  WereScrewedGame.manager.get( "data/common/slides/slide3_alphabot.png", Texture.class );
+		players= WereScrewedGame.manager.get( "data/common/slides/slide4_players.png", Texture.class );
 		
 		stage = new Stage( );
 		Gdx.input.setInputProcessor( stage );
 
-		Image splashImage = new Image( player );
+		Image introImage = new Image( intro );
+		Image audienceImage = new Image( audience );
+		Image alphabotImage = new Image( alphabot );
+		Image playersImage = new Image( players );
 		// Image splashImage = new Image(Assets.logoTexture);
 		// splashImage.addAction(Actions.fadeIn( 2f ));
-		splashImage
-				.addAction( Actions.sequence( Actions.fadeOut( 0.001f ),
+		introImage
+				.addAction( Actions.sequence( Actions.delay( 0f ),
 						Actions.fadeIn( 2f ),
-						Actions.run( onSplashFinishedRunnable ) ) );
+						Actions.fadeOut( 2f ),
+						Actions.hide( )));
+		
+		audienceImage
+		.addAction( Actions.sequence( Actions.delay( 4f ),
+				Actions.fadeIn( 2f ),
+				Actions.fadeOut( 2f ),
+				Actions.hide( )));
+		
+		alphabotImage
+		.addAction( Actions.sequence( Actions.delay( 8f ),
+				Actions.fadeIn( 2f ),
+				Actions.fadeOut( 2f ),Actions.hide( ) ));
+		
+		playersImage
+		.addAction( Actions.sequence( Actions.delay( 16f ),
+				Actions.fadeIn( 2f ),
+				Actions.fadeOut( 2f ),
+				Actions.run( onSplashFinishedRunnable )
+				));
 
-		stage.addActor( splashImage );
+		
+		stage.addActor( playersImage );
+		
+		stage.addActor( alphabotImage );
+		
+		stage.addActor( audienceImage );
+		stage.addActor( introImage );
 	}
 
 	@Override

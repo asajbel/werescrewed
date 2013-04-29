@@ -1,0 +1,19 @@
+<entity>
+	<category>ComplexPlatform</category>
+	<texture>common/gear.png</texture>
+	<initialAnim>default</initialAnim>
+	<originX>0.0f</originX>
+	<originY>0.0f</originY>
+	<spriteScaleX>0.85f</spriteScaleX>
+	<spriteScaleY>0.85f</spriteScaleY>
+	<tintRed>1.0f</tintRed>
+	<tintGreen>1.0f</tintGreen>
+	<tintBlue>1.0f</tintBlue>
+	<tintAlpha>1.0f</tintAlpha>
+	
+	<body>pistonLeft</body>
+	<density>1.0f</density>
+	<friction>0.25f</friction>
+	<restitution>0.00f</restitution>
+	<bodyScale>0.5f</bodyScale>
+</entity>
