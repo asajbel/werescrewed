@@ -176,9 +176,9 @@ public class Skeleton extends Platform {
 		else
 			addKinematicPlatform( platform );
 	}
-	
-	public void addPlatforms(Platform... platforms){
-		for( Platform p : platforms ){
+
+	public void addPlatforms( Platform... platforms ) {
+		for ( Platform p : platforms ) {
 			addPlatform( p );
 		}
 	}
@@ -268,9 +268,9 @@ public class Skeleton extends Platform {
 		platform.setOriginRelativeToSkeleton( platform.getPosition( ).cpy( )
 				.sub( ( getPosition( ) ) ) );
 	}
-	
-	public void addSteam(Steam steam){
-		addKinematicPlatform(steam);
+
+	public void addSteam( Steam steam ) {
+		addKinematicPlatform( steam );
 	}
 
 	/**
@@ -572,20 +572,21 @@ public class Skeleton extends Platform {
 				screw.draw( batch, deltaTime );
 			}
 		}
-		for ( CheckPoint chkpt : checkpointMap.values( ) ) {
-			if ( !chkpt.getRemoveNextStep( ) ) {
-				chkpt.draw( batch, deltaTime );
+		if ( !this.isFadingSkel( ) || this.isFGFaded( ) ) {
+			for ( CheckPoint chkpt : checkpointMap.values( ) ) {
+				if ( !chkpt.getRemoveNextStep( ) ) {
+					chkpt.draw( batch, deltaTime );
+				}
+			}
+			for ( Rope rope : ropeMap.values( ) ) {
+				rope.draw( batch, deltaTime );
+			}
+			for ( EventTrigger et : eventMap.values( ) ) {
+				et.draw( batch, deltaTime );
 			}
 		}
-		for ( Rope rope : ropeMap.values( ) ) {
-			rope.draw( batch, deltaTime );
-		}
-		for ( EventTrigger et : eventMap.values( ) ) {
-			et.draw( batch, deltaTime );
-		}
-
-		
-		// draw the entities of the parent skeleton before recursing through the
+		// draw the entities of the parent skeleton before recursing through
+		// the
 		// child skeletons
 		for ( Skeleton skeleton : childSkeletonMap.values( ) ) {
 			skeleton.draw( batch, deltaTime );
@@ -610,7 +611,7 @@ public class Skeleton extends Platform {
 			drawHazard( ( Hazard ) platform, batch, deltaTime );
 			break;
 		case STEAM:
-			Steam steam = (Steam) platform;
+			Steam steam = ( Steam ) platform;
 			steam.draw( batch, deltaTime );
 			break;
 		default:
@@ -755,11 +756,11 @@ public class Skeleton extends Platform {
 	public void setFgFade( boolean applyFadeToFGDecals ) {
 		this.applyFadeToFGDecals = applyFadeToFGDecals;
 	}
-	
+
 	public boolean isFGFaded( ) {
 		return alphaFadeAnimator.getTime( ) < 1;
 	}
-	
+
 	public boolean isFadingSkel( ) {
 		return applyFadeToFGDecals;
 	}
