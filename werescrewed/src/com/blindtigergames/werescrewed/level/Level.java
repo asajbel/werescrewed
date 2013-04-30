@@ -159,7 +159,7 @@ public class Level {
 
 		if ( debug )
 			debugRenderer.render( world, camera.combined( ) );
-		world.step( WereScrewedGame.oneOverTargetFrameRate, 6, 6 );
+		world.step( WereScrewedGame.oneOverTargetFrameRate, 6, 4 );
 
 	}
 
@@ -198,7 +198,10 @@ public class Level {
 
 	private void drawFGStuff( SpriteBatch batch ) {
 		for ( Entity e : entityFGList ) {
-			if ( e.isActive( ) ) {
+			if ( e.isActive( ) 
+					&& ( e.getParentSkeleton( ) == null
+					|| !e.getParentSkeleton( ).isFadingSkel( ) || e
+					.getParentSkeleton( ).isFGFaded( ) ) ) {
 				e.drawFGDecals( batch, camera );
 			}
 		}
