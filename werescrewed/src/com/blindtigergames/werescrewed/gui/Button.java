@@ -152,7 +152,7 @@ public class Button {
 		font.setColor(colored ? HOVER_COLOR : NORMAL_COLOR);
 		font.draw(batch, caption, x, y);
 		font.setColor(originalColor);
-		screwL.setPosition( x - width, y - height - 10 );
+		screwL.setPosition( x - 50, y - height - 10 );
 		screwR.setPosition( x + width + 10, y - height - 10 );
 		screwL.setSize( screwSize / 2, screwSize / 2 );
 		screwR.setSize( screwSize / 2, screwSize / 2 );
