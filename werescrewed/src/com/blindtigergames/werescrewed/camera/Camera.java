@@ -26,11 +26,11 @@ public class Camera {
 	private Rectangle screenBounds;
 
 	// translation
-	/**
-	 * A ratio of some sort
-	 */
 	// private static final float ACCELERATION_BUFFER_RATIO = .2f;
-	private static final float TARGET_BUFFER_RATIO = .0075f;
+	/**
+	 * A ratio of some sort to determine targetBuffer size
+	 */
+	private static final float TARGET_BUFFER_RATIO = .0025f;
 	private static final float MINIMUM_FOLLOW_SPEED = .1f;
 	private static final float MAX_ANGLE_DIFF = 100f;
 	/**
@@ -106,7 +106,7 @@ public class Camera {
 		// this.viewportHeight
 		// * BUFFER_RATIO / 2 ) / 2 )
 		// * ACCELERATION_BUFFER_RATIO;
-		translateState = true;
+		translateState = false;
 		insideTargetBuffer = false;
 		zoomSpeed = 0f;
 		this.timeLeft = 0;
@@ -126,7 +126,6 @@ public class Camera {
 	 * @param position
 	 */
 	public void setPosition( Vector2 position ) {
-
 		camera.position.set( position.x, position.y, 0f );
 		this.position = camera.position;
 		center2D = new Vector2( position.x, position.y );
@@ -178,10 +177,12 @@ public class Camera {
 		setTranslateTarget( );
 
 		// check if center is inside target buffer
-		if ( center2D.dst( translateTarget ) < targetBuffer )
+		float dist = Math.abs( center2D.dst( translateTarget ) );
+		if ( dist < targetBuffer ) {
 			insideTargetBuffer = true;
-		else
+		} else {
 			insideTargetBuffer = false;
+		}
 
 		// Do the actual translation and zooming
 		adjustCamera( );
@@ -285,7 +286,11 @@ public class Camera {
 		}
 		// If the button to debug input isn't being held, translate and zoom
 		if ( !debugInput ) {
-			translateLogic( outside_x, outside_y );
+			translateLogic(
+					outside_x
+							|| Math.abs( translateVelocity.x ) > MINIMUM_FOLLOW_SPEED,
+					outside_y
+							|| Math.abs( translateVelocity.y ) > MINIMUM_FOLLOW_SPEED );
 			zoom( );
 		}
 	}
@@ -302,18 +307,12 @@ public class Camera {
 			boolean lockY = false;
 
 			// lock when:
-			if ( insideTargetBuffer ) {
-				// camera center is really close to target
-				lockX = true;
-				lockY = true;
-			} else if ( trans_x
-					&& !trans_y
+			if ( trans_x
 					&& Math.abs( translateTarget.x - center2D.x ) < targetBuffer ) {
 				// camera center is really close to target.x when only
 				// translating on x axis
 				lockX = true;
 			} else if ( trans_y
-					&& !trans_x
 					&& Math.abs( translateTarget.y - center2D.y ) < targetBuffer ) {
 				// camera center is really close to target.y when only
 				// translating on y axis
@@ -329,7 +328,7 @@ public class Camera {
 					camera.position.x = translateTarget.x;
 				if ( lockY )
 					camera.position.y = translateTarget.y;
-				
+
 				// find angle between midpoint velocity and translate velocity
 				float tempAngle = 0f;
 				tempAngle = anchorList.getMidpointVelocity( ).angle( )
@@ -338,7 +337,7 @@ public class Camera {
 				if ( tempAngle > 180 ) {
 					tempAngle = 360 - tempAngle;
 				}
-				// if player stops moving or changes direction abruptly, disable
+				// if target stops moving or changes direction abruptly, disable
 				// lock
 				if ( anchorList.getMidpointVelocity( ).len( ) < MINIMUM_FOLLOW_SPEED
 						|| tempAngle > MAX_ANGLE_DIFF ) {
@@ -380,15 +379,34 @@ public class Camera {
 				relevantDist.y = center2D.y;
 			}
 		} else {
-			// All buffers still in screen
-			relevantDist.x = translateTarget.x;
-			relevantDist.y = translateTarget.y;
+			// All buffers in screen
+			if ( Math.abs( translateVelocity.x ) > 0 ) {
+				// If we were moving in the x-direction, keep moving
+				relevantDist.x = translateTarget.x;
+			} else {
+				relevantDist.x = center2D.x;
+			}
+			if ( Math.abs( translateVelocity.y ) > 0 ) {
+				// If we were moving in the y-direction, keep moving
+				relevantDist.y = translateTarget.y;
+			} else {
+				relevantDist.y = center2D.y;
+			}
 		}
 
 		// the difference between the translate target and the
 		// center of the camera on only the relevant axes
 		relevantDist = new Vector2( relevantDist.x - center2D.x, relevantDist.y
 				- center2D.y );
+
+		if ( Math.abs( relevantDist.x ) < targetBuffer
+				&& Math.abs( relevantDist.y ) < targetBuffer ) {
+			translateVelocity.x = 0f;
+			translateVelocity.y = 0f;
+			timeLeft = 0;
+			translateState = false;
+			return;
+		}
 
 		// Manage time
 
