@@ -1,7 +1,6 @@
 package com.blindtigergames.werescrewed.level;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 
 import aurelienribon.tweenengine.Tween;
