@@ -1215,6 +1215,14 @@ public class Entity implements GleedLoadable {
 		}
 	}
 
+	public int getFGListSize( ) {
+		return fgDecals.size( );
+	}
+	
+	public int getBGListSize( ) {
+		return fgDecals.size( );
+	}
+	
 	/**
 	 * 
 	 * @param spriteBounds
