@@ -160,7 +160,7 @@ public class Level {
 
 		if ( debug )
 			debugRenderer.render( world, camera.combined( ) );
-		world.step( WereScrewedGame.oneOverTargetFrameRate, 6, 6 );
+		world.step( WereScrewedGame.oneOverTargetFrameRate, 6, 4 );
 
 	}
 
