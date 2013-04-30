@@ -14,6 +14,7 @@ import com.blindtigergames.werescrewed.entity.EntityDef;
 import com.blindtigergames.werescrewed.entity.RobotState;
 import com.blindtigergames.werescrewed.entity.mover.IMover;
 import com.blindtigergames.werescrewed.sound.SoundManager;
+import com.blindtigergames.werescrewed.sound.SoundManager.SoundRef;
 import com.blindtigergames.werescrewed.util.ArrayHash;
 /**
  * EntityBuilder is meant to simplify creating entities and allow for extension
@@ -40,7 +41,7 @@ public class GenericEntityBuilder< B extends GenericEntityBuilder< ? >> {
 	protected IMover mover;
 	protected boolean solid;
 	protected String definition;
-	protected HashMap<String, String> sounds;
+	protected ArrayHash< String, HashMap< String, String >> sounds;
 
 	// Used for type+world construction
 	protected EntityDef type;
@@ -49,7 +50,7 @@ public class GenericEntityBuilder< B extends GenericEntityBuilder< ? >> {
 	// Used for texture+body construction
 	protected Texture tex;
 	protected Body body;
-
+	
 	public GenericEntityBuilder( ) {
 		resetInternal( );
 	}
@@ -65,7 +66,7 @@ public class GenericEntityBuilder< B extends GenericEntityBuilder< ? >> {
 		world = null;
 		tex = null;
 		body = null;
-		sounds = new HashMap<String,String>();
+		sounds = new ArrayHash<String,HashMap<String,String>>();
 		definition = "";
 	}
 
@@ -241,17 +242,35 @@ public class GenericEntityBuilder< B extends GenericEntityBuilder< ? >> {
 	 *            - String/String hashmap containing the data
 	 * @return EntityBuilder
 	 */
-	
 	@SuppressWarnings( "unchecked" )
 	public B properties( ArrayHash<String,String> props ) {
 		if (props.containsKey( "texture" )){
 			this.texture( WereScrewedGame.manager.get( props.get( "texture" ), Texture.class ) );
 		}
+		//Handle sound tags
 		if (props.containsKey("sound")){
 			for (String line : props.getAll( "sound" )){
-				String[] tokens = line.split("\\s*\\:\\s*");
+				String[] tokens = line.toLowerCase().split("\\s*\\:\\s*");
 				if (tokens.length >= 2){
-					this.addSound(tokens[0], tokens[1]);
+					HashMap<String,String> sound = new HashMap<String,String>();
+					sound.put( "asset", tokens[1] );
+					int index = -1;
+					String[] optTokens;
+					for (int opts = 2; opts < tokens.length; opts++){
+						optTokens = tokens[opts].split("\\s+");
+						if (optTokens.length >= 2){
+							if (optTokens[0].equals("index")){
+								index = Integer.parseInt( optTokens[1] );
+							}								
+							sound.put( optTokens[0], optTokens[1] );
+							Gdx.app.log( "EntityBuilder-Sound Options", optTokens[0]+":"+optTokens[1] );
+						}
+					}
+					if (index >= 0){
+						sounds.set( tokens[0], index, sound );
+					} else {
+						sounds.add( tokens[0], sound );
+					}
 					Gdx.app.log( "EntityBuilder", "Adding \""+tokens[0]+"\" sound:\""+tokens[1]+"\"" );
 				} else {
 					Gdx.app.log( "EntityBuilder", "Malformed sound line:\""+line+"\"." );
@@ -342,20 +361,28 @@ public class GenericEntityBuilder< B extends GenericEntityBuilder< ? >> {
 					out.setSoundManager( soundMan );
 				}
 				for (String name: sounds.keySet()){
-					soundMan.getSound( name, sounds.get(name) );
-					if (name.equals("collision")){
-						soundMan.setDelay( name, 1.0f );
+					for (HashMap<String,String> subSounds : sounds.getAll( name )){
+						SoundRef sound = soundMan.getSound( name, subSounds.get( "asset" ) );
+						if (subSounds.containsKey( "volume" ))
+							sound.setVolume(Float.parseFloat( subSounds.get("volume") ));
+						if (subSounds.containsKey( "pitch" ))
+							sound.setPitch(Float.parseFloat( subSounds.get("pitch") ));
+						if (subSounds.containsKey( "pan" ))
+							sound.setPan(Float.parseFloat( subSounds.get("pan") ));
+						if (subSounds.containsKey( "range" ))
+							sound.setRange(Float.parseFloat( subSounds.get("range") ));
+						if (subSounds.containsKey( "falloff" ))
+							sound.setFalloff(Float.parseFloat( subSounds.get("falloff") ));
+						if (name.contains("collision")){
+							soundMan.setDelay( name, 1.0f );
+						}
 					}
 				}
 			}
 			out.postLoad( );
 		}
 	}
-	
-	public void addSound(String tag, String assetName){
-		sounds.put( tag, WereScrewedGame.dirHandle + assetName );
-	}
-	
+		
 	protected static final String nameTag = "Name";
 	protected static final String typeTag = "Definition";
 	protected static final String xTag = "X";

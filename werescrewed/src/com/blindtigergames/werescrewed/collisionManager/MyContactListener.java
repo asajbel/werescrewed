@@ -534,7 +534,8 @@ public class MyContactListener implements ContactListener {
 			
 			//Stop gears from making a sound when they collide with each other.
 			if (objectA.type != null && objectB.type != null){
-				if (objectA.type.getName().toLowerCase().contains( "gear" ) && objectB.type.getName().toLowerCase().contains( "gear" )){
+				if (objectA.type.getName().toLowerCase().contains( "gear" ) 
+						&& objectB.type.getName().toLowerCase().contains( "gear" )){
 					playSoundA = playSoundB = false;
 				}
 				//Stop gears from making a sound when they collide with the player.
@@ -550,14 +551,20 @@ public class MyContactListener implements ContactListener {
 			float v = Math.min( Math.max( (float)Math.pow(force * COLLISION_VOLUME, COLLISION_FORCE_FALLOFF), 0.0f ), 2.0f);
 			//Play soundA
 			if (playSoundA){
-				float vA = v * SoundManager.calculatePositionalVolume( objectA.getPositionPixel( ), Camera.CAMERA_RECT, 800, COLLISION_SCREEN_FALLOFF );
+				float vA = v * SoundManager.calculatePositionalVolume( objectA.getPositionPixel( ), 
+																		Camera.CAMERA_RECT, 
+																			objectA.sounds.getRange(soundA, indexA), 
+																				COLLISION_SCREEN_FALLOFF );
 				objectA.sounds.setSoundVolume( soundA, vA);
 				objectA.sounds.playSound( soundA, indexA , COLLISION_SOUND_DELAY);
 			}
 			
 			//Play soundB
 			if (playSoundB){
-				float vB = v * SoundManager.calculatePositionalVolume( objectB.getPositionPixel( ), Camera.CAMERA_RECT, 800, 0.5f );
+				float vB = v * SoundManager.calculatePositionalVolume( objectB.getPositionPixel( ), 
+																		Camera.CAMERA_RECT, 
+																			objectB.sounds.getRange(soundB, indexB), 
+																				COLLISION_SCREEN_FALLOFF );
 				objectB.sounds.setSoundVolume( soundB, vB);
 				objectB.sounds.playSound( soundB, indexB , COLLISION_SOUND_DELAY);
 			}

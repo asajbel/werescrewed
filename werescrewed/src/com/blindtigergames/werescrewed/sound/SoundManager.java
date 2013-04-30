@@ -45,6 +45,14 @@ public class SoundManager {
 		sounds = new ArrayHash<String, SoundRef>();
 	}
 
+	public SoundRef getSound(String id, int index, String assetName){
+		if (!hasSound(id)){
+			Sound s = WereScrewedGame.manager.get( assetName, Sound.class );
+			sounds.set( id, index, new SoundRef(s));
+		}
+		return sounds.get( id );
+	}
+	
 	public SoundRef getSound(String id, String assetName){
 		if (!hasSound(id)){
 			Sound s = WereScrewedGame.manager.get( assetName, Sound.class );
@@ -204,21 +212,27 @@ public class SoundManager {
 	public void addDelay(String id, float amount){
 		if (hasSound(id)){
 			if (hasSound(id)){
-				sounds.get(id).delay += amount;
+				for (SoundRef sound : sounds.getAll(id)){
+					sound.delay += amount;
+				}
 			}			
 		}		
 	}
 	
 	public void setDelay(String id, float amount){
 		if (hasSound(id)){
-			sounds.get(id).delay = amount;
+			for (SoundRef sound : sounds.getAll(id)){
+				sound.delay = amount;
+			}
 		}
 	}
 	
 	public void delay(String id, float amount){
 		if (hasSound(id)){
 			if (sounds.get(id).delay < amount){
-				sounds.get(id).delay = amount;				
+				for (SoundRef sound : sounds.getAll(id)){
+					sound.delay = amount;
+				}				
 			}
 		}
 	}
@@ -243,8 +257,16 @@ public class SoundManager {
 	public static float getNoiseVolume(){
 		return globalVolume.get( SoundType.NOISE );
 	}
+	
+	public float getRange( String id, int index ) {
+		return sounds.get( id, index ).range;
+	}	
 
-	protected class SoundRef{
+	public void setRange( String id, int index , float r) {
+		sounds.get( id, index ).range = r;
+	}	
+
+	public class SoundRef{
 		public Sound sound;
 		protected Array<Long> soundIds;
 		protected long loopId;
@@ -313,5 +335,26 @@ public class SoundManager {
 		public Sound getSound(){
 			return sound;
 		}
-	}	
+
+		public void setVolume( float value ) {
+			volume = value;
+		}
+
+		public void setPitch( float value ) {
+			pitch = value;
+		}
+
+		public void setPan( float value ) {
+			pan = value;
+		}
+		
+		public void setRange( float value ) {
+			range = value;
+		}
+
+		public void setFalloff( float value ) {
+			falloff = value;
+		}
+
+	}
 }
