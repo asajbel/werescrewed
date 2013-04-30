@@ -542,22 +542,9 @@ public class Skeleton extends Platform {
 	public void draw( SpriteBatch batch, float deltaTime ) {
 		// super.draw( batch );
 		if ( visible ) {
-			// drawBGDecals( batch );
-			// draw decals before drawing children
-			// update z order : don't draw decals recursively
-			// draw in queue before everything
-			// drawDecals(batch);
-			// draw bg
-			// update z order : don't draw skeleton sprites recursively
-			// update z order : draw the background in a separate queue before
-			// everything
-			// if ( bgSprite != null )
-			// bgSprite.draw( batch );
 			if ( isActive( ) ) {
 				drawChildren( batch, deltaTime );
 			}
-			// update z order : draw the foreground in a separate queue after
-			// everything
 			if ( isActive( ) || isMacroSkeleton ) {
 				if ( fgSprite != null && alphaFadeAnimator.getTime( ) > 0 ) {
 					fgSprite.setAlpha( alphaFadeAnimator.getTime( ) );
@@ -570,7 +557,6 @@ public class Skeleton extends Platform {
 			if ( applyFadeToFGDecals ) {
 				fadeFGDecals( );
 			}
-			// drawFGDecals( batch );
 		}
 	}
 
@@ -768,5 +754,13 @@ public class Skeleton extends Platform {
 
 	public void setFgFade( boolean applyFadeToFGDecals ) {
 		this.applyFadeToFGDecals = applyFadeToFGDecals;
+	}
+	
+	public boolean isFGFaded( ) {
+		return alphaFadeAnimator.getTime( ) < 1;
+	}
+	
+	public boolean isFadingSkel( ) {
+		return applyFadeToFGDecals;
 	}
 }
