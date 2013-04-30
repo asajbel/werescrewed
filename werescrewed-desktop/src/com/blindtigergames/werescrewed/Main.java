@@ -1,5 +1,6 @@
 package com.blindtigergames.werescrewed;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 
@@ -12,8 +13,7 @@ public class Main {
 		cfg.width = 1280;
 		cfg.height = 720;
 		cfg.vSyncEnabled = true;
-
-		
+        
 		//cfg.useCPUSynch = false;
 		//cfg.vSyncEnabled = true;
 		//cfg.fullscreen = true;

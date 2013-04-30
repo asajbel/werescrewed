@@ -142,14 +142,14 @@ class MainMenuScreen implements com.badlogic.gdx.Screen {
 		storyButton.setY( centerY + 5 * lineHeight);
 		levelSelectButton.setX( leftX - levelSelectButton.getWidth( ) / 2 );
 		levelSelectButton.setY( centerY + 4 * lineHeight);
-		optionsButton.setX( leftX - optionsButton.getWidth( ) / 2);
+		optionsButton.setX( leftX - optionsButton.getWidth( ) / 2 );
 		optionsButton.setY( centerY + 3 * lineHeight );
 		// imoverButton.setX( centerX - imoverButton.getWidth( )/2 );
 		// imoverButton.setY( centerY - lineHeight );
 		exitButton.setX( leftX - exitButton.getWidth( ) / 2 );
 		exitButton.setY( centerY + 2 * lineHeight );
 		
-		Tween.to( storyButton, ButtonTweenAccessor.POSITION_X, 1 ).ease( TweenEquations.easeInBounce ).target( leftX  - storyButton.getWidth( )/2 ).start( manager );
+		//Tween.to( storyButton, ButtonTweenAccessor.POSITION_X, 1 ).ease( TweenEquations.easeInBounce ).target( leftX  - storyButton.getWidth( )/2 ).start( manager );
 	}
 	
 	/**
