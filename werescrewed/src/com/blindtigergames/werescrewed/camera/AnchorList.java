@@ -2,6 +2,7 @@ package com.blindtigergames.werescrewed.camera;
 
 import java.util.ArrayList;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
@@ -72,10 +73,11 @@ public class AnchorList {
 
 		// Update timers
 		for ( Anchor curAnchor : anchorList ) {
-			if ( curAnchor.getTimer( ) > 0 && curAnchor.activated == true )
-				// Gdx.app.log( "timer", curAnchor.getTimer( ) + "" );
+			if ( curAnchor.getTimer( ) > 0 && curAnchor.activated == true ){
+				
 				curAnchor.decrementTimer( );
-
+				// Gdx.app.log( "timer", curAnchor.getTimer( ) + "" );
+			}
 			// Safety check & deactivate
 			if ( curAnchor.getTimer( ) == 0 ) {
 				curAnchor.setTimer( 0 );

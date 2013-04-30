@@ -86,7 +86,7 @@ public class AlphaScreen extends Screen {
 	
 	private Steam engineSteam;
 
-	private boolean chestSteamTriggered = false, headPlatformCreated = false;
+	private boolean chestSteamTriggered = false, headPlatformCreated = false, headAnchorActivatedOnce = false;
 
 	private Skeleton rightShoulderSkeleton;
 
@@ -200,8 +200,12 @@ public class AlphaScreen extends Screen {
 							&& level.player2.getPositionPixel( ).x < 2848f 
 							&& level.player2.getPositionPixel( ).y > 4688)) {
 				
-			
-				headSkeleton.anchors.get(0).activate( );
+				if(!headSkeleton.anchors.get(0).activated && !headAnchorActivatedOnce){
+					headAnchorActivatedOnce = true;
+					headSkeleton.anchors.get(0).setTimer( 30 );
+					headSkeleton.anchors.get(0).activate( );
+				}
+				
 				
 				if(!headPlatformCreated){
 					headPlatformCreated = true;
@@ -705,11 +709,38 @@ public class AlphaScreen extends Screen {
 			}
 		}
 
-		// if ( ( powerScrew3.getDepth( ) == powerScrew3.getMaxDepth( ) )
-		// && ( powerScrew4.getDepth( ) == powerScrew4.getMaxDepth( ) ) ) {
-		//
-		// }
-		
+//		if (  powerSwitch5.isTurnedOn( )  && powerSwitch6.isTurnedOn( ) ) {
+//			
+//
+//				Skeleton rightKneeTrapDoorSkeleton1 = ( Skeleton ) LevelFactory.entities
+//						.get( "rightKneeTrapDoorSkeleton1" );
+//				Skeleton rightKneeTrapDoorSkeleton2 = ( Skeleton ) LevelFactory.entities
+//						.get( "rightKneeTrapDoorSkeleton2" );
+//				if(rightKneeTrapDoorSkeleton1.currentMover( ) == null){
+//					Timeline t = Timeline.createSequence( );
+//		
+//					t.push( Tween
+//							.to( rightKneeTrapDoorSkeleton1, PlatformAccessor.LOCAL_ROT,
+//									0.5f ).ease( TweenEquations.easeNone )
+//							.target( ( -Util.PI / 2 ) ).delay( 0f ).start( ) );
+//		
+//					rightKneeTrapDoorSkeleton1
+//							.addMover( new TimelineTweenMover( t.start( ) ) );
+//				}
+//				
+//				if(rightKneeTrapDoorSkeleton2.currentMover( ) == null){
+//					Timeline t2 = Timeline.createSequence( );
+//		
+//					t2.push( Tween
+//							.to( rightKneeTrapDoorSkeleton2, PlatformAccessor.LOCAL_ROT,
+//									0.5f ).ease( TweenEquations.easeNone )
+//							.target( (Util.PI / 2 ) ).delay( 0f ).start( ) );
+//		
+//					rightKneeTrapDoorSkeleton2
+//							.addMover( new TimelineTweenMover( t2.start( ) ) );
+//				
+//				}
+//		}
 		
 		if (  powerSwitch9.isTurnedOn( )  && powerSwitch10.isTurnedOn( ) ) {
 			Skeleton rightElbowSkeleton = ( Skeleton ) LevelFactory.entities
