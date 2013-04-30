@@ -7,7 +7,7 @@
   <SaveLevelApplicationToStart />
   <SaveLevelAppendLevelFilename>false</SaveLevelAppendLevelFilename>
   <ShowGrid>true</ShowGrid>
-  <SnapToGrid>true</SnapToGrid>
+  <SnapToGrid>false</SnapToGrid>
   <ShowWorldOrigin>true</ShowWorldOrigin>
   <ColorSelectionFirst>
     <R>255</R>

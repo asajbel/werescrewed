@@ -93,6 +93,7 @@ public class AlphaScreen extends Screen {
 	private Platform rightArmDoor;
 
 	private StrippedScrew rightArmDoorHinge;
+	private StructureScrew structureScrew1;
 	
 	private int rightShoulderSkeletonAnchorCounter = 0;
 
@@ -180,6 +181,8 @@ public class AlphaScreen extends Screen {
 		// characterSelect.draw( batch, deltaTime );
 
 		powerScrewUpdate( deltaTime );
+		
+
 		
 		//If everything is on
 		if (  powerSwitch1.isTurnedOn( )  && powerSwitch2.isTurnedOn( )
@@ -545,12 +548,14 @@ public class AlphaScreen extends Screen {
 		kneeSkeleton.body.setType( BodyType.KinematicBody );
 		thighSkeleton.body.setType( BodyType.KinematicBody );
 
+		structureScrew1 = ( StructureScrew ) LevelFactory.entities
+				.get( "structureScrew1" );
 		//414, 48
 		ankleHatch = ( Platform ) LevelFactory.entities
 				.get( "ankle_hatch" );
 		RevoluteJointDef rjd = new RevoluteJointDef( );
 		rjd.initialize( ankleHatch.body, footSkeleton.body,
-				new Vector2( -414, 48 ).mul( Util.PIXEL_TO_BOX ) );
+				new Vector2( -415, 14 ).mul( Util.PIXEL_TO_BOX ) );
 		level.world.createJoint( rjd );
 		
 		TiledPlatform structurePlat3 = ( TiledPlatform ) LevelFactory.entities
