@@ -561,18 +561,18 @@ public class Skeleton extends Platform {
 	}
 
 	private void drawChildren( SpriteBatch batch, float deltaTime ) {
-		for ( Platform p : dynamicPlatformMap.values( ) ) {
-			drawPlatform( p, batch, deltaTime );
-		}
-		for ( Platform p : kinematicPlatformMap.values( ) ) {
-			drawPlatform( p, batch, deltaTime );
-		}
-		for ( Screw screw : screwMap.values( ) ) {
-			if ( !screw.getRemoveNextStep( ) ) {
-				screw.draw( batch, deltaTime );
-			}
-		}
 		if ( !this.isFadingSkel( ) || this.isFGFaded( ) ) {
+			for ( Platform p : dynamicPlatformMap.values( ) ) {
+				drawPlatform( p, batch, deltaTime );
+			}
+			for ( Platform p : kinematicPlatformMap.values( ) ) {
+				drawPlatform( p, batch, deltaTime );
+			}
+			for ( Screw screw : screwMap.values( ) ) {
+				if ( !screw.getRemoveNextStep( ) ) {
+					screw.draw( batch, deltaTime );
+				}
+			}
 			for ( CheckPoint chkpt : checkpointMap.values( ) ) {
 				if ( !chkpt.getRemoveNextStep( ) ) {
 					chkpt.draw( batch, deltaTime );
@@ -584,7 +584,7 @@ public class Skeleton extends Platform {
 			for ( EventTrigger et : eventMap.values( ) ) {
 				et.draw( batch, deltaTime );
 			}
-		}
+		} 
 		// draw the entities of the parent skeleton before recursing through
 		// the
 		// child skeletons
