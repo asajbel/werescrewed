@@ -86,13 +86,14 @@ public class AlphaScreen extends Screen {
 	
 	private Steam engineSteam;
 
-	private boolean chestSteamTriggered = false, headPlatformCreated = false;
+	private boolean chestSteamTriggered = false, headPlatformCreated = false, headAnchorActivatedOnce = false;
 
 	private Skeleton rightShoulderSkeleton;
 
 	private Platform rightArmDoor;
 
 	private StrippedScrew rightArmDoorHinge;
+	private StructureScrew structureScrew1;
 	
 	private int rightShoulderSkeletonAnchorCounter = 0;
 
@@ -169,6 +170,7 @@ public class AlphaScreen extends Screen {
 		buildEngineHeart( new Vector2( 0, 5450 ) );
 		createChestDecals();
 		//powerSwitch();
+		
 	}
 
 	@Override
@@ -180,6 +182,8 @@ public class AlphaScreen extends Screen {
 		// characterSelect.draw( batch, deltaTime );
 
 		powerScrewUpdate( deltaTime );
+		
+
 		
 		//If everything is on
 		if (  powerSwitch1.isTurnedOn( )  && powerSwitch2.isTurnedOn( )
@@ -197,8 +201,12 @@ public class AlphaScreen extends Screen {
 							&& level.player2.getPositionPixel( ).x < 2848f 
 							&& level.player2.getPositionPixel( ).y > 4688)) {
 				
-			
-				headSkeleton.anchors.get(0).activate( );
+				if(!headSkeleton.anchors.get(0).activated && !headAnchorActivatedOnce){
+					headAnchorActivatedOnce = true;
+					headSkeleton.anchors.get(0).setTimer( 30 );
+					headSkeleton.anchors.get(0).activate( );
+				}
+				
 				
 				if(!headPlatformCreated){
 					headPlatformCreated = true;
@@ -545,12 +553,21 @@ public class AlphaScreen extends Screen {
 		kneeSkeleton.body.setType( BodyType.KinematicBody );
 		thighSkeleton.body.setType( BodyType.KinematicBody );
 
+<<<<<<< HEAD
+=======
+		structureScrew1 = ( StructureScrew ) LevelFactory.entities
+				.get( "structureScrew1" );
+>>>>>>> master
 		//414, 48
 		ankleHatch = ( Platform ) LevelFactory.entities
 				.get( "ankle_hatch" );
 		RevoluteJointDef rjd = new RevoluteJointDef( );
 		rjd.initialize( ankleHatch.body, footSkeleton.body,
+<<<<<<< HEAD
 				new Vector2( -414, 48 ).mul( Util.PIXEL_TO_BOX ) );
+=======
+				new Vector2( -415, 14 ).mul( Util.PIXEL_TO_BOX ) );
+>>>>>>> master
 		level.world.createJoint( rjd );
 		
 		TiledPlatform structurePlat3 = ( TiledPlatform ) LevelFactory.entities
@@ -580,8 +597,8 @@ public class AlphaScreen extends Screen {
 		footBG.setOrigin( 0f, 0f );
 		foot.addBGDecal( legBG, new Vector2( 410 + decalX, 432 + decalY ) );
 
-		addBGEntity( footSkeleton );
-		addFGEntity( footSkeleton );
+		addBGSkeleton( footSkeleton );
+		addFGSkeleton( footSkeleton );
 		
 		Vector2 footFGPos = new Vector2( decalX - 0, decalY -10 );
 		foot.addFGDecal( decals.createSprite( "foot_exterior" ), footFGPos );
@@ -607,7 +624,7 @@ public class AlphaScreen extends Screen {
 									// here even
 		kneeSkeleton.addFGDecalBack( decals.createSprite( "knee_exterior" ),
 				kneeDecalPos.cpy( ) );
-		addFGEntity( kneeSkeleton );
+		addFGSkeleton( kneeSkeleton );
 
 		kneeSkeleton
 				.addBGDecalBack( knee_exterior
@@ -700,11 +717,9 @@ public class AlphaScreen extends Screen {
 			}
 		}
 
-		// if ( ( powerScrew3.getDepth( ) == powerScrew3.getMaxDepth( ) )
-		// && ( powerScrew4.getDepth( ) == powerScrew4.getMaxDepth( ) ) ) {
-		//
-		// }
-		
+//		if (  powerSwitch5.isTurnedOn( )  && powerSwitch6.isTurnedOn( ) ) {
+	
+//		}
 		
 		if (  powerSwitch9.isTurnedOn( )  && powerSwitch10.isTurnedOn( ) ) {
 			Skeleton rightElbowSkeleton = ( Skeleton ) LevelFactory.entities
@@ -892,7 +907,29 @@ public class AlphaScreen extends Screen {
 				.get( "headEyebrow2" );
 		
 
-
+		Skeleton rightKneeTrapDoorSkeleton1 = ( Skeleton ) LevelFactory.entities
+				.get( "rightKneeTrapDoorSkeleton1" );
+		Skeleton rightKneeTrapDoorSkeleton2 = ( Skeleton ) LevelFactory.entities
+				.get( "rightKneeTrapDoorSkeleton2" );
+		
+		//rightKneeTrapDoorSkeleton2.setActive( false );
+		//rightKneeTrapDoorSkeleton1.setActive( false );
+		
+		EventTrigger rightKneeTrapDoorEvent1 = ( EventTrigger ) LevelFactory.entities
+				.get( "rightKneeTrapDoorEvent1" );
+		
+		rightKneeTrapDoorEvent1.addEntityToTrigger( rightKneeTrapDoorSkeleton1 );
+		rightKneeTrapDoorEvent1.actOnEntity = true;
+		rightKneeTrapDoorEvent1.addBeginIAction( new RotateTweenAction(-Util.PI/2, 0.8f));
+		
+		EventTrigger rightKneeTrapDoorEvent2 = ( EventTrigger ) LevelFactory.entities
+				.get( "rightKneeTrapDoorEvent2" );
+		
+		rightKneeTrapDoorEvent2.addEntityToTrigger( rightKneeTrapDoorSkeleton2 );
+		rightKneeTrapDoorEvent2.actOnEntity = true;
+		rightKneeTrapDoorEvent2.addBeginIAction( new RotateTweenAction(Util.PI/2, 0.8f));
+				
+				
 	}
 	
 	private void createChestDecals(){

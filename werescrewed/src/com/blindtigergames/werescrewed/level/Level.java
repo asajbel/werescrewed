@@ -1,7 +1,6 @@
 package com.blindtigergames.werescrewed.level;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 
 import aurelienribon.tweenengine.Tween;
@@ -42,7 +41,6 @@ import com.blindtigergames.werescrewed.util.Util;
 public class Level {
 
 	public static int GRAVITY = -35;
-
 	public Camera camera;
 	public World world;
 	public MyContactListener myContactListener;
@@ -89,7 +87,7 @@ public class Level {
 	}
 
 	public void update( float deltaTime ) {
-		//camera.update( );
+		// camera.update( );
 
 		if ( player1 != null )
 			player1.update( deltaTime );
@@ -161,14 +159,15 @@ public class Level {
 
 		if ( debug )
 			debugRenderer.render( world, camera.combined( ) );
-		world.step( WereScrewedGame.oneOverTargetFrameRate, 6, 6 );
+		world.step( WereScrewedGame.oneOverTargetFrameRate, 6, 4 );
 
 	}
 
 	private void drawBGStuff( SpriteBatch batch, float deltaTime ) {
 		for ( Skeleton skel : skelBGList ) {
 			if ( skel.isActive( ) ) {
-				if ( skel.bgSprite != null ) {
+				if ( skel.bgSprite != null
+						&& ( !skel.isFadingSkel( ) || skel.isFGFaded( ) ) ) {
 					// Vector2 spritePos = new Vector2(
 					// skel.bgSprite.getBoundingRectangle( ).width / 2.0f,
 					// skel.bgSprite.getBoundingRectangle( ).height / 2.0f );
@@ -180,21 +179,29 @@ public class Level {
 					skel.bgSprite.draw( batch );
 					// }
 				}
-				skel.drawBGDecals( batch, camera );
+				if ( !skel.isFadingSkel( ) || skel.isFGFaded( ) ) {
+					skel.drawBGDecals( batch, camera );
+				}
 			}
 		}
 		for ( Entity e : entityBGList ) {
-			if ( e.isActive( ) ) {
+			if ( e.isActive( )
+					&& ( e.getParentSkeleton( ) == null
+							|| !e.getParentSkeleton( ).isFadingSkel( ) || e
+							.getParentSkeleton( ).isFGFaded( ) ) ) {
 				{
 					e.drawBGDecals( batch, camera );
 				}
-			} 
+			}
 		}
 	}
 
 	private void drawFGStuff( SpriteBatch batch ) {
 		for ( Entity e : entityFGList ) {
-			if ( e.isActive( ) ) {
+			if ( e.isActive( ) 
+					&& ( e.getParentSkeleton( ) == null
+					|| !e.getParentSkeleton( ).isFadingSkel( ) || e
+					.getParentSkeleton( ).isFGFaded( ) ) ) {
 				e.drawFGDecals( batch, camera );
 			}
 		}
