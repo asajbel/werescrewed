@@ -189,6 +189,7 @@ public class PhysicsTestScreen extends Screen {
 		// Attach wheel decal
 
 		engineSkeleton.addPlatform( wheel1 );
+		engineSkeleton.setFgFade( false );
 		// Make wheel rotate
 		new RevoluteJointBuilder( world ).entityA( engineSkeleton )
 				.entityB( wheel1 ).motor( true ).motorSpeed( 3f )
@@ -387,11 +388,14 @@ public class PhysicsTestScreen extends Screen {
 				Util.CATEGORY_EVERYTHING );
 		ground.body.getFixtureList( ).get( 0 ).getShape( ).setRadius( 0 );
 		skeleton.addKinematicPlatform( ground );
+		skeleton.setFgFade( false );
 
 		Skeleton dynSkel = new SkeletonBuilder( world ).position( 800, 500 )
 				.dynamic( ).name( "dynSkele" ).build( );
 		// dynSkel.quickfixCollisions( );
 		rootSkeleton.addSkeleton( dynSkel );
+		rootSkeleton.setFgFade( false );
+		dynSkel.setFgFade( false );
 
 		// platforms on dynamic skeleton
 		TiledPlatform plat6 = platBuilder.name( "dynPlat1" ).dynamic( )
@@ -469,6 +473,7 @@ public class PhysicsTestScreen extends Screen {
 		plat7.body.setFixedRotation( false );
 		plat7.quickfixCollisions( );
 		dynSkel2.addDynamicPlatform( plat7 );
+		dynSkel2.setFgFade( false );
 
 		TiledPlatform plat8 = platBuilder.name( "weld3" ).dynamic( )
 				.position( 800, 700 ).dimensions( 12, 1 ).oneSided( false )
@@ -547,7 +552,7 @@ public class PhysicsTestScreen extends Screen {
 
 		s = new Skeleton( "skeleton7", new Vector2( -700, 700 ), null, world,
 				BodyType.KinematicBody );
-
+s.setFgFade( false );
 		TiledPlatform ttt = platBuilder.name( "ttt" ).kinematic( )
 				.position( -700, 1000 ).dimensions( 1, 5 ).oneSided( false )
 				.buildTilePlatform( );
@@ -763,7 +768,7 @@ public class PhysicsTestScreen extends Screen {
 		// dynSkeleton.body.createFixture( , density )
 
 		oldRootSkeleton.addSkeleton( skeleton );
-
+		oldRootSkeleton.setFgFade( false );
 	}
 
 	/**
