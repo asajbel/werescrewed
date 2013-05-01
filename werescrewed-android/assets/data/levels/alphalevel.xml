@@ -3334,7 +3334,7 @@
                 </Item>
                 <Item xsi:type="RectangleItem" Name="rightThighPlat1" Visible="true">
                     <Position>
-                        <X>1696</X>
+                        <X>1744</X>
                         <Y>-2496</Y>
                     </Position>
                     <CustomProperties>
@@ -3345,7 +3345,7 @@
                             <string>thighSkeleton2</string>
                         </Property>
                     </CustomProperties>
-                    <Width>352</Width>
+                    <Width>304</Width>
                     <Height>32</Height>
                     <FillColor>
                         <R>192</R>
@@ -3357,8 +3357,8 @@
                 </Item>
                 <Item xsi:type="TextureItem" Name="rightThighStripped3" Visible="true">
                     <Position>
-                        <X>1920</X>
-                        <Y>-2912</Y>
+                        <X>1904</X>
+                        <Y>-3072</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -10386,7 +10386,7 @@
                             <string>rail_vert_top</string>
                         </Property>
                         <Property Name="target" Type="string" Description="">
-                            <string>kneeSkeleton</string>
+                            <string>thighSkeleton</string>
                         </Property>
                     </CustomProperties>
                     <Width>150</Width>
@@ -10415,7 +10415,7 @@
                             <string>rail_vert_middle</string>
                         </Property>
                         <Property Name="target" Type="string" Description="">
-                            <string>kneeSkeleton</string>
+                            <string>thighSkeleton</string>
                         </Property>
                     </CustomProperties>
                     <Width>150</Width>
@@ -10444,7 +10444,7 @@
                             <string>rail_vert_middle</string>
                         </Property>
                         <Property Name="target" Type="string" Description="">
-                            <string>kneeSkeleton</string>
+                            <string>thighSkeleton</string>
                         </Property>
                     </CustomProperties>
                     <Width>150</Width>
@@ -10473,7 +10473,7 @@
                             <string>rail_vert_middle</string>
                         </Property>
                         <Property Name="target" Type="string" Description="">
-                            <string>kneeSkeleton</string>
+                            <string>thighSkeleton</string>
                         </Property>
                     </CustomProperties>
                     <Width>150</Width>
@@ -10502,7 +10502,7 @@
                             <string>rail_vert_middle</string>
                         </Property>
                         <Property Name="target" Type="string" Description="">
-                            <string>kneeSkeleton</string>
+                            <string>thighSkeleton</string>
                         </Property>
                     </CustomProperties>
                     <Width>150</Width>
@@ -10531,7 +10531,7 @@
                             <string>rail_vert_middle</string>
                         </Property>
                         <Property Name="target" Type="string" Description="">
-                            <string>kneeSkeleton</string>
+                            <string>thighSkeleton</string>
                         </Property>
                     </CustomProperties>
                     <Width>150</Width>
@@ -10560,7 +10560,7 @@
                             <string>rail_vert_middle</string>
                         </Property>
                         <Property Name="target" Type="string" Description="">
-                            <string>kneeSkeleton</string>
+                            <string>thighSkeleton</string>
                         </Property>
                     </CustomProperties>
                     <Width>150</Width>
@@ -10589,7 +10589,7 @@
                             <string>rail_vert_middle</string>
                         </Property>
                         <Property Name="target" Type="string" Description="">
-                            <string>kneeSkeleton</string>
+                            <string>thighSkeleton</string>
                         </Property>
                     </CustomProperties>
                     <Width>150</Width>
@@ -10618,7 +10618,7 @@
                             <string>rail_vert_bottom</string>
                         </Property>
                         <Property Name="target" Type="string" Description="">
-                            <string>kneeSkeleton</string>
+                            <string>thighSkeleton</string>
                         </Property>
                     </CustomProperties>
                     <Width>150</Width>
@@ -11364,7 +11364,7 @@
                             <string>ScrewStripped</string>
                         </Property>
                         <Property Name="AttachToSkeleton" Type="string" Description="">
-                            <string>thighSkeleton2</string>
+                            <string>kneeSkeleton2</string>
                         </Property>
                     </CustomProperties>
                     <Rotation>-6.15177441</Rotation>
@@ -11401,7 +11401,7 @@
                             <string>ScrewStripped</string>
                         </Property>
                         <Property Name="AttachToSkeleton" Type="string" Description="">
-                            <string>thighSkeleton2</string>
+                            <string>kneeSkeleton2</string>
                         </Property>
                     </CustomProperties>
                     <Rotation>-6.15177441</Rotation>
@@ -11584,7 +11584,7 @@
                 <Item xsi:type="PathItem" Name="rightThighPipe1" Visible="true">
                     <Position>
                         <X>2240</X>
-                        <Y>-3200</Y>
+                        <Y>-3248</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -11613,37 +11613,37 @@
                         </Vector2>
                         <Vector2>
                             <X>-320</X>
-                            <Y>0</Y>
+                            <Y>-48</Y>
                         </Vector2>
                         <Vector2>
                             <X>-512</X>
-                            <Y>0</Y>
+                            <Y>-48</Y>
                         </Vector2>
                     </LocalPoints>
                     <WorldPoints>
                         <Vector2>
                             <X>2240</X>
-                            <Y>-3200</Y>
+                            <Y>-3248</Y>
                         </Vector2>
                         <Vector2>
                             <X>2112</X>
-                            <Y>-3200</Y>
+                            <Y>-3248</Y>
                         </Vector2>
                         <Vector2>
                             <X>2112</X>
-                            <Y>-3328</Y>
+                            <Y>-3376</Y>
                         </Vector2>
                         <Vector2>
                             <X>1920</X>
-                            <Y>-3328</Y>
+                            <Y>-3376</Y>
                         </Vector2>
                         <Vector2>
                             <X>1920</X>
-                            <Y>-3200</Y>
+                            <Y>-3296</Y>
                         </Vector2>
                         <Vector2>
                             <X>1728</X>
-                            <Y>-3200</Y>
+                            <Y>-3296</Y>
                         </Vector2>
                     </WorldPoints>
                     <IsPolygon>false</IsPolygon>
@@ -13704,9 +13704,6 @@
                         </Property>
                         <Property Name="endaction" Type="string" Description="">
                             <string>deactivate_anchor kneeSkeleton 1</string>
-                        </Property>
-                        <Property Name="twoplayerstodeactivate" Type="string" Description="">
-                            <string />
                         </Property>
                         <Property Name="repeatable" Type="string" Description="">
                             <string />
@@ -16726,9 +16723,6 @@
                         <Property Name="endaction" Type="string" Description="">
                             <string>deactivate_anchor kneeSkeleton2 1</string>
                         </Property>
-                        <Property Name="twoplayerstodeactivate" Type="string" Description="">
-                            <string />
-                        </Property>
                         <Property Name="repeatable" Type="string" Description="">
                             <string />
                         </Property>
@@ -17941,7 +17935,7 @@
                 </Item>
                 <Item xsi:type="TextureItem" Name="Texture_0887" Visible="true">
                     <Position>
-                        <X>1920</X>
+                        <X>1904</X>
                         <Y>-2720</Y>
                     </Position>
                     <CustomProperties>
@@ -22686,8 +22680,8 @@
         <NextItemNumber>907</NextItemNumber>
         <ContentRootFolder>gleed-textures</ContentRootFolder>
         <CameraPosition>
-            <X>1633.34131</X>
-            <Y>-1499.40308</Y>
+            <X>875.005249</X>
+            <Y>-1666.07593</Y>
         </CameraPosition>
         <Version>1.3.0.0</Version>
     </EditorRelated>

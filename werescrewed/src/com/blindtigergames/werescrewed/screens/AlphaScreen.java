@@ -77,7 +77,7 @@ public class AlphaScreen extends Screen {
 	private PowerSwitch powerSwitchPuzzle1, powerSwitchPuzzle2;
 	private Skeleton footSkeleton, kneeSkeleton, 
 		thighSkeleton, hipSkeleton,
-		chestSkeleton, leftShoulderSkeleton, headSkeleton;
+		chestSkeleton, leftShoulderSkeleton, headSkeleton, thighSkeleton2;
 	
 	private TiledPlatform kneeMovingPlat, chestRotatePlat1, 
 		chestRotatePlat3, headEntrancePlatform4,
@@ -89,7 +89,7 @@ public class AlphaScreen extends Screen {
 	private Steam engineSteam;
 
 	private boolean chestSteamTriggered = false, headPlatformCreated = false, headAnchorActivatedOnce = false;
-	private boolean rLegTriggered = false;
+	private boolean rLegTriggered = false, thighSteamTriggered = false;
 
 	private Skeleton rightShoulderSkeleton;
 
@@ -553,7 +553,9 @@ public class AlphaScreen extends Screen {
 
 		thighSkeleton = ( Skeleton ) LevelFactory.entities
 				.get( "thighSkeleton" );
-
+		thighSkeleton2 = ( Skeleton ) LevelFactory.entities
+		.get( "thighSkeleton2" );
+		
 		footSkeleton.body.setType( BodyType.KinematicBody );
 		kneeSkeleton.body.setType( BodyType.KinematicBody );
 		thighSkeleton.body.setType( BodyType.KinematicBody );
@@ -697,6 +699,11 @@ public class AlphaScreen extends Screen {
 
 		}
 
+		if ( powerSwitch5.isTurnedOn( )  && powerSwitch6.isTurnedOn( ) && !thighSteamTriggered) {
+			thighSteamTriggered = true;
+			Steam steam = new Steam( "steamThigh1", new Vector2( 2015, 2880 ), 25, 120, level.world );
+			thighSkeleton2.addSteam(steam);
+		}
 		if ( powerSwitch7.isTurnedOn( )  && powerSwitch8.isTurnedOn( ) ) {
 			if(leftShoulderSkeleton.currentMover( ) == null){
 				updatePanels("left_arm");
@@ -874,8 +881,8 @@ public class AlphaScreen extends Screen {
 		engineSteam = new Steam( "steamChest3", new Vector2( -420, 5050 ), 25, 120, level.world );
 		chestSkeleton.addSteam(engineSteam);
 		
-		Pipe chestPipe3 = ( Pipe ) LevelFactory.entities
-				.get( "chestPipe3" );
+//		Pipe chestPipe3 = ( Pipe ) LevelFactory.entities
+//				.get( "chestPipe3" );
 		
 //		chestPipe3.setCategoryMask( Util.CATEGORY_PLATFORMS,
 //				Util.CATEGORY_PLAYER );
