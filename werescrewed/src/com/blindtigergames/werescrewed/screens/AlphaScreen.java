@@ -532,7 +532,7 @@ public class AlphaScreen extends Screen {
 
 	private void thighDecals( Skeleton thighSkeleton ) {
 		TextureAtlas decals = WereScrewedGame.manager
-				.getAtlas( "alphabot_thigh_decal" );
+				.getAtlas( "chest_pipes_thigh_pipes" );
 		// level.entityBGList.add(thighSkeleton);
 		thighSkeleton.addBGDecalBack(
 				decals.createSprite( "thigh_mechanisms_and_pipesNOCOLOR" ),
@@ -930,7 +930,7 @@ public class AlphaScreen extends Screen {
 	}
 	
 	private void createChestDecals(){
-		TextureAtlas chest_powerscrew = WereScrewedGame.manager.getAtlas( "chest_powerscrew" );
+		TextureAtlas chest_powerscrew = WereScrewedGame.manager.getAtlas( "chest_pipes_thigh_pipes" );
 		Skeleton chestSkeleton = (Skeleton)LevelFactory.entities.get( "chestSkeleton" );
 		chestSkeleton.addBGDecal( 
 				chest_powerscrew.createSprite( "chest_powerscrew_pipes_to_engineNOCOLOR" ), 
