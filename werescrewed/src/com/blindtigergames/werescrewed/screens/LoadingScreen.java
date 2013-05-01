@@ -11,6 +11,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
 import com.blindtigergames.werescrewed.WereScrewedGame;
+import com.blindtigergames.werescrewed.asset.AssetManager;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.screws.Screw;
 import com.blindtigergames.werescrewed.graphics.SpriteBatch;
@@ -26,6 +27,7 @@ public class LoadingScreen extends Screen {
 	private SpriteBatch batch = null;
 	private String screenTag = null;
 	private Entity loadingBar;
+	
 
 	/**
 	 * Displays the loading screen and loads the appropriate contents for the
@@ -290,23 +292,51 @@ public class LoadingScreen extends Screen {
 		for ( String s : split ) {
 			s.replaceAll( "\\s", "" );
 			if ( s.length( ) > 0 ) {
-				if ( s.charAt( 0 ) != '#' ) {
-					String ext;
-					String fileAndExtension[] = s.split( "\\." );
-					if ( fileAndExtension.length > 1 ) {
-						// gets the extension
-						ext = fileAndExtension[1];
-						// loads the file
-						loadCurrentFile( ext, WereScrewedGame.dirHandle
-								+ s );
-					} else {
-						Gdx.app.log( "Loading screen: ", s + " doesn't have an extension" );
-					}
-					
-					/*
-					*/ 
+				if ( s.charAt( 0 ) == '#' ) {
+					//A comment
+					continue;
+				}else if (s.charAt(0)=='@'){
+					//special case for level parameters
+					loadLevelParameter(s);
+				}else{
+					//A regular file
+					loadFromPath(s);
 				}
 			}
+		}
+	}
+	
+	private void loadLevelParameter(String s){
+		/*format for level options: 
+			@ fg /path/to/fg/tex
+			@ bg /path/to/bg/tex
+			@ outline /path/to/outline/tex	
+		*/
+		String[] options = s.split( "\\s" );
+		loadFromPath( options[2] );
+		WereScrewedGame.manager.finishLoading();
+		Texture tex = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
+				+options[2], Texture.class );
+		if(options[1].equals("fg")){
+			WereScrewedGame.manager.setLevelRobotFGTex( tex );
+		}else if(options[1].equals("bg")){
+			WereScrewedGame.manager.setLevelRobotBGTex( tex );
+		}else if(options[1].equals("outline")){
+			WereScrewedGame.manager.setLevelRobotOutlineTex( tex );
+		}
+	}
+	
+	private void loadFromPath(String s){
+		String ext;
+		String fileAndExtension[] = s.split( "\\." );
+		if ( fileAndExtension.length > 1 ) {
+			// gets the extension
+			ext = fileAndExtension[1];
+			// loads the file
+			loadCurrentFile( ext, WereScrewedGame.dirHandle
+					+ s );
+		} else {
+			Gdx.app.log( "Loading screen: ", s + " doesn't have an extension" );
 		}
 	}
 }

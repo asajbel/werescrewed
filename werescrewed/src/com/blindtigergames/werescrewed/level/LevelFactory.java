@@ -634,17 +634,13 @@ public class LevelFactory {
 						.bg( )
 						.setVerts( polySprite )
 						.texBackground(
-								WereScrewedGame.manager.get(
-										WereScrewedGame.dirHandle + robotTexBG,
-										Texture.class ) );
+								WereScrewedGame.manager.getLevelRobotBGTex( ) );
 			} else {
 				skeleBuilder
 						.bg( )
 						.setVerts( polySprite )
 						.texBackground(
-								WereScrewedGame.manager.get(
-										WereScrewedGame.dirHandle + robotTexBG,
-										Texture.class ) ).fg( )
+								WereScrewedGame.manager.getLevelRobotBGTex( ) ).fg( )
 						.setVerts( polySprite );
 				// .texForeground( WereScrewedGame.manager.get
 				// (WereScrewedGame.dirHandle+"/common/robot/alphabot_texture_skin.png",
@@ -897,8 +893,7 @@ public class LevelFactory {
 			pb.texture( WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 					+ "/common/robot/alphabot_texture_tux.png", Texture.class ) );
 		} else {
-			pb.texture( WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-					+ robotOutlineTex, Texture.class ) );
+			pb.texture( WereScrewedGame.manager.getLevelRobotOutlineTex( ) );
 		}
 
 		if ( item.props.containsKey( "gravscale" ) ) {

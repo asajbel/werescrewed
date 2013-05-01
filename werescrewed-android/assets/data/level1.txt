@@ -1,5 +1,9 @@
 ## alphabot specific assets index
 
+@ bg /levels/alphabot/alphabot-interior.png
+@ outline /levels/alphabot/alphabot-outline.png
+@ fg /levels/alphabot/alphabot-fg.png
+
 ##sounds
 /common/sounds/inceptionbutton.mp3
 /common/sounds/jump.ogg
@@ -62,6 +66,5 @@
 /levels/alphabot/alphabot_tile_interior.png
 /levels/alphabot/sheetmetaltexture.png
 /levels/alphabot/sheetmetaltextureblack.png
-/levels/alphabot/alphabot-outline.png
 
 /levels/alphabot/shoe_testing/shoe_background_1024.png
