@@ -375,15 +375,10 @@ public class Camera {
 
 		// Manage time
 
-		if ( timeLeft <= 0 ) {
-			// timeLeft being zero while still translating means we've just
-			// started moving
+		if ( relevantDist.len( ) > 100 ) {
 			timeLeft = TIME_PER_PIX * Math.abs( relevantDist.len( ) );
 		} else {
-			// Otherwise, just add the time to cover the new distance
-			timeLeft += Math.abs( AnchorList.getInstance( )
-					.getMidpointVelocity( ).len( ) )
-					* TIME_PER_PIX;
+			timeLeft = TIME_PER_PIX * Math.abs( relevantDist.len( ) ) * 3;
 		}
 
 		Vector2 acceleration = calcAcceleration( relevantDist );
