@@ -258,7 +258,7 @@ public class LevelFactory {
 		} else if ( bluePrints.equals( "fixture" ) ) {
 			constructFixture( item );
 		} else if(bluePrints.equals( "panel" )){
-			constructPanel(item);
+			out = constructPanel(item);
 		}else if ( !bluePrints.equals( "camera" )
 				&& item.getDefinition( ).getCategory( ) == EntityCategory.COMPLEX_PLATFORM ) {
 			out = loadComplexPlatform( item );
@@ -1532,8 +1532,9 @@ public class LevelFactory {
 		String skelAttach = item.skeleton;
 		Skeleton parent = loadSkeleton( skelAttach );
 		
-		Panel out = new Panel(new Vector2(item.pos.x,item.pos.y), level.world, item.getAtlasName(), "");
+		Panel out = new Panel(item.name, new Vector2(item.pos.x,item.pos.y), level.world, item.getAtlasName(), "");
 		parent.addKinematicPlatform( out );
+		entities.put( item.name, out );
 		return out;
 	}
 

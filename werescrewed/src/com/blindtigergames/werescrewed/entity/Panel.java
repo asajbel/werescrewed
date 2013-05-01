@@ -17,8 +17,8 @@ import com.blindtigergames.werescrewed.util.Util;
 public class Panel extends Platform {
 	TextureAtlas panelAtlas;
 	
-	public Panel( Vector2 posPix, World world, String panelAtlasName, String initialPanel ){
-		super("panel",posPix,null,world);
+	public Panel( String name, Vector2 posPix, World world, String panelAtlasName, String initialPanel ){
+		super(name,posPix,null,world);
 		this.panelAtlas = WereScrewedGame.manager.getAtlas( panelAtlasName );
 		
 		BodyDef bodyDef = new BodyDef( );
@@ -34,7 +34,7 @@ public class Panel extends Platform {
 	
 	public void setPanelSprite(String spriteName){
 		Vector2 oldPos = getPositionPixel( );
-		float rotation = sprite.getRotation( );
+		float rotation = (sprite==null)?0:sprite.getRotation( );
 		changeSprite( panelAtlas.createSprite( spriteName ) );
 		sprite.setPosition( oldPos );
 		sprite.rotate( rotation );

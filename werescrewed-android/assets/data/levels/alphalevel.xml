@@ -2139,8 +2139,8 @@
                 </Item>
                 <Item xsi:type="RectangleItem" Name="kneeCenterPlat" Visible="true">
                     <Position>
-                        <X>-913</X>
-                        <Y>-1695</Y>
+                        <X>-912</X>
+                        <Y>-1696</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -22537,6 +22537,136 @@
                         <PackedValue>2445279424</PackedValue>
                     </FillColor>
                 </Item>
+                <Item xsi:type="RectangleItem" Name="panel1" Visible="true">
+                    <Position>
+                        <X>-1104</X>
+                        <Y>-1904</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="definition" Type="string" Description="">
+                            <string>panel</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>kneeSkeleton</string>
+                        </Property>
+                        <Property Name="atlas" Type="string" Description="">
+                            <string>alphabot-panel</string>
+                        </Property>
+                    </CustomProperties>
+                    <Width>80</Width>
+                    <Height>63</Height>
+                    <FillColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </FillColor>
+                </Item>
+                <Item xsi:type="RectangleItem" Name="panel2" Visible="true">
+                    <Position>
+                        <X>-2288</X>
+                        <Y>-3104</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="definition" Type="string" Description="">
+                            <string>panel</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>leftShoulderSkeleton</string>
+                        </Property>
+                        <Property Name="atlas" Type="string" Description="">
+                            <string>alphabot-panel</string>
+                        </Property>
+                    </CustomProperties>
+                    <Width>80</Width>
+                    <Height>80</Height>
+                    <FillColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </FillColor>
+                </Item>
+                <Item xsi:type="RectangleItem" Name="panel3" Visible="true">
+                    <Position>
+                        <X>224</X>
+                        <Y>-3840</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="definition" Type="string" Description="">
+                            <string>panel</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>chestSkeleton</string>
+                        </Property>
+                        <Property Name="atlas" Type="string" Description="">
+                            <string>alphabot-panel</string>
+                        </Property>
+                    </CustomProperties>
+                    <Width>80</Width>
+                    <Height>80</Height>
+                    <FillColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </FillColor>
+                </Item>
+                <Item xsi:type="RectangleItem" Name="panel4" Visible="true">
+                    <Position>
+                        <X>3504</X>
+                        <Y>-2944</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="definition" Type="string" Description="">
+                            <string>panel</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>rightElbowSkeleton</string>
+                        </Property>
+                        <Property Name="atlas" Type="string" Description="">
+                            <string>alphabot-panel</string>
+                        </Property>
+                    </CustomProperties>
+                    <Width>96</Width>
+                    <Height>96</Height>
+                    <FillColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </FillColor>
+                </Item>
+                <Item xsi:type="RectangleItem" Name="panel5" Visible="true">
+                    <Position>
+                        <X>2160</X>
+                        <Y>-1440</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="definition" Type="string" Description="">
+                            <string>panel</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>kneeSkeleton2</string>
+                        </Property>
+                        <Property Name="atlas" Type="string" Description="">
+                            <string>alphabot-panel</string>
+                        </Property>
+                    </CustomProperties>
+                    <Width>64</Width>
+                    <Height>80</Height>
+                    <FillColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </FillColor>
+                </Item>
             </Items>
             <ScrollSpeed>
                 <X>2</X>
@@ -22553,11 +22683,11 @@
     </Layers>
     <CustomProperties />
     <EditorRelated>
-        <NextItemNumber>906</NextItemNumber>
+        <NextItemNumber>907</NextItemNumber>
         <ContentRootFolder>gleed-textures</ContentRootFolder>
         <CameraPosition>
-            <X>-233.331955</X>
-            <Y>-274.39798</Y>
+            <X>1633.34131</X>
+            <Y>-1499.40308</Y>
         </CameraPosition>
         <Version>1.3.0.0</Version>
     </EditorRelated>

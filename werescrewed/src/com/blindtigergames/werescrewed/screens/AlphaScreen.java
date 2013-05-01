@@ -1204,19 +1204,20 @@ public class AlphaScreen extends Screen {
 	}
 	
 	private void initPanels(){
+		int numPanels = 5;
 		String panelAtlas = "alphabot-panel";
-		panels = new Array< Panel >(6);
-		/*Panel p;
+		panels = new Array< Panel >(numPanels);
+		Panel p;
 		//get panels 1-5 (possibly 6, but not yet)
-		for(int i = 1; i <= 5; ++i ){
+		for(int i = 1; i <= numPanels; ++i ){
 			p = (Panel) LevelFactory.entities.get( "panel"+i );
 			p.setPanelSprite("alphabot-panel_off");
 			panels.add( p );
-		}*/
+		}
 		
-		Panel p = new Panel( kneeSkeleton.getPositionPixel( ), level.world, panelAtlas, "alphabot-panel_off" );
-		kneeSkeleton.addPlatform( p );
-		panels.add(p);
+		//Panel p = new Panel( kneeSkeleton.getPositionPixel( ), level.world, panelAtlas, "alphabot-panel_off" );
+		//kneeSkeleton.addPlatform( p );
+		//panels.add(p);
 		
 	}
 	
