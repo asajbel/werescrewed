@@ -30,7 +30,7 @@ public class Camera {
 	/**
 	 * A ratio of some sort to determine targetBuffer size
 	 */
-	private static final float TARGET_BUFFER_RATIO = .0025f;
+	private static final float TARGET_BUFFER_RATIO = .005f;
 	private static final float MINIMUM_FOLLOW_SPEED = .1f;
 	private static final float MAX_ANGLE_DIFF = 100f;
 	/**
@@ -47,7 +47,6 @@ public class Camera {
 
 	// zoom
 	private static final float ZOOM_ACCELERATION = .001f;
-	private static final float ZOOM_MAX_SPEED = 15f;
 	private static final float ZOOM_SIG_DIFF = .00005f;
 	private static final float ZOOM_IN_FACTOR = .5f;
 	public static final float MIN_ZOOM = 1f;
@@ -223,8 +222,7 @@ public class Camera {
 		// DETERMINE IF BUFFERS HAVE LEFT THE SCREEN //
 
 		// Track the status of buffers
-		boolean outside_x = false;
-		boolean outside_y = false;
+		boolean outside = false;
 
 		// Iterate through each anchor
 		for ( Anchor curAnchor : anchorList.anchorList ) {
@@ -238,30 +236,18 @@ public class Camera {
 				// Check that a buffer has indeed exited the screen
 				if ( dir != RectDirection.NONE ) {
 
-					// Find whether buffer is outside in x, y or both directions
-					if ( dir == RectDirection.BOTH ) {
-						outside_x = true;
-						outside_y = true;
-					} else if ( dir == RectDirection.X )
-						outside_x = true;
-					else
-						outside_y = true;
+					outside = true;
 
-					// If we know buffers have left in both x and y directions,
-					// we don't need to check anymore.
-					if ( outside_x && outside_y )
+					// If we know buffers have left the screen we don't need to
+					// check anymore.
+					if ( outside )
 						break;
 				}
 			}
 		}
 
-		boolean translatingX = outside_x
-				|| Math.abs( translateVelocity.x ) > MINIMUM_FOLLOW_SPEED;
-		boolean translatingY = outside_y
-				|| Math.abs( translateVelocity.y ) > MINIMUM_FOLLOW_SPEED;
-
 		// If a buffer has left the screen
-		if ( !translating && ( outside_x || outside_y ) ) {
+		if ( !translating && outside ) {
 			translating = true;
 		}
 
@@ -269,31 +255,24 @@ public class Camera {
 
 		if ( translating ) {
 
-			boolean lockX = false;
-			boolean lockY = false;
+			boolean lock = false;
 
-			// lock when:
-			if ( translatingX
-					&& Math.abs( translateTarget.x - center2D.x ) < targetBuffer ) {
-				// camera center is really close to target.x when only
-				// translating on x axis
-				lockX = true;
-			} else if ( translatingY
+			// Lock when:
+			if ( Math.abs( translateTarget.x - center2D.x ) < targetBuffer
 					&& Math.abs( translateTarget.y - center2D.y ) < targetBuffer ) {
-				// camera center is really close to target.y when only
-				// translating on y axis
-				lockY = true;
+				// camera center is really close to target
+				lock = true;
 			}
 
-			// center of camera is within buffer from target, so camera
+			// Center of camera is within buffer from target, so camera
 			// locks to target
-			if ( lockX || lockY ) {
+			if ( lock ) {
 				this.timeLeft = 0;
 
-				if ( lockX )
+				if ( lock ) {
 					camera.position.x = translateTarget.x;
-				if ( lockY )
 					camera.position.y = translateTarget.y;
+				}
 
 				// find angle between midpoint velocity and translate velocity
 				float tempAngle = 0f;
@@ -312,7 +291,7 @@ public class Camera {
 					translateVelocity.y = 0f;
 				}
 			} else {
-				translate( translatingX, translatingY );
+				translate( );
 			}
 			timeLeft--;
 		} else {
@@ -324,49 +303,20 @@ public class Camera {
 	/**
 	 * Translate the camera towards the translate target
 	 */
-	private void translate( boolean trans_x, boolean trans_y ) {
+	private void translate( ) {
 		// only account for translate target on relevant axes
 
-		Vector2 relevantDist = new Vector2( );
-		if ( trans_x || trans_y ) {
-			// If a buffer has exited the screen
-			if ( trans_x ) {
-				// In the x direction
-				relevantDist.x = translateTarget.x;
-			} else {
-				// Only in the y direction
-				relevantDist.x = center2D.x;
-			}
-			if ( trans_y ) {
-				// In the y direction
-				relevantDist.y = translateTarget.y;
-			} else {
-				// Only in the x direction
-				relevantDist.y = center2D.y;
-			}
-		} else {
-			// All buffers in screen
-			if ( Math.abs( translateVelocity.x ) > 0 ) {
-				// If we were moving in the x-direction, keep moving
-				relevantDist.x = translateTarget.x;
-			} else {
-				relevantDist.x = center2D.x;
-			}
-			if ( Math.abs( translateVelocity.y ) > 0 ) {
-				// If we were moving in the y-direction, keep moving
-				relevantDist.y = translateTarget.y;
-			} else {
-				relevantDist.y = center2D.y;
-			}
-		}
+		Vector2 distance = new Vector2( );
+		distance.x = translateTarget.x;
+		distance.y = translateTarget.y;
 
 		// the difference between the translate target and the
 		// center of the camera on only the relevant axes
-		relevantDist = new Vector2( relevantDist.x - center2D.x, relevantDist.y
+		distance = new Vector2( distance.x - center2D.x, distance.y
 				- center2D.y );
 
-		if ( Math.abs( relevantDist.x ) < targetBuffer
-				&& Math.abs( relevantDist.y ) < targetBuffer ) {
+		if ( Math.abs( distance.x ) < targetBuffer
+				&& Math.abs( distance.y ) < targetBuffer ) {
 			translateVelocity.x = 0f;
 			translateVelocity.y = 0f;
 			timeLeft = 0;
@@ -376,21 +326,21 @@ public class Camera {
 
 		// Manage time
 
-		if ( relevantDist.len( ) > 100 ) {
-			timeLeft = TIME_PER_PIX * Math.abs( relevantDist.len( ) );
+		if ( distance.len( ) > targetBuffer * 1.25 ) {
+			timeLeft = TIME_PER_PIX * Math.abs( distance.len( ) );
 		} else {
-			timeLeft = TIME_PER_PIX * Math.abs( relevantDist.len( ) ) * 3;
+			timeLeft = TIME_PER_PIX * Math.abs( distance.len( ) ) * 3;
 		}
 
-		Vector2 acceleration = calcAcceleration( relevantDist );
+		Vector2 acceleration = calcAcceleration( distance );
 		if ( Math.abs( this.translateVelocity.x + acceleration.x ) > Math
-				.abs( relevantDist.x ) ) {
-			this.translateVelocity.x = relevantDist.x;
+				.abs( distance.x ) ) {
+			this.translateVelocity.x = distance.x;
 			acceleration.x = 0;
 		}
 		if ( Math.abs( this.translateVelocity.y + acceleration.y ) > Math
-				.abs( relevantDist.y ) ) {
-			this.translateVelocity.y = relevantDist.y;
+				.abs( distance.y ) ) {
+			this.translateVelocity.y = distance.y;
 			acceleration.y = 0;
 		}
 		this.translateVelocity.add( acceleration );
@@ -400,19 +350,35 @@ public class Camera {
 	/**
 	 * Get the acceleration for this step, based on timeLeft
 	 * 
-	 * @param relevantDist
+	 * @param dist
 	 *            the distance between the camera's current position and the
-	 *            target position on only relevant axes
+	 *            target position
 	 * @return acceleration for this step
 	 */
-	private Vector2 calcAcceleration( Vector2 relevantDist ) {
+	private Vector2 calcAcceleration( Vector2 dist ) {
 		Vector2 acceleration = new Vector2( 0, 0 );
-		acceleration.x = relevantDist.x;
-		acceleration.y = relevantDist.y;
+		acceleration.x = dist.x;
+		acceleration.y = dist.y;
 		acceleration.div( this.timeLeft );
 		acceleration.sub( this.translateVelocity );
 		acceleration.div( this.timeLeft );
 		return acceleration;
+	}
+
+	/**
+	 * Get the zoom acceleration for this step, based on timeLeft
+	 * 
+	 * @param zoomChange
+	 *            the difference between the target zoom and the current zoom
+	 * @return zoom acceleration for this step
+	 */
+	private float calcZoomAcc( float zoomChange ) {
+		float zoomAccel = 0;
+		zoomAccel = zoomChange;
+		zoomAccel /= this.timeLeft;
+		zoomAccel -= this.zoomSpeed;
+		zoomAccel /= this.timeLeft;
+		return zoomAccel;
 	}
 
 	/**
@@ -433,9 +399,12 @@ public class Camera {
 			newZoom = longestDist.y / viewportHeight;
 		}
 
-		if ( zoomSpeed < ZOOM_MAX_SPEED ) {
-			zoomSteer( newZoom );
+		// If targetZoom is too zoomed-in, set to MIN_ZOOM
+		if ( newZoom < MIN_ZOOM ) {
+			newZoom = MIN_ZOOM;
 		}
+
+		zoomSteer( newZoom );
 	}
 
 	/**
@@ -446,30 +415,37 @@ public class Camera {
 	private void zoomSteer( float targetZoom ) {
 		// if difference is small enough, set speed to zero
 		float newZoom = camera.zoom;
-		if ( Math.abs( camera.zoom - targetZoom ) < ZOOM_SIG_DIFF )
+		if ( Math.abs( newZoom - targetZoom ) < ZOOM_SIG_DIFF ) {
 			zoomSpeed = 0;
+			return;
+		}
 
-		// accelerate zoom
-		zoomSpeed += ZOOM_ACCELERATION;
+		float zoomChange = newZoom = targetZoom;
 
-		// use speed to zoom out
+		// Accelerate zoom
+		if ( zoomChange != 0 ) {
+			zoomSpeed += calcZoomAcc( zoomChange );
+		} else {
+			zoomSpeed = 0;
+		}
+
+		// Zoom out
 		if ( targetZoom > camera.zoom ) {
-			if ( ( camera.zoom + zoomSpeed ) < ( targetZoom - .001f ) )
+			if ( ( camera.zoom + zoomSpeed ) < ( targetZoom - ZOOM_SIG_DIFF ) )
 				newZoom += zoomSpeed;
 			else
 				newZoom = targetZoom;
 		}
 
-		// if zooming in, use slower (half maybe) speed
+		// Zoom in
 		if ( targetZoom < camera.zoom ) {
-			if ( ( camera.zoom - zoomSpeed * ZOOM_IN_FACTOR ) > ( targetZoom + .001f ) )
-				newZoom -= zoomSpeed * ZOOM_IN_FACTOR;
+			if ( ( camera.zoom - zoomSpeed ) > ( targetZoom + ZOOM_SIG_DIFF ) )
+				newZoom -= zoomSpeed;
 			else
 				newZoom = targetZoom;
 		}
 
-		if ( newZoom > MIN_ZOOM )
-			camera.zoom = newZoom;
+		camera.zoom = newZoom;
 	}
 
 	/**
