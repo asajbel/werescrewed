@@ -6,8 +6,15 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.blindtigergames.werescrewed.graphics.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.World;
 import com.blindtigergames.werescrewed.WereScrewedGame;
+import com.blindtigergames.werescrewed.asset.AssetManager;
+import com.blindtigergames.werescrewed.entity.Entity;
+import com.blindtigergames.werescrewed.entity.screws.Screw;
+import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 import com.blindtigergames.werescrewed.gui.Label;
 
 public class LoadingScreen extends Screen {
@@ -19,6 +26,8 @@ public class LoadingScreen extends Screen {
 	private Label loadingCompleteLabel = null;
 	private SpriteBatch batch = null;
 	private String screenTag = null;
+	private Entity loadingBar;
+	
 
 	/**
 	 * Displays the loading screen and loads the appropriate contents for the
@@ -202,6 +211,15 @@ public class LoadingScreen extends Screen {
 		float percentLoaded = WereScrewedGame.manager.getProgress( ) * 100;
 		loadingLabel.setCaption( "Loading... " + ( int ) percentLoaded + "%" );
 
+		if ( WereScrewedGame.manager.isAtlasLoaded( "common-textures" ) && loadingBar.sprite == null ) {
+			TextureRegion screwTex = WereScrewedGame.manager.getAtlas( "common-textures" ).findRegion( "flat_head_circular" );
+			loadingBar.sprite = loadingBar.constructSprite( screwTex );
+			loadingBar.sprite.setPosition( 608, 216 );
+		} else if ( loadingBar.sprite != null ) {
+			loadingBar.sprite.setPosition( 608, 216 );
+			loadingBar.sprite.setRotation( -1080 * WereScrewedGame.manager.getProgress( ) );
+		}
+		
 		batch.begin( );
 		
 		//begin loading the assets
@@ -217,13 +235,14 @@ public class LoadingScreen extends Screen {
 			} else if ( screenTag != null && screenTag.equals( "level2" ) ) {
 				ScreenManager.getInstance( ).show( ScreenType.DRAGON );
 			}else {
-				ScreenManager.getInstance( ).show( ScreenType.MAIN_MENU );
+				ScreenManager.getInstance( ).show( ScreenType.MAIN_MENU ); 
 			}
 			
 		}
 
 		// draw the label on the screen
 		loadingLabel.draw( batch );
+		loadingBar.sprite.draw( batch );
 		batch.end( );
 	}
 
@@ -253,13 +272,13 @@ public class LoadingScreen extends Screen {
 	@Override
 	public void show( ) {
 		font = new BitmapFont( );
-		font.scale( scaleSize );
+		font.scale( 1.0f );
 
 		loadingLabel = new Label( "Loading... 0%", font );
 		loadingCompleteLabel = new Label( "Press 'A'!!", font );
 		batch = new SpriteBatch( );
 
-
+		loadingBar = new Entity( "loadingScrew", new Vector2( 640, 330), null, null, false );
 
 		// THIS IS WHAT THE DIRECTORY SHOULD ALWAYS BE
 		// THERE SHOULDN"T BE TWO FOLDERS
@@ -273,23 +292,51 @@ public class LoadingScreen extends Screen {
 		for ( String s : split ) {
 			s.replaceAll( "\\s", "" );
 			if ( s.length( ) > 0 ) {
-				if ( s.charAt( 0 ) != '#' ) {
-					String ext;
-					String fileAndExtension[] = s.split( "\\." );
-					if ( fileAndExtension.length > 1 ) {
-						// gets the extension
-						ext = fileAndExtension[1];
-						// loads the file
-						loadCurrentFile( ext, WereScrewedGame.dirHandle
-								+ s );
-					} else {
-						Gdx.app.log( "Loading screen: ", s + " doesn't have an extension" );
-					}
-					
-					/*
-					*/ 
+				if ( s.charAt( 0 ) == '#' ) {
+					//A comment
+					continue;
+				}else if (s.charAt(0)=='@'){
+					//special case for level parameters
+					loadLevelParameter(s);
+				}else{
+					//A regular file
+					loadFromPath(s);
 				}
 			}
+		}
+	}
+	
+	private void loadLevelParameter(String s){
+		/*format for level options: 
+			@ fg /path/to/fg/tex
+			@ bg /path/to/bg/tex
+			@ outline /path/to/outline/tex	
+		*/
+		String[] options = s.split( "\\s" );
+		loadFromPath( options[2] );
+		WereScrewedGame.manager.finishLoading();
+		Texture tex = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
+				+options[2], Texture.class );
+		if(options[1].equals("fg")){
+			WereScrewedGame.manager.setLevelRobotFGTex( tex );
+		}else if(options[1].equals("bg")){
+			WereScrewedGame.manager.setLevelRobotBGTex( tex );
+		}else if(options[1].equals("outline")){
+			WereScrewedGame.manager.setLevelRobotOutlineTex( tex );
+		}
+	}
+	
+	private void loadFromPath(String s){
+		String ext;
+		String fileAndExtension[] = s.split( "\\." );
+		if ( fileAndExtension.length > 1 ) {
+			// gets the extension
+			ext = fileAndExtension[1];
+			// loads the file
+			loadCurrentFile( ext, WereScrewedGame.dirHandle
+					+ s );
+		} else {
+			Gdx.app.log( "Loading screen: ", s + " doesn't have an extension" );
 		}
 	}
 }

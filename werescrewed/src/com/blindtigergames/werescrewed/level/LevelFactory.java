@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.Random;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
@@ -22,6 +23,7 @@ import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityCategory;
 import com.blindtigergames.werescrewed.entity.EntityDef;
 import com.blindtigergames.werescrewed.entity.EntityType;
+import com.blindtigergames.werescrewed.entity.Panel;
 import com.blindtigergames.werescrewed.entity.PolySprite;
 import com.blindtigergames.werescrewed.entity.RobotState;
 import com.blindtigergames.werescrewed.entity.RootSkeleton;
@@ -91,6 +93,9 @@ public class LevelFactory {
 	protected static final String imageTag = "image";
 	protected static final String gleedImageTag = "image";
 	protected static final String atlasTag = "atlas";
+	protected static final String panelTag = "panel";
+	
+	private Random random;
 
 	private final String robotTexBG = "/levels/alphabot/alphabot-interior.png";
 	private final String robotOutlineTex = "/levels/alphabot/alphabot-outline.png";
@@ -109,7 +114,7 @@ public class LevelFactory {
 		polySprites = new LinkedHashMap< String, Array< Vector2 > >( );
 		level = new Level( );
 		spawnPoints = 0;
-
+		random = new Random();
 	}
 
 	public Level load( String filename ) {
@@ -243,7 +248,7 @@ public class LevelFactory {
 		} else if ( bluePrints.equals( "rope" ) ) {
 			constructRope( item );
 		} else if ( bluePrints.equals( "checkpoint" ) ) {
-			constructCheckpoint( item );
+			out = constructCheckpoint( item );
 		} else if ( bluePrints.equals( "eventtrigger" ) ) {
 			constructEventTrigger( item );
 		} else if (bluePrints.equals( "powerswitch" )){
@@ -252,7 +257,9 @@ public class LevelFactory {
 			out = constructHazard( item );
 		} else if ( bluePrints.equals( "fixture" ) ) {
 			constructFixture( item );
-		} else if ( !bluePrints.equals( "camera" )
+		} else if(bluePrints.equals( "panel" )){
+			out = constructPanel(item);
+		}else if ( !bluePrints.equals( "camera" )
 				&& item.getDefinition( ).getCategory( ) == EntityCategory.COMPLEX_PLATFORM ) {
 			out = loadComplexPlatform( item );
 		} else {
@@ -522,6 +529,7 @@ public class LevelFactory {
 		}
 		Sprite decal = null;
 		Vector2 scale = new Vector2( 1.0f, 1.0f );
+		boolean isRivet = false;
 		if ( !item.getImageName( ).equals( "" ) ) {
 			if ( item.getAtlasName( ) != null ) {
 				if ( item.getGleedType( ).equals( "PathItem" ) ) {
@@ -530,7 +538,12 @@ public class LevelFactory {
 				}
 				TextureAtlas atlas = WereScrewedGame.manager.getAtlas( item
 						.getAtlasName( ) );
-				decal = atlas.createSprite( item.getImageName( ) );
+				String imgName = item.getImageName( );
+				if(imgName.equals("rivet")){
+					imgName = WereScrewedGame.manager.getRandomRivetName( );
+					isRivet = true;
+				}
+				decal = atlas.createSprite( imgName );
 				decal.setOrigin( 0.0f, 0.0f );
 				scale.x = item.sca.x / decal.getWidth( );
 				scale.y = item.sca.y / decal.getHeight( );
@@ -566,8 +579,14 @@ public class LevelFactory {
 
 			Vector2 pos = item.pos.sub( targetPos );
 			pos.y -= item.sca.y;
-
 			float rot = item.rot - targetRot;
+			
+			if(isRivet){
+				pos.add( -decal.getWidth( )/2, decal.getHeight( )/2 );
+				//rot += random.nextFloat( )*360;
+				//can't apply random rotation because decals rotate about their position, not their offset
+				//TODO: put this back in once decal rotation is fixed.
+			}
 
 			decal.setScale( scale.x, scale.y );
 			if ( item.props.containsKey( "decal" ) ) {
@@ -578,7 +597,7 @@ public class LevelFactory {
 					addForeGroundEntity( target );
 				}
 			} else {
-				Gdx.app.log( "level factory", "hello world" );
+				//Gdx.app.log( "level factory", "hello world" );
 				target.addBGDecal( decal, pos, rot );
 				if ( target.getEntityType( ) == EntityType.SKELETON ) {
 					addBackGroundSkeleton( ( Skeleton ) target );
@@ -602,6 +621,7 @@ public class LevelFactory {
 		if ( item.name.equals( "RootSkeleton" ) ) {
 			level.root = new RootSkeleton( item.name, item.pos, null,
 					level.world );
+			level.root.setFgFade( false );
 			skeletons.put( item.name, level.root );
 			entities.put( item.name, level.root );
 
@@ -614,22 +634,19 @@ public class LevelFactory {
 
 			if ( item.props.containsKey( "invisible" ) ) {
 				skeleBuilder.invisibleVerts( polySprite );
+				
 			} else if ( item.props.containsKey( "noforeground" ) ) {
 				skeleBuilder
 						.bg( )
 						.setVerts( polySprite )
 						.texBackground(
-								WereScrewedGame.manager.get(
-										WereScrewedGame.dirHandle + robotTexBG,
-										Texture.class ) );
+								WereScrewedGame.manager.getLevelRobotBGTex( ) );
 			} else {
 				skeleBuilder
 						.bg( )
 						.setVerts( polySprite )
 						.texBackground(
-								WereScrewedGame.manager.get(
-										WereScrewedGame.dirHandle + robotTexBG,
-										Texture.class ) ).fg( )
+								WereScrewedGame.manager.getLevelRobotBGTex( ) ).fg( )
 						.setVerts( polySprite );
 				// .texForeground( WereScrewedGame.manager.get
 				// (WereScrewedGame.dirHandle+"/common/robot/alphabot_texture_skin.png",
@@ -646,6 +663,9 @@ public class LevelFactory {
 
 			skeleton = skeleBuilder.build( );
 
+			if ( item.props.containsKey( "invisible" ) ) {
+			//	skeleton.setFgFade( false );
+			}
 			if ( item.props.containsKey( "gravscale" ) ) {
 				float gravScale = Float.parseFloat( item.props
 						.get( "gravscale" ) );
@@ -669,6 +689,7 @@ public class LevelFactory {
 			// }
 			//
 			// skeleton.addMover( mover, RobotState.IDLE );
+			
 			skeletons.put( item.name, skeleton );
 			entities.put( item.name, skeleton );
 			if ( item.props.containsKey( "attachtoskeleton" ) ) {
@@ -767,7 +788,12 @@ public class LevelFactory {
 		if ( item.props.containsKey( "crushable" ) ) {
 			isCrushable = true;
 		}
-
+		
+		if ( item.props.containsKey( "density" ) ) {
+			float density = Float.parseFloat( item.props.get( "density" ) );
+			pb.density( density );
+		}
+		
 		pb.name( item.name ).position( new Vector2( xPos, yPos ) )
 				.dimensions( new Vector2( tileWidth, tileHeight ) )
 				.tileSet( "alphabot" ).properties( item.props );
@@ -876,8 +902,7 @@ public class LevelFactory {
 			pb.texture( WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 					+ "/common/robot/alphabot_texture_tux.png", Texture.class ) );
 		} else {
-			pb.texture( WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-					+ robotOutlineTex, Texture.class ) );
+			pb.texture( WereScrewedGame.manager.getLevelRobotOutlineTex( ) );
 		}
 
 		if ( item.props.containsKey( "gravscale" ) ) {
@@ -1009,7 +1034,7 @@ public class LevelFactory {
 
 		ScrewType sType = ScrewType.fromString( item.props.get( "screwtype" ) );
 		ScrewBuilder builder = new ScrewBuilder( ).name( item.name )
-				.position( item.pos ).world( level.world ).screwType( sType );
+				.position( item.pos ).world( level.world ).screwType( sType ).properties( item.props );
 
 		Skeleton parent = loadSkeleton( item.skeleton );
 		builder.skeleton( parent );
@@ -1235,7 +1260,7 @@ public class LevelFactory {
 		return out;
 	}
 
-	public void constructCheckpoint( Item item ) {
+	public CheckPoint constructCheckpoint( Item item ) {
 
 		if ( level.progressManager == null ) {
 			level.progressManager = new ProgressManager( level.player1,
@@ -1249,6 +1274,10 @@ public class LevelFactory {
 		// add checkpointto skeleton not progress manager
 		parent.addCheckPoint( chkpt );
 		// chkpt.setParentSkeleton( parent );
+		
+		entities.put( item.name, chkpt );
+		
+		return chkpt;
 	}
 
 	/**
@@ -1501,6 +1530,17 @@ public class LevelFactory {
 
 		return pathPoints;
 
+	}
+	
+	//requirements of a panel are an atlas and a skeleton
+	public Panel constructPanel(Item item){
+		String skelAttach = item.skeleton;
+		Skeleton parent = loadSkeleton( skelAttach );
+		
+		Panel out = new Panel(item.name, new Vector2(item.pos.x,item.pos.y), level.world, item.getAtlasName(), "");
+		parent.addKinematicPlatform( out );
+		entities.put( item.name, out );
+		return out;
 	}
 
 	public Hazard constructHazard( Item item ) {

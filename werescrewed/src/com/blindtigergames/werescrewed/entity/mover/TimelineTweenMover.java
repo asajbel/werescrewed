@@ -8,7 +8,7 @@ import com.blindtigergames.werescrewed.entity.screws.Screw;
 
 public class TimelineTweenMover implements IMover {
 
-	Timeline timeline;
+	public Timeline timeline;
 	
 	public TimelineTweenMover(Timeline timeline){
 		this.timeline = timeline;

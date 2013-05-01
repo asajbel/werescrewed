@@ -176,9 +176,9 @@ public class Skeleton extends Platform {
 		else
 			addKinematicPlatform( platform );
 	}
-	
-	public void addPlatforms(Platform... platforms){
-		for( Platform p : platforms ){
+
+	public void addPlatforms( Platform... platforms ) {
+		for ( Platform p : platforms ) {
 			addPlatform( p );
 		}
 	}
@@ -268,9 +268,9 @@ public class Skeleton extends Platform {
 		platform.setOriginRelativeToSkeleton( platform.getPosition( ).cpy( )
 				.sub( ( getPosition( ) ) ) );
 	}
-	
-	public void addSteam(Steam steam){
-		addKinematicPlatform(steam);
+
+	public void addSteam( Steam steam ) {
+		addKinematicPlatform( steam );
 	}
 
 	/**
@@ -542,22 +542,9 @@ public class Skeleton extends Platform {
 	public void draw( SpriteBatch batch, float deltaTime ) {
 		// super.draw( batch );
 		if ( visible ) {
-			// drawBGDecals( batch );
-			// draw decals before drawing children
-			// update z order : don't draw decals recursively
-			// draw in queue before everything
-			// drawDecals(batch);
-			// draw bg
-			// update z order : don't draw skeleton sprites recursively
-			// update z order : draw the background in a separate queue before
-			// everything
-			// if ( bgSprite != null )
-			// bgSprite.draw( batch );
 			if ( isActive( ) ) {
 				drawChildren( batch, deltaTime );
 			}
-			// update z order : draw the foreground in a separate queue after
-			// everything
 			if ( isActive( ) || isMacroSkeleton ) {
 				if ( fgSprite != null && alphaFadeAnimator.getTime( ) > 0 ) {
 					fgSprite.setAlpha( alphaFadeAnimator.getTime( ) );
@@ -566,40 +553,40 @@ public class Skeleton extends Platform {
 					// fgSprite.draw( batch );
 					// batch.setColor( c.r, c.g, c.b, oldAlpha );
 				}
-				if ( applyFadeToFGDecals ) {
-					fadeFGDecals( );
-				}
 			}
-			// drawFGDecals( batch );
+			if ( applyFadeToFGDecals ) {
+				fadeFGDecals( );
+			}
 		}
 	}
 
 	private void drawChildren( SpriteBatch batch, float deltaTime ) {
-		for ( Platform p : dynamicPlatformMap.values( ) ) {
-			drawPlatform( p, batch, deltaTime );
-		}
-		for ( Platform p : kinematicPlatformMap.values( ) ) {
-			drawPlatform( p, batch, deltaTime );
-		}
-		for ( Screw screw : screwMap.values( ) ) {
-			if ( !screw.getRemoveNextStep( ) ) {
-				screw.draw( batch, deltaTime );
+		if ( !this.isFadingSkel( ) || this.isFGFaded( ) ) {
+			for ( Platform p : dynamicPlatformMap.values( ) ) {
+				drawPlatform( p, batch, deltaTime );
 			}
-		}
-		for ( CheckPoint chkpt : checkpointMap.values( ) ) {
-			if ( !chkpt.getRemoveNextStep( ) ) {
-				chkpt.draw( batch, deltaTime );
+			for ( Platform p : kinematicPlatformMap.values( ) ) {
+				drawPlatform( p, batch, deltaTime );
 			}
-		}
-		for ( Rope rope : ropeMap.values( ) ) {
-			rope.draw( batch, deltaTime );
-		}
-		for ( EventTrigger et : eventMap.values( ) ) {
-			et.draw( batch, deltaTime );
-		}
-
-		
-		// draw the entities of the parent skeleton before recursing through the
+			for ( Screw screw : screwMap.values( ) ) {
+				if ( !screw.getRemoveNextStep( ) ) {
+					screw.draw( batch, deltaTime );
+				}
+			}
+			for ( CheckPoint chkpt : checkpointMap.values( ) ) {
+				if ( !chkpt.getRemoveNextStep( ) ) {
+					chkpt.draw( batch, deltaTime );
+				}
+			}
+			for ( Rope rope : ropeMap.values( ) ) {
+				rope.draw( batch, deltaTime );
+			}
+			for ( EventTrigger et : eventMap.values( ) ) {
+				et.draw( batch, deltaTime );
+			}
+		} 
+		// draw the entities of the parent skeleton before recursing through
+		// the
 		// child skeletons
 		for ( Skeleton skeleton : childSkeletonMap.values( ) ) {
 			skeleton.draw( batch, deltaTime );
@@ -624,7 +611,7 @@ public class Skeleton extends Platform {
 			drawHazard( ( Hazard ) platform, batch, deltaTime );
 			break;
 		case STEAM:
-			Steam steam = (Steam) platform;
+			Steam steam = ( Steam ) platform;
 			steam.draw( batch, deltaTime );
 			break;
 		default:
@@ -768,5 +755,13 @@ public class Skeleton extends Platform {
 
 	public void setFgFade( boolean applyFadeToFGDecals ) {
 		this.applyFadeToFGDecals = applyFadeToFGDecals;
+	}
+
+	public boolean isFGFaded( ) {
+		return alphaFadeAnimator.getTime( ) < 1;
+	}
+
+	public boolean isFadingSkel( ) {
+		return applyFadeToFGDecals;
 	}
 }

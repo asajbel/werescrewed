@@ -7,11 +7,13 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.camera.Camera;
 import com.blindtigergames.werescrewed.entity.I_Updateable;
 import com.blindtigergames.werescrewed.util.ArrayHash;
+import com.blindtigergames.werescrewed.util.Util;
 
 public class SoundManager {
 	public enum SoundType{
@@ -27,9 +29,8 @@ public class SoundManager {
 		 * how far we can break up each sound file.*/
 		SPEECH
 	}
-	
 	public static EnumMap<SoundType, Float> globalVolume;
-	public HashMap<String, SoundRef> sounds;
+	public ArrayHash<String, SoundRef> sounds;
 	
 	static {
 		globalVolume = new EnumMap<SoundType, Float>(SoundType.class);
@@ -41,13 +42,21 @@ public class SoundManager {
 	protected Camera camera;
 	
 	public SoundManager( ) {
-		sounds = new HashMap<String, SoundRef>();
+		sounds = new ArrayHash<String, SoundRef>();
 	}
 
+	public SoundRef getSound(String id, int index, String assetName){
+		if (!hasSound(id)){
+			Sound s = WereScrewedGame.manager.get( assetName, Sound.class );
+			sounds.set( id, index, new SoundRef(s));
+		}
+		return sounds.get( id );
+	}
+	
 	public SoundRef getSound(String id, String assetName){
 		if (!hasSound(id)){
 			Sound s = WereScrewedGame.manager.get( assetName, Sound.class );
-			sounds.put( id, new SoundRef(s));
+			sounds.add( id, new SoundRef(s));
 		}
 		return sounds.get( id );
 	}
@@ -62,23 +71,27 @@ public class SoundManager {
 	public boolean hasSound(String tag){
 		return sounds.containsKey( tag );
 	}
-
-	public void playSound( String id ){
-		playSound(id, 0.0f);
-	}
 	
-	public void playSound( String id, float delay ) {
-		if (hasSound(id)) {
-			sounds.get( id ).play( delay );
+	public boolean hasSound(String tag, int index){
+		return (sounds.containsKey( tag ) && sounds.getAll( tag ).size > index);
+	}
+
+	public void playSound( String id ){ playSound(id, 0, 0f); }
+	public void playSound( String id , float delay){ playSound(id, 0, delay); }
+	
+	public void playSound( String id, int index, float delay ) {
+		if (hasSound(id , index)) {
+			sounds.get( id, index ).play( delay );
+		} else {
+			Gdx.app.log( "SoundManager", "No sound loaded for tag: "+id+"/"+index );
 		}
 	}
 
-	public void loopSound( String id ){
-		loopSound(id, true);
-	}
+	public void loopSound( String id ){ loopSound(id, 0, true); }
+	public void loopSound( String id , int index){ loopSound(id, index, true); }
 	
-	public void loopSound( String id , boolean override) {
-		if (hasSound(id)) {
+	public void loopSound( String id , int index, boolean override) {
+		if (hasSound(id, index)) {
 			sounds.get( id ).loop( override );
 		}
 	}
@@ -108,24 +121,53 @@ public class SoundManager {
 	
 	public void handleSoundPosition(String id, Vector2 soundPos, Rectangle cameraBox){
 		if (hasSound(id)){
-			Vector2 camPos = new Vector2(
-					cameraBox.getX(),
-					cameraBox.getY()
-				);
-			Vector2 scale = new Vector2(
-					cameraBox.getWidth( ),
-					cameraBox.getHeight( )
-				);
-			Vector2 center = camPos.cpy().add( scale.cpy( ).mul( 0.5f ) );
-			float dist = center.dst( soundPos );
-			float xPan = center.cpy( ).sub( soundPos ).x/cameraBox.width;
-			float zoom = scale.len( );
-			float vol = sounds.get(id).falloff/(dist*dist*zoom);
+			float xPan = calculatePositionalPan(soundPos, cameraBox);
+			float vol = calculatePositionalVolume(soundPos, cameraBox, sounds.get( id ).range, sounds.get( id ).falloff);
 			setSoundVolume(id, vol);
 			setSoundPan(id, xPan);
-			//Gdx.app.log( "Handle Sound Position", "Dist:"+dist+" Vol:"+vol+" Pan:"+xPan );
+			//Gdx.app.log( "Handle Sound Position", center.toString( )+"->"+soundPos.toString()+"="+dist );
+			//Gdx.app.log( "Handle Sound Position", "Pan:"+xPan+" Vol:"+vol );
 			sounds.get( id ).update(0.0f);
 		}
+	}
+	
+	public static float calculatePositionalVolume(Vector2 soundPos, Rectangle cameraBox, float range, float falloff){
+		Vector2 camPos = new Vector2(
+				cameraBox.getX(),
+				cameraBox.getY()
+			);
+		Vector2 scale = new Vector2(
+				cameraBox.getWidth( ),
+				cameraBox.getHeight( )
+			);
+		float zoom = scale.len( )/Camera.SCREEN_TO_ZOOM;
+		Vector3 center3 = new Vector3(
+					camPos.x + 0.5f*scale.x,
+					camPos.y + 0.5f*scale.y,
+					(float)Math.pow( zoom, 2.0f )
+		);
+		Vector3 sound3 = new Vector3(
+				soundPos.x,
+				soundPos.y,
+				Camera.MIN_ZOOM
+		);
+		float dist = center3.dst( sound3 );
+		float vol = (float)Math.pow( Math.max((1f - dist/range), 0f), falloff );
+		return vol;		
+	}
+	
+	public static float calculatePositionalPan(Vector2 soundPos, Rectangle cameraBox){
+		Vector2 camPos = new Vector2(
+				cameraBox.getX(),
+				cameraBox.getY()
+			);
+		Vector2 scale = new Vector2(
+				cameraBox.getWidth( ),
+				cameraBox.getHeight( )
+			);
+		Vector2 center = camPos.cpy().add( scale.cpy( ).mul( 0.5f ) );
+		float xPan = (float)Math.max( Math.min((Math.pow(center.cpy( ).sub( soundPos ).x/cameraBox.width, 2.0)), 1.0), -1.0);
+		return xPan;
 	}
 	
 	public void setSoundPitch(String id, float v){
@@ -141,13 +183,15 @@ public class SoundManager {
 	
 	public void setSoundFalloff(String id, float v){
 		if (hasSound(id)){
-			sounds.get(id).falloff = v;
+			sounds.get(id).range = v;
 		}		
 	}
 	
 	public void update(float dT){
-		for (SoundRef ref : sounds.values( )){
-			ref.update( dT );
+		for (Array<SoundRef> refs : sounds.arrays( )){
+			for (SoundRef ref: refs){
+				ref.update( dT );
+			}
 		}
 	}
 	
@@ -168,23 +212,42 @@ public class SoundManager {
 	public void addDelay(String id, float amount){
 		if (hasSound(id)){
 			if (hasSound(id)){
-				sounds.get(id).delay += amount;
+				for (SoundRef sound : sounds.getAll(id)){
+					sound.delay += amount;
+				}
 			}			
 		}		
 	}
 	
 	public void setDelay(String id, float amount){
 		if (hasSound(id)){
-			sounds.get(id).delay = amount;
+			for (SoundRef sound : sounds.getAll(id)){
+				sound.delay = amount;
+			}
 		}
 	}
 	
 	public void delay(String id, float amount){
 		if (hasSound(id)){
 			if (sounds.get(id).delay < amount){
-				sounds.get(id).delay = amount;				
+				for (SoundRef sound : sounds.getAll(id)){
+					sound.delay = amount;
+				}				
 			}
 		}
+	}
+	
+	public void copyRefs(SoundManager that){
+		for (String name: that.sounds.keySet()){
+			sounds.add( name, that.sounds.get(name) );
+		}
+	}
+
+	public Sound getGDXSound(String id, int index){
+		if (hasSound(id, index)){
+			return sounds.get(id, index).sound;
+		}
+		return null;
 	}
 	
 	public static float getSoundVolume(){
@@ -195,26 +258,43 @@ public class SoundManager {
 		return globalVolume.get( SoundType.NOISE );
 	}
 	
-	protected class SoundRef{
+	public float getRange( String id, int index ) {
+		return sounds.get( id, index ).range;
+	}	
+
+	public void setRange( String id, int index , float r) {
+		sounds.get( id, index ).range = r;
+	}	
+
+	public class SoundRef{
 		public Sound sound;
 		protected Array<Long> soundIds;
 		protected long loopId;
 		protected float volume;
 		protected float pitch;
+		protected float pitchVariance;
 		protected float pan;
 		protected float delay;
+		protected float range;
 		protected float falloff;
 		
 		protected static final float DELAY_MINIMUM = 0.0001f;
+		/*
+		 * Puts an initial delay on all sounds when they're first loaded.
+		 * This is meant to keep collision or idle sounds from playing immediately on startup.
+		 */
+		public static final float INITIAL_DELAY = 0.1f;
 		
-		public SoundRef(Sound s){
+		protected SoundRef(Sound s){
 			volume = 1.0f;
 			pitch = 1.0f;
 			pan = 0.0f;
+			delay = INITIAL_DELAY;
 			soundIds = new Array<Long>();
 			loopId = -1;
 			sound = s;
-			falloff = 1.0f;
+			range = 500.0f;
+			falloff = 2.0f;
 		}
 		
 		protected long play( float delayAmount){
@@ -251,6 +331,30 @@ public class SoundManager {
 			}
 			delay = (float)(Math.max( delay - dT, 0.0f ));
 		}
+		
+		public Sound getSound(){
+			return sound;
+		}
+
+		public void setVolume( float value ) {
+			volume = value;
+		}
+
+		public void setPitch( float value ) {
+			pitch = value;
+		}
+
+		public void setPan( float value ) {
+			pan = value;
+		}
+		
+		public void setRange( float value ) {
+			range = value;
+		}
+
+		public void setFalloff( float value ) {
+			falloff = value;
+		}
+
 	}
-	
 }

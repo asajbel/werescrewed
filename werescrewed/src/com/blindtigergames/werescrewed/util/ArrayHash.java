@@ -1,6 +1,8 @@
 package com.blindtigergames.werescrewed.util;
 
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.Set;
 
 import com.badlogic.gdx.utils.Array;
 
@@ -15,14 +17,18 @@ public class ArrayHash<K,V> {
 		if (!data.containsKey( key )){
 			data.put( key, new Array<V>() );
 		}
+		if (index > data.get( key ).size){
+			data.get(key).ensureCapacity( index );
+		}
 		data.get( key ).set( index, value );
 	}
 	
-	public void add(K key, V value){
+	public V add(K key, V value){
 		if (!data.containsKey( key )){
 			data.put( key, new Array<V>() );
 		}
 		data.get( key ).add( value );
+		return value;
 	}
 	
 	public boolean containsKey( K key ){return data.containsKey( key );}
@@ -76,5 +82,17 @@ public class ArrayHash<K,V> {
 			}
 		}
 		return out;
+	}
+	
+	public Collection< Array<V> > arrays(){
+		return data.values( );
+	}
+
+	public Set<K> keySet( ) {
+		return data.keySet( );
+	}
+
+	public int size( ) {
+		return data.size( );
 	}
 }

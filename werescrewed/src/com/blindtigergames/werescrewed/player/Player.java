@@ -1,7 +1,5 @@
 package com.blindtigergames.werescrewed.player;
 
-import java.util.Random;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.audio.Sound;
@@ -26,6 +24,7 @@ import com.blindtigergames.werescrewed.entity.EntityType;
 import com.blindtigergames.werescrewed.entity.animator.PlayerSpinemator;
 import com.blindtigergames.werescrewed.entity.mover.FollowEntityMover;
 import com.blindtigergames.werescrewed.entity.mover.IMover;
+import com.blindtigergames.werescrewed.entity.particles.Steam;
 import com.blindtigergames.werescrewed.entity.platforms.Platform;
 import com.blindtigergames.werescrewed.entity.screws.ResurrectScrew;
 import com.blindtigergames.werescrewed.entity.screws.Screw;
@@ -67,7 +66,8 @@ public class Player extends Entity {
 	public final static int GRAB_COUNTER_STEPS = 5;
 	public final static Vector2 ANCHOR_BUFFER_SIZE = new Vector2( 300f, 200f );
 	public final static float STEAM_FORCE = .5f;
-	public final static float STEAM_IMPULSE = 0.2f;
+	public final static float STEAM_IMPULSE = 0.4f;
+	public final static float STEAM_MAX_Y_VELOCITY = 2.5f;
 	public final static float FEET_OFFSET_X = 59f * Util.PIXEL_TO_BOX;
 	public final static float FEET_OFFSET_Y = 23.5f * Util.PIXEL_TO_BOX;
 	public final static float JUMP_DIRECTION_MULTIPLIER = 2f;
@@ -76,6 +76,11 @@ public class Player extends Entity {
 	public boolean flipX = false;
 	public final static float HEIGHT = 128;
 	public final static float WIDTH = 64;
+	public final static float FOOTSTEP_DELAY = 1.0f;
+	public final static float FOOTSTEP_PITCH_DROP = 0.75f;
+	public final static float FOOTSTEP_PITCH_VARIANCE = 0.02f;
+	public final static float FOOTSTEP_VOLUME_DROP = 0.01f;
+
 	// public final static float
 
 	public Fixture feet;
@@ -116,6 +121,7 @@ public class Player extends Entity {
 
 	private Screw currentScrew;
 	private PowerSwitch currentSwitch;
+	private Steam currentSteam;
 	private static int switchTimer = 0;
 
 	private Player otherPlayer;
@@ -190,7 +196,6 @@ public class Player extends Entity {
 	private String landCloudName = "land_cloud";
 	private String[ ] injuredParticles = { "injured/oof", "injured/arg",
 			"injured/doof" };
-	Random r;
 
 	// CONSTRUCTORS
 
@@ -248,7 +253,6 @@ public class Player extends Entity {
 		}
 		loadSounds( );
 
-		r = new Random( );
 		addBehindParticleEffect( landCloudName, false, false );
 		addFrontParticleEffect( "skid_left", false, false );
 		addFrontParticleEffect( "skid_right", false, false );
@@ -274,9 +278,12 @@ public class Player extends Entity {
 		if ( switchTimer > 0 )
 			--switchTimer;
 
-		if ( Gdx.input.isKeyPressed( Keys.G ) )
-			Gdx.app.log( "steamCollide: " + steamCollide, "steamDone: "
-					+ steamDone );
+		if ( Gdx.input.isKeyPressed( Keys.G ) ) {
+			if ( name.equals( "player1" ) ) {
+				Gdx.app.log( "steamCollide: " + steamCollide, "steamDone: "
+						+ steamDone );
+			}
+		}
 		if ( Gdx.input.isKeyPressed( Keys.NUM_7 ) )
 			flyDebug = !flyDebug;
 		if ( flyDebug )
@@ -385,7 +392,7 @@ public class Player extends Entity {
 				} else {
 					body.setTransform(
 							new Vector2( currentScrew.getPositionPixel( ).x
-									- ( WIDTH / 2.0f ), currentScrew
+									- ( WIDTH ), currentScrew
 									.getPositionPixel( ).y - ( HEIGHT / 2.0f ) )
 									.mul( Util.PIXEL_TO_BOX ), 0.0f );
 					RevoluteJointDef revoluteJointDef = new RevoluteJointDef( );
@@ -472,10 +479,10 @@ public class Player extends Entity {
 			// Gdx.app.log( "top: ", "" + topCrush );
 			// Gdx.app.log( "bottom: ", "" + botCrush );
 		} else if ( steamCollide ) {
-			if ( !steamDone ) {
-				steamResolution( );
-				steamDone = true;
-			}
+			// if ( !steamDone ) {
+			steamResolution( );
+			steamDone = true;
+			// }
 		} else
 			steamDone = false;
 		terminalVelocityCheck( 15.0f );
@@ -583,7 +590,7 @@ public class Player extends Entity {
 			}
 
 			if ( !isDead ) {
-				ParticleEffect blood = getEffect( injuredParticles[ r
+				ParticleEffect blood = getEffect( injuredParticles[ WereScrewedGame.random
 						.nextInt( injuredParticles.length ) ] );
 				blood.restartAt( getPositionPixel( ) );
 			}
@@ -670,7 +677,7 @@ public class Player extends Entity {
 			reachedMaxSpeed = false;
 		}
 		runTimeout = RUN_STEPS;
-		footstepSound( );
+		footstepSound( 1.0f );
 	}
 
 	/**
@@ -719,7 +726,7 @@ public class Player extends Entity {
 			reachedMaxSpeed = false;
 		}
 		runTimeout = RUN_STEPS;
-		footstepSound( );
+		footstepSound( 1.0f );
 	}
 
 	/**
@@ -761,6 +768,7 @@ public class Player extends Entity {
 				&& playerState != PlayerState.Screwing ) {
 			Metrics.incTrophyMetric( TrophyMetric.P2RUNDIST, 0.01f );
 		}
+		footstepSound( leftAnalogX );
 	}
 
 	/**
@@ -796,6 +804,7 @@ public class Player extends Entity {
 				&& playerState != PlayerState.Screwing ) {
 			Metrics.incTrophyMetric( TrophyMetric.P2RUNDIST, 0.01f );
 		}
+		footstepSound( leftAnalogX );
 	}
 
 	/**
@@ -819,6 +828,7 @@ public class Player extends Entity {
 		if ( playerState != PlayerState.Screwing ) {
 			playerDirection = PlayerDirection.Right;
 		}
+		footstepSound( leftAnalogX );
 	}
 
 	/**
@@ -1136,8 +1146,6 @@ public class Player extends Entity {
 		return grounded;
 	}
 
-	// PRIVATE METHODS
-
 	/**
 	 * Attaches a player to the current screw
 	 * 
@@ -1155,8 +1163,8 @@ public class Player extends Entity {
 				}
 			}
 			mover = new FollowEntityMover( body.getPosition( ).mul(
-					Util.BOX_TO_PIXEL ), currentScrew, new Vector2(
-					-WIDTH / 2.0f, -HEIGHT / 2.0f ), SCREW_ATTACH_SPEED );
+					Util.BOX_TO_PIXEL ), currentScrew, new Vector2( -WIDTH,
+					-HEIGHT / 2.0f ), SCREW_ATTACH_SPEED );
 			playerState = PlayerState.Screwing;
 			currentScrew.setPlayerAttached( true );
 			screwAttachTimeout = SCREW_ATTACH_STEPS;
@@ -1279,6 +1287,7 @@ public class Player extends Entity {
 					resetScrewing = false;
 				} else if ( isScrewing ) {
 					switchedScrewingDirection = true;
+					sounds.playSound( "switchDirection", 1.0f );
 					isUnscrewing = true;
 					isScrewing = false;
 				} else {
@@ -1314,6 +1323,7 @@ public class Player extends Entity {
 					resetScrewing = false;
 				} else if ( isUnscrewing ) {
 					switchedScrewingDirection = true;
+					sounds.playSound( "switchDirection", 1.0f );
 					isScrewing = true;
 					isUnscrewing = false;
 				} else {
@@ -1458,10 +1468,12 @@ public class Player extends Entity {
 				// player
 				if ( ( this.getPositionPixel( ).y > otherPlayer
 						.getPositionPixel( ).add( 0, HEIGHT / 2f ).y )
-						&& ( otherPlayer.getPositionPixel( ).sub( WIDTH / 3.0f,
-								0.0f ).x <= this.getPositionPixel( ).x )
-						&& ( otherPlayer.getPositionPixel( ).add( WIDTH / 4.0f,
-								0.0f ).x > this.getPositionPixel( ).x ) ) {
+						&& ( otherPlayer.getPositionPixel( ).sub(
+								( WIDTH / 3.0f ) + 1.2f, 0.0f ).x <= this
+								.getPositionPixel( ).x )
+						&& ( otherPlayer.getPositionPixel( ).add(
+								( WIDTH / 4.0f ) + 1.2f, 0.0f ).x > this
+								.getPositionPixel( ).x ) ) {
 					boolean isMoving = false;
 					// check if the player is using input
 					// to move either left or right
@@ -1981,7 +1993,8 @@ public class Player extends Entity {
 	 * @param value
 	 *            boolean
 	 */
-	public void setSteamCollide( boolean value ) {
+	public void setSteamCollide( Steam steam, boolean value ) {
+		this.currentSteam = steam;
 		steamCollide = value;
 	}
 
@@ -2017,22 +2030,51 @@ public class Player extends Entity {
 	 * applies force to player
 	 */
 	private void steamResolution( ) {
-		if ( prevButton == null )
-			body.setLinearVelocity( new Vector2( 0f,
-					body.getLinearVelocity( ).y ) );
-		// body.applyForceToCenter( 0f, STEAM_FORCE );
-		// body.setLinearVelocity( new Vector2( body.getLinearVelocity( ).x, 0f
-		// ) );
-		body.applyLinearImpulse( new Vector2( 0, STEAM_IMPULSE ),
-				body.getWorldCenter( ) );
+		// setGrounded(true);
+		if ( currentSteam != null && currentSteam.isActive( ) ) {
 
-		// increments steam jump trophy metric
-		if ( this.name == Metrics.player1( ) ) {
-			Metrics.incTrophyMetric( TrophyMetric.P1STEAMJUMPS, 1 );
-		} else if ( this.name == Metrics.player2( ) ) {
-			Metrics.incTrophyMetric( TrophyMetric.P2STEAMJUMPS, 1 );
+			float steamAngle, xImpulse = 0, yImpulse = 0;
+			steamAngle = currentSteam.getAngle( );
+
+			xImpulse = ( float ) ( Math.sin( steamAngle ) * STEAM_IMPULSE );
+			yImpulse = ( float ) ( Math.cos( steamAngle ) * STEAM_IMPULSE );
+
+			// System.out.println( "x: " + xImpulse + ", y: " + yImpulse);
+			if ( name.equals( "player1" ) ) {
+				// System.out.println( body.getLinearVelocity( ) );
+			}
+
+			// body.applyForceToCenter( 0f, STEAM_FORCE );
+			// body.setLinearVelocity( new Vector2( body.getLinearVelocity( ).x,
+			// 0f
+			// ) );
+
+			xImpulse *= 0.09f;
+			yImpulse *= 0.09f;
+
+			body.applyLinearImpulse( new Vector2( -1 * xImpulse, yImpulse ),
+					body.getWorldCenter( ) );
+
+			if ( prevButton == null ) {
+				body.setLinearVelocity( new Vector2( 0f, body
+						.getLinearVelocity( ).y ) );
+			}
+			if ( body.getLinearVelocity( ).y > STEAM_MAX_Y_VELOCITY ) {
+				body.setLinearVelocity( body.getLinearVelocity( ).x,
+						STEAM_MAX_Y_VELOCITY );
+			}
+
+			// body.applyForce( new Vector2( -1 * xImpulse, yImpulse ),
+			// body.getWorldCenter( ) );
+
+			// increments steam jump trophy metric
+			if ( this.name == Metrics.player1( ) ) {
+				Metrics.incTrophyMetric( TrophyMetric.P1STEAMJUMPS, 1 );
+			} else if ( this.name == Metrics.player2( ) ) {
+				Metrics.incTrophyMetric( TrophyMetric.P2STEAMJUMPS, 1 );
+			}
 		}
-		grounded = false;
+
 	}
 
 	/**
@@ -2140,20 +2182,38 @@ public class Player extends Entity {
 		}
 	}
 
-	public void footstepSound( ) {
+	public void footstepSound( float a ) {
+		float amount = ( float ) Math.pow( Math.abs( a ), 2.0 );
 		if ( isGrounded( ) && this.playerState != PlayerState.Screwing ) {
+			float rate = FOOTSTEP_DELAY;
+			float pitch = FOOTSTEP_PITCH_DROP
+					+ ( amount * ( 1.0f - FOOTSTEP_PITCH_DROP ) )
+					+ ( FOOTSTEP_PITCH_VARIANCE * ( ( 2.f * WereScrewedGame.random
+							.nextFloat( ) ) - 1f ) );
+			float vol = FOOTSTEP_VOLUME_DROP + amount
+					* ( 1.0f - FOOTSTEP_VOLUME_DROP );
 			if ( sounds.isDelayed( "footstep1" ) ) {
-				sounds.playSound( "footstep2", 1.0f );
+				sounds.setSoundVolume( "footstep2", vol );
+				sounds.setSoundPitch( "footstep2", pitch );
+				sounds.playSound( "footstep2", rate );
 			} else {
-				sounds.playSound( "footstep1", 1.0f );
-				sounds.setDelay( "footstep2", 0.5f );
+				sounds.setSoundVolume( "footstep1", vol );
+				sounds.setSoundPitch( "footstep1", pitch );
+				sounds.playSound( "footstep1", rate );
+				sounds.setDelay( "footstep2", 0.5f * rate );
 			}
 		}
 	}
 
 	public void loadSounds( ) {
-		sounds.getSound( "jump", WereScrewedGame.dirHandle
-				+ "/common/sounds/jump.ogg" );
+		// Gender-specific Sounds
+		if ( name.equals( "player1" ) ) {
+			sounds.getSound( "jump", WereScrewedGame.dirHandle
+					+ "/common/sounds/jump.ogg" );
+		} else {
+			sounds.getSound( "jump", WereScrewedGame.dirHandle
+					+ "/common/sounds/jumpFemale.ogg" );
+		}
 		sounds.getSound( "footstep1", WereScrewedGame.dirHandle
 				+ "/common/sounds/footstep1.ogg" );
 		sounds.getSound( "footstep2", WereScrewedGame.dirHandle

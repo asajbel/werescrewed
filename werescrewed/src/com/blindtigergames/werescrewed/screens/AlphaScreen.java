@@ -5,6 +5,7 @@ import aurelienribon.tweenengine.Tween;
 import aurelienribon.tweenengine.TweenEquations;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
@@ -15,15 +16,23 @@ import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
+import com.badlogic.gdx.utils.Array;
 import com.blindtigergames.werescrewed.WereScrewedGame;
+import com.blindtigergames.werescrewed.camera.Anchor;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityDef;
+import com.blindtigergames.werescrewed.entity.Panel;
 import com.blindtigergames.werescrewed.entity.RobotState;
 import com.blindtigergames.werescrewed.entity.RootSkeleton;
 import com.blindtigergames.werescrewed.entity.Skeleton;
 import com.blindtigergames.werescrewed.entity.Sprite;
+import com.blindtigergames.werescrewed.entity.action.AnchorActivateAction;
+import com.blindtigergames.werescrewed.entity.action.AnchorDeactivateAction;
 import com.blindtigergames.werescrewed.entity.action.DestoryPlatformJointAction;
+import com.blindtigergames.werescrewed.entity.action.EntityActivateMoverAction;
+import com.blindtigergames.werescrewed.entity.action.EntityDeactivateMoverAction;
 import com.blindtigergames.werescrewed.entity.action.RemoveEntityAction;
+import com.blindtigergames.werescrewed.entity.action.RotateTweenAction;
 import com.blindtigergames.werescrewed.entity.builders.EventTriggerBuilder;
 import com.blindtigergames.werescrewed.entity.builders.GenericEntityBuilder;
 import com.blindtigergames.werescrewed.entity.builders.PlatformBuilder;
@@ -35,6 +44,8 @@ import com.blindtigergames.werescrewed.entity.mover.PuzzleType;
 import com.blindtigergames.werescrewed.entity.mover.RotateTweenMover;
 import com.blindtigergames.werescrewed.entity.mover.TimelineTweenMover;
 import com.blindtigergames.werescrewed.entity.mover.puzzle.PuzzleRotateTweenMover;
+import com.blindtigergames.werescrewed.entity.particles.Steam;
+import com.blindtigergames.werescrewed.entity.platforms.Pipe;
 import com.blindtigergames.werescrewed.entity.platforms.Platform;
 import com.blindtigergames.werescrewed.entity.platforms.TiledPlatform;
 import com.blindtigergames.werescrewed.entity.screws.PuzzleScrew;
@@ -57,23 +68,39 @@ public class AlphaScreen extends Screen {
 	public ScreenType screenType;
 
 	private CharacterSelect characterSelect;
-	private Screw powerScrew1, powerScrew2, powerScrew3, powerScrew4;
-	private PowerSwitch powerSwitch1, powerSwitch2, powerSwitch3, powerSwitch4, powerSwitch5, powerSwitch6,
-		powerSwitch7, powerSwitch8;
-	private Skeleton footSkeleton, kneeSkeleton, thighSkeleton, hipSkeleton,
-			chestSkeleton, leftShoulderSkeleton;
-	private TiledPlatform kneeMovingPlat;
+	private PowerSwitch powerSwitch1, powerSwitch2, powerSwitch3, 
+		powerSwitch4, powerSwitch5, powerSwitch6,
+		powerSwitch7, powerSwitch8, powerSwitch9,
+		powerSwitch10, chestSteamPowerSwitch,
+		powerSwitchBrain1, powerSwitchBrain2;
+	
+	private PowerSwitch powerSwitchPuzzle1, powerSwitchPuzzle2;
+	private Skeleton footSkeleton, kneeSkeleton, 
+		thighSkeleton, hipSkeleton,
+		chestSkeleton, leftShoulderSkeleton, headSkeleton, thighSkeleton2;
+	
+	private TiledPlatform kneeMovingPlat, chestRotatePlat1, 
+		chestRotatePlat3, headEntrancePlatform4,
+		headEyebrow1, headEyebrow2;
 
-	Platform leftShoulderSideHatch;
-	private PuzzleScrew leftArmScrew, rightElbowPuzzleScrew;
+	Platform leftShoulderSideHatch, ankleHatch;
+	private PuzzleScrew leftArmScrew, chestPuzzleScrew2;
+	
+	private Steam engineSteam;
 
-	private boolean etTriggered = false;
+	private boolean chestSteamTriggered = false, headPlatformCreated = false, headAnchorActivatedOnce = false;
+	private boolean rLegTriggered = false, thighSteamTriggered = false;
 
 	private Skeleton rightShoulderSkeleton;
 
 	private Platform rightArmDoor;
 
 	private StrippedScrew rightArmDoorHinge;
+	private StructureScrew structureScrew1;
+	
+	private int rightShoulderSkeletonAnchorCounter = 0;
+	
+	Array<Panel> panels;
 
 	public AlphaScreen( ) {
 		super( );
@@ -111,7 +138,7 @@ public class AlphaScreen extends Screen {
 		// right arm: 2600f, 6000f >>>> side
 		//left side hand <- -2224, 3008
 		
-		Vector2 spawnPos = new Vector2(512, 256);
+		Vector2 spawnPos = new Vector2( 512, 256 );
 
 		if ( level.player1 == null ) {
 			level.player1 = new PlayerBuilder( ).world( level.world )
@@ -148,6 +175,7 @@ public class AlphaScreen extends Screen {
 		buildEngineHeart( new Vector2( 0, 5450 ) );
 		createChestDecals();
 		//powerSwitch();
+		initPanels();
 	}
 
 	@Override
@@ -158,7 +186,108 @@ public class AlphaScreen extends Screen {
 
 		// characterSelect.draw( batch, deltaTime );
 
-		powerScrewupdate( );
+		powerScrewUpdate( deltaTime );
+		
+
+		
+		//If everything is on
+		if (  powerSwitch1.isTurnedOn( )  && powerSwitch2.isTurnedOn( )
+				&&  powerSwitch3.isTurnedOn( )  && powerSwitch4.isTurnedOn( )
+				&&  powerSwitch5.isTurnedOn( )  && powerSwitch6.isTurnedOn( )
+				&&  powerSwitch7.isTurnedOn( )  && powerSwitch8.isTurnedOn( )
+				&&  powerSwitch9.isTurnedOn( )  && powerSwitch10.isTurnedOn( ) ){
+			
+			//check if players are outside of arms and above half the chest
+			if( (level.player1.getPositionPixel( ).x >-1747f 
+					&& level.player1.getPositionPixel( ).x < 2848f 
+					&& level.player1.getPositionPixel( ).y > 4688)
+					&&
+					(level.player2.getPositionPixel( ).x >-1747f 
+							&& level.player2.getPositionPixel( ).x < 2848f 
+							&& level.player2.getPositionPixel( ).y > 4688)) {
+				
+				if(!headSkeleton.anchors.get(0).activated && !headAnchorActivatedOnce){
+					headAnchorActivatedOnce = true;
+					headSkeleton.anchors.get(0).setTimer( 30 );
+					headSkeleton.anchors.get(0).activate( );
+				}
+				
+				
+				if(!headPlatformCreated){
+					headPlatformCreated = true;
+					EventTriggerBuilder etb = new EventTriggerBuilder( level.world );
+					
+					etb.name( "head_platform_event").rectangle( ).height( 500f ).width( 300f )
+					.position(new Vector2( 900, 6150));
+					
+					etb.addEntity( headEntrancePlatform4 );
+					etb.beginAction(  new EntityActivateMoverAction(  ) );
+					
+					
+					EventTrigger et = etb.repeatable( ).build( );
+					chestSkeleton.addEventTrigger( et );
+				}
+			}
+			
+			if(powerSwitchBrain1.isTurnedOn( ) && powerSwitchBrain2.isTurnedOn( )){
+
+				if(headEyebrow1.currentMover( ) == null){
+					Timeline t = Timeline.createSequence( );
+		
+					t.push( Tween
+							.to( headEyebrow1, PlatformAccessor.LOCAL_POS_XY, 0.5f )
+							.delay( 0f ).target( 0, 200 )
+							.ease( TweenEquations.easeNone ).start( ) );
+					
+					t.push( Tween
+							.to( headEyebrow2, PlatformAccessor.LOCAL_POS_XY, 0f )
+							.delay( 5f ).target( 0, 200 )
+							.ease( TweenEquations.easeNone ).start( ) );
+					
+					headEyebrow1
+							.addMover( new TimelineTweenMover( t.start( ) ) );
+				}
+				
+				if(headEyebrow2.currentMover( ) == null){
+					Timeline t = Timeline.createSequence( );
+		
+					t.push( Tween
+							.to( headEyebrow2, PlatformAccessor.LOCAL_POS_XY, 0.5f )
+							.delay( 0f ).target( 0, 200 )
+							.ease( TweenEquations.easeNone ).start( ) );
+		
+					t.push( Tween
+							.to( headEyebrow2, PlatformAccessor.LOCAL_POS_XY, 0f )
+							.delay( 5f ).target( 0, 200 )
+							.ease( TweenEquations.easeNone ).start( ) );
+					
+					headEyebrow2
+							.addMover( new TimelineTweenMover( t.start( ) ) );
+				}
+				
+				
+				if(headEyebrow1.isTimeLineMoverFinished( )
+						&& headEyebrow2.isTimeLineMoverFinished( )){
+					
+					//You win and goto next screen!!!
+					ScreenManager.getInstance( ).show( ScreenType.LOADING_2 );
+				}
+			}
+		}
+
+	
+		if(Gdx.input.isKeyPressed( Keys.NUM_9 )){
+			powerSwitch1.setState( true );
+			powerSwitch2.setState( true );
+			powerSwitch3.setState( true );
+			powerSwitch4.setState( true );
+			powerSwitch5.setState( true );
+			powerSwitch6.setState( true );
+			powerSwitch7.setState( true );
+			powerSwitch8.setState( true );
+			powerSwitch9.setState( true );
+			powerSwitch10.setState( true );
+		}
 
 	}
 
@@ -403,7 +532,7 @@ public class AlphaScreen extends Screen {
 
 	private void thighDecals( Skeleton thighSkeleton ) {
 		TextureAtlas decals = WereScrewedGame.manager
-				.getAtlas( "alphabot_thigh_decal" );
+				.getAtlas( "chest_pipes_thigh_pipes" );
 		// level.entityBGList.add(thighSkeleton);
 		thighSkeleton.addBGDecalBack(
 				decals.createSprite( "thigh_mechanisms_and_pipesNOCOLOR" ),
@@ -424,11 +553,24 @@ public class AlphaScreen extends Screen {
 
 		thighSkeleton = ( Skeleton ) LevelFactory.entities
 				.get( "thighSkeleton" );
-
+		thighSkeleton2 = ( Skeleton ) LevelFactory.entities
+		.get( "thighSkeleton2" );
+		
 		footSkeleton.body.setType( BodyType.KinematicBody );
 		kneeSkeleton.body.setType( BodyType.KinematicBody );
 		thighSkeleton.body.setType( BodyType.KinematicBody );
 
+		structureScrew1 = ( StructureScrew ) LevelFactory.entities
+				.get( "structureScrew1" );
+		//414, 48
+		ankleHatch = ( Platform ) LevelFactory.entities
+				.get( "ankle_hatch" );
+		RevoluteJointDef rjd = new RevoluteJointDef( );
+		rjd.initialize( ankleHatch.body, footSkeleton.body,
+				//new Vector2( -414, 48 ).mul( Util.PIXEL_TO_BOX ) );
+				new Vector2( -415, 14 ).mul( Util.PIXEL_TO_BOX ) );
+		level.world.createJoint( rjd );
+		
 		TiledPlatform structurePlat3 = ( TiledPlatform ) LevelFactory.entities
 				.get( "structurePlat3" );
 		TiledPlatform pivotPlat1 = ( TiledPlatform ) LevelFactory.entities
@@ -456,8 +598,8 @@ public class AlphaScreen extends Screen {
 		footBG.setOrigin( 0f, 0f );
 		foot.addBGDecal( legBG, new Vector2( 410 + decalX, 432 + decalY ) );
 
-		addBGEntity( footSkeleton );
-		addFGEntity( footSkeleton );
+		addBGSkeleton( footSkeleton );
+		addFGSkeleton( footSkeleton );
 		
 		Vector2 footFGPos = new Vector2( decalX - 0, decalY -10 );
 		foot.addFGDecal( decals.createSprite( "foot_exterior" ), footFGPos );
@@ -483,7 +625,7 @@ public class AlphaScreen extends Screen {
 									// here even
 		kneeSkeleton.addFGDecalBack( decals.createSprite( "knee_exterior" ),
 				kneeDecalPos.cpy( ) );
-		addFGEntity( kneeSkeleton );
+		addFGSkeleton( kneeSkeleton );
 
 		kneeSkeleton
 				.addBGDecalBack( knee_exterior
@@ -494,23 +636,57 @@ public class AlphaScreen extends Screen {
 
 	private void initPowerScrews( ) {
 
-		powerScrew1 = ( Screw ) LevelFactory.entities.get( "powerScrew1" );
-		powerScrew2 = ( Screw ) LevelFactory.entities.get( "powerScrew2" );
-
-		powerScrew3 = ( Screw ) LevelFactory.entities.get( "powerScrew3" );
-		powerScrew4 = ( Screw ) LevelFactory.entities.get( "powerScrew4" );
+		powerSwitchBrain1 = (PowerSwitch) LevelFactory.entities.get( "PowerSwitchBrain1" );
+		powerSwitchBrain2 = (PowerSwitch) LevelFactory.entities.get( "PowerSwitchBrain2" );
 		
 		powerSwitch1 = (PowerSwitch) LevelFactory.entities.get( "powerSwitch1" );
 		powerSwitch2 = (PowerSwitch) LevelFactory.entities.get( "powerSwitch2" );
+		
+		powerSwitch3 = (PowerSwitch) LevelFactory.entities.get( "powerSwitch3" );
+		powerSwitch4 = (PowerSwitch) LevelFactory.entities.get( "powerSwitch4" );
+		
+		powerSwitch5 = (PowerSwitch) LevelFactory.entities.get( "powerSwitch5" );
+		powerSwitch6 = (PowerSwitch) LevelFactory.entities.get( "powerSwitch6" );
+		
+		powerSwitch7 = (PowerSwitch) LevelFactory.entities.get( "powerSwitch7" );
+		powerSwitch8 = (PowerSwitch) LevelFactory.entities.get( "powerSwitch8" );
+		
+		powerSwitch9 = (PowerSwitch) LevelFactory.entities.get( "powerSwitch9" );
+		powerSwitch10 = (PowerSwitch) LevelFactory.entities.get( "powerSwitch10" );
+		
+		chestSteamPowerSwitch = (PowerSwitch) LevelFactory.entities.get( "chestSteamPowerSwitch" );
+		chestSteamPowerSwitch.setState( true );
+		chestSteamPowerSwitch.addEntityToTrigger( engineSteam );
+		chestSteamPowerSwitch.actOnEntity = true;
+		chestSteamPowerSwitch.addBeginIAction( new EntityActivateMoverAction() );
+		chestSteamPowerSwitch.addEndIAction( new EntityDeactivateMoverAction() );
+		
+		powerSwitchPuzzle1 = (PowerSwitch) LevelFactory.entities.get( "powerSwitchPuzzle1" );
+		powerSwitchPuzzle2 = (PowerSwitch) LevelFactory.entities.get( "powerSwitchPuzzle2" );
+		
+		powerSwitchPuzzle1.actOnEntity = true;
+		powerSwitchPuzzle1.addEntityToTrigger( chestRotatePlat3 );
+		powerSwitchPuzzle1.addEntityToTrigger( chestRotatePlat1 );
+		powerSwitchPuzzle1.addBeginIAction( new RotateTweenAction(Util.PI / 2) );
+		powerSwitchPuzzle1.addEndIAction( new RotateTweenAction( 0) );
+		
+		powerSwitchPuzzle2.actOnEntity = true;
+		powerSwitchPuzzle2.addEntityToTrigger( chestRotatePlat3 );
+		powerSwitchPuzzle2.addEntityToTrigger( chestRotatePlat1 );
+		powerSwitchPuzzle2.addBeginIAction( new RotateTweenAction(Util.PI / 2) );
+		powerSwitchPuzzle2.addEndIAction( new RotateTweenAction( 0) );
+		
+		
 	}
 
-	private void powerScrewupdate( ) {
+	private void powerScrewUpdate( float deltaTime ) {
 
 		if (  powerSwitch1.isTurnedOn( )  && powerSwitch2.isTurnedOn( ) ) {
 			kneeMovingPlat.setActive( true );
 
 
 			if ( hipSkeleton.currentMover( ) == null ) {
+				updatePanels("left_leg");
 				hipSkeleton.addMover( new RotateTweenMover( hipSkeleton, 3f,
 						-Util.PI / 45, 1f, true ), RobotState.IDLE );
 
@@ -523,35 +699,40 @@ public class AlphaScreen extends Screen {
 
 		}
 
-		if ( leftArmScrew.getDepth( ) == leftArmScrew.getMaxDepth( )
-				&& leftShoulderSkeleton.currentMover( ) == null ) {
-
-			Timeline t = Timeline.createSequence( );
-
-			t.push( Tween
-					.to( leftShoulderSkeleton, PlatformAccessor.LOCAL_ROT, 20f )
-					.ease( TweenEquations.easeInOutQuad )
-					.target( ( -Util.PI / 2 ) ).delay( 1f ).start( ) );
-
-			leftShoulderSkeleton
-					.addMover( new TimelineTweenMover( t.start( ) ) );
+		if ( powerSwitch5.isTurnedOn( )  && powerSwitch6.isTurnedOn( ) && !thighSteamTriggered) {
+			thighSteamTriggered = true;
+			Steam steam = new Steam( "steamThigh1", new Vector2( 2015, 2880 ), 25, 120, level.world );
+			thighSkeleton2.addSteam(steam);
 		}
-
-		// if ( ( powerScrew3.getDepth( ) == powerScrew3.getMaxDepth( ) )
-		// && ( powerScrew4.getDepth( ) == powerScrew4.getMaxDepth( ) ) ) {
-		//
-		// }
-
-		if ( rightElbowPuzzleScrew.getDepth( ) == rightElbowPuzzleScrew
-				.getMaxDepth( ) ) {
+		if ( powerSwitch7.isTurnedOn( )  && powerSwitch8.isTurnedOn( ) ) {
+			if(leftShoulderSkeleton.currentMover( ) == null){
+				updatePanels("left_arm");
+				Timeline t = Timeline.createSequence( );
+	
+				t.push( Tween
+						.to( leftShoulderSkeleton, PlatformAccessor.LOCAL_ROT, 20f )
+						.ease( TweenEquations.easeInOutQuad )
+						.target( ( -Util.PI / 2 ) ).delay( 1f ).start( ) );
+	
+				leftShoulderSkeleton
+						.addMover( new TimelineTweenMover( t.start( ) ) );
+				
+				//activate anchor
+				leftShoulderSkeleton.anchors.get( 0 ).activate( );
+			} else if (leftShoulderSkeleton.isTimeLineMoverFinished( )){
+				//deactivate anchor
+				leftShoulderSkeleton.anchors.get( 0 ).deactivate( );
+			}
+		}
+		
+		if (  powerSwitch9.isTurnedOn( )  && powerSwitch10.isTurnedOn( ) ) {
 			Skeleton rightElbowSkeleton = ( Skeleton ) LevelFactory.entities
 					.get( "rightElbowSkeleton" );
 			Skeleton rightShoulderSkeleton = ( Skeleton ) LevelFactory.entities
 					.get( "rightShoulderSkeleton" );
 
-			if ( rightElbowSkeleton.currentMover( ) == null
-					&& rightShoulderSkeleton.currentMover( ) == null ) {
-
+			if ( rightElbowSkeleton.currentMover( ) == null ) {
+				updatePanels("right_arm");
 				Timeline t = Timeline.createSequence( );
 
 				t.push( Tween
@@ -561,20 +742,73 @@ public class AlphaScreen extends Screen {
 
 				rightElbowSkeleton
 						.addMover( new TimelineTweenMover( t.start( ) ) );
-
+				
+				rightElbowSkeleton.anchors.get( 0 ).activate( );
+				
+			} else if (rightElbowSkeleton.isTimeLineMoverFinished( )){
+				//deactivate anchor
+				rightElbowSkeleton.anchors.get( 0 ).deactivate( );
+			}
+				
+			if(rightShoulderSkeleton.currentMover( ) == null 
+					&& rightElbowSkeleton.isTimeLineMoverFinished( )){
 				Timeline t2 = Timeline.createSequence( );
 
+				t2.delay( 5f );
 				t2.push( Tween
 						.to( rightShoulderSkeleton, PlatformAccessor.LOCAL_ROT,
 								10f ).ease( TweenEquations.easeInOutQuad )
-						.target( ( Util.PI / 2 ) ).delay( 13f ).start( ) );
+						.target( ( Util.PI / 2 ) ).delay( 0f ).start( ) );
 
 				rightShoulderSkeleton.addMover( new TimelineTweenMover( t2
 						.start( ) ) );
-
+				
+				rightShoulderSkeleton.anchors.get( 0 ).activate( );
+				
+			} else if (rightShoulderSkeleton.isTimeLineMoverFinished( )){
+				//deactivate anchor
+				rightShoulderSkeleton.anchors.get( 0 ).deactivate( );
 			}
 		}
-
+		
+		if (  powerSwitch3.isTurnedOn( )  && powerSwitch4.isTurnedOn( ) && !chestSteamTriggered) {
+			updatePanels("chest");
+			
+			chestSteamTriggered = true;
+			EventTriggerBuilder etb = new EventTriggerBuilder( level.world );
+			
+			etb.name( "chestPuzzle_event_anchor").rectangle( ).height( 400f ).width( 600f )
+			.position(new Vector2( 570, 4000));
+			
+			Anchor anchor = chestPuzzleScrew2.anchors.get( 0 );
+			etb.beginAction(  new AnchorActivateAction( anchor ) );
+			etb.endAction( new AnchorDeactivateAction(anchor) );
+			
+			EventTrigger et = etb.repeatable( ).twoPlayersToActivate( ).twoPlayersToDeactivate( ).build( );
+			chestSkeleton.addEventTrigger( et );
+			
+			Steam steam = new Steam( "steamChest1", new Vector2( 576, 4000 ), 25, 225, level.world );
+			chestSkeleton.addSteam(steam);
+			
+			//GET RID OF TEMP STEAM WHEN PARTICLES MATCH THE BODY SIZE
+			Steam temp = new Steam( "steamtemp1", new Vector2( 576, 4000 ), 25, 120, level.world );
+			temp.setTempCollision( false );
+			chestSkeleton.addSteam(temp);
+			
+			Steam temp2 = new Steam( "steamtemp2", new Vector2( 576, 4100 ), 25, 120, level.world );
+			temp2.setTempCollision( false );
+			chestSkeleton.addSteam(temp);
+			
+//			Steam steam2 = new Steam( "steamChest2", new Vector2( 350, 4450 ), 25, 120, level.world );
+////			steam2.setLocalRot(  270 * Util.DEG_TO_RAD );
+//			chestSkeleton.addSteam(steam2);
+		}
+		
+		if ( !rLegTriggered && powerSwitch5.isTurnedOn( )  && powerSwitch6.isTurnedOn( ) ) {
+			//do right leg activation stuff stuff
+			rLegTriggered = true;
+			updatePanels("right_leg");
+		}
 	}
 
 	private void knee2Objects( ) {
@@ -597,6 +831,9 @@ public class AlphaScreen extends Screen {
 	}
 
 	private void chestObjects( ) {
+		headSkeleton = ( Skeleton ) LevelFactory.entities
+				.get( "headSkeleton" );
+		
 		chestSkeleton = ( Skeleton ) LevelFactory.entities
 				.get( "chestSkeleton" );
 		PuzzleScrew chestScrew1 = ( PuzzleScrew ) LevelFactory.entities
@@ -609,6 +846,10 @@ public class AlphaScreen extends Screen {
 		PuzzleScrew chestScrew4 = ( PuzzleScrew ) LevelFactory.entities
 				.get( "chestPuzzleScrew10" );
 
+		headEntrancePlatform4 = ( TiledPlatform ) LevelFactory.entities
+				.get( "head_entrance_platform_4" );
+		headEntrancePlatform4.setActive( false );
+		
 		TiledPlatform chestRotatingPlat2 = ( TiledPlatform ) LevelFactory.entities
 				.get( "chestRotatePlat2" );
 
@@ -631,11 +872,65 @@ public class AlphaScreen extends Screen {
 
 		EventTrigger etGearFall = ( EventTrigger ) LevelFactory.entities
 				.get( "et1" );
+		
+		//it has the anchor I need when power switches 3-4 are on
+		chestPuzzleScrew2 = ( PuzzleScrew ) LevelFactory.entities
+		.get( "chestPuzzleScrew2" );
+		
+		
+		engineSteam = new Steam( "steamChest3", new Vector2( -420, 5050 ), 25, 120, level.world );
+		chestSkeleton.addSteam(engineSteam);
+		
+//		Pipe chestPipe3 = ( Pipe ) LevelFactory.entities
+//				.get( "chestPipe3" );
+		
+//		chestPipe3.setCategoryMask( Util.CATEGORY_PLATFORMS,
+//				Util.CATEGORY_PLAYER );
+		
+		chestRotatePlat1 = ( TiledPlatform ) LevelFactory.entities
+				.get( "chestRotatePlat1" );
+		chestRotatePlat1.setActive( true );
 
+		
+		chestRotatePlat3 = ( TiledPlatform ) LevelFactory.entities
+				.get( "chestRotatePlat3" );
+		chestRotatePlat3.setActive( true );
+		
+		headEyebrow1 = ( TiledPlatform ) LevelFactory.entities
+				.get( "headEyebrow1" );
+		
+		
+		headEyebrow2 = ( TiledPlatform ) LevelFactory.entities
+				.get( "headEyebrow2" );
+		
+
+		Skeleton rightKneeTrapDoorSkeleton1 = ( Skeleton ) LevelFactory.entities
+				.get( "rightKneeTrapDoorSkeleton1" );
+		Skeleton rightKneeTrapDoorSkeleton2 = ( Skeleton ) LevelFactory.entities
+				.get( "rightKneeTrapDoorSkeleton2" );
+		
+		//rightKneeTrapDoorSkeleton2.setActive( false );
+		//rightKneeTrapDoorSkeleton1.setActive( false );
+		
+		EventTrigger rightKneeTrapDoorEvent1 = ( EventTrigger ) LevelFactory.entities
+				.get( "rightKneeTrapDoorEvent1" );
+		
+		rightKneeTrapDoorEvent1.addEntityToTrigger( rightKneeTrapDoorSkeleton1 );
+		rightKneeTrapDoorEvent1.actOnEntity = true;
+		rightKneeTrapDoorEvent1.addBeginIAction( new RotateTweenAction(-Util.PI/2, 0.8f));
+		
+		EventTrigger rightKneeTrapDoorEvent2 = ( EventTrigger ) LevelFactory.entities
+				.get( "rightKneeTrapDoorEvent2" );
+		
+		rightKneeTrapDoorEvent2.addEntityToTrigger( rightKneeTrapDoorSkeleton2 );
+		rightKneeTrapDoorEvent2.actOnEntity = true;
+		rightKneeTrapDoorEvent2.addBeginIAction( new RotateTweenAction(Util.PI/2, 0.8f));
+				
+				
 	}
 	
 	private void createChestDecals(){
-		TextureAtlas chest_powerscrew = WereScrewedGame.manager.getAtlas( "chest_powerscrew" );
+		TextureAtlas chest_powerscrew = WereScrewedGame.manager.getAtlas( "chest_pipes_thigh_pipes" );
 		Skeleton chestSkeleton = (Skeleton)LevelFactory.entities.get( "chestSkeleton" );
 		chestSkeleton.addBGDecal( 
 				chest_powerscrew.createSprite( "chest_powerscrew_pipes_to_engineNOCOLOR" ), 
@@ -670,27 +965,21 @@ public class AlphaScreen extends Screen {
 
 		rightArmDoor = ( Platform ) LevelFactory.entities
 				.get( "rightShoulderTopHatch1" );
-
-		// rightArmDoorHinge = ( StrippedScrew ) LevelFactory.entities
-		// .get( "rightShoulderTopHatch1" );
-
+		
 		RevoluteJointDef rjd = new RevoluteJointDef( );
 		rjd.initialize( rightArmDoor.body, rightShoulderSkeleton.body,
-				new Vector2( 2850f, 5908f ).mul( Util.PIXEL_TO_BOX ) );
+				new Vector2( 2851f, 5904f ).mul( Util.PIXEL_TO_BOX ) );
 		level.world.createJoint( rjd );
-
-		rightElbowPuzzleScrew = ( PuzzleScrew ) LevelFactory.entities
-				.get( "rightElbowPuzzleScrew" );
 	}
 
 	private void buildEngineHeart( Vector2 posPix ) {
 		Skeleton engineSkeleton = new Skeleton( "engineSkeleton", posPix, null,
 				level.world );
 		level.root.addSkeleton( engineSkeleton );
+		engineSkeleton.setFgFade( false );
 		int pistonDistanceApart = 280;
 		float engineSpeed = 2.5f;
-
-		// Got to set the right bits
+		
 		PlatformBuilder platBuilder = new PlatformBuilder( level.world );
 		Platform chestEngine = platBuilder.name( "chestEngine" )
 				.position( -200, 5100 ).texture( null ).type( "chestEngine" )
@@ -712,7 +1001,6 @@ public class AlphaScreen extends Screen {
 					posPix.cpy( ).add( pistonDistanceApart * i, 0 ), i,
 					engineSpeed );
 		}
-
 	}
 
 	private void buildPiston( Skeleton engineSkeleton,
@@ -734,19 +1022,14 @@ public class AlphaScreen extends Screen {
 
 		// setup for building girder
 		Sprite girderSprite = engineAtlas.createSprite( "girder0" );
-		// girderSprite.scale( .8f );
 		float girderInset = 0.97f;
 		float pistonDistApartMetre = girderSprite.getHeight( ) * girderInset
 				* Util.PIXEL_TO_BOX;
-		// float pistonDistApartMetre = girderSprite.getHeight(
-		// )*Util.PIXEL_TO_BOX;
 		Sprite wheelBolt = engineAtlas.createSprite( "bolt0" );
 		// Build GIRDER!
 		float targetRadiusOnWheelMeter = ( radiusPix - wheelBolt.getHeight( ) / 3 )
 				* Util.PIXEL_TO_BOX;
 		boolean isDown = ( index % 2 == 0 );
-		// wheel1.getPosition().add((wheelBoltOffset+wheelBolt.getWidth(
-		// )/2)*Util.PIXEL_TO_BOX,0);
 
 		Vector2 wheelJointPosMeter = new Vector2( posMeter );
 		if ( isDown ) {
@@ -759,24 +1042,33 @@ public class AlphaScreen extends Screen {
 				pistonDistApartMetre );
 		engineSkeleton.addPlatform( girder1 );
 
-		/*
-		 * DistanceJointDef dJoint = new DistanceJointDef(); dJoint.initialize(
-		 * wheel1.body, piston.body, wheelJointPosMeter, piston.getPosition( )
-		 * ); dJoint.collideConnected = false; world.createJoint( dJoint );
-		 */
-
 		// Build piston!!
 		Vector2 pistonJointPosMeter = wheelJointPosMeter.cpy( ).sub( 0,
 				pistonDistApartMetre );
-		PlatformBuilder pBuilder = new PlatformBuilder( level.world );
-		TiledPlatform piston = pBuilder
-				.position( pistonJointPosMeter.cpy( ).mul( Util.BOX_TO_PIXEL ) )
-				.dynamic( ).dimensions( 4, 5 )// 3.71,4.75
-				.buildTilePlatform( );
+
+		Vector2 finalPos = pistonJointPosMeter.cpy( ).mul( Util.BOX_TO_PIXEL );
+		finalPos = finalPos.sub( 58f, 90f );
+		PlatformBuilder pBuilder = new PlatformBuilder(level.world ).name( "piston"  )
+				.position( finalPos )
+				.texture( null )
+				.dynamic( );
+	
+		
+
+		if(index ==0 ){
+			pBuilder.type( EntityDef.getDefinition( "pistonLeft" ) );
+		} else if (index == 1){
+			pBuilder.type( EntityDef.getDefinition( "pistonMiddle" ) );
+		} else {
+			pBuilder.type( EntityDef.getDefinition( "pistonRight" ) );
+		}
+		
+		Platform piston = pBuilder.buildComplexPlatform( );
 		piston.setCrushing( true );
 		piston.setVisible( false );// only draw decals, not tiled body!
 		engineSkeleton.addDynamicPlatform( piston );
-
+		
+		
 		// Setup prismatic joint for piston!
 		new PrismaticJointBuilder( level.world ).bodyA( engineSkeleton )
 				.bodyB( piston ).axis( new Vector2( 0, 1 ) ).build( );
@@ -831,10 +1123,9 @@ public class AlphaScreen extends Screen {
 		girder1.addFGDecal( girderSprite, new Vector2(
 				-girderSprite.getWidth( ) / 2, -girderSprite.getHeight( ) / 2 ) );
 
-		piston.addFGDecal( pistonSprite, new Vector2(
-				-piston.getPixelWidth( ) / 2, -piston.getPixelHeight( ) / 2 ) );
-		piston.addFGDecal( boltSprite, new Vector2(
-				-boltSprite.getWidth( ) / 2, -boltSprite.getHeight( ) / 2 ) );
+
+		piston.addFGDecal( pistonSprite, Vector2.Zero );
+		piston.addFGDecal( boltSprite, new Vector2(32f, 48f) );
 		wheel1.addFGDecal( wheelBolt, boltPosPix );
 		
 
@@ -918,5 +1209,56 @@ public class AlphaScreen extends Screen {
 		// AnchorDeactivateAction
 				
 		chestSkeleton.addEventTrigger( ps );
+	}
+	
+	private void initPanels(){
+		int numPanels = 5;
+		String panelAtlas = "alphabot-panel";
+		panels = new Array< Panel >(numPanels);
+		Panel p;
+		//get panels 1-5 (possibly 6, but not yet)
+		for(int i = 1; i <= numPanels; ++i ){
+			p = (Panel) LevelFactory.entities.get( "panel"+i );
+			p.setPanelSprite("alphabot-panel_off");
+			panels.add( p );
+		}
+		
+		//Panel p = new Panel( kneeSkeleton.getPositionPixel( ), level.world, panelAtlas, "alphabot-panel_off" );
+		//kneeSkeleton.addPlatform( p );
+		//panels.add(p);
+		
+	}
+	
+	private void updatePanels(String activatedPanel){
+		String panelName = "alphabot-panel";
+		
+		if(activatedPanel.equals( "left_leg" )){
+			panelName = "alphabot-panel_left_leg";
+		}else if (activatedPanel.equals("chest")){
+			panelName = "alphabot-panel_chest";
+		}else{
+			//rleg
+			if( powerSwitch5.isTurnedOn( )  && powerSwitch6.isTurnedOn( ) ){
+				panelName = panelName + "_rleg";
+			}
+			
+			//right arm
+			if( powerSwitch9.isTurnedOn( )  && powerSwitch10.isTurnedOn( ) ){
+				panelName = panelName + "_rarm";
+			}
+			
+			//left arm
+			if ( powerSwitch7.isTurnedOn( )  && powerSwitch8.isTurnedOn( )){
+				panelName = panelName + "_larm";
+			}
+		}
+		//hip skeleton
+		//powerSwitch1.isTurnedOn( )  && powerSwitch2.isTurnedOn( ) 
+			
+		//chest
+		 //powerSwitch3.isTurnedOn( )  && powerSwitch4.isTurnedOn( ) 
+		for(Panel p : panels){
+			p.setPanelSprite( panelName );
+		}
 	}
 }

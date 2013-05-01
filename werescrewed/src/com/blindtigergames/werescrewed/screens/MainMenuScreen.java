@@ -31,6 +31,7 @@ class MainMenuScreen implements com.badlogic.gdx.Screen {
 	public ScreenType screenType;
 	private SpriteBatch batch = null;
 	private Texture logo = null;
+	private Texture menuBG = null;
 	private OrthographicCamera camera = null;
 	private BitmapFont font = null;
 	BitmapFont fancyFont;
@@ -53,8 +54,7 @@ class MainMenuScreen implements com.badlogic.gdx.Screen {
 
 
 	public MainMenuScreen( ) {
-		Tween.registerAccessor( Button.class, new ButtonTweenAccessor( ) );
-		
+		//Tween.registerAccessor( Button.class, new ButtonTweenAccessor( ) );
 	}
 
 	@Override
@@ -65,7 +65,8 @@ class MainMenuScreen implements com.badlogic.gdx.Screen {
 		Gdx.gl.glClear( GL10.GL_COLOR_BUFFER_BIT );
 		manager.update( delta );
 		batch.begin( );
-		batch.draw(logo, 0, 0);
+		batch.draw( menuBG, 0, 0 );
+		batch.draw(logo, 110, 500);
 		//batch.draw(logo, -128, 0);
 		//headingLabel.draw( batch );
 		storyButton.draw( batch, camera );
@@ -133,23 +134,23 @@ class MainMenuScreen implements com.badlogic.gdx.Screen {
 		camera = new OrthographicCamera( );
 		camera.setToOrtho( false, width, height );
 		batch.setProjectionMatrix( camera.combined );
-		int centerX = width / 2;
-		int centerY = height / 2;
+		int leftX = width / 5 - 20;
+		int centerY = height / 3 ;
 		
-		headingLabel.setX( centerX - headingLabel.getWidth( ) / 2 );
+		headingLabel.setX( leftX - headingLabel.getWidth( ) / 2 );
 		headingLabel.setY( centerY + 7 * lineHeight );
-		storyButton.setX(-200 );//centerX  - storyButton.getWidth( )/2
+		storyButton.setX( leftX  - storyButton.getWidth( ) / 2 );
 		storyButton.setY( centerY + 5 * lineHeight);
-		levelSelectButton.setX( centerX - levelSelectButton.getWidth( )/2 );
+		levelSelectButton.setX( leftX - levelSelectButton.getWidth( ) / 2 );
 		levelSelectButton.setY( centerY + 4 * lineHeight);
-		optionsButton.setX( centerX - optionsButton.getWidth( )/2);
+		optionsButton.setX( leftX - optionsButton.getWidth( ) / 2 );
 		optionsButton.setY( centerY + 3 * lineHeight );
 		// imoverButton.setX( centerX - imoverButton.getWidth( )/2 );
 		// imoverButton.setY( centerY - lineHeight );
-		exitButton.setX( centerX - exitButton.getWidth( ) / 2 );
+		exitButton.setX( leftX - exitButton.getWidth( ) / 2 );
 		exitButton.setY( centerY + 2 * lineHeight );
 		
-		Tween.to( storyButton, ButtonTweenAccessor.POSITION_X, 1 ).ease( TweenEquations.easeInBounce ).target( centerX  - storyButton.getWidth( )/2 ).start( manager );
+		//Tween.to( storyButton, ButtonTweenAccessor.POSITION_X, 1 ).ease( TweenEquations.easeInBounce ).target( leftX  - storyButton.getWidth( )/2 ).start( manager );
 	}
 	
 	/**
@@ -172,9 +173,11 @@ class MainMenuScreen implements com.badlogic.gdx.Screen {
 	 */
 	private void loadButtons( ){
 		//font = WereScrewedGame.manager.getFont( "ornatique" );
+		menuBG = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
+				 + "/common/menu_placeholder.png", Texture.class );
 		logo =  WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-				 + "/common/title_background.png", Texture.class );
-		lineHeight = Math.round( 2.5f * font.getCapHeight( ) );
+				 + "/common/title_background_clear.png", Texture.class );
+		lineHeight = Math.round( 2.5f * font.getCapHeight( ) + 20 );
 		headingLabel = new Label( "We're Screwed!!", fancyFont );
 		
 		storyButton = new Button("Start", fancyFont,

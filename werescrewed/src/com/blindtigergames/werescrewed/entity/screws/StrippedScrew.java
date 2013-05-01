@@ -43,6 +43,7 @@ public class StrippedScrew extends Screw {
 		this.detachDirection = detachDirection;
 		this.entity = entity;
 		this.depth = 0;
+		
 		if ( entity != null ) {
 			this.entityAngle = entity.getAngle( )*Util.RAD_TO_DEG;
 		}
@@ -143,9 +144,9 @@ public class StrippedScrew extends Screw {
 		
 		this.sprite.setOrigin( this.sprite.getWidth( ) / 2, this.sprite.getHeight( ) / 2);
 		this.sprite.setPosition( xpos * Util.BOX_TO_PIXEL, ypos * Util.BOX_TO_PIXEL);
-		this.sprite.setRotation(  MathUtils.radiansToDegrees
-				* body.getAngle( ) );
-		
+//		this.sprite.setRotation(  MathUtils.radiansToDegrees
+//				* body.getAngle( ) );
+		sprite.setRotation( rotation );
 		this.sprite.draw( batch );
 	}
 	
@@ -163,6 +164,8 @@ public class StrippedScrew extends Screw {
 	 */
 	@Override
 	public void screwLeft( ) {
+		//depth -= 1;
+		//rotation += 10;
 	}
 
 	/**
@@ -179,6 +182,8 @@ public class StrippedScrew extends Screw {
 	 */
 	@Override
 	public void screwRight( ) {
+		//depth += 1;
+		//rotation -= 10;
 	}
 	
 	@Override

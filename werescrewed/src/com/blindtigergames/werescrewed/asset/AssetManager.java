@@ -31,17 +31,19 @@ public class AssetManager extends com.badlogic.gdx.assets.AssetManager {
 	HashMap< String, TextureAtlas > atlasMap;
 	HashMap< String, BitmapFont > fontMap;
 	ArrayList< String > palette;
-	Random random;
 	HashMap< String, ParticleEffect > particleEffects;
 	HashMap< String, SkeletonData > spineSkeletons;
 	HashMap<Class<?>, String > dummyAssets;
+	Texture robotTexBG;// = "/levels/alphabot/alphabot-interior.png";
+	Texture robotOutlineTex;// = "/levels/alphabot/alphabot-outline.png";
+	Texture robotTexFG;// = "/levels/alphabot/alphabot-outline.png";
+	//TODO: set default values for this
 
 	public AssetManager( ) {
 		super( );
 		atlasMap = new HashMap< String, TextureAtlas >( );
 		fontMap = new HashMap<String, BitmapFont>();
 		palette = new ArrayList<String>();
-		random = new Random(0);//same seed so random will be predictable for debug purpose
 		particleEffects = new HashMap<String, ParticleEffect>();
 		dummyAssets = new HashMap<Class<?>, String >();
 	}
@@ -79,7 +81,7 @@ public class AssetManager extends com.badlogic.gdx.assets.AssetManager {
 	 * <colorname>.palette
 	 */
 	public String getRandomPaletteColor( ) {
-		return palette.get( random.nextInt( palette.size( ) ) );
+		return palette.get( WereScrewedGame.random.nextInt( palette.size( ) ) );
 	}
 
 	public void loadAtlas( String fullPathToAtlas ) {
@@ -222,6 +224,40 @@ public class AssetManager extends com.badlogic.gdx.assets.AssetManager {
 		for (Class<?> type: dummyAssets.keySet()){
 			this.load( dummyAssets.get( type ), type );
 		}
+	}
+	
+	/**
+	 * Get a random rivet by name. then do commom-textures.createSprite(random rivet name)
+	 * @author Stew
+	 * @return
+	 */
+	public String getRandomRivetName(){
+		return "rivet"+(WereScrewedGame.random.nextInt( 4 )+1);//there's only 4 rivets in common-textures.
+	}
+	
+	
+	public void setLevelRobotBGTex(Texture tex){
+		robotTexBG = tex;
+	}
+	
+	public Texture getLevelRobotBGTex(){
+		return robotTexBG;
+	}
+	
+	public void setLevelRobotFGTex(Texture tex){
+		robotTexFG = tex;
+	}
+	
+	public Texture getLevelRobotFGTex(){
+		return robotTexFG;
+	}
+	
+	public void setLevelRobotOutlineTex(Texture tex){
+		robotOutlineTex = tex;
+	}
+	
+	public Texture getLevelRobotOutlineTex(){
+		return robotOutlineTex;
 	}
 
 }

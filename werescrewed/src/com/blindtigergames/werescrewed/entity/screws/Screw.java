@@ -188,16 +188,12 @@ public class Screw extends Entity {
 	 * @param switchedDirections
 	 */
 	public void screwLeft( int region, boolean switchedDirections ) {
-		//Sorry this crashes my system so I'm commenting it out. -stew
-		//sounds.playSound( "unscrewing" , UNSCREW_SOUND_DELAY );
 	}
 
 	/**
 	 * used by keyboard controls to screw left
 	 */
 	public void screwLeft( ) {
-		//Sorry this crashes my system so I'm commenting it out. -stew
-		//sounds.playSound( "unscrewing" , UNSCREW_SOUND_DELAY );
 	}
 
 	/**
@@ -206,16 +202,12 @@ public class Screw extends Entity {
 	 * @param switchedDirections
 	 */
 	public void screwRight( int region, boolean switchedDirections ) {
-		//Sorry this crashes my system so I'm commenting it out. -stew
-		//sounds.playSound( "screwing" , SCREW_SOUND_DELAY );
 	}
 
 	/**
 	 * used by keyboard controls to screw right
 	 */
 	public void screwRight( ) {
-		//Sorry this crashes my system so I'm commenting it out. -stew
-		//sounds.playSound( "screwing" , SCREW_SOUND_DELAY );
 	}
 
 	
@@ -224,9 +216,21 @@ public class Screw extends Entity {
 	 * 
 	 */
 	public void stopScrewing(){
-		if (sounds != null){
-			sounds.stopSound("screwing");
-			sounds.stopSound("unscrewing");
+	}
+	
+	public void screwSound(float a, float midpoint){
+		float amount = (float)Math.pow(Math.abs(a / midpoint),2.0f);
+		if (amount >= 2.0f){
+			float delay = Math.max( Math.min( SCREW_SOUND_DELAY / amount, 1.5f), 0.5f);
+			sounds.playSound( "screwing", delay );
+		}
+	}
+	
+	public void unscrewSound(float a, float midpoint){
+		float amount = (float)Math.pow(Math.abs(a / midpoint),2.0f);
+		if (amount >= 2.0f){
+			float delay = Math.max( Math.min( SCREW_SOUND_DELAY / amount, 1.5f), 0.5f);
+			sounds.playSound( "unscrewing", delay );
 		}
 	}
 	/**
@@ -356,4 +360,5 @@ public class Screw extends Entity {
 		// You dont dispose the fixturedef, you dispose the shape
 		screwShape.dispose( );
 	}
+	
 }

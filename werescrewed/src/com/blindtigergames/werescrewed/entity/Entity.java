@@ -31,6 +31,7 @@ import com.blindtigergames.werescrewed.entity.animator.ISpinemator;
 import com.blindtigergames.werescrewed.entity.animator.PlayerAnimator;
 import com.blindtigergames.werescrewed.entity.animator.SimpleFrameAnimator;
 import com.blindtigergames.werescrewed.entity.mover.IMover;
+import com.blindtigergames.werescrewed.entity.mover.TimelineTweenMover;
 import com.blindtigergames.werescrewed.entity.platforms.Platform;
 import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 import com.blindtigergames.werescrewed.graphics.TextureAtlas;
@@ -363,10 +364,9 @@ public class Entity implements GleedLoadable {
 	}
 
 	public void update( float deltaTime ) {
-		Vector2 bodyPos = null;
 		if ( body != null ) {
 			// animation stuff may go here
-			bodyPos = body.getPosition( ).mul( Util.BOX_TO_PIXEL );
+			Vector2 bodyPos = body.getPosition( ).mul( Util.BOX_TO_PIXEL );
 
 			if ( sprite != null ) {
 				sprite.setPosition( bodyPos.x - offset.x, bodyPos.y - offset.y );
@@ -390,14 +390,16 @@ public class Entity implements GleedLoadable {
 			if ( spinemator != null ) {
 				spinemator.update( deltaTime );
 			}
-
 		}
 
 		updateParticleEffect( deltaTime, frontParticles );
 		updateParticleEffect( deltaTime, behindParticles );
 
 		if ( sounds != null ) {
-			sounds.handleSoundPosition( "idle", bodyPos, Camera.CAMERA_RECT );
+			if ( sounds.hasSound( "idle" ) ) {
+				sounds.handleSoundPosition( "idle", this.getPositionPixel( ),
+						Camera.CAMERA_RECT );
+			}
 			sounds.update( deltaTime );
 		}
 	}
@@ -444,6 +446,24 @@ public class Entity implements GleedLoadable {
 				}
 			}
 		}
+	}
+
+	public boolean isTimeLineMoverFinished( ) {
+		if ( currentMover( ) instanceof TimelineTweenMover ) {
+			return ( ( TimelineTweenMover ) currentMover( ) ).timeline
+					.isFinished( );
+		}
+		return false;
+
+	}
+
+	public boolean isTimeLineMoverStarted( ) {
+		if ( currentMover( ) instanceof TimelineTweenMover ) {
+			return ( ( TimelineTweenMover ) currentMover( ) ).timeline
+					.isStarted( );
+		}
+		return false;
+
 	}
 
 	protected String generateName( ) {
@@ -1017,17 +1037,36 @@ public class Entity implements GleedLoadable {
 		currentRobotState = RobotState.IDLE;
 	}
 
-	/**
-	 * 
-	 */
-	public void addBGDecal( Sprite s, Vector2 offset, float angle ) {
+	private void insertDecal( boolean isBG, Sprite s, Vector2 offset, float angle, boolean isBack ){
 		if ( s == null ) {
 			throw new RuntimeException(
-					"Entity.addBGDecal(): Adding null sprite" );
+					"Entity.insertDecal(): Adding null sprite! NO!" );
 		}
-		this.bgDecals.add( s );
-		this.bgDecalOffsets.add( offset );
-		this.bgDecalAngles.add( angle );
+		ArrayList< Sprite > decalList = (isBG)?bgDecals:fgDecals;
+		ArrayList< Float > angleList = (isBG)?bgDecalAngles:fgDecalAngles;
+		ArrayList< Vector2 > offsetList = (isBG)?bgDecalOffsets:fgDecalOffsets;
+		//s.setOrigin( -s.getWidth( )/2, -s.getHeight( )/2 );
+		if(isBack){
+			decalList.add( 0,s );
+			angleList.add( 0,angle );
+			offsetList.add( 0,offset );
+		}else{
+			decalList.add( s );
+			angleList.add( angle );
+			offsetList.add( offset );
+		}
+	}
+	
+	public void addBGDecal( Sprite s, Vector2 offset, float angle ) {
+//		if ( s == null ) {
+//			throw new RuntimeException(
+//					"Entity.addBGDecal(): Adding null sprite" );
+//		}
+//		s.setOrigin( s.getWidth( )/2, s.getHeight( )/2 );
+//		this.bgDecals.add( s );
+//		this.bgDecalOffsets.add( offset );
+//		this.bgDecalAngles.add( angle );
+		insertDecal(true,s,offset, angle, false);
 	}
 
 	/**
@@ -1035,13 +1074,15 @@ public class Entity implements GleedLoadable {
 	 *            in radian
 	 */
 	public void addFGDecal( Sprite s, Vector2 offset, float angle ) {
-		if ( s == null ) {
-			throw new RuntimeException(
-					"Entity.addFGDecal(): Adding null sprite" );
-		}
-		this.fgDecals.add( s );
-		this.fgDecalOffsets.add( offset );
-		this.fgDecalAngles.add( angle );
+//		if ( s == null ) {
+//			throw new RuntimeException(
+//					"Entity.addFGDecal(): Adding null sprite" );
+//		}
+//		s.setOrigin( s.getWidth( )/2, s.getHeight( )/2 );
+//		this.fgDecals.add( s );
+//		this.fgDecalOffsets.add( offset );
+//		this.fgDecalAngles.add( angle );
+		insertDecal(false,s,offset, angle, false);
 	}
 
 	public void addBGDecal( Sprite s, Vector2 offset ) {
@@ -1053,68 +1094,27 @@ public class Entity implements GleedLoadable {
 	}
 
 	public void addFGDecalBack( Sprite s, Vector2 offset ) {
-		if ( s == null ) {
-			throw new RuntimeException(
-					"Entity.addFGDecal(): Adding null sprite" );
-		}
-		fgDecals.add( 0, s );
-		fgDecalOffsets.add( 0, offset );
-		fgDecalAngles.add( 0, 0.0f );
-		// addDecalBack( s, offset, true );
+//		if ( s == null ) {
+//			throw new RuntimeException(
+//					"Entity.addFGDecal(): Adding null sprite" );
+//		}
+//		fgDecals.add( 0, s );
+//		fgDecalOffsets.add( 0, offset );
+//		fgDecalAngles.add( 0, 0.0f );
+//		// addDecalBack( s, offset, true );
+		insertDecal(false,s,offset, 0.0f, true);
 	}
 
 	public void addBGDecalBack( Sprite s, Vector2 offset ) {
-		if ( s == null ) {
-			throw new RuntimeException(
-					"Entity.addFGDecal(): Adding null sprite" );
-		}
-		bgDecals.add( 0, s );
-		bgDecalOffsets.add( 0, offset );
-		bgDecalAngles.add( 0, 0.0f );
-		// addDecalBack( s, offset, false );
-	}
-
-	private void addDecalBack( Sprite s, Vector2 offset, boolean isFG ) {
-		ArrayList< Sprite > decalsList = ( isFG ) ? this.fgDecals
-				: this.bgDecals;
-		ArrayList< Vector2 > offsetList = ( isFG ) ? this.fgDecalOffsets
-				: this.bgDecalOffsets;
-		ArrayList< Float > angleList = ( isFG ) ? this.fgDecalAngles
-				: this.bgDecalAngles;
-
-		ArrayList< Sprite > newSprites = new ArrayList< Sprite >(
-				decalsList.size( ) + 1 );
-		newSprites.add( s );
-		for ( Sprite sprite : decalsList )
-			newSprites.add( sprite );
-		decalsList.clear( );
-		decalsList = newSprites;
-
-		ArrayList< Vector2 > newOffsets = new ArrayList< Vector2 >(
-				offsetList.size( ) + 1 );
-		newOffsets.add( offset );
-		for ( Vector2 o : offsetList )
-			newOffsets.add( o );
-		offsetList.clear( );
-		offsetList = newOffsets;
-
-		ArrayList< Float > newAngles = new ArrayList< Float >(
-				angleList.size( ) + 1 );
-		newAngles.add( 0.0f );
-		for ( Float f : angleList )
-			newAngles.add( f );
-		angleList.clear( );
-		angleList = newAngles;
-
-		if ( isFG ) {
-			this.fgDecals = decalsList;
-			this.fgDecalOffsets = offsetList;
-			this.fgDecalAngles = angleList;
-		} else {
-			this.bgDecals = decalsList;
-			this.bgDecalOffsets = offsetList;
-			this.bgDecalAngles = angleList;
-		}
+//		if ( s == null ) {
+//			throw new RuntimeException(
+//					"Entity.addFGDecal(): Adding null sprite" );
+//		}
+//		bgDecals.add( 0, s );
+//		bgDecalOffsets.add( 0, offset );
+//		bgDecalAngles.add( 0, 0.0f );
+//		// addDecalBack( s, offset, false );
+		insertDecal(true,s,offset, 0.0f, true);
 	}
 
 	public void addBGDecal( Sprite s ) {
@@ -1132,23 +1132,24 @@ public class Entity implements GleedLoadable {
 		float x, y, r;
 		Vector2 offset;
 		Sprite decal;
+		float a = angle * Util.RAD_TO_DEG;
 		for ( int i = 0; i < fgDecals.size( ); i++ ) {
 			offset = fgDecalOffsets.get( i );
 			decal = fgDecals.get( i );
 			r = fgDecalAngles.get( i );
-			x = bodyPos.x + ( offset.x * cos ) - ( offset.y * sin );
-			y = bodyPos.y + ( offset.y * cos ) + ( offset.x * sin );
-			decal.setPosition( x, y );
-			decal.setRotation( r + ( angle * Util.RAD_TO_DEG ) );
+			x = bodyPos.x + ( (offset.x) * cos ) - ( (offset.y) * sin );
+			y = bodyPos.y + ( (offset.y) * cos ) + ( (offset.x) * sin );
+			decal.setPosition( x+decal.getOriginX( ), y+decal.getOriginY( ) );
+			decal.setRotation( r + a );
 		}
 		for ( int i = 0; i < bgDecals.size( ); i++ ) {
 			offset = bgDecalOffsets.get( i );
 			decal = bgDecals.get( i );
 			r = bgDecalAngles.get( i );
-			x = bodyPos.x + ( offset.x * cos ) - ( offset.y * sin );
-			y = bodyPos.y + ( offset.y * cos ) + ( offset.x * sin );
-			decal.setPosition( x, y );
-			decal.setRotation( r + ( angle * Util.RAD_TO_DEG ) );
+			x = bodyPos.x + ( (offset.x) * cos ) - ( (offset.y) * sin );
+			y = bodyPos.y + ( (offset.y) * cos ) + ( (offset.x) * sin );
+			decal.setPosition( x+decal.getOriginX( ), y+decal.getOriginY( ) );
+			decal.setRotation( r + a );
 		}
 	}
 
@@ -1168,8 +1169,7 @@ public class Entity implements GleedLoadable {
 			 */
 			if ( this.entityType != EntityType.SKELETON
 					|| decal.getBoundingRectangle( ).overlaps(
-							camera.getBounds( ) ) ) 
-			{
+							camera.getBounds( ) ) ) {
 				decal.draw( batch );
 			}
 		}
@@ -1195,6 +1195,14 @@ public class Entity implements GleedLoadable {
 				decal.draw( batch );
 			}
 		}
+	}
+
+	public int getFGListSize( ) {
+		return fgDecals.size( );
+	}
+
+	public int getBGListSize( ) {
+		return fgDecals.size( );
 	}
 
 	/**
@@ -1371,6 +1379,7 @@ public class Entity implements GleedLoadable {
 		if ( sounds != null && sounds.hasSound( "idle" ) ) {
 			sounds.setSoundVolume( "idle", 0.0f );
 			sounds.loopSound( "idle" );
+			Gdx.app.log( name, "Starting Idle Sound" );
 		}
 	}
 

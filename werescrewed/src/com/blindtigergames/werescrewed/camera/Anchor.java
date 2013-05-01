@@ -16,7 +16,7 @@ public class Anchor {
 	protected Vector2 offset;
 	protected Vector2 offsetBox;
 	protected Vector2 buffer;
-	protected boolean activated;
+	public boolean activated;
 	// In steps
 	protected int timer;
 	static protected final Vector2 DEFAULT_BUFFER = new Vector2( 128f, 128f );
