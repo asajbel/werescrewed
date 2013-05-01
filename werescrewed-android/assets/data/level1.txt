@@ -68,3 +68,6 @@
 /levels/alphabot/sheetmetaltextureblack.png
 
 /levels/alphabot/shoe_testing/shoe_background_1024.png
+
+## Alphabot panel thing
+/levels/alphabot/alphabot-panel.pack

@@ -23,6 +23,7 @@ import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityCategory;
 import com.blindtigergames.werescrewed.entity.EntityDef;
 import com.blindtigergames.werescrewed.entity.EntityType;
+import com.blindtigergames.werescrewed.entity.Panel;
 import com.blindtigergames.werescrewed.entity.PolySprite;
 import com.blindtigergames.werescrewed.entity.RobotState;
 import com.blindtigergames.werescrewed.entity.RootSkeleton;
@@ -92,6 +93,7 @@ public class LevelFactory {
 	protected static final String imageTag = "image";
 	protected static final String gleedImageTag = "image";
 	protected static final String atlasTag = "atlas";
+	protected static final String panelTag = "panel";
 	
 	private Random random;
 
@@ -255,7 +257,9 @@ public class LevelFactory {
 			out = constructHazard( item );
 		} else if ( bluePrints.equals( "fixture" ) ) {
 			constructFixture( item );
-		} else if ( !bluePrints.equals( "camera" )
+		} else if(bluePrints.equals( "panel" )){
+			constructPanel(item);
+		}else if ( !bluePrints.equals( "camera" )
 				&& item.getDefinition( ).getCategory( ) == EntityCategory.COMPLEX_PLATFORM ) {
 			out = loadComplexPlatform( item );
 		} else {
@@ -1521,6 +1525,16 @@ public class LevelFactory {
 
 		return pathPoints;
 
+	}
+	
+	//requirements of a panel are an atlas and a skeleton
+	public Panel constructPanel(Item item){
+		String skelAttach = item.skeleton;
+		Skeleton parent = loadSkeleton( skelAttach );
+		
+		Panel out = new Panel(new Vector2(item.pos.x,item.pos.y), level.world, item.getAtlasName(), "");
+		parent.addKinematicPlatform( out );
+		return out;
 	}
 
 	public Hazard constructHazard( Item item ) {
