@@ -1,6 +1,19 @@
+## Common assets loaded once on the game's boot up.
+## Please clean out your old assets!!
+
+## Notes: Always put the @ options in the beginning of these
+## index files or the loading bar will be interrupted
+
+##Default robot textures:
+@ bg /levels/alphabot/alphabot-interior.png
+@ outline /levels/alphabot/alphabot-outline.png
+@ fg /levels/alphabot/alphabot-fg.png
+
+
 ##sounds
 /common/sounds/inceptionbutton.mp3
 /common/sounds/jump.ogg
+/common/sounds/jumpFemale.ogg
 /common/sounds/footstep1.ogg
 /common/sounds/footstep2.ogg
 /common/sounds/screwing.ogg
@@ -50,8 +63,7 @@
 #/common/title_background_original.png
 #/common/robot/metal.png
 
-##Alphabot BG texture as default
-/levels/alphabot/alphabot-interior.png
+
 
 /common/moustache.png
 

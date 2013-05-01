@@ -42,6 +42,9 @@ public class WereScrewedGame extends Game {
 		
 		ScreenManager.getInstance( ).initialize( this );
 		
+        //used to stop auto call of render
+        //Gdx.graphics.setContinuousRendering(false);
+        
 		if (Gdx.graphics.isGL20Available( ))
 			defaultShader = SpriteBatch.createDefaultShader( );
 		else
@@ -96,6 +99,8 @@ public class WereScrewedGame extends Game {
 //		fpsTime += deltaTime;
 //		if ( fpsTime >= oneOverTargetFrameRate ){
 //			fpsTime = fpsTime - oneOverTargetFrameRate;
+//			//request a render
+//			//Gdx.graphics.requestRendering();
 //			super.render( );
 //		}else{
 //			return;
