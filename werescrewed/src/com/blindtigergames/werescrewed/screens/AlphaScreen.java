@@ -710,36 +710,7 @@ public class AlphaScreen extends Screen {
 		}
 
 //		if (  powerSwitch5.isTurnedOn( )  && powerSwitch6.isTurnedOn( ) ) {
-//			
-//
-//				Skeleton rightKneeTrapDoorSkeleton1 = ( Skeleton ) LevelFactory.entities
-//						.get( "rightKneeTrapDoorSkeleton1" );
-//				Skeleton rightKneeTrapDoorSkeleton2 = ( Skeleton ) LevelFactory.entities
-//						.get( "rightKneeTrapDoorSkeleton2" );
-//				if(rightKneeTrapDoorSkeleton1.currentMover( ) == null){
-//					Timeline t = Timeline.createSequence( );
-//		
-//					t.push( Tween
-//							.to( rightKneeTrapDoorSkeleton1, PlatformAccessor.LOCAL_ROT,
-//									0.5f ).ease( TweenEquations.easeNone )
-//							.target( ( -Util.PI / 2 ) ).delay( 0f ).start( ) );
-//		
-//					rightKneeTrapDoorSkeleton1
-//							.addMover( new TimelineTweenMover( t.start( ) ) );
-//				}
-//				
-//				if(rightKneeTrapDoorSkeleton2.currentMover( ) == null){
-//					Timeline t2 = Timeline.createSequence( );
-//		
-//					t2.push( Tween
-//							.to( rightKneeTrapDoorSkeleton2, PlatformAccessor.LOCAL_ROT,
-//									0.5f ).ease( TweenEquations.easeNone )
-//							.target( (Util.PI / 2 ) ).delay( 0f ).start( ) );
-//		
-//					rightKneeTrapDoorSkeleton2
-//							.addMover( new TimelineTweenMover( t2.start( ) ) );
-//				
-//				}
+	
 //		}
 		
 		if (  powerSwitch9.isTurnedOn( )  && powerSwitch10.isTurnedOn( ) ) {
@@ -928,7 +899,29 @@ public class AlphaScreen extends Screen {
 				.get( "headEyebrow2" );
 		
 
-
+		Skeleton rightKneeTrapDoorSkeleton1 = ( Skeleton ) LevelFactory.entities
+				.get( "rightKneeTrapDoorSkeleton1" );
+		Skeleton rightKneeTrapDoorSkeleton2 = ( Skeleton ) LevelFactory.entities
+				.get( "rightKneeTrapDoorSkeleton2" );
+		
+		//rightKneeTrapDoorSkeleton2.setActive( false );
+		//rightKneeTrapDoorSkeleton1.setActive( false );
+		
+		EventTrigger rightKneeTrapDoorEvent1 = ( EventTrigger ) LevelFactory.entities
+				.get( "rightKneeTrapDoorEvent1" );
+		
+		rightKneeTrapDoorEvent1.addEntityToTrigger( rightKneeTrapDoorSkeleton1 );
+		rightKneeTrapDoorEvent1.actOnEntity = true;
+		rightKneeTrapDoorEvent1.addBeginIAction( new RotateTweenAction(-Util.PI/2, 0.8f));
+		
+		EventTrigger rightKneeTrapDoorEvent2 = ( EventTrigger ) LevelFactory.entities
+				.get( "rightKneeTrapDoorEvent2" );
+		
+		rightKneeTrapDoorEvent2.addEntityToTrigger( rightKneeTrapDoorSkeleton2 );
+		rightKneeTrapDoorEvent2.actOnEntity = true;
+		rightKneeTrapDoorEvent2.addBeginIAction( new RotateTweenAction(Util.PI/2, 0.8f));
+				
+				
 	}
 	
 	private void createChestDecals(){
