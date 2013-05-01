@@ -34,6 +34,10 @@ public class AssetManager extends com.badlogic.gdx.assets.AssetManager {
 	HashMap< String, ParticleEffect > particleEffects;
 	HashMap< String, SkeletonData > spineSkeletons;
 	HashMap<Class<?>, String > dummyAssets;
+	Texture robotTexBG;// = "/levels/alphabot/alphabot-interior.png";
+	Texture robotOutlineTex;// = "/levels/alphabot/alphabot-outline.png";
+	Texture robotTexFG;// = "/levels/alphabot/alphabot-outline.png";
+	//TODO: set default values for this
 
 	public AssetManager( ) {
 		super( );
@@ -229,6 +233,31 @@ public class AssetManager extends com.badlogic.gdx.assets.AssetManager {
 	 */
 	public String getRandomRivetName(){
 		return "rivet"+(WereScrewedGame.random.nextInt( 4 )+1);//there's only 4 rivets in common-textures.
+	}
+	
+	
+	public void setLevelRobotBGTex(Texture tex){
+		robotTexBG = tex;
+	}
+	
+	public Texture getLevelRobotBGTex(){
+		return robotTexBG;
+	}
+	
+	public void setLevelRobotFGTex(Texture tex){
+		robotTexFG = tex;
+	}
+	
+	public Texture getLevelRobotFGTex(){
+		return robotTexFG;
+	}
+	
+	public void setLevelRobotOutlineTex(Texture tex){
+		robotOutlineTex = tex;
+	}
+	
+	public Texture getLevelRobotOutlineTex(){
+		return robotOutlineTex;
 	}
 
 }

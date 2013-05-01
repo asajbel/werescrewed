@@ -2220,8 +2220,14 @@ public class Player extends Entity {
 	}
 	
 	public void loadSounds(){
-		sounds.getSound( "jump", WereScrewedGame.dirHandle
-				+ "/common/sounds/jump.ogg" );
+		//Gender-specific Sounds
+		if (name.equals("player1")){
+			sounds.getSound( "jump", WereScrewedGame.dirHandle
+					+ "/common/sounds/jump.ogg" );
+		} else {
+			sounds.getSound( "jump", WereScrewedGame.dirHandle
+					+ "/common/sounds/jumpFemale.ogg" );	
+		}
 		sounds.getSound( "footstep1" , WereScrewedGame.dirHandle
 				+ "/common/sounds/footstep1.ogg");
 		sounds.getSound( "footstep2" , WereScrewedGame.dirHandle

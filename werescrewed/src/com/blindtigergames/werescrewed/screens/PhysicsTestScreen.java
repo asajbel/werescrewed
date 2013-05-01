@@ -610,9 +610,9 @@ public class PhysicsTestScreen extends Screen {
 		// gear2.quickfixCollisions( );
 
 		TiledPlatform piston = platBuilder.name( "piston" ).kinematic( )
-				.position( 2700, 100 ).dimensions( 2, 5 ).oneSided( false )
+				.position( 2700, 100 ).dimensions( 7, 2 ).oneSided( false )
 				.buildTilePlatform( );
-		piston.addMover( new PistonTweenMover( piston, new Vector2( -350, 0 ),
+		piston.addMover( new PistonTweenMover( piston, new Vector2( 0, 500 ),
 				0.5f, 3f, 1f, 0f, 1f ), RobotState.IDLE );
 		s.addKinematicPlatform( piston );
 		piston.setCrushing( true );

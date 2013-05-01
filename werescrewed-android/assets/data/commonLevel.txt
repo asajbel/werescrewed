@@ -1,6 +1,19 @@
+## Common assets loaded once on the game's boot up.
+## Please clean out your old assets!!
+
+## Notes: Always put the @ options in the beginning of these
+## index files or the loading bar will be interrupted
+
+##Default robot textures:
+@ bg /levels/alphabot/alphabot-interior.png
+@ outline /levels/alphabot/alphabot-outline.png
+@ fg /levels/alphabot/alphabot-fg.png
+
+
 ##sounds
 /common/sounds/inceptionbutton.mp3
 /common/sounds/jump.ogg
+/common/sounds/jumpFemale.ogg
 /common/sounds/footstep1.ogg
 /common/sounds/footstep2.ogg
 /common/sounds/screwing.ogg
@@ -45,12 +58,12 @@
 /common/tileset/TilesetTest.png
 #/common/blind_tiger_logo_1024.png
 /common/title_background.png
+/common/title_background_clear.png
 #/common/title_background_1024.png
 #/common/title_background_original.png
 #/common/robot/metal.png
 
-##Alphabot BG texture as default
-/levels/alphabot/alphabot-interior.png
+
 
 /common/moustache.png
 
@@ -119,6 +132,8 @@ slowSteam.p
 ## debug for testing engine in phys screen. Remove before release! -stew
 /levels/alphabot/engine.pack
 
+##temp background
+/common/menu_placeholder.png
 
 ##Palette Def
 ##Define with <colorName>.palette
