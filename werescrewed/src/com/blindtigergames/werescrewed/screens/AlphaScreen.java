@@ -61,6 +61,8 @@ import com.blindtigergames.werescrewed.joint.PrismaticJointBuilder;
 import com.blindtigergames.werescrewed.joint.RevoluteJointBuilder;
 import com.blindtigergames.werescrewed.level.CharacterSelect;
 import com.blindtigergames.werescrewed.level.LevelFactory;
+import com.blindtigergames.werescrewed.sound.SoundManager;
+import com.blindtigergames.werescrewed.sound.SoundManager.SoundType;
 import com.blindtigergames.werescrewed.util.Util;
 
 public class AlphaScreen extends Screen {
@@ -102,6 +104,8 @@ public class AlphaScreen extends Screen {
 	
 	Array<Panel> panels;
 
+	protected SoundManager bgm;
+	
 	public AlphaScreen( ) {
 		super( );
 
@@ -176,6 +180,11 @@ public class AlphaScreen extends Screen {
 		createChestDecals();
 		//powerSwitch();
 		initPanels();
+		bgm = new SoundManager();
+		bgm.getSound( "bgm" ,WereScrewedGame.dirHandle
+				+ "/common/music/waltz.mp3");
+		bgm.setSoundVolume( "bgm", SoundManager.globalVolume.get(SoundType.MUSIC));
+		bgm.loopSound( "bgm" );
 	}
 
 	@Override

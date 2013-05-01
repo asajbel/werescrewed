@@ -20,9 +20,11 @@
 /common/sounds/unscrewing.ogg
 /common/sounds/land.ogg
 /common/sounds/WilhelmScream.ogg
+/common/sounds/steam.ogg
 /common/sounds/TrainJob.mp3
 /common/sounds/loopTrain.mp3
 /common/sounds/introTrain.mp3
+/common/music/waltz.mp3
 
 ##Please don't add individual files, add them to the common-textures.pack file with texture packer!
 ##common texture

@@ -115,7 +115,7 @@ public class SoundManager {
 	
 	public void setSoundVolume(String id, float v){
 		if (hasSound(id)){
-			sounds.get(id).volume = (float)(Math.min( 2.0f, Math.max( v, 0.0f) ));
+			sounds.get(id).setVolume( v );
 		}
 	}
 	
@@ -337,7 +337,7 @@ public class SoundManager {
 		}
 
 		public void setVolume( float value ) {
-			volume = value;
+			volume = Math.min( Math.max(value, 0.0f), 1.0f );
 		}
 
 		public void setPitch( float value ) {
