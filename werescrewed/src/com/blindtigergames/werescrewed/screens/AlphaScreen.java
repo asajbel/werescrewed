@@ -976,6 +976,7 @@ public class AlphaScreen extends Screen {
 		Skeleton engineSkeleton = new Skeleton( "engineSkeleton", posPix, null,
 				level.world );
 		level.root.addSkeleton( engineSkeleton );
+		engineSkeleton.setFgFade( false );
 		int pistonDistanceApart = 280;
 		float engineSpeed = 2.5f;
 		
