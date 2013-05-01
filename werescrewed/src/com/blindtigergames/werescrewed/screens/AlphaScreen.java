@@ -176,6 +176,9 @@ public class AlphaScreen extends Screen {
 		createChestDecals();
 		//powerSwitch();
 		initPanels();
+		Skeleton root = ( Skeleton ) LevelFactory.entities
+				.get( "RootSkeleton" );
+		root.setFgFade( false );
 	}
 
 	@Override
@@ -424,6 +427,7 @@ public class AlphaScreen extends Screen {
 			Gdx.app.log( "fgList", s.name );
 		}
 		light_skel.setFgFade( false );
+		
 	}
 
 	private void initParallaxBackground( ) {

@@ -663,8 +663,9 @@ public class LevelFactory {
 
 			skeleton = skeleBuilder.build( );
 
-			if ( item.props.containsKey( "invisible" ) ) {
-			//	skeleton.setFgFade( false );
+			if ( item.props.containsKey( "alwaysVisible" ) ) 
+			{
+				skeleton.setFgFade( false );
 			}
 			if ( item.props.containsKey( "gravscale" ) ) {
 				float gravScale = Float.parseFloat( item.props

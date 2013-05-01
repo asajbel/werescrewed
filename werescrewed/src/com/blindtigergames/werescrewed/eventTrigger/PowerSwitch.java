@@ -16,10 +16,10 @@ import com.blindtigergames.werescrewed.util.Util;
 public class PowerSwitch extends EventTrigger{
 
 	private boolean state = false;
-	//private static Texture onTex =  WereScrewedGame.manager.get(
-	//		WereScrewedGame.dirHandle + "/common/powerswitches/on.png" );
-	//private static Texture offTex = WereScrewedGame.manager.get( 
-	//		WereScrewedGame.dirHandle + "/common/powerswitches/off.png" );
+	private static Texture onTex =  WereScrewedGame.manager.get(
+			WereScrewedGame.dirHandle + "/common/powerswitches/on.png" );
+	private static Texture offTex = WereScrewedGame.manager.get( 
+			WereScrewedGame.dirHandle + "/common/powerswitches/off.png" );
 	
 	private Sprite onState, offState;
 	/**
@@ -33,11 +33,17 @@ public class PowerSwitch extends EventTrigger{
 		super( name, world );
 		contructRectangleBody(64, 64, position);
 		entityType = EntityType.POWERSWITCH;
-		TextureAtlas commonTextureAtlas = WereScrewedGame.manager.getAtlas( "common-textures" );
-		onState = commonTextureAtlas.createSprite( "steam_engine_lever_on" );//new Sprite(onTex);
-		offState = commonTextureAtlas.createSprite( "steam_engine_lever_off" );//new Sprite(offTex);
-		//onState.setOrigin( onState.getWidth( )/2, 32 );
-		//offState.setOrigin( offState.getWidth( )/2, 32 );
+		//TODO FIX THIS
+		//TextureAtlas commonTextureAtlas = WereScrewedGame.manager.getAtlas( "common-textures" );
+		//onState = commonTextureAtlas.createSprite( "steam_engine_lever_on" );
+		//TODO FIX THIS
+		onState = new Sprite(onTex);
+		//offState = commonTextureAtlas.createSprite( "steam_engine_lever_off" );
+		offState = new Sprite(offTex);
+		this.sprite = offState;
+		onState.setOrigin( onState.getWidth( )/2, 32 );
+		offState.setOrigin( offState.getWidth( )/2, 32 );
+		//TODO FIX THIS
 		addBGDecal( onState );
 	}
 	
@@ -66,23 +72,24 @@ public class PowerSwitch extends EventTrigger{
 	
 	@Override
 	public void draw(SpriteBatch batch, float deltaTime){
-		//float xpos =  body.getPosition( ).x - (32f * Util.PIXEL_TO_BOX);
-		//float ypos =  body.getPosition( ).y - (32f * Util.PIXEL_TO_BOX);
+		float xpos =  body.getPosition( ).x - (32f * Util.PIXEL_TO_BOX);
+		float ypos =  body.getPosition( ).y - (32f * Util.PIXEL_TO_BOX);
 		
-		Sprite currentSprite = (state)?onState:offState;
-		if(currentSprite.equals(bgDecals.get( 0 ))){
-			bgDecals.clear( );
-			bgDecalAngles.clear( );
-			bgDecalOffsets.clear( );
-			addBGDecal( currentSprite );
-		}
-		updateDecals( deltaTime );
-
+		//TODO FIX THIS
+//		Sprite currentSprite = (state)?onState:offState;
+//		if(currentSprite.equals(bgDecals.get( 0 ))){
+//			bgDecals.clear( );
+//			bgDecalAngles.clear( );
+//			bgDecalOffsets.clear( );
+//			addBGDecal( currentSprite );
+//		}
+//		updateDecals( deltaTime );
+		
 		super.draw( batch, deltaTime );
-		
-		//currentSprite.setPosition( xpos * Util.BOX_TO_PIXEL, ypos * Util.BOX_TO_PIXEL);
-		//currentSprite.setRotation(  MathUtils.radiansToDegrees
-		//			* body.getAngle( ) );
+
+		sprite.setPosition( xpos * Util.BOX_TO_PIXEL, ypos * Util.BOX_TO_PIXEL);
+		sprite.setRotation(  MathUtils.radiansToDegrees
+					* body.getAngle( ) );
 		
 	}	
 	
