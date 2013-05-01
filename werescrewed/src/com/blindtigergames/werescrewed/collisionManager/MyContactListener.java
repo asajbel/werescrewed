@@ -2,6 +2,7 @@ package com.blindtigergames.werescrewed.collisionManager;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactImpulse;
@@ -9,6 +10,7 @@ import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.physics.box2d.Manifold.ManifoldPoint;
+import com.blindtigergames.werescrewed.camera.Camera;
 import com.blindtigergames.werescrewed.checkpoints.CheckPoint;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityType;
@@ -22,8 +24,10 @@ import com.blindtigergames.werescrewed.entity.platforms.TiledPlatform;
 import com.blindtigergames.werescrewed.entity.screws.Screw;
 import com.blindtigergames.werescrewed.eventTrigger.EventTrigger;
 import com.blindtigergames.werescrewed.eventTrigger.PowerSwitch;
+import com.blindtigergames.werescrewed.level.Level;
 import com.blindtigergames.werescrewed.player.Player;
 import com.blindtigergames.werescrewed.player.Player.PlayerState;
+import com.blindtigergames.werescrewed.sound.SoundManager;
 
 /**
  * 
@@ -36,17 +40,23 @@ public class MyContactListener implements ContactListener {
 	private static int NUM_PLAYER2_CONTACTS = 0;
 	private static final float LAND_DELAY = 0;
 	private static final float LAND_VOLUME = 0.15f;
+	private static final float COLLISION_VOLUME = 5.0f;
 	private static final float LAND_FALLOFF = 3.0f;
+	private static final float COLLISION_SOUND_DELAY = 0.2f;
+	private static final float COLLISION_FORCE_FALLOFF = 3.0f;
+	private static final float COLLISION_SCREEN_FALLOFF = 1.0f;
+
 
 	/**
 	 * When two new objects start to touch
 	 */
 	@Override
 	public void beginContact( Contact contact ) {
-		// Object objectA = contact.getFixtureA( ).getUserData( );
-		// Object objectB = contact.getFixtureB( ).getUserData( );
 		final Fixture x1 = contact.getFixtureA( );
 		final Fixture x2 = contact.getFixtureB( );
+		Object objectA = x1.getBody( ).getUserData( );
+		Object objectB = x2.getBody( ).getUserData( );
+
 		/*
 		 * Will replace current code with this when I'm not working on other
 		 * tasks. ~Kevin if (objectA != null && objectB != null){ if (objectA
@@ -61,20 +71,14 @@ public class MyContactListener implements ContactListener {
 		Fixture objectFix = null;
 		
         boolean playerInvolved = false;
-		
-        Vector2 contactPos;
-        int contactPoints = contact.getWorldManifold( ).getPoints().length;
-        Vector2 forceVector = new Vector2(0,0);
-        for (int c = 0; c < contactPoints; c++){
-        	contactPos = contact.getWorldManifold( ).getPoints()[c];
-        	forceVector.add( x1.getBody().getLinearVelocityFromWorldPoint(contactPos) );
-        	forceVector.sub( x2.getBody().getLinearVelocityFromWorldPoint(contactPos) );
-        }
+
+        float force = calculateForce(contact);
         
-        float force = forceVector.len()/contactPoints;
-        
-		if ( x1.getBody( ).getUserData( ) != null
-				&& x2.getBody( ).getUserData( ) != null ) {
+		if ( objectA != null
+				&& objectB != null ) {
+			if (objectA instanceof Entity && objectB instanceof Entity){
+				handleCollisionSounds( (Entity) objectA, (Entity) objectB , contact, force);
+			}
 			if ( x1.getBody( ).getUserData( ) instanceof Player ) {
 				playerFix = x1;
 				objectFix = x2;
@@ -418,15 +422,18 @@ public class MyContactListener implements ContactListener {
 	public void postSolve( Contact contact, ContactImpulse impulse ) {
 		final Fixture x1 = contact.getFixtureA( );
 		final Fixture x2 = contact.getFixtureB( );
+		
+		Object objectA = x1.getBody( ).getUserData( );
+		Object objectB = x2.getBody( ).getUserData( );
 
 		Fixture playerFix = null;
 		Fixture objectFix = null;
 
 		boolean playerInvolved = false;
 
-		if ( x1.getBody( ).getUserData( ) != null
-				&& x2.getBody( ).getUserData( ) != null ) {
-			if ( x1.getBody( ).getUserData( ) instanceof Player ) {
+		if ( objectA != null
+				&& objectB != null ) {
+			if ( objectA instanceof Player ) {
 				playerFix = x1;
 				objectFix = x2;
 				playerInvolved = true;
@@ -438,15 +445,15 @@ public class MyContactListener implements ContactListener {
 			if ( playerInvolved ) {
 				Player player = ( Player ) playerFix.getBody( ).getUserData( );
 				if ( objectFix.getBody( ).getUserData( ) instanceof Entity ) {
-					Entity object = ( Entity ) objectFix.getBody( )
+					Entity notPlayer = ( Entity ) objectFix.getBody( )
 							.getUserData( );
-					if ( object.getEntityType( ) != null ) {
-						switch ( object.getEntityType( ) ) { // switch between
+					if ( notPlayer.getEntityType( ) != null ) {
+						switch ( notPlayer.getEntityType( ) ) { // switch between
 																// different
 																// types
 																// of entities
 						case PLATFORM:
-							Platform plat = ( Platform ) object;
+							Platform plat = ( Platform ) notPlayer;
 							if ( plat.getPlatformType( ) == PlatformType.TILED ) {
 								TiledPlatform tilePlat = ( TiledPlatform ) objectFix
 										.getBody( ).getUserData( );
@@ -471,6 +478,95 @@ public class MyContactListener implements ContactListener {
 								"" );
 					}
 				}
+			}
+		}
+	}
+	
+	public float calculateForce(Contact contact){
+		final Body x1 = contact.getFixtureA( ).getBody();
+		final Body x2 = contact.getFixtureB( ).getBody();
+
+        Vector2 contactPos;
+        int contactPoints = contact.getWorldManifold( ).getPoints().length;
+        Vector2 forceVector = new Vector2(0,0);
+        for (int c = 0; c < contactPoints; c++){
+        	contactPos = contact.getWorldManifold( ).getPoints()[c];
+        	forceVector.add( x1.getLinearVelocityFromWorldPoint(contactPos) );
+        	
+        	forceVector.sub( x2.getLinearVelocityFromWorldPoint(contactPos) );
+        }
+        
+        float force = forceVector.len()/contactPoints;
+        return force;
+	}
+	
+	public void handleCollisionSounds(Entity objectA, Entity objectB, Contact contact, float force){
+		/*
+		 * Generally, we want to avoid playing the same sound twice with any one collision.
+		 * So we'll use two soundref variables to store the sounds coming from both entities,
+		 * then check to see if they share a sound. If so, then we can skip playing the second one.
+		 */
+		//Determine the sound played by object A.
+		boolean playSoundA = objectA.hasSoundManager( );
+		//Determine the sound played by object B.
+		boolean playSoundB = objectB.hasSoundManager( );
+		//Only continue if we have at least one sound manager
+		if (playSoundA || playSoundB){
+			String soundA = "collision";
+			int indexA = 0;
+			
+			String soundB = "collision";
+			int indexB = 0;
+
+			//Skip playing a sound that the sound manager doesn't have.
+			if (playSoundA && !objectA.sounds.hasSound( soundA, indexA ))
+				playSoundA = false;
+			if (playSoundB && !objectB.sounds.hasSound( soundA, indexA ))
+				playSoundB = false;
+			
+			//Resolve duplicate sounds
+			if (playSoundA && playSoundB){
+				if (objectA.sounds.getGDXSound( soundA, indexA )
+						.equals( objectB.sounds.getGDXSound( soundB, indexB ) ) ){
+					playSoundB = false;
+				}
+			}
+			
+			//Stop gears from making a sound when they collide with each other.
+			if (objectA.type != null && objectB.type != null){
+				if (objectA.type.getName().toLowerCase().contains( "gear" ) 
+						&& objectB.type.getName().toLowerCase().contains( "gear" )){
+					playSoundA = playSoundB = false;
+				}
+				//Stop gears from making a sound when they collide with the player.
+				if (objectA.type.getName().toLowerCase().contains( "gear" ) && objectB instanceof Player){
+					playSoundA = false;
+				}
+				if (objectB.type.getName().toLowerCase().contains( "gear" ) && objectA instanceof Player){
+					playSoundB = false;
+				}
+
+			}
+			
+			float v = Math.min( Math.max( (float)Math.pow(force * COLLISION_VOLUME, COLLISION_FORCE_FALLOFF), 0.0f ), 2.0f);
+			//Play soundA
+			if (playSoundA){
+				float vA = v * SoundManager.calculatePositionalVolume( objectA.getPositionPixel( ), 
+																		Camera.CAMERA_RECT, 
+																			objectA.sounds.getRange(soundA, indexA), 
+																				COLLISION_SCREEN_FALLOFF );
+				objectA.sounds.setSoundVolume( soundA, vA);
+				objectA.sounds.playSound( soundA, indexA , COLLISION_SOUND_DELAY);
+			}
+			
+			//Play soundB
+			if (playSoundB){
+				float vB = v * SoundManager.calculatePositionalVolume( objectB.getPositionPixel( ), 
+																		Camera.CAMERA_RECT, 
+																			objectB.sounds.getRange(soundB, indexB), 
+																				COLLISION_SCREEN_FALLOFF );
+				objectB.sounds.setSoundVolume( soundB, vB);
+				objectB.sounds.playSound( soundB, indexB , COLLISION_SOUND_DELAY);
 			}
 		}
 	}

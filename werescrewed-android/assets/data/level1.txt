@@ -21,6 +21,7 @@
 /common/parallax_layer2_0.png
 /common/parallax_layer2_1.png
 /common/robot/alphabot_texture_tux.png
+/levels/alphabot/alphabot_tile_suit_main.png
 /levels/alphabot/bgCloud.png
 
 ##texture atlas

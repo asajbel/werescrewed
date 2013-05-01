@@ -391,13 +391,14 @@ public class Entity implements GleedLoadable {
 				spinemator.update( deltaTime );
 			}
 		}
-		
+
 		updateParticleEffect( deltaTime, frontParticles );
 		updateParticleEffect( deltaTime, behindParticles );
-		
-		if (sounds != null){
-			if (sounds.hasSound( "idle" )){
-				sounds.handleSoundPosition("idle", this.getPositionPixel( ), Camera.CAMERA_RECT);
+
+		if ( sounds != null ) {
+			if ( sounds.hasSound( "idle" ) ) {
+				sounds.handleSoundPosition( "idle", this.getPositionPixel( ),
+						Camera.CAMERA_RECT );
 			}
 			sounds.update( deltaTime );
 		}
@@ -447,23 +448,24 @@ public class Entity implements GleedLoadable {
 		}
 	}
 
-	public boolean isTimeLineMoverFinished(){
-		if(currentMover() instanceof TimelineTweenMover){
-			return ( ( TimelineTweenMover ) currentMover() ).timeline.isFinished();
+	public boolean isTimeLineMoverFinished( ) {
+		if ( currentMover( ) instanceof TimelineTweenMover ) {
+			return ( ( TimelineTweenMover ) currentMover( ) ).timeline
+					.isFinished( );
 		}
 		return false;
-		
+
 	}
-	
-	
-	
-	public boolean isTimeLineMoverStarted(){
-		if(currentMover() instanceof TimelineTweenMover){
-			return ( ( TimelineTweenMover ) currentMover() ).timeline.isStarted( );
+
+	public boolean isTimeLineMoverStarted( ) {
+		if ( currentMover( ) instanceof TimelineTweenMover ) {
+			return ( ( TimelineTweenMover ) currentMover( ) ).timeline
+					.isStarted( );
 		}
 		return false;
-		
+
 	}
+
 	protected String generateName( ) {
 		return type.getName( );
 	}
@@ -1186,8 +1188,7 @@ public class Entity implements GleedLoadable {
 			 */
 			if ( this.entityType != EntityType.SKELETON
 					|| decal.getBoundingRectangle( ).overlaps(
-							camera.getBounds( ) ) ) 
-			{
+							camera.getBounds( ) ) ) {
 				decal.draw( batch );
 			}
 		}
@@ -1213,6 +1214,14 @@ public class Entity implements GleedLoadable {
 				decal.draw( batch );
 			}
 		}
+	}
+
+	public int getFGListSize( ) {
+		return fgDecals.size( );
+	}
+
+	public int getBGListSize( ) {
+		return fgDecals.size( );
 	}
 
 	/**
