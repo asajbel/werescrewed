@@ -553,21 +553,15 @@ public class AlphaScreen extends Screen {
 		kneeSkeleton.body.setType( BodyType.KinematicBody );
 		thighSkeleton.body.setType( BodyType.KinematicBody );
 
-<<<<<<< HEAD
-=======
 		structureScrew1 = ( StructureScrew ) LevelFactory.entities
 				.get( "structureScrew1" );
->>>>>>> master
 		//414, 48
 		ankleHatch = ( Platform ) LevelFactory.entities
 				.get( "ankle_hatch" );
 		RevoluteJointDef rjd = new RevoluteJointDef( );
 		rjd.initialize( ankleHatch.body, footSkeleton.body,
-<<<<<<< HEAD
-				new Vector2( -414, 48 ).mul( Util.PIXEL_TO_BOX ) );
-=======
+				//new Vector2( -414, 48 ).mul( Util.PIXEL_TO_BOX ) );
 				new Vector2( -415, 14 ).mul( Util.PIXEL_TO_BOX ) );
->>>>>>> master
 		level.world.createJoint( rjd );
 		
 		TiledPlatform structurePlat3 = ( TiledPlatform ) LevelFactory.entities
