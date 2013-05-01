@@ -127,3 +127,5 @@ gold.palette
 white.palette
 black.palette
 grey.palette
+
+/common/tutorial/thought_bubble.png

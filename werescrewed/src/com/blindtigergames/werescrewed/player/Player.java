@@ -8,6 +8,7 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.controllers.PovDirection;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
@@ -23,6 +24,7 @@ import com.blindtigergames.werescrewed.camera.Anchor;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityDef;
 import com.blindtigergames.werescrewed.entity.EntityType;
+import com.blindtigergames.werescrewed.entity.Sprite;
 import com.blindtigergames.werescrewed.entity.animator.PlayerSpinemator;
 import com.blindtigergames.werescrewed.entity.mover.FollowEntityMover;
 import com.blindtigergames.werescrewed.entity.mover.IMover;
@@ -32,6 +34,7 @@ import com.blindtigergames.werescrewed.entity.screws.ResurrectScrew;
 import com.blindtigergames.werescrewed.entity.screws.Screw;
 import com.blindtigergames.werescrewed.entity.screws.ScrewType;
 import com.blindtigergames.werescrewed.eventTrigger.PowerSwitch;
+import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 import com.blindtigergames.werescrewed.graphics.particle.ParticleEffect;
 import com.blindtigergames.werescrewed.input.MyControllerListener;
 import com.blindtigergames.werescrewed.input.PlayerInputHandler;
@@ -126,6 +129,11 @@ public class Player extends Entity {
 	private Steam currentSteam;
 	private static int switchTimer = 0;
 	
+	private Sprite tutorial = null;
+	private Sprite bubble;
+	private Texture bubbleTex = WereScrewedGame.manager.get( 
+			WereScrewedGame.dirHandle + "/common/tutorial/thought_bubble.png" );
+
 	private Player otherPlayer;
 	private RevoluteJoint playerJoint;
 	private Platform currentPlatform;
@@ -148,7 +156,7 @@ public class Player extends Entity {
 	private boolean changeDirections = false;
 	private boolean steamCollide = false;
 	private boolean steamDone = false;
-
+	
 	private IMover mover;
 
 	public int grabCounter = 0;
@@ -233,6 +241,7 @@ public class Player extends Entity {
 			spinemator = new PlayerSpinemator( this );
 			spinemator.setPosition( body.getWorldCenter( ) );
 		}
+		
 		Filter filter = new Filter( );
 		for ( Fixture f : body.getFixtureList( ) ) {
 			filter.categoryBits = Util.CATEGORY_PLAYER;
@@ -266,6 +275,8 @@ public class Player extends Entity {
 
 		createCircle( PLAYER_FRICTION );
 		frictionCounter = PLAYER_FRICTION;
+		
+		bubble = new Sprite(bubbleTex);
 	}
 
 	// PUBLIC METHODS
@@ -1146,6 +1157,9 @@ public class Player extends Entity {
 		return grounded;
 	}
 
+	/*public void draw( SpriteBatch batch, float deltaTime ) {
+		// TODO
+	}*/
 
 	/**
 	 * Attaches a player to the current screw
