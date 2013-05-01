@@ -24,6 +24,7 @@ public class LevelSelectScreen implements com.badlogic.gdx.Screen {
 	private BitmapFont font = null;
 	private BitmapFont fancyFont = null;
 	private Texture logo = null;
+	private Texture menuBG = null;
 	private Label screenLabel = null;
 	private Button playButton = null;
 	private Button gleedButton = null;
@@ -73,7 +74,8 @@ public class LevelSelectScreen implements com.badlogic.gdx.Screen {
 		Gdx.gl.glClear( GL10.GL_COLOR_BUFFER_BIT );
 		// TODO Auto-generated method stub
 		batch.begin( );
-		batch.draw( logo, 0, 200 );
+		batch.draw( menuBG, 0, 0 );
+		batch.draw( logo, 110, 560 );
 		// batch.draw(logo, -128, 0);
 		screenLabel.draw( batch );
 		playButton.draw( batch, camera );
@@ -124,8 +126,8 @@ public class LevelSelectScreen implements com.badlogic.gdx.Screen {
 		camera = new OrthographicCamera( );
 		camera.setToOrtho( false, width, height );
 		batch.setProjectionMatrix( camera.combined );
-		int leftX = width / 5;
-		int centerY = height / 2;
+		int leftX = width / 5 - 20;
+		int centerY = height / 2 - 10;
 		screenLabel.setX( leftX - screenLabel.getWidth( ) / 2 );
 		screenLabel.setY( centerY + 4 * lineHeight );
 		testButton.setX( leftX - testButton.getWidth( ) / 2 );
@@ -161,7 +163,9 @@ public class LevelSelectScreen implements com.badlogic.gdx.Screen {
 		fancyFont = WereScrewedGame.manager.getFont( "Screwball" );
 		// fancyFont = WereScrewedGame.manager.getFont( "ornatique" );
 		logo = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-				+ "/common/title_background.png", Texture.class );
+				+ "/common/title_background_clear.png", Texture.class );
+		menuBG = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
+				+ "/common/menu_placeholder.png", Texture.class ); 
 		lineHeight = Math.round( 2.5f * font.getCapHeight( ) + 20 );
 		screenLabel = new Label( "Level Select", fancyFont );
 		ControllerSetUp( );

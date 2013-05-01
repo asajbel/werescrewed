@@ -31,6 +31,7 @@ class MainMenuScreen implements com.badlogic.gdx.Screen {
 	public ScreenType screenType;
 	private SpriteBatch batch = null;
 	private Texture logo = null;
+	private Texture menuBG = null;
 	private OrthographicCamera camera = null;
 	private BitmapFont font = null;
 	BitmapFont fancyFont;
@@ -53,8 +54,7 @@ class MainMenuScreen implements com.badlogic.gdx.Screen {
 
 
 	public MainMenuScreen( ) {
-		Tween.registerAccessor( Button.class, new ButtonTweenAccessor( ) );
-		
+		//Tween.registerAccessor( Button.class, new ButtonTweenAccessor( ) );
 	}
 
 	@Override
@@ -65,7 +65,8 @@ class MainMenuScreen implements com.badlogic.gdx.Screen {
 		Gdx.gl.glClear( GL10.GL_COLOR_BUFFER_BIT );
 		manager.update( delta );
 		batch.begin( );
-		batch.draw(logo, 0, 128);
+		batch.draw( menuBG, 0, 0 );
+		batch.draw(logo, 110, 500);
 		//batch.draw(logo, -128, 0);
 		//headingLabel.draw( batch );
 		storyButton.draw( batch, camera );
@@ -133,7 +134,7 @@ class MainMenuScreen implements com.badlogic.gdx.Screen {
 		camera = new OrthographicCamera( );
 		camera.setToOrtho( false, width, height );
 		batch.setProjectionMatrix( camera.combined );
-		int leftX = width / 5;
+		int leftX = width / 5 - 20;
 		int centerY = height / 3 ;
 		
 		headingLabel.setX( leftX - headingLabel.getWidth( ) / 2 );
@@ -172,8 +173,10 @@ class MainMenuScreen implements com.badlogic.gdx.Screen {
 	 */
 	private void loadButtons( ){
 		//font = WereScrewedGame.manager.getFont( "ornatique" );
+		menuBG = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
+				 + "/common/menu_placeholder.png", Texture.class );
 		logo =  WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-				 + "/common/title_background.png", Texture.class );
+				 + "/common/title_background_clear.png", Texture.class );
 		lineHeight = Math.round( 2.5f * font.getCapHeight( ) + 20 );
 		headingLabel = new Label( "We're Screwed!!", fancyFont );
 		

@@ -17,7 +17,7 @@ import com.badlogic.gdx.math.Vector3;
 public class Button {
 	
 	private static final Color NORMAL_COLOR = new Color(1f, 1f, 1f, 0.7f);
-	private static final Color HOVER_COLOR = new Color(0f, 1f, 0f, 1f);
+	private static final Color HOVER_COLOR = new Color(0f, 128f, 255f, 1f);
 	
 	private String caption = null;
 	private BitmapFont font = null;
@@ -152,6 +152,7 @@ public class Button {
 		font.setColor(colored ? HOVER_COLOR : NORMAL_COLOR);
 		font.draw(batch, caption, x, y);
 		font.setColor(originalColor);
+		//Screw Adjustments
 		screwL.setPosition( x - 50, y - height - 10 );
 		screwR.setPosition( x + width + 10, y - height - 10 );
 		screwL.setSize( screwSize / 2, screwSize / 2 );
