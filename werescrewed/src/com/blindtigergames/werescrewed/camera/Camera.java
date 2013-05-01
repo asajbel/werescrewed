@@ -43,8 +43,7 @@ public class Camera {
 	private Vector2 translateVelocity;
 	private Vector2 translateTarget;
 	private float targetBuffer;
-	private boolean translateState;
-	private boolean insideTargetBuffer;
+	private boolean translating;
 
 	// zoom
 	private static final float ZOOM_ACCELERATION = .001f;
@@ -106,8 +105,7 @@ public class Camera {
 		// this.viewportHeight
 		// * BUFFER_RATIO / 2 ) / 2 )
 		// * ACCELERATION_BUFFER_RATIO;
-		translateState = false;
-		insideTargetBuffer = false;
+		translating = false;
 		zoomSpeed = 0f;
 		this.timeLeft = 0;
 		camera.zoom = MIN_ZOOM;
@@ -162,8 +160,6 @@ public class Camera {
 		if ( Gdx.input.isKeyPressed( Keys.N ) ) {
 			debugRender = true;
 		}
-		if ( debugInput )
-			handleInput( );
 
 		// update all positions and dimensions
 		position = camera.position;
@@ -174,18 +170,13 @@ public class Camera {
 		screenBounds.x = position.x - screenBounds.width / 2;
 		screenBounds.y = position.y - screenBounds.height / 2;
 
-		setTranslateTarget( );
-
-		// check if center is inside target buffer
-		float dist = Math.abs( center2D.dst( translateTarget ) );
-		if ( dist < targetBuffer ) {
-			insideTargetBuffer = true;
+		if ( debugInput ) {
+			handleInput( );
 		} else {
-			insideTargetBuffer = false;
+			setTranslateTarget( );
+			// Do the actual translation and zooming
+			adjustCamera( );
 		}
-
-		// Do the actual translation and zooming
-		adjustCamera( );
 
 		// render buffers areas anchors
 		if ( debugRender ) {
@@ -213,35 +204,23 @@ public class Camera {
 	}
 
 	/**
-	 * Determine if any part of rect1 is outside of rect2
-	 * 
-	 * @param rect1
-	 *            inner Rectangle
-	 * @param rect2
-	 *            outer Rectangle
-	 * @return true if any part of rect1 is outside of rect2, false otherwise
-	 */
-	private RectDirection rectOutsideRect( Rectangle rect1, Rectangle rect2 ) {
-		RectDirection returnDir = RectDirection.NONE;
-
-		if ( rect1.x < rect2.x
-				|| ( rect1.x + rect1.width ) > ( rect2.x + rect2.width ) )
-			returnDir = RectDirection.X;
-		if ( rect1.y < rect2.y
-				|| ( rect1.y + rect1.height ) > ( rect2.y + rect2.height ) ) {
-			if ( returnDir == RectDirection.X )
-				returnDir = RectDirection.BOTH;
-			else
-				returnDir = RectDirection.Y;
-		}
-
-		return returnDir;
-	}
-
-	/**
 	 * Adjust the camera by translating and zooming when necessary
 	 */
 	private void adjustCamera( ) {
+		// Translate and zoom
+		translateLogic( );
+		zoom( );
+
+	}
+
+	/**
+	 * Either translate, lock, or do nothing based on various buffers and
+	 * positions
+	 */
+	private void translateLogic( ) {
+
+		// DETERMINE IF BUFFERS HAVE LEFT THE SCREEN //
+
 		// Track the status of buffers
 		boolean outside_x = false;
 		boolean outside_y = false;
@@ -275,44 +254,30 @@ public class Camera {
 			}
 		}
 
-		// If a buffer has left the screen
-		if ( outside_x || outside_y ) {
-			// And if the center of the camera is outside of the center of the
-			// midpoint (Not just opposite sides)
-			if ( !insideTargetBuffer ) {
-				// Then we translate
-				translateState = true;
-			}
-		}
-		// If the button to debug input isn't being held, translate and zoom
-		if ( !debugInput ) {
-			translateLogic(
-					outside_x
-							|| Math.abs( translateVelocity.x ) > MINIMUM_FOLLOW_SPEED,
-					outside_y
-							|| Math.abs( translateVelocity.y ) > MINIMUM_FOLLOW_SPEED );
-			zoom( );
-		}
-	}
+		boolean translatingX = outside_x
+				|| Math.abs( translateVelocity.x ) > MINIMUM_FOLLOW_SPEED;
+		boolean translatingY = outside_y
+				|| Math.abs( translateVelocity.y ) > MINIMUM_FOLLOW_SPEED;
 
-	/**
-	 * Either translate, lock, or do nothing based on various buffers and
-	 * positions
-	 */
-	private void translateLogic( boolean trans_x, boolean trans_y ) {
-		// determine whether to translate, lock, or do nothing
-		if ( translateState ) {
+		// If a buffer has left the screen
+		if ( !translating && ( outside_x || outside_y ) ) {
+			translating = true;
+		}
+
+		// DETERMINE WHETHER TO LOCK, TRANSLATE, OR DO NOTHING //
+
+		if ( translating ) {
 
 			boolean lockX = false;
 			boolean lockY = false;
 
 			// lock when:
-			if ( trans_x
+			if ( translatingX
 					&& Math.abs( translateTarget.x - center2D.x ) < targetBuffer ) {
 				// camera center is really close to target.x when only
 				// translating on x axis
 				lockX = true;
-			} else if ( trans_y
+			} else if ( translatingY
 					&& Math.abs( translateTarget.y - center2D.y ) < targetBuffer ) {
 				// camera center is really close to target.y when only
 				// translating on y axis
@@ -341,12 +306,12 @@ public class Camera {
 				// lock
 				if ( anchorList.getMidpointVelocity( ).len( ) < MINIMUM_FOLLOW_SPEED
 						|| tempAngle > MAX_ANGLE_DIFF ) {
-					translateState = false;
+					translating = false;
 					translateVelocity.x = 0f;
 					translateVelocity.y = 0f;
 				}
 			} else {
-				translate( trans_x, trans_y );
+				translate( translatingX, translatingY );
 			}
 			timeLeft--;
 		} else {
@@ -404,7 +369,7 @@ public class Camera {
 			translateVelocity.x = 0f;
 			translateVelocity.y = 0f;
 			timeLeft = 0;
-			translateState = false;
+			translating = false;
 			return;
 		}
 
@@ -509,6 +474,32 @@ public class Camera {
 
 		if ( newZoom > MIN_ZOOM )
 			camera.zoom = newZoom;
+	}
+
+	/**
+	 * Determine if any part of rect1 is outside of rect2
+	 * 
+	 * @param rect1
+	 *            inner Rectangle
+	 * @param rect2
+	 *            outer Rectangle
+	 * @return true if any part of rect1 is outside of rect2, false otherwise
+	 */
+	private RectDirection rectOutsideRect( Rectangle rect1, Rectangle rect2 ) {
+		RectDirection returnDir = RectDirection.NONE;
+
+		if ( rect1.x < rect2.x
+				|| ( rect1.x + rect1.width ) > ( rect2.x + rect2.width ) )
+			returnDir = RectDirection.X;
+		if ( rect1.y < rect2.y
+				|| ( rect1.y + rect1.height ) > ( rect2.y + rect2.height ) ) {
+			if ( returnDir == RectDirection.X )
+				returnDir = RectDirection.BOTH;
+			else
+				returnDir = RectDirection.Y;
+		}
+
+		return returnDir;
 	}
 
 	/**
