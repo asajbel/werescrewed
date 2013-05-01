@@ -2,6 +2,8 @@
 
 @ bg /levels/alphabot/alphabot-interior.png
 @ outline /levels/alphabot/alphabot-outline.png
+## uncomment line below to do only black outlines for alphabot
+#@ outline /common/black.png
 @ fg /levels/alphabot/alphabot-fg.png
 
 ##sounds
