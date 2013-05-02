@@ -6,6 +6,7 @@ import aurelienribon.tweenengine.TweenEquations;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
@@ -104,7 +105,7 @@ public class AlphaScreen extends Screen {
 	
 	Array<Panel> panels;
 
-	protected SoundManager bgm;
+	protected Music bgm;
 	
 	public AlphaScreen( ) {
 		super( );
@@ -180,11 +181,21 @@ public class AlphaScreen extends Screen {
 		createChestDecals();
 		//powerSwitch();
 		initPanels();
-		bgm = new SoundManager();
-		bgm.getSound( "bgm" ,WereScrewedGame.dirHandle
-				+ "/common/music/waltz.mp3");
-		bgm.setSoundVolume( "bgm", SoundManager.globalVolume.get(SoundType.MUSIC));
-		bgm.loopSound( "bgm" );
+		bgm = WereScrewedGame.manager.get( WereScrewedGame.dirHandle.path( ) + "/common/music/waltz.mp3", Music.class );
+		bgm.setVolume( SoundManager.getMusicVolume( ) );
+		bgm.setLooping( true );
+	}
+	
+	@Override
+	public void show(){
+		super.show( );
+		bgm.play();	
+	}
+
+	@Override
+	public void hide(){
+		super.hide( );
+		bgm.stop();	
 	}
 
 	@Override

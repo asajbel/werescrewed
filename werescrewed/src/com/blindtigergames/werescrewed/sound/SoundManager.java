@@ -257,7 +257,10 @@ public class SoundManager {
 	public static float getNoiseVolume(){
 		return globalVolume.get( SoundType.NOISE );
 	}
-	
+	public static float getMusicVolume( ) {
+		return globalVolume.get( SoundType.MUSIC);
+	}
+
 	public float getRange( String id, int index ) {
 		return sounds.get( id, index ).range;
 	}	
@@ -357,4 +360,5 @@ public class SoundManager {
 		}
 
 	}
+
 }
