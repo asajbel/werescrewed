@@ -663,7 +663,7 @@ public class LevelFactory {
 
 			skeleton = skeleBuilder.build( );
 
-			if ( item.props.containsKey( "alwaysVisible" ) ) 
+			if ( item.props.containsKey( "alwaysvisible" ) ) 
 			{
 				skeleton.setFgFade( false );
 			}

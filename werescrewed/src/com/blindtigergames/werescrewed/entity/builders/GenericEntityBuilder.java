@@ -362,7 +362,7 @@ public class GenericEntityBuilder< B extends GenericEntityBuilder< ? >> {
 				}
 				for (String name: sounds.keySet()){
 					for (HashMap<String,String> subSounds : sounds.getAll( name )){
-						SoundRef sound = soundMan.getSound( name, subSounds.get( "asset" ) );
+						SoundRef sound = soundMan.getSound( name, WereScrewedGame.dirHandle + subSounds.get( "asset" ) );
 						if (subSounds.containsKey( "volume" ))
 							sound.setVolume(Float.parseFloat( subSounds.get("volume") ));
 						if (subSounds.containsKey( "pitch" ))

@@ -596,6 +596,9 @@ public class Player extends Entity {
 				blood.restartAt( getPositionPixel( ) );
 			}
 			isDead = true;
+			if (sounds.hasSound( "death" )){
+				sounds.playSound( "death", 1.0f );
+			}
 		}
 	}
 
@@ -1976,7 +1979,7 @@ public class Player extends Entity {
 				controller.addListener( controllerListener );
 			}
 		}
-		if ( Controllers.getControllers( ).size == 2 ) {
+		if ( Controllers.getControllers( ).size >= 2 ) {
 			if ( this.name.equals( "player2" ) ) {
 				controllerListener = new MyControllerListener( );
 				controller = Controllers.getControllers( ).get( 1 );
@@ -2208,11 +2211,28 @@ public class Player extends Entity {
 	public void loadSounds(){
 		//Gender-specific Sounds
 		if (name.equals("player1")){
+			//Jump
 			sounds.getSound( "jump", WereScrewedGame.dirHandle
 					+ "/common/sounds/jump.ogg" );
+			//Death
+			sounds.getSound( "death", WereScrewedGame.dirHandle
+					+ "/common/sounds/deathMaleGah.ogg" );
+			sounds.getSound( "death", WereScrewedGame.dirHandle
+					+ "/common/sounds/deathMaleUgh.ogg" );
+			sounds.getSound( "death", WereScrewedGame.dirHandle
+					+ "/common/sounds/deathMaleOw.ogg" );
+
 		} else {
+			//Jump
 			sounds.getSound( "jump", WereScrewedGame.dirHandle
-					+ "/common/sounds/jumpFemale.ogg" );	
+					+ "/common/sounds/jumpFemale.ogg" );
+			//Death
+			sounds.getSound( "death", WereScrewedGame.dirHandle
+					+ "/common/sounds/deathFemaleUgh.ogg" );
+			sounds.getSound( "death", WereScrewedGame.dirHandle
+					+ "/common/sounds/deathFemaleUeh.ogg" );
+			sounds.getSound( "death", WereScrewedGame.dirHandle
+					+ "/common/sounds/deathFemaleOoh.ogg" );
 		}
 		sounds.getSound( "footstep1" , WereScrewedGame.dirHandle
 				+ "/common/sounds/footstep1.ogg");

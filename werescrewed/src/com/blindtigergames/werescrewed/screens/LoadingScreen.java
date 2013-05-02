@@ -62,137 +62,8 @@ public class LoadingScreen extends Screen {
 		this( null );
 	}
 
-	/**
-	 * A recursive function to load all files in a given directory, and load the
-	 * files directories in directories
-	 * 
-	 * @author Nick Patti
-	 * 
-	 * @deprecated
-	 * 
-	 * @param currentDirectory
-	 *            The current directory that the function is loading files from
-	 * 
-	 * @param screenTag
-	 *            Indicates which screen is going to be loaded, which influences
-	 *            which file's contents are loaded
-	 * 
-	 * @return void
-	 */
-	@SuppressWarnings( "unused" )
-	private void loadFilesInDirectory( FileHandle currentDirectory,
-			String screenTag ) {
-		// Gdx.app.log( "GOING DOWN", "now inside " + currentDirectory.name( )
-		// );
+	
 
-		for ( FileHandle entry : currentDirectory.list( ) ) {
-			// Gdx.app.log( currentDirectory.name( ), "found file " +
-			// entry.name( ) );
-
-			// figure out what it means to be a file I don't care about
-			String entryName = entry.name( );
-			boolean IDontCareAboutThisFile = entryName.equals( "bodies" )
-					|| entryName.equals( "entities" )
-					|| entryName.equals( ".DS_Store" );
-
-			if ( IDontCareAboutThisFile )
-				continue;
-
-			// determine if we want to go into this directory
-			// TODO: The string interpretation of screenTag will go here
-			boolean IWannaLoadTheseFiles = entryName.equals( "common" )
-					|| entryName.equals( "sounds" )
-					|| entryName.equals( "levels" )
-					|| entryName.equals( screenTag );
-
-			if ( IWannaLoadTheseFiles )
-				loadFilesInDirectory( entry, screenTag );
-
-			// load the file that we're currently looking at
-			String fileExtension = entry.extension( );
-			String fullPathName = currentDirectory.parent( ) + "/"
-					+ currentDirectory.name( ) + "/" + entry.name( );
-
-			loadCurrentFile( fileExtension, fullPathName );
-
-		}
-
-		// Gdx.app.log( "GOING UP", "returning to " + currentDirectory.parent( )
-		// );
-	}
-
-	/**
-	 * A small babby function to load the current file
-	 * 
-	 * @author Nick Patti
-	 * 
-	 * @param fileExtension
-	 *            The file extension, which is used to choose whether to load
-	 *            the file a texture, sound, or music object.
-	 * 
-	 * @param fullPathName
-	 *            The full path name of the file to be passed into the load
-	 *            function
- 	 * @param listedPathName
- 	 * 			  The path to call when loading the texture from the AssetManager.
- 	 * 			  Usually will be the same as fullPathName, but may differ for alt textures.            
-	 */
-	private void loadCurrentFile( String fileExtension, String fullPathName , String listedPathName) {
-		if ( fileExtension.equals( "png" ) ) {
-			if(!WereScrewedGame.manager.isLoaded( fullPathName, Texture.class )){
-				WereScrewedGame.manager.load( fullPathName, Texture.class );
-				//Gdx.app.log( "Texture file loaded", fullPathName );
-			}
-
-		} else if ( fileExtension.equals( "ogg" ) ) {
-			if(!WereScrewedGame.manager.isLoaded( fullPathName, Sound.class )){
-				WereScrewedGame.manager.load( fullPathName, Sound.class );
-				//Gdx.app.log( "Sound file loaded", fullPathName );
-			}
-
-		} else if ( fileExtension.equals( "mp3" ) ) {
-			if(!WereScrewedGame.manager.isLoaded( fullPathName, Music.class )){
-				WereScrewedGame.manager.load( fullPathName, Music.class );
-				//Gdx.app.log( "Music file loaded", fullPathName );
-			}
-
-		} else if ( fileExtension.equals( "pack" ) ) {
-			FileHandle fileHandle = Gdx.files.internal( fullPathName );
-			
-			if(!WereScrewedGame.manager.isAtlasLoaded( fileHandle.nameWithoutExtension( ) )){
-				WereScrewedGame.manager.loadAtlas( fullPathName );
-				//Gdx.app.log( "Atlas pack file loaded", fullPathName );
-			}
-		}
-		else if ( fileExtension.equals( "fnt" )){
-			if(!WereScrewedGame.manager.isLoaded( fullPathName )){
-				WereScrewedGame.manager.loadFont( fullPathName );
-			}
-			//Gdx.app.log( "Bitmap pack file loaded", fullPathName );
-		}
-		else if ( fileExtension.equals( "palette" )){
-			String[] path = fullPathName.split( "\\." );
-			String colorName = path[0].substring( WereScrewedGame.dirHandle.name( ).length( ) );
-			WereScrewedGame.manager.addToPalette( colorName );
-			//Gdx.app.log( "Color Loaded", colorName );
-		}
-		else if ( fileExtension.equals( "p" )){ //load a particle effect
-			String[] path = fullPathName.split( "\\." );
-			String effectName = path[0].substring( WereScrewedGame.dirHandle.name( ).length( ) );
-			WereScrewedGame.manager.loadParticleEffect( effectName );
-			//Gdx.app.log( "Color Loaded", colorName );
-		}
-//		else if ( fileExtension.equals( "skel" )){
-//			String[] path = fullPathName.split( "\\." );
-//			String skelName = path[0].substring( WereScrewedGame.dirHandle.name( ).length( ) );
-//			WereScrewedGame.manager.loadSpineSkeleton( skeletonName, atlas )
-//		}
-	}
-
-	//Simple overloading for when you only have an extension and pathname.
-	private void loadCurrentFile( String fE, String fPN){
-		loadCurrentFile( fE, fPN, fPN);
-	}
 	
 	/**
 	 * Runs every frame tick. Loads the assets that are queued in
@@ -280,8 +151,6 @@ public class LoadingScreen extends Screen {
 
 		loadingBar = new Entity( "loadingScrew", new Vector2( 640, 330), null, null, false );
 
-		// THIS IS WHAT THE DIRECTORY SHOULD ALWAYS BE
-		// THERE SHOULDN"T BE TWO FOLDERS
 		WereScrewedGame.dirHandle = Gdx.files.internal( "data/" );
 
 		// reads through the text file that is named
@@ -338,5 +207,78 @@ public class LoadingScreen extends Screen {
 		} else {
 			Gdx.app.log( "Loading screen: ", s + " doesn't have an extension" );
 		}
+	}
+	
+	/**
+	 * A small babby function to load the current file
+	 * 
+	 * @author Nick Patti
+	 * 
+	 * @param fileExtension
+	 *            The file extension, which is used to choose whether to load
+	 *            the file a texture, sound, or music object.
+	 * 
+	 * @param fullPathName
+	 *            The full path name of the file to be passed into the load
+	 *            function
+ 	 * @param listedPathName
+ 	 * 			  The path to call when loading the texture from the AssetManager.
+ 	 * 			  Usually will be the same as fullPathName, but may differ for alt textures.            
+	 */
+	private void loadCurrentFile( String fileExtension, String fullPathName , String listedPathName) {
+		if ( fileExtension.equals( "png" ) ) {
+			if(!WereScrewedGame.manager.isLoaded( fullPathName, Texture.class )){
+				WereScrewedGame.manager.load( fullPathName, Texture.class );
+				//Gdx.app.log( "Texture file loaded", fullPathName );
+			}
+
+		} else if ( fileExtension.equals( "ogg" ) ) {
+			if(!WereScrewedGame.manager.isLoaded( fullPathName, Sound.class )){
+				WereScrewedGame.manager.load( fullPathName, Sound.class );
+				//Gdx.app.log( "Sound file loaded", fullPathName );
+			}
+
+		} else if ( fileExtension.equals( "mp3" ) ) {
+			if(!WereScrewedGame.manager.isLoaded( fullPathName, Music.class )){
+				WereScrewedGame.manager.load( fullPathName, Music.class );
+				//Gdx.app.log( "Music file loaded", fullPathName );
+			}
+
+		} else if ( fileExtension.equals( "pack" ) ) {
+			FileHandle fileHandle = Gdx.files.internal( fullPathName );
+			
+			if(!WereScrewedGame.manager.isAtlasLoaded( fileHandle.nameWithoutExtension( ) )){
+				WereScrewedGame.manager.loadAtlas( fullPathName );
+				//Gdx.app.log( "Atlas pack file loaded", fullPathName );
+			}
+		}
+		else if ( fileExtension.equals( "fnt" )){
+			if(!WereScrewedGame.manager.isLoaded( fullPathName )){
+				WereScrewedGame.manager.loadFont( fullPathName );
+			}
+			//Gdx.app.log( "Bitmap pack file loaded", fullPathName );
+		}
+		else if ( fileExtension.equals( "palette" )){
+			String[] path = fullPathName.split( "\\." );
+			String colorName = path[0].substring( WereScrewedGame.dirHandle.name( ).length( ) );
+			WereScrewedGame.manager.addToPalette( colorName );
+			//Gdx.app.log( "Color Loaded", colorName );
+		}
+		else if ( fileExtension.equals( "p" )){ //load a particle effect
+			String[] path = fullPathName.split( "\\." );
+			String effectName = path[0].substring( WereScrewedGame.dirHandle.name( ).length( ) );
+			WereScrewedGame.manager.loadParticleEffect( effectName );
+			//Gdx.app.log( "Color Loaded", colorName );
+		}
+//		else if ( fileExtension.equals( "skel" )){
+//			String[] path = fullPathName.split( "\\." );
+//			String skelName = path[0].substring( WereScrewedGame.dirHandle.name( ).length( ) );
+//			WereScrewedGame.manager.loadSpineSkeleton( skeletonName, atlas )
+//		}
+	}
+
+	//Simple overloading for when you only have an extension and pathname.
+	private void loadCurrentFile( String fE, String fPN){
+		loadCurrentFile( fE, fPN, fPN);
 	}
 }
