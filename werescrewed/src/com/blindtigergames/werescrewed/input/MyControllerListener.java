@@ -125,8 +125,8 @@ public class MyControllerListener implements ControllerListener {
 			analogUsed = true;
 		}
 
-		// Resetting Right Stick
-		if ( ( axisLX < ANALOG_CENTER && axisLY < ANALOG_CENTER )
+		// Resetting left Stick
+		if ( !checkRightStickForScrewing && ( axisLX < ANALOG_CENTER && axisLY < ANALOG_CENTER )
 				&& ( axisLX > -ANALOG_CENTER && axisLY > -ANALOG_CENTER ) ) {
 			screwingPressed = false;
 			unscrewingPressed = false;
@@ -134,11 +134,13 @@ public class MyControllerListener implements ControllerListener {
 			currLeftAnalogAngle = 0;
 			checkLeftStickForScrewing = false;
 		} else{
-			checkLeftStickForScrewing = true;
+			if(!checkRightStickForScrewing){
+				checkLeftStickForScrewing = true;
+			}
 		}
 		
 		// Resetting Right Stick
-		if ( ( axisRX < ANALOG_CENTER && axisRY < ANALOG_CENTER )
+		if (!checkLeftStickForScrewing && ( axisRX < ANALOG_CENTER && axisRY < ANALOG_CENTER )
 				&& ( axisRX > -ANALOG_CENTER && axisRY > -ANALOG_CENTER ) ) {
 			screwingPressed = false;
 			unscrewingPressed = false;
@@ -146,7 +148,9 @@ public class MyControllerListener implements ControllerListener {
 			currRightAnalogAngle = 0;
 			checkRightStickForScrewing = false;
 		} else{
-			checkRightStickForScrewing = true;
+			if(!checkLeftStickForScrewing){
+				checkRightStickForScrewing = true;
+			}
 		}
 		
 		if(checkLeftStickForScrewing && checkRightStickForScrewing){
