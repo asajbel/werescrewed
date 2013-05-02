@@ -97,7 +97,7 @@ public class PhysicsTestScreen extends Screen {
 
 		skeleton = new Skeleton( "skeleton", new Vector2( 500, 0 ), null,
 				world, BodyType.KinematicBody );
-
+		skeleton.setFgFade( false );
 		platBuilder = new PlatformBuilder( world );
 
 		// Uncomment for test anchor
@@ -119,7 +119,7 @@ public class PhysicsTestScreen extends Screen {
 		rootSkeleton = level.root;
 
 		rootSkeleton.addSkeleton( skeleton );
-
+		rootSkeleton.setFgFade( false );
 		// debugRenderer.setDrawJoints( false );
 
 		Gdx.app.setLogLevel( Application.LOG_DEBUG );
@@ -142,6 +142,7 @@ public class PhysicsTestScreen extends Screen {
 	private void buildEngineHeart( Vector2 posPix ) {
 		Skeleton engineSkeleton = new Skeleton( "engineSkeleton", posPix, null,
 				world );
+		engineSkeleton.setFgFade( false );
 		rootSkeleton.addSkeleton( engineSkeleton );
 
 		TextureAtlas engineAtlas = WereScrewedGame.manager.getAtlas( "engine" );
@@ -189,6 +190,7 @@ public class PhysicsTestScreen extends Screen {
 		// Attach wheel decal
 
 		engineSkeleton.addPlatform( wheel1 );
+		engineSkeleton.setFgFade( false );
 		// Make wheel rotate
 		new RevoluteJointBuilder( world ).entityA( engineSkeleton )
 				.entityB( wheel1 ).motor( true ).motorSpeed( 3f )
@@ -387,11 +389,14 @@ public class PhysicsTestScreen extends Screen {
 				Util.CATEGORY_EVERYTHING );
 		ground.body.getFixtureList( ).get( 0 ).getShape( ).setRadius( 0 );
 		skeleton.addKinematicPlatform( ground );
+		skeleton.setFgFade( false );
 
 		Skeleton dynSkel = new SkeletonBuilder( world ).position( 800, 500 )
 				.dynamic( ).name( "dynSkele" ).build( );
 		// dynSkel.quickfixCollisions( );
 		rootSkeleton.addSkeleton( dynSkel );
+		rootSkeleton.setFgFade( false );
+		dynSkel.setFgFade( false );
 
 		// platforms on dynamic skeleton
 		TiledPlatform plat6 = platBuilder.name( "dynPlat1" ).dynamic( )
@@ -434,6 +439,7 @@ public class PhysicsTestScreen extends Screen {
 		dynSkel2.body.setType( BodyType.DynamicBody );
 		dynSkel2.body.setGravityScale( 0.1f );
 		dynSkel2.setDensity( 100f );
+		dynSkel2.setFgFade( false );
 		rootSkeleton.addSkeleton( dynSkel2 );
 
 		StrippedScrew strScrew = new StrippedScrew( "strScrew3", new Vector2(
@@ -469,6 +475,7 @@ public class PhysicsTestScreen extends Screen {
 		plat7.body.setFixedRotation( false );
 		plat7.quickfixCollisions( );
 		dynSkel2.addDynamicPlatform( plat7 );
+		dynSkel2.setFgFade( false );
 
 		TiledPlatform plat8 = platBuilder.name( "weld3" ).dynamic( )
 				.position( 800, 700 ).dimensions( 12, 1 ).oneSided( false )
@@ -547,7 +554,7 @@ public class PhysicsTestScreen extends Screen {
 
 		s = new Skeleton( "skeleton7", new Vector2( -700, 700 ), null, world,
 				BodyType.KinematicBody );
-
+s.setFgFade( false );
 		TiledPlatform ttt = platBuilder.name( "ttt" ).kinematic( )
 				.position( -700, 1000 ).dimensions( 1, 5 ).oneSided( false )
 				.buildTilePlatform( );
@@ -556,6 +563,7 @@ public class PhysicsTestScreen extends Screen {
 		// rootSkeleton.addSkeleton( s );
 
 		top.addSkeleton( s );
+		top.setFgFade( false );
 		// StructureScrew screw = new StructureScrew( "sdfasdf",
 		// new Vector2(-700f, 500f),
 		// 100, world );
@@ -571,7 +579,7 @@ public class PhysicsTestScreen extends Screen {
 				400 ), null, world, BodyType.KinematicBody );
 		// rootSkeleton.addSkeleton( middleHang );
 		s.addSkeleton( middleHang );
-
+		middleHang.setFgFade( false );
 		// TiledPlatform test2 = platBuilder.name( "movetest2" ).kinematic( )
 		// .position( -900, 500 ).dimensions( 1, 5).oneSided( false )
 		// .buildTilePlatform( );
@@ -760,10 +768,11 @@ public class PhysicsTestScreen extends Screen {
 								Texture.class ) ).fg( ).vert( 200, 0 )
 				.vert( 300, 100 ).vert( 200, 200 ).hasDeactiveTrigger( true )
 				.build( );
+		skeleton.setFgFade( false );
 		// dynSkeleton.body.createFixture( , density )
 
 		oldRootSkeleton.addSkeleton( skeleton );
-
+		oldRootSkeleton.setFgFade( false );
 	}
 
 	/**

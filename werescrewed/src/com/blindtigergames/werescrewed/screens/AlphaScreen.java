@@ -9,7 +9,6 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
@@ -35,7 +34,6 @@ import com.blindtigergames.werescrewed.entity.action.EntityDeactivateMoverAction
 import com.blindtigergames.werescrewed.entity.action.RemoveEntityAction;
 import com.blindtigergames.werescrewed.entity.action.RotateTweenAction;
 import com.blindtigergames.werescrewed.entity.builders.EventTriggerBuilder;
-import com.blindtigergames.werescrewed.entity.builders.GenericEntityBuilder;
 import com.blindtigergames.werescrewed.entity.builders.PlatformBuilder;
 import com.blindtigergames.werescrewed.entity.builders.PlayerBuilder;
 import com.blindtigergames.werescrewed.entity.mover.AnalogRotateMover;
@@ -46,11 +44,9 @@ import com.blindtigergames.werescrewed.entity.mover.RotateTweenMover;
 import com.blindtigergames.werescrewed.entity.mover.TimelineTweenMover;
 import com.blindtigergames.werescrewed.entity.mover.puzzle.PuzzleRotateTweenMover;
 import com.blindtigergames.werescrewed.entity.particles.Steam;
-import com.blindtigergames.werescrewed.entity.platforms.Pipe;
 import com.blindtigergames.werescrewed.entity.platforms.Platform;
 import com.blindtigergames.werescrewed.entity.platforms.TiledPlatform;
 import com.blindtigergames.werescrewed.entity.screws.PuzzleScrew;
-import com.blindtigergames.werescrewed.entity.screws.Screw;
 import com.blindtigergames.werescrewed.entity.screws.StrippedScrew;
 import com.blindtigergames.werescrewed.entity.screws.StructureScrew;
 import com.blindtigergames.werescrewed.entity.tween.PlatformAccessor;
@@ -143,7 +139,7 @@ public class AlphaScreen extends Screen {
 		// right arm: 2600f, 6000f >>>> side
 		//left side hand <- -2224, 3008
 		
-		Vector2 spawnPos = new Vector2( 0,0 );
+		Vector2 spawnPos = new Vector2( 512, 256 );
 
 		if ( level.player1 == null ) {
 			level.player1 = new PlayerBuilder( ).world( level.world )
@@ -181,6 +177,9 @@ public class AlphaScreen extends Screen {
 		createChestDecals();
 		//powerSwitch();
 		initPanels();
+		Skeleton root = ( Skeleton ) LevelFactory.entities
+				.get( "RootSkeleton" );
+		root.setFgFade( false );
 		bgm = WereScrewedGame.manager.get( WereScrewedGame.dirHandle.path( ) + "/common/music/waltz.mp3", Music.class );
 		bgm.setVolume( SoundManager.getMusicVolume( ) );
 		bgm.setLooping( true );
@@ -444,6 +443,7 @@ public class AlphaScreen extends Screen {
 			Gdx.app.log( "fgList", s.name );
 		}
 		light_skel.setFgFade( false );
+		
 	}
 
 	private void initParallaxBackground( ) {
@@ -552,7 +552,7 @@ public class AlphaScreen extends Screen {
 
 	private void thighDecals( Skeleton thighSkeleton ) {
 		TextureAtlas decals = WereScrewedGame.manager
-				.getAtlas( "alphabot_thigh_decal" );
+				.getAtlas( "chest_pipes_thigh_pipes" );
 		// level.entityBGList.add(thighSkeleton);
 		thighSkeleton.addBGDecalBack(
 				decals.createSprite( "thigh_mechanisms_and_pipesNOCOLOR" ),
@@ -950,7 +950,7 @@ public class AlphaScreen extends Screen {
 	}
 	
 	private void createChestDecals(){
-		TextureAtlas chest_powerscrew = WereScrewedGame.manager.getAtlas( "chest_powerscrew" );
+		TextureAtlas chest_powerscrew = WereScrewedGame.manager.getAtlas( "chest_pipes_thigh_pipes" );
 		Skeleton chestSkeleton = (Skeleton)LevelFactory.entities.get( "chestSkeleton" );
 		chestSkeleton.addBGDecal( 
 				chest_powerscrew.createSprite( "chest_powerscrew_pipes_to_engineNOCOLOR" ), 

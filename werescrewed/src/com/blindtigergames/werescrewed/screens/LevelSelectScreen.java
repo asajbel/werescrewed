@@ -44,9 +44,7 @@ public class LevelSelectScreen implements com.badlogic.gdx.Screen {
 	private int controllerTimer = 10;
 	private int controllerMax = 10;
 
-	/*
-	 * Things needed... Being able to select levels
-	 */
+
 	public LevelSelectScreen( ) {
 		
 	}
@@ -129,10 +127,12 @@ public class LevelSelectScreen implements com.badlogic.gdx.Screen {
 		int leftX = width / 5 - 20;
 		int centerY = height / 2 - 10;
 		screenLabel.setX( leftX - screenLabel.getWidth( ) / 2 );
-		screenLabel.setY( centerY + 4 * lineHeight );
+		screenLabel.setY( centerY + 4 * lineHeight);
 		testButton.setX( leftX - testButton.getWidth( ) / 2 );
 		testButton.setY( centerY + 3 * lineHeight );
-		playButton.setX( leftX - playButton.getWidth( ) / 2 );
+		
+		//quick fix
+		playButton.setX( leftX - playButton.getWidth( ) + 350 );
 		playButton.setY( centerY + 2 * lineHeight );
 		gleedButton.setX( leftX - gleedButton.getWidth( ) / 2 );
 		gleedButton.setY( centerY + lineHeight );

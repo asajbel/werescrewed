@@ -621,6 +621,7 @@ public class LevelFactory {
 		if ( item.name.equals( "RootSkeleton" ) ) {
 			level.root = new RootSkeleton( item.name, item.pos, null,
 					level.world );
+			level.root.setFgFade( false );
 			skeletons.put( item.name, level.root );
 			entities.put( item.name, level.root );
 
@@ -633,6 +634,7 @@ public class LevelFactory {
 
 			if ( item.props.containsKey( "invisible" ) ) {
 				skeleBuilder.invisibleVerts( polySprite );
+				
 			} else if ( item.props.containsKey( "noforeground" ) ) {
 				skeleBuilder
 						.bg( )
@@ -661,6 +663,10 @@ public class LevelFactory {
 
 			skeleton = skeleBuilder.build( );
 
+			if ( item.props.containsKey( "alwaysVisible" ) ) 
+			{
+				skeleton.setFgFade( false );
+			}
 			if ( item.props.containsKey( "gravscale" ) ) {
 				float gravScale = Float.parseFloat( item.props
 						.get( "gravscale" ) );

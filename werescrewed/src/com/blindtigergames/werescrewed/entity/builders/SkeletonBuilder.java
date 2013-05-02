@@ -241,7 +241,8 @@ public class SkeletonBuilder extends GenericEntityBuilder<SkeletonBuilder>{
 			}
 		}
 		
-		if ( fadeFgDecals ){
+		if ( fadeFgDecals )
+		{
 			out.setFgFade(fadeFgDecals);
 		}
 		
