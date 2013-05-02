@@ -1976,7 +1976,7 @@ public class Player extends Entity {
 				controller.addListener( controllerListener );
 			}
 		}
-		if ( Controllers.getControllers( ).size == 2 ) {
+		if ( Controllers.getControllers( ).size >= 2 ) {
 			if ( this.name.equals( "player2" ) ) {
 				controllerListener = new MyControllerListener( );
 				controller = Controllers.getControllers( ).get( 1 );
