@@ -6,9 +6,10 @@ import aurelienribon.tweenengine.TweenEquations;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
@@ -34,7 +35,6 @@ import com.blindtigergames.werescrewed.entity.action.EntityDeactivateMoverAction
 import com.blindtigergames.werescrewed.entity.action.RemoveEntityAction;
 import com.blindtigergames.werescrewed.entity.action.RotateTweenAction;
 import com.blindtigergames.werescrewed.entity.builders.EventTriggerBuilder;
-import com.blindtigergames.werescrewed.entity.builders.GenericEntityBuilder;
 import com.blindtigergames.werescrewed.entity.builders.PlatformBuilder;
 import com.blindtigergames.werescrewed.entity.builders.PlayerBuilder;
 import com.blindtigergames.werescrewed.entity.mover.AnalogRotateMover;
@@ -45,11 +45,9 @@ import com.blindtigergames.werescrewed.entity.mover.RotateTweenMover;
 import com.blindtigergames.werescrewed.entity.mover.TimelineTweenMover;
 import com.blindtigergames.werescrewed.entity.mover.puzzle.PuzzleRotateTweenMover;
 import com.blindtigergames.werescrewed.entity.particles.Steam;
-import com.blindtigergames.werescrewed.entity.platforms.Pipe;
 import com.blindtigergames.werescrewed.entity.platforms.Platform;
 import com.blindtigergames.werescrewed.entity.platforms.TiledPlatform;
 import com.blindtigergames.werescrewed.entity.screws.PuzzleScrew;
-import com.blindtigergames.werescrewed.entity.screws.Screw;
 import com.blindtigergames.werescrewed.entity.screws.StrippedScrew;
 import com.blindtigergames.werescrewed.entity.screws.StructureScrew;
 import com.blindtigergames.werescrewed.entity.tween.PlatformAccessor;
@@ -61,6 +59,8 @@ import com.blindtigergames.werescrewed.joint.PrismaticJointBuilder;
 import com.blindtigergames.werescrewed.joint.RevoluteJointBuilder;
 import com.blindtigergames.werescrewed.level.CharacterSelect;
 import com.blindtigergames.werescrewed.level.LevelFactory;
+import com.blindtigergames.werescrewed.sound.SoundManager;
+import com.blindtigergames.werescrewed.sound.SoundManager.SoundType;
 import com.blindtigergames.werescrewed.util.Util;
 
 public class AlphaScreen extends Screen {
@@ -102,6 +102,8 @@ public class AlphaScreen extends Screen {
 	
 	Array<Panel> panels;
 
+	protected Music bgm;
+	
 	public AlphaScreen( ) {
 		super( );
 
@@ -138,7 +140,7 @@ public class AlphaScreen extends Screen {
 		// right arm: 2600f, 6000f >>>> side
 		//left side hand <- -2224, 3008
 		
-		Vector2 spawnPos = new Vector2( 0,0 );
+		Vector2 spawnPos = new Vector2( 512, 256 );
 
 		if ( level.player1 == null ) {
 			level.player1 = new PlayerBuilder( ).world( level.world )
@@ -176,6 +178,28 @@ public class AlphaScreen extends Screen {
 		createChestDecals();
 		//powerSwitch();
 		initPanels();
+		
+		rightArmDecal( );
+		headDecals( );
+		
+		Skeleton root = ( Skeleton ) LevelFactory.entities
+				.get( "RootSkeleton" );
+		root.setFgFade( false );
+		bgm = WereScrewedGame.manager.get( WereScrewedGame.dirHandle.path( ) + "/common/music/waltz.mp3", Music.class );
+		bgm.setVolume( SoundManager.getMusicVolume( ) );
+		bgm.setLooping( true );
+	}
+	
+	@Override
+	public void show(){
+		super.show( );
+		bgm.play();	
+	}
+
+	@Override
+	public void hide(){
+		super.hide( );
+		bgm.stop();	
 	}
 
 	@Override
@@ -424,6 +448,7 @@ public class AlphaScreen extends Screen {
 			Gdx.app.log( "fgList", s.name );
 		}
 		light_skel.setFgFade( false );
+		
 	}
 
 	private void initParallaxBackground( ) {
@@ -532,12 +557,22 @@ public class AlphaScreen extends Screen {
 
 	private void thighDecals( Skeleton thighSkeleton ) {
 		TextureAtlas decals = WereScrewedGame.manager
-				.getAtlas( "alphabot_thigh_decal" );
+				.getAtlas( "chest_pipes_thigh_pipes" );
+		TextureAtlas exterior_decals = WereScrewedGame.manager
+				.getAtlas( "alphabot_knee_in_thigh_out" );
+		
 		// level.entityBGList.add(thighSkeleton);
 		thighSkeleton.addBGDecalBack(
 				decals.createSprite( "thigh_mechanisms_and_pipesNOCOLOR" ),
 				new Vector2( -425, -1117 ) );
 		// 380,1117
+		
+		Vector2 thighPos = new Vector2( -370,-1010);
+		thighSkeleton.addFGDecal(
+				exterior_decals.createSprite( "thigh_ex_lower" ),
+				thighPos);
+		thighSkeleton.addFGDecal(exterior_decals.createSprite( "thigh_ex_upper" ),
+				thighPos.cpy().add( -34,699 ));
 	}
 
 	private void createFootObjects( ) {
@@ -612,7 +647,7 @@ public class AlphaScreen extends Screen {
 		TextureAtlas decals = WereScrewedGame.manager
 				.getAtlas( "alphabot_foot_shin_decal" );
 		TextureAtlas knee_exterior = WereScrewedGame.manager
-				.getAtlas( "alphabot_knee_decal" );
+				.getAtlas( "alphabot_knee_in_thigh_out" );
 
 		kneeMovingPlat = ( TiledPlatform ) LevelFactory.entities
 				.get( "kneeMovingPlat" );
@@ -629,7 +664,7 @@ public class AlphaScreen extends Screen {
 
 		kneeSkeleton
 				.addBGDecalBack( knee_exterior
-						.createSprite( "knee_mechanisms_and_pipesNOCOLOR" ),
+						.createSprite( "knee_mechanisms_and_pipesNOCOLOR_REDONE" ),
 						kneeDecalPos.cpy( ) );
 		// removePlayerToScrew( )
 	}
@@ -930,7 +965,7 @@ public class AlphaScreen extends Screen {
 	}
 	
 	private void createChestDecals(){
-		TextureAtlas chest_powerscrew = WereScrewedGame.manager.getAtlas( "chest_powerscrew" );
+		TextureAtlas chest_powerscrew = WereScrewedGame.manager.getAtlas( "chest_pipes_thigh_pipes" );
 		Skeleton chestSkeleton = (Skeleton)LevelFactory.entities.get( "chestSkeleton" );
 		chestSkeleton.addBGDecal( 
 				chest_powerscrew.createSprite( "chest_powerscrew_pipes_to_engineNOCOLOR" ), 
@@ -1252,13 +1287,56 @@ public class AlphaScreen extends Screen {
 				panelName = panelName + "_larm";
 			}
 		}
-		//hip skeleton
-		//powerSwitch1.isTurnedOn( )  && powerSwitch2.isTurnedOn( ) 
-			
-		//chest
-		 //powerSwitch3.isTurnedOn( )  && powerSwitch4.isTurnedOn( ) 
 		for(Panel p : panels){
 			p.setPanelSprite( panelName );
+		}
+	}
+	
+	
+	private void headDecals(){
+		headSkeleton = ( Skeleton ) LevelFactory.entities
+				.get( "headSkeleton" );
+		
+		TextureAtlas head_left = WereScrewedGame.manager.getAtlas( "head_left" );
+		TextureAtlas head_right = WereScrewedGame.manager.getAtlas( "head_right" );
+		
+		Vector2 pos = new Vector2(-1475,-680);
+		
+		headSkeleton.addFGDecal( head_left.createSprite( "head_left" ), pos.cpy() );
+		headSkeleton.addFGDecal( head_right.createSprite( "head_right" ), pos.cpy().add(2029,0) );
+		
+	}
+	
+	private void rightArmDecal(){
+		Skeleton rightElbowSkeleton = ( Skeleton ) LevelFactory.entities
+				.get( "rightElbowSkeleton" );
+		Skeleton rightShoulderSkeleton = ( Skeleton ) LevelFactory.entities
+				.get( "rightShoulderSkeleton" );
+		
+		//forearm decals
+		TextureAtlas elbow_decals = WereScrewedGame.manager.getAtlas( "forearm_elbow_ex" );
+		Vector2 elbowPos = new Vector2(-520,-278);
+		int x=0,y=-1;
+		for(int i = 0; i <6; ++i ){
+			//515,710
+			x = i%2;
+			if(x==0)++y;
+			rightElbowSkeleton.addFGDecal( 
+				elbow_decals.createSprite( "forearmandelbow_exterior"+(i+1) ),
+				elbowPos.cpy().add( 515*x,-710*y ) );
+		}
+		
+		//upper arm decals
+		TextureAtlas arm_decals = WereScrewedGame.manager.getAtlas( "right_arm_ex" );
+		Vector2 armPos = new Vector2(-500,-128);
+		x=0; y=-1;
+		for(int i = 0; i <6; ++i ){
+			//515,710
+			x = i%2;
+			if(x==0)++y;
+			rightShoulderSkeleton.addFGDecal( 
+					arm_decals.createSprite( "upperarm_exterior"+(i+1) ),
+					armPos.cpy().add( 480*x,-683*y ) );
 		}
 	}
 }

@@ -79,19 +79,13 @@ class IntroScreen implements com.badlogic.gdx.Screen {
 	public void render( float delta ) {
 		Gdx.gl.glClearColor( 1f, 1f, 1f, 1f );
 		Gdx.gl.glClear( GL10.GL_COLOR_BUFFER_BIT );
-		/*
-		 * batch.begin(); font.setColor(0f, 0f, 0f, 1f); font.draw(batch, LIB,
-		 * captionX1, captionY); font.setColor(1f, 0f, 0f, 1f); font.draw(batch,
-		 * GDX, captionX2, captionY); batch.end();
-		 */
+
 		stage.act( delta );
 		stage.draw( );
 	}
 
 	@Override
 	public void resize( int width, int height ) {
-		// batch.getProjectionMatrix().setToOrtho2D(-width/2, -height/2, width,
-		// height);
 		stage.setViewport( width, height, true );
 
 	}
@@ -107,8 +101,6 @@ class IntroScreen implements com.badlogic.gdx.Screen {
 
 		@Override
 		public void run( ) {
-			// TODO Auto-generated method stub
-			// game.setScreen(new MainMenuScreen(game));
 			ScreenManager.getInstance( ).show( ScreenType.LOADING_1 );
 
 		}
@@ -116,8 +108,6 @@ class IntroScreen implements com.badlogic.gdx.Screen {
 
 	@Override
 	public void hide( ) {
-		/* dispose intro screen because it won't be needed anymore */
-		// ScreenManager.getInstance( ).dispose( ScreenType.INTRO );
 	}
 
 	@Override

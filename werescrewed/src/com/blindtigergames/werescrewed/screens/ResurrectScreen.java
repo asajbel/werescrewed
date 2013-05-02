@@ -93,10 +93,12 @@ public class ResurrectScreen implements com.badlogic.gdx.Screen {
 
 		// entityManager = new EntityManager( );
 		skeleton = new Skeleton( "skeleton", new Vector2( 500, 0 ), null, world );
+		skeleton.setFgFade( false );
 		// skeleton.body.setType( BodyType.DynamicBody );
 		rootSkeleton = new Skeleton( "root", Vector2.Zero, null, world );
+		rootSkeleton.setFgFade( false );
 		bgRootSkel = new RootSkeleton( "root", Vector2.Zero, null, world );
-
+		bgRootSkel.setFgFade( false );
 		initParallaxBackground( );
 
 		// testTexture = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
