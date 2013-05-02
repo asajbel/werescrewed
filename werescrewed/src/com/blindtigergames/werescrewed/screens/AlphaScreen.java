@@ -6,6 +6,7 @@ import aurelienribon.tweenengine.TweenEquations;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -57,6 +58,8 @@ import com.blindtigergames.werescrewed.joint.PrismaticJointBuilder;
 import com.blindtigergames.werescrewed.joint.RevoluteJointBuilder;
 import com.blindtigergames.werescrewed.level.CharacterSelect;
 import com.blindtigergames.werescrewed.level.LevelFactory;
+import com.blindtigergames.werescrewed.sound.SoundManager;
+import com.blindtigergames.werescrewed.sound.SoundManager.SoundType;
 import com.blindtigergames.werescrewed.util.Util;
 
 public class AlphaScreen extends Screen {
@@ -98,6 +101,8 @@ public class AlphaScreen extends Screen {
 	
 	Array<Panel> panels;
 
+	protected Music bgm;
+	
 	public AlphaScreen( ) {
 		super( );
 
@@ -175,6 +180,21 @@ public class AlphaScreen extends Screen {
 		Skeleton root = ( Skeleton ) LevelFactory.entities
 				.get( "RootSkeleton" );
 		root.setFgFade( false );
+		bgm = WereScrewedGame.manager.get( WereScrewedGame.dirHandle.path( ) + "/common/music/waltz.mp3", Music.class );
+		bgm.setVolume( SoundManager.getMusicVolume( ) );
+		bgm.setLooping( true );
+	}
+	
+	@Override
+	public void show(){
+		super.show( );
+		bgm.play();	
+	}
+
+	@Override
+	public void hide(){
+		super.hide( );
+		bgm.stop();	
 	}
 
 	@Override
