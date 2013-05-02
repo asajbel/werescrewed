@@ -518,6 +518,15 @@ public class MyContactListener implements ContactListener {
 			String soundB = "collision";
 			int indexB = 0;
 
+			if (playSoundB && objectA instanceof Platform && objectB.sounds.hasSound("platformcollision")){
+				soundB = "platformcollision";
+				indexB = 0;
+			}
+			if (playSoundA && objectB instanceof Platform && objectA.sounds.hasSound("platformcollision")){
+				soundA = "platformcollision";
+				indexA = 0;
+			}
+
 			//Skip playing a sound that the sound manager doesn't have.
 			if (playSoundA && !objectA.sounds.hasSound( soundA, indexA ))
 				playSoundA = false;
@@ -530,22 +539,6 @@ public class MyContactListener implements ContactListener {
 						.equals( objectB.sounds.getGDXSound( soundB, indexB ) ) ){
 					playSoundB = false;
 				}
-			}
-			
-			//Stop gears from making a sound when they collide with each other.
-			if (objectA.type != null && objectB.type != null){
-				if (objectA.type.getName().toLowerCase().contains( "gear" ) 
-						&& objectB.type.getName().toLowerCase().contains( "gear" )){
-					playSoundA = playSoundB = false;
-				}
-				//Stop gears from making a sound when they collide with the player.
-				if (objectA.type.getName().toLowerCase().contains( "gear" ) && objectB instanceof Player){
-					playSoundA = false;
-				}
-				if (objectB.type.getName().toLowerCase().contains( "gear" ) && objectA instanceof Player){
-					playSoundB = false;
-				}
-
 			}
 			
 			float v = Math.min( Math.max( (float)Math.pow(force * COLLISION_VOLUME, COLLISION_FORCE_FALLOFF), 0.0f ), 2.0f);
