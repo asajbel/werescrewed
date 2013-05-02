@@ -168,7 +168,7 @@ public class MyControllerListener implements ControllerListener {
 	 */
 	@Override
 	public boolean buttonDown( Controller controller, int buttonIndex ) {
-
+	//	Gdx.app.log( controller.getName( ), String.valueOf( buttonIndex ) ); 
 		// Setting jump/pause/bumper
 		if ( buttonIndex == Mapping.BUTTON_FACE_BOT )
 			jumpPressed = true;
@@ -177,7 +177,8 @@ public class MyControllerListener implements ControllerListener {
 				|| buttonIndex == Mapping.BUTTON_L1
 				|| buttonIndex == Mapping.BUTTON_L2 )
 			attachScrewPressed = true;
-		if ( buttonIndex == Mapping.BUTTON_START )
+		if ( buttonIndex == Mapping.BUTTON_START 
+				|| buttonIndex == Mapping.BUTTON_SYSTEM )
 			pausePressed = true;
 		if ( buttonIndex == Mapping.BUTTON_FACE_LEFT )
 			grabPressed = true;
@@ -213,7 +214,8 @@ public class MyControllerListener implements ControllerListener {
 				|| buttonIndex == Mapping.BUTTON_L1
 				|| buttonIndex == Mapping.BUTTON_L2 )
 			attachScrewPressed = false;
-		if ( buttonIndex == Mapping.BUTTON_START )
+		if ( buttonIndex == Mapping.BUTTON_START 
+				|| buttonIndex == Mapping.BUTTON_SYSTEM )
 			pausePressed = false;
 		if ( buttonIndex == Mapping.BUTTON_FACE_LEFT )
 			grabPressed = false;
