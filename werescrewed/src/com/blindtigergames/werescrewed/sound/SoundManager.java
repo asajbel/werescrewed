@@ -54,11 +54,8 @@ public class SoundManager {
 	}
 	
 	public SoundRef getSound(String id, String assetName){
-		if (!hasSound(id)){
-			Sound s = WereScrewedGame.manager.get( assetName, Sound.class );
-			sounds.add( id, new SoundRef(s));
-		}
-		return sounds.get( id );
+		Sound s = WereScrewedGame.manager.get( assetName, Sound.class );
+		return sounds.add( id, new SoundRef(s));
 	}
 	
 	public SoundRef getSound(String id){
@@ -76,8 +73,16 @@ public class SoundManager {
 		return (sounds.containsKey( tag ) && sounds.getAll( tag ).size > index);
 	}
 
-	public void playSound( String id ){ playSound(id, 0, 0f); }
-	public void playSound( String id , float delay){ playSound(id, 0, delay); }
+	public void playSound( String id ){ 
+		int index = WereScrewedGame.random.nextInt( sounds.getAll( id ).size );
+		//Gdx.app.log( "SoundManager", "Playing sound "+ index +" out of "+sounds.getAll( id ).size +"." );
+		playSound(id, index, 0f); 
+	}
+	public void playSound( String id , float delay){ 
+		int index = WereScrewedGame.random.nextInt( sounds.getAll( id ).size );
+		//Gdx.app.log( "SoundManager", "Playing sound "+ index +" out of "+sounds.getAll( id ).size +"." );
+		playSound(id, index, delay); 
+	}
 	
 	public void playSound( String id, int index, float delay ) {
 		if (hasSound(id , index)) {

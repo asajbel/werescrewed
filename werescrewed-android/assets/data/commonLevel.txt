@@ -13,6 +13,12 @@
 ##sounds
 /common/sounds/inceptionbutton.mp3
 /common/sounds/jump.ogg
+/common/sounds/deathMaleGah.ogg
+/common/sounds/deathMaleUgh.ogg
+/common/sounds/deathMaleOw.ogg
+/common/sounds/deathFemaleUgh.ogg
+/common/sounds/deathFemaleUeh.ogg
+/common/sounds/deathFemaleOoh.ogg
 /common/sounds/jumpFemale.ogg
 /common/sounds/footstep1.ogg
 /common/sounds/footstep2.ogg
