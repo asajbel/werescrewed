@@ -97,7 +97,7 @@ public class PhysicsTestScreen extends Screen {
 
 		skeleton = new Skeleton( "skeleton", new Vector2( 500, 0 ), null,
 				world, BodyType.KinematicBody );
-
+		skeleton.setFgFade( false );
 		platBuilder = new PlatformBuilder( world );
 
 		// Uncomment for test anchor
@@ -119,7 +119,7 @@ public class PhysicsTestScreen extends Screen {
 		rootSkeleton = level.root;
 
 		rootSkeleton.addSkeleton( skeleton );
-
+		rootSkeleton.setFgFade( false );
 		// debugRenderer.setDrawJoints( false );
 
 		Gdx.app.setLogLevel( Application.LOG_DEBUG );
@@ -142,6 +142,7 @@ public class PhysicsTestScreen extends Screen {
 	private void buildEngineHeart( Vector2 posPix ) {
 		Skeleton engineSkeleton = new Skeleton( "engineSkeleton", posPix, null,
 				world );
+		engineSkeleton.setFgFade( false );
 		rootSkeleton.addSkeleton( engineSkeleton );
 
 		TextureAtlas engineAtlas = WereScrewedGame.manager.getAtlas( "engine" );
@@ -438,6 +439,7 @@ public class PhysicsTestScreen extends Screen {
 		dynSkel2.body.setType( BodyType.DynamicBody );
 		dynSkel2.body.setGravityScale( 0.1f );
 		dynSkel2.setDensity( 100f );
+		dynSkel2.setFgFade( false );
 		rootSkeleton.addSkeleton( dynSkel2 );
 
 		StrippedScrew strScrew = new StrippedScrew( "strScrew3", new Vector2(
@@ -561,6 +563,7 @@ s.setFgFade( false );
 		// rootSkeleton.addSkeleton( s );
 
 		top.addSkeleton( s );
+		top.setFgFade( false );
 		// StructureScrew screw = new StructureScrew( "sdfasdf",
 		// new Vector2(-700f, 500f),
 		// 100, world );
@@ -576,7 +579,7 @@ s.setFgFade( false );
 				400 ), null, world, BodyType.KinematicBody );
 		// rootSkeleton.addSkeleton( middleHang );
 		s.addSkeleton( middleHang );
-
+		middleHang.setFgFade( false );
 		// TiledPlatform test2 = platBuilder.name( "movetest2" ).kinematic( )
 		// .position( -900, 500 ).dimensions( 1, 5).oneSided( false )
 		// .buildTilePlatform( );
@@ -765,6 +768,7 @@ s.setFgFade( false );
 								Texture.class ) ).fg( ).vert( 200, 0 )
 				.vert( 300, 100 ).vert( 200, 200 ).hasDeactiveTrigger( true )
 				.build( );
+		skeleton.setFgFade( false );
 		// dynSkeleton.body.createFixture( , density )
 
 		oldRootSkeleton.addSkeleton( skeleton );

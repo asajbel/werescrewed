@@ -91,7 +91,9 @@ public class HazardScreen implements com.badlogic.gdx.Screen {
 		Tween.registerAccessor( Entity.class, new EntityAccessor( ) );
 
 		skeleton = new Skeleton( "skeleton", Vector2.Zero, null, world );
+		skeleton.setFgFade( false );
 		rootSkeleton = new Skeleton( "root", Vector2.Zero, null, world );
+		rootSkeleton.setFgFade( false );
 		platBuilder = new PlatformBuilder( world );
 		spikesBuilder = new HazardBuilder( world );
 		contactListener = new MyContactListener( );
@@ -214,6 +216,7 @@ public class HazardScreen implements com.badlogic.gdx.Screen {
 	private void initParticleEffect( ) {
 		testSteam = new Steam( "testSteam", new Vector2( 2000f, 120f ), 25, 120, world );
 		Skeleton steamSkel = new Skeleton("steam", new Vector2(2000f, 100f), null, world);
+		steamSkel.setFgFade( false );
 	//	testSteam.particleEffect.setOffset(0f, -100f);
 		rootSkeleton.addSkeleton( steamSkel );
 		
