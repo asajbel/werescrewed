@@ -7,6 +7,7 @@ import aurelienribon.tweenengine.TweenEquations;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -175,6 +176,9 @@ public class AlphaScreen extends Screen {
 		Skeleton root = ( Skeleton ) LevelFactory.entities
 				.get( "RootSkeleton" );
 		root.setFgFade( false );
+		
+		headDecals();
+		rightArmDecal();
 	}
 
 	@Override
@@ -533,11 +537,21 @@ public class AlphaScreen extends Screen {
 	private void thighDecals( Skeleton thighSkeleton ) {
 		TextureAtlas decals = WereScrewedGame.manager
 				.getAtlas( "chest_pipes_thigh_pipes" );
+		TextureAtlas exterior_decals = WereScrewedGame.manager
+				.getAtlas( "alphabot_knee_in_thigh_out" );
+		
 		// level.entityBGList.add(thighSkeleton);
 		thighSkeleton.addBGDecalBack(
 				decals.createSprite( "thigh_mechanisms_and_pipesNOCOLOR" ),
 				new Vector2( -425, -1117 ) );
 		// 380,1117
+		
+		Vector2 thighPos = new Vector2( -370,-1010);
+		thighSkeleton.addFGDecal(
+				exterior_decals.createSprite( "thigh_ex_lower" ),
+				thighPos);
+		thighSkeleton.addFGDecal(exterior_decals.createSprite( "thigh_ex_upper" ),
+				thighPos.cpy().add( -34,699 ));
 	}
 
 	private void createFootObjects( ) {
@@ -612,7 +626,7 @@ public class AlphaScreen extends Screen {
 		TextureAtlas decals = WereScrewedGame.manager
 				.getAtlas( "alphabot_foot_shin_decal" );
 		TextureAtlas knee_exterior = WereScrewedGame.manager
-				.getAtlas( "alphabot_knee_decal" );
+				.getAtlas( "alphabot_knee_in_thigh_out" );
 
 		kneeMovingPlat = ( TiledPlatform ) LevelFactory.entities
 				.get( "kneeMovingPlat" );
@@ -629,7 +643,7 @@ public class AlphaScreen extends Screen {
 
 		kneeSkeleton
 				.addBGDecalBack( knee_exterior
-						.createSprite( "knee_mechanisms_and_pipesNOCOLOR" ),
+						.createSprite( "knee_mechanisms_and_pipesNOCOLOR_REDONE" ),
 						kneeDecalPos.cpy( ) );
 		// removePlayerToScrew( )
 	}
@@ -1252,13 +1266,56 @@ public class AlphaScreen extends Screen {
 				panelName = panelName + "_larm";
 			}
 		}
-		//hip skeleton
-		//powerSwitch1.isTurnedOn( )  && powerSwitch2.isTurnedOn( ) 
-			
-		//chest
-		 //powerSwitch3.isTurnedOn( )  && powerSwitch4.isTurnedOn( ) 
 		for(Panel p : panels){
 			p.setPanelSprite( panelName );
+		}
+	}
+	
+	
+	private void headDecals(){
+		headSkeleton = ( Skeleton ) LevelFactory.entities
+				.get( "headSkeleton" );
+		
+		TextureAtlas head_left = WereScrewedGame.manager.getAtlas( "head_left" );
+		TextureAtlas head_right = WereScrewedGame.manager.getAtlas( "head_right" );
+		
+		Vector2 pos = new Vector2(-1475,-680);
+		
+		headSkeleton.addFGDecal( head_left.createSprite( "head_left" ), pos.cpy() );
+		headSkeleton.addFGDecal( head_right.createSprite( "head_right" ), pos.cpy().add(2029,0) );
+		
+	}
+	
+	private void rightArmDecal(){
+		Skeleton rightElbowSkeleton = ( Skeleton ) LevelFactory.entities
+				.get( "rightElbowSkeleton" );
+		Skeleton rightShoulderSkeleton = ( Skeleton ) LevelFactory.entities
+				.get( "rightShoulderSkeleton" );
+		
+		//forearm decals
+		TextureAtlas elbow_decals = WereScrewedGame.manager.getAtlas( "forearm_elbow_ex" );
+		Vector2 elbowPos = new Vector2(-520,-278);
+		int x=0,y=-1;
+		for(int i = 0; i <6; ++i ){
+			//515,710
+			x = i%2;
+			if(x==0)++y;
+			rightElbowSkeleton.addFGDecal( 
+				elbow_decals.createSprite( "forearmandelbow_exterior"+(i+1) ),
+				elbowPos.cpy().add( 515*x,-710*y ) );
+		}
+		
+		//upper arm decals
+		TextureAtlas arm_decals = WereScrewedGame.manager.getAtlas( "right_arm_ex" );
+		Vector2 armPos = new Vector2(-500,-128);
+		x=0; y=-1;
+		for(int i = 0; i <6; ++i ){
+			//515,710
+			x = i%2;
+			if(x==0)++y;
+			rightShoulderSkeleton.addFGDecal( 
+					arm_decals.createSprite( "upperarm_exterior"+(i+1) ),
+					armPos.cpy().add( 480*x,-683*y ) );
 		}
 	}
 }
