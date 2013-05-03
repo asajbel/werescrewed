@@ -738,6 +738,19 @@ public class AlphaScreen extends Screen {
 			thighSteamTriggered = true;
 			Steam steam = new Steam( "steamThigh1", new Vector2( 2015, 2880 ), 25, 120, level.world );
 			thighSkeleton2.addSteam(steam);
+			
+			
+			// Trap door goes back up so players can jump out
+			Skeleton rightKneeTrapDoorSkeleton1 = ( Skeleton ) LevelFactory.entities
+					.get( "rightKneeTrapDoorSkeleton1" );
+			
+			Timeline t = Timeline.createSequence( );
+			t.push( Tween
+					.to( rightKneeTrapDoorSkeleton1, PlatformAccessor.LOCAL_ROT,
+							2f ).ease( TweenEquations.easeInOutQuad )
+					.target( ( 0 ) ).delay( 0f ).start( ) );
+
+			rightKneeTrapDoorSkeleton1.addMover( new TimelineTweenMover( t.start( ) ) );
 		}
 		if ( powerSwitch7.isTurnedOn( )  && powerSwitch8.isTurnedOn( ) ) {
 			if(leftShoulderSkeleton.currentMover( ) == null){
