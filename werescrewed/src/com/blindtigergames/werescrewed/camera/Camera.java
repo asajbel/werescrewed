@@ -43,14 +43,17 @@ public class Camera {
 	private Vector2 translateVelocity;
 	private Vector2 translateTarget;
 	private float targetBuffer;
-	private boolean translating;
+	private boolean moving;
 
 	// zoom
-	private static final float ZOOM_ACCELERATION = .001f;
 	private static final float ZOOM_SIG_DIFF = .00005f;
-	private static final float ZOOM_IN_FACTOR = .5f;
 	public static final float MIN_ZOOM = 1f;
 	public static final float SCREEN_TO_ZOOM = 1468.6f;
+	/**
+	 * The ratio of the total distance traveled for the camera to start slowing
+	 * down
+	 */
+	private static final float DECEL_RATIO = 0.1f;
 
 	// globals for calculating screen space
 	protected static Vector3 CURRENT_CAMERA;
@@ -77,6 +80,7 @@ public class Camera {
 	private boolean debugInput;
 	private boolean debugRender;
 	private ShapeRenderer shapeRenderer;
+	private Vector2 initPosition;
 
 	public Camera( Vector2 position, float viewportWidth, float viewportHeight,
 			World world ) {
@@ -105,7 +109,7 @@ public class Camera {
 		// this.viewportHeight
 		// * BUFFER_RATIO / 2 ) / 2 )
 		// * ACCELERATION_BUFFER_RATIO;
-		translating = false;
+		moving = false;
 		zoomSpeed = 0f;
 		this.timeLeft = 0;
 		camera.zoom = MIN_ZOOM;
@@ -204,21 +208,9 @@ public class Camera {
 	}
 
 	/**
-	 * Adjust the camera by translating and zooming when necessary
+	 * Movement and zooming
 	 */
 	private void adjustCamera( ) {
-		// Translate and zoom
-		translateLogic( );
-		zoom( );
-
-	}
-
-	/**
-	 * Either translate, lock, or do nothing based on various buffers and
-	 * positions
-	 */
-	private void translateLogic( ) {
-
 		// DETERMINE IF BUFFERS HAVE LEFT THE SCREEN //
 
 		// Track the status of buffers
@@ -247,92 +239,106 @@ public class Camera {
 		}
 
 		// If a buffer has left the screen
-		if ( !translating && outside ) {
-			translating = true;
+		if ( !moving && outside ) {
+			startMoving( );
 		}
 
-		// DETERMINE WHETHER TO LOCK, TRANSLATE, OR DO NOTHING //
-
-		if ( translating ) {
-
-			boolean lock = false;
-
-			// Lock when:
-			if ( Math.abs( translateTarget.x - center2D.x ) < targetBuffer
-					&& Math.abs( translateTarget.y - center2D.y ) < targetBuffer ) {
-				// camera center is really close to target
-				lock = true;
-			}
-
-			// Center of camera is within buffer from target, so camera
-			// locks to target
-			if ( lock ) {
-				this.timeLeft = 0;
-
-				if ( lock ) {
-					camera.position.x = translateTarget.x;
-					camera.position.y = translateTarget.y;
-				}
-
-				// find angle between midpoint velocity and translate velocity
-				float tempAngle = 0f;
-				tempAngle = anchorList.getMidpointVelocity( ).angle( )
-						- translateVelocity.angle( );
-				tempAngle = Math.abs( tempAngle );
-				if ( tempAngle > 180 ) {
-					tempAngle = 360 - tempAngle;
-				}
-				// if target stops moving or changes direction abruptly, disable
-				// lock
-				if ( anchorList.getMidpointVelocity( ).len( ) < MINIMUM_FOLLOW_SPEED
-						|| tempAngle > MAX_ANGLE_DIFF ) {
-					translating = false;
-					translateVelocity.x = 0f;
-					translateVelocity.y = 0f;
-				}
-			} else {
-				translate( );
-			}
+		if ( moving ) {
+			move( );
+			zoom( );
 			timeLeft--;
-		} else {
-			translateVelocity.x = 0f;
-			translateVelocity.y = 0f;
 		}
+	}
+
+	/**
+	 * Initialize movement
+	 */
+	private void startMoving( ) {
+		moving = true;
+		initPosition = new Vector2( center2D.x, center2D.y );
+	}
+
+	/**
+	 * Do movement stuff.
+	 */
+	private void move( ) {
+		translate( );
+		zoom( );
+	}
+
+	/**
+	 * End all movement
+	 */
+	private void stopMoving( ) {
+		translateVelocity.x = 0f;
+		translateVelocity.y = 0f;
+		timeLeft = 0;
+		moving = false;
 	}
 
 	/**
 	 * Translate the camera towards the translate target
 	 */
 	private void translate( ) {
-		// only account for translate target on relevant axes
+		// boolean lock = false;
 
-		Vector2 distance = new Vector2( );
-		distance.x = translateTarget.x;
-		distance.y = translateTarget.y;
+		Vector2 distance = new Vector2( translateTarget.x, translateTarget.y );
+		distance.sub( center2D );
 
-		// the difference between the translate target and the
-		// center of the camera on only the relevant axes
-		distance = new Vector2( distance.x - center2D.x, distance.y
-				- center2D.y );
+		// // Lock when:
+		// if ( Math.abs( distance.len( ) ) < targetBuffer ) {
+		// // camera center is really close to target
+		// lock = true;
+		// }
+		//
+		// // Center of camera is within buffer from target, so camera
+		// // locks to target
+		// if ( lock ) {
+		// this.timeLeft = 0;
+		//
+		// camera.position.x = translateTarget.x;
+		// camera.position.y = translateTarget.y;
+		//
+		// // find angle between midpoint velocity and translate velocity
+		// float tempAngle = 0f;
+		// tempAngle = anchorList.getMidpointVelocity( ).angle( )
+		// - translateVelocity.angle( );
+		// tempAngle = Math.abs( tempAngle );
+		// if ( tempAngle > 180 ) {
+		// tempAngle = 360 - tempAngle;
+		// }
+		// // if target stops moving or changes direction abruptly, disable
+		// // lock
+		// if ( anchorList.getMidpointVelocity( ).len( ) < MINIMUM_FOLLOW_SPEED
+		// || tempAngle > MAX_ANGLE_DIFF ) {
+		// moving = false;
+		// translateVelocity.x = 0f;
+		// translateVelocity.y = 0f;
+		// }
+		// } else {
 
-		if ( Math.abs( distance.x ) < targetBuffer
-				&& Math.abs( distance.y ) < targetBuffer ) {
-			translateVelocity.x = 0f;
-			translateVelocity.y = 0f;
-			timeLeft = 0;
-			translating = false;
+		Vector2 totalDistance = new Vector2( translateTarget.x,
+				translateTarget.y );
+		totalDistance.sub( initPosition );
+
+		if ( Math.abs( distance.len( ) ) < targetBuffer ) {
+			stopMoving( );
 			return;
 		}
 
 		// Manage time
 
-		if ( distance.len( ) > targetBuffer * 1.25 ) {
+		if ( Math.abs( distance.len( ) ) > Math.abs( totalDistance.len( ) )
+				* DECEL_RATIO ) {
 			timeLeft = TIME_PER_PIX * Math.abs( distance.len( ) );
 		} else {
 			timeLeft = TIME_PER_PIX * Math.abs( distance.len( ) ) * 3;
 		}
 
 		Vector2 acceleration = calcAcceleration( distance );
+
+		// If the acceleration would take the camera past its destination,
+		// adjust velocity to take it exactly to the target
 		if ( Math.abs( this.translateVelocity.x + acceleration.x ) > Math
 				.abs( distance.x ) ) {
 			this.translateVelocity.x = distance.x;
@@ -345,6 +351,7 @@ public class Camera {
 		}
 		this.translateVelocity.add( acceleration );
 		this.camera.translate( this.translateVelocity );
+		// }
 	}
 
 	/**
