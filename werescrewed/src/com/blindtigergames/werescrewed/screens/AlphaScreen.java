@@ -182,12 +182,17 @@ public class AlphaScreen extends Screen {
 		rightArmDecal( );
 		headDecals( );
 		
+		rightLegDecals();
+		leftArmDecal();
+		
+		
 		Skeleton root = ( Skeleton ) LevelFactory.entities
 				.get( "RootSkeleton" );
 		root.setFgFade( false );
 		bgm = WereScrewedGame.manager.get( WereScrewedGame.dirHandle.path( ) + "/common/music/waltz.mp3", Music.class );
 		bgm.setVolume( SoundManager.getMusicVolume( ) );
 		bgm.setLooping( true );
+		
 	}
 	
 	@Override
@@ -641,6 +646,60 @@ public class AlphaScreen extends Screen {
 		foot.addFGDecal( decals.createSprite( "shin_exterior" ),
 				footFGPos.cpy( ).add( 400, 386 ) );
 
+	}
+	
+	private void rightLegDecals(){
+		Skeleton rightFoot = (Skeleton)LevelFactory.entities.get("footSkeleton2");
+		Skeleton rightKnee = (Skeleton)LevelFactory.entities.get("kneeSkeleton2");
+		Skeleton rightThigh = (Skeleton)LevelFactory.entities.get("thighSkeleton2");
+		
+		TextureAtlas decals = WereScrewedGame.manager
+				.getAtlas( "alphabot_foot_shin_decal" );
+		
+		// DECALS for Foot / Shin
+		Sprite sprite;
+
+		addFGSkeleton( rightFoot );
+		
+		Vector2 footFGPos = new Vector2( 750, -690 );
+		sprite = decals.createSprite( "foot_exterior" );
+		sprite.setScale( -1, 1 );
+		rightFoot.addFGDecal( sprite, footFGPos );
+		
+		sprite = decals.createSprite( "shin_exterior" );
+		sprite.setScale( -1, 1 );
+		rightFoot.addFGDecal( sprite,
+				footFGPos.cpy( ).add( -400, 386 ) );
+		
+		
+		//KNEE
+		decals = WereScrewedGame.manager
+				.getAtlas( "alphabot_foot_shin_decal" );
+		
+
+		Vector2 kneeDecalPos = new Vector2( 630	, -1420 );
+		sprite = decals.createSprite( "knee_exterior" );
+		sprite.setScale( -1, 1 );
+		rightThigh.addFGDecal( sprite ,
+				kneeDecalPos.cpy( ) );
+		addFGSkeleton( rightKnee );
+
+		
+		//THIGH
+		TextureAtlas thigh_exterior = WereScrewedGame.manager
+				.getAtlas( "alphabot_knee_in_thigh_out" );
+		addFGSkeleton(rightThigh);
+		Vector2 thighDecalPos = new Vector2( 468,-394 );
+		sprite = thigh_exterior.createSprite( "thigh_ex_lower" );
+		sprite.setScale( -1,1 );
+		rightThigh.addFGDecal(
+				sprite,
+				thighDecalPos);
+		sprite = thigh_exterior.createSprite( "thigh_ex_upper" );
+		sprite.setScale( -1,1 );
+		rightThigh.addFGDecal(sprite,
+				thighDecalPos.cpy().add( 34,699 ));
+		
 	}
 
 	private void createKneeObjects( ) {
@@ -1317,6 +1376,43 @@ public class AlphaScreen extends Screen {
 		
 		headSkeleton.addFGDecal( head_left.createSprite( "head_left" ), pos.cpy() );
 		headSkeleton.addFGDecal( head_right.createSprite( "head_right" ), pos.cpy().add(2029,0) );
+		
+	}
+	
+	private void leftArmDecal(){
+		Skeleton leftShoulderSkeleton = ( Skeleton ) LevelFactory.entities
+				.get( "leftShoulderSkeleton" );
+		
+		Sprite s;
+		int x=0,y=-1;
+		//upper arm decals
+		TextureAtlas arm_decals = WereScrewedGame.manager.getAtlas( "right_arm_ex" );
+		Vector2 armPos = new Vector2(-520,-128);
+		x=0; y=-1;
+		for(int i = 0; i <6; ++i ){
+			//515,710
+			x = (i%2);
+			if(x==0)++y;
+			s = arm_decals.createSprite( "upperarm_exterior"+(i+1) );
+			//s.setScale(-1,1);
+			leftShoulderSkeleton.addFGDecal( 
+					s,
+					armPos.cpy().add( 480*x,-683*y ) );
+		}
+		
+		//forearm decals
+		TextureAtlas elbow_decals = WereScrewedGame.manager.getAtlas( "forearm_elbow_ex" );
+		Vector2 elbowPos = new Vector2(-555,232);
+		
+		for(int i = 0; i <6; ++i ){
+			//515,710
+			x = (i%2);
+			if(x==0)++y;
+			s = elbow_decals.createSprite( "forearmandelbow_exterior"+(i+1) );
+			//s.setScale( -1,1 );
+			leftShoulderSkeleton.addFGDecal(  s,
+				elbowPos.cpy().add( 515*x,-710*y ) );
+		}
 		
 	}
 	
