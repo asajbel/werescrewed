@@ -31,8 +31,8 @@ public class Camera {
 	 * A ratio of some sort to determine targetBuffer size
 	 */
 	private static final float TARGET_BUFFER_RATIO = .005f;
-	private static final float MINIMUM_FOLLOW_SPEED = .1f;
-	private static final float MAX_ANGLE_DIFF = 100f;
+	// private static final float MINIMUM_FOLLOW_SPEED = .1f;
+	// private static final float MAX_ANGLE_DIFF = 100f;
 	/**
 	 * Time to get to ideal camera position/zoom per hundred pixels of distance
 	 */
@@ -81,6 +81,8 @@ public class Camera {
 	private boolean debugRender;
 	private ShapeRenderer shapeRenderer;
 	private Vector2 initPosition;
+	private Vector2 distance;
+	private float targetZoom;
 
 	public Camera( Vector2 position, float viewportWidth, float viewportHeight,
 			World world ) {
@@ -110,11 +112,14 @@ public class Camera {
 		// * BUFFER_RATIO / 2 ) / 2 )
 		// * ACCELERATION_BUFFER_RATIO;
 		moving = false;
-		zoomSpeed = 0f;
+		this.zoomSpeed = 0f;
 		this.timeLeft = 0;
 		camera.zoom = MIN_ZOOM;
+		targetZoom = MIN_ZOOM;
 		anchorList = AnchorList.getInstance( camera );
 		anchorList.clear( );
+
+		distance = new Vector2( 0, 0 );
 
 		// debug
 		debugInput = false;
@@ -239,14 +244,17 @@ public class Camera {
 		}
 
 		// If a buffer has left the screen
-		if ( !moving && outside ) {
+		if ( !moving && ( outside || camera.zoom > MIN_ZOOM ) ) {
 			startMoving( );
 		}
 
 		if ( moving ) {
 			move( );
-			zoom( );
 			timeLeft--;
+		}
+
+		if ( timeLeft <= 0 ) {
+			stopMoving( );
 		}
 	}
 
@@ -262,8 +270,33 @@ public class Camera {
 	 * Do movement stuff.
 	 */
 	private void move( ) {
-		translate( );
-		zoom( );
+		distance = new Vector2( translateTarget.x, translateTarget.y );
+		distance.sub( center2D );
+
+		if ( Math.abs( distance.len( ) ) > targetBuffer ) {
+			translate( );
+		}
+
+		targetZoom = 1f;
+		Vector2 longestDist = anchorList.getLongestXYDist( );
+		Vector2 distFromEdge = new Vector2( longestDist.x - screenBounds.width,
+				longestDist.y - screenBounds.height );
+
+		if ( distFromEdge.x > distFromEdge.y ) {
+			targetZoom = longestDist.x / viewportWidth;
+		} else if ( distFromEdge.y > distFromEdge.x ) {
+			targetZoom = longestDist.y / viewportHeight;
+		}
+
+		// If target zoom is too zoomed-in, set to MIN_ZOOM
+		if ( targetZoom < MIN_ZOOM ) {
+			targetZoom = MIN_ZOOM;
+		}
+
+		if ( ( camera.zoom ) < ( targetZoom - ZOOM_SIG_DIFF )
+				|| ( camera.zoom ) > ( targetZoom + ZOOM_SIG_DIFF ) ) {
+			zoom( );
+		}
 	}
 
 	/**
@@ -273,6 +306,7 @@ public class Camera {
 		translateVelocity.x = 0f;
 		translateVelocity.y = 0f;
 		timeLeft = 0;
+		zoomSpeed = 0;
 		moving = false;
 	}
 
@@ -281,9 +315,6 @@ public class Camera {
 	 */
 	private void translate( ) {
 		// boolean lock = false;
-
-		Vector2 distance = new Vector2( translateTarget.x, translateTarget.y );
-		distance.sub( center2D );
 
 		// // Lock when:
 		// if ( Math.abs( distance.len( ) ) < targetBuffer ) {
@@ -321,11 +352,6 @@ public class Camera {
 				translateTarget.y );
 		totalDistance.sub( initPosition );
 
-		if ( Math.abs( distance.len( ) ) < targetBuffer ) {
-			stopMoving( );
-			return;
-		}
-
 		// Manage time
 
 		if ( Math.abs( distance.len( ) ) > Math.abs( totalDistance.len( ) )
@@ -352,6 +378,44 @@ public class Camera {
 		this.translateVelocity.add( acceleration );
 		this.camera.translate( this.translateVelocity );
 		// }
+	}
+
+	/**
+	 * Zoom out or in depending on anchor buffer rectangles
+	 * 
+	 */
+	private void zoom( ) {
+		// if difference is small enough, set speed to zero
+		if ( Math.abs( camera.zoom - targetZoom ) < ZOOM_SIG_DIFF ) {
+			zoomSpeed = 0;
+			return;
+		}
+
+		float zoomChange = targetZoom - camera.zoom;
+
+		// Accelerate zoom
+		if ( zoomChange != 0 ) {
+			zoomSpeed += calcZoomAcc( zoomChange );
+		} else {
+			zoomSpeed = 0;
+		}
+
+		float newZoom = camera.zoom;
+
+		if ( zoomSpeed > 0
+				&& ( newZoom + zoomSpeed ) > ( targetZoom + ZOOM_SIG_DIFF ) ) {
+			newZoom = targetZoom;
+		} else if ( zoomSpeed < 0
+				&& ( newZoom + zoomSpeed ) < ( targetZoom - ZOOM_SIG_DIFF ) ) {
+			newZoom = targetZoom;
+		} else if ( ( newZoom + zoomSpeed ) > ( targetZoom - ZOOM_SIG_DIFF )
+				&& ( newZoom + zoomSpeed ) < ( targetZoom + ZOOM_SIG_DIFF ) ) {
+			newZoom = targetZoom;
+		} else {
+			newZoom += zoomSpeed;
+		}
+
+		camera.zoom = newZoom;
 	}
 
 	/**
@@ -389,73 +453,6 @@ public class Camera {
 	}
 
 	/**
-	 * zoom out or in depending on anchor buffer rectangles
-	 * 
-	 * @param modifier
-	 *            modifies zoom rate
-	 */
-	private void zoom( ) {
-		float newZoom = 1f;
-		Vector2 longestDist = anchorList.getLongestXYDist( );
-		Vector2 distFromEdge = new Vector2( longestDist.x - screenBounds.width,
-				longestDist.y - screenBounds.height );
-
-		if ( distFromEdge.x > distFromEdge.y ) {
-			newZoom = longestDist.x / viewportWidth;
-		} else if ( distFromEdge.y > distFromEdge.x ) {
-			newZoom = longestDist.y / viewportHeight;
-		}
-
-		// If targetZoom is too zoomed-in, set to MIN_ZOOM
-		if ( newZoom < MIN_ZOOM ) {
-			newZoom = MIN_ZOOM;
-		}
-
-		zoomSteer( newZoom );
-	}
-
-	/**
-	 * steer zoom to the new zoom
-	 * 
-	 * @param targetZoom
-	 */
-	private void zoomSteer( float targetZoom ) {
-		// if difference is small enough, set speed to zero
-		float newZoom = camera.zoom;
-		if ( Math.abs( newZoom - targetZoom ) < ZOOM_SIG_DIFF ) {
-			zoomSpeed = 0;
-			return;
-		}
-
-		float zoomChange = newZoom = targetZoom;
-
-		// Accelerate zoom
-		if ( zoomChange != 0 ) {
-			zoomSpeed += calcZoomAcc( zoomChange );
-		} else {
-			zoomSpeed = 0;
-		}
-
-		// Zoom out
-		if ( targetZoom > camera.zoom ) {
-			if ( ( camera.zoom + zoomSpeed ) < ( targetZoom - ZOOM_SIG_DIFF ) )
-				newZoom += zoomSpeed;
-			else
-				newZoom = targetZoom;
-		}
-
-		// Zoom in
-		if ( targetZoom < camera.zoom ) {
-			if ( ( camera.zoom - zoomSpeed ) > ( targetZoom + ZOOM_SIG_DIFF ) )
-				newZoom -= zoomSpeed;
-			else
-				newZoom = targetZoom;
-		}
-
-		camera.zoom = newZoom;
-	}
-
-	/**
 	 * Determine if any part of rect1 is outside of rect2
 	 * 
 	 * @param rect1
@@ -467,11 +464,11 @@ public class Camera {
 	private RectDirection rectOutsideRect( Rectangle rect1, Rectangle rect2 ) {
 		RectDirection returnDir = RectDirection.NONE;
 
-		if ( rect1.x < rect2.x
-				|| ( rect1.x + rect1.width ) > ( rect2.x + rect2.width ) )
+		if ( rect1.x < ( rect2.x - targetBuffer )
+				|| ( rect1.x + rect1.width ) > ( rect2.x + rect2.width + targetBuffer ) )
 			returnDir = RectDirection.X;
-		if ( rect1.y < rect2.y
-				|| ( rect1.y + rect1.height ) > ( rect2.y + rect2.height ) ) {
+		if ( rect1.y < ( rect2.y - targetBuffer )
+				|| ( rect1.y + rect1.height ) > ( rect2.y + rect2.height + targetBuffer ) ) {
 			if ( returnDir == RectDirection.X )
 				returnDir = RectDirection.BOTH;
 			else
