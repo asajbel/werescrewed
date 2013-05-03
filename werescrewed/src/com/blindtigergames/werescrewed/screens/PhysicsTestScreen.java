@@ -160,7 +160,7 @@ public class PhysicsTestScreen extends Screen {
 		
 		engineSkeleton.addPlatform( chestEngine );
 		
-		Platform moustache = platBuilder.name( "moustache" ).position( 0, 50 )
+		Platform moustache = platBuilder.name( "moustache" ).position( 0, 1700 )
 				 .texture( null ).type( "moustache" )
 				 .buildComplexPlatform( );
 		
