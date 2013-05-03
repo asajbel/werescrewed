@@ -48,6 +48,7 @@ import com.blindtigergames.werescrewed.entity.screws.PuzzleScrew;
 import com.blindtigergames.werescrewed.entity.screws.StrippedScrew;
 import com.blindtigergames.werescrewed.entity.screws.StructureScrew;
 import com.blindtigergames.werescrewed.entity.tween.PathBuilder;
+import com.blindtigergames.werescrewed.eventTrigger.PowerSwitch;
 import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 import com.blindtigergames.werescrewed.graphics.TextureAtlas;
 import com.blindtigergames.werescrewed.joint.JointFactory;
@@ -136,7 +137,8 @@ public class PhysicsTestScreen extends Screen {
 		//
 
 		buildEngineHeart( new Vector2( 1600, 500 ) );// 2700,600 //2000,-300
-
+		PowerSwitch pswitch = new PowerSwitch("pwsstsf", new Vector2( 512, 200 ), world);
+		rootSkeleton.addEventTrigger( pswitch );
 	}
 
 	private void buildEngineHeart( Vector2 posPix ) {
