@@ -689,16 +689,16 @@ public class AlphaScreen extends Screen {
 		TextureAtlas thigh_exterior = WereScrewedGame.manager
 				.getAtlas( "alphabot_knee_in_thigh_out" );
 		addFGSkeleton(rightThigh);
-		Vector2 thighDecalPos = new Vector2( 468,-394 );
+		Vector2 thighDecalPos = new Vector2( -347,-407 );
 		sprite = thigh_exterior.createSprite( "thigh_ex_lower" );
-		sprite.setScale( -1,1 );
+		sprite.setScale( 1,1 );
 		rightThigh.addFGDecal(
 				sprite,
 				thighDecalPos);
 		sprite = thigh_exterior.createSprite( "thigh_ex_upper" );
-		sprite.setScale( -1,1 );
+		sprite.setScale( 1,1 );//-815,13
 		rightThigh.addFGDecal(sprite,
-				thighDecalPos.cpy().add( 34,699 ));
+				thighDecalPos.cpy().add( -34,699 ));
 		
 	}
 
