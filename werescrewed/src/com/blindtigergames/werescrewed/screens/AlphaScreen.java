@@ -140,7 +140,7 @@ public class AlphaScreen extends Screen {
 		// right arm: 2600f, 6000f >>>> side
 		//left side hand <- -2224, 3008
 		
-		Vector2 spawnPos = new Vector2( -1582f, 6150f );
+		Vector2 spawnPos = new Vector2( 512f, 256f );
 
 		if ( level.player1 == null ) {
 			level.player1 = new PlayerBuilder( ).world( level.world )
