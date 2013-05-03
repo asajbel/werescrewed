@@ -17,7 +17,7 @@ import com.blindtigergames.werescrewed.util.Metrics;
 
 public class WereScrewedGame extends Game {
 
-	public static final int targetFrameRate = 60;
+	public static final float targetFrameRate = 60;
 	public static final float oneOverTargetFrameRate = 1f/targetFrameRate;
 	
 	public static AssetManager manager;
@@ -43,7 +43,7 @@ public class WereScrewedGame extends Game {
 		ScreenManager.getInstance( ).initialize( this );
 		
         //used to stop auto call of render
-        //Gdx.graphics.setContinuousRendering(false);
+        Gdx.graphics.setContinuousRendering(false);
         
 		if (Gdx.graphics.isGL20Available( ))
 			defaultShader = SpriteBatch.createDefaultShader( );
@@ -100,11 +100,12 @@ public class WereScrewedGame extends Game {
 //		if ( fpsTime >= oneOverTargetFrameRate ){
 //			fpsTime = fpsTime - oneOverTargetFrameRate;
 //			//request a render
-//			//Gdx.graphics.requestRendering();
+//			Gdx.graphics.requestRendering();
 //			super.render( );
-//		}else{
-//			return;
 //		}
+		
+		return;
+		
 	}
 	
 	public void restart(){
