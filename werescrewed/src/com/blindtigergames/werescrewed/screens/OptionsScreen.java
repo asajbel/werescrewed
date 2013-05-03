@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.blindtigergames.werescrewed.entity.Sprite;
 import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.gui.Button;
@@ -16,7 +17,7 @@ class OptionsScreen extends Screen{
 	private SpriteBatch batch = null;
 	private BitmapFont font = null;
 	private BitmapFont fancyFont = null;
-	private Texture logo = null;
+	private Sprite logo = null;
 	private int lineHeight = 0;
 	private OrthographicCamera camera = null;
 	private Label screenLabel = null;
@@ -40,8 +41,12 @@ class OptionsScreen extends Screen{
 		font = new BitmapFont( );
 		fancyFont = WereScrewedGame.manager.getFont( "Screwball" );
 
-		logo =  WereScrewedGame.manager.get( WereScrewedGame.dirHandle
+		Texture name =  WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 				 + "/common/title_background.png", Texture.class );
+		logo = new Sprite(name);
+		int width = Gdx.graphics.getWidth( );
+		int height = Gdx.graphics.getHeight( ); 
+		logo.setPosition( width / 5 - logo.getWidth( ) / 2, height / 2 - logo.getWidth( ) );
 		lineHeight = Math.round( 2.5f * font.getCapHeight( ) );
 		//the following are placeholder displays. Add actual option buttons here later
 		screenLabel = new Label("OPTIONS", fancyFont);
@@ -100,6 +105,7 @@ class OptionsScreen extends Screen{
 		batch.setProjectionMatrix( camera.combined );
 		int centerX = width / 2;
 		int centerY = height / 2;
+		logo.setPosition( width / 5 - logo.getWidth( ) / 2, height / 2 - logo.getWidth( ) );
 		screenLabel.setX( centerX - screenLabel.getWidth()/2);
 		screenLabel.setY( centerY + 6 * lineHeight);
 		controls.setX( centerX - controls.getWidth( )/2);

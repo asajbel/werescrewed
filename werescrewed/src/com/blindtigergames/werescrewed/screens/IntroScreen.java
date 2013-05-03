@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.blindtigergames.werescrewed.graphics.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -87,6 +88,10 @@ class IntroScreen implements com.badlogic.gdx.Screen {
 	@Override
 	public void resize( int width, int height ) {
 		stage.setViewport( width, height, true );
+		for (Actor a : stage.getActors( )) {
+			a.setX( width / 2 - a.getWidth( ) / 2 );
+			a.setY( height / 2 - a.getHeight( ) / 2 );
+		}
 
 	}
 
