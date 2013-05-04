@@ -1207,7 +1207,7 @@ public class AlphaScreen extends Screen {
 		} else {
 			wheelJointPosMeter.add( 0, targetRadiusOnWheelMeter );
 		}
-		// Build girter!!
+		// Build girder!!
 		Platform girder1 = buildGirder( girderSprite, wheelJointPosMeter,
 				pistonDistApartMetre );
 		engineSkeleton.addPlatform( girder1 );
