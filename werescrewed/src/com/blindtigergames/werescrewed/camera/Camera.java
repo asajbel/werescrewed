@@ -26,7 +26,7 @@ public class Camera {
 	private Rectangle screenBounds;
 
 	// translation
-	// private static final float ACCELERATION_BUFFER_RATIO = .2f;
+//	 private static final float ACCELERATION_BUFFER_RATIO = .2f;
 	/**
 	 * A ratio of some sort to determine targetBuffer size
 	 */
@@ -37,6 +37,7 @@ public class Camera {
 	 * Time to get to ideal camera position/zoom per hundred pixels of distance
 	 */
 	private static final float TIME_PER_PIX = .1f;
+	private static final float TIME_PER_ZOOM = 60;
 	private float timeLeft;
 
 	// private float accelerationBuffer;
@@ -46,14 +47,14 @@ public class Camera {
 	private boolean moving;
 
 	// zoom
-	private static final float ZOOM_SIG_DIFF = .00005f;
+	private static final float ZOOM_SIG_DIFF = 0;
 	public static final float MIN_ZOOM = 1f;
 	public static final float SCREEN_TO_ZOOM = 1468.6f;
 	/**
 	 * The ratio of the total distance traveled for the camera to start slowing
 	 * down
 	 */
-	private static final float DECEL_RATIO = 0.1f;
+	 private static final float DECEL_RATIO = 0.1f;
 
 	// globals for calculating screen space
 	protected static Vector3 CURRENT_CAMERA;
@@ -80,9 +81,12 @@ public class Camera {
 	private boolean debugInput;
 	private boolean debugRender;
 	private ShapeRenderer shapeRenderer;
-	private Vector2 initPosition;
 	private Vector2 distance;
 	private float targetZoom;
+	private float zoomChange;
+
+	 private float totalZoomChange;
+	 private float totalDistance;
 
 	public Camera( Vector2 position, float viewportWidth, float viewportHeight,
 			World world ) {
@@ -120,7 +124,8 @@ public class Camera {
 		anchorList.clear( );
 
 		distance = new Vector2( 0, 0 );
-
+		new Vector2( 0, 0 );
+		zoomChange = 0;
 		// debug
 		debugInput = false;
 		debugRender = false;
@@ -210,6 +215,22 @@ public class Camera {
 	private void setTranslateTarget( ) {
 		translateTarget.x = anchorList.getMidpoint( ).x;
 		translateTarget.y = anchorList.getMidpoint( ).y;
+
+		targetZoom = 1f;
+		Vector2 longestDist = anchorList.getLongestXYDist( );
+		Vector2 distFromEdge = new Vector2( longestDist.x - screenBounds.width,
+				longestDist.y - screenBounds.height );
+
+		if ( distFromEdge.x > distFromEdge.y ) {
+			targetZoom = longestDist.x / viewportWidth;
+		} else if ( distFromEdge.y > distFromEdge.x ) {
+			targetZoom = longestDist.y / viewportHeight;
+		}
+
+		// If target zoom is too zoomed-in, set to MIN_ZOOM
+		if ( targetZoom < MIN_ZOOM ) {
+			targetZoom = MIN_ZOOM;
+		}
 	}
 
 	/**
@@ -252,10 +273,6 @@ public class Camera {
 			move( );
 			timeLeft--;
 		}
-
-		if ( timeLeft <= 0 ) {
-			stopMoving( );
-		}
 	}
 
 	/**
@@ -263,34 +280,64 @@ public class Camera {
 	 */
 	private void startMoving( ) {
 		moving = true;
-		initPosition = new Vector2( center2D.x, center2D.y );
+		new Vector2( center2D.x, center2D.y );
+		 totalDistance = new Vector2( translateTarget.x - center2D.x,
+		 translateTarget.y - center2D.y ).len( );
+		 totalZoomChange = targetZoom - camera.zoom;
 	}
 
 	/**
 	 * Do movement stuff.
 	 */
 	private void move( ) {
+		// UPDATE DISTANCE //
+
 		distance = new Vector2( translateTarget.x, translateTarget.y );
 		distance.sub( center2D );
 
+		if ( distance.len( ) < targetBuffer ) {
+			distance.x = distance.y = 0;
+		}
+
+		 totalDistance += Math.abs( translateVelocity.len( ) );
+
+		// UPDATE TARGET ZOOM //
+
+		zoomChange = targetZoom - camera.zoom;
+
+		 totalZoomChange += Math.abs( zoomSpeed );
+
+		// MANAGE TIME //
+
+		float transTime = 0;
+		float zoomTime = 0;
+
+		 if ( Math.abs( distance.len( ) ) > totalDistance * DECEL_RATIO ) {
+		transTime = TIME_PER_PIX * Math.abs( distance.len( ) );
+		 } else {
+		 transTime = TIME_PER_PIX * Math.abs( distance.len( ) ) * 3;
+		 }
+
+		if ( Math.abs( zoomChange ) > Math.abs( totalZoomChange ) * DECEL_RATIO ) {
+		zoomTime = TIME_PER_ZOOM * zoomChange;
+		 } else {
+		 zoomTime = TIME_PER_ZOOM * zoomChange * 3;
+		 }
+
+		timeLeft = ( transTime > zoomTime ) ? transTime : zoomTime;
+
+		if ( timeLeft <= 0 ) {
+			stopMoving( );
+			return;
+		}
+
+		// TRANSLATE AND ZOOM //
+
 		if ( Math.abs( distance.len( ) ) > targetBuffer ) {
 			translate( );
-		}
-
-		targetZoom = 1f;
-		Vector2 longestDist = anchorList.getLongestXYDist( );
-		Vector2 distFromEdge = new Vector2( longestDist.x - screenBounds.width,
-				longestDist.y - screenBounds.height );
-
-		if ( distFromEdge.x > distFromEdge.y ) {
-			targetZoom = longestDist.x / viewportWidth;
-		} else if ( distFromEdge.y > distFromEdge.x ) {
-			targetZoom = longestDist.y / viewportHeight;
-		}
-
-		// If target zoom is too zoomed-in, set to MIN_ZOOM
-		if ( targetZoom < MIN_ZOOM ) {
-			targetZoom = MIN_ZOOM;
+		} else {
+			camera.position.x = translateTarget.x;
+			camera.position.y = translateTarget.y;
 		}
 
 		if ( ( camera.zoom ) < ( targetZoom - ZOOM_SIG_DIFF )
@@ -305,8 +352,8 @@ public class Camera {
 	private void stopMoving( ) {
 		translateVelocity.x = 0f;
 		translateVelocity.y = 0f;
-		timeLeft = 0;
 		zoomSpeed = 0;
+		timeLeft = 0;
 		moving = false;
 	}
 
@@ -315,7 +362,7 @@ public class Camera {
 	 */
 	private void translate( ) {
 		// boolean lock = false;
-
+		//
 		// // Lock when:
 		// if ( Math.abs( distance.len( ) ) < targetBuffer ) {
 		// // camera center is really close to target
@@ -348,19 +395,6 @@ public class Camera {
 		// }
 		// } else {
 
-		Vector2 totalDistance = new Vector2( translateTarget.x,
-				translateTarget.y );
-		totalDistance.sub( initPosition );
-
-		// Manage time
-
-		if ( Math.abs( distance.len( ) ) > Math.abs( totalDistance.len( ) )
-				* DECEL_RATIO ) {
-			timeLeft = TIME_PER_PIX * Math.abs( distance.len( ) );
-		} else {
-			timeLeft = TIME_PER_PIX * Math.abs( distance.len( ) ) * 3;
-		}
-
 		Vector2 acceleration = calcAcceleration( distance );
 
 		// If the acceleration would take the camera past its destination,
@@ -385,34 +419,37 @@ public class Camera {
 	 * 
 	 */
 	private void zoom( ) {
-		// if difference is small enough, set speed to zero
-		if ( Math.abs( camera.zoom - targetZoom ) < ZOOM_SIG_DIFF ) {
-			zoomSpeed = 0;
-			return;
-		}
-
-		float zoomChange = targetZoom - camera.zoom;
-
 		// Accelerate zoom
+		float zoomAccel = 0;
 		if ( zoomChange != 0 ) {
-			zoomSpeed += calcZoomAcc( zoomChange );
+			zoomAccel = calcZoomAcc( zoomChange );
+			zoomSpeed += zoomAccel;
 		} else {
 			zoomSpeed = 0;
 		}
 
 		float newZoom = camera.zoom;
 
-		if ( zoomSpeed > 0
-				&& ( newZoom + zoomSpeed ) > ( targetZoom + ZOOM_SIG_DIFF ) ) {
+		if ( newZoom + zoomSpeed > targetZoom - ZOOM_SIG_DIFF
+				&& newZoom + zoomSpeed < targetZoom + ZOOM_SIG_DIFF ) {
 			newZoom = targetZoom;
-		} else if ( zoomSpeed < 0
-				&& ( newZoom + zoomSpeed ) < ( targetZoom - ZOOM_SIG_DIFF ) ) {
+		} else if ( zoomAccel > 0
+				&& newZoom + zoomSpeed > targetZoom + ZOOM_SIG_DIFF ) {
 			newZoom = targetZoom;
-		} else if ( ( newZoom + zoomSpeed ) > ( targetZoom - ZOOM_SIG_DIFF )
-				&& ( newZoom + zoomSpeed ) < ( targetZoom + ZOOM_SIG_DIFF ) ) {
+		} else if ( zoomAccel < 0
+				&& newZoom + zoomSpeed < targetZoom - ZOOM_SIG_DIFF ) {
+			newZoom = targetZoom;
+		} else if ( zoomAccel == 0
+				&& ( ( zoomSpeed < 0 && newZoom + zoomSpeed < targetZoom
+						- ZOOM_SIG_DIFF ) || ( zoomSpeed > 0 && newZoom
+						+ zoomSpeed > targetZoom + ZOOM_SIG_DIFF ) ) ) {
 			newZoom = targetZoom;
 		} else {
 			newZoom += zoomSpeed;
+		}
+
+		if ( newZoom < 1 ) {
+			newZoom = 1;
 		}
 
 		camera.zoom = newZoom;
@@ -445,10 +482,12 @@ public class Camera {
 	 */
 	private float calcZoomAcc( float zoomChange ) {
 		float zoomAccel = 0;
-		zoomAccel = zoomChange;
-		zoomAccel /= this.timeLeft;
-		zoomAccel -= this.zoomSpeed;
-		zoomAccel /= this.timeLeft;
+		if ( this.timeLeft != 0 ) {
+			zoomAccel = zoomChange;
+			zoomAccel /= this.timeLeft;
+			zoomAccel -= this.zoomSpeed;
+			zoomAccel /= this.timeLeft;
+		}
 		return zoomAccel;
 	}
 
