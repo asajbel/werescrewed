@@ -114,7 +114,11 @@ public class AlphaScreen extends Screen {
 
 		// level.camera.position = new Vector3( 0, 0, 0 );
 
-		// death barrier
+		//***************************************
+		//         Death Barriers
+		//***************************************
+		
+		// bottom
 		EventTriggerBuilder etb = new EventTriggerBuilder( level.world );
 		EventTrigger removeTrigger = etb.name( "removeEntity" ).rectangle( )
 				.width( 10 ).height( 50000 ).position( new Vector2( 0, -3200 ) )
@@ -123,6 +127,25 @@ public class AlphaScreen extends Screen {
 				Util.CATEGORY_EVERYTHING );
 		level.root.addEventTrigger( removeTrigger );
 
+		//left arm
+		etb = new EventTriggerBuilder( level.world );
+		removeTrigger = etb.name( "removeEntity" ).rectangle( )
+				.width( 10 ).height( 5000 ).position( new Vector2( -3700, 2800 ) )
+				.beginAction( new RemoveEntityAction( ) ).build( );
+		removeTrigger.setCategoryMask( Util.CATEGORY_PLAYER,
+				Util.CATEGORY_EVERYTHING );
+		level.root.addEventTrigger( removeTrigger );
+
+		//right arm
+		etb = new EventTriggerBuilder( level.world );
+		removeTrigger = etb.name( "removeEntity" ).rectangle( )
+				.width( 10 ).height( 5000 ).position( new Vector2( 5000, 2800 ) )
+				.beginAction( new RemoveEntityAction( ) ).build( );
+		removeTrigger.setCategoryMask( Util.CATEGORY_PLAYER,
+				Util.CATEGORY_EVERYTHING );
+		level.root.addEventTrigger( removeTrigger );
+
+		
 		characterSelect = new CharacterSelect( level );
 
 		createFootObjects( );
@@ -888,11 +911,12 @@ public class AlphaScreen extends Screen {
 				.get( "chestPuzzleScrew5" );
 		PuzzleScrew chestScrew2 = ( PuzzleScrew ) LevelFactory.entities
 				.get( "chestPuzzleScrew6" );
-
 		PuzzleScrew chestScrew3 = ( PuzzleScrew ) LevelFactory.entities
 				.get( "chestPuzzleScrew9" );
 		PuzzleScrew chestScrew4 = ( PuzzleScrew ) LevelFactory.entities
 				.get( "chestPuzzleScrew10" );
+		PuzzleScrew chestScrew5 = ( PuzzleScrew ) LevelFactory.entities
+				.get( "chestPuzzleScrew7" );
 
 		headEntrancePlatform4 = ( TiledPlatform ) LevelFactory.entities
 				.get( "head_entrance_platform_4" );
@@ -913,7 +937,11 @@ public class AlphaScreen extends Screen {
 		chestScrew4.puzzleManager.addScrew( chestScrew3 );
 
 		chestScrew1.puzzleManager.addScrew( chestScrew2 );
+		chestScrew1.puzzleManager.addScrew( chestScrew5 );
 		chestScrew2.puzzleManager.addScrew( chestScrew1 );
+		chestScrew2.puzzleManager.addScrew( chestScrew5 );
+		chestScrew5.puzzleManager.addScrew( chestScrew1 );
+		chestScrew5.puzzleManager.addScrew( chestScrew2 );
 
 		StructureScrew stuctureScrew1 = ( StructureScrew ) LevelFactory.entities
 				.get( "structureScrew1" );
@@ -925,7 +953,7 @@ public class AlphaScreen extends Screen {
 		chestPuzzleScrew2 = ( PuzzleScrew ) LevelFactory.entities
 		.get( "chestPuzzleScrew2" );
 		
-		
+		//fix here 
 		engineSteam = new Steam( "steamChest3", new Vector2( -420, 5050 ), 25, 120, level.world );
 		chestSkeleton.addSteam(engineSteam);
 		
@@ -1166,9 +1194,9 @@ public class AlphaScreen extends Screen {
 		}
 
 		// Draw order:
-		wheel1.addFGDecal( wheelSprite, new Vector2(
+		wheel1.addFGDecalBack( wheelSprite, new Vector2(
 				-wheelSprite.getWidth( ) / 2, -wheelSprite.getHeight( ) / 2 ) );
-		girder1.addFGDecal( girderSprite, new Vector2(
+		girder1.addFGDecalBack( girderSprite, new Vector2(
 				-girderSprite.getWidth( ) / 2, -girderSprite.getHeight( ) / 2 ) );
 
 
