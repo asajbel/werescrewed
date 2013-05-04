@@ -512,8 +512,8 @@
                             <Y>-666</Y>
                         </Vector2>
                         <Vector2>
-                            <X>-209</X>
-                            <Y>158</Y>
+                            <X>-195</X>
+                            <Y>155</Y>
                         </Vector2>
                         <Vector2>
                             <X>-423</X>
@@ -524,8 +524,8 @@
                             <Y>209</Y>
                         </Vector2>
                         <Vector2>
-                            <X>-677</X>
-                            <Y>341</Y>
+                            <X>-675</X>
+                            <Y>396</Y>
                         </Vector2>
                         <Vector2>
                             <X>-676</X>
@@ -554,8 +554,8 @@
                             <Y>-1306</Y>
                         </Vector2>
                         <Vector2>
-                            <X>-993</X>
-                            <Y>-482</Y>
+                            <X>-979</X>
+                            <Y>-485</Y>
                         </Vector2>
                         <Vector2>
                             <X>-1207</X>
@@ -566,8 +566,8 @@
                             <Y>-431</Y>
                         </Vector2>
                         <Vector2>
-                            <X>-1461</X>
-                            <Y>-299</Y>
+                            <X>-1459</X>
+                            <Y>-244</Y>
                         </Vector2>
                         <Vector2>
                             <X>-1460</X>
@@ -1234,8 +1234,8 @@
                             <Y>-816</Y>
                         </Vector2>
                         <Vector2>
-                            <X>-1152</X>
-                            <Y>-816</Y>
+                            <X>-1264</X>
+                            <Y>-976</Y>
                         </Vector2>
                         <Vector2>
                             <X>-1152</X>
@@ -1260,8 +1260,8 @@
                             <Y>-7504</Y>
                         </Vector2>
                         <Vector2>
-                            <X>-672</X>
-                            <Y>-7504</Y>
+                            <X>-784</X>
+                            <Y>-7664</Y>
                         </Vector2>
                         <Vector2>
                             <X>-672</X>
@@ -1347,6 +1347,87 @@
                         </Vector2>
                         <Vector2>
                             <X>16</X>
+                            <Y>-16</Y>
+                        </Vector2>
+                    </WorldPoints>
+                    <IsPolygon>false</IsPolygon>
+                    <LineWidth>4</LineWidth>
+                    <LineColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </LineColor>
+                </Item>
+                <Item xsi:type="PathItem" Name="footHatchSkeleton" Visible="true">
+                    <Position>
+                        <X>-432</X>
+                        <Y>-32</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="definition" Type="string" Description="">
+                            <string>skeleton</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>footSkeleton</string>
+                        </Property>
+                        <Property Name="invisible" Type="string" Description="">
+                            <string />
+                        </Property>
+                        <Property Name="alwaysvisible" Type="string" Description="">
+                            <string />
+                        </Property>
+                    </CustomProperties>
+                    <LocalPoints>
+                        <Vector2>
+                            <X>0</X>
+                            <Y>0</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>16</X>
+                            <Y>16</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>16</X>
+                            <Y>-16</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>-16</X>
+                            <Y>-16</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>-16</X>
+                            <Y>16</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>16</X>
+                            <Y>16</Y>
+                        </Vector2>
+                    </LocalPoints>
+                    <WorldPoints>
+                        <Vector2>
+                            <X>-432</X>
+                            <Y>-32</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>-416</X>
+                            <Y>-16</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>-416</X>
+                            <Y>-48</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>-448</X>
+                            <Y>-48</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>-448</X>
+                            <Y>-16</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>-416</X>
                             <Y>-16</Y>
                         </Vector2>
                     </WorldPoints>
@@ -1523,9 +1604,6 @@
                         </Property>
                         <Property Name="AttachToSkeleton" Type="string" Description="">
                             <string>footSkeleton</string>
-                        </Property>
-                        <Property Name="onesided" Type="string" Description="">
-                            <string />
                         </Property>
                     </CustomProperties>
                     <Width>160</Width>
@@ -1725,7 +1803,7 @@
                         </Vector2>
                         <Vector2>
                             <X>9.939392</X>
-                            <Y>537.126648</Y>
+                            <Y>521.126648</Y>
                         </Vector2>
                         <Vector2>
                             <X>82.2043152</X>
@@ -1741,7 +1819,7 @@
                         </Vector2>
                         <Vector2>
                             <X>9.939392</X>
-                            <Y>537.126648</Y>
+                            <Y>521.126648</Y>
                         </Vector2>
                     </LocalPoints>
                     <WorldPoints>
@@ -1751,7 +1829,7 @@
                         </Vector2>
                         <Vector2>
                             <X>-406.0606</X>
-                            <Y>-326.873352</Y>
+                            <Y>-342.873352</Y>
                         </Vector2>
                         <Vector2>
                             <X>-333.7957</X>
@@ -1767,7 +1845,7 @@
                         </Vector2>
                         <Vector2>
                             <X>-406.0606</X>
-                            <Y>-326.873352</Y>
+                            <Y>-342.873352</Y>
                         </Vector2>
                     </WorldPoints>
                     <IsPolygon>false</IsPolygon>
@@ -1799,23 +1877,23 @@
                             <Y>0</Y>
                         </Vector2>
                         <Vector2>
-                            <X>55.9393921</X>
+                            <X>71.93939</X>
                             <Y>559.126648</Y>
                         </Vector2>
                         <Vector2>
-                            <X>12.2043457</X>
-                            <Y>-365.835938</Y>
+                            <X>-3.7956543</X>
+                            <Y>-317.835938</Y>
                         </Vector2>
                         <Vector2>
                             <X>-63.7944336</X>
-                            <Y>-366.1261</Y>
+                            <Y>-318.1261</Y>
                         </Vector2>
                         <Vector2>
-                            <X>29.9407349</X>
-                            <Y>558.836548</Y>
+                            <X>34.9407349</X>
+                            <Y>553.836548</Y>
                         </Vector2>
                         <Vector2>
-                            <X>55.9393921</X>
+                            <X>71.93939</X>
                             <Y>559.126648</Y>
                         </Vector2>
                     </LocalPoints>
@@ -1825,23 +1903,23 @@
                             <Y>-992</Y>
                         </Vector2>
                         <Vector2>
-                            <X>-952.0606</X>
+                            <X>-936.0606</X>
                             <Y>-432.873352</Y>
                         </Vector2>
                         <Vector2>
-                            <X>-995.795654</X>
-                            <Y>-1357.83594</Y>
+                            <X>-1011.79565</X>
+                            <Y>-1309.83594</Y>
                         </Vector2>
                         <Vector2>
                             <X>-1071.79443</X>
-                            <Y>-1358.1261</Y>
+                            <Y>-1310.1261</Y>
                         </Vector2>
                         <Vector2>
-                            <X>-978.059265</X>
-                            <Y>-433.163452</Y>
+                            <X>-973.059265</X>
+                            <Y>-438.163452</Y>
                         </Vector2>
                         <Vector2>
-                            <X>-952.0606</X>
+                            <X>-936.0606</X>
                             <Y>-432.873352</Y>
                         </Vector2>
                     </WorldPoints>
@@ -2086,6 +2164,9 @@
                         <Property Name="AttachToSkeleton" Type="string" Description="">
                             <string>kneeSkeleton</string>
                         </Property>
+                        <Property Name="onesided" Type="string" Description="">
+                            <string />
+                        </Property>
                     </CustomProperties>
                     <Width>288</Width>
                     <Height>32</Height>
@@ -2108,6 +2189,9 @@
                         </Property>
                         <Property Name="AttachToSkeleton" Type="string" Description="">
                             <string>kneeSkeleton</string>
+                        </Property>
+                        <Property Name="onesided" Type="string" Description="">
+                            <string />
                         </Property>
                     </CustomProperties>
                     <Width>224</Width>
@@ -2132,9 +2216,12 @@
                         <Property Name="AttachToSkeleton" Type="string" Description="">
                             <string>kneeSkeleton</string>
                         </Property>
+                        <Property Name="onesided" Type="string" Description="">
+                            <string />
+                        </Property>
                     </CustomProperties>
                     <Width>240</Width>
-                    <Height>32</Height>
+                    <Height>27</Height>
                     <FillColor>
                         <R>192</R>
                         <G>0</G>
@@ -2245,11 +2332,11 @@
                             <Y>0</Y>
                         </Vector2>
                         <Vector2>
-                            <X>111.890137</X>
+                            <X>127.890137</X>
                             <Y>16.2178955</Y>
                         </Vector2>
                         <Vector2>
-                            <X>112.217529</X>
+                            <X>128.217529</X>
                             <Y>-31.7808838</Y>
                         </Vector2>
                         <Vector2>
@@ -2261,7 +2348,7 @@
                             <Y>15.1263428</Y>
                         </Vector2>
                         <Vector2>
-                            <X>111.890137</X>
+                            <X>127.890137</X>
                             <Y>16.2178955</Y>
                         </Vector2>
                     </LocalPoints>
@@ -2271,11 +2358,11 @@
                             <Y>-1328</Y>
                         </Vector2>
                         <Vector2>
-                            <X>-1024.10986</X>
+                            <X>-1008.10986</X>
                             <Y>-1311.7821</Y>
                         </Vector2>
                         <Vector2>
-                            <X>-1023.78247</X>
+                            <X>-1007.78247</X>
                             <Y>-1359.78088</Y>
                         </Vector2>
                         <Vector2>
@@ -2287,7 +2374,7 @@
                             <Y>-1312.87366</Y>
                         </Vector2>
                         <Vector2>
-                            <X>-1024.10986</X>
+                            <X>-1008.10986</X>
                             <Y>-1311.7821</Y>
                         </Vector2>
                     </WorldPoints>
@@ -4032,8 +4119,8 @@
                 </Item>
                 <Item xsi:type="TextureItem" Name="chestStrippedScrew5" Visible="true">
                     <Position>
-                        <X>1936</X>
-                        <Y>-4832</Y>
+                        <X>1968</X>
+                        <Y>-4816</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -4198,8 +4285,8 @@
                 </Item>
                 <Item xsi:type="TextureItem" Name="chestStrippedScrew3" Visible="true">
                     <Position>
-                        <X>2048</X>
-                        <Y>-4096</Y>
+                        <X>2112</X>
+                        <Y>-4208</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -4235,8 +4322,8 @@
                 </Item>
                 <Item xsi:type="TextureItem" Name="chestStrippedScrew2" Visible="true">
                     <Position>
-                        <X>2048</X>
-                        <Y>-4352</Y>
+                        <X>2112</X>
+                        <Y>-4416</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -8403,20 +8490,17 @@
                 </Item>
                 <Item xsi:type="PathItem" Name="ankle_hatch" Visible="true">
                     <Position>
-                        <X>-400</X>
-                        <Y>-304</Y>
+                        <X>-208</X>
+                        <Y>-64</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
                             <string>customPlatform</string>
                         </Property>
                         <Property Name="AttachToSkeleton" Type="string" Description="">
-                            <string>RootSkeleton</string>
+                            <string>footHatchSkeleton</string>
                         </Property>
                         <Property Name="dynamic" Type="string" Description="">
-                            <string />
-                        </Property>
-                        <Property Name="alwaysvisible" Type="string" Description="">
                             <string />
                         </Property>
                     </CustomProperties>
@@ -8426,49 +8510,49 @@
                             <Y>0</Y>
                         </Vector2>
                         <Vector2>
-                            <X>-15.0987244</X>
-                            <Y>283.016266</Y>
+                            <X>-223.098724</X>
+                            <Y>43.0162659</Y>
                         </Vector2>
                         <Vector2>
-                            <X>8.610046</X>
-                            <Y>-33.6378479</Y>
+                            <X>-156.389954</X>
+                            <Y>-213.637848</Y>
                         </Vector2>
                         <Vector2>
-                            <X>-18.2418823</X>
-                            <Y>3.94818115</Y>
+                            <X>-238.241882</X>
+                            <Y>-213.051819</Y>
                         </Vector2>
                         <Vector2>
-                            <X>-33.995697</X>
-                            <Y>252.635681</Y>
+                            <X>-241.9957</X>
+                            <Y>12.6356812</Y>
                         </Vector2>
                         <Vector2>
-                            <X>-15.0985413</X>
-                            <Y>282.982635</Y>
+                            <X>-223.098541</X>
+                            <Y>42.9826355</Y>
                         </Vector2>
                     </LocalPoints>
                     <WorldPoints>
                         <Vector2>
-                            <X>-400</X>
-                            <Y>-304</Y>
+                            <X>-208</X>
+                            <Y>-64</Y>
                         </Vector2>
                         <Vector2>
-                            <X>-415.098724</X>
+                            <X>-431.098724</X>
                             <Y>-20.9837341</Y>
                         </Vector2>
                         <Vector2>
-                            <X>-391.389954</X>
-                            <Y>-337.637848</Y>
+                            <X>-364.389954</X>
+                            <Y>-277.637848</Y>
                         </Vector2>
                         <Vector2>
-                            <X>-418.241882</X>
-                            <Y>-300.051819</Y>
+                            <X>-446.241882</X>
+                            <Y>-277.051819</Y>
                         </Vector2>
                         <Vector2>
-                            <X>-433.9957</X>
+                            <X>-449.9957</X>
                             <Y>-51.36432</Y>
                         </Vector2>
                         <Vector2>
-                            <X>-415.098541</X>
+                            <X>-431.098541</X>
                             <Y>-21.0173645</Y>
                         </Vector2>
                     </WorldPoints>
@@ -8484,8 +8568,8 @@
                 </Item>
                 <Item xsi:type="TextureItem" Name="structureScrew1" Visible="true">
                     <Position>
-                        <X>-336</X>
-                        <Y>-304</Y>
+                        <X>-320</X>
+                        <Y>-224</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Screwtype" Type="string" Description="">
@@ -10703,8 +10787,8 @@
                 </Item>
                 <Item xsi:type="PathItem" Name="Path_0687" Visible="true">
                     <Position>
-                        <X>-1383</X>
-                        <Y>-369</Y>
+                        <X>-1408</X>
+                        <Y>-288</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -10720,50 +10804,50 @@
                             <Y>0</Y>
                         </Vector2>
                         <Vector2>
-                            <X>-75.82593</X>
-                            <Y>96.37933</Y>
+                            <X>-9.825928</X>
+                            <Y>58.3793335</Y>
                         </Vector2>
                         <Vector2>
-                            <X>45.3403931</X>
-                            <Y>-26.4283619</Y>
+                            <X>101.340332</X>
+                            <Y>-117.428375</Y>
                         </Vector2>
                         <Vector2>
-                            <X>41.6982651</X>
-                            <Y>-57.481308</Y>
+                            <X>70.69824</X>
+                            <Y>-132.481323</Y>
                         </Vector2>
                         <Vector2>
-                            <X>-76.03263</X>
-                            <Y>62.5127754</Y>
+                            <X>-49.0325928</X>
+                            <Y>41.5127869</Y>
                         </Vector2>
                         <Vector2>
-                            <X>-75.82593</X>
-                            <Y>96.37933</Y>
+                            <X>-10.8259277</X>
+                            <Y>59.3793335</Y>
                         </Vector2>
                     </LocalPoints>
                     <WorldPoints>
                         <Vector2>
-                            <X>-1383</X>
-                            <Y>-369</Y>
+                            <X>-1408</X>
+                            <Y>-288</Y>
                         </Vector2>
                         <Vector2>
-                            <X>-1458.82593</X>
-                            <Y>-272.620667</Y>
+                            <X>-1417.82593</X>
+                            <Y>-229.620667</Y>
                         </Vector2>
                         <Vector2>
-                            <X>-1337.65967</X>
-                            <Y>-395.428375</Y>
+                            <X>-1306.65967</X>
+                            <Y>-405.428375</Y>
                         </Vector2>
                         <Vector2>
-                            <X>-1341.30176</X>
-                            <Y>-426.481323</Y>
+                            <X>-1337.30176</X>
+                            <Y>-420.481323</Y>
                         </Vector2>
                         <Vector2>
-                            <X>-1459.03259</X>
-                            <Y>-306.4872</Y>
+                            <X>-1457.03259</X>
+                            <Y>-246.487213</Y>
                         </Vector2>
                         <Vector2>
-                            <X>-1458.82593</X>
-                            <Y>-272.620667</Y>
+                            <X>-1418.82593</X>
+                            <Y>-228.620667</Y>
                         </Vector2>
                     </WorldPoints>
                     <IsPolygon>false</IsPolygon>
@@ -10799,16 +10883,16 @@
                             <Y>139.62149</Y>
                         </Vector2>
                         <Vector2>
-                            <X>16.1101723</X>
+                            <X>20.11023</X>
                             <Y>139.62149</Y>
                         </Vector2>
                         <Vector2>
-                            <X>16.1101723</X>
-                            <Y>-112.771194</Y>
+                            <X>20.11023</X>
+                            <Y>-37.77118</Y>
                         </Vector2>
                         <Vector2>
                             <X>-18.11023</X>
-                            <Y>-79.55084</Y>
+                            <Y>-53.5508423</Y>
                         </Vector2>
                         <Vector2>
                             <X>-18.11023</X>
@@ -10825,16 +10909,16 @@
                             <Y>-52.37851</Y>
                         </Vector2>
                         <Vector2>
-                            <X>-1423.88977</X>
+                            <X>-1419.88977</X>
                             <Y>-52.37851</Y>
                         </Vector2>
                         <Vector2>
-                            <X>-1423.88977</X>
-                            <Y>-304.771179</Y>
+                            <X>-1419.88977</X>
+                            <Y>-229.771179</Y>
                         </Vector2>
                         <Vector2>
                             <X>-1458.11023</X>
-                            <Y>-271.550842</Y>
+                            <Y>-245.550842</Y>
                         </Vector2>
                         <Vector2>
                             <X>-1458.11023</X>
@@ -10853,8 +10937,8 @@
                 </Item>
                 <Item xsi:type="PathItem" Name="Path_0689" Visible="true">
                     <Position>
-                        <X>-1093</X>
-                        <Y>-462</Y>
+                        <X>-1072</X>
+                        <Y>-464</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -10870,50 +10954,50 @@
                             <Y>0</Y>
                         </Vector2>
                         <Vector2>
-                            <X>141.626587</X>
-                            <Y>21.0661316</Y>
+                            <X>97.62659</X>
+                            <Y>25.0661316</Y>
                         </Vector2>
                         <Vector2>
-                            <X>138.616455</X>
-                            <Y>-17.1541748</Y>
+                            <X>93.6164551</X>
+                            <Y>-21.1541748</Y>
                         </Vector2>
                         <Vector2>
-                            <X>-112.776306</X>
-                            <Y>-16.0746212</Y>
+                            <X>-109.776367</X>
+                            <Y>-22.074646</Y>
                         </Vector2>
                         <Vector2>
-                            <X>-114.545776</X>
-                            <Y>33.13556</Y>
+                            <X>-109.545776</X>
+                            <Y>25.13556</Y>
                         </Vector2>
                         <Vector2>
-                            <X>138.626587</X>
-                            <Y>22.0661316</Y>
+                            <X>97.62659</X>
+                            <Y>25.0661316</Y>
                         </Vector2>
                     </LocalPoints>
                     <WorldPoints>
                         <Vector2>
-                            <X>-1093</X>
-                            <Y>-462</Y>
+                            <X>-1072</X>
+                            <Y>-464</Y>
                         </Vector2>
                         <Vector2>
-                            <X>-951.3734</X>
-                            <Y>-440.933868</Y>
+                            <X>-974.3734</X>
+                            <Y>-438.933868</Y>
                         </Vector2>
                         <Vector2>
-                            <X>-954.383545</X>
-                            <Y>-479.154175</Y>
+                            <X>-978.383545</X>
+                            <Y>-485.154175</Y>
                         </Vector2>
                         <Vector2>
-                            <X>-1205.77637</X>
-                            <Y>-478.074615</Y>
+                            <X>-1181.77637</X>
+                            <Y>-486.074646</Y>
                         </Vector2>
                         <Vector2>
-                            <X>-1207.54578</X>
-                            <Y>-428.864441</Y>
+                            <X>-1181.54578</X>
+                            <Y>-438.864441</Y>
                         </Vector2>
                         <Vector2>
-                            <X>-954.3734</X>
-                            <Y>-439.933868</Y>
+                            <X>-974.3734</X>
+                            <Y>-438.933868</Y>
                         </Vector2>
                     </WorldPoints>
                     <IsPolygon>false</IsPolygon>
@@ -10928,8 +11012,8 @@
                 </Item>
                 <Item xsi:type="PathItem" Name="Path_0690" Visible="true">
                     <Position>
-                        <X>-1255</X>
-                        <Y>-450</Y>
+                        <X>-1248</X>
+                        <Y>-448</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -10949,12 +11033,12 @@
                             <Y>50.095932</Y>
                         </Vector2>
                         <Vector2>
-                            <X>47.3701172</X>
-                            <Y>19.5409851</Y>
+                            <X>64.37012</X>
+                            <Y>10.5409851</Y>
                         </Vector2>
                         <Vector2>
-                            <X>48.23536</X>
-                            <Y>-29.3525829</Y>
+                            <X>64.23535</X>
+                            <Y>-38.35257</Y>
                         </Vector2>
                         <Vector2>
                             <X>-80.96228</X>
@@ -10967,28 +11051,28 @@
                     </LocalPoints>
                     <WorldPoints>
                         <Vector2>
-                            <X>-1255</X>
-                            <Y>-450</Y>
+                            <X>-1248</X>
+                            <Y>-448</Y>
                         </Vector2>
                         <Vector2>
-                            <X>-1337.89172</X>
-                            <Y>-399.904053</Y>
+                            <X>-1330.89172</X>
+                            <Y>-397.904053</Y>
                         </Vector2>
                         <Vector2>
-                            <X>-1207.62988</X>
-                            <Y>-430.459</Y>
+                            <X>-1183.62988</X>
+                            <Y>-437.459</Y>
                         </Vector2>
                         <Vector2>
-                            <X>-1206.76465</X>
-                            <Y>-479.35257</Y>
+                            <X>-1183.76465</X>
+                            <Y>-486.35257</Y>
                         </Vector2>
                         <Vector2>
-                            <X>-1335.96228</X>
-                            <Y>-427.501434</Y>
+                            <X>-1328.96228</X>
+                            <Y>-425.501434</Y>
                         </Vector2>
                         <Vector2>
-                            <X>-1337.89172</X>
-                            <Y>-399.904053</Y>
+                            <X>-1330.89172</X>
+                            <Y>-397.904053</Y>
                         </Vector2>
                     </WorldPoints>
                     <IsPolygon>false</IsPolygon>
@@ -11047,29 +11131,6 @@
                         <PackedValue>2445279424</PackedValue>
                     </FillColor>
                 </Item>
-                <Item xsi:type="RectangleItem" Name="Rectangle_0696" Visible="true">
-                    <Position>
-                        <X>-1008</X>
-                        <Y>-3648</Y>
-                    </Position>
-                    <CustomProperties>
-                        <Property Name="Definition" Type="string" Description="">
-                            <string>tiledPlatform</string>
-                        </Property>
-                        <Property Name="AttachToSkeleton" Type="string" Description="">
-                            <string>chestSkeleton</string>
-                        </Property>
-                    </CustomProperties>
-                    <Width>228</Width>
-                    <Height>80</Height>
-                    <FillColor>
-                        <R>192</R>
-                        <G>0</G>
-                        <B>192</B>
-                        <A>145</A>
-                        <PackedValue>2445279424</PackedValue>
-                    </FillColor>
-                </Item>
                 <Item xsi:type="RectangleItem" Name="Rectangle_0703" Visible="true">
                     <Position>
                         <X>2304</X>
@@ -11098,7 +11159,7 @@
                 </Item>
                 <Item xsi:type="TextureItem" Name="chestStrippedScrew4" Visible="true">
                     <Position>
-                        <X>2112</X>
+                        <X>1968</X>
                         <Y>-4608</Y>
                     </Position>
                     <CustomProperties>
@@ -14873,8 +14934,8 @@
                 </Item>
                 <Item xsi:type="CircleItem" Name="Copy of Copy(0) of rivet" Visible="true">
                     <Position>
-                        <X>-1184</X>
-                        <Y>-448</Y>
+                        <X>-1168</X>
+                        <Y>-464</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="definition" Type="string" Description="">
@@ -14904,8 +14965,8 @@
                 </Item>
                 <Item xsi:type="CircleItem" Name="Copy of Copy of Copy(0) of rivet" Visible="true">
                     <Position>
-                        <X>-1337</X>
-                        <Y>-408</Y>
+                        <X>-1328</X>
+                        <Y>-400</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="definition" Type="string" Description="">
@@ -14936,7 +14997,7 @@
                 <Item xsi:type="CircleItem" Name="rivet2" Visible="true">
                     <Position>
                         <X>-1440</X>
-                        <Y>-256</Y>
+                        <Y>-240</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="definition" Type="string" Description="">
@@ -15090,8 +15151,8 @@
                 </Item>
                 <Item xsi:type="CircleItem" Name="Copy of Copy of rivet3" Visible="true">
                     <Position>
-                        <X>-1040</X>
-                        <Y>-1328</Y>
+                        <X>-1039</X>
+                        <Y>-1334</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="definition" Type="string" Description="">
@@ -15121,8 +15182,8 @@
                 </Item>
                 <Item xsi:type="CircleItem" Name="Copy of Copy of Copy of rivet3" Visible="true">
                     <Position>
-                        <X>-1184</X>
-                        <Y>-1344</Y>
+                        <X>-1188</X>
+                        <Y>-1338</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="definition" Type="string" Description="">
@@ -15152,7 +15213,7 @@
                 </Item>
                 <Item xsi:type="CircleItem" Name="Copy of Copy of Copy of Copy of rivet3" Visible="true">
                     <Position>
-                        <X>-1200</X>
+                        <X>-1193</X>
                         <Y>-1520</Y>
                     </Position>
                     <CustomProperties>
@@ -23016,11 +23077,11 @@
     </Layers>
     <CustomProperties />
     <EditorRelated>
-        <NextItemNumber>920</NextItemNumber>
+        <NextItemNumber>921</NextItemNumber>
         <ContentRootFolder>gleed-textures</ContentRootFolder>
         <CameraPosition>
-            <X>216.671692</X>
-            <Y>-3632.75977</Y>
+            <X>-491.664581</X>
+            <Y>-3707.76782</Y>
         </CameraPosition>
         <Version>1.3.0.0</Version>
     </EditorRelated>
