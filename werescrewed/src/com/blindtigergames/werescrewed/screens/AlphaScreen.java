@@ -8,7 +8,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -60,7 +59,6 @@ import com.blindtigergames.werescrewed.joint.RevoluteJointBuilder;
 import com.blindtigergames.werescrewed.level.CharacterSelect;
 import com.blindtigergames.werescrewed.level.LevelFactory;
 import com.blindtigergames.werescrewed.sound.SoundManager;
-import com.blindtigergames.werescrewed.sound.SoundManager.SoundType;
 import com.blindtigergames.werescrewed.util.Util;
 
 public class AlphaScreen extends Screen {
@@ -112,7 +110,11 @@ public class AlphaScreen extends Screen {
 
 		// level.camera.position = new Vector3( 0, 0, 0 );
 
-		// death barrier
+		//***************************************
+		//         Death Barriers
+		//***************************************
+		
+		// bottom
 		EventTriggerBuilder etb = new EventTriggerBuilder( level.world );
 		EventTrigger removeTrigger = etb.name( "removeEntity" ).rectangle( )
 				.width( 10 ).height( 50000 ).position( new Vector2( 0, -3200 ) )
@@ -121,6 +123,25 @@ public class AlphaScreen extends Screen {
 				Util.CATEGORY_EVERYTHING );
 		level.root.addEventTrigger( removeTrigger );
 
+		//left arm
+		etb = new EventTriggerBuilder( level.world );
+		removeTrigger = etb.name( "removeEntity" ).rectangle( )
+				.width( 10 ).height( 5000 ).position( new Vector2( -3700, 2800 ) )
+				.beginAction( new RemoveEntityAction( ) ).build( );
+		removeTrigger.setCategoryMask( Util.CATEGORY_PLAYER,
+				Util.CATEGORY_EVERYTHING );
+		level.root.addEventTrigger( removeTrigger );
+
+		//right arm
+		etb = new EventTriggerBuilder( level.world );
+		removeTrigger = etb.name( "removeEntity" ).rectangle( )
+				.width( 10 ).height( 5000 ).position( new Vector2( 5000, 2800 ) )
+				.beginAction( new RemoveEntityAction( ) ).build( );
+		removeTrigger.setCategoryMask( Util.CATEGORY_PLAYER,
+				Util.CATEGORY_EVERYTHING );
+		level.root.addEventTrigger( removeTrigger );
+
+		
 		characterSelect = new CharacterSelect( level );
 
 		createFootObjects( );
@@ -179,8 +200,13 @@ public class AlphaScreen extends Screen {
 
 		rightArmDecal( );
 		headDecals( );
-
-		Skeleton root = ( Skeleton ) LevelFactory.entities.get( "RootSkeleton" );
+		
+		rightLegDecals();
+		leftArmDecal();
+		
+		
+		Skeleton root = ( Skeleton ) LevelFactory.entities
+				.get( "RootSkeleton" );
 		root.setFgFade( false );
 		bgm = WereScrewedGame.manager.get( WereScrewedGame.dirHandle.path( )
 				+ "/common/music/waltz.mp3", Music.class );
@@ -643,6 +669,60 @@ public class AlphaScreen extends Screen {
 				.cpy( ).add( 400, 386 ) );
 
 	}
+	
+	private void rightLegDecals(){
+		Skeleton rightFoot = (Skeleton)LevelFactory.entities.get("footSkeleton2");
+		Skeleton rightKnee = (Skeleton)LevelFactory.entities.get("kneeSkeleton2");
+		Skeleton rightThigh = (Skeleton)LevelFactory.entities.get("thighSkeleton2");
+		
+		TextureAtlas decals = WereScrewedGame.manager
+				.getAtlas( "alphabot_foot_shin_decal" );
+		
+		// DECALS for Foot / Shin
+		Sprite sprite;
+
+		addFGSkeleton( rightFoot );
+		
+		Vector2 footFGPos = new Vector2( 750, -690 );
+		sprite = decals.createSprite( "foot_exterior" );
+		sprite.setScale( -1, 1 );
+		rightFoot.addFGDecal( sprite, footFGPos );
+		
+		sprite = decals.createSprite( "shin_exterior" );
+		sprite.setScale( -1, 1 );
+		rightFoot.addFGDecal( sprite,
+				footFGPos.cpy( ).add( -400, 386 ) );
+		
+		
+		//KNEE
+		decals = WereScrewedGame.manager
+				.getAtlas( "alphabot_foot_shin_decal" );
+		
+
+		Vector2 kneeDecalPos = new Vector2( 630	, -1420 );
+		sprite = decals.createSprite( "knee_exterior" );
+		sprite.setScale( -1, 1 );
+		rightThigh.addFGDecal( sprite ,
+				kneeDecalPos.cpy( ) );
+		addFGSkeleton( rightKnee );
+
+		
+		//THIGH
+		TextureAtlas thigh_exterior = WereScrewedGame.manager
+				.getAtlas( "alphabot_knee_in_thigh_out" );
+		addFGSkeleton(rightThigh);
+		Vector2 thighDecalPos = new Vector2( -347,-407 );
+		sprite = thigh_exterior.createSprite( "thigh_ex_lower" );
+		sprite.setScale( 1,1 );
+		rightThigh.addFGDecal(
+				sprite,
+				thighDecalPos);
+		sprite = thigh_exterior.createSprite( "thigh_ex_upper" );
+		sprite.setScale( 1,1 );//-815,13
+		rightThigh.addFGDecal(sprite,
+				thighDecalPos.cpy().add( -34,699 ));
+		
+	}
 
 	private void createKneeObjects( ) {
 		TextureAtlas decals = WereScrewedGame.manager
@@ -914,11 +994,12 @@ public class AlphaScreen extends Screen {
 				.get( "chestPuzzleScrew5" );
 		PuzzleScrew chestScrew2 = ( PuzzleScrew ) LevelFactory.entities
 				.get( "chestPuzzleScrew6" );
-
 		PuzzleScrew chestScrew3 = ( PuzzleScrew ) LevelFactory.entities
 				.get( "chestPuzzleScrew9" );
 		PuzzleScrew chestScrew4 = ( PuzzleScrew ) LevelFactory.entities
 				.get( "chestPuzzleScrew10" );
+		PuzzleScrew chestScrew5 = ( PuzzleScrew ) LevelFactory.entities
+				.get( "chestPuzzleScrew7" );
 
 		headEntrancePlatform4 = ( TiledPlatform ) LevelFactory.entities
 				.get( "head_entrance_platform_4" );
@@ -939,7 +1020,11 @@ public class AlphaScreen extends Screen {
 		chestScrew4.puzzleManager.addScrew( chestScrew3 );
 
 		chestScrew1.puzzleManager.addScrew( chestScrew2 );
+		chestScrew1.puzzleManager.addScrew( chestScrew5 );
 		chestScrew2.puzzleManager.addScrew( chestScrew1 );
+		chestScrew2.puzzleManager.addScrew( chestScrew5 );
+		chestScrew5.puzzleManager.addScrew( chestScrew1 );
+		chestScrew5.puzzleManager.addScrew( chestScrew2 );
 
 		StructureScrew stuctureScrew1 = ( StructureScrew ) LevelFactory.entities
 				.get( "structureScrew1" );
@@ -948,8 +1033,7 @@ public class AlphaScreen extends Screen {
 				.get( "et1" );
 
 		// it has the anchor I need when power switches 3-4 are on
-		chestPuzzleScrew2 = ( PuzzleScrew ) LevelFactory.entities
-				.get( "chestPuzzleScrew2" );
+		chestPuzzleScrew2 = ( PuzzleScrew ) LevelFactory.entities.get( "chestPuzzleScrew2" );
 
 		engineSteam = new Steam( "steamChest3", new Vector2( -420, 5050 ), 25,
 				120, level.world );
@@ -960,7 +1044,17 @@ public class AlphaScreen extends Screen {
 
 		// chestPipe3.setCategoryMask( Util.CATEGORY_PLATFORMS,
 		// Util.CATEGORY_PLAYER );
-
+		
+		//fix here 
+		engineSteam = new Steam( "steamChest3", new Vector2( -420, 5050 ), 25, 120, level.world );
+		chestSkeleton.addSteam(engineSteam);
+		
+//		Pipe chestPipe3 = ( Pipe ) LevelFactory.entities
+//				.get( "chestPipe3" );
+		
+//		chestPipe3.setCategoryMask( Util.CATEGORY_PLATFORMS,
+//				Util.CATEGORY_PLAYER );
+		
 		chestRotatePlat1 = ( TiledPlatform ) LevelFactory.entities
 				.get( "chestRotatePlat1" );
 		chestRotatePlat1.setActive( true );
@@ -1190,9 +1284,9 @@ public class AlphaScreen extends Screen {
 		}
 
 		// Draw order:
-		wheel1.addFGDecal( wheelSprite, new Vector2(
+		wheel1.addFGDecalBack( wheelSprite, new Vector2(
 				-wheelSprite.getWidth( ) / 2, -wheelSprite.getHeight( ) / 2 ) );
-		girder1.addFGDecal( girderSprite, new Vector2(
+		girder1.addFGDecalBack( girderSprite, new Vector2(
 				-girderSprite.getWidth( ) / 2, -girderSprite.getHeight( ) / 2 ) );
 
 		piston.addFGDecal( pistonSprite, Vector2.Zero );
@@ -1345,8 +1439,45 @@ public class AlphaScreen extends Screen {
 				.cpy( ).add( 2029, 0 ) );
 
 	}
-
-	private void rightArmDecal( ) {
+	
+	private void leftArmDecal(){
+		Skeleton leftShoulderSkeleton = ( Skeleton ) LevelFactory.entities
+				.get( "leftShoulderSkeleton" );
+		
+		Sprite s;
+		int x=0,y=-1;
+		//upper arm decals
+		TextureAtlas arm_decals = WereScrewedGame.manager.getAtlas( "right_arm_ex" );
+		Vector2 armPos = new Vector2(-520,-128);
+		x=0; y=-1;
+		for(int i = 0; i <6; ++i ){
+			//515,710
+			x = (i%2);
+			if(x==0)++y;
+			s = arm_decals.createSprite( "upperarm_exterior"+(i+1) );
+			//s.setScale(-1,1);
+			leftShoulderSkeleton.addFGDecal( 
+					s,
+					armPos.cpy().add( 480*x,-683*y ) );
+		}
+		
+		//forearm decals
+		TextureAtlas elbow_decals = WereScrewedGame.manager.getAtlas( "forearm_elbow_ex" );
+		Vector2 elbowPos = new Vector2(-555,232);
+		
+		for(int i = 0; i <6; ++i ){
+			//515,710
+			x = (i%2);
+			if(x==0)++y;
+			s = elbow_decals.createSprite( "forearmandelbow_exterior"+(i+1) );
+			//s.setScale( -1,1 );
+			leftShoulderSkeleton.addFGDecal(  s,
+				elbowPos.cpy().add( 515*x,-710*y ) );
+		}
+		
+	}
+	
+	private void rightArmDecal(){
 		Skeleton rightElbowSkeleton = ( Skeleton ) LevelFactory.entities
 				.get( "rightElbowSkeleton" );
 		Skeleton rightShoulderSkeleton = ( Skeleton ) LevelFactory.entities
