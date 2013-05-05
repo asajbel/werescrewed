@@ -168,16 +168,7 @@ public class Level {
 			if ( skel.isActive( ) ) {
 				if ( skel.bgSprite != null
 						&& ( !skel.isFadingSkel( ) || skel.isFGFaded( ) ) ) {
-					// Vector2 spritePos = new Vector2(
-					// skel.bgSprite.getBoundingRectangle( ).width / 2.0f,
-					// skel.bgSprite.getBoundingRectangle( ).height / 2.0f );
-					// Vector2 camPos = new Vector2( camera.position.x,
-					// camera.position.y );
-					// // if ( insideRadius( skel.bgSprite.getRadius( ),
-					// // camera.getBounds( ), spritePos, camPos ) )
-					// {
 					skel.bgSprite.draw( batch );
-					// }
 				}
 				if ( !skel.isFadingSkel( ) || skel.isFGFaded( ) ) {
 					skel.drawBGDecals( batch, camera );
@@ -198,23 +189,15 @@ public class Level {
 
 	private void drawFGStuff( SpriteBatch batch ) {
 		for ( Entity e : entityFGList ) {
-			if ( e.isActive( ) 
-					&& ( e.getParentSkeleton( ) == null
+			if ( e.getParentSkeleton( ) == null
 					|| !e.getParentSkeleton( ).isFadingSkel( ) || e
-					.getParentSkeleton( ).isFGFaded( ) ) ) {
+					.getParentSkeleton( ).isFGFaded( ) ) {
 				e.drawFGDecals( batch, camera );
 			}
 		}
 		for ( Skeleton skel : skelFGList ) {
 			if ( skel.fgSprite != null && skel.fgSprite.getAlpha( ) != 0 ) {
-				// Vector2 spritePos = new Vector2( skel.fgSprite.getX( ),
-				// skel.fgSprite.getY( ) );
-				// Vector2 camPos = new Vector2( camera.position.x,
-				// camera.position.y );
-				// if ( insideRadius( skel.fgSprite.getRadius( ),
-				// camera.getBounds( ), spritePos, camPos ) ) {
 				skel.fgSprite.draw( batch );
-				// }
 			}
 			// if ( !skel.isActive( ) )
 			{

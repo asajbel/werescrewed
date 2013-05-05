@@ -10,8 +10,9 @@ import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 import com.blindtigergames.werescrewed.WereScrewedGame;
+import com.blindtigergames.werescrewed.entity.Sprite;
+import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 import com.blindtigergames.werescrewed.gui.Button;
 import com.blindtigergames.werescrewed.gui.Label;
 import com.blindtigergames.werescrewed.input.MyControllerListener;
@@ -23,8 +24,8 @@ public class LevelSelectScreen implements com.badlogic.gdx.Screen {
 	private OrthographicCamera camera = null;
 	private BitmapFont font = null;
 	private BitmapFont fancyFont = null;
-	private Texture logo = null;
-	private Texture menuBG = null;
+	private Sprite logo = null;
+	private Sprite menuBG = null;
 	private Label screenLabel = null;
 	private Button playButton = null;
 	private Button gleedButton = null;
@@ -72,8 +73,8 @@ public class LevelSelectScreen implements com.badlogic.gdx.Screen {
 		Gdx.gl.glClear( GL10.GL_COLOR_BUFFER_BIT );
 		// TODO Auto-generated method stub
 		batch.begin( );
-		batch.draw( menuBG, 0, 0 );
-		batch.draw( logo, 110, 560 );
+		menuBG.draw( batch );
+		logo.draw( batch );
 		// batch.draw(logo, -128, 0);
 		screenLabel.draw( batch );
 		playButton.draw( batch, camera );
@@ -126,13 +127,20 @@ public class LevelSelectScreen implements com.badlogic.gdx.Screen {
 		batch.setProjectionMatrix( camera.combined );
 		int leftX = width / 5 - 20;
 		int centerY = height / 2 - 10;
+		float scaleX = width / 1280f;
+		float scaleY = height / 720f;
+		
+		logo.setScale( scaleX, scaleY ); 
+		menuBG.setScale( width / menuBG.getWidth( ), width / menuBG.getWidth( ) ); 
+		logo.setPosition( leftX - logo.getWidth( ) / 2, centerY + 4 * lineHeight + 20); 
+		menuBG.setPosition( width / 2 - menuBG.getWidth( ) / 2, height / 2 - menuBG.getHeight( ) / 2 ); 
 		screenLabel.setX( leftX - screenLabel.getWidth( ) / 2 );
 		screenLabel.setY( centerY + 4 * lineHeight);
 		testButton.setX( leftX - testButton.getWidth( ) / 2 );
 		testButton.setY( centerY + 3 * lineHeight );
 		
 		//quick fix
-		playButton.setX( leftX - playButton.getWidth( ) + 350 );
+		playButton.setX( leftX - playButton.getWidth( )  + 350);
 		playButton.setY( centerY + 2 * lineHeight );
 		gleedButton.setX( leftX - gleedButton.getWidth( ) / 2 );
 		gleedButton.setY( centerY + lineHeight );
@@ -162,10 +170,12 @@ public class LevelSelectScreen implements com.badlogic.gdx.Screen {
 		font = new BitmapFont( );
 		fancyFont = WereScrewedGame.manager.getFont( "Screwball" );
 		// fancyFont = WereScrewedGame.manager.getFont( "ornatique" );
-		logo = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
+		Texture name = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 				+ "/common/title_background_clear.png", Texture.class );
-		menuBG = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
+		Texture back = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 				+ "/common/menu_placeholder.png", Texture.class ); 
+		logo = new Sprite(name);
+		menuBG = new Sprite(back);
 		lineHeight = Math.round( 2.5f * font.getCapHeight( ) + 20 );
 		screenLabel = new Label( "Level Select", fancyFont );
 		ControllerSetUp( );

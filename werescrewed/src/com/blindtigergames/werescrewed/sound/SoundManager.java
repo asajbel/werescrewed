@@ -74,14 +74,18 @@ public class SoundManager {
 	}
 
 	public void playSound( String id ){ 
-		int index = WereScrewedGame.random.nextInt( sounds.getAll( id ).size );
-		//Gdx.app.log( "SoundManager", "Playing sound "+ index +" out of "+sounds.getAll( id ).size +"." );
-		playSound(id, index, 0f); 
+		if (hasSound(id)){
+			int index = WereScrewedGame.random.nextInt( sounds.getAll( id ).size );
+			//Gdx.app.log( "SoundManager", "Playing sound "+ index +" out of "+sounds.getAll( id ).size +"." );
+			playSound(id, index, 0f); 
+		}
 	}
-	public void playSound( String id , float delay){ 
-		int index = WereScrewedGame.random.nextInt( sounds.getAll( id ).size );
-		//Gdx.app.log( "SoundManager", "Playing sound "+ index +" out of "+sounds.getAll( id ).size +"." );
-		playSound(id, index, delay); 
+	public void playSound( String id , float delay){
+		if (hasSound(id)){
+			int index = WereScrewedGame.random.nextInt( sounds.getAll( id ).size );
+			//Gdx.app.log( "SoundManager", "Playing sound "+ index +" out of "+sounds.getAll( id ).size +"." );
+			playSound(id, index, delay); 
+		}
 	}
 	
 	public void playSound( String id, int index, float delay ) {

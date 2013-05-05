@@ -147,7 +147,7 @@ public class Pipe extends Platform {
 			} else if ( previousDirection == Direction.DOWN ) {
 				texName = "pipeUL";
 			} else 
-				texName = "pipeEndR";
+				texName = "pipeLR";
 			break;
 		case RIGHT:
 			if ( previousDirection == Direction.UP) {
@@ -155,7 +155,7 @@ public class Pipe extends Platform {
 			} else if ( previousDirection == Direction.DOWN ) {
 				texName = "pipeUR";
 			} else 
-				texName = "pipeEndL";
+				texName = "pipeLR";
 			break;
 		case UP:
 			if ( previousDirection == Direction.LEFT) {
@@ -163,7 +163,7 @@ public class Pipe extends Platform {
 			} else if ( previousDirection == Direction.RIGHT ) {
 				texName = "pipeUL";
 			} else 
-				texName = "pipeEndD";
+				texName = "pipeUD";
 			break;
 		case DOWN:
 			if ( previousDirection == Direction.LEFT) {
@@ -171,7 +171,7 @@ public class Pipe extends Platform {
 			} else if ( previousDirection == Direction.RIGHT ) {
 				texName = "pipeDL";
 			} else 
-				texName = "pipeEndU";
+				texName = "pipeUD";
 			break;
 		}
 		
