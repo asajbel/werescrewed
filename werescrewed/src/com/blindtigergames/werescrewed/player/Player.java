@@ -652,6 +652,12 @@ public class Player extends Entity {
 	 * Moves the player right, and in the air it halves the amount the player
 	 * can jump
 	 */
+	
+	public void draw( SpriteBatch batch, float deltaTime ) {
+		super.draw( batch, deltaTime);
+		Gdx.app.log("Player.draw","");
+	}
+
 	public void moveRight( ) {
 		if ( playerState == PlayerState.Falling
 				|| playerState == PlayerState.Jumping ) {
