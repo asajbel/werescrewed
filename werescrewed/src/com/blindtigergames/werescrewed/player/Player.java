@@ -558,7 +558,7 @@ public class Player extends Entity {
 						f.setSensor( true );
 					}
 					filter.categoryBits = Util.CATEGORY_SUBPLAYER;
-					filter.maskBits = Util.CATEGORY_SCREWS;
+					filter.maskBits = Util.CATEGORY_NOTHING;
 					f.setFilterData( filter );
 				}
 				playerState = PlayerState.Dead;
@@ -895,7 +895,7 @@ public class Player extends Entity {
 	 * 
 	 */
 	public void hitScrew( Screw screw ) {
-		if ( playerState != PlayerState.Screwing && mover == null ) {
+		if ( playerState != PlayerState.Screwing && !isDead && mover == null ) {
 			currentScrew = screw;
 
 			// Trophy check for if player attaches to a stripped screw
@@ -1151,7 +1151,6 @@ public class Player extends Entity {
 		return grounded;
 	}
 
-
 	/**
 	 * Attaches a player to the current screw
 	 * 
@@ -1159,6 +1158,7 @@ public class Player extends Entity {
 	 */
 	private void attachToScrew( ) {
 		if ( currentScrew != null && screwAttachTimeout == 0
+				&& currentScrew.body != null
 				&& currentScrew.body.getJointList( ).size( ) > 0
 				&& playerState != PlayerState.HeadStand
 				&& !currentScrew.isPlayerAttached( ) ) {
