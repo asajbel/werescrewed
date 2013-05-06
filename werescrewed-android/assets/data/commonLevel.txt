@@ -153,3 +153,4 @@ black.palette
 grey.palette
 
 /common/tutorial/thought_bubble.png
+/common/tutorial/placeholderTut.png

@@ -9,6 +9,7 @@ import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.controllers.PovDirection;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
@@ -129,10 +130,11 @@ public class Player extends Entity {
 	private Steam currentSteam;
 	private static int switchTimer = 0;
 	
+	private boolean drawTutorial = false;
 	private Sprite tutorial = null;
 	private Sprite bubble;
-	private Texture bubbleTex = WereScrewedGame.manager.get( 
-			WereScrewedGame.dirHandle + "/common/tutorial/thought_bubble.png" );
+	private Texture bubbleTex;
+	private Texture tutorialTex;
 
 	private Player otherPlayer;
 	private RevoluteJoint playerJoint;
@@ -275,8 +277,16 @@ public class Player extends Entity {
 
 		createCircle( PLAYER_FRICTION );
 		frictionCounter = PLAYER_FRICTION;
+				
+		bubbleTex = WereScrewedGame.manager.get( 
+				WereScrewedGame.dirHandle + "/common/tutorial/thought_bubble.png" );
+		tutorialTex = WereScrewedGame.manager.get( 
+				WereScrewedGame.dirHandle + "/common/tutorial/placeholderTut.png" );
 		
-		bubble = new Sprite(bubbleTex);
+		bubble = constructSprite( bubbleTex );
+		tutorial = constructSprite( tutorialTex );
+		
+		bubble.flip( true, false );
 	}
 
 	// PUBLIC METHODS
@@ -293,6 +303,8 @@ public class Player extends Entity {
 			if(name.equals( "player1" )){
 				Gdx.app.log( "steamCollide: " + steamCollide, "steamDone: "
 						+ steamDone );
+				Gdx.app.log( "drawTutorial: ", "" + drawTutorial );
+				drawTutorial = !drawTutorial;
 			}
 		}
 		if ( Gdx.input.isKeyPressed( Keys.NUM_7 )) 
@@ -485,10 +497,11 @@ public class Player extends Entity {
 			}
 
 			this.killPlayer( );
-			// Gdx.app.log( "\nright: ", "" + rightCrush );
-			// Gdx.app.log( "left: ", "" + leftCrush );
-			// Gdx.app.log( "top: ", "" + topCrush );
-			// Gdx.app.log( "bottom: ", "" + botCrush );
+			 /*
+			 Gdx.app.log( "\nright: ", "" + rightCrush );
+			 Gdx.app.log( "left: ", "" + leftCrush );
+			 Gdx.app.log( "top: ", "" + topCrush );
+			 Gdx.app.log( "bottom: ", "" + botCrush );*/
 		} else if ( steamCollide ) {
 			//if ( !steamDone ) {
 				steamResolution( );
@@ -647,17 +660,59 @@ public class Player extends Entity {
 	public boolean isPlayerDead( ) {
 		return isDead;
 	}
+	
+	/**
+	 * Turns tutorial bubble on and off
+	 * 
+	 * @param value boolean
+	 */
+	public void setDrawTutorial( boolean value ){
+		drawTutorial = value;
+	}
+	
+	/**
+	 * sets inside of thought bubble
+	 * 
+	 * @param texture Texture
+	 */
+	public void setTutorial( Texture texture){
+		tutorial = constructSprite( texture );
+	}
+	
+	/**
+	 * clears inside of thought bubble
+	 */
+	public void clearTutorial(){
+		tutorial = null;
+	}
+	
+	/**
+	 * draws tutorials when appropriate
+	 */
+	public void draw( SpriteBatch batch, float deltaTime ) {
+		if(drawTutorial){
+			Gdx.app.log(name + " draw"," bubble");
+			float xpos =  body.getPosition( ).x;
+			float ypos =  body.getPosition( ).y;
+			bubble.getScaleX( );
+			if(tutorial != null){
+				bubble.setPosition( xpos * Util.BOX_TO_PIXEL-bubble.getWidth( )/2.0f + 250f, ypos * Util.BOX_TO_PIXEL + 100f);
+				bubble.setRotation(  MathUtils.radiansToDegrees
+						* body.getAngle( ) );
+				tutorial.setPosition( xpos * Util.BOX_TO_PIXEL-tutorial.getWidth( )/2.0f + 250f, ypos * Util.BOX_TO_PIXEL + 125);
+				tutorial.setRotation(  MathUtils.radiansToDegrees
+						* body.getAngle( ) );
+			}
+			bubble.draw( batch);
+			tutorial.draw( batch );
+		}
+		super.draw( batch, deltaTime);
+	}
 
 	/**
 	 * Moves the player right, and in the air it halves the amount the player
 	 * can jump
 	 */
-	
-	public void draw( SpriteBatch batch, float deltaTime ) {
-		super.draw( batch, deltaTime);
-		//Gdx.app.log(name + "draw","");
-	}
-
 	public void moveRight( ) {
 		if ( playerState == PlayerState.Falling
 				|| playerState == PlayerState.Jumping ) {
@@ -1165,10 +1220,6 @@ public class Player extends Entity {
 	public boolean isGrounded( ) {
 		return grounded;
 	}
-
-	/*public void draw( SpriteBatch batch, float deltaTime ) {
-		// TODO
-	}*/
 
 	/**
 	 * Attaches a player to the current screw
