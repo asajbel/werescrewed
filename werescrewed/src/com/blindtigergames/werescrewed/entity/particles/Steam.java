@@ -15,6 +15,8 @@ import com.blindtigergames.werescrewed.entity.EntityType;
 import com.blindtigergames.werescrewed.entity.platforms.Platform;
 import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 import com.blindtigergames.werescrewed.graphics.particle.ParticleEffect;
+import com.blindtigergames.werescrewed.sound.SoundManager;
+import com.blindtigergames.werescrewed.sound.SoundManager.SoundRef;
 import com.blindtigergames.werescrewed.util.Util;
 
 public class Steam extends Platform{
@@ -51,6 +53,8 @@ public class Steam extends Platform{
 		this.active = true;
 		particleEffect.start( );
 		started = true;
+		loadSounds();
+		postLoad();
 	}
 	
 	
@@ -78,6 +82,15 @@ public class Steam extends Platform{
 			particleEffect.draw( batch, deltaTime );
 		}
 		
+	}
+	@Override
+	public void update( float dT){
+		super.update( dT );
+		if (isActive()){
+			sounds.loopSound( "idle", 0, false );
+		} else {
+			sounds.stopSound( "idle" );
+		}
 	}
 	
 	/**
@@ -117,5 +130,14 @@ public class Steam extends Platform{
 	
 	public boolean getTempCollision(){
 		return this.tempCheckForCollision;
+	}
+	
+	public void loadSounds(){
+		if (sounds == null)
+			sounds = new SoundManager();
+		SoundRef steamSound = sounds.getSound( "idle", WereScrewedGame.dirHandle
+				+ "/common/sounds/steam.ogg" );
+		steamSound.setRange( 600.f );
+		steamSound.setFalloff( 2.0f );
 	}
 }

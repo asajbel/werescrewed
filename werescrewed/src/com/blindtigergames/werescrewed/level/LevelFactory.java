@@ -652,6 +652,26 @@ public class LevelFactory {
 				// (WereScrewedGame.dirHandle+"/common/robot/alphabot_texture_skin.png",
 				// Texture.class ));;
 			}
+			
+		/*Argggg, the code you're looking for be here Matey
+		 * } else if ( item.props.containsKey( "foreground" ) ) {
+			skeleBuilder
+					.bg( )
+					.setVerts( polySprite )
+					.texBackground(
+							WereScrewedGame.manager.getLevelRobotBGTex( ) ).fg( )
+					.setVerts( polySprite );
+			
+		} else {
+			skeleBuilder
+					.bg( )
+					.setVerts( polySprite )
+					.texBackground(
+							WereScrewedGame.manager.getLevelRobotBGTex( ) );
+			// .texForeground( WereScrewedGame.manager.get
+			// (WereScrewedGame.dirHandle+"/common/robot/alphabot_texture_skin.png",
+			// Texture.class ));;
+		}*/
 
 			if ( item.props.containsKey( "dynamic" ) ) {
 				skeleBuilder.dynamic( );
@@ -663,7 +683,7 @@ public class LevelFactory {
 
 			skeleton = skeleBuilder.build( );
 
-			if ( item.props.containsKey( "alwaysVisible" ) ) 
+			if ( item.props.containsKey( "alwaysvisible" ) ) 
 			{
 				skeleton.setFgFade( false );
 			}

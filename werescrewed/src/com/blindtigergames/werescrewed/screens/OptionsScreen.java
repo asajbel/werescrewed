@@ -26,11 +26,11 @@ class OptionsScreen extends Screen{
 	private SpriteBatch batch = null;
 	private BitmapFont font = null;
 	private BitmapFont fancyFont = null;
-	private Texture logo = null;
 	private Texture menuBG = null;
 	private Sprite musicSprite = null;
 	private Sprite soundSprite = null;
 	private Sprite voiceSprite = null;
+	private Sprite logo = null;
 	private int lineHeight = 0;
 	private int musicPos = 0;
 	private int soundPos = 0;
@@ -73,8 +73,12 @@ class OptionsScreen extends Screen{
 		font = new BitmapFont( );
 		fancyFont = WereScrewedGame.manager.getFont( "longdon" );
 
-		logo =  WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-				 + "/common/title_background_clear.png", Texture.class );
+		Texture name =  WereScrewedGame.manager.get( WereScrewedGame.dirHandle
+				 + "/common/title_background.png", Texture.class );
+		logo = new Sprite(name);
+		int width = Gdx.graphics.getWidth( );
+		int height = Gdx.graphics.getHeight( ); 
+		logo.setPosition( width / 5 - logo.getWidth( ) / 2, height / 2 - logo.getWidth( ) );
 		lineHeight = Math.round( 2.5f * font.getCapHeight( ) + 20 );
 		//the following are placeholder displays. Add actual option buttons here later
 		screenLabel = new Label("OPTIONS", fancyFont);
@@ -188,6 +192,8 @@ class OptionsScreen extends Screen{
 		music.setX( leftX - music.getWidth( ) / 2 );
 		music.setY( centerY + lineHeight );
 		sound.setX( leftX - sound.getWidth( ) / 2 );
+		logo.setPosition( width / 5 - logo.getWidth( ) / 2, height / 2 - logo.getWidth( ) );
+
 		sound.setY( centerY  );
 		voice.setX( leftX - voice.getWidth( ) / 2 );
 		voice.setY( centerY - lineHeight );

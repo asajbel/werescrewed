@@ -310,8 +310,9 @@ public class Entity implements GleedLoadable {
 			SpriteBatch batch ) {
 		if ( map != null ) {
 			for ( ParticleEffect e : map.values( ) ) {
-				if ( !e.isComplete( ) )
+				if ( !e.isComplete( ) ) {
 					e.draw( batch );
+				}
 			}
 		}
 	}
@@ -414,8 +415,13 @@ public class Entity implements GleedLoadable {
 					e.setPosition( pos.x, pos.y );
 					if ( e.updateAngleBasedOnVelocity ) {
 
-					} else
-						e.setAngle( body.getAngle( ) );
+					} else {
+						if ( body != null ) {
+							e.setAngle( body.getAngle( ) );
+						} else {
+							e.setAngle( sprite.getRotation( )*Util.DEG_TO_RAD );
+						}
+					}
 				}
 				if ( !e.isComplete( ) ) {
 					e.update( deltaTime );
@@ -1037,36 +1043,38 @@ public class Entity implements GleedLoadable {
 		currentRobotState = RobotState.IDLE;
 	}
 
-	private void insertDecal( boolean isBG, Sprite s, Vector2 offset, float angle, boolean isBack ){
+	private void insertDecal( boolean isBG, Sprite s, Vector2 offset,
+			float angle, boolean isBack ) {
 		if ( s == null ) {
 			throw new RuntimeException(
 					"Entity.insertDecal(): Adding null sprite! NO!" );
 		}
-		ArrayList< Sprite > decalList = (isBG)?bgDecals:fgDecals;
-		ArrayList< Float > angleList = (isBG)?bgDecalAngles:fgDecalAngles;
-		ArrayList< Vector2 > offsetList = (isBG)?bgDecalOffsets:fgDecalOffsets;
-		//s.setOrigin( -s.getWidth( )/2, -s.getHeight( )/2 );
-		if(isBack){
-			decalList.add( 0,s );
-			angleList.add( 0,angle );
-			offsetList.add( 0,offset );
-		}else{
+		ArrayList< Sprite > decalList = ( isBG ) ? bgDecals : fgDecals;
+		ArrayList< Float > angleList = ( isBG ) ? bgDecalAngles : fgDecalAngles;
+		ArrayList< Vector2 > offsetList = ( isBG ) ? bgDecalOffsets
+				: fgDecalOffsets;
+		// s.setOrigin( -s.getWidth( )/2, -s.getHeight( )/2 );
+		if ( isBack ) {
+			decalList.add( 0, s );
+			angleList.add( 0, angle );
+			offsetList.add( 0, offset );
+		} else {
 			decalList.add( s );
 			angleList.add( angle );
 			offsetList.add( offset );
 		}
 	}
-	
+
 	public void addBGDecal( Sprite s, Vector2 offset, float angle ) {
-//		if ( s == null ) {
-//			throw new RuntimeException(
-//					"Entity.addBGDecal(): Adding null sprite" );
-//		}
-//		s.setOrigin( s.getWidth( )/2, s.getHeight( )/2 );
-//		this.bgDecals.add( s );
-//		this.bgDecalOffsets.add( offset );
-//		this.bgDecalAngles.add( angle );
-		insertDecal(true,s,offset, angle, false);
+		// if ( s == null ) {
+		// throw new RuntimeException(
+		// "Entity.addBGDecal(): Adding null sprite" );
+		// }
+		// s.setOrigin( s.getWidth( )/2, s.getHeight( )/2 );
+		// this.bgDecals.add( s );
+		// this.bgDecalOffsets.add( offset );
+		// this.bgDecalAngles.add( angle );
+		insertDecal( true, s, offset, angle, false );
 	}
 
 	/**
@@ -1074,15 +1082,15 @@ public class Entity implements GleedLoadable {
 	 *            in radian
 	 */
 	public void addFGDecal( Sprite s, Vector2 offset, float angle ) {
-//		if ( s == null ) {
-//			throw new RuntimeException(
-//					"Entity.addFGDecal(): Adding null sprite" );
-//		}
-//		s.setOrigin( s.getWidth( )/2, s.getHeight( )/2 );
-//		this.fgDecals.add( s );
-//		this.fgDecalOffsets.add( offset );
-//		this.fgDecalAngles.add( angle );
-		insertDecal(false,s,offset, angle, false);
+		// if ( s == null ) {
+		// throw new RuntimeException(
+		// "Entity.addFGDecal(): Adding null sprite" );
+		// }
+		// s.setOrigin( s.getWidth( )/2, s.getHeight( )/2 );
+		// this.fgDecals.add( s );
+		// this.fgDecalOffsets.add( offset );
+		// this.fgDecalAngles.add( angle );
+		insertDecal( false, s, offset, angle, false );
 	}
 
 	public void addBGDecal( Sprite s, Vector2 offset ) {
@@ -1094,27 +1102,27 @@ public class Entity implements GleedLoadable {
 	}
 
 	public void addFGDecalBack( Sprite s, Vector2 offset ) {
-//		if ( s == null ) {
-//			throw new RuntimeException(
-//					"Entity.addFGDecal(): Adding null sprite" );
-//		}
-//		fgDecals.add( 0, s );
-//		fgDecalOffsets.add( 0, offset );
-//		fgDecalAngles.add( 0, 0.0f );
-//		// addDecalBack( s, offset, true );
-		insertDecal(false,s,offset, 0.0f, true);
+		// if ( s == null ) {
+		// throw new RuntimeException(
+		// "Entity.addFGDecal(): Adding null sprite" );
+		// }
+		// fgDecals.add( 0, s );
+		// fgDecalOffsets.add( 0, offset );
+		// fgDecalAngles.add( 0, 0.0f );
+		// // addDecalBack( s, offset, true );
+		insertDecal( false, s, offset, 0.0f, true );
 	}
 
 	public void addBGDecalBack( Sprite s, Vector2 offset ) {
-//		if ( s == null ) {
-//			throw new RuntimeException(
-//					"Entity.addFGDecal(): Adding null sprite" );
-//		}
-//		bgDecals.add( 0, s );
-//		bgDecalOffsets.add( 0, offset );
-//		bgDecalAngles.add( 0, 0.0f );
-//		// addDecalBack( s, offset, false );
-		insertDecal(true,s,offset, 0.0f, true);
+		// if ( s == null ) {
+		// throw new RuntimeException(
+		// "Entity.addFGDecal(): Adding null sprite" );
+		// }
+		// bgDecals.add( 0, s );
+		// bgDecalOffsets.add( 0, offset );
+		// bgDecalAngles.add( 0, 0.0f );
+		// // addDecalBack( s, offset, false );
+		insertDecal( true, s, offset, 0.0f, true );
 	}
 
 	public void addBGDecal( Sprite s ) {
@@ -1137,18 +1145,18 @@ public class Entity implements GleedLoadable {
 			offset = fgDecalOffsets.get( i );
 			decal = fgDecals.get( i );
 			r = fgDecalAngles.get( i );
-			x = bodyPos.x + ( (offset.x) * cos ) - ( (offset.y) * sin );
-			y = bodyPos.y + ( (offset.y) * cos ) + ( (offset.x) * sin );
-			decal.setPosition( x+decal.getOriginX( ), y+decal.getOriginY( ) );
+			x = bodyPos.x + ( ( offset.x ) * cos ) - ( ( offset.y ) * sin );
+			y = bodyPos.y + ( ( offset.y ) * cos ) + ( ( offset.x ) * sin );
+			decal.setPosition( x + decal.getOriginX( ), y + decal.getOriginY( ) );
 			decal.setRotation( r + a );
 		}
 		for ( int i = 0; i < bgDecals.size( ); i++ ) {
 			offset = bgDecalOffsets.get( i );
 			decal = bgDecals.get( i );
 			r = bgDecalAngles.get( i );
-			x = bodyPos.x + ( (offset.x) * cos ) - ( (offset.y) * sin );
-			y = bodyPos.y + ( (offset.y) * cos ) + ( (offset.x) * sin );
-			decal.setPosition( x+decal.getOriginX( ), y+decal.getOriginY( ) );
+			x = bodyPos.x + ( ( offset.x ) * cos ) - ( ( offset.y ) * sin );
+			y = bodyPos.y + ( ( offset.y ) * cos ) + ( ( offset.x ) * sin );
+			decal.setPosition( x + decal.getOriginX( ), y + decal.getOriginY( ) );
 			decal.setRotation( r + a );
 		}
 	}
@@ -1160,16 +1168,7 @@ public class Entity implements GleedLoadable {
 	 */
 	public void drawFGDecals( SpriteBatch batch, Camera camera ) {
 		for ( Sprite decal : fgDecals ) {
-			/*
-			 * Vector2 decalPos = new Vector2( decal.getX( ), decal.getY( ) );
-			 * Vector2 camPos = new Vector2( camera.position.x,
-			 * camera.position.y ); if ( insideRadius(
-			 * decal.getBoundingRectangle( ), camera.getBounds( ), decalPos,
-			 * camPos ) )
-			 */
-			if ( this.entityType != EntityType.SKELETON
-					|| decal.getBoundingRectangle( ).overlaps(
-							camera.getBounds( ) ) ) {
+			if ( decal.getBoundingRectangle( ).overlaps( camera.getBounds( ) ) ) {
 				decal.draw( batch );
 			}
 		}
@@ -1182,16 +1181,7 @@ public class Entity implements GleedLoadable {
 	 */
 	public void drawBGDecals( SpriteBatch batch, Camera camera ) {
 		for ( Sprite decal : bgDecals ) {
-			/*
-			 * Vector2 decalPos = new Vector2( decal.getX( ), decal.getY( ) );
-			 * Vector2 camPos = new Vector2( camera.position.x,
-			 * camera.position.y ); if ( insideRadius(
-			 * decal.getBoundingRectangle( ), camera.getBounds( ), decalPos,
-			 * camPos ) )
-			 */
-			if ( this.entityType != EntityType.SKELETON
-					|| decal.getBoundingRectangle( ).overlaps(
-							camera.getBounds( ) ) ) {
+			if ( decal.getBoundingRectangle( ).overlaps( camera.getBounds( ) ) ) {
 				decal.draw( batch );
 			}
 		}

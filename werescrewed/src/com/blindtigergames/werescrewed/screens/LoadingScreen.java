@@ -27,6 +27,8 @@ public class LoadingScreen extends Screen {
 	private SpriteBatch batch = null;
 	private String screenTag = null;
 	private Entity loadingBar;
+	private int screenWidth;
+	private int screenHeight;
 	
 
 	/**
@@ -62,65 +64,160 @@ public class LoadingScreen extends Screen {
 		this( null );
 	}
 
+	
+
+	
 	/**
-	 * A recursive function to load all files in a given directory, and load the
-	 * files directories in directories
+	 * Runs every frame tick. Loads the assets that are queued in
+	 * WereScrewedGame.manager, and moves to the next screen. Shows how much of
+	 * the assets have been loaded.
 	 * 
-	 * @author Nick Patti
-	 * 
-	 * @deprecated
-	 * 
-	 * @param currentDirectory
-	 *            The current directory that the function is loading files from
-	 * 
-	 * @param screenTag
-	 *            Indicates which screen is going to be loaded, which influences
-	 *            which file's contents are loaded
+	 * @author Ranveer, Nick, and Jen
 	 * 
 	 * @return void
 	 */
-	@SuppressWarnings( "unused" )
-	private void loadFilesInDirectory( FileHandle currentDirectory,
-			String screenTag ) {
-		// Gdx.app.log( "GOING DOWN", "now inside " + currentDirectory.name( )
-		// );
+	@Override
+	public void render( float delta ) {
+		super.render( delta );
 
-		for ( FileHandle entry : currentDirectory.list( ) ) {
-			// Gdx.app.log( currentDirectory.name( ), "found file " +
-			// entry.name( ) );
+		// tell me how much has loaded
+		float percentLoaded = WereScrewedGame.manager.getProgress( ) * 100;
+		loadingLabel.setCaption( "Loading... " + ( int ) percentLoaded + "%" );
 
-			// figure out what it means to be a file I don't care about
-			String entryName = entry.name( );
-			boolean IDontCareAboutThisFile = entryName.equals( "bodies" )
-					|| entryName.equals( "entities" )
-					|| entryName.equals( ".DS_Store" );
-
-			if ( IDontCareAboutThisFile )
-				continue;
-
-			// determine if we want to go into this directory
-			// TODO: The string interpretation of screenTag will go here
-			boolean IWannaLoadTheseFiles = entryName.equals( "common" )
-					|| entryName.equals( "sounds" )
-					|| entryName.equals( "levels" )
-					|| entryName.equals( screenTag );
-
-			if ( IWannaLoadTheseFiles )
-				loadFilesInDirectory( entry, screenTag );
-
-			// load the file that we're currently looking at
-			String fileExtension = entry.extension( );
-			String fullPathName = currentDirectory.parent( ) + "/"
-					+ currentDirectory.name( ) + "/" + entry.name( );
-
-			loadCurrentFile( fileExtension, fullPathName );
-
+		if ( WereScrewedGame.manager.isAtlasLoaded( "common-textures" ) && loadingBar.sprite == null ) {
+			TextureRegion screwTex = WereScrewedGame.manager.getAtlas( "common-textures" ).findRegion( "flat_head_circular" );
+			loadingBar.sprite = loadingBar.constructSprite( screwTex );
+			loadingBar.sprite.setPosition( screenWidth / 2 - loadingBar.sprite.getWidth( ) / 2, 
+											screenHeight / 3 - loadingBar.sprite.getHeight( ) / 2 );
+		} else if ( loadingBar.sprite != null ) {
+			loadingBar.sprite.setPosition( screenWidth / 2 - loadingBar.sprite.getWidth( ) / 2, 
+											screenHeight / 3 - loadingBar.sprite.getHeight( ) / 2 );
+			loadingBar.sprite.setRotation( -1080 * WereScrewedGame.manager.getProgress( ) );
+		}
+		
+		batch.begin( );
+		
+		//begin loading the assets
+		if ( WereScrewedGame.manager.update( ) ) { 
+			
+			//assets have been loaded!
+			loadingLabel.setCaption("Loading Complete!!");
+			//loadingCompleteLabel.draw( batch );
+		
+			// TODO: Use the screenTag to pick which screen to go to next
+			if ( screenTag != null && screenTag.equals( "level1" ) ) {
+				ScreenManager.getInstance( ).show( ScreenType.LEVEL_1 );
+			} else if ( screenTag != null && screenTag.equals( "level2" ) ) {
+				ScreenManager.getInstance( ).show( ScreenType.DRAGON );
+			}else {
+				ScreenManager.getInstance( ).show( ScreenType.MAIN_MENU ); 
+			}
+			
 		}
 
-		// Gdx.app.log( "GOING UP", "returning to " + currentDirectory.parent( )
-		// );
+		// draw the label on the screen
+		loadingLabel.draw( batch );
+		loadingBar.sprite.draw( batch );
+		batch.end( );
 	}
 
+	@Override
+	public void resize(int width, int height){
+		screenWidth = width;
+		screenHeight = height; 
+		
+		//set position of the loading label
+		//TODO: Figure out a way to keep it in the center of the screen without resizing
+		int loadingLabelX = width/2 - loadingLabel.getWidth()/2;
+		int loadingLabelY = height/2 + loadingLabel.getHeight();
+		loadingLabel.setX(loadingLabelX);
+		loadingLabel.setY(loadingLabelY);
+		
+		//set position of loading complete label
+		int loadingCompleteLabelX = width/2 - loadingCompleteLabel.getWidth()/2;
+		int loadingCompleteLabelY = height/2 - loadingCompleteLabel.getHeight()/3;
+		loadingCompleteLabel.setX(loadingCompleteLabelX);
+		loadingCompleteLabel.setY(loadingCompleteLabelY);
+	}
+	
+
+	@Override
+	public void dispose( ) {
+		//WereScrewedGame.manager.dispose( );
+	}
+
+	@Override
+	public void show( ) {
+		font = new BitmapFont( );
+		font.scale( 1.0f );
+
+		loadingLabel = new Label( "Loading... 0%", font );
+		loadingCompleteLabel = new Label( "Press 'A'!!", font );
+		batch = new SpriteBatch( );
+
+		int width = Gdx.graphics.getWidth( );
+		int height = Gdx.graphics.getHeight( );
+		
+		loadingBar = new Entity( "loadingScrew", null , null, null, false );
+
+		WereScrewedGame.dirHandle = Gdx.files.internal( "data/" );
+
+		// reads through the text file that is named
+		// the same thing as the screenTag
+		// and reads each line which is a path and loads that file
+		FileHandle handle = Gdx.files.internal( "data/" + screenTag + ".txt" );		
+		String split[] = handle.readString( ).split( "\\r?\\n" );
+		for ( String s : split ) {
+			s.replaceAll( "\\s", "" );
+			if ( s.length( ) > 0 ) {
+				if ( s.charAt( 0 ) == '#' ) {
+					//A comment
+					continue;
+				}else if (s.charAt(0)=='@'){
+					//special case for level parameters
+					loadLevelParameter(s);
+				}else{
+					//A regular file
+					loadFromPath(s);
+				}
+			}
+		}
+	}
+	
+	private void loadLevelParameter(String s){
+		/*format for level options: 
+			@ fg /path/to/fg/tex
+			@ bg /path/to/bg/tex
+			@ outline /path/to/outline/tex	
+		*/
+		String[] options = s.split( "\\s" );
+		loadFromPath( options[2] );
+		WereScrewedGame.manager.finishLoading();
+		Texture tex = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
+				+options[2], Texture.class );
+		if(options[1].equals("fg")){
+			WereScrewedGame.manager.setLevelRobotFGTex( tex );
+		}else if(options[1].equals("bg")){
+			WereScrewedGame.manager.setLevelRobotBGTex( tex );
+		}else if(options[1].equals("outline")){
+			WereScrewedGame.manager.setLevelRobotOutlineTex( tex );
+		}
+	}
+	
+	private void loadFromPath(String s){
+		String ext;
+		String fileAndExtension[] = s.split( "\\." );
+		if ( fileAndExtension.length > 1 ) {
+			// gets the extension
+			ext = fileAndExtension[1];
+			// loads the file
+			loadCurrentFile( ext, WereScrewedGame.dirHandle
+					+ s );
+		} else {
+			Gdx.app.log( "Loading screen: ", s + " doesn't have an extension" );
+		}
+	}
+	
 	/**
 	 * A small babby function to load the current file
 	 * 
@@ -192,151 +289,5 @@ public class LoadingScreen extends Screen {
 	//Simple overloading for when you only have an extension and pathname.
 	private void loadCurrentFile( String fE, String fPN){
 		loadCurrentFile( fE, fPN, fPN);
-	}
-	
-	/**
-	 * Runs every frame tick. Loads the assets that are queued in
-	 * WereScrewedGame.manager, and moves to the next screen. Shows how much of
-	 * the assets have been loaded.
-	 * 
-	 * @author Ranveer, Nick, and Jen
-	 * 
-	 * @return void
-	 */
-	@Override
-	public void render( float delta ) {
-		super.render( delta );
-
-		// tell me how much has loaded
-		float percentLoaded = WereScrewedGame.manager.getProgress( ) * 100;
-		loadingLabel.setCaption( "Loading... " + ( int ) percentLoaded + "%" );
-
-		if ( WereScrewedGame.manager.isAtlasLoaded( "common-textures" ) && loadingBar.sprite == null ) {
-			TextureRegion screwTex = WereScrewedGame.manager.getAtlas( "common-textures" ).findRegion( "flat_head_circular" );
-			loadingBar.sprite = loadingBar.constructSprite( screwTex );
-			loadingBar.sprite.setPosition( 608, 216 );
-		} else if ( loadingBar.sprite != null ) {
-			loadingBar.sprite.setPosition( 608, 216 );
-			loadingBar.sprite.setRotation( -1080 * WereScrewedGame.manager.getProgress( ) );
-		}
-		
-		batch.begin( );
-		
-		//begin loading the assets
-		if ( WereScrewedGame.manager.update( ) ) { 
-			
-			//assets have been loaded!
-			loadingLabel.setCaption("Loading Complete!!");
-			//loadingCompleteLabel.draw( batch );
-		
-			// TODO: Use the screenTag to pick which screen to go to next
-			if ( screenTag != null && screenTag.equals( "level1" ) ) {
-				ScreenManager.getInstance( ).show( ScreenType.LEVEL_1 );
-			} else if ( screenTag != null && screenTag.equals( "level2" ) ) {
-				ScreenManager.getInstance( ).show( ScreenType.DRAGON );
-			}else {
-				ScreenManager.getInstance( ).show( ScreenType.MAIN_MENU ); 
-			}
-			
-		}
-
-		// draw the label on the screen
-		loadingLabel.draw( batch );
-		loadingBar.sprite.draw( batch );
-		batch.end( );
-	}
-
-	@Override
-	public void resize(int width, int height){
-		
-		//set position of the loading label
-		//TODO: Figure out a way to keep it in the center of the screen without resizing
-		int loadingLabelX = width/2 - loadingLabel.getWidth()/2;
-		int loadingLabelY = height/2 + loadingLabel.getHeight();
-		loadingLabel.setX(loadingLabelX);
-		loadingLabel.setY(loadingLabelY);
-		
-		//set position of loading complete label
-		int loadingCompleteLabelX = width/2 - loadingCompleteLabel.getWidth()/2;
-		int loadingCompleteLabelY = height/2 - loadingCompleteLabel.getHeight()/3;
-		loadingCompleteLabel.setX(loadingCompleteLabelX);
-		loadingCompleteLabel.setY(loadingCompleteLabelY);
-	}
-	
-
-	@Override
-	public void dispose( ) {
-		//WereScrewedGame.manager.dispose( );
-	}
-
-	@Override
-	public void show( ) {
-		font = new BitmapFont( );
-		font.scale( 1.0f );
-
-		loadingLabel = new Label( "Loading... 0%", font );
-		loadingCompleteLabel = new Label( "Press 'A'!!", font );
-		batch = new SpriteBatch( );
-
-		loadingBar = new Entity( "loadingScrew", new Vector2( 640, 330), null, null, false );
-
-		// THIS IS WHAT THE DIRECTORY SHOULD ALWAYS BE
-		// THERE SHOULDN"T BE TWO FOLDERS
-		WereScrewedGame.dirHandle = Gdx.files.internal( "data/" );
-
-		// reads through the text file that is named
-		// the same thing as the screenTag
-		// and reads each line which is a path and loads that file
-		FileHandle handle = Gdx.files.internal( "data/" + screenTag + ".txt" );		
-		String split[] = handle.readString( ).split( "\\r?\\n" );
-		for ( String s : split ) {
-			s.replaceAll( "\\s", "" );
-			if ( s.length( ) > 0 ) {
-				if ( s.charAt( 0 ) == '#' ) {
-					//A comment
-					continue;
-				}else if (s.charAt(0)=='@'){
-					//special case for level parameters
-					loadLevelParameter(s);
-				}else{
-					//A regular file
-					loadFromPath(s);
-				}
-			}
-		}
-	}
-	
-	private void loadLevelParameter(String s){
-		/*format for level options: 
-			@ fg /path/to/fg/tex
-			@ bg /path/to/bg/tex
-			@ outline /path/to/outline/tex	
-		*/
-		String[] options = s.split( "\\s" );
-		loadFromPath( options[2] );
-		WereScrewedGame.manager.finishLoading();
-		Texture tex = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-				+options[2], Texture.class );
-		if(options[1].equals("fg")){
-			WereScrewedGame.manager.setLevelRobotFGTex( tex );
-		}else if(options[1].equals("bg")){
-			WereScrewedGame.manager.setLevelRobotBGTex( tex );
-		}else if(options[1].equals("outline")){
-			WereScrewedGame.manager.setLevelRobotOutlineTex( tex );
-		}
-	}
-	
-	private void loadFromPath(String s){
-		String ext;
-		String fileAndExtension[] = s.split( "\\." );
-		if ( fileAndExtension.length > 1 ) {
-			// gets the extension
-			ext = fileAndExtension[1];
-			// loads the file
-			loadCurrentFile( ext, WereScrewedGame.dirHandle
-					+ s );
-		} else {
-			Gdx.app.log( "Loading screen: ", s + " doesn't have an extension" );
-		}
 	}
 }

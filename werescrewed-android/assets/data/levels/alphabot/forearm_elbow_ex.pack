@@ -1,0 +1,47 @@
+forearm_elbow_ex.png
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+offset: 0, 0
+forearmandelbow_exterior1
+  rotate: false
+  xy: 1041, 717
+  size: 515, 710
+  orig: 515, 710
+  offset: 0, 0
+  index: -1
+forearmandelbow_exterior6
+  rotate: false
+  xy: 3, 3
+  size: 515, 710
+  orig: 515, 710
+  offset: 0, 0
+  index: -1
+forearmandelbow_exterior4
+  rotate: false
+  xy: 522, 3
+  size: 515, 710
+  orig: 515, 710
+  offset: 0, 0
+  index: -1
+forearmandelbow_exterior5
+  rotate: false
+  xy: 3, 717
+  size: 515, 710
+  orig: 515, 710
+  offset: 0, 0
+  index: -1
+forearmandelbow_exterior2
+  rotate: false
+  xy: 522, 717
+  size: 515, 710
+  orig: 515, 710
+  offset: 0, 0
+  index: -1
+forearmandelbow_exterior3
+  rotate: false
+  xy: 1041, 3
+  size: 515, 710
+  orig: 515, 710
+  offset: 0, 0
+  index: -1
