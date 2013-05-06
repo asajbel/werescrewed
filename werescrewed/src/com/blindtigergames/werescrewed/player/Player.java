@@ -303,8 +303,8 @@ public class Player extends Entity {
 			if(name.equals( "player1" )){
 				Gdx.app.log( "steamCollide: " + steamCollide, "steamDone: "
 						+ steamDone );
-				Gdx.app.log( "drawTutorial: ", "" + drawTutorial );
 				drawTutorial = !drawTutorial;
+				Gdx.app.log( "drawTutorial: ", "" + drawTutorial );
 			}
 		}
 		if ( Gdx.input.isKeyPressed( Keys.NUM_7 )) 
@@ -691,7 +691,6 @@ public class Player extends Entity {
 	 */
 	public void draw( SpriteBatch batch, float deltaTime ) {
 		if(drawTutorial){
-			Gdx.app.log(name + " draw"," bubble");
 			float xpos =  body.getPosition( ).x;
 			float ypos =  body.getPosition( ).y;
 			bubble.getScaleX( );
