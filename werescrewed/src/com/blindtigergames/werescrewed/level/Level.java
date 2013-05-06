@@ -170,7 +170,7 @@ public class Level {
 						&& ( !skel.isFadingSkel( ) || skel.isFGFaded( ) ) ) {
 					skel.bgSprite.draw( batch );
 				}
-				if ( !skel.isFadingSkel( ) || skel.isFGFaded( ) ) {
+				if ( skel.isUpdatable( ) ) {
 					skel.drawBGDecals( batch, camera );
 				}
 			}
@@ -199,7 +199,7 @@ public class Level {
 			if ( skel.fgSprite != null && skel.fgSprite.getAlpha( ) != 0 ) {
 				skel.fgSprite.draw( batch );
 			}
-			// if ( !skel.isActive( ) )
+			if ( !skel.isUpdatable( ) )
 			{
 				skel.drawFGDecals( batch, camera );
 			}
