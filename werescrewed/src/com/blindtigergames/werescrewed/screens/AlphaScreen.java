@@ -595,9 +595,11 @@ public class AlphaScreen extends Screen {
 				.getAtlas( "alphabot_knee_in_thigh_out" );
 
 		// level.entityBGList.add(thighSkeleton);
+		Sprite sprite = decals.createSprite( "thigh_mechanisms_and_pipesNOCOLOR" );
+		sprite.setScale(1f/0.75f);
 		thighSkeleton.addBGDecalBack(
-				decals.createSprite( "thigh_mechanisms_and_pipesNOCOLOR" ),
-				new Vector2( -425, -1117 ) );
+				sprite,
+				new Vector2( -345, -1117 ) );
 		// 380,1117
 
 		Vector2 thighPos = new Vector2( -370, -1010 );
@@ -1167,7 +1169,13 @@ public class AlphaScreen extends Screen {
 		addFGSkeleton( chestSkeleton );
 		level.skelFGList.remove( chestSkeleton );
 		level.skelFGList.add( chestSkeleton );
-	}
+		
+		//END FG DECALS
+		
+		//chest_bottomleft_mechanisms75
+		TextureAtlas chest_gear = WereScrewedGame.manager.getAtlas( "chest_pipes_thigh_pipes" );
+		chestSkeleton.addBGDecal( chest_gear.createSprite( "chest_bottomleft_mechanisms75" ), new Vector2(-1800,-1157 ) );
+	}///293,53
 
 	private void leftArm( ) {
 		leftArmScrew = ( PuzzleScrew ) LevelFactory.entities
