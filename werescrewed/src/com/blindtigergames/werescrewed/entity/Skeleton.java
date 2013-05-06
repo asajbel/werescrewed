@@ -462,11 +462,6 @@ public class Skeleton extends Platform {
 			}
 			for ( Rope rope : ropeMap.values( ) ) {
 				// TODO: ropes need to be able to be deleted
-				boolean nextLink = true;
-				int index = 0;
-				while(nextLink) {
-					rope.getLink( index ).body.setAwake( false );
-				}
 				rope.update( deltaTime );
 			}
 		} else {
@@ -632,7 +627,7 @@ public class Skeleton extends Platform {
 	}
 
 	private void drawChildren( SpriteBatch batch, float deltaTime ) {
-		if ( !wasInactive && ( !this.isFadingSkel( ) || this.isFGFaded( ) ) ) {
+		if ( !wasInactive && isUpdatable ) {
 			for ( Platform p : dynamicPlatformMap.values( ) ) {
 				drawPlatform( p, batch, deltaTime );
 			}
