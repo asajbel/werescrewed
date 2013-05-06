@@ -113,11 +113,10 @@
 
 ##Fonts
 /debug/debug_font.fnt
-#/fonts/ornatique-26.fnt
-#/fonts/ornatique.fnt
-/fonts/ArmenianCircus.fnt
-/fonts/Screwball.fnt
-/fonts/longdon.fnt
+#/common/ornatique-26.fnt
+#/common/ornatique.fnt
+/common/ArmenianCircus.fnt
+/common/Screwball.fnt
 
 #slides
 /common/slides/slide1_intro.png
@@ -137,6 +136,7 @@ injured/doof.p
 injured/oof.p
 fastSteam.p
 slowSteam.p
+ghostTrail.p
 
 ## debug for testing engine in phys screen. Remove before release! -stew
 /levels/alphabot/engine.pack
@@ -151,5 +151,3 @@ gold.palette
 white.palette
 black.palette
 grey.palette
-
-/common/tutorial/thought_bubble.png

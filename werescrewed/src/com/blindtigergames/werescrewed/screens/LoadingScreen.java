@@ -27,6 +27,8 @@ public class LoadingScreen extends Screen {
 	private SpriteBatch batch = null;
 	private String screenTag = null;
 	private Entity loadingBar;
+	private int screenWidth;
+	private int screenHeight;
 	
 
 	/**
@@ -85,9 +87,11 @@ public class LoadingScreen extends Screen {
 		if ( WereScrewedGame.manager.isAtlasLoaded( "common-textures" ) && loadingBar.sprite == null ) {
 			TextureRegion screwTex = WereScrewedGame.manager.getAtlas( "common-textures" ).findRegion( "flat_head_circular" );
 			loadingBar.sprite = loadingBar.constructSprite( screwTex );
-			loadingBar.sprite.setPosition( 608, 216 );
+			loadingBar.sprite.setPosition( screenWidth / 2 - loadingBar.sprite.getWidth( ) / 2, 
+											screenHeight / 3 - loadingBar.sprite.getHeight( ) / 2 );
 		} else if ( loadingBar.sprite != null ) {
-			loadingBar.sprite.setPosition( 608, 216 );
+			loadingBar.sprite.setPosition( screenWidth / 2 - loadingBar.sprite.getWidth( ) / 2, 
+											screenHeight / 3 - loadingBar.sprite.getHeight( ) / 2 );
 			loadingBar.sprite.setRotation( -1080 * WereScrewedGame.manager.getProgress( ) );
 		}
 		
@@ -119,6 +123,8 @@ public class LoadingScreen extends Screen {
 
 	@Override
 	public void resize(int width, int height){
+		screenWidth = width;
+		screenHeight = height; 
 		
 		//set position of the loading label
 		//TODO: Figure out a way to keep it in the center of the screen without resizing
@@ -149,7 +155,10 @@ public class LoadingScreen extends Screen {
 		loadingCompleteLabel = new Label( "Press 'A'!!", font );
 		batch = new SpriteBatch( );
 
-		loadingBar = new Entity( "loadingScrew", new Vector2( 640, 330), null, null, false );
+		int width = Gdx.graphics.getWidth( );
+		int height = Gdx.graphics.getHeight( );
+		
+		loadingBar = new Entity( "loadingScrew", null , null, null, false );
 
 		WereScrewedGame.dirHandle = Gdx.files.internal( "data/" );
 
