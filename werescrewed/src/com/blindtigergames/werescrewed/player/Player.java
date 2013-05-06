@@ -655,7 +655,7 @@ public class Player extends Entity {
 	
 	public void draw( SpriteBatch batch, float deltaTime ) {
 		super.draw( batch, deltaTime);
-		Gdx.app.log("Player.draw","");
+		//Gdx.app.log(name + "draw","");
 	}
 
 	public void moveRight( ) {
