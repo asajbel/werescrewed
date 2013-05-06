@@ -102,7 +102,7 @@ public class ProgressManager {
 					} else if ( currentCheckPoint.getPositionPixel( ).x > ghost
 							.getPositionPixel( ).x
 							&& oldChkptPos.x < ghost.getPositionPixel( ).x ) {
-						ghost.sprite.setScale( -1, 1 );
+						ghost.sprite.setScale( 1, 1 );
 					}
 				}
 			}
@@ -134,7 +134,7 @@ public class ProgressManager {
 		for ( ResurrectScrew rezScrew : rezScrewMap.values( ) ) {
 			rezScrew.update( deltaTime );
 		}
-		updateGhosts( );
+		updateGhosts( deltaTime );
 
 		oldChkptPos = currentCheckPoint.getPositionPixel( ).cpy( );
 	}
@@ -156,7 +156,7 @@ public class ProgressManager {
 					lm.moveStep( );
 				}
 				ghostMap.get( key ).sprite.setPosition( lm.getPos( ) );
-				ghostMap.get( key ).sprite.draw( batch, 1f );
+				ghostMap.get( key ).draw( batch, deltaTime );
 			}
 		}
 	}
@@ -235,7 +235,7 @@ public class ProgressManager {
 	/**
 	 * 
 	 */
-	private void updateGhosts( ) {
+	private void updateGhosts( float deltaTime ) {
 		for ( String key : new ArrayList< String >( ghostMap.keySet( ) ) ) {
 			if ( ghostMap.get( key ).currentMover( ) instanceof LerpMover ) {
 				LerpMover lm = ( LerpMover ) ghostMap.get( key ).currentMover( );
@@ -252,7 +252,7 @@ public class ProgressManager {
 						.get( key ).getPositionPixel( ).x
 						&& oldChkptPos.x < ghostMap.get( key )
 								.getPositionPixel( ).x ) {
-					ghostMap.get( key ).sprite.setScale( -1, 1 );
+					ghostMap.get( key ).sprite.setScale( 1, 1 );
 				}
 				if ( lm.atEnd( ) ) {
 					spawnAtCheckPoint( players.get( key ) );
@@ -260,6 +260,7 @@ public class ProgressManager {
 					ghostMap.remove( key );
 				} else {
 					ghostMap.get( key ).updateAnchors( );
+					ghostMap.get( key ).update( deltaTime );
 				}
 			}
 		}
