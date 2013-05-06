@@ -263,7 +263,6 @@ public class Player extends Entity {
 		if ( sounds == null ) {
 			sounds = new SoundManager( );
 		}
-		loadSounds();
 
 		addBehindParticleEffect( landCloudName, false, false );
 		addFrontParticleEffect( "skid_left", false, false );
@@ -2277,39 +2276,5 @@ public class Player extends Entity {
 				sounds.setDelay( "footstep2", 0.5f * rate );
 			}
 		}
-	}
-	
-	public void loadSounds(){
-		//Gender-specific Sounds
-		if (name.equals("player1")){
-			//Jump
-			sounds.getSound( "jump", WereScrewedGame.dirHandle
-					+ "/common/sounds/jump.ogg" );
-			//Death
-			sounds.getSound( "death", WereScrewedGame.dirHandle
-					+ "/common/sounds/deathMaleGah.ogg" );
-			sounds.getSound( "death", WereScrewedGame.dirHandle
-					+ "/common/sounds/deathMaleUgh.ogg" );
-			sounds.getSound( "death", WereScrewedGame.dirHandle
-					+ "/common/sounds/deathMaleOw.ogg" );
-
-		} else {
-			//Jump
-			sounds.getSound( "jump", WereScrewedGame.dirHandle
-					+ "/common/sounds/jumpFemale.ogg" );
-			//Death
-			sounds.getSound( "death", WereScrewedGame.dirHandle
-					+ "/common/sounds/deathFemaleUgh.ogg" );
-			sounds.getSound( "death", WereScrewedGame.dirHandle
-					+ "/common/sounds/deathFemaleUeh.ogg" );
-			sounds.getSound( "death", WereScrewedGame.dirHandle
-					+ "/common/sounds/deathFemaleOoh.ogg" );
-		}
-		sounds.getSound( "footstep1" , WereScrewedGame.dirHandle
-				+ "/common/sounds/footstep1.ogg");
-		sounds.getSound( "footstep2" , WereScrewedGame.dirHandle
-				+ "/common/sounds/footstep2.ogg");
-		sounds.getSound( "land" , WereScrewedGame.dirHandle
-				+ "/common/sounds/land.ogg");
 	}
 }

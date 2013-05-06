@@ -31,6 +31,7 @@
 /common/sounds/loopTrain.mp3
 /common/sounds/introTrain.mp3
 /levels/alphabot/sounds/arm_move.ogg
+/levels/alphabot/sounds/Engine.ogg
 
 ##music
 /common/music/waltz.mp3
