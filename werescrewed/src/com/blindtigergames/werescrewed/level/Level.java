@@ -178,8 +178,8 @@ public class Level {
 		for ( Entity e : entityBGList ) {
 			if ( e.isActive( )
 					&& ( e.getParentSkeleton( ) == null
-							|| !e.getParentSkeleton( ).isFadingSkel( ) || e
-							.getParentSkeleton( ).isFGFaded( ) ) ) {
+							|| ( e.getParentSkeleton( ).isUpdatable( ) && !e
+							.getParentSkeleton( ).getWasInactive( ) ) ) ) {
 				{
 					e.drawBGDecals( batch, camera );
 				}
@@ -190,8 +190,8 @@ public class Level {
 	private void drawFGStuff( SpriteBatch batch ) {
 		for ( Entity e : entityFGList ) {
 			if ( e.getParentSkeleton( ) == null
-					|| !e.getParentSkeleton( ).isFadingSkel( ) || e
-					.getParentSkeleton( ).isFGFaded( ) ) {
+					|| ( e.getParentSkeleton( ).isUpdatable( )
+					&& !e.getParentSkeleton( ).getWasInactive( ) ) ) {
 				e.drawFGDecals( batch, camera );
 			}
 		}

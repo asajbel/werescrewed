@@ -434,6 +434,7 @@ public class Skeleton extends Platform {
 					entitiesToRemove.add( platform );
 				} else {
 					if ( wasInactive ) {
+						platform.body.setActive( true );
 						platform.body.setAwake( false );
 					}
 					platform.updateMover( deltaTime );
@@ -445,6 +446,7 @@ public class Skeleton extends Platform {
 					entitiesToRemove.add( screw );
 				} else {
 					if ( wasInactive ) {
+						screw.body.setActive( true );
 						screw.body.setAwake( false );
 					}
 					screw.update( deltaTime );
@@ -455,6 +457,7 @@ public class Skeleton extends Platform {
 					entitiesToRemove.add( chkpt );
 				} else {
 					if ( wasInactive ) {
+						chkpt.body.setActive( true );
 						chkpt.body.setAwake( false );
 					}
 					chkpt.update( deltaTime );
@@ -462,6 +465,22 @@ public class Skeleton extends Platform {
 			}
 			for ( Rope rope : ropeMap.values( ) ) {
 				// TODO: ropes need to be able to be deleted
+				if ( wasInactive ) {
+					boolean nextLink = true;
+					int index = 0;
+					if ( rope.getEndAttachment( ) != null ) {
+						rope.getEndAttachment( ).body.setAwake( false );
+						rope.getEndAttachment( ).body.setActive( true );
+					}
+					while ( nextLink ) {
+						rope.getLink( index ).body.setActive( true );
+						rope.getLink( index ).body.setAwake( false );
+						if ( rope.getLastLink( ) == rope.getLink( index ) ) {
+							nextLink = false;
+						}
+						index++;
+					}
+				}
 				rope.update( deltaTime );
 			}
 		} else {
@@ -560,9 +579,8 @@ public class Skeleton extends Platform {
 	}
 
 	/**
-	 * this skeleton has gone to bed, put its entities to sleep
-	 * instead of updating the entities movements and such
-	 * and delete them if necessary
+	 * this skeleton has gone to bed, put its entities to sleep instead of
+	 * updating the entities movements and such and delete them if necessary
 	 */
 	private void setEntitiesToSleepOnUpdate( ) {
 		for ( Platform platform : kinematicPlatformMap.values( ) ) {
@@ -573,11 +591,12 @@ public class Skeleton extends Platform {
 				platform.body.setActive( false );
 			}
 		}
-		/*for ( Platform platform : dynamicPlatformMap.values( ) ) {
+		for ( Platform platform : dynamicPlatformMap.values( ) ) {
 			if ( platform.removeNextStep ) {
 				entitiesToRemove.add( platform );
 			} else {
 				platform.body.setAwake( true );
+				platform.body.setActive( false );
 			}
 		}
 		for ( Screw screw : screwMap.values( ) ) {
@@ -585,6 +604,7 @@ public class Skeleton extends Platform {
 				entitiesToRemove.add( screw );
 			} else {
 				screw.body.setAwake( true );
+				screw.body.setActive( false );
 			}
 		}
 		for ( CheckPoint chkpt : checkpointMap.values( ) ) {
@@ -592,18 +612,28 @@ public class Skeleton extends Platform {
 				entitiesToRemove.add( chkpt );
 			} else {
 				chkpt.body.setAwake( true );
+				chkpt.body.setActive( false );
 			}
 		}
 		for ( Rope rope : ropeMap.values( ) ) {
 			// TODO: ropes need to be able to be deleted
 			boolean nextLink = true;
 			int index = 0;
-			while(nextLink) {
-				rope.getLink( index ).body.setAwake( true );
+			if ( rope.getEndAttachment( ) != null ) {
+				rope.getEndAttachment( ).body.setAwake( true );
+				rope.getEndAttachment( ).body.setActive( false );
 			}
-		}*/
+			while ( nextLink ) {
+				rope.getLink( index ).body.setAwake( true );
+				rope.getLink( index ).body.setActive( false );
+				if ( rope.getLastLink( ) == rope.getLink( index ) ) {
+					nextLink = false;
+				}
+				index++;
+			}
+		}
 	}
-	
+
 	@Override
 	public void draw( SpriteBatch batch, float deltaTime ) {
 		// super.draw( batch );
@@ -699,6 +729,14 @@ public class Skeleton extends Platform {
 			hazard.draw( batch, deltaTime );
 			break;
 		}
+	}
+
+	public boolean getWasInactive( ) {
+		return wasInactive;
+	}
+
+	public boolean isUpdatable( ) {
+		return isUpdatable;
 	}
 
 	private String getUniqueName( String nonUniqueName ) {
