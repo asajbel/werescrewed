@@ -310,8 +310,9 @@ public class Entity implements GleedLoadable {
 			SpriteBatch batch ) {
 		if ( map != null ) {
 			for ( ParticleEffect e : map.values( ) ) {
-				if ( !e.isComplete( ) )
+				if ( !e.isComplete( ) ) {
 					e.draw( batch );
+				}
 			}
 		}
 	}
@@ -414,8 +415,13 @@ public class Entity implements GleedLoadable {
 					e.setPosition( pos.x, pos.y );
 					if ( e.updateAngleBasedOnVelocity ) {
 
-					} else
-						e.setAngle( body.getAngle( ) );
+					} else {
+						if ( body != null ) {
+							e.setAngle( body.getAngle( ) );
+						} else {
+							e.setAngle( sprite.getRotation( )*Util.DEG_TO_RAD );
+						}
+					}
 				}
 				if ( !e.isComplete( ) ) {
 					e.update( deltaTime );
@@ -1436,5 +1442,10 @@ public class Entity implements GleedLoadable {
 		if ( sounds != null && sounds.hasSound( "collision" ) ) {
 			sounds.playSound( "collision" );
 		}
+	}
+	
+	
+	public boolean hasDecals(){
+		return (fgDecals.size( ) > 0 || bgDecals.size( ) > 0);
 	}
 }

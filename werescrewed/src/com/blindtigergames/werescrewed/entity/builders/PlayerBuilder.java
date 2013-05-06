@@ -10,7 +10,7 @@ public class PlayerBuilder extends GenericEntityBuilder<PlayerBuilder> {
 	
 	public PlayerBuilder( ) {
 		super();
-		type = EntityDef.getDefinition( "playerTest" );
+		this.definition( "playerTest" );
 		number = 1;
 	}
 	public PlayerBuilder number(int n){
@@ -31,8 +31,10 @@ public class PlayerBuilder extends GenericEntityBuilder<PlayerBuilder> {
 	}
 
 	public Player buildPlayer(){
+		this.properties( EntityDef.getDefinition(definition).getProperties( ) );
 		Player out = new Player( name, definition, world, pos );
 		if (out != null){
+			prepareEntity( out );
 			out.postLoad( );
 		}
 		return out;
