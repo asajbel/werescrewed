@@ -497,16 +497,16 @@
                             <Y>0</Y>
                         </Vector2>
                         <Vector2>
-                            <X>355</X>
+                            <X>323</X>
                             <Y>633</Y>
                         </Vector2>
                         <Vector2>
                             <X>449</X>
-                            <Y>-664</Y>
+                            <Y>-728</Y>
                         </Vector2>
                         <Vector2>
-                            <X>-283</X>
-                            <Y>-666</Y>
+                            <X>-299</X>
+                            <Y>-730</Y>
                         </Vector2>
                         <Vector2>
                             <X>-195</X>
@@ -529,7 +529,7 @@
                             <Y>630</Y>
                         </Vector2>
                         <Vector2>
-                            <X>354</X>
+                            <X>322</X>
                             <Y>633</Y>
                         </Vector2>
                     </LocalPoints>
@@ -539,16 +539,16 @@
                             <Y>-640</Y>
                         </Vector2>
                         <Vector2>
-                            <X>-429</X>
+                            <X>-461</X>
                             <Y>-7</Y>
                         </Vector2>
                         <Vector2>
                             <X>-335</X>
-                            <Y>-1304</Y>
+                            <Y>-1368</Y>
                         </Vector2>
                         <Vector2>
-                            <X>-1067</X>
-                            <Y>-1306</Y>
+                            <X>-1083</X>
+                            <Y>-1370</Y>
                         </Vector2>
                         <Vector2>
                             <X>-979</X>
@@ -571,7 +571,7 @@
                             <Y>-10</Y>
                         </Vector2>
                         <Vector2>
-                            <X>-430</X>
+                            <X>-462</X>
                             <Y>-7</Y>
                         </Vector2>
                     </WorldPoints>
@@ -1804,11 +1804,11 @@
                         </Vector2>
                         <Vector2>
                             <X>82.2043152</X>
-                            <Y>-488.835938</Y>
+                            <Y>-440.835938</Y>
                         </Vector2>
                         <Vector2>
                             <X>15.2055664</X>
-                            <Y>-490.1261</Y>
+                            <Y>-442.1261</Y>
                         </Vector2>
                         <Vector2>
                             <X>-32.0592651</X>
@@ -1830,11 +1830,11 @@
                         </Vector2>
                         <Vector2>
                             <X>-333.7957</X>
-                            <Y>-1352.83594</Y>
+                            <Y>-1304.83594</Y>
                         </Vector2>
                         <Vector2>
                             <X>-400.794434</X>
-                            <Y>-1354.1261</Y>
+                            <Y>-1306.1261</Y>
                         </Vector2>
                         <Vector2>
                             <X>-448.059265</X>
@@ -2412,11 +2412,11 @@
                             <Y>-31.7808838</Y>
                         </Vector2>
                         <Vector2>
-                            <X>-127.778687</X>
+                            <X>-175.778687</X>
                             <Y>-32.87256</Y>
                         </Vector2>
                         <Vector2>
-                            <X>-128.1062</X>
+                            <X>-176.1062</X>
                             <Y>15.1263428</Y>
                         </Vector2>
                         <Vector2>
@@ -2438,11 +2438,11 @@
                             <Y>-1359.78088</Y>
                         </Vector2>
                         <Vector2>
-                            <X>-351.7787</X>
+                            <X>-399.7787</X>
                             <Y>-1360.87256</Y>
                         </Vector2>
                         <Vector2>
-                            <X>-352.1062</X>
+                            <X>-400.1062</X>
                             <Y>-1312.87366</Y>
                         </Vector2>
                         <Vector2>
@@ -9429,7 +9429,7 @@
                 </Item>
                 <Item xsi:type="TextureItem" Name="left_arm_ss_11" Visible="true">
                     <Position>
-                        <X>-2016</X>
+                        <X>-2064</X>
                         <Y>-3200</Y>
                     </Position>
                     <CustomProperties>
@@ -9466,7 +9466,7 @@
                 </Item>
                 <Item xsi:type="TextureItem" Name="left_arm_ss_12" Visible="true">
                     <Position>
-                        <X>-2448</X>
+                        <X>-2368</X>
                         <Y>-3200</Y>
                     </Position>
                     <CustomProperties>
@@ -9503,7 +9503,7 @@
                 </Item>
                 <Item xsi:type="TextureItem" Name="left_arm_ss_13" Visible="true">
                     <Position>
-                        <X>-2512</X>
+                        <X>-2384</X>
                         <Y>-3776</Y>
                     </Position>
                     <CustomProperties>
@@ -9540,8 +9540,8 @@
                 </Item>
                 <Item xsi:type="TextureItem" Name="left_arm_ss_14" Visible="true">
                     <Position>
-                        <X>-1936</X>
-                        <Y>-3775</Y>
+                        <X>-1856</X>
+                        <Y>-3776</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -14870,7 +14870,7 @@
                 <Item xsi:type="CircleItem" Name="Copy of Copy of Copy of Copy of Copy of rivet" Visible="true">
                     <Position>
                         <X>-368</X>
-                        <Y>-1328</Y>
+                        <Y>-1334</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="definition" Type="string" Description="">
@@ -15148,8 +15148,8 @@
                 </Item>
                 <Item xsi:type="CircleItem" Name="Copy of Copy of rivet3" Visible="true">
                     <Position>
-                        <X>-1039</X>
-                        <Y>-1334</Y>
+                        <X>-1048</X>
+                        <Y>-1338</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="definition" Type="string" Description="">
@@ -16849,7 +16849,7 @@
                             <string>eventtrigger</string>
                         </Property>
                         <Property Name="AttachToSkeleton" Type="string" Description="">
-                            <string>kneeSkeleton</string>
+                            <string>kneeSkeleton2</string>
                         </Property>
                         <Property Name="beginaction" Type="string" Description="">
                             <string>activate_anchor kneeSkeleton2 1</string>
@@ -23058,6 +23058,302 @@
                         <Y>64</Y>
                     </Origin>
                 </Item>
+                <Item xsi:type="TextureItem" Name="Texture_0922" Visible="true">
+                    <Position>
+                        <X>-2576</X>
+                        <Y>-3200</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>screw</string>
+                        </Property>
+                        <Property Name="ScrewType" Type="string" Description="">
+                            <string>ScrewStripped</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>leftShoulderSkeleton</string>
+                        </Property>
+                    </CustomProperties>
+                    <Rotation>0</Rotation>
+                    <Scale>
+                        <X>1</X>
+                        <Y>1</Y>
+                    </Scale>
+                    <TintColor>
+                        <R>255</R>
+                        <G>255</G>
+                        <B>255</B>
+                        <A>255</A>
+                        <PackedValue>4294967295</PackedValue>
+                    </TintColor>
+                    <FlipHorizontally>false</FlipHorizontally>
+                    <FlipVertically>true</FlipVertically>
+                    <texture_filename>strippedscrews.png</texture_filename>
+                    <asset_name>strippedscrews</asset_name>
+                    <Origin>
+                        <X>32</X>
+                        <Y>32</Y>
+                    </Origin>
+                </Item>
+                <Item xsi:type="TextureItem" Name="Texture_0923" Visible="true">
+                    <Position>
+                        <X>-1856</X>
+                        <Y>-3200</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>screw</string>
+                        </Property>
+                        <Property Name="ScrewType" Type="string" Description="">
+                            <string>ScrewStripped</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>leftShoulderSkeleton</string>
+                        </Property>
+                    </CustomProperties>
+                    <Rotation>0</Rotation>
+                    <Scale>
+                        <X>1</X>
+                        <Y>1</Y>
+                    </Scale>
+                    <TintColor>
+                        <R>255</R>
+                        <G>255</G>
+                        <B>255</B>
+                        <A>255</A>
+                        <PackedValue>4294967295</PackedValue>
+                    </TintColor>
+                    <FlipHorizontally>false</FlipHorizontally>
+                    <FlipVertically>true</FlipVertically>
+                    <texture_filename>strippedscrews.png</texture_filename>
+                    <asset_name>strippedscrews</asset_name>
+                    <Origin>
+                        <X>32</X>
+                        <Y>32</Y>
+                    </Origin>
+                </Item>
+                <Item xsi:type="TextureItem" Name="Texture_0924" Visible="true">
+                    <Position>
+                        <X>-1856</X>
+                        <Y>-2928</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>screw</string>
+                        </Property>
+                        <Property Name="ScrewType" Type="string" Description="">
+                            <string>ScrewStripped</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>leftShoulderSkeleton</string>
+                        </Property>
+                    </CustomProperties>
+                    <Rotation>0</Rotation>
+                    <Scale>
+                        <X>1</X>
+                        <Y>1</Y>
+                    </Scale>
+                    <TintColor>
+                        <R>255</R>
+                        <G>255</G>
+                        <B>255</B>
+                        <A>255</A>
+                        <PackedValue>4294967295</PackedValue>
+                    </TintColor>
+                    <FlipHorizontally>false</FlipHorizontally>
+                    <FlipVertically>true</FlipVertically>
+                    <texture_filename>strippedscrews.png</texture_filename>
+                    <asset_name>strippedscrews</asset_name>
+                    <Origin>
+                        <X>32</X>
+                        <Y>32</Y>
+                    </Origin>
+                </Item>
+                <Item xsi:type="TextureItem" Name="Texture_0925" Visible="true">
+                    <Position>
+                        <X>-2576</X>
+                        <Y>-2944</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>screw</string>
+                        </Property>
+                        <Property Name="ScrewType" Type="string" Description="">
+                            <string>ScrewStripped</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>leftShoulderSkeleton</string>
+                        </Property>
+                    </CustomProperties>
+                    <Rotation>0</Rotation>
+                    <Scale>
+                        <X>1</X>
+                        <Y>1</Y>
+                    </Scale>
+                    <TintColor>
+                        <R>255</R>
+                        <G>255</G>
+                        <B>255</B>
+                        <A>255</A>
+                        <PackedValue>4294967295</PackedValue>
+                    </TintColor>
+                    <FlipHorizontally>false</FlipHorizontally>
+                    <FlipVertically>true</FlipVertically>
+                    <texture_filename>strippedscrews.png</texture_filename>
+                    <asset_name>strippedscrews</asset_name>
+                    <Origin>
+                        <X>32</X>
+                        <Y>32</Y>
+                    </Origin>
+                </Item>
+                <Item xsi:type="TextureItem" Name="Texture_0926" Visible="true">
+                    <Position>
+                        <X>-2576</X>
+                        <Y>-3776</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>screw</string>
+                        </Property>
+                        <Property Name="ScrewType" Type="string" Description="">
+                            <string>ScrewStripped</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>leftShoulderSkeleton</string>
+                        </Property>
+                    </CustomProperties>
+                    <Rotation>0</Rotation>
+                    <Scale>
+                        <X>1</X>
+                        <Y>1</Y>
+                    </Scale>
+                    <TintColor>
+                        <R>255</R>
+                        <G>255</G>
+                        <B>255</B>
+                        <A>255</A>
+                        <PackedValue>4294967295</PackedValue>
+                    </TintColor>
+                    <FlipHorizontally>false</FlipHorizontally>
+                    <FlipVertically>false</FlipVertically>
+                    <texture_filename>strippedscrews.png</texture_filename>
+                    <asset_name>strippedscrews</asset_name>
+                    <Origin>
+                        <X>32</X>
+                        <Y>32</Y>
+                    </Origin>
+                </Item>
+                <Item xsi:type="TextureItem" Name="Texture_0927" Visible="true">
+                    <Position>
+                        <X>-2576</X>
+                        <Y>-3968</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>screw</string>
+                        </Property>
+                        <Property Name="ScrewType" Type="string" Description="">
+                            <string>ScrewStripped</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>leftShoulderSkeleton</string>
+                        </Property>
+                    </CustomProperties>
+                    <Rotation>0</Rotation>
+                    <Scale>
+                        <X>1</X>
+                        <Y>1</Y>
+                    </Scale>
+                    <TintColor>
+                        <R>255</R>
+                        <G>255</G>
+                        <B>255</B>
+                        <A>255</A>
+                        <PackedValue>4294967295</PackedValue>
+                    </TintColor>
+                    <FlipHorizontally>false</FlipHorizontally>
+                    <FlipVertically>false</FlipVertically>
+                    <texture_filename>strippedscrews.png</texture_filename>
+                    <asset_name>strippedscrews</asset_name>
+                    <Origin>
+                        <X>32</X>
+                        <Y>32</Y>
+                    </Origin>
+                </Item>
+                <Item xsi:type="TextureItem" Name="Texture_0928" Visible="true">
+                    <Position>
+                        <X>-1872</X>
+                        <Y>-3952</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>screw</string>
+                        </Property>
+                        <Property Name="ScrewType" Type="string" Description="">
+                            <string>ScrewStripped</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>leftShoulderSkeleton</string>
+                        </Property>
+                    </CustomProperties>
+                    <Rotation>0</Rotation>
+                    <Scale>
+                        <X>1</X>
+                        <Y>1</Y>
+                    </Scale>
+                    <TintColor>
+                        <R>255</R>
+                        <G>255</G>
+                        <B>255</B>
+                        <A>255</A>
+                        <PackedValue>4294967295</PackedValue>
+                    </TintColor>
+                    <FlipHorizontally>false</FlipHorizontally>
+                    <FlipVertically>false</FlipVertically>
+                    <texture_filename>strippedscrews.png</texture_filename>
+                    <asset_name>strippedscrews</asset_name>
+                    <Origin>
+                        <X>32</X>
+                        <Y>32</Y>
+                    </Origin>
+                </Item>
+                <Item xsi:type="TextureItem" Name="Texture_0929" Visible="true">
+                    <Position>
+                        <X>-2048</X>
+                        <Y>-3776</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>screw</string>
+                        </Property>
+                        <Property Name="ScrewType" Type="string" Description="">
+                            <string>ScrewStripped</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>leftShoulderSkeleton</string>
+                        </Property>
+                    </CustomProperties>
+                    <Rotation>0</Rotation>
+                    <Scale>
+                        <X>1</X>
+                        <Y>1</Y>
+                    </Scale>
+                    <TintColor>
+                        <R>255</R>
+                        <G>255</G>
+                        <B>255</B>
+                        <A>255</A>
+                        <PackedValue>4294967295</PackedValue>
+                    </TintColor>
+                    <FlipHorizontally>false</FlipHorizontally>
+                    <FlipVertically>false</FlipVertically>
+                    <texture_filename>strippedscrews.png</texture_filename>
+                    <asset_name>strippedscrews</asset_name>
+                    <Origin>
+                        <X>32</X>
+                        <Y>32</Y>
+                    </Origin>
+                </Item>
             </Items>
             <ScrollSpeed>
                 <X>2</X>
@@ -23074,11 +23370,11 @@
     </Layers>
     <CustomProperties />
     <EditorRelated>
-        <NextItemNumber>921</NextItemNumber>
+        <NextItemNumber>929</NextItemNumber>
         <ContentRootFolder>gleed-textures</ContentRootFolder>
         <CameraPosition>
-            <X>-491.664581</X>
-            <Y>-3707.76782</Y>
+            <X>-58.3280258</X>
+            <Y>-66.10762</Y>
         </CameraPosition>
         <Version>1.3.0.0</Version>
     </EditorRelated>
