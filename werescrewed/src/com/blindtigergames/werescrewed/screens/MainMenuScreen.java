@@ -188,7 +188,7 @@ class MainMenuScreen implements com.badlogic.gdx.Screen {
 		headingLabel = new Label( "We're Screwed!!", fancyFont );
 		
 		storyButton = new Button("Start", fancyFont,
-				new ScreenSwitchHandler(ScreenType.INTRO));
+				new ScreenSwitchHandler(ScreenType.LOADING_1));
 		levelSelectButton = new Button( "Level Select", fancyFont,
 				new ScreenSwitchHandler(ScreenType.LEVEL_SELECT));
 		optionsButton = new Button("Options", fancyFont,

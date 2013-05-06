@@ -58,8 +58,8 @@ public class Player extends Entity {
 	public final static int JUMP_COUNTER = 10;
 	public final static float ANALOG_DEADZONE = 0.4f;
 	public final static float ANALOG_MAX_RANGE = 1.0f;
-	public final static float PLAYER_FRICTION = 1.0f;
-	public final static float FRICTION_INCREMENT = 0.2f;
+	public final static float PLAYER_FRICTION = 2.0f;
+	public final static float FRICTION_INCREMENT = 0.4f;
 	public final static int SCREW_ATTACH_STEPS = 15;
 	public final static int HEAD_JUMP_STEPS = 30;
 	public final static int DEAD_STEPS = 0;
@@ -1062,6 +1062,7 @@ public class Player extends Entity {
 
 	private void updateFootFrictionNew( ) {
 
+
 		if ( prevButton != null ) {
 			if ( body.getLinearVelocity( ).x > MAX_VELOCITY ) {
 				body.setLinearVelocity( MAX_VELOCITY,
@@ -1071,7 +1072,8 @@ public class Player extends Entity {
 						body.getLinearVelocity( ).y );
 			}
 		}
-
+		
+		
 		if ( prevButton == null ) {
 
 			if ( feet.getFriction( ) < PLAYER_FRICTION ) {
