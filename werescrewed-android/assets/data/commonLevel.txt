@@ -105,10 +105,11 @@
 
 ##Fonts
 /debug/debug_font.fnt
-#/common/ornatique-26.fnt
-#/common/ornatique.fnt
-/common/ArmenianCircus.fnt
-/common/Screwball.fnt
+#/fonts/ornatique-26.fnt
+#/fonts/ornatique.fnt
+/fonts/ArmenianCircus.fnt
+/fonts/Screwball.fnt
+/fonts/longdon.fnt
 
 #slides
 /common/slides/slide1_intro.png

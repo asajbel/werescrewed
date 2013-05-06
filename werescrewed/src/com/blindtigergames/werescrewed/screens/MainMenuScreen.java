@@ -204,7 +204,8 @@ class MainMenuScreen implements com.badlogic.gdx.Screen {
 	public void show( ) {
 		batch = new SpriteBatch( );
 		font = new BitmapFont( );
-		fancyFont = WereScrewedGame.manager.getFont( "Screwball" );
+		fancyFont = WereScrewedGame.manager.getFont( "longdon" );
+		//fancyFont = WereScrewedGame.manager.getFont( "Screwball" );
 		//fancyFont = WereScrewedGame.manager.getFont( "ornatique" );
 		
 		ControllerSetUp( );
