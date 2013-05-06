@@ -434,9 +434,9 @@ public class Camera {
 		if ( zoomChange != 0 ) {
 			zoomAccel = calcZoomAcc( zoomChange );
 			zoomSpeed += zoomAccel;
-			Gdx.app.log( "targetZoom", targetZoom + "" );
-			Gdx.app.log( "zoomSpeed", zoomSpeed + "" );
-			Gdx.app.log( "timeLeft", timeLeft + "" );
+			//Gdx.app.log( "targetZoom", targetZoom + "" );
+			//Gdx.app.log( "zoomSpeed", zoomSpeed + "" );
+			//Gdx.app.log( "timeLeft", timeLeft + "" );
 		} else {
 			zoomSpeed = 0;
 			return;

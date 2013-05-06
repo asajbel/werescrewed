@@ -397,14 +397,14 @@ public class AlphaScreen extends Screen {
 		int curtainY = seatsY + 585;
 
 		// support beam
-		light_skel.addBGDecalBack( support_left.createSprite( "support_left" ),
+		/*light_skel.addBGDecalBack( support_left.createSprite( "support_left" ),
 				new Vector2( supportX, supportY ) );
 		light_skel.addBGDecalBack(
 				support_middle_right.createSprite( "support_middle" ),
 				new Vector2( supportX + max, supportY + 216 ) );
 		light_skel.addBGDecalBack(
 				support_middle_right.createSprite( "support_right" ),
-				new Vector2( supportX + 2 * max, supportY ) );
+				new Vector2( supportX + 2 * max, supportY ) );*/
 
 		// lights
 		light_skel.addBGDecal( stage_light.createSprite( "light_left" ),
