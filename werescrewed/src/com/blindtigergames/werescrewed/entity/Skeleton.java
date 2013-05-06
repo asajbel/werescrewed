@@ -658,6 +658,9 @@ public class Skeleton extends Platform {
 
 	private void drawChildren( SpriteBatch batch, float deltaTime ) {
 		if ( !wasInactive && isUpdatable ) {
+			for ( EventTrigger et : eventMap.values( ) ) {
+				et.draw( batch, deltaTime );
+			}
 			for ( Platform p : dynamicPlatformMap.values( ) ) {
 				drawPlatform( p, batch, deltaTime );
 			}
@@ -676,9 +679,6 @@ public class Skeleton extends Platform {
 			}
 			for ( Rope rope : ropeMap.values( ) ) {
 				rope.draw( batch, deltaTime );
-			}
-			for ( EventTrigger et : eventMap.values( ) ) {
-				et.draw( batch, deltaTime );
 			}
 		}
 		if ( isUpdatable && wasInactive ) {
