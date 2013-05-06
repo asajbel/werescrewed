@@ -60,6 +60,10 @@
 /levels/alphabot/head_right.pack
 /levels/alphabot/forearm_elbow_ex.pack
 /levels/alphabot/right_arm_ex.pack
+/levels/alphabot/chest_exterior_lower.pack
+/levels/alphabot/chest_exterior_middle.pack
+/levels/alphabot/chest_exterior_upper1.pack
+/levels/alphabot/chest_exterior_upper2.pack
 
 
 /levels/level1/player_female_idle.png

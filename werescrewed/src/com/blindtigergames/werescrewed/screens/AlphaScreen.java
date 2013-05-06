@@ -1070,6 +1070,15 @@ public class AlphaScreen extends Screen {
 		chestSkeleton.addBGDecal( 
 				chest_powerscrew.createSprite( "chest_powerscrew_pipes_to_engineNOCOLOR" ), 
 				new Vector2(-453,-970) );
+		
+		TextureAtlas chest_lower, chest_middle, chest_upper1, chest_upper2;
+		chest_lower = WereScrewedGame.manager.getAtlas( "chest_exterior_lower" );
+		chest_middle = WereScrewedGame.manager.getAtlas( "chest_exterior_middle" );
+		chest_upper1 = WereScrewedGame.manager.getAtlas( "chest_exterior_upper1" );
+		chest_upper2 = WereScrewedGame.manager.getAtlas( "chest_exterior_upper2" );
+		
+		Vector2 chestPos = new Vector2();
+		
 	}
 
 	private void leftArm( ) {

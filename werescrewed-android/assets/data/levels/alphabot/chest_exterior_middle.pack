@@ -1,0 +1,19 @@
+chest_exterior_middle.png
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+offset: 0, 0
+torso4
+  rotate: false
+  xy: 4, 888
+  size: 1076, 877
+  orig: 1076, 877
+  offset: 0, 0
+  index: -1
+torso5
+  rotate: false
+  xy: 4, 4
+  size: 1219, 878
+  orig: 1219, 878
+  offset: 0, 0
+  index: -1
