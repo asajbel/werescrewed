@@ -1077,8 +1077,54 @@ public class AlphaScreen extends Screen {
 		chest_upper1 = WereScrewedGame.manager.getAtlas( "chest_exterior_upper1" );
 		chest_upper2 = WereScrewedGame.manager.getAtlas( "chest_exterior_upper2" );
 		
-		Vector2 chestPos = new Vector2();
+		Vector2 chestPos = new Vector2(-2320,-1875);
+		//2625
+		Sprite s;
 		
+		float scale = 0.75f;
+		float invScale = 1.0f/scale;
+		
+		//LOWER SECTION
+		s = chest_lower.createSprite( "torso1" );
+		s.setScale( invScale );
+		chestSkeleton.addFGDecal( s, chestPos.cpy( ).add(364,89) );
+		
+		s = chest_lower.createSprite( "torso2" );
+		s.setScale( invScale );
+		chestSkeleton.addFGDecal( s, chestPos.cpy( ).add(1520,0) );
+		
+		s = chest_lower.createSprite( "torso3" );
+		s.setScale( invScale );
+		chestSkeleton.addFGDecal( s, chestPos.cpy( ).add(3143,89) );
+		
+		//MIDDLE SECTION
+		s = chest_middle.createSprite( "torso4" );
+		s.setScale( invScale );
+		chestSkeleton.addFGDecal( s, chestPos.cpy( ).add(88,1168) );
+		
+		s = chest_middle.createSprite( "torso5" );
+		s.setScale( invScale );
+		chestSkeleton.addFGDecal( s, chestPos.cpy( ).add(1520,1168) );
+		
+		s = chest_upper1.createSprite( "torso6" );
+		s.setScale( invScale );
+		chestSkeleton.addFGDecal( s, chestPos.cpy( ).add(3143,1168) );
+		
+		//UPPER SECTION
+		s = chest_upper1.createSprite( "torso7" );
+		s.setScale( invScale );
+		chestSkeleton.addFGDecal( s, chestPos.cpy( ).add(0,2336) );
+		
+		s = chest_upper2.createSprite( "torso8" );
+		s.setScale( invScale );
+		chestSkeleton.addFGDecal( s, chestPos.cpy( ).add(1520,2336) );
+		
+		s = chest_upper2.createSprite( "torso9" );
+		s.setScale( invScale );
+		chestSkeleton.addFGDecal( s, chestPos.cpy( ).add(3143,2336) );
+		
+		level.skelFGList.remove( chestSkeleton );
+		level.skelFGList.add( chestSkeleton );
 	}
 
 	private void leftArm( ) {
