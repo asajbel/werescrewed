@@ -100,7 +100,8 @@ public class AlphaScreen extends Screen {
 	Array< Panel > panels;
 
 	protected Music bgm;
-
+	protected SoundManager sounds;
+	
 	public AlphaScreen( ) {
 		super( );
 
@@ -212,6 +213,9 @@ public class AlphaScreen extends Screen {
 				+ "/common/music/waltz.mp3", Music.class );
 		bgm.setVolume( SoundManager.getMusicVolume( ) );
 		bgm.setLooping( true );
+		
+		sounds = new SoundManager();
+		sounds.getSound( "rightshoulder" , WereScrewedGame.dirHandle.path( ) + "/levels/alphabot/sounds/arm_move.ogg");
 
 		Skeleton skel = ( Skeleton ) LevelFactory.entities.get( "hipSkeleton" );
 		skel.setMacroSkel( true );
@@ -238,7 +242,7 @@ public class AlphaScreen extends Screen {
 	@Override
 	public void render( float deltaTime ) {
 		super.render( deltaTime );
-
+		sounds.update(deltaTime);
 		// characterSelect.update( );
 
 		// characterSelect.draw( batch, deltaTime );
@@ -852,9 +856,10 @@ public class AlphaScreen extends Screen {
 			rightKneeTrapDoorSkeleton1.addMover( new TimelineTweenMover( t
 					.start( ) ) );
 		}
-		if ( powerSwitch7.isTurnedOn( ) && powerSwitch8.isTurnedOn( ) ) {
-			if ( leftShoulderSkeleton.currentMover( ) == null ) {
-				updatePanels( "left_arm" );
+		if ( powerSwitch7.isTurnedOn( )  && powerSwitch8.isTurnedOn( ) ) {
+			if(leftShoulderSkeleton.currentMover( ) == null){
+				sounds.playSound( "rightshoulder", 1.0f );
+				updatePanels("left_arm");
 				Timeline t = Timeline.createSequence( );
 
 				t.push( Tween
@@ -880,7 +885,8 @@ public class AlphaScreen extends Screen {
 					.get( "rightShoulderSkeleton" );
 
 			if ( rightElbowSkeleton.currentMover( ) == null ) {
-				updatePanels( "right_arm" );
+				sounds.playSound( "rightshoulder", 1.0f );
+				updatePanels("right_arm");
 				Timeline t = Timeline.createSequence( );
 
 				t.push( Tween
