@@ -189,7 +189,7 @@ public class Level {
 
 	private void drawFGStuff( SpriteBatch batch ) {
 		for ( Entity e : entityFGList ) {
-			if ( e.getParentSkeleton( ) == null
+			if ( e.getParentSkeleton( ) == null     
 					|| ( e.getParentSkeleton( ).isUpdatable( )
 					&& !e.getParentSkeleton( ).getWasInactive( ) ) ) {
 				e.drawFGDecals( batch, camera );
