@@ -8,6 +8,8 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.controllers.PovDirection;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
@@ -23,6 +25,7 @@ import com.blindtigergames.werescrewed.camera.Anchor;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityDef;
 import com.blindtigergames.werescrewed.entity.EntityType;
+import com.blindtigergames.werescrewed.entity.Sprite;
 import com.blindtigergames.werescrewed.entity.animator.PlayerSpinemator;
 import com.blindtigergames.werescrewed.entity.mover.FollowEntityMover;
 import com.blindtigergames.werescrewed.entity.mover.IMover;
@@ -32,6 +35,7 @@ import com.blindtigergames.werescrewed.entity.screws.ResurrectScrew;
 import com.blindtigergames.werescrewed.entity.screws.Screw;
 import com.blindtigergames.werescrewed.entity.screws.ScrewType;
 import com.blindtigergames.werescrewed.eventTrigger.PowerSwitch;
+import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 import com.blindtigergames.werescrewed.graphics.particle.ParticleEffect;
 import com.blindtigergames.werescrewed.input.MyControllerListener;
 import com.blindtigergames.werescrewed.input.PlayerInputHandler;
@@ -126,6 +130,12 @@ public class Player extends Entity {
 	private Steam currentSteam;
 	private static int switchTimer = 0;
 	
+	private boolean drawTutorial = false;
+	private Sprite tutorial = null;
+	private Sprite bubble;
+	private Texture bubbleTex;
+	private Texture tutorialTex;
+
 	private Player otherPlayer;
 	private RevoluteJoint playerJoint;
 	private Platform currentPlatform;
@@ -148,7 +158,7 @@ public class Player extends Entity {
 	private boolean changeDirections = false;
 	private boolean steamCollide = false;
 	private boolean steamDone = false;
-
+	
 	private IMover mover;
 
 	public int grabCounter = 0;
@@ -233,6 +243,7 @@ public class Player extends Entity {
 			spinemator = new PlayerSpinemator( this );
 			spinemator.setPosition( body.getWorldCenter( ) );
 		}
+		
 		Filter filter = new Filter( );
 		for ( Fixture f : body.getFixtureList( ) ) {
 			filter.categoryBits = Util.CATEGORY_PLAYER;
@@ -266,6 +277,16 @@ public class Player extends Entity {
 
 		createCircle( PLAYER_FRICTION );
 		frictionCounter = PLAYER_FRICTION;
+				
+		bubbleTex = WereScrewedGame.manager.get( 
+				WereScrewedGame.dirHandle + "/common/tutorial/thought_bubble.png" );
+		tutorialTex = WereScrewedGame.manager.get( 
+				WereScrewedGame.dirHandle + "/common/tutorial/placeholderTut.png" );
+		
+		bubble = constructSprite( bubbleTex );
+		tutorial = constructSprite( tutorialTex );
+		
+		bubble.flip( true, false );
 	}
 
 	// PUBLIC METHODS
@@ -282,6 +303,8 @@ public class Player extends Entity {
 			if(name.equals( "player1" )){
 				Gdx.app.log( "steamCollide: " + steamCollide, "steamDone: "
 						+ steamDone );
+				drawTutorial = !drawTutorial;
+				Gdx.app.log( "drawTutorial: ", "" + drawTutorial );
 			}
 		}
 		if ( Gdx.input.isKeyPressed( Keys.NUM_7 )) 
@@ -474,10 +497,11 @@ public class Player extends Entity {
 			}
 
 			this.killPlayer( );
-			// Gdx.app.log( "\nright: ", "" + rightCrush );
-			// Gdx.app.log( "left: ", "" + leftCrush );
-			// Gdx.app.log( "top: ", "" + topCrush );
-			// Gdx.app.log( "bottom: ", "" + botCrush );
+			 /*
+			 Gdx.app.log( "\nright: ", "" + rightCrush );
+			 Gdx.app.log( "left: ", "" + leftCrush );
+			 Gdx.app.log( "top: ", "" + topCrush );
+			 Gdx.app.log( "bottom: ", "" + botCrush );*/
 		} else if ( steamCollide ) {
 			//if ( !steamDone ) {
 				steamResolution( );
@@ -558,7 +582,7 @@ public class Player extends Entity {
 						f.setSensor( true );
 					}
 					filter.categoryBits = Util.CATEGORY_SUBPLAYER;
-					filter.maskBits = Util.CATEGORY_SCREWS;
+					filter.maskBits = Util.CATEGORY_NOTHING;
 					f.setFilterData( filter );
 				}
 				playerState = PlayerState.Dead;
@@ -635,6 +659,53 @@ public class Player extends Entity {
 	 */
 	public boolean isPlayerDead( ) {
 		return isDead;
+	}
+	
+	/**
+	 * Turns tutorial bubble on and off
+	 * 
+	 * @param value boolean
+	 */
+	public void setDrawTutorial( boolean value ){
+		drawTutorial = value;
+	}
+	
+	/**
+	 * sets inside of thought bubble
+	 * 
+	 * @param texture Texture
+	 */
+	public void setTutorial( Texture texture){
+		tutorial = constructSprite( texture );
+	}
+	
+	/**
+	 * clears inside of thought bubble
+	 */
+	public void clearTutorial(){
+		tutorial = null;
+	}
+	
+	/**
+	 * draws tutorials when appropriate
+	 */
+	public void draw( SpriteBatch batch, float deltaTime ) {
+		if(drawTutorial){
+			float xpos =  body.getPosition( ).x;
+			float ypos =  body.getPosition( ).y;
+			bubble.getScaleX( );
+			if(tutorial != null){
+				bubble.setPosition( xpos * Util.BOX_TO_PIXEL-bubble.getWidth( )/2.0f + 250f, ypos * Util.BOX_TO_PIXEL + 100f);
+				bubble.setRotation(  MathUtils.radiansToDegrees
+						* body.getAngle( ) );
+				tutorial.setPosition( xpos * Util.BOX_TO_PIXEL-tutorial.getWidth( )/2.0f + 250f, ypos * Util.BOX_TO_PIXEL + 125);
+				tutorial.setRotation(  MathUtils.radiansToDegrees
+						* body.getAngle( ) );
+			}
+			bubble.draw( batch);
+			tutorial.draw( batch );
+		}
+		super.draw( batch, deltaTime);
 	}
 
 	/**
@@ -895,7 +966,7 @@ public class Player extends Entity {
 	 * 
 	 */
 	public void hitScrew( Screw screw ) {
-		if ( playerState != PlayerState.Screwing && mover == null ) {
+		if ( playerState != PlayerState.Screwing && !isDead && mover == null ) {
 			currentScrew = screw;
 
 			// Trophy check for if player attaches to a stripped screw
@@ -1149,7 +1220,6 @@ public class Player extends Entity {
 		return grounded;
 	}
 
-
 	/**
 	 * Attaches a player to the current screw
 	 * 
@@ -1157,6 +1227,7 @@ public class Player extends Entity {
 	 */
 	private void attachToScrew( ) {
 		if ( currentScrew != null && screwAttachTimeout == 0
+				&& currentScrew.body != null
 				&& currentScrew.body.getJointList( ).size( ) > 0
 				&& playerState != PlayerState.HeadStand
 				&& !currentScrew.isPlayerAttached( ) ) {

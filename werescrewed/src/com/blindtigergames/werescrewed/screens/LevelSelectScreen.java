@@ -168,7 +168,8 @@ public class LevelSelectScreen implements com.badlogic.gdx.Screen {
 	public void show( ) {
 		batch = new SpriteBatch( );
 		font = new BitmapFont( );
-		fancyFont = WereScrewedGame.manager.getFont( "Screwball" );
+		fancyFont = WereScrewedGame.manager.getFont( "longdon" );
+		//fancyFont = WereScrewedGame.manager.getFont( "Screwball" );
 		// fancyFont = WereScrewedGame.manager.getFont( "ornatique" );
 		Texture name = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 				+ "/common/title_background_clear.png", Texture.class );
