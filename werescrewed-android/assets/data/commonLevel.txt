@@ -13,6 +13,12 @@
 ##sounds
 /common/sounds/inceptionbutton.mp3
 /common/sounds/jump.ogg
+/common/sounds/deathMaleGah.ogg
+/common/sounds/deathMaleUgh.ogg
+/common/sounds/deathMaleOw.ogg
+/common/sounds/deathFemaleUgh.ogg
+/common/sounds/deathFemaleUeh.ogg
+/common/sounds/deathFemaleOoh.ogg
 /common/sounds/jumpFemale.ogg
 /common/sounds/footstep1.ogg
 /common/sounds/footstep2.ogg
@@ -20,9 +26,15 @@
 /common/sounds/unscrewing.ogg
 /common/sounds/land.ogg
 /common/sounds/WilhelmScream.ogg
+/common/sounds/steam.ogg
 /common/sounds/TrainJob.mp3
 /common/sounds/loopTrain.mp3
 /common/sounds/introTrain.mp3
+/levels/alphabot/sounds/arm_move.ogg
+/levels/alphabot/sounds/Engine.ogg
+
+##music
+/common/music/waltz.mp3
 
 ##Please don't add individual files, add them to the common-textures.pack file with texture packer!
 ##common texture
@@ -105,10 +117,11 @@
 
 ##Fonts
 /debug/debug_font.fnt
-#/common/ornatique-26.fnt
-#/common/ornatique.fnt
-/common/ArmenianCircus.fnt
-/common/Screwball.fnt
+#/fonts/ornatique-26.fnt
+#/fonts/ornatique.fnt
+/fonts/ArmenianCircus.fnt
+/fonts/Screwball.fnt
+/fonts/longdon.fnt
 
 #slides
 /common/slides/slide1_intro.png
@@ -142,3 +155,6 @@ gold.palette
 white.palette
 black.palette
 grey.palette
+
+/common/tutorial/thought_bubble.png
+/common/tutorial/placeholderTut.png

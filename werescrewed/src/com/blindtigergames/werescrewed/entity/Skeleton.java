@@ -68,6 +68,8 @@ public class Skeleton extends Platform {
 	protected boolean applyFadeToFGDecals = true;
 	protected boolean isMacroSkeleton = false;
 
+	protected boolean wasInactive = false;
+
 	/**
 	 * Constructor used by SkeletonBuilder
 	 * 
@@ -398,27 +400,28 @@ public class Skeleton extends Platform {
 	@Override
 	public void update( float deltaTime ) {
 		float frameRate = 1 / deltaTime;
-		if ( isActive( ) || isMacroSkeleton ) {
+		boolean isUpdatable = !this.isFadingSkel( ) || this.isFGFaded( );
+		if ( isUpdatable || isMacroSkeleton ) {
 			updateMover( deltaTime );
 			if ( entityType != EntityType.ROOTSKELETON && isKinematic( ) ) {
 				super.setTargetPosRotFromSkeleton( frameRate, parentSkeleton );
 			}
 		}
-		if ( isActive( ) ) {
+		for ( Platform platform : kinematicPlatformMap.values( ) ) {
+			if ( platform.removeNextStep ) {
+				entitiesToRemove.add( platform );
+			} else {
+				platform.updateMover( deltaTime );
+				platform.setTargetPosRotFromSkeleton( frameRate, this );
+				platform.update( deltaTime );
+			}
+		}
+		if ( isUpdatable ) {
 			for ( Platform platform : dynamicPlatformMap.values( ) ) {
 				if ( platform.removeNextStep ) {
 					entitiesToRemove.add( platform );
 				} else {
 					platform.updateMover( deltaTime );
-					platform.update( deltaTime );
-				}
-			}
-			for ( Platform platform : kinematicPlatformMap.values( ) ) {
-				if ( platform.removeNextStep ) {
-					entitiesToRemove.add( platform );
-				} else {
-					platform.updateMover( deltaTime );
-					platform.setTargetPosRotFromSkeleton( frameRate, this );
 					platform.update( deltaTime );
 				}
 			}
@@ -440,30 +443,28 @@ public class Skeleton extends Platform {
 				// TODO: ropes need to be able to be deleted
 				rope.update( deltaTime );
 			}
+		} else {
+			wasInactive = true;
 		}
 		for ( EventTrigger event : eventMap.values( ) ) {
 			event.translatePosRotFromSKeleton( this );
 			// event.setTargetPosRotFromSkeleton( frameRate, this );
 		}
 
-		if ( isActive( ) || isMacroSkeleton ) {
-			alphaFadeAnimator.update( deltaTime );
-			Vector2 pixelPos = null;
-			if ( fgSprite != null ) {
-				pixelPos = getPosition( ).mul( Util.BOX_TO_PIXEL );
-				fgSprite.setPosition( pixelPos.x - offset.x, pixelPos.y
-						- offset.y );
-				fgSprite.setRotation( MathUtils.radiansToDegrees * getAngle( ) );
-			}
-			if ( bgSprite != null ) {
-				if ( pixelPos == null )
-					pixelPos = getPosition( ).mul( Util.BOX_TO_PIXEL );
-				bgSprite.setPosition( pixelPos.x - offset.x, pixelPos.y
-						- offset.y );
-				bgSprite.setRotation( MathUtils.radiansToDegrees * getAngle( ) );
-			}
-			updateDecals( deltaTime );
+		alphaFadeAnimator.update( deltaTime );
+		Vector2 pixelPos = null;
+		if ( fgSprite != null ) {
+			pixelPos = getPosition( ).mul( Util.BOX_TO_PIXEL );
+			fgSprite.setPosition( pixelPos.x - offset.x, pixelPos.y - offset.y );
+			fgSprite.setRotation( MathUtils.radiansToDegrees * getAngle( ) );
 		}
+		if ( bgSprite != null ) {
+			if ( pixelPos == null )
+				pixelPos = getPosition( ).mul( Util.BOX_TO_PIXEL );
+			bgSprite.setPosition( pixelPos.x - offset.x, pixelPos.y - offset.y );
+			bgSprite.setRotation( MathUtils.radiansToDegrees * getAngle( ) );
+		}
+		updateDecals( deltaTime );
 
 		// }
 		// recursively update child skeletons
@@ -584,7 +585,7 @@ public class Skeleton extends Platform {
 			for ( EventTrigger et : eventMap.values( ) ) {
 				et.draw( batch, deltaTime );
 			}
-		} 
+		}
 		// draw the entities of the parent skeleton before recursing through
 		// the
 		// child skeletons

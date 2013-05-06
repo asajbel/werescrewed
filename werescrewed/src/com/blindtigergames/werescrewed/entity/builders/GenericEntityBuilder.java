@@ -30,8 +30,6 @@ import com.blindtigergames.werescrewed.util.ArrayHash;
  * 
  */
 public class GenericEntityBuilder< B extends GenericEntityBuilder< ? >> {
-	private static final String IDLE_SOUND = "idlesound";
-	private static final String COLLISION_SOUND = "collisionsound";
 
 	// Common to all builders
 	protected String name;
@@ -113,8 +111,7 @@ public class GenericEntityBuilder< B extends GenericEntityBuilder< ? >> {
 		if ( type.getCategory( ) == EntityCategory.PLAYER ) {
 			return ( B ) new PlayerBuilder( ).copy( this );
 		}
-		return ( B ) this;
-
+		return ( B ) this.properties( def.getProperties() );
 	}
 
 	/**
@@ -250,14 +247,14 @@ public class GenericEntityBuilder< B extends GenericEntityBuilder< ? >> {
 		//Handle sound tags
 		if (props.containsKey("sound")){
 			for (String line : props.getAll( "sound" )){
-				String[] tokens = line.toLowerCase().split("\\s*\\:\\s*");
+				String[] tokens = line.split("\\s*\\:\\s*");
 				if (tokens.length >= 2){
 					HashMap<String,String> sound = new HashMap<String,String>();
-					sound.put( "asset", tokens[1] );
+					sound.put( "asset", tokens[1]);
 					int index = -1;
 					String[] optTokens;
 					for (int opts = 2; opts < tokens.length; opts++){
-						optTokens = tokens[opts].split("\\s+");
+						optTokens = tokens[opts].toLowerCase().split("\\s+");
 						if (optTokens.length >= 2){
 							if (optTokens[0].equals("index")){
 								index = Integer.parseInt( optTokens[1] );
@@ -267,16 +264,15 @@ public class GenericEntityBuilder< B extends GenericEntityBuilder< ? >> {
 						}
 					}
 					if (index >= 0){
-						sounds.set( tokens[0], index, sound );
+						sounds.set( tokens[0].toLowerCase(), index, sound );
 					} else {
-						sounds.add( tokens[0], sound );
+						sounds.add( tokens[0].toLowerCase(), sound );
 					}
 					Gdx.app.log( "EntityBuilder", "Adding \""+tokens[0]+"\" sound:\""+tokens[1]+"\"" );
 				} else {
 					Gdx.app.log( "EntityBuilder", "Malformed sound line:\""+line+"\"." );
 				}
 			}
-			
 		}
 		return ( B ) this;
 	}
@@ -362,7 +358,7 @@ public class GenericEntityBuilder< B extends GenericEntityBuilder< ? >> {
 				}
 				for (String name: sounds.keySet()){
 					for (HashMap<String,String> subSounds : sounds.getAll( name )){
-						SoundRef sound = soundMan.getSound( name, subSounds.get( "asset" ) );
+						SoundRef sound = soundMan.getSound( name, WereScrewedGame.dirHandle + subSounds.get( "asset" ) );
 						if (subSounds.containsKey( "volume" ))
 							sound.setVolume(Float.parseFloat( subSounds.get("volume") ));
 						if (subSounds.containsKey( "pitch" ))

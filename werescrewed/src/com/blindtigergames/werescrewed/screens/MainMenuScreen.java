@@ -2,9 +2,6 @@ package com.blindtigergames.werescrewed.screens;
 
 import java.util.ArrayList;
 
-import aurelienribon.tweenengine.Tween;
-import aurelienribon.tweenengine.TweenEquation;
-import aurelienribon.tweenengine.TweenEquations;
 import aurelienribon.tweenengine.TweenManager;
 
 import com.badlogic.gdx.Gdx;
@@ -15,13 +12,11 @@ import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.blindtigergames.werescrewed.entity.platforms.Platform;
-import com.blindtigergames.werescrewed.entity.tween.PlatformAccessor;
-import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 import com.blindtigergames.werescrewed.WereScrewedGame;
+import com.blindtigergames.werescrewed.entity.Sprite;
+import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 import com.blindtigergames.werescrewed.gui.Button;
 import com.blindtigergames.werescrewed.gui.Button.ButtonHandler;
-import com.blindtigergames.werescrewed.gui.ButtonTweenAccessor;
 import com.blindtigergames.werescrewed.gui.Label;
 import com.blindtigergames.werescrewed.input.MyControllerListener;
 
@@ -30,8 +25,10 @@ class MainMenuScreen implements com.badlogic.gdx.Screen {
 
 	public ScreenType screenType;
 	private SpriteBatch batch = null;
-	private Texture logo = null;
-	private Texture menuBG = null;
+//	private Texture logo = null;
+//	private Texture menuBG = null;
+	private Sprite logo = null;
+	private Sprite menuBG = null; 
 	private OrthographicCamera camera = null;
 	private BitmapFont font = null;
 	BitmapFont fancyFont;
@@ -65,8 +62,10 @@ class MainMenuScreen implements com.badlogic.gdx.Screen {
 		Gdx.gl.glClear( GL10.GL_COLOR_BUFFER_BIT );
 		manager.update( delta );
 		batch.begin( );
-		batch.draw( menuBG, 0, 0 );
-		batch.draw(logo, 110, 500);
+		menuBG.draw( batch );
+		logo.draw( batch ); 
+//		batch.draw( menuBG, 0, 0 );
+//		batch.draw(logo, 110, 500);
 		//batch.draw(logo, -128, 0);
 		//headingLabel.draw( batch );
 		storyButton.draw( batch, camera );
@@ -135,8 +134,14 @@ class MainMenuScreen implements com.badlogic.gdx.Screen {
 		camera.setToOrtho( false, width, height );
 		batch.setProjectionMatrix( camera.combined );
 		int leftX = width / 5 - 20;
-		int centerY = height / 3 ;
+		int centerY = height / 3;
+		float scaleX = width / 1280f;
+		float scaleY = height / 720f;
 		
+		logo.setScale( scaleX, scaleY ); 
+		menuBG.setScale( width / menuBG.getWidth( ), width / menuBG.getWidth( ) ); 
+		logo.setPosition( leftX - logo.getWidth( ) / 2, centerY + 6 * lineHeight); 
+		menuBG.setPosition( width / 2 - menuBG.getWidth( ) / 2, height / 2 - menuBG.getHeight( ) / 2 ); 
 		headingLabel.setX( leftX - headingLabel.getWidth( ) / 2 );
 		headingLabel.setY( centerY + 7 * lineHeight );
 		storyButton.setX( leftX  - storyButton.getWidth( ) / 2 );
@@ -173,10 +178,12 @@ class MainMenuScreen implements com.badlogic.gdx.Screen {
 	 */
 	private void loadButtons( ){
 		//font = WereScrewedGame.manager.getFont( "ornatique" );
-		menuBG = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
+		Texture back = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 				 + "/common/menu_placeholder.png", Texture.class );
-		logo =  WereScrewedGame.manager.get( WereScrewedGame.dirHandle
+		Texture name =  WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 				 + "/common/title_background_clear.png", Texture.class );
+		logo = new Sprite(name);
+		menuBG = new Sprite(back);
 		lineHeight = Math.round( 2.5f * font.getCapHeight( ) + 20 );
 		headingLabel = new Label( "We're Screwed!!", fancyFont );
 		
@@ -204,7 +211,8 @@ class MainMenuScreen implements com.badlogic.gdx.Screen {
 	public void show( ) {
 		batch = new SpriteBatch( );
 		font = new BitmapFont( );
-		fancyFont = WereScrewedGame.manager.getFont( "Screwball" );
+		fancyFont = WereScrewedGame.manager.getFont( "longdon" );
+		//fancyFont = WereScrewedGame.manager.getFont( "Screwball" );
 		//fancyFont = WereScrewedGame.manager.getFont( "ornatique" );
 		
 		ControllerSetUp( );

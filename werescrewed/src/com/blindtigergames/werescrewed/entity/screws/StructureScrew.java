@@ -332,4 +332,13 @@ public class StructureScrew extends Screw {
 		// body.createFixture( radarFixture );
 		// radarShape.dispose( );
 	}
+
+	@Override
+	public void loadSounds(){
+		super.loadSounds( );
+		sounds.getSound( "mindepth", "" );
+		sounds.getSound( "maxdepth", "");
+		sounds.getSound( "removal", "");
+	}
+
 }

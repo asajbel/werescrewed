@@ -125,8 +125,8 @@ public class MyControllerListener implements ControllerListener {
 			analogUsed = true;
 		}
 
-		// Resetting Right Stick
-		if ( ( axisLX < ANALOG_CENTER && axisLY < ANALOG_CENTER )
+		// Resetting left Stick
+		if ( !checkRightStickForScrewing && ( axisLX < ANALOG_CENTER && axisLY < ANALOG_CENTER )
 				&& ( axisLX > -ANALOG_CENTER && axisLY > -ANALOG_CENTER ) ) {
 			screwingPressed = false;
 			unscrewingPressed = false;
@@ -134,11 +134,13 @@ public class MyControllerListener implements ControllerListener {
 			currLeftAnalogAngle = 0;
 			checkLeftStickForScrewing = false;
 		} else{
-			checkLeftStickForScrewing = true;
+			if(!checkRightStickForScrewing){
+				checkLeftStickForScrewing = true;
+			}
 		}
 		
 		// Resetting Right Stick
-		if ( ( axisRX < ANALOG_CENTER && axisRY < ANALOG_CENTER )
+		if (!checkLeftStickForScrewing && ( axisRX < ANALOG_CENTER && axisRY < ANALOG_CENTER )
 				&& ( axisRX > -ANALOG_CENTER && axisRY > -ANALOG_CENTER ) ) {
 			screwingPressed = false;
 			unscrewingPressed = false;
@@ -146,7 +148,9 @@ public class MyControllerListener implements ControllerListener {
 			currRightAnalogAngle = 0;
 			checkRightStickForScrewing = false;
 		} else{
-			checkRightStickForScrewing = true;
+			if(!checkLeftStickForScrewing){
+				checkRightStickForScrewing = true;
+			}
 		}
 		
 		if(checkLeftStickForScrewing && checkRightStickForScrewing){
@@ -168,7 +172,7 @@ public class MyControllerListener implements ControllerListener {
 	 */
 	@Override
 	public boolean buttonDown( Controller controller, int buttonIndex ) {
-
+	//	Gdx.app.log( controller.getName( ), String.valueOf( buttonIndex ) ); 
 		// Setting jump/pause/bumper
 		if ( buttonIndex == Mapping.BUTTON_FACE_BOT )
 			jumpPressed = true;
@@ -177,7 +181,8 @@ public class MyControllerListener implements ControllerListener {
 				|| buttonIndex == Mapping.BUTTON_L1
 				|| buttonIndex == Mapping.BUTTON_L2 )
 			attachScrewPressed = true;
-		if ( buttonIndex == Mapping.BUTTON_START )
+		if ( buttonIndex == Mapping.BUTTON_START 
+				|| buttonIndex == Mapping.BUTTON_SYSTEM )
 			pausePressed = true;
 		if ( buttonIndex == Mapping.BUTTON_FACE_LEFT )
 			grabPressed = true;
@@ -213,7 +218,8 @@ public class MyControllerListener implements ControllerListener {
 				|| buttonIndex == Mapping.BUTTON_L1
 				|| buttonIndex == Mapping.BUTTON_L2 )
 			attachScrewPressed = false;
-		if ( buttonIndex == Mapping.BUTTON_START )
+		if ( buttonIndex == Mapping.BUTTON_START 
+				|| buttonIndex == Mapping.BUTTON_SYSTEM )
 			pausePressed = false;
 		if ( buttonIndex == Mapping.BUTTON_FACE_LEFT )
 			grabPressed = false;

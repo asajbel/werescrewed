@@ -16,4 +16,5 @@
 	<friction>1f</friction>
 	<restitution>0.00f</restitution>
 	<bodyScale>3.75f</bodyScale>
+	<sound>idle:/levels/alphabot/sounds/Engine.ogg:range 1280:falloff 1.0</sound>
 </entity>

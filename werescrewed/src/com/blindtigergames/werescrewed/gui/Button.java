@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.BitmapFont.TextBounds;
@@ -44,7 +43,7 @@ public class Button {
 	 * @param x int
 	 * @param y int
 	 */
-	public Button(String caption, BitmapFont font, ButtonHandler handler, int x, int y) {
+	public Button( String caption, BitmapFont font, ButtonHandler handler, int x, int y ) {
 		this.caption = caption;
 		this.font = font;
 		this.x = x;
@@ -60,8 +59,8 @@ public class Button {
 	 * @param font BitmapFont
 	 * @param handler ButtonHandler
 	 */
-	public Button(String caption, BitmapFont font, ButtonHandler handler) {
-		this(caption, font, handler, 0, 0);
+	public Button( String caption, BitmapFont font, ButtonHandler handler ) {
+		this( caption, font, handler, 0, 0 );
 	}
 	
 	/**
@@ -159,7 +158,7 @@ public class Button {
 		screwR.setSize( screwSize / 2, screwSize / 2 );
 		screwL.setOrigin( screwL.getWidth( ) / 2, screwL.getHeight( ) / 2 );
 		screwR.setOrigin( screwR.getWidth( ) / 2, screwR.getHeight( ) / 2 );
-		if ( isColored( ) ) {
+		if ( colored ) {
 			screwL.draw( batch );
 			screwR.draw( batch );
 			screwL.rotate( 5.0f );

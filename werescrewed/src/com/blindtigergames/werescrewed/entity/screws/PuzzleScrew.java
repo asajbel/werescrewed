@@ -345,5 +345,11 @@ public class PuzzleScrew extends Screw {
 		// radarShape.dispose( );
 		screwShape.dispose( );
 	}
-
+	
+	@Override
+	public void loadSounds(){
+		super.loadSounds( );
+		sounds.getSound( "mindepth", "" );
+		sounds.getSound( "maxdepth", "");
+	}
 }

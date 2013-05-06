@@ -1,0 +1,47 @@
+right_arm_ex.png
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+offset: 0, 0
+upperarm_exterior2
+  rotate: false
+  xy: 1455, 3
+  size: 480, 683
+  orig: 480, 683
+  offset: 0, 0
+  index: -1
+upperarm_exterior1
+  rotate: false
+  xy: 487, 690
+  size: 480, 683
+  orig: 480, 683
+  offset: 0, 0
+  index: -1
+upperarm_exterior4
+  rotate: false
+  xy: 3, 3
+  size: 480, 684
+  orig: 480, 684
+  offset: 0, 0
+  index: -1
+upperarm_exterior3
+  rotate: false
+  xy: 3, 691
+  size: 480, 684
+  orig: 480, 684
+  offset: 0, 0
+  index: -1
+upperarm_exterior5
+  rotate: false
+  xy: 971, 3
+  size: 480, 683
+  orig: 480, 683
+  offset: 0, 0
+  index: -1
+upperarm_exterior6
+  rotate: false
+  xy: 487, 3
+  size: 480, 683
+  orig: 480, 683
+  offset: 0, 0
+  index: -1
