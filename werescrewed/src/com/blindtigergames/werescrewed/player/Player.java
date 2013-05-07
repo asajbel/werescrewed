@@ -414,8 +414,8 @@ public class Player extends Entity {
 				} else {
 					body.setTransform(
 							new Vector2( currentScrew.getPositionPixel( ).x
-									- ( WIDTH ), currentScrew
-									.getPositionPixel( ).y - ( HEIGHT / 2.0f ) )
+									- ( WIDTH ) + 5, currentScrew
+									.getPositionPixel( ).y - ( HEIGHT / 2.0f ) - 5)
 									.mul( Util.PIXEL_TO_BOX ), 0.0f );
 					RevoluteJointDef revoluteJointDef = new RevoluteJointDef( );
 					revoluteJointDef.initialize( body, currentScrew.body,

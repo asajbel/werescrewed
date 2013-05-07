@@ -2886,9 +2886,9 @@
 					{ "time": 1, "angle": 0 }
 				],
 				"translate": [
-					{ "time": 0, "x": 0, "y": 0, "curve": "stepped" },
-					{ "time": 0.5, "x": 0, "y": 0, "curve": "stepped" },
-					{ "time": 1, "x": 0, "y": 0 }
+					{ "time": 0, "x": -34.16, "y": 0 },
+					{ "time": 0.5, "x": -30.46, "y": -2.27 },
+					{ "time": 1, "x": -34.16, "y": 0 }
 				],
 				"scale": [
 					{ "time": 0.5, "x": 1, "y": 1 }
@@ -3142,7 +3142,9 @@
 			},
 			"screw_driver_back": {
 				"translate": [
-					{ "time": 0, "x": 11.3, "y": 24.37 }
+					{ "time": 0, "x": -22.85, "y": 24.37 },
+					{ "time": 0.5, "x": -19.97, "y": 24.37 },
+					{ "time": 1, "x": -22.85, "y": 24.37 }
 				]
 			}
 		},
@@ -3188,17 +3190,20 @@
 			},
 			"head": {
 				"color": [
-					{ "time": 0, "color": "ffffff00" }
+					{ "time": 0, "color": "ffffff00", "curve": "stepped" },
+					{ "time": 1, "color": "ffffff00" }
 				]
 			},
 			"torso": {
 				"color": [
-					{ "time": 0, "color": "ffffff00" }
+					{ "time": 0, "color": "ffffff00", "curve": "stepped" },
+					{ "time": 1, "color": "ffffff00" }
 				]
 			},
 			"waist": {
 				"color": [
-					{ "time": 0, "color": "ffffff00" }
+					{ "time": 0, "color": "ffffff00", "curve": "stepped" },
+					{ "time": 1, "color": "ffffff00" }
 				]
 			},
 			"L_upper_arm": {
@@ -3221,7 +3226,8 @@
 			},
 			"R_upper_leg": {
 				"color": [
-					{ "time": 0, "color": "ffffffff" }
+					{ "time": 0, "color": "ffffffff", "curve": "stepped" },
+					{ "time": 1, "color": "ffffffff" }
 				]
 			},
 			"L_glove_back": {
@@ -3254,12 +3260,14 @@
 			},
 			"L_upper_leg": {
 				"color": [
-					{ "time": 0, "color": "ffffffff" }
+					{ "time": 0, "color": "ffffffff", "curve": "stepped" },
+					{ "time": 1, "color": "ffffffff" }
 				]
 			},
 			"torso_back": {
 				"color": [
-					{ "time": 0, "color": "ffffffff" }
+					{ "time": 0, "color": "ffffffff", "curve": "stepped" },
+					{ "time": 1, "color": "ffffffff" }
 				]
 			},
 			"L_lower_leg": {
@@ -3269,7 +3277,8 @@
 			},
 			"head_back": {
 				"color": [
-					{ "time": 0, "color": "ffffffff" }
+					{ "time": 0, "color": "ffffffff", "curve": "stepped" },
+					{ "time": 1, "color": "ffffffff" }
 				]
 			},
 			"L_boot": {
@@ -3284,12 +3293,14 @@
 			},
 			"coat_tail": {
 				"color": [
-					{ "time": 0, "color": "ffffff00" }
+					{ "time": 0, "color": "ffffff00", "curve": "stepped" },
+					{ "time": 1, "color": "ffffff00" }
 				]
 			},
 			"coat_tail_back": {
 				"color": [
-					{ "time": 0, "color": "ffffffff" }
+					{ "time": 0, "color": "ffffffff", "curve": "stepped" },
+					{ "time": 1, "color": "ffffffff" }
 				]
 			},
 			"screw_driver": {
@@ -8721,8 +8732,8 @@
 			},
 			"waist": {
 				"translate": [
-					{ "time": 0, "x": -0.65, "y": -16.4, "curve": "stepped" },
-					{ "time": 1.0666, "x": -0.65, "y": -16.4 }
+					{ "time": 0, "x": -38.09, "y": -16.4, "curve": "stepped" },
+					{ "time": 1.0666, "x": -38.09, "y": -16.4 }
 				]
 			},
 			"torso": {
@@ -8774,7 +8785,7 @@
 					{ "time": 1.0666, "angle": 0 }
 				],
 				"translate": [
-					{ "time": 0, "x": 14.69, "y": -0.83 }
+					{ "time": 0, "x": -22.73, "y": -0.83 }
 				]
 			}
 		},
@@ -9064,6 +9075,9 @@
 						"curve": [ 0.431, 0.01, 0.583, 0.97 ]
 					},
 					{ "time": 1.0666, "angle": 16.22 }
+				],
+				"translate": [
+					{ "time": 0, "x": -34.55, "y": 0 }
 				]
 			},
 			"torso": {
@@ -9164,7 +9178,7 @@
 					{ "time": 1.0666, "angle": 0 }
 				],
 				"translate": [
-					{ "time": 0, "x": 11.33, "y": 24.35 }
+					{ "time": 0, "x": -23.21, "y": 24.35 }
 				]
 			}
 		},
