@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 import com.blindtigergames.werescrewed.gui.Button;
 import com.blindtigergames.werescrewed.gui.Label;
+import com.blindtigergames.werescrewed.gui.TextButton;
 
 class WinScreen implements com.badlogic.gdx.Screen{
 
@@ -17,7 +18,7 @@ class WinScreen implements com.badlogic.gdx.Screen{
 	private BitmapFont font = null;
 	private Label firstLine = null;
 	private Label secLine = null;
-	private Button nextButton = null;
+	private TextButton nextButton = null;
 	private int lineHeight = 0;
 
 	public WinScreen( ) {
@@ -26,7 +27,7 @@ class WinScreen implements com.badlogic.gdx.Screen{
 		lineHeight = Math.round( 2.5f * font.getCapHeight( ) );
 		firstLine = new Label( "Mission Complete!", font );
 		secLine = new Label( "Winners Never Lose!!", font );
-		nextButton = new Button( "Continue", font, new ScreenSwitchHandler(
+		nextButton = new TextButton( "Continue", font, new ScreenSwitchHandler(
 				ScreenType.TROPHY ) );
 	}
 

@@ -1,5 +1,7 @@
 package com.blindtigergames.werescrewed.screens;
 
+import java.util.ArrayList;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
@@ -7,13 +9,8 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.World;
 import com.blindtigergames.werescrewed.WereScrewedGame;
-import com.blindtigergames.werescrewed.asset.AssetManager;
 import com.blindtigergames.werescrewed.entity.Entity;
-import com.blindtigergames.werescrewed.entity.screws.Screw;
 import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 import com.blindtigergames.werescrewed.gui.Label;
 
@@ -30,6 +27,10 @@ public class LoadingScreen extends Screen {
 	private int screenWidth;
 	private int screenHeight;
 	
+	private int timer = 0;
+	private int currIndex = 0;
+	private ArrayList<Texture> storyBoardArray = new ArrayList<Texture>();
+	private int currLevel = 0;
 
 	/**
 	 * Displays the loading screen and loads the appropriate contents for the
@@ -44,12 +45,31 @@ public class LoadingScreen extends Screen {
 
 		if ( st != null && !st.isEmpty( ) ) {
 			screenTag = st;
+			if(screenTag.equals( "level1" )){
+				currLevel = 1;
+			}
 		} else {
 			screenTag = "commonLevel";
 		}
 		Gdx.app.log( "Loading assets for", screenTag );
 		
-
+		if(currLevel == 1){
+			// check for level1
+			WereScrewedGame.manager.load( "data/common/slides/slide1_intro.png", Texture.class );
+			WereScrewedGame.manager.load( "data/common/slides/slide2_audience.png", Texture.class );
+			WereScrewedGame.manager.load( "data/common/slides/slide3_alphabot.png", Texture.class );
+			WereScrewedGame.manager.load( "data/common/slides/slide4_players.png", Texture.class );
+			
+			WereScrewedGame.manager.finishLoading( );
+			
+			storyBoardArray.add( WereScrewedGame.manager.get( "data/common/slides/slide1_intro.png", Texture.class ) );
+			storyBoardArray.add( WereScrewedGame.manager.get( "data/common/slides/slide2_audience.png", Texture.class ) );
+			storyBoardArray.add( WereScrewedGame.manager.get( "data/common/slides/slide3_alphabot.png", Texture.class ) );
+			storyBoardArray.add( WereScrewedGame.manager.get( "data/common/slides/slide4_players.png", Texture.class ) );
+		}
+		
+		
+		//stage = new Stage( );
 		// loadFilesInDirectory( WereScrewedGame.dirHandle, screenTag );
 
 	}
@@ -100,24 +120,42 @@ public class LoadingScreen extends Screen {
 		//begin loading the assets
 		if ( WereScrewedGame.manager.update( ) ) { 
 			
+			if(currLevel == 0){
 			//assets have been loaded!
-			loadingLabel.setCaption("Loading Complete!!");
-			//loadingCompleteLabel.draw( batch );
-		
+			 loadingLabel.setCaption("Loading Complete!!");
+			 loadingCompleteLabel.draw( batch );
+			}
 			// TODO: Use the screenTag to pick which screen to go to next
-			if ( screenTag != null && screenTag.equals( "level1" ) ) {
-				ScreenManager.getInstance( ).show( ScreenType.LEVEL_1 );
-			} else if ( screenTag != null && screenTag.equals( "level2" ) ) {
-				ScreenManager.getInstance( ).show( ScreenType.DRAGON );
-			}else {
-				ScreenManager.getInstance( ).show( ScreenType.MAIN_MENU ); 
+			if(storyBoardArray.size() == 0 || currIndex == storyBoardArray.size() - 1){
+				if ( screenTag != null && screenTag.equals( "level1" ) ) {
+					ScreenManager.getInstance( ).show( ScreenType.LEVEL_1 );
+				} else if ( screenTag != null && screenTag.equals( "level2" ) ) {
+					ScreenManager.getInstance( ).show( ScreenType.DRAGON );
+				}else {
+					ScreenManager.getInstance( ).show( ScreenType.MAIN_MENU ); 
+				}
 			}
 			
 		}
-
+		
+		
+		
+		timer++;
+		if(timer > 100){
+			timer = 0;
+			if( !(currIndex == storyBoardArray.size() - 1) ){
+				currIndex++;
+			}
+			
+		}
+		
+		if(currLevel == 1){
+			batch.draw( storyBoardArray.get(currIndex),  screenWidth / 4,  screenHeight / 4 );
+		}else{
 		// draw the label on the screen
-		loadingLabel.draw( batch );
-		loadingBar.sprite.draw( batch );
+			loadingLabel.draw( batch );
+		 	loadingBar.sprite.draw( batch );
+		}
 		batch.end( );
 	}
 

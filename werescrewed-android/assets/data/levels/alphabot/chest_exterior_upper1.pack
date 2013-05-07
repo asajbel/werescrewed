@@ -1,0 +1,19 @@
+chest_exterior_upper1.png
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+offset: 0, 0
+torso6
+  rotate: false
+  xy: 4, 839
+  size: 1076, 878
+  orig: 1076, 878
+  offset: 0, 0
+  index: -1
+torso7
+  rotate: false
+  xy: 4, 4
+  size: 1142, 829
+  orig: 1142, 829
+  offset: 0, 0
+  index: -1
