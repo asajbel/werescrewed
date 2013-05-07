@@ -57,7 +57,6 @@ import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 import com.blindtigergames.werescrewed.graphics.TextureAtlas;
 import com.blindtigergames.werescrewed.joint.PrismaticJointBuilder;
 import com.blindtigergames.werescrewed.joint.RevoluteJointBuilder;
-import com.blindtigergames.werescrewed.level.CharacterSelect;
 import com.blindtigergames.werescrewed.level.LevelFactory;
 import com.blindtigergames.werescrewed.sound.SoundManager;
 import com.blindtigergames.werescrewed.util.Util;
@@ -66,7 +65,7 @@ public class AlphaScreen extends Screen {
 
 	public ScreenType screenType;
 
-	private CharacterSelect characterSelect;
+
 	private PowerSwitch powerSwitch1, powerSwitch2, powerSwitch3, powerSwitch4,
 			powerSwitch5, powerSwitch6, powerSwitch7, powerSwitch8,
 			powerSwitch9, powerSwitch10, chestSteamPowerSwitch,
@@ -144,7 +143,6 @@ public class AlphaScreen extends Screen {
 		level.root.addEventTrigger( removeTrigger );
 
 		
-		characterSelect = new CharacterSelect( level );
 
 		createFootObjects( );
 		createKneeObjects( );
@@ -243,9 +241,7 @@ public class AlphaScreen extends Screen {
 	public void render( float deltaTime ) {
 		super.render( deltaTime );
 		sounds.update(deltaTime);
-		// characterSelect.update( );
 
-		// characterSelect.draw( batch, deltaTime );
 
 		powerScrewUpdate( deltaTime );
 
