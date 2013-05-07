@@ -1045,12 +1045,12 @@ s.setFgFade( false );
 		//
 		// world.step( 1 / 60f, 6, 3 );
 		//
-		// if ( Gdx.input.isKeyPressed( Input.Keys.ESCAPE ) ) {
-		// if ( !ScreenManager.escapeHeld ) {
-		// ScreenManager.getInstance( ).show( ScreenType.PAUSE );
-		// }
-		// } else
-		// ScreenManager.escapeHeld = false;
+		 if ( Gdx.input.isKeyPressed( Input.Keys.ESCAPE ) ) {
+			 if ( !ScreenManager.escapeHeld ) {
+				 ScreenManager.getInstance( ).show( ScreenType.PAUSE );
+			 }
+		 } else
+			 ScreenManager.escapeHeld = false;
 
 	}
 

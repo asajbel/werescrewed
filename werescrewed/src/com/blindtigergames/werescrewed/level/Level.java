@@ -6,6 +6,7 @@ import java.util.Iterator;
 import aurelienribon.tweenengine.Tween;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.GL20;
@@ -28,6 +29,8 @@ import com.blindtigergames.werescrewed.entity.tween.EntityAccessor;
 import com.blindtigergames.werescrewed.entity.tween.PlatformAccessor;
 import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 import com.blindtigergames.werescrewed.player.Player;
+import com.blindtigergames.werescrewed.screens.ScreenManager;
+import com.blindtigergames.werescrewed.screens.ScreenType;
 import com.blindtigergames.werescrewed.util.Util;
 
 /**
@@ -130,6 +133,32 @@ public class Level {
 			}
 			jointsToRemove.clear( );
 		}
+		
+		if( WereScrewedGame.p1Controller != null ) {
+			if ( WereScrewedGame.p1ControllerListener.pausePressed( )) {
+				if(!ScreenManager.p1PauseHeld){
+					ScreenManager.getInstance( ).show( ScreenType.PAUSE );
+				}
+			} else {
+				ScreenManager.p1PauseHeld = false;
+			}
+		}
+		if( WereScrewedGame.p2Controller != null ) {
+			if ( WereScrewedGame.p2ControllerListener.pausePressed( )) {
+				if(!ScreenManager.p2PauseHeld){
+					ScreenManager.getInstance( ).show( ScreenType.PAUSE );
+				}
+			} else {
+				ScreenManager.p2PauseHeld = false;
+			}
+		}
+		
+		if ( Gdx.input.isKeyPressed( Input.Keys.ESCAPE ) ) {
+			if(!ScreenManager.escapeHeld){
+				ScreenManager.getInstance( ).show( ScreenType.PAUSE );
+			}
+		} else
+			ScreenManager.escapeHeld = false;
 	}
 
 	public void draw( SpriteBatch batch, SBox2DDebugRenderer debugRenderer,

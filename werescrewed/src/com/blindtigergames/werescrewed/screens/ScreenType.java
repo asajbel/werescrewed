@@ -20,14 +20,7 @@ public enum ScreenType {
 //			return physics;
 //		}
 //	},
-	GLEED {
-		@Override
-		protected com.badlogic.gdx.Screen getScreenInstance( ) {
-			GleedTestScreen gleed = new GleedTestScreen( "FinalPresentationLevel2" );
-			gleed.screenType = ScreenType.GLEED;
-			return gleed;
-		}
-	},
+
 	INTRO {
 		@Override
 		protected com.badlogic.gdx.Screen getScreenInstance( ) {
@@ -123,14 +116,6 @@ public enum ScreenType {
 			PauseScreen pause = new PauseScreen( );
 			pause.screenType = ScreenType.PAUSE;
 			return pause;
-		}
-	},
-	PLAYTEST {
-		@Override
-		protected com.badlogic.gdx.Screen getScreenInstance( ) {
-			DebugPlayTestScreen debug = new DebugPlayTestScreen( );
-			debug.screenType = ScreenType.PLAYTEST;
-			return debug;
 		}
 	},
 	PHYSICS {

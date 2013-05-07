@@ -2043,20 +2043,21 @@ public class Player extends Entity {
 	 */
 	private void setUpController( ) {
 		for ( Controller controller2 : Controllers.getControllers( ) ) {
-			Gdx.app.log( "ok", controller2.getName( ) );
+			Gdx.app.log( "controllers", controller2.getName( ) );
 		}
 		if ( Controllers.getControllers( ).size >= 1 ) {
 			if ( this.name.equals( "player1" ) ) {
-				controllerListener = new MyControllerListener( );
-				controller = Controllers.getControllers( ).get( 0 );
-				controller.addListener( controllerListener );
+
+				controllerListener = WereScrewedGame.p1ControllerListener;
+				controller = WereScrewedGame.p1Controller;
+				
 			}
 		}
 		if ( Controllers.getControllers( ).size >= 2 ) {
 			if ( this.name.equals( "player2" ) ) {
-				controllerListener = new MyControllerListener( );
-				controller = Controllers.getControllers( ).get( 1 );
-				controller.addListener( controllerListener );
+				
+				controllerListener = WereScrewedGame.p2ControllerListener;
+				controller = WereScrewedGame.p2Controller;
 			}
 		}
 

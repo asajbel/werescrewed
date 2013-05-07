@@ -14,7 +14,7 @@ public class ScreenSwitchHandler implements ButtonHandler {
 
 	@Override
 	public void onClick( ) {
-		/* easily implemented screen switching thanks to singleton pattern */
+	
 		ScreenManager.getInstance( ).show( screen );
 	}
 
