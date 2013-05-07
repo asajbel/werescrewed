@@ -290,7 +290,7 @@ public class LoadingScreen extends Screen {
 	public void resize( int width, int height ) {
 		screenWidth = width;
 		screenHeight = height;
-		if ( currLevel == 1 ) {
+		if ( currLevel == 1 && characterSelect) {
 			 
 			pressStart.setX( screenWidth / 2 - pressStart.getWidth( ) / 2 );
 			pressStart.setY( screenHeight / 4);
