@@ -708,10 +708,10 @@ public class AlphaScreen extends Screen {
 				.getAtlas( "alphabot_foot_shin_decal" );
 		
 
-		Vector2 kneeDecalPos = new Vector2( 630	, -1420 );
+		Vector2 kneeDecalPos = new Vector2( 630	, -530 );
 		sprite = decals.createSprite( "knee_exterior" );
 		sprite.setScale( -1, 1 );
-		rightThigh.addFGDecal( sprite ,
+		rightKnee.addFGDecal( sprite ,
 				kneeDecalPos.cpy( ) );
 		addFGSkeleton( rightKnee );
 
