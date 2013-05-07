@@ -38,6 +38,9 @@ public class WereScrewedGame extends Game {
 	public static Controller p1Controller, p2Controller;
 	public static MyControllerListener p1ControllerListener, p2ControllerListener;
 	
+	// used to decide which player is which character, if player1female is false then
+	// player 1 is the male character
+	public static boolean player1Female = false;
 	@SuppressWarnings( "unused" )
 	private float fpsTime = 0;
 

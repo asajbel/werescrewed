@@ -15,6 +15,8 @@ public class Label {
 	private int y = 0;
 	private int width = 0;
 	private int height = 0;
+	private Color originalColor, selectedColor;
+	private boolean selected = false;
 	
 	public Label(String caption, BitmapFont font, int x, int y) {
 		this.caption = caption;
@@ -22,6 +24,9 @@ public class Label {
 		this.x = x;
 		this.y = y;
 		calculateDimensions();
+		originalColor = font.getColor();
+		selectedColor = new Color();
+		selectedColor.add( Color.GREEN );
 	}
 	
 	public Label(String caption, BitmapFont font) {
@@ -61,11 +66,22 @@ public class Label {
 		return height;
 	}
 	
+	public void select(){
+		this.selected = true;
+	}
+	
+	public void unselect(){
+		this.selected = false;
+	}
 	public void draw(SpriteBatch batch) {
-		Color originalColor = font.getColor();
-		font.setColor(COLOR);
+		//font.setColor(COLOR);
+		
+		if(selected)
+			font.setColor(selectedColor);
+		else
+			font.setColor(originalColor);
+		
 		font.draw(batch, caption, x, y);
-		font.setColor(originalColor);
 	}
 	
 	private void calculateDimensions() {

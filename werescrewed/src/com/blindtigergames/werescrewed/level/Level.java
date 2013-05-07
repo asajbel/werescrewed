@@ -194,7 +194,7 @@ public class Level {
 
 	private void drawBGStuff( SpriteBatch batch, float deltaTime ) {
 		for ( Skeleton skel : skelBGList ) {
-			if ( skel.isActive( ) ) {
+			if ( skel.isActive( ) ) { 
 				if ( skel.bgSprite != null
 						&& ( !skel.isFadingSkel( ) || skel.isFGFaded( ) ) ) {
 					skel.bgSprite.draw( batch );
