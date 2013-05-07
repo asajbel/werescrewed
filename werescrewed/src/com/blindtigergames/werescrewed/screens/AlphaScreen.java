@@ -1512,11 +1512,16 @@ public class AlphaScreen extends Screen {
 				.getAtlas( "head_right" );
 
 		Vector2 pos = new Vector2( -1475, -680 );
-
-		headSkeleton.addFGDecal( head_left.createSprite( "head_left" ),
+		Sprite s;
+		float scale = 1f/.75f;
+		s = head_left.createSprite( "head_left" );
+		s.setScale( scale );
+		headSkeleton.addFGDecal( s,
 				pos.cpy( ) );
-		headSkeleton.addFGDecal( head_right.createSprite( "head_right" ), pos
-				.cpy( ).add( 2029, 0 ) );
+		s = head_right.createSprite( "head_right" );
+		s.setScale( scale );
+		headSkeleton.addFGDecal( s, pos
+				.cpy( ).add( 1500, 0 ) );
 		addBGEntity( headSkeleton );
 		addFGEntity( headSkeleton );
 
@@ -1546,12 +1551,13 @@ public class AlphaScreen extends Screen {
 		//forearm decals
 		TextureAtlas elbow_decals = WereScrewedGame.manager.getAtlas( "forearm_elbow_ex" );
 		Vector2 elbowPos = new Vector2(-555,232);
-		
+		float scale = 1f/0.75f;
 		for(int i = 0; i <6; ++i ){
 			//515,710
 			x = (i%2);
 			if(x==0)++y;
 			s = elbow_decals.createSprite( "forearmandelbow_exterior"+(i+1) );
+			s.setScale( scale );
 			//s.setScale( -1,1 );
 			leftShoulderSkeleton.addFGDecal(  s,
 				elbowPos.cpy().add( 515*x,-710*y ) );
@@ -1564,20 +1570,23 @@ public class AlphaScreen extends Screen {
 				.get( "rightElbowSkeleton" );
 		Skeleton rightShoulderSkeleton = ( Skeleton ) LevelFactory.entities
 				.get( "rightShoulderSkeleton" );
-
+		Sprite s;
 		// forearm decals
 		TextureAtlas elbow_decals = WereScrewedGame.manager
 				.getAtlas( "forearm_elbow_ex" );
 		Vector2 elbowPos = new Vector2( -520, -278 );
+		float scale = 1f/.75f;
 		int x = 0, y = -1;
 		for ( int i = 0; i < 6; ++i ) {
 			// 515,710
 			x = i % 2;
 			if ( x == 0 )
 				++y;
+			s = elbow_decals.createSprite( "forearmandelbow_exterior"
+					+ ( i + 1 ) );
+			s.setScale( scale );
 			rightElbowSkeleton.addFGDecal(
-					elbow_decals.createSprite( "forearmandelbow_exterior"
-							+ ( i + 1 ) ),
+					s,
 					elbowPos.cpy( ).add( 515 * x, -710 * y ) );
 		}
 

@@ -159,7 +159,10 @@ public class MyContactListener implements ContactListener {
 								et.getBeginAction( ).act( player );
 							}
 							if ( playerFix == player.torso ) {
-								et.triggerBeginEvent( );
+								if( et.getBeginAction( ).getActionType( ) == ActionType.ACT_ON_PLAYER ){
+									et.triggerBeginEvent( player );
+								}else
+									et.triggerBeginEvent( );
 							}
 							break;
 						case POWERSWITCH:

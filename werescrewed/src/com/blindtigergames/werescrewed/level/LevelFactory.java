@@ -634,24 +634,6 @@ public class LevelFactory {
 
 			if ( item.props.containsKey( "invisible" ) ) {
 				skeleBuilder.invisibleVerts( polySprite );
-				
-			/*} else if ( item.props.containsKey( "noforeground" ) ) {
-				skeleBuilder
-						.bg( )
-						.setVerts( polySprite )
-						.texBackground(
-								WereScrewedGame.manager.getLevelRobotBGTex( ) );
-			} else {
-				skeleBuilder
-						.bg( )
-						.setVerts( polySprite )
-						.texBackground(
-								WereScrewedGame.manager.getLevelRobotBGTex( ) ).fg( )
-						.setVerts( polySprite );
-				// .texForeground( WereScrewedGame.manager.get
-				// (WereScrewedGame.dirHandle+"/common/robot/alphabot_texture_skin.png",
-				// Texture.class ));;
-			}*/
 			
 			//Argggg, the code you're looking for be here Matey
 			} else if ( item.props.containsKey( "foreground" ) ) {

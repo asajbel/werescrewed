@@ -45,7 +45,7 @@ public class PowerSwitch extends EventTrigger{
 		if(repeatable){
 			if(state == false){
 
-				runBeginAction();
+				runBeginAction(null);
 				state = true;
 			}
 			else{
@@ -55,7 +55,7 @@ public class PowerSwitch extends EventTrigger{
 			}
 		}else{
 			if(!this.beginTriggeredOnce){
-				runBeginAction();
+				runBeginAction(null);
 				state = true;
 			}
 		}
