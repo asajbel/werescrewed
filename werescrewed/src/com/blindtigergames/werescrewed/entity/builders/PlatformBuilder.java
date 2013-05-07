@@ -249,9 +249,11 @@ public class PlatformBuilder extends GenericEntityBuilder<PlatformBuilder> {
 	public TiledPlatform buildTilePlatform( ) {
 		//TileSet ts = WereScrewedGame.manager.getTileSet( tileSet );
 		
+		//Tileset ts = ;
+		
 		TiledPlatform tp = new TiledPlatform( this.name, 
 				                              this.pos, 
-				                              WereScrewedGame.manager.getTileSet( tileSet ), 
+				                              WereScrewedGame.manager.getTileSet( (isOneSided)?"common-textures":tileSet ), 
 				                              this.width, 
 				                              this.height, 
 				                              this.isOneSided, 

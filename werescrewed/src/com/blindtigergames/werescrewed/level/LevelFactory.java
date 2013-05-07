@@ -829,6 +829,10 @@ public class LevelFactory {
 			pb.dynamic( );
 		else
 			pb.kinematic( );
+		
+		if ( item.props.containsKey( "onesided" ) ) {
+			pb.oneSided( true );
+		}
 
 		out = pb.buildTilePlatform( );
 
@@ -838,6 +842,7 @@ public class LevelFactory {
 		if ( item.props.containsKey( "onesided" ) ) {
 			out.oneSided = true;
 		}
+		
 
 		IMover mover = null;
 		if ( item.props.containsKey( "mover" ) ) {
