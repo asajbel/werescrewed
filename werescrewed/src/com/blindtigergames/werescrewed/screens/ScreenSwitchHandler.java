@@ -1,6 +1,6 @@
 package com.blindtigergames.werescrewed.screens;
 
-import com.blindtigergames.werescrewed.gui.Button.ButtonHandler;
+import com.blindtigergames.werescrewed.gui.TextButton.ButtonHandler;
 import com.blindtigergames.werescrewed.screens.ScreenType;
 import com.blindtigergames.werescrewed.screens.ScreenManager;
 

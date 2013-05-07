@@ -15,6 +15,7 @@ import com.blindtigergames.werescrewed.entity.Sprite;
 import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 import com.blindtigergames.werescrewed.gui.Button;
 import com.blindtigergames.werescrewed.gui.Label;
+import com.blindtigergames.werescrewed.gui.TextButton;
 import com.blindtigergames.werescrewed.input.MyControllerListener;
 
 public class LevelSelectScreen implements com.badlogic.gdx.Screen {
@@ -27,15 +28,15 @@ public class LevelSelectScreen implements com.badlogic.gdx.Screen {
 	private Sprite logo = null;
 	private Sprite menuBG = null;
 	private Label screenLabel = null;
-	private Button playButton = null;
-	private Button gleedButton = null;
-	private Button testButton;
-	private Button resurrectButton = null;
-	private Button hazardButton = null;
+	private TextButton playButton = null;
+	private TextButton gleedButton = null;
+	private TextButton testButton;
+	private TextButton resurrectButton = null;
+	private TextButton hazardButton = null;
 	private int lineHeight = 0;
-	private Button level1Button;
-	private Button backButton = null;
-	private Button dragonButton = null;
+	private TextButton level1Button;
+	private TextButton backButton = null;
+	private TextButton dragonButton = null;
 
 	private int buttonIndex = 0;
 	private ArrayList< Button > Buttons;
@@ -203,21 +204,21 @@ public class LevelSelectScreen implements com.badlogic.gdx.Screen {
 	 * loads buttons appropriately
 	 */
 	private void loadButtons( ) {
-		playButton = new Button( "Physics Test Screen", fancyFont,
+		playButton = new TextButton( "Physics Test Screen", fancyFont,
 				new ScreenSwitchHandler( ScreenType.PHYSICS ) );
-		resurrectButton = new Button( "Parallax Test Screen", fancyFont,
+		resurrectButton = new TextButton( "Parallax Test Screen", fancyFont,
 				new ScreenSwitchHandler( ScreenType.RESURRECT ) );
-		hazardButton = new Button( "Hazard Test Screen", fancyFont,
+		hazardButton = new TextButton( "Hazard Test Screen", fancyFont,
 				new ScreenSwitchHandler( ScreenType.HAZARD ) );
-		testButton = new Button( "Playtest Screen", fancyFont,
+		testButton = new TextButton( "Playtest Screen", fancyFont,
 				new ScreenSwitchHandler( ScreenType.PLAYTEST ) );
-		gleedButton = new Button( "Gleed Screen", fancyFont,
+		gleedButton = new TextButton( "Gleed Screen", fancyFont,
 				new ScreenSwitchHandler( ScreenType.GLEED ) );
-		level1Button = new Button( "AlphaBot", fancyFont,
+		level1Button = new TextButton( "AlphaBot", fancyFont,
 				new ScreenSwitchHandler( ScreenType.LOADING_1 ) );
-		dragonButton = new Button( "Dragon", fancyFont, new ScreenSwitchHandler( ScreenType.LOADING_2 ) );
+		dragonButton = new TextButton( "Dragon", fancyFont, new ScreenSwitchHandler( ScreenType.LOADING_2 ) );
 
-		backButton = new Button( "Back", fancyFont, new ScreenSwitchHandler(
+		backButton = new TextButton( "Back", fancyFont, new ScreenSwitchHandler(
 				ScreenType.MAIN_MENU ) );
 		playButton.setColored( true );
 		Buttons = new ArrayList< Button >( );

@@ -16,8 +16,9 @@ import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.entity.Sprite;
 import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 import com.blindtigergames.werescrewed.gui.Button;
-import com.blindtigergames.werescrewed.gui.Button.ButtonHandler;
+import com.blindtigergames.werescrewed.gui.TextButton.ButtonHandler;
 import com.blindtigergames.werescrewed.gui.Label;
+import com.blindtigergames.werescrewed.gui.TextButton;
 import com.blindtigergames.werescrewed.input.MyControllerListener;
 
 class MainMenuScreen implements com.badlogic.gdx.Screen {
@@ -33,14 +34,14 @@ class MainMenuScreen implements com.badlogic.gdx.Screen {
 	private BitmapFont font = null;
 	BitmapFont fancyFont;
 	private Label headingLabel = null;
-	private Button exitButton = null;
+	private TextButton exitButton = null;
 	private int lineHeight = 0;
 	private int buttonIndex = 0;
 	private ArrayList<Button> Buttons;
 
-	private Button storyButton = null;
-	private Button levelSelectButton = null;
-	private Button optionsButton = null;
+	private TextButton storyButton = null;
+	private TextButton levelSelectButton = null;
+	private TextButton optionsButton = null;
 	private Controller controller1;
 	private Controller controller2;
 	private MyControllerListener controllerListener;
@@ -187,13 +188,13 @@ class MainMenuScreen implements com.badlogic.gdx.Screen {
 		lineHeight = Math.round( 2.5f * font.getCapHeight( ) + 20 );
 		headingLabel = new Label( "We're Screwed!!", fancyFont );
 		
-		storyButton = new Button("Start", fancyFont,
+		storyButton = new TextButton("Start", fancyFont,
 				new ScreenSwitchHandler(ScreenType.INTRO));
-		levelSelectButton = new Button( "Level Select", fancyFont,
+		levelSelectButton = new TextButton( "Level Select", fancyFont,
 				new ScreenSwitchHandler(ScreenType.LEVEL_SELECT));
-		optionsButton = new Button("Options", fancyFont,
+		optionsButton = new TextButton("Options", fancyFont,
 				new ScreenSwitchHandler( ScreenType.OPTIONS));
-		exitButton = new Button( "Exit", fancyFont, new ButtonHandler( ) {
+		exitButton = new TextButton( "Exit", fancyFont, new ButtonHandler( ) {
 			@Override
 			public void onClick( ) {
 				Gdx.app.exit( );

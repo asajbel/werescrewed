@@ -18,6 +18,7 @@ import com.blindtigergames.werescrewed.gui.CheckBox;
 import com.blindtigergames.werescrewed.gui.Label;
 import com.blindtigergames.werescrewed.gui.OptionButton;
 import com.blindtigergames.werescrewed.gui.Slider;
+import com.blindtigergames.werescrewed.gui.TextButton;
 import com.blindtigergames.werescrewed.input.MyControllerListener;
 import com.blindtigergames.werescrewed.screens.ScreenSwitchHandler;
 
@@ -27,14 +28,8 @@ class OptionsScreen extends Screen{
 	private BitmapFont font = null;
 	private BitmapFont fancyFont = null;
 	private Texture menuBG = null;
-	private Sprite musicSprite = null;
-	private Sprite soundSprite = null;
-	private Sprite voiceSprite = null;
 	private Sprite logo = null;
 	private int lineHeight = 0;
-	private int musicPos = 0;
-	private int soundPos = 0;
-	private int voicePos = 0;
 	private final int VOLUME_MAX = 100;
 	private final int VOLUME_MIN = 0;
 	private boolean subs = false;
@@ -45,16 +40,16 @@ class OptionsScreen extends Screen{
 	private Slider soundSlider = null;
 	private Slider voiceSlider = null;
 	private CheckBox subBox = null;
-	private Button controls = null;
+	private TextButton controls = null;
 	private OptionButton music = null;
 	private OptionButton sound = null;
 	private OptionButton voice = null;
 	private OptionButton subtitles = null;
-	private Button creditsButton = null;
-	private Button backButton = null;
+	private TextButton creditsButton = null;
+	private TextButton backButton = null;
 	
 	private int buttonIndex = 0;
-	private ArrayList< OptionButton > Buttons;
+	private ArrayList< Button > Buttons;
 	private Controller controller1;
 	private Controller controller2;
 	private MyControllerListener controllerListener;
@@ -164,15 +159,19 @@ class OptionsScreen extends Screen{
 					}
 					Buttons.get( buttonIndex ).setColored( true );
 					controllerTimer = controllerMax;
-				} else if ( Gdx.input.isKeyPressed( Keys.LEFT ) && Buttons.get( buttonIndex ).getOption( ).isActive( ) ) {
-					Slider slider = ( Slider ) Buttons.get( buttonIndex ).getOption( );
-					slider.moveLeft( );
-					controllerTimer = controllerMax;
-				} else if ( Gdx.input.isKeyPressed( Keys.RIGHT ) && Buttons.get( buttonIndex ).getOption( ).isActive( ) ) {
-					Slider slider = ( Slider ) Buttons.get( buttonIndex ).getOption( );
-					slider.moveRight( );
-					controllerTimer = controllerMax;
-				} 
+				} if ( Buttons.get( buttonIndex ) instanceof OptionButton ) {
+					OptionButton option = ( OptionButton ) Buttons.get( buttonIndex );
+					if ( option.getOption( ) instanceof Slider ) {
+						Slider slider = ( Slider ) option.getOption( );
+						if ( Gdx.input.isKeyPressed( Keys.LEFT ) && slider.isActive( ) ) {
+							slider.moveLeft( );
+							controllerTimer = controllerMax;
+						} else if ( Gdx.input.isKeyPressed( Keys.RIGHT ) &&  slider.isActive( ) ) {
+							slider.moveRight( );
+							controllerTimer = controllerMax;
+						}
+					}
+				}
 			}
 		}
 	}
@@ -249,7 +248,7 @@ class OptionsScreen extends Screen{
 		soundSlider = new Slider ( VOLUME_MIN, VOLUME_MAX, VOLUME_MAX / 2 );
 		voiceSlider = new Slider ( VOLUME_MIN, VOLUME_MAX, VOLUME_MAX / 2 );
 		subBox = new CheckBox ( 0, 1, 0 );
-		controls = new Button( "Controls", fancyFont, 
+		controls = new TextButton( "Controls", fancyFont, 
 				null);
 		music = new OptionButton( "Music", fancyFont, 
 				musicSlider );
@@ -259,17 +258,20 @@ class OptionsScreen extends Screen{
 				voiceSlider );
 		subtitles = new OptionButton( "Subtitles", fancyFont, 
 				subBox );
-		creditsButton = new Button("Credits", fancyFont, 
+		creditsButton = new TextButton("Credits", fancyFont, 
 				new ScreenSwitchHandler(ScreenType.CREDITS));
-		backButton = new Button( "Back", fancyFont, new ScreenSwitchHandler(
+		backButton = new TextButton( "Back", fancyFont, new ScreenSwitchHandler(
 				ScreenType.MAIN_MENU ) );
 		
 		music.setColored( true );
 		
-		Buttons = new ArrayList< OptionButton >( );
+		Buttons = new ArrayList< Button >( );
+		Buttons.add( controls );
 		Buttons.add( music );
 		Buttons.add( sound );
 		Buttons.add( voice );
 		Buttons.add( subtitles );
+		Buttons.add( creditsButton );
+		Buttons.add( backButton );
 	}
 }
