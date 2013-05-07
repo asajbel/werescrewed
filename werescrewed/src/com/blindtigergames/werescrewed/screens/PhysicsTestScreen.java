@@ -719,14 +719,14 @@ s.setFgFade( false );
 		rootSkeleton.addDynamicPlatform( struc1 );
 
 		StructureScrew s = new StructureScrew( "ss", struc1.getPositionPixel( )
-				.add( struc1.getPixelWidth( ) / 2, 0 ), 100, world,
+				.add( struc1.getPixelWidth( ) / 2, 100 ), 100, world,
 				Vector2.Zero );
 		s.addStructureJoint( struc1 );
 		s.addStructureJoint( rootSkeleton );
 		rootSkeleton.addScrewForDraw( s );
 
 		StructureScrew s2 = new StructureScrew( "ss2", struc1
-				.getPositionPixel( ).sub( struc1.getPixelWidth( ) / 2, 0 ),
+				.getPositionPixel( ).sub( struc1.getPixelWidth( ) / 2, -100 ),
 				100, world, Vector2.Zero );
 		s2.addStructureJoint( struc1 );
 		s2.addStructureJoint( rootSkeleton );
@@ -1045,12 +1045,12 @@ s.setFgFade( false );
 		//
 		// world.step( 1 / 60f, 6, 3 );
 		//
-		// if ( Gdx.input.isKeyPressed( Input.Keys.ESCAPE ) ) {
-		// if ( !ScreenManager.escapeHeld ) {
-		// ScreenManager.getInstance( ).show( ScreenType.PAUSE );
-		// }
-		// } else
-		// ScreenManager.escapeHeld = false;
+		 if ( Gdx.input.isKeyPressed( Input.Keys.ESCAPE ) ) {
+			 if ( !ScreenManager.escapeHeld ) {
+				 ScreenManager.getInstance( ).show( ScreenType.PAUSE );
+			 }
+		 } else
+			 ScreenManager.escapeHeld = false;
 
 	}
 

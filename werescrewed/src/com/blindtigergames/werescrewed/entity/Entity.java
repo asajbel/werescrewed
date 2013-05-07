@@ -1443,4 +1443,9 @@ public class Entity implements GleedLoadable {
 			sounds.playSound( "collision" );
 		}
 	}
+	
+	
+	public boolean hasDecals(){
+		return (fgDecals.size( ) > 0 || bgDecals.size( ) > 0);
+	}
 }

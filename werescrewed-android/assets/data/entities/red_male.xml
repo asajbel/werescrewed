@@ -20,4 +20,11 @@
 	<restitution>0.0f</restitution>
 	<bodyScale>0.45f</bodyScale>
 	<fixedRotation>true</fixedRotation>
+	<sound>jump:/common/sounds/jump.ogg</sound>
+	<sound>death:/common/sounds/deathMaleGah.ogg</sound>
+	<sound>death:/common/sounds/deathMaleUgh.ogg</sound>
+	<sound>death:/common/sounds/deathMaleOw.ogg</sound>
+	<sound>footstep1:/common/sounds/footstep1.ogg</sound>
+	<sound>footstep2:/common/sounds/footstep2.ogg</sound>
+	<sound>land:/common/sounds/land.ogg</sound>
 </entity>

@@ -15,6 +15,7 @@ import com.blindtigergames.werescrewed.graphics.TextureAtlas;
 import com.blindtigergames.werescrewed.player.Player;
 import com.blindtigergames.werescrewed.player.Player.ConcurrentState;
 import com.blindtigergames.werescrewed.player.Player.PlayerDirection;
+import com.blindtigergames.werescrewed.player.Player.PlayerState;
 import com.blindtigergames.werescrewed.util.Util;
 import com.esotericsoftware.spine.Animation;
 import com.esotericsoftware.spine.Bone;
@@ -136,14 +137,19 @@ public class PlayerSpinemator implements ISpinemator {
 			break;
 		case SCREWING_GROUND:
 		case SCREWING_HANG:
-			flipX = true; 
-			float screwAmount = mixer.getDuration( ) - (float) player.getCurrentScrew( ).getDepth( ) / (float) player.getCurrentScrew( ).getMaxDepth( ) * mixer.getDuration( );
-			if (!Float.isNaN( screwAmount )) {
+			float screwAmount = ( float ) player.getCurrentScrew( ).getDepth( )
+					/ ( float ) player.getCurrentScrew( ).getMaxDepth( )
+					* mixer.getDuration( );
+			if (flipX) {
+				screwAmount = mixer.getDuration( ) - screwAmount;
+			}
+			if ( !Float.isNaN( screwAmount ) ) {
 				mixer.apply( skel, screwAmount, next.loopBool );
 				break;
-			}
-			else
-				mixer = anims.get( PlayerAnim.HANG ); 
+			} else
+				anims.get( PlayerAnim.HANG ).apply( skel, time,
+						PlayerAnim.HANG.loopBool );
+				break;
 		default:
 			mixRatio = mixTime / anim.getDuration( );
 			mixer.mix( skel, time, next.loopBool, mixRatio );
@@ -162,7 +168,8 @@ public class PlayerSpinemator implements ISpinemator {
 		} else {
 		}
 
-		if ( player.getExtraState( ) == ConcurrentState.ScrewReady ) {
+		if ( player.getExtraState( ) == ConcurrentState.ScrewReady
+				&& player.getState( ) != PlayerState.Screwing ) {
 			switch ( animState ) {
 			case IGNORE:
 				readyTime = 0f;

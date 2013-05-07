@@ -34,11 +34,11 @@ public class PowerSwitch extends EventTrigger{
 		contructRectangleBody(170, 128, position);
 		entityType = EntityType.POWERSWITCH;
 		TextureAtlas commonTextureAtlas = WereScrewedGame.manager.getAtlas( "common-textures" );
-		onState = commonTextureAtlas.createSprite( "steam_engine_lever_on" );
-		offState = commonTextureAtlas.createSprite( "steam_engine_lever_off" );
+		onState = commonTextureAtlas.createSprite( "switch_on" );
+		offState = commonTextureAtlas.createSprite( "switch_off" );
 		this.sprite = offState;
-		onState.setOrigin( onState.getWidth( )/2, 32 );
-		offState.setOrigin( offState.getWidth( )/2, 32 );
+		onState.setOrigin( onState.getWidth( )/2, onState.getHeight( )/2 );
+		offState.setOrigin( offState.getWidth( )/2, offState.getHeight( )/2  );
 	}
 	
 	public void doAction(){

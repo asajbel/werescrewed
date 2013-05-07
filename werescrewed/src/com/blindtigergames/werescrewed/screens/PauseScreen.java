@@ -12,7 +12,7 @@ import com.blindtigergames.werescrewed.gui.Label;
 import com.blindtigergames.werescrewed.gui.TextButton;
 import com.blindtigergames.werescrewed.screens.ScreenSwitchHandler;
 
-class PauseScreen implements com.badlogic.gdx.Screen {
+class PauseScreen extends Screen {
 
 	public ScreenType screenType;
 	private SpriteBatch batch = null;
@@ -66,6 +66,26 @@ class PauseScreen implements com.badlogic.gdx.Screen {
 		screenLabel.draw( batch );
 		mainMenuButton.draw( batch, camera );
 		batch.end( );
+		
+		if( WereScrewedGame.p1Controller != null ) {
+			if ( WereScrewedGame.p1ControllerListener.pausePressed( )) {
+				if(!ScreenManager.p1PauseHeld){
+					ScreenManager.getInstance( ).show(  ScreenManager.getPrevScreen( ) );
+				}
+			}else {
+				ScreenManager.p1PauseHeld = false;
+			}
+		}
+		if( WereScrewedGame.p2Controller != null ) {
+			if ( WereScrewedGame.p2ControllerListener.pausePressed( )) {
+				if(!ScreenManager.p2PauseHeld){
+					ScreenManager.getInstance( ).show(  ScreenManager.getPrevScreen( ) );
+				}
+			}else {
+				ScreenManager.p2PauseHeld = false;
+			}
+			
+		}
 		
 		if ( Gdx.input.isKeyPressed( Input.Keys.ESCAPE ) ) {
 			if(!ScreenManager.escapeHeld){

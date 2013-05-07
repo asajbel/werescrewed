@@ -22,8 +22,8 @@ import com.blindtigergames.werescrewed.gui.TextButton;
 import com.blindtigergames.werescrewed.input.MyControllerListener;
 import com.blindtigergames.werescrewed.screens.ScreenSwitchHandler;
 
-class OptionsScreen extends Screen{
-//implements com.badlogic.gdx.Screen
+class OptionsScreen extends Screen {
+
 	private SpriteBatch batch = null;
 	private BitmapFont font = null;
 	private BitmapFont fancyFont = null;

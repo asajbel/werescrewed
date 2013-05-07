@@ -57,13 +57,7 @@ public class AssetManager extends com.badlogic.gdx.assets.AssetManager {
 	 * @return TileSet with your atlas loaded in.
 	 */
 	public TileSet getTileSet( String name ) {
-		TileSet ts;
-		// if ( isAtlasLoaded( name+"-bleed" )){
-		// ts = new TileSet( atlasMap.get( name ), );
-		// }else{
-		ts = new TileSet( atlasMap.get( name ), atlasMap.get( name + "-bleed" ) );
-		// }
-		return ts;
+		return new TileSet( atlasMap.get( name ), atlasMap.get( name + "-bleed" ) );
 	}
 
 	/**

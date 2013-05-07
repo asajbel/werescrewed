@@ -60,6 +60,11 @@
 /levels/alphabot/head_right.pack
 /levels/alphabot/forearm_elbow_ex.pack
 /levels/alphabot/right_arm_ex.pack
+/levels/alphabot/chest_exterior_lower.pack
+/levels/alphabot/chest_exterior_middle.pack
+/levels/alphabot/chest_exterior_upper1.pack
+/levels/alphabot/chest_exterior_upper2.pack
+/levels/alphabot/chest2.pack
 
 
 /levels/level1/player_female_idle.png
@@ -72,6 +77,7 @@
 /levels/alphabot/alphabot_tile_interior.png
 /levels/alphabot/sheetmetaltexture.png
 /levels/alphabot/sheetmetaltextureblack.png
+
 
 /levels/alphabot/shoe_testing/shoe_background_1024.png
 

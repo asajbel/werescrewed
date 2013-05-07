@@ -1,29 +1,30 @@
 package com.blindtigergames.werescrewed.screens;
 
+import java.util.ArrayList;
+
+import com.blindtigergames.werescrewed.screens.transitions.TransitionEffect;
+
 public class TransitionScreen extends Screen {
 
 	Screen current;
-	Screen next;
+	ScreenType next;
 
 	int currentTransitionEffect = 0;
-	//ArrayList<TransitionEffect> transitionEffects;
+	float delta = 0.0f;
+	TransitionEffect transitionEffect;
 
-	/*TransitionScreen( Screen current, Screen next, ArrayList<TransitionEffect> transitionEffects ) {
+	TransitionScreen( Screen current, ScreenType next, TransitionEffect transitionEffect, float delta ) {
 		this.current = current;
 		this.next = next;
-		this.transitionEffects = transitionEffects;
+		this.transitionEffect = transitionEffect;
+		this.delta = delta;
 	}
 
 	void render( ) {
-		if ( currentTransitionEffect >= transitionEffects.size( ) ) {
-			return;
-		}
+		//transitionEffects.update( delta );
+		transitionEffect.render( current, next, delta );
 
-		transitionEffects.get( currentTransitionEffect ).update( getDelta( ) );
-		transitionEffects.get( currentTransitionEffect ).render( current, next );
-
-		if ( transitionEffects.get(currentTransitionEffect).isFinished( ) )
-			currentTransitionEffect++;
+		if ( transitionEffect.isFinished( ) )
+			ScreenManager.getInstance( ).show( next );
 	}
-	*/
 }

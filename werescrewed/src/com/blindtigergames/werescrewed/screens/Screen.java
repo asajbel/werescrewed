@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.blindtigergames.werescrewed.graphics.SpriteBatch;
+import com.blindtigergames.werescrewed.gui.Button;
 import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.debug.FPSLoggerS;
 import com.blindtigergames.werescrewed.debug.SBox2DDebugRenderer;
@@ -26,6 +27,10 @@ public class Screen implements com.badlogic.gdx.Screen {
 	protected SpriteBatch batch;
 	protected SBox2DDebugRenderer debugRenderer;
 	private Color clearColor = new Color(0,0,0,1);
+	protected ArrayList< Button > Buttons = new ArrayList< Button >( );
+	protected int controllerTimer = 10;
+	protected int controllerMax = 10;
+	protected int buttonIndex = 0;
 	
 	BitmapFont debug_font;
 	Camera uiCamera;
@@ -46,7 +51,7 @@ public class Screen implements com.badlogic.gdx.Screen {
 	
 		logger = new FPSLoggerS( );
 		uiCamera = new OrthographicCamera(Gdx.graphics.getWidth( ), Gdx.graphics.getHeight( ));
-		uiCamera.position.set(0,0 , 0); //-Gdx.graphics.getWidth( ), -Gdx.graphics.getHeight( )
+		uiCamera.position.set(0, 0 , 0); //-Gdx.graphics.getWidth( ), -Gdx.graphics.getHeight( )
 	}
 	
 	@Override
@@ -92,14 +97,101 @@ public class Screen implements com.badlogic.gdx.Screen {
 				//debug_font.draw(batch, "ALPHA BUILD", -Gdx.graphics.getWidth( )/2, Gdx.graphics.getHeight( )/2);
 			}
 			batch.end( );
+			
+			
 		}
 		
-		if ( Gdx.input.isKeyPressed( Input.Keys.ESCAPE ) ) {
-			if(!ScreenManager.escapeHeld){
-				ScreenManager.getInstance( ).show( ScreenType.PAUSE );
+		
+		if(Buttons.size( ) > 0){
+		
+			if ( controllerTimer > 0 ) {
+				controllerTimer--;
+			} else {
+				
+				if(WereScrewedGame.p1Controller != null  ) {
+					if ( WereScrewedGame.p1ControllerListener.jumpPressed( )
+							|| WereScrewedGame.p1ControllerListener.pausePressed( )) {
+						Buttons.get( buttonIndex ).setSelected( true );
+						controllerTimer = controllerMax;
+						
+					} else if ( WereScrewedGame.p1ControllerListener.downPressed( )) {
+						
+						Buttons.get( buttonIndex ).setColored( false );
+						buttonIndex++;
+						buttonIndex = buttonIndex % Buttons.size( );
+						Buttons.get( buttonIndex ).setColored( true );
+						controllerTimer = controllerMax;
+						
+					} else if ( WereScrewedGame.p1ControllerListener.upPressed( )) {
+						
+						Buttons.get( buttonIndex ).setColored( false );
+						if ( buttonIndex == 0 ) {
+							buttonIndex = Buttons.size( ) - 1;
+						} else {
+							buttonIndex--;
+						}
+						Buttons.get( buttonIndex ).setColored( true );
+						controllerTimer = controllerMax;
+						
+					}
+				}
+				if(WereScrewedGame.p2Controller != null ) {
+					if (  WereScrewedGame.p2ControllerListener.jumpPressed( ) 
+							|| WereScrewedGame.p2ControllerListener.pausePressed( )) {
+						Buttons.get( buttonIndex ).setSelected( true );
+						controllerTimer = controllerMax;
+						
+					} else if (  WereScrewedGame.p2ControllerListener.downPressed( )) {
+						
+						Buttons.get( buttonIndex ).setColored( false );
+						buttonIndex++;
+						buttonIndex = buttonIndex % Buttons.size( );
+						Buttons.get( buttonIndex ).setColored( true );
+						controllerTimer = controllerMax;
+						
+					} else if (  WereScrewedGame.p2ControllerListener.upPressed( ) ) {
+						
+						Buttons.get( buttonIndex ).setColored( false );
+						if ( buttonIndex == 0 ) {
+							buttonIndex = Buttons.size( ) - 1;
+						} else {
+							buttonIndex--;
+						}
+						Buttons.get( buttonIndex ).setColored( true );
+						controllerTimer = controllerMax;
+						
+					}
+				}
+				
+				
+				if(WereScrewedGame.p1Controller == null && WereScrewedGame.p2Controller == null){
+					if( Gdx.input.isKeyPressed( Keys.ENTER )){
+						Buttons.get( buttonIndex ).setSelected( true );
+					}
+					if( Gdx.input.isKeyPressed( Keys.DOWN )){
+						Buttons.get( buttonIndex ).setColored( false );
+						buttonIndex++;
+						buttonIndex = buttonIndex % Buttons.size( );
+						Buttons.get( buttonIndex ).setColored( true );
+					}
+					if( Gdx.input.isKeyPressed( Keys.UP ) ){
+						
+						Buttons.get( buttonIndex ).setColored( false );
+						if ( buttonIndex == 0 ) {
+							buttonIndex = Buttons.size( ) - 1;
+						} else {
+							buttonIndex--;
+						}
+						Buttons.get( buttonIndex ).setColored( true );
+						
+					}
+				}
+				
 			}
-		} else
-			ScreenManager.escapeHeld = false;
+		}
+		
+		
+		
 	}
 
 	protected void addFGSkeleton( Skeleton skel ) {
@@ -180,7 +272,8 @@ public class Screen implements com.badlogic.gdx.Screen {
 
 	@Override
 	public void dispose( ) {
-		level.resetPhysicsWorld( );
+		if(level != null)
+			level.resetPhysicsWorld( );
 		
 	}
 	

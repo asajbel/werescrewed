@@ -6,9 +6,12 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.controllers.Controller;
+import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.FPSLogger;
 import com.blindtigergames.werescrewed.graphics.SpriteBatch;
+import com.blindtigergames.werescrewed.input.MyControllerListener;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.blindtigergames.werescrewed.asset.AssetManager;
 import com.blindtigergames.werescrewed.screens.ScreenManager;
@@ -31,6 +34,9 @@ public class WereScrewedGame extends Game {
 	public static ShaderProgram defaultShader;
 	
 	public static Random random;
+	
+	public static Controller p1Controller, p2Controller;
+	public static MyControllerListener p1ControllerListener, p2ControllerListener;
 	
 	@SuppressWarnings( "unused" )
 	private float fpsTime = 0;
@@ -55,6 +61,8 @@ public class WereScrewedGame extends Game {
 		logger = new FPSLogger( );
 
 		manager.loadDummyAssets( );
+		
+		setUpControllers( );
 	}
 
 	@Override
@@ -118,4 +126,24 @@ public class WereScrewedGame extends Game {
 	public void update( float dT ) {
 	}
 
+	private void setUpControllers( ) {
+		for ( Controller controller : Controllers.getControllers( ) ) {
+			Gdx.app.log( "controllers", controller.getName( ) );
+		}
+		if ( Controllers.getControllers( ).size >= 1 ) {
+			
+			p1ControllerListener = new MyControllerListener( );
+			p1Controller = Controllers.getControllers( ).get( 0 );
+			p1Controller.addListener( p1ControllerListener );
+			
+		}
+		if ( Controllers.getControllers( ).size >= 2 ) {
+
+			p2ControllerListener = new MyControllerListener( );
+			p2Controller = Controllers.getControllers( ).get( 1 );
+			p2Controller.addListener( p2ControllerListener );
+			
+		}
+
+	}
 }
