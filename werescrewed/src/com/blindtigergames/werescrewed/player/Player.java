@@ -1254,6 +1254,7 @@ public class Player extends Entity {
 			if ( Metrics.activated ) {
 				Metrics.addPlayerAttachToScrewPosition( this.getPositionPixel( ) );
 			}
+			sounds.playSound( "attach" , 1.0f);
 		}
 	}
 
