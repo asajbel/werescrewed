@@ -54,7 +54,7 @@ public class Slider extends OptionControl {
 		}
 	}
 	
-	public void draw(SpriteBatch batch ) {
+	public void draw( SpriteBatch batch ) {
 		volume.setPosition( xPos, yPos );
 		volume.draw( batch );
 		if ( activated ) {

@@ -7,8 +7,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.entity.Sprite;
-import com.blindtigergames.werescrewed.gui.Button;
 import com.blindtigergames.werescrewed.gui.Label;
+import com.blindtigergames.werescrewed.gui.TextButton;
 
 public class LevelSelectScreen extends Screen {
 
@@ -20,13 +20,13 @@ public class LevelSelectScreen extends Screen {
 	private Sprite logo = null;
 	private Sprite menuBG = null;
 	private Label screenLabel = null;
-	private Button physicsButton = null;
-	private Button resurrectButton = null;
-	private Button hazardButton = null;
+	private TextButton resurrectButton = null;
+	private TextButton hazardButton = null;
+	private TextButton physicsButton = null;
 	private int lineHeight = 0;
-	private Button level1Button;
-	private Button backButton = null;
-	private Button dragonButton = null;
+	private TextButton level1Button;
+	private TextButton backButton = null;
+	private TextButton dragonButton = null;
 
 
 
@@ -142,19 +142,17 @@ public class LevelSelectScreen extends Screen {
 	 * loads buttons appropriately
 	 */
 	private void loadButtons( ) {
-		physicsButton = new Button( "Physics Test Screen", fancyFont,
+		physicsButton = new TextButton( "Physics Test Screen", fancyFont,
 				new ScreenSwitchHandler( ScreenType.PHYSICS ) );
-		resurrectButton = new Button( "Parallax Test Screen", fancyFont,
+		resurrectButton = new TextButton( "Parallax Test Screen", fancyFont,
 				new ScreenSwitchHandler( ScreenType.RESURRECT ) );
-		hazardButton = new Button( "Hazard Test Screen", fancyFont,
+		hazardButton = new TextButton( "Hazard Test Screen", fancyFont,
 				new ScreenSwitchHandler( ScreenType.HAZARD ) );
-
-
-		level1Button = new Button( "AlphaBot", fancyFont,
+		level1Button = new TextButton( "AlphaBot", fancyFont,
 				new ScreenSwitchHandler( ScreenType.LOADING_1 ) );
-		dragonButton = new Button( "Dragon", fancyFont, new ScreenSwitchHandler( ScreenType.LOADING_2 ) );
+		dragonButton = new TextButton( "Dragon", fancyFont, new ScreenSwitchHandler( ScreenType.LOADING_2 ) );
 
-		backButton = new Button( "Back", fancyFont, new ScreenSwitchHandler(
+		backButton = new TextButton( "Back", fancyFont, new ScreenSwitchHandler(
 				ScreenType.MAIN_MENU ) );
 		physicsButton.setColored( true );
 		
