@@ -2,7 +2,6 @@ package com.blindtigergames.werescrewed.camera;
 
 import java.util.ArrayList;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
@@ -73,8 +72,8 @@ public class AnchorList {
 
 		// Update timers
 		for ( Anchor curAnchor : anchorList ) {
-			if ( curAnchor.getTimer( ) > 0 && curAnchor.activated == true ){
-				
+			if ( curAnchor.getTimer( ) > 0 && curAnchor.activated == true ) {
+
 				curAnchor.decrementTimer( );
 				// Gdx.app.log( "timer", curAnchor.getTimer( ) + "" );
 			}
@@ -219,9 +218,12 @@ public class AnchorList {
 	 *         anchors plus their buffer heights
 	 */
 	public Vector2 getLongestXYDist( ) {
+		// Initialize distance vector
 		Vector2 vectDist = new Vector2( 0f, 0f );
+
 		int numActiveAnchors = 0;
 
+		// Calculate number of active anchors
 		for ( Anchor anchor : anchorList ) {
 			if ( anchor.activated ) {
 				numActiveAnchors++;
@@ -229,8 +231,10 @@ public class AnchorList {
 		}
 
 		if ( numActiveAnchors > 1 ) {
+			// If we have at least 2 anchors:
 			AnchorPair pair = new AnchorPair( );
 			int j = 0;
+			// Iterate through anchorList until we find the first active anchor
 			for ( int i = 0; i < anchorList.size( ); i++ ) {
 				if ( anchorList.get( i ).activated ) {
 					pair.first = anchorList.get( i );
@@ -238,6 +242,9 @@ public class AnchorList {
 					break;
 				}
 			}
+
+			// From the point we ended in the previous iteration, find the next
+			// active anchor
 			for ( int i = j + 1; i < anchorList.size( ); i++ ) {
 				if ( anchorList.get( i ).activated ) {
 					pair.second = anchorList.get( i );
@@ -245,8 +252,11 @@ public class AnchorList {
 				}
 			}
 
-			if ( pair.first.position.x > pair.second.position.x )
+			// Keeps the first of pair to the left of the second
+			if ( pair.first.position.x - pair.first.buffer.x > pair.second.position.x
+					- pair.second.buffer.x ) {
 				pair.swap( );
+			}
 
 			// Find anchor with left- and right-most buffers //
 
@@ -255,15 +265,13 @@ public class AnchorList {
 				// Making sure its active
 				if ( curAnchor.activated ) {
 					// If the current anchor (minus the buffer) is to the left
-					// of
-					// the one tracked, replace it
+					// of the current left-most anchor, replace it
 					if ( curAnchor.position.x - curAnchor.buffer.x < pair.first.position.x
 							- pair.first.buffer.x ) {
 						pair.first = curAnchor;
 					}
 					// If the current anchor (plus the buffer) is to the right
-					// of
-					// the one tracked, replace it
+					// of the current right-most anchor, replace it
 					if ( curAnchor.position.x + curAnchor.buffer.x > pair.second.position.x
 							+ pair.second.buffer.x ) {
 						pair.second = curAnchor;
@@ -272,7 +280,7 @@ public class AnchorList {
 			}
 			furthestX = pair;
 
-			if ( pair != null && pair.first != null && pair.second != null ) {
+			if ( pair.first != null && pair.second != null ) {
 				// set x distance
 				vectDist.x = ( pair.second.position.x + pair.second.buffer.x )
 						- ( pair.first.position.x - pair.first.buffer.x );
@@ -281,6 +289,8 @@ public class AnchorList {
 			// Find longest y distance //
 			pair = new AnchorPair( );
 			j = 0;
+
+			// Iterate through anchorList until we find the first active anchor
 			for ( int i = 0; i < anchorList.size( ); i++ ) {
 				if ( anchorList.get( i ).activated ) {
 					pair.first = anchorList.get( i );
@@ -288,6 +298,9 @@ public class AnchorList {
 					break;
 				}
 			}
+
+			// From the point we ended in the previous iteration, find the next
+			// active anchor
 			for ( int i = j + 1; i < anchorList.size( ); i++ ) {
 				if ( anchorList.get( i ).activated ) {
 					pair.second = anchorList.get( i );
@@ -295,7 +308,9 @@ public class AnchorList {
 				}
 			}
 
-			if ( pair.first.position.y > pair.second.position.y )
+			// Keeps the first of pair below the second
+			if ( pair.first.position.y - pair.first.buffer.y > pair.second.position.y
+					- pair.first.buffer.y )
 				pair.swap( );
 
 			// Find anchor with top- and bottom-most buffers //
@@ -327,7 +342,15 @@ public class AnchorList {
 			}
 
 		} else if ( numActiveAnchors == 1 ) {
-			Anchor onlyAnchor = anchorList.get( 0 );
+			// Otherwise, if there's only one active anchor
+			Anchor onlyAnchor = new Anchor( new Vector2( 0, 0 ) );
+			// Iterate through anchorList until we find the active anchor
+			for ( int i = 0; i < anchorList.size( ); i++ ) {
+				if ( anchorList.get( i ).activated ) {
+					onlyAnchor = anchorList.get( i );
+					break;
+				}
+			}
 			vectDist.x = ( onlyAnchor.buffer.x * 2 );
 			vectDist.y = ( onlyAnchor.buffer.y * 2 );
 			furthestX = new AnchorPair( );
@@ -337,6 +360,7 @@ public class AnchorList {
 			furthestY.first = onlyAnchor;
 			furthestY.second = onlyAnchor;
 		} else {
+			// Finally, if there are no anchors active
 			vectDist.x = 0;
 			vectDist.y = 0;
 			furthestX = null;

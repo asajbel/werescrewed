@@ -18,6 +18,7 @@ import com.badlogic.gdx.utils.XmlReader;
 import com.badlogic.gdx.utils.XmlReader.Element;
 import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.graphics.TextureAtlas;
+import com.blindtigergames.werescrewed.util.ArrayHash;
 import com.blindtigergames.werescrewed.util.BodyEditorLoader;
 import com.blindtigergames.werescrewed.util.Util;
 
@@ -55,7 +56,8 @@ public class EntityDef {
 	// Miscellaneous Fields
 	protected String name;
 	protected EntityCategory category;
-
+	protected ArrayHash<String,String> properties;
+	
 	// CONSTANTS
 	public static final String tag = "definition";
 	// Static initialization
@@ -94,6 +96,7 @@ public class EntityDef {
 		// Misc Data
 		setName( name );
 		category = null;
+		properties = new ArrayHash<String, String>();
 	}
 
 	/**
@@ -298,6 +301,16 @@ public class EntityDef {
 
 			out.loadComplexBody( density, friction, restitution, scale,
 					bodyName );
+			
+			// Sound Data
+			Array<Element> sounds = xml.getChildrenByName( "sound" );
+			if (sounds.size > 0){
+				for (Element soundElem: sounds){
+					if (soundElem.getText( ).length() > 0){
+						out.properties.add( "sound", soundElem.getText( ) );
+					}
+				}
+			}
 			return out;
 		} catch ( IOException e ) {
 			Gdx.app.log( "Error", "Loading entity definition " + id + " ", e );
@@ -339,6 +352,10 @@ public class EntityDef {
 		return spriteScale;
 	}
 
+	public ArrayHash<String,String> getProperties(){
+		return properties;
+	}
+	
 	public void setScale( float x ) {
 		spriteScale.x = x;
 	}
