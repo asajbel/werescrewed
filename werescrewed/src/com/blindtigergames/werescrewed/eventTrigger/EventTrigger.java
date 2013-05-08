@@ -17,6 +17,7 @@ import com.blindtigergames.werescrewed.entity.EntityType;
 import com.blindtigergames.werescrewed.entity.action.IAction;
 import com.blindtigergames.werescrewed.entity.platforms.Platform;
 import com.blindtigergames.werescrewed.graphics.SpriteBatch;
+import com.blindtigergames.werescrewed.player.Player;
 import com.blindtigergames.werescrewed.util.Util;
 
 
@@ -369,13 +370,23 @@ public class EventTrigger extends Platform{
 	public void triggerBeginEvent(){
 		if(twoPlayersToActivate){
 			if(playerOneContact && playerTwoContact){
-				runBeginAction();
+				runBeginAction(null);
 				
 			}
 		}else{
-			runBeginAction();
+			runBeginAction(null);
 		}
-		
+	}
+	
+	public void triggerBeginEvent(Player player){
+		if(twoPlayersToActivate){
+			if(playerOneContact && playerTwoContact){
+				runBeginAction(player);
+				
+			}
+		}else{
+			runBeginAction(player);
+		}
 	}
 	
 	/**
@@ -439,10 +450,11 @@ public class EventTrigger extends Platform{
 	
 	/**
 	 * calls act() with its begin action on every entity in this list
-	 * depending on if its repeatable or not
+	 * depending on if its repeatable or not.
 	 * @author Ranveer
+	 * @param playerThatTriggeredMe pass in null if you don't know what this is for.
 	 */
-	protected void runBeginAction(){
+	protected void runBeginAction(Player playerThatTriggeredMe){
 		if(!repeatable)
 		{
 			if(!beginTriggeredOnce)
@@ -459,6 +471,7 @@ public class EventTrigger extends Platform{
 							//Gdx.app.log( this.name,  " begin action " + beginAction.getClass( ).getSimpleName( ) );
 						}
 					}
+					if(playerThatTriggeredMe!=null)beginAction.act(playerThatTriggeredMe);
 				}
 				else
 				{
@@ -468,6 +481,7 @@ public class EventTrigger extends Platform{
 						beginTriggeredOnce = true;
 						//endTriggeredOnce = false;
 						//Gdx.app.log( this.name,  " begin action " + beginAction.getClass( ).getSimpleName( ) );
+						if(playerThatTriggeredMe!=null)beginAction.act(playerThatTriggeredMe);
 					}
 				}
 			}
@@ -486,6 +500,7 @@ public class EventTrigger extends Platform{
 						//Gdx.app.log( this.name,  " begin action " + beginAction.getClass( ).getSimpleName( ));
 					}
 				}
+				if(playerThatTriggeredMe!=null)beginAction.act(playerThatTriggeredMe);
 			}
 			else
 			{
@@ -495,6 +510,7 @@ public class EventTrigger extends Platform{
 					beginTriggeredOnce = true;
 					endTriggeredOnce = false;
 					//Gdx.app.log( this.name,  " begin action " + beginAction.getClass( ).getSimpleName( ) );
+					if(playerThatTriggeredMe!=null)beginAction.act(playerThatTriggeredMe);
 				}
 			}
 		}

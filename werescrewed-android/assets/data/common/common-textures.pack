@@ -5,21 +5,28 @@ repeat: none
 offset: 0, 0
 hex_screw
   rotate: false
-  xy: 139, 741
+  xy: 250, 453
   size: 79, 79
   orig: 79, 79
   offset: 0, 0
   index: -1
+3
+  rotate: false
+  xy: 66, 959
+  size: 62, 62
+  orig: 62, 62
+  offset: 0, 0
+  index: -1
 pipeLR
   rotate: false
-  xy: 58, 453
+  xy: 58, 683
   size: 94, 94
   orig: 94, 94
   offset: 0, 0
   index: -1
 pipeUR
   rotate: false
-  xy: 2, 825
+  xy: 58, 491
   size: 94, 94
   orig: 94, 94
   offset: 0, 0
@@ -33,70 +40,77 @@ rail_horz_right
   index: -1
 flat_head_circular2
   rotate: false
-  xy: 154, 357
+  xy: 154, 683
   size: 88, 88
   orig: 88, 88
   offset: 0, 0
   index: -1
+4
+  rotate: false
+  xy: 2, 959
+  size: 62, 62
+  orig: 62, 62
+  offset: 0, 0
+  index: -1
 power_screw
   rotate: false
-  xy: 58, 741
+  xy: 244, 683
   size: 79, 79
   orig: 79, 79
   offset: 0, 0
   index: -1
 rivet4
   rotate: false
-  xy: 192, 654
+  xy: 96, 779
   size: 36, 36
   orig: 36, 36
   offset: 0, 0
   index: -1
 pipeEndL
   rotate: false
-  xy: 98, 822
+  xy: 168, 913
   size: 94, 94
   orig: 94, 94
   offset: 0, 0
   index: -1
 pipeEndD
   rotate: false
-  xy: 98, 918
+  xy: 154, 491
   size: 94, 94
   orig: 94, 94
   offset: 0, 0
   index: -1
 rivet3
   rotate: false
-  xy: 244, 395
+  xy: 108, 913
   size: 38, 35
   orig: 38, 35
   offset: 0, 0
   index: -1
 tiletexture2
   rotate: false
-  xy: 154, 654
+  xy: 128, 453
   size: 36, 36
   orig: 36, 36
   offset: 0, 0
   index: -1
 rail_vert_bottom
   rotate: false
-  xy: 235, 447
+  xy: 331, 438
   size: 154, 54
   orig: 154, 54
   offset: 0, 0
   index: -1
 chainlink
   rotate: false
-  xy: 154, 528
+  xy: 130, 950
   size: 36, 68
   orig: 36, 68
   offset: 0, 0
   index: -1
 pipeEndU
   rotate: false
-  xy: 58, 549
+  xy: 72, 817
   size: 94, 94
   orig: 94, 94
   offset: 0, 0
@@ -108,39 +122,53 @@ steam_engine_lever_on
   orig: 502, 353
   offset: 0, 0
   index: -1
+switch_on
+  rotate: false
+  xy: 2, 825
+  size: 68, 132
+  orig: 68, 132
+  offset: 0, 0
+  index: -1
 pipeDL
   rotate: false
-  xy: 194, 918
+  xy: 154, 587
   size: 94, 94
   orig: 94, 94
   offset: 0, 0
   index: -1
 tiletexture1
   rotate: false
-  xy: 154, 692
+  xy: 58, 779
   size: 36, 36
   orig: 36, 36
   offset: 0, 0
   index: -1
 flat_head_circular
   rotate: false
-  xy: 154, 447
+  xy: 320, 357
   size: 79, 79
   orig: 79, 79
   offset: 0, 0
   index: 75
 pipeUD
   rotate: false
-  xy: 58, 357
+  xy: 58, 587
   size: 94, 94
   orig: 94, 94
   offset: 0, 0
   index: -1
 rivet2
   rotate: false
-  xy: 244, 357
+  xy: 72, 913
   size: 34, 36
   orig: 34, 36
+  offset: 0, 0
+  index: -1
+2
+  rotate: false
+  xy: 250, 534
+  size: 62, 62
+  orig: 62, 62
   offset: 0, 0
   index: -1
 rail_horz_left
@@ -152,7 +180,7 @@ rail_horz_left
   index: -1
 pipeUL
   rotate: false
-  xy: 2, 921
+  xy: 128, 357
   size: 94, 94
   orig: 94, 94
   offset: 0, 0
@@ -166,35 +194,42 @@ rail_horz_middle
   index: -1
 pipeEndR
   rotate: false
-  xy: 58, 645
+  xy: 168, 817
   size: 94, 94
   orig: 94, 94
   offset: 0, 0
   index: -1
+switch_off
+  rotate: false
+  xy: 58, 357
+  size: 68, 132
+  orig: 68, 132
+  offset: 0, 0
+  index: -1
 rail_vert_top
   rotate: false
-  xy: 154, 598
+  xy: 250, 598
   size: 154, 54
   orig: 154, 54
   offset: 0, 0
   index: -1
 pipeDR
   rotate: false
-  xy: 194, 822
+  xy: 224, 357
   size: 94, 94
   orig: 94, 94
   offset: 0, 0
   index: -1
 rivet1
   rotate: false
-  xy: 192, 692
+  xy: 134, 779
   size: 35, 36
   orig: 35, 36
   offset: 0, 0
   index: -1
 rail_vert_middle
   rotate: false
-  xy: 192, 528
+  xy: 314, 534
   size: 154, 54
   orig: 154, 54
   offset: 0, 0

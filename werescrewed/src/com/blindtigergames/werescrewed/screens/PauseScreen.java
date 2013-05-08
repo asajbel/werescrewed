@@ -8,11 +8,11 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 import com.blindtigergames.werescrewed.WereScrewedGame;
-import com.blindtigergames.werescrewed.gui.Button;
 import com.blindtigergames.werescrewed.gui.Label;
+import com.blindtigergames.werescrewed.gui.TextButton;
 import com.blindtigergames.werescrewed.screens.ScreenSwitchHandler;
 
-class PauseScreen implements com.badlogic.gdx.Screen {
+class PauseScreen extends Screen {
 
 	public ScreenType screenType;
 	private SpriteBatch batch = null;
@@ -21,7 +21,7 @@ class PauseScreen implements com.badlogic.gdx.Screen {
 	private BitmapFont font = null;
 	private BitmapFont fancyFont = null;
 	private Label screenLabel = null;
-	private Button mainMenuButton = null;
+	private TextButton mainMenuButton = null;
 	private int lineHeight = 0;
 	
 	
@@ -30,13 +30,13 @@ class PauseScreen implements com.badlogic.gdx.Screen {
 		batch = new SpriteBatch( );
 		font = new BitmapFont( );
 
-		fancyFont = WereScrewedGame.manager.getFont( "Screwball" );
+		fancyFont = WereScrewedGame.manager.getFont( "longdon" );
 
 		logo =  WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 				 + "/common/title_background.png", Texture.class );
 		lineHeight = Math.round( 2.5f * font.getCapHeight( ) );
 		screenLabel = new Label("Pause Screen", fancyFont);
-		mainMenuButton = new Button("Main Menu",fancyFont, 
+		mainMenuButton = new TextButton("Main Menu",fancyFont, 
 				new ScreenSwitchHandler(ScreenType.MAIN_MENU));
 		
 
@@ -66,6 +66,26 @@ class PauseScreen implements com.badlogic.gdx.Screen {
 		screenLabel.draw( batch );
 		mainMenuButton.draw( batch, camera );
 		batch.end( );
+		
+		if( WereScrewedGame.p1Controller != null ) {
+			if ( WereScrewedGame.p1ControllerListener.pausePressed( )) {
+				if(!ScreenManager.p1PauseHeld){
+					ScreenManager.getInstance( ).show(  ScreenManager.getPrevScreen( ) );
+				}
+			}else {
+				ScreenManager.p1PauseHeld = false;
+			}
+		}
+		if( WereScrewedGame.p2Controller != null ) {
+			if ( WereScrewedGame.p2ControllerListener.pausePressed( )) {
+				if(!ScreenManager.p2PauseHeld){
+					ScreenManager.getInstance( ).show(  ScreenManager.getPrevScreen( ) );
+				}
+			}else {
+				ScreenManager.p2PauseHeld = false;
+			}
+			
+		}
 		
 		if ( Gdx.input.isKeyPressed( Input.Keys.ESCAPE ) ) {
 			if(!ScreenManager.escapeHeld){

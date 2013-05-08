@@ -1,0 +1,19 @@
+chest2.png
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+offset: 0, 0
+chest_upperleftandtop_mechanismS_ROUGHwithnotes
+  rotate: false
+  xy: 0, 0
+  size: 2048, 517
+  orig: 2048, 517
+  offset: 0, 0
+  index: -1
+chest_powerswitches_pipestoengine_ROUGH
+  rotate: false
+  xy: 0, 517
+  size: 1127, 1133
+  orig: 1127, 1133
+  offset: 0, 0
+  index: -1

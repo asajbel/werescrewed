@@ -6,11 +6,10 @@ import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 import com.blindtigergames.werescrewed.WereScrewedGame;
-import com.blindtigergames.werescrewed.gui.Button;
+import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 import com.blindtigergames.werescrewed.gui.Label;
-import com.blindtigergames.werescrewed.screens.ScreenSwitchHandler;
+import com.blindtigergames.werescrewed.gui.TextButton;
 
 class CreditsScreen  extends Screen {
 //implements com.badlogic.gdx.Screen
@@ -23,7 +22,7 @@ class CreditsScreen  extends Screen {
 	private Label authorLabel = null;
 	private Label licenseLabel = null;
 	private Label versionLabel = null;
-	private Button backButton = null;
+	private TextButton backButton = null;
 	private int lineHeight = 0;
 
 	public CreditsScreen( ) {
@@ -38,7 +37,7 @@ class CreditsScreen  extends Screen {
 		authorLabel = new Label( "", font );
 		licenseLabel = new Label( "", font );
 		versionLabel = new Label( "" + Version.VERSION, font );
-		backButton = new Button( "Back", fancyFont, new ScreenSwitchHandler(
+		backButton = new TextButton( "Back", fancyFont, new ScreenSwitchHandler(
 				ScreenType.MAIN_MENU ) );
 	}
 

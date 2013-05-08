@@ -1,7 +1,5 @@
 package com.blindtigergames.werescrewed.player;
 
-import java.util.Random;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.audio.Sound;
@@ -62,8 +60,8 @@ public class Player extends Entity {
 	public final static int JUMP_COUNTER = 10;
 	public final static float ANALOG_DEADZONE = 0.4f;
 	public final static float ANALOG_MAX_RANGE = 1.0f;
-	public final static float PLAYER_FRICTION = 1.0f;
-	public final static float FRICTION_INCREMENT = 0.2f;
+	public final static float PLAYER_FRICTION = 2.0f;
+	public final static float FRICTION_INCREMENT = 0.4f;
 	public final static int SCREW_ATTACH_STEPS = 15;
 	public final static int HEAD_JUMP_STEPS = 30;
 	public final static int DEAD_STEPS = 0;
@@ -86,7 +84,7 @@ public class Player extends Entity {
 	public final static float FOOTSTEP_PITCH_DROP = 0.75f;
 	public final static float FOOTSTEP_PITCH_VARIANCE = 0.02f;
 	public final static float FOOTSTEP_VOLUME_DROP = 0.01f;
-	
+
 	// public final static float
 
 	public Fixture feet;
@@ -129,7 +127,7 @@ public class Player extends Entity {
 	private PowerSwitch currentSwitch;
 	private Steam currentSteam;
 	private static int switchTimer = 0;
-	
+
 	private boolean drawTutorial = false;
 	private Sprite tutorial = null;
 	private Sprite bubble;
@@ -158,7 +156,7 @@ public class Player extends Entity {
 	private boolean changeDirections = false;
 	private boolean steamCollide = false;
 	private boolean steamDone = false;
-	
+
 	private IMover mover;
 
 	public int grabCounter = 0;
@@ -235,6 +233,7 @@ public class Player extends Entity {
 				* Util.BOX_TO_PIXEL, body.getWorldCenter( ).y
 				* Util.BOX_TO_PIXEL ), new Vector2( 0, 0 ), new Vector2(
 				ANCHOR_BUFFER_SIZE.x, ANCHOR_BUFFER_SIZE.y ) );
+		anchor.setOffset( 0, ANCHOR_BUFFER_SIZE.y / 2 );
 		anchor.activate( );
 		addAnchor( anchor );
 
@@ -243,7 +242,7 @@ public class Player extends Entity {
 			spinemator = new PlayerSpinemator( this );
 			spinemator.setPosition( body.getWorldCenter( ) );
 		}
-		
+
 		Filter filter = new Filter( );
 		for ( Fixture f : body.getFixtureList( ) ) {
 			filter.categoryBits = Util.CATEGORY_PLAYER;
@@ -276,15 +275,15 @@ public class Player extends Entity {
 
 		createCircle( PLAYER_FRICTION );
 		frictionCounter = PLAYER_FRICTION;
-				
-		bubbleTex = WereScrewedGame.manager.get( 
-				WereScrewedGame.dirHandle + "/common/tutorial/thought_bubble.png" );
-		tutorialTex = WereScrewedGame.manager.get( 
-				WereScrewedGame.dirHandle + "/common/tutorial/placeholderTut.png" );
-		
+
+		bubbleTex = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
+				+ "/common/tutorial/thought_bubble.png" );
+		tutorialTex = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
+				+ "/common/tutorial/placeholderTut.png" );
+
 		bubble = constructSprite( bubbleTex );
 		tutorial = constructSprite( tutorialTex );
-		
+
 		bubble.flip( true, false );
 	}
 
@@ -296,19 +295,22 @@ public class Player extends Entity {
 	public void update( float deltaTime ) {
 		super.update( deltaTime );
 		
-		if (switchTimer > 0) --switchTimer;
+		updateMover( deltaTime );
 
-		if ( Gdx.input.isKeyPressed( Keys.G ) ){
-			if(name.equals( "player1" )){
+		if ( switchTimer > 0 )
+			--switchTimer;
+
+		if ( Gdx.input.isKeyPressed( Keys.G ) ) {
+			if ( name.equals( "player1" ) ) {
 				Gdx.app.log( "steamCollide: " + steamCollide, "steamDone: "
 						+ steamDone );
 				drawTutorial = !drawTutorial;
 				Gdx.app.log( "drawTutorial: ", "" + drawTutorial );
 			}
 		}
-		if ( Gdx.input.isKeyPressed( Keys.NUM_7 )) 
+		if ( Gdx.input.isKeyPressed( Keys.NUM_7 ) )
 			flyDebug = !flyDebug;
-		if ( flyDebug ) 
+		if ( flyDebug )
 			grounded = true;
 		if ( kinematicTransform ) {
 			// setPlatformTransform( platformOffset );
@@ -414,8 +416,8 @@ public class Player extends Entity {
 				} else {
 					body.setTransform(
 							new Vector2( currentScrew.getPositionPixel( ).x
-									- ( WIDTH ), currentScrew
-									.getPositionPixel( ).y - ( HEIGHT / 2.0f ) )
+									- ( WIDTH ) + 5, currentScrew
+									.getPositionPixel( ).y - ( HEIGHT / 2.0f ) - 5)
 									.mul( Util.PIXEL_TO_BOX ), 0.0f );
 					RevoluteJointDef revoluteJointDef = new RevoluteJointDef( );
 					revoluteJointDef.initialize( body, currentScrew.body,
@@ -496,16 +498,16 @@ public class Player extends Entity {
 			}
 
 			this.killPlayer( );
-			 /*
-			 Gdx.app.log( "\nright: ", "" + rightCrush );
-			 Gdx.app.log( "left: ", "" + leftCrush );
-			 Gdx.app.log( "top: ", "" + topCrush );
-			 Gdx.app.log( "bottom: ", "" + botCrush );*/
+			/*
+			 * Gdx.app.log( "\nright: ", "" + rightCrush ); Gdx.app.log(
+			 * "left: ", "" + leftCrush ); Gdx.app.log( "top: ", "" + topCrush
+			 * ); Gdx.app.log( "bottom: ", "" + botCrush );
+			 */
 		} else if ( steamCollide ) {
-			//if ( !steamDone ) {
-				steamResolution( );
-				steamDone = true;
-			//}
+			// if ( !steamDone ) {
+			steamResolution( );
+			steamDone = true;
+			// }
 		} else
 			steamDone = false;
 		terminalVelocityCheck( 15.0f );
@@ -540,18 +542,17 @@ public class Player extends Entity {
 				&& currentScrew.getScrewType( ) == ScrewType.SCREW_PUZZLE ) {
 			if ( this.name == Metrics.player1( ) ) {
 				Metrics.incTrophyMetric( TrophyMetric.P1PUZZLETIME, 0.01f );
-			}
-			else if ( this.name == Metrics.player2( ) ) {
+			} else if ( this.name == Metrics.player2( ) ) {
 				Metrics.incTrophyMetric( TrophyMetric.P2PUZZLETIME, 0.01f );
 			}
 		}
-		//debug no collision while holding 7
+		// debug no collision while holding 7
 		if ( Gdx.input.isKeyPressed( Keys.NUM_8 ) ) {
-			for ( Fixture f: body.getFixtureList( ) ) {
+			for ( Fixture f : body.getFixtureList( ) ) {
 				f.setSensor( true );
 			}
 		} else {
-			for ( Fixture f: body.getFixtureList( ) ) {
+			for ( Fixture f : body.getFixtureList( ) ) {
 				if ( f != rightSensor && f != leftSensor && f != topSensor ) {
 					f.setSensor( false );
 				}
@@ -591,7 +592,7 @@ public class Player extends Entity {
 				// count by 1
 				if ( this.name == Metrics.player1( ) ) {
 					Metrics.incTrophyMetric( TrophyMetric.P1DEATHS, 1.0f );
-					
+
 					if ( otherPlayer != null
 							&& otherPlayer.getState( ) == PlayerState.Dead ) {
 						Metrics.incTrophyMetric( TrophyMetric.P1TEAMDEATHS,
@@ -619,7 +620,7 @@ public class Player extends Entity {
 				blood.restartAt( getPositionPixel( ) );
 			}
 			isDead = true;
-			if (sounds.hasSound( "death" )){
+			if ( sounds.hasSound( "death" ) ) {
 				sounds.playSound( "death", 1.0f );
 			}
 		}
@@ -659,52 +660,58 @@ public class Player extends Entity {
 	public boolean isPlayerDead( ) {
 		return isDead;
 	}
-	
+
 	/**
 	 * Turns tutorial bubble on and off
 	 * 
-	 * @param value boolean
+	 * @param value
+	 *            boolean
 	 */
-	public void setDrawTutorial( boolean value ){
+	public void setDrawTutorial( boolean value ) {
 		drawTutorial = value;
 	}
-	
+
 	/**
 	 * sets inside of thought bubble
 	 * 
-	 * @param texture Texture
+	 * @param texture
+	 *            Texture
 	 */
-	public void setTutorial( Texture texture){
+	public void setTutorial( Texture texture ) {
 		tutorial = constructSprite( texture );
 	}
-	
+
 	/**
 	 * clears inside of thought bubble
 	 */
-	public void clearTutorial(){
+	public void clearTutorial( ) {
 		tutorial = null;
 	}
-	
+
 	/**
 	 * draws tutorials when appropriate
 	 */
 	public void draw( SpriteBatch batch, float deltaTime ) {
-		if(drawTutorial){
-			float xpos =  body.getPosition( ).x;
-			float ypos =  body.getPosition( ).y;
+		if ( drawTutorial ) {
+			float xpos = body.getPosition( ).x;
+			float ypos = body.getPosition( ).y;
 			bubble.getScaleX( );
-			if(tutorial != null){
-				bubble.setPosition( xpos * Util.BOX_TO_PIXEL-bubble.getWidth( )/2.0f + 250f, ypos * Util.BOX_TO_PIXEL + 100f);
-				bubble.setRotation(  MathUtils.radiansToDegrees
+			if ( tutorial != null ) {
+				bubble.setPosition(
+						xpos * Util.BOX_TO_PIXEL - bubble.getWidth( ) / 2.0f
+								+ 250f, ypos * Util.BOX_TO_PIXEL + 100f );
+				bubble.setRotation( MathUtils.radiansToDegrees
 						* body.getAngle( ) );
-				tutorial.setPosition( xpos * Util.BOX_TO_PIXEL-tutorial.getWidth( )/2.0f + 250f, ypos * Util.BOX_TO_PIXEL + 125);
-				tutorial.setRotation(  MathUtils.radiansToDegrees
+				tutorial.setPosition(
+						xpos * Util.BOX_TO_PIXEL - tutorial.getWidth( ) / 2.0f
+								+ 250f, ypos * Util.BOX_TO_PIXEL + 125 );
+				tutorial.setRotation( MathUtils.radiansToDegrees
 						* body.getAngle( ) );
 			}
-			bubble.draw( batch);
+			bubble.draw( batch );
 			tutorial.draw( batch );
 		}
-		super.draw( batch, deltaTime);
+		super.draw( batch, deltaTime );
 	}
 
 	/**
@@ -751,7 +758,7 @@ public class Player extends Entity {
 			reachedMaxSpeed = false;
 		}
 		runTimeout = RUN_STEPS;
-		footstepSound(1.0f);
+		footstepSound( 1.0f );
 	}
 
 	/**
@@ -800,7 +807,7 @@ public class Player extends Entity {
 			reachedMaxSpeed = false;
 		}
 		runTimeout = RUN_STEPS;
-		footstepSound(1.0f);
+		footstepSound( 1.0f );
 	}
 
 	/**
@@ -842,7 +849,7 @@ public class Player extends Entity {
 				&& playerState != PlayerState.Screwing ) {
 			Metrics.incTrophyMetric( TrophyMetric.P2RUNDIST, 0.01f );
 		}
-		footstepSound(leftAnalogX);
+		footstepSound( leftAnalogX );
 	}
 
 	/**
@@ -878,7 +885,7 @@ public class Player extends Entity {
 				&& playerState != PlayerState.Screwing ) {
 			Metrics.incTrophyMetric( TrophyMetric.P2RUNDIST, 0.01f );
 		}
-		footstepSound(leftAnalogX);
+		footstepSound( leftAnalogX );
 	}
 
 	/**
@@ -902,7 +909,7 @@ public class Player extends Entity {
 		if ( playerState != PlayerState.Screwing ) {
 			playerDirection = PlayerDirection.Right;
 		}
-		footstepSound(leftAnalogX);
+		footstepSound( leftAnalogX );
 	}
 
 	/**
@@ -1017,9 +1024,10 @@ public class Player extends Entity {
 	public Screw getCurrentScrew( ) {
 		return currentScrew;
 	}
-	
+
 	/**
 	 * returns the powerswitch being collided by the player
+	 * 
 	 * @return PowerSwitch
 	 */
 	public PowerSwitch getSwitch( ) {
@@ -1072,11 +1080,11 @@ public class Player extends Entity {
 		feet.setFriction( 0.0f );
 
 	}
-	
+
 	/**
 	 * sets the power switch being held by player
 	 */
-	public void setPowerSwitch( PowerSwitch powerSwitch ){
+	public void setPowerSwitch( PowerSwitch powerSwitch ) {
 		currentSwitch = powerSwitch;
 	}
 
@@ -1132,6 +1140,7 @@ public class Player extends Entity {
 
 	private void updateFootFrictionNew( ) {
 
+
 		if ( prevButton != null ) {
 			if ( body.getLinearVelocity( ).x > MAX_VELOCITY ) {
 				body.setLinearVelocity( MAX_VELOCITY,
@@ -1141,7 +1150,8 @@ public class Player extends Entity {
 						body.getLinearVelocity( ).y );
 			}
 		}
-
+		
+		
 		if ( prevButton == null ) {
 
 			if ( feet.getFriction( ) < PLAYER_FRICTION ) {
@@ -1193,7 +1203,7 @@ public class Player extends Entity {
 			}
 		}
 		if ( platform == null ) {
-			//knockedOff = false;
+			// knockedOff = false;
 			hitSolidObject = false;
 		} else {
 			if ( platform.isKinematic( ) && platform.currentMover( ) == null ) {
@@ -1237,8 +1247,8 @@ public class Player extends Entity {
 				}
 			}
 			mover = new FollowEntityMover( body.getPosition( ).mul(
-					Util.BOX_TO_PIXEL ), currentScrew, new Vector2(
-					-WIDTH , -HEIGHT / 2.0f ), SCREW_ATTACH_SPEED );
+					Util.BOX_TO_PIXEL ), currentScrew, new Vector2( -WIDTH,
+					-HEIGHT / 2.0f ), SCREW_ATTACH_SPEED );
 			playerState = PlayerState.Screwing;
 			currentScrew.setPlayerAttached( true );
 			screwAttachTimeout = SCREW_ATTACH_STEPS;
@@ -1246,6 +1256,7 @@ public class Player extends Entity {
 			if ( Metrics.activated ) {
 				Metrics.addPlayerAttachToScrewPosition( this.getPositionPixel( ) );
 			}
+			sounds.playSound( "attach" , 1.0f);
 		}
 	}
 
@@ -1421,7 +1432,7 @@ public class Player extends Entity {
 					}
 				}
 			} else {
-				currentScrew.stopScrewing();
+				currentScrew.stopScrewing( );
 			}
 		} else {
 			if ( inputHandler.unscrewing( ) && currentMover( ) == null ) {
@@ -1469,7 +1480,7 @@ public class Player extends Entity {
 					}
 				}
 			} else {
-				currentScrew.stopScrewing();
+				currentScrew.stopScrewing( );
 			}
 		}
 
@@ -1542,10 +1553,12 @@ public class Player extends Entity {
 				// player
 				if ( ( this.getPositionPixel( ).y > otherPlayer
 						.getPositionPixel( ).add( 0, HEIGHT / 2f ).y )
-						&& ( otherPlayer.getPositionPixel( ).sub( ( WIDTH / 3.0f )+ 1.2f,
-								0.0f ).x <= this.getPositionPixel( ).x )
-						&& ( otherPlayer.getPositionPixel( ).add( ( WIDTH / 4.0f )+ 1.2f,
-								0.0f ).x > this.getPositionPixel( ).x ) ) {
+						&& ( otherPlayer.getPositionPixel( ).sub(
+								( WIDTH / 3.0f ) + 1.2f, 0.0f ).x <= this
+								.getPositionPixel( ).x )
+						&& ( otherPlayer.getPositionPixel( ).add(
+								( WIDTH / 4.0f ) + 1.2f, 0.0f ).x > this
+								.getPositionPixel( ).x ) ) {
 					boolean isMoving = false;
 					// check if the player is using input
 					// to move either left or right
@@ -1899,8 +1912,8 @@ public class Player extends Entity {
 					if ( inputHandler.screwPressed( ) ) {
 						screwButtonHeld = true;
 					}
-				} else if (currentSwitch != null && switchTimer == 0){
-					Gdx.app.log("currentSwitch: ","" + currentSwitch);
+				} else if ( currentSwitch != null && switchTimer == 0 ) {
+					Gdx.app.log( "currentSwitch: ", "" + currentSwitch );
 					currentSwitch.doAction( );
 					switchTimer = 60;
 				} else {
@@ -2008,8 +2021,8 @@ public class Player extends Entity {
 				}
 
 				jumpCounter = 0;
-			} else if (currentSwitch != null && switchTimer == 0){
-				Gdx.app.log("currentSwitch: ","" + currentSwitch);
+			} else if ( currentSwitch != null && switchTimer == 0 ) {
+				Gdx.app.log( "currentSwitch: ", "" + currentSwitch );
 				currentSwitch.doAction( );
 				switchTimer = 60;
 			} else
@@ -2040,20 +2053,21 @@ public class Player extends Entity {
 	 */
 	private void setUpController( ) {
 		for ( Controller controller2 : Controllers.getControllers( ) ) {
-			Gdx.app.log( "ok", controller2.getName( ) );
+			Gdx.app.log( "controllers", controller2.getName( ) );
 		}
 		if ( Controllers.getControllers( ).size >= 1 ) {
 			if ( this.name.equals( "player1" ) ) {
-				controllerListener = new MyControllerListener( );
-				controller = Controllers.getControllers( ).get( 0 );
-				controller.addListener( controllerListener );
+
+				controllerListener = WereScrewedGame.p1ControllerListener;
+				controller = WereScrewedGame.p1Controller;
+				
 			}
 		}
 		if ( Controllers.getControllers( ).size >= 2 ) {
 			if ( this.name.equals( "player2" ) ) {
-				controllerListener = new MyControllerListener( );
-				controller = Controllers.getControllers( ).get( 1 );
-				controller.addListener( controllerListener );
+				
+				controllerListener = WereScrewedGame.p2ControllerListener;
+				controller = WereScrewedGame.p2Controller;
 			}
 		}
 
@@ -2102,44 +2116,43 @@ public class Player extends Entity {
 	 * applies force to player
 	 */
 	private void steamResolution( ) {
-		//setGrounded(true);
-		if(currentSteam != null && currentSteam.isActive()){
-			
+		// setGrounded(true);
+		if ( currentSteam != null && currentSteam.isActive( ) ) {
+
 			float steamAngle, xImpulse = 0, yImpulse = 0;
 			steamAngle = currentSteam.getAngle( );
-			
+
 			xImpulse = ( float ) ( Math.sin( steamAngle ) * STEAM_IMPULSE );
 			yImpulse = ( float ) ( Math.cos( steamAngle ) * STEAM_IMPULSE );
-			
-			//System.out.println( "x: " + xImpulse + ", y: "  + yImpulse);
-			if(name.equals( "player1" )){
-				//System.out.println( body.getLinearVelocity( ) );
+
+			// System.out.println( "x: " + xImpulse + ", y: " + yImpulse);
+			if ( name.equals( "player1" ) ) {
+				// System.out.println( body.getLinearVelocity( ) );
 			}
-		
-			
-	
+
 			// body.applyForceToCenter( 0f, STEAM_FORCE );
-			// body.setLinearVelocity( new Vector2( body.getLinearVelocity( ).x, 0f
+			// body.setLinearVelocity( new Vector2( body.getLinearVelocity( ).x,
+			// 0f
 			// ) );
-			
-			
-			
+
 			xImpulse *= 0.09f;
 			yImpulse *= 0.09f;
-			
+
 			body.applyLinearImpulse( new Vector2( -1 * xImpulse, yImpulse ),
 					body.getWorldCenter( ) );
-			
-			if ( prevButton == null ){
-				body.setLinearVelocity( new Vector2( 0f,
-						body.getLinearVelocity( ).y ) );
+
+			if ( prevButton == null ) {
+				body.setLinearVelocity( new Vector2( 0f, body
+						.getLinearVelocity( ).y ) );
 			}
 			if ( body.getLinearVelocity( ).y > STEAM_MAX_Y_VELOCITY ) {
-				body.setLinearVelocity( body.getLinearVelocity( ).x, STEAM_MAX_Y_VELOCITY );
+				body.setLinearVelocity( body.getLinearVelocity( ).x,
+						STEAM_MAX_Y_VELOCITY );
 			}
-			
-	//		body.applyForce( new Vector2( -1 * xImpulse, yImpulse ), body.getWorldCenter( ) );
-	
+
+			// body.applyForce( new Vector2( -1 * xImpulse, yImpulse ),
+			// body.getWorldCenter( ) );
+
 			// increments steam jump trophy metric
 			if ( this.name == Metrics.player1( ) ) {
 				Metrics.incTrophyMetric( TrophyMetric.P1STEAMJUMPS, 1 );
@@ -2147,7 +2160,7 @@ public class Player extends Entity {
 				Metrics.incTrophyMetric( TrophyMetric.P2STEAMJUMPS, 1 );
 			}
 		}
-		
+
 	}
 
 	/**
@@ -2214,8 +2227,6 @@ public class Player extends Entity {
 		feet = body.createFixture( fd );
 
 	}
-	
-	
 
 	public float getAbsAnalogXRatio( ) {
 		if ( controllerListener != null ) {
@@ -2256,16 +2267,18 @@ public class Player extends Entity {
 			}
 		}
 	}
-	
-	public void footstepSound( float a ){
-		float amount = (float)Math.pow( Math.abs( a ), 2.0);
-		if (isGrounded() && this.playerState != PlayerState.Screwing){
+
+	public void footstepSound( float a ) {
+		float amount = ( float ) Math.pow( Math.abs( a ), 2.0 );
+		if ( isGrounded( ) && this.playerState != PlayerState.Screwing ) {
 			float rate = FOOTSTEP_DELAY;
-			float pitch = FOOTSTEP_PITCH_DROP 
-							+ (amount * (1.0f - FOOTSTEP_PITCH_DROP))
-								+ (FOOTSTEP_PITCH_VARIANCE * ((2.f * WereScrewedGame.random.nextFloat()) -1f));
-			float vol = FOOTSTEP_VOLUME_DROP + amount * (1.0f - FOOTSTEP_VOLUME_DROP);
-			if (sounds.isDelayed( "footstep1" )){
+			float pitch = FOOTSTEP_PITCH_DROP
+					+ ( amount * ( 1.0f - FOOTSTEP_PITCH_DROP ) )
+					+ ( FOOTSTEP_PITCH_VARIANCE * ( ( 2.f * WereScrewedGame.random
+							.nextFloat( ) ) - 1f ) );
+			float vol = FOOTSTEP_VOLUME_DROP + amount
+					* ( 1.0f - FOOTSTEP_VOLUME_DROP );
+			if ( sounds.isDelayed( "footstep1" ) ) {
 				sounds.setSoundVolume( "footstep2", vol );
 				sounds.setSoundPitch( "footstep2", pitch );
 				sounds.playSound( "footstep2", rate );

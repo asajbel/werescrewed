@@ -57,13 +57,7 @@ public class AssetManager extends com.badlogic.gdx.assets.AssetManager {
 	 * @return TileSet with your atlas loaded in.
 	 */
 	public TileSet getTileSet( String name ) {
-		TileSet ts;
-		// if ( isAtlasLoaded( name+"-bleed" )){
-		// ts = new TileSet( atlasMap.get( name ), );
-		// }else{
-		ts = new TileSet( atlasMap.get( name ), atlasMap.get( name + "-bleed" ) );
-		// }
-		return ts;
+		return new TileSet( atlasMap.get( name ), atlasMap.get( name + "-bleed" ) );
 	}
 
 	/**
@@ -209,7 +203,7 @@ public class AssetManager extends com.badlogic.gdx.assets.AssetManager {
 			return super.get( fileName, type );
 		} catch ( GdxRuntimeException err ) {
 			if (loadDummies && dummyAssets.containsKey( type ) && !dummyAssets.get(type).equalsIgnoreCase( fileName )){
-				Gdx.app.log( "AssetManager", err.getMessage( ));
+				Gdx.app.log( "AssetManager", err.getMessage( )+"("+type.getSimpleName( )+")");
 				return get( dummyAssets.get( type ) );
 			} else {
 				throw err;

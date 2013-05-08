@@ -192,12 +192,15 @@ public class SkeletonBuilder extends GenericEntityBuilder<SkeletonBuilder>{
 	@Override
 	public Skeleton build(){
 		Skeleton out = new Skeleton( name, pos, null, super.world, bodyType );
-		if ( polyVertsFG != null && texForeground != null ){
-			out.fgSprite = new PolySprite( texForeground, polyVertsFG );
+		if( invisibleVerts != null ){
+			if ( polyVertsFG != null && texForeground != null ){
+				out.fgSprite = new PolySprite( texForeground, polyVertsFG );
+			}
 		}
-		if ( polyVertsBG != null && texBackground != null){
-			out.bgSprite = new PolySprite( texBackground, polyVertsBG );
-		}
+			if ( polyVertsBG != null && texBackground != null){
+				out.bgSprite = new PolySprite( texBackground, polyVertsBG );
+			}
+		
 		
 		//out.body.setType( bodyType );
 		out.setDensity( this.density );
@@ -205,9 +208,8 @@ public class SkeletonBuilder extends GenericEntityBuilder<SkeletonBuilder>{
 		
 		if ( invisibleVerts != null ){
 			EventTriggerBuilder etb = new EventTriggerBuilder( world );
-			//THE END ACTION IS NEVER BEING CALLED HERE:
 			EventTrigger et = etb.name( name+"-invisible-fader" ).setVerts( invisibleVerts )
-					.extraBorder( 0f )
+					.extraBorder( 128f )
 					.position( pos.add( 0,0 ) ).addEntity( out )
 					.beginAction( new FadeSkeletonAction(true) )
 					.endAction( new FadeSkeletonAction(false) ).repeatable( )
@@ -215,23 +217,23 @@ public class SkeletonBuilder extends GenericEntityBuilder<SkeletonBuilder>{
 					.build( );
 			out.addEventTrigger( et );
 		}else{
-		
-			if ( hasDeactivateTrigger && polyVertsBG != null ){
+			//PIZZA	
+			if ( hasDeactivateTrigger&& polyVertsBG != null ){
 				EventTriggerBuilder etb = new EventTriggerBuilder( world );
 				EventTrigger et = etb.name( name+"-activator" ).setVerts( polyVertsBG )
+						.extraBorder( 128f )
 						.position( pos ).addEntity( out )
-						.beginAction( new SetActiveStateSkeleton( true ) )
-						.endAction( new SetActiveStateSkeleton( false ) ).repeatable( )
+						.beginAction( new FadeSkeletonAction( true ) )
+						.endAction( new FadeSkeletonAction( false ) )
+						.repeatable( )
 						.twoPlayersToDeactivate( ).build( );
 				out.addEventTrigger( et );
 				//Gdx.app.log( "SkeletonBuilder", "I just built an event trigger" );
-			}
-		
-			if (out.fgSprite!=null){
+			}else if (polyVertsFG!=null){
 				EventTriggerBuilder etb = new EventTriggerBuilder( world );
 			
 				EventTrigger et = etb.name( name+"-fg-fader" ).setVerts( polyVertsFG )
-						.extraBorder( 0f )
+						.extraBorder( 128f )
 						.position( pos.add( 0,0 ) ).addEntity( out )
 						.beginAction( new FadeSkeletonAction(true) )
 						.endAction( new FadeSkeletonAction(false) ).repeatable( )

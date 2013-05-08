@@ -23,7 +23,8 @@ public class Util {
 	public static final float DEG_TO_RAD = 0.0174532925199432957f;
 	public static final float RAD_TO_DEG = 57.295779513082320876f;
 	public static final float PI = 3.141592653589793f;
-	public static final float TWO_PI = 2*3.141592653589793f;
+	public static final float TWO_PI = 2*PI;
+	public static final float HALF_PI = PI/2;
 	
 	/**
 	 * Collision Categories and masks for every 

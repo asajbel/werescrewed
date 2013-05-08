@@ -1,0 +1,26 @@
+chest_exterior_lower.png
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+offset: 0, 0
+torso2
+  rotate: false
+  xy: 4, 4
+  size: 1219, 880
+  orig: 1219, 880
+  offset: 0, 0
+  index: -1
+torso3
+  rotate: false
+  xy: 4, 890
+  size: 881, 813
+  orig: 881, 813
+  offset: 0, 0
+  index: -1
+torso1
+  rotate: false
+  xy: 891, 890
+  size: 869, 813
+  orig: 869, 813
+  offset: 0, 0
+  index: -1

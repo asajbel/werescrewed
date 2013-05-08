@@ -45,6 +45,9 @@ public class MyContactListener implements ContactListener {
 	private static final float COLLISION_SOUND_DELAY = 0.2f;
 	private static final float COLLISION_FORCE_FALLOFF = 3.0f;
 	private static final float COLLISION_SCREEN_FALLOFF = 1.0f;
+	private static final float MINIMUM_HIT_FORCE = 1.0f;
+	private static final float MAXIMUM_HIT_FORCE = 5.0f;
+	private static final float HIT_X_Y_RATIO = 5.0f;
 
 
 	/**
@@ -72,12 +75,14 @@ public class MyContactListener implements ContactListener {
 		
         boolean playerInvolved = false;
 
-        float force = calculateForce(contact);
+        Vector2 force = calculateForce(contact);
+        Vector2 painForce = force;
+        painForce.x /= HIT_X_Y_RATIO;
         
 		if ( objectA != null
 				&& objectB != null ) {
 			if (objectA instanceof Entity && objectB instanceof Entity){
-				handleCollisionSounds( (Entity) objectA, (Entity) objectB , contact, force);
+				handleCollisionSounds( (Entity) objectA, (Entity) objectB , contact, force.len());
 			}
 			if ( x1.getBody( ).getUserData( ) instanceof Player ) {
 				playerFix = x1;
@@ -111,21 +116,28 @@ public class MyContactListener implements ContactListener {
 							// also make sure its not the player
 							Platform plat = ( Platform ) object;
 							player.hitSolidObject( plat );
-							if ( object.isSolid( )
-									&& playerFix.getShape( ) instanceof CircleShape ) {
-								if ( player.name.equals( "player1" ) ) {
-									NUM_PLAYER1_CONTACTS++;
-								} else if ( player.name.equals( "player2" ) ) {
-									NUM_PLAYER2_CONTACTS++;
-								}
-								//Platform plat = ( Platform ) object;
-								//player.hitSolidObject( plat );
-								if ( player.getState( ) != PlayerState.Screwing ) {
-									if (!player.isGrounded( )){
-										player.sounds.setSoundVolume( "land", (float)Math.pow(force * LAND_VOLUME, LAND_FALLOFF) );
-										player.sounds.playSound( "land" , LAND_DELAY);
+							if ( object.isSolid( ) ){
+								if ( playerFix.getShape( ) instanceof CircleShape ) {
+									if ( player.name.equals( "player1" ) ) {
+										NUM_PLAYER1_CONTACTS++;
+									} else if ( player.name.equals( "player2" ) ) {
+										NUM_PLAYER2_CONTACTS++;
 									}
-									player.setGrounded( true );
+									//Platform plat = ( Platform ) object;
+									//player.hitSolidObject( plat );
+									if ( player.getState( ) != PlayerState.Screwing ) {
+										if (!player.isGrounded( )){
+											player.sounds.setSoundVolume( "land", (float)Math.pow(force.len() * LAND_VOLUME, LAND_FALLOFF) );
+											player.sounds.playSound( "land" , LAND_DELAY);
+										}
+										player.setGrounded( true );
+									}
+								} else {
+									if (playerFix.equals( player.topSensor ) && !plat.oneSided && painForce.len() > MINIMUM_HIT_FORCE){
+										player.sounds.setSoundVolume( "hit", painForce.len()/MAXIMUM_HIT_FORCE );
+										player.sounds.playSound( "hit", 0.5f );
+										player.sounds.setDelay( "hit", 0.5f );
+									}
 								}
 							}
 							break;
@@ -159,7 +171,10 @@ public class MyContactListener implements ContactListener {
 								et.getBeginAction( ).act( player );
 							}
 							if ( playerFix == player.torso ) {
-								et.triggerBeginEvent( );
+								if( et.getBeginAction( ).getActionType( ) == ActionType.ACT_ON_PLAYER ){
+									et.triggerBeginEvent( player );
+								}else
+									et.triggerBeginEvent( );
 							}
 							break;
 						case POWERSWITCH:
@@ -167,7 +182,7 @@ public class MyContactListener implements ContactListener {
 								PowerSwitch ps = ( PowerSwitch ) object;
 								player.setPowerSwitch( ps );
 							}
-							break;
+							break;						
 						default:
 							break;
 						}
@@ -313,8 +328,6 @@ public class MyContactListener implements ContactListener {
 							if(playerFix == player.torso){
 								player.setPowerSwitch( null );
 							}
-							break;
-						default:
 							break;
 						}
 					} else {
@@ -482,7 +495,7 @@ public class MyContactListener implements ContactListener {
 		}
 	}
 	
-	public float calculateForce(Contact contact){
+	public Vector2 calculateForce(Contact contact){
 		final Body x1 = contact.getFixtureA( ).getBody();
 		final Body x2 = contact.getFixtureB( ).getBody();
 
@@ -495,9 +508,7 @@ public class MyContactListener implements ContactListener {
         	
         	forceVector.sub( x2.getLinearVelocityFromWorldPoint(contactPos) );
         }
-        
-        float force = forceVector.len()/contactPoints;
-        return force;
+        return  forceVector.div( contactPoints );
 	}
 	
 	public void handleCollisionSounds(Entity objectA, Entity objectB, Contact contact, float force){

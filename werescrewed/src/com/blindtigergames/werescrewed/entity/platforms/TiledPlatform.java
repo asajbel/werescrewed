@@ -102,7 +102,7 @@ public class TiledPlatform extends Platform {
 		bodypos = body.getPosition( ).mul( Util.BOX_TO_PIXEL );
 		tiles = new Vector< Tile >( ( int ) ( tileHeight * tileWidth ) );
 		decal = new Vector< Tile >( ( int ) ( tileHeight * tileWidth ) );
-		if ( tileSet.canBleed( ) ){
+		if ( tileSet.canBleed( ) && !oneSided ){
 			bleedTiles = new Vector<Tile>( ( int ) ( tileHeight * tileWidth ) );
 		}
 		//Gdx.app.log( "TP:"+name+":", doBleed+"" );
@@ -254,8 +254,13 @@ public class TiledPlatform extends Platform {
 	}
 
 	private Tile setTile( Sprite temp, float offset_x, float offset_y ) {
-		offset_x += temp.getOriginX( );
-		offset_y += temp.getOriginY( );
+		if(oneSided){
+			offset_x += 16;
+			offset_y += 16;
+		}else{
+			offset_x += temp.getOriginX( );
+			offset_y += temp.getOriginY( );
+		}
 		temp.setOrigin( offset_x, offset_y );
 		temp.setPosition( bodypos.x - offset_x, bodypos.y - offset_y );
 		temp.setRotation( MathUtils.radiansToDegrees * body.getAngle( ) );

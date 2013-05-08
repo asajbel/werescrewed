@@ -70,7 +70,11 @@ public class SoundManager {
 	}
 	
 	public boolean hasSound(String tag, int index){
-		return (sounds.containsKey( tag ) && sounds.getAll( tag ).size > index);
+		if (sounds.containsKey( tag ) && sounds.getAll( tag ).size > index){
+			return true;
+		}
+		//Gdx.app.log( "SoundManager", "No sounds loaded for tag:"+tag );
+		return false;
 	}
 
 	public void playSound( String id ){ 

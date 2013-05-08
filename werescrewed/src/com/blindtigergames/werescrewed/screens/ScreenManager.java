@@ -4,6 +4,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.utils.IntMap;
+import com.blindtigergames.werescrewed.WereScrewedGame;
 
 public final class ScreenManager {
 
@@ -15,7 +16,7 @@ public final class ScreenManager {
 
 	private static ScreenType prevScreen = null;
 	private boolean pauseScreenShown = false;
-	public static boolean escapeHeld;
+	public static boolean escapeHeld, p1PauseHeld, p2PauseHeld;
 
 	private ScreenManager( ) {
 		screens = new IntMap< com.badlogic.gdx.Screen >( );
@@ -42,6 +43,19 @@ public final class ScreenManager {
 		} else 
 			ScreenManager.escapeHeld = false;
 		
+		if( WereScrewedGame.p1Controller != null ) {
+			if ( WereScrewedGame.p1ControllerListener.pausePressed( )) {
+				ScreenManager.p1PauseHeld = true;
+			} else
+				ScreenManager.p1PauseHeld = false;
+		}
+		
+		if( WereScrewedGame.p2Controller != null ) {
+			if ( WereScrewedGame.p2ControllerListener.pausePressed( )) {
+				ScreenManager.p2PauseHeld = true;
+			} else
+				ScreenManager.p2PauseHeld = false;
+		}
 		
 		if ( null == game )
 			return;
