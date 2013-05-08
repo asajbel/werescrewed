@@ -218,9 +218,9 @@ public class MyControllerListener implements ControllerListener {
 				|| buttonIndex == Mapping.BUTTON_L1
 				|| buttonIndex == Mapping.BUTTON_L2 )
 			attachScrewPressed = false;
-		if ( buttonIndex == Mapping.BUTTON_START 
-				|| buttonIndex == Mapping.BUTTON_SYSTEM )
-			pausePressed = false;
+//		if ( buttonIndex == Mapping.BUTTON_START 
+//				|| buttonIndex == Mapping.BUTTON_SYSTEM )
+//			pausePressed = false;
 		if ( buttonIndex == Mapping.BUTTON_FACE_LEFT )
 			grabPressed = false;
 
@@ -363,7 +363,9 @@ public class MyControllerListener implements ControllerListener {
 	 * @author Ranveer
 	 */
 	public boolean pausePressed( ) {
-		return pausePressed;
+		boolean check = pausePressed;
+		pausePressed = false;
+		return check;
 	}
 
 	/**
