@@ -22,13 +22,13 @@
 /common/animations/screwInterface.png
 #/common/test01.png
 #/common/cletter.png
-/common/parallax_layer1_0.png
-/common/parallax_layer1_1.png
-/common/parallax_layer2_0.png
-/common/parallax_layer2_1.png
-/common/robot/alphabot_texture_tux.png
-/levels/alphabot/alphabot_tile_suit_main.png
-/levels/alphabot/bgCloud.png
+#/common/parallax_layer1_0.png
+#/common/parallax_layer1_1.png
+#/common/parallax_layer2_0.png
+#/common/parallax_layer2_1.png
+#/common/robot/alphabot_texture_tux.png
+#/levels/alphabot/alphabot_tile_suit_main.png
+#/levels/alphabot/bgCloud.png
 
 ##texture atlas
 ##/common/animations/screwInterface.pack
