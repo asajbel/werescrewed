@@ -1053,9 +1053,6 @@ public class AlphaScreen extends Screen {
 		// chestPipe3.setCategoryMask( Util.CATEGORY_PLATFORMS,
 		// Util.CATEGORY_PLAYER );
 		
-		//fix here 
-		engineSteam = new Steam( "steamChest3", new Vector2( -420, 5050 ), 25, 120, level.world );
-		chestSkeleton.addSteam(engineSteam);
 		
 //		Pipe chestPipe3 = ( Pipe ) LevelFactory.entities
 //				.get( "chestPipe3" );
