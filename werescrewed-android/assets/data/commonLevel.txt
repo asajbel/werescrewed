@@ -22,6 +22,8 @@
 /common/sounds/jumpFemale.ogg
 /common/sounds/footstep1.ogg
 /common/sounds/footstep2.ogg
+/common/sounds/footstep1F.ogg
+/common/sounds/footstep2F.ogg
 /common/sounds/screwing.ogg
 /common/sounds/unscrewing.ogg
 /common/sounds/land.ogg
