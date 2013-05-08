@@ -60,16 +60,6 @@ public class MyContactListener implements ContactListener {
 		Object objectA = x1.getBody( ).getUserData( );
 		Object objectB = x2.getBody( ).getUserData( );
 
-		/*
-		 * Will replace current code with this when I'm not working on other
-		 * tasks. ~Kevin if (objectA != null && objectB != null){ if (objectA
-		 * instanceof Entity && objectB instanceof Entity){ Class<? extends
-		 * Entity> classA = objectA.getClass( ).asSubclass( Entity.class );
-		 * Class<? extends Entity> classB = objectB.getClass( ).asSubclass(
-		 * Entity.class ); classA.cast( objectA ).collide( classB.cast( objectB
-		 * ), contact ); classB.cast( objectB ).collide( classA.cast( objectA ),
-		 * contact ); } }
-		 */
 		Fixture playerFix = null;
 		Fixture objectFix = null;
 		

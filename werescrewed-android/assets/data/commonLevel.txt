@@ -27,6 +27,8 @@
 /common/sounds/land.ogg
 /common/sounds/impactMaleDoh.ogg
 /common/sounds/impactMaleDoh2.ogg
+/common/sounds/impactFemaleOw.ogg
+/common/sounds/impactFemaleUgh.ogg
 /common/sounds/WilhelmScream.ogg
 /common/sounds/steam.ogg
 /common/sounds/TrainJob.mp3
