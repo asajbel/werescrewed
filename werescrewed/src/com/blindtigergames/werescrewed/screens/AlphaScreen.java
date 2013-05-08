@@ -1172,10 +1172,10 @@ public class AlphaScreen extends Screen {
 		TextureAtlas chest_gear = WereScrewedGame.manager.getAtlas( "chest_pipes_thigh_pipes" );
 		chestSkeleton.addBGDecal( chest_gear.createSprite( "chest_bottomleft_mechanisms75" ), new Vector2(-1800,-1157 ) );
 	
-		TextureAtlas chest2 = WereScrewedGame.manager.getAtlas("chest2");
-		s = chest2.createSprite( "chest_upperleftandtop_mechanismS_ROUGHwithnotes" );
-		s.setScale( 1f/0.75f );
-		chestSkeleton.addBGDecal( s, new Vector2(-2050,525) );
+		//TextureAtlas chest2 = WereScrewedGame.manager.getAtlas("chest2");
+		//s = chest2.createSprite( "chest_upperleftandtop_mechanismS_ROUGHwithnotes" );
+		//s.setScale( 1f/0.75f );
+		//chestSkeleton.addBGDecal( s, new Vector2(-2050,525) );
 	}
 
 	private void leftArm( ) {
