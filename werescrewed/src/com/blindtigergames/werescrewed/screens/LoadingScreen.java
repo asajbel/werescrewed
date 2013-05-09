@@ -163,7 +163,10 @@ public class LoadingScreen extends Screen {
 
 		// begin loading the assets
 		if ( WereScrewedGame.manager.update( ) ) {
-
+			if(Gdx.app.getInput( ).isTouched( )){
+				ScreenManager.getInstance( ).show(
+						ScreenType.LEVEL_1 );
+			}
 			if ( currLevel == 0 ) {
 				// assets have been loaded!
 				loadingLabel.setCaption( "Loading Complete!!" );

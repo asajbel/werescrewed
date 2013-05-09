@@ -158,7 +158,7 @@ public class AlphaScreen extends Screen {
 		// right arm: 2600f, 6000f >>>> side
 		// left side hand <- -2224, 3008
 
-		Vector2 spawnPos = new Vector2( 512f, 256f );
+		Vector2 spawnPos = new Vector2( -1582, 6150 );
 
 		if ( level.player1 == null ) {
 			level.player1 = new PlayerBuilder( ).world( level.world )
@@ -369,7 +369,7 @@ public class AlphaScreen extends Screen {
 		int floorX = -max + offsetX;
 		int stage_pillarY = -202 + offsetY;
 		int stage_pillarX = floorX - 530;
-		int lightX = offsetX - 1986;
+		int lightX = offsetX - 1974;
 		int lightY = offsetY + 24;
 
 		int domeSliceX = 1234 * 2;
@@ -378,7 +378,7 @@ public class AlphaScreen extends Screen {
 		int supportY = 6500 + offsetY;
 		int supportX = -max + seatsX;
 
-		int curtainX = seatsX - max + 1230;
+		int curtainX = seatsX - max + 1195;
 		int curtainY = seatsY + 585;
 		
 		float scale = 1f/0.75f;
@@ -402,7 +402,7 @@ public class AlphaScreen extends Screen {
 		s=light_curtain.createSprite( "light_right" );
 		s.setScale(scale);
 		light_skel.addBGDecal( s,
-				new Vector2( lightX + 2030, lightY ) );
+				new Vector2( lightX + 2033, lightY ) );
 
 		// floor
 		s=theater_floor_seats_stage.createSprite( "floor" );
@@ -412,21 +412,22 @@ public class AlphaScreen extends Screen {
 
 		// curtains
 		s = light_curtain.createSprite( "curtain_bottom" );
-		s.setScale( scale );
+		//s.setScale( scale );
 		bgSkele.addFGDecal( s,
 				new Vector2( curtainX, curtainY ) );
-		s = light_curtain.createSprite( "curtain_bottom" );
-		s.setScale( -scale, scale );
-		bgSkele.addFGDecal( s,
-				new Vector2( curtainX+2398, curtainY ) );
 		s = light_curtain.createSprite( "curtain_top" );
-		s.setScale( scale );
 		bgSkele.addFGDecal( s,
 				new Vector2( curtainX, curtainY + 1176 ) );
-		s = light_curtain.createSprite( "curtain_top" );
-		s.setScale( -scale, scale );
+		float curtainTopWidth = s.getWidth();
+		s = light_curtain.createSprite( "curtain_bottom" );
+		s.setScale( -1, 1 );
 		bgSkele.addFGDecal( s,
-				new Vector2( curtainX+s.getWidth( )*scale, curtainY + 1176 ) );
+				new Vector2( curtainX+curtainTopWidth*2-1, curtainY ) );
+		
+		s = light_curtain.createSprite( "curtain_top" );
+		s.setScale( -1, 1 );
+		bgSkele.addFGDecal( s,
+				new Vector2( curtainX+s.getWidth( )*2-1, curtainY + 1176 ) );
 
 		// stage is in between floor & seats
 		s=theater_floor_seats_stage.createSprite( "stage_bottom" );
@@ -437,6 +438,15 @@ public class AlphaScreen extends Screen {
 		s.setScale( scale );
 		bgSkele.addFGDecal( s,
 				new Vector2( stage_pillarX+2 , 1684 + stage_pillarY ) );
+		s=theater_floor_seats_stage.createSprite( "stage_top" );
+		s.setScale( -scale, scale );
+		bgSkele.addFGDecal( s,
+				new Vector2( stage_pillarX-2 + s.getWidth( )*scale*2 , 1684 + stage_pillarY ) );
+		float widthTop = s.getWidth()*scale;
+		s=theater_floor_seats_stage.createSprite( "stage_bottom" );
+		s.setScale( -scale,scale );
+		bgSkele.addFGDecal( s,
+				new Vector2( stage_pillarX+widthTop*2, stage_pillarY ) );
 
 		
 		/*bgSkele.addFGDecal( stage_pillar.createSprite( "stage_right" ),
