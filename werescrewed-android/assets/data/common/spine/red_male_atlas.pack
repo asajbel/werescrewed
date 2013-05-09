@@ -1,221 +1,221 @@
-red_male_atlas.png
+atlas.png
 format: RGBA8888
 filter: Linear,Linear
 repeat: none
-offset: 0,0
+offset: 0, 0
 R_lower_arm
   rotate: false
-  xy: 174, 2
+  xy: 24, 2
   size: 12, 20
   orig: 12, 20
   offset: 0, 0
   index: -1
 back/hat_back
   rotate: false
-  xy: 2, 62
+  xy: 189, 63
   size: 63, 39
   orig: 63, 39
   offset: 0, 0
   index: -1
 F_hat
   rotate: false
-  xy: 67, 62
+  xy: 2, 111
   size: 63, 39
   orig: 63, 39
   offset: 0, 0
   index: -1
-male_outline
-  rotate: false
-  xy: 137, 110
-  size: 99, 128
-  orig: 99, 128
-  offset: 0, 0
-  index: 128
 coat_tail
   rotate: false
-  xy: 147, 28
+  xy: 81, 29
   size: 32, 26
   orig: 32, 26
   offset: 0, 0
   index: -1
 R_lower_leg
   rotate: false
-  xy: 101, 2
+  xy: 13, 2
   size: 9, 19
   orig: 9, 19
   offset: 0, 0
   index: -1
 back/coat_tail_back
   rotate: false
-  xy: 113, 28
+  xy: 115, 29
   size: 32, 26
   orig: 32, 26
   offset: 0, 0
   index: -1
 R_boot
   rotate: false
-  xy: 31, 2
+  xy: 139, 2
   size: 24, 17
   orig: 24, 17
   offset: 0, 0
   index: -1
 R_upper_leg
   rotate: false
-  xy: 60, 28
+  xy: 28, 29
   size: 24, 25
   orig: 24, 25
   offset: 0, 0
   index: -1
 head
   rotate: false
-  xy: 132, 62
+  xy: 82, 63
   size: 51, 44
   orig: 51, 44
   offset: 0, 0
   index: -1
 back/R_upper_arm_back
   rotate: false
-  xy: 235, 2
+  xy: 56, 2
   size: 15, 24
   orig: 15, 24
   offset: 0, 0
   index: -1
 back/L_upper_arm_back
   rotate: false
-  xy: 188, 2
+  xy: 73, 2
   size: 19, 21
   orig: 19, 21
   offset: 0, 0
   index: -1
 back/R_lower_arm_back
   rotate: false
-  xy: 83, 2
+  xy: 38, 2
   size: 16, 17
   orig: 16, 17
   offset: 0, 0
   index: -1
+ghost
+  rotate: false
+  xy: 108, 111
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: -1
 L_upper_arm
   rotate: false
-  xy: 235, 2
+  xy: 56, 2
   size: 15, 24
   orig: 15, 24
   offset: 0, 0
   index: -1
 torso
   rotate: false
-  xy: 185, 62
+  xy: 42, 63
   size: 38, 46
   orig: 38, 46
   offset: 0, 0
   index: -1
 back/L_glove_back
   rotate: false
-  xy: 41, 28
+  xy: 165, 2
   size: 17, 25
   orig: 17, 25
   offset: 0, 0
   index: -1
 back/L_lower_arm_back
   rotate: false
-  xy: 174, 2
+  xy: 24, 2
   size: 12, 20
   orig: 12, 20
   offset: 0, 0
   index: -1
 waist
   rotate: false
-  xy: 2, 2
+  xy: 204, 2
   size: 27, 16
   orig: 27, 16
   offset: 0, 0
   index: -1
 L_boot
   rotate: false
-  xy: 57, 2
+  xy: 113, 2
   size: 24, 17
   orig: 24, 17
   offset: 0, 0
   index: -1
 L_lower_arm
   rotate: false
-  xy: 83, 2
+  xy: 38, 2
   size: 16, 17
   orig: 16, 17
   offset: 0, 0
   index: -1
 B_hat
   rotate: false
-  xy: 112, 2
+  xy: 149, 29
   size: 49, 19
   orig: 49, 19
   offset: 0, 0
   index: -1
 back/head_back
   rotate: false
-  xy: 2, 110
+  xy: 135, 63
   size: 52, 46
   orig: 52, 46
   offset: 0, 0
   index: -1
 L_lower_leg
   rotate: false
-  xy: 163, 2
+  xy: 2, 2
   size: 9, 19
   orig: 9, 19
   offset: 0, 0
   index: -1
 R_upper_arm
   rotate: false
-  xy: 188, 2
+  xy: 73, 2
   size: 19, 21
   orig: 19, 21
   offset: 0, 0
   index: -1
 R_glove
   rotate: false
-  xy: 2, 28
+  xy: 94, 2
   size: 17, 24
   orig: 17, 24
   offset: 0, 0
   index: -1
 back/R_glove_back
   rotate: false
-  xy: 209, 2
+  xy: 2, 29
   size: 24, 23
   orig: 24, 23
   offset: 0, 0
   index: -1
 L_upper_leg
   rotate: false
-  xy: 21, 28
+  xy: 184, 2
   size: 18, 24
   orig: 18, 24
   offset: 0, 0
   index: -1
 back/torso_back
   rotate: false
-  xy: 56, 110
+  xy: 2, 63
   size: 38, 46
   orig: 38, 46
   offset: 0, 0
   index: -1
 L_glove
   rotate: false
-  xy: 86, 28
+  xy: 54, 29
   size: 25, 25
   orig: 25, 25
   offset: 0, 0
   index: -1
 back/male_back_128_xcf-screw_back_color
   rotate: false
-  xy: 181, 28
+  xy: 200, 29
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 screw_driver
   rotate: false
-  xy: 96, 110
+  xy: 67, 111
   size: 39, 92
   orig: 39, 92
   offset: 0, 0
