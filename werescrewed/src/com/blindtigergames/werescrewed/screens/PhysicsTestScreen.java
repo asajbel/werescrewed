@@ -184,7 +184,7 @@ public class PhysicsTestScreen extends Screen {
 		EventTrigger et = etb.name( "cannon-trigger" ).setVerts( triggerVerts )
 				.extraBorder( 0 )
 				.position( eventPos )//.addEntity( s )
-				.beginAction( new CannonLaunchAction( s, 10000, 1 ) )
+				.beginAction( new CannonLaunchAction( s, .3f, 1 ) )
 				.repeatable( )
 				.build( );
 		s.addEventTrigger( et );
