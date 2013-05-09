@@ -13,6 +13,7 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.JointEdge;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
+import com.blindtigergames.werescrewed.camera.Camera;
 import com.blindtigergames.werescrewed.checkpoints.CheckPoint;
 import com.blindtigergames.werescrewed.entity.animator.SimpleFrameAnimator;
 import com.blindtigergames.werescrewed.entity.animator.SimpleFrameAnimator.LoopBehavior;
@@ -67,8 +68,10 @@ public class Skeleton extends Platform {
 
 	protected boolean applyFadeToFGDecals = true;
 	protected boolean isMacroSkeleton = false;
+	protected boolean invisibleBGDecal = false;
 
 	protected boolean wasInactive = false;
+	protected boolean onScreen = true;
 
 	/**
 	 * Constructor used by SkeletonBuilder
@@ -401,7 +404,7 @@ public class Skeleton extends Platform {
 	public void update( float deltaTime ) {
 		float frameRate = 1 / deltaTime;
 		boolean isUpdatable = !this.isFadingSkel( ) || this.isFGFaded( );
-		if ( isUpdatable || isMacroSkeleton ) {
+		if ( onScreen && ( isUpdatable || isMacroSkeleton ) ) {
 			updateMover( deltaTime );
 			if ( entityType != EntityType.ROOTSKELETON && isKinematic( ) ) {
 				super.setTargetPosRotFromSkeleton( frameRate, parentSkeleton );
@@ -416,7 +419,7 @@ public class Skeleton extends Platform {
 				platform.update( deltaTime );
 			}
 		}
-		if ( isUpdatable ) {
+		if ( onScreen && isUpdatable ) {
 			for ( Platform platform : dynamicPlatformMap.values( ) ) {
 				if ( platform.removeNextStep ) {
 					entitiesToRemove.add( platform );
@@ -562,7 +565,7 @@ public class Skeleton extends Platform {
 	}
 
 	private void drawChildren( SpriteBatch batch, float deltaTime ) {
-		if ( !this.isFadingSkel( ) || this.isFGFaded( ) ) {
+		if ( onScreen && ( !this.isFadingSkel( ) || this.isFGFaded( ) ) ) {
 			for ( Platform p : dynamicPlatformMap.values( ) ) {
 				drawPlatform( p, batch, deltaTime );
 			}
@@ -594,6 +597,25 @@ public class Skeleton extends Platform {
 		}
 	}
 
+	/**
+	 * 
+	 * @param batch
+	 * @param camera
+	 */
+	@Override
+	public void drawBGDecals( SpriteBatch batch, Camera camera ) {
+		for ( Sprite decal : bgDecals ) {
+			if ( decal.getBoundingRectangle( ).overlaps( camera.getBounds( ) ) ) {
+				if ( !invisibleBGDecal ) {
+					decal.draw( batch );
+				}
+				onScreen = true;
+			} else {
+				onScreen = false;
+			}
+		}
+	}
+	
 	/**
 	 * Draw each child. Tiled platforms have unique draw calls. Platforms can be
 	 * hazards as well
