@@ -21,6 +21,7 @@
 	<bodyScale>0.45f</bodyScale>
 	<fixedRotation>true</fixedRotation>
 	<sound>jump:/common/sounds/jumpFemale.ogg</sound>
+	<sound>jump:/common/sounds/jumpFemale2.ogg</sound>
 	<sound>death:/common/sounds/deathFemaleOoh.ogg</sound>
 	<sound>death:/common/sounds/deathFemaleUeh.ogg</sound>
 	<sound>death:/common/sounds/deathFemaleUgh.ogg</sound>
