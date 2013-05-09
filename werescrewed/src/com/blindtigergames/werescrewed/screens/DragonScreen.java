@@ -44,6 +44,7 @@ public class DragonScreen extends Screen {
 
 	PuzzleScrew puzzle_screw_balloon1;
 	Platform balloon1;
+	Skeleton balloon1_super;
 	
 	public DragonScreen( ) {
 		super( );
@@ -51,6 +52,7 @@ public class DragonScreen extends Screen {
 		level = new LevelFactory( ).load( filename );
 		
 		buildBalloon();
+		
 		
 		Skeleton balloon3CannonSkeleton = (Skeleton) LevelFactory.entities.get( "balloon3_cannon_skeleton" );
 		balloon3CannonSkeleton.setFgFade( false );
@@ -67,7 +69,7 @@ public class DragonScreen extends Screen {
 		//Platform balloon4 = (Platform) LevelFactory.entities.get( "balloon4" );
 		
 		Skeleton balloon1_skeleton = ( Skeleton ) LevelFactory.entities.get( "balloon1_skeleton" );
-
+		balloon1_super = (Skeleton) LevelFactory.entities.get( "balloon1_super" );
 		
 		puzzle_screw_balloon1 = (PuzzleScrew) LevelFactory.entities.get( "puzzle_screw_balloon1" );
 		
@@ -103,17 +105,17 @@ public class DragonScreen extends Screen {
 		}
 
 		if(puzzle_screw_balloon1.getDepth( ) == puzzle_screw_balloon1.getMaxDepth( )){
-			if(balloon1.currentMover() == null){
+			if(balloon1_super.currentMover() == null){
 				Timeline t = Timeline.createSequence( );
 				
 				
 				t.beginParallel( );
 				t.push( Tween
-						.to( balloon1, PlatformAccessor.LOCAL_POS_XY, 8f )
+						.to( balloon1_super, PlatformAccessor.LOCAL_POS_XY, 8f )
 						.delay( 0f ).target( 0, 800 )
 						.ease( TweenEquations.easeNone ).start( ) );
 				
-				t.push( Tween.to( balloon1, PlatformAccessor.LOCAL_ROT, 4f )
+				t.push( Tween.to( balloon1_super, PlatformAccessor.LOCAL_ROT, 4f )
 						   .ease(TweenEquations.easeNone)
 						   .target( Util.PI / 32 ).delay( 0f )
 						   .start()
@@ -125,11 +127,11 @@ public class DragonScreen extends Screen {
 				t.beginParallel( );
 				
 				t.push( Tween
-						.to( balloon1, PlatformAccessor.LOCAL_POS_XY, 8f )
+						.to( balloon1_super, PlatformAccessor.LOCAL_POS_XY, 8f )
 						.delay( 0f ).target( 0, 1600f )
 						.ease( TweenEquations.easeNone ).start( ) );
 				
-				t.push( Tween.to( balloon1, PlatformAccessor.LOCAL_ROT, 4f )
+				t.push( Tween.to( balloon1_super, PlatformAccessor.LOCAL_ROT, 4f )
 						   .ease(TweenEquations.easeNone)
 						   .target( -Util.PI / 32 ).delay( 0f )
 						   .start()
@@ -138,13 +140,13 @@ public class DragonScreen extends Screen {
 				t.end( );
 
 				t.beginSequence( );
-				t.push( Tween.to( balloon1, PlatformAccessor.LOCAL_ROT, 4f )
+				t.push( Tween.to( balloon1_super, PlatformAccessor.LOCAL_ROT, 4f )
 						   .ease(TweenEquations.easeNone)
 						   .target( 0 ).delay( 0f )
 						   .start()
 						   );
 				 t.end( );
-				balloon1.addMover( new TimelineTweenMover( t.start( ) ) );
+				 balloon1_super.addMover( new TimelineTweenMover( t.start( ) ) );
 			}
 			
 		}

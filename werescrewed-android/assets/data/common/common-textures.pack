@@ -5,238 +5,252 @@ repeat: none
 offset: 0, 0
 hex_screw
   rotate: false
-  xy: 402, 239
+  xy: 264, 346
   size: 79, 79
   orig: 79, 79
   offset: 0, 0
   index: -1
 3
   rotate: false
-  xy: 434, 401
+  xy: 92, 465
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
 spikes
   rotate: false
-  xy: 440, 2
+  xy: 264, 427
   size: 68, 68
   orig: 68, 68
   offset: 0, 0
   index: -1
+player_female_idle_ghost
+  rotate: false
+  xy: 136, 58
+  size: 132, 132
+  orig: 132, 132
+  offset: 0, 0
+  index: -1
 pipeLR
   rotate: false
-  xy: 72, 98
+  xy: 366, 154
   size: 94, 94
   orig: 94, 94
   offset: 0, 0
   index: -1
 pipeUR
   rotate: false
-  xy: 2, 270
+  xy: 270, 58
   size: 94, 94
   orig: 94, 94
   offset: 0, 0
   index: -1
 rail_horz_right
   rotate: false
-  xy: 290, 250
+  xy: 456, 261
   size: 54, 154
   orig: 54, 154
   offset: 0, 0
   index: -1
 flat_head_circular2
   rotate: false
-  xy: 344, 406
+  xy: 2, 384
   size: 88, 88
   orig: 88, 88
   offset: 0, 0
   index: -1
 4
   rotate: false
-  xy: 440, 72
+  xy: 173, 460
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
 power_screw
   rotate: false
-  xy: 384, 158
+  xy: 92, 384
   size: 79, 79
   orig: 79, 79
   offset: 0, 0
   index: -1
 rivet4
   rotate: false
-  xy: 434, 465
+  xy: 462, 185
   size: 36, 36
   orig: 36, 36
   offset: 0, 0
   index: -1
 spikes_rotated
   rotate: false
-  xy: 274, 442
+  xy: 426, 417
   size: 68, 68
   orig: 68, 68
   offset: 0, 0
   index: -1
 pipeEndL
   rotate: false
-  xy: 98, 250
+  xy: 2, 288
   size: 94, 94
   orig: 94, 94
   offset: 0, 0
   index: -1
 pipeEndD
   rotate: false
-  xy: 98, 346
+  xy: 98, 288
   size: 94, 94
   orig: 94, 94
   offset: 0, 0
   index: -1
 rivet3
   rotate: false
-  xy: 2, 462
+  xy: 470, 2
   size: 38, 35
   orig: 38, 35
   offset: 0, 0
   index: -1
 tiletexture2
   rotate: false
-  xy: 42, 462
+  xy: 462, 109
   size: 36, 36
   orig: 36, 36
   offset: 0, 0
   index: -1
 rail_vert_bottom
   rotate: false
-  xy: 228, 194
+  xy: 314, 2
   size: 154, 54
   orig: 154, 54
   offset: 0, 0
   index: -1
 chainlink
   rotate: false
-  xy: 465, 136
+  xy: 470, 39
   size: 36, 68
   orig: 36, 68
   offset: 0, 0
   index: -1
 flat_head_circular
   rotate: false
-  xy: 402, 320
+  xy: 345, 346
   size: 79, 79
   orig: 79, 79
   offset: 0, 0
   index: 75
 pipeEndU
   rotate: false
-  xy: 168, 2
+  xy: 2, 192
   size: 94, 94
   orig: 94, 94
   offset: 0, 0
   index: -1
+player_r_m_ghost
+  rotate: false
+  xy: 2, 58
+  size: 132, 132
+  orig: 132, 132
+  offset: 0, 0
+  index: -1
 switch_on
   rotate: false
-  xy: 2, 2
+  xy: 194, 192
   size: 68, 132
   orig: 68, 132
   offset: 0, 0
   index: -1
 pipeDL
   rotate: false
-  xy: 194, 346
+  xy: 360, 250
   size: 94, 94
   orig: 94, 94
   offset: 0, 0
   index: -1
 tiletexture1
   rotate: false
-  xy: 80, 462
+  xy: 462, 147
   size: 36, 36
   orig: 36, 36
   offset: 0, 0
   index: -1
 pipeUD
   rotate: false
-  xy: 72, 2
+  xy: 270, 154
   size: 94, 94
   orig: 94, 94
   offset: 0, 0
   index: -1
 rivet2
   rotate: false
-  xy: 328, 2
+  xy: 390, 427
   size: 34, 36
   orig: 34, 36
   offset: 0, 0
   index: -1
 2
   rotate: false
-  xy: 264, 2
+  xy: 2, 474
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
 rail_horz_left
   rotate: false
-  xy: 384, 2
+  xy: 237, 497
   size: 54, 154
   orig: 54, 154
   offset: 0, 0
   index: -1
 pipeUL
   rotate: false
-  xy: 2, 366
+  xy: 366, 58
   size: 94, 94
   orig: 94, 94
   offset: 0, 0
   index: -1
 rail_horz_middle
   rotate: false
-  xy: 346, 250
+  xy: 334, 427
   size: 54, 154
   orig: 54, 154
   offset: 0, 0
   index: -1
 pipeEndR
   rotate: false
-  xy: 168, 98
+  xy: 98, 192
   size: 94, 94
   orig: 94, 94
   offset: 0, 0
   index: -1
 switch_off
   rotate: false
-  xy: 2, 136
+  xy: 194, 326
   size: 68, 132
   orig: 68, 132
   offset: 0, 0
   index: -1
 rail_vert_top
   rotate: false
-  xy: 72, 194
+  xy: 2, 2
   size: 154, 54
   orig: 154, 54
   offset: 0, 0
   index: -1
 pipeDR
   rotate: false
-  xy: 194, 250
+  xy: 264, 250
   size: 94, 94
   orig: 94, 94
   offset: 0, 0
   index: -1
 rivet1
   rotate: false
-  xy: 472, 465
+  xy: 462, 223
   size: 35, 36
   orig: 35, 36
   offset: 0, 0
   index: -1
 rail_vert_middle
   rotate: false
-  xy: 118, 442
+  xy: 158, 2
   size: 154, 54
   orig: 154, 54
   offset: 0, 0
