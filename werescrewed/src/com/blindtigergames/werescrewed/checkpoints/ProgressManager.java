@@ -17,6 +17,7 @@ import com.blindtigergames.werescrewed.entity.mover.LinearAxis;
 import com.blindtigergames.werescrewed.entity.screws.ResurrectScrew;
 import com.blindtigergames.werescrewed.entity.screws.ScrewType;
 import com.blindtigergames.werescrewed.graphics.SpriteBatch;
+import com.blindtigergames.werescrewed.graphics.TextureAtlas;
 import com.blindtigergames.werescrewed.graphics.TextureAtlas.AtlasRegion;
 import com.blindtigergames.werescrewed.player.Player;
 import com.blindtigergames.werescrewed.player.Player.PlayerState;
@@ -53,16 +54,17 @@ public class ProgressManager {
 		rezScrewMap = new HashMap< String, ResurrectScrew >( );
 		ghostMap = new HashMap< String, Entity >( );
 		ghostTextures = new HashMap< String, TextureRegion >( );
+		TextureAtlas atlas = WereScrewedGame.manager.getAtlas( "common-textures");
 		if ( p1 != null ) {
 			players.put( p1.name, p1 );
 			ghostTextures.put(
 					p1.name,
-					WereScrewedGame.manager.getAtlas( "common-textures").findRegion( "player_r_m_ghost" ) );
+					atlas.findRegion( "player_r_m_ghost" ) );
 		}
 		if ( p2 != null ) {
 			players.put( p2.name, p2 );
 			ghostTextures
-			.put( p2.name, WereScrewedGame.manager.getAtlas( "common-textures").findRegion( "/common/player_female_idle_ghost.png" ) );
+			.put( p2.name, atlas.findRegion( "player_female_idle_ghost" ) );
 		}
 		this.world = world;
 	}
@@ -303,10 +305,11 @@ public class ProgressManager {
 	 */
 	public void addPlayerOne( Player p1 ) {
 		if ( !players.containsKey( p1.name ) ) {
+			TextureAtlas atlas = WereScrewedGame.manager.getAtlas( "common-textures");
 			this.players.put( p1.name, p1 );
 			ghostTextures.put(
 					p1.name,
-					WereScrewedGame.manager.getAtlas( "common-textures").findRegion( "player_r_m_ghost" )  );
+					atlas.findRegion( "player_r_m_ghost" )  );
 		}
 	}
 
@@ -317,9 +320,10 @@ public class ProgressManager {
 	 */
 	public void addPlayerTwo( Player p2 ) {
 		if ( !players.containsKey( p2.name ) ) {
+			TextureAtlas atlas = WereScrewedGame.manager.getAtlas( "common-textures");
 			this.players.put( p2.name, p2 );
 			ghostTextures
-			.put( p2.name, WereScrewedGame.manager.getAtlas( "common-textures").findRegion( "/common/player_female_idle_ghost.png" ) );
+			.put( p2.name, atlas.findRegion( "player_female_idle_ghost" ) );
 		}
 	}
 
