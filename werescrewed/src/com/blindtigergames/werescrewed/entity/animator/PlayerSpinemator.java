@@ -49,6 +49,7 @@ public class PlayerSpinemator implements ISpinemator {
 	protected Vector2 position = null;
 	protected Vector2 scale = null;
 	protected boolean flipX = false;
+	private TextureAtlas bodyAtlas;
 
 	private enum ScrewState {
 		IGNORE, READY, DRAW, STOW
@@ -63,9 +64,9 @@ public class PlayerSpinemator implements ISpinemator {
 	 *            Player the animations will belong to.
 	 */
 	public PlayerSpinemator( Player thePlayer ) {
-		TextureAtlas atlas = WereScrewedGame.manager.getAtlas( thePlayer.type
+		bodyAtlas = WereScrewedGame.manager.getAtlas( thePlayer.type
 				.getAtlasName( ) );
-		SkeletonBinary sb = new SkeletonBinary( atlas );
+		SkeletonBinary sb = new SkeletonBinary( bodyAtlas );
 		SkeletonData sd = sb.readSkeletonData( Gdx.files
 				.internal( "data/common/spine/" + thePlayer.type.getSkeleton( )
 						+ ".skel" ) );
@@ -353,6 +354,14 @@ public class PlayerSpinemator implements ISpinemator {
 	@Override
 	public void setScale( Vector2 scale ) {
 		this.scale = scale;
+	}
+	
+	/**
+	 * Returns atlas that has all the body parts for this player
+	 * @return
+	 */
+	public TextureAtlas getBodyAtlas(){
+		return bodyAtlas;
 	}
 
 }
