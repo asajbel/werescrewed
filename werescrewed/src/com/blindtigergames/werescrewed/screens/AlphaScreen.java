@@ -354,22 +354,12 @@ public class AlphaScreen extends Screen {
 		addBGSkeletonBack( light_skel );
 
 		// level.skelBGList.put( key, value )
-		TextureAtlas floor_seats = WereScrewedGame.manager
-				.getAtlas( "alphabot_floor_seats" );
-		TextureAtlas stage_pillar = WereScrewedGame.manager
-				.getAtlas( "stage_pillar" );
-		TextureAtlas stage_upperleft = WereScrewedGame.manager
-				.getAtlas( "stage_upperleft" );
-		TextureAtlas stage_upperright = WereScrewedGame.manager
-				.getAtlas( "stage_upperright" );
-		TextureAtlas stage_light = WereScrewedGame.manager
-				.getAtlas( "stage_light" );
-		TextureAtlas support_left = WereScrewedGame.manager
-				.getAtlas( "support_left" );
-		TextureAtlas support_middle_right = WereScrewedGame.manager
-				.getAtlas( "support_middle_right" );
-		TextureAtlas curtains = WereScrewedGame.manager.getAtlas( "curtains" );
+		TextureAtlas theater_floor_seats_stage = WereScrewedGame.manager
+				.getAtlas( "theater_floor_seats_stage" );
+		TextureAtlas light_curtain = WereScrewedGame.manager.getAtlas( "light_curtain" );
 
+		Sprite s;
+		
 		int max = 2030;
 		int offsetX = 200;
 		int offsetY = 0;
@@ -390,6 +380,9 @@ public class AlphaScreen extends Screen {
 
 		int curtainX = seatsX - max + 1230;
 		int curtainY = seatsY + 585;
+		
+		float scale = 1f/0.75f;
+		float floorScale = 1f/0.724848916f; //Don't ask me why
 
 		// support beam
 		/*light_skel.addBGDecalBack( support_left.createSprite( "support_left" ),
@@ -402,59 +395,69 @@ public class AlphaScreen extends Screen {
 				new Vector2( supportX + 2 * max, supportY ) );*/
 
 		// lights
-		light_skel.addBGDecal( stage_light.createSprite( "light_left" ),
+		s=light_curtain.createSprite( "light_left" );
+		s.setScale(scale);
+		light_skel.addBGDecal( s,
 				new Vector2( lightX, lightY ) );
-		light_skel.addBGDecal( stage_light.createSprite( "light_right" ),
+		s=light_curtain.createSprite( "light_right" );
+		s.setScale(scale);
+		light_skel.addBGDecal( s,
 				new Vector2( lightX + 2030, lightY ) );
 
 		// floor
-		light_skel.addBGDecal( floor_seats.createSprite( "floor_left" ),
+		s=theater_floor_seats_stage.createSprite( "floor" );
+		s.setScale(floorScale);
+		light_skel.addBGDecal( s,
 				new Vector2( floorX, floorY ) );
-		light_skel.addBGDecal( floor_seats.createSprite( "floor_right" ),
-				new Vector2( floorX + max, floorY ) );
 
 		// curtains
-		bgSkele.addFGDecal( curtains.createSprite( "curtains_bottom_left" ),
+		s = light_curtain.createSprite( "curtain_bottom" );
+		s.setScale( scale );
+		bgSkele.addFGDecal( s,
 				new Vector2( curtainX, curtainY ) );
-		bgSkele.addFGDecal( curtains.createSprite( "curtains_top_left" ),
-				new Vector2( curtainX, curtainY + 830 ) );
-		bgSkele.addFGDecal( curtains.createSprite( "curtains_middle" ),
-				new Vector2( curtainX + 304, curtainY + 1011 ) );
-		bgSkele.addFGDecal( curtains.createSprite( "curtains_top_right" ),
-				new Vector2( curtainX + 2333, curtainY + 834 ) );
-		bgSkele.addFGDecal( curtains.createSprite( "curtains_bottom_right" ),
-				new Vector2( curtainX + 2398, curtainY ) );
+		s = light_curtain.createSprite( "curtain_bottom" );
+		s.setScale( -scale, scale );
+		bgSkele.addFGDecal( s,
+				new Vector2( curtainX+2398, curtainY ) );
+		s = light_curtain.createSprite( "curtain_top" );
+		s.setScale( scale );
+		bgSkele.addFGDecal( s,
+				new Vector2( curtainX, curtainY + 1176 ) );
+		s = light_curtain.createSprite( "curtain_top" );
+		s.setScale( -scale, scale );
+		bgSkele.addFGDecal( s,
+				new Vector2( curtainX+s.getWidth( )*scale, curtainY + 1176 ) );
 
 		// stage is in between floor & seats
-		bgSkele.addFGDecal( stage_pillar.createSprite( "stage_left" ),
+		s=theater_floor_seats_stage.createSprite( "stage_bottom" );
+		s.setScale( scale );
+		bgSkele.addFGDecal( s,
 				new Vector2( stage_pillarX, stage_pillarY ) );
-		bgSkele.addFGDecal( stage_upperleft.createSprite( "stage_upperleft" ),
-				new Vector2( stage_pillarX + 2, 1647 + stage_pillarY ) );// 1647
-																			// is
-																			// height
-																			// of
-																			// left
-																			// pillar
+		s=theater_floor_seats_stage.createSprite( "stage_top" );
+		s.setScale( scale );
+		bgSkele.addFGDecal( s,
+				new Vector2( stage_pillarX+2 , 1684 + stage_pillarY ) );
 
-		bgSkele.addFGDecal( stage_pillar.createSprite( "stage_right" ),
-				new Vector2( stage_pillarX + 3204, stage_pillarY ) );// 3204 is
-																		// difference
-																		// between
-																		// left
-																		// &
-																		// right
+		
+		/*bgSkele.addFGDecal( stage_pillar.createSprite( "stage_right" ),
+				new Vector2( stage_pillarX + 3204, stage_pillarY ) );
+		
 		bgSkele.addFGDecal(
 				stage_upperright.createSprite( "stage_upperright" ),
-				new Vector2( stage_pillarX + 2004, stage_pillarY + 1616 ) );// 1617
+				new Vector2( stage_pillarX + 2004, stage_pillarY + 1616 ) );// 1617*/
 
 		// works
 		// seats
-		light_skel.addFGDecal( floor_seats.createSprite( "seats_left" ),
+		//todo:
+		s = theater_floor_seats_stage.createSprite( "seats" );
+		s.setScale( scale );
+		light_skel.addFGDecal( s,
 				new Vector2( -max + seatsX, seatsY ) );
-		light_skel.addFGDecal( floor_seats.createSprite( "seats_middle" ),
-				new Vector2( 0 + seatsX, seatsY ) );
-		light_skel.addFGDecal( floor_seats.createSprite( "seats_right" ),
-				new Vector2( max + seatsX, seatsY ) );
+		s = theater_floor_seats_stage.createSprite( "seats" );
+		s.setScale( -scale, scale );
+		light_skel.addFGDecal( s,
+				new Vector2((-max + seatsX+2614*2), seatsY ) );
+				
 
 		// addBackGroundEntity( bgSkele );
 		// addForeGroundEntity( bgSkele );
@@ -472,9 +475,7 @@ public class AlphaScreen extends Screen {
 		addFGSkeleton( bgSkele );
 		level.skelFGList.remove( light_skel );
 		addFGSkeleton( light_skel );
-		for ( Skeleton s : level.skelFGList ) {
-			Gdx.app.log( "fgList", s.name );
-		}
+
 		light_skel.setFgFade( false );
 
 	}
