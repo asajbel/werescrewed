@@ -17,6 +17,8 @@ import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.camera.Camera;
 import com.blindtigergames.werescrewed.entity.RobotState;
 import com.blindtigergames.werescrewed.entity.Skeleton;
+import com.blindtigergames.werescrewed.entity.action.CannonLaunchAction;
+import com.blindtigergames.werescrewed.entity.builders.EventTriggerBuilder;
 import com.blindtigergames.werescrewed.entity.builders.PlatformBuilder;
 import com.blindtigergames.werescrewed.entity.builders.PlayerBuilder;
 import com.blindtigergames.werescrewed.entity.builders.SkeletonBuilder;
@@ -35,6 +37,7 @@ import com.blindtigergames.werescrewed.entity.screws.PuzzleScrew;
 import com.blindtigergames.werescrewed.entity.screws.StructureScrew;
 import com.blindtigergames.werescrewed.entity.tween.PathBuilder;
 import com.blindtigergames.werescrewed.entity.tween.PlatformAccessor;
+import com.blindtigergames.werescrewed.eventTrigger.EventTrigger;
 import com.blindtigergames.werescrewed.util.Util;
 
 public class DragonScreen extends Screen {
@@ -49,7 +52,12 @@ public class DragonScreen extends Screen {
 		
 		buildBalloon();
 		
+		Skeleton balloon3CannonSkeleton = (Skeleton) LevelFactory.entities.get( "balloon3_cannon_skeleton" );
+		balloon3CannonSkeleton.setFgFade( false );
+		balloon3CannonSkeleton.setLocalRot( -Util.PI/4 );
 		
+		buildCannon(balloon3CannonSkeleton, balloon3CannonSkeleton.getPositionPixel( ),
+				200, 200);
 	}
 	
 	void buildBalloon(){
@@ -65,7 +73,7 @@ public class DragonScreen extends Screen {
 		
 		
 	//	balloon1.addMover( balloonMover(balloon1, 800, Util.PI/32, 0) );
-		balloon2.addMover( balloonMover(balloon2, 800, 0, 4) );
+	//	balloon2.addMover( balloonMover(balloon2, 800, 0, 4) );
 //		balloon3.addMover( balloonMover(balloon3, 700, 0, 2) );
 //		balloon4.addMover( balloonMover(balloon4, 600, 0, 0) );
 //		balloon3_skeleton.addMover( balloonMover(balloon3_skeleton, 600, Util.PI/8, 4) );
@@ -203,5 +211,48 @@ public class DragonScreen extends Screen {
 //		t.delay( initPause );
 		t = t.repeat( Tween.INFINITY, 0f );
 		return new TimelineTweenMover( t.start( ) );
+	}
+	
+	void buildCannon(Skeleton skel, Vector2 pos, int widthPix, int heightPix){
+		if(widthPix<=64)throw new RuntimeException( "Cannon width needs to be greater than 64 (2tiles) to work properly" );
+		PlatformBuilder pb = new PlatformBuilder( level.world ).tileSet( "TilesetTest" );
+
+		
+		Vector2 dim = new Vector2(((int)(widthPix/32))-2,((int)(heightPix/32)));
+		Vector2 left = new Vector2(pos.x-dim.x/2*32-16, pos.y-16+dim.y*16);
+		Vector2 right = new Vector2(pos.x+dim.x/2*32+16, pos.y-16+dim.y*16);
+		
+
+		
+		//base
+		skel.addPlatform( pb.name( "cannon-base" ).dimensions( dim.x,1 ).position( pos.cpy() ).buildTilePlatform( ) );
+		//left
+		skel.addPlatform( pb.name( "cannon-left" ).dimensions( 1,dim.y ).position( left.cpy() ).buildTilePlatform( ) );
+		//right
+		skel.addPlatform( pb.name( "cannon-right" ).dimensions( 1,dim.y ).position( right.cpy() ).buildTilePlatform( ) );
+		
+		EventTriggerBuilder etb = new EventTriggerBuilder( level.world );
+		
+		int quarter = ( int ) ( dim.y*32/4 );
+		Vector2 eventPos = new Vector2(pos.x,pos.y+16+quarter);
+		
+		Array< Vector2 > triggerVerts = new Array< Vector2 >(4);
+		//triggerVerts.add( new Vector2 )
+		
+		triggerVerts.add( new Vector2( quarter,-quarter) );
+		triggerVerts.add( new Vector2( quarter, quarter) );
+		triggerVerts.add( new Vector2(-quarter, quarter) );
+		triggerVerts.add( new Vector2(-quarter,-quarter) );
+		triggerVerts.add( new Vector2(-quarter,-quarter) );
+		
+		
+		EventTrigger et = etb.name( "cannon-trigger" ).setVerts( triggerVerts )
+				.extraBorder( 0 )
+				.position( eventPos )//.addEntity( s )
+				.beginAction( new CannonLaunchAction( skel, 0.4f, 1 ) )
+				.repeatable( )
+				.build( );
+		skel.addEventTrigger( et );
+		
 	}
 }
