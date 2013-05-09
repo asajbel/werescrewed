@@ -27,7 +27,7 @@
 /common/sounds/land.ogg
 /common/sounds/impactMaleDoh.ogg
 /common/sounds/impactMaleDoh2.ogg
-/common/sounds/WilhelmScream.ogg
+#/common/sounds/WilhelmScream.ogg
 /common/sounds/steam.ogg
 #/common/sounds/TrainJob.mp3
 #/common/sounds/loopTrain.mp3
@@ -38,35 +38,27 @@
 ##music
 /common/music/waltz.mp3
 
-##Please don't add individual files, add them to the common-textures.pack file with texture packer!
-##common texture
-#/common/player_female_idle_ghost.png
-#/common/player_r_m_ghost.png
+
 
 /common/tileset/TilesetTest.png
-#/common/blind_tiger_logo_1024.png
-/common/title_background.png
 /common/title_background_clear.png
-#/common/title_background_1024.png
-#/common/title_background_original.png
-#/common/robot/metal.png
 
 
 
 /common/moustache.png
 
-/common/robot/metal.png
 /common/gear.png
 /common/sawblade.png
 /common/chest-engine.png
 /common/redScrewDriver.png
-/common/pipe/pipeEndD.png
-/common/pipe/pipeEndL.png
-/common/pipe/pipeEndR.png
-/common/pipe/pipeEndU.png
-/common/pipe/pipeLR.png
-/common/pipe/pipeUD.png
+#/common/pipe/pipeEndD.png
+#/common/pipe/pipeEndL.png
+#/common/pipe/pipeEndR.png
+#/common/pipe/pipeEndU.png
+#/common/pipe/pipeLR.png
+#/common/pipe/pipeUD.png
 
+#delete these when final art comes in
 /common/powerswitches/on.png
 /common/powerswitches/off.png
 
@@ -74,17 +66,16 @@
 ##please us texture packer to put all common textures in this pack file!
 /common/common-textures.pack
 /common/checkpoint/checkpoint.pack
-/common/animations/pushButton.pack
 /common/animations/screwInterface.pack
 /common/tileset1.pack
 /common/TilesetTest.pack
 /common/autumn.pack
-/common/animations/player_r_m_1.pack
-/common/animations/player_r_m_2.pack
-/common/animations/player_r_m_3.pack
-/common/animations/player_r_f_1.pack
-/common/animations/player_r_f_2.pack
-/common/animations/player_r_f_3.pack
+#/common/animations/player_r_m_1.pack
+#/common/animations/player_r_m_2.pack
+#/common/animations/player_r_m_3.pack
+#/common/animations/player_r_f_1.pack
+#/common/animations/player_r_f_2.pack
+#/common/animations/player_r_f_3.pack
 /common/tileset/alphabot.pack
 /common/tileset/alphabot-bleed.pack
 /common/spine/red_female_atlas.pack
@@ -119,8 +110,6 @@ injured/oof.p
 fastSteam.p
 slowSteam.p
 
-
-
 ##temp background
 /common/menu_placeholder.png
 
@@ -134,3 +123,5 @@ grey.palette
 
 /common/tutorial/thought_bubble.png
 /common/tutorial/placeholderTut.png
+
+/common/title_background.png
