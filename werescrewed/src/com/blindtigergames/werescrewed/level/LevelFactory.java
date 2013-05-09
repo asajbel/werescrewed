@@ -400,6 +400,11 @@ public class LevelFactory {
 			pb.openEnded( );
 		}
 
+		if ( item.props.containsKey( "density" ) ) {
+			float density = Float.parseFloat( item.props.get( "density" ) );
+			pb.density( density );
+		}
+		
 		pb.name( item.name ).position( new Vector2( item.pos.x, item.pos.y ) )
 				.properties( item.props );
 
