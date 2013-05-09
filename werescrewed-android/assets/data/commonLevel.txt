@@ -11,7 +11,7 @@
 
 
 ##sounds
-/common/sounds/inceptionbutton.mp3
+#/common/sounds/inceptionbutton.mp3
 /common/sounds/jump.ogg
 /common/sounds/deathMaleGah.ogg
 /common/sounds/deathMaleUgh.ogg
@@ -27,72 +27,38 @@
 /common/sounds/land.ogg
 /common/sounds/impactMaleDoh.ogg
 /common/sounds/impactMaleDoh2.ogg
-/common/sounds/WilhelmScream.ogg
+#/common/sounds/WilhelmScream.ogg
 /common/sounds/steam.ogg
-/common/sounds/TrainJob.mp3
-/common/sounds/loopTrain.mp3
-/common/sounds/introTrain.mp3
+#/common/sounds/TrainJob.mp3
+#/common/sounds/loopTrain.mp3
+#/common/sounds/introTrain.mp3
 /levels/alphabot/sounds/arm_move.ogg
 /levels/alphabot/sounds/Engine.ogg
 
 ##music
 /common/music/waltz.mp3
 
-##Please don't add individual files, add them to the common-textures.pack file with texture packer!
-##common texture
-##/common/player_b_f.png
-##/common/player_female_idle.png
-/common/player_female_idle_ghost.png
-##/common/player_r_m.png
-/common/player_r_m_ghost.png
-#/common/test01.png
-#/common/cletter.png
 
-#/common/parallax_layer1_0.png
-#/common/parallax_layer1_1.png
-#/common/parallax_layer2_0.png
-#/common/parallax_layer2_1.png
-#/common/parallax_layer3_0.png
-#/common/parallax_layer3_1.png
 
-##/common/parallax_layer1_0.png
-##/common/parallax_layer1_1.png
-##/common/parallax_layer2_0.png
-##/common/parallax_layer2_1.png
-##/common/parallax_layer3_0.png
-
-/common/spikes.png
-/common/spikes_rotated.png
-/common/spikes_01.png
-/common/spikes_01r.png
-/common/spikes_02.png
-/common/spikes_02r.png
-/common/spikes_03.png
-/common/spikes_03r.png
 /common/tileset/TilesetTest.png
-#/common/blind_tiger_logo_1024.png
-/common/title_background.png
 /common/title_background_clear.png
-#/common/title_background_1024.png
-#/common/title_background_original.png
-#/common/robot/metal.png
 
 
 
 /common/moustache.png
 
-/common/robot/metal.png
 /common/gear.png
 /common/sawblade.png
 /common/chest-engine.png
 /common/redScrewDriver.png
-/common/pipe/pipeEndD.png
-/common/pipe/pipeEndL.png
-/common/pipe/pipeEndR.png
-/common/pipe/pipeEndU.png
-/common/pipe/pipeLR.png
-/common/pipe/pipeUD.png
+#/common/pipe/pipeEndD.png
+#/common/pipe/pipeEndL.png
+#/common/pipe/pipeEndR.png
+#/common/pipe/pipeEndU.png
+#/common/pipe/pipeLR.png
+#/common/pipe/pipeUD.png
 
+#delete these when final art comes in
 /common/powerswitches/on.png
 /common/powerswitches/off.png
 
@@ -100,17 +66,16 @@
 ##please us texture packer to put all common textures in this pack file!
 /common/common-textures.pack
 /common/checkpoint/checkpoint.pack
-/common/animations/pushButton.pack
 /common/animations/screwInterface.pack
 /common/tileset1.pack
 /common/TilesetTest.pack
 /common/autumn.pack
-##/common/animations/player_r_m_1.pack
-##/common/animations/player_r_m_2.pack
-##/common/animations/player_r_m_3.pack
-##/common/animations/player_r_f_1.pack
-##/common/animations/player_r_f_2.pack
-##/common/animations/player_r_f_3.pack
+#/common/animations/player_r_m_1.pack
+#/common/animations/player_r_m_2.pack
+#/common/animations/player_r_m_3.pack
+#/common/animations/player_r_f_1.pack
+#/common/animations/player_r_f_2.pack
+#/common/animations/player_r_f_3.pack
 /common/tileset/alphabot.pack
 /common/tileset/alphabot-bleed.pack
 /common/spine/red_female_atlas.pack
@@ -126,6 +91,7 @@
 /fonts/longdon.fnt
 
 #slides
+## TODO: unload these during the level
 /common/slides/slide1_intro.png
 /common/slides/slide2_audience.png
 /common/slides/slide3_alphabot.png
@@ -144,9 +110,6 @@ injured/oof.p
 fastSteam.p
 slowSteam.p
 
-## debug for testing engine in phys screen. Remove before release! -stew
-/levels/alphabot/engine.pack
-
 ##temp background
 /common/menu_placeholder.png
 
@@ -160,3 +123,5 @@ grey.palette
 
 /common/tutorial/thought_bubble.png
 /common/tutorial/placeholderTut.png
+
+/common/title_background.png
