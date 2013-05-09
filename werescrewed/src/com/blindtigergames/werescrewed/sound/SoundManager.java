@@ -293,7 +293,7 @@ public class SoundManager {
 		protected float delay;
 		protected float range;
 		protected float falloff;
-		
+		protected Vector2 offset;
 		protected static final float DELAY_MINIMUM = 0.0001f;
 		/*
 		 * Puts an initial delay on all sounds when they're first loaded.

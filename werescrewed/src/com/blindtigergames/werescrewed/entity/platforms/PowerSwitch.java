@@ -41,7 +41,7 @@ public class PowerSwitch extends EventTrigger{
 		Gdx.app.log("doAction ","");
 		if(state == false){
 			Gdx.app.log("doAction: ","if");
-			runBeginAction();
+			runBeginAction(null);
 			state = true;
 		}
 		else{

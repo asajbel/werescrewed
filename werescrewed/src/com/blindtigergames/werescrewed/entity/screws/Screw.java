@@ -305,13 +305,22 @@ public class Screw extends Entity {
 	public void addStructureJoint( Entity entity, float degreeLimit ) {
 		// connect other structure to structure screw
 		RevoluteJointDef revoluteJointDef = new RevoluteJointDef( );
-		revoluteJointDef.initialize( entity.body, body, body.getPosition( ) );
+		
+		//Order matters! put in negative degreelimit if the screw is on the right of the 
+		// object/skeleton and you want the skeleton to fall correctly
+		if(degreeLimit > 0)
+			revoluteJointDef.initialize( entity.body, body, body.getPosition( ) );
+		else
+			revoluteJointDef.initialize( body, entity.body, body.getPosition( ) );
 		revoluteJointDef.enableMotor = true;
 		revoluteJointDef.enableLimit = true;
+		degreeLimit = Math.abs( degreeLimit );
 		revoluteJointDef.upperAngle = degreeLimit * Util.DEG_TO_RAD;
 		revoluteJointDef.lowerAngle = -degreeLimit * Util.DEG_TO_RAD;
 
+
 		revoluteJointDef.maxMotorTorque = 30f;
+
 		revoluteJointDef.motorSpeed = 0.1f;
 		body.setFixedRotation( true );
 		

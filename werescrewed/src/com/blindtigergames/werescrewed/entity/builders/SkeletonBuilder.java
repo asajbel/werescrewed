@@ -209,7 +209,7 @@ public class SkeletonBuilder extends GenericEntityBuilder<SkeletonBuilder>{
 		if ( invisibleVerts != null ){
 			EventTriggerBuilder etb = new EventTriggerBuilder( world );
 			EventTrigger et = etb.name( name+"-invisible-fader" ).setVerts( invisibleVerts )
-					.extraBorder( 0f )
+					.extraBorder( 128f )
 					.position( pos.add( 0,0 ) ).addEntity( out )
 					.beginAction( new FadeSkeletonAction(true) )
 					.endAction( new FadeSkeletonAction(false) ).repeatable( )
@@ -221,6 +221,7 @@ public class SkeletonBuilder extends GenericEntityBuilder<SkeletonBuilder>{
 			if ( hasDeactivateTrigger&& polyVertsBG != null ){
 				EventTriggerBuilder etb = new EventTriggerBuilder( world );
 				EventTrigger et = etb.name( name+"-activator" ).setVerts( polyVertsBG )
+						.extraBorder( 128f )
 						.position( pos ).addEntity( out )
 						.beginAction( new FadeSkeletonAction( true ) )
 						.endAction( new FadeSkeletonAction( false ) )
@@ -232,7 +233,7 @@ public class SkeletonBuilder extends GenericEntityBuilder<SkeletonBuilder>{
 				EventTriggerBuilder etb = new EventTriggerBuilder( world );
 			
 				EventTrigger et = etb.name( name+"-fg-fader" ).setVerts( polyVertsFG )
-						.extraBorder( 0f )
+						.extraBorder( 128f )
 						.position( pos.add( 0,0 ) ).addEntity( out )
 						.beginAction( new FadeSkeletonAction(true) )
 						.endAction( new FadeSkeletonAction(false) ).repeatable( )

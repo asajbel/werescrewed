@@ -177,6 +177,19 @@ public class Entity implements GleedLoadable {
 		this.setPixelPosition( positionPixels );
 		this.anchors = new ArrayList< Anchor >( );
 	}
+	
+	public Entity( String name, Vector2 positionPixels, TextureRegion texture,
+			Body body, boolean solid, float rotation ) {
+		this.construct( name, solid );
+		this.sprite = constructSprite( texture );
+		this.body = body;
+		if ( body != null ) {
+			world = body.getWorld( );
+			// sprite.setScale( Util.PIXEL_TO_BOX );
+		}
+		this.setPixelPosition( positionPixels );
+		this.anchors = new ArrayList< Anchor >( );
+	}
 
 	/**
 	 * Construct an entity that uses a PolySprite
@@ -454,6 +467,80 @@ public class Entity implements GleedLoadable {
 		}
 	}
 
+	public void updateSounds( float deltaTime ){
+		sounds.update( deltaTime );
+		if (body != null){
+			Vector2 absVelocity = body.getLinearVelocity( );
+			float absAngVelocity = body.getAngularVelocity( );
+			if (sounds.hasSound( "linearvelocity" )){
+				//These properties should be moved into SoundRef. They're just here for testing.
+				Vector2 lineScale = new Vector2(1.0f,1.0f);
+				Vector2 relativeVelocity;
+				if (getParentSkeleton() != null){
+					relativeVelocity = body.getLinearVelocityFromLocalPoint( getParentSkeleton().getPosition( ) );
+				} else {
+					relativeVelocity = absVelocity.cpy();
+				}
+				float pitchZero = 0.5f;
+				float pitchRange = -0.5f;
+				float pitchExp = 1.0f;
+				float volumeZero = 1.0f;
+				float volumeRange = -1.0f;
+				float volumeExp = 1.0f;
+				relativeVelocity.x *= lineScale.x;
+				relativeVelocity.y *= lineScale.y;
+				float contrib = Math.max( Math.min(relativeVelocity.len(), 0.0f), 1.0f);
+				sounds.setSoundPitch( "linearvelocity", pitchZero + (float)Math.pow((pitchRange * contrib),pitchExp));
+				sounds.setSoundVolume( "linearvelocity", volumeZero + (float)Math.pow((volumeRange * contrib),volumeExp));				
+			}
+			if (sounds.hasSound( "angularvelocity" )){
+				float angScale = 1.0f;
+				float relativeAngVelocity = absAngVelocity;
+				if (getParentSkeleton() != null){
+					relativeAngVelocity -= getParentSkeleton().body.getAngularVelocity( );
+				}
+				relativeAngVelocity *= angScale;
+				float pitchZero = 0.5f;
+				float pitchRange = -0.5f;
+				float pitchExp = 1.0f;
+				float volumeZero = 1.0f;
+				float volumeRange = -1.0f;
+				float volumeExp = 1.0f;
+				float contrib = Math.max( Math.min(relativeAngVelocity, 0.0f), 1.0f);
+				sounds.setSoundPitch( "angularvelocity", pitchZero + (float)Math.pow((pitchRange * contrib),pitchExp));
+				sounds.setSoundVolume( "angularvelocity", volumeZero + (float)Math.pow((volumeRange * contrib),volumeExp));				
+			}
+			if (sounds.hasSound( "abslinearvelocity" )){
+				Vector2 lineScale = new Vector2(1.0f,1.0f);
+				Vector2 relativeVelocity;
+				relativeVelocity = absVelocity.cpy();
+				float pitchZero = 0.5f;
+				float pitchRange = -0.5f;
+				float pitchExp = 1.0f;
+				float volumeZero = 1.0f;
+				float volumeRange = -1.0f;
+				float volumeExp = 1.0f;
+				relativeVelocity.x *= lineScale.x;
+				relativeVelocity.y *= lineScale.y;
+				float contrib = Math.max( Math.min(relativeVelocity.len(), 0.0f), 1.0f);
+				sounds.setSoundPitch( "abslinearvelocity", pitchZero + (float)Math.pow((pitchRange * contrib),pitchExp));
+				sounds.setSoundVolume( "abslinearvelocity", volumeZero + (float)Math.pow((volumeRange * contrib),volumeExp));
+			}
+			if (sounds.hasSound( "absangularvelocity" )){
+				float angScale = 1.0f;
+				float relativeAngVelocity = absAngVelocity * angScale;
+				float pitchZero = 0.5f;
+				float pitchRange = -0.5f;
+				float pitchExp = 1.0f;
+				float volumeZero = 1.0f;
+				float volumeRange = -1.0f;
+				float volumeExp = 1.0f;
+				float contrib = Math.max( Math.min(relativeAngVelocity, 0.0f), 1.0f);
+				sounds.setSoundPitch( "absangularvelocity", pitchZero + (float)Math.pow((pitchRange * contrib),pitchExp));
+				sounds.setSoundVolume( "absangularvelocity", volumeZero + (float)Math.pow((volumeRange * contrib),volumeExp));	
+			}
+		}
+	}
 	public boolean isTimeLineMoverFinished( ) {
 		if ( currentMover( ) instanceof TimelineTweenMover ) {
 			return ( ( TimelineTweenMover ) currentMover( ) ).timeline

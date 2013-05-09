@@ -597,16 +597,16 @@ public class Camera {
 			camera.zoom -= 0.2;
 		}
 		if ( Gdx.input.isKeyPressed( Input.Keys.LEFT ) ) {
-			camera.translate( -10, 0, 0 );
+			camera.translate( -30, 0, 0 );
 		}
 		if ( Gdx.input.isKeyPressed( Input.Keys.RIGHT ) ) {
-			camera.translate( 10, 0, 0 );
+			camera.translate( 30, 0, 0 );
 		}
 		if ( Gdx.input.isKeyPressed( Input.Keys.DOWN ) ) {
-			camera.translate( 0, -10, 0 );
+			camera.translate( 0, -30, 0 );
 		}
 		if ( Gdx.input.isKeyPressed( Input.Keys.UP ) ) {
-			camera.translate( 0, 10, 0 );
+			camera.translate( 0, 30, 0 );
 		}
 		if ( Gdx.input.isKeyPressed( Input.Keys.NUM_3 ) ) {
 			camera.zoom = .5f;
