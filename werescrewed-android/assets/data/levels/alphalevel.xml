@@ -4333,7 +4333,7 @@
                 </Item>
                 <Item xsi:type="TextureItem" Name="chest_gear_1" Visible="true">
                     <Position>
-                        <X>-784</X>
+                        <X>-832</X>
                         <Y>-4432</Y>
                     </Position>
                     <CustomProperties>
@@ -4379,7 +4379,7 @@
                 </Item>
                 <Item xsi:type="TextureItem" Name="chest_gear_2" Visible="true">
                     <Position>
-                        <X>-544</X>
+                        <X>-592</X>
                         <Y>-4432</Y>
                     </Position>
                     <CustomProperties>
@@ -4422,7 +4422,7 @@
                 </Item>
                 <Item xsi:type="TextureItem" Name="chest_gear_fall" Visible="true">
                     <Position>
-                        <X>-1024</X>
+                        <X>-1072</X>
                         <Y>-4432</Y>
                     </Position>
                     <CustomProperties>
@@ -5280,7 +5280,7 @@
                 </Item>
                 <Item xsi:type="TextureItem" Name="chestPuzzleScrew11" Visible="true">
                     <Position>
-                        <X>-1104</X>
+                        <X>-1168</X>
                         <Y>-4976</Y>
                     </Position>
                     <CustomProperties>
@@ -5733,7 +5733,7 @@
                 </Item>
                 <Item xsi:type="TextureItem" Name="checkpoint3" Visible="true">
                     <Position>
-                        <X>-960</X>
+                        <X>-1040</X>
                         <Y>-4976</Y>
                     </Position>
                     <CustomProperties>
@@ -18168,19 +18168,19 @@
                             <Y>0</Y>
                         </Vector2>
                         <Vector2>
-                            <X>1008</X>
+                            <X>944</X>
                             <Y>0</Y>
                         </Vector2>
                         <Vector2>
-                            <X>1008</X>
+                            <X>944</X>
                             <Y>-240</Y>
                         </Vector2>
                         <Vector2>
-                            <X>1632</X>
+                            <X>1568</X>
                             <Y>-240</Y>
                         </Vector2>
                         <Vector2>
-                            <X>1632</X>
+                            <X>1568</X>
                             <Y>-432</Y>
                         </Vector2>
                         <Vector2>
@@ -18196,59 +18196,59 @@
                             <Y>-432</Y>
                         </Vector2>
                         <Vector2>
-                            <X>1632</X>
+                            <X>1568</X>
                             <Y>-432</Y>
                         </Vector2>
                         <Vector2>
-                            <X>1632</X>
+                            <X>1568</X>
                             <Y>-240</Y>
                         </Vector2>
                         <Vector2>
-                            <X>1008</X>
+                            <X>944</X>
                             <Y>-240</Y>
                         </Vector2>
                         <Vector2>
-                            <X>1008</X>
+                            <X>944</X>
                             <Y>-624</Y>
                         </Vector2>
                         <Vector2>
-                            <X>976</X>
+                            <X>912</X>
                             <Y>-624</Y>
                         </Vector2>
                         <Vector2>
-                            <X>768</X>
+                            <X>752</X>
                             <Y>-624</Y>
                         </Vector2>
                         <Vector2>
-                            <X>768</X>
+                            <X>752</X>
                             <Y>-800</Y>
                         </Vector2>
                         <Vector2>
-                            <X>768</X>
+                            <X>752</X>
                             <Y>-624</Y>
                         </Vector2>
                         <Vector2>
-                            <X>976</X>
+                            <X>912</X>
                             <Y>-624</Y>
                         </Vector2>
                         <Vector2>
-                            <X>976</X>
+                            <X>912</X>
                             <Y>-752</Y>
                         </Vector2>
                         <Vector2>
-                            <X>640</X>
+                            <X>656</X>
                             <Y>-752</Y>
                         </Vector2>
                         <Vector2>
-                            <X>640</X>
+                            <X>656</X>
                             <Y>-640</Y>
                         </Vector2>
                         <Vector2>
-                            <X>336</X>
+                            <X>272</X>
                             <Y>-640</Y>
                         </Vector2>
                         <Vector2>
-                            <X>336</X>
+                            <X>272</X>
                             <Y>-752</Y>
                         </Vector2>
                         <Vector2>
@@ -18262,19 +18262,19 @@
                             <Y>-4160</Y>
                         </Vector2>
                         <Vector2>
-                            <X>-208</X>
+                            <X>-272</X>
                             <Y>-4160</Y>
                         </Vector2>
                         <Vector2>
-                            <X>-208</X>
+                            <X>-272</X>
                             <Y>-4400</Y>
                         </Vector2>
                         <Vector2>
-                            <X>416</X>
+                            <X>352</X>
                             <Y>-4400</Y>
                         </Vector2>
                         <Vector2>
-                            <X>416</X>
+                            <X>352</X>
                             <Y>-4592</Y>
                         </Vector2>
                         <Vector2>
@@ -18290,59 +18290,59 @@
                             <Y>-4592</Y>
                         </Vector2>
                         <Vector2>
-                            <X>416</X>
+                            <X>352</X>
                             <Y>-4592</Y>
                         </Vector2>
                         <Vector2>
-                            <X>416</X>
+                            <X>352</X>
                             <Y>-4400</Y>
                         </Vector2>
                         <Vector2>
-                            <X>-208</X>
+                            <X>-272</X>
                             <Y>-4400</Y>
                         </Vector2>
                         <Vector2>
-                            <X>-208</X>
+                            <X>-272</X>
                             <Y>-4784</Y>
                         </Vector2>
                         <Vector2>
-                            <X>-240</X>
+                            <X>-304</X>
                             <Y>-4784</Y>
                         </Vector2>
                         <Vector2>
-                            <X>-448</X>
+                            <X>-464</X>
                             <Y>-4784</Y>
                         </Vector2>
                         <Vector2>
-                            <X>-448</X>
+                            <X>-464</X>
                             <Y>-4960</Y>
                         </Vector2>
                         <Vector2>
-                            <X>-448</X>
+                            <X>-464</X>
                             <Y>-4784</Y>
                         </Vector2>
                         <Vector2>
-                            <X>-240</X>
+                            <X>-304</X>
                             <Y>-4784</Y>
                         </Vector2>
                         <Vector2>
-                            <X>-240</X>
+                            <X>-304</X>
                             <Y>-4912</Y>
                         </Vector2>
                         <Vector2>
-                            <X>-576</X>
+                            <X>-560</X>
                             <Y>-4912</Y>
                         </Vector2>
                         <Vector2>
-                            <X>-576</X>
+                            <X>-560</X>
                             <Y>-4800</Y>
                         </Vector2>
                         <Vector2>
-                            <X>-880</X>
+                            <X>-944</X>
                             <Y>-4800</Y>
                         </Vector2>
                         <Vector2>
-                            <X>-880</X>
+                            <X>-944</X>
                             <Y>-4912</Y>
                         </Vector2>
                         <Vector2>
@@ -23585,8 +23585,8 @@
         <NextItemNumber>937</NextItemNumber>
         <ContentRootFolder>gleed-textures</ContentRootFolder>
         <CameraPosition>
-            <X>975.005859</X>
-            <Y>-2674.472</Y>
+            <X>175.004547</X>
+            <Y>-2607.80249</Y>
         </CameraPosition>
         <Version>1.3.0.0</Version>
     </EditorRelated>
