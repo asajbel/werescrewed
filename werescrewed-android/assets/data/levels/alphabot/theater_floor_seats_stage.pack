@@ -1,0 +1,33 @@
+theater_floor_seats_stage.png
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+offset: 0, 0
+seats
+  rotate: false
+  xy: 4, 217
+  size: 1966, 363
+  orig: 1966, 363
+  offset: 0, 0
+  index: -1
+stage_top
+  rotate: false
+  xy: 437, 586
+  size: 1410, 945
+  orig: 1410, 945
+  offset: 0, 0
+  index: -1
+stage_bottom
+  rotate: false
+  xy: 4, 586
+  size: 427, 1268
+  orig: 427, 1268
+  offset: 0, 0
+  index: -1
+floor
+  rotate: false
+  xy: 4, 4
+  size: 1988, 207
+  orig: 1988, 207
+  offset: 0, 0
+  index: -1

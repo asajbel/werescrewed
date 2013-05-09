@@ -35,12 +35,15 @@ import com.blindtigergames.werescrewed.util.Util;
 // Just your standard spikes.
 public class Spikes extends Hazard {
 
+	private static final TextureRegion texRotated = WereScrewedGame.manager.getAtlas( "common-textures" ).findRegion( "spikes_rotated" );
+	private static final TextureRegion texUnRotated = WereScrewedGame.manager.getAtlas( "common-textures" ).findRegion( "spikes" );
+	
 	protected Vector< Tile > tiles = new Vector< Tile >( );
 	protected Vector2 bodypos;
 	protected float tileConstant = 64.0f;
 	protected boolean hori;
 	protected Orientation ori;
-	protected Texture tex; 
+	protected TextureRegion tex; 
 	protected Fixture pointyEnd;
 
 	/**
@@ -61,21 +64,20 @@ public class Spikes extends Hazard {
 	 */
 	public Spikes( String name, Vector2 pos, float width, float height,
 			World world, boolean isActive, boolean invert, boolean horizontal ) {
-		super( name, pos, ( Texture ) WereScrewedGame.manager
-				.get( WereScrewedGame.dirHandle + "/common/spikes.png" ),
+		super( name, pos, null,
 				world, width, height, isActive );
 		entityType = EntityType.HAZARD;
 		hazardType = HazardType.SPIKES;
 
 		if ( height > width ) {
 			this.hori = false;
-			tex = WereScrewedGame.manager.get( "data/common/spikes_rotated.png", Texture.class );
+			tex = texRotated;
 		} else if ( width > height ) {
 			this.hori = true;
-			tex = WereScrewedGame.manager.get( "data/common/spikes.png", Texture.class );
+			tex = texUnRotated;
 		} else {
 			this.hori = horizontal;
-			tex = WereScrewedGame.manager.get( "data/common/spikes.png", Texture.class );
+			tex = texUnRotated;
 		}
 
 		if ( hori ) {
@@ -92,8 +94,6 @@ public class Spikes extends Hazard {
 
 		this.world = world;
 		this.activeHazard = isActive;
-		// this.sprite = constructSprite( (Texture) WereScrewedGame.manager
-		// .get( WereScrewedGame.dirHandle + "/common/spikes.png" ) );
 		constructBody( height, width, pos );
 		constructTile( pos, height, width );
 	}
@@ -195,13 +195,12 @@ public class Spikes extends Hazard {
 	private void constructTile( Vector2 position, float height, float width ) {
 		Tile insub;
 		float offset_x, offset_y;
-		TextureRegion texR = new TextureRegion(tex);
 				switch(ori){
 				case DOWN:
-					texR.flip( false, true );
+					tex.flip( false, true );
 					break;
 				case LEFT:
-					texR.flip( true, false ); 
+					tex.flip( true, false ); 
 					break;
 				case RIGHT:
 					break;
@@ -212,8 +211,6 @@ public class Spikes extends Hazard {
 				
 				}
 		
-//		Sprite temp = constructSprite( ( Texture ) WereScrewedGame.manager
-//				.get( WereScrewedGame.dirHandle + "/common/spikes_01.png" ) );
 		Sprite temp;
 		for ( int i = 0; i < width; i++ ) {
 			if(hori)
@@ -221,7 +218,7 @@ public class Spikes extends Hazard {
 			else
 				offset_x = ( i - width / 2 + 1 ) * tileConstant - 16f;
 			for ( int j = 0; j < height; j++ ) {
-				temp = new Sprite(texR);
+				temp = new Sprite(tex);
 				if(hori)
 					offset_y = ( j - height / 2 + 1 ) * tileConstant - 16f;
 				else

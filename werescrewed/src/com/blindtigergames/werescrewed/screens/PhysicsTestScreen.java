@@ -180,11 +180,15 @@ public class PhysicsTestScreen extends Screen {
 		triggerVerts.add( new Vector2(-quarter,-quarter) );
 		triggerVerts.add( new Vector2(-quarter,-quarter) );
 		
-		
+		s.setLocalRot( -Util.PI/4 );
 		EventTrigger et = etb.name( "cannon-trigger" ).setVerts( triggerVerts )
 				.extraBorder( 0 )
 				.position( eventPos )//.addEntity( s )
+<<<<<<< HEAD
 				.beginAction( new CannonLaunchAction( s, .3f, 1 ) )
+=======
+				.beginAction( new CannonLaunchAction( s, 0.4f, 1 ) )
+>>>>>>> 1e11a96d7efb235c31fdd191d58497522b627298
 				.repeatable( )
 				.build( );
 		s.addEventTrigger( et );
