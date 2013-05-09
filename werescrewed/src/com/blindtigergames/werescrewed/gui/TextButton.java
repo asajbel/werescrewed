@@ -58,11 +58,13 @@ public class TextButton extends Button {
 		Vector3 cursorPosition = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
 		camera.unproject(cursorPosition);
 		boolean isIntersect = bounds.contains(cursorPosition.x, cursorPosition.y);
+		box.setPosition( x , y - height - 20 );
+		box.draw( batch );
 		font.setColor(colored ? HOVER_COLOR : NORMAL_COLOR);
 		font.draw(batch, caption, x, y);
 		font.setColor(originalColor);
 		//Screw Adjustments
-		screwL.setPosition( x - 50, y - height - 10 );
+		/*screwL.setPosition( x - 50, y - height - 10 );
 		screwR.setPosition( x + width + 10, y - height - 10 );
 		screwL.setSize( screwSize / 2, screwSize / 2 );
 		screwR.setSize( screwSize / 2, screwSize / 2 );
@@ -73,7 +75,7 @@ public class TextButton extends Button {
 			screwR.draw( batch );
 			screwL.rotate( 5.0f );
 			screwR.rotate( 5.0f );
-		}
+		}*/
 		if ((isIntersect && (Gdx.input.isTouched() || Gdx.input.isButtonPressed(Buttons.LEFT))) || selected) {
 			selected = false;
 			handler.onClick();

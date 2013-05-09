@@ -28,7 +28,6 @@ class OptionsScreen extends Screen {
 	private BitmapFont font = null;
 	private BitmapFont fancyFont = null;
 	private Texture menuBG = null;
-	private Sprite logo = null;
 	private int lineHeight = 0;
 	private final int VOLUME_MAX = 100;
 	private final int VOLUME_MIN = 0;
@@ -67,13 +66,9 @@ class OptionsScreen extends Screen {
 		batch = new SpriteBatch( );
 		font = new BitmapFont( );
 		fancyFont = WereScrewedGame.manager.getFont( "longdon" );
-
-		Texture name =  WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-				 + "/common/title_background.png", Texture.class );
-		logo = new Sprite(name);
+		
 		int width = Gdx.graphics.getWidth( );
 		int height = Gdx.graphics.getHeight( ); 
-		logo.setPosition( width / 5 - logo.getWidth( ) / 2, height / 2 - logo.getWidth( ) );
 		lineHeight = Math.round( 2.5f * font.getCapHeight( ) + 20 );
 		//the following are placeholder displays. Add actual option buttons here later
 		screenLabel = new Label("OPTIONS", fancyFont);
@@ -102,11 +97,9 @@ class OptionsScreen extends Screen {
 	@Override
 	public void render( float delta ) {
 		super.render( delta );
-		Gdx.gl.glClearColor( 0.0f, 0.0f, 0.0f, 1f );
+		Gdx.gl.glClearColor( 0.0f, 0.0f, 0.0f, 1.0f );
 		Gdx.gl.glClear( GL10.GL_COLOR_BUFFER_BIT );
-		// TODO Auto-generated method stub
 		batch.begin( );
-		batch.draw(logo, 510, 550);
 		screenLabel.draw( batch );
 		controls.draw( batch, camera );
 		music.draw( batch, camera );
@@ -191,8 +184,7 @@ class OptionsScreen extends Screen {
 		music.setX( leftX - music.getWidth( ) / 2 );
 		music.setY( centerY + lineHeight );
 		sound.setX( leftX - sound.getWidth( ) / 2 );
-		logo.setPosition( width / 5 - logo.getWidth( ) / 2, height / 2 - logo.getWidth( ) );
-
+		
 		sound.setY( centerY  );
 		voice.setX( leftX - voice.getWidth( ) / 2 );
 		voice.setY( centerY - lineHeight );
@@ -203,12 +195,6 @@ class OptionsScreen extends Screen {
 		backButton.setX( centerX - backButton.getWidth( ) / 2 );
 		backButton.setY( 20 + backButton.getHeight( ) );
 		
-		/*musicSlider.setX( music.getX( ) + 50 );
-		musicSlider.setY( music.getY( ) );
-		soundSlider.setX( sound.getX( ) + 50 );
-		soundSlider.setY( sound.getY( ) );
-		voiceSlider.setX( voice.getX( ) + 50 );
-		voiceSlider.setY( voice.getY( ) );*/
 		subBox.setX( subtitles.getX( ) + 50 );
 		subBox.setY( subtitles.getY( ) );
 		musicSlider.setXPos( ( float ) musicSlider.getX( ) + ( float ) musicSlider.getCurrentValue( ) );

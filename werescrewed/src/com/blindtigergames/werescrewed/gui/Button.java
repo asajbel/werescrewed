@@ -3,8 +3,11 @@ package com.blindtigergames.werescrewed.gui;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.BitmapFont.TextBounds;
+import com.blindtigergames.werescrewed.WereScrewedGame;
+import com.blindtigergames.werescrewed.entity.Sprite;
 import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
@@ -23,6 +26,7 @@ public class Button {
 	protected Rectangle bounds = null;
 	protected boolean selected = false;
 	protected boolean colored = false;
+	protected Sprite box = null;
 
 	/**
 	 * makes a new button instance
@@ -38,6 +42,9 @@ public class Button {
 		this.font = font;
 		this.x = x;
 		this.y = y;
+		Texture back = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
+				 + "/menu/button.png", Texture.class );
+		box = new Sprite( back );
 		calculateDimensions( );
 	}
 	
@@ -140,6 +147,7 @@ public class Button {
 		font.setColor(colored ? HOVER_COLOR : NORMAL_COLOR);
 		font.draw(batch, caption, x, y);
 		font.setColor(originalColor);
+		box.draw( batch );
 	}
 	
 	protected void calculateDimensions() {

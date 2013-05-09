@@ -66,6 +66,8 @@ public class OptionButton extends Button {
 		Vector3 cursorPosition = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
 		camera.unproject(cursorPosition);
 		boolean isIntersect = bounds.contains(cursorPosition.x, cursorPosition.y);
+		box.setPosition( x , y - height - 20 );
+		box.draw( batch );
 		font.setColor(colored ? HOVER_COLOR : NORMAL_COLOR);
 		font.draw(batch, caption, x, y);
 		font.setColor(originalColor);

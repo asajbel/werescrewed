@@ -17,7 +17,6 @@ public class LevelSelectScreen extends Screen {
 	private OrthographicCamera camera = null;
 	private BitmapFont font = null;
 	private BitmapFont fancyFont = null;
-	private Sprite logo = null;
 	private Sprite menuBG = null;
 	private Label screenLabel = null;
 	private TextButton resurrectButton = null;
@@ -36,11 +35,8 @@ public class LevelSelectScreen extends Screen {
 		fancyFont = WereScrewedGame.manager.getFont( "longdon" );
 		//fancyFont = WereScrewedGame.manager.getFont( "Screwball" );
 		// fancyFont = WereScrewedGame.manager.getFont( "ornatique" );
-		Texture name = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-				+ "/common/title_background_clear.png", Texture.class );
 		Texture back = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-				+ "/common/menu_placeholder.png", Texture.class ); 
-		logo = new Sprite(name);
+				+ "/menu/menu.png", Texture.class ); 
 		menuBG = new Sprite(back);
 		lineHeight = Math.round( 2.5f * font.getCapHeight( ) + 20 );
 		screenLabel = new Label( "Level Select", fancyFont );
@@ -72,8 +68,6 @@ public class LevelSelectScreen extends Screen {
 		
 		batch.begin( );
 		menuBG.draw( batch );
-		logo.draw( batch );
-		// batch.draw(logo, -128, 0);
 		screenLabel.draw( batch );
 		physicsButton.draw( batch, camera );
 		resurrectButton.draw( batch, camera );
@@ -100,10 +94,9 @@ public class LevelSelectScreen extends Screen {
 		float scaleX = width / 1280f;
 		float scaleY = height / 720f;
 		
-		logo.setScale( scaleX, scaleY ); 
-		menuBG.setScale( width / menuBG.getWidth( ), width / menuBG.getWidth( ) ); 
-		logo.setPosition( leftX - logo.getWidth( ) / 2, centerY + 4 * lineHeight + 20); 
-		menuBG.setPosition( width / 2 - menuBG.getWidth( ) / 2, height / 2 - menuBG.getHeight( ) / 2 ); 
+		//menuBG.setScale( width / menuBG.getWidth( ), width / menuBG.getWidth( ) ); 
+		menuBG.setPosition( width - menuBG.getWidth( ), height / 2 - menuBG.getHeight( ) / 2 ); 
+		//menuBG.setPosition( width / 2 - menuBG.getWidth( ) / 2, height / 2 - menuBG.getHeight( ) / 2 ); 
 		screenLabel.setX( leftX - screenLabel.getWidth( ) / 2 );
 		screenLabel.setY( centerY + 4 * lineHeight);
 		
