@@ -177,6 +177,19 @@ public class Entity implements GleedLoadable {
 		this.setPixelPosition( positionPixels );
 		this.anchors = new ArrayList< Anchor >( );
 	}
+	
+	public Entity( String name, Vector2 positionPixels, TextureRegion texture,
+			Body body, boolean solid, float rotation ) {
+		this.construct( name, solid );
+		this.sprite = constructSprite( texture );
+		this.body = body;
+		if ( body != null ) {
+			world = body.getWorld( );
+			// sprite.setScale( Util.PIXEL_TO_BOX );
+		}
+		this.setPixelPosition( positionPixels );
+		this.anchors = new ArrayList< Anchor >( );
+	}
 
 	/**
 	 * Construct an entity that uses a PolySprite
