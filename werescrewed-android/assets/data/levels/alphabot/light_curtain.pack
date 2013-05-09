@@ -1,0 +1,33 @@
+light_curtain.png
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+offset: 0, 0
+light_left
+  rotate: false
+  xy: 4, 1190
+  size: 1527, 714
+  orig: 1527, 714
+  offset: 0, 0
+  index: -1
+light_right
+  rotate: false
+  xy: 1537, 1190
+  size: 470, 715
+  orig: 470, 715
+  offset: 0, 0
+  index: -1
+curtain_top
+  rotate: false
+  xy: 442, 4
+  size: 1329, 378
+  orig: 1329, 378
+  offset: 0, 0
+  index: -1
+curtain_bottom
+  rotate: false
+  xy: 4, 4
+  size: 432, 1180
+  orig: 432, 1180
+  offset: 0, 0
+  index: -1

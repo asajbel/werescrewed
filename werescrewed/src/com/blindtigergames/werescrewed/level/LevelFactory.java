@@ -1222,8 +1222,8 @@ public class LevelFactory {
 				String thisthing = item.props.get( "ropetargetrev" );
 				Link target = ( Link ) entities.get( thisthing );
 
-				// target.body.setTransform( ss.getPosition( ),
-				// target.body.getAngle( ) );
+				 target.body.setTransform( ss.getPosition( ),
+				 target.body.getAngle( ) );
 				ss.addStructureJoint( target );
 			}
 
