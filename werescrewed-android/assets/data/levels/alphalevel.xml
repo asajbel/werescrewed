@@ -16773,9 +16773,6 @@
                         <Property Name="repeatable" Type="string" Description="">
                             <string />
                         </Property>
-                        <Property Name="twoplayerstodeactivate" Type="string" Description="">
-                            <string />
-                        </Property>
                     </CustomProperties>
                     <LocalPoints>
                         <Vector2>
@@ -23373,8 +23370,8 @@
         <NextItemNumber>929</NextItemNumber>
         <ContentRootFolder>gleed-textures</ContentRootFolder>
         <CameraPosition>
-            <X>-58.3280258</X>
-            <Y>-66.10762</Y>
+            <X>891.6745</X>
+            <Y>-2532.77783</Y>
         </CameraPosition>
         <Version>1.3.0.0</Version>
     </EditorRelated>

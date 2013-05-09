@@ -12,21 +12,21 @@ knee_exterior
   index: -1
 foot-interior
   rotate: false
-  xy: 697, 1534
+  xy: 680, 1534
   size: 1080, 453
   orig: 1080, 453
   offset: 0, 0
   index: -1
 foot_ceiling_light_NOCOLOR
   rotate: false
-  xy: 1783, 1008
+  xy: 1766, 1008
   size: 141, 190
   orig: 141, 190
   offset: 0, 0
   index: -1
 foot_exterior
   rotate: false
-  xy: 697, 1048
+  xy: 680, 1048
   size: 1084, 484
   orig: 1084, 484
   offset: 0, 0
@@ -41,7 +41,7 @@ shin_exterior
 shin-interior
   rotate: false
   xy: 2, 1048
-  size: 693, 933
-  orig: 693, 933
+  size: 676, 857
+  orig: 676, 857
   offset: 0, 0
   index: -1

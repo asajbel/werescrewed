@@ -294,6 +294,8 @@ public class Player extends Entity {
 	 */
 	public void update( float deltaTime ) {
 		super.update( deltaTime );
+		
+		updateMover( deltaTime );
 
 		if ( switchTimer > 0 )
 			--switchTimer;
