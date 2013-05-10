@@ -2,6 +2,7 @@ package com.blindtigergames.werescrewed.entity.platforms;
 
 import java.util.ArrayList;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
@@ -281,6 +282,7 @@ public class Pipe extends Platform {
 				offset_y = (start.y + ( i / (float) numberOfSegments ) * distance.y)
 					* Util.BOX_TO_PIXEL - tempSprite.getHeight( ) / 2;
 			}
+			tempSprite.setColor( .9f,0.7f,0.1f,1 );
 			tempSprite.setOrigin( -offset_x, -offset_y);
 			temp = new Tile( offset_x, offset_y, tempSprite );
 			tiles.add( temp );
@@ -293,6 +295,8 @@ public class Pipe extends Platform {
 
 		// for ( int i = 0; i < segments.size(); i++ )
 		// segments.get( i ).draw( batch );
+		//Color c = batch.getColor( );
+		//batch.setColor( 1f, 0f, 0f, 1f );
 		for ( Tile a : tiles ) {
 			a.tileSprite.setPosition( 
 					body.getPosition( ).x * Util.BOX_TO_PIXEL + a.xOffset,
@@ -301,6 +305,7 @@ public class Pipe extends Platform {
 					* body.getAngle( ) );
 			a.tileSprite.draw( batch );
 		}
+		//batch.setColor( c.r, c.g, c.b, c.a );
 	}
 
 	public void setOpen( boolean open2 ) {

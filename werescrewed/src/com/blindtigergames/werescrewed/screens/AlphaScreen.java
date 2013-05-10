@@ -667,9 +667,9 @@ public class AlphaScreen extends Screen {
 		Sprite footBG = decals.createSprite( "foot-interior" );
 		Sprite legBG = decals.createSprite( "shin-interior" );
 		Skeleton foot = ( Skeleton ) LevelFactory.entities.get( "footSkeleton" );
-		foot.addBGDecal( footBG, new Vector2( decalX, decalY ) );
+		foot.addBGDecal( Sprite.scale(footBG,scale), new Vector2( decalX, decalY ) );
 		footBG.setOrigin( 0f, 0f );
-		foot.addBGDecal( legBG, new Vector2( 410 + decalX, 432 + decalY ) );
+		foot.addBGDecal( Sprite.scale(legBG,scale), new Vector2( 410 + decalX, 432 + decalY ) );
 
 		addBGSkeleton( footSkeleton );
 		addFGSkeleton( footSkeleton );
