@@ -17,7 +17,6 @@ public class LevelSelectScreen extends Screen {
 	private OrthographicCamera camera = null;
 	private BitmapFont font = null;
 	private BitmapFont fancyFont = null;
-	private Sprite logo = null;
 	private Sprite menuBG = null;
 	private Label screenLabel = null;
 	private TextButton resurrectButton = null;
@@ -36,13 +35,10 @@ public class LevelSelectScreen extends Screen {
 		fancyFont = WereScrewedGame.manager.getFont( "longdon" );
 		//fancyFont = WereScrewedGame.manager.getFont( "Screwball" );
 		// fancyFont = WereScrewedGame.manager.getFont( "ornatique" );
-		Texture name = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-				+ "/common/title_background_clear.png", Texture.class );
 		Texture back = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-				+ "/common/menu_placeholder.png", Texture.class ); 
-		logo = new Sprite(name);
+				+ "/menu/menu.png", Texture.class ); 
 		menuBG = new Sprite(back);
-		lineHeight = Math.round( 2.5f * font.getCapHeight( ) + 20 );
+		lineHeight = Math.round( 2.5f * font.getCapHeight( ) + 40 );
 		screenLabel = new Label( "Level Select", fancyFont );
 		loadButtons( );
 	}
@@ -72,9 +68,7 @@ public class LevelSelectScreen extends Screen {
 		
 		batch.begin( );
 		menuBG.draw( batch );
-		logo.draw( batch );
-		// batch.draw(logo, -128, 0);
-		screenLabel.draw( batch );
+		//screenLabel.draw( batch );
 		physicsButton.draw( batch, camera );
 		resurrectButton.draw( batch, camera );
 		hazardButton.draw( batch, camera );
@@ -95,32 +89,31 @@ public class LevelSelectScreen extends Screen {
 		camera = new OrthographicCamera( );
 		camera.setToOrtho( false, width, height );
 		batch.setProjectionMatrix( camera.combined );
-		int leftX = width / 5 - 20;
-		int centerY = height / 2 - 10;
+		int leftX = ( int ) menuBG.getWidth( ) / 2;// / 5 - 20;
+		int centerY = height / 5;
 		float scaleX = width / 1280f;
 		float scaleY = height / 720f;
 		
-		logo.setScale( scaleX, scaleY ); 
-		menuBG.setScale( width / menuBG.getWidth( ), width / menuBG.getWidth( ) ); 
-		logo.setPosition( leftX - logo.getWidth( ) / 2, centerY + 4 * lineHeight + 20); 
-		menuBG.setPosition( width / 2 - menuBG.getWidth( ) / 2, height / 2 - menuBG.getHeight( ) / 2 ); 
+		//menuBG.setScale( width / menuBG.getWidth( ), width / menuBG.getWidth( ) ); 
+		menuBG.setPosition( 0, height / 2 - menuBG.getHeight( ) / 2 ); 
+		//menuBG.setPosition( width / 2 - menuBG.getWidth( ) / 2, height / 2 - menuBG.getHeight( ) / 2 ); 
 		screenLabel.setX( leftX - screenLabel.getWidth( ) / 2 );
-		screenLabel.setY( centerY + 4 * lineHeight);
+		screenLabel.setY( centerY + 3 * lineHeight);
 		
 		//quick fix
-		physicsButton.setX( leftX - physicsButton.getWidth( )  /2 );
-		physicsButton.setY( centerY +  lineHeight );
+		physicsButton.setX( leftX - physicsButton.getWidth( ) / 2 );
+		physicsButton.setY( centerY +  lineHeight * 6 );
 		resurrectButton.setX( leftX - resurrectButton.getWidth( ) / 2 );
-		resurrectButton.setY( centerY );
+		resurrectButton.setY( centerY + lineHeight * 5 );
 		hazardButton.setX( leftX - hazardButton.getWidth( ) / 2 );
-		hazardButton.setY( centerY - lineHeight );
+		hazardButton.setY( centerY + lineHeight * 4 );
 		level1Button.setX( leftX - level1Button.getWidth( ) / 2 );
-		level1Button.setY( centerY - lineHeight * 2 );
-		dragonButton.setX( leftX-dragonButton.getWidth()/2 );
-		dragonButton.setY(centerY-lineHeight*3);
+		level1Button.setY( centerY + lineHeight * 3 );
+		dragonButton.setX( leftX - dragonButton.getWidth() / 2 );
+		dragonButton.setY( centerY + lineHeight * 2 );
 
 		backButton.setX( leftX - backButton.getWidth( ) / 2 );
-		backButton.setY( 20 + backButton.getHeight( ) );
+		backButton.setY( 100 + backButton.getHeight( ) );
 
 	}
 

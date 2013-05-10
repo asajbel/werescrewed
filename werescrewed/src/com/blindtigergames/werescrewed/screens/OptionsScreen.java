@@ -28,7 +28,6 @@ class OptionsScreen extends Screen {
 	private BitmapFont font = null;
 	private BitmapFont fancyFont = null;
 	private Texture menuBG = null;
-	private Sprite logo = null;
 	private int lineHeight = 0;
 	private final int VOLUME_MAX = 100;
 	private final int VOLUME_MIN = 0;
@@ -67,14 +66,10 @@ class OptionsScreen extends Screen {
 		batch = new SpriteBatch( );
 		font = new BitmapFont( );
 		fancyFont = WereScrewedGame.manager.getFont( "longdon" );
-
-		Texture name =  WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-				 + "/common/title_background.png", Texture.class );
-		logo = new Sprite(name);
+		
 		int width = Gdx.graphics.getWidth( );
 		int height = Gdx.graphics.getHeight( ); 
-		logo.setPosition( width / 5 - logo.getWidth( ) / 2, height / 2 - logo.getWidth( ) );
-		lineHeight = Math.round( 2.5f * font.getCapHeight( ) + 20 );
+		lineHeight = Math.round( 2.5f * font.getCapHeight( ) + 40 );
 		//the following are placeholder displays. Add actual option buttons here later
 		screenLabel = new Label("OPTIONS", fancyFont);
 		
@@ -102,11 +97,9 @@ class OptionsScreen extends Screen {
 	@Override
 	public void render( float delta ) {
 		super.render( delta );
-		Gdx.gl.glClearColor( 0.0f, 0.0f, 0.0f, 1f );
+		Gdx.gl.glClearColor( 0.0f, 0.0f, 0.0f, 1.0f );
 		Gdx.gl.glClear( GL10.GL_COLOR_BUFFER_BIT );
-		// TODO Auto-generated method stub
 		batch.begin( );
-		batch.draw(logo, 510, 550);
 		screenLabel.draw( batch );
 		controls.draw( batch, camera );
 		music.draw( batch, camera );
@@ -185,38 +178,30 @@ class OptionsScreen extends Screen {
 		int leftX = width / 4;
 		int centerY = height / 2;
 		screenLabel.setX( centerX - screenLabel.getWidth() / 2 );
-		screenLabel.setY( centerY + 6 * ( lineHeight - 20 ) );
+		screenLabel.setY( centerY + 7 * ( lineHeight - 20 ) );
 		controls.setX( leftX - controls.getWidth( ) / 2 );
-		controls.setY( centerY + 2 * lineHeight );
+		controls.setY( centerY + 4 * lineHeight );
 		music.setX( leftX - music.getWidth( ) / 2 );
-		music.setY( centerY + lineHeight );
+		music.setY( centerY + 3 * lineHeight );
 		sound.setX( leftX - sound.getWidth( ) / 2 );
-		logo.setPosition( width / 5 - logo.getWidth( ) / 2, height / 2 - logo.getWidth( ) );
-
-		sound.setY( centerY  );
+		sound.setY( centerY + 2 * lineHeight );
 		voice.setX( leftX - voice.getWidth( ) / 2 );
-		voice.setY( centerY - lineHeight );
+		voice.setY( centerY + lineHeight );
 		subtitles.setX( leftX - subtitles.getWidth( ) / 2 );
-		subtitles.setY( centerY - 2 * lineHeight );
+		subtitles.setY( centerY );
 		creditsButton.setX( leftX - subtitles.getWidth( ) / 2 );
-		creditsButton.setY( centerY - 3 * lineHeight );
+		creditsButton.setY( centerY - 1 * lineHeight );
 		backButton.setX( centerX - backButton.getWidth( ) / 2 );
-		backButton.setY( 20 + backButton.getHeight( ) );
+		backButton.setY( 100 + backButton.getHeight( ) );
 		
-		/*musicSlider.setX( music.getX( ) + 50 );
-		musicSlider.setY( music.getY( ) );
-		soundSlider.setX( sound.getX( ) + 50 );
-		soundSlider.setY( sound.getY( ) );
-		voiceSlider.setX( voice.getX( ) + 50 );
-		voiceSlider.setY( voice.getY( ) );*/
-		subBox.setX( subtitles.getX( ) + 50 );
+		subBox.setX( subtitles.getX( ) * 4 );
 		subBox.setY( subtitles.getY( ) );
-		musicSlider.setXPos( ( float ) musicSlider.getX( ) + ( float ) musicSlider.getCurrentValue( ) );
-		musicSlider.setYPos( ( float ) musicSlider.getY( ) - 20 );
-		soundSlider.setXPos( ( float ) soundSlider.getX( ) + ( float ) soundSlider.getCurrentValue( ) );
-		soundSlider.setYPos( ( float ) soundSlider.getY( ) - 20 );
-		voiceSlider.setXPos( ( float ) voiceSlider.getX( ) + ( float ) voiceSlider.getCurrentValue( ) );
-		voiceSlider.setYPos( ( float ) voiceSlider.getY( ) - 20 );
+		musicSlider.setXPos( ( float ) musicSlider.getMinPos( ) + ( float ) musicSlider.getCurrentValue( ) );
+		musicSlider.setYPos( ( float ) musicSlider.getY( ) );
+		soundSlider.setXPos( ( float ) soundSlider.getMinPos( ) + ( float ) soundSlider.getCurrentValue( ) );
+		soundSlider.setYPos( ( float ) soundSlider.getY( ) );
+		voiceSlider.setXPos( ( float ) voiceSlider.getMinPos( ) + ( float ) voiceSlider.getCurrentValue( ) );
+		voiceSlider.setYPos( ( float ) voiceSlider.getY( ) );
 	}
 
 	@Override

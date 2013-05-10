@@ -110,6 +110,12 @@ injured/oof.p
 fastSteam.p
 slowSteam.p
 
+##menu assets
+/menu/menu.png
+/menu/button.png
+/menu/screw.png
+/menu/slider.png
+
 ##temp background
 /common/menu_placeholder.png
 
