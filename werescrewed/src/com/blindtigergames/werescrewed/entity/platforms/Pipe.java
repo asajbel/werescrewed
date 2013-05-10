@@ -180,6 +180,7 @@ public class Pipe extends Platform {
 		offset_x = currentPos.x * Util.BOX_TO_PIXEL - tempSprite.getWidth( ) / 2;
 		offset_y = currentPos.y * Util.BOX_TO_PIXEL - tempSprite.getHeight( ) / 2;
 		tempSprite.setOrigin( -offset_x, -offset_y );
+		tempSprite.setColor( .9f,0.7f,0.1f,1 );
 		temp = new Tile( offset_x, offset_y, tempSprite );
 		tiles.add( temp );
 
