@@ -1457,7 +1457,7 @@ public class AlphaScreen extends Screen {
 	}
 
 	private void initPanels( ) {
-		int numPanels = 5;
+		int numPanels = 7;
 		String panelAtlas = "alphabot-panel";
 		panels = new Array< Panel >( numPanels );
 		Panel p;
@@ -1467,6 +1467,14 @@ public class AlphaScreen extends Screen {
 			p.setPanelSprite( "alphabot-panel_off" );
 			panels.add( p );
 		}
+		
+		/*p = ( Panel ) LevelFactory.entities.get( "panel6" );
+		p.setPanelSprite( "alphabot-panel_off" );
+		panels.add( p );
+		
+		p = ( Panel ) LevelFactory.entities.get( "panel7" );
+		p.setPanelSprite( "alphabot-panel_off" );
+		panels.add( p );*/
 
 		// Panel p = new Panel( kneeSkeleton.getPositionPixel( ), level.world,
 		// panelAtlas, "alphabot-panel_off" );
