@@ -406,6 +406,10 @@ public class Player extends Entity {
 			}
 			break;
 		case Screwing:
+			topCrush = false;
+			botCrush = false;
+			leftCrush = false;
+			rightCrush = false;
 			if ( knockedOff ) {
 				removePlayerToScrew( );
 				knockedOff = false;
