@@ -21,13 +21,16 @@ public enum PlayerAnim{
 	,WAVE("wave")
 	,SCREWING_HANG("screwing_hang")
 	,SCREWING_GROUND("screwing_ground")
-	,LAND_SCREW("land_screw_ready", LoopBehavior.STOP)
-	,LAND("land", LoopBehavior.STOP)
+	,LAND_SCREW("land_screw_ready", true)
+	,LAND("land", true)
+	,TURN_SCREW("turn_screw_ready", true)
+	,TURN("turn", true)
 	;
 	String text;
 	PlayerAnim start = null; 
 	LoopBehavior loop;
 	boolean loopBool;
+	boolean singleTick = false;
 	PlayerAnim(String t){
 		this(t, LoopBehavior.LOOP);
 		loopBool = true;
@@ -46,9 +49,9 @@ public enum PlayerAnim{
 		this(t,l); 
 		start = s; 
 	}
-	PlayerAnim(String t, boolean loop){
-		text = t;
-		loopBool = loop;
+	PlayerAnim(String t, boolean tick){
+		this(t,LoopBehavior.STOP); 
+		singleTick = tick;
 	}
 	public String toString(){
 		return text;

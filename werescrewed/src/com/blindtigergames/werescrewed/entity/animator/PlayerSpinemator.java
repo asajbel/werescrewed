@@ -104,13 +104,13 @@ public class PlayerSpinemator implements ISpinemator {
 	public void update( float delta ) {
 		time += delta;
 		mixTime += delta;
-		skel.setFlipX( flipX );
 
-		next = getCurrentAnim( );
+		if (!current.singleTick || mixTime >= mixer.getDuration( ) / 2 )
+			next = getCurrentAnim( );
 
 		if ( current != next ) {
 			current = next;
-			// time = 0f;
+			time = mixTime;
 			startTime = 0f;
 			mixTime = 0;
 		}
@@ -141,7 +141,7 @@ public class PlayerSpinemator implements ISpinemator {
 			float screwAmount = ( float ) player.getCurrentScrew( ).getDepth( )
 					/ ( float ) player.getCurrentScrew( ).getMaxDepth( )
 					* mixer.getDuration( );
-			if (flipX) {
+			if ( flipX ) {
 				screwAmount = mixer.getDuration( ) - screwAmount;
 			}
 			if ( !Float.isNaN( screwAmount ) ) {
@@ -150,23 +150,16 @@ public class PlayerSpinemator implements ISpinemator {
 			} else
 				anims.get( PlayerAnim.HANG ).apply( skel, time,
 						PlayerAnim.HANG.loopBool );
-				break;
+			break;
 		default:
 			mixRatio = mixTime / anim.getDuration( );
 			mixer.mix( skel, time, next.loopBool, mixRatio );
-			if ( mixTime < anim.getDuration( ) / 2 ) {
-			} else {
+			if ( mixTime >= anim.getDuration( ) / 2 ) {
+			
 				previous = current;
 				mixTime = 0;
 			}
 			break;
-		}
-
-		if ( current == PlayerAnim.RUN || current == PlayerAnim.RUN_SCREW ) {
-			if ( current == PlayerAnim.RUN_SCREW ) {
-			} else {
-			}
-		} else {
 		}
 
 		if ( player.getExtraState( ) == ConcurrentState.ScrewReady
@@ -230,6 +223,8 @@ public class PlayerSpinemator implements ISpinemator {
 			}
 		}
 
+		if (current != PlayerAnim.TURN && current != PlayerAnim.TURN_SCREW)
+			skel.setFlipX( flipX );
 		if ( position != null ) {
 			root.setX( position.x );
 			root.setY( position.y );
@@ -262,9 +257,21 @@ public class PlayerSpinemator implements ISpinemator {
 				case Idle:
 					break;
 				case Left:
+//					if (!flipX) {
+//						flipX = true;
+//						if (player.getExtraState( ) == ConcurrentState.ScrewReady)
+//							return PlayerAnim.TURN_SCREW; 
+//						return PlayerAnim.TURN; 
+//					}
 					flipX = true;
 					break;
 				case Right:
+//					if (flipX) {
+//						flipX = false;
+//						if (player.getExtraState( ) == ConcurrentState.ScrewReady)
+//							return PlayerAnim.TURN_SCREW; 
+//						return PlayerAnim.TURN; 
+//					}
 					flipX = false;
 					break;
 				default:
@@ -300,9 +307,9 @@ public class PlayerSpinemator implements ISpinemator {
 				return PlayerAnim.LAND;
 			}
 			if ( player.getExtraState( ) == ConcurrentState.ScrewReady ) {
-				return PlayerAnim.IDLE_SCREW;
+				return PlayerAnim.LAND_SCREW;
 			}
-			return PlayerAnim.IDLE;
+			return PlayerAnim.LAND;
 		case Jumping:
 			switch ( player.getMoveState( ) ) {
 			case Idle:
@@ -355,12 +362,13 @@ public class PlayerSpinemator implements ISpinemator {
 	public void setScale( Vector2 scale ) {
 		this.scale = scale;
 	}
-	
+
 	/**
 	 * Returns atlas that has all the body parts for this player
+	 * 
 	 * @return
 	 */
-	public TextureAtlas getBodyAtlas(){
+	public TextureAtlas getBodyAtlas( ) {
 		return bodyAtlas;
 	}
 

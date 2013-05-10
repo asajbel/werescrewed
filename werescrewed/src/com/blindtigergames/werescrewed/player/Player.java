@@ -1066,6 +1066,8 @@ public class Player extends Entity {
 			if ( newVal != false && !grounded && otherPlayer == null ) {
 				getEffect( landCloudName ).restartAt(
 						getPositionPixel( ).add( 50, 0 ) );
+				playerState = PlayerState.Landing;
+				
 			}
 			this.grounded = newVal;
 		}
