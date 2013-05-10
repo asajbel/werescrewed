@@ -171,7 +171,7 @@ public class LoadingScreen extends Screen {
 		if ( WereScrewedGame.manager.update( ) ) {
 			
 			//HIT ANY KEY TO SKIP
-			if(percentLoaded == 100 && Gdx.app.getInput( ).isTouched( )){
+			if( Gdx.app.getInput( ).isTouched( )){
 				ScreenManager.getInstance( ).show(
 						ScreenType.LEVEL_1 );
 			}
@@ -210,7 +210,7 @@ public class LoadingScreen extends Screen {
 
 		timer++;
 		
-		if ( timer > 200 ) {
+		if ( timer > 100 ) {
 			timer = 0;
 			if ( !( currIndex == storyBoardArray.size( ) - 1 ) ) {
 				currIndex++;
