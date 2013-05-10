@@ -5427,7 +5427,10 @@
                             <string />
                         </Property>
                         <Property Name="density" Type="string" Description="">
-                            <string>10f</string>
+                            <string>5f</string>
+                        </Property>
+                        <Property Name="gravscale" Type="string" Description="">
+                            <string>0.1f</string>
                         </Property>
                     </CustomProperties>
                     <LocalPoints>
@@ -23585,8 +23588,8 @@
         <NextItemNumber>937</NextItemNumber>
         <ContentRootFolder>gleed-textures</ContentRootFolder>
         <CameraPosition>
-            <X>175.004547</X>
-            <Y>-2607.80249</Y>
+            <X>-299.996368</X>
+            <Y>-2866.13428</Y>
         </CameraPosition>
         <Version>1.3.0.0</Version>
     </EditorRelated>
