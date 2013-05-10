@@ -1066,7 +1066,6 @@ public class Entity implements GleedLoadable {
 		ArrayList< Float > angleList = ( isBG ) ? bgDecalAngles : fgDecalAngles;
 		ArrayList< Vector2 > offsetList = ( isBG ) ? bgDecalOffsets
 				: fgDecalOffsets;
-		// s.setOrigin( -s.getWidth( )/2, -s.getHeight( )/2 );
 		if ( isBack ) {
 			decalList.add( 0, s );
 			angleList.add( 0, angle );
