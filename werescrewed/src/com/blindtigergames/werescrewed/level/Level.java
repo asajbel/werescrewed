@@ -188,9 +188,23 @@ public class Level {
 
 		if ( debug )
 			debugRenderer.render( world, camera.combined( ) );
-		world.step( WereScrewedGame.oneOverTargetFrameRate, 6, 4 );
+//		world.step( WereScrewedGame.oneOverTargetFrameRate, 4, 2);
+		worldStep(deltaTime); 
 
 	}
+	
+	private float accum = 0f;               
+	private final float step = 1f / 60f;    
+	private final float maxAccum = 1f / 30f;
+	                                        
+	private void worldStep(float delta) {   
+	   accum += delta;                     
+	   accum = Math.min(accum, maxAccum);  
+	   while (accum > step) {              
+	      world.step(step, 2, 1);         
+	      accum -= step;                  
+	   }                                   
+	}                                      
 
 	private void drawBGStuff( SpriteBatch batch, float deltaTime ) {
 		for ( Skeleton skel : skelBGList ) {
