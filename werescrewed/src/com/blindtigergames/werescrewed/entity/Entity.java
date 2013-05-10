@@ -982,7 +982,7 @@ public class Entity implements GleedLoadable {
 	 * 
 	 * @author stew
 	 */
-	public String toString( ) {
+	public String printDebug( ) {
 		return "Entity[" + name + "] pos:" + body.getPosition( )
 				+ ", body.active:" + body.isActive( ) + ", body.awake:"
 				+ body.isAwake( );

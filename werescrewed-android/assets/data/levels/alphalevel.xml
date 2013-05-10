@@ -4688,7 +4688,7 @@
                 </Item>
                 <Item xsi:type="RectangleItem" Name="chestPlat8" Visible="true">
                     <Position>
-                        <X>-192</X>
+                        <X>-256</X>
                         <Y>-4912</Y>
                     </Position>
                     <CustomProperties>
@@ -4702,7 +4702,7 @@
                             <string />
                         </Property>
                     </CustomProperties>
-                    <Width>352</Width>
+                    <Width>416</Width>
                     <Height>64</Height>
                     <FillColor>
                         <R>192</R>

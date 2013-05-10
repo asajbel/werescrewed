@@ -158,7 +158,7 @@ public class AlphaScreen extends Screen {
 		// right arm: 2600f, 6000f >>>> side
 		// left side hand <- -2224, 3008
 
-		Vector2 spawnPos = new Vector2( -1582, 6150 );
+		Vector2 spawnPos = new Vector2( 512, 256 );
 
 		if ( level.player1 == null ) {
 			level.player1 = new PlayerBuilder( ).world( level.world )
@@ -324,7 +324,8 @@ public class AlphaScreen extends Screen {
 						&& headEyebrow2.isTimeLineMoverFinished( ) ) {
 
 					// You win and goto next screen!!!
-					ScreenManager.getInstance( ).show( ScreenType.LOADING_2 );
+					// menu for now
+					ScreenManager.getInstance( ).show( ScreenType.MAIN_MENU );
 				}
 			}
 		}
@@ -1110,7 +1111,7 @@ public class AlphaScreen extends Screen {
 		Skeleton chestSkeleton = (Skeleton)LevelFactory.entities.get( "chestSkeleton" );
 		chestSkeleton.addBGDecal( 
 				chest_powerscrew.createSprite( "chest_powerscrew_pipes_to_engineNOCOLOR" ), 
-				new Vector2(-453,-970) );
+				new Vector2(-680,-970) );
 		
 		TextureAtlas chest_lower, chest_middle, chest_upper1, chest_upper2;
 		chest_lower = WereScrewedGame.manager.getAtlas( "chest_exterior_lower" );

@@ -1216,7 +1216,7 @@ public class LevelFactory {
 				if ( item.props.containsKey( "degreelimit" ) ) {
 					float limit = Float.parseFloat( item.props
 							.get( "degreelimit" ) );
-					ss.addStructureJoint( target, limit );
+					ss.addStructureJoint( target, -limit );
 
 				} else
 					ss.addStructureJoint( target );
