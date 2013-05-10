@@ -16,11 +16,11 @@ public class TextButton extends Button {
 	private static final Color NORMAL_COLOR = new Color(1f, 1f, 1f, 0.7f);
 	private static final Color HOVER_COLOR = new Color(0f, 128f, 255f, 1f);
 	
-	private static TextureRegion screwTex = WereScrewedGame.manager
+	/*private static TextureRegion screwTex = WereScrewedGame.manager
 			.getAtlas( "common-textures" ).findRegion( "flat_head_circular" );
 	private Sprite screwL = new Sprite( screwTex );
 	private Sprite screwR = new Sprite( screwTex );
-	private float screwSize = screwL.getHeight( );
+	private float screwSize = screwL.getHeight( );*/
 	private ButtonHandler handler = null;
 	
 	/**
@@ -39,7 +39,7 @@ public class TextButton extends Button {
 		this.x = x;
 		this.y = y;
 		this.handler = handler;
-		calculateDimensions( );
+		//calculateDimensions( );
 	}
 	
 	/**
@@ -58,10 +58,10 @@ public class TextButton extends Button {
 		Vector3 cursorPosition = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
 		camera.unproject(cursorPosition);
 		boolean isIntersect = bounds.contains(cursorPosition.x, cursorPosition.y);
-		box.setPosition( x , y - height - 20 );
+		box.setPosition( x, y - height * 2 );
 		box.draw( batch );
 		font.setColor(colored ? HOVER_COLOR : NORMAL_COLOR);
-		font.draw(batch, caption, x, y);
+		font.draw(batch, caption, x - capWidth / 2 + width / 2 + 5, y - height - capHeight / 2 );
 		font.setColor(originalColor);
 		//Screw Adjustments
 		/*screwL.setPosition( x - 50, y - height - 10 );
@@ -76,14 +76,16 @@ public class TextButton extends Button {
 			screwL.rotate( 5.0f );
 			screwR.rotate( 5.0f );
 		}*/
-		if ((isIntersect && (Gdx.input.isTouched() || Gdx.input.isButtonPressed(Buttons.LEFT))) || selected) {
+		if ((isIntersect && !WereScrewedGame.isMouseClicked() && (Gdx.input.isTouched() 
+				|| Gdx.input.isButtonPressed(Buttons.LEFT))) 
+				|| selected) {
 			selected = false;
-			handler.onClick();
+			handler.onClick( );
 		}
 	}
 	
 	public static interface ButtonHandler {
-		public void onClick();
+		public void onClick( );
 		
 	}
 	

@@ -91,8 +91,8 @@ class MainMenuScreen extends Screen {
 		camera = new OrthographicCamera( );
 		camera.setToOrtho( false, width, height );
 		batch.setProjectionMatrix( camera.combined );
-		int leftX = width / 5 - 20;
-		int centerY = height / 3;
+		int leftX = ( int ) menuBG.getWidth( ) / 2;
+		int centerY = height / 5;
 		float scaleX = width / 1280f;
 		float scaleY = height / 720f;
 		
@@ -125,7 +125,7 @@ class MainMenuScreen extends Screen {
 		Texture back = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 				 + "/menu/menu.png", Texture.class );
 		menuBG = new Sprite( back );
-		lineHeight = Math.round( 2.5f * font.getCapHeight( ) + 20 );
+		lineHeight = Math.round( 2.5f * font.getCapHeight( ) + 50 );
 		headingLabel = new Label( "We're Screwed!!", fancyFont );
 		
 		storyButton = new TextButton("Start", fancyFont,

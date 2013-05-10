@@ -110,18 +110,12 @@ injured/oof.p
 fastSteam.p
 slowSteam.p
 
-<<<<<<< HEAD
 ##menu assets
 /menu/menu.png
 /menu/button.png
 /menu/screw.png
 /menu/slider.png
 
-## debug for testing engine in phys screen. Remove before release! -stew
-/levels/alphabot/engine.pack
-
-=======
->>>>>>> 35aeb56162e9d19f3f161f850b2c674fdac111a2
 ##temp background
 /common/menu_placeholder.png
 

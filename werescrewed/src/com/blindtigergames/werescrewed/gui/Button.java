@@ -16,13 +16,15 @@ public class Button {
 	
 	private static final Color NORMAL_COLOR = new Color(1f, 1f, 1f, 0.7f);
 	private static final Color HOVER_COLOR = new Color(0f, 128f, 255f, 1f);
-	
+
 	protected String caption = null;
 	protected BitmapFont font = null;
 	protected int x = 0;
 	protected int y = 0;
-	protected int width = 0;
-	protected int height = 0;
+	protected int width = 287;     //width of button image
+	protected int height = 92;     //height of button image
+	protected int capWidth = 0;
+	protected int capHeight = 0;
 	protected Rectangle bounds = null;
 	protected boolean selected = false;
 	protected boolean colored = false;
@@ -45,6 +47,7 @@ public class Button {
 		Texture back = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 				 + "/menu/button.png", Texture.class );
 		box = new Sprite( back );
+		bounds = new Rectangle(x, y - height, width, height);
 		calculateDimensions( );
 	}
 	
@@ -92,7 +95,7 @@ public class Button {
 	
 	public void setY(int y) {
 		this.y = y;
-		bounds.y = y - height;
+		bounds.y = y - height * 2;
 	}
 	
 	public int getWidth() {
@@ -144,17 +147,18 @@ public class Button {
 		Vector3 cursorPosition = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
 		camera.unproject(cursorPosition);
 		boolean isIntersect = bounds.contains(cursorPosition.x, cursorPosition.y);
-		font.setColor(colored ? HOVER_COLOR : NORMAL_COLOR);
-		font.draw(batch, caption, x, y);
-		font.setColor(originalColor);
+		box.setPosition( x, y - height * 2 );
 		box.draw( batch );
+		font.setColor(colored ? HOVER_COLOR : NORMAL_COLOR);
+		font.draw(batch, caption, x - capWidth / 2 + width / 2 + 5, y - height - capHeight / 2 );
+		font.setColor(originalColor);
+		
 	}
 	
 	protected void calculateDimensions() {
 		TextBounds dimensions = font.getBounds(caption);
-		width = Math.round(dimensions.width);
-		height = Math.round(dimensions.height);
-		bounds = new Rectangle(x, y - height, width, height);
+		capWidth = Math.round(dimensions.width);
+		capHeight = Math.round(dimensions.height);
 		
 	}	
 }

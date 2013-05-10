@@ -69,7 +69,7 @@ class OptionsScreen extends Screen {
 		
 		int width = Gdx.graphics.getWidth( );
 		int height = Gdx.graphics.getHeight( ); 
-		lineHeight = Math.round( 2.5f * font.getCapHeight( ) + 20 );
+		lineHeight = Math.round( 2.5f * font.getCapHeight( ) + 40 );
 		//the following are placeholder displays. Add actual option buttons here later
 		screenLabel = new Label("OPTIONS", fancyFont);
 		
@@ -178,31 +178,30 @@ class OptionsScreen extends Screen {
 		int leftX = width / 4;
 		int centerY = height / 2;
 		screenLabel.setX( centerX - screenLabel.getWidth() / 2 );
-		screenLabel.setY( centerY + 6 * ( lineHeight - 20 ) );
+		screenLabel.setY( centerY + 7 * ( lineHeight - 20 ) );
 		controls.setX( leftX - controls.getWidth( ) / 2 );
-		controls.setY( centerY + 2 * lineHeight );
+		controls.setY( centerY + 4 * lineHeight );
 		music.setX( leftX - music.getWidth( ) / 2 );
-		music.setY( centerY + lineHeight );
+		music.setY( centerY + 3 * lineHeight );
 		sound.setX( leftX - sound.getWidth( ) / 2 );
-		
-		sound.setY( centerY  );
+		sound.setY( centerY + 2 * lineHeight );
 		voice.setX( leftX - voice.getWidth( ) / 2 );
-		voice.setY( centerY - lineHeight );
+		voice.setY( centerY + lineHeight );
 		subtitles.setX( leftX - subtitles.getWidth( ) / 2 );
-		subtitles.setY( centerY - 2 * lineHeight );
+		subtitles.setY( centerY );
 		creditsButton.setX( leftX - subtitles.getWidth( ) / 2 );
-		creditsButton.setY( centerY - 3 * lineHeight );
+		creditsButton.setY( centerY - 1 * lineHeight );
 		backButton.setX( centerX - backButton.getWidth( ) / 2 );
-		backButton.setY( 20 + backButton.getHeight( ) );
+		backButton.setY( 100 + backButton.getHeight( ) );
 		
-		subBox.setX( subtitles.getX( ) + 50 );
+		subBox.setX( subtitles.getX( ) * 4 );
 		subBox.setY( subtitles.getY( ) );
-		musicSlider.setXPos( ( float ) musicSlider.getX( ) + ( float ) musicSlider.getCurrentValue( ) );
-		musicSlider.setYPos( ( float ) musicSlider.getY( ) - 20 );
-		soundSlider.setXPos( ( float ) soundSlider.getX( ) + ( float ) soundSlider.getCurrentValue( ) );
-		soundSlider.setYPos( ( float ) soundSlider.getY( ) - 20 );
-		voiceSlider.setXPos( ( float ) voiceSlider.getX( ) + ( float ) voiceSlider.getCurrentValue( ) );
-		voiceSlider.setYPos( ( float ) voiceSlider.getY( ) - 20 );
+		musicSlider.setXPos( ( float ) musicSlider.getMinPos( ) + ( float ) musicSlider.getCurrentValue( ) );
+		musicSlider.setYPos( ( float ) musicSlider.getY( ) );
+		soundSlider.setXPos( ( float ) soundSlider.getMinPos( ) + ( float ) soundSlider.getCurrentValue( ) );
+		soundSlider.setYPos( ( float ) soundSlider.getY( ) );
+		voiceSlider.setXPos( ( float ) voiceSlider.getMinPos( ) + ( float ) voiceSlider.getCurrentValue( ) );
+		voiceSlider.setYPos( ( float ) voiceSlider.getY( ) );
 	}
 
 	@Override
