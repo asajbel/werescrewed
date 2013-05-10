@@ -251,7 +251,7 @@ public class DragonScreen extends Screen {
 		EventTrigger et = etb.name( "cannon-trigger" ).setVerts( triggerVerts )
 				.extraBorder( 0 )
 				.position( eventPos )//.addEntity( s )
-				.beginAction( new CannonLaunchAction( skel, 0.4f, 1 ) )
+				.beginAction( new CannonLaunchAction( skel, 0.5f, 1 ) )
 				.repeatable( )
 				.build( );
 		skel.addEventTrigger( et );

@@ -89,8 +89,8 @@ class IntroScreen implements com.badlogic.gdx.Screen {
 	public void resize( int width, int height ) {
 		stage.setViewport( width, height, true );
 		for (Actor a : stage.getActors( )) {
-			a.setX( width / 2 - a.getWidth( ) / 2 );
-			a.setY( height / 2 - a.getHeight( ) / 2 );
+			a.setX( width / 2  );
+			a.setY( height / 2  );
 		}
 
 	}

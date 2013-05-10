@@ -7,6 +7,7 @@ package com.blindtigergames.werescrewed.entity.animator;
  */
 import com.badlogic.gdx.math.Vector2;
 import com.blindtigergames.werescrewed.entity.I_Drawable;
+import com.blindtigergames.werescrewed.graphics.TextureAtlas;
 
 public interface ISpinemator extends I_Drawable {
 	/**
@@ -34,4 +35,10 @@ public interface ISpinemator extends I_Drawable {
 	 *            the skeleton
 	 */
 	void setScale( Vector2 scale );
+	
+	/**
+	 * Returns atlas with all of this spine body's parts
+	 * @return
+	 */
+	TextureAtlas getBodyAtlas();
 }

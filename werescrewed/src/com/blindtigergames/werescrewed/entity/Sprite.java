@@ -163,4 +163,19 @@ public class Sprite extends com.badlogic.gdx.graphics.g2d.Sprite implements I_Dr
 	public void setPosition( Vector2 pos ) {
 		super.setPosition(pos.x, pos.y);
 	}
+	
+	/**
+	 * Scale the sprite XY equally if you pass in 1 scale param, or X/Y separately if you pass in 2
+	 * @param s
+	 * @param scale pass in 1 
+	 * @return the sprite you passed in
+	 */
+	public static Sprite scale(Sprite s, float... scale){
+		if(scale.length>1){
+			s.setScale( scale[0],scale[1] );
+		}else if (scale.length>0){
+			s.setScale( scale[0] );
+		}
+		return s;
+	}
 }

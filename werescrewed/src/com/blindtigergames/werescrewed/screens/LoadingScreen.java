@@ -109,6 +109,12 @@ public class LoadingScreen extends Screen {
 				player2.setX( p2LabelPositionX );
 				player2.setY( screenHeight / 4 - 50 );
 			}
+			
+			
+			
+			//debug turning character select off until someone else can finish it
+			
+			playersHaveBeenSelected = true;
 		}
 
 		// stage = new Stage( );
@@ -163,7 +169,12 @@ public class LoadingScreen extends Screen {
 
 		// begin loading the assets
 		if ( WereScrewedGame.manager.update( ) ) {
-
+			
+			//HIT ANY KEY TO SKIP
+			if( Gdx.app.getInput( ).isTouched( )){
+				ScreenManager.getInstance( ).show(
+						ScreenType.LEVEL_1 );
+			}
 			if ( currLevel == 0 ) {
 				// assets have been loaded!
 				loadingLabel.setCaption( "Loading Complete!!" );
@@ -175,7 +186,6 @@ public class LoadingScreen extends Screen {
 				if ( characterSelect ) {
 					if ( playersHaveBeenSelected ) {
 						WereScrewedGame.player1Female = p1SelectFemale;
-						System.out.println( WereScrewedGame.player1Female );
 						if ( screenTag != null && screenTag.equals( "level1" ) ) {
 							ScreenManager.getInstance( ).show(
 									ScreenType.LEVEL_1 );
@@ -199,6 +209,7 @@ public class LoadingScreen extends Screen {
 		}
 
 		timer++;
+		
 		if ( timer > 100 ) {
 			timer = 0;
 			if ( !( currIndex == storyBoardArray.size( ) - 1 ) ) {
