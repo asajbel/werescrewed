@@ -21,6 +21,8 @@ public enum PlayerAnim{
 	,WAVE("wave")
 	,SCREWING_HANG("screwing_hang")
 	,SCREWING_GROUND("screwing_ground")
+	,LAND_SCREW("land_screw_ready", LoopBehavior.STOP)
+	,LAND("land", LoopBehavior.STOP)
 	;
 	String text;
 	PlayerAnim start = null; 

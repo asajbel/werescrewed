@@ -295,9 +295,9 @@ public class PlayerSpinemator implements ISpinemator {
 					break;
 				}
 				if ( player.getExtraState( ) == ConcurrentState.ScrewReady ) {
-					return PlayerAnim.RUN_SCREW;
+					return PlayerAnim.LAND_SCREW;
 				}
-				return PlayerAnim.RUN;
+				return PlayerAnim.LAND;
 			}
 			if ( player.getExtraState( ) == ConcurrentState.ScrewReady ) {
 				return PlayerAnim.IDLE_SCREW;
