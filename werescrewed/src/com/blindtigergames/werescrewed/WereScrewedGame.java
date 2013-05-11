@@ -20,7 +20,7 @@ import com.blindtigergames.werescrewed.util.Metrics;
 
 public class WereScrewedGame extends Game {
 
-	public static final float targetFrameRate = 60;
+	public static final float targetFrameRate = 30f;
 	public static final float oneOverTargetFrameRate = 1f/targetFrameRate;
 	
 	public static AssetManager manager;

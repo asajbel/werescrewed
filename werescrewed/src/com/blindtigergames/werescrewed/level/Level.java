@@ -91,6 +91,7 @@ public class Level {
 
 	public void update( float deltaTime ) {
 		// camera.update( );
+		world.step( WereScrewedGame.oneOverTargetFrameRate, 2, 1);
 
 		if ( player1 != null )
 			player1.update( deltaTime );
@@ -188,21 +189,20 @@ public class Level {
 
 		if ( debug )
 			debugRenderer.render( world, camera.combined( ) );
-//		world.step( WereScrewedGame.oneOverTargetFrameRate, 4, 2);
-		worldStep(deltaTime); 
+//		worldStep(deltaTime); 
 
 	}
 	
 	private float accum = 0f;               
 	private final float step = 1f / 60f;    
-	private final float maxAccum = 1f / 30f;
+	private final float maxAccum = 1f / 20f;
 	                                        
 	private void worldStep(float delta) {   
 	   accum += delta;                     
 	   accum = Math.min(accum, maxAccum);  
-	   while (accum > step) {              
-	      world.step(step, 2, 1);         
-	      accum -= step;                  
+	   while (accum >= maxAccum) {              
+	      world.step(1f / 30f, 1, 1);         
+	      accum -= maxAccum;                  
 	   }                                   
 	}                                      
 

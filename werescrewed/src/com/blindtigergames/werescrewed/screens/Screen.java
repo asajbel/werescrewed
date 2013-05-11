@@ -69,7 +69,6 @@ public class Screen implements com.badlogic.gdx.Screen {
 			System.exit( 0 );
 		}
 		if (level != null){			
-			level.update( delta );
 
 			//background stuff
 			if ( level.backgroundRootSkeleton != null ) {
@@ -98,6 +97,9 @@ public class Screen implements com.badlogic.gdx.Screen {
 			}
 			batch.end( );
 			
+
+			updateStep( delta ); 
+//			level.update( delta );
 			
 		}
 		
@@ -193,6 +195,21 @@ public class Screen implements com.badlogic.gdx.Screen {
 		
 		
 	}
+	
+	private float accum = 0f;               
+	private final float step = 1f / 30f;    
+	private final float maxAccum = 1f / 20f;
+	                                        
+	private void updateStep(float delta) {   
+		accum += delta;  
+		Gdx.app.log( this.toString( ) + " Start", String.valueOf( accum * 60f ) );
+		accum = Math.min( accum, maxAccum );
+		while (accum > step) {    
+			Gdx.app.log( this.toString( ), String.valueOf( accum * 60f) );
+			level.update( accum );
+		    accum -= step;                  
+		}                                        
+	}         
 
 	protected void addFGSkeleton( Skeleton skel ) {
 		addToSkelList(level.skelFGList,skel,false);
