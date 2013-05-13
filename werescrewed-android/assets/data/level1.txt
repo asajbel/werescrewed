@@ -24,7 +24,7 @@
 /levels/alphabot/knee_chest_in.pack
 /levels/alphabot/engine.pack
 /levels/alphabot/chest_pipes_thigh_pipes.pack
-/levels/alphabot/left-arm.pack
+/levels/alphabot/left-arm-internal.pack
 /levels/alphabot/head_left.pack
 /levels/alphabot/head_right.pack
 /levels/alphabot/chest_exterior_lower.pack

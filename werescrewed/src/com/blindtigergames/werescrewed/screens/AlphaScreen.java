@@ -597,21 +597,21 @@ public class AlphaScreen extends Screen {
 
 	private void thighDecals( Skeleton thighSkeleton ) {
 		TextureAtlas decals = WereScrewedGame.manager
-				.getAtlas( "chest_pipes_thigh_pipes" );
-		TextureAtlas exterior_decals = WereScrewedGame.manager
 				.getAtlas( "foot_shin_thigh" );
 
 		// level.entityBGList.add(thighSkeleton);
-		Sprite sprite = decals.createSprite( "thigh_mechanisms_and_pipesNOCOLOR" );
+		Sprite sprite = decals.createSprite( "left-thigh" );
 		sprite.setScale(1f/0.75f);
 		thighSkeleton.addBGDecalBack(
 				sprite,
-				new Vector2( -345, -1117 ) );
+				new Vector2( -365, -994 ) );
 		// 380,1117
 
 		Vector2 thighPos = new Vector2( -425, -1010 );
 		thighSkeleton.addFGDecal(
-				Sprite.scale(exterior_decals.createSprite( "thigh_exterior" ),1.75f), thighPos );
+				Sprite.scale(decals.createSprite( "thigh_exterior" ),1.75f), thighPos );
+		
+		thighSkeleton.bgSprite = null;
 	}
 
 	private void createFootObjects( ) {
@@ -663,14 +663,14 @@ public class AlphaScreen extends Screen {
 		// DECALS for Foot / Shin
 		Sprite s;
 		float scale = 1f/.75f;
-		int decalX = -686;// -482;//587
+		int decalX = -703;// -482;//587
 		int decalY = -614;// -558;//536
-		Sprite footBG = decals.createSprite( "foot-interior" );
-		Sprite legBG = decals.createSprite( "shin-interior" );
+		Sprite footBG = decals.createSprite( "left-foot" );
+		Sprite legBG = decals.createSprite( "left-shin" );
 		Skeleton foot = ( Skeleton ) LevelFactory.entities.get( "footSkeleton" );
 		foot.addBGDecal( Sprite.scale(footBG,scale), new Vector2( decalX, decalY ) );
 		footBG.setOrigin( 0f, 0f );
-		foot.addBGDecal( Sprite.scale(legBG,scale), new Vector2( 410 + decalX, 432 + decalY ) );
+		foot.addBGDecal( Sprite.scale(legBG,scale), new Vector2( 450 + decalX, 440 + decalY ) );
 
 		addBGSkeleton( footSkeleton );
 		addFGSkeleton( footSkeleton );
@@ -682,6 +682,9 @@ public class AlphaScreen extends Screen {
 		foot.addFGDecal( Sprite.scale(decals.createSprite( "foot_exterior" ),scale), footFGPos );
 		foot.addFGDecal( Sprite.scale(decals.createSprite( "shin_exterior" ),scale), footFGPos
 				.cpy( ).add( 400, 386 ) );
+		
+		foot.bgSprite = null;
+		
 
 	}
 	
@@ -751,14 +754,16 @@ public class AlphaScreen extends Screen {
 				.add( 260, -2279 ); // this is horrible I know know why knee is
 									// here even 50,60
 		kneeSkeleton.addFGDecalBack( Sprite.scale(decals.createSprite( "knee_exterior" ),scale),
-				kneeDecalPos.cpy( ) );
+				kneeDecalPos.cpy( ).add( -36,-65 ) );
 		addFGSkeleton( kneeSkeleton );
 		addBGSkeleton( kneeSkeleton );
 
 		kneeSkeleton.addBGDecalBack( Sprite.scale(knee_exterior
-				.createSprite( "knee_mechanisms_and_pipesNOCOLOR_REDONE" ),scale),
-				kneeDecalPos.cpy( ) );
+				.createSprite( "left-knee" ),scale),
+				kneeDecalPos.cpy( ).add(22,-6) );
 		// removePlayerToScrew( )
+		
+		kneeSkeleton.bgSprite = null;
 	}
 
 	private void initPowerScrews( ) {
@@ -1199,6 +1204,7 @@ public class AlphaScreen extends Screen {
 	}
 
 	private void leftArm( ) {
+		float scale = 1f/.75f;
 		leftArmScrew = ( PuzzleScrew ) LevelFactory.entities
 				.get( "leftShoulderPuzzleScrew1" );
 
@@ -1213,13 +1219,16 @@ public class AlphaScreen extends Screen {
 				new Vector2( -1748, 5980 ).mul( Util.PIXEL_TO_BOX ) );
 		level.world.createJoint( rjd );
 
-		TextureAtlas left_arm = WereScrewedGame.manager.getAtlas( "left-arm" );
-		Vector2 pos = new Vector2( -455, -3250 );
+		TextureAtlas left_arm = WereScrewedGame.manager.getAtlas( "left-arm-internal" );
+		Vector2 pos = new Vector2( -526, -3314.66f );
 		leftShoulderSkeleton.addBGDecal(
-				left_arm.createSprite( "left-arm-bottom" ), pos );
+				Sprite.scale(left_arm.createSprite( "left-arm-bottom" ),scale), pos );
 		leftShoulderSkeleton.addBGDecal(
-				left_arm.createSprite( "left-arm-top" ),
-				pos.cpy( ).add( 0, 1721 ) );
+				Sprite.scale(left_arm.createSprite( "left-arm-top" ),scale,scale),
+				pos.cpy( ).add( 0, 1916 ) );
+		//714,1437
+		
+		leftShoulderSkeleton.bgSprite = null;
 		
 		addFGSkeleton( leftShoulderSkeleton );
 		addBGSkeleton( leftShoulderSkeleton );
@@ -1635,5 +1644,7 @@ public class AlphaScreen extends Screen {
 		
 		addBGSkeleton(rightElbowSkeleton);
 		addBGSkeleton( rightShoulderSkeleton );
+		
+		
 	}
 }
