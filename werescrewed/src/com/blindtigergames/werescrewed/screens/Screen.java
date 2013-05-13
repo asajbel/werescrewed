@@ -31,6 +31,8 @@ public class Screen implements com.badlogic.gdx.Screen {
 	protected int controllerTimer = 10;
 	protected int controllerMax = 10;
 	protected int buttonIndex = 0;
+	protected float alpha = 1.0f;
+	protected boolean finish = false;
 	
 	BitmapFont debug_font;
 	Camera uiCamera;
@@ -291,5 +293,28 @@ public class Screen implements com.badlogic.gdx.Screen {
 		setClearColor(r/255f,g/255f,b/255f,a/255f);
 	}
 
+	public float getAlpha( ) {
+		return alpha;
+	}
 	
+	public void setAlpha( float value ) {
+		alpha += value;
+		
+		if ( alpha >= 1.0f ) {
+			alpha = 1.0f;
+			finish = true;
+		}
+		else if ( alpha < 0.0f ) {
+			alpha = 0.0f;
+			finish = true;
+		}
+	}
+	
+	public boolean isFinished( ) {
+		return finish;
+	}
+	
+	public void setFinish ( boolean value ) {
+		finish = value;
+	}
 }
