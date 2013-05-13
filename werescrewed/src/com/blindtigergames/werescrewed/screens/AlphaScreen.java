@@ -208,7 +208,7 @@ public class AlphaScreen extends Screen {
 		root.setFgFade( false );
 		bgm = WereScrewedGame.manager.get( WereScrewedGame.dirHandle.path( )
 				+ "/common/music/waltz.mp3", Music.class );
-		bgm.setVolume( SoundManager.getMusicVolume( ) );
+		bgm.setVolume( 0 );//SoundManager.getMusicVolume( )
 		bgm.setLooping( true );
 		
 		sounds = new SoundManager();
@@ -712,7 +712,7 @@ public class AlphaScreen extends Screen {
 		rightFoot.addFGDecal( sprite,
 				footFGPos.cpy( ).add( -400, 386 ) );
 		
-		
+		//EXTERNAL:
 		//KNEE
 		decals = WereScrewedGame.manager
 				.getAtlas( "foot_shin_thigh" );
@@ -730,11 +730,26 @@ public class AlphaScreen extends Screen {
 		TextureAtlas thigh_exterior = WereScrewedGame.manager
 				.getAtlas( "foot_shin_thigh" );
 		addFGSkeleton(rightThigh);
-		Vector2 thighDecalPos = new Vector2( -425,-407 );
-		sprite = Sprite.scale(thigh_exterior.createSprite( "thigh_exterior" ),1.75f);
+		Vector2 thighDecalPos = new Vector2( -425,-420 );
+		sprite = Sprite.scale(thigh_exterior.createSprite( "thigh_exterior" ),1.8f);
 		rightThigh.addFGDecal(
 				sprite,
 				thighDecalPos);
+		
+		//INTERNAL:
+		rightKnee.bgSprite = null;
+		rightThigh.bgSprite = null;
+		
+		TextureAtlas right_leg_internal = WereScrewedGame.manager
+				.getAtlas( "right-leg" );
+		sprite = Sprite.scale(right_leg_internal.createSprite( "right-leg-top" ),scale);
+		rightThigh.addBGDecal(
+				sprite,
+				thighDecalPos.cpy().add(0,25));
+		sprite = Sprite.scale(right_leg_internal.createSprite( "right-leg-knee" ),scale);
+		rightKnee.addBGDecal(
+				sprite,
+				new Vector2(-441,-601));
 		
 	}
 

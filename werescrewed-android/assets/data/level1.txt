@@ -33,6 +33,7 @@
 /levels/alphabot/chest_exterior_upper2.pack
 /levels/alphabot/chest2.pack
 /levels/alphabot/arm_ex.pack
+/levels/alphabot/right-leg.pack
 
 
 
