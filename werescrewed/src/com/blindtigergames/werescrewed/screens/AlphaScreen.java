@@ -202,7 +202,7 @@ public class AlphaScreen extends Screen {
 		
 		rightLegDecals();
 		leftArmDecal();
-		createChestDecals( );
+		chestDecals( );
 		Skeleton root = ( Skeleton ) LevelFactory.entities
 				.get( "RootSkeleton" );
 		root.setFgFade( false );
@@ -668,9 +668,9 @@ public class AlphaScreen extends Screen {
 		Sprite footBG = decals.createSprite( "foot-interior" );
 		Sprite legBG = decals.createSprite( "shin-interior" );
 		Skeleton foot = ( Skeleton ) LevelFactory.entities.get( "footSkeleton" );
-		foot.addBGDecal( footBG, new Vector2( decalX, decalY ) );
+		foot.addBGDecal( Sprite.scale(footBG,scale), new Vector2( decalX, decalY ) );
 		footBG.setOrigin( 0f, 0f );
-		foot.addBGDecal( legBG, new Vector2( 410 + decalX, 432 + decalY ) );
+		foot.addBGDecal( Sprite.scale(legBG,scale), new Vector2( 410 + decalX, 432 + decalY ) );
 
 		addBGSkeleton( footSkeleton );
 		addFGSkeleton( footSkeleton );
@@ -739,7 +739,7 @@ public class AlphaScreen extends Screen {
 		TextureAtlas decals = WereScrewedGame.manager
 				.getAtlas( "foot_shin_thigh" );
 		TextureAtlas knee_exterior = WereScrewedGame.manager
-				.getAtlas( "alphabot_knee_in_thigh_out" );
+				.getAtlas( "knee_chest_in" );
 		float scale = 1f/.75f;
 		kneeMovingPlat = ( TiledPlatform ) LevelFactory.entities
 				.get( "kneeMovingPlat" );
@@ -748,15 +748,15 @@ public class AlphaScreen extends Screen {
 		kneeSkeleton = ( Skeleton ) LevelFactory.entities.get( "kneeSkeleton" );
 
 		Vector2 kneeDecalPos = kneeSkeleton.getPositionPixel( )
-				.add( 230, -2339 ); // this is horrible I know know why knee is
-									// here even
+				.add( 260, -2279 ); // this is horrible I know know why knee is
+									// here even 50,60
 		kneeSkeleton.addFGDecalBack( Sprite.scale(decals.createSprite( "knee_exterior" ),scale),
 				kneeDecalPos.cpy( ) );
 		addFGSkeleton( kneeSkeleton );
 		addBGSkeleton( kneeSkeleton );
 
-		kneeSkeleton.addBGDecalBack( knee_exterior
-				.createSprite( "knee_mechanisms_and_pipesNOCOLOR_REDONE" ),
+		kneeSkeleton.addBGDecalBack( Sprite.scale(knee_exterior
+				.createSprite( "knee_mechanisms_and_pipesNOCOLOR_REDONE" ),scale),
 				kneeDecalPos.cpy( ) );
 		// removePlayerToScrew( )
 	}
@@ -1106,12 +1106,14 @@ public class AlphaScreen extends Screen {
 
 	}
 	
-	private void createChestDecals(){
-		TextureAtlas chest_powerscrew = WereScrewedGame.manager.getAtlas( "chest_pipes_thigh_pipes" );
+	private void chestDecals(){
+		//TextureAtlas chest_powerscrew = WereScrewedGame.manager.getAtlas( "chest_pipes_thigh_pipes" );
+		TextureAtlas chestEnginePipes = WereScrewedGame.manager.getAtlas( "knee_chest_in" );
+		float scale = 1f/0.75f;
 		Skeleton chestSkeleton = (Skeleton)LevelFactory.entities.get( "chestSkeleton" );
 		chestSkeleton.addBGDecal( 
-				chest_powerscrew.createSprite( "chest_powerscrew_pipes_to_engineNOCOLOR" ), 
-				new Vector2(-680,-970) );
+				Sprite.scale(chestEnginePipes.createSprite( "chest_powerswitches_pipestoengine" ),scale), 
+				new Vector2(-732,-1300) );//-52,-346
 		
 		TextureAtlas chest_lower, chest_middle, chest_upper1, chest_upper2;
 		chest_lower = WereScrewedGame.manager.getAtlas( "chest_exterior_lower" );
@@ -1123,46 +1125,45 @@ public class AlphaScreen extends Screen {
 		//2625
 		Sprite s;
 		
-		float scale = 0.75f;
-		float invScale = 1.0f/scale;
+		
 		
 		//LOWER SECTION
 		s = chest_lower.createSprite( "torso1" );
-		s.setScale( invScale );
+		s.setScale( scale );
 		chestSkeleton.addFGDecal( s, chestPos.cpy( ).add(364,89) );
 		
 		s = chest_lower.createSprite( "torso2" );
-		s.setScale( invScale );
+		s.setScale( scale );
 		chestSkeleton.addFGDecal( s, chestPos.cpy( ).add(1520,0) );
 		
 		s = chest_lower.createSprite( "torso3" );
-		s.setScale( invScale );
+		s.setScale( scale );
 		chestSkeleton.addFGDecal( s, chestPos.cpy( ).add(3143,89) );
 		
 		//MIDDLE SECTION
 		s = chest_middle.createSprite( "torso4" );
-		s.setScale( invScale );
+		s.setScale( scale );
 		chestSkeleton.addFGDecal( s, chestPos.cpy( ).add(88,1168) );
 		
 		s = chest_middle.createSprite( "torso5" );
-		s.setScale( invScale );
+		s.setScale( scale );
 		chestSkeleton.addFGDecal( s, chestPos.cpy( ).add(1520,1168) );
 		
 		s = chest_upper1.createSprite( "torso6" );
-		s.setScale( invScale );
+		s.setScale( scale );
 		chestSkeleton.addFGDecal( s, chestPos.cpy( ).add(3143,1168) );
 		
 		//UPPER SECTION
 		s = chest_upper1.createSprite( "torso7" );
-		s.setScale( invScale );
+		s.setScale( scale );
 		chestSkeleton.addFGDecal( s, chestPos.cpy( ).add(0,2336) );
 		
 		s = chest_upper2.createSprite( "torso8" );
-		s.setScale( invScale );
+		s.setScale( scale );
 		chestSkeleton.addFGDecal( s, chestPos.cpy( ).add(1520,2336) );
 		
 		s = chest_upper2.createSprite( "torso9" );
-		s.setScale( invScale );
+		s.setScale( scale );
 		chestSkeleton.addFGDecal( s, chestPos.cpy( ).add(3143,2336) );
 		
 		addFGSkeleton( chestSkeleton );
@@ -1171,14 +1172,30 @@ public class AlphaScreen extends Screen {
 		
 		//END FG DECALS
 		
+		// INTERIOR DECALS
+		
 		//chest_bottomleft_mechanisms75
 		TextureAtlas chest_gear = WereScrewedGame.manager.getAtlas( "chest_pipes_thigh_pipes" );
 		chestSkeleton.addBGDecal( chest_gear.createSprite( "chest_bottomleft_mechanisms75" ), new Vector2(-1800,-1157 ) );
 	
+		
+		TextureAtlas chest_interiorAtlas = WereScrewedGame.manager.getAtlas( "knee_chest_in" );
+		Vector2 chestPipesRightPos = new Vector2(-200,-75);
+		chestSkeleton.addBGDecalBack( 
+				Sprite.scale(chest_interiorAtlas.createSprite( "lower-right-chest" ),scale),
+				new Vector2(450,-1200).add( chestPipesRightPos ) );
+		
+		chestSkeleton.addBGDecalBack( 
+				Sprite.scale(chest_interiorAtlas.createSprite( "upper-right-chest" ),scale),
+				new Vector2(370,-117).add( chestPipesRightPos ) );
+		
 		//TextureAtlas chest2 = WereScrewedGame.manager.getAtlas("chest2");
 		//s = chest2.createSprite( "chest_upperleftandtop_mechanismS_ROUGHwithnotes" );
 		//s.setScale( 1f/0.75f );
 		//chestSkeleton.addBGDecal( s, new Vector2(-2050,525) );
+		
+		
+		
 	}
 
 	private void leftArm( ) {
@@ -1457,7 +1474,7 @@ public class AlphaScreen extends Screen {
 	}
 
 	private void initPanels( ) {
-		int numPanels = 5;
+		int numPanels = 7;
 		String panelAtlas = "alphabot-panel";
 		panels = new Array< Panel >( numPanels );
 		Panel p;
@@ -1467,6 +1484,14 @@ public class AlphaScreen extends Screen {
 			p.setPanelSprite( "alphabot-panel_off" );
 			panels.add( p );
 		}
+		
+		/*p = ( Panel ) LevelFactory.entities.get( "panel6" );
+		p.setPanelSprite( "alphabot-panel_off" );
+		panels.add( p );
+		
+		p = ( Panel ) LevelFactory.entities.get( "panel7" );
+		p.setPanelSprite( "alphabot-panel_off" );
+		panels.add( p );*/
 
 		// Panel p = new Panel( kneeSkeleton.getPositionPixel( ), level.world,
 		// panelAtlas, "alphabot-panel_off" );

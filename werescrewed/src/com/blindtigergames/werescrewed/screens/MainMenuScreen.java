@@ -20,7 +20,6 @@ class MainMenuScreen extends Screen {
 
 	public ScreenType screenType;
 	private SpriteBatch batch = null;
-	private Sprite logo = null;
 	private Sprite menuBG = null; 
 	private OrthographicCamera camera = null;
 	private BitmapFont font = null;
@@ -54,7 +53,6 @@ class MainMenuScreen extends Screen {
 		manager.update( delta );
 		batch.begin( );
 		menuBG.draw( batch );
-		logo.draw( batch ); 
 
 		storyButton.draw( batch, camera );
 		levelSelectButton.draw( batch, camera );
@@ -93,15 +91,14 @@ class MainMenuScreen extends Screen {
 		camera = new OrthographicCamera( );
 		camera.setToOrtho( false, width, height );
 		batch.setProjectionMatrix( camera.combined );
-		int leftX = width / 5 - 20;
-		int centerY = height / 3;
+		int leftX = ( int ) menuBG.getWidth( ) / 2;
+		int centerY = height / 5;
 		float scaleX = width / 1280f;
 		float scaleY = height / 720f;
 		
-		logo.setScale( scaleX, scaleY ); 
-		menuBG.setScale( width / menuBG.getWidth( ), width / menuBG.getWidth( ) ); 
-		logo.setPosition( leftX - logo.getWidth( ) / 2, centerY + 6 * lineHeight); 
-		menuBG.setPosition( width / 2 - menuBG.getWidth( ) / 2, height / 2 - menuBG.getHeight( ) / 2 ); 
+		//menuBG.setScale( width / menuBG.getWidth( ), width / menuBG.getWidth( ) ); 
+		menuBG.setPosition( 0, height / 2 - menuBG.getHeight( ) / 2 ); 
+		//menuBG.setPosition( width / 2 - menuBG.getWidth( ) / 2, height / 2 - menuBG.getHeight( ) / 2 ); 
 		headingLabel.setX( leftX - headingLabel.getWidth( ) / 2 );
 		headingLabel.setY( centerY + 7 * lineHeight );
 		storyButton.setX( leftX  - storyButton.getWidth( ) / 2 );
@@ -126,12 +123,9 @@ class MainMenuScreen extends Screen {
 	private void loadButtons( ){
 		//font = WereScrewedGame.manager.getFont( "ornatique" );
 		Texture back = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-				 + "/common/menu_placeholder.png", Texture.class );
-		Texture name =  WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-				 + "/common/title_background_clear.png", Texture.class );
-		logo = new Sprite(name);
-		menuBG = new Sprite(back);
-		lineHeight = Math.round( 2.5f * font.getCapHeight( ) + 20 );
+				 + "/menu/menu.png", Texture.class );
+		menuBG = new Sprite( back );
+		lineHeight = Math.round( 2.5f * font.getCapHeight( ) + 50 );
 		headingLabel = new Label( "We're Screwed!!", fancyFont );
 		
 		storyButton = new TextButton("Start", fancyFont,

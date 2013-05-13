@@ -96,18 +96,18 @@ public class LoadingScreen extends Screen {
 				player2 = new Label("Player2", WereScrewedGame.manager.getFont( "longdon" ) );
 				
 				pressToConfirm.setX(  screenWidth / 2 - pressToConfirm.getWidth( ) / 2);
-				pressToConfirm.setY( screenHeight / 4);
+				pressToConfirm.setY( screenHeight / 4 );
 				
 				pressStart.setX(  screenWidth / 2 - pressStart.getWidth( ) / 2);
 				pressStart.setY(  screenHeight / 4 );
 				
-				p2LabelPositionX =  (screenWidth / 2) - player1.getWidth( )/2;
-				player1.setX( p2LabelPositionX );
+				p1LabelPositionX =  ( screenWidth / 2 );// - player1.getWidth( ) / 2;
+				player1.setX( p1LabelPositionX );
 				player1.setY( screenHeight / 4 - 100 );
 				
-				p2LabelPositionX = (screenWidth / 2) + player2.getWidth( )/2 + 500; 
+				p2LabelPositionX = ( screenWidth / 2 );// + player2.getWidth( ) / 2 + 100; 
 				player2.setX( p2LabelPositionX );
-				player2.setY( screenHeight / 4 - 100 );
+				player2.setY( screenHeight / 4 - 50 );
 			}
 			
 			
