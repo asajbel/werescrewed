@@ -207,7 +207,13 @@ public class SoundManager {
 			}
 		}
 	}
-	
+	public void dispose(){
+		for (Array<SoundRef> refs : sounds.arrays( )){
+			for (SoundRef ref: refs){
+				ref.stop( );
+			}
+		}
+	}
 	public float getDelay(String id){
 		if (hasSound(id)){
 			return sounds.get(id).delay;
@@ -373,5 +379,4 @@ public class SoundManager {
 		}
 
 	}
-
 }

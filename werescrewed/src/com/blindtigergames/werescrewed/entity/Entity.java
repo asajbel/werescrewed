@@ -1368,6 +1368,7 @@ public class Entity implements GleedLoadable {
 	 */
 	public void dispose( ) {
 		body.getWorld( ).destroyBody( body );
+		sounds.dispose();
 	}
 
 	public void setGroupIndex( short index ) {
