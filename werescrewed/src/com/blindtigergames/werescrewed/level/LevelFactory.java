@@ -400,6 +400,11 @@ public class LevelFactory {
 			pb.openEnded( );
 		}
 
+		if ( item.props.containsKey( "density" ) ) {
+			float density = Float.parseFloat( item.props.get( "density" ) );
+			pb.density( density );
+		}
+		
 		pb.name( item.name ).position( new Vector2( item.pos.x, item.pos.y ) )
 				.properties( item.props );
 
@@ -1211,7 +1216,7 @@ public class LevelFactory {
 				if ( item.props.containsKey( "degreelimit" ) ) {
 					float limit = Float.parseFloat( item.props
 							.get( "degreelimit" ) );
-					ss.addStructureJoint( target, limit );
+					ss.addStructureJoint( target, -limit );
 
 				} else
 					ss.addStructureJoint( target );

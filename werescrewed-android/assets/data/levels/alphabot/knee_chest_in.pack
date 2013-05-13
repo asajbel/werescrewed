@@ -1,0 +1,33 @@
+knee_chest_in.png
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+offset: 0, 0
+lower-right-chest
+  rotate: false
+  xy: 2, 604
+  size: 1029, 836
+  orig: 1029, 836
+  offset: 0, 0
+  index: -1
+chest_powerswitches_pipestoengine
+  rotate: false
+  xy: 1033, 757
+  size: 798, 1064
+  orig: 798, 1064
+  offset: 0, 0
+  index: -1
+upper-right-chest
+  rotate: false
+  xy: 2, 2
+  size: 1231, 600
+  orig: 1231, 600
+  offset: 0, 0
+  index: -1
+knee_mechanisms_and_pipesNOCOLOR_REDONE
+  rotate: false
+  xy: 1235, 2
+  size: 800, 753
+  orig: 800, 753
+  offset: 0, 0
+  index: -1

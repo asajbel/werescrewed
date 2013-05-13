@@ -20,20 +20,19 @@
 
 
 ##decals and such
-/levels/alphabot/alphabot_foot_shin_decal.pack
-/levels/alphabot/alphabot_knee_in_thigh_out.pack
+/levels/alphabot/foot_shin_thigh.pack
+/levels/alphabot/knee_chest_in.pack
 /levels/alphabot/engine.pack
 /levels/alphabot/chest_pipes_thigh_pipes.pack
 /levels/alphabot/left-arm.pack
 /levels/alphabot/head_left.pack
 /levels/alphabot/head_right.pack
-/levels/alphabot/forearm_elbow_ex.pack
-/levels/alphabot/right_arm_ex.pack
 /levels/alphabot/chest_exterior_lower.pack
 /levels/alphabot/chest_exterior_middle.pack
 /levels/alphabot/chest_exterior_upper1.pack
 /levels/alphabot/chest_exterior_upper2.pack
 /levels/alphabot/chest2.pack
+/levels/alphabot/arm_ex.pack
 
 
 
