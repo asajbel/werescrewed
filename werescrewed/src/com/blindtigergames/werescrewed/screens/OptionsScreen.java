@@ -28,6 +28,7 @@ class OptionsScreen extends Screen {
 	private BitmapFont font = null;
 	private BitmapFont fancyFont = null;
 	private Texture menuBG = null;
+	private Sprite transition = null;
 	private int lineHeight = 0;
 	private final int VOLUME_MAX = 100;
 	private final int VOLUME_MIN = 0;
@@ -66,6 +67,10 @@ class OptionsScreen extends Screen {
 		batch = new SpriteBatch( );
 		font = new BitmapFont( );
 		fancyFont = WereScrewedGame.manager.getFont( "longdon" );
+		
+		Texture trans = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
+				 + "/menu/transition.png", Texture.class ); 
+		transition = new Sprite( trans );
 		
 		int width = Gdx.graphics.getWidth( );
 		int height = Gdx.graphics.getHeight( ); 
@@ -108,6 +113,11 @@ class OptionsScreen extends Screen {
 		subtitles.draw( batch, camera );
 		creditsButton.draw(batch, camera );
 		backButton.draw( batch, camera );
+		
+		if ( !finish )
+			setAlpha( -0.02f );
+		transition.draw( batch, alpha );
+		
 		batch.end( );
 		
 		if ( Gdx.input.isKeyPressed( Keys.LEFT ) ) {
@@ -177,6 +187,9 @@ class OptionsScreen extends Screen {
 		int centerX = width / 2;
 		int leftX = width / 4;
 		int centerY = height / 2;
+		
+		transition.setPosition( 0, 0 );
+		
 		screenLabel.setX( centerX - screenLabel.getWidth() / 2 );
 		screenLabel.setY( centerY + 7 * ( lineHeight - 20 ) );
 		controls.setX( leftX - controls.getWidth( ) / 2 );

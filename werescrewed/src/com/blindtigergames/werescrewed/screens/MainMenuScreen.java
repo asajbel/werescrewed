@@ -21,6 +21,7 @@ class MainMenuScreen extends Screen {
 	public ScreenType screenType;
 	private SpriteBatch batch = null;
 	private Sprite menuBG = null; 
+	private Sprite transition = null;
 	private OrthographicCamera camera = null;
 	private BitmapFont font = null;
 	BitmapFont fancyFont;
@@ -39,7 +40,6 @@ class MainMenuScreen extends Screen {
 		batch = new SpriteBatch( );
 		font = new BitmapFont( );
 		fancyFont = WereScrewedGame.manager.getFont( "longdon" );
-
 		
 		loadButtons( );
 	}
@@ -47,7 +47,6 @@ class MainMenuScreen extends Screen {
 	@Override
 	public void render( float delta ) {
 		super.render(delta);		
-		Gdx.gl.glClearColor( 0.5f, 0.5f, 0.5f, 1f );
 		Gdx.gl.glClearColor( 0.0f, 0.0f, 0.0f, 1f );
 		Gdx.gl.glClear( GL10.GL_COLOR_BUFFER_BIT );
 		manager.update( delta );
@@ -59,6 +58,11 @@ class MainMenuScreen extends Screen {
 		optionsButton.draw( batch, camera );
 
 		exitButton.draw( batch, camera );
+		
+		if ( !finish )
+			setAlpha( -0.02f );
+		transition.draw( batch, alpha );
+		
 		batch.end( );
 
 		if ( Gdx.input.isKeyPressed( Keys.P ) ) {
@@ -96,6 +100,7 @@ class MainMenuScreen extends Screen {
 		float scaleX = width / 1280f;
 		float scaleY = height / 720f;
 		
+		transition.setPosition( 0, 0 );
 		//menuBG.setScale( width / menuBG.getWidth( ), width / menuBG.getWidth( ) ); 
 		menuBG.setPosition( 0, height / 2 - menuBG.getHeight( ) / 2 ); 
 		//menuBG.setPosition( width / 2 - menuBG.getWidth( ) / 2, height / 2 - menuBG.getHeight( ) / 2 ); 
@@ -124,7 +129,10 @@ class MainMenuScreen extends Screen {
 		//font = WereScrewedGame.manager.getFont( "ornatique" );
 		Texture back = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 				 + "/menu/menu.png", Texture.class );
+		Texture trans = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
+				 + "/menu/transition.png", Texture.class ); 
 		menuBG = new Sprite( back );
+		transition = new Sprite( trans );
 		lineHeight = Math.round( 2.5f * font.getCapHeight( ) + 50 );
 		headingLabel = new Label( "We're Screwed!!", fancyFont );
 		

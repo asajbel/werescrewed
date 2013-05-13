@@ -18,6 +18,7 @@ public class LevelSelectScreen extends Screen {
 	private BitmapFont font = null;
 	private BitmapFont fancyFont = null;
 	private Sprite menuBG = null;
+	private Sprite transition = null;
 	private Label screenLabel = null;
 	private TextButton resurrectButton = null;
 	private TextButton hazardButton = null;
@@ -37,7 +38,10 @@ public class LevelSelectScreen extends Screen {
 		// fancyFont = WereScrewedGame.manager.getFont( "ornatique" );
 		Texture back = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 				+ "/menu/menu.png", Texture.class ); 
-		menuBG = new Sprite(back);
+		Texture trans = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
+				 + "/menu/transition.png", Texture.class ); 
+		menuBG = new Sprite( back );
+		transition = new Sprite( trans );
 		lineHeight = Math.round( 2.5f * font.getCapHeight( ) + 40 );
 		screenLabel = new Label( "Level Select", fancyFont );
 		loadButtons( );
@@ -76,6 +80,11 @@ public class LevelSelectScreen extends Screen {
 		dragonButton.draw(batch,camera);
 
 		backButton.draw( batch, camera );
+		
+		if ( !finish )
+			setAlpha( -0.02f );
+		transition.draw( batch, alpha );
+		
 		batch.end( );
 
 		
@@ -94,6 +103,7 @@ public class LevelSelectScreen extends Screen {
 		float scaleX = width / 1280f;
 		float scaleY = height / 720f;
 		
+		transition.setPosition( 0, 0 );
 		//menuBG.setScale( width / menuBG.getWidth( ), width / menuBG.getWidth( ) ); 
 		menuBG.setPosition( 0, height / 2 - menuBG.getHeight( ) / 2 ); 
 		//menuBG.setPosition( width / 2 - menuBG.getWidth( ) / 2, height / 2 - menuBG.getHeight( ) / 2 ); 

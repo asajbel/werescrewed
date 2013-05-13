@@ -121,6 +121,7 @@ slowSteam.p
 /menu/button.png
 /menu/screw.png
 /menu/slider.png
+/menu/transition.png
 
 ##temp background
 /common/menu_placeholder.png
