@@ -60,6 +60,55 @@ public class DragonScreen extends Screen {
 		
 		buildCannon(balloon3CannonSkeleton, balloon3CannonSkeleton.getPositionPixel( ),
 				200, 200);
+		
+		
+		
+		Skeleton jaw_skeleton = ( Skeleton ) LevelFactory.entities.get( "jaw_skeleton" );
+		Timeline t = Timeline.createSequence( );
+			
+		
+		t.push( Tween.to( jaw_skeleton, PlatformAccessor.LOCAL_ROT, 6f )
+				   .ease(TweenEquations.easeNone)
+				   .target( -Util.PI / 32 )
+				   .start().delay( 2f )
+				   );
+		
+		
+		t.push( Tween.to( jaw_skeleton, PlatformAccessor.LOCAL_ROT, 4f )
+				   .ease(TweenEquations.easeNone)
+				   .target( 0 ).delay( 2f )
+				   .start()
+				   );
+		
+		
+		t.push( Tween.to( jaw_skeleton, PlatformAccessor.LOCAL_ROT, 6f )
+				   .ease(TweenEquations.easeNone)
+				   .target( -Util.PI / 32 )
+				   .start().delay( 2f )
+				   );
+		
+		
+		t.push( Tween.to( jaw_skeleton, PlatformAccessor.LOCAL_ROT, 6f )
+				   .ease(TweenEquations.easeNone)
+				   .target( 0 ).delay( 2f )
+				   .start()
+				   );
+		
+		
+		t.push( Tween.to( jaw_skeleton, PlatformAccessor.LOCAL_ROT, 8f )
+				   .ease(TweenEquations.easeNone)
+				   .target( -Util.PI / 32 )
+				   .start().delay( 4f )
+				   );
+		
+		
+		t.push( Tween.to( jaw_skeleton, PlatformAccessor.LOCAL_ROT, 5f )
+				   .ease(TweenEquations.easeNone)
+				   .target( 0 ).delay( 2f )
+				   .start()
+				   );
+		t.repeat( Tween.INFINITY, 0f );
+		jaw_skeleton.addMover( new TimelineTweenMover( t.start( ) ) );
 	}
 	
 	void buildBalloon(){

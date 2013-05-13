@@ -6,7 +6,7 @@
   <SaveLevelStartApplication>false</SaveLevelStartApplication>
   <SaveLevelApplicationToStart />
   <SaveLevelAppendLevelFilename>false</SaveLevelAppendLevelFilename>
-  <ShowGrid>false</ShowGrid>
+  <ShowGrid>true</ShowGrid>
   <SnapToGrid>true</SnapToGrid>
   <ShowWorldOrigin>true</ShowWorldOrigin>
   <ColorSelectionFirst>
@@ -61,8 +61,8 @@
   </ColorTextureTransparent>
   <DefaultPathItemLineWidth>4</DefaultPathItemLineWidth>
   <DefaultContentRootFolder>C:\</DefaultContentRootFolder>
-  <CameraSpeed>500</CameraSpeed>
-  <CameraFastSpeed>2000</CameraFastSpeed>
+  <CameraSpeed>1000</CameraSpeed>
+  <CameraFastSpeed>4000</CameraFastSpeed>
   <DefaultTextureOriginMethod>TextureCenter</DefaultTextureOriginMethod>
   <WorldOriginColor>
     <R>255</R>
@@ -80,7 +80,7 @@
     <PackedValue>2025898176</PackedValue>
   </GridColor>
   <GridLineThickness>1</GridLineThickness>
-  <GridNumberOfGridLines>1000</GridNumberOfGridLines>
+  <GridNumberOfGridLines>10000</GridNumberOfGridLines>
   <GridSpacing>
     <X>16</X>
     <Y>16</Y>
