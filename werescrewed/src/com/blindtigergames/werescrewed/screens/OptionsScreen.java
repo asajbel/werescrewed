@@ -120,22 +120,6 @@ class OptionsScreen extends Screen {
 		
 		batch.end( );
 		
-		if ( Gdx.input.isKeyPressed( Keys.LEFT ) ) {
-			
-		}
-		
-		else if ( Gdx.input.isKeyPressed( Keys.RIGHT ) ) {
-			
-		}
-		
-		else if ( Gdx.input.isKeyPressed( Keys.UP ) ) {
-			
-		}
-		
-		else if ( Gdx.input.isKeyPressed( Keys.DOWN ) ) {
-			
-		}
-		
 		if ( controllerTimer > 0 ) {
 			controllerTimer--;
 		} else {
@@ -261,7 +245,7 @@ class OptionsScreen extends Screen {
 		backButton = new TextButton( "Back", fancyFont, new ScreenSwitchHandler(
 				ScreenType.MAIN_MENU ) );
 		
-		music.setColored( true );
+		controls.setColored( true );
 		
 		Buttons = new ArrayList< Button >( );
 		Buttons.add( controls );

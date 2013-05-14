@@ -24,8 +24,8 @@ public class Slider extends OptionControl {
 				 + "/menu/screw.png", Texture.class );
 		volume = new Sprite( slidTex );
 		screw = new Sprite( screwTex );
-		maxPos = x + 150;
-		minPos = x + 50;
+		maxPos = x + 180;
+		minPos = x + 60;
 	}
 	
 	public Slider( int min, int max, int current ) {
@@ -35,8 +35,8 @@ public class Slider extends OptionControl {
 	@Override
 	public void setX(int x) {
 		this.x = x;
-		maxPos = x + 150;
-		minPos = x + 50;
+		maxPos = x + 180;
+		minPos = x + 60;
 	}
 	
 	public float getXPos( ) {
@@ -64,17 +64,21 @@ public class Slider extends OptionControl {
 	}
 	
 	public void moveLeft( ) {
-		if ( curValue > minValue || this.xPos > minPos ) {
+		if ( curValue > minValue ) {
 			curValue--;
 			xPos -= 2.0f;
+			if ( xPos > minPos )
+				xPos = minPos;
 			screw.setX( xPos );
 		}
 	}
 	
 	public void moveRight( ) {
-		if ( curValue < maxValue || this.xPos < maxPos ) {
+		if ( curValue < maxValue ) {
 			curValue++;
 			xPos += 2.0f;
+			if ( xPos < maxPos )
+				xPos = maxPos;
 			screw.setX( xPos );
 		}
 	}
