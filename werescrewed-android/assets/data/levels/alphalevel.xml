@@ -18762,6 +18762,9 @@
                         <Property Name="AttachToSkeleton" Type="string" Description="">
                             <string>rightKneeTrapDoorSkeleton2</string>
                         </Property>
+                        <Property Name="sound" Type="string" Description="">
+                            <string>angular: /common/sounds/unscrewing.ogg</string>
+                        </Property>
                     </CustomProperties>
                     <Width>303</Width>
                     <Height>32</Height>
@@ -18784,6 +18787,9 @@
                         </Property>
                         <Property Name="AttachToSkeleton" Type="string" Description="">
                             <string>rightKneeTrapDoorSkeleton1</string>
+                        </Property>
+                        <Property Name="sound" Type="string" Description="">
+                            <string>angular: /common/sounds/unscrewing.ogg</string>
                         </Property>
                     </CustomProperties>
                     <Width>303</Width>
@@ -23559,8 +23565,8 @@
         <NextItemNumber>939</NextItemNumber>
         <ContentRootFolder>gleed-textures</ContentRootFolder>
         <CameraPosition>
-            <X>-350.002441</X>
-            <Y>-1316.12231</Y>
+            <X>1058.33484</X>
+            <Y>-1666.124</Y>
         </CameraPosition>
         <Version>1.3.0.0</Version>
     </EditorRelated>

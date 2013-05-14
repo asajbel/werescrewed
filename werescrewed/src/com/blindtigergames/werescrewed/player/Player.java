@@ -2285,13 +2285,9 @@ public class Player extends Entity {
 			float vol = FOOTSTEP_VOLUME_DROP + amount
 					* ( 1.0f - FOOTSTEP_VOLUME_DROP );
 			if ( sounds.isDelayed( "footstep1" ) ) {
-				sounds.setSoundVolume( "footstep2", vol );
-				sounds.setSoundPitch( "footstep2", pitch );
-				sounds.playSound( "footstep2", rate );
+				sounds.playSound( "footstep2", sounds.randomSoundId( "footstep2" ), rate, vol, pitch);
 			} else {
-				sounds.setSoundVolume( "footstep1", vol );
-				sounds.setSoundPitch( "footstep1", pitch );
-				sounds.playSound( "footstep1", rate );
+				sounds.playSound( "footstep1", sounds.randomSoundId( "footstep1" ), rate, vol, pitch);
 				sounds.setDelay( "footstep2", 0.5f * rate );
 			}
 		}

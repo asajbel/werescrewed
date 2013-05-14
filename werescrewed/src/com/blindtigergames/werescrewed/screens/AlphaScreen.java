@@ -208,7 +208,7 @@ public class AlphaScreen extends Screen {
 		root.setFgFade( false );
 		bgm = WereScrewedGame.manager.get( WereScrewedGame.dirHandle.path( )
 				+ "/common/music/waltz.mp3", Music.class );
-		bgm.setVolume( 0 );//SoundManager.getMusicVolume( )
+		bgm.setVolume( SoundManager.getMusicVolume( ) );
 		bgm.setLooping( true );
 		
 		sounds = new SoundManager();

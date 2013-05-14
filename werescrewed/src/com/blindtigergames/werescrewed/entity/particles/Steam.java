@@ -10,6 +10,7 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.World;
 import com.blindtigergames.werescrewed.WereScrewedGame;
+import com.blindtigergames.werescrewed.camera.Camera;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityType;
 import com.blindtigergames.werescrewed.entity.platforms.Platform;
@@ -86,11 +87,7 @@ public class Steam extends Platform{
 	@Override
 	public void update( float dT){
 		super.update( dT );
-		if (isActive()){
-			sounds.loopSound( "idle", 0, false );
-		} else {
-			sounds.stopSound( "idle" );
-		}
+		sounds.setSoundVolume( "idle", isActive()? sounds.calculatePositionalVolume( "idle", getPositionPixel(), Camera.CAMERA_RECT ):0f );
 	}
 	
 	/**

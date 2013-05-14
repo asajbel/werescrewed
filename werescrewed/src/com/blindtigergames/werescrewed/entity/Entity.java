@@ -1455,8 +1455,7 @@ public class Entity implements GleedLoadable {
 	// Idle sound
 	public void idleSound( ) {
 		if ( sounds != null && sounds.hasSound( "idle" ) ) {
-			sounds.setSoundVolume( "idle", 0.0f );
-			sounds.loopSound( "idle" );
+			sounds.loopSound( "idle", 0, true, 0.0f, 1.0f);
 			Gdx.app.log( name, "Starting Idle Sound" );
 		}
 	}
@@ -1546,16 +1545,13 @@ public class Entity implements GleedLoadable {
 			float linearVol = body.getLinearVelocity( ).len( ) * sounds.calculatePositionalVolume( "linear", soundPos, Camera.CAMERA_RECT );
 			Gdx.app.log( "Linear Sound Volume", Float.toString( linearVol ) );
 			if (linearVol > MIN_LINEAR){
-				sounds.setSoundVolume( "linear", linearVol );
-				sounds.playSound( "linear", MOVEMENT_SOUND_DELAY );	
+				sounds.playSound( "linear", sounds.randomSoundId( "linear" ), MOVEMENT_SOUND_DELAY , linearVol, 1.0f);	
 			}
 		}
 		if (sounds.hasSound( "angular" )){
 			float angularVol = Math.abs( body.getAngularVelocity( ) * Util.RAD_TO_DEG ) * sounds.calculatePositionalVolume( "angular", soundPos, Camera.CAMERA_RECT );
 			if (angularVol > MIN_ANGULAR){
-				sounds.setSoundVolume( "angular", angularVol );
-				sounds.playSound( "angular", MOVEMENT_SOUND_DELAY );				
-			}
+				sounds.playSound( "angular", sounds.randomSoundId( "angular" ), MOVEMENT_SOUND_DELAY , angularVol, 1.0f);			}
 		}
 	}
 }

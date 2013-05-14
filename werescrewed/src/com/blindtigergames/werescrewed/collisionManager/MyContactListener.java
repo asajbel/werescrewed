@@ -117,16 +117,14 @@ public class MyContactListener implements ContactListener {
 									//player.hitSolidObject( plat );
 									if ( player.getState( ) != PlayerState.Screwing ) {
 										if (!player.isGrounded( )){
-											player.sounds.setSoundVolume( "land", (float)Math.pow(force.len() * LAND_VOLUME, LAND_FALLOFF) );
-											player.sounds.playSound( "land" , LAND_DELAY);
+											player.sounds.playSound( "land" , player.sounds.randomSoundId("land"), LAND_DELAY, (float)Math.pow(force.len() * LAND_VOLUME, LAND_FALLOFF), 1.0f);
 										}
 										player.setGrounded( true );
 									}
 								} else {
 									if (playerFix.equals( player.topSensor ) && !plat.oneSided && painForce.len() > MINIMUM_HIT_FORCE){
-										player.sounds.setSoundVolume( "hit", painForce.len()/MAXIMUM_HIT_FORCE );
-										player.sounds.playSound( "hit", 0.5f );
-										player.sounds.setDelay( "hit", 0.5f );
+										player.sounds.playSound( "hit", player.sounds.randomSoundId("hit"), 0.5f , painForce.len()/MAXIMUM_HIT_FORCE , 1.0f);
+										player.sounds.setDelay( "hit", 3.0f );
 									}
 								}
 							}
@@ -549,8 +547,7 @@ public class MyContactListener implements ContactListener {
 																		Camera.CAMERA_RECT, 
 																			objectA.sounds.getRange(soundA, indexA), 
 																				COLLISION_SCREEN_FALLOFF );
-				objectA.sounds.setSoundVolume( soundA, vA);
-				objectA.sounds.playSound( soundA, indexA , COLLISION_SOUND_DELAY);
+				objectA.sounds.playSound( soundA, indexA , COLLISION_SOUND_DELAY, vA, 1.0f);
 			}
 			
 			//Play soundB
@@ -559,8 +556,7 @@ public class MyContactListener implements ContactListener {
 																		Camera.CAMERA_RECT, 
 																			objectB.sounds.getRange(soundB, indexB), 
 																				COLLISION_SCREEN_FALLOFF );
-				objectB.sounds.setSoundVolume( soundB, vB);
-				objectB.sounds.playSound( soundB, indexB , COLLISION_SOUND_DELAY);
+				objectB.sounds.playSound( soundB, indexB , COLLISION_SOUND_DELAY, vB, 1.0f);
 			}
 		}
 	}
