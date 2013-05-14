@@ -18,17 +18,20 @@ import com.blindtigergames.werescrewed.camera.Camera;
 import com.blindtigergames.werescrewed.entity.RobotState;
 import com.blindtigergames.werescrewed.entity.Skeleton;
 import com.blindtigergames.werescrewed.entity.action.CannonLaunchAction;
+import com.blindtigergames.werescrewed.entity.action.RotateTweenAction;
 import com.blindtigergames.werescrewed.entity.builders.EventTriggerBuilder;
 import com.blindtigergames.werescrewed.entity.builders.PlatformBuilder;
 import com.blindtigergames.werescrewed.entity.builders.PlayerBuilder;
 import com.blindtigergames.werescrewed.entity.builders.SkeletonBuilder;
 import com.blindtigergames.werescrewed.entity.hazard.Fire;
 import com.blindtigergames.werescrewed.entity.hazard.builders.HazardBuilder;
+import com.blindtigergames.werescrewed.entity.mover.AnalogRotateMover;
 import com.blindtigergames.werescrewed.entity.mover.IMover;
 import com.blindtigergames.werescrewed.entity.mover.RockingMover;
 import com.blindtigergames.werescrewed.entity.mover.RotateTweenMover;
 import com.blindtigergames.werescrewed.entity.mover.TargetImpulseMover;
 import com.blindtigergames.werescrewed.entity.mover.TimelineTweenMover;
+import com.blindtigergames.werescrewed.entity.platforms.Pipe;
 import com.blindtigergames.werescrewed.entity.platforms.Platform;
 import com.blindtigergames.werescrewed.entity.platforms.TiledPlatform;
 import com.blindtigergames.werescrewed.level.Level;
@@ -38,6 +41,7 @@ import com.blindtigergames.werescrewed.entity.screws.StructureScrew;
 import com.blindtigergames.werescrewed.entity.tween.PathBuilder;
 import com.blindtigergames.werescrewed.entity.tween.PlatformAccessor;
 import com.blindtigergames.werescrewed.eventTrigger.EventTrigger;
+import com.blindtigergames.werescrewed.eventTrigger.PowerSwitch;
 import com.blindtigergames.werescrewed.util.Util;
 
 public class DragonScreen extends Screen {
@@ -53,6 +57,8 @@ public class DragonScreen extends Screen {
 		
 		buildBalloon();
 		
+		initPuzzleScrews();
+		tail3Pipes();
 		
 		Skeleton balloon3CannonSkeleton = (Skeleton) LevelFactory.entities.get( "balloon3_cannon_skeleton" );
 		balloon3CannonSkeleton.setFgFade( false );
@@ -304,6 +310,57 @@ public class DragonScreen extends Screen {
 				.repeatable( )
 				.build( );
 		skel.addEventTrigger( et );
+		
+	}
+	
+	private void initPuzzleScrews(){
+		PuzzleScrew tail2PuzzleScrew1 = ( PuzzleScrew ) LevelFactory.entities
+				.get( "tail2_puzzle_screw1" );
+		PuzzleScrew tail2PuzzleScrew2 = ( PuzzleScrew ) LevelFactory.entities
+				.get( "tail2_puzzle_screw2" );
+		
+		// NOTE: this doesn't work correctly, it only works if you move one screw
+		// (which only turns one pipe), then screw the other which then turns both pipes
+
+		AnalogRotateMover anlgRot = new AnalogRotateMover( .6f, level.world );
+		
+		tail2PuzzleScrew1.puzzleManager.addMover( anlgRot );
+		tail2PuzzleScrew2.puzzleManager.addMover( anlgRot );
+		
+		tail2PuzzleScrew1.puzzleManager.addScrew( tail2PuzzleScrew2 );
+		tail2PuzzleScrew2.puzzleManager.addScrew( tail2PuzzleScrew1 );
+		
+	}
+	
+	private void tail3Pipes(){
+		
+		
+		Pipe tail3MiddlePipe1 = ( Pipe ) LevelFactory.entities
+		.get( "tail3_middle_pipe1" );
+		Pipe tail3MiddlePipe2 = ( Pipe ) LevelFactory.entities
+				.get( "tail3_middle_pipe2" );
+		
+		
+		//tail3MiddlePipe2.setLocalRot(  90f * Util.DEG_TO_RAD  );
+		
+		PowerSwitch tail3Switch1 = ( PowerSwitch ) LevelFactory.entities
+				.get( "tail3_switch1" );
+		PowerSwitch tail3Switch2 = ( PowerSwitch ) LevelFactory.entities
+				.get( "tail3_switch2" );
+
+		tail3Switch1.actOnEntity = true;
+		tail3Switch1.addEntityToTrigger( tail3MiddlePipe1 );
+		tail3Switch1.addEntityToTrigger( tail3MiddlePipe2 );
+		tail3Switch1
+				.addBeginIAction( new RotateTweenAction( Util.PI / 2 ) );
+		tail3Switch1.addEndIAction( new RotateTweenAction( 0 ) );
+
+		tail3Switch2.actOnEntity = true;
+		tail3Switch2.addEntityToTrigger( tail3MiddlePipe1 );
+		tail3Switch2.addEntityToTrigger( tail3MiddlePipe2 );
+		tail3Switch2
+				.addBeginIAction( new RotateTweenAction( Util.PI / 2 ) );
+		tail3Switch2.addEndIAction( new RotateTweenAction( 0 ) );
 		
 	}
 }

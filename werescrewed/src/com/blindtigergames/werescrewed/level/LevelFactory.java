@@ -1079,6 +1079,15 @@ public class LevelFactory {
 
 				p.puzzleManager.addEntity( attach );
 			}
+			
+			if ( item.props.containsKey( "controlthis2" ) ) {
+				String s = item.props.get( "controlthis2" );
+				Entity attach2 = entities.get( s );
+				Gdx.app.log( "LevelFactory", "attaching :" + attach2.name
+						+ " to puzzle screw" );
+
+				p.puzzleManager.addEntity( attach2 );
+			}
 
 			if ( item.props.containsKey( "jointto" ) ) {
 				String s = item.props.get( "jointto" );
@@ -1157,6 +1166,15 @@ public class LevelFactory {
 			Gdx.app.log( "LevelFactory", "Building stripped screw " + item.name
 					+ " at " + item.pos.toString( ) );
 			StrippedScrew s = builder.buildStrippedScrew( );
+			if ( item.props.containsKey( "jointto" ) ) {
+				String obj = item.props.get( "jointto" );
+				Entity plat = entities.get( obj );
+
+				s.addStructureJoint( plat );
+			} else {
+				s.addStructureJoint( parent );
+			}
+
 			entities.put( item.name, s );
 			out = s;
 			break;

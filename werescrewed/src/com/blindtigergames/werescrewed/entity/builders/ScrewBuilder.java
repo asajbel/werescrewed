@@ -1,6 +1,7 @@
 package com.blindtigergames.werescrewed.entity.builders;
 
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.World;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.Skeleton;
 import com.blindtigergames.werescrewed.entity.mover.LerpMover;
@@ -188,9 +189,14 @@ public class ScrewBuilder extends GenericEntityBuilder< ScrewBuilder > {
 		StrippedScrew out = null;
 		if (canBuild() && skeleton != null){
 			
-			out = new StrippedScrew(name, pos, skeleton, world, detachDirection);
-			//out = new StrippedScrew(name, pos, world);
-			//out.addWeldJoint( skeleton );
+			//out = new StrippedScrew(name, pos, skeleton, world, detachDirection);
+			out = new StrippedScrew( name, pos,  world);
+			if (skeleton != null){
+
+				skeleton.addScrewForDraw( out );
+
+			}
+
 			skeleton.addStrippedScrew( out );
 			
 			prepareEntity(out);
