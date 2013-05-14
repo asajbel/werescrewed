@@ -14,8 +14,8 @@ import com.badlogic.gdx.math.Vector3;
 
 public class Button {
 	
-	private static final Color NORMAL_COLOR = new Color(1f, 1f, 1f, 0.7f);
-	private static final Color HOVER_COLOR = new Color(0f, 128f, 255f, 1f);
+	protected static final Color NORMAL_COLOR = new Color( 0.24f, 0.24f, 0.24f, 1f );
+	protected static final Color HOVER_COLOR = new Color( 1f, 1f, 1f, 1f );
 
 	protected String caption = null;
 	protected BitmapFont font = null;
@@ -153,8 +153,15 @@ public class Button {
 		Vector3 cursorPosition = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
 		camera.unproject(cursorPosition);
 		boolean isIntersect = bounds.contains(cursorPosition.x, cursorPosition.y);
-		box.setPosition( x, y - height * 2 );
+		
+		box.setPosition( x - xPos, y - height * 2 - yPos );
+		if ( !scaled ) {
+			setScale( );
+		}
+		box.setSize( scaleX, scaleY );
+		box.setOrigin( box.getWidth( ) / 2, box.getHeight( ) / 2 );
 		box.draw( batch );
+		
 		font.setColor(colored ? HOVER_COLOR : NORMAL_COLOR);
 		font.draw(batch, caption, x - capWidth / 2 + width / 2 + 5, y - height - capHeight / 2 );
 		font.setColor(originalColor);

@@ -10,9 +10,6 @@ import com.badlogic.gdx.math.Vector3;
 
 public class OptionButton extends Button {
 	
-	private static final Color NORMAL_COLOR = new Color( 0.24f, 0.24f, 0.24f, 1f );
-	private static final Color HOVER_COLOR = new Color( 1f, 1f, 1f, 1f );
-	
 	private OptionControl control = null;
 
 	/**
@@ -84,5 +81,10 @@ public class OptionButton extends Button {
 			selected = false;
 			control.setActive( true );
 		}
+		
+		if ( colored )
+			control.setActive( true );
+		else
+			control.setActive( false );
 	}
 }
