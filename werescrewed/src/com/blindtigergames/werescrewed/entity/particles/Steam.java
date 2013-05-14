@@ -22,7 +22,7 @@ import com.blindtigergames.werescrewed.util.Util;
 
 public class Steam extends Platform{
 
-	public ParticleEffect particleEffect;
+	//public ParticleEffect particleEffect;
 	float width;
 	float height;
 	boolean started, tempCheckForCollision = true; //remove temp when the particles fit the size correctly;
@@ -46,13 +46,16 @@ public class Steam extends Platform{
 		width = pixelWidth;
 		height = pixelHeight;
 		this.world = world;
-		particleEffect = WereScrewedGame.manager.getParticleEffect( "fastSteam" );//ParticleEffect.loadEffect("steam");
-		particleEffect.setOffset(0f, -pixelHeight + 20);
-		particleEffect.setPosition( positionPixels.x, positionPixels.y);
+		//particleEffect = WereScrewedGame.manager.getParticleEffect( "fastSteam" );//ParticleEffect.loadEffect("steam");
+		//particleEffect.setOffset(0f, -pixelHeight + 20);
+		//particleEffect.setPosition( positionPixels.x, positionPixels.y);
+		
+		addFrontParticleEffect( "fastSteam", false, true ).setOffset( 0, -pixelHeight+20 );
+		//getEffect( "fastSteam" )
 		constructBody(positionPixels, pixelHeight, pixelWidth);
 		
 		this.active = true;
-		particleEffect.start( );
+		//particleEffect.start( );
 		started = true;
 		loadSounds();
 		postLoad();
@@ -66,22 +69,28 @@ public class Steam extends Platform{
 	 * @param deltaTime float
 	 */
 	public void draw( SpriteBatch batch, float deltaTime ) {
+		
 		if(this.active){
+			
 			if(!started){
-				particleEffect.start( );
+				getEffect( "fastSteam" ).start( );
+				//particleEffect.start( );
 				started = true;
 			}
-			particleEffect.setPosition( this.getPositionPixel( ).x, this.getPositionPixel().y);
-			particleEffect.setAngle( body.getAngle( ) );
-			particleEffect.draw( batch, deltaTime );
+			
+			//particleEffect.setPosition( this.getPositionPixel( ).x, this.getPositionPixel().y);
+			//particleEffect.setAngle( body.getAngle( ) );
+			//particleEffect.draw( batch, deltaTime );*/
 			
 		}else{
 			started = false;
-			particleEffect.allowCompletion( );
-			particleEffect.setPosition( this.getPositionPixel( ).x, this.getPositionPixel().y);
-			particleEffect.setAngle( body.getAngle( ) );
-			particleEffect.draw( batch, deltaTime );
+			getEffect( "fastSteam" ).allowCompletion( );
+			//particleEffect.allowCompletion( );
+			//particleEffect.setPosition( this.getPositionPixel( ).x, this.getPositionPixel().y);
+			//particleEffect.setAngle( body.getAngle( ) );
+			//particleEffect.draw( batch, deltaTime );
 		}
+		super.draw( batch, deltaTime );
 		
 	}
 	@Override

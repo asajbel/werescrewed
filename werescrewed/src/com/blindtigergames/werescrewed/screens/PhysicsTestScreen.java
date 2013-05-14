@@ -873,6 +873,9 @@ s.setFgFade( false );
 		rootSkeleton.addSkeleton( fireSkele );
 		fireSkele.setFgFade( false );
 		fireSkele.setMoverAtCurrentState( new RotateTweenMover( fireSkele ) );
+		
+		Steam s = new Steam( "steam", fireSkele.getPositionPixel( ).add(0,-100), 100, 100, world );
+		fireSkele.addSteam( s );
 	}
 
 }
