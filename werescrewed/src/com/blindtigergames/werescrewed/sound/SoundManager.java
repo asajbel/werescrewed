@@ -144,6 +144,12 @@ public class SoundManager {
 		}
 	}
 	
+	public float calculatePositionalVolume(String id, Vector2 soundPos, Rectangle cameraBox){
+		if (hasSound(id))
+			return calculatePositionalVolume(soundPos, cameraBox, sounds.get( id ).range, sounds.get(id).falloff);
+		return 0.0f;
+	}
+	
 	public static float calculatePositionalVolume(Vector2 soundPos, Rectangle cameraBox, float range, float falloff){
 		Vector2 camPos = new Vector2(
 				cameraBox.getX(),
@@ -293,8 +299,9 @@ public class SoundManager {
 		protected Array<Long> soundIds;
 		protected long loopId;
 		protected float volume;
+		protected float volumeRange;
 		protected float pitch;
-		protected float pitchVariance;
+		protected float pitchRange;
 		protected float pan;
 		protected float delay;
 		protected float range;
@@ -309,7 +316,9 @@ public class SoundManager {
 		
 		protected SoundRef(Sound s){
 			volume = 1.0f;
+			volumeRange = 0.0f;
 			pitch = 1.0f;
+			pitchRange = 0.0f;
 			pan = 0.0f;
 			delay = INITIAL_DELAY;
 			soundIds = new Array<Long>();

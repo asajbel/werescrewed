@@ -31,7 +31,8 @@
 /common/sounds/land.ogg
 /common/sounds/impactMaleDoh.ogg
 /common/sounds/impactMaleDoh2.ogg
-/common/sounds/impactFemaleOw.ogg
+/common/sounds/impactFemaleAh.ogg
+/common/sounds/impactFemaleOph.ogg
 /common/sounds/impactFemaleUgh.ogg
 #/common/sounds/WilhelmScream.ogg
 /common/sounds/steam.ogg

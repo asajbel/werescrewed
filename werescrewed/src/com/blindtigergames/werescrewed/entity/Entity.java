@@ -414,6 +414,7 @@ public class Entity implements GleedLoadable {
 				sounds.handleSoundPosition( "idle", this.getPositionPixel( ),
 						Camera.CAMERA_RECT );
 			}
+			handleMovementSounds( deltaTime );
 			sounds.update( deltaTime );
 		}
 	}
@@ -1534,5 +1535,27 @@ public class Entity implements GleedLoadable {
 	
 	public boolean hasDecals(){
 		return (fgDecals.size( ) > 0 || bgDecals.size( ) > 0);
+	}
+	
+	protected static final float MIN_LINEAR = 0.1f;
+	protected static final float MIN_ANGULAR = 1.0f;
+	protected static final float MOVEMENT_SOUND_DELAY = 0.05f;
+	public void handleMovementSounds( float dT ){
+		Vector2 soundPos = getPositionPixel();
+		if (sounds.hasSound( "linear" )){
+			float linearVol = body.getLinearVelocity( ).len( ) * sounds.calculatePositionalVolume( "linear", soundPos, Camera.CAMERA_RECT );
+			Gdx.app.log( "Linear Sound Volume", Float.toString( linearVol ) );
+			if (linearVol > MIN_LINEAR){
+				sounds.setSoundVolume( "linear", linearVol );
+				sounds.playSound( "linear", MOVEMENT_SOUND_DELAY );	
+			}
+		}
+		if (sounds.hasSound( "angular" )){
+			float angularVol = Math.abs( body.getAngularVelocity( ) * Util.RAD_TO_DEG ) * sounds.calculatePositionalVolume( "angular", soundPos, Camera.CAMERA_RECT );
+			if (angularVol > MIN_ANGULAR){
+				sounds.setSoundVolume( "angular", angularVol );
+				sounds.playSound( "angular", MOVEMENT_SOUND_DELAY );				
+			}
+		}
 	}
 }

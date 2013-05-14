@@ -29,5 +29,6 @@
 	<sound>footstep2:/common/sounds/footstep2F.ogg</sound>
 	<sound>land:/common/sounds/land.ogg</sound>
 	<sound>hit:/common/sounds/impactFemaleUgh.ogg</sound>
-	<sound>hit:/common/sounds/impactFemaleOw.ogg</sound>
+	<sound>hit:/common/sounds/impactFemaleOph.ogg</sound>
+	<sound>hit:/common/sounds/impactFemaleAh.ogg</sound>
 </entity>
