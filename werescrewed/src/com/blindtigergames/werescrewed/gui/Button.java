@@ -29,6 +29,11 @@ public class Button {
 	protected boolean selected = false;
 	protected boolean colored = false;
 	protected Sprite box = null;
+	protected boolean scaled = false; //Used to tell when button has hit appropriate size
+	protected int scaleX = width; //Used for scaling sprite
+	protected int scaleY = height;
+	protected float xPos = 0.0f;
+	protected float yPos = 0.0f;
 
 	/**
 	 * makes a new button instance
@@ -131,6 +136,7 @@ public class Button {
 	 */
 	public void setColored( boolean value ){
 		colored = value;
+		scaled = false;
 	}
 	
 	/**
@@ -153,6 +159,27 @@ public class Button {
 		font.draw(batch, caption, x - capWidth / 2 + width / 2 + 5, y - height - capHeight / 2 );
 		font.setColor(originalColor);
 		
+	}
+	
+	protected void setScale( ) {
+		if ( colored ) {
+			scaleX++;
+			scaleY++;
+			xPos += 0.5f;
+			yPos += 0.5f;
+			if ( scaleX >= ( width + 30 ) && scaleY >= ( height + 30 ) ) {
+				scaled = true;
+			}
+		}
+		else {
+			scaleX--;
+			scaleY--;
+			xPos -= 0.5f;
+			yPos -= 0.5f;
+			if ( scaleX <= ( width ) && scaleY <= ( height ) ) {
+				scaled = true;
+			}
+		}
 	}
 	
 	protected void calculateDimensions() {
