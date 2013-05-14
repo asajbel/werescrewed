@@ -27,7 +27,7 @@ class OptionsScreen extends Screen {
 	private SpriteBatch batch = null;
 	private BitmapFont font = null;
 	private BitmapFont fancyFont = null;
-	private Texture menuBG = null;
+	private Sprite menuBG = null;
 	private Sprite transition = null;
 	private int lineHeight = 0;
 	private final int VOLUME_MAX = 100;
@@ -40,21 +40,13 @@ class OptionsScreen extends Screen {
 	private Slider soundSlider = null;
 	private Slider voiceSlider = null;
 	private CheckBox subBox = null;
-	private TextButton controls = null;
+	private Button controls = null;
 	private OptionButton music = null;
 	private OptionButton sound = null;
 	private OptionButton voice = null;
 	private OptionButton subtitles = null;
 	private TextButton creditsButton = null;
 	private TextButton backButton = null;
-	
-	private int buttonIndex = 0;
-	private ArrayList< Button > Buttons;
-	private Controller controller1;
-	private Controller controller2;
-	private MyControllerListener controllerListener;
-	private int controllerTimer = 10;
-	private int controllerMax = 10;
 	
 	/* Things needed...
 	 * Controls: Shows a visual map of the controls depending on what inputs are being used.
@@ -78,7 +70,6 @@ class OptionsScreen extends Screen {
 		//the following are placeholder displays. Add actual option buttons here later
 		screenLabel = new Label("OPTIONS", fancyFont);
 		
-		ControllerSetUp( );
 		loadButtons( );
 	}
 
@@ -119,48 +110,6 @@ class OptionsScreen extends Screen {
 		transition.draw( batch, alpha );
 		
 		batch.end( );
-		
-		if ( controllerTimer > 0 ) {
-			controllerTimer--;
-		} else {
-			if(controller1 != null || controller2 != null 
-					|| (controller1 == null && controller2 == null)){
-				if ( controllerListener.jumpPressed( )
-						|| Gdx.input.isKeyPressed( Keys.ENTER ) ) {
-					Buttons.get( buttonIndex ).setSelected( true );
-					controllerTimer = controllerMax;
-				} else if ( controllerListener.downPressed( )
-						|| Gdx.input.isKeyPressed( Keys.DOWN ) ) {
-					Buttons.get( buttonIndex ).setColored( false );
-					buttonIndex++;
-					buttonIndex = buttonIndex % Buttons.size( );
-					Buttons.get( buttonIndex ).setColored( true );
-					controllerTimer = controllerMax;
-				} else if ( controllerListener.upPressed( )
-						|| Gdx.input.isKeyPressed( Keys.UP ) ) {
-					Buttons.get( buttonIndex ).setColored( false );
-					if ( buttonIndex == 0 ) {
-						buttonIndex = Buttons.size( ) - 1;
-					} else {
-						buttonIndex--;
-					}
-					Buttons.get( buttonIndex ).setColored( true );
-					controllerTimer = controllerMax;
-				} if ( Buttons.get( buttonIndex ) instanceof OptionButton ) {
-					OptionButton option = ( OptionButton ) Buttons.get( buttonIndex );
-					if ( option.getOption( ) instanceof Slider ) {
-						Slider slider = ( Slider ) option.getOption( );
-						if ( Gdx.input.isKeyPressed( Keys.LEFT ) && slider.isActive( ) ) {
-							slider.moveLeft( );
-							controllerTimer = controllerMax;
-						} else if ( Gdx.input.isKeyPressed( Keys.RIGHT ) &&  slider.isActive( ) ) {
-							slider.moveRight( );
-							controllerTimer = controllerMax;
-						}
-					}
-				}
-			}
-		}
 	}
 
 	@Override
@@ -213,25 +162,12 @@ class OptionsScreen extends Screen {
 		
 	}
 	
-	private void ControllerSetUp( ) {
-		controllerListener = new MyControllerListener( );
-		if ( Controllers.getControllers( ).size > 0 ) {
-			controller1 = Controllers.getControllers( ).get( 0 );
-			controller1.addListener( controllerListener );
-		}
-		if ( Controllers.getControllers( ).size > 1 ) {
-			controller2 = Controllers.getControllers( ).get( 1 );
-			controller2.addListener( controllerListener );
-		}
-	}
-	
 	private void loadButtons( ) {
 		musicSlider = new Slider ( VOLUME_MIN, VOLUME_MAX, VOLUME_MAX / 2 );
 		soundSlider = new Slider ( VOLUME_MIN, VOLUME_MAX, VOLUME_MAX / 2 );
 		voiceSlider = new Slider ( VOLUME_MIN, VOLUME_MAX, VOLUME_MAX / 2 );
 		subBox = new CheckBox ( 0, 1, 0 );
-		controls = new TextButton( "Controls", fancyFont, 
-				null);
+		controls = new Button( "Controls", fancyFont );
 		music = new OptionButton( "Music", fancyFont, 
 				musicSlider );
 		sound = new OptionButton( "Sound", fancyFont, 

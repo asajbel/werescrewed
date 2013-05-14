@@ -24,7 +24,7 @@ class MainMenuScreen extends Screen {
 	private Sprite transition = null;
 	private OrthographicCamera camera = null;
 	private BitmapFont font = null;
-	BitmapFont fancyFont;
+	private BitmapFont fancyFont;
 	private Label headingLabel = null;
 	private TextButton exitButton = null;
 	private int lineHeight = 0;
