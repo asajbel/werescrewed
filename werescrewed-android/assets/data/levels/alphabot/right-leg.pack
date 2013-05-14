@@ -1,0 +1,19 @@
+right-leg.png
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+offset: 0, 0
+right-leg-top
+  rotate: false
+  xy: 3, 3
+  size: 836, 983
+  orig: 836, 983
+  offset: 0, 0
+  index: -1
+right-leg-knee
+  rotate: false
+  xy: 3, 990
+  size: 752, 815
+  orig: 752, 815
+  offset: 0, 0
+  index: -1

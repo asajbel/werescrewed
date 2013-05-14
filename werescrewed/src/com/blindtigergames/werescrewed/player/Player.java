@@ -564,10 +564,10 @@ public class Player extends Entity {
 		}
 		prevPlayerDir = playerDirection;
 		if(name == "player1"){
-			Gdx.app.log( "\nright: ", "" + rightCrush );
-			Gdx.app.log("left: ", "" + leftCrush );
-			Gdx.app.log( "top: ", "" + topCrush);
-			Gdx.app.log( "bottom: ", "" + botCrush );
+			//Gdx.app.log( "\nright: ", "" + rightCrush );
+			//Gdx.app.log("left: ", "" + leftCrush );
+			//Gdx.app.log( "top: ", "" + topCrush);
+			//Gdx.app.log( "bottom: ", "" + botCrush );
 		}
 	}
 
