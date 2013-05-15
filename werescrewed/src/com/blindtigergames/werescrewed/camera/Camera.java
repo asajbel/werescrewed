@@ -36,8 +36,8 @@ public class Camera {
 	/**
 	 * Time to get to ideal camera position/zoom per hundred pixels of distance
 	 */
-	private static final float TIME_PER_PIX = .06f;
-	private static final float TIME_PER_ZOOM = 60;
+	private static final float TIME_PER_PIX = .04f;
+	private static final float TIME_PER_ZOOM = 40;
 	private float timeLeft;
 
 	// private float accelerationBuffer;
@@ -49,7 +49,7 @@ public class Camera {
 	// zoom
 	private static final float ZOOM_SIG_DIFF = 0.005f;
 	public static final float MIN_ZOOM = 1f;
-	public static final float MAX_ZOOM = 4f;
+	public static final float MAX_ZOOM = 8f;
 	public static final float SCREEN_TO_ZOOM = 1468.6f;
 	/**
 	 * The ratio of the total distance traveled for the camera to start slowing

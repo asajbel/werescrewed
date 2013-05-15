@@ -5,6 +5,7 @@ import java.util.Random;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Application.ApplicationType;
+import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.Controllers;
@@ -30,6 +31,9 @@ public class WereScrewedGame extends Game {
 	
 	private boolean restartFlag = false;
 	private boolean metricsFlag = false;
+	
+	private static boolean mouseJustClicked = false;
+	public static boolean isMouseClicked(){return mouseJustClicked;}
 	
 	public static ShaderProgram defaultShader;
 	
@@ -115,6 +119,11 @@ public class WereScrewedGame extends Game {
 //			super.render( );
 //		}
 		
+		if (Gdx.input.isTouched() || Gdx.input.isButtonPressed(Buttons.LEFT)){
+			mouseJustClicked = true;
+		} else {
+			mouseJustClicked = false;
+		}
 		return;
 		
 	}

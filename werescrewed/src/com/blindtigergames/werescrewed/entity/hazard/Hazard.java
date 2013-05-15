@@ -71,7 +71,6 @@ public class Hazard extends Platform {
 	 */
 	public void setActiveHazard ( boolean state ) {
 		this.activeHazard = state;
-		Gdx.app.log( "State changed", " " + activeHazard );
 	}
 	
 	public void constructBody( Vector2 position, float width, float height ) {

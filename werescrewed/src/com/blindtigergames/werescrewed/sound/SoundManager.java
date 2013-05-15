@@ -65,6 +65,10 @@ public class SoundManager {
 		return null;
 	}
 	
+	public int randomSoundId(String tag){
+		return WereScrewedGame.random.nextInt( sounds.getAll( tag ).size );
+	}
+	
 	public boolean hasSound(String tag){
 		return sounds.containsKey( tag );
 	}
@@ -79,33 +83,33 @@ public class SoundManager {
 
 	public void playSound( String id ){ 
 		if (hasSound(id)){
-			int index = WereScrewedGame.random.nextInt( sounds.getAll( id ).size );
 			//Gdx.app.log( "SoundManager", "Playing sound "+ index +" out of "+sounds.getAll( id ).size +"." );
-			playSound(id, index, 0f); 
+			playSound(id, randomSoundId(id), 0f, 1f, 1f); 
 		}
 	}
+	
 	public void playSound( String id , float delay){
 		if (hasSound(id)){
 			int index = WereScrewedGame.random.nextInt( sounds.getAll( id ).size );
 			//Gdx.app.log( "SoundManager", "Playing sound "+ index +" out of "+sounds.getAll( id ).size +"." );
-			playSound(id, index, delay); 
+			playSound(id, index, delay, 1f, 1f); 
 		}
 	}
 	
-	public void playSound( String id, int index, float delay ) {
+	public void playSound( String id, int index, float delay , float extVol, float extPitch) {
 		if (hasSound(id , index)) {
-			sounds.get( id, index ).play( delay );
+			sounds.get( id, index ).play( delay, extVol, extPitch );
 		} else {
 			Gdx.app.log( "SoundManager", "No sound loaded for tag: "+id+"/"+index );
 		}
 	}
 
-	public void loopSound( String id ){ loopSound(id, 0, true); }
-	public void loopSound( String id , int index){ loopSound(id, index, true); }
+	public void loopSound( String id ){ loopSound(id, 0, true, 1.0f, 1.0f); }
+	public void loopSound( String id , int index){ loopSound(id, index, true, 1.0f, 1.0f); }
 	
-	public void loopSound( String id , int index, boolean override) {
+	public void loopSound( String id , int index, boolean override, float extVol, float extPitch) {
 		if (hasSound(id, index)) {
-			sounds.get( id ).loop( override );
+			sounds.get( id ).loop( override , extVol, extPitch);
 		}
 	}
 
@@ -132,6 +136,12 @@ public class SoundManager {
 		}
 	}
 	
+	public void setSoundInternalVolume(String id, float v){
+		if (hasSound(id)){
+			sounds.get(id).setInternalVolume( v );
+		}
+	}
+	
 	public void handleSoundPosition(String id, Vector2 soundPos, Rectangle cameraBox){
 		if (hasSound(id)){
 			float xPan = calculatePositionalPan(soundPos, cameraBox);
@@ -142,6 +152,12 @@ public class SoundManager {
 			//Gdx.app.log( "Handle Sound Position", "Pan:"+xPan+" Vol:"+vol );
 			sounds.get( id ).update(0.0f);
 		}
+	}
+	
+	public float calculatePositionalVolume(String id, Vector2 soundPos, Rectangle cameraBox){
+		if (hasSound(id))
+			return calculatePositionalVolume(soundPos, cameraBox, sounds.get( id ).range, sounds.get(id).falloff);
+		return 0.0f;
 	}
 	
 	public static float calculatePositionalVolume(Vector2 soundPos, Rectangle cameraBox, float range, float falloff){
@@ -185,9 +201,16 @@ public class SoundManager {
 	
 	public void setSoundPitch(String id, float v){
 		if (hasSound(id)){
-			sounds.get(id).pitch = v;
+			sounds.get(id).setPitch( v );
 		}
 	}
+	
+	public void setSoundInternalPitch(String id, float v){
+		if (hasSound(id)){
+			sounds.get(id).setInternalPitch( v );
+		}
+	}
+	
 	public void setSoundPan(String id, float v){
 		if (hasSound(id)){
 			sounds.get(id).pan = v;
@@ -207,7 +230,13 @@ public class SoundManager {
 			}
 		}
 	}
-	
+	public void dispose(){
+		for (Array<SoundRef> refs : sounds.arrays( )){
+			for (SoundRef ref: refs){
+				ref.stop( );
+			}
+		}
+	}
 	public float getDelay(String id){
 		if (hasSound(id)){
 			return sounds.get(id).delay;
@@ -287,13 +316,14 @@ public class SoundManager {
 		protected Array<Long> soundIds;
 		protected long loopId;
 		protected float volume;
+		protected float volumeRange;
 		protected float pitch;
-		protected float pitchVariance;
+		protected float pitchRange;
 		protected float pan;
 		protected float delay;
 		protected float range;
 		protected float falloff;
-		
+		protected Vector2 offset;
 		protected static final float DELAY_MINIMUM = 0.0001f;
 		/*
 		 * Puts an initial delay on all sounds when they're first loaded.
@@ -303,7 +333,9 @@ public class SoundManager {
 		
 		protected SoundRef(Sound s){
 			volume = 1.0f;
+			volumeRange = 0.0f;
 			pitch = 1.0f;
+			pitchRange = 0.0f;
 			pan = 0.0f;
 			delay = INITIAL_DELAY;
 			soundIds = new Array<Long>();
@@ -313,23 +345,27 @@ public class SoundManager {
 			falloff = 2.0f;
 		}
 		
-		protected long play( float delayAmount){
+		protected long play( float delayAmount, float extVol, float extPitch){
 			long id = -1;
 			if (delay < DELAY_MINIMUM){
-				id = sound.play( getSoundVolume() * volume, pitch, pan);
+				float finalVol = Math.max( Math.min(getSoundVolume() * volume * extVol, 1.0f) , 0.0f);
+				float finalPitch = pitch * extPitch;
+				id = sound.play( finalVol, finalPitch, pan);
 				soundIds.add( id );
 				delay += delayAmount;
 			}
 			return id;
 		}
 		
-		protected long loop( boolean override ){
+		protected long loop( boolean override , float extVol, float extPitch){
 			if (override && loopId >= 0){
 				sound.stop(loopId);
-				loopId = sound.loop( getNoiseVolume() * volume);
+				loopId = sound.loop( getNoiseVolume() * volume * extVol);
 			} else if (loopId < 0){
-				loopId = sound.loop( getNoiseVolume() * volume);
+				loopId = sound.loop( getNoiseVolume() * volume * extVol);
 			}
+			setVolume(extVol);
+			setPitch(extPitch);
 			return loopId;
 		}
 		
@@ -340,11 +376,6 @@ public class SoundManager {
 		}
 		
 		protected void update( float dT ){
-			if (loopId >= 0){
-				sound.setVolume( loopId, getNoiseVolume() * volume );
-				sound.setPitch( loopId, pitch );
-				sound.setPan( loopId, pan, volume );
-			}
 			delay = (float)(Math.max( delay - dT, 0.0f ));
 		}
 		
@@ -352,12 +383,24 @@ public class SoundManager {
 			return sound;
 		}
 
-		public void setVolume( float value ) {
+		public void setInternalVolume( float value ) {
 			volume = Math.min( Math.max(value, 0.0f), 1.0f );
 		}
+		
+		public void setVolume( float extVol ){
+			if (loopId >= 0){
+				sound.setVolume( loopId, getNoiseVolume() * volume * extVol);
+			}
+		}
 
-		public void setPitch( float value ) {
+		public void setInternalPitch( float value ) {
 			pitch = value;
+		}
+
+		public void setPitch( float extPitch ){
+			if (loopId >= 0){
+				sound.setPitch( loopId, pitch * extPitch);
+			}
 		}
 
 		public void setPan( float value ) {
@@ -373,5 +416,4 @@ public class SoundManager {
 		}
 
 	}
-
 }

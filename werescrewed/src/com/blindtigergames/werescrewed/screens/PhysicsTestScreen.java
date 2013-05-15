@@ -39,11 +39,14 @@ import com.blindtigergames.werescrewed.entity.builders.EventTriggerBuilder;
 import com.blindtigergames.werescrewed.entity.builders.PlatformBuilder;
 import com.blindtigergames.werescrewed.entity.builders.PlayerBuilder;
 import com.blindtigergames.werescrewed.entity.builders.SkeletonBuilder;
+import com.blindtigergames.werescrewed.entity.hazard.Fire;
+import com.blindtigergames.werescrewed.entity.hazard.builders.HazardBuilder;
 import com.blindtigergames.werescrewed.entity.mover.LerpMover;
 import com.blindtigergames.werescrewed.entity.mover.LinearAxis;
 import com.blindtigergames.werescrewed.entity.mover.PistonTweenMover;
 import com.blindtigergames.werescrewed.entity.mover.PuzzleType;
 import com.blindtigergames.werescrewed.entity.mover.RotateByDegree;
+import com.blindtigergames.werescrewed.entity.mover.RotateTweenMover;
 import com.blindtigergames.werescrewed.entity.mover.SlidingMotorMover;
 import com.blindtigergames.werescrewed.entity.mover.puzzle.PuzzlePistonTweenMover;
 import com.blindtigergames.werescrewed.entity.mover.puzzle.PuzzleRotateTweenMover;
@@ -142,6 +145,8 @@ public class PhysicsTestScreen extends Screen {
 
 		PowerSwitch pswitch = new PowerSwitch("pwsstsf", new Vector2( 512, 200 ), world);
 		rootSkeleton.addEventTrigger( pswitch );
+		
+		createFire();	
 	}
 	
 	//width & height in pixels
@@ -339,7 +344,7 @@ public class PhysicsTestScreen extends Screen {
 
 		s = new Skeleton( "skeleton7", new Vector2( -700, 700 ), null, world,
 				BodyType.KinematicBody );
-s.setFgFade( false );
+		s.setFgFade( false );
 		TiledPlatform ttt = platBuilder.name( "ttt" ).kinematic( )
 				.position( -700, 1000 ).dimensions( 1, 5 ).oneSided( false )
 				.buildTilePlatform( );
@@ -859,6 +864,18 @@ s.setFgFade( false );
 				world.destroyJoint( joint );
 		}
 
+	}
+	
+	private void createFire(){
+		Skeleton fireSkele = new SkeletonBuilder( world ).name( "fireSkeleton" ).position( 100,200 ).build( );
+		Fire f = new Fire( "fire", fireSkele.getPositionPixel( ).add(0,100), 100, 200, world, true );
+		fireSkele.addHazard( f );
+		rootSkeleton.addSkeleton( fireSkele );
+		fireSkele.setFgFade( false );
+		fireSkele.setMoverAtCurrentState( new RotateTweenMover( fireSkele ) );
+		
+		Steam s = new Steam( "steam", fireSkele.getPositionPixel( ).add(0,-100), 100, 100, world );
+		fireSkele.addSteam( s );
 	}
 
 }

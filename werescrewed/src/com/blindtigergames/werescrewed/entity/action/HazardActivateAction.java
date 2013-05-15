@@ -15,11 +15,11 @@ public class HazardActivateAction implements IAction{
 
 	@Override
 	public void act( Entity entity ) {
-		//THIS CHECK EXISTS SO WE DONT CAST THINGS INTO WRONG THINGS
+		
 		if(entity.getEntityType( ) == EntityType.HAZARD){
 			Hazard h = (Hazard) entity;
 			h.setActive( true );
-			//Code will change as hazards grow
+			
 		}
 		
 	}

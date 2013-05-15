@@ -14,7 +14,6 @@ public class ScreenSwitchHandler implements ButtonHandler {
 
 	@Override
 	public void onClick( ) {
-	
 		ScreenManager.getInstance( ).show( screen );
 	}
 

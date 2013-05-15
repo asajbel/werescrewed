@@ -13,6 +13,7 @@ public class OptionControl {
 	protected int curValue = 0;
 	protected int x = 0;
 	protected int y = 0;
+	protected float alpha = 1.0f;
 	protected boolean activated = false;
 	
 	protected static Texture tex = null;

@@ -10,9 +10,6 @@ import com.badlogic.gdx.math.Vector3;
 
 public class OptionButton extends Button {
 	
-	private static final Color NORMAL_COLOR = new Color(1f, 1f, 1f, 0.7f);
-	private static final Color HOVER_COLOR = new Color(0f, 128f, 255f, 1f);
-	
 	private OptionControl control = null;
 
 	/**
@@ -31,7 +28,7 @@ public class OptionButton extends Button {
 		this.x = x;
 		this.y = y;
 		this.control = control;
-		calculateDimensions( );
+		//calculateDimensions( );
 	}
 	
 	/**
@@ -48,13 +45,13 @@ public class OptionButton extends Button {
 	public void setX(int x) {
 		this.x = x;
 		bounds.x = x;
-		control.setX( x + 200 );
+		control.setX( x * 4 );
 	}
 	@Override
 	public void setY(int y) {
 		this.y = y;
-		bounds.y = y - height;
-		control.setY( y - height );
+		bounds.y = y - height * 2;
+		control.setY( y - height * 2  + 20 );
 	}
 	
 	public OptionControl getOption ( ) {
@@ -66,13 +63,28 @@ public class OptionButton extends Button {
 		Vector3 cursorPosition = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
 		camera.unproject(cursorPosition);
 		boolean isIntersect = bounds.contains(cursorPosition.x, cursorPosition.y);
+		
+		box.setPosition( x - xPos, y - height * 2 - yPos );
+		if ( !scaled ) {
+			setScale( );
+		}
+		box.setSize( scaleX, scaleY );
+		box.setOrigin( box.getWidth( ) / 2, box.getHeight( ) / 2 );
+		box.draw( batch );
+		
 		font.setColor(colored ? HOVER_COLOR : NORMAL_COLOR);
-		font.draw(batch, caption, x, y);
+		font.draw(batch, caption, x - capWidth / 2 + width / 2 + 5, y - height - capHeight / 2 );
 		font.setColor(originalColor);
+		
 		control.draw( batch );
 		if ((isIntersect && (Gdx.input.isTouched() || Gdx.input.isButtonPressed(Buttons.LEFT))) || selected) {
 			selected = false;
 			control.setActive( true );
 		}
+		
+		if ( colored )
+			control.setActive( true );
+		else
+			control.setActive( false );
 	}
 }

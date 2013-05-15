@@ -261,6 +261,9 @@ public class Screw extends Entity {
 		return depth;
 	}
 
+	public void setDepth(int d){
+		this.depth = d;
+	}
 	/**
 	 * public access to get max depth of a screw
 	 * 

@@ -213,7 +213,7 @@ public class Level {
 						&& ( !skel.isFadingSkel( ) || skel.isFGFaded( ) ) ) {
 					skel.bgSprite.draw( batch );
 				}
-				if ( !skel.isFadingSkel( ) || skel.isFGFaded( ) ) {
+				if ( skel.isUpdatable( ) ) {
 					skel.drawBGDecals( batch, camera );
 				}
 			}
@@ -221,8 +221,8 @@ public class Level {
 		for ( Entity e : entityBGList ) {
 			if ( e.isActive( )
 					&& ( e.getParentSkeleton( ) == null
-							|| !e.getParentSkeleton( ).isFadingSkel( ) || e
-							.getParentSkeleton( ).isFGFaded( ) ) ) {
+							|| ( e.getParentSkeleton( ).isUpdatable( ) && !e
+							.getParentSkeleton( ).getWasInactive( ) ) ) ) {
 				{
 					e.drawBGDecals( batch, camera );
 				}
@@ -232,9 +232,9 @@ public class Level {
 
 	private void drawFGStuff( SpriteBatch batch ) {
 		for ( Entity e : entityFGList ) {
-			if ( e.getParentSkeleton( ) == null
-					|| !e.getParentSkeleton( ).isFadingSkel( ) || e
-					.getParentSkeleton( ).isFGFaded( ) ) {
+			if ( e.getParentSkeleton( ) == null     
+					|| ( e.getParentSkeleton( ).isUpdatable( )
+					&& !e.getParentSkeleton( ).getWasInactive( ) ) ) {
 				e.drawFGDecals( batch, camera );
 			}
 		}
@@ -242,7 +242,7 @@ public class Level {
 			if ( skel.fgSprite != null && skel.fgSprite.getAlpha( ) != 0 ) {
 				skel.fgSprite.draw( batch );
 			}
-			// if ( !skel.isActive( ) )
+			//if ( !skel.isUpdatable( ) )
 			{
 				skel.drawFGDecals( batch, camera );
 			}

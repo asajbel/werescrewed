@@ -10,6 +10,7 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.World;
 import com.blindtigergames.werescrewed.WereScrewedGame;
+import com.blindtigergames.werescrewed.camera.Camera;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityType;
 import com.blindtigergames.werescrewed.entity.platforms.Platform;
@@ -48,6 +49,9 @@ public class Steam extends Platform{
 		particleEffect = WereScrewedGame.manager.getParticleEffect( "fastSteam" );//ParticleEffect.loadEffect("steam");
 		particleEffect.setOffset(0f, -pixelHeight + 20);
 		particleEffect.setPosition( positionPixels.x, positionPixels.y);
+		
+		//addFrontParticleEffect( "fastSteam", false, true ).setOffset( 0, -pixelHeight+20 );
+		//getEffect( "fastSteam" )
 		constructBody(positionPixels, pixelHeight, pixelWidth);
 		
 		this.active = true;
@@ -65,32 +69,34 @@ public class Steam extends Platform{
 	 * @param deltaTime float
 	 */
 	public void draw( SpriteBatch batch, float deltaTime ) {
+		
 		if(this.active){
+
 			if(!started){
+				//getEffect( "fastSteam" ).start( );
 				particleEffect.start( );
 				started = true;
 			}
+
 			particleEffect.setPosition( this.getPositionPixel( ).x, this.getPositionPixel().y);
 			particleEffect.setAngle( body.getAngle( ) );
 			particleEffect.draw( batch, deltaTime );
-			
+
 		}else{
 			started = false;
+			//getEffect( "fastSteam" ).allowCompletion( );
 			particleEffect.allowCompletion( );
 			particleEffect.setPosition( this.getPositionPixel( ).x, this.getPositionPixel().y);
 			particleEffect.setAngle( body.getAngle( ) );
 			particleEffect.draw( batch, deltaTime );
 		}
+		super.draw( batch, deltaTime );
 		
 	}
 	@Override
 	public void update( float dT){
 		super.update( dT );
-		if (isActive()){
-			sounds.loopSound( "idle", 0, false );
-		} else {
-			sounds.stopSound( "idle" );
-		}
+		sounds.setSoundVolume( "idle", isActive()? sounds.calculatePositionalVolume( "idle", getPositionPixel(), Camera.CAMERA_RECT ):0f );
 	}
 	
 	/**

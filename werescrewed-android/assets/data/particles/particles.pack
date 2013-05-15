@@ -12,30 +12,37 @@ cloud1
   index: -1
 doof
   rotate: false
-  xy: 2, 121
+  xy: 313, 2
   size: 128, 64
   orig: 64, 32
   offset: 0, 0
   index: -1
 spark
   rotate: false
-  xy: 232, 187
+  xy: 68, 407
   size: 8, 92
   orig: 4, 46
   offset: 0, 0
   index: -1
 screw
   rotate: false
-  xy: 166, 187
+  xy: 2, 407
   size: 64, 64
   orig: 32, 32
   offset: 0, 0
   index: -1
+flame
+  rotate: false
+  xy: 2, 68
+  size: 333, 337
+  orig: 166, 168
+  offset: 0, 0
+  index: -1
 oof
   rotate: false
-  xy: 2, 187
+  xy: 337, 68
   size: 128, 64
-  orig: 61, 32
+  orig: 64, 32
   offset: 0, 0
   index: -1
 arg
@@ -47,21 +54,21 @@ arg
   index: -1
 cloud2
   rotate: false
-  xy: 2, 68
+  xy: 184, 2
   size: 77, 51
   orig: 38, 25
   offset: 0, 0
   index: -1
 particle
   rotate: false
-  xy: 132, 187
+  xy: 467, 68
   size: 32, 32
   orig: 16, 16
   offset: 0, 0
   index: -1
 cloud3
   rotate: false
-  xy: 81, 68
+  xy: 263, 2
   size: 48, 39
   orig: 24, 19
   offset: 0, 0

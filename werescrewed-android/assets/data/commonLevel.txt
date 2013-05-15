@@ -13,6 +13,7 @@
 ##sounds
 #/common/sounds/inceptionbutton.mp3
 /common/sounds/jump.ogg
+/common/sounds/jumpMale2.ogg
 /common/sounds/deathMaleGah.ogg
 /common/sounds/deathMaleUgh.ogg
 /common/sounds/deathMaleOw.ogg
@@ -20,13 +21,19 @@
 /common/sounds/deathFemaleUeh.ogg
 /common/sounds/deathFemaleOoh.ogg
 /common/sounds/jumpFemale.ogg
+/common/sounds/jumpFemale2.ogg
 /common/sounds/footstep1.ogg
 /common/sounds/footstep2.ogg
+/common/sounds/footstep1F.ogg
+/common/sounds/footstep2F.ogg
 /common/sounds/screwing.ogg
 /common/sounds/unscrewing.ogg
 /common/sounds/land.ogg
 /common/sounds/impactMaleDoh.ogg
 /common/sounds/impactMaleDoh2.ogg
+/common/sounds/impactFemaleAh.ogg
+/common/sounds/impactFemaleOph.ogg
+/common/sounds/impactFemaleUgh.ogg
 #/common/sounds/WilhelmScream.ogg
 /common/sounds/steam.ogg
 #/common/sounds/TrainJob.mp3
@@ -109,6 +116,14 @@ injured/doof.p
 injured/oof.p
 fastSteam.p
 slowSteam.p
+fire.p
+
+##menu assets
+/menu/menu.png
+/menu/button.png
+/menu/screw.png
+/menu/slider.png
+/menu/transition.png
 
 ##temp background
 /common/menu_placeholder.png
@@ -125,3 +140,13 @@ grey.palette
 /common/tutorial/placeholderTut.png
 
 /common/title_background.png
+
+/common/tutorial/dubba0.png
+/common/tutorial/dubba1.png
+/common/tutorial/dubba2.png
+/common/tutorial/move_jump0.png
+/common/tutorial/move_jump1.png
+/common/tutorial/screw0.png
+/common/tutorial/screw1.png
+/common/tutorial/switch0.png
+/common/tutorial/switch1.png
