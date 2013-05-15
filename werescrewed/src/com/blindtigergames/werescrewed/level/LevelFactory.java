@@ -1249,7 +1249,7 @@ public class LevelFactory {
 				String thisthing = item.props.get( "ropetargetrev" );
 				Link target = ( Link ) entities.get( thisthing );
 
-				 target.body.setTransform( ss.getPosition( ),
+				 target.body.setTransform( ss.getPosition( ).add( 0, target.getHeight( )/2 * Util.PIXEL_TO_BOX ),
 				 target.body.getAngle( ) );
 				ss.addStructureJoint( target );
 			}
@@ -1399,9 +1399,20 @@ public class LevelFactory {
 		if ( item.props.containsKey( "createscrewsecond" ) ) {
 			ropeBuilder.createScrewSecondToLastLink( );
 		}
+		if ( item.props.containsKey( "createscrewthird" ) ) {
+			ropeBuilder.createScrewThirdToLastLink( );
+		}
+		if ( item.props.containsKey( "createall" ) ) {
+			ropeBuilder.createScrewAll( );
+		}
 		if ( item.props.containsKey( "links" ) ) {
 			int links = Integer.parseInt( item.props.get( "links" ) );
 			ropeBuilder.links( links );
+		}
+		
+		if ( item.props.containsKey( "linkheight" ) ) {
+			int links = Integer.parseInt( item.props.get( "linkheight" ) );
+			ropeBuilder.height( links );
 		}
 
 		// if(item.props.containsKey( "numberofscrews" )){

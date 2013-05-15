@@ -11,7 +11,8 @@ public class RopeBuilder extends GenericEntityBuilder<RopeBuilder> {
 	protected float linkWidth;
 	protected float linkHeight;
 	protected int links;
-	protected boolean createScrew, createScrewSecondToLastLink, moveToEntity;
+	protected boolean createScrew, createScrewSecondToLastLink, createScrewThirdToLastLink, moveToEntity,
+		createScrewAll;
 	protected Entity attachToTop;
 	
 	public RopeBuilder ( World world ){
@@ -47,16 +48,31 @@ public class RopeBuilder extends GenericEntityBuilder<RopeBuilder> {
 	}
 	public RopeBuilder createScrew(){
 		createScrew = true;
+		createScrewThirdToLastLink = false;
+		return this;
+	}
+	
+	public RopeBuilder createScrewThirdToLastLink(){
+		createScrewThirdToLastLink = true;
 		createScrewSecondToLastLink = false;
+		createScrew = false;
 		return this;
 	}
 	
 	public RopeBuilder createScrewSecondToLastLink(){
 		createScrewSecondToLastLink = true;
+		createScrewThirdToLastLink = false;
 		createScrew = false;
 		return this;
 	}
 	
+	public RopeBuilder createScrewAll(){
+		createScrewAll = true;
+		createScrew = false;
+		createScrewThirdToLastLink = false;
+		createScrewSecondToLastLink = false;
+		return this;
+	}
 	public RopeBuilder moveToEntity(){
 		moveToEntity = true;
 		return this;
@@ -75,6 +91,8 @@ public class RopeBuilder extends GenericEntityBuilder<RopeBuilder> {
 							  this.world );
 		if(createScrew) rope.createScrew( );
 		else if (createScrewSecondToLastLink) rope.createScrewSecondToLastLink( );
+		else if (createScrewThirdToLastLink) rope.createScrewThirdToLastLink( );
+		else if (createScrewAll) rope.createScrewAll();
 		if(this.attachToTop != null) rope.attachEntityToTop( attachToTop, moveToEntity );
 		return rope;
 	}
@@ -86,7 +104,9 @@ public class RopeBuilder extends GenericEntityBuilder<RopeBuilder> {
 		this.linkHeight = 64.0f;
 		this.links = 5;
 		this.createScrew = false;
+		this.createScrewThirdToLastLink = false;
 		this.createScrewSecondToLastLink = false;
+		this.createScrewAll = false;
 		this.attachToTop = null;
 		this.moveToEntity = false;
 		return this;

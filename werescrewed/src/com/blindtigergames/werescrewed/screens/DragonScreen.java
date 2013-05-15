@@ -4,43 +4,24 @@ import aurelienribon.tweenengine.Timeline;
 import aurelienribon.tweenengine.Tween;
 import aurelienribon.tweenengine.TweenEquations;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input.Keys;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
-import com.badlogic.gdx.physics.box2d.CircleShape;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.utils.Array;
-import com.blindtigergames.werescrewed.WereScrewedGame;
-import com.blindtigergames.werescrewed.camera.Camera;
-import com.blindtigergames.werescrewed.entity.RobotState;
 import com.blindtigergames.werescrewed.entity.Skeleton;
 import com.blindtigergames.werescrewed.entity.action.CannonLaunchAction;
 import com.blindtigergames.werescrewed.entity.action.RotateTweenAction;
 import com.blindtigergames.werescrewed.entity.builders.EventTriggerBuilder;
 import com.blindtigergames.werescrewed.entity.builders.PlatformBuilder;
-import com.blindtigergames.werescrewed.entity.builders.PlayerBuilder;
-import com.blindtigergames.werescrewed.entity.builders.SkeletonBuilder;
 import com.blindtigergames.werescrewed.entity.hazard.Fire;
-import com.blindtigergames.werescrewed.entity.hazard.builders.HazardBuilder;
 import com.blindtigergames.werescrewed.entity.mover.AnalogRotateMover;
 import com.blindtigergames.werescrewed.entity.mover.IMover;
 import com.blindtigergames.werescrewed.entity.mover.LerpMover;
 import com.blindtigergames.werescrewed.entity.mover.LinearAxis;
-import com.blindtigergames.werescrewed.entity.mover.RockingMover;
 import com.blindtigergames.werescrewed.entity.mover.RotateTweenMover;
-import com.blindtigergames.werescrewed.entity.mover.TargetImpulseMover;
 import com.blindtigergames.werescrewed.entity.mover.TimelineTweenMover;
 import com.blindtigergames.werescrewed.entity.platforms.Pipe;
 import com.blindtigergames.werescrewed.entity.platforms.Platform;
-import com.blindtigergames.werescrewed.entity.platforms.TiledPlatform;
-import com.blindtigergames.werescrewed.level.Level;
 import com.blindtigergames.werescrewed.level.LevelFactory;
 import com.blindtigergames.werescrewed.entity.screws.PuzzleScrew;
-import com.blindtigergames.werescrewed.entity.screws.StructureScrew;
-import com.blindtigergames.werescrewed.entity.tween.PathBuilder;
 import com.blindtigergames.werescrewed.entity.tween.PlatformAccessor;
 import com.blindtigergames.werescrewed.eventTrigger.EventTrigger;
 import com.blindtigergames.werescrewed.eventTrigger.PowerSwitch;
@@ -64,6 +45,7 @@ public class DragonScreen extends Screen {
 		
 		initPuzzleScrews();
 		tail3Pipes();
+		bodySkeletons();
 		
 		Skeleton balloon3CannonSkeleton = (Skeleton) LevelFactory.entities.get( "balloon3_cannon_skeleton" );
 		balloon3CannonSkeleton.setFgFade( false );
@@ -127,15 +109,22 @@ public class DragonScreen extends Screen {
 		//Platform balloon3 = (Platform) LevelFactory.entities.get( "balloon3" );
 		//Platform balloon4 = (Platform) LevelFactory.entities.get( "balloon4" );
 		
+		Platform tail1Balloon = (Platform) LevelFactory.entities.get( "tail_balloon1" );
+		Platform tail2Balloon = (Platform) LevelFactory.entities.get( "tail2_balloon1" );
+		Platform tail3Balloon = (Platform) LevelFactory.entities.get( "tail3_balloon" );
+		
+		
 		Skeleton balloon1_skeleton = ( Skeleton ) LevelFactory.entities.get( "balloon1_skeleton" );
 		balloon1_super = (Skeleton) LevelFactory.entities.get( "balloon1_super" );
 		
 		puzzle_screw_balloon1 = (PuzzleScrew) LevelFactory.entities.get( "puzzle_screw_balloon1" );
 		
 		
-	//	balloon1.addMover( balloonMover(balloon1, 800, Util.PI/32, 0) );
-	//	balloon2.addMover( balloonMover(balloon2, 800, 0, 4) );
-//		balloon3.addMover( balloonMover(balloon3, 700, 0, 2) );
+		tail1Balloon.addMover( balloonMover(tail1Balloon, 200, Util.PI/32, 0) );
+		tail2Balloon.addMover( balloonMover(tail2Balloon, 250, 0, 2) );
+		tail3Balloon.addMover( balloonMover(tail3Balloon, 300, 0, 4) );
+		
+		
 //		balloon4.addMover( balloonMover(balloon4, 600, 0, 0) );
 //		balloon3_skeleton.addMover( balloonMover(balloon3_skeleton, 600, Util.PI/8, 4) );
 //		balloon4_skeleton.addMover( balloonMover(balloon4_skeleton, 700, Util.PI/16, 2) );
@@ -325,12 +314,11 @@ public class DragonScreen extends Screen {
 		PuzzleScrew tail2PuzzleScrew2 = ( PuzzleScrew ) LevelFactory.entities
 				.get( "tail2_puzzle_screw2" );
 		
-		// NOTE: this doesn't work correctly, it only works if you move one screw
-		// (which only turns one pipe), then screw the other which then turns both pipes
-
-		AnalogRotateMover anlgRot = new AnalogRotateMover( .6f, level.world );
 		
-		AnalogRotateMover anlgRot2 = new AnalogRotateMover( -0.6f, level.world );
+
+		AnalogRotateMover anlgRot = new AnalogRotateMover( 0.6f, level.world );
+		
+		AnalogRotateMover anlgRot2 = new AnalogRotateMover( 0.6f, level.world );
 		
 		tail2PuzzleScrew1.puzzleManager.addMover( anlgRot );
 		tail2PuzzleScrew2.puzzleManager.addMover( anlgRot );
@@ -451,5 +439,12 @@ public class DragonScreen extends Screen {
 		}else{
 			tail3Fire6.setActiveHazard( true );
 		}
+	}
+	
+	void bodySkeletons(){
+		
+		Skeleton bodyInsideSkeleton1 = ( Skeleton ) LevelFactory.entities.get( "body_inside_skeleton1" );
+
+		bodyInsideSkeleton1.addMover(new RotateTweenMover(bodyInsideSkeleton1));
 	}
 }
