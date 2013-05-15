@@ -228,7 +228,7 @@ public class Level {
 			if ( skel.fgSprite != null && skel.fgSprite.getAlpha( ) != 0 ) {
 				skel.fgSprite.draw( batch );
 			}
-			if ( !skel.isUpdatable( ) )
+			//if ( !skel.isUpdatable( ) )
 			{
 				skel.drawFGDecals( batch, camera );
 			}

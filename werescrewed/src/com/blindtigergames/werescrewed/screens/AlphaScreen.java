@@ -468,7 +468,7 @@ public class AlphaScreen extends Screen {
 		s.setScale( -scale, scale );
 		light_skel.addFGDecal( s,
 				new Vector2((-max + seatsX+2614*2), seatsY ) );
-				
+		light_skel.setFade( false );
 
 		// addBackGroundEntity( bgSkele );
 		// addForeGroundEntity( bgSkele );
