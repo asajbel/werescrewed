@@ -34,6 +34,7 @@ import com.blindtigergames.werescrewed.entity.action.AnchorDeactivateAction;
 import com.blindtigergames.werescrewed.entity.action.DestoryPlatformJointAction;
 import com.blindtigergames.werescrewed.entity.action.EntityActivateMoverAction;
 import com.blindtigergames.werescrewed.entity.action.EntityDeactivateMoverAction;
+import com.blindtigergames.werescrewed.entity.action.SetTutorialAction;
 import com.blindtigergames.werescrewed.entity.builders.EventTriggerBuilder;
 import com.blindtigergames.werescrewed.entity.builders.MoverBuilder;
 import com.blindtigergames.werescrewed.entity.builders.PipeBuilder;
@@ -1502,6 +1503,15 @@ public class LevelFactory {
 				Anchor anchor = LevelFactory.entities.get( tokens[ 1 ] ).anchors
 						.get( i );
 				etb.beginAction( new AnchorDeactivateAction( anchor ) );
+			} else if( action.contains( "set_tutorial" ) ) {
+				String tutorialNumbers = item.props.get( "sequence" );
+				String tokens[] = tutorialNumbers.split( " " );
+				int x = Integer.parseInt( tokens[ 0 ] ) ;
+				int y = Integer.parseInt( tokens[ 1 ] ) ;
+				int[] array = new int[2];
+				array[0] = x;
+				array[1] = y;
+				etb.beginAction( new SetTutorialAction(array, true) );
 			} else {
 				etb.beginAction( new EntityActivateMoverAction( ) );
 			}
@@ -1515,7 +1525,16 @@ public class LevelFactory {
 				Anchor anchor = LevelFactory.entities.get( tokens[ 1 ] ).anchors
 						.get( i );
 				etb.endAction( new AnchorDeactivateAction( anchor ) );
-			} else {
+			}else if( action.contains( "set_tutorial" ) ) {
+				String tutorialNumbers = item.props.get( "sequence" );
+				String tokens[] = tutorialNumbers.split( " " );
+				int x = Integer.parseInt( tokens[ 0 ] ) ;
+				int y = Integer.parseInt( tokens[ 1 ] ) ;
+				int[] array = new int[2];
+				array[0] = x;
+				array[1] = y;
+				etb.endAction( new SetTutorialAction(array, false) ); 
+			}else {
 				etb.endAction( new EntityDeactivateMoverAction( ) );
 			}
 		}
