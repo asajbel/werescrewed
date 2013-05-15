@@ -258,7 +258,7 @@ public class Screen implements com.badlogic.gdx.Screen {
 	}
 	
 	private float accum = 0f;               
-	private final float step = 1f / 30f;    
+	private final float step = 1f / 60f;    
 	private final float maxAccum = 1f / 20f;
 	                                        
 	private void updateStep(float delta) {   
