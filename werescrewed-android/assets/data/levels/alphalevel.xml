@@ -23646,7 +23646,7 @@
                             <string>chestSkeleton</string>
                         </Property>
                         <Property Name="beginaction" Type="string" Description="">
-                            <string>activate_anchor footSkeleton 1</string>
+                            <string>set_tutorial</string>
                         </Property>
                         <Property Name="endaction" Type="string" Description="">
                             <string>deactivate_anchor footSkeleton 1</string>
@@ -23656,6 +23656,9 @@
                         </Property>
                         <Property Name="twoplayerstodeactivate" Type="string" Description="">
                             <string />
+                        </Property>
+                        <Property Name="sequence" Type="string" Description="">
+                            <string>0 1</string>
                         </Property>
                     </CustomProperties>
                     <LocalPoints>
@@ -23739,8 +23742,8 @@
         <NextItemNumber>942</NextItemNumber>
         <ContentRootFolder>gleed-textures</ContentRootFolder>
         <CameraPosition>
-            <X>475.00058</X>
-            <Y>-216.12381</Y>
+            <X>233.333374</X>
+            <Y>-266.123871</Y>
         </CameraPosition>
         <Version>1.3.0.0</Version>
     </EditorRelated>

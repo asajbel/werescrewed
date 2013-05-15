@@ -25,68 +25,72 @@
 
 package com.esotericsoftware.spine.attachments;
 
-import com.esotericsoftware.spine.Slot;
-
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
+import com.esotericsoftware.spine.Slot;
 
 /** Attachment that displays various texture regions over time. */
 public class RegionSequenceAttachment extends RegionAttachment {
 	private Mode mode;
 	private float frameTime;
-	private TextureRegion[] regions;
+	private TextureRegion[ ] regions;
 
-	public RegionSequenceAttachment (String name) {
-		super(name);
+	public RegionSequenceAttachment( String name ) {
+		super( name );
 	}
 
-	public void updateVertices (Slot slot) {
-		if (regions == null) throw new IllegalStateException("Regions have not been set: " + this);
+	public void updateVertices( Slot slot ) {
+		if ( regions == null )
+			throw new IllegalStateException( "Regions have not been set: "
+					+ this );
 
-		int frameIndex = (int)(slot.getAttachmentTime() / frameTime);
-		switch (mode) {
+		int frameIndex = ( int ) ( slot.getAttachmentTime( ) / frameTime );
+		switch ( mode ) {
 		case forward:
-			frameIndex = Math.min(regions.length - 1, frameIndex);
+			frameIndex = Math.min( regions.length - 1, frameIndex );
 			break;
 		case forwardLoop:
 			frameIndex = frameIndex % regions.length;
 			break;
 		case pingPong:
-			frameIndex = frameIndex % (regions.length * 2);
-			if (frameIndex >= regions.length) frameIndex = regions.length - 1 - (frameIndex - regions.length);
+			frameIndex = frameIndex % ( regions.length * 2 );
+			if ( frameIndex >= regions.length )
+				frameIndex = regions.length - 1
+						- ( frameIndex - regions.length );
 			break;
 		case random:
-			frameIndex = MathUtils.random(regions.length - 1);
+			frameIndex = MathUtils.random( regions.length - 1 );
 			break;
 		case backward:
-			frameIndex = Math.max(regions.length - frameIndex - 1, 0);
+			frameIndex = Math.max( regions.length - frameIndex - 1, 0 );
 			break;
 		case backwardLoop:
 			frameIndex = frameIndex % regions.length;
 			frameIndex = regions.length - frameIndex - 1;
 			break;
 		}
-		setRegion(regions[frameIndex]);
+		setRegion( regions[ frameIndex ] );
 
-		super.updateVertices(slot);
+		super.updateVertices( slot );
 	}
 
-	public TextureRegion[] getRegions () {
-		if (regions == null) throw new IllegalStateException("Regions have not been set: " + this);
+	public TextureRegion[ ] getRegions( ) {
+		if ( regions == null )
+			throw new IllegalStateException( "Regions have not been set: "
+					+ this );
 		return regions;
 	}
 
-	public void setRegions (TextureRegion[] regions) {
+	public void setRegions( TextureRegion[ ] regions ) {
 		this.regions = regions;
 	}
 
 	/** Sets the time in seconds each frame is shown. */
-	public void setFrameTime (float frameTime) {
+	public void setFrameTime( float frameTime ) {
 		this.frameTime = frameTime;
 	}
 
-	public void setMode (Mode mode) {
+	public void setMode( Mode mode ) {
 		this.mode = mode;
 	}
 

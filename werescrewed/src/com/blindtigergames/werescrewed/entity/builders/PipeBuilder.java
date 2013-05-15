@@ -14,7 +14,7 @@ public class PipeBuilder extends GenericEntityBuilder< PipeBuilder > {
 	private float restitution = 0;
 	private float density = 1f;
 	private float friction = 1.0f;
-	private boolean open = false; 
+	private boolean open = false;
 
 	/**
 	 * 
@@ -29,33 +29,30 @@ public class PipeBuilder extends GenericEntityBuilder< PipeBuilder > {
 	}
 
 	public Pipe build( ) {
-		Pipe out = new Pipe( this.name, 
-				this.pos, 
-				this.path, 
-				this.tex,
-				this.world,
-				open);
-		
+		Pipe out = new Pipe( this.name, this.pos, this.path, this.tex,
+				this.world, open );
+
 		out.body.setType( bodyType );
 		out.setDensity( this.density );
 		out.setFriction( this.friction );
 		out.setRestitution( this.restitution );
 		out.setGravScale( this.gravScale );
 		out.body.setFixedRotation( false );
-		prepareEntity(out);
+		prepareEntity( out );
 		return out;
 	}
-	
+
 	public PipeBuilder path( ArrayList< Vector2 > path ) {
-		this.path = path; 
+		this.path = path;
 		return this;
 	}
 
 	public PipeBuilder gravityScale( float gravScale ) {
 		this.gravScale = gravScale;
 		return this;
-		
+
 	}
+
 	public PipeBuilder restitution( float restitution ) {
 		this.restitution = restitution;
 		return this;
@@ -65,36 +62,36 @@ public class PipeBuilder extends GenericEntityBuilder< PipeBuilder > {
 		this.density = density;
 		return this;
 	}
-	
+
 	public PipeBuilder friction( float friction ) {
 		this.friction = friction;
 		return this;
 	}
-	
+
 	public PipeBuilder dynamic( boolean d ) {
-		if (d){
+		if ( d ) {
 			return this.dynamic( );
 		}
 		return this.kinematic( );
 	}
-	
-	public PipeBuilder dynamic(){
+
+	public PipeBuilder dynamic( ) {
 		bodyType = BodyType.DynamicBody;
 		return this;
 	}
-	
-	public PipeBuilder staticBody(){
+
+	public PipeBuilder staticBody( ) {
 		bodyType = BodyType.StaticBody;
 		return this;
 	}
-	
-	public PipeBuilder kinematic(){
+
+	public PipeBuilder kinematic( ) {
 		bodyType = BodyType.KinematicBody;
 		return this;
 	}
-	
-	public PipeBuilder openEnded() {
+
+	public PipeBuilder openEnded( ) {
 		open = true;
-		return this; 
+		return this;
 	}
 }

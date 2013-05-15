@@ -25,8 +25,6 @@
 
 package com.esotericsoftware.spine;
 
-import com.badlogic.gdx.math.MathUtils;
-
 /** Stores state for an animation and automatically mixes between animations. */
 public class AnimationState {
 	private final AnimationStateData data;
@@ -35,50 +33,59 @@ public class AnimationState {
 	boolean currentLoop, previousLoop;
 	float mixTime, mixDuration;
 
-	public AnimationState (AnimationStateData data) {
-		if (data == null) throw new IllegalArgumentException("data cannot be null.");
+	public AnimationState( AnimationStateData data ) {
+		if ( data == null )
+			throw new IllegalArgumentException( "data cannot be null." );
 		this.data = data;
 	}
 
-	public void update (float delta) {
+	public void update( float delta ) {
 		currentTime += delta;
 		previousTime += delta;
 		mixTime += delta;
 	}
 
-	public void apply (Skeleton skeleton) {
-		if (current == null) return;
-		if (previous != null) {
-			previous.apply(skeleton, previousTime, previousLoop);
+	public void apply( Skeleton skeleton ) {
+		if ( current == null )
+			return;
+		if ( previous != null ) {
+			previous.apply( skeleton, previousTime, previousLoop );
 			float alpha = mixTime / mixDuration;
-			if (alpha >= 1) {
+			if ( alpha >= 1 ) {
 				alpha = 1;
 				previous = null;
 			}
-			current.mix(skeleton, currentTime, currentLoop, alpha);
+			current.mix( skeleton, currentTime, currentLoop, alpha );
 		} else
-			current.apply(skeleton, currentTime, currentLoop);
+			current.apply( skeleton, currentTime, currentLoop );
 	}
 
-	public void clear () {
+	public void clear( ) {
 		previous = null;
 		current = null;
 	}
 
 	/** @see #setAnimation(Animation, boolean) */
-	public void setAnimation (String animationName, boolean loop) {
-		Animation animation = data.getSkeletonData().findAnimation(animationName);
-		if (animation == null) throw new IllegalArgumentException("Animation not found: " + animationName);
-		setAnimation(animation, loop);
+	public void setAnimation( String animationName, boolean loop ) {
+		Animation animation = data.getSkeletonData( ).findAnimation(
+				animationName );
+		if ( animation == null )
+			throw new IllegalArgumentException( "Animation not found: "
+					+ animationName );
+		setAnimation( animation, loop );
 	}
 
-	/** Set the current animation. The current animation time is set to 0.
-	 * @param animation May be null. */
-	public void setAnimation (Animation animation, boolean loop) {
+	/**
+	 * Set the current animation. The current animation time is set to 0.
+	 * 
+	 * @param animation
+	 *            May be null.
+	 */
+	public void setAnimation( Animation animation, boolean loop ) {
 		previous = null;
-		if (animation != null && current != null) {
-			mixDuration = data.getMix(current, animation);
-			if (mixDuration > 0) {
+		if ( animation != null && current != null ) {
+			mixDuration = data.getMix( current, animation );
+			if ( mixDuration > 0 ) {
 				mixTime = 0;
 				previous = current;
 				previousTime = currentTime;
@@ -91,24 +98,25 @@ public class AnimationState {
 	}
 
 	/** @return May be null. */
-	public Animation getAnimation () {
+	public Animation getAnimation( ) {
 		return current;
 	}
 
 	/** Returns the time within the current animation. */
-	public float getTime () {
+	public float getTime( ) {
 		return currentTime;
 	}
 
-	public void setTime (float time) {
+	public void setTime( float time ) {
 		currentTime = time;
 	}
 
-	public AnimationStateData getData () {
+	public AnimationStateData getData( ) {
 		return data;
 	}
 
-	public String toString () {
-		return (current != null && current.getName() != null) ? current.getName() : super.toString();
+	public String toString( ) {
+		return ( current != null && current.getName( ) != null ) ? current
+				.getName( ) : super.toString( );
 	}
 }

@@ -35,10 +35,11 @@ public interface ISpinemator extends I_Drawable {
 	 *            the skeleton
 	 */
 	void setScale( Vector2 scale );
-	
+
 	/**
 	 * Returns atlas with all of this spine body's parts
+	 * 
 	 * @return
 	 */
-	TextureAtlas getBodyAtlas();
+	TextureAtlas getBodyAtlas( );
 }

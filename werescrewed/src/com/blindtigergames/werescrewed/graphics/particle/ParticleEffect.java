@@ -23,18 +23,15 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Writer;
-import java.util.Iterator;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
-import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.GdxRuntimeException;
-import com.blindtigergames.werescrewed.WereScrewedGame;
+import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 import com.blindtigergames.werescrewed.graphics.TextureAtlas;
 
 /**
@@ -48,27 +45,26 @@ public class ParticleEffect implements Disposable {
 	/**
 	 * If true, will update position and rotation when parent updates.
 	 */
-	public boolean updatePositionOnUpdate = true;	
-	
+	public boolean updatePositionOnUpdate = true;
+
 	public boolean updateAngleBasedOnVelocity = false;
 	/**
 	 * Flag for parent to delete this when it particle effect is complete
 	 */
 	public boolean removeOnComplete = false;
-	
+
 	public String name;
 
-
 	public ParticleEffect( ) {
-		emitters = new Array<ParticleEmitter>( 8 );
+		emitters = new Array< ParticleEmitter >( 8 );
 	}
 
 	public ParticleEffect( ParticleEffect effect ) {
 		updateAngleBasedOnVelocity = effect.updateAngleBasedOnVelocity;
 		updatePositionOnUpdate = effect.updatePositionOnUpdate;
 		removeOnComplete = effect.removeOnComplete;
-		name = effect.name+"_instance";
-		emitters = new Array<ParticleEmitter>( true, effect.emitters.size );
+		name = effect.name + "_instance";
+		emitters = new Array< ParticleEmitter >( true, effect.emitters.size );
 		for ( int i = 0, n = effect.emitters.size; i < n; i++ )
 			emitters.add( new ParticleEmitter( effect.emitters.get( i ) ) );
 	}
@@ -125,47 +121,47 @@ public class ParticleEffect implements Disposable {
 		for ( int i = 0, n = emitters.size; i < n; i++ )
 			emitters.get( i ).setPosition( x, y );
 	}
-	
+
 	/**
-	 * Sets the angle of the emitters of the effect 
+	 * Sets the angle of the emitters of the effect
 	 * 
 	 * @author stew
 	 * @param radians
-	 *				The angle of rotation in radians; 
+	 *            The angle of rotation in radians;
 	 */
-	public void setAngle(float radians){
+	public void setAngle( float radians ) {
 		for ( int i = 0, n = emitters.size; i < n; i++ )
 			emitters.get( i ).setAngle( radians );
 	}
-	
+
 	/**
-	 * Sets the rotation of the sprites of the effect 
+	 * Sets the rotation of the sprites of the effect
 	 * 
 	 * @author Anders
 	 * @param radians
-	 *				The angle of rotation in radians; 
+	 *            The angle of rotation in radians;
 	 */
-	public void setRotation(float radians){
+	public void setRotation( float radians ) {
 		for ( int i = 0; i < emitters.size; i++ )
-			emitters.get( i ).setRotation( radians ); 
+			emitters.get( i ).setRotation( radians );
 	}
-	
+
 	/**
-	 * Sets the angle of the entire effect setting 
-	 * both the emitter angle and sprite rotation
+	 * Sets the angle of the entire effect setting both the emitter angle and
+	 * sprite rotation
 	 * 
 	 * @author Anders
 	 * @param radians
-	 * 				The angle of rotation in radians;
+	 *            The angle of rotation in radians;
 	 */
-	public void setEffectAngle(float radians){
-		setAngle(radians);
-		setRotation(radians); 
+	public void setEffectAngle( float radians ) {
+		setAngle( radians );
+		setRotation( radians );
 	}
-	
-	public void setOffset(float xOffset, float yOffset) {
+
+	public void setOffset( float xOffset, float yOffset ) {
 		for ( int i = 0; i < emitters.size; i++ )
-			emitters.get( i ).setOffset( xOffset, yOffset ); 
+			emitters.get( i ).setOffset( xOffset, yOffset );
 
 	}
 
@@ -298,15 +294,15 @@ public class ParticleEffect implements Disposable {
 			emitter.getSprite( ).getTexture( ).dispose( );
 		}
 	}
-	
-	public void restartAt(float xPix, float yPix){
+
+	public void restartAt( float xPix, float yPix ) {
 		setPosition( xPix, yPix );
 		reset( );
 		start( );
 	}
-	
-	public void restartAt(Vector2 posPixels){
+
+	public void restartAt( Vector2 posPixels ) {
 		restartAt( posPixels.x, posPixels.y );
 	}
-	
+
 }
