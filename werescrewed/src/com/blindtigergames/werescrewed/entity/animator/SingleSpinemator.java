@@ -42,9 +42,12 @@ public class SingleSpinemator implements ISpinemator {
 	/**
 	 * Constructor
 	 * 
-	 * @param atlasName Name of the atlas for the animation
-	 * @param skeletonName Name of the skeleton containing the animation
-	 * @param animationName Name of the animation
+	 * @param atlasName
+	 *            Name of the atlas for the animation
+	 * @param skeletonName
+	 *            Name of the skeleton containing the animation
+	 * @param animationName
+	 *            Name of the animation
 	 */
 	public SingleSpinemator( String atlasName, String skeletonName,
 			String animationName ) {

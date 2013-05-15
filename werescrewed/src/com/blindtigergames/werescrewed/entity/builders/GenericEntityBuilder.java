@@ -2,7 +2,6 @@ package com.blindtigergames.werescrewed.entity.builders;
 
 import java.util.HashMap;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -16,6 +15,7 @@ import com.blindtigergames.werescrewed.entity.mover.IMover;
 import com.blindtigergames.werescrewed.sound.SoundManager;
 import com.blindtigergames.werescrewed.sound.SoundManager.SoundRef;
 import com.blindtigergames.werescrewed.util.ArrayHash;
+
 /**
  * EntityBuilder is meant to simplify creating entities and allow for extension
  * through inheritance and polymorphism. Will probably be a constant
@@ -33,7 +33,7 @@ public class GenericEntityBuilder< B extends GenericEntityBuilder< ? >> {
 
 	// Common to all builders
 	protected String name;
-	protected Vector2 pos; //in pixels
+	protected Vector2 pos; // in pixels
 	protected float rot;
 	protected Vector2 sca;
 	protected IMover mover;
@@ -48,7 +48,7 @@ public class GenericEntityBuilder< B extends GenericEntityBuilder< ? >> {
 	// Used for texture+body construction
 	protected Texture tex;
 	protected Body body;
-	
+
 	public GenericEntityBuilder( ) {
 		resetInternal( );
 	}
@@ -64,7 +64,7 @@ public class GenericEntityBuilder< B extends GenericEntityBuilder< ? >> {
 		world = null;
 		tex = null;
 		body = null;
-		sounds = new ArrayHash<String,HashMap<String,String>>();
+		sounds = new ArrayHash< String, HashMap< String, String >>( );
 		definition = "";
 	}
 
@@ -86,7 +86,7 @@ public class GenericEntityBuilder< B extends GenericEntityBuilder< ? >> {
 		name = n;
 		return ( B ) this;
 	}
-	
+
 	/**
 	 * 
 	 * @param definition
@@ -94,9 +94,9 @@ public class GenericEntityBuilder< B extends GenericEntityBuilder< ? >> {
 	 * @return EntityBuilder
 	 */
 	@SuppressWarnings( "unchecked" )
-	public B definition ( String d ) {
+	public B definition( String d ) {
 		definition = d;
-		return ( B ) this; 
+		return ( B ) this;
 	}
 
 	/**
@@ -111,7 +111,7 @@ public class GenericEntityBuilder< B extends GenericEntityBuilder< ? >> {
 		if ( type.getCategory( ) == EntityCategory.PLAYER ) {
 			return ( B ) new PlayerBuilder( ).copy( this );
 		}
-		return ( B ) this.properties( def.getProperties() );
+		return ( B ) this.properties( def.getProperties( ) );
 	}
 
 	/**
@@ -175,8 +175,10 @@ public class GenericEntityBuilder< B extends GenericEntityBuilder< ? >> {
 
 	/**
 	 * 
-	 * @param x - new x position of the created entity (in pixels)
-	 * @param y - new y position of the created entity (in pixels)
+	 * @param x
+	 *            - new x position of the created entity (in pixels)
+	 * @param y
+	 *            - new y position of the created entity (in pixels)
 	 * @return EntityBuilder
 	 */
 	@SuppressWarnings( "unchecked" )
@@ -240,37 +242,42 @@ public class GenericEntityBuilder< B extends GenericEntityBuilder< ? >> {
 	 * @return EntityBuilder
 	 */
 	@SuppressWarnings( "unchecked" )
-	public B properties( ArrayHash<String,String> props ) {
-		if (props.containsKey( "texture" )){
-			this.texture( WereScrewedGame.manager.get( props.get( "texture" ), Texture.class ) );
+	public B properties( ArrayHash< String, String > props ) {
+		if ( props.containsKey( "texture" ) ) {
+			this.texture( WereScrewedGame.manager.get( props.get( "texture" ),
+					Texture.class ) );
 		}
-		//Handle sound tags
-		if (props.containsKey("sound")){
-			for (String line : props.getAll( "sound" )){
-				String[] tokens = line.split("\\s*\\:\\s*");
-				if (tokens.length >= 2){
-					HashMap<String,String> sound = new HashMap<String,String>();
-					sound.put( "asset", tokens[1]);
+		// Handle sound tags
+		if ( props.containsKey( "sound" ) ) {
+			for ( String line : props.getAll( "sound" ) ) {
+				String[ ] tokens = line.split( "\\s*\\:\\s*" );
+				if ( tokens.length >= 2 ) {
+					HashMap< String, String > sound = new HashMap< String, String >( );
+					sound.put( "asset", tokens[ 1 ] );
 					int index = -1;
-					String[] optTokens;
-					for (int opts = 2; opts < tokens.length; opts++){
-						optTokens = tokens[opts].toLowerCase().split("\\s+");
-						if (optTokens.length >= 2){
-							if (optTokens[0].equals("index")){
-								index = Integer.parseInt( optTokens[1] );
-							}								
-							sound.put( optTokens[0], optTokens[1] );
-							Gdx.app.log( "EntityBuilder-Sound Options", optTokens[0]+":"+optTokens[1] );
+					String[ ] optTokens;
+					for ( int opts = 2; opts < tokens.length; opts++ ) {
+						optTokens = tokens[ opts ].toLowerCase( )
+								.split( "\\s+" );
+						if ( optTokens.length >= 2 ) {
+							if ( optTokens[ 0 ].equals( "index" ) ) {
+								index = Integer.parseInt( optTokens[ 1 ] );
+							}
+							sound.put( optTokens[ 0 ], optTokens[ 1 ] );
+							// Gdx.app.log( "EntityBuilder-Sound Options",
+							// optTokens[0]+":"+optTokens[1] );
 						}
 					}
-					if (index >= 0){
-						sounds.set( tokens[0].toLowerCase(), index, sound );
+					if ( index >= 0 ) {
+						sounds.set( tokens[ 0 ].toLowerCase( ), index, sound );
 					} else {
-						sounds.add( tokens[0].toLowerCase(), sound );
+						sounds.add( tokens[ 0 ].toLowerCase( ), sound );
 					}
-					Gdx.app.log( "EntityBuilder", "Adding \""+tokens[0]+"\" sound:\""+tokens[1]+"\"" );
+					// Gdx.app.log( "EntityBuilder",
+					// "Adding \""+tokens[0]+"\" sound:\""+tokens[1]+"\"" );
 				} else {
-					Gdx.app.log( "EntityBuilder", "Malformed sound line:\""+line+"\"." );
+					// Gdx.app.log( "EntityBuilder",
+					// "Malformed sound line:\""+line+"\"." );
 				}
 			}
 		}
@@ -336,40 +343,49 @@ public class GenericEntityBuilder< B extends GenericEntityBuilder< ? >> {
 		Entity out = null;
 		if ( canBuild( ) ) {
 			if ( type != null ) {
-				out = new Entity( name, type, world, pos, rot, sca, tex, solid);
+				out = new Entity( name, type, world, pos, rot, sca, tex, solid );
 			} else {
 				out = new Entity( name, pos, tex, body, solid );
 			}
 		}
-		prepareEntity(out);
+		prepareEntity( out );
 		return out;
 	}
 
-	protected void prepareEntity(Entity out){
-		if (out != null){
+	protected void prepareEntity( Entity out ) {
+		if ( out != null ) {
 			if ( mover != null ) {
 				out.addMover( mover, RobotState.IDLE );
 			}
-			if ( sounds.size() > 0){
+			if ( sounds.size( ) > 0 ) {
 				SoundManager soundMan = out.getSoundManager( );
-				if (soundMan == null){
-					soundMan = new SoundManager();
+				if ( soundMan == null ) {
+					soundMan = new SoundManager( );
 					out.setSoundManager( soundMan );
 				}
-				for (String name: sounds.keySet()){
-					for (HashMap<String,String> subSounds : sounds.getAll( name )){
-						SoundRef sound = soundMan.getSound( name, WereScrewedGame.dirHandle + subSounds.get( "asset" ) );
-						if (subSounds.containsKey( "volume" ))
-							sound.setInternalVolume(Float.parseFloat( subSounds.get("volume") ));
-						if (subSounds.containsKey( "pitch" ))
-							sound.setInternalPitch(Float.parseFloat( subSounds.get("pitch") ));
-						if (subSounds.containsKey( "pan" ))
-							sound.setPan(Float.parseFloat( subSounds.get("pan") ));
-						if (subSounds.containsKey( "range" ))
-							sound.setRange(Float.parseFloat( subSounds.get("range") ));
-						if (subSounds.containsKey( "falloff" ))
-							sound.setFalloff(Float.parseFloat( subSounds.get("falloff") ));
-						if (name.contains("collision")){
+				for ( String name : sounds.keySet( ) ) {
+					for ( HashMap< String, String > subSounds : sounds
+							.getAll( name ) ) {
+						SoundRef sound = soundMan.getSound(
+								name,
+								WereScrewedGame.dirHandle
+										+ subSounds.get( "asset" ) );
+						if ( subSounds.containsKey( "volume" ) )
+							sound.setInternalVolume( Float
+									.parseFloat( subSounds.get( "volume" ) ) );
+						if ( subSounds.containsKey( "pitch" ) )
+							sound.setInternalPitch( Float.parseFloat( subSounds
+									.get( "pitch" ) ) );
+						if ( subSounds.containsKey( "pan" ) )
+							sound.setPan( Float.parseFloat( subSounds
+									.get( "pan" ) ) );
+						if ( subSounds.containsKey( "range" ) )
+							sound.setRange( Float.parseFloat( subSounds
+									.get( "range" ) ) );
+						if ( subSounds.containsKey( "falloff" ) )
+							sound.setFalloff( Float.parseFloat( subSounds
+									.get( "falloff" ) ) );
+						if ( name.contains( "collision" ) ) {
 							soundMan.setDelay( name, 1.0f );
 						}
 					}
@@ -378,7 +394,7 @@ public class GenericEntityBuilder< B extends GenericEntityBuilder< ? >> {
 			out.postLoad( );
 		}
 	}
-		
+
 	protected static final String nameTag = "Name";
 	protected static final String typeTag = "Definition";
 	protected static final String xTag = "X";

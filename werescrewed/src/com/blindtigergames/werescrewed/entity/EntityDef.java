@@ -56,8 +56,8 @@ public class EntityDef {
 	// Miscellaneous Fields
 	protected String name;
 	protected EntityCategory category;
-	protected ArrayHash<String,String> properties;
-	
+	protected ArrayHash< String, String > properties;
+
 	// CONSTANTS
 	public static final String tag = "definition";
 	// Static initialization
@@ -96,7 +96,7 @@ public class EntityDef {
 		// Misc Data
 		setName( name );
 		category = null;
-		properties = new ArrayHash<String, String>();
+		properties = new ArrayHash< String, String >( );
 	}
 
 	/**
@@ -246,10 +246,10 @@ public class EntityDef {
 	 * @return The loaded definition
 	 */
 	protected static EntityDef loadDefinition( String id ) {
-		Gdx.app.log( "EntityDef", "Loading EntityDef: " + id );
+		// Gdx.app.log( "EntityDef", "Loading EntityDef: " + id );
 		String filename = WereScrewedGame.dirHandle.path( ) + "/entities/" + id
 				+ ".xml";
-		Gdx.app.log( "EntityDef", "Filename: " + filename );
+		// Gdx.app.log( "EntityDef", "Filename: " + filename );
 		try {
 			XmlReader reader = new XmlReader( );
 			XmlReader.Element xml = reader
@@ -265,8 +265,8 @@ public class EntityDef {
 			String atlasName = null;
 			texName = xml.get( "texture", "" );
 			for ( Element atlasElem : xml.getChildrenByName( "atlas" ) ) {
-				Gdx.app.log( "EntityDef",
-						"Getting texture atlas " + atlasElem.getText( ) );
+				// Gdx.app.log( "EntityDef",
+				// "Getting texture atlas " + atlasElem.getText( ) );
 				out.atlases.add( WereScrewedGame.manager.getAtlas( atlasElem
 						.getText( ) ) );
 			}
@@ -278,7 +278,7 @@ public class EntityDef {
 							Texture.class ) );
 				}
 			}
-			out.atlasName = xml.get( "atlas", "" ); 
+			out.atlasName = xml.get( "atlas", "" );
 			out.color = xml.get( "color", "" );
 			out.skeleton = xml.get( "gender", "" );
 			out.initialAnim = xml.get( "initialAnim" );
@@ -301,19 +301,20 @@ public class EntityDef {
 
 			out.loadComplexBody( density, friction, restitution, scale,
 					bodyName );
-			
+
 			// Sound Data
-			Array<Element> sounds = xml.getChildrenByName( "sound" );
-			if (sounds.size > 0){
-				for (Element soundElem: sounds){
-					if (soundElem.getText( ).length() > 0){
+			Array< Element > sounds = xml.getChildrenByName( "sound" );
+			if ( sounds.size > 0 ) {
+				for ( Element soundElem : sounds ) {
+					if ( soundElem.getText( ).length( ) > 0 ) {
 						out.properties.add( "sound", soundElem.getText( ) );
 					}
 				}
 			}
 			return out;
 		} catch ( IOException e ) {
-			Gdx.app.log( "Error", "Loading entity definition " + id + " ", e );
+			// Gdx.app.log( "Error", "Loading entity definition " + id + " ", e
+			// );
 		}
 
 		return null;
@@ -343,19 +344,19 @@ public class EntityDef {
 	public String getSkeleton( ) {
 		return skeleton;
 	}
-	
-	public String getInitialAnimation () {
-		return initialAnim; 
+
+	public String getInitialAnimation( ) {
+		return initialAnim;
 	}
 
 	public Vector2 getScale( ) {
 		return spriteScale;
 	}
 
-	public ArrayHash<String,String> getProperties(){
+	public ArrayHash< String, String > getProperties( ) {
 		return properties;
 	}
-	
+
 	public void setScale( float x ) {
 		spriteScale.x = x;
 	}

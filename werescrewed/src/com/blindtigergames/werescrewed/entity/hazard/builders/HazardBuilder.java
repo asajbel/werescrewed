@@ -12,94 +12,99 @@ public class HazardBuilder extends GenericEntityBuilder< HazardBuilder > {
 	protected boolean horizontal;
 	protected boolean inverted;
 	protected boolean active;
-	
+
 	/**
 	 * 
-	 * @param world - Box2d world, only needs to be set once
+	 * @param world
+	 *            - Box2d world, only needs to be set once
 	 * @return SpikesBuilder
 	 */
-	public HazardBuilder ( World world ) {
-		super();
-		reset();
-		super.world(  world );
+	public HazardBuilder( World world ) {
+		super( );
+		reset( );
+		super.world( world );
 	}
-	
+
 	/**
 	 * 
-	 * @param h - set height with a float, default is 1
+	 * @param h
+	 *            - set height with a float, default is 1
 	 * @return SpikesBuilder
-	 */	
-	public HazardBuilder height ( float h ) {
+	 */
+	public HazardBuilder height( float h ) {
 		this.height = h;
 		return this;
 	}
-	
+
 	/**
 	 * 
-	 * @param w - set width with a float, default is 4
+	 * @param w
+	 *            - set width with a float, default is 4
 	 * @return SpikesBuilder
-	 */	
+	 */
 	public HazardBuilder width( float w ) {
 		this.width = w;
 		return this;
 	}
-		
+
 	/**
 	 * 
-	 * @param dimension - set width/height with Vector2, default is (4,1)
+	 * @param dimension
+	 *            - set width/height with Vector2, default is (4,1)
 	 * @return SpikesBuilder
 	 */
 	public HazardBuilder dimensions( Vector2 dimension ) {
 		return this.width( dimension.x ).height( dimension.y );
 	}
-		
+
 	/**
 	 * 
-	 * @param width - float width of platform
-	 * @param height - float height of platform
+	 * @param width
+	 *            - float width of platform
+	 * @param height
+	 *            - float height of platform
 	 * @return SpikesBuilder
 	 */
 	public HazardBuilder dimensions( float width, float height ) {
 		return this.width( width ).height( height );
 	}
-	
 
-	public HazardBuilder active ( ) {
+	public HazardBuilder active( ) {
 		this.active = true;
 		return this;
 	}
-	
-	public HazardBuilder inactive ( ) {
+
+	public HazardBuilder inactive( ) {
 		this.active = false;
 		return this;
 	}
-	
-	public HazardBuilder up ( ) {
+
+	public HazardBuilder up( ) {
 		this.horizontal = true;
 		this.inverted = false;
 		return this;
 	}
-	
-	public HazardBuilder down ( ) {
+
+	public HazardBuilder down( ) {
 		this.horizontal = true;
 		this.inverted = true;
 		return this;
 	}
-	
-	public HazardBuilder left ( ) {
+
+	public HazardBuilder left( ) {
 		this.horizontal = false;
 		this.inverted = true;
 		return this;
 	}
-	
-	public HazardBuilder right ( ) {
+
+	public HazardBuilder right( ) {
 		this.horizontal = false;
 		this.inverted = false;
 		return this;
 	}
-	
+
 	@Override
-	public HazardBuilder reset(){
+	public HazardBuilder reset( ) {
 		super.resetInternal( );
 		this.width = 2;
 		this.height = 1;
@@ -107,16 +112,11 @@ public class HazardBuilder extends GenericEntityBuilder< HazardBuilder > {
 		this.inverted = false;
 		return this;
 	}
-	
-	public Spikes buildSpikes ( ) {
-		Spikes spikes = new Spikes( this.name,
-									this.pos, 
-									this.width, 
-									this.height,
-									this.world,
-									this.active,
-									this.inverted,
-									this.horizontal );
+
+	public Spikes buildSpikes( ) {
+		Spikes spikes = new Spikes( this.name, this.pos, this.width,
+				this.height, this.world, this.active, this.inverted,
+				this.horizontal );
 		return spikes;
 	}
 }

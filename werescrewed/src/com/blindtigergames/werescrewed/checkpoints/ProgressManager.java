@@ -3,9 +3,6 @@ package com.blindtigergames.werescrewed.checkpoints;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.World;
@@ -19,7 +16,6 @@ import com.blindtigergames.werescrewed.entity.screws.ResurrectScrew;
 import com.blindtigergames.werescrewed.entity.screws.ScrewType;
 import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 import com.blindtigergames.werescrewed.graphics.TextureAtlas;
-import com.blindtigergames.werescrewed.graphics.TextureAtlas.AtlasRegion;
 import com.blindtigergames.werescrewed.player.Player;
 import com.blindtigergames.werescrewed.player.Player.PlayerState;
 
@@ -36,7 +32,7 @@ public class ProgressManager {
 	private HashMap< String, Player > players;
 	private HashMap< String, ResurrectScrew > rezScrewMap;
 	private HashMap< String, Entity > ghostMap;
-	//private HashMap< String, TextureRegion > ghostTextures;
+	// private HashMap< String, TextureRegion > ghostTextures;
 	private World world;
 	private Vector2 oldChkptPos;
 	private final Vector2 chkptOffset = new Vector2( 16, 8 );
@@ -54,18 +50,19 @@ public class ProgressManager {
 		players = new HashMap< String, Player >( );
 		rezScrewMap = new HashMap< String, ResurrectScrew >( );
 		ghostMap = new HashMap< String, Entity >( );
-		//ghostTextures = new HashMap< String, TextureRegion >( );
-		//TextureAtlas atlas = WereScrewedGame.manager.getAtlas( "common-textures");
+		// ghostTextures = new HashMap< String, TextureRegion >( );
+		// TextureAtlas atlas = WereScrewedGame.manager.getAtlas(
+		// "common-textures");
 		if ( p1 != null ) {
 			players.put( p1.name, p1 );
-			//ghostTextures.put(
-			//		p1.name,
-			//		atlas.findRegion( "player_r_m_ghost" ) );
+			// ghostTextures.put(
+			// p1.name,
+			// atlas.findRegion( "player_r_m_ghost" ) );
 		}
 		if ( p2 != null ) {
 			players.put( p2.name, p2 );
-			//ghostTextures
-			//.put( p2.name, atlas.findRegion( "player_female_idle_ghost" ) );
+			// ghostTextures
+			// .put( p2.name, atlas.findRegion( "player_female_idle_ghost" ) );
 		}
 		this.world = world;
 	}
@@ -181,11 +178,11 @@ public class ProgressManager {
 	private void buildGhost( Player player ) {
 		Entity ghost;
 		// build ghost entity
-		Gdx.app.log("ghost:", player.name);
-		
+		// Gdx.app.log("ghost:", player.name);
+
 		ghost = new Entity( "player1Ghost", player.getPositionPixel( ).cpy( )
-				.add( -64f, 64f ), player.spinemator.getBodyAtlas( ).findRegion( "ghost" ), null,
-				false, 0f );
+				.add( -64f, 64f ), player.spinemator.getBodyAtlas( )
+				.findRegion( "ghost" ), null, false, 0f );
 		// build ghost mover
 		LerpMover ghostMover = new LerpMover( player.getPositionPixel( ).cpy( )
 				.add( hoverOffset ), currentCheckPoint.getPositionPixel( ).sub(
@@ -223,8 +220,7 @@ public class ProgressManager {
 					.getPositionPixel( ).add( screwPos ), LinearAxis.DIAGONAL );
 		} else {
 			screwMover = new LerpMover( player.getPositionPixel( ), player
-					.getPositionPixel( ).add( screwPos )
-					.sub( screwPos ),
+					.getPositionPixel( ).add( screwPos ).sub( screwPos ),
 					LinearAxis.DIAGONAL );
 		}
 		player.body.setLinearVelocity( Vector2.Zero );
@@ -308,11 +304,13 @@ public class ProgressManager {
 	 */
 	public void addPlayerOne( Player p1 ) {
 		if ( !players.containsKey( p1.name ) ) {
-			TextureAtlas atlas = WereScrewedGame.manager.getAtlas( "common-textures");
+			@SuppressWarnings( "unused" )
+			TextureAtlas atlas = WereScrewedGame.manager
+					.getAtlas( "common-textures" );
 			this.players.put( p1.name, p1 );
-			//ghostTextures.put(
-			//		p1.name,
-			//		atlas.findRegion( "player_r_m_ghost" )  );
+			// ghostTextures.put(
+			// p1.name,
+			// atlas.findRegion( "player_r_m_ghost" ) );
 		}
 	}
 
@@ -323,10 +321,12 @@ public class ProgressManager {
 	 */
 	public void addPlayerTwo( Player p2 ) {
 		if ( !players.containsKey( p2.name ) ) {
-			TextureAtlas atlas = WereScrewedGame.manager.getAtlas( "common-textures");
+			@SuppressWarnings( "unused" )
+			TextureAtlas atlas = WereScrewedGame.manager
+					.getAtlas( "common-textures" );
 			this.players.put( p2.name, p2 );
-			//ghostTextures
-			//.put( p2.name, atlas.findRegion( "player_female_idle_ghost" ) );
+			// ghostTextures
+			// .put( p2.name, atlas.findRegion( "player_female_idle_ghost" ) );
 		}
 	}
 
@@ -340,10 +340,11 @@ public class ProgressManager {
 		}
 	}
 
-//	public void addGhostTexture( Player player, TextureRegion ghostTexture ) {
-//		if ( ghostTexture != null && !ghostTextures.containsKey( player.name )
-//				&& players.containsKey( player.name ) ) {
-//			//ghostTextures.put( player.name, ghostTexture );
-//		}
-//	}
+	// public void addGhostTexture( Player player, TextureRegion ghostTexture )
+	// {
+	// if ( ghostTexture != null && !ghostTextures.containsKey( player.name )
+	// && players.containsKey( player.name ) ) {
+	// //ghostTextures.put( player.name, ghostTexture );
+	// }
+	// }
 }

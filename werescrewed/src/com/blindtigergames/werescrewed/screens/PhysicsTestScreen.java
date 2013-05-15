@@ -2,20 +2,14 @@ package com.blindtigergames.werescrewed.screens;
 
 import java.util.Iterator;
 
-import javax.management.RuntimeErrorException;
-
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
-import com.badlogic.gdx.physics.box2d.CircleShape;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.Joint;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.joints.PrismaticJoint;
 import com.badlogic.gdx.physics.box2d.joints.PrismaticJointDef;
@@ -26,21 +20,16 @@ import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.camera.Camera;
 import com.blindtigergames.werescrewed.checkpoints.CheckPoint;
 import com.blindtigergames.werescrewed.checkpoints.ProgressManager;
-import com.blindtigergames.werescrewed.entity.EntityDef;
 import com.blindtigergames.werescrewed.entity.PolySprite;
 import com.blindtigergames.werescrewed.entity.RobotState;
 import com.blindtigergames.werescrewed.entity.RootSkeleton;
 import com.blindtigergames.werescrewed.entity.Skeleton;
-import com.blindtigergames.werescrewed.entity.Sprite;
 import com.blindtigergames.werescrewed.entity.action.CannonLaunchAction;
-import com.blindtigergames.werescrewed.entity.action.DebugPrintAction;
-import com.blindtigergames.werescrewed.entity.action.FadeSkeletonAction;
 import com.blindtigergames.werescrewed.entity.builders.EventTriggerBuilder;
 import com.blindtigergames.werescrewed.entity.builders.PlatformBuilder;
 import com.blindtigergames.werescrewed.entity.builders.PlayerBuilder;
 import com.blindtigergames.werescrewed.entity.builders.SkeletonBuilder;
 import com.blindtigergames.werescrewed.entity.hazard.Fire;
-import com.blindtigergames.werescrewed.entity.hazard.builders.HazardBuilder;
 import com.blindtigergames.werescrewed.entity.mover.LerpMover;
 import com.blindtigergames.werescrewed.entity.mover.LinearAxis;
 import com.blindtigergames.werescrewed.entity.mover.PistonTweenMover;
@@ -51,7 +40,6 @@ import com.blindtigergames.werescrewed.entity.mover.SlidingMotorMover;
 import com.blindtigergames.werescrewed.entity.mover.puzzle.PuzzlePistonTweenMover;
 import com.blindtigergames.werescrewed.entity.mover.puzzle.PuzzleRotateTweenMover;
 import com.blindtigergames.werescrewed.entity.particles.Steam;
-import com.blindtigergames.werescrewed.entity.platforms.Platform;
 import com.blindtigergames.werescrewed.entity.platforms.TiledPlatform;
 import com.blindtigergames.werescrewed.entity.screws.PuzzleScrew;
 import com.blindtigergames.werescrewed.entity.screws.StrippedScrew;
@@ -60,10 +48,7 @@ import com.blindtigergames.werescrewed.entity.tween.PathBuilder;
 import com.blindtigergames.werescrewed.eventTrigger.EventTrigger;
 import com.blindtigergames.werescrewed.eventTrigger.PowerSwitch;
 import com.blindtigergames.werescrewed.graphics.SpriteBatch;
-import com.blindtigergames.werescrewed.graphics.TextureAtlas;
 import com.blindtigergames.werescrewed.joint.JointFactory;
-import com.blindtigergames.werescrewed.joint.PrismaticJointBuilder;
-import com.blindtigergames.werescrewed.joint.RevoluteJointBuilder;
 import com.blindtigergames.werescrewed.level.Level;
 import com.blindtigergames.werescrewed.util.Util;
 
@@ -86,9 +71,8 @@ public class PhysicsTestScreen extends Screen {
 
 	private Skeleton dynSkel2;
 	private Skeleton s;
-	
+
 	StructureScrew limit;
-	
 
 	/**
 	 * Defines all necessary components in a screen for testing different
@@ -135,68 +119,74 @@ public class PhysicsTestScreen extends Screen {
 
 		Gdx.app.setLogLevel( Application.LOG_DEBUG );
 
-		
 		initCheckPoints( );
 		initGround( );
 		// connectedRoom( );
 		movingSkeleton( );
-		
-		buildCannon(new Vector2(1600,50), 200, 200);
 
-		PowerSwitch pswitch = new PowerSwitch("pwsstsf", new Vector2( 512, 200 ), world);
+		buildCannon( new Vector2( 1600, 50 ), 200, 200 );
+
+		PowerSwitch pswitch = new PowerSwitch( "pwsstsf",
+				new Vector2( 512, 200 ), world );
 		rootSkeleton.addEventTrigger( pswitch );
-		
-		createFire();	
+
+		createFire( );
 	}
-	
-	//width & height in pixels
-	//pos is position of bottom axis
-	void buildCannon(Vector2 pos, int widthPix, int heightPix){
-		if(widthPix<=64)throw new RuntimeException( "Cannon width needs to be greater than 64 (2tiles) to work properly" );
-		PlatformBuilder pb = new PlatformBuilder( world ).tileSet( "TilesetTest" );
+
+	// width & height in pixels
+	// pos is position of bottom axis
+	void buildCannon( Vector2 pos, int widthPix, int heightPix ) {
+		if ( widthPix <= 64 )
+			throw new RuntimeException(
+					"Cannon width needs to be greater than 64 (2tiles) to work properly" );
+		PlatformBuilder pb = new PlatformBuilder( world )
+				.tileSet( "TilesetTest" );
 		SkeletonBuilder sb = new SkeletonBuilder( world );
-		
-		Vector2 dim = new Vector2(((int)(widthPix/32))-2,((int)(heightPix/32)));
-		Vector2 left = new Vector2(pos.x-dim.x/2*32-16, pos.y-16+dim.y*16);
-		Vector2 right = new Vector2(pos.x+dim.x/2*32+16, pos.y-16+dim.y*16);
-		
-		Skeleton s = sb.position( pos.cpy() ).build( );
+
+		Vector2 dim = new Vector2( ( ( int ) ( widthPix / 32 ) ) - 2,
+				( ( int ) ( heightPix / 32 ) ) );
+		Vector2 left = new Vector2( pos.x - dim.x / 2 * 32 - 16, pos.y - 16
+				+ dim.y * 16 );
+		Vector2 right = new Vector2( pos.x + dim.x / 2 * 32 + 16, pos.y - 16
+				+ dim.y * 16 );
+
+		Skeleton s = sb.position( pos.cpy( ) ).build( );
 		skeleton.addSkeleton( s );
 		s.setFgFade( false );
-		
-		//base
-		s.addPlatform( pb.name( "cannon-base" ).dimensions( dim.x,1 ).position( pos.cpy() ).buildTilePlatform( ) );
-		//left
-		s.addPlatform( pb.name( "cannon-left" ).dimensions( 1,dim.y ).position( left.cpy() ).buildTilePlatform( ) );
-		//right
-		s.addPlatform( pb.name( "cannon-right" ).dimensions( 1,dim.y ).position( right.cpy() ).buildTilePlatform( ) );
-		
+
+		// base
+		s.addPlatform( pb.name( "cannon-base" ).dimensions( dim.x, 1 )
+				.position( pos.cpy( ) ).buildTilePlatform( ) );
+		// left
+		s.addPlatform( pb.name( "cannon-left" ).dimensions( 1, dim.y )
+				.position( left.cpy( ) ).buildTilePlatform( ) );
+		// right
+		s.addPlatform( pb.name( "cannon-right" ).dimensions( 1, dim.y )
+				.position( right.cpy( ) ).buildTilePlatform( ) );
+
 		EventTriggerBuilder etb = new EventTriggerBuilder( world );
-		
-		int quarter = ( int ) ( dim.y*32/4 );
-		Vector2 eventPos = new Vector2(pos.x,pos.y+16+quarter);
-		
-		Array< Vector2 > triggerVerts = new Array< Vector2 >(4);
-		//triggerVerts.add( new Vector2 )
-		
-		triggerVerts.add( new Vector2( quarter,-quarter) );
-		triggerVerts.add( new Vector2( quarter, quarter) );
-		triggerVerts.add( new Vector2(-quarter, quarter) );
-		triggerVerts.add( new Vector2(-quarter,-quarter) );
-		triggerVerts.add( new Vector2(-quarter,-quarter) );
-		
-		s.setLocalRot( -Util.PI/4 );
+
+		int quarter = ( int ) ( dim.y * 32 / 4 );
+		Vector2 eventPos = new Vector2( pos.x, pos.y + 16 + quarter );
+
+		Array< Vector2 > triggerVerts = new Array< Vector2 >( 4 );
+		// triggerVerts.add( new Vector2 )
+
+		triggerVerts.add( new Vector2( quarter, -quarter ) );
+		triggerVerts.add( new Vector2( quarter, quarter ) );
+		triggerVerts.add( new Vector2( -quarter, quarter ) );
+		triggerVerts.add( new Vector2( -quarter, -quarter ) );
+		triggerVerts.add( new Vector2( -quarter, -quarter ) );
+
+		s.setLocalRot( -Util.PI / 4 );
 		EventTrigger et = etb.name( "cannon-trigger" ).setVerts( triggerVerts )
-				.extraBorder( 0 )
-				.position( eventPos )//.addEntity( s )
+				.extraBorder( 0 ).position( eventPos )
+				// .addEntity( s )
 				.beginAction( new CannonLaunchAction( s, .3f, 1 ) )
-				.repeatable( )
-				.build( );
+				.repeatable( ).build( );
 		s.addEventTrigger( et );
-		
+
 	}
-	
-	
 
 	// This is how you make a whole room fall, by welding everything together
 	void connectedRoom( ) {
@@ -315,21 +305,19 @@ public class PhysicsTestScreen extends Screen {
 		s5.addWeldJoint( plat6 );
 		s5.addWeldJoint( plat7 );
 		dynSkel2.addScrewForDraw( s5 );
-		
-		
+
 		TiledPlatform box = platBuilder.name( "box" ).dynamic( )
 				.position( 2500, 250 ).dimensions( 3, 3 ).oneSided( false )
 				.buildTilePlatform( );
 		box.body.setFixedRotation( false );
 		box.quickfixCollisions( );
 		rootSkeleton.addDynamicPlatform( box );
-		
-		limit = new StructureScrew( "box", new Vector2(2700, 250), 100, world, Vector2.Zero );
+
+		limit = new StructureScrew( "box", new Vector2( 2700, 250 ), 100,
+				world, Vector2.Zero );
 		limit.addStructureJoint( box, 45f );
 		limit.addStructureJoint( rootSkeleton );
 		rootSkeleton.addScrewForDraw( limit );
-
-		
 
 	}
 
@@ -380,6 +368,7 @@ public class PhysicsTestScreen extends Screen {
 		// ) );
 		// world.createJoint( revoluteJointDef2 );
 
+		@SuppressWarnings( "unused" )
 		PathBuilder pb = new PathBuilder( );
 		// ttt.addMover( pb.begin( ttt ).ease( TweenEquations.easeInOutExpo
 		// ).target( -1000, 0, 20 )
@@ -833,12 +822,12 @@ public class PhysicsTestScreen extends Screen {
 		//
 		// world.step( 1 / 60f, 6, 3 );
 		//
-		 if ( Gdx.input.isKeyPressed( Input.Keys.ESCAPE ) ) {
-			 if ( !ScreenManager.escapeHeld ) {
-				 ScreenManager.getInstance( ).show( ScreenType.PAUSE );
-			 }
-		 } else
-			 ScreenManager.escapeHeld = false;
+		if ( Gdx.input.isKeyPressed( Input.Keys.ESCAPE ) ) {
+			if ( !ScreenManager.escapeHeld ) {
+				ScreenManager.getInstance( ).show( ScreenType.PAUSE );
+			}
+		} else
+			ScreenManager.escapeHeld = false;
 
 	}
 
@@ -865,16 +854,19 @@ public class PhysicsTestScreen extends Screen {
 		}
 
 	}
-	
-	private void createFire(){
-		Skeleton fireSkele = new SkeletonBuilder( world ).name( "fireSkeleton" ).position( 100,200 ).build( );
-		Fire f = new Fire( "fire", fireSkele.getPositionPixel( ).add(0,100), 100, 200, world, true );
+
+	private void createFire( ) {
+		Skeleton fireSkele = new SkeletonBuilder( world ).name( "fireSkeleton" )
+				.position( 100, 200 ).build( );
+		Fire f = new Fire( "fire", fireSkele.getPositionPixel( ).add( 0, 100 ),
+				100, 200, world, true );
 		fireSkele.addHazard( f );
 		rootSkeleton.addSkeleton( fireSkele );
 		fireSkele.setFgFade( false );
 		fireSkele.setMoverAtCurrentState( new RotateTweenMover( fireSkele ) );
-		
-		Steam s = new Steam( "steam", fireSkele.getPositionPixel( ).add(0,-100), 100, 100, world );
+
+		Steam s = new Steam( "steam", fireSkele.getPositionPixel( ).add( 0,
+				-100 ), 100, 100, world );
 		fireSkele.addSteam( s );
 	}
 

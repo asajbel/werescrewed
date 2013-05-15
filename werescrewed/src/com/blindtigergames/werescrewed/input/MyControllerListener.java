@@ -1,6 +1,5 @@
 package com.blindtigergames.werescrewed.input;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.ControllerListener;
 import com.badlogic.gdx.controllers.Controllers;
@@ -58,7 +57,7 @@ public class MyControllerListener implements ControllerListener {
 	public final static float DEADZONE = 0.2f;
 	private final static float TRIGGER_DEADZONE = 0.3f;
 	private final static float ANALOG_CENTER = 0.7f;
-	
+
 	private boolean checkLeftStickForScrewing = false;
 	private boolean checkRightStickForScrewing = false;
 
@@ -126,43 +125,45 @@ public class MyControllerListener implements ControllerListener {
 		}
 
 		// Resetting left Stick
-		if ( !checkRightStickForScrewing && ( axisLX < ANALOG_CENTER && axisLY < ANALOG_CENTER )
+		if ( !checkRightStickForScrewing
+				&& ( axisLX < ANALOG_CENTER && axisLY < ANALOG_CENTER )
 				&& ( axisLX > -ANALOG_CENTER && axisLY > -ANALOG_CENTER ) ) {
 			screwingPressed = false;
 			unscrewingPressed = false;
 			screwCounter = 0;
 			currLeftAnalogAngle = 0;
 			checkLeftStickForScrewing = false;
-		} else{
-			if(!checkRightStickForScrewing){
+		} else {
+			if ( !checkRightStickForScrewing ) {
 				checkLeftStickForScrewing = true;
 			}
 		}
-		
+
 		// Resetting Right Stick
-		if (!checkLeftStickForScrewing && ( axisRX < ANALOG_CENTER && axisRY < ANALOG_CENTER )
+		if ( !checkLeftStickForScrewing
+				&& ( axisRX < ANALOG_CENTER && axisRY < ANALOG_CENTER )
 				&& ( axisRX > -ANALOG_CENTER && axisRY > -ANALOG_CENTER ) ) {
 			screwingPressed = false;
 			unscrewingPressed = false;
 			screwCounter = 0;
 			currRightAnalogAngle = 0;
 			checkRightStickForScrewing = false;
-		} else{
-			if(!checkLeftStickForScrewing){
+		} else {
+			if ( !checkLeftStickForScrewing ) {
 				checkRightStickForScrewing = true;
 			}
 		}
-		
-		if(checkLeftStickForScrewing && checkRightStickForScrewing){
+
+		if ( checkLeftStickForScrewing && checkRightStickForScrewing ) {
 			leftStickScrew( );
-			
-		} else if (checkLeftStickForScrewing){
+
+		} else if ( checkLeftStickForScrewing ) {
 			leftStickScrew( );
-			
-		}else {
-			rightStickScrew();
+
+		} else {
+			rightStickScrew( );
 		}
-		
+
 		return false;
 	}
 
@@ -172,7 +173,7 @@ public class MyControllerListener implements ControllerListener {
 	 */
 	@Override
 	public boolean buttonDown( Controller controller, int buttonIndex ) {
-	//	Gdx.app.log( controller.getName( ), String.valueOf( buttonIndex ) ); 
+		// Gdx.app.log( controller.getName( ), String.valueOf( buttonIndex ) );
 		// Setting jump/pause/bumper
 		if ( buttonIndex == Mapping.BUTTON_FACE_BOT )
 			jumpPressed = true;
@@ -181,7 +182,7 @@ public class MyControllerListener implements ControllerListener {
 				|| buttonIndex == Mapping.BUTTON_L1
 				|| buttonIndex == Mapping.BUTTON_L2 )
 			attachScrewPressed = true;
-		if ( buttonIndex == Mapping.BUTTON_START 
+		if ( buttonIndex == Mapping.BUTTON_START
 				|| buttonIndex == Mapping.BUTTON_SYSTEM )
 			pausePressed = true;
 		if ( buttonIndex == Mapping.BUTTON_FACE_LEFT )
@@ -213,14 +214,14 @@ public class MyControllerListener implements ControllerListener {
 		// Resetting buttons
 		if ( buttonIndex == Mapping.BUTTON_FACE_BOT )
 			jumpPressed = false;
-		if ( buttonIndex == Mapping.BUTTON_R1 
+		if ( buttonIndex == Mapping.BUTTON_R1
 				|| buttonIndex == Mapping.BUTTON_R2
 				|| buttonIndex == Mapping.BUTTON_L1
 				|| buttonIndex == Mapping.BUTTON_L2 )
 			attachScrewPressed = false;
-//		if ( buttonIndex == Mapping.BUTTON_START 
-//				|| buttonIndex == Mapping.BUTTON_SYSTEM )
-//			pausePressed = false;
+		// if ( buttonIndex == Mapping.BUTTON_START
+		// || buttonIndex == Mapping.BUTTON_SYSTEM )
+		// pausePressed = false;
 		if ( buttonIndex == Mapping.BUTTON_FACE_LEFT )
 			grabPressed = false;
 
@@ -251,7 +252,7 @@ public class MyControllerListener implements ControllerListener {
 	@Override
 	public void disconnected( Controller controller ) {
 		isConnected = false;
-		Gdx.app.log( null, "A CONTROLLER WAS DISCONNECTED" );
+		// Gdx.app.log( null, "A CONTROLLER WAS DISCONNECTED" );
 
 	}
 
@@ -520,10 +521,9 @@ public class MyControllerListener implements ControllerListener {
 		currRightAnalogAngle = ( int ) Math.toDegrees( Math.atan2( -axisRY,
 				-axisRX ) ) + 180;
 
-		
 		prevRegion = currRegion;
 		currRegion = currRightAnalogAngle / 5;
-		
+
 		if ( currRegion - prevRegion > 60 ) {
 			unscrewingPressed = false;
 			screwingPressed = true;
@@ -539,17 +539,15 @@ public class MyControllerListener implements ControllerListener {
 		}
 
 	}
-	
+
 	private void leftStickScrew( ) {
 		axisLY *= -1;
 		currLeftAnalogAngle = ( int ) Math.toDegrees( Math.atan2( -axisLY,
 				-axisLX ) ) + 180;
-		
-		
+
 		prevRegion = currRegion;
 		currRegion = currLeftAnalogAngle / 5;
 
-		
 		if ( currRegion - prevRegion > 60 ) {
 			unscrewingPressed = false;
 			screwingPressed = true;
@@ -565,12 +563,12 @@ public class MyControllerListener implements ControllerListener {
 		}
 
 	}
-	
-	public boolean checkRightStickForScrewing(){
+
+	public boolean checkRightStickForScrewing( ) {
 		return checkRightStickForScrewing;
 	}
-	
-	public boolean checkLeftStickForScrewing(){
+
+	public boolean checkLeftStickForScrewing( ) {
 		return checkLeftStickForScrewing;
 	}
 }
