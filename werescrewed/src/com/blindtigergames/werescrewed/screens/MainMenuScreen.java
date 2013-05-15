@@ -8,10 +8,12 @@ import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.math.Vector2;
 import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.entity.Sprite;
+import com.blindtigergames.werescrewed.entity.animator.SingleSpinemator;
 import com.blindtigergames.werescrewed.graphics.SpriteBatch;
-import com.blindtigergames.werescrewed.gui.Label;
+//import com.blindtigergames.werescrewed.gui.Label;
 import com.blindtigergames.werescrewed.gui.TextButton;
 import com.blindtigergames.werescrewed.gui.TextButton.ButtonHandler;
 
@@ -24,13 +26,15 @@ class MainMenuScreen extends Screen {
 	private OrthographicCamera camera = null;
 	private BitmapFont font = null;
 	private BitmapFont fancyFont;
-	private Label headingLabel = null;
+//	private Label headingLabel = null;
 	private TextButton exitButton = null;
 	private int lineHeight = 0;
 
 	private TextButton storyButton = null;
 	private TextButton levelSelectButton = null;
 	private TextButton optionsButton = null;
+	private SingleSpinemator man = null;
+	private SingleSpinemator lady = null;
 
 	TweenManager manager = new TweenManager( );
 
@@ -38,6 +42,8 @@ class MainMenuScreen extends Screen {
 		batch = new SpriteBatch( );
 		font = new BitmapFont( );
 		fancyFont = WereScrewedGame.manager.getFont( "longdon" );
+		man = new SingleSpinemator( "red_male_atlas", "male", "fall_idle" );
+		lady = new SingleSpinemator( "red_female_atlas", "female", "fall_idle" );
 
 		loadButtons( );
 	}
@@ -48,6 +54,8 @@ class MainMenuScreen extends Screen {
 		Gdx.gl.glClearColor( 0.0f, 0.0f, 0.0f, 1f );
 		Gdx.gl.glClear( GL10.GL_COLOR_BUFFER_BIT );
 		manager.update( delta );
+		man.update( delta );
+		lady.update( delta );
 		batch.begin( );
 		menuBG.draw( batch );
 
@@ -61,6 +69,8 @@ class MainMenuScreen extends Screen {
 			setAlpha( -0.02f );
 		transition.draw( batch, alpha );
 
+		man.draw( batch );
+		lady.draw( batch );
 		batch.end( );
 
 		if ( Gdx.input.isKeyPressed( Keys.P ) ) {
@@ -90,7 +100,7 @@ class MainMenuScreen extends Screen {
 		camera.setToOrtho( false, width, height );
 		batch.setProjectionMatrix( camera.combined );
 		int leftX = ( int ) menuBG.getWidth( ) / 2;
-		int centerY = height / 5;
+		int centerY = height / 2;
 		@SuppressWarnings( "unused" )
 		float scaleX = width / 1280f;
 		@SuppressWarnings( "unused" )
@@ -102,18 +112,20 @@ class MainMenuScreen extends Screen {
 		menuBG.setPosition( 0, height / 2 - menuBG.getHeight( ) / 2 );
 		// menuBG.setPosition( width / 2 - menuBG.getWidth( ) / 2, height / 2 -
 		// menuBG.getHeight( ) / 2 );
-		headingLabel.setX( leftX - headingLabel.getWidth( ) / 2 );
-		headingLabel.setY( centerY + 7 * lineHeight );
+//		headingLabel.setX( leftX - headingLabel.getWidth( ) / 2 );
+//		headingLabel.setY( centerY - 0 * lineHeight );
 		storyButton.setX( leftX - storyButton.getWidth( ) / 2 );
-		storyButton.setY( centerY + 5 * lineHeight );
+		storyButton.setY( height / 2 + 2 * lineHeight );
 		levelSelectButton.setX( leftX - levelSelectButton.getWidth( ) / 2 );
-		levelSelectButton.setY( centerY + 4 * lineHeight );
+		levelSelectButton.setY( centerY + 1 * lineHeight );
 		optionsButton.setX( leftX - optionsButton.getWidth( ) / 2 );
-		optionsButton.setY( centerY + 3 * lineHeight );
+		optionsButton.setY( centerY + 0 * lineHeight );
 		// imoverButton.setX( centerX - imoverButton.getWidth( )/2 );
 		// imoverButton.setY( centerY - lineHeight );
 		exitButton.setX( leftX - exitButton.getWidth( ) / 2 );
-		exitButton.setY( centerY + 2 * lineHeight );
+		exitButton.setY( centerY + -1 * lineHeight );
+		man.setPosition( new Vector2( width / 2 - 50, height / 2 + 50 ) );
+		lady.setPosition( new Vector2( width / 2 + 50, height / 2 - 50 ) );
 
 		// Tween.to( storyButton, ButtonTweenAccessor.POSITION_X, 1 ).ease(
 		// TweenEquations.easeInBounce ).target( leftX - storyButton.getWidth(
@@ -132,7 +144,7 @@ class MainMenuScreen extends Screen {
 		menuBG = new Sprite( back );
 		transition = new Sprite( trans );
 		lineHeight = Math.round( 2.5f * font.getCapHeight( ) + 50 );
-		headingLabel = new Label( "We're Screwed!!", fancyFont );
+//		headingLabel = new Label( "We're Screwed!!", fancyFont );
 
 		storyButton = new TextButton( "Start", fancyFont,
 				new ScreenSwitchHandler( ScreenType.LOADING_1 ) );

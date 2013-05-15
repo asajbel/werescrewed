@@ -71,29 +71,19 @@ public class SingleSpinemator implements ISpinemator {
 	public void update( float delta ) {
 		time += delta;
 		anim.apply( skel, time, true );
-		if ( position != null ) {
-			root.setX( position.x );
-			root.setY( position.y );
-		}
-		if ( scale != null ) {
-			root.setScaleX( scale.x );
-			root.setScaleY( scale.y );
-		} else {
-			root.setScaleX( 1f );
-			root.setScaleY( 1f );
-		}
 		skel.updateWorldTransform( );
-		position = null;
 	}
 
 	@Override
 	public void setPosition( Vector2 pos ) {
-		position = pos;
+		root.setX( pos.x );
+		root.setY( pos.y );
 	}
 
 	@Override
 	public void setScale( Vector2 scale ) {
-		this.scale = scale;
+		root.setScaleX( scale.x );
+		root.setScaleY( scale.y );
 	}
 
 	@Override

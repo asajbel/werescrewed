@@ -5,8 +5,10 @@ import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.math.Vector2;
 import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.entity.Sprite;
+import com.blindtigergames.werescrewed.entity.animator.SingleSpinemator;
 import com.blindtigergames.werescrewed.gui.Label;
 import com.blindtigergames.werescrewed.gui.TextButton;
 
@@ -27,6 +29,8 @@ public class LevelSelectScreen extends Screen {
 	private TextButton level1Button;
 	private TextButton backButton = null;
 	private TextButton dragonButton = null;
+	private SingleSpinemator man = null;
+	private SingleSpinemator lady = null;
 
 	public LevelSelectScreen( ) {
 		super( );
@@ -42,6 +46,8 @@ public class LevelSelectScreen extends Screen {
 		transition = new Sprite( trans );
 		lineHeight = Math.round( 2.5f * font.getCapHeight( ) + 40 );
 		screenLabel = new Label( "Level Select", fancyFont );
+		man = new SingleSpinemator( "red_male_atlas", "male", "fall_idle" );
+		lady = new SingleSpinemator( "red_female_atlas", "female", "fall_idle" );
 		loadButtons( );
 	}
 
@@ -68,6 +74,8 @@ public class LevelSelectScreen extends Screen {
 		Gdx.gl.glClearColor( 0.0f, 0.0f, 0.0f, 1f );
 		Gdx.gl.glClear( GL10.GL_COLOR_BUFFER_BIT );
 
+		man.update( delta );
+		lady.update( delta );
 		batch.begin( );
 		menuBG.draw( batch );
 		// screenLabel.draw( batch );
@@ -82,7 +90,8 @@ public class LevelSelectScreen extends Screen {
 		if ( !finish )
 			setAlpha( -0.02f );
 		transition.draw( batch, alpha );
-
+		man.draw( batch );
+		lady.draw( batch );
 		batch.end( );
 
 	}
@@ -94,7 +103,7 @@ public class LevelSelectScreen extends Screen {
 		camera.setToOrtho( false, width, height );
 		batch.setProjectionMatrix( camera.combined );
 		int leftX = ( int ) menuBG.getWidth( ) / 2;// / 5 - 20;
-		int centerY = height / 5;
+		int centerY = height / 2;
 		@SuppressWarnings( "unused" )
 		float scaleX = width / 1280f;
 		@SuppressWarnings( "unused" )
@@ -111,18 +120,21 @@ public class LevelSelectScreen extends Screen {
 
 		// quick fix
 		physicsButton.setX( leftX - physicsButton.getWidth( ) / 2 );
-		physicsButton.setY( centerY + lineHeight * 6 );
+		physicsButton.setY( centerY + lineHeight * 3 );
 		resurrectButton.setX( leftX - resurrectButton.getWidth( ) / 2 );
-		resurrectButton.setY( centerY + lineHeight * 5 );
+		resurrectButton.setY( centerY + lineHeight * 2 );
 		hazardButton.setX( leftX - hazardButton.getWidth( ) / 2 );
-		hazardButton.setY( centerY + lineHeight * 4 );
+		hazardButton.setY( centerY + lineHeight * 1 );
 		level1Button.setX( leftX - level1Button.getWidth( ) / 2 );
-		level1Button.setY( centerY + lineHeight * 3 );
+		level1Button.setY( centerY + lineHeight * 0 );
 		dragonButton.setX( leftX - dragonButton.getWidth( ) / 2 );
-		dragonButton.setY( centerY + lineHeight * 2 );
+		dragonButton.setY( centerY + lineHeight * -1 );
 
 		backButton.setX( leftX - backButton.getWidth( ) / 2 );
-		backButton.setY( 100 + backButton.getHeight( ) );
+		backButton.setY( centerY + lineHeight * -2 );
+
+		man.setPosition( new Vector2( width / 2 - 50, height / 2 + 50 ) );
+		lady.setPosition( new Vector2( width / 2 + 50, height / 2 - 50 ) );
 
 	}
 
