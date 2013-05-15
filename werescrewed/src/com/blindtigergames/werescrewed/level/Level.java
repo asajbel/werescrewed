@@ -189,7 +189,7 @@ public class Level {
 		if ( debug )
 			debugRenderer.render( world, camera.combined( ) );
 		world.step( WereScrewedGame.oneOverTargetFrameRate, 6, 4 );
-
+		
 	}
 
 	private void drawBGStuff( SpriteBatch batch, float deltaTime ) {
