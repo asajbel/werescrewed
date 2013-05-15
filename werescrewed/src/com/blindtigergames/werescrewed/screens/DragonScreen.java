@@ -68,7 +68,6 @@ public class DragonScreen extends Screen {
 				200, 200);
 		
 		
-		
 		Skeleton jaw_skeleton = ( Skeleton ) LevelFactory.entities.get( "jaw_skeleton" );
 		Timeline t = Timeline.createSequence( );
 			
@@ -324,8 +323,12 @@ public class DragonScreen extends Screen {
 
 		AnalogRotateMover anlgRot = new AnalogRotateMover( .6f, level.world );
 		
+		AnalogRotateMover anlgRot2 = new AnalogRotateMover( -0.6f, level.world );
+		
 		tail2PuzzleScrew1.puzzleManager.addMover( anlgRot );
 		tail2PuzzleScrew2.puzzleManager.addMover( anlgRot );
+		tail2PuzzleScrew1.puzzleManager.addMover( anlgRot2 );
+		tail2PuzzleScrew2.puzzleManager.addMover( anlgRot2 );
 		
 		tail2PuzzleScrew1.puzzleManager.addScrew( tail2PuzzleScrew2 );
 		tail2PuzzleScrew2.puzzleManager.addScrew( tail2PuzzleScrew1 );
