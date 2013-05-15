@@ -288,20 +288,20 @@ public class TiledPlatform extends Platform {
 						* body.getAngle( ) );
 				d.tileSprite.draw( batch );
 			}
-			for ( Screw s : screws )
-				s.draw( batch, deltaTime );
-			
-			if ( bleedTiles != null ){
-				v = bleedTiles.listIterator( );
-				while ( v.hasNext( ) ) {
-					d = v.next( );
-					d.tileSprite.setPosition( bodypos.x - d.xOffset, bodypos.y
-							- d.yOffset );
-					d.tileSprite.setRotation( MathUtils.radiansToDegrees
-							* body.getAngle( ) );
-					d.tileSprite.draw( batch );
-				}
-			}
+//			for ( Screw s : screws )
+//				s.draw( batch, deltaTime );
+//			
+//			if ( bleedTiles != null ){
+//				v = bleedTiles.listIterator( );
+//				while ( v.hasNext( ) ) {
+//					d = v.next( );
+//					d.tileSprite.setPosition( bodypos.x - d.xOffset, bodypos.y
+//							- d.yOffset );
+//					d.tileSprite.setRotation( MathUtils.radiansToDegrees
+//							* body.getAngle( ) );
+//					d.tileSprite.draw( batch );
+//				}
+//			}
 		}
 		//drawOrigin( batch );
 		//drawFGDecals( batch );

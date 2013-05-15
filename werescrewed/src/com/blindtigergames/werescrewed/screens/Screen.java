@@ -264,10 +264,9 @@ public class Screen implements com.badlogic.gdx.Screen {
 	private void updateStep(float delta) {   
 		accum += delta;  
 		Gdx.app.log( this.toString( ) + " Start", String.valueOf( accum * 60f ) );
-		accum = Math.min( accum, maxAccum );
-		while (accum > step) {    
+		while (accum >= step) {    
 			Gdx.app.log( this.toString( ), String.valueOf( accum * 60f) );
-			level.update( accum );
+			level.update( step );
 		    accum -= step;                  
 		}                                        
 	}         
