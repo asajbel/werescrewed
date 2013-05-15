@@ -40,7 +40,7 @@
                 <Item xsi:type="PathItem" Name="chestSkeleton" Visible="true">
                     <Position>
                         <X>560</X>
-                        <Y>-5040</Y>
+                        <Y>-5056</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -72,11 +72,11 @@
                         </Vector2>
                         <Vector2>
                             <X>2288</X>
-                            <Y>-1376</Y>
+                            <Y>-1408</Y>
                         </Vector2>
                         <Vector2>
                             <X>-2307</X>
-                            <Y>-1377</Y>
+                            <Y>-1409</Y>
                         </Vector2>
                         <Vector2>
                             <X>-2306</X>
@@ -90,35 +90,35 @@
                     <WorldPoints>
                         <Vector2>
                             <X>560</X>
-                            <Y>-5040</Y>
+                            <Y>-5056</Y>
                         </Vector2>
                         <Vector2>
                             <X>-1088</X>
-                            <Y>-3472</Y>
+                            <Y>-3488</Y>
                         </Vector2>
                         <Vector2>
                             <X>2352</X>
-                            <Y>-3440</Y>
+                            <Y>-3456</Y>
                         </Vector2>
                         <Vector2>
                             <X>2848</X>
-                            <Y>-5856</Y>
+                            <Y>-5872</Y>
                         </Vector2>
                         <Vector2>
                             <X>2848</X>
-                            <Y>-6416</Y>
+                            <Y>-6464</Y>
                         </Vector2>
                         <Vector2>
                             <X>-1747</X>
-                            <Y>-6417</Y>
+                            <Y>-6465</Y>
                         </Vector2>
                         <Vector2>
                             <X>-1746</X>
-                            <Y>-5920</Y>
+                            <Y>-5936</Y>
                         </Vector2>
                         <Vector2>
                             <X>-1088</X>
-                            <Y>-3472</Y>
+                            <Y>-3488</Y>
                         </Vector2>
                     </WorldPoints>
                     <IsPolygon>false</IsPolygon>
@@ -9013,8 +9013,8 @@
                 </Item>
                 <Item xsi:type="PathItem" Name="head_outline_left" Visible="true">
                     <Position>
-                        <X>-704</X>
-                        <Y>-6816</Y>
+                        <X>-720</X>
+                        <Y>-6800</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -9031,11 +9031,11 @@
                         </Vector2>
                         <Vector2>
                             <X>-48</X>
-                            <Y>416</Y>
+                            <Y>384</Y>
                         </Vector2>
                         <Vector2>
                             <X>48</X>
-                            <Y>416</Y>
+                            <Y>384</Y>
                         </Vector2>
                         <Vector2>
                             <X>48</X>
@@ -9047,33 +9047,33 @@
                         </Vector2>
                         <Vector2>
                             <X>-48</X>
-                            <Y>416</Y>
+                            <Y>384</Y>
                         </Vector2>
                     </LocalPoints>
                     <WorldPoints>
                         <Vector2>
-                            <X>-704</X>
-                            <Y>-6816</Y>
+                            <X>-720</X>
+                            <Y>-6800</Y>
                         </Vector2>
                         <Vector2>
-                            <X>-752</X>
-                            <Y>-6400</Y>
+                            <X>-768</X>
+                            <Y>-6416</Y>
                         </Vector2>
                         <Vector2>
-                            <X>-656</X>
-                            <Y>-6400</Y>
+                            <X>-672</X>
+                            <Y>-6416</Y>
                         </Vector2>
                         <Vector2>
-                            <X>-656</X>
-                            <Y>-7152</Y>
+                            <X>-672</X>
+                            <Y>-7136</Y>
                         </Vector2>
                         <Vector2>
-                            <X>-752</X>
-                            <Y>-7056</Y>
+                            <X>-768</X>
+                            <Y>-7040</Y>
                         </Vector2>
                         <Vector2>
-                            <X>-752</X>
-                            <Y>-6400</Y>
+                            <X>-768</X>
+                            <Y>-6416</Y>
                         </Vector2>
                     </WorldPoints>
                     <IsPolygon>false</IsPolygon>
@@ -23565,8 +23565,8 @@
         <NextItemNumber>939</NextItemNumber>
         <ContentRootFolder>gleed-textures</ContentRootFolder>
         <CameraPosition>
-            <X>1058.33484</X>
-            <Y>-1666.124</Y>
+            <X>141.666534</X>
+            <Y>-1832.79065</Y>
         </CameraPosition>
         <Version>1.3.0.0</Version>
     </EditorRelated>
