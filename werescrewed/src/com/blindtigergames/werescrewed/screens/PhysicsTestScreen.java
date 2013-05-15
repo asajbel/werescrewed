@@ -344,7 +344,7 @@ public class PhysicsTestScreen extends Screen {
 
 		s = new Skeleton( "skeleton7", new Vector2( -700, 700 ), null, world,
 				BodyType.KinematicBody );
-s.setFgFade( false );
+		s.setFgFade( false );
 		TiledPlatform ttt = platBuilder.name( "ttt" ).kinematic( )
 				.position( -700, 1000 ).dimensions( 1, 5 ).oneSided( false )
 				.buildTilePlatform( );

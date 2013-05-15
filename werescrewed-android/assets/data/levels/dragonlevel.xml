@@ -3923,7 +3923,7 @@
                             <Y>-256</Y>
                         </Vector2>
                         <Vector2>
-                            <X>192</X>
+                            <X>224</X>
                             <Y>-256</Y>
                         </Vector2>
                     </LocalPoints>
@@ -3941,7 +3941,7 @@
                             <Y>-1120</Y>
                         </Vector2>
                         <Vector2>
-                            <X>9216</X>
+                            <X>9248</X>
                             <Y>-1120</Y>
                         </Vector2>
                     </WorldPoints>
@@ -9632,7 +9632,7 @@
         <NextItemNumber>875</NextItemNumber>
         <ContentRootFolder>gleed-textures</ContentRootFolder>
         <CameraPosition>
-            <X>10799.3193</X>
+            <X>9149.322</X>
             <Y>-1208.683</Y>
         </CameraPosition>
         <Version>1.3.0.0</Version>
