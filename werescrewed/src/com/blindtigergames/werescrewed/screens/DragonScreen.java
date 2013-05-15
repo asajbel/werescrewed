@@ -27,6 +27,8 @@ import com.blindtigergames.werescrewed.entity.hazard.Fire;
 import com.blindtigergames.werescrewed.entity.hazard.builders.HazardBuilder;
 import com.blindtigergames.werescrewed.entity.mover.AnalogRotateMover;
 import com.blindtigergames.werescrewed.entity.mover.IMover;
+import com.blindtigergames.werescrewed.entity.mover.LerpMover;
+import com.blindtigergames.werescrewed.entity.mover.LinearAxis;
 import com.blindtigergames.werescrewed.entity.mover.RockingMover;
 import com.blindtigergames.werescrewed.entity.mover.RotateTweenMover;
 import com.blindtigergames.werescrewed.entity.mover.TargetImpulseMover;
@@ -49,7 +51,10 @@ public class DragonScreen extends Screen {
 	PuzzleScrew puzzle_screw_balloon1;
 	Platform balloon1;
 	Skeleton balloon1_super;
+	PowerSwitch tail3Switch1, tail3Switch2, tail3Switch3;
 	
+	// the numbers here correspond to gleed numbers
+	Fire tail3Fire2, tail3Fire3, tail3Fire4, tail3Fire5, tail3Fire6;
 	public DragonScreen( ) {
 		super( );
 		String filename = "data/levels/dragonlevel.xml";
@@ -159,6 +164,8 @@ public class DragonScreen extends Screen {
 			time = 0;
 		}
 
+		tail3FireEventsUpdate();
+		
 		if(puzzle_screw_balloon1.getDepth( ) == puzzle_screw_balloon1.getMaxDepth( )){
 			if(balloon1_super.currentMover() == null){
 				Timeline t = Timeline.createSequence( );
@@ -326,9 +333,45 @@ public class DragonScreen extends Screen {
 		
 		tail2PuzzleScrew1.puzzleManager.addMover( anlgRot );
 		tail2PuzzleScrew2.puzzleManager.addMover( anlgRot );
+	//	tail2PuzzleScrew1.puzzleManager.addMover( anlgRot );
+	//	tail2PuzzleScrew2.puzzleManager.addMover( anlgRot );
 		
 		tail2PuzzleScrew1.puzzleManager.addScrew( tail2PuzzleScrew2 );
 		tail2PuzzleScrew2.puzzleManager.addScrew( tail2PuzzleScrew1 );
+		
+		PuzzleScrew tail3PuzzleScrew1 = ( PuzzleScrew ) LevelFactory.entities
+				.get( "tail3_puzzle_screw1" );
+		PuzzleScrew tail3PuzzleScrew2 = ( PuzzleScrew ) LevelFactory.entities
+				.get( "tail3_puzzle_screw2" );
+		
+		Platform tail3MoverPlat1 = (Platform) LevelFactory.entities.get( "tail3_mover_plat1" );
+		Platform tail3MoverPlat2 = (Platform) LevelFactory.entities.get( "tail3_mover_plat2" );
+		
+		float distance = 1000f;
+		
+		LerpMover lm1 = new LerpMover( tail3MoverPlat1.getPositionPixel( ),
+				new Vector2( tail3MoverPlat1.getPositionPixel( ).x ,
+						tail3MoverPlat1.getPositionPixel( ).y  + distance),
+				LinearAxis.VERTICAL );
+		
+		LerpMover lm2 = new LerpMover( tail3MoverPlat2.getPositionPixel( ),
+				new Vector2( tail3MoverPlat2.getPositionPixel( ).x ,
+						tail3MoverPlat2.getPositionPixel( ).y  + distance),
+				LinearAxis.VERTICAL );
+		
+		tail3PuzzleScrew1.puzzleManager.addEntity( tail3MoverPlat1 );
+		tail3PuzzleScrew1.puzzleManager.addEntity( tail3MoverPlat2 );
+		tail3PuzzleScrew2.puzzleManager.addEntity( tail3MoverPlat1 );
+		tail3PuzzleScrew2.puzzleManager.addEntity( tail3MoverPlat2 );
+		
+		
+		tail3PuzzleScrew1.puzzleManager.addMover( lm1 );
+		tail3PuzzleScrew2.puzzleManager.addMover( lm1 );
+		tail3PuzzleScrew1.puzzleManager.addMover( lm2 );
+		tail3PuzzleScrew2.puzzleManager.addMover( lm2 );
+		
+		tail3PuzzleScrew1.puzzleManager.addScrew( tail3PuzzleScrew2 );
+		tail3PuzzleScrew2.puzzleManager.addScrew( tail3PuzzleScrew1 );
 		
 	}
 	
@@ -341,12 +384,25 @@ public class DragonScreen extends Screen {
 				.get( "tail3_middle_pipe2" );
 		
 		
-		//tail3MiddlePipe2.setLocalRot(  90f * Util.DEG_TO_RAD  );
+		tail3Fire2 = ( Fire ) LevelFactory.entities
+				.get( "tail3_fire2" );
+		tail3Fire3 = ( Fire ) LevelFactory.entities
+				.get( "tail3_fire3" );
+		tail3Fire4 = ( Fire ) LevelFactory.entities
+				.get( "tail3_fire4" );
+		tail3Fire4.setActiveHazard( false );
+		tail3Fire5 = ( Fire ) LevelFactory.entities
+				.get( "tail3_fire5" );
+		tail3Fire5.setActiveHazard( false );
+		tail3Fire6 = ( Fire ) LevelFactory.entities
+				.get( "tail3_fire6" );
 		
-		PowerSwitch tail3Switch1 = ( PowerSwitch ) LevelFactory.entities
+		tail3Switch1 = ( PowerSwitch ) LevelFactory.entities
 				.get( "tail3_switch1" );
-		PowerSwitch tail3Switch2 = ( PowerSwitch ) LevelFactory.entities
+		tail3Switch2 = ( PowerSwitch ) LevelFactory.entities
 				.get( "tail3_switch2" );
+		tail3Switch3 = ( PowerSwitch ) LevelFactory.entities
+				.get( "tail3_switch3" );
 
 		tail3Switch1.actOnEntity = true;
 		tail3Switch1.addEntityToTrigger( tail3MiddlePipe1 );
@@ -359,8 +415,38 @@ public class DragonScreen extends Screen {
 		tail3Switch2.addEntityToTrigger( tail3MiddlePipe1 );
 		tail3Switch2.addEntityToTrigger( tail3MiddlePipe2 );
 		tail3Switch2
-				.addBeginIAction( new RotateTweenAction( Util.PI / 2 ) );
-		tail3Switch2.addEndIAction( new RotateTweenAction( 0 ) );
+				.addBeginIAction( new RotateTweenAction(0 ) );
+		tail3Switch2.addEndIAction( new RotateTweenAction(  Util.PI / 2 ) );
 		
+	}
+	
+	void tail3FireEventsUpdate(){
+		if(tail3Switch1.isTurnedOn( ) && tail3Switch2.isTurnedOn( )){
+			tail3Fire2.setActiveHazard( true );
+			tail3Fire3.setActiveHazard( true );
+			tail3Fire4.setActiveHazard( false );
+			tail3Fire5.setActiveHazard( false );
+		} else if (tail3Switch1.isTurnedOn( )){
+			tail3Fire2.setActiveHazard( false );
+			tail3Fire3.setActiveHazard( false );
+			tail3Fire4.setActiveHazard( true );
+			tail3Fire5.setActiveHazard( true );
+		} else if (tail3Switch2.isTurnedOn( )){
+			tail3Fire2.setActiveHazard( true );
+			tail3Fire3.setActiveHazard( true );
+			tail3Fire4.setActiveHazard( false );
+			tail3Fire5.setActiveHazard( false );
+		}else{
+			tail3Fire2.setActiveHazard( true );
+			tail3Fire3.setActiveHazard( true );
+			tail3Fire4.setActiveHazard( false );
+			tail3Fire5.setActiveHazard( false );
+		}
+		
+		if(tail3Switch3.isTurnedOn( )){
+			tail3Fire6.setActiveHazard( false );
+		}else{
+			tail3Fire6.setActiveHazard( true );
+		}
 	}
 }

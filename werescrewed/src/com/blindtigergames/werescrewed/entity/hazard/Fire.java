@@ -19,11 +19,11 @@ import com.blindtigergames.werescrewed.util.Util;
 
 public class Fire extends Hazard {
 
-	//public ParticleEffect particleEffect;
+	public ParticleEffect particleEffect;
 	//public Array< ParticleEmitter > particleEmitter;
 	protected float width;
 	protected float height;
-	boolean upsideDown = true;
+	boolean upsideDown = true, started = true;
 	
 	/**
 	 * Constructor for fire
@@ -45,15 +45,14 @@ public class Fire extends Hazard {
 		this.height = height;
 		this.world = world;
 		this.activeHazard = isActive;
-		/*particleEffect = new ParticleEffect( );
-		particleEffect.load(
-				Gdx.files.internal( "data/particles/steam.p" ),
-				WereScrewedGame.manager.getAtlas( "particles" ));//Gdx.files.internal( "data/particles" ));//WereScrewedGame.manager.getAtlas( "particles" )
+		particleEffect = WereScrewedGame.manager.getParticleEffect( "fire" );
+		//particleEffect.setOffset(0f, -height);
 		particleEffect.setPosition( pos.x, pos.y);
-		particleEmitter = particleEffect.getEmitters( );
-		*/
-		addFrontParticleEffect( "fire", false, true );
+		
+		//addFrontParticleEffect( "fire", false, true );
 		constructBody( pos );
+		particleEffect.start( );
+		
 		//for( ParticleEmitter PE: particleEmitter)
 		//	PE.setContinuous( false );
 		
@@ -123,19 +122,31 @@ public class Fire extends Hazard {
 	 * @param deltaTime float
 	 */
 	public void draw( SpriteBatch batch, float deltaTime ) {
-		super.draw(batch, deltaTime);
-		if (Gdx.input.isKeyPressed( Input.Keys.TAB ))
-			flip( );
+	
 		if (Gdx.input.isKeyPressed( Input.Keys.BACKSLASH ))
-			setActiveHazard(!activeHazard);
-		//Vector2 pos = body.getPosition( ).mul( Util.BOX_TO_PIXEL );
-		//particleEffect.setPosition( pos.x, pos.y );
-		//particleEffect.setAngle( body.getAngle( ) );
-		//particleEffect.draw( batch, deltaTime );
-		//if(activeHazard){
-		//	particleEffect.start( );
-		//}
-		//TODO: on/off switch for active hazard
+			this.activeHazard = false;
+		
+		if(this.activeHazard){
+			
+			if(!started){
+				//getEffect( "fire" ).start( );
+				particleEffect.start( );
+				started = true;
+			}
+
+			particleEffect.setPosition( this.getPositionPixel( ).x, this.getPositionPixel().y);
+			particleEffect.setAngle( body.getAngle( ) );
+			particleEffect.draw( batch, deltaTime );
+
+		}else{
+			started = false;
+			//getEffect( "fire" ).allowCompletion( );
+			particleEffect.allowCompletion( );
+			particleEffect.setPosition( this.getPositionPixel( ).x, this.getPositionPixel().y);
+			particleEffect.setAngle( body.getAngle( ) );
+			particleEffect.draw( batch, deltaTime );
+		}
+		super.draw( batch, deltaTime );
 	}
 	
 }

@@ -4601,12 +4601,12 @@
                             <Y>0</Y>
                         </Vector2>
                         <Vector2>
-                            <X>-1264</X>
-                            <Y>-16</Y>
+                            <X>-832</X>
+                            <Y>-32</Y>
                         </Vector2>
                         <Vector2>
-                            <X>-1264</X>
-                            <Y>128</Y>
+                            <X>-832</X>
+                            <Y>112</Y>
                         </Vector2>
                         <Vector2>
                             <X>1408</X>
@@ -4617,8 +4617,8 @@
                             <Y>-160</Y>
                         </Vector2>
                         <Vector2>
-                            <X>-1264</X>
-                            <Y>-16</Y>
+                            <X>-832</X>
+                            <Y>-32</Y>
                         </Vector2>
                     </LocalPoints>
                     <WorldPoints>
@@ -4627,12 +4627,12 @@
                             <Y>-1824</Y>
                         </Vector2>
                         <Vector2>
-                            <X>10368</X>
-                            <Y>-1840</Y>
+                            <X>10800</X>
+                            <Y>-1856</Y>
                         </Vector2>
                         <Vector2>
-                            <X>10368</X>
-                            <Y>-1696</Y>
+                            <X>10800</X>
+                            <Y>-1712</Y>
                         </Vector2>
                         <Vector2>
                             <X>13040</X>
@@ -4643,8 +4643,8 @@
                             <Y>-1984</Y>
                         </Vector2>
                         <Vector2>
-                            <X>10368</X>
-                            <Y>-1840</Y>
+                            <X>10800</X>
+                            <Y>-1856</Y>
                         </Vector2>
                     </WorldPoints>
                     <IsPolygon>false</IsPolygon>
@@ -5009,6 +5009,950 @@
                     <FlipVertically>true</FlipVertically>
                     <texture_filename>structurescrew.png</texture_filename>
                     <asset_name>structurescrew</asset_name>
+                    <Origin>
+                        <X>32</X>
+                        <Y>32</Y>
+                    </Origin>
+                </Item>
+                <Item xsi:type="PathItem" Name="tail3_pipe1" Visible="true">
+                    <Position>
+                        <X>11072</X>
+                        <Y>-704</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>pipe</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>tail3_skeleton</string>
+                        </Property>
+                    </CustomProperties>
+                    <LocalPoints>
+                        <Vector2>
+                            <X>0</X>
+                            <Y>0</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>0</X>
+                            <Y>-192</Y>
+                        </Vector2>
+                    </LocalPoints>
+                    <WorldPoints>
+                        <Vector2>
+                            <X>11072</X>
+                            <Y>-704</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>11072</X>
+                            <Y>-896</Y>
+                        </Vector2>
+                    </WorldPoints>
+                    <IsPolygon>false</IsPolygon>
+                    <LineWidth>10</LineWidth>
+                    <LineColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </LineColor>
+                </Item>
+                <Item xsi:type="PathItem" Name="tail3_pipe2" Visible="true">
+                    <Position>
+                        <X>11072</X>
+                        <Y>-1216</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>pipe</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>tail3_skeleton</string>
+                        </Property>
+                    </CustomProperties>
+                    <LocalPoints>
+                        <Vector2>
+                            <X>0</X>
+                            <Y>0</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>0</X>
+                            <Y>-256</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>-192</X>
+                            <Y>-256</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>-192</X>
+                            <Y>-640</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>-192</X>
+                            <Y>-256</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>0</X>
+                            <Y>-256</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>192</X>
+                            <Y>-256</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>192</X>
+                            <Y>-704</Y>
+                        </Vector2>
+                    </LocalPoints>
+                    <WorldPoints>
+                        <Vector2>
+                            <X>11072</X>
+                            <Y>-1216</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>11072</X>
+                            <Y>-1472</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>10880</X>
+                            <Y>-1472</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>10880</X>
+                            <Y>-1856</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>10880</X>
+                            <Y>-1472</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>11072</X>
+                            <Y>-1472</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>11264</X>
+                            <Y>-1472</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>11264</X>
+                            <Y>-1920</Y>
+                        </Vector2>
+                    </WorldPoints>
+                    <IsPolygon>false</IsPolygon>
+                    <LineWidth>10</LineWidth>
+                    <LineColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </LineColor>
+                </Item>
+                <Item xsi:type="PathItem" Name="tail3_middle_pipe1" Visible="true">
+                    <Position>
+                        <X>11072</X>
+                        <Y>-1152</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>pipe</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>tail3_skeleton</string>
+                        </Property>
+                    </CustomProperties>
+                    <LocalPoints>
+                        <Vector2>
+                            <X>0</X>
+                            <Y>0</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>0</X>
+                            <Y>192</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>0</X>
+                            <Y>-128</Y>
+                        </Vector2>
+                    </LocalPoints>
+                    <WorldPoints>
+                        <Vector2>
+                            <X>11072</X>
+                            <Y>-1152</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>11072</X>
+                            <Y>-960</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>11072</X>
+                            <Y>-1280</Y>
+                        </Vector2>
+                    </WorldPoints>
+                    <IsPolygon>false</IsPolygon>
+                    <LineWidth>10</LineWidth>
+                    <LineColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </LineColor>
+                </Item>
+                <Item xsi:type="PathItem" Name="tail3_pipe3" Visible="true">
+                    <Position>
+                        <X>12352</X>
+                        <Y>-608</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>pipe</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>tail3_skeleton</string>
+                        </Property>
+                    </CustomProperties>
+                    <LocalPoints>
+                        <Vector2>
+                            <X>0</X>
+                            <Y>0</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>0</X>
+                            <Y>-304</Y>
+                        </Vector2>
+                    </LocalPoints>
+                    <WorldPoints>
+                        <Vector2>
+                            <X>12352</X>
+                            <Y>-608</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>12352</X>
+                            <Y>-912</Y>
+                        </Vector2>
+                    </WorldPoints>
+                    <IsPolygon>false</IsPolygon>
+                    <LineWidth>10</LineWidth>
+                    <LineColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </LineColor>
+                </Item>
+                <Item xsi:type="PathItem" Name="tail3_middle_pipe2" Visible="true">
+                    <Position>
+                        <X>12320</X>
+                        <Y>-1024</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>pipe</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>tail3_skeleton</string>
+                        </Property>
+                    </CustomProperties>
+                    <LocalPoints>
+                        <Vector2>
+                            <X>0</X>
+                            <Y>0</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>240</X>
+                            <Y>0</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>-192</X>
+                            <Y>0</Y>
+                        </Vector2>
+                    </LocalPoints>
+                    <WorldPoints>
+                        <Vector2>
+                            <X>12320</X>
+                            <Y>-1024</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>12560</X>
+                            <Y>-1024</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>12128</X>
+                            <Y>-1024</Y>
+                        </Vector2>
+                    </WorldPoints>
+                    <IsPolygon>false</IsPolygon>
+                    <LineWidth>10</LineWidth>
+                    <LineColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </LineColor>
+                </Item>
+                <Item xsi:type="PathItem" Name="tail3_pipe4" Visible="true">
+                    <Position>
+                        <X>12352</X>
+                        <Y>-1232</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>pipe</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>tail3_skeleton</string>
+                        </Property>
+                    </CustomProperties>
+                    <LocalPoints>
+                        <Vector2>
+                            <X>0</X>
+                            <Y>0</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>0</X>
+                            <Y>-240</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>-192</X>
+                            <Y>-240</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>-192</X>
+                            <Y>-720</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>-192</X>
+                            <Y>-240</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>0</X>
+                            <Y>-240</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>192</X>
+                            <Y>-240</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>192</X>
+                            <Y>-752</Y>
+                        </Vector2>
+                    </LocalPoints>
+                    <WorldPoints>
+                        <Vector2>
+                            <X>12352</X>
+                            <Y>-1232</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>12352</X>
+                            <Y>-1472</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>12160</X>
+                            <Y>-1472</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>12160</X>
+                            <Y>-1952</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>12160</X>
+                            <Y>-1472</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>12352</X>
+                            <Y>-1472</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>12544</X>
+                            <Y>-1472</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>12544</X>
+                            <Y>-1984</Y>
+                        </Vector2>
+                    </WorldPoints>
+                    <IsPolygon>false</IsPolygon>
+                    <LineWidth>10</LineWidth>
+                    <LineColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </LineColor>
+                </Item>
+                <Item xsi:type="TextureItem" Name="tail3_switch1" Visible="true">
+                    <Position>
+                        <X>10592</X>
+                        <Y>-1472</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>powerswitch</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>tail3_skeleton</string>
+                        </Property>
+                        <Property Name="repeatable" Type="string" Description="">
+                            <string />
+                        </Property>
+                    </CustomProperties>
+                    <Rotation>0</Rotation>
+                    <Scale>
+                        <X>1</X>
+                        <Y>1</Y>
+                    </Scale>
+                    <TintColor>
+                        <R>255</R>
+                        <G>255</G>
+                        <B>255</B>
+                        <A>255</A>
+                        <PackedValue>4294967295</PackedValue>
+                    </TintColor>
+                    <FlipHorizontally>false</FlipHorizontally>
+                    <FlipVertically>false</FlipVertically>
+                    <texture_filename>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\powerswitch.png</texture_filename>
+                    <asset_name>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\powerswitch</asset_name>
+                    <Origin>
+                        <X>32</X>
+                        <Y>32</Y>
+                    </Origin>
+                </Item>
+                <Item xsi:type="TextureItem" Name="tail3_switch2" Visible="true">
+                    <Position>
+                        <X>11904</X>
+                        <Y>-1520</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>powerswitch</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>tail3_skeleton</string>
+                        </Property>
+                        <Property Name="repeatable" Type="string" Description="">
+                            <string />
+                        </Property>
+                    </CustomProperties>
+                    <Rotation>0</Rotation>
+                    <Scale>
+                        <X>1</X>
+                        <Y>1</Y>
+                    </Scale>
+                    <TintColor>
+                        <R>255</R>
+                        <G>255</G>
+                        <B>255</B>
+                        <A>255</A>
+                        <PackedValue>4294967295</PackedValue>
+                    </TintColor>
+                    <FlipHorizontally>false</FlipHorizontally>
+                    <FlipVertically>false</FlipVertically>
+                    <texture_filename>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\powerswitch.png</texture_filename>
+                    <asset_name>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\powerswitch</asset_name>
+                    <Origin>
+                        <X>32</X>
+                        <Y>32</Y>
+                    </Origin>
+                </Item>
+                <Item xsi:type="TextureItem" Name="tail3_switch3" Visible="true">
+                    <Position>
+                        <X>12960</X>
+                        <Y>-1584</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>powerswitch</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>tail3_skeleton</string>
+                        </Property>
+                        <Property Name="repeatable" Type="string" Description="">
+                            <string />
+                        </Property>
+                    </CustomProperties>
+                    <Rotation>0</Rotation>
+                    <Scale>
+                        <X>1</X>
+                        <Y>1</Y>
+                    </Scale>
+                    <TintColor>
+                        <R>255</R>
+                        <G>255</G>
+                        <B>255</B>
+                        <A>255</A>
+                        <PackedValue>4294967295</PackedValue>
+                    </TintColor>
+                    <FlipHorizontally>false</FlipHorizontally>
+                    <FlipVertically>false</FlipVertically>
+                    <texture_filename>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\powerswitch.png</texture_filename>
+                    <asset_name>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\powerswitch</asset_name>
+                    <Origin>
+                        <X>32</X>
+                        <Y>32</Y>
+                    </Origin>
+                </Item>
+                <Item xsi:type="RectangleItem" Name="tail3_mover_plat1" Visible="true">
+                    <Position>
+                        <X>10592</X>
+                        <Y>-848</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>tiledPlatform</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>tail3_skeleton</string>
+                        </Property>
+                    </CustomProperties>
+                    <Width>256</Width>
+                    <Height>48</Height>
+                    <FillColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </FillColor>
+                </Item>
+                <Item xsi:type="RectangleItem" Name="tail3_mover_plat2" Visible="true">
+                    <Position>
+                        <X>11536</X>
+                        <Y>-832</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>tiledPlatform</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>tail3_skeleton</string>
+                        </Property>
+                    </CustomProperties>
+                    <Width>480</Width>
+                    <Height>48</Height>
+                    <FillColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </FillColor>
+                </Item>
+                <Item xsi:type="TextureItem" Name="tail3_puzzle_screw2" Visible="true">
+                    <Position>
+                        <X>11632</X>
+                        <Y>-2000</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>screw</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>tail3_skeleton</string>
+                        </Property>
+                        <Property Name="ScrewType" Type="string" Description="">
+                            <string>ScrewPuzzle</string>
+                        </Property>
+                        <Property Name="maxDepth" Type="string" Description="">
+                            <string>200</string>
+                        </Property>
+                        <Property Name="jointto" Type="string" Description="">
+                            <string>tail3_top</string>
+                        </Property>
+                    </CustomProperties>
+                    <Rotation>0</Rotation>
+                    <Scale>
+                        <X>1</X>
+                        <Y>1</Y>
+                    </Scale>
+                    <TintColor>
+                        <R>255</R>
+                        <G>255</G>
+                        <B>255</B>
+                        <A>255</A>
+                        <PackedValue>4294967295</PackedValue>
+                    </TintColor>
+                    <FlipHorizontally>false</FlipHorizontally>
+                    <FlipVertically>false</FlipVertically>
+                    <texture_filename>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\puzzlescrew.png</texture_filename>
+                    <asset_name>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\puzzlescrew</asset_name>
+                    <Origin>
+                        <X>32</X>
+                        <Y>32</Y>
+                    </Origin>
+                </Item>
+                <Item xsi:type="TextureItem" Name="tail3_puzzle_screw1" Visible="true">
+                    <Position>
+                        <X>10496</X>
+                        <Y>-848</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>screw</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>tail3_skeleton</string>
+                        </Property>
+                        <Property Name="ScrewType" Type="string" Description="">
+                            <string>ScrewPuzzle</string>
+                        </Property>
+                        <Property Name="maxDepth" Type="string" Description="">
+                            <string>200</string>
+                        </Property>
+                        <Property Name="jointto" Type="string" Description="">
+                            <string>tail3_bot</string>
+                        </Property>
+                    </CustomProperties>
+                    <Rotation>0</Rotation>
+                    <Scale>
+                        <X>1</X>
+                        <Y>1</Y>
+                    </Scale>
+                    <TintColor>
+                        <R>255</R>
+                        <G>255</G>
+                        <B>255</B>
+                        <A>255</A>
+                        <PackedValue>4294967295</PackedValue>
+                    </TintColor>
+                    <FlipHorizontally>false</FlipHorizontally>
+                    <FlipVertically>false</FlipVertically>
+                    <texture_filename>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\puzzlescrew.png</texture_filename>
+                    <asset_name>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\puzzlescrew</asset_name>
+                    <Origin>
+                        <X>32</X>
+                        <Y>32</Y>
+                    </Origin>
+                </Item>
+                <Item xsi:type="PathItem" Name="tail3_top1" Visible="true">
+                    <Position>
+                        <X>10576</X>
+                        <Y>-1792</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>customPlatform</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>tail3_skeleton</string>
+                        </Property>
+                    </CustomProperties>
+                    <LocalPoints>
+                        <Vector2>
+                            <X>0</X>
+                            <Y>0</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>-208</X>
+                            <Y>96</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>64</X>
+                            <Y>80</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>64</X>
+                            <Y>-64</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>-208</X>
+                            <Y>-48</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>-208</X>
+                            <Y>96</Y>
+                        </Vector2>
+                    </LocalPoints>
+                    <WorldPoints>
+                        <Vector2>
+                            <X>10576</X>
+                            <Y>-1792</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>10368</X>
+                            <Y>-1696</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>10640</X>
+                            <Y>-1712</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>10640</X>
+                            <Y>-1856</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>10368</X>
+                            <Y>-1840</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>10368</X>
+                            <Y>-1696</Y>
+                        </Vector2>
+                    </WorldPoints>
+                    <IsPolygon>false</IsPolygon>
+                    <LineWidth>20</LineWidth>
+                    <LineColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </LineColor>
+                </Item>
+                <Item xsi:type="RectangleItem" Name="tail3_fire1" Visible="true">
+                    <Position>
+                        <X>10400</X>
+                        <Y>-1984</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>fire</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>tail_skeleton_super</string>
+                        </Property>
+                    </CustomProperties>
+                    <Width>80</Width>
+                    <Height>144</Height>
+                    <FillColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </FillColor>
+                </Item>
+                <Item xsi:type="RectangleItem" Name="tail3_fire2" Visible="true">
+                    <Position>
+                        <X>10848</X>
+                        <Y>-2000</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>fire</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>tail_skeleton_super</string>
+                        </Property>
+                    </CustomProperties>
+                    <Width>80</Width>
+                    <Height>144</Height>
+                    <FillColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </FillColor>
+                </Item>
+                <Item xsi:type="RectangleItem" Name="tail3_fire3" Visible="true">
+                    <Position>
+                        <X>11216</X>
+                        <Y>-2032</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>fire</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>tail_skeleton_super</string>
+                        </Property>
+                    </CustomProperties>
+                    <Width>80</Width>
+                    <Height>144</Height>
+                    <FillColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </FillColor>
+                </Item>
+                <Item xsi:type="RectangleItem" Name="tail3_fire4" Visible="true">
+                    <Position>
+                        <X>12112</X>
+                        <Y>-2096</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>fire</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>tail_skeleton_super</string>
+                        </Property>
+                    </CustomProperties>
+                    <Width>80</Width>
+                    <Height>144</Height>
+                    <FillColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </FillColor>
+                </Item>
+                <Item xsi:type="RectangleItem" Name="tail3_fire5" Visible="true">
+                    <Position>
+                        <X>12512</X>
+                        <Y>-2112</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>fire</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>tail_skeleton_super</string>
+                        </Property>
+                    </CustomProperties>
+                    <Width>80</Width>
+                    <Height>144</Height>
+                    <FillColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </FillColor>
+                </Item>
+                <Item xsi:type="RectangleItem" Name="tail3_fire6" Visible="true">
+                    <Position>
+                        <X>13040</X>
+                        <Y>-2128</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>fire</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>tail_skeleton_super</string>
+                        </Property>
+                    </CustomProperties>
+                    <Width>80</Width>
+                    <Height>144</Height>
+                    <FillColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </FillColor>
+                </Item>
+                <Item xsi:type="TextureItem" Name="tail3_stripped_screw1" Visible="true">
+                    <Position>
+                        <X>10720</X>
+                        <Y>-1824</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>screw</string>
+                        </Property>
+                        <Property Name="ScrewType" Type="string" Description="">
+                            <string>ScrewStripped</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>tail3_skeleton</string>
+                        </Property>
+                        <Property Name="jointto" Type="string" Description="">
+                            <string>tail3_top1</string>
+                        </Property>
+                    </CustomProperties>
+                    <Rotation>0</Rotation>
+                    <Scale>
+                        <X>1</X>
+                        <Y>1</Y>
+                    </Scale>
+                    <TintColor>
+                        <R>255</R>
+                        <G>255</G>
+                        <B>255</B>
+                        <A>255</A>
+                        <PackedValue>4294967295</PackedValue>
+                    </TintColor>
+                    <FlipHorizontally>false</FlipHorizontally>
+                    <FlipVertically>false</FlipVertically>
+                    <texture_filename>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\strippedscrews.png</texture_filename>
+                    <asset_name>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\strippedscrews</asset_name>
+                    <Origin>
+                        <X>32</X>
+                        <Y>32</Y>
+                    </Origin>
+                </Item>
+                <Item xsi:type="RectangleItem" Name="tail3_mover_plat3" Visible="true">
+                    <Position>
+                        <X>12640</X>
+                        <Y>-768</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>tiledPlatform</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>tail3_skeleton</string>
+                        </Property>
+                    </CustomProperties>
+                    <Width>336</Width>
+                    <Height>48</Height>
+                    <FillColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </FillColor>
+                </Item>
+                <Item xsi:type="TextureItem" Name="tail3_puzzle_screw3" Visible="true">
+                    <Position>
+                        <X>12848</X>
+                        <Y>-2064</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>screw</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>tail3_skeleton</string>
+                        </Property>
+                        <Property Name="ScrewType" Type="string" Description="">
+                            <string>ScrewPuzzle</string>
+                        </Property>
+                        <Property Name="maxDepth" Type="string" Description="">
+                            <string>200</string>
+                        </Property>
+                        <Property Name="controlThis" Type="string" Description="">
+                            <string>tail3_mover_plat3</string>
+                        </Property>
+                        <Property Name="vertical" Type="string" Description="">
+                            <string />
+                        </Property>
+                        <Property Name="mover" Type="string" Description="">
+                            <string>lerpmover</string>
+                        </Property>
+                        <Property Name="distance" Type="string" Description="">
+                            <string>800f</string>
+                        </Property>
+                        <Property Name="jointto" Type="string" Description="">
+                            <string>tail3_top</string>
+                        </Property>
+                    </CustomProperties>
+                    <Rotation>0</Rotation>
+                    <Scale>
+                        <X>1</X>
+                        <Y>1</Y>
+                    </Scale>
+                    <TintColor>
+                        <R>255</R>
+                        <G>255</G>
+                        <B>255</B>
+                        <A>255</A>
+                        <PackedValue>4294967295</PackedValue>
+                    </TintColor>
+                    <FlipHorizontally>false</FlipHorizontally>
+                    <FlipVertically>false</FlipVertically>
+                    <texture_filename>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\puzzlescrew.png</texture_filename>
+                    <asset_name>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\puzzlescrew</asset_name>
                     <Origin>
                         <X>32</X>
                         <Y>32</Y>
@@ -8676,450 +9620,6 @@
                         <PackedValue>2445279424</PackedValue>
                     </LineColor>
                 </Item>
-                <Item xsi:type="PathItem" Name="Path_0851" Visible="true">
-                    <Position>
-                        <X>11072</X>
-                        <Y>-704</Y>
-                    </Position>
-                    <CustomProperties>
-                        <Property Name="Definition" Type="string" Description="">
-                            <string>pipe</string>
-                        </Property>
-                        <Property Name="AttachToSkeleton" Type="string" Description="">
-                            <string>tail3_skeleton</string>
-                        </Property>
-                    </CustomProperties>
-                    <LocalPoints>
-                        <Vector2>
-                            <X>0</X>
-                            <Y>0</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>0</X>
-                            <Y>-192</Y>
-                        </Vector2>
-                    </LocalPoints>
-                    <WorldPoints>
-                        <Vector2>
-                            <X>11072</X>
-                            <Y>-704</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>11072</X>
-                            <Y>-896</Y>
-                        </Vector2>
-                    </WorldPoints>
-                    <IsPolygon>false</IsPolygon>
-                    <LineWidth>4</LineWidth>
-                    <LineColor>
-                        <R>192</R>
-                        <G>0</G>
-                        <B>192</B>
-                        <A>145</A>
-                        <PackedValue>2445279424</PackedValue>
-                    </LineColor>
-                </Item>
-                <Item xsi:type="PathItem" Name="Path_0853" Visible="true">
-                    <Position>
-                        <X>11072</X>
-                        <Y>-1216</Y>
-                    </Position>
-                    <CustomProperties>
-                        <Property Name="Definition" Type="string" Description="">
-                            <string>pipe</string>
-                        </Property>
-                        <Property Name="AttachToSkeleton" Type="string" Description="">
-                            <string>tail3_skeleton</string>
-                        </Property>
-                    </CustomProperties>
-                    <LocalPoints>
-                        <Vector2>
-                            <X>0</X>
-                            <Y>0</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>0</X>
-                            <Y>-256</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>-192</X>
-                            <Y>-256</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>-192</X>
-                            <Y>-640</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>-192</X>
-                            <Y>-256</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>0</X>
-                            <Y>-256</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>192</X>
-                            <Y>-256</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>192</X>
-                            <Y>-640</Y>
-                        </Vector2>
-                    </LocalPoints>
-                    <WorldPoints>
-                        <Vector2>
-                            <X>11072</X>
-                            <Y>-1216</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>11072</X>
-                            <Y>-1472</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>10880</X>
-                            <Y>-1472</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>10880</X>
-                            <Y>-1856</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>10880</X>
-                            <Y>-1472</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>11072</X>
-                            <Y>-1472</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>11264</X>
-                            <Y>-1472</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>11264</X>
-                            <Y>-1856</Y>
-                        </Vector2>
-                    </WorldPoints>
-                    <IsPolygon>false</IsPolygon>
-                    <LineWidth>4</LineWidth>
-                    <LineColor>
-                        <R>192</R>
-                        <G>0</G>
-                        <B>192</B>
-                        <A>145</A>
-                        <PackedValue>2445279424</PackedValue>
-                    </LineColor>
-                </Item>
-                <Item xsi:type="PathItem" Name="tail3_middle_pipe1" Visible="true">
-                    <Position>
-                        <X>11072</X>
-                        <Y>-1088</Y>
-                    </Position>
-                    <CustomProperties>
-                        <Property Name="Definition" Type="string" Description="">
-                            <string>pipe</string>
-                        </Property>
-                        <Property Name="AttachToSkeleton" Type="string" Description="">
-                            <string>tail3_skeleton</string>
-                        </Property>
-                    </CustomProperties>
-                    <LocalPoints>
-                        <Vector2>
-                            <X>0</X>
-                            <Y>0</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>0</X>
-                            <Y>192</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>0</X>
-                            <Y>-128</Y>
-                        </Vector2>
-                    </LocalPoints>
-                    <WorldPoints>
-                        <Vector2>
-                            <X>11072</X>
-                            <Y>-1088</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>11072</X>
-                            <Y>-896</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>11072</X>
-                            <Y>-1216</Y>
-                        </Vector2>
-                    </WorldPoints>
-                    <IsPolygon>false</IsPolygon>
-                    <LineWidth>4</LineWidth>
-                    <LineColor>
-                        <R>192</R>
-                        <G>0</G>
-                        <B>192</B>
-                        <A>145</A>
-                        <PackedValue>2445279424</PackedValue>
-                    </LineColor>
-                </Item>
-                <Item xsi:type="PathItem" Name="Path_0856" Visible="true">
-                    <Position>
-                        <X>12352</X>
-                        <Y>-704</Y>
-                    </Position>
-                    <CustomProperties>
-                        <Property Name="Definition" Type="string" Description="">
-                            <string>pipe</string>
-                        </Property>
-                        <Property Name="AttachToSkeleton" Type="string" Description="">
-                            <string>tail3_skeleton</string>
-                        </Property>
-                    </CustomProperties>
-                    <LocalPoints>
-                        <Vector2>
-                            <X>0</X>
-                            <Y>0</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>0</X>
-                            <Y>-192</Y>
-                        </Vector2>
-                    </LocalPoints>
-                    <WorldPoints>
-                        <Vector2>
-                            <X>12352</X>
-                            <Y>-704</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>12352</X>
-                            <Y>-896</Y>
-                        </Vector2>
-                    </WorldPoints>
-                    <IsPolygon>false</IsPolygon>
-                    <LineWidth>4</LineWidth>
-                    <LineColor>
-                        <R>192</R>
-                        <G>0</G>
-                        <B>192</B>
-                        <A>145</A>
-                        <PackedValue>2445279424</PackedValue>
-                    </LineColor>
-                </Item>
-                <Item xsi:type="PathItem" Name="tail3_middle_pipe2" Visible="true">
-                    <Position>
-                        <X>12352</X>
-                        <Y>-1088</Y>
-                    </Position>
-                    <CustomProperties>
-                        <Property Name="Definition" Type="string" Description="">
-                            <string>pipe</string>
-                        </Property>
-                        <Property Name="AttachToSkeleton" Type="string" Description="">
-                            <string>tail3_skeleton</string>
-                        </Property>
-                    </CustomProperties>
-                    <LocalPoints>
-                        <Vector2>
-                            <X>0</X>
-                            <Y>0</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>192</X>
-                            <Y>0</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>-128</X>
-                            <Y>0</Y>
-                        </Vector2>
-                    </LocalPoints>
-                    <WorldPoints>
-                        <Vector2>
-                            <X>12352</X>
-                            <Y>-1088</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>12544</X>
-                            <Y>-1088</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>12224</X>
-                            <Y>-1088</Y>
-                        </Vector2>
-                    </WorldPoints>
-                    <IsPolygon>false</IsPolygon>
-                    <LineWidth>4</LineWidth>
-                    <LineColor>
-                        <R>192</R>
-                        <G>0</G>
-                        <B>192</B>
-                        <A>145</A>
-                        <PackedValue>2445279424</PackedValue>
-                    </LineColor>
-                </Item>
-                <Item xsi:type="PathItem" Name="Path_0858" Visible="true">
-                    <Position>
-                        <X>12352</X>
-                        <Y>-1216</Y>
-                    </Position>
-                    <CustomProperties>
-                        <Property Name="Definition" Type="string" Description="">
-                            <string>pipe</string>
-                        </Property>
-                        <Property Name="AttachToSkeleton" Type="string" Description="">
-                            <string>tail3_skeleton</string>
-                        </Property>
-                    </CustomProperties>
-                    <LocalPoints>
-                        <Vector2>
-                            <X>0</X>
-                            <Y>0</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>0</X>
-                            <Y>-256</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>-192</X>
-                            <Y>-256</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>-192</X>
-                            <Y>-768</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>-192</X>
-                            <Y>-256</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>0</X>
-                            <Y>-256</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>192</X>
-                            <Y>-256</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>192</X>
-                            <Y>-768</Y>
-                        </Vector2>
-                    </LocalPoints>
-                    <WorldPoints>
-                        <Vector2>
-                            <X>12352</X>
-                            <Y>-1216</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>12352</X>
-                            <Y>-1472</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>12160</X>
-                            <Y>-1472</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>12160</X>
-                            <Y>-1984</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>12160</X>
-                            <Y>-1472</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>12352</X>
-                            <Y>-1472</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>12544</X>
-                            <Y>-1472</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>12544</X>
-                            <Y>-1984</Y>
-                        </Vector2>
-                    </WorldPoints>
-                    <IsPolygon>false</IsPolygon>
-                    <LineWidth>4</LineWidth>
-                    <LineColor>
-                        <R>192</R>
-                        <G>0</G>
-                        <B>192</B>
-                        <A>145</A>
-                        <PackedValue>2445279424</PackedValue>
-                    </LineColor>
-                </Item>
-                <Item xsi:type="TextureItem" Name="tail3_switch1" Visible="true">
-                    <Position>
-                        <X>10560</X>
-                        <Y>-1472</Y>
-                    </Position>
-                    <CustomProperties>
-                        <Property Name="Definition" Type="string" Description="">
-                            <string>powerswitch</string>
-                        </Property>
-                        <Property Name="AttachToSkeleton" Type="string" Description="">
-                            <string>tail3_skeleton</string>
-                        </Property>
-                        <Property Name="repeatable" Type="string" Description="">
-                            <string />
-                        </Property>
-                    </CustomProperties>
-                    <Rotation>0</Rotation>
-                    <Scale>
-                        <X>1</X>
-                        <Y>1</Y>
-                    </Scale>
-                    <TintColor>
-                        <R>255</R>
-                        <G>255</G>
-                        <B>255</B>
-                        <A>255</A>
-                        <PackedValue>4294967295</PackedValue>
-                    </TintColor>
-                    <FlipHorizontally>false</FlipHorizontally>
-                    <FlipVertically>false</FlipVertically>
-                    <texture_filename>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\powerswitch.png</texture_filename>
-                    <asset_name>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\powerswitch</asset_name>
-                    <Origin>
-                        <X>32</X>
-                        <Y>32</Y>
-                    </Origin>
-                </Item>
-                <Item xsi:type="TextureItem" Name="tail3_switch2" Visible="true">
-                    <Position>
-                        <X>11520</X>
-                        <Y>-1472</Y>
-                    </Position>
-                    <CustomProperties>
-                        <Property Name="Definition" Type="string" Description="">
-                            <string>powerswitch</string>
-                        </Property>
-                        <Property Name="AttachToSkeleton" Type="string" Description="">
-                            <string>tail3_skeleton</string>
-                        </Property>
-                        <Property Name="repeatable" Type="string" Description="">
-                            <string />
-                        </Property>
-                    </CustomProperties>
-                    <Rotation>0</Rotation>
-                    <Scale>
-                        <X>1</X>
-                        <Y>1</Y>
-                    </Scale>
-                    <TintColor>
-                        <R>255</R>
-                        <G>255</G>
-                        <B>255</B>
-                        <A>255</A>
-                        <PackedValue>4294967295</PackedValue>
-                    </TintColor>
-                    <FlipHorizontally>false</FlipHorizontally>
-                    <FlipVertically>false</FlipVertically>
-                    <texture_filename>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\powerswitch.png</texture_filename>
-                    <asset_name>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\powerswitch</asset_name>
-                    <Origin>
-                        <X>32</X>
-                        <Y>32</Y>
-                    </Origin>
-                </Item>
             </Items>
             <ScrollSpeed>
                 <X>1</X>
@@ -9129,11 +9629,11 @@
     </Layers>
     <CustomProperties />
     <EditorRelated>
-        <NextItemNumber>860</NextItemNumber>
+        <NextItemNumber>875</NextItemNumber>
         <ContentRootFolder>gleed-textures</ContentRootFolder>
         <CameraPosition>
-            <X>12399.2959</X>
-            <Y>-1067.01318</Y>
+            <X>10799.3193</X>
+            <Y>-1208.683</Y>
         </CameraPosition>
         <Version>1.3.0.0</Version>
     </EditorRelated>

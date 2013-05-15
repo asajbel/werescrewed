@@ -42,6 +42,7 @@ import com.blindtigergames.werescrewed.entity.builders.PlayerBuilder;
 import com.blindtigergames.werescrewed.entity.builders.RopeBuilder;
 import com.blindtigergames.werescrewed.entity.builders.ScrewBuilder;
 import com.blindtigergames.werescrewed.entity.builders.SkeletonBuilder;
+import com.blindtigergames.werescrewed.entity.hazard.Fire;
 import com.blindtigergames.werescrewed.entity.hazard.Hazard;
 import com.blindtigergames.werescrewed.entity.hazard.builders.HazardBuilder;
 import com.blindtigergames.werescrewed.entity.mover.IMover;
@@ -253,8 +254,10 @@ public class LevelFactory {
 			constructEventTrigger( item );
 		} else if (bluePrints.equals( "powerswitch" )){
 			constructPowerSwitch(item);
-		}else if ( bluePrints.equals( "hazard" ) ) {
+		} else if ( bluePrints.equals( "hazard" ) ) {
 			out = constructHazard( item );
+		} else if (bluePrints.equals( "fire" )){
+			constructFire( item );
 		} else if ( bluePrints.equals( "fixture" ) ) {
 			constructFixture( item );
 		} else if(bluePrints.equals( "panel" )){
@@ -1131,10 +1134,11 @@ public class LevelFactory {
 
 							p.puzzleManager.addEntity( attach2 );
 
-							p.puzzleManager
-									.addMover( new PuzzleRotateTweenMover( 1,
-											Util.PI / 2, true,
-											PuzzleType.ON_OFF_MOVER ) );
+							
+//							p.puzzleManager
+//									.addMover( new PuzzleRotateTweenMover( 1,
+//											Util.PI / 2, true,
+//											PuzzleType.ON_OFF_MOVER ) );
 
 							Gdx.app.log( "LevelFactory", "attaching :"
 									+ movername + " to puzzle screw" );
@@ -1574,7 +1578,22 @@ public class LevelFactory {
 		entities.put( item.name, out );
 		return out;
 	}
-
+	
+	public Fire constructFire( Item item ){
+		
+		float width = item.element.getFloat( "Width" );
+		float height = item.element.getFloat( "Height" );
+		float xPos = item.pos.x + ( width / 2 );
+		float yPos = item.pos.y - ( height / 2 );
+		Fire fire = new Fire( item.name, new Vector2(xPos, yPos), width, height, level.world, true );
+		
+		String skelAttach = item.skeleton;
+		Skeleton parent = loadSkeleton( skelAttach );
+		parent.addHazard( fire );
+		entities.put( item.name, fire );
+		
+		return fire;
+	}
 	public Hazard constructHazard( Item item ) {
 
 		String skelAttach = item.skeleton;
