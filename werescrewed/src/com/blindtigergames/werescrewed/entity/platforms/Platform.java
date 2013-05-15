@@ -2,20 +2,15 @@ package com.blindtigergames.werescrewed.entity.platforms;
 
 import java.util.ArrayList;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
-import com.badlogic.gdx.physics.box2d.joints.RevoluteJoint;
-import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
-import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.Filter;
-import com.badlogic.gdx.physics.box2d.Fixture;
+import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.Joint;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
 import com.badlogic.gdx.utils.Array;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityDef;
@@ -66,8 +61,7 @@ public class Platform extends Entity {
 										// at, in pixels
 
 	private Vector2 originRelativeToSkeleton; // box meters
-	
-	
+
 	protected Joint extraSkeletonJoint;
 
 	// ============================================
@@ -243,7 +237,6 @@ public class Platform extends Entity {
 			s.body.setAwake( true );
 	}
 
-	@SuppressWarnings( "unused" )
 	@Override
 	public void update( float deltaTime ) {
 		super.update( deltaTime );
@@ -273,26 +266,26 @@ public class Platform extends Entity {
 		dynamicType = !dynamicType;
 		if ( dynamicType ) {
 			body.setType( BodyType.DynamicBody );
-//			Filter filter = new Filter( );
-//			for ( Fixture f : body.getFixtureList( ) ) {
-//				filter = f.getFilterData( );
-//				// move player back to original category
-//				filter.categoryBits = Util.CATEGORY_PLATFORMS;
-//				// player now collides with everything
-//				filter.maskBits = Util.CATEGORY_EVERYTHING;
-//				f.setFilterData( filter );
-//			}
+			// Filter filter = new Filter( );
+			// for ( Fixture f : body.getFixtureList( ) ) {
+			// filter = f.getFilterData( );
+			// // move player back to original category
+			// filter.categoryBits = Util.CATEGORY_PLATFORMS;
+			// // player now collides with everything
+			// filter.maskBits = Util.CATEGORY_EVERYTHING;
+			// f.setFilterData( filter );
+			// }
 		} else {
 			body.setType( BodyType.KinematicBody );
-//			Filter filter = new Filter( );
-//			for ( Fixture f : body.getFixtureList( ) ) {
-//				filter = f.getFilterData( );
-//				// move player back to original category
-//				filter.categoryBits = Util.CATEGORY_PLATFORMS;
-//				// player now collides with everything
-//				filter.maskBits = Util.CATEGORY_EVERYTHING;
-//				f.setFilterData( filter );
-//			}
+			// Filter filter = new Filter( );
+			// for ( Fixture f : body.getFixtureList( ) ) {
+			// filter = f.getFilterData( );
+			// // move player back to original category
+			// filter.categoryBits = Util.CATEGORY_PLATFORMS;
+			// // player now collides with everything
+			// filter.maskBits = Util.CATEGORY_EVERYTHING;
+			// f.setFilterData( filter );
+			// }
 		}
 
 		body.setActive( false );
@@ -387,14 +380,14 @@ public class Platform extends Entity {
 		if ( skeleton != null ) {
 			Vector2 posOnSkeleLocalMeter = originRelativeToSkeleton.cpy( ).add(
 					localPosition.cpy( ).mul( Util.PIXEL_TO_BOX ) );
-			
-			if ( posOnSkeleLocalMeter.equals( Vector2.Zero )){
-				body.setTransform( skeleton.body.getPosition( ), localRotation + skeleton.body.getAngle( )
-						 );
-			}else{
+
+			if ( posOnSkeleLocalMeter.equals( Vector2.Zero ) ) {
+				body.setTransform( skeleton.body.getPosition( ), localRotation
+						+ skeleton.body.getAngle( ) );
+			} else {
 				float radiusFromSkeletonMeters = posOnSkeleLocalMeter.len( );
 				float newAngleFromSkeleton = skeleton.body.getAngle( );
-				newAngleFromSkeleton+= Util.angleBetweenPoints( Vector2.Zero,
+				newAngleFromSkeleton += Util.angleBetweenPoints( Vector2.Zero,
 						posOnSkeleLocalMeter );
 
 				Vector2 targetPosition = Util.PointOnCircle(
@@ -404,7 +397,7 @@ public class Platform extends Entity {
 
 				body.setTransform( targetPosition, targetRotation );
 			}
-			
+
 		}
 	}
 
@@ -452,32 +445,31 @@ public class Platform extends Entity {
 
 		polygon.dispose( );
 	}
-	
+
 	/**
-	 * This function is used to joint a platform to a skeleton so that it stays in place
-	 * also this way we save the reference to that particular joint so we can delete it later
+	 * This function is used to joint a platform to a skeleton so that it stays
+	 * in place also this way we save the reference to that particular joint so
+	 * we can delete it later
 	 * 
 	 * @param skel
 	 */
-	public void addJointToSkeleton( Skeleton skel ){
+	public void addJointToSkeleton( Skeleton skel ) {
 		RevoluteJointDef rjd = new RevoluteJointDef( );
 		rjd.initialize( body, skel.body, body.getWorldCenter( ) );
 		extraSkeletonJoint = ( Joint ) this.world.createJoint( rjd );
 	}
-	
+
 	/**
-	 * Adds the joint (connected to a skeleton) to the list to remove it when 
+	 * Adds the joint (connected to a skeleton) to the list to remove it when
 	 * the Box2d world is not locked() (otherwise it crashes)
 	 * 
 	 * Only really used when level loading
 	 */
-	public void destorySkeletonJoint(){
-		if(extraSkeletonJoint != null){
-			Level.jointsToRemove.add(extraSkeletonJoint);
+	public void destorySkeletonJoint( ) {
+		if ( extraSkeletonJoint != null ) {
+			Level.jointsToRemove.add( extraSkeletonJoint );
 			extraSkeletonJoint = null;
 		}
 	}
-	
-	
 
 }

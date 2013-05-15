@@ -75,7 +75,6 @@ public class AnchorList {
 			if ( curAnchor.getTimer( ) > 0 && curAnchor.activated == true ) {
 
 				curAnchor.decrementTimer( );
-				// Gdx.app.log( "timer", curAnchor.getTimer( ) + "" );
 			}
 			// Safety check & deactivate
 			if ( curAnchor.getTimer( ) == 0 ) {

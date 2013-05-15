@@ -32,8 +32,8 @@ public class FollowEntityMover implements IMover {
 	 * @param loopTime
 	 *            how many loops this goes through
 	 */
-	public FollowEntityMover( Vector2 beginningPoint, Entity entity, Vector2 offset,
-			float speed ) {
+	public FollowEntityMover( Vector2 beginningPoint, Entity entity,
+			Vector2 offset, float speed ) {
 		this.beginningPoint = beginningPoint.cpy( );
 		this.offset = offset.cpy( );
 		this.entity = entity;
@@ -63,8 +63,6 @@ public class FollowEntityMover implements IMover {
 	public boolean atStart( ) {
 		return alpha == 0;
 	}
-
-	
 
 	@Override
 	public void runPuzzleMovement( Screw screw, float screwVal, Platform p ) {

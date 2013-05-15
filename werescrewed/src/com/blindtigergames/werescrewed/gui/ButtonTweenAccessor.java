@@ -1,15 +1,13 @@
 package com.blindtigergames.werescrewed.gui;
-import com.badlogic.gdx.Gdx;
 
 import aurelienribon.tweenengine.TweenAccessor;
 
-
 public class ButtonTweenAccessor implements TweenAccessor< Button > {
-	
+
 	public static final int POSITION_X = 1;
 	public static final int POSITION_Y = 2;
 	public static final int POSITION_XY = 3;
-	
+
 	@Override
 	public int getValues( Button target, int tweenType, float[ ] returnValues ) {
 		switch ( tweenType ) {
@@ -24,7 +22,8 @@ public class ButtonTweenAccessor implements TweenAccessor< Button > {
 			returnValues[ 1 ] = target.getY( );
 			return 2;
 		default:
-			Gdx.app.log( "ButtonAccessor", "You tries using Button Accessor get with a wrong tween type." );
+			// Gdx.app.log( "ButtonAccessor",
+			// "You tries using Button Accessor get with a wrong tween type." );
 			assert false;
 			return -1;
 		}
@@ -33,39 +32,39 @@ public class ButtonTweenAccessor implements TweenAccessor< Button > {
 	@Override
 	public void setValues( Button target, int tweenType, float[ ] newValues ) {
 		// TODO Auto-generated method stub
-		switch ( tweenType ){
+		switch ( tweenType ) {
 		case POSITION_X:
-			target.setX( (int)newValues[0] );
+			target.setX( ( int ) newValues[ 0 ] );
 			break;
 		case POSITION_Y:
-			target.setY( (int)newValues[0] );
+			target.setY( ( int ) newValues[ 0 ] );
 			break;
 		case POSITION_XY:
-			target.setX( (int)newValues[0] );
-			target.setY( (int)newValues[1] );
+			target.setX( ( int ) newValues[ 0 ] );
+			target.setY( ( int ) newValues[ 1 ] );
 			break;
 		default:
-			Gdx.app.log( "ButtonAccessor", "You tries using Entity Accessor set with a wrong tween type." );
+			// Gdx.app.log( "ButtonAccessor",
+			// "You tries using Entity Accessor set with a wrong tween type." );
 			assert false;
 		}
 	}
 }
 
-
 /*
-
-package com.blindtigergames.werescrewed.entity.tween;
-
-
-
-import com.badlogic.gdx.Gdx;
-import com.blindtigergames.werescrewed.entity.Entity;
-
-public class EntityAccessor  {
-
-	
-
-	
-
-}
-*/
+ * 
+ * package com.blindtigergames.werescrewed.entity.tween;
+ * 
+ * 
+ * 
+ * import com.badlogic.gdx.Gdx; import
+ * com.blindtigergames.werescrewed.entity.Entity;
+ * 
+ * public class EntityAccessor {
+ * 
+ * 
+ * 
+ * 
+ * 
+ * }
+ */

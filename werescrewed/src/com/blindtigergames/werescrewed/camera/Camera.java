@@ -36,11 +36,10 @@ public class Camera {
 	/**
 	 * Time to get to ideal camera position/zoom per hundred pixels of distance
 	 */
-	private static final float TIME_PER_PIX = .04f;
-	private static final float TIME_PER_ZOOM = 40;
-	private float timeLeft;
+	private static final float TIME_PER_PIX = .06f;
+	private static final float TIME_PER_ZOOM = 70;
+	private int timeLeft;
 
-	// private float accelerationBuffer;
 	private Vector2 translateVelocity;
 	private Vector2 translateTarget;
 	private float targetBuffer;
@@ -114,10 +113,6 @@ public class Camera {
 		translateVelocity = new Vector2( 0f, 0f );
 		targetBuffer = ( this.viewportWidth + this.viewportHeight )
 				* TARGET_BUFFER_RATIO;
-		// accelerationBuffer = ( ( this.viewportWidth * BUFFER_RATIO / 2 +
-		// this.viewportHeight
-		// * BUFFER_RATIO / 2 ) / 2 )
-		// * ACCELERATION_BUFFER_RATIO;
 		moving = false;
 		this.zoomSpeed = 0f;
 		this.timeLeft = 0;
@@ -290,10 +285,12 @@ public class Camera {
 	 * Initialize movement
 	 */
 	private void startMoving( ) {
+		// Set state to true
 		moving = true;
-		totalDistance = new Vector2( translateTarget.x - center2D.x,
-				translateTarget.y - center2D.y ).len( );
-		totalZoomChange = Math.abs( targetZoom - camera.zoom );
+		// Initialize total distance and zoom change to zero (since they update
+		// in the first step)
+		totalDistance = 0;
+		totalZoomChange = 0;
 	}
 
 	/**
@@ -302,41 +299,48 @@ public class Camera {
 	private void move( ) {
 		// UPDATE DISTANCE //
 
+		// distance is difference between current position and target position
 		distance = new Vector2( translateTarget.x, translateTarget.y );
 		distance.sub( center2D );
 
+		// If it's close enough, just set it to the center
 		if ( distance.len( ) < targetBuffer ) {
 			distance.x = distance.y = 0;
+			translateVelocity = new Vector2( 0, 0 );
 		}
 
+		// Update total distance traveled by adding the midpoint change this
+		// step
 		totalDistance += AnchorList.getInstance( ).getMidpointVelocity( ).len( );
 
 		// UPDATE TARGET ZOOM //
 
+		// zoomChange is difference between current zoom and target zoom
 		zoomChange = targetZoom - camera.zoom;
 
+		// Update total zoom change by adding the zoom change this step
 		totalZoomChange += Math.abs( targetZoomSpeed );
 
 		// MANAGE TIME //
 
-		float transTime = 0;
-		float zoomTime = 0;
+		int transTime = 0;
+		int zoomTime = 0;
 
 		if ( distance.len( ) > totalDistance * DECEL_RATIO ) {
-			transTime = TIME_PER_PIX * distance.len( );
+			transTime = ( int ) ( TIME_PER_PIX * distance.len( ) );
 		} else {
-			transTime = TIME_PER_PIX * distance.len( ) * 3;
+			transTime = ( int ) ( TIME_PER_PIX * distance.len( ) * 3 );
 		}
 
 		if ( Math.abs( zoomChange ) > totalZoomChange * DECEL_RATIO ) {
-			zoomTime = TIME_PER_ZOOM * Math.abs( zoomChange );
+			zoomTime = ( int ) ( TIME_PER_ZOOM * Math.abs( zoomChange ) );
 		} else {
-			zoomTime = TIME_PER_ZOOM * Math.abs( zoomChange ) * 3;
+			zoomTime = ( int ) ( TIME_PER_ZOOM * Math.abs( zoomChange ) * 3 );
 		}
 
 		timeLeft = ( transTime > zoomTime ) ? transTime : zoomTime;
 
-		if ( timeLeft <= 0 ) {
+		if ( timeLeft < 0 ) {
 			stopMoving( );
 			return;
 		}
@@ -371,39 +375,6 @@ public class Camera {
 	 * Translate the camera towards the translate target
 	 */
 	private void translate( ) {
-		// boolean lock = false;
-		//
-		// // Lock when:
-		// if ( Math.abs( distance.len( ) ) < targetBuffer ) {
-		// // camera center is really close to target
-		// lock = true;
-		// }
-		//
-		// // Center of camera is within buffer from target, so camera
-		// // locks to target
-		// if ( lock ) {
-		// this.timeLeft = 0;
-		//
-		// camera.position.x = translateTarget.x;
-		// camera.position.y = translateTarget.y;
-		//
-		// // find angle between midpoint velocity and translate velocity
-		// float tempAngle = 0f;
-		// tempAngle = anchorList.getMidpointVelocity( ).angle( )
-		// - translateVelocity.angle( );
-		// tempAngle = Math.abs( tempAngle );
-		// if ( tempAngle > 180 ) {
-		// tempAngle = 360 - tempAngle;
-		// }
-		// // if target stops moving or changes direction abruptly, disable
-		// // lock
-		// if ( anchorList.getMidpointVelocity( ).len( ) < MINIMUM_FOLLOW_SPEED
-		// || tempAngle > MAX_ANGLE_DIFF ) {
-		// moving = false;
-		// translateVelocity.x = 0f;
-		// translateVelocity.y = 0f;
-		// }
-		// } else {
 
 		Vector2 acceleration = calcAcceleration( distance );
 
@@ -434,9 +405,6 @@ public class Camera {
 		if ( zoomChange != 0 ) {
 			zoomAccel = calcZoomAcc( zoomChange );
 			zoomSpeed += zoomAccel;
-			//Gdx.app.log( "targetZoom", targetZoom + "" );
-			//Gdx.app.log( "zoomSpeed", zoomSpeed + "" );
-			//Gdx.app.log( "timeLeft", timeLeft + "" );
 		} else {
 			zoomSpeed = 0;
 			return;
@@ -447,17 +415,6 @@ public class Camera {
 		if ( camera.zoom + zoomSpeed > targetZoom - ZOOM_SIG_DIFF
 				&& camera.zoom + zoomSpeed < targetZoom + ZOOM_SIG_DIFF ) {
 			zoomSpeed = zoomChange;
-			// } else if ( zoomAccel > 0
-			// && newZoom + zoomSpeed > targetZoom + ZOOM_SIG_DIFF ) {
-			// newZoom = targetZoom;
-			// } else if ( zoomAccel < 0
-			// && newZoom + zoomSpeed < targetZoom - ZOOM_SIG_DIFF ) {
-			// newZoom = targetZoom;
-			// } else if ( zoomAccel == 0
-			// && ( ( zoomSpeed < 0 && camera.zoom + zoomSpeed < targetZoom
-			// - ZOOM_SIG_DIFF ) || ( zoomSpeed > 0 && camera.zoom
-			// + zoomSpeed > targetZoom + ZOOM_SIG_DIFF ) ) ) {
-			// newZoom = targetZoom;
 		}
 		newZoom += zoomSpeed;
 
@@ -555,35 +512,12 @@ public class Camera {
 				screenBounds.y );
 		shapeRenderer.end( );
 
-		// bounding box
-		// shapeRenderer.begin( ShapeType.Line );
-		// shapeRenderer.line( getBounds( ).x + 20, getBounds( ).y + 20,
-		// getBounds( ).x + getBounds( ).width - 20, getBounds( ).y + 20 );
-		// shapeRenderer.line( getBounds( ).x + 20, getBounds( ).y
-		// + getBounds( ).height,
-		// getBounds( ).x + getBounds( ).width - 20, getBounds( ).y
-		// + getBounds( ).height );
-		//
-		// shapeRenderer.line( getBounds( ).x + 20, getBounds( ).y + 20,
-		// getBounds( ).x + 20, getBounds( ).y + getBounds( ).height - 20 );
-		// shapeRenderer.line( getBounds( ).x + getBounds( ).width - 20,
-		// getBounds( ).y + 20, getBounds( ).x + getBounds( ).width - 20,
-		// getBounds( ).y + getBounds( ).height - 20 );
-		// shapeRenderer.end( );
-
 		// render the translation target buffer
 		shapeRenderer.begin( ShapeType.Circle );
 		shapeRenderer.identity( );
 		shapeRenderer.circle( translateTarget.x, translateTarget.y,
 				targetBuffer );
 		shapeRenderer.end( );
-
-		// render the acceleration target buffer
-		// shapeRenderer.begin( ShapeType.Circle );
-		// shapeRenderer.identity( );
-		// shapeRenderer.circle( translateTarget.x, translateTarget.y,
-		// accelerationBuffer );
-		// shapeRenderer.end( );
 	}
 
 	/**

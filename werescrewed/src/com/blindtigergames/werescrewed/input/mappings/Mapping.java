@@ -8,8 +8,9 @@ import com.badlogic.gdx.controllers.Controller;
 
 /**
  * Button and axis mapping {@link Controller}.
+ * 
  * @author Anders
- *
+ * 
  */
 public class Mapping {
 	public static final String ID = "Android Direct Input Game Controller";
@@ -34,25 +35,25 @@ public class Mapping {
 	public static final int AXIS_RIGHT_Y;
 	public static final int AXIS_RIGHT_TRIGGER;
 	public static final int BUTTON_START;
-	public static final int BUTTON_SELECT; 
-	public static final int BUTTON_SYSTEM; 
+	public static final int BUTTON_SELECT;
+	public static final int BUTTON_SYSTEM;
 	/** whether the app is running on a real Android device **/
 	public static final boolean runningOnAndroid;
-	
+
 	static {
 		boolean isAndroid = false;
 		try {
-			Class<?> buildClass = Class.forName("android.os.Build");
-			Field deviceField = buildClass.getDeclaredField("DEVICE");
-			isAndroid = "cardhu".equals(deviceField.get(null));
-		} catch(Exception e) {
+			Class< ? > buildClass = Class.forName( "android.os.Build" );
+			Field deviceField = buildClass.getDeclaredField( "DEVICE" );
+			isAndroid = "cardhu".equals( deviceField.get( null ) );
+		} catch ( Exception e ) {
 		}
-		if (Gdx.app.getType() == ApplicationType.Android) {
-			isAndroid = true; 
-		} 
+		if ( Gdx.app.getType( ) == ApplicationType.Android ) {
+			isAndroid = true;
+		}
 		runningOnAndroid = isAndroid;
-		
-		if(isAndroid) {
+
+		if ( isAndroid ) {
 			BUTTON_FACE_BOT = 96;
 			BUTTON_FACE_LEFT = 99;
 			BUTTON_FACE_TOP = 100;
@@ -75,7 +76,7 @@ public class Mapping {
 			AXIS_RIGHT_TRIGGER = 13;
 			BUTTON_SELECT = 4;
 			BUTTON_START = 108;
-			BUTTON_SYSTEM = 82; 
+			BUTTON_SYSTEM = 82;
 		} else {
 			BUTTON_FACE_BOT = 0;
 			BUTTON_FACE_RIGHT = 1;
@@ -99,7 +100,7 @@ public class Mapping {
 			AXIS_RIGHT_TRIGGER = 4;
 			BUTTON_SELECT = 6;
 			BUTTON_START = 7;
-			BUTTON_SYSTEM = 2000; 
+			BUTTON_SYSTEM = 2000;
 		}
 	}
 }

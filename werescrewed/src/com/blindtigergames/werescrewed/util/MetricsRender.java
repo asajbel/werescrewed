@@ -50,8 +50,8 @@ public class MetricsRender {
 	private String mode;
 	private BitmapFont debug_font = null;
 	private Vector3 camPos;
-	private SpriteBatch batch; 
-	private Camera uiCamera; 
+	private SpriteBatch batch;
+	private Camera uiCamera;
 	private ArrayList< MetricsOutput > runs;
 	private Map< String, Place > parsedJump;
 	private Map< String, Place > parsedDeath;
@@ -77,13 +77,15 @@ public class MetricsRender {
 		runs = new ArrayList< MetricsOutput >( );
 		debug_font = WereScrewedGame.manager.getFont( "debug_font" );
 		mode = "";
-		
+
 		camPos = new Vector3( );
-		batch = new SpriteBatch(); 
-		
-		uiCamera = new OrthographicCamera(Gdx.graphics.getWidth( ), Gdx.graphics.getHeight( ));
-		uiCamera.position.set(0,0 , 0); //-Gdx.graphics.getWidth( ), -Gdx.graphics.getHeight( )
-		
+		batch = new SpriteBatch( );
+
+		uiCamera = new OrthographicCamera( Gdx.graphics.getWidth( ),
+				Gdx.graphics.getHeight( ) );
+		uiCamera.position.set( 0, 0, 0 ); // -Gdx.graphics.getWidth( ),
+											// -Gdx.graphics.getHeight( )
+
 		File file = new File( levelName + Metrics.FILE_APPEND );
 		Json json = new Json( );
 		if ( file.exists( ) ) {
@@ -226,32 +228,32 @@ public class MetricsRender {
 		switch ( whatToRender ) {
 		case NONE:
 			render = true;
-			Gdx.app.log( "Metric Shown: ", "Jumping" );
+			// Gdx.app.log( "Metric Shown: ", "Jumping" );
 			whatToRender = Type.JUMP;
 			break;
 		case JUMP:
 			render = true;
-			Gdx.app.log( "Metric Shown: ", "Dieing" );
+			// Gdx.app.log( "Metric Shown: ", "Dieing" );
 			whatToRender = Type.DIE;
 			break;
 		case DIE:
 			render = true;
-			Gdx.app.log( "Metric Shown: ", "Screwing" );
+			// Gdx.app.log( "Metric Shown: ", "Screwing" );
 			whatToRender = Type.SCREW;
 			break;
 		case SCREW:
 			render = true;
-			Gdx.app.log( "Metric Shown: ", "Unscrewing" );
+			// Gdx.app.log( "Metric Shown: ", "Unscrewing" );
 			whatToRender = Type.UNSCREW;
 			break;
 		case UNSCREW:
 			render = true;
-			Gdx.app.log( "Metric Shown: ", "Attaching" );
+			// Gdx.app.log( "Metric Shown: ", "Attaching" );
 			whatToRender = Type.ATTACH;
 			break;
 		case ATTACH:
 			render = false;
-			Gdx.app.log( "Metric Shown: ", "Nothing" );
+			// Gdx.app.log( "Metric Shown: ", "Nothing" );
 			whatToRender = Type.NONE;
 			break;
 		case TIME:
@@ -267,32 +269,32 @@ public class MetricsRender {
 		switch ( whatToRender ) {
 		case NONE:
 			render = true;
-			Gdx.app.log( "Metric Shown: ", "Attaching" );
+			// Gdx.app.log( "Metric Shown: ", "Attaching" );
 			whatToRender = Type.ATTACH;
 			break;
 		case JUMP:
 			render = false;
-			Gdx.app.log( "Metric Shown: ", "Nothing" );
+			// Gdx.app.log( "Metric Shown: ", "Nothing" );
 			whatToRender = Type.NONE;
 			break;
 		case DIE:
 			render = true;
-			Gdx.app.log( "Metric Shown: ", "Jumping" );
+			// Gdx.app.log( "Metric Shown: ", "Jumping" );
 			whatToRender = Type.JUMP;
 			break;
 		case SCREW:
 			render = true;
-			Gdx.app.log( "Metric Shown: ", "Dieing" );
+			// Gdx.app.log( "Metric Shown: ", "Dieing" );
 			whatToRender = Type.DIE;
 			break;
 		case UNSCREW:
 			render = true;
-			Gdx.app.log( "Metric Shown: ", "Screwing" );
+			// Gdx.app.log( "Metric Shown: ", "Screwing" );
 			whatToRender = Type.SCREW;
 			break;
 		case ATTACH:
 			render = true;
-			Gdx.app.log( "Metric Shown: ", "Unscrewing" );
+			// Gdx.app.log( "Metric Shown: ", "Unscrewing" );
 			whatToRender = Type.UNSCREW;
 			break;
 		case TIME:

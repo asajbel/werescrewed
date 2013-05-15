@@ -9,7 +9,6 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
-import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.World;
@@ -31,6 +30,7 @@ import com.blindtigergames.werescrewed.entity.builders.PlayerBuilder;
 import com.blindtigergames.werescrewed.entity.builders.RopeBuilder;
 import com.blindtigergames.werescrewed.entity.builders.ScrewBuilder;
 import com.blindtigergames.werescrewed.entity.builders.SkeletonBuilder;
+import com.blindtigergames.werescrewed.entity.hazard.builders.HazardBuilder;
 import com.blindtigergames.werescrewed.entity.mover.AnalogRotateMover;
 import com.blindtigergames.werescrewed.entity.mover.LerpMover;
 import com.blindtigergames.werescrewed.entity.mover.LinearAxis;
@@ -39,6 +39,9 @@ import com.blindtigergames.werescrewed.entity.mover.RockingMover;
 import com.blindtigergames.werescrewed.entity.mover.RotateByDegree;
 import com.blindtigergames.werescrewed.entity.mover.RotateTweenMover;
 import com.blindtigergames.werescrewed.entity.mover.puzzle.PuzzleRotateTweenMover;
+import com.blindtigergames.werescrewed.entity.platforms.Platform;
+import com.blindtigergames.werescrewed.entity.platforms.TiledPlatform;
+import com.blindtigergames.werescrewed.entity.rope.Rope;
 import com.blindtigergames.werescrewed.entity.screws.BossScrew;
 import com.blindtigergames.werescrewed.entity.screws.PuzzleScrew;
 import com.blindtigergames.werescrewed.entity.screws.Screw;
@@ -48,12 +51,8 @@ import com.blindtigergames.werescrewed.entity.tween.EntityAccessor;
 import com.blindtigergames.werescrewed.entity.tween.PathBuilder;
 import com.blindtigergames.werescrewed.entity.tween.PlatformAccessor;
 import com.blindtigergames.werescrewed.eventTrigger.EventTrigger;
-import com.blindtigergames.werescrewed.entity.hazard.Spikes;
-import com.blindtigergames.werescrewed.entity.hazard.builders.HazardBuilder;
+import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 import com.blindtigergames.werescrewed.player.Player;
-import com.blindtigergames.werescrewed.entity.platforms.Platform;
-import com.blindtigergames.werescrewed.entity.platforms.TiledPlatform;
-import com.blindtigergames.werescrewed.entity.rope.Rope;
 import com.blindtigergames.werescrewed.util.Metrics;
 import com.blindtigergames.werescrewed.util.MetricsRender;
 import com.blindtigergames.werescrewed.util.Util;
@@ -127,10 +126,12 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		world.setContactListener( contactListener );
 
 		// Initialize players
-		player1 = new PlayerBuilder( ).name( "player1" ).definition( "red_male" ).world( world )
+		player1 = new PlayerBuilder( ).name( "player1" )
+				.definition( "red_male" ).world( world )
 				.position( 0 * TILE, 0 * TILE ).buildPlayer( );
 
-		player2 = new PlayerBuilder( ).name( "player2" ).definition( "red_female" ).world( world )
+		player2 = new PlayerBuilder( ).name( "player2" )
+				.definition( "red_female" ).world( world )
 				.position( 0 * TILE, 0 * TILE ).buildPlayer( );
 
 		// END: 175f * TILE, 96f * TILE
@@ -293,43 +294,50 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		stair = platBuilder.position( 77 * TILE, 2 * TILE ).name( "stair1" )
 				.dimensions( 8, 2 ).texture( testTexture ).kinematic( )
 				.oneSided( false ).restitution( 0 ).buildTilePlatform( );
-		stair.setCategoryMask( Util.CATEGORY_PLATFORMS, Util.CATEGORY_EVERYTHING );
+		stair.setCategoryMask( Util.CATEGORY_PLATFORMS,
+				Util.CATEGORY_EVERYTHING );
 		skel1.addKinematicPlatform( stair );
 
 		stair = platBuilder.position( 78 * TILE, 4 * TILE ).name( "stair2" )
 				.dimensions( 6, 2 ).texture( testTexture ).kinematic( )
 				.oneSided( false ).restitution( 0 ).buildTilePlatform( );
-		stair.setCategoryMask( Util.CATEGORY_PLATFORMS, Util.CATEGORY_EVERYTHING );
+		stair.setCategoryMask( Util.CATEGORY_PLATFORMS,
+				Util.CATEGORY_EVERYTHING );
 		skel1.addKinematicPlatform( stair );
 
 		stair = platBuilder.position( 79 * TILE, 6 * TILE ).name( "stair3" )
 				.dimensions( 4, 2 ).texture( testTexture ).kinematic( )
 				.oneSided( false ).restitution( 0 ).buildTilePlatform( );
-		stair.setCategoryMask( Util.CATEGORY_PLATFORMS, Util.CATEGORY_EVERYTHING );
+		stair.setCategoryMask( Util.CATEGORY_PLATFORMS,
+				Util.CATEGORY_EVERYTHING );
 		skel1.addKinematicPlatform( stair );
 
 		stair = platBuilder.position( 80 * TILE, 8 * TILE ).name( "stair4" )
 				.dimensions( 2, 2 ).texture( testTexture ).kinematic( )
 				.oneSided( false ).restitution( 0 ).buildTilePlatform( );
-		stair.setCategoryMask( Util.CATEGORY_PLATFORMS, Util.CATEGORY_EVERYTHING );
+		stair.setCategoryMask( Util.CATEGORY_PLATFORMS,
+				Util.CATEGORY_EVERYTHING );
 		skel1.addKinematicPlatform( stair );
 
 		stair = platBuilder.position( 82 * TILE, 2.5f * TILE ).name( "stair5" )
 				.dimensions( 2, 3 ).texture( testTexture ).kinematic( )
 				.oneSided( false ).restitution( 0 ).buildTilePlatform( );
-		stair.setCategoryMask( Util.CATEGORY_PLATFORMS, Util.CATEGORY_EVERYTHING );
+		stair.setCategoryMask( Util.CATEGORY_PLATFORMS,
+				Util.CATEGORY_EVERYTHING );
 		skel1.addKinematicPlatform( stair );
 
 		plat = platBuilder.position( 93 * TILE, 5 * TILE ).name( "plat6" )
 				.dimensions( 2, 8 ).texture( testTexture ).kinematic( )
 				.oneSided( false ).restitution( 0 ).buildTilePlatform( );
-		stair.setCategoryMask( Util.CATEGORY_PLATFORMS, Util.CATEGORY_EVERYTHING );
+		stair.setCategoryMask( Util.CATEGORY_PLATFORMS,
+				Util.CATEGORY_EVERYTHING );
 		skel1.addKinematicPlatform( plat );
 
 		stair = platBuilder.position( 95 * TILE, 2.5f * TILE ).name( "stair6" )
 				.dimensions( 2, 3 ).texture( testTexture ).kinematic( )
 				.oneSided( false ).restitution( 0 ).buildTilePlatform( );
-		stair.setCategoryMask( Util.CATEGORY_PLATFORMS, Util.CATEGORY_EVERYTHING );
+		stair.setCategoryMask( Util.CATEGORY_PLATFORMS,
+				Util.CATEGORY_EVERYTHING );
 		skel1.addKinematicPlatform( stair );
 		// PUZZLE 4 //
 
@@ -455,6 +463,7 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		TiledPlatform lowerArm = platBuilder.dynamic( ).position( 550, 800 )
 				.dimensions( 8, 1 ).density( 1f ).oneSided( false )
 				.buildTilePlatform( );
+		@SuppressWarnings( "unused" )
 		HazardBuilder spikesBuilder = new HazardBuilder( world );
 		// and spikes under the arms
 		// Spikes secondUpArm = spikesBuilder.position( 850, 970).dimensions( 4,
@@ -708,7 +717,8 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		// "plat9" )
 		// .dimensions( 1, 7 ).texture( testTexture ).dynamic( )
 		// .oneSided( false ).restitution( 0 ).buildTilePlatform( );
-		// plat.setCategoryMask( Util.CATEGORY_PLATFORMS, Util.CATEGORY_PLAYER );
+		// plat.setCategoryMask( Util.CATEGORY_PLATFORMS, Util.CATEGORY_PLAYER
+		// );
 		// plat.body.setFixedRotation( false );
 		// rotatingRoom.addDynamicPlatform( plat );
 		//
@@ -732,7 +742,8 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		// plat = platBuilder.position( 118f * TILE, 52 * TILE ).name( "plat9" )
 		// .dimensions( 2, 1 ).texture( testTexture ).dynamic( )
 		// .oneSided( false ).restitution( 0 ).buildTilePlatform( );
-		// plat.setCategoryMask( Util.CATEGORY_PLATFORMS, Util.CATEGORY_EVERYTHING
+		// plat.setCategoryMask( Util.CATEGORY_PLATFORMS,
+		// Util.CATEGORY_EVERYTHING
 		// );
 		// plat.body.setFixedRotation( false );
 		// rotatingRoom.addDynamicPlatform( plat );
@@ -951,7 +962,8 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		skel8.addKinematicPlatform( plat );
 
 		PuzzleScrew puzzleScrew = new PuzzleScrew( "001", new Vector2(
-				109f * TILE, 73 * TILE ), 100, skel8, world, 0, false, Vector2.Zero );
+				109f * TILE, 73 * TILE ), 100, skel8, world, 0, false,
+				Vector2.Zero );
 		LerpMover lm2 = new LerpMover( new Vector2( plat.body.getPosition( ).x
 				* Util.BOX_TO_PIXEL, plat.body.getPosition( ).y
 				* Util.BOX_TO_PIXEL ), new Vector2( plat.body.getPosition( ).x,
@@ -964,7 +976,8 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		skeleton.addScrewForDraw( puzzleScrew );
 
 		PuzzleScrew puzzleScrew2 = new PuzzleScrew( "001", new Vector2(
-				113f * TILE, 83 * TILE ), 100, skel8, world, 0, false, Vector2.Zero );
+				113f * TILE, 83 * TILE ), 100, skel8, world, 0, false,
+				Vector2.Zero );
 		// LerpMover lm3 = new LerpMover( new Vector2( plat.body.getPosition(
 		// ).x,
 		// plat.body.getPosition( ).y + 1.5f ).mul( Util.BOX_TO_PIXEL ),
@@ -1002,7 +1015,8 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		skel9.addKinematicPlatform( plat );
 
 		PuzzleScrew puzzleScrew = new PuzzleScrew( "004", new Vector2(
-				130f * TILE, 83 * TILE ), 100, skel9, world, 0, false, Vector2.Zero );
+				130f * TILE, 83 * TILE ), 100, skel9, world, 0, false,
+				Vector2.Zero );
 		@SuppressWarnings( "unused" )
 		RotateByDegree rm = new RotateByDegree( 0.0f, -90.0f, 0, 0.5f );
 
@@ -1021,7 +1035,8 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		skel9.addKinematicPlatform( plat );
 
 		PuzzleScrew puzzleScrew2 = new PuzzleScrew( "006", new Vector2(
-				143f * TILE, 83 * TILE ), 100, skel9, world, 0, false, Vector2.Zero );
+				143f * TILE, 83 * TILE ), 100, skel9, world, 0, false,
+				Vector2.Zero );
 		plat.setActive( true );
 		puzzleScrew2.puzzleManager.addEntity( plat );
 		PuzzleRotateTweenMover rtm2 = new PuzzleRotateTweenMover( 1,
@@ -1082,10 +1097,8 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 
 	private void initCheckPoints( ) {
 		progressManager = new ProgressManager( player1, player2, world );
-		skeleton
-				.addCheckPoint( new CheckPoint( "check_01", new Vector2( 0f,
-						64f ), skeleton, world, progressManager,
-						"levelStage_0_0" ) );
+		skeleton.addCheckPoint( new CheckPoint( "check_01", new Vector2( 0f,
+				64f ), skeleton, world, progressManager, "levelStage_0_0" ) );
 		skeleton.addCheckPoint( new CheckPoint( "check_02", new Vector2(
 				512 * TILE, 64 * TILE ), skeleton, world, progressManager,
 				"levelStage_0_1" ) );

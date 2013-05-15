@@ -47,7 +47,7 @@ public class EntityDefTestScreen implements com.badlogic.gdx.Screen {
 	// FIELDS
 
 	// Variables
-	public ScreenType screenType;
+	public ScreenType screOenType;
 	private Camera cam;
 	private SpriteBatch batch;
 	private Texture testTexture;

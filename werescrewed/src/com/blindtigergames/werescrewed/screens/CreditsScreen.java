@@ -11,8 +11,8 @@ import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 import com.blindtigergames.werescrewed.gui.Label;
 import com.blindtigergames.werescrewed.gui.TextButton;
 
-class CreditsScreen  extends Screen {
-//implements com.badlogic.gdx.Screen
+class CreditsScreen extends Screen {
+	// implements com.badlogic.gdx.Screen
 	private SpriteBatch batch = null;
 	private OrthographicCamera camera = null;
 	private BitmapFont font = null;
@@ -29,16 +29,16 @@ class CreditsScreen  extends Screen {
 		batch = new SpriteBatch( );
 		font = new BitmapFont( );
 		fancyFont = WereScrewedGame.manager.getFont( "Screwball" );
-		//fancyFont = WereScrewedGame.manager.getFont( "ornatique" );
-		logo =  WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-				 + "/common/title_background.png", Texture.class );
+		// fancyFont = WereScrewedGame.manager.getFont( "ornatique" );
+		logo = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
+				+ "/common/title_background.png", Texture.class );
 		lineHeight = Math.round( 2.5f * font.getCapHeight( ) );
-		screenLabel = new Label("CREDITS",fancyFont);
+		screenLabel = new Label( "CREDITS", fancyFont );
 		authorLabel = new Label( "", font );
 		licenseLabel = new Label( "", font );
 		versionLabel = new Label( "" + Version.VERSION, font );
-		backButton = new TextButton( "Back", fancyFont, new ScreenSwitchHandler(
-				ScreenType.MAIN_MENU ) );
+		backButton = new TextButton( "Back", fancyFont,
+				new ScreenSwitchHandler( ScreenType.MAIN_MENU ) );
 	}
 
 	@Override
@@ -47,7 +47,7 @@ class CreditsScreen  extends Screen {
 		Gdx.gl.glClearColor( 0.0f, 0.0f, 0.0f, 1f );
 		Gdx.gl.glClear( GL10.GL_COLOR_BUFFER_BIT );
 		batch.begin( );
-		batch.draw(logo, 0, 0);
+		batch.draw( logo, 0, 0 );
 		screenLabel.draw( batch );
 		authorLabel.draw( batch );
 		licenseLabel.draw( batch );
@@ -63,7 +63,7 @@ class CreditsScreen  extends Screen {
 		batch.setProjectionMatrix( camera.combined );
 		int centerX = width / 2;
 		int centerY = height / 2;
-		screenLabel.setX( centerX - screenLabel.getWidth()/2);
+		screenLabel.setX( centerX - screenLabel.getWidth( ) / 2 );
 		screenLabel.setY( centerY + 6 * lineHeight );
 		authorLabel.setX( centerX - authorLabel.getWidth( ) / 2 );
 		authorLabel.setY( centerY + lineHeight );

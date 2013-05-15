@@ -46,6 +46,7 @@ import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.badlogic.gdx.utils.ObjectMap;
 import com.blindtigergames.werescrewed.entity.Sprite;
+
 /**
  * Loads images from texture atlases created by TexturePacker.<br>
  * <br>
@@ -175,11 +176,13 @@ public class TextureAtlas implements Disposable {
 						region.top = top;
 						region.width = width;
 						region.height = height;
-						if (line.matches( "\\w+/\\d+" )){
-							String[] tokens = line.split( "/" );
-							region.name = tokens[0];
-							region.index = Integer.parseInt( tokens[1] );
-							//Gdx.app.log( "TextureAtlas", "Reading index from region name. Name:"+region.name+" Index:"+region.index );
+						if ( line.matches( "\\w+/\\d+" ) ) {
+							String[ ] tokens = line.split( "/" );
+							region.name = tokens[ 0 ];
+							region.index = Integer.parseInt( tokens[ 1 ] );
+							// Gdx.app.log( "TextureAtlas",
+							// "Reading index from region name. Name:"+region.name+" Index:"+region.index
+							// );
 						} else {
 							region.name = line;
 							region.index = -1;
@@ -212,25 +215,26 @@ public class TextureAtlas implements Disposable {
 						region.originalWidth = Integer.parseInt( tuple[ 0 ] );
 						region.originalHeight = Integer.parseInt( tuple[ 1 ] );
 
-						//readTuple( reader );
-						String possibleLine = reader.readLine();
+						// readTuple( reader );
+						String possibleLine = reader.readLine( );
 
 						int index = -1;
-						
-						if (possibleLine.matches( "^\\s*offset:\\s*(\\d+)\\s*,\\s*(\\d+)$" )){
-							//read the values into the offset ints
+
+						if ( possibleLine
+								.matches( "^\\s*offset:\\s*(\\d+)\\s*,\\s*(\\d+)$" ) ) {
+							// read the values into the offset ints
 							Pattern p = Pattern.compile( "(\\d+)" );
-							Matcher m = p.matcher(possibleLine);
-							m.find();
-							region.offsetX = Integer.parseInt( m.group() );
-							m.find();
-							region.offsetY = Integer.parseInt( m.group() );
-							
+							Matcher m = p.matcher( possibleLine );
+							m.find( );
+							region.offsetX = Integer.parseInt( m.group( ) );
+							m.find( );
+							region.offsetY = Integer.parseInt( m.group( ) );
+
 							index = Integer.parseInt( readValue( reader ) );
 						} else {
 							index = Integer.parseInt( parseValue( line ) );
 						}
-						if (region.index == -1 && index != -1)
+						if ( region.index == -1 && index != -1 )
 							region.index = index;
 
 						if ( flip )
@@ -301,8 +305,7 @@ public class TextureAtlas implements Disposable {
 	 *            If true, all regions loaded will be flipped for use with a
 	 *            perspective where 0,0 is the upper left corner.
 	 */
-	public TextureAtlas( FileHandle packFile, FileHandle imagesDir,
-			boolean flip ) {
+	public TextureAtlas( FileHandle packFile, FileHandle imagesDir, boolean flip ) {
 		this( new TextureAtlasData( packFile, imagesDir, flip ) );
 	}
 
@@ -585,7 +588,7 @@ public class TextureAtlas implements Disposable {
 
 	static String readValue( BufferedReader reader ) throws IOException {
 		String line = reader.readLine( );
-		return parseValue(line);
+		return parseValue( line );
 	}
 
 	static String parseValue( String line ) throws IOException {
