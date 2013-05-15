@@ -31,7 +31,7 @@ public class PowerSwitch extends EventTrigger{
 	 */
 	public PowerSwitch( String name, Vector2 position, World world ) {
 		super( name, world );
-		contructRectangleBody(170, 128, position);
+		contructRectangleBody(128, 128, position);
 		entityType = EntityType.POWERSWITCH;
 		TextureAtlas commonTextureAtlas = WereScrewedGame.manager.getAtlas( "common-textures" );
 		onState = commonTextureAtlas.createSprite( "switch_on" );

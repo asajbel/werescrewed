@@ -12,6 +12,8 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 import com.blindtigergames.werescrewed.gui.Button;
+import com.blindtigergames.werescrewed.gui.OptionButton;
+import com.blindtigergames.werescrewed.gui.Slider;
 import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.debug.FPSLoggerS;
 import com.blindtigergames.werescrewed.debug.SBox2DDebugRenderer;
@@ -31,6 +33,8 @@ public class Screen implements com.badlogic.gdx.Screen {
 	protected int controllerTimer = 10;
 	protected int controllerMax = 10;
 	protected int buttonIndex = 0;
+	protected float alpha = 1.0f;
+	protected boolean finish = false;
 	
 	BitmapFont debug_font;
 	Camera uiCamera;
@@ -102,19 +106,19 @@ public class Screen implements com.badlogic.gdx.Screen {
 		}
 		
 		
-		if(Buttons.size( ) > 0){
+		if( Buttons.size( ) > 0 ){
 		
 			if ( controllerTimer > 0 ) {
 				controllerTimer--;
 			} else {
 				
-				if(WereScrewedGame.p1Controller != null  ) {
+				if( WereScrewedGame.p1Controller != null ) {
 					if ( WereScrewedGame.p1ControllerListener.jumpPressed( )
-							|| WereScrewedGame.p1ControllerListener.pausePressed( )) {
+							|| WereScrewedGame.p1ControllerListener.pausePressed( ) ) {
 						Buttons.get( buttonIndex ).setSelected( true );
 						controllerTimer = controllerMax;
 						
-					} else if ( WereScrewedGame.p1ControllerListener.downPressed( )) {
+					} else if ( WereScrewedGame.p1ControllerListener.downPressed( ) ) {
 						
 						Buttons.get( buttonIndex ).setColored( false );
 						buttonIndex++;
@@ -122,7 +126,7 @@ public class Screen implements com.badlogic.gdx.Screen {
 						Buttons.get( buttonIndex ).setColored( true );
 						controllerTimer = controllerMax;
 						
-					} else if ( WereScrewedGame.p1ControllerListener.upPressed( )) {
+					} else if ( WereScrewedGame.p1ControllerListener.upPressed( ) ) {
 						
 						Buttons.get( buttonIndex ).setColored( false );
 						if ( buttonIndex == 0 ) {
@@ -133,15 +137,35 @@ public class Screen implements com.badlogic.gdx.Screen {
 						Buttons.get( buttonIndex ).setColored( true );
 						controllerTimer = controllerMax;
 						
+					} else if ( WereScrewedGame.p1ControllerListener.leftPressed( ) ) {
+						
+						if ( Buttons.get( buttonIndex ) instanceof OptionButton ) {
+							OptionButton option = ( OptionButton ) Buttons.get( buttonIndex );
+							if ( option.getOption( ) instanceof Slider ) {
+								Slider slider = ( Slider ) option.getOption( );
+								slider.moveLeft( );
+								controllerTimer = controllerMax;
+							}
+						}
+					} else if ( WereScrewedGame.p1ControllerListener.rightPressed( ) ) {
+						
+						if ( Buttons.get( buttonIndex ) instanceof OptionButton ) {
+							OptionButton option = ( OptionButton ) Buttons.get( buttonIndex );
+							if ( option.getOption( ) instanceof Slider ) {
+								Slider slider = ( Slider ) option.getOption( );
+								slider.moveRight( );
+								controllerTimer = controllerMax;
+							}
+						}
 					}
 				}
-				if(WereScrewedGame.p2Controller != null ) {
-					if (  WereScrewedGame.p2ControllerListener.jumpPressed( ) 
-							|| WereScrewedGame.p2ControllerListener.pausePressed( )) {
+				if( WereScrewedGame.p2Controller != null ) {
+					if ( WereScrewedGame.p2ControllerListener.jumpPressed( ) 
+							|| WereScrewedGame.p2ControllerListener.pausePressed( ) ) {
 						Buttons.get( buttonIndex ).setSelected( true );
 						controllerTimer = controllerMax;
 						
-					} else if (  WereScrewedGame.p2ControllerListener.downPressed( )) {
+					} else if ( WereScrewedGame.p2ControllerListener.downPressed( ) ) {
 						
 						Buttons.get( buttonIndex ).setColored( false );
 						buttonIndex++;
@@ -160,12 +184,32 @@ public class Screen implements com.badlogic.gdx.Screen {
 						Buttons.get( buttonIndex ).setColored( true );
 						controllerTimer = controllerMax;
 						
+					} else if ( WereScrewedGame.p2ControllerListener.leftPressed( ) ) {
+						
+						if ( Buttons.get( buttonIndex ) instanceof OptionButton ) {
+							OptionButton option = ( OptionButton ) Buttons.get( buttonIndex );
+							if ( option.getOption( ) instanceof Slider ) {
+								Slider slider = ( Slider ) option.getOption( );
+								slider.moveLeft( );
+								controllerTimer = controllerMax;
+							}
+						}
+					} else if ( WereScrewedGame.p2ControllerListener.rightPressed( ) ) {
+						
+						if ( Buttons.get( buttonIndex ) instanceof OptionButton ) {
+							OptionButton option = ( OptionButton ) Buttons.get( buttonIndex );
+							if ( option.getOption( ) instanceof Slider ) {
+								Slider slider = ( Slider ) option.getOption( );
+								slider.moveRight( );
+								controllerTimer = controllerMax;
+							}
+						}
 					}
 				}
 				
 				
-				if(WereScrewedGame.p1Controller == null && WereScrewedGame.p2Controller == null){
-					if( Gdx.input.isKeyPressed( Keys.ENTER )){
+				if( WereScrewedGame.p1Controller == null && WereScrewedGame.p2Controller == null ){
+					if( Gdx.input.isKeyPressed( Keys.ENTER ) ){
 						Buttons.get( buttonIndex ).setSelected( true );
 					}
 					if( Gdx.input.isKeyPressed( Keys.DOWN )){
@@ -185,8 +229,25 @@ public class Screen implements com.badlogic.gdx.Screen {
 						Buttons.get( buttonIndex ).setColored( true );
 						
 					}
+					if ( Gdx.input.isKeyPressed( Keys.LEFT ) ) {
+						if ( Buttons.get( buttonIndex ) instanceof OptionButton ) {
+							OptionButton option = ( OptionButton ) Buttons.get( buttonIndex );
+							if ( option.getOption( ) instanceof Slider ) {
+								Slider slider = ( Slider ) option.getOption( );
+								slider.moveLeft( );
+							} 
+						}
+					}
+					if ( Gdx.input.isKeyPressed( Keys.RIGHT ) ) {
+						if ( Buttons.get( buttonIndex ) instanceof OptionButton ) {
+							OptionButton option = ( OptionButton ) Buttons.get( buttonIndex );
+							if ( option.getOption( ) instanceof Slider ) {
+								Slider slider = ( Slider ) option.getOption( );
+								slider.moveRight( );
+							} 
+						}
+					}
 				}
-				
 			}
 		}
 		
@@ -195,47 +256,47 @@ public class Screen implements com.badlogic.gdx.Screen {
 	}
 
 	protected void addFGSkeleton( Skeleton skel ) {
-		addToSkelList(level.skelFGList,skel,false);
+		addToSkelList( level.skelFGList,skel,false );
 	}
 	
 	protected void addFGSkeletonBack( Skeleton skel ) {
-		addToSkelList(level.skelFGList,skel,true);
+		addToSkelList( level.skelFGList,skel,true );
 	}
 	
 	protected void addBGSkeleton( Skeleton skel ) {
-		addToSkelList(level.skelBGList,skel,false);
+		addToSkelList( level.skelBGList,skel,false );
 	}
 	
 	protected void addBGSkeletonBack( Skeleton skel ) {
-		addToSkelList(level.skelBGList,skel,true);
+		addToSkelList( level.skelBGList,skel,true );
 	}
 	
 	protected void addFGEntity( Entity entity ) {
-		addToEntityList(level.entityFGList,entity,false);
+		addToEntityList( level.entityFGList,entity,false );
 	}
 	
 	protected void addFGEntityToBack( Entity entity ) {
-		addToEntityList(level.entityFGList,entity,true);
+		addToEntityList( level.entityFGList,entity,true );
 	}
 	
 	protected void addBGEntity( Entity entity ) {
-		addToEntityList(level.entityBGList,entity,false);
+		addToEntityList( level.entityBGList,entity,false );
 	}
 	
 	protected void addBGEntityToBack( Entity entity ) {
-		addToEntityList(level.entityBGList,entity,true);
+		addToEntityList( level.entityBGList,entity,true );
 	}
 	
-	private void addToEntityList(ArrayList< Entity > list, Entity e, boolean isBack){
-		if(!list.contains( e )){
-			if(isBack)list.add( 0,e );
-			else list.add(e);
+	private void addToEntityList( ArrayList< Entity > list, Entity e, boolean isBack ){
+		if( !list.contains( e ) ){
+			if( isBack )list.add( 0,e );
+			else list.add( e );
 		}
 	}
 	
-	private void addToSkelList(ArrayList< Skeleton > list, Skeleton s, boolean isBack){
-		if(!list.contains( s )){
-			if(isBack)list.add( 0,s );
+	private void addToSkelList( ArrayList< Skeleton > list, Skeleton s, boolean isBack ){
+		if( !list.contains( s ) ){
+			if( isBack )list.add( 0,s );
 			else list.add(s);
 		}
 	}
@@ -272,7 +333,7 @@ public class Screen implements com.badlogic.gdx.Screen {
 
 	@Override
 	public void dispose( ) {
-		if(level != null)
+		if( level != null )
 			level.resetPhysicsWorld( );
 		
 	}
@@ -280,16 +341,39 @@ public class Screen implements com.badlogic.gdx.Screen {
 	/**
 	 * Set clear color with values in 0-1 range
 	 */
-	public void setClearColor(float r, float g, float b, float a){
-		clearColor = new Color(r,g,b,a);
+	public void setClearColor( float r, float g, float b, float a ){
+		clearColor = new Color( r,g,b,a );
 	}
 	
 	/**
 	 * Set clear color with values in 0-255 range
 	 */
-	public void setClearColor(int r, int g, int b, int a){
-		setClearColor(r/255f,g/255f,b/255f,a/255f);
+	public void setClearColor( int r, int g, int b, int a ){
+		setClearColor( r/255f,g/255f,b/255f,a/255f );
 	}
 
+	public float getAlpha( ) {
+		return alpha;
+	}
 	
+	public void setAlpha( float value ) {
+		alpha += value;
+		
+		if ( alpha >= 1.0f ) {
+			alpha = 1.0f;
+			finish = true;
+		}
+		else if ( alpha < 0.0f ) {
+			alpha = 0.0f;
+			finish = true;
+		}
+	}
+	
+	public boolean isFinished( ) {
+		return finish;
+	}
+	
+	public void setFinish ( boolean value ) {
+		finish = value;
+	}
 }

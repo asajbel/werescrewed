@@ -1,0 +1,89 @@
+arm_ex.png
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+offset: 0, 0
+forearmandelbow_exterior1
+  rotate: false
+  xy: 1180, 4
+  size: 386, 533
+  orig: 386, 533
+  offset: 0, 0
+  index: -1
+upperarm_exterior2
+  rotate: false
+  xy: 1128, 543
+  size: 360, 512
+  orig: 360, 512
+  offset: 0, 0
+  index: -1
+upperarm_exterior1
+  rotate: false
+  xy: 1494, 1042
+  size: 360, 512
+  orig: 360, 512
+  offset: 0, 0
+  index: -1
+upperarm_exterior4
+  rotate: false
+  xy: 1572, 4
+  size: 360, 513
+  orig: 360, 513
+  offset: 0, 0
+  index: -1
+upperarm_exterior3
+  rotate: false
+  xy: 1572, 523
+  size: 360, 513
+  orig: 360, 513
+  offset: 0, 0
+  index: -1
+upperarm_exterior5
+  rotate: false
+  xy: 762, 543
+  size: 360, 512
+  orig: 360, 512
+  offset: 0, 0
+  index: -1
+upperarm_exterior6
+  rotate: false
+  xy: 396, 1042
+  size: 360, 512
+  orig: 360, 512
+  offset: 0, 0
+  index: -1
+forearmandelbow_exterior6
+  rotate: false
+  xy: 4, 4
+  size: 386, 533
+  orig: 386, 533
+  offset: 0, 0
+  index: -1
+forearmandelbow_exterior4
+  rotate: false
+  xy: 4, 1082
+  size: 386, 533
+  orig: 386, 533
+  offset: 0, 0
+  index: -1
+forearmandelbow_exterior5
+  rotate: false
+  xy: 4, 543
+  size: 386, 533
+  orig: 386, 533
+  offset: 0, 0
+  index: -1
+forearmandelbow_exterior2
+  rotate: false
+  xy: 788, 4
+  size: 386, 533
+  orig: 386, 533
+  offset: 0, 0
+  index: -1
+forearmandelbow_exterior3
+  rotate: false
+  xy: 396, 4
+  size: 386, 533
+  orig: 386, 533
+  offset: 0, 0
+  index: -1

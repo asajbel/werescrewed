@@ -400,6 +400,11 @@ public class LevelFactory {
 			pb.openEnded( );
 		}
 
+		if ( item.props.containsKey( "density" ) ) {
+			float density = Float.parseFloat( item.props.get( "density" ) );
+			pb.density( density );
+		}
+		
 		pb.name( item.name ).position( new Vector2( item.pos.x, item.pos.y ) )
 				.properties( item.props );
 
@@ -1074,6 +1079,15 @@ public class LevelFactory {
 
 				p.puzzleManager.addEntity( attach );
 			}
+			
+			if ( item.props.containsKey( "controlthis2" ) ) {
+				String s = item.props.get( "controlthis2" );
+				Entity attach2 = entities.get( s );
+				Gdx.app.log( "LevelFactory", "attaching :" + attach2.name
+						+ " to puzzle screw" );
+
+				p.puzzleManager.addEntity( attach2 );
+			}
 
 			if ( item.props.containsKey( "jointto" ) ) {
 				String s = item.props.get( "jointto" );
@@ -1152,6 +1166,15 @@ public class LevelFactory {
 			Gdx.app.log( "LevelFactory", "Building stripped screw " + item.name
 					+ " at " + item.pos.toString( ) );
 			StrippedScrew s = builder.buildStrippedScrew( );
+			if ( item.props.containsKey( "jointto" ) ) {
+				String obj = item.props.get( "jointto" );
+				Entity plat = entities.get( obj );
+
+				s.addStructureJoint( plat );
+			} else {
+				s.addStructureJoint( parent );
+			}
+
 			entities.put( item.name, s );
 			out = s;
 			break;
@@ -1211,7 +1234,7 @@ public class LevelFactory {
 				if ( item.props.containsKey( "degreelimit" ) ) {
 					float limit = Float.parseFloat( item.props
 							.get( "degreelimit" ) );
-					ss.addStructureJoint( target, limit );
+					ss.addStructureJoint( target, -limit );
 
 				} else
 					ss.addStructureJoint( target );
@@ -1222,8 +1245,8 @@ public class LevelFactory {
 				String thisthing = item.props.get( "ropetargetrev" );
 				Link target = ( Link ) entities.get( thisthing );
 
-				// target.body.setTransform( ss.getPosition( ),
-				// target.body.getAngle( ) );
+				 target.body.setTransform( ss.getPosition( ),
+				 target.body.getAngle( ) );
 				ss.addStructureJoint( target );
 			}
 

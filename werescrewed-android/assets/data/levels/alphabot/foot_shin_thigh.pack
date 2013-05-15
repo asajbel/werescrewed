@@ -1,0 +1,54 @@
+foot_shin_thigh.png
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+offset: 0, 0
+knee_exterior
+  rotate: false
+  xy: 5, 5
+  size: 844, 784
+  orig: 844, 784
+  offset: 0, 0
+  index: -1
+foot_exterior
+  rotate: false
+  xy: 5, 1559
+  size: 814, 364
+  orig: 814, 364
+  offset: 0, 0
+  index: -1
+shin_exterior
+  rotate: false
+  xy: 5, 797
+  size: 589, 754
+  orig: 589, 754
+  offset: 0, 0
+  index: -1
+left-foot
+  rotate: false
+  xy: 602, 1012
+  size: 803, 333
+  orig: 803, 333
+  offset: 0, 0
+  index: -1
+left-shin
+  rotate: false
+  xy: 827, 1353
+  size: 509, 653
+  orig: 509, 653
+  offset: 0, 0
+  index: -1
+left-thigh
+  rotate: false
+  xy: 857, 5
+  size: 637, 999
+  orig: 637, 999
+  offset: 0, 0
+  index: -1
+thigh_exterior
+  rotate: false
+  xy: 1413, 1012
+  size: 544, 792
+  orig: 544, 792
+  offset: 0, 0
+  index: -1

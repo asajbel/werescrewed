@@ -17,16 +17,21 @@ import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.camera.Camera;
 import com.blindtigergames.werescrewed.entity.RobotState;
 import com.blindtigergames.werescrewed.entity.Skeleton;
+import com.blindtigergames.werescrewed.entity.action.CannonLaunchAction;
+import com.blindtigergames.werescrewed.entity.action.RotateTweenAction;
+import com.blindtigergames.werescrewed.entity.builders.EventTriggerBuilder;
 import com.blindtigergames.werescrewed.entity.builders.PlatformBuilder;
 import com.blindtigergames.werescrewed.entity.builders.PlayerBuilder;
 import com.blindtigergames.werescrewed.entity.builders.SkeletonBuilder;
 import com.blindtigergames.werescrewed.entity.hazard.Fire;
 import com.blindtigergames.werescrewed.entity.hazard.builders.HazardBuilder;
+import com.blindtigergames.werescrewed.entity.mover.AnalogRotateMover;
 import com.blindtigergames.werescrewed.entity.mover.IMover;
 import com.blindtigergames.werescrewed.entity.mover.RockingMover;
 import com.blindtigergames.werescrewed.entity.mover.RotateTweenMover;
 import com.blindtigergames.werescrewed.entity.mover.TargetImpulseMover;
 import com.blindtigergames.werescrewed.entity.mover.TimelineTweenMover;
+import com.blindtigergames.werescrewed.entity.platforms.Pipe;
 import com.blindtigergames.werescrewed.entity.platforms.Platform;
 import com.blindtigergames.werescrewed.entity.platforms.TiledPlatform;
 import com.blindtigergames.werescrewed.level.Level;
@@ -35,12 +40,15 @@ import com.blindtigergames.werescrewed.entity.screws.PuzzleScrew;
 import com.blindtigergames.werescrewed.entity.screws.StructureScrew;
 import com.blindtigergames.werescrewed.entity.tween.PathBuilder;
 import com.blindtigergames.werescrewed.entity.tween.PlatformAccessor;
+import com.blindtigergames.werescrewed.eventTrigger.EventTrigger;
+import com.blindtigergames.werescrewed.eventTrigger.PowerSwitch;
 import com.blindtigergames.werescrewed.util.Util;
 
 public class DragonScreen extends Screen {
 
 	PuzzleScrew puzzle_screw_balloon1;
 	Platform balloon1;
+	Skeleton balloon1_super;
 	
 	public DragonScreen( ) {
 		super( );
@@ -49,7 +57,64 @@ public class DragonScreen extends Screen {
 		
 		buildBalloon();
 		
+		initPuzzleScrews();
+		tail3Pipes();
 		
+		Skeleton balloon3CannonSkeleton = (Skeleton) LevelFactory.entities.get( "balloon3_cannon_skeleton" );
+		balloon3CannonSkeleton.setFgFade( false );
+		balloon3CannonSkeleton.setLocalRot( -Util.PI/4 );
+		
+		buildCannon(balloon3CannonSkeleton, balloon3CannonSkeleton.getPositionPixel( ),
+				200, 200);
+		
+		
+		
+		Skeleton jaw_skeleton = ( Skeleton ) LevelFactory.entities.get( "jaw_skeleton" );
+		Timeline t = Timeline.createSequence( );
+			
+		
+		t.push( Tween.to( jaw_skeleton, PlatformAccessor.LOCAL_ROT, 6f )
+				   .ease(TweenEquations.easeNone)
+				   .target( -Util.PI / 32 )
+				   .start().delay( 2f )
+				   );
+		
+		
+		t.push( Tween.to( jaw_skeleton, PlatformAccessor.LOCAL_ROT, 4f )
+				   .ease(TweenEquations.easeNone)
+				   .target( 0 ).delay( 2f )
+				   .start()
+				   );
+		
+		
+		t.push( Tween.to( jaw_skeleton, PlatformAccessor.LOCAL_ROT, 6f )
+				   .ease(TweenEquations.easeNone)
+				   .target( -Util.PI / 32 )
+				   .start().delay( 2f )
+				   );
+		
+		
+		t.push( Tween.to( jaw_skeleton, PlatformAccessor.LOCAL_ROT, 6f )
+				   .ease(TweenEquations.easeNone)
+				   .target( 0 ).delay( 2f )
+				   .start()
+				   );
+		
+		
+		t.push( Tween.to( jaw_skeleton, PlatformAccessor.LOCAL_ROT, 8f )
+				   .ease(TweenEquations.easeNone)
+				   .target( -Util.PI / 32 )
+				   .start().delay( 4f )
+				   );
+		
+		
+		t.push( Tween.to( jaw_skeleton, PlatformAccessor.LOCAL_ROT, 5f )
+				   .ease(TweenEquations.easeNone)
+				   .target( 0 ).delay( 2f )
+				   .start()
+				   );
+		t.repeat( Tween.INFINITY, 0f );
+		jaw_skeleton.addMover( new TimelineTweenMover( t.start( ) ) );
 	}
 	
 	void buildBalloon(){
@@ -59,13 +124,13 @@ public class DragonScreen extends Screen {
 		//Platform balloon4 = (Platform) LevelFactory.entities.get( "balloon4" );
 		
 		Skeleton balloon1_skeleton = ( Skeleton ) LevelFactory.entities.get( "balloon1_skeleton" );
-
+		balloon1_super = (Skeleton) LevelFactory.entities.get( "balloon1_super" );
 		
 		puzzle_screw_balloon1 = (PuzzleScrew) LevelFactory.entities.get( "puzzle_screw_balloon1" );
 		
 		
 	//	balloon1.addMover( balloonMover(balloon1, 800, Util.PI/32, 0) );
-		balloon2.addMover( balloonMover(balloon2, 800, 0, 4) );
+	//	balloon2.addMover( balloonMover(balloon2, 800, 0, 4) );
 //		balloon3.addMover( balloonMover(balloon3, 700, 0, 2) );
 //		balloon4.addMover( balloonMover(balloon4, 600, 0, 0) );
 //		balloon3_skeleton.addMover( balloonMover(balloon3_skeleton, 600, Util.PI/8, 4) );
@@ -95,17 +160,17 @@ public class DragonScreen extends Screen {
 		}
 
 		if(puzzle_screw_balloon1.getDepth( ) == puzzle_screw_balloon1.getMaxDepth( )){
-			if(balloon1.currentMover() == null){
+			if(balloon1_super.currentMover() == null){
 				Timeline t = Timeline.createSequence( );
 				
 				
 				t.beginParallel( );
 				t.push( Tween
-						.to( balloon1, PlatformAccessor.LOCAL_POS_XY, 8f )
+						.to( balloon1_super, PlatformAccessor.LOCAL_POS_XY, 8f )
 						.delay( 0f ).target( 0, 800 )
 						.ease( TweenEquations.easeNone ).start( ) );
 				
-				t.push( Tween.to( balloon1, PlatformAccessor.LOCAL_ROT, 4f )
+				t.push( Tween.to( balloon1_super, PlatformAccessor.LOCAL_ROT, 4f )
 						   .ease(TweenEquations.easeNone)
 						   .target( Util.PI / 32 ).delay( 0f )
 						   .start()
@@ -117,11 +182,11 @@ public class DragonScreen extends Screen {
 				t.beginParallel( );
 				
 				t.push( Tween
-						.to( balloon1, PlatformAccessor.LOCAL_POS_XY, 8f )
+						.to( balloon1_super, PlatformAccessor.LOCAL_POS_XY, 8f )
 						.delay( 0f ).target( 0, 1600f )
 						.ease( TweenEquations.easeNone ).start( ) );
 				
-				t.push( Tween.to( balloon1, PlatformAccessor.LOCAL_ROT, 4f )
+				t.push( Tween.to( balloon1_super, PlatformAccessor.LOCAL_ROT, 4f )
 						   .ease(TweenEquations.easeNone)
 						   .target( -Util.PI / 32 ).delay( 0f )
 						   .start()
@@ -130,13 +195,13 @@ public class DragonScreen extends Screen {
 				t.end( );
 
 				t.beginSequence( );
-				t.push( Tween.to( balloon1, PlatformAccessor.LOCAL_ROT, 4f )
+				t.push( Tween.to( balloon1_super, PlatformAccessor.LOCAL_ROT, 4f )
 						   .ease(TweenEquations.easeNone)
 						   .target( 0 ).delay( 0f )
 						   .start()
 						   );
 				 t.end( );
-				balloon1.addMover( new TimelineTweenMover( t.start( ) ) );
+				 balloon1_super.addMover( new TimelineTweenMover( t.start( ) ) );
 			}
 			
 		}
@@ -203,5 +268,99 @@ public class DragonScreen extends Screen {
 //		t.delay( initPause );
 		t = t.repeat( Tween.INFINITY, 0f );
 		return new TimelineTweenMover( t.start( ) );
+	}
+	
+	void buildCannon(Skeleton skel, Vector2 pos, int widthPix, int heightPix){
+		if(widthPix<=64)throw new RuntimeException( "Cannon width needs to be greater than 64 (2tiles) to work properly" );
+		PlatformBuilder pb = new PlatformBuilder( level.world ).tileSet( "TilesetTest" );
+
+		
+		Vector2 dim = new Vector2(((int)(widthPix/32))-2,((int)(heightPix/32)));
+		Vector2 left = new Vector2(pos.x-dim.x/2*32-16, pos.y-16+dim.y*16);
+		Vector2 right = new Vector2(pos.x+dim.x/2*32+16, pos.y-16+dim.y*16);
+		
+
+		
+		//base
+		skel.addPlatform( pb.name( "cannon-base" ).dimensions( dim.x,1 ).position( pos.cpy() ).buildTilePlatform( ) );
+		//left
+		skel.addPlatform( pb.name( "cannon-left" ).dimensions( 1,dim.y ).position( left.cpy() ).buildTilePlatform( ) );
+		//right
+		skel.addPlatform( pb.name( "cannon-right" ).dimensions( 1,dim.y ).position( right.cpy() ).buildTilePlatform( ) );
+		
+		EventTriggerBuilder etb = new EventTriggerBuilder( level.world );
+		
+		int quarter = ( int ) ( dim.y*32/4 );
+		Vector2 eventPos = new Vector2(pos.x,pos.y+16+quarter);
+		
+		Array< Vector2 > triggerVerts = new Array< Vector2 >(4);
+		//triggerVerts.add( new Vector2 )
+		
+		triggerVerts.add( new Vector2( quarter,-quarter) );
+		triggerVerts.add( new Vector2( quarter, quarter) );
+		triggerVerts.add( new Vector2(-quarter, quarter) );
+		triggerVerts.add( new Vector2(-quarter,-quarter) );
+		triggerVerts.add( new Vector2(-quarter,-quarter) );
+		
+		
+		EventTrigger et = etb.name( "cannon-trigger" ).setVerts( triggerVerts )
+				.extraBorder( 0 )
+				.position( eventPos )//.addEntity( s )
+				.beginAction( new CannonLaunchAction( skel, 0.5f, 1 ) )
+				.repeatable( )
+				.build( );
+		skel.addEventTrigger( et );
+		
+	}
+	
+	private void initPuzzleScrews(){
+		PuzzleScrew tail2PuzzleScrew1 = ( PuzzleScrew ) LevelFactory.entities
+				.get( "tail2_puzzle_screw1" );
+		PuzzleScrew tail2PuzzleScrew2 = ( PuzzleScrew ) LevelFactory.entities
+				.get( "tail2_puzzle_screw2" );
+		
+		// NOTE: this doesn't work correctly, it only works if you move one screw
+		// (which only turns one pipe), then screw the other which then turns both pipes
+
+		AnalogRotateMover anlgRot = new AnalogRotateMover( .6f, level.world );
+		
+		tail2PuzzleScrew1.puzzleManager.addMover( anlgRot );
+		tail2PuzzleScrew2.puzzleManager.addMover( anlgRot );
+		
+		tail2PuzzleScrew1.puzzleManager.addScrew( tail2PuzzleScrew2 );
+		tail2PuzzleScrew2.puzzleManager.addScrew( tail2PuzzleScrew1 );
+		
+	}
+	
+	private void tail3Pipes(){
+		
+		
+		Pipe tail3MiddlePipe1 = ( Pipe ) LevelFactory.entities
+		.get( "tail3_middle_pipe1" );
+		Pipe tail3MiddlePipe2 = ( Pipe ) LevelFactory.entities
+				.get( "tail3_middle_pipe2" );
+		
+		
+		//tail3MiddlePipe2.setLocalRot(  90f * Util.DEG_TO_RAD  );
+		
+		PowerSwitch tail3Switch1 = ( PowerSwitch ) LevelFactory.entities
+				.get( "tail3_switch1" );
+		PowerSwitch tail3Switch2 = ( PowerSwitch ) LevelFactory.entities
+				.get( "tail3_switch2" );
+
+		tail3Switch1.actOnEntity = true;
+		tail3Switch1.addEntityToTrigger( tail3MiddlePipe1 );
+		tail3Switch1.addEntityToTrigger( tail3MiddlePipe2 );
+		tail3Switch1
+				.addBeginIAction( new RotateTweenAction( Util.PI / 2 ) );
+		tail3Switch1.addEndIAction( new RotateTweenAction( 0 ) );
+
+		tail3Switch2.actOnEntity = true;
+		tail3Switch2.addEntityToTrigger( tail3MiddlePipe1 );
+		tail3Switch2.addEntityToTrigger( tail3MiddlePipe2 );
+		tail3Switch2
+				.addBeginIAction( new RotateTweenAction( Util.PI / 2 ) );
+		tail3Switch2.addEndIAction( new RotateTweenAction( 0 ) );
+		
 	}
 }

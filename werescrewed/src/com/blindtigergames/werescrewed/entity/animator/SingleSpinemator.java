@@ -93,4 +93,10 @@ public class SingleSpinemator implements ISpinemator {
 		this.scale = scale;
 	}
 
+	@Override
+	public TextureAtlas getBodyAtlas( ) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
