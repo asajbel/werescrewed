@@ -61,8 +61,8 @@
   </ColorTextureTransparent>
   <DefaultPathItemLineWidth>4</DefaultPathItemLineWidth>
   <DefaultContentRootFolder>C:\</DefaultContentRootFolder>
-  <CameraSpeed>1000</CameraSpeed>
-  <CameraFastSpeed>4000</CameraFastSpeed>
+  <CameraSpeed>500</CameraSpeed>
+  <CameraFastSpeed>2000</CameraFastSpeed>
   <DefaultTextureOriginMethod>TextureCenter</DefaultTextureOriginMethod>
   <WorldOriginColor>
     <R>255</R>

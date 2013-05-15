@@ -42,6 +42,7 @@ import com.blindtigergames.werescrewed.entity.builders.PlayerBuilder;
 import com.blindtigergames.werescrewed.entity.builders.RopeBuilder;
 import com.blindtigergames.werescrewed.entity.builders.ScrewBuilder;
 import com.blindtigergames.werescrewed.entity.builders.SkeletonBuilder;
+import com.blindtigergames.werescrewed.entity.hazard.Fire;
 import com.blindtigergames.werescrewed.entity.hazard.Hazard;
 import com.blindtigergames.werescrewed.entity.hazard.builders.HazardBuilder;
 import com.blindtigergames.werescrewed.entity.mover.IMover;
@@ -253,8 +254,10 @@ public class LevelFactory {
 			constructEventTrigger( item );
 		} else if (bluePrints.equals( "powerswitch" )){
 			constructPowerSwitch(item);
-		}else if ( bluePrints.equals( "hazard" ) ) {
+		} else if ( bluePrints.equals( "hazard" ) ) {
 			out = constructHazard( item );
+		} else if (bluePrints.equals( "fire" )){
+			constructFire( item );
 		} else if ( bluePrints.equals( "fixture" ) ) {
 			constructFixture( item );
 		} else if(bluePrints.equals( "panel" )){
@@ -1079,6 +1082,15 @@ public class LevelFactory {
 
 				p.puzzleManager.addEntity( attach );
 			}
+			
+			if ( item.props.containsKey( "controlthis2" ) ) {
+				String s = item.props.get( "controlthis2" );
+				Entity attach2 = entities.get( s );
+				Gdx.app.log( "LevelFactory", "attaching :" + attach2.name
+						+ " to puzzle screw" );
+
+				p.puzzleManager.addEntity( attach2 );
+			}
 
 			if ( item.props.containsKey( "jointto" ) ) {
 				String s = item.props.get( "jointto" );
@@ -1122,10 +1134,11 @@ public class LevelFactory {
 
 							p.puzzleManager.addEntity( attach2 );
 
-							p.puzzleManager
-									.addMover( new PuzzleRotateTweenMover( 1,
-											Util.PI / 2, true,
-											PuzzleType.ON_OFF_MOVER ) );
+							
+//							p.puzzleManager
+//									.addMover( new PuzzleRotateTweenMover( 1,
+//											Util.PI / 2, true,
+//											PuzzleType.ON_OFF_MOVER ) );
 
 							Gdx.app.log( "LevelFactory", "attaching :"
 									+ movername + " to puzzle screw" );
@@ -1157,6 +1170,15 @@ public class LevelFactory {
 			Gdx.app.log( "LevelFactory", "Building stripped screw " + item.name
 					+ " at " + item.pos.toString( ) );
 			StrippedScrew s = builder.buildStrippedScrew( );
+			if ( item.props.containsKey( "jointto" ) ) {
+				String obj = item.props.get( "jointto" );
+				Entity plat = entities.get( obj );
+
+				s.addStructureJoint( plat );
+			} else {
+				s.addStructureJoint( parent );
+			}
+
 			entities.put( item.name, s );
 			out = s;
 			break;
@@ -1227,7 +1249,7 @@ public class LevelFactory {
 				String thisthing = item.props.get( "ropetargetrev" );
 				Link target = ( Link ) entities.get( thisthing );
 
-				 target.body.setTransform( ss.getPosition( ),
+				 target.body.setTransform( ss.getPosition( ).add( 0, target.getHeight( )/2 * Util.PIXEL_TO_BOX ),
 				 target.body.getAngle( ) );
 				ss.addStructureJoint( target );
 			}
@@ -1377,9 +1399,20 @@ public class LevelFactory {
 		if ( item.props.containsKey( "createscrewsecond" ) ) {
 			ropeBuilder.createScrewSecondToLastLink( );
 		}
+		if ( item.props.containsKey( "createscrewthird" ) ) {
+			ropeBuilder.createScrewThirdToLastLink( );
+		}
+		if ( item.props.containsKey( "createall" ) ) {
+			ropeBuilder.createScrewAll( );
+		}
 		if ( item.props.containsKey( "links" ) ) {
 			int links = Integer.parseInt( item.props.get( "links" ) );
 			ropeBuilder.links( links );
+		}
+		
+		if ( item.props.containsKey( "linkheight" ) ) {
+			int links = Integer.parseInt( item.props.get( "linkheight" ) );
+			ropeBuilder.height( links );
 		}
 
 		// if(item.props.containsKey( "numberofscrews" )){
@@ -1556,7 +1589,22 @@ public class LevelFactory {
 		entities.put( item.name, out );
 		return out;
 	}
-
+	
+	public Fire constructFire( Item item ){
+		
+		float width = item.element.getFloat( "Width" );
+		float height = item.element.getFloat( "Height" );
+		float xPos = item.pos.x + ( width / 2 );
+		float yPos = item.pos.y - ( height / 2 );
+		Fire fire = new Fire( item.name, new Vector2(xPos, yPos), width, height, level.world, true );
+		
+		String skelAttach = item.skeleton;
+		Skeleton parent = loadSkeleton( skelAttach );
+		parent.addHazard( fire );
+		entities.put( item.name, fire );
+		
+		return fire;
+	}
 	public Hazard constructHazard( Item item ) {
 
 		String skelAttach = item.skeleton;

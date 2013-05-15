@@ -19,7 +19,7 @@ import com.blindtigergames.werescrewed.util.Util;
 public class Link extends Entity {
 	private float width, height;
 	private float xOffset, yOffset;
-	
+	private boolean drawTwoLinks = false;
 	private static TextureRegion chainLinkTexRegion =  WereScrewedGame.manager.getAtlas( "common-textures" ).findRegion( "chainlink" );
 	
 	private static final float spriteScale = (22f/64f);
@@ -37,6 +37,8 @@ public class Link extends Entity {
 		this.yOffset = (temp.getHeight( )/2);//+this.height/2;
 
 		this.changeSprite( temp );
+		
+
 	}
 
 	private void constructBody( Vector2 pos ) {
@@ -82,6 +84,18 @@ public class Link extends Entity {
 	
 	@Override 
 	public void draw(SpriteBatch batch, float deltaTime){
+//		if(drawTwoLinks){
+//			float xpos =  body.getPosition( ).x - (xOffset * Util.PIXEL_TO_BOX);
+//			float ypos =  body.getPosition( ).y - (this.yOffset2 * Util.PIXEL_TO_BOX);
+//			
+//			//this.sprite.setOrigin( this.sprite.getWidth( ) / 2, this.sprite.getHeight( ) / 2);
+//			this.sprite.setPosition( xpos * Util.BOX_TO_PIXEL, ypos * Util.BOX_TO_PIXEL);
+//			this.sprite.setRotation(  MathUtils.radiansToDegrees
+//					* body.getAngle( ) );
+//			
+//			this.sprite.draw( batch );
+//		}
+		
 		float xpos =  body.getPosition( ).x - (xOffset * Util.PIXEL_TO_BOX);
 		float ypos =  body.getPosition( ).y - (yOffset * Util.PIXEL_TO_BOX);
 		
@@ -91,6 +105,7 @@ public class Link extends Entity {
 				* body.getAngle( ) );
 		
 		this.sprite.draw( batch );
+		
 	}
 	
 }

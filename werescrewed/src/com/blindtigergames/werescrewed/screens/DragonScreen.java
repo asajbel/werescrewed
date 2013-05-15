@@ -4,40 +4,27 @@ import aurelienribon.tweenengine.Timeline;
 import aurelienribon.tweenengine.Tween;
 import aurelienribon.tweenengine.TweenEquations;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input.Keys;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
-import com.badlogic.gdx.physics.box2d.CircleShape;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.utils.Array;
-import com.blindtigergames.werescrewed.WereScrewedGame;
-import com.blindtigergames.werescrewed.camera.Camera;
-import com.blindtigergames.werescrewed.entity.RobotState;
 import com.blindtigergames.werescrewed.entity.Skeleton;
 import com.blindtigergames.werescrewed.entity.action.CannonLaunchAction;
+import com.blindtigergames.werescrewed.entity.action.RotateTweenAction;
 import com.blindtigergames.werescrewed.entity.builders.EventTriggerBuilder;
 import com.blindtigergames.werescrewed.entity.builders.PlatformBuilder;
-import com.blindtigergames.werescrewed.entity.builders.PlayerBuilder;
-import com.blindtigergames.werescrewed.entity.builders.SkeletonBuilder;
 import com.blindtigergames.werescrewed.entity.hazard.Fire;
-import com.blindtigergames.werescrewed.entity.hazard.builders.HazardBuilder;
+import com.blindtigergames.werescrewed.entity.mover.AnalogRotateMover;
 import com.blindtigergames.werescrewed.entity.mover.IMover;
-import com.blindtigergames.werescrewed.entity.mover.RockingMover;
+import com.blindtigergames.werescrewed.entity.mover.LerpMover;
+import com.blindtigergames.werescrewed.entity.mover.LinearAxis;
 import com.blindtigergames.werescrewed.entity.mover.RotateTweenMover;
-import com.blindtigergames.werescrewed.entity.mover.TargetImpulseMover;
 import com.blindtigergames.werescrewed.entity.mover.TimelineTweenMover;
+import com.blindtigergames.werescrewed.entity.platforms.Pipe;
 import com.blindtigergames.werescrewed.entity.platforms.Platform;
-import com.blindtigergames.werescrewed.entity.platforms.TiledPlatform;
-import com.blindtigergames.werescrewed.level.Level;
 import com.blindtigergames.werescrewed.level.LevelFactory;
 import com.blindtigergames.werescrewed.entity.screws.PuzzleScrew;
-import com.blindtigergames.werescrewed.entity.screws.StructureScrew;
-import com.blindtigergames.werescrewed.entity.tween.PathBuilder;
 import com.blindtigergames.werescrewed.entity.tween.PlatformAccessor;
 import com.blindtigergames.werescrewed.eventTrigger.EventTrigger;
+import com.blindtigergames.werescrewed.eventTrigger.PowerSwitch;
 import com.blindtigergames.werescrewed.util.Util;
 
 public class DragonScreen extends Screen {
@@ -45,7 +32,10 @@ public class DragonScreen extends Screen {
 	PuzzleScrew puzzle_screw_balloon1;
 	Platform balloon1;
 	Skeleton balloon1_super;
+	PowerSwitch tail3Switch1, tail3Switch2, tail3Switch3;
 	
+	// the numbers here correspond to gleed numbers
+	Fire tail3Fire2, tail3Fire3, tail3Fire4, tail3Fire5, tail3Fire6;
 	public DragonScreen( ) {
 		super( );
 		String filename = "data/levels/dragonlevel.xml";
@@ -53,6 +43,9 @@ public class DragonScreen extends Screen {
 		
 		buildBalloon();
 		
+		initPuzzleScrews();
+		tail3Pipes();
+		bodySkeletons();
 		
 		Skeleton balloon3CannonSkeleton = (Skeleton) LevelFactory.entities.get( "balloon3_cannon_skeleton" );
 		balloon3CannonSkeleton.setFgFade( false );
@@ -60,7 +53,6 @@ public class DragonScreen extends Screen {
 		
 		buildCannon(balloon3CannonSkeleton, balloon3CannonSkeleton.getPositionPixel( ),
 				200, 200);
-		
 		
 		
 		Skeleton jaw_skeleton = ( Skeleton ) LevelFactory.entities.get( "jaw_skeleton" );
@@ -117,15 +109,22 @@ public class DragonScreen extends Screen {
 		//Platform balloon3 = (Platform) LevelFactory.entities.get( "balloon3" );
 		//Platform balloon4 = (Platform) LevelFactory.entities.get( "balloon4" );
 		
+		Platform tail1Balloon = (Platform) LevelFactory.entities.get( "tail_balloon1" );
+		Platform tail2Balloon = (Platform) LevelFactory.entities.get( "tail2_balloon1" );
+		Platform tail3Balloon = (Platform) LevelFactory.entities.get( "tail3_balloon" );
+		
+		
 		Skeleton balloon1_skeleton = ( Skeleton ) LevelFactory.entities.get( "balloon1_skeleton" );
 		balloon1_super = (Skeleton) LevelFactory.entities.get( "balloon1_super" );
 		
 		puzzle_screw_balloon1 = (PuzzleScrew) LevelFactory.entities.get( "puzzle_screw_balloon1" );
 		
 		
-	//	balloon1.addMover( balloonMover(balloon1, 800, Util.PI/32, 0) );
-	//	balloon2.addMover( balloonMover(balloon2, 800, 0, 4) );
-//		balloon3.addMover( balloonMover(balloon3, 700, 0, 2) );
+		tail1Balloon.addMover( balloonMover(tail1Balloon, 200, Util.PI/32, 0) );
+		tail2Balloon.addMover( balloonMover(tail2Balloon, 250, 0, 2) );
+		tail3Balloon.addMover( balloonMover(tail3Balloon, 300, 0, 4) );
+		
+		
 //		balloon4.addMover( balloonMover(balloon4, 600, 0, 0) );
 //		balloon3_skeleton.addMover( balloonMover(balloon3_skeleton, 600, Util.PI/8, 4) );
 //		balloon4_skeleton.addMover( balloonMover(balloon4_skeleton, 700, Util.PI/16, 2) );
@@ -153,6 +152,8 @@ public class DragonScreen extends Screen {
 			time = 0;
 		}
 
+		tail3FireEventsUpdate();
+		
 		if(puzzle_screw_balloon1.getDepth( ) == puzzle_screw_balloon1.getMaxDepth( )){
 			if(balloon1_super.currentMover() == null){
 				Timeline t = Timeline.createSequence( );
@@ -305,5 +306,145 @@ public class DragonScreen extends Screen {
 				.build( );
 		skel.addEventTrigger( et );
 		
+	}
+	
+	private void initPuzzleScrews(){
+		PuzzleScrew tail2PuzzleScrew1 = ( PuzzleScrew ) LevelFactory.entities
+				.get( "tail2_puzzle_screw1" );
+		PuzzleScrew tail2PuzzleScrew2 = ( PuzzleScrew ) LevelFactory.entities
+				.get( "tail2_puzzle_screw2" );
+		
+		
+
+		AnalogRotateMover anlgRot = new AnalogRotateMover( 0.6f, level.world );
+		
+		AnalogRotateMover anlgRot2 = new AnalogRotateMover( 0.6f, level.world );
+		
+		tail2PuzzleScrew1.puzzleManager.addMover( anlgRot );
+		tail2PuzzleScrew2.puzzleManager.addMover( anlgRot );
+
+		tail2PuzzleScrew1.puzzleManager.addMover( anlgRot2 );
+		tail2PuzzleScrew2.puzzleManager.addMover( anlgRot2 );
+
+		
+		tail2PuzzleScrew1.puzzleManager.addScrew( tail2PuzzleScrew2 );
+		tail2PuzzleScrew2.puzzleManager.addScrew( tail2PuzzleScrew1 );
+		
+		PuzzleScrew tail3PuzzleScrew1 = ( PuzzleScrew ) LevelFactory.entities
+				.get( "tail3_puzzle_screw1" );
+		PuzzleScrew tail3PuzzleScrew2 = ( PuzzleScrew ) LevelFactory.entities
+				.get( "tail3_puzzle_screw2" );
+		
+		Platform tail3MoverPlat1 = (Platform) LevelFactory.entities.get( "tail3_mover_plat1" );
+		Platform tail3MoverPlat2 = (Platform) LevelFactory.entities.get( "tail3_mover_plat2" );
+		
+		float distance = 1000f;
+		
+		LerpMover lm1 = new LerpMover( tail3MoverPlat1.getPositionPixel( ),
+				new Vector2( tail3MoverPlat1.getPositionPixel( ).x ,
+						tail3MoverPlat1.getPositionPixel( ).y  + distance),
+				LinearAxis.VERTICAL );
+		
+		LerpMover lm2 = new LerpMover( tail3MoverPlat2.getPositionPixel( ),
+				new Vector2( tail3MoverPlat2.getPositionPixel( ).x ,
+						tail3MoverPlat2.getPositionPixel( ).y  + distance),
+				LinearAxis.VERTICAL );
+		
+		tail3PuzzleScrew1.puzzleManager.addEntity( tail3MoverPlat1 );
+		tail3PuzzleScrew1.puzzleManager.addEntity( tail3MoverPlat2 );
+		tail3PuzzleScrew2.puzzleManager.addEntity( tail3MoverPlat1 );
+		tail3PuzzleScrew2.puzzleManager.addEntity( tail3MoverPlat2 );
+		
+		
+		tail3PuzzleScrew1.puzzleManager.addMover( lm1 );
+		tail3PuzzleScrew2.puzzleManager.addMover( lm1 );
+		tail3PuzzleScrew1.puzzleManager.addMover( lm2 );
+		tail3PuzzleScrew2.puzzleManager.addMover( lm2 );
+		
+		tail3PuzzleScrew1.puzzleManager.addScrew( tail3PuzzleScrew2 );
+		tail3PuzzleScrew2.puzzleManager.addScrew( tail3PuzzleScrew1 );
+		
+	}
+	
+	private void tail3Pipes(){
+		
+		
+		Pipe tail3MiddlePipe1 = ( Pipe ) LevelFactory.entities
+		.get( "tail3_middle_pipe1" );
+		Pipe tail3MiddlePipe2 = ( Pipe ) LevelFactory.entities
+				.get( "tail3_middle_pipe2" );
+		
+		
+		tail3Fire2 = ( Fire ) LevelFactory.entities
+				.get( "tail3_fire2" );
+		tail3Fire3 = ( Fire ) LevelFactory.entities
+				.get( "tail3_fire3" );
+		tail3Fire4 = ( Fire ) LevelFactory.entities
+				.get( "tail3_fire4" );
+		tail3Fire4.setActiveHazard( false );
+		tail3Fire5 = ( Fire ) LevelFactory.entities
+				.get( "tail3_fire5" );
+		tail3Fire5.setActiveHazard( false );
+		tail3Fire6 = ( Fire ) LevelFactory.entities
+				.get( "tail3_fire6" );
+		
+		tail3Switch1 = ( PowerSwitch ) LevelFactory.entities
+				.get( "tail3_switch1" );
+		tail3Switch2 = ( PowerSwitch ) LevelFactory.entities
+				.get( "tail3_switch2" );
+		tail3Switch3 = ( PowerSwitch ) LevelFactory.entities
+				.get( "tail3_switch3" );
+
+		tail3Switch1.actOnEntity = true;
+		tail3Switch1.addEntityToTrigger( tail3MiddlePipe1 );
+		tail3Switch1.addEntityToTrigger( tail3MiddlePipe2 );
+		tail3Switch1
+				.addBeginIAction( new RotateTweenAction( Util.PI / 2 ) );
+		tail3Switch1.addEndIAction( new RotateTweenAction( 0 ) );
+
+		tail3Switch2.actOnEntity = true;
+		tail3Switch2.addEntityToTrigger( tail3MiddlePipe1 );
+		tail3Switch2.addEntityToTrigger( tail3MiddlePipe2 );
+		tail3Switch2
+				.addBeginIAction( new RotateTweenAction(0 ) );
+		tail3Switch2.addEndIAction( new RotateTweenAction(  Util.PI / 2 ) );
+		
+	}
+	
+	void tail3FireEventsUpdate(){
+		if(tail3Switch1.isTurnedOn( ) && tail3Switch2.isTurnedOn( )){
+			tail3Fire2.setActiveHazard( true );
+			tail3Fire3.setActiveHazard( true );
+			tail3Fire4.setActiveHazard( false );
+			tail3Fire5.setActiveHazard( false );
+		} else if (tail3Switch1.isTurnedOn( )){
+			tail3Fire2.setActiveHazard( false );
+			tail3Fire3.setActiveHazard( false );
+			tail3Fire4.setActiveHazard( true );
+			tail3Fire5.setActiveHazard( true );
+		} else if (tail3Switch2.isTurnedOn( )){
+			tail3Fire2.setActiveHazard( true );
+			tail3Fire3.setActiveHazard( true );
+			tail3Fire4.setActiveHazard( false );
+			tail3Fire5.setActiveHazard( false );
+		}else{
+			tail3Fire2.setActiveHazard( true );
+			tail3Fire3.setActiveHazard( true );
+			tail3Fire4.setActiveHazard( false );
+			tail3Fire5.setActiveHazard( false );
+		}
+		
+		if(tail3Switch3.isTurnedOn( )){
+			tail3Fire6.setActiveHazard( false );
+		}else{
+			tail3Fire6.setActiveHazard( true );
+		}
+	}
+	
+	void bodySkeletons(){
+		
+		Skeleton bodyInsideSkeleton1 = ( Skeleton ) LevelFactory.entities.get( "body_inside_skeleton1" );
+
+		bodyInsideSkeleton1.addMover(new RotateTweenMover(bodyInsideSkeleton1));
 	}
 }
