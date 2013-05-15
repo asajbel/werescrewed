@@ -1537,21 +1537,27 @@ public class Entity implements GleedLoadable {
 	}
 	
 	protected static final float MIN_LINEAR = 0.1f;
-	protected static final float MIN_ANGULAR = 1.0f;
+	protected static final float MIN_ANGULAR = 0.5f;
 	protected static final float MOVEMENT_SOUND_DELAY = 0.05f;
 	public void handleMovementSounds( float dT ){
 		Vector2 soundPos = getPositionPixel();
+		float vol;
+		float pitch;
+		int soundId;
 		if (sounds.hasSound( "linear" )){
-			float linearVol = body.getLinearVelocity( ).len( ) * sounds.calculatePositionalVolume( "linear", soundPos, Camera.CAMERA_RECT );
-			Gdx.app.log( "Linear Sound Volume", Float.toString( linearVol ) );
-			if (linearVol > MIN_LINEAR){
-				sounds.playSound( "linear", sounds.randomSoundId( "linear" ), MOVEMENT_SOUND_DELAY , linearVol, 1.0f);	
+			soundId = sounds.randomSoundId( "linear" );
+			vol = body.getLinearVelocity( ).len( ) * sounds.calculatePositionalVolume( "linear", soundPos, Camera.CAMERA_RECT );
+			pitch = sounds.getPitchInRange( "linear", soundId, body.getLinearVelocity( ).len() );
+			if (vol > MIN_LINEAR){
+				sounds.playSound( "linear", soundId, MOVEMENT_SOUND_DELAY , vol, pitch);	
 			}
 		}
 		if (sounds.hasSound( "angular" )){
-			float angularVol = Math.abs( body.getAngularVelocity( ) * Util.RAD_TO_DEG ) * sounds.calculatePositionalVolume( "angular", soundPos, Camera.CAMERA_RECT );
-			if (angularVol > MIN_ANGULAR){
-				sounds.playSound( "angular", sounds.randomSoundId( "angular" ), MOVEMENT_SOUND_DELAY , angularVol, 1.0f);			}
+			soundId = sounds.randomSoundId( "angular" );
+			vol = Math.abs( body.getAngularVelocity( ) * Util.RAD_TO_DEG ) * sounds.calculatePositionalVolume( "angular", soundPos, Camera.CAMERA_RECT );
+			pitch = sounds.getPitchInRange( "angular", soundId, (float)Math.pow( Math.abs(body.getAngularVelocity( )), 1.5f) );
+			if (vol > MIN_ANGULAR){
+				sounds.playSound( "angular", sounds.randomSoundId( "angular" ), MOVEMENT_SOUND_DELAY , vol, pitch);			}
 		}
 	}
 }

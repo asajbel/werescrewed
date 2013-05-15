@@ -271,11 +271,11 @@ public class SoundManager {
 	
 	public void delay(String id, float amount){
 		if (hasSound(id)){
-			if (sounds.get(id).delay < amount){
-				for (SoundRef sound : sounds.getAll(id)){
+			for (SoundRef sound : sounds.getAll(id)){
+				if (sounds.get(id).delay < amount){
 					sound.delay = amount;
-				}				
-			}
+				}
+			}				
 		}
 	}
 	
@@ -311,6 +311,21 @@ public class SoundManager {
 		sounds.get( id, index ).range = r;
 	}	
 
+	public float getVolumeInRange(String id, int index, float a){
+		if (hasSound(id)){
+			SoundRef ref = sounds.get( id , index);
+			return (1.0f - ref.volumeRange) + (ref.volumeRange * a);
+		}
+		return 1.0f;
+	}
+	
+	public float getPitchInRange(String id, int index, float a){
+		if (hasSound(id)){
+			SoundRef ref = sounds.get( id , index);
+			return (1.0f - ref.pitchRange) + (ref.pitchRange * a);
+		}
+		return 1.0f;
+	}
 	public class SoundRef{
 		public Sound sound;
 		protected Array<Long> soundIds;
@@ -393,6 +408,10 @@ public class SoundManager {
 			}
 		}
 
+		public void setVolumeRange(float value){
+			pitchRange = value;
+		}
+
 		public void setInternalPitch( float value ) {
 			pitch = value;
 		}
@@ -403,6 +422,10 @@ public class SoundManager {
 			}
 		}
 
+		public void setPitchRange(float value){
+			pitchRange = value;
+		}
+		
 		public void setPan( float value ) {
 			pan = value;
 		}

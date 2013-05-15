@@ -369,6 +369,10 @@ public class GenericEntityBuilder< B extends GenericEntityBuilder< ? >> {
 							sound.setRange(Float.parseFloat( subSounds.get("range") ));
 						if (subSounds.containsKey( "falloff" ))
 							sound.setFalloff(Float.parseFloat( subSounds.get("falloff") ));
+						if (subSounds.containsKey( "volumerange" ))
+							sound.setVolumeRange(Float.parseFloat( subSounds.get("volumerange") ));
+						if (subSounds.containsKey( "pitchrange" ))
+							sound.setPitchRange(Float.parseFloat( subSounds.get("pitchrange") ));
 						if (name.contains("collision")){
 							soundMan.setDelay( name, 1.0f );
 						}
