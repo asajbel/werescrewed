@@ -7,9 +7,11 @@ import com.blindtigergames.werescrewed.player.Player;
 public class SetTutorialAction implements IAction {
 
 	int[ ] sequence;
+	boolean value;
 
-	public SetTutorialAction( int[ ] tutorialSequence ) {
+	public SetTutorialAction( int[ ] tutorialSequence, boolean newValue ) {
 		sequence = tutorialSequence;
+		value = newValue;
 	}
 
 	@Override
@@ -21,8 +23,12 @@ public class SetTutorialAction implements IAction {
 	public void act( Entity entity ) {
 		if ( entity.entityType == EntityType.PLAYER ) {
 			Player player = ( Player ) entity;
-			player.setTutorial( sequence );
-			player.setDrawTutorial( true );
+			if ( value ) {
+				player.setTutorial( sequence );
+				player.setDrawTutorial( true );
+			} else {
+				player.setDrawTutorial( false );
+			}
 		}
 	}
 
