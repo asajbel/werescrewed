@@ -67,7 +67,8 @@ class MainMenuScreen extends Screen {
 	@Override
 	public void render( float delta ) {
 		super.render( delta );
-		Gdx.gl.glClearColor( 0.0f, 0.5f, 0.9f, 1f );
+		Gdx.gl.glClearColor( 0.4f, 0.6f, 1.0f, 1f );
+//		Gdx.gl.glClearColor( 79.0f / 255.0f, 82.0f / 255.0f, 104.0f / 255.0f, 1.0f );
 		Gdx.gl.glClear( GL10.GL_COLOR_BUFFER_BIT );
 		manager.update( delta );
 		moveCharacters( delta );
@@ -89,10 +90,10 @@ class MainMenuScreen extends Screen {
 
 		if ( !finish )
 			setAlpha( -0.02f );
-		transition.draw( batch, alpha );
 
 		man.draw( batch );
 		lady.draw( batch );
+		transition.draw( batch, alpha );
 		batch.end( );
 
 		if ( Gdx.input.isKeyPressed( Keys.P ) ) {
@@ -130,7 +131,8 @@ class MainMenuScreen extends Screen {
 		@SuppressWarnings( "unused" )
 		float scaleY = height / 720f;
 
-		transition.setPosition( 0, 0 );
+		transition.setPosition( width/2 - transition.getWidth( )/2, height/2 - transition.getHeight( )/2 );
+		transition.setScale( width/transition.getWidth( ), height/transition.getHeight( ) );
 		// menuBG.setScale( width / menuBG.getWidth( ), width / menuBG.getWidth(
 		// ) );
 		menuBG.setPosition( 0, height / 2 - menuBG.getHeight( ) / 2 );
@@ -264,7 +266,6 @@ class MainMenuScreen extends Screen {
 		addCommon( common, "power_screw" );
 		addCommon( common, "pipeEndL" );
 		addCommon( common, "pipeEndD" );
-		addCommon( common, "chainlink" );
 		addCommon( common, "flat_head_circular" );
 		addCommon( common, "pipeEndU" );
 		addCommon( common, "switch_on" );
@@ -275,6 +276,7 @@ class MainMenuScreen extends Screen {
 		addCommon( common, "pipeUL" );
 		addCommon( common, "pipeDR" );
 		for ( int i = 0; i < 5; i++ ) {
+			addCommon( common, "chainlink" );
 			addCommon( common, "rivet1" );
 			addCommon( common, "rivet2" );
 			addCommon( common, "rivet3" );

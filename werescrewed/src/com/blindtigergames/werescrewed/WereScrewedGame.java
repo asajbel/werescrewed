@@ -138,6 +138,19 @@ public class WereScrewedGame extends Game {
 		ScreenManager.getInstance( ).initialize( this );
 		ScreenManager.getInstance( ).show( ScreenType.LOADING );
 	}
+	
+	public void pause( ) {
+		super.pause( );
+		this.dispose( );
+	}
+	
+	public void resume( ) {
+		super.resume( );
+		this.dispose( );
+		manager = new AssetManager( );
+		ScreenManager.getInstance( ).initialize( this );
+		ScreenManager.getInstance( ).show( ScreenType.LOADING );
+	}
 
 	public void update( float dT ) {
 	}
