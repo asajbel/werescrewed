@@ -162,5 +162,6 @@ public class Steam extends Platform {
 				WereScrewedGame.dirHandle + "/common/sounds/steam.ogg" );
 		steamSound.setRange( 600.f );
 		steamSound.setFalloff( 2.0f );
+		steamSound.setOffset( new Vector2(0.0f, height / 2.0f) );
 	}
 }

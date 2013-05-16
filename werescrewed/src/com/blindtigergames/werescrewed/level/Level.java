@@ -189,8 +189,7 @@ public class Level {
 
 		if ( debug )
 			debugRenderer.render( world, camera.combined( ) );
-//		worldStep(deltaTime); 
-
+		
 	}
 	
 	private float accum = 0f;               

@@ -133,8 +133,8 @@ public class LevelSelectScreen extends Screen {
 		backButton.setX( leftX - backButton.getWidth( ) / 2 );
 		backButton.setY( centerY + lineHeight * -2 );
 
-		man.setPosition( new Vector2( width / 2 - 50, height / 2 + 50 ) );
-		lady.setPosition( new Vector2( width / 2 + 50, height / 2 - 50 ) );
+		man.setPosition( width / 2 - 50, height / 2 + 50 );
+		lady.setPosition( width / 2 + 50, height / 2 - 50 );
 
 	}
 

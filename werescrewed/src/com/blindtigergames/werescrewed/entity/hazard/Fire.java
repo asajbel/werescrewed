@@ -111,12 +111,13 @@ public class Fire extends Hazard {
 	 * flips vertical direction of fire
 	 */
 	public void flip( ) {
-		// particleEffect.flipY( );
-		getEffect( "steam" ).flipY( );
+		 particleEffect.flipY( );
+		//getEffect( "steam" ).flipY( );
 		if ( upsideDown ) {
-			body.setTransform( body.getPosition( ), ( float ) Math.PI );
+			this.setLocalRot( (float) Math.PI);
+	
 		} else {
-			body.setTransform( body.getPosition( ), 0.0f );
+			this.setLocalRot( 0f );
 		}
 		upsideDown = !upsideDown;
 	}
