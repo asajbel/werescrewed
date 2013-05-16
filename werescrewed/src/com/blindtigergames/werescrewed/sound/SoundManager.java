@@ -174,7 +174,7 @@ public class SoundManager {
 	public float calculatePositionalVolume( String id, Vector2 soundPos,
 			Rectangle cameraBox ) {
 		if ( hasSound( id ) )
-			return calculatePositionalVolume( soundPos, cameraBox,
+			return calculatePositionalVolume( soundPos.cpy().add( sounds.get( id ).offset), cameraBox,
 					sounds.get( id ).range, sounds.get( id ).falloff );
 		return 0.0f;
 	}
@@ -278,14 +278,14 @@ public class SoundManager {
 			}
 		}
 	}
-
-	public void delay( String id, float amount ) {
-		if ( hasSound( id ) ) {
-			if ( sounds.get( id ).delay < amount ) {
-				for ( SoundRef sound : sounds.getAll( id ) ) {
+	
+	public void delay(String id, float amount){
+		if (hasSound(id)){
+			for (SoundRef sound : sounds.getAll(id)){
+				if (sounds.get(id).delay < amount){
 					sound.delay = amount;
 				}
-			}
+			}				
 		}
 	}
 
@@ -322,7 +322,22 @@ public class SoundManager {
 		sounds.get( id, index ).range = r;
 	}
 
-	public class SoundRef {
+	public float getVolumeInRange(String id, int index, float a){
+		if (hasSound(id)){
+			SoundRef ref = sounds.get( id , index);
+			return (1.0f - ref.volumeRange) + (ref.volumeRange * a);
+		}
+		return 1.0f;
+	}
+	
+	public float getPitchInRange(String id, int index, float a){
+		if (hasSound(id)){
+			SoundRef ref = sounds.get( id , index);
+			return (1.0f - ref.pitchRange) + (ref.pitchRange * a);
+		}
+		return 1.0f;
+	}
+	public class SoundRef{
 		public Sound sound;
 		protected Array< Long > soundIds;
 		protected long loopId;
@@ -355,6 +370,7 @@ public class SoundManager {
 			sound = s;
 			range = 500.0f;
 			falloff = 2.0f;
+			offset = new Vector2(0f,0f);
 		}
 
 		protected long play( float delayAmount, float extVol, float extPitch ) {
@@ -407,6 +423,10 @@ public class SoundManager {
 			}
 		}
 
+		public void setVolumeRange(float value){
+			pitchRange = value;
+		}
+
 		public void setInternalPitch( float value ) {
 			pitch = value;
 		}
@@ -417,6 +437,10 @@ public class SoundManager {
 			}
 		}
 
+		public void setPitchRange(float value){
+			pitchRange = value;
+		}
+		
 		public void setPan( float value ) {
 			pan = value;
 		}
@@ -429,5 +453,8 @@ public class SoundManager {
 			falloff = value;
 		}
 
+		public void setOffset( Vector2 vec ){
+			offset = vec;
+		}
 	}
 }
