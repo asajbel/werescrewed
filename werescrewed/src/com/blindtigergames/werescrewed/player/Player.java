@@ -2,7 +2,6 @@ package com.blindtigergames.werescrewed.player;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.controllers.PovDirection;
@@ -77,7 +76,6 @@ public class Player extends Entity {
 	public final static float JUMP_DIRECTION_MULTIPLIER = 2f;
 	public final static float JUMP_DEFAULT_DIVISION = 2.0f;
 	public float directionJumpDivsion = JUMP_DEFAULT_DIVISION;
-	public boolean flipX = false;
 	public final static float HEIGHT = 128;
 	public final static float WIDTH = 64;
 	public final static float FOOTSTEP_DELAY = 1.0f;
@@ -106,16 +104,12 @@ public class Player extends Entity {
 	private PlayerState playerState;
 	private ConcurrentState extraState;
 	private PlayerDirection playerDirection = PlayerDirection.Idle;
-	@SuppressWarnings( "unused" )
-	private boolean reachedMaxSpeed;
+	//private boolean reachedMaxSpeed;
 	private PlayerDirection prevPlayerDir = PlayerDirection.Idle;
 	private Controller controller;
-	@SuppressWarnings( "unused" )
-	private boolean controllerIsActive, controllerDebug;
 	private boolean flyDebug = false;
 	private float leftAnalogX;
-	@SuppressWarnings( "unused" )
-	private float leftAnalogY;
+	//private float leftAnalogY;
 	// private float rightAnalogX;
 	// private float rightAnalogY;
 	private boolean switchedScrewingDirection;
@@ -153,7 +147,6 @@ public class Player extends Entity {
 	private boolean screwButtonHeld;
 	private boolean kinematicTransform = false;
 	private boolean changeDirectionsOnceInAir = false;
-	private boolean changeDirections = false;
 	private boolean steamCollide = false;
 	private boolean steamDone = false;
 
@@ -161,18 +154,6 @@ public class Player extends Entity {
 
 	public int grabCounter = 0;
 	public int jumpCounter = 0;
-
-	// private ParticleEffect land_cloud;
-
-	@SuppressWarnings( "unused" )
-	private Sound jumpSound;
-
-	// TODO: fill in the frames counts and frame rates for various animations
-	// like below
-	@SuppressWarnings( "unused" )
-	private int jumpFrames = 3;
-	@SuppressWarnings( "unused" )
-	private float jumpSpeed = 0.3f;
 
 	public float frictionCounter = PLAYER_FRICTION;
 
@@ -257,7 +238,6 @@ public class Player extends Entity {
 		bodydef.position.set( pos );
 
 		setUpController( );
-		controllerDebug = true;
 
 		if ( sounds == null ) {
 			sounds = new SoundManager( );
@@ -312,6 +292,7 @@ public class Player extends Entity {
 			flyDebug = !flyDebug;
 		if ( flyDebug )
 			grounded = true;
+		
 		if ( kinematicTransform ) {
 			// setPlatformTransform( platformOffset );
 			kinematicTransform = false;
@@ -375,15 +356,11 @@ public class Player extends Entity {
 					playerDirection = PlayerDirection.Idle;
 				} else if ( playerDirection == PlayerDirection.Left
 						&& prevPlayerDir != PlayerDirection.Left ) {
-					// && type.getScale( ).x > 0 ) {
 					prevPlayerDir = PlayerDirection.Left;
-					flipX = true;
 					type.setScale( type.getScale( ).x * -1, type.getScale( ).y );
 				} else if ( playerDirection == PlayerDirection.Right
 						&& prevPlayerDir != PlayerDirection.Right ) {
 					prevPlayerDir = PlayerDirection.Right;
-					// && type.getScale( ).x < 0 ) {
-					flipX = false;
 					type.setScale( type.getScale( ).x * -1, type.getScale( ).y );
 				} else if ( playerState != PlayerState.Jumping
 						&& playerState != PlayerState.Falling
@@ -444,6 +421,10 @@ public class Player extends Entity {
 				}
 			}
 			break;
+		case Jumping:
+			if ( this.jumpCounter == 0 && currentPlatform != null ) {
+				playerState = PlayerState.Standing;
+			}
 		default:
 			break;
 		}
@@ -548,18 +529,6 @@ public class Player extends Entity {
 				Metrics.incTrophyMetric( TrophyMetric.P1PUZZLETIME, 0.01f );
 			} else if ( this.name == Metrics.player2( ) ) {
 				Metrics.incTrophyMetric( TrophyMetric.P2PUZZLETIME, 0.01f );
-			}
-		}
-		// debug no collision while holding 7
-		if ( Gdx.input.isKeyPressed( Keys.NUM_8 ) ) {
-			for ( Fixture f : body.getFixtureList( ) ) {
-				f.setSensor( true );
-			}
-		} else {
-			for ( Fixture f : body.getFixtureList( ) ) {
-				if ( f != rightSensor && f != leftSensor && f != topSensor ) {
-					f.setSensor( false );
-				}
 			}
 		}
 		prevPlayerDir = playerDirection;
@@ -747,10 +716,10 @@ public class Player extends Entity {
 			if ( body.getLinearVelocity( ).x < MAX_VELOCITY ) {
 				body.applyLinearImpulse( new Vector2( MOVEMENT_IMPULSE, 0.0f ),
 						body.getWorldCenter( ) );
-				if ( body.getLinearVelocity( ).x >= MAX_VELOCITY * 0.99f )
-					reachedMaxSpeed = true;
-				else
-					reachedMaxSpeed = false;
+//				if ( body.getLinearVelocity( ).x >= MAX_VELOCITY * 0.99f )
+//					reachedMaxSpeed = true;
+//				else
+//					reachedMaxSpeed = false;
 			}
 		}
 		if ( playerState != PlayerState.Screwing ) {
@@ -759,7 +728,7 @@ public class Player extends Entity {
 		if ( grounded && prevPlayerDir == PlayerDirection.Left ) {
 			getEffect( "skid_left" )
 					.restartAt( getPositionPixel( ).add( 30, 0 ) );
-			reachedMaxSpeed = false;
+			//reachedMaxSpeed = false;
 		}
 		runTimeout = RUN_STEPS;
 		footstepSound( 1.0f );
@@ -796,10 +765,10 @@ public class Player extends Entity {
 				body.applyLinearImpulse(
 						new Vector2( -MOVEMENT_IMPULSE, 0.0f ),
 						body.getWorldCenter( ) );
-				if ( body.getLinearVelocity( ).x <= -MAX_VELOCITY * 0.99f )
-					reachedMaxSpeed = true;
-				else
-					reachedMaxSpeed = false;
+//				if ( body.getLinearVelocity( ).x <= -MAX_VELOCITY * 0.99f )
+//					reachedMaxSpeed = true;
+//				else
+//					reachedMaxSpeed = false;
 			}
 		}
 		if ( playerState != PlayerState.Screwing ) {
@@ -808,7 +777,7 @@ public class Player extends Entity {
 		if ( grounded && prevPlayerDir == PlayerDirection.Right ) {
 			getEffect( "skid_right" ).restartAt(
 					getPositionPixel( ).add( 100, 0 ) );
-			reachedMaxSpeed = false;
+			//reachedMaxSpeed = false;
 		}
 		runTimeout = RUN_STEPS;
 		footstepSound( 1.0f );
@@ -840,7 +809,7 @@ public class Player extends Entity {
 		if ( grounded && prevPlayerDir == PlayerDirection.Left ) {
 			getEffect( "skid_left" )
 					.restartAt( getPositionPixel( ).add( 30, 0 ) );
-			reachedMaxSpeed = false;
+			//reachedMaxSpeed = false;
 		}
 		runTimeout = RUN_STEPS;
 
@@ -876,7 +845,7 @@ public class Player extends Entity {
 		if ( grounded && prevPlayerDir == PlayerDirection.Right ) {
 			getEffect( "skid_right" ).restartAt(
 					getPositionPixel( ).add( 100, 0 ) );
-			reachedMaxSpeed = false;
+			//reachedMaxSpeed = false;
 		}
 		runTimeout = RUN_STEPS;
 
@@ -1094,58 +1063,7 @@ public class Player extends Entity {
 		currentSwitch = powerSwitch;
 	}
 
-	/**
-	 * slowly increases friction to avoid that silly stopping bug. Call this
-	 * every player.update()
-	 */
-	private void updateFootFriction( ) {
-
-		if ( isGrounded( ) ) {
-			if ( feet.getFriction( ) < PLAYER_FRICTION ) {
-				// if ( playerState != PlayerState.Screwing && otherPlayer ==
-				// null ) {
-				// playerState = PlayerState.Landing;
-				// }
-				frictionCounter += FRICTION_INCREMENT;
-
-				CircleShape ps = new CircleShape( );
-				ps.setRadius( feet.getShape( ).getRadius( ) );
-
-				ps.setPosition( ps.getPosition( ).add( FEET_OFFSET_X,
-						FEET_OFFSET_Y ) );
-				FixtureDef fd = new FixtureDef( );
-
-				fd.shape = ps;
-				fd.density = 1f;
-				fd.restitution = 0.001f;
-				fd.friction = frictionCounter;
-
-				if ( playerState == PlayerState.Screwing ) {
-					fd.isSensor = true;
-				}
-
-				fd.filter.categoryBits = Util.CATEGORY_PLAYER;
-				fd.filter.maskBits = Util.CATEGORY_EVERYTHING;
-
-				body.destroyFixture( feet );
-
-				feet = body.createFixture( fd );
-
-				if ( feet.getFriction( ) > PLAYER_FRICTION ) {
-					feet.setFriction( PLAYER_FRICTION );
-
-				}
-				// currentScrew = null;
-			}
-		} else {
-			frictionCounter = 0f;
-			feet.setFriction( frictionCounter );
-		}
-
-	}
-
 	private void updateFootFrictionNew( ) {
-
 
 		if ( prevButton != null ) {
 			if ( body.getLinearVelocity( ).x > MAX_VELOCITY ) {
@@ -1246,12 +1164,12 @@ public class Player extends Entity {
 				&& currentScrew.body.getJointList( ).size( ) > 0
 				&& playerState != PlayerState.HeadStand
 				&& !currentScrew.isPlayerAttached( ) ) {
-			if ( !currentScrew.playerNotSensor( ) ) {
-				for ( Fixture f : body.getFixtureList( ) ) {
+			//if ( !currentScrew.playerNotSensor( ) ) {
+			//	for ( Fixture f : body.getFixtureList( ) ) {
 					// may be removed later leaving in for now
-					f.setSensor( true );
-				}
-			}
+			//		f.setSensor( true );
+			//	}
+			//}
 			mover = new FollowEntityMover( body.getPosition( ).mul(
 					Util.BOX_TO_PIXEL ), currentScrew, new Vector2( -WIDTH,
 					-HEIGHT / 2.0f ), SCREW_ATTACH_SPEED );
@@ -1700,16 +1618,11 @@ public class Player extends Entity {
 			world.destroyJoint( playerJoint );
 			playerJoint = null;
 		}
-		for ( Fixture f : body.getFixtureList( ) ) {
-			if ( f != rightSensor && f != leftSensor && f != topSensor ) {
-				f.setSensor( false );
-			}
-		}
-		for ( Fixture f : body.getFixtureList( ) ) {
-			if ( f != rightSensor && f != leftSensor && f != topSensor ) {
-				f.setSensor( false );
-			}
-		}
+		//for ( Fixture f : body.getFixtureList( ) ) {
+		//	if ( f != rightSensor && f != leftSensor && f != topSensor ) {
+		//		f.setSensor( false );
+		//	}
+		//}
 		mover = null;
 		if ( currentScrew != null ) {
 			currentScrew.setPlayerAttached( false );
