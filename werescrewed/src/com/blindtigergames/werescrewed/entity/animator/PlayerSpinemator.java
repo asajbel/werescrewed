@@ -356,8 +356,9 @@ public class PlayerSpinemator implements ISpinemator {
 	}
 
 	@Override
-	public void setPosition( Vector2 pos ) {
-		position = pos;
+	public void setPosition( float x, float y) {
+		root.setX( x );
+		root.setY( y );
 	}
 
 	@Override
@@ -372,6 +373,29 @@ public class PlayerSpinemator implements ISpinemator {
 	 */
 	public TextureAtlas getBodyAtlas( ) {
 		return bodyAtlas;
+	}
+
+	@Override
+	public Vector2 getPosition( ) {
+		float x = root.getWorldX( );
+		float y = root.getWorldY( );
+		
+		return new Vector2(x,y); 
+	}
+
+	@Override
+	public float getX( ) {
+		return root.getWorldX( );
+	}
+
+	@Override
+	public float getY( ) {
+		return root.getWorldY( );
+	}
+
+	@Override
+	public void setPosition( Vector2 pos ) {
+		position = pos; 
 	}
 
 }
