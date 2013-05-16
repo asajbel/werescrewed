@@ -97,9 +97,10 @@ public class Screen implements com.badlogic.gdx.Screen {
 			level.camera.update( );
 
 			int FPS = logger.getFPS( );
-			batch.setProjectionMatrix( uiCamera.combined );
-			batch.begin( );
-			if ( debug_font != null ) {
+			
+			if ( level.debug && debug_font != null ) {
+				batch.setProjectionMatrix( uiCamera.combined );
+				batch.begin( );
 				debug_font.draw( batch, "FPS: " + FPS,
 						-Gdx.graphics.getWidth( ) / 2,
 						Gdx.graphics.getHeight( ) / 2 );// -Gdx.graphics.getWidth(
@@ -108,8 +109,9 @@ public class Screen implements com.badlogic.gdx.Screen {
 														// )/4
 				// debug_font.draw(batch, "ALPHA BUILD", -Gdx.graphics.getWidth(
 				// )/2, Gdx.graphics.getHeight( )/2);
+				batch.end( );
 			}
-			batch.end( );
+			
 			
 			updateStep(delta);
 
