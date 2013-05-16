@@ -3,7 +3,8 @@ package com.blindtigergames.werescrewed.entity.action;
 import com.badlogic.gdx.utils.Array;
 
 public enum ActionType {
-	FORANYENTITY( "foranyentity" ), FORPLAYER( "forplayer" ), ACT_ON_PLAYER("actonplayer") ;
+	FORANYENTITY( "foranyentity" ), FORPLAYER( "forplayer" ), ACT_ON_PLAYER(
+			"actonplayer" );
 	/**
 	 * @param text
 	 */

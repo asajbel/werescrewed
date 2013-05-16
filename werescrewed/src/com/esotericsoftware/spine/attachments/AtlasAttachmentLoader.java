@@ -33,29 +33,33 @@ import com.blindtigergames.werescrewed.graphics.TextureAtlas.AtlasRegion;
 public class AtlasAttachmentLoader implements AttachmentLoader {
 	private TextureAtlas atlas;
 
-	public AtlasAttachmentLoader (TextureAtlas atlas2) {
-		if (atlas2 == null) throw new IllegalArgumentException("atlas cannot be null.");
+	public AtlasAttachmentLoader( TextureAtlas atlas2 ) {
+		if ( atlas2 == null )
+			throw new IllegalArgumentException( "atlas cannot be null." );
 		this.atlas = atlas2;
 	}
 
-	public Attachment newAttachment (Skin skin, AttachmentType type, String name) {
+	public Attachment newAttachment( Skin skin, AttachmentType type, String name ) {
 		Attachment attachment = null;
-		switch (type) {
+		switch ( type ) {
 		case region:
-			attachment = new RegionAttachment(name);
+			attachment = new RegionAttachment( name );
 			break;
 		case regionSequence:
-			attachment = new RegionSequenceAttachment(name);
+			attachment = new RegionSequenceAttachment( name );
 			break;
 		default:
-			throw new IllegalArgumentException("Unknown attachment type: " + type);
+			throw new IllegalArgumentException( "Unknown attachment type: "
+					+ type );
 		}
 
-		if (attachment instanceof RegionAttachment) {
-			AtlasRegion region = atlas.findRegion(attachment.getName());
-			if (region == null)
-				throw new RuntimeException("Region not found in atlas: " + attachment + " (" + type + " attachment: " + name + ")");
-			((RegionAttachment)attachment).setRegion(region);
+		if ( attachment instanceof RegionAttachment ) {
+			AtlasRegion region = atlas.findRegion( attachment.getName( ) );
+			if ( region == null )
+				throw new RuntimeException( "Region not found in atlas: "
+						+ attachment + " (" + type + " attachment: " + name
+						+ ")" );
+			( ( RegionAttachment ) attachment ).setRegion( region );
 		}
 
 		return attachment;

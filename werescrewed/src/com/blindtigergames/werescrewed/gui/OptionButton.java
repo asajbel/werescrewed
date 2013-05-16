@@ -9,61 +9,74 @@ import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
 
 public class OptionButton extends Button {
-	
+
 	private OptionControl control = null;
 
 	/**
 	 * makes a new button instance
 	 * 
-	 * @param caption String
-	 * @param font BitmapFont
-	 * @param handler ButtonHandler
-	 * @param x int
-	 * @param y int
+	 * @param caption
+	 *            String
+	 * @param font
+	 *            BitmapFont
+	 * @param handler
+	 *            ButtonHandler
+	 * @param x
+	 *            int
+	 * @param y
+	 *            int
 	 */
-	public OptionButton(String caption, BitmapFont font, OptionControl control, int x, int y) {
-		super( caption, font, x, y  );
+	public OptionButton( String caption, BitmapFont font,
+			OptionControl control, int x, int y ) {
+		super( caption, font, x, y );
 		this.caption = caption;
 		this.font = font;
 		this.x = x;
 		this.y = y;
 		this.control = control;
-		//calculateDimensions( );
+		// calculateDimensions( );
 	}
-	
+
 	/**
 	 * makes a new button instance
 	 * 
-	 * @param caption String
-	 * @param font BitmapFont
-	 * @param handler ButtonHandler
+	 * @param caption
+	 *            String
+	 * @param font
+	 *            BitmapFont
+	 * @param handler
+	 *            ButtonHandler
 	 */
-	public OptionButton(String caption, BitmapFont font, OptionControl control ) {
-		this(caption, font, control, 0, 0);
+	public OptionButton( String caption, BitmapFont font, OptionControl control ) {
+		this( caption, font, control, 0, 0 );
 	}
+
 	@Override
-	public void setX(int x) {
+	public void setX( int x ) {
 		this.x = x;
 		bounds.x = x;
 		control.setX( x * 4 );
 	}
+
 	@Override
-	public void setY(int y) {
+	public void setY( int y ) {
 		this.y = y;
 		bounds.y = y - height * 2;
-		control.setY( y - height * 2  + 20 );
+		control.setY( y - height * 2 + 20 );
 	}
-	
-	public OptionControl getOption ( ) {
+
+	public OptionControl getOption( ) {
 		return control;
 	}
-	
-	public void draw(SpriteBatch batch, Camera camera) {
-		Color originalColor = font.getColor();
-		Vector3 cursorPosition = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
-		camera.unproject(cursorPosition);
-		boolean isIntersect = bounds.contains(cursorPosition.x, cursorPosition.y);
-		
+
+	public void draw( SpriteBatch batch, Camera camera ) {
+		Color originalColor = font.getColor( );
+		Vector3 cursorPosition = new Vector3( Gdx.input.getX( ),
+				Gdx.input.getY( ), 0 );
+		camera.unproject( cursorPosition );
+		boolean isIntersect = bounds.contains( cursorPosition.x,
+				cursorPosition.y );
+
 		box.setPosition( x - xPos, y - height * 2 - yPos );
 		if ( !scaled ) {
 			setScale( );
@@ -71,17 +84,19 @@ public class OptionButton extends Button {
 		box.setSize( scaleX, scaleY );
 		box.setOrigin( box.getWidth( ) / 2, box.getHeight( ) / 2 );
 		box.draw( batch );
-		
-		font.setColor(colored ? HOVER_COLOR : NORMAL_COLOR);
-		font.draw(batch, caption, x - capWidth / 2 + width / 2 + 5, y - height - capHeight / 2 );
-		font.setColor(originalColor);
-		
+
+		font.setColor( colored ? HOVER_COLOR : NORMAL_COLOR );
+		font.draw( batch, caption, x - capWidth / 2 + width / 2 + 5, y - height
+				- capHeight / 2 );
+		font.setColor( originalColor );
+
 		control.draw( batch );
-		if ((isIntersect && (Gdx.input.isTouched() || Gdx.input.isButtonPressed(Buttons.LEFT))) || selected) {
+		if ( ( isIntersect && ( Gdx.input.isTouched( ) || Gdx.input
+				.isButtonPressed( Buttons.LEFT ) ) ) || selected ) {
 			selected = false;
 			control.setActive( true );
 		}
-		
+
 		if ( colored )
 			control.setActive( true );
 		else

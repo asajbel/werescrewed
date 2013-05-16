@@ -2,7 +2,7 @@ package com.blindtigergames.werescrewed.screens;
 
 import com.badlogic.gdx.Screen;
 
-public enum ScreenType {	
+public enum ScreenType {
 	CREDITS {
 		@Override
 		protected com.badlogic.gdx.Screen getScreenInstance( ) {
@@ -12,14 +12,14 @@ public enum ScreenType {
 		}
 	},
 
-//	GAME {
-//		@Override
-//		protected com.badlogic.gdx.Screen getScreenInstance( ) {
-//			PhysicsTestScreen physics = new PhysicsTestScreen( );
-//			physics.screenType = ScreenType.GAME;
-//			return physics;
-//		}
-//	},
+	// GAME {
+	// @Override
+	// protected com.badlogic.gdx.Screen getScreenInstance( ) {
+	// PhysicsTestScreen physics = new PhysicsTestScreen( );
+	// physics.screenType = ScreenType.GAME;
+	// return physics;
+	// }
+	// },
 
 	INTRO {
 		@Override
@@ -123,7 +123,8 @@ public enum ScreenType {
 		protected com.badlogic.gdx.Screen getScreenInstance( ) {
 			PhysicsTestScreen physics = new PhysicsTestScreen( );
 			physics.screenType = ScreenType.PHYSICS;
-			return physics;		}
+			return physics;
+		}
 	},
 	RESURRECT {
 		@Override
@@ -149,7 +150,7 @@ public enum ScreenType {
 			return menu;
 		}
 	},
-	
+
 	WIN {
 		@Override
 		protected com.badlogic.gdx.Screen getScreenInstance( ) {
@@ -166,13 +167,13 @@ public enum ScreenType {
 			trophy.screenType = ScreenType.TROPHY;
 			return trophy;
 		}
-	}, 
-	
+	},
+
 	PREVSCREEN {
-		
+
 		// USED IN PAUSE SCREEN TO RETURN TO THE LAST SCREEN
 		// I COULDN'T THINK OF BETTER FIX, BUT THIS WORKS FINE
-		
+
 		@Override
 		protected Screen getScreenInstance( ) {
 			return null;

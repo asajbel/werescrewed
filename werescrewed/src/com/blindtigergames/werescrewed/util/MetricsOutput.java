@@ -20,7 +20,7 @@ public class MetricsOutput {
 	public ArrayList< String > names;
 
 	/**
-	 * Constructor sets everything to null. 
+	 * Constructor sets everything to null.
 	 */
 	public MetricsOutput( ) {
 		death = null;

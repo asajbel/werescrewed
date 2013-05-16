@@ -25,23 +25,20 @@
 
 package com.esotericsoftware.spine.attachments;
 
-import com.esotericsoftware.spine.Slot;
-
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-
 abstract public class Attachment {
 	final String name;
 
-	public Attachment (String name) {
-		if (name == null) throw new IllegalArgumentException("name cannot be null.");
+	public Attachment( String name ) {
+		if ( name == null )
+			throw new IllegalArgumentException( "name cannot be null." );
 		this.name = name;
 	}
 
-	public String getName () {
+	public String getName( ) {
 		return name;
 	}
 
-	public String toString () {
+	public String toString( ) {
 		return name;
 	}
 }

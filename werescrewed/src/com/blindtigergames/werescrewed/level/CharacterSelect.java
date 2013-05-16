@@ -15,7 +15,6 @@ import com.blindtigergames.werescrewed.entity.Sprite;
 import com.blindtigergames.werescrewed.entity.builders.PlayerBuilder;
 import com.blindtigergames.werescrewed.input.MyControllerListener;
 import com.blindtigergames.werescrewed.input.PlayerInputHandler;
-import com.blindtigergames.werescrewed.player.Player;
 
 public class CharacterSelect {
 

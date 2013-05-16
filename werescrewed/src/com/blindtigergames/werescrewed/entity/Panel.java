@@ -11,30 +11,32 @@ import com.blindtigergames.werescrewed.util.Util;
 
 /**
  * Panel for Alphabot level for displaying which body parts are on/off.
+ * 
  * @author stew
- *
+ * 
  */
 public class Panel extends Platform {
 	TextureAtlas panelAtlas;
-	
-	public Panel( String name, Vector2 posPix, World world, String panelAtlasName, String initialPanel ){
-		super(name,posPix,null,world);
+
+	public Panel( String name, Vector2 posPix, World world,
+			String panelAtlasName, String initialPanel ) {
+		super( name, posPix, null, world );
 		this.panelAtlas = WereScrewedGame.manager.getAtlas( panelAtlasName );
-		
+
 		BodyDef bodyDef = new BodyDef( );
 		bodyDef.type = BodyType.KinematicBody;
-		bodyDef.position.set( posPix.cpy().mul( Util.PIXEL_TO_BOX ) );
+		bodyDef.position.set( posPix.cpy( ).mul( Util.PIXEL_TO_BOX ) );
 		this.body = world.createBody( bodyDef );
-		
-		if(!initialPanel.equals( "" )){
+
+		if ( !initialPanel.equals( "" ) ) {
 			changeSprite( panelAtlas.createSprite( initialPanel ) );
 			this.sprite.setPosition( posPix.cpy( ) );
 		}
 	}
-	
-	public void setPanelSprite(String spriteName){
+
+	public void setPanelSprite( String spriteName ) {
 		Vector2 oldPos = getPositionPixel( );
-		float rotation = (sprite==null)?0:sprite.getRotation( );
+		float rotation = ( sprite == null ) ? 0 : sprite.getRotation( );
 		changeSprite( panelAtlas.createSprite( spriteName ) );
 		sprite.setPosition( oldPos );
 		sprite.rotate( rotation );
