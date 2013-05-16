@@ -1254,6 +1254,13 @@ public class AlphaScreen extends Screen {
 		// 714,1437
 
 		leftShoulderSkeleton.bgSprite = null;
+		
+		//All in one line cus I'm high level like that:
+		leftShoulderSkeleton.addBGDecalBack( Sprite.scale( 
+				WereScrewedGame.manager.getAtlas( "head_right" )
+				.createSprite( "hand" ) 
+				,1), 
+				pos.cpy( ).add( 0,-1100 ) );
 
 		addFGSkeleton( leftShoulderSkeleton );
 		addBGSkeleton( leftShoulderSkeleton );

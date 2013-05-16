@@ -6,7 +6,14 @@ offset: 0, 0
 head_right
   rotate: false
   xy: 2, 2
-  size: 1129, 1046
-  orig: 1129, 1046
+  size: 974, 1353
+  orig: 974, 1353
+  offset: 0, 0
+  index: -1
+hand
+  rotate: false
+  xy: 978, 2
+  size: 855, 1059
+  orig: 855, 1059
   offset: 0, 0
   index: -1
