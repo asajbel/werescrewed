@@ -42,9 +42,12 @@ public class SingleSpinemator implements ISpinemator {
 	/**
 	 * Constructor
 	 * 
-	 * @param atlasName Name of the atlas for the animation
-	 * @param skeletonName Name of the skeleton containing the animation
-	 * @param animationName Name of the animation
+	 * @param atlasName
+	 *            Name of the atlas for the animation
+	 * @param skeletonName
+	 *            Name of the skeleton containing the animation
+	 * @param animationName
+	 *            Name of the animation
 	 */
 	public SingleSpinemator( String atlasName, String skeletonName,
 			String animationName ) {
@@ -68,35 +71,49 @@ public class SingleSpinemator implements ISpinemator {
 	public void update( float delta ) {
 		time += delta;
 		anim.apply( skel, time, true );
-		if ( position != null ) {
-			root.setX( position.x );
-			root.setY( position.y );
-		}
-		if ( scale != null ) {
-			root.setScaleX( scale.x );
-			root.setScaleY( scale.y );
-		} else {
-			root.setScaleX( 1f );
-			root.setScaleY( 1f );
-		}
 		skel.updateWorldTransform( );
-		position = null;
 	}
 
 	@Override
-	public void setPosition( Vector2 pos ) {
-		position = pos;
+	public void setPosition(float x, float y) {
+		root.setX( x );
+		root.setY( y );
 	}
 
 	@Override
 	public void setScale( Vector2 scale ) {
-		this.scale = scale;
+		root.setScaleX( scale.x );
+		root.setScaleY( scale.y );
 	}
 
 	@Override
 	public TextureAtlas getBodyAtlas( ) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	
+	@Override
+	public Vector2 getPosition( ) {
+		float x = root.getWorldX( );
+		float y = root.getWorldY( );
+		
+		return new Vector2(x,y); 
+	}
+
+	@Override
+	public float getX( ) {
+		return root.getWorldX( );
+	}
+
+	@Override
+	public float getY( ) {
+		return root.getWorldY( );
+	}
+
+	@Override
+	public void setPosition( Vector2 pos ) {
+		root.setX( pos.x );
+		root.setY( pos.y );
 	}
 
 }

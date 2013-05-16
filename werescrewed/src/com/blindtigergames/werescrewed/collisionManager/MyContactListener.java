@@ -1,6 +1,5 @@
 package com.blindtigergames.werescrewed.collisionManager;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.CircleShape;
@@ -9,7 +8,6 @@ import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.Manifold;
-import com.badlogic.gdx.physics.box2d.Manifold.ManifoldPoint;
 import com.blindtigergames.werescrewed.camera.Camera;
 import com.blindtigergames.werescrewed.checkpoints.CheckPoint;
 import com.blindtigergames.werescrewed.entity.Entity;
@@ -24,7 +22,6 @@ import com.blindtigergames.werescrewed.entity.platforms.TiledPlatform;
 import com.blindtigergames.werescrewed.entity.screws.Screw;
 import com.blindtigergames.werescrewed.eventTrigger.EventTrigger;
 import com.blindtigergames.werescrewed.eventTrigger.PowerSwitch;
-import com.blindtigergames.werescrewed.level.Level;
 import com.blindtigergames.werescrewed.player.Player;
 import com.blindtigergames.werescrewed.player.Player.PlayerState;
 import com.blindtigergames.werescrewed.sound.SoundManager;
@@ -49,7 +46,6 @@ public class MyContactListener implements ContactListener {
 	private static final float MAXIMUM_HIT_FORCE = 5.0f;
 	private static final float HIT_X_Y_RATIO = 5.0f;
 
-
 	/**
 	 * When two new objects start to touch
 	 */
@@ -62,17 +58,17 @@ public class MyContactListener implements ContactListener {
 
 		Fixture playerFix = null;
 		Fixture objectFix = null;
-		
-        boolean playerInvolved = false;
 
-        Vector2 force = calculateForce(contact);
-        Vector2 painForce = force;
-        painForce.x /= HIT_X_Y_RATIO;
-        
-		if ( objectA != null
-				&& objectB != null ) {
-			if (objectA instanceof Entity && objectB instanceof Entity){
-				handleCollisionSounds( (Entity) objectA, (Entity) objectB , contact, force.len());
+		boolean playerInvolved = false;
+
+		Vector2 force = calculateForce( contact );
+		Vector2 painForce = force;
+		painForce.x /= HIT_X_Y_RATIO;
+
+		if ( objectA != null && objectB != null ) {
+			if ( objectA instanceof Entity && objectB instanceof Entity ) {
+				handleCollisionSounds( ( Entity ) objectA, ( Entity ) objectB,
+						contact, force.len( ) );
 			}
 			if ( x1.getBody( ).getUserData( ) instanceof Player ) {
 				playerFix = x1;
@@ -106,24 +102,44 @@ public class MyContactListener implements ContactListener {
 							// also make sure its not the player
 							Platform plat = ( Platform ) object;
 							player.hitSolidObject( plat );
-							if ( object.isSolid( ) ){
+							if ( object.isSolid( ) ) {
 								if ( playerFix.getShape( ) instanceof CircleShape ) {
 									if ( player.name.equals( "player1" ) ) {
 										NUM_PLAYER1_CONTACTS++;
 									} else if ( player.name.equals( "player2" ) ) {
 										NUM_PLAYER2_CONTACTS++;
 									}
-									//Platform plat = ( Platform ) object;
-									//player.hitSolidObject( plat );
+									// Platform plat = ( Platform ) object;
+									// player.hitSolidObject( plat );
 									if ( player.getState( ) != PlayerState.Screwing ) {
-										if (!player.isGrounded( )){
-											player.sounds.playSound( "land" , player.sounds.randomSoundId("land"), LAND_DELAY, (float)Math.pow(force.len() * LAND_VOLUME, LAND_FALLOFF), 1.0f);
+										if ( !player.isGrounded( ) ) {
+											player.sounds
+													.playSound(
+															"land",
+															player.sounds
+																	.randomSoundId( "land" ),
+															LAND_DELAY,
+															( float ) Math.pow(
+																	force.len( )
+																			* LAND_VOLUME,
+																	LAND_FALLOFF ),
+															1.0f );
 										}
 										player.setGrounded( true );
 									}
 								} else {
-									if (playerFix.equals( player.topSensor ) && !plat.oneSided && painForce.len() > MINIMUM_HIT_FORCE){
-										player.sounds.playSound( "hit", player.sounds.randomSoundId("hit"), 0.5f , painForce.len()/MAXIMUM_HIT_FORCE , 1.0f);
+									if ( playerFix.equals( player.topSensor )
+											&& !plat.oneSided
+											&& painForce.len( ) > MINIMUM_HIT_FORCE ) {
+										player.sounds
+												.playSound(
+														"hit",
+														player.sounds
+																.randomSoundId( "hit" ),
+														0.5f,
+														painForce.len( )
+																/ MAXIMUM_HIT_FORCE,
+														1.0f );
 										player.sounds.setDelay( "hit", 3.0f );
 									}
 								}
@@ -145,11 +161,13 @@ public class MyContactListener implements ContactListener {
 							checkP.hitPlayer( );
 							break;
 						case STEAM:
-							//TODO: GET RID OF TEMPCOLLISION WHEN STEAM PARTICLES MATCH THE BODY
-							Steam steam = (Steam) object;
-							if ( playerFix == player.torso && steam.getTempCollision( )) {
-								
-								player.setSteamCollide(steam, true );
+							// TODO: GET RID OF TEMPCOLLISION WHEN STEAM
+							// PARTICLES MATCH THE BODY
+							Steam steam = ( Steam ) object;
+							if ( playerFix == player.torso
+									&& steam.getTempCollision( ) ) {
+
+								player.setSteamCollide( steam, true );
 							}
 							break;
 						case EVENTTRIGGER:
@@ -159,25 +177,25 @@ public class MyContactListener implements ContactListener {
 								et.getBeginAction( ).act( player );
 							}
 							if ( playerFix == player.torso ) {
-								if( et.getBeginAction( ).getActionType( ) == ActionType.ACT_ON_PLAYER ){
+								if ( et.getBeginAction( ).getActionType( ) == ActionType.ACT_ON_PLAYER ) {
 									et.triggerBeginEvent( player );
-								}else
+								} else
 									et.triggerBeginEvent( );
 							}
 							break;
 						case POWERSWITCH:
-							if(playerFix == player.torso){
+							if ( playerFix == player.torso ) {
 								PowerSwitch ps = ( PowerSwitch ) object;
 								player.setPowerSwitch( ps );
 							}
-							break;						
+							break;
 						default:
 							break;
 						}
 					} else {
-						Gdx.app.log(
-								"please declare your entity with a type to the Entity Type enum",
-								"" );
+						// Gdx.app.log(
+						// "please declare your entity with a type to the Entity Type enum",
+						// "" );
 					}
 				}
 			} else {
@@ -296,10 +314,12 @@ public class MyContactListener implements ContactListener {
 							}
 							break;
 						case STEAM:
-							//TODO: GET RID OF TEMPCOLLISION WHEN STEAM PARTICLES MATCH THE BODY
-							Steam steam = (Steam) object;
-							if ( playerFix == player.torso && steam.getTempCollision( )) {
-								player.setSteamCollide(null, false );
+							// TODO: GET RID OF TEMPCOLLISION WHEN STEAM
+							// PARTICLES MATCH THE BODY
+							Steam steam = ( Steam ) object;
+							if ( playerFix == player.torso
+									&& steam.getTempCollision( ) ) {
+								player.setSteamCollide( null, false );
 							}
 							break;
 						case EVENTTRIGGER:
@@ -313,15 +333,17 @@ public class MyContactListener implements ContactListener {
 							}
 							break;
 						case POWERSWITCH:
-							if(playerFix == player.torso){
+							if ( playerFix == player.torso ) {
 								player.setPowerSwitch( null );
 							}
 							break;
+						default:
+							break;
 						}
 					} else {
-						Gdx.app.log(
-								"please declare your entity with a type to the Entity Type enum",
-								"" );
+						// Gdx.app.log(
+						// "please declare your entity with a type to the Entity Type enum",
+						// "" );
 					}
 				}
 			}
@@ -340,8 +362,8 @@ public class MyContactListener implements ContactListener {
 		Fixture objectFix = null;
 
 		boolean playerInvolved = false;
-		
-        if ( x1.getBody( ).getUserData( ) != null
+
+		if ( x1.getBody( ).getUserData( ) != null
 				&& x2.getBody( ).getUserData( ) != null ) {
 			if ( x1.getBody( ).getUserData( ) instanceof Player ) {
 				playerFix = x1;
@@ -407,9 +429,9 @@ public class MyContactListener implements ContactListener {
 							break;
 						}
 					} else {
-						Gdx.app.log(
-								"please declare your entity with a type to the Entity Type enum",
-								"" );
+						// Gdx.app.log(
+						// "please declare your entity with a type to the Entity Type enum",
+						// "" );
 					}
 				}
 			}
@@ -423,7 +445,7 @@ public class MyContactListener implements ContactListener {
 	public void postSolve( Contact contact, ContactImpulse impulse ) {
 		final Fixture x1 = contact.getFixtureA( );
 		final Fixture x2 = contact.getFixtureB( );
-		
+
 		Object objectA = x1.getBody( ).getUserData( );
 		Object objectB = x2.getBody( ).getUserData( );
 
@@ -432,8 +454,7 @@ public class MyContactListener implements ContactListener {
 
 		boolean playerInvolved = false;
 
-		if ( objectA != null
-				&& objectB != null ) {
+		if ( objectA != null && objectB != null ) {
 			if ( objectA instanceof Player ) {
 				playerFix = x1;
 				objectFix = x2;
@@ -449,7 +470,8 @@ public class MyContactListener implements ContactListener {
 					Entity notPlayer = ( Entity ) objectFix.getBody( )
 							.getUserData( );
 					if ( notPlayer.getEntityType( ) != null ) {
-						switch ( notPlayer.getEntityType( ) ) { // switch between
+						switch ( notPlayer.getEntityType( ) ) { // switch
+																// between
 																// different
 																// types
 																// of entities
@@ -474,89 +496,103 @@ public class MyContactListener implements ContactListener {
 							break;
 						}
 					} else {
-						Gdx.app.log(
-								"please declare your entity with a type to the Entity Type enum",
-								"" );
+						// Gdx.app.log(
+						// "please declare your entity with a type to the Entity Type enum",
+						// "" );
 					}
 				}
 			}
 		}
 	}
-	
-	public Vector2 calculateForce(Contact contact){
-		final Body x1 = contact.getFixtureA( ).getBody();
-		final Body x2 = contact.getFixtureB( ).getBody();
 
-        Vector2 contactPos;
-        int contactPoints = contact.getWorldManifold( ).getPoints().length;
-        Vector2 forceVector = new Vector2(0,0);
-        for (int c = 0; c < contactPoints; c++){
-        	contactPos = contact.getWorldManifold( ).getPoints()[c];
-        	forceVector.add( x1.getLinearVelocityFromWorldPoint(contactPos) );
-        	
-        	forceVector.sub( x2.getLinearVelocityFromWorldPoint(contactPos) );
-        }
-        return  forceVector.div( contactPoints );
+	public Vector2 calculateForce( Contact contact ) {
+		final Body x1 = contact.getFixtureA( ).getBody( );
+		final Body x2 = contact.getFixtureB( ).getBody( );
+
+		Vector2 contactPos;
+		int contactPoints = contact.getWorldManifold( ).getPoints( ).length;
+		Vector2 forceVector = new Vector2( 0, 0 );
+		for ( int c = 0; c < contactPoints; c++ ) {
+			contactPos = contact.getWorldManifold( ).getPoints( )[ c ];
+			forceVector.add( x1.getLinearVelocityFromWorldPoint( contactPos ) );
+
+			forceVector.sub( x2.getLinearVelocityFromWorldPoint( contactPos ) );
+		}
+		return forceVector.div( contactPoints );
 	}
-	
-	public void handleCollisionSounds(Entity objectA, Entity objectB, Contact contact, float force){
+
+	public void handleCollisionSounds( Entity objectA, Entity objectB,
+			Contact contact, float force ) {
 		/*
-		 * Generally, we want to avoid playing the same sound twice with any one collision.
-		 * So we'll use two soundref variables to store the sounds coming from both entities,
-		 * then check to see if they share a sound. If so, then we can skip playing the second one.
+		 * Generally, we want to avoid playing the same sound twice with any one
+		 * collision. So we'll use two soundref variables to store the sounds
+		 * coming from both entities, then check to see if they share a sound.
+		 * If so, then we can skip playing the second one.
 		 */
-		//Determine the sound played by object A.
+		// Determine the sound played by object A.
 		boolean playSoundA = objectA.hasSoundManager( );
-		//Determine the sound played by object B.
+		// Determine the sound played by object B.
 		boolean playSoundB = objectB.hasSoundManager( );
-		//Only continue if we have at least one sound manager
-		if (playSoundA || playSoundB){
+		// Only continue if we have at least one sound manager
+		if ( playSoundA || playSoundB ) {
 			String soundA = "collision";
 			int indexA = 0;
-			
+
 			String soundB = "collision";
 			int indexB = 0;
 
-			if (playSoundB && objectA instanceof Platform && objectB.sounds.hasSound("platformcollision")){
+			if ( playSoundB && objectA instanceof Platform
+					&& objectB.sounds.hasSound( "platformcollision" ) ) {
 				soundB = "platformcollision";
 				indexB = 0;
 			}
-			if (playSoundA && objectB instanceof Platform && objectA.sounds.hasSound("platformcollision")){
+			if ( playSoundA && objectB instanceof Platform
+					&& objectA.sounds.hasSound( "platformcollision" ) ) {
 				soundA = "platformcollision";
 				indexA = 0;
 			}
 
-			//Skip playing a sound that the sound manager doesn't have.
-			if (playSoundA && !objectA.sounds.hasSound( soundA, indexA ))
+			// Skip playing a sound that the sound manager doesn't have.
+			if ( playSoundA && !objectA.sounds.hasSound( soundA, indexA ) )
 				playSoundA = false;
-			if (playSoundB && !objectB.sounds.hasSound( soundA, indexA ))
+			if ( playSoundB && !objectB.sounds.hasSound( soundA, indexA ) )
 				playSoundB = false;
-			
-			//Resolve duplicate sounds
-			if (playSoundA && playSoundB){
-				if (objectA.sounds.getGDXSound( soundA, indexA )
-						.equals( objectB.sounds.getGDXSound( soundB, indexB ) ) ){
+
+			// Resolve duplicate sounds
+			if ( playSoundA && playSoundB ) {
+				if ( objectA.sounds.getGDXSound( soundA, indexA ).equals(
+						objectB.sounds.getGDXSound( soundB, indexB ) ) ) {
 					playSoundB = false;
 				}
 			}
-			
-			float v = Math.min( Math.max( (float)Math.pow(force * COLLISION_VOLUME, COLLISION_FORCE_FALLOFF), 0.0f ), 2.0f);
-			//Play soundA
-			if (playSoundA){
-				float vA = v * SoundManager.calculatePositionalVolume( objectA.getPositionPixel( ), 
-																		Camera.CAMERA_RECT, 
-																			objectA.sounds.getRange(soundA, indexA), 
-																				COLLISION_SCREEN_FALLOFF );
-				objectA.sounds.playSound( soundA, indexA , COLLISION_SOUND_DELAY, vA, 1.0f);
+
+			float v = Math
+					.min( Math
+							.max( ( float ) Math.pow( force * COLLISION_VOLUME,
+									COLLISION_FORCE_FALLOFF ), 0.0f ),
+							2.0f );
+			// Play soundA
+			if ( playSoundA ) {
+				float vA = v
+						* SoundManager.calculatePositionalVolume(
+								objectA.getPositionPixel( ),
+								Camera.CAMERA_RECT,
+								objectA.sounds.getRange( soundA, indexA ),
+								COLLISION_SCREEN_FALLOFF );
+				objectA.sounds.playSound( soundA, indexA,
+						COLLISION_SOUND_DELAY, vA, 1.0f );
 			}
-			
-			//Play soundB
-			if (playSoundB){
-				float vB = v * SoundManager.calculatePositionalVolume( objectB.getPositionPixel( ), 
-																		Camera.CAMERA_RECT, 
-																			objectB.sounds.getRange(soundB, indexB), 
-																				COLLISION_SCREEN_FALLOFF );
-				objectB.sounds.playSound( soundB, indexB , COLLISION_SOUND_DELAY, vB, 1.0f);
+
+			// Play soundB
+			if ( playSoundB ) {
+				float vB = v
+						* SoundManager.calculatePositionalVolume(
+								objectB.getPositionPixel( ),
+								Camera.CAMERA_RECT,
+								objectB.sounds.getRange( soundB, indexB ),
+								COLLISION_SCREEN_FALLOFF );
+				objectB.sounds.playSound( soundB, indexB,
+						COLLISION_SOUND_DELAY, vB, 1.0f );
 			}
 		}
 	}

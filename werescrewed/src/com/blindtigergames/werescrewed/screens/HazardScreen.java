@@ -25,7 +25,7 @@ import com.blindtigergames.werescrewed.entity.RobotState;
 import com.blindtigergames.werescrewed.entity.Skeleton;
 import com.blindtigergames.werescrewed.entity.action.AnchorActivateAction;
 import com.blindtigergames.werescrewed.entity.action.AnchorDeactivateAction;
-import com.blindtigergames.werescrewed.entity.action.DestoryPlatformJointAction;
+import com.blindtigergames.werescrewed.entity.action.DestroyPlatformJointAction;
 import com.blindtigergames.werescrewed.entity.action.RemoveEntityAction;
 import com.blindtigergames.werescrewed.entity.builders.EventTriggerBuilder;
 import com.blindtigergames.werescrewed.entity.builders.PlatformBuilder;
@@ -69,8 +69,10 @@ public class HazardScreen implements com.badlogic.gdx.Screen {
 	private TiledPlatform ground, crusher;
 	private StructureScrew struct1, struct2;
 	private PlatformBuilder platBuilder;
+	@SuppressWarnings( "unused" )
 	private Hazard hazard;
 	private Fire fire;
+	@SuppressWarnings( "unused" )
 	private Electricity elec;
 	private Spikes spikes, spikes2;
 	private HazardBuilder spikesBuilder;
@@ -78,14 +80,16 @@ public class HazardScreen implements com.badlogic.gdx.Screen {
 	private boolean debugTest = true;
 	private Steam testSteam;
 	private Pipe testPipe;
-	
+
 	Platform fallingGear1;
 
+	@SuppressWarnings( "unused" )
 	private Level level;
+
 	public HazardScreen( ) {
 		batch = new SpriteBatch( );
 		world = new World( new Vector2( 0, -35 ), true );
-		level = new Level();
+		level = new Level( );
 		initCamera( );
 		Tween.registerAccessor( Platform.class, new PlatformAccessor( ) );
 		Tween.registerAccessor( Entity.class, new EntityAccessor( ) );
@@ -99,27 +103,29 @@ public class HazardScreen implements com.badlogic.gdx.Screen {
 		contactListener = new MyContactListener( );
 		world.setContactListener( contactListener );
 
-		player1 = new PlayerBuilder( ).name( "player1" ).definition( "red_male" ).world( world )
-				.position( 1800f, 100f ).buildPlayer( );
-		player2 = new PlayerBuilder( ).name( "player2" ).definition( "red_female" ).world( world )
+		player1 = new PlayerBuilder( ).name( "player1" )
+				.definition( "red_male" ).world( world ).position( 1800f, 100f )
+				.buildPlayer( );
+		player2 = new PlayerBuilder( ).name( "player2" )
+				.definition( "red_female" ).world( world )
 				.position( 1900f, 100.0f ).buildPlayer( );
-		
+
 		Metrics.registerPlayer1( player1.name );
 		Metrics.registerPlayer2( player2.name );
 
-		ArrayList < Vector2 > pipePath = new ArrayList < Vector2 >();
-		pipePath.add( new Vector2 (2, 0) );
-		pipePath.add( new Vector2 (2, -4) );
-		pipePath.add( new Vector2 (5, -4) );
-	
-		
-		testPipe = new Pipe("pipe", new Vector2 ( 800f, 0f ), pipePath, null, world, false);
+		ArrayList< Vector2 > pipePath = new ArrayList< Vector2 >( );
+		pipePath.add( new Vector2( 2, 0 ) );
+		pipePath.add( new Vector2( 2, -4 ) );
+		pipePath.add( new Vector2( 5, -4 ) );
+
+		testPipe = new Pipe( "pipe", new Vector2( 800f, 0f ), pipePath, null,
+				world, false );
 		skeleton.addKinematicPlatform( testPipe );
-		
-		RotateTweenMover rtm1 = new RotateTweenMover( testPipe, 10f,
-				Util.PI, 2f, true );
+
+		RotateTweenMover rtm1 = new RotateTweenMover( testPipe, 10f, Util.PI,
+				2f, true );
 		testPipe.setMoverAtCurrentState( rtm1 );
-		
+
 		initTiledPlatforms( );
 		initHazards( );
 		initCheckPoints( );
@@ -127,15 +133,15 @@ public class HazardScreen implements com.badlogic.gdx.Screen {
 		initParticleEffect( );
 		initDeathBarrier( );
 		initPowerScrew( );
-		
-		PuzzleScrew pscrew = new PuzzleScrew( "pscrew1", new Vector2( 1550f, 200f), 100, skeleton,
-				world, 0, false, Vector2.Zero);
+
+		PuzzleScrew pscrew = new PuzzleScrew( "pscrew1", new Vector2( 1550f,
+				200f ), 100, skeleton, world, 0, false, Vector2.Zero );
 		skeleton.addScrewForDraw( pscrew );
-		
-		pscrew = new PuzzleScrew( "pscrew2", new Vector2( 1850f, 200f), 100, skeleton,
-				world, 100, false, Vector2.Zero);
+
+		pscrew = new PuzzleScrew( "pscrew2", new Vector2( 1850f, 200f ), 100,
+				skeleton, world, 100, false, Vector2.Zero );
 		skeleton.addScrewForDraw( pscrew );
-		
+
 		rootSkeleton.addSkeleton( skeleton );
 		debugRenderer = new SBox2DDebugRenderer( Util.BOX_TO_PIXEL );
 		debugRenderer.setDrawJoints( false );
@@ -147,7 +153,7 @@ public class HazardScreen implements com.badlogic.gdx.Screen {
 		float zoom = 1.0f;
 		float width = Gdx.graphics.getWidth( ) / zoom;
 		float height = Gdx.graphics.getHeight( ) / zoom;
-		cam = new Camera( new Vector2( 1000, 0), width, height, world );
+		cam = new Camera( new Vector2( 1000, 0 ), width, height, world );
 	}
 
 	private void initTiledPlatforms( ) {
@@ -167,20 +173,19 @@ public class HazardScreen implements com.badlogic.gdx.Screen {
 		skeleton.addKinematicPlatform( ground );
 
 	}
-	
+
 	private void initPowerScrew( ) {
-		PowerScrew pscrew = new PowerScrew("powerscrewtest", new Vector2( 1800, 100), skeleton, world );
+		PowerScrew pscrew = new PowerScrew( "powerscrewtest", new Vector2(
+				1800, 100 ), skeleton, world );
 		skeleton.addScrewForDraw( pscrew );
 	}
-	
-	private void initDeathBarrier( ){
-		//death barrier
+
+	private void initDeathBarrier( ) {
+		// death barrier
 		EventTriggerBuilder etb = new EventTriggerBuilder( world );
 		EventTrigger removeTrigger = etb.name( "removeEntity" ).rectangle( )
-				.width( 10 ).height( 50000 )
-				.position( new Vector2( 0, -3200 ) )
-				.beginAction( new RemoveEntityAction( ) )
-				.addEntity( player1 )
+				.width( 10 ).height( 50000 ).position( new Vector2( 0, -3200 ) )
+				.beginAction( new RemoveEntityAction( ) ).addEntity( player1 )
 				.addEntity( player2 ).build( );
 		removeTrigger.setCategoryMask( Util.CATEGORY_PLAYER,
 				Util.CATEGORY_EVERYTHING );
@@ -195,8 +200,8 @@ public class HazardScreen implements com.badlogic.gdx.Screen {
 		 */
 		fire = new Fire( "Fire1", new Vector2( -700.0f, -10.0f ), 50, 100,
 				world, true );
-		//elec = new Electricity( "Elec1", new Vector2( 700.0f, 0.0f ),
-		//		new Vector2( 700.0f, 150.0f ), world, true );
+		// elec = new Electricity( "Elec1", new Vector2( 700.0f, 0.0f ),
+		// new Vector2( 700.0f, 150.0f ), world, true );
 		/*
 		 * saw = new Saws( "Saw1", new Vector2( -2000.0f, 40.0f ), 2, world,
 		 * true );
@@ -214,16 +219,18 @@ public class HazardScreen implements com.badlogic.gdx.Screen {
 	 * Initializes steam for testing, not on a skeleton at the moment
 	 */
 	private void initParticleEffect( ) {
-		testSteam = new Steam( "testSteam", new Vector2( 2000f, 120f ), 25, 120, world );
-		Skeleton steamSkel = new Skeleton("steam", new Vector2(2000f, 100f), null, world);
+		testSteam = new Steam( "testSteam", new Vector2( 2000f, 120f ), 25,
+				120, world );
+		Skeleton steamSkel = new Skeleton( "steam", new Vector2( 2000f, 100f ),
+				null, world );
 		steamSkel.setFgFade( false );
-	//	testSteam.particleEffect.setOffset(0f, -100f);
+		// testSteam.particleEffect.setOffset(0f, -100f);
 		rootSkeleton.addSkeleton( steamSkel );
-		
-		steamSkel.addMover( new RotateTweenMover( steamSkel, 6f,
-						-Util.PI * 2, 1f, true ), RobotState.IDLE);
-		
-		steamSkel.addSteam(testSteam);
+
+		steamSkel.addMover( new RotateTweenMover( steamSkel, 6f, -Util.PI * 2,
+				1f, true ), RobotState.IDLE );
+
+		steamSkel.addSteam( testSteam );
 		// Create anchor with start position and buffer as parameters
 		Anchor testAnchor = new Anchor( new Vector2( 600f, 200f ), new Vector2(
 				-100f, 100f ) );
@@ -251,21 +258,22 @@ public class HazardScreen implements com.badlogic.gdx.Screen {
 				.position( new Vector2( 2100f, 20f ) ).repeatable( )
 				.beginAction( new AnchorDeactivateAction( testAnchor ) )
 				.endAction( new AnchorDeactivateAction( testAnchor ) ).build( );
-		
+
 		fallingGear1 = new PlatformBuilder( world ).name( "fallingGear1" )
 				.type( EntityDef.getDefinition( "gearSmall" ) )
 				.position( 496.0f, 400.0f )
 				.texture( EntityDef.getDefinition( "gearSmall" ).getTexture( ) )
 				.solid( true ).dynamic( ).buildComplexPlatform( );
 		skeleton.addDynamicPlatform( fallingGear1 );
-		
-		fallingGear1.addJointToSkeleton(skeleton);
-		
-		PowerSwitch ps = new PowerSwitch( "power1" , new Vector2(-1000f, 100), world);
-				ps.addEntityToTrigger( fallingGear1 );
-				ps.actOnEntity = true;
-				ps.addBeginIAction( new DestoryPlatformJointAction( ) );
-				ps.addEndIAction ( new DestoryPlatformJointAction( ) );
+
+		fallingGear1.addJointToSkeleton( skeleton );
+
+		PowerSwitch ps = new PowerSwitch( "power1", new Vector2( -1000f, 100 ),
+				world );
+		ps.addEntityToTrigger( fallingGear1 );
+		ps.actOnEntity = true;
+		ps.addBeginIAction( new DestroyPlatformJointAction( ) );
+		ps.addEndIAction( new DestroyPlatformJointAction( ) );
 		// AnchorDeactivateAction
 
 		skeleton.addEventTrigger( et );
@@ -282,10 +290,12 @@ public class HazardScreen implements com.badlogic.gdx.Screen {
 		crusher.setCrushing( true );
 		skeleton.addDynamicPlatform( crusher );
 		struct1 = new StructureScrew( "struct1", crusher.getPositionPixel( )
-				.add( new Vector2( -50f, 0f ) ), 50, crusher, world, new Vector2( 0, 1 ) );
+				.add( new Vector2( -50f, 0f ) ), 50, crusher, world,
+				new Vector2( 0, 1 ) );
 		struct1.addStructureJoint( skeleton );
 		struct2 = new StructureScrew( "struct2", crusher.getPositionPixel( )
-				.add( new Vector2( 50f, 0f ) ), 50, crusher, world, new Vector2( 0, 1 ) );
+				.add( new Vector2( 50f, 0f ) ), 50, crusher, world,
+				new Vector2( 0, 1 ) );
 		struct2.addStructureJoint( skeleton );
 		skeleton.addScrewForDraw( struct1 );
 		skeleton.addScrewForDraw( struct2 );
@@ -293,13 +303,11 @@ public class HazardScreen implements com.badlogic.gdx.Screen {
 
 	private void initCheckPoints( ) {
 		progressManager = new ProgressManager( player1, player2, world );
-		skeleton.addCheckPoint( new CheckPoint( "check_01", new Vector2(
-				-512f, 32f ), skeleton, world, progressManager,
-				"levelStage_0_0" ) );
-		skeleton
-				.addCheckPoint( new CheckPoint( "check_02", new Vector2(1900.0f, 5.0f ),
-						skeleton, world, progressManager,
-						"levelStage_0_1" ) );
+		skeleton.addCheckPoint( new CheckPoint( "check_01", new Vector2( -512f,
+				32f ), skeleton, world, progressManager, "levelStage_0_0" ) );
+		skeleton.addCheckPoint( new CheckPoint( "check_02", new Vector2(
+				1900.0f, 5.0f ), skeleton, world, progressManager,
+				"levelStage_0_1" ) );
 	}
 
 	@Override
@@ -336,11 +344,11 @@ public class HazardScreen implements com.badlogic.gdx.Screen {
 			if ( skeleton != null )
 				skeleton.rotateBy( 0.01f );
 		}
-		
+
 		if ( Gdx.input.isKeyPressed( Input.Keys.BACKSPACE ) ) {
 			ScreenManager.getInstance( ).show( ScreenType.TROPHY );
 		}
-		
+
 		if ( Gdx.input.isKeyPressed( Keys.NUM_0 ) ) {
 			if ( debugTest )
 				debug = !debug;
@@ -358,8 +366,8 @@ public class HazardScreen implements com.badlogic.gdx.Screen {
 		rootSkeleton.draw( batch, deltaTime );
 		progressManager.draw( batch, deltaTime );
 		fire.draw( batch, deltaTime );
-		//elec.draw( batch, deltaTime );
-		//testSteam.draw( batch, deltaTime );
+		// elec.draw( batch, deltaTime );
+		// testSteam.draw( batch, deltaTime );
 		player1.draw( batch, deltaTime );
 		player2.draw( batch, deltaTime );
 		testPipe.draw( batch, deltaTime );
@@ -372,7 +380,7 @@ public class HazardScreen implements com.badlogic.gdx.Screen {
 		if ( Gdx.input.isKeyPressed( Keys.P ) ) {
 			System.exit( 0 );
 		}
-		
+
 		world.step( 1 / 60f, 6, 6 );
 
 		if ( Gdx.input.isKeyPressed( Input.Keys.ESCAPE ) ) {

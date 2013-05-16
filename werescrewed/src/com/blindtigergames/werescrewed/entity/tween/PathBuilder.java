@@ -41,21 +41,24 @@ public class PathBuilder {
 	}
 
 	/**
-	 * start your path. you better use PathBuilder.platform()
-	 * before you set a target.
+	 * start your path. you better use PathBuilder.platform() before you set a
+	 * target.
+	 * 
 	 * @return
 	 */
 	public PathBuilder begin( ) {
 		this.timeline = Timeline.createSequence( );
 		return this;
 	}
-	
+
 	/**
 	 * start your path using this and the path will apply to this platform
-	 * @param platform platform to apply path to.
+	 * 
+	 * @param platform
+	 *            platform to apply path to.
 	 * @return
 	 */
-	public PathBuilder begin( Platform platform ){
+	public PathBuilder begin( Platform platform ) {
 		this.platformToMove = platform;
 		return this.begin( );
 	}
@@ -83,11 +86,15 @@ public class PathBuilder {
 	}
 
 	/**
-	 * set a new target on the path for the platform. Happens after
-	 * the target before and before the target after.
-	 * @param xPixel PIXELS!!
-	 * @param yPixel PIXELS!!
-	 * @param time time to reach target from prev target (speed)
+	 * set a new target on the path for the platform. Happens after the target
+	 * before and before the target after.
+	 * 
+	 * @param xPixel
+	 *            PIXELS!!
+	 * @param yPixel
+	 *            PIXELS!!
+	 * @param time
+	 *            time to reach target from prev target (speed)
 	 * @return
 	 */
 	public PathBuilder target( float xPixel, float yPixel, float time ) {

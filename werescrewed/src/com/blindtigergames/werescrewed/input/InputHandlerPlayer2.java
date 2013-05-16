@@ -18,7 +18,7 @@ public class InputHandlerPlayer2 implements InputProcessor {
 	private boolean rightPressed;
 	private boolean jumpPressed;
 	private boolean downPressed;
-	
+
 	private boolean attachScrewPressed;
 
 	/*
@@ -30,7 +30,7 @@ public class InputHandlerPlayer2 implements InputProcessor {
 
 	public void update( ) {
 		pauseKeyPressed = Gdx.input.isKeyPressed( Keys.ESCAPE );
-		
+
 		leftPressed = Gdx.input.isKeyPressed( Keys.DPAD_LEFT );
 		rightPressed = Gdx.input.isKeyPressed( Keys.DPAD_RIGHT );
 		jumpPressed = Gdx.input.isKeyPressed( Keys.DPAD_UP );
@@ -55,7 +55,7 @@ public class InputHandlerPlayer2 implements InputProcessor {
 	 * Returns whether the move left key is pressed
 	 * 
 	 */
-	public boolean leftPressed() {
+	public boolean leftPressed( ) {
 		return leftPressed;
 	}
 
@@ -63,7 +63,7 @@ public class InputHandlerPlayer2 implements InputProcessor {
 	 * Returns whether the move right key is pressed
 	 * 
 	 */
-	public boolean rightPressed() {
+	public boolean rightPressed( ) {
 		return rightPressed;
 	}
 

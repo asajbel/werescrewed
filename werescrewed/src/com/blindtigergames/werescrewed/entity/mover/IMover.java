@@ -10,7 +10,6 @@ import com.blindtigergames.werescrewed.entity.screws.Screw;
  ******************************************************************************/
 public interface IMover {
 
-	
 	/**
 	 * Calculates movement then applies to body
 	 * 
@@ -30,9 +29,10 @@ public interface IMover {
 	 *            - the platform the will be altered by this mover
 	 */
 	public void runPuzzleMovement( Screw screw, float screwVal, Platform p );
-	
+
 	/**
 	 * returns the behavior for which this mover will be used in a puzzle
+	 * 
 	 * @return MoverType
 	 */
 	public PuzzleType getMoverType( );

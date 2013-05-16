@@ -2,19 +2,17 @@ package com.blindtigergames.werescrewed.entity;
 
 import java.util.ArrayList;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
-import com.blindtigergames.werescrewed.graphics.SpriteBatch;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+import com.badlogic.gdx.physics.box2d.World;
+import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 
 public class RootSkeleton extends Skeleton {
 
 	private ArrayList< Entity > looseEntity, entitiesToDelete;
 	private ArrayList< Skeleton > skeletonToSetActive, skeletonToSetInactive;
-	private ArrayList<Skeleton> skeletonsToDelete;
+	private ArrayList< Skeleton > skeletonsToDelete;
 
 	public RootSkeleton( String name, Vector2 positionPix, Texture tex,
 			World world ) {
@@ -32,12 +30,13 @@ public class RootSkeleton extends Skeleton {
 
 	/**
 	 * Delete a skeleton and all it's associated entities.
+	 * 
 	 * @param skeleToDelete
 	 */
-	public void destroySkeleton(Skeleton skeleToDelete){
+	public void destroySkeleton( Skeleton skeleToDelete ) {
 		skeletonsToDelete.add( skeleToDelete );
 	}
-	
+
 	/**
 	 * Never directly do skeleton.setSkeletonActive() because you may activate
 	 * it in the middle of a world.step() which crashes box2d. Instead, use this
@@ -68,17 +67,17 @@ public class RootSkeleton extends Skeleton {
 			list.clear( );
 		}
 	}
-	
-	private void deleteSkeletons(){
-		if ( skeletonsToDelete.size( ) > 0 ){
-			for ( Skeleton s : skeletonsToDelete ){
+
+	private void deleteSkeletons( ) {
+		if ( skeletonsToDelete.size( ) > 0 ) {
+			for ( Skeleton s : skeletonsToDelete ) {
 				Skeleton newParent = s.getParentSkeleton( );
-				for ( Skeleton childsSkeleton : s.childSkeletonMap.values( ) ){
-					//childsSkeleton.setParentSkeleton( newParent );
+				for ( Skeleton childsSkeleton : s.childSkeletonMap.values( ) ) {
+					// childsSkeleton.setParentSkeleton( newParent );
 					newParent.addSkeleton( childsSkeleton );
 				}
 				newParent.childSkeletonMap.remove( s.name );
-				s.dispose();
+				s.dispose( );
 			}
 		}
 	}
@@ -89,17 +88,17 @@ public class RootSkeleton extends Skeleton {
 		setSkeletonListActiveState( skeletonToSetInactive, false );
 		deleteSkeletons( );
 		super.update( deltaTime );
-		for( Entity entity : looseEntity ){
-			if ( entity.removeNextStep ){
+		for ( Entity entity : looseEntity ) {
+			if ( entity.removeNextStep ) {
 				entity.remove( );
 				entitiesToDelete.add( entity );
-			}else{
+			} else {
 				entity.update( deltaTime );
 				entity.updateMover( deltaTime );
 			}
 		}
-		if ( entitiesToDelete.size( ) > 0 ){
-			for( Entity entity : entitiesToDelete ){
+		if ( entitiesToDelete.size( ) > 0 ) {
+			for ( Entity entity : entitiesToDelete ) {
 				looseEntity.remove( entity );
 			}
 			entitiesToDelete.clear( );

@@ -2,29 +2,32 @@ package com.blindtigergames.werescrewed.entity.rope;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
 import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.Sprite;
+import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 import com.blindtigergames.werescrewed.util.Util;
 
 public class Link extends Entity {
 	private float width, height;
 	private float xOffset, yOffset;
+	@SuppressWarnings( "unused" )
 	private boolean drawTwoLinks = false;
-	private static TextureRegion chainLinkTexRegion =  WereScrewedGame.manager.getAtlas( "common-textures" ).findRegion( "chainlink" );
-	
-	private static final float spriteScale = (22f/64f);
-	
-	public Link( String name, World world, Vector2 pos, Texture texture, Vector2 widthHeight ) {
+	private static TextureRegion chainLinkTexRegion = WereScrewedGame.manager
+			.getAtlas( "common-textures" ).findRegion( "chainlink" );
+
+	private static final float spriteScale = ( 22f / 64f );
+
+	public Link( String name, World world, Vector2 pos, Texture texture,
+			Vector2 widthHeight ) {
 		super( name, pos, texture, null, true );
 		this.world = world;
 		this.width = widthHeight.x;
@@ -33,11 +36,10 @@ public class Link extends Entity {
 		constructBody( pos );
 		Sprite temp = constructSprite( chainLinkTexRegion );
 		temp.scale( spriteScale );
-		this.xOffset = (temp.getWidth( )/2);//+this.width/2;
-		this.yOffset = (temp.getHeight( )/2);//+this.height/2;
+		this.xOffset = ( temp.getWidth( ) / 2 );// +this.width/2;
+		this.yOffset = ( temp.getHeight( ) / 2 );// +this.height/2;
 
 		this.changeSprite( temp );
-		
 
 	}
 
@@ -47,8 +49,8 @@ public class Link extends Entity {
 		bodyDef.type = BodyType.DynamicBody;
 		bodyDef.gravityScale = 0.1f;
 		PolygonShape polygonShape = new PolygonShape( );
-		polygonShape.setAsBox( width / 2 * Util.PIXEL_TO_BOX,
-				height / 2 * Util.PIXEL_TO_BOX );
+		polygonShape.setAsBox( width / 2 * Util.PIXEL_TO_BOX, height / 2
+				* Util.PIXEL_TO_BOX );
 		FixtureDef fixtureDef = new FixtureDef( );
 		fixtureDef.filter.categoryBits = Util.CATEGORY_ROPE;
 		fixtureDef.filter.maskBits = Util.CATEGORY_NOTHING;
@@ -72,40 +74,43 @@ public class Link extends Entity {
 		revoluteJointDef.collideConnected = false;
 		world.createJoint( revoluteJointDef );
 	}
-	
-	public float getWidth(){
+
+	public float getWidth( ) {
 		return this.width;
 	}
-	
-	public float getHeight(){
+
+	public float getHeight( ) {
 		return this.height;
 	}
-	
-	
-	@Override 
-	public void draw(SpriteBatch batch, float deltaTime){
-//		if(drawTwoLinks){
-//			float xpos =  body.getPosition( ).x - (xOffset * Util.PIXEL_TO_BOX);
-//			float ypos =  body.getPosition( ).y - (this.yOffset2 * Util.PIXEL_TO_BOX);
-//			
-//			//this.sprite.setOrigin( this.sprite.getWidth( ) / 2, this.sprite.getHeight( ) / 2);
-//			this.sprite.setPosition( xpos * Util.BOX_TO_PIXEL, ypos * Util.BOX_TO_PIXEL);
-//			this.sprite.setRotation(  MathUtils.radiansToDegrees
-//					* body.getAngle( ) );
-//			
-//			this.sprite.draw( batch );
-//		}
-		
-		float xpos =  body.getPosition( ).x - (xOffset * Util.PIXEL_TO_BOX);
-		float ypos =  body.getPosition( ).y - (yOffset * Util.PIXEL_TO_BOX);
-		
-		//this.sprite.setOrigin( this.sprite.getWidth( ) / 2, this.sprite.getHeight( ) / 2);
-		this.sprite.setPosition( xpos * Util.BOX_TO_PIXEL, ypos * Util.BOX_TO_PIXEL);
-		this.sprite.setRotation(  MathUtils.radiansToDegrees
-				* body.getAngle( ) );
-		
+
+	@Override
+	public void draw( SpriteBatch batch, float deltaTime ) {
+		// if(drawTwoLinks){
+		// float xpos = body.getPosition( ).x - (xOffset * Util.PIXEL_TO_BOX);
+		// float ypos = body.getPosition( ).y - (this.yOffset2 *
+		// Util.PIXEL_TO_BOX);
+		//
+		// //this.sprite.setOrigin( this.sprite.getWidth( ) / 2,
+		// this.sprite.getHeight( ) / 2);
+		// this.sprite.setPosition( xpos * Util.BOX_TO_PIXEL, ypos *
+		// Util.BOX_TO_PIXEL);
+		// this.sprite.setRotation( MathUtils.radiansToDegrees
+		// * body.getAngle( ) );
+		//
+		// this.sprite.draw( batch );
+		// }
+
+		float xpos = body.getPosition( ).x - ( xOffset * Util.PIXEL_TO_BOX );
+		float ypos = body.getPosition( ).y - ( yOffset * Util.PIXEL_TO_BOX );
+
+		// this.sprite.setOrigin( this.sprite.getWidth( ) / 2,
+		// this.sprite.getHeight( ) / 2);
+		this.sprite.setPosition( xpos * Util.BOX_TO_PIXEL, ypos
+				* Util.BOX_TO_PIXEL );
+		this.sprite.setRotation( MathUtils.radiansToDegrees * body.getAngle( ) );
+
 		this.sprite.draw( batch );
-		
+
 	}
-	
+
 }

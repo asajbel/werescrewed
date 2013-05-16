@@ -27,20 +27,21 @@ public class EventTriggerBuilder extends
 	private boolean repeatableAction;
 	private boolean twoPlayersToActivate;
 	private boolean twoPlayersToDeactive;
-	private Array<Vector2> verts;
+	private Array< Vector2 > verts;
 	private IAction beginAction;
 	private IAction endAction;
 	private ArrayList< Entity > entitiesToAdd;
 	private float polygonExtraBorder;
-	
-	private Array<Vector2> skeleVertsPix;
+
+	@SuppressWarnings( "unused" )
+	private Array< Vector2 > skeleVertsPix;
 
 	public EventTriggerBuilder( World world ) {
 		super( );
 		reset( );
 		super.world( world );
 		entitiesToAdd = new ArrayList< Entity >( );
-		
+
 	}
 
 	@Override
@@ -69,13 +70,14 @@ public class EventTriggerBuilder extends
 		this.polygonExtraBorder = Util.SKELETON_ACTIVE_BORDER;
 		return this;
 	}
-	
+
 	/**
 	 * The extra border around a fg skeleton
+	 * 
 	 * @param extraPix
 	 * @return
 	 */
-	public EventTriggerBuilder extraBorder(float extraPix){
+	public EventTriggerBuilder extraBorder( float extraPix ) {
 		this.polygonExtraBorder = extraPix;
 		return this;
 	}
@@ -108,29 +110,30 @@ public class EventTriggerBuilder extends
 		this.vertBody = false;
 		return this;
 	}
-	
+
 	/**
 	 * This is slightly different than setting verts
+	 * 
 	 * @param vertsPixels
 	 * @return
 	 */
-//	public EventTriggerBuilder skelePolygon(Array< Vector2 > vertsPixels){
-//		this.rectangle = false;
-//		this.circle = false;
-//		this.skelePolygon = true;
-//		this.vertBody = false;
-//		this.skeleVertsPix = vertsPixels;
-//		return this;
-//	}
+	// public EventTriggerBuilder skelePolygon(Array< Vector2 > vertsPixels){
+	// this.rectangle = false;
+	// this.circle = false;
+	// this.skelePolygon = true;
+	// this.vertBody = false;
+	// this.skeleVertsPix = vertsPixels;
+	// return this;
+	// }
 
-	public EventTriggerBuilder setVerts( Array<Vector2> vertices ) {
+	public EventTriggerBuilder setVerts( Array< Vector2 > vertices ) {
 		this.rectangle = false;
 		this.circle = false;
 		this.vertBody = true;
 		this.verts = vertices;
 		return this;
 	}
-	
+
 	public EventTriggerBuilder setPositionToEntity( Entity entity ) {
 		this.attachedToEntity = true;
 		this.pos = entity.getPositionPixel( );
@@ -197,8 +200,8 @@ public class EventTriggerBuilder extends
 
 		if ( this.circle ) {
 			if ( this.attachedToEntity ) {
-				
-				// depreciated 
+
+				// depreciated
 				if ( offsetAbove ) {
 					this.pos = new Vector2( this.pos.x, this.pos.y );
 				} else if ( offsetBelow ) {
@@ -223,9 +226,10 @@ public class EventTriggerBuilder extends
 				}
 			}
 			et.contructRectangleBody( this.height, this.width, this.pos );
-		//}else if ( this.skelePolygon ){
-		//	et.constructPolygonBody( skeleVertsPix, this.pos, polygonExtraBorder );
-		}else if ( this.vertBody ){
+			// }else if ( this.skelePolygon ){
+			// et.constructPolygonBody( skeleVertsPix, this.pos,
+			// polygonExtraBorder );
+		} else if ( this.vertBody ) {
 			et.constructVertBody( verts, pos, polygonExtraBorder );
 		}
 

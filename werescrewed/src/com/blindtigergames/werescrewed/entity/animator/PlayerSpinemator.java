@@ -105,7 +105,7 @@ public class PlayerSpinemator implements ISpinemator {
 		time += delta;
 		mixTime += delta;
 
-		if (!current.singleTick || mixTime >= mixer.getDuration( ) / 2 )
+		if ( !current.singleTick || mixTime >= mixer.getDuration( ) / 2 )
 			next = getCurrentAnim( );
 
 		if ( current != next ) {
@@ -155,7 +155,7 @@ public class PlayerSpinemator implements ISpinemator {
 			mixRatio = mixTime / anim.getDuration( );
 			mixer.mix( skel, time, next.loopBool, mixRatio );
 			if ( mixTime >= anim.getDuration( ) / 2 ) {
-			
+
 				previous = current;
 				mixTime = 0;
 			}
@@ -223,7 +223,7 @@ public class PlayerSpinemator implements ISpinemator {
 			}
 		}
 
-		if (current != PlayerAnim.TURN && current != PlayerAnim.TURN_SCREW)
+		if ( current != PlayerAnim.TURN && current != PlayerAnim.TURN_SCREW )
 			skel.setFlipX( flipX );
 		if ( position != null ) {
 			root.setX( position.x );
@@ -257,21 +257,23 @@ public class PlayerSpinemator implements ISpinemator {
 				case Idle:
 					break;
 				case Left:
-//					if (!flipX) {
-//						flipX = true;
-//						if (player.getExtraState( ) == ConcurrentState.ScrewReady)
-//							return PlayerAnim.TURN_SCREW; 
-//						return PlayerAnim.TURN; 
-//					}
+					// if (!flipX) {
+					// flipX = true;
+					// if (player.getExtraState( ) ==
+					// ConcurrentState.ScrewReady)
+					// return PlayerAnim.TURN_SCREW;
+					// return PlayerAnim.TURN;
+					// }
 					flipX = true;
 					break;
 				case Right:
-//					if (flipX) {
-//						flipX = false;
-//						if (player.getExtraState( ) == ConcurrentState.ScrewReady)
-//							return PlayerAnim.TURN_SCREW; 
-//						return PlayerAnim.TURN; 
-//					}
+					// if (flipX) {
+					// flipX = false;
+					// if (player.getExtraState( ) ==
+					// ConcurrentState.ScrewReady)
+					// return PlayerAnim.TURN_SCREW;
+					// return PlayerAnim.TURN;
+					// }
 					flipX = false;
 					break;
 				default:
@@ -354,8 +356,9 @@ public class PlayerSpinemator implements ISpinemator {
 	}
 
 	@Override
-	public void setPosition( Vector2 pos ) {
-		position = pos;
+	public void setPosition( float x, float y) {
+		root.setX( x );
+		root.setY( y );
 	}
 
 	@Override
@@ -370,6 +373,29 @@ public class PlayerSpinemator implements ISpinemator {
 	 */
 	public TextureAtlas getBodyAtlas( ) {
 		return bodyAtlas;
+	}
+
+	@Override
+	public Vector2 getPosition( ) {
+		float x = root.getWorldX( );
+		float y = root.getWorldY( );
+		
+		return new Vector2(x,y); 
+	}
+
+	@Override
+	public float getX( ) {
+		return root.getWorldX( );
+	}
+
+	@Override
+	public float getY( ) {
+		return root.getWorldY( );
+	}
+
+	@Override
+	public void setPosition( Vector2 pos ) {
+		position = pos; 
 	}
 
 }

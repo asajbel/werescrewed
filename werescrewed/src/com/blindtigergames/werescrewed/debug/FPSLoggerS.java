@@ -18,32 +18,35 @@ package com.blindtigergames.werescrewed.debug;
 
 import com.badlogic.gdx.Gdx;
 
-/** A simple helper class to log the frames per seconds achieved. Just invoke the {@link #log()} method in your rendering method.
- * The output will be logged once per second.
+/**
+ * A simple helper class to log the frames per seconds achieved. Just invoke the
+ * {@link #log()} method in your rendering method. The output will be logged
+ * once per second.
  * 
- * @author mzechner */
+ * @author mzechner
+ */
 public class FPSLoggerS {
 	long startTime;
 	int currentFPS;
 
-	public FPSLoggerS () {
-		startTime = System.currentTimeMillis();
+	public FPSLoggerS( ) {
+		startTime = System.currentTimeMillis( );
 		currentFPS = 0;
 	}
 
 	/** Logs the current frames per second to the console. */
-	public void log () {
-		if (System.currentTimeMillis() - startTime > 1000) {
-			currentFPS = Gdx.graphics.getFramesPerSecond();
-			Gdx.app.log("FPSLogger", "fps: " + currentFPS);
-			startTime = System.currentTimeMillis();
+	public void log( ) {
+		if ( System.currentTimeMillis( ) - startTime > 1000 ) {
+			currentFPS = Gdx.graphics.getFramesPerSecond( );
+			// Gdx.app.log("FPSLogger", "fps: " + currentFPS);
+			startTime = System.currentTimeMillis( );
 		}
 	}
-	
-	public int getFPS(){
-		if (System.currentTimeMillis() - startTime > 1000) {
-			currentFPS = Gdx.graphics.getFramesPerSecond();
-			startTime = System.currentTimeMillis();
+
+	public int getFPS( ) {
+		if ( System.currentTimeMillis( ) - startTime > 1000 ) {
+			currentFPS = Gdx.graphics.getFramesPerSecond( );
+			startTime = System.currentTimeMillis( );
 		}
 		return currentFPS;
 	}

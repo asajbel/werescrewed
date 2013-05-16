@@ -23,7 +23,7 @@ public class SteamMover implements IMover {
 	@Override
 	public void move( float deltaTime, Body body ) {
 		body.applyLinearImpulse( new Vector2( 0f, 1f ), body.getWorldCenter( ) );
-		
+
 	}
 
 	@Override

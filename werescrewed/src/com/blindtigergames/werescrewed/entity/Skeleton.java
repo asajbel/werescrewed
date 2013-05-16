@@ -426,8 +426,11 @@ public class Skeleton extends Platform {
 						platform.translatePosRotFromSKeleton( this );
 						platform.update( deltaTime );
 					} else {
-						platform.updateMover( deltaTime );
-						platform.setTargetPosRotFromSkeleton( frameRate, this );
+						if ( platform.updateMover( deltaTime ) || hasMoved() || hasRotated() ) {
+							platform.setTargetPosRotFromSkeleton( frameRate, this );
+						} else {
+							platform.body.setLinearVelocity( Vector2.Zero );
+						}
 						platform.update( deltaTime );
 					}
 				}
@@ -492,7 +495,9 @@ public class Skeleton extends Platform {
 				wasInactive = true;
 			}
 		}
-
+		
+		setPreviousTransformation( );
+		
 		alphaFadeAnimator.update( deltaTime );
 		Vector2 pixelPos = null;
 		if ( fgSprite != null ) {
@@ -637,6 +642,28 @@ public class Skeleton extends Platform {
 		}
 	}
 
+	/**
+	 * 
+	 * @param batch
+	 * @param camera
+	 */
+	@Override
+	public void drawFGDecals( SpriteBatch batch, Camera camera ) {
+		for ( Sprite decal : fgDecals ) {
+			if ( decal.alpha >= 0.25 ) {
+				if ( decal.getBoundingRectangle( )
+						.overlaps( camera.getBounds( ) ) ) {
+					decal.draw( batch );
+				} else{
+					if ( !wasInactive ) {
+						setEntitiesToSleepOnUpdate( );
+						wasInactive = true;
+					}
+				}
+			}
+		}
+	}
+	
 	@Override
 	public void draw( SpriteBatch batch, float deltaTime ) {
 		// super.draw( batch );
