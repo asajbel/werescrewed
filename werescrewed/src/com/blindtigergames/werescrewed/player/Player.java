@@ -126,7 +126,10 @@ public class Player extends Entity {
 	private Sprite tutorial = null;
 	private Sprite bubble;
 	private Texture bubbleTex;
-	private Texture tutorialTex;
+	private Texture[ ] tutorials;
+	private int[ ] tutorialIndexes;
+	private int tutorialTimer = 0;
+	private int tutorialFrame = 0;
 
 	private Player otherPlayer;
 	private RevoluteJoint playerJoint;
@@ -147,7 +150,10 @@ public class Player extends Entity {
 	private boolean screwButtonHeld;
 	private boolean kinematicTransform = false;
 	private boolean changeDirectionsOnceInAir = false;
+
+	private boolean changeDirections = false;
 	private boolean steamCollide = false;
+	@SuppressWarnings( "unused" )
 	private boolean steamDone = false;
 
 	private IMover mover;
@@ -256,15 +262,8 @@ public class Player extends Entity {
 		createCircle( PLAYER_FRICTION );
 		frictionCounter = PLAYER_FRICTION;
 
-		bubbleTex = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-				+ "/common/tutorial/thought_bubble.png" );
-		tutorialTex = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-				+ "/common/tutorial/placeholderTut.png" );
+		initTutorials( );
 
-		bubble = constructSprite( bubbleTex );
-		tutorial = constructSprite( tutorialTex );
-
-		bubble.flip( true, false );
 	}
 
 	// PUBLIC METHODS
@@ -274,7 +273,7 @@ public class Player extends Entity {
 	 */
 	public void update( float deltaTime ) {
 		super.update( deltaTime );
-		
+
 		updateMover( deltaTime );
 
 		if ( switchTimer > 0 )
@@ -282,10 +281,24 @@ public class Player extends Entity {
 
 		if ( Gdx.input.isKeyPressed( Keys.G ) ) {
 			if ( name.equals( "player1" ) ) {
-				Gdx.app.log( "steamCollide: " + steamCollide, "steamDone: "
-						+ steamDone );
 				drawTutorial = !drawTutorial;
-				Gdx.app.log( "drawTutorial: ", "" + drawTutorial );
+				// Gdx.app.log( "drawTutorial: ", "" + drawTutorial );
+			}
+		}
+		tutorialTimer++;
+		if ( tutorialTimer > 60 ) {
+			tutorialFrame++;
+			if ( tutorialFrame > tutorialIndexes.length - 1 )
+				tutorialFrame = 0;
+			tutorial.setTexture( tutorials[ tutorialIndexes[ tutorialFrame ] ] );
+			// Gdx.app.log( "tutorialIndexes: " + tutorialIndexes[ tutorialFrame
+			// ], "\ntutorialFrame: " + tutorialFrame + "\ntutorialTimer: " +
+			// tutorialTimer );
+			tutorialTimer = 0;
+		}
+		if ( Gdx.input.isKeyPressed( Keys.H ) ) {
+			if ( name.equals( "player1" ) ) {
+				tutorial.setTexture( tutorials[ 1 ] );
 			}
 		}
 		if ( Gdx.input.isKeyPressed( Keys.NUM_7 ) )
@@ -398,8 +411,9 @@ public class Player extends Entity {
 					body.setTransform(
 							new Vector2( currentScrew.getPositionPixel( ).x
 									- ( WIDTH ) + 5, currentScrew
-									.getPositionPixel( ).y - ( HEIGHT / 2.0f ) - 5)
-									.mul( Util.PIXEL_TO_BOX ), 0.0f );
+									.getPositionPixel( ).y
+									- ( HEIGHT / 2.0f )
+									- 5 ).mul( Util.PIXEL_TO_BOX ), 0.0f );
 					RevoluteJointDef revoluteJointDef = new RevoluteJointDef( );
 					revoluteJointDef.initialize( body, currentScrew.body,
 							currentScrew.getPosition( ) );
@@ -645,13 +659,13 @@ public class Player extends Entity {
 	}
 
 	/**
-	 * sets inside of thought bubble
+	 * sets the sequence of tutorials in box
 	 * 
-	 * @param texture
-	 *            Texture
+	 * @param indices
+	 *            int[]
 	 */
-	public void setTutorial( Texture texture ) {
-		tutorial = constructSprite( texture );
+	public void setTutorial( int[ ] indices ) {
+		tutorialIndexes = indices;
 	}
 
 	/**
@@ -672,12 +686,12 @@ public class Player extends Entity {
 			if ( tutorial != null ) {
 				bubble.setPosition(
 						xpos * Util.BOX_TO_PIXEL - bubble.getWidth( ) / 2.0f
-								+ 250f, ypos * Util.BOX_TO_PIXEL + 100f );
+								+ 350f, ypos * Util.BOX_TO_PIXEL + 100f );
 				bubble.setRotation( MathUtils.radiansToDegrees
 						* body.getAngle( ) );
 				tutorial.setPosition(
 						xpos * Util.BOX_TO_PIXEL - tutorial.getWidth( ) / 2.0f
-								+ 250f, ypos * Util.BOX_TO_PIXEL + 125 );
+								+ 350f, ypos * Util.BOX_TO_PIXEL + 230 );
 				tutorial.setRotation( MathUtils.radiansToDegrees
 						* body.getAngle( ) );
 			}
@@ -1034,7 +1048,7 @@ public class Player extends Entity {
 				getEffect( landCloudName ).restartAt(
 						getPositionPixel( ).add( 50, 0 ) );
 				playerState = PlayerState.Landing;
-				
+
 			}
 			this.grounded = newVal;
 		}
@@ -1063,6 +1077,57 @@ public class Player extends Entity {
 		currentSwitch = powerSwitch;
 	}
 
+	/**
+	 * slowly increases friction to avoid that silly stopping bug. Call this
+	 * every player.update()
+	 */
+	@SuppressWarnings( "unused" )
+	private void updateFootFriction( ) {
+
+		if ( isGrounded( ) ) {
+			if ( feet.getFriction( ) < PLAYER_FRICTION ) {
+				// if ( playerState != PlayerState.Screwing && otherPlayer ==
+				// null ) {
+				// playerState = PlayerState.Landing;
+				// }
+				frictionCounter += FRICTION_INCREMENT;
+
+				CircleShape ps = new CircleShape( );
+				ps.setRadius( feet.getShape( ).getRadius( ) );
+
+				ps.setPosition( ps.getPosition( ).add( FEET_OFFSET_X,
+						FEET_OFFSET_Y ) );
+				FixtureDef fd = new FixtureDef( );
+
+				fd.shape = ps;
+				fd.density = 1f;
+				fd.restitution = 0.001f;
+				fd.friction = frictionCounter;
+
+				if ( playerState == PlayerState.Screwing ) {
+					fd.isSensor = true;
+				}
+
+				fd.filter.categoryBits = Util.CATEGORY_PLAYER;
+				fd.filter.maskBits = Util.CATEGORY_EVERYTHING;
+
+				body.destroyFixture( feet );
+
+				feet = body.createFixture( fd );
+
+				if ( feet.getFriction( ) > PLAYER_FRICTION ) {
+					feet.setFriction( PLAYER_FRICTION );
+
+				}
+				// currentScrew = null;
+			}
+		} else {
+			frictionCounter = 0f;
+			feet.setFriction( frictionCounter );
+		}
+
+	}
+
 	private void updateFootFrictionNew( ) {
 
 		if ( prevButton != null ) {
@@ -1074,8 +1139,7 @@ public class Player extends Entity {
 						body.getLinearVelocity( ).y );
 			}
 		}
-		
-		
+
 		if ( prevButton == null ) {
 
 			if ( feet.getFriction( ) < PLAYER_FRICTION ) {
@@ -1180,7 +1244,7 @@ public class Player extends Entity {
 			if ( Metrics.activated ) {
 				Metrics.addPlayerAttachToScrewPosition( this.getPositionPixel( ) );
 			}
-			sounds.playSound( "attach" , 1.0f);
+			sounds.playSound( "attach", 1.0f );
 		}
 	}
 
@@ -1759,9 +1823,9 @@ public class Player extends Entity {
 	 */
 	@SuppressWarnings( "unused" )
 	private void setPlatformTransform( Vector2 posOffset ) {
-		Gdx.app.log( name + "old:", " " + body.getPosition( ) );
+		// Gdx.app.log( name + "old:", " " + body.getPosition( ) );
 		body.setTransform( body.getPosition( ).cpy( ).add( posOffset ), 0 );
-		Gdx.app.log( name + "new:", " " + body.getPosition( ) );
+		// Gdx.app.log( name + "new:", " " + body.getPosition( ) );
 	}
 
 	/**
@@ -1832,7 +1896,7 @@ public class Player extends Entity {
 						screwButtonHeld = true;
 					}
 				} else if ( currentSwitch != null && switchTimer == 0 ) {
-					Gdx.app.log( "currentSwitch: ", "" + currentSwitch );
+					// Gdx.app.log( "currentSwitch: ", "" + currentSwitch );
 					currentSwitch.doAction( );
 					switchTimer = 60;
 				} else {
@@ -1941,7 +2005,7 @@ public class Player extends Entity {
 
 				jumpCounter = 0;
 			} else if ( currentSwitch != null && switchTimer == 0 ) {
-				Gdx.app.log( "currentSwitch: ", "" + currentSwitch );
+				// Gdx.app.log( "currentSwitch: ", "" + currentSwitch );
 				currentSwitch.doAction( );
 				switchTimer = 60;
 			} else
@@ -1971,20 +2035,21 @@ public class Player extends Entity {
 	 * @author Ranveer
 	 */
 	private void setUpController( ) {
-		for ( Controller controller2 : Controllers.getControllers( ) ) {
-			Gdx.app.log( "controllers", controller2.getName( ) );
+		for ( @SuppressWarnings( "unused" )
+		Controller controller2 : Controllers.getControllers( ) ) {
+			// Gdx.app.log( "controllers", controller2.getName( ) );
 		}
 		if ( Controllers.getControllers( ).size >= 1 ) {
 			if ( this.name.equals( "player1" ) ) {
 
 				controllerListener = WereScrewedGame.p1ControllerListener;
 				controller = WereScrewedGame.p1Controller;
-				
+
 			}
 		}
 		if ( Controllers.getControllers( ).size >= 2 ) {
 			if ( this.name.equals( "player2" ) ) {
-				
+
 				controllerListener = WereScrewedGame.p2ControllerListener;
 				controller = WereScrewedGame.p2Controller;
 			}
@@ -2010,6 +2075,41 @@ public class Player extends Entity {
 	 */
 	public boolean isSteamCollide( ) {
 		return steamCollide;
+	}
+
+	/**
+	 * initializes tutorials array
+	 */
+	private void initTutorials( ) {
+		bubbleTex = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
+				+ "/common/tutorial/thought_bubble.png" );
+		tutorials = new Texture[ 9 ];
+		tutorials[ 0 ] = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
+				+ "/common/tutorial/move_jump0.png" );
+		tutorials[ 1 ] = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
+				+ "/common/tutorial/move_jump1.png" );
+		tutorials[ 2 ] = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
+				+ "/common/tutorial/screw0.png" );
+		tutorials[ 3 ] = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
+				+ "/common/tutorial/screw1.png" );
+		tutorials[ 4 ] = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
+				+ "/common/tutorial/switch0.png" );
+		tutorials[ 5 ] = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
+				+ "/common/tutorial/switch1.png" );
+		tutorials[ 6 ] = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
+				+ "/common/tutorial/dubba0.png" );
+		tutorials[ 7 ] = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
+				+ "/common/tutorial/dubba1.png" );
+		tutorials[ 8 ] = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
+				+ "/common/tutorial/dubba2.png" );
+
+		bubble = constructSprite( bubbleTex );
+		tutorial = constructSprite( tutorials[ 0 ] );
+
+		bubble.flip( true, false );
+
+		int[ ] test = { 6, 7, 8 };
+		tutorialIndexes = test;
 	}
 
 	/**
@@ -2198,9 +2298,11 @@ public class Player extends Entity {
 			float vol = FOOTSTEP_VOLUME_DROP + amount
 					* ( 1.0f - FOOTSTEP_VOLUME_DROP );
 			if ( sounds.isDelayed( "footstep1" ) ) {
-				sounds.playSound( "footstep2", sounds.randomSoundId( "footstep2" ), rate, vol, pitch);
+				sounds.playSound( "footstep2",
+						sounds.randomSoundId( "footstep2" ), rate, vol, pitch );
 			} else {
-				sounds.playSound( "footstep1", sounds.randomSoundId( "footstep1" ), rate, vol, pitch);
+				sounds.playSound( "footstep1",
+						sounds.randomSoundId( "footstep1" ), rate, vol, pitch );
 				sounds.setDelay( "footstep2", 0.5f * rate );
 			}
 		}

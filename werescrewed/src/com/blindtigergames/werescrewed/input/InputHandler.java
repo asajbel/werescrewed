@@ -19,23 +19,24 @@ public class InputHandler implements InputProcessor {
 	private boolean jumpPressed;
 	private boolean downPressed;
 	private boolean grabPressed;
-	
+
 	private boolean attachScrewPressed;
-	
+
 	private int up, down, left, right, screw, grab;
+
 	/*
 	 * Hooks up the InputProcessor to the input class, so events can be reported
 	 */
 	public InputHandler( String playerNumber ) {
-		
-		if (playerNumber.equals( "player1" ) ){
+
+		if ( playerNumber.equals( "player1" ) ) {
 			up = Keys.W;
 			down = Keys.S;
 			left = Keys.A;
 			right = Keys.D;
 			screw = Keys.F;
 			grab = Keys.R;
-		} else if (playerNumber.equals( "player2" ) ){
+		} else if ( playerNumber.equals( "player2" ) ) {
 			up = Keys.I;
 			down = Keys.K;
 			left = Keys.J;
@@ -43,15 +44,13 @@ public class InputHandler implements InputProcessor {
 			screw = Keys.H;
 			grab = Keys.Y;
 		}
-		
-			
+
 		Gdx.input.setInputProcessor( this );
 	}
 
-
 	public void update( ) {
 		pauseKeyPressed = Gdx.input.isKeyPressed( Keys.ESCAPE );
-		
+
 		leftPressed = Gdx.input.isKeyPressed( Keys.DPAD_LEFT );
 		rightPressed = Gdx.input.isKeyPressed( Keys.DPAD_RIGHT );
 		jumpPressed = Gdx.input.isKeyPressed( Keys.DPAD_UP );
@@ -61,7 +60,7 @@ public class InputHandler implements InputProcessor {
 		rightPressed = Gdx.input.isKeyPressed( Keys.D );
 		jumpPressed = Gdx.input.isKeyPressed( Keys.W );
 		downPressed = Gdx.input.isKeyPressed( Keys.S );
-		
+
 		grabPressed = Gdx.input.isKeyPressed( Keys.R );
 		Gdx.input.isKeyPressed( Keys.Q );
 
@@ -78,7 +77,7 @@ public class InputHandler implements InputProcessor {
 	 * Returns whether the move left key is pressed
 	 * 
 	 */
-	public boolean leftPressed() {
+	public boolean leftPressed( ) {
 		return leftPressed;
 	}
 
@@ -86,7 +85,7 @@ public class InputHandler implements InputProcessor {
 	 * Returns whether the move right key is pressed
 	 * 
 	 */
-	public boolean rightPressed() {
+	public boolean rightPressed( ) {
 		return rightPressed;
 	}
 
@@ -111,10 +110,10 @@ public class InputHandler implements InputProcessor {
 	 * 
 	 */
 	public boolean screwPressed( ) {
-		//return Gdx.input.isKeyPressed( Keys.SPACE );
+		// return Gdx.input.isKeyPressed( Keys.SPACE );
 		return attachScrewPressed;
 	}
-	
+
 	public boolean isGrabPressed( ) {
 		return grabPressed;
 	}
@@ -136,7 +135,7 @@ public class InputHandler implements InputProcessor {
 		if ( keycode == Keys.ESCAPE ) {
 			pauseKeyPressed = true;
 		}
-		if ( keycode == up) {
+		if ( keycode == up ) {
 			jumpPressed = true;
 		}
 		if ( keycode == left ) {

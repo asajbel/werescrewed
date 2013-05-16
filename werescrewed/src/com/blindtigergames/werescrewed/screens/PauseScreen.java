@@ -23,8 +23,6 @@ class PauseScreen extends Screen {
 	private Label screenLabel = null;
 	private TextButton mainMenuButton = null;
 	private int lineHeight = 0;
-	
-	
 
 	public PauseScreen( ) {
 		batch = new SpriteBatch( );
@@ -32,64 +30,63 @@ class PauseScreen extends Screen {
 
 		fancyFont = WereScrewedGame.manager.getFont( "longdon" );
 
-		logo =  WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-				 + "/common/title_background.png", Texture.class );
+		logo = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
+				+ "/common/title_background.png", Texture.class );
 		lineHeight = Math.round( 2.5f * font.getCapHeight( ) );
-		screenLabel = new Label("Pause Screen", fancyFont);
-		mainMenuButton = new TextButton("Main Menu",fancyFont, 
-				new ScreenSwitchHandler(ScreenType.MAIN_MENU));
-		
+		screenLabel = new Label( "Pause Screen", fancyFont );
+		mainMenuButton = new TextButton( "Main Menu", fancyFont,
+				new ScreenSwitchHandler( ScreenType.MAIN_MENU ) );
 
 	}
 
-	public void disposeAll(){
-//		ScreenManager.getInstance( ).dispose(ScreenType.PHYSICS );
-//		ScreenManager.getInstance( ).dispose(ScreenType.PLAYTEST );
-//		ScreenManager.getInstance( ).dispose(ScreenType.HAZARD );
-//		ScreenManager.getInstance( ).dispose(ScreenType.OPTIONS );
-//		ScreenManager.getInstance( ).dispose(ScreenType.LEVEL_SELECT );
-//		ScreenManager.getInstance( ).dispose(ScreenType.RESURRECT );
-//		ScreenManager.getInstance( ).dispose(ScreenType.GLEED );
-//		ScreenManager.getInstance( ).dispose(ScreenType.LEVEL_SELECT );
+	public void disposeAll( ) {
+		// ScreenManager.getInstance( ).dispose(ScreenType.PHYSICS );
+		// ScreenManager.getInstance( ).dispose(ScreenType.PLAYTEST );
+		// ScreenManager.getInstance( ).dispose(ScreenType.HAZARD );
+		// ScreenManager.getInstance( ).dispose(ScreenType.OPTIONS );
+		// ScreenManager.getInstance( ).dispose(ScreenType.LEVEL_SELECT );
+		// ScreenManager.getInstance( ).dispose(ScreenType.RESURRECT );
+		// ScreenManager.getInstance( ).dispose(ScreenType.GLEED );
+		// ScreenManager.getInstance( ).dispose(ScreenType.LEVEL_SELECT );
 	}
-	
+
 	@Override
 	public void render( float delta ) {
 		Gdx.gl.glClearColor( 0.0f, 0.0f, 0.0f, 1f );
 		Gdx.gl.glClear( GL10.GL_COLOR_BUFFER_BIT );
 
-  
-	
-		
 		batch.begin( );
-		batch.draw(logo, 0, 0);
+		batch.draw( logo, 0, 0 );
 		screenLabel.draw( batch );
 		mainMenuButton.draw( batch, camera );
 		batch.end( );
-		
-		if( WereScrewedGame.p1Controller != null ) {
-			if ( WereScrewedGame.p1ControllerListener.pausePressed( )) {
-				if(!ScreenManager.p1PauseHeld){
-					ScreenManager.getInstance( ).show(  ScreenManager.getPrevScreen( ) );
+
+		if ( WereScrewedGame.p1Controller != null ) {
+			if ( WereScrewedGame.p1ControllerListener.pausePressed( ) ) {
+				if ( !ScreenManager.p1PauseHeld ) {
+					ScreenManager.getInstance( ).show(
+							ScreenManager.getPrevScreen( ) );
 				}
-			}else {
+			} else {
 				ScreenManager.p1PauseHeld = false;
 			}
 		}
-		if( WereScrewedGame.p2Controller != null ) {
-			if ( WereScrewedGame.p2ControllerListener.pausePressed( )) {
-				if(!ScreenManager.p2PauseHeld){
-					ScreenManager.getInstance( ).show(  ScreenManager.getPrevScreen( ) );
+		if ( WereScrewedGame.p2Controller != null ) {
+			if ( WereScrewedGame.p2ControllerListener.pausePressed( ) ) {
+				if ( !ScreenManager.p2PauseHeld ) {
+					ScreenManager.getInstance( ).show(
+							ScreenManager.getPrevScreen( ) );
 				}
-			}else {
+			} else {
 				ScreenManager.p2PauseHeld = false;
 			}
-			
+
 		}
-		
+
 		if ( Gdx.input.isKeyPressed( Input.Keys.ESCAPE ) ) {
-			if(!ScreenManager.escapeHeld){
-				ScreenManager.getInstance( ).show( ScreenManager.getPrevScreen( ) );
+			if ( !ScreenManager.escapeHeld ) {
+				ScreenManager.getInstance( ).show(
+						ScreenManager.getPrevScreen( ) );
 			}
 		} else
 			ScreenManager.escapeHeld = false;
@@ -102,9 +99,9 @@ class PauseScreen extends Screen {
 		batch.setProjectionMatrix( camera.combined );
 		int centerX = width / 2;
 		int centerY = height / 2;
-		screenLabel.setX( centerX - screenLabel.getWidth()/2);
+		screenLabel.setX( centerX - screenLabel.getWidth( ) / 2 );
 		screenLabel.setY( centerY + 6 * lineHeight );
-		mainMenuButton.setX( centerX - mainMenuButton.getWidth()/2);
+		mainMenuButton.setX( centerX - mainMenuButton.getWidth( ) / 2 );
 		mainMenuButton.setY( 60 + mainMenuButton.getHeight( ) );
 	}
 

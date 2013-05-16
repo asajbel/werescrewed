@@ -70,19 +70,14 @@
 /common/powerswitches/off.png
 
 ##texture atlas
-##please us texture packer to put all common textures in this pack file!
+##please use texture packer to put all common textures in this pack file!
 /common/common-textures.pack
 /common/checkpoint/checkpoint.pack
 /common/animations/screwInterface.pack
 /common/tileset1.pack
 /common/TilesetTest.pack
 /common/autumn.pack
-#/common/animations/player_r_m_1.pack
-#/common/animations/player_r_m_2.pack
-#/common/animations/player_r_m_3.pack
-#/common/animations/player_r_f_1.pack
-#/common/animations/player_r_f_2.pack
-#/common/animations/player_r_f_3.pack
+/common/gears.pack
 /common/tileset/alphabot.pack
 /common/tileset/alphabot-bleed.pack
 /common/spine/red_female_atlas.pack
@@ -140,3 +135,13 @@ grey.palette
 /common/tutorial/placeholderTut.png
 
 /common/title_background.png
+
+/common/tutorial/dubba0.png
+/common/tutorial/dubba1.png
+/common/tutorial/dubba2.png
+/common/tutorial/move_jump0.png
+/common/tutorial/move_jump1.png
+/common/tutorial/screw0.png
+/common/tutorial/screw1.png
+/common/tutorial/switch0.png
+/common/tutorial/switch1.png

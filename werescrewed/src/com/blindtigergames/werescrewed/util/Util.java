@@ -23,12 +23,11 @@ public class Util {
 	public static final float DEG_TO_RAD = 0.0174532925199432957f;
 	public static final float RAD_TO_DEG = 57.295779513082320876f;
 	public static final float PI = 3.141592653589793f;
-	public static final float TWO_PI = 2*PI;
-	public static final float HALF_PI = PI/2;
-	
+	public static final float TWO_PI = 2 * PI;
+	public static final float HALF_PI = PI / 2;
+
 	/**
-	 * Collision Categories and masks for every 
-	 * object that needs them
+	 * Collision Categories and masks for every object that needs them
 	 */
 	public static final short CATEGORY_PLAYER = 0x0002;
 	public static final short CATEGORY_SUBPLAYER = 0x0004;
@@ -41,14 +40,15 @@ public class Util {
 	public static final short CATEGORY_IGNORE = 0x1000;
 	public static final short CATEGORY_NOTHING = 0x0000;
 	public static final short CATEGORY_EVERYTHING = -1;
-	
+
 	/**
 	 * Size outside of a skeleton that turns it on / off
 	 */
-	public static final float SKELETON_ACTIVE_BORDER = 2000f;//in pixels
-	
+	public static final float SKELETON_ACTIVE_BORDER = 2000f;// in pixels
+
 	/**
 	 * PointOnCircle()
+	 * 
 	 * @author stew
 	 * @param radius
 	 *            FLOAT
@@ -68,8 +68,8 @@ public class Util {
 	}
 
 	/**
-	 * Finds the angle between 2 points in radians. Won't ever return NaN.
-	 * TODO: this may have bugs for pi and 0.
+	 * Finds the angle between 2 points in radians. Won't ever return NaN. TODO:
+	 * this may have bugs for pi and 0.
 	 * 
 	 * @param pointA
 	 *            as vector2
@@ -79,8 +79,8 @@ public class Util {
 	 * @author stew
 	 */
 	public static float angleBetweenPoints( Vector2 pointA, Vector2 pointB ) {
-		float angle = ( float ) Math.atan2( ( pointB.y - pointA.y )
-				, ( pointB.x - pointA.x ) );
+		float angle = ( float ) Math.atan2( ( pointB.y - pointA.y ),
+				( pointB.x - pointA.x ) );
 		if ( Float.isNaN( angle ) ) {
 			if ( pointA.y > pointB.y ) { // pointA is above pointB
 				return ( float ) Math.PI / 2;
@@ -93,5 +93,5 @@ public class Util {
 			return angle;
 		}
 	}
-	
+
 }

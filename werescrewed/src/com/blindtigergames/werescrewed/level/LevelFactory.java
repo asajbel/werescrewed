@@ -31,9 +31,12 @@ import com.blindtigergames.werescrewed.entity.Skeleton;
 import com.blindtigergames.werescrewed.entity.Sprite;
 import com.blindtigergames.werescrewed.entity.action.AnchorActivateAction;
 import com.blindtigergames.werescrewed.entity.action.AnchorDeactivateAction;
-import com.blindtigergames.werescrewed.entity.action.DestoryPlatformJointAction;
+import com.blindtigergames.werescrewed.entity.action.DestroyPlatformJointAction;
 import com.blindtigergames.werescrewed.entity.action.EntityActivateMoverAction;
 import com.blindtigergames.werescrewed.entity.action.EntityDeactivateMoverAction;
+import com.blindtigergames.werescrewed.entity.action.HazardActivateAction;
+import com.blindtigergames.werescrewed.entity.action.HazardDeactivateAction;
+import com.blindtigergames.werescrewed.entity.action.SetTutorialAction;
 import com.blindtigergames.werescrewed.entity.builders.EventTriggerBuilder;
 import com.blindtigergames.werescrewed.entity.builders.MoverBuilder;
 import com.blindtigergames.werescrewed.entity.builders.PipeBuilder;
@@ -48,9 +51,8 @@ import com.blindtigergames.werescrewed.entity.hazard.builders.HazardBuilder;
 import com.blindtigergames.werescrewed.entity.mover.IMover;
 import com.blindtigergames.werescrewed.entity.mover.MoverType;
 import com.blindtigergames.werescrewed.entity.mover.PistonTweenMover;
-import com.blindtigergames.werescrewed.entity.mover.PuzzleType;
 import com.blindtigergames.werescrewed.entity.mover.TimelineTweenMover;
-import com.blindtigergames.werescrewed.entity.mover.puzzle.PuzzleRotateTweenMover;
+import com.blindtigergames.werescrewed.entity.platforms.Pipe;
 import com.blindtigergames.werescrewed.entity.platforms.Platform;
 import com.blindtigergames.werescrewed.entity.platforms.TiledPlatform;
 import com.blindtigergames.werescrewed.entity.rope.Link;
@@ -62,7 +64,6 @@ import com.blindtigergames.werescrewed.entity.screws.ScrewType;
 import com.blindtigergames.werescrewed.entity.screws.StrippedScrew;
 import com.blindtigergames.werescrewed.entity.screws.StructureScrew;
 import com.blindtigergames.werescrewed.entity.tween.PathBuilder;
-import com.blindtigergames.werescrewed.entity.platforms.Pipe;
 import com.blindtigergames.werescrewed.eventTrigger.EventTrigger;
 import com.blindtigergames.werescrewed.eventTrigger.PowerSwitch;
 import com.blindtigergames.werescrewed.graphics.TextureAtlas;
@@ -95,10 +96,13 @@ public class LevelFactory {
 	protected static final String gleedImageTag = "image";
 	protected static final String atlasTag = "atlas";
 	protected static final String panelTag = "panel";
-	
+
+	@SuppressWarnings( "unused" )
 	private Random random;
 
+	@SuppressWarnings( "unused" )
 	private final String robotTexBG = "/levels/alphabot/alphabot-interior.png";
+	@SuppressWarnings( "unused" )
 	private final String robotOutlineTex = "/levels/alphabot/alphabot-outline.png";
 
 	public LevelFactory( ) {
@@ -115,7 +119,7 @@ public class LevelFactory {
 		polySprites = new LinkedHashMap< String, Array< Vector2 > >( );
 		level = new Level( );
 		spawnPoints = 0;
-		random = new Random();
+		random = new Random( );
 	}
 
 	public Level load( String filename ) {
@@ -129,11 +133,12 @@ public class LevelFactory {
 			Array< Element > layers = root.getChildByName( "Layers" )
 					.getChildrenByName( "Layer" );
 			for ( Element layer : layers ) {
-				Gdx.app.log( "GleedLoader",
-						"loading layer " + layer.getAttribute( "Name", "" ) );
+				// Gdx.app.log( "GleedLoader",
+				// "loading layer " + layer.getAttribute( "Name", "" ) );
 				elements = layer.getChildByName( "Items" ).getChildrenByName(
 						"Item" );
-				Gdx.app.log( "GleedLoader", "Entities Found:" + elements.size );
+				// Gdx.app.log( "GleedLoader", "Entities Found:" + elements.size
+				// );
 				Item item;
 				// Sorts items into entities, movers, skeletons, etc.
 
@@ -146,14 +151,15 @@ public class LevelFactory {
 						items.get( item.gleedTag ).put( item.name, item );
 					} else {
 						items.get( GleedTypeTag.ENTITY ).put( item.name, item );
-						Gdx.app.log( "LevelFactory, Putting in items hashmap",
-								item.name );
+						// Gdx.app.log(
+						// "LevelFactory, Putting in items hashmap",
+						// item.name );
 					}
 				}
 			}
 		} catch ( IOException e1 ) {
-			Gdx.app.log( "GleedLoader", "Error: could not load file "
-					+ filename, e1 );
+			// Gdx.app.log( "GleedLoader", "Error: could not load file "
+			// + filename, e1 );
 			e1.printStackTrace( );
 		}
 		// Load camera first.
@@ -226,7 +232,7 @@ public class LevelFactory {
 
 		// for example, player or tiledplatform or screw
 		String bluePrints = item.defName;
-		Gdx.app.log( "LevelFactory, bluePrints ", bluePrints );
+		// Gdx.app.log( "LevelFactory, bluePrints ", bluePrints );
 
 		if ( bluePrints.equals( "skeleton" ) ) {
 			out = constructSkeleton( item );
@@ -252,17 +258,17 @@ public class LevelFactory {
 			out = constructCheckpoint( item );
 		} else if ( bluePrints.equals( "eventtrigger" ) ) {
 			constructEventTrigger( item );
-		} else if (bluePrints.equals( "powerswitch" )){
-			constructPowerSwitch(item);
+		} else if ( bluePrints.equals( "powerswitch" ) ) {
+			constructPowerSwitch( item );
 		} else if ( bluePrints.equals( "hazard" ) ) {
 			out = constructHazard( item );
-		} else if (bluePrints.equals( "fire" )){
+		} else if ( bluePrints.equals( "fire" ) ) {
 			constructFire( item );
 		} else if ( bluePrints.equals( "fixture" ) ) {
 			constructFixture( item );
-		} else if(bluePrints.equals( "panel" )){
-			out = constructPanel(item);
-		}else if ( !bluePrints.equals( "camera" )
+		} else if ( bluePrints.equals( "panel" ) ) {
+			out = constructPanel( item );
+		} else if ( !bluePrints.equals( "camera" )
 				&& item.getDefinition( ).getCategory( ) == EntityCategory.COMPLEX_PLATFORM ) {
 			out = loadComplexPlatform( item );
 		} else {
@@ -304,12 +310,12 @@ public class LevelFactory {
 						} else {
 							addForeGroundEntity( out );
 						}
-						Gdx.app.log(
-								"LoadEntity",
-								"Creating foreground decal for [" + item.name
-										+ "]. Image:" + decalImage
-										+ " Position:"
-										+ decalPosition.toString( ) );
+						// Gdx.app.log(
+						// "LoadEntity",
+						// "Creating foreground decal for [" + item.name
+						// + "]. Image:" + decalImage
+						// + " Position:"
+						// + decalPosition.toString( ) );
 					}
 				}
 			} else if ( item.props.containsKey( "bgdecal" ) ) {
@@ -343,15 +349,15 @@ public class LevelFactory {
 						out.addBGDecal( decal, decalPosition, r );
 						if ( out.getEntityType( ) == EntityType.SKELETON ) {
 							addBackGroundSkeleton( ( Skeleton ) out );
-						}else {
+						} else {
 							addBackGroundEntity( out );
 						}
-						Gdx.app.log(
-								"LoadEntity",
-								"Creating background decal for [" + item.name
-										+ "]. Image:" + decalImage
-										+ " Position:"
-										+ decalPosition.toString( ) );
+						// Gdx.app.log(
+						// "LoadEntity",
+						// "Creating background decal for [" + item.name
+						// + "]. Image:" + decalImage
+						// + " Position:"
+						// + decalPosition.toString( ) );
 					}
 				}
 			}
@@ -407,7 +413,7 @@ public class LevelFactory {
 			float density = Float.parseFloat( item.props.get( "density" ) );
 			pb.density( density );
 		}
-		
+
 		pb.name( item.name ).position( new Vector2( item.pos.x, item.pos.y ) )
 				.properties( item.props );
 
@@ -450,8 +456,8 @@ public class LevelFactory {
 			} else if ( MoverType.fromString( movername ) != null ) {
 				mover = new MoverBuilder( ).fromString( movername )
 						.applyTo( out ).build( );
-				Gdx.app.log( "LevelFactory", "attaching :" + movername
-						+ " to platform" );
+				// Gdx.app.log( "LevelFactory", "attaching :" + movername
+				// + " to platform" );
 
 				// ROTATETWEEN("rotatetween"),
 				// LERP("lerpmover")
@@ -464,8 +470,8 @@ public class LevelFactory {
 
 		if ( !item.props.containsKey( "invisible" ) ) {
 			if ( isDynamic ) {
-				Gdx.app.log( "LevelFactory", "Tiled Dynamic platform loaded:"
-						+ out.name );
+				// Gdx.app.log( "LevelFactory", "Tiled Dynamic platform loaded:"
+				// + out.name );
 				out.quickfixCollisions( );
 				parent.addDynamicPlatform( out );
 
@@ -473,8 +479,9 @@ public class LevelFactory {
 					out.addJointToSkeleton( parent );
 				}
 			} else {
-				Gdx.app.log( "LevelFactory", "Tiled Kinematic platform loaded:"
-						+ out.name );
+				// Gdx.app.log( "LevelFactory",
+				// "Tiled Kinematic platform loaded:"
+				// + out.name );
 
 				parent.addKinematicPlatform( out );
 				out.setCategoryMask( Util.CATEGORY_PLATFORMS,
@@ -547,7 +554,7 @@ public class LevelFactory {
 				TextureAtlas atlas = WereScrewedGame.manager.getAtlas( item
 						.getAtlasName( ) );
 				String imgName = item.getImageName( );
-				if(imgName.equals("rivet")){
+				if ( imgName.equals( "rivet" ) ) {
 					imgName = WereScrewedGame.manager.getRandomRivetName( );
 					isRivet = true;
 				}
@@ -578,7 +585,7 @@ public class LevelFactory {
 				}
 			}
 		} else {
-			Gdx.app.log( "LoadDecal", "Could not find texture tag." );
+			// Gdx.app.log( "LoadDecal", "Could not find texture tag." );
 		}
 		if ( decal != null ) {
 			// Set position and rotation relative to the target.
@@ -588,12 +595,13 @@ public class LevelFactory {
 			Vector2 pos = item.pos.sub( targetPos );
 			pos.y -= item.sca.y;
 			float rot = item.rot - targetRot;
-			
-			if(isRivet){
-				pos.add( -decal.getWidth( )/2, decal.getHeight( )/2 );
-				//rot += random.nextFloat( )*360;
-				//can't apply random rotation because decals rotate about their position, not their offset
-				//TODO: put this back in once decal rotation is fixed.
+
+			if ( isRivet ) {
+				pos.add( -decal.getWidth( ) / 2, decal.getHeight( ) / 2 );
+				// rot += random.nextFloat( )*360;
+				// can't apply random rotation because decals rotate about their
+				// position, not their offset
+				// TODO: put this back in once decal rotation is fixed.
 			}
 
 			decal.setScale( scale.x, scale.y );
@@ -601,11 +609,11 @@ public class LevelFactory {
 				target.addFGDecal( decal, pos, rot );
 				if ( target.getEntityType( ) == EntityType.SKELETON ) {
 					addForeGroundSkeleton( ( Skeleton ) target );
-				} else{
+				} else {
 					addForeGroundEntity( target );
 				}
 			} else {
-				//Gdx.app.log( "level factory", "hello world" );
+				// Gdx.app.log( "level factory", "hello world" );
 				target.addBGDecal( decal, pos, rot );
 				if ( target.getEntityType( ) == EntityType.SKELETON ) {
 					addBackGroundSkeleton( ( Skeleton ) target );
@@ -613,13 +621,13 @@ public class LevelFactory {
 					addBackGroundEntity( target );
 				}
 			}
-			Gdx.app.log( "LoadDecal", "Attaching decal " + item.name + " to "
-					+ targetName + "." );
+			// Gdx.app.log( "LoadDecal", "Attaching decal " + item.name + " to "
+			// + targetName + "." );
 			target.updateDecals( 0.0f );
-			Gdx.app.log( "LoadDecal",
-					"(X: " + decal.getX( ) + " Y: " + decal.getY( ) + " R: "
-							+ decal.getRotation( ) + " sX: " + item.sca.x
-							+ " sY: " + item.sca.y + ")" );
+			// Gdx.app.log( "LoadDecal",
+			// "(X: " + decal.getX( ) + " Y: " + decal.getY( ) + " R: "
+			// + decal.getRotation( ) + " sX: " + item.sca.x
+			// + " sY: " + item.sca.y + ")" );
 		}
 		return decal;
 	}
@@ -642,26 +650,27 @@ public class LevelFactory {
 
 			if ( item.props.containsKey( "invisible" ) ) {
 				skeleBuilder.invisibleVerts( polySprite );
-			
-			//Argggg, the code you're looking for be here Matey
+
+				// Argggg, the code you're looking for be here Matey
 			} else if ( item.props.containsKey( "foreground" ) ) {
 				skeleBuilder
-					.bg( )
-					.setVerts( polySprite )
-					.texBackground(
-							WereScrewedGame.manager.getLevelRobotBGTex( ) )
-					.fg( )
-					.setVerts( polySprite )
-					.texForeground( WereScrewedGame.manager.getLevelRobotFGTex( ) );
+						.bg( )
+						.setVerts( polySprite )
+						.texBackground(
+								WereScrewedGame.manager.getLevelRobotBGTex( ) )
+						.fg( )
+						.setVerts( polySprite )
+						.texForeground(
+								WereScrewedGame.manager.getLevelRobotFGTex( ) );
 			} else {
 				skeleBuilder
 						.bg( )
 						.setVerts( polySprite )
 						.texBackground(
 								WereScrewedGame.manager.getLevelRobotBGTex( ) )
-						.texForeground( null )
-						.fg().setVerts( polySprite );
-				//to have a fg fade action with no actual foreground we set fg verts but don't set fg texture
+						.texForeground( null ).fg( ).setVerts( polySprite );
+				// to have a fg fade action with no actual foreground we set fg
+				// verts but don't set fg texture
 			}
 
 			if ( item.props.containsKey( "dynamic" ) ) {
@@ -674,8 +683,7 @@ public class LevelFactory {
 
 			skeleton = skeleBuilder.build( );
 
-			if ( item.props.containsKey( "alwaysvisible" ) ) 
-			{
+			if ( item.props.containsKey( "alwaysvisible" ) ) {
 				skeleton.setFgFade( false );
 			}
 			if ( item.props.containsKey( "gravscale" ) ) {
@@ -701,7 +709,7 @@ public class LevelFactory {
 			// }
 			//
 			// skeleton.addMover( mover, RobotState.IDLE );
-			
+
 			skeletons.put( item.name, skeleton );
 			entities.put( item.name, skeleton );
 			if ( item.props.containsKey( "attachtoskeleton" ) ) {
@@ -740,7 +748,7 @@ public class LevelFactory {
 			}
 		}
 
-		Gdx.app.log( "LevelFactory, Skeleton constucted ", item.name );
+		// Gdx.app.log( "LevelFactory, Skeleton constucted ", item.name );
 
 		return skeleton;
 	}
@@ -800,12 +808,12 @@ public class LevelFactory {
 		if ( item.props.containsKey( "crushable" ) ) {
 			isCrushable = true;
 		}
-		
+
 		if ( item.props.containsKey( "density" ) ) {
 			float density = Float.parseFloat( item.props.get( "density" ) );
 			pb.density( density );
 		}
-		
+
 		pb.name( item.name ).position( new Vector2( xPos, yPos ) )
 				.dimensions( new Vector2( tileWidth, tileHeight ) )
 				.tileSet( "alphabot" ).properties( item.props );
@@ -819,7 +827,7 @@ public class LevelFactory {
 			pb.dynamic( );
 		else
 			pb.kinematic( );
-		
+
 		if ( item.props.containsKey( "onesided" ) ) {
 			pb.oneSided( true );
 		}
@@ -832,7 +840,6 @@ public class LevelFactory {
 		if ( item.props.containsKey( "onesided" ) ) {
 			out.oneSided = true;
 		}
-		
 
 		IMover mover = null;
 		if ( item.props.containsKey( "mover" ) ) {
@@ -857,8 +864,8 @@ public class LevelFactory {
 			} else if ( MoverType.fromString( movername ) != null ) {
 				mover = new MoverBuilder( ).fromString( movername )
 						.applyTo( out ).build( );
-				Gdx.app.log( "LevelFactory", "attaching :" + movername
-						+ " to platform" );
+				// Gdx.app.log( "LevelFactory", "attaching :" + movername
+				// + " to platform" );
 
 				// ROTATETWEEN("rotatetween"),
 				// LERP("lerpmover")
@@ -871,8 +878,8 @@ public class LevelFactory {
 
 		if ( !item.props.containsKey( "invisible" ) ) {
 			if ( isDynamic ) {
-				Gdx.app.log( "LevelFactory", "Tiled Dynamic platform loaded:"
-						+ out.name );
+				// Gdx.app.log( "LevelFactory", "Tiled Dynamic platform loaded:"
+				// + out.name );
 				out.quickfixCollisions( );
 				parent.addDynamicPlatform( out );
 
@@ -880,8 +887,9 @@ public class LevelFactory {
 					out.addJointToSkeleton( parent );
 				}
 			} else {
-				Gdx.app.log( "LevelFactory", "Tiled Kinematic platform loaded:"
-						+ out.name );
+				// Gdx.app.log( "LevelFactory",
+				// "Tiled Kinematic platform loaded:"
+				// + out.name );
 
 				parent.addKinematicPlatform( out );
 				out.setCategoryMask( Util.CATEGORY_PLATFORMS,
@@ -949,8 +957,8 @@ public class LevelFactory {
 			if ( MoverType.fromString( movername ) != null ) {
 				mover = new MoverBuilder( ).fromString( movername )
 						.applyTo( out ).build( );
-				Gdx.app.log( "LevelFactory", "attaching :" + movername
-						+ " to platform" );
+				// Gdx.app.log( "LevelFactory", "attaching :" + movername
+				// + " to platform" );
 
 				// ROTATETWEEN("rotatetween"),
 				// LERP("lerpmover")
@@ -962,17 +970,17 @@ public class LevelFactory {
 		Skeleton parent = loadSkeleton( item.skeleton );
 
 		if ( isDynamic ) {
-			Gdx.app.log( "LevelFactory", "Tiled Dynamic platform loaded:"
-					+ out.name );
+			// Gdx.app.log( "LevelFactory", "Tiled Dynamic platform loaded:"
+			// + out.name );
 			out.quickfixCollisions( );
 			parent.addDynamicPlatform( out );
-			
+
 			if ( item.props.containsKey( "jointtoskeleton" ) ) {
 				out.addJointToSkeleton( parent );
 			}
 		} else {
-			Gdx.app.log( "LevelFactory", "Tiled Kinematic platform loaded:"
-					+ out.name );
+			// Gdx.app.log( "LevelFactory", "Tiled Kinematic platform loaded:"
+			// + out.name );
 
 			parent.addKinematicPlatform( out );
 			out.setCategoryMask( Util.CATEGORY_PLATFORMS,
@@ -1018,7 +1026,7 @@ public class LevelFactory {
 
 		out.setCrushing( isCrushable );
 
-		Gdx.app.log( "GleedLoader", "Complex Platform loaded:" + item.name );
+		// Gdx.app.log( "GleedLoader", "Complex Platform loaded:" + item.name );
 		Skeleton parent = loadSkeleton( item.skeleton );
 		if ( isDynamic ) {
 			out.quickfixCollisions( );
@@ -1051,7 +1059,8 @@ public class LevelFactory {
 
 		ScrewType sType = ScrewType.fromString( item.props.get( "screwtype" ) );
 		ScrewBuilder builder = new ScrewBuilder( ).name( item.name )
-				.position( item.pos ).world( level.world ).screwType( sType ).properties( item.props );
+				.position( item.pos ).world( level.world ).screwType( sType )
+				.properties( item.props );
 
 		Skeleton parent = loadSkeleton( item.skeleton );
 		builder.skeleton( parent );
@@ -1068,8 +1077,8 @@ public class LevelFactory {
 		Screw out = null;
 		switch ( sType ) {
 		case SCREW_PUZZLE:
-			Gdx.app.log( "LevelFactory", "Building puzzle screw " + item.name
-					+ " at " + item.pos.toString( ) );
+			// Gdx.app.log( "LevelFactory", "Building puzzle screw " + item.name
+			// + " at " + item.pos.toString( ) );
 
 			PuzzleScrew p = builder.buildPuzzleScrew( );
 
@@ -1077,17 +1086,17 @@ public class LevelFactory {
 			if ( item.props.containsKey( "controlthis" ) ) {
 				String s = item.props.get( "controlthis" );
 				attach = entities.get( s );
-				Gdx.app.log( "LevelFactory", "attaching :" + attach.name
-						+ " to puzzle screw" );
+				// Gdx.app.log( "LevelFactory", "attaching :" + attach.name
+				// + " to puzzle screw" );
 
 				p.puzzleManager.addEntity( attach );
 			}
-			
+
 			if ( item.props.containsKey( "controlthis2" ) ) {
 				String s = item.props.get( "controlthis2" );
 				Entity attach2 = entities.get( s );
-				Gdx.app.log( "LevelFactory", "attaching :" + attach2.name
-						+ " to puzzle screw" );
+				// Gdx.app.log( "LevelFactory", "attaching :" + attach2.name
+				// + " to puzzle screw" );
 
 				p.puzzleManager.addEntity( attach2 );
 			}
@@ -1129,24 +1138,23 @@ public class LevelFactory {
 						if ( item.props.containsKey( "controlthis2" ) ) {
 							String s = item.props.get( "controlthis2" );
 							attach2 = entities.get( s );
-							Gdx.app.log( "LevelFactory", "attaching :"
-									+ attach2.name + " to puzzle screw" );
+							// Gdx.app.log( "LevelFactory", "attaching :"
+							// + attach2.name + " to puzzle screw" );
 
 							p.puzzleManager.addEntity( attach2 );
 
-							
-//							p.puzzleManager
-//									.addMover( new PuzzleRotateTweenMover( 1,
-//											Util.PI / 2, true,
-//											PuzzleType.ON_OFF_MOVER ) );
+							// p.puzzleManager
+							// .addMover( new PuzzleRotateTweenMover( 1,
+							// Util.PI / 2, true,
+							// PuzzleType.ON_OFF_MOVER ) );
 
-							Gdx.app.log( "LevelFactory", "attaching :"
-									+ movername + " to puzzle screw" );
+							// Gdx.app.log( "LevelFactory", "attaching :"
+							// + movername + " to puzzle screw" );
 						}
 					}
 					mover = moverBuilder.build( );
-					Gdx.app.log( "LevelFactory", "attaching :" + movername
-							+ " to puzzle screw" );
+					// Gdx.app.log( "LevelFactory", "attaching :" + movername
+					// + " to puzzle screw" );
 
 					p.puzzleManager.addMover( mover );
 					// ROTATETWEEN("rotatetween"),
@@ -1167,8 +1175,9 @@ public class LevelFactory {
 			out = p;
 			break;
 		case SCREW_STRIPPED:
-			Gdx.app.log( "LevelFactory", "Building stripped screw " + item.name
-					+ " at " + item.pos.toString( ) );
+			// Gdx.app.log( "LevelFactory", "Building stripped screw " +
+			// item.name
+			// + " at " + item.pos.toString( ) );
 			StrippedScrew s = builder.buildStrippedScrew( );
 			if ( item.props.containsKey( "jointto" ) ) {
 				String obj = item.props.get( "jointto" );
@@ -1183,8 +1192,8 @@ public class LevelFactory {
 			out = s;
 			break;
 		case SCREW_STRUCTURAL:
-			Gdx.app.log( "LevelFactory", "Building structural screw "
-					+ item.name + " at " + item.pos.toString( ) );
+			// Gdx.app.log( "LevelFactory", "Building structural screw "
+			// + item.name + " at " + item.pos.toString( ) );
 
 			StructureScrew ss = builder.buildStructureScrew( );
 
@@ -1249,8 +1258,10 @@ public class LevelFactory {
 				String thisthing = item.props.get( "ropetargetrev" );
 				Link target = ( Link ) entities.get( thisthing );
 
-				 target.body.setTransform( ss.getPosition( ).add( 0, target.getHeight( )/2 * Util.PIXEL_TO_BOX ),
-				 target.body.getAngle( ) );
+				target.body.setTransform(
+						ss.getPosition( ).add( 0,
+								target.getHeight( ) / 2 * Util.PIXEL_TO_BOX ),
+						target.body.getAngle( ) );
 				ss.addStructureJoint( target );
 			}
 
@@ -1275,15 +1286,16 @@ public class LevelFactory {
 
 			break;
 		case SCREW_COSMETIC:
-			Gdx.app.log( "LevelFactory", "Building cosmetic screw " + item.name
-					+ " at " + item.pos.toString( ) );
+			// Gdx.app.log( "LevelFactory", "Building cosmetic screw " +
+			// item.name
+			// + " at " + item.pos.toString( ) );
 			Screw screw = builder.buildScrew( );
 			entities.put( item.name, screw );
 			out = screw;
 			break;
 		case SCREW_BOSS:
-			Gdx.app.log( "LevelFactory", "Building boss screw " + item.name
-					+ " at " + item.pos.toString( ) );
+			// Gdx.app.log( "LevelFactory", "Building boss screw " + item.name
+			// + " at " + item.pos.toString( ) );
 			BossScrew bs = builder.buildBossScrew( );
 			entities.put( item.name, bs );
 			out = bs;
@@ -1310,9 +1322,9 @@ public class LevelFactory {
 		// add checkpointto skeleton not progress manager
 		parent.addCheckPoint( chkpt );
 		// chkpt.setParentSkeleton( parent );
-		
+
 		entities.put( item.name, chkpt );
-		
+
 		return chkpt;
 	}
 
@@ -1326,8 +1338,8 @@ public class LevelFactory {
 
 		Array< Element > pointElems = item.element.getChildByName(
 				"LocalPoints" ).getChildrenByName( "Vector2" );
-		Gdx.app.log( "LevelFactory", "Loading Path Mover:" + pointElems.size
-				+ " points." );
+		// Gdx.app.log( "LevelFactory", "Loading Path Mover:" + pointElems.size
+		// + " points." );
 		Array< Vector2 > pathPoints = new Array< Vector2 >( pointElems.size );
 		Array< Float > times = new Array< Float >( pointElems.size );
 
@@ -1349,7 +1361,7 @@ public class LevelFactory {
 		if ( item.props.containsKey( "delay" ) ) {
 			float delay = Float.parseFloat( item.props.get( "delay" ) );
 			pBuilder.delay( delay );
-			Gdx.app.log( "LevelFactory", "path has delay " + delay );
+			// Gdx.app.log( "LevelFactory", "path has delay " + delay );
 		}
 
 		// Starts at one because first point on a path should start at 0,0 by
@@ -1371,8 +1383,8 @@ public class LevelFactory {
 					times.set( i - 1, time );
 				}
 			}
-			Gdx.app.log( "LevelFactory",
-					"Point " + i + " has time " + times.get( i ) + "." );
+			// Gdx.app.log( "LevelFactory",
+			// "Point " + i + " has time " + times.get( i ) + "." );
 		}
 		for ( int i = 0; i < pathPoints.size; i++ ) {
 			pBuilder.target( pathPoints.get( i ).x, pathPoints.get( i ).y,
@@ -1409,7 +1421,7 @@ public class LevelFactory {
 			int links = Integer.parseInt( item.props.get( "links" ) );
 			ropeBuilder.links( links );
 		}
-		
+
 		if ( item.props.containsKey( "linkheight" ) ) {
 			int links = Integer.parseInt( item.props.get( "linkheight" ) );
 			ropeBuilder.height( links );
@@ -1443,8 +1455,8 @@ public class LevelFactory {
 
 		Array< Element > pointElems = item.element.getChildByName(
 				"LocalPoints" ).getChildrenByName( "Vector2" );
-		Gdx.app.log( "LevelFactory", "Loading PolySprite:" + pointElems.size
-				+ " points." );
+		// Gdx.app.log( "LevelFactory", "Loading PolySprite:" + pointElems.size
+		// + " points." );
 		Array< Vector2 > pathPoints = new Array< Vector2 >( pointElems.size );
 
 		Element vElem;
@@ -1489,7 +1501,7 @@ public class LevelFactory {
 		if ( item.props.containsKey( "beginaction" ) ) {
 			String action = item.props.get( "beginaction" );
 			if ( action.equals( "destoryjoint" ) ) {
-				etb.beginAction( new DestoryPlatformJointAction( ) );
+				etb.beginAction( new DestroyPlatformJointAction( ) );
 			} else if ( action.contains( "activate_anchor" ) ) {
 				String tokens[] = action.split( " " );
 				int i = Integer.parseInt( tokens[ 2 ] ) - 1;
@@ -1502,6 +1514,15 @@ public class LevelFactory {
 				Anchor anchor = LevelFactory.entities.get( tokens[ 1 ] ).anchors
 						.get( i );
 				etb.beginAction( new AnchorDeactivateAction( anchor ) );
+			} else if( action.contains( "set_tutorial" ) ) {
+				String tutorialNumbers = item.props.get( "sequence" );
+				String tokens[] = tutorialNumbers.split( " " );
+				int x = Integer.parseInt( tokens[ 0 ] ) ;
+				int y = Integer.parseInt( tokens[ 1 ] ) ;
+				int[] array = new int[2];
+				array[0] = x;
+				array[1] = y;
+				etb.beginAction( new SetTutorialAction(array, true) );
 			} else {
 				etb.beginAction( new EntityActivateMoverAction( ) );
 			}
@@ -1515,7 +1536,16 @@ public class LevelFactory {
 				Anchor anchor = LevelFactory.entities.get( tokens[ 1 ] ).anchors
 						.get( i );
 				etb.endAction( new AnchorDeactivateAction( anchor ) );
-			} else {
+			}else if( action.contains( "set_tutorial" ) ) {
+				String tutorialNumbers = item.props.get( "sequence" );
+				String tokens[] = tutorialNumbers.split( " " );
+				int x = Integer.parseInt( tokens[ 0 ] ) ;
+				int y = Integer.parseInt( tokens[ 1 ] ) ;
+				int[] array = new int[2];
+				array[0] = x;
+				array[1] = y;
+				etb.endAction( new SetTutorialAction(array, false) ); 
+			}else {
 				etb.endAction( new EntityDeactivateMoverAction( ) );
 			}
 		}
@@ -1558,8 +1588,8 @@ public class LevelFactory {
 
 		Array< Element > pointElems = item.element.getChildByName(
 				"LocalPoints" ).getChildrenByName( "Vector2" );
-		Gdx.app.log( "LevelFactory", "Loading Array[]:" + pointElems.size
-				+ " points." );
+		// Gdx.app.log( "LevelFactory", "Loading Array[]:" + pointElems.size
+		// + " points." );
 		Array< Vector2 > pathPoints = new Array< Vector2 >( pointElems.size );
 
 		Element vElem;
@@ -1578,33 +1608,42 @@ public class LevelFactory {
 		return pathPoints;
 
 	}
-	
-	//requirements of a panel are an atlas and a skeleton
-	public Panel constructPanel(Item item){
+
+	// requirements of a panel are an atlas and a skeleton
+	public Panel constructPanel( Item item ) {
 		String skelAttach = item.skeleton;
 		Skeleton parent = loadSkeleton( skelAttach );
-		
-		Panel out = new Panel(item.name, new Vector2(item.pos.x,item.pos.y), level.world, item.getAtlasName(), "");
+
+		Panel out = new Panel( item.name,
+				new Vector2( item.pos.x, item.pos.y ), level.world,
+				item.getAtlasName( ), "" );
 		parent.addKinematicPlatform( out );
 		entities.put( item.name, out );
 		return out;
 	}
-	
-	public Fire constructFire( Item item ){
-		
+
+	public Fire constructFire( Item item ) {
+
 		float width = item.element.getFloat( "Width" );
 		float height = item.element.getFloat( "Height" );
 		float xPos = item.pos.x + ( width / 2 );
 		float yPos = item.pos.y - ( height / 2 );
-		Fire fire = new Fire( item.name, new Vector2(xPos, yPos), width, height, level.world, true );
+		Fire fire = new Fire( item.name, new Vector2( xPos, yPos ), width,
+				height, level.world, true );
+
+		if ( item.props.containsKey( "flip" ) ) {
+			fire.flip( );
+		}
+		
 		
 		String skelAttach = item.skeleton;
 		Skeleton parent = loadSkeleton( skelAttach );
 		parent.addHazard( fire );
 		entities.put( item.name, fire );
-		
+
 		return fire;
 	}
+
 	public Hazard constructHazard( Item item ) {
 
 		String skelAttach = item.skeleton;
@@ -1641,21 +1680,63 @@ public class LevelFactory {
 		return hazard;
 	}
 
-	public PowerSwitch constructPowerSwitch(Item item){
-		PowerSwitch ps = new PowerSwitch( item.name , item.pos, level.world);
-		
+	public PowerSwitch constructPowerSwitch( Item item ) {
+		PowerSwitch ps = new PowerSwitch( item.name, item.pos, level.world );
+
 		String skelAttach = item.skeleton;
 		Skeleton parent = loadSkeleton( skelAttach );
-		
+
 		if ( item.props.containsKey( "repeatable" ) ) {
 			ps.setRepeatable( true );
 		}
 		
+		if ( item.props.containsKey( "active" ) ) {
+			ps.setState(true);
+		}
+		
+		if ( item.props.containsKey( "controlthis" ) ) {
+			String s = item.props.get( "controlthis" );
+			Entity attach = entities.get( s );
+			ps.actOnEntity = true;
+			ps.addEntityToTrigger( attach );
+		}
+		
+		if ( item.props.containsKey( "controlthis2" ) ) {
+			String s = item.props.get( "controlthis2" );
+			Entity attach = entities.get( s );
+			
+			ps.addEntityToTrigger( attach );
+		}
+		
+		if ( item.props.containsKey( "controlthis3" ) ) {
+			String s = item.props.get( "controlthis3" );
+			Entity attach = entities.get( s );
+			
+			ps.addEntityToTrigger( attach );
+		}
+		
+		if ( item.props.containsKey( "beginaction" ) ) {
+			String action = item.props.get( "beginaction" );
+			
+			if(action.equals( "activate_hazard" )){
+				ps.addBeginIAction( new HazardActivateAction() );
+			}
+		}
+		
+		if ( item.props.containsKey( "endaction" ) ) {
+			String action = item.props.get( "endaction" );
+			
+			if(action.equals( "deactivate_hazard" )){
+				ps.addEndIAction( new HazardDeactivateAction() );
+			}
+		}
+		
 		parent.addEventTrigger( ps );
 		entities.put( item.name, ps );
-		
+
 		return ps;
 	}
+
 	public Level getLevel( ) {
 		return level;
 	}
@@ -1686,8 +1767,8 @@ public class LevelFactory {
 			def = null;
 			if ( props.containsKey( "attachtoskeleton" ) ) {
 				skeleton = props.get( "attachtoskeleton" );
-				Gdx.app.log( "LevelFactory, attaching skeleton " + skeleton,
-						"to " + name );
+				// Gdx.app.log( "LevelFactory, attaching skeleton " + skeleton,
+				// "to " + name );
 			}
 			gleedTag = GleedTypeTag.fromString( props.get( "type" ) ); // GleedTypeTag.tag
 																		// ) );
@@ -1726,7 +1807,7 @@ public class LevelFactory {
 			if ( locked ) {
 				RuntimeException oops = new RuntimeException(
 						"Cyclic Reference" );
-				Gdx.app.log( "GleedLoader", "While loading:" + name, oops );
+				// Gdx.app.log( "GleedLoader", "While loading:" + name, oops );
 				throw oops;
 			}
 			locked = true;
@@ -1843,25 +1924,25 @@ public class LevelFactory {
 			level.skelFGList.add( skel );
 		}
 	}
-	
+
 	private void addBackGroundSkeleton( Skeleton skel ) {
 		if ( !level.skelBGList.contains( skel ) ) {
 			level.skelBGList.add( skel );
 		}
 	}
-	
+
 	private void addForeGroundEntity( Entity entity ) {
 		if ( !level.entityFGList.contains( entity ) ) {
 			level.entityFGList.add( entity );
 		}
 	}
-	
+
 	private void addBackGroundEntity( Entity entity ) {
 		if ( !level.entityBGList.contains( entity ) ) {
 			level.entityBGList.add( entity );
 		}
 	}
-	
+
 	protected static final String typeTag = "Type";
 	protected static final String defTag = "Definition";
 

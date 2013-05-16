@@ -40,23 +40,23 @@ public final class ScreenManager {
 	public void show( ScreenType screen ) {
 		if ( Gdx.input.isKeyPressed( Keys.ESCAPE ) ) {
 			ScreenManager.escapeHeld = true;
-		} else 
+		} else
 			ScreenManager.escapeHeld = false;
-		
-		if( WereScrewedGame.p1Controller != null ) {
-			if ( WereScrewedGame.p1ControllerListener.pausePressed( )) {
+
+		if ( WereScrewedGame.p1Controller != null ) {
+			if ( WereScrewedGame.p1ControllerListener.pausePressed( ) ) {
 				ScreenManager.p1PauseHeld = true;
 			} else
 				ScreenManager.p1PauseHeld = false;
 		}
-		
-		if( WereScrewedGame.p2Controller != null ) {
-			if ( WereScrewedGame.p2ControllerListener.pausePressed( )) {
+
+		if ( WereScrewedGame.p2Controller != null ) {
+			if ( WereScrewedGame.p2ControllerListener.pausePressed( ) ) {
 				ScreenManager.p2PauseHeld = true;
 			} else
 				ScreenManager.p2PauseHeld = false;
 		}
-		
+
 		if ( null == game )
 			return;
 
@@ -68,9 +68,9 @@ public final class ScreenManager {
 			if ( prevScreen != null ) {
 
 				if ( !pauseScreenShown ) {
-					Gdx.app.log( "disposing", screens
-							.get( prevScreen.ordinal( ) ).getClass( )
-							.getSimpleName( ) );
+					// Gdx.app.log( "disposing", screens
+					// .get( prevScreen.ordinal( ) ).getClass( )
+					// .getSimpleName( ) );
 					screens.get( prevScreen.ordinal( ) ).dispose( );
 					dispose( prevScreen );
 					pauseScreenShown = false;
@@ -85,23 +85,21 @@ public final class ScreenManager {
 		} else {
 			if ( screen == ScreenType.MAIN_MENU ) {
 				if ( pauseScreenShown ) {
-					Gdx.app.log( "disposing", screens
-							.get( prevScreen.ordinal( ) ).getClass( )
-							.getSimpleName( ) );
+					// Gdx.app.log( "disposing", screens
+					// .get( prevScreen.ordinal( ) ).getClass( )
+					// .getSimpleName( ) );
 					screens.get( prevScreen.ordinal( ) ).dispose( );
 					dispose( prevScreen );
 				}
 			}
-			
+
 			game.setScreen( screens.get( screen.ordinal( ) ) );
 			prevScreen = screen;
 		}
 
-		Gdx.app.log( "ScreenManager", screens.get( screen.ordinal( ) )
-				.getClass( ).getSimpleName( )
-				+ " starting" );
-
-		
+		// Gdx.app.log( "ScreenManager", screens.get( screen.ordinal( ) )
+		// .getClass( ).getSimpleName( )
+		// + " starting" );
 
 	}
 

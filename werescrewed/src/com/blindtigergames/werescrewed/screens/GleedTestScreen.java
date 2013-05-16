@@ -9,6 +9,7 @@ import com.blindtigergames.werescrewed.entity.EntityDef;
 import com.blindtigergames.werescrewed.entity.RobotState;
 import com.blindtigergames.werescrewed.entity.Skeleton;
 import com.blindtigergames.werescrewed.entity.builders.PlatformBuilder;
+import com.blindtigergames.werescrewed.entity.hazard.Fire;
 import com.blindtigergames.werescrewed.entity.mover.PuzzleType;
 import com.blindtigergames.werescrewed.entity.mover.RotateTweenMover;
 import com.blindtigergames.werescrewed.entity.mover.puzzle.PuzzleRotateTweenMover;
@@ -16,7 +17,6 @@ import com.blindtigergames.werescrewed.entity.particles.Steam;
 import com.blindtigergames.werescrewed.entity.platforms.Platform;
 import com.blindtigergames.werescrewed.entity.screws.PuzzleScrew;
 import com.blindtigergames.werescrewed.eventTrigger.EventTrigger;
-import com.blindtigergames.werescrewed.entity.hazard.Fire;
 import com.blindtigergames.werescrewed.level.LevelFactory;
 import com.blindtigergames.werescrewed.util.Util;
 
@@ -26,7 +26,7 @@ public class GleedTestScreen extends Screen {
 	Music music;
 	Music intro, loop;
 	boolean introPlayed = false;
-	
+
 	Steam testSteam, steam2;
 
 	Platform fallingGear1;
@@ -46,10 +46,10 @@ public class GleedTestScreen extends Screen {
 
 		loop = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 				+ "/common/sounds/introTrain.mp3" );
-		
+
 		intro = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 				+ "/common/sounds/loopTrain.mp3" );
-		
+
 		Platform plat = ( Platform ) LevelFactory.entities
 				.get( "structureplat" );
 		plat.quickfixCollisions( );
@@ -69,24 +69,22 @@ public class GleedTestScreen extends Screen {
 
 		fallingGear1.setCrushing( true );
 
-		
 		RevoluteJointDef revoluteJointDef = new RevoluteJointDef( );
 		revoluteJointDef.initialize( fallingGear1.body, skel1.body,
 				fallingGear1.body.getWorldCenter( ) );
 		revoluteJointDef.enableMotor = false;
-		fg1 = ( RevoluteJoint ) level.world
-				.createJoint( revoluteJointDef );
-		
-		f1 = new Fire( "Fire1", new Vector2( 600f, 1850.0f ), 
-				15, 60, level.world, true);
-		
-		f2 = new Fire( "Fire1", new Vector2( 900f, 1850.0f ), 
-				15, 60, level.world, true );
+		fg1 = ( RevoluteJoint ) level.world.createJoint( revoluteJointDef );
+
+		f1 = new Fire( "Fire1", new Vector2( 600f, 1850.0f ), 15, 60,
+				level.world, true );
+
+		f2 = new Fire( "Fire1", new Vector2( 900f, 1850.0f ), 15, 60,
+				level.world, true );
 		f2.flip( );
-		
-		f3 = new Fire( "Fire1", new Vector2( 1200f, 1850.0f ), 
-				15, 60, level.world, true );
-		
+
+		f3 = new Fire( "Fire1", new Vector2( 1200f, 1850.0f ), 15, 60,
+				level.world, true );
+
 		et = ( EventTrigger ) LevelFactory.entities.get( "et1" );
 		// StructureScrew ss = ( StructureScrew ) LevelFactory.entities.get(
 		// "structurescrew1" );
@@ -105,8 +103,8 @@ public class GleedTestScreen extends Screen {
 		// pj.upperTranslation = 1024;
 		// pj.lowerTranslation = 0;
 		// level.world.createJoint( pj );
-		 skel.addMover( new RotateTweenMover(skel, 15f, Util.PI, 2f, true),
-		 RobotState.IDLE );
+		skel.addMover( new RotateTweenMover( skel, 15f, Util.PI, 2f, true ),
+				RobotState.IDLE );
 
 		Skeleton skel2 = ( Skeleton ) LevelFactory.entities.get( "skeleton4" );
 		// skel2.body.setType( BodyType.DynamicBody );
@@ -128,8 +126,10 @@ public class GleedTestScreen extends Screen {
 
 		// 1680, 750
 
-		testSteam = new Steam( "testSteam", new Vector2( 2913, 2770f ), 25, 50, level.world );
-		steam2 = new Steam( "steam2", new Vector2( 1680, 780 ), 25, 50, level.world );
+		testSteam = new Steam( "testSteam", new Vector2( 2913, 2770f ), 25, 50,
+				level.world );
+		steam2 = new Steam( "steam2", new Vector2( 1680, 780 ), 25, 50,
+				level.world );
 		// // Create anchor with start position and buffer as parameters
 		// Anchor testAnchor = new Anchor( new Vector2(
 		// skel.getPositionPixel( ).x, skel.getPositionPixel( ).y ),
@@ -144,7 +144,6 @@ public class GleedTestScreen extends Screen {
 		// skel.addMover( new RotateTweenMover( skel, 5f,
 		// Util.PI / 2, 1f, true ),
 		// RobotState.IDLE );
-		
 
 	}
 
@@ -182,21 +181,18 @@ public class GleedTestScreen extends Screen {
 		f3.draw( batch, deltaTime );
 		batch.end( );
 
-
 		// Doesn't work perfectly, but its okay
-		if(!introPlayed){
+		if ( !introPlayed ) {
 			intro.play( );
 			introPlayed = true;
 		} else {
-			if(!intro.isPlaying( )){
-				if(!loop.isPlaying( )){
+			if ( !intro.isPlaying( ) ) {
+				if ( !loop.isPlaying( ) ) {
 					loop.play( );
 					loop.setLooping( true );
 				}
 			}
 		}
-		
-		
 
 	}
 
