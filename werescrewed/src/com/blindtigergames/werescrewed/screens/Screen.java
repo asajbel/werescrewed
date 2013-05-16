@@ -234,12 +234,14 @@ public class Screen implements com.badlogic.gdx.Screen {
 						&& WereScrewedGame.p2Controller == null ) {
 					if ( Gdx.input.isKeyPressed( Keys.ENTER ) ) {
 						Buttons.get( buttonIndex ).setSelected( true );
+						controllerTimer = controllerMax;
 					}
 					if ( Gdx.input.isKeyPressed( Keys.DOWN ) ) {
 						Buttons.get( buttonIndex ).setColored( false );
 						buttonIndex++;
 						buttonIndex = buttonIndex % Buttons.size( );
 						Buttons.get( buttonIndex ).setColored( true );
+						controllerTimer = controllerMax;
 					}
 					if ( Gdx.input.isKeyPressed( Keys.UP ) ) {
 
@@ -250,7 +252,7 @@ public class Screen implements com.badlogic.gdx.Screen {
 							buttonIndex--;
 						}
 						Buttons.get( buttonIndex ).setColored( true );
-
+						controllerTimer = controllerMax;
 					}
 					if ( Gdx.input.isKeyPressed( Keys.LEFT ) ) {
 						if ( Buttons.get( buttonIndex ) instanceof OptionButton ) {
@@ -259,7 +261,8 @@ public class Screen implements com.badlogic.gdx.Screen {
 							if ( option.getOption( ) instanceof Slider ) {
 								Slider slider = ( Slider ) option.getOption( );
 								slider.moveLeft( );
-							}
+								controllerTimer = controllerMax;
+							} 
 						}
 					}
 					if ( Gdx.input.isKeyPressed( Keys.RIGHT ) ) {
@@ -269,7 +272,8 @@ public class Screen implements com.badlogic.gdx.Screen {
 							if ( option.getOption( ) instanceof Slider ) {
 								Slider slider = ( Slider ) option.getOption( );
 								slider.moveRight( );
-							}
+								controllerTimer = controllerMax;
+							} 
 						}
 					}
 				}
