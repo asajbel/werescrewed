@@ -7,10 +7,10 @@ import com.blindtigergames.werescrewed.player.Player;
 
 public class SetTutorialAction implements IAction{
 
-	Texture tutorialTexture = null;
+	int[] sequence;
 	
-	public SetTutorialAction( Texture tex ){
-		tutorialTexture = tex;
+	public SetTutorialAction( int[] tutorialSequence ){
+		sequence = tutorialSequence;
 	}
 	
 	@Override
@@ -20,9 +20,9 @@ public class SetTutorialAction implements IAction{
 
 	@Override
 	public void act( Entity entity ) {
-		if(entity.entityType != EntityType.PLAYER){
+		if(entity.entityType == EntityType.PLAYER){
 			Player player = (Player) entity;
-			player.setTutorial( tutorialTexture );
+			player.setTutorial( sequence );
 			player.setDrawTutorial( true );
 		}
 	}

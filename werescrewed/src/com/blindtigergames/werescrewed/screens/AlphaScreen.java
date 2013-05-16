@@ -208,7 +208,7 @@ public class AlphaScreen extends Screen {
 		root.setFgFade( false );
 		bgm = WereScrewedGame.manager.get( WereScrewedGame.dirHandle.path( )
 				+ "/common/music/waltz.mp3", Music.class );
-		bgm.setVolume( 0 );//SoundManager.getMusicVolume( )
+		bgm.setVolume( SoundManager.getMusicVolume( ) );
 		bgm.setLooping( true );
 		
 		sounds = new SoundManager();
@@ -468,7 +468,7 @@ public class AlphaScreen extends Screen {
 		s.setScale( -scale, scale );
 		light_skel.addFGDecal( s,
 				new Vector2((-max + seatsX+2614*2), seatsY ) );
-				
+		light_skel.setFade( false );
 
 		// addBackGroundEntity( bgSkele );
 		// addForeGroundEntity( bgSkele );

@@ -360,9 +360,9 @@ public class GenericEntityBuilder< B extends GenericEntityBuilder< ? >> {
 					for (HashMap<String,String> subSounds : sounds.getAll( name )){
 						SoundRef sound = soundMan.getSound( name, WereScrewedGame.dirHandle + subSounds.get( "asset" ) );
 						if (subSounds.containsKey( "volume" ))
-							sound.setVolume(Float.parseFloat( subSounds.get("volume") ));
+							sound.setInternalVolume(Float.parseFloat( subSounds.get("volume") ));
 						if (subSounds.containsKey( "pitch" ))
-							sound.setPitch(Float.parseFloat( subSounds.get("pitch") ));
+							sound.setInternalPitch(Float.parseFloat( subSounds.get("pitch") ));
 						if (subSounds.containsKey( "pan" ))
 							sound.setPan(Float.parseFloat( subSounds.get("pan") ));
 						if (subSounds.containsKey( "range" ))

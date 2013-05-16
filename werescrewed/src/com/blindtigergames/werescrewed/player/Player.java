@@ -132,8 +132,11 @@ public class Player extends Entity {
 	private Sprite tutorial = null;
 	private Sprite bubble;
 	private Texture bubbleTex;
-	private Texture tutorialTex;
-
+	private Texture[] tutorials;
+	private int[] tutorialIndexes;
+	private int tutorialTimer = 0;
+	private int tutorialFrame = 0;
+	
 	private Player otherPlayer;
 	private RevoluteJoint playerJoint;
 	private Platform currentPlatform;
@@ -275,16 +278,10 @@ public class Player extends Entity {
 
 		createCircle( PLAYER_FRICTION );
 		frictionCounter = PLAYER_FRICTION;
+		
+		initTutorials( );
 
-		bubbleTex = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-				+ "/common/tutorial/thought_bubble.png" );
-		tutorialTex = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-				+ "/common/tutorial/placeholderTut.png" );
-
-		bubble = constructSprite( bubbleTex );
-		tutorial = constructSprite( tutorialTex );
-
-		bubble.flip( true, false );
+		
 	}
 
 	// PUBLIC METHODS
@@ -302,10 +299,21 @@ public class Player extends Entity {
 
 		if ( Gdx.input.isKeyPressed( Keys.G ) ) {
 			if ( name.equals( "player1" ) ) {
-				Gdx.app.log( "steamCollide: " + steamCollide, "steamDone: "
-						+ steamDone );
 				drawTutorial = !drawTutorial;
 				Gdx.app.log( "drawTutorial: ", "" + drawTutorial );
+			}
+		}
+		tutorialTimer++;
+		if(tutorialTimer > 60){
+			tutorialFrame++;
+			if (tutorialFrame > tutorialIndexes.length - 1) tutorialFrame = 0;
+			tutorial.setTexture( tutorials[tutorialIndexes[ tutorialFrame ]]);
+			Gdx.app.log( "tutorialIndexes: " + tutorialIndexes[ tutorialFrame ], "\ntutorialFrame: " + tutorialFrame + "\ntutorialTimer: " + tutorialTimer );
+			tutorialTimer = 0;
+		}
+		if ( Gdx.input.isKeyPressed( Keys.H ) ) {
+			if ( name.equals( "player1" ) ) {
+				tutorial.setTexture( tutorials[1] );
 			}
 		}
 		if ( Gdx.input.isKeyPressed( Keys.NUM_7 ) )
@@ -563,12 +571,6 @@ public class Player extends Entity {
 			}
 		}
 		prevPlayerDir = playerDirection;
-		if(name == "player1"){
-			//Gdx.app.log( "\nright: ", "" + rightCrush );
-			//Gdx.app.log("left: ", "" + leftCrush );
-			//Gdx.app.log( "top: ", "" + topCrush);
-			//Gdx.app.log( "bottom: ", "" + botCrush );
-		}
 	}
 
 	/**
@@ -682,13 +684,13 @@ public class Player extends Entity {
 	}
 
 	/**
-	 * sets inside of thought bubble
+	 * sets the sequence of tutorials in box
 	 * 
-	 * @param texture
-	 *            Texture
+	 * @param indices
+	 *            int[]
 	 */
-	public void setTutorial( Texture texture ) {
-		tutorial = constructSprite( texture );
+	public void setTutorial( int[] indices ) {
+		tutorialIndexes = indices;
 	}
 
 	/**
@@ -709,12 +711,12 @@ public class Player extends Entity {
 			if ( tutorial != null ) {
 				bubble.setPosition(
 						xpos * Util.BOX_TO_PIXEL - bubble.getWidth( ) / 2.0f
-								+ 250f, ypos * Util.BOX_TO_PIXEL + 100f );
+								+ 350f, ypos * Util.BOX_TO_PIXEL + 100f );
 				bubble.setRotation( MathUtils.radiansToDegrees
 						* body.getAngle( ) );
 				tutorial.setPosition(
 						xpos * Util.BOX_TO_PIXEL - tutorial.getWidth( ) / 2.0f
-								+ 250f, ypos * Util.BOX_TO_PIXEL + 125 );
+								+ 350f, ypos * Util.BOX_TO_PIXEL + 230 );
 				tutorial.setRotation( MathUtils.radiansToDegrees
 						* body.getAngle( ) );
 			}
@@ -1925,7 +1927,7 @@ public class Player extends Entity {
 						screwButtonHeld = true;
 					}
 				} else if ( currentSwitch != null && switchTimer == 0 ) {
-					Gdx.app.log( "currentSwitch: ", "" + currentSwitch );
+					//Gdx.app.log( "currentSwitch: ", "" + currentSwitch );
 					currentSwitch.doAction( );
 					switchTimer = 60;
 				} else {
@@ -2103,6 +2105,41 @@ public class Player extends Entity {
 	 */
 	public boolean isSteamCollide( ) {
 		return steamCollide;
+	}
+	
+	/**
+	 * initializes tutorials array
+	 */
+	private void initTutorials( ) {
+		bubbleTex = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
+				+ "/common/tutorial/thought_bubble.png" );
+		tutorials = new Texture[9];
+		tutorials[0] = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
+				+ "/common/tutorial/move_jump0.png" );
+		tutorials[1] = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
+				+ "/common/tutorial/move_jump1.png" );
+		tutorials[2] = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
+				+ "/common/tutorial/screw0.png" );
+		tutorials[3] = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
+				+ "/common/tutorial/screw1.png" );
+		tutorials[4] = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
+				+ "/common/tutorial/switch0.png" );
+		tutorials[5] = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
+				+ "/common/tutorial/switch1.png" );
+		tutorials[6] = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
+				+ "/common/tutorial/dubba0.png" );
+		tutorials[7] = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
+				+ "/common/tutorial/dubba1.png" );
+		tutorials[8] = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
+				+ "/common/tutorial/dubba2.png" );
+
+		bubble = constructSprite( bubbleTex );
+		tutorial = constructSprite( tutorials[0] );
+
+		bubble.flip( true, false );
+		
+		int[] test = { 6, 7, 8 };
+		tutorialIndexes = test;
 	}
 
 	/**
@@ -2291,13 +2328,9 @@ public class Player extends Entity {
 			float vol = FOOTSTEP_VOLUME_DROP + amount
 					* ( 1.0f - FOOTSTEP_VOLUME_DROP );
 			if ( sounds.isDelayed( "footstep1" ) ) {
-				sounds.setSoundVolume( "footstep2", vol );
-				sounds.setSoundPitch( "footstep2", pitch );
-				sounds.playSound( "footstep2", rate );
+				sounds.playSound( "footstep2", sounds.randomSoundId( "footstep2" ), rate, vol, pitch);
 			} else {
-				sounds.setSoundVolume( "footstep1", vol );
-				sounds.setSoundPitch( "footstep1", pitch );
-				sounds.playSound( "footstep1", rate );
+				sounds.playSound( "footstep1", sounds.randomSoundId( "footstep1" ), rate, vol, pitch);
 				sounds.setDelay( "footstep2", 0.5f * rate );
 			}
 		}

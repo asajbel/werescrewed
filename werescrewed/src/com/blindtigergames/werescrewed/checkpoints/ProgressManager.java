@@ -3,6 +3,7 @@ package com.blindtigergames.werescrewed.checkpoints;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
@@ -180,6 +181,8 @@ public class ProgressManager {
 	private void buildGhost( Player player ) {
 		Entity ghost;
 		// build ghost entity
+		Gdx.app.log("ghost:", player.name);
+		
 		ghost = new Entity( "player1Ghost", player.getPositionPixel( ).cpy( )
 				.add( -64f, 64f ), player.spinemator.getBodyAtlas( ).findRegion( "ghost" ), null,
 				false, 0f );

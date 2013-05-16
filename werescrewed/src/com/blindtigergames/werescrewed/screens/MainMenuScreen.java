@@ -24,7 +24,7 @@ class MainMenuScreen extends Screen {
 	private Sprite transition = null;
 	private OrthographicCamera camera = null;
 	private BitmapFont font = null;
-	BitmapFont fancyFont;
+	private BitmapFont fancyFont;
 	private Label headingLabel = null;
 	private TextButton exitButton = null;
 	private int lineHeight = 0;
@@ -69,21 +69,19 @@ class MainMenuScreen extends Screen {
 			System.exit( 1 );
 		}
 		
-
-		
 		if ( Gdx.input.isKeyPressed( Keys.Z ) ) {
-			ScreenManager.getInstance( ).show( ScreenType.PHYSICS);
+			ScreenManager.getInstance( ).show( ScreenType.PHYSICS );
 		}
 		
 		if ( Gdx.input.isKeyPressed( Keys.D ) ) {
-			ScreenManager.getInstance( ).show( ScreenType.LOADING_2);
+			ScreenManager.getInstance( ).show( ScreenType.LOADING_2 );
 		}
 		
 		if ( Gdx.input.isKeyPressed( Keys.A ) ) {
-			ScreenManager.getInstance( ).show( ScreenType.LOADING_1);
+			ScreenManager.getInstance( ).show( ScreenType.LOADING_1 );
 		}
 		if ( Gdx.input.isKeyPressed( Keys.H ) ) {
-			ScreenManager.getInstance( ).show( ScreenType.HAZARD);
+			ScreenManager.getInstance( ).show( ScreenType.HAZARD );
 		}
 		
 		
