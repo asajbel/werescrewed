@@ -34,6 +34,8 @@ import com.blindtigergames.werescrewed.entity.action.AnchorDeactivateAction;
 import com.blindtigergames.werescrewed.entity.action.DestroyPlatformJointAction;
 import com.blindtigergames.werescrewed.entity.action.EntityActivateMoverAction;
 import com.blindtigergames.werescrewed.entity.action.EntityDeactivateMoverAction;
+import com.blindtigergames.werescrewed.entity.action.HazardActivateAction;
+import com.blindtigergames.werescrewed.entity.action.HazardDeactivateAction;
 import com.blindtigergames.werescrewed.entity.action.SetTutorialAction;
 import com.blindtigergames.werescrewed.entity.builders.EventTriggerBuilder;
 import com.blindtigergames.werescrewed.entity.builders.MoverBuilder;
@@ -1629,6 +1631,11 @@ public class LevelFactory {
 		Fire fire = new Fire( item.name, new Vector2( xPos, yPos ), width,
 				height, level.world, true );
 
+		if ( item.props.containsKey( "flip" ) ) {
+			fire.flip( );
+		}
+		
+		
 		String skelAttach = item.skeleton;
 		Skeleton parent = loadSkeleton( skelAttach );
 		parent.addHazard( fire );
@@ -1682,7 +1689,48 @@ public class LevelFactory {
 		if ( item.props.containsKey( "repeatable" ) ) {
 			ps.setRepeatable( true );
 		}
-
+		
+		if ( item.props.containsKey( "active" ) ) {
+			ps.setState(true);
+		}
+		
+		if ( item.props.containsKey( "controlthis" ) ) {
+			String s = item.props.get( "controlthis" );
+			Entity attach = entities.get( s );
+			ps.actOnEntity = true;
+			ps.addEntityToTrigger( attach );
+		}
+		
+		if ( item.props.containsKey( "controlthis2" ) ) {
+			String s = item.props.get( "controlthis2" );
+			Entity attach = entities.get( s );
+			
+			ps.addEntityToTrigger( attach );
+		}
+		
+		if ( item.props.containsKey( "controlthis3" ) ) {
+			String s = item.props.get( "controlthis3" );
+			Entity attach = entities.get( s );
+			
+			ps.addEntityToTrigger( attach );
+		}
+		
+		if ( item.props.containsKey( "beginaction" ) ) {
+			String action = item.props.get( "beginaction" );
+			
+			if(action.equals( "activate_hazard" )){
+				ps.addBeginIAction( new HazardActivateAction() );
+			}
+		}
+		
+		if ( item.props.containsKey( "endaction" ) ) {
+			String action = item.props.get( "endaction" );
+			
+			if(action.equals( "deactivate_hazard" )){
+				ps.addEndIAction( new HazardDeactivateAction() );
+			}
+		}
+		
 		parent.addEventTrigger( ps );
 		entities.put( item.name, ps );
 

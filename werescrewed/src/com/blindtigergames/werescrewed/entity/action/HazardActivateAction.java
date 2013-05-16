@@ -17,7 +17,7 @@ public class HazardActivateAction implements IAction {
 
 		if ( entity.getEntityType( ) == EntityType.HAZARD ) {
 			Hazard h = ( Hazard ) entity;
-			h.setActive( true );
+			h.setActiveHazard( true );
 
 		}
 
