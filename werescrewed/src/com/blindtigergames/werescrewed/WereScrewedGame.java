@@ -80,7 +80,8 @@ public class WereScrewedGame extends Game {
 	@Override
 	public void dispose( ) {
 		super.dispose( );
-		ScreenManager.getInstance( ).dispose( );
+		manager.dispose( ); 
+//		ScreenManager.getInstance( ).dispose( );
 	}
 
 	@Override
@@ -133,7 +134,7 @@ public class WereScrewedGame extends Game {
 	}
 
 	public void restart( ) {
-		this.dispose( );
+//		this.dispose( );
 		manager = new AssetManager( );
 		ScreenManager.getInstance( ).initialize( this );
 		ScreenManager.getInstance( ).show( ScreenType.LOADING );
@@ -141,15 +142,13 @@ public class WereScrewedGame extends Game {
 	
 	public void pause( ) {
 		super.pause( );
-		this.dispose( );
 	}
 	
 	public void resume( ) {
 		super.resume( );
-		this.dispose( );
-		manager = new AssetManager( );
-		ScreenManager.getInstance( ).initialize( this );
-		ScreenManager.getInstance( ).show( ScreenType.LOADING );
+//		manager = new AssetManager( );
+//		ScreenManager.getInstance( ).initialize( this );
+//		ScreenManager.getInstance( ).show( ScreenType.LOADING );
 	}
 
 	public void update( float dT ) {
