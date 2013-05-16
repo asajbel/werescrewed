@@ -8,7 +8,7 @@
 
 ##sounds
 /common/sounds/inceptionbutton.mp3
-/common/sounds/jump.ogg
+/levels/alphabot/sounds/gear.ogg
 
 
 
