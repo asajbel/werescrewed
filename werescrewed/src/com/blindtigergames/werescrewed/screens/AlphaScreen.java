@@ -1580,7 +1580,7 @@ public class AlphaScreen extends Screen {
 		TextureAtlas head_right = WereScrewedGame.manager
 				.getAtlas( "head_right" );
 
-		Vector2 pos = new Vector2( -1475, -680 );
+		Vector2 pos = new Vector2( -1475, -590 );
 		Sprite s;
 		float scale = 1f / .75f;
 		s = head_left.createSprite( "head_left" );
