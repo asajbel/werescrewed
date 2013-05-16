@@ -17,6 +17,7 @@ import com.blindtigergames.werescrewed.gui.OptionButton;
 import com.blindtigergames.werescrewed.gui.Slider;
 import com.blindtigergames.werescrewed.gui.TextButton;
 import com.blindtigergames.werescrewed.screens.ScreenSwitchHandler;
+import com.blindtigergames.werescrewed.sound.SoundManager;
 import com.blindtigergames.werescrewed.sound.SoundManager.SoundType;
 
 class OptionsScreen extends Screen {
@@ -30,6 +31,7 @@ class OptionsScreen extends Screen {
 	private int lineHeight = 0;
 	private final int VOLUME_MAX = 100;
 	private final int VOLUME_MIN = 0;
+	private final float SHIFT = 1.2f;
 	//private boolean subs = false;
 
 	private OrthographicCamera camera = null;
@@ -155,13 +157,13 @@ class OptionsScreen extends Screen {
 		//subBox.setY( subtitles.getY( ) );
 
 		musicSlider.setXPos( ( float ) musicSlider.getMinPos( )
-				+ ( float ) musicSlider.getCurrentValue( ) );
+				+ ( SoundManager.globalVolume.get( SoundType.MUSIC ) * 100 * SHIFT ) );
 		musicSlider.setYPos( ( float ) musicSlider.getY( ) );
 		soundSlider.setXPos( ( float ) soundSlider.getMinPos( )
-				+ ( float ) soundSlider.getCurrentValue( ) );
+				+ ( SoundManager.globalVolume.get( SoundType.SFX ) * 100 * SHIFT ) );
 		soundSlider.setYPos( ( float ) soundSlider.getY( ) );
 		noiseSlider.setXPos( ( float ) noiseSlider.getMinPos( ) 
-				+ ( float ) noiseSlider.getCurrentValue( ) );
+				+ ( SoundManager.globalVolume.get( SoundType.NOISE ) * 100 * SHIFT ) );
 		noiseSlider.setYPos( ( float ) noiseSlider.getY( ) );
 	}
 

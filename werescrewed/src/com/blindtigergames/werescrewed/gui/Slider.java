@@ -15,6 +15,7 @@ public class Slider extends OptionControl {
 	private float yPos = 0;   //Y position of screw sprite, should not change after initializing
 	private float maxPos = 0; // The farthest the screw on the slider can go to the right
 	private float minPos = 0; // The farthest the screw on the slider can go to the left
+	private final float SHIFT = 1.2f;
 	private SoundType type = null;
 	
 	public Slider( int min, int max, int current, int x, int y, SoundType type ) {
@@ -69,27 +70,23 @@ public class Slider extends OptionControl {
 
 	// Decreases volume
 	public void moveLeft( ) {
-		if ( curValue > minValue ) {
-			curValue--;
-			xPos -= 1.2f;
+		if ( SoundManager.globalVolume.get( type ) > 0.0f ) {
+			xPos -= SHIFT;
 			if ( xPos < minPos )
 				xPos = minPos;
 			screw.setX( xPos );
-			if ( SoundManager.globalVolume.get( type ) > 0.0f )
-				SoundManager.globalVolume.put( type, SoundManager.globalVolume.get( type ) - 0.01f ); 
+			SoundManager.globalVolume.put( type, SoundManager.globalVolume.get( type ) - 0.01f ); 
 		}
 	}
 
 	// Increases volume
 	public void moveRight( ) {
-		if ( curValue < maxValue ) {
-			curValue++;
-			xPos += 1.2f;
+		if ( SoundManager.globalVolume.get( type ) < 1.0f ) {
+			xPos += SHIFT;
 			if ( xPos > maxPos )
 				xPos = maxPos;
 			screw.setX( xPos );
-			if ( SoundManager.globalVolume.get( type ) < 1.0f )
-				SoundManager.globalVolume.put( type, SoundManager.globalVolume.get( type ) + 0.01f ); 
+			SoundManager.globalVolume.put( type, SoundManager.globalVolume.get( type ) + 0.01f ); 
 		}
 	}
 
