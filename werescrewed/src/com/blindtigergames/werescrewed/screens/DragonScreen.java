@@ -47,15 +47,10 @@ public class DragonScreen extends Screen {
 		initPuzzleScrews( );
 		tail3Pipes( );
 		bodySkeletons( );
+		buildAllCannons();
+		
 
-		Skeleton balloon3CannonSkeleton = ( Skeleton ) LevelFactory.entities
-				.get( "balloon3_cannon_skeleton" );
-		balloon3CannonSkeleton.setFgFade( false );
-		balloon3CannonSkeleton.setLocalRot( -Util.PI / 4 );
-
-		buildCannon( balloon3CannonSkeleton,
-				balloon3CannonSkeleton.getPositionPixel( ), 200, 200 );
-
+		
 		Skeleton jaw_skeleton = ( Skeleton ) LevelFactory.entities
 				.get( "jaw_skeleton" );
 		Timeline t = Timeline.createSequence( );
@@ -243,7 +238,7 @@ public class DragonScreen extends Screen {
 		return new TimelineTweenMover( t.start( ) );
 	}
 
-	void buildCannon( Skeleton skel, Vector2 pos, int widthPix, int heightPix ) {
+	void buildCannon( Skeleton skel, Vector2 pos, int widthPix, int heightPix, float power) {
 		if ( widthPix <= 64 )
 			throw new RuntimeException(
 					"Cannon width needs to be greater than 64 (2tiles) to work properly" );
@@ -284,7 +279,7 @@ public class DragonScreen extends Screen {
 		EventTrigger et = etb.name( "cannon-trigger" ).setVerts( triggerVerts )
 				.extraBorder( 0 ).position( eventPos )
 				// .addEntity( s )
-				.beginAction( new CannonLaunchAction( skel, 0.5f, 1 ) )
+				.beginAction( new CannonLaunchAction( skel, power, 1 ) )
 				.repeatable( ).build( );
 		skel.addEventTrigger( et );
 
@@ -419,5 +414,31 @@ public class DragonScreen extends Screen {
 
 		bodyInsideSkeleton1
 				.addMover( new RotateTweenMover( bodyInsideSkeleton1 ) );
+	}
+	
+	void buildAllCannons(){
+		Skeleton balloon3CannonSkeleton = ( Skeleton ) LevelFactory.entities
+				.get( "balloon3_cannon_skeleton" );
+		balloon3CannonSkeleton.setFgFade( false );
+		balloon3CannonSkeleton.setLocalRot( -Util.PI / 4 );
+
+		buildCannon( balloon3CannonSkeleton,
+				balloon3CannonSkeleton.getPositionPixel( ), 200, 200, 0.5f );
+
+		for(int i = 1; i <5; ++i){
+			Skeleton skel = ( Skeleton ) LevelFactory.entities
+					.get( "body_cannon_skeleton" +i );
+			skel.setFgFade( false );
+			
+			if(i % 2 == 1){
+				skel.setLocalRot( Util.PI / 6 );
+			}else{
+				skel.setLocalRot( -Util.PI / 6 );
+			}
+			buildCannon(skel, skel.getPositionPixel( ), 200, 200, 0.33f);
+			
+		}
+		
+		
 	}
 }
