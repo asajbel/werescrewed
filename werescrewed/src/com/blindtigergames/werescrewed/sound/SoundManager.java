@@ -31,7 +31,7 @@ public class SoundManager {
 		 */
 		SPEECH
 	}
-
+	
 	public static EnumMap< SoundType, Float > globalVolume;
 	public ArrayHash< String, SoundRef > sounds;
 
@@ -350,6 +350,8 @@ public class SoundManager {
 		protected float range;
 		protected float falloff;
 		protected Vector2 offset;
+		
+		public static final float VOLUME_MINIMUM = 0.001f;
 		protected static final float DELAY_MINIMUM = 0.0001f;
 		/*
 		 * Puts an initial delay on all sounds when they're first loaded. This
@@ -380,7 +382,9 @@ public class SoundManager {
 						Math.min( getSoundVolume( ) * volume * extVol, 1.0f ),
 						0.0f );
 				float finalPitch = pitch * extPitch;
-				id = sound.play( finalVol, finalPitch, pan );
+				if (finalVol > VOLUME_MINIMUM){
+					id = sound.play( finalVol, finalPitch, pan );
+				}
 				soundIds.add( id );
 				delay += delayAmount;
 			}
@@ -419,7 +423,8 @@ public class SoundManager {
 
 		public void setVolume( float extVol ) {
 			if ( loopId >= 0 ) {
-				sound.setVolume( loopId, getNoiseVolume( ) * volume * extVol );
+				float vol = getNoiseVolume( ) * volume * extVol;
+				sound.setVolume( loopId, vol);
 			}
 		}
 

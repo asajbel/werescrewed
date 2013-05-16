@@ -365,23 +365,25 @@ public class GenericEntityBuilder< B extends GenericEntityBuilder< ? >> {
 				}
 				for (String name: sounds.keySet()){
 					for (HashMap<String,String> subSounds : sounds.getAll( name )){
-						SoundRef sound = soundMan.getSound( name, WereScrewedGame.dirHandle + subSounds.get( "asset" ) );
-						if (subSounds.containsKey( "volume" ))
-							sound.setInternalVolume(Float.parseFloat( subSounds.get("volume") ));
-						if (subSounds.containsKey( "pitch" ))
-							sound.setInternalPitch(Float.parseFloat( subSounds.get("pitch") ));
-						if (subSounds.containsKey( "pan" ))
-							sound.setPan(Float.parseFloat( subSounds.get("pan") ));
-						if (subSounds.containsKey( "range" ))
-							sound.setRange(Float.parseFloat( subSounds.get("range") ));
-						if (subSounds.containsKey( "falloff" ))
-							sound.setFalloff(Float.parseFloat( subSounds.get("falloff") ));
-						if (subSounds.containsKey( "volumerange" ))
-							sound.setVolumeRange(Float.parseFloat( subSounds.get("volumerange") ));
-						if (subSounds.containsKey( "pitchrange" ))
-							sound.setPitchRange(Float.parseFloat( subSounds.get("pitchrange") ));
-						if (name.contains("collision")){
-							soundMan.setDelay( name, 1.0f );
+						if (!subSounds.get( "asset" ).equals( "" )){
+							SoundRef sound = soundMan.getSound( name, WereScrewedGame.dirHandle + subSounds.get( "asset" ) );
+							if (subSounds.containsKey( "volume" ))
+								sound.setInternalVolume(Float.parseFloat( subSounds.get("volume") ));
+							if (subSounds.containsKey( "pitch" ))
+								sound.setInternalPitch(Float.parseFloat( subSounds.get("pitch") ));
+							if (subSounds.containsKey( "pan" ))
+								sound.setPan(Float.parseFloat( subSounds.get("pan") ));
+							if (subSounds.containsKey( "range" ))
+								sound.setRange(Float.parseFloat( subSounds.get("range") ));
+							if (subSounds.containsKey( "falloff" ))
+								sound.setFalloff(Float.parseFloat( subSounds.get("falloff") ));
+							if (subSounds.containsKey( "volumerange" ))
+								sound.setVolumeRange(Float.parseFloat( subSounds.get("volumerange") ));
+							if (subSounds.containsKey( "pitchrange" ))
+								sound.setPitchRange(Float.parseFloat( subSounds.get("pitchrange") ));
+							if (name.contains("collision")){
+								soundMan.setDelay( name, 1.0f );
+							}
 						}
 					}
 				}

@@ -351,7 +351,5 @@ public class PuzzleScrew extends Screw {
 	@Override
 	public void loadSounds( ) {
 		super.loadSounds( );
-		sounds.getSound( "mindepth", "" );
-		sounds.getSound( "maxdepth", "" );
 	}
 }
