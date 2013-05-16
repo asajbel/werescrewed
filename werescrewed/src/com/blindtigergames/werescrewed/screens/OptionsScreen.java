@@ -3,23 +3,19 @@ package com.blindtigergames.werescrewed.screens;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input.Keys;
-import com.badlogic.gdx.controllers.Controller;
-import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.entity.Sprite;
 import com.blindtigergames.werescrewed.graphics.SpriteBatch;
-import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.gui.Button;
 import com.blindtigergames.werescrewed.gui.CheckBox;
 import com.blindtigergames.werescrewed.gui.Label;
 import com.blindtigergames.werescrewed.gui.OptionButton;
 import com.blindtigergames.werescrewed.gui.Slider;
 import com.blindtigergames.werescrewed.gui.TextButton;
-import com.blindtigergames.werescrewed.input.MyControllerListener;
 import com.blindtigergames.werescrewed.screens.ScreenSwitchHandler;
 import com.blindtigergames.werescrewed.sound.SoundManager.SoundType;
 
@@ -28,14 +24,16 @@ class OptionsScreen extends Screen {
 	private SpriteBatch batch = null;
 	private BitmapFont font = null;
 	private BitmapFont fancyFont = null;
+	@SuppressWarnings( "unused" )
 	private Sprite menuBG = null;
 	private Sprite transition = null;
 	private int lineHeight = 0;
 	private final int VOLUME_MAX = 100;
 	private final int VOLUME_MIN = 0;
 	//private boolean subs = false;
+
 	private OrthographicCamera camera = null;
-	
+
 	private Label screenLabel = null;
 	private Slider musicSlider = null;
 	private Slider soundSlider = null;
@@ -55,22 +53,34 @@ class OptionsScreen extends Screen {
 	 * Sound Effects: Changes the volume of the sound effects.
 	 * Noise: Changes the volume of the noise work.
 	 * Subtitles: Turns subtitle on and off for the noise work.
+=======
+
+	/*
+	 * Things needed... Controls: Shows a visual map of the controls depending
+	 * on what inputs are being used. Music: Changes the volume of the music.
+	 * Sound Effects: Changes the volume of the sound effects. Voice: Changes
+	 * the volume of the voice work. Subtitles: Turns subtitle on and off for
+	 * the voice work.
+>>>>>>> 5deabcea9b2f923a7f65fba77194e01e4deb11ad
 	 */
-	public OptionsScreen(){
+	public OptionsScreen( ) {
 		batch = new SpriteBatch( );
 		font = new BitmapFont( );
 		fancyFont = WereScrewedGame.manager.getFont( "longdon" );
-		
+
 		Texture trans = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-				 + "/menu/transition.png", Texture.class ); 
+				+ "/menu/transition.png", Texture.class );
 		transition = new Sprite( trans );
-		
+
+		@SuppressWarnings( "unused" )
 		int width = Gdx.graphics.getWidth( );
-		int height = Gdx.graphics.getHeight( ); 
+		@SuppressWarnings( "unused" )
+		int height = Gdx.graphics.getHeight( );
 		lineHeight = Math.round( 2.5f * font.getCapHeight( ) + 40 );
-		//the following are placeholder displays. Add actual option buttons here later
-		screenLabel = new Label("OPTIONS", fancyFont);
-		
+		// the following are placeholder displays. Add actual option buttons
+		// here later
+		screenLabel = new Label( "OPTIONS", fancyFont );
+
 		loadButtons( );
 	}
 
@@ -82,13 +92,13 @@ class OptionsScreen extends Screen {
 	@Override
 	public void hide( ) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void pause( ) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -105,11 +115,11 @@ class OptionsScreen extends Screen {
 		//subtitles.draw( batch, camera );
 		creditsButton.draw(batch, camera );
 		backButton.draw( batch, camera );
-		
+
 		if ( !finish )
 			setAlpha( -0.02f );
 		transition.draw( batch, alpha );
-		
+
 		batch.end( );
 	}
 
@@ -121,10 +131,10 @@ class OptionsScreen extends Screen {
 		int centerX = width / 2;
 		int leftX = width / 4;
 		int centerY = height / 2;
-		
+
 		transition.setPosition( 0, 0 );
-		
-		screenLabel.setX( centerX - screenLabel.getWidth() / 2 );
+
+		screenLabel.setX( centerX - screenLabel.getWidth( ) / 2 );
 		screenLabel.setY( centerY + 7 * ( lineHeight - 20 ) );
 		controls.setX( leftX - controls.getWidth( ) / 2 );
 		controls.setY( centerY + 4 * lineHeight );
@@ -143,26 +153,30 @@ class OptionsScreen extends Screen {
 		
 		//subBox.setX( subtitles.getX( ) * 4 );
 		//subBox.setY( subtitles.getY( ) );
-		musicSlider.setXPos( ( float ) musicSlider.getMinPos( ) + ( float ) musicSlider.getCurrentValue( ) );
+
+		musicSlider.setXPos( ( float ) musicSlider.getMinPos( )
+				+ ( float ) musicSlider.getCurrentValue( ) );
 		musicSlider.setYPos( ( float ) musicSlider.getY( ) );
-		soundSlider.setXPos( ( float ) soundSlider.getMinPos( ) + ( float ) soundSlider.getCurrentValue( ) );
+		soundSlider.setXPos( ( float ) soundSlider.getMinPos( )
+				+ ( float ) soundSlider.getCurrentValue( ) );
 		soundSlider.setYPos( ( float ) soundSlider.getY( ) );
-		noiseSlider.setXPos( ( float ) noiseSlider.getMinPos( ) + ( float ) noiseSlider.getCurrentValue( ) );
+		noiseSlider.setXPos( ( float ) noiseSlider.getMinPos( ) 
+				+ ( float ) noiseSlider.getCurrentValue( ) );
 		noiseSlider.setYPos( ( float ) noiseSlider.getY( ) );
 	}
 
 	@Override
 	public void resume( ) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void show( ) {
 		// TODO Auto-generated method stub
-		
+
 	}
-	
+
 	private void loadButtons( ) {
 		musicSlider = new Slider ( VOLUME_MIN, VOLUME_MAX, VOLUME_MAX / 2, SoundType.MUSIC );
 		soundSlider = new Slider ( VOLUME_MIN, VOLUME_MAX, VOLUME_MAX / 2, SoundType.SFX );
@@ -181,9 +195,9 @@ class OptionsScreen extends Screen {
 				new ScreenSwitchHandler(ScreenType.CREDITS));
 		backButton = new TextButton( "Back", fancyFont, new ScreenSwitchHandler(
 				ScreenType.MAIN_MENU ) );
-		
+
 		controls.setColored( true );
-		
+
 		Buttons = new ArrayList< Button >( );
 		Buttons.add( controls );
 		Buttons.add( music );

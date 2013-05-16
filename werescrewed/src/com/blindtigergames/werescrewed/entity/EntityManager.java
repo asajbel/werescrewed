@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import com.badlogic.gdx.Gdx;
 import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 
 /**
@@ -74,9 +73,10 @@ public class EntityManager {
 			entryToRemove = itRemove.next( );
 			Entity entityToRemove = entryToRemove.getValue( );
 			entityList.remove( entryToRemove.getKey( ) );
-			Gdx.app.log(
-					"EntityManager",
-					"class com.blindtigergames.werescrewed.entity.EntityManager: DESTROYING ENTITY BODY" );
+			// Gdx.app.log(
+			// "EntityManager",
+			// "class com.blindtigergames.werescrewed.entity.EntityManager: DESTROYING ENTITY BODY"
+			// );
 			entityToRemove.world.destroyBody( entityToRemove.body );
 		}
 		entitiesToRemove.clear( );
@@ -88,9 +88,10 @@ public class EntityManager {
 			entrySkelToRemove = jitRemove.next( );
 			Skeleton skeletonToRemove = entrySkelToRemove.getValue( );
 			skeletonToRemove.world.destroyBody( skeletonToRemove.body );
-			Gdx.app.log(
-					"EntityManager",
-					"class com.blindtigergames.werescrewed.entity.EntityManager: DESTROYING SKELETON BODY" );
+			// Gdx.app.log(
+			// "EntityManager",
+			// "class com.blindtigergames.werescrewed.entity.EntityManager: DESTROYING SKELETON BODY"
+			// );
 			skeletonList.remove( entrySkelToRemove.getKey( ) );
 		}
 		skeletonsToRemove.clear( );
@@ -148,7 +149,7 @@ public class EntityManager {
 	 *            - Object value removed from the HashMap
 	 */
 	public void removeEntity( String name, Entity type ) {
-		Gdx.app.log( "EntityManager", "ADDING TO REMOVE LIST" );
+		// Gdx.app.log( "EntityManager", "ADDING TO REMOVE LIST" );
 		entitiesToRemove.put( name, type );
 		// entityList.remove( name );
 	}
@@ -162,9 +163,9 @@ public class EntityManager {
 	 *            - Object value removed from the HashMap
 	 */
 	public void removeSkeleton( String name, Skeleton type ) {
-		Gdx.app.log( "EntityManager",
-				"class com.blindtigergames.werescrewed.entity.EntityManager: adding skeleton "
-						+ name + " to remove list" );
+		// Gdx.app.log( "EntityManager",
+		// "class com.blindtigergames.werescrewed.entity.EntityManager: adding skeleton "
+		// + name + " to remove list" );
 		skeletonsToRemove.put( name, type );
 		// skeletonList.remove( name );
 	}

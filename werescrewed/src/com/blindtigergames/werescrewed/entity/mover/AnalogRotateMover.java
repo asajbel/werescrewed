@@ -15,7 +15,7 @@ public class AnalogRotateMover implements IMover {
 	private float speed;
 	private float lastVal = 0;
 	private Body transformBody;
-	
+
 	/**
 	 * 
 	 * @param startAngle
@@ -35,7 +35,7 @@ public class AnalogRotateMover implements IMover {
 	@Override
 	public void move( float deltaTime, Body body ) {
 		if ( speedSteps > 0 ) {
-			speedSteps--;		
+			speedSteps--;
 			if ( clockWise ) {
 				transformBody.setAngularVelocity( -speed );
 			} else {
@@ -44,13 +44,14 @@ public class AnalogRotateMover implements IMover {
 		} else {
 			transformBody.setAngularVelocity( 0 );
 			if ( body.getUserData( ) instanceof Platform ) {
-				Platform entity ;
+				Platform entity;
 				entity = ( Platform ) body.getUserData( );
-				transformBody.setTransform( body.getPosition( ), entity.getLocalRot( ) );
+				transformBody.setTransform( body.getPosition( ),
+						entity.getLocalRot( ) );
 			}
 		}
 		if ( body.getUserData( ) instanceof Platform ) {
-			Platform entity ;
+			Platform entity;
 			entity = ( Platform ) body.getUserData( );
 			entity.setLocalRot( transformBody.getAngle( ) );
 		}
@@ -58,7 +59,8 @@ public class AnalogRotateMover implements IMover {
 
 	@Override
 	public void runPuzzleMovement( Screw screw, float screwVal, Platform p ) {
-		if (p.currentMover( ) == null || p.currentMover( ).getMoverType( ) != puzzleType ) {
+		if ( p.currentMover( ) == null
+				|| p.currentMover( ).getMoverType( ) != puzzleType ) {
 			p.setMoverAtCurrentState( this );
 			transformBody.setTransform( p.getPosition( ), p.getLocalRot( ) );
 		}

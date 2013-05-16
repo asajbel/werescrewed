@@ -2,7 +2,6 @@ package com.blindtigergames.werescrewed.entity.screws;
 
 import java.util.ArrayList;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
@@ -22,8 +21,8 @@ import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 import com.blindtigergames.werescrewed.graphics.TextureAtlas;
 import com.blindtigergames.werescrewed.player.Player;
 import com.blindtigergames.werescrewed.util.Metrics;
-import com.blindtigergames.werescrewed.util.Util;
 import com.blindtigergames.werescrewed.util.Metrics.TrophyMetric;
+import com.blindtigergames.werescrewed.util.Util;
 
 /**
  * resurrect screws allow one alive player to screw in a dead player once the
@@ -42,7 +41,7 @@ public class ResurrectScrew extends Screw {
 	private final int startFrame = 15;
 	private final int lastMotionFrame = 14;
 	private final int animeSteps = 12;
-	
+
 	/**
 	 * 
 	 * @param name
@@ -118,7 +117,7 @@ public class ResurrectScrew extends Screw {
 			prevDiff = diff;
 
 			body.setAngularVelocity( 1 );
-			if(newDiff != 0)
+			if ( newDiff != 0 )
 				newDiff /= newDiff;
 			newDiff *= -1;
 			depth += newDiff;
@@ -169,7 +168,7 @@ public class ResurrectScrew extends Screw {
 			prevDiff = diff;
 
 			body.setAngularVelocity( -1 );
-			if(newDiff != 0)
+			if ( newDiff != 0 )
 				newDiff /= newDiff;
 			depth += newDiff;
 			if ( diff != 0 ) {
@@ -242,14 +241,15 @@ public class ResurrectScrew extends Screw {
 				deadPlayer.respawnPlayer( );
 				remove( );
 				active = false;
-				
-				//Trophy check for revived player
-				if ( deadPlayer.name == Metrics.player1( ) ){
-					//If player 1 is revived, give player 2 the point
+
+				// Trophy check for revived player
+				if ( deadPlayer.name == Metrics.player1( ) ) {
+					// If player 1 is revived, give player 2 the point
 					Metrics.incTrophyMetric( TrophyMetric.P2REVIVES, 0.5f );
-					//System.out.println("player1 revive " + Metrics.getTrophyMetric( TrophyMetric.P2REVIVES ) );
-				} else if ( deadPlayer.name == Metrics.player2() ){
-					//If player 2 is revived, give player 1 the point
+					// System.out.println("player1 revive " +
+					// Metrics.getTrophyMetric( TrophyMetric.P2REVIVES ) );
+				} else if ( deadPlayer.name == Metrics.player2( ) ) {
+					// If player 2 is revived, give player 1 the point
 					Metrics.incTrophyMetric( TrophyMetric.P1REVIVES, 0.5f );
 				}
 			}

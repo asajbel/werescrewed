@@ -267,7 +267,8 @@ public class StructureScrew extends Screw {
 					screwUIAnimator.speed( -1 );
 				}
 			}
-			if ( screwInterface.sprite.getAnimator( ).getFrame( ) > 0 || playerAttached ) {
+			if ( screwInterface.sprite.getAnimator( ).getFrame( ) > 0
+					|| playerAttached ) {
 				screwInterface.sprite.setPosition( this.getPositionPixel( )
 						.sub( interfaceOffset ) );
 				screwInterface.sprite.update( deltaTime );

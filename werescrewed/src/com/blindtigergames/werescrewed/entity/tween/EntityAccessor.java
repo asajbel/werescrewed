@@ -2,7 +2,6 @@ package com.blindtigergames.werescrewed.entity.tween;
 
 import aurelienribon.tweenengine.TweenAccessor;
 
-import com.badlogic.gdx.Gdx;
 import com.blindtigergames.werescrewed.entity.Entity;
 
 /*******************************************************************************
@@ -52,7 +51,8 @@ public class EntityAccessor implements TweenAccessor< Entity > {
 			returnValues[ 0 ] = target.body.getAngularVelocity( );
 			return 1;
 		default:
-			Gdx.app.log( "EntityAccessor", "You tries using Entity Accessor get with a wrong tween type." );
+			// Gdx.app.log( "EntityAccessor",
+			// "You tries using Entity Accessor get with a wrong tween type." );
 			assert false;
 			return -1;
 		}
@@ -61,33 +61,40 @@ public class EntityAccessor implements TweenAccessor< Entity > {
 	@Override
 	public void setValues( Entity target, int tweenType, float[ ] newValues ) {
 		// TODO Auto-generated method stub
-		switch ( tweenType ){
+		switch ( tweenType ) {
 		case POSITION_X:
-			target.body.setTransform( newValues[0], target.body.getPosition( ).y, target.body.getAngle( ) );
+			target.body.setTransform( newValues[ 0 ],
+					target.body.getPosition( ).y, target.body.getAngle( ) );
 			break;
 		case POSITION_Y:
-			target.body.setTransform( target.body.getPosition( ).x, newValues[0], target.body.getAngle( ) );
+			target.body.setTransform( target.body.getPosition( ).x,
+					newValues[ 0 ], target.body.getAngle( ) );
 			break;
 		case POSITION_XY:
-			target.body.setTransform( newValues[0], newValues[1], target.body.getAngle( ) );
+			target.body.setTransform( newValues[ 0 ], newValues[ 1 ],
+					target.body.getAngle( ) );
 			break;
 		case VELOCITY_X:
-			target.body.setLinearVelocity( newValues[0], target.body.getLinearVelocity( ).y );
+			target.body.setLinearVelocity( newValues[ 0 ],
+					target.body.getLinearVelocity( ).y );
 			break;
 		case VELOCITY_Y:
-			target.body.setLinearVelocity( target.body.getLinearVelocity( ).x, newValues[0] );
+			target.body.setLinearVelocity( target.body.getLinearVelocity( ).x,
+					newValues[ 0 ] );
 			break;
 		case VELOCITY_XY:
-			target.body.setLinearVelocity( newValues[0], newValues[1] );
+			target.body.setLinearVelocity( newValues[ 0 ], newValues[ 1 ] );
 			break;
 		case ROTATION:
-			target.body.setTransform( target.body.getPosition( ), newValues[0] );
+			target.body
+					.setTransform( target.body.getPosition( ), newValues[ 0 ] );
 			break;
 		case ANGULAR_VEL:
-			target.body.setAngularVelocity( newValues[0] );
+			target.body.setAngularVelocity( newValues[ 0 ] );
 			break;
 		default:
-			Gdx.app.log( "EntityAccessor", "You tries using Entity Accessor set with a wrong tween type." );
+			// Gdx.app.log( "EntityAccessor",
+			// "You tries using Entity Accessor set with a wrong tween type." );
 			assert false;
 		}
 	}

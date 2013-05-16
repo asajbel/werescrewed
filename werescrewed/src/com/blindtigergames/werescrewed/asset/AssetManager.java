@@ -2,16 +2,13 @@ package com.blindtigergames.werescrewed.asset;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Random;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.assets.RefCountedContainer;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.utils.GdxRuntimeException;
-import com.badlogic.gdx.utils.ObjectMap;
 import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.entity.platforms.TileSet;
 import com.blindtigergames.werescrewed.graphics.TextureAtlas;
@@ -33,19 +30,20 @@ public class AssetManager extends com.badlogic.gdx.assets.AssetManager {
 	ArrayList< String > palette;
 	HashMap< String, ParticleEffect > particleEffects;
 	HashMap< String, SkeletonData > spineSkeletons;
-	HashMap<Class<?>, String > dummyAssets;
+	HashMap< Class< ? >, String > dummyAssets;
 	Texture robotTexBG;// = "/levels/alphabot/alphabot-interior.png";
 	Texture robotOutlineTex;// = "/levels/alphabot/alphabot-outline.png";
 	Texture robotTexFG;// = "/levels/alphabot/alphabot-outline.png";
-	//TODO: set default values for this
+
+	// TODO: set default values for this
 
 	public AssetManager( ) {
 		super( );
 		atlasMap = new HashMap< String, TextureAtlas >( );
-		fontMap = new HashMap<String, BitmapFont>();
-		palette = new ArrayList<String>();
-		particleEffects = new HashMap<String, ParticleEffect>();
-		dummyAssets = new HashMap<Class<?>, String >();
+		fontMap = new HashMap< String, BitmapFont >( );
+		palette = new ArrayList< String >( );
+		particleEffects = new HashMap< String, ParticleEffect >( );
+		dummyAssets = new HashMap< Class< ? >, String >( );
 	}
 
 	/**
@@ -57,7 +55,8 @@ public class AssetManager extends com.badlogic.gdx.assets.AssetManager {
 	 * @return TileSet with your atlas loaded in.
 	 */
 	public TileSet getTileSet( String name ) {
-		return new TileSet( atlasMap.get( name ), atlasMap.get( name + "-bleed" ) );
+		return new TileSet( atlasMap.get( name ),
+				atlasMap.get( name + "-bleed" ) );
 	}
 
 	/**
@@ -83,11 +82,13 @@ public class AssetManager extends com.badlogic.gdx.assets.AssetManager {
 		atlasMap.put( fileHandle.nameWithoutExtension( ), new TextureAtlas(
 				fileHandle ) );
 	}
-	
-	public TextureAtlas getAtlas(String atlasPackName){
-		TextureAtlas out = atlasMap.get(atlasPackName);
-		if ( out == null ){
-			throw new RuntimeException("AssetManager:getAtlas() no texture atlas by name "+atlasPackName+" is loaded");
+
+	public TextureAtlas getAtlas( String atlasPackName ) {
+		TextureAtlas out = atlasMap.get( atlasPackName );
+		if ( out == null ) {
+			throw new RuntimeException(
+					"AssetManager:getAtlas() no texture atlas by name "
+							+ atlasPackName + " is loaded" );
 		}
 		return atlasMap.get( atlasPackName );
 	}
@@ -110,14 +111,13 @@ public class AssetManager extends com.badlogic.gdx.assets.AssetManager {
 		return atlasMap.get( atlasName );
 	}
 
-	@SuppressWarnings( "unused" )
 	public void loadFont( String fullPathToFont ) {
 		FileHandle fileHandle = Gdx.files.internal( fullPathToFont );
 
 		BitmapFont font = new BitmapFont( fileHandle, false );
-		if ( font == null ) {
-			Gdx.app.log( "AssetManager", "Font is null! " + fileHandle.path( ) );
-		}
+		// if ( font == null ) {
+		// Gdx.app.log( "AssetManager", "Font is null! " + fileHandle.path( ) );
+		// }
 		fontMap.put( fileHandle.nameWithoutExtension( ), font );
 		// Gdx.app.log( "AssetManager", "Size"+fontMap.size(
 		// )+" "+fileHandle.nameWithoutExtension( ) );
@@ -189,68 +189,81 @@ public class AssetManager extends com.badlogic.gdx.assets.AssetManager {
 		super.dispose( );
 		atlasMap.clear( );
 	}
-	
-	/** @param fileName the asset file name
-	 * @return the asset */
+
+	/**
+	 * @param fileName
+	 *            the asset file name
+	 * @return the asset
+	 */
 	@Override
-	public synchronized <T> T get (String fileName, Class<T> type){
-		return get( fileName, type, true);
+	public synchronized < T > T get( String fileName, Class< T > type ) {
+		return get( fileName, type, true );
 	}
 
-	@SuppressWarnings( "unchecked" )
-	public synchronized <T> T get (String fileName, Class<T> type, boolean loadDummies) {
-		try{
+	public synchronized < T > T get( String fileName, Class< T > type,
+			boolean loadDummies ) {
+		try {
 			return super.get( fileName, type );
 		} catch ( GdxRuntimeException err ) {
-			if (loadDummies && dummyAssets.containsKey( type ) && !dummyAssets.get(type).equalsIgnoreCase( fileName )){
-				Gdx.app.log( "AssetManager", err.getMessage( )+"("+type.getSimpleName( )+")");
+			if ( loadDummies && dummyAssets.containsKey( type )
+					&& !dummyAssets.get( type ).equalsIgnoreCase( fileName ) ) {
+				// Gdx.app.log( "AssetManager", err.getMessage(
+				// )+"("+type.getSimpleName( )+")");
 				return get( dummyAssets.get( type ) );
 			} else {
 				throw err;
 			}
 		}
 	}
-	
+
 	public void loadDummyAssets( ) {
-		//String filename = WereScrewedGame.dirHandle + "/common/fail.png";
-		dummyAssets.put( Texture.class, WereScrewedGame.dirHandle + "/common/fail.png" );
-		dummyAssets.put( Sound.class, WereScrewedGame.dirHandle + "/common/fail.wav" );
-		for (Class<?> type: dummyAssets.keySet()){
+		// String filename = WereScrewedGame.dirHandle + "/common/fail.png";
+		dummyAssets.put( Texture.class, WereScrewedGame.dirHandle
+				+ "/common/fail.png" );
+		dummyAssets.put( Sound.class, WereScrewedGame.dirHandle
+				+ "/common/fail.wav" );
+		for ( Class< ? > type : dummyAssets.keySet( ) ) {
 			this.load( dummyAssets.get( type ), type );
 		}
 	}
-	
+
 	/**
-	 * Get a random rivet by name. then do commom-textures.createSprite(random rivet name)
+	 * Get a random rivet by name. then do commom-textures.createSprite(random
+	 * rivet name)
+	 * 
 	 * @author Stew
 	 * @return
 	 */
-	public String getRandomRivetName(){
-		return "rivet"+(WereScrewedGame.random.nextInt( 4 )+1);//there's only 4 rivets in common-textures.
+	public String getRandomRivetName( ) {
+		return "rivet" + ( WereScrewedGame.random.nextInt( 4 ) + 1 );// there's
+																		// only
+																		// 4
+																		// rivets
+																		// in
+																		// common-textures.
 	}
-	
-	
-	public void setLevelRobotBGTex(Texture tex){
+
+	public void setLevelRobotBGTex( Texture tex ) {
 		robotTexBG = tex;
 	}
-	
-	public Texture getLevelRobotBGTex(){
+
+	public Texture getLevelRobotBGTex( ) {
 		return robotTexBG;
 	}
-	
-	public void setLevelRobotFGTex(Texture tex){
+
+	public void setLevelRobotFGTex( Texture tex ) {
 		robotTexFG = tex;
 	}
-	
-	public Texture getLevelRobotFGTex(){
+
+	public Texture getLevelRobotFGTex( ) {
 		return robotTexFG;
 	}
-	
-	public void setLevelRobotOutlineTex(Texture tex){
+
+	public void setLevelRobotOutlineTex( Texture tex ) {
 		robotOutlineTex = tex;
 	}
-	
-	public Texture getLevelRobotOutlineTex(){
+
+	public Texture getLevelRobotOutlineTex( ) {
 		return robotOutlineTex;
 	}
 

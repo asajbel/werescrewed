@@ -1,6 +1,5 @@
 package com.blindtigergames.werescrewed.gui;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.entity.Sprite;
@@ -20,10 +19,10 @@ public class Slider extends OptionControl {
 	
 	public Slider( int min, int max, int current, int x, int y, SoundType type ) {
 		super( min, max, current, x, y );
-		Texture  slidTex = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-				 + "/menu/slider.png", Texture.class );
-		Texture screwTex = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-				 + "/menu/screw.png", Texture.class );
+		Texture slidTex = WereScrewedGame.manager.get(
+				WereScrewedGame.dirHandle + "/menu/slider.png", Texture.class );
+		Texture screwTex = WereScrewedGame.manager.get(
+				WereScrewedGame.dirHandle + "/menu/screw.png", Texture.class );
 		volume = new Sprite( slidTex );
 		screw = new Sprite( screwTex );
 		maxPos = x + 180;
@@ -34,18 +33,18 @@ public class Slider extends OptionControl {
 	public Slider( int min, int max, int current, SoundType type ) {
 		this( min, max, current, 0, 0, type );
 	}
-	
+
 	@Override
-	public void setX(int x) {
+	public void setX( int x ) {
 		this.x = x;
 		maxPos = x + 180;
 		minPos = x + 60;
 	}
-	
+
 	public float getXPos( ) {
 		return xPos;
 	}
-	
+
 	public void setXPos( float newX ) {
 		xPos = newX;
 	}
@@ -53,7 +52,7 @@ public class Slider extends OptionControl {
 	public float getYPos( ) {
 		return yPos;
 	}
-	
+
 	public void setYPos( float newY ) {
 		yPos = newY;
 	}
@@ -68,7 +67,7 @@ public class Slider extends OptionControl {
 		return minPos;
 	}
 
-	// Decreases Volume
+	// Decreases volume
 	public void moveLeft( ) {
 		if ( curValue > minValue ) {
 			curValue--;
@@ -76,12 +75,11 @@ public class Slider extends OptionControl {
 			if ( xPos < minPos )
 				xPos = minPos;
 			screw.setX( xPos );
-			Gdx.app.log( "current value", "" + curValue );
 			if ( SoundManager.globalVolume.get( type ) > 0.0f )
 				SoundManager.globalVolume.put( type, SoundManager.globalVolume.get( type ) - 0.01f ); 
 		}
 	}
-	
+
 	// Increases volume
 	public void moveRight( ) {
 		if ( curValue < maxValue ) {
@@ -90,21 +88,20 @@ public class Slider extends OptionControl {
 			if ( xPos > maxPos )
 				xPos = maxPos;
 			screw.setX( xPos );
-			Gdx.app.log( "current value", "" + curValue );
 			if ( SoundManager.globalVolume.get( type ) < 1.0f )
 				SoundManager.globalVolume.put( type, SoundManager.globalVolume.get( type ) + 0.01f ); 
 		}
 	}
-	
+
 	private void setAlpha( ) {
-		if ( activated ) 
+		if ( activated )
 			alpha = 1.0f;
 		else
 			alpha = 0.6f;
 	}
-	
+
 	public void draw( SpriteBatch batch ) {
-		//volume.setOrigin( volume.getWidth( ) / 2, volume.getHeight( ) / 2 );
+		// volume.setOrigin( volume.getWidth( ) / 2, volume.getHeight( ) / 2 );
 		setAlpha( );
 		volume.setPosition( x, y );
 		volume.draw( batch, alpha );
@@ -113,6 +110,6 @@ public class Slider extends OptionControl {
 		if ( activated ) {
 			screw.rotate( 3.0f );
 		}
-		
+
 	}
 }

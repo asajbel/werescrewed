@@ -47,7 +47,7 @@ public class SBox2DDebugRenderer {
 	protected ShapeRenderer renderer;
 
 	/** vertices for polygon rendering **/
-	private static Vector2[] vertices = new Vector2[1000];
+	private static Vector2[ ] vertices = new Vector2[ 1000 ];
 
 	private static Vector2 lower;
 	private static Vector2 upper;
@@ -57,28 +57,29 @@ public class SBox2DDebugRenderer {
 	private boolean drawAABBs;
 	private boolean drawInactiveBodies;
 	private boolean drawVelocities;
-	
+
 	private float box_to_world_scale;
 
-	public SBox2DDebugRenderer (float _box_to_world_scale ) {
-		this(_box_to_world_scale, true, true, false, true, false);
+	public SBox2DDebugRenderer( float _box_to_world_scale ) {
+		this( _box_to_world_scale, true, true, false, true, false );
 	}
 
-	public SBox2DDebugRenderer (float _box_to_world_scale, boolean drawBodies, boolean drawJoints, boolean drawAABBs, boolean drawInactiveBodies,
-		boolean drawVelocities) {
-		
-		box_to_world_scale = _box_to_world_scale;
-		
-		// next we setup the immediate mode renderer
-		renderer = new ShapeRenderer();
-		renderer.scale(box_to_world_scale, box_to_world_scale, 1);
+	public SBox2DDebugRenderer( float _box_to_world_scale, boolean drawBodies,
+			boolean drawJoints, boolean drawAABBs, boolean drawInactiveBodies,
+			boolean drawVelocities ) {
 
-		lower = new Vector2();
-		upper = new Vector2();
+		box_to_world_scale = _box_to_world_scale;
+
+		// next we setup the immediate mode renderer
+		renderer = new ShapeRenderer( );
+		renderer.scale( box_to_world_scale, box_to_world_scale, 1 );
+
+		lower = new Vector2( );
+		upper = new Vector2( );
 
 		// initialize vertices array
-		for (int i = 0; i < vertices.length; i++)
-			vertices[i] = new Vector2();
+		for ( int i = 0; i < vertices.length; i++ )
+			vertices[ i ] = new Vector2( );
 
 		this.drawBodies = drawBodies;
 		this.drawJoints = drawJoints;
@@ -88,289 +89,302 @@ public class SBox2DDebugRenderer {
 	}
 
 	/** This assumes that the projection matrix has already been set. */
-	public void render (World world, Matrix4 projMatrix) {
-		renderer.setProjectionMatrix(projMatrix);
-		renderBodies(world);
+	public void render( World world, Matrix4 projMatrix ) {
+		renderer.setProjectionMatrix( projMatrix );
+		renderBodies( world );
 	}
 
-	private final Color SHAPE_NOT_ACTIVE = new Color(0.5f, 0.5f, 0.3f, 1);
-	private final Color SHAPE_STATIC = new Color(0.5f, 0.9f, 0.5f, 1);
-	private final Color SHAPE_KINEMATIC = new Color(0.5f, 0.5f, 0.9f, 1);
-	private final Color SHAPE_NOT_AWAKE = new Color(0.6f, 0.6f, 0.6f, 1);
-	private final Color SHAPE_AWAKE = new Color(0.9f, 0.7f, 0.7f, 1);
-	private final Color JOINT_COLOR = new Color(0.5f, 0.8f, 0.8f, 1);
-	private final Color AABB_COLOR = new Color(1.0f, 0, 1.0f, 1f);
-	private final Color VELOCITY_COLOR = new Color(1.0f, 0, 0f, 1f);
+	private final Color SHAPE_NOT_ACTIVE = new Color( 0.5f, 0.5f, 0.3f, 1 );
+	private final Color SHAPE_STATIC = new Color( 0.5f, 0.9f, 0.5f, 1 );
+	private final Color SHAPE_KINEMATIC = new Color( 0.5f, 0.5f, 0.9f, 1 );
+	private final Color SHAPE_NOT_AWAKE = new Color( 0.6f, 0.6f, 0.6f, 1 );
+	private final Color SHAPE_AWAKE = new Color( 0.9f, 0.7f, 0.7f, 1 );
+	private final Color JOINT_COLOR = new Color( 0.5f, 0.8f, 0.8f, 1 );
+	private final Color AABB_COLOR = new Color( 1.0f, 0, 1.0f, 1f );
+	private final Color VELOCITY_COLOR = new Color( 1.0f, 0, 0f, 1f );
 
-	private void renderBodies (World world) {
-		renderer.begin(ShapeType.Line);
+	private void renderBodies( World world ) {
+		renderer.begin( ShapeType.Line );
 
-		if (drawBodies || drawAABBs) {
-			for (Iterator<Body> iter = world.getBodies(); iter.hasNext();) {
-				Body body = iter.next();
-				if (body.isActive() || drawInactiveBodies) renderBody(body);
+		if ( drawBodies || drawAABBs ) {
+			for ( Iterator< Body > iter = world.getBodies( ); iter.hasNext( ); ) {
+				Body body = iter.next( );
+				if ( body.isActive( ) || drawInactiveBodies )
+					renderBody( body );
 			}
 		}
 
-		if (drawJoints) {
-			for (Iterator<Joint> iter = world.getJoints(); iter.hasNext();) {
-				Joint joint = iter.next();
-				drawJoint(joint);
+		if ( drawJoints ) {
+			for ( Iterator< Joint > iter = world.getJoints( ); iter.hasNext( ); ) {
+				Joint joint = iter.next( );
+				drawJoint( joint );
 			}
 		}
-		renderer.end();
+		renderer.end( );
 
-		if (Gdx.gl10 != null) Gdx.gl10.glPointSize(3);
-		renderer.begin(ShapeType.Point);
-		int len = world.getContactList().size();
-		for (int i = 0; i < len; i++)
-			drawContact(world.getContactList().get(i));
-		renderer.end();
-		if (Gdx.gl10 != null) Gdx.gl10.glPointSize(1);
+		if ( Gdx.gl10 != null )
+			Gdx.gl10.glPointSize( 3 );
+		renderer.begin( ShapeType.Point );
+		int len = world.getContactList( ).size( );
+		for ( int i = 0; i < len; i++ )
+			drawContact( world.getContactList( ).get( i ) );
+		renderer.end( );
+		if ( Gdx.gl10 != null )
+			Gdx.gl10.glPointSize( 1 );
 	}
 
-	protected void renderBody (Body body) {
-		Transform transform = body.getTransform();
-		int len = body.getFixtureList().size();
-		List<Fixture> fixtures = body.getFixtureList();
-		for (int i = 0; i < len; i++) {
-			Fixture fixture = fixtures.get(i);
+	protected void renderBody( Body body ) {
+		Transform transform = body.getTransform( );
+		int len = body.getFixtureList( ).size( );
+		List< Fixture > fixtures = body.getFixtureList( );
+		for ( int i = 0; i < len; i++ ) {
+			Fixture fixture = fixtures.get( i );
 
-			if (drawBodies) {
-				if (body.isActive() == false)
-					drawShape(fixture, transform, SHAPE_NOT_ACTIVE);
-				else if (body.getType() == BodyType.StaticBody)
-					drawShape(fixture, transform, SHAPE_STATIC);
-				else if (body.getType() == BodyType.KinematicBody)
-					drawShape(fixture, transform, SHAPE_KINEMATIC);
-				else if (body.isAwake() == false)
-					drawShape(fixture, transform, SHAPE_NOT_AWAKE);
+			if ( drawBodies ) {
+				if ( body.isActive( ) == false )
+					drawShape( fixture, transform, SHAPE_NOT_ACTIVE );
+				else if ( body.getType( ) == BodyType.StaticBody )
+					drawShape( fixture, transform, SHAPE_STATIC );
+				else if ( body.getType( ) == BodyType.KinematicBody )
+					drawShape( fixture, transform, SHAPE_KINEMATIC );
+				else if ( body.isAwake( ) == false )
+					drawShape( fixture, transform, SHAPE_NOT_AWAKE );
 				else
-					drawShape(fixture, transform, SHAPE_AWAKE);
+					drawShape( fixture, transform, SHAPE_AWAKE );
 
-				if (drawVelocities) {
-					Vector2 position = body.getPosition();
-					drawSegment(position, body.getLinearVelocity().add(position), VELOCITY_COLOR);
+				if ( drawVelocities ) {
+					Vector2 position = body.getPosition( );
+					drawSegment( position,
+							body.getLinearVelocity( ).add( position ),
+							VELOCITY_COLOR );
 				}
 			}
 
-			if (drawAABBs) {
-				drawAABB(fixture, transform);
+			if ( drawAABBs ) {
+				drawAABB( fixture, transform );
 			}
 		}
 	}
 
-	private void drawAABB (Fixture fixture, Transform transform) {
-		if (fixture.getType() == Type.Circle) {
+	private void drawAABB( Fixture fixture, Transform transform ) {
+		if ( fixture.getType( ) == Type.Circle ) {
 
-			CircleShape shape = (CircleShape)fixture.getShape();
-			float radius = shape.getRadius();
-			vertices[0].set(shape.getPosition());
-			vertices[0].rotate(transform.getRotation()).add(transform.getPosition());
-			lower.set(vertices[0].x - radius, vertices[0].y - radius);
-			upper.set(vertices[0].x + radius, vertices[0].y + radius);
+			CircleShape shape = ( CircleShape ) fixture.getShape( );
+			float radius = shape.getRadius( );
+			vertices[ 0 ].set( shape.getPosition( ) );
+			vertices[ 0 ].rotate( transform.getRotation( ) ).add(
+					transform.getPosition( ) );
+			lower.set( vertices[ 0 ].x - radius, vertices[ 0 ].y - radius );
+			upper.set( vertices[ 0 ].x + radius, vertices[ 0 ].y + radius );
 
 			// define vertices in ccw fashion...
-			vertices[0].set(lower.x, lower.y);
-			vertices[1].set(upper.x, lower.y);
-			vertices[2].set(upper.x, upper.y);
-			vertices[3].set(lower.x, upper.y);
+			vertices[ 0 ].set( lower.x, lower.y );
+			vertices[ 1 ].set( upper.x, lower.y );
+			vertices[ 2 ].set( upper.x, upper.y );
+			vertices[ 3 ].set( lower.x, upper.y );
 
-			drawSolidPolygon(vertices, 4, AABB_COLOR);
-		} else if (fixture.getType() == Type.Polygon) {
-			PolygonShape shape = (PolygonShape)fixture.getShape();
-			int vertexCount = shape.getVertexCount();
+			drawSolidPolygon( vertices, 4, AABB_COLOR );
+		} else if ( fixture.getType( ) == Type.Polygon ) {
+			PolygonShape shape = ( PolygonShape ) fixture.getShape( );
+			int vertexCount = shape.getVertexCount( );
 
-			shape.getVertex(0, vertices[0]);
-			lower.set(transform.mul(vertices[0]));
-			upper.set(lower);
-			for (int i = 1; i < vertexCount; i++) {
-				shape.getVertex(i, vertices[i]);
-				transform.mul(vertices[i]);
-				lower.x = Math.min(lower.x, vertices[i].x);
-				lower.y = Math.min(lower.y, vertices[i].y);
-				upper.x = Math.max(upper.x, vertices[i].x);
-				upper.y = Math.max(upper.y, vertices[i].y);
+			shape.getVertex( 0, vertices[ 0 ] );
+			lower.set( transform.mul( vertices[ 0 ] ) );
+			upper.set( lower );
+			for ( int i = 1; i < vertexCount; i++ ) {
+				shape.getVertex( i, vertices[ i ] );
+				transform.mul( vertices[ i ] );
+				lower.x = Math.min( lower.x, vertices[ i ].x );
+				lower.y = Math.min( lower.y, vertices[ i ].y );
+				upper.x = Math.max( upper.x, vertices[ i ].x );
+				upper.y = Math.max( upper.y, vertices[ i ].y );
 			}
 
 			// define vertices in ccw fashion...
-			vertices[0].set(lower.x, lower.y);
-			vertices[1].set(upper.x, lower.y);
-			vertices[2].set(upper.x, upper.y);
-			vertices[3].set(lower.x, upper.y);
+			vertices[ 0 ].set( lower.x, lower.y );
+			vertices[ 1 ].set( upper.x, lower.y );
+			vertices[ 2 ].set( upper.x, upper.y );
+			vertices[ 3 ].set( lower.x, upper.y );
 
-			drawSolidPolygon(vertices, 4, AABB_COLOR);
+			drawSolidPolygon( vertices, 4, AABB_COLOR );
 		}
 	}
 
-	private static Vector2 t = new Vector2();
-	private static Vector2 axis = new Vector2();
+	private static Vector2 t = new Vector2( );
+	private static Vector2 axis = new Vector2( );
 
-	private void drawShape (Fixture fixture, Transform transform, Color color) {
-		if (fixture.getType() == Type.Circle) {
-			CircleShape circle = (CircleShape)fixture.getShape();
-			t.set(circle.getPosition());
-			transform.mul(t);
-			drawSolidCircle(t, circle.getRadius(), axis.set(transform.vals[Transform.COS], transform.vals[Transform.SIN]), color);
+	private void drawShape( Fixture fixture, Transform transform, Color color ) {
+		if ( fixture.getType( ) == Type.Circle ) {
+			CircleShape circle = ( CircleShape ) fixture.getShape( );
+			t.set( circle.getPosition( ) );
+			transform.mul( t );
+			drawSolidCircle( t, circle.getRadius( ), axis.set(
+					transform.vals[ Transform.COS ],
+					transform.vals[ Transform.SIN ] ), color );
 		}
 
-		if (fixture.getType() == Type.Edge) {
-			EdgeShape edge = (EdgeShape)fixture.getShape();
-			edge.getVertex1(vertices[0]);
-			edge.getVertex2(vertices[1]);
-			transform.mul(vertices[0]);
-			transform.mul(vertices[1]);
-			drawSolidPolygon(vertices, 2, color);
+		if ( fixture.getType( ) == Type.Edge ) {
+			EdgeShape edge = ( EdgeShape ) fixture.getShape( );
+			edge.getVertex1( vertices[ 0 ] );
+			edge.getVertex2( vertices[ 1 ] );
+			transform.mul( vertices[ 0 ] );
+			transform.mul( vertices[ 1 ] );
+			drawSolidPolygon( vertices, 2, color );
 		}
 
-		if (fixture.getType() == Type.Polygon) {
-			PolygonShape chain = (PolygonShape)fixture.getShape();
-			int vertexCount = chain.getVertexCount();
-			for (int i = 0; i < vertexCount; i++) {
-				chain.getVertex(i, vertices[i]);
-				transform.mul(vertices[i]);
+		if ( fixture.getType( ) == Type.Polygon ) {
+			PolygonShape chain = ( PolygonShape ) fixture.getShape( );
+			int vertexCount = chain.getVertexCount( );
+			for ( int i = 0; i < vertexCount; i++ ) {
+				chain.getVertex( i, vertices[ i ] );
+				transform.mul( vertices[ i ] );
 			}
-			drawSolidPolygon(vertices, vertexCount, color);
+			drawSolidPolygon( vertices, vertexCount, color );
 		}
 
-		if (fixture.getType() == Type.Chain) {
-			ChainShape chain = (ChainShape)fixture.getShape();
-			int vertexCount = chain.getVertexCount();
-			for (int i = 0; i < vertexCount; i++) {
-				chain.getVertex(i, vertices[i]);
-				transform.mul(vertices[i]);
+		if ( fixture.getType( ) == Type.Chain ) {
+			ChainShape chain = ( ChainShape ) fixture.getShape( );
+			int vertexCount = chain.getVertexCount( );
+			for ( int i = 0; i < vertexCount; i++ ) {
+				chain.getVertex( i, vertices[ i ] );
+				transform.mul( vertices[ i ] );
 			}
-			drawSolidPolygon(vertices, vertexCount, color);
+			drawSolidPolygon( vertices, vertexCount, color );
 		}
 	}
 
-	private final Vector2 f = new Vector2();
-	private final Vector2 v = new Vector2();
-	private final Vector2 lv = new Vector2();
+	private final Vector2 f = new Vector2( );
+	private final Vector2 v = new Vector2( );
+	private final Vector2 lv = new Vector2( );
 
-	private void drawSolidCircle (Vector2 center, float radius, Vector2 axis, Color color) {
+	private void drawSolidCircle( Vector2 center, float radius, Vector2 axis,
+			Color color ) {
 		float angle = 0;
-		float angleInc = 2 * (float)Math.PI / 20;
-		renderer.setColor(color.r, color.g, color.b, color.a);
-		for (int i = 0; i < 20; i++, angle += angleInc) {
-			v.set((float)Math.cos(angle) * radius + center.x, (float)Math.sin(angle) * radius + center.y);
-			if (i == 0) {
-				lv.set(v);
-				f.set(v);
+		float angleInc = 2 * ( float ) Math.PI / 20;
+		renderer.setColor( color.r, color.g, color.b, color.a );
+		for ( int i = 0; i < 20; i++, angle += angleInc ) {
+			v.set( ( float ) Math.cos( angle ) * radius + center.x,
+					( float ) Math.sin( angle ) * radius + center.y );
+			if ( i == 0 ) {
+				lv.set( v );
+				f.set( v );
 				continue;
 			}
-			renderer.line(lv.x, lv.y, v.x, v.y);
-			lv.set(v);
+			renderer.line( lv.x, lv.y, v.x, v.y );
+			lv.set( v );
 		}
-		renderer.line(f.x, f.y, lv.x, lv.y);
-		renderer.line(center.x, center.y, 0, center.x + axis.x * radius, center.y + axis.y * radius, 0);
+		renderer.line( f.x, f.y, lv.x, lv.y );
+		renderer.line( center.x, center.y, 0, center.x + axis.x * radius,
+				center.y + axis.y * radius, 0 );
 	}
 
-	private void drawSolidPolygon (Vector2[] vertices, int vertexCount, Color color) {
-		renderer.setColor(color.r, color.g, color.b, color.a);
-		for (int i = 0; i < vertexCount; i++) {
-			Vector2 v = vertices[i];
-			if (i == 0) {
-				lv.set(v);
-				f.set(v);
+	private void drawSolidPolygon( Vector2[ ] vertices, int vertexCount,
+			Color color ) {
+		renderer.setColor( color.r, color.g, color.b, color.a );
+		for ( int i = 0; i < vertexCount; i++ ) {
+			Vector2 v = vertices[ i ];
+			if ( i == 0 ) {
+				lv.set( v );
+				f.set( v );
 				continue;
 			}
-			renderer.line(lv.x, lv.y, v.x, v.y);
-			lv.set(v);
+			renderer.line( lv.x, lv.y, v.x, v.y );
+			lv.set( v );
 		}
-		renderer.line(f.x, f.y, lv.x, lv.y);
+		renderer.line( f.x, f.y, lv.x, lv.y );
 	}
 
-	private void drawJoint (Joint joint) {
-		Body bodyA = joint.getBodyA();
-		Body bodyB = joint.getBodyB();
-		Transform xf1 = bodyA.getTransform();
-		Transform xf2 = bodyB.getTransform();
+	private void drawJoint( Joint joint ) {
+		Body bodyA = joint.getBodyA( );
+		Body bodyB = joint.getBodyB( );
+		Transform xf1 = bodyA.getTransform( );
+		Transform xf2 = bodyB.getTransform( );
 
-		Vector2 x1 = xf1.getPosition();
-		Vector2 x2 = xf2.getPosition();
-		Vector2 p1 = joint.getAnchorA();
-		Vector2 p2 = joint.getAnchorB();
+		Vector2 x1 = xf1.getPosition( );
+		Vector2 x2 = xf2.getPosition( );
+		Vector2 p1 = joint.getAnchorA( );
+		Vector2 p2 = joint.getAnchorB( );
 
-		if (joint.getType() == JointType.DistanceJoint) {
-			drawSegment(p1, p2, JOINT_COLOR);
-		} else if (joint.getType() == JointType.PulleyJoint) {
-			PulleyJoint pulley = (PulleyJoint)joint;
-			Vector2 s1 = pulley.getGroundAnchorA();
-			Vector2 s2 = pulley.getGroundAnchorB();
-			drawSegment(s1, p1, JOINT_COLOR);
-			drawSegment(s2, p2, JOINT_COLOR);
-			drawSegment(s1, s2, JOINT_COLOR);
-		} else if (joint.getType() == JointType.MouseJoint) {
-			drawSegment(joint.getAnchorA(), joint.getAnchorB(), JOINT_COLOR);
+		if ( joint.getType( ) == JointType.DistanceJoint ) {
+			drawSegment( p1, p2, JOINT_COLOR );
+		} else if ( joint.getType( ) == JointType.PulleyJoint ) {
+			PulleyJoint pulley = ( PulleyJoint ) joint;
+			Vector2 s1 = pulley.getGroundAnchorA( );
+			Vector2 s2 = pulley.getGroundAnchorB( );
+			drawSegment( s1, p1, JOINT_COLOR );
+			drawSegment( s2, p2, JOINT_COLOR );
+			drawSegment( s1, s2, JOINT_COLOR );
+		} else if ( joint.getType( ) == JointType.MouseJoint ) {
+			drawSegment( joint.getAnchorA( ), joint.getAnchorB( ), JOINT_COLOR );
 		} else {
-			drawSegment(x1, p1, JOINT_COLOR);
-			drawSegment(p1, p2, JOINT_COLOR);
-			drawSegment(x2, p2, JOINT_COLOR);
+			drawSegment( x1, p1, JOINT_COLOR );
+			drawSegment( p1, p2, JOINT_COLOR );
+			drawSegment( x2, p2, JOINT_COLOR );
 		}
 	}
 
-	private void drawSegment (Vector2 x1, Vector2 x2, Color color) {
-		renderer.setColor(color);
-		renderer.line(x1.x, x1.y, x2.x, x2.y);
+	private void drawSegment( Vector2 x1, Vector2 x2, Color color ) {
+		renderer.setColor( color );
+		renderer.line( x1.x, x1.y, x2.x, x2.y );
 	}
 
-	private void drawContact (Contact contact) {
-		WorldManifold worldManifold = contact.getWorldManifold();
-		if (worldManifold.getNumberOfContactPoints() == 0) return;
-		Vector2 point = worldManifold.getPoints()[0];
-		renderer.point(point.x, point.y, 0);
+	private void drawContact( Contact contact ) {
+		WorldManifold worldManifold = contact.getWorldManifold( );
+		if ( worldManifold.getNumberOfContactPoints( ) == 0 )
+			return;
+		Vector2 point = worldManifold.getPoints( )[ 0 ];
+		renderer.point( point.x, point.y, 0 );
 	}
 
-	public boolean isDrawBodies () {
+	public boolean isDrawBodies( ) {
 		return drawBodies;
 	}
 
-	public void setDrawBodies (boolean drawBodies) {
+	public void setDrawBodies( boolean drawBodies ) {
 		this.drawBodies = drawBodies;
 	}
 
-	public boolean isDrawJoints () {
+	public boolean isDrawJoints( ) {
 		return drawJoints;
 	}
 
-	public void setDrawJoints (boolean drawJoints) {
+	public void setDrawJoints( boolean drawJoints ) {
 		this.drawJoints = drawJoints;
 	}
 
-	public boolean isDrawAABBs () {
+	public boolean isDrawAABBs( ) {
 		return drawAABBs;
 	}
 
-	public void setDrawAABBs (boolean drawAABBs) {
+	public void setDrawAABBs( boolean drawAABBs ) {
 		this.drawAABBs = drawAABBs;
 	}
 
-	public boolean isDrawInactiveBodies () {
+	public boolean isDrawInactiveBodies( ) {
 		return drawInactiveBodies;
 	}
 
-	public void setDrawInactiveBodies (boolean drawInactiveBodies) {
+	public void setDrawInactiveBodies( boolean drawInactiveBodies ) {
 		this.drawInactiveBodies = drawInactiveBodies;
 	}
 
-	public boolean isDrawVelocities () {
+	public boolean isDrawVelocities( ) {
 		return drawVelocities;
 	}
 
-	public void setDrawVelocities (boolean drawVelocities) {
+	public void setDrawVelocities( boolean drawVelocities ) {
 		this.drawVelocities = drawVelocities;
 	}
 
-	public static Vector2 getAxis () {
+	public static Vector2 getAxis( ) {
 		return axis;
 	}
 
-	public static void setAxis (Vector2 axis) {
+	public static void setAxis( Vector2 axis ) {
 		SBox2DDebugRenderer.axis = axis;
 	}
 
-	public void dispose () {
-		renderer.dispose();
+	public void dispose( ) {
+		renderer.dispose( );
 	}
 }
