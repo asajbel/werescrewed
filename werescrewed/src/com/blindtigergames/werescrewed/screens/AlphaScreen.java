@@ -1255,12 +1255,17 @@ public class AlphaScreen extends Screen {
 
 		leftShoulderSkeleton.bgSprite = null;
 		
+		Skeleton handSkeleton = new Skeleton( "left-hand-skele", leftShoulderSkeleton.getPositionPixel( ) , null, level.world );
+		
 		//All in one line cus I'm high level like that:
-		leftShoulderSkeleton.addBGDecalBack( Sprite.scale( 
+		Sprite s = Sprite.scale( 
 				WereScrewedGame.manager.getAtlas( "head_right" )
-				.createSprite( "hand" ) 
-				,1), 
-				pos.cpy( ).add( 0,-1100 ) );
+				.createSprite( "hand" ),scale);
+		handSkeleton.addBGDecal(s, 
+				pos.cpy( ).add( -65,-1300 ) );
+		handSkeleton.setFgFade( false );
+		addBGSkeletonBack( handSkeleton );
+		leftShoulderSkeleton.addSkeleton( handSkeleton );
 
 		addFGSkeleton( leftShoulderSkeleton );
 		addBGSkeleton( leftShoulderSkeleton );
@@ -1583,7 +1588,7 @@ public class AlphaScreen extends Screen {
 		headSkeleton.addFGDecal( s, pos.cpy( ) );
 		s = head_right.createSprite( "head_right" );
 		s.setScale( scale );
-		headSkeleton.addFGDecal( s, pos.cpy( ).add( 1500, 0 ) );
+		headSkeleton.addFGDecal( s, pos.cpy( ).add( s.getWidth()*scale-5, 0 ) );
 		addBGEntity( headSkeleton );
 		addFGEntity( headSkeleton );
 
@@ -1608,7 +1613,7 @@ public class AlphaScreen extends Screen {
 			s = arm_decals.createSprite( "upperarm_exterior" + ( i + 1 ) );
 			s.setScale( scale );
 			leftShoulderSkeleton.addFGDecal( s,
-					armPos.cpy( ).add( 480 * x, -683 * y ) );
+					armPos.cpy( ).add( 479 * x, -683 * y+i ) );
 		}
 
 		// forearm decals
@@ -1625,7 +1630,7 @@ public class AlphaScreen extends Screen {
 			s.setScale( scale );
 			// s.setScale( -1,1 );
 			leftShoulderSkeleton.addFGDecal( s,
-					elbowPos.cpy( ).add( 515 * x, -710 * y ) );
+					elbowPos.cpy( ).add( 513 * x, -710 * y+i ) );
 		}
 
 	}
@@ -1650,7 +1655,7 @@ public class AlphaScreen extends Screen {
 					+ ( i + 1 ) );
 			s.setScale( scale );
 			rightElbowSkeleton.addFGDecal( s,
-					elbowPos.cpy( ).add( 515 * x, -710 * y ) );
+					elbowPos.cpy( ).add( 513 * x, -710 * y+i ) );
 		}
 
 		// upper arm decals
@@ -1667,7 +1672,7 @@ public class AlphaScreen extends Screen {
 					Sprite.scale(
 							arm_decals.createSprite( "upperarm_exterior"
 									+ ( i + 1 ) ), scale ),
-					armPos.cpy( ).add( 480 * x, -683 * y ) );
+					armPos.cpy( ).add( 479 * x, -683 * y+i ) );
 		}
 
 		addFGSkeleton( rightElbowSkeleton );
@@ -1675,6 +1680,24 @@ public class AlphaScreen extends Screen {
 
 		addBGSkeleton( rightElbowSkeleton );
 		addBGSkeleton( rightShoulderSkeleton );
+		
+		
+		
+		Skeleton handSkeleton = new Skeleton( "right-hand-skele", rightElbowSkeleton.getPositionPixel( ).add(0,700) , null, level.world );
+		
+		//All in one line cus I'm high level like that:
+		s = Sprite.scale( 
+				WereScrewedGame.manager.getAtlas( "head_right" )
+				.createSprite( "hand" ),scale);
+		s.setScale( -scale,scale );
+		handSkeleton.addBGDecal(s, 
+				new Vector2( s.getWidth( )-320,-3700 ) );
+		handSkeleton.setFgFade( false );
+		addBGSkeletonBack( handSkeleton );
+		rightElbowSkeleton.addSkeleton( handSkeleton );
+
+		addFGSkeleton( leftShoulderSkeleton );
+		addBGSkeleton( leftShoulderSkeleton );
 
 	}
 }
