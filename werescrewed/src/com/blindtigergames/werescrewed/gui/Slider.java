@@ -2,10 +2,11 @@ package com.blindtigergames.werescrewed.gui;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.entity.Sprite;
 import com.blindtigergames.werescrewed.graphics.SpriteBatch;
+import com.blindtigergames.werescrewed.sound.SoundManager;
+import com.blindtigergames.werescrewed.sound.SoundManager.SoundType;
 
 public class Slider extends OptionControl {
 
@@ -15,8 +16,9 @@ public class Slider extends OptionControl {
 	private float yPos = 0;   //Y position of screw sprite, should not change after initializing
 	private float maxPos = 0; // The farthest the screw on the slider can go to the right
 	private float minPos = 0; // The farthest the screw on the slider can go to the left
+	private SoundType type = null;
 	
-	public Slider( int min, int max, int current, int x, int y ) {
+	public Slider( int min, int max, int current, int x, int y, SoundType type ) {
 		super( min, max, current, x, y );
 		Texture  slidTex = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 				 + "/menu/slider.png", Texture.class );
@@ -26,10 +28,11 @@ public class Slider extends OptionControl {
 		screw = new Sprite( screwTex );
 		maxPos = x + 180;
 		minPos = x + 60;
+		this.type = type;
 	}
 	
-	public Slider( int min, int max, int current ) {
-		this( min, max, current, 0, 0 );
+	public Slider( int min, int max, int current, SoundType type ) {
+		this( min, max, current, 0, 0, type );
 	}
 	
 	@Override
@@ -55,31 +58,41 @@ public class Slider extends OptionControl {
 		yPos = newY;
 	}
 	
+	// Returns farthest right position the screw can go
 	public float getMaxPos ( ) {
 		return maxPos;
 	}
 	
+	// Returns farthest left position the screw can go
 	public float getMinPos ( ) {
 		return minPos;
 	}
-	
+
+	// Decreases Volume
 	public void moveLeft( ) {
 		if ( curValue > minValue ) {
 			curValue--;
-			xPos -= 2.0f;
+			xPos -= 1.2f;
 			if ( xPos < minPos )
 				xPos = minPos;
 			screw.setX( xPos );
+			Gdx.app.log( "current value", "" + curValue );
+			if ( SoundManager.globalVolume.get( type ) > 0.0f )
+				SoundManager.globalVolume.put( type, SoundManager.globalVolume.get( type ) - 0.01f ); 
 		}
 	}
 	
+	// Increases volume
 	public void moveRight( ) {
 		if ( curValue < maxValue ) {
 			curValue++;
-			xPos += 2.0f;
+			xPos += 1.2f;
 			if ( xPos > maxPos )
 				xPos = maxPos;
 			screw.setX( xPos );
+			Gdx.app.log( "current value", "" + curValue );
+			if ( SoundManager.globalVolume.get( type ) < 1.0f )
+				SoundManager.globalVolume.put( type, SoundManager.globalVolume.get( type ) + 0.01f ); 
 		}
 	}
 	
