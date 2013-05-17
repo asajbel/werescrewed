@@ -697,26 +697,29 @@ public class Skeleton extends Platform {
 	 */
 	private void drawPlatform( Platform platform, SpriteBatch batch,
 			float deltaTime ) {
-		switch ( platform.getEntityType( ) ) {
-		case PLATFORM:
-			if ( platform.getPlatformType( ) == PlatformType.TILED ) {
-				( ( TiledPlatform ) platform ).draw( batch, deltaTime );
-			} else {
-				platform.draw( batch, deltaTime );
-			}
-			break;
-		case HAZARD:
-			drawHazard( ( Hazard ) platform, batch, deltaTime );
-			break;
-		case STEAM:
-			Steam steam = ( Steam ) platform;
-			steam.draw( batch, deltaTime );
-			break;
-		default:
-			throw new RuntimeException( "Skeleton: " + name
-					+ " doesn't know how to draw your platform: "
-					+ platform.name );
-		}
+		
+		platform.draw( batch, deltaTime );
+		
+//		switch ( platform.getEntityType( ) ) {
+//		case PLATFORM:
+//			if ( platform.getPlatformType( ) == PlatformType.TILED ) {
+//				( ( TiledPlatform ) platform ).draw( batch, deltaTime );
+//			} else {
+//				platform.draw( batch, deltaTime );
+//			}
+//			break;
+//		case HAZARD:
+//			drawHazard( ( Hazard ) platform, batch, deltaTime );
+//			break;
+//		case STEAM:
+//			Steam steam = ( Steam ) platform;
+//			steam.draw( batch, deltaTime );
+//			break;
+//		default:
+//			throw new RuntimeException( "Skeleton: " + name
+//					+ " doesn't know how to draw your platform: "
+//					+ platform.name );
+//		}
 	}
 
 	private void drawHazard( Hazard hazard, SpriteBatch batch, float deltaTime ) {

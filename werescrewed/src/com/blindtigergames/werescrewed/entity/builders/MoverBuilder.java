@@ -3,8 +3,10 @@ package com.blindtigergames.werescrewed.entity.builders;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.blindtigergames.werescrewed.entity.Entity;
+import com.blindtigergames.werescrewed.entity.mover.AnalogRotateMover;
 import com.blindtigergames.werescrewed.entity.mover.IMover;
 import com.blindtigergames.werescrewed.entity.mover.LerpMover;
 import com.blindtigergames.werescrewed.entity.mover.LinearAxis;
@@ -23,6 +25,7 @@ public class MoverBuilder {
 	protected Entity entity;
 	protected boolean vertical, horizontal;
 	protected float distance;
+	protected World world;
 
 	public void reset( ) {
 		floats = new ArrayList< Float >( );
@@ -31,11 +34,13 @@ public class MoverBuilder {
 		vertical = false;
 		horizontal = false;
 		distance = 0;
+		world = null;
 	}
 
-	public MoverBuilder( ) {
+	public MoverBuilder(World world ) {
 		floats = new ArrayList< Float >( );
 		type = null;
+		this.world = world;
 	}
 
 	public MoverBuilder type( MoverType t ) {
@@ -73,12 +78,19 @@ public class MoverBuilder {
 			return buildPuzzleRotateTweenMover( );
 		case LERP:
 			return buildLerpMover( );
+		case ANALOG_ROTATE:
+			return buildAnalogRotateMover();
 		default:
 			break;
 		}
 		return null;
 	}
 
+	public AnalogRotateMover buildAnalogRotateMover(){
+		AnalogRotateMover anlgRot = new AnalogRotateMover( .6f, world );
+		return anlgRot;
+		
+	}
 	public RockingMover buildRockingMover( ) {
 		if ( floats.size( ) < 2 )
 			return null;

@@ -297,7 +297,7 @@ public class GleedLoader {
 					moverName = item.props.get( tag );
 					mover = null;
 					if ( MoverType.fromString( moverName ) != null ) {
-						mover = new MoverBuilder( ).fromString( moverName )
+						mover = new MoverBuilder(level.world ).fromString( moverName )
 								.build( );
 					} else if ( isPlatform ) {
 						mover = loadMover( moverName, out );
@@ -333,7 +333,7 @@ public class GleedLoader {
 						if ( puzzle != null ) {
 							mover = null;
 							if ( MoverType.fromString( moverName ) != null ) {
-								mover = new MoverBuilder( ).fromString(
+								mover = new MoverBuilder(level.world ).fromString(
 										moverName ).build( );
 							} else if ( isPlatform ) {
 								mover = loadMover( moverName, out );
