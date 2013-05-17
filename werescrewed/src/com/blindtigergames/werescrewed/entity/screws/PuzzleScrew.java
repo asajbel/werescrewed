@@ -37,9 +37,11 @@ public class PuzzleScrew extends Screw {
 	private int startFrame = 15;
 	private final int lastMotionFrame = 14;
 	private final int animeSteps = 12;
+	@SuppressWarnings( "unused" )
 	private int soundCounter = 0;
-	
-	private static TextureRegion screwTex = WereScrewedGame.manager.getAtlas( "common-textures" ).findRegion( "hex_screw" );
+
+	private static TextureRegion screwTex = WereScrewedGame.manager.getAtlas(
+			"common-textures" ).findRegion( "hex_screw" );
 
 	public PuzzleScrew( String name, Vector2 pos, int max, Entity entity,
 			World world, int startDepth, boolean resetable,
@@ -125,7 +127,7 @@ public class PuzzleScrew extends Screw {
 	 */
 	@Override
 	public void screwLeft( int region, boolean switchedDirections ) {
-		super.screwLeft(region, switchedDirections);
+		super.screwLeft( region, switchedDirections );
 		if ( switchedDirections ) {
 			startRegion = region;
 			prevDiff = 0;
@@ -139,20 +141,20 @@ public class PuzzleScrew extends Screw {
 				newDiff = 0;
 			}
 			prevDiff = diff;
-			unscrewSound(diff, 5);
+			unscrewSound( diff, 5 );
 
 			body.setAngularVelocity( 1 );
-			if(newDiff != 0)
+			if ( newDiff != 0 )
 				newDiff /= newDiff;
 			newDiff *= -1;
 			depth += newDiff;
-			soundCounter += Math.abs(newDiff);
-//			System.out.println( soundCounter);
-//			if( soundCounter  > maxDepth/8) {
-//				sounds.playSound( "unscrewing" , 0 );
-//				soundCounter = 0;
-//				System.out.println( soundCounter);
-//			}
+			soundCounter += Math.abs( newDiff );
+			// System.out.println( soundCounter);
+			// if( soundCounter > maxDepth/8) {
+			// sounds.playSound( "unscrewing" , 0 );
+			// soundCounter = 0;
+			// System.out.println( soundCounter);
+			// }
 			if ( depth < 0 )
 				depth = 0;
 			spriteRegion += region;
@@ -168,11 +170,11 @@ public class PuzzleScrew extends Screw {
 
 	@Override
 	public void screwLeft( ) {
-		super.screwLeft();
+		super.screwLeft( );
 		if ( depth > 0 ) {
 			body.setAngularVelocity( 1 );
 			depth -= 1;
-			unscrewSound(2,2);
+			unscrewSound( 2, 2 );
 
 			rotation += 10;
 			screwStep = depth + 5;
@@ -201,19 +203,19 @@ public class PuzzleScrew extends Screw {
 				newDiff = 0;
 			}
 			prevDiff = diff;
-			screwSound(diff,5);
+			screwSound( diff, 5 );
 
 			body.setAngularVelocity( -1 );
-			if(newDiff != 0)
+			if ( newDiff != 0 )
 				newDiff /= newDiff;
 			depth += newDiff;
 			soundCounter += newDiff;
-//			System.out.println( soundCounter);
-//			if(soundCounter > maxDepth/8) {
-//				sounds.playSound( "screwing" , 0 );
-//				soundCounter = 0;
-//				System.out.println( soundCounter);
-//			}
+			// System.out.println( soundCounter);
+			// if(soundCounter > maxDepth/8) {
+			// sounds.playSound( "screwing" , 0 );
+			// soundCounter = 0;
+			// System.out.println( soundCounter);
+			// }
 			if ( depth > maxDepth )
 				depth = maxDepth;
 			if ( diff != 0 ) {
@@ -232,7 +234,7 @@ public class PuzzleScrew extends Screw {
 		if ( depth < maxDepth ) {
 			body.setAngularVelocity( -1 );
 			depth += 1;
-			screwSound(2,2);
+			screwSound( 2, 2 );
 			rotation -= 10;
 			screwStep = depth + 6;
 			puzzleManager.runElement( this, ( float ) depth
@@ -345,11 +347,9 @@ public class PuzzleScrew extends Screw {
 		// radarShape.dispose( );
 		screwShape.dispose( );
 	}
-	
+
 	@Override
-	public void loadSounds(){
+	public void loadSounds( ) {
 		super.loadSounds( );
-		sounds.getSound( "mindepth", "" );
-		sounds.getSound( "maxdepth", "");
 	}
 }

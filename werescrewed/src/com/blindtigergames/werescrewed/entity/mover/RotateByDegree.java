@@ -56,7 +56,7 @@ public class RotateByDegree implements IMover {
 				p.setLocalRot( endAngle * Util.DEG_TO_RAD );
 			} else {
 				p.setLocalRot( startAngle * Util.DEG_TO_RAD );
-			}			
+			}
 		}
 	}
 

@@ -111,14 +111,14 @@ public class PlayerInputHandler {
 	}
 
 	/**
-	 * returns whether the grab button is pressed
-	 * used for the double jump grab
+	 * returns whether the grab button is pressed used for the double jump grab
+	 * 
 	 * @return
 	 */
 	public boolean isGrabPressed( ) {
 		return grabPressed;
 	}
-	
+
 	/**
 	 * Returns whether the attach to screw key is pressed
 	 * 
@@ -127,7 +127,7 @@ public class PlayerInputHandler {
 	public boolean screwPressed( ) {
 		return attachScrewPressed;
 	}
-	
+
 	public boolean unscrewPressed( ) {
 		return Gdx.input.isKeyPressed( Keys.Z );
 	}

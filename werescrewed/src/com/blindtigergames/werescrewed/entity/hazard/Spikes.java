@@ -3,8 +3,6 @@ package com.blindtigergames.werescrewed.entity.hazard;
 import java.util.Iterator;
 import java.util.Vector;
 
-import com.badlogic.gdx.graphics.Texture;
-import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
@@ -18,7 +16,7 @@ import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.entity.EntityType;
 import com.blindtigergames.werescrewed.entity.Sprite;
 import com.blindtigergames.werescrewed.entity.platforms.Tile;
-import com.blindtigergames.werescrewed.player.Player;
+import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 import com.blindtigergames.werescrewed.util.Util;
 
 /**
@@ -35,12 +33,17 @@ import com.blindtigergames.werescrewed.util.Util;
 // Just your standard spikes.
 public class Spikes extends Hazard {
 
+	private static final TextureRegion texRotated = WereScrewedGame.manager
+			.getAtlas( "common-textures" ).findRegion( "spikes_rotated" );
+	private static final TextureRegion texUnRotated = WereScrewedGame.manager
+			.getAtlas( "common-textures" ).findRegion( "spikes" );
+
 	protected Vector< Tile > tiles = new Vector< Tile >( );
 	protected Vector2 bodypos;
 	protected float tileConstant = 64.0f;
 	protected boolean hori;
 	protected Orientation ori;
-	protected Texture tex; 
+	protected TextureRegion tex;
 	protected Fixture pointyEnd;
 
 	/**
@@ -61,21 +64,19 @@ public class Spikes extends Hazard {
 	 */
 	public Spikes( String name, Vector2 pos, float width, float height,
 			World world, boolean isActive, boolean invert, boolean horizontal ) {
-		super( name, pos, ( Texture ) WereScrewedGame.manager
-				.get( WereScrewedGame.dirHandle + "/common/spikes.png" ),
-				world, width, height, isActive );
+		super( name, pos, null, world, width, height, isActive );
 		entityType = EntityType.HAZARD;
 		hazardType = HazardType.SPIKES;
 
 		if ( height > width ) {
 			this.hori = false;
-			tex = WereScrewedGame.manager.get( "data/common/spikes_rotated.png", Texture.class );
+			tex = texRotated;
 		} else if ( width > height ) {
 			this.hori = true;
-			tex = WereScrewedGame.manager.get( "data/common/spikes.png", Texture.class );
+			tex = texUnRotated;
 		} else {
 			this.hori = horizontal;
-			tex = WereScrewedGame.manager.get( "data/common/spikes.png", Texture.class );
+			tex = texUnRotated;
 		}
 
 		if ( hori ) {
@@ -92,8 +93,6 @@ public class Spikes extends Hazard {
 
 		this.world = world;
 		this.activeHazard = isActive;
-		// this.sprite = constructSprite( (Texture) WereScrewedGame.manager
-		// .get( WereScrewedGame.dirHandle + "/common/spikes.png" ) );
 		constructBody( height, width, pos );
 		constructTile( pos, height, width );
 	}
@@ -102,12 +101,12 @@ public class Spikes extends Hazard {
 		return this.ori;
 	}
 
-//	@Override
-//	public void performContact( Player player, Fixture fixture ) {
-//		if ( fixture == this.body.getFixtureList( ).get( 0 ) && activeHazard ) {
-//			player.killPlayer( );
-//		}
-//	}
+	// @Override
+	// public void performContact( Player player, Fixture fixture ) {
+	// if ( fixture == this.body.getFixtureList( ).get( 0 ) && activeHazard ) {
+	// player.killPlayer( );
+	// }
+	// }
 
 	/**
 	 * 
@@ -122,115 +121,108 @@ public class Spikes extends Hazard {
 		BodyDef bodyDef = new BodyDef( );
 		bodyDef.type = BodyType.KinematicBody;
 
-		
-
-		
 		PolygonShape polygon = new PolygonShape( );
 		FixtureDef spikeFixtureDef = new FixtureDef( );
 		if ( hori ) {
-			
-			bodyDef.position.set( ( position.x )* Util.PIXEL_TO_BOX,
-					( position.y  )* Util.PIXEL_TO_BOX );
-			
+
+			bodyDef.position.set( ( position.x ) * Util.PIXEL_TO_BOX,
+					( position.y ) * Util.PIXEL_TO_BOX );
+
 			polygon.setAsBox( ( width * tileConstant ) / 2 * Util.PIXEL_TO_BOX,
 					( height * tileConstant ) / 4 * Util.PIXEL_TO_BOX );
-			
+
 			spikeFixtureDef.shape = polygon;
 			spikeFixtureDef.isSensor = true;
 			spikeFixtureDef.filter.categoryBits = Util.CATEGROY_HAZARD;
 			spikeFixtureDef.filter.maskBits = Util.CATEGORY_PLAYER;
 
-			
-//			polygon.setAsBox( ( ( ( width * tileConstant ) / 2 ) - 6 )
-//					* Util.PIXEL_TO_BOX, ( height * tileConstant ) / 2
-//					* Util.PIXEL_TO_BOX );
+			// polygon.setAsBox( ( ( ( width * tileConstant ) / 2 ) - 6 )
+			// * Util.PIXEL_TO_BOX, ( height * tileConstant ) / 2
+			// * Util.PIXEL_TO_BOX );
 		} else {
-			
-			bodyDef.position.set( ( position.x )* Util.PIXEL_TO_BOX,
-					( position.y  )* Util.PIXEL_TO_BOX );
-			
+
+			bodyDef.position.set( ( position.x ) * Util.PIXEL_TO_BOX,
+					( position.y ) * Util.PIXEL_TO_BOX );
+
 			polygon.setAsBox( ( width * tileConstant ) / 4 * Util.PIXEL_TO_BOX,
 					( height * tileConstant ) / 2 * Util.PIXEL_TO_BOX );
-			
+
 			spikeFixtureDef.shape = polygon;
 			spikeFixtureDef.isSensor = true;
 			spikeFixtureDef.filter.categoryBits = Util.CATEGROY_HAZARD;
 			spikeFixtureDef.filter.maskBits = Util.CATEGORY_PLAYER;
-		
-			
-//			polygon.setAsBox( ( width * tileConstant ) / 2 * Util.PIXEL_TO_BOX,
-//					( ( ( height * tileConstant ) / 2 ) - 6 )
-//							* Util.PIXEL_TO_BOX );
+
+			// polygon.setAsBox( ( width * tileConstant ) / 2 *
+			// Util.PIXEL_TO_BOX,
+			// ( ( ( height * tileConstant ) / 2 ) - 6 )
+			// * Util.PIXEL_TO_BOX );
 		}
 
 		body = world.createBody( bodyDef );
 		pointyEnd = body.createFixture( spikeFixtureDef );
 		body.setGravityScale( 0.1f );
-		//spikeFixtureDef.shape = polygon;
-		//body.createFixture( spikeFixtureDef );
+		// spikeFixtureDef.shape = polygon;
+		// body.createFixture( spikeFixtureDef );
 
 		polygon.dispose( );
 
 		body.setUserData( this );
 
 		bodypos = body.getPosition( ).mul( Util.BOX_TO_PIXEL );
-		
-//		switch (ori) {
-//		case DOWN:
-//			body.setTransform( body.getPosition( ), ( float ) Math.PI ); 
-//			break;
-//		case LEFT: 
-//			body.setTransform( body.getPosition( ), ( float ) Math.PI / 2 ); 
-//			break;
-//		case RIGHT:
-//			body.setTransform( new Vector2(), ( float ) -Math.PI / 2 ); 
-//			break;
-//		case UP:
-//			break;
-//		default:
-//			break;
-//		}
+
+		// switch (ori) {
+		// case DOWN:
+		// body.setTransform( body.getPosition( ), ( float ) Math.PI );
+		// break;
+		// case LEFT:
+		// body.setTransform( body.getPosition( ), ( float ) Math.PI / 2 );
+		// break;
+		// case RIGHT:
+		// body.setTransform( new Vector2(), ( float ) -Math.PI / 2 );
+		// break;
+		// case UP:
+		// break;
+		// default:
+		// break;
+		// }
 	}
 
 	private void constructTile( Vector2 position, float height, float width ) {
 		Tile insub;
 		float offset_x, offset_y;
-		TextureRegion texR = new TextureRegion(tex);
-				switch(ori){
-				case DOWN:
-					texR.flip( false, true );
-					break;
-				case LEFT:
-					texR.flip( true, false ); 
-					break;
-				case RIGHT:
-					break;
-				case UP:
-					break;
-				default:
-					break;
-				
-				}
-		
-//		Sprite temp = constructSprite( ( Texture ) WereScrewedGame.manager
-//				.get( WereScrewedGame.dirHandle + "/common/spikes_01.png" ) );
+		switch ( ori ) {
+		case DOWN:
+			tex.flip( false, true );
+			break;
+		case LEFT:
+			tex.flip( true, false );
+			break;
+		case RIGHT:
+			break;
+		case UP:
+			break;
+		default:
+			break;
+
+		}
+
 		Sprite temp;
 		for ( int i = 0; i < width; i++ ) {
-			if(hori)
+			if ( hori )
 				offset_x = ( i - width / 2 + 1 ) * tileConstant;
 			else
 				offset_x = ( i - width / 2 + 1 ) * tileConstant - 16f;
 			for ( int j = 0; j < height; j++ ) {
-				temp = new Sprite(texR);
-				if(hori)
+				temp = new Sprite( tex );
+				if ( hori )
 					offset_y = ( j - height / 2 + 1 ) * tileConstant - 16f;
 				else
 					offset_y = ( j - height / 2 + 1 ) * tileConstant;
-				
+
 				temp.setOrigin( offset_x, offset_y );
 				temp.setPosition( bodypos.x - offset_x, bodypos.y - offset_y );
 				temp.rotate( MathUtils.radiansToDegrees * body.getAngle( ) );
-				insub = new Tile( offset_x, offset_y, temp);
+				insub = new Tile( offset_x, offset_y, temp );
 				tiles.add( insub );
 			}
 		}
@@ -245,51 +237,51 @@ public class Spikes extends Hazard {
 	}
 
 	@Override
-	public void draw( SpriteBatch batch, float deltaTime) {
+	public void draw( SpriteBatch batch, float deltaTime ) {
 		Tile d;
 		Iterator< Tile > v = tiles.listIterator( );
 		while ( v.hasNext( ) ) {
 			d = v.next( );
-//			switch ( ori ) {
-//			case RIGHT:
-//				// d.tileSprite.setOrigin( d.tileSprite.getWidth( ) / 2,
-//				// d.tileSprite.getHeight( ) / 2 );
-//				d.tileSprite.setPosition( bodypos.x - d.xOffset, bodypos.y
-//						- d.yOffset );
-//				d.tileSprite.setRotation( MathUtils.radiansToDegrees
-//						* body.getAngle( ) );
-//
-//				break;
-//			case LEFT:
-//				// d.tileSprite.setOrigin( d.tileSprite.getWidth( ) / 2,
-//				// d.tileSprite.getHeight( ) / 2 );
-//				d.tileSprite.setPosition( bodypos.x - d.xOffset, bodypos.y
-//						- d.yOffset );
-//				d.tileSprite.setRotation( MathUtils.radiansToDegrees
-//						* body.getAngle( ) + 90 );
-//				break;
-//			case UP:
-//				// d.tileSprite.setOrigin( d.tileSprite.getWidth( ) / 2,
-//				// d.tileSprite.getHeight( ) / 2 );
-//				d.tileSprite.setPosition( bodypos.x - d.xOffset, bodypos.y
-//						- d.yOffset );
-//				d.tileSprite.setRotation( MathUtils.radiansToDegrees
-//						* body.getAngle( ) );
-//				break;
-//			case DOWN:
-//				// d.tileSprite.setOrigin( d.tileSprite.getWidth( ) / 2,
-//				// d.tileSprite.getHeight( ) / 2 );
-//				d.tileSprite.setPosition( bodypos.x - d.xOffset, bodypos.y
-//						- d.yOffset );
-//				d.tileSprite.setRotation( MathUtils.radiansToDegrees
-//						* body.getAngle( ) + 180 );
-//				break;
-//			default:
-//				d.tileSprite.setPosition( bodypos.x - d.xOffset, bodypos.y
-//						- d.yOffset );
-//				d.tileSprite.setRotation( MathUtils.radiansToDegrees
-//						* body.getAngle( ) );
-//			}
+			// switch ( ori ) {
+			// case RIGHT:
+			// // d.tileSprite.setOrigin( d.tileSprite.getWidth( ) / 2,
+			// // d.tileSprite.getHeight( ) / 2 );
+			// d.tileSprite.setPosition( bodypos.x - d.xOffset, bodypos.y
+			// - d.yOffset );
+			// d.tileSprite.setRotation( MathUtils.radiansToDegrees
+			// * body.getAngle( ) );
+			//
+			// break;
+			// case LEFT:
+			// // d.tileSprite.setOrigin( d.tileSprite.getWidth( ) / 2,
+			// // d.tileSprite.getHeight( ) / 2 );
+			// d.tileSprite.setPosition( bodypos.x - d.xOffset, bodypos.y
+			// - d.yOffset );
+			// d.tileSprite.setRotation( MathUtils.radiansToDegrees
+			// * body.getAngle( ) + 90 );
+			// break;
+			// case UP:
+			// // d.tileSprite.setOrigin( d.tileSprite.getWidth( ) / 2,
+			// // d.tileSprite.getHeight( ) / 2 );
+			// d.tileSprite.setPosition( bodypos.x - d.xOffset, bodypos.y
+			// - d.yOffset );
+			// d.tileSprite.setRotation( MathUtils.radiansToDegrees
+			// * body.getAngle( ) );
+			// break;
+			// case DOWN:
+			// // d.tileSprite.setOrigin( d.tileSprite.getWidth( ) / 2,
+			// // d.tileSprite.getHeight( ) / 2 );
+			// d.tileSprite.setPosition( bodypos.x - d.xOffset, bodypos.y
+			// - d.yOffset );
+			// d.tileSprite.setRotation( MathUtils.radiansToDegrees
+			// * body.getAngle( ) + 180 );
+			// break;
+			// default:
+			// d.tileSprite.setPosition( bodypos.x - d.xOffset, bodypos.y
+			// - d.yOffset );
+			// d.tileSprite.setRotation( MathUtils.radiansToDegrees
+			// * body.getAngle( ) );
+			// }
 			d.tileSprite.setPosition( bodypos.x - d.xOffset, bodypos.y
 					- d.yOffset );
 			d.tileSprite.setRotation( MathUtils.radiansToDegrees

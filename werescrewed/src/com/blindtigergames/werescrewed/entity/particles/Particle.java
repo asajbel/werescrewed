@@ -26,7 +26,8 @@ public class Particle {
 	}
 
 	/**
-	 *  updates life span
+	 * updates life span
+	 * 
 	 * @param deltaTime
 	 */
 	public void update( float deltaTime ) {
@@ -39,6 +40,7 @@ public class Particle {
 
 	/**
 	 * if particle has run its course
+	 * 
 	 * @return boolean
 	 */
 	public boolean isDead( ) {
@@ -51,7 +53,7 @@ public class Particle {
 	public void resetParticle( ) {
 		part = baseEntity;
 	}
-	
+
 	/**
 	 * resets particle's life span to initial amount
 	 */

@@ -2,7 +2,6 @@ package com.blindtigergames.werescrewed.entity.screws;
 
 import java.util.ArrayList;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
@@ -50,7 +49,7 @@ public class BossScrew extends Screw {
 	public BossScrew( String name, Vector2 pos, int max, Entity entity,
 			World world, Vector2 detachDirection ) {
 		super( name, pos, null );
-		loadSounds();
+		loadSounds( );
 		this.world = world;
 		this.detachDirection = detachDirection;
 		this.entity = entity;
@@ -88,7 +87,7 @@ public class BossScrew extends Screw {
 				* Util.DEG_TO_RAD );
 		rotation = ( int ) ( body.getAngle( ) * Util.RAD_TO_DEG );
 		addStructureJoint( entity );
-		loadSounds();
+		loadSounds( );
 	}
 
 	@Override
@@ -192,7 +191,7 @@ public class BossScrew extends Screw {
 					for ( Joint j : extraJoints ) {
 						world.destroyJoint( j );
 					}
-					Gdx.app.log( "Boss Screw Removed", "End Level" );
+					// Gdx.app.log( "Boss Screw Removed", "End Level" );
 					endFlag = true;
 					// if the number of joints is less than 3 set to dynamic
 					// body

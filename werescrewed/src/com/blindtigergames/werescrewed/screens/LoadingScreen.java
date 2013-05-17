@@ -18,6 +18,7 @@ public class LoadingScreen extends Screen {
 
 	public ScreenType screenType;
 	private BitmapFont font = null;
+	@SuppressWarnings( "unused" )
 	private int scaleSize = 7;
 	private Label loadingLabel = null;
 	private Label loadingCompleteLabel = null;
@@ -58,7 +59,7 @@ public class LoadingScreen extends Screen {
 		} else {
 			screenTag = "commonLevel";
 		}
-		Gdx.app.log( "Loading assets for", screenTag );
+		// Gdx.app.log( "Loading assets for", screenTag );
 
 		// check for level1
 		if ( currLevel == 1 ) {
@@ -89,26 +90,37 @@ public class LoadingScreen extends Screen {
 
 				pressStart = new Label( "Press Start To Volunteer!",
 						WereScrewedGame.manager.getFont( "longdon" ) );
-				pressToConfirm = new Label( "Left/Right to switch, Start to confirm",
+				pressToConfirm = new Label(
+						"Left/Right to switch, Start to confirm",
 						WereScrewedGame.manager.getFont( "longdon" ) );
-				
-				player1 = new Label("Player1", WereScrewedGame.manager.getFont( "longdon" ) );
-				player2 = new Label("Player2", WereScrewedGame.manager.getFont( "longdon" ) );
-				
-				pressToConfirm.setX(  screenWidth / 2 - pressToConfirm.getWidth( ) / 2);
-				pressToConfirm.setY( screenHeight / 4);
-				
-				pressStart.setX(  screenWidth / 2 - pressStart.getWidth( ) / 2);
-				pressStart.setY(  screenHeight / 4 );
-				
-				p2LabelPositionX =  (screenWidth / 2) - player1.getWidth( )/2;
-				player1.setX( p2LabelPositionX );
+
+				player1 = new Label( "Player1",
+						WereScrewedGame.manager.getFont( "longdon" ) );
+				player2 = new Label( "Player2",
+						WereScrewedGame.manager.getFont( "longdon" ) );
+
+				pressToConfirm.setX( screenWidth / 2
+						- pressToConfirm.getWidth( ) / 2 );
+				pressToConfirm.setY( screenHeight / 4 );
+
+				pressStart.setX( screenWidth / 2 - pressStart.getWidth( ) / 2 );
+				pressStart.setY( screenHeight / 4 );
+
+				p1LabelPositionX = ( screenWidth / 2 );// - player1.getWidth( )
+														// / 2;
+				player1.setX( p1LabelPositionX );
 				player1.setY( screenHeight / 4 - 100 );
-				
-				p2LabelPositionX = (screenWidth / 2) + player2.getWidth( )/2 + 500; 
+
+				p2LabelPositionX = ( screenWidth / 2 );// + player2.getWidth( )
+														// / 2 + 100;
 				player2.setX( p2LabelPositionX );
-				player2.setY( screenHeight / 4 - 100 );
+				player2.setY( screenHeight / 4 - 50 );
 			}
+
+			// debug turning character select off until someone else can finish
+			// it
+
+			playersHaveBeenSelected = true;
 		}
 
 		// stage = new Stage( );
@@ -164,6 +176,10 @@ public class LoadingScreen extends Screen {
 		// begin loading the assets
 		if ( WereScrewedGame.manager.update( ) ) {
 
+			// HIT ANY KEY TO SKIP
+			if ( Gdx.app.getInput( ).isTouched( ) ) {
+				ScreenManager.getInstance( ).show( ScreenType.LEVEL_1 );
+			}
 			if ( currLevel == 0 ) {
 				// assets have been loaded!
 				loadingLabel.setCaption( "Loading Complete!!" );
@@ -175,7 +191,6 @@ public class LoadingScreen extends Screen {
 				if ( characterSelect ) {
 					if ( playersHaveBeenSelected ) {
 						WereScrewedGame.player1Female = p1SelectFemale;
-						System.out.println( WereScrewedGame.player1Female );
 						if ( screenTag != null && screenTag.equals( "level1" ) ) {
 							ScreenManager.getInstance( ).show(
 									ScreenType.LEVEL_1 );
@@ -199,6 +214,7 @@ public class LoadingScreen extends Screen {
 		}
 
 		timer++;
+
 		if ( timer > 100 ) {
 			timer = 0;
 			if ( !( currIndex == storyBoardArray.size( ) - 1 ) ) {
@@ -206,71 +222,72 @@ public class LoadingScreen extends Screen {
 			}
 
 		}
-		
+
 		if ( characterSelect ) {
 			if ( ( currIndex == storyBoardArray.size( ) - 1 ) ) {
-				
-				if (  WereScrewedGame.p1ControllerListener.jumpPressed( ) ||
-						WereScrewedGame.p1ControllerListener.pausePressed( )){
+
+				if ( WereScrewedGame.p1ControllerListener.jumpPressed( )
+						|| WereScrewedGame.p1ControllerListener.pausePressed( ) ) {
 					player1Volunteer = true;
-					
+
 				}
-				if (  WereScrewedGame.p2ControllerListener.jumpPressed( ) ||
-						WereScrewedGame.p2ControllerListener.pausePressed( )){
+				if ( WereScrewedGame.p2ControllerListener.jumpPressed( )
+						|| WereScrewedGame.p2ControllerListener.pausePressed( ) ) {
 					player2Volunteer = true;
-					
+
 				}
-				if(!(player1Volunteer || player2Volunteer))
+				if ( !( player1Volunteer || player2Volunteer ) )
 					pressStart.draw( batch );
-				else{
+				else {
 					pressToConfirm.draw( batch );
 				}
-				if(player1Volunteer)
+				if ( player1Volunteer )
 					player1.draw( batch );
-				if(player2Volunteer)
+				if ( player2Volunteer )
 					player2.draw( batch );
-				
-				
-				if (player1Volunteer && player2Volunteer) {
-					
-					
-					if (  WereScrewedGame.p1ControllerListener.rightPressed( ) 
-							|| WereScrewedGame.p1ControllerListener.leftPressed( )
-							|| WereScrewedGame.p2ControllerListener.rightPressed( )
-							||  WereScrewedGame.p2ControllerListener.leftPressed( )
-							){
-						
+
+				if ( player1Volunteer && player2Volunteer ) {
+
+					if ( WereScrewedGame.p1ControllerListener.rightPressed( )
+							|| WereScrewedGame.p1ControllerListener
+									.leftPressed( )
+							|| WereScrewedGame.p2ControllerListener
+									.rightPressed( )
+							|| WereScrewedGame.p2ControllerListener
+									.leftPressed( ) ) {
+
 						// Swap positions;
 						int temp = p1LabelPositionX;
 						p1LabelPositionX = p2LabelPositionX;
 						p2LabelPositionX = temp;
-						
+
 						player1.setX( p1LabelPositionX );
-						
+
 						player2.setX( p2LabelPositionX );
-						
+
 						player1.unselect( );
 						player2.unselect( );
 						p1SelectFemale = !p1SelectFemale;
-						
+
 					}
-					
-					
-					if (  WereScrewedGame.p1ControllerListener.jumpPressed( ) ||
-							WereScrewedGame.p1ControllerListener.pausePressed( )){
+
+					if ( WereScrewedGame.p1ControllerListener.jumpPressed( )
+							|| WereScrewedGame.p1ControllerListener
+									.pausePressed( ) ) {
 						player1Confirm = true;
 						player1.select( );
-						
+
 					}
-					if (  WereScrewedGame.p2ControllerListener.jumpPressed( ) ||
-							WereScrewedGame.p2ControllerListener.pausePressed( )){
+					if ( WereScrewedGame.p2ControllerListener.jumpPressed( )
+							|| WereScrewedGame.p2ControllerListener
+									.pausePressed( ) ) {
 						player2Confirm = true;
 						player2.select( );
-						
+
 					}
-					if(player1Confirm && player2Confirm)
+					if ( player1Confirm && player2Confirm )
 						playersHaveBeenSelected = true;
-					
+
 				}
 			}
 
@@ -290,19 +307,20 @@ public class LoadingScreen extends Screen {
 	public void resize( int width, int height ) {
 		screenWidth = width;
 		screenHeight = height;
-		if ( currLevel == 1 && characterSelect) {
-			 
+		if ( currLevel == 1 && characterSelect ) {
+
 			pressStart.setX( screenWidth / 2 - pressStart.getWidth( ) / 2 );
-			pressStart.setY( screenHeight / 4);
-			
+			pressStart.setY( screenHeight / 4 );
+
 			player1.setX( p1LabelPositionX );
 			player1.setY( screenHeight / 4 - 100 );
-			
+
 			player2.setX( p2LabelPositionX );
 			player2.setY( screenHeight / 4 - 100 );
-			
-			pressToConfirm.setX( screenWidth / 2 - pressToConfirm.getWidth( ) / 2);
-			pressToConfirm.setY( screenHeight / 4  );
+
+			pressToConfirm.setX( screenWidth / 2 - pressToConfirm.getWidth( )
+					/ 2 );
+			pressToConfirm.setY( screenHeight / 4 );
 		}
 		// set position of the loading label
 		// TODO: Figure out a way to keep it in the center of the screen without
@@ -335,7 +353,9 @@ public class LoadingScreen extends Screen {
 		loadingCompleteLabel = new Label( "Press 'A'!!", font );
 		batch = new SpriteBatch( );
 
+		@SuppressWarnings( "unused" )
 		int width = Gdx.graphics.getWidth( );
+		@SuppressWarnings( "unused" )
 		int height = Gdx.graphics.getHeight( );
 
 		loadingBar = new Entity( "loadingScrew", null, null, null, false );
@@ -397,7 +417,8 @@ public class LoadingScreen extends Screen {
 			// loads the file
 			loadCurrentFile( ext, WereScrewedGame.dirHandle + s );
 		} else {
-			Gdx.app.log( "Loading screen: ", s + " doesn't have an extension" );
+			// Gdx.app.log( "Loading screen: ", s + " doesn't have an extension"
+			// );
 		}
 	}
 

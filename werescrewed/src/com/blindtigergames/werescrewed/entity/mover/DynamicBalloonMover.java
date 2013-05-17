@@ -6,20 +6,20 @@ import com.blindtigergames.werescrewed.entity.screws.Screw;
 
 public class DynamicBalloonMover implements IMover {
 
-	
-	public DynamicBalloonMover(){
-		
+	public DynamicBalloonMover( ) {
+
 	}
+
 	@Override
 	public void move( float deltaTime, Body body ) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void runPuzzleMovement( Screw screw, float screwVal, Platform p ) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -27,6 +27,5 @@ public class DynamicBalloonMover implements IMover {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
 
 }

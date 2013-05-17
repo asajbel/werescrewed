@@ -49,6 +49,7 @@ public class PlayerSpinemator implements ISpinemator {
 	protected Vector2 position = null;
 	protected Vector2 scale = null;
 	protected boolean flipX = false;
+	private TextureAtlas bodyAtlas;
 
 	private enum ScrewState {
 		IGNORE, READY, DRAW, STOW
@@ -63,9 +64,9 @@ public class PlayerSpinemator implements ISpinemator {
 	 *            Player the animations will belong to.
 	 */
 	public PlayerSpinemator( Player thePlayer ) {
-		TextureAtlas atlas = WereScrewedGame.manager.getAtlas( thePlayer.type
+		bodyAtlas = WereScrewedGame.manager.getAtlas( thePlayer.type
 				.getAtlasName( ) );
-		SkeletonBinary sb = new SkeletonBinary( atlas );
+		SkeletonBinary sb = new SkeletonBinary( bodyAtlas );
 		SkeletonData sd = sb.readSkeletonData( Gdx.files
 				.internal( "data/common/spine/" + thePlayer.type.getSkeleton( )
 						+ ".skel" ) );
@@ -103,13 +104,13 @@ public class PlayerSpinemator implements ISpinemator {
 	public void update( float delta ) {
 		time += delta;
 		mixTime += delta;
-		skel.setFlipX( flipX );
 
-		next = getCurrentAnim( );
+		if ( !current.singleTick || mixTime >= mixer.getDuration( ) / 2 )
+			next = getCurrentAnim( );
 
 		if ( current != next ) {
 			current = next;
-			// time = 0f;
+			time = mixTime;
 			startTime = 0f;
 			mixTime = 0;
 		}
@@ -140,7 +141,7 @@ public class PlayerSpinemator implements ISpinemator {
 			float screwAmount = ( float ) player.getCurrentScrew( ).getDepth( )
 					/ ( float ) player.getCurrentScrew( ).getMaxDepth( )
 					* mixer.getDuration( );
-			if (flipX) {
+			if ( flipX ) {
 				screwAmount = mixer.getDuration( ) - screwAmount;
 			}
 			if ( !Float.isNaN( screwAmount ) ) {
@@ -149,23 +150,16 @@ public class PlayerSpinemator implements ISpinemator {
 			} else
 				anims.get( PlayerAnim.HANG ).apply( skel, time,
 						PlayerAnim.HANG.loopBool );
-				break;
+			break;
 		default:
 			mixRatio = mixTime / anim.getDuration( );
 			mixer.mix( skel, time, next.loopBool, mixRatio );
-			if ( mixTime < anim.getDuration( ) / 2 ) {
-			} else {
+			if ( mixTime >= anim.getDuration( ) / 2 ) {
+
 				previous = current;
 				mixTime = 0;
 			}
 			break;
-		}
-
-		if ( current == PlayerAnim.RUN || current == PlayerAnim.RUN_SCREW ) {
-			if ( current == PlayerAnim.RUN_SCREW ) {
-			} else {
-			}
-		} else {
 		}
 
 		if ( player.getExtraState( ) == ConcurrentState.ScrewReady
@@ -229,6 +223,8 @@ public class PlayerSpinemator implements ISpinemator {
 			}
 		}
 
+		if ( current != PlayerAnim.TURN && current != PlayerAnim.TURN_SCREW )
+			skel.setFlipX( flipX );
 		if ( position != null ) {
 			root.setX( position.x );
 			root.setY( position.y );
@@ -261,9 +257,23 @@ public class PlayerSpinemator implements ISpinemator {
 				case Idle:
 					break;
 				case Left:
+					// if (!flipX) {
+					// flipX = true;
+					// if (player.getExtraState( ) ==
+					// ConcurrentState.ScrewReady)
+					// return PlayerAnim.TURN_SCREW;
+					// return PlayerAnim.TURN;
+					// }
 					flipX = true;
 					break;
 				case Right:
+					// if (flipX) {
+					// flipX = false;
+					// if (player.getExtraState( ) ==
+					// ConcurrentState.ScrewReady)
+					// return PlayerAnim.TURN_SCREW;
+					// return PlayerAnim.TURN;
+					// }
 					flipX = false;
 					break;
 				default:
@@ -294,14 +304,14 @@ public class PlayerSpinemator implements ISpinemator {
 					break;
 				}
 				if ( player.getExtraState( ) == ConcurrentState.ScrewReady ) {
-					return PlayerAnim.RUN_SCREW;
+					return PlayerAnim.LAND_SCREW;
 				}
-				return PlayerAnim.RUN;
+				return PlayerAnim.LAND;
 			}
 			if ( player.getExtraState( ) == ConcurrentState.ScrewReady ) {
-				return PlayerAnim.IDLE_SCREW;
+				return PlayerAnim.LAND_SCREW;
 			}
-			return PlayerAnim.IDLE;
+			return PlayerAnim.LAND;
 		case Jumping:
 			switch ( player.getMoveState( ) ) {
 			case Idle:
@@ -346,13 +356,46 @@ public class PlayerSpinemator implements ISpinemator {
 	}
 
 	@Override
-	public void setPosition( Vector2 pos ) {
-		position = pos;
+	public void setPosition( float x, float y) {
+		root.setX( x );
+		root.setY( y );
 	}
 
 	@Override
 	public void setScale( Vector2 scale ) {
 		this.scale = scale;
+	}
+
+	/**
+	 * Returns atlas that has all the body parts for this player
+	 * 
+	 * @return
+	 */
+	public TextureAtlas getBodyAtlas( ) {
+		return bodyAtlas;
+	}
+
+	@Override
+	public Vector2 getPosition( ) {
+		float x = root.getWorldX( );
+		float y = root.getWorldY( );
+		
+		return new Vector2(x,y); 
+	}
+
+	@Override
+	public float getX( ) {
+		return root.getWorldX( );
+	}
+
+	@Override
+	public float getY( ) {
+		return root.getWorldY( );
+	}
+
+	@Override
+	public void setPosition( Vector2 pos ) {
+		position = pos; 
 	}
 
 }

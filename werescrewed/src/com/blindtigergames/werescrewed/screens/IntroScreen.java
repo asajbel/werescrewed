@@ -5,35 +5,46 @@ import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.blindtigergames.werescrewed.WereScrewedGame;
+import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 
 class IntroScreen implements com.badlogic.gdx.Screen {
-	
+
 	public ScreenType screenType;
+	@SuppressWarnings( "unused" )
 	private SpriteBatch batch = null;
+	@SuppressWarnings( "unused" )
 	private BitmapFont font = null;
-	static TextureRegion player = WereScrewedGame.manager.getAtlas( "common-textures" ).findRegion( "flat_head_circular" );
+	static TextureRegion player = WereScrewedGame.manager.getAtlas(
+			"common-textures" ).findRegion( "flat_head_circular" );
 	private Texture intro, audience, alphabot, players;
 	Stage stage;
 
 	public IntroScreen( ) {
 		batch = new SpriteBatch( );
 		font = new BitmapFont( );
-		WereScrewedGame.manager.load( "data/common/slides/slide1_intro.png", Texture.class );
-		WereScrewedGame.manager.load( "data/common/slides/slide2_audience.png", Texture.class );
-		WereScrewedGame.manager.load( "data/common/slides/slide3_alphabot.png", Texture.class );
-		WereScrewedGame.manager.load( "data/common/slides/slide4_players.png", Texture.class );
-		
-		intro = WereScrewedGame.manager.get( "data/common/slides/slide1_intro.png", Texture.class );
-		audience =  WereScrewedGame.manager.get( "data/common/slides/slide2_audience.png", Texture.class );
-		alphabot=  WereScrewedGame.manager.get( "data/common/slides/slide3_alphabot.png", Texture.class );
-		players= WereScrewedGame.manager.get( "data/common/slides/slide4_players.png", Texture.class );
-		
+		WereScrewedGame.manager.load( "data/common/slides/slide1_intro.png",
+				Texture.class );
+		WereScrewedGame.manager.load( "data/common/slides/slide2_audience.png",
+				Texture.class );
+		WereScrewedGame.manager.load( "data/common/slides/slide3_alphabot.png",
+				Texture.class );
+		WereScrewedGame.manager.load( "data/common/slides/slide4_players.png",
+				Texture.class );
+
+		intro = WereScrewedGame.manager.get(
+				"data/common/slides/slide1_intro.png", Texture.class );
+		audience = WereScrewedGame.manager.get(
+				"data/common/slides/slide2_audience.png", Texture.class );
+		alphabot = WereScrewedGame.manager.get(
+				"data/common/slides/slide3_alphabot.png", Texture.class );
+		players = WereScrewedGame.manager.get(
+				"data/common/slides/slide4_players.png", Texture.class );
+
 		stage = new Stage( );
 		Gdx.input.setInputProcessor( stage );
 
@@ -43,35 +54,23 @@ class IntroScreen implements com.badlogic.gdx.Screen {
 		Image playersImage = new Image( players );
 		// Image splashImage = new Image(Assets.logoTexture);
 		// splashImage.addAction(Actions.fadeIn( 2f ));
-		introImage
-				.addAction( Actions.sequence( Actions.delay( 0f ),
-						Actions.fadeIn( 2f ),
-						Actions.fadeOut( 2f ),
-						Actions.hide( )));
-		
-		audienceImage
-		.addAction( Actions.sequence( Actions.delay( 4f ),
-				Actions.fadeIn( 2f ),
-				Actions.fadeOut( 2f ),
-				Actions.hide( )));
-		
-		alphabotImage
-		.addAction( Actions.sequence( Actions.delay( 8f ),
-				Actions.fadeIn( 2f ),
-				Actions.fadeOut( 2f ),Actions.hide( ) ));
-		
-		playersImage
-		.addAction( Actions.sequence( Actions.delay( 16f ),
-				Actions.fadeIn( 2f ),
-				Actions.fadeOut( 2f ),
-				Actions.run( onSplashFinishedRunnable )
-				));
+		introImage.addAction( Actions.sequence( Actions.delay( 0f ),
+				Actions.fadeIn( 2f ), Actions.fadeOut( 2f ), Actions.hide( ) ) );
 
-		
+		audienceImage.addAction( Actions.sequence( Actions.delay( 4f ),
+				Actions.fadeIn( 2f ), Actions.fadeOut( 2f ), Actions.hide( ) ) );
+
+		alphabotImage.addAction( Actions.sequence( Actions.delay( 8f ),
+				Actions.fadeIn( 2f ), Actions.fadeOut( 2f ), Actions.hide( ) ) );
+
+		playersImage.addAction( Actions.sequence( Actions.delay( 16f ),
+				Actions.fadeIn( 2f ), Actions.fadeOut( 2f ),
+				Actions.run( onSplashFinishedRunnable ) ) );
+
 		stage.addActor( playersImage );
-		
+
 		stage.addActor( alphabotImage );
-		
+
 		stage.addActor( audienceImage );
 		stage.addActor( introImage );
 	}
@@ -88,9 +87,9 @@ class IntroScreen implements com.badlogic.gdx.Screen {
 	@Override
 	public void resize( int width, int height ) {
 		stage.setViewport( width, height, true );
-		for (Actor a : stage.getActors( )) {
-			a.setX( width / 2 - a.getWidth( ) / 2 );
-			a.setY( height / 2 - a.getHeight( ) / 2 );
+		for ( Actor a : stage.getActors( ) ) {
+			a.setX( width / 2 );
+			a.setY( height / 2 );
 		}
 
 	}
@@ -99,7 +98,7 @@ class IntroScreen implements com.badlogic.gdx.Screen {
 	public void show( ) {
 		/* schedule to show main menu screen after 2 seconds */
 		// Timer.schedule(new ScreenSwitchTask(Screen.MAIN_MENU), 2f);
-		
+
 	}
 
 	Runnable onSplashFinishedRunnable = new Runnable( ) {

@@ -192,11 +192,11 @@ public class LerpMover implements IMover {
 		alpha = value;
 		if ( alpha > 1 ) {
 			alpha = 1;
-		}
-		else if ( alpha < 0 ) {
+		} else if ( alpha < 0 ) {
 			alpha = 0;
 		}
 	}
+
 	/**
 	 * take a step
 	 */

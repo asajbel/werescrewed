@@ -8,75 +8,37 @@
 
 ##sounds
 /common/sounds/inceptionbutton.mp3
-/common/sounds/jump.ogg
+/levels/alphabot/sounds/gear.ogg
 
-##common tilesets
-##/levels/level1/TilesetTest.png
 
-##common texture
-/common/player_b_f.png
-/common/player_female_idle.png
-/common/player_r_m.png
-/common/player_female_idle_ghost.png
-/common/player_r_m_ghost.png
-/common/animations/screwInterface.png
-#/common/test01.png
-#/common/cletter.png
-/common/parallax_layer1_0.png
-/common/parallax_layer1_1.png
-/common/parallax_layer2_0.png
-/common/parallax_layer2_1.png
-/common/robot/alphabot_texture_tux.png
-/levels/alphabot/alphabot_tile_suit_main.png
-/levels/alphabot/bgCloud.png
-
-##texture atlas
-##/common/animations/screwInterface.pack
-##/common/tileset1.pack
-##/common/TilesetTest.pack
-##/particles/particles.pack
-/levels/alphabot/bgCloud.pack
 
 ##stage assets
-/levels/alphabot/alphabot_floor_seats.pack
-/levels/alphabot/stage_pillar.pack
-/levels/alphabot/stage_upperleft.pack
-/levels/alphabot/stage_upperright.pack
-/levels/alphabot/stage_light.pack
-/levels/alphabot/support_left.pack
-/levels/alphabot/support_middle_right.pack
-/levels/alphabot/curtains.pack
+/levels/alphabot/theater_floor_seats_stage.pack
+/levels/alphabot/light_curtain.pack
 /levels/alphabot/dome_small.pack
 
 
 
 ##decals and such
-/levels/alphabot/alphabot_foot_shin_decal.pack
-/levels/alphabot/alphabot_knee_in_thigh_out.pack
+/levels/alphabot/foot_shin_thigh.pack
+/levels/alphabot/knee_chest_in.pack
 /levels/alphabot/engine.pack
 /levels/alphabot/chest_pipes_thigh_pipes.pack
-/levels/alphabot/left-arm.pack
+/levels/alphabot/left-arm-internal.pack
 /levels/alphabot/head_left.pack
 /levels/alphabot/head_right.pack
-/levels/alphabot/forearm_elbow_ex.pack
-/levels/alphabot/right_arm_ex.pack
 /levels/alphabot/chest_exterior_lower.pack
 /levels/alphabot/chest_exterior_middle.pack
 /levels/alphabot/chest_exterior_upper1.pack
 /levels/alphabot/chest_exterior_upper2.pack
 /levels/alphabot/chest2.pack
+/levels/alphabot/arm_ex.pack
+/levels/alphabot/right-leg.pack
 
 
-/levels/level1/player_female_idle.png
-/levels/level1/player_male_idle.png
 
 ##Alphabot skeleton textures
-#/levels/alphabot/alphabot_texture_skin.png
 /levels/alphabot/alphabot_texture_tux.png
-/levels/alphabot/alphabot_tile_suit_main.png
-/levels/alphabot/alphabot_tile_interior.png
-/levels/alphabot/sheetmetaltexture.png
-/levels/alphabot/sheetmetaltextureblack.png
 
 
 /levels/alphabot/shoe_testing/shoe_background_1024.png

@@ -3,150 +3,213 @@ package com.blindtigergames.werescrewed.gui;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.BitmapFont.TextBounds;
-import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
+import com.blindtigergames.werescrewed.WereScrewedGame;
+import com.blindtigergames.werescrewed.entity.Sprite;
+import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 
 public class Button {
-	
-	private static final Color NORMAL_COLOR = new Color(1f, 1f, 1f, 0.7f);
-	private static final Color HOVER_COLOR = new Color(0f, 128f, 255f, 1f);
-	
+
+	protected static final Color NORMAL_COLOR = new Color( 0.24f, 0.24f, 0.24f,
+			1f );
+	protected static final Color HOVER_COLOR = new Color( 1f, 1f, 1f, 1f );
+
 	protected String caption = null;
 	protected BitmapFont font = null;
 	protected int x = 0;
 	protected int y = 0;
-	protected int width = 0;
-	protected int height = 0;
+	protected int width = 287; // width of button image
+	protected int height = 92; // height of button image
+	protected int capWidth = 0;
+	protected int capHeight = 0;
 	protected Rectangle bounds = null;
 	protected boolean selected = false;
 	protected boolean colored = false;
+	protected Sprite box = null;
+	protected boolean scaled = false; // Used to tell when button has hit
+										// appropriate size
+	protected int scaleX = width; // Used for scaling sprite
+	protected int scaleY = height;
+	protected float xPos = 0.0f;
+	protected float yPos = 0.0f;
 
 	/**
 	 * makes a new button instance
 	 * 
-	 * @param caption String
-	 * @param font BitmapFont
-	 * @param handler ButtonHandler
-	 * @param x int
-	 * @param y int
+	 * @param caption
+	 *            String
+	 * @param font
+	 *            BitmapFont
+	 * @param handler
+	 *            ButtonHandler
+	 * @param x
+	 *            int
+	 * @param y
+	 *            int
 	 */
 	public Button( String caption, BitmapFont font, int x, int y ) {
 		this.caption = caption;
 		this.font = font;
 		this.x = x;
 		this.y = y;
+		Texture back = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
+				+ "/menu/button.png", Texture.class );
+		box = new Sprite( back );
+		bounds = new Rectangle( x, y - height, width, height );
 		calculateDimensions( );
 	}
-	
+
 	/**
 	 * makes a new button instance
 	 * 
-	 * @param caption String
-	 * @param font BitmapFont
-	 * @param handler ButtonHandler
+	 * @param caption
+	 *            String
+	 * @param font
+	 *            BitmapFont
+	 * @param handler
+	 *            ButtonHandler
 	 */
 	public Button( String caption, BitmapFont font ) {
 		this( caption, font, 0, 0 );
 	}
-	
+
 	/**
 	 * Gets phrase the button will say on screen
+	 * 
 	 * @return String
 	 */
-	public String getCaption() {
+	public String getCaption( ) {
 		return caption;
 	}
-	
+
 	/**
 	 * Changes phrase the button will say on screen
 	 * 
-	 * @param caption String
+	 * @param caption
+	 *            String
 	 */
-	public void setCaption(String caption) {
+	public void setCaption( String caption ) {
 		this.caption = caption;
-		calculateDimensions();
+		calculateDimensions( );
 	}
-	
-	public int getX() {
+
+	public int getX( ) {
 		return x;
 	}
-	
-	public void setX(int x) {
+
+	public void setX( int x ) {
 		this.x = x;
 		bounds.x = x;
 	}
-	
-	public int getY() {
+
+	public int getY( ) {
 		return y;
 	}
-	
-	public void setY(int y) {
+
+	public void setY( int y ) {
 		this.y = y;
-		bounds.y = y - height;
+		bounds.y = y - height * 2;
 	}
-	
-	public int getWidth() {
+
+	public int getWidth( ) {
 		return width;
 	}
-	
-	public int getHeight() {
+
+	public int getHeight( ) {
 		return height;
 	}
-	
+
 	/**
 	 * used to press button
 	 * 
-	 * @param value boolean
+	 * @param value
+	 *            boolean
 	 */
-	public void setSelected( boolean value ){
+	public void setSelected( boolean value ) {
 		selected = value;
 	}
-	
+
 	/**
 	 * determines if button has been pressed
 	 * 
 	 * @return boolean
 	 */
-	public boolean isSelected(){
+	public boolean isSelected( ) {
 		return selected;
 	}
-	
+
 	/**
 	 * determines if button will be colored
 	 * 
-	 * @param value boolean
+	 * @param value
+	 *            boolean
 	 */
-	public void setColored( boolean value ){
+	public void setColored( boolean value ) {
 		colored = value;
+		scaled = false;
 	}
-	
+
 	/**
 	 * determines if button will be colored
 	 * 
 	 * @return boolean
 	 */
-	public boolean isColored(){
+	public boolean isColored( ) {
 		return colored;
 	}
-	
-	public void draw(SpriteBatch batch, Camera camera) {
-		Color originalColor = font.getColor();
-		Vector3 cursorPosition = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
-		camera.unproject(cursorPosition);
-		boolean isIntersect = bounds.contains(cursorPosition.x, cursorPosition.y);
-		font.setColor(colored ? HOVER_COLOR : NORMAL_COLOR);
-		font.draw(batch, caption, x, y);
-		font.setColor(originalColor);
+
+	public void draw( SpriteBatch batch, Camera camera ) {
+		Color originalColor = font.getColor( );
+		Vector3 cursorPosition = new Vector3( Gdx.input.getX( ),
+				Gdx.input.getY( ), 0 );
+		camera.unproject( cursorPosition );
+		@SuppressWarnings( "unused" )
+		boolean isIntersect = bounds.contains( cursorPosition.x,
+				cursorPosition.y );
+
+		box.setPosition( x - xPos, y - height * 2 - yPos );
+		if ( !scaled ) {
+			setScale( );
+		}
+		box.setSize( scaleX, scaleY );
+		box.setOrigin( box.getWidth( ) / 2, box.getHeight( ) / 2 );
+		box.draw( batch );
+
+		font.setColor( colored ? HOVER_COLOR : NORMAL_COLOR );
+		font.draw( batch, caption, x - capWidth / 2 + width / 2 + 5, y - height
+				- capHeight / 2 );
+		font.setColor( originalColor );
+
 	}
-	
-	protected void calculateDimensions() {
-		TextBounds dimensions = font.getBounds(caption);
-		width = Math.round(dimensions.width);
-		height = Math.round(dimensions.height);
-		bounds = new Rectangle(x, y - height, width, height);
-		
-	}	
+
+	protected void setScale( ) {
+		if ( colored ) {
+			scaleX++;
+			scaleY++;
+			xPos += 0.5f;
+			yPos += 0.5f;
+			if ( scaleX >= ( width + 30 ) && scaleY >= ( height + 30 ) ) {
+				scaled = true;
+			}
+		} else {
+			scaleX--;
+			scaleY--;
+			xPos -= 0.5f;
+			yPos -= 0.5f;
+			if ( scaleX <= ( width ) && scaleY <= ( height ) ) {
+				scaled = true;
+			}
+		}
+	}
+
+	protected void calculateDimensions( ) {
+		TextBounds dimensions = font.getBounds( caption );
+		capWidth = Math.round( dimensions.width );
+		capHeight = Math.round( dimensions.height );
+
+	}
 }

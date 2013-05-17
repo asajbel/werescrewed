@@ -1,0 +1,33 @@
+knee_chest_in.png
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+offset: 0, 0
+lower-right-chest
+  rotate: false
+  xy: 2, 1068
+  size: 1029, 836
+  orig: 1029, 836
+  offset: 0, 0
+  index: -1
+chest_powerswitches_pipestoengine
+  rotate: false
+  xy: 1235, 2
+  size: 798, 1064
+  orig: 798, 1064
+  offset: 0, 0
+  index: -1
+upper-right-chest
+  rotate: false
+  xy: 2, 2
+  size: 1231, 600
+  orig: 1231, 600
+  offset: 0, 0
+  index: -1
+left-knee
+  rotate: false
+  xy: 1033, 1068
+  size: 763, 716
+  orig: 763, 716
+  offset: 0, 0
+  index: -1

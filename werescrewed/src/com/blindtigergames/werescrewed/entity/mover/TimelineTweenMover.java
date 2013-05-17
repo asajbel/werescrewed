@@ -9,11 +9,11 @@ import com.blindtigergames.werescrewed.entity.screws.Screw;
 public class TimelineTweenMover implements IMover {
 
 	public Timeline timeline;
-	
-	public TimelineTweenMover(Timeline timeline){
+
+	public TimelineTweenMover( Timeline timeline ) {
 		this.timeline = timeline;
 	}
-	
+
 	@Override
 	public void move( float deltaTime, Body body ) {
 		timeline.update( deltaTime );
@@ -23,7 +23,7 @@ public class TimelineTweenMover implements IMover {
 	public void runPuzzleMovement( Screw screw, float screwVal, Platform p ) {
 		// TODO Auto-generated method stub
 		p.setMoverAtCurrentState( this );
-		if (screwVal > 0.0f){
+		if ( screwVal > 0.0f ) {
 			p.setActive( true );
 		} else {
 			p.setActive( false );

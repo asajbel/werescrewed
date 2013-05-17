@@ -91,6 +91,7 @@ public class Level {
 
 	public void update( float deltaTime ) {
 		// camera.update( );
+		world.step( WereScrewedGame.oneOverTargetFrameRate, 2, 1);
 
 		if ( player1 != null )
 			player1.update( deltaTime );
@@ -133,28 +134,28 @@ public class Level {
 			}
 			jointsToRemove.clear( );
 		}
-		
-		if( WereScrewedGame.p1Controller != null ) {
-			if ( WereScrewedGame.p1ControllerListener.pausePressed( )) {
-				if(!ScreenManager.p1PauseHeld){
+
+		if ( WereScrewedGame.p1Controller != null ) {
+			if ( WereScrewedGame.p1ControllerListener.pausePressed( ) ) {
+				if ( !ScreenManager.p1PauseHeld ) {
 					ScreenManager.getInstance( ).show( ScreenType.PAUSE );
 				}
 			} else {
 				ScreenManager.p1PauseHeld = false;
 			}
 		}
-		if( WereScrewedGame.p2Controller != null ) {
-			if ( WereScrewedGame.p2ControllerListener.pausePressed( )) {
-				if(!ScreenManager.p2PauseHeld){
+		if ( WereScrewedGame.p2Controller != null ) {
+			if ( WereScrewedGame.p2ControllerListener.pausePressed( ) ) {
+				if ( !ScreenManager.p2PauseHeld ) {
 					ScreenManager.getInstance( ).show( ScreenType.PAUSE );
 				}
 			} else {
 				ScreenManager.p2PauseHeld = false;
 			}
 		}
-		
+
 		if ( Gdx.input.isKeyPressed( Input.Keys.ESCAPE ) ) {
-			if(!ScreenManager.escapeHeld){
+			if ( !ScreenManager.escapeHeld ) {
 				ScreenManager.getInstance( ).show( ScreenType.PAUSE );
 			}
 		} else
@@ -188,27 +189,40 @@ public class Level {
 
 		if ( debug )
 			debugRenderer.render( world, camera.combined( ) );
-		world.step( WereScrewedGame.oneOverTargetFrameRate, 6, 4 );
+//		worldStep(deltaTime); 
 
 	}
+	
+	private float accum = 0f;               
+	private final float step = 1f / 60f;    
+	private final float maxAccum = 1f / 20f;
+	                                        
+	private void worldStep(float delta) {   
+	   accum += delta;                     
+	   accum = Math.min(accum, maxAccum);  
+	   while (accum >= maxAccum) {              
+	      world.step(1f / 30f, 1, 1);         
+	      accum -= maxAccum;                  
+	   }                                   
+	}                                      
 
 	private void drawBGStuff( SpriteBatch batch, float deltaTime ) {
 		for ( Skeleton skel : skelBGList ) {
-			if ( skel.isActive( ) ) { 
+			if ( skel.isActive( ) ) {
 				if ( skel.bgSprite != null
 						&& ( !skel.isFadingSkel( ) || skel.isFGFaded( ) ) ) {
 					skel.bgSprite.draw( batch );
 				}
-				if ( !skel.isFadingSkel( ) || skel.isFGFaded( ) ) {
+				if ( skel.isUpdatable( ) ) {
 					skel.drawBGDecals( batch, camera );
 				}
 			}
 		}
 		for ( Entity e : entityBGList ) {
 			if ( e.isActive( )
-					&& ( e.getParentSkeleton( ) == null
-							|| !e.getParentSkeleton( ).isFadingSkel( ) || e
-							.getParentSkeleton( ).isFGFaded( ) ) ) {
+					&& ( e.getParentSkeleton( ) == null || ( e
+							.getParentSkeleton( ).isUpdatable( ) && !e
+							.getParentSkeleton( ).getWasInactive( ) ) ) ) {
 				{
 					e.drawBGDecals( batch, camera );
 				}
@@ -219,8 +233,8 @@ public class Level {
 	private void drawFGStuff( SpriteBatch batch ) {
 		for ( Entity e : entityFGList ) {
 			if ( e.getParentSkeleton( ) == null
-					|| !e.getParentSkeleton( ).isFadingSkel( ) || e
-					.getParentSkeleton( ).isFGFaded( ) ) {
+					|| ( e.getParentSkeleton( ).isUpdatable( ) && !e
+							.getParentSkeleton( ).getWasInactive( ) ) ) {
 				e.drawFGDecals( batch, camera );
 			}
 		}
@@ -228,7 +242,7 @@ public class Level {
 			if ( skel.fgSprite != null && skel.fgSprite.getAlpha( ) != 0 ) {
 				skel.fgSprite.draw( batch );
 			}
-			// if ( !skel.isActive( ) )
+			// if ( !skel.isUpdatable( ) )
 			{
 				skel.drawFGDecals( batch, camera );
 			}

@@ -33,14 +33,14 @@ public class Pipe extends Platform {
 	protected Direction nextDirection;
 	protected Direction previousDirection;
 	protected Texture texture;
-	protected boolean open; 
+	protected boolean open;
 
 	public static final float TILE_SIZE = 32.0f;
 
 	public Pipe( String name, Vector2 pos, ArrayList< Vector2 > path,
 			Texture tex, World world, boolean openEnded ) {
 		super( name, pos, tex, world );
-		open = openEnded; 
+		open = openEnded;
 		this.path = path;
 		this.currentPos = new Vector2( );
 		start = new Vector2( );
@@ -51,15 +51,15 @@ public class Pipe extends Platform {
 		int numberOfSegments;
 		previousDirection = null;
 
-		boolean bodymake = true; 
-		
-		Vector2 previousPair = new Vector2(); 
+		boolean bodymake = true;
+
+		Vector2 previousPair = new Vector2( );
 
 		for ( int i = 0; i < path.size( ); i++ ) {
-			
-			currentPair = new Vector2(path.get( i ));
+
+			currentPair = new Vector2( path.get( i ) );
 			currentPair = currentPair.sub( previousPair );
-			previousPair = path.get( i ); 
+			previousPair = path.get( i );
 
 			// error-check coordinate pairs, only allowing for movement in one
 			// direction
@@ -69,7 +69,7 @@ public class Pipe extends Platform {
 			}
 
 			// determine which direction this segment of pipe will run
-			if ( currentPair.x < 0 ) 
+			if ( currentPair.x < 0 )
 				currentDirection = Direction.LEFT;
 			else if ( currentPair.x > 0 )
 				currentDirection = Direction.RIGHT;
@@ -77,29 +77,29 @@ public class Pipe extends Platform {
 				currentDirection = Direction.DOWN;
 			else if ( currentPair.y > 0 )
 				currentDirection = Direction.UP;
-			
-			if (bodymake) {
 
-				switch (currentDirection) {
+			if ( bodymake ) {
+
+				switch ( currentDirection ) {
 				case DOWN:
 					position = new Vector2( pos.x * Util.PIXEL_TO_BOX,
-							(pos.y - TILE_SIZE) * Util.PIXEL_TO_BOX ); 
+							( pos.y - TILE_SIZE ) * Util.PIXEL_TO_BOX );
 					break;
 				case LEFT:
-					position = new Vector2( ( pos.x - TILE_SIZE) * Util.PIXEL_TO_BOX,
-						pos.y * Util.PIXEL_TO_BOX ); 
+					position = new Vector2( ( pos.x - TILE_SIZE )
+							* Util.PIXEL_TO_BOX, pos.y * Util.PIXEL_TO_BOX );
 					break;
 				case RIGHT:
-					position = new Vector2( ( pos.x + TILE_SIZE) * Util.PIXEL_TO_BOX,
-							pos.y * Util.PIXEL_TO_BOX ); 
+					position = new Vector2( ( pos.x + TILE_SIZE )
+							* Util.PIXEL_TO_BOX, pos.y * Util.PIXEL_TO_BOX );
 					break;
 				case UP:
 					position = new Vector2( pos.x * Util.PIXEL_TO_BOX,
-							(pos.y + TILE_SIZE) * Util.PIXEL_TO_BOX ); 
+							( pos.y + TILE_SIZE ) * Util.PIXEL_TO_BOX );
 					break;
 				default:
 					break;
-				
+
 				}
 				BodyDef bodyDef = new BodyDef( );
 				bodyDef.position.set( position );
@@ -107,7 +107,7 @@ public class Pipe extends Platform {
 				bodyDef.gravityScale = 0.1f;
 				body = world.createBody( bodyDef );
 				body.setUserData( this );
-				bodymake = false; 
+				bodymake = false;
 			}
 
 			if ( currentPair.x != 0 )
@@ -131,57 +131,60 @@ public class Pipe extends Platform {
 			int numberOfSegments, World world, boolean lastSegment ) {
 		Tile temp;
 		Sprite tempSprite;
-		float offset_x = 0;  
+		float offset_x = 0;
 		float offset_y = 0;
-	
+
 		start.x = currentPos.x;
-		start.y = currentPos.y; 
-		
-		TextureAtlas commonTextures = WereScrewedGame.manager.getAtlas( "common-textures" );
+		start.y = currentPos.y;
+
+		TextureAtlas commonTextures = WereScrewedGame.manager
+				.getAtlas( "common-textures" );
 		String texName = "";
-		
-		switch ( currentDirection ){
+
+		switch ( currentDirection ) {
 		case LEFT:
-			if ( previousDirection == Direction.UP) {
+			if ( previousDirection == Direction.UP ) {
 				texName = "pipeDL";
 			} else if ( previousDirection == Direction.DOWN ) {
 				texName = "pipeUL";
-			} else 
+			} else
 				texName = "pipeLR";
 			break;
 		case RIGHT:
-			if ( previousDirection == Direction.UP) {
+			if ( previousDirection == Direction.UP ) {
 				texName = "pipeDR";
 			} else if ( previousDirection == Direction.DOWN ) {
 				texName = "pipeUR";
-			} else 
+			} else
 				texName = "pipeLR";
 			break;
 		case UP:
-			if ( previousDirection == Direction.LEFT) {
+			if ( previousDirection == Direction.LEFT ) {
 				texName = "pipeUR";
 			} else if ( previousDirection == Direction.RIGHT ) {
 				texName = "pipeUL";
-			} else 
+			} else
 				texName = "pipeUD";
 			break;
 		case DOWN:
-			if ( previousDirection == Direction.LEFT) {
+			if ( previousDirection == Direction.LEFT ) {
 				texName = "pipeDR";
 			} else if ( previousDirection == Direction.RIGHT ) {
 				texName = "pipeDL";
-			} else 
+			} else
 				texName = "pipeUD";
 			break;
 		}
-		
+
 		tempSprite = commonTextures.createSprite( texName );
-		offset_x = currentPos.x * Util.BOX_TO_PIXEL - tempSprite.getWidth( ) / 2;
-		offset_y = currentPos.y * Util.BOX_TO_PIXEL - tempSprite.getHeight( ) / 2;
+		offset_x = currentPos.x * Util.BOX_TO_PIXEL - tempSprite.getWidth( )
+				/ 2;
+		offset_y = currentPos.y * Util.BOX_TO_PIXEL - tempSprite.getHeight( )
+				/ 2;
 		tempSprite.setOrigin( -offset_x, -offset_y );
+		tempSprite.setColor( .9f, 0.7f, 0.1f, 1 );
 		temp = new Tile( offset_x, offset_y, tempSprite );
 		tiles.add( temp );
-
 
 		switch ( currentDirection ) {
 		case LEFT:
@@ -241,21 +244,22 @@ public class Pipe extends Platform {
 			break;
 		}
 
-		Vector2 distance = new Vector2(currentPos.x - start.x, currentPos.y - start.y); 
-		
+		Vector2 distance = new Vector2( currentPos.x - start.x, currentPos.y
+				- start.y );
+
 		for ( int i = 1; i < numberOfSegments; i++ ) {
-				switch ( currentDirection ){
-				case LEFT:
-				case RIGHT:
-					texName = "pipeLR";
-					break;
-				case UP:
-				case DOWN:
-					texName = "pipeUD";
-					break;
-				}
-			if ( i == numberOfSegments - 1 && lastSegment && !open ){
-				switch ( currentDirection ){
+			switch ( currentDirection ) {
+			case LEFT:
+			case RIGHT:
+				texName = "pipeLR";
+				break;
+			case UP:
+			case DOWN:
+				texName = "pipeUD";
+				break;
+			}
+			if ( i == numberOfSegments - 1 && lastSegment && !open ) {
+				switch ( currentDirection ) {
 				case LEFT:
 					texName = "pipeEndL";
 					break;
@@ -270,41 +274,50 @@ public class Pipe extends Platform {
 					break;
 				}
 			}
-			
+
 			tempSprite = commonTextures.createSprite( texName );
-			if (currentDirection == Direction.RIGHT || currentDirection == Direction.LEFT) {
-				offset_x = (start.x + ( i / (float) numberOfSegments ) * distance.x)
-					* Util.BOX_TO_PIXEL  - tempSprite.getWidth( ) / 2;
-				offset_y = currentPos.y * (float) Util.BOX_TO_PIXEL - tempSprite.getHeight( ) / 2;
+			if ( currentDirection == Direction.RIGHT
+					|| currentDirection == Direction.LEFT ) {
+				offset_x = ( start.x + ( i / ( float ) numberOfSegments )
+						* distance.x )
+						* Util.BOX_TO_PIXEL - tempSprite.getWidth( ) / 2;
+				offset_y = currentPos.y * ( float ) Util.BOX_TO_PIXEL
+						- tempSprite.getHeight( ) / 2;
 			} else {
-				offset_x = currentPos.x * (float) Util.BOX_TO_PIXEL  - tempSprite.getWidth( ) / 2;
-				offset_y = (start.y + ( i / (float) numberOfSegments ) * distance.y)
-					* Util.BOX_TO_PIXEL - tempSprite.getHeight( ) / 2;
+				offset_x = currentPos.x * ( float ) Util.BOX_TO_PIXEL
+						- tempSprite.getWidth( ) / 2;
+				offset_y = ( start.y + ( i / ( float ) numberOfSegments )
+						* distance.y )
+						* Util.BOX_TO_PIXEL - tempSprite.getHeight( ) / 2;
 			}
-			tempSprite.setOrigin( -offset_x, -offset_y);
+			tempSprite.setColor( .9f, 0.7f, 0.1f, 1 );
+			tempSprite.setOrigin( -offset_x, -offset_y );
 			temp = new Tile( offset_x, offset_y, tempSprite );
 			tiles.add( temp );
 
 		}
 	}
 
-	@Override 
-	public void draw( SpriteBatch batch , float deltaTime ) {
+	@Override
+	public void draw( SpriteBatch batch, float deltaTime ) {
 
 		// for ( int i = 0; i < segments.size(); i++ )
 		// segments.get( i ).draw( batch );
+		// Color c = batch.getColor( );
+		// batch.setColor( 1f, 0f, 0f, 1f );
 		for ( Tile a : tiles ) {
-			a.tileSprite.setPosition( 
-					body.getPosition( ).x * Util.BOX_TO_PIXEL + a.xOffset,
-					body.getPosition( ).y * Util.BOX_TO_PIXEL + a.yOffset );
+			a.tileSprite.setPosition( body.getPosition( ).x * Util.BOX_TO_PIXEL
+					+ a.xOffset, body.getPosition( ).y * Util.BOX_TO_PIXEL
+					+ a.yOffset );
 			a.tileSprite.setRotation( MathUtils.radiansToDegrees
 					* body.getAngle( ) );
 			a.tileSprite.draw( batch );
 		}
+		// batch.setColor( c.r, c.g, c.b, c.a );
 	}
 
 	public void setOpen( boolean open2 ) {
-		open = open2; 
+		open = open2;
 	}
 
 }

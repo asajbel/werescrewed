@@ -3,7 +3,6 @@ package com.blindtigergames.werescrewed.entity;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
@@ -69,6 +68,7 @@ public class Skeleton extends Platform {
 	protected boolean isMacroSkeleton = false;
 
 	protected boolean wasInactive = false;
+	protected boolean isUpdatable = true;
 
 	/**
 	 * Constructor used by SkeletonBuilder
@@ -400,27 +400,42 @@ public class Skeleton extends Platform {
 	@Override
 	public void update( float deltaTime ) {
 		float frameRate = 1 / deltaTime;
-		boolean isUpdatable = !this.isFadingSkel( ) || this.isFGFaded( );
+		isUpdatable = !this.isFadingSkel( ) || this.isFGFaded( );
 		if ( isUpdatable || isMacroSkeleton ) {
 			updateMover( deltaTime );
 			if ( entityType != EntityType.ROOTSKELETON && isKinematic( ) ) {
 				super.setTargetPosRotFromSkeleton( frameRate, parentSkeleton );
 			}
 		}
-		for ( Platform platform : kinematicPlatformMap.values( ) ) {
-			if ( platform.removeNextStep ) {
-				entitiesToRemove.add( platform );
-			} else {
-				platform.updateMover( deltaTime );
-				platform.setTargetPosRotFromSkeleton( frameRate, this );
-				platform.update( deltaTime );
-			}
+		for ( EventTrigger event : eventMap.values( ) ) {
+			event.translatePosRotFromSKeleton( this );
+			// event.setTargetPosRotFromSkeleton( frameRate, this );
 		}
 		if ( isUpdatable ) {
+			for ( Platform platform : kinematicPlatformMap.values( ) ) {
+				if ( platform.removeNextStep ) {
+					entitiesToRemove.add( platform );
+				} else {
+					if ( wasInactive ) {
+						platform.body.setAwake( false );
+						platform.body.setActive( true );
+						platform.translatePosRotFromSKeleton( this );
+						platform.update( deltaTime );
+					} else {
+						platform.updateMover( deltaTime );
+						platform.setTargetPosRotFromSkeleton( frameRate, this );
+						platform.update( deltaTime );
+					}
+				}
+			}
 			for ( Platform platform : dynamicPlatformMap.values( ) ) {
 				if ( platform.removeNextStep ) {
 					entitiesToRemove.add( platform );
 				} else {
+					if ( wasInactive ) {
+						platform.body.setActive( true );
+						platform.body.setAwake( false );
+					}
 					platform.updateMover( deltaTime );
 					platform.update( deltaTime );
 				}
@@ -429,6 +444,10 @@ public class Skeleton extends Platform {
 				if ( screw.removeNextStep ) {
 					entitiesToRemove.add( screw );
 				} else {
+					if ( wasInactive ) {
+						screw.body.setActive( true );
+						screw.body.setAwake( false );
+					}
 					screw.update( deltaTime );
 				}
 			}
@@ -436,19 +455,38 @@ public class Skeleton extends Platform {
 				if ( chkpt.removeNextStep ) {
 					entitiesToRemove.add( chkpt );
 				} else {
+					if ( wasInactive ) {
+						chkpt.body.setActive( true );
+						chkpt.body.setAwake( false );
+					}
 					chkpt.update( deltaTime );
 				}
 			}
 			for ( Rope rope : ropeMap.values( ) ) {
 				// TODO: ropes need to be able to be deleted
+				if ( wasInactive ) {
+					boolean nextLink = true;
+					int index = 0;
+					if ( rope.getEndAttachment( ) != null ) {
+						rope.getEndAttachment( ).body.setAwake( false );
+						rope.getEndAttachment( ).body.setActive( true );
+					}
+					while ( nextLink ) {
+						rope.getLink( index ).body.setActive( true );
+						rope.getLink( index ).body.setAwake( false );
+						if ( rope.getLastLink( ) == rope.getLink( index ) ) {
+							nextLink = false;
+						}
+						index++;
+					}
+				}
 				rope.update( deltaTime );
 			}
 		} else {
-			wasInactive = true;
-		}
-		for ( EventTrigger event : eventMap.values( ) ) {
-			event.translatePosRotFromSKeleton( this );
-			// event.setTargetPosRotFromSkeleton( frameRate, this );
+			if ( !wasInactive ) {
+				setEntitiesToSleepOnUpdate( );
+				wasInactive = true;
+			}
 		}
 
 		alphaFadeAnimator.update( deltaTime );
@@ -539,6 +577,62 @@ public class Skeleton extends Platform {
 		world.destroyBody( body );
 	}
 
+	/**
+	 * this skeleton has gone to bed, put its entities to sleep instead of
+	 * updating the entities movements and such and delete them if necessary
+	 */
+	private void setEntitiesToSleepOnUpdate( ) {
+		for ( Platform platform : kinematicPlatformMap.values( ) ) {
+			if ( platform.removeNextStep ) {
+				entitiesToRemove.add( platform );
+			} else {
+				platform.body.setAwake( true );
+				platform.body.setActive( false );
+			}
+		}
+		for ( Platform platform : dynamicPlatformMap.values( ) ) {
+			if ( platform.removeNextStep ) {
+				entitiesToRemove.add( platform );
+			} else {
+				platform.body.setAwake( true );
+				platform.body.setActive( false );
+			}
+		}
+		for ( Screw screw : screwMap.values( ) ) {
+			if ( screw.removeNextStep ) {
+				entitiesToRemove.add( screw );
+			} else {
+				screw.body.setAwake( true );
+				screw.body.setActive( false );
+			}
+		}
+		for ( CheckPoint chkpt : checkpointMap.values( ) ) {
+			if ( chkpt.removeNextStep ) {
+				entitiesToRemove.add( chkpt );
+			} else {
+				chkpt.body.setAwake( true );
+				chkpt.body.setActive( false );
+			}
+		}
+		for ( Rope rope : ropeMap.values( ) ) {
+			// TODO: ropes need to be able to be deleted
+			boolean nextLink = true;
+			int index = 0;
+			if ( rope.getEndAttachment( ) != null ) {
+				rope.getEndAttachment( ).body.setAwake( true );
+				rope.getEndAttachment( ).body.setActive( false );
+			}
+			while ( nextLink ) {
+				rope.getLink( index ).body.setAwake( true );
+				rope.getLink( index ).body.setActive( false );
+				if ( rope.getLastLink( ) == rope.getLink( index ) ) {
+					nextLink = false;
+				}
+				index++;
+			}
+		}
+	}
+
 	@Override
 	public void draw( SpriteBatch batch, float deltaTime ) {
 		// super.draw( batch );
@@ -562,7 +656,10 @@ public class Skeleton extends Platform {
 	}
 
 	private void drawChildren( SpriteBatch batch, float deltaTime ) {
-		if ( !this.isFadingSkel( ) || this.isFGFaded( ) ) {
+		if ( !wasInactive && isUpdatable ) {
+			for ( EventTrigger et : eventMap.values( ) ) {
+				et.draw( batch, deltaTime );
+			}
 			for ( Platform p : dynamicPlatformMap.values( ) ) {
 				drawPlatform( p, batch, deltaTime );
 			}
@@ -582,9 +679,9 @@ public class Skeleton extends Platform {
 			for ( Rope rope : ropeMap.values( ) ) {
 				rope.draw( batch, deltaTime );
 			}
-			for ( EventTrigger et : eventMap.values( ) ) {
-				et.draw( batch, deltaTime );
-			}
+		}
+		if ( isUpdatable && wasInactive ) {
+			wasInactive = false;
 		}
 		// draw the entities of the parent skeleton before recursing through
 		// the
@@ -631,6 +728,14 @@ public class Skeleton extends Platform {
 			hazard.draw( batch, deltaTime );
 			break;
 		}
+	}
+
+	public boolean getWasInactive( ) {
+		return wasInactive;
+	}
+
+	public boolean isUpdatable( ) {
+		return isUpdatable;
 	}
 
 	private String getUniqueName( String nonUniqueName ) {

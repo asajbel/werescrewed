@@ -2,7 +2,6 @@ package com.blindtigergames.werescrewed.entity.screws;
 
 import java.util.ArrayList;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -54,11 +53,12 @@ public class Screw extends Entity {
 	protected boolean playerNotSensor = false;
 	protected ScrewType screwType;
 	public ArrayList< Joint > extraJoints;
-	
+
 	public static float SCREW_SOUND_DELAY = 0.5f;
 	public static float UNSCREW_SOUND_DELAY = 0.5f;
-	
-	private static TextureRegion screwTexRegion = WereScrewedGame.manager.getAtlas( "common-textures" ).findRegion( "flat_head_circular" );
+
+	private static TextureRegion screwTexRegion = WereScrewedGame.manager
+			.getAtlas( "common-textures" ).findRegion( "flat_head_circular" );
 
 	/**
 	 * constructor to use if you want a cosmetic screw
@@ -72,26 +72,28 @@ public class Screw extends Entity {
 	 */
 	public Screw( String name, Vector2 pos, Entity entity, World world ) {
 		super( name, pos, null, null, false );
-		loadSounds();
+		loadSounds( );
 		this.world = world;
-		this.sprite = constructSprite(screwTexRegion);
+		this.sprite = constructSprite( screwTexRegion );
 		this.entity = entity;
 		this.entityAngle = entity.getAngle( );
 		screwType = ScrewType.SCREW_COSMETIC;
 		entityType = EntityType.SCREW;
 		extraJoints = new ArrayList< Joint >( );
 		constructBody( pos );
-		if(sprite!=null)sprite.rotate( ( float ) ( Math.random( )*360 ) );
-		body.setTransform( body.getPosition( ), sprite.getRotation( )*Util.DEG_TO_RAD );
+		if ( sprite != null )
+			sprite.rotate( ( float ) ( Math.random( ) * 360 ) );
+		body.setTransform( body.getPosition( ), sprite.getRotation( )
+				* Util.DEG_TO_RAD );
 		addStructureJoint( entity );
 	}
 
 	protected void loadSounds( ) {
-		sounds = new SoundManager();
-		sounds.getSound( "screwing" , WereScrewedGame.dirHandle
-				+ "/common/sounds/screwing.ogg");
-		sounds.getSound( "unscrewing" , WereScrewedGame.dirHandle
-				+ "/common/sounds/unscrewing.ogg");
+		sounds = new SoundManager( );
+		sounds.getSound( "screwing", WereScrewedGame.dirHandle
+				+ "/common/sounds/screwing.ogg" );
+		sounds.getSound( "unscrewing", WereScrewedGame.dirHandle
+				+ "/common/sounds/unscrewing.ogg" );
 	}
 
 	/**
@@ -103,9 +105,11 @@ public class Screw extends Entity {
 	 */
 	public Screw( String name, Vector2 pos, TextureRegion tex ) {
 		super( name, pos, null, null, false );
-		loadSounds();
-		if (tex == null)tex = WereScrewedGame.manager.getAtlas( "common-textures" ).findRegion( "flat_head_circular" );
-		this.sprite = constructSprite(tex);
+		loadSounds( );
+		if ( tex == null )
+			tex = WereScrewedGame.manager.getAtlas( "common-textures" )
+					.findRegion( "flat_head_circular" );
+		this.sprite = constructSprite( tex );
 		entityType = EntityType.SCREW;
 	}
 
@@ -128,7 +132,7 @@ public class Screw extends Entity {
 	public void dispose( ) {
 		remove( );
 	}
-	
+
 	/**
 	 * returns true if the box2d stuff has been completely removed
 	 */
@@ -147,31 +151,31 @@ public class Screw extends Entity {
 			detachDirection = new Vector2( x, y );
 		}
 	}
-	
+
 	/**
 	 * gets the detach direction
 	 */
 	public Vector2 getDetachDirection( ) {
 		if ( detachDirection == null ) {
 			return Vector2.Zero;
-		} 
+		}
 		return detachDirection;
 	}
-	
+
 	/**
 	 * returns true if this screw is on a rope
 	 */
 	public boolean playerNotSensor( ) {
 		return playerNotSensor;
 	}
-	
+
 	/**
 	 * sets this screw to being on a rope;
 	 */
 	public void setPlayerNotSensor( ) {
 		playerNotSensor = true;
 	}
-	
+
 	/**
 	 * returns the joint at this index
 	 */
@@ -184,6 +188,7 @@ public class Screw extends Entity {
 
 	/**
 	 * used by controller controls to screw left
+	 * 
 	 * @param region
 	 * @param switchedDirections
 	 */
@@ -198,6 +203,7 @@ public class Screw extends Entity {
 
 	/**
 	 * used by controller controls to screw right
+	 * 
 	 * @param region
 	 * @param switchedDirections
 	 */
@@ -210,29 +216,31 @@ public class Screw extends Entity {
 	public void screwRight( ) {
 	}
 
-	
 	/**
 	 * used when the player is not screwing either left or right.
 	 * 
 	 */
-	public void stopScrewing(){
+	public void stopScrewing( ) {
 	}
-	
-	public void screwSound(float a, float midpoint){
-		float amount = (float)Math.pow(Math.abs(a / midpoint),2.0f);
-		if (amount >= 2.0f){
-			float delay = Math.max( Math.min( SCREW_SOUND_DELAY / amount, 1.5f), 0.5f);
+
+	public void screwSound( float a, float midpoint ) {
+		float amount = ( float ) Math.pow( Math.abs( a / midpoint ), 2.0f );
+		if ( amount >= 2.0f ) {
+			float delay = Math.max(
+					Math.min( SCREW_SOUND_DELAY / amount, 1.5f ), 0.5f );
 			sounds.playSound( "screwing", delay );
 		}
 	}
-	
-	public void unscrewSound(float a, float midpoint){
-		float amount = (float)Math.pow(Math.abs(a / midpoint),2.0f);
-		if (amount >= 2.0f){
-			float delay = Math.max( Math.min( SCREW_SOUND_DELAY / amount, 1.5f), 0.5f);
+
+	public void unscrewSound( float a, float midpoint ) {
+		float amount = ( float ) Math.pow( Math.abs( a / midpoint ), 2.0f );
+		if ( amount >= 2.0f ) {
+			float delay = Math.max(
+					Math.min( SCREW_SOUND_DELAY / amount, 1.5f ), 0.5f );
 			sounds.playSound( "unscrewing", delay );
 		}
 	}
+
 	/**
 	 * returns true if the screws body is jointed to a player
 	 * 
@@ -259,6 +267,10 @@ public class Screw extends Entity {
 	 */
 	public int getDepth( ) {
 		return depth;
+	}
+
+	public void setDepth( int d ) {
+		this.depth = d;
 	}
 
 	/**
@@ -294,7 +306,7 @@ public class Screw extends Entity {
 		RevoluteJointDef revoluteJointDef = new RevoluteJointDef( );
 		revoluteJointDef.initialize( body, entity.body, body.getPosition( ) );
 		revoluteJointDef.enableMotor = false;
-		Joint screwJoint =  (Joint) world.createJoint( revoluteJointDef );
+		Joint screwJoint = ( Joint ) world.createJoint( revoluteJointDef );
 		extraJoints.add( screwJoint );
 		this.entity = entity;
 		if ( entity != null ) {
@@ -305,38 +317,52 @@ public class Screw extends Entity {
 	public void addStructureJoint( Entity entity, float degreeLimit ) {
 		// connect other structure to structure screw
 		RevoluteJointDef revoluteJointDef = new RevoluteJointDef( );
-		revoluteJointDef.initialize( entity.body, body, body.getPosition( ) );
+
+		// Order matters! put in negative degreelimit if the screw is on the
+		// right of the
+		// object/skeleton and you want the skeleton to fall correctly
+		if ( degreeLimit > 0 )
+			revoluteJointDef
+					.initialize( entity.body, body, body.getPosition( ) );
+		else
+			revoluteJointDef
+					.initialize( body, entity.body, body.getPosition( ) );
 		revoluteJointDef.enableMotor = true;
 		revoluteJointDef.enableLimit = true;
+		degreeLimit = Math.abs( degreeLimit );
 		revoluteJointDef.upperAngle = degreeLimit * Util.DEG_TO_RAD;
 		revoluteJointDef.lowerAngle = -degreeLimit * Util.DEG_TO_RAD;
 
 		revoluteJointDef.maxMotorTorque = 30f;
+
 		revoluteJointDef.motorSpeed = 0.1f;
 		body.setFixedRotation( true );
-		
-		Joint screwJoint =  (Joint) world.createJoint( revoluteJointDef );
-		
+
+		Joint screwJoint = ( Joint ) world.createJoint( revoluteJointDef );
+
 		extraJoints.add( screwJoint );
 		this.entity = entity;
 		if ( entity != null ) {
 			this.entityAngle = entity.getAngle( );
 		}
 	}
+
 	/**
 	 * attaches another object using a weld joint
+	 * 
 	 * @param entity
 	 */
 	public void addWeldJoint( Entity entity ) {
-		WeldJointDef weldJointDef = new WeldJointDef();
+		WeldJointDef weldJointDef = new WeldJointDef( );
 		weldJointDef.initialize( body, entity.body, body.getPosition( ) );
-		Joint screwJoint =  (Joint) world.createJoint( weldJointDef );
+		Joint screwJoint = ( Joint ) world.createJoint( weldJointDef );
 		extraJoints.add( screwJoint );
-		
+
 	}
-	
+
 	/**
 	 * builds the screw body
+	 * 
 	 * @param pos
 	 */
 	private void constructBody( Vector2 pos ) {
@@ -360,5 +386,5 @@ public class Screw extends Entity {
 		// You dont dispose the fixturedef, you dispose the shape
 		screwShape.dispose( );
 	}
-	
+
 }

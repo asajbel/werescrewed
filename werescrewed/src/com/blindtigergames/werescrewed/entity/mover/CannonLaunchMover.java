@@ -1,6 +1,5 @@
 package com.blindtigergames.werescrewed.entity.mover;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.blindtigergames.werescrewed.entity.Entity;
@@ -15,7 +14,8 @@ public class CannonLaunchMover implements IMover {
 	float impulseStrength;
 	float delay;
 
-	public CannonLaunchMover( Skeleton cannon, float impulseStrength, float delaySeconds ) {
+	public CannonLaunchMover( Skeleton cannon, float impulseStrength,
+			float delaySeconds ) {
 		this.impulseStrength = impulseStrength;
 		this.cannon = cannon;
 		this.delay = delaySeconds;
@@ -24,13 +24,16 @@ public class CannonLaunchMover implements IMover {
 	@Override
 	public void move( float deltaTime, Body body ) {
 		delay -= deltaTime;
-		if(delay<=0f){
-			Gdx.app.log( "CannonLaunchMover", "LAUNCHING!" );
-			Vector2 impulseDirection = Util.PointOnCircle( impulseStrength, cannon.body.getAngle( )+Util.HALF_PI, new Vector2() );
+		if ( delay <= 0f ) {
+			// Gdx.app.log( "CannonLaunchMover", "LAUNCHING!" );
+			Vector2 impulseDirection = Util.PointOnCircle( impulseStrength,
+					cannon.body.getAngle( ) + Util.HALF_PI, new Vector2( ) );
 			body.applyLinearImpulse( impulseDirection, body.getWorldCenter( ) );
-			((Entity)(body.getUserData( ))).setMoverNullAtCurrentState( ); // delete this mover!
+			( ( Entity ) ( body.getUserData( ) ) ).setMoverNullAtCurrentState( ); // delete
+																					// this
+																					// mover!
 		}
-		
+
 	}
 
 	@Override

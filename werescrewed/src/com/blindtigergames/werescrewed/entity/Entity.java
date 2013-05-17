@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.HashMap;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -167,6 +166,19 @@ public class Entity implements GleedLoadable {
 	 */
 	public Entity( String name, Vector2 positionPixels, Texture texture,
 			Body body, boolean solid ) {
+		this.construct( name, solid );
+		this.sprite = constructSprite( texture );
+		this.body = body;
+		if ( body != null ) {
+			world = body.getWorld( );
+			// sprite.setScale( Util.PIXEL_TO_BOX );
+		}
+		this.setPixelPosition( positionPixels );
+		this.anchors = new ArrayList< Anchor >( );
+	}
+
+	public Entity( String name, Vector2 positionPixels, TextureRegion texture,
+			Body body, boolean solid, float rotation ) {
 		this.construct( name, solid );
 		this.sprite = constructSprite( texture );
 		this.body = body;
@@ -401,6 +413,7 @@ public class Entity implements GleedLoadable {
 				sounds.handleSoundPosition( "idle", this.getPositionPixel( ),
 						Camera.CAMERA_RECT );
 			}
+			handleMovementSounds( deltaTime );
 			sounds.update( deltaTime );
 		}
 	}
@@ -419,7 +432,7 @@ public class Entity implements GleedLoadable {
 						if ( body != null ) {
 							e.setAngle( body.getAngle( ) );
 						} else {
-							e.setAngle( sprite.getRotation( )*Util.DEG_TO_RAD );
+							e.setAngle( sprite.getRotation( ) * Util.DEG_TO_RAD );
 						}
 					}
 				}
@@ -450,6 +463,121 @@ public class Entity implements GleedLoadable {
 				if ( currentMover( ) != null ) {
 					currentMover( ).move( deltaTime, body );
 				}
+			}
+		}
+	}
+
+	public void updateSounds( float deltaTime ) {
+		sounds.update( deltaTime );
+		if ( body != null ) {
+			Vector2 absVelocity = body.getLinearVelocity( );
+			float absAngVelocity = body.getAngularVelocity( );
+			if ( sounds.hasSound( "linearvelocity" ) ) {
+				// These properties should be moved into SoundRef. They're just
+				// here for testing.
+				Vector2 lineScale = new Vector2( 1.0f, 1.0f );
+				Vector2 relativeVelocity;
+				if ( getParentSkeleton( ) != null ) {
+					relativeVelocity = body
+							.getLinearVelocityFromLocalPoint( getParentSkeleton( )
+									.getPosition( ) );
+				} else {
+					relativeVelocity = absVelocity.cpy( );
+				}
+				float pitchZero = 0.5f;
+				float pitchRange = -0.5f;
+				float pitchExp = 1.0f;
+				float volumeZero = 1.0f;
+				float volumeRange = -1.0f;
+				float volumeExp = 1.0f;
+				relativeVelocity.x *= lineScale.x;
+				relativeVelocity.y *= lineScale.y;
+				float contrib = Math.max(
+						Math.min( relativeVelocity.len( ), 0.0f ), 1.0f );
+				sounds.setSoundPitch(
+						"linearvelocity",
+						pitchZero
+								+ ( float ) Math.pow( ( pitchRange * contrib ),
+										pitchExp ) );
+				sounds.setSoundVolume(
+						"linearvelocity",
+						volumeZero
+								+ ( float ) Math.pow(
+										( volumeRange * contrib ), volumeExp ) );
+			}
+			if ( sounds.hasSound( "angularvelocity" ) ) {
+				float angScale = 1.0f;
+				float relativeAngVelocity = absAngVelocity;
+				if ( getParentSkeleton( ) != null ) {
+					relativeAngVelocity -= getParentSkeleton( ).body
+							.getAngularVelocity( );
+				}
+				relativeAngVelocity *= angScale;
+				float pitchZero = 0.5f;
+				float pitchRange = -0.5f;
+				float pitchExp = 1.0f;
+				float volumeZero = 1.0f;
+				float volumeRange = -1.0f;
+				float volumeExp = 1.0f;
+				float contrib = Math.max(
+						Math.min( relativeAngVelocity, 0.0f ), 1.0f );
+				sounds.setSoundPitch(
+						"angularvelocity",
+						pitchZero
+								+ ( float ) Math.pow( ( pitchRange * contrib ),
+										pitchExp ) );
+				sounds.setSoundVolume(
+						"angularvelocity",
+						volumeZero
+								+ ( float ) Math.pow(
+										( volumeRange * contrib ), volumeExp ) );
+			}
+			if ( sounds.hasSound( "abslinearvelocity" ) ) {
+				Vector2 lineScale = new Vector2( 1.0f, 1.0f );
+				Vector2 relativeVelocity;
+				relativeVelocity = absVelocity.cpy( );
+				float pitchZero = 0.5f;
+				float pitchRange = -0.5f;
+				float pitchExp = 1.0f;
+				float volumeZero = 1.0f;
+				float volumeRange = -1.0f;
+				float volumeExp = 1.0f;
+				relativeVelocity.x *= lineScale.x;
+				relativeVelocity.y *= lineScale.y;
+				float contrib = Math.max(
+						Math.min( relativeVelocity.len( ), 0.0f ), 1.0f );
+				sounds.setSoundPitch(
+						"abslinearvelocity",
+						pitchZero
+								+ ( float ) Math.pow( ( pitchRange * contrib ),
+										pitchExp ) );
+				sounds.setSoundVolume(
+						"abslinearvelocity",
+						volumeZero
+								+ ( float ) Math.pow(
+										( volumeRange * contrib ), volumeExp ) );
+			}
+			if ( sounds.hasSound( "absangularvelocity" ) ) {
+				float angScale = 1.0f;
+				float relativeAngVelocity = absAngVelocity * angScale;
+				float pitchZero = 0.5f;
+				float pitchRange = -0.5f;
+				float pitchExp = 1.0f;
+				float volumeZero = 1.0f;
+				float volumeRange = -1.0f;
+				float volumeExp = 1.0f;
+				float contrib = Math.max(
+						Math.min( relativeAngVelocity, 0.0f ), 1.0f );
+				sounds.setSoundPitch(
+						"absangularvelocity",
+						pitchZero
+								+ ( float ) Math.pow( ( pitchRange * contrib ),
+										pitchExp ) );
+				sounds.setSoundVolume(
+						"absangularvelocity",
+						volumeZero
+								+ ( float ) Math.pow(
+										( volumeRange * contrib ), volumeExp ) );
 			}
 		}
 	}
@@ -969,7 +1097,7 @@ public class Entity implements GleedLoadable {
 	 * 
 	 * @author stew
 	 */
-	public String toString( ) {
+	public String printDebug( ) {
 		return "Entity[" + name + "] pos:" + body.getPosition( )
 				+ ", body.active:" + body.isActive( ) + ", body.awake:"
 				+ body.isAwake( );
@@ -1053,7 +1181,6 @@ public class Entity implements GleedLoadable {
 		ArrayList< Float > angleList = ( isBG ) ? bgDecalAngles : fgDecalAngles;
 		ArrayList< Vector2 > offsetList = ( isBG ) ? bgDecalOffsets
 				: fgDecalOffsets;
-		// s.setOrigin( -s.getWidth( )/2, -s.getHeight( )/2 );
 		if ( isBack ) {
 			decalList.add( 0, s );
 			angleList.add( 0, angle );
@@ -1240,7 +1367,7 @@ public class Entity implements GleedLoadable {
 	public void getFixtureIndex( Fixture fix ) {
 		for ( int i = 0; i < body.getFixtureList( ).size( ); i++ ) {
 			if ( fix == body.getFixtureList( ).get( i ) ) {
-				Gdx.app.log( name + " FixtureListIndex: ", "" + i );
+				// Gdx.app.log( name + " FixtureListIndex: ", "" + i );
 				return;
 			}
 		}
@@ -1282,6 +1409,7 @@ public class Entity implements GleedLoadable {
 	 */
 	public void dispose( ) {
 		body.getWorld( ).destroyBody( body );
+		sounds.dispose( );
 	}
 
 	public void setGroupIndex( short index ) {
@@ -1367,9 +1495,8 @@ public class Entity implements GleedLoadable {
 	// Idle sound
 	public void idleSound( ) {
 		if ( sounds != null && sounds.hasSound( "idle" ) ) {
-			sounds.setSoundVolume( "idle", 0.0f );
-			sounds.loopSound( "idle" );
-			Gdx.app.log( name, "Starting Idle Sound" );
+			sounds.loopSound( "idle", 0, true, 0.0f, 1.0f );
+			// Gdx.app.log( name, "Starting Idle Sound" );
 		}
 	}
 
@@ -1422,6 +1549,7 @@ public class Entity implements GleedLoadable {
 		body.setType( body.getType( ) );
 
 		if ( entityType == EntityType.PLATFORM ) {
+			@SuppressWarnings( "unused" )
 			Platform p = ( Platform ) this;
 
 		}
@@ -1443,9 +1571,33 @@ public class Entity implements GleedLoadable {
 			sounds.playSound( "collision" );
 		}
 	}
-	
-	
-	public boolean hasDecals(){
-		return (fgDecals.size( ) > 0 || bgDecals.size( ) > 0);
+
+	public boolean hasDecals( ) {
+		return ( fgDecals.size( ) > 0 || bgDecals.size( ) > 0 );
+	}
+
+	protected static final float MIN_LINEAR = 0.1f;
+	protected static final float MIN_ANGULAR = 0.5f;
+	protected static final float MOVEMENT_SOUND_DELAY = 0.05f;
+	public void handleMovementSounds( float dT ){
+		Vector2 soundPos = getPositionPixel();
+		float vol;
+		float pitch;
+		int soundId;
+		if (sounds.hasSound( "linear" )){
+			soundId = sounds.randomSoundId( "linear" );
+			vol = body.getLinearVelocity( ).len( ) * sounds.calculatePositionalVolume( "linear", soundPos, Camera.CAMERA_RECT );
+			pitch = sounds.getPitchInRange( "linear", soundId, body.getLinearVelocity( ).len() );
+			if (vol > MIN_LINEAR){
+				sounds.playSound( "linear", soundId, MOVEMENT_SOUND_DELAY , vol, pitch);	
+			}
+		}
+		if (sounds.hasSound( "angular" )){
+			soundId = sounds.randomSoundId( "angular" );
+			vol = Math.abs( body.getAngularVelocity( ) * Util.RAD_TO_DEG ) * sounds.calculatePositionalVolume( "angular", soundPos, Camera.CAMERA_RECT );
+			pitch = sounds.getPitchInRange( "angular", soundId, (float)Math.pow( Math.abs(body.getAngularVelocity( )), 1.5f) );
+			if (vol > MIN_ANGULAR){
+				sounds.playSound( "angular", sounds.randomSoundId( "angular" ), MOVEMENT_SOUND_DELAY , vol, pitch);			}
+		}
 	}
 }

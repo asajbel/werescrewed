@@ -6,11 +6,10 @@ import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.blindtigergames.werescrewed.graphics.SpriteBatch;
-import com.blindtigergames.werescrewed.gui.Button;
 import com.blindtigergames.werescrewed.gui.Label;
 import com.blindtigergames.werescrewed.gui.TextButton;
 
-class WinScreen implements com.badlogic.gdx.Screen{
+class WinScreen implements com.badlogic.gdx.Screen {
 
 	public ScreenType screenType;
 	private SpriteBatch batch = null;
@@ -36,8 +35,8 @@ class WinScreen implements com.badlogic.gdx.Screen{
 		Gdx.gl.glClearColor( 0.1f, 0.1f, 0.1f, 1f );
 		Gdx.gl.glClear( GL10.GL_COLOR_BUFFER_BIT );
 
-		ScreenManager.getInstance( ).dispose( ScreenType.TROPHY);
-		
+		ScreenManager.getInstance( ).dispose( ScreenType.TROPHY );
+
 		if ( Gdx.input.isKeyPressed( Input.Keys.ENTER ) ) {
 			ScreenManager.getInstance( ).show( ScreenType.TROPHY );
 			// Later this will probably call the next level screen instead.

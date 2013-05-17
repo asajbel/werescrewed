@@ -7,6 +7,7 @@ package com.blindtigergames.werescrewed.entity.animator;
  */
 import com.badlogic.gdx.math.Vector2;
 import com.blindtigergames.werescrewed.entity.I_Drawable;
+import com.blindtigergames.werescrewed.graphics.TextureAtlas;
 
 public interface ISpinemator extends I_Drawable {
 	/**
@@ -16,7 +17,7 @@ public interface ISpinemator extends I_Drawable {
 	 *            The time difference between updates
 	 */
 	void update( float delta );
-
+	
 	/**
 	 * Sets the position of a spine animation
 	 * 
@@ -27,6 +28,16 @@ public interface ISpinemator extends I_Drawable {
 	void setPosition( Vector2 pos );
 
 	/**
+	 * Sets the position of a spine animation
+	 * 
+	 * @param x
+	 *            x position in pixels to place spine skeleton
+	 * @param y
+	 *            y position in pixels to place spine skeleton
+	 */
+	void setPosition( float x, float y );
+
+	/**
 	 * Sets the scale of a spine animation
 	 * 
 	 * @param scale
@@ -34,4 +45,33 @@ public interface ISpinemator extends I_Drawable {
 	 *            the skeleton
 	 */
 	void setScale( Vector2 scale );
+
+	/**
+	 * Returns atlas with all of this spine body's parts
+	 * 
+	 * @return TextureAtlas
+	 */
+	TextureAtlas getBodyAtlas( );
+
+	/**
+	 * Returns the position of the root bone relative to the world in pixels
+	 * 
+	 * @return Vector2
+	 * 
+	 */
+	Vector2 getPosition( );
+
+	/**
+	 * Returns the x position of the root bone relative to the world in pixels
+	 * 
+	 * @return float
+	 */
+	float getX( );
+
+	/**
+	 * Returns the y position of the root bone relative to the world in pixels
+	 * 
+	 * @return float
+	 */
+	float getY( );
 }

@@ -37,13 +37,14 @@ public class StructureScrew extends Screw {
 	private final int startFrame = 15;
 	private final int lastMotionFrame = 14;
 	private final int animeSteps = 12;
-	
-	private static TextureRegion screwTex = WereScrewedGame.manager.getAtlas( "common-textures" ).findRegion( "flat_head_circular" );
+
+	private static TextureRegion screwTex = WereScrewedGame.manager.getAtlas(
+			"common-textures" ).findRegion( "flat_head_circular" );
 
 	public StructureScrew( String name, Vector2 pos, int max, Entity entity,
 			World world, Vector2 detachDirection ) {
 		super( name, pos, screwTex );
-		loadSounds();
+		loadSounds( );
 		this.world = world;
 		this.detachDirection = detachDirection;
 		this.entity = entity;
@@ -86,7 +87,7 @@ public class StructureScrew extends Screw {
 	public StructureScrew( String name, Vector2 pos, int max, World world,
 			Vector2 detachDirection ) {
 		super( name, pos, screwTex );
-		loadSounds();
+		loadSounds( );
 		this.world = world;
 		this.detachDirection = detachDirection;
 		if ( detachDirection != null
@@ -136,8 +137,8 @@ public class StructureScrew extends Screw {
 			}
 			prevDiff = diff;
 
-			//body.setAngularVelocity( -1 );
-			if(newDiff != 0)
+			// body.setAngularVelocity( -1 );
+			if ( newDiff != 0 )
 				newDiff /= newDiff;
 			depth += newDiff;
 			if ( diff != 0 ) {
@@ -152,7 +153,7 @@ public class StructureScrew extends Screw {
 	public void screwLeft( ) {
 		super.screwLeft( );
 		if ( depth > -10 ) {
-			//body.setAngularVelocity( 1 );
+			// body.setAngularVelocity( 1 );
 			depth -= 1;
 			rotation += 10;
 			screwStep = depth + 5;
@@ -175,8 +176,8 @@ public class StructureScrew extends Screw {
 			}
 			prevDiff = diff;
 
-			//body.setAngularVelocity( 1 );
-			if(newDiff != 0)
+			// body.setAngularVelocity( 1 );
+			if ( newDiff != 0 )
 				newDiff /= newDiff;
 			newDiff *= -1;
 			depth += newDiff;
@@ -193,7 +194,7 @@ public class StructureScrew extends Screw {
 	public void screwRight( ) {
 		super.screwRight( );
 		if ( depth < maxDepth && depth > 0 ) {
-			//body.setAngularVelocity( -1 );
+			// body.setAngularVelocity( -1 );
 			depth += 1;
 			rotation -= 10;
 			screwStep = depth + 6;
@@ -204,8 +205,6 @@ public class StructureScrew extends Screw {
 	public void update( float deltaTime ) {
 		super.update( deltaTime );
 		if ( !removed ) {
-			Vector2 bodyPos = body.getPosition( ).mul( Util.BOX_TO_PIXEL );
-			sprite.setPosition( bodyPos.x - offset.x, bodyPos.y - offset.y );
 			if ( depth <= 0 ) {
 				if ( fallTimeout == 0 ) {
 					for ( Joint j : extraJoints ) {
@@ -224,7 +223,7 @@ public class StructureScrew extends Screw {
 				// sprite.getY( )
 				// + ( .25f * ( float ) ( ( maxDepth - depth ) * ( Math
 				// .sin( body.getAngle( ) ) ) ) ) );
-			} else if ( fallTimeout > 0 ) {
+			} else if ( fallTimeout > 0 ) { // falling out shake back and forth
 				sprite.setPosition( sprite.getX( ) - 8f, sprite.getY( ) );
 				Vector2 spritePos = new Vector2( sprite.getX( ), sprite.getY( ) );
 				Vector2 target1 = new Vector2( sprite.getX( ) + 8f,
@@ -265,34 +264,37 @@ public class StructureScrew extends Screw {
 			} else {
 				if ( screwInterface.sprite.getAnimator( ).getFrame( ) > lastMotionFrame ) {
 					screwUIAnimator.setFrame( lastMotionFrame );
+					screwUIAnimator.speed( -1 );
 				}
-				screwUIAnimator.speed( -1 );
 			}
-			screwInterface.sprite.setPosition( this.getPositionPixel( ).sub(
-					interfaceOffset ) );
-			screwInterface.sprite.update( deltaTime );
-			screwUIAnimator.update( deltaTime );
+			if ( screwInterface.sprite.getAnimator( ).getFrame( ) > 0
+					|| playerAttached ) {
+				screwInterface.sprite.setPosition( this.getPositionPixel( )
+						.sub( interfaceOffset ) );
+				screwInterface.sprite.update( deltaTime );
+				screwUIAnimator.update( deltaTime );
+			}
 		} else {
-			sounds.stopSound("screwing");
-			sounds.stopSound("unscrewing");
+			sounds.stopSound( "screwing" );
+			sounds.stopSound( "unscrewing" );
 		}
 	}
 
 	@Override
 	public void draw( SpriteBatch batch, float deltaTime ) {
-		//drawBGDecals( batch );
+		// drawBGDecals( batch );
 		if ( playerAttached ) {
 			screwInterface.sprite.draw( batch );
 		}
-		//drawParticles( behindParticles, batch );
+		// drawParticles( behindParticles, batch );
 		if ( sprite != null && visible && !removeNextStep ) {
 			sprite.draw( batch );
 		}
 		// drawOrigin(batch);
-		//drawFGDecals( batch );
-		//if ( spinemator != null )
-		//	spinemator.draw( batch );
-		//drawParticles( frontParticles, batch );
+		// drawFGDecals( batch );
+		// if ( spinemator != null )
+		// spinemator.draw( batch );
+		// drawParticles( frontParticles, batch );
 	}
 
 	private void constuctBody( Vector2 pos ) {
@@ -334,11 +336,8 @@ public class StructureScrew extends Screw {
 	}
 
 	@Override
-	public void loadSounds(){
+	public void loadSounds( ) {
 		super.loadSounds( );
-		sounds.getSound( "mindepth", "" );
-		sounds.getSound( "maxdepth", "");
-		sounds.getSound( "removal", "");
 	}
 
 }

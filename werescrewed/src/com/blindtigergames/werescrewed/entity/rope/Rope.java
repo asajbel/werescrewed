@@ -22,7 +22,7 @@ import com.blindtigergames.werescrewed.util.Util;
 public class Rope {
 
 	public String name;
-	private StrippedScrew screw;
+	private ArrayList< StrippedScrew > screws = new ArrayList<StrippedScrew>();
 	private ArrayList< Link > linkParts;
 	private World world;
 	private final float ROPE_DEACCELERATION_RATE = 0.6f;
@@ -49,11 +49,7 @@ public class Rope {
 		linkParts = new ArrayList< Link >( );
 		constructRope( name, pos, widthHeight, links, texture, world );
 
-//		screw = new StrippedScrew( "ropescrew",
-//				new Vector2( pos.x, pos.y
-//						- widthHeight.y * Util.PIXEL_TO_BOX * links )
-//						.mul( Util.BOX_TO_PIXEL ), linkParts.get( linkParts
-//						.size( ) - 1 ), world );
+
 
 	}
 
@@ -80,11 +76,7 @@ public class Rope {
 		constructRope( name, entity.getPosition( ), widthHeight, links,
 				texture, world );
 
-//		screw = new StrippedScrew( "ropescrew",
-//				new Vector2( entity.getPosition( ).x, entity.getPosition( ).y
-//						- widthHeight.y * Util.PIXEL_TO_BOX * links )
-//						.mul( Util.BOX_TO_PIXEL ), linkParts.get( linkParts
-//						.size( ) - 1 ), world );
+
 
 	}
 
@@ -97,14 +89,17 @@ public class Rope {
 		Link topPiece = new Link( "top", world, pos, texture, widthHeight );
 		topPiece.body.setType( BodyType.DynamicBody );
 		linkParts.add( topPiece );
-
+		
+		Link temp = null, prev = null;
 		for ( int i = 0; i < links; ++i ) {
-
-			Link temp = new Link( "link" + i, world, new Vector2(
+			temp = new Link( "link" + i, world, new Vector2(
 					getEnd( ).body.getWorldCenter( ).x,
 					getEnd( ).body.getWorldCenter( ).y - widthHeight.y
 							* Util.PIXEL_TO_BOX ), texture, widthHeight );
-
+			if (prev != null){
+				temp.setChild(prev);
+			}
+			prev = temp;
 			getEnd( ).createLinkJoint( temp );
 			linkParts.add( temp );
 
@@ -151,18 +146,25 @@ public class Rope {
 	}
 
 	public void update( float deltaTime ) {
-		if ( screw != null ) {	
-			
-			if ( !screw.isPlayerAttached( ) ){
-				stopRope( );
+		if(screws.size( ) != 0){
+			boolean playerAttached = false;
+			for(StrippedScrew s : screws){
+				if(s.isPlayerAttached( )) playerAttached = true;
+				s.update( deltaTime );
 			}
-			
-			screw.update( deltaTime );
+			if(playerAttached)
+				stopRope();
 		}
-		// if(Gdx.input.isKeyPressed( Keys.O ))
-		// pieces.get( pieces.size( )-1 ).applyLinearImpulse( new Vector2(0.5f,
-		// 0.0f),
-		// pieces.get( pieces.size( )-1 ).getWorldCenter( ) );
+		
+//		if ( screw != null ) {	
+//			
+//			if ( !screw.isPlayerAttached( ) ){
+//				stopRope( );
+//			}
+//			
+//			screw.update( deltaTime );
+//		}
+	
 
 	}
 
@@ -176,8 +178,12 @@ public class Rope {
 		for ( int i = 0; i < linkParts.size( ); i++ ) {
 			getLink( i ).draw( batch, deltaTime );
 		}
-		if ( screw != null )
-			screw.draw( batch, deltaTime );
+		if(screws.size( ) != 0){
+
+			for(StrippedScrew s : screws){
+				s.draw( batch, deltaTime );
+			}
+		}
 	}
 
 
@@ -186,7 +192,7 @@ public class Rope {
 	 * @return the screw attached at the end of the rope
 	 */
 	public Screw getEndAttachment( ) {
-		return screw;
+		return screws.get( screws.size( ) - 1 );
 	}
 
 	/**
@@ -206,9 +212,12 @@ public class Rope {
 	}
 	
 	public Link getSecondedToLastLink( ) {
-		return linkParts.get( linkParts.size( ) - 3 );
+		return linkParts.get( linkParts.size( ) - 2 );
 	}
 
+	public Link getThirdToLastLink( ) {
+		return linkParts.get( linkParts.size( ) - 3 );
+	}
 	/**
 	 * 
 	 * @param index
@@ -230,21 +239,48 @@ public class Rope {
 	}
 
 	public void createScrew( ) {
-		screw = new StrippedScrew( "ropeScrew", new Vector2(
+		StrippedScrew screw = new StrippedScrew( "ropeScrew", new Vector2(
 				getLastLink( ).body.getPosition( ).x * Util.BOX_TO_PIXEL,
 				( getLastLink( ).body.getPosition( ).y * Util.BOX_TO_PIXEL )
 						- ( getLastLink( ).getHeight( ) ) ), getLastLink( ), world, Vector2.Zero );
 		screw.setPlayerNotSensor( );
+		
+		screws.add( screw );
+
+	}
+	public void createScrewAll(){
+		for(int i = 1; i < linkParts.size( ); i += 2){
+			Link link = linkParts.get( i );
+			
+			StrippedScrew screw = new StrippedScrew( "ropeScrew", new Vector2(
+					link.body.getPosition( ).x * Util.BOX_TO_PIXEL,
+					( link.body.getPosition( ).y * Util.BOX_TO_PIXEL )
+							 ), link, world, Vector2.Zero );
+			screw.setPlayerNotSensor( );
+			
+			screws.add(screw);
+		}
+		
+	}
+	public void createScrewThirdToLastLink( ) {
+		StrippedScrew screw = new StrippedScrew( "ropeScrew", new Vector2(
+				getThirdToLastLink( ).body.getPosition( ).x * Util.BOX_TO_PIXEL,
+				( getThirdToLastLink( ).body.getPosition( ).y * Util.BOX_TO_PIXEL )
+						 ), getThirdToLastLink( ), world, Vector2.Zero );
+		screw.setPlayerNotSensor( );
+		
+		screws.add(screw);
 
 	}
 	
 	public void createScrewSecondToLastLink( ) {
-		screw = new StrippedScrew( "ropeScrew", new Vector2(
+		StrippedScrew screw = new StrippedScrew( "ropeScrew", new Vector2(
 				getSecondedToLastLink( ).body.getPosition( ).x * Util.BOX_TO_PIXEL,
 				( getSecondedToLastLink( ).body.getPosition( ).y * Util.BOX_TO_PIXEL )
 						 ), getSecondedToLastLink( ), world, Vector2.Zero );
 		screw.setPlayerNotSensor( );
 
+		screws.add(screw);
 	}
 	
 	public void stopRope( ) {
@@ -269,7 +305,9 @@ public class Rope {
 			l.dispose( );
 		}
 		linkParts.clear( );
-		screw.dispose();
+		for(Screw s : screws)
+			s.dispose();
+		screws.clear( );
 	}
 
 }
