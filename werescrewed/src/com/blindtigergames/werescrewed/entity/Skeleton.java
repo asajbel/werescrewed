@@ -3,6 +3,7 @@ package com.blindtigergames.werescrewed.entity;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
@@ -12,6 +13,7 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.JointEdge;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
+import com.blindtigergames.werescrewed.camera.Camera;
 import com.blindtigergames.werescrewed.checkpoints.CheckPoint;
 import com.blindtigergames.werescrewed.entity.animator.SimpleFrameAnimator;
 import com.blindtigergames.werescrewed.entity.animator.SimpleFrameAnimator.LoopBehavior;
@@ -66,8 +68,10 @@ public class Skeleton extends Platform {
 
 	protected boolean applyFadeToFGDecals = true;
 	protected boolean isMacroSkeleton = false;
+	protected boolean invisibleBGDecal = false;
 
 	protected boolean wasInactive = false;
+	protected boolean onScreen = true;
 	protected boolean isUpdatable = true;
 
 	/**
@@ -422,8 +426,11 @@ public class Skeleton extends Platform {
 						platform.translatePosRotFromSKeleton( this );
 						platform.update( deltaTime );
 					} else {
-						platform.updateMover( deltaTime );
-						platform.setTargetPosRotFromSkeleton( frameRate, this );
+						if ( platform.updateMover( deltaTime ) || hasMoved() || hasRotated() ) {
+							platform.setTargetPosRotFromSkeleton( frameRate, this );
+						} else {
+							platform.body.setLinearVelocity( Vector2.Zero );
+						}
 						platform.update( deltaTime );
 					}
 				}
@@ -488,7 +495,9 @@ public class Skeleton extends Platform {
 				wasInactive = true;
 			}
 		}
-
+		
+		setPreviousTransformation( );
+		
 		alphaFadeAnimator.update( deltaTime );
 		Vector2 pixelPos = null;
 		if ( fgSprite != null ) {
@@ -633,6 +642,28 @@ public class Skeleton extends Platform {
 		}
 	}
 
+	/**
+	 * 
+	 * @param batch
+	 * @param camera
+	 */
+	@Override
+	public void drawFGDecals( SpriteBatch batch, Camera camera ) {
+		for ( Sprite decal : fgDecals ) {
+			if ( decal.alpha >= 0.25 ) {
+				if ( decal.getBoundingRectangle( )
+						.overlaps( camera.getBounds( ) ) ) {
+					decal.draw( batch );
+				} else{
+					if ( !wasInactive ) {
+						setEntitiesToSleepOnUpdate( );
+						wasInactive = true;
+					}
+				}
+			}
+		}
+	}
+	
 	@Override
 	public void draw( SpriteBatch batch, float deltaTime ) {
 		// super.draw( batch );
@@ -691,6 +722,25 @@ public class Skeleton extends Platform {
 		}
 	}
 
+	/**
+	 * 
+	 * @param batch
+	 * @param camera
+	 */
+	@Override
+	public void drawBGDecals( SpriteBatch batch, Camera camera ) {
+		for ( Sprite decal : bgDecals ) {
+			if ( decal.getBoundingRectangle( ).overlaps( camera.getBounds( ) ) ) {
+				if ( !invisibleBGDecal ) {
+					decal.draw( batch );
+				}
+				onScreen = true;
+			} else {
+				onScreen = false;
+			}
+		}
+	}
+	
 	/**
 	 * Draw each child. Tiled platforms have unique draw calls. Platforms can be
 	 * hazards as well

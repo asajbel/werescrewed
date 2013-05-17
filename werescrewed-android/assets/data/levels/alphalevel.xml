@@ -2164,6 +2164,9 @@
                         <Property Name="onesided" Type="string" Description="">
                             <string />
                         </Property>
+                        <Property Name="sound" Type="string" Description="">
+                            <string>linear: /common/sounds/screwing.ogg : range 2500 : volume 5.0f: pitchrange 0.5f</string>
+                        </Property>
                     </CustomProperties>
                     <Width>288</Width>
                     <Height>32</Height>
@@ -2747,7 +2750,7 @@
                             <string>thighSkeleton</string>
                         </Property>
                         <Property Name="sound" Type="string" Description="">
-                            <string>linear: /common/sounds/screwing.ogg : range 1280</string>
+                            <string>linear: /common/sounds/screwing.ogg : range 2500 : volume 5.0f: pitchrange -0.25f</string>
                         </Property>
                     </CustomProperties>
                     <Width>482</Width>
@@ -4337,7 +4340,7 @@
                 <Item xsi:type="TextureItem" Name="chest_gear_1" Visible="true">
                     <Position>
                         <X>-832</X>
-                        <Y>-4432</Y>
+                        <Y>-4438</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -4357,6 +4360,9 @@
                         </Property>
                         <Property Name="crushable" Type="string" Description="">
                             <string />
+                        </Property>
+                        <Property Name="sound" Type="string" Description="">
+                            <string>idle:/levels/alphabot/sounds/gear.ogg:range 1280:falloff 1.0: volume 0.25f</string>
                         </Property>
                     </CustomProperties>
                     <Rotation>0</Rotation>
@@ -8603,7 +8609,7 @@
                             <string />
                         </Property>
                         <Property Name="sound" Type="string" Description="">
-                            <string>angular: /common/sounds/screwing.ogg</string>
+                            <string>angular: /common/sounds/screwing.ogg : pitchrange 0.25f</string>
                         </Property>
                     </CustomProperties>
                     <LocalPoints>
@@ -23742,8 +23748,8 @@
         <NextItemNumber>942</NextItemNumber>
         <ContentRootFolder>gleed-textures</ContentRootFolder>
         <CameraPosition>
-            <X>233.333374</X>
-            <Y>-266.123871</Y>
+            <X>-216.667419</X>
+            <Y>-2491.1272</Y>
         </CameraPosition>
         <Version>1.3.0.0</Version>
     </EditorRelated>

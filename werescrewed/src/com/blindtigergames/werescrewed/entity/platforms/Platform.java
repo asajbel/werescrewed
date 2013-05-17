@@ -53,7 +53,11 @@ public class Platform extends Entity {
 	 * Used for kinematic movement connected to skeleton. Pixels.
 	 */
 	protected Vector2 localPosition; // in pixels, local coordinate system
+	protected Vector2 previousPosition;
+	protected Vector2 prevBodyPos;
 	private float localRotation; // in radians, local rot system
+	protected float previousRotation;
+	protected float prevBodyAngle;
 	protected Vector2 localLinearVelocity; // in meters/step
 	protected float localAngularVelocity; //
 	protected Vector2 originPosition; // world position that this platform
@@ -128,8 +132,11 @@ public class Platform extends Entity {
 	void init( Vector2 pos ) {
 		screws = new ArrayList< Screw >( );
 		localPosition = new Vector2( 0, 0 );
+		previousPosition = new Vector2( localPosition.x, localPosition.y );
+		prevBodyPos = new Vector2( 0, 0 );
 		localLinearVelocity = new Vector2( 0, 0 );
 		localRotation = 0;
+		previousRotation = localRotation;
 		originPosition = pos.cpy( );
 		platType = PlatformType.DEFAULT; // set to default unless subclass sets
 											// it later in a constructor
@@ -169,6 +176,46 @@ public class Platform extends Entity {
 	 */
 	public float getLocalRot( ) {
 		return localRotation;
+	}
+
+	/**
+	 * returns previous location last time it moved
+	 */
+	public boolean hasMoved( ) {
+		float epsilon = Util.MIN_VALUE;
+		if ( ( Math.abs(previousPosition.x - localPosition.x) < epsilon )
+				|| ( Math.abs(previousPosition.y - localPosition.y) < epsilon )
+				|| ( body != null
+				&& ( ( Math.abs(prevBodyPos.x - body.getPosition( ).x) < epsilon ) 
+				|| ( Math.abs(prevBodyPos.y - body.getPosition( ).y) < epsilon ) ) ) ) {
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * set the previous position to this position
+	 */
+	public void setPreviousTransformation( ) {
+		previousPosition = new Vector2( localPosition.x, localPosition.y );
+		if ( body != null ) {
+			prevBodyPos = new Vector2( body.getPosition( ).x,
+					body.getPosition( ).y );
+			prevBodyAngle = body.getAngle( );
+		}
+		previousRotation = localRotation;
+	}
+
+	/**
+	 * returns previous rotation last time it rotated
+	 */
+	public boolean hasRotated( ) {
+		float epsilon = Util.MIN_VALUE;
+		if ( ( Math.abs(previousRotation - localRotation) < epsilon ) 
+				|| ( Math.abs(prevBodyAngle - body.getAngle( )) < epsilon ) ) {
+			return true;
+		}
+		return false;
 	}
 
 	/**

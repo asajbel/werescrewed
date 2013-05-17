@@ -5,8 +5,15 @@ repeat: none
 offset: 0, 0
 head_right
   rotate: false
-  xy: 2, 2
+  xy: 3, 3
   size: 1129, 1046
   orig: 1129, 1046
+  offset: 0, 0
+  index: -1
+hand
+  rotate: false
+  xy: 1136, 3
+  size: 855, 1059
+  orig: 855, 1059
   offset: 0, 0
   index: -1

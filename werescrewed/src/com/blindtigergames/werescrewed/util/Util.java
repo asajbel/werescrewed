@@ -25,6 +25,7 @@ public class Util {
 	public static final float PI = 3.141592653589793f;
 	public static final float TWO_PI = 2 * PI;
 	public static final float HALF_PI = PI / 2;
+	public static final float MIN_VALUE = 0x0.000002P-126f; // 1.4e-45f
 
 	/**
 	 * Collision Categories and masks for every object that needs them

@@ -49,7 +49,7 @@ public class Level {
 	public MyContactListener myContactListener;
 	public Player player1, player2;
 	public RootSkeleton root;
-	private boolean debugTest, debug;
+	public boolean debugTest, debug;
 	public ProgressManager progressManager;
 	public static ArrayList< Joint > jointsToRemove = new ArrayList< Joint >( );
 	public ArrayList< Skeleton > skelBGList;
@@ -189,8 +189,7 @@ public class Level {
 
 		if ( debug )
 			debugRenderer.render( world, camera.combined( ) );
-//		worldStep(deltaTime); 
-
+		
 	}
 	
 	private float accum = 0f;               
