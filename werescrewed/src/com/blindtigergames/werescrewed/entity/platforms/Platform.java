@@ -182,12 +182,12 @@ public class Platform extends Entity {
 	 * returns previous location last time it moved
 	 */
 	public boolean hasMoved( ) {
-		float epsilon = Util.MIN_VALUE;
-		if ( ( Math.abs(previousPosition.x - localPosition.x) < epsilon )
-				|| ( Math.abs(previousPosition.y - localPosition.y) < epsilon )
+		Vector2 bodyPos = body.getPosition( ).mul( Util.BOX_TO_PIXEL );
+		if ( previousPosition.x != localPosition.x
+				|| previousPosition.y != localPosition.y
 				|| ( body != null
-				&& ( ( Math.abs(prevBodyPos.x - body.getPosition( ).x) < epsilon ) 
-				|| ( Math.abs(prevBodyPos.y - body.getPosition( ).y) < epsilon ) ) ) ) {
+				&& ( prevBodyPos.x != bodyPos.x 
+				|| prevBodyPos.y != bodyPos.y) ) ) {
 			return true;
 		}
 		return false;
@@ -197,10 +197,10 @@ public class Platform extends Entity {
 	 * set the previous position to this position
 	 */
 	public void setPreviousTransformation( ) {
+		Vector2 bodyPos = body.getPosition( ).mul( Util.BOX_TO_PIXEL );
 		previousPosition = new Vector2( localPosition.x, localPosition.y );
 		if ( body != null ) {
-			prevBodyPos = new Vector2( body.getPosition( ).x,
-					body.getPosition( ).y );
+			prevBodyPos = new Vector2( bodyPos.x, bodyPos.y );
 			prevBodyAngle = body.getAngle( );
 		}
 		previousRotation = localRotation;
@@ -210,9 +210,7 @@ public class Platform extends Entity {
 	 * returns previous rotation last time it rotated
 	 */
 	public boolean hasRotated( ) {
-		float epsilon = Util.MIN_VALUE;
-		if ( ( Math.abs(previousRotation - localRotation) < epsilon ) 
-				|| ( Math.abs(prevBodyAngle - body.getAngle( )) < epsilon ) ) {
+		if ( previousRotation != localRotation ) {
 			return true;
 		}
 		return false;
