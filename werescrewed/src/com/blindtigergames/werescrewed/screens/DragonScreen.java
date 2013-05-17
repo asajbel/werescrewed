@@ -422,6 +422,18 @@ public class DragonScreen extends Screen {
 			.addMover( new RotateTweenMover( bodyInsideSkeleton2, -1 ) );
 		bodyInsideSkeleton3
 			.addMover( new RotateTweenMover( bodyInsideSkeleton3 ) );
+		
+		
+		Skeleton bodyRoomRotateSkeleton = ( Skeleton ) LevelFactory.entities
+		.get( "body_room_rotate_skeleton" );
+		
+		bodyRoomRotateSkeleton.addMover( new RotateTweenMover(bodyRoomRotateSkeleton ));
+		
+		//These platforms are invisible
+		Platform bodyTop = ( Platform ) LevelFactory.entities
+				.get( "body_top" );
+		Platform bodyBotLower = ( Platform ) LevelFactory.entities
+				.get( "body_bot_lower" );
 	}
 	
 	void buildAllCannons(){
