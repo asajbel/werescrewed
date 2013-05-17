@@ -277,7 +277,10 @@ public class LevelSelectScreen extends Screen {
 		double newY = height + Math.random( ) * height / 2;
 		d.sprite.setPosition( ( float ) newX, ( float ) newY );
 		d.fallSpeed = ( float ) ( 0.5f + Math.random( ) * 1.5f );
-		d.rotateSpeed = ( float ) ( Math.random( ) * 0.7 );
+		double dir = Math.random( );
+		if ( dir > 0.5 ) dir = 1;
+		else dir = -1; 
+		d.rotateSpeed = ( float ) ( dir * Math.random( ) * 0.7 );
 		d.sprite.setScale( 0.3f + ( float ) Math.random( ) * 0.7f );
 	}
 
@@ -297,21 +300,21 @@ public class LevelSelectScreen extends Screen {
 		time += delta / 3;
 		man.update( delta / 2 );
 		lady.update( delta / 2 );
-		float mx = man.getX( ) - ( float ) Math.cos( time - delta ) * 0.25f; 
-		float my = man.getY( ) - ( float ) Math.sin( time ) * 0.6f;
-		mx = mx + manDir * 0.5f;
+		float mx = man.getX( );// - ( float ) Math.cos( time - delta ) * 0.25f; 
+		float my = man.getY( ) - ( float ) Math.sin( time - delta / 6 ) * 0.6f;
+		mx = mx + manDir * 0.3f;
 		if ( mx > width * 5 / 6 )
-			manDir -= 0.05;
-		if ( mx < menuBG.getWidth( ) * 1.5)
-			manDir += 0.05;
+			manDir -= 0.15;
+		if ( mx < menuBG.getWidth( ) * 1.2)
+			manDir += 0.15;
 		man.setPosition( mx, my );
-		float fx = lady.getX( ) + ( float ) ( Math.cos( time + delta ) * 0.25f );
-		float fy = lady.getY( ) + ( float ) Math.sin( time + delta ) * 1.1f;
-		fx = fx + ladyDir * 0.5f;
+		float fx = lady.getX( );// + ( float ) ( Math.cos( time + delta ) * 0.25f );
+		float fy = lady.getY( ) + ( float ) Math.sin( time + delta / 6) * 0.6f;
+		fx = fx + ladyDir * 0.3f;
 		if ( fx > width * 5 / 6 ) {
 			ladyDir -= 0.15;
 		}
-		if ( fx < menuBG.getWidth( ) * 1.5 ) {
+		if ( fx < menuBG.getWidth( ) * 1.2 ) {
 			ladyDir += 0.15;
 		}
 		lady.setPosition( fx, fy );
