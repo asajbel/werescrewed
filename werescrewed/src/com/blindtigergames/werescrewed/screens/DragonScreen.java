@@ -47,10 +47,8 @@ public class DragonScreen extends Screen {
 		initPuzzleScrews( );
 		tail3Pipes( );
 		bodySkeletons( );
-		buildAllCannons();
-		
+		buildAllCannons( );
 
-		
 		Skeleton jaw_skeleton = ( Skeleton ) LevelFactory.entities
 				.get( "jaw_skeleton" );
 		Timeline t = Timeline.createSequence( );
@@ -238,7 +236,8 @@ public class DragonScreen extends Screen {
 		return new TimelineTweenMover( t.start( ) );
 	}
 
-	void buildCannon( Skeleton skel, Vector2 pos, int widthPix, int heightPix, float power, float delay) {
+	void buildCannon( Skeleton skel, Vector2 pos, int widthPix, int heightPix,
+			float power, float delay ) {
 		if ( widthPix <= 64 )
 			throw new RuntimeException(
 					"Cannon width needs to be greater than 64 (2tiles) to work properly" );
@@ -418,13 +417,26 @@ public class DragonScreen extends Screen {
 
 		bodyInsideSkeleton1
 				.addMover( new RotateTweenMover( bodyInsideSkeleton1 ) );
-		bodyInsideSkeleton2
-			.addMover( new RotateTweenMover( bodyInsideSkeleton2, -1 ) );
+		bodyInsideSkeleton2.addMover( new RotateTweenMover(
+				bodyInsideSkeleton2, -1 ) );
 		bodyInsideSkeleton3
-			.addMover( new RotateTweenMover( bodyInsideSkeleton3 ) );
+				.addMover( new RotateTweenMover( bodyInsideSkeleton3 ) );
+
+		Skeleton bodyRoomRotateSkeleton = ( Skeleton ) LevelFactory.entities
+				.get( "body_room_rotate_skeleton" );
+
+		bodyRoomRotateSkeleton.addMover( new RotateTweenMover(
+				bodyRoomRotateSkeleton ) );
+
+		// These platforms are invisible
+		@SuppressWarnings( "unused" )
+		Platform bodyTop = ( Platform ) LevelFactory.entities.get( "body_top" );
+		@SuppressWarnings( "unused" )
+		Platform bodyBotLower = ( Platform ) LevelFactory.entities
+				.get( "body_bot_lower" );
 	}
-	
-	void buildAllCannons(){
+
+	void buildAllCannons( ) {
 		Skeleton balloon3CannonSkeleton = ( Skeleton ) LevelFactory.entities
 				.get( "balloon3_cannon_skeleton" );
 		balloon3CannonSkeleton.setFgFade( false );
@@ -433,28 +445,27 @@ public class DragonScreen extends Screen {
 		buildCannon( balloon3CannonSkeleton,
 				balloon3CannonSkeleton.getPositionPixel( ), 200, 200, 0.5f, 1f );
 
-		
 		Skeleton cannonPuzzle = ( Skeleton ) LevelFactory.entities
-		.get( "body_cannon_puzzle_skeleton" );
-		
+				.get( "body_cannon_puzzle_skeleton" );
+
 		cannonPuzzle.setLocalRot( -Util.PI / 2 );
-		
+
 		cannonPuzzle.setFgFade( false );
-		buildCannon(cannonPuzzle, cannonPuzzle.getPositionPixel( ), 200, 200, 0.5f, 0.5f);
-		for(int i = 1; i <5; ++i){
+		buildCannon( cannonPuzzle, cannonPuzzle.getPositionPixel( ), 200, 200,
+				0.5f, 0.5f );
+		for ( int i = 1; i < 5; ++i ) {
 			Skeleton skel = ( Skeleton ) LevelFactory.entities
-					.get( "body_cannon_skeleton" +i );
+					.get( "body_cannon_skeleton" + i );
 			skel.setFgFade( false );
-			
-			if(i % 2 == 1){
+
+			if ( i % 2 == 1 ) {
 				skel.setLocalRot( Util.PI / 6 );
-			}else{
+			} else {
 				skel.setLocalRot( -Util.PI / 6 );
 			}
-			buildCannon(skel, skel.getPositionPixel( ), 200, 200, 0.33f, 0.5f);
-			
+			buildCannon( skel, skel.getPositionPixel( ), 200, 200, 0.33f, 0.5f );
+
 		}
-		
-		
+
 	}
 }

@@ -11,7 +11,6 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
-import com.blindtigergames.werescrewed.entity.screws.Screw;
 import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 import com.blindtigergames.werescrewed.util.Util;
 
@@ -318,23 +317,23 @@ public class TiledPlatform extends Platform {
 						* body.getAngle( ) );
 				d.tileSprite.draw( batch );
 			}
-//			for ( Screw s : screws )
-//				s.draw( batch, deltaTime );
-//			
-//			if ( bleedTiles != null ){
-//				v = bleedTiles.listIterator( );
-//				while ( v.hasNext( ) ) {
-//					d = v.next( );
-//					d.tileSprite.setPosition( bodypos.x - d.xOffset, bodypos.y
-//							- d.yOffset );
-//					d.tileSprite.setRotation( MathUtils.radiansToDegrees
-//							* body.getAngle( ) );
-//					d.tileSprite.draw( batch );
-//				}
-//			}
+			// for ( Screw s : screws )
+			// s.draw( batch, deltaTime );
+			//
+			// if ( bleedTiles != null ){
+			// v = bleedTiles.listIterator( );
+			// while ( v.hasNext( ) ) {
+			// d = v.next( );
+			// d.tileSprite.setPosition( bodypos.x - d.xOffset, bodypos.y
+			// - d.yOffset );
+			// d.tileSprite.setRotation( MathUtils.radiansToDegrees
+			// * body.getAngle( ) );
+			// d.tileSprite.draw( batch );
+			// }
+			// }
 		}
-		//drawOrigin( batch );
-		//drawFGDecals( batch );
+		// drawOrigin( batch );
+		// drawFGDecals( batch );
 	}
 
 	/**

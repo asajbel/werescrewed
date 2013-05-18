@@ -23669,11 +23669,11 @@
                         </Vector2>
                         <Vector2>
                             <X>232.560547</X>
-                            <Y>-224.0546</Y>
+                            <Y>-256.0546</Y>
                         </Vector2>
                         <Vector2>
                             <X>-156.51532</X>
-                            <Y>-224.0546</Y>
+                            <Y>-256.0546</Y>
                         </Vector2>
                         <Vector2>
                             <X>-156.51532</X>
@@ -23695,11 +23695,11 @@
                         </Vector2>
                         <Vector2>
                             <X>-23.4394531</X>
-                            <Y>-416.0546</Y>
+                            <Y>-448.0546</Y>
                         </Vector2>
                         <Vector2>
                             <X>-412.51532</X>
-                            <Y>-416.0546</Y>
+                            <Y>-448.0546</Y>
                         </Vector2>
                         <Vector2>
                             <X>-412.51532</X>
@@ -23741,9 +23741,6 @@
                         <Property Name="sequence" Type="string" Description="">
                             <string>4 5</string>
                         </Property>
-                        <Property Name="repeatable" Type="string" Description="">
-                            <string />
-                        </Property>
                     </CustomProperties>
                     <LocalPoints>
                         <Vector2>
@@ -23751,24 +23748,24 @@
                             <Y>0</Y>
                         </Vector2>
                         <Vector2>
-                            <X>456.560547</X>
-                            <Y>142.736328</Y>
+                            <X>392.560547</X>
+                            <Y>110.736328</Y>
                         </Vector2>
                         <Vector2>
-                            <X>456.560547</X>
-                            <Y>-96.0545654</Y>
+                            <X>392.560547</X>
+                            <Y>-160.054565</Y>
                         </Vector2>
                         <Vector2>
-                            <X>-156.51532</X>
-                            <Y>-96.0545654</Y>
+                            <X>-60.51532</X>
+                            <Y>-160.054565</Y>
                         </Vector2>
                         <Vector2>
-                            <X>-156.51532</X>
-                            <Y>142.736267</Y>
+                            <X>-60.51532</X>
+                            <Y>110.736328</Y>
                         </Vector2>
                         <Vector2>
-                            <X>456.560547</X>
-                            <Y>142.736328</Y>
+                            <X>392.560547</X>
+                            <Y>110.736328</Y>
                         </Vector2>
                     </LocalPoints>
                     <WorldPoints>
@@ -23777,24 +23774,24 @@
                             <Y>-1792</Y>
                         </Vector2>
                         <Vector2>
-                            <X>-375.439453</X>
-                            <Y>-1649.26367</Y>
+                            <X>-439.439453</X>
+                            <Y>-1681.26367</Y>
                         </Vector2>
                         <Vector2>
-                            <X>-375.439453</X>
-                            <Y>-1888.05457</Y>
+                            <X>-439.439453</X>
+                            <Y>-1952.05457</Y>
                         </Vector2>
                         <Vector2>
-                            <X>-988.5153</X>
-                            <Y>-1888.05457</Y>
+                            <X>-892.5153</X>
+                            <Y>-1952.05457</Y>
                         </Vector2>
                         <Vector2>
-                            <X>-988.5153</X>
-                            <Y>-1649.26367</Y>
+                            <X>-892.5153</X>
+                            <Y>-1681.26367</Y>
                         </Vector2>
                         <Vector2>
-                            <X>-375.439453</X>
-                            <Y>-1649.26367</Y>
+                            <X>-439.439453</X>
+                            <Y>-1681.26367</Y>
                         </Vector2>
                     </WorldPoints>
                     <IsPolygon>false</IsPolygon>
@@ -23843,15 +23840,15 @@
                         </Vector2>
                         <Vector2>
                             <X>392.560547</X>
-                            <Y>-96.05469</Y>
+                            <Y>-256.0547</Y>
                         </Vector2>
                         <Vector2>
-                            <X>-156.51532</X>
-                            <Y>-96.0545654</Y>
+                            <X>-124.51532</X>
+                            <Y>-256.0547</Y>
                         </Vector2>
                         <Vector2>
-                            <X>-156.51532</X>
-                            <Y>142.736267</Y>
+                            <X>-124.51532</X>
+                            <Y>142.736328</Y>
                         </Vector2>
                         <Vector2>
                             <X>392.560547</X>
@@ -23869,14 +23866,14 @@
                         </Vector2>
                         <Vector2>
                             <X>-311.439453</X>
-                            <Y>-2720.05469</Y>
+                            <Y>-2880.05469</Y>
                         </Vector2>
                         <Vector2>
-                            <X>-860.5153</X>
-                            <Y>-2720.05469</Y>
+                            <X>-828.5153</X>
+                            <Y>-2880.05469</Y>
                         </Vector2>
                         <Vector2>
-                            <X>-860.5153</X>
+                            <X>-828.5153</X>
                             <Y>-2481.26367</Y>
                         </Vector2>
                         <Vector2>
@@ -23913,8 +23910,8 @@
         <NextItemNumber>946</NextItemNumber>
         <ContentRootFolder>gleed-textures</ContentRootFolder>
         <CameraPosition>
-            <X>-450.001282</X>
-            <Y>-391.1211</Y>
+            <X>300.000183</X>
+            <Y>-1191.123</Y>
         </CameraPosition>
         <Version>1.3.0.0</Version>
     </EditorRelated>
