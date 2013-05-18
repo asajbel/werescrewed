@@ -104,12 +104,12 @@ public class Player extends Entity {
 	private PlayerState playerState;
 	private ConcurrentState extraState;
 	private PlayerDirection playerDirection = PlayerDirection.Idle;
-	//private boolean reachedMaxSpeed;
+	// private boolean reachedMaxSpeed;
 	private PlayerDirection prevPlayerDir = PlayerDirection.Idle;
 	private Controller controller;
 	private boolean flyDebug = false;
 	private float leftAnalogX;
-	//private float leftAnalogY;
+	// private float leftAnalogY;
 	// private float rightAnalogX;
 	// private float rightAnalogY;
 	private boolean switchedScrewingDirection;
@@ -151,6 +151,7 @@ public class Player extends Entity {
 	private boolean kinematicTransform = false;
 	private boolean changeDirectionsOnceInAir = false;
 
+	@SuppressWarnings( "unused" )
 	private boolean changeDirections = false;
 	private boolean steamCollide = false;
 	@SuppressWarnings( "unused" )
@@ -305,7 +306,7 @@ public class Player extends Entity {
 			flyDebug = !flyDebug;
 		if ( flyDebug )
 			grounded = true;
-		
+
 		if ( kinematicTransform ) {
 			// setPlatformTransform( platformOffset );
 			kinematicTransform = false;
@@ -730,10 +731,10 @@ public class Player extends Entity {
 			if ( body.getLinearVelocity( ).x < MAX_VELOCITY ) {
 				body.applyLinearImpulse( new Vector2( MOVEMENT_IMPULSE, 0.0f ),
 						body.getWorldCenter( ) );
-//				if ( body.getLinearVelocity( ).x >= MAX_VELOCITY * 0.99f )
-//					reachedMaxSpeed = true;
-//				else
-//					reachedMaxSpeed = false;
+				// if ( body.getLinearVelocity( ).x >= MAX_VELOCITY * 0.99f )
+				// reachedMaxSpeed = true;
+				// else
+				// reachedMaxSpeed = false;
 			}
 		}
 		if ( playerState != PlayerState.Screwing ) {
@@ -742,7 +743,7 @@ public class Player extends Entity {
 		if ( grounded && prevPlayerDir == PlayerDirection.Left ) {
 			getEffect( "skid_left" )
 					.restartAt( getPositionPixel( ).add( 30, 0 ) );
-			//reachedMaxSpeed = false;
+			// reachedMaxSpeed = false;
 		}
 		runTimeout = RUN_STEPS;
 		footstepSound( 1.0f );
@@ -779,10 +780,10 @@ public class Player extends Entity {
 				body.applyLinearImpulse(
 						new Vector2( -MOVEMENT_IMPULSE, 0.0f ),
 						body.getWorldCenter( ) );
-//				if ( body.getLinearVelocity( ).x <= -MAX_VELOCITY * 0.99f )
-//					reachedMaxSpeed = true;
-//				else
-//					reachedMaxSpeed = false;
+				// if ( body.getLinearVelocity( ).x <= -MAX_VELOCITY * 0.99f )
+				// reachedMaxSpeed = true;
+				// else
+				// reachedMaxSpeed = false;
 			}
 		}
 		if ( playerState != PlayerState.Screwing ) {
@@ -791,7 +792,7 @@ public class Player extends Entity {
 		if ( grounded && prevPlayerDir == PlayerDirection.Right ) {
 			getEffect( "skid_right" ).restartAt(
 					getPositionPixel( ).add( 100, 0 ) );
-			//reachedMaxSpeed = false;
+			// reachedMaxSpeed = false;
 		}
 		runTimeout = RUN_STEPS;
 		footstepSound( 1.0f );
@@ -823,7 +824,7 @@ public class Player extends Entity {
 		if ( grounded && prevPlayerDir == PlayerDirection.Left ) {
 			getEffect( "skid_left" )
 					.restartAt( getPositionPixel( ).add( 30, 0 ) );
-			//reachedMaxSpeed = false;
+			// reachedMaxSpeed = false;
 		}
 		runTimeout = RUN_STEPS;
 
@@ -859,7 +860,7 @@ public class Player extends Entity {
 		if ( grounded && prevPlayerDir == PlayerDirection.Right ) {
 			getEffect( "skid_right" ).restartAt(
 					getPositionPixel( ).add( 100, 0 ) );
-			//reachedMaxSpeed = false;
+			// reachedMaxSpeed = false;
 		}
 		runTimeout = RUN_STEPS;
 
@@ -1228,12 +1229,12 @@ public class Player extends Entity {
 				&& currentScrew.body.getJointList( ).size( ) > 0
 				&& playerState != PlayerState.HeadStand
 				&& !currentScrew.isPlayerAttached( ) ) {
-			//if ( !currentScrew.playerNotSensor( ) ) {
-			//	for ( Fixture f : body.getFixtureList( ) ) {
-					// may be removed later leaving in for now
-			//		f.setSensor( true );
-			//	}
-			//}
+			// if ( !currentScrew.playerNotSensor( ) ) {
+			// for ( Fixture f : body.getFixtureList( ) ) {
+			// may be removed later leaving in for now
+			// f.setSensor( true );
+			// }
+			// }
 			mover = new FollowEntityMover( body.getPosition( ).mul(
 					Util.BOX_TO_PIXEL ), currentScrew, new Vector2( -WIDTH,
 					-HEIGHT / 2.0f ), SCREW_ATTACH_SPEED );
@@ -1682,11 +1683,11 @@ public class Player extends Entity {
 			world.destroyJoint( playerJoint );
 			playerJoint = null;
 		}
-		//for ( Fixture f : body.getFixtureList( ) ) {
-		//	if ( f != rightSensor && f != leftSensor && f != topSensor ) {
-		//		f.setSensor( false );
-		//	}
-		//}
+		// for ( Fixture f : body.getFixtureList( ) ) {
+		// if ( f != rightSensor && f != leftSensor && f != topSensor ) {
+		// f.setSensor( false );
+		// }
+		// }
 		mover = null;
 		if ( currentScrew != null ) {
 			currentScrew.setPlayerAttached( false );
