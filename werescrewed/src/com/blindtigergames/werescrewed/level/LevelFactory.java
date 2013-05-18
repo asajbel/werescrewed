@@ -1519,10 +1519,7 @@ public class LevelFactory {
 				String tokens[] = tutorialNumbers.split( " " );
 				int x = Integer.parseInt( tokens[ 0 ] ) ;
 				int y = Integer.parseInt( tokens[ 1 ] ) ;
-				int[] array = new int[2];
-				array[0] = x;
-				array[1] = y;
-				etb.beginAction( new SetTutorialAction(array, true) );
+				etb.beginAction( new SetTutorialAction(x, y, true) );
 			} else {
 				etb.beginAction( new EntityActivateMoverAction( ) );
 			}
@@ -1541,10 +1538,7 @@ public class LevelFactory {
 				String tokens[] = tutorialNumbers.split( " " );
 				int x = Integer.parseInt( tokens[ 0 ] ) ;
 				int y = Integer.parseInt( tokens[ 1 ] ) ;
-				int[] array = new int[2];
-				array[0] = x;
-				array[1] = y;
-				etb.endAction( new SetTutorialAction(array, false) ); 
+				etb.endAction( new SetTutorialAction(x, y, false) ); 
 			}else {
 				etb.endAction( new EntityDeactivateMoverAction( ) );
 			}

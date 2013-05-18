@@ -183,6 +183,9 @@ public class Level {
 			player2.draw( batch, deltaTime );
 
 		drawFGStuff( batch );
+		
+		player1.drawBubble( batch );
+		player2.drawBubble( batch );
 
 		// camera.renderBuffers( );
 		batch.end( );
