@@ -63,6 +63,10 @@ public class RotateTweenMover extends TweenMover implements IMover {
 	public RotateTweenMover( Platform platform ) {
 		this( platform, 10f, Util.TWO_PI, 0f, false );
 	}
+	
+	public RotateTweenMover( Platform platform, float negative ) {
+		this( platform, 10f, -Util.TWO_PI, 0f, false );
+	}
 
 	@Override
 	public void runPuzzleMovement( Screw screw, float screwVal, Platform p ) {

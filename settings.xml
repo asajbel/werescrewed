@@ -82,7 +82,7 @@
   <GridLineThickness>1</GridLineThickness>
   <GridNumberOfGridLines>10000</GridNumberOfGridLines>
   <GridSpacing>
-    <X>16</X>
-    <Y>16</Y>
+    <X>32</X>
+    <Y>32</Y>
   </GridSpacing>
 </Constants>

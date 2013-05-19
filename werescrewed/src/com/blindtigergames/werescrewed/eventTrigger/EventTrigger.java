@@ -420,6 +420,17 @@ public class EventTrigger extends Platform {
 			runEndAction( );
 		}
 	}
+	
+	public void triggerEndEvent( Player player ) {
+		if ( twoPlayersToActivate ) {
+			if ( playerOneContact && playerTwoContact ) {
+				endAction.act( player );
+
+			}
+		} else {
+			endAction.act( player );
+		}
+	}
 
 	/**
 	 * Add entity to Event Trigger
@@ -460,6 +471,14 @@ public class EventTrigger extends Platform {
 	 */
 	public IAction getBeginAction( ) {
 		return beginAction;
+	}
+	
+	/**
+	 * gets the ending action couldn't run on any arbitrary entities if they
+	 * need to be in a list used for removing entities
+	 */
+	public IAction getEndAction( ) {
+		return endAction;
 	}
 
 	/**

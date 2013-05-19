@@ -11,12 +11,10 @@ import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.entity.Sprite;
 import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 import com.blindtigergames.werescrewed.gui.Button;
-import com.blindtigergames.werescrewed.gui.CheckBox;
 import com.blindtigergames.werescrewed.gui.Label;
 import com.blindtigergames.werescrewed.gui.OptionButton;
 import com.blindtigergames.werescrewed.gui.Slider;
 import com.blindtigergames.werescrewed.gui.TextButton;
-import com.blindtigergames.werescrewed.screens.ScreenSwitchHandler;
 import com.blindtigergames.werescrewed.sound.SoundManager;
 import com.blindtigergames.werescrewed.sound.SoundManager.SoundType;
 
@@ -32,7 +30,7 @@ class OptionsScreen extends Screen {
 	private final int VOLUME_MAX = 100;
 	private final int VOLUME_MIN = 0;
 	private final float SHIFT = 1.2f;
-	//private boolean subs = false;
+	// private boolean subs = false;
 
 	private OrthographicCamera camera = null;
 
@@ -40,30 +38,27 @@ class OptionsScreen extends Screen {
 	private Slider musicSlider = null;
 	private Slider soundSlider = null;
 	private Slider noiseSlider = null;
-	//private CheckBox subBox = null;
+	// private CheckBox subBox = null;
 	private Button controls = null;
 	private OptionButton music = null;
 	private OptionButton sound = null;
 	private OptionButton noise = null;
-	//private OptionButton subtitles = null;
+	// private OptionButton subtitles = null;
 	private TextButton creditsButton = null;
 	private TextButton backButton = null;
-	
-	/* Things needed...
-	 * Controls: Shows a visual map of the controls depending on what inputs are being used.
-	 * Music: Changes the volume of the music.
-	 * Sound Effects: Changes the volume of the sound effects.
-	 * Noise: Changes the volume of the noise work.
-	 * Subtitles: Turns subtitle on and off for the noise work.
-=======
 
 	/*
 	 * Things needed... Controls: Shows a visual map of the controls depending
 	 * on what inputs are being used. Music: Changes the volume of the music.
-	 * Sound Effects: Changes the volume of the sound effects. Voice: Changes
-	 * the volume of the voice work. Subtitles: Turns subtitle on and off for
-	 * the voice work.
->>>>>>> 5deabcea9b2f923a7f65fba77194e01e4deb11ad
+	 * Sound Effects: Changes the volume of the sound effects. Noise: Changes
+	 * the volume of the noise work. Subtitles: Turns subtitle on and off for
+	 * the noise work. =======
+	 * 
+	 * /* Things needed... Controls: Shows a visual map of the controls
+	 * depending on what inputs are being used. Music: Changes the volume of the
+	 * music. Sound Effects: Changes the volume of the sound effects. Voice:
+	 * Changes the volume of the voice work. Subtitles: Turns subtitle on and
+	 * off for the voice work. >>>>>>> 5deabcea9b2f923a7f65fba77194e01e4deb11ad
 	 */
 	public OptionsScreen( ) {
 		batch = new SpriteBatch( );
@@ -114,8 +109,8 @@ class OptionsScreen extends Screen {
 		music.draw( batch, camera );
 		sound.draw( batch, camera );
 		noise.draw( batch, camera );
-		//subtitles.draw( batch, camera );
-		creditsButton.draw(batch, camera );
+		// subtitles.draw( batch, camera );
+		creditsButton.draw( batch, camera );
 		backButton.draw( batch, camera );
 
 		if ( !finish )
@@ -146,24 +141,27 @@ class OptionsScreen extends Screen {
 		sound.setY( centerY + 2 * lineHeight );
 		noise.setX( leftX - noise.getWidth( ) / 2 );
 		noise.setY( centerY + lineHeight );
-		//subtitles.setX( leftX - subtitles.getWidth( ) / 2 );
-		//subtitles.setY( centerY );
+		// subtitles.setX( leftX - subtitles.getWidth( ) / 2 );
+		// subtitles.setY( centerY );
 		creditsButton.setX( leftX - creditsButton.getWidth( ) / 2 );
 		creditsButton.setY( centerY );
 		backButton.setX( centerX - backButton.getWidth( ) / 2 );
 		backButton.setY( 100 + backButton.getHeight( ) );
-		
-		//subBox.setX( subtitles.getX( ) * 4 );
-		//subBox.setY( subtitles.getY( ) );
 
-		musicSlider.setXPos( ( float ) musicSlider.getMinPos( )
-				+ ( SoundManager.globalVolume.get( SoundType.MUSIC ) * 100 * SHIFT ) );
+		// subBox.setX( subtitles.getX( ) * 4 );
+		// subBox.setY( subtitles.getY( ) );
+
+		musicSlider
+				.setXPos( ( float ) musicSlider.getMinPos( )
+						+ ( SoundManager.globalVolume.get( SoundType.MUSIC ) * 100 * SHIFT ) );
 		musicSlider.setYPos( ( float ) musicSlider.getY( ) );
-		soundSlider.setXPos( ( float ) soundSlider.getMinPos( )
-				+ ( SoundManager.globalVolume.get( SoundType.SFX ) * 100 * SHIFT ) );
+		soundSlider
+				.setXPos( ( float ) soundSlider.getMinPos( )
+						+ ( SoundManager.globalVolume.get( SoundType.SFX ) * 100 * SHIFT ) );
 		soundSlider.setYPos( ( float ) soundSlider.getY( ) );
-		noiseSlider.setXPos( ( float ) noiseSlider.getMinPos( ) 
-				+ ( SoundManager.globalVolume.get( SoundType.NOISE ) * 100 * SHIFT ) );
+		noiseSlider
+				.setXPos( ( float ) noiseSlider.getMinPos( )
+						+ ( SoundManager.globalVolume.get( SoundType.NOISE ) * 100 * SHIFT ) );
 		noiseSlider.setYPos( ( float ) noiseSlider.getY( ) );
 	}
 
@@ -180,23 +178,23 @@ class OptionsScreen extends Screen {
 	}
 
 	private void loadButtons( ) {
-		musicSlider = new Slider ( VOLUME_MIN, VOLUME_MAX, VOLUME_MAX / 2, SoundType.MUSIC );
-		soundSlider = new Slider ( VOLUME_MIN, VOLUME_MAX, VOLUME_MAX / 2, SoundType.SFX );
-		noiseSlider = new Slider ( VOLUME_MIN, VOLUME_MAX, VOLUME_MAX / 2, SoundType.NOISE );
-		//subBox = new CheckBox ( 0, 1, 0 );
+		musicSlider = new Slider( VOLUME_MIN, VOLUME_MAX, VOLUME_MAX / 2,
+				SoundType.MUSIC );
+		soundSlider = new Slider( VOLUME_MIN, VOLUME_MAX, VOLUME_MAX / 2,
+				SoundType.SFX );
+		noiseSlider = new Slider( VOLUME_MIN, VOLUME_MAX, VOLUME_MAX / 2,
+				SoundType.NOISE );
+		// subBox = new CheckBox ( 0, 1, 0 );
 		controls = new Button( "Controls", fancyFont );
-		music = new OptionButton( "Music", fancyFont, 
-				musicSlider );
-		sound = new OptionButton( "Sound", fancyFont, 
-				soundSlider );
-		noise = new OptionButton( "Noise", fancyFont, 
-				noiseSlider );
-		//subtitles = new OptionButton( "Subtitles", fancyFont, 
-		//		subBox );
-		creditsButton = new TextButton("Credits", fancyFont, 
-				new ScreenSwitchHandler(ScreenType.CREDITS));
-		backButton = new TextButton( "Back", fancyFont, new ScreenSwitchHandler(
-				ScreenType.MAIN_MENU ) );
+		music = new OptionButton( "Music", fancyFont, musicSlider );
+		sound = new OptionButton( "Sound", fancyFont, soundSlider );
+		noise = new OptionButton( "Noise", fancyFont, noiseSlider );
+		// subtitles = new OptionButton( "Subtitles", fancyFont,
+		// subBox );
+		creditsButton = new TextButton( "Credits", fancyFont,
+				new ScreenSwitchHandler( ScreenType.CREDITS ) );
+		backButton = new TextButton( "Back", fancyFont,
+				new ScreenSwitchHandler( ScreenType.MAIN_MENU ) );
 
 		controls.setColored( true );
 
@@ -205,7 +203,7 @@ class OptionsScreen extends Screen {
 		Buttons.add( music );
 		Buttons.add( sound );
 		Buttons.add( noise );
-		//Buttons.add( subtitles );
+		// Buttons.add( subtitles );
 		Buttons.add( creditsButton );
 		Buttons.add( backButton );
 	}

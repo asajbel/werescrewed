@@ -97,9 +97,10 @@ public class Screen implements com.badlogic.gdx.Screen {
 			level.camera.update( );
 
 			int FPS = logger.getFPS( );
-			batch.setProjectionMatrix( uiCamera.combined );
-			batch.begin( );
-			if ( debug_font != null ) {
+			
+			if ( level.debug && debug_font != null ) {
+				batch.setProjectionMatrix( uiCamera.combined );
+				batch.begin( );
 				debug_font.draw( batch, "FPS: " + FPS,
 						-Gdx.graphics.getWidth( ) / 2,
 						Gdx.graphics.getHeight( ) / 2 );// -Gdx.graphics.getWidth(
@@ -108,8 +109,9 @@ public class Screen implements com.badlogic.gdx.Screen {
 														// )/4
 				// debug_font.draw(batch, "ALPHA BUILD", -Gdx.graphics.getWidth(
 				// )/2, Gdx.graphics.getHeight( )/2);
+				batch.end( );
 			}
-			batch.end( );
+			
 			
 			updateStep(delta);
 
@@ -284,10 +286,11 @@ public class Screen implements com.badlogic.gdx.Screen {
 	
 	private float accum = 0f;               
 	private final float step = 1f / 60f;    
-//	private final float maxAccum = 1f / 20f;
+	private final float maxAccum = 1f / 17f;
 	                                        
 	private void updateStep(float delta) {   
 		accum += delta;  
+		accum = Math.min( accum, maxAccum );
 		while (accum >= step) {    
 			level.update( step );
 		    accum -= step;                  

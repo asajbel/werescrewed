@@ -457,14 +457,20 @@ public class Entity implements GleedLoadable {
 	 * 
 	 * @param deltaTime
 	 */
-	public void updateMover( float deltaTime ) {
+	public boolean updateMover( float deltaTime ) {
 		if ( active ) {
 			if ( body != null ) {
 				if ( currentMover( ) != null ) {
+					Vector2 oldPos = body.getPosition( );
 					currentMover( ).move( deltaTime, body );
+					Vector2 newPos = body.getPosition( );
+					if ( oldPos.x != newPos.x || oldPos.y != newPos.y ) {
+						return true;
+					}
 				}
 			}
 		}
+		return false;
 	}
 
 	public void updateSounds( float deltaTime ) {
@@ -1295,8 +1301,11 @@ public class Entity implements GleedLoadable {
 	 */
 	public void drawFGDecals( SpriteBatch batch, Camera camera ) {
 		for ( Sprite decal : fgDecals ) {
-			if ( decal.getBoundingRectangle( ).overlaps( camera.getBounds( ) ) ) {
-				decal.draw( batch );
+			if ( decal.alpha >= 0.25 ) {
+				if ( decal.getBoundingRectangle( )
+						.overlaps( camera.getBounds( ) ) ) {
+					decal.draw( batch );
+				} 
 			}
 		}
 	}
