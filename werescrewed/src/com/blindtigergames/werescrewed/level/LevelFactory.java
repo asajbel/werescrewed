@@ -454,7 +454,7 @@ public class LevelFactory {
 				mover = new PistonTweenMover( out, new Vector2( 0, distance ),
 						0.5f, 3f, 1f, 0f, delay );
 			} else if ( MoverType.fromString( movername ) != null ) {
-				mover = new MoverBuilder( ).fromString( movername )
+				mover = new MoverBuilder( level.world ).fromString( movername )
 						.applyTo( out ).build( );
 				// Gdx.app.log( "LevelFactory", "attaching :" + movername
 				// + " to platform" );
@@ -862,7 +862,7 @@ public class LevelFactory {
 				mover = new PistonTweenMover( out, new Vector2( 0, distance ),
 						0.5f, 3f, 1f, 0f, delay );
 			} else if ( MoverType.fromString( movername ) != null ) {
-				mover = new MoverBuilder( ).fromString( movername )
+				mover = new MoverBuilder( level.world ).fromString( movername )
 						.applyTo( out ).build( );
 				// Gdx.app.log( "LevelFactory", "attaching :" + movername
 				// + " to platform" );
@@ -955,7 +955,7 @@ public class LevelFactory {
 		if ( item.props.containsKey( "mover" ) ) {
 			String movername = item.props.get( "mover" );
 			if ( MoverType.fromString( movername ) != null ) {
-				mover = new MoverBuilder( ).fromString( movername )
+				mover = new MoverBuilder( level.world ).fromString( movername )
 						.applyTo( out ).build( );
 				// Gdx.app.log( "LevelFactory", "attaching :" + movername
 				// + " to platform" );
@@ -1117,7 +1117,7 @@ public class LevelFactory {
 				// TODO: add all movers to this mover builder
 				if ( MoverType.fromString( movername ) != null ) {
 
-					MoverBuilder moverBuilder = new MoverBuilder( ).fromString(
+					MoverBuilder moverBuilder = new MoverBuilder( level.world ).fromString(
 							movername ).applyTo( attach );
 
 					if ( movername.equals( "lerpmover" ) ) {
@@ -1519,10 +1519,7 @@ public class LevelFactory {
 				String tokens[] = tutorialNumbers.split( " " );
 				int x = Integer.parseInt( tokens[ 0 ] ) ;
 				int y = Integer.parseInt( tokens[ 1 ] ) ;
-				int[] array = new int[2];
-				array[0] = x;
-				array[1] = y;
-				etb.beginAction( new SetTutorialAction(array, true) );
+				etb.beginAction( new SetTutorialAction(x, y, true) );
 			} else {
 				etb.beginAction( new EntityActivateMoverAction( ) );
 			}
@@ -1541,10 +1538,7 @@ public class LevelFactory {
 				String tokens[] = tutorialNumbers.split( " " );
 				int x = Integer.parseInt( tokens[ 0 ] ) ;
 				int y = Integer.parseInt( tokens[ 1 ] ) ;
-				int[] array = new int[2];
-				array[0] = x;
-				array[1] = y;
-				etb.endAction( new SetTutorialAction(array, false) ); 
+				etb.endAction( new SetTutorialAction(x, y, false) ); 
 			}else {
 				etb.endAction( new EntityDeactivateMoverAction( ) );
 			}

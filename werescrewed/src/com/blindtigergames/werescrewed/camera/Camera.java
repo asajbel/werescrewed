@@ -26,18 +26,18 @@ public class Camera {
 	private Rectangle screenBounds;
 
 	// translation
-	// private static final float ACCELERATION_BUFFER_RATIO = .2f;
 	/**
 	 * A ratio of some sort to determine targetBuffer size
 	 */
-	private static final float TARGET_BUFFER_RATIO = .005f;
-	// private static final float MINIMUM_FOLLOW_SPEED = .1f;
-	// private static final float MAX_ANGLE_DIFF = 100f;
+	private static final float TARGET_BUFFER_RATIO = .003f;
 	/**
-	 * Time to get to ideal camera position/zoom per hundred pixels of distance
+	 * Time to get to ideal camera position per pixel of distance
 	 */
-	private static final float TIME_PER_PIX = .06f;
-	private static final float TIME_PER_ZOOM = 70;
+	private static final float MS_PER_PIX = 3f;
+	/**
+	 * Time to get to ideal camera zoom per zoom-unit difference
+	 */
+	private static final float MS_PER_ZOOM = 1150f;
 	private int timeLeft;
 
 	private Vector2 translateVelocity;
@@ -46,7 +46,7 @@ public class Camera {
 	private boolean moving;
 
 	// zoom
-	private static final float ZOOM_SIG_DIFF = 0.005f;
+	private static final float ZOOM_SIG_DIFF = 0.003f;
 	public static final float MIN_ZOOM = 1f;
 	public static final float MAX_ZOOM = 8f;
 	public static final float SCREEN_TO_ZOOM = 1468.6f;
@@ -55,6 +55,7 @@ public class Camera {
 	 * down
 	 */
 	private static final float DECEL_RATIO = 0.1f;
+	private static final int FRAMES_PER_SECOND = 60;
 
 	// globals for calculating screen space
 	protected static Vector3 CURRENT_CAMERA;
@@ -277,7 +278,7 @@ public class Camera {
 
 		if ( moving ) {
 			move( );
-			timeLeft--;
+			timeLeft -= 1000 / FRAMES_PER_SECOND;
 		}
 	}
 
@@ -327,20 +328,20 @@ public class Camera {
 		int zoomTime = 0;
 
 		if ( distance.len( ) > totalDistance * DECEL_RATIO ) {
-			transTime = ( int ) ( TIME_PER_PIX * distance.len( ) );
+			transTime = ( int ) ( MS_PER_PIX * distance.len( ) );
 		} else {
-			transTime = ( int ) ( TIME_PER_PIX * distance.len( ) * 3 );
+			transTime = ( int ) ( MS_PER_PIX * distance.len( ) * 3 );
 		}
 
 		if ( Math.abs( zoomChange ) > totalZoomChange * DECEL_RATIO ) {
-			zoomTime = ( int ) ( TIME_PER_ZOOM * Math.abs( zoomChange ) );
+			zoomTime = ( int ) ( MS_PER_ZOOM * Math.abs( zoomChange ) );
 		} else {
-			zoomTime = ( int ) ( TIME_PER_ZOOM * Math.abs( zoomChange ) * 3 );
+			zoomTime = ( int ) ( MS_PER_ZOOM * Math.abs( zoomChange ) * 3 );
 		}
 
 		timeLeft = ( transTime > zoomTime ) ? transTime : zoomTime;
 
-		if ( timeLeft < 0 ) {
+		if ( timeLeft <= 0 ) {
 			stopMoving( );
 			return;
 		}
@@ -357,6 +358,8 @@ public class Camera {
 		if ( ( camera.zoom ) < ( targetZoom - ZOOM_SIG_DIFF )
 				|| ( camera.zoom ) > ( targetZoom + ZOOM_SIG_DIFF ) ) {
 			zoom( );
+		} else {
+			camera.zoom = targetZoom;
 		}
 	}
 
@@ -392,12 +395,10 @@ public class Camera {
 		}
 		this.translateVelocity.add( acceleration );
 		this.camera.translate( this.translateVelocity );
-		// }
 	}
 
 	/**
 	 * Zoom out or in depending on anchor buffer rectangles
-	 * 
 	 */
 	private void zoom( ) {
 		// Accelerate zoom
@@ -443,12 +444,13 @@ public class Camera {
 	 * @return acceleration for this step
 	 */
 	private Vector2 calcAcceleration( Vector2 dist ) {
+		int framesLeft = FRAMES_PER_SECOND * timeLeft / 1000;
 		Vector2 acceleration = new Vector2( 0, 0 );
 		acceleration.x = dist.x;
 		acceleration.y = dist.y;
-		acceleration.div( this.timeLeft );
+		acceleration.div( framesLeft );
 		acceleration.sub( this.translateVelocity );
-		acceleration.div( this.timeLeft );
+		acceleration.div( framesLeft );
 		return acceleration;
 	}
 
@@ -460,12 +462,13 @@ public class Camera {
 	 * @return zoom acceleration for this step
 	 */
 	private float calcZoomAcc( float zoomChange ) {
+		int framesLeft = FRAMES_PER_SECOND * timeLeft / 1000;
 		float zoomAccel = 0;
-		if ( this.timeLeft != 0 ) {
+		if ( framesLeft != 0 ) {
 			zoomAccel = zoomChange;
-			zoomAccel /= this.timeLeft;
+			zoomAccel /= framesLeft;
 			zoomAccel -= this.zoomSpeed;
-			zoomAccel /= this.timeLeft;
+			zoomAccel /= framesLeft;
 		}
 		return zoomAccel;
 	}
