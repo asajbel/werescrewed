@@ -37,6 +37,8 @@
 #/common/sounds/WilhelmScream.ogg
 /common/sounds/steam.ogg
 /common/sounds/chains.ogg
+/common/sounds/switchOn.ogg
+/common/sounds/switchOff.ogg
 #/common/sounds/TrainJob.mp3
 #/common/sounds/loopTrain.mp3
 #/common/sounds/introTrain.mp3

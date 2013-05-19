@@ -1,6 +1,7 @@
 package com.blindtigergames.werescrewed.sound;
 
 import java.util.EnumMap;
+import java.util.HashMap;
 
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.math.Rectangle;
@@ -49,11 +50,14 @@ public class SoundManager {
 	}
 
 	public SoundRef getSound( String id, int index, String assetName ) {
-		if ( !hasSound( id ) ) {
+		if (index < 0){
+			return getSound( id, assetName );
+		}
+		if ( !hasSound( id , index) ) {
 			Sound s = WereScrewedGame.manager.get( assetName, Sound.class );
 			sounds.set( id, index, new SoundRef( s ) );
 		}
-		return sounds.get( id );
+		return sounds.get( id , index );
 	}
 
 	public SoundRef getSound( String id, String assetName ) {
@@ -68,6 +72,37 @@ public class SoundManager {
 		return null;
 	}
 
+	public SoundRef getSoundWithProperties( String line ){
+		return getSoundWithProperties(getSoundTags(line));
+	}
+	
+	public SoundRef getSoundWithProperties( HashMap<String, String> subSounds ){
+		if (!(subSounds.get( "asset" ).equals( "" ) || subSounds.get("name").equals(""))){
+			String name = subSounds.get("name");
+			int id = Integer.parseInt( subSounds.get("index") );
+			SoundRef sound = getSound( name, id, WereScrewedGame.dirHandle + subSounds.get( "asset" ) );
+			if (subSounds.containsKey( "volume" ))
+				sound.setInternalVolume(Float.parseFloat( subSounds.get("volume") ));
+			if (subSounds.containsKey( "pitch" ))
+				sound.setInternalPitch(Float.parseFloat( subSounds.get("pitch") ));
+			if (subSounds.containsKey( "pan" ))
+				sound.setPan(Float.parseFloat( subSounds.get("pan") ));
+			if (subSounds.containsKey( "range" ))
+				sound.setRange(Float.parseFloat( subSounds.get("range") ));
+			if (subSounds.containsKey( "falloff" ))
+				sound.setFalloff(Float.parseFloat( subSounds.get("falloff") ));
+			if (subSounds.containsKey( "volumerange" ))
+				sound.setVolumeRange(Float.parseFloat( subSounds.get("volumerange") ));
+			if (subSounds.containsKey( "pitchrange" ))
+				sound.setPitchRange(Float.parseFloat( subSounds.get("pitchrange") ));
+			if (name.contains("collision")){
+				sound.delay = 1.0f;
+			}
+			return sound;
+		}
+		return null;
+	}
+	
 	public int randomSoundId( String tag ) {
 		return WereScrewedGame.random.nextInt( sounds.getAll( tag ).size );
 	}
@@ -337,6 +372,27 @@ public class SoundManager {
 		}
 		return 1.0f;
 	}
+	
+	public static HashMap<String, String> getSoundTags(String line){
+		String[ ] tokens = line.split( "\\s*\\:\\s*" );
+		if ( tokens.length >= 2 ) {
+			HashMap< String, String > sound = new HashMap< String, String >( );
+			sound.put( "name", tokens[0].toLowerCase( ) );
+			sound.put( "asset", tokens[ 1 ] );
+			sound.put( "index", "-1" );
+			String[ ] optTokens;
+			for ( int opts = 2; opts < tokens.length; opts++ ) {
+				optTokens = tokens[ opts ].toLowerCase( )
+						.split( "\\s+" );
+				if ( optTokens.length >= 2 ) {
+					sound.put( optTokens[ 0 ], optTokens[ 1 ] );
+				}
+			}
+			return sound;
+		}
+		return null;
+	}
+	
 	public class SoundRef{
 		public Sound sound;
 		protected Array< Long > soundIds;
