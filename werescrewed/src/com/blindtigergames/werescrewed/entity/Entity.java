@@ -180,7 +180,8 @@ public class Entity implements GleedLoadable {
 	public Entity( String name, Vector2 positionPixels, TextureRegion texture,
 			Body body, boolean solid, float rotation ) {
 		this.construct( name, solid );
-		this.sprite = constructSprite( texture );
+		if(texture!=null)
+			this.sprite = constructSprite( texture );
 		this.body = body;
 		if ( body != null ) {
 			world = body.getWorld( );

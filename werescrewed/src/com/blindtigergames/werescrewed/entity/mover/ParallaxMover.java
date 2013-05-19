@@ -28,19 +28,21 @@ public class ParallaxMover implements IMover {
 	 * @param endingPoint
 	 * @param speed
 	 */
-	public ParallaxMover( Vector2 beginningPoint, Vector2 endingPoint,
+	public ParallaxMover( Vector2 beginningPoint, Vector2 endingPoint, 
 			float speed, float alpha, Camera camera, boolean moveContinuous,
 			LinearAxis axis ) {
 		this.beginningPoint = beginningPoint.cpy( );
 		this.endPoint = endingPoint.cpy( );
-		this.speed = Math.abs( speed );
+		this.speed =  speed;
 		this.alpha = alpha;
 		this.cameraControl = camera;
-		this.oldCameraPos = camera.position.cpy( );
+		if(camera!=null)
+			this.oldCameraPos = camera.position.cpy( );
 		this.moveContinuous = moveContinuous;
 		this.axis = axis;
 		puzzleType = PuzzleType.OVERRIDE_ENTITY_MOVER;
 	}
+	
 
 	@Override
 	public void move( float deltaTime, Body body ) {

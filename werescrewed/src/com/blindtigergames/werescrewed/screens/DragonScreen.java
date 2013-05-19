@@ -1,12 +1,19 @@
 package com.blindtigergames.werescrewed.screens;
 
+import java.util.Random;
+
 import aurelienribon.tweenengine.Timeline;
 import aurelienribon.tweenengine.Tween;
 import aurelienribon.tweenengine.TweenEquations;
 
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.utils.Array;
+import com.blindtigergames.werescrewed.WereScrewedGame;
+import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.Skeleton;
+import com.blindtigergames.werescrewed.entity.Sprite;
 import com.blindtigergames.werescrewed.entity.action.CannonLaunchAction;
 import com.blindtigergames.werescrewed.entity.action.RotateTweenAction;
 import com.blindtigergames.werescrewed.entity.builders.EventTriggerBuilder;
@@ -16,6 +23,7 @@ import com.blindtigergames.werescrewed.entity.mover.AnalogRotateMover;
 import com.blindtigergames.werescrewed.entity.mover.IMover;
 import com.blindtigergames.werescrewed.entity.mover.LerpMover;
 import com.blindtigergames.werescrewed.entity.mover.LinearAxis;
+import com.blindtigergames.werescrewed.entity.mover.ParallaxMover;
 import com.blindtigergames.werescrewed.entity.mover.RotateTweenMover;
 import com.blindtigergames.werescrewed.entity.mover.TimelineTweenMover;
 import com.blindtigergames.werescrewed.entity.platforms.Pipe;
@@ -24,6 +32,7 @@ import com.blindtigergames.werescrewed.entity.screws.PuzzleScrew;
 import com.blindtigergames.werescrewed.entity.tween.PlatformAccessor;
 import com.blindtigergames.werescrewed.eventTrigger.EventTrigger;
 import com.blindtigergames.werescrewed.eventTrigger.PowerSwitch;
+import com.blindtigergames.werescrewed.graphics.TextureAtlas;
 import com.blindtigergames.werescrewed.level.LevelFactory;
 import com.blindtigergames.werescrewed.util.Util;
 
@@ -48,6 +57,8 @@ public class DragonScreen extends Screen {
 		tail3Pipes( );
 		bodySkeletons( );
 		buildAllCannons( );
+		
+		buildBackground( );
 
 		Skeleton jaw_skeleton = ( Skeleton ) LevelFactory.entities
 				.get( "jaw_skeleton" );
@@ -78,6 +89,9 @@ public class DragonScreen extends Screen {
 				.start( ) );
 		t.repeat( Tween.INFINITY, 0f );
 		jaw_skeleton.addMover( new TimelineTweenMover( t.start( ) ) );
+		
+		
+		
 	}
 
 	void buildBalloon( ) {
@@ -467,5 +481,53 @@ public class DragonScreen extends Screen {
 
 		}
 
+	}
+	
+	
+	void buildBackground(){
+		TextureAtlas front_clouds = WereScrewedGame.manager.getAtlas( "front-clouds" );
+		float frontCloudsY = 0;
+		float numFrontClouds = 50;
+		float xMax = 28000, xMin = 0;
+		
+		//setClearColor( 105f/255f, 208f/255f, 255f/255f, 1f ); //SKY BLUE
+		
+		
+		Random r = new Random();
+		//loop variables
+		BodyDef bdef; Body b; Entity e; ParallaxMover m; float yPos; String cloudId;
+		for(int i = 0; i < numFrontClouds; ++i){
+			bdef = new BodyDef();
+			bdef.fixedRotation=true;
+			b = level.world.createBody( bdef );
+			cloudId = "front1-"+(r.nextInt( 4 )+1);
+			e = new Entity("front1-"+i,
+								  new Vector2(),
+								  front_clouds.findRegion( cloudId ),
+								  b,
+								  false,
+								  0);
+			yPos = frontCloudsY;
+			m = new ParallaxMover( new Vector2(xMin,yPos),
+												 new Vector2(xMax,yPos),
+												 //new Vector2( r.nextFloat( )*(xMax-xMin)+xMin, yPos ),
+												 -0.0001f, r.nextFloat(), null, true, LinearAxis.HORIZONTAL );
+			e.setMoverAtCurrentState( m );
+			level.root.addLooseEntity( e );
+		}
+		
+
+		//bgGradient
+		level.initBackgroundRoot( );
+		bdef=new BodyDef();
+		bdef.fixedRotation=true;
+		b=level.world.createBody( bdef );
+		e=new Entity("bg-gradient",new Vector2(),null,b,false,0);
+		e.changeSprite( Sprite.scale( front_clouds.createSprite( "bg-gradient" ), 10,1/2f ) );//67.5f
+		level.backgroundRootSkeleton.addLooseEntity( e );
+		m = new ParallaxMover( new Vector2(-20,0),
+				 new Vector2(xMax,yPos),
+				 //new Vector2( r.nextFloat( )*(xMax-xMin)+xMin, yPos ),
+				 -0.0001f, r.nextFloat(), null, true, LinearAxis.HORIZONTAL );
 	}
 }
