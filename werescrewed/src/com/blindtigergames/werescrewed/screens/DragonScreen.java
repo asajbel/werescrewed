@@ -486,16 +486,19 @@ public class DragonScreen extends Screen {
 	
 	void buildBackground(){
 		TextureAtlas front_clouds = WereScrewedGame.manager.getAtlas( "front-clouds" );
-		float frontCloudsY = 0;
+		float frontCloudsY = 2800, frontCloudsY2 = -500;
+		float frontCloudVariation = 600;
 		float numFrontClouds = 50;
-		float xMax = 28000, xMin = 0;
+		float xMax = 30000, xMin = -3000;
+		float minCloudScale = 0.5f;
 		
-		//setClearColor( 105f/255f, 208f/255f, 255f/255f, 1f ); //SKY BLUE
-		
+		setClearColor( 105f/255f, 208f/255f, 255f/255f, 1f ); //SKY BLUE
 		
 		Random r = new Random();
 		//loop variables
-		BodyDef bdef; Body b; Entity e; ParallaxMover m; float yPos; String cloudId;
+		BodyDef bdef; Body b; Entity e; ParallaxMover m; float yPos, scale; String cloudId;
+		
+		//top orange big cloud layer
 		for(int i = 0; i < numFrontClouds; ++i){
 			bdef = new BodyDef();
 			bdef.fixedRotation=true;
@@ -507,11 +510,39 @@ public class DragonScreen extends Screen {
 								  b,
 								  false,
 								  0);
-			yPos = frontCloudsY;
+			scale = r.nextFloat( )/2+minCloudScale;
+			e.sprite.setScale( scale * (r.nextBoolean( )?1f:-1f), r.nextFloat( )/2+0.5f );
+			yPos = frontCloudsY2 + Util.binom( )*frontCloudVariation;
+			m = new ParallaxMover( new Vector2(xMin,yPos),
+												 new Vector2(xMax,yPos),
+												 -0.0001f*r.nextFloat()-.00001f,
+												 r.nextFloat(),
+												 null,
+												 true,
+												 LinearAxis.HORIZONTAL );
+			e.setMoverAtCurrentState( m );
+			level.root.addLooseEntity( e );
+		}
+		
+		//bottom darker cloud layer
+		for(int i = 0; i < numFrontClouds; ++i){
+			bdef = new BodyDef();
+			bdef.fixedRotation=true;
+			b = level.world.createBody( bdef );
+			cloudId = "front2-"+(r.nextInt( 2 )+2); //FIX THIS, front2-1 is not in pack file
+			e = new Entity("front1-"+i,
+								  new Vector2(),
+								  front_clouds.findRegion( cloudId ),
+								  b,
+								  false,
+								  0);
+			scale = r.nextFloat( )/2+minCloudScale;
+			e.sprite.setScale( scale * (r.nextBoolean( )?1f:-1f), r.nextFloat( )/2+0.5f );
+			yPos = frontCloudsY + Util.binom( )*frontCloudVariation;
 			m = new ParallaxMover( new Vector2(xMin,yPos),
 												 new Vector2(xMax,yPos),
 												 //new Vector2( r.nextFloat( )*(xMax-xMin)+xMin, yPos ),
-												 -0.0001f, r.nextFloat(), null, true, LinearAxis.HORIZONTAL );
+												 -0.0001f*r.nextFloat()-.00001f, r.nextFloat(), null, true, LinearAxis.HORIZONTAL );
 			e.setMoverAtCurrentState( m );
 			level.root.addLooseEntity( e );
 		}
@@ -519,15 +550,18 @@ public class DragonScreen extends Screen {
 
 		//bgGradient
 		level.initBackgroundRoot( );
+		float xOffset = -150;
 		bdef=new BodyDef();
 		bdef.fixedRotation=true;
 		b=level.world.createBody( bdef );
 		e=new Entity("bg-gradient",new Vector2(),null,b,false,0);
-		e.changeSprite( Sprite.scale( front_clouds.createSprite( "bg-gradient" ), 10,1/2f ) );//67.5f
+		
+		e.changeSprite( Sprite.scale( front_clouds.createSprite( "bg-gradient" ), 100f,1 ) );//67.5f
 		level.backgroundRootSkeleton.addLooseEntity( e );
-		m = new ParallaxMover( new Vector2(-20,0),
-				 new Vector2(xMax,yPos),
+		m = new ParallaxMover( new Vector2(xOffset,0),
+				 new Vector2(xOffset,-2048),
 				 //new Vector2( r.nextFloat( )*(xMax-xMin)+xMin, yPos ),
-				 -0.0001f, r.nextFloat(), null, true, LinearAxis.HORIZONTAL );
+				 0.0002f,0.00001f, level.camera, false, LinearAxis.VERTICAL );
+		e.setMoverAtCurrentState( m );
 	}
 }
