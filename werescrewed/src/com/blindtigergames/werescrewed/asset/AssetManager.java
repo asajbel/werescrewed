@@ -207,8 +207,8 @@ public class AssetManager extends com.badlogic.gdx.assets.AssetManager {
 		} catch ( GdxRuntimeException err ) {
 			if ( loadDummies && dummyAssets.containsKey( type )
 					&& !dummyAssets.get( type ).equalsIgnoreCase( fileName ) ) {
-				// Gdx.app.log( "AssetManager", err.getMessage(
-				// )+"("+type.getSimpleName( )+")");
+				 Gdx.app.log( "AssetManager", err.getMessage(
+				 )+"("+type.getSimpleName( )+")");
 				return get( dummyAssets.get( type ) );
 			} else {
 				throw err;

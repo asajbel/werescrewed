@@ -19,12 +19,12 @@ public class SetTutorialAction implements IAction {
 
 	@Override
 	public void act( ) {
-		Gdx.app.log("not_working: ", "" + value);
+		//Gdx.app.log("not_working: ", "" + value);
 	}
 
 	@Override
 	public void act( Entity entity ) {
-		Gdx.app.log("working: ", "" + value);
+		//Gdx.app.log("working: ", "" + value);
 		if ( entity.entityType == EntityType.PLAYER ) {
 			Player player = ( Player ) entity;
 			if ( value ) {

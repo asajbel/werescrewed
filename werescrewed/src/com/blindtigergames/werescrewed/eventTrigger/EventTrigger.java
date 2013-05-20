@@ -2,6 +2,7 @@ package com.blindtigergames.werescrewed.eventTrigger;
 
 import java.util.ArrayList;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
@@ -356,16 +357,6 @@ public class EventTrigger extends Platform {
 			}
 		}
 	}
-
-	/**
-	 * random prints, no real need for update function yet
-	 * 
-	 * @param - float deltaTime
-	 * @author Ranveer
-	 */
-	// public void update( float deltaTime ){
-	//
-	// }
 
 	/**
 	 * triggers the beginning Action depending on if it takes two players to run

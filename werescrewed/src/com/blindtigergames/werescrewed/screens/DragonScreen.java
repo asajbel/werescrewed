@@ -5,6 +5,9 @@ import aurelienribon.tweenengine.Tween;
 import aurelienribon.tweenengine.TweenEquations;
 
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Joint;
+import com.badlogic.gdx.physics.box2d.joints.RevoluteJoint;
+import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
 import com.badlogic.gdx.utils.Array;
 import com.blindtigergames.werescrewed.entity.Skeleton;
 import com.blindtigergames.werescrewed.entity.action.CannonLaunchAction;
@@ -29,10 +32,11 @@ import com.blindtigergames.werescrewed.util.Util;
 
 public class DragonScreen extends Screen {
 
-	PuzzleScrew puzzle_screw_balloon1;
+	PuzzleScrew puzzleScrewBalloon1;
 	Platform balloon1;
-	Skeleton balloon1_super;
-	PowerSwitch tail3Switch1, tail3Switch2, tail3Switch3;
+	Skeleton balloon1_super, bodyRoomRotateSkeleton;
+	PowerSwitch tail3Switch1, tail3Switch2, tail3Switch3, bodyPowerSwitch3;
+	RevoluteJoint bodyRoomJoint;
 
 	// the numbers here correspond to gleed numbers
 	Fire tail3Fire2, tail3Fire3, tail3Fire4, tail3Fire5, tail3Fire6;
@@ -47,7 +51,9 @@ public class DragonScreen extends Screen {
 		initPuzzleScrews( );
 		tail3Pipes( );
 		bodySkeletons( );
-		buildAllCannons( );
+		buildAllCannons();
+		flamePlatformDecals();
+
 
 		Skeleton jaw_skeleton = ( Skeleton ) LevelFactory.entities
 				.get( "jaw_skeleton" );
@@ -82,8 +88,8 @@ public class DragonScreen extends Screen {
 
 	void buildBalloon( ) {
 		balloon1 = ( Platform ) LevelFactory.entities.get( "balloon1" );
-		@SuppressWarnings( "unused" )
-		Platform balloon2 = ( Platform ) LevelFactory.entities.get( "balloon2" );
+		
+		//Platform balloon2 = ( Platform ) LevelFactory.entities.get( "balloon2" );
 		// Platform balloon3 = (Platform) LevelFactory.entities.get( "balloon3"
 		// );
 		// Platform balloon4 = (Platform) LevelFactory.entities.get( "balloon4"
@@ -96,13 +102,13 @@ public class DragonScreen extends Screen {
 		Platform tail3Balloon = ( Platform ) LevelFactory.entities
 				.get( "tail3_balloon" );
 
-		@SuppressWarnings( "unused" )
+		
 		Skeleton balloon1_skeleton = ( Skeleton ) LevelFactory.entities
 				.get( "balloon1_skeleton" );
 		balloon1_super = ( Skeleton ) LevelFactory.entities
 				.get( "balloon1_super" );
 
-		puzzle_screw_balloon1 = ( PuzzleScrew ) LevelFactory.entities
+		puzzleScrewBalloon1 = ( PuzzleScrew ) LevelFactory.entities
 				.get( "puzzle_screw_balloon1" );
 
 		tail1Balloon
@@ -122,21 +128,33 @@ public class DragonScreen extends Screen {
 
 	float time;
 	boolean restart = false;
-
+	int bodyRoomAngle = 0;
 	@Override
 	public void render( float deltaTime ) {
 		super.render( deltaTime );
 		// time += deltaTime * 1000;
-
+		bodyRoomAngle = (int) Math.abs( (bodyRoomRotateSkeleton.getAngle( ) * Util.RAD_TO_DEG) % 360);
+		
+		
 		if ( time > 5000 ) {
 			// balloon2.body.applyForce( new Vector2(0f, 100f),
 			// balloon2.body.getWorldCenter( ));
 			time = 0;
 		}
-
+		
+		if(!bodyPowerSwitch3.isTurnedOn( )){
+			bodyRoomJoint.setMotorSpeed( 0.1f );
+			if(bodyRoomAngle > 358 && bodyRoomJoint.isMotorEnabled( )){
+				bodyRoomRotateSkeleton.body.setAngularVelocity( 0f );
+				bodyRoomJoint.setMotorSpeed( 0.0f );
+				bodyRoomJoint.setMaxMotorTorque( 0f );
+				bodyRoomJoint.enableMotor( false );
+			}
+			
+		}
 		tail3FireEventsUpdate( );
 
-		if ( puzzle_screw_balloon1.getDepth( ) == puzzle_screw_balloon1
+		if ( puzzleScrewBalloon1.getDepth( ) == puzzleScrewBalloon1
 				.getMaxDepth( ) ) {
 			if ( balloon1_super.currentMover( ) == null ) {
 				Timeline t = Timeline.createSequence( );
@@ -361,7 +379,9 @@ public class DragonScreen extends Screen {
 				.get( "tail3_switch2" );
 		tail3Switch3 = ( PowerSwitch ) LevelFactory.entities
 				.get( "tail3_switch3" );
-
+		bodyPowerSwitch3 = ( PowerSwitch ) LevelFactory.entities
+				.get( "body_power_switch3" );
+		
 		tail3Switch1.actOnEntity = true;
 		tail3Switch1.addEntityToTrigger( tail3MiddlePipe1 );
 		tail3Switch1.addEntityToTrigger( tail3MiddlePipe2 );
@@ -420,18 +440,33 @@ public class DragonScreen extends Screen {
 		bodyInsideSkeleton2.addMover( new RotateTweenMover(
 				bodyInsideSkeleton2, -1 ) );
 		bodyInsideSkeleton3
-				.addMover( new RotateTweenMover( bodyInsideSkeleton3 ) );
+			.addMover( new RotateTweenMover( bodyInsideSkeleton3 ) );
+		
+		
+		bodyRoomRotateSkeleton = ( Skeleton ) LevelFactory.entities
+		.get( "body_room_rotate_skeleton" );
+		Skeleton bodySkeleton = ( Skeleton ) LevelFactory.entities
+				.get( "body_skeleton" );
+		
+		//bodyRoomRotateSkeleton.addMover( new RotateTweenMover(bodyRoomRotateSkeleton ));
+		//bodyRoomRotateSkeleton.addMover( rotateCircleMover(bodyRoomRotateSkeleton) );
+		
+		RevoluteJointDef revoluteJointDef = new RevoluteJointDef( );
+		revoluteJointDef.initialize( bodyRoomRotateSkeleton.body, bodySkeleton.body,
+				bodyRoomRotateSkeleton.getPosition( ) );
+		revoluteJointDef.enableMotor = true;
+		revoluteJointDef.maxMotorTorque = 100f;// high max motor force
+															// yields a
 
-		Skeleton bodyRoomRotateSkeleton = ( Skeleton ) LevelFactory.entities
-				.get( "body_room_rotate_skeleton" );
+	
+		revoluteJointDef.motorSpeed = 0.5f;
 
-		bodyRoomRotateSkeleton.addMover( new RotateTweenMover(
-				bodyRoomRotateSkeleton ) );
+		bodyRoomJoint = (RevoluteJoint)level.world.createJoint( revoluteJointDef );
+		
+		//These platforms are invisible
+		Platform bodyTop = ( Platform ) LevelFactory.entities
+				.get( "body_top" );
 
-		// These platforms are invisible
-		@SuppressWarnings( "unused" )
-		Platform bodyTop = ( Platform ) LevelFactory.entities.get( "body_top" );
-		@SuppressWarnings( "unused" )
 		Platform bodyBotLower = ( Platform ) LevelFactory.entities
 				.get( "body_bot_lower" );
 	}
@@ -467,5 +502,40 @@ public class DragonScreen extends Screen {
 
 		}
 
+	}
+	
+	
+	private TimelineTweenMover rotateCircleMover(Skeleton skel){
+		Timeline t = Timeline.createSequence( );
+
+
+		t.push( Tween.to( skel, PlatformAccessor.LOCAL_ROT, 10f )
+				.ease( TweenEquations.easeNone ).target( Util.PI *2 )
+				.start( ).delay( 0f ) );
+
+	
+		t.repeat( Tween.INFINITY, 0f );
+		return  new TimelineTweenMover( t.start( ) );
+	}
+	
+	void flamePlatformDecals(){
+		Platform balloon1FlamePlat = ( Platform ) LevelFactory.entities
+				.get( "balloon1_flame_plat" );
+		
+		Platform balloon2FlamePlat = ( Platform ) LevelFactory.entities
+				.get( "balloon2_flame_plat" );
+		
+		Platform balloon3FlamePlat = ( Platform ) LevelFactory.entities
+				.get( "balloon3_flame_plat" );
+		
+		Platform tailFlamePlat = ( Platform ) LevelFactory.entities
+				.get( "tail_flame_plat" );
+		
+		Platform tail2FlamePlat = ( Platform ) LevelFactory.entities
+				.get( "tail2_flame_plat" );
+		
+		Platform tai3lFlamePlat = ( Platform ) LevelFactory.entities
+				.get( "tail3_flame_plat" );
+	
 	}
 }
