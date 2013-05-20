@@ -33,11 +33,11 @@ public class Camera {
 	/**
 	 * Time to get to ideal camera position per pixel of distance
 	 */
-	private static final float MS_PER_PIX = 3f;
+	private static final float MS_PER_PIX = 2f;
 	/**
 	 * Time to get to ideal camera zoom per zoom-unit difference
 	 */
-	private static final float MS_PER_ZOOM = 1150f;
+	private static final float MS_PER_ZOOM = 1000f;
 	private int timeLeft;
 
 	private Vector2 translateVelocity;
@@ -45,7 +45,7 @@ public class Camera {
 	private float targetBuffer;
 	private boolean moving;
 
-	// zoom
+	// Zoom constants
 	private static final float ZOOM_SIG_DIFF = 0.003f;
 	public static final float MIN_ZOOM = 1f;
 	public static final float MAX_ZOOM = 8f;
