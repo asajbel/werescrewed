@@ -38,6 +38,7 @@ public class TrophyScreen implements com.badlogic.gdx.Screen {
 																// label
 	private Sprite[ ] trophies2 = new Sprite[ trophyLength ];
 	private TextureRegion[ ] trophyIcon = new TextureRegion[ trophyMax ];
+	private int[] trophyIndices = new int[ 2 * trophyLength ];
 	private Label player1Name = null;
 	private Label player2Name = null;
 	private TextButton next = null;
@@ -175,11 +176,11 @@ public class TrophyScreen implements com.badlogic.gdx.Screen {
 			if ( playerNum == 1
 					&& Metrics.getTrophyMetric( TrophyMetric.P1DEATHS ) > Metrics
 							.getTrophyMetric( TrophyMetric.P2DEATHS ) )
-				player1[ index ] = new Label( "Call The Suicide Hotline", fancyFont );
+				player1[ index ] = new Label( "Call The Suicide \n Hotline", fancyFont );
 			else if ( playerNum == 2
 					&& Metrics.getTrophyMetric( TrophyMetric.P2DEATHS ) > Metrics
 							.getTrophyMetric( TrophyMetric.P1DEATHS ) )
-				player2[ index ] = new Label( "Call The Suicide Hotline", fancyFont );
+				player2[ index ] = new Label( "Call The Suicide \n Hotline", fancyFont );
 			break;
 		case 7: // Most Head Jumps
 			if ( playerNum == 1
@@ -224,10 +225,10 @@ public class TrophyScreen implements com.badlogic.gdx.Screen {
 		case 11: // No Deaths
 			if ( playerNum == 1
 					&& Metrics.getTrophyMetric( TrophyMetric.P1DEATHS ) == 0 )
-				player1[ index ] = new Label( "Are You Using God Mode?", fancyFont );
+				player1[ index ] = new Label( "Are You Using \n God Mode?", fancyFont );
 			else if ( playerNum == 2
 					&& Metrics.getTrophyMetric( TrophyMetric.P2DEATHS ) == 0 )
-				player2[ index ] = new Label( "Are You Using God Mode?", fancyFont );
+				player2[ index ] = new Label( "Are You Using \n God Mode?", fancyFont );
 			break;
 		case 12: // Most Crush Deaths
 			if ( playerNum == 1
@@ -335,9 +336,9 @@ public class TrophyScreen implements com.badlogic.gdx.Screen {
 			break;
 		case 23: // Random 3
 			if ( playerNum == 1 ) {
-				player1[ index ] = new Label( "You Unlocked An Achievement!!", fancyFont );
+				player1[ index ] = new Label( "You Unlocked \n An Achievement!!", fancyFont );
 			} else if ( playerNum == 2 ) {
-				player2[ index ] = new Label( "You Unlocked An Achievement!!", fancyFont );
+				player2[ index ] = new Label( "You Unlocked \n An Achievement!!", fancyFont );
 			}
 			break;
 		case 24: // Random 4
@@ -356,18 +357,18 @@ public class TrophyScreen implements com.badlogic.gdx.Screen {
 			break;
 		case 26: // Random 6
 			if ( playerNum == 1 ) {
-				player1[ index ] = new Label( "Better Than Bacon Ice Cream", fancyFont );
+				player1[ index ] = new Label( "Better Than \n Bacon Ice Cream", fancyFont );
 			} else if ( playerNum == 2 ) {
-				player2[ index ] = new Label( "Better Than Bacon Ice Cream", fancyFont );
+				player2[ index ] = new Label( "Better Than \n Bacon Ice Cream", fancyFont );
 			}
 			break;
 		case 27: // Random 7
 			if ( playerNum == 1 ) {
 				player1[ index ] = new Label(
-						"You Played The Best Game Ever!!", fancyFont );
+						"You Played \n The Best Game Ever!!", fancyFont );
 			} else if ( playerNum == 2 ) {
 				player2[ index ] = new Label(
-						"You Played The Best Game Ever!!", fancyFont );
+						"You Played \n The Best Game Ever!!", fancyFont );
 			}
 			break;
 		case 28: // Random 8
@@ -419,6 +420,57 @@ public class TrophyScreen implements com.badlogic.gdx.Screen {
 
 			player2[ j ].setX( centerX - ( int ) offSet );
 			player2[ j ].setY( centerY + lineHeight * ( j + 1 ) );
+/**
+ * Ed, commented out your code instead of deleting it so you can adjust it
+ *     to work with the new font size. 
+ *     ~Jenn M.~ 
+ */
+/*
+		player2Name.setX( (int)(centerX * 1.5) - player1Name.getWidth( ) / 2 );
+		player2Name.setY( centerY + lineHeight * ( trophyLength + 1 ) );
+		for ( int j = 0; j < trophyLength; j++ ) {
+			
+			//align trophy labels for player1
+			if ( j >= 1 ){
+//				player1[ j ].setX( centerX / 2 - player1[ j ].getWidth( ) / 2 );
+				if ( j == 3 ){
+					player1[ j ].setX( centerX / 4 - player1[ j ].getWidth() / 2 );
+				}else
+					player1[ j ].setX( player1[ j - 1 ].getX( )  + player1[ j - 1 ].getWidth( ) + 32 );
+			}
+			else
+				player1[ j ].setX( 2 * centerX / 12 - player1[ j ].getWidth( ) / 2 );
+
+			if ( j <= 2 ){
+//			player1[ j ].setY( centerY + lineHeight * ( j + 1 ) );
+				player1[ j ].setY( centerY );
+			}
+			else 
+				player1[ j ].setY( centerY - 156 );
+
+			
+			//align trophy labels for player2
+			if ( j >= 1 ){
+//				player1[ j ].setX( centerX / 2 - player1[ j ].getWidth( ) / 2 );
+				if ( j == 3 ){
+					player2[ j ].setX( (int)( centerX * 1.25) );
+				}else
+					player2[ j ].setX( player2[ j - 1 ].getX( )  + player2[ j - 1 ].getWidth( ) + 32 );
+			}
+			else
+				player2[ j ].setX( centerX );
+
+			if ( j <= 2 ){
+//			player1[ j ].setY( centerY + lineHeight * ( j + 1 ) );
+				player2[ j ].setY( centerY );
+			}
+			else 
+				player2[ j ].setY( centerY - 156 );
+			
+			
+//			player2[ j ].setX( (int)(centerX * 1.5) - player2[ j ].getWidth( ) / 2 );
+//			player2[ j ].setY( centerY + lineHeight * ( j + 1 ) );
+*/
 		}
 		next.setX( centerX - next.getWidth( ) / 2 );
 		next.setY( 100 + next.getHeight( ) );

@@ -75,7 +75,8 @@ public class Screen implements com.badlogic.gdx.Screen {
 			System.exit( 0 );
 		}
 		if (level != null){			
-
+			updateStep(delta);
+			
 			// background stuff
 			if ( level.backgroundRootSkeleton != null ) {
 				level.backgroundCam.update( );
@@ -113,9 +114,6 @@ public class Screen implements com.badlogic.gdx.Screen {
 				batch.end( );
 			}
 			
-			
-			updateStep(delta);
-
 		}
 		
 		if ( Gdx.input.isKeyPressed( Input.Keys.BACKSPACE ) ) {

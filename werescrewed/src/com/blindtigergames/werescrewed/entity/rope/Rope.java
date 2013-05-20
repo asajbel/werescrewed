@@ -89,14 +89,17 @@ public class Rope {
 		Link topPiece = new Link( "top", world, pos, texture, widthHeight );
 		topPiece.body.setType( BodyType.DynamicBody );
 		linkParts.add( topPiece );
-
+		
+		Link temp = null, prev = null;
 		for ( int i = 0; i < links; ++i ) {
-
-			Link temp = new Link( "link" + i, world, new Vector2(
+			temp = new Link( "link" + i, world, new Vector2(
 					getEnd( ).body.getWorldCenter( ).x,
 					getEnd( ).body.getWorldCenter( ).y - widthHeight.y
 							* Util.PIXEL_TO_BOX ), texture, widthHeight );
-
+			if (prev != null){
+				temp.setChild(prev);
+			}
+			prev = temp;
 			getEnd( ).createLinkJoint( temp );
 			linkParts.add( temp );
 
