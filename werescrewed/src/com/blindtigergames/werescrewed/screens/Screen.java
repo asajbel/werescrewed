@@ -3,6 +3,7 @@ package com.blindtigergames.werescrewed.screens;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
@@ -116,6 +117,10 @@ public class Screen implements com.badlogic.gdx.Screen {
 			updateStep(delta);
 
 		}
+		
+		if ( Gdx.input.isKeyPressed( Input.Keys.BACKSPACE ) ) {
+			ScreenManager.getInstance( ).show( ScreenType.TROPHY );
+		}
 
 		if ( Buttons.size( ) > 0 ) {
 
@@ -160,7 +165,6 @@ public class Screen implements com.badlogic.gdx.Screen {
 							if ( option.getOption( ) instanceof Slider ) {
 								Slider slider = ( Slider ) option.getOption( );
 								slider.moveLeft( );
-								controllerTimer = controllerMax;
 							}
 						}
 					} else if ( WereScrewedGame.p1ControllerListener
@@ -172,7 +176,6 @@ public class Screen implements com.badlogic.gdx.Screen {
 							if ( option.getOption( ) instanceof Slider ) {
 								Slider slider = ( Slider ) option.getOption( );
 								slider.moveRight( );
-								controllerTimer = controllerMax;
 							}
 						}
 					}
@@ -214,7 +217,6 @@ public class Screen implements com.badlogic.gdx.Screen {
 							if ( option.getOption( ) instanceof Slider ) {
 								Slider slider = ( Slider ) option.getOption( );
 								slider.moveLeft( );
-								controllerTimer = controllerMax;
 							}
 						}
 					} else if ( WereScrewedGame.p2ControllerListener
@@ -226,7 +228,6 @@ public class Screen implements com.badlogic.gdx.Screen {
 							if ( option.getOption( ) instanceof Slider ) {
 								Slider slider = ( Slider ) option.getOption( );
 								slider.moveRight( );
-								controllerTimer = controllerMax;
 							}
 						}
 					}
@@ -263,7 +264,6 @@ public class Screen implements com.badlogic.gdx.Screen {
 							if ( option.getOption( ) instanceof Slider ) {
 								Slider slider = ( Slider ) option.getOption( );
 								slider.moveLeft( );
-								controllerTimer = controllerMax;
 							} 
 						}
 					}
@@ -274,7 +274,6 @@ public class Screen implements com.badlogic.gdx.Screen {
 							if ( option.getOption( ) instanceof Slider ) {
 								Slider slider = ( Slider ) option.getOption( );
 								slider.moveRight( );
-								controllerTimer = controllerMax;
 							} 
 						}
 					}

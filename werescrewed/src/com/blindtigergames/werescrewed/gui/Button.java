@@ -32,10 +32,11 @@ public class Button {
 	protected Sprite box = null;
 	protected boolean scaled = false; // Used to tell when button has hit
 										// appropriate size
-	protected int scaleX = width; // Used for scaling sprite
-	protected int scaleY = height;
-	protected float xPos = 0.0f;
-	protected float yPos = 0.0f;
+	protected int scaleSize = 35;
+	protected int scaleX = width - scaleSize; // Used for scaling sprite
+	protected int scaleY = height - scaleSize;
+	protected float xPos = 0.5f * -scaleSize;
+	protected float yPos = 0.5f * -scaleSize;
 
 	/**
 	 * makes a new button instance
@@ -59,6 +60,7 @@ public class Button {
 		Texture back = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 				+ "/menu/button.png", Texture.class );
 		box = new Sprite( back );
+		
 		bounds = new Rectangle( x, y - height, width, height );
 		calculateDimensions( );
 	}
@@ -164,12 +166,6 @@ public class Button {
 
 	public void draw( SpriteBatch batch, Camera camera ) {
 		Color originalColor = font.getColor( );
-		Vector3 cursorPosition = new Vector3( Gdx.input.getX( ),
-				Gdx.input.getY( ), 0 );
-		camera.unproject( cursorPosition );
-		@SuppressWarnings( "unused" )
-		boolean isIntersect = bounds.contains( cursorPosition.x,
-				cursorPosition.y );
 
 		box.setPosition( x - xPos, y - height * 2 - yPos );
 		if ( !scaled ) {
@@ -188,11 +184,11 @@ public class Button {
 
 	protected void setScale( ) {
 		if ( colored ) {
-			scaleX++;
-			scaleY++;
-			xPos += 0.5f;
-			yPos += 0.5f;
-			if ( scaleX >= ( width + 30 ) && scaleY >= ( height + 30 ) ) {
+			scaleX += 3;
+			scaleY += 3;
+			xPos += 1.5f;
+			yPos += 1.5f;
+			if ( scaleX >= ( width ) && scaleY >= ( height ) ) {
 				scaled = true;
 			}
 		} else {
@@ -200,7 +196,7 @@ public class Button {
 			scaleY--;
 			xPos -= 0.5f;
 			yPos -= 0.5f;
-			if ( scaleX <= ( width ) && scaleY <= ( height ) ) {
+			if ( scaleX <= ( width - scaleSize ) && scaleY <= ( height - scaleSize ) ) {
 				scaled = true;
 			}
 		}

@@ -168,6 +168,36 @@ public enum ScreenType {
 			return trophy;
 		}
 	},
+	
+	TROPHY_1 { //Called from Level 1
+			   //--Goes to Level 2!!
+		@Override
+		protected com.badlogic.gdx.Screen getScreenInstance( ) {
+			TrophyScreen trophy = new TrophyScreen( ScreenType.LOADING_2 );
+			trophy.screenType = ScreenType.TROPHY;
+			return trophy;
+		}
+	},
+
+	TROPHY_2 { //Called from Level 2
+		       //--Goes to Level 3!!
+		@Override
+		protected com.badlogic.gdx.Screen getScreenInstance( ) {
+			TrophyScreen trophy = new TrophyScreen( ScreenType.LOADING_3 );
+			trophy.screenType = ScreenType.TROPHY;
+			return trophy;
+		}
+	},
+	
+	TROPHY_END { 
+			     //Goes to credits screen
+		@Override
+		protected com.badlogic.gdx.Screen getScreenInstance( ) {
+			TrophyScreen trophy = new TrophyScreen( ScreenType.CREDITS );
+			trophy.screenType = ScreenType.TROPHY;
+			return trophy;
+		}
+	},
 
 	PREVSCREEN {
 
