@@ -1128,14 +1128,15 @@ public class AlphaScreen extends Screen {
 	private void chestDecals( ) {
 		// TextureAtlas chest_powerscrew = WereScrewedGame.manager.getAtlas(
 		// "chest_pipes_thigh_pipes" );
+		@SuppressWarnings( "unused" )
 		TextureAtlas chestEnginePipes = WereScrewedGame.manager
 				.getAtlas( "knee_chest_in" );
 		float scale = 1f / 0.75f;
 		Skeleton chestSkeleton = ( Skeleton ) LevelFactory.entities
 				.get( "chestSkeleton" );
-		chestSkeleton.addBGDecal( Sprite.scale( chestEnginePipes
-				.createSprite( "chest_powerswitches_pipestoengine" ), scale ),
-				new Vector2( -732, -1300 ) );// -52,-346
+//		chestSkeleton.addBGDecal( Sprite.scale( chestEnginePipes
+//				.createSprite( "chest_powerswitches_pipestoengine" ), scale ),
+//				new Vector2( -732, -1300 ) );// -52,-346
 
 		TextureAtlas chest_lower, chest_middle, chest_upper1, chest_upper2;
 		chest_lower = WereScrewedGame.manager.getAtlas( "chest_exterior_lower" );
@@ -1198,7 +1199,7 @@ public class AlphaScreen extends Screen {
 		// INTERIOR DECALS
 
 		// chest_bottomleft_mechanisms75
-		TextureAtlas chest_gear = WereScrewedGame.manager
+		/*TextureAtlas chest_gear = WereScrewedGame.manager
 				.getAtlas( "chest_pipes_thigh_pipes" );
 		chestSkeleton.addBGDecal(
 				chest_gear.createSprite( "chest_bottomleft_mechanisms75" ),
@@ -1217,8 +1218,20 @@ public class AlphaScreen extends Screen {
 				.addBGDecalBack(
 						Sprite.scale( chest_interiorAtlas
 								.createSprite( "upper-right-chest" ), scale ),
-						new Vector2( 370, -117 ).add( chestPipesRightPos ) );
-
+						new Vector2( 370, -117 ).add( chestPipesRightPos ) );*/
+		
+		Vector2 chestInerdsPos = new Vector2(-2300,-90);
+		scale = 1f/.66f;
+		TextureAtlas chest1 = WereScrewedGame.manager.getAtlas( "knee_chest_in" );
+		chestSkeleton.addBGDecal( Sprite.scale(chest1.createSprite( "chest1" ),scale), chestInerdsPos.cpy() );
+		TextureAtlas chest23 = WereScrewedGame.manager.getAtlas( "chest2" );
+		chestSkeleton.addBGDecal( Sprite.scale(chest23.createSprite( "chest2" ),scale), chestInerdsPos.cpy().add( 2278,0 ) );
+		chestSkeleton.addBGDecal( Sprite.scale(chest23.createSprite( "chest3" ),scale),chestInerdsPos.cpy().add( -365,-1614 ) );
+		
+		TextureAtlas chest4 = WereScrewedGame.manager.getAtlas( "head_right" );
+		chestSkeleton.addBGDecal( Sprite.scale(chest4.createSprite( "chest4" ),scale), chestInerdsPos.cpy().add(2278-365,-1614) );
+		chestSkeleton.bgSprite = null;
+		
 		// TextureAtlas chest2 = WereScrewedGame.manager.getAtlas("chest2");
 		// s = chest2.createSprite(
 		// "chest_upperleftandtop_mechanismS_ROUGHwithnotes" );

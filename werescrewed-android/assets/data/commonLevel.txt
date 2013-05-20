@@ -28,6 +28,8 @@
 /common/sounds/footstep2F.ogg
 /common/sounds/screwing.ogg
 /common/sounds/unscrewing.ogg
+/common/sounds/screwAtt.ogg
+/common/sounds/screwDet.ogg
 /common/sounds/land.ogg
 /common/sounds/impactMaleDoh.ogg
 /common/sounds/impactMaleDoh2.ogg
@@ -36,6 +38,9 @@
 /common/sounds/impactFemaleUgh.ogg
 #/common/sounds/WilhelmScream.ogg
 /common/sounds/steam.ogg
+/common/sounds/chains.ogg
+/common/sounds/switchOn.ogg
+/common/sounds/switchOff.ogg
 #/common/sounds/TrainJob.mp3
 #/common/sounds/loopTrain.mp3
 #/common/sounds/introTrain.mp3

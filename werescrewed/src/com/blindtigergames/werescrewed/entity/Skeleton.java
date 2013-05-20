@@ -3,7 +3,6 @@ package com.blindtigergames.werescrewed.entity;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
@@ -21,8 +20,6 @@ import com.blindtigergames.werescrewed.entity.hazard.Fire;
 import com.blindtigergames.werescrewed.entity.hazard.Hazard;
 import com.blindtigergames.werescrewed.entity.particles.Steam;
 import com.blindtigergames.werescrewed.entity.platforms.Platform;
-import com.blindtigergames.werescrewed.entity.platforms.PlatformType;
-import com.blindtigergames.werescrewed.entity.platforms.TiledPlatform;
 import com.blindtigergames.werescrewed.entity.rope.Rope;
 import com.blindtigergames.werescrewed.entity.screws.Screw;
 import com.blindtigergames.werescrewed.entity.screws.StrippedScrew;
@@ -405,6 +402,7 @@ public class Skeleton extends Platform {
 	public void update( float deltaTime ) {
 		float frameRate = 1 / deltaTime;
 		isUpdatable = !this.isFadingSkel( ) || this.isFGFaded( );
+		@SuppressWarnings( "unused" )
 		boolean hasMoved = false;
 		if ( isUpdatable || isMacroSkeleton ) {
 			updateMover( deltaTime );
@@ -498,9 +496,9 @@ public class Skeleton extends Platform {
 				wasInactive = true;
 			}
 		}
-		
+
 		setPreviousTransformation( );
-		
+
 		alphaFadeAnimator.update( deltaTime );
 		Vector2 pixelPos = null;
 		if ( fgSprite != null ) {
@@ -657,7 +655,7 @@ public class Skeleton extends Platform {
 				if ( decal.getBoundingRectangle( )
 						.overlaps( camera.getBounds( ) ) ) {
 					decal.draw( batch );
-				} else{
+				} else {
 					if ( !wasInactive ) {
 						setEntitiesToSleepOnUpdate( );
 						wasInactive = true;
@@ -666,7 +664,7 @@ public class Skeleton extends Platform {
 			}
 		}
 	}
-	
+
 	@Override
 	public void draw( SpriteBatch batch, float deltaTime ) {
 		// super.draw( batch );
@@ -743,38 +741,39 @@ public class Skeleton extends Platform {
 			}
 		}
 	}
-	
+
 	/**
 	 * Draw each child. Tiled platforms have unique draw calls. Platforms can be
 	 * hazards as well
 	 */
 	private void drawPlatform( Platform platform, SpriteBatch batch,
 			float deltaTime ) {
-		
+
 		platform.draw( batch, deltaTime );
-		
-//		switch ( platform.getEntityType( ) ) {
-//		case PLATFORM:
-//			if ( platform.getPlatformType( ) == PlatformType.TILED ) {
-//				( ( TiledPlatform ) platform ).draw( batch, deltaTime );
-//			} else {
-//				platform.draw( batch, deltaTime );
-//			}
-//			break;
-//		case HAZARD:
-//			drawHazard( ( Hazard ) platform, batch, deltaTime );
-//			break;
-//		case STEAM:
-//			Steam steam = ( Steam ) platform;
-//			steam.draw( batch, deltaTime );
-//			break;
-//		default:
-//			throw new RuntimeException( "Skeleton: " + name
-//					+ " doesn't know how to draw your platform: "
-//					+ platform.name );
-//		}
+
+		// switch ( platform.getEntityType( ) ) {
+		// case PLATFORM:
+		// if ( platform.getPlatformType( ) == PlatformType.TILED ) {
+		// ( ( TiledPlatform ) platform ).draw( batch, deltaTime );
+		// } else {
+		// platform.draw( batch, deltaTime );
+		// }
+		// break;
+		// case HAZARD:
+		// drawHazard( ( Hazard ) platform, batch, deltaTime );
+		// break;
+		// case STEAM:
+		// Steam steam = ( Steam ) platform;
+		// steam.draw( batch, deltaTime );
+		// break;
+		// default:
+		// throw new RuntimeException( "Skeleton: " + name
+		// + " doesn't know how to draw your platform: "
+		// + platform.name );
+		// }
 	}
 
+	@SuppressWarnings( "unused" )
 	private void drawHazard( Hazard hazard, SpriteBatch batch, float deltaTime ) {
 		switch ( hazard.hazardType ) {
 		case FIRE:

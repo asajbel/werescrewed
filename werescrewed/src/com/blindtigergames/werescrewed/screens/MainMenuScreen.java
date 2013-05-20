@@ -8,7 +8,6 @@ import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.entity.Falling;
@@ -18,8 +17,6 @@ import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 import com.blindtigergames.werescrewed.graphics.TextureAtlas;
 import com.blindtigergames.werescrewed.gui.TextButton;
 import com.blindtigergames.werescrewed.gui.TextButton.ButtonHandler;
-
-//import com.blindtigergames.werescrewed.gui.Label;
 
 class MainMenuScreen extends Screen {
 
@@ -68,7 +65,8 @@ class MainMenuScreen extends Screen {
 	public void render( float delta ) {
 		super.render( delta );
 		Gdx.gl.glClearColor( 0.4f, 0.6f, 1.0f, 1f );
-//		Gdx.gl.glClearColor( 79.0f / 255.0f, 82.0f / 255.0f, 104.0f / 255.0f, 1.0f );
+		// Gdx.gl.glClearColor( 79.0f / 255.0f, 82.0f / 255.0f, 104.0f / 255.0f,
+		// 1.0f );
 		Gdx.gl.glClear( GL10.GL_COLOR_BUFFER_BIT );
 		manager.update( delta );
 		moveCharacters( delta );
@@ -131,8 +129,10 @@ class MainMenuScreen extends Screen {
 		@SuppressWarnings( "unused" )
 		float scaleY = height / 720f;
 
-		transition.setPosition( width/2 - transition.getWidth( )/2, height/2 - transition.getHeight( )/2 );
-		transition.setScale( width/transition.getWidth( ), height/transition.getHeight( ) );
+		transition.setPosition( width / 2 - transition.getWidth( ) / 2, height
+				/ 2 - transition.getHeight( ) / 2 );
+		transition.setScale( width / transition.getWidth( ), height
+				/ transition.getHeight( ) );
 		// menuBG.setScale( width / menuBG.getWidth( ), width / menuBG.getWidth(
 		// ) );
 		menuBG.setPosition( 0, height / 2 - menuBG.getHeight( ) / 2 );
@@ -302,8 +302,10 @@ class MainMenuScreen extends Screen {
 		d.sprite.setPosition( ( float ) newX, ( float ) newY );
 		d.fallSpeed = ( float ) ( 0.5f + Math.random( ) * 1.5f );
 		double dir = Math.random( );
-		if ( dir > 0.5 ) dir = 1;
-		else dir = -1; 
+		if ( dir > 0.5 )
+			dir = 1;
+		else
+			dir = -1;
 		d.rotateSpeed = ( float ) ( dir * Math.random( ) * 0.7 );
 		d.sprite.setScale( 0.3f + ( float ) Math.random( ) * 0.7f );
 	}
@@ -324,16 +326,17 @@ class MainMenuScreen extends Screen {
 		time += delta;
 		man.update( delta / 2 );
 		lady.update( delta / 2 );
-		float mx = man.getX( );// - ( float ) Math.cos( time - delta ) * 0.25f; 
+		float mx = man.getX( );// - ( float ) Math.cos( time - delta ) * 0.25f;
 		float my = man.getY( ) - ( float ) Math.sin( time - delta / 6 ) * 0.6f;
 		mx = mx + manDir * 0.3f;
 		if ( mx > width * 5 / 6 )
 			manDir -= 0.15;
-		if ( mx < menuBG.getWidth( ) * 1.2)
+		if ( mx < menuBG.getWidth( ) * 1.2 )
 			manDir += 0.15;
 		man.setPosition( mx, my );
-		float fx = lady.getX( );// + ( float ) ( Math.cos( time + delta ) * 0.25f );
-		float fy = lady.getY( ) + ( float ) Math.sin( time + delta / 6) * 0.6f;
+		float fx = lady.getX( );// + ( float ) ( Math.cos( time + delta ) *
+								// 0.25f );
+		float fy = lady.getY( ) + ( float ) Math.sin( time + delta / 6 ) * 0.6f;
 		fx = fx + ladyDir * 0.3f;
 		if ( fx > width * 5 / 6 ) {
 			ladyDir -= 0.15;
