@@ -1,5 +1,8 @@
 package com.blindtigergames.werescrewed.util;
 
+import java.util.Random;
+
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 
 /**
@@ -41,6 +44,8 @@ public class Util {
 	public static final short CATEGORY_IGNORE = 0x1000;
 	public static final short CATEGORY_NOTHING = 0x0000;
 	public static final short CATEGORY_EVERYTHING = -1;
+	
+	public static final Random r = new Random();
 
 	/**
 	 * Size outside of a skeleton that turns it on / off
@@ -93,6 +98,10 @@ public class Util {
 		} else {
 			return angle;
 		}
+	}
+	
+	public static float binom(){
+		return r.nextFloat( )-r.nextFloat( );
 	}
 
 }
