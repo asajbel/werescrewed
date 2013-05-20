@@ -88,8 +88,8 @@ public class DragonScreen extends Screen {
 
 	void buildBalloon( ) {
 		balloon1 = ( Platform ) LevelFactory.entities.get( "balloon1" );
-		@SuppressWarnings( "unused" )
-		Platform balloon2 = ( Platform ) LevelFactory.entities.get( "balloon2" );
+		
+		//Platform balloon2 = ( Platform ) LevelFactory.entities.get( "balloon2" );
 		// Platform balloon3 = (Platform) LevelFactory.entities.get( "balloon3"
 		// );
 		// Platform balloon4 = (Platform) LevelFactory.entities.get( "balloon4"
@@ -102,7 +102,7 @@ public class DragonScreen extends Screen {
 		Platform tail3Balloon = ( Platform ) LevelFactory.entities
 				.get( "tail3_balloon" );
 
-		@SuppressWarnings( "unused" )
+		
 		Skeleton balloon1_skeleton = ( Skeleton ) LevelFactory.entities
 				.get( "balloon1_skeleton" );
 		balloon1_super = ( Skeleton ) LevelFactory.entities

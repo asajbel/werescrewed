@@ -5,6 +5,7 @@ import java.util.Iterator;
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -822,6 +823,11 @@ public class PhysicsTestScreen extends Screen {
 		//
 		// world.step( 1 / 60f, 6, 3 );
 		//
+		
+		if ( Gdx.input.isKeyPressed( Keys.T ) ) {
+			ScreenManager.getInstance( ).show( ScreenType.TROPHY);
+		}
+		
 		if ( Gdx.input.isKeyPressed( Input.Keys.ESCAPE ) ) {
 			if ( !ScreenManager.escapeHeld ) {
 				ScreenManager.getInstance( ).show( ScreenType.PAUSE );
