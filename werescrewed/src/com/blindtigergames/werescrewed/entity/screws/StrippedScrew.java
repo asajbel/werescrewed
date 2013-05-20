@@ -14,6 +14,7 @@ import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityType;
 import com.blindtigergames.werescrewed.graphics.SpriteBatch;
+import com.blindtigergames.werescrewed.sound.SoundManager;
 import com.blindtigergames.werescrewed.util.Util;
 
 /**
@@ -215,5 +216,10 @@ public class StrippedScrew extends Screw {
 
 	@Override
 	public void loadSounds( ) {
+		sounds = new SoundManager( );
+		sounds.getSound( "attach", WereScrewedGame.dirHandle
+				+ "/common/sounds/screwing.ogg" );
+		sounds.getSound( "detach", WereScrewedGame.dirHandle
+				+ "/common/sounds/unscrewing.ogg" );
 	}
 }

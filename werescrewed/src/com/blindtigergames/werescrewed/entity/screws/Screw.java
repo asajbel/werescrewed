@@ -94,6 +94,10 @@ public class Screw extends Entity {
 				+ "/common/sounds/screwing.ogg" );
 		sounds.getSound( "unscrewing", WereScrewedGame.dirHandle
 				+ "/common/sounds/unscrewing.ogg" );
+		sounds.getSound( "attach", WereScrewedGame.dirHandle
+				+ "/common/sounds/screwing.ogg" );
+		sounds.getSound( "detach", WereScrewedGame.dirHandle
+				+ "/common/sounds/unscrewing.ogg" );
 	}
 
 	/**
@@ -257,6 +261,11 @@ public class Screw extends Entity {
 	 */
 	public void setPlayerAttached( boolean isPlayerAttached ) {
 		playerAttached = isPlayerAttached;
+		if (sounds != null && isPlayerAttached){
+			sounds.playSound("attach");
+		} else {
+			sounds.playSound("detach");
+		}
 	}
 
 	/**
