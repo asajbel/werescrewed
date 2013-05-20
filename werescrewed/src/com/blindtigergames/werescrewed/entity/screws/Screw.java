@@ -95,9 +95,9 @@ public class Screw extends Entity {
 		sounds.getSound( "unscrewing", WereScrewedGame.dirHandle
 				+ "/common/sounds/unscrewing.ogg" );
 		sounds.getSound( "attach", WereScrewedGame.dirHandle
-				+ "/common/sounds/screwing.ogg" );
+				+ "/common/sounds/screwAtt.ogg" );
 		sounds.getSound( "detach", WereScrewedGame.dirHandle
-				+ "/common/sounds/unscrewing.ogg" );
+				+ "/common/sounds/screwDet.ogg" );
 	}
 
 	/**

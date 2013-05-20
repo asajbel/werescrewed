@@ -218,8 +218,8 @@ public class StrippedScrew extends Screw {
 	public void loadSounds( ) {
 		sounds = new SoundManager( );
 		sounds.getSound( "attach", WereScrewedGame.dirHandle
-				+ "/common/sounds/screwing.ogg" );
+				+ "/common/sounds/screwAtt.ogg" );
 		sounds.getSound( "detach", WereScrewedGame.dirHandle
-				+ "/common/sounds/unscrewing.ogg" );
+				+ "/common/sounds/screwDet.ogg" );
 	}
 }

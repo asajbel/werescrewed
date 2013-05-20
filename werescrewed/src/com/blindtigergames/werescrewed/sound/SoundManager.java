@@ -71,7 +71,14 @@ public class SoundManager {
 		}
 		return null;
 	}
-
+	
+	public SoundRef getSound( String tag , int id) {
+		if ( hasSound( tag , id ) ) {
+			return sounds.get( tag , id );
+		}
+		return null;
+	}
+	
 	public SoundRef getSoundWithProperties( String line ){
 		return getSoundWithProperties(getSoundTags(line));
 	}
@@ -119,11 +126,13 @@ public class SoundManager {
 		return false;
 	}
 
-	public void playSound( String id ) {
-		if ( hasSound( id ) ) {
+	public void playSound( String tag ) {
+		if ( hasSound( tag ) ) {
 			// Gdx.app.log( "SoundManager", "Playing sound "+ index
 			// +" out of "+sounds.getAll( id ).size +"." );
-			playSound( id, randomSoundId( id ), 0f, 1f, 1f );
+			int id = randomSoundId( tag );
+			SoundRef ref = getSound(tag, id);
+			playSound( tag, id, ref.getDefaultDelay( ), 1f, 1f );
 		}
 	}
 
@@ -403,6 +412,7 @@ public class SoundManager {
 		protected float pitchRange;
 		protected float pan;
 		protected float delay;
+		protected float defaultDelay;
 		protected float range;
 		protected float falloff;
 		protected Vector2 offset;
@@ -423,6 +433,7 @@ public class SoundManager {
 			pitchRange = 0.0f;
 			pan = 0.0f;
 			delay = INITIAL_DELAY;
+			defaultDelay = 0.0f;
 			soundIds = new Array< Long >( );
 			loopId = -1;
 			sound = s;
@@ -430,7 +441,7 @@ public class SoundManager {
 			falloff = 2.0f;
 			offset = new Vector2(0f,0f);
 		}
-
+		
 		protected long play( float delayAmount, float extVol, float extPitch ) {
 			long id = -1;
 			if ( delay < DELAY_MINIMUM ) {
@@ -516,6 +527,14 @@ public class SoundManager {
 
 		public void setOffset( Vector2 vec ){
 			offset = vec;
+		}
+		
+		public void setDefaultDelay( float value ){
+			defaultDelay = value;
+		}
+		
+		public float getDefaultDelay(){
+			return defaultDelay;
 		}
 	}
 }
