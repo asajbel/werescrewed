@@ -426,13 +426,14 @@ public class Skeleton extends Platform {
 						platform.update( deltaTime );
 					} else {
 						platform.updateMover( deltaTime );
-						// if ( platform.hasMoved( ) || platform.hasRotated( )
-						// || hasMoved() || hasRotated() ) {
-						platform.setTargetPosRotFromSkeleton( frameRate, this );
-						platform.setPreviousTransformation( );
-						// } else {
-						// platform.body.setLinearVelocity( Vector2.Zero );
-						// }
+						if ( platform.hasMoved( ) || platform.hasRotated( )
+								|| hasMoved( ) || hasRotated( ) || platform instanceof Fire ) {
+							platform.setTargetPosRotFromSkeleton( frameRate,
+									this );
+							platform.setPreviousTransformation( );
+						} else {
+							platform.body.setLinearVelocity( Vector2.Zero );
+						}
 						platform.update( deltaTime );
 					}
 				}
