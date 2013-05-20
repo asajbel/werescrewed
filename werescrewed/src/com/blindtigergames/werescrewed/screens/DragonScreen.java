@@ -490,7 +490,7 @@ public class DragonScreen extends Screen {
 		float numFrontClouds = 50;
 		float xMax = 28000, xMin = 0;
 		
-		//setClearColor( 105f/255f, 208f/255f, 255f/255f, 1f ); //SKY BLUE
+		setClearColor( 105f/255f, 208f/255f, 255f/255f, 1f ); //SKY BLUE
 		
 		
 		Random r = new Random();
