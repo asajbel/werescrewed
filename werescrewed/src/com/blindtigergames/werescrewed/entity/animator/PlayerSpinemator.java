@@ -77,7 +77,7 @@ public class PlayerSpinemator implements ISpinemator {
 		anims = new EnumMap< PlayerAnim, Animation >( PlayerAnim.class );
 
 		for ( PlayerAnim a : PlayerAnim.values( ) ) {
-			Animation temp = sd.findAnimation( a.text );
+			Animation temp = sd.findAnimation( a.getText() );
 			if ( temp != null ) {
 				anims.put( a, temp );
 			}

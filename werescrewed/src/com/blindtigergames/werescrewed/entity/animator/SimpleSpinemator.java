@@ -1,7 +1,5 @@
 package com.blindtigergames.werescrewed.entity.animator;
 
-import java.util.HashMap;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.blindtigergames.werescrewed.WereScrewedGame;
@@ -30,7 +28,7 @@ public class SimpleSpinemator implements ISpinemator {
 	protected float mixRatio = 0f;
 	protected SkeletonData sd;
 
-	public SimpleSpinemator( String skeletonName, String atlasName,
+	public SimpleSpinemator( String atlasName, String skeletonName,
 			String initialAnimationName, boolean loop ) {
 		TextureAtlas atlas = WereScrewedGame.manager.getAtlas( atlasName );
 		SkeletonBinary sb = new SkeletonBinary( atlas );
@@ -41,6 +39,7 @@ public class SimpleSpinemator implements ISpinemator {
 		skel.setToBindPose( );
 		root = skel.getRootBone( );
 		skel.updateWorldTransform( );
+		this.loop = loop; 
 	}
 
 	@Override
@@ -52,14 +51,12 @@ public class SimpleSpinemator implements ISpinemator {
 	public void update( float delta ) {
 		time += delta;
 		mixTime += delta;
-		if ( mixTime < anim.getDuration( ) && loop ) {
-			mixRatio = mixTime / anim.getDuration( );
-			anim.mix( skel, time, loop, mixRatio );
-			if ( mixTime >= anim.getDuration( ) / 2 ) {
-				mixTime = anim.getDuration( );
-			}
-			skel.updateWorldTransform( );
+		mixRatio = mixTime / anim.getDuration( );
+		anim.mix( skel, time, loop, mixRatio );
+		if ( mixTime >= anim.getDuration( ) / 2 ) {
+			mixTime = anim.getDuration( );
 		}
+		skel.updateWorldTransform( );
 	}
 
 	@Override
