@@ -340,11 +340,10 @@ public class ProgressManager {
 		}
 	}
 
-	// public void addGhostTexture( Player player, TextureRegion ghostTexture )
-	// {
-	// if ( ghostTexture != null && !ghostTextures.containsKey( player.name )
-	// && players.containsKey( player.name ) ) {
-	// //ghostTextures.put( player.name, ghostTexture );
-	// }
-	// }
+//	public void addGhostTexture( Player player, TextureRegion ghostTexture ) {
+//		if ( ghostTexture != null && !ghostTextures.containsKey( player.name )
+//				&& players.containsKey( player.name ) ) {
+//			// ghostTextures.put( player.name, ghostTexture );
+//		}
+//	}
 }

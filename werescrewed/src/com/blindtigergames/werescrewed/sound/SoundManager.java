@@ -1,6 +1,7 @@
 package com.blindtigergames.werescrewed.sound;
 
 import java.util.EnumMap;
+import java.util.HashMap;
 
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.math.Rectangle;
@@ -31,7 +32,7 @@ public class SoundManager {
 		 */
 		SPEECH
 	}
-
+	
 	public static EnumMap< SoundType, Float > globalVolume;
 	public ArrayHash< String, SoundRef > sounds;
 
@@ -49,11 +50,14 @@ public class SoundManager {
 	}
 
 	public SoundRef getSound( String id, int index, String assetName ) {
-		if ( !hasSound( id ) ) {
+		if (index < 0){
+			return getSound( id, assetName );
+		}
+		if ( !hasSound( id , index) ) {
 			Sound s = WereScrewedGame.manager.get( assetName, Sound.class );
 			sounds.set( id, index, new SoundRef( s ) );
 		}
-		return sounds.get( id );
+		return sounds.get( id , index );
 	}
 
 	public SoundRef getSound( String id, String assetName ) {
@@ -67,7 +71,45 @@ public class SoundManager {
 		}
 		return null;
 	}
-
+	
+	public SoundRef getSound( String tag , int id) {
+		if ( hasSound( tag , id ) ) {
+			return sounds.get( tag , id );
+		}
+		return null;
+	}
+	
+	public SoundRef getSoundWithProperties( String line ){
+		return getSoundWithProperties(getSoundTags(line));
+	}
+	
+	public SoundRef getSoundWithProperties( HashMap<String, String> subSounds ){
+		if (!(subSounds.get( "asset" ).equals( "" ) || subSounds.get("name").equals(""))){
+			String name = subSounds.get("name");
+			int id = Integer.parseInt( subSounds.get("index") );
+			SoundRef sound = getSound( name, id, WereScrewedGame.dirHandle + subSounds.get( "asset" ) );
+			if (subSounds.containsKey( "volume" ))
+				sound.setInternalVolume(Float.parseFloat( subSounds.get("volume") ));
+			if (subSounds.containsKey( "pitch" ))
+				sound.setInternalPitch(Float.parseFloat( subSounds.get("pitch") ));
+			if (subSounds.containsKey( "pan" ))
+				sound.setPan(Float.parseFloat( subSounds.get("pan") ));
+			if (subSounds.containsKey( "range" ))
+				sound.setRange(Float.parseFloat( subSounds.get("range") ));
+			if (subSounds.containsKey( "falloff" ))
+				sound.setFalloff(Float.parseFloat( subSounds.get("falloff") ));
+			if (subSounds.containsKey( "volumerange" ))
+				sound.setVolumeRange(Float.parseFloat( subSounds.get("volumerange") ));
+			if (subSounds.containsKey( "pitchrange" ))
+				sound.setPitchRange(Float.parseFloat( subSounds.get("pitchrange") ));
+			if (name.contains("collision")){
+				sound.delay = 1.0f;
+			}
+			return sound;
+		}
+		return null;
+	}
+	
 	public int randomSoundId( String tag ) {
 		return WereScrewedGame.random.nextInt( sounds.getAll( tag ).size );
 	}
@@ -84,11 +126,13 @@ public class SoundManager {
 		return false;
 	}
 
-	public void playSound( String id ) {
-		if ( hasSound( id ) ) {
+	public void playSound( String tag ) {
+		if ( hasSound( tag ) ) {
 			// Gdx.app.log( "SoundManager", "Playing sound "+ index
 			// +" out of "+sounds.getAll( id ).size +"." );
-			playSound( id, randomSoundId( id ), 0f, 1f, 1f );
+			int id = randomSoundId( tag );
+			SoundRef ref = getSound(tag, id);
+			playSound( tag, id, ref.getDefaultDelay( ), 1f, 1f );
 		}
 	}
 
@@ -337,6 +381,27 @@ public class SoundManager {
 		}
 		return 1.0f;
 	}
+	
+	public static HashMap<String, String> getSoundTags(String line){
+		String[ ] tokens = line.split( "\\s*\\:\\s*" );
+		if ( tokens.length >= 2 ) {
+			HashMap< String, String > sound = new HashMap< String, String >( );
+			sound.put( "name", tokens[0].toLowerCase( ) );
+			sound.put( "asset", tokens[ 1 ] );
+			sound.put( "index", "-1" );
+			String[ ] optTokens;
+			for ( int opts = 2; opts < tokens.length; opts++ ) {
+				optTokens = tokens[ opts ].toLowerCase( )
+						.split( "\\s+" );
+				if ( optTokens.length >= 2 ) {
+					sound.put( optTokens[ 0 ], optTokens[ 1 ] );
+				}
+			}
+			return sound;
+		}
+		return null;
+	}
+	
 	public class SoundRef{
 		public Sound sound;
 		protected Array< Long > soundIds;
@@ -347,9 +412,12 @@ public class SoundManager {
 		protected float pitchRange;
 		protected float pan;
 		protected float delay;
+		protected float defaultDelay;
 		protected float range;
 		protected float falloff;
 		protected Vector2 offset;
+		
+		public static final float VOLUME_MINIMUM = 0.001f;
 		protected static final float DELAY_MINIMUM = 0.0001f;
 		/*
 		 * Puts an initial delay on all sounds when they're first loaded. This
@@ -365,6 +433,7 @@ public class SoundManager {
 			pitchRange = 0.0f;
 			pan = 0.0f;
 			delay = INITIAL_DELAY;
+			defaultDelay = 0.0f;
 			soundIds = new Array< Long >( );
 			loopId = -1;
 			sound = s;
@@ -372,7 +441,7 @@ public class SoundManager {
 			falloff = 2.0f;
 			offset = new Vector2(0f,0f);
 		}
-
+		
 		protected long play( float delayAmount, float extVol, float extPitch ) {
 			long id = -1;
 			if ( delay < DELAY_MINIMUM ) {
@@ -380,7 +449,9 @@ public class SoundManager {
 						Math.min( getSoundVolume( ) * volume * extVol, 1.0f ),
 						0.0f );
 				float finalPitch = pitch * extPitch;
-				id = sound.play( finalVol, finalPitch, pan );
+				if (finalVol > VOLUME_MINIMUM){
+					id = sound.play( finalVol, finalPitch, pan );
+				}
 				soundIds.add( id );
 				delay += delayAmount;
 			}
@@ -419,7 +490,8 @@ public class SoundManager {
 
 		public void setVolume( float extVol ) {
 			if ( loopId >= 0 ) {
-				sound.setVolume( loopId, getNoiseVolume( ) * volume * extVol );
+				float vol = getNoiseVolume( ) * volume * extVol;
+				sound.setVolume( loopId, vol);
 			}
 		}
 
@@ -455,6 +527,14 @@ public class SoundManager {
 
 		public void setOffset( Vector2 vec ){
 			offset = vec;
+		}
+		
+		public void setDefaultDelay( float value ){
+			defaultDelay = value;
+		}
+		
+		public float getDefaultDelay(){
+			return defaultDelay;
 		}
 	}
 }

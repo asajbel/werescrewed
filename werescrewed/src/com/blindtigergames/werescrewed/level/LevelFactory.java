@@ -495,9 +495,8 @@ public class LevelFactory {
 		RuntimeException exception = new RuntimeException(
 				"Anchor incorrectly defined. Be sure the format is: \"bufferWidth, bufferHeight, offsetX, offsetY\"" );
 		Anchor anchor;
-		for ( int i = 1; i < 50; i++ ) {
-			if ( item.props.containsKey( "anchor" + i ) ) {
-				String string = item.props.get( "anchor" + i );
+		if (item.props.containsKey( "anchor" )){
+			for (String string : item.props.getAll( "anchor" )){
 				String sValues[] = string.split( ", " );
 				if ( sValues.length != 4 )
 					throw exception;
@@ -520,8 +519,6 @@ public class LevelFactory {
 				out.addAnchor( anchor );
 				// Comment line below to make anchors inactive by default
 				// anchor.activate( );
-			} else {
-				break;
 			}
 		}
 		return out;
@@ -1629,6 +1626,18 @@ public class LevelFactory {
 			fire.flip( );
 		}
 		
+		// Looks for size property in a fire particle
+		// The size should be the duration in seconds the life a particle should be.
+		// Fire starts at 1 for reference. 
+		// Warning the number of particles increases by a power of 2. 
+		if ( item.props.containsKey( "size" ) ) {
+			float size = Float.valueOf( item.props.get( "size" ) );
+			float time = size * 1000;
+			float emits = 40 + size * 10;
+			int max = (int) Math.round( emits * size ) + 10;
+			fire.particleEffect.changeEffectMaxSize( time, emits, max ); 
+		}
+		
 		
 		String skelAttach = item.skeleton;
 		Skeleton parent = loadSkeleton( skelAttach );
@@ -1815,7 +1824,7 @@ public class LevelFactory {
 				String name;
 				String value;
 				for ( Element prop : properties ) {
-					name = prop.getAttribute( "Name" ).toLowerCase( );
+					name = prop.getAttribute( "Name" ).toLowerCase( ).replaceAll( "\\d*$", "" );
 					value = prop.get( "string", "<no value>" );
 					props.add( name, value );
 				}
