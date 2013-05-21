@@ -1626,6 +1626,18 @@ public class LevelFactory {
 			fire.flip( );
 		}
 		
+		// Looks for size property in a fire particle
+		// The size should be the duration in seconds the life a particle should be.
+		// Fire starts at 1 for reference. 
+		// Warning the number of particles increases by a power of 2. 
+		if ( item.props.containsKey( "size" ) ) {
+			float size = Float.valueOf( item.props.get( "size" ) );
+			float time = size * 1000;
+			float emits = 40 + size * 10;
+			int max = (int) Math.round( emits * size ) + 10;
+			fire.particleEffect.changeEffectMaxSize( time, emits, max ); 
+		}
+		
 		
 		String skelAttach = item.skeleton;
 		Skeleton parent = loadSkeleton( skelAttach );

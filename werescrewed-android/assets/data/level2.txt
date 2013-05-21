@@ -30,3 +30,11 @@
 /levels/alphabot/alphabot_texture_tux.png
 
 /levels/alphabot/shoe_testing/shoe_background_1024.png
+
+
+
+
+##Everything below this line is more awesome than everything above this line
+/levels/dragon/front-clouds.pack
+/levels/dragon/dragon_objects.pack
+/levels/dragon/head.pack

@@ -293,8 +293,11 @@ public class LoadingScreen extends Screen {
 
 		}
 		if ( currLevel == 1 ) {
-			batch.draw( storyBoardArray.get( currIndex ), screenWidth / 4,
-					screenHeight / 4 );
+			int posX = screenWidth / 2
+					- storyBoardArray.get( currIndex ).getWidth( ) / 2;
+			int posY = screenHeight / 2
+					- storyBoardArray.get( currIndex ).getHeight( ) / 2;
+			batch.draw( storyBoardArray.get( currIndex ), posX, posY);
 		} else {
 			// draw the label on the screen
 			loadingLabel.draw( batch );
