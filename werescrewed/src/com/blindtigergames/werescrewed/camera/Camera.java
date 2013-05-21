@@ -48,7 +48,7 @@ public class Camera {
 	// Zoom constants
 	private static final float ZOOM_SIG_DIFF = 0.003f;
 	public static final float MIN_ZOOM = 1f;
-	public static final float MAX_ZOOM = 8f;
+	public static final float MAX_ZOOM = 16f;
 	public static final float SCREEN_TO_ZOOM = 1468.6f;
 	/**
 	 * The ratio of the total distance traveled for the camera to start slowing
@@ -186,6 +186,7 @@ public class Camera {
 		if ( debugInput ) {
 			handleInput( );
 		} else {
+			// Set the target camera state
 			setTranslateTarget( );
 			// Do the actual translation and zooming
 			adjustCamera( );
@@ -348,19 +349,21 @@ public class Camera {
 
 		// TRANSLATE AND ZOOM //
 
-		if ( Math.abs( distance.len( ) ) > targetBuffer ) {
+		// if ( Math.abs( distance.len( ) ) > targetBuffer ) {
+		if ( Math.abs( distance.len( ) ) > 0 )
 			translate( );
-		} else {
-			camera.position.x = translateTarget.x;
-			camera.position.y = translateTarget.y;
-		}
+		// } else {
+		// camera.position.x = translateTarget.x;
+		// camera.position.y = translateTarget.y;
+		// }
 
-		if ( ( camera.zoom ) < ( targetZoom - ZOOM_SIG_DIFF )
-				|| ( camera.zoom ) > ( targetZoom + ZOOM_SIG_DIFF ) ) {
+		// if ( ( camera.zoom ) < ( targetZoom - ZOOM_SIG_DIFF )
+		// || ( camera.zoom ) > ( targetZoom + ZOOM_SIG_DIFF ) ) {
+		if ( camera.zoom != targetZoom )
 			zoom( );
-		} else {
-			camera.zoom = targetZoom;
-		}
+		// } else {
+		// camera.zoom = targetZoom;
+		// }
 	}
 
 	/**
