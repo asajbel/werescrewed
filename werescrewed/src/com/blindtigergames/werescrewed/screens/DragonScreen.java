@@ -90,7 +90,7 @@ public class DragonScreen extends Screen {
 		t.repeat( Tween.INFINITY, 0f );
 		jaw_skeleton.addMover( new TimelineTweenMover( t.start( ) ) );
 		
-		
+		headDecals();
 		
 	}
 
@@ -563,5 +563,19 @@ public class DragonScreen extends Screen {
 				 //new Vector2( r.nextFloat( )*(xMax-xMin)+xMin, yPos ),
 				 0.0002f,0.00001f, level.camera, false, LinearAxis.VERTICAL );
 		e.setMoverAtCurrentState( m );
+	}
+	
+	void headDecals(){
+		//head_skeleton
+		Skeleton jaw_skeleton = ( Skeleton ) LevelFactory.entities
+				.get( "jaw_skeleton" ),
+				head_skeletonSkeleton = ( Skeleton ) LevelFactory.entities
+				.get( "head_skeleton" );
+		TextureAtlas headAtlas = WereScrewedGame.manager.getAtlas( "head" );
+		float scale = 1f/.66f;
+		//UPPER HEAD
+		Sprite s;
+		jaw_skeleton.addFGDecal( Sprite.scale( headAtlas.createSprite( "dragonbottom_left" ), scale ), new Vector2() );
+		
 	}
 }
