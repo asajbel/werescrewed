@@ -261,11 +261,9 @@ public class ParticleEffect implements Disposable {
 			int maxParticles ) {
 		for ( ParticleEmitter e : emitters ) {
 			e.setMaxParticleCount( maxParticles );
-			float lowEmit = ( e.getEmission( ).getLowMax( ) + e.getEmission( )
-					.getLowMin( ) ) / 2;
+			float lowEmit = e.getEmission( ).getLowMax( );
 			e.setEmmisionValue( emitsMax, lowEmit );
-			float lowLife = ( e.getLife( ).getLowMax( ) + e.getLife( )
-					.getLowMin( ) ) / 2;
+			float lowLife = e.getLife( ).getLowMax( );
 			e.setLifeValue( maxLife, lowLife );
 		}
 	}
@@ -285,11 +283,9 @@ public class ParticleEffect implements Disposable {
 			int minParticles ) {
 		for ( ParticleEmitter e : emitters ) {
 			e.setMinParticleCount( minParticles );
-			float highEmit = ( e.getEmission( ).getHighMax( ) + e.getEmission( )
-					.getHighMin( ) ) / 2;
+			float highEmit = e.getEmission( ).getHighMax( );
 			e.setEmmisionValue( highEmit, emitsMin );
-			float highLife = ( e.getLife( ).getHighMax( ) + e.getLife( )
-					.getHighMin( ) ) / 2;
+			float highLife = e.getLife( ).getHighMax( );
 			e.setLifeValue( highLife, minLife );
 		}
 	}
