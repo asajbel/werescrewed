@@ -4362,7 +4362,7 @@
                             <string />
                         </Property>
                         <Property Name="sound" Type="string" Description="">
-                            <string>idle:/levels/alphabot/sounds/gear.ogg:range 1280:falloff 1.0: volume 0.25f</string>
+                            <string>idle:/levels/alphabot/sounds/gear.ogg:range 1280:falloff 2.0: volume 0.25f</string>
                         </Property>
                     </CustomProperties>
                     <Rotation>0</Rotation>
@@ -4451,7 +4451,7 @@
                             <string />
                         </Property>
                         <Property Name="sound" Type="string" Description="">
-                            <string>platformcollision: /common/sounds/land.ogg : range 800 : falloff 1.5f</string>
+                            <string>platformcollision: /common/sounds/fallingObject.ogg : range 800 : falloff 1.5f</string>
                         </Property>
                     </CustomProperties>
                     <Rotation>0</Rotation>
@@ -12296,6 +12296,12 @@
                         <Property Name="dynamic" Type="string" Description="">
                             <string />
                         </Property>
+                        <Property Name="sound" Type="string" Description="">
+                            <string>cw: /common/sounds/screwing.ogg : pitchrange 0.1f : range 2560.0f : volume 2.0f : pitch 0.875f</string>
+                        </Property>
+                        <Property Name="sound2" Type="string" Description="">
+                            <string>ccw: /common/sounds/screwing.ogg : pitchrange 0.1f : range 2560.0f : volume 2.0f</string>
+                        </Property>
                     </CustomProperties>
                     <LocalPoints>
                         <Vector2>
@@ -12811,6 +12817,12 @@
                         <Property Name="dynamic" Type="string" Description="">
                             <string />
                         </Property>
+                        <Property Name="sound" Type="string" Description="">
+                            <string>cw: /common/sounds/screwing.ogg : pitchrange 0.1f : range 2560.0f : volume 2.0f</string>
+                        </Property>
+                        <Property Name="sound2" Type="string" Description="">
+                            <string>ccw: /common/sounds/screwing.ogg : pitchrange 0.1f : range 2560.0f : volume 2.0f : pitch 0.875f</string>
+                        </Property>
                     </CustomProperties>
                     <LocalPoints>
                         <Vector2>
@@ -13314,7 +13326,7 @@
                             <string>1f</string>
                         </Property>
                         <Property Name="sound" Type="string" Description="">
-                            <string>platformcollision: /common/sounds/land.ogg : range 800 : falloff 1.5f</string>
+                            <string>platformcollision: /common/sounds/fallingObject.ogg : range 800 : falloff 1.5f</string>
                         </Property>
                     </CustomProperties>
                     <Width>224</Width>
@@ -17276,7 +17288,7 @@
                             <string>1f</string>
                         </Property>
                         <Property Name="sound" Type="string" Description="">
-                            <string>platformcollision: /common/sounds/land.ogg : range 800 : falloff 1.5f</string>
+                            <string>platformcollision: /common/sounds/fallingObject.ogg : range 800 : falloff 1.5f</string>
                         </Property>
                     </CustomProperties>
                     <Width>256</Width>
@@ -17531,7 +17543,7 @@
                             <string>1f</string>
                         </Property>
                         <Property Name="sound" Type="string" Description="">
-                            <string>platformcollision: /common/sounds/land.ogg : range 800 : falloff 1.5f</string>
+                            <string>platformcollision: /common/sounds/fallingObject.ogg : range 800 : falloff 1.5f</string>
                         </Property>
                     </CustomProperties>
                     <Width>274</Width>
@@ -18769,7 +18781,7 @@
                             <string>rightKneeTrapDoorSkeleton2</string>
                         </Property>
                         <Property Name="sound" Type="string" Description="">
-                            <string>angular: /common/sounds/unscrewing.ogg</string>
+                            <string>ccw: /common/sounds/unscrewing.ogg</string>
                         </Property>
                     </CustomProperties>
                     <Width>303</Width>
@@ -18795,7 +18807,7 @@
                             <string>rightKneeTrapDoorSkeleton1</string>
                         </Property>
                         <Property Name="sound" Type="string" Description="">
-                            <string>angular: /common/sounds/unscrewing.ogg</string>
+                            <string>cw: /common/sounds/unscrewing.ogg</string>
                         </Property>
                     </CustomProperties>
                     <Width>303</Width>
@@ -23910,8 +23922,8 @@
         <NextItemNumber>946</NextItemNumber>
         <ContentRootFolder>gleed-textures</ContentRootFolder>
         <CameraPosition>
-            <X>133.333313</X>
-            <Y>-849.4547</Y>
+            <X>500.0003</X>
+            <Y>-3257.782</Y>
         </CameraPosition>
         <Version>1.3.0.0</Version>
     </EditorRelated>

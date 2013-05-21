@@ -82,6 +82,7 @@ public class Player extends Entity {
 	public final static float FOOTSTEP_PITCH_DROP = 0.75f;
 	public final static float FOOTSTEP_PITCH_VARIANCE = 0.02f;
 	public final static float FOOTSTEP_VOLUME_DROP = 0.01f;
+	public final static float JUMP_SOUND_DELAY = 1.0f;
 
 	// public final static float
 
@@ -947,6 +948,7 @@ public class Player extends Entity {
 		if ( grounded
 				|| ( playerState == PlayerState.HeadStand && this.isTopPlayer( ) ) ) {
 			sounds.playSound( "jump" );
+			sounds.setDelay( "jump", JUMP_SOUND_DELAY);
 			// Trophy check for player jumps
 			if ( this.name == Metrics.player1( ) ) {
 				Metrics.incTrophyMetric( TrophyMetric.P1JUMPS, 1.0f );
