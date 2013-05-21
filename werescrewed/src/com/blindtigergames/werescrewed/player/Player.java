@@ -126,10 +126,12 @@ public class Player extends Entity {
 	private Sprite tutorial = null;
 	private Sprite bubble;
 	private Texture bubbleTex;
-	private Texture[ ] tutorials;
-	private int[ ] tutorialIndexes;
-	private int tutorialTimer = 0;
-	private int tutorialFrame = 0;
+	private Anchor bubbleAnchor;
+	private Texture[ ] tutorials; // array of all tutorial textures
+	private int tutorialBegin; //beginning and ending index
+	private int tutorialEnd; // current index
+	private int tutorialTimer = 0; // countdown to next frame
+	private int tutorialFrame = 0; // current frame
 
 	private Player otherPlayer;
 	private RevoluteJoint playerJoint;
@@ -286,20 +288,19 @@ public class Player extends Entity {
 				// Gdx.app.log( "drawTutorial: ", "" + drawTutorial );
 			}
 		}
-		tutorialTimer++;
-		if ( tutorialTimer > 60 ) {
-			tutorialFrame++;
-			if ( tutorialFrame > tutorialIndexes.length - 1 )
-				tutorialFrame = 0;
-			tutorial.setTexture( tutorials[ tutorialIndexes[ tutorialFrame ] ] );
-			// Gdx.app.log( "tutorialIndexes: " + tutorialIndexes[ tutorialFrame
-			// ], "\ntutorialFrame: " + tutorialFrame + "\ntutorialTimer: " +
-			// tutorialTimer );
-			tutorialTimer = 0;
-		}
-		if ( Gdx.input.isKeyPressed( Keys.H ) ) {
-			if ( name.equals( "player1" ) ) {
-				tutorial.setTexture( tutorials[ 1 ] );
+		if ( drawTutorial ) {
+			tutorialTimer++;
+			if ( tutorialTimer > 90 ) { // controls frame time on tutorials
+				tutorialFrame++;
+				if ( tutorialFrame > tutorialEnd )
+					tutorialFrame = tutorialBegin;
+				tutorial.setTexture( tutorials[ tutorialFrame ] );
+				// Gdx.app.log( "tutorialIndexes: " + tutorialIndexes[
+				// tutorialFrame
+				// ], "\ntutorialFrame: " + tutorialFrame + "\ntutorialTimer: "
+				// +
+				// tutorialTimer );
+				tutorialTimer = 0;
 			}
 		}
 		if ( Gdx.input.isKeyPressed( Keys.NUM_7 ) )
@@ -657,16 +658,19 @@ public class Player extends Entity {
 	 */
 	public void setDrawTutorial( boolean value ) {
 		drawTutorial = value;
+		if( value )bubbleAnchor.activate( ) ;
+		else bubbleAnchor.deactivate( );
 	}
 
 	/**
-	 * sets the sequence of tutorials in box
+	 * sets the section of tutorials[] to be drawn in sequence
 	 * 
-	 * @param indices
-	 *            int[]
+	 * @param begin int
+	 * @param end int
 	 */
-	public void setTutorial( int[ ] indices ) {
-		tutorialIndexes = indices;
+	public void setTutorial( int begin, int end ) {
+		tutorialBegin = begin;
+		tutorialEnd = end;
 	}
 
 	/**
@@ -680,6 +684,16 @@ public class Player extends Entity {
 	 * draws tutorials when appropriate
 	 */
 	public void draw( SpriteBatch batch, float deltaTime ) {
+		drawBubble( batch );
+		super.draw( batch, deltaTime );
+	}
+	
+	/**
+	 * draws tutorials when appropriate
+	 *
+	 * @param batch SpriteBatch
+	 */
+	public void drawBubble( SpriteBatch batch ){
 		if ( drawTutorial ) {
 			float xpos = body.getPosition( ).x;
 			float ypos = body.getPosition( ).y;
@@ -699,7 +713,6 @@ public class Player extends Entity {
 			bubble.draw( batch );
 			tutorial.draw( batch );
 		}
-		super.draw( batch, deltaTime );
 	}
 
 	/**
@@ -2109,8 +2122,16 @@ public class Player extends Entity {
 
 		bubble.flip( true, false );
 
-		int[ ] test = { 6, 7, 8 };
-		tutorialIndexes = test;
+		tutorialBegin = 0;
+		tutorialEnd = 1;
+		
+		bubbleAnchor =  new Anchor( new Vector2( body.getWorldCenter( ).x
+				* Util.BOX_TO_PIXEL, body.getWorldCenter( ).y
+				* Util.BOX_TO_PIXEL ), new Vector2( 0, 0 ), new Vector2(
+				200f, 200f ) );
+		bubbleAnchor.setOffset( 350f, ANCHOR_BUFFER_SIZE.y / 2 + 180f );
+		//bubbleAnchor.activate( );
+		addAnchor( bubbleAnchor );
 	}
 
 	/**

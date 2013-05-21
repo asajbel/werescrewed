@@ -36,6 +36,7 @@ class PauseScreen extends Screen {
 		screenLabel = new Label( "Pause Screen", fancyFont );
 		mainMenuButton = new TextButton( "Main Menu", fancyFont,
 				new ScreenSwitchHandler( ScreenType.MAIN_MENU ) );
+		mainMenuButton.setColored( true );
 
 	}
 
@@ -102,7 +103,7 @@ class PauseScreen extends Screen {
 		screenLabel.setX( centerX - screenLabel.getWidth( ) / 2 );
 		screenLabel.setY( centerY + 6 * lineHeight );
 		mainMenuButton.setX( centerX - mainMenuButton.getWidth( ) / 2 );
-		mainMenuButton.setY( 60 + mainMenuButton.getHeight( ) );
+		mainMenuButton.setY( 100 + mainMenuButton.getHeight( ) );
 	}
 
 	@Override

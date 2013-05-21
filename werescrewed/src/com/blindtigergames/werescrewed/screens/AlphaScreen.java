@@ -262,7 +262,7 @@ public class AlphaScreen extends Screen {
 				if ( !headSkeleton.anchors.get( 0 ).activated
 						&& !headAnchorActivatedOnce ) {
 					headAnchorActivatedOnce = true;
-					headSkeleton.anchors.get( 0 ).setTimer( 30 );
+					headSkeleton.anchors.get( 0 ).setTimer( 3600 );
 					headSkeleton.anchors.get( 0 ).activate( );
 				}
 
@@ -1128,6 +1128,7 @@ public class AlphaScreen extends Screen {
 	private void chestDecals( ) {
 		// TextureAtlas chest_powerscrew = WereScrewedGame.manager.getAtlas(
 		// "chest_pipes_thigh_pipes" );
+		@SuppressWarnings( "unused" )
 		TextureAtlas chestEnginePipes = WereScrewedGame.manager
 				.getAtlas( "knee_chest_in" );
 		float scale = 1f / 0.75f;

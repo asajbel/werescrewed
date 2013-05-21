@@ -326,8 +326,13 @@ public class MyContactListener implements ContactListener {
 							if ( !player.isPlayerDead( ) ) {
 								EventTrigger et = ( EventTrigger ) objectFix
 										.getBody( ).getUserData( );
-								if ( playerFix == player.torso ) {
-									et.triggerEndEvent( );
+								if ( et.getEndAction( )  != null){
+									if ( playerFix == player.torso ) {	
+										if ( et.getEndAction( ).getActionType( ) == ActionType.ACT_ON_PLAYER ) {
+											et.triggerEndEvent( player );
+										} else
+											et.triggerEndEvent( );
+									}
 								}
 								et.setActivated( false, player.name );
 							}

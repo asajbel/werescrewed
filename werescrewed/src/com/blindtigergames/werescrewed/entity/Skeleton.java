@@ -402,8 +402,6 @@ public class Skeleton extends Platform {
 	public void update( float deltaTime ) {
 		float frameRate = 1 / deltaTime;
 		isUpdatable = !this.isFadingSkel( ) || this.isFGFaded( );
-		@SuppressWarnings( "unused" )
-		boolean hasMoved = false;
 		if ( isUpdatable || isMacroSkeleton ) {
 			updateMover( deltaTime );
 			if ( entityType != EntityType.ROOTSKELETON && isKinematic( ) ) {
@@ -426,13 +424,13 @@ public class Skeleton extends Platform {
 						platform.update( deltaTime );
 					} else {
 						platform.updateMover( deltaTime );
-						// if ( platform.hasMoved( ) || platform.hasRotated( )
-						// || hasMoved() || hasRotated() ) {
-						platform.setTargetPosRotFromSkeleton( frameRate, this );
-						platform.setPreviousTransformation( );
-						// } else {
-						// platform.body.setLinearVelocity( Vector2.Zero );
-						// }
+						if ( platform.hasMoved( ) || platform.hasRotated( ) || hasMoved() || hasRotated() ) {
+							platform.setTargetPosRotFromSkeleton( frameRate, this );
+							platform.setPreviousTransformation();
+						} else {
+							platform.body.setLinearVelocity( Vector2.Zero );
+							platform.body.setAngularVelocity( 0.0f );
+						}
 						platform.update( deltaTime );
 					}
 				}
