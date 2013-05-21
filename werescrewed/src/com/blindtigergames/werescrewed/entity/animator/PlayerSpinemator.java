@@ -398,4 +398,25 @@ public class PlayerSpinemator implements ISpinemator {
 		position = pos; 
 	}
 
+	@Override
+	public void flipX( boolean flipX ) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void flipY( boolean flipY ) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	/**
+	 * Not implemented
+	 */
+	@Override
+	public void changeAnimation( String animName, boolean loop ) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
