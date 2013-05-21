@@ -9,6 +9,7 @@ import aurelienribon.tweenengine.TweenEquations;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJoint;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
 import com.badlogic.gdx.utils.Array;
@@ -552,12 +553,14 @@ public class DragonScreen extends Screen {
 	}
 
 void buildBackground(){
-		TextureAtlas front_clouds = WereScrewedGame.manager.getAtlas( "front-clouds" );
-		float frontCloudsY = 2800, frontCloudsY2 = -500;
+		TextureAtlas clouds_sun_bg = WereScrewedGame.manager.getAtlas( "clouds_sun_bg" );
+		TextureAtlas mountains_back_clouds = WereScrewedGame.manager.getAtlas( "mountains-back-clouds" );
+		float frontTopCloudsY = 2800, midOrangeCloudsY = -400, bottomFrontCloudsY = -1000;
 		float frontCloudVariation = 600;
 		float numFrontClouds = 50;
-		float xMax = 30000, xMin = -3000;
+		float xMax = 32000, xMin = -3000;
 		float minCloudScale = 0.5f;
+		float cloudScale = 1f/.75f;
 		
 		setClearColor( 105f/255f, 208f/255f, 255f/255f, 1f ); //SKY BLUE
 		
@@ -565,21 +568,50 @@ void buildBackground(){
 		//loop variables
 		BodyDef bdef; Body b; Entity e; ParallaxMover m; float yPos, scale; String cloudId;
 		
-		//top orange big cloud layer
+		//TOP yellow big clouds
 		for(int i = 0; i < numFrontClouds; ++i){
 			bdef = new BodyDef();
 			bdef.fixedRotation=true;
+			bdef.type=BodyType.StaticBody;
+			b = level.world.createBody( bdef );
+			cloudId = "top-front"+(r.nextInt( 5 )+1);
+			e = new Entity("top-front-"+i,
+								  new Vector2(),
+								  clouds_sun_bg.findRegion( cloudId ),
+								  b,
+								  false,
+								  0);
+			scale = (r.nextFloat( )/2+minCloudScale)*cloudScale;
+			e.sprite.setScale( scale * (r.nextBoolean( )?1f:-1f), r.nextFloat( )/2+0.5f );
+			yPos = frontTopCloudsY + Util.binom( )*frontCloudVariation;
+			m = new ParallaxMover( new Vector2(xMin,yPos),
+												 new Vector2(xMax,yPos),
+												 -0.0001f*r.nextFloat()-.00001f,
+												 r.nextFloat(),
+												 null,
+												 true,
+												 LinearAxis.HORIZONTAL );
+			e.setMoverAtCurrentState( m );
+			level.root.addLooseEntity( e );
+		}
+		
+		
+		//MID orange big cloud layer
+		for(int i = 0; i < numFrontClouds; ++i){
+			bdef = new BodyDef();
+			bdef.fixedRotation=true;
+			bdef.type=BodyType.StaticBody;
 			b = level.world.createBody( bdef );
 			cloudId = "front1-"+(r.nextInt( 4 )+1);
 			e = new Entity("front1-"+i,
 								  new Vector2(),
-								  front_clouds.findRegion( cloudId ),
+								  clouds_sun_bg.findRegion( cloudId ),
 								  b,
 								  false,
 								  0);
-			scale = r.nextFloat( )/2+minCloudScale;
+			scale = (r.nextFloat( )/2+minCloudScale)*cloudScale;
 			e.sprite.setScale( scale * (r.nextBoolean( )?1f:-1f), r.nextFloat( )/2+0.5f );
-			yPos = frontCloudsY2 + Util.binom( )*frontCloudVariation;
+			yPos = midOrangeCloudsY + Util.binom( )*frontCloudVariation;
 			m = new ParallaxMover( new Vector2(xMin,yPos),
 												 new Vector2(xMax,yPos),
 												 -0.0001f*r.nextFloat()-.00001f,
@@ -595,17 +627,18 @@ void buildBackground(){
 		for(int i = 0; i < numFrontClouds; ++i){
 			bdef = new BodyDef();
 			bdef.fixedRotation=true;
+			bdef.type=BodyType.StaticBody;
 			b = level.world.createBody( bdef );
 			cloudId = "front2-"+(r.nextInt( 2 )+2); //FIX THIS, front2-1 is not in pack file
 			e = new Entity("front1-"+i,
 								  new Vector2(),
-								  front_clouds.findRegion( cloudId ),
+								  clouds_sun_bg.findRegion( cloudId ),
 								  b,
 								  false,
 								  0);
-			scale = r.nextFloat( )/2+minCloudScale;
+			scale = (r.nextFloat( )/2+minCloudScale)*cloudScale;
 			e.sprite.setScale( scale * (r.nextBoolean( )?1f:-1f), r.nextFloat( )/2+0.5f );
-			yPos = frontCloudsY + Util.binom( )*frontCloudVariation;
+			yPos = bottomFrontCloudsY + Util.binom( )*frontCloudVariation;
 			m = new ParallaxMover( new Vector2(xMin,yPos),
 												 new Vector2(xMax,yPos),
 												 //new Vector2( r.nextFloat( )*(xMax-xMin)+xMin, yPos ),
@@ -615,22 +648,59 @@ void buildBackground(){
 		}
 		
 
-		//bgGradient
+		// !Important
 		level.initBackgroundRoot( );
+		
+		//bgGradient
 		float xOffset = -150, yOffset = -900;
 		bdef=new BodyDef();
 		bdef.fixedRotation=true;
+			bdef.type=BodyType.StaticBody;
 		b=level.world.createBody( bdef );
 		e=new Entity("bg-gradient",new Vector2(0,-500),null,b,false,0);
 		
-		e.changeSprite( Sprite.scale( front_clouds.createSprite( "bg-gradient" ), 100f,1 ) );//67.5f
+		e.changeSprite( Sprite.scale( clouds_sun_bg.createSprite( "bg-gradient" ), 100f,1 ) );//67.5f
 		level.backgroundRootSkeleton.addLooseEntity( e );
 		m = new ParallaxMover( new Vector2(xOffset,0+yOffset),
 				 new Vector2(xOffset,-2048+yOffset),
-				// new Vector2( r.nextFloat( )*(xMax-xMin)+xMin, yPos ),
 				 0.0002f,0.00001f, level.camera, false, LinearAxis.VERTICAL );
 		m.setLoopRepeat( false );
 		e.setMoverAtCurrentState( m );
+		
+		//mountains
+		//mountains_back_clouds
+		int numMountains = 3;
+		for(int i = 0; i < numMountains; ++i ){
+			bdef=new BodyDef();
+			bdef.fixedRotation=true;
+			bdef.type=BodyType.StaticBody;
+			b=level.world.createBody( bdef );
+			e=new Entity("mountains"+i,new Vector2(),null,b,false,0);
+			
+			e.changeSprite( mountains_back_clouds.createSprite( "mountains" ) );
+			level.backgroundRootSkeleton.addLooseEntity( e );
+			m = new ParallaxMover( new Vector2(-1280,0),
+					new Vector2(1280,0),
+					 0.0002f,i*1f/numMountains, level.camera, false, LinearAxis.HORIZONTAL );
+			e.setMoverAtCurrentState( m );
+		}
+		
+		//Sun 50% = 2
+		float sunScale = 1f;
+		bdef=new BodyDef();
+		bdef.fixedRotation=true;
+			bdef.type=BodyType.StaticBody;
+		b=level.world.createBody( bdef );
+		e=new Entity("sun",new Vector2(),null,b,false,0);//0,2048-2*
+		e.changeSprite( Sprite.scale( clouds_sun_bg.createSprite( "sun" ), sunScale ) );
+		//e.setPosition( new Vector2().mul( Util.PIXEL_TO_BOX ) );
+		float sunYPos = 2048-sunScale*e.sprite.getHeight( )+yOffset;
+		m = new ParallaxMover( new Vector2(400,sunYPos),
+				 new Vector2(400,-2048+sunYPos),
+				 0.00009f,0.00001f, level.camera, false, LinearAxis.VERTICAL );
+		e.setMoverAtCurrentState( m );
+		m.setLoopRepeat( false );
+		level.backgroundRootSkeleton.addLooseEntity( e );
 	}
 	
 	void headDecals(){

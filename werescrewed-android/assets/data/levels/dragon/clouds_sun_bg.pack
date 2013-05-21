@@ -1,0 +1,96 @@
+clouds_sun_bg.png
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+offset: 0, 0
+bg-gradient
+  rotate: false
+  xy: 2, 2
+  size: 16, 2044
+  orig: 16, 2044
+  offset: 0, 0
+  index: -1
+front1-4
+  rotate: false
+  xy: 1059, 575
+  size: 862, 299
+  orig: 862, 299
+  offset: 0, 0
+  index: -1
+top-front2
+  rotate: false
+  xy: 754, 1285
+  size: 626, 203
+  orig: 626, 203
+  offset: 0, 0
+  index: -1
+top-front5
+  rotate: false
+  xy: 1342, 2
+  size: 644, 224
+  orig: 644, 224
+  offset: 0, 0
+  index: -1
+front1-2
+  rotate: false
+  xy: 1059, 349
+  size: 962, 224
+  orig: 962, 224
+  offset: 0, 0
+  index: -1
+front1-3
+  rotate: false
+  xy: 20, 2
+  size: 1320, 326
+  orig: 1320, 326
+  offset: 0, 0
+  index: -1
+top-front3
+  rotate: false
+  xy: 20, 1556
+  size: 734, 238
+  orig: 734, 238
+  offset: 0, 0
+  index: -1
+front2-2
+  rotate: false
+  xy: 20, 1796
+  size: 737, 217
+  orig: 737, 217
+  offset: 0, 0
+  index: -1
+front2-3
+  rotate: false
+  xy: 1342, 228
+  size: 630, 119
+  orig: 630, 119
+  offset: 0, 0
+  index: -1
+top-front1
+  rotate: false
+  xy: 20, 1285
+  size: 732, 269
+  orig: 732, 269
+  offset: 0, 0
+  index: -1
+front1-1
+  rotate: false
+  xy: 20, 1026
+  size: 762, 257
+  orig: 762, 257
+  offset: 0, 0
+  index: -1
+sun
+  rotate: false
+  xy: 20, 330
+  size: 1037, 694
+  orig: 1037, 694
+  offset: 0, 0
+  index: -1
+top-front4
+  rotate: false
+  xy: 1059, 876
+  size: 848, 356
+  orig: 848, 356
+  offset: 0, 0
+  index: -1

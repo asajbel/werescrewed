@@ -27,7 +27,10 @@ public class ParallaxMover implements IMover {
 	 * 
 	 * @param beginningPoint
 	 * @param endingPoint
-	 * @param speed
+	 * @param speed -- percentage of total distance to travel
+	 * @param alpha -- STARTING POSITION percent
+	 * @param camera, level camera usually
+	 * @param moveContinuous -- always move alpha by speed each update
 	 */
 	public ParallaxMover( Vector2 beginningPoint, Vector2 endingPoint, 
 			float speed, float alpha, Camera camera, boolean moveContinuous,
