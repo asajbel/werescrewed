@@ -23,19 +23,19 @@ public class SimpleSpinemator implements ISpinemator {
 	protected Vector2 position = null;
 	protected Vector2 scale = null;
 	protected float time = 0f;
-	protected float mixTime = 0f; 
+	protected float mixTime = 0f;
 	protected boolean flipX = false;
 	protected boolean flipY = false;
 	protected boolean loop = false;
-	protected float mixRatio = 0f; 
-	protected SkeletonData sd; 
+	protected float mixRatio = 0f;
+	protected SkeletonData sd;
 
 	public SimpleSpinemator( String skeletonName, String atlasName,
 			String initialAnimationName, boolean loop ) {
 		TextureAtlas atlas = WereScrewedGame.manager.getAtlas( atlasName );
 		SkeletonBinary sb = new SkeletonBinary( atlas );
-		sd = sb.readSkeletonData( Gdx.files
-				.internal( "data/common/spine/" + skeletonName + ".skel" ) );
+		sd = sb.readSkeletonData( Gdx.files.internal( "data/common/spine/"
+				+ skeletonName + ".skel" ) );
 		anim = sd.findAnimation( initialAnimationName );
 		skel = new com.esotericsoftware.spine.Skeleton( sd );
 		skel.setToBindPose( );
@@ -45,18 +45,21 @@ public class SimpleSpinemator implements ISpinemator {
 
 	@Override
 	public void draw( SpriteBatch b ) {
-		skelDraw.draw( b, skel ); 
+		skelDraw.draw( b, skel );
 	}
 
 	@Override
 	public void update( float delta ) {
 		time += delta;
-		mixRatio = mixTime / anim.getDuration( );
-		anim.mix( skel, time, loop, mixRatio );
-		if ( mixTime >= anim.getDuration( ) / 2 ) {
-			mixTime = anim.getDuration( );
+		mixTime += delta;
+		if ( mixTime < anim.getDuration( ) && loop ) {
+			mixRatio = mixTime / anim.getDuration( );
+			anim.mix( skel, time, loop, mixRatio );
+			if ( mixTime >= anim.getDuration( ) / 2 ) {
+				mixTime = anim.getDuration( );
+			}
+			skel.updateWorldTransform( );
 		}
-		skel.updateWorldTransform( );
 	}
 
 	@Override
@@ -86,8 +89,8 @@ public class SimpleSpinemator implements ISpinemator {
 	public Vector2 getPosition( ) {
 		float x = root.getWorldX( );
 		float y = root.getWorldY( );
-		
-		return new Vector2(x,y); 
+
+		return new Vector2( x, y );
 	}
 
 	@Override
@@ -107,14 +110,14 @@ public class SimpleSpinemator implements ISpinemator {
 
 	@Override
 	public void flipY( boolean flipY ) {
-		skel.setFlipY( flipY ); 
+		skel.setFlipY( flipY );
 	}
 
 	@Override
 	public void changeAnimation( String animName, boolean loop ) {
 		anim = sd.findAnimation( animName );
 		this.loop = loop;
-		time = mixTime; 
+		time = mixTime;
 		mixTime = 0f;
 	}
 
