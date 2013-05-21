@@ -667,26 +667,50 @@ void buildBackground(){
 		m.setLoopRepeat( false );
 		e.setMoverAtCurrentState( m );
 		
-		//mountains
-		//mountains_back_clouds
+		
+		//clouds behind mountains
 		level.bgCamZoomScale = .1f;
 		level.bgCamZoomMax = 1.5f;
 		level.bgCamZoomMin = .5f;
-		int numMountains = 3, mountainW = 1280, mountainY = -200;
+		int numMountains = 3;
+		float mountainW = 1919*level.bgCamZoomMax, mountainY = 300;
+
+		float alpha, aOffset;
+		for(int i = 0; i < numMountains; ++i ){
+			bdef=new BodyDef();
+			bdef.fixedRotation=true;
+			bdef.type=BodyType.StaticBody;
+			b=level.world.createBody( bdef );
+			e=new Entity("back-clouds"+i,new Vector2(),null,b,false,0);
+			e.changeSprite( mountains_back_clouds.createSprite( "back-clouds" ) );
+			level.backgroundRootSkeleton.addLooseEntity( e );
+			aOffset=i*.0001f;
+			alpha = (i)*(1f/(numMountains));//+aOffset;
+			m = new ParallaxMover( new Vector2(mountainW,mountainY),
+					new Vector2(-mountainW,mountainY),
+					 0.00001f,alpha, null, true, LinearAxis.HORIZONTAL );
+			e.setMoverAtCurrentState( m );
+		}
+		
+		//mountains
+		//mountains_back_clouds
+		mountainW = 1280*level.bgCamZoomMax; mountainY = -200f;
 		for(int i = 0; i < numMountains; ++i ){
 			bdef=new BodyDef();
 			bdef.fixedRotation=true;
 			bdef.type=BodyType.StaticBody;
 			b=level.world.createBody( bdef );
 			e=new Entity("mountains"+i,new Vector2(),null,b,false,0);
-			
 			e.changeSprite( mountains_back_clouds.createSprite( "mountains" ) );
 			level.backgroundRootSkeleton.addLooseEntity( e );
-			m = new ParallaxMover( new Vector2(-mountainW,mountainY),
-					new Vector2(mountainW,mountainY),
-					 -0.00002f,i*(mountainW*1f/numMountains/mountainW), null, true, LinearAxis.HORIZONTAL );
+			aOffset=i*.0001f;
+			alpha = (i)*(1f/(numMountains));//+aOffset;
+			m = new ParallaxMover( new Vector2(mountainW,mountainY),
+					new Vector2(-mountainW,mountainY),
+					 0.00002f,alpha, null, true, LinearAxis.HORIZONTAL );
 			e.setMoverAtCurrentState( m );
 		}
+		
 		
 		//Sun 50% = 2
 		float sunScale = 1f;
