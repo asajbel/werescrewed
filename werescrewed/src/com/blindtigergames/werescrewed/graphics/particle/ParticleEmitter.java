@@ -737,12 +737,28 @@ public class ParticleEmitter {
 	public void setOffset( float xOffset, float yOffset ) {
 		xOffsetValue.active = true;
 		yOffsetValue.active = true;
-		float xDiffLowHalf = xOffsetValue.getLowMax( )
-				- xOffsetValue.getLowMin( );
-		float yDiffLowHalf = yOffsetValue.getLowMax( )
-				- yOffsetValue.getLowMin( );
+		float xDiffLowHalf = (xOffsetValue.getLowMax( )
+				- xOffsetValue.getLowMin( )) / 2;
+		float yDiffLowHalf = (yOffsetValue.getLowMax( )
+				- yOffsetValue.getLowMin( )) / 2;
 		xOffsetValue.setLow( xOffset - xDiffLowHalf, xOffset + xDiffLowHalf );
 		yOffsetValue.setLow( yOffset - yDiffLowHalf, yOffset + yDiffLowHalf );
+	}
+	
+	public void setLifeValue( float lifeMaxMillis, float lifeMinMillis ) {
+		lifeValue.active = true;
+		float diffHighHalf = ( lifeValue.getHighMax( ) - lifeValue.getHighMin( ) ) / 2;
+		float diffLowHalf = (lifeValue.getLowMax( ) - lifeValue.getLowMin( ) ) / 2;
+		lifeValue.setHigh( lifeMaxMillis - diffHighHalf, lifeMaxMillis + diffHighHalf );
+		lifeValue.setLow( lifeMinMillis - diffLowHalf, lifeMinMillis + diffHighHalf ); 
+	}
+	
+	public void setEmmisionValue( float highEmits, float lowEmits ) {
+		emissionValue.active = true;
+		float diffHighHalf = ( emissionValue.getHighMax( ) - emissionValue.getHighMin( ) ) / 2;
+		float diffLowHalf = emissionValue.getLowMax( ) - emissionValue.getLowMin( );
+		emissionValue.setHigh( highEmits - diffHighHalf, highEmits + diffHighHalf );
+		emissionValue.setLow( lowEmits - diffLowHalf, lowEmits + diffHighHalf ); 
 	}
 
 	public ScaledNumericValue getEmission( ) {
