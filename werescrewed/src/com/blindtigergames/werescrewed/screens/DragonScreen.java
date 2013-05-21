@@ -652,14 +652,14 @@ void buildBackground(){
 		level.initBackgroundRoot( );
 		
 		//bgGradient
-		float xOffset = -150, yOffset = -900;
+		float xOffset = -450, yOffset = -900;
 		bdef=new BodyDef();
 		bdef.fixedRotation=true;
 			bdef.type=BodyType.StaticBody;
 		b=level.world.createBody( bdef );
 		e=new Entity("bg-gradient",new Vector2(0,-500),null,b,false,0);
 		
-		e.changeSprite( Sprite.scale( clouds_sun_bg.createSprite( "bg-gradient" ), 100f,1 ) );//67.5f
+		e.changeSprite( Sprite.scale( clouds_sun_bg.createSprite( "bg-gradient" ), 140f,1 ) );//67.5f
 		level.backgroundRootSkeleton.addLooseEntity( e );
 		m = new ParallaxMover( new Vector2(xOffset,0+yOffset),
 				 new Vector2(xOffset,-2048+yOffset),
@@ -669,7 +669,10 @@ void buildBackground(){
 		
 		//mountains
 		//mountains_back_clouds
-		int numMountains = 3;
+		level.bgCamZoomScale = .1f;
+		level.bgCamZoomMax = 1.5f;
+		level.bgCamZoomMin = .5f;
+		int numMountains = 3, mountainW = 1280, mountainY = -200;
 		for(int i = 0; i < numMountains; ++i ){
 			bdef=new BodyDef();
 			bdef.fixedRotation=true;
@@ -679,9 +682,9 @@ void buildBackground(){
 			
 			e.changeSprite( mountains_back_clouds.createSprite( "mountains" ) );
 			level.backgroundRootSkeleton.addLooseEntity( e );
-			m = new ParallaxMover( new Vector2(-1280,0),
-					new Vector2(1280,0),
-					 0.0002f,i*1f/numMountains, level.camera, false, LinearAxis.HORIZONTAL );
+			m = new ParallaxMover( new Vector2(-mountainW,mountainY),
+					new Vector2(mountainW,mountainY),
+					 -0.00002f,i*(mountainW*1f/numMountains/mountainW), null, true, LinearAxis.HORIZONTAL );
 			e.setMoverAtCurrentState( m );
 		}
 		
