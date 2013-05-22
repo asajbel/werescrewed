@@ -15,6 +15,7 @@ import com.blindtigergames.werescrewed.debug.FPSLoggerS;
 import com.blindtigergames.werescrewed.debug.SBox2DDebugRenderer;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.Skeleton;
+import com.blindtigergames.werescrewed.entity.Sprite;
 import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 import com.blindtigergames.werescrewed.gui.Button;
 import com.blindtigergames.werescrewed.gui.OptionButton;
@@ -34,7 +35,10 @@ public class Screen implements com.badlogic.gdx.Screen {
 	protected int controllerMax = 10;
 	protected int buttonIndex = 0;
 	protected float alpha = 1.0f;
-	protected boolean finish = false;
+	protected Sprite transition = null;
+	protected boolean alphaFinish = false;
+	protected boolean transStart = true;
+	protected boolean transFinish = false;
 
 	BitmapFont debug_font;
 	Camera uiCamera;
@@ -406,18 +410,34 @@ public class Screen implements com.badlogic.gdx.Screen {
 
 		if ( alpha >= 1.0f ) {
 			alpha = 1.0f;
-			finish = true;
+			alphaFinish = true;
 		} else if ( alpha < 0.0f ) {
 			alpha = 0.0f;
-			finish = true;
+			alphaFinish = true;
 		}
 	}
 
-	public boolean isFinished( ) {
-		return finish;
+	public boolean isAlphaFinished( ) {
+		return alphaFinish;
 	}
 
-	public void setFinish( boolean value ) {
-		finish = value;
+	public void setAlphaFinish( boolean value ) {
+		alphaFinish = value;
+	}
+
+	public boolean isTransStarted( ) {
+		return transStart;
+	}
+
+	public void setTransStart( boolean value ) {
+		transStart = value;
+	}
+	
+	public boolean isTransFinished( ) {
+		return transFinish;
+	}
+
+	public void setTransFinish( boolean value ) {
+		transFinish = value;
 	}
 }

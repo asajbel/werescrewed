@@ -22,7 +22,7 @@ public class LevelSelectScreen extends Screen {
 	private BitmapFont font = null;
 	private BitmapFont fancyFont = null;
 	private Sprite menuBG = null;
-	private Sprite transition = null;
+	private Sprite fade = null;
 	private Label screenLabel = null;
 	private TextButton resurrectButton = null;
 	private TextButton hazardButton = null;
@@ -48,10 +48,14 @@ public class LevelSelectScreen extends Screen {
 		// fancyFont = WereScrewedGame.manager.getFont( "ornatique" );
 		Texture back = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 				+ "/menu/menu.png", Texture.class );
-		Texture trans = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
+		Texture fadeScreen = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 				+ "/menu/transition.png", Texture.class );
+		Texture trans = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
+				+ "/transition/trans-gear.png", Texture.class );
 		menuBG = new Sprite( back );
+		fade = new Sprite( fadeScreen );
 		transition = new Sprite( trans );
+		
 		lineHeight = Math.round( 2.5f * font.getCapHeight( ) + 40 );
 		screenLabel = new Label( "Level Select", fancyFont );
 		man = new SingleSpinemator( "red_male_atlas", "male", "fall_idle" );
@@ -108,11 +112,11 @@ public class LevelSelectScreen extends Screen {
 
 		backButton.draw( batch, camera );
 
-		if ( !finish )
+		if ( !alphaFinish )
 			setAlpha( -0.02f );
 		man.draw( batch );
 		lady.draw( batch );
-		transition.draw( batch, alpha );
+		fade.draw( batch, alpha );
 		batch.end( );
 
 	}
@@ -132,10 +136,10 @@ public class LevelSelectScreen extends Screen {
 		@SuppressWarnings( "unused" )
 		float scaleY = height / 720f;
 
-		transition.setPosition( width / 2 - transition.getWidth( ) / 2, height
-				/ 2 - transition.getHeight( ) / 2 );
-		transition.setScale( width / transition.getWidth( ), height
-				/ transition.getHeight( ) );
+		fade.setPosition( width / 2 - fade.getWidth( ) / 2, height
+				/ 2 - fade.getHeight( ) / 2 );
+		fade.setScale( width / fade.getWidth( ), height
+				/ fade.getHeight( ) );
 		// menuBG.setScale( width / menuBG.getWidth( ), width / menuBG.getWidth(
 		// ) );
 		menuBG.setPosition( 0, height / 2 - menuBG.getHeight( ) / 2 );

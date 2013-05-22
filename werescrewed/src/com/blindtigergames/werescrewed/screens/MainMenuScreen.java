@@ -23,7 +23,7 @@ class MainMenuScreen extends Screen {
 	public ScreenType screenType;
 	private SpriteBatch batch = null;
 	private Sprite menuBG = null;
-	private Sprite transition = null;
+	private Sprite fade = null;
 	private OrthographicCamera camera = null;
 	private BitmapFont font = null;
 	private BitmapFont fancyFont;
@@ -56,6 +56,12 @@ class MainMenuScreen extends Screen {
 		TextureAtlas gearsAtlas = WereScrewedGame.manager.getAtlas( "gears" );
 		TextureAtlas common = WereScrewedGame.manager
 				.getAtlas( "common-textures" );
+		Texture fadeScreen = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
+				+ "/menu/transition.png", Texture.class );
+		Texture trans = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
+				+ "/transition/trans-gear.png", Texture.class );
+		fade = new Sprite( fadeScreen );
+		transition = new Sprite( trans );
 		for ( int i = 0; i < 5; i++ )
 			createDebris( gearsAtlas, common );
 		loadButtons( );
@@ -86,12 +92,13 @@ class MainMenuScreen extends Screen {
 
 		exitButton.draw( batch, camera );
 
-		if ( !finish )
+		if ( !alphaFinish )
 			setAlpha( -0.02f );
 
 		man.draw( batch );
 		lady.draw( batch );
-		transition.draw( batch, alpha );
+		fade.draw( batch, alpha );
+		transition.draw( batch );
 		batch.end( );
 
 		if ( Gdx.input.isKeyPressed( Keys.P ) ) {
@@ -112,6 +119,9 @@ class MainMenuScreen extends Screen {
 		if ( Gdx.input.isKeyPressed( Keys.H ) ) {
 			ScreenManager.getInstance( ).show( ScreenType.HAZARD );
 		}
+		if ( Gdx.input.isKeyPressed( Keys.T ) ) {
+			setTransFinish( !isTransFinished( ) );
+		}
 
 	}
 
@@ -129,10 +139,10 @@ class MainMenuScreen extends Screen {
 		@SuppressWarnings( "unused" )
 		float scaleY = height / 720f;
 
-		transition.setPosition( width / 2 - transition.getWidth( ) / 2, height
-				/ 2 - transition.getHeight( ) / 2 );
-		transition.setScale( width / transition.getWidth( ), height
-				/ transition.getHeight( ) );
+		fade.setPosition( width / 2 - fade.getWidth( ) / 2, height
+				/ 2 - fade.getHeight( ) / 2 );
+		fade.setScale( width / fade.getWidth( ), height
+				/ fade.getHeight( ) );
 		// menuBG.setScale( width / menuBG.getWidth( ), width / menuBG.getWidth(
 		// ) );
 		menuBG.setPosition( 0, height / 2 - menuBG.getHeight( ) / 2 );
@@ -171,10 +181,7 @@ class MainMenuScreen extends Screen {
 		// font = WereScrewedGame.manager.getFont( "ornatique" );
 		Texture back = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 				+ "/menu/menu.png", Texture.class );
-		Texture trans = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-				+ "/menu/transition.png", Texture.class );
 		menuBG = new Sprite( back );
-		transition = new Sprite( trans );
 		lineHeight = Math.round( 2.5f * font.getCapHeight( ) + 50 );
 		// headingLabel = new Label( "We're Screwed!!", fancyFont );
 
