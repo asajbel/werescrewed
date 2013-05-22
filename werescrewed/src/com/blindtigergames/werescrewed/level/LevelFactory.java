@@ -521,6 +521,41 @@ public class LevelFactory {
 				// anchor.activate( );
 			}
 		}
+		if (item.props.containsKey( "anchor1" )){
+			boolean moreAnchors = true;
+			String tag;
+			for (int i = 0; i < 99 && moreAnchors; i++){
+				tag = "anchor" + Integer.toString( i );
+				if (item.props.containsKey(tag)){
+					for (String string : item.props.getAll( tag )){
+						String sValues[] = string.split( ", " );
+						if ( sValues.length != 4 )
+							throw exception;
+						float values[] = new float[ 4 ];
+						int j = 0;
+						for ( String value : sValues ) {
+							try {
+								values[ j ] = Float.parseFloat( value );
+								j++;
+							} catch ( NumberFormatException e ) {
+								throw exception;
+							}
+						}
+						float offsetX = values[ 0 ];
+						float offsetY = values[ 1 ];
+						float bufferWidth = values[ 2 ];
+						float bufferHeight = values[ 3 ];
+						anchor = new Anchor( item.pos, new Vector2( offsetX, offsetY ),
+								new Vector2( bufferWidth, bufferHeight ) );
+						out.addAnchor( anchor );
+						// Comment line below to make anchors inactive by default
+						// anchor.activate( );
+					}
+				} else if (i >= 2){
+					moreAnchors = false;
+				}
+			}
+		}
 		return out;
 	}
 
@@ -1824,7 +1859,7 @@ public class LevelFactory {
 				String name;
 				String value;
 				for ( Element prop : properties ) {
-					name = prop.getAttribute( "Name" ).toLowerCase( ).replaceAll( "\\d*$", "" );
+					name = prop.getAttribute( "Name" ).toLowerCase( );
 					value = prop.get( "string", "<no value>" );
 					props.add( name, value );
 				}
