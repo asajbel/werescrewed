@@ -50,6 +50,131 @@
 	"chamber": {}
 },
 "animations": {
+	"birth": {
+		"bones": {
+			"back": {
+				"rotate": [
+					{ "time": 0, "angle": 0 }
+				],
+				"translate": [
+					{ "time": 0, "x": 0, "y": 0 }
+				],
+				"scale": [
+					{ "time": 0, "x": 1, "y": 1 }
+				]
+			},
+			"door-left": {
+				"rotate": [
+					{ "time": 0, "angle": 0 }
+				],
+				"translate": [
+					{
+						"time": 0,
+						"x": 0,
+						"y": 0,
+						"curve": [ 0.612, 0, 0.497, 1 ]
+					},
+					{
+						"time": 0.2666,
+						"x": 0,
+						"y": 89.55,
+						"curve": [ 0.416, 0.01, 0.617, 0.96 ]
+					},
+					{ "time": 1, "x": 0, "y": 0 }
+				],
+				"scale": [
+					{ "time": 0, "x": 1, "y": 1 }
+				]
+			},
+			"door-right": {
+				"rotate": [
+					{ "time": 0, "angle": 0, "curve": "stepped" },
+					{ "time": 1, "angle": 0 }
+				],
+				"translate": [
+					{
+						"time": 0,
+						"x": 0,
+						"y": 0,
+						"curve": [ 0.612, 0, 0.497, 1 ]
+					},
+					{
+						"time": 0.2666,
+						"x": 0,
+						"y": -88.2,
+						"curve": [ 0.416, 0.01, 0.617, 0.96 ]
+					},
+					{ "time": 1, "x": 0, "y": 0 }
+				],
+				"scale": [
+					{ "time": 0, "x": 1, "y": 1, "curve": "stepped" },
+					{ "time": 1, "x": 1, "y": 1 }
+				]
+			},
+			"root": {
+				"rotate": [
+					{ "time": 0, "angle": 0 }
+				],
+				"translate": [
+					{ "time": 0, "x": 0, "y": 0 }
+				],
+				"scale": [
+					{ "time": 0, "x": 1, "y": 1 }
+				]
+			}
+		},
+		"slots": {
+			"door-left": {
+				"attachment": [
+					{ "time": 0, "name": "door-left" },
+					{ "time": 0.2666, "name": "door-left" },
+					{ "time": 1, "name": "door-left" }
+				]
+			},
+			"door-right": {
+				"attachment": [
+					{ "time": 0, "name": "door-right" },
+					{ "time": 0.2666, "name": "door-right" },
+					{ "time": 1, "name": "door-right" }
+				]
+			},
+			"steam": {
+				"attachment": [
+					{ "time": 0, "name": null }
+				]
+			},
+			"door-right-open": {
+				"attachment": [
+					{ "time": 0, "name": null }
+				]
+			},
+			"door-left-open": {
+				"attachment": [
+					{ "time": 0, "name": null }
+				]
+			},
+			"door-right-closed": {
+				"attachment": [
+					{ "time": 0, "name": null }
+				]
+			},
+			"chamber": {
+				"attachment": [
+					{ "time": 0, "name": "back-open-on" }
+				]
+			},
+			"steam-root": {
+				"attachment": [
+					{ "time": 0, "name": "steam" }
+				]
+			},
+			"door-left-closed": {
+				"attachment": [
+					{ "time": 0, "name": null }
+				]
+			}
+		}
+	},
 	"off-idle": {
 		"slots": {
 			"door-right": {
@@ -286,8 +411,33 @@
 			"chamber": {
 				"attachment": [
 					{ "time": 0, "name": "back-open-on" },
-					{ "time": 0.5, "name": null },
-					{ "time": 1.1666, "name": "back-open-on" }
+					{ "time": 0.0666, "name": "back-open-off" },
+					{ "time": 0.1333, "name": "back-open-on" },
+					{ "time": 0.2, "name": "back-open-off" },
+					{ "time": 0.2666, "name": "back-open-on" },
+					{ "time": 0.3333, "name": "back-open-off" },
+					{ "time": 0.4, "name": "back-open-on" },
+					{ "time": 0.4666, "name": "back-open-off" },
+					{ "time": 0.5333, "name": "back-open-on" },
+					{ "time": 0.5666, "name": "back-open-off" },
+					{ "time": 0.6, "name": "back-open-on" },
+					{ "time": 0.6333, "name": "back-open-off" },
+					{ "time": 0.6666, "name": "back-open-on" },
+					{ "time": 0.7, "name": "back-open-off" },
+					{ "time": 0.7333, "name": "back-open-on" },
+					{ "time": 0.7666, "name": "back-open-off" },
+					{ "time": 0.8, "name": "back-open-on" },
+					{ "time": 0.8333, "name": "back-open-off" },
+					{ "time": 0.8666, "name": "back-open-on" },
+					{ "time": 0.9, "name": "back-open-off" },
+					{ "time": 0.9333, "name": "back-open-on" },
+					{ "time": 0.9666, "name": "back-open-off" },
+					{ "time": 1, "name": "back-open-on" },
+					{ "time": 1.0333, "name": "back-open-off" },
+					{ "time": 1.0666, "name": "back-open-on" },
+					{ "time": 1.1, "name": "back-open-off" },
+					{ "time": 1.1333, "name": "back-open-on" },
+					{ "time": 1.1666, "name": "back-open-off" }
 				]
 			},
 			"steam-root": {
@@ -481,6 +631,17 @@
 					{ "time": 0.7333, "x": 0.987, "y": 1.07 },
 					{ "time": 0.9, "x": 1, "y": 1 }
 				]
+			},
+			"back": {
+				"rotate": [
+					{ "time": 0, "angle": 0 }
+				],
+				"translate": [
+					{ "time": 0, "x": 0, "y": 0 }
+				],
+				"scale": [
+					{ "time": 0, "x": 1, "y": 1 }
+				]
 			}
 		},
 		"slots": {
@@ -516,7 +677,20 @@
 			},
 			"chamber": {
 				"attachment": [
-					{ "time": 0, "name": null }
+					{ "time": 0, "name": "back-open-on" },
+					{ "time": 0.0666, "name": "back-open-off" },
+					{ "time": 0.1333, "name": "back-open-on" },
+					{ "time": 0.2, "name": "back-open-off" },
+					{ "time": 0.2666, "name": "back-open-on" },
+					{ "time": 0.3333, "name": "back-open-off" },
+					{ "time": 0.4, "name": "back-open-on" },
+					{ "time": 0.4666, "name": "back-open-off" },
+					{ "time": 0.5333, "name": "back-open-on" },
+					{ "time": 0.6, "name": "back-open-off" },
+					{ "time": 0.6666, "name": "back-open-on" },
+					{ "time": 0.7333, "name": "back-open-off" },
+					{ "time": 0.8, "name": "back-open-on" },
+					{ "time": 0.8666, "name": "back-open-off" }
 				]
 			},
 			"steam-root": {
