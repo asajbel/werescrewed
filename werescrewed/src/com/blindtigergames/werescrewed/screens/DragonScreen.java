@@ -63,6 +63,7 @@ public class DragonScreen extends Screen {
 		buildAllCannons();
 		flamePlatformDecals();
 		buildBackground( );
+		tail1Decals();
 
 
 		Skeleton jaw_skeleton = ( Skeleton ) LevelFactory.entities
@@ -742,5 +743,9 @@ void buildBackground(){
 		Sprite s;
 		jaw_skeleton.addFGDecal( Sprite.scale( headAtlas.createSprite( "dragonbottom_left" ), scale ), new Vector2() );
 		
+	}
+	
+	void tail1Decals(){
+		Skeleton tail = (Skeleton)LevelFactory.entities.get( "tail_skeleton" );
 	}
 }
