@@ -110,7 +110,7 @@ public class CheckPoint extends Entity {
 	public void hitPlayer( ) {
 		if ( !active ) {
 //			checkpointFrameAnimator.speed( 1.0f );
-			spinemator.changeAnimation( "turn-on", false );
+			spinemator.changeAnimation( "on-idle", true );
 			// body.setAngularVelocity( 3f );
 		}
 		active = true;
@@ -139,7 +139,7 @@ public class CheckPoint extends Entity {
 	public void deactivate( ) {
 		active = false;
 //		checkpointFrameAnimator.speed( -1.0f );
-		spinemator.changeAnimation( "turn-off", false ); 
+		spinemator.changeAnimation( "off-idle", false ); 
 		// body.setAngularVelocity( -3f );
 	}
 
