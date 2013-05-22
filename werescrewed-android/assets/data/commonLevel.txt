@@ -31,6 +31,7 @@
 /common/sounds/screwAtt.ogg
 /common/sounds/screwDet.ogg
 /common/sounds/land.ogg
+/common/sounds/fallingObject.ogg
 /common/sounds/impactMaleDoh.ogg
 /common/sounds/impactMaleDoh2.ogg
 /common/sounds/impactFemaleAh.ogg
@@ -87,6 +88,7 @@
 /common/tileset/alphabot-bleed.pack
 /common/spine/red_female_atlas.pack
 /common/spine/red_male_atlas.pack
+/common/spine/rez_chamber_atlas.pack
 /particles/particles.pack
 
 ##Fonts
