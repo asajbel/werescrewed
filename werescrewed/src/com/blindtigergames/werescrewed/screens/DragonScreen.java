@@ -173,7 +173,7 @@ public class DragonScreen extends Screen {
 				t.beginParallel( );
 				t.push( Tween
 						.to( balloon1_super, PlatformAccessor.LOCAL_POS_XY, 8f )
-						.delay( 0f ).target( 0, 800 )
+						.delay( 0f ).target( 0, 2000 )
 						.ease( TweenEquations.easeNone ).start( ) );
 
 				t.push( Tween
@@ -187,7 +187,7 @@ public class DragonScreen extends Screen {
 
 				t.push( Tween
 						.to( balloon1_super, PlatformAccessor.LOCAL_POS_XY, 8f )
-						.delay( 0f ).target( 0, 1600f )
+						.delay( 0f ).target( 0, 4000f )
 						.ease( TweenEquations.easeNone ).start( ) );
 
 				t.push( Tween
