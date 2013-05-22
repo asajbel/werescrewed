@@ -15,10 +15,6 @@ import com.blindtigergames.werescrewed.util.Util;
 public class PowerSwitch extends EventTrigger {
 
 	private boolean state = false;
-	// private static Texture onTex = WereScrewedGame.manager.get(
-	// WereScrewedGame.dirHandle + "/common/powerswitches/on.png" );
-	// private static Texture offTex = WereScrewedGame.manager.get(
-	// WereScrewedGame.dirHandle + "/common/powerswitches/off.png" );
 
 	private Sprite onState, offState;
 

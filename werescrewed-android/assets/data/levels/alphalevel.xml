@@ -7855,9 +7855,6 @@
                         <Property Name="AttachToSkeleton" Type="string" Description="">
                             <string>rightElbowSkeleton</string>
                         </Property>
-                        <Property Name="crushable" Type="string" Description="">
-                            <string />
-                        </Property>
                     </CustomProperties>
                     <LocalPoints>
                         <Vector2>
@@ -7932,9 +7929,6 @@
                         </Property>
                         <Property Name="AttachToSkeleton" Type="string" Description="">
                             <string>rightElbowSkeleton</string>
-                        </Property>
-                        <Property Name="crushable" Type="string" Description="">
-                            <string />
                         </Property>
                     </CustomProperties>
                     <LocalPoints>
@@ -8385,9 +8379,6 @@
                         </Property>
                         <Property Name="AttachToSkeleton" Type="string" Description="">
                             <string>rightElbowSkeleton</string>
-                        </Property>
-                        <Property Name="crushable" Type="string" Description="">
-                            <string />
                         </Property>
                     </CustomProperties>
                     <LocalPoints>
@@ -23925,8 +23916,8 @@
         <NextItemNumber>947</NextItemNumber>
         <ContentRootFolder>gleed-textures</ContentRootFolder>
         <CameraPosition>
-            <X>-158.333328</X>
-            <Y>-2666.13062</Y>
+            <X>-616.6697</X>
+            <Y>-2541.1228</Y>
         </CameraPosition>
         <Version>1.3.0.0</Version>
     </EditorRelated>

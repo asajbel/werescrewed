@@ -65,7 +65,7 @@ public class DragonScreen extends Screen {
 
 
 		Skeleton jaw_skeleton = ( Skeleton ) LevelFactory.entities
-				.get( "jaw_skeleton" );
+				.get( "fuck_jaw_skeleton" );
 		Timeline t = Timeline.createSequence( );
 
 		t.push( Tween.to( jaw_skeleton, PlatformAccessor.LOCAL_ROT, 6f )
@@ -147,7 +147,6 @@ public class DragonScreen extends Screen {
 		// time += deltaTime * 1000;
 		bodyRoomAngle = (int) Math.abs( (bodyRoomRotateSkeleton.getAngle( ) * Util.RAD_TO_DEG) % 360);
 		
-		
 		if ( time > 5000 ) {
 			// balloon2.body.applyForce( new Vector2(0f, 100f),
 			// balloon2.body.getWorldCenter( ));
@@ -155,8 +154,8 @@ public class DragonScreen extends Screen {
 		}
 		
 		if(!bodyPowerSwitch3.isTurnedOn( )){
-			bodyRoomJoint.setMotorSpeed( 0.1f );
-			if(bodyRoomAngle > 358 && bodyRoomJoint.isMotorEnabled( )){
+			bodyRoomJoint.setMotorSpeed( -0.1f );
+			if((bodyRoomAngle == 359 || bodyRoomAngle == 180)  && bodyRoomJoint.isMotorEnabled( )){
 				bodyRoomRotateSkeleton.body.setAngularVelocity( 0f );
 				bodyRoomJoint.setMotorSpeed( 0.0f );
 				bodyRoomJoint.setMaxMotorTorque( 0f );
@@ -471,10 +470,11 @@ public class DragonScreen extends Screen {
 															// yields a
 
 	
-		revoluteJointDef.motorSpeed = 0.5f;
+		revoluteJointDef.motorSpeed = -0.3f;
 
 		bodyRoomJoint = (RevoluteJoint)level.world.createJoint( revoluteJointDef );
 		
+		//body_bot_lower
 		//These platforms are invisible
 		Platform bodyTop = ( Platform ) LevelFactory.entities
 				.get( "body_top" );
@@ -636,7 +636,7 @@ void buildBackground(){
 	void headDecals(){
 		//head_skeleton
 		Skeleton jaw_skeleton = ( Skeleton ) LevelFactory.entities
-				.get( "jaw_skeleton" ),
+				.get( "fuck_jaw_skeleton" ),
 				head_skeletonSkeleton = ( Skeleton ) LevelFactory.entities
 				.get( "head_skeleton" );
 		TextureAtlas headAtlas = WereScrewedGame.manager.getAtlas( "head" );
