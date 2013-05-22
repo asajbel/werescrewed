@@ -70,26 +70,14 @@ public class OptionButton extends Button {
 	}
 
 	public void draw( SpriteBatch batch, Camera camera ) {
-		Color originalColor = font.getColor( );
+		super.draw( batch, camera );
+
 		Vector3 cursorPosition = new Vector3( Gdx.input.getX( ),
 				Gdx.input.getY( ), 0 );
 		camera.unproject( cursorPosition );
 		boolean isIntersect = bounds.contains( cursorPosition.x,
 				cursorPosition.y );
-
-		box.setPosition( x - xPos, y - height * 2 - yPos );
-		if ( !scaled ) {
-			setScale( );
-		}
-		box.setSize( scaleX, scaleY );
-		box.setOrigin( box.getWidth( ) / 2, box.getHeight( ) / 2 );
-		box.draw( batch );
-
-		font.setColor( colored ? HOVER_COLOR : NORMAL_COLOR );
-		font.draw( batch, caption, x - capWidth / 2 + width / 2 + 5, y - height
-				- capHeight / 2 );
-		font.setColor( originalColor );
-
+		
 		control.draw( batch );
 		if ( ( isIntersect && ( Gdx.input.isTouched( ) || Gdx.input
 				.isButtonPressed( Buttons.LEFT ) ) ) || selected ) {

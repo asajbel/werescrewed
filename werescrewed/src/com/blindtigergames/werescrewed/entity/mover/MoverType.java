@@ -5,7 +5,7 @@ import com.badlogic.gdx.utils.Array;
 public enum MoverType {
 	ROCKING( "rocking" ), LINEAR_AXIS( "linear" ), ROTATETWEEN( "rotatetween" ), ROTATEBYDEGREE(
 			"rotatebydegree" ), LERP( "lerpmover" ), PUZZLEROTATETWEEN(
-			"puzzlerotatetween" )
+			"puzzlerotatetween" ), ANALOG_ROTATE( "analogrotate" )
 	// PuzzleRotateTweenMover
 
 	;

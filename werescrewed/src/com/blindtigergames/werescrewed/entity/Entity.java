@@ -180,7 +180,8 @@ public class Entity implements GleedLoadable {
 	public Entity( String name, Vector2 positionPixels, TextureRegion texture,
 			Body body, boolean solid, float rotation ) {
 		this.construct( name, solid );
-		this.sprite = constructSprite( texture );
+		if(texture!=null)
+			this.sprite = constructSprite( texture );
 		this.body = body;
 		if ( body != null ) {
 			world = body.getWorld( );
@@ -457,14 +458,20 @@ public class Entity implements GleedLoadable {
 	 * 
 	 * @param deltaTime
 	 */
-	public void updateMover( float deltaTime ) {
+	public boolean updateMover( float deltaTime ) {
 		if ( active ) {
 			if ( body != null ) {
 				if ( currentMover( ) != null ) {
+					Vector2 oldPos = body.getPosition( );
 					currentMover( ).move( deltaTime, body );
+					Vector2 newPos = body.getPosition( );
+					if ( oldPos.x != newPos.x || oldPos.y != newPos.y ) {
+						return true;
+					}
 				}
 			}
 		}
+		return false;
 	}
 
 	public void updateSounds( float deltaTime ) {
@@ -1295,8 +1302,11 @@ public class Entity implements GleedLoadable {
 	 */
 	public void drawFGDecals( SpriteBatch batch, Camera camera ) {
 		for ( Sprite decal : fgDecals ) {
-			if ( decal.getBoundingRectangle( ).overlaps( camera.getBounds( ) ) ) {
-				decal.draw( batch );
+			if ( decal.alpha >= 0.25 ) {
+				if ( decal.getBoundingRectangle( )
+						.overlaps( camera.getBounds( ) ) ) {
+					decal.draw( batch );
+				} 
 			}
 		}
 	}
@@ -1583,21 +1593,50 @@ public class Entity implements GleedLoadable {
 		Vector2 soundPos = getPositionPixel();
 		float vol;
 		float pitch;
-		int soundId;
-		if (sounds.hasSound( "linear" )){
-			soundId = sounds.randomSoundId( "linear" );
-			vol = body.getLinearVelocity( ).len( ) * sounds.calculatePositionalVolume( "linear", soundPos, Camera.CAMERA_RECT );
-			pitch = sounds.getPitchInRange( "linear", soundId, body.getLinearVelocity( ).len() );
+		String soundTag; int soundId;
+		Vector2 vel = body.getLinearVelocity( );
+		float aVel = body.getAngularVelocity( );
+		//horizontal
+		if (vel.x > 0.0f){
+			soundTag = "left";
+		} else {
+			soundTag = "right";
+		}
+		if (sounds.hasSound( soundTag )){
+			vol = Math.abs( vel.x ) * sounds.calculatePositionalVolume( soundTag, soundPos, Camera.CAMERA_RECT );
+			soundId = sounds.randomSoundId( soundTag );
+			pitch = sounds.getPitchInRange( soundTag, soundId, Math.abs( vel.x ) );
 			if (vol > MIN_LINEAR){
-				sounds.playSound( "linear", soundId, MOVEMENT_SOUND_DELAY , vol, pitch);	
+				sounds.playSound( soundTag, soundId, MOVEMENT_SOUND_DELAY , vol, pitch);	
 			}
 		}
-		if (sounds.hasSound( "angular" )){
-			soundId = sounds.randomSoundId( "angular" );
-			vol = Math.abs( body.getAngularVelocity( ) * Util.RAD_TO_DEG ) * sounds.calculatePositionalVolume( "angular", soundPos, Camera.CAMERA_RECT );
-			pitch = sounds.getPitchInRange( "angular", soundId, (float)Math.pow( Math.abs(body.getAngularVelocity( )), 1.5f) );
-			if (vol > MIN_ANGULAR){
-				sounds.playSound( "angular", sounds.randomSoundId( "angular" ), MOVEMENT_SOUND_DELAY , vol, pitch);			}
+		//vertical
+		if (vel.y > 0.0f){
+			soundTag = "up";
+		} else {
+			soundTag = "down";
+		}
+		if (sounds.hasSound( soundTag )){
+			vol = Math.abs( vel.y ) * sounds.calculatePositionalVolume( soundTag, soundPos, Camera.CAMERA_RECT );
+			soundId = sounds.randomSoundId( soundTag );
+			pitch = sounds.getPitchInRange( soundTag, soundId, Math.abs( vel.y ) );
+			if (vol > MIN_LINEAR){
+				sounds.playSound( soundTag, soundId, MOVEMENT_SOUND_DELAY , vol, pitch);	
+			}
+		}
+		//angular
+		if (aVel > 0.0f){
+			soundTag = "ccw";
+		} else {
+			soundTag = "cw";
+		}
+		if (sounds.hasSound( soundTag )){
+			vol = Math.abs( aVel ) * sounds.calculatePositionalVolume( soundTag, soundPos, Camera.CAMERA_RECT );
+			soundId = sounds.randomSoundId( soundTag );
+			pitch = sounds.getPitchInRange( soundTag, soundId, Math.abs( aVel ) );
+			if (vol > MIN_LINEAR){
+				sounds.playSound( soundTag, soundId, MOVEMENT_SOUND_DELAY , vol, pitch);	
+			}
 		}
 	}
 }

@@ -1,5 +1,8 @@
 package com.blindtigergames.werescrewed.util;
 
+import java.util.Random;
+
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 
 /**
@@ -25,6 +28,7 @@ public class Util {
 	public static final float PI = 3.141592653589793f;
 	public static final float TWO_PI = 2 * PI;
 	public static final float HALF_PI = PI / 2;
+	public static final float MIN_VALUE = 0x0.000002P-126f; // 1.4e-45f
 
 	/**
 	 * Collision Categories and masks for every object that needs them
@@ -40,6 +44,8 @@ public class Util {
 	public static final short CATEGORY_IGNORE = 0x1000;
 	public static final short CATEGORY_NOTHING = 0x0000;
 	public static final short CATEGORY_EVERYTHING = -1;
+	
+	public static final Random r = new Random();
 
 	/**
 	 * Size outside of a skeleton that turns it on / off
@@ -92,6 +98,10 @@ public class Util {
 		} else {
 			return angle;
 		}
+	}
+	
+	public static float binom(){
+		return r.nextFloat( )-r.nextFloat( );
 	}
 
 }

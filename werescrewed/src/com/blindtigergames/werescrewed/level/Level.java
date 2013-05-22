@@ -49,7 +49,7 @@ public class Level {
 	public MyContactListener myContactListener;
 	public Player player1, player2;
 	public RootSkeleton root;
-	private boolean debugTest, debug;
+	public boolean debugTest, debug;
 	public ProgressManager progressManager;
 	public static ArrayList< Joint > jointsToRemove = new ArrayList< Joint >( );
 	public ArrayList< Skeleton > skelBGList;
@@ -91,7 +91,7 @@ public class Level {
 
 	public void update( float deltaTime ) {
 		// camera.update( );
-		world.step( WereScrewedGame.oneOverTargetFrameRate, 2, 1);
+		world.step( WereScrewedGame.oneOverTargetFrameRate, 2, 1 );
 
 		if ( player1 != null )
 			player1.update( deltaTime );
@@ -183,28 +183,32 @@ public class Level {
 			player2.draw( batch, deltaTime );
 
 		drawFGStuff( batch );
+		
+		player1.drawBubble( batch );
+		player2.drawBubble( batch );
 
 		// camera.renderBuffers( );
 		batch.end( );
 
 		if ( debug )
 			debugRenderer.render( world, camera.combined( ) );
-//		worldStep(deltaTime); 
 
 	}
-	
-	private float accum = 0f;               
-	private final float step = 1f / 60f;    
+
+	private float accum = 0f;
+	@SuppressWarnings( "unused" )
+	private final float step = 1f / 60f;
 	private final float maxAccum = 1f / 20f;
-	                                        
-	private void worldStep(float delta) {   
-	   accum += delta;                     
-	   accum = Math.min(accum, maxAccum);  
-	   while (accum >= maxAccum) {              
-	      world.step(1f / 30f, 1, 1);         
-	      accum -= maxAccum;                  
-	   }                                   
-	}                                      
+
+	@SuppressWarnings( "unused" )
+	private void worldStep( float delta ) {
+		accum += delta;
+		accum = Math.min( accum, maxAccum );
+		while ( accum >= maxAccum ) {
+			world.step( 1f / 30f, 1, 1 );
+			accum -= maxAccum;
+		}
+	}
 
 	private void drawBGStuff( SpriteBatch batch, float deltaTime ) {
 		for ( Skeleton skel : skelBGList ) {
@@ -263,6 +267,21 @@ public class Level {
 				world.destroyJoint( joint );
 		}
 
+	}
+	
+	
+	public void initBackgroundRoot(){
+		// background stuff
+		backgroundBatch = new SpriteBatch( );
+		backgroundRootSkeleton = new RootSkeleton( "backgroundroot",
+				Vector2.Zero, null, world );
+		float width = Gdx.graphics.getWidth( ) / 1f;
+		float height = Gdx.graphics.getHeight( ) / 1f;
+		backgroundCam = new OrthographicCamera( 1, width / height );
+		backgroundCam.viewportWidth = width;
+		backgroundCam.viewportHeight = height;
+		backgroundCam.position.set( width * .5f, height * .5f, 0f );
+		backgroundCam.update( );
 	}
 
 }

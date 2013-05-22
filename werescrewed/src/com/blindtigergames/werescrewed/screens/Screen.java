@@ -3,6 +3,7 @@ package com.blindtigergames.werescrewed.screens;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
@@ -74,7 +75,8 @@ public class Screen implements com.badlogic.gdx.Screen {
 			System.exit( 0 );
 		}
 		if (level != null){			
-
+			updateStep(delta);
+			
 			// background stuff
 			if ( level.backgroundRootSkeleton != null ) {
 				level.backgroundCam.update( );
@@ -97,9 +99,10 @@ public class Screen implements com.badlogic.gdx.Screen {
 			level.camera.update( );
 
 			int FPS = logger.getFPS( );
-			batch.setProjectionMatrix( uiCamera.combined );
-			batch.begin( );
-			if ( debug_font != null ) {
+			
+			if ( level.debug && debug_font != null ) {
+				batch.setProjectionMatrix( uiCamera.combined );
+				batch.begin( );
 				debug_font.draw( batch, "FPS: " + FPS,
 						-Gdx.graphics.getWidth( ) / 2,
 						Gdx.graphics.getHeight( ) / 2 );// -Gdx.graphics.getWidth(
@@ -108,11 +111,13 @@ public class Screen implements com.badlogic.gdx.Screen {
 														// )/4
 				// debug_font.draw(batch, "ALPHA BUILD", -Gdx.graphics.getWidth(
 				// )/2, Gdx.graphics.getHeight( )/2);
+				batch.end( );
 			}
-			batch.end( );
 			
-			updateStep(delta);
-
+		}
+		
+		if ( Gdx.input.isKeyPressed( Input.Keys.BACKSPACE ) ) {
+			ScreenManager.getInstance( ).show( ScreenType.TROPHY );
 		}
 
 		if ( Buttons.size( ) > 0 ) {
@@ -158,7 +163,6 @@ public class Screen implements com.badlogic.gdx.Screen {
 							if ( option.getOption( ) instanceof Slider ) {
 								Slider slider = ( Slider ) option.getOption( );
 								slider.moveLeft( );
-								controllerTimer = controllerMax;
 							}
 						}
 					} else if ( WereScrewedGame.p1ControllerListener
@@ -170,7 +174,6 @@ public class Screen implements com.badlogic.gdx.Screen {
 							if ( option.getOption( ) instanceof Slider ) {
 								Slider slider = ( Slider ) option.getOption( );
 								slider.moveRight( );
-								controllerTimer = controllerMax;
 							}
 						}
 					}
@@ -212,7 +215,6 @@ public class Screen implements com.badlogic.gdx.Screen {
 							if ( option.getOption( ) instanceof Slider ) {
 								Slider slider = ( Slider ) option.getOption( );
 								slider.moveLeft( );
-								controllerTimer = controllerMax;
 							}
 						}
 					} else if ( WereScrewedGame.p2ControllerListener
@@ -224,7 +226,6 @@ public class Screen implements com.badlogic.gdx.Screen {
 							if ( option.getOption( ) instanceof Slider ) {
 								Slider slider = ( Slider ) option.getOption( );
 								slider.moveRight( );
-								controllerTimer = controllerMax;
 							}
 						}
 					}
@@ -261,7 +262,6 @@ public class Screen implements com.badlogic.gdx.Screen {
 							if ( option.getOption( ) instanceof Slider ) {
 								Slider slider = ( Slider ) option.getOption( );
 								slider.moveLeft( );
-								controllerTimer = controllerMax;
 							} 
 						}
 					}
@@ -272,7 +272,6 @@ public class Screen implements com.badlogic.gdx.Screen {
 							if ( option.getOption( ) instanceof Slider ) {
 								Slider slider = ( Slider ) option.getOption( );
 								slider.moveRight( );
-								controllerTimer = controllerMax;
 							} 
 						}
 					}
@@ -284,10 +283,11 @@ public class Screen implements com.badlogic.gdx.Screen {
 	
 	private float accum = 0f;               
 	private final float step = 1f / 60f;    
-//	private final float maxAccum = 1f / 20f;
+	private final float maxAccum = 1f / 17f;
 	                                        
 	private void updateStep(float delta) {   
 		accum += delta;  
+		accum = Math.min( accum, maxAccum );
 		while (accum >= step) {    
 			level.update( step );
 		    accum -= step;                  

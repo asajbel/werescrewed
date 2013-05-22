@@ -45,3 +45,10 @@
 
 ## Alphabot panel thing
 /levels/alphabot/alphabot-panel.pack
+
+## Firework ending particles
+fireworks/firework1.p
+fireworks/firework2.p
+fireworks/firework3.p
+fireworks/firework4.p
+fireworks/firework5.p

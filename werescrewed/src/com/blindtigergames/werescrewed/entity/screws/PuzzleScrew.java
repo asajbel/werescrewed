@@ -269,10 +269,13 @@ public class PuzzleScrew extends Screw {
 				}
 				screwUIAnimator.speed( -1 );
 			}
-			screwInterface.sprite.setPosition( this.getPositionPixel( ).sub(
-					interfaceOffset ) );
-			screwInterface.sprite.update( deltaTime );
-			screwUIAnimator.update( deltaTime );
+			if ( screwInterface.sprite.getAnimator( ).getFrame( ) > 0
+					|| playerAttached ) {
+				screwInterface.sprite.setPosition( this.getPositionPixel( )
+						.sub( interfaceOffset ) );
+				screwInterface.sprite.update( deltaTime );
+				screwUIAnimator.update( deltaTime );
+			}
 		}
 	}
 

@@ -262,7 +262,7 @@ public class AlphaScreen extends Screen {
 				if ( !headSkeleton.anchors.get( 0 ).activated
 						&& !headAnchorActivatedOnce ) {
 					headAnchorActivatedOnce = true;
-					headSkeleton.anchors.get( 0 ).setTimer( 30 );
+					headSkeleton.anchors.get( 0 ).setTimer( 3600 );
 					headSkeleton.anchors.get( 0 ).activate( );
 				}
 
@@ -1128,14 +1128,15 @@ public class AlphaScreen extends Screen {
 	private void chestDecals( ) {
 		// TextureAtlas chest_powerscrew = WereScrewedGame.manager.getAtlas(
 		// "chest_pipes_thigh_pipes" );
+		@SuppressWarnings( "unused" )
 		TextureAtlas chestEnginePipes = WereScrewedGame.manager
 				.getAtlas( "knee_chest_in" );
 		float scale = 1f / 0.75f;
 		Skeleton chestSkeleton = ( Skeleton ) LevelFactory.entities
 				.get( "chestSkeleton" );
-		chestSkeleton.addBGDecal( Sprite.scale( chestEnginePipes
-				.createSprite( "chest_powerswitches_pipestoengine" ), scale ),
-				new Vector2( -732, -1300 ) );// -52,-346
+//		chestSkeleton.addBGDecal( Sprite.scale( chestEnginePipes
+//				.createSprite( "chest_powerswitches_pipestoengine" ), scale ),
+//				new Vector2( -732, -1300 ) );// -52,-346
 
 		TextureAtlas chest_lower, chest_middle, chest_upper1, chest_upper2;
 		chest_lower = WereScrewedGame.manager.getAtlas( "chest_exterior_lower" );
@@ -1198,7 +1199,7 @@ public class AlphaScreen extends Screen {
 		// INTERIOR DECALS
 
 		// chest_bottomleft_mechanisms75
-		TextureAtlas chest_gear = WereScrewedGame.manager
+		/*TextureAtlas chest_gear = WereScrewedGame.manager
 				.getAtlas( "chest_pipes_thigh_pipes" );
 		chestSkeleton.addBGDecal(
 				chest_gear.createSprite( "chest_bottomleft_mechanisms75" ),
@@ -1217,8 +1218,20 @@ public class AlphaScreen extends Screen {
 				.addBGDecalBack(
 						Sprite.scale( chest_interiorAtlas
 								.createSprite( "upper-right-chest" ), scale ),
-						new Vector2( 370, -117 ).add( chestPipesRightPos ) );
-
+						new Vector2( 370, -117 ).add( chestPipesRightPos ) );*/
+		
+		Vector2 chestInerdsPos = new Vector2(-2300,-90);
+		scale = 1f/.66f;
+		TextureAtlas chest1 = WereScrewedGame.manager.getAtlas( "knee_chest_in" );
+		chestSkeleton.addBGDecal( Sprite.scale(chest1.createSprite( "chest1" ),scale), chestInerdsPos.cpy() );
+		TextureAtlas chest23 = WereScrewedGame.manager.getAtlas( "chest2" );
+		chestSkeleton.addBGDecal( Sprite.scale(chest23.createSprite( "chest2" ),scale), chestInerdsPos.cpy().add( 2278,0 ) );
+		chestSkeleton.addBGDecal( Sprite.scale(chest23.createSprite( "chest3" ),scale),chestInerdsPos.cpy().add( -365,-1614 ) );
+		
+		TextureAtlas chest4 = WereScrewedGame.manager.getAtlas( "head_right" );
+		chestSkeleton.addBGDecal( Sprite.scale(chest4.createSprite( "chest4" ),scale), chestInerdsPos.cpy().add(2278-365,-1614) );
+		chestSkeleton.bgSprite = null;
+		
 		// TextureAtlas chest2 = WereScrewedGame.manager.getAtlas("chest2");
 		// s = chest2.createSprite(
 		// "chest_upperleftandtop_mechanismS_ROUGHwithnotes" );
@@ -1254,6 +1267,18 @@ public class AlphaScreen extends Screen {
 		// 714,1437
 
 		leftShoulderSkeleton.bgSprite = null;
+		
+		Skeleton handSkeleton = new Skeleton( "left-hand-skele", leftShoulderSkeleton.getPositionPixel( ) , null, level.world );
+		
+		//All in one line cus I'm high level like that:
+		Sprite s = Sprite.scale( 
+				WereScrewedGame.manager.getAtlas( "head_right" )
+				.createSprite( "hand" ),scale);
+		handSkeleton.addBGDecal(s, 
+				pos.cpy( ).add( -65,-1300 ) );
+		handSkeleton.setFgFade( false );
+		addBGSkeletonBack( handSkeleton );
+		leftShoulderSkeleton.addSkeleton( handSkeleton );
 
 		addFGSkeleton( leftShoulderSkeleton );
 		addBGSkeleton( leftShoulderSkeleton );
@@ -1568,7 +1593,7 @@ public class AlphaScreen extends Screen {
 		TextureAtlas head_right = WereScrewedGame.manager
 				.getAtlas( "head_right" );
 
-		Vector2 pos = new Vector2( -1475, -680 );
+		Vector2 pos = new Vector2( -1475, -590 );
 		Sprite s;
 		float scale = 1f / .75f;
 		s = head_left.createSprite( "head_left" );
@@ -1576,7 +1601,7 @@ public class AlphaScreen extends Screen {
 		headSkeleton.addFGDecal( s, pos.cpy( ) );
 		s = head_right.createSprite( "head_right" );
 		s.setScale( scale );
-		headSkeleton.addFGDecal( s, pos.cpy( ).add( 1500, 0 ) );
+		headSkeleton.addFGDecal( s, pos.cpy( ).add( s.getWidth()*scale-5, 0 ) );
 		addBGEntity( headSkeleton );
 		addFGEntity( headSkeleton );
 
@@ -1601,7 +1626,7 @@ public class AlphaScreen extends Screen {
 			s = arm_decals.createSprite( "upperarm_exterior" + ( i + 1 ) );
 			s.setScale( scale );
 			leftShoulderSkeleton.addFGDecal( s,
-					armPos.cpy( ).add( 480 * x, -683 * y ) );
+					armPos.cpy( ).add( 479 * x, -683 * y+i ) );
 		}
 
 		// forearm decals
@@ -1618,7 +1643,7 @@ public class AlphaScreen extends Screen {
 			s.setScale( scale );
 			// s.setScale( -1,1 );
 			leftShoulderSkeleton.addFGDecal( s,
-					elbowPos.cpy( ).add( 515 * x, -710 * y ) );
+					elbowPos.cpy( ).add( 513 * x, -710 * y+i ) );
 		}
 
 	}
@@ -1643,7 +1668,7 @@ public class AlphaScreen extends Screen {
 					+ ( i + 1 ) );
 			s.setScale( scale );
 			rightElbowSkeleton.addFGDecal( s,
-					elbowPos.cpy( ).add( 515 * x, -710 * y ) );
+					elbowPos.cpy( ).add( 513 * x, -710 * y+i ) );
 		}
 
 		// upper arm decals
@@ -1660,7 +1685,7 @@ public class AlphaScreen extends Screen {
 					Sprite.scale(
 							arm_decals.createSprite( "upperarm_exterior"
 									+ ( i + 1 ) ), scale ),
-					armPos.cpy( ).add( 480 * x, -683 * y ) );
+					armPos.cpy( ).add( 479 * x, -683 * y+i ) );
 		}
 
 		addFGSkeleton( rightElbowSkeleton );
@@ -1668,6 +1693,24 @@ public class AlphaScreen extends Screen {
 
 		addBGSkeleton( rightElbowSkeleton );
 		addBGSkeleton( rightShoulderSkeleton );
+		
+		
+		
+		Skeleton handSkeleton = new Skeleton( "right-hand-skele", rightElbowSkeleton.getPositionPixel( ).add(0,700) , null, level.world );
+		
+		//All in one line cus I'm high level like that:
+		s = Sprite.scale( 
+				WereScrewedGame.manager.getAtlas( "head_right" )
+				.createSprite( "hand" ),scale);
+		s.setScale( -scale,scale );
+		handSkeleton.addBGDecal(s, 
+				new Vector2( s.getWidth( )-320,-3700 ) );
+		handSkeleton.setFgFade( false );
+		addBGSkeletonBack( handSkeleton );
+		rightElbowSkeleton.addSkeleton( handSkeleton );
+
+		addFGSkeleton( leftShoulderSkeleton );
+		addBGSkeleton( leftShoulderSkeleton );
 
 	}
 }

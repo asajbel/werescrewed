@@ -14,7 +14,7 @@ public class Main {
 		cfg.vSyncEnabled = true;
         
 		//cfg.useCPUSynch = false;
-		//cfg.vSyncEnabled = true;
+		cfg.vSyncEnabled = true;
 		//cfg.fullscreen = true;
 		
 		new LwjglApplication(new WereScrewedGame(), cfg);

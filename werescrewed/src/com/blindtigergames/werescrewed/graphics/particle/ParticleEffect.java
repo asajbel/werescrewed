@@ -159,6 +159,137 @@ public class ParticleEffect implements Disposable {
 		setRotation( radians );
 	}
 
+	/**
+	 * Sets the time it takes for a particle to be removed
+	 * 
+	 * @author Anders
+	 * @param lifeMillis
+	 *            The time in milliseconds
+	 */
+	public void setLifeTime( float lifeMaxMillis, float lifeMinMillis ) {
+		for ( ParticleEmitter e : emitters ) {
+			e.setLifeValue( lifeMaxMillis, lifeMinMillis );
+		}
+	}
+
+	/**
+	 * Sets the number of particles emitted in a second.
+	 * 
+	 * @author Anders
+	 * @param emitsPerSecondMax
+	 *            The maximum number of particles emitted in a second.
+	 * @param emitsPerSecondMin
+	 *            The minimum number of particles emitted in a second.
+	 */
+	public void setEmission( float emitsPerSecondMax, float emitsPerSecondMin ) {
+		for ( ParticleEmitter e : emitters ) {
+			e.setEmmisionValue( emitsPerSecondMax, emitsPerSecondMin );
+		}
+	}
+
+	/**
+	 * Adds particles to emitters in the effect. Do not call in an update loop
+	 * as it resets the emitters.
+	 * 
+	 * @author Anders
+	 * @param particles
+	 *            Number of particles to add.
+	 */
+	public void addParticles( int particles ) {
+		for ( ParticleEmitter e : emitters ) {
+			int min = e.getMinParticleCount( );
+			int max = e.getMaxParticleCount( );
+			e.setMinParticleCount( min + particles );
+			e.setMaxParticleCount( max + particles );
+		}
+	}
+
+	/**
+	 * Subtracts particles from the emitters in the effect. Do not call in an
+	 * update loop as it resets the emitters.
+	 * 
+	 * @author Anders
+	 * @param particles
+	 *            Number of particles to subtract.
+	 */
+	public void subtractParticles( int particles ) {
+		addParticles( -particles );
+	}
+
+	/**
+	 * Sets the minimum number of particles the emitters in the effect can
+	 * produce at a time
+	 * 
+	 * @author Anders
+	 * @param min
+	 *            Minimum Number.
+	 */
+	public void setMinParticleCount( int min ) {
+		for ( ParticleEmitter e : emitters ) {
+			e.setMinParticleCount( min );
+		}
+	}
+
+	/**
+	 * Sets the maximum number of particles the emitters in the effect can
+	 * produce at a time
+	 * 
+	 * @author Anders
+	 * @param min
+	 *            Maximum Number.
+	 */
+	public void setMaxParticleCount( int max ) {
+		for ( ParticleEmitter e : emitters ) {
+			e.setMaxParticleCount( max );
+		}
+	}
+
+	/**
+	 * Changes the maximum size of a particle effect. Do not call continuously.
+	 * For fire change the values maxParticles = emitsMax * seconds + 10; 
+	 * emitsMax = 20 + 10 * seconds.
+	 * 
+	 * @author Anders
+	 * @param maxLife
+	 *            The maximum life time of a particle in milliseconds
+	 * @param emitsMax
+	 *            The maximum number of particles emitted per second
+	 * @param maxParticles
+	 *            The maximum number of particles allowed a a time.
+	 */
+	public void changeEffectMaxSize( float maxLife, float emitsMax,
+			int maxParticles ) {
+		for ( ParticleEmitter e : emitters ) {
+			e.setMaxParticleCount( maxParticles );
+			float lowEmit = e.getEmission( ).getLowMax( );
+			e.setEmmisionValue( emitsMax, lowEmit );
+			float lowLife = e.getLife( ).getLowMax( );
+			e.setLifeValue( maxLife, lowLife );
+		}
+	}
+
+	/**
+	 * Changes the minimum size of a particle effect. Do not call continuously.
+	 * 
+	 * @author Anders
+	 * @param maxLife
+	 *            The minimum life time of a particle in milliseconds
+	 * @param emitsMax
+	 *            The minimum number of particles emitted per second
+	 * @param maxParticles
+	 *            The minimum number of particles allowed a a time.
+	 */
+	public void changeEffectMinSize( float minLife, float emitsMin,
+			int minParticles ) {
+		for ( ParticleEmitter e : emitters ) {
+			e.setMinParticleCount( minParticles );
+			float highEmit = e.getEmission( ).getHighMax( );
+			e.setEmmisionValue( highEmit, emitsMin );
+			float highLife = e.getLife( ).getHighMax( );
+			e.setLifeValue( highLife, minLife );
+		}
+	}
+
 	public void setOffset( float xOffset, float yOffset ) {
 		for ( int i = 0; i < emitters.size; i++ )
 			emitters.get( i ).setOffset( xOffset, yOffset );

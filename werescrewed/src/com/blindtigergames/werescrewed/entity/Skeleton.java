@@ -12,6 +12,7 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.JointEdge;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
+import com.blindtigergames.werescrewed.camera.Camera;
 import com.blindtigergames.werescrewed.checkpoints.CheckPoint;
 import com.blindtigergames.werescrewed.entity.animator.SimpleFrameAnimator;
 import com.blindtigergames.werescrewed.entity.animator.SimpleFrameAnimator.LoopBehavior;
@@ -19,8 +20,6 @@ import com.blindtigergames.werescrewed.entity.hazard.Fire;
 import com.blindtigergames.werescrewed.entity.hazard.Hazard;
 import com.blindtigergames.werescrewed.entity.particles.Steam;
 import com.blindtigergames.werescrewed.entity.platforms.Platform;
-import com.blindtigergames.werescrewed.entity.platforms.PlatformType;
-import com.blindtigergames.werescrewed.entity.platforms.TiledPlatform;
 import com.blindtigergames.werescrewed.entity.rope.Rope;
 import com.blindtigergames.werescrewed.entity.screws.Screw;
 import com.blindtigergames.werescrewed.entity.screws.StrippedScrew;
@@ -66,8 +65,10 @@ public class Skeleton extends Platform {
 
 	protected boolean applyFadeToFGDecals = true;
 	protected boolean isMacroSkeleton = false;
+	protected boolean invisibleBGDecal = false;
 
 	protected boolean wasInactive = false;
+	protected boolean onScreen = true;
 	protected boolean isUpdatable = true;
 
 	/**
@@ -423,7 +424,13 @@ public class Skeleton extends Platform {
 						platform.update( deltaTime );
 					} else {
 						platform.updateMover( deltaTime );
-						platform.setTargetPosRotFromSkeleton( frameRate, this );
+						if ( platform.hasMoved( ) || platform.hasRotated( ) || hasMoved() || hasRotated() ) {
+							platform.setTargetPosRotFromSkeleton( frameRate, this );
+							platform.setPreviousTransformation();
+						} else {
+							platform.body.setLinearVelocity( Vector2.Zero );
+							platform.body.setAngularVelocity( 0.0f );
+						}
 						platform.update( deltaTime );
 					}
 				}
@@ -488,6 +495,8 @@ public class Skeleton extends Platform {
 				wasInactive = true;
 			}
 		}
+
+		setPreviousTransformation( );
 
 		alphaFadeAnimator.update( deltaTime );
 		Vector2 pixelPos = null;
@@ -633,6 +642,28 @@ public class Skeleton extends Platform {
 		}
 	}
 
+	/**
+	 * 
+	 * @param batch
+	 * @param camera
+	 */
+	@Override
+	public void drawFGDecals( SpriteBatch batch, Camera camera ) {
+		for ( Sprite decal : fgDecals ) {
+			if ( decal.alpha >= 0.25 ) {
+				if ( decal.getBoundingRectangle( )
+						.overlaps( camera.getBounds( ) ) ) {
+					decal.draw( batch );
+				} else {
+					if ( !wasInactive ) {
+						setEntitiesToSleepOnUpdate( );
+						wasInactive = true;
+					}
+				}
+			}
+		}
+	}
+
 	@Override
 	public void draw( SpriteBatch batch, float deltaTime ) {
 		// super.draw( batch );
@@ -692,33 +723,56 @@ public class Skeleton extends Platform {
 	}
 
 	/**
+	 * 
+	 * @param batch
+	 * @param camera
+	 */
+	@Override
+	public void drawBGDecals( SpriteBatch batch, Camera camera ) {
+		for ( Sprite decal : bgDecals ) {
+			if ( decal.getBoundingRectangle( ).overlaps( camera.getBounds( ) ) ) {
+				if ( !invisibleBGDecal ) {
+					decal.draw( batch );
+				}
+				onScreen = true;
+			} else {
+				onScreen = false;
+			}
+		}
+	}
+
+	/**
 	 * Draw each child. Tiled platforms have unique draw calls. Platforms can be
 	 * hazards as well
 	 */
 	private void drawPlatform( Platform platform, SpriteBatch batch,
 			float deltaTime ) {
-		switch ( platform.getEntityType( ) ) {
-		case PLATFORM:
-			if ( platform.getPlatformType( ) == PlatformType.TILED ) {
-				( ( TiledPlatform ) platform ).draw( batch, deltaTime );
-			} else {
-				platform.draw( batch, deltaTime );
-			}
-			break;
-		case HAZARD:
-			drawHazard( ( Hazard ) platform, batch, deltaTime );
-			break;
-		case STEAM:
-			Steam steam = ( Steam ) platform;
-			steam.draw( batch, deltaTime );
-			break;
-		default:
-			throw new RuntimeException( "Skeleton: " + name
-					+ " doesn't know how to draw your platform: "
-					+ platform.name );
-		}
+
+		platform.draw( batch, deltaTime );
+
+		// switch ( platform.getEntityType( ) ) {
+		// case PLATFORM:
+		// if ( platform.getPlatformType( ) == PlatformType.TILED ) {
+		// ( ( TiledPlatform ) platform ).draw( batch, deltaTime );
+		// } else {
+		// platform.draw( batch, deltaTime );
+		// }
+		// break;
+		// case HAZARD:
+		// drawHazard( ( Hazard ) platform, batch, deltaTime );
+		// break;
+		// case STEAM:
+		// Steam steam = ( Steam ) platform;
+		// steam.draw( batch, deltaTime );
+		// break;
+		// default:
+		// throw new RuntimeException( "Skeleton: " + name
+		// + " doesn't know how to draw your platform: "
+		// + platform.name );
+		// }
 	}
 
+	@SuppressWarnings( "unused" )
 	private void drawHazard( Hazard hazard, SpriteBatch batch, float deltaTime ) {
 		switch ( hazard.hazardType ) {
 		case FIRE:

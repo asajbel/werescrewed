@@ -1,0 +1,40 @@
+chamber.png
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+offset: 0, 0
+back-open-off
+  rotate: false
+  xy: 2, 338
+  size: 214, 334
+  orig: 214, 334
+  offset: 0, 0
+  index: -1
+door-left
+  rotate: false
+  xy: 2, 674
+  size: 93, 262
+  orig: 93, 262
+  offset: 0, 0
+  index: -1
+steam
+  rotate: false
+  xy: 2, 938
+  size: 88, 75
+  orig: 88, 75
+  offset: 0, 0
+  index: -1
+door-right
+  rotate: false
+  xy: 97, 674
+  size: 91, 262
+  orig: 91, 262
+  offset: 0, 0
+  index: -1
+back-open-on
+  rotate: false
+  xy: 2, 2
+  size: 214, 334
+  orig: 214, 334
+  offset: 0, 0
+  index: -1
