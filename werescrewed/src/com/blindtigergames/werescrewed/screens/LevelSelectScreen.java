@@ -9,7 +9,7 @@ import com.badlogic.gdx.utils.Array;
 import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.entity.Falling;
 import com.blindtigergames.werescrewed.entity.Sprite;
-import com.blindtigergames.werescrewed.entity.animator.SingleSpinemator;
+import com.blindtigergames.werescrewed.entity.animator.SimpleSpinemator;
 import com.blindtigergames.werescrewed.graphics.TextureAtlas;
 import com.blindtigergames.werescrewed.gui.Label;
 import com.blindtigergames.werescrewed.gui.TextButton;
@@ -31,8 +31,8 @@ public class LevelSelectScreen extends Screen {
 	private TextButton level1Button;
 	private TextButton backButton = null;
 	private TextButton dragonButton = null;
-	private SingleSpinemator man = null;
-	private SingleSpinemator lady = null;
+	private SimpleSpinemator man = null;
+	private SimpleSpinemator lady = null;
 	private Array< Falling > debris = null;
 	private Array< Falling > gears = null;
 	private int width, height;
@@ -58,8 +58,8 @@ public class LevelSelectScreen extends Screen {
 		
 		lineHeight = Math.round( 2.5f * font.getCapHeight( ) + 40 );
 		screenLabel = new Label( "Level Select", fancyFont );
-		man = new SingleSpinemator( "red_male_atlas", "male", "fall_idle" );
-		lady = new SingleSpinemator( "red_female_atlas", "female", "fall_idle" );
+		man = new SimpleSpinemator( "red_male_atlas", "male", "fall_idle", true );
+		lady = new SimpleSpinemator( "red_female_atlas", "female", "fall_idle", true );
 		gears = new Array< Falling >( );
 		debris = new Array< Falling >( );
 		TextureAtlas gearsAtlas = WereScrewedGame.manager.getAtlas( "gears" );

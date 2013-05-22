@@ -1,0 +1,19 @@
+dragon_objects.png
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+offset: 0, 0
+burner_small
+  rotate: false
+  xy: 594, 2
+  size: 295, 295
+  orig: 295, 295
+  offset: 0, 0
+  index: -1
+burner_med
+  rotate: false
+  xy: 2, 2
+  size: 590, 590
+  orig: 590, 590
+  offset: 0, 0
+  index: -1

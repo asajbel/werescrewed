@@ -20,6 +20,7 @@ public class ParallaxMover implements IMover {
 	private boolean moveContinuous;
 	private float oneStep = 1.33f;
 	private LinearAxis axis;
+	private boolean loopRepeat=true;
 
 	/**
 	 * builds movement of a single layer of parallax scrolling
@@ -28,19 +29,21 @@ public class ParallaxMover implements IMover {
 	 * @param endingPoint
 	 * @param speed
 	 */
-	public ParallaxMover( Vector2 beginningPoint, Vector2 endingPoint,
+	public ParallaxMover( Vector2 beginningPoint, Vector2 endingPoint, 
 			float speed, float alpha, Camera camera, boolean moveContinuous,
 			LinearAxis axis ) {
 		this.beginningPoint = beginningPoint.cpy( );
 		this.endPoint = endingPoint.cpy( );
-		this.speed = Math.abs( speed );
+		this.speed =  speed;
 		this.alpha = alpha;
 		this.cameraControl = camera;
-		this.oldCameraPos = camera.position.cpy( );
+		if(camera!=null)
+			this.oldCameraPos = camera.position.cpy( );
 		this.moveContinuous = moveContinuous;
 		this.axis = axis;
 		puzzleType = PuzzleType.OVERRIDE_ENTITY_MOVER;
 	}
+	
 
 	@Override
 	public void move( float deltaTime, Body body ) {
@@ -76,12 +79,14 @@ public class ParallaxMover implements IMover {
 			}
 			oldCameraPos = cameraControl.position.cpy( );
 		}
-		if ( alpha >= 1 ) {
-			// body.setTransform( beginningPoint.mul( Util.PIXEL_TO_BOX ), 0.0f
-			// );
-			alpha = 0;
-		} else if ( alpha <= 0 ) {
-			alpha = 1;
+		if(loopRepeat){
+			if ( alpha >= 1 ) {
+				// body.setTransform( beginningPoint.mul( Util.PIXEL_TO_BOX ), 0.0f
+				// );
+				alpha = 0;
+			} else if ( alpha <= 0 ) {
+				alpha = 1;
+			}
 		}
 		Vector2 temp = beginningPoint.cpy( );
 		beginningPoint.lerp( endPoint, alpha );
@@ -97,5 +102,9 @@ public class ParallaxMover implements IMover {
 	@Override
 	public PuzzleType getMoverType( ) {
 		return puzzleType;
+	}
+	
+	public void setLoopRepeat(boolean hasLoopRepeat){
+		this.loopRepeat=hasLoopRepeat;
 	}
 }

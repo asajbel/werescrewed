@@ -77,7 +77,7 @@ public class PlayerSpinemator implements ISpinemator {
 		anims = new EnumMap< PlayerAnim, Animation >( PlayerAnim.class );
 
 		for ( PlayerAnim a : PlayerAnim.values( ) ) {
-			Animation temp = sd.findAnimation( a.text );
+			Animation temp = sd.findAnimation( a.getText() );
 			if ( temp != null ) {
 				anims.put( a, temp );
 			}
@@ -396,6 +396,27 @@ public class PlayerSpinemator implements ISpinemator {
 	@Override
 	public void setPosition( Vector2 pos ) {
 		position = pos; 
+	}
+
+	@Override
+	public void flipX( boolean flipX ) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void flipY( boolean flipY ) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	/**
+	 * Not implemented
+	 */
+	@Override
+	public void changeAnimation( String animName, boolean loop ) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

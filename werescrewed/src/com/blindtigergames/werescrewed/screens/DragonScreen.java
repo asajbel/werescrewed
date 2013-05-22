@@ -1,15 +1,21 @@
 package com.blindtigergames.werescrewed.screens;
 
+import java.util.Random;
+
 import aurelienribon.tweenengine.Timeline;
 import aurelienribon.tweenengine.Tween;
 import aurelienribon.tweenengine.TweenEquations;
 
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Joint;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJoint;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
 import com.badlogic.gdx.utils.Array;
+import com.blindtigergames.werescrewed.WereScrewedGame;
+import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.Skeleton;
+import com.blindtigergames.werescrewed.entity.Sprite;
 import com.blindtigergames.werescrewed.entity.action.CannonLaunchAction;
 import com.blindtigergames.werescrewed.entity.action.RotateTweenAction;
 import com.blindtigergames.werescrewed.entity.builders.EventTriggerBuilder;
@@ -19,6 +25,7 @@ import com.blindtigergames.werescrewed.entity.mover.AnalogRotateMover;
 import com.blindtigergames.werescrewed.entity.mover.IMover;
 import com.blindtigergames.werescrewed.entity.mover.LerpMover;
 import com.blindtigergames.werescrewed.entity.mover.LinearAxis;
+import com.blindtigergames.werescrewed.entity.mover.ParallaxMover;
 import com.blindtigergames.werescrewed.entity.mover.RotateTweenMover;
 import com.blindtigergames.werescrewed.entity.mover.TimelineTweenMover;
 import com.blindtigergames.werescrewed.entity.platforms.Pipe;
@@ -27,6 +34,7 @@ import com.blindtigergames.werescrewed.entity.screws.PuzzleScrew;
 import com.blindtigergames.werescrewed.entity.tween.PlatformAccessor;
 import com.blindtigergames.werescrewed.eventTrigger.EventTrigger;
 import com.blindtigergames.werescrewed.eventTrigger.PowerSwitch;
+import com.blindtigergames.werescrewed.graphics.TextureAtlas;
 import com.blindtigergames.werescrewed.level.LevelFactory;
 import com.blindtigergames.werescrewed.util.Util;
 
@@ -53,10 +61,11 @@ public class DragonScreen extends Screen {
 		bodySkeletons( );
 		buildAllCannons();
 		flamePlatformDecals();
+		buildBackground( );
 
 
 		Skeleton jaw_skeleton = ( Skeleton ) LevelFactory.entities
-				.get( "jaw_skeleton" );
+				.get( "fuck_jaw_skeleton" );
 		Timeline t = Timeline.createSequence( );
 
 		t.push( Tween.to( jaw_skeleton, PlatformAccessor.LOCAL_ROT, 6f )
@@ -84,6 +93,9 @@ public class DragonScreen extends Screen {
 				.start( ) );
 		t.repeat( Tween.INFINITY, 0f );
 		jaw_skeleton.addMover( new TimelineTweenMover( t.start( ) ) );
+		
+		headDecals();
+		
 	}
 
 	void buildBalloon( ) {
@@ -135,7 +147,6 @@ public class DragonScreen extends Screen {
 		// time += deltaTime * 1000;
 		bodyRoomAngle = (int) Math.abs( (bodyRoomRotateSkeleton.getAngle( ) * Util.RAD_TO_DEG) % 360);
 		
-		
 		if ( time > 5000 ) {
 			// balloon2.body.applyForce( new Vector2(0f, 100f),
 			// balloon2.body.getWorldCenter( ));
@@ -143,8 +154,8 @@ public class DragonScreen extends Screen {
 		}
 		
 		if(!bodyPowerSwitch3.isTurnedOn( )){
-			bodyRoomJoint.setMotorSpeed( 0.1f );
-			if(bodyRoomAngle > 358 && bodyRoomJoint.isMotorEnabled( )){
+			bodyRoomJoint.setMotorSpeed( -0.1f );
+			if((bodyRoomAngle == 359 || bodyRoomAngle == 180)  && bodyRoomJoint.isMotorEnabled( )){
 				bodyRoomRotateSkeleton.body.setAngularVelocity( 0f );
 				bodyRoomJoint.setMotorSpeed( 0.0f );
 				bodyRoomJoint.setMaxMotorTorque( 0f );
@@ -459,10 +470,11 @@ public class DragonScreen extends Screen {
 															// yields a
 
 	
-		revoluteJointDef.motorSpeed = 0.5f;
+		revoluteJointDef.motorSpeed = -0.3f;
 
 		bodyRoomJoint = (RevoluteJoint)level.world.createJoint( revoluteJointDef );
 		
+		//body_bot_lower
 		//These platforms are invisible
 		Platform bodyTop = ( Platform ) LevelFactory.entities
 				.get( "body_top" );
@@ -537,5 +549,101 @@ public class DragonScreen extends Screen {
 		Platform tai3lFlamePlat = ( Platform ) LevelFactory.entities
 				.get( "tail3_flame_plat" );
 	
+	}
+
+void buildBackground(){
+		TextureAtlas front_clouds = WereScrewedGame.manager.getAtlas( "front-clouds" );
+		float frontCloudsY = 2800, frontCloudsY2 = -500;
+		float frontCloudVariation = 600;
+		float numFrontClouds = 50;
+		float xMax = 30000, xMin = -3000;
+		float minCloudScale = 0.5f;
+		
+		setClearColor( 105f/255f, 208f/255f, 255f/255f, 1f ); //SKY BLUE
+		
+		Random r = new Random();
+		//loop variables
+		BodyDef bdef; Body b; Entity e; ParallaxMover m; float yPos, scale; String cloudId;
+		
+		//top orange big cloud layer
+		for(int i = 0; i < numFrontClouds; ++i){
+			bdef = new BodyDef();
+			bdef.fixedRotation=true;
+			b = level.world.createBody( bdef );
+			cloudId = "front1-"+(r.nextInt( 4 )+1);
+			e = new Entity("front1-"+i,
+								  new Vector2(),
+								  front_clouds.findRegion( cloudId ),
+								  b,
+								  false,
+								  0);
+			scale = r.nextFloat( )/2+minCloudScale;
+			e.sprite.setScale( scale * (r.nextBoolean( )?1f:-1f), r.nextFloat( )/2+0.5f );
+			yPos = frontCloudsY2 + Util.binom( )*frontCloudVariation;
+			m = new ParallaxMover( new Vector2(xMin,yPos),
+												 new Vector2(xMax,yPos),
+												 -0.0001f*r.nextFloat()-.00001f,
+												 r.nextFloat(),
+												 null,
+												 true,
+												 LinearAxis.HORIZONTAL );
+			e.setMoverAtCurrentState( m );
+			level.root.addLooseEntity( e );
+		}
+		
+		//bottom darker cloud layer
+		for(int i = 0; i < numFrontClouds; ++i){
+			bdef = new BodyDef();
+			bdef.fixedRotation=true;
+			b = level.world.createBody( bdef );
+			cloudId = "front2-"+(r.nextInt( 2 )+2); //FIX THIS, front2-1 is not in pack file
+			e = new Entity("front1-"+i,
+								  new Vector2(),
+								  front_clouds.findRegion( cloudId ),
+								  b,
+								  false,
+								  0);
+			scale = r.nextFloat( )/2+minCloudScale;
+			e.sprite.setScale( scale * (r.nextBoolean( )?1f:-1f), r.nextFloat( )/2+0.5f );
+			yPos = frontCloudsY + Util.binom( )*frontCloudVariation;
+			m = new ParallaxMover( new Vector2(xMin,yPos),
+												 new Vector2(xMax,yPos),
+												 //new Vector2( r.nextFloat( )*(xMax-xMin)+xMin, yPos ),
+												 -0.0001f*r.nextFloat()-.00001f, r.nextFloat(), null, true, LinearAxis.HORIZONTAL );
+			e.setMoverAtCurrentState( m );
+			level.root.addLooseEntity( e );
+		}
+		
+
+		//bgGradient
+		level.initBackgroundRoot( );
+		float xOffset = -150, yOffset = -900;
+		bdef=new BodyDef();
+		bdef.fixedRotation=true;
+		b=level.world.createBody( bdef );
+		e=new Entity("bg-gradient",new Vector2(0,-500),null,b,false,0);
+		
+		e.changeSprite( Sprite.scale( front_clouds.createSprite( "bg-gradient" ), 100f,1 ) );//67.5f
+		level.backgroundRootSkeleton.addLooseEntity( e );
+		m = new ParallaxMover( new Vector2(xOffset,0+yOffset),
+				 new Vector2(xOffset,-2048+yOffset),
+				// new Vector2( r.nextFloat( )*(xMax-xMin)+xMin, yPos ),
+				 0.0002f,0.00001f, level.camera, false, LinearAxis.VERTICAL );
+		m.setLoopRepeat( false );
+		e.setMoverAtCurrentState( m );
+	}
+	
+	void headDecals(){
+		//head_skeleton
+		Skeleton jaw_skeleton = ( Skeleton ) LevelFactory.entities
+				.get( "fuck_jaw_skeleton" ),
+				head_skeletonSkeleton = ( Skeleton ) LevelFactory.entities
+				.get( "head_skeleton" );
+		TextureAtlas headAtlas = WereScrewedGame.manager.getAtlas( "head" );
+		float scale = 1f/.66f;
+		//UPPER HEAD
+		Sprite s;
+		jaw_skeleton.addFGDecal( Sprite.scale( headAtlas.createSprite( "dragonbottom_left" ), scale ), new Vector2() );
+		
 	}
 }
