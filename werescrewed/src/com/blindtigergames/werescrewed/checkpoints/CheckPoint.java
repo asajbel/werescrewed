@@ -14,6 +14,7 @@ import com.blindtigergames.werescrewed.entity.EntityType;
 import com.blindtigergames.werescrewed.entity.Sprite;
 import com.blindtigergames.werescrewed.entity.animator.SimpleFrameAnimator;
 import com.blindtigergames.werescrewed.entity.animator.SimpleFrameAnimator.LoopBehavior;
+import com.blindtigergames.werescrewed.entity.animator.SimpleSpinemator;
 import com.blindtigergames.werescrewed.graphics.TextureAtlas;
 import com.blindtigergames.werescrewed.util.Util;
 
@@ -33,6 +34,7 @@ public class CheckPoint extends Entity {
 	private boolean removed = false;
 	private SimpleFrameAnimator checkpointFrameAnimator;
 	private Entity entity;
+	private static final float radius = 64; 
 
 	/**
 	 * builds a checkpoint jointed to a skeleton
@@ -58,15 +60,17 @@ public class CheckPoint extends Entity {
 		if ( progressManager.currentCheckPoint == null ) {
 			progressManager.currentCheckPoint = this;
 		}
-		TextureAtlas atlas = WereScrewedGame.manager.getAtlas( "checkpoint" );
-		checkpointFrameAnimator = new SimpleFrameAnimator( ).speed( 0f )
-				.loop( LoopBehavior.STOP ).time( 0.001f ).startFrame( 0 )
-				.maxFrames( atlas.getRegions( ).size + 1 );
-		Sprite sprite = new Sprite( atlas, checkpointFrameAnimator );
-		sprite.setOrigin( sprite.getWidth( ) / 2, sprite.getHeight( ) / 2 );
-		changeSprite( sprite );
-		super.offset = new Vector2( sprite.getWidth( ) / 2,
-				sprite.getHeight( ) / 2 );
+		spinemator = new SimpleSpinemator( "rez_chamber_atlas", "chamber", "off-idle", false ); 
+		spinemator.setPosition( pos.x, pos.y );
+//		TextureAtlas atlas = WereScrewedGame.manager.getAtlas( "checkpoint" );
+//		checkpointFrameAnimator = new SimpleFrameAnimator( ).speed( 0f )
+//				.loop( LoopBehavior.STOP ).time( 0.001f ).startFrame( 0 )
+//				.maxFrames( atlas.getRegions( ).size + 1 );
+//		Sprite sprite = new Sprite( atlas, checkpointFrameAnimator );
+//		sprite.setOrigin( sprite.getWidth( ) / 2, sprite.getHeight( ) / 2 );
+//		changeSprite( sprite );
+//		super.offset = new Vector2( sprite.getWidth( ) / 2,
+//				sprite.getHeight( ) / 2 );
 
 		// sprite.setColor( Color.PINK );
 		constructBody( pos );
@@ -105,7 +109,8 @@ public class CheckPoint extends Entity {
 	 */
 	public void hitPlayer( ) {
 		if ( !active ) {
-			checkpointFrameAnimator.speed( 1.0f );
+//			checkpointFrameAnimator.speed( 1.0f );
+			spinemator.changeAnimation( "turn-on", false );
 			// body.setAngularVelocity( 3f );
 		}
 		active = true;
@@ -133,19 +138,21 @@ public class CheckPoint extends Entity {
 	 */
 	public void deactivate( ) {
 		active = false;
-		checkpointFrameAnimator.speed( -1.0f );
+//		checkpointFrameAnimator.speed( -1.0f );
+		spinemator.changeAnimation( "turn-off", false ); 
 		// body.setAngularVelocity( -3f );
 	}
 
 	@Override
 	public void update( float deltaTime ) {
+		Vector2 bodyPos = body.getPosition( ).mul( Util.BOX_TO_PIXEL );
+		spinemator.setPosition( bodyPos ); 
 		super.update( deltaTime );
 		// this.body.setTransform( body.getPosition( ), entity.getAngle( ) );
-		Vector2 bodyPos = body.getPosition( ).mul( Util.BOX_TO_PIXEL );
-		sprite.setRotation( MathUtils.radiansToDegrees * entity.getAngle( ) );
-		sprite.setPosition( bodyPos.x - offset.x, bodyPos.y - offset.y );
+//		sprite.setRotation( MathUtils.radiansToDegrees * entity.getAngle( ) );
+//		sprite.setPosition( bodyPos.x - offset.x, bodyPos.y - offset.y );
 		// if ( !checkpointFrameAnimator.isStopped( ) )
-		checkpointFrameAnimator.update( deltaTime );
+//		checkpointFrameAnimator.update( deltaTime );
 		// System.out.println( checkpointFrameAnimator.getFrame( ) );
 		// if ( active ) {
 		// if ( body.getAngle( ) >= 90f * Util.DEG_TO_RAD ) {
@@ -164,7 +171,7 @@ public class CheckPoint extends Entity {
 		checkPBodyDef.fixedRotation = false;
 		body = world.createBody( checkPBodyDef );
 		CircleShape checkPShape = new CircleShape( );
-		checkPShape.setRadius( ( sprite.getWidth( ) / 2.0f )
+		checkPShape.setRadius( ( radius )
 				* Util.PIXEL_TO_BOX );
 		FixtureDef checkPFixture = new FixtureDef( );
 		checkPFixture.filter.categoryBits = Util.CATEGORY_CHECKPOINTS;
