@@ -16,7 +16,7 @@ public enum PlayerAnim {
 			"screwing_hang" ), SCREWING_GROUND( "screwing_ground" ), LAND_SCREW(
 			"land_screw_ready", true ), LAND( "land", true ), TURN_SCREW(
 			"turn_screw_ready", true ), TURN( "turn", true );
-	String text;
+	private String text;
 	PlayerAnim start = null;
 	LoopBehavior loop;
 	boolean loopBool;
@@ -32,7 +32,7 @@ public enum PlayerAnim {
 	}
 
 	PlayerAnim( String t, LoopBehavior l ) {
-		text = t;
+		setText( t );
 		loop = l;
 		if ( l == LoopBehavior.STOP ) {
 			loopBool = false;
@@ -51,14 +51,22 @@ public enum PlayerAnim {
 	}
 
 	public String toString( ) {
-		return text;
+		return getText();
 	}
 
 	public static PlayerAnim fromString( String t ) {
 		for ( PlayerAnim a : PlayerAnim.values( ) ) {
-			if ( a.text.equals( t ) )
+			if ( a.getText().equals( t ) )
 				return a;
 		}
 		return IDLE;
+	}
+
+	public String getText( ) {
+		return text;
+	}
+
+	public void setText( String text ) {
+		this.text = text;
 	}
 }

@@ -476,7 +476,7 @@ public class EventTrigger extends Platform {
 	 * calls act() with its begin action on every entity in this list depending
 	 * on if its repeatable or not.
 	 * 
-	 * @author Ranveer
+	 * @author Ranveer - I didn't write the player stuff associated
 	 * @param playerThatTriggeredMe
 	 *            pass in null if you don't know what this is for.
 	 */
