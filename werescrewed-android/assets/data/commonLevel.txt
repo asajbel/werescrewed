@@ -88,6 +88,7 @@
 /common/tileset/alphabot-bleed.pack
 /common/spine/red_female_atlas.pack
 /common/spine/red_male_atlas.pack
+/common/spine/rez_chamber_atlas.pack
 /particles/particles.pack
 
 ##Fonts

@@ -10,6 +10,7 @@ import com.esotericsoftware.spine.Bone;
 import com.esotericsoftware.spine.Skeleton;
 import com.esotericsoftware.spine.SkeletonBinary;
 import com.esotericsoftware.spine.SkeletonData;
+import com.esotericsoftware.spine.SkeletonJson;
 import com.esotericsoftware.spine.SkeletonRenderer;
 
 public class SimpleSpinemator implements ISpinemator {
@@ -31,9 +32,9 @@ public class SimpleSpinemator implements ISpinemator {
 	public SimpleSpinemator( String atlasName, String skeletonName,
 			String initialAnimationName, boolean loop ) {
 		TextureAtlas atlas = WereScrewedGame.manager.getAtlas( atlasName );
-		SkeletonBinary sb = new SkeletonBinary( atlas );
+		SkeletonJson sb = new SkeletonJson( atlas );
 		sd = sb.readSkeletonData( Gdx.files.internal( "data/common/spine/"
-				+ skeletonName + ".skel" ) );
+				+ skeletonName + ".json" ) );
 		anim = sd.findAnimation( initialAnimationName );
 		skel = new com.esotericsoftware.spine.Skeleton( sd );
 		skel.setToBindPose( );
