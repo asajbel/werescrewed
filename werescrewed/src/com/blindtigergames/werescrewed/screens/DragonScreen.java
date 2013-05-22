@@ -65,7 +65,7 @@ public class DragonScreen extends Screen {
 
 
 		Skeleton jaw_skeleton = ( Skeleton ) LevelFactory.entities
-				.get( "jaw_skeleton" );
+				.get( "fuck_jaw_skeleton" );
 		Timeline t = Timeline.createSequence( );
 
 		t.push( Tween.to( jaw_skeleton, PlatformAccessor.LOCAL_ROT, 6f )
@@ -636,7 +636,7 @@ void buildBackground(){
 	void headDecals(){
 		//head_skeleton
 		Skeleton jaw_skeleton = ( Skeleton ) LevelFactory.entities
-				.get( "jaw_skeleton" ),
+				.get( "fuck_jaw_skeleton" ),
 				head_skeletonSkeleton = ( Skeleton ) LevelFactory.entities
 				.get( "head_skeleton" );
 		TextureAtlas headAtlas = WereScrewedGame.manager.getAtlas( "head" );
