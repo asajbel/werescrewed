@@ -18,6 +18,7 @@ import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 import com.blindtigergames.werescrewed.graphics.TextureAtlas;
 import com.blindtigergames.werescrewed.player.Player;
 import com.blindtigergames.werescrewed.player.Player.PlayerState;
+import com.blindtigergames.werescrewed.util.Util;
 
 /**
  * handles all of the progress through checkpoints also handles re-spawning with
@@ -39,6 +40,8 @@ public class ProgressManager {
 	private final Vector2 hoverOffset = new Vector2( -64, 64 );
 	private final Vector2 screwLeftOffset = new Vector2( -240, 150 );
 	private final Vector2 screwRightOffset = new Vector2( 270, 150 );
+	private float animTime = 0f;
+	private float rezDelay = Float.MAX_VALUE;
 
 	/**
 	 * 
@@ -112,6 +115,7 @@ public class ProgressManager {
 	 * @param deltaTime
 	 */
 	public void update( float deltaTime ) {
+		animTime += deltaTime;
 		boolean noPlayersDead = true;
 		for ( Player player : players.values( ) ) {
 			if ( !player.isPlayerDead( ) && ghostMap.containsKey( player.name ) ) {
@@ -123,21 +127,27 @@ public class ProgressManager {
 				}
 				noPlayersDead = false;
 			}
+			if ( player.isRezzing( ) ) {
+				if (player.getRezTime( ) < rezDelay) {
+					player.setRezTime( player.getRezTime( ) + deltaTime ); 
+				} else {
+					spawnAtCheckPoint(player); 
+				}
+			}
 		}
+
 		if ( noPlayersDead ) {
 			removeRezScrew( );
-			//used for tele-porting to checkpoint and calculate collisions
-			/*for ( Player player : players.values( ) ) {
-				if ( player.body.getType( ) == BodyType.KinematicBody ) {
-					player.body.setType( BodyType.DynamicBody );
-					player.body.setLinearVelocity( Vector2.Zero );
-					for ( Fixture f : player.body.getFixtureList( ) ) {
-						if ( f != player.rightSensor && f != player.leftSensor && f != player.topSensor ) {
-							f.setSensor( false );
-						}
-					}
-				}
-			}*/
+			// used for tele-porting to checkpoint and calculate collisions
+			/*
+			 * for ( Player player : players.values( ) ) { if (
+			 * player.body.getType( ) == BodyType.KinematicBody ) {
+			 * player.body.setType( BodyType.DynamicBody );
+			 * player.body.setLinearVelocity( Vector2.Zero ); for ( Fixture f :
+			 * player.body.getFixtureList( ) ) { if ( f != player.rightSensor &&
+			 * f != player.leftSensor && f != player.topSensor ) { f.setSensor(
+			 * false ); } } } }
+			 */
 		}
 
 		// update the rez screw if it exists
@@ -147,6 +157,16 @@ public class ProgressManager {
 		updateGhosts( deltaTime );
 
 		oldChkptPos = currentCheckPoint.getPositionPixel( ).cpy( );
+
+		if ( !currentCheckPoint.spinemator.getCurrentAnimation( ).equals(
+				"on-idle" )
+				&& !currentCheckPoint.spinemator.getCurrentAnimation( ).equals(
+						"wait" )
+				&& animTime > currentCheckPoint.spinemator
+						.getAnimationDuration( ) ) {
+			currentCheckPoint.spinemator.changeAnimation( "on-idle", true );
+			animTime = 0f;
+		}
 	}
 
 	/**
@@ -179,6 +199,8 @@ public class ProgressManager {
 			buildRezScrew( player );
 		}
 		if ( !ghostMap.containsKey( player.name ) ) {
+			currentCheckPoint.spinemator.changeAnimation( "wait", true );
+			animTime = 0f;
 			buildGhost( player );
 		}
 	}
@@ -252,7 +274,7 @@ public class ProgressManager {
 				LerpMover lm = ( LerpMover ) ghostMap.get( key ).currentMover( );
 				lm.changeEndPos( currentCheckPoint.getPositionPixel( ).sub(
 						chkptOffset ) );
-				lm.setSpeed( 10f / currentCheckPoint.getPositionPixel( )
+				lm.setSpeed( 20f / currentCheckPoint.getPositionPixel( )
 						.sub( players.get( key ).getPositionPixel( ) ).len( ) );
 				if ( currentCheckPoint.getPositionPixel( ).x < ghostMap.get(
 						key ).getPositionPixel( ).x
@@ -266,7 +288,7 @@ public class ProgressManager {
 					ghostMap.get( key ).sprite.setScale( 1, 1 );
 				}
 				if ( lm.atEnd( ) ) {
-					spawnAtCheckPoint( players.get( key ), deltaTime );
+					startSpawn( players.get( key ) );
 					ghostMap.get( key ).clearAnchors( );
 					ghostMap.remove( key );
 				} else {
@@ -282,23 +304,36 @@ public class ProgressManager {
 	 * 
 	 * @param player
 	 */
-	private void spawnAtCheckPoint( Player player, float deltaTime ) {
-		//tele-port to checkpoint with velocity
-		//float frameRate = 1 / deltaTime;
+	private void startSpawn( Player player ) {
+		currentCheckPoint.spinemator.changeAnimation( "birth", false );
+		rezDelay = currentCheckPoint.spinemator.getAnimationDuration( ) / 20f;
+		player.setRezzing( true );
+		animTime = 0f;
+		player.setRezTime( 0f );
+
+	}
+
+	private void spawnAtCheckPoint( Player player ) {
+		player.setRezzing( false ); 
+		// tele-port to checkpoint with velocity
+		// float frameRate = 1 / deltaTime;
 		// bring the player back to life
 		player.respawnPlayer( );
 		// remove the instance of the rez screw
 		removeRezScrew( );
 		// move the player to the current checkpoint
-		//tele-port to checkpoint with velocity
-		//Vector2 diff = currentCheckPoint.body.getPosition( ).sub( player.body.getPosition( ) );
+		// tele-port to checkpoint with velocity
+		// Vector2 diff = currentCheckPoint.body.getPosition( ).sub(
+		// player.body.getPosition( ) );
 		player.body.setType( BodyType.DynamicBody );
-		//player.body.setLinearVelocity( diff );
-		//move the player to checkpoint with transform collision problems
-		player.body.setTransform( currentCheckPoint.body.getPosition( ), 0.0f );
+		// player.body.setLinearVelocity( diff );
+		// move the player to checkpoint with transform collision problems
+		Vector2 rezPoint = new Vector2(currentCheckPoint.body.getPosition( ));
+		rezPoint.add( -60 * Util.PIXEL_TO_BOX , 60f * Util.PIXEL_TO_BOX );
+		player.body.setTransform( rezPoint, 0.0f );
 		player.body.setLinearVelocity( Vector2.Zero );
 		player.getEffect( "revive" ).restartAt(
-				player.getPositionPixel( ).add( 60, -30 ) );
+				player.getPositionPixel( ).add( 60, 60 ) );
 	}
 
 	/**
@@ -358,10 +393,11 @@ public class ProgressManager {
 		}
 	}
 
-//	public void addGhostTexture( Player player, TextureRegion ghostTexture ) {
-//		if ( ghostTexture != null && !ghostTextures.containsKey( player.name )
-//				&& players.containsKey( player.name ) ) {
-//			// ghostTextures.put( player.name, ghostTexture );
-//		}
-//	}
+	// public void addGhostTexture( Player player, TextureRegion ghostTexture )
+	// {
+	// if ( ghostTexture != null && !ghostTextures.containsKey( player.name )
+	// && players.containsKey( player.name ) ) {
+	// // ghostTextures.put( player.name, ghostTexture );
+	// }
+	// }
 }
