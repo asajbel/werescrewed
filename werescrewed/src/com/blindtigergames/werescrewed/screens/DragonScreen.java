@@ -771,7 +771,7 @@ void buildBackground(){
 		
 		tail.addFGDecal( Sprite.scale( tailAtlas.createSprite( "tail" ), 2), new Vector2(-1800,-400) );
 		tail.fgSprite=null;
-		tail.setFgFade( true );
+	//tail.setFgFade( true );
 		addFGSkeleton( tail );
 		
 	}
@@ -782,7 +782,7 @@ void buildBackground(){
 		TextureAtlas tailAtlas = WereScrewedGame.manager.getAtlas( "tail-fg" );
 		tail2_skeleton.addFGDecal( Sprite.scale( tailAtlas.createSprite( "tail2" ), 2), new Vector2(-1206,-638) );//227,17
 		tail2_skeleton.fgSprite=null;
-		tail2_skeleton.setFgFade( true );
+		//tail2_skeleton.setFgFade( true );
 		
 		addFGSkeleton( tail2_skeleton );
 	}
@@ -793,7 +793,7 @@ void buildBackground(){
 		TextureAtlas tailAtlas = WereScrewedGame.manager.getAtlas( "tail-fg" );
 		tail3_skeleton.addFGDecal( Sprite.scale( tailAtlas.createSprite( "tail3" ), 2), new Vector2(-1166,-765) );//227,17
 		tail3_skeleton.fgSprite=null;
-		tail3_skeleton.setFgFade( true );
+		//tail3_skeleton.setFgFade( true );
 		
 		addFGSkeleton( tail3_skeleton );
 	}
