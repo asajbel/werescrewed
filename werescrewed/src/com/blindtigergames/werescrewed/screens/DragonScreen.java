@@ -66,6 +66,8 @@ public class DragonScreen extends Screen {
 		tail1Decals();
 		tail2Decals();
 		tail3Decals();
+		//neckDecals();
+		bodyDecals();
 
 
 		Skeleton jaw_skeleton = ( Skeleton ) LevelFactory.entities
@@ -676,7 +678,7 @@ void buildBackground(){
 		level.bgCamZoomMax = 1.5f;
 		level.bgCamZoomMin = .5f;
 		int numMountains = 3;
-		float mountainW = 1919*level.bgCamZoomMax, mountainY = 300;
+		float mountainW = (1859-100)*level.bgCamZoomMax, mountainY = 100;
 
 		float alpha, aOffset;
 		for(int i = 0; i < numMountains; ++i ){
@@ -696,7 +698,6 @@ void buildBackground(){
 		}
 		
 		//mountains
-		//mountains_back_clouds
 		mountainW = 1275*level.bgCamZoomMax; mountainY = -200f;
 		for(int i = 0; i < numMountains; ++i ){
 			bdef=new BodyDef();
@@ -754,6 +755,7 @@ void buildBackground(){
 		
 		tail.addFGDecal( Sprite.scale( tailAtlas.createSprite( "tail" ), 2), new Vector2(-1800,-400) );
 		tail.fgSprite=null;
+		tail.setFgFade( true );
 		addFGSkeleton( tail );
 		
 	}
@@ -764,7 +766,7 @@ void buildBackground(){
 		TextureAtlas tailAtlas = WereScrewedGame.manager.getAtlas( "tail-fg" );
 		tail2_skeleton.addFGDecal( Sprite.scale( tailAtlas.createSprite( "tail2" ), 2), new Vector2(-1206,-638) );//227,17
 		tail2_skeleton.fgSprite=null;
-		//tail2_skeleton.setFgFade( true );
+		tail2_skeleton.setFgFade( true );
 		
 		addFGSkeleton( tail2_skeleton );
 	}
@@ -775,8 +777,22 @@ void buildBackground(){
 		TextureAtlas tailAtlas = WereScrewedGame.manager.getAtlas( "tail-fg" );
 		tail3_skeleton.addFGDecal( Sprite.scale( tailAtlas.createSprite( "tail3" ), 2), new Vector2(-1166,-765) );//227,17
 		tail3_skeleton.fgSprite=null;
-		//tail2_skeleton.setFgFade( true );
+		tail3_skeleton.setFgFade( true );
 		
 		addFGSkeleton( tail3_skeleton );
+	}
+	
+	void bodyDecals(){
+		Skeleton neck_skeleton = (Skeleton)LevelFactory.entities.get( "neck_skeleton" );
+		TextureAtlas tailAtlas = WereScrewedGame.manager.getAtlas( "body-neck" );
+		neck_skeleton.addFGDecal( Sprite.scale( tailAtlas.createSprite( "neck" ), 2f), new Vector2(-1167,-914) );//4,414
+		neck_skeleton.fgSprite=null;
+		neck_skeleton.setFgFade( false );//3497.1770
+		
+		addFGSkeleton( neck_skeleton );
+	}
+	
+	void neckDecal(){
+		
 	}
 }

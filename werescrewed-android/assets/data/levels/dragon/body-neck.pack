@@ -1,19 +1,19 @@
-mountains-back-clouds.png
+body-neck.png
 format: RGBA8888
 filter: Linear,Linear
 repeat: none
 offset: 0, 0
-mountains
-  rotate: false
-  xy: 2, 681
-  size: 1280, 641
-  orig: 1280, 641
-  offset: 0, 0
-  index: -1
-back-clouds
+body
   rotate: false
   xy: 2, 2
-  size: 1859, 677
-  orig: 1859, 677
+  size: 1981, 775
+  orig: 1981, 775
+  offset: 0, 0
+  index: -1
+neck
+  rotate: false
+  xy: 2, 779
+  size: 1289, 906
+  orig: 1289, 906
   offset: 0, 0
   index: -1

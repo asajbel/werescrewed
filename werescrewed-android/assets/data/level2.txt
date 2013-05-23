@@ -47,3 +47,4 @@
 
 #Fg packs
 /levels/dragon/tail-fg.pack
+/levels/dragon/body-neck.pack
