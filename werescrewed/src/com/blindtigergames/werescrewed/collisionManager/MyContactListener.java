@@ -45,6 +45,7 @@ public class MyContactListener implements ContactListener {
 	private static final float MINIMUM_HIT_FORCE = 1.0f;
 	private static final float MAXIMUM_HIT_FORCE = 5.0f;
 	private static final float HIT_X_Y_RATIO = 5.0f;
+	private static final float HIT_SOUND_DELAY = 0.1f;
 
 	/**
 	 * When two new objects start to touch
@@ -140,7 +141,7 @@ public class MyContactListener implements ContactListener {
 														painForce.len( )
 																/ MAXIMUM_HIT_FORCE,
 														1.0f );
-										player.sounds.setDelay( "hit", 3.0f );
+										player.sounds.setDelay( "hit", HIT_SOUND_DELAY );
 									}
 								}
 							}

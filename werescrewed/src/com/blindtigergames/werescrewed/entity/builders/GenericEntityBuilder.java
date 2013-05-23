@@ -251,9 +251,20 @@ public class GenericEntityBuilder< B extends GenericEntityBuilder< ? >> {
 					Texture.class ) );
 		}
 		// Handle sound tags
-		if ( props.containsKey( "sound" ) ) {
-			for ( String line : props.getAll( "sound" ) ) {
-				soundlines.add( line );
+		boolean moreSounds = true;
+		String tag;
+		for (int i = -1; i < 99 && moreSounds; i++){
+			if (i < 0){
+				tag = "sound";
+			} else {
+				tag = "sound" + i;
+			}
+			if (props.containsKey( tag )){
+				for ( String line : props.getAll( tag ) ) {
+					soundlines.add( line );
+				}
+			} else if (i >= 0){
+				moreSounds = false;
 			}
 		}
 		return ( B ) this;
