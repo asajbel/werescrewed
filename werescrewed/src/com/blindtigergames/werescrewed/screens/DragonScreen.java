@@ -342,7 +342,7 @@ public class DragonScreen extends Screen {
 		Platform tail3MoverPlat2 = ( Platform ) LevelFactory.entities
 				.get( "tail3_mover_plat2" );
 
-		float distance = 1000f;
+		float distance = 800f;
 
 		LerpMover lm1 = new LerpMover( tail3MoverPlat1.getPositionPixel( ),
 				new Vector2( tail3MoverPlat1.getPositionPixel( ).x,
