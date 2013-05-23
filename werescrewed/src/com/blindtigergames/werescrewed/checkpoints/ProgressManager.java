@@ -42,7 +42,6 @@ public class ProgressManager {
 	private final Vector2 hoverOffset = new Vector2( -64, 64 );
 	private final Vector2 screwLeftOffset = new Vector2( -240, 150 );
 	private final Vector2 screwRightOffset = new Vector2( 270, 150 );
-	private boolean deadPlayerHitCheckpnt = false;
 	private float animTime = 0f;
 	private float rezDelay = Float.MAX_VALUE;
 
@@ -112,7 +111,7 @@ public class ProgressManager {
 			}
 		} else {
 			if ( player.body.getType( ) == BodyType.KinematicBody ) {
-				deadPlayerHitCheckpnt = true;
+				player.setDeadPlayerHitCheckpnt( true );
 			}
 		}
 	}
@@ -125,20 +124,8 @@ public class ProgressManager {
 		animTime += deltaTime;
 		boolean noPlayersDead = true;
 		for ( Player player : players.values( ) ) {
-			if ( deadPlayerHitCheckpnt ) {
-				player.body.setType( BodyType.DynamicBody );
-				player.body.setLinearVelocity( Vector2.Zero );
-				player.setVisible( true );
-				Filter filter = new Filter( );
-				for ( Fixture f : player.body.getFixtureList( ) ) {
-					if ( f != player.rightSensor && f != player.leftSensor
-							&& f != player.topSensor ) {
-						f.setSensor( false );
-					}
-					filter.categoryBits = Util.CATEGORY_PLAYER;
-					filter.maskBits = Util.CATEGORY_EVERYTHING;
-					f.setFilterData( filter );
-				}
+			if ( player.isDeadPlayerHitCheckpnt( ) ) {
+				wait( player );
 			}
 			if ( !player.isPlayerDead( ) && ghostMap.containsKey( player.name ) ) {
 				ghostMap.get( player.name ).clearAnchors( );
@@ -150,14 +137,15 @@ public class ProgressManager {
 				noPlayersDead = false;
 			}
 			if ( player.isRezzing( ) ) {
-				if (player.getRezTime( ) < rezDelay) {
-					player.setRezTime( player.getRezTime( ) + deltaTime ); 
+				if ( player.getRezTime( ) < rezDelay ) {
+					player.setRezTime( player.getRezTime( ) + deltaTime );
 				} else {
-					spawnAtCheckPoint(player); 
+					spawnAtCheckPoint( player );
 				}
 			}
+
+			player.setDeadPlayerHitCheckpnt( false );
 		}
-		deadPlayerHitCheckpnt = false;
 		if ( noPlayersDead ) {
 			removeRezScrew( );
 		}
@@ -275,10 +263,9 @@ public class ProgressManager {
 		if ( jointE == null ) {
 			jointE = currentCheckPoint;
 		}
-		rezScrewMap.put( player.name,
-				rezzBuilder.playerOffset( true ).lerpMover( screwMover )
-						.position( screwPos )
-						.entity( jointE ).buildRezzScrew( ) );
+		rezScrewMap.put( player.name, rezzBuilder.playerOffset( true )
+				.lerpMover( screwMover ).position( screwPos ).entity( jointE )
+				.buildRezzScrew( ) );
 	}
 
 	/**
@@ -315,43 +302,59 @@ public class ProgressManager {
 		}
 	}
 
-
 	private void startSpawn( Player player ) {
-		currentCheckPoint.spinemator.changeAnimation( "birth", false );
-		rezDelay = currentCheckPoint.spinemator.getAnimationDuration( ) / 20f;
-		player.setRezzing( true );
-		animTime = 0f;
+		removeRezScrew( );
 		player.setRezTime( 0f );
+		player.respawnPlayer( );
+		Vector2 rezPoint = new Vector2( currentCheckPoint.body.getPosition( ) );
+		// rezPoint.add( -60 * Util.PIXEL_TO_BOX , 60f * Util.PIXEL_TO_BOX );
+		Vector2 diff = rezPoint.sub( player.body.getPosition( ) );
+		player.body.setLinearVelocity( diff );
+		player.setVisible( false );
 
 	}
-/**
- * respawn the player at the check point
- * 
- * @param player
- */
+
+	private void wait( Player player ) {
+		currentCheckPoint.spinemator.changeAnimation( "birth", false );
+		rezDelay = currentCheckPoint.spinemator.getAnimationDuration( ) / 10f;
+		player.setRezzing( true );
+		animTime = 0f;
+	}
+
+	/**
+	 * respawn the player at the check point
+	 * 
+	 * @param player
+	 */
 	private void spawnAtCheckPoint( Player player ) {
-		player.setRezzing( false ); 
+		player.setRezzing( false );
 		// tele-port to checkpoint with velocity
 		// float frameRate = 1 / deltaTime;
 		// bring the player back to life
-		player.respawnPlayer( );
 		// remove the instance of the rez screw
-		removeRezScrew( );
-		Vector2 rezPoint = new Vector2(currentCheckPoint.body.getPosition( ));
-		rezPoint.add( -60 * Util.PIXEL_TO_BOX , 60f * Util.PIXEL_TO_BOX );
 
 		// move the player to the current checkpoint
 		// tele-port to checkpoint with velocity
-		Vector2 diff = rezPoint.sub(
-				player.body.getPosition( ) );
-		player.body.setLinearVelocity( diff );
-		player.setVisible( false );
 		// move the player to checkpoint with transform collision problems
-		//player.body.setType( BodyType.DynamicBody );
-		//player.body.setTransform( rezPoint, 0.0f );
-		//player.body.setLinearVelocity( Vector2.Zero );
-		player.getEffect( "revive" ).restartAt(
-				player.getPositionPixel( ).add( 60, 60 ) );
+		// player.body.setType( BodyType.DynamicBody );
+		// player.body.setTransform( rezPoint, 0.0f );
+		// player.body.setLinearVelocity( Vector2.Zero );
+		Vector2 rezPoint = new Vector2( currentCheckPoint.body.getPosition( ) );
+		rezPoint.add( -60 * Util.PIXEL_TO_BOX, 60f * Util.PIXEL_TO_BOX );
+		player.body.setTransform( rezPoint, 0.0f );
+		player.body.setType( BodyType.DynamicBody );
+		player.body.setLinearVelocity( Vector2.Zero );
+		player.setVisible( true );
+		Filter filter = new Filter( );
+		for ( Fixture f : player.body.getFixtureList( ) ) {
+			if ( f != player.rightSensor && f != player.leftSensor
+					&& f != player.topSensor ) {
+				f.setSensor( false );
+			}
+			filter.categoryBits = Util.CATEGORY_PLAYER;
+			filter.maskBits = Util.CATEGORY_EVERYTHING;
+			f.setFilterData( filter );
+		}
 	}
 
 	/**
