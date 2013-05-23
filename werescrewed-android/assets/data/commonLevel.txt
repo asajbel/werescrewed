@@ -119,6 +119,7 @@ injured/oof.p
 fastSteam.p
 slowSteam.p
 fire.p
+fire_new.p
 
 ##menu assets
 /menu/menu.png
