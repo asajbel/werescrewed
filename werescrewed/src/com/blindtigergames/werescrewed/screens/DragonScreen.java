@@ -537,24 +537,20 @@ public class DragonScreen extends Screen {
 	}
 	
 	void flamePlatformDecals(){
-		Platform balloon1FlamePlat = ( Platform ) LevelFactory.entities
-				.get( "balloon1_flame_plat" );
-		
-		Platform balloon2FlamePlat = ( Platform ) LevelFactory.entities
-				.get( "balloon2_flame_plat" );
-		
-		Platform balloon3FlamePlat = ( Platform ) LevelFactory.entities
-				.get( "balloon3_flame_plat" );
-		
-		Platform tailFlamePlat = ( Platform ) LevelFactory.entities
-				.get( "tail_flame_plat" );
-		
-		Platform tail2FlamePlat = ( Platform ) LevelFactory.entities
-				.get( "tail2_flame_plat" );
-		
-		Platform tai3lFlamePlat = ( Platform ) LevelFactory.entities
-				.get( "tail3_flame_plat" );
-	
+		TextureAtlas dragonObjects = WereScrewedGame.manager.getAtlas( "dragon_objects" );
+		Sprite s;
+		Platform p;
+		String[] entities = {"balloon1_flame_plat","balloon2_flame_plat",
+				"balloon3_flame_plat","tail_flame_plat",
+				"tail2_flame_plat","tail3_flame_plat"};
+		for(int i =0; i < entities.length; ++i ){
+			p = ( Platform ) LevelFactory.entities
+					.get( entities[i] );
+			s = dragonObjects.createSprite( "burner-med" );
+			p.addFGDecal( s,new Vector2(-s.getWidth( )/2,-s.getHeight( )/2) );
+			addFGEntity( p );
+			p.addBehindParticleEffect( "fire", false, true ).start();
+		}
 	}
 
 void buildBackground(){
