@@ -80,7 +80,8 @@ public class ProgressManager {
 	 */
 	public void hitNewCheckPoint( CheckPoint checkPoint, Player player ) {
 		// If the checkpoint hit is not the currently activated one
-		if ( currentCheckPoint != checkPoint ) {
+		if ( currentCheckPoint != checkPoint
+				&& player.body.getType( ) != BodyType.KinematicBody ) {
 			// Deactivate the current checkpoint
 			currentCheckPoint.deactivate( );
 			oldChkptPos = currentCheckPoint.getPositionPixel( ).cpy( );
