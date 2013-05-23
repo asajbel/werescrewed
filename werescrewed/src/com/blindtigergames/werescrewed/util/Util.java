@@ -103,5 +103,14 @@ public class Util {
 	public static float binom(){
 		return r.nextFloat( )-r.nextFloat( );
 	}
+	
+	public static int clamp(int n, int l, int h)
+	{
+	    return (n > h ? h : (n < l ? l : n));
+	}
 
+	public static float clamp(float n, float l, float h)
+	{
+	    return (n > h ? h : (n < l ? l : n));
+	}
 }

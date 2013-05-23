@@ -79,11 +79,14 @@ public class Screen implements com.badlogic.gdx.Screen {
 			
 			// background stuff
 			if ( level.backgroundRootSkeleton != null ) {
+				if(level.bgCamZoomScale!=0.0f){
+					level.backgroundCam.zoom= Util.clamp( 1f+level.camera.camera.zoom*level.bgCamZoomScale,
+							level.bgCamZoomMin, level.bgCamZoomMax );
+					
+				}
 				level.backgroundCam.update( );
 				level.backgroundRootSkeleton.update( delta );
-			}
-
-			if ( level.backgroundRootSkeleton != null ) {
+				
 				level.backgroundBatch
 						.setProjectionMatrix( level.backgroundCam.combined );
 				level.backgroundBatch.begin( );

@@ -99,4 +99,8 @@ public interface ISpinemator extends I_Drawable {
 	 */
 	void changeAnimation( String animName, boolean loop );
 	
+	String getCurrentAnimation( );
+	
+	float getAnimationDuration( ); 
+	
 }

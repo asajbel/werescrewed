@@ -53,17 +53,22 @@ public class SimpleSpinemator implements ISpinemator {
 		time += delta;
 		mixTime += delta;
 		mixRatio = mixTime / anim.getDuration( );
-		anim.mix( skel, time, loop, mixRatio );
+		anim.apply( skel, time, loop );
+//		anim.mix( skel, time, loop, mixRatio );
 		if ( mixTime >= anim.getDuration( ) / 2 ) {
 			mixTime = anim.getDuration( );
 		}
+		if (position != null) {
+			root.setX( position.x );
+			root.setY( position.y ); 
+		}
 		skel.updateWorldTransform( );
+		position = null; 
 	}
 
 	@Override
 	public void setPosition( Vector2 pos ) {
-		root.setX( pos.x );
-		root.setY( pos.y );
+		position = pos.cpy(); 
 	}
 
 	@Override
@@ -114,9 +119,20 @@ public class SimpleSpinemator implements ISpinemator {
 	@Override
 	public void changeAnimation( String animName, boolean loop ) {
 		anim = sd.findAnimation( animName );
+//		this.setPosition( x, y );
 		this.loop = loop;
-		time = mixTime;
+		time = 0f;
 		mixTime = 0f;
+	}
+
+	@Override
+	public String getCurrentAnimation( ) {
+		return anim.getName( );
+	}
+
+	@Override
+	public float getAnimationDuration( ) {
+		return anim.getDuration( ); 
 	}
 
 }

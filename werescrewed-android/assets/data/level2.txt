@@ -33,8 +33,18 @@
 
 
 
-
 ##Everything below this line is more awesome than everything above this line
-/levels/dragon/front-clouds.pack
-/levels/dragon/dragon_objects.pack
+
+#BACKGROUND STUFF
+/levels/dragon/clouds_sun_bg.pack
+/levels/dragon/mountains-back-clouds.pack
+
+#head zoner
 /levels/dragon/head.pack
+
+#Object assets
+/levels/dragon/dragon_objects.pack
+
+#Fg packs
+/levels/dragon/tail-fg.pack
+/levels/dragon/body-neck.pack
