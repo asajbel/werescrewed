@@ -159,7 +159,7 @@ public class MyContactListener implements ContactListener {
 						case CHECKPOINT:
 							CheckPoint checkP = ( CheckPoint ) objectFix
 									.getBody( ).getUserData( );
-							checkP.hitPlayer( );
+							checkP.hitPlayer( player );
 							break;
 						case STEAM:
 							// TODO: GET RID OF TEMPCOLLISION WHEN STEAM
