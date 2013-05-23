@@ -15,6 +15,7 @@ import com.blindtigergames.werescrewed.entity.Sprite;
 import com.blindtigergames.werescrewed.entity.animator.SimpleFrameAnimator;
 import com.blindtigergames.werescrewed.entity.animator.SimpleFrameAnimator.LoopBehavior;
 import com.blindtigergames.werescrewed.graphics.TextureAtlas;
+import com.blindtigergames.werescrewed.player.Player;
 import com.blindtigergames.werescrewed.util.Util;
 
 /**
@@ -103,13 +104,13 @@ public class CheckPoint extends Entity {
 	/**
 	 * activates this checkpoint if not already active
 	 */
-	public void hitPlayer( ) {
+	public void hitPlayer( Player player ) {
 		if ( !active ) {
 			checkpointFrameAnimator.speed( 1.0f );
 			// body.setAngularVelocity( 3f );
 		}
 		active = true;
-		progressManager.hitNewCheckPoint( this );
+		progressManager.hitNewCheckPoint( this, player );
 	}
 
 	/**

@@ -5,6 +5,8 @@ import java.util.HashMap;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+import com.badlogic.gdx.physics.box2d.Filter;
+import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.World;
 import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.camera.Anchor;
@@ -18,6 +20,7 @@ import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 import com.blindtigergames.werescrewed.graphics.TextureAtlas;
 import com.blindtigergames.werescrewed.player.Player;
 import com.blindtigergames.werescrewed.player.Player.PlayerState;
+import com.blindtigergames.werescrewed.util.Util;
 
 /**
  * handles all of the progress through checkpoints also handles re-spawning with
@@ -39,6 +42,7 @@ public class ProgressManager {
 	private final Vector2 hoverOffset = new Vector2( -64, 64 );
 	private final Vector2 screwLeftOffset = new Vector2( -240, 150 );
 	private final Vector2 screwRightOffset = new Vector2( 270, 150 );
+	private boolean deadPlayerHitCheckpnt = false;
 
 	/**
 	 * 
@@ -73,7 +77,7 @@ public class ProgressManager {
 	 * 
 	 * @param checkPoint
 	 */
-	public void hitNewCheckPoint( CheckPoint checkPoint ) {
+	public void hitNewCheckPoint( CheckPoint checkPoint, Player player ) {
 		// If the checkpoint hit is not the currently activated one
 		if ( currentCheckPoint != checkPoint ) {
 			// Deactivate the current checkpoint
@@ -104,6 +108,10 @@ public class ProgressManager {
 					}
 				}
 			}
+		} else {
+			if ( player.body.getType( ) == BodyType.KinematicBody ) {
+				deadPlayerHitCheckpnt = true;
+			}
 		}
 	}
 
@@ -114,6 +122,20 @@ public class ProgressManager {
 	public void update( float deltaTime ) {
 		boolean noPlayersDead = true;
 		for ( Player player : players.values( ) ) {
+			if ( deadPlayerHitCheckpnt ) {
+				player.body.setType( BodyType.DynamicBody );
+				player.body.setLinearVelocity( Vector2.Zero );
+				Filter filter = new Filter( );
+				for ( Fixture f : player.body.getFixtureList( ) ) {
+					if ( f != player.rightSensor && f != player.leftSensor
+							&& f != player.topSensor ) {
+						f.setSensor( false );
+					}
+					filter.categoryBits = Util.CATEGORY_PLAYER;
+					filter.maskBits = Util.CATEGORY_EVERYTHING;
+					f.setFilterData( filter );
+				}
+			}
 			if ( !player.isPlayerDead( ) && ghostMap.containsKey( player.name ) ) {
 				ghostMap.get( player.name ).clearAnchors( );
 				ghostMap.remove( player.name );
@@ -124,20 +146,22 @@ public class ProgressManager {
 				noPlayersDead = false;
 			}
 		}
+		deadPlayerHitCheckpnt = false;
 		if ( noPlayersDead ) {
 			removeRezScrew( );
-			//used for tele-porting to checkpoint and calculate collisions
-			/*for ( Player player : players.values( ) ) {
-				if ( player.body.getType( ) == BodyType.KinematicBody ) {
-					player.body.setType( BodyType.DynamicBody );
-					player.body.setLinearVelocity( Vector2.Zero );
-					for ( Fixture f : player.body.getFixtureList( ) ) {
-						if ( f != player.rightSensor && f != player.leftSensor && f != player.topSensor ) {
-							f.setSensor( false );
-						}
-					}
-				}
-			}*/
+			// used for tele-porting to checkpoint and calculate collisions
+			// for ( Player player : players.values( ) ) {
+			// if ( player.body.getType( ) == BodyType.KinematicBody ) {
+			// player.body.setType( BodyType.DynamicBody );
+			// player.body.setLinearVelocity( Vector2.Zero );
+			// for ( Fixture f : player.body.getFixtureList( ) ) {
+			// if ( f != player.rightSensor && f != player.leftSensor && f !=
+			// player.topSensor ) {
+			// f.setSensor( false );
+			// }
+			// }
+			// }
+			// }
 		}
 
 		// update the rez screw if it exists
@@ -283,20 +307,22 @@ public class ProgressManager {
 	 * @param player
 	 */
 	private void spawnAtCheckPoint( Player player, float deltaTime ) {
-		//tele-port to checkpoint with velocity
-		//float frameRate = 1 / deltaTime;
+		// tele-port to checkpoint with velocity
+		// float frameRate = 1 / deltaTime;
 		// bring the player back to life
 		player.respawnPlayer( );
 		// remove the instance of the rez screw
 		removeRezScrew( );
 		// move the player to the current checkpoint
-		//tele-port to checkpoint with velocity
-		//Vector2 diff = currentCheckPoint.body.getPosition( ).sub( player.body.getPosition( ) );
-		player.body.setType( BodyType.DynamicBody );
-		//player.body.setLinearVelocity( diff );
-		//move the player to checkpoint with transform collision problems
-		player.body.setTransform( currentCheckPoint.body.getPosition( ), 0.0f );
-		player.body.setLinearVelocity( Vector2.Zero );
+		// tele-port to checkpoint with velocity
+		Vector2 diff = currentCheckPoint.body.getPosition( ).sub(
+				player.body.getPosition( ) );
+		player.body.setLinearVelocity( diff );
+		// move the player to checkpoint with transform collision problems
+		// player.body.setType( BodyType.DynamicBody );
+		// player.body.setTransform( currentCheckPoint.body.getPosition( ), 0.0f
+		// );
+		// player.body.setLinearVelocity( Vector2.Zero );
 		player.getEffect( "revive" ).restartAt(
 				player.getPositionPixel( ).add( 60, -30 ) );
 	}
@@ -358,10 +384,11 @@ public class ProgressManager {
 		}
 	}
 
-//	public void addGhostTexture( Player player, TextureRegion ghostTexture ) {
-//		if ( ghostTexture != null && !ghostTextures.containsKey( player.name )
-//				&& players.containsKey( player.name ) ) {
-//			// ghostTextures.put( player.name, ghostTexture );
-//		}
-//	}
+	// public void addGhostTexture( Player player, TextureRegion ghostTexture )
+	// {
+	// if ( ghostTexture != null && !ghostTextures.containsKey( player.name )
+	// && players.containsKey( player.name ) ) {
+	// // ghostTextures.put( player.name, ghostTexture );
+	// }
+	// }
 }

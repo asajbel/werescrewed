@@ -566,14 +566,14 @@ public class Player extends Entity {
 				currentScrew = null;
 				currentPlatform = null;
 				mover = null;
-				//Filter filter = new Filter( );
+				Filter filter = new Filter( );
 				for ( Fixture f : body.getFixtureList( ) ) {
 					if ( f != rightSensor && f != leftSensor && f != topSensor ) {
 						f.setSensor( true );
 					}
-					//filter.categoryBits = Util.CATEGORY_SUBPLAYER;
-					//filter.maskBits = Util.CATEGORY_NOTHING;
-					//f.setFilterData( filter );
+					filter.categoryBits = Util.CATEGORY_SUBPLAYER;
+					filter.maskBits = Util.CATEGORY_CHECKPOINTS;
+					f.setFilterData( filter );
 				}
 				playerState = PlayerState.Dead;
 				// Trophy Check, Figures out which player died and increments
@@ -625,15 +625,15 @@ public class Player extends Entity {
 		leftCrush = false;
 		rightCrush = false;
 		//body.setTransform( body.getPosition( ), 0f );
-		//Filter filter = new Filter( );
+		/*Filter filter = new Filter( );
 		for ( Fixture f : body.getFixtureList( ) ) {
 			if ( f != rightSensor && f != leftSensor && f != topSensor ) {
 				f.setSensor( false );
 			}
-			//filter.categoryBits = Util.CATEGORY_PLAYER;
-			//filter.maskBits = Util.CATEGORY_EVERYTHING;
-			//f.setFilterData( filter );
-		}
+			filter.categoryBits = Util.CATEGORY_PLAYER;
+			filter.maskBits = Util.CATEGORY_EVERYTHING;
+			f.setFilterData( filter );
+		}*/
 		playerState = PlayerState.Standing;
 		currentPlatform = null;
 		isDead = false;
