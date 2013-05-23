@@ -51,7 +51,12 @@ public class ParticleEffect implements Disposable {
 	 */
 	public boolean removeOnComplete = false;
 	
+	/**
+	 * Use this to offset a particle effect from an entity parent that may be rotating.
+	 */
 	public Vector2 offsetFromParent = new Vector2();
+	
+	public float rotationOffset = 0;
 
 	public String name;
 
