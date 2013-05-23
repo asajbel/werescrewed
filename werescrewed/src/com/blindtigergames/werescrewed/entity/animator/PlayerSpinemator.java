@@ -419,4 +419,16 @@ public class PlayerSpinemator implements ISpinemator {
 		
 	}
 
+	@Override
+	public String getCurrentAnimation( ) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public float getAnimationDuration( ) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
 }

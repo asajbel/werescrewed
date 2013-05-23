@@ -9,6 +9,7 @@ import aurelienribon.tweenengine.TweenEquations;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJoint;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
 import com.badlogic.gdx.utils.Array;
@@ -62,6 +63,11 @@ public class DragonScreen extends Screen {
 		buildAllCannons();
 		flamePlatformDecals();
 		buildBackground( );
+		tail1Decals();
+		tail2Decals();
+		tail3Decals();
+		//neckDecals();
+		bodyDecals();
 
 
 		Skeleton jaw_skeleton = ( Skeleton ) LevelFactory.entities
@@ -552,12 +558,14 @@ public class DragonScreen extends Screen {
 	}
 
 void buildBackground(){
-		TextureAtlas front_clouds = WereScrewedGame.manager.getAtlas( "front-clouds" );
-		float frontCloudsY = 2800, frontCloudsY2 = -500;
+		TextureAtlas clouds_sun_bg = WereScrewedGame.manager.getAtlas( "clouds_sun_bg" );
+		TextureAtlas mountains_back_clouds = WereScrewedGame.manager.getAtlas( "mountains-back-clouds" );
+		float frontTopCloudsY = 2800, midOrangeCloudsY = -400, bottomFrontCloudsY = -1000;
 		float frontCloudVariation = 600;
 		float numFrontClouds = 50;
-		float xMax = 30000, xMin = -3000;
+		float xMax = 32000, xMin = -3000;
 		float minCloudScale = 0.5f;
+		float cloudScale = 1f/.75f;
 		
 		setClearColor( 105f/255f, 208f/255f, 255f/255f, 1f ); //SKY BLUE
 		
@@ -565,21 +573,50 @@ void buildBackground(){
 		//loop variables
 		BodyDef bdef; Body b; Entity e; ParallaxMover m; float yPos, scale; String cloudId;
 		
-		//top orange big cloud layer
+		//TOP yellow big clouds
 		for(int i = 0; i < numFrontClouds; ++i){
 			bdef = new BodyDef();
 			bdef.fixedRotation=true;
+			bdef.type=BodyType.StaticBody;
+			b = level.world.createBody( bdef );
+			cloudId = "top-front"+(r.nextInt( 5 )+1);
+			e = new Entity("top-front-"+i,
+								  new Vector2(),
+								  clouds_sun_bg.findRegion( cloudId ),
+								  b,
+								  false,
+								  0);
+			scale = (r.nextFloat( )/2+minCloudScale)*cloudScale;
+			e.sprite.setScale( scale * (r.nextBoolean( )?1f:-1f), r.nextFloat( )/2+0.5f );
+			yPos = frontTopCloudsY + Util.binom( )*frontCloudVariation;
+			m = new ParallaxMover( new Vector2(xMin,yPos),
+												 new Vector2(xMax,yPos),
+												 -0.0001f*r.nextFloat()-.00001f,
+												 r.nextFloat(),
+												 null,
+												 true,
+												 LinearAxis.HORIZONTAL );
+			e.setMoverAtCurrentState( m );
+			level.root.addLooseEntity( e );
+		}
+		
+		
+		//MID orange big cloud layer
+		for(int i = 0; i < numFrontClouds; ++i){
+			bdef = new BodyDef();
+			bdef.fixedRotation=true;
+			bdef.type=BodyType.StaticBody;
 			b = level.world.createBody( bdef );
 			cloudId = "front1-"+(r.nextInt( 4 )+1);
 			e = new Entity("front1-"+i,
 								  new Vector2(),
-								  front_clouds.findRegion( cloudId ),
+								  clouds_sun_bg.findRegion( cloudId ),
 								  b,
 								  false,
 								  0);
-			scale = r.nextFloat( )/2+minCloudScale;
+			scale = (r.nextFloat( )/2+minCloudScale)*cloudScale;
 			e.sprite.setScale( scale * (r.nextBoolean( )?1f:-1f), r.nextFloat( )/2+0.5f );
-			yPos = frontCloudsY2 + Util.binom( )*frontCloudVariation;
+			yPos = midOrangeCloudsY + Util.binom( )*frontCloudVariation;
 			m = new ParallaxMover( new Vector2(xMin,yPos),
 												 new Vector2(xMax,yPos),
 												 -0.0001f*r.nextFloat()-.00001f,
@@ -595,17 +632,18 @@ void buildBackground(){
 		for(int i = 0; i < numFrontClouds; ++i){
 			bdef = new BodyDef();
 			bdef.fixedRotation=true;
+			bdef.type=BodyType.StaticBody;
 			b = level.world.createBody( bdef );
 			cloudId = "front2-"+(r.nextInt( 2 )+2); //FIX THIS, front2-1 is not in pack file
 			e = new Entity("front1-"+i,
 								  new Vector2(),
-								  front_clouds.findRegion( cloudId ),
+								  clouds_sun_bg.findRegion( cloudId ),
 								  b,
 								  false,
 								  0);
-			scale = r.nextFloat( )/2+minCloudScale;
+			scale = (r.nextFloat( )/2+minCloudScale)*cloudScale;
 			e.sprite.setScale( scale * (r.nextBoolean( )?1f:-1f), r.nextFloat( )/2+0.5f );
-			yPos = frontCloudsY + Util.binom( )*frontCloudVariation;
+			yPos = bottomFrontCloudsY + Util.binom( )*frontCloudVariation;
 			m = new ParallaxMover( new Vector2(xMin,yPos),
 												 new Vector2(xMax,yPos),
 												 //new Vector2( r.nextFloat( )*(xMax-xMin)+xMin, yPos ),
@@ -615,22 +653,85 @@ void buildBackground(){
 		}
 		
 
-		//bgGradient
+		// !Important
 		level.initBackgroundRoot( );
-		float xOffset = -150, yOffset = -900;
+		
+		//bgGradient
+		float xOffset = -450, yOffset = -900;
 		bdef=new BodyDef();
 		bdef.fixedRotation=true;
+			bdef.type=BodyType.StaticBody;
 		b=level.world.createBody( bdef );
 		e=new Entity("bg-gradient",new Vector2(0,-500),null,b,false,0);
 		
-		e.changeSprite( Sprite.scale( front_clouds.createSprite( "bg-gradient" ), 100f,1 ) );//67.5f
+		e.changeSprite( Sprite.scale( clouds_sun_bg.createSprite( "bg-gradient" ), 140f,1 ) );//67.5f
 		level.backgroundRootSkeleton.addLooseEntity( e );
 		m = new ParallaxMover( new Vector2(xOffset,0+yOffset),
 				 new Vector2(xOffset,-2048+yOffset),
-				// new Vector2( r.nextFloat( )*(xMax-xMin)+xMin, yPos ),
 				 0.0002f,0.00001f, level.camera, false, LinearAxis.VERTICAL );
 		m.setLoopRepeat( false );
 		e.setMoverAtCurrentState( m );
+		
+		
+		//clouds behind mountains
+		level.bgCamZoomScale = .1f;
+		level.bgCamZoomMax = 1.5f;
+		level.bgCamZoomMin = .5f;
+		int numMountains = 3;
+		float mountainW = (1859-100)*level.bgCamZoomMax, mountainY = 100;
+
+		float alpha, aOffset;
+		for(int i = 0; i < numMountains; ++i ){
+			bdef=new BodyDef();
+			bdef.fixedRotation=true;
+			bdef.type=BodyType.StaticBody;
+			b=level.world.createBody( bdef );
+			e=new Entity("back-clouds"+i,new Vector2(),null,b,false,0);
+			e.changeSprite( mountains_back_clouds.createSprite( "back-clouds" ) );
+			level.backgroundRootSkeleton.addLooseEntity( e );
+			aOffset=i*.0001f;
+			alpha = (i)*(1f/(numMountains));//+aOffset;
+			m = new ParallaxMover( new Vector2(mountainW,mountainY),
+					new Vector2(-mountainW,mountainY),
+					 0.00001f,alpha, null, true, LinearAxis.HORIZONTAL );
+			e.setMoverAtCurrentState( m );
+		}
+		
+		//mountains
+		mountainW = 1275*level.bgCamZoomMax; mountainY = -200f;
+		for(int i = 0; i < numMountains; ++i ){
+			bdef=new BodyDef();
+			bdef.fixedRotation=true;
+			bdef.type=BodyType.StaticBody;
+			b=level.world.createBody( bdef );
+			e=new Entity("mountains"+i,new Vector2(),null,b,false,0);
+			e.changeSprite( mountains_back_clouds.createSprite( "mountains" ) );
+			level.backgroundRootSkeleton.addLooseEntity( e );
+			aOffset=i*.0001f;
+			alpha = (i)*(1f/(numMountains));//+aOffset;
+			m = new ParallaxMover( new Vector2(mountainW,mountainY),
+					new Vector2(-mountainW,mountainY),
+					 0.00002f,alpha, null, true, LinearAxis.HORIZONTAL );
+			e.setMoverAtCurrentState( m );
+		}
+		
+		
+		//Sun 50% = 2
+		float sunScale = 1f;
+		bdef=new BodyDef();
+		bdef.fixedRotation=true;
+			bdef.type=BodyType.StaticBody;
+		b=level.world.createBody( bdef );
+		e=new Entity("sun",new Vector2(),null,b,false,0);//0,2048-2*
+		e.changeSprite( Sprite.scale( clouds_sun_bg.createSprite( "sun" ), sunScale ) );
+		//e.setPosition( new Vector2().mul( Util.PIXEL_TO_BOX ) );
+		float sunYPos = 2048-sunScale*e.sprite.getHeight( )+yOffset;
+		m = new ParallaxMover( new Vector2(400,sunYPos),
+				 new Vector2(400,-2048+sunYPos),
+				 0.00009f,0.00001f, level.camera, false, LinearAxis.VERTICAL );
+		e.setMoverAtCurrentState( m );
+		m.setLoopRepeat( false );
+		level.backgroundRootSkeleton.addLooseEntity( e );
 	}
 	
 	void headDecals(){
@@ -640,10 +741,74 @@ void buildBackground(){
 				head_skeletonSkeleton = ( Skeleton ) LevelFactory.entities
 				.get( "head_skeleton" );
 		TextureAtlas headAtlas = WereScrewedGame.manager.getAtlas( "head" );
-		float scale = 1f/.66f;
+		float scale = 2;//1f/.66f;
 		//UPPER HEAD
 		Sprite s;
-		jaw_skeleton.addFGDecal( Sprite.scale( headAtlas.createSprite( "dragonbottom_left" ), scale ), new Vector2() );
+		
+		Vector2 headPos = new Vector2(-1900,-900 );
+		s = headAtlas.createSprite( "dragontop_left" );
+		head_skeletonSkeleton.addFGDecal( Sprite.scale( s, scale ), new Vector2().add( headPos ) );
+		head_skeletonSkeleton.addFGDecal( 
+				Sprite.scale( headAtlas.createSprite( "dragontop_right" ), scale ), 
+				new Vector2(s.getWidth( )*scale-10,725).add( headPos ) );
+		addFGSkeleton( head_skeletonSkeleton );
+		
+		//LOW HEAD/ JAW
+		Vector2 pos = new Vector2(-959,-615);
+		s = headAtlas.createSprite( "dragonbottom_left" );
+		jaw_skeleton.addFGDecal( Sprite.scale( s, scale ), new Vector2().add( pos ) );//959,615
+		jaw_skeleton.addFGDecal( Sprite.scale( headAtlas.createSprite( "dragonbottom_right" ), scale ), 
+				new Vector2(s.getWidth( )*scale-10,25).add( pos ) );
+		addFGSkeleton( jaw_skeleton );
+		
+		
+	}
+	
+	void tail1Decals(){
+		Skeleton tail = (Skeleton)LevelFactory.entities.get( "tail_skeleton" );
+		
+		TextureAtlas tailAtlas = WereScrewedGame.manager.getAtlas( "tail-fg" );
+		
+		tail.addFGDecal( Sprite.scale( tailAtlas.createSprite( "tail" ), 2), new Vector2(-1800,-400) );
+		tail.fgSprite=null;
+		tail.setFgFade( true );
+		addFGSkeleton( tail );
+		
+	}
+	
+	void tail2Decals(){
+		////1189,431
+		Skeleton tail2_skeleton = (Skeleton)LevelFactory.entities.get( "tail2_skeleton" );
+		TextureAtlas tailAtlas = WereScrewedGame.manager.getAtlas( "tail-fg" );
+		tail2_skeleton.addFGDecal( Sprite.scale( tailAtlas.createSprite( "tail2" ), 2), new Vector2(-1206,-638) );//227,17
+		tail2_skeleton.fgSprite=null;
+		tail2_skeleton.setFgFade( true );
+		
+		addFGSkeleton( tail2_skeleton );
+	}
+	
+	void tail3Decals(){
+		//tail3_skeleton
+		Skeleton tail3_skeleton = (Skeleton)LevelFactory.entities.get( "tail3_skeleton" );
+		TextureAtlas tailAtlas = WereScrewedGame.manager.getAtlas( "tail-fg" );
+		tail3_skeleton.addFGDecal( Sprite.scale( tailAtlas.createSprite( "tail3" ), 2), new Vector2(-1166,-765) );//227,17
+		tail3_skeleton.fgSprite=null;
+		tail3_skeleton.setFgFade( true );
+		
+		addFGSkeleton( tail3_skeleton );
+	}
+	
+	void bodyDecals(){
+		Skeleton neck_skeleton = (Skeleton)LevelFactory.entities.get( "neck_skeleton" );
+		TextureAtlas tailAtlas = WereScrewedGame.manager.getAtlas( "body-neck" );
+		neck_skeleton.addFGDecal( Sprite.scale( tailAtlas.createSprite( "neck" ), 2f), new Vector2(-1167,-914) );//4,414
+		neck_skeleton.fgSprite=null;
+		neck_skeleton.setFgFade( false );//3497.1770
+		
+		addFGSkeleton( neck_skeleton );
+	}
+	
+	void neckDecal(){
 		
 	}
 }

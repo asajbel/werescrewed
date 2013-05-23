@@ -1,0 +1,19 @@
+body-neck.png
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+offset: 0, 0
+body
+  rotate: false
+  xy: 2, 2
+  size: 1981, 775
+  orig: 1981, 775
+  offset: 0, 0
+  index: -1
+neck
+  rotate: false
+  xy: 2, 779
+  size: 1289, 906
+  orig: 1289, 906
+  offset: 0, 0
+  index: -1

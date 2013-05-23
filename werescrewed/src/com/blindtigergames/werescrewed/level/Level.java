@@ -60,6 +60,7 @@ public class Level {
 	public OrthographicCamera backgroundCam;
 	public RootSkeleton backgroundRootSkeleton;
 	public SpriteBatch backgroundBatch;
+	public float bgCamZoomScale = 0f, bgCamZoomMax = 1f, bgCamZoomMin=1f;
 
 	public Level( ) {
 

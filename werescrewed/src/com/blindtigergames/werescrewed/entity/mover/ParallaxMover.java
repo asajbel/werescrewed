@@ -21,20 +21,25 @@ public class ParallaxMover implements IMover {
 	private float oneStep = 1.33f;
 	private LinearAxis axis;
 	private boolean loopRepeat=true;
+	private float alphaOffset;
 
 	/**
 	 * builds movement of a single layer of parallax scrolling
 	 * 
 	 * @param beginningPoint
 	 * @param endingPoint
-	 * @param speed
+	 * @param speed -- percentage of total distance to travel
+	 * @param alpha -- STARTING POSITION percent
+	 * @param camera, level camera usually
+	 * @param moveContinuous -- always move alpha by speed each update
 	 */
 	public ParallaxMover( Vector2 beginningPoint, Vector2 endingPoint, 
 			float speed, float alpha, Camera camera, boolean moveContinuous,
-			LinearAxis axis ) {
+			LinearAxis axis, float alphaOffset ) {
 		this.beginningPoint = beginningPoint.cpy( );
 		this.endPoint = endingPoint.cpy( );
 		this.speed =  speed;
+		this.alphaOffset=alphaOffset;
 		this.alpha = alpha;
 		this.cameraControl = camera;
 		if(camera!=null)
@@ -44,6 +49,21 @@ public class ParallaxMover implements IMover {
 		puzzleType = PuzzleType.OVERRIDE_ENTITY_MOVER;
 	}
 	
+	/**
+	 * Build it with an alpha offset..
+	 * @param beginningPoint
+	 * @param endingPoint
+	 * @param speed
+	 * @param alpha
+	 * @param camera
+	 * @param moveContinuous
+	 * @param axis
+	 */
+	public ParallaxMover( Vector2 beginningPoint, Vector2 endingPoint, 
+			float speed, float alpha, Camera camera, boolean moveContinuous,
+			LinearAxis axis ) {
+		this( beginningPoint, endingPoint, speed, alpha, camera, moveContinuous, axis, 0f );
+	}
 
 	@Override
 	public void move( float deltaTime, Body body ) {
@@ -81,11 +101,9 @@ public class ParallaxMover implements IMover {
 		}
 		if(loopRepeat){
 			if ( alpha >= 1 ) {
-				// body.setTransform( beginningPoint.mul( Util.PIXEL_TO_BOX ), 0.0f
-				// );
-				alpha = 0;
+				alpha = 0+alphaOffset;
 			} else if ( alpha <= 0 ) {
-				alpha = 1;
+				alpha = 1+alphaOffset;
 			}
 		}
 		Vector2 temp = beginningPoint.cpy( );
@@ -106,5 +124,9 @@ public class ParallaxMover implements IMover {
 	
 	public void setLoopRepeat(boolean hasLoopRepeat){
 		this.loopRepeat=hasLoopRepeat;
+	}
+	
+	public void setAlphaOffset(float alphaOffset){
+		this.alphaOffset = alphaOffset;
 	}
 }
