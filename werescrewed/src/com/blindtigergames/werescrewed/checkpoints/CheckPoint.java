@@ -33,7 +33,7 @@ public class CheckPoint extends Entity {
 	private boolean active = false;
 	private ProgressManager progressManager;
 	private boolean removed = false;
-	private SimpleFrameAnimator checkpointFrameAnimator;
+//	private SimpleFrameAnimator checkpointFrameAnimator;
 	private Entity entity;
 	private static final float radius = 64; 
 
