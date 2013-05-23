@@ -166,6 +166,8 @@ public class Player extends Entity {
 	public int jumpCounter = 0;
 
 	public float frictionCounter = PLAYER_FRICTION;
+	private float rezTime = Float.MAX_VALUE; 
+	private boolean rezzing = false; 
 
 	// Enums
 	/**
@@ -2335,5 +2337,21 @@ public class Player extends Entity {
 				sounds.setDelay( "footstep2", 0.5f * rate );
 			}
 		}
+	}
+
+	public boolean isRezzing( ) {
+		return rezzing;
+	}
+
+	public void setRezzing( boolean rezzing ) {
+		this.rezzing = rezzing;
+	}
+
+	public float getRezTime( ) {
+		return rezTime;
+	}
+
+	public void setRezTime( float rezTime ) {
+		this.rezTime = rezTime;
 	}
 }
