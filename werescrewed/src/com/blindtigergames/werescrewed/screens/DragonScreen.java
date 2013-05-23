@@ -64,6 +64,8 @@ public class DragonScreen extends Screen {
 		flamePlatformDecals();
 		buildBackground( );
 		tail1Decals();
+		tail2Decals();
+		tail3Decals();
 
 
 		Skeleton jaw_skeleton = ( Skeleton ) LevelFactory.entities
@@ -695,7 +697,7 @@ void buildBackground(){
 		
 		//mountains
 		//mountains_back_clouds
-		mountainW = 1280*level.bgCamZoomMax; mountainY = -200f;
+		mountainW = 1275*level.bgCamZoomMax; mountainY = -200f;
 		for(int i = 0; i < numMountains; ++i ){
 			bdef=new BodyDef();
 			bdef.fixedRotation=true;
@@ -747,5 +749,34 @@ void buildBackground(){
 	
 	void tail1Decals(){
 		Skeleton tail = (Skeleton)LevelFactory.entities.get( "tail_skeleton" );
+		
+		TextureAtlas tailAtlas = WereScrewedGame.manager.getAtlas( "tail-fg" );
+		
+		tail.addFGDecal( Sprite.scale( tailAtlas.createSprite( "tail" ), 2), new Vector2(-1800,-400) );
+		tail.fgSprite=null;
+		addFGSkeleton( tail );
+		
+	}
+	
+	void tail2Decals(){
+		////1189,431
+		Skeleton tail2_skeleton = (Skeleton)LevelFactory.entities.get( "tail2_skeleton" );
+		TextureAtlas tailAtlas = WereScrewedGame.manager.getAtlas( "tail-fg" );
+		tail2_skeleton.addFGDecal( Sprite.scale( tailAtlas.createSprite( "tail2" ), 2), new Vector2(-1206,-638) );//227,17
+		tail2_skeleton.fgSprite=null;
+		//tail2_skeleton.setFgFade( true );
+		
+		addFGSkeleton( tail2_skeleton );
+	}
+	
+	void tail3Decals(){
+		//tail3_skeleton
+		Skeleton tail3_skeleton = (Skeleton)LevelFactory.entities.get( "tail3_skeleton" );
+		TextureAtlas tailAtlas = WereScrewedGame.manager.getAtlas( "tail-fg" );
+		tail3_skeleton.addFGDecal( Sprite.scale( tailAtlas.createSprite( "tail3" ), 2), new Vector2(-1166,-765) );//227,17
+		tail3_skeleton.fgSprite=null;
+		//tail2_skeleton.setFgFade( true );
+		
+		addFGSkeleton( tail3_skeleton );
 	}
 }
