@@ -605,14 +605,12 @@ public class Player extends Entity {
 			}
 
 			if ( !isDead ) {
-				ParticleEffect blood = getEffect( injuredParticles[ WereScrewedGame.random
+				ParticleEffect text = getEffect( injuredParticles[ WereScrewedGame.random
 						.nextInt( injuredParticles.length ) ] );
-				blood.restartAt( getPositionPixel( ) );
-			}
-			isDead = true;
-			if ( sounds.hasSound( "death" ) ) {
+				text.restartAt( getPositionPixel( ) );
 				sounds.playSound( "death", 1.0f );
 			}
+			isDead = true;
 		}
 	}
 
