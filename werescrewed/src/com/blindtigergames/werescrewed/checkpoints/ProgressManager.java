@@ -128,6 +128,7 @@ public class ProgressManager {
 			if ( deadPlayerHitCheckpnt ) {
 				player.body.setType( BodyType.DynamicBody );
 				player.body.setLinearVelocity( Vector2.Zero );
+				player.setVisible( true );
 				Filter filter = new Filter( );
 				for ( Fixture f : player.body.getFixtureList( ) ) {
 					if ( f != player.rightSensor && f != player.leftSensor
@@ -344,6 +345,7 @@ public class ProgressManager {
 		Vector2 diff = rezPoint.sub(
 				player.body.getPosition( ) );
 		player.body.setLinearVelocity( diff );
+		player.setVisible( false );
 		// move the player to checkpoint with transform collision problems
 		//player.body.setType( BodyType.DynamicBody );
 		//player.body.setTransform( rezPoint, 0.0f );
