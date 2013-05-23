@@ -741,10 +741,26 @@ void buildBackground(){
 				head_skeletonSkeleton = ( Skeleton ) LevelFactory.entities
 				.get( "head_skeleton" );
 		TextureAtlas headAtlas = WereScrewedGame.manager.getAtlas( "head" );
-		float scale = 1f/.66f;
+		float scale = 2;//1f/.66f;
 		//UPPER HEAD
 		Sprite s;
-		jaw_skeleton.addFGDecal( Sprite.scale( headAtlas.createSprite( "dragonbottom_left" ), scale ), new Vector2() );
+		
+		Vector2 headPos = new Vector2(-1900,-900 );
+		s = headAtlas.createSprite( "dragontop_left" );
+		head_skeletonSkeleton.addFGDecal( Sprite.scale( s, scale ), new Vector2().add( headPos ) );
+		head_skeletonSkeleton.addFGDecal( 
+				Sprite.scale( headAtlas.createSprite( "dragontop_right" ), scale ), 
+				new Vector2(s.getWidth( )*scale-10,725).add( headPos ) );
+		addFGSkeleton( head_skeletonSkeleton );
+		
+		//LOW HEAD/ JAW
+		Vector2 pos = new Vector2(-959,-615);
+		s = headAtlas.createSprite( "dragonbottom_left" );
+		jaw_skeleton.addFGDecal( Sprite.scale( s, scale ), new Vector2().add( pos ) );//959,615
+		jaw_skeleton.addFGDecal( Sprite.scale( headAtlas.createSprite( "dragonbottom_right" ), scale ), 
+				new Vector2(s.getWidth( )*scale-10,25).add( pos ) );
+		addFGSkeleton( jaw_skeleton );
+		
 		
 	}
 	
