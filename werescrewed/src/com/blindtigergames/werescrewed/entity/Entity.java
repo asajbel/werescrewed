@@ -238,6 +238,7 @@ public class Entity implements GleedLoadable {
 		this.bgDecalOffsets = new ArrayList< Vector2 >( );
 		this.bgDecalAngles = new ArrayList< Float >( );
 		this.sounds = null;
+		this.crushing = false;
 		setUpRobotState( );
 	}
 
