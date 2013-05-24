@@ -493,11 +493,12 @@ public class DragonScreen extends Screen {
 		Skeleton balloon3CannonSkeleton = ( Skeleton ) LevelFactory.entities
 				.get( "balloon3_cannon_skeleton" );
 		balloon3CannonSkeleton.setFgFade( false );
-		balloon3CannonSkeleton.setLocalRot( -Util.PI / 4 );
+		
 
 		buildCannon( balloon3CannonSkeleton,
 				balloon3CannonSkeleton.getPositionPixel( ), 200, 200, 0.5f, 1f );
 
+		balloon3CannonSkeleton.setLocalRot( -Util.PI / 4 );
 		Skeleton cannonPuzzle = ( Skeleton ) LevelFactory.entities
 				.get( "body_cannon_puzzle_skeleton" );
 
@@ -799,7 +800,7 @@ void buildBackground(){
 		TextureAtlas tailAtlas = WereScrewedGame.manager.getAtlas( "body-neck" );
 		neck_skeleton.addFGDecal( Sprite.scale( tailAtlas.createSprite( "neck" ), 2f), new Vector2(-1167,-914) );//4,414
 		neck_skeleton.fgSprite=null;
-		neck_skeleton.setFgFade( false );//3497.1770
+		//neck_skeleton.setFgFade( false );//3497.1770
 		
 		addFGSkeleton( neck_skeleton );
 	}
