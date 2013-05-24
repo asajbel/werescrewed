@@ -34,6 +34,7 @@ public class AssetManager extends com.badlogic.gdx.assets.AssetManager {
 	Texture robotTexBG;// = "/levels/alphabot/alphabot-interior.png";
 	Texture robotOutlineTex;// = "/levels/alphabot/alphabot-outline.png";
 	Texture robotTexFG;// = "/levels/alphabot/alphabot-outline.png";
+	private int particleEffectCt = 0;
 
 	// TODO: set default values for this
 
@@ -141,7 +142,7 @@ public class AssetManager extends com.badlogic.gdx.assets.AssetManager {
 				Gdx.files.internal( "data/particles/" + particleEffectName
 						+ ".p" ),
 				WereScrewedGame.manager.getAtlas( "particles" ) );
-		effect.name = particleEffectName;
+		effect.name = particleEffectName+(particleEffectCt++);
 		particleEffects.put( particleEffectName, effect );
 	}
 

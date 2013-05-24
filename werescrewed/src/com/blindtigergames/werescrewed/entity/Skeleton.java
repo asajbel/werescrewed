@@ -412,6 +412,14 @@ public class Skeleton extends Platform {
 			event.translatePosRotFromSKeleton( this );
 			// event.setTargetPosRotFromSkeleton( frameRate, this );
 		}
+
+		for ( CheckPoint chkpt : checkpointMap.values( ) ) {
+			if ( chkpt.removeNextStep ) {
+				entitiesToRemove.add( chkpt );
+			} else {
+				chkpt.update( deltaTime );
+			}
+		}
 		if ( isUpdatable ) {
 			for ( Platform platform : kinematicPlatformMap.values( ) ) {
 				if ( platform.removeNextStep ) {
@@ -456,17 +464,6 @@ public class Skeleton extends Platform {
 						screw.body.setAwake( false );
 					}
 					screw.update( deltaTime );
-				}
-			}
-			for ( CheckPoint chkpt : checkpointMap.values( ) ) {
-				if ( chkpt.removeNextStep ) {
-					entitiesToRemove.add( chkpt );
-				} else {
-					if ( wasInactive ) {
-						chkpt.body.setActive( true );
-						chkpt.body.setAwake( false );
-					}
-					chkpt.update( deltaTime );
 				}
 			}
 			for ( Rope rope : ropeMap.values( ) ) {
@@ -613,14 +610,6 @@ public class Skeleton extends Platform {
 			} else {
 				screw.body.setAwake( true );
 				screw.body.setActive( false );
-			}
-		}
-		for ( CheckPoint chkpt : checkpointMap.values( ) ) {
-			if ( chkpt.removeNextStep ) {
-				entitiesToRemove.add( chkpt );
-			} else {
-				chkpt.body.setAwake( true );
-				chkpt.body.setActive( false );
 			}
 		}
 		for ( Rope rope : ropeMap.values( ) ) {

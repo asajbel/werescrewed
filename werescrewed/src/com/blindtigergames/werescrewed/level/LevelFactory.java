@@ -495,65 +495,41 @@ public class LevelFactory {
 		RuntimeException exception = new RuntimeException(
 				"Anchor incorrectly defined. Be sure the format is: \"bufferWidth, bufferHeight, offsetX, offsetY\"" );
 		Anchor anchor;
-		if (item.props.containsKey( "anchor" )){
-			for (String string : item.props.getAll( "anchor" )){
-				String sValues[] = string.split( ", " );
-				if ( sValues.length != 4 )
-					throw exception;
-				float values[] = new float[ 4 ];
-				int j = 0;
-				for ( String value : sValues ) {
-					try {
-						values[ j ] = Float.parseFloat( value );
-						j++;
-					} catch ( NumberFormatException e ) {
-						throw exception;
-					}
-				}
-				float offsetX = values[ 0 ];
-				float offsetY = values[ 1 ];
-				float bufferWidth = values[ 2 ];
-				float bufferHeight = values[ 3 ];
-				anchor = new Anchor( item.pos, new Vector2( offsetX, offsetY ),
-						new Vector2( bufferWidth, bufferHeight ) );
-				out.addAnchor( anchor );
-				// Comment line below to make anchors inactive by default
-				// anchor.activate( );
+		String tag;
+		boolean moreAnchors = true;
+		for (int i = -1; i < 99 && moreAnchors; i++){
+			if (i < 0){
+				tag = "anchor";
+			} else {
+				tag = "anchor" + i;
 			}
-		}
-		if (item.props.containsKey( "anchor1" )){
-			boolean moreAnchors = true;
-			String tag;
-			for (int i = 0; i < 99 && moreAnchors; i++){
-				tag = "anchor" + Integer.toString( i );
-				if (item.props.containsKey(tag)){
-					for (String string : item.props.getAll( tag )){
-						String sValues[] = string.split( ", " );
-						if ( sValues.length != 4 )
+			if (item.props.containsKey( tag )){
+				for ( String string : item.props.getAll( tag ) ) {
+					String sValues[] = string.split( ", " );
+					if ( sValues.length != 4 )
+						throw exception;
+					float values[] = new float[ 4 ];
+					int j = 0;
+					for ( String value : sValues ) {
+						try {
+							values[ j ] = Float.parseFloat( value );
+							j++;
+						} catch ( NumberFormatException e ) {
 							throw exception;
-						float values[] = new float[ 4 ];
-						int j = 0;
-						for ( String value : sValues ) {
-							try {
-								values[ j ] = Float.parseFloat( value );
-								j++;
-							} catch ( NumberFormatException e ) {
-								throw exception;
-							}
 						}
-						float offsetX = values[ 0 ];
-						float offsetY = values[ 1 ];
-						float bufferWidth = values[ 2 ];
-						float bufferHeight = values[ 3 ];
-						anchor = new Anchor( item.pos, new Vector2( offsetX, offsetY ),
-								new Vector2( bufferWidth, bufferHeight ) );
-						out.addAnchor( anchor );
-						// Comment line below to make anchors inactive by default
-						// anchor.activate( );
 					}
-				} else if (i >= 2){
-					moreAnchors = false;
+					float offsetX = values[ 0 ];
+					float offsetY = values[ 1 ];
+					float bufferWidth = values[ 2 ];
+					float bufferHeight = values[ 3 ];
+					anchor = new Anchor( item.pos, new Vector2( offsetX, offsetY ),
+							new Vector2( bufferWidth, bufferHeight ) );
+					out.addAnchor( anchor );
+					// Comment line below to make anchors inactive by default
+					// anchor.activate( );
 				}
+			} else if (i >= 2){
+				moreAnchors = false;
 			}
 		}
 		return out;
