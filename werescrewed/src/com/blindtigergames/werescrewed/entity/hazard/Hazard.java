@@ -28,8 +28,7 @@ public class Hazard extends Platform {
 
 	public HazardType hazardType;
 
-	public Hazard( String name, Vector2 pos, Texture texture, World world,
-			float width, float height, boolean isHazardActive ) {
+	public Hazard( String name, Vector2 pos, Texture texture, World world, boolean isHazardActive ) {
 		super( name, pos, texture, world );
 		entityType = EntityType.HAZARD;
 		hazardType = HazardType.HAZARD;

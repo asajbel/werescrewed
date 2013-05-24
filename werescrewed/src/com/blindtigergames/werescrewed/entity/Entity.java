@@ -439,10 +439,12 @@ public class Entity implements GleedLoadable {
 					}else{
 						e.setPosition( pos.x, pos.y );
 					}
-					if ( body != null ) {
-						e.setAngle( body.getAngle( ) );
-					} else if (sprite!=null) {
-						e.setAngle( sprite.getRotation( ) * Util.DEG_TO_RAD );
+					if(e.updateAngleWithParent){
+						if ( body != null ) {
+							e.setAngle( body.getAngle( ) );
+						} else if (sprite!=null) {
+							e.setAngle( sprite.getRotation( ) * Util.DEG_TO_RAD );
+						}
 					}
 					
 				}
