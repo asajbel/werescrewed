@@ -287,12 +287,12 @@ public class Player extends Entity {
 		if ( switchTimer > 0 )
 			--switchTimer;
 		
-		if ( Gdx.input.isKeyPressed( Keys.PERIOD ) ) {
+		/*if ( Gdx.input.isKeyPressed( Keys.PERIOD ) ) {
 			have_control = false;
 		}
 		if ( Gdx.input.isKeyPressed( Keys.SLASH ) ) {
 			have_control = true;
-		}
+		}*/
 		
 		if ( drawTutorial ) {
 			tutorialTimer++;
