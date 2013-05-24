@@ -537,24 +537,20 @@ public class DragonScreen extends Screen {
 	}
 	
 	void flamePlatformDecals(){
-		Platform balloon1FlamePlat = ( Platform ) LevelFactory.entities
-				.get( "balloon1_flame_plat" );
-		
-		Platform balloon2FlamePlat = ( Platform ) LevelFactory.entities
-				.get( "balloon2_flame_plat" );
-		
-		Platform balloon3FlamePlat = ( Platform ) LevelFactory.entities
-				.get( "balloon3_flame_plat" );
-		
-		Platform tailFlamePlat = ( Platform ) LevelFactory.entities
-				.get( "tail_flame_plat" );
-		
-		Platform tail2FlamePlat = ( Platform ) LevelFactory.entities
-				.get( "tail2_flame_plat" );
-		
-		Platform tai3lFlamePlat = ( Platform ) LevelFactory.entities
-				.get( "tail3_flame_plat" );
-	
+		TextureAtlas dragonObjects = WereScrewedGame.manager.getAtlas( "dragon_objects" );
+		Sprite s;
+		Platform p;
+		String[] entities = {"balloon1_flame_plat","balloon2_flame_plat",
+				"balloon3_flame_plat","tail_flame_plat",
+				"tail2_flame_plat","tail3_flame_plat"};
+		for(int i =0; i < entities.length; ++i ){
+			p = ( Platform ) LevelFactory.entities
+					.get( entities[i] );
+			s = dragonObjects.createSprite( "burner-med" );
+			p.addFGDecal( s,new Vector2(-s.getWidth( )/2,-s.getHeight( )/2) );
+			addFGEntity( p );
+			p.addBehindParticleEffect( "fire_new", false, true ).setOffsetFromParent( 0, 75 ).start();
+		}
 	}
 
 void buildBackground(){
@@ -741,20 +737,20 @@ void buildBackground(){
 				head_skeletonSkeleton = ( Skeleton ) LevelFactory.entities
 				.get( "head_skeleton" );
 		TextureAtlas headAtlas = WereScrewedGame.manager.getAtlas( "head" );
-		float scale = 2;//1f/.66f;
+		float scale = 3;//1f/.66f;
 		//UPPER HEAD
 		Sprite s;
 		
-		Vector2 headPos = new Vector2(-1900,-900 );
+		Vector2 headPos = new Vector2(-3500,-1460 );
 		s = headAtlas.createSprite( "dragontop_left" );
 		head_skeletonSkeleton.addFGDecal( Sprite.scale( s, scale ), new Vector2().add( headPos ) );
 		head_skeletonSkeleton.addFGDecal( 
 				Sprite.scale( headAtlas.createSprite( "dragontop_right" ), scale ), 
-				new Vector2(s.getWidth( )*scale-10,725).add( headPos ) );
+				new Vector2(s.getWidth( )*scale-10,1085).add( headPos ) );
 		addFGSkeleton( head_skeletonSkeleton );
 		
 		//LOW HEAD/ JAW
-		Vector2 pos = new Vector2(-959,-615);
+		Vector2 pos = new Vector2(-1375,-615);
 		s = headAtlas.createSprite( "dragonbottom_left" );
 		jaw_skeleton.addFGDecal( Sprite.scale( s, scale ), new Vector2().add( pos ) );//959,615
 		jaw_skeleton.addFGDecal( Sprite.scale( headAtlas.createSprite( "dragonbottom_right" ), scale ), 

@@ -305,6 +305,7 @@ public class TiledPlatform extends Platform {
 
 	@Override
 	public void draw( SpriteBatch batch, float deltaTime ) {
+		super.draw(batch,deltaTime);
 		// drawBGDecals( batch );
 		if ( visible ) {
 			Tile d;
