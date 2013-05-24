@@ -165,7 +165,11 @@ public class ProgressManager {
 						"wait" )
 				&& animTime > currentCheckPoint.spinemator
 						.getAnimationDuration( ) ) {
-			currentCheckPoint.spinemator.changeAnimation( "on-idle", true );
+			if ( noPlayersDead ) {
+				currentCheckPoint.spinemator.changeAnimation( "on-idle", true );
+			} else {
+				currentCheckPoint.spinemator.changeAnimation( "wait", true );
+			}
 			animTime = 0f;
 		}
 	}
