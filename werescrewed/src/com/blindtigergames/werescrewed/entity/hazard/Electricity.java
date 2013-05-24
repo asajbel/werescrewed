@@ -24,7 +24,7 @@ public class Electricity extends Hazard {
 
 	public Electricity( String name, Vector2 pos1, Vector2 pos2, World world,
 			boolean isActive ) {
-		super( name, pos1, null, world, 0, 0, isActive );
+		super( name, pos1, null, world,isActive );
 		entityType = EntityType.HAZARD;
 		hazardType = HazardType.ELECTRICITY;
 
