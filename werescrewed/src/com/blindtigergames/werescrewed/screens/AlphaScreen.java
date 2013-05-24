@@ -83,7 +83,7 @@ public class AlphaScreen extends Screen {
 	private Steam engineSteam;
 
 	private boolean chestSteamTriggered = false, headPlatformCreated = false,
-			headAnchorActivatedOnce = false;
+			headAnchorActivatedOnce = false, testOnce = true;
 	private boolean rLegTriggered = false, thighSteamTriggered = false;
 
 	private Skeleton rightShoulderSkeleton;
@@ -227,6 +227,7 @@ public class AlphaScreen extends Screen {
 		skel.setMacroSkel( true );
 		skel = ( Skeleton ) LevelFactory.entities.get( "footSkeleton" );
 		skel.setMacroSkel( true );
+		
 	}
 
 	@Override
@@ -327,6 +328,13 @@ public class AlphaScreen extends Screen {
 
 				if ( headEyebrow1.isTimeLineMoverFinished( )
 						&& headEyebrow2.isTimeLineMoverFinished( ) ) {
+					if(testOnce){
+						//Skeleton fw1 = ( Skeleton ) LevelFactory.entities.get( "firework_skeleton1" );
+						//Skeleton fw2 = ( Skeleton ) LevelFactory.entities.get( "firework_skeleton2" );
+						//fw1.addFrontParticleEffect( "fireworks/firework1" , true , true );
+						//fw2.addFrontParticleEffect( "fireworks/firework2" , true , true );
+						testOnce = false;
+					}
 
 					// You win and goto next screen!!!
 					// menu for now
