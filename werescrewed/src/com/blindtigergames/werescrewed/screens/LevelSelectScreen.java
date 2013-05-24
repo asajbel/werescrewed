@@ -54,7 +54,7 @@ public class LevelSelectScreen extends Screen {
 				+ "/transition/trans-gear.png", Texture.class );
 		menuBG = new Sprite( back );
 		fade = new Sprite( fadeScreen );
-		transition = new Sprite( trans );
+		transIn = new Sprite( trans );
 		
 		lineHeight = Math.round( 2.5f * font.getCapHeight( ) + 40 );
 		screenLabel = new Label( "Level Select", fancyFont );

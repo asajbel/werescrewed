@@ -35,10 +35,11 @@ public class Screen implements com.badlogic.gdx.Screen {
 	protected int controllerMax = 10;
 	protected int buttonIndex = 0;
 	protected float alpha = 1.0f;
-	protected Sprite transition = null;
+	protected Sprite transIn = null;
+	protected Sprite transOut = null;
 	protected boolean alphaFinish = false;
-	protected boolean transStart = true;
-	protected boolean transFinish = false;
+	protected boolean transInEnd = false;
+	protected boolean transOutEnd = false;
 
 	BitmapFont debug_font;
 	Camera uiCamera;
@@ -428,19 +429,19 @@ public class Screen implements com.badlogic.gdx.Screen {
 		alphaFinish = value;
 	}
 
-	public boolean isTransStarted( ) {
-		return transStart;
+	public boolean transInEnded( ) {
+		return transInEnd;
 	}
 
-	public void setTransStart( boolean value ) {
-		transStart = value;
+	public void setTransInEnd( boolean value ) {
+		transInEnd = value;
 	}
 	
-	public boolean isTransFinished( ) {
-		return transFinish;
+	public boolean transOutEnded( ) {
+		return transOutEnd;
 	}
 
-	public void setTransFinish( boolean value ) {
-		transFinish = value;
+	public void setTransOutEnd( boolean value ) {
+		transOutEnd = value;
 	}
 }
