@@ -32,6 +32,7 @@ public class CannonLaunchMover implements IMover {
 			( ( Entity ) ( body.getUserData( ) ) ).setMoverNullAtCurrentState( ); // delete
 																					// this
 																					// mover!
+			cannon.addBehindParticleEffect( "cannon_blast", true, true ).start( );
 		}
 
 	}
