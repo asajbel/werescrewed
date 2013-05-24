@@ -62,7 +62,7 @@ public class Entity implements GleedLoadable {
 	protected float energy;
 	protected boolean active;
 	protected boolean crushing;
-	protected boolean visible;
+	protected boolean visible, drawParticles=true;
 	protected boolean maintained;
 	protected boolean removeNextStep = false;
 	public EntityType entityType;
@@ -310,10 +310,11 @@ public class Entity implements GleedLoadable {
 //		if(name.equals("balloon1_flame_plat")){
 //			this.getPosition( );
 //		}
+		if(drawParticles)drawParticles( behindParticles, batch );
 		if ( visible ) {
 			
 			// drawBGDecals( batch );
-			drawParticles( behindParticles, batch );
+			
 			if ( sprite != null && visible && !removeNextStep ) {
 				sprite.draw( batch );
 			}
@@ -321,8 +322,9 @@ public class Entity implements GleedLoadable {
 			// drawFGDecals( batch );
 			if ( spinemator != null )
 				spinemator.draw( batch );
-			drawParticles( frontParticles, batch );
+			
 		}
+		if(drawParticles)drawParticles( frontParticles, batch );
 	}
 
 	protected void drawParticles( HashMap< String, ParticleEffect > map,
@@ -890,6 +892,7 @@ public class Entity implements GleedLoadable {
 	 */
 	public void setVisible( boolean v ) {
 		visible = v;
+		drawParticles=v;
 	}
 
 	/**
@@ -899,6 +902,15 @@ public class Entity implements GleedLoadable {
 	 */
 	public boolean isVisible( ) {
 		return visible;
+	}
+	
+	public void setVisible(boolean isVisible, boolean drawParticles){
+		this.visible=isVisible;
+		this.drawParticles = drawParticles;
+	}
+	
+	public boolean drawParticles(){
+		return drawParticles;
 	}
 
 	/**

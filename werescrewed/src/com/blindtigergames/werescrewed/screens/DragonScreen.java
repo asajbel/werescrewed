@@ -550,6 +550,7 @@ public class DragonScreen extends Screen {
 			p.addFGDecal( s,new Vector2(-s.getWidth( )/2,-s.getHeight( )/2) );
 			addFGEntity( p );
 			p.addBehindParticleEffect( "fire_new", false, true ).setOffsetFromParent( 0, 75 ).start();
+			p.setVisible( false, true );
 		}
 	}
 
