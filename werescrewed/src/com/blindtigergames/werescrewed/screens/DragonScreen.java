@@ -585,6 +585,7 @@ void buildBackground(){
 								  0);
 			scale = (r.nextFloat( )/2+minCloudScale)*cloudScale;
 			e.sprite.setScale( scale * (r.nextBoolean( )?1f:-1f), r.nextFloat( )/2+0.5f );
+			
 			yPos = frontTopCloudsY + Util.binom( )*frontCloudVariation;
 			m = new ParallaxMover( new Vector2(xMin,yPos),
 												 new Vector2(xMax,yPos),
@@ -613,6 +614,9 @@ void buildBackground(){
 								  0);
 			scale = (r.nextFloat( )/2+minCloudScale)*cloudScale;
 			e.sprite.setScale( scale * (r.nextBoolean( )?1f:-1f), r.nextFloat( )/2+0.5f );
+			e.addFGDecal( e.sprite );
+			e.sprite=null;
+			addFGEntity( e );
 			yPos = midOrangeCloudsY + Util.binom( )*frontCloudVariation;
 			m = new ParallaxMover( new Vector2(xMin,yPos),
 												 new Vector2(xMax,yPos),
