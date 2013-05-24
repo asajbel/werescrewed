@@ -170,6 +170,7 @@ public class Player extends Entity {
 	public float frictionCounter = PLAYER_FRICTION;
 	private float rezTime = Float.MAX_VALUE; 
 	private boolean rezzing = false; 
+	private boolean deadPlayerHitCheckpnt = false; 
 
 	// Enums
 	/**
@@ -642,7 +643,7 @@ public class Player extends Entity {
 		isDead = false;
 		respawnTimeout = DEAD_STEPS;
 
-		getEffect( "revive" ).restartAt( getPositionPixel( ).add( 0, 500 ) );
+//		getEffect( "revive" ).restartAt( getPositionPixel( ).add( 0, 500 ) );
 	}
 
 	/**
@@ -2358,5 +2359,13 @@ public class Player extends Entity {
 
 	public void setRezTime( float rezTime ) {
 		this.rezTime = rezTime;
+	}
+
+	public boolean isDeadPlayerHitCheckpnt( ) {
+		return deadPlayerHitCheckpnt;
+	}
+
+	public void setDeadPlayerHitCheckpnt( boolean deadPlayerHitCheckpnt ) {
+		this.deadPlayerHitCheckpnt = deadPlayerHitCheckpnt;
 	}
 }
