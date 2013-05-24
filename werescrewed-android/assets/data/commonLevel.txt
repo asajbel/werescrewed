@@ -120,7 +120,7 @@ fastSteam.p
 slowSteam.p
 fire.p
 fire_new.p
-cannon_blast.p
+cannon.p
 
 ##menu assets
 /menu/menu.png
