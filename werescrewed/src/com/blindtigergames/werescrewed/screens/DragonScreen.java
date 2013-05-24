@@ -179,7 +179,7 @@ public class DragonScreen extends Screen {
 				t.beginParallel( );
 				t.push( Tween
 						.to( balloon1_super, PlatformAccessor.LOCAL_POS_XY, 8f )
-						.delay( 0f ).target( 0, 800 )
+						.delay( 0f ).target( 0, 2000 )
 						.ease( TweenEquations.easeNone ).start( ) );
 
 				t.push( Tween
@@ -193,7 +193,7 @@ public class DragonScreen extends Screen {
 
 				t.push( Tween
 						.to( balloon1_super, PlatformAccessor.LOCAL_POS_XY, 8f )
-						.delay( 0f ).target( 0, 1600f )
+						.delay( 0f ).target( 0, 4000f )
 						.ease( TweenEquations.easeNone ).start( ) );
 
 				t.push( Tween
@@ -348,7 +348,7 @@ public class DragonScreen extends Screen {
 		Platform tail3MoverPlat2 = ( Platform ) LevelFactory.entities
 				.get( "tail3_mover_plat2" );
 
-		float distance = 1000f;
+		float distance = 800f;
 
 		LerpMover lm1 = new LerpMover( tail3MoverPlat1.getPositionPixel( ),
 				new Vector2( tail3MoverPlat1.getPositionPixel( ).x,
@@ -493,11 +493,12 @@ public class DragonScreen extends Screen {
 		Skeleton balloon3CannonSkeleton = ( Skeleton ) LevelFactory.entities
 				.get( "balloon3_cannon_skeleton" );
 		balloon3CannonSkeleton.setFgFade( false );
-		balloon3CannonSkeleton.setLocalRot( -Util.PI / 4 );
+		
 
 		buildCannon( balloon3CannonSkeleton,
 				balloon3CannonSkeleton.getPositionPixel( ), 200, 200, 0.5f, 1f );
 
+		balloon3CannonSkeleton.setLocalRot( -Util.PI / 4 );
 		Skeleton cannonPuzzle = ( Skeleton ) LevelFactory.entities
 				.get( "body_cannon_puzzle_skeleton" );
 
@@ -537,24 +538,20 @@ public class DragonScreen extends Screen {
 	}
 	
 	void flamePlatformDecals(){
-		Platform balloon1FlamePlat = ( Platform ) LevelFactory.entities
-				.get( "balloon1_flame_plat" );
-		
-		Platform balloon2FlamePlat = ( Platform ) LevelFactory.entities
-				.get( "balloon2_flame_plat" );
-		
-		Platform balloon3FlamePlat = ( Platform ) LevelFactory.entities
-				.get( "balloon3_flame_plat" );
-		
-		Platform tailFlamePlat = ( Platform ) LevelFactory.entities
-				.get( "tail_flame_plat" );
-		
-		Platform tail2FlamePlat = ( Platform ) LevelFactory.entities
-				.get( "tail2_flame_plat" );
-		
-		Platform tai3lFlamePlat = ( Platform ) LevelFactory.entities
-				.get( "tail3_flame_plat" );
-	
+		TextureAtlas dragonObjects = WereScrewedGame.manager.getAtlas( "dragon_objects" );
+		Sprite s;
+		Platform p;
+		String[] entities = {"balloon1_flame_plat","balloon2_flame_plat",
+				"balloon3_flame_plat","tail_flame_plat",
+				"tail2_flame_plat","tail3_flame_plat"};
+		for(int i =0; i < entities.length; ++i ){
+			p = ( Platform ) LevelFactory.entities
+					.get( entities[i] );
+			s = dragonObjects.createSprite( "burner-med" );
+			p.addFGDecal( s,new Vector2(-s.getWidth( )/2,-s.getHeight( )/2) );
+			addFGEntity( p );
+			p.addBehindParticleEffect( "fire_new", false, true ).setOffsetFromParent( 0, 75 ).start();
+		}
 	}
 
 void buildBackground(){
@@ -588,6 +585,7 @@ void buildBackground(){
 								  0);
 			scale = (r.nextFloat( )/2+minCloudScale)*cloudScale;
 			e.sprite.setScale( scale * (r.nextBoolean( )?1f:-1f), r.nextFloat( )/2+0.5f );
+			
 			yPos = frontTopCloudsY + Util.binom( )*frontCloudVariation;
 			m = new ParallaxMover( new Vector2(xMin,yPos),
 												 new Vector2(xMax,yPos),
@@ -616,6 +614,9 @@ void buildBackground(){
 								  0);
 			scale = (r.nextFloat( )/2+minCloudScale)*cloudScale;
 			e.sprite.setScale( scale * (r.nextBoolean( )?1f:-1f), r.nextFloat( )/2+0.5f );
+			e.addFGDecal( e.sprite );
+			e.sprite=null;
+			addFGEntity( e );
 			yPos = midOrangeCloudsY + Util.binom( )*frontCloudVariation;
 			m = new ParallaxMover( new Vector2(xMin,yPos),
 												 new Vector2(xMax,yPos),
@@ -741,20 +742,20 @@ void buildBackground(){
 				head_skeletonSkeleton = ( Skeleton ) LevelFactory.entities
 				.get( "head_skeleton" );
 		TextureAtlas headAtlas = WereScrewedGame.manager.getAtlas( "head" );
-		float scale = 2;//1f/.66f;
+		float scale = 3;//1f/.66f;
 		//UPPER HEAD
 		Sprite s;
 		
-		Vector2 headPos = new Vector2(-1900,-900 );
+		Vector2 headPos = new Vector2(-3500,-1460 );
 		s = headAtlas.createSprite( "dragontop_left" );
 		head_skeletonSkeleton.addFGDecal( Sprite.scale( s, scale ), new Vector2().add( headPos ) );
 		head_skeletonSkeleton.addFGDecal( 
 				Sprite.scale( headAtlas.createSprite( "dragontop_right" ), scale ), 
-				new Vector2(s.getWidth( )*scale-10,725).add( headPos ) );
+				new Vector2(s.getWidth( )*scale-10,1085).add( headPos ) );
 		addFGSkeleton( head_skeletonSkeleton );
 		
 		//LOW HEAD/ JAW
-		Vector2 pos = new Vector2(-959,-615);
+		Vector2 pos = new Vector2(-1375,-615);
 		s = headAtlas.createSprite( "dragonbottom_left" );
 		jaw_skeleton.addFGDecal( Sprite.scale( s, scale ), new Vector2().add( pos ) );//959,615
 		jaw_skeleton.addFGDecal( Sprite.scale( headAtlas.createSprite( "dragonbottom_right" ), scale ), 
@@ -771,7 +772,7 @@ void buildBackground(){
 		
 		tail.addFGDecal( Sprite.scale( tailAtlas.createSprite( "tail" ), 2), new Vector2(-1800,-400) );
 		tail.fgSprite=null;
-		tail.setFgFade( true );
+	//tail.setFgFade( true );
 		addFGSkeleton( tail );
 		
 	}
@@ -782,7 +783,7 @@ void buildBackground(){
 		TextureAtlas tailAtlas = WereScrewedGame.manager.getAtlas( "tail-fg" );
 		tail2_skeleton.addFGDecal( Sprite.scale( tailAtlas.createSprite( "tail2" ), 2), new Vector2(-1206,-638) );//227,17
 		tail2_skeleton.fgSprite=null;
-		tail2_skeleton.setFgFade( true );
+		//tail2_skeleton.setFgFade( true );
 		
 		addFGSkeleton( tail2_skeleton );
 	}
@@ -793,7 +794,7 @@ void buildBackground(){
 		TextureAtlas tailAtlas = WereScrewedGame.manager.getAtlas( "tail-fg" );
 		tail3_skeleton.addFGDecal( Sprite.scale( tailAtlas.createSprite( "tail3" ), 2), new Vector2(-1166,-765) );//227,17
 		tail3_skeleton.fgSprite=null;
-		tail3_skeleton.setFgFade( true );
+		//tail3_skeleton.setFgFade( true );
 		
 		addFGSkeleton( tail3_skeleton );
 	}
@@ -803,7 +804,7 @@ void buildBackground(){
 		TextureAtlas tailAtlas = WereScrewedGame.manager.getAtlas( "body-neck" );
 		neck_skeleton.addFGDecal( Sprite.scale( tailAtlas.createSprite( "neck" ), 2f), new Vector2(-1167,-914) );//4,414
 		neck_skeleton.fgSprite=null;
-		neck_skeleton.setFgFade( false );//3497.1770
+		//neck_skeleton.setFgFade( false );//3497.1770
 		
 		addFGSkeleton( neck_skeleton );
 	}

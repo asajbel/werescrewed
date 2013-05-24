@@ -316,6 +316,12 @@ public class Screen implements com.badlogic.gdx.Screen {
 	protected void addFGEntity( Entity entity ) {
 		addToEntityList( level.entityFGList, entity, false );
 	}
+	
+	protected void addFGEntity( Entity... entities ) {
+		for(Entity e : entities){
+			addToEntityList( level.entityFGList, e, false );
+		}
+	}
 
 	protected void addFGEntityToBack( Entity entity ) {
 		addToEntityList( level.entityFGList, entity, true );

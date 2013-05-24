@@ -27,7 +27,7 @@ public class TrophyScreen implements com.badlogic.gdx.Screen {
 	private BitmapFont fancyFont;
 	private int trophyLength = 5;
 	private int lineHeight = 0;
-	private int trophyMax = 28; // Current number of possible trophies
+	private int trophyMax = 30; // Current number of possible trophies
 	private float offSet = 96;
 	private ScreenType screenTag = null;
 	private Label[ ] player1 = new Label[ trophyLength ];
@@ -121,6 +121,10 @@ public class TrophyScreen implements com.badlogic.gdx.Screen {
 	 *            the trophy slot the trophy is being added to
 	 */
 	private void trophyCheck( int playerNum, int trophyNum, int index ) {
+		for (int i = 0; i < trophyIndices.length ; i++){
+			if ( trophyIndices[i] == trophyNum ) return;
+		}
+		
 		switch ( trophyNum ) {
 		case 1: // Longest Running Time
 			if ( playerNum == 1
@@ -130,6 +134,7 @@ public class TrophyScreen implements com.badlogic.gdx.Screen {
 				Texture icon = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 						+ "/common/powerswitches/on.png", Texture.class );
 				trophies1[ index ] = new Sprite ( icon );
+				trophyIndices[ index ] = trophyNum;
 			}
 			else if ( playerNum == 2
 					&& Metrics.getTrophyMetric( TrophyMetric.P2RUNDIST ) > Metrics
@@ -138,6 +143,7 @@ public class TrophyScreen implements com.badlogic.gdx.Screen {
 				Texture icon = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 						+ "/common/powerswitches/on.png", Texture.class );
 				trophies2[ index ] = new Sprite ( icon );
+				trophyIndices[ trophyLength + index ] = trophyNum;
 			}
 			break;
 		case 2: // Most Struct Screws Unscrewed
@@ -148,6 +154,7 @@ public class TrophyScreen implements com.badlogic.gdx.Screen {
 				Texture icon = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 						+ "/common/powerswitches/on.png", Texture.class );
 				trophies1[ index ] = new Sprite ( icon );
+				trophyIndices[ index ] = trophyNum;
 			}
 			else if ( playerNum == 2
 					&& Metrics.getTrophyMetric( TrophyMetric.P2UNSCREWED ) > Metrics
@@ -156,6 +163,7 @@ public class TrophyScreen implements com.badlogic.gdx.Screen {
 				Texture icon = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 						+ "/common/powerswitches/on.png", Texture.class );
 				trophies2[ index ] = new Sprite ( icon );
+				trophyIndices[ trophyLength + index ] = trophyNum;
 			}
 			break;
 		case 3: // Longest Air Time
@@ -166,6 +174,7 @@ public class TrophyScreen implements com.badlogic.gdx.Screen {
 				Texture icon = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 						+ "/common/powerswitches/on.png", Texture.class );
 				trophies1[ index ] = new Sprite ( icon );
+				trophyIndices[ index ] = trophyNum;
 			}
 			else if ( playerNum == 2
 					&& Metrics.getTrophyMetric( TrophyMetric.P2AIRTIME ) > Metrics
@@ -174,6 +183,7 @@ public class TrophyScreen implements com.badlogic.gdx.Screen {
 				Texture icon = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 						+ "/common/powerswitches/on.png", Texture.class );
 				trophies2[ index ] = new Sprite ( icon );
+				trophyIndices[ trophyLength + index ] = trophyNum;
 			}
 			break;
 		case 4: // Most Fall Deaths
@@ -184,6 +194,7 @@ public class TrophyScreen implements com.badlogic.gdx.Screen {
 				Texture icon = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 						+ "/common/powerswitches/on.png", Texture.class );
 				trophies1[ index ] = new Sprite ( icon );
+				trophyIndices[ index ] = trophyNum;
 			}
 			else if ( playerNum == 2
 					&& Metrics.getTrophyMetric( TrophyMetric.P2FALLDEATHS ) > Metrics
@@ -192,6 +203,7 @@ public class TrophyScreen implements com.badlogic.gdx.Screen {
 				Texture icon = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 						+ "/common/powerswitches/on.png", Texture.class );
 				trophies2[ index ] = new Sprite ( icon );
+				trophyIndices[ trophyLength + index ] = trophyNum;
 			}
 			break;
 		case 5: // Most Time Spent On Puzzle Screws
@@ -202,6 +214,7 @@ public class TrophyScreen implements com.badlogic.gdx.Screen {
 				Texture icon = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 						+ "/common/powerswitches/on.png", Texture.class );
 				trophies1[ index ] = new Sprite ( icon );
+				trophyIndices[ index ] = trophyNum;
 			}
 			else if ( playerNum == 2
 					&& Metrics.getTrophyMetric( TrophyMetric.P2PUZZLETIME ) > Metrics
@@ -210,6 +223,7 @@ public class TrophyScreen implements com.badlogic.gdx.Screen {
 				Texture icon = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 						+ "/common/powerswitches/on.png", Texture.class );
 				trophies2[ index ] = new Sprite ( icon );
+				trophyIndices[ trophyLength + index ] = trophyNum;
 			}
 			break;
 		case 6: // Most Deaths
@@ -220,6 +234,7 @@ public class TrophyScreen implements com.badlogic.gdx.Screen {
 				Texture icon = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 						+ "/common/powerswitches/on.png", Texture.class );
 				trophies1[ index ] = new Sprite ( icon );
+				trophyIndices[ index ] = trophyNum;
 			}
 			else if ( playerNum == 2
 					&& Metrics.getTrophyMetric( TrophyMetric.P2DEATHS ) > Metrics
@@ -228,6 +243,7 @@ public class TrophyScreen implements com.badlogic.gdx.Screen {
 				Texture icon = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 						+ "/common/powerswitches/on.png", Texture.class );
 				trophies2[ index ] = new Sprite ( icon );
+				trophyIndices[ trophyLength + index ] = trophyNum;
 			}
 			break;
 		case 7: // Most Head Jumps
@@ -238,6 +254,7 @@ public class TrophyScreen implements com.badlogic.gdx.Screen {
 				Texture icon = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 						+ "/common/powerswitches/on.png", Texture.class );
 				trophies1[ index ] = new Sprite ( icon );
+				trophyIndices[ index ] = trophyNum;
 			}
 			else if ( playerNum == 2
 					&& Metrics.getTrophyMetric( TrophyMetric.P2HEADSTANDS ) > Metrics
@@ -246,6 +263,7 @@ public class TrophyScreen implements com.badlogic.gdx.Screen {
 				Texture icon = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 						+ "/common/powerswitches/on.png", Texture.class );
 				trophies2[ index ] = new Sprite ( icon );
+				trophyIndices[ trophyLength + index ] = trophyNum;
 			}
 			break;
 		case 8: // Most Revives
@@ -256,6 +274,7 @@ public class TrophyScreen implements com.badlogic.gdx.Screen {
 				Texture icon = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 						+ "/common/powerswitches/on.png", Texture.class );
 				trophies1[ index ] = new Sprite ( icon );
+				trophyIndices[ index ] = trophyNum;
 			}
 			else if ( playerNum == 2
 					&& Metrics.getTrophyMetric( TrophyMetric.P2REVIVES ) > Metrics
@@ -264,6 +283,7 @@ public class TrophyScreen implements com.badlogic.gdx.Screen {
 				Texture icon = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 						+ "/common/powerswitches/on.png", Texture.class );
 				trophies2[ index ] = new Sprite ( icon );
+				trophyIndices[ trophyLength + index ] = trophyNum;
 			}
 			break;
 		case 9: // Most Secondary Deaths
@@ -274,6 +294,7 @@ public class TrophyScreen implements com.badlogic.gdx.Screen {
 				Texture icon = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 						+ "/common/powerswitches/on.png", Texture.class );
 				trophies1[ index ] = new Sprite ( icon );
+				trophyIndices[ index ] = trophyNum;
 			}
 			else if ( playerNum == 2
 					&& Metrics.getTrophyMetric( TrophyMetric.P2TEAMDEATHS ) > Metrics
@@ -282,6 +303,7 @@ public class TrophyScreen implements com.badlogic.gdx.Screen {
 				Texture icon = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 						+ "/common/powerswitches/on.png", Texture.class );
 				trophies2[ index ] = new Sprite ( icon );
+				trophyIndices[ trophyLength + index ] = trophyNum;
 			}
 			break;
 		case 10: // Longest Idle Time
@@ -292,6 +314,7 @@ public class TrophyScreen implements com.badlogic.gdx.Screen {
 				Texture icon = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 						+ "/common/powerswitches/on.png", Texture.class );
 				trophies1[ index ] = new Sprite ( icon );
+				trophyIndices[ index ] = trophyNum;
 			}
 			else if ( playerNum == 2
 					&& Metrics.getTrophyMetric( TrophyMetric.P2IDLETIME ) > Metrics
@@ -300,6 +323,7 @@ public class TrophyScreen implements com.badlogic.gdx.Screen {
 				Texture icon = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 						+ "/common/powerswitches/on.png", Texture.class );
 				trophies2[ index ] = new Sprite ( icon );
+				trophyIndices[ trophyLength + index ] = trophyNum;
 			}
 			break;
 		case 11: // No Deaths
@@ -309,6 +333,7 @@ public class TrophyScreen implements com.badlogic.gdx.Screen {
 				Texture icon = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 						+ "/common/powerswitches/on.png", Texture.class );
 				trophies1[ index ] = new Sprite ( icon );
+				trophyIndices[ index ] = trophyNum;
 			}
 			else if ( playerNum == 2
 					&& Metrics.getTrophyMetric( TrophyMetric.P2DEATHS ) == 0 ){
@@ -316,6 +341,7 @@ public class TrophyScreen implements com.badlogic.gdx.Screen {
 				Texture icon = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 						+ "/common/powerswitches/on.png", Texture.class );
 				trophies2[ index ] = new Sprite ( icon );
+				trophyIndices[ trophyLength + index ] = trophyNum;
 			}
 			break;
 		case 12: // Most Crush Deaths
@@ -326,6 +352,7 @@ public class TrophyScreen implements com.badlogic.gdx.Screen {
 				Texture icon = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 						+ "/common/powerswitches/on.png", Texture.class );
 				trophies1[ index ] = new Sprite ( icon );
+				trophyIndices[ index ] = trophyNum;
 			}
 			else if ( playerNum == 2
 					&& Metrics.getTrophyMetric( TrophyMetric.P2CRUSHDEATHS ) > Metrics
@@ -334,6 +361,7 @@ public class TrophyScreen implements com.badlogic.gdx.Screen {
 				Texture icon = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 						+ "/common/powerswitches/on.png", Texture.class );
 				trophies2[ index ] = new Sprite ( icon );
+				trophyIndices[ trophyLength + index ] = trophyNum;
 			}
 			break;
 		case 13: // Most Electrocution Deaths
@@ -344,6 +372,7 @@ public class TrophyScreen implements com.badlogic.gdx.Screen {
 				Texture icon = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 						+ "/common/powerswitches/on.png", Texture.class );
 				trophies1[ index ] = new Sprite ( icon );
+				trophyIndices[ index ] = trophyNum;
 			}
 			else if ( playerNum == 2
 					&& Metrics.getTrophyMetric( TrophyMetric.P2ELECDEATHS ) > Metrics
@@ -352,6 +381,7 @@ public class TrophyScreen implements com.badlogic.gdx.Screen {
 				Texture icon = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 						+ "/common/powerswitches/on.png", Texture.class );
 				trophies2[ index ] = new Sprite ( icon );
+				trophyIndices[ trophyLength + index ] = trophyNum;
 			}
 			break;
 		case 14: // Longest Time Grounded
@@ -362,6 +392,7 @@ public class TrophyScreen implements com.badlogic.gdx.Screen {
 				Texture icon = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 						+ "/common/powerswitches/on.png", Texture.class );
 				trophies1[ index ] = new Sprite ( icon );
+				trophyIndices[ index ] = trophyNum;
 			}
 			else if ( playerNum == 2
 					&& Metrics.getTrophyMetric( TrophyMetric.P2GROUNDTIME ) > Metrics
@@ -370,6 +401,7 @@ public class TrophyScreen implements com.badlogic.gdx.Screen {
 				Texture icon = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 						+ "/common/powerswitches/on.png", Texture.class );
 				trophies2[ index ] = new Sprite ( icon );
+				trophyIndices[ trophyLength + index ] = trophyNum;
 			}
 			break;
 		case 15: // Most Jumps
@@ -380,6 +412,7 @@ public class TrophyScreen implements com.badlogic.gdx.Screen {
 				Texture icon = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 						+ "/common/powerswitches/on.png", Texture.class );
 				trophies1[ index ] = new Sprite ( icon );
+				trophyIndices[ index ] = trophyNum;
 			}
 			else if ( playerNum == 2
 					&& Metrics.getTrophyMetric( TrophyMetric.P2JUMPS ) > Metrics
@@ -388,6 +421,7 @@ public class TrophyScreen implements com.badlogic.gdx.Screen {
 				Texture icon = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 						+ "/common/powerswitches/on.png", Texture.class );
 				trophies2[ index ] = new Sprite ( icon );
+				trophyIndices[ trophyLength + index ] = trophyNum;
 			}
 			break;
 		case 16: // Most Spike Deaths
@@ -398,6 +432,7 @@ public class TrophyScreen implements com.badlogic.gdx.Screen {
 				Texture icon = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 						+ "/common/powerswitches/on.png", Texture.class );
 				trophies1[ index ] = new Sprite ( icon );
+				trophyIndices[ index ] = trophyNum;
 			}
 			else if ( playerNum == 2
 					&& Metrics.getTrophyMetric( TrophyMetric.P2SPIKEDEATHS ) > Metrics
@@ -406,6 +441,7 @@ public class TrophyScreen implements com.badlogic.gdx.Screen {
 				Texture icon = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 						+ "/common/powerswitches/on.png", Texture.class );
 				trophies2[ index ] = new Sprite ( icon );
+				trophyIndices[ trophyLength + index ] = trophyNum;
 			}
 			break;
 		case 17: // Most Fire Deaths
@@ -416,6 +452,7 @@ public class TrophyScreen implements com.badlogic.gdx.Screen {
 				Texture icon = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 						+ "/common/powerswitches/on.png", Texture.class );
 				trophies1[ index ] = new Sprite ( icon );
+				trophyIndices[ index ] = trophyNum;
 			}
 			else if ( playerNum == 2
 					&& Metrics.getTrophyMetric( TrophyMetric.P2FIREDEATHS ) > Metrics
@@ -424,6 +461,7 @@ public class TrophyScreen implements com.badlogic.gdx.Screen {
 				Texture icon = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 						+ "/common/powerswitches/on.png", Texture.class );
 				trophies2[ index ] = new Sprite ( icon );
+				trophyIndices[ trophyLength + index ] = trophyNum;
 			}
 			break;
 		case 18: // Longest Time Dead
@@ -434,6 +472,7 @@ public class TrophyScreen implements com.badlogic.gdx.Screen {
 				Texture icon = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 						+ "/common/powerswitches/on.png", Texture.class );
 				trophies1[ index ] = new Sprite ( icon );
+				trophyIndices[ index ] = trophyNum;
 			}
 			else if ( playerNum == 2
 					&& Metrics.getTrophyMetric( TrophyMetric.P2DEADTIME ) > Metrics
@@ -442,6 +481,7 @@ public class TrophyScreen implements com.badlogic.gdx.Screen {
 				Texture icon = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 						+ "/common/powerswitches/on.png", Texture.class );
 				trophies2[ index ] = new Sprite ( icon );
+				trophyIndices[ trophyLength + index ] = trophyNum;
 			}
 			break;
 		case 19: // Most Steam Jumps
@@ -452,6 +492,7 @@ public class TrophyScreen implements com.badlogic.gdx.Screen {
 				Texture icon = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 						+ "/common/powerswitches/on.png", Texture.class );
 				trophies1[ index ] = new Sprite ( icon );
+				trophyIndices[ index ] = trophyNum;
 			}
 			else if ( playerNum == 2
 					&& Metrics.getTrophyMetric( TrophyMetric.P2STEAMJUMPS ) > Metrics
@@ -460,6 +501,7 @@ public class TrophyScreen implements com.badlogic.gdx.Screen {
 				Texture icon = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 						+ "/common/powerswitches/on.png", Texture.class );
 				trophies2[ index ] = new Sprite ( icon );
+				trophyIndices[ trophyLength + index ] = trophyNum;
 			}
 			break;
 		case 20: // Most Strip Screws Attached To
@@ -470,6 +512,7 @@ public class TrophyScreen implements com.badlogic.gdx.Screen {
 				Texture icon = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 						+ "/common/powerswitches/on.png", Texture.class );
 				trophies1[ index ] = new Sprite ( icon );
+				trophyIndices[ index ] = trophyNum;
 			}
 			else if ( playerNum == 2
 					&& Metrics.getTrophyMetric( TrophyMetric.P2STRIPATTACH ) > Metrics
@@ -478,6 +521,7 @@ public class TrophyScreen implements com.badlogic.gdx.Screen {
 				Texture icon = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 						+ "/common/powerswitches/on.png", Texture.class );
 				trophies2[ index ] = new Sprite ( icon );
+				trophyIndices[ trophyLength + index ] = trophyNum;
 			}
 			break;
 		case 21: // Random 1
@@ -486,11 +530,13 @@ public class TrophyScreen implements com.badlogic.gdx.Screen {
 				Texture icon = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 						+ "/common/powerswitches/on.png", Texture.class );
 				trophies1[ index ] = new Sprite ( icon );
+				trophyIndices[ index ] = trophyNum;
 			} else if ( playerNum == 2 ) {
 				player2[ index ] = new Label( "Best Dressed", fancyFont );
 				Texture icon = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 						+ "/common/powerswitches/on.png", Texture.class );
 				trophies2[ index ] = new Sprite ( icon );
+				trophyIndices[ trophyLength + index ] = trophyNum;
 			}
 			break;
 		case 22: // Random 2
@@ -499,11 +545,13 @@ public class TrophyScreen implements com.badlogic.gdx.Screen {
 				Texture icon = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 						+ "/common/powerswitches/on.png", Texture.class );
 				trophies1[ index ] = new Sprite ( icon );
+				trophyIndices[ index ] = trophyNum;
 			} else if ( playerNum == 2 ) {
 				player2[ index ] = new Label( "My Screwdriver's Bigger", fancyFont );
 				Texture icon = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 						+ "/common/powerswitches/on.png", Texture.class );
 				trophies2[ index ] = new Sprite ( icon );
+				trophyIndices[ trophyLength + index ] = trophyNum;
 			}
 			break;
 		case 23: // Random 3
@@ -512,11 +560,13 @@ public class TrophyScreen implements com.badlogic.gdx.Screen {
 				Texture icon = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 						+ "/common/powerswitches/on.png", Texture.class );
 				trophies1[ index ] = new Sprite ( icon );
+				trophyIndices[ index ] = trophyNum;
 			} else if ( playerNum == 2 ) {
 				player2[ index ] = new Label( "You Unlocked \n An Achievement!!", fancyFont );
 				Texture icon = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 						+ "/common/powerswitches/on.png", Texture.class );
 				trophies2[ index ] = new Sprite ( icon );
+				trophyIndices[ trophyLength + index ] = trophyNum;
 			}
 			break;
 		case 24: // Random 4
@@ -525,11 +575,13 @@ public class TrophyScreen implements com.badlogic.gdx.Screen {
 				Texture icon = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 						+ "/common/powerswitches/on.png", Texture.class );
 				trophies1[ index ] = new Sprite ( icon );
+				trophyIndices[ index ] = trophyNum;
 			} else if ( playerNum == 2 ) {
 				player2[ index ] = new Label( "Most Popular", fancyFont );
 				Texture icon = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 						+ "/common/powerswitches/on.png", Texture.class );
 				trophies2[ index ] = new Sprite ( icon );
+				trophyIndices[ trophyLength + index ] = trophyNum;
 			}
 			break;
 		case 25: // Random 5
@@ -538,11 +590,13 @@ public class TrophyScreen implements com.badlogic.gdx.Screen {
 				Texture icon = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 						+ "/common/powerswitches/on.png", Texture.class );
 				trophies1[ index ] = new Sprite ( icon );
+				trophyIndices[ index ] = trophyNum;
 			} else if ( playerNum == 2 ) {
 				player2[ index ] = new Label( "Gives Awesome Hugs", fancyFont );
 				Texture icon = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 						+ "/common/powerswitches/on.png", Texture.class );
 				trophies2[ index ] = new Sprite ( icon );
+				trophyIndices[ trophyLength + index ] = trophyNum;
 			}
 			break;
 		case 26: // Random 6
@@ -551,11 +605,13 @@ public class TrophyScreen implements com.badlogic.gdx.Screen {
 				Texture icon = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 						+ "/common/powerswitches/on.png", Texture.class );
 				trophies1[ index ] = new Sprite ( icon );
+				trophyIndices[ index ] = trophyNum;
 			} else if ( playerNum == 2 ) {
 				player2[ index ] = new Label( "Better Than \n Bacon Ice Cream", fancyFont );
 				Texture icon = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 						+ "/common/powerswitches/on.png", Texture.class );
 				trophies2[ index ] = new Sprite ( icon );
+				trophyIndices[ trophyLength + index ] = trophyNum;
 			}
 			break;
 		case 27: // Random 7
@@ -565,12 +621,14 @@ public class TrophyScreen implements com.badlogic.gdx.Screen {
 				Texture icon = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 						+ "/common/powerswitches/on.png", Texture.class );
 				trophies1[ index ] = new Sprite ( icon );
+				trophyIndices[ index ] = trophyNum;
 			} else if ( playerNum == 2 ) {
 				player2[ index ] = new Label(
 						"You Played \n The Best Game Ever!!", fancyFont );
 				Texture icon = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 						+ "/common/powerswitches/on.png", Texture.class );
 				trophies2[ index ] = new Sprite ( icon );
+				trophyIndices[ trophyLength + index ] = trophyNum;
 			}
 			break;
 		case 28: // Random 8
@@ -579,11 +637,43 @@ public class TrophyScreen implements com.badlogic.gdx.Screen {
 				Texture icon = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 						+ "/common/powerswitches/on.png", Texture.class );
 				trophies1[ index ] = new Sprite ( icon );
+				trophyIndices[ index ] = trophyNum;
 			} else if ( playerNum == 2 ) {
 				player2[ index ] = new Label( "Free Cookie", fancyFont );
 				Texture icon = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 						+ "/common/powerswitches/on.png", Texture.class );
 				trophies2[ index ] = new Sprite ( icon );
+				trophyIndices[ trophyLength + index ] = trophyNum;
+			}
+			break;
+		case 29: // Random 9
+			if ( playerNum == 1 ) {
+				player1[ index ] = new Label( "Supremely Screwy", fancyFont );
+				Texture icon = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
+						+ "/common/powerswitches/on.png", Texture.class );
+				trophies1[ index ] = new Sprite ( icon );
+				trophyIndices[ index ] = trophyNum;
+			} else if ( playerNum == 2 ) {
+				player2[ index ] = new Label( "Supremely Screwy", fancyFont );
+				Texture icon = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
+						+ "/common/powerswitches/on.png", Texture.class );
+				trophies2[ index ] = new Sprite ( icon );
+				trophyIndices[ trophyLength + index ] = trophyNum;
+			}
+			break;
+		case 30: // Random 10
+			if ( playerNum == 1 ) {
+				player1[ index ] = new Label( "Antidisestablishmentarianist", fancyFont );
+				Texture icon = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
+						+ "/common/powerswitches/on.png", Texture.class );
+				trophies1[ index ] = new Sprite ( icon );
+				trophyIndices[ index ] = trophyNum;
+			} else if ( playerNum == 2 ) {
+				player2[ index ] = new Label( "Antidisestablishmentarianist", fancyFont );
+				Texture icon = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
+						+ "/common/powerswitches/on.png", Texture.class );
+				trophies2[ index ] = new Sprite ( icon );
+				trophyIndices[ trophyLength + index ] = trophyNum;
 			}
 			break;
 		default:
@@ -593,7 +683,7 @@ public class TrophyScreen implements com.badlogic.gdx.Screen {
 
 	@Override
 	public void render( float delta ) {
-		Gdx.gl.glClearColor( 0.8f, 0.6f, 0.0f, 1f );
+		Gdx.gl.glClearColor( 0.4f, 0.2f, 0.0f, 1f );
 		Gdx.gl.glClear( GL10.GL_COLOR_BUFFER_BIT );
 
 		batch.begin( );

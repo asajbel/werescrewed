@@ -49,7 +49,7 @@ public class Fire extends Hazard {
 		this.height = height;
 		this.world = world;
 		this.activeHazard = isActive;
-		particleEffect = WereScrewedGame.manager.getParticleEffect( "fire" );
+		particleEffect = WereScrewedGame.manager.getParticleEffect( "fire_new" );
 		// particleEffect.setOffset(0f, -height);
 		particleEffect.setPosition( pos.x, pos.y );
 

@@ -308,7 +308,11 @@ public class Entity implements GleedLoadable {
 	}
 
 	public void draw( SpriteBatch batch, float deltaTime ) {
+//		if(name.equals("balloon1_flame_plat")){
+//			this.getPosition( );
+//		}
 		if ( visible ) {
+			
 			// drawBGDecals( batch );
 			drawParticles( behindParticles, batch );
 			if ( sprite != null && visible && !removeNextStep ) {
@@ -429,16 +433,18 @@ public class Entity implements GleedLoadable {
 			Vector2 pos = getPositionPixel( );
 			for ( ParticleEffect e : map.values( ) ) {
 				if ( e.updatePositionOnUpdate ) {
-					e.setPosition( pos.x, pos.y );
-					if ( e.updateAngleBasedOnVelocity ) {
-
-					} else {
-						if ( body != null ) {
-							e.setAngle( body.getAngle( ) );
-						} else {
-							e.setAngle( sprite.getRotation( ) * Util.DEG_TO_RAD );
-						}
+					if(!e.offsetFromParent.equals( Vector2.Zero )&&body!=null){
+						Vector2 newPos = new Vector2(e.offsetFromParent).rotate( body.getAngle( )*Util.RAD_TO_DEG );
+						e.setPosition( pos.x+newPos.x, pos.y+newPos.y );
+					}else{
+						e.setPosition( pos.x, pos.y );
 					}
+					if ( body != null ) {
+						e.setAngle( body.getAngle( ) );
+					} else if (sprite!=null) {
+						e.setAngle( sprite.getRotation( ) * Util.DEG_TO_RAD );
+					}
+					
 				}
 				if ( !e.isComplete( ) ) {
 					e.update( deltaTime );
@@ -1435,45 +1441,30 @@ public class Entity implements GleedLoadable {
 	}
 
 	public ParticleEffect addBehindParticleEffect( String name,
-			boolean removeOnComplete, boolean updateWithParent,
-			boolean updateAngleWithVelocity ) {
+			boolean removeOnComplete, boolean updateWithParent ) {
 		if ( behindParticles == null ) {
 			behindParticles = new HashMap< String, ParticleEffect >( );
 		}
 		return addParticleEffect( name, behindParticles, removeOnComplete,
-				updateWithParent, updateAngleWithVelocity );
-	}
-
-	public ParticleEffect addBehindParticleEffect( String name,
-			boolean removeOnComplete, boolean updateWithParent ) {
-		return addBehindParticleEffect( name, removeOnComplete,
-				updateWithParent, false );
+				updateWithParent );
 	}
 
 	public ParticleEffect addFrontParticleEffect( String name,
-			boolean removeOnComplete, boolean updateWithParent,
-			boolean updateAngleWithVelocity ) {
+			boolean removeOnComplete, boolean updateWithParent ) {
 		if ( frontParticles == null ) {
 			frontParticles = new HashMap< String, ParticleEffect >( );
 		}
 		return addParticleEffect( name, frontParticles, removeOnComplete,
-				updateWithParent, updateAngleWithVelocity );
-	}
-
-	public ParticleEffect addFrontParticleEffect( String name,
-			boolean removeOnComplete, boolean updateWithParent ) {
-		return addFrontParticleEffect( name, removeOnComplete,
-				updateWithParent, false );
+				updateWithParent );
 	}
 
 	private ParticleEffect addParticleEffect( String name,
 			HashMap< String, ParticleEffect > map, boolean removeOnComplete,
-			boolean updateWithParent, boolean updateAngleWithVelocity ) {
+			boolean updateWithParent ) {
 		ParticleEffect effect = WereScrewedGame.manager
 				.getParticleEffect( name );
 		effect.removeOnComplete = removeOnComplete;
 		effect.updatePositionOnUpdate = updateWithParent;
-		effect.updateAngleBasedOnVelocity = updateAngleWithVelocity;
 		map.put( name, effect );
 		return effect;
 	}

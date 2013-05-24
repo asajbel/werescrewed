@@ -46,12 +46,12 @@ public class ParticleEffect implements Disposable {
 	 * If true, will update position and rotation when parent updates.
 	 */
 	public boolean updatePositionOnUpdate = true;
-
-	public boolean updateAngleBasedOnVelocity = false;
 	/**
 	 * Flag for parent to delete this when it particle effect is complete
 	 */
 	public boolean removeOnComplete = false;
+	
+	public Vector2 offsetFromParent = new Vector2();
 
 	public String name;
 
@@ -60,7 +60,6 @@ public class ParticleEffect implements Disposable {
 	}
 
 	public ParticleEffect( ParticleEffect effect ) {
-		updateAngleBasedOnVelocity = effect.updateAngleBasedOnVelocity;
 		updatePositionOnUpdate = effect.updatePositionOnUpdate;
 		removeOnComplete = effect.removeOnComplete;
 		name = effect.name + "_instance";
@@ -434,6 +433,12 @@ public class ParticleEffect implements Disposable {
 
 	public void restartAt( Vector2 posPixels ) {
 		restartAt( posPixels.x, posPixels.y );
+	}
+	
+	public ParticleEffect setOffsetFromParent(int x, int y){
+		this.offsetFromParent.x= x;
+		this.offsetFromParent.y = y;
+		return this;
 	}
 
 }
