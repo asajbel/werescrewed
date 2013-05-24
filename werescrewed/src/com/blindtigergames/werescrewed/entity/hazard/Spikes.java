@@ -64,7 +64,7 @@ public class Spikes extends Hazard {
 	 */
 	public Spikes( String name, Vector2 pos, float width, float height,
 			World world, boolean isActive, boolean invert, boolean horizontal ) {
-		super( name, pos, null, world, width, height, isActive );
+		super( name, pos, null, world,  isActive );
 		entityType = EntityType.HAZARD;
 		hazardType = HazardType.SPIKES;
 

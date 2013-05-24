@@ -31,6 +31,8 @@ import com.blindtigergames.werescrewed.entity.builders.PlatformBuilder;
 import com.blindtigergames.werescrewed.entity.builders.PlayerBuilder;
 import com.blindtigergames.werescrewed.entity.builders.SkeletonBuilder;
 import com.blindtigergames.werescrewed.entity.hazard.Fire;
+import com.blindtigergames.werescrewed.entity.hazard.Enemy;
+import com.blindtigergames.werescrewed.entity.mover.DirectionFlipMover;
 import com.blindtigergames.werescrewed.entity.mover.LerpMover;
 import com.blindtigergames.werescrewed.entity.mover.LinearAxis;
 import com.blindtigergames.werescrewed.entity.mover.PistonTweenMover;
@@ -125,13 +127,19 @@ public class PhysicsTestScreen extends Screen {
 		// connectedRoom( );
 		movingSkeleton( );
 
-		buildCannon( new Vector2( 1600, 50 ), 200, 200 );
+		buildCannon( new Vector2( 1600, 30 ), 200, 200 );
+		
+		buildCannon( new Vector2( 1900, 30 ), 200, 200 );
+		
+		buildCannon( new Vector2( -1900, 30 ), 200, 200 );
 
 		PowerSwitch pswitch = new PowerSwitch( "pwsstsf",
 				new Vector2( 512, 200 ), world );
 		rootSkeleton.addEventTrigger( pswitch );
 
-		createFire( );
+		//createFire( );
+		
+		hotBolts(new Vector2( -1900, 30 ));
 	}
 
 	// width & height in pixels
@@ -179,7 +187,7 @@ public class PhysicsTestScreen extends Screen {
 		triggerVerts.add( new Vector2( -quarter, -quarter ) );
 		triggerVerts.add( new Vector2( -quarter, -quarter ) );
 
-		s.setLocalRot( -Util.PI / 4 );
+		s.setLocalRot( -Util.PI / 7 );
 		EventTrigger et = etb.name( "cannon-trigger" ).setVerts( triggerVerts )
 				.extraBorder( 0 ).position( eventPos )
 				// .addEntity( s )
@@ -187,6 +195,14 @@ public class PhysicsTestScreen extends Screen {
 				.repeatable( ).build( );
 		s.addEventTrigger( et );
 
+	}
+	
+	void hotBolts(Vector2 pos){
+		Enemy hotbolt = new Enemy( "hot-bolt", pos,25, world, true );
+		//hotbolt.body.setType( BodyType.DynamicBody );
+		skeleton.addDynamicPlatform(  hotbolt );
+		hotbolt.addMover( new DirectionFlipMover( false, 0.001f, hotbolt, 2f, .03f ) );
+		hotbolt.addFrontParticleEffect( "fire_new", false, true ).updateAngleWithParent=false;
 	}
 
 	// This is how you make a whole room fall, by welding everything together
