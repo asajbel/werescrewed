@@ -235,8 +235,8 @@ public class Player extends Entity {
 
 		// build spine animator
 		if ( this.type.isAnimatorType( "spine" ) ) {
-			spinemator = new PlayerSpinemator( this );
-			spinemator.setPosition( body.getWorldCenter( ) );
+			setSpinemator( new PlayerSpinemator( this ) );
+			getSpinemator().setPosition( body.getWorldCenter( ) );
 		}
 
 		Filter filter = new Filter( );

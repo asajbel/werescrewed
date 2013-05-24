@@ -25,6 +25,7 @@ import com.blindtigergames.werescrewed.entity.PolySprite;
 import com.blindtigergames.werescrewed.entity.RobotState;
 import com.blindtigergames.werescrewed.entity.RootSkeleton;
 import com.blindtigergames.werescrewed.entity.Skeleton;
+import com.blindtigergames.werescrewed.entity.Sprite;
 import com.blindtigergames.werescrewed.entity.action.CannonLaunchAction;
 import com.blindtigergames.werescrewed.entity.builders.EventTriggerBuilder;
 import com.blindtigergames.werescrewed.entity.builders.PlatformBuilder;
@@ -51,6 +52,7 @@ import com.blindtigergames.werescrewed.entity.tween.PathBuilder;
 import com.blindtigergames.werescrewed.eventTrigger.EventTrigger;
 import com.blindtigergames.werescrewed.eventTrigger.PowerSwitch;
 import com.blindtigergames.werescrewed.graphics.SpriteBatch;
+import com.blindtigergames.werescrewed.graphics.TextureAtlas;
 import com.blindtigergames.werescrewed.joint.JointFactory;
 import com.blindtigergames.werescrewed.level.Level;
 import com.blindtigergames.werescrewed.util.Util;
@@ -74,6 +76,8 @@ public class PhysicsTestScreen extends Screen {
 
 	private Skeleton dynSkel2;
 	private Skeleton s;
+	
+	private TextureAtlas dragonParts; 
 
 	StructureScrew limit;
 
@@ -97,6 +101,7 @@ public class PhysicsTestScreen extends Screen {
 				world, BodyType.KinematicBody );
 		skeleton.setFgFade( false );
 		platBuilder = new PlatformBuilder( world );
+		dragonParts = new TextureAtlas("data/levels/dragon/dragon_objects.pack"); 
 
 		// Uncomment for test anchor
 		// anchor = new Anchor( new Vector2( 7 * Util.BOX_TO_PIXEL,
@@ -127,7 +132,7 @@ public class PhysicsTestScreen extends Screen {
 		// connectedRoom( );
 		movingSkeleton( );
 
-		buildCannon( new Vector2( 1600, 30 ), 200, 200 );
+		buildCannon( new Vector2( 1600, 50 ), 160, 350 );
 		
 		buildCannon( new Vector2( 1900, 30 ), 200, 200 );
 		
@@ -162,6 +167,10 @@ public class PhysicsTestScreen extends Screen {
 		Skeleton s = sb.position( pos.cpy( ) ).build( );
 		skeleton.addSkeleton( s );
 		s.setFgFade( false );
+		Sprite can = dragonParts.createSprite( "cannon-small" );
+		can.setOrigin( can.getWidth( )/2, can.getHeight( )/2 ); 
+		s.addFGDecal( can, new Vector2(-can.getWidth( ),-can.getHeight( )*2/3) );
+		addFGEntityToBack(s); 
 
 		// base
 		s.addPlatform( pb.name( "cannon-base" ).dimensions( dim.x, 1 )

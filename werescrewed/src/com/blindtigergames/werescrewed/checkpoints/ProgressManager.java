@@ -159,16 +159,16 @@ public class ProgressManager {
 
 		oldChkptPos = currentCheckPoint.getPositionPixel( ).cpy( );
 
-		if ( !currentCheckPoint.spinemator.getCurrentAnimation( ).equals(
+		if ( !currentCheckPoint.getSpinemator().getCurrentAnimation( ).equals(
 				"on-idle" )
-				&& !currentCheckPoint.spinemator.getCurrentAnimation( ).equals(
+				&& !currentCheckPoint.getSpinemator().getCurrentAnimation( ).equals(
 						"wait" )
-				&& animTime > currentCheckPoint.spinemator
+				&& animTime > currentCheckPoint.getSpinemator()
 						.getAnimationDuration( ) ) {
 			if ( noPlayersDead ) {
-				currentCheckPoint.spinemator.changeAnimation( "on-idle", true );
+				currentCheckPoint.getSpinemator().changeAnimation( "on-idle", true );
 			} else {
-				currentCheckPoint.spinemator.changeAnimation( "wait", true );
+				currentCheckPoint.getSpinemator().changeAnimation( "wait", true );
 			}
 			animTime = 0f;
 		}
@@ -204,7 +204,7 @@ public class ProgressManager {
 			buildRezScrew( player );
 		}
 		if ( !ghostMap.containsKey( player.name ) ) {
-			currentCheckPoint.spinemator.changeAnimation( "wait", true );
+			currentCheckPoint.getSpinemator().changeAnimation( "wait", true );
 			animTime = 0f;
 			buildGhost( player );
 		}
@@ -220,7 +220,7 @@ public class ProgressManager {
 		// Gdx.app.log("ghost:", player.name);
 
 		ghost = new Entity( "player1Ghost", player.getPositionPixel( ).cpy( )
-				.add( -64f, 64f ), player.spinemator.getBodyAtlas( )
+				.add( -64f, 64f ), player.getSpinemator().getBodyAtlas( )
 				.findRegion( "ghost" ), null, false, 0f );
 		// build ghost mover
 		LerpMover ghostMover = new LerpMover( player.getPositionPixel( ).cpy( )
@@ -320,8 +320,8 @@ public class ProgressManager {
 	}
 
 	private void wait( Player player ) {
-		currentCheckPoint.spinemator.changeAnimation( "birth", false );
-		rezDelay = currentCheckPoint.spinemator.getAnimationDuration( ) / 10f;
+		currentCheckPoint.getSpinemator().changeAnimation( "birth", false );
+		rezDelay = currentCheckPoint.getSpinemator().getAnimationDuration( ) / 10f;
 		player.setRezzing( true );
 		animTime = 0f;
 	}
