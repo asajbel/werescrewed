@@ -88,7 +88,7 @@ public class Steam extends Platform {
 
 			particleEffect.setPosition( this.getPositionPixel( ).x,
 					this.getPositionPixel( ).y );
-			particleEffect.setAngle( body.getAngle( ) );
+			particleEffect.setEffectAngle( body.getAngle( ) );
 			particleEffect.draw( batch, deltaTime );
 
 		} else {

@@ -142,7 +142,11 @@ public class StructureScrew extends Screw {
 				newDiff /= newDiff;
 			depth += newDiff;
 			if ( diff != 0 ) {
-				rotation += ( -newDiff * 5 );
+				int rotAfter = rotation + ( -newDiff * 5 );
+				if (rotAfter % SCREW_SOUND_DEGREES != rotation % SCREW_SOUND_DEGREES){
+					screwSound( diff, 5 );
+				}
+				rotation = rotAfter;
 			}
 			screwStep = depth + 6;
 		}
@@ -155,7 +159,11 @@ public class StructureScrew extends Screw {
 		if ( depth > -10 ) {
 			// body.setAngularVelocity( 1 );
 			depth -= 1;
-			rotation += 10;
+			int rotAfter = rotation + 10;
+			if (rotAfter % SCREW_SOUND_DEGREES != rotation % SCREW_SOUND_DEGREES){
+				screwSound( diff, 5 );
+			}
+			rotation = rotAfter;
 			screwStep = depth + 5;
 		}
 	}
@@ -183,7 +191,11 @@ public class StructureScrew extends Screw {
 			depth += newDiff;
 			spriteRegion += region;
 			if ( diff != 0 ) {
-				rotation += ( -newDiff * 5 );
+				int rotAfter = rotation + ( -newDiff * 5 );
+				if (rotAfter % SCREW_SOUND_DEGREES != rotation % SCREW_SOUND_DEGREES){
+					unscrewSound( diff, 5 );
+				}
+				rotation = rotAfter;
 			}
 			screwStep = depth + 5;
 		}
@@ -196,7 +208,11 @@ public class StructureScrew extends Screw {
 		if ( depth < maxDepth && depth > 0 ) {
 			// body.setAngularVelocity( -1 );
 			depth += 1;
-			rotation -= 10;
+			int rotAfter = rotation - 10;
+			if (rotAfter % SCREW_SOUND_DEGREES != rotation % SCREW_SOUND_DEGREES){
+				screwSound( diff, 5 );
+			}
+			rotation = rotAfter;
 			screwStep = depth + 6;
 		}
 	}

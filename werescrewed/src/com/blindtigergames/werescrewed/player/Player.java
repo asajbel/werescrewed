@@ -82,6 +82,7 @@ public class Player extends Entity {
 	public final static float FOOTSTEP_PITCH_DROP = 0.75f;
 	public final static float FOOTSTEP_PITCH_VARIANCE = 0.02f;
 	public final static float FOOTSTEP_VOLUME_DROP = 0.01f;
+	public final static float JUMP_SOUND_DELAY = 1.0f;
 
 	// public final static float
 
@@ -97,6 +98,8 @@ public class Player extends Entity {
 	boolean botCrush;
 
 	int check = 0;
+	private boolean have_control = true;
+	private boolean control_counter = false;
 
 	private PovDirection prevButton = null;
 	public PlayerInputHandler inputHandler;
@@ -128,7 +131,7 @@ public class Player extends Entity {
 	private Texture bubbleTex;
 	private Anchor bubbleAnchor;
 	private Texture[ ] tutorials; // array of all tutorial textures
-	private int tutorialBegin; //beginning and ending index
+	private int tutorialBegin; // beginning and ending index
 	private int tutorialEnd; // current index
 	private int tutorialTimer = 0; // countdown to next frame
 	private int tutorialFrame = 0; // current frame
@@ -165,6 +168,9 @@ public class Player extends Entity {
 	public int jumpCounter = 0;
 
 	public float frictionCounter = PLAYER_FRICTION;
+	private float rezTime = Float.MAX_VALUE; 
+	private boolean rezzing = false; 
+	private boolean deadPlayerHitCheckpnt = false; 
 
 	// Enums
 	/**
@@ -229,8 +235,8 @@ public class Player extends Entity {
 
 		// build spine animator
 		if ( this.type.isAnimatorType( "spine" ) ) {
-			spinemator = new PlayerSpinemator( this );
-			spinemator.setPosition( body.getWorldCenter( ) );
+			setSpinemator( new PlayerSpinemator( this ) );
+			getSpinemator().setPosition( body.getWorldCenter( ) );
 		}
 
 		Filter filter = new Filter( );
@@ -281,13 +287,14 @@ public class Player extends Entity {
 
 		if ( switchTimer > 0 )
 			--switchTimer;
-
-		if ( Gdx.input.isKeyPressed( Keys.G ) ) {
-			if ( name.equals( "player1" ) ) {
-				drawTutorial = !drawTutorial;
-				// Gdx.app.log( "drawTutorial: ", "" + drawTutorial );
-			}
+		
+		/*if ( Gdx.input.isKeyPressed( Keys.PERIOD ) ) {
+			have_control = false;
 		}
+		if ( Gdx.input.isKeyPressed( Keys.SLASH ) ) {
+			have_control = true;
+		}*/
+		
 		if ( drawTutorial ) {
 			tutorialTimer++;
 			if ( tutorialTimer > 90 ) { // controls frame time on tutorials
@@ -351,7 +358,7 @@ public class Player extends Entity {
 			// else player is not dead update regular input
 			if ( controller != null ) {
 				updateController( deltaTime );
-			} else if ( inputHandler != null ) {
+			} else if ( inputHandler != null  ) {
 				updateKeyboard( deltaTime );
 			}
 			// if re-spawning decrement time out
@@ -571,7 +578,7 @@ public class Player extends Entity {
 						f.setSensor( true );
 					}
 					filter.categoryBits = Util.CATEGORY_SUBPLAYER;
-					filter.maskBits = Util.CATEGORY_NOTHING;
+					filter.maskBits = Util.CATEGORY_CHECKPOINTS;
 					f.setFilterData( filter );
 				}
 				playerState = PlayerState.Dead;
@@ -604,14 +611,12 @@ public class Player extends Entity {
 			}
 
 			if ( !isDead ) {
-				ParticleEffect blood = getEffect( injuredParticles[ WereScrewedGame.random
+				ParticleEffect text = getEffect( injuredParticles[ WereScrewedGame.random
 						.nextInt( injuredParticles.length ) ] );
-				blood.restartAt( getPositionPixel( ) );
-			}
-			isDead = true;
-			if ( sounds.hasSound( "death" ) ) {
+				text.restartAt( getPositionPixel( ) );
 				sounds.playSound( "death", 1.0f );
 			}
+			isDead = true;
 		}
 	}
 
@@ -623,8 +628,8 @@ public class Player extends Entity {
 		botCrush = false;
 		leftCrush = false;
 		rightCrush = false;
-		body.setTransform( body.getPosition( ), 0f );
-		Filter filter = new Filter( );
+		//body.setTransform( body.getPosition( ), 0f );
+		/*Filter filter = new Filter( );
 		for ( Fixture f : body.getFixtureList( ) ) {
 			if ( f != rightSensor && f != leftSensor && f != topSensor ) {
 				f.setSensor( false );
@@ -632,13 +637,13 @@ public class Player extends Entity {
 			filter.categoryBits = Util.CATEGORY_PLAYER;
 			filter.maskBits = Util.CATEGORY_EVERYTHING;
 			f.setFilterData( filter );
-		}
+		}*/
 		playerState = PlayerState.Standing;
 		currentPlatform = null;
 		isDead = false;
 		respawnTimeout = DEAD_STEPS;
 
-		getEffect( "revive" ).restartAt( getPositionPixel( ).add( 0, 500 ) );
+//		getEffect( "revive" ).restartAt( getPositionPixel( ).add( 0, 500 ) );
 	}
 
 	/**
@@ -658,15 +663,19 @@ public class Player extends Entity {
 	 */
 	public void setDrawTutorial( boolean value ) {
 		drawTutorial = value;
-		if( value )bubbleAnchor.activate( ) ;
-		else bubbleAnchor.deactivate( );
+		if ( value )
+			bubbleAnchor.activate( );
+		else
+			bubbleAnchor.deactivate( );
 	}
 
 	/**
 	 * sets the section of tutorials[] to be drawn in sequence
 	 * 
-	 * @param begin int
-	 * @param end int
+	 * @param begin
+	 *            int
+	 * @param end
+	 *            int
 	 */
 	public void setTutorial( int begin, int end ) {
 		tutorialBegin = begin;
@@ -687,13 +696,14 @@ public class Player extends Entity {
 		drawBubble( batch );
 		super.draw( batch, deltaTime );
 	}
-	
+
 	/**
 	 * draws tutorials when appropriate
-	 *
-	 * @param batch SpriteBatch
+	 * 
+	 * @param batch
+	 *            SpriteBatch
 	 */
-	public void drawBubble( SpriteBatch batch ){
+	public void drawBubble( SpriteBatch batch ) {
 		if ( drawTutorial ) {
 			float xpos = body.getPosition( ).x;
 			float ypos = body.getPosition( ).y;
@@ -947,6 +957,7 @@ public class Player extends Entity {
 		if ( grounded
 				|| ( playerState == PlayerState.HeadStand && this.isTopPlayer( ) ) ) {
 			sounds.playSound( "jump" );
+			sounds.setDelay( "jump", JUMP_SOUND_DELAY);
 			// Trophy check for player jumps
 			if ( this.name == Metrics.player1( ) ) {
 				Metrics.incTrophyMetric( TrophyMetric.P1JUMPS, 1.0f );
@@ -2124,13 +2135,13 @@ public class Player extends Entity {
 
 		tutorialBegin = 0;
 		tutorialEnd = 1;
-		
-		bubbleAnchor =  new Anchor( new Vector2( body.getWorldCenter( ).x
+
+		bubbleAnchor = new Anchor( new Vector2( body.getWorldCenter( ).x
 				* Util.BOX_TO_PIXEL, body.getWorldCenter( ).y
-				* Util.BOX_TO_PIXEL ), new Vector2( 0, 0 ), new Vector2(
-				200f, 200f ) );
+				* Util.BOX_TO_PIXEL ), new Vector2( 0, 0 ), new Vector2( 200f,
+				200f ) );
 		bubbleAnchor.setOffset( 350f, ANCHOR_BUFFER_SIZE.y / 2 + 180f );
-		//bubbleAnchor.activate( );
+		// bubbleAnchor.activate( );
 		addAnchor( bubbleAnchor );
 	}
 
@@ -2328,5 +2339,33 @@ public class Player extends Entity {
 				sounds.setDelay( "footstep2", 0.5f * rate );
 			}
 		}
+	}
+	
+	public void controller_off(){
+		
+	}
+
+	public boolean isRezzing( ) {
+		return rezzing;
+	}
+
+	public void setRezzing( boolean rezzing ) {
+		this.rezzing = rezzing;
+	}
+
+	public float getRezTime( ) {
+		return rezTime;
+	}
+
+	public void setRezTime( float rezTime ) {
+		this.rezTime = rezTime;
+	}
+
+	public boolean isDeadPlayerHitCheckpnt( ) {
+		return deadPlayerHitCheckpnt;
+	}
+
+	public void setDeadPlayerHitCheckpnt( boolean deadPlayerHitCheckpnt ) {
+		this.deadPlayerHitCheckpnt = deadPlayerHitCheckpnt;
 	}
 }

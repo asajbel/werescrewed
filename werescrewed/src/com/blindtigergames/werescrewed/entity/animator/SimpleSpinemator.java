@@ -1,14 +1,8 @@
 package com.blindtigergames.werescrewed.entity.animator;
 
-/**
- * Animates an object with a single spine animation
- * 
- * @author Anders Sajbel
- */
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.blindtigergames.werescrewed.WereScrewedGame;
-import com.blindtigergames.werescrewed.entity.EntityDef;
 import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 import com.blindtigergames.werescrewed.graphics.TextureAtlas;
 import com.esotericsoftware.spine.Animation;
@@ -16,9 +10,10 @@ import com.esotericsoftware.spine.Bone;
 import com.esotericsoftware.spine.Skeleton;
 import com.esotericsoftware.spine.SkeletonBinary;
 import com.esotericsoftware.spine.SkeletonData;
+import com.esotericsoftware.spine.SkeletonJson;
 import com.esotericsoftware.spine.SkeletonRenderer;
 
-public class SingleSpinemator implements ISpinemator {
+public class SimpleSpinemator implements ISpinemator {
 
 	protected Animation anim;
 	protected Skeleton skel;
@@ -27,39 +22,25 @@ public class SingleSpinemator implements ISpinemator {
 	protected Vector2 position = null;
 	protected Vector2 scale = null;
 	protected float time = 0f;
+	protected float mixTime = 0f;
+	protected boolean flipX = false;
+	protected boolean flipY = false;
+	protected boolean loop = false;
+	protected float mixRatio = 0f;
+	protected SkeletonData sd;
 
-	/**
-	 * Constructor
-	 * 
-	 * @param type
-	 *            EntityDef containing an atlas, skeleton and intial animation
-	 */
-	public SingleSpinemator( EntityDef type ) {
-		this( type.getAtlasName( ), type.getSkeleton( ), type
-				.getInitialAnimation( ) );
-	}
-
-	/**
-	 * Constructor
-	 * 
-	 * @param atlasName
-	 *            Name of the atlas for the animation
-	 * @param skeletonName
-	 *            Name of the skeleton containing the animation
-	 * @param animationName
-	 *            Name of the animation
-	 */
-	public SingleSpinemator( String atlasName, String skeletonName,
-			String animationName ) {
+	public SimpleSpinemator( String atlasName, String skeletonName,
+			String initialAnimationName, boolean loop ) {
 		TextureAtlas atlas = WereScrewedGame.manager.getAtlas( atlasName );
-		SkeletonBinary sb = new SkeletonBinary( atlas );
-		SkeletonData sd = sb.readSkeletonData( Gdx.files
-				.internal( "data/common/spine/" + skeletonName + ".skel" ) );
-		anim = sd.findAnimation( animationName );
+		SkeletonJson sb = new SkeletonJson( atlas );
+		sd = sb.readSkeletonData( Gdx.files.internal( "data/common/spine/"
+				+ skeletonName + ".json" ) );
+		anim = sd.findAnimation( initialAnimationName );
 		skel = new com.esotericsoftware.spine.Skeleton( sd );
 		skel.setToBindPose( );
 		root = skel.getRootBone( );
 		skel.updateWorldTransform( );
+		this.loop = loop; 
 	}
 
 	@Override
@@ -70,12 +51,28 @@ public class SingleSpinemator implements ISpinemator {
 	@Override
 	public void update( float delta ) {
 		time += delta;
-		anim.apply( skel, time, true );
+		mixTime += delta;
+		mixRatio = mixTime / anim.getDuration( );
+		anim.apply( skel, time, loop );
+//		anim.mix( skel, time, loop, mixRatio );
+		if ( mixTime >= anim.getDuration( ) / 2 ) {
+			mixTime = anim.getDuration( );
+		}
+		if (position != null) {
+			root.setX( position.x );
+			root.setY( position.y ); 
+		}
 		skel.updateWorldTransform( );
+		position = null; 
 	}
 
 	@Override
-	public void setPosition(float x, float y) {
+	public void setPosition( Vector2 pos ) {
+		position = pos.cpy(); 
+	}
+
+	@Override
+	public void setPosition( float x, float y ) {
 		root.setX( x );
 		root.setY( y );
 	}
@@ -88,16 +85,15 @@ public class SingleSpinemator implements ISpinemator {
 
 	@Override
 	public TextureAtlas getBodyAtlas( ) {
-		// TODO Auto-generated method stub
 		return null;
 	}
-	
+
 	@Override
 	public Vector2 getPosition( ) {
 		float x = root.getWorldX( );
 		float y = root.getWorldY( );
-		
-		return new Vector2(x,y); 
+
+		return new Vector2( x, y );
 	}
 
 	@Override
@@ -111,9 +107,32 @@ public class SingleSpinemator implements ISpinemator {
 	}
 
 	@Override
-	public void setPosition( Vector2 pos ) {
-		root.setX( pos.x );
-		root.setY( pos.y );
+	public void flipX( boolean flipX ) {
+		skel.setFlipX( flipX );
+	}
+
+	@Override
+	public void flipY( boolean flipY ) {
+		skel.setFlipY( flipY );
+	}
+
+	@Override
+	public void changeAnimation( String animName, boolean loop ) {
+		anim = sd.findAnimation( animName );
+//		this.setPosition( x, y );
+		this.loop = loop;
+		time = 0f;
+		mixTime = 0f;
+	}
+
+	@Override
+	public String getCurrentAnimation( ) {
+		return anim.getName( );
+	}
+
+	@Override
+	public float getAnimationDuration( ) {
+		return anim.getDuration( ); 
 	}
 
 }
