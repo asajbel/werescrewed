@@ -485,21 +485,34 @@ public class Camera {
 	public void renderBuffers( ) {
 		shapeRenderer.setProjectionMatrix( camera.combined );
 
-		// renders a cross through the square
+		// bounding box
 		shapeRenderer.begin( ShapeType.Line );
-		shapeRenderer.line( screenBounds.x, screenBounds.y, screenBounds.x
-				+ screenBounds.width, screenBounds.y + screenBounds.height );
-		shapeRenderer.line( screenBounds.x, screenBounds.y
-				+ screenBounds.height, screenBounds.x + screenBounds.width,
-				screenBounds.y );
-		shapeRenderer.end( );
+		shapeRenderer.line( getBounds( ).x + 20, getBounds( ).y + 20,
+				getBounds( ).x + getBounds( ).width - 20, getBounds( ).y + 20 );
+		shapeRenderer.line( getBounds( ).x + 20, getBounds( ).y
+				+ getBounds( ).height - 20,
+				getBounds( ).x + getBounds( ).width - 20, getBounds( ).y
+						+ getBounds( ).height  - 20);
 
-		// render the translation target buffer
-		shapeRenderer.begin( ShapeType.Circle );
-		shapeRenderer.identity( );
-		shapeRenderer.circle( translateTarget.x, translateTarget.y,
-				targetBuffer );
+		shapeRenderer.line( getBounds( ).x + 20, getBounds( ).y + 20,
+				getBounds( ).x + 20, getBounds( ).y + getBounds( ).height - 20 );
+		shapeRenderer.line( getBounds( ).x + getBounds( ).width - 20,
+				getBounds( ).y + 20, getBounds( ).x + getBounds( ).width - 20,
+				getBounds( ).y + getBounds( ).height - 20 );
 		shapeRenderer.end( );
+		/*
+		 * // renders a cross through the square shapeRenderer.begin(
+		 * ShapeType.Line ); shapeRenderer.line( screenBounds.x, screenBounds.y,
+		 * screenBounds.x + screenBounds.width, screenBounds.y +
+		 * screenBounds.height ); shapeRenderer.line( screenBounds.x,
+		 * screenBounds.y + screenBounds.height, screenBounds.x +
+		 * screenBounds.width, screenBounds.y ); shapeRenderer.end( );
+		 * 
+		 * // render the translation target buffer shapeRenderer.begin(
+		 * ShapeType.Circle ); shapeRenderer.identity( ); shapeRenderer.circle(
+		 * translateTarget.x, translateTarget.y, targetBuffer );
+		 * shapeRenderer.end( );
+		 */
 	}
 
 	/**
