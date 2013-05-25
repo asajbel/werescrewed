@@ -291,6 +291,12 @@ public class AlphaScreen extends Screen {
 
 			if ( powerSwitchBrain1.isTurnedOn( )
 					&& powerSwitchBrain2.isTurnedOn( ) ) {
+				
+				Skeleton fw1 = ( Skeleton ) LevelFactory.entities.get( "firework_skeleton1" );
+				Skeleton fw2 = ( Skeleton ) LevelFactory.entities.get( "firework_skeleton2" );
+				fw1.addFrontParticleEffect( "fire" , true , true );
+				fw2.addFrontParticleEffect( "fireworks/firework2" , true , true );
+				
 
 				if ( headEyebrow1.currentMover( ) == null ) {
 					Timeline t = Timeline.createSequence( );
@@ -329,16 +335,12 @@ public class AlphaScreen extends Screen {
 				if ( headEyebrow1.isTimeLineMoverFinished( )
 						&& headEyebrow2.isTimeLineMoverFinished( ) ) {
 					if(testOnce){
-						//Skeleton fw1 = ( Skeleton ) LevelFactory.entities.get( "firework_skeleton1" );
-						//Skeleton fw2 = ( Skeleton ) LevelFactory.entities.get( "firework_skeleton2" );
-						//fw1.addFrontParticleEffect( "fireworks/firework1" , true , true );
-						//fw2.addFrontParticleEffect( "fireworks/firework2" , true , true );
 						testOnce = false;
 					}
 
 					// You win and goto next screen!!!
 					// menu for now
-					ScreenManager.getInstance( ).show( ScreenType.MAIN_MENU );
+					//ScreenManager.getInstance( ).show( ScreenType.MAIN_MENU );
 				}
 			}
 		}
