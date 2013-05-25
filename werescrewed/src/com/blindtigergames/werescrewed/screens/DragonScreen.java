@@ -9,9 +9,11 @@ import aurelienribon.tweenengine.TweenEquations;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.Joint;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJoint;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
+import com.badlogic.gdx.physics.box2d.joints.WeldJointDef;
 import com.badlogic.gdx.utils.Array;
 import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.entity.Entity;
@@ -114,11 +116,11 @@ public class DragonScreen extends Screen {
 		// );
 
 		Platform tail1Balloon = ( Platform ) LevelFactory.entities
-				.get( "tail_balloon1" );
+				.get( "tail1_balloon1" );
 		Platform tail2Balloon = ( Platform ) LevelFactory.entities
 				.get( "tail2_balloon1" );
 		Platform tail3Balloon = ( Platform ) LevelFactory.entities
-				.get( "tail3_balloon" );
+				.get( "tail3_balloon1" );
 
 		
 		Skeleton balloon1_skeleton = ( Skeleton ) LevelFactory.entities
@@ -380,7 +382,16 @@ public class DragonScreen extends Screen {
 	}
 
 	private void tail3Pipes( ) {
-
+		
+		Pipe tail3TopPipe1 = ( Pipe ) LevelFactory.entities.get( "tail3_top_pipe_1" );
+		tail3TopPipe1.setLocalRot( Util.PI / 60 );
+		
+		Pipe tail3TopPipe2 = ( Pipe ) LevelFactory.entities.get( "tail3_top_pipe_2" );
+		tail3TopPipe2.setLocalRot( Util.PI / 60 );
+		
+		Pipe tail3TopPipe3 = ( Pipe ) LevelFactory.entities.get( "tail3_top_pipe_3" );
+		tail3TopPipe3.setLocalRot( -Util.PI / 60 );
+		
 		Pipe tail3MiddlePipe1 = ( Pipe ) LevelFactory.entities
 				.get( "tail3_middle_pipe1" );
 		Pipe tail3MiddlePipe2 = ( Pipe ) LevelFactory.entities
@@ -503,9 +514,10 @@ public class DragonScreen extends Screen {
 				balloon3CannonSkeleton.getPositionPixel( ), 200, 200, 0.5f, 1f );
 
 		balloon3CannonSkeleton.setLocalRot( -Util.PI / 4 );
+		
 		Skeleton cannonPuzzle = ( Skeleton ) LevelFactory.entities
 				.get( "body_cannon_puzzle_skeleton" );
-
+		
 		cannonPuzzle.setLocalRot( -Util.PI / 2 );
 
 		cannonPuzzle.setFgFade( false );
@@ -546,7 +558,7 @@ public class DragonScreen extends Screen {
 		Sprite s;
 		Platform p;
 		String[] entities = {"balloon1_flame_plat","balloon2_flame_plat",
-				"balloon3_flame_plat","tail_flame_plat",
+				"balloon3_flame_plat","tail1_flame_plat",
 				"tail2_flame_plat","tail3_flame_plat"};
 		for(int i =0; i < entities.length; ++i ){
 			p = ( Platform ) LevelFactory.entities
@@ -556,6 +568,23 @@ public class DragonScreen extends Screen {
 			addFGEntity( p );
 			p.addBehindParticleEffect( "fire_new", false, true ).setOffsetFromParent( 0, 75 ).start();
 		}
+		
+		
+		// Joints the flame plats to their balloons, instead of making more skeleton
+		for(int i = 1; i < 4; i++){
+			p = ( Platform ) LevelFactory.entities
+					.get( "tail" + i + "_flame_plat" );
+			
+			Platform balloon1 = (Platform) LevelFactory.entities.get("tail" +i+ "_balloon1");
+			
+			if(p != null && balloon1 != null){
+				WeldJointDef weldJointDef = new WeldJointDef( );
+				weldJointDef.initialize( p.body, balloon1.body, p.getPosition( ) );
+				level.world.createJoint( weldJointDef );
+			}
+		}
+		
+		
 	}
 
 void buildBackground(){
