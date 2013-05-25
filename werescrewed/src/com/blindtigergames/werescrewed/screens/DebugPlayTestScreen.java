@@ -1134,7 +1134,7 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 			Gdx.gl10.glClear( GL20.GL_COLOR_BUFFER_BIT );
 		}
 
-		cam.update( );
+		cam.update( deltaTime );
 
 		if ( Gdx.input.isKeyPressed( Keys.P ) ) {
 			Gdx.app.exit( );

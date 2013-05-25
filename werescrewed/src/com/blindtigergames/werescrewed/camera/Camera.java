@@ -158,9 +158,10 @@ public class Camera {
 	}
 
 	/**
-	 * update the camera
+	 * @param deltaTime
+	 *            The amount of time between this frame and the last
 	 */
-	public void update( ) {
+	public void update( float deltaTime ) {
 		// Tracks player holding "B"
 		debugInput = false;
 		// Tracks player holding "N"
@@ -349,21 +350,21 @@ public class Camera {
 
 		// TRANSLATE AND ZOOM //
 
-		// if ( Math.abs( distance.len( ) ) > targetBuffer ) {
-		if ( Math.abs( distance.len( ) ) > 0 )
+		 if ( Math.abs( distance.len( ) ) > targetBuffer ) {
+//		if ( Math.abs( distance.len( ) ) > 0 )
 			translate( );
-		// } else {
-		// camera.position.x = translateTarget.x;
-		// camera.position.y = translateTarget.y;
-		// }
+		 } else {
+		 camera.position.x = translateTarget.x;
+		 camera.position.y = translateTarget.y;
+		 }
 
-		// if ( ( camera.zoom ) < ( targetZoom - ZOOM_SIG_DIFF )
-		// || ( camera.zoom ) > ( targetZoom + ZOOM_SIG_DIFF ) ) {
-		if ( camera.zoom != targetZoom )
+		 if ( ( camera.zoom ) < ( targetZoom - ZOOM_SIG_DIFF )
+		 || ( camera.zoom ) > ( targetZoom + ZOOM_SIG_DIFF ) ) {
+//		if ( camera.zoom != targetZoom )
 			zoom( );
-		// } else {
-		// camera.zoom = targetZoom;
-		// }
+		 } else {
+		 camera.zoom = targetZoom;
+		 }
 	}
 
 	/**
