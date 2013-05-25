@@ -98,6 +98,8 @@ public class Player extends Entity {
 	boolean botCrush;
 
 	int check = 0;
+	private boolean have_control = true;
+	private boolean control_counter = false;
 
 	private PovDirection prevButton = null;
 	public PlayerInputHandler inputHandler;
@@ -233,8 +235,8 @@ public class Player extends Entity {
 
 		// build spine animator
 		if ( this.type.isAnimatorType( "spine" ) ) {
-			spinemator = new PlayerSpinemator( this );
-			spinemator.setPosition( body.getWorldCenter( ) );
+			setSpinemator( new PlayerSpinemator( this ) );
+			getSpinemator().setPosition( body.getWorldCenter( ) );
 		}
 
 		Filter filter = new Filter( );
@@ -285,13 +287,14 @@ public class Player extends Entity {
 
 		if ( switchTimer > 0 )
 			--switchTimer;
-
-		if ( Gdx.input.isKeyPressed( Keys.G ) ) {
-			if ( name.equals( "player1" ) ) {
-				drawTutorial = !drawTutorial;
-				// Gdx.app.log( "drawTutorial: ", "" + drawTutorial );
-			}
+		
+		/*if ( Gdx.input.isKeyPressed( Keys.PERIOD ) ) {
+			have_control = false;
 		}
+		if ( Gdx.input.isKeyPressed( Keys.SLASH ) ) {
+			have_control = true;
+		}*/
+		
 		if ( drawTutorial ) {
 			tutorialTimer++;
 			if ( tutorialTimer > 90 ) { // controls frame time on tutorials
@@ -355,7 +358,7 @@ public class Player extends Entity {
 			// else player is not dead update regular input
 			if ( controller != null ) {
 				updateController( deltaTime );
-			} else if ( inputHandler != null ) {
+			} else if ( inputHandler != null  ) {
 				updateKeyboard( deltaTime );
 			}
 			// if re-spawning decrement time out
@@ -2336,6 +2339,10 @@ public class Player extends Entity {
 				sounds.setDelay( "footstep2", 0.5f * rate );
 			}
 		}
+	}
+	
+	public void controller_off(){
+		
 	}
 
 	public boolean isRezzing( ) {

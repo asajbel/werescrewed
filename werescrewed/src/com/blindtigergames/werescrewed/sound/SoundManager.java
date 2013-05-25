@@ -537,4 +537,10 @@ public class SoundManager {
 			return defaultDelay;
 		}
 	}
+
+	public void stopAll( ) {
+		for (String tag: sounds.keySet( )){
+			this.stopSound( tag );
+		}
+	}
 }

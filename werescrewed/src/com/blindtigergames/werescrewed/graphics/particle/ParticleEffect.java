@@ -51,6 +51,8 @@ public class ParticleEffect implements Disposable {
 	 */
 	public boolean removeOnComplete = false;
 	
+	public boolean updateAngleWithParent = true;
+	
 	public Vector2 offsetFromParent = new Vector2();
 
 	public String name;

@@ -287,6 +287,10 @@ public class DragonScreen extends Screen {
 				+ dim.y * 16 );
 		Vector2 right = new Vector2( pos.x + dim.x / 2 * 32 + 16, pos.y - 16
 				+ dim.y * 16 );
+		skel.setFgFade( false );
+		Sprite can = WereScrewedGame.manager.getAtlas( "dragon_objects" ).createSprite( "cannon-small" ); 
+		skel.addFGDecal( can, new Vector2(-can.getWidth( )/2, -64) );
+		addFGEntityToBack(skel); 
 
 		// base
 		skel.addPlatform( pb.name( "cannon-base" ).dimensions( dim.x, 1 )

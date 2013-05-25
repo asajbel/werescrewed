@@ -30,7 +30,7 @@ public class Link extends Entity {
 	private float width, height;
 	private float xOffset, yOffset;
 	
-	protected Link child;
+	protected Link parent;
 	
 	@SuppressWarnings( "unused" )
 	private boolean drawTwoLinks = false;
@@ -45,7 +45,7 @@ public class Link extends Entity {
 		this.world = world;
 		this.width = widthHeight.x;
 		this.height = widthHeight.y;
-		this.child = null;
+		this.parent = null;
 		constructBody( pos );
 		Sprite temp = constructSprite( chainLinkTexRegion );
 		temp.scale( spriteScale );
@@ -134,8 +134,8 @@ public class Link extends Entity {
 		
 		sounds.update( deltaTime );
 		float av;
-		if (child != null){
-			av = (float)Math.pow( Math.abs( body.getAngle() - child.body.getAngle( ) ), 2.0f );
+		if (parent != null){
+			av = Math.abs( body.getAngularVelocity() - parent.body.getAngularVelocity( ) ) * Math.abs( body.getAngle() - parent.body.getAngle( ) );
 		} else {
 			av = Math.abs( body.getAngularVelocity( ) );
 		}
@@ -149,7 +149,7 @@ public class Link extends Entity {
 		}
 	}
 
-	public void setChild(Link c){
-		child = c;
+	public void setParent(Link c){
+		parent = c;
 	}
 }

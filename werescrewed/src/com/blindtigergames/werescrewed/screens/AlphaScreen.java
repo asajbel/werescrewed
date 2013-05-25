@@ -83,7 +83,7 @@ public class AlphaScreen extends Screen {
 	private Steam engineSteam;
 
 	private boolean chestSteamTriggered = false, headPlatformCreated = false,
-			headAnchorActivatedOnce = false;
+			headAnchorActivatedOnce = false, testOnce = true;
 	private boolean rLegTriggered = false, thighSteamTriggered = false;
 
 	private Skeleton rightShoulderSkeleton;
@@ -212,8 +212,12 @@ public class AlphaScreen extends Screen {
 		bgm.setLooping( true );
 
 		sounds = new SoundManager( );
-		sounds.getSound( "rightshoulder", WereScrewedGame.dirHandle.path( )
-				+ "/levels/alphabot/sounds/arm_move.ogg" );
+		sounds.getSound( "arm_start", WereScrewedGame.dirHandle.path( )
+				+ "/levels/alphabot/sounds/arm_move_begin.ogg" );
+		sounds.getSound( "arm_loop", WereScrewedGame.dirHandle.path( )
+				+ "/levels/alphabot/sounds/arm_move_loop.ogg" );
+		sounds.getSound( "arm_end", WereScrewedGame.dirHandle.path( )
+				+ "/levels/alphabot/sounds/arm_move_end.ogg" );
 
 		Skeleton skel = ( Skeleton ) LevelFactory.entities.get( "hipSkeleton" );
 		skel.setMacroSkel( true );
@@ -223,6 +227,7 @@ public class AlphaScreen extends Screen {
 		skel.setMacroSkel( true );
 		skel = ( Skeleton ) LevelFactory.entities.get( "footSkeleton" );
 		skel.setMacroSkel( true );
+		
 	}
 
 	@Override
@@ -235,6 +240,7 @@ public class AlphaScreen extends Screen {
 	public void hide( ) {
 		super.hide( );
 		bgm.stop( );
+		sounds.stopAll();
 	}
 
 	@Override
@@ -322,6 +328,13 @@ public class AlphaScreen extends Screen {
 
 				if ( headEyebrow1.isTimeLineMoverFinished( )
 						&& headEyebrow2.isTimeLineMoverFinished( ) ) {
+					if(testOnce){
+						//Skeleton fw1 = ( Skeleton ) LevelFactory.entities.get( "firework_skeleton1" );
+						//Skeleton fw2 = ( Skeleton ) LevelFactory.entities.get( "firework_skeleton2" );
+						//fw1.addFrontParticleEffect( "fireworks/firework1" , true , true );
+						//fw2.addFrontParticleEffect( "fireworks/firework2" , true , true );
+						testOnce = false;
+					}
 
 					// You win and goto next screen!!!
 					// menu for now
@@ -884,7 +897,8 @@ public class AlphaScreen extends Screen {
 		}
 		if ( powerSwitch7.isTurnedOn( ) && powerSwitch8.isTurnedOn( ) ) {
 			if ( leftShoulderSkeleton.currentMover( ) == null ) {
-				sounds.playSound( "rightshoulder", 1.0f );
+				sounds.playSound( "arm_start", 1.0f );
+				sounds.loopSound( "arm_loop" );
 				updatePanels( "left_arm" );
 				Timeline t = Timeline.createSequence( );
 
@@ -900,6 +914,10 @@ public class AlphaScreen extends Screen {
 				leftShoulderSkeleton.anchors.get( 0 ).activate( );
 			} else if ( leftShoulderSkeleton.isTimeLineMoverFinished( ) ) {
 				// deactivate anchor
+				if (leftShoulderSkeleton.anchors.get( 0 ).activated){
+					sounds.stopSound( "arm_loop" );
+					sounds.playSound( "arm_end", 1.0f );
+				}
 				leftShoulderSkeleton.anchors.get( 0 ).deactivate( );
 			}
 		}
@@ -911,7 +929,8 @@ public class AlphaScreen extends Screen {
 					.get( "rightShoulderSkeleton" );
 
 			if ( rightElbowSkeleton.currentMover( ) == null ) {
-				sounds.playSound( "rightshoulder", 1.0f );
+				sounds.playSound( "arm_start", 1.0f );
+				sounds.loopSound( "arm_loop" );
 				updatePanels( "right_arm" );
 				Timeline t = Timeline.createSequence( );
 
@@ -927,13 +946,18 @@ public class AlphaScreen extends Screen {
 
 			} else if ( rightElbowSkeleton.isTimeLineMoverFinished( ) ) {
 				// deactivate anchor
+				if (rightElbowSkeleton.anchors.get( 0 ).activated){
+					sounds.stopSound( "arm_loop" );
+					sounds.playSound( "arm_end", 1.0f );
+				}
 				rightElbowSkeleton.anchors.get( 0 ).deactivate( );
 			}
 
 			if ( rightShoulderSkeleton.currentMover( ) == null
 					&& rightElbowSkeleton.isTimeLineMoverFinished( ) ) {
 				Timeline t2 = Timeline.createSequence( );
-
+				sounds.playSound( "arm_start", 1.0f );
+				sounds.loopSound( "arm_loop" );
 				t2.delay( 5f );
 				t2.push( Tween
 						.to( rightShoulderSkeleton, PlatformAccessor.LOCAL_ROT,
@@ -947,6 +971,10 @@ public class AlphaScreen extends Screen {
 
 			} else if ( rightShoulderSkeleton.isTimeLineMoverFinished( ) ) {
 				// deactivate anchor
+				if (rightShoulderSkeleton.anchors.get( 0 ).activated){
+					sounds.stopSound( "arm_loop" );
+					sounds.playSound( "arm_end", 1.0f );
+				}
 				rightShoulderSkeleton.anchors.get( 0 ).deactivate( );
 			}
 		}
