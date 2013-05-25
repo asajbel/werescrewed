@@ -391,4 +391,13 @@ public class AnchorList {
 			midpoint2.y = 0;
 		}
 	}
+
+	public int getNumActiveAnchors( ) {
+		int total = 0;
+		for ( Anchor anchor : anchorList ) {
+			if ( anchor.activated )
+				total++;
+		}
+		return total;
+	}
 }

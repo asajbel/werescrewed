@@ -33,17 +33,20 @@ public class Camera {
 	/**
 	 * Time to get to ideal camera position per pixel of distance
 	 */
-	private static final float MS_PER_PIX = 2f;
+	// private static final float MS_PER_PIX = 2f;
 	/**
 	 * Time to get to ideal camera zoom per zoom-unit difference
 	 */
-	private static final float MS_PER_ZOOM = 1000f;
+	// private static final float MS_PER_ZOOM = 1000f;
+	private static final float MILLISECONDS = 1000f;
 	private int timeLeft;
 
 	private Vector2 translateVelocity;
 	private Vector2 translateTarget;
 	private float targetBuffer;
-	private boolean moving;
+	private int prevActiveAnchors;
+	private int currActiveAnchors;
+	private boolean steering;
 
 	// Zoom constants
 	private static final float ZOOM_SIG_DIFF = 0.003f;
@@ -54,7 +57,6 @@ public class Camera {
 	 * The ratio of the total distance traveled for the camera to start slowing
 	 * down
 	 */
-	private static final float DECEL_RATIO = 0.1f;
 	private static final int FRAMES_PER_SECOND = 60;
 
 	// globals for calculating screen space
@@ -86,11 +88,6 @@ public class Camera {
 	private float targetZoom;
 	private float zoomChange;
 
-	private float totalZoomChange;
-	private float totalDistance;
-	private float prevTargetZoom;
-	private float targetZoomSpeed;
-
 	public Camera( Vector2 position, float viewportWidth, float viewportHeight,
 			World world ) {
 		initializeVars( position, viewportWidth, viewportHeight, world );
@@ -99,36 +96,39 @@ public class Camera {
 
 	private void initializeVars( Vector2 position, float viewportWidth,
 			float viewportHeight, World world ) {
-		camera = new OrthographicCamera( 1, viewportHeight / viewportWidth );
+		this.camera = new OrthographicCamera( 1, viewportHeight / viewportWidth );
 		this.viewportHeight = Gdx.graphics.getHeight( );
 		this.viewportWidth = Gdx.graphics.getWidth( );
-		camera.viewportWidth = this.viewportWidth;
-		camera.viewportHeight = this.viewportHeight;
-		camera.position.set( position.x, position.y, 0f );
+		this.camera.viewportWidth = this.viewportWidth;
+		this.camera.viewportHeight = this.viewportHeight;
+		this.camera.position.set( position.x, position.y, 0f );
 		this.position = camera.position;
-		center2D = new Vector2( position.x, position.y );
-		screenBounds = new Rectangle( position.x - viewportWidth / 2,
+		this.center2D = new Vector2( position.x, position.y );
+		this.screenBounds = new Rectangle( position.x - viewportWidth / 2,
 				position.y - viewportHeight / 2, viewportWidth, viewportHeight );
 
 		this.translateTarget = new Vector2( center2D );
-		translateVelocity = new Vector2( 0f, 0f );
-		targetBuffer = ( this.viewportWidth + this.viewportHeight )
+		this.translateVelocity = new Vector2( 0f, 0f );
+		this.targetBuffer = ( this.viewportWidth + this.viewportHeight )
 				* TARGET_BUFFER_RATIO;
-		moving = false;
+		this.steering = false;
 		this.zoomSpeed = 0f;
 		this.timeLeft = 0;
-		camera.zoom = MIN_ZOOM;
-		targetZoom = MIN_ZOOM;
-		anchorList = AnchorList.getInstance( camera );
-		anchorList.clear( );
+		this.camera.zoom = MIN_ZOOM;
+		this.targetZoom = MIN_ZOOM;
+		this.anchorList = AnchorList.getInstance( camera );
+		this.anchorList.clear( );
 
-		distance = new Vector2( 0, 0 );
-		new Vector2( 0, 0 );
-		zoomChange = 0;
+		this.prevActiveAnchors = 0;
+		this.currActiveAnchors = 0;
+
+		this.distance = new Vector2( 0, 0 );
+		this.zoomChange = 0;
+
 		// debug
-		debugInput = false;
-		debugRender = false;
-		shapeRenderer = new ShapeRenderer( );
+		this.debugInput = false;
+		this.debugRender = false;
+		this.shapeRenderer = new ShapeRenderer( );
 	}
 
 	/**
@@ -166,7 +166,6 @@ public class Camera {
 		debugInput = false;
 		// Tracks player holding "N"
 		debugRender = false;
-		// debugMode = true;
 		// check debug keys
 		if ( Gdx.input.isKeyPressed( Keys.B ) ) {
 			debugInput = true;// now camera is a toggle
@@ -189,8 +188,11 @@ public class Camera {
 		} else {
 			// Set the target camera state
 			setTranslateTarget( );
+			// Check anchor differences
+			currActiveAnchors = AnchorList.getInstance( ).getNumActiveAnchors( );
 			// Do the actual translation and zooming
 			adjustCamera( );
+			prevActiveAnchors = currActiveAnchors;
 		}
 
 		// render buffers areas anchors
@@ -217,8 +219,6 @@ public class Camera {
 		translateTarget.x = anchorList.getMidpoint( ).x;
 		translateTarget.y = anchorList.getMidpoint( ).y;
 
-		prevTargetZoom = targetZoom;
-
 		targetZoom = 1f;
 		Vector2 longestDist = anchorList.getLongestXYDist( );
 		Vector2 distFromEdge = new Vector2( longestDist.x - screenBounds.width,
@@ -238,8 +238,6 @@ public class Camera {
 		if ( targetZoom > MAX_ZOOM ) {
 			targetZoom = MAX_ZOOM;
 		}
-
-		targetZoomSpeed = targetZoom - prevTargetZoom;
 	}
 
 	/**
@@ -274,32 +272,34 @@ public class Camera {
 		}
 
 		// If a buffer has left the screen
-		if ( !moving && ( outside || camera.zoom > targetZoom + ZOOM_SIG_DIFF ) ) {
-			startMoving( );
+		if ( !steering && currActiveAnchors != prevActiveAnchors
+				&& ( outside || camera.zoom > targetZoom + ZOOM_SIG_DIFF ) ) {
+			startSteering( );
 		}
 
-		if ( moving ) {
-			move( );
-			timeLeft -= 1000 / FRAMES_PER_SECOND;
+		if ( steering ) {
+			steer( );
+		} else {
+			camera.position.x = translateTarget.x;
+			camera.position.y = translateTarget.y;
+			camera.zoom = targetZoom;
 		}
 	}
 
 	/**
 	 * Initialize movement
 	 */
-	private void startMoving( ) {
+	private void startSteering( ) {
 		// Set state to true
-		moving = true;
-		// Initialize total distance and zoom change to zero (since they update
-		// in the first step)
-		totalDistance = 0;
-		totalZoomChange = 0;
+		steering = true;
+
+		timeLeft = ( int ) MILLISECONDS;
 	}
 
 	/**
 	 * Do movement stuff.
 	 */
-	private void move( ) {
+	private void steer( ) {
 		// UPDATE DISTANCE //
 
 		// distance is difference between current position and target position
@@ -312,70 +312,45 @@ public class Camera {
 			translateVelocity = new Vector2( 0, 0 );
 		}
 
-		// Update total distance traveled by adding the midpoint change this
-		// step
-		totalDistance += AnchorList.getInstance( ).getMidpointVelocity( ).len( );
-
 		// UPDATE TARGET ZOOM //
 
 		// zoomChange is difference between current zoom and target zoom
 		zoomChange = targetZoom - camera.zoom;
 
-		// Update total zoom change by adding the zoom change this step
-		totalZoomChange += Math.abs( targetZoomSpeed );
-
-		// MANAGE TIME //
-
-		int transTime = 0;
-		int zoomTime = 0;
-
-		if ( distance.len( ) > totalDistance * DECEL_RATIO ) {
-			transTime = ( int ) ( MS_PER_PIX * distance.len( ) );
-		} else {
-			transTime = ( int ) ( MS_PER_PIX * distance.len( ) * 3 );
-		}
-
-		if ( Math.abs( zoomChange ) > totalZoomChange * DECEL_RATIO ) {
-			zoomTime = ( int ) ( MS_PER_ZOOM * Math.abs( zoomChange ) );
-		} else {
-			zoomTime = ( int ) ( MS_PER_ZOOM * Math.abs( zoomChange ) * 3 );
-		}
-
-		timeLeft = ( transTime > zoomTime ) ? transTime : zoomTime;
-
-		if ( timeLeft <= 0 ) {
-			stopMoving( );
-			return;
-		}
-
 		// TRANSLATE AND ZOOM //
 
-		 if ( Math.abs( distance.len( ) ) > targetBuffer ) {
-//		if ( Math.abs( distance.len( ) ) > 0 )
+		if ( Math.abs( distance.len( ) ) > targetBuffer ) {
 			translate( );
-		 } else {
-		 camera.position.x = translateTarget.x;
-		 camera.position.y = translateTarget.y;
-		 }
+		} else {
+			camera.position.x = translateTarget.x;
+			camera.position.y = translateTarget.y;
+		}
 
-		 if ( ( camera.zoom ) < ( targetZoom - ZOOM_SIG_DIFF )
-		 || ( camera.zoom ) > ( targetZoom + ZOOM_SIG_DIFF ) ) {
-//		if ( camera.zoom != targetZoom )
+		if ( ( camera.zoom ) < ( targetZoom - ZOOM_SIG_DIFF )
+				|| ( camera.zoom ) > ( targetZoom + ZOOM_SIG_DIFF ) ) {
 			zoom( );
-		 } else {
-		 camera.zoom = targetZoom;
-		 }
+		} else {
+			camera.zoom = targetZoom;
+		}
+
+		if ( camera.position.x == translateTarget.x
+				&& camera.position.y == translateTarget.y
+				&& camera.zoom == targetZoom ) {
+			stopSteering( );
+		}
+
+		timeLeft--;
 	}
 
 	/**
 	 * End all movement
 	 */
-	private void stopMoving( ) {
+	private void stopSteering( ) {
 		translateVelocity.x = 0f;
 		translateVelocity.y = 0f;
 		zoomSpeed = 0;
 		timeLeft = 0;
-		moving = false;
+		steering = false;
 	}
 
 	/**
