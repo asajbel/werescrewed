@@ -947,18 +947,11 @@ public class AlphaScreen extends Screen {
 
 				rightElbowSkeleton.anchors.get( 0 ).activate( );
 
-			} else if ( rightElbowSkeleton.isTimeLineMoverFinished( ) ) {
-				// deactivate anchor
-				if (rightElbowSkeleton.anchors.get( 0 ).activated){
-					sounds.stopSound( "arm_loop" );
-					sounds.playSound( "arm_end", 1.0f );
-				}
-				rightElbowSkeleton.anchors.get( 0 ).deactivate( );
 			} else if (rightElbowSkeleton.anchors.get( 0 ).activated){
 				if (rightElbowSkeleton.isTimeLineMoverFinished( )){
 					// deactivate anchor
 					sounds.stopSound( "arm_loop" );
-					sounds.playSound( "arm_end", 6.0f );
+					sounds.playSound( "arm_end", 5.0f );
 					rightElbowSkeleton.anchors.get( 0 ).deactivate( );
 				} else if (!sounds.isDelayed( "arm_start" )) {	
 					sounds.setSoundVolume( "arm_loop", 1.0f);
