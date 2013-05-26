@@ -55,9 +55,9 @@ public class CheckPoint extends Entity {
 		if ( progressManager.currentCheckPoint == null ) {
 			progressManager.currentCheckPoint = this;
 		}
-		spinemator = new SimpleSpinemator( "rez_chamber_atlas", "chamber",
-				"off-idle", false );
-		spinemator.setPosition( pos.x, pos.y );
+		setSpinemator( new SimpleSpinemator( "rez_chamber_atlas", "chamber",
+				"off-idle", false ) );
+		getSpinemator().setPosition( pos.x, pos.y );
 		// TextureAtlas atlas = WereScrewedGame.manager.getAtlas( "checkpoint"
 		// );
 		// checkpointFrameAnimator = new SimpleFrameAnimator( ).speed( 0f )
@@ -108,7 +108,7 @@ public class CheckPoint extends Entity {
 		if ( player.body.getType( ) != BodyType.KinematicBody ) {
 			if ( !active ) {
 				// checkpointFrameAnimator.speed( 1.0f );
-				spinemator.changeAnimation( "on-idle", true );
+				getSpinemator().changeAnimation( "on-idle", true );
 				// body.setAngularVelocity( 3f );
 			}
 			active = true;
@@ -138,14 +138,14 @@ public class CheckPoint extends Entity {
 	public void deactivate( ) {
 		active = false;
 		// checkpointFrameAnimator.speed( -1.0f );
-		spinemator.changeAnimation( "off-idle", false );
+		getSpinemator().changeAnimation( "off-idle", false );
 		// body.setAngularVelocity( -3f );
 	}
 
 	@Override
 	public void update( float deltaTime ) {
 		Vector2 bodyPos = body.getPosition( ).mul( Util.BOX_TO_PIXEL );
-		spinemator.setPosition( bodyPos );
+		getSpinemator().setPosition( bodyPos );
 		super.update( deltaTime );
 		// this.body.setTransform( body.getPosition( ), entity.getAngle( ) );
 		// sprite.setRotation( MathUtils.radiansToDegrees * entity.getAngle( )

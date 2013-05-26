@@ -41,7 +41,7 @@ public class Fire extends Hazard {
 	 */
 	public Fire( String name, Vector2 pos, float width, float height,
 			World world, boolean isActive ) {
-		super( name, pos, null, world, width, height, isActive );
+		super( name, pos, null, world, isActive );
 		entityType = EntityType.HAZARD;
 		hazardType = HazardType.FIRE;
 

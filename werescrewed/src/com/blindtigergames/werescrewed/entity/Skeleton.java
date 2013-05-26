@@ -400,6 +400,7 @@ public class Skeleton extends Platform {
 	 */
 	@Override
 	public void update( float deltaTime ) {
+		super.update( deltaTime ); 
 		float frameRate = 1 / deltaTime;
 		isUpdatable = !this.isFadingSkel( ) || this.isFGFaded( );
 		if ( isUpdatable || isMacroSkeleton ) {
@@ -655,7 +656,7 @@ public class Skeleton extends Platform {
 
 	@Override
 	public void draw( SpriteBatch batch, float deltaTime ) {
-		// super.draw( batch );
+		super.draw( batch, deltaTime );
 		if ( visible ) {
 			if ( isActive( ) ) {
 				drawChildren( batch, deltaTime );

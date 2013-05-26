@@ -30,6 +30,7 @@ public class MyControllerListener implements ControllerListener {
 	private boolean screwingPressed;
 	private boolean unscrewingPressed;
 	private boolean grabPressed;
+	public boolean on = true;
 
 	// Screwing booleans
 	private boolean prevScrewingPressed;

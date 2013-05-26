@@ -25,7 +25,6 @@ import com.blindtigergames.werescrewed.entity.EntityType;
 import com.blindtigergames.werescrewed.entity.Sprite;
 import com.blindtigergames.werescrewed.entity.animator.PlayerSpinemator;
 import com.blindtigergames.werescrewed.entity.mover.FollowEntityMover;
-import com.blindtigergames.werescrewed.entity.mover.IMover;
 import com.blindtigergames.werescrewed.entity.particles.Steam;
 import com.blindtigergames.werescrewed.entity.platforms.Platform;
 import com.blindtigergames.werescrewed.entity.screws.ResurrectScrew;
@@ -98,6 +97,8 @@ public class Player extends Entity {
 	boolean botCrush;
 
 	int check = 0;
+	private boolean have_control = true;
+	private boolean control_counter = false;
 
 	private PovDirection prevButton = null;
 	public PlayerInputHandler inputHandler;
@@ -160,7 +161,7 @@ public class Player extends Entity {
 	@SuppressWarnings( "unused" )
 	private boolean steamDone = false;
 
-	private IMover mover;
+	//private IMover mover;
 
 	public int grabCounter = 0;
 	public int jumpCounter = 0;
@@ -233,8 +234,8 @@ public class Player extends Entity {
 
 		// build spine animator
 		if ( this.type.isAnimatorType( "spine" ) ) {
-			spinemator = new PlayerSpinemator( this );
-			spinemator.setPosition( body.getWorldCenter( ) );
+			setSpinemator( new PlayerSpinemator( this ) );
+			getSpinemator().setPosition( body.getWorldCenter( ) );
 		}
 
 		Filter filter = new Filter( );
@@ -285,13 +286,14 @@ public class Player extends Entity {
 
 		if ( switchTimer > 0 )
 			--switchTimer;
-
-		if ( Gdx.input.isKeyPressed( Keys.G ) ) {
-			if ( name.equals( "player1" ) ) {
-				drawTutorial = !drawTutorial;
-				// Gdx.app.log( "drawTutorial: ", "" + drawTutorial );
-			}
+		
+		/*if ( Gdx.input.isKeyPressed( Keys.PERIOD ) ) {
+			have_control = false;
 		}
+		if ( Gdx.input.isKeyPressed( Keys.SLASH ) ) {
+			have_control = true;
+		}*/
+		
 		if ( drawTutorial ) {
 			tutorialTimer++;
 			if ( tutorialTimer > 90 ) { // controls frame time on tutorials
@@ -355,7 +357,7 @@ public class Player extends Entity {
 			// else player is not dead update regular input
 			if ( controller != null ) {
 				updateController( deltaTime );
-			} else if ( inputHandler != null ) {
+			} else if ( inputHandler != null  ) {
 				updateKeyboard( deltaTime );
 			}
 			// if re-spawning decrement time out
@@ -409,8 +411,8 @@ public class Player extends Entity {
 			if ( knockedOff ) {
 				removePlayerToScrew( );
 				knockedOff = false;
-			} else if ( mover != null ) {
-				FollowEntityMover lm = ( FollowEntityMover ) mover;
+			} else if ( currentMover( )  != null ) {
+				FollowEntityMover lm = ( FollowEntityMover ) currentMover( ) ;
 				if ( !lm.atEnd( ) ) {
 					lm.move( deltaTime, body );
 				} else {
@@ -427,7 +429,7 @@ public class Player extends Entity {
 					playerJoint = ( RevoluteJoint ) world
 							.createJoint( revoluteJointDef );
 					playerState = PlayerState.Screwing;
-					mover = null;
+					setMoverAtCurrentState( null );
 				}
 			} else {
 				// if resurrect screw and its not active remove the player
@@ -568,7 +570,7 @@ public class Player extends Entity {
 				removePlayerToPlayer( );
 				currentScrew = null;
 				currentPlatform = null;
-				mover = null;
+				setMoverAtCurrentState( null );
 				Filter filter = new Filter( );
 				for ( Fixture f : body.getFixtureList( ) ) {
 					if ( f != rightSensor && f != leftSensor && f != topSensor ) {
@@ -981,7 +983,7 @@ public class Player extends Entity {
 	 * 
 	 */
 	public void hitScrew( Screw screw ) {
-		if ( playerState != PlayerState.Screwing && !isDead && mover == null ) {
+		if ( playerState != PlayerState.Screwing && !isDead && currentMover( )  == null ) {
 			currentScrew = screw;
 
 			// Trophy check for if player attaches to a stripped screw
@@ -1256,9 +1258,9 @@ public class Player extends Entity {
 			// f.setSensor( true );
 			// }
 			// }
-			mover = new FollowEntityMover( body.getPosition( ).mul(
+			setMoverAtCurrentState( new FollowEntityMover( body.getPosition( ).mul(
 					Util.BOX_TO_PIXEL ), currentScrew, new Vector2( -WIDTH,
-					-HEIGHT / 2.0f ), SCREW_ATTACH_SPEED );
+					-HEIGHT / 2.0f ), SCREW_ATTACH_SPEED ) );
 			playerState = PlayerState.Screwing;
 			currentScrew.setPlayerAttached( true );
 			screwAttachTimeout = SCREW_ATTACH_STEPS;
@@ -1277,7 +1279,7 @@ public class Player extends Entity {
 	private void processJumpState( ) {
 		if ( playerState == PlayerState.Screwing ) {
 			if ( canJumpOffScrew ) {
-				if ( mover == null ) {
+				if ( currentMover( )  == null ) {
 					// jumpPressedKeyboard = true;
 					if ( currentScrew.getScrewType( ) != ScrewType.SCREW_STRUCTURAL
 							|| currentScrew.getDepth( ) >= 0 ) {
@@ -1327,7 +1329,7 @@ public class Player extends Entity {
 	private void processJumpStateController( ) {
 		if ( playerState == PlayerState.Screwing ) {
 			if ( canJumpOffScrew ) {
-				if ( mover == null ) {
+				if ( currentMover( )  == null ) {
 					// jumpPressedController = true;
 					if ( currentScrew.getScrewType( ) != ScrewType.SCREW_STRUCTURAL
 							|| currentScrew.getDepth( ) >= 0 ) {
@@ -1494,7 +1496,7 @@ public class Player extends Entity {
 			}
 		}
 
-		if ( mover == null
+		if ( currentMover( )  == null
 				&& currentScrew.body.getJointList( ).size( ) <= 1
 				|| ( currentScrew.getScrewType( ) == ScrewType.SCREW_BOSS && currentScrew
 						.getDepth( ) == 0 ) ) {
@@ -1534,7 +1536,7 @@ public class Player extends Entity {
 	 */
 	private void processMovementDown( ) {
 		if ( playerState == PlayerState.Screwing ) {
-			if ( mover == null ) {
+			if ( currentMover( )  == null ) {
 				if ( currentScrew.getScrewType( ) != ScrewType.SCREW_STRUCTURAL
 						|| currentScrew.getDepth( ) >= 0 ) {
 					removePlayerToScrew( );
@@ -1709,7 +1711,7 @@ public class Player extends Entity {
 		// f.setSensor( false );
 		// }
 		// }
-		mover = null;
+		this.setMoverAtCurrentState( null );
 		if ( currentScrew != null ) {
 			currentScrew.setPlayerAttached( false );
 		}
@@ -1926,7 +1928,7 @@ public class Player extends Entity {
 				}
 			} else {
 				if ( !screwButtonHeld ) {
-					if ( mover == null ) {
+					if ( currentMover( ) == null ) {
 						if ( currentScrew != null
 								&& ( currentScrew.getScrewType( ) != ScrewType.SCREW_STRUCTURAL || currentScrew
 										.getDepth( ) >= 0 ) ) {
@@ -2037,7 +2039,7 @@ public class Player extends Entity {
 		// Basically you have to hold attach button to stick to screw
 		if ( !controllerListener.screwPressed( )
 				&& playerState == PlayerState.Screwing ) {
-			if ( mover == null ) {
+			if ( currentMover( ) == null ) {
 				if ( currentScrew.getScrewType( ) != ScrewType.SCREW_STRUCTURAL
 						|| currentScrew.getDepth( ) >= 0 ) {
 					removePlayerToScrew( );
@@ -2336,6 +2338,10 @@ public class Player extends Entity {
 				sounds.setDelay( "footstep2", 0.5f * rate );
 			}
 		}
+	}
+	
+	public void controller_off(){
+		
 	}
 
 	public boolean isRezzing( ) {
