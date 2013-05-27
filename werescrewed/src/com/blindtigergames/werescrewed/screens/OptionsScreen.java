@@ -62,9 +62,6 @@ class OptionsScreen extends Screen {
 		Texture fadeScreen = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 				+ "/menu/transition.png", Texture.class );
 		fade = new Sprite( fadeScreen );
-		Texture trans = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-				+ "/transition/trans-gear.png", Texture.class );
-		transIn = new Sprite( trans );
 		@SuppressWarnings( "unused" )
 		int width = Gdx.graphics.getWidth( );
 		@SuppressWarnings( "unused" )

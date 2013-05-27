@@ -58,10 +58,12 @@ class MainMenuScreen extends Screen {
 				.getAtlas( "common-textures" );
 		Texture fadeScreen = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 				+ "/menu/transition.png", Texture.class );
-		Texture trans = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-				+ "/transition/trans-gear.png", Texture.class );
 		fade = new Sprite( fadeScreen );
-		transIn = new Sprite( trans );
+		Texture transition = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
+				+ "/transitions/trans-gear.png", Texture.class );
+		trans = new Sprite( transition );
+		scale = trans.getHeight( ) * SCALEMAX;
+		transInEnd = false;
 		for ( int i = 0; i < 5; i++ )
 			createDebris( gearsAtlas, common );
 		loadButtons( );
@@ -99,10 +101,13 @@ class MainMenuScreen extends Screen {
 		lady.draw( batch );
 		fade.draw( batch, alpha );
 		
-		transIn.setSize( 0, 0 );
-		transIn.setOrigin( transIn.getWidth( ) / 2, transIn.getHeight( ) / 2 );
-		transIn.rotate( 5.0f );
-		transIn.draw( batch );
+		if ( !transInEnd ) {
+			drawTransIn( batch );
+		}
+		
+		if ( !transOutEnd ) {
+			drawTransOut( batch );
+		}
 		
 		batch.end( );
 
@@ -144,7 +149,6 @@ class MainMenuScreen extends Screen {
 				/ 2 - fade.getHeight( ) / 2 );
 		fade.setScale( width / fade.getWidth( ), height
 				/ fade.getHeight( ) );
-		transIn.setPosition( width / 2, height / 2 );
 		// menuBG.setScale( width / menuBG.getWidth( ), width / menuBG.getWidth(
 		// ) );
 		menuBG.setPosition( 0, height / 2 - menuBG.getHeight( ) / 2 );

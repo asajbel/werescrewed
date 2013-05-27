@@ -50,11 +50,8 @@ public class LevelSelectScreen extends Screen {
 				+ "/menu/menu.png", Texture.class );
 		Texture fadeScreen = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 				+ "/menu/transition.png", Texture.class );
-		Texture trans = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-				+ "/transition/trans-gear.png", Texture.class );
 		menuBG = new Sprite( back );
 		fade = new Sprite( fadeScreen );
-		transIn = new Sprite( trans );
 		
 		lineHeight = Math.round( 2.5f * font.getCapHeight( ) + 40 );
 		screenLabel = new Label( "Level Select", fancyFont );

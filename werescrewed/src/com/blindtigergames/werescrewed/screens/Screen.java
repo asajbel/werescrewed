@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.debug.FPSLoggerS;
@@ -35,11 +36,15 @@ public class Screen implements com.badlogic.gdx.Screen {
 	protected int controllerMax = 10;
 	protected int buttonIndex = 0;
 	protected float alpha = 1.0f;
-	protected Sprite transIn = null;
-	protected Sprite transOut = null;
+	protected float scale = 0.0f;
+	protected final float SCALEMIN = 1.0f;
+	protected final float SCALEMAX = 500.0f;
+	//protected Sprite transIn = null;
+	//protected Sprite transOut = null;
+	protected Sprite trans = null;
 	protected boolean alphaFinish = false;
-	protected boolean transInEnd = false;
-	protected boolean transOutEnd = false;
+	protected boolean transInEnd = true;
+	protected boolean transOutEnd = true;
 
 	BitmapFont debug_font;
 	Camera uiCamera;
@@ -128,7 +133,7 @@ public class Screen implements com.badlogic.gdx.Screen {
 			ScreenManager.getInstance( ).show( ScreenType.TROPHY );
 		}
 
-		if ( Buttons.size( ) > 0 ) {
+		if ( Buttons.size( ) > 0 && transInEnd && transOutEnd ) {
 
 			if ( controllerTimer > 0 ) {
 				controllerTimer--;
@@ -138,7 +143,8 @@ public class Screen implements com.badlogic.gdx.Screen {
 					if ( WereScrewedGame.p1ControllerListener.jumpPressed( )
 							|| WereScrewedGame.p1ControllerListener
 									.pausePressed( ) ) {
-						Buttons.get( buttonIndex ).setSelected( true );
+						transOutEnd = true;
+						//Buttons.get( buttonIndex ).setSelected( true );
 						controllerTimer = controllerMax;
 
 					} else if ( WereScrewedGame.p1ControllerListener
@@ -190,7 +196,8 @@ public class Screen implements com.badlogic.gdx.Screen {
 					if ( WereScrewedGame.p2ControllerListener.jumpPressed( )
 							|| WereScrewedGame.p2ControllerListener
 									.pausePressed( ) ) {
-						Buttons.get( buttonIndex ).setSelected( true );
+						transOutEnd = true;
+						//Buttons.get( buttonIndex ).setSelected( true );
 						controllerTimer = controllerMax;
 
 					} else if ( WereScrewedGame.p2ControllerListener
@@ -242,6 +249,7 @@ public class Screen implements com.badlogic.gdx.Screen {
 				if ( WereScrewedGame.p1Controller == null
 						&& WereScrewedGame.p2Controller == null ) {
 					if ( Gdx.input.isKeyPressed( Keys.ENTER ) ) {
+						//transOutEnd = true;
 						Buttons.get( buttonIndex ).setSelected( true );
 						controllerTimer = controllerMax;
 					}
@@ -287,6 +295,40 @@ public class Screen implements com.badlogic.gdx.Screen {
 			}
 		}
 
+	}
+	
+	protected void drawTransIn ( SpriteBatch batch ) {
+		trans.setSize( scale, scale );
+		scale = scale / 2;
+		trans.setOrigin( trans.getWidth( ) / 2, trans.getHeight( ) / 2 );
+		trans.rotate( 5.0f );
+		trans.draw( batch );
+		if ( scale < SCALEMIN )
+			transInEnd = true;
+	}
+	
+	protected void drawTransOut ( SpriteBatch batch ) {
+		trans.setSize( scale, scale );
+		scale = scale * 2;
+		trans.setOrigin( trans.getWidth( ) / 2, trans.getHeight( ) / 2 );
+		trans.rotate( 5.0f );
+		trans.draw( batch );
+		if ( scale > SCALEMAX ) {
+			transOutEnd = true;
+			Buttons.get( buttonIndex ).setSelected( true );
+		}
+	}
+	
+	protected void drawTransOut ( SpriteBatch batch, ScreenType screen ) {
+		trans.setSize( scale, scale );
+		scale = scale * 2;
+		trans.setOrigin( trans.getWidth( ) / 2, trans.getHeight( ) / 2 );
+		trans.rotate( 5.0f );
+		trans.draw( batch );
+		if ( scale > SCALEMAX ) {
+			transOutEnd = true;
+			ScreenManager.getInstance( ).show( screen );
+		}
 	}
 	
 	private float accum = 0f;               
@@ -435,7 +477,7 @@ public class Screen implements com.badlogic.gdx.Screen {
 		alphaFinish = value;
 	}
 
-	public boolean transInEnded( ) {
+	public boolean transInFinish( ) {
 		return transInEnd;
 	}
 
@@ -443,7 +485,7 @@ public class Screen implements com.badlogic.gdx.Screen {
 		transInEnd = value;
 	}
 	
-	public boolean transOutEnded( ) {
+	public boolean transOutFinish( ) {
 		return transOutEnd;
 	}
 
