@@ -559,7 +559,10 @@ public class Player extends Entity {
 	/**
 	 * This function sets player in dead state
 	 */
-	public void killPlayer( ) {
+	public void killPlayer(){
+		killPlayer(false);
+	}
+	public void killPlayer( boolean disableAnchor ) {
 		if ( respawnTimeout == 0 ) {
 			if ( !world.isLocked( ) ) {
 				if ( otherPlayer != null
@@ -616,6 +619,11 @@ public class Player extends Entity {
 				sounds.playSound( "death", 1.0f );
 			}
 			isDead = true;
+			if (disableAnchor){
+				for (Anchor a: anchors){
+					a.deactivate( );
+				}
+			}
 		}
 	}
 
@@ -639,7 +647,13 @@ public class Player extends Entity {
 		}*/
 		playerState = PlayerState.Standing;
 		currentPlatform = null;
-		isDead = false;
+		if (isDead){
+			sounds.playSound( "revive", 1.0f );
+			isDead = false;
+		}
+		for (Anchor a: anchors){
+			a.activate( );
+		}
 		respawnTimeout = DEAD_STEPS;
 
 //		getEffect( "revive" ).restartAt( getPositionPixel( ).add( 0, 500 ) );
