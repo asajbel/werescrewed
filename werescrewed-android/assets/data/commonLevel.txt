@@ -37,6 +37,8 @@
 /common/sounds/impactFemaleAh.ogg
 /common/sounds/impactFemaleOph.ogg
 /common/sounds/impactFemaleUgh.ogg
+/common/sounds/rezzScrew.ogg
+/common/sounds/rezzFinish.ogg
 #/common/sounds/WilhelmScream.ogg
 /common/sounds/steam.ogg
 /common/sounds/chains.ogg
@@ -120,6 +122,7 @@ fastSteam.p
 slowSteam.p
 fire.p
 fire_new.p
+cannon.p
 
 ##menu assets
 /menu/menu.png

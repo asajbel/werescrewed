@@ -75,7 +75,7 @@ public class Entity implements GleedLoadable {
 	protected ArrayList< Float > bgDecalAngles;
 	private RobotState currentRobotState;
 	private EnumMap< RobotState, Integer > robotStateMap;
-	public ISpinemator spinemator;
+	private ISpinemator spinemator;
 
 	private Skeleton parentSkeleton; // pointer to parent skele, set by skeleton
 
@@ -320,8 +320,8 @@ public class Entity implements GleedLoadable {
 			}
 			// drawOrigin(batch);
 			// drawFGDecals( batch );
-			if ( spinemator != null )
-				spinemator.draw( batch );
+			if ( getSpinemator() != null )
+				getSpinemator().draw( batch );
 			drawParticles( frontParticles, batch );
 		}
 	}
@@ -408,8 +408,8 @@ public class Entity implements GleedLoadable {
 			// }
 			updateDecals( deltaTime );
 
-			if ( spinemator != null ) {
-				spinemator.update( deltaTime );
+			if ( getSpinemator() != null ) {
+				getSpinemator().update( deltaTime );
 			}
 		}
 
@@ -441,9 +441,9 @@ public class Entity implements GleedLoadable {
 					}
 					if(e.updateAngleWithParent){
 						if ( body != null ) {
-							e.setAngle( body.getAngle( ) );
+							e.setEffectAngle( body.getAngle( ) );
 						} else if (sprite!=null) {
-							e.setAngle( sprite.getRotation( ) * Util.DEG_TO_RAD );
+							e.setEffectAngle( sprite.getRotation( ) * Util.DEG_TO_RAD );
 						}
 					}
 					
@@ -1648,5 +1648,13 @@ public class Entity implements GleedLoadable {
 						pitch );
 			}
 		}
+	}
+
+	public ISpinemator getSpinemator( ) {
+		return spinemator;
+	}
+
+	public void setSpinemator( ISpinemator spinemator ) {
+		this.spinemator = spinemator;
 	}
 }

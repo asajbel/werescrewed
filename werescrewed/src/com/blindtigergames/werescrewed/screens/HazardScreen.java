@@ -323,7 +323,7 @@ public class HazardScreen implements com.badlogic.gdx.Screen {
 			Gdx.gl10.glClear( GL20.GL_COLOR_BUFFER_BIT );
 		}
 
-		cam.update( ); 
+		cam.update( deltaTime ); 
 
 		// Set hazards active
 		if ( Gdx.input.isKeyPressed( Input.Keys.NUM_1 ) ) {

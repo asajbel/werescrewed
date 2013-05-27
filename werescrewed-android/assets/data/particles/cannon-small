@@ -2,16 +2,16 @@ blast
 - Delay -
 active: false
 - Duration - 
-lowMin: 1000.0
-lowMax: 1000.0
+lowMin: 100.0
+lowMax: 100.0
 - Count - 
 min: 0
 max: 20
 - Emission - 
 lowMin: 0.0
 lowMax: 0.0
-highMin: 251.0
-highMax: 251.0
+highMin: 250.0
+highMax: 250.0
 relative: false
 scalingCount: 1
 scaling0: 1.0
@@ -20,25 +20,30 @@ timeline0: 0.0
 - Life - 
 lowMin: 0.0
 lowMax: 0.0
-highMin: 500.0
-highMax: 750.0
+highMin: 1000.0
+highMax: 1150.0
 relative: false
-scalingCount: 3
+scalingCount: 1
 scaling0: 1.0
-scaling1: 1.0
-scaling2: 0.3
-timelineCount: 3
+timelineCount: 1
 timeline0: 0.0
-timeline1: 0.66
-timeline2: 1.0
 - Life Offset - 
 active: false
 - X Offset - 
-active: false
+active: true
+lowMin: 0.0
+lowMax: 0.0
+highMin: 0.0
+highMax: 0.0
+relative: false
+scalingCount: 1
+scaling0: 1.0
+timelineCount: 1
+timeline0: 0.0
 - Y Offset - 
 active: false
 - Spawn Shape - 
-shape: point
+shape: square
 - Spawn Width - 
 lowMin: 0.0
 lowMax: 0.0
@@ -72,31 +77,35 @@ timeline0: 0.0
 - Velocity - 
 active: true
 lowMin: 50.0
-lowMax: 150.0
-highMin: 1000.0
-highMax: 900.0
+lowMax: 100.0
+highMin: 1500.0
+highMax: 1650.0
 relative: false
-scalingCount: 2
+scalingCount: 4
 scaling0: 1.0
-scaling1: 0.0
-timelineCount: 2
+scaling1: 1.0
+scaling2: 0.42857143
+scaling3: 0.040816326
+timelineCount: 4
 timeline0: 0.0
-timeline1: 0.6712329
+timeline1: 0.13013698
+timeline2: 0.25342464
+timeline3: 0.9794521
 - Angle - 
 active: true
-lowMin: 180.0
-lowMax: 0.0
-highMin: 80.0
-highMax: 100.0
+lowMin: 80.0
+lowMax: 100.0
+highMin: 180.0
+highMax: 0.0
 relative: false
 scalingCount: 3
-scaling0: 1.0
+scaling0: 0.0
 scaling1: 0.0
-scaling2: 0.0
+scaling2: 1.0
 timelineCount: 3
 timeline0: 0.0
-timeline1: 0.5205479
-timeline2: 1.0
+timeline1: 0.1839315
+timeline2: 0.24657534
 - Rotation - 
 active: false
 - Wind - 
@@ -116,16 +125,14 @@ lowMax: 0.0
 highMin: 1.0
 highMax: 1.0
 relative: false
-scalingCount: 4
+scalingCount: 3
 scaling0: 0.0
-scaling1: 0.98245615
-scaling2: 0.6666667
-scaling3: 0.0
-timelineCount: 4
+scaling1: 1.0
+scaling2: 0.0
+timelineCount: 3
 timeline0: 0.0
-timeline1: 0.39726028
-timeline2: 0.91780823
-timeline3: 1.0
+timeline1: 0.31506848
+timeline2: 1.0
 - Options - 
 attached: false
 continuous: false

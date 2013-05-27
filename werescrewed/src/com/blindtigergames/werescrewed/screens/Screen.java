@@ -109,7 +109,7 @@ public class Screen implements com.badlogic.gdx.Screen {
 
 			level.draw( batch, debugRenderer, delta );
 
-			level.camera.update( );
+			level.camera.update( delta );
 
 			int FPS = logger.getFPS( );
 			

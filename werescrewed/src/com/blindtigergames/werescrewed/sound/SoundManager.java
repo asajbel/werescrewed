@@ -453,7 +453,7 @@ public class SoundManager {
 					id = sound.play( finalVol, finalPitch, pan );
 				}
 				soundIds.add( id );
-				delay += delayAmount;
+				delay = delayAmount;
 			}
 			return id;
 		}
