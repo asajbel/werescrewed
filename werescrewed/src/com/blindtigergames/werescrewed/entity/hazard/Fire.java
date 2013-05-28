@@ -10,9 +10,12 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.blindtigergames.werescrewed.WereScrewedGame;
+import com.blindtigergames.werescrewed.camera.Camera;
 import com.blindtigergames.werescrewed.entity.EntityType;
 import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 import com.blindtigergames.werescrewed.graphics.particle.ParticleEffect;
+import com.blindtigergames.werescrewed.sound.SoundManager;
+import com.blindtigergames.werescrewed.sound.SoundManager.SoundRef;
 import com.blindtigergames.werescrewed.util.Util;
 
 public class Fire extends Hazard {
@@ -62,6 +65,7 @@ public class Fire extends Hazard {
 
 		// Sound s = WereScrewedGame.manager.get( "/data/sjfdsi.mp3",
 		// Sound.class );
+		loadSounds();
 	}
 
 	/**
@@ -144,7 +148,20 @@ public class Fire extends Hazard {
 		}
 		upsideDown = !upsideDown;
 	}
-
+	public void update( float deltaTime){
+		if (isActive()){
+			if (!sounds.isLooping( "idle" )){
+				//sounds.loopSound( "idle" );
+			}
+			sounds.setSoundVolume(
+					"idle",
+					isActive( ) ? sounds.calculatePositionalVolume( "idle",
+							getPositionPixel( ), Camera.CAMERA_RECT ) : 0f );
+			sounds.update( deltaTime );
+		} else {
+			sounds.stopSound( "idle" );
+		}
+	}
 	/**
 	 * draws fire particles
 	 * 
@@ -154,7 +171,6 @@ public class Fire extends Hazard {
 	 *            float
 	 */
 	public void draw( SpriteBatch batch, float deltaTime ) {
-
 		if ( Gdx.input.isKeyPressed( Input.Keys.BACKSLASH ) )
 			this.activeHazard = false;
 
@@ -182,5 +198,14 @@ public class Fire extends Hazard {
 		}
 		super.draw( batch, deltaTime );
 	}
-
+		
+	public void loadSounds( ) {
+		if ( sounds == null )
+			sounds = new SoundManager( );
+		SoundRef fireSound = sounds.getSound( "idle",
+				WereScrewedGame.dirHandle + "/common/sounds/flames.ogg" );
+		fireSound.setRange( 1200.f );
+		fireSound.setFalloff( 2.0f );
+		fireSound.setOffset( new Vector2(0.0f, height / 2.0f) );
+	}
 }

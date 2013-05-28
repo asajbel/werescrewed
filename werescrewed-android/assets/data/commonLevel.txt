@@ -41,6 +41,7 @@
 /common/sounds/rezzFinish.ogg
 #/common/sounds/WilhelmScream.ogg
 /common/sounds/steam.ogg
+/common/sounds/flames.ogg
 /common/sounds/chain1.ogg
 /common/sounds/chain2.ogg
 /common/sounds/chain3.ogg
