@@ -25,20 +25,9 @@ public class Camera {
 	private Vector2 center2D;
 	private Rectangle screenBounds;
 
-	// translation
-	/**
-	 * A ratio of some sort to determine targetBuffer size
-	 */
+	// Translation
 	private static final float TARGET_BUFFER_RATIO = .003f;
-	/**
-	 * Time to get to ideal camera position per pixel of distance
-	 */
-	// private static final float MS_PER_PIX = 2f;
-	/**
-	 * Time to get to ideal camera zoom per zoom-unit difference
-	 */
-	// private static final float MS_PER_ZOOM = 1000f;
-	private static final float MILLISECONDS = 1000f;
+	private static final int MILLISECONDS = 2000;
 	private int timeLeft;
 
 	private Vector2 translateVelocity;
@@ -48,16 +37,12 @@ public class Camera {
 	private int currActiveAnchors;
 	private boolean steering;
 
-	// Zoom constants
+	// Zoom
 	private static final float ZOOM_SIG_DIFF = 0.003f;
 	public static final float MIN_ZOOM = 1f;
 	public static final float MAX_ZOOM = 16f;
 	public static final float SCREEN_TO_ZOOM = 1468.6f;
-	/**
-	 * The ratio of the total distance traveled for the camera to start slowing
-	 * down
-	 */
-	private static final int FRAMES_PER_SECOND = 60;
+	private int fps = 60;
 
 	// globals for calculating screen space
 	protected static Vector3 CURRENT_CAMERA;
@@ -162,54 +147,61 @@ public class Camera {
 	 *            The amount of time between this frame and the last
 	 */
 	public void update( float deltaTime ) {
-		// Tracks player holding "B"
-		debugInput = false;
-		// Tracks player holding "N"
-		debugRender = false;
-		// check debug keys
-		if ( Gdx.input.isKeyPressed( Keys.B ) ) {
-			debugInput = true;// now camera is a toggle
+		if ( deltaTime != 0 ) {
+			fps = ( int ) ( 1 / deltaTime );
+			if ( fps == 0 )
+				fps = 1;
+
+			// Tracks player holding "B"
+			debugInput = false;
+			// Tracks player holding "N"
+			debugRender = false;
+			// check debug keys
+			if ( Gdx.input.isKeyPressed( Keys.B ) ) {
+				debugInput = true;// now camera is a toggle
+			}
+			if ( Gdx.input.isKeyPressed( Keys.N ) ) {
+				debugRender = true;
+			}
+
+			// update all positions and dimensions
+			position = camera.position;
+			center2D.x = position.x;
+			center2D.y = position.y;
+			screenBounds.width = camera.zoom * viewportWidth;
+			screenBounds.height = camera.zoom * viewportHeight;
+			screenBounds.x = position.x - screenBounds.width / 2;
+			screenBounds.y = position.y - screenBounds.height / 2;
+
+			if ( debugInput ) {
+				handleInput( );
+			} else {
+				// Set the target camera state
+				setTranslateTarget( );
+				// Check anchor differences
+				currActiveAnchors = AnchorList.getInstance( )
+						.getNumActiveAnchors( );
+				// Do the actual translation and zooming
+				adjustCamera( deltaTime );
+				prevActiveAnchors = currActiveAnchors;
+			}
+
+			// render buffers areas anchors
+			if ( debugRender ) {
+				renderBuffers( );
+			}
+
+			camera.update( );
+
+			// also render anchors if debugRender == true
+			anchorList.update( debugRender );
+
+			CURRENT_CAMERA.x = position.x;
+			CURRENT_CAMERA.y = position.y;
+			CURRENT_CAMERA.z = camera.zoom;
+
+			CAMERA_RECT = screenBounds;
 		}
-		if ( Gdx.input.isKeyPressed( Keys.N ) ) {
-			debugRender = true;
-		}
-
-		// update all positions and dimensions
-		position = camera.position;
-		center2D.x = position.x;
-		center2D.y = position.y;
-		screenBounds.width = camera.zoom * viewportWidth;
-		screenBounds.height = camera.zoom * viewportHeight;
-		screenBounds.x = position.x - screenBounds.width / 2;
-		screenBounds.y = position.y - screenBounds.height / 2;
-
-		if ( debugInput ) {
-			handleInput( );
-		} else {
-			// Set the target camera state
-			setTranslateTarget( );
-			// Check anchor differences
-			currActiveAnchors = AnchorList.getInstance( ).getNumActiveAnchors( );
-			// Do the actual translation and zooming
-			adjustCamera( );
-			prevActiveAnchors = currActiveAnchors;
-		}
-
-		// render buffers areas anchors
-		if ( debugRender ) {
-			renderBuffers( );
-		}
-
-		camera.update( );
-
-		// also render anchors if debugRender == true
-		anchorList.update( debugRender );
-
-		CURRENT_CAMERA.x = position.x;
-		CURRENT_CAMERA.y = position.y;
-		CURRENT_CAMERA.z = camera.zoom;
-
-		CAMERA_RECT = screenBounds;
 	}
 
 	/**
@@ -243,7 +235,7 @@ public class Camera {
 	/**
 	 * Movement and zooming
 	 */
-	private void adjustCamera( ) {
+	private void adjustCamera( float deltaTime ) {
 		// DETERMINE IF BUFFERS HAVE LEFT THE SCREEN //
 
 		// Track the status of buffers
@@ -279,6 +271,7 @@ public class Camera {
 
 		if ( steering ) {
 			steer( );
+			timeLeft -= deltaTime * 1000;
 		} else {
 			camera.position.x = translateTarget.x;
 			camera.position.y = translateTarget.y;
@@ -292,8 +285,7 @@ public class Camera {
 	private void startSteering( ) {
 		// Set state to true
 		steering = true;
-
-		timeLeft = ( int ) MILLISECONDS;
+		timeLeft = MILLISECONDS;
 	}
 
 	/**
@@ -309,7 +301,6 @@ public class Camera {
 		// If it's close enough, just set it to the center
 		if ( distance.len( ) < targetBuffer ) {
 			distance.x = distance.y = 0;
-			translateVelocity = new Vector2( 0, 0 );
 		}
 
 		// UPDATE TARGET ZOOM //
@@ -338,8 +329,6 @@ public class Camera {
 				&& camera.zoom == targetZoom ) {
 			stopSteering( );
 		}
-
-		timeLeft--;
 	}
 
 	/**
@@ -380,6 +369,12 @@ public class Camera {
 	 * Zoom out or in depending on anchor buffer rectangles
 	 */
 	private void zoom( ) {
+		boolean zoomOut = false;
+
+		if ( camera.zoom < targetZoom ) {
+			zoomOut = true;
+		}
+
 		// Accelerate zoom
 		float zoomAccel = 0;
 		if ( zoomChange != 0 ) {
@@ -392,8 +387,8 @@ public class Camera {
 
 		float newZoom = camera.zoom;
 
-		if ( camera.zoom + zoomSpeed > targetZoom - ZOOM_SIG_DIFF
-				&& camera.zoom + zoomSpeed < targetZoom + ZOOM_SIG_DIFF ) {
+		if ( ( zoomOut && newZoom + zoomSpeed > targetZoom )
+				|| ( !zoomOut && newZoom + zoomSpeed < targetZoom ) ) {
 			zoomSpeed = zoomChange;
 		}
 		newZoom += zoomSpeed;
@@ -423,7 +418,7 @@ public class Camera {
 	 * @return acceleration for this step
 	 */
 	private Vector2 calcAcceleration( Vector2 dist ) {
-		int framesLeft = FRAMES_PER_SECOND * timeLeft / 1000;
+		int framesLeft = fps * timeLeft / 1000;
 		Vector2 acceleration = new Vector2( 0, 0 );
 		acceleration.x = dist.x;
 		acceleration.y = dist.y;
@@ -441,7 +436,7 @@ public class Camera {
 	 * @return zoom acceleration for this step
 	 */
 	private float calcZoomAcc( float zoomChange ) {
-		int framesLeft = FRAMES_PER_SECOND * timeLeft / 1000;
+		int framesLeft = fps * timeLeft / 1000;
 		float zoomAccel = 0;
 		if ( framesLeft != 0 ) {
 			zoomAccel = zoomChange;
@@ -490,9 +485,8 @@ public class Camera {
 		shapeRenderer.line( getBounds( ).x + 20, getBounds( ).y + 20,
 				getBounds( ).x + getBounds( ).width - 20, getBounds( ).y + 20 );
 		shapeRenderer.line( getBounds( ).x + 20, getBounds( ).y
-				+ getBounds( ).height - 20,
-				getBounds( ).x + getBounds( ).width - 20, getBounds( ).y
-						+ getBounds( ).height  - 20);
+				+ getBounds( ).height - 20, getBounds( ).x + getBounds( ).width
+				- 20, getBounds( ).y + getBounds( ).height - 20 );
 
 		shapeRenderer.line( getBounds( ).x + 20, getBounds( ).y + 20,
 				getBounds( ).x + 20, getBounds( ).y + getBounds( ).height - 20 );
