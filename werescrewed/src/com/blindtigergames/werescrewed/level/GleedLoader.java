@@ -485,7 +485,7 @@ public class GleedLoader {
 		for ( Element prop : properties ) {
 			name = prop.getAttribute( "Name" ).toLowerCase( );
 			value = prop.get( "string", "<no value>" );
-			out.add( name, value );
+			out.put( name, value );
 		}
 		return out;
 	}

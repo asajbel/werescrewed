@@ -8,12 +8,12 @@ lowMin: 27.0
 lowMax: 27.0
 - Count - 
 min: 5
-max: 8
+max: 10
 - Emission - 
 lowMin: 4.0
 lowMax: 4.0
-highMin: 8.0
-highMax: 8.0
+highMin: 15.0
+highMax: 15.0
 relative: false
 scalingCount: 1
 scaling0: 1.0
@@ -22,8 +22,8 @@ timeline0: 0.0
 - Life - 
 lowMin: 500.0
 lowMax: 500.0
-highMin: 500.0
-highMax: 950.0
+highMin: 250.0
+highMax: 500.0
 relative: false
 scalingCount: 1
 scaling0: 1.0
@@ -45,12 +45,14 @@ active: false
 - Y Offset - 
 active: false
 - Spawn Shape - 
-shape: line
+shape: ellipse
+edges: false
+side: both
 - Spawn Width - 
 lowMin: 0.0
 lowMax: 0.0
-highMin: 0.0
-highMax: 0.0
+highMin: 40.0
+highMax: 40.0
 relative: false
 scalingCount: 1
 scaling0: 1.0
@@ -69,8 +71,8 @@ timeline0: 0.0
 - Scale - 
 lowMin: 29.0
 lowMax: 29.0
-highMin: 140.0
-highMax: 180.0
+highMin: 60.0
+highMax: 100.0
 relative: false
 scalingCount: 3
 scaling0: 0.0
@@ -114,15 +116,13 @@ timeline2: 1.0
 active: true
 lowMin: -15.0
 lowMax: 15.0
-highMin: -15.0
-highMax: 15.0
+highMin: 0.0
+highMax: 0.0
 relative: true
-scalingCount: 2
+scalingCount: 1
 scaling0: 0.0
-scaling1: 1.0
-timelineCount: 2
+timelineCount: 1
 timeline0: 0.0
-timeline1: 1.0
 - Wind - 
 active: false
 - Gravity - 
@@ -130,8 +130,8 @@ active: false
 - Tint - 
 colorsCount: 6
 colors0: 1.0
-colors1: 1.0
-colors2: 1.0
+colors1: 0.65882355
+colors2: 0.41568628
 colors3: 0.26666668
 colors4: 0.26666668
 colors5: 0.26666668
@@ -145,21 +145,21 @@ highMin: 1.0
 highMax: 1.0
 relative: false
 scalingCount: 3
-scaling0: 1.0
-scaling1: 1.0
+scaling0: 0.9298246
+scaling1: 0.7719298
 scaling2: 0.0
 timelineCount: 3
 timeline0: 0.0
-timeline1: 0.7876712
+timeline1: 0.7191781
 timeline2: 1.0
 - Options - 
 attached: false
 continuous: true
 aligned: false
 additive: true
-behind: false
+behind: true
 - Image Path -
-fire_whisp_flip
+/Users/stew/Google Drive/We're Screwed!!/Art/Working/Particles/Fires/fire_whisp_flip.png
 
 
 fire_whisp_flip
@@ -172,12 +172,12 @@ lowMin: 27.0
 lowMax: 27.0
 - Count - 
 min: 5
-max: 8
+max: 10
 - Emission - 
 lowMin: 4.0
 lowMax: 4.0
-highMin: 8.0
-highMax: 8.0
+highMin: 15.0
+highMax: 15.0
 relative: false
 scalingCount: 1
 scaling0: 1.0
@@ -186,8 +186,8 @@ timeline0: 0.0
 - Life - 
 lowMin: 500.0
 lowMax: 500.0
-highMin: 500.0
-highMax: 950.0
+highMin: 250.0
+highMax: 500.0
 relative: false
 scalingCount: 1
 scaling0: 1.0
@@ -209,12 +209,14 @@ active: false
 - Y Offset - 
 active: false
 - Spawn Shape - 
-shape: line
+shape: ellipse
+edges: false
+side: both
 - Spawn Width - 
 lowMin: 0.0
 lowMax: 0.0
-highMin: 0.0
-highMax: 0.0
+highMin: 40.0
+highMax: 40.0
 relative: false
 scalingCount: 1
 scaling0: 1.0
@@ -233,8 +235,8 @@ timeline0: 0.0
 - Scale - 
 lowMin: 29.0
 lowMax: 29.0
-highMin: 140.0
-highMax: 180.0
+highMin: 60.0
+highMax: 100.0
 relative: false
 scalingCount: 3
 scaling0: 0.0
@@ -278,15 +280,13 @@ timeline2: 1.0
 active: true
 lowMin: -15.0
 lowMax: 15.0
-highMin: -15.0
-highMax: 15.0
+highMin: 0.0
+highMax: 0.0
 relative: true
-scalingCount: 2
+scalingCount: 1
 scaling0: 0.0
-scaling1: 1.0
-timelineCount: 2
+timelineCount: 1
 timeline0: 0.0
-timeline1: 1.0
 - Wind - 
 active: false
 - Gravity - 
@@ -294,8 +294,8 @@ active: false
 - Tint - 
 colorsCount: 6
 colors0: 1.0
-colors1: 1.0
-colors2: 1.0
+colors1: 0.65882355
+colors2: 0.41568628
 colors3: 0.26666668
 colors4: 0.26666668
 colors5: 0.26666668
@@ -309,18 +309,18 @@ highMin: 1.0
 highMax: 1.0
 relative: false
 scalingCount: 3
-scaling0: 1.0
-scaling1: 1.0
+scaling0: 0.9298246
+scaling1: 0.7719298
 scaling2: 0.0
 timelineCount: 3
 timeline0: 0.0
-timeline1: 0.7808219
+timeline1: 0.7191781
 timeline2: 1.0
 - Options - 
 attached: false
 continuous: true
 aligned: false
 additive: true
-behind: false
+behind: true
 - Image Path -
-fire_whisp
+/Users/stew/Google Drive/We're Screwed!!/Art/Working/Particles/Fires/fire_whisp.png

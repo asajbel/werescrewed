@@ -565,7 +565,7 @@ public class DragonScreen extends Screen {
 			s = dragonObjects.createSprite( "burner-med" );
 			p.addFGDecal( s,new Vector2(-s.getWidth( )/2,-s.getHeight( )/2) );
 			addFGEntity( p );
-			p.addBehindParticleEffect( "fire_new", false, true ).setOffsetFromParent( 0, 75 ).start();
+			p.addBehindParticleEffect( "fire_new", false, true ).setOffsetFromParent( 0, 75 ).setAngle( -Util.PI/2 ).start();
 		}
 		
 		
