@@ -355,7 +355,7 @@ public class ProgressManager {
 		// player.body.setTransform( rezPoint, 0.0f );
 		// player.body.setLinearVelocity( Vector2.Zero );
 		Vector2 rezPoint = new Vector2( currentCheckPoint.body.getPosition( ) );
-		rezPoint.add( -60 * Util.PIXEL_TO_BOX, 60f * Util.PIXEL_TO_BOX );
+		rezPoint.add( -60 * Util.PIXEL_TO_BOX, 36f * Util.PIXEL_TO_BOX );
 		player.body.setTransform( rezPoint, 0.0f );
 		player.body.setType( BodyType.DynamicBody );
 		player.body.setLinearVelocity( Vector2.Zero );
