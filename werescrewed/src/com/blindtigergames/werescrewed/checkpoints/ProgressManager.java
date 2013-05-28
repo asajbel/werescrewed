@@ -325,7 +325,7 @@ public class ProgressManager {
 		player.setMoverAtCurrentState( new FollowEntityWithVelocity( player
 				.getPositionPixel( ), currentCheckPoint, Vector2.Zero, diff ) );
 		// player.body.setLinearVelocity( diff );
-		player.setVisible( false );
+		player.setVisible( false, true );
 
 	}
 

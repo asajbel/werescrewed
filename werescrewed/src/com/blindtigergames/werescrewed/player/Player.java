@@ -612,7 +612,7 @@ public class Player extends Entity {
 				currentPlatform = null;
 			}
 
-			if ( !isDead ) {
+			if ( !isDead ) { //sometimes this function is called twice in a row :(
 				addBehindParticleEffect( injuredParticles[ WereScrewedGame.random
 						.nextInt( injuredParticles.length ) ], true, false ).restartAt( getPositionPixel( ) );
 				sounds.playSound( "death", 1.0f );
