@@ -885,7 +885,7 @@ public class PhysicsTestScreen extends Screen {
 		fireballEmitter = new EntityParticleEmitter( "bolt emitter",
 				new Vector2( pos ),
 				createBoltEnemy(pos.cpy().mul( 1, 0 )),
-				5, null, world, true );
+				15, null, world, true );
 		rootSkeleton.addLooseEntity( fireballEmitter );
 	}
 	
