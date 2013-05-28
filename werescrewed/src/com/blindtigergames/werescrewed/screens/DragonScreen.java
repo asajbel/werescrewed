@@ -505,22 +505,21 @@ public class DragonScreen extends Screen {
 	}
 
 	void buildAllCannons( ) {
+		
 		Skeleton balloon3CannonSkeleton = ( Skeleton ) LevelFactory.entities
 				.get( "balloon3_cannon_skeleton" );
 		balloon3CannonSkeleton.setFgFade( false );
-		
-
 		buildCannon( balloon3CannonSkeleton,
 				balloon3CannonSkeleton.getPositionPixel( ), 200, 200, 0.5f, 1f );
-
 		balloon3CannonSkeleton.setLocalRot( -Util.PI / 4 );
+		
 		
 		Skeleton cannonPuzzle = ( Skeleton ) LevelFactory.entities
 				.get( "body_cannon_puzzle_skeleton" );
-		
 		cannonPuzzle.setLocalRot( -Util.PI / 2 );
-
 		cannonPuzzle.setFgFade( false );
+		
+		
 		buildCannon( cannonPuzzle, cannonPuzzle.getPositionPixel( ), 200, 200,
 				0.5f, 0.5f );
 		for ( int i = 1; i < 5; ++i ) {
