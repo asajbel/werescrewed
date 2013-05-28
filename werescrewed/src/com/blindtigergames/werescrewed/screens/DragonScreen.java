@@ -466,6 +466,8 @@ public class DragonScreen extends Screen {
 				.get( "body_inside_skeleton2" );
 		Skeleton bodyInsideSkeleton3 = ( Skeleton ) LevelFactory.entities
 				.get( "body_inside_skeleton3" );
+		Skeleton bodyInsideSkeleton4 = ( Skeleton ) LevelFactory.entities
+				.get( "body_inside_skeleton4" );
 
 		bodyInsideSkeleton1
 				.addMover( new RotateTweenMover( bodyInsideSkeleton1 ) );
@@ -474,6 +476,7 @@ public class DragonScreen extends Screen {
 		bodyInsideSkeleton3
 			.addMover( new RotateTweenMover( bodyInsideSkeleton3 ) );
 		
+		bodyInsideSkeleton4.addMover( new RotateTweenMover( bodyInsideSkeleton4 ) );
 		
 		bodyRoomRotateSkeleton = ( Skeleton ) LevelFactory.entities
 		.get( "body_room_rotate_skeleton" );
