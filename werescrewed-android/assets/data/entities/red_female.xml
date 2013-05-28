@@ -31,4 +31,5 @@
 	<sound>hit:/common/sounds/impactFemaleUgh.ogg</sound>
 	<sound>hit:/common/sounds/impactFemaleOph.ogg</sound>
 	<sound>hit:/common/sounds/impactFemaleAh.ogg</sound>
+	<sound>revive:/common/sounds/rezzFinish.ogg: volume 0.35f</sound>
 </entity>

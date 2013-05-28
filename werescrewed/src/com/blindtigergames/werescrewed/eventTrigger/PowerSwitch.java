@@ -57,8 +57,9 @@ public class PowerSwitch extends EventTrigger {
 		} else {
 			if ( !this.beginTriggeredOnce ) {
 				runBeginAction( null );
+				if (!state)
+					sounds.playSound( "on" );
 				state = true;
-				sounds.playSound( "on" );
 			}
 		}
 

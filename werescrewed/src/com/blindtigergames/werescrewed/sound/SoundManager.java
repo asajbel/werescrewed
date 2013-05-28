@@ -62,7 +62,7 @@ public class SoundManager {
 
 	public SoundRef getSound( String id, String assetName ) {
 		Sound s = WereScrewedGame.manager.get( assetName, Sound.class );
-		return sounds.add( id, new SoundRef( s ) );
+		return sounds.put( id, new SoundRef( s ) );
 	}
 
 	public SoundRef getSound( String id ) {
@@ -335,7 +335,7 @@ public class SoundManager {
 
 	public void copyRefs( SoundManager that ) {
 		for ( String name : that.sounds.keySet( ) ) {
-			sounds.add( name, that.sounds.get( name ) );
+			sounds.put( name, that.sounds.get( name ) );
 		}
 	}
 
@@ -453,7 +453,7 @@ public class SoundManager {
 					id = sound.play( finalVol, finalPitch, pan );
 				}
 				soundIds.add( id );
-				delay += delayAmount;
+				delay = delayAmount;
 			}
 			return id;
 		}
@@ -535,6 +535,12 @@ public class SoundManager {
 		
 		public float getDefaultDelay(){
 			return defaultDelay;
+		}
+	}
+
+	public void stopAll( ) {
+		for (String tag: sounds.keySet( )){
+			this.stopSound( tag );
 		}
 	}
 }

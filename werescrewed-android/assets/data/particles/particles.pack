@@ -19,70 +19,70 @@ doof
   index: -1
 fire_whisp
   rotate: false
-  xy: 2, 68
+  xy: 443, 2
   size: 357, 401
   orig: 178, 200
   offset: 0, 0
   index: -1
 wind1
   rotate: false
-  xy: 78, 810
+  xy: 936, 405
   size: 81, 32
   orig: 40, 16
   offset: 0, 0
   index: -1
 spark
   rotate: false
-  xy: 68, 810
+  xy: 926, 405
   size: 8, 92
   orig: 4, 46
   offset: 0, 0
   index: -1
 wind2
   rotate: false
-  xy: 161, 810
+  xy: 2, 808
   size: 60, 31
   orig: 30, 15
   offset: 0, 0
   index: -1
 screw
   rotate: false
-  xy: 2, 810
+  xy: 860, 405
   size: 64, 64
   orig: 32, 32
   offset: 0, 0
   index: -1
 wind3
   rotate: false
-  xy: 223, 810
+  xy: 64, 808
   size: 94, 39
   orig: 47, 19
   offset: 0, 0
   index: -1
 flame
   rotate: false
-  xy: 2, 471
+  xy: 361, 405
   size: 333, 337
-  orig: 166, 168
+  orig: 166, 166
   offset: 0, 0
   index: -1
 wind4
   rotate: false
-  xy: 319, 810
+  xy: 160, 808
   size: 56, 41
   orig: 28, 20
   offset: 0, 0
   index: -1
 oof
   rotate: false
-  xy: 337, 471
+  xy: 696, 405
   size: 128, 64
   orig: 64, 32
   offset: 0, 0
   index: -1
 wind5
   rotate: false
-  xy: 377, 810
+  xy: 218, 808
   size: 98, 50
   orig: 49, 25
   offset: 0, 0
@@ -103,9 +103,16 @@ cloud2
   index: -1
 particle
   rotate: false
-  xy: 467, 471
+  xy: 826, 405
   size: 32, 32
   orig: 16, 16
+  offset: 0, 0
+  index: -1
+fire_whisp_flip
+  rotate: false
+  xy: 2, 405
+  size: 357, 401
+  orig: 178, 200
   offset: 0, 0
   index: -1
 cloud3

@@ -9,6 +9,7 @@ public class CannonLaunchAction implements IAction {
 	// IMover moverToRun;
 	float impulseStrength;
 	float delaySeconds;
+	boolean regain_control;
 	Skeleton cannon;
 
 	/**
@@ -21,6 +22,7 @@ public class CannonLaunchAction implements IAction {
 		this.impulseStrength = impulseStrength;
 		this.delaySeconds = delaySeconds;
 		this.cannon = cannon;
+		regain_control = false;
 	}
 
 	@Override
@@ -39,6 +41,14 @@ public class CannonLaunchAction implements IAction {
 	@Override
 	public ActionType getActionType( ) {
 		return ActionType.ACT_ON_PLAYER;
+	}
+	
+	/** sets regain control value for final cannon in sequence
+	 * 
+	 * @param value boolean
+	 */
+	public void set_control( boolean value ){
+		regain_control = value;
 	}
 
 }

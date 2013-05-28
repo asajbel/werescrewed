@@ -21,16 +21,21 @@ import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.camera.Camera;
 import com.blindtigergames.werescrewed.checkpoints.CheckPoint;
 import com.blindtigergames.werescrewed.checkpoints.ProgressManager;
+import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.PolySprite;
 import com.blindtigergames.werescrewed.entity.RobotState;
 import com.blindtigergames.werescrewed.entity.RootSkeleton;
 import com.blindtigergames.werescrewed.entity.Skeleton;
+import com.blindtigergames.werescrewed.entity.Sprite;
 import com.blindtigergames.werescrewed.entity.action.CannonLaunchAction;
 import com.blindtigergames.werescrewed.entity.builders.EventTriggerBuilder;
 import com.blindtigergames.werescrewed.entity.builders.PlatformBuilder;
 import com.blindtigergames.werescrewed.entity.builders.PlayerBuilder;
 import com.blindtigergames.werescrewed.entity.builders.SkeletonBuilder;
 import com.blindtigergames.werescrewed.entity.hazard.Fire;
+import com.blindtigergames.werescrewed.entity.hazard.Enemy;
+import com.blindtigergames.werescrewed.entity.mover.DirectionFlipMover;
+import com.blindtigergames.werescrewed.entity.mover.IMover;
 import com.blindtigergames.werescrewed.entity.mover.LerpMover;
 import com.blindtigergames.werescrewed.entity.mover.LinearAxis;
 import com.blindtigergames.werescrewed.entity.mover.PistonTweenMover;
@@ -40,6 +45,8 @@ import com.blindtigergames.werescrewed.entity.mover.RotateTweenMover;
 import com.blindtigergames.werescrewed.entity.mover.SlidingMotorMover;
 import com.blindtigergames.werescrewed.entity.mover.puzzle.PuzzlePistonTweenMover;
 import com.blindtigergames.werescrewed.entity.mover.puzzle.PuzzleRotateTweenMover;
+import com.blindtigergames.werescrewed.entity.particles.EntityParticle;
+import com.blindtigergames.werescrewed.entity.particles.EntityParticleEmitter;
 import com.blindtigergames.werescrewed.entity.particles.Steam;
 import com.blindtigergames.werescrewed.entity.platforms.TiledPlatform;
 import com.blindtigergames.werescrewed.entity.screws.PuzzleScrew;
@@ -49,6 +56,7 @@ import com.blindtigergames.werescrewed.entity.tween.PathBuilder;
 import com.blindtigergames.werescrewed.eventTrigger.EventTrigger;
 import com.blindtigergames.werescrewed.eventTrigger.PowerSwitch;
 import com.blindtigergames.werescrewed.graphics.SpriteBatch;
+import com.blindtigergames.werescrewed.graphics.TextureAtlas;
 import com.blindtigergames.werescrewed.joint.JointFactory;
 import com.blindtigergames.werescrewed.level.Level;
 import com.blindtigergames.werescrewed.util.Util;
@@ -69,9 +77,13 @@ public class PhysicsTestScreen extends Screen {
 	public Steam testSteam;
 	public SpriteBatch particleBatch;
 	TiledPlatform test2;
+	
+	EntityParticleEmitter fireballEmitter;
 
 	private Skeleton dynSkel2;
 	private Skeleton s;
+	
+	private TextureAtlas dragonParts; 
 
 	StructureScrew limit;
 
@@ -95,6 +107,7 @@ public class PhysicsTestScreen extends Screen {
 				world, BodyType.KinematicBody );
 		skeleton.setFgFade( false );
 		platBuilder = new PlatformBuilder( world );
+		dragonParts = new TextureAtlas("data/levels/dragon/dragon_objects.pack"); 
 
 		// Uncomment for test anchor
 		// anchor = new Anchor( new Vector2( 7 * Util.BOX_TO_PIXEL,
@@ -125,13 +138,19 @@ public class PhysicsTestScreen extends Screen {
 		// connectedRoom( );
 		movingSkeleton( );
 
-		buildCannon( new Vector2( 1600, 50 ), 200, 200 );
+		buildCannon( new Vector2( 1600, 50 ), 160, 350 );
+		
+		buildCannon( new Vector2( 1900, 30 ), 200, 200 );
+		
+		buildCannon( new Vector2( -1900, 30 ), 200, 200 );
 
 		PowerSwitch pswitch = new PowerSwitch( "pwsstsf",
 				new Vector2( 512, 200 ), world );
 		rootSkeleton.addEventTrigger( pswitch );
 
-		createFire( );
+		//createFire( );
+		initFireballEnemy(new Vector2(900,200));
+		
 	}
 
 	// width & height in pixels
@@ -154,6 +173,10 @@ public class PhysicsTestScreen extends Screen {
 		Skeleton s = sb.position( pos.cpy( ) ).build( );
 		skeleton.addSkeleton( s );
 		s.setFgFade( false );
+		Sprite can = dragonParts.createSprite( "cannon-small" );
+		can.setOrigin( can.getWidth( )/2, can.getHeight( )/2 ); 
+		s.addFGDecal( can, new Vector2(-can.getWidth( ),-can.getHeight( )*2/3) );
+		addFGEntityToBack(s); 
 
 		// base
 		s.addPlatform( pb.name( "cannon-base" ).dimensions( dim.x, 1 )
@@ -179,7 +202,7 @@ public class PhysicsTestScreen extends Screen {
 		triggerVerts.add( new Vector2( -quarter, -quarter ) );
 		triggerVerts.add( new Vector2( -quarter, -quarter ) );
 
-		s.setLocalRot( -Util.PI / 4 );
+		s.setLocalRot( -Util.PI / 7 );
 		EventTrigger et = etb.name( "cannon-trigger" ).setVerts( triggerVerts )
 				.extraBorder( 0 ).position( eventPos )
 				// .addEntity( s )
@@ -188,6 +211,8 @@ public class PhysicsTestScreen extends Screen {
 		s.addEventTrigger( et );
 
 	}
+	
+	
 
 	// This is how you make a whole room fall, by welding everything together
 	void connectedRoom( ) {
@@ -512,19 +537,6 @@ public class PhysicsTestScreen extends Screen {
 
 	}
 
-	@SuppressWarnings( "unused" )
-	void buildPolySprite( ) {
-		Array< Vector2 > verts = new Array< Vector2 >( );
-		verts.add( new Vector2( 0, 0 ) );
-		verts.add( new Vector2( 1, 0 ) );
-		verts.add( new Vector2( 0, 1 ) );
-		verts.add( new Vector2( -1, .25f ) );
-
-		PolySprite polySprite = new PolySprite( WereScrewedGame.manager.get(
-				WereScrewedGame.dirHandle.path( )
-						+ "/common/robot/alphabot_texture_skin.png",
-				Texture.class ), verts );
-	}
 
 	@SuppressWarnings( "unused" )
 	private void buildOptimizeSkele( ) {
@@ -582,6 +594,12 @@ public class PhysicsTestScreen extends Screen {
 		skeleton.addKinematicPlatform( ground );
 		ground.setCrushing( true );
 
+		//build a little walls at edge
+		TiledPlatform wall = platBuilder.position( ground.getPixelWidth( )/2f,0f ).name("wall1")
+				.dimensions( 1,3 ).kinematic( ).buildTilePlatform( );
+		skeleton.addKinematicPlatform( wall );
+		wall = platBuilder.position( -ground.getPixelWidth( )/2f,0 ).name("wall2").buildTilePlatform( );
+		skeleton.addKinematicPlatform( wall );
 	}
 
 	/**
@@ -800,29 +818,7 @@ public class PhysicsTestScreen extends Screen {
 				s.rotateBy( 0.01f );
 			// dynSkel2.body.applyAngularImpulse( -0.1f ) ;
 		}
-		//
-		// player1.update( deltaTime );
-		// player2.update( deltaTime );
-		// rootSkeleton.update( deltaTime );
-		// if ( progressManager != null )
-		// progressManager.update( deltaTime );
-		// batch.setProjectionMatrix( cam.combined( ) );
-		// batch.begin( );
-		//
-		// if ( progressManager != null )
-		// progressManager.draw( batch, deltaTime );
-		// rootSkeleton.draw( batch, deltaTime );
-		// player1.draw( batch, deltaTime );
-		// player2.draw( batch, deltaTime );
-		//
-		//
-		// batch.end( );
-		//
-		// if ( debug )
-		// debugRenderer.render( world, cam.combined( ) );
-		//
-		// world.step( 1 / 60f, 6, 3 );
-		//
+		
 		
 		if ( Gdx.input.isKeyPressed( Keys.T ) ) {
 			ScreenManager.getInstance( ).show( ScreenType.TROPHY);
@@ -874,6 +870,32 @@ public class PhysicsTestScreen extends Screen {
 		Steam s = new Steam( "steam", fireSkele.getPositionPixel( ).add( 0,
 				-100 ), 100, 100, world );
 		fireSkele.addSteam( s );
+	}
+	
+	private void initFireballEnemy(Vector2 pos){
+		
+		int cageWidth = 700;
+		//build a little cage for the fireball
+		TiledPlatform wall = platBuilder.position( pos.x+cageWidth/2,0f ).name("wall1")
+				.dimensions( 1,3 ).kinematic( ).buildTilePlatform( );
+		skeleton.addKinematicPlatform( wall );
+		wall = platBuilder.position( pos.x-cageWidth/2,0 ).name("wall2").buildTilePlatform( );
+		skeleton.addKinematicPlatform( wall );
+		
+		fireballEmitter = new EntityParticleEmitter( "bolt emitter",
+				new Vector2( pos ),
+				createBoltEnemy(pos.cpy().mul( 1, 0 )),
+				15, null, world, true );
+		rootSkeleton.addLooseEntity( fireballEmitter );
+	}
+	
+	Enemy createBoltEnemy(Vector2 pos){
+		Enemy hotbolt = new Enemy( "hot-bolt", pos,25, world, true );
+		//hotbolt.body.setType( BodyType.DynamicBody );
+		//skeleton.addDynamicPlatform(  hotbolt );
+		hotbolt.addMover( new DirectionFlipMover( false, 0.001f, hotbolt, 2f, .03f ) );
+		addBGEntity( hotbolt );
+		return hotbolt;
 	}
 
 }

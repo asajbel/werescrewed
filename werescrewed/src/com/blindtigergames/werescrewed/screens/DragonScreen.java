@@ -9,9 +9,11 @@ import aurelienribon.tweenengine.TweenEquations;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.Joint;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJoint;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
+import com.badlogic.gdx.physics.box2d.joints.WeldJointDef;
 import com.badlogic.gdx.utils.Array;
 import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.entity.Entity;
@@ -114,11 +116,11 @@ public class DragonScreen extends Screen {
 		// );
 
 		Platform tail1Balloon = ( Platform ) LevelFactory.entities
-				.get( "tail_balloon1" );
+				.get( "tail1_balloon1" );
 		Platform tail2Balloon = ( Platform ) LevelFactory.entities
 				.get( "tail2_balloon1" );
 		Platform tail3Balloon = ( Platform ) LevelFactory.entities
-				.get( "tail3_balloon" );
+				.get( "tail3_balloon1" );
 
 		
 		Skeleton balloon1_skeleton = ( Skeleton ) LevelFactory.entities
@@ -179,7 +181,7 @@ public class DragonScreen extends Screen {
 				t.beginParallel( );
 				t.push( Tween
 						.to( balloon1_super, PlatformAccessor.LOCAL_POS_XY, 8f )
-						.delay( 0f ).target( 0, 800 )
+						.delay( 0f ).target( 0, 2000 )
 						.ease( TweenEquations.easeNone ).start( ) );
 
 				t.push( Tween
@@ -193,7 +195,7 @@ public class DragonScreen extends Screen {
 
 				t.push( Tween
 						.to( balloon1_super, PlatformAccessor.LOCAL_POS_XY, 8f )
-						.delay( 0f ).target( 0, 1600f )
+						.delay( 0f ).target( 0, 4000f )
 						.ease( TweenEquations.easeNone ).start( ) );
 
 				t.push( Tween
@@ -285,6 +287,10 @@ public class DragonScreen extends Screen {
 				+ dim.y * 16 );
 		Vector2 right = new Vector2( pos.x + dim.x / 2 * 32 + 16, pos.y - 16
 				+ dim.y * 16 );
+		skel.setFgFade( false );
+		Sprite can = WereScrewedGame.manager.getAtlas( "dragon_objects" ).createSprite( "cannon-small" ); 
+		skel.addFGDecal( can, new Vector2(-can.getWidth( )/2, -64) );
+		addFGEntityToBack(skel); 
 
 		// base
 		skel.addPlatform( pb.name( "cannon-base" ).dimensions( dim.x, 1 )
@@ -348,7 +354,7 @@ public class DragonScreen extends Screen {
 		Platform tail3MoverPlat2 = ( Platform ) LevelFactory.entities
 				.get( "tail3_mover_plat2" );
 
-		float distance = 1000f;
+		float distance = 800f;
 
 		LerpMover lm1 = new LerpMover( tail3MoverPlat1.getPositionPixel( ),
 				new Vector2( tail3MoverPlat1.getPositionPixel( ).x,
@@ -376,7 +382,16 @@ public class DragonScreen extends Screen {
 	}
 
 	private void tail3Pipes( ) {
-
+		
+		Pipe tail3TopPipe1 = ( Pipe ) LevelFactory.entities.get( "tail3_top_pipe_1" );
+		tail3TopPipe1.setLocalRot( Util.PI / 60 );
+		
+		Pipe tail3TopPipe2 = ( Pipe ) LevelFactory.entities.get( "tail3_top_pipe_2" );
+		tail3TopPipe2.setLocalRot( Util.PI / 60 );
+		
+		Pipe tail3TopPipe3 = ( Pipe ) LevelFactory.entities.get( "tail3_top_pipe_3" );
+		tail3TopPipe3.setLocalRot( -Util.PI / 60 );
+		
 		Pipe tail3MiddlePipe1 = ( Pipe ) LevelFactory.entities
 				.get( "tail3_middle_pipe1" );
 		Pipe tail3MiddlePipe2 = ( Pipe ) LevelFactory.entities
@@ -451,6 +466,8 @@ public class DragonScreen extends Screen {
 				.get( "body_inside_skeleton2" );
 		Skeleton bodyInsideSkeleton3 = ( Skeleton ) LevelFactory.entities
 				.get( "body_inside_skeleton3" );
+		Skeleton bodyInsideSkeleton4 = ( Skeleton ) LevelFactory.entities
+				.get( "body_inside_skeleton4" );
 
 		bodyInsideSkeleton1
 				.addMover( new RotateTweenMover( bodyInsideSkeleton1 ) );
@@ -459,6 +476,7 @@ public class DragonScreen extends Screen {
 		bodyInsideSkeleton3
 			.addMover( new RotateTweenMover( bodyInsideSkeleton3 ) );
 		
+		bodyInsideSkeleton4.addMover( new RotateTweenMover( bodyInsideSkeleton4 ) );
 		
 		bodyRoomRotateSkeleton = ( Skeleton ) LevelFactory.entities
 		.get( "body_room_rotate_skeleton" );
@@ -490,20 +508,21 @@ public class DragonScreen extends Screen {
 	}
 
 	void buildAllCannons( ) {
+		
 		Skeleton balloon3CannonSkeleton = ( Skeleton ) LevelFactory.entities
 				.get( "balloon3_cannon_skeleton" );
 		balloon3CannonSkeleton.setFgFade( false );
-		balloon3CannonSkeleton.setLocalRot( -Util.PI / 4 );
-
 		buildCannon( balloon3CannonSkeleton,
 				balloon3CannonSkeleton.getPositionPixel( ), 200, 200, 0.5f, 1f );
-
+		balloon3CannonSkeleton.setLocalRot( -Util.PI / 4 );
+		
+		
 		Skeleton cannonPuzzle = ( Skeleton ) LevelFactory.entities
 				.get( "body_cannon_puzzle_skeleton" );
-
 		cannonPuzzle.setLocalRot( -Util.PI / 2 );
-
 		cannonPuzzle.setFgFade( false );
+		
+		
 		buildCannon( cannonPuzzle, cannonPuzzle.getPositionPixel( ), 200, 200,
 				0.5f, 0.5f );
 		for ( int i = 1; i < 5; ++i ) {
@@ -541,7 +560,7 @@ public class DragonScreen extends Screen {
 		Sprite s;
 		Platform p;
 		String[] entities = {"balloon1_flame_plat","balloon2_flame_plat",
-				"balloon3_flame_plat","tail_flame_plat",
+				"balloon3_flame_plat","tail1_flame_plat",
 				"tail2_flame_plat","tail3_flame_plat"};
 		for(int i =0; i < entities.length; ++i ){
 			p = ( Platform ) LevelFactory.entities
@@ -552,6 +571,23 @@ public class DragonScreen extends Screen {
 			p.addBehindParticleEffect( "fire_new", false, true ).setOffsetFromParent( 0, 75 ).start();
 			p.setVisible( false, true );
 		}
+		
+		
+		// Joints the flame plats to their balloons, instead of making more skeleton
+		for(int i = 1; i < 4; i++){
+			p = ( Platform ) LevelFactory.entities
+					.get( "tail" + i + "_flame_plat" );
+			
+			Platform balloon1 = (Platform) LevelFactory.entities.get("tail" +i+ "_balloon1");
+			
+			if(p != null && balloon1 != null){
+				WeldJointDef weldJointDef = new WeldJointDef( );
+				weldJointDef.initialize( p.body, balloon1.body, p.getPosition( ) );
+				level.world.createJoint( weldJointDef );
+			}
+		}
+		
+		
 	}
 
 void buildBackground(){
@@ -585,6 +621,7 @@ void buildBackground(){
 								  0);
 			scale = (r.nextFloat( )/2+minCloudScale)*cloudScale;
 			e.sprite.setScale( scale * (r.nextBoolean( )?1f:-1f), r.nextFloat( )/2+0.5f );
+			
 			yPos = frontTopCloudsY + Util.binom( )*frontCloudVariation;
 			m = new ParallaxMover( new Vector2(xMin,yPos),
 												 new Vector2(xMax,yPos),
@@ -613,6 +650,9 @@ void buildBackground(){
 								  0);
 			scale = (r.nextFloat( )/2+minCloudScale)*cloudScale;
 			e.sprite.setScale( scale * (r.nextBoolean( )?1f:-1f), r.nextFloat( )/2+0.5f );
+			e.addFGDecal( e.sprite );
+			e.sprite=null;
+			addFGEntity( e );
 			yPos = midOrangeCloudsY + Util.binom( )*frontCloudVariation;
 			m = new ParallaxMover( new Vector2(xMin,yPos),
 												 new Vector2(xMax,yPos),
@@ -768,7 +808,7 @@ void buildBackground(){
 		
 		tail.addFGDecal( Sprite.scale( tailAtlas.createSprite( "tail" ), 2), new Vector2(-1800,-400) );
 		tail.fgSprite=null;
-		tail.setFgFade( true );
+	//tail.setFgFade( true );
 		addFGSkeleton( tail );
 		
 	}
@@ -779,7 +819,7 @@ void buildBackground(){
 		TextureAtlas tailAtlas = WereScrewedGame.manager.getAtlas( "tail-fg" );
 		tail2_skeleton.addFGDecal( Sprite.scale( tailAtlas.createSprite( "tail2" ), 2), new Vector2(-1206,-638) );//227,17
 		tail2_skeleton.fgSprite=null;
-		tail2_skeleton.setFgFade( true );
+		//tail2_skeleton.setFgFade( true );
 		
 		addFGSkeleton( tail2_skeleton );
 	}
@@ -790,7 +830,7 @@ void buildBackground(){
 		TextureAtlas tailAtlas = WereScrewedGame.manager.getAtlas( "tail-fg" );
 		tail3_skeleton.addFGDecal( Sprite.scale( tailAtlas.createSprite( "tail3" ), 2), new Vector2(-1166,-765) );//227,17
 		tail3_skeleton.fgSprite=null;
-		tail3_skeleton.setFgFade( true );
+		//tail3_skeleton.setFgFade( true );
 		
 		addFGSkeleton( tail3_skeleton );
 	}
@@ -800,7 +840,7 @@ void buildBackground(){
 		TextureAtlas tailAtlas = WereScrewedGame.manager.getAtlas( "body-neck" );
 		neck_skeleton.addFGDecal( Sprite.scale( tailAtlas.createSprite( "neck" ), 2f), new Vector2(-1167,-914) );//4,414
 		neck_skeleton.fgSprite=null;
-		neck_skeleton.setFgFade( false );//3497.1770
+		//neck_skeleton.setFgFade( false );//3497.1770
 		
 		addFGSkeleton( neck_skeleton );
 	}

@@ -38,6 +38,7 @@ import com.blindtigergames.werescrewed.graphics.particle.ParticleEffect;
 import com.blindtigergames.werescrewed.level.GleedLoadable;
 import com.blindtigergames.werescrewed.player.Player;
 import com.blindtigergames.werescrewed.sound.SoundManager;
+import com.blindtigergames.werescrewed.util.ArrayHash;
 import com.blindtigergames.werescrewed.util.Util;
 
 /**
@@ -75,11 +76,11 @@ public class Entity implements GleedLoadable {
 	protected ArrayList< Float > bgDecalAngles;
 	private RobotState currentRobotState;
 	private EnumMap< RobotState, Integer > robotStateMap;
-	public ISpinemator spinemator;
+	private ISpinemator spinemator;
 
 	private Skeleton parentSkeleton; // pointer to parent skele, set by skeleton
 
-	protected HashMap< String, ParticleEffect > behindParticles,
+	protected ArrayHash< String, ParticleEffect > behindParticles,
 			frontParticles;
 
 	public SoundManager sounds;
@@ -238,6 +239,7 @@ public class Entity implements GleedLoadable {
 		this.bgDecalOffsets = new ArrayList< Vector2 >( );
 		this.bgDecalAngles = new ArrayList< Float >( );
 		this.sounds = null;
+		this.crushing = false;
 		setUpRobotState( );
 	}
 
@@ -307,19 +309,11 @@ public class Entity implements GleedLoadable {
 	}
 
 	public void draw( SpriteBatch batch, float deltaTime ) {
-//		if(name.equals("balloon1_flame_plat")){
-//			this.getPosition( );
-//		}
 		if(drawParticles)drawParticles( behindParticles, batch );
 		if ( visible ) {
-			
-			// drawBGDecals( batch );
-			
-			if ( sprite != null && visible && !removeNextStep ) {
+			if ( sprite != null && !removeNextStep ) {
 				sprite.draw( batch );
 			}
-			// drawOrigin(batch);
-			// drawFGDecals( batch );
 			if ( spinemator != null )
 				spinemator.draw( batch );
 			
@@ -327,12 +321,14 @@ public class Entity implements GleedLoadable {
 		if(drawParticles)drawParticles( frontParticles, batch );
 	}
 
-	protected void drawParticles( HashMap< String, ParticleEffect > map,
+	protected void drawParticles( ArrayHash< String, ParticleEffect > map,
 			SpriteBatch batch ) {
 		if ( map != null ) {
-			for ( ParticleEffect e : map.values( ) ) {
-				if ( !e.isComplete( ) ) {
-					e.draw( batch );
+			for ( String key : map.keySet( ) ) {
+				for ( ParticleEffect e : map.getAll( key ) ) {
+					if ( !e.isComplete( ) ) {
+						e.draw( batch );
+					}
 				}
 			}
 		}
@@ -409,8 +405,8 @@ public class Entity implements GleedLoadable {
 			// }
 			updateDecals( deltaTime );
 
-			if ( spinemator != null ) {
-				spinemator.update( deltaTime );
+			if ( getSpinemator( ) != null ) {
+				getSpinemator( ).update( deltaTime );
 			}
 		}
 
@@ -427,37 +423,50 @@ public class Entity implements GleedLoadable {
 		}
 	}
 
+	/**
+	 * Polymorphic method to update particle effects
+	 * 
+	 * @author stew
+	 */
 	private void updateParticleEffect( float deltaTime,
-			HashMap< String, ParticleEffect > map ) {
-		Array< String > removals = null;
+			ArrayHash< String, ParticleEffect > map ) {
+		Array< ParticleEffect > removals = null;
 		if ( map != null ) {
 			Vector2 pos = getPositionPixel( );
-			for ( ParticleEffect e : map.values( ) ) {
-				if ( e.updatePositionOnUpdate ) {
-					if(!e.offsetFromParent.equals( Vector2.Zero )&&body!=null){
-						Vector2 newPos = new Vector2(e.offsetFromParent).rotate( body.getAngle( )*Util.RAD_TO_DEG );
-						e.setPosition( pos.x+newPos.x, pos.y+newPos.y );
-					}else{
-						e.setPosition( pos.x, pos.y );
+			for ( String key : map.keySet( ) ) {
+				for ( ParticleEffect emitter : map.getAll( key ) ) {
+					if ( emitter.updatePositionOnUpdate ) {
+						if ( !emitter.offsetFromParent.equals( Vector2.Zero )
+								&& body != null ) {
+							Vector2 newPos = new Vector2(
+									emitter.offsetFromParent ).rotate( body
+									.getAngle( ) * Util.RAD_TO_DEG );
+							emitter.setPosition( pos.x + newPos.x, pos.y
+									+ newPos.y );
+						} else {
+							emitter.setPosition( pos.x, pos.y );
+						}
+						if ( emitter.updateAngleWithParent ) {
+							if ( body != null ) {
+								emitter.setEffectAngle( body.getAngle( ) );
+							} else if ( sprite != null ) {
+								emitter.setEffectAngle( sprite.getRotation( )
+										* Util.DEG_TO_RAD );
+							}
+						}
 					}
-					if ( body != null ) {
-						e.setAngle( body.getAngle( )+e.rotationOffset );
-					} else if (sprite!=null) {
-						e.setAngle( sprite.getRotation( ) * Util.DEG_TO_RAD+e.rotationOffset );
+					if ( !emitter.isComplete( ) ) {
+						emitter.update( deltaTime );
+					} else if ( emitter.removeOnComplete ) {
+						if ( removals == null )
+							removals = new Array< ParticleEffect >( );
+						removals.add( emitter );
 					}
-					
 				}
-				if ( !e.isComplete( ) ) {
-					e.update( deltaTime );
-				} else if ( e.removeOnComplete ) {
-					if ( removals == null )
-						removals = new Array< String >( );
-					removals.add( e.name );
+				if ( removals != null ) {
+					for ( ParticleEffect e : removals )
+						map.remove( e.effectName, e );
 				}
-			}
-			if ( removals != null ) {
-				for ( String name : removals )
-					map.remove( name );
 			}
 		}
 	}
@@ -1454,7 +1463,7 @@ public class Entity implements GleedLoadable {
 	public ParticleEffect addBehindParticleEffect( String name,
 			boolean removeOnComplete, boolean updateWithParent ) {
 		if ( behindParticles == null ) {
-			behindParticles = new HashMap< String, ParticleEffect >( );
+			behindParticles = new ArrayHash< String, ParticleEffect >( );
 		}
 		return addParticleEffect( name, behindParticles, removeOnComplete,
 				updateWithParent );
@@ -1463,14 +1472,20 @@ public class Entity implements GleedLoadable {
 	public ParticleEffect addFrontParticleEffect( String name,
 			boolean removeOnComplete, boolean updateWithParent ) {
 		if ( frontParticles == null ) {
-			frontParticles = new HashMap< String, ParticleEffect >( );
+			frontParticles = new ArrayHash< String, ParticleEffect >( );
 		}
 		return addParticleEffect( name, frontParticles, removeOnComplete,
 				updateWithParent );
 	}
 
+	/**
+	 * Polymorphic method to add particle effects. Used by multiple public
+	 * methods.
+	 * 
+	 * @author stew
+	 */
 	private ParticleEffect addParticleEffect( String name,
-			HashMap< String, ParticleEffect > map, boolean removeOnComplete,
+			ArrayHash< String, ParticleEffect > map, boolean removeOnComplete,
 			boolean updateWithParent ) {
 		ParticleEffect effect = WereScrewedGame.manager
 				.getParticleEffect( name );
@@ -1480,19 +1495,33 @@ public class Entity implements GleedLoadable {
 		return effect;
 	}
 
-	public ParticleEffect getEffect( String name ) {
-
+	/**
+	 * @param name
+	 *            of particle effect
+	 * @return Returns the first effect with the given name.
+	 * @author stew
+	 */
+	public ParticleEffect getEffect( String name, int index ) {
 		ParticleEffect out = null;
 		if ( behindParticles != null )
-			out = behindParticles.get( name );
+			out = behindParticles.get( name, index );
 		if ( out == null && frontParticles != null ) {
-			out = frontParticles.get( name );
+			out = frontParticles.get( name, index );
 			if ( out == null ) {
 				throw new NullPointerException(
 						"No particle effect exists with name: " + name );
 			}
 		}
 		return out;
+	}
+
+	/**
+	 * @param name
+	 *            of particle effect
+	 * @return Returns the first effect with the given name.
+	 */
+	public ParticleEffect getEffect( String name ) {
+		return getEffect( name, 0 );
 	}
 
 	public void setSoundManager( SoundManager s ) {
@@ -1658,4 +1687,22 @@ public class Entity implements GleedLoadable {
 			}
 		}
 	}
+
+	public ISpinemator getSpinemator( ) {
+		return spinemator;
+	}
+
+	public void setSpinemator( ISpinemator spinemator ) {
+		this.spinemator = spinemator;
+	}
+	
+	/**
+	 * A sudo virtual function that inheriting classes can 
+	 * override and add whatever reset code
+	 * @author stew
+	 */
+	public void reset(){
+		
+	}
+	
 }
