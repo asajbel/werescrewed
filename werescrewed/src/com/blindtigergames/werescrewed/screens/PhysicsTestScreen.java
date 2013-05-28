@@ -894,6 +894,7 @@ public class PhysicsTestScreen extends Screen {
 		//hotbolt.body.setType( BodyType.DynamicBody );
 		//skeleton.addDynamicPlatform(  hotbolt );
 		hotbolt.addMover( new DirectionFlipMover( false, 0.001f, hotbolt, 2f, .03f ) );
+		addBGEntity( hotbolt );
 		return hotbolt;
 	}
 

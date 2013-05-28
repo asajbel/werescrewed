@@ -10,7 +10,9 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
+import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.entity.EntityType;
+import com.blindtigergames.werescrewed.entity.Sprite;
 import com.blindtigergames.werescrewed.entity.platforms.Tile;
 import com.blindtigergames.werescrewed.player.Player;
 import com.blindtigergames.werescrewed.util.Util;
@@ -36,6 +38,13 @@ public class Enemy extends Hazard {
 		this.active = isActive;
 
 		constructBody( pos, radius );
+		
+		Sprite s = WereScrewedGame.manager.getAtlas( "common-textures" ).createSprite( "power_screw" );
+		float scale = radius*2 / s.getWidth( );
+		s.setScale( scale );
+		
+		
+		addBGDecal( s, new Vector2(-radius,-radius) );
 		
 		addFrontParticleEffect( "/fire/fire_tiny", false, true ).updateAngleWithParent=false;
 	}
