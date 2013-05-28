@@ -5,7 +5,7 @@ import com.blindtigergames.werescrewed.entity.EntityType;
 import com.blindtigergames.werescrewed.entity.action.ActionType;
 import com.blindtigergames.werescrewed.entity.action.IAction;
 
-public class ParticleActivator implements IAction {
+public class EntityParticleActivator implements IAction {
 
 	@Override
 	public void act( ) {
@@ -21,7 +21,7 @@ public class ParticleActivator implements IAction {
 			// entity.name);
 			return;
 		}
-		ParticleEmitter pE = ( ParticleEmitter ) entity;
+		EntityParticleEmitter pE = ( EntityParticleEmitter ) entity;
 		if ( pE.isActive( ) )
 			pE.activate( );
 		else

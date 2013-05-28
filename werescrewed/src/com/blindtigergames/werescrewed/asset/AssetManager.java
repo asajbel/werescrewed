@@ -142,14 +142,14 @@ public class AssetManager extends com.badlogic.gdx.assets.AssetManager {
 				Gdx.files.internal( "data/particles/" + particleEffectName
 						+ ".p" ),
 				WereScrewedGame.manager.getAtlas( "particles" ) );
-		effect.name = particleEffectName+(particleEffectCt++);
+		effect.name = particleEffectName;
+		effect.effectName = particleEffectName;
 		particleEffects.put( particleEffectName, effect );
 	}
 
 	/**
-	 * Return an instance of the named particle effect! You'll want to name it
-	 * something unique
-	 * 
+	 * Return an instance of the named particle effect!
+	 * stew
 	 * @param particleEffectName
 	 * @return
 	 */
@@ -159,6 +159,8 @@ public class AssetManager extends com.badlogic.gdx.assets.AssetManager {
 			throw new RuntimeException(
 					"AssetManager: no particle effect is loaded with the name '"
 							+ particleEffectName + "'" );
+		out = new ParticleEffect(out);
+		out.name = out.effectName+"_instance"+(particleEffectCt++);
 		return new ParticleEffect( out );
 	}
 

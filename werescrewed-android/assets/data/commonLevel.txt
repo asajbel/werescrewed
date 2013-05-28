@@ -123,6 +123,8 @@ slowSteam.p
 fire.p
 fire_new.p
 cannon.p
+smoke_puff_small.p
+/fire/fire_tiny.p
 
 ##menu assets
 /menu/menu.png

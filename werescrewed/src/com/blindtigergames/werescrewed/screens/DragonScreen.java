@@ -466,6 +466,8 @@ public class DragonScreen extends Screen {
 				.get( "body_inside_skeleton2" );
 		Skeleton bodyInsideSkeleton3 = ( Skeleton ) LevelFactory.entities
 				.get( "body_inside_skeleton3" );
+		Skeleton bodyInsideSkeleton4 = ( Skeleton ) LevelFactory.entities
+				.get( "body_inside_skeleton4" );
 
 		bodyInsideSkeleton1
 				.addMover( new RotateTweenMover( bodyInsideSkeleton1 ) );
@@ -474,6 +476,7 @@ public class DragonScreen extends Screen {
 		bodyInsideSkeleton3
 			.addMover( new RotateTweenMover( bodyInsideSkeleton3 ) );
 		
+		bodyInsideSkeleton4.addMover( new RotateTweenMover( bodyInsideSkeleton4 ) );
 		
 		bodyRoomRotateSkeleton = ( Skeleton ) LevelFactory.entities
 		.get( "body_room_rotate_skeleton" );
@@ -505,22 +508,21 @@ public class DragonScreen extends Screen {
 	}
 
 	void buildAllCannons( ) {
+		
 		Skeleton balloon3CannonSkeleton = ( Skeleton ) LevelFactory.entities
 				.get( "balloon3_cannon_skeleton" );
 		balloon3CannonSkeleton.setFgFade( false );
-		
-
 		buildCannon( balloon3CannonSkeleton,
 				balloon3CannonSkeleton.getPositionPixel( ), 200, 200, 0.5f, 1f );
-
 		balloon3CannonSkeleton.setLocalRot( -Util.PI / 4 );
+		
 		
 		Skeleton cannonPuzzle = ( Skeleton ) LevelFactory.entities
 				.get( "body_cannon_puzzle_skeleton" );
-		
 		cannonPuzzle.setLocalRot( -Util.PI / 2 );
-
 		cannonPuzzle.setFgFade( false );
+		
+		
 		buildCannon( cannonPuzzle, cannonPuzzle.getPositionPixel( ), 200, 200,
 				0.5f, 0.5f );
 		for ( int i = 1; i < 5; ++i ) {
@@ -566,7 +568,7 @@ public class DragonScreen extends Screen {
 			s = dragonObjects.createSprite( "burner-med" );
 			p.addFGDecal( s,new Vector2(-s.getWidth( )/2,-s.getHeight( )/2) );
 			addFGEntity( p );
-			p.addBehindParticleEffect( "fire_new", false, true ).setOffsetFromParent( 0, 75 ).start();
+			p.addBehindParticleEffect( "fire_new", false, true ).setOffsetFromParent( 0, 75 ).setAngle( -Util.PI/2 ).start();
 		}
 		
 		

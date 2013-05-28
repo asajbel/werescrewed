@@ -1,21 +1,22 @@
 package com.blindtigergames.werescrewed.entity.particles;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+import com.badlogic.gdx.physics.box2d.World;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityType;
 import com.blindtigergames.werescrewed.entity.mover.IMover;
+import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 import com.blindtigergames.werescrewed.util.Util;
 
-@Deprecated
-public class ParticleEmitter extends Entity {
 
-	private ArrayList< Particle > particles;
+public class EntityParticleEmitter extends Entity {
+
+	private ArrayList< EntityParticle > particles;
 	private boolean activated;
 
 	/**
@@ -39,13 +40,14 @@ public class ParticleEmitter extends Entity {
 	 * @param active
 	 *            boolean
 	 */
-	ParticleEmitter( String name, Vector2 positionPixels, Texture texture,
-			Body body, Entity baseEntity, float lifeSpan, IMover mover,
+	public EntityParticleEmitter( String name, Vector2 positionPixels, 
+			Entity baseEntity, float lifeSpan, IMover mover, World world,
 			boolean active ) {
-		super( name, positionPixels, texture, null, false );
-		particles = new ArrayList< Particle >( );
-		Particle p = new Particle( baseEntity, lifeSpan, mover );
+		super( name, positionPixels, null, null, false );
+		particles = new ArrayList< EntityParticle >( );
+		EntityParticle p = new EntityParticle( baseEntity, lifeSpan, mover );
 		particles.add( p );
+		this.world = world;
 		constructBody( positionPixels );
 		activated = active;
 		entityType = EntityType.PARTICLE_EMITTER;
@@ -73,10 +75,10 @@ public class ParticleEmitter extends Entity {
 	 *            float
 	 */
 	public void update( float deltaTime ) {
-		for ( Particle p : particles ) {
+		for ( EntityParticle p : particles ) {
 			p.update( deltaTime );
 			if ( p.isDead( ) ) {
-				p.resetParticle( );
+				p.resetParticle( this.getPosition( ) );
 			}
 		}
 	}
@@ -92,7 +94,7 @@ public class ParticleEmitter extends Entity {
 	 *            mover
 	 */
 	public void addParticle( Entity entity, float lifeSpan, IMover mover ) {
-		particles.add( new Particle( entity, lifeSpan, mover ) );
+		particles.add( new EntityParticle( entity, lifeSpan, mover ) );
 	}
 
 	/**
@@ -110,7 +112,7 @@ public class ParticleEmitter extends Entity {
 	public void duplicateParticle( Entity e, float lifeSpan, IMover mover,
 			int duplications ) {
 		for ( int i = 0; i < duplications; i++ ) {
-			particles.add( new Particle( e, lifeSpan, mover ) );
+			particles.add( new EntityParticle( e, lifeSpan, mover ) );
 		}
 	}
 
@@ -135,5 +137,13 @@ public class ParticleEmitter extends Entity {
 	 */
 	public boolean isActive( ) {
 		return activated;
+	}
+	
+	@Override
+	public void draw( SpriteBatch batch, float deltaTime ) {
+		super.draw( batch, deltaTime );
+		for ( EntityParticle particle : particles ) {
+			if(!particle.isDead( ))particle.getEntity( ).draw( batch, deltaTime );
+		}
 	}
 }
