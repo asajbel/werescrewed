@@ -30,12 +30,14 @@ public class Enemy extends Hazard {
 			boolean isActive ) {
 		super( name, pos, null, world, isActive );
 		entityType = EntityType.HAZARD;
-		hazardType = HazardType.SAWS;
+		hazardType = HazardType.ENEMY;
 
 		this.world = world;
 		this.active = isActive;
 
 		constructBody( pos, radius );
+		
+		addFrontParticleEffect( "/fire/fire_tiny", false, true ).updateAngleWithParent=false;
 	}
 	
 	
@@ -79,5 +81,16 @@ public class Enemy extends Hazard {
 		body.setUserData( this );
 
 		bodypos = body.getPosition( ).mul( Util.BOX_TO_PIXEL );
+	}
+
+	/**
+	 * Kills the enemy!
+	 * @author stew
+	 */
+	@Override
+	public void reset(){
+		super.reset();
+		
+		this.addFrontParticleEffect( "smoke_puff_small", true, false ).restartAt( getPositionPixel( ) );
 	}
 }

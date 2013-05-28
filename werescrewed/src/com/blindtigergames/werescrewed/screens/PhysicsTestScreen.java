@@ -21,6 +21,7 @@ import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.camera.Camera;
 import com.blindtigergames.werescrewed.checkpoints.CheckPoint;
 import com.blindtigergames.werescrewed.checkpoints.ProgressManager;
+import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.PolySprite;
 import com.blindtigergames.werescrewed.entity.RobotState;
 import com.blindtigergames.werescrewed.entity.RootSkeleton;
@@ -34,6 +35,7 @@ import com.blindtigergames.werescrewed.entity.builders.SkeletonBuilder;
 import com.blindtigergames.werescrewed.entity.hazard.Fire;
 import com.blindtigergames.werescrewed.entity.hazard.Enemy;
 import com.blindtigergames.werescrewed.entity.mover.DirectionFlipMover;
+import com.blindtigergames.werescrewed.entity.mover.IMover;
 import com.blindtigergames.werescrewed.entity.mover.LerpMover;
 import com.blindtigergames.werescrewed.entity.mover.LinearAxis;
 import com.blindtigergames.werescrewed.entity.mover.PistonTweenMover;
@@ -43,6 +45,8 @@ import com.blindtigergames.werescrewed.entity.mover.RotateTweenMover;
 import com.blindtigergames.werescrewed.entity.mover.SlidingMotorMover;
 import com.blindtigergames.werescrewed.entity.mover.puzzle.PuzzlePistonTweenMover;
 import com.blindtigergames.werescrewed.entity.mover.puzzle.PuzzleRotateTweenMover;
+import com.blindtigergames.werescrewed.entity.particles.EntityParticle;
+import com.blindtigergames.werescrewed.entity.particles.EntityParticleEmitter;
 import com.blindtigergames.werescrewed.entity.particles.Steam;
 import com.blindtigergames.werescrewed.entity.platforms.TiledPlatform;
 import com.blindtigergames.werescrewed.entity.screws.PuzzleScrew;
@@ -73,6 +77,8 @@ public class PhysicsTestScreen extends Screen {
 	public Steam testSteam;
 	public SpriteBatch particleBatch;
 	TiledPlatform test2;
+	
+	EntityParticleEmitter fireballEmitter;
 
 	private Skeleton dynSkel2;
 	private Skeleton s;
@@ -143,8 +149,8 @@ public class PhysicsTestScreen extends Screen {
 		rootSkeleton.addEventTrigger( pswitch );
 
 		//createFire( );
+		initFireballEnemy(new Vector2(900,200));
 		
-		hotBolts(new Vector2( -1900, 30 ));
 	}
 
 	// width & height in pixels
@@ -206,13 +212,7 @@ public class PhysicsTestScreen extends Screen {
 
 	}
 	
-	void hotBolts(Vector2 pos){
-		Enemy hotbolt = new Enemy( "hot-bolt", pos,25, world, true );
-		//hotbolt.body.setType( BodyType.DynamicBody );
-		skeleton.addDynamicPlatform(  hotbolt );
-		hotbolt.addMover( new DirectionFlipMover( false, 0.001f, hotbolt, 2f, .03f ) );
-		hotbolt.addFrontParticleEffect( "fire_new", false, true ).updateAngleWithParent=false;
-	}
+	
 
 	// This is how you make a whole room fall, by welding everything together
 	void connectedRoom( ) {
@@ -537,19 +537,6 @@ public class PhysicsTestScreen extends Screen {
 
 	}
 
-	@SuppressWarnings( "unused" )
-	void buildPolySprite( ) {
-		Array< Vector2 > verts = new Array< Vector2 >( );
-		verts.add( new Vector2( 0, 0 ) );
-		verts.add( new Vector2( 1, 0 ) );
-		verts.add( new Vector2( 0, 1 ) );
-		verts.add( new Vector2( -1, .25f ) );
-
-		PolySprite polySprite = new PolySprite( WereScrewedGame.manager.get(
-				WereScrewedGame.dirHandle.path( )
-						+ "/common/robot/alphabot_texture_skin.png",
-				Texture.class ), verts );
-	}
 
 	@SuppressWarnings( "unused" )
 	private void buildOptimizeSkele( ) {
@@ -607,6 +594,12 @@ public class PhysicsTestScreen extends Screen {
 		skeleton.addKinematicPlatform( ground );
 		ground.setCrushing( true );
 
+		//build a little walls at edge
+		TiledPlatform wall = platBuilder.position( ground.getPixelWidth( )/2f,0f ).name("wall1")
+				.dimensions( 1,3 ).kinematic( ).buildTilePlatform( );
+		skeleton.addKinematicPlatform( wall );
+		wall = platBuilder.position( -ground.getPixelWidth( )/2f,0 ).name("wall2").buildTilePlatform( );
+		skeleton.addKinematicPlatform( wall );
 	}
 
 	/**
@@ -825,29 +818,7 @@ public class PhysicsTestScreen extends Screen {
 				s.rotateBy( 0.01f );
 			// dynSkel2.body.applyAngularImpulse( -0.1f ) ;
 		}
-		//
-		// player1.update( deltaTime );
-		// player2.update( deltaTime );
-		// rootSkeleton.update( deltaTime );
-		// if ( progressManager != null )
-		// progressManager.update( deltaTime );
-		// batch.setProjectionMatrix( cam.combined( ) );
-		// batch.begin( );
-		//
-		// if ( progressManager != null )
-		// progressManager.draw( batch, deltaTime );
-		// rootSkeleton.draw( batch, deltaTime );
-		// player1.draw( batch, deltaTime );
-		// player2.draw( batch, deltaTime );
-		//
-		//
-		// batch.end( );
-		//
-		// if ( debug )
-		// debugRenderer.render( world, cam.combined( ) );
-		//
-		// world.step( 1 / 60f, 6, 3 );
-		//
+		
 		
 		if ( Gdx.input.isKeyPressed( Keys.T ) ) {
 			ScreenManager.getInstance( ).show( ScreenType.TROPHY);
@@ -899,6 +870,31 @@ public class PhysicsTestScreen extends Screen {
 		Steam s = new Steam( "steam", fireSkele.getPositionPixel( ).add( 0,
 				-100 ), 100, 100, world );
 		fireSkele.addSteam( s );
+	}
+	
+	private void initFireballEnemy(Vector2 pos){
+		
+		int cageWidth = 700;
+		//build a little cage for the fireball
+		TiledPlatform wall = platBuilder.position( pos.x+cageWidth/2,0f ).name("wall1")
+				.dimensions( 1,3 ).kinematic( ).buildTilePlatform( );
+		skeleton.addKinematicPlatform( wall );
+		wall = platBuilder.position( pos.x-cageWidth/2,0 ).name("wall2").buildTilePlatform( );
+		skeleton.addKinematicPlatform( wall );
+		
+		fireballEmitter = new EntityParticleEmitter( "bolt emitter",
+				new Vector2( pos ),
+				createBoltEnemy(pos.cpy().mul( 1, 0 )),
+				5, null, world, true );
+		rootSkeleton.addLooseEntity( fireballEmitter );
+	}
+	
+	Enemy createBoltEnemy(Vector2 pos){
+		Enemy hotbolt = new Enemy( "hot-bolt", pos,25, world, true );
+		//hotbolt.body.setType( BodyType.DynamicBody );
+		//skeleton.addDynamicPlatform(  hotbolt );
+		hotbolt.addMover( new DirectionFlipMover( false, 0.001f, hotbolt, 2f, .03f ) );
+		return hotbolt;
 	}
 
 }

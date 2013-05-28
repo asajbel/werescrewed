@@ -55,19 +55,25 @@ public class ParticleEffect implements Disposable {
 	
 	public Vector2 offsetFromParent = new Vector2();
 
-	public String name;
+	public String name; //unique instance name
+	
+	public String effectName; //common name of effect
 
 	public ParticleEffect( ) {
 		emitters = new Array< ParticleEmitter >( 8 );
+		name = null;
+		effectName=null;
 	}
 
 	public ParticleEffect( ParticleEffect effect ) {
 		updatePositionOnUpdate = effect.updatePositionOnUpdate;
 		removeOnComplete = effect.removeOnComplete;
-		name = effect.name + "_instance";
+		name = effect.name;
+		effectName = effect.effectName;
 		emitters = new Array< ParticleEmitter >( true, effect.emitters.size );
 		for ( int i = 0, n = effect.emitters.size; i < n; i++ )
 			emitters.add( new ParticleEmitter( effect.emitters.get( i ) ) );
+		
 	}
 
 	public void start( ) {
