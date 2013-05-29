@@ -1,12 +1,12 @@
 package com.blindtigergames.werescrewed.entity.particles;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.World;
+import com.blindtigergames.werescrewed.camera.Camera;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityType;
 import com.blindtigergames.werescrewed.entity.mover.IMover;
@@ -152,10 +152,10 @@ public class EntityParticleEmitter extends Entity {
 	}
 	
 	@Override
-	public void draw( SpriteBatch batch, float deltaTime ) {
-		super.draw( batch, deltaTime );
+	public void draw( SpriteBatch batch, float deltaTime, Camera camera ) {
+		super.draw( batch, deltaTime, camera );
 		for ( EntityParticle particle : particles ) {
-			if(!particle.isDead( ))particle.getEntity( ).draw( batch, deltaTime );
+			if(!particle.isDead( ))particle.getEntity( ).draw( batch, deltaTime, camera );
 		}
 	}
 }

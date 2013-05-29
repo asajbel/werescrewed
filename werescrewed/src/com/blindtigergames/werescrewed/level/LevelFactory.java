@@ -689,6 +689,9 @@ public class LevelFactory {
 				skeleBuilder.fadeFgDecals( true );
 			}
 
+			if ( item.props.containsKey( "setChildSkelsToSleep" ) ) {
+				skeleBuilder.setChildSkelsToSleep( true );
+			}
 			skeleton = skeleBuilder.build( );
 
 			if ( item.props.containsKey( "alwaysvisible" ) ) {

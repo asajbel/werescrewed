@@ -11,6 +11,7 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.Joint;
 import com.badlogic.gdx.physics.box2d.World;
 import com.blindtigergames.werescrewed.WereScrewedGame;
+import com.blindtigergames.werescrewed.camera.Camera;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityType;
 import com.blindtigergames.werescrewed.entity.Sprite;
@@ -297,20 +298,14 @@ public class StructureScrew extends Screw {
 	}
 
 	@Override
-	public void draw( SpriteBatch batch, float deltaTime ) {
-		// drawBGDecals( batch );
+	public void draw( SpriteBatch batch, float deltaTime, Camera camera ) {
 		if ( playerAttached ) {
 			screwInterface.sprite.draw( batch );
 		}
-		// drawParticles( behindParticles, batch );
-		if ( sprite != null && visible && !removeNextStep ) {
+		if ( sprite != null && visible && !removeNextStep
+				&& sprite.getBoundingRectangle( ).overlaps( camera.getBounds( ) )) {
 			sprite.draw( batch );
 		}
-		// drawOrigin(batch);
-		// drawFGDecals( batch );
-		// if ( spinemator != null )
-		// spinemator.draw( batch );
-		// drawParticles( frontParticles, batch );
 	}
 
 	private void constuctBody( Vector2 pos ) {

@@ -394,7 +394,6 @@ public class LoadingScreen extends Screen {
 			}
 		}
 	}
-
 	private void loadLevelParameter( String s ) {
 		/*
 		 * format for level options:

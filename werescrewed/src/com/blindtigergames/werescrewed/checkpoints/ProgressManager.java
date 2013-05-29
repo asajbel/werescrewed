@@ -11,6 +11,7 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.World;
 import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.camera.Anchor;
+import com.blindtigergames.werescrewed.camera.Camera;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.builders.ScrewBuilder;
 import com.blindtigergames.werescrewed.entity.mover.FollowEntityWithVelocity;
@@ -185,9 +186,9 @@ public class ProgressManager {
 	 * 
 	 * @param batch
 	 */
-	public void draw( SpriteBatch batch, float deltaTime ) {
+	public void draw( SpriteBatch batch, float deltaTime, Camera camera ) {
 		for ( ResurrectScrew rezScrew : rezScrewMap.values( ) ) {
-			rezScrew.draw( batch, deltaTime );
+			rezScrew.draw( batch, deltaTime, camera );
 		}
 		for ( String key : ghostMap.keySet( ) ) {
 			if ( ghostMap.get( key ).currentMover( ) instanceof LerpMover ) {
@@ -196,7 +197,7 @@ public class ProgressManager {
 					lm.moveStep( );
 				}
 				ghostMap.get( key ).sprite.setPosition( lm.getPos( ) );
-				ghostMap.get( key ).draw( batch, deltaTime );
+				ghostMap.get( key ).draw( batch, deltaTime, camera );
 			}
 		}
 	}
@@ -328,6 +329,11 @@ public class ProgressManager {
 		// player.body.setLinearVelocity( diff );
 		player.setVisible( false, true );
 
+		rezScrewMap.get( player.name ).remove( );
+		if ( rezScrewMap.get( player.name ).isRemoved( ) ) {
+			rezScrewMap.remove( player.name );
+		}
+		
 	}
 
 	private void wait( Player player ) {

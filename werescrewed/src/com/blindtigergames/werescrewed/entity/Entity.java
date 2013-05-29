@@ -2,7 +2,6 @@ package com.blindtigergames.werescrewed.entity;
 
 import java.util.ArrayList;
 import java.util.EnumMap;
-import java.util.HashMap;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -308,7 +307,8 @@ public class Entity implements GleedLoadable {
 		setPosition( pos );
 	}
 
-	public void draw( SpriteBatch batch, float deltaTime ) {
+
+	public void draw( SpriteBatch batch, float deltaTime, Camera camera ) {
 		if(drawParticles)drawParticles( behindParticles, batch );
 		if ( visible ) {
 			if ( sprite != null && !removeNextStep ) {

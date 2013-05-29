@@ -9,12 +9,14 @@ import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.debug.FPSLoggerS;
 import com.blindtigergames.werescrewed.debug.SBox2DDebugRenderer;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.Skeleton;
+import com.blindtigergames.werescrewed.entity.Sprite;
 import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 import com.blindtigergames.werescrewed.gui.Button;
 import com.blindtigergames.werescrewed.gui.OptionButton;
@@ -33,8 +35,20 @@ public class Screen implements com.badlogic.gdx.Screen {
 	protected int controllerTimer = 10;
 	protected int controllerMax = 10;
 	protected int buttonIndex = 0;
+	protected int width, height;
 	protected float alpha = 1.0f;
-	protected boolean finish = false;
+	protected float scale = 0.0f;
+	protected final float SCALE_MIN = 0.0f;
+	protected final float SCALE_MAX = 10.0f;
+	protected final float SCALE_DOWN = 100.0f;
+	protected final float SCALE_UP = 100.0f;
+	protected float scaleMax = 0.0f;
+	//protected Sprite transIn = null;
+	//protected Sprite transOut = null;
+	protected Sprite trans = null;
+	protected boolean alphaFinish = false;
+	protected boolean transInEnd = true;
+	protected boolean transOutEnd = true;
 
 	BitmapFont debug_font;
 	Camera uiCamera;
@@ -93,7 +107,7 @@ public class Screen implements com.badlogic.gdx.Screen {
 				level.backgroundRootSkeleton.drawBGDecals(
 						level.backgroundBatch, level.camera );
 				level.backgroundRootSkeleton
-						.draw( level.backgroundBatch, delta );
+						.draw( level.backgroundBatch, delta, level.camera );
 				level.backgroundBatch.end( );
 			}
 
@@ -123,7 +137,7 @@ public class Screen implements com.badlogic.gdx.Screen {
 			ScreenManager.getInstance( ).show( ScreenType.TROPHY );
 		}
 
-		if ( Buttons.size( ) > 0 ) {
+		if ( Buttons.size( ) > 0 && transInEnd && transOutEnd ) {
 
 			if ( controllerTimer > 0 ) {
 				controllerTimer--;
@@ -133,7 +147,8 @@ public class Screen implements com.badlogic.gdx.Screen {
 					if ( WereScrewedGame.p1ControllerListener.jumpPressed( )
 							|| WereScrewedGame.p1ControllerListener
 									.pausePressed( ) ) {
-						Buttons.get( buttonIndex ).setSelected( true );
+						transOutEnd = false;
+						//Buttons.get( buttonIndex ).setSelected( true );
 						controllerTimer = controllerMax;
 
 					} else if ( WereScrewedGame.p1ControllerListener
@@ -185,7 +200,8 @@ public class Screen implements com.badlogic.gdx.Screen {
 					if ( WereScrewedGame.p2ControllerListener.jumpPressed( )
 							|| WereScrewedGame.p2ControllerListener
 									.pausePressed( ) ) {
-						Buttons.get( buttonIndex ).setSelected( true );
+						transOutEnd = false;
+						//Buttons.get( buttonIndex ).setSelected( true );
 						controllerTimer = controllerMax;
 
 					} else if ( WereScrewedGame.p2ControllerListener
@@ -237,7 +253,8 @@ public class Screen implements com.badlogic.gdx.Screen {
 				if ( WereScrewedGame.p1Controller == null
 						&& WereScrewedGame.p2Controller == null ) {
 					if ( Gdx.input.isKeyPressed( Keys.ENTER ) ) {
-						Buttons.get( buttonIndex ).setSelected( true );
+						transOutEnd = false;
+						//Buttons.get( buttonIndex ).setSelected( true );
 						controllerTimer = controllerMax;
 					}
 					if ( Gdx.input.isKeyPressed( Keys.DOWN ) ) {
@@ -282,6 +299,42 @@ public class Screen implements com.badlogic.gdx.Screen {
 			}
 		}
 
+	}
+	
+	protected void drawTransIn ( SpriteBatch batch ) {
+		scale = scale - SCALE_DOWN;
+		trans.setOrigin( trans.getWidth( ) / 2, trans.getHeight( ) / 2 );
+		trans.rotate( 5.0f );
+		trans.draw( batch );
+		if ( scale < SCALE_MIN ) {
+			transInEnd = true;
+			scale = 0.0f;
+		}
+	}
+	
+	protected void drawTransOut ( SpriteBatch batch ) {
+		scale = scale + SCALE_UP;
+		trans.setOrigin( trans.getWidth( ) / 2, trans.getHeight( ) / 2 );
+		trans.rotate( 5.0f );
+		trans.draw( batch );
+		if ( scale > scaleMax ) {
+			transOutEnd = true;
+			if ( Buttons.size( ) > 0 ) 
+				Buttons.get( buttonIndex ).setSelected( true );
+			else
+				scale = 0.0f;
+		}
+	}
+	
+	protected void drawTransOut ( SpriteBatch batch, ScreenType screen ) {
+		scale = scale + SCALE_UP;
+		trans.setOrigin( trans.getWidth( ) / 2, trans.getHeight( ) / 2 );
+		trans.rotate( 5.0f );
+		trans.draw( batch );
+		if ( scale > scaleMax ) {
+			transOutEnd = true;
+			ScreenManager.getInstance( ).show( screen );
+		}
 	}
 	
 	private float accum = 0f;               
@@ -415,18 +468,34 @@ public class Screen implements com.badlogic.gdx.Screen {
 
 		if ( alpha >= 1.0f ) {
 			alpha = 1.0f;
-			finish = true;
+			alphaFinish = true;
 		} else if ( alpha < 0.0f ) {
 			alpha = 0.0f;
-			finish = true;
+			alphaFinish = true;
 		}
 	}
 
-	public boolean isFinished( ) {
-		return finish;
+	public boolean isAlphaFinished( ) {
+		return alphaFinish;
 	}
 
-	public void setFinish( boolean value ) {
-		finish = value;
+	public void setAlphaFinish( boolean value ) {
+		alphaFinish = value;
+	}
+
+	public boolean transInFinish( ) {
+		return transInEnd;
+	}
+
+	public void setTransInEnd( boolean value ) {
+		transInEnd = value;
+	}
+	
+	public boolean transOutFinish( ) {
+		return transOutEnd;
+	}
+
+	public void setTransOutEnd( boolean value ) {
+		transOutEnd = value;
 	}
 }

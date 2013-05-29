@@ -136,6 +136,9 @@ smoke_puff_small.p
 ##temp background
 /common/menu_placeholder.png
 
+##transition images
+/transitions/trans-gear.png
+
 ##Palette Def
 ##Define with <colorName>.palette
 ##These are used to select bleed effects
