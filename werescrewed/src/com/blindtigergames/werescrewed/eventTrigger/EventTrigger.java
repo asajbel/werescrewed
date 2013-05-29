@@ -2,7 +2,6 @@ package com.blindtigergames.werescrewed.eventTrigger;
 
 import java.util.ArrayList;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
@@ -11,6 +10,7 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
+import com.blindtigergames.werescrewed.camera.Camera;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityType;
 import com.blindtigergames.werescrewed.entity.action.IAction;
@@ -587,8 +587,8 @@ public class EventTrigger extends Platform {
 		}
 	}
 
-	public void draw( SpriteBatch batch, float deltaTime ) {
-		super.draw( batch, deltaTime );
+	public void draw( SpriteBatch batch, float deltaTime, Camera camera ) {
+		super.draw( batch, deltaTime, camera );
 	}
 
 }

@@ -3,14 +3,15 @@ package com.blindtigergames.werescrewed.entity.rope;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.graphics.Texture;
-import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
-import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
+import com.blindtigergames.werescrewed.camera.Camera;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.screws.Screw;
 import com.blindtigergames.werescrewed.entity.screws.StrippedScrew;
+import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 import com.blindtigergames.werescrewed.util.Util;
 
 /** A chain of box fixtures that 
@@ -173,15 +174,15 @@ public class Rope {
 	 * 
 	 * @param batch sprite batch used for drawing the rope
 	 */
-	public void draw( SpriteBatch batch, float deltaTime ) {
+	public void draw( SpriteBatch batch, float deltaTime, Camera camera ) {
 		
 		for ( int i = 0; i < linkParts.size( ); i++ ) {
-			getLink( i ).draw( batch, deltaTime );
+			getLink( i ).draw( batch, deltaTime, camera );
 		}
 		if(screws.size( ) != 0){
 
 			for(StrippedScrew s : screws){
-				s.draw( batch, deltaTime );
+				s.draw( batch, deltaTime, camera );
 			}
 		}
 	}

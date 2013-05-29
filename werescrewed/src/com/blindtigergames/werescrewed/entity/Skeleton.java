@@ -655,11 +655,11 @@ public class Skeleton extends Platform {
 	}
 
 	@Override
-	public void draw( SpriteBatch batch, float deltaTime ) {
-		super.draw( batch, deltaTime );
+	public void draw( SpriteBatch batch, float deltaTime, Camera camera ) {
+		super.draw( batch, deltaTime, camera );
 		if ( visible ) {
 			if ( isActive( ) ) {
-				drawChildren( batch, deltaTime );
+				drawChildren( batch, deltaTime, camera );
 			}
 			if ( isActive( ) || isMacroSkeleton ) {
 				if ( fgSprite != null && alphaFadeAnimator.getTime( ) > 0 ) {
@@ -676,29 +676,29 @@ public class Skeleton extends Platform {
 		}
 	}
 
-	private void drawChildren( SpriteBatch batch, float deltaTime ) {
+	private void drawChildren( SpriteBatch batch, float deltaTime, Camera camera ) {
 		if ( !wasInactive && isUpdatable ) {
 			for ( EventTrigger et : eventMap.values( ) ) {
-				et.draw( batch, deltaTime );
+				et.draw( batch, deltaTime, camera );
 			}
 			for ( Platform p : dynamicPlatformMap.values( ) ) {
-				drawPlatform( p, batch, deltaTime );
+				drawPlatform( p, batch, deltaTime, camera );
 			}
 			for ( Platform p : kinematicPlatformMap.values( ) ) {
-				drawPlatform( p, batch, deltaTime );
+				drawPlatform( p, batch, deltaTime, camera );
 			}
 			for ( Screw screw : screwMap.values( ) ) {
 				if ( !screw.getRemoveNextStep( ) ) {
-					screw.draw( batch, deltaTime );
+					screw.draw( batch, deltaTime, camera );
 				}
 			}
 			for ( CheckPoint chkpt : checkpointMap.values( ) ) {
 				if ( !chkpt.getRemoveNextStep( ) ) {
-					chkpt.draw( batch, deltaTime );
+					chkpt.draw( batch, deltaTime, camera );
 				}
 			}
 			for ( Rope rope : ropeMap.values( ) ) {
-				rope.draw( batch, deltaTime );
+				rope.draw( batch, deltaTime, camera );
 			}
 		}
 		if ( isUpdatable && wasInactive ) {
@@ -708,7 +708,7 @@ public class Skeleton extends Platform {
 		// the
 		// child skeletons
 		for ( Skeleton skeleton : childSkeletonMap.values( ) ) {
-			skeleton.draw( batch, deltaTime );
+			skeleton.draw( batch, deltaTime, camera);
 		}
 	}
 
@@ -736,9 +736,9 @@ public class Skeleton extends Platform {
 	 * hazards as well
 	 */
 	private void drawPlatform( Platform platform, SpriteBatch batch,
-			float deltaTime ) {
+			float deltaTime, Camera camera ) {
 
-		platform.draw( batch, deltaTime );
+		platform.draw( batch, deltaTime, camera );
 
 		// switch ( platform.getEntityType( ) ) {
 		// case PLATFORM:
@@ -763,13 +763,13 @@ public class Skeleton extends Platform {
 	}
 
 	@SuppressWarnings( "unused" )
-	private void drawHazard( Hazard hazard, SpriteBatch batch, float deltaTime ) {
+	private void drawHazard( Hazard hazard, SpriteBatch batch, float deltaTime, Camera camera ) {
 		switch ( hazard.hazardType ) {
 		case FIRE:
-			( ( Fire ) hazard ).draw( batch, deltaTime );
+			( ( Fire ) hazard ).draw( batch, deltaTime, camera );
 			break;
 		default:
-			hazard.draw( batch, deltaTime );
+			hazard.draw( batch, deltaTime, camera );
 			break;
 		}
 	}

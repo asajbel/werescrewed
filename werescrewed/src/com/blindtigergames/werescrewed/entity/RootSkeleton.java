@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.World;
+import com.blindtigergames.werescrewed.camera.Camera;
 import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 
 public class RootSkeleton extends Skeleton {
@@ -129,12 +130,12 @@ public class RootSkeleton extends Skeleton {
 	}
 
 	@Override
-	public void draw( SpriteBatch batch, float deltaTime ) {
+	public void draw( SpriteBatch batch, float deltaTime, Camera camera ) {
 		// possible bug: the draw order
 		for ( Entity entity : looseEntity ) {
-			entity.draw( batch, deltaTime );
+			entity.draw( batch, deltaTime, camera );
 		}
-		super.draw( batch, deltaTime );
+		super.draw( batch, deltaTime, camera );
 	}
 
 }

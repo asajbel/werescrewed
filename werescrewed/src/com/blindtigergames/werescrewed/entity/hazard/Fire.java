@@ -10,6 +10,7 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.blindtigergames.werescrewed.WereScrewedGame;
+import com.blindtigergames.werescrewed.camera.Camera;
 import com.blindtigergames.werescrewed.entity.EntityType;
 import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 import com.blindtigergames.werescrewed.graphics.particle.ParticleEffect;
@@ -153,7 +154,7 @@ public class Fire extends Hazard {
 	 * @param deltaTime
 	 *            float
 	 */
-	public void draw( SpriteBatch batch, float deltaTime ) {
+	public void draw( SpriteBatch batch, float deltaTime, Camera camera ) {
 
 		if ( Gdx.input.isKeyPressed( Input.Keys.BACKSLASH ) )
 			this.activeHazard = false;
@@ -180,7 +181,7 @@ public class Fire extends Hazard {
 			//particleEffect.setAngle( body.getAngle( ) );
 			particleEffect.draw( batch, deltaTime );
 		}
-		super.draw( batch, deltaTime );
+		super.draw( batch, deltaTime, camera );
 	}
 
 }

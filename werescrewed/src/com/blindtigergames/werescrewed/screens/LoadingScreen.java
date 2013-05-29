@@ -51,6 +51,7 @@ public class LoadingScreen extends Screen {
 	 */
 	public LoadingScreen( String st ) {
 
+		WereScrewedGame.manager.clear( );
 		if ( st != null && !st.isEmpty( ) ) {
 			screenTag = st;
 			if ( screenTag.equals( "level1" ) ) {
@@ -365,10 +366,18 @@ public class LoadingScreen extends Screen {
 
 		WereScrewedGame.dirHandle = Gdx.files.internal( "data/" );
 
+		readLoadFiles( "commonLevel" );
+		if ( !screenTag.equals( "commonLevel" ) ) {
+			readLoadFiles( screenTag );
+		}
+		
+	}
+
+	private void readLoadFiles( String filename ) {
 		// reads through the text file that is named
 		// the same thing as the screenTag
 		// and reads each line which is a path and loads that file
-		FileHandle handle = Gdx.files.internal( "data/" + screenTag + ".txt" );
+		FileHandle handle = Gdx.files.internal( "data/" + filename + ".txt" );
 		String split[] = handle.readString( ).split( "\\r?\\n" );
 		for ( String s : split ) {
 			s.replaceAll( "\\s", "" );
@@ -386,7 +395,6 @@ public class LoadingScreen extends Screen {
 			}
 		}
 	}
-
 	private void loadLevelParameter( String s ) {
 		/*
 		 * format for level options:

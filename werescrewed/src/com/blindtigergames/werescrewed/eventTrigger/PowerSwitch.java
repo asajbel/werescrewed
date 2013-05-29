@@ -1,10 +1,10 @@
 package com.blindtigergames.werescrewed.eventTrigger;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.blindtigergames.werescrewed.WereScrewedGame;
+import com.blindtigergames.werescrewed.camera.Camera;
 import com.blindtigergames.werescrewed.entity.EntityType;
 import com.blindtigergames.werescrewed.entity.Sprite;
 import com.blindtigergames.werescrewed.graphics.SpriteBatch;
@@ -66,7 +66,7 @@ public class PowerSwitch extends EventTrigger {
 	}
 	
 	@Override
-	public void draw( SpriteBatch batch, float deltaTime ) {
+	public void draw( SpriteBatch batch, float deltaTime, Camera camera ) {
 		update(deltaTime);
 		float xpos = body.getPosition( ).x;
 		float ypos = body.getPosition( ).y - ( 64f * Util.PIXEL_TO_BOX );
@@ -84,7 +84,7 @@ public class PowerSwitch extends EventTrigger {
 				/ 2.0f, ypos * Util.BOX_TO_PIXEL );
 		sprite.setRotation( MathUtils.radiansToDegrees * body.getAngle( ) );
 
-		super.draw( batch, deltaTime );
+		super.draw( batch, deltaTime, camera );
 
 	}
 	

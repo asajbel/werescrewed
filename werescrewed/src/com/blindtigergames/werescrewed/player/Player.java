@@ -19,6 +19,7 @@ import com.badlogic.gdx.physics.box2d.joints.RevoluteJoint;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
 import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.camera.Anchor;
+import com.blindtigergames.werescrewed.camera.Camera;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityDef;
 import com.blindtigergames.werescrewed.entity.EntityType;
@@ -82,7 +83,7 @@ public class Player extends Entity {
 	public final static float FOOTSTEP_PITCH_VARIANCE = 0.02f;
 	public final static float FOOTSTEP_VOLUME_DROP = 0.01f;
 	public final static float JUMP_SOUND_DELAY = 1.0f;
-	private final static float HEAD_JUMP_OFFSET = 1.5f;
+	private final static float HEAD_JUMP_OFFSET = 4f;
 
 	// public final static float
 
@@ -723,9 +724,9 @@ public class Player extends Entity {
 	/**
 	 * draws tutorials when appropriate
 	 */
-	public void draw( SpriteBatch batch, float deltaTime ) {
+	public void draw( SpriteBatch batch, float deltaTime, Camera camera ) {
 		drawBubble( batch );
-		super.draw( batch, deltaTime );
+		super.draw( batch, deltaTime, camera );
 	}
 
 	/**
@@ -1601,7 +1602,7 @@ public class Player extends Entity {
 								( WIDTH / 3.0f ) + HEAD_JUMP_OFFSET, 0.0f ).x <= this
 								.getPositionPixel( ).x )
 						&& ( otherPlayer.getPositionPixel( ).add(
-								( WIDTH / 4.0f ) + HEAD_JUMP_OFFSET, 0.0f ).x > this
+								( WIDTH / 3.0f ) + HEAD_JUMP_OFFSET, 0.0f ).x > this
 								.getPositionPixel( ).x ) ) {
 					boolean isMoving = false;
 					// check if the player is using input
