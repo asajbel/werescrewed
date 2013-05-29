@@ -329,6 +329,11 @@ public class ProgressManager {
 		// player.body.setLinearVelocity( diff );
 		player.setVisible( false );
 
+		rezScrewMap.get( player.name ).remove( );
+		if ( rezScrewMap.get( player.name ).isRemoved( ) ) {
+			rezScrewMap.remove( player.name );
+		}
+		
 	}
 
 	private void wait( Player player ) {
