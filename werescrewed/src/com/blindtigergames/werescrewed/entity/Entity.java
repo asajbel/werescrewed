@@ -894,8 +894,7 @@ public class Entity implements GleedLoadable {
 	}
 
 	/**
-	 * Determines whether an entity should be drawn or not.
-	 * 
+	 * Set visibility of both the entity and the particles.
 	 * @param v
 	 *            - boolean
 	 */
@@ -913,12 +912,17 @@ public class Entity implements GleedLoadable {
 		return visible;
 	}
 	
+	/**
+	 * Set drawing of the entity and the particles separately
+	 * @param isVisible
+	 * @param drawParticles
+	 */
 	public void setVisible(boolean isVisible, boolean drawParticles){
 		this.visible=isVisible;
 		this.drawParticles = drawParticles;
 	}
 	
-	public boolean drawParticles(){
+	public boolean isDrawingParticles(){
 		return drawParticles;
 	}
 
