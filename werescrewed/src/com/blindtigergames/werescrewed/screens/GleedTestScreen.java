@@ -173,12 +173,12 @@ public class GleedTestScreen extends Screen {
 
 		batch.setProjectionMatrix( level.camera.combined( ) );
 		batch.begin( );
-		testSteam.draw( batch, deltaTime );
-		steam2.draw( batch, deltaTime );
-		fallingGear1.draw( batch, deltaTime );
-		f1.draw( batch, deltaTime );
-		f2.draw( batch, deltaTime );
-		f3.draw( batch, deltaTime );
+		testSteam.draw( batch, deltaTime, level.camera );
+		steam2.draw( batch, deltaTime, level.camera );
+		fallingGear1.draw( batch, deltaTime, level.camera );
+		f1.draw( batch, deltaTime, level.camera );
+		f2.draw( batch, deltaTime, level.camera );
+		f3.draw( batch, deltaTime, level.camera );
 		batch.end( );
 
 		// Doesn't work perfectly, but its okay

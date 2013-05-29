@@ -366,14 +366,14 @@ public class HazardScreen implements com.badlogic.gdx.Screen {
 		batch.setProjectionMatrix( cam.combined( ) );
 		batch.begin( );
 
-		rootSkeleton.draw( batch, deltaTime );
-		progressManager.draw( batch, deltaTime );
-		fire.draw( batch, deltaTime );
+		rootSkeleton.draw( batch, deltaTime, cam );
+		progressManager.draw( batch, deltaTime, cam );
+		fire.draw( batch, deltaTime, cam );
 		// elec.draw( batch, deltaTime );
 		// testSteam.draw( batch, deltaTime );
-		player1.draw( batch, deltaTime );
-		player2.draw( batch, deltaTime );
-		testPipe.draw( batch, deltaTime );
+		player1.draw( batch, deltaTime, cam );
+		player2.draw( batch, deltaTime, cam );
+		testPipe.draw( batch, deltaTime, cam );
 
 		batch.end( );
 

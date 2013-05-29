@@ -22,6 +22,7 @@ public class SkeletonBuilder extends GenericEntityBuilder< SkeletonBuilder > {
 	protected Texture texBackground, texForeground, texBody;
 	protected boolean hasDeactivateTrigger;
 	protected boolean fadeFgDecals;
+	protected boolean setChildSkeletonsToSleep = false;
 
 	public SkeletonBuilder( World world ) {
 		super( );
@@ -44,6 +45,7 @@ public class SkeletonBuilder extends GenericEntityBuilder< SkeletonBuilder > {
 		this.hasDeactivateTrigger = false;
 		this.fadeFgDecals = false;
 		this.invisibleVerts = null;
+		this.setChildSkeletonsToSleep = false;
 		return this;
 	}
 
@@ -109,6 +111,11 @@ public class SkeletonBuilder extends GenericEntityBuilder< SkeletonBuilder > {
 		return this;
 	}
 
+	public SkeletonBuilder setChildSkelsToSleep ( boolean setting ) {
+		setChildSkeletonsToSleep = setting;
+		return this;
+	}
+	
 	/**
 	 * Add a vertice to the polySprite for this skeleton
 	 * 
@@ -194,6 +201,7 @@ public class SkeletonBuilder extends GenericEntityBuilder< SkeletonBuilder > {
 	@Override
 	public Skeleton build( ) {
 		Skeleton out = new Skeleton( name, pos, null, super.world, bodyType );
+		out.setChildSkeletonsToSleepProperty( setChildSkeletonsToSleep );
 		if ( invisibleVerts != null ) {
 			if ( polyVertsFG != null && texForeground != null ) {
 				out.fgSprite = new PolySprite( texForeground, polyVertsFG );

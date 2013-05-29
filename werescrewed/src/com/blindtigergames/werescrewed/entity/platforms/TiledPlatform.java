@@ -11,6 +11,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
+import com.blindtigergames.werescrewed.camera.Camera;
 import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 import com.blindtigergames.werescrewed.util.Util;
 
@@ -304,8 +305,8 @@ public class TiledPlatform extends Platform {
 	}
 
 	@Override
-	public void draw( SpriteBatch batch, float deltaTime ) {
-		super.draw(batch,deltaTime);
+	public void draw( SpriteBatch batch, float deltaTime, Camera camera ) {
+		super.draw(batch,deltaTime, camera);
 		// drawBGDecals( batch );
 		if ( visible ) {
 			Tile d;
@@ -316,7 +317,9 @@ public class TiledPlatform extends Platform {
 						- d.yOffset );
 				d.tileSprite.setRotation( MathUtils.radiansToDegrees
 						* body.getAngle( ) );
-				d.tileSprite.draw( batch );
+				if ( d.tileSprite.getBoundingRectangle( ).overlaps( camera.getBounds( ) ) ) {
+					d.tileSprite.draw( batch );
+				}
 			}
 			// for ( Screw s : screws )
 			// s.draw( batch, deltaTime );
