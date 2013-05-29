@@ -289,7 +289,10 @@ public class PuzzleScrew extends Screw {
 		if ( playerAttached ) {
 			screwInterface.sprite.draw( batch );
 		}
-		super.draw( batch, deltaTime, camera );
+		if ( sprite != null && visible && !removeNextStep
+				&& sprite.getBoundingRectangle( ).overlaps( camera.getBounds( ) )) {
+			sprite.draw( batch );
+		}
 	}
 
 	/**

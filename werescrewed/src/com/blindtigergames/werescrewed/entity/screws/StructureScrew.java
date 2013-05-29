@@ -302,7 +302,10 @@ public class StructureScrew extends Screw {
 		if ( playerAttached ) {
 			screwInterface.sprite.draw( batch );
 		}
-		super.draw( batch, deltaTime, camera );
+		if ( sprite != null && visible && !removeNextStep
+				&& sprite.getBoundingRectangle( ).overlaps( camera.getBounds( ) )) {
+			sprite.draw( batch );
+		}
 	}
 
 	private void constuctBody( Vector2 pos ) {

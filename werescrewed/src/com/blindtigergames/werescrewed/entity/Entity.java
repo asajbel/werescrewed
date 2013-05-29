@@ -315,8 +315,8 @@ public class Entity implements GleedLoadable {
 
 			// drawBGDecals( batch );
 			drawParticles( behindParticles, batch );
-			if ( sprite != null && visible && !removeNextStep 
-					&& sprite.getBoundingRectangle( ).overlaps( camera.getBounds( ) )) {
+			if ( sprite != null && visible && !removeNextStep  ) {
+				//	&& sprite.getBoundingRectangle( ).overlaps( camera.getBounds( ) )) {
 				sprite.draw( batch );
 			}
 			// drawOrigin(batch);
