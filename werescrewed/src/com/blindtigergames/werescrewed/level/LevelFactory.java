@@ -933,7 +933,7 @@ public class LevelFactory {
 				.properties( item.props );
 		if ( item.props.containsKey( "tux" ) ) {
 			pb.texture( WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-					+ "/common/robot/alphabot_texture_tux.png", Texture.class ) );
+					+ "/levels/alphabot/alphabot_texture_tux.png", Texture.class ) );
 		} else {
 			pb.texture( WereScrewedGame.manager.getLevelRobotOutlineTex( ) );
 		}

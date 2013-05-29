@@ -82,6 +82,7 @@ public class Player extends Entity {
 	public final static float FOOTSTEP_PITCH_VARIANCE = 0.02f;
 	public final static float FOOTSTEP_VOLUME_DROP = 0.01f;
 	public final static float JUMP_SOUND_DELAY = 1.0f;
+	private final static float HEAD_JUMP_OFFSET = 1.5f;
 
 	// public final static float
 
@@ -562,6 +563,7 @@ public class Player extends Entity {
 	public void killPlayer(){
 		killPlayer(false);
 	}
+	
 	public void killPlayer( boolean disableAnchor ) {
 		if ( respawnTimeout == 0 ) {
 			if ( !world.isLocked( ) ) {
@@ -619,13 +621,11 @@ public class Player extends Entity {
 			}
 			isDead = true;
 			if (disableAnchor){
-				for (Anchor a: anchors){
-					a.deactivate( );
-				}
+				deactivateAnchors( );
 			}
 		}
 	}
-
+	
 	/**
 	 * This function sets player in alive state
 	 */
@@ -667,6 +667,24 @@ public class Player extends Entity {
 		return isDead;
 	}
 
+	/**
+	 * deactivates players anchors
+	 */
+	public void deactivateAnchors( ) {
+		for (Anchor a: anchors){
+			a.deactivate( );
+		}
+	}
+	
+	/**
+	 * deactivates players anchors
+	 */
+	public void activateAnchors( ) {
+		for (Anchor a: anchors){
+			a.activate( );
+		}
+	}
+	
 	/**
 	 * Turns tutorial bubble on and off
 	 * 
@@ -1579,10 +1597,10 @@ public class Player extends Entity {
 				if ( ( this.getPositionPixel( ).y > otherPlayer
 						.getPositionPixel( ).add( 0, HEIGHT / 2f ).y )
 						&& ( otherPlayer.getPositionPixel( ).sub(
-								( WIDTH / 3.0f ) + 1.2f, 0.0f ).x <= this
+								( WIDTH / 3.0f ) + HEAD_JUMP_OFFSET, 0.0f ).x <= this
 								.getPositionPixel( ).x )
 						&& ( otherPlayer.getPositionPixel( ).add(
-								( WIDTH / 4.0f ) + 1.2f, 0.0f ).x > this
+								( WIDTH / 4.0f ) + HEAD_JUMP_OFFSET, 0.0f ).x > this
 								.getPositionPixel( ).x ) ) {
 					boolean isMoving = false;
 					// check if the player is using input

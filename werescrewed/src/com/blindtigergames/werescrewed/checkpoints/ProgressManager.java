@@ -324,6 +324,7 @@ public class ProgressManager {
 		Gdx.app.log( "progress manager", diff.toString( ) );
 		player.setMoverAtCurrentState( new FollowEntityWithVelocity( player
 				.getPositionPixel( ), currentCheckPoint, Vector2.Zero, diff ) );
+		player.deactivateAnchors( );
 		// player.body.setLinearVelocity( diff );
 		player.setVisible( false, true );
 
@@ -356,6 +357,7 @@ public class ProgressManager {
 		// player.body.setLinearVelocity( Vector2.Zero );
 		Vector2 rezPoint = new Vector2( currentCheckPoint.body.getPosition( ) );
 		rezPoint.add( -60 * Util.PIXEL_TO_BOX, 36f * Util.PIXEL_TO_BOX );
+		player.activateAnchors( );
 		player.body.setTransform( rezPoint, 0.0f );
 		player.body.setType( BodyType.DynamicBody );
 		player.body.setLinearVelocity( Vector2.Zero );
