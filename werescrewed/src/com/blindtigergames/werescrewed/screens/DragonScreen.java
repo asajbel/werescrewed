@@ -983,32 +983,59 @@ public class DragonScreen extends Screen {
 		////1189,431
 		Skeleton tail2_skeleton = (Skeleton)LevelFactory.entities.get( "tail2_skeleton" );
 		TextureAtlas tailAtlas = WereScrewedGame.manager.getAtlas( "tail-fg" );
+		TextureAtlas tailInterior = WereScrewedGame.manager.getAtlas( "interior_tail2_bodyright" );
+		
+		//do fg
 		tail2_skeleton.addFGDecal( Sprite.scale( tailAtlas.createSprite( "tail2" ), 2), new Vector2(-1206,-638) );//227,17
 		tail2_skeleton.fgSprite=null;
 		//tail2_skeleton.setFgFade( true );
-		
 		addFGSkeleton( tail2_skeleton );
+		
+		//bg
+		//tail2_interior
+		tail2_skeleton.addBGDecal( Sprite.scale( tailInterior.createSprite( "tail2_interior" ), 2), new Vector2(-1137,-525) );//227,17
+		tail2_skeleton.bgSprite=null;
+		addBGSkeleton( tail2_skeleton );
 	}
 	
 	void tail3Decals(){
 		//tail3_skeleton
 		Skeleton tail3_skeleton = (Skeleton)LevelFactory.entities.get( "tail3_skeleton" );
 		TextureAtlas tailAtlas = WereScrewedGame.manager.getAtlas( "tail-fg" );
+		TextureAtlas interiorAtlas = WereScrewedGame.manager.getAtlas( "interior_tail3_bodyleft" );
+		
+		//fg
 		tail3_skeleton.addFGDecal( Sprite.scale( tailAtlas.createSprite( "tail3" ), 2), new Vector2(-1166,-765) );//227,17
 		tail3_skeleton.fgSprite=null;
 		//tail3_skeleton.setFgFade( true );
-		
 		addFGSkeleton( tail3_skeleton );
+		
+		//bg
+		tail3_skeleton.addBGDecal( Sprite.scale( interiorAtlas.createSprite( "tail3_interior" ), 2.06f, 2.12f), new Vector2(-1100,-685) );//227,17
+		tail3_skeleton.bgSprite=null;
+		addBGSkeleton( tail3_skeleton );
 	}
 	
 	void bodyDecals(){
 		Skeleton neck_skeleton = (Skeleton)LevelFactory.entities.get( "neck_skeleton" );
 		TextureAtlas tailAtlas = WereScrewedGame.manager.getAtlas( "body-neck" );
+		TextureAtlas interiorLeftAtlas = WereScrewedGame.manager.getAtlas( "interior_tail3_bodyleft" );
+		TextureAtlas interiorRightAtlas = WereScrewedGame.manager.getAtlas( "interior_tail2_bodyright" );
+		
+		//neck
 		neck_skeleton.addFGDecal( Sprite.scale( tailAtlas.createSprite( "neck" ), 2f), new Vector2(-1167,-914) );//4,414
 		neck_skeleton.fgSprite=null;
 		//neck_skeleton.setFgFade( false );//3497.1770
-		
 		addFGSkeleton( neck_skeleton );
+		//650,-640
+		//interior body decals
+		Skeleton bodySkeleton = ( Skeleton ) LevelFactory.entities
+				.get( "body_skeleton" );
+		Vector2 interiorPos = new Vector2(-3360,-1350);
+		bodySkeleton.addBGDecal( Sprite.scale(interiorLeftAtlas.createSprite( "body_interior_left" ), 2), interiorPos.cpy() );
+		bodySkeleton.addBGDecal( Sprite.scale(interiorRightAtlas.createSprite( "body_interior_right" ), 2), interiorPos.cpy().add(4074,0) );
+		bodySkeleton.bgSprite=null;
+		addBGSkeleton( bodySkeleton );
 	}
 	
 	void neckDecal(){

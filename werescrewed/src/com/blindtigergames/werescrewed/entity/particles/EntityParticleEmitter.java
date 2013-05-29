@@ -96,6 +96,18 @@ public class EntityParticleEmitter extends Entity {
 	public void addParticle( Entity entity, float lifeSpan, IMover mover ) {
 		particles.add( new EntityParticle( entity, lifeSpan, mover ) );
 	}
+	
+	/**
+	 * Use this when you have mutiple particles that need to spawn at different times 
+	 * (ie a line of entities that respawn when they reach a single destination)
+	 * @param entity
+	 * @param lifeSpan
+	 * @param mover
+	 * @param lifeSpanOffset
+	 */
+	public void addParticle( Entity entity, float lifeSpan, IMover mover, float lifeSpanOffset ) {
+		particles.add( new EntityParticle( entity, lifeSpan, mover, lifeSpanOffset ) );
+	}
 
 	/**
 	 * don't use this right now
