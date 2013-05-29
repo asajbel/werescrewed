@@ -36,6 +36,7 @@ import com.blindtigergames.werescrewed.entity.mover.RotateTweenMover;
 import com.blindtigergames.werescrewed.entity.mover.TimelineTweenMover;
 import com.blindtigergames.werescrewed.entity.platforms.Pipe;
 import com.blindtigergames.werescrewed.entity.platforms.Platform;
+import com.blindtigergames.werescrewed.entity.platforms.TiledPlatform;
 import com.blindtigergames.werescrewed.entity.screws.PuzzleScrew;
 import com.blindtigergames.werescrewed.entity.tween.PathBuilder;
 import com.blindtigergames.werescrewed.entity.tween.PlatformAccessor;
@@ -71,6 +72,7 @@ public class DragonScreen extends Screen {
 		
 		buildBalloon( );
 
+		groundDecals();
 		initPuzzleScrews( );
 		tail3Pipes( );
 		bodySkeletons( );
@@ -1013,6 +1015,7 @@ public class DragonScreen extends Screen {
 		
 	}
 	
+
 	void createMotor(Skeleton rotating, Skeleton parent, float motorSpeed){
 		
 		RevoluteJointDef revoluteJointDef = new RevoluteJointDef( );
@@ -1029,4 +1032,14 @@ public class DragonScreen extends Screen {
 		
 	}
 	
+
+	void groundDecals(){
+		//ground1
+		TiledPlatform ground = (TiledPlatform)LevelFactory.entities.get( "ground1" );
+		TextureAtlas objects = WereScrewedGame.manager.getAtlas( "dragon_objects" );
+		ground.addFGDecal( Sprite.scale(objects.createSprite( "bridge" ),3,2), new Vector2(-1370,-277*2));
+		ground.setVisible( false );
+		addFGEntity( ground );
+	}
+
 }
