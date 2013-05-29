@@ -132,7 +132,7 @@ public class HazardScreen implements com.badlogic.gdx.Screen {
 		initCrushTest( );
 		initParticleEffect( );
 		initDeathBarrier( );
-		initPowerScrew( );
+//		initPowerScrew( );
 
 		PuzzleScrew pscrew = new PuzzleScrew( "pscrew1", new Vector2( 1550f,
 				200f ), 100, skeleton, world, 0, false, Vector2.Zero );
@@ -200,6 +200,9 @@ public class HazardScreen implements com.badlogic.gdx.Screen {
 		 */
 		fire = new Fire( "Fire1", new Vector2( -700.0f, -10.0f ), 50, 100,
 				world, true );
+		fire.particleEffect.changeEffectMaxSize( 2000, 40, 90 ); 
+//		fire.particleEffect.addParticles( 600 ); 
+//		fire.particleEffect.setEmmisionLifeTime( 3000 );
 		// elec = new Electricity( "Elec1", new Vector2( 700.0f, 0.0f ),
 		// new Vector2( 700.0f, 150.0f ), world, true );
 		/*
@@ -320,7 +323,7 @@ public class HazardScreen implements com.badlogic.gdx.Screen {
 			Gdx.gl10.glClear( GL20.GL_COLOR_BUFFER_BIT );
 		}
 
-		cam.update( );
+		cam.update( deltaTime ); 
 
 		// Set hazards active
 		if ( Gdx.input.isKeyPressed( Input.Keys.NUM_1 ) ) {

@@ -30,3 +30,21 @@
 /levels/alphabot/alphabot_texture_tux.png
 
 /levels/alphabot/shoe_testing/shoe_background_1024.png
+
+
+
+##Everything below this line is more awesome than everything above this line
+
+#BACKGROUND STUFF
+/levels/dragon/clouds_sun_bg.pack
+/levels/dragon/mountains-back-clouds.pack
+
+#head zoner
+/levels/dragon/head.pack
+
+#Object assets
+/levels/dragon/dragon_objects.pack
+
+#Fg packs
+/levels/dragon/tail-fg.pack
+/levels/dragon/body-neck.pack

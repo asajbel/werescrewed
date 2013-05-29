@@ -1,5 +1,6 @@
 package com.blindtigergames.werescrewed.eventTrigger;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
@@ -8,15 +9,12 @@ import com.blindtigergames.werescrewed.entity.EntityType;
 import com.blindtigergames.werescrewed.entity.Sprite;
 import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 import com.blindtigergames.werescrewed.graphics.TextureAtlas;
+import com.blindtigergames.werescrewed.sound.SoundManager;
 import com.blindtigergames.werescrewed.util.Util;
 
 public class PowerSwitch extends EventTrigger {
 
 	private boolean state = false;
-	// private static Texture onTex = WereScrewedGame.manager.get(
-	// WereScrewedGame.dirHandle + "/common/powerswitches/on.png" );
-	// private static Texture offTex = WereScrewedGame.manager.get(
-	// WereScrewedGame.dirHandle + "/common/powerswitches/off.png" );
 
 	private Sprite onState, offState;
 
@@ -41,6 +39,7 @@ public class PowerSwitch extends EventTrigger {
 		this.sprite = offState;
 		onState.setOrigin( onState.getWidth( ) / 2, onState.getHeight( ) / 2 );
 		offState.setOrigin( offState.getWidth( ) / 2, offState.getHeight( ) / 2 );
+		loadSounds();
 	}
 
 	public void doAction( ) {
@@ -49,22 +48,26 @@ public class PowerSwitch extends EventTrigger {
 
 				runBeginAction( null );
 				state = true;
+				sounds.playSound( "on" );
 			} else {
-
 				runEndAction( );
 				state = false;
+				sounds.playSound( "off" );
 			}
 		} else {
 			if ( !this.beginTriggeredOnce ) {
 				runBeginAction( null );
+				if (!state)
+					sounds.playSound( "on" );
 				state = true;
 			}
 		}
 
 	}
-
+	
 	@Override
 	public void draw( SpriteBatch batch, float deltaTime ) {
+		update(deltaTime);
 		float xpos = body.getPosition( ).x;
 		float ypos = body.getPosition( ).y - ( 64f * Util.PIXEL_TO_BOX );
 
@@ -84,12 +87,19 @@ public class PowerSwitch extends EventTrigger {
 		super.draw( batch, deltaTime );
 
 	}
-
+	
 	public boolean isTurnedOn( ) {
 		return state;
 	}
 
 	public void setState( boolean boo ) {
 		state = boo;
+	}
+	
+	public void loadSounds(){
+		if (sounds == null)
+			sounds = new SoundManager();
+		sounds.getSound( "on" , WereScrewedGame.dirHandle + "/common/sounds/switchOn.ogg");
+		sounds.getSound( "off" , WereScrewedGame.dirHandle + "/common/sounds/switchOff.ogg");
 	}
 }

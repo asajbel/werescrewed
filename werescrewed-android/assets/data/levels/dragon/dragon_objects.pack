@@ -1,0 +1,47 @@
+dragon_objects.png
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+offset: 0, 0
+burner-small
+  rotate: false
+  xy: 533, 814
+  size: 297, 84
+  orig: 297, 84
+  offset: 0, 0
+  index: -1
+cannonstand-small
+  rotate: false
+  xy: 213, 814
+  size: 314, 156
+  orig: 314, 156
+  offset: 0, 0
+  index: -1
+cannon-large
+  rotate: false
+  xy: 4, 4
+  size: 314, 611
+  orig: 314, 611
+  offset: 0, 0
+  index: -1
+cannonstand-large
+  rotate: false
+  xy: 213, 621
+  size: 376, 187
+  orig: 376, 187
+  offset: 0, 0
+  index: -1
+burner-med
+  rotate: false
+  xy: 324, 4
+  size: 587, 167
+  orig: 587, 167
+  offset: 0, 0
+  index: -1
+cannon-small
+  rotate: false
+  xy: 4, 621
+  size: 203, 391
+  orig: 203, 391
+  offset: 0, 0
+  index: -1

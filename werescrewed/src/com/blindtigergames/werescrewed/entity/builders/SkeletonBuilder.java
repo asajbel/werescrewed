@@ -209,7 +209,7 @@ public class SkeletonBuilder extends GenericEntityBuilder< SkeletonBuilder > {
 		if ( invisibleVerts != null ) {
 			EventTriggerBuilder etb = new EventTriggerBuilder( world );
 			EventTrigger et = etb.name( name + "-invisible-fader" )
-					.setVerts( invisibleVerts ).extraBorder( 128f )
+					.setVerts( invisibleVerts ).extraBorder( 256f )
 					.position( pos.add( 0, 0 ) ).addEntity( out )
 					.beginAction( new FadeSkeletonAction( true ) )
 					.endAction( new FadeSkeletonAction( false ) ).repeatable( )

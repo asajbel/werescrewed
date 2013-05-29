@@ -52,13 +52,7 @@ class OptionsScreen extends Screen {
 	 * on what inputs are being used. Music: Changes the volume of the music.
 	 * Sound Effects: Changes the volume of the sound effects. Noise: Changes
 	 * the volume of the noise work. Subtitles: Turns subtitle on and off for
-	 * the noise work. =======
-	 * 
-	 * /* Things needed... Controls: Shows a visual map of the controls
-	 * depending on what inputs are being used. Music: Changes the volume of the
-	 * music. Sound Effects: Changes the volume of the sound effects. Voice:
-	 * Changes the volume of the voice work. Subtitles: Turns subtitle on and
-	 * off for the voice work. >>>>>>> 5deabcea9b2f923a7f65fba77194e01e4deb11ad
+	 * the noise work.
 	 */
 	public OptionsScreen( ) {
 		batch = new SpriteBatch( );

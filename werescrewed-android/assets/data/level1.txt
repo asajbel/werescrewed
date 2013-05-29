@@ -9,7 +9,9 @@
 ##sounds
 /common/sounds/inceptionbutton.mp3
 /levels/alphabot/sounds/gear.ogg
-
+/levels/alphabot/sounds/arm_move_begin.ogg
+/levels/alphabot/sounds/arm_move_loop.ogg
+/levels/alphabot/sounds/arm_move_end.ogg
 
 
 ##stage assets
@@ -45,3 +47,10 @@
 
 ## Alphabot panel thing
 /levels/alphabot/alphabot-panel.pack
+
+## Firework ending particles
+fireworks/firework1.p
+fireworks/firework2.p
+fireworks/firework3.p
+fireworks/firework4.p
+fireworks/firework5.p

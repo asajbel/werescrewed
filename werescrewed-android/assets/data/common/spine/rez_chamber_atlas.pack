@@ -1,0 +1,47 @@
+rez_chamber_atlas.png
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+offset: 0, 0
+back-open-off
+  rotate: false
+  xy: 2, 2
+  size: 210, 330
+  orig: 210, 330
+  offset: 0, 0
+  index: -1
+door-left
+  rotate: false
+  xy: 2, 334
+  size: 89, 258
+  orig: 89, 258
+  offset: 0, 0
+  index: -1
+steam
+  rotate: false
+  xy: 182, 334
+  size: 84, 71
+  orig: 84, 71
+  offset: 0, 0
+  index: -1
+door-right
+  rotate: false
+  xy: 93, 334
+  size: 87, 258
+  orig: 87, 258
+  offset: 0, 0
+  index: -1
+back-open-on
+  rotate: false
+  xy: 214, 2
+  size: 210, 330
+  orig: 210, 330
+  offset: 0, 0
+  index: -1
+white-flash
+  rotate: false
+  xy: 268, 334
+  size: 210, 330
+  orig: 210, 330
+  offset: 0, 0
+  index: -1

@@ -56,6 +56,7 @@ public class Screw extends Entity {
 
 	public static float SCREW_SOUND_DELAY = 0.5f;
 	public static float UNSCREW_SOUND_DELAY = 0.5f;
+	public static int SCREW_SOUND_DEGREES = 45;
 
 	private static TextureRegion screwTexRegion = WereScrewedGame.manager
 			.getAtlas( "common-textures" ).findRegion( "flat_head_circular" );
@@ -94,6 +95,10 @@ public class Screw extends Entity {
 				+ "/common/sounds/screwing.ogg" );
 		sounds.getSound( "unscrewing", WereScrewedGame.dirHandle
 				+ "/common/sounds/unscrewing.ogg" );
+		sounds.getSound( "attach", WereScrewedGame.dirHandle
+				+ "/common/sounds/screwAtt.ogg" );
+		sounds.getSound( "detach", WereScrewedGame.dirHandle
+				+ "/common/sounds/screwDet.ogg" );
 	}
 
 	/**
@@ -224,21 +229,11 @@ public class Screw extends Entity {
 	}
 
 	public void screwSound( float a, float midpoint ) {
-		float amount = ( float ) Math.pow( Math.abs( a / midpoint ), 2.0f );
-		if ( amount >= 2.0f ) {
-			float delay = Math.max(
-					Math.min( SCREW_SOUND_DELAY / amount, 1.5f ), 0.5f );
-			sounds.playSound( "screwing", delay );
-		}
+		sounds.playSound( "screwing", SCREW_SOUND_DELAY );
 	}
 
 	public void unscrewSound( float a, float midpoint ) {
-		float amount = ( float ) Math.pow( Math.abs( a / midpoint ), 2.0f );
-		if ( amount >= 2.0f ) {
-			float delay = Math.max(
-					Math.min( SCREW_SOUND_DELAY / amount, 1.5f ), 0.5f );
-			sounds.playSound( "unscrewing", delay );
-		}
+		sounds.playSound( "unscrewing", UNSCREW_SOUND_DELAY);
 	}
 
 	/**
@@ -257,6 +252,11 @@ public class Screw extends Entity {
 	 */
 	public void setPlayerAttached( boolean isPlayerAttached ) {
 		playerAttached = isPlayerAttached;
+		if (sounds != null && isPlayerAttached){
+			sounds.playSound("attach");
+		} else {
+			sounds.playSound("detach");
+		}
 	}
 
 	/**

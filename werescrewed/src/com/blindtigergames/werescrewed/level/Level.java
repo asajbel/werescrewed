@@ -60,6 +60,7 @@ public class Level {
 	public OrthographicCamera backgroundCam;
 	public RootSkeleton backgroundRootSkeleton;
 	public SpriteBatch backgroundBatch;
+	public float bgCamZoomScale = 0f, bgCamZoomMax = 1f, bgCamZoomMin=1f;
 
 	public Level( ) {
 
@@ -267,6 +268,21 @@ public class Level {
 				world.destroyJoint( joint );
 		}
 
+	}
+	
+	
+	public void initBackgroundRoot(){
+		// background stuff
+		backgroundBatch = new SpriteBatch( );
+		backgroundRootSkeleton = new RootSkeleton( "backgroundroot",
+				Vector2.Zero, null, world );
+		float width = Gdx.graphics.getWidth( ) / 1f;
+		float height = Gdx.graphics.getHeight( ) / 1f;
+		backgroundCam = new OrthographicCamera( 1, width / height );
+		backgroundCam.viewportWidth = width;
+		backgroundCam.viewportHeight = height;
+		backgroundCam.position.set( width * .5f, height * .5f, 0f );
+		backgroundCam.update( );
 	}
 
 }

@@ -3,13 +3,17 @@ package com.blindtigergames.werescrewed.checkpoints;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+import com.badlogic.gdx.physics.box2d.Filter;
+import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.World;
 import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.camera.Anchor;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.builders.ScrewBuilder;
+import com.blindtigergames.werescrewed.entity.mover.FollowEntityWithVelocity;
 import com.blindtigergames.werescrewed.entity.mover.LerpMover;
 import com.blindtigergames.werescrewed.entity.mover.LinearAxis;
 import com.blindtigergames.werescrewed.entity.screws.ResurrectScrew;
@@ -18,6 +22,7 @@ import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 import com.blindtigergames.werescrewed.graphics.TextureAtlas;
 import com.blindtigergames.werescrewed.player.Player;
 import com.blindtigergames.werescrewed.player.Player.PlayerState;
+import com.blindtigergames.werescrewed.util.Util;
 
 /**
  * handles all of the progress through checkpoints also handles re-spawning with
@@ -39,6 +44,8 @@ public class ProgressManager {
 	private final Vector2 hoverOffset = new Vector2( -64, 64 );
 	private final Vector2 screwLeftOffset = new Vector2( -240, 150 );
 	private final Vector2 screwRightOffset = new Vector2( 270, 150 );
+	private float animTime = 0f;
+	private float rezDelay = Float.MAX_VALUE;
 
 	/**
 	 * 
@@ -73,9 +80,10 @@ public class ProgressManager {
 	 * 
 	 * @param checkPoint
 	 */
-	public void hitNewCheckPoint( CheckPoint checkPoint ) {
+	public void hitNewCheckPoint( CheckPoint checkPoint, Player player ) {
 		// If the checkpoint hit is not the currently activated one
-		if ( currentCheckPoint != checkPoint ) {
+		if ( currentCheckPoint != checkPoint
+				&& player.body.getType( ) != BodyType.KinematicBody ) {
 			// Deactivate the current checkpoint
 			currentCheckPoint.deactivate( );
 			oldChkptPos = currentCheckPoint.getPositionPixel( ).cpy( );
@@ -104,6 +112,11 @@ public class ProgressManager {
 					}
 				}
 			}
+		} else {
+			if ( player.body.getType( ) == BodyType.KinematicBody ) {
+				player.setDeadPlayerHitCheckpnt( true );
+				player.setMoverAtCurrentState( null );
+			}
 		}
 	}
 
@@ -112,8 +125,12 @@ public class ProgressManager {
 	 * @param deltaTime
 	 */
 	public void update( float deltaTime ) {
+		animTime += deltaTime;
 		boolean noPlayersDead = true;
 		for ( Player player : players.values( ) ) {
+			if ( player.isDeadPlayerHitCheckpnt( ) ) {
+				wait( player );
+			}
 			if ( !player.isPlayerDead( ) && ghostMap.containsKey( player.name ) ) {
 				ghostMap.get( player.name ).clearAnchors( );
 				ghostMap.remove( player.name );
@@ -123,6 +140,15 @@ public class ProgressManager {
 				}
 				noPlayersDead = false;
 			}
+			if ( player.isRezzing( ) ) {
+				if ( player.getRezTime( ) < rezDelay ) {
+					player.setRezTime( player.getRezTime( ) + deltaTime );
+				} else {
+					spawnAtCheckPoint( player );
+				}
+			}
+
+			player.setDeadPlayerHitCheckpnt( false );
 		}
 		if ( noPlayersDead ) {
 			removeRezScrew( );
@@ -135,6 +161,22 @@ public class ProgressManager {
 		updateGhosts( deltaTime );
 
 		oldChkptPos = currentCheckPoint.getPositionPixel( ).cpy( );
+
+		if ( !currentCheckPoint.getSpinemator( ).getCurrentAnimation( )
+				.equals( "on-idle" )
+				&& !currentCheckPoint.getSpinemator( ).getCurrentAnimation( )
+						.equals( "wait" )
+				&& animTime > currentCheckPoint.getSpinemator( )
+						.getAnimationDuration( ) ) {
+			if ( noPlayersDead ) {
+				currentCheckPoint.getSpinemator( ).changeAnimation( "on-idle",
+						true );
+			} else {
+				currentCheckPoint.getSpinemator( ).changeAnimation( "wait",
+						true );
+			}
+			animTime = 0f;
+		}
 	}
 
 	/**
@@ -167,6 +209,8 @@ public class ProgressManager {
 			buildRezScrew( player );
 		}
 		if ( !ghostMap.containsKey( player.name ) ) {
+			currentCheckPoint.getSpinemator( ).changeAnimation( "wait", true );
+			animTime = 0f;
 			buildGhost( player );
 		}
 	}
@@ -181,7 +225,7 @@ public class ProgressManager {
 		// Gdx.app.log("ghost:", player.name);
 
 		ghost = new Entity( "player1Ghost", player.getPositionPixel( ).cpy( )
-				.add( -64f, 64f ), player.spinemator.getBodyAtlas( )
+				.add( -64f, 64f ), player.getSpinemator( ).getBodyAtlas( )
 				.findRegion( "ghost" ), null, false, 0f );
 		// build ghost mover
 		LerpMover ghostMover = new LerpMover( player.getPositionPixel( ).cpy( )
@@ -225,10 +269,13 @@ public class ProgressManager {
 		}
 		player.body.setLinearVelocity( Vector2.Zero );
 		player.body.setType( BodyType.KinematicBody );
-		rezScrewMap.put( player.name,
-				rezzBuilder.playerOffset( true ).lerpMover( screwMover )
-						.position( screwPos )
-						.entity( player.getLastPlatform( ) ).buildRezzScrew( ) );
+		Entity jointE = player.getLastPlatform( );
+		if ( jointE == null ) {
+			jointE = currentCheckPoint;
+		}
+		rezScrewMap.put( player.name, rezzBuilder.playerOffset( true )
+				.lerpMover( screwMover ).position( screwPos ).entity( jointE )
+				.buildRezzScrew( ) );
 	}
 
 	/**
@@ -240,7 +287,7 @@ public class ProgressManager {
 				LerpMover lm = ( LerpMover ) ghostMap.get( key ).currentMover( );
 				lm.changeEndPos( currentCheckPoint.getPositionPixel( ).sub(
 						chkptOffset ) );
-				lm.setSpeed( 10f / currentCheckPoint.getPositionPixel( )
+				lm.setSpeed( 20f / currentCheckPoint.getPositionPixel( )
 						.sub( players.get( key ).getPositionPixel( ) ).len( ) );
 				if ( currentCheckPoint.getPositionPixel( ).x < ghostMap.get(
 						key ).getPositionPixel( ).x
@@ -254,7 +301,7 @@ public class ProgressManager {
 					ghostMap.get( key ).sprite.setScale( 1, 1 );
 				}
 				if ( lm.atEnd( ) ) {
-					spawnAtCheckPoint( players.get( key ) );
+					startSpawn( players.get( key ) );
 					ghostMap.get( key ).clearAnchors( );
 					ghostMap.remove( key );
 				} else {
@@ -265,22 +312,64 @@ public class ProgressManager {
 		}
 	}
 
+	private void startSpawn( Player player ) {
+		removeRezScrew( );
+		player.setRezTime( 0f );
+		player.respawnPlayer( );
+		Vector2 rezPoint = new Vector2( currentCheckPoint.getPositionPixel( ) );
+		// rezPoint.add( -60 * Util.PIXEL_TO_BOX , 60f * Util.PIXEL_TO_BOX );
+
+		Vector2 diff = rezPoint.sub( player.getPositionPixel( ) ).mul( 0.25f );
+
+		Gdx.app.log( "progress manager", diff.toString( ) );
+		player.setMoverAtCurrentState( new FollowEntityWithVelocity( player
+				.getPositionPixel( ), currentCheckPoint, Vector2.Zero, diff ) );
+		// player.body.setLinearVelocity( diff );
+		player.setVisible( false );
+
+	}
+
+	private void wait( Player player ) {
+		currentCheckPoint.getSpinemator( ).changeAnimation( "birth", false );
+		rezDelay = currentCheckPoint.getSpinemator( ).getAnimationDuration( ) / 10f;
+		player.setRezzing( true );
+		animTime = 0f;
+	}
+
 	/**
 	 * respawn the player at the check point
 	 * 
 	 * @param player
 	 */
 	private void spawnAtCheckPoint( Player player ) {
+		player.setRezzing( false );
+		// tele-port to checkpoint with velocity
+		// float frameRate = 1 / deltaTime;
 		// bring the player back to life
-		player.respawnPlayer( );
 		// remove the instance of the rez screw
-		removeRezScrew( );
+
 		// move the player to the current checkpoint
+		// tele-port to checkpoint with velocity
+		// move the player to checkpoint with transform collision problems
+		// player.body.setType( BodyType.DynamicBody );
+		// player.body.setTransform( rezPoint, 0.0f );
+		// player.body.setLinearVelocity( Vector2.Zero );
+		Vector2 rezPoint = new Vector2( currentCheckPoint.body.getPosition( ) );
+		rezPoint.add( -60 * Util.PIXEL_TO_BOX, 60f * Util.PIXEL_TO_BOX );
+		player.body.setTransform( rezPoint, 0.0f );
 		player.body.setType( BodyType.DynamicBody );
-		player.body.setTransform( currentCheckPoint.body.getPosition( ), 0.0f );
 		player.body.setLinearVelocity( Vector2.Zero );
-		player.getEffect( "revive" ).restartAt(
-				player.getPositionPixel( ).add( 60, -30 ) );
+		player.setVisible( true );
+		Filter filter = new Filter( );
+		for ( Fixture f : player.body.getFixtureList( ) ) {
+			if ( f != player.rightSensor && f != player.leftSensor
+					&& f != player.topSensor ) {
+				f.setSensor( false );
+			}
+			filter.categoryBits = Util.CATEGORY_PLAYER;
+			filter.maskBits = Util.CATEGORY_EVERYTHING;
+			f.setFilterData( filter );
+		}
 	}
 
 	/**
@@ -344,7 +433,7 @@ public class ProgressManager {
 	// {
 	// if ( ghostTexture != null && !ghostTextures.containsKey( player.name )
 	// && players.containsKey( player.name ) ) {
-	// //ghostTextures.put( player.name, ghostTexture );
+	// // ghostTextures.put( player.name, ghostTexture );
 	// }
 	// }
 }

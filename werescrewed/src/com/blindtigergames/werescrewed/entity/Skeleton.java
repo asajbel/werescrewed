@@ -400,10 +400,9 @@ public class Skeleton extends Platform {
 	 */
 	@Override
 	public void update( float deltaTime ) {
+		super.update( deltaTime ); 
 		float frameRate = 1 / deltaTime;
 		isUpdatable = !this.isFadingSkel( ) || this.isFGFaded( );
-		@SuppressWarnings( "unused" )
-		boolean hasMoved = false;
 		if ( isUpdatable || isMacroSkeleton ) {
 			updateMover( deltaTime );
 			if ( entityType != EntityType.ROOTSKELETON && isKinematic( ) ) {
@@ -413,6 +412,14 @@ public class Skeleton extends Platform {
 		for ( EventTrigger event : eventMap.values( ) ) {
 			event.translatePosRotFromSKeleton( this );
 			// event.setTargetPosRotFromSkeleton( frameRate, this );
+		}
+
+		for ( CheckPoint chkpt : checkpointMap.values( ) ) {
+			if ( chkpt.removeNextStep ) {
+				entitiesToRemove.add( chkpt );
+			} else {
+				chkpt.update( deltaTime );
+			}
 		}
 		if ( isUpdatable ) {
 			for ( Platform platform : kinematicPlatformMap.values( ) ) {
@@ -426,13 +433,13 @@ public class Skeleton extends Platform {
 						platform.update( deltaTime );
 					} else {
 						platform.updateMover( deltaTime );
-						// if ( platform.hasMoved( ) || platform.hasRotated( )
-						// || hasMoved() || hasRotated() ) {
-						platform.setTargetPosRotFromSkeleton( frameRate, this );
-						platform.setPreviousTransformation( );
-						// } else {
-						// platform.body.setLinearVelocity( Vector2.Zero );
-						// }
+						if ( platform.hasMoved( ) || platform.hasRotated( ) || hasMoved() || hasRotated() ) {
+							platform.setTargetPosRotFromSkeleton( frameRate, this );
+							platform.setPreviousTransformation();
+						} else {
+							platform.body.setLinearVelocity( Vector2.Zero );
+							platform.body.setAngularVelocity( 0.0f );
+						}
 						platform.update( deltaTime );
 					}
 				}
@@ -458,17 +465,6 @@ public class Skeleton extends Platform {
 						screw.body.setAwake( false );
 					}
 					screw.update( deltaTime );
-				}
-			}
-			for ( CheckPoint chkpt : checkpointMap.values( ) ) {
-				if ( chkpt.removeNextStep ) {
-					entitiesToRemove.add( chkpt );
-				} else {
-					if ( wasInactive ) {
-						chkpt.body.setActive( true );
-						chkpt.body.setAwake( false );
-					}
-					chkpt.update( deltaTime );
 				}
 			}
 			for ( Rope rope : ropeMap.values( ) ) {
@@ -617,14 +613,6 @@ public class Skeleton extends Platform {
 				screw.body.setActive( false );
 			}
 		}
-		for ( CheckPoint chkpt : checkpointMap.values( ) ) {
-			if ( chkpt.removeNextStep ) {
-				entitiesToRemove.add( chkpt );
-			} else {
-				chkpt.body.setAwake( true );
-				chkpt.body.setActive( false );
-			}
-		}
 		for ( Rope rope : ropeMap.values( ) ) {
 			// TODO: ropes need to be able to be deleted
 			boolean nextLink = true;
@@ -668,7 +656,7 @@ public class Skeleton extends Platform {
 
 	@Override
 	public void draw( SpriteBatch batch, float deltaTime ) {
-		// super.draw( batch );
+		super.draw( batch, deltaTime );
 		if ( visible ) {
 			if ( isActive( ) ) {
 				drawChildren( batch, deltaTime );

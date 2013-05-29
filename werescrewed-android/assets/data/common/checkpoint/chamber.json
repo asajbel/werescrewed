@@ -1,0 +1,546 @@
+{
+"bones": [
+	{ "name": "root" },
+	{ "name": "back", "parent": "root", "length": 252.97, "x": 0.32, "y": 6.78, "rotation": 90 },
+	{ "name": "door-left", "parent": "back", "length": 58.01, "x": 124.01, "y": 15.42, "rotation": 89.09 },
+	{ "name": "door-right", "parent": "back", "length": 58, "x": 124.63, "y": -13.57, "rotation": -89.54 }
+],
+"slots": [
+	{ "name": "steam", "bone": "back", "attachment": "images/steam" },
+	{ "name": "steam-root", "bone": "root", "attachment": "images/steam" },
+	{ "name": "chamber-root", "bone": "root", "attachment": "images/back-open-off" },
+	{ "name": "chamber", "bone": "back", "attachment": "images/back-open-off" },
+	{ "name": "door-left-closed", "bone": "root", "attachment": "images/door-left" },
+	{ "name": "door-left-open", "bone": "root", "attachment": "images/door-left" },
+	{ "name": "door-left", "bone": "door-left", "attachment": "images/door-left" },
+	{ "name": "door-right-closed", "bone": "root", "attachment": "images/door-right" },
+	{ "name": "door-right-open", "bone": "root", "attachment": "images/door-right" },
+	{ "name": "door-right", "bone": "door-right", "attachment": "images/door-right" }
+],
+"skins": {
+	"default": {
+		"chamber": {
+			"images/back-open-off": { "x": 158.22, "y": 0.32, "rotation": -90, "width": 210, "height": 330 },
+			"images/back-open-on": { "x": 158.21, "y": 0.32, "rotation": -90, "width": 210, "height": 330 }
+		},
+		"chamber-root": {
+			"images/back-open-off": { "y": 165.01, "width": 210, "height": 330 },
+			"images/back-open-on": { "y": 165, "width": 210, "height": 330 }
+		},
+		"door-left": {
+			"images/door-left": { "x": 27.71, "y": 1.48, "rotation": -179.09, "width": 89, "height": 258 }
+		},
+		"door-left-closed": {
+			"images/door-left": { "x": -42.83, "y": 129.75, "width": 89, "height": 258 }
+		},
+		"door-left-open": {
+			"images/door-left": { "x": -131.12, "y": 129.75, "width": 89, "height": 258 }
+		},
+		"door-right": {
+			"images/door-right": { "x": 28.05, "y": -1.44, "rotation": -0.45, "width": 87, "height": 258 }
+		},
+		"door-right-closed": {
+			"images/door-right": { "x": 41.96, "y": 130.2, "width": 87, "height": 258 }
+		},
+		"door-right-open": {
+			"images/door-right": { "x": 129.02, "y": 130.2, "width": 87, "height": 258 }
+		},
+		"steam": {
+			"images/steam": { "x": 320.81, "y": -35.79, "rotation": -90, "width": 84, "height": 71 }
+		},
+		"steam-root": {
+			"images/steam": { "x": 36.12, "y": 327.59, "width": 84, "height": 71 }
+		}
+	},
+	"chamber": {}
+},
+"animations": {
+	"on-idle": {
+		"bones": {
+			"root": {
+				"translate": [
+					{ "time": 0, "x": 0, "y": 0, "curve": "stepped" },
+					{ "time": 0.6666, "x": 0, "y": 0 }
+				],
+				"scale": [
+					{
+						"time": 0,
+						"x": 1,
+						"y": 1,
+						"curve": [ 0.477, 0, 0.635, 0.99 ]
+					},
+					{
+						"time": 0.2333,
+						"x": 0.958,
+						"y": 1.039,
+						"curve": [ 0.442, 0.01, 0.646, 1 ]
+					},
+					{
+						"time": 0.5,
+						"x": 1.041,
+						"y": 0.947,
+						"curve": [ 0.364, 0.01, 0.755, 0.61 ]
+					},
+					{ "time": 0.6666, "x": 1, "y": 1 }
+				]
+			}
+		},
+		"slots": {
+			"door-right": {
+				"attachment": [
+					{ "time": 0, "name": null }
+				]
+			},
+			"chamber-root": {
+				"attachment": [
+					{ "time": 0, "name": "images/back-open-on" },
+					{ "time": 0.6666, "name": "images/back-open-on" }
+				]
+			},
+			"door-left-closed": {
+				"attachment": [
+					{ "time": 0, "name": null },
+					{ "time": 0.6666, "name": null }
+				]
+			},
+			"door-right-closed": {
+				"attachment": [
+					{ "time": 0, "name": null },
+					{ "time": 0.6666, "name": null }
+				]
+			},
+			"steam": {
+				"attachment": [
+					{ "time": 0, "name": null }
+				]
+			},
+			"steam-root": {
+				"attachment": [
+					{ "time": 0, "name": "images/steam" },
+					{ "time": 0.6666, "name": "images/steam" }
+				]
+			},
+			"door-left-open": {
+				"attachment": [
+					{ "time": 0, "name": "images/door-left" },
+					{ "time": 0.6666, "name": "images/door-left" }
+				]
+			},
+			"chamber": {
+				"attachment": [
+					{ "time": 0, "name": null }
+				]
+			},
+			"door-right-open": {
+				"attachment": [
+					{ "time": 0, "name": "images/door-right" },
+					{ "time": 0.6666, "name": "images/door-right" }
+				]
+			},
+			"door-left": {
+				"attachment": [
+					{ "time": 0, "name": null }
+				]
+			}
+		}
+	},
+	"rez": {
+		"bones": {
+			"root": {
+				"translate": [
+					{ "time": 0, "x": 0, "y": 0, "curve": "stepped" },
+					{ "time": 0.5, "x": 0, "y": 0, "curve": "stepped" },
+					{ "time": 0.6, "x": 0, "y": 0 },
+					{ "time": 0.7666, "x": 0, "y": 28.74 },
+					{ "time": 0.9333, "x": 0, "y": 0, "curve": "stepped" },
+					{ "time": 1.0666, "x": 0, "y": 0 }
+				],
+				"scale": [
+					{ "time": 0, "x": 1, "y": 1, "curve": "stepped" },
+					{ "time": 0.5, "x": 1, "y": 1 },
+					{ "time": 0.6, "x": 1.074, "y": 0.925 },
+					{ "time": 0.6666, "x": 0.948, "y": 1.043 },
+					{ "time": 0.7666, "x": 1.029, "y": 0.945 },
+					{ "time": 0.8666, "x": 0.948, "y": 1.043 },
+					{ "time": 0.9333, "x": 1.074, "y": 0.925 },
+					{ "time": 1.0666, "x": 1, "y": 1 }
+				]
+			},
+			"door-left": {
+				"translate": [
+					{
+						"time": 0,
+						"x": 0,
+						"y": 89.55,
+						"curve": [ 0.416, 0.01, 0.617, 0.96 ]
+					},
+					{ "time": 0.3666, "x": 0, "y": 0, "curve": "stepped" },
+					{
+						"time": 1.1666,
+						"x": 0,
+						"y": 0,
+						"curve": [ 0.612, 0, 0.497, 1 ]
+					},
+					{ "time": 1.5, "x": 0, "y": 89.55 }
+				]
+			},
+			"door-right": {
+				"translate": [
+					{
+						"time": 0,
+						"x": 0,
+						"y": -88.2,
+						"curve": [ 0.416, 0.01, 0.617, 0.96 ]
+					},
+					{ "time": 0.3666, "x": 0, "y": 0, "curve": "stepped" },
+					{
+						"time": 1.1666,
+						"x": 0,
+						"y": 0,
+						"curve": [ 0.612, 0, 0.497, 1 ]
+					},
+					{ "time": 1.5, "x": 0, "y": -88.2 }
+				]
+			}
+		},
+		"slots": {
+			"door-right": {
+				"attachment": [
+					{ "time": 0, "name": "images/door-right" },
+					{ "time": 0.3666, "name": "images/door-right" },
+					{ "time": 0.5, "name": null },
+					{ "time": 1.1666, "name": "images/door-right" },
+					{ "time": 1.5, "name": "images/door-right" }
+				]
+			},
+			"chamber-root": {
+				"attachment": [
+					{ "time": 0, "name": null },
+					{ "time": 0.5, "name": "images/back-open-on" },
+					{ "time": 0.6666, "name": "images/back-open-on" },
+					{ "time": 1.0666, "name": "images/back-open-on" },
+					{ "time": 1.1666, "name": null }
+				]
+			},
+			"door-left-closed": {
+				"attachment": [
+					{ "time": 0, "name": null },
+					{ "time": 0.5, "name": "images/door-left" },
+					{ "time": 1.0666, "name": "images/door-left" },
+					{ "time": 1.1666, "name": null }
+				]
+			},
+			"door-right-closed": {
+				"attachment": [
+					{ "time": 0, "name": null },
+					{ "time": 0.5, "name": "images/door-right" },
+					{ "time": 1.0666, "name": "images/door-right" },
+					{ "time": 1.1666, "name": null }
+				]
+			},
+			"steam": {
+				"attachment": [
+					{ "time": 0, "name": "images/steam" },
+					{ "time": 0.5, "name": null }
+				]
+			},
+			"steam-root": {
+				"attachment": [
+					{ "time": 0, "name": null },
+					{ "time": 0.5, "name": "images/steam" },
+					{ "time": 1.0666, "name": "images/steam" }
+				]
+			},
+			"door-left-open": {
+				"attachment": [
+					{ "time": 0, "name": null },
+					{ "time": 0.5, "name": null }
+				]
+			},
+			"chamber": {
+				"attachment": [
+					{ "time": 0, "name": "images/back-open-on" },
+					{ "time": 0.5, "name": null },
+					{ "time": 1.1666, "name": "images/back-open-on" }
+				]
+			},
+			"door-right-open": {
+				"attachment": [
+					{ "time": 0, "name": null },
+					{ "time": 0.5, "name": null }
+				]
+			},
+			"door-left": {
+				"attachment": [
+					{ "time": 0, "name": "images/door-left" },
+					{ "time": 0.3666, "name": "images/door-left" },
+					{ "time": 0.5, "name": null },
+					{ "time": 1.1666, "name": "images/door-left" },
+					{ "time": 1.5, "name": "images/door-left" }
+				]
+			}
+		}
+	},
+	"turn-off": {
+		"bones": {
+			"door-left": {
+				"translate": [
+					{
+						"time": 0,
+						"x": 0,
+						"y": 89.55,
+						"curve": [ 0.416, 0.01, 0.617, 0.96 ]
+					},
+					{ "time": 0.3666, "x": 0, "y": 0 }
+				]
+			},
+			"door-right": {
+				"translate": [
+					{
+						"time": 0,
+						"x": 0,
+						"y": -88.2,
+						"curve": [ 0.416, 0.01, 0.617, 0.96 ]
+					},
+					{ "time": 0.3666, "x": 0, "y": 0 }
+				]
+			},
+			"root": {
+				"translate": [
+					{ "time": 0, "x": 0, "y": 0 }
+				],
+				"scale": [
+					{ "time": 0, "x": 1, "y": 1 }
+				]
+			}
+		},
+		"slots": {
+			"door-right": {
+				"attachment": [
+					{ "time": 0, "name": "images/door-right" },
+					{ "time": 0.3666, "name": "images/door-right" }
+				]
+			},
+			"chamber-root": {
+				"attachment": [
+					{ "time": 0, "name": "images/back-open-off" }
+				]
+			},
+			"door-left-closed": {
+				"attachment": [
+					{ "time": 0, "name": null }
+				]
+			},
+			"door-right-closed": {
+				"attachment": [
+					{ "time": 0, "name": null }
+				]
+			},
+			"steam": {
+				"attachment": [
+					{ "time": 0, "name": null }
+				]
+			},
+			"steam-root": {
+				"attachment": [
+					{ "time": 0, "name": "images/steam" }
+				]
+			},
+			"door-left-open": {
+				"attachment": [
+					{ "time": 0, "name": null }
+				]
+			},
+			"chamber": {
+				"attachment": [
+					{ "time": 0, "name": null }
+				]
+			},
+			"door-right-open": {
+				"attachment": [
+					{ "time": 0, "name": null }
+				]
+			},
+			"door-left": {
+				"attachment": [
+					{ "time": 0, "name": "images/door-left" },
+					{ "time": 0.3666, "name": "images/door-left" }
+				]
+			}
+		}
+	},
+	"turn-on": {
+		"bones": {
+			"door-left": {
+				"translate": [
+					{
+						"time": 0,
+						"x": 0,
+						"y": 0,
+						"curve": [ 0.612, 0, 0.497, 1 ]
+					},
+					{ "time": 0.3333, "x": 0, "y": 89.55 }
+				]
+			},
+			"door-right": {
+				"translate": [
+					{
+						"time": 0,
+						"x": 0,
+						"y": 0,
+						"curve": [ 0.612, 0, 0.497, 1 ]
+					},
+					{ "time": 0.3333, "x": 0, "y": -88.2 }
+				]
+			},
+			"root": {
+				"translate": [
+					{ "time": 0, "x": 0, "y": 0 }
+				],
+				"scale": [
+					{ "time": 0, "x": 1, "y": 1 }
+				]
+			}
+		},
+		"slots": {
+			"door-right": {
+				"attachment": [
+					{ "time": 0, "name": "images/door-right" },
+					{ "time": 0.3333, "name": "images/door-right" }
+				]
+			},
+			"chamber-root": {
+				"attachment": [
+					{ "time": 0, "name": null }
+				]
+			},
+			"door-left-closed": {
+				"attachment": [
+					{ "time": 0, "name": null }
+				]
+			},
+			"door-right-closed": {
+				"attachment": [
+					{ "time": 0, "name": null }
+				]
+			},
+			"steam": {
+				"attachment": [
+					{ "time": 0, "name": null }
+				]
+			},
+			"steam-root": {
+				"attachment": [
+					{ "time": 0, "name": "images/steam" }
+				]
+			},
+			"door-left-open": {
+				"attachment": [
+					{ "time": 0, "name": null }
+				]
+			},
+			"chamber": {
+				"attachment": [
+					{ "time": 0, "name": "images/back-open-on" }
+				]
+			},
+			"door-right-open": {
+				"attachment": [
+					{ "time": 0, "name": null }
+				]
+			},
+			"door-left": {
+				"attachment": [
+					{ "time": 0, "name": "images/door-left" },
+					{ "time": 0.3333, "name": "images/door-left" }
+				]
+			}
+		}
+	},
+	"wait": {
+		"bones": {
+			"root": {
+				"translate": [
+					{ "time": 0, "x": 0, "y": 0, "curve": "stepped" },
+					{ "time": 0.1333, "x": 0, "y": 0, "curve": "stepped" },
+					{ "time": 0.2666, "x": 0, "y": 0 },
+					{ "time": 0.3333, "x": 0, "y": 19.05 },
+					{ "time": 0.4333, "x": 0, "y": 0, "curve": "stepped" },
+					{ "time": 0.7333, "x": 0, "y": 0 },
+					{ "time": 0.8, "x": 0, "y": 14.04 },
+					{ "time": 0.9, "x": 0, "y": 0 }
+				],
+				"scale": [
+					{ "time": 0, "x": 1, "y": 1 },
+					{ "time": 0.1333, "x": 1.147, "y": 0.89 },
+					{ "time": 0.2666, "x": 0.987, "y": 1.07 },
+					{ "time": 0.4333, "x": 1, "y": 1 },
+					{ "time": 0.5333, "x": 1.147, "y": 0.89 },
+					{ "time": 0.7333, "x": 0.987, "y": 1.07 },
+					{ "time": 0.9, "x": 1, "y": 1 }
+				]
+			}
+		},
+		"slots": {
+			"door-right": {
+				"attachment": [
+					{ "time": 0, "name": null }
+				]
+			},
+			"chamber-root": {
+				"attachment": [
+					{ "time": 0, "name": "images/back-open-on" },
+					{ "time": 0.1666, "name": "images/back-open-off" },
+					{ "time": 0.3333, "name": "images/back-open-on" },
+					{ "time": 0.4333, "name": "images/back-open-on" },
+					{ "time": 0.5, "name": "images/back-open-off" },
+					{ "time": 0.6666, "name": "images/back-open-on" },
+					{ "time": 0.7333, "name": "images/back-open-on" },
+					{ "time": 0.8333, "name": "images/back-open-off" },
+					{ "time": 0.9, "name": "images/back-open-off" }
+				]
+			},
+			"door-left-closed": {
+				"attachment": [
+					{ "time": 0, "name": null }
+				]
+			},
+			"door-right-closed": {
+				"attachment": [
+					{ "time": 0, "name": null }
+				]
+			},
+			"steam": {
+				"attachment": [
+					{ "time": 0, "name": null }
+				]
+			},
+			"steam-root": {
+				"attachment": [
+					{ "time": 0, "name": "images/steam" }
+				]
+			},
+			"door-left-open": {
+				"attachment": [
+					{ "time": 0, "name": "images/door-left" }
+				]
+			},
+			"chamber": {
+				"attachment": [
+					{ "time": 0, "name": null }
+				]
+			},
+			"door-right-open": {
+				"attachment": [
+					{ "time": 0, "name": "images/door-right" }
+				]
+			},
+			"door-left": {
+				"attachment": [
+					{ "time": 0, "name": null }
+				]
+			}
+		}
+	}
+}
+}

@@ -97,7 +97,7 @@ public class Rope {
 					getEnd( ).body.getWorldCenter( ).y - widthHeight.y
 							* Util.PIXEL_TO_BOX ), texture, widthHeight );
 			if (prev != null){
-				temp.setChild(prev);
+				temp.setParent(prev);
 			}
 			prev = temp;
 			getEnd( ).createLinkJoint( temp );

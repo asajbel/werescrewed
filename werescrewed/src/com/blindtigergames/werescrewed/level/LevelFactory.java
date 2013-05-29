@@ -495,33 +495,41 @@ public class LevelFactory {
 		RuntimeException exception = new RuntimeException(
 				"Anchor incorrectly defined. Be sure the format is: \"bufferWidth, bufferHeight, offsetX, offsetY\"" );
 		Anchor anchor;
-		for ( int i = 1; i < 50; i++ ) {
-			if ( item.props.containsKey( "anchor" + i ) ) {
-				String string = item.props.get( "anchor" + i );
-				String sValues[] = string.split( ", " );
-				if ( sValues.length != 4 )
-					throw exception;
-				float values[] = new float[ 4 ];
-				int j = 0;
-				for ( String value : sValues ) {
-					try {
-						values[ j ] = Float.parseFloat( value );
-						j++;
-					} catch ( NumberFormatException e ) {
-						throw exception;
-					}
-				}
-				float offsetX = values[ 0 ];
-				float offsetY = values[ 1 ];
-				float bufferWidth = values[ 2 ];
-				float bufferHeight = values[ 3 ];
-				anchor = new Anchor( item.pos, new Vector2( offsetX, offsetY ),
-						new Vector2( bufferWidth, bufferHeight ) );
-				out.addAnchor( anchor );
-				// Comment line below to make anchors inactive by default
-				// anchor.activate( );
+		String tag;
+		boolean moreAnchors = true;
+		for (int i = -1; i < 99 && moreAnchors; i++){
+			if (i < 0){
+				tag = "anchor";
 			} else {
-				break;
+				tag = "anchor" + i;
+			}
+			if (item.props.containsKey( tag )){
+				for ( String string : item.props.getAll( tag ) ) {
+					String sValues[] = string.split( ", " );
+					if ( sValues.length != 4 )
+						throw exception;
+					float values[] = new float[ 4 ];
+					int j = 0;
+					for ( String value : sValues ) {
+						try {
+							values[ j ] = Float.parseFloat( value );
+							j++;
+						} catch ( NumberFormatException e ) {
+							throw exception;
+						}
+					}
+					float offsetX = values[ 0 ];
+					float offsetY = values[ 1 ];
+					float bufferWidth = values[ 2 ];
+					float bufferHeight = values[ 3 ];
+					anchor = new Anchor( item.pos, new Vector2( offsetX, offsetY ),
+							new Vector2( bufferWidth, bufferHeight ) );
+					out.addAnchor( anchor );
+					// Comment line below to make anchors inactive by default
+					// anchor.activate( );
+				}
+			} else if (i >= 2){
+				moreAnchors = false;
 			}
 		}
 		return out;
@@ -1627,6 +1635,18 @@ public class LevelFactory {
 
 		if ( item.props.containsKey( "flip" ) ) {
 			fire.flip( );
+		}
+		
+		// Looks for size property in a fire particle
+		// The size should be the duration in seconds the life a particle should be.
+		// Fire starts at 1 for reference. 
+		// Warning the number of particles increases by a power of 2. 
+		if ( item.props.containsKey( "size" ) ) {
+			float size = Float.valueOf( item.props.get( "size" ) );
+			float time = size * 1000;
+			float emits = 40 + size * 10;
+			int max = (int) Math.round( emits * size ) + 10;
+			fire.particleEffect.changeEffectMaxSize( time, emits, max ); 
 		}
 		
 		

@@ -5,6 +5,7 @@ import java.util.Iterator;
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -24,12 +25,15 @@ import com.blindtigergames.werescrewed.entity.PolySprite;
 import com.blindtigergames.werescrewed.entity.RobotState;
 import com.blindtigergames.werescrewed.entity.RootSkeleton;
 import com.blindtigergames.werescrewed.entity.Skeleton;
+import com.blindtigergames.werescrewed.entity.Sprite;
 import com.blindtigergames.werescrewed.entity.action.CannonLaunchAction;
 import com.blindtigergames.werescrewed.entity.builders.EventTriggerBuilder;
 import com.blindtigergames.werescrewed.entity.builders.PlatformBuilder;
 import com.blindtigergames.werescrewed.entity.builders.PlayerBuilder;
 import com.blindtigergames.werescrewed.entity.builders.SkeletonBuilder;
 import com.blindtigergames.werescrewed.entity.hazard.Fire;
+import com.blindtigergames.werescrewed.entity.hazard.Enemy;
+import com.blindtigergames.werescrewed.entity.mover.DirectionFlipMover;
 import com.blindtigergames.werescrewed.entity.mover.LerpMover;
 import com.blindtigergames.werescrewed.entity.mover.LinearAxis;
 import com.blindtigergames.werescrewed.entity.mover.PistonTweenMover;
@@ -48,6 +52,7 @@ import com.blindtigergames.werescrewed.entity.tween.PathBuilder;
 import com.blindtigergames.werescrewed.eventTrigger.EventTrigger;
 import com.blindtigergames.werescrewed.eventTrigger.PowerSwitch;
 import com.blindtigergames.werescrewed.graphics.SpriteBatch;
+import com.blindtigergames.werescrewed.graphics.TextureAtlas;
 import com.blindtigergames.werescrewed.joint.JointFactory;
 import com.blindtigergames.werescrewed.level.Level;
 import com.blindtigergames.werescrewed.util.Util;
@@ -71,6 +76,8 @@ public class PhysicsTestScreen extends Screen {
 
 	private Skeleton dynSkel2;
 	private Skeleton s;
+	
+	private TextureAtlas dragonParts; 
 
 	StructureScrew limit;
 
@@ -94,6 +101,7 @@ public class PhysicsTestScreen extends Screen {
 				world, BodyType.KinematicBody );
 		skeleton.setFgFade( false );
 		platBuilder = new PlatformBuilder( world );
+		dragonParts = new TextureAtlas("data/levels/dragon/dragon_objects.pack"); 
 
 		// Uncomment for test anchor
 		// anchor = new Anchor( new Vector2( 7 * Util.BOX_TO_PIXEL,
@@ -124,13 +132,19 @@ public class PhysicsTestScreen extends Screen {
 		// connectedRoom( );
 		movingSkeleton( );
 
-		buildCannon( new Vector2( 1600, 50 ), 200, 200 );
+		buildCannon( new Vector2( 1600, 50 ), 160, 350 );
+		
+		buildCannon( new Vector2( 1900, 30 ), 200, 200 );
+		
+		buildCannon( new Vector2( -1900, 30 ), 200, 200 );
 
 		PowerSwitch pswitch = new PowerSwitch( "pwsstsf",
 				new Vector2( 512, 200 ), world );
 		rootSkeleton.addEventTrigger( pswitch );
 
-		createFire( );
+		//createFire( );
+		
+		hotBolts(new Vector2( -1900, 30 ));
 	}
 
 	// width & height in pixels
@@ -153,6 +167,10 @@ public class PhysicsTestScreen extends Screen {
 		Skeleton s = sb.position( pos.cpy( ) ).build( );
 		skeleton.addSkeleton( s );
 		s.setFgFade( false );
+		Sprite can = dragonParts.createSprite( "cannon-small" );
+		can.setOrigin( can.getWidth( )/2, can.getHeight( )/2 ); 
+		s.addFGDecal( can, new Vector2(-can.getWidth( ),-can.getHeight( )*2/3) );
+		addFGEntityToBack(s); 
 
 		// base
 		s.addPlatform( pb.name( "cannon-base" ).dimensions( dim.x, 1 )
@@ -178,7 +196,7 @@ public class PhysicsTestScreen extends Screen {
 		triggerVerts.add( new Vector2( -quarter, -quarter ) );
 		triggerVerts.add( new Vector2( -quarter, -quarter ) );
 
-		s.setLocalRot( -Util.PI / 4 );
+		s.setLocalRot( -Util.PI / 7 );
 		EventTrigger et = etb.name( "cannon-trigger" ).setVerts( triggerVerts )
 				.extraBorder( 0 ).position( eventPos )
 				// .addEntity( s )
@@ -186,6 +204,14 @@ public class PhysicsTestScreen extends Screen {
 				.repeatable( ).build( );
 		s.addEventTrigger( et );
 
+	}
+	
+	void hotBolts(Vector2 pos){
+		Enemy hotbolt = new Enemy( "hot-bolt", pos,25, world, true );
+		//hotbolt.body.setType( BodyType.DynamicBody );
+		skeleton.addDynamicPlatform(  hotbolt );
+		hotbolt.addMover( new DirectionFlipMover( false, 0.001f, hotbolt, 2f, .03f ) );
+		hotbolt.addFrontParticleEffect( "fire_new", false, true ).updateAngleWithParent=false;
 	}
 
 	// This is how you make a whole room fall, by welding everything together
@@ -822,6 +848,11 @@ public class PhysicsTestScreen extends Screen {
 		//
 		// world.step( 1 / 60f, 6, 3 );
 		//
+		
+		if ( Gdx.input.isKeyPressed( Keys.T ) ) {
+			ScreenManager.getInstance( ).show( ScreenType.TROPHY);
+		}
+		
 		if ( Gdx.input.isKeyPressed( Input.Keys.ESCAPE ) ) {
 			if ( !ScreenManager.escapeHeld ) {
 				ScreenManager.getInstance( ).show( ScreenType.PAUSE );

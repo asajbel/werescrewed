@@ -3,6 +3,7 @@ package com.blindtigergames.werescrewed.screens;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
@@ -74,14 +75,18 @@ public class Screen implements com.badlogic.gdx.Screen {
 			System.exit( 0 );
 		}
 		if (level != null){			
-
+			updateStep(delta);
+			
 			// background stuff
 			if ( level.backgroundRootSkeleton != null ) {
+				if(level.bgCamZoomScale!=0.0f){
+					level.backgroundCam.zoom= Util.clamp( 1f+level.camera.camera.zoom*level.bgCamZoomScale,
+							level.bgCamZoomMin, level.bgCamZoomMax );
+					
+				}
 				level.backgroundCam.update( );
 				level.backgroundRootSkeleton.update( delta );
-			}
-
-			if ( level.backgroundRootSkeleton != null ) {
+				
 				level.backgroundBatch
 						.setProjectionMatrix( level.backgroundCam.combined );
 				level.backgroundBatch.begin( );
@@ -94,7 +99,7 @@ public class Screen implements com.badlogic.gdx.Screen {
 
 			level.draw( batch, debugRenderer, delta );
 
-			level.camera.update( );
+			level.camera.update( delta );
 
 			int FPS = logger.getFPS( );
 			
@@ -112,9 +117,10 @@ public class Screen implements com.badlogic.gdx.Screen {
 				batch.end( );
 			}
 			
-			
-			updateStep(delta);
-
+		}
+		
+		if ( Gdx.input.isKeyPressed( Input.Keys.BACKSPACE ) ) {
+			ScreenManager.getInstance( ).show( ScreenType.TROPHY );
 		}
 
 		if ( Buttons.size( ) > 0 ) {
@@ -160,7 +166,6 @@ public class Screen implements com.badlogic.gdx.Screen {
 							if ( option.getOption( ) instanceof Slider ) {
 								Slider slider = ( Slider ) option.getOption( );
 								slider.moveLeft( );
-								controllerTimer = controllerMax;
 							}
 						}
 					} else if ( WereScrewedGame.p1ControllerListener
@@ -172,7 +177,6 @@ public class Screen implements com.badlogic.gdx.Screen {
 							if ( option.getOption( ) instanceof Slider ) {
 								Slider slider = ( Slider ) option.getOption( );
 								slider.moveRight( );
-								controllerTimer = controllerMax;
 							}
 						}
 					}
@@ -214,7 +218,6 @@ public class Screen implements com.badlogic.gdx.Screen {
 							if ( option.getOption( ) instanceof Slider ) {
 								Slider slider = ( Slider ) option.getOption( );
 								slider.moveLeft( );
-								controllerTimer = controllerMax;
 							}
 						}
 					} else if ( WereScrewedGame.p2ControllerListener
@@ -226,7 +229,6 @@ public class Screen implements com.badlogic.gdx.Screen {
 							if ( option.getOption( ) instanceof Slider ) {
 								Slider slider = ( Slider ) option.getOption( );
 								slider.moveRight( );
-								controllerTimer = controllerMax;
 							}
 						}
 					}
@@ -263,7 +265,6 @@ public class Screen implements com.badlogic.gdx.Screen {
 							if ( option.getOption( ) instanceof Slider ) {
 								Slider slider = ( Slider ) option.getOption( );
 								slider.moveLeft( );
-								controllerTimer = controllerMax;
 							} 
 						}
 					}
@@ -274,7 +275,6 @@ public class Screen implements com.badlogic.gdx.Screen {
 							if ( option.getOption( ) instanceof Slider ) {
 								Slider slider = ( Slider ) option.getOption( );
 								slider.moveRight( );
-								controllerTimer = controllerMax;
 							} 
 						}
 					}
@@ -315,6 +315,12 @@ public class Screen implements com.badlogic.gdx.Screen {
 
 	protected void addFGEntity( Entity entity ) {
 		addToEntityList( level.entityFGList, entity, false );
+	}
+	
+	protected void addFGEntity( Entity... entities ) {
+		for(Entity e : entities){
+			addToEntityList( level.entityFGList, e, false );
+		}
 	}
 
 	protected void addFGEntityToBack( Entity entity ) {

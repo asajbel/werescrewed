@@ -210,7 +210,7 @@ public class Platform extends Entity {
 	 * returns previous rotation last time it rotated
 	 */
 	public boolean hasRotated( ) {
-		if ( previousRotation != localRotation ) {
+		if ( previousRotation != localRotation || prevBodyAngle != body.getAngle( ) ) {
 			return true;
 		}
 		return false;

@@ -28,15 +28,28 @@
 /common/sounds/footstep2F.ogg
 /common/sounds/screwing.ogg
 /common/sounds/unscrewing.ogg
+/common/sounds/screwAtt.ogg
+/common/sounds/screwDet.ogg
 /common/sounds/land.ogg
+/common/sounds/fallingObject.ogg
 /common/sounds/impactMaleDoh.ogg
 /common/sounds/impactMaleDoh2.ogg
 /common/sounds/impactFemaleAh.ogg
 /common/sounds/impactFemaleOph.ogg
 /common/sounds/impactFemaleUgh.ogg
+/common/sounds/rezzScrew.ogg
+/common/sounds/rezzFinish.ogg
 #/common/sounds/WilhelmScream.ogg
 /common/sounds/steam.ogg
-/common/sounds/chains.ogg
+/common/sounds/flames.ogg
+/common/sounds/chain1.ogg
+/common/sounds/chain2.ogg
+/common/sounds/chain3.ogg
+/common/sounds/frontswing.ogg
+/common/sounds/backswing.ogg
+/common/sounds/chain3.ogg
+/common/sounds/switchOn.ogg
+/common/sounds/switchOff.ogg
 #/common/sounds/TrainJob.mp3
 #/common/sounds/loopTrain.mp3
 #/common/sounds/introTrain.mp3
@@ -83,6 +96,7 @@
 /common/tileset/alphabot-bleed.pack
 /common/spine/red_female_atlas.pack
 /common/spine/red_male_atlas.pack
+/common/spine/rez_chamber_atlas.pack
 /particles/particles.pack
 
 ##Fonts
@@ -113,6 +127,8 @@ injured/oof.p
 fastSteam.p
 slowSteam.p
 fire.p
+fire_new.p
+cannon.p
 
 ##menu assets
 /menu/menu.png

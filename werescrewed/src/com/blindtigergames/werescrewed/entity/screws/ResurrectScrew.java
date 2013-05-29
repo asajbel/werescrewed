@@ -6,6 +6,8 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.CircleShape;
+import com.badlogic.gdx.physics.box2d.Filter;
+import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.Joint;
 import com.badlogic.gdx.physics.box2d.World;
@@ -229,6 +231,7 @@ public class ResurrectScrew extends Screw {
 	public void update( float deltaTime ) {
 		super.update( deltaTime );
 		if ( !removed ) {
+			//if mover is at end re-spawn the player
 			if ( playerMover.atEnd( ) || depth == maxDepth ) {
 				deadPlayer.body
 						.setTransform(
@@ -238,6 +241,16 @@ public class ResurrectScrew extends Screw {
 										.mul( Util.PIXEL_TO_BOX ), 0.0f );
 				deadPlayer.body.setType( BodyType.DynamicBody );
 				deadPlayer.body.setLinearVelocity( Vector2.Zero );
+				Filter filter = new Filter( );
+				for ( Fixture f : deadPlayer.body.getFixtureList( ) ) {
+					if ( f != deadPlayer.rightSensor && f != deadPlayer.leftSensor
+							&& f != deadPlayer.topSensor ) {
+						f.setSensor( false );
+					}
+					filter.categoryBits = Util.CATEGORY_PLAYER;
+					filter.maskBits = Util.CATEGORY_EVERYTHING;
+					f.setFilterData( filter );
+				}
 				deadPlayer.respawnPlayer( );
 				remove( );
 				active = false;

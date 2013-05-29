@@ -33,7 +33,7 @@ public class PlayerAnimator implements IAnimator {
 			for ( int i = 0; i < atlases.size && anim == null; i++ ) {
 				atlas = atlases.get( i );
 				if ( atlas != null ) {
-					regions = atlas.findRegions( a.text );
+					regions = atlas.findRegions( a.getText() );
 					if ( regions != null && regions.size > 0 ) {
 						anim = new SimpleFrameAnimator( ).atlas( i )
 								.maxFrames( regions.size ).loop( a.loop );
@@ -100,7 +100,7 @@ public class PlayerAnimator implements IAnimator {
 
 	@Override
 	public String getRegion( ) {
-		return current.text;
+		return current.getText();
 	}
 
 	@Override

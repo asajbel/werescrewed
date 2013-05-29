@@ -75,7 +75,7 @@ public class Entity implements GleedLoadable {
 	protected ArrayList< Float > bgDecalAngles;
 	private RobotState currentRobotState;
 	private EnumMap< RobotState, Integer > robotStateMap;
-	public ISpinemator spinemator;
+	private ISpinemator spinemator;
 
 	private Skeleton parentSkeleton; // pointer to parent skele, set by skeleton
 
@@ -180,7 +180,8 @@ public class Entity implements GleedLoadable {
 	public Entity( String name, Vector2 positionPixels, TextureRegion texture,
 			Body body, boolean solid, float rotation ) {
 		this.construct( name, solid );
-		this.sprite = constructSprite( texture );
+		if ( texture != null )
+			this.sprite = constructSprite( texture );
 		this.body = body;
 		if ( body != null ) {
 			world = body.getWorld( );
@@ -237,6 +238,7 @@ public class Entity implements GleedLoadable {
 		this.bgDecalOffsets = new ArrayList< Vector2 >( );
 		this.bgDecalAngles = new ArrayList< Float >( );
 		this.sounds = null;
+		this.crushing = false;
 		setUpRobotState( );
 	}
 
@@ -306,16 +308,22 @@ public class Entity implements GleedLoadable {
 	}
 
 	public void draw( SpriteBatch batch, float deltaTime ) {
-		// drawBGDecals( batch );
-		drawParticles( behindParticles, batch );
-		if ( sprite != null && visible && !removeNextStep ) {
-			sprite.draw( batch );
+//		if(name.equals("balloon1_flame_plat")){
+//			this.getPosition( );
+//		}
+		if ( visible ) {
+			
+			// drawBGDecals( batch );
+			drawParticles( behindParticles, batch );
+			if ( sprite != null && visible && !removeNextStep ) {
+				sprite.draw( batch );
+			}
+			// drawOrigin(batch);
+			// drawFGDecals( batch );
+			if ( getSpinemator() != null )
+				getSpinemator().draw( batch );
+			drawParticles( frontParticles, batch );
 		}
-		// drawOrigin(batch);
-		// drawFGDecals( batch );
-		if ( spinemator != null )
-			spinemator.draw( batch );
-		drawParticles( frontParticles, batch );
 	}
 
 	protected void drawParticles( HashMap< String, ParticleEffect > map,
@@ -400,8 +408,8 @@ public class Entity implements GleedLoadable {
 			// }
 			updateDecals( deltaTime );
 
-			if ( spinemator != null ) {
-				spinemator.update( deltaTime );
+			if ( getSpinemator() != null ) {
+				getSpinemator().update( deltaTime );
 			}
 		}
 
@@ -425,16 +433,20 @@ public class Entity implements GleedLoadable {
 			Vector2 pos = getPositionPixel( );
 			for ( ParticleEffect e : map.values( ) ) {
 				if ( e.updatePositionOnUpdate ) {
-					e.setPosition( pos.x, pos.y );
-					if ( e.updateAngleBasedOnVelocity ) {
-
-					} else {
+					if(!e.offsetFromParent.equals( Vector2.Zero )&&body!=null){
+						Vector2 newPos = new Vector2(e.offsetFromParent).rotate( body.getAngle( )*Util.RAD_TO_DEG );
+						e.setPosition( pos.x+newPos.x, pos.y+newPos.y );
+					}else{
+						e.setPosition( pos.x, pos.y );
+					}
+					if(e.updateAngleWithParent){
 						if ( body != null ) {
-							e.setAngle( body.getAngle( ) );
-						} else {
-							e.setAngle( sprite.getRotation( ) * Util.DEG_TO_RAD );
+							e.setEffectAngle( body.getAngle( ) );
+						} else if (sprite!=null) {
+							e.setEffectAngle( sprite.getRotation( ) * Util.DEG_TO_RAD );
 						}
 					}
+					
 				}
 				if ( !e.isComplete( ) ) {
 					e.update( deltaTime );
@@ -1305,7 +1317,7 @@ public class Entity implements GleedLoadable {
 				if ( decal.getBoundingRectangle( )
 						.overlaps( camera.getBounds( ) ) ) {
 					decal.draw( batch );
-				} 
+				}
 			}
 		}
 	}
@@ -1431,45 +1443,30 @@ public class Entity implements GleedLoadable {
 	}
 
 	public ParticleEffect addBehindParticleEffect( String name,
-			boolean removeOnComplete, boolean updateWithParent,
-			boolean updateAngleWithVelocity ) {
+			boolean removeOnComplete, boolean updateWithParent ) {
 		if ( behindParticles == null ) {
 			behindParticles = new HashMap< String, ParticleEffect >( );
 		}
 		return addParticleEffect( name, behindParticles, removeOnComplete,
-				updateWithParent, updateAngleWithVelocity );
-	}
-
-	public ParticleEffect addBehindParticleEffect( String name,
-			boolean removeOnComplete, boolean updateWithParent ) {
-		return addBehindParticleEffect( name, removeOnComplete,
-				updateWithParent, false );
+				updateWithParent );
 	}
 
 	public ParticleEffect addFrontParticleEffect( String name,
-			boolean removeOnComplete, boolean updateWithParent,
-			boolean updateAngleWithVelocity ) {
+			boolean removeOnComplete, boolean updateWithParent ) {
 		if ( frontParticles == null ) {
 			frontParticles = new HashMap< String, ParticleEffect >( );
 		}
 		return addParticleEffect( name, frontParticles, removeOnComplete,
-				updateWithParent, updateAngleWithVelocity );
-	}
-
-	public ParticleEffect addFrontParticleEffect( String name,
-			boolean removeOnComplete, boolean updateWithParent ) {
-		return addFrontParticleEffect( name, removeOnComplete,
-				updateWithParent, false );
+				updateWithParent );
 	}
 
 	private ParticleEffect addParticleEffect( String name,
 			HashMap< String, ParticleEffect > map, boolean removeOnComplete,
-			boolean updateWithParent, boolean updateAngleWithVelocity ) {
+			boolean updateWithParent ) {
 		ParticleEffect effect = WereScrewedGame.manager
 				.getParticleEffect( name );
 		effect.removeOnComplete = removeOnComplete;
 		effect.updatePositionOnUpdate = updateWithParent;
-		effect.updateAngleBasedOnVelocity = updateAngleWithVelocity;
 		map.put( name, effect );
 		return effect;
 	}
@@ -1588,25 +1585,76 @@ public class Entity implements GleedLoadable {
 	protected static final float MIN_LINEAR = 0.1f;
 	protected static final float MIN_ANGULAR = 0.5f;
 	protected static final float MOVEMENT_SOUND_DELAY = 0.05f;
-	public void handleMovementSounds( float dT ){
-		Vector2 soundPos = getPositionPixel();
+
+	public void handleMovementSounds( float dT ) {
+		Vector2 soundPos = getPositionPixel( );
 		float vol;
 		float pitch;
+		String soundTag;
 		int soundId;
-		if (sounds.hasSound( "linear" )){
-			soundId = sounds.randomSoundId( "linear" );
-			vol = body.getLinearVelocity( ).len( ) * sounds.calculatePositionalVolume( "linear", soundPos, Camera.CAMERA_RECT );
-			pitch = sounds.getPitchInRange( "linear", soundId, body.getLinearVelocity( ).len() );
-			if (vol > MIN_LINEAR){
-				sounds.playSound( "linear", soundId, MOVEMENT_SOUND_DELAY , vol, pitch);	
+		Vector2 vel = body.getLinearVelocity( );
+		float aVel = body.getAngularVelocity( );
+		// horizontal
+		if ( vel.x > 0.0f ) {
+			soundTag = "left";
+		} else {
+			soundTag = "right";
+		}
+		if ( sounds.hasSound( soundTag ) ) {
+			vol = Math.abs( vel.x )
+					* sounds.calculatePositionalVolume( soundTag, soundPos,
+							Camera.CAMERA_RECT );
+			soundId = sounds.randomSoundId( soundTag );
+			pitch = sounds
+					.getPitchInRange( soundTag, soundId, Math.abs( vel.x ) );
+			if ( vol > MIN_LINEAR ) {
+				sounds.playSound( soundTag, soundId, MOVEMENT_SOUND_DELAY, vol,
+						pitch );
 			}
 		}
-		if (sounds.hasSound( "angular" )){
-			soundId = sounds.randomSoundId( "angular" );
-			vol = Math.abs( body.getAngularVelocity( ) * Util.RAD_TO_DEG ) * sounds.calculatePositionalVolume( "angular", soundPos, Camera.CAMERA_RECT );
-			pitch = sounds.getPitchInRange( "angular", soundId, (float)Math.pow( Math.abs(body.getAngularVelocity( )), 1.5f) );
-			if (vol > MIN_ANGULAR){
-				sounds.playSound( "angular", sounds.randomSoundId( "angular" ), MOVEMENT_SOUND_DELAY , vol, pitch);			}
+		// vertical
+		if ( vel.y > 0.0f ) {
+			soundTag = "up";
+		} else {
+			soundTag = "down";
 		}
+		if ( sounds.hasSound( soundTag ) ) {
+			vol = Math.abs( vel.y )
+					* sounds.calculatePositionalVolume( soundTag, soundPos,
+							Camera.CAMERA_RECT );
+			soundId = sounds.randomSoundId( soundTag );
+			pitch = sounds
+					.getPitchInRange( soundTag, soundId, Math.abs( vel.y ) );
+			if ( vol > MIN_LINEAR ) {
+				sounds.playSound( soundTag, soundId, MOVEMENT_SOUND_DELAY, vol,
+						pitch );
+			}
+		}
+		// angular
+		if ( aVel > 0.0f ) {
+			soundTag = "ccw";
+		} else {
+			soundTag = "cw";
+		}
+		if ( sounds.hasSound( soundTag ) ) {
+			vol = Math.abs( aVel )
+					* sounds.calculatePositionalVolume( soundTag, soundPos,
+							Camera.CAMERA_RECT );
+			soundId = sounds.randomSoundId( soundTag );
+			pitch = sounds
+					.getPitchInRange( soundTag, soundId, Math.abs( aVel ) );
+			if ( vol > MIN_LINEAR ) {
+				sounds.playSound( soundTag, soundId, MOVEMENT_SOUND_DELAY, vol,
+						pitch );
+			}
+		}
+	}
+
+	public ISpinemator getSpinemator( ) {
+		return spinemator;
+	}
+
+	public void setSpinemator( ISpinemator spinemator ) {
+		this.spinemator = spinemator;
 	}
 }

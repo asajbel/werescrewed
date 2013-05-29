@@ -323,7 +323,7 @@ public class ResurrectScreen implements com.badlogic.gdx.Screen {
 			Gdx.gl10.glClear( GL20.GL_COLOR_BUFFER_BIT );
 		}
 
-		cam.update( );
+		cam.update( deltaTime );
 		// update background camera zoom
 		// float zoomRatio = ( ( ( 1.1f - 1f ) * ( cam.camera.zoom-1 ) ) / ( 3f
 		// - 1f ) ) + 1;

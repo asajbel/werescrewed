@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.Array;
 import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityCategory;
@@ -40,6 +41,7 @@ public class GenericEntityBuilder< B extends GenericEntityBuilder< ? >> {
 	protected boolean solid;
 	protected String definition;
 	protected ArrayHash< String, HashMap< String, String >> sounds;
+	protected Array<String> soundlines;
 
 	// Used for type+world construction
 	protected EntityDef type;
@@ -65,6 +67,7 @@ public class GenericEntityBuilder< B extends GenericEntityBuilder< ? >> {
 		tex = null;
 		body = null;
 		sounds = new ArrayHash< String, HashMap< String, String >>( );
+		soundlines = new Array<String>();
 		definition = "";
 	}
 
@@ -248,37 +251,20 @@ public class GenericEntityBuilder< B extends GenericEntityBuilder< ? >> {
 					Texture.class ) );
 		}
 		// Handle sound tags
-		if ( props.containsKey( "sound" ) ) {
-			for ( String line : props.getAll( "sound" ) ) {
-				String[ ] tokens = line.split( "\\s*\\:\\s*" );
-				if ( tokens.length >= 2 ) {
-					HashMap< String, String > sound = new HashMap< String, String >( );
-					sound.put( "asset", tokens[ 1 ] );
-					int index = -1;
-					String[ ] optTokens;
-					for ( int opts = 2; opts < tokens.length; opts++ ) {
-						optTokens = tokens[ opts ].toLowerCase( )
-								.split( "\\s+" );
-						if ( optTokens.length >= 2 ) {
-							if ( optTokens[ 0 ].equals( "index" ) ) {
-								index = Integer.parseInt( optTokens[ 1 ] );
-							}
-							sound.put( optTokens[ 0 ], optTokens[ 1 ] );
-							// Gdx.app.log( "EntityBuilder-Sound Options",
-							// optTokens[0]+":"+optTokens[1] );
-						}
-					}
-					if ( index >= 0 ) {
-						sounds.set( tokens[ 0 ].toLowerCase( ), index, sound );
-					} else {
-						sounds.add( tokens[ 0 ].toLowerCase( ), sound );
-					}
-					// Gdx.app.log( "EntityBuilder",
-					// "Adding \""+tokens[0]+"\" sound:\""+tokens[1]+"\"" );
-				} else {
-					// Gdx.app.log( "EntityBuilder",
-					// "Malformed sound line:\""+line+"\"." );
+		boolean moreSounds = true;
+		String tag;
+		for (int i = -1; i < 99 && moreSounds; i++){
+			if (i < 0){
+				tag = "sound";
+			} else {
+				tag = "sound" + i;
+			}
+			if (props.containsKey( tag )){
+				for ( String line : props.getAll( tag ) ) {
+					soundlines.add( line );
 				}
+			} else if (i >= 0){
+				moreSounds = false;
 			}
 		}
 		return ( B ) this;
@@ -357,35 +343,14 @@ public class GenericEntityBuilder< B extends GenericEntityBuilder< ? >> {
 			if ( mover != null ) {
 				out.addMover( mover, RobotState.IDLE );
 			}
-			if ( sounds.size( ) > 0 ) {
+			if ( soundlines.size > 0 ) {
 				SoundManager soundMan = out.getSoundManager( );
 				if ( soundMan == null ) {
 					soundMan = new SoundManager( );
 					out.setSoundManager( soundMan );
 				}
-				for (String name: sounds.keySet()){
-					for (HashMap<String,String> subSounds : sounds.getAll( name )){
-						if (!subSounds.get( "asset" ).equals( "" )){
-							SoundRef sound = soundMan.getSound( name, WereScrewedGame.dirHandle + subSounds.get( "asset" ) );
-							if (subSounds.containsKey( "volume" ))
-								sound.setInternalVolume(Float.parseFloat( subSounds.get("volume") ));
-							if (subSounds.containsKey( "pitch" ))
-								sound.setInternalPitch(Float.parseFloat( subSounds.get("pitch") ));
-							if (subSounds.containsKey( "pan" ))
-								sound.setPan(Float.parseFloat( subSounds.get("pan") ));
-							if (subSounds.containsKey( "range" ))
-								sound.setRange(Float.parseFloat( subSounds.get("range") ));
-							if (subSounds.containsKey( "falloff" ))
-								sound.setFalloff(Float.parseFloat( subSounds.get("falloff") ));
-							if (subSounds.containsKey( "volumerange" ))
-								sound.setVolumeRange(Float.parseFloat( subSounds.get("volumerange") ));
-							if (subSounds.containsKey( "pitchrange" ))
-								sound.setPitchRange(Float.parseFloat( subSounds.get("pitchrange") ));
-							if (name.contains("collision")){
-								soundMan.setDelay( name, 1.0f );
-							}
-						}
-					}
+				for (String line: soundlines){
+					soundMan.getSoundWithProperties( line );
 				}
 			}
 			out.postLoad( );

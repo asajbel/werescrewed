@@ -25,7 +25,6 @@ import com.blindtigergames.werescrewed.entity.EntityType;
 import com.blindtigergames.werescrewed.entity.Sprite;
 import com.blindtigergames.werescrewed.entity.animator.PlayerSpinemator;
 import com.blindtigergames.werescrewed.entity.mover.FollowEntityMover;
-import com.blindtigergames.werescrewed.entity.mover.IMover;
 import com.blindtigergames.werescrewed.entity.particles.Steam;
 import com.blindtigergames.werescrewed.entity.platforms.Platform;
 import com.blindtigergames.werescrewed.entity.screws.ResurrectScrew;
@@ -82,6 +81,7 @@ public class Player extends Entity {
 	public final static float FOOTSTEP_PITCH_DROP = 0.75f;
 	public final static float FOOTSTEP_PITCH_VARIANCE = 0.02f;
 	public final static float FOOTSTEP_VOLUME_DROP = 0.01f;
+	public final static float JUMP_SOUND_DELAY = 1.0f;
 
 	// public final static float
 
@@ -97,6 +97,8 @@ public class Player extends Entity {
 	boolean botCrush;
 
 	int check = 0;
+	private boolean have_control = true;
+	private boolean control_counter = false;
 
 	private PovDirection prevButton = null;
 	public PlayerInputHandler inputHandler;
@@ -128,7 +130,7 @@ public class Player extends Entity {
 	private Texture bubbleTex;
 	private Anchor bubbleAnchor;
 	private Texture[ ] tutorials; // array of all tutorial textures
-	private int tutorialBegin; //beginning and ending index
+	private int tutorialBegin; // beginning and ending index
 	private int tutorialEnd; // current index
 	private int tutorialTimer = 0; // countdown to next frame
 	private int tutorialFrame = 0; // current frame
@@ -159,12 +161,15 @@ public class Player extends Entity {
 	@SuppressWarnings( "unused" )
 	private boolean steamDone = false;
 
-	private IMover mover;
+	//private IMover mover;
 
 	public int grabCounter = 0;
 	public int jumpCounter = 0;
 
 	public float frictionCounter = PLAYER_FRICTION;
+	private float rezTime = Float.MAX_VALUE; 
+	private boolean rezzing = false; 
+	private boolean deadPlayerHitCheckpnt = false; 
 
 	// Enums
 	/**
@@ -229,8 +234,8 @@ public class Player extends Entity {
 
 		// build spine animator
 		if ( this.type.isAnimatorType( "spine" ) ) {
-			spinemator = new PlayerSpinemator( this );
-			spinemator.setPosition( body.getWorldCenter( ) );
+			setSpinemator( new PlayerSpinemator( this ) );
+			getSpinemator().setPosition( body.getWorldCenter( ) );
 		}
 
 		Filter filter = new Filter( );
@@ -281,13 +286,14 @@ public class Player extends Entity {
 
 		if ( switchTimer > 0 )
 			--switchTimer;
-
-		if ( Gdx.input.isKeyPressed( Keys.G ) ) {
-			if ( name.equals( "player1" ) ) {
-				drawTutorial = !drawTutorial;
-				// Gdx.app.log( "drawTutorial: ", "" + drawTutorial );
-			}
+		
+		/*if ( Gdx.input.isKeyPressed( Keys.PERIOD ) ) {
+			have_control = false;
 		}
+		if ( Gdx.input.isKeyPressed( Keys.SLASH ) ) {
+			have_control = true;
+		}*/
+		
 		if ( drawTutorial ) {
 			tutorialTimer++;
 			if ( tutorialTimer > 90 ) { // controls frame time on tutorials
@@ -351,7 +357,7 @@ public class Player extends Entity {
 			// else player is not dead update regular input
 			if ( controller != null ) {
 				updateController( deltaTime );
-			} else if ( inputHandler != null ) {
+			} else if ( inputHandler != null  ) {
 				updateKeyboard( deltaTime );
 			}
 			// if re-spawning decrement time out
@@ -405,8 +411,8 @@ public class Player extends Entity {
 			if ( knockedOff ) {
 				removePlayerToScrew( );
 				knockedOff = false;
-			} else if ( mover != null ) {
-				FollowEntityMover lm = ( FollowEntityMover ) mover;
+			} else if ( currentMover( )  != null ) {
+				FollowEntityMover lm = ( FollowEntityMover ) currentMover( ) ;
 				if ( !lm.atEnd( ) ) {
 					lm.move( deltaTime, body );
 				} else {
@@ -423,7 +429,7 @@ public class Player extends Entity {
 					playerJoint = ( RevoluteJoint ) world
 							.createJoint( revoluteJointDef );
 					playerState = PlayerState.Screwing;
-					mover = null;
+					setMoverAtCurrentState( null );
 				}
 			} else {
 				// if resurrect screw and its not active remove the player
@@ -553,7 +559,10 @@ public class Player extends Entity {
 	/**
 	 * This function sets player in dead state
 	 */
-	public void killPlayer( ) {
+	public void killPlayer(){
+		killPlayer(false);
+	}
+	public void killPlayer( boolean disableAnchor ) {
 		if ( respawnTimeout == 0 ) {
 			if ( !world.isLocked( ) ) {
 				if ( otherPlayer != null
@@ -564,14 +573,14 @@ public class Player extends Entity {
 				removePlayerToPlayer( );
 				currentScrew = null;
 				currentPlatform = null;
-				mover = null;
+				setMoverAtCurrentState( null );
 				Filter filter = new Filter( );
 				for ( Fixture f : body.getFixtureList( ) ) {
 					if ( f != rightSensor && f != leftSensor && f != topSensor ) {
 						f.setSensor( true );
 					}
 					filter.categoryBits = Util.CATEGORY_SUBPLAYER;
-					filter.maskBits = Util.CATEGORY_NOTHING;
+					filter.maskBits = Util.CATEGORY_CHECKPOINTS;
 					f.setFilterData( filter );
 				}
 				playerState = PlayerState.Dead;
@@ -604,13 +613,16 @@ public class Player extends Entity {
 			}
 
 			if ( !isDead ) {
-				ParticleEffect blood = getEffect( injuredParticles[ WereScrewedGame.random
+				ParticleEffect text = getEffect( injuredParticles[ WereScrewedGame.random
 						.nextInt( injuredParticles.length ) ] );
-				blood.restartAt( getPositionPixel( ) );
+				text.restartAt( getPositionPixel( ) );
+				sounds.playSound( "death", 1.0f );
 			}
 			isDead = true;
-			if ( sounds.hasSound( "death" ) ) {
-				sounds.playSound( "death", 1.0f );
+			if (disableAnchor){
+				for (Anchor a: anchors){
+					a.deactivate( );
+				}
 			}
 		}
 	}
@@ -623,8 +635,8 @@ public class Player extends Entity {
 		botCrush = false;
 		leftCrush = false;
 		rightCrush = false;
-		body.setTransform( body.getPosition( ), 0f );
-		Filter filter = new Filter( );
+		//body.setTransform( body.getPosition( ), 0f );
+		/*Filter filter = new Filter( );
 		for ( Fixture f : body.getFixtureList( ) ) {
 			if ( f != rightSensor && f != leftSensor && f != topSensor ) {
 				f.setSensor( false );
@@ -632,13 +644,19 @@ public class Player extends Entity {
 			filter.categoryBits = Util.CATEGORY_PLAYER;
 			filter.maskBits = Util.CATEGORY_EVERYTHING;
 			f.setFilterData( filter );
-		}
+		}*/
 		playerState = PlayerState.Standing;
 		currentPlatform = null;
-		isDead = false;
+		if (isDead){
+			sounds.playSound( "revive", 1.0f );
+			isDead = false;
+		}
+		for (Anchor a: anchors){
+			a.activate( );
+		}
 		respawnTimeout = DEAD_STEPS;
 
-		getEffect( "revive" ).restartAt( getPositionPixel( ).add( 0, 500 ) );
+//		getEffect( "revive" ).restartAt( getPositionPixel( ).add( 0, 500 ) );
 	}
 
 	/**
@@ -658,15 +676,19 @@ public class Player extends Entity {
 	 */
 	public void setDrawTutorial( boolean value ) {
 		drawTutorial = value;
-		if( value )bubbleAnchor.activate( ) ;
-		else bubbleAnchor.deactivate( );
+		if ( value )
+			bubbleAnchor.activate( );
+		else
+			bubbleAnchor.deactivate( );
 	}
 
 	/**
 	 * sets the section of tutorials[] to be drawn in sequence
 	 * 
-	 * @param begin int
-	 * @param end int
+	 * @param begin
+	 *            int
+	 * @param end
+	 *            int
 	 */
 	public void setTutorial( int begin, int end ) {
 		tutorialBegin = begin;
@@ -687,13 +709,14 @@ public class Player extends Entity {
 		drawBubble( batch );
 		super.draw( batch, deltaTime );
 	}
-	
+
 	/**
 	 * draws tutorials when appropriate
-	 *
-	 * @param batch SpriteBatch
+	 * 
+	 * @param batch
+	 *            SpriteBatch
 	 */
-	public void drawBubble( SpriteBatch batch ){
+	public void drawBubble( SpriteBatch batch ) {
 		if ( drawTutorial ) {
 			float xpos = body.getPosition( ).x;
 			float ypos = body.getPosition( ).y;
@@ -947,6 +970,7 @@ public class Player extends Entity {
 		if ( grounded
 				|| ( playerState == PlayerState.HeadStand && this.isTopPlayer( ) ) ) {
 			sounds.playSound( "jump" );
+			sounds.setDelay( "jump", JUMP_SOUND_DELAY);
 			// Trophy check for player jumps
 			if ( this.name == Metrics.player1( ) ) {
 				Metrics.incTrophyMetric( TrophyMetric.P1JUMPS, 1.0f );
@@ -973,7 +997,7 @@ public class Player extends Entity {
 	 * 
 	 */
 	public void hitScrew( Screw screw ) {
-		if ( playerState != PlayerState.Screwing && !isDead && mover == null ) {
+		if ( playerState != PlayerState.Screwing && !isDead && currentMover( )  == null ) {
 			currentScrew = screw;
 
 			// Trophy check for if player attaches to a stripped screw
@@ -1248,9 +1272,9 @@ public class Player extends Entity {
 			// f.setSensor( true );
 			// }
 			// }
-			mover = new FollowEntityMover( body.getPosition( ).mul(
+			setMoverAtCurrentState( new FollowEntityMover( body.getPosition( ).mul(
 					Util.BOX_TO_PIXEL ), currentScrew, new Vector2( -WIDTH,
-					-HEIGHT / 2.0f ), SCREW_ATTACH_SPEED );
+					-HEIGHT / 2.0f ), SCREW_ATTACH_SPEED ) );
 			playerState = PlayerState.Screwing;
 			currentScrew.setPlayerAttached( true );
 			screwAttachTimeout = SCREW_ATTACH_STEPS;
@@ -1269,7 +1293,7 @@ public class Player extends Entity {
 	private void processJumpState( ) {
 		if ( playerState == PlayerState.Screwing ) {
 			if ( canJumpOffScrew ) {
-				if ( mover == null ) {
+				if ( currentMover( )  == null ) {
 					// jumpPressedKeyboard = true;
 					if ( currentScrew.getScrewType( ) != ScrewType.SCREW_STRUCTURAL
 							|| currentScrew.getDepth( ) >= 0 ) {
@@ -1319,7 +1343,7 @@ public class Player extends Entity {
 	private void processJumpStateController( ) {
 		if ( playerState == PlayerState.Screwing ) {
 			if ( canJumpOffScrew ) {
-				if ( mover == null ) {
+				if ( currentMover( )  == null ) {
 					// jumpPressedController = true;
 					if ( currentScrew.getScrewType( ) != ScrewType.SCREW_STRUCTURAL
 							|| currentScrew.getDepth( ) >= 0 ) {
@@ -1486,7 +1510,7 @@ public class Player extends Entity {
 			}
 		}
 
-		if ( mover == null
+		if ( currentMover( )  == null
 				&& currentScrew.body.getJointList( ).size( ) <= 1
 				|| ( currentScrew.getScrewType( ) == ScrewType.SCREW_BOSS && currentScrew
 						.getDepth( ) == 0 ) ) {
@@ -1526,7 +1550,7 @@ public class Player extends Entity {
 	 */
 	private void processMovementDown( ) {
 		if ( playerState == PlayerState.Screwing ) {
-			if ( mover == null ) {
+			if ( currentMover( )  == null ) {
 				if ( currentScrew.getScrewType( ) != ScrewType.SCREW_STRUCTURAL
 						|| currentScrew.getDepth( ) >= 0 ) {
 					removePlayerToScrew( );
@@ -1701,7 +1725,7 @@ public class Player extends Entity {
 		// f.setSensor( false );
 		// }
 		// }
-		mover = null;
+		this.setMoverAtCurrentState( null );
 		if ( currentScrew != null ) {
 			currentScrew.setPlayerAttached( false );
 		}
@@ -1918,7 +1942,7 @@ public class Player extends Entity {
 				}
 			} else {
 				if ( !screwButtonHeld ) {
-					if ( mover == null ) {
+					if ( currentMover( ) == null ) {
 						if ( currentScrew != null
 								&& ( currentScrew.getScrewType( ) != ScrewType.SCREW_STRUCTURAL || currentScrew
 										.getDepth( ) >= 0 ) ) {
@@ -2029,7 +2053,7 @@ public class Player extends Entity {
 		// Basically you have to hold attach button to stick to screw
 		if ( !controllerListener.screwPressed( )
 				&& playerState == PlayerState.Screwing ) {
-			if ( mover == null ) {
+			if ( currentMover( ) == null ) {
 				if ( currentScrew.getScrewType( ) != ScrewType.SCREW_STRUCTURAL
 						|| currentScrew.getDepth( ) >= 0 ) {
 					removePlayerToScrew( );
@@ -2124,13 +2148,13 @@ public class Player extends Entity {
 
 		tutorialBegin = 0;
 		tutorialEnd = 1;
-		
-		bubbleAnchor =  new Anchor( new Vector2( body.getWorldCenter( ).x
+
+		bubbleAnchor = new Anchor( new Vector2( body.getWorldCenter( ).x
 				* Util.BOX_TO_PIXEL, body.getWorldCenter( ).y
-				* Util.BOX_TO_PIXEL ), new Vector2( 0, 0 ), new Vector2(
-				200f, 200f ) );
+				* Util.BOX_TO_PIXEL ), new Vector2( 0, 0 ), new Vector2( 200f,
+				200f ) );
 		bubbleAnchor.setOffset( 350f, ANCHOR_BUFFER_SIZE.y / 2 + 180f );
-		//bubbleAnchor.activate( );
+		// bubbleAnchor.activate( );
 		addAnchor( bubbleAnchor );
 	}
 
@@ -2328,5 +2352,33 @@ public class Player extends Entity {
 				sounds.setDelay( "footstep2", 0.5f * rate );
 			}
 		}
+	}
+	
+	public void controller_off(){
+		
+	}
+
+	public boolean isRezzing( ) {
+		return rezzing;
+	}
+
+	public void setRezzing( boolean rezzing ) {
+		this.rezzing = rezzing;
+	}
+
+	public float getRezTime( ) {
+		return rezTime;
+	}
+
+	public void setRezTime( float rezTime ) {
+		this.rezTime = rezTime;
+	}
+
+	public boolean isDeadPlayerHitCheckpnt( ) {
+		return deadPlayerHitCheckpnt;
+	}
+
+	public void setDeadPlayerHitCheckpnt( boolean deadPlayerHitCheckpnt ) {
+		this.deadPlayerHitCheckpnt = deadPlayerHitCheckpnt;
 	}
 }

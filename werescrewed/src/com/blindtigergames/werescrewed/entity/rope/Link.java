@@ -30,7 +30,7 @@ public class Link extends Entity {
 	private float width, height;
 	private float xOffset, yOffset;
 	
-	protected Link child;
+	protected Link parent;
 	
 	@SuppressWarnings( "unused" )
 	private boolean drawTwoLinks = false;
@@ -45,7 +45,7 @@ public class Link extends Entity {
 		this.world = world;
 		this.width = widthHeight.x;
 		this.height = widthHeight.y;
-		this.child = null;
+		this.parent = null;
 		constructBody( pos );
 		Sprite temp = constructSprite( chainLinkTexRegion );
 		temp.scale( spriteScale );
@@ -59,7 +59,9 @@ public class Link extends Entity {
 	private void loadSounds( ) {
 		if (sounds == null)
 			sounds = new SoundManager();
-		sounds.getSound( "clink", WereScrewedGame.dirHandle + "/common/sounds/chains.ogg" );
+		sounds.getSound( "clink", WereScrewedGame.dirHandle + "/common/sounds/chain1.ogg" );
+		sounds.getSound( "clink", WereScrewedGame.dirHandle + "/common/sounds/chain2.ogg" );
+		sounds.getSound( "clink", WereScrewedGame.dirHandle + "/common/sounds/chain3.ogg" );
 	}
 
 	private void constructBody( Vector2 pos ) {
@@ -74,7 +76,7 @@ public class Link extends Entity {
 		fixtureDef.filter.categoryBits = Util.CATEGORY_ROPE;
 		fixtureDef.filter.maskBits = Util.CATEGORY_NOTHING;
 		fixtureDef.shape = polygonShape;
-		fixtureDef.density = 1f;
+		fixtureDef.density = 2f;
 		fixtureDef.restitution = 0.0f;
 		fixtureDef.friction = 0.1f;
 		body = world.createBody( bodyDef );
@@ -134,8 +136,8 @@ public class Link extends Entity {
 		
 		sounds.update( deltaTime );
 		float av;
-		if (child != null){
-			av = (float)Math.pow( Math.abs( body.getAngle() - child.body.getAngle( ) ), 2.0f );
+		if (parent != null){
+			av = Math.abs( body.getAngularVelocity() - parent.body.getAngularVelocity( ) ) * Math.abs( body.getAngle() - parent.body.getAngle( ) );
 		} else {
 			av = Math.abs( body.getAngularVelocity( ) );
 		}
@@ -145,11 +147,12 @@ public class Link extends Entity {
 			float pitch = (SOUND_PITCH - SOUND_PITCH_VARIANCE) + (SOUND_PITCH_VARIANCE * Math.min( av, 1.0f ) ); 
 			if (vol > 0.0f){
 				sounds.playSound( "clink", 0, del, vol, pitch);
+				sounds.setDelay( "clink", del);
 			}
 		}
 	}
 
-	public void setChild(Link c){
-		child = c;
+	public void setParent(Link c){
+		parent = c;
 	}
 }
