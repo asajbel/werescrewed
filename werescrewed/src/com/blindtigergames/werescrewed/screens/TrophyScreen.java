@@ -32,12 +32,12 @@ public class TrophyScreen implements com.badlogic.gdx.Screen {
 	private ScreenType screenTag = null;
 	private Label[ ] player1 = new Label[ trophyLength ];
 	private Label[ ] player2 = new Label[ trophyLength ];
+	private TextureRegion[ ] trophyIcon = new TextureRegion[ trophyMax ]; // Holds ALL trophy icons
 	private Sprite[ ] trophies1 = new Sprite[ trophyLength ]; // trophy images
 																// that go next
 																// to player
 																// label
 	private Sprite[ ] trophies2 = new Sprite[ trophyLength ];
-	private TextureRegion[ ] trophyIcon = new TextureRegion[ trophyMax ];
 	private int[] trophyIndices = new int[ 2 * trophyLength ];
 	private Label player1Name = null;
 	private Label player2Name = null;
