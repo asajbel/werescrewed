@@ -35,10 +35,14 @@ public class Screen implements com.badlogic.gdx.Screen {
 	protected int controllerTimer = 10;
 	protected int controllerMax = 10;
 	protected int buttonIndex = 0;
+	protected int width, height;
 	protected float alpha = 1.0f;
 	protected float scale = 0.0f;
-	protected final float SCALEMIN = 1.0f;
-	protected final float SCALEMAX = 500.0f;
+	protected final float SCALE_MIN = 0.0f;
+	protected final float SCALE_MAX = 10.0f;
+	protected final float SCALE_DOWN = 100.0f;
+	protected final float SCALE_UP = 100.0f;
+	protected float scaleMax = 0.0f;
 	//protected Sprite transIn = null;
 	//protected Sprite transOut = null;
 	protected Sprite trans = null;
@@ -143,7 +147,7 @@ public class Screen implements com.badlogic.gdx.Screen {
 					if ( WereScrewedGame.p1ControllerListener.jumpPressed( )
 							|| WereScrewedGame.p1ControllerListener
 									.pausePressed( ) ) {
-						transOutEnd = true;
+						transOutEnd = false;
 						//Buttons.get( buttonIndex ).setSelected( true );
 						controllerTimer = controllerMax;
 
@@ -196,7 +200,7 @@ public class Screen implements com.badlogic.gdx.Screen {
 					if ( WereScrewedGame.p2ControllerListener.jumpPressed( )
 							|| WereScrewedGame.p2ControllerListener
 									.pausePressed( ) ) {
-						transOutEnd = true;
+						transOutEnd = false;
 						//Buttons.get( buttonIndex ).setSelected( true );
 						controllerTimer = controllerMax;
 
@@ -249,8 +253,8 @@ public class Screen implements com.badlogic.gdx.Screen {
 				if ( WereScrewedGame.p1Controller == null
 						&& WereScrewedGame.p2Controller == null ) {
 					if ( Gdx.input.isKeyPressed( Keys.ENTER ) ) {
-						//transOutEnd = true;
-						Buttons.get( buttonIndex ).setSelected( true );
+						transOutEnd = false;
+						//Buttons.get( buttonIndex ).setSelected( true );
 						controllerTimer = controllerMax;
 					}
 					if ( Gdx.input.isKeyPressed( Keys.DOWN ) ) {
@@ -298,34 +302,36 @@ public class Screen implements com.badlogic.gdx.Screen {
 	}
 	
 	protected void drawTransIn ( SpriteBatch batch ) {
-		trans.setSize( scale, scale );
-		scale = scale / 2;
+		scale = scale - SCALE_DOWN;
 		trans.setOrigin( trans.getWidth( ) / 2, trans.getHeight( ) / 2 );
 		trans.rotate( 5.0f );
 		trans.draw( batch );
-		if ( scale < SCALEMIN )
+		if ( scale < SCALE_MIN ) {
 			transInEnd = true;
+			scale = 0.0f;
+		}
 	}
 	
 	protected void drawTransOut ( SpriteBatch batch ) {
-		trans.setSize( scale, scale );
-		scale = scale * 2;
+		scale = scale + SCALE_UP;
 		trans.setOrigin( trans.getWidth( ) / 2, trans.getHeight( ) / 2 );
 		trans.rotate( 5.0f );
 		trans.draw( batch );
-		if ( scale > SCALEMAX ) {
+		if ( scale > scaleMax ) {
 			transOutEnd = true;
-			Buttons.get( buttonIndex ).setSelected( true );
+			if ( Buttons.size( ) > 0 ) 
+				Buttons.get( buttonIndex ).setSelected( true );
+			else
+				scale = 0.0f;
 		}
 	}
 	
 	protected void drawTransOut ( SpriteBatch batch, ScreenType screen ) {
-		trans.setSize( scale, scale );
-		scale = scale * 2;
+		scale = scale + SCALE_UP;
 		trans.setOrigin( trans.getWidth( ) / 2, trans.getHeight( ) / 2 );
 		trans.rotate( 5.0f );
 		trans.draw( batch );
-		if ( scale > SCALEMAX ) {
+		if ( scale > scaleMax ) {
 			transOutEnd = true;
 			ScreenManager.getInstance( ).show( screen );
 		}

@@ -35,7 +35,6 @@ public class LevelSelectScreen extends Screen {
 	private SimpleSpinemator lady = null;
 	private Array< Falling > debris = null;
 	private Array< Falling > gears = null;
-	private int width, height;
 	private float time;
 	private float manDir = 1;
 	private float ladyDir = -1;
@@ -55,10 +54,19 @@ public class LevelSelectScreen extends Screen {
 		
 		lineHeight = Math.round( 2.5f * font.getCapHeight( ) + 40 );
 		screenLabel = new Label( "Level Select", fancyFont );
+		
 		man = new SimpleSpinemator( "red_male_atlas", "male", "fall_idle", true );
 		lady = new SimpleSpinemator( "red_female_atlas", "female", "fall_idle", true );
 		gears = new Array< Falling >( );
 		debris = new Array< Falling >( );
+		
+		Texture transition = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
+				+ "/transitions/trans-gear.png", Texture.class );
+		trans = new Sprite( transition );
+		scale = trans.getHeight( ) * SCALE_MAX;
+		scaleMax = scale;
+		transInEnd = false;
+		
 		TextureAtlas gearsAtlas = WereScrewedGame.manager.getAtlas( "gears" );
 		TextureAtlas common = WereScrewedGame.manager
 				.getAtlas( "common-textures" );
@@ -109,11 +117,24 @@ public class LevelSelectScreen extends Screen {
 
 		backButton.draw( batch, camera );
 
-		if ( !alphaFinish )
-			setAlpha( -0.02f );
+		//if ( !alphaFinish )
+			//setAlpha( -0.02f );
 		man.draw( batch );
 		lady.draw( batch );
-		fade.draw( batch, alpha );
+		//fade.draw( batch, alpha );
+
+		if ( !transInEnd ) {
+			trans.setPosition( width / 2 - trans.getWidth( ) / 2, height / 2 - trans.getHeight( ) / 2 );
+			drawTransIn( batch );
+			trans.setSize( scale, scale );
+		}
+		
+		if ( !transOutEnd ) {
+			trans.setPosition( width / 2 - trans.getWidth( ) / 2, height / 2 - trans.getHeight( ) / 2 );
+			drawTransOut( batch );
+			trans.setSize( scale, scale );
+		}
+		
 		batch.end( );
 
 	}
