@@ -18,7 +18,6 @@ import com.blindtigergames.werescrewed.util.Util;
 public class Fire extends Hazard {
 
 	public ParticleEffect particleEffect;
-	// public Array< ParticleEmitter > particleEmitter;
 	protected float width;
 	protected float height;
 	boolean upsideDown = true, started = true;
@@ -50,7 +49,6 @@ public class Fire extends Hazard {
 		this.world = world;
 		this.activeHazard = isActive;
 		particleEffect = WereScrewedGame.manager.getParticleEffect( "fire_new" );
-		// particleEffect.setOffset(0f, -height);
 		particleEffect.setPosition( pos.x, pos.y );
 
 		// addFrontParticleEffect( "fire", false, true );

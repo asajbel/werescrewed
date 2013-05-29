@@ -80,7 +80,6 @@ public class DragonScreen extends Screen {
 		tail1Decals();
 		tail2Decals();
 		tail3Decals();
-		//neckDecals();
 		bodyDecals();
 
 
@@ -514,9 +513,11 @@ public class DragonScreen extends Screen {
 
 	void bodySkeletons( ) {
 
+
 		Skeleton bodySection2Skeleton = ( Skeleton ) LevelFactory.entities
 				.get( "body_section2_skeleton" );
 		
+
 		Skeleton bodyInsideSkeleton1 = ( Skeleton ) LevelFactory.entities
 				.get( "body_inside_skeleton1" );
 		Skeleton bodyInsideSkeleton2 = ( Skeleton ) LevelFactory.entities
@@ -560,6 +561,7 @@ public class DragonScreen extends Screen {
 		Platform bodyBotLower = ( Platform ) LevelFactory.entities
 				.get( "body_bot_lower" );
 		
+
 		Fire bodyFire6 = (Fire) LevelFactory.entities
 				.get( "body_fire6" );
 		bodyFire6.particleEffect.setAngle( Util.PI/2 );
@@ -594,6 +596,40 @@ public class DragonScreen extends Screen {
 		bodyPowerSwitch2.actOnEntity = true;
 		bodyPowerSwitch2.addEntityToTrigger( bodyFire5 );
 		bodyPowerSwitch2.addEntityToTrigger( bodyFire6 );
+
+		
+		//DECALS:
+		TextureAtlas dragon_objects = WereScrewedGame.manager.getAtlas( "dragon_objects" );
+		Skeleton[] wheelSkeles = {bodyInsideSkeleton1,bodyInsideSkeleton2,bodyInsideSkeleton3,bodyInsideSkeleton4};
+		Sprite s;
+		for(int i = 0; i < wheelSkeles.length; ++i){
+			s = dragon_objects.createSprite( "wheel" );
+			wheelSkeles[i].addBGDecal( s, new Vector2(-s.getWidth( )/2,-s.getHeight( )/2) );
+			addBGEntity( wheelSkeles[i] ); //add to entity list so it's amongst the entity layer not skele layer
+		}
+		//306 328
+		bodySkeleton.addBGDecal( Sprite.scale(dragon_objects.createSprite( "turbine" ), 2.6f), new Vector2(1244,-1248) );
+		addBGSkeleton( bodySkeleton );
+		
+		//bodyRoomRotateSkeleton
+		//top left
+		bodyRoomRotateSkeleton.addFGDecal( 
+				Sprite.scale(dragon_objects.createSprite( "turbine-outside" ),2), 
+				new Vector2(-1012,100) );
+		//bottom left
+		bodyRoomRotateSkeleton.addFGDecal( 
+				Sprite.scale(dragon_objects.createSprite( "turbine-outside" ),2,-2),
+				new Vector2(-1012,-100) );
+		//top right
+		bodyRoomRotateSkeleton.addFGDecal( 
+				Sprite.scale(dragon_objects.createSprite( "turbine-outside" ),-2,2), 
+				new Vector2(1012,100) );
+		//bottom right
+		bodyRoomRotateSkeleton.addFGDecal( 
+				Sprite.scale(dragon_objects.createSprite( "turbine-outside" ),-2,-2),
+				new Vector2(1012,-100) );
+		addFGEntity( bodyRoomRotateSkeleton );
+
 	}
 
 	void buildAllCannons( ) {
@@ -657,7 +693,9 @@ public class DragonScreen extends Screen {
 			s = dragonObjects.createSprite( "burner-med" );
 			p.addFGDecal( s,new Vector2(-s.getWidth( )/2,-s.getHeight( )/2) );
 			addFGEntity( p );
-			p.addBehindParticleEffect( "fire_new", false, true ).setOffsetFromParent( 0, 75 ).setAngle( -Util.PI/2 ).start();
+			p.addBehindParticleEffect( "fire_new", false, true ).setOffsetFromParent( 0, 75 ).setRotation( Util.PI ).start();//
+			p.getEffect( "fire_new" ).updateAngleWithParent=false;
+			p.setVisible( false, true ); //don't draw the platform, but do draw particles
 		}
 		
 		
@@ -678,15 +716,17 @@ public class DragonScreen extends Screen {
 		
 	}
 
-void buildBackground(){
+	void buildBackground(){
 		TextureAtlas clouds_sun_bg = WereScrewedGame.manager.getAtlas( "clouds_sun_bg" );
 		TextureAtlas mountains_back_clouds = WereScrewedGame.manager.getAtlas( "mountains-back-clouds" );
-		float frontTopCloudsY = 2800, midOrangeCloudsY = -400, bottomFrontCloudsY = -1000;
+		float frontTopCloudsY = 2400, midOrangeCloudsY = -900, bottomFrontCloudsY = -1000;
 		float frontCloudVariation = 600;
 		float numFrontClouds = 50;
-		float xMax = 32000, xMin = -3000;
+		float xMax = 32000, xMin = -7000;
 		float minCloudScale = 0.5f;
 		float cloudScale = 1f/.75f;
+		float moveLeftSpeed = -0.00013f;
+		float speedOffset = -.00001f;
 		
 		setClearColor( 105f/255f, 208f/255f, 255f/255f, 1f ); //SKY BLUE
 		
@@ -709,11 +749,13 @@ void buildBackground(){
 								  0);
 			scale = (r.nextFloat( )/2+minCloudScale)*cloudScale;
 			e.sprite.setScale( scale * (r.nextBoolean( )?1f:-1f), r.nextFloat( )/2+0.5f );
-			
+			e.addFGDecal( e.sprite );
+			e.sprite=null;
+			addFGEntity( e );
 			yPos = frontTopCloudsY + Util.binom( )*frontCloudVariation;
 			m = new ParallaxMover( new Vector2(xMin,yPos),
 												 new Vector2(xMax,yPos),
-												 -0.0001f*r.nextFloat()-.00001f,
+												 moveLeftSpeed*r.nextFloat()+speedOffset,
 												 r.nextFloat(),
 												 null,
 												 true,
@@ -744,7 +786,7 @@ void buildBackground(){
 			yPos = midOrangeCloudsY + Util.binom( )*frontCloudVariation;
 			m = new ParallaxMover( new Vector2(xMin,yPos),
 												 new Vector2(xMax,yPos),
-												 -0.0001f*r.nextFloat()-.00001f,
+												 moveLeftSpeed*r.nextFloat()+speedOffset,
 												 r.nextFloat(),
 												 null,
 												 true,
@@ -768,11 +810,45 @@ void buildBackground(){
 								  0);
 			scale = (r.nextFloat( )/2+minCloudScale)*cloudScale;
 			e.sprite.setScale( scale * (r.nextBoolean( )?1f:-1f), r.nextFloat( )/2+0.5f );
+			e.addFGDecal( e.sprite );
+			e.sprite=null;
+			addFGEntity( e );
 			yPos = bottomFrontCloudsY + Util.binom( )*frontCloudVariation;
 			m = new ParallaxMover( new Vector2(xMin,yPos),
 												 new Vector2(xMax,yPos),
 												 //new Vector2( r.nextFloat( )*(xMax-xMin)+xMin, yPos ),
-												 -0.0001f*r.nextFloat()-.00001f, r.nextFloat(), null, true, LinearAxis.HORIZONTAL );
+												 moveLeftSpeed*r.nextFloat()+speedOffset, r.nextFloat(), null, true, LinearAxis.HORIZONTAL );
+			e.setMoverAtCurrentState( m );
+			level.root.addLooseEntity( e );
+		}
+		
+		
+		//more in the beginning orange big cloud layer
+		for(int i = 0; i < 10; ++i){
+			bdef = new BodyDef();
+			bdef.fixedRotation=true;
+			bdef.type=BodyType.StaticBody;
+			b = level.world.createBody( bdef );
+			cloudId = "front1-"+(r.nextInt( 4 )+1);
+			e = new Entity("front1-"+i,
+								  new Vector2(),
+								  clouds_sun_bg.findRegion( cloudId ),
+								  b,
+								  false,
+								  0);
+			scale = (r.nextFloat( )/2+minCloudScale)*cloudScale;
+			e.sprite.setScale( scale * (r.nextBoolean( )?1f:-1f), r.nextFloat( )/2+0.5f );
+			e.addFGDecal( e.sprite );
+			e.sprite=null;
+			addFGEntity( e );
+			yPos = midOrangeCloudsY+900 + Util.binom( )*frontCloudVariation;
+			m = new ParallaxMover( new Vector2(xMin,yPos),
+												 new Vector2(2500,yPos),
+												 -0.001f*r.nextFloat()-.0001f,
+												 r.nextFloat(),
+												 null,
+												 true,
+												 LinearAxis.HORIZONTAL );
 			e.setMoverAtCurrentState( m );
 			level.root.addLooseEntity( e );
 		}

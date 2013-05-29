@@ -3076,7 +3076,7 @@
                 </Item>
                 <Item xsi:type="PathItem" Name="tail2_skeleton" Visible="true">
                     <Position>
-                        <X>8928</X>
+                        <X>8896</X>
                         <Y>-1248</Y>
                     </Position>
                     <CustomProperties>
@@ -3118,27 +3118,27 @@
                     </LocalPoints>
                     <WorldPoints>
                         <Vector2>
-                            <X>8928</X>
+                            <X>8896</X>
                             <Y>-1248</Y>
                         </Vector2>
                         <Vector2>
-                            <X>7868.59229</X>
+                            <X>7836.59229</X>
                             <Y>-882.6892</Y>
                         </Vector2>
                         <Vector2>
-                            <X>10185.3555</X>
+                            <X>10153.3555</X>
                             <Y>-653.0273</Y>
                         </Vector2>
                         <Vector2>
-                            <X>10187.1426</X>
+                            <X>10155.1426</X>
                             <Y>-1740.06543</Y>
                         </Vector2>
                         <Vector2>
-                            <X>7869.73047</X>
+                            <X>7837.73047</X>
                             <Y>-1574.44092</Y>
                         </Vector2>
                         <Vector2>
-                            <X>7868.59229</X>
+                            <X>7836.59229</X>
                             <Y>-882.6892</Y>
                         </Vector2>
                     </WorldPoints>
@@ -3154,7 +3154,7 @@
                 </Item>
                 <Item xsi:type="PathItem" Name="tail2_sub_skeleton" Visible="true">
                     <Position>
-                        <X>9328</X>
+                        <X>9296</X>
                         <Y>-1360</Y>
                     </Position>
                     <CustomProperties>
@@ -3199,27 +3199,27 @@
                     </LocalPoints>
                     <WorldPoints>
                         <Vector2>
-                            <X>9328</X>
+                            <X>9296</X>
                             <Y>-1360</Y>
                         </Vector2>
                         <Vector2>
-                            <X>9232</X>
+                            <X>9200</X>
                             <Y>-1280</Y>
                         </Vector2>
                         <Vector2>
-                            <X>9408</X>
+                            <X>9376</X>
                             <Y>-1328</Y>
                         </Vector2>
                         <Vector2>
-                            <X>9360</X>
+                            <X>9328</X>
                             <Y>-1408</Y>
                         </Vector2>
                         <Vector2>
-                            <X>9216</X>
+                            <X>9184</X>
                             <Y>-1360</Y>
                         </Vector2>
                         <Vector2>
-                            <X>9232</X>
+                            <X>9200</X>
                             <Y>-1280</Y>
                         </Vector2>
                     </WorldPoints>
@@ -3235,7 +3235,7 @@
                 </Item>
                 <Item xsi:type="PathItem" Name="tail2_balloon1" Visible="true">
                     <Position>
-                        <X>8928</X>
+                        <X>8896</X>
                         <Y>-2896</Y>
                     </Position>
                     <CustomProperties>
@@ -3285,35 +3285,35 @@
                     </LocalPoints>
                     <WorldPoints>
                         <Vector2>
-                            <X>8928</X>
+                            <X>8896</X>
                             <Y>-2896</Y>
                         </Vector2>
                         <Vector2>
-                            <X>8112</X>
+                            <X>8080</X>
                             <Y>-2896</Y>
                         </Vector2>
                         <Vector2>
-                            <X>8416</X>
+                            <X>8384</X>
                             <Y>-2544</Y>
                         </Vector2>
                         <Vector2>
-                            <X>9424</X>
+                            <X>9392</X>
                             <Y>-2544</Y>
                         </Vector2>
                         <Vector2>
-                            <X>9728</X>
+                            <X>9696</X>
                             <Y>-2912</Y>
                         </Vector2>
                         <Vector2>
-                            <X>9424</X>
+                            <X>9392</X>
                             <Y>-3200</Y>
                         </Vector2>
                         <Vector2>
-                            <X>8416</X>
+                            <X>8384</X>
                             <Y>-3200</Y>
                         </Vector2>
                         <Vector2>
-                            <X>8112</X>
+                            <X>8080</X>
                             <Y>-2896</Y>
                         </Vector2>
                     </WorldPoints>
@@ -3329,7 +3329,7 @@
                 </Item>
                 <Item xsi:type="PathItem" Name="tail2_bot" Visible="true">
                     <Position>
-                        <X>9136</X>
+                        <X>9104</X>
                         <Y>-784</Y>
                     </Position>
                     <CustomProperties>
@@ -3368,27 +3368,27 @@
                     </LocalPoints>
                     <WorldPoints>
                         <Vector2>
-                            <X>9136</X>
+                            <X>9104</X>
                             <Y>-784</Y>
                         </Vector2>
                         <Vector2>
-                            <X>7744</X>
+                            <X>7712</X>
                             <Y>-928</Y>
                         </Vector2>
                         <Vector2>
-                            <X>7744</X>
+                            <X>7712</X>
                             <Y>-848</Y>
                         </Vector2>
                         <Vector2>
-                            <X>10176</X>
+                            <X>10144</X>
                             <Y>-624</Y>
                         </Vector2>
                         <Vector2>
-                            <X>10176</X>
+                            <X>10144</X>
                             <Y>-768</Y>
                         </Vector2>
                         <Vector2>
-                            <X>7744</X>
+                            <X>7712</X>
                             <Y>-928</Y>
                         </Vector2>
                     </WorldPoints>
@@ -3404,7 +3404,7 @@
                 </Item>
                 <Item xsi:type="PathItem" Name="tail2_top" Visible="true">
                     <Position>
-                        <X>8992</X>
+                        <X>8960</X>
                         <Y>-1680</Y>
                     </Position>
                     <CustomProperties>
@@ -3443,27 +3443,27 @@
                     </LocalPoints>
                     <WorldPoints>
                         <Vector2>
-                            <X>8992</X>
+                            <X>8960</X>
                             <Y>-1680</Y>
                         </Vector2>
                         <Vector2>
-                            <X>7728</X>
+                            <X>7696</X>
                             <Y>-1648</Y>
                         </Vector2>
                         <Vector2>
-                            <X>7728</X>
+                            <X>7696</X>
                             <Y>-1568</Y>
                         </Vector2>
                         <Vector2>
-                            <X>10000</X>
+                            <X>9968</X>
                             <Y>-1696</Y>
                         </Vector2>
                         <Vector2>
-                            <X>10000</X>
+                            <X>9968</X>
                             <Y>-1824</Y>
                         </Vector2>
                         <Vector2>
-                            <X>7728</X>
+                            <X>7696</X>
                             <Y>-1648</Y>
                         </Vector2>
                     </WorldPoints>
@@ -3479,7 +3479,7 @@
                 </Item>
                 <Item xsi:type="PathItem" Name="tail2_right" Visible="true">
                     <Position>
-                        <X>10256</X>
+                        <X>10208</X>
                         <Y>-1296</Y>
                     </Position>
                     <CustomProperties>
@@ -3518,27 +3518,27 @@
                     </LocalPoints>
                     <WorldPoints>
                         <Vector2>
-                            <X>10256</X>
+                            <X>10208</X>
                             <Y>-1296</Y>
                         </Vector2>
                         <Vector2>
-                            <X>10192</X>
+                            <X>10144</X>
                             <Y>-624</Y>
                         </Vector2>
                         <Vector2>
-                            <X>10320</X>
+                            <X>10272</X>
                             <Y>-624</Y>
                         </Vector2>
                         <Vector2>
-                            <X>10320</X>
+                            <X>10272</X>
                             <Y>-1840</Y>
                         </Vector2>
                         <Vector2>
-                            <X>10192</X>
+                            <X>10144</X>
                             <Y>-1840</Y>
                         </Vector2>
                         <Vector2>
-                            <X>10192</X>
+                            <X>10144</X>
                             <Y>-624</Y>
                         </Vector2>
                     </WorldPoints>
@@ -3554,7 +3554,7 @@
                 </Item>
                 <Item xsi:type="RectangleItem" Name="tail2_flame_plat" Visible="true">
                     <Position>
-                        <X>8736</X>
+                        <X>8704</X>
                         <Y>-2240</Y>
                     </Position>
                     <CustomProperties>
@@ -3580,7 +3580,7 @@
                 </Item>
                 <Item xsi:type="TextureItem" Name="tail2_rope1" Visible="true">
                     <Position>
-                        <X>8432</X>
+                        <X>8400</X>
                         <Y>-2544</Y>
                     </Position>
                     <CustomProperties>
@@ -3623,7 +3623,7 @@
                 </Item>
                 <Item xsi:type="TextureItem" Name="tail2_rope2" Visible="true">
                     <Position>
-                        <X>9408</X>
+                        <X>9376</X>
                         <Y>-2544</Y>
                     </Position>
                     <CustomProperties>
@@ -3666,7 +3666,7 @@
                 </Item>
                 <Item xsi:type="TextureItem" Name="tail2_ss_left" Visible="true">
                     <Position>
-                        <X>8304</X>
+                        <X>8272</X>
                         <Y>-1792</Y>
                     </Position>
                     <CustomProperties>
@@ -3715,7 +3715,7 @@
                 </Item>
                 <Item xsi:type="TextureItem" Name="tail2_ss_right" Visible="true">
                     <Position>
-                        <X>9600</X>
+                        <X>9568</X>
                         <Y>-1888</Y>
                     </Position>
                     <CustomProperties>
@@ -3764,7 +3764,7 @@
                 </Item>
                 <Item xsi:type="RectangleItem" Name="tail2_plat_left" Visible="true">
                     <Position>
-                        <X>7872</X>
+                        <X>7840</X>
                         <Y>-1376</Y>
                     </Position>
                     <CustomProperties>
@@ -3787,7 +3787,7 @@
                 </Item>
                 <Item xsi:type="TextureItem" Name="tail2_stripped_screw5" Visible="true">
                     <Position>
-                        <X>8112</X>
+                        <X>8080</X>
                         <Y>-1120</Y>
                     </Position>
                     <CustomProperties>
@@ -3827,7 +3827,7 @@
                 </Item>
                 <Item xsi:type="RectangleItem" Name="tail2_plat_right" Visible="true">
                     <Position>
-                        <X>9760</X>
+                        <X>9728</X>
                         <Y>-1344</Y>
                     </Position>
                     <CustomProperties>
@@ -3850,7 +3850,7 @@
                 </Item>
                 <Item xsi:type="PathItem" Name="tail2_pipe1" Visible="true">
                     <Position>
-                        <X>8544</X>
+                        <X>8512</X>
                         <Y>-1152</Y>
                     </Position>
                     <CustomProperties>
@@ -3881,19 +3881,19 @@
                     </LocalPoints>
                     <WorldPoints>
                         <Vector2>
-                            <X>8544</X>
+                            <X>8512</X>
                             <Y>-1152</Y>
                         </Vector2>
                         <Vector2>
-                            <X>8288</X>
+                            <X>8256</X>
                             <Y>-1152</Y>
                         </Vector2>
                         <Vector2>
-                            <X>8544</X>
+                            <X>8512</X>
                             <Y>-1152</Y>
                         </Vector2>
                         <Vector2>
-                            <X>8544</X>
+                            <X>8512</X>
                             <Y>-1472</Y>
                         </Vector2>
                     </WorldPoints>
@@ -3909,7 +3909,7 @@
                 </Item>
                 <Item xsi:type="PathItem" Name="tail2_pipe2" Visible="true">
                     <Position>
-                        <X>9440</X>
+                        <X>9408</X>
                         <Y>-1152</Y>
                     </Position>
                     <CustomProperties>
@@ -3940,19 +3940,19 @@
                     </LocalPoints>
                     <WorldPoints>
                         <Vector2>
-                            <X>9440</X>
+                            <X>9408</X>
                             <Y>-1152</Y>
                         </Vector2>
                         <Vector2>
-                            <X>9696</X>
+                            <X>9664</X>
                             <Y>-1152</Y>
                         </Vector2>
                         <Vector2>
-                            <X>9440</X>
+                            <X>9408</X>
                             <Y>-1152</Y>
                         </Vector2>
                         <Vector2>
-                            <X>9440</X>
+                            <X>9408</X>
                             <Y>-832</Y>
                         </Vector2>
                     </WorldPoints>
@@ -3968,7 +3968,7 @@
                 </Item>
                 <Item xsi:type="PathItem" Name="tail2_middle_pipe" Visible="true">
                     <Position>
-                        <X>9024</X>
+                        <X>8992</X>
                         <Y>-864</Y>
                     </Position>
                     <CustomProperties>
@@ -3999,19 +3999,19 @@
                     </LocalPoints>
                     <WorldPoints>
                         <Vector2>
-                            <X>9024</X>
+                            <X>8992</X>
                             <Y>-864</Y>
                         </Vector2>
                         <Vector2>
-                            <X>9024</X>
+                            <X>8992</X>
                             <Y>-1120</Y>
                         </Vector2>
                         <Vector2>
-                            <X>8832</X>
+                            <X>8800</X>
                             <Y>-1120</Y>
                         </Vector2>
                         <Vector2>
-                            <X>9248</X>
+                            <X>9216</X>
                             <Y>-1120</Y>
                         </Vector2>
                     </WorldPoints>
@@ -4027,7 +4027,7 @@
                 </Item>
                 <Item xsi:type="TextureItem" Name="tail2_puzzle_screw1" Visible="true">
                     <Position>
-                        <X>8032</X>
+                        <X>8000</X>
                         <Y>-1440</Y>
                     </Position>
                     <CustomProperties>
@@ -4079,7 +4079,7 @@
                 </Item>
                 <Item xsi:type="TextureItem" Name="tail2_puzzle_screw2" Visible="true">
                     <Position>
-                        <X>9920</X>
+                        <X>9888</X>
                         <Y>-1408</Y>
                     </Position>
                     <CustomProperties>
@@ -4131,7 +4131,7 @@
                 </Item>
                 <Item xsi:type="PathItem" Name="tail2_ledge" Visible="true">
                     <Position>
-                        <X>10336</X>
+                        <X>10304</X>
                         <Y>-736</Y>
                     </Position>
                     <CustomProperties>
@@ -4166,23 +4166,23 @@
                     </LocalPoints>
                     <WorldPoints>
                         <Vector2>
-                            <X>10336</X>
+                            <X>10304</X>
                             <Y>-736</Y>
                         </Vector2>
                         <Vector2>
-                            <X>10304</X>
+                            <X>10272</X>
                             <Y>-784</Y>
                         </Vector2>
                         <Vector2>
-                            <X>10304</X>
+                            <X>10272</X>
                             <Y>-688</Y>
                         </Vector2>
                         <Vector2>
-                            <X>10480</X>
+                            <X>10448</X>
                             <Y>-720</Y>
                         </Vector2>
                         <Vector2>
-                            <X>10304</X>
+                            <X>10272</X>
                             <Y>-784</Y>
                         </Vector2>
                     </WorldPoints>
@@ -5370,8 +5370,8 @@
                 </Item>
                 <Item xsi:type="TextureItem" Name="tail3_switch2" Visible="true">
                     <Position>
-                        <X>11888</X>
-                        <Y>-1520</Y>
+                        <X>11696</X>
+                        <Y>-1504</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -5832,7 +5832,7 @@
                 </Item>
                 <Item xsi:type="TextureItem" Name="tail2_to_tail3_ss" Visible="true">
                     <Position>
-                        <X>10336</X>
+                        <X>10304</X>
                         <Y>-656</Y>
                     </Position>
                     <CustomProperties>
@@ -9575,7 +9575,7 @@
                 </Item>
                 <Item xsi:type="TextureItem" Name="tail2_stripped_screw6" Visible="true">
                     <Position>
-                        <X>10080</X>
+                        <X>10048</X>
                         <Y>-1520</Y>
                     </Position>
                     <CustomProperties>
@@ -9615,7 +9615,7 @@
                 </Item>
                 <Item xsi:type="TextureItem" Name="tail2_stripped_screw7" Visible="true">
                     <Position>
-                        <X>10080</X>
+                        <X>10048</X>
                         <Y>-1744</Y>
                     </Position>
                     <CustomProperties>
@@ -9655,7 +9655,7 @@
                 </Item>
                 <Item xsi:type="RectangleItem" Name="tail2_fire1" Visible="true">
                     <Position>
-                        <X>7776</X>
+                        <X>7744</X>
                         <Y>-1856</Y>
                     </Position>
                     <CustomProperties>
@@ -14917,7 +14917,7 @@
                 </Item>
                 <Item xsi:type="PathItem" Name="Path_1028" Visible="true">
                     <Position>
-                        <X>10352</X>
+                        <X>10304</X>
                         <Y>-1632</Y>
                     </Position>
                     <CustomProperties>
@@ -14952,23 +14952,23 @@
                     </LocalPoints>
                     <WorldPoints>
                         <Vector2>
-                            <X>10352</X>
+                            <X>10304</X>
                             <Y>-1632</Y>
                         </Vector2>
                         <Vector2>
-                            <X>10320</X>
+                            <X>10272</X>
                             <Y>-1680</Y>
                         </Vector2>
                         <Vector2>
-                            <X>10320</X>
+                            <X>10272</X>
                             <Y>-1584</Y>
                         </Vector2>
                         <Vector2>
-                            <X>10416</X>
+                            <X>10368</X>
                             <Y>-1632</Y>
                         </Vector2>
                         <Vector2>
-                            <X>10320</X>
+                            <X>10272</X>
                             <Y>-1680</Y>
                         </Vector2>
                     </WorldPoints>
@@ -14984,7 +14984,7 @@
                 </Item>
                 <Item xsi:type="PathItem" Name="Path_1029" Visible="true">
                     <Position>
-                        <X>10336</X>
+                        <X>10304</X>
                         <Y>-1376</Y>
                     </Position>
                     <CustomProperties>
@@ -15019,23 +15019,23 @@
                     </LocalPoints>
                     <WorldPoints>
                         <Vector2>
-                            <X>10336</X>
+                            <X>10304</X>
                             <Y>-1376</Y>
                         </Vector2>
                         <Vector2>
-                            <X>10304</X>
+                            <X>10272</X>
                             <Y>-1424</Y>
                         </Vector2>
                         <Vector2>
-                            <X>10304</X>
+                            <X>10272</X>
                             <Y>-1328</Y>
                         </Vector2>
                         <Vector2>
-                            <X>10432</X>
+                            <X>10400</X>
                             <Y>-1376</Y>
                         </Vector2>
                         <Vector2>
-                            <X>10304</X>
+                            <X>10272</X>
                             <Y>-1424</Y>
                         </Vector2>
                     </WorldPoints>
@@ -15051,7 +15051,7 @@
                 </Item>
                 <Item xsi:type="PathItem" Name="Path_1030" Visible="true">
                     <Position>
-                        <X>10352</X>
+                        <X>10304</X>
                         <Y>-1056</Y>
                     </Position>
                     <CustomProperties>
@@ -15086,23 +15086,23 @@
                     </LocalPoints>
                     <WorldPoints>
                         <Vector2>
-                            <X>10352</X>
+                            <X>10304</X>
                             <Y>-1056</Y>
                         </Vector2>
                         <Vector2>
-                            <X>10320</X>
+                            <X>10272</X>
                             <Y>-1104</Y>
                         </Vector2>
                         <Vector2>
-                            <X>10320</X>
+                            <X>10272</X>
                             <Y>-1008</Y>
                         </Vector2>
                         <Vector2>
-                            <X>10464</X>
+                            <X>10416</X>
                             <Y>-1040</Y>
                         </Vector2>
                         <Vector2>
-                            <X>10320</X>
+                            <X>10272</X>
                             <Y>-1104</Y>
                         </Vector2>
                     </WorldPoints>
@@ -15118,8 +15118,8 @@
                 </Item>
                 <Item xsi:type="PathItem" Name="Path_1031" Visible="true">
                     <Position>
-                        <X>7808</X>
-                        <Y>-1664</Y>
+                        <X>7776</X>
+                        <Y>-1696</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -15136,16 +15136,16 @@
                         </Vector2>
                         <Vector2>
                             <X>0</X>
-                            <Y>576</Y>
+                            <Y>608</Y>
                         </Vector2>
                     </LocalPoints>
                     <WorldPoints>
                         <Vector2>
-                            <X>7808</X>
-                            <Y>-1664</Y>
+                            <X>7776</X>
+                            <Y>-1696</Y>
                         </Vector2>
                         <Vector2>
-                            <X>7808</X>
+                            <X>7776</X>
                             <Y>-1088</Y>
                         </Vector2>
                     </WorldPoints>
@@ -16805,8 +16805,8 @@
         <NextItemNumber>1071</NextItemNumber>
         <ContentRootFolder>gleed-textures</ContentRootFolder>
         <CameraPosition>
-            <X>13514.0117</X>
-            <Y>-357.995117</Y>
+            <X>7713.989</X>
+            <Y>-1607.99878</Y>
         </CameraPosition>
         <Version>1.3.0.0</Version>
     </EditorRelated>

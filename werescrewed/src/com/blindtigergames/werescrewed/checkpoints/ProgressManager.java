@@ -326,7 +326,7 @@ public class ProgressManager {
 				.getPositionPixel( ), currentCheckPoint, Vector2.Zero, diff ) );
 		player.deactivateAnchors( );
 		// player.body.setLinearVelocity( diff );
-		player.setVisible( false );
+		player.setVisible( false, true );
 
 	}
 

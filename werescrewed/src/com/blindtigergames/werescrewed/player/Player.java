@@ -261,10 +261,10 @@ public class Player extends Entity {
 		addBehindParticleEffect( landCloudName, false, false );
 		addFrontParticleEffect( "skid_left", false, false );
 		addFrontParticleEffect( "skid_right", false, false );
-		for ( String s : injuredParticles ) {
+		/*for ( String s : injuredParticles ) {
 			addBehindParticleEffect( s, false, false );
 			getEffect( s ).allowCompletion( );
-		}
+		}*/
 		addBehindParticleEffect( "revive", false, false );
 		// land_cloud = ParticleEffect.loadEffect( "land_cloud" );
 
@@ -614,10 +614,9 @@ public class Player extends Entity {
 				currentPlatform = null;
 			}
 
-			if ( !isDead ) {
-				ParticleEffect text = getEffect( injuredParticles[ WereScrewedGame.random
-						.nextInt( injuredParticles.length ) ] );
-				text.restartAt( getPositionPixel( ) );
+			if ( !isDead ) { //sometimes this function is called twice in a row :(
+				addBehindParticleEffect( injuredParticles[ WereScrewedGame.random
+						.nextInt( injuredParticles.length ) ], true, false ).restartAt( getPositionPixel( ) );
 				sounds.playSound( "death", 1.0f );
 			}
 			isDead = true;

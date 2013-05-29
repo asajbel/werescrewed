@@ -63,7 +63,7 @@ public class Entity implements GleedLoadable {
 	protected float energy;
 	protected boolean active;
 	protected boolean crushing;
-	protected boolean visible;
+	protected boolean visible, drawParticles=true;
 	protected boolean maintained;
 	protected boolean removeNextStep = false;
 	public EntityType entityType;
@@ -309,22 +309,16 @@ public class Entity implements GleedLoadable {
 	}
 
 	public void draw( SpriteBatch batch, float deltaTime ) {
-		// if(name.equals("balloon1_flame_plat")){
-		// this.getPosition( );
-		// }
+		if(drawParticles)drawParticles( behindParticles, batch );
 		if ( visible ) {
-
-			// drawBGDecals( batch );
-			drawParticles( behindParticles, batch );
-			if ( sprite != null && visible && !removeNextStep ) {
+			if ( sprite != null && !removeNextStep ) {
 				sprite.draw( batch );
 			}
-			// drawOrigin(batch);
-			// drawFGDecals( batch );
-			if ( getSpinemator( ) != null )
-				getSpinemator( ).draw( batch );
-			drawParticles( frontParticles, batch );
+			if ( spinemator != null )
+				spinemator.draw( batch );
+			
 		}
+		if(drawParticles)drawParticles( frontParticles, batch );
 	}
 
 	protected void drawParticles( ArrayHash< String, ParticleEffect > map,
@@ -900,13 +894,13 @@ public class Entity implements GleedLoadable {
 	}
 
 	/**
-	 * Determines whether an entity should be drawn or not.
-	 * 
+	 * Set visibility of both the entity and the particles.
 	 * @param v
 	 *            - boolean
 	 */
 	public void setVisible( boolean v ) {
 		visible = v;
+		drawParticles=v;
 	}
 
 	/**
@@ -916,6 +910,20 @@ public class Entity implements GleedLoadable {
 	 */
 	public boolean isVisible( ) {
 		return visible;
+	}
+	
+	/**
+	 * Set drawing of the entity and the particles separately
+	 * @param isVisible
+	 * @param drawParticles
+	 */
+	public void setVisible(boolean isVisible, boolean drawParticles){
+		this.visible=isVisible;
+		this.drawParticles = drawParticles;
+	}
+	
+	public boolean isDrawingParticles(){
+		return drawParticles;
 	}
 
 	/**
