@@ -152,7 +152,7 @@ public class Rope {
 				if(s.isPlayerAttached( )) playerAttached = true;
 				s.update( deltaTime );
 			}
-			if(playerAttached)
+			if(!playerAttached)
 				stopRope();
 		}
 		

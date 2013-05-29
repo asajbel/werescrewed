@@ -43,23 +43,25 @@ public class PowerSwitch extends EventTrigger {
 	}
 
 	public void doAction( ) {
-		if ( repeatable ) {
-			if ( state == false ) {
-
-				runBeginAction( null );
-				state = true;
-				sounds.playSound( "on" );
-			} else {
-				runEndAction( );
-				state = false;
-				sounds.playSound( "off" );
-			}
-		} else {
-			if ( !this.beginTriggeredOnce ) {
-				runBeginAction( null );
-				if (!state)
+		if (active){
+			if ( repeatable ) {
+				if ( state == false ) {
+	
+					runBeginAction( null );
+					state = true;
 					sounds.playSound( "on" );
-				state = true;
+				} else {
+					runEndAction( );
+					state = false;
+					sounds.playSound( "off" );
+				}
+			} else {
+				if ( !this.beginTriggeredOnce ) {
+					runBeginAction( null );
+					if (!state)
+						sounds.playSound( "on" );
+					state = true;
+				}
 			}
 		}
 

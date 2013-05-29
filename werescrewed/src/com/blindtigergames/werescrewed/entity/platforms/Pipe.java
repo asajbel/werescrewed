@@ -45,8 +45,8 @@ public class Pipe extends Platform {
 		this.currentPos = new Vector2( );
 		start = new Vector2( );
 		tiles = new ArrayList< Tile >( );
-		texture = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-				+ "/common/pipe/pipeLR.png", Texture.class );
+		texture = null;//WereScrewedGame.manager.get( WereScrewedGame.dirHandle
+				//+ "/common/pipe/pipeLR.png", Texture.class );
 		Vector2 currentPair;
 		int numberOfSegments;
 		previousDirection = null;
