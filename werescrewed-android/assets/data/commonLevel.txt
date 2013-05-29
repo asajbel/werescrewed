@@ -161,3 +161,6 @@ grey.palette
 /common/tutorial/screw1.png
 /common/tutorial/switch0.png
 /common/tutorial/switch1.png
+
+##Trophy icons
+/common/trophies/trophy.png

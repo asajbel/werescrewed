@@ -132,7 +132,7 @@ public class TrophyScreen implements com.badlogic.gdx.Screen {
 							.getTrophyMetric( TrophyMetric.P2RUNDIST ) ){
 				player1[ index ] = new Label( "Marathon Runner", fancyFont );
 				Texture icon = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-						+ "/common/powerswitches/on.png", Texture.class );
+						+ "/common/trophies/trophy.png", Texture.class );
 				trophies1[ index ] = new Sprite ( icon );
 				trophyIndices[ index ] = trophyNum;
 			}
@@ -141,7 +141,7 @@ public class TrophyScreen implements com.badlogic.gdx.Screen {
 							.getTrophyMetric( TrophyMetric.P1RUNDIST ) ){
 				player2[ index ] = new Label( "Marathon Runner", fancyFont );
 				Texture icon = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-						+ "/common/powerswitches/on.png", Texture.class );
+						+ "/common/trophies/trophy.png", Texture.class );
 				trophies2[ index ] = new Sprite ( icon );
 				trophyIndices[ trophyLength + index ] = trophyNum;
 			}
@@ -152,7 +152,7 @@ public class TrophyScreen implements com.badlogic.gdx.Screen {
 							.getTrophyMetric( TrophyMetric.P2UNSCREWED ) ){
 				player1[ index ] = new Label( "You Got A Screw Loose", fancyFont );
 				Texture icon = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-						+ "/common/powerswitches/on.png", Texture.class );
+						+ "/common/trophies/trophy.png", Texture.class );
 				trophies1[ index ] = new Sprite ( icon );
 				trophyIndices[ index ] = trophyNum;
 			}
@@ -161,7 +161,7 @@ public class TrophyScreen implements com.badlogic.gdx.Screen {
 							.getTrophyMetric( TrophyMetric.P1UNSCREWED ) ){
 				player2[ index ] = new Label( "You Got A Screw Loose", fancyFont );
 				Texture icon = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-						+ "/common/powerswitches/on.png", Texture.class );
+						+ "/common/trophies/trophy.png", Texture.class );
 				trophies2[ index ] = new Sprite ( icon );
 				trophyIndices[ trophyLength + index ] = trophyNum;
 			}
@@ -172,7 +172,7 @@ public class TrophyScreen implements com.badlogic.gdx.Screen {
 							.getTrophyMetric( TrophyMetric.P2AIRTIME ) ){
 				player1[ index ] = new Label( "Hang Time", fancyFont );
 				Texture icon = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-						+ "/common/powerswitches/on.png", Texture.class );
+						+ "/common/trophies/trophy.png", Texture.class );
 				trophies1[ index ] = new Sprite ( icon );
 				trophyIndices[ index ] = trophyNum;
 			}
@@ -181,7 +181,7 @@ public class TrophyScreen implements com.badlogic.gdx.Screen {
 							.getTrophyMetric( TrophyMetric.P1AIRTIME ) ){
 				player2[ index ] = new Label( "Hang Time", fancyFont );
 				Texture icon = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-						+ "/common/powerswitches/on.png", Texture.class );
+						+ "/common/trophies/trophy.png", Texture.class );
 				trophies2[ index ] = new Sprite ( icon );
 				trophyIndices[ trophyLength + index ] = trophyNum;
 			}
@@ -192,7 +192,7 @@ public class TrophyScreen implements com.badlogic.gdx.Screen {
 							.getTrophyMetric( TrophyMetric.P2FALLDEATHS ) ){
 				player1[ index ] = new Label( "Fall Guy", fancyFont );
 				Texture icon = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-						+ "/common/powerswitches/on.png", Texture.class );
+						+ "/common/trophies/trophy.png", Texture.class );
 				trophies1[ index ] = new Sprite ( icon );
 				trophyIndices[ index ] = trophyNum;
 			}
@@ -201,7 +201,7 @@ public class TrophyScreen implements com.badlogic.gdx.Screen {
 							.getTrophyMetric( TrophyMetric.P1FALLDEATHS ) ){
 				player2[ index ] = new Label( "Fall Guy", fancyFont );
 				Texture icon = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-						+ "/common/powerswitches/on.png", Texture.class );
+						+ "/common/trophies/trophy.png", Texture.class );
 				trophies2[ index ] = new Sprite ( icon );
 				trophyIndices[ trophyLength + index ] = trophyNum;
 			}
@@ -212,7 +212,7 @@ public class TrophyScreen implements com.badlogic.gdx.Screen {
 							.getTrophyMetric( TrophyMetric.P2PUZZLETIME ) ){
 				player1[ index ] = new Label( "Inventor's Apprentice", fancyFont );
 				Texture icon = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-						+ "/common/powerswitches/on.png", Texture.class );
+						+ "/common/trophies/trophy.png", Texture.class );
 				trophies1[ index ] = new Sprite ( icon );
 				trophyIndices[ index ] = trophyNum;
 			}
@@ -221,7 +221,7 @@ public class TrophyScreen implements com.badlogic.gdx.Screen {
 							.getTrophyMetric( TrophyMetric.P1PUZZLETIME ) ){
 				player2[ index ] = new Label( "Inventor's Apprentice", fancyFont );
 				Texture icon = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-						+ "/common/powerswitches/on.png", Texture.class );
+						+ "/common/trophies/trophy.png", Texture.class );
 				trophies2[ index ] = new Sprite ( icon );
 				trophyIndices[ trophyLength + index ] = trophyNum;
 			}
@@ -232,7 +232,7 @@ public class TrophyScreen implements com.badlogic.gdx.Screen {
 							.getTrophyMetric( TrophyMetric.P2DEATHS ) ){
 				player1[ index ] = new Label( "Call The Suicide \n Hotline", fancyFont );
 				Texture icon = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-						+ "/common/powerswitches/on.png", Texture.class );
+						+ "/common/trophies/trophy.png", Texture.class );
 				trophies1[ index ] = new Sprite ( icon );
 				trophyIndices[ index ] = trophyNum;
 			}
@@ -241,7 +241,7 @@ public class TrophyScreen implements com.badlogic.gdx.Screen {
 							.getTrophyMetric( TrophyMetric.P1DEATHS ) ){
 				player2[ index ] = new Label( "Call The Suicide \n Hotline", fancyFont );
 				Texture icon = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-						+ "/common/powerswitches/on.png", Texture.class );
+						+ "/common/trophies/trophy.png", Texture.class );
 				trophies2[ index ] = new Sprite ( icon );
 				trophyIndices[ trophyLength + index ] = trophyNum;
 			}
@@ -252,7 +252,7 @@ public class TrophyScreen implements com.badlogic.gdx.Screen {
 							.getTrophyMetric( TrophyMetric.P2HEADSTANDS ) ){
 				player1[ index ] = new Label( "Always On Top", fancyFont );
 				Texture icon = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-						+ "/common/powerswitches/on.png", Texture.class );
+						+ "/common/trophies/trophy.png", Texture.class );
 				trophies1[ index ] = new Sprite ( icon );
 				trophyIndices[ index ] = trophyNum;
 			}
@@ -261,7 +261,7 @@ public class TrophyScreen implements com.badlogic.gdx.Screen {
 							.getTrophyMetric( TrophyMetric.P1HEADSTANDS ) ){
 				player2[ index ] = new Label( "Always On Top", fancyFont );
 				Texture icon = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-						+ "/common/powerswitches/on.png", Texture.class );
+						+ "/common/trophies/trophy.png", Texture.class );
 				trophies2[ index ] = new Sprite ( icon );
 				trophyIndices[ trophyLength + index ] = trophyNum;
 			}
@@ -272,7 +272,7 @@ public class TrophyScreen implements com.badlogic.gdx.Screen {
 							.getTrophyMetric( TrophyMetric.P2REVIVES ) ){
 				player1[ index ] = new Label( "I Help Dead People", fancyFont );
 				Texture icon = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-						+ "/common/powerswitches/on.png", Texture.class );
+						+ "/common/trophies/trophy.png", Texture.class );
 				trophies1[ index ] = new Sprite ( icon );
 				trophyIndices[ index ] = trophyNum;
 			}
@@ -281,7 +281,7 @@ public class TrophyScreen implements com.badlogic.gdx.Screen {
 							.getTrophyMetric( TrophyMetric.P1REVIVES ) ){
 				player2[ index ] = new Label( "I Help Dead People", fancyFont );
 				Texture icon = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-						+ "/common/powerswitches/on.png", Texture.class );
+						+ "/common/trophies/trophy.png", Texture.class );
 				trophies2[ index ] = new Sprite ( icon );
 				trophyIndices[ trophyLength + index ] = trophyNum;
 			}
@@ -292,7 +292,7 @@ public class TrophyScreen implements com.badlogic.gdx.Screen {
 							.getTrophyMetric( TrophyMetric.P2TEAMDEATHS ) ){
 				player1[ index ] = new Label( "Well, He Jumped First", fancyFont );
 				Texture icon = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-						+ "/common/powerswitches/on.png", Texture.class );
+						+ "/common/trophies/trophy.png", Texture.class );
 				trophies1[ index ] = new Sprite ( icon );
 				trophyIndices[ index ] = trophyNum;
 			}
@@ -301,7 +301,7 @@ public class TrophyScreen implements com.badlogic.gdx.Screen {
 							.getTrophyMetric( TrophyMetric.P1TEAMDEATHS ) ){
 				player2[ index ] = new Label( "Well, He Jumped First", fancyFont );
 				Texture icon = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-						+ "/common/powerswitches/on.png", Texture.class );
+						+ "/common/trophies/trophy.png", Texture.class );
 				trophies2[ index ] = new Sprite ( icon );
 				trophyIndices[ trophyLength + index ] = trophyNum;
 			}
@@ -312,7 +312,7 @@ public class TrophyScreen implements com.badlogic.gdx.Screen {
 							.getTrophyMetric( TrophyMetric.P2IDLETIME ) ){
 				player1[ index ] = new Label( "I'm Waaaaiting!!", fancyFont );
 				Texture icon = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-						+ "/common/powerswitches/on.png", Texture.class );
+						+ "/common/trophies/trophy.png", Texture.class );
 				trophies1[ index ] = new Sprite ( icon );
 				trophyIndices[ index ] = trophyNum;
 			}
@@ -321,7 +321,7 @@ public class TrophyScreen implements com.badlogic.gdx.Screen {
 							.getTrophyMetric( TrophyMetric.P1IDLETIME ) ){
 				player2[ index ] = new Label( "I'm Waaaaiting!!", fancyFont );
 				Texture icon = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-						+ "/common/powerswitches/on.png", Texture.class );
+						+ "/common/trophies/trophy.png", Texture.class );
 				trophies2[ index ] = new Sprite ( icon );
 				trophyIndices[ trophyLength + index ] = trophyNum;
 			}
@@ -331,7 +331,7 @@ public class TrophyScreen implements com.badlogic.gdx.Screen {
 					&& Metrics.getTrophyMetric( TrophyMetric.P1DEATHS ) == 0 ){
 				player1[ index ] = new Label( "Are You Using \n God Mode?", fancyFont );
 				Texture icon = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-						+ "/common/powerswitches/on.png", Texture.class );
+						+ "/common/trophies/trophy.png", Texture.class );
 				trophies1[ index ] = new Sprite ( icon );
 				trophyIndices[ index ] = trophyNum;
 			}
@@ -339,7 +339,7 @@ public class TrophyScreen implements com.badlogic.gdx.Screen {
 					&& Metrics.getTrophyMetric( TrophyMetric.P2DEATHS ) == 0 ){
 				player2[ index ] = new Label( "Are You Using \n God Mode?", fancyFont );
 				Texture icon = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-						+ "/common/powerswitches/on.png", Texture.class );
+						+ "/common/trophies/trophy.png", Texture.class );
 				trophies2[ index ] = new Sprite ( icon );
 				trophyIndices[ trophyLength + index ] = trophyNum;
 			}
@@ -350,7 +350,7 @@ public class TrophyScreen implements com.badlogic.gdx.Screen {
 							.getTrophyMetric( TrophyMetric.P2CRUSHDEATHS ) ){
 				player1[ index ] = new Label( "Crushing Defeat", fancyFont );
 				Texture icon = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-						+ "/common/powerswitches/on.png", Texture.class );
+						+ "/common/trophies/trophy.png", Texture.class );
 				trophies1[ index ] = new Sprite ( icon );
 				trophyIndices[ index ] = trophyNum;
 			}
@@ -359,7 +359,7 @@ public class TrophyScreen implements com.badlogic.gdx.Screen {
 							.getTrophyMetric( TrophyMetric.P1CRUSHDEATHS ) ){
 				player2[ index ] = new Label( "Crushing Defeat", fancyFont );
 				Texture icon = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-						+ "/common/powerswitches/on.png", Texture.class );
+						+ "/common/trophies/trophy.png", Texture.class );
 				trophies2[ index ] = new Sprite ( icon );
 				trophyIndices[ trophyLength + index ] = trophyNum;
 			}
@@ -370,7 +370,7 @@ public class TrophyScreen implements com.badlogic.gdx.Screen {
 							.getTrophyMetric( TrophyMetric.P2ELECDEATHS ) ){
 				player1[ index ] = new Label( "A Shocking Revelation", fancyFont );
 				Texture icon = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-						+ "/common/powerswitches/on.png", Texture.class );
+						+ "/common/trophies/trophy.png", Texture.class );
 				trophies1[ index ] = new Sprite ( icon );
 				trophyIndices[ index ] = trophyNum;
 			}
@@ -379,7 +379,7 @@ public class TrophyScreen implements com.badlogic.gdx.Screen {
 							.getTrophyMetric( TrophyMetric.P1ELECDEATHS ) ){
 				player2[ index ] = new Label( "A Shocking Revelation", fancyFont );
 				Texture icon = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-						+ "/common/powerswitches/on.png", Texture.class );
+						+ "/common/trophies/trophy.png", Texture.class );
 				trophies2[ index ] = new Sprite ( icon );
 				trophyIndices[ trophyLength + index ] = trophyNum;
 			}
@@ -390,7 +390,7 @@ public class TrophyScreen implements com.badlogic.gdx.Screen {
 							.getTrophyMetric( TrophyMetric.P2GROUNDTIME ) ){
 				player1[ index ] = new Label( "Landlubber", fancyFont );
 				Texture icon = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-						+ "/common/powerswitches/on.png", Texture.class );
+						+ "/common/trophies/trophy.png", Texture.class );
 				trophies1[ index ] = new Sprite ( icon );
 				trophyIndices[ index ] = trophyNum;
 			}
@@ -399,7 +399,7 @@ public class TrophyScreen implements com.badlogic.gdx.Screen {
 							.getTrophyMetric( TrophyMetric.P1GROUNDTIME ) ){
 				player2[ index ] = new Label( "Landlubber", fancyFont );
 				Texture icon = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-						+ "/common/powerswitches/on.png", Texture.class );
+						+ "/common/trophies/trophy.png", Texture.class );
 				trophies2[ index ] = new Sprite ( icon );
 				trophyIndices[ trophyLength + index ] = trophyNum;
 			}
@@ -410,7 +410,7 @@ public class TrophyScreen implements com.badlogic.gdx.Screen {
 							.getTrophyMetric( TrophyMetric.P2JUMPS ) ){
 				player1[ index ] = new Label( "Jumpin' Jack", fancyFont );
 				Texture icon = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-						+ "/common/powerswitches/on.png", Texture.class );
+						+ "/common/trophies/trophy.png", Texture.class );
 				trophies1[ index ] = new Sprite ( icon );
 				trophyIndices[ index ] = trophyNum;
 			}
@@ -419,7 +419,7 @@ public class TrophyScreen implements com.badlogic.gdx.Screen {
 							.getTrophyMetric( TrophyMetric.P1JUMPS ) ){
 				player2[ index ] = new Label( "Jumpin' Jack", fancyFont );
 				Texture icon = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-						+ "/common/powerswitches/on.png", Texture.class );
+						+ "/common/trophies/trophy.png", Texture.class );
 				trophies2[ index ] = new Sprite ( icon );
 				trophyIndices[ trophyLength + index ] = trophyNum;
 			}
@@ -430,7 +430,7 @@ public class TrophyScreen implements com.badlogic.gdx.Screen {
 							.getTrophyMetric( TrophyMetric.P2SPIKEDEATHS ) ){
 				player1[ index ] = new Label( "Vlad the Impaled", fancyFont );
 				Texture icon = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-						+ "/common/powerswitches/on.png", Texture.class );
+						+ "/common/trophies/trophy.png", Texture.class );
 				trophies1[ index ] = new Sprite ( icon );
 				trophyIndices[ index ] = trophyNum;
 			}
@@ -439,7 +439,7 @@ public class TrophyScreen implements com.badlogic.gdx.Screen {
 							.getTrophyMetric( TrophyMetric.P1SPIKEDEATHS ) ){
 				player2[ index ] = new Label( "Vlad the Impaled", fancyFont );
 				Texture icon = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-						+ "/common/powerswitches/on.png", Texture.class );
+						+ "/common/trophies/trophy.png", Texture.class );
 				trophies2[ index ] = new Sprite ( icon );
 				trophyIndices[ trophyLength + index ] = trophyNum;
 			}
@@ -450,7 +450,7 @@ public class TrophyScreen implements com.badlogic.gdx.Screen {
 							.getTrophyMetric( TrophyMetric.P2FIREDEATHS ) ){
 				player1[ index ] = new Label( "Hot And Bothered", fancyFont );
 				Texture icon = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-						+ "/common/powerswitches/on.png", Texture.class );
+						+ "/common/trophies/trophy.png", Texture.class );
 				trophies1[ index ] = new Sprite ( icon );
 				trophyIndices[ index ] = trophyNum;
 			}
@@ -459,7 +459,7 @@ public class TrophyScreen implements com.badlogic.gdx.Screen {
 							.getTrophyMetric( TrophyMetric.P1FIREDEATHS ) ){
 				player2[ index ] = new Label( "Hot And Bothered", fancyFont );
 				Texture icon = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-						+ "/common/powerswitches/on.png", Texture.class );
+						+ "/common/trophies/trophy.png", Texture.class );
 				trophies2[ index ] = new Sprite ( icon );
 				trophyIndices[ trophyLength + index ] = trophyNum;
 			}
@@ -470,7 +470,7 @@ public class TrophyScreen implements com.badlogic.gdx.Screen {
 							.getTrophyMetric( TrophyMetric.P2DEADTIME ) ){
 				player1[ index ] = new Label( "Ghostly Gamer", fancyFont );
 				Texture icon = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-						+ "/common/powerswitches/on.png", Texture.class );
+						+ "/common/trophies/trophy.png", Texture.class );
 				trophies1[ index ] = new Sprite ( icon );
 				trophyIndices[ index ] = trophyNum;
 			}
@@ -479,7 +479,7 @@ public class TrophyScreen implements com.badlogic.gdx.Screen {
 							.getTrophyMetric( TrophyMetric.P1DEADTIME ) ){
 				player2[ index ] = new Label( "Ghostly Gamer", fancyFont );
 				Texture icon = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-						+ "/common/powerswitches/on.png", Texture.class );
+						+ "/common/trophies/trophy.png", Texture.class );
 				trophies2[ index ] = new Sprite ( icon );
 				trophyIndices[ trophyLength + index ] = trophyNum;
 			}
@@ -490,7 +490,7 @@ public class TrophyScreen implements com.badlogic.gdx.Screen {
 							.getTrophyMetric( TrophyMetric.P2STEAMJUMPS ) ){
 				player1[ index ] = new Label( "Steam Powered", fancyFont );
 				Texture icon = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-						+ "/common/powerswitches/on.png", Texture.class );
+						+ "/common/trophies/trophy.png", Texture.class );
 				trophies1[ index ] = new Sprite ( icon );
 				trophyIndices[ index ] = trophyNum;
 			}
@@ -499,7 +499,7 @@ public class TrophyScreen implements com.badlogic.gdx.Screen {
 							.getTrophyMetric( TrophyMetric.P1STEAMJUMPS ) ){
 				player2[ index ] = new Label( "Steam Powered", fancyFont );
 				Texture icon = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-						+ "/common/powerswitches/on.png", Texture.class );
+						+ "/common/trophies/trophy.png", Texture.class );
 				trophies2[ index ] = new Sprite ( icon );
 				trophyIndices[ trophyLength + index ] = trophyNum;
 			}
@@ -510,7 +510,7 @@ public class TrophyScreen implements com.badlogic.gdx.Screen {
 							.getTrophyMetric( TrophyMetric.P2STRIPATTACH ) ){
 				player1[ index ] = new Label( "Crafty Climber", fancyFont );
 				Texture icon = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-						+ "/common/powerswitches/on.png", Texture.class );
+						+ "/common/trophies/trophy.png", Texture.class );
 				trophies1[ index ] = new Sprite ( icon );
 				trophyIndices[ index ] = trophyNum;
 			}
@@ -519,7 +519,7 @@ public class TrophyScreen implements com.badlogic.gdx.Screen {
 							.getTrophyMetric( TrophyMetric.P1STRIPATTACH ) ){
 				player2[ index ] = new Label( "Crafty Climber", fancyFont );
 				Texture icon = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-						+ "/common/powerswitches/on.png", Texture.class );
+						+ "/common/trophies/trophy.png", Texture.class );
 				trophies2[ index ] = new Sprite ( icon );
 				trophyIndices[ trophyLength + index ] = trophyNum;
 			}
@@ -528,13 +528,13 @@ public class TrophyScreen implements com.badlogic.gdx.Screen {
 			if ( playerNum == 1 ) {
 				player1[ index ] = new Label( "Best 'Stache", fancyFont );
 				Texture icon = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-						+ "/common/powerswitches/on.png", Texture.class );
+						+ "/common/trophies/trophy.png", Texture.class );
 				trophies1[ index ] = new Sprite ( icon );
 				trophyIndices[ index ] = trophyNum;
 			} else if ( playerNum == 2 ) {
 				player2[ index ] = new Label( "Best Dressed", fancyFont );
 				Texture icon = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-						+ "/common/powerswitches/on.png", Texture.class );
+						+ "/common/trophies/trophy.png", Texture.class );
 				trophies2[ index ] = new Sprite ( icon );
 				trophyIndices[ trophyLength + index ] = trophyNum;
 			}
@@ -543,13 +543,13 @@ public class TrophyScreen implements com.badlogic.gdx.Screen {
 			if ( playerNum == 1 ) {
 				player1[ index ] = new Label( "My Screwdriver's Bigger", fancyFont );
 				Texture icon = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-						+ "/common/powerswitches/on.png", Texture.class );
+						+ "/common/trophies/trophy.png", Texture.class );
 				trophies1[ index ] = new Sprite ( icon );
 				trophyIndices[ index ] = trophyNum;
 			} else if ( playerNum == 2 ) {
 				player2[ index ] = new Label( "My Screwdriver's Bigger", fancyFont );
 				Texture icon = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-						+ "/common/powerswitches/on.png", Texture.class );
+						+ "/common/trophies/trophy.png", Texture.class );
 				trophies2[ index ] = new Sprite ( icon );
 				trophyIndices[ trophyLength + index ] = trophyNum;
 			}
@@ -558,13 +558,13 @@ public class TrophyScreen implements com.badlogic.gdx.Screen {
 			if ( playerNum == 1 ) {
 				player1[ index ] = new Label( "You Unlocked \n An Achievement!!", fancyFont );
 				Texture icon = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-						+ "/common/powerswitches/on.png", Texture.class );
+						+ "/common/trophies/trophy.png", Texture.class );
 				trophies1[ index ] = new Sprite ( icon );
 				trophyIndices[ index ] = trophyNum;
 			} else if ( playerNum == 2 ) {
 				player2[ index ] = new Label( "You Unlocked \n An Achievement!!", fancyFont );
 				Texture icon = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-						+ "/common/powerswitches/on.png", Texture.class );
+						+ "/common/trophies/trophy.png", Texture.class );
 				trophies2[ index ] = new Sprite ( icon );
 				trophyIndices[ trophyLength + index ] = trophyNum;
 			}
@@ -573,13 +573,13 @@ public class TrophyScreen implements com.badlogic.gdx.Screen {
 			if ( playerNum == 1 ) {
 				player1[ index ] = new Label( "Most Popular", fancyFont );
 				Texture icon = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-						+ "/common/powerswitches/on.png", Texture.class );
+						+ "/common/trophies/trophy.png", Texture.class );
 				trophies1[ index ] = new Sprite ( icon );
 				trophyIndices[ index ] = trophyNum;
 			} else if ( playerNum == 2 ) {
 				player2[ index ] = new Label( "Most Popular", fancyFont );
 				Texture icon = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-						+ "/common/powerswitches/on.png", Texture.class );
+						+ "/common/trophies/trophy.png", Texture.class );
 				trophies2[ index ] = new Sprite ( icon );
 				trophyIndices[ trophyLength + index ] = trophyNum;
 			}
@@ -588,13 +588,13 @@ public class TrophyScreen implements com.badlogic.gdx.Screen {
 			if ( playerNum == 1 ) {
 				player1[ index ] = new Label( "Gives Awesome Hugs", fancyFont );
 				Texture icon = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-						+ "/common/powerswitches/on.png", Texture.class );
+						+ "/common/trophies/trophy.png", Texture.class );
 				trophies1[ index ] = new Sprite ( icon );
 				trophyIndices[ index ] = trophyNum;
 			} else if ( playerNum == 2 ) {
 				player2[ index ] = new Label( "Gives Awesome Hugs", fancyFont );
 				Texture icon = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-						+ "/common/powerswitches/on.png", Texture.class );
+						+ "/common/trophies/trophy.png", Texture.class );
 				trophies2[ index ] = new Sprite ( icon );
 				trophyIndices[ trophyLength + index ] = trophyNum;
 			}
@@ -603,13 +603,13 @@ public class TrophyScreen implements com.badlogic.gdx.Screen {
 			if ( playerNum == 1 ) {
 				player1[ index ] = new Label( "Better Than \n Bacon Ice Cream", fancyFont );
 				Texture icon = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-						+ "/common/powerswitches/on.png", Texture.class );
+						+ "/common/trophies/trophy.png", Texture.class );
 				trophies1[ index ] = new Sprite ( icon );
 				trophyIndices[ index ] = trophyNum;
 			} else if ( playerNum == 2 ) {
 				player2[ index ] = new Label( "Better Than \n Bacon Ice Cream", fancyFont );
 				Texture icon = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-						+ "/common/powerswitches/on.png", Texture.class );
+						+ "/common/trophies/trophy.png", Texture.class );
 				trophies2[ index ] = new Sprite ( icon );
 				trophyIndices[ trophyLength + index ] = trophyNum;
 			}
@@ -619,14 +619,14 @@ public class TrophyScreen implements com.badlogic.gdx.Screen {
 				player1[ index ] = new Label(
 						"You Played \n The Best Game Ever!!", fancyFont );
 				Texture icon = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-						+ "/common/powerswitches/on.png", Texture.class );
+						+ "/common/trophies/trophy.png", Texture.class );
 				trophies1[ index ] = new Sprite ( icon );
 				trophyIndices[ index ] = trophyNum;
 			} else if ( playerNum == 2 ) {
 				player2[ index ] = new Label(
 						"You Played \n The Best Game Ever!!", fancyFont );
 				Texture icon = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-						+ "/common/powerswitches/on.png", Texture.class );
+						+ "/common/trophies/trophy.png", Texture.class );
 				trophies2[ index ] = new Sprite ( icon );
 				trophyIndices[ trophyLength + index ] = trophyNum;
 			}
@@ -635,13 +635,13 @@ public class TrophyScreen implements com.badlogic.gdx.Screen {
 			if ( playerNum == 1 ) {
 				player1[ index ] = new Label( "Free Cookie", fancyFont );
 				Texture icon = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-						+ "/common/powerswitches/on.png", Texture.class );
+						+ "/common/trophies/trophy.png", Texture.class );
 				trophies1[ index ] = new Sprite ( icon );
 				trophyIndices[ index ] = trophyNum;
 			} else if ( playerNum == 2 ) {
 				player2[ index ] = new Label( "Free Cookie", fancyFont );
 				Texture icon = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-						+ "/common/powerswitches/on.png", Texture.class );
+						+ "/common/trophies/trophy.png", Texture.class );
 				trophies2[ index ] = new Sprite ( icon );
 				trophyIndices[ trophyLength + index ] = trophyNum;
 			}
@@ -650,13 +650,13 @@ public class TrophyScreen implements com.badlogic.gdx.Screen {
 			if ( playerNum == 1 ) {
 				player1[ index ] = new Label( "Supremely Screwy", fancyFont );
 				Texture icon = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-						+ "/common/powerswitches/on.png", Texture.class );
+						+ "/common/trophies/trophy.png", Texture.class );
 				trophies1[ index ] = new Sprite ( icon );
 				trophyIndices[ index ] = trophyNum;
 			} else if ( playerNum == 2 ) {
 				player2[ index ] = new Label( "Supremely Screwy", fancyFont );
 				Texture icon = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-						+ "/common/powerswitches/on.png", Texture.class );
+						+ "/common/trophies/trophy.png", Texture.class );
 				trophies2[ index ] = new Sprite ( icon );
 				trophyIndices[ trophyLength + index ] = trophyNum;
 			}
@@ -665,13 +665,13 @@ public class TrophyScreen implements com.badlogic.gdx.Screen {
 			if ( playerNum == 1 ) {
 				player1[ index ] = new Label( "Antidisestablishmentarianist", fancyFont );
 				Texture icon = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-						+ "/common/powerswitches/on.png", Texture.class );
+						+ "/common/trophies/trophy.png", Texture.class );
 				trophies1[ index ] = new Sprite ( icon );
 				trophyIndices[ index ] = trophyNum;
 			} else if ( playerNum == 2 ) {
 				player2[ index ] = new Label( "Antidisestablishmentarianist", fancyFont );
 				Texture icon = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-						+ "/common/powerswitches/on.png", Texture.class );
+						+ "/common/trophies/trophy.png", Texture.class );
 				trophies2[ index ] = new Sprite ( icon );
 				trophyIndices[ trophyLength + index ] = trophyNum;
 			}
