@@ -63,6 +63,7 @@ public class Screen implements com.badlogic.gdx.Screen {
 	protected boolean alphaFinish = false;
 	protected boolean transInEnd = true;
 	protected boolean transOutEnd = true;
+	protected boolean fullscreen = false; 
 
 	BitmapFont debug_font;
 	Camera uiCamera;
@@ -99,12 +100,14 @@ public class Screen implements com.badlogic.gdx.Screen {
 		if ((Gdx.input.isKeyPressed( Keys.ALT_LEFT ) 
 				|| Gdx.input.isKeyPressed( Keys.ALT_RIGHT )) 
 				&& Gdx.input.isKeyPressed( Keys.ENTER ) ) {
-			Gdx.graphics.setDisplayMode( Gdx.graphics.getDesktopDisplayMode( ) );
-		}
-		if ((Gdx.input.isKeyPressed( Keys.ALT_LEFT ) 
-				|| Gdx.input.isKeyPressed( Keys.ALT_RIGHT )) 
-				&& Gdx.input.isKeyPressed( Keys.ENTER ) ) {
-			Gdx.graphics.setDisplayMode( 1280, 720, false );
+			if (fullscreen) {
+				Gdx.graphics.setDisplayMode( 1280, 720, false );
+				fullscreen = false;
+			}
+			else {
+				Gdx.graphics.setDisplayMode( Gdx.graphics.getDesktopDisplayMode( ) );
+				fullscreen = true; 
+			}
 		}
 		//////////////////////////////////////////////////////////////////////
 		Gdx.gl.glViewport(
@@ -122,7 +125,7 @@ public class Screen implements com.badlogic.gdx.Screen {
 		}
 		
 		shapeRenderer.begin( ShapeType.FilledRectangle );
-		shapeRenderer.filledRect(bX, bY, width, height );
+		shapeRenderer.filledRect(bX, bY, screenWidth, screenHeight );
 		shapeRenderer.end( );
 		
 		
