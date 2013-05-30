@@ -150,18 +150,18 @@ public class PhysicsTestScreen extends Screen {
 		// connectedRoom( );
 		movingSkeleton( );
 
-		buildCannon( new Vector2( 1600, 50 ), 160, 350 );
+		//buildCannon( new Vector2( 1600, 50 ), 160, 350 );
 		
-		buildCannon( new Vector2( 1900, 30 ), 200, 200 );
+		//buildCannon( new Vector2( 1900, 30 ), 200, 200 );
 		
-		buildCannon( new Vector2( -1900, 30 ), 200, 200 );
+		//buildCannon( new Vector2( -1900, 30 ), 200, 200 );
 
 		PowerSwitch pswitch = new PowerSwitch( "pwsstsf",
 				new Vector2( 512, 200 ), world );
 		rootSkeleton.addEventTrigger( pswitch );
 
 		//createFire( );
-		initFireballEnemy(new Vector2(900,200));
+		initFireballEnemy(new Vector2(1600,200));
 		
 		initEyebrow(new Vector2(0,0));
 		
@@ -894,26 +894,35 @@ public class PhysicsTestScreen extends Screen {
 	
 	private void initFireballEnemy(Vector2 pos){
 		
-		int cageWidth = 700;
+		int w = 15, n= 10, h = 140;
+		int cageWidth = 700, cageHeight = n*140;
 		//build a little cage for the fireball
-		TiledPlatform wall = platBuilder.position( pos.x+cageWidth/2,0f ).name("wall1")
-				.dimensions( 1,3 ).kinematic( ).buildTilePlatform( );
+		TiledPlatform wall = platBuilder.position( pos.x+cageWidth/2,cageHeight/2 ).name("wall1")
+				.dimensions( 1,60 ).kinematic( ).buildTilePlatform( );
 		skeleton.addKinematicPlatform( wall );
-		wall = platBuilder.position( pos.x-cageWidth/2,0 ).name("wall2").buildTilePlatform( );
+		wall = platBuilder.position( pos.x-cageWidth/2,cageHeight/2 ).name("wall2").buildTilePlatform( );
 		skeleton.addKinematicPlatform( wall );
 		
+		
+		platBuilder.dimensions( 15, 1 ); //21
+		for(int i = 1; i < n; ++i ){
+			int x = i%2 == 0?0:192 + cageWidth/2;
+			skeleton.addPlatform(platBuilder.position( pos.x-w*16+x, i*h ).buildTilePlatform( ));
+		}
+		
 		fireballEmitter = new EntityParticleEmitter( "bolt emitter",
-				new Vector2( pos ),
-				createBoltEnemy(pos.cpy().mul( 1, 0 )),
-				15, null, world, true );
+				new Vector2( pos.cpy( ).add(0,n*h) ),
+				new Vector2(),
+				25, world, true );
+		for(int i =0; i < 5; ++i ){
+			fireballEmitter.addParticle( createBoltEnemy( pos.cpy( ).add(0,n*h), i ), 30, 0, i*5 );
+		}
 		rootSkeleton.addLooseEntity( fireballEmitter );
 	}
 	
-	Enemy createBoltEnemy(Vector2 pos){
-		Enemy hotbolt = new Enemy( "hot-bolt", pos,25, world, true );
-		//hotbolt.body.setType( BodyType.DynamicBody );
-		//skeleton.addDynamicPlatform(  hotbolt );
-		hotbolt.addMover( new DirectionFlipMover( false, 0.001f, hotbolt, 2f, .03f ) );
+	Enemy createBoltEnemy(Vector2 pos, int index){
+		Enemy hotbolt = new Enemy( "hot-bolt"+index, pos,25, world, true );
+		hotbolt.addMover( new DirectionFlipMover( false, 0.001f, hotbolt, 1.5f, .03f ) );
 		addBGEntity( hotbolt );
 		return hotbolt;
 	}

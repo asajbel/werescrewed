@@ -3,6 +3,7 @@ package com.blindtigergames.werescrewed.entity.particles;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.World;
@@ -18,6 +19,7 @@ public class EntityParticleEmitter extends Entity {
 
 	private ArrayList< EntityParticle > particles;
 	private boolean activated;
+	private Vector2 emitionImpusle;
 
 	/**
 	 * Entity used to manage Particle Systems, in which the Particles are
@@ -40,17 +42,17 @@ public class EntityParticleEmitter extends Entity {
 	 * @param active
 	 *            boolean
 	 */
-	public EntityParticleEmitter( String name, Vector2 positionPixels, 
-			Entity baseEntity, float lifeSpan, IMover mover, World world,
+	public EntityParticleEmitter( String name, Vector2 positionPixels, Vector2 particleEmitImpulse, float lifeSpan, World world,
 			boolean active ) {
 		super( name, positionPixels, null, null, false );
 		particles = new ArrayList< EntityParticle >( );
-		EntityParticle p = new EntityParticle( baseEntity, lifeSpan, mover );
-		particles.add( p );
+		//EntityParticle p = new EntityParticle( baseEntity, lifeSpan );
+		//particles.add( p );
 		this.world = world;
 		constructBody( positionPixels );
 		activated = active;
 		entityType = EntityType.PARTICLE_EMITTER;
+		this.emitionImpusle = particleEmitImpulse.cpy( );
 	}
 
 	/**
@@ -68,20 +70,6 @@ public class EntityParticleEmitter extends Entity {
 		body.setUserData( this );
 	}
 
-	/**
-	 * updates all particles in the system
-	 * 
-	 * @param deltaTime
-	 *            float
-	 */
-	public void update( float deltaTime ) {
-		for ( EntityParticle p : particles ) {
-			p.update( deltaTime );
-			if ( p.isDead( ) ) {
-				p.resetParticle( this.getPosition( ) );
-			}
-		}
-	}
 
 	/**
 	 * adds new particle to the engine with the following components
@@ -93,8 +81,8 @@ public class EntityParticleEmitter extends Entity {
 	 * @param mover
 	 *            mover
 	 */
-	public void addParticle( Entity entity, float lifeSpan, IMover mover ) {
-		particles.add( new EntityParticle( entity, lifeSpan, mover ) );
+	public void addParticle( Entity entity, float lifeSpan ) {
+		particles.add( new EntityParticle( entity, lifeSpan) );
 	}
 	
 	/**
@@ -105,41 +93,16 @@ public class EntityParticleEmitter extends Entity {
 	 * @param mover
 	 * @param lifeSpanOffset
 	 */
-	public void addParticle( Entity entity, float lifeSpan, IMover mover, float lifeSpanOffset ) {
-		particles.add( new EntityParticle( entity, lifeSpan, mover, lifeSpanOffset ) );
+	public void addParticle( Entity entity, float lifeSpan, float lifeSpanOffset ) {
+		particles.add( new EntityParticle( entity, lifeSpan, lifeSpanOffset ) );
+	}
+	
+	public void addParticle(Entity entity, float lifeSpan, float lifeSpanOffset, float delay){
+		particles.add( new EntityParticle( entity, lifeSpan, delay ) );
 	}
 
-	/**
-	 * don't use this right now
-	 * 
-	 * @param e
-	 *            Entity
-	 * @param lifeSpan
-	 *            float
-	 * @param mover
-	 *            IMover
-	 * @param duplications
-	 *            int
-	 */
-	public void duplicateParticle( Entity e, float lifeSpan, IMover mover,
-			int duplications ) {
-		for ( int i = 0; i < duplications; i++ ) {
-			particles.add( new EntityParticle( e, lifeSpan, mover ) );
-		}
-	}
-
-	/**
-	 * turns on emmitter
-	 */
-	public void activate( ) {
-		activated = true;
-	}
-
-	/**
-	 * turns off emitter
-	 */
-	public void deactivate( ) {
-		activated = false;
+	public void setActivate(boolean isActive ) {
+		activated = isActive;
 	}
 
 	/**
@@ -151,11 +114,44 @@ public class EntityParticleEmitter extends Entity {
 		return activated;
 	}
 	
+
+	/**
+	 * updates all particles in the system
+	 * 
+	 * @param deltaTime
+	 *            float
+	 */
+	public void update( float deltaTime ) {
+		if(activated){
+			for ( EntityParticle p : particles ) {
+				p.update( deltaTime );
+				if( p.isDelayDone( ) ){
+					Body b = p.getEntity( ).body;
+					b.setLinearVelocity( 0,0 );
+					b.setGravityScale( 0.1f );
+					b.applyLinearImpulse( emitionImpusle, b.getWorldCenter( ) );
+				}
+				if ( p.isDead( ) ) {
+					p.resetParticle( this.getPosition( ) );
+				}
+			}
+		}
+	}
+	
 	@Override
 	public void draw( SpriteBatch batch, float deltaTime, Camera camera ) {
 		super.draw( batch, deltaTime, camera );
+		if(active){
+			for ( EntityParticle particle : particles ) {
+				if(!particle.isDead( ) && !particle.isDelayed() )particle.getEntity( ).draw( batch, deltaTime, camera );
+			}
+		}
+	}
+	
+	@Override
+	public void reset(){
 		for ( EntityParticle particle : particles ) {
-			if(!particle.isDead( ))particle.getEntity( ).draw( batch, deltaTime, camera );
+			particle.hardReset( );
 		}
 	}
 }

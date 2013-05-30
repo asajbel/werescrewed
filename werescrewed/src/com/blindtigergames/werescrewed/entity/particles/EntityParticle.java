@@ -16,27 +16,39 @@ import com.blindtigergames.werescrewed.entity.mover.IMover;
  */
 public class EntityParticle {
 
+	private float lifeDelta;
 	private float lifeSpanSeconds;
 	private float initLifeSpan;
 	private Entity particle;
-	private IMover movement;
-	private Entity baseEntity;
+	private Vector2 initPositionMeter;
+	private float delay, delayDelta;
+	private boolean isDelayDone;
 
 	/**
 	 * @param particleEntity
 	 * @param lifeSpanSeconds
 	 * @param mover
 	 */
-	public EntityParticle( Entity particleEntity, float lifespanSeconds, IMover mover ) {
-		this( particleEntity, lifespanSeconds, mover, lifespanSeconds );
+	public EntityParticle( Entity particleEntity, float lifespanSeconds ) {
+		this( particleEntity, lifespanSeconds, lifespanSeconds, 0 );
 	}
 	
-	public EntityParticle( Entity particleEntity, float lifespanSeconds, IMover mover, float initLifeSpan ) {
+	/**
+	 * Delay happens once on creation or if you call hard reset
+	 */
+	public EntityParticle( Entity particleEntity, float lifespanSeconds, float delay ) {
+		this( particleEntity, lifespanSeconds, lifespanSeconds, delay );
+	}
+	
+	public EntityParticle( Entity particleEntity, float lifespanSeconds, float initLifeSpan, float delay ) {
 		this.particle = particleEntity;
 		this.lifeSpanSeconds = lifespanSeconds;
-		this.movement = mover;
-		baseEntity = particle;
 		this.initLifeSpan = initLifeSpan;
+		this.lifeDelta = initLifeSpan;
+		this.initPositionMeter = particleEntity.getPosition( );
+		this.delay = delay;
+		this.delayDelta = delay;
+		isDelayDone = (this.delay <= 0);
 	}
 
 	/**
@@ -45,12 +57,26 @@ public class EntityParticle {
 	 * @param deltaTime
 	 */
 	public void update( float deltaTime ) {
-		if ( lifeSpanSeconds > 0 ) {
-			if(movement!=null)movement.move( deltaTime, particle.body );
+		if(delayDelta>0){
+			delayDelta -= deltaTime;
+			if(delayDelta<=0)isDelayDone=true;
+			particle.setPosition( initPositionMeter );
+			particle.body.setGravityScale( 0.0f );
+		} else{
+			if(isDelayDone) isDelayDone = false;
+		}
+		if(delayDelta <= 0 && !isDelayDone )	
+		if ( lifeDelta > 0 ) {
 			particle.update( deltaTime );
 			particle.updateMover( deltaTime );
-			lifeSpanSeconds-=deltaTime;
+			lifeDelta-=deltaTime;
 		}
+		
+	}
+	
+	//This is true for one tic when this particle has recently finished it's delay
+	public boolean isDelayDone(){
+		return isDelayDone;
 	}
 
 	/**
@@ -59,14 +85,17 @@ public class EntityParticle {
 	 * @return boolean
 	 */
 	public boolean isDead( ) {
-		return lifeSpanSeconds <= 0;
+		return lifeDelta <= 0;
+	}
+	
+	public boolean isDelayed(){
+		return delayDelta > 0;
 	}
 
 	/**
 	 * resets particle to initial state
 	 */
 	public void resetParticle( Vector2 posMeters ) {
-		//part = baseEntity; //old code
 		particle.reset( );
 		particle.setPosition( posMeters.cpy() );
 		resetLifespan( );
@@ -76,7 +105,16 @@ public class EntityParticle {
 	 * resets particle's life span to initial amount
 	 */
 	public void resetLifespan( ) {
-		lifeSpanSeconds = initLifeSpan;
+		lifeDelta = lifeSpanSeconds;
+	}
+	
+	/**
+	 * Reset particle to initial constructor lifetime & position
+	 */
+	public void hardReset(){
+		particle.setPosition( initPositionMeter.cpy() );
+		lifeDelta = initLifeSpan;
+		delayDelta = delay;
 	}
 	
 	public Entity getEntity(){
