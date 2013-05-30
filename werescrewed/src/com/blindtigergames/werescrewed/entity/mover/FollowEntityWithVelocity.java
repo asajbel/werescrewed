@@ -71,7 +71,7 @@ public class FollowEntityWithVelocity implements IMover {
 			speed.y = speedY * 0.1f;
 			below = true;
 		}
-		Gdx.app.log( "Follow entity with velocity", speed.toString( ));
+		//Gdx.app.log( "follow eintity with velcoity", speed.toString( ));
 		body.setLinearVelocity( speed );
 	}
 

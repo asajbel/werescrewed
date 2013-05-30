@@ -307,7 +307,7 @@ public class EntityDef {
 			if ( sounds.size > 0 ) {
 				for ( Element soundElem : sounds ) {
 					if ( soundElem.getText( ).length( ) > 0 ) {
-						out.properties.add( "sound", soundElem.getText( ) );
+						out.properties.put( "sound", soundElem.getText( ) );
 					}
 				}
 			}

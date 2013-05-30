@@ -1837,7 +1837,7 @@ public class LevelFactory {
 				for ( Element prop : properties ) {
 					name = prop.getAttribute( "Name" ).toLowerCase( );
 					value = prop.get( "string", "<no value>" );
-					props.add( name, value );
+					props.put( name, value );
 				}
 			}
 			return props;
