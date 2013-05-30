@@ -497,13 +497,13 @@ public class LevelFactory {
 		Anchor anchor;
 		String tag;
 		boolean moreAnchors = true;
-		for (int i = -1; i < 99 && moreAnchors; i++){
-			if (i < 0){
+		for ( int i = -1; i < 99 && moreAnchors; i++ ) {
+			if ( i < 0 ) {
 				tag = "anchor";
 			} else {
 				tag = "anchor" + i;
 			}
-			if (item.props.containsKey( tag )){
+			if ( item.props.containsKey( tag ) ) {
 				for ( String string : item.props.getAll( tag ) ) {
 					String sValues[] = string.split( ", " );
 					if ( sValues.length != 4 )
@@ -522,13 +522,13 @@ public class LevelFactory {
 					float offsetY = values[ 1 ];
 					float bufferWidth = values[ 2 ];
 					float bufferHeight = values[ 3 ];
-					anchor = new Anchor( item.pos, new Vector2( offsetX, offsetY ),
-							new Vector2( bufferWidth, bufferHeight ) );
+					anchor = new Anchor( item.pos, new Vector2( offsetX,
+							offsetY ), new Vector2( bufferWidth, bufferHeight ) );
 					out.addAnchor( anchor );
 					// Comment line below to make anchors inactive by default
 					// anchor.activate( );
 				}
-			} else if (i >= 2){
+			} else if ( i >= 2 ) {
 				moreAnchors = false;
 			}
 		}
@@ -654,39 +654,48 @@ public class LevelFactory {
 			SkeletonBuilder skeleBuilder = new SkeletonBuilder( level.world );
 			skeleBuilder.name( item.name ).position( item.pos ).texture( null );
 
-			if ( item.getGleedType( ).equals( "RectangleItem") ) {
+			if ( item.getGleedType( ).equals( "RectangleItem" ) ) {
 				skeleBuilder.setUseBoundingRect( true );
-				skeleBuilder.buildRectangle( item.pos.x-(item.element.getFloat( "Width" )/2.0f), 
-						item.pos.y-(item.element.getFloat( "Height" )/2.0f), 
-						item.element.getFloat( "Width" ), item.element.getFloat( "Height" ) );
-			} 
-			Array< Vector2 > polySprite = contstructSkeletonPoly( item );
-
-			if ( item.props.containsKey( "invisible" ) ) {
-				skeleBuilder.invisibleVerts( polySprite );
-
-				// Argggg, the code you're looking for be here Matey
-			} else if ( item.props.containsKey( "foreground" ) ) {
 				skeleBuilder
-						.bg( )
-						.setVerts( polySprite )
-						.texBackground(
-								WereScrewedGame.manager.getLevelRobotBGTex( ) )
-						.fg( )
-						.setVerts( polySprite )
-						.texForeground(
-								WereScrewedGame.manager.getLevelRobotFGTex( ) );
-			} else {
-				skeleBuilder
-						.bg( )
-						.setVerts( polySprite )
-						.texBackground(
-								WereScrewedGame.manager.getLevelRobotBGTex( ) )
-						.texForeground( null ).fg( ).setVerts( polySprite );
-				// to have a fg fade action with no actual foreground we set fg
-				// verts but don't set fg texture
+						.buildRectangle(
+								item.pos.x
+										- ( item.element.getFloat( "Width" ) / 2.0f ),
+								item.pos.y
+										- ( item.element.getFloat( "Height" ) / 2.0f ),
+								item.element.getFloat( "Width" ),
+								item.element.getFloat( "Height" ) );
+
+				Array< Vector2 > polySprite = contstructSkeletonPoly( item );
+
+				if ( item.props.containsKey( "invisible" ) ) {
+					skeleBuilder.invisibleVerts( polySprite );
+
+					// Argggg, the code you're looking for be here Matey
+				} else if ( item.props.containsKey( "foreground" ) ) {
+					skeleBuilder
+							.bg( )
+							.setVerts( polySprite )
+							.texBackground(
+									WereScrewedGame.manager
+											.getLevelRobotBGTex( ) )
+							.fg( )
+							.setVerts( polySprite )
+							.texForeground(
+									WereScrewedGame.manager
+											.getLevelRobotFGTex( ) );
+				} else {
+					skeleBuilder
+							.bg( )
+							.setVerts( polySprite )
+							.texBackground(
+									WereScrewedGame.manager
+											.getLevelRobotBGTex( ) )
+							.texForeground( null ).fg( ).setVerts( polySprite );
+					// to have a fg fade action with no actual foreground we set
+					// fg
+					// verts but don't set fg texture
+				}
 			}
-
 			if ( item.props.containsKey( "dynamic" ) ) {
 				skeleBuilder.dynamic( );
 			}
@@ -942,7 +951,8 @@ public class LevelFactory {
 				.properties( item.props );
 		if ( item.props.containsKey( "tux" ) ) {
 			pb.texture( WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-					+ "/levels/alphabot/alphabot_texture_tux.png", Texture.class ) );
+					+ "/levels/alphabot/alphabot_texture_tux.png",
+					Texture.class ) );
 		} else {
 			pb.texture( WereScrewedGame.manager.getLevelRobotOutlineTex( ) );
 		}
@@ -1134,8 +1144,8 @@ public class LevelFactory {
 				// TODO: add all movers to this mover builder
 				if ( MoverType.fromString( movername ) != null ) {
 
-					MoverBuilder moverBuilder = new MoverBuilder( level.world ).fromString(
-							movername ).applyTo( attach );
+					MoverBuilder moverBuilder = new MoverBuilder( level.world )
+							.fromString( movername ).applyTo( attach );
 
 					if ( movername.equals( "lerpmover" ) ) {
 						if ( item.props.containsKey( "distance" ) ) {
@@ -1531,12 +1541,12 @@ public class LevelFactory {
 				Anchor anchor = LevelFactory.entities.get( tokens[ 1 ] ).anchors
 						.get( i );
 				etb.beginAction( new AnchorDeactivateAction( anchor ) );
-			} else if( action.contains( "set_tutorial" ) ) {
+			} else if ( action.contains( "set_tutorial" ) ) {
 				String tutorialNumbers = item.props.get( "sequence" );
 				String tokens[] = tutorialNumbers.split( " " );
-				int x = Integer.parseInt( tokens[ 0 ] ) ;
-				int y = Integer.parseInt( tokens[ 1 ] ) ;
-				etb.beginAction( new SetTutorialAction(x, y, true) );
+				int x = Integer.parseInt( tokens[ 0 ] );
+				int y = Integer.parseInt( tokens[ 1 ] );
+				etb.beginAction( new SetTutorialAction( x, y, true ) );
 			} else {
 				etb.beginAction( new EntityActivateMoverAction( ) );
 			}
@@ -1550,13 +1560,13 @@ public class LevelFactory {
 				Anchor anchor = LevelFactory.entities.get( tokens[ 1 ] ).anchors
 						.get( i );
 				etb.endAction( new AnchorDeactivateAction( anchor ) );
-			}else if( action.contains( "set_tutorial" ) ) {
+			} else if ( action.contains( "set_tutorial" ) ) {
 				String tutorialNumbers = item.props.get( "sequence" );
 				String tokens[] = tutorialNumbers.split( " " );
-				int x = Integer.parseInt( tokens[ 0 ] ) ;
-				int y = Integer.parseInt( tokens[ 1 ] ) ;
-				etb.endAction( new SetTutorialAction(x, y, false) ); 
-			}else {
+				int x = Integer.parseInt( tokens[ 0 ] );
+				int y = Integer.parseInt( tokens[ 1 ] );
+				etb.endAction( new SetTutorialAction( x, y, false ) );
+			} else {
 				etb.endAction( new EntityDeactivateMoverAction( ) );
 			}
 		}
@@ -1645,20 +1655,20 @@ public class LevelFactory {
 		if ( item.props.containsKey( "flip" ) ) {
 			fire.flip( );
 		}
-		
+
 		// Looks for size property in a fire particle
-		// The size should be the duration in seconds the life a particle should be.
-		// Fire starts at 1 for reference. 
-		// Warning the number of particles increases by a power of 2. 
+		// The size should be the duration in seconds the life a particle should
+		// be.
+		// Fire starts at 1 for reference.
+		// Warning the number of particles increases by a power of 2.
 		if ( item.props.containsKey( "size" ) ) {
 			float size = Float.valueOf( item.props.get( "size" ) );
 			float time = size * 1000;
 			float emits = 40 + size * 10;
-			int max = (int) Math.round( emits * size ) + 10;
-			fire.particleEffect.changeEffectMaxSize( time, emits, max ); 
+			int max = ( int ) Math.round( emits * size ) + 10;
+			fire.particleEffect.changeEffectMaxSize( time, emits, max );
 		}
-		
-		
+
 		String skelAttach = item.skeleton;
 		Skeleton parent = loadSkeleton( skelAttach );
 		parent.addHazard( fire );
@@ -1712,48 +1722,48 @@ public class LevelFactory {
 		if ( item.props.containsKey( "repeatable" ) ) {
 			ps.setRepeatable( true );
 		}
-		
+
 		if ( item.props.containsKey( "active" ) ) {
-			ps.setState(true);
+			ps.setState( true );
 		}
-		
+
 		if ( item.props.containsKey( "controlthis" ) ) {
 			String s = item.props.get( "controlthis" );
 			Entity attach = entities.get( s );
 			ps.actOnEntity = true;
 			ps.addEntityToTrigger( attach );
 		}
-		
+
 		if ( item.props.containsKey( "controlthis2" ) ) {
 			String s = item.props.get( "controlthis2" );
 			Entity attach = entities.get( s );
-			
+
 			ps.addEntityToTrigger( attach );
 		}
-		
+
 		if ( item.props.containsKey( "controlthis3" ) ) {
 			String s = item.props.get( "controlthis3" );
 			Entity attach = entities.get( s );
-			
+
 			ps.addEntityToTrigger( attach );
 		}
-		
+
 		if ( item.props.containsKey( "beginaction" ) ) {
 			String action = item.props.get( "beginaction" );
-			
-			if(action.equals( "activate_hazard" )){
-				ps.addBeginIAction( new HazardActivateAction() );
+
+			if ( action.equals( "activate_hazard" ) ) {
+				ps.addBeginIAction( new HazardActivateAction( ) );
 			}
 		}
-		
+
 		if ( item.props.containsKey( "endaction" ) ) {
 			String action = item.props.get( "endaction" );
-			
-			if(action.equals( "deactivate_hazard" )){
-				ps.addEndIAction( new HazardDeactivateAction() );
+
+			if ( action.equals( "deactivate_hazard" ) ) {
+				ps.addEndIAction( new HazardDeactivateAction( ) );
 			}
 		}
-		
+
 		parent.addEventTrigger( ps );
 		entities.put( item.name, ps );
 
