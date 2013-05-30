@@ -1,7 +1,9 @@
 package com.blindtigergames.werescrewed.sound;
 
+import java.util.Comparator;
 import java.util.EnumMap;
 import java.util.HashMap;
+import java.util.PriorityQueue;
 
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.math.Rectangle;
@@ -35,14 +37,32 @@ public class SoundManager {
 	
 	public static EnumMap< SoundType, Float > globalVolume;
 	public ArrayHash< String, SoundRef > sounds;
-
+	public static PriorityQueue<SoundRef> loopSounds;
+	protected static int maxLoopChannels;
+	
 	static {
 		globalVolume = new EnumMap< SoundType, Float >( SoundType.class );
 		for ( SoundType type : SoundType.values( ) ) {
 			globalVolume.put( type, 1.0f );
 		}
+		maxLoopChannels = 4;
+		loopSounds = new PriorityQueue<SoundRef>(maxLoopChannels, new CompareByVolume());
 	}
 
+	public static void updateLoops(){
+		int activeLoops = 0;
+		for (SoundRef ref: loopSounds){
+			if (activeLoops < maxLoopChannels){
+				ref.loop( false );
+				activeLoops++;
+			} else {
+				if (ref.loopId > 0){
+					ref.stop( );
+				}
+			}
+		}
+	}
+	
 	protected Camera camera;
 
 	public SoundManager( ) {
@@ -167,15 +187,29 @@ public class SoundManager {
 	public void loopSound( String id, int index, boolean override,
 			float extVol, float extPitch ) {
 		if ( hasSound( id, index ) ) {
-			sounds.get( id ).loop( override, extVol, extPitch );
+			//sounds.get( id ).loop( override, extVol, extPitch );
+			SoundRef ref = sounds.get( id );
+			ref.setVolume( extVol );
+			ref.setPitch( extPitch );
+			loopSounds.add( ref );
 		}
 	}
 
-	public void stopSound( String id ) {
-		if ( hasSound( id ) ) {
-			sounds.get( id ).stop( );
-			if ( isLooping( id ) ) {
-				sounds.get( id ).loopId = -1;
+	public void stopSound( String id ){
+		if (hasSound(id)){
+			Array<SoundRef> refs = sounds.getAll( id );
+			for (int i = 0; i < refs.size; i++){
+				stopSound(id, i);
+			}
+		}
+	}
+	
+	public void stopSound( String id , int index) {
+		if ( hasSound( id , index) ) {
+			SoundRef ref = sounds.get(id, index);
+			ref.stop( );
+			if (loopSounds.contains( ref )){
+				loopSounds.remove( ref );
 			}
 		}
 	}
@@ -417,6 +451,9 @@ public class SoundManager {
 		protected float falloff;
 		protected Vector2 offset;
 		
+		protected float finalVolume;
+		protected float finalPitch;
+		
 		public static final float VOLUME_MINIMUM = 0.001f;
 		protected static final float DELAY_MINIMUM = 0.0001f;
 		/*
@@ -429,6 +466,8 @@ public class SoundManager {
 		protected SoundRef( Sound s ) {
 			volume = 1.0f;
 			volumeRange = 0.0f;
+			finalVolume = 1.0f;
+			finalPitch = 1.0f;
 			pitch = 1.0f;
 			pitchRange = 0.0f;
 			pan = 0.0f;
@@ -445,28 +484,32 @@ public class SoundManager {
 		protected long play( float delayAmount, float extVol, float extPitch ) {
 			long id = -1;
 			if ( delay < DELAY_MINIMUM ) {
-				float finalVol = Math.max(
+				finalVolume = Math.max(
 						Math.min( getSoundVolume( ) * volume * extVol, 1.0f ),
 						0.0f );
-				float finalPitch = pitch * extPitch;
-				if (finalVol > VOLUME_MINIMUM){
-					id = sound.play( finalVol, finalPitch, pan );
+				finalPitch = pitch * extPitch;
+				if (finalVolume > VOLUME_MINIMUM){
+					id = sound.play( finalVolume, finalPitch, pan );
 				}
 				soundIds.add( id );
 				delay = delayAmount;
 			}
 			return id;
 		}
-
+		
 		protected long loop( boolean override, float extVol, float extPitch ) {
-			if ( override && loopId >= 0 ) {
-				sound.stop( loopId );
-				loopId = sound.loop( getNoiseVolume( ) * volume * extVol );
-			} else if ( loopId < 0 ) {
-				loopId = sound.loop( getNoiseVolume( ) * volume * extVol );
-			}
 			setVolume( extVol );
 			setPitch( extPitch );
+			return loop(override);
+		}
+		
+		protected long loop( boolean override ) {
+			if ( override && loopId >= 0 ) {
+				sound.stop( loopId );
+				loopId = sound.loop( finalVolume );
+			} else if ( loopId < 0 ) {
+				loopId = sound.loop( finalVolume );
+			}
 			return loopId;
 		}
 
@@ -489,9 +532,13 @@ public class SoundManager {
 		}
 
 		public void setVolume( float extVol ) {
+			finalVolume = getNoiseVolume( ) * volume * extVol;
+			if (loopSounds.contains( this )){
+				loopSounds.remove(this);
+				loopSounds.add( this );
+			}
 			if ( loopId >= 0 ) {
-				float vol = getNoiseVolume( ) * volume * extVol;
-				sound.setVolume( loopId, vol);
+				sound.setVolume( loopId, finalVolume);
 			}
 		}
 
@@ -504,8 +551,9 @@ public class SoundManager {
 		}
 
 		public void setPitch( float extPitch ) {
+			finalPitch = pitch * extPitch;
 			if ( loopId >= 0 ) {
-				sound.setPitch( loopId, pitch * extPitch );
+				sound.setPitch( loopId,  finalPitch );
 			}
 		}
 
@@ -537,7 +585,17 @@ public class SoundManager {
 			return defaultDelay;
 		}
 	}
+	public static class CompareByVolume implements Comparator<SoundRef>{
 
+		@Override
+		public int compare( SoundRef ref1, SoundRef ref2){
+			if (ref2.finalVolume > ref1.finalVolume ){
+				return 1;
+			}
+			return -1;
+		}
+		
+	}
 	public void stopAll( ) {
 		for (String tag: sounds.keySet( )){
 			this.stopSound( tag );
