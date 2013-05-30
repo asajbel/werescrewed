@@ -203,8 +203,6 @@ public class AlphaScreen extends Screen {
 		chestDecals( );
 		Skeleton root = ( Skeleton ) LevelFactory.entities.get( "RootSkeleton" );
 		root.setFgFade( false );
-		bgm = WereScrewedGame.manager.get( WereScrewedGame.dirHandle.path( )
-				+ "/common/music/waltz.mp3", Music.class );
 
 		sounds = new SoundManager( );
 		sounds.getSound( "arm_start", WereScrewedGame.dirHandle.path( )
@@ -225,6 +223,19 @@ public class AlphaScreen extends Screen {
 		
 	}
 
+	@Override
+	public void load(){
+		bgm = WereScrewedGame.manager.get( WereScrewedGame.dirHandle.path( )
+				+ "/common/music/waltz.mp3", Music.class );
+		sounds = new SoundManager( );
+		sounds.getSound( "arm_start", WereScrewedGame.dirHandle.path( )
+				+ "/levels/alphabot/sounds/arm_move_begin.ogg" );
+		sounds.getSound( "arm_loop", WereScrewedGame.dirHandle.path( )
+				+ "/levels/alphabot/sounds/arm_move_loop.ogg" );
+		sounds.getSound( "arm_end", WereScrewedGame.dirHandle.path( )
+				+ "/levels/alphabot/sounds/arm_move_end.ogg" );
+	}
+	
 	@Override
 	public void render( float deltaTime ) {
 		super.render( deltaTime );

@@ -66,7 +66,8 @@ public class Screen implements com.badlogic.gdx.Screen {
 	protected boolean transInEnd = true;
 	protected boolean transOutEnd = true;
 	protected boolean fullscreen = false; 
-
+	protected boolean assetsLoaded = false;
+	
 	BitmapFont debug_font;
 	Camera uiCamera;
 
@@ -95,9 +96,12 @@ public class Screen implements com.badlogic.gdx.Screen {
 											// -Gdx.graphics.getHeight( )
 		setClearColor( 0f, 0f, 0f, 1f );
 		bgm = null;
-		sounds = new SoundManager();
+		sounds = null;
 	}
 
+	public void load(){
+	}
+	
 	@Override
 	public void render( float delta ) {
 		if ( Gdx.input.isKeyPressed( Keys.P ) ) {
@@ -472,6 +476,9 @@ public class Screen implements com.badlogic.gdx.Screen {
 
 	@Override
 	public void show( ) {
+		if (!assetsLoaded){
+			load();
+		}
 		if (bgm != null){
 			bgm.setLooping( true );
 			bgm.setVolume( SoundManager.getMusicVolume( ) );
@@ -484,7 +491,9 @@ public class Screen implements com.badlogic.gdx.Screen {
 		if (bgm != null){
 			bgm.stop();
 		}
-		sounds.stopAll( );
+		if (sounds != null){
+			sounds.stopAll( );
+		}
 	}
 
 	@Override
@@ -503,8 +512,16 @@ public class Screen implements com.badlogic.gdx.Screen {
 	public void dispose( ) {
 		if ( level != null )
 			level.resetPhysicsWorld( );
-		bgm = null;
-		sounds.dispose( );
+		if (bgm != null){
+			bgm.stop( );
+			bgm.dispose( );
+			bgm = null;
+		}
+		if (sounds != null){
+			sounds.dispose( );
+			sounds = null;
+		}
+		assetsLoaded = false;
 	}
 
 	/**

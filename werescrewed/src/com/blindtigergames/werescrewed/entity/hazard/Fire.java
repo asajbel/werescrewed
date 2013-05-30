@@ -149,7 +149,7 @@ public class Fire extends Hazard {
 	public void update( float deltaTime){
 		if (isActive()){
 			if (!sounds.isLooping( "idle" )){
-				//sounds.loopSound( "idle" );
+				sounds.loopSound( "idle" );
 			}
 			sounds.setSoundVolume(
 					"idle",
