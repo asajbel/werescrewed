@@ -67,6 +67,8 @@ public class Platform extends Entity {
 	private Vector2 originRelativeToSkeleton; // box meters
 
 	protected Joint extraSkeletonJoint;
+	
+	public boolean dontPutToSleep = false;
 
 	// ============================================
 	// Constructors

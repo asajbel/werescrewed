@@ -654,6 +654,12 @@ public class LevelFactory {
 			SkeletonBuilder skeleBuilder = new SkeletonBuilder( level.world );
 			skeleBuilder.name( item.name ).position( item.pos ).texture( null );
 
+			if ( item.getGleedType( ).equals( "RectangleItem") ) {
+				skeleBuilder.setUseBoundingRect( true );
+				skeleBuilder.buildRectangle( item.pos.x-(item.element.getFloat( "Width" )/2.0f), 
+						item.pos.y-(item.element.getFloat( "Height" )/2.0f), 
+						item.element.getFloat( "Width" ), item.element.getFloat( "Height" ) );
+			} 
 			Array< Vector2 > polySprite = contstructSkeletonPoly( item );
 
 			if ( item.props.containsKey( "invisible" ) ) {
