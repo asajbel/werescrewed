@@ -6,6 +6,14 @@ import java.util.Set;
 
 import com.badlogic.gdx.utils.Array;
 
+/**
+ * A HashMap with buckets at each key. Each bucket is a badlogic Array.
+ * 
+ * @author Kevin / stew
+ *
+ * @param <K>
+ * @param <V>
+ */
 public class ArrayHash< K, V > {
 	protected HashMap< K, Array< V >> data;
 
@@ -23,7 +31,7 @@ public class ArrayHash< K, V > {
 		data.get( key ).set( index, value );
 	}
 
-	public V add( K key, V value ) {
+	public V put( K key, V value ) {
 		if ( !data.containsKey( key ) ) {
 			data.put( key, new Array< V >( ) );
 		}
@@ -100,5 +108,23 @@ public class ArrayHash< K, V > {
 
 	public int size( ) {
 		return data.size( );
+	}
+	
+	public void remove(String key, int index){
+		if ( data.containsKey( key ) ) {
+			Array< V > values = data.get( key );
+			if ( values.size > 0 && index < values.size) {
+				values.removeIndex( index );
+			}
+		}
+	}
+	
+	public void remove(String key, V value){
+		if ( data.containsKey( key ) ) {
+			Array< V > values = data.get( key );
+			if ( values.size > 0 ) {
+				values.removeValue( value, false );
+			}
+		}
 	}
 }

@@ -21,7 +21,6 @@ import com.blindtigergames.werescrewed.util.Util;
 public class Fire extends Hazard {
 
 	public ParticleEffect particleEffect;
-	// public Array< ParticleEmitter > particleEmitter;
 	protected float width;
 	protected float height;
 	boolean upsideDown = true, started = true;
@@ -53,7 +52,6 @@ public class Fire extends Hazard {
 		this.world = world;
 		this.activeHazard = isActive;
 		particleEffect = WereScrewedGame.manager.getParticleEffect( "fire_new" );
-		// particleEffect.setOffset(0f, -height);
 		particleEffect.setPosition( pos.x, pos.y );
 
 		// addFrontParticleEffect( "fire", false, true );
@@ -170,7 +168,7 @@ public class Fire extends Hazard {
 	 * @param deltaTime
 	 *            float
 	 */
-	public void draw( SpriteBatch batch, float deltaTime ) {
+	public void draw( SpriteBatch batch, float deltaTime, Camera camera ) {
 		if ( Gdx.input.isKeyPressed( Input.Keys.BACKSLASH ) )
 			this.activeHazard = false;
 
@@ -196,7 +194,7 @@ public class Fire extends Hazard {
 			//particleEffect.setAngle( body.getAngle( ) );
 			particleEffect.draw( batch, deltaTime );
 		}
-		super.draw( batch, deltaTime );
+		super.draw( batch, deltaTime, camera );
 	}
 		
 	public void loadSounds( ) {

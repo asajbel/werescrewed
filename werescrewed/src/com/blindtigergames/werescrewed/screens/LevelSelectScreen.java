@@ -22,7 +22,7 @@ public class LevelSelectScreen extends Screen {
 	private BitmapFont font = null;
 	private BitmapFont fancyFont = null;
 	private Sprite menuBG = null;
-	private Sprite transition = null;
+	private Sprite fade = null;
 	private Label screenLabel = null;
 	private TextButton resurrectButton = null;
 	private TextButton hazardButton = null;
@@ -35,7 +35,6 @@ public class LevelSelectScreen extends Screen {
 	private SimpleSpinemator lady = null;
 	private Array< Falling > debris = null;
 	private Array< Falling > gears = null;
-	private int width, height;
 	private float time;
 	private float manDir = 1;
 	private float ladyDir = -1;
@@ -48,16 +47,26 @@ public class LevelSelectScreen extends Screen {
 		// fancyFont = WereScrewedGame.manager.getFont( "ornatique" );
 		Texture back = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 				+ "/menu/menu.png", Texture.class );
-		Texture trans = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
+		Texture fadeScreen = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 				+ "/menu/transition.png", Texture.class );
 		menuBG = new Sprite( back );
-		transition = new Sprite( trans );
+		fade = new Sprite( fadeScreen );
+		
 		lineHeight = Math.round( 2.5f * font.getCapHeight( ) + 40 );
 		screenLabel = new Label( "Level Select", fancyFont );
+		
 		man = new SimpleSpinemator( "red_male_atlas", "male", "fall_idle", true );
 		lady = new SimpleSpinemator( "red_female_atlas", "female", "fall_idle", true );
 		gears = new Array< Falling >( );
 		debris = new Array< Falling >( );
+		
+		Texture transition = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
+				+ "/transitions/trans-gear.png", Texture.class );
+		trans = new Sprite( transition );
+		scale = trans.getHeight( ) * SCALE_MAX;
+		scaleMax = scale;
+		transInEnd = false;
+		
 		TextureAtlas gearsAtlas = WereScrewedGame.manager.getAtlas( "gears" );
 		TextureAtlas common = WereScrewedGame.manager
 				.getAtlas( "common-textures" );
@@ -108,11 +117,24 @@ public class LevelSelectScreen extends Screen {
 
 		backButton.draw( batch, camera );
 
-		if ( !finish )
-			setAlpha( -0.02f );
+		//if ( !alphaFinish )
+			//setAlpha( -0.02f );
 		man.draw( batch );
 		lady.draw( batch );
-		transition.draw( batch, alpha );
+		//fade.draw( batch, alpha );
+
+		if ( !transInEnd ) {
+			trans.setPosition( width / 2 - trans.getWidth( ) / 2, height / 2 - trans.getHeight( ) / 2 );
+			drawTransIn( batch );
+			trans.setSize( scale, scale );
+		}
+		
+		if ( !transOutEnd ) {
+			trans.setPosition( width / 2 - trans.getWidth( ) / 2, height / 2 - trans.getHeight( ) / 2 );
+			drawTransOut( batch );
+			trans.setSize( scale, scale );
+		}
+		
 		batch.end( );
 
 	}
@@ -132,10 +154,10 @@ public class LevelSelectScreen extends Screen {
 		@SuppressWarnings( "unused" )
 		float scaleY = height / 720f;
 
-		transition.setPosition( width / 2 - transition.getWidth( ) / 2, height
-				/ 2 - transition.getHeight( ) / 2 );
-		transition.setScale( width / transition.getWidth( ), height
-				/ transition.getHeight( ) );
+		fade.setPosition( width / 2 - fade.getWidth( ) / 2, height
+				/ 2 - fade.getHeight( ) / 2 );
+		fade.setScale( width / fade.getWidth( ), height
+				/ fade.getHeight( ) );
 		// menuBG.setScale( width / menuBG.getWidth( ), width / menuBG.getWidth(
 		// ) );
 		menuBG.setPosition( 0, height / 2 - menuBG.getHeight( ) / 2 );

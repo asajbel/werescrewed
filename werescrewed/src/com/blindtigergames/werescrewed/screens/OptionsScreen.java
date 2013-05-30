@@ -25,7 +25,7 @@ class OptionsScreen extends Screen {
 	private BitmapFont fancyFont = null;
 	@SuppressWarnings( "unused" )
 	private Sprite menuBG = null;
-	private Sprite transition = null;
+	private Sprite fade = null;
 	private int lineHeight = 0;
 	private final int VOLUME_MAX = 100;
 	private final int VOLUME_MIN = 0;
@@ -59,17 +59,21 @@ class OptionsScreen extends Screen {
 		font = new BitmapFont( );
 		fancyFont = WereScrewedGame.manager.getFont( "longdon" );
 
-		Texture trans = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
+		Texture fadeScreen = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 				+ "/menu/transition.png", Texture.class );
-		transition = new Sprite( trans );
-
-		@SuppressWarnings( "unused" )
+		fade = new Sprite( fadeScreen );
+		/*@SuppressWarnings( "unused" )
 		int width = Gdx.graphics.getWidth( );
 		@SuppressWarnings( "unused" )
-		int height = Gdx.graphics.getHeight( );
+		int height = Gdx.graphics.getHeight( );*/
+		Texture transition = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
+				+ "/transitions/trans-gear.png", Texture.class );
+		trans = new Sprite( transition );
+		scale = trans.getHeight( ) * SCALE_MAX;
+		scaleMax = scale;;
+		transInEnd = false;
+		
 		lineHeight = Math.round( 2.5f * font.getCapHeight( ) + 40 );
-		// the following are placeholder displays. Add actual option buttons
-		// here later
 		screenLabel = new Label( "OPTIONS", fancyFont );
 
 		loadButtons( );
@@ -107,15 +111,29 @@ class OptionsScreen extends Screen {
 		creditsButton.draw( batch, camera );
 		backButton.draw( batch, camera );
 
-		if ( !finish )
-			setAlpha( -0.02f );
-		transition.draw( batch, alpha );
+		if ( !transInEnd ) {
+			trans.setPosition( width / 2 - trans.getWidth( ) / 2, height / 2 - trans.getHeight( ) / 2 );
+			drawTransIn( batch );
+			trans.setSize( scale, scale );
+		}
+		
+		if ( !transOutEnd ) {
+			trans.setPosition( width / 2 - trans.getWidth( ) / 2, height / 2 - trans.getHeight( ) / 2 );
+			drawTransOut( batch );
+			trans.setSize( scale, scale );
+		}
+		
+		//if ( !alphaFinish )
+			//setAlpha( -0.02f );
+		//fade.draw( batch, alpha );
 
 		batch.end( );
 	}
 
 	@Override
 	public void resize( int width, int height ) {
+		this.width = width;
+		this.height = height;
 		camera = new OrthographicCamera( );
 		camera.setToOrtho( false, width, height );
 		batch.setProjectionMatrix( camera.combined );
@@ -123,7 +141,7 @@ class OptionsScreen extends Screen {
 		int leftX = width / 4;
 		int centerY = height / 2;
 
-		transition.setPosition( 0, 0 );
+		fade.setPosition( 0, 0 );
 
 		screenLabel.setX( centerX - screenLabel.getWidth( ) / 2 );
 		screenLabel.setY( centerY + 7 * ( lineHeight - 20 ) );

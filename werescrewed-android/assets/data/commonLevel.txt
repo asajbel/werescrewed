@@ -129,6 +129,8 @@ slowSteam.p
 fire.p
 fire_new.p
 cannon.p
+smoke_puff_small.p
+/fire/fire_tiny.p
 
 ##menu assets
 /menu/menu.png
@@ -139,6 +141,9 @@ cannon.p
 
 ##temp background
 /common/menu_placeholder.png
+
+##transition images
+/transitions/trans-gear.png
 
 ##Palette Def
 ##Define with <colorName>.palette
@@ -162,3 +167,6 @@ grey.palette
 /common/tutorial/screw1.png
 /common/tutorial/switch0.png
 /common/tutorial/switch1.png
+
+##Trophy icons
+/common/trophies/trophy.png

@@ -689,6 +689,9 @@ public class LevelFactory {
 				skeleBuilder.fadeFgDecals( true );
 			}
 
+			if ( item.props.containsKey( "setChildSkelsToSleep" ) ) {
+				skeleBuilder.setChildSkelsToSleep( true );
+			}
 			skeleton = skeleBuilder.build( );
 
 			if ( item.props.containsKey( "alwaysvisible" ) ) {
@@ -933,7 +936,7 @@ public class LevelFactory {
 				.properties( item.props );
 		if ( item.props.containsKey( "tux" ) ) {
 			pb.texture( WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-					+ "/common/robot/alphabot_texture_tux.png", Texture.class ) );
+					+ "/levels/alphabot/alphabot_texture_tux.png", Texture.class ) );
 		} else {
 			pb.texture( WereScrewedGame.manager.getLevelRobotOutlineTex( ) );
 		}
@@ -1837,7 +1840,7 @@ public class LevelFactory {
 				for ( Element prop : properties ) {
 					name = prop.getAttribute( "Name" ).toLowerCase( );
 					value = prop.get( "string", "<no value>" );
-					props.add( name, value );
+					props.put( name, value );
 				}
 			}
 			return props;

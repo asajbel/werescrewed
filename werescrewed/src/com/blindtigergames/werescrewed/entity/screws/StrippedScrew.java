@@ -11,6 +11,7 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.Joint;
 import com.badlogic.gdx.physics.box2d.World;
 import com.blindtigergames.werescrewed.WereScrewedGame;
+import com.blindtigergames.werescrewed.camera.Camera;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityType;
 import com.blindtigergames.werescrewed.graphics.SpriteBatch;
@@ -160,7 +161,7 @@ public class StrippedScrew extends Screw {
 	 * @author Ranveer
 	 */
 	@Override
-	public void draw( SpriteBatch batch, float deltaTime ) {
+	public void draw( SpriteBatch batch, float deltaTime, Camera camera ) {
 		float xpos = body.getPosition( ).x
 				- ( this.sprite.getWidth( ) / 2 * Util.PIXEL_TO_BOX );
 		float ypos = body.getPosition( ).y
@@ -173,7 +174,10 @@ public class StrippedScrew extends Screw {
 		// this.sprite.setRotation( MathUtils.radiansToDegrees
 		// * body.getAngle( ) );
 		sprite.setRotation( rotation );
-		this.sprite.draw( batch );
+		if ( sprite != null && visible && !removeNextStep
+				&& sprite.getBoundingRectangle( ).overlaps( camera.getBounds( ) )) {
+			sprite.draw( batch );
+		}
 	}
 
 	/**

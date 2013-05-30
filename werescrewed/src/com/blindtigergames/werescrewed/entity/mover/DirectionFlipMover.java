@@ -14,6 +14,9 @@ public class DirectionFlipMover implements IMover {
 	float prevXPosMeter;
 	float accum, timeToFlipAfterNoMove, maxSpeed;
 	
+	//private variables to prevent re-allocating them each time move() is called
+	private float pos, diff, len;
+	
 	/**
 	 * Attach this mover to a dynamic body. IT will roll it left and right, and flip directions if stuck on a wall
 	 * @param moveLeft Starting direction
@@ -34,9 +37,9 @@ public class DirectionFlipMover implements IMover {
 	
 	@Override
 	public void move( float deltaTime, Body body ) {
-		float pos = body.getPosition( ).x;
-		float diff = pos- prevXPosMeter ;
-		float len = Math.abs( diff );
+		pos = body.getPosition( ).x;
+		diff = pos- prevXPosMeter ;
+		len = Math.abs( diff );
 		if (len< 0.01f){ //0.01 means the enemy hasn't move much
 			accum+=deltaTime;
 		}
