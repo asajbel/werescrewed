@@ -12,14 +12,14 @@ hex_screw
   index: -1
 3
   rotate: false
-  xy: 434, 401
+  xy: 264, 66
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
 spikes
   rotate: false
-  xy: 440, 2
+  xy: 434, 401
   size: 68, 68
   orig: 68, 68
   offset: 0, 0
@@ -54,7 +54,7 @@ flat_head_circular2
   index: -1
 4
   rotate: false
-  xy: 440, 72
+  xy: 264, 2
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
@@ -68,7 +68,7 @@ power_screw
   index: -1
 rivet4
   rotate: false
-  xy: 434, 465
+  xy: 434, 471
   size: 36, 36
   orig: 36, 36
   offset: 0, 0
@@ -143,6 +143,13 @@ switch_on
   orig: 68, 132
   offset: 0, 0
   index: -1
+chainlink-long
+  rotate: false
+  xy: 440, 2
+  size: 38, 132
+  orig: 38, 132
+  offset: 0, 0
+  index: -1
 pipeDL
   rotate: false
   xy: 194, 346
@@ -173,7 +180,7 @@ rivet2
   index: -1
 2
   rotate: false
-  xy: 264, 2
+  xy: 264, 130
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
@@ -229,7 +236,7 @@ pipeDR
   index: -1
 rivet1
   rotate: false
-  xy: 472, 465
+  xy: 472, 471
   size: 35, 36
   orig: 35, 36
   offset: 0, 0

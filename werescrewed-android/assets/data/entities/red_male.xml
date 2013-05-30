@@ -30,4 +30,5 @@
 	<sound>land:/common/sounds/land.ogg</sound>
 	<sound>hit:/common/sounds/impactMaleDoh.ogg</sound>
 	<sound>hit:/common/sounds/impactMaleDoh2.ogg</sound>
+	<sound>revive:/common/sounds/rezzFinish.ogg: volume 0.35f</sound>
 </entity>

@@ -76,7 +76,7 @@ public class Steam extends Platform {
 	 * @param deltaTime
 	 *            float
 	 */
-	public void draw( SpriteBatch batch, float deltaTime ) {
+	public void draw( SpriteBatch batch, float deltaTime, Camera camera ) {
 
 		if ( this.active ) {
 
@@ -100,7 +100,7 @@ public class Steam extends Platform {
 			particleEffect.setAngle( body.getAngle( ) );
 			particleEffect.draw( batch, deltaTime );
 		}
-		super.draw( batch, deltaTime );
+		super.draw( batch, deltaTime, camera);
 
 	}
 

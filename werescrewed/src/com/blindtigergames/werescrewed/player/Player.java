@@ -19,13 +19,13 @@ import com.badlogic.gdx.physics.box2d.joints.RevoluteJoint;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
 import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.camera.Anchor;
+import com.blindtigergames.werescrewed.camera.Camera;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityDef;
 import com.blindtigergames.werescrewed.entity.EntityType;
 import com.blindtigergames.werescrewed.entity.Sprite;
 import com.blindtigergames.werescrewed.entity.animator.PlayerSpinemator;
 import com.blindtigergames.werescrewed.entity.mover.FollowEntityMover;
-import com.blindtigergames.werescrewed.entity.mover.IMover;
 import com.blindtigergames.werescrewed.entity.particles.Steam;
 import com.blindtigergames.werescrewed.entity.platforms.Platform;
 import com.blindtigergames.werescrewed.entity.screws.ResurrectScrew;
@@ -83,6 +83,7 @@ public class Player extends Entity {
 	public final static float FOOTSTEP_PITCH_VARIANCE = 0.02f;
 	public final static float FOOTSTEP_VOLUME_DROP = 0.01f;
 	public final static float JUMP_SOUND_DELAY = 1.0f;
+	private final static float HEAD_JUMP_OFFSET = 4f;
 
 	// public final static float
 
@@ -162,7 +163,7 @@ public class Player extends Entity {
 	@SuppressWarnings( "unused" )
 	private boolean steamDone = false;
 
-	private IMover mover;
+	//private IMover mover;
 
 	public int grabCounter = 0;
 	public int jumpCounter = 0;
@@ -261,10 +262,10 @@ public class Player extends Entity {
 		addBehindParticleEffect( landCloudName, false, false );
 		addFrontParticleEffect( "skid_left", false, false );
 		addFrontParticleEffect( "skid_right", false, false );
-		for ( String s : injuredParticles ) {
+		/*for ( String s : injuredParticles ) {
 			addBehindParticleEffect( s, false, false );
 			getEffect( s ).allowCompletion( );
-		}
+		}*/
 		addBehindParticleEffect( "revive", false, false );
 		// land_cloud = ParticleEffect.loadEffect( "land_cloud" );
 
@@ -412,8 +413,8 @@ public class Player extends Entity {
 			if ( knockedOff ) {
 				removePlayerToScrew( );
 				knockedOff = false;
-			} else if ( mover != null ) {
-				FollowEntityMover lm = ( FollowEntityMover ) mover;
+			} else if ( currentMover( )  != null ) {
+				FollowEntityMover lm = ( FollowEntityMover ) currentMover( ) ;
 				if ( !lm.atEnd( ) ) {
 					lm.move( deltaTime, body );
 				} else {
@@ -430,7 +431,7 @@ public class Player extends Entity {
 					playerJoint = ( RevoluteJoint ) world
 							.createJoint( revoluteJointDef );
 					playerState = PlayerState.Screwing;
-					mover = null;
+					setMoverAtCurrentState( null );
 				}
 			} else {
 				// if resurrect screw and its not active remove the player
@@ -560,7 +561,11 @@ public class Player extends Entity {
 	/**
 	 * This function sets player in dead state
 	 */
-	public void killPlayer( ) {
+	public void killPlayer(){
+		killPlayer(false);
+	}
+	
+	public void killPlayer( boolean disableAnchor ) {
 		if ( respawnTimeout == 0 ) {
 			if ( !world.isLocked( ) ) {
 				if ( otherPlayer != null
@@ -571,7 +576,7 @@ public class Player extends Entity {
 				removePlayerToPlayer( );
 				currentScrew = null;
 				currentPlatform = null;
-				mover = null;
+				setMoverAtCurrentState( null );
 				Filter filter = new Filter( );
 				for ( Fixture f : body.getFixtureList( ) ) {
 					if ( f != rightSensor && f != leftSensor && f != topSensor ) {
@@ -610,16 +615,18 @@ public class Player extends Entity {
 				currentPlatform = null;
 			}
 
-			if ( !isDead ) {
-				ParticleEffect text = getEffect( injuredParticles[ WereScrewedGame.random
-						.nextInt( injuredParticles.length ) ] );
-				text.restartAt( getPositionPixel( ) );
+			if ( !isDead ) { //sometimes this function is called twice in a row :(
+				addBehindParticleEffect( injuredParticles[ WereScrewedGame.random
+						.nextInt( injuredParticles.length ) ], true, false ).restartAt( getPositionPixel( ) );
 				sounds.playSound( "death", 1.0f );
 			}
 			isDead = true;
+			if (disableAnchor){
+				deactivateAnchors( );
+			}
 		}
 	}
-
+	
 	/**
 	 * This function sets player in alive state
 	 */
@@ -640,7 +647,13 @@ public class Player extends Entity {
 		}*/
 		playerState = PlayerState.Standing;
 		currentPlatform = null;
-		isDead = false;
+		if (isDead){
+			sounds.playSound( "revive", 1.0f );
+			isDead = false;
+		}
+		for (Anchor a: anchors){
+			a.activate( );
+		}
 		respawnTimeout = DEAD_STEPS;
 
 //		getEffect( "revive" ).restartAt( getPositionPixel( ).add( 0, 500 ) );
@@ -655,6 +668,24 @@ public class Player extends Entity {
 		return isDead;
 	}
 
+	/**
+	 * deactivates players anchors
+	 */
+	public void deactivateAnchors( ) {
+		for (Anchor a: anchors){
+			a.deactivate( );
+		}
+	}
+	
+	/**
+	 * deactivates players anchors
+	 */
+	public void activateAnchors( ) {
+		for (Anchor a: anchors){
+			a.activate( );
+		}
+	}
+	
 	/**
 	 * Turns tutorial bubble on and off
 	 * 
@@ -692,9 +723,9 @@ public class Player extends Entity {
 	/**
 	 * draws tutorials when appropriate
 	 */
-	public void draw( SpriteBatch batch, float deltaTime ) {
+	public void draw( SpriteBatch batch, float deltaTime, Camera camera ) {
 		drawBubble( batch );
-		super.draw( batch, deltaTime );
+		super.draw( batch, deltaTime, camera );
 	}
 
 	/**
@@ -984,7 +1015,7 @@ public class Player extends Entity {
 	 * 
 	 */
 	public void hitScrew( Screw screw ) {
-		if ( playerState != PlayerState.Screwing && !isDead && mover == null ) {
+		if ( playerState != PlayerState.Screwing && !isDead && currentMover( )  == null ) {
 			currentScrew = screw;
 
 			// Trophy check for if player attaches to a stripped screw
@@ -1259,9 +1290,9 @@ public class Player extends Entity {
 			// f.setSensor( true );
 			// }
 			// }
-			mover = new FollowEntityMover( body.getPosition( ).mul(
+			setMoverAtCurrentState( new FollowEntityMover( body.getPosition( ).mul(
 					Util.BOX_TO_PIXEL ), currentScrew, new Vector2( -WIDTH,
-					-HEIGHT / 2.0f ), SCREW_ATTACH_SPEED );
+					-HEIGHT / 2.0f ), SCREW_ATTACH_SPEED ) );
 			playerState = PlayerState.Screwing;
 			currentScrew.setPlayerAttached( true );
 			screwAttachTimeout = SCREW_ATTACH_STEPS;
@@ -1280,7 +1311,7 @@ public class Player extends Entity {
 	private void processJumpState( ) {
 		if ( playerState == PlayerState.Screwing ) {
 			if ( canJumpOffScrew ) {
-				if ( mover == null ) {
+				if ( currentMover( )  == null ) {
 					// jumpPressedKeyboard = true;
 					if ( currentScrew.getScrewType( ) != ScrewType.SCREW_STRUCTURAL
 							|| currentScrew.getDepth( ) >= 0 ) {
@@ -1330,7 +1361,7 @@ public class Player extends Entity {
 	private void processJumpStateController( ) {
 		if ( playerState == PlayerState.Screwing ) {
 			if ( canJumpOffScrew ) {
-				if ( mover == null ) {
+				if ( currentMover( )  == null ) {
 					// jumpPressedController = true;
 					if ( currentScrew.getScrewType( ) != ScrewType.SCREW_STRUCTURAL
 							|| currentScrew.getDepth( ) >= 0 ) {
@@ -1497,7 +1528,7 @@ public class Player extends Entity {
 			}
 		}
 
-		if ( mover == null
+		if ( currentMover( )  == null
 				&& currentScrew.body.getJointList( ).size( ) <= 1
 				|| ( currentScrew.getScrewType( ) == ScrewType.SCREW_BOSS && currentScrew
 						.getDepth( ) == 0 ) ) {
@@ -1537,7 +1568,7 @@ public class Player extends Entity {
 	 */
 	private void processMovementDown( ) {
 		if ( playerState == PlayerState.Screwing ) {
-			if ( mover == null ) {
+			if ( currentMover( )  == null ) {
 				if ( currentScrew.getScrewType( ) != ScrewType.SCREW_STRUCTURAL
 						|| currentScrew.getDepth( ) >= 0 ) {
 					removePlayerToScrew( );
@@ -1567,10 +1598,10 @@ public class Player extends Entity {
 				if ( ( this.getPositionPixel( ).y > otherPlayer
 						.getPositionPixel( ).add( 0, HEIGHT / 2f ).y )
 						&& ( otherPlayer.getPositionPixel( ).sub(
-								( WIDTH / 3.0f ) + 1.2f, 0.0f ).x <= this
+								( WIDTH / 3.0f ) + HEAD_JUMP_OFFSET, 0.0f ).x <= this
 								.getPositionPixel( ).x )
 						&& ( otherPlayer.getPositionPixel( ).add(
-								( WIDTH / 4.0f ) + 1.2f, 0.0f ).x > this
+								( WIDTH / 3.0f ) + HEAD_JUMP_OFFSET, 0.0f ).x > this
 								.getPositionPixel( ).x ) ) {
 					boolean isMoving = false;
 					// check if the player is using input
@@ -1712,7 +1743,7 @@ public class Player extends Entity {
 		// f.setSensor( false );
 		// }
 		// }
-		mover = null;
+		this.setMoverAtCurrentState( null );
 		if ( currentScrew != null ) {
 			currentScrew.setPlayerAttached( false );
 		}
@@ -1929,7 +1960,7 @@ public class Player extends Entity {
 				}
 			} else {
 				if ( !screwButtonHeld ) {
-					if ( mover == null ) {
+					if ( currentMover( ) == null ) {
 						if ( currentScrew != null
 								&& ( currentScrew.getScrewType( ) != ScrewType.SCREW_STRUCTURAL || currentScrew
 										.getDepth( ) >= 0 ) ) {
@@ -2040,7 +2071,7 @@ public class Player extends Entity {
 		// Basically you have to hold attach button to stick to screw
 		if ( !controllerListener.screwPressed( )
 				&& playerState == PlayerState.Screwing ) {
-			if ( mover == null ) {
+			if ( currentMover( ) == null ) {
 				if ( currentScrew.getScrewType( ) != ScrewType.SCREW_STRUCTURAL
 						|| currentScrew.getDepth( ) >= 0 ) {
 					removePlayerToScrew( );

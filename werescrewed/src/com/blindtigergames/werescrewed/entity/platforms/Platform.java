@@ -67,6 +67,8 @@ public class Platform extends Entity {
 	private Vector2 originRelativeToSkeleton; // box meters
 
 	protected Joint extraSkeletonJoint;
+	
+	public boolean dontPutToSleep = false;
 
 	// ============================================
 	// Constructors
@@ -210,7 +212,7 @@ public class Platform extends Entity {
 	 * returns previous rotation last time it rotated
 	 */
 	public boolean hasRotated( ) {
-		if ( previousRotation != localRotation ) {
+		if ( previousRotation != localRotation || prevBodyAngle != body.getAngle( ) ) {
 			return true;
 		}
 		return false;
