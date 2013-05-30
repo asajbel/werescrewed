@@ -5,6 +5,7 @@ import java.util.HashMap;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
@@ -72,6 +73,10 @@ public class Skeleton extends Platform {
 	protected boolean isUpdatable = true;
 
 	protected boolean setChildSkeletonsToSleep = false;
+	protected boolean useBoundingRect = false;
+	public Rectangle boundingRect = new Rectangle( -10000, -10000, 10000, 10000 );
+	protected Rectangle lastCameraRect = new Rectangle( -10000, -10000, 10000,
+			10000 );
 
 	/**
 	 * Constructor used by SkeletonBuilder
@@ -359,29 +364,21 @@ public class Skeleton extends Platform {
 	 * @author stew
 	 */
 	public void setSkeletonActive( boolean isActive ) {
-		if ( body.isActive( ) != isActive )
-			body.setActive( isActive );
-		setActive( isActive );
-		for ( Platform platform : dynamicPlatformMap.values( ) ) {
-			platform.body.setActive( isActive );
-			platform.setActive( isActive );
-		}
-		for ( Platform platform : kinematicPlatformMap.values( ) ) {
-			platform.body.setActive( isActive );
-			platform.setActive( isActive );
-		}
-		for ( Screw screw : screwMap.values( ) ) {
-			screw.body.setActive( isActive );
-			screw.setActive( isActive );
-		}
-		for ( CheckPoint chkpt : checkpointMap.values( ) ) {
-			chkpt.body.setActive( isActive );
-			chkpt.setActive( isActive );
-		}
-		// for ( Rope rope : ropeMap.values( ) ){
-
-		// }
-		/* TODO: add ropes */
+		/*
+		 * if ( body.isActive( ) != isActive ) body.setActive( isActive );
+		 * setActive( isActive ); for ( Platform platform :
+		 * dynamicPlatformMap.values( ) ) { platform.body.setActive( isActive );
+		 * platform.setActive( isActive ); } for ( Platform platform :
+		 * kinematicPlatformMap.values( ) ) { platform.body.setActive( isActive
+		 * ); platform.setActive( isActive ); } for ( Screw screw :
+		 * screwMap.values( ) ) { screw.body.setActive( isActive );
+		 * screw.setActive( isActive ); } for ( CheckPoint chkpt :
+		 * checkpointMap.values( ) ) { chkpt.body.setActive( isActive );
+		 * chkpt.setActive( isActive ); } // for ( Rope rope : ropeMap.values( )
+		 * ){
+		 * 
+		 * // } /* TODO: add ropes
+		 */
 	}
 
 	/**
@@ -404,7 +401,11 @@ public class Skeleton extends Platform {
 	public void update( float deltaTime ) {
 		super.update( deltaTime );
 		float frameRate = 1 / deltaTime;
-		isUpdatable = !this.isFadingSkel( ) || this.isFGFaded( );
+		isUpdatable = ( !this.isFadingSkel( ) || this.isFGFaded( ) );
+		if ( useBoundingRect ) {
+			if ( !boundingRect.overlaps( lastCameraRect ) )
+				isUpdatable = false;
+		}
 		if ( isUpdatable || isMacroSkeleton ) {
 			updateMover( deltaTime );
 			if ( entityType != EntityType.ROOTSKELETON && isKinematic( ) ) {
@@ -435,6 +436,12 @@ public class Skeleton extends Platform {
 						platform.update( deltaTime );
 					} else {
 						platform.updateMover( deltaTime );
+						if ( !platform.body.isActive( ) ) { 
+							platform.body.setActive( true );
+						}
+						if ( !platform.body.isAwake( ) ) {
+							platform.body.setAwake( false );
+						}
 						if ( platform.hasMoved( ) || platform.hasRotated( )
 								|| hasMoved( ) || hasRotated( ) ) {
 							platform.setTargetPosRotFromSkeleton( frameRate,
@@ -599,7 +606,7 @@ public class Skeleton extends Platform {
 		for ( Platform platform : kinematicPlatformMap.values( ) ) {
 			if ( platform.removeNextStep ) {
 				entitiesToRemove.add( platform );
-			} else {
+			} else if ( !platform.dontPutToSleep ){
 				platform.body.setAwake( true );
 				platform.body.setActive( false );
 			}
@@ -651,11 +658,6 @@ public class Skeleton extends Platform {
 				if ( decal.getBoundingRectangle( )
 						.overlaps( camera.getBounds( ) ) ) {
 					decal.draw( batch );
-				} else {
-					if ( !wasInactive ) {
-						setEntitiesToSleepOnUpdate( );
-						wasInactive = true;
-					}
 				}
 			}
 		}
@@ -665,17 +667,13 @@ public class Skeleton extends Platform {
 	public void draw( SpriteBatch batch, float deltaTime, Camera camera ) {
 		super.draw( batch, deltaTime, camera );
 		if ( visible ) {
-			if ( isActive( ) ) {
-				drawChildren( batch, deltaTime, camera );
-			}
-			if ( isActive( ) || isMacroSkeleton ) {
-				if ( fgSprite != null && alphaFadeAnimator.getTime( ) > 0 ) {
-					fgSprite.setAlpha( alphaFadeAnimator.getTime( ) );
-					// batch.setColor( c.r, c.g, c.b, fgAlphaAnimator.getTime( )
-					// );
-					// fgSprite.draw( batch );
-					// batch.setColor( c.r, c.g, c.b, oldAlpha );
-				}
+			drawChildren( batch, deltaTime, camera );
+			if ( fgSprite != null && alphaFadeAnimator.getTime( ) > 0 ) {
+				fgSprite.setAlpha( alphaFadeAnimator.getTime( ) );
+				// batch.setColor( c.r, c.g, c.b, fgAlphaAnimator.getTime( )
+				// );
+				// fgSprite.draw( batch );
+				// batch.setColor( c.r, c.g, c.b, oldAlpha );
 			}
 			if ( applyFadeToFGDecals ) {
 				fadeFGDecals( );
@@ -684,6 +682,7 @@ public class Skeleton extends Platform {
 	}
 
 	private void drawChildren( SpriteBatch batch, float deltaTime, Camera camera ) {
+		lastCameraRect = camera.getBounds( );
 		if ( !wasInactive && isUpdatable ) {
 			for ( EventTrigger et : eventMap.values( ) ) {
 				et.draw( batch, deltaTime, camera );
@@ -714,9 +713,11 @@ public class Skeleton extends Platform {
 		// draw the entities of the parent skeleton before recursing through
 		// the
 		// child skeletons
-		if ( !setChildSkeletonsToSleep || isUpdatable( ) ) {
-			for ( Skeleton skeleton : childSkeletonMap.values( ) ) {
-				skeleton.draw( batch, deltaTime, camera );
+		if ( isUpdatable || isMacroSkeleton ) {
+			if ( !setChildSkeletonsToSleep || isUpdatable ) {
+				for ( Skeleton skeleton : childSkeletonMap.values( ) ) {
+					skeleton.draw( batch, deltaTime, camera );
+				}
 			}
 		}
 	}
@@ -733,9 +734,6 @@ public class Skeleton extends Platform {
 				if ( !invisibleBGDecal ) {
 					decal.draw( batch );
 				}
-				onScreen = true;
-			} else {
-				onScreen = false;
 			}
 		}
 	}
@@ -786,6 +784,10 @@ public class Skeleton extends Platform {
 
 	public boolean getWasInactive( ) {
 		return wasInactive;
+	}
+
+	public void setUseBoundingRect( boolean setting ) {
+		useBoundingRect = setting;
 	}
 
 	public boolean isUpdatable( ) {

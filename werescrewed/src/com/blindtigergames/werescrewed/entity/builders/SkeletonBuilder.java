@@ -1,6 +1,7 @@
 package com.blindtigergames.werescrewed.entity.builders;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.World;
@@ -23,6 +24,8 @@ public class SkeletonBuilder extends GenericEntityBuilder< SkeletonBuilder > {
 	protected boolean hasDeactivateTrigger;
 	protected boolean fadeFgDecals;
 	protected boolean setChildSkeletonsToSleep = false;
+	protected boolean useBoundingRect = false;
+	protected Rectangle boundingRect;
 
 	public SkeletonBuilder( World world ) {
 		super( );
@@ -90,6 +93,16 @@ public class SkeletonBuilder extends GenericEntityBuilder< SkeletonBuilder > {
 		return this;
 	}
 
+	public SkeletonBuilder setUseBoundingRect( boolean setting ) {
+		useBoundingRect = setting;
+		return this;
+	}
+	
+	public SkeletonBuilder buildRectangle( float x, float y, float width, float height ) {
+		boundingRect = new Rectangle( x, y, width, height);
+		return this;
+	}
+	
 	/**
 	 * Set the entire vertice list for the polySprite on the next built skeleton
 	 * 
@@ -204,6 +217,7 @@ public class SkeletonBuilder extends GenericEntityBuilder< SkeletonBuilder > {
 	public Skeleton build( ) {
 		Skeleton out = new Skeleton( name, pos, null, super.world, bodyType );
 		out.setChildSkeletonsToSleepProperty( setChildSkeletonsToSleep );
+		out.boundingRect = this.boundingRect;
 		if ( invisibleVerts != null ) {
 			if ( polyVertsFG != null && texForeground != null ) {
 				out.fgSprite = new PolySprite( texForeground, polyVertsFG );
