@@ -6,6 +6,8 @@
 @ outline /common/black.png
 @ fg /levels/alphabot/alphabot-fg.png
 
+##music
+/levels/dragon/riding.mp3
 
 ##sounds
 /common/sounds/inceptionbutton.mp3

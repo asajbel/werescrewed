@@ -100,9 +100,6 @@ public class AlphaScreen extends Screen {
 
 	Array< Panel > panels;
 
-	protected Music bgm;
-	protected SoundManager sounds;
-
 	public AlphaScreen( ) {
 		super( );
 
@@ -178,12 +175,12 @@ public class AlphaScreen extends Screen {
 		level.backgroundBatch = new SpriteBatch( );
 		level.backgroundRootSkeleton = new RootSkeleton( "backgroundroot",
 				Vector2.Zero, null, level.world );
-		float width = Gdx.graphics.getWidth( ) / 1f;
-		float height = Gdx.graphics.getHeight( ) / 1f;
-		level.backgroundCam = new OrthographicCamera( 1, width / height );
-		level.backgroundCam.viewportWidth = width;
-		level.backgroundCam.viewportHeight = height;
-		level.backgroundCam.position.set( width * .5f, height * .5f, 0f );
+		float _width = WereScrewedGame.getWidth( ) / 1f;
+		float _height = WereScrewedGame.getHeight( ) / 1f;
+		level.backgroundCam = new OrthographicCamera( 1, _width / _height );
+		level.backgroundCam.viewportWidth = _width;
+		level.backgroundCam.viewportHeight = _height;
+		level.backgroundCam.position.set( _width * .5f, _height * .5f, 0f );
 		level.backgroundCam.update( );
 
 		chestObjects( );
@@ -208,8 +205,6 @@ public class AlphaScreen extends Screen {
 		root.setFgFade( false );
 		bgm = WereScrewedGame.manager.get( WereScrewedGame.dirHandle.path( )
 				+ "/common/music/waltz.mp3", Music.class );
-		bgm.setVolume( SoundManager.getMusicVolume( ) );
-		bgm.setLooping( true );
 
 		sounds = new SoundManager( );
 		sounds.getSound( "arm_start", WereScrewedGame.dirHandle.path( )
@@ -228,19 +223,6 @@ public class AlphaScreen extends Screen {
 		skel = ( Skeleton ) LevelFactory.entities.get( "footSkeleton" );
 		skel.setMacroSkel( true );
 		
-	}
-
-	@Override
-	public void show( ) {
-		super.show( );
-		bgm.play( );
-	}
-
-	@Override
-	public void hide( ) {
-		super.hide( );
-		bgm.stop( );
-		sounds.stopAll();
 	}
 
 	@Override

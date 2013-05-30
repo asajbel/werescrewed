@@ -112,7 +112,8 @@ class CreditsScreen extends Screen {
 	}
 
 	@Override
-	public void resize( int width, int height ) {
+	public void resize( int _width, int _height ) {
+		super.resize( _width, _height );
 		camera = new OrthographicCamera( );
 		camera.setToOrtho( false, width, height );
 		batch.setProjectionMatrix( camera.combined );
