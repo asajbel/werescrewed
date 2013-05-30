@@ -711,6 +711,9 @@ public class Player extends Entity {
 	public void setTutorial( int begin, int end ) {
 		tutorialBegin = begin;
 		tutorialEnd = end;
+		tutorialFrame = tutorialBegin;
+		tutorial.setTexture( tutorials[ tutorialFrame ] );
+		tutorialTimer = 0;
 	}
 
 	/**
