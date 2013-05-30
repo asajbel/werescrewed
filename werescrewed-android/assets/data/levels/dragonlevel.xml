@@ -36,8 +36,8 @@
                 </Item>
                 <Item xsi:type="TextureItem" Name="cameraPosition" Visible="true">
                     <Position>
-                        <X>25728</X>
-                        <Y>-1072</Y>
+                        <X>-1392</X>
+                        <Y>1376</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -159,8 +159,8 @@
                 </Item>
                 <Item xsi:type="TextureItem" Name="playerOne" Visible="true">
                     <Position>
-                        <X>25728</X>
-                        <Y>-880</Y>
+                        <X>-1392</X>
+                        <Y>1568</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -190,8 +190,8 @@
                 </Item>
                 <Item xsi:type="TextureItem" Name="playerTwo" Visible="true">
                     <Position>
-                        <X>25824</X>
-                        <Y>-912</Y>
+                        <X>-1296</X>
+                        <Y>1536</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -2128,6 +2128,9 @@
                             <string />
                         </Property>
                         <Property Name="invisible" Type="string" Description="">
+                            <string />
+                        </Property>
+                        <Property Name="setChildSkelsToSleep" Type="string" Description="">
                             <string />
                         </Property>
                     </CustomProperties>
@@ -10434,7 +10437,7 @@
                 <Item xsi:type="TextureItem" Name="body_stripped_screw_2" Visible="true">
                     <Position>
                         <X>14096</X>
-                        <Y>-272</Y>
+                        <Y>-240</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -16762,8 +16765,8 @@
         <NextItemNumber>1073</NextItemNumber>
         <ContentRootFolder>gleed-textures</ContentRootFolder>
         <CameraPosition>
-            <X>24030.9238</X>
-            <Y>-1674.666</Y>
+            <X>14364.1172</X>
+            <Y>-191.328674</Y>
         </CameraPosition>
         <Version>1.3.0.0</Version>
     </EditorRelated>
