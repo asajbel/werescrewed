@@ -12,6 +12,8 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.debug.FPSLoggerS;
 import com.blindtigergames.werescrewed.debug.SBox2DDebugRenderer;
@@ -37,8 +39,20 @@ public class Screen implements com.badlogic.gdx.Screen {
 	protected int controllerTimer = 10;
 	protected int controllerMax = 10;
 	protected int buttonIndex = 0;
-	protected int width, height;
+	protected static int width = WereScrewedGame.getWidth( );
+	protected static int height = WereScrewedGame.getHeight( );
 	protected float alpha = 1.0f;
+	protected boolean finish = false;
+	
+	private float accum = 0f;               
+	private final float step = 1f / 60f;    
+	private final float maxAccum = 1f / 17f;
+	private int screenWidth, screenHeight;
+	private int x;
+	private int y;
+	private int bX;
+	private int bY;
+	private ShapeRenderer shapeRenderer;
 	protected float scale = 0.0f;
 	protected final float SCALE_MIN = 0.0f;
 	protected final float SCALE_MAX = 10.0f;
@@ -65,6 +79,8 @@ public class Screen implements com.badlogic.gdx.Screen {
 		// Gdx.app.log( "Screen", "Turning log level to none. SHHH" );
 		// Gdx.app.setLogLevel( Application.LOG_NONE );
 
+
+		shapeRenderer = new ShapeRenderer( );
 		batch = new SpriteBatch( );
 		debugRenderer = new SBox2DDebugRenderer( Util.BOX_TO_PIXEL );
 		level = null;
@@ -72,29 +88,52 @@ public class Screen implements com.badlogic.gdx.Screen {
 		debug_font = WereScrewedGame.manager.getFont( "debug_font" );
 
 		logger = new FPSLoggerS( );
-		uiCamera = new OrthographicCamera( Gdx.graphics.getWidth( ),
-				Gdx.graphics.getHeight( ) );
+		uiCamera = new OrthographicCamera( WereScrewedGame.getWidth( ),
+				WereScrewedGame.getHeight( ) );
 		uiCamera.position.set( 0, 0, 0 ); // -Gdx.graphics.getWidth( ),
 											// -Gdx.graphics.getHeight( )
+		setClearColor( 0f, 0f, 0f, 1f );
 		bgm = null;
 		sounds = new SoundManager();
 	}
 
 	@Override
 	public void render( float delta ) {
+		if ( Gdx.input.isKeyPressed( Keys.P ) ) {
+			System.exit( 0 );
+		}
+		/////////////////////// DON'T REMOVE FOR RELEASE ///////////////////////
+		if ((Gdx.input.isKeyPressed( Keys.ALT_LEFT ) 
+				|| Gdx.input.isKeyPressed( Keys.ALT_RIGHT )) 
+				&& Gdx.input.isKeyPressed( Keys.ENTER ) ) {
+			Gdx.graphics.setDisplayMode( Gdx.graphics.getDesktopDisplayMode( ) );
+		}
+		if ((Gdx.input.isKeyPressed( Keys.ALT_LEFT ) 
+				|| Gdx.input.isKeyPressed( Keys.ALT_RIGHT )) 
+				&& Gdx.input.isKeyPressed( Keys.ENTER ) ) {
+			Gdx.graphics.setDisplayMode( 1280, 720, false );
+		}
+		//////////////////////////////////////////////////////////////////////
+		Gdx.gl.glViewport(
+				x,
+				y,  
+				screenWidth, 
+				screenHeight);
 		if ( Gdx.gl20 != null ) {
-			Gdx.gl20.glClearColor( clearColor.r, clearColor.g, clearColor.b,
-					clearColor.a );
+			Gdx.gl20.glClearColor( 0.0f, 0.0f, 0.0f, 1.0f );
 			Gdx.gl20.glClear( GL20.GL_COLOR_BUFFER_BIT );
 		} else {
 			Gdx.gl10.glClearColor( clearColor.r, clearColor.g, clearColor.b,
 					clearColor.a );
 			Gdx.gl10.glClear( GL20.GL_COLOR_BUFFER_BIT );
 		}
-
-		if ( Gdx.input.isKeyPressed( Keys.P ) ) {
-			System.exit( 0 );
-		}
+		
+		shapeRenderer.begin( ShapeType.FilledRectangle );
+		shapeRenderer.filledRect(bX, bY, width, height );
+		shapeRenderer.end( );
+		
+		
+		
 		if (level != null){			
 			updateStep(delta);
 			
@@ -128,8 +167,8 @@ public class Screen implements com.badlogic.gdx.Screen {
 				batch.setProjectionMatrix( uiCamera.combined );
 				batch.begin( );
 				debug_font.draw( batch, "FPS: " + FPS,
-						-Gdx.graphics.getWidth( ) / 2,
-						Gdx.graphics.getHeight( ) / 2 );// -Gdx.graphics.getWidth(
+						-WereScrewedGame.getWidth( ) / 2,
+						WereScrewedGame.getHeight( ) / 2 );// -Gdx.graphics.getWidth(
 														// )/4,
 														// Gdx.graphics.getHeight(
 														// )/4
@@ -344,10 +383,6 @@ public class Screen implements com.badlogic.gdx.Screen {
 		}
 	}
 	
-	private float accum = 0f;               
-	private final float step = 1f / 60f;    
-	private final float maxAccum = 1f / 17f;
-	                                        
 	private void updateStep(float delta) {   
 		accum += delta;  
 		accum = Math.min( accum, maxAccum );
@@ -416,9 +451,20 @@ public class Screen implements com.badlogic.gdx.Screen {
 	}
 
 	@Override
-	public void resize( int width, int height ) {
-		// TODO Auto-generated method stub
-
+	public void resize( int _width, int _height ) {
+		float _scale = 1.0f;
+		if (_width > WereScrewedGame.getWidth( )) 
+			_scale = (float)_width/(float)WereScrewedGame.getWidth( ); 
+		screenWidth = (int) (_scale * WereScrewedGame.getWidth( )); 
+		screenHeight = (int) (_scale * WereScrewedGame.getHeight( ));
+		x = _width / 2 - screenWidth / 2; 
+		y = _height / 2 - screenHeight / 2; 
+		bX = -screenWidth/2;
+		bY = -screenHeight/2;
+		shapeRenderer.setProjectionMatrix( uiCamera.combined );
+		shapeRenderer.setColor( clearColor.r,
+				clearColor.g, clearColor.b,
+				clearColor.a );
 	}
 
 	@Override

@@ -70,15 +70,12 @@ class MainMenuScreen extends Screen {
 		for ( int i = 0; i < 5; i++ )
 			createDebris( gearsAtlas, common );
 		loadButtons( );
+		setClearColor( 105f/255f, 208f/255f, 255f/255f, 1f );
 	}
 
 	@Override
 	public void render( float delta ) {
 		super.render( delta );
-		Gdx.gl.glClearColor( 0.4f, 0.6f, 1.0f, 1f );
-		// Gdx.gl.glClearColor( 79.0f / 255.0f, 82.0f / 255.0f, 104.0f / 255.0f,
-		// 1.0f );
-		Gdx.gl.glClear( GL10.GL_COLOR_BUFFER_BIT );
 		manager.update( delta );
 		moveCharacters( delta );
 		updateDebris( );
@@ -139,18 +136,14 @@ class MainMenuScreen extends Screen {
 	}
 
 	@Override
-	public void resize( int width, int height ) {
-		this.width = width;
-		this.height = height;
+	public void resize( int _width, int _height ) {
+		super.resize( _width, _height );
+		setClearColor( 105f/255f, 208f/255f, 255f/255f, 1f );
 		camera = new OrthographicCamera( );
-		camera.setToOrtho( false, width, height );
+		camera.setToOrtho( false, WereScrewedGame.getWidth(), WereScrewedGame.getHeight() );
 		batch.setProjectionMatrix( camera.combined );
 		int leftX = ( int ) menuBG.getWidth( ) / 2;
 		int centerY = height / 2;
-		@SuppressWarnings( "unused" )
-		float scaleX = width / 1280f;
-		@SuppressWarnings( "unused" )
-		float scaleY = height / 720f;
 
 		fade.setPosition( width / 2 - fade.getWidth( ) / 2, height
 				/ 2 - fade.getHeight( ) / 2 );
@@ -158,7 +151,7 @@ class MainMenuScreen extends Screen {
 				/ fade.getHeight( ) );
 		// menuBG.setScale( width / menuBG.getWidth( ), width / menuBG.getWidth(
 		// ) );
-		menuBG.setPosition( 0, height / 2 - menuBG.getHeight( ) / 2 );
+		menuBG.setPosition( 0, WereScrewedGame.getHeight() / 2 - menuBG.getHeight( ) / 2 );
 		// menuBG.setPosition( width / 2 - menuBG.getWidth( ) / 2, height / 2 -
 		// menuBG.getHeight( ) / 2 );
 		// headingLabel.setX( leftX - headingLabel.getWidth( ) / 2 );
@@ -173,8 +166,8 @@ class MainMenuScreen extends Screen {
 		// imoverButton.setY( centerY - lineHeight );
 		exitButton.setX( leftX - exitButton.getWidth( ) / 2 );
 		exitButton.setY( centerY + -1 * lineHeight );
-		man.setPosition( width / 2 - 50, height / 2 + 50 );
-		lady.setPosition( width / 2 + 200, height / 2 - 200 );
+		man.setPosition( WereScrewedGame.getWidth() / 2 - 50,  WereScrewedGame.getHeight() / 2 + 50 );
+		lady.setPosition( WereScrewedGame.getWidth() / 2 + 200,  WereScrewedGame.getHeight() / 2 - 200 );
 		for ( Falling g : gears ) {
 			resizeGears( g );
 		}
@@ -349,7 +342,7 @@ class MainMenuScreen extends Screen {
 		float mx = man.getX( );// - ( float ) Math.cos( time - delta ) * 0.25f;
 		float my = man.getY( ) - ( float ) Math.sin( time - delta / 6 ) * 0.6f;
 		mx = mx + manDir * 0.3f;
-		if ( mx > width * 5 / 6 )
+		if ( mx > WereScrewedGame.getWidth( ) * 5 / 6 )
 			manDir -= 0.15;
 		if ( mx < menuBG.getWidth( ) * 1.2 ) 
 			manDir += 0.15;
@@ -358,7 +351,7 @@ class MainMenuScreen extends Screen {
 								// 0.25f );
 		float fy = lady.getY( ) + ( float ) Math.sin( time + delta / 6 ) * 0.6f;
 		fx = fx + ladyDir * 0.3f;
-		if ( fx > width * 5 / 6 ) {
+		if ( fx > WereScrewedGame.getWidth( ) * 5 / 6 ) {
 			ladyDir -= 0.15;
 		}
 		if ( fx < menuBG.getWidth( ) * 1.2 ) {

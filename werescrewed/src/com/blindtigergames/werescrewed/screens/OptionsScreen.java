@@ -70,7 +70,7 @@ class OptionsScreen extends Screen {
 				+ "/transitions/trans-gear.png", Texture.class );
 		trans = new Sprite( transition );
 		scale = trans.getHeight( ) * SCALE_MAX;
-		scaleMax = scale;;
+		scaleMax = scale;
 		transInEnd = false;
 		
 		lineHeight = Math.round( 2.5f * font.getCapHeight( ) + 40 );
@@ -132,8 +132,7 @@ class OptionsScreen extends Screen {
 
 	@Override
 	public void resize( int width, int height ) {
-		this.width = width;
-		this.height = height;
+		super.resize( width, height );
 		camera = new OrthographicCamera( );
 		camera.setToOrtho( false, width, height );
 		batch.setProjectionMatrix( camera.combined );
