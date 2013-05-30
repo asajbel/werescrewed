@@ -664,7 +664,7 @@ public class LevelFactory {
 										- ( item.element.getFloat( "Height" ) / 2.0f ),
 								item.element.getFloat( "Width" ),
 								item.element.getFloat( "Height" ) );
-
+			} else {
 				Array< Vector2 > polySprite = contstructSkeletonPoly( item );
 
 				if ( item.props.containsKey( "invisible" ) ) {
