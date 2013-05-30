@@ -1,11 +1,17 @@
 package com.blindtigergames.werescrewed.screens;
 
+import java.util.HashMap;
 import java.util.Iterator;
+
+import aurelienribon.tweenengine.Timeline;
+import aurelienribon.tweenengine.Tween;
+import aurelienribon.tweenengine.TweenEquations;
 
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -28,6 +34,7 @@ import com.blindtigergames.werescrewed.entity.RootSkeleton;
 import com.blindtigergames.werescrewed.entity.Skeleton;
 import com.blindtigergames.werescrewed.entity.Sprite;
 import com.blindtigergames.werescrewed.entity.action.CannonLaunchAction;
+import com.blindtigergames.werescrewed.entity.action.SetRobotStateAction;
 import com.blindtigergames.werescrewed.entity.builders.EventTriggerBuilder;
 import com.blindtigergames.werescrewed.entity.builders.PlatformBuilder;
 import com.blindtigergames.werescrewed.entity.builders.PlayerBuilder;
@@ -43,16 +50,19 @@ import com.blindtigergames.werescrewed.entity.mover.PuzzleType;
 import com.blindtigergames.werescrewed.entity.mover.RotateByDegree;
 import com.blindtigergames.werescrewed.entity.mover.RotateTweenMover;
 import com.blindtigergames.werescrewed.entity.mover.SlidingMotorMover;
+import com.blindtigergames.werescrewed.entity.mover.TimelineTweenMover;
 import com.blindtigergames.werescrewed.entity.mover.puzzle.PuzzlePistonTweenMover;
 import com.blindtigergames.werescrewed.entity.mover.puzzle.PuzzleRotateTweenMover;
 import com.blindtigergames.werescrewed.entity.particles.EntityParticle;
 import com.blindtigergames.werescrewed.entity.particles.EntityParticleEmitter;
 import com.blindtigergames.werescrewed.entity.particles.Steam;
+import com.blindtigergames.werescrewed.entity.platforms.Platform;
 import com.blindtigergames.werescrewed.entity.platforms.TiledPlatform;
 import com.blindtigergames.werescrewed.entity.screws.PuzzleScrew;
 import com.blindtigergames.werescrewed.entity.screws.StrippedScrew;
 import com.blindtigergames.werescrewed.entity.screws.StructureScrew;
 import com.blindtigergames.werescrewed.entity.tween.PathBuilder;
+import com.blindtigergames.werescrewed.entity.tween.PlatformAccessor;
 import com.blindtigergames.werescrewed.eventTrigger.EventTrigger;
 import com.blindtigergames.werescrewed.eventTrigger.PowerSwitch;
 import com.blindtigergames.werescrewed.graphics.SpriteBatch;
@@ -86,6 +96,8 @@ public class PhysicsTestScreen extends Screen {
 	private TextureAtlas dragonParts; 
 
 	StructureScrew limit;
+	
+	HashMap< String, PowerSwitch > browSwitchStateMap = new HashMap< String, PowerSwitch >( );
 
 	/**
 	 * Defines all necessary components in a screen for testing different
@@ -150,6 +162,8 @@ public class PhysicsTestScreen extends Screen {
 
 		//createFire( );
 		initFireballEnemy(new Vector2(900,200));
+		
+		initEyebrow(new Vector2(0,0));
 		
 	}
 
@@ -830,6 +844,12 @@ public class PhysicsTestScreen extends Screen {
 			}
 		} else
 			ScreenManager.escapeHeld = false;
+		
+		PowerSwitch p;
+		for(String key : browSwitchStateMap.keySet( )){
+			p = browSwitchStateMap.get( key );
+			
+		}
 
 	}
 
@@ -896,6 +916,87 @@ public class PhysicsTestScreen extends Screen {
 		hotbolt.addMover( new DirectionFlipMover( false, 0.001f, hotbolt, 2f, .03f ) );
 		addBGEntity( hotbolt );
 		return hotbolt;
+	}
+	
+	void initEyebrow(Vector2 pos){
+		TiledPlatform brow = platBuilder.name( "eyebrow" ).dimensions( 2,2 ).position( pos.cpy() ).buildTilePlatform( );
+		skeleton.addPlatform( brow );
+		
+		TextureAtlas browAtlas = new TextureAtlas(
+				Gdx.files.internal( "data/levels/dragon/head.pack" ) );
+		//At rest the eyebrow is unrotated at 0,0 local position.
+		brow.addFGDecal( browAtlas.createSprite( "dragoneyebrow" ));//, new Vector2(-393,-161) );
+		addFGEntity( brow );
+		
+		//angry mover
+		Timeline browSequence = Timeline.createSequence( );
+		//begin the mover by moving it to the starting position quickly
+		browSequence.beginParallel( );
+		browSequence.push( Tween.to( brow, PlatformAccessor.LOCAL_POS_XY, .5f )
+				.target( 0,0 ).ease( TweenEquations.easeInOutQuad ).start( ) );
+		browSequence.push( Tween.to( brow, PlatformAccessor.LOCAL_ROT, .5f )
+				.target( 0 ).ease( TweenEquations.easeInOutQuad ).start( ) );
+		browSequence.end( );
+		
+		browSequence.beginParallel( );
+			browSequence.push( Tween.to( brow, PlatformAccessor.LOCAL_POS_XY, .5f )
+				.target( 100, -100f ).ease( TweenEquations.easeInOutQuad ).start( ) );
+			browSequence.push( Tween.to( brow, PlatformAccessor.LOCAL_ROT, .5f )
+					.target( -Util.FOURTH_PI/2 ).ease( TweenEquations.easeInOutQuad ).start( ) );
+		browSequence.end( );
+		
+		browSequence.beginParallel( );
+			browSequence.push( Tween.to( brow, PlatformAccessor.LOCAL_POS_XY, 2f )
+					.target( 110, -130 ).ease( TweenEquations.easeInOutQuad ).repeatYoyo( 3, 0 ).start( ) );
+			browSequence.push( Tween.to( brow, PlatformAccessor.LOCAL_ROT, 2f )
+				.target( -Util.FOURTH_PI/2-Util.FOURTH_PI/6 ).ease( TweenEquations.easeInOutQuad ).repeatYoyo( 3, 0 ).start( ) );
+		browSequence.end( );
+		
+		
+		browSequence.beginParallel( );
+			browSequence.push( Tween.to( brow, PlatformAccessor.LOCAL_POS_XY, 1.5f )
+					.target( 0,0 ).ease( TweenEquations.easeInOutQuad ).start( ) );
+			browSequence.push( Tween.to( brow, PlatformAccessor.LOCAL_ROT, 1.5f )
+					.target( 0 ).ease( TweenEquations.easeInOutQuad ).start( ) );
+			browSequence.end( );
+		browSequence = browSequence.repeat( Tween.INFINITY, 0f );
+		
+		//brow.addMover( new TimelineTweenMover( angry.start( ) ) );
+		brow.addMover( new TimelineTweenMover( browSequence.start( ) ), RobotState.HOSTILE );
+		
+		//IDLE sequence
+		browSequence = Timeline.createSequence( );
+		browSequence.beginParallel( );
+		browSequence.push( Tween.to( brow, PlatformAccessor.LOCAL_POS_XY, .5f )
+				.target( 0,0 ).ease( TweenEquations.easeInOutQuad ).start( ) );
+		browSequence.push( Tween.to( brow, PlatformAccessor.LOCAL_ROT, .5f )
+				.target( 0 ).ease( TweenEquations.easeInOutQuad ).start( ) );
+		browSequence.end( );
+		
+		browSequence.beginParallel( );
+		browSequence.push( Tween.to( brow, PlatformAccessor.LOCAL_POS_XY, 5f )
+			.target( 20, -20f ).ease( TweenEquations.easeInOutQuad ).repeatYoyo( 5, 0 ).start( ) );
+		browSequence.push( Tween.to( brow, PlatformAccessor.LOCAL_ROT, 5f )
+				.target( -Util.FOURTH_PI/6 ).ease( TweenEquations.easeInOutQuad ).repeatYoyo( 5, 0 ).start( ) );
+		browSequence.end( );
+		browSequence = browSequence.repeat( Tween.INFINITY, 0f );
+		
+		brow.addMover( new TimelineTweenMover( browSequence.start( ) ), RobotState.IDLE );
+		
+		//((TimelineTweenMover)brow.currentMover( )).timeline.start( );
+		
+		RobotState[] states = {RobotState.IDLE,RobotState.HOSTILE};
+		PowerSwitch pSwitch;
+		for(int i=0;i<states.length;++i){
+			pSwitch = new PowerSwitch( "switch"+i, new Vector2(1300+150*i,30), world );
+			pSwitch.addBeginIAction( new SetRobotStateAction( states[i] ) );
+			pSwitch.setRepeatable( true );
+			pSwitch.setActingOnEntity( true );
+			pSwitch.addEntityToTrigger( brow );
+			skeleton.addEventTrigger( pSwitch );
+		}
+		
+		
 	}
 
 }

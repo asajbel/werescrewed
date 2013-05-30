@@ -3,8 +3,14 @@ package com.blindtigergames.werescrewed.entity.action;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.RobotState;
 
-public class EntityChangeToIdleAction implements IAction {
+public class SetRobotStateAction implements IAction {
 
+	RobotState state;
+	
+	public SetRobotStateAction(RobotState state){
+		this.state = state;
+	}
+	
 	@Override
 	public void act( ) {
 		// TODO Auto-generated method stub
@@ -13,7 +19,7 @@ public class EntityChangeToIdleAction implements IAction {
 
 	@Override
 	public void act( Entity entity ) {
-		entity.setCurrentMover( RobotState.IDLE );
+		entity.setCurrentMover( state );
 
 	}
 
