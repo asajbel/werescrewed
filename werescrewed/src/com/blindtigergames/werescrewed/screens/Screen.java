@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -22,6 +23,7 @@ import com.blindtigergames.werescrewed.gui.Button;
 import com.blindtigergames.werescrewed.gui.OptionButton;
 import com.blindtigergames.werescrewed.gui.Slider;
 import com.blindtigergames.werescrewed.level.Level;
+import com.blindtigergames.werescrewed.sound.SoundManager;
 import com.blindtigergames.werescrewed.util.Util;
 
 public class Screen implements com.badlogic.gdx.Screen {
@@ -54,7 +56,10 @@ public class Screen implements com.badlogic.gdx.Screen {
 	Camera uiCamera;
 
 	public FPSLoggerS logger;
-
+	
+	public Music bgm;
+	public SoundManager sounds;
+	
 	public Screen( ) {
 
 		// Gdx.app.log( "Screen", "Turning log level to none. SHHH" );
@@ -71,6 +76,8 @@ public class Screen implements com.badlogic.gdx.Screen {
 				Gdx.graphics.getHeight( ) );
 		uiCamera.position.set( 0, 0, 0 ); // -Gdx.graphics.getWidth( ),
 											// -Gdx.graphics.getHeight( )
+		bgm = null;
+		sounds = new SoundManager();
 	}
 
 	@Override
@@ -416,14 +423,19 @@ public class Screen implements com.badlogic.gdx.Screen {
 
 	@Override
 	public void show( ) {
-		// TODO Auto-generated method stub
-
+		if (bgm != null){
+			bgm.setLooping( true );
+			bgm.setVolume( SoundManager.getMusicVolume( ) );
+			bgm.play( );
+		}
 	}
 
 	@Override
 	public void hide( ) {
-		// TODO Auto-generated method stub
-
+		if (bgm != null){
+			bgm.stop();
+		}
+		sounds.stopAll( );
 	}
 
 	@Override
@@ -442,7 +454,8 @@ public class Screen implements com.badlogic.gdx.Screen {
 	public void dispose( ) {
 		if ( level != null )
 			level.resetPhysicsWorld( );
-
+		bgm = null;
+		sounds.dispose( );
 	}
 
 	/**

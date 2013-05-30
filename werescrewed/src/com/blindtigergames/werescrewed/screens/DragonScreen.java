@@ -8,6 +8,7 @@ import aurelienribon.tweenengine.TweenEquations;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -44,6 +45,7 @@ import com.blindtigergames.werescrewed.eventTrigger.EventTrigger;
 import com.blindtigergames.werescrewed.eventTrigger.PowerSwitch;
 import com.blindtigergames.werescrewed.graphics.TextureAtlas;
 import com.blindtigergames.werescrewed.level.LevelFactory;
+import com.blindtigergames.werescrewed.sound.SoundManager;
 import com.blindtigergames.werescrewed.util.Util;
 
 public class DragonScreen extends Screen {
@@ -53,6 +55,7 @@ public class DragonScreen extends Screen {
 	Skeleton balloon1_super, bodyRoomRotateSkeleton;
 	PowerSwitch tail3Switch1, tail3Switch2, tail3Switch3, bodyPowerSwitch3;
 	RevoluteJoint bodyRoomJoint;
+	
 	
 	// the numbers here correspond to gleed numbers
 	Fire tail3Fire2, tail3Fire3, tail3Fire4, tail3Fire5, tail3Fire6;
@@ -117,6 +120,8 @@ public class DragonScreen extends Screen {
 		
 		headDecals();
 		
+		bgm = WereScrewedGame.manager.get( WereScrewedGame.dirHandle.path( )
+				+ "/levels/dragon/riding.mp3", Music.class );
 	}
 
 	void buildBalloon( ) {
@@ -156,7 +161,8 @@ public class DragonScreen extends Screen {
 		// Util.PI/16, 2) );
 		// balloon5_skeleton.addMover( balloonMover(balloon5_skeleton, 800,
 		// Util.PI/32, 0) );
-
+		bgm = WereScrewedGame.manager.get( WereScrewedGame.dirHandle.path( )
+				+ "/levels/dragon/riding.mp3", Music.class );
 	}
 
 	float time;
@@ -376,7 +382,6 @@ public class DragonScreen extends Screen {
 				.beginAction( new CannonLaunchAction( skel, power, delay ) )
 				.repeatable( ).build( );
 		skel.addEventTrigger( et );
-
 	}
 
 	private void initPuzzleScrews( ) {

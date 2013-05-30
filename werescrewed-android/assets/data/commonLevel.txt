@@ -56,11 +56,6 @@
 /levels/alphabot/sounds/arm_move.ogg
 /levels/alphabot/sounds/Engine.ogg
 
-##music
-/common/music/waltz.mp3
-
-
-
 /common/tileset/TilesetTest.png
 /common/title_background_clear.png
 

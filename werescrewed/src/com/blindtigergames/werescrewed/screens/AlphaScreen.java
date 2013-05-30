@@ -100,9 +100,6 @@ public class AlphaScreen extends Screen {
 
 	Array< Panel > panels;
 
-	protected Music bgm;
-	protected SoundManager sounds;
-
 	public AlphaScreen( ) {
 		super( );
 
@@ -208,8 +205,6 @@ public class AlphaScreen extends Screen {
 		root.setFgFade( false );
 		bgm = WereScrewedGame.manager.get( WereScrewedGame.dirHandle.path( )
 				+ "/common/music/waltz.mp3", Music.class );
-		bgm.setVolume( SoundManager.getMusicVolume( ) );
-		bgm.setLooping( true );
 
 		sounds = new SoundManager( );
 		sounds.getSound( "arm_start", WereScrewedGame.dirHandle.path( )
@@ -228,19 +223,6 @@ public class AlphaScreen extends Screen {
 		skel = ( Skeleton ) LevelFactory.entities.get( "footSkeleton" );
 		skel.setMacroSkel( true );
 		
-	}
-
-	@Override
-	public void show( ) {
-		super.show( );
-		bgm.play( );
-	}
-
-	@Override
-	public void hide( ) {
-		super.hide( );
-		bgm.stop( );
-		sounds.stopAll();
 	}
 
 	@Override
