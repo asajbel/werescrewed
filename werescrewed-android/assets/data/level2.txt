@@ -48,3 +48,7 @@
 #Fg packs
 /levels/dragon/tail-fg.pack
 /levels/dragon/body-neck.pack
+
+#Interior bg packs
+/levels/dragon/interior_tail2_bodyright.pack
+/levels/dragon/interior_tail3_bodyleft.pack

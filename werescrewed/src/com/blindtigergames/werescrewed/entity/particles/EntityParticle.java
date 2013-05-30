@@ -28,11 +28,15 @@ public class EntityParticle {
 	 * @param mover
 	 */
 	public EntityParticle( Entity particleEntity, float lifespanSeconds, IMover mover ) {
+		this( particleEntity, lifespanSeconds, mover, lifespanSeconds );
+	}
+	
+	public EntityParticle( Entity particleEntity, float lifespanSeconds, IMover mover, float initLifeSpan ) {
 		this.particle = particleEntity;
 		this.lifeSpanSeconds = lifespanSeconds;
 		this.movement = mover;
 		baseEntity = particle;
-		initLifeSpan = lifeSpanSeconds;
+		this.initLifeSpan = initLifeSpan;
 	}
 
 	/**
