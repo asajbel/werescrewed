@@ -1440,8 +1440,8 @@
                 </Item>
                 <Item xsi:type="TextureItem" Name="cameraPosition" Visible="true">
                     <Position>
-                        <X>480</X>
-                        <Y>-6832</Y>
+                        <X>416</X>
+                        <Y>-336</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -25050,8 +25050,8 @@
         <NextItemNumber>965</NextItemNumber>
         <ContentRootFolder>gleed-textures</ContentRootFolder>
         <CameraPosition>
-            <X>707.347839</X>
-            <Y>-659.402954</Y>
+            <X>374.0141</X>
+            <Y>-326.0614</Y>
         </CameraPosition>
         <Version>1.3.0.0</Version>
     </EditorRelated>
