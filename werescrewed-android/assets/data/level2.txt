@@ -6,6 +6,8 @@
 @ outline /common/black.png
 @ fg /levels/alphabot/alphabot-fg.png
 
+##music
+/levels/dragon/riding.mp3
 
 ##sounds
 /common/sounds/inceptionbutton.mp3
@@ -44,7 +46,12 @@
 
 #Object assets
 /levels/dragon/dragon_objects.pack
+/levels/dragon/balloons.pack
 
 #Fg packs
 /levels/dragon/tail-fg.pack
 /levels/dragon/body-neck.pack
+
+#Interior bg packs
+/levels/dragon/interior_tail2_bodyright.pack
+/levels/dragon/interior_tail3_bodyleft.pack

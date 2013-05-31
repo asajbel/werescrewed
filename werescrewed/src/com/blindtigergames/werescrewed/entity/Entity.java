@@ -2,7 +2,6 @@ package com.blindtigergames.werescrewed.entity;
 
 import java.util.ArrayList;
 import java.util.EnumMap;
-import java.util.HashMap;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -63,7 +62,7 @@ public class Entity implements GleedLoadable {
 	protected float energy;
 	protected boolean active;
 	protected boolean crushing;
-	protected boolean visible, drawParticles=true;
+	protected boolean visible, drawParticles = true;
 	protected boolean maintained;
 	protected boolean removeNextStep = false;
 	public EntityType entityType;
@@ -191,6 +190,18 @@ public class Entity implements GleedLoadable {
 		this.setPixelPosition( positionPixels );
 		this.anchors = new ArrayList< Anchor >( );
 	}
+	
+	public Entity( String name, Vector2 positionPixels, boolean solid, ISpinemator spinemator, Body body) {
+		this.construct( name, solid );
+		this.spinemator = spinemator; 
+		this.body = body;
+		if ( body != null ) {
+			world = body.getWorld( );
+			// sprite.setScale( Util.PIXEL_TO_BOX );
+		}
+		this.setPixelPosition( positionPixels );
+		this.anchors = new ArrayList< Anchor >( );
+	}
 
 	/**
 	 * Construct an entity that uses a PolySprite
@@ -257,6 +268,9 @@ public class Entity implements GleedLoadable {
 		} else if ( sprite != null ) {
 			sprite.setPosition( xMeters * Util.BOX_TO_PIXEL, yMeters
 					* Util.BOX_TO_PIXEL );
+		} else if ( spinemator != null ) {
+			spinemator.setPosition( xMeters * Util.BOX_TO_PIXEL, 
+					yMeters * Util.BOX_TO_PIXEL );
 		}
 	}
 
@@ -297,8 +311,12 @@ public class Entity implements GleedLoadable {
 	public Vector2 getPositionPixel( ) {
 		if ( body != null ) {
 			return body.getPosition( ).cpy( ).mul( Util.BOX_TO_PIXEL );
-		} else if ( sprite != null ) {
+		} 
+		if ( sprite != null ) {
 			return new Vector2( sprite.getX( ), sprite.getY( ) );
+		}
+		if (spinemator != null ) {
+			return spinemator.getPosition( ); 
 		}
 		return Vector2.Zero;
 	}
@@ -308,17 +326,19 @@ public class Entity implements GleedLoadable {
 		setPosition( pos );
 	}
 
-	public void draw( SpriteBatch batch, float deltaTime ) {
-		if(drawParticles)drawParticles( behindParticles, batch );
+	public void draw( SpriteBatch batch, float deltaTime, Camera camera ) {
+		if ( drawParticles )
+			drawParticles( behindParticles, batch );
 		if ( visible ) {
 			if ( sprite != null && !removeNextStep ) {
 				sprite.draw( batch );
 			}
 			if ( spinemator != null )
 				spinemator.draw( batch );
-			
+
 		}
-		if(drawParticles)drawParticles( frontParticles, batch );
+		if ( drawParticles )
+			drawParticles( frontParticles, batch );
 	}
 
 	protected void drawParticles( ArrayHash< String, ParticleEffect > map,
@@ -405,9 +425,10 @@ public class Entity implements GleedLoadable {
 			// }
 			updateDecals( deltaTime );
 
-			if ( getSpinemator( ) != null ) {
-				getSpinemator( ).update( deltaTime );
-			}
+			
+		}
+		if ( spinemator != null ) {
+				spinemator.update( deltaTime );
 		}
 
 		updateParticleEffect( deltaTime, frontParticles );
@@ -895,12 +916,13 @@ public class Entity implements GleedLoadable {
 
 	/**
 	 * Set visibility of both the entity and the particles.
+	 * 
 	 * @param v
 	 *            - boolean
 	 */
 	public void setVisible( boolean v ) {
 		visible = v;
-		drawParticles=v;
+		drawParticles = v;
 	}
 
 	/**
@@ -911,18 +933,19 @@ public class Entity implements GleedLoadable {
 	public boolean isVisible( ) {
 		return visible;
 	}
-	
+
 	/**
 	 * Set drawing of the entity and the particles separately
+	 * 
 	 * @param isVisible
 	 * @param drawParticles
 	 */
-	public void setVisible(boolean isVisible, boolean drawParticles){
-		this.visible=isVisible;
+	public void setVisible( boolean isVisible, boolean drawParticles ) {
+		this.visible = isVisible;
 		this.drawParticles = drawParticles;
 	}
-	
-	public boolean isDrawingParticles(){
+
+	public boolean isDrawingParticles( ) {
 		return drawParticles;
 	}
 
@@ -1335,9 +1358,9 @@ public class Entity implements GleedLoadable {
 	 */
 	public void drawFGDecals( SpriteBatch batch, Camera camera ) {
 		for ( Sprite decal : fgDecals ) {
-			if ( decal.alpha >= 0.25 ) {
-				if ( decal.getBoundingRectangle( )
-						.overlaps( camera.getBounds( ) ) ) {
+			if ( decal.alpha >= 0.25 ) 
+			{
+			if ( decal.getBoundingRectangle( ).overlaps( camera.getBounds( ) ) ) {
 					decal.draw( batch );
 				}
 			}
@@ -1543,7 +1566,8 @@ public class Entity implements GleedLoadable {
 	// Idle sound
 	public void idleSound( ) {
 		if ( sounds != null && sounds.hasSound( "idle" ) ) {
-			sounds.loopSound( "idle", 0, true, 0.0f, 1.0f );
+			sounds.loopSound( "idle", 0);
+			sounds.setSoundVolume( "idle", 0.0f );
 			// Gdx.app.log( name, "Starting Idle Sound" );
 		}
 	}
@@ -1699,14 +1723,15 @@ public class Entity implements GleedLoadable {
 	public void setSpinemator( ISpinemator spinemator ) {
 		this.spinemator = spinemator;
 	}
-	
+
 	/**
-	 * A sudo virtual function that inheriting classes can 
-	 * override and add whatever reset code
+	 * A sudo virtual function that inheriting classes can override and add
+	 * whatever reset code
+	 * 
 	 * @author stew
 	 */
-	public void reset(){
-		
+	public void reset( ) {
+
 	}
-	
+
 }

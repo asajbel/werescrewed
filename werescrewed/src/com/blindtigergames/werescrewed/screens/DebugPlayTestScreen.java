@@ -1159,11 +1159,11 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 		batch.setProjectionMatrix( cam.combined( ) );
 		batch.begin( );
 
-		rootSkeleton.draw( batch, deltaTime );
-		progressManager.draw( batch, deltaTime );
-		testRope.draw( batch, deltaTime );
-		player1.draw( batch, deltaTime );
-		player2.draw( batch, deltaTime );
+		rootSkeleton.draw( batch, deltaTime, cam );
+		progressManager.draw( batch, deltaTime, cam );
+		testRope.draw( batch, deltaTime, cam );
+		player1.draw( batch, deltaTime, cam );
+		player2.draw( batch, deltaTime, cam );
 		batch.end( );
 
 		if ( debug )

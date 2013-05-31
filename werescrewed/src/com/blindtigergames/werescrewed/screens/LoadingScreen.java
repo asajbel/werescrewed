@@ -309,6 +309,7 @@ public class LoadingScreen extends Screen {
 
 	@Override
 	public void resize( int width, int height ) {
+		super.resize( width, height );
 		screenWidth = width;
 		screenHeight = height;
 		if ( currLevel == 1 && characterSelect ) {
@@ -394,7 +395,6 @@ public class LoadingScreen extends Screen {
 			}
 		}
 	}
-
 	private void loadLevelParameter( String s ) {
 		/*
 		 * format for level options:

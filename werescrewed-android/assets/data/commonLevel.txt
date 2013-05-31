@@ -31,6 +31,7 @@
 /common/sounds/screwAtt.ogg
 /common/sounds/screwDet.ogg
 /common/sounds/land.ogg
+/common/sounds/creak.ogg
 /common/sounds/fallingObject.ogg
 /common/sounds/impactMaleDoh.ogg
 /common/sounds/impactMaleDoh2.ogg
@@ -41,7 +42,13 @@
 /common/sounds/rezzFinish.ogg
 #/common/sounds/WilhelmScream.ogg
 /common/sounds/steam.ogg
-/common/sounds/chains.ogg
+/common/sounds/flames.ogg
+/common/sounds/chain1.ogg
+/common/sounds/chain2.ogg
+/common/sounds/chain3.ogg
+/common/sounds/frontswing.ogg
+/common/sounds/backswing.ogg
+/common/sounds/chain3.ogg
 /common/sounds/switchOn.ogg
 /common/sounds/switchOff.ogg
 #/common/sounds/TrainJob.mp3
@@ -49,11 +56,6 @@
 #/common/sounds/introTrain.mp3
 /levels/alphabot/sounds/arm_move.ogg
 /levels/alphabot/sounds/Engine.ogg
-
-##music
-/common/music/waltz.mp3
-
-
 
 /common/tileset/TilesetTest.png
 /common/title_background_clear.png
@@ -135,6 +137,9 @@ smoke_puff_small.p
 
 ##temp background
 /common/menu_placeholder.png
+
+##transition images
+/transitions/trans-gear.png
 
 ##Palette Def
 ##Define with <colorName>.palette

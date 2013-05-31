@@ -175,13 +175,13 @@ public class Level {
 		drawBGStuff( batch, deltaTime );
 
 		// draw all the normal sprites
-		root.draw( batch, deltaTime );
+		root.draw( batch, deltaTime, camera );
 		if ( progressManager != null )
-			progressManager.draw( batch, deltaTime );
+			progressManager.draw( batch, deltaTime, camera );
 		if ( player1 != null )
-			player1.draw( batch, deltaTime );
+			player1.draw( batch, deltaTime, camera );
 		if ( player2 != null )
-			player2.draw( batch, deltaTime );
+			player2.draw( batch, deltaTime, camera );
 
 		drawFGStuff( batch );
 		

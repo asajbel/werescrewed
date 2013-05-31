@@ -12,6 +12,7 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.blindtigergames.werescrewed.WereScrewedGame;
+import com.blindtigergames.werescrewed.camera.Camera;
 import com.blindtigergames.werescrewed.entity.Sprite;
 import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 import com.blindtigergames.werescrewed.graphics.TextureAtlas;
@@ -45,7 +46,7 @@ public class Pipe extends Platform {
 		this.currentPos = new Vector2( );
 		start = new Vector2( );
 		tiles = new ArrayList< Tile >( );
-		texture = null;//WereScrewedGame.manager.get( WereScrewedGame.dirHandle
+		texture = null; //WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 				//+ "/common/pipe/pipeLR.png", Texture.class );
 		Vector2 currentPair;
 		int numberOfSegments;
@@ -299,7 +300,7 @@ public class Pipe extends Platform {
 	}
 
 	@Override
-	public void draw( SpriteBatch batch, float deltaTime ) {
+	public void draw( SpriteBatch batch, float deltaTime, Camera camera ) {
 
 		// for ( int i = 0; i < segments.size(); i++ )
 		// segments.get( i ).draw( batch );
@@ -311,7 +312,10 @@ public class Pipe extends Platform {
 					+ a.yOffset );
 			a.tileSprite.setRotation( MathUtils.radiansToDegrees
 					* body.getAngle( ) );
-			a.tileSprite.draw( batch );
+			if ( a.tileSprite.getBoundingRectangle( ).overlaps(
+					camera.getBounds( ) ) ) {
+				a.tileSprite.draw( batch );
+			}
 		}
 		// batch.setColor( c.r, c.g, c.b, c.a );
 	}

@@ -5,6 +5,7 @@ import java.util.HashMap;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
@@ -70,6 +71,12 @@ public class Skeleton extends Platform {
 	protected boolean wasInactive = false;
 	protected boolean onScreen = true;
 	protected boolean isUpdatable = true;
+
+	protected boolean setChildSkeletonsToSleep = false;
+	protected boolean useBoundingRect = false;
+	public Rectangle boundingRect = new Rectangle( -10000, -10000, 10000, 10000 );
+	protected Rectangle lastCameraRect = new Rectangle( -10000, -10000, 10000,
+			10000 );
 
 	/**
 	 * Constructor used by SkeletonBuilder
@@ -357,29 +364,21 @@ public class Skeleton extends Platform {
 	 * @author stew
 	 */
 	public void setSkeletonActive( boolean isActive ) {
-		if ( body.isActive( ) != isActive )
-			body.setActive( isActive );
-		setActive( isActive );
-		for ( Platform platform : dynamicPlatformMap.values( ) ) {
-			platform.body.setActive( isActive );
-			platform.setActive( isActive );
-		}
-		for ( Platform platform : kinematicPlatformMap.values( ) ) {
-			platform.body.setActive( isActive );
-			platform.setActive( isActive );
-		}
-		for ( Screw screw : screwMap.values( ) ) {
-			screw.body.setActive( isActive );
-			screw.setActive( isActive );
-		}
-		for ( CheckPoint chkpt : checkpointMap.values( ) ) {
-			chkpt.body.setActive( isActive );
-			chkpt.setActive( isActive );
-		}
-		// for ( Rope rope : ropeMap.values( ) ){
-
-		// }
-		/* TODO: add ropes */
+		/*
+		 * if ( body.isActive( ) != isActive ) body.setActive( isActive );
+		 * setActive( isActive ); for ( Platform platform :
+		 * dynamicPlatformMap.values( ) ) { platform.body.setActive( isActive );
+		 * platform.setActive( isActive ); } for ( Platform platform :
+		 * kinematicPlatformMap.values( ) ) { platform.body.setActive( isActive
+		 * ); platform.setActive( isActive ); } for ( Screw screw :
+		 * screwMap.values( ) ) { screw.body.setActive( isActive );
+		 * screw.setActive( isActive ); } for ( CheckPoint chkpt :
+		 * checkpointMap.values( ) ) { chkpt.body.setActive( isActive );
+		 * chkpt.setActive( isActive ); } // for ( Rope rope : ropeMap.values( )
+		 * ){
+		 * 
+		 * // } /* TODO: add ropes
+		 */
 	}
 
 	/**
@@ -400,9 +399,13 @@ public class Skeleton extends Platform {
 	 */
 	@Override
 	public void update( float deltaTime ) {
-		super.update( deltaTime ); 
+		super.update( deltaTime );
 		float frameRate = 1 / deltaTime;
-		isUpdatable = !this.isFadingSkel( ) || this.isFGFaded( );
+		isUpdatable = ( !this.isFadingSkel( ) || this.isFGFaded( ) );
+		if ( useBoundingRect ) {
+			if ( !boundingRect.overlaps( lastCameraRect ) )
+				isUpdatable = false;
+		}
 		if ( isUpdatable || isMacroSkeleton ) {
 			updateMover( deltaTime );
 			if ( entityType != EntityType.ROOTSKELETON && isKinematic( ) ) {
@@ -433,9 +436,17 @@ public class Skeleton extends Platform {
 						platform.update( deltaTime );
 					} else {
 						platform.updateMover( deltaTime );
-						if ( platform.hasMoved( ) || platform.hasRotated( ) || hasMoved() || hasRotated() ) {
-							platform.setTargetPosRotFromSkeleton( frameRate, this );
-							platform.setPreviousTransformation();
+						if ( !platform.body.isActive( ) ) { 
+							platform.body.setActive( true );
+						}
+						if ( !platform.body.isAwake( ) ) {
+							platform.body.setAwake( false );
+						}
+						if ( platform.hasMoved( ) || platform.hasRotated( )
+								|| hasMoved( ) || hasRotated( ) ) {
+							platform.setTargetPosRotFromSkeleton( frameRate,
+									this );
+							platform.setPreviousTransformation( );
 						} else {
 							platform.body.setLinearVelocity( Vector2.Zero );
 							platform.body.setAngularVelocity( 0.0f );
@@ -513,11 +524,14 @@ public class Skeleton extends Platform {
 
 		// }
 		// recursively update child skeletons
-		for ( Skeleton skeleton : childSkeletonMap.values( ) ) {
-			if ( skeleton.removeNextStep ) {
-				entitiesToRemove.add( skeleton );
-			} else {
-				skeleton.update( deltaTime );
+
+		if ( !setChildSkeletonsToSleep || isUpdatable( ) ) {
+			for ( Skeleton skeleton : childSkeletonMap.values( ) ) {
+				if ( skeleton.removeNextStep ) {
+					entitiesToRemove.add( skeleton );
+				} else {
+					skeleton.update( deltaTime );
+				}
 			}
 		}
 
@@ -592,7 +606,7 @@ public class Skeleton extends Platform {
 		for ( Platform platform : kinematicPlatformMap.values( ) ) {
 			if ( platform.removeNextStep ) {
 				entitiesToRemove.add( platform );
-			} else {
+			} else if ( !platform.dontPutToSleep ){
 				platform.body.setAwake( true );
 				platform.body.setActive( false );
 			}
@@ -644,31 +658,22 @@ public class Skeleton extends Platform {
 				if ( decal.getBoundingRectangle( )
 						.overlaps( camera.getBounds( ) ) ) {
 					decal.draw( batch );
-				} else {
-					if ( !wasInactive ) {
-						setEntitiesToSleepOnUpdate( );
-						wasInactive = true;
-					}
 				}
 			}
 		}
 	}
 
 	@Override
-	public void draw( SpriteBatch batch, float deltaTime ) {
-		super.draw( batch, deltaTime );
+	public void draw( SpriteBatch batch, float deltaTime, Camera camera ) {
+		super.draw( batch, deltaTime, camera );
 		if ( visible ) {
-			if ( isActive( ) ) {
-				drawChildren( batch, deltaTime );
-			}
-			if ( isActive( ) || isMacroSkeleton ) {
-				if ( fgSprite != null && alphaFadeAnimator.getTime( ) > 0 ) {
-					fgSprite.setAlpha( alphaFadeAnimator.getTime( ) );
-					// batch.setColor( c.r, c.g, c.b, fgAlphaAnimator.getTime( )
-					// );
-					// fgSprite.draw( batch );
-					// batch.setColor( c.r, c.g, c.b, oldAlpha );
-				}
+			drawChildren( batch, deltaTime, camera );
+			if ( fgSprite != null && alphaFadeAnimator.getTime( ) > 0 ) {
+				fgSprite.setAlpha( alphaFadeAnimator.getTime( ) );
+				// batch.setColor( c.r, c.g, c.b, fgAlphaAnimator.getTime( )
+				// );
+				// fgSprite.draw( batch );
+				// batch.setColor( c.r, c.g, c.b, oldAlpha );
 			}
 			if ( applyFadeToFGDecals ) {
 				fadeFGDecals( );
@@ -676,29 +681,30 @@ public class Skeleton extends Platform {
 		}
 	}
 
-	private void drawChildren( SpriteBatch batch, float deltaTime ) {
+	private void drawChildren( SpriteBatch batch, float deltaTime, Camera camera ) {
+		lastCameraRect = camera.getBounds( );
 		if ( !wasInactive && isUpdatable ) {
 			for ( EventTrigger et : eventMap.values( ) ) {
-				et.draw( batch, deltaTime );
+				et.draw( batch, deltaTime, camera );
 			}
 			for ( Platform p : dynamicPlatformMap.values( ) ) {
-				drawPlatform( p, batch, deltaTime );
+				drawPlatform( p, batch, deltaTime, camera );
 			}
 			for ( Platform p : kinematicPlatformMap.values( ) ) {
-				drawPlatform( p, batch, deltaTime );
+				drawPlatform( p, batch, deltaTime, camera );
 			}
 			for ( Screw screw : screwMap.values( ) ) {
 				if ( !screw.getRemoveNextStep( ) ) {
-					screw.draw( batch, deltaTime );
+					screw.draw( batch, deltaTime, camera );
 				}
 			}
 			for ( CheckPoint chkpt : checkpointMap.values( ) ) {
 				if ( !chkpt.getRemoveNextStep( ) ) {
-					chkpt.draw( batch, deltaTime );
+					chkpt.draw( batch, deltaTime, camera );
 				}
 			}
 			for ( Rope rope : ropeMap.values( ) ) {
-				rope.draw( batch, deltaTime );
+				rope.draw( batch, deltaTime, camera );
 			}
 		}
 		if ( isUpdatable && wasInactive ) {
@@ -707,8 +713,13 @@ public class Skeleton extends Platform {
 		// draw the entities of the parent skeleton before recursing through
 		// the
 		// child skeletons
-		for ( Skeleton skeleton : childSkeletonMap.values( ) ) {
-			skeleton.draw( batch, deltaTime );
+		//if ( isUpdatable || isMacroSkeleton ) 
+		{
+			if ( !setChildSkeletonsToSleep || isUpdatable ) {
+				for ( Skeleton skeleton : childSkeletonMap.values( ) ) {
+					skeleton.draw( batch, deltaTime, camera );
+				}
+			}
 		}
 	}
 
@@ -724,9 +735,6 @@ public class Skeleton extends Platform {
 				if ( !invisibleBGDecal ) {
 					decal.draw( batch );
 				}
-				onScreen = true;
-			} else {
-				onScreen = false;
 			}
 		}
 	}
@@ -736,9 +744,9 @@ public class Skeleton extends Platform {
 	 * hazards as well
 	 */
 	private void drawPlatform( Platform platform, SpriteBatch batch,
-			float deltaTime ) {
+			float deltaTime, Camera camera ) {
 
-		platform.draw( batch, deltaTime );
+		platform.draw( batch, deltaTime, camera );
 
 		// switch ( platform.getEntityType( ) ) {
 		// case PLATFORM:
@@ -763,19 +771,24 @@ public class Skeleton extends Platform {
 	}
 
 	@SuppressWarnings( "unused" )
-	private void drawHazard( Hazard hazard, SpriteBatch batch, float deltaTime ) {
+	private void drawHazard( Hazard hazard, SpriteBatch batch, float deltaTime,
+			Camera camera ) {
 		switch ( hazard.hazardType ) {
 		case FIRE:
-			( ( Fire ) hazard ).draw( batch, deltaTime );
+			( ( Fire ) hazard ).draw( batch, deltaTime, camera );
 			break;
 		default:
-			hazard.draw( batch, deltaTime );
+			hazard.draw( batch, deltaTime, camera );
 			break;
 		}
 	}
 
 	public boolean getWasInactive( ) {
 		return wasInactive;
+	}
+
+	public void setUseBoundingRect( boolean setting ) {
+		useBoundingRect = setting;
 	}
 
 	public boolean isUpdatable( ) {
@@ -848,6 +861,10 @@ public class Skeleton extends Platform {
 	 */
 	public void rotateBy( float angleInRadians ) {
 		setLocalRot( getLocalRot( ) + angleInRadians );
+	}
+
+	public void setChildSkeletonsToSleepProperty( boolean setting ) {
+		setChildSkeletonsToSleep = setting;
 	}
 
 	/**

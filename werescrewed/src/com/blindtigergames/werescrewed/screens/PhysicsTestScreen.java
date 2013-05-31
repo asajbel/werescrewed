@@ -2,6 +2,10 @@ package com.blindtigergames.werescrewed.screens;
 
 import java.util.Iterator;
 
+import aurelienribon.tweenengine.Timeline;
+import aurelienribon.tweenengine.Tween;
+import aurelienribon.tweenengine.TweenEquations;
+
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -21,21 +25,20 @@ import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.camera.Camera;
 import com.blindtigergames.werescrewed.checkpoints.CheckPoint;
 import com.blindtigergames.werescrewed.checkpoints.ProgressManager;
-import com.blindtigergames.werescrewed.entity.Entity;
-import com.blindtigergames.werescrewed.entity.PolySprite;
 import com.blindtigergames.werescrewed.entity.RobotState;
 import com.blindtigergames.werescrewed.entity.RootSkeleton;
 import com.blindtigergames.werescrewed.entity.Skeleton;
 import com.blindtigergames.werescrewed.entity.Sprite;
 import com.blindtigergames.werescrewed.entity.action.CannonLaunchAction;
+import com.blindtigergames.werescrewed.entity.action.SetRobotStateAction;
 import com.blindtigergames.werescrewed.entity.builders.EventTriggerBuilder;
 import com.blindtigergames.werescrewed.entity.builders.PlatformBuilder;
 import com.blindtigergames.werescrewed.entity.builders.PlayerBuilder;
 import com.blindtigergames.werescrewed.entity.builders.SkeletonBuilder;
-import com.blindtigergames.werescrewed.entity.hazard.Fire;
 import com.blindtigergames.werescrewed.entity.hazard.Enemy;
+import com.blindtigergames.werescrewed.entity.hazard.Fire;
+import com.blindtigergames.werescrewed.entity.hazard.MouthFire;
 import com.blindtigergames.werescrewed.entity.mover.DirectionFlipMover;
-import com.blindtigergames.werescrewed.entity.mover.IMover;
 import com.blindtigergames.werescrewed.entity.mover.LerpMover;
 import com.blindtigergames.werescrewed.entity.mover.LinearAxis;
 import com.blindtigergames.werescrewed.entity.mover.PistonTweenMover;
@@ -43,9 +46,9 @@ import com.blindtigergames.werescrewed.entity.mover.PuzzleType;
 import com.blindtigergames.werescrewed.entity.mover.RotateByDegree;
 import com.blindtigergames.werescrewed.entity.mover.RotateTweenMover;
 import com.blindtigergames.werescrewed.entity.mover.SlidingMotorMover;
+import com.blindtigergames.werescrewed.entity.mover.TimelineTweenMover;
 import com.blindtigergames.werescrewed.entity.mover.puzzle.PuzzlePistonTweenMover;
 import com.blindtigergames.werescrewed.entity.mover.puzzle.PuzzleRotateTweenMover;
-import com.blindtigergames.werescrewed.entity.particles.EntityParticle;
 import com.blindtigergames.werescrewed.entity.particles.EntityParticleEmitter;
 import com.blindtigergames.werescrewed.entity.particles.Steam;
 import com.blindtigergames.werescrewed.entity.platforms.TiledPlatform;
@@ -53,6 +56,7 @@ import com.blindtigergames.werescrewed.entity.screws.PuzzleScrew;
 import com.blindtigergames.werescrewed.entity.screws.StrippedScrew;
 import com.blindtigergames.werescrewed.entity.screws.StructureScrew;
 import com.blindtigergames.werescrewed.entity.tween.PathBuilder;
+import com.blindtigergames.werescrewed.entity.tween.PlatformAccessor;
 import com.blindtigergames.werescrewed.eventTrigger.EventTrigger;
 import com.blindtigergames.werescrewed.eventTrigger.PowerSwitch;
 import com.blindtigergames.werescrewed.graphics.SpriteBatch;
@@ -86,6 +90,8 @@ public class PhysicsTestScreen extends Screen {
 	private TextureAtlas dragonParts; 
 
 	StructureScrew limit;
+	
+	MouthFire mouthFire;
 
 	/**
 	 * Defines all necessary components in a screen for testing different
@@ -138,19 +144,24 @@ public class PhysicsTestScreen extends Screen {
 		// connectedRoom( );
 		movingSkeleton( );
 
-		buildCannon( new Vector2( 1600, 50 ), 160, 350 );
+		//buildCannon( new Vector2( 1600, 50 ), 160, 350 );
 		
-		buildCannon( new Vector2( 1900, 30 ), 200, 200 );
+		//buildCannon( new Vector2( 1900, 30 ), 200, 200 );
 		
-		buildCannon( new Vector2( -1900, 30 ), 200, 200 );
+		//buildCannon( new Vector2( -1900, 30 ), 200, 200 );
 
 		PowerSwitch pswitch = new PowerSwitch( "pwsstsf",
 				new Vector2( 512, 200 ), world );
 		rootSkeleton.addEventTrigger( pswitch );
 
 		//createFire( );
-		initFireballEnemy(new Vector2(900,200));
+		initFireballEnemy(new Vector2(1600,200));
 		
+		initEyebrow(new Vector2(0,0));
+		
+	
+		mouthFire = new MouthFire( "mouth-fire", new Vector2(0,0), 1, world );
+		skeleton.addHazard( mouthFire );
 	}
 
 	// width & height in pixels
@@ -830,6 +841,10 @@ public class PhysicsTestScreen extends Screen {
 			}
 		} else
 			ScreenManager.escapeHeld = false;
+		
+		if ( Gdx.input.isKeyPressed( Input.Keys.SHIFT_LEFT ) && Gdx.input.isKeyPressed( Input.Keys.M ) ) {
+			mouthFire.setActiveHazard( true );
+		}
 
 	}
 
@@ -874,28 +889,118 @@ public class PhysicsTestScreen extends Screen {
 	
 	private void initFireballEnemy(Vector2 pos){
 		
-		int cageWidth = 700;
+		int w = 15, n= 10, h = 140;
+		int cageWidth = 700, cageHeight = n*140;
 		//build a little cage for the fireball
-		TiledPlatform wall = platBuilder.position( pos.x+cageWidth/2,0f ).name("wall1")
-				.dimensions( 1,3 ).kinematic( ).buildTilePlatform( );
+		TiledPlatform wall = platBuilder.position( pos.x+cageWidth/2,cageHeight/2 ).name("wall1")
+				.dimensions( 1,60 ).kinematic( ).buildTilePlatform( );
 		skeleton.addKinematicPlatform( wall );
-		wall = platBuilder.position( pos.x-cageWidth/2,0 ).name("wall2").buildTilePlatform( );
+		wall = platBuilder.position( pos.x-cageWidth/2,cageHeight/2 ).name("wall2").buildTilePlatform( );
 		skeleton.addKinematicPlatform( wall );
 		
+		
+		platBuilder.dimensions( 15, 1 ); //21
+		for(int i = 1; i < n; ++i ){
+			int x = i%2 == 0?0:230 + cageWidth/2;
+			skeleton.addPlatform(platBuilder.position( pos.x-w*16+x, i*h ).buildTilePlatform( ));
+		}
+		
 		fireballEmitter = new EntityParticleEmitter( "bolt emitter",
-				new Vector2( pos ),
-				createBoltEnemy(pos.cpy().mul( 1, 0 )),
-				15, null, world, true );
+				new Vector2( pos.cpy( ).add(0,n*h) ),
+				new Vector2(),
+				25, world, true );
+		for(int i =0; i < 5; ++i ){
+			fireballEmitter.addParticle( createBoltEnemy( pos.cpy( ).add(0,n*h), i ), 30, 0, i*5 );
+		}
 		rootSkeleton.addLooseEntity( fireballEmitter );
 	}
 	
-	Enemy createBoltEnemy(Vector2 pos){
-		Enemy hotbolt = new Enemy( "hot-bolt", pos,25, world, true );
-		//hotbolt.body.setType( BodyType.DynamicBody );
-		//skeleton.addDynamicPlatform(  hotbolt );
-		hotbolt.addMover( new DirectionFlipMover( false, 0.001f, hotbolt, 2f, .03f ) );
+	Enemy createBoltEnemy(Vector2 pos, int index){
+		Enemy hotbolt = new Enemy( "hot-bolt"+index, pos,25, world, true );
+		hotbolt.addMover( new DirectionFlipMover( false, 0.001f, hotbolt, 1.5f, .03f ) );
 		addBGEntity( hotbolt );
 		return hotbolt;
+	}
+	
+	void initEyebrow(Vector2 pos){
+		TiledPlatform brow = platBuilder.name( "eyebrow" ).dimensions( 2,2 ).position( pos.cpy() ).buildTilePlatform( );
+		skeleton.addPlatform( brow );
+		
+		TextureAtlas browAtlas = new TextureAtlas(
+				Gdx.files.internal( "data/levels/dragon/head.pack" ) );
+		//At rest the eyebrow is unrotated at 0,0 local position.
+		brow.addFGDecal( browAtlas.createSprite( "dragoneyebrow" ));//, new Vector2(-393,-161) );
+		addFGEntity( brow );
+		
+		//angry mover
+		Timeline browSequence = Timeline.createSequence( );
+		//begin the mover by moving it to the starting position quickly
+		browSequence.beginParallel( );
+		browSequence.push( Tween.to( brow, PlatformAccessor.LOCAL_POS_XY, .5f )
+				.target( 0,0 ).ease( TweenEquations.easeInOutQuad ).start( ) );
+		browSequence.push( Tween.to( brow, PlatformAccessor.LOCAL_ROT, .5f )
+				.target( 0 ).ease( TweenEquations.easeInOutQuad ).start( ) );
+		browSequence.end( );
+		
+		browSequence.beginParallel( );
+			browSequence.push( Tween.to( brow, PlatformAccessor.LOCAL_POS_XY, .5f )
+				.target( 100, -100f ).ease( TweenEquations.easeInOutQuad ).start( ) );
+			browSequence.push( Tween.to( brow, PlatformAccessor.LOCAL_ROT, .5f )
+					.target( -Util.FOURTH_PI/2 ).ease( TweenEquations.easeInOutQuad ).start( ) );
+		browSequence.end( );
+		
+		browSequence.beginParallel( );
+			browSequence.push( Tween.to( brow, PlatformAccessor.LOCAL_POS_XY, 2f )
+					.target( 110, -130 ).ease( TweenEquations.easeInOutQuad ).repeatYoyo( 3, 0 ).start( ) );
+			browSequence.push( Tween.to( brow, PlatformAccessor.LOCAL_ROT, 2f )
+				.target( -Util.FOURTH_PI/2-Util.FOURTH_PI/6 ).ease( TweenEquations.easeInOutQuad ).repeatYoyo( 3, 0 ).start( ) );
+		browSequence.end( );
+		
+		
+		browSequence.beginParallel( );
+			browSequence.push( Tween.to( brow, PlatformAccessor.LOCAL_POS_XY, 1.5f )
+					.target( 0,0 ).ease( TweenEquations.easeInOutQuad ).start( ) );
+			browSequence.push( Tween.to( brow, PlatformAccessor.LOCAL_ROT, 1.5f )
+					.target( 0 ).ease( TweenEquations.easeInOutQuad ).start( ) );
+			browSequence.end( );
+		browSequence = browSequence.repeat( Tween.INFINITY, 0f );
+		
+		//brow.addMover( new TimelineTweenMover( angry.start( ) ) );
+		brow.addMover( new TimelineTweenMover( browSequence.start( ) ), RobotState.HOSTILE );
+		
+		//IDLE sequence
+		browSequence = Timeline.createSequence( );
+		browSequence.beginParallel( );
+		browSequence.push( Tween.to( brow, PlatformAccessor.LOCAL_POS_XY, .5f )
+				.target( 0,0 ).ease( TweenEquations.easeInOutQuad ).start( ) );
+		browSequence.push( Tween.to( brow, PlatformAccessor.LOCAL_ROT, .5f )
+				.target( 0 ).ease( TweenEquations.easeInOutQuad ).start( ) );
+		browSequence.end( );
+		
+		browSequence.beginParallel( );
+		browSequence.push( Tween.to( brow, PlatformAccessor.LOCAL_POS_XY, 5f )
+			.target( 20, -20f ).ease( TweenEquations.easeInOutQuad ).repeatYoyo( 5, 0 ).start( ) );
+		browSequence.push( Tween.to( brow, PlatformAccessor.LOCAL_ROT, 5f )
+				.target( -Util.FOURTH_PI/6 ).ease( TweenEquations.easeInOutQuad ).repeatYoyo( 5, 0 ).start( ) );
+		browSequence.end( );
+		browSequence = browSequence.repeat( Tween.INFINITY, 0f );
+		
+		brow.addMover( new TimelineTweenMover( browSequence.start( ) ), RobotState.IDLE );
+		
+		//((TimelineTweenMover)brow.currentMover( )).timeline.start( );
+		
+		RobotState[] states = {RobotState.IDLE,RobotState.HOSTILE};
+		PowerSwitch pSwitch;
+		for(int i=0;i<states.length;++i){
+			pSwitch = new PowerSwitch( "switch"+i, new Vector2(1300+150*i,30), world );
+			pSwitch.addBeginIAction( new SetRobotStateAction( states[i] ) );
+			pSwitch.setRepeatable( true );
+			pSwitch.setActingOnEntity( true );
+			pSwitch.addEntityToTrigger( brow );
+			skeleton.addEventTrigger( pSwitch );
+		}
+		
+		
 	}
 
 }

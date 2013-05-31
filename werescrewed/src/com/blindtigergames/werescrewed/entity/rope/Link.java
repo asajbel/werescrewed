@@ -65,7 +65,9 @@ public class Link extends Entity {
 	private void loadSounds( ) {
 		if (sounds == null)
 			sounds = new SoundManager();
-		sounds.getSound( "clink", WereScrewedGame.dirHandle + "/common/sounds/chains.ogg" );
+		sounds.getSound( "clink", WereScrewedGame.dirHandle + "/common/sounds/chain1.ogg" );
+		sounds.getSound( "clink", WereScrewedGame.dirHandle + "/common/sounds/chain2.ogg" );
+		sounds.getSound( "clink", WereScrewedGame.dirHandle + "/common/sounds/chain3.ogg" );
 	}
 
 	private void constructBody( Vector2 pos ) {
@@ -109,7 +111,7 @@ public class Link extends Entity {
 	}
 	
 	@Override
-	public void draw( SpriteBatch batch, float deltaTime ) {
+	public void draw( SpriteBatch batch, float deltaTime, Camera camera ) {
 		// if(drawTwoLinks){
 		// float xpos = body.getPosition( ).x - (xOffset * Util.PIXEL_TO_BOX);
 		// float ypos = body.getPosition( ).y - (this.yOffset2 *
@@ -136,7 +138,9 @@ public class Link extends Entity {
 		this.sprite.setPosition( screenPos );
 		this.sprite.setRotation( Util.RAD_TO_DEG * body.getAngle( ) );
 		
-		this.sprite.draw( batch );
+		if ( this.sprite.getBoundingRectangle( ).overlaps( camera.getBounds() ) ) {
+			this.sprite.draw( batch );
+		}
 		
 		sounds.update( deltaTime );
 		float av;
@@ -151,6 +155,7 @@ public class Link extends Entity {
 			float pitch = (SOUND_PITCH - SOUND_PITCH_VARIANCE) + (SOUND_PITCH_VARIANCE * Math.min( av, 1.0f ) ); 
 			if (vol > 0.0f){
 				sounds.playSound( "clink", 0, del, vol, pitch);
+				sounds.setDelay( "clink", del);
 			}
 		}
 	}
