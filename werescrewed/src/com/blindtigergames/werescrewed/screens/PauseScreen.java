@@ -11,6 +11,7 @@ import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.gui.Label;
 import com.blindtigergames.werescrewed.gui.TextButton;
 import com.blindtigergames.werescrewed.screens.ScreenSwitchHandler;
+import com.blindtigergames.werescrewed.sound.SoundManager;
 
 class PauseScreen extends Screen {
 
@@ -37,7 +38,6 @@ class PauseScreen extends Screen {
 		mainMenuButton = new TextButton( "Main Menu", fancyFont,
 				new ScreenSwitchHandler( ScreenType.MAIN_MENU ) );
 		mainMenuButton.setColored( true );
-
 	}
 
 	public void disposeAll( ) {
@@ -110,10 +110,19 @@ class PauseScreen extends Screen {
 
 	@Override
 	public void show( ) {
+		if (!SoundManager.loopSounds.isEmpty( )){
+			for (SoundManager.SoundRef ref: SoundManager.loopSounds){
+				Gdx.app.log("Looping Sound", ref.getAssetName( ) +":(vol):" + ref.getFinalVolume( ) + ":(loopID):" + Long.toString(ref.getLoopID()));
+			}
+			SoundManager.setEnableLoops( false );
+		}
 	}
 
 	@Override
 	public void hide( ) {
+		if (!SoundManager.loopSounds.isEmpty( )){
+			SoundManager.setEnableLoops( true );
+		}
 	}
 
 	@Override
