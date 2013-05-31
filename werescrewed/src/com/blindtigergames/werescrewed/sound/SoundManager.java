@@ -10,11 +10,12 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.Disposable;
 import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.camera.Camera;
 import com.blindtigergames.werescrewed.util.ArrayHash;
 
-public class SoundManager {
+public class SoundManager implements Disposable {
 	public enum SoundType {
 		/* Background music, as you can expect. */
 		MUSIC,
@@ -39,6 +40,7 @@ public class SoundManager {
 	public ArrayHash< String, SoundRef > sounds;
 	public static PriorityQueue<SoundRef> loopSounds;
 	protected static int maxLoopChannels;
+	protected static boolean allowLoopSounds;
 	
 	static {
 		globalVolume = new EnumMap< SoundType, Float >( SoundType.class );
@@ -46,22 +48,25 @@ public class SoundManager {
 			globalVolume.put( type, 1.0f );
 		}
 		maxLoopChannels = 4;
+		allowLoopSounds = true;
 		loopSounds = new PriorityQueue<SoundRef>(maxLoopChannels, new CompareByVolume());
 	}
 
 	public static void updateLoops(){
 		int activeLoops = 0;
 		for (SoundRef ref: loopSounds){
-			if (activeLoops < maxLoopChannels){
+			if (allowLoopSounds && activeLoops < maxLoopChannels){
 				ref.loop( false );
 				activeLoops++;
 			} else {
-				if (ref.loopId > 0){
+				if (ref.loopId >= 0){
 					ref.stop( );
 				}
 			}
 		}
 	}
+	
+	public static void setEnableLoops(boolean v){allowLoopSounds = v;}
 	
 	protected Camera camera;
 
@@ -75,14 +80,18 @@ public class SoundManager {
 		}
 		if ( !hasSound( id , index) ) {
 			Sound s = WereScrewedGame.manager.get( assetName, Sound.class );
-			sounds.set( id, index, new SoundRef( s ) );
+			SoundRef ref = new SoundRef(s);
+			ref.assetName = assetName;
+			sounds.set( id, index, ref );
 		}
 		return sounds.get( id , index );
 	}
 
 	public SoundRef getSound( String id, String assetName ) {
 		Sound s = WereScrewedGame.manager.get( assetName, Sound.class );
-		return sounds.put( id, new SoundRef( s ) );
+		SoundRef ref = new SoundRef(s);
+		ref.assetName = assetName;
+		return sounds.put( id , ref );
 	}
 
 	public SoundRef getSound( String id ) {
@@ -321,6 +330,9 @@ public class SoundManager {
 		for ( Array< SoundRef > refs : sounds.arrays( ) ) {
 			for ( SoundRef ref : refs ) {
 				ref.stop( );
+				if (loopSounds.contains( ref )){
+					loopSounds.remove(ref);
+				}
 			}
 		}
 	}
@@ -436,7 +448,7 @@ public class SoundManager {
 		return null;
 	}
 	
-	public class SoundRef{
+	public class SoundRef implements Disposable{
 		public Sound sound;
 		protected Array< Long > soundIds;
 		protected long loopId;
@@ -450,11 +462,12 @@ public class SoundManager {
 		protected float range;
 		protected float falloff;
 		protected Vector2 offset;
+		protected String assetName;
 		
 		protected float finalVolume;
 		protected float finalPitch;
 		
-		public static final float VOLUME_MINIMUM = 0.001f;
+		public static final float VOLUME_MINIMUM = 0.00001f;
 		protected static final float DELAY_MINIMUM = 0.0001f;
 		/*
 		 * Puts an initial delay on all sounds when they're first loaded. This
@@ -464,6 +477,7 @@ public class SoundManager {
 		public static final float INITIAL_DELAY = 0.1f;
 
 		protected SoundRef( Sound s ) {
+			assetName = "dkdc";
 			volume = 1.0f;
 			volumeRange = 0.0f;
 			finalVolume = 1.0f;
@@ -584,6 +598,29 @@ public class SoundManager {
 		public float getDefaultDelay(){
 			return defaultDelay;
 		}
+		
+		public float getFinalVolume(){
+			return finalVolume;
+		}
+		
+		public float getFinalPitch(){
+			return finalPitch;
+		}
+		
+		public String getAssetName(){
+			return assetName;
+		}
+		public void dispose(){
+			stop();
+			if (SoundManager.loopSounds.contains(this)){
+				SoundManager.loopSounds.remove(this);
+			}
+			sound.dispose( );
+		}
+
+		public long getLoopID( ) {
+			return loopId;
+		}
 	}
 	public static class CompareByVolume implements Comparator<SoundRef>{
 
@@ -600,5 +637,12 @@ public class SoundManager {
 		for (String tag: sounds.keySet( )){
 			this.stopSound( tag );
 		}
+	}
+
+	public static void stopLoops( ) {
+		for (SoundRef ref: loopSounds){
+			ref.stop( );
+		}
+		loopSounds.clear( );
 	}
 }

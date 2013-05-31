@@ -93,7 +93,7 @@ public class DragonScreen extends Screen {
 		Timeline t = Timeline.createSequence( );
 
 		t.push( Tween.to( jaw_skeleton, PlatformAccessor.LOCAL_ROT, 6f )
-				.ease( TweenEquations.easeNone ).target( -Util.PI / 32 )
+				.ease( TweenEquations.easeNone ).target( -Util.PI / 20 )
 				.start( ).delay( 2f ) );
 
 		t.push( Tween.to( jaw_skeleton, PlatformAccessor.LOCAL_ROT, 4f )
@@ -101,7 +101,7 @@ public class DragonScreen extends Screen {
 				.start( ) );
 
 		t.push( Tween.to( jaw_skeleton, PlatformAccessor.LOCAL_ROT, 6f )
-				.ease( TweenEquations.easeNone ).target( -Util.PI / 32 )
+				.ease( TweenEquations.easeNone ).target( -Util.PI / 20 )
 				.start( ).delay( 2f ) );
 
 		t.push( Tween.to( jaw_skeleton, PlatformAccessor.LOCAL_ROT, 6f )
@@ -109,7 +109,7 @@ public class DragonScreen extends Screen {
 				.start( ) );
 
 		t.push( Tween.to( jaw_skeleton, PlatformAccessor.LOCAL_ROT, 8f )
-				.ease( TweenEquations.easeNone ).target( -Util.PI / 32 )
+				.ease( TweenEquations.easeNone ).target( -Util.PI / 20 )
 				.start( ).delay( 4f ) );
 
 		t.push( Tween.to( jaw_skeleton, PlatformAccessor.LOCAL_ROT, 5f )
@@ -531,14 +531,14 @@ public class DragonScreen extends Screen {
 				.get( "body_inside_skeleton2" );
 		Skeleton bodyInsideSkeleton3 = ( Skeleton ) LevelFactory.entities
 				.get( "body_inside_skeleton3" );
-		Skeleton bodyInsideSkeleton4 = ( Skeleton ) LevelFactory.entities
-				.get( "body_inside_skeleton4" );
+//		Skeleton bodyInsideSkeleton4 = ( Skeleton ) LevelFactory.entities
+//				.get( "body_inside_skeleton4" );
 
 		float motorSpeed = 0.7f;
 		createMotor( bodyInsideSkeleton1, bodySection2Skeleton, motorSpeed );
 		createMotor( bodyInsideSkeleton2, bodySection2Skeleton, -motorSpeed );
 		createMotor( bodyInsideSkeleton3, bodySection2Skeleton, motorSpeed );
-		createMotor( bodyInsideSkeleton4, bodySection2Skeleton, -motorSpeed );
+		//createMotor( bodyInsideSkeleton4, bodySection2Skeleton, -motorSpeed );
 		
 		bodyRoomRotateSkeleton = ( Skeleton ) LevelFactory.entities
 		.get( "body_room_rotate_skeleton" );
@@ -607,7 +607,7 @@ public class DragonScreen extends Screen {
 		
 		//DECALS:
 		TextureAtlas dragon_objects = WereScrewedGame.manager.getAtlas( "dragon_objects" );
-		Skeleton[] wheelSkeles = {bodyInsideSkeleton1,bodyInsideSkeleton2,bodyInsideSkeleton3,bodyInsideSkeleton4};
+		Skeleton[] wheelSkeles = {bodyInsideSkeleton1,bodyInsideSkeleton2,bodyInsideSkeleton3};
 		Sprite s;
 		for(int i = 0; i < wheelSkeles.length; ++i){
 			s = dragon_objects.createSprite( "wheel" );
