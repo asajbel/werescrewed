@@ -221,6 +221,11 @@ public class AlphaScreen extends Screen {
 		skel = ( Skeleton ) LevelFactory.entities.get( "footSkeleton" );
 		skel.setMacroSkel( true );
 		
+		Platform footWall2 = ( Platform ) LevelFactory.entities.get( "footWall2" );
+		footWall2.dontPutToSleep = true;
+		Platform footBottom = ( Platform ) LevelFactory.entities.get( "footBottom" );
+		footBottom.dontPutToSleep = true;
+		
 	}
 
 	@Override

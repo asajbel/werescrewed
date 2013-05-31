@@ -135,4 +135,10 @@ public class SimpleSpinemator implements ISpinemator {
 		return anim.getDuration( ); 
 	}
 
+	@Override
+	public void setRotation( float angle ) {
+		root.setRotation( angle );
+		
+	}
+
 }

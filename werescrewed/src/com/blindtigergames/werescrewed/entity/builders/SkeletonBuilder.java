@@ -203,6 +203,8 @@ public class SkeletonBuilder extends GenericEntityBuilder< SkeletonBuilder > {
 		this.density = density;
 		return this;
 	}
+	
+	
 
 	/**
 	 * Builds a friggin root skeleton, what do you want jeese.
