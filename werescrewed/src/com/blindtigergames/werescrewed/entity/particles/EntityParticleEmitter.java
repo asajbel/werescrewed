@@ -154,4 +154,16 @@ public class EntityParticleEmitter extends Entity {
 			particle.hardReset( );
 		}
 	}
+	
+	@Override
+	public void setActive(boolean isActive){
+		super.setActive( isActive );
+		Entity e;
+		for ( EntityParticle particle : particles ) {
+			e=particle.getEntity( );
+			if(e.entityType == EntityType.HAZARD){
+				//todo
+			}
+		}
+	}
 }

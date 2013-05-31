@@ -5,7 +5,7 @@ repeat: none
 offset: 0, 0
 tail
   rotate: false
-  xy: 2, 1389
+  xy: 2, 1387
   size: 1219, 424
   orig: 1219, 424
   offset: 0, 0
@@ -13,9 +13,9 @@ tail
 tail2
   rotate: false
   xy: 2, 772
-  size: 1307, 615
+  size: 1305, 613
   orig: 1307, 615
-  offset: 0, 0
+  offset: 0, 1
   index: -1
 tail3
   rotate: false
