@@ -2142,24 +2142,26 @@ public class Player extends Entity {
 	private void initTutorials( ) {
 		bubbleTex = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 				+ "/common/tutorial/thought_bubble.png" );
-		tutorials = new Texture[ 9 ];
+		tutorials = new Texture[ 10 ];
 		tutorials[ 0 ] = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 				+ "/common/tutorial/move_jump0.png" );
 		tutorials[ 1 ] = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 				+ "/common/tutorial/move_jump1.png" );
 		tutorials[ 2 ] = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-				+ "/common/tutorial/screw0.png" );
+				+ "/common/tutorial/screw_ready0.png" );
 		tutorials[ 3 ] = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-				+ "/common/tutorial/screw1.png" );
+				+ "/common/tutorial/screw_ready1.png" );
 		tutorials[ 4 ] = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-				+ "/common/tutorial/switch0.png" );
+				+ "/common/tutorial/screw_ready2.png" );
 		tutorials[ 5 ] = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-				+ "/common/tutorial/switch1.png" );
+				+ "/common/tutorial/switch0.png" );
 		tutorials[ 6 ] = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-				+ "/common/tutorial/dubba0.png" );
+				+ "/common/tutorial/switch1.png" );
 		tutorials[ 7 ] = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-				+ "/common/tutorial/dubba1.png" );
+				+ "/common/tutorial/dubba0.png" );
 		tutorials[ 8 ] = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
+				+ "/common/tutorial/dubba1.png" );
+		tutorials[ 9 ] = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 				+ "/common/tutorial/dubba2.png" );
 
 		bubble = constructSprite( bubbleTex );
