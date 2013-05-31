@@ -35,6 +35,16 @@ public class DirectionFlipMover implements IMover {
 		this.maxSpeed=maxSpeed;
 	}
 	
+	/**
+	 * Initialize this mover with default values
+	 * @param moveLeft
+	 * @param entityToMove
+	 */
+	public DirectionFlipMover(boolean moveLeft, Entity entityToMove){
+		this(moveLeft, 0.001f, entityToMove, 1.5f, .03f);
+	}
+	
+	
 	@Override
 	public void move( float deltaTime, Body body ) {
 		pos = body.getPosition( ).x;

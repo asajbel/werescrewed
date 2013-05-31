@@ -93,13 +93,14 @@ public class Enemy extends Hazard {
 	}
 
 	/**
-	 * Kills the enemy!
+	 * Set speed to zero and prepare enemy for repsawn at particle emitter.
 	 * @author stew
 	 */
 	@Override
 	public void reset(){
 		super.reset();
-		
+		this.body.setAngularVelocity( 0 );
+		this.body.setLinearVelocity( 0, 0 );
 		this.addFrontParticleEffect( "smoke_puff_small", true, false ).restartAt( getPositionPixel( ) );
 	}
 }

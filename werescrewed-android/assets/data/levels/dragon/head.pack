@@ -24,6 +24,13 @@ dragonbottom_right
   orig: 884, 269
   offset: 0, 0
   index: -1
+dragoneyebrow
+  rotate: false
+  xy: 1039, 1771
+  size: 678, 245
+  orig: 686, 271
+  offset: 1, 16
+  index: -1
 dragonbottom_left
   rotate: false
   xy: 2, 1125
