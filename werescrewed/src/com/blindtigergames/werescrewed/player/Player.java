@@ -19,6 +19,7 @@ import com.badlogic.gdx.physics.box2d.joints.RevoluteJoint;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
 import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.camera.Anchor;
+import com.blindtigergames.werescrewed.camera.Camera;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityDef;
 import com.blindtigergames.werescrewed.entity.EntityType;
@@ -82,6 +83,7 @@ public class Player extends Entity {
 	public final static float FOOTSTEP_PITCH_VARIANCE = 0.02f;
 	public final static float FOOTSTEP_VOLUME_DROP = 0.01f;
 	public final static float JUMP_SOUND_DELAY = 1.0f;
+	private final static float HEAD_JUMP_OFFSET = 4f;
 
 	// public final static float
 
@@ -260,10 +262,10 @@ public class Player extends Entity {
 		addBehindParticleEffect( landCloudName, false, false );
 		addFrontParticleEffect( "skid_left", false, false );
 		addFrontParticleEffect( "skid_right", false, false );
-		for ( String s : injuredParticles ) {
+		/*for ( String s : injuredParticles ) {
 			addBehindParticleEffect( s, false, false );
 			getEffect( s ).allowCompletion( );
-		}
+		}*/
 		addBehindParticleEffect( "revive", false, false );
 		// land_cloud = ParticleEffect.loadEffect( "land_cloud" );
 
@@ -562,6 +564,7 @@ public class Player extends Entity {
 	public void killPlayer(){
 		killPlayer(false);
 	}
+	
 	public void killPlayer( boolean disableAnchor ) {
 		if ( respawnTimeout == 0 ) {
 			if ( !world.isLocked( ) ) {
@@ -612,21 +615,18 @@ public class Player extends Entity {
 				currentPlatform = null;
 			}
 
-			if ( !isDead ) {
-				ParticleEffect text = getEffect( injuredParticles[ WereScrewedGame.random
-						.nextInt( injuredParticles.length ) ] );
-				text.restartAt( getPositionPixel( ) );
+			if ( !isDead ) { //sometimes this function is called twice in a row :(
+				addBehindParticleEffect( injuredParticles[ WereScrewedGame.random
+						.nextInt( injuredParticles.length ) ], true, false ).restartAt( getPositionPixel( ) );
 				sounds.playSound( "death", 1.0f );
 			}
 			isDead = true;
 			if (disableAnchor){
-				for (Anchor a: anchors){
-					a.deactivate( );
-				}
+				deactivateAnchors( );
 			}
 		}
 	}
-
+	
 	/**
 	 * This function sets player in alive state
 	 */
@@ -669,6 +669,24 @@ public class Player extends Entity {
 	}
 
 	/**
+	 * deactivates players anchors
+	 */
+	public void deactivateAnchors( ) {
+		for (Anchor a: anchors){
+			a.deactivate( );
+		}
+	}
+	
+	/**
+	 * deactivates players anchors
+	 */
+	public void activateAnchors( ) {
+		for (Anchor a: anchors){
+			a.activate( );
+		}
+	}
+	
+	/**
 	 * Turns tutorial bubble on and off
 	 * 
 	 * @param value
@@ -693,6 +711,9 @@ public class Player extends Entity {
 	public void setTutorial( int begin, int end ) {
 		tutorialBegin = begin;
 		tutorialEnd = end;
+		tutorialFrame = tutorialBegin;
+		tutorial.setTexture( tutorials[ tutorialFrame ] );
+		tutorialTimer = 0;
 	}
 
 	/**
@@ -705,9 +726,9 @@ public class Player extends Entity {
 	/**
 	 * draws tutorials when appropriate
 	 */
-	public void draw( SpriteBatch batch, float deltaTime ) {
+	public void draw( SpriteBatch batch, float deltaTime, Camera camera ) {
 		drawBubble( batch );
-		super.draw( batch, deltaTime );
+		super.draw( batch, deltaTime, camera );
 	}
 
 	/**
@@ -1580,10 +1601,10 @@ public class Player extends Entity {
 				if ( ( this.getPositionPixel( ).y > otherPlayer
 						.getPositionPixel( ).add( 0, HEIGHT / 2f ).y )
 						&& ( otherPlayer.getPositionPixel( ).sub(
-								( WIDTH / 3.0f ) + 1.2f, 0.0f ).x <= this
+								( WIDTH / 3.0f ) + HEAD_JUMP_OFFSET, 0.0f ).x <= this
 								.getPositionPixel( ).x )
 						&& ( otherPlayer.getPositionPixel( ).add(
-								( WIDTH / 4.0f ) + 1.2f, 0.0f ).x > this
+								( WIDTH / 3.0f ) + HEAD_JUMP_OFFSET, 0.0f ).x > this
 								.getPositionPixel( ).x ) ) {
 					boolean isMoving = false;
 					// check if the player is using input

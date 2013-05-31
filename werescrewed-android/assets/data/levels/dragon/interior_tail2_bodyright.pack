@@ -1,0 +1,19 @@
+interior_tail2_bodyright.png
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+offset: 0, 0
+tail2_interior
+  rotate: false
+  xy: 0, 1190
+  size: 1218, 518
+  orig: 1218, 518
+  offset: 0, 0
+  index: -1
+body_interior_right
+  rotate: false
+  xy: 0, 0
+  size: 1528, 1190
+  orig: 1528, 1190
+  offset: 0, 0
+  index: -1

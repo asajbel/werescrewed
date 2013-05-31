@@ -726,6 +726,7 @@ public class ParticleEmitter {
 	}
 
 	public void setRotation( float angleRad ) {
+		rotationValue.active = true; 
 		float angleDeg = angleRad * Util.RAD_TO_DEG + 90;
 		float diffHighHalf = ( rotationValue.getHighMax( ) - rotationValue
 				.getHighMin( ) ) / 2;
@@ -921,6 +922,8 @@ public class ParticleEmitter {
 
 		yOffsetValue.setLow( -yOffsetValue.getLowMin( ),
 				-yOffsetValue.getLowMax( ) );
+		
+		this.setRotation( Util.PI );
 	}
 
 	public void save( Writer output ) throws IOException {

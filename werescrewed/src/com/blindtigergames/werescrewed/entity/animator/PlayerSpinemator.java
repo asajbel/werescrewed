@@ -431,4 +431,10 @@ public class PlayerSpinemator implements ISpinemator {
 		return 0;
 	}
 
+	@Override
+	public void setRotation( float angle ) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
