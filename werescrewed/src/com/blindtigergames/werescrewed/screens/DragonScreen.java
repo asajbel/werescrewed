@@ -717,8 +717,10 @@ public class DragonScreen extends Screen {
 	}
 	
 	void flamePlatformDecals(){
+		TextureAtlas balloons = WereScrewedGame.manager.getAtlas( "balloons" );
 		TextureAtlas dragonObjects = WereScrewedGame.manager.getAtlas( "dragon_objects" );
 		Sprite s;
+		float scale = 1f/0.5f;
 		Platform p;
 		String[] entities = {"balloon1_flame_plat","balloon2_flame_plat",
 				"balloon3_flame_plat","tail1_flame_plat",
@@ -747,8 +749,28 @@ public class DragonScreen extends Screen {
 				weldJointDef.initialize( p.body, balloon1.body, p.getPosition( ) );
 				level.world.createJoint( weldJointDef );
 			}
+			if(i==1)scale = 1f/.7f;
+			else scale = 1f/.5f;
+			balloon1.sprite = null;
+			s = balloons.createSprite( "balloon_big"+i );
+			balloon1.addFGDecal( Sprite.scale( s,scale), new Vector2(-s.getWidth( )/2*scale,-s.getHeight( )/2.8f*scale) );
+			addFGEntity( balloon1 );
+			
+			
+			
 		}
-		
+
+		//intro balloons
+		//balloon1,2,3
+		scale = 1f/.7f;
+		for(int i = 1; i <= 3; i++){
+			p = ( Platform ) LevelFactory.entities
+					.get( "balloon"+i );
+			p.sprite=null;
+			s = balloons.createSprite( "balloon_big"+i );
+			p.addFGDecal( Sprite.scale( s,scale), new Vector2(-s.getWidth( )/2*scale,-s.getHeight( )/2.8f*scale) );
+			addFGEntity( p );
+		}
 		
 	}
 

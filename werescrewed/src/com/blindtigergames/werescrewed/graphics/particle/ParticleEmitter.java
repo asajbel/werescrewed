@@ -923,7 +923,7 @@ public class ParticleEmitter {
 		yOffsetValue.setLow( -yOffsetValue.getLowMin( ),
 				-yOffsetValue.getLowMax( ) );
 		
-		//this.setRotation( Util.PI );
+		this.setRotation(Util.HALF_PI );
 	}
 
 	public void save( Writer output ) throws IOException {
