@@ -74,13 +74,6 @@ public class PowerSwitch extends EventTrigger {
 		float ypos = body.getPosition( ).y - ( 64f * Util.PIXEL_TO_BOX );
 
 		sprite = ( state ) ? onState : offState;
-		// if(currentSprite.equals(bgDecals.get( 0 ))){
-		// bgDecals.clear( );
-		// bgDecalAngles.clear( );
-		// bgDecalOffsets.clear( );
-		// addBGDecal( currentSprite );
-		// }
-		// updateDecals( deltaTime );
 
 		sprite.setPosition( xpos * Util.BOX_TO_PIXEL - sprite.getWidth( )
 				/ 2.0f, ypos * Util.BOX_TO_PIXEL );

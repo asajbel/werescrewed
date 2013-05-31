@@ -27,18 +27,22 @@ import com.blindtigergames.werescrewed.entity.action.RemoveEntityAction;
 import com.blindtigergames.werescrewed.entity.action.RotateTweenAction;
 import com.blindtigergames.werescrewed.entity.builders.EventTriggerBuilder;
 import com.blindtigergames.werescrewed.entity.builders.PlatformBuilder;
+import com.blindtigergames.werescrewed.entity.hazard.Enemy;
 import com.blindtigergames.werescrewed.entity.hazard.Fire;
 import com.blindtigergames.werescrewed.entity.mover.AnalogRotateMover;
+import com.blindtigergames.werescrewed.entity.mover.DirectionFlipMover;
 import com.blindtigergames.werescrewed.entity.mover.IMover;
 import com.blindtigergames.werescrewed.entity.mover.LerpMover;
 import com.blindtigergames.werescrewed.entity.mover.LinearAxis;
 import com.blindtigergames.werescrewed.entity.mover.ParallaxMover;
 import com.blindtigergames.werescrewed.entity.mover.RotateTweenMover;
 import com.blindtigergames.werescrewed.entity.mover.TimelineTweenMover;
+import com.blindtigergames.werescrewed.entity.particles.EntityParticleEmitter;
 import com.blindtigergames.werescrewed.entity.platforms.Pipe;
 import com.blindtigergames.werescrewed.entity.platforms.Platform;
 import com.blindtigergames.werescrewed.entity.platforms.TiledPlatform;
 import com.blindtigergames.werescrewed.entity.screws.PuzzleScrew;
+import com.blindtigergames.werescrewed.entity.screws.StructureScrew;
 import com.blindtigergames.werescrewed.entity.tween.PathBuilder;
 import com.blindtigergames.werescrewed.entity.tween.PlatformAccessor;
 import com.blindtigergames.werescrewed.eventTrigger.EventTrigger;
@@ -53,9 +57,10 @@ public class DragonScreen extends Screen {
 	PuzzleScrew puzzleScrewBalloon1;
 	Platform balloon1;
 	Skeleton balloon1_super, bodyRoomRotateSkeleton;
-	PowerSwitch tail3Switch1, tail3Switch2, tail3Switch3, bodyPowerSwitch3;
+	PowerSwitch tail3Switch1, tail3Switch2, tail3Switch3, bodyPowerSwitch1, bodyPowerSwitch3;
 	RevoluteJoint bodyRoomJoint;
-	
+	EntityParticleEmitter fireballEmitter;
+	StructureScrew tail1Left, tail1Right, tail2Left, tail2Right, tail3Left, tail3Right;
 	
 	// the numbers here correspond to gleed numbers
 	Fire tail3Fire2, tail3Fire3, tail3Fire4, tail3Fire5, tail3Fire6;
@@ -86,14 +91,20 @@ public class DragonScreen extends Screen {
 		tail2Decals();
 		tail3Decals();
 		bodyDecals();
+		getTailStructureScrews();
+		initFireballEnemy(new Vector2(13750, 300));
 
-
+		
+		
+		
+		
+		
 		Skeleton jaw_skeleton = ( Skeleton ) LevelFactory.entities
 				.get( "fuck_jaw_skeleton" );
 		Timeline t = Timeline.createSequence( );
 
 		t.push( Tween.to( jaw_skeleton, PlatformAccessor.LOCAL_ROT, 6f )
-				.ease( TweenEquations.easeNone ).target( -Util.PI / 32 )
+				.ease( TweenEquations.easeNone ).target( -Util.PI / 20 )
 				.start( ).delay( 2f ) );
 
 		t.push( Tween.to( jaw_skeleton, PlatformAccessor.LOCAL_ROT, 4f )
@@ -101,7 +112,7 @@ public class DragonScreen extends Screen {
 				.start( ) );
 
 		t.push( Tween.to( jaw_skeleton, PlatformAccessor.LOCAL_ROT, 6f )
-				.ease( TweenEquations.easeNone ).target( -Util.PI / 32 )
+				.ease( TweenEquations.easeNone ).target( -Util.PI / 20 )
 				.start( ).delay( 2f ) );
 
 		t.push( Tween.to( jaw_skeleton, PlatformAccessor.LOCAL_ROT, 6f )
@@ -109,7 +120,7 @@ public class DragonScreen extends Screen {
 				.start( ) );
 
 		t.push( Tween.to( jaw_skeleton, PlatformAccessor.LOCAL_ROT, 8f )
-				.ease( TweenEquations.easeNone ).target( -Util.PI / 32 )
+				.ease( TweenEquations.easeNone ).target( -Util.PI / 20 )
 				.start( ).delay( 4f ) );
 
 		t.push( Tween.to( jaw_skeleton, PlatformAccessor.LOCAL_ROT, 5f )
@@ -120,10 +131,15 @@ public class DragonScreen extends Screen {
 		
 		headDecals();
 		
-		bgm = WereScrewedGame.manager.get( WereScrewedGame.dirHandle.path( )
-				+ "/levels/dragon/riding.mp3", Music.class );
 	}
-
+	@Override
+	public void load(){
+		super.load( );
+		if (bgm == null){
+			bgm = WereScrewedGame.manager.get( WereScrewedGame.dirHandle.path( )
+					+ "/levels/dragon/riding.mp3", Music.class );
+		}
+	}
 	void buildBalloon( ) {
 		balloon1 = ( Platform ) LevelFactory.entities.get( "balloon1" );
 		
@@ -217,7 +233,19 @@ public class DragonScreen extends Screen {
 			
 		}
 		tail3FireEventsUpdate( );
-
+		if(!bodyPowerSwitch1.isTurnedOn( )){
+			fireballEmitter.setActive( false );
+			
+		}else{
+			
+			fireballEmitter.setActive( true );
+		}
+		
+//		if(tail1Left.body == null && tail2.body == null){
+//			
+//			
+//		}
+		
 		if ( puzzleScrewBalloon1.getDepth( ) == puzzleScrewBalloon1
 				.getMaxDepth( ) ) {
 			if ( balloon1_super.currentMover( ) == null ) {
@@ -473,6 +501,9 @@ public class DragonScreen extends Screen {
 		bodyPowerSwitch3 = ( PowerSwitch ) LevelFactory.entities
 				.get( "body_power_switch3" );
 		
+		bodyPowerSwitch1 = ( PowerSwitch ) LevelFactory.entities
+				.get( "body_power_switch1" );
+		
 		
 		tail3Switch1.actOnEntity = true;
 		tail3Switch1.addEntityToTrigger( tail3MiddlePipe1 );
@@ -531,14 +562,14 @@ public class DragonScreen extends Screen {
 				.get( "body_inside_skeleton2" );
 		Skeleton bodyInsideSkeleton3 = ( Skeleton ) LevelFactory.entities
 				.get( "body_inside_skeleton3" );
-		Skeleton bodyInsideSkeleton4 = ( Skeleton ) LevelFactory.entities
-				.get( "body_inside_skeleton4" );
+//		Skeleton bodyInsideSkeleton4 = ( Skeleton ) LevelFactory.entities
+//				.get( "body_inside_skeleton4" );
 
 		float motorSpeed = 0.7f;
 		createMotor( bodyInsideSkeleton1, bodySection2Skeleton, motorSpeed );
 		createMotor( bodyInsideSkeleton2, bodySection2Skeleton, -motorSpeed );
 		createMotor( bodyInsideSkeleton3, bodySection2Skeleton, motorSpeed );
-		createMotor( bodyInsideSkeleton4, bodySection2Skeleton, -motorSpeed );
+		//createMotor( bodyInsideSkeleton4, bodySection2Skeleton, -motorSpeed );
 		
 		bodyRoomRotateSkeleton = ( Skeleton ) LevelFactory.entities
 		.get( "body_room_rotate_skeleton" );
@@ -607,7 +638,7 @@ public class DragonScreen extends Screen {
 		
 		//DECALS:
 		TextureAtlas dragon_objects = WereScrewedGame.manager.getAtlas( "dragon_objects" );
-		Skeleton[] wheelSkeles = {bodyInsideSkeleton1,bodyInsideSkeleton2,bodyInsideSkeleton3,bodyInsideSkeleton4};
+		Skeleton[] wheelSkeles = {bodyInsideSkeleton1,bodyInsideSkeleton2,bodyInsideSkeleton3};
 		Sprite s;
 		for(int i = 0; i < wheelSkeles.length; ++i){
 			s = dragon_objects.createSprite( "wheel" );
@@ -649,27 +680,27 @@ public class DragonScreen extends Screen {
 		balloon3CannonSkeleton.setLocalRot( -Util.PI / 4 );
 		
 		
-		Skeleton cannonPuzzle = ( Skeleton ) LevelFactory.entities
-				.get( "body_cannon_puzzle_skeleton" );
-		cannonPuzzle.setLocalRot( -Util.PI / 2 );
-		cannonPuzzle.setFgFade( false );
-		
-		
-		buildCannon( cannonPuzzle, cannonPuzzle.getPositionPixel( ), 200, 200,
-				0.5f, 0.5f );
-		for ( int i = 1; i < 5; ++i ) {
-			Skeleton skel = ( Skeleton ) LevelFactory.entities
-					.get( "body_cannon_skeleton" + i );
-			skel.setFgFade( false );
-
-			if ( i % 2 == 1 ) {
-				skel.setLocalRot( Util.PI / 6 );
-			} else {
-				skel.setLocalRot( -Util.PI / 6 );
-			}
-			buildCannon( skel, skel.getPositionPixel( ), 200, 200, 0.33f, 0.5f );
-
-		}
+//		Skeleton cannonPuzzle = ( Skeleton ) LevelFactory.entities
+//				.get( "body_cannon_puzzle_skeleton" );
+//		cannonPuzzle.setLocalRot( -Util.PI / 2 );
+//		cannonPuzzle.setFgFade( false );
+//		
+//		
+//		buildCannon( cannonPuzzle, cannonPuzzle.getPositionPixel( ), 200, 200,
+//				0.5f, 0.5f );
+//		for ( int i = 1; i < 5; ++i ) {
+//			Skeleton skel = ( Skeleton ) LevelFactory.entities
+//					.get( "body_cannon_skeleton" + i );
+//			skel.setFgFade( false );
+//
+//			if ( i % 2 == 1 ) {
+//				skel.setLocalRot( Util.PI / 6 );
+//			} else {
+//				skel.setLocalRot( -Util.PI / 6 );
+//			}
+//			buildCannon( skel, skel.getPositionPixel( ), 200, 200, 0.33f, 0.5f );
+//
+//		}
 
 	}
 	
@@ -1074,4 +1105,42 @@ public class DragonScreen extends Screen {
 		addFGEntity( ground );
 	}
 
+	
+	private void initFireballEnemy(Vector2 pos){
+		
+		int w = 15, n= 10, h = 140;
+		
+		//build a little cage for the fireball
+	
+		
+		fireballEmitter = new EntityParticleEmitter( "bolt emitter",
+				new Vector2( pos.cpy( ).add(0,n*h) ),
+				new Vector2(),
+				25, level.world, true );
+		for(int i =0; i < 5; ++i ){
+			fireballEmitter.addParticle( createBoltEnemy( pos.cpy( ).add(0,n*h), i ), 10, 0, i*5 );
+		}
+		level.root.addLooseEntity( fireballEmitter );
+	}
+	
+	Enemy createBoltEnemy(Vector2 pos, int index){
+		Enemy hotbolt = new Enemy( "hot-bolt"+index, pos,25, level.world, true );
+		hotbolt.addMover( new DirectionFlipMover( false, 0.002f, hotbolt, 1f, .04f ) );
+		addBGEntity( hotbolt );
+		return hotbolt;
+	}
+	
+	void getTailStructureScrews(){
+		tail1Left = ( StructureScrew ) LevelFactory.entities
+				.get( "tail_ss_left" );
+		tail1Right = ( StructureScrew ) LevelFactory.entities
+				.get( "tail_ss_right" );
+		
+		
+		tail2Left = ( StructureScrew ) LevelFactory.entities
+		.get( "tail2_ss_left" );
+		tail2Right = ( StructureScrew ) LevelFactory.entities
+				.get( "tail2_ss_right" );
+		
+	}
 }

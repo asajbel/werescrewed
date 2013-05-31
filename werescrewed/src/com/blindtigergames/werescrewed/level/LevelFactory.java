@@ -1417,7 +1417,11 @@ public class LevelFactory {
 			pBuilder.target( pathPoints.get( i ).x, pathPoints.get( i ).y,
 					times.get( i ).floatValue( ) );
 		}
-
+		if ( item.props.containsKey( "loops" ) ) {
+			int loopCount = Integer.parseInt( item.props.get( "loops" ) );
+			pBuilder.loops( loopCount );
+		}
+		
 		TimelineTweenMover out = pBuilder.build( );
 		movers.put( item.name, out );
 		p.addMover( out, RobotState.IDLE );
@@ -1754,6 +1758,10 @@ public class LevelFactory {
 			if ( action.equals( "activate_hazard" ) ) {
 				ps.addBeginIAction( new HazardActivateAction( ) );
 			}
+			if ( action.equals( "activate_mover" ) ) {
+				ps.addBeginIAction( new EntityActivateMoverAction( )  );
+			}
+			
 		}
 
 		if ( item.props.containsKey( "endaction" ) ) {
@@ -1761,6 +1769,10 @@ public class LevelFactory {
 
 			if ( action.equals( "deactivate_hazard" ) ) {
 				ps.addEndIAction( new HazardDeactivateAction( ) );
+			}
+			
+			if ( action.equals( "deactivate_mover" ) ) {
+				ps.addBeginIAction( new EntityDeactivateMoverAction( )  );
 			}
 		}
 

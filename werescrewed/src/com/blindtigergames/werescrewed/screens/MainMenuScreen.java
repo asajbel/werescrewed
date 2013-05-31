@@ -212,26 +212,27 @@ class MainMenuScreen extends Screen {
 
 	@Override
 	public void show( ) {
-
+		super.show( );
 	}
 
 	@Override
 	public void hide( ) {
-
+		super.hide( );
 	}
 
 	@Override
 	public void pause( ) {
-
+		super.pause( );
 	}
 
 	@Override
 	public void resume( ) {
-
+		super.resume( );
 	}
 
 	@Override
 	public void dispose( ) {
+		super.dispose( );
 	}
 
 	/*
