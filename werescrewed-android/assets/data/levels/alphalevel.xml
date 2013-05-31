@@ -409,7 +409,7 @@
                         </Vector2>
                         <Vector2>
                             <X>-336</X>
-                            <Y>-960</Y>
+                            <Y>-880</Y>
                         </Vector2>
                         <Vector2>
                             <X>1424</X>
@@ -420,16 +420,16 @@
                             <Y>-2384</Y>
                         </Vector2>
                         <Vector2>
-                            <X>2672</X>
-                            <Y>-3616</Y>
+                            <X>5328</X>
+                            <Y>-2784</Y>
                         </Vector2>
                         <Vector2>
-                            <X>-4912</X>
-                            <Y>-3664</Y>
+                            <X>-4896</X>
+                            <Y>-2928</Y>
                         </Vector2>
                         <Vector2>
                             <X>-336</X>
-                            <Y>-960</Y>
+                            <Y>-880</Y>
                         </Vector2>
                     </LocalPoints>
                     <WorldPoints>
@@ -439,7 +439,7 @@
                         </Vector2>
                         <Vector2>
                             <X>-352</X>
-                            <Y>-976</Y>
+                            <Y>-896</Y>
                         </Vector2>
                         <Vector2>
                             <X>1408</X>
@@ -450,16 +450,16 @@
                             <Y>-2400</Y>
                         </Vector2>
                         <Vector2>
-                            <X>2656</X>
-                            <Y>-3632</Y>
+                            <X>5312</X>
+                            <Y>-2800</Y>
                         </Vector2>
                         <Vector2>
-                            <X>-4928</X>
-                            <Y>-3680</Y>
+                            <X>-4912</X>
+                            <Y>-2944</Y>
                         </Vector2>
                         <Vector2>
                             <X>-352</X>
-                            <Y>-976</Y>
+                            <Y>-896</Y>
                         </Vector2>
                     </WorldPoints>
                     <IsPolygon>false</IsPolygon>
@@ -23831,9 +23831,6 @@
                         <Property Name="invisible" Type="string" Description="">
                             <string>true</string>
                         </Property>
-                        <Property Name="alwaysvisible" Type="string" Description="">
-                            <string />
-                        </Property>
                     </CustomProperties>
                     <LocalPoints>
                         <Vector2>
@@ -23911,9 +23908,6 @@
                         </Property>
                         <Property Name="invisible" Type="string" Description="">
                             <string>true</string>
-                        </Property>
-                        <Property Name="alwaysvisible" Type="string" Description="">
-                            <string />
                         </Property>
                     </CustomProperties>
                     <LocalPoints>
@@ -23993,9 +23987,6 @@
                         <Property Name="invisible" Type="string" Description="">
                             <string>true</string>
                         </Property>
-                        <Property Name="alwaysvisible" Type="string" Description="">
-                            <string />
-                        </Property>
                     </CustomProperties>
                     <LocalPoints>
                         <Vector2>
@@ -24073,9 +24064,6 @@
                         </Property>
                         <Property Name="invisible" Type="string" Description="">
                             <string>true</string>
-                        </Property>
-                        <Property Name="alwaysvisible" Type="string" Description="">
-                            <string />
                         </Property>
                     </CustomProperties>
                     <LocalPoints>
@@ -24155,9 +24143,6 @@
                         <Property Name="invisible" Type="string" Description="">
                             <string>true</string>
                         </Property>
-                        <Property Name="alwaysvisible" Type="string" Description="">
-                            <string />
-                        </Property>
                     </CustomProperties>
                     <LocalPoints>
                         <Vector2>
@@ -24235,9 +24220,6 @@
                         </Property>
                         <Property Name="invisible" Type="string" Description="">
                             <string>true</string>
-                        </Property>
-                        <Property Name="alwaysvisible" Type="string" Description="">
-                            <string />
                         </Property>
                     </CustomProperties>
                     <LocalPoints>
@@ -24317,9 +24299,6 @@
                         <Property Name="invisible" Type="string" Description="">
                             <string>true</string>
                         </Property>
-                        <Property Name="alwaysvisible" Type="string" Description="">
-                            <string />
-                        </Property>
                     </CustomProperties>
                     <LocalPoints>
                         <Vector2>
@@ -24397,9 +24376,6 @@
                         </Property>
                         <Property Name="invisible" Type="string" Description="">
                             <string>true</string>
-                        </Property>
-                        <Property Name="alwaysvisible" Type="string" Description="">
-                            <string />
                         </Property>
                     </CustomProperties>
                     <LocalPoints>
@@ -24479,9 +24455,6 @@
                         <Property Name="invisible" Type="string" Description="">
                             <string>true</string>
                         </Property>
-                        <Property Name="alwaysvisible" Type="string" Description="">
-                            <string />
-                        </Property>
                     </CustomProperties>
                     <LocalPoints>
                         <Vector2>
@@ -24559,9 +24532,6 @@
                         </Property>
                         <Property Name="invisible" Type="string" Description="">
                             <string>true</string>
-                        </Property>
-                        <Property Name="alwaysvisible" Type="string" Description="">
-                            <string />
                         </Property>
                     </CustomProperties>
                     <LocalPoints>
@@ -24641,9 +24611,6 @@
                         <Property Name="invisible" Type="string" Description="">
                             <string>true</string>
                         </Property>
-                        <Property Name="alwaysvisible" Type="string" Description="">
-                            <string />
-                        </Property>
                     </CustomProperties>
                     <LocalPoints>
                         <Vector2>
@@ -24721,9 +24688,6 @@
                         </Property>
                         <Property Name="invisible" Type="string" Description="">
                             <string>true</string>
-                        </Property>
-                        <Property Name="alwaysvisible" Type="string" Description="">
-                            <string />
                         </Property>
                     </CustomProperties>
                     <LocalPoints>
@@ -24803,9 +24767,6 @@
                         <Property Name="invisible" Type="string" Description="">
                             <string>true</string>
                         </Property>
-                        <Property Name="alwaysvisible" Type="string" Description="">
-                            <string />
-                        </Property>
                     </CustomProperties>
                     <LocalPoints>
                         <Vector2>
@@ -24884,9 +24845,6 @@
                         <Property Name="invisible" Type="string" Description="">
                             <string>true</string>
                         </Property>
-                        <Property Name="alwaysvisible" Type="string" Description="">
-                            <string />
-                        </Property>
                     </CustomProperties>
                     <LocalPoints>
                         <Vector2>
@@ -24964,9 +24922,6 @@
                         </Property>
                         <Property Name="invisible" Type="string" Description="">
                             <string>true</string>
-                        </Property>
-                        <Property Name="alwaysvisible" Type="string" Description="">
-                            <string />
                         </Property>
                     </CustomProperties>
                     <LocalPoints>
@@ -25050,8 +25005,8 @@
         <NextItemNumber>965</NextItemNumber>
         <ContentRootFolder>gleed-textures</ContentRootFolder>
         <CameraPosition>
-            <X>374.0141</X>
-            <Y>-326.0614</Y>
+            <X>7.344574</X>
+            <Y>-3542.73584</Y>
         </CameraPosition>
         <Version>1.3.0.0</Version>
     </EditorRelated>
