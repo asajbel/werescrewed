@@ -120,6 +120,21 @@
 			}
 		},
 		"slots": {
+			"steam": {
+				"attachment": [
+					{ "time": 0, "name": null }
+				]
+			},
+			"door-right-closed": {
+				"attachment": [
+					{ "time": 0, "name": null }
+				]
+			},
+			"steam-root": {
+				"attachment": [
+					{ "time": 0, "name": "steam" }
+				]
+			},
 			"door-right": {
 				"attachment": [
 					{ "time": 0, "name": "door-right" },
@@ -127,19 +142,13 @@
 					{ "time": 1, "name": "door-right" }
 				]
 			},
-			"steam": {
+			"white-flash": {
 				"attachment": [
-					{ "time": 0, "name": null }
-				]
-			},
-			"door-left-closed": {
-				"attachment": [
-					{ "time": 0, "name": null }
-				]
-			},
-			"chamber": {
-				"attachment": [
-					{ "time": 0, "name": "back-open-on" }
+					{ "time": 0, "name": "white-flash" }
+				],
+				"color": [
+					{ "time": 0.1666, "color": "ffffffff" },
+					{ "time": 0.4, "color": "ffffff00" }
 				]
 			},
 			"door-left": {
@@ -152,23 +161,14 @@
 					{ "time": 0.3333, "color": "ffffffff" }
 				]
 			},
-			"door-right-closed": {
+			"chamber": {
+				"attachment": [
+					{ "time": 0, "name": "back-open-on" }
+				]
+			},
+			"door-left-closed": {
 				"attachment": [
 					{ "time": 0, "name": null }
-				]
-			},
-			"steam-root": {
-				"attachment": [
-					{ "time": 0, "name": "steam" }
-				]
-			},
-			"white-flash": {
-				"attachment": [
-					{ "time": 0, "name": "white-flash" }
-				],
-				"color": [
-					{ "time": 0.1666, "color": "ffffffff" },
-					{ "time": 0.4, "color": "ffffff00" }
 				]
 			}
 		}
@@ -177,68 +177,82 @@
 		"bones": {
 			"back": {
 				"translate": [
-					{ "time": 0, "x": 0, "y": 0 }
+					{ "time": 0, "x": 0, "y": 0, "curve": "stepped" },
+					{ "time": 0.3333, "x": 0, "y": 0 }
 				],
 				"scale": [
-					{ "time": 0, "x": 1, "y": 1 }
+					{ "time": 0, "x": 1, "y": 1, "curve": "stepped" },
+					{ "time": 0.3333, "x": 1, "y": 1 }
 				]
 			},
 			"door-left": {
 				"translate": [
-					{ "time": 0, "x": 0, "y": 0 }
+					{ "time": 0, "x": 0, "y": 0, "curve": "stepped" },
+					{ "time": 0.3333, "x": 0, "y": 0 }
 				],
 				"scale": [
-					{ "time": 0, "x": 1, "y": 1 }
+					{ "time": 0, "x": 1, "y": 1, "curve": "stepped" },
+					{ "time": 0.3333, "x": 1, "y": 1 }
 				]
 			},
 			"door-right": {
 				"translate": [
-					{ "time": 0, "x": 0, "y": 0 }
+					{ "time": 0, "x": 0, "y": 0, "curve": "stepped" },
+					{ "time": 0.3333, "x": 0, "y": 0 }
 				],
 				"scale": [
-					{ "time": 0, "x": 1, "y": 1 }
+					{ "time": 0, "x": 1, "y": 1, "curve": "stepped" },
+					{ "time": 0.3333, "x": 1, "y": 1 }
 				]
 			}
 		},
 		"slots": {
-			"door-right": {
-				"attachment": [
-					{ "time": 0, "name": null }
-				]
-			},
 			"steam": {
 				"attachment": [
-					{ "time": 0, "name": "steam" }
-				]
-			},
-			"door-left-closed": {
-				"attachment": [
-					{ "time": 0, "name": "door-left" }
+					{ "time": 0, "name": "steam" },
+					{ "time": 0.3333, "name": "steam" }
 				]
 			},
 			"chamber": {
 				"attachment": [
-					{ "time": 0, "name": "back-open-off" }
-				]
-			},
-			"door-left": {
-				"attachment": [
-					{ "time": 0, "name": null }
+					{ "time": 0, "name": "back-open-off" },
+					{ "time": 0.3333, "name": "back-open-off" }
 				]
 			},
 			"door-right-closed": {
 				"attachment": [
-					{ "time": 0, "name": "door-right" }
+					{ "time": 0, "name": "door-right" },
+					{ "time": 0.3333, "name": "door-right" }
 				]
 			},
 			"steam-root": {
 				"attachment": [
-					{ "time": 0, "name": "steam" }
+					{ "time": 0, "name": "steam" },
+					{ "time": 0.3333, "name": "steam" }
+				]
+			},
+			"door-right": {
+				"attachment": [
+					{ "time": 0, "name": null },
+					{ "time": 0.3333, "name": null }
 				]
 			},
 			"white-flash": {
 				"attachment": [
-					{ "time": 0, "name": null }
+					{ "time": 0, "name": null },
+					{ "time": 0.3333, "name": null }
+				]
+			},
+			"door-left": {
+				"attachment": [
+					{ "time": 0, "name": null },
+					{ "time": 0.3333, "name": null }
+				]
+			},
+			"door-left-closed": {
+				"attachment": [
+					{ "time": 0, "name": "door-left" },
+					{ "time": 0.3333, "name": "door-left" }
 				]
 			}
 		}
@@ -290,20 +304,9 @@
 			}
 		},
 		"slots": {
-			"door-right": {
-				"attachment": [
-					{ "time": 0, "name": null }
-				]
-			},
 			"steam": {
 				"attachment": [
 					{ "time": 0, "name": null }
-				]
-			},
-			"door-left-closed": {
-				"attachment": [
-					{ "time": 0, "name": "door-left" },
-					{ "time": 1.1333, "name": "door-left" }
 				]
 			},
 			"chamber": {
@@ -318,11 +321,6 @@
 					{ "time": 1.1333, "name": "back-open-off" }
 				]
 			},
-			"door-left": {
-				"attachment": [
-					{ "time": 0, "name": null }
-				]
-			},
 			"door-right-closed": {
 				"attachment": [
 					{ "time": 0, "name": "door-right" },
@@ -333,6 +331,22 @@
 				"attachment": [
 					{ "time": 0, "name": "steam" },
 					{ "time": 1.1333, "name": "steam" }
+				]
+			},
+			"door-right": {
+				"attachment": [
+					{ "time": 0, "name": null }
+				]
+			},
+			"door-left": {
+				"attachment": [
+					{ "time": 0, "name": null }
+				]
+			},
+			"door-left-closed": {
+				"attachment": [
+					{ "time": 0, "name": "door-left" },
+					{ "time": 1.1333, "name": "door-left" }
 				]
 			}
 		}
@@ -397,27 +411,10 @@
 			}
 		},
 		"slots": {
-			"door-right": {
-				"attachment": [
-					{ "time": 0, "name": "door-right" },
-					{ "time": 0.3666, "name": "door-right" },
-					{ "time": 0.5, "name": null },
-					{ "time": 1.1666, "name": "door-right" },
-					{ "time": 1.5, "name": "door-right" }
-				]
-			},
 			"steam": {
 				"attachment": [
 					{ "time": 0, "name": "steam" },
 					{ "time": 0.5, "name": null }
-				]
-			},
-			"door-left-closed": {
-				"attachment": [
-					{ "time": 0, "name": null },
-					{ "time": 0.5, "name": "door-left" },
-					{ "time": 1.0666, "name": "door-left" },
-					{ "time": 1.1666, "name": null }
 				]
 			},
 			"chamber": {
@@ -452,15 +449,6 @@
 					{ "time": 1.1666, "name": "back-open-off" }
 				]
 			},
-			"door-left": {
-				"attachment": [
-					{ "time": 0, "name": "door-left" },
-					{ "time": 0.3666, "name": "door-left" },
-					{ "time": 0.5, "name": null },
-					{ "time": 1.1666, "name": "door-left" },
-					{ "time": 1.5, "name": "door-left" }
-				]
-			},
 			"door-right-closed": {
 				"attachment": [
 					{ "time": 0, "name": null },
@@ -476,6 +464,15 @@
 					{ "time": 1.0666, "name": "steam" }
 				]
 			},
+			"door-right": {
+				"attachment": [
+					{ "time": 0, "name": "door-right" },
+					{ "time": 0.3666, "name": "door-right" },
+					{ "time": 0.5, "name": null },
+					{ "time": 1.1666, "name": "door-right" },
+					{ "time": 1.5, "name": "door-right" }
+				]
+			},
 			"white-flash": {
 				"attachment": [
 					{ "time": 0, "name": null },
@@ -484,6 +481,23 @@
 				"color": [
 					{ "time": 1.4, "color": "ffffffff" },
 					{ "time": 1.5, "color": "ffffff00" }
+				]
+			},
+			"door-left": {
+				"attachment": [
+					{ "time": 0, "name": "door-left" },
+					{ "time": 0.3666, "name": "door-left" },
+					{ "time": 0.5, "name": null },
+					{ "time": 1.1666, "name": "door-left" },
+					{ "time": 1.5, "name": "door-left" }
+				]
+			},
+			"door-left-closed": {
+				"attachment": [
+					{ "time": 0, "name": null },
+					{ "time": 0.5, "name": "door-left" },
+					{ "time": 1.0666, "name": "door-left" },
+					{ "time": 1.1666, "name": null }
 				]
 			}
 		}
@@ -522,18 +536,7 @@
 			}
 		},
 		"slots": {
-			"door-right": {
-				"attachment": [
-					{ "time": 0, "name": "door-right" },
-					{ "time": 0.3666, "name": "door-right" }
-				]
-			},
 			"steam": {
-				"attachment": [
-					{ "time": 0, "name": null }
-				]
-			},
-			"door-left-closed": {
 				"attachment": [
 					{ "time": 0, "name": null }
 				]
@@ -541,12 +544,6 @@
 			"chamber": {
 				"attachment": [
 					{ "time": 0, "name": null }
-				]
-			},
-			"door-left": {
-				"attachment": [
-					{ "time": 0, "name": "door-left" },
-					{ "time": 0.3666, "name": "door-left" }
 				]
 			},
 			"door-right-closed": {
@@ -557,6 +554,23 @@
 			"steam-root": {
 				"attachment": [
 					{ "time": 0, "name": "steam" }
+				]
+			},
+			"door-right": {
+				"attachment": [
+					{ "time": 0, "name": "door-right" },
+					{ "time": 0.3666, "name": "door-right" }
+				]
+			},
+			"door-left": {
+				"attachment": [
+					{ "time": 0, "name": "door-left" },
+					{ "time": 0.3666, "name": "door-left" }
+				]
+			},
+			"door-left-closed": {
+				"attachment": [
+					{ "time": 0, "name": null }
 				]
 			}
 		}
@@ -583,17 +597,7 @@
 			}
 		},
 		"slots": {
-			"door-right": {
-				"attachment": [
-					{ "time": 0, "name": "door-right" }
-				]
-			},
 			"steam": {
-				"attachment": [
-					{ "time": 0, "name": null }
-				]
-			},
-			"door-left-closed": {
 				"attachment": [
 					{ "time": 0, "name": null }
 				]
@@ -601,11 +605,6 @@
 			"chamber": {
 				"attachment": [
 					{ "time": 0, "name": "back-open-on" }
-				]
-			},
-			"door-left": {
-				"attachment": [
-					{ "time": 0, "name": "door-left" }
 				]
 			},
 			"door-right-closed": {
@@ -616,6 +615,21 @@
 			"steam-root": {
 				"attachment": [
 					{ "time": 0, "name": "steam" }
+				]
+			},
+			"door-right": {
+				"attachment": [
+					{ "time": 0, "name": "door-right" }
+				]
+			},
+			"door-left": {
+				"attachment": [
+					{ "time": 0, "name": "door-left" }
+				]
+			},
+			"door-left-closed": {
+				"attachment": [
+					{ "time": 0, "name": null }
 				]
 			}
 		}
@@ -656,19 +670,9 @@
 			}
 		},
 		"slots": {
-			"door-right": {
-				"attachment": [
-					{ "time": 0, "name": null }
-				]
-			},
 			"steam": {
 				"attachment": [
 					{ "time": 0, "name": null }
-				]
-			},
-			"door-left-closed": {
-				"attachment": [
-					{ "time": 0, "name": "door-left" }
 				]
 			},
 			"chamber": {
@@ -689,11 +693,6 @@
 					{ "time": 0.8666, "name": "back-open-off" }
 				]
 			},
-			"door-left": {
-				"attachment": [
-					{ "time": 0, "name": null }
-				]
-			},
 			"door-right-closed": {
 				"attachment": [
 					{ "time": 0, "name": "door-right" }
@@ -702,6 +701,21 @@
 			"steam-root": {
 				"attachment": [
 					{ "time": 0, "name": "steam" }
+				]
+			},
+			"door-right": {
+				"attachment": [
+					{ "time": 0, "name": null }
+				]
+			},
+			"door-left": {
+				"attachment": [
+					{ "time": 0, "name": null }
+				]
+			},
+			"door-left-closed": {
+				"attachment": [
+					{ "time": 0, "name": "door-left" }
 				]
 			}
 		}
