@@ -120,10 +120,15 @@ public class DragonScreen extends Screen {
 		
 		headDecals();
 		
-		bgm = WereScrewedGame.manager.get( WereScrewedGame.dirHandle.path( )
-				+ "/levels/dragon/riding.mp3", Music.class );
 	}
-
+	@Override
+	public void load(){
+		super.load( );
+		if (bgm == null){
+			bgm = WereScrewedGame.manager.get( WereScrewedGame.dirHandle.path( )
+					+ "/levels/dragon/riding.mp3", Music.class );
+		}
+	}
 	void buildBalloon( ) {
 		balloon1 = ( Platform ) LevelFactory.entities.get( "balloon1" );
 		
