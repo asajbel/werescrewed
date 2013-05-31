@@ -48,6 +48,7 @@ public class ProgressManager {
 	private final Vector2 screwRightOffset = new Vector2( 270, 150 );
 	private float animTime = 0f;
 	private float rezDelay = Float.MAX_VALUE;
+	boolean noPlayersDead = false; 
 
 	/**
 	 * 
@@ -89,6 +90,9 @@ public class ProgressManager {
 			// Deactivate the current checkpoint
 			currentCheckPoint.deactivate( );
 			oldChkptPos = currentCheckPoint.getPositionPixel( ).cpy( );
+			if (!noPlayersDead) {
+				checkPoint.getSpinemator( ).changeAnimation( "wait", true );
+			}
 			// Then set it to the one the players hit
 			currentCheckPoint = checkPoint;
 			// If player 1's Ghost is active
@@ -128,7 +132,7 @@ public class ProgressManager {
 	 */
 	public void update( float deltaTime ) {
 		animTime += deltaTime;
-		boolean noPlayersDead = true;
+		noPlayersDead = true;
 		for ( Player player : players.values( ) ) {
 			if ( player.isDeadPlayerHitCheckpnt( ) ) {
 				wait( player );

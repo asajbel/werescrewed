@@ -268,6 +268,9 @@ public class Entity implements GleedLoadable {
 		} else if ( sprite != null ) {
 			sprite.setPosition( xMeters * Util.BOX_TO_PIXEL, yMeters
 					* Util.BOX_TO_PIXEL );
+		} else if ( spinemator != null ) {
+			spinemator.setPosition( xMeters * Util.BOX_TO_PIXEL, 
+					yMeters * Util.BOX_TO_PIXEL );
 		}
 	}
 
@@ -425,7 +428,7 @@ public class Entity implements GleedLoadable {
 			
 		}
 		if ( spinemator != null ) {
-				getSpinemator( ).update( deltaTime );
+				spinemator.update( deltaTime );
 		}
 
 		updateParticleEffect( deltaTime, frontParticles );

@@ -77,11 +77,12 @@ public class SimpleSpinemator implements ISpinemator {
 
 	@Override
 	public void setPosition( Vector2 pos ) {
-		position = pos.cpy(); 
+		position = new Vector2 ( pos ); 
 	}
 
 	@Override
 	public void setPosition( float x, float y ) {
+		position = new Vector2(x, y);
 		root.setX( x );
 		root.setY( y );
 	}
@@ -128,7 +129,6 @@ public class SimpleSpinemator implements ISpinemator {
 	@Override
 	public void changeAnimation( String animName, boolean loop ) {
 		anim = sd.findAnimation( animName );
-//		this.setPosition( x, y );
 		this.loop = loop;
 		time = 0f;
 		mixTime = 0f;
