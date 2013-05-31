@@ -48,21 +48,7 @@ public class Enemy extends Hazard {
 		
 		addFrontParticleEffect( "/fire/fire_tiny", false, true ).updateAngleWithParent=false;
 	}
-	
-	
 
-	@Override
-	public void performContact( Player player, Fixture fixture ) {
-		/*
-		 * Possible Player-Spike collision test (player.x + player.width >
-		 * spikes.x) && (player.x < spikes.x + spikes.width) && (player.y <=
-		 * spikes.y + spikes.height)
-		 */
-		if ( fixture == this.body.getFixtureList( ).get( 0 ) ) {
-			player.killPlayer( );
-		}
-		// Gdx.app.log( "Hello", "World" );
-	}
 
 	public void constructBody( Vector2 position, float radius ) {
 		BodyDef bodyDef = new BodyDef( );

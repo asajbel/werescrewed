@@ -5,7 +5,7 @@ repeat: none
 offset: 0, 0
 burner-small
   rotate: false
-  xy: 4, 1131
+  xy: 4, 1936
   size: 297, 84
   orig: 297, 84
   offset: 0, 0
@@ -13,55 +13,55 @@ burner-small
 turbine
   rotate: false
   xy: 4, 4
-  size: 1028, 829
-  orig: 1028, 829
+  size: 1028, 1028
+  orig: 1028, 1028
   offset: 0, 0
   index: -1
 bridge
   rotate: false
   xy: 1038, 4
-  size: 632, 440
-  orig: 632, 440
+  size: 633, 416
+  orig: 633, 416
   offset: 0, 0
   index: -1
 cannonstand-small
   rotate: false
-  xy: 254, 839
+  xy: 4, 1107
   size: 314, 156
   orig: 314, 156
   offset: 0, 0
   index: -1
 cannon-large
   rotate: false
-  xy: 1676, 4
+  xy: 1677, 4
   size: 314, 611
   orig: 314, 611
   offset: 0, 0
   index: -1
 cannonstand-large
   rotate: false
-  xy: 1631, 621
+  xy: 1546, 1079
   size: 376, 187
   orig: 376, 187
   offset: 0, 0
   index: -1
 turbine_blade
   rotate: false
-  xy: 4, 839
+  xy: 4, 1669
   size: 244, 261
   orig: 244, 261
   offset: 0, 0
   index: -1
 turbine-outside
   rotate: false
-  xy: 1546, 814
+  xy: 1546, 621
   size: 452, 452
   orig: 452, 452
   offset: 0, 0
   index: -1
 burner-med
   rotate: false
-  xy: 1038, 450
+  xy: 1038, 426
   size: 587, 167
   orig: 587, 167
   offset: 0, 0
@@ -75,7 +75,7 @@ cannon-small
   index: -1
 wheel
   rotate: false
-  xy: 1038, 623
+  xy: 1038, 599
   size: 502, 502
   orig: 502, 502
   offset: 0, 0

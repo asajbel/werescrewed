@@ -46,6 +46,7 @@
 
 #Object assets
 /levels/dragon/dragon_objects.pack
+/levels/dragon/balloons.pack
 
 #Fg packs
 /levels/dragon/tail-fg.pack
