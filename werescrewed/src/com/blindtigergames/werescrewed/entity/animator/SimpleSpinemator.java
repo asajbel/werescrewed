@@ -8,7 +8,6 @@ import com.blindtigergames.werescrewed.graphics.TextureAtlas;
 import com.esotericsoftware.spine.Animation;
 import com.esotericsoftware.spine.Bone;
 import com.esotericsoftware.spine.Skeleton;
-import com.esotericsoftware.spine.SkeletonBinary;
 import com.esotericsoftware.spine.SkeletonData;
 import com.esotericsoftware.spine.SkeletonJson;
 import com.esotericsoftware.spine.SkeletonRenderer;
@@ -28,6 +27,16 @@ public class SimpleSpinemator implements ISpinemator {
 	protected boolean loop = false;
 	protected float mixRatio = 0f;
 	protected SkeletonData sd;
+	
+	public SimpleSpinemator( SkeletonData data, String initialAnimationName, boolean loop  ) {
+		sd = data; 
+		anim = sd.findAnimation( initialAnimationName );
+		skel = new com.esotericsoftware.spine.Skeleton( sd );
+		skel.setToBindPose( );
+		root = skel.getRootBone( );
+		skel.updateWorldTransform( );
+		this.loop = loop; 
+	}
 
 	public SimpleSpinemator( String atlasName, String skeletonName,
 			String initialAnimationName, boolean loop ) {
@@ -139,6 +148,11 @@ public class SimpleSpinemator implements ISpinemator {
 	public void setRotation( float angle ) {
 		root.setRotation( angle );
 		
+	}
+
+	@Override
+	public SkeletonData getSkeletonData( ) {
+		return sd;
 	}
 
 }

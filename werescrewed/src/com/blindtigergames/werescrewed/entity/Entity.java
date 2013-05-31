@@ -190,6 +190,18 @@ public class Entity implements GleedLoadable {
 		this.setPixelPosition( positionPixels );
 		this.anchors = new ArrayList< Anchor >( );
 	}
+	
+	public Entity( String name, Vector2 positionPixels, boolean solid, ISpinemator spinemator, Body body) {
+		this.construct( name, solid );
+		this.spinemator = spinemator; 
+		this.body = body;
+		if ( body != null ) {
+			world = body.getWorld( );
+			// sprite.setScale( Util.PIXEL_TO_BOX );
+		}
+		this.setPixelPosition( positionPixels );
+		this.anchors = new ArrayList< Anchor >( );
+	}
 
 	/**
 	 * Construct an entity that uses a PolySprite
@@ -296,8 +308,12 @@ public class Entity implements GleedLoadable {
 	public Vector2 getPositionPixel( ) {
 		if ( body != null ) {
 			return body.getPosition( ).cpy( ).mul( Util.BOX_TO_PIXEL );
-		} else if ( sprite != null ) {
+		} 
+		if ( sprite != null ) {
 			return new Vector2( sprite.getX( ), sprite.getY( ) );
+		}
+		if (spinemator != null ) {
+			return spinemator.getPosition( ); 
 		}
 		return Vector2.Zero;
 	}
@@ -406,9 +422,10 @@ public class Entity implements GleedLoadable {
 			// }
 			updateDecals( deltaTime );
 
-			if ( getSpinemator( ) != null ) {
+			
+		}
+		if ( spinemator != null ) {
 				getSpinemator( ).update( deltaTime );
-			}
 		}
 
 		updateParticleEffect( deltaTime, frontParticles );
