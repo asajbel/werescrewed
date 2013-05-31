@@ -10,6 +10,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.blindtigergames.werescrewed.camera.Camera;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityType;
+import com.blindtigergames.werescrewed.entity.hazard.Hazard;
 import com.blindtigergames.werescrewed.entity.mover.IMover;
 import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 import com.blindtigergames.werescrewed.util.Util;
@@ -18,7 +19,7 @@ import com.blindtigergames.werescrewed.util.Util;
 public class EntityParticleEmitter extends Entity {
 
 	private ArrayList< EntityParticle > particles;
-	private boolean activated;
+	private boolean activeEmitting;
 	private Vector2 emitionImpusle;
 
 	/**
@@ -50,7 +51,7 @@ public class EntityParticleEmitter extends Entity {
 		//particles.add( p );
 		this.world = world;
 		constructBody( positionPixels );
-		activated = active;
+		activeEmitting = active;
 		entityType = EntityType.PARTICLE_EMITTER;
 		this.emitionImpusle = particleEmitImpulse.cpy( );
 	}
@@ -101,19 +102,6 @@ public class EntityParticleEmitter extends Entity {
 		particles.add( new EntityParticle( entity, lifeSpan, delay ) );
 	}
 
-	public void setActivate(boolean isActive ) {
-		activated = isActive;
-	}
-
-	/**
-	 * returns value of activated;
-	 * 
-	 * @return boolean
-	 */
-	public boolean isActive( ) {
-		return activated;
-	}
-	
 
 	/**
 	 * updates all particles in the system
@@ -122,7 +110,7 @@ public class EntityParticleEmitter extends Entity {
 	 *            float
 	 */
 	public void update( float deltaTime ) {
-		if(activated){
+		if(activeEmitting){
 			for ( EntityParticle p : particles ) {
 				p.update( deltaTime );
 				if( p.isDelayDone( ) ){
@@ -162,7 +150,7 @@ public class EntityParticleEmitter extends Entity {
 		for ( EntityParticle particle : particles ) {
 			e=particle.getEntity( );
 			if(e.entityType == EntityType.HAZARD){
-				//todo
+				((Hazard)e).setActiveHazard(isActive);
 			}
 		}
 	}
