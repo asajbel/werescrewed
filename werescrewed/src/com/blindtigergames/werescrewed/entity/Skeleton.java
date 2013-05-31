@@ -713,7 +713,8 @@ public class Skeleton extends Platform {
 		// draw the entities of the parent skeleton before recursing through
 		// the
 		// child skeletons
-		if ( isUpdatable || isMacroSkeleton ) {
+		//if ( isUpdatable || isMacroSkeleton ) 
+		{
 			if ( !setChildSkeletonsToSleep || isUpdatable ) {
 				for ( Skeleton skeleton : childSkeletonMap.values( ) ) {
 					skeleton.draw( batch, deltaTime, camera );
