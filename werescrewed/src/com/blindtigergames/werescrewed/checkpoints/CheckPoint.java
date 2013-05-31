@@ -146,6 +146,7 @@ public class CheckPoint extends Entity {
 	public void update( float deltaTime ) {
 		Vector2 bodyPos = body.getPosition( ).mul( Util.BOX_TO_PIXEL );
 		getSpinemator().setPosition( bodyPos );
+		getSpinemator().setRotation( body.getAngle( ) );
 		super.update( deltaTime );
 		// this.body.setTransform( body.getPosition( ), entity.getAngle( ) );
 		// sprite.setRotation( MathUtils.radiansToDegrees * entity.getAngle( )

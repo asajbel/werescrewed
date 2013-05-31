@@ -11,6 +11,7 @@ import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.gui.Label;
 import com.blindtigergames.werescrewed.gui.TextButton;
 import com.blindtigergames.werescrewed.screens.ScreenSwitchHandler;
+import com.blindtigergames.werescrewed.sound.SoundManager;
 
 class PauseScreen extends Screen {
 
@@ -37,7 +38,6 @@ class PauseScreen extends Screen {
 		mainMenuButton = new TextButton( "Main Menu", fancyFont,
 				new ScreenSwitchHandler( ScreenType.MAIN_MENU ) );
 		mainMenuButton.setColored( true );
-
 	}
 
 	public void disposeAll( ) {
@@ -53,6 +53,7 @@ class PauseScreen extends Screen {
 
 	@Override
 	public void render( float delta ) {
+		super.render( delta );
 		Gdx.gl.glClearColor( 0.0f, 0.0f, 0.0f, 1f );
 		Gdx.gl.glClear( GL10.GL_COLOR_BUFFER_BIT );
 
@@ -95,6 +96,7 @@ class PauseScreen extends Screen {
 
 	@Override
 	public void resize( int width, int height ) {
+		super.resize( width, height );
 		camera = new OrthographicCamera( );
 		camera.setToOrtho( false, width, height );
 		batch.setProjectionMatrix( camera.combined );
@@ -108,10 +110,12 @@ class PauseScreen extends Screen {
 
 	@Override
 	public void show( ) {
+		SoundManager.setEnableLoops( false );
 	}
 
 	@Override
 	public void hide( ) {
+		SoundManager.setEnableLoops( true );
 	}
 
 	@Override

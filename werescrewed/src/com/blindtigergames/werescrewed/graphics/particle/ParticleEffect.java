@@ -136,9 +136,10 @@ public class ParticleEffect implements Disposable {
 	 * @param radians
 	 *            The angle of rotation in radians;
 	 */
-	public void setAngle( float radians ) {
+	public ParticleEffect setAngle( float radians ) {
 		for ( int i = 0, n = emitters.size; i < n; i++ )
 			emitters.get( i ).setAngle( radians );
+		return this;
 	}
 
 	/**
@@ -148,9 +149,10 @@ public class ParticleEffect implements Disposable {
 	 * @param radians
 	 *            The angle of rotation in radians;
 	 */
-	public void setRotation( float radians ) {
+	public ParticleEffect setRotation( float radians ) {
 		for ( int i = 0; i < emitters.size; i++ )
 			emitters.get( i ).setRotation( radians );
+		return this;
 	}
 
 	/**

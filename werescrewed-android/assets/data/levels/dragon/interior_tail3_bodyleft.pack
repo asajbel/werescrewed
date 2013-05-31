@@ -1,0 +1,19 @@
+interior_tail3_bodyleft.png
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+offset: 0, 0
+body_interior_left
+  rotate: false
+  xy: 0, 0
+  size: 2038, 1190
+  orig: 2038, 1190
+  offset: 0, 0
+  index: -1
+tail3_interior
+  rotate: false
+  xy: 0, 1190
+  size: 1308, 634
+  orig: 1308, 634
+  offset: 0, 0
+  index: -1

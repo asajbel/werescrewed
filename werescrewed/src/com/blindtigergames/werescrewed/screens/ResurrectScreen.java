@@ -407,16 +407,16 @@ public class ResurrectScreen implements com.badlogic.gdx.Screen {
 		// update background stuff which uses different transformation matrices
 		bgBatch.setProjectionMatrix( bgCam.combined );
 		bgBatch.begin( );
-		bgRootSkel.draw( bgBatch, deltaTime );
+		bgRootSkel.draw( bgBatch, deltaTime, cam );
 		bgBatch.end( );
 
 		// use the camera matrix for things not in the background
 		batch.setProjectionMatrix( cam.combined( ) );
 		batch.begin( );
-		rootSkeleton.draw( batch, deltaTime );
-		progressManager.draw( batch, deltaTime );
-		player1.draw( batch, deltaTime );
-		player2.draw( batch, deltaTime );
+		rootSkeleton.draw( batch, deltaTime, cam );
+		progressManager.draw( batch, deltaTime, cam );
+		player1.draw( batch, deltaTime, cam );
+		player2.draw( batch, deltaTime, cam );
 		batch.end( );
 
 		if ( debug )

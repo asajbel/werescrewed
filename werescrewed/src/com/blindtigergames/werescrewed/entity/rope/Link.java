@@ -36,6 +36,8 @@ public class Link extends Entity {
 	private boolean drawTwoLinks = false;
 	private static TextureRegion chainLinkTexRegion = WereScrewedGame.manager
 			.getAtlas( "common-textures" ).findRegion( "chainlink" );
+	private static TextureRegion chainLinkLongTexRegion = WereScrewedGame.manager
+			.getAtlas( "common-textures" ).findRegion( "chainlink-long" );
 
 	private static final float spriteScale = ( 22f / 64f );
 
@@ -47,7 +49,11 @@ public class Link extends Entity {
 		this.height = widthHeight.y;
 		this.parent = null;
 		constructBody( pos );
-		Sprite temp = constructSprite( chainLinkTexRegion );
+		Sprite temp;
+		if(this.height>64)
+			temp = constructSprite( chainLinkLongTexRegion );
+		else 
+			temp = constructSprite( chainLinkTexRegion );
 		temp.scale( spriteScale );
 		this.xOffset = ( temp.getWidth( ) / 2 );// +this.width/2;
 		this.yOffset = ( temp.getHeight( ) / 2 );// +this.height/2;
@@ -105,7 +111,7 @@ public class Link extends Entity {
 	}
 	
 	@Override
-	public void draw( SpriteBatch batch, float deltaTime ) {
+	public void draw( SpriteBatch batch, float deltaTime, Camera camera ) {
 		// if(drawTwoLinks){
 		// float xpos = body.getPosition( ).x - (xOffset * Util.PIXEL_TO_BOX);
 		// float ypos = body.getPosition( ).y - (this.yOffset2 *
@@ -132,7 +138,9 @@ public class Link extends Entity {
 		this.sprite.setPosition( screenPos );
 		this.sprite.setRotation( Util.RAD_TO_DEG * body.getAngle( ) );
 		
-		this.sprite.draw( batch );
+		if ( this.sprite.getBoundingRectangle( ).overlaps( camera.getBounds() ) ) {
+			this.sprite.draw( batch );
+		}
 		
 		sounds.update( deltaTime );
 		float av;

@@ -103,4 +103,6 @@ public interface ISpinemator extends I_Drawable {
 	
 	float getAnimationDuration( ); 
 	
+	void setRotation( float angle );
+	
 }

@@ -2,7 +2,6 @@ package com.blindtigergames.werescrewed.entity;
 
 import java.util.ArrayList;
 import java.util.EnumMap;
-import java.util.HashMap;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -63,7 +62,7 @@ public class Entity implements GleedLoadable {
 	protected float energy;
 	protected boolean active;
 	protected boolean crushing;
-	protected boolean visible;
+	protected boolean visible, drawParticles = true;
 	protected boolean maintained;
 	protected boolean removeNextStep = false;
 	public EntityType entityType;
@@ -308,23 +307,19 @@ public class Entity implements GleedLoadable {
 		setPosition( pos );
 	}
 
-	public void draw( SpriteBatch batch, float deltaTime ) {
-		// if(name.equals("balloon1_flame_plat")){
-		// this.getPosition( );
-		// }
-		if ( visible ) {
-
-			// drawBGDecals( batch );
+	public void draw( SpriteBatch batch, float deltaTime, Camera camera ) {
+		if ( drawParticles )
 			drawParticles( behindParticles, batch );
-			if ( sprite != null && visible && !removeNextStep ) {
+		if ( visible ) {
+			if ( sprite != null && !removeNextStep ) {
 				sprite.draw( batch );
 			}
-			// drawOrigin(batch);
-			// drawFGDecals( batch );
-			if ( getSpinemator( ) != null )
-				getSpinemator( ).draw( batch );
-			drawParticles( frontParticles, batch );
+			if ( spinemator != null )
+				spinemator.draw( batch );
+
 		}
+		if ( drawParticles )
+			drawParticles( frontParticles, batch );
 	}
 
 	protected void drawParticles( ArrayHash< String, ParticleEffect > map,
@@ -900,13 +895,14 @@ public class Entity implements GleedLoadable {
 	}
 
 	/**
-	 * Determines whether an entity should be drawn or not.
+	 * Set visibility of both the entity and the particles.
 	 * 
 	 * @param v
 	 *            - boolean
 	 */
 	public void setVisible( boolean v ) {
 		visible = v;
+		drawParticles = v;
 	}
 
 	/**
@@ -916,6 +912,21 @@ public class Entity implements GleedLoadable {
 	 */
 	public boolean isVisible( ) {
 		return visible;
+	}
+
+	/**
+	 * Set drawing of the entity and the particles separately
+	 * 
+	 * @param isVisible
+	 * @param drawParticles
+	 */
+	public void setVisible( boolean isVisible, boolean drawParticles ) {
+		this.visible = isVisible;
+		this.drawParticles = drawParticles;
+	}
+
+	public boolean isDrawingParticles( ) {
+		return drawParticles;
 	}
 
 	/**
@@ -1327,9 +1338,9 @@ public class Entity implements GleedLoadable {
 	 */
 	public void drawFGDecals( SpriteBatch batch, Camera camera ) {
 		for ( Sprite decal : fgDecals ) {
-			if ( decal.alpha >= 0.25 ) {
-				if ( decal.getBoundingRectangle( )
-						.overlaps( camera.getBounds( ) ) ) {
+			if ( decal.alpha >= 0.25 ) 
+			{
+			if ( decal.getBoundingRectangle( ).overlaps( camera.getBounds( ) ) ) {
 					decal.draw( batch );
 				}
 			}
@@ -1535,7 +1546,8 @@ public class Entity implements GleedLoadable {
 	// Idle sound
 	public void idleSound( ) {
 		if ( sounds != null && sounds.hasSound( "idle" ) ) {
-			sounds.loopSound( "idle", 0, true, 0.0f, 1.0f );
+			sounds.addSoundToLoops( "idle", 0);
+			sounds.setSoundVolume( "idle", 0.0f );
 			// Gdx.app.log( name, "Starting Idle Sound" );
 		}
 	}
@@ -1691,14 +1703,15 @@ public class Entity implements GleedLoadable {
 	public void setSpinemator( ISpinemator spinemator ) {
 		this.spinemator = spinemator;
 	}
-	
+
 	/**
-	 * A sudo virtual function that inheriting classes can 
-	 * override and add whatever reset code
+	 * A sudo virtual function that inheriting classes can override and add
+	 * whatever reset code
+	 * 
 	 * @author stew
 	 */
-	public void reset(){
-		
+	public void reset( ) {
+
 	}
-	
+
 }
