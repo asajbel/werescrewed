@@ -1,5 +1,7 @@
 package com.blindtigergames.werescrewed.screens;
 
+import java.util.Random;
+
 import aurelienribon.tweenengine.Timeline;
 import aurelienribon.tweenengine.Tween;
 import aurelienribon.tweenengine.TweenEquations;
@@ -63,6 +65,9 @@ import com.blindtigergames.werescrewed.util.Util;
 public class AlphaScreen extends Screen {
 
 	public ScreenType screenType;
+	
+	private float dT = 0;
+	private Random generator = new Random();
 
 	private PowerSwitch powerSwitch1, powerSwitch2, powerSwitch3, powerSwitch4,
 			powerSwitch5, powerSwitch6, powerSwitch7, powerSwitch8,
@@ -156,7 +161,7 @@ public class AlphaScreen extends Screen {
 		// right arm: 2600f, 6000f >>>> side
 		// left side hand <- -2224, 3008
 
-		Vector2 spawnPos = new Vector2( 512, 256 );
+		Vector2 spawnPos = new Vector2( 480f, 6688f );
 
 		if ( level.player1 == null ) {
 			level.player1 = new PlayerBuilder( ).world( level.world )
@@ -243,6 +248,9 @@ public class AlphaScreen extends Screen {
 	
 	@Override
 	public void render( float deltaTime ) {
+		
+		dT += deltaTime;
+		
 		super.render( deltaTime );
 		sounds.update( deltaTime );
 
@@ -289,12 +297,9 @@ public class AlphaScreen extends Screen {
 
 			if ( powerSwitchBrain1.isTurnedOn( )
 					&& powerSwitchBrain2.isTurnedOn( ) ) {
-				if(testOnce){
-					testOnce = false;
-					Skeleton fw1 = ( Skeleton ) LevelFactory.entities.get( "firework_skeleton1" );
-					Skeleton fw2 = ( Skeleton ) LevelFactory.entities.get( "firework_skeleton2" );
-					fw1.addFrontParticleEffect( "fire" , true , true ).start();
-					fw2.addFrontParticleEffect( "fireworks/firework2" , true , true ).start();
+				if(dT > .5){
+					dT = 0;
+					shootFireworks();
 				}
 
 				if ( headEyebrow1.currentMover( ) == null ) {
@@ -336,7 +341,7 @@ public class AlphaScreen extends Screen {
 					
 					// You win and goto next screen!!!
 					// menu for now
-					// ScreenManager.getInstance( ).show( ScreenType.MAIN_MENU );
+					ScreenManager.getInstance( ).show( ScreenType.MAIN_MENU );
 				}
 			}
 		}
@@ -1749,5 +1754,18 @@ public class AlphaScreen extends Screen {
 		addFGSkeleton( leftShoulderSkeleton );
 		addBGSkeleton( leftShoulderSkeleton );
 
+	}
+	
+	/**
+	 *  shoots off the fireworks on top of alphabot
+	 */
+	private void shootFireworks(){
+		Skeleton fw;
+		for (int i = 1; i < 16; i++){
+			if(generator.nextInt(2) == 1){
+				fw = ( Skeleton ) LevelFactory.entities.get( "firework_skeleton" + i );
+				fw.addFrontParticleEffect( "fireworks/firework" + ((i % 5) + 1) , true , true ).start();
+			}
+		}
 	}
 }
