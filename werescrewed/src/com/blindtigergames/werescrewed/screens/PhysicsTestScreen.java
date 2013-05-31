@@ -1,6 +1,5 @@
 package com.blindtigergames.werescrewed.screens;
 
-import java.util.HashMap;
 import java.util.Iterator;
 
 import aurelienribon.tweenengine.Timeline;
@@ -11,7 +10,6 @@ import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Keys;
-import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -27,8 +25,6 @@ import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.camera.Camera;
 import com.blindtigergames.werescrewed.checkpoints.CheckPoint;
 import com.blindtigergames.werescrewed.checkpoints.ProgressManager;
-import com.blindtigergames.werescrewed.entity.Entity;
-import com.blindtigergames.werescrewed.entity.PolySprite;
 import com.blindtigergames.werescrewed.entity.RobotState;
 import com.blindtigergames.werescrewed.entity.RootSkeleton;
 import com.blindtigergames.werescrewed.entity.Skeleton;
@@ -39,10 +35,10 @@ import com.blindtigergames.werescrewed.entity.builders.EventTriggerBuilder;
 import com.blindtigergames.werescrewed.entity.builders.PlatformBuilder;
 import com.blindtigergames.werescrewed.entity.builders.PlayerBuilder;
 import com.blindtigergames.werescrewed.entity.builders.SkeletonBuilder;
-import com.blindtigergames.werescrewed.entity.hazard.Fire;
 import com.blindtigergames.werescrewed.entity.hazard.Enemy;
+import com.blindtigergames.werescrewed.entity.hazard.Fire;
+import com.blindtigergames.werescrewed.entity.hazard.MouthFire;
 import com.blindtigergames.werescrewed.entity.mover.DirectionFlipMover;
-import com.blindtigergames.werescrewed.entity.mover.IMover;
 import com.blindtigergames.werescrewed.entity.mover.LerpMover;
 import com.blindtigergames.werescrewed.entity.mover.LinearAxis;
 import com.blindtigergames.werescrewed.entity.mover.PistonTweenMover;
@@ -53,10 +49,8 @@ import com.blindtigergames.werescrewed.entity.mover.SlidingMotorMover;
 import com.blindtigergames.werescrewed.entity.mover.TimelineTweenMover;
 import com.blindtigergames.werescrewed.entity.mover.puzzle.PuzzlePistonTweenMover;
 import com.blindtigergames.werescrewed.entity.mover.puzzle.PuzzleRotateTweenMover;
-import com.blindtigergames.werescrewed.entity.particles.EntityParticle;
 import com.blindtigergames.werescrewed.entity.particles.EntityParticleEmitter;
 import com.blindtigergames.werescrewed.entity.particles.Steam;
-import com.blindtigergames.werescrewed.entity.platforms.Platform;
 import com.blindtigergames.werescrewed.entity.platforms.TiledPlatform;
 import com.blindtigergames.werescrewed.entity.screws.PuzzleScrew;
 import com.blindtigergames.werescrewed.entity.screws.StrippedScrew;
@@ -97,7 +91,7 @@ public class PhysicsTestScreen extends Screen {
 
 	StructureScrew limit;
 	
-	HashMap< String, PowerSwitch > browSwitchStateMap = new HashMap< String, PowerSwitch >( );
+	MouthFire mouthFire;
 
 	/**
 	 * Defines all necessary components in a screen for testing different
@@ -165,6 +159,9 @@ public class PhysicsTestScreen extends Screen {
 		
 		initEyebrow(new Vector2(0,0));
 		
+	
+		mouthFire = new MouthFire( "mouth-fire", new Vector2(0,0), 1, world );
+		skeleton.addHazard( mouthFire );
 	}
 
 	// width & height in pixels
@@ -845,10 +842,8 @@ public class PhysicsTestScreen extends Screen {
 		} else
 			ScreenManager.escapeHeld = false;
 		
-		PowerSwitch p;
-		for(String key : browSwitchStateMap.keySet( )){
-			p = browSwitchStateMap.get( key );
-			
+		if ( Gdx.input.isKeyPressed( Input.Keys.SHIFT_LEFT ) && Gdx.input.isKeyPressed( Input.Keys.M ) ) {
+			mouthFire.setActiveHazard( true );
 		}
 
 	}
@@ -906,7 +901,7 @@ public class PhysicsTestScreen extends Screen {
 		
 		platBuilder.dimensions( 15, 1 ); //21
 		for(int i = 1; i < n; ++i ){
-			int x = i%2 == 0?0:192 + cageWidth/2;
+			int x = i%2 == 0?0:230 + cageWidth/2;
 			skeleton.addPlatform(platBuilder.position( pos.x-w*16+x, i*h ).buildTilePlatform( ));
 		}
 		
