@@ -62,7 +62,7 @@ public class SoundManager implements Disposable {
 				activeLoops++;
 			} else {
 				if (ref.loopId >= 0){
-					ref.stop( );
+					ref.stop( ref.loopId );
 				}
 			}
 		}
@@ -496,7 +496,7 @@ public class SoundManager implements Disposable {
 			falloff = 2.0f;
 			offset = new Vector2(0f,0f);
 		}
-		
+
 		protected long play( float delayAmount, float extVol, float extPitch ) {
 			long id = -1;
 			if ( delay < DELAY_MINIMUM ) {
@@ -534,7 +534,13 @@ public class SoundManager implements Disposable {
 			loopId = -1;
 			delay = 0.0f;
 		}
-
+		public void stop( long thatId ) {
+			if (loopId == thatId){
+				sound.stop(thatId);
+				loopId = -1;
+				delay = 0.0f;
+			}
+		}
 		protected void update( float dT ) {
 			delay = ( float ) ( Math.max( delay - dT, 0.0f ) );
 		}
