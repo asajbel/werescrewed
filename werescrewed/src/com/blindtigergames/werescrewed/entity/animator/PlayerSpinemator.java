@@ -20,8 +20,8 @@ import com.blindtigergames.werescrewed.util.Util;
 import com.esotericsoftware.spine.Animation;
 import com.esotericsoftware.spine.Bone;
 import com.esotericsoftware.spine.Skeleton;
-import com.esotericsoftware.spine.SkeletonBinary;
 import com.esotericsoftware.spine.SkeletonData;
+import com.esotericsoftware.spine.SkeletonJson;
 import com.esotericsoftware.spine.SkeletonRenderer;
 
 public class PlayerSpinemator implements ISpinemator {
@@ -50,6 +50,7 @@ public class PlayerSpinemator implements ISpinemator {
 	protected Vector2 scale = null;
 	protected boolean flipX = false;
 	private TextureAtlas bodyAtlas;
+	private SkeletonData sd;
 
 	private enum ScrewState {
 		IGNORE, READY, DRAW, STOW
@@ -66,10 +67,10 @@ public class PlayerSpinemator implements ISpinemator {
 	public PlayerSpinemator( Player thePlayer ) {
 		bodyAtlas = WereScrewedGame.manager.getAtlas( thePlayer.type
 				.getAtlasName( ) );
-		SkeletonBinary sb = new SkeletonBinary( bodyAtlas );
-		SkeletonData sd = sb.readSkeletonData( Gdx.files
+		SkeletonJson sb = new SkeletonJson( bodyAtlas );
+		sd = sb.readSkeletonData( Gdx.files
 				.internal( "data/common/spine/" + thePlayer.type.getSkeleton( )
-						+ ".skel" ) );
+						+ ".json" ) );
 		this.player = thePlayer;
 		current = PlayerAnim.IDLE;
 		previous = current;
@@ -435,6 +436,11 @@ public class PlayerSpinemator implements ISpinemator {
 	public void setRotation( float angle ) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public SkeletonData getSkeletonData( ) {
+		return sd;
 	}
 
 }
