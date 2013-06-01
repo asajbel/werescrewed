@@ -5,6 +5,7 @@ import java.util.HashMap;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.Filter;
 import com.badlogic.gdx.physics.box2d.Fixture;
@@ -23,7 +24,6 @@ import com.blindtigergames.werescrewed.entity.screws.ScrewType;
 import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 import com.blindtigergames.werescrewed.graphics.TextureAtlas;
 import com.blindtigergames.werescrewed.player.Player;
-import com.blindtigergames.werescrewed.player.Player.ConcurrentState;
 import com.blindtigergames.werescrewed.player.Player.PlayerState;
 import com.blindtigergames.werescrewed.util.Util;
 
@@ -137,8 +137,12 @@ public class ProgressManager {
 		animTime += deltaTime;
 		noPlayersDead = true;
 		int index = 0;
-		while ( this.currentCheckPoint == null ) {
-			this.currentCheckPoint = checkPoints.get( index );
+		while ( this.currentCheckPoint == null && index < checkPoints.size()) {
+			if ( checkPoints.get( index ) != null ) {
+				this.currentCheckPoint = checkPoints.get( index );
+			} else {
+				checkPoints.remove( index );
+			}
 			index++;
 		}
 		for ( Player player : players.values( ) ) {
@@ -157,8 +161,9 @@ public class ProgressManager {
 				if ( !rezScrewMap.containsKey( player.name ) ) {
 					handleDeadPlayer( player );
 				} else {
-					if ( rezScrewMap.get( player.name ).
-							body.getJointList( ).get( 0 ).joint.getBodyB( ) == null ) {
+					Body jointBody = rezScrewMap.get( player.name ).
+							body.getJointList( ).get( 0 ).joint.getBodyB( );
+					if ( jointBody  == null || !jointBody.isActive( ) || jointBody.isAwake( ) ) {
 						rezScrewMap.get( player.name ).connectScrewToEntity( currentCheckPoint );
 					}
 				}
