@@ -40,6 +40,7 @@ public class ProgressManager {
 	private HashMap< String, Player > players;
 	private HashMap< String, ResurrectScrew > rezScrewMap;
 	private HashMap< String, Entity > ghostMap;
+	public ArrayList<CheckPoint> checkPoints;
 	// private HashMap< String, TextureRegion > ghostTextures;
 	private World world;
 	private Vector2 oldChkptPos;
@@ -61,6 +62,7 @@ public class ProgressManager {
 		players = new HashMap< String, Player >( );
 		rezScrewMap = new HashMap< String, ResurrectScrew >( );
 		ghostMap = new HashMap< String, Entity >( );
+		checkPoints = new ArrayList<CheckPoint>( );
 		// ghostTextures = new HashMap< String, TextureRegion >( );
 		// TextureAtlas atlas = WereScrewedGame.manager.getAtlas(
 		// "common-textures");
@@ -134,6 +136,11 @@ public class ProgressManager {
 	public void update( float deltaTime ) {
 		animTime += deltaTime;
 		noPlayersDead = true;
+		int index = 0;
+		while ( this.currentCheckPoint == null ) {
+			this.currentCheckPoint = checkPoints.get( index );
+			index++;
+		}
 		for ( Player player : players.values( ) ) {
 			if ( player.isAutoRezzing( ) ) {
 				player.body.setLinearVelocity( Vector2.Zero );
@@ -149,6 +156,11 @@ public class ProgressManager {
 			} else if ( player.isPlayerDead( ) ) {
 				if ( !rezScrewMap.containsKey( player.name ) ) {
 					handleDeadPlayer( player );
+				} else {
+					if ( rezScrewMap.get( player.name ).
+							body.getJointList( ).get( 0 ).joint.getBodyB( ) == null ) {
+						rezScrewMap.get( player.name ).connectScrewToEntity( currentCheckPoint );
+					}
 				}
 				noPlayersDead = false;
 			}

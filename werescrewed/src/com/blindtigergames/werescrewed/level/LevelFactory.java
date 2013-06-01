@@ -1348,6 +1348,7 @@ public class LevelFactory {
 		// level.progressManager
 		// add checkpointto skeleton not progress manager
 		parent.addCheckPoint( chkpt );
+		level.progressManager.checkPoints.add( chkpt );
 		// chkpt.setParentSkeleton( parent );
 
 		entities.put( item.name, chkpt );
