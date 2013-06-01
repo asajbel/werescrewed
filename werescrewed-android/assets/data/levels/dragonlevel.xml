@@ -90,8 +90,8 @@
                 </Item>
                 <Item xsi:type="RectangleItem" Name="jumpHeight" Visible="true">
                     <Position>
-                        <X>12912</X>
-                        <Y>160</Y>
+                        <X>-2624</X>
+                        <Y>2016</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -113,8 +113,8 @@
                 </Item>
                 <Item xsi:type="RectangleItem" Name="doubleJumpHeight" Visible="true">
                     <Position>
-                        <X>13008</X>
-                        <Y>-64</Y>
+                        <X>-2528</X>
+                        <Y>1792</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -5901,7 +5901,7 @@
                             <Y>0</Y>
                         </Vector2>
                         <Vector2>
-                            <X>-3696</X>
+                            <X>-3984</X>
                             <Y>1696</Y>
                         </Vector2>
                         <Vector2>
@@ -5913,11 +5913,11 @@
                             <Y>-1456</Y>
                         </Vector2>
                         <Vector2>
-                            <X>-3696</X>
+                            <X>-3984</X>
                             <Y>-1456</Y>
                         </Vector2>
                         <Vector2>
-                            <X>-3696</X>
+                            <X>-3984</X>
                             <Y>1696</Y>
                         </Vector2>
                     </LocalPoints>
@@ -5927,7 +5927,7 @@
                             <Y>-1328</Y>
                         </Vector2>
                         <Vector2>
-                            <X>13280</X>
+                            <X>12992</X>
                             <Y>368</Y>
                         </Vector2>
                         <Vector2>
@@ -5939,11 +5939,11 @@
                             <Y>-2784</Y>
                         </Vector2>
                         <Vector2>
-                            <X>13280</X>
+                            <X>12992</X>
                             <Y>-2784</Y>
                         </Vector2>
                         <Vector2>
-                            <X>13280</X>
+                            <X>12992</X>
                             <Y>368</Y>
                         </Vector2>
                     </WorldPoints>
@@ -9689,7 +9689,7 @@
                             <string>RootSkeleton</string>
                         </Property>
                     </CustomProperties>
-                    <Width>304</Width>
+                    <Width>240</Width>
                     <Height>48</Height>
                     <FillColor>
                         <R>192</R>
@@ -16945,8 +16945,8 @@
         <NextItemNumber>1113</NextItemNumber>
         <ContentRootFolder>gleed-textures</ContentRootFolder>
         <CameraPosition>
-            <X>7100.603</X>
-            <Y>-2002.68481</Y>
+            <X>12833.9355</X>
+            <Y>47.31905</Y>
         </CameraPosition>
         <Version>1.3.0.0</Version>
     </EditorRelated>
