@@ -15,6 +15,7 @@ import com.badlogic.gdx.physics.box2d.Filter;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJoint;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
 import com.blindtigergames.werescrewed.WereScrewedGame;
@@ -156,6 +157,7 @@ public class Player extends Entity {
 	private boolean screwButtonHeld;
 	private boolean kinematicTransform = false;
 	private boolean changeDirectionsOnceInAir = false;
+	private boolean autoRezzing = false;
 
 	@SuppressWarnings( "unused" )
 	private boolean changeDirections = false;
@@ -646,6 +648,7 @@ public class Player extends Entity {
 			f.setFilterData( filter );
 		}*/
 		playerState = PlayerState.Standing;
+		autoRezzing = false;
 		currentPlatform = null;
 		if (isDead){
 			sounds.playSound( "revive", 1.0f );
@@ -1260,6 +1263,17 @@ public class Player extends Entity {
 		}
 	}
 
+	/**
+	 * sets the extra state to auto rezzing
+	 */
+	public void setAutoRezzing( ) {
+		autoRezzing = true;
+	}
+	
+	public boolean isAutoRezzing( ) {
+		return autoRezzing;
+	}
+	
 	/**
 	 * gets the last kinematic platform hit
 	 */

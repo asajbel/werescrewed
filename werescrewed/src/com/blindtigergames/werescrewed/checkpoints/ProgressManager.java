@@ -23,6 +23,7 @@ import com.blindtigergames.werescrewed.entity.screws.ScrewType;
 import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 import com.blindtigergames.werescrewed.graphics.TextureAtlas;
 import com.blindtigergames.werescrewed.player.Player;
+import com.blindtigergames.werescrewed.player.Player.ConcurrentState;
 import com.blindtigergames.werescrewed.player.Player.PlayerState;
 import com.blindtigergames.werescrewed.util.Util;
 
@@ -134,6 +135,11 @@ public class ProgressManager {
 		animTime += deltaTime;
 		noPlayersDead = true;
 		for ( Player player : players.values( ) ) {
+			if ( player.isAutoRezzing( ) ) {
+				player.body.setLinearVelocity( Vector2.Zero );
+				player.body.setType( BodyType.KinematicBody );
+				this.startSpawn( player );
+			}
 			if ( player.isDeadPlayerHitCheckpnt( ) ) {
 				wait( player );
 			}
@@ -334,9 +340,11 @@ public class ProgressManager {
 		// player.body.setLinearVelocity( diff );
 		player.setVisible( false, true );
 
-		rezScrewMap.get( player.name ).remove( );
-		if ( rezScrewMap.get( player.name ).isRemoved( ) ) {
-			rezScrewMap.remove( player.name );
+		if ( rezScrewMap.containsKey( player.name ) ) {
+			rezScrewMap.get( player.name ).remove( );
+			if ( rezScrewMap.get( player.name ).isRemoved( ) ) {
+				rezScrewMap.remove( player.name );
+			}
 		}
 		
 	}
