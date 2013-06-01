@@ -83,6 +83,7 @@ public class DragonScreen extends Screen {
 		groundDecals();
 		initPuzzleScrews( );
 		tail3Pipes( );
+		bodyDecals();
 		bodySkeletons( );
 		buildAllCannons();
 		flamePlatformDecals();
@@ -90,7 +91,6 @@ public class DragonScreen extends Screen {
 		tail1Decals();
 		tail2Decals();
 		tail3Decals();
-		bodyDecals();
 		getTailStructureScrews();
 		initFireballEnemy(new Vector2(13750, 300));
 
@@ -645,9 +645,7 @@ public class DragonScreen extends Screen {
 			wheelSkeles[i].addBGDecal( s, new Vector2(-s.getWidth( )/2,-s.getHeight( )/2) );
 			addBGEntity( wheelSkeles[i] ); //add to entity list so it's amongst the entity layer not skele layer
 		}
-		//306 328
-		bodySkeleton.addBGDecal( Sprite.scale(dragon_objects.createSprite( "turbine" ), 2.6f), new Vector2(1244,-1248) );
-		addBGSkeleton( bodySkeleton );
+		
 		
 		//bodyRoomRotateSkeleton
 		//top left
@@ -667,6 +665,11 @@ public class DragonScreen extends Screen {
 				Sprite.scale(dragon_objects.createSprite( "turbine-outside" ),-2,-2),
 				new Vector2(1012,-100) );
 		addFGEntity( bodyRoomRotateSkeleton );
+		
+		s=dragon_objects.createSprite( "turbine" );
+		float scale = 2f;
+		bodySkeleton.addBGDecal( Sprite.scale(s, scale), new Vector2(1473,-1198) );
+		addBGSkeleton( bodySkeleton );
 
 	}
 
@@ -719,8 +722,10 @@ public class DragonScreen extends Screen {
 	}
 	
 	void flamePlatformDecals(){
+		TextureAtlas balloons = WereScrewedGame.manager.getAtlas( "balloons" );
 		TextureAtlas dragonObjects = WereScrewedGame.manager.getAtlas( "dragon_objects" );
 		Sprite s;
+		float scale = 1f/0.5f;
 		Platform p;
 		String[] entities = {"balloon1_flame_plat","balloon2_flame_plat",
 				"balloon3_flame_plat","tail1_flame_plat",
@@ -731,7 +736,7 @@ public class DragonScreen extends Screen {
 			s = dragonObjects.createSprite( "burner-med" );
 			p.addFGDecal( s,new Vector2(-s.getWidth( )/2,-s.getHeight( )/2) );
 			addFGEntity( p );
-			p.addBehindParticleEffect( "fire_new", false, true ).setOffsetFromParent( 0, 75 ).setRotation( Util.PI ).start();//
+			p.addBehindParticleEffect( "fire_new", false, true ).setOffsetFromParent( 0, 75 ).start();//
 			p.getEffect( "fire_new" ).updateAngleWithParent=false;
 			p.setVisible( false, true ); //don't draw the platform, but do draw particles
 		}
@@ -749,8 +754,28 @@ public class DragonScreen extends Screen {
 				weldJointDef.initialize( p.body, balloon1.body, p.getPosition( ) );
 				level.world.createJoint( weldJointDef );
 			}
+			if(i==1)scale = 1f/.7f;
+			else scale = 1f/.5f;
+			balloon1.sprite = null;
+			s = balloons.createSprite( "balloon_big"+i );
+			balloon1.addFGDecal( Sprite.scale( s,scale), new Vector2(-s.getWidth( )/2*scale,-s.getHeight( )/2.8f*scale) );
+			addFGEntity( balloon1 );
+			
+			
+			
 		}
-		
+
+		//intro balloons
+		//balloon1,2,3
+		scale = 1f/.7f;
+		for(int i = 1; i <= 3; i++){
+			p = ( Platform ) LevelFactory.entities
+					.get( "balloon"+i );
+			p.sprite=null;
+			s = balloons.createSprite( "balloon_big"+i );
+			p.addFGDecal( Sprite.scale( s,scale), new Vector2(-s.getWidth( )/2*scale,-s.getHeight( )/2.8f*scale) );
+			addFGEntity( p );
+		}
 		
 	}
 
@@ -1063,10 +1088,16 @@ public class DragonScreen extends Screen {
 		neck_skeleton.fgSprite=null;
 		//neck_skeleton.setFgFade( false );//3497.1770
 		addFGSkeleton( neck_skeleton );
-		//650,-640
-		//interior body decals
+		
+		
+		
 		Skeleton bodySkeleton = ( Skeleton ) LevelFactory.entities
 				.get( "body_skeleton" );
+		//body exterior //32,11
+		bodySkeleton.addFGDecal( Sprite.scale(tailAtlas.createSprite( "body" ),1f/.27f), new Vector2(-3468,-1719) );
+		//addFGSkeleton( bodySkeleton );
+		
+		//interior body decals
 		Vector2 interiorPos = new Vector2(-3360,-1350);
 		bodySkeleton.addBGDecal( Sprite.scale(interiorLeftAtlas.createSprite( "body_interior_left" ), 2), interiorPos.cpy() );
 		bodySkeleton.addBGDecal( Sprite.scale(interiorRightAtlas.createSprite( "body_interior_right" ), 2), interiorPos.cpy().add(4074,0) );

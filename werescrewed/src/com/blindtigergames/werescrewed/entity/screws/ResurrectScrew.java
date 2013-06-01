@@ -353,7 +353,7 @@ public class ResurrectScrew extends Screw {
 		screwShape.dispose( );
 	}
 
-	private void connectScrewToEntity( Entity entity ) {
+	public void connectScrewToEntity( Entity entity ) {
 		// connect the screw to the entity;
 		RevoluteJointDef revoluteJointDef = new RevoluteJointDef( );
 		revoluteJointDef.initialize( body, entity.body, body.getPosition( ) );

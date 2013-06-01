@@ -111,14 +111,7 @@ public class Screen implements com.badlogic.gdx.Screen {
 		if ((Gdx.input.isKeyPressed( Keys.ALT_LEFT ) 
 				|| Gdx.input.isKeyPressed( Keys.ALT_RIGHT )) 
 				&& Gdx.input.isKeyPressed( Keys.ENTER ) ) {
-			if (fullscreen) {
-				Gdx.graphics.setDisplayMode( 1280, 720, false );
-				fullscreen = false;
-			}
-			else {
-				Gdx.graphics.setDisplayMode( Gdx.graphics.getDesktopDisplayMode( ) );
-				fullscreen = true; 
-			}
+			changeFullScreen( );
 		}
 		//////////////////////////////////////////////////////////////////////
 		Gdx.gl.glViewport(
@@ -352,6 +345,17 @@ public class Screen implements com.badlogic.gdx.Screen {
 			}
 		}
 
+	}
+	
+	protected void changeFullScreen( ) {
+		if (fullscreen) {
+			Gdx.graphics.setDisplayMode( 1280, 720, false );
+			fullscreen = false;
+		}
+		else {
+			Gdx.graphics.setDisplayMode( Gdx.graphics.getDesktopDisplayMode( ) );
+			fullscreen = true; 
+		}
 	}
 	
 	protected void drawTransIn ( SpriteBatch batch ) {
