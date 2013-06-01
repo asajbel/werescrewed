@@ -512,10 +512,9 @@ public class Screen implements com.badlogic.gdx.Screen {
 	public void dispose( ) {
 		if ( level != null )
 			level.resetPhysicsWorld( );
-		/*
+		
 		if (bgm != null){
 			bgm.stop( );
-			bgm.dispose( );
 			bgm = null;
 		}
 		if (sounds != null){
@@ -523,7 +522,7 @@ public class Screen implements com.badlogic.gdx.Screen {
 			sounds = null;
 		}
 		assetsLoaded = false;
-		*/
+		
 	}
 
 	/**
