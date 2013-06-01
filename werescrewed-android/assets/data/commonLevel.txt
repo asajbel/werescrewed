@@ -159,8 +159,9 @@ grey.palette
 /common/tutorial/dubba2.png
 /common/tutorial/move_jump0.png
 /common/tutorial/move_jump1.png
-/common/tutorial/screw0.png
-/common/tutorial/screw1.png
+/common/tutorial/screw_ready0.png
+/common/tutorial/screw_ready1.png
+/common/tutorial/screw_ready2.png
 /common/tutorial/switch0.png
 /common/tutorial/switch1.png
 

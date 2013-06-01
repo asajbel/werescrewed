@@ -35,7 +35,7 @@ public class RemoveEntityAction implements IAction {
 			// Gdx.app.log( "removing Entity", entity.name );
 		} else {
 			Player player = ( Player ) entity;
-			player.killPlayer( );
+			player.setAutoRezzing( );
 		}
 	}
 
