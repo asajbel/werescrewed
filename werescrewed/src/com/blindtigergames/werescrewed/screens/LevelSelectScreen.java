@@ -14,7 +14,7 @@ import com.blindtigergames.werescrewed.graphics.TextureAtlas;
 import com.blindtigergames.werescrewed.gui.Label;
 import com.blindtigergames.werescrewed.gui.TextButton;
 
-public class LevelSelectScreen extends Screen {
+public class LevelSelectScreen extends MenuScreen {
 
 	public ScreenType screenType;
 	// private SpriteBatch batch = null;

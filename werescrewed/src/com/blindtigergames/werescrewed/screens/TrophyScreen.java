@@ -18,7 +18,7 @@ import com.blindtigergames.werescrewed.gui.TextButton;
 import com.blindtigergames.werescrewed.util.Metrics;
 import com.blindtigergames.werescrewed.util.Metrics.TrophyMetric;
 
-public class TrophyScreen implements com.badlogic.gdx.Screen {
+public class TrophyScreen extends Screen {
 
 	public ScreenType screenType;
 	private SpriteBatch batch = null;

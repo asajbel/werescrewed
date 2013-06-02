@@ -12,7 +12,7 @@ import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 import com.blindtigergames.werescrewed.gui.Label;
 import com.blindtigergames.werescrewed.gui.TextButton;
 
-class CreditsScreen extends Screen {
+class CreditsScreen extends MenuScreen {
 	// implements com.badlogic.gdx.Screen
 	private SpriteBatch batch = null;
 	private OrthographicCamera camera = null;

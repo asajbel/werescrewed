@@ -13,7 +13,7 @@ import com.blindtigergames.werescrewed.gui.TextButton;
 import com.blindtigergames.werescrewed.screens.ScreenSwitchHandler;
 import com.blindtigergames.werescrewed.sound.SoundManager;
 
-class PauseScreen extends Screen {
+class PauseScreen extends MenuScreen {
 
 	public ScreenType screenType;
 	private SpriteBatch batch = null;

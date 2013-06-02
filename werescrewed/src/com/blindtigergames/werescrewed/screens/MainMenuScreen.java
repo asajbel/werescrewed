@@ -19,7 +19,7 @@ import com.blindtigergames.werescrewed.gui.TextButton;
 import com.blindtigergames.werescrewed.gui.TextButton.ButtonHandler;
 import com.blindtigergames.werescrewed.sound.SoundManager;
 
-class MainMenuScreen extends Screen {
+class MainMenuScreen extends MenuScreen {
 
 	public ScreenType screenType;
 	private SpriteBatch batch = null;
