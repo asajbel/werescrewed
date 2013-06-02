@@ -66,6 +66,7 @@ public class Entity implements GleedLoadable {
 	protected boolean maintained;
 	protected boolean removeNextStep = false;
 	public EntityType entityType;
+	public boolean dontPutToSleep = false;
 	private ArrayList< IMover > moverArray;
 	protected ArrayList< Sprite > fgDecals;
 	protected ArrayList< Vector2 > fgDecalOffsets;
