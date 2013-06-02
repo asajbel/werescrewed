@@ -391,6 +391,13 @@ public class Skeleton extends Platform {
 		return null;
 	}
 
+	public void setSkeletonEntitiesToSleepRecursively( ) {
+		this.setEntitiesToSleepOnUpdate( );
+		this.wasInactive = true;
+		for ( Skeleton skeleton: this.childSkeletonMap.values( ) ) {
+			skeleton.setSkeletonEntitiesToSleepRecursively( );
+		}
+	}
 	/**
 	 * This update function is ONLY called on the very root skeleton, it takes
 	 * care of the child sksletons
@@ -405,10 +412,7 @@ public class Skeleton extends Platform {
 		if ( useBoundingRect ) {
 			if ( !boundingRect.overlaps( lastCameraRect ) ) {
 				isUpdatable = false;
-				for ( Skeleton skeleton : childSkeletonMap.values( ) ) {
-					skeleton.setEntitiesToSleepOnUpdate( );
-					skeleton.wasInactive = true;
-				}
+				setSkeletonEntitiesToSleepRecursively( );
 			}
 		}
 		if ( isUpdatable || isMacroSkeleton ) {
