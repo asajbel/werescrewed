@@ -659,7 +659,8 @@ public class LevelFactory {
 			SkeletonBuilder skeleBuilder = new SkeletonBuilder( level.world );
 			skeleBuilder.name( item.name ).position( item.pos ).texture( null );
 
-			if ( item.getGleedType( ).equals( "RectangleItem" ) ) {
+			if ( item.props.containsKey( "rectangle" ) ) {
+				
 				skeleBuilder.setUseBoundingRect( true );
 				skeleBuilder
 						.buildRectangle(
