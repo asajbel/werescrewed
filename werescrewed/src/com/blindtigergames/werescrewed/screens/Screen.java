@@ -484,9 +484,11 @@ public class Screen implements com.badlogic.gdx.Screen {
 			load();
 		}
 		if (bgm != null){
-			bgm.setLooping( true );
-			bgm.setVolume( SoundManager.getMusicVolume( ) );
-			bgm.play( );
+			// UNCOMMENTED UNTIL IT STOPS CRASHING WHEN RESTARTING LEVELS
+			
+//			bgm.setLooping( true );
+//			bgm.setVolume( SoundManager.getMusicVolume( ) );
+//			bgm.play( );
 		}
 	}
 
