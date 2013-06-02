@@ -40,11 +40,8 @@ public class Screen implements com.badlogic.gdx.Screen {
 	protected float scale = 0.0f;
 	protected final float SCALE_MIN = 0.0f;
 	protected final float SCALE_MAX = 10.0f;
-	protected final float SCALE_DOWN = 100.0f;
-	protected final float SCALE_UP = 100.0f;
+	protected final float SCALE_SIZE = 150.0f;
 	protected float scaleMax = 0.0f;
-	//protected Sprite transIn = null;
-	//protected Sprite transOut = null;
 	protected Sprite trans = null;
 	protected boolean alphaFinish = false;
 	protected boolean transInEnd = true;
@@ -302,9 +299,10 @@ public class Screen implements com.badlogic.gdx.Screen {
 	}
 	
 	protected void drawTransIn ( SpriteBatch batch ) {
-		scale = scale - SCALE_DOWN;
+		scale = scale - SCALE_SIZE;
 		trans.setOrigin( trans.getWidth( ) / 2, trans.getHeight( ) / 2 );
 		trans.rotate( 5.0f );
+		trans.setSize( scale, scale );
 		trans.draw( batch );
 		if ( scale < SCALE_MIN ) {
 			transInEnd = true;
@@ -313,26 +311,28 @@ public class Screen implements com.badlogic.gdx.Screen {
 	}
 	
 	protected void drawTransOut ( SpriteBatch batch ) {
-		scale = scale + SCALE_UP;
+		scale = scale + SCALE_SIZE;
 		trans.setOrigin( trans.getWidth( ) / 2, trans.getHeight( ) / 2 );
 		trans.rotate( 5.0f );
+		trans.setSize( scale, scale );
 		trans.draw( batch );
 		if ( scale > scaleMax ) {
 			transOutEnd = true;
+			scale = scaleMax;
 			if ( Buttons.size( ) > 0 ) 
 				Buttons.get( buttonIndex ).setSelected( true );
-			else
-				scale = 0.0f;
 		}
 	}
 	
 	protected void drawTransOut ( SpriteBatch batch, ScreenType screen ) {
-		scale = scale + SCALE_UP;
+		scale = scale + SCALE_SIZE;
 		trans.setOrigin( trans.getWidth( ) / 2, trans.getHeight( ) / 2 );
 		trans.rotate( 5.0f );
+		trans.setSize( scale, scale );
 		trans.draw( batch );
 		if ( scale > scaleMax ) {
 			transOutEnd = true;
+			scale = scaleMax;
 			ScreenManager.getInstance( ).show( screen );
 		}
 	}

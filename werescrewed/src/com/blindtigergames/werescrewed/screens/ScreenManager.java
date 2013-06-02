@@ -90,6 +90,7 @@ public final class ScreenManager {
 					// .getSimpleName( ) );
 					screens.get( prevScreen.ordinal( ) ).dispose( );
 					dispose( prevScreen );
+					pauseScreenShown = false;
 				}
 			}
 

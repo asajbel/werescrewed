@@ -16,16 +16,19 @@ public class Button {
 
 	protected static final Color NORMAL_COLOR = new Color( 0.24f, 0.24f, 0.24f,
 			1f );
-	protected static final Color HOVER_COLOR = new Color( 1f, 1f, 1f, 1f );
+	protected static final Color HOVER_COLOR = new Color( 0f, 0.5f, 0.8f, 1f );
 
 	protected String caption = null;
 	protected BitmapFont font = null;
+	protected BitmapFont smallFont = null;
 	protected int x = 0;
 	protected int y = 0;
 	protected int width = 287; // width of button image
 	protected int height = 92; // height of button image
 	protected int capWidth = 0;
 	protected int capHeight = 0;
+	protected int smallCapWidth = 0;
+	protected int smallCapHeight = 0;
 	protected Rectangle bounds = null;
 	protected boolean selected = false;
 	protected boolean colored = false;
@@ -57,6 +60,7 @@ public class Button {
 		this.font = font;
 		this.x = x;
 		this.y = y;
+		smallFont = WereScrewedGame.manager.getFont( "longdon-small" );
 		Texture back = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 				+ "/menu/button.png", Texture.class );
 		box = new Sprite( back );
@@ -175,10 +179,20 @@ public class Button {
 		box.setOrigin( box.getWidth( ) / 2, box.getHeight( ) / 2 );
 		box.draw( batch );
 
-		font.setColor( colored ? HOVER_COLOR : NORMAL_COLOR );
-		font.draw( batch, caption, x - capWidth / 2 + width / 2 + 5, y - height
-				- capHeight / 2 );
-		font.setColor( originalColor );
+		//font.setColor( colored ? HOVER_COLOR : NORMAL_COLOR );
+		
+		if ( colored ) {
+			font.setColor( HOVER_COLOR );
+			font.draw( batch, caption, x - capWidth / 2 + width / 2 + 5, y - height
+					- capHeight / 2 );
+			font.setColor( originalColor );
+		}
+		else {
+			smallFont.setColor( NORMAL_COLOR );
+			smallFont.draw( batch, caption, x - smallCapWidth / 2 + width / 2 + 5, 
+					y - height - smallCapHeight * 2 + 5 );
+			smallFont.setColor( originalColor );
+		}
 
 	}
 
@@ -206,6 +220,9 @@ public class Button {
 		TextBounds dimensions = font.getBounds( caption );
 		capWidth = Math.round( dimensions.width );
 		capHeight = Math.round( dimensions.height );
-
+		
+		TextBounds smallDim = smallFont.getBounds( caption );
+		smallCapWidth = Math.round( smallDim.width );
+		smallCapHeight = Math.round( smallDim.height );
 	}
 }

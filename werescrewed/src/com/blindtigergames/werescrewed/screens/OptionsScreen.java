@@ -114,13 +114,11 @@ class OptionsScreen extends Screen {
 		if ( !transInEnd ) {
 			trans.setPosition( width / 2 - trans.getWidth( ) / 2, height / 2 - trans.getHeight( ) / 2 );
 			drawTransIn( batch );
-			trans.setSize( scale, scale );
 		}
 		
 		if ( !transOutEnd ) {
 			trans.setPosition( width / 2 - trans.getWidth( ) / 2, height / 2 - trans.getHeight( ) / 2 );
 			drawTransOut( batch );
-			trans.setSize( scale, scale );
 		}
 		
 		//if ( !alphaFinish )
