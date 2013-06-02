@@ -1,82 +1,82 @@
 alphabot-panel.png
 format: RGBA8888
-filter: Linear,Linear
+filter: Nearest,Nearest
 repeat: none
 offset: 0, 0
 alphabot-panel_rarm
   rotate: false
-  xy: 302, 198
-  size: 148, 194
-  orig: 148, 194
+  xy: 300, 155
+  size: 147, 151
+  orig: 147, 151
   offset: 0, 0
   index: -1
 alphabot-panel_chest
   rotate: false
-  xy: 2, 590
-  size: 148, 194
-  orig: 148, 194
+  xy: 300, 308
+  size: 147, 151
+  orig: 147, 151
   offset: 0, 0
   index: -1
 alphabot-panel_rleg_larm
   rotate: false
-  xy: 302, 2
-  size: 148, 194
-  orig: 148, 194
+  xy: 300, 2
+  size: 147, 151
+  orig: 147, 151
   offset: 0, 0
   index: -1
 alphabot-panel_rleg
   rotate: false
-  xy: 2, 198
-  size: 148, 194
-  orig: 148, 194
+  xy: 2, 155
+  size: 147, 151
+  orig: 147, 151
   offset: 0, 0
   index: -1
 alphabot-panel_rleg_rarm_larm
   rotate: false
   xy: 2, 2
-  size: 148, 194
-  orig: 148, 194
+  size: 147, 151
+  orig: 147, 151
   offset: 0, 0
   index: -1
 alphabot-panel_left_leg
   rotate: false
-  xy: 152, 394
-  size: 148, 194
-  orig: 148, 194
+  xy: 2, 308
+  size: 147, 151
+  orig: 147, 151
   offset: 0, 0
   index: -1
 alphabot-panel_all
   rotate: false
-  xy: 2, 786
-  size: 148, 194
-  orig: 148, 194
+  xy: 2, 461
+  size: 147, 151
+  orig: 147, 151
   offset: 0, 0
   index: -1
 alphabot-panel_rarm_larm
   rotate: false
-  xy: 152, 198
-  size: 148, 194
-  orig: 148, 194
+  xy: 151, 155
+  size: 147, 151
+  orig: 147, 151
   offset: 0, 0
   index: -1
 alphabot-panel_rleg_rarm
   rotate: false
-  xy: 152, 2
-  size: 148, 194
-  orig: 148, 194
+  xy: 151, 2
+  size: 147, 151
+  orig: 147, 151
   offset: 0, 0
   index: -1
 alphabot-panel_larm
   rotate: false
-  xy: 302, 394
-  size: 148, 194
-  orig: 148, 194
+  xy: 151, 308
+  size: 147, 151
+  orig: 147, 151
   offset: 0, 0
   index: -1
 alphabot-panel_off
   rotate: false
-  xy: 2, 394
-  size: 148, 194
-  orig: 148, 194
+  xy: 2, 461
+  size: 147, 151
+  orig: 147, 151
   offset: 0, 0
   index: -1
