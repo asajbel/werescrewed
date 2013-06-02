@@ -603,6 +603,7 @@ public class DragonScreen extends Screen {
 		Fire bodyFire6 = (Fire) LevelFactory.entities
 				.get( "body_fire6" );
 		bodyFire6.particleEffect.setAngle( Util.PI/2 );
+		bodyFire6.particleEffect.setRotation( -Util.PI/4 );
 		Fire bodyFire5 = (Fire) LevelFactory.entities
 				.get( "body_fire5" );
 		
@@ -1097,7 +1098,7 @@ public class DragonScreen extends Screen {
 				.get( "body_skeleton" );
 		//body exterior //32,11
 		bodySkeleton.addFGDecal( Sprite.scale(tailAtlas.createSprite( "body" ),1f/.27f), new Vector2(-3468,-1719) );
-		//addFGSkeleton( bodySkeleton );
+		addFGSkeleton( bodySkeleton );
 		
 		//interior body decals
 		Vector2 interiorPos = new Vector2(-3360,-1350);
@@ -1119,10 +1120,22 @@ public class DragonScreen extends Screen {
 		rotateScrewSkeleton.addBGDecal( s, new Vector2(-s.getWidth( )/2,-30) );//-s.getHeight( )/2
 		addBGEntity( rotateScrewSkeleton );
 		
-		//l
-		//m
-		//r
-		
+		//l body_rotate_puzzle2
+		//m body_rotate_puzzle3
+		//r body_rotate_puzzle4
+		Vector2 bodyP = bodySkeleton.getPositionPixel( );
+		screw = LevelFactory.entities.get("body_rotate_puzzle2");
+		Vector2 screwP = screw.getPositionPixel( );
+		screw.addBGDecal( dragon_objects.createSprite( "rotation_machine_decal_left" ),screwP.sub( bodyP ));
+
+		screw = LevelFactory.entities.get("body_rotate_puzzle3");
+		screwP = screw.getPositionPixel( );
+		screw.addBGDecal( dragon_objects.createSprite( "rotation_machine_decal_middle" ),screwP.sub( bodyP ) );
+
+		screw = LevelFactory.entities.get("body_rotate_puzzle4");
+		screwP = screw.getPositionPixel( );
+		screw.addBGDecal( dragon_objects.createSprite( "rotation_machine_decal_right" ) ,screwP.sub( bodyP ));
+
 	}
 	
 	void neckDecal(){

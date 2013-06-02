@@ -725,6 +725,7 @@ public class ParticleEmitter {
 		angleValue.setHigh( angleDeg - diffHighHalf, angleDeg + diffHighHalf );
 		angleValue.setLow( angleDeg - diffLowHalf, angleDeg + diffLowHalf );
 		angleValue.setTimeline( timeline ); 
+		setRotation( angleRad );
 	}
 
 	public void setRotation( float angleRad ) {
