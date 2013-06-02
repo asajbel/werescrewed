@@ -479,7 +479,6 @@ public class Screen implements com.badlogic.gdx.Screen {
 		shapeRenderer.setColor( clearColor.r,
 				clearColor.g, clearColor.b,
 				clearColor.a );
-		WereScrewedGame.reconnectControllers( );
 
 	}
 	@Override
