@@ -1,6 +1,6 @@
 interior_tail2_bodyright.png
 format: RGBA8888
-filter: Linear,Linear
+filter: Nearest,Nearest
 repeat: none
 offset: 0, 0
 tail2_interior
