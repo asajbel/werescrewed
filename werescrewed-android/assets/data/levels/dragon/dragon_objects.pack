@@ -1,11 +1,18 @@
 dragon_objects.png
 format: RGBA8888
-filter: Linear,Linear
+filter: Nearest,Nearest
 repeat: none
 offset: 0, 0
+rotation_machine_decal_middle
+  rotate: false
+  xy: 324, 1719
+  size: 110, 290
+  orig: 110, 290
+  offset: 0, 0
+  index: -1
 burner-small
   rotate: false
-  xy: 4, 1936
+  xy: 636, 1038
   size: 297, 84
   orig: 297, 84
   offset: 0, 0
@@ -26,7 +33,7 @@ bridge
   index: -1
 cannonstand-small
   rotate: false
-  xy: 4, 1107
+  xy: 4, 1858
   size: 314, 156
   orig: 314, 156
   offset: 0, 0
@@ -40,23 +47,51 @@ cannon-large
   index: -1
 cannonstand-large
   rotate: false
-  xy: 1546, 1079
+  xy: 254, 1107
   size: 376, 187
   orig: 376, 187
   offset: 0, 0
   index: -1
+rotation_machine_decal_right
+  rotate: false
+  xy: 118, 1322
+  size: 104, 528
+  orig: 104, 528
+  offset: 0, 0
+  index: -1
+rotation_machine_wheel
+  rotate: false
+  xy: 1675, 621
+  size: 225, 224
+  orig: 225, 224
+  offset: 0, 0
+  index: -1
 turbine_blade
   rotate: false
-  xy: 4, 1669
+  xy: 4, 1038
   size: 244, 261
   orig: 244, 261
   offset: 0, 0
   index: -1
 turbine-outside
   rotate: false
-  xy: 1546, 621
+  xy: 1546, 864
   size: 452, 452
   orig: 452, 452
+  offset: 0, 0
+  index: -1
+rotation_machine_decal_left
+  rotate: false
+  xy: 4, 1322
+  size: 108, 530
+  orig: 108, 530
+  offset: 0, 0
+  index: -1
+rotation_machine_rotate_plate
+  rotate: false
+  xy: 1546, 599
+  size: 123, 259
+  orig: 123, 259
   offset: 0, 0
   index: -1
 burner-med
@@ -68,7 +103,7 @@ burner-med
   index: -1
 cannon-small
   rotate: false
-  xy: 4, 1272
+  xy: 228, 1322
   size: 203, 391
   orig: 203, 391
   offset: 0, 0
