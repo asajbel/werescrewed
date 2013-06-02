@@ -241,12 +241,19 @@ public class AlphaScreen extends Screen {
 		}
 		if (sounds == null){
 			sounds = new SoundManager( );
+		}
+		if (!assetsLoaded){
 			sounds.getSound( "arm_start", WereScrewedGame.dirHandle.path( )
 					+ "/levels/alphabot/sounds/arm_move_begin.ogg" );
 			sounds.getSound( "arm_loop", WereScrewedGame.dirHandle.path( )
 					+ "/levels/alphabot/sounds/arm_move_loop.ogg" );
 			sounds.getSound( "arm_end", WereScrewedGame.dirHandle.path( )
 					+ "/levels/alphabot/sounds/arm_move_end.ogg" );
+			sounds.getSound( "fireworks", WereScrewedGame.dirHandle.path( )
+					+ "/levels/alphabot/sounds/fireworks1.ogg" );
+			sounds.getSound( "fireworks", WereScrewedGame.dirHandle.path( )
+					+ "/levels/alphabot/sounds/fireworks2.ogg" );
+			assetsLoaded = true;
 		}
 	}
 	
@@ -256,8 +263,6 @@ public class AlphaScreen extends Screen {
 		dT += deltaTime;
 		
 		super.render( deltaTime );
-		sounds.update( deltaTime );
-
 		powerScrewUpdate( deltaTime );
 
 		// If everything is on
@@ -1767,6 +1772,7 @@ public class AlphaScreen extends Screen {
 		Skeleton fw;
 		for (int i = 1; i < 16; i++){
 			if(generator.nextInt(2) == 1){
+				sounds.playSound( "fireworks" , 0.2f + 0.8f * generator.nextFloat());
 				fw = ( Skeleton ) LevelFactory.entities.get( "firework_skeleton" + i );
 				fw.addFrontParticleEffect( "fireworks/firework" + ((i % 5) + 1) , true , true ).start();
 			}
