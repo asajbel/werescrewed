@@ -17,6 +17,7 @@ import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 import com.blindtigergames.werescrewed.input.MyControllerListener;
 import com.blindtigergames.werescrewed.screens.ScreenManager;
 import com.blindtigergames.werescrewed.screens.ScreenType;
+import com.blindtigergames.werescrewed.sound.SoundManager;
 import com.blindtigergames.werescrewed.util.Metrics;
 
 public class WereScrewedGame extends Game {
@@ -52,6 +53,9 @@ public class WereScrewedGame extends Game {
 	public static boolean player1Female = false;
 	@SuppressWarnings( "unused" )
 	private float fpsTime = 0;
+	
+	private static int width = 1280;
+	private static int height = 720; 
 
 	@Override
 	public void create( ) {
@@ -87,6 +91,7 @@ public class WereScrewedGame extends Game {
 	@Override
 	public void render( ) {
 		// update( 0 );
+		SoundManager.updateLoops( );
 		if ( Gdx.input.isKeyPressed( Keys.SHIFT_LEFT )
 				&& Gdx.input.isKeyPressed( Keys.ESCAPE ) ) {
 			if ( !restartFlag ) {
@@ -174,5 +179,13 @@ public class WereScrewedGame extends Game {
 
 		}
 
+	}
+
+	public static int getWidth( ) {
+		return width;
+	}
+	
+	public static int getHeight( ) {
+		return height; 
 	}
 }

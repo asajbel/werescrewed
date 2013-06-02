@@ -13,6 +13,7 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.blindtigergames.werescrewed.WereScrewedGame;
+import com.blindtigergames.werescrewed.camera.Camera;
 import com.blindtigergames.werescrewed.entity.EntityType;
 import com.blindtigergames.werescrewed.entity.Sprite;
 import com.blindtigergames.werescrewed.entity.platforms.Tile;
@@ -64,7 +65,7 @@ public class Spikes extends Hazard {
 	 */
 	public Spikes( String name, Vector2 pos, float width, float height,
 			World world, boolean isActive, boolean invert, boolean horizontal ) {
-		super( name, pos, null, world,  isActive );
+		super( name, pos, null, world, isActive );
 		entityType = EntityType.HAZARD;
 		hazardType = HazardType.SPIKES;
 
@@ -237,7 +238,7 @@ public class Spikes extends Hazard {
 	}
 
 	@Override
-	public void draw( SpriteBatch batch, float deltaTime ) {
+	public void draw( SpriteBatch batch, float deltaTime, Camera camera ) {
 		Tile d;
 		Iterator< Tile > v = tiles.listIterator( );
 		while ( v.hasNext( ) ) {
@@ -286,7 +287,10 @@ public class Spikes extends Hazard {
 					- d.yOffset );
 			d.tileSprite.setRotation( MathUtils.radiansToDegrees
 					* body.getAngle( ) );
-			d.tileSprite.draw( batch );
+			if ( d.tileSprite.getBoundingRectangle( ).overlaps(
+					camera.getBounds( ) ) ) {
+				d.tileSprite.draw( batch );
+			}
 		}
 	}
 }

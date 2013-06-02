@@ -23,9 +23,9 @@ public class EntityParticleActivator implements IAction {
 		}
 		EntityParticleEmitter pE = ( EntityParticleEmitter ) entity;
 		if ( pE.isActive( ) )
-			pE.activate( );
+			pE.setActive( true );
 		else
-			pE.deactivate( );
+			pE.setActive( false );
 	}
 
 	public ActionType getActionType( ) {

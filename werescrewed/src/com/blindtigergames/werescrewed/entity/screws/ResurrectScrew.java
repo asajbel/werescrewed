@@ -13,6 +13,7 @@ import com.badlogic.gdx.physics.box2d.Joint;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
 import com.blindtigergames.werescrewed.WereScrewedGame;
+import com.blindtigergames.werescrewed.camera.Camera;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityType;
 import com.blindtigergames.werescrewed.entity.Sprite;
@@ -309,16 +310,11 @@ public class ResurrectScrew extends Screw {
 	}
 
 	@Override
-	public void draw( SpriteBatch batch, float deltaTime ) {
+	public void draw( SpriteBatch batch, float deltaTime, Camera camera ) {
 		if ( playerAttached ) {
 			screwInterface.sprite.draw( batch );
 		}
-		// drawParticles( behindParticles, batch );
-		if ( sprite != null && visible && !removeNextStep ) {
-			sprite.draw( batch );
-		}
-		// drawOrigin(batch);
-		// drawParticles( frontParticles, batch );
+		super.draw( batch, deltaTime, camera );
 	}
 
 	private void constructBody( Vector2 pos ) {
@@ -357,7 +353,7 @@ public class ResurrectScrew extends Screw {
 		screwShape.dispose( );
 	}
 
-	private void connectScrewToEntity( Entity entity ) {
+	public void connectScrewToEntity( Entity entity ) {
 		// connect the screw to the entity;
 		RevoluteJointDef revoluteJointDef = new RevoluteJointDef( );
 		revoluteJointDef.initialize( body, entity.body, body.getPosition( ) );

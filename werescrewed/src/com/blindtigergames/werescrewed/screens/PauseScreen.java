@@ -15,6 +15,7 @@ import com.blindtigergames.werescrewed.gui.Button;
 import com.blindtigergames.werescrewed.gui.Label;
 import com.blindtigergames.werescrewed.gui.TextButton;
 import com.blindtigergames.werescrewed.screens.ScreenSwitchHandler;
+import com.blindtigergames.werescrewed.sound.SoundManager;
 
 class PauseScreen extends Screen {
 
@@ -146,10 +147,12 @@ class PauseScreen extends Screen {
 
 	@Override
 	public void show( ) {
+		SoundManager.setEnableLoops( false );
 	}
 
 	@Override
 	public void hide( ) {
+		SoundManager.setEnableLoops( true );
 	}
 
 	@Override

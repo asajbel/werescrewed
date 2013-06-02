@@ -5,12 +5,15 @@ import java.util.ArrayList;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.debug.FPSLoggerS;
 import com.blindtigergames.werescrewed.debug.SBox2DDebugRenderer;
@@ -22,6 +25,7 @@ import com.blindtigergames.werescrewed.gui.Button;
 import com.blindtigergames.werescrewed.gui.OptionButton;
 import com.blindtigergames.werescrewed.gui.Slider;
 import com.blindtigergames.werescrewed.level.Level;
+import com.blindtigergames.werescrewed.sound.SoundManager;
 import com.blindtigergames.werescrewed.util.Util;
 
 public class Screen implements com.badlogic.gdx.Screen {
@@ -35,8 +39,20 @@ public class Screen implements com.badlogic.gdx.Screen {
 	protected int controllerTimer = 10;
 	protected int controllerMax = 10;
 	protected int buttonIndex = 0;
-	protected int width, height;
+	protected static int width = WereScrewedGame.getWidth( );
+	protected static int height = WereScrewedGame.getHeight( );
 	protected float alpha = 1.0f;
+	protected boolean finish = false;
+	
+	private float accum = 0f;               
+	private final float step = 1f / 60f;    
+	private final float maxAccum = 1f / 17f;
+	private int screenWidth, screenHeight;
+	private int x;
+	private int y;
+	private int bX;
+	private int bY;
+	private ShapeRenderer shapeRenderer;
 	protected float scale = 0.0f;
 	protected final float SCALE_MIN = 0.0f;
 	protected final float SCALE_MAX = 10.0f;
@@ -46,17 +62,24 @@ public class Screen implements com.badlogic.gdx.Screen {
 	protected boolean alphaFinish = false;
 	protected boolean transInEnd = true;
 	protected boolean transOutEnd = true;
-
+	protected boolean fullscreen = false; 
+	protected boolean assetsLoaded = false;
+	
 	BitmapFont debug_font;
 	Camera uiCamera;
 
 	public FPSLoggerS logger;
-
+	
+	public Music bgm;
+	public SoundManager sounds;
+	
 	public Screen( ) {
 
 		// Gdx.app.log( "Screen", "Turning log level to none. SHHH" );
 		// Gdx.app.setLogLevel( Application.LOG_NONE );
 
+
+		shapeRenderer = new ShapeRenderer( );
 		batch = new SpriteBatch( );
 		debugRenderer = new SBox2DDebugRenderer( Util.BOX_TO_PIXEL );
 		level = null;
@@ -64,27 +87,50 @@ public class Screen implements com.badlogic.gdx.Screen {
 		debug_font = WereScrewedGame.manager.getFont( "debug_font" );
 
 		logger = new FPSLoggerS( );
-		uiCamera = new OrthographicCamera( Gdx.graphics.getWidth( ),
-				Gdx.graphics.getHeight( ) );
+		uiCamera = new OrthographicCamera( WereScrewedGame.getWidth( ),
+				WereScrewedGame.getHeight( ) );
 		uiCamera.position.set( 0, 0, 0 ); // -Gdx.graphics.getWidth( ),
 											// -Gdx.graphics.getHeight( )
+		setClearColor( 0f, 0f, 0f, 1f );
+		bgm = null;
+		sounds = null;
 	}
 
+	public void load(){
+	}
+	
 	@Override
 	public void render( float delta ) {
+		if ( Gdx.input.isKeyPressed( Keys.P ) ) {
+			System.exit( 0 );
+		}
+		/////////////////////// DON'T REMOVE FOR RELEASE ///////////////////////
+		if ((Gdx.input.isKeyPressed( Keys.ALT_LEFT ) 
+				|| Gdx.input.isKeyPressed( Keys.ALT_RIGHT )) 
+				&& Gdx.input.isKeyPressed( Keys.ENTER ) ) {
+			changeFullScreen( );
+		}
+		//////////////////////////////////////////////////////////////////////
+		Gdx.gl.glViewport(
+				x,
+				y,  
+				screenWidth, 
+				screenHeight);
 		if ( Gdx.gl20 != null ) {
-			Gdx.gl20.glClearColor( clearColor.r, clearColor.g, clearColor.b,
-					clearColor.a );
+			Gdx.gl20.glClearColor( 0.0f, 0.0f, 0.0f, 1.0f );
 			Gdx.gl20.glClear( GL20.GL_COLOR_BUFFER_BIT );
 		} else {
 			Gdx.gl10.glClearColor( clearColor.r, clearColor.g, clearColor.b,
 					clearColor.a );
 			Gdx.gl10.glClear( GL20.GL_COLOR_BUFFER_BIT );
 		}
-
-		if ( Gdx.input.isKeyPressed( Keys.P ) ) {
-			System.exit( 0 );
-		}
+		
+		shapeRenderer.begin( ShapeType.FilledRectangle );
+		shapeRenderer.filledRect(bX, bY, screenWidth, screenHeight );
+		shapeRenderer.end( );
+		
+		
+		
 		if (level != null){			
 			updateStep(delta);
 			
@@ -104,7 +150,7 @@ public class Screen implements com.badlogic.gdx.Screen {
 				level.backgroundRootSkeleton.drawBGDecals(
 						level.backgroundBatch, level.camera );
 				level.backgroundRootSkeleton
-						.draw( level.backgroundBatch, delta );
+						.draw( level.backgroundBatch, delta, level.camera );
 				level.backgroundBatch.end( );
 			}
 
@@ -118,8 +164,8 @@ public class Screen implements com.badlogic.gdx.Screen {
 				batch.setProjectionMatrix( uiCamera.combined );
 				batch.begin( );
 				debug_font.draw( batch, "FPS: " + FPS,
-						-Gdx.graphics.getWidth( ) / 2,
-						Gdx.graphics.getHeight( ) / 2 );// -Gdx.graphics.getWidth(
+						-WereScrewedGame.getWidth( ) / 2,
+						WereScrewedGame.getHeight( ) / 2 );// -Gdx.graphics.getWidth(
 														// )/4,
 														// Gdx.graphics.getHeight(
 														// )/4
@@ -298,6 +344,17 @@ public class Screen implements com.badlogic.gdx.Screen {
 
 	}
 	
+	protected void changeFullScreen( ) {
+		if (fullscreen) {
+			Gdx.graphics.setDisplayMode( 1280, 720, false );
+			fullscreen = false;
+		}
+		else {
+			Gdx.graphics.setDisplayMode( Gdx.graphics.getDesktopDisplayMode( ) );
+			fullscreen = true; 
+		}
+	}
+	
 	protected void drawTransIn ( SpriteBatch batch ) {
 		scale = scale - SCALE_SIZE;
 		trans.setOrigin( trans.getWidth( ) / 2, trans.getHeight( ) / 2 );
@@ -337,10 +394,6 @@ public class Screen implements com.badlogic.gdx.Screen {
 		}
 	}
 	
-	private float accum = 0f;               
-	private final float step = 1f / 60f;    
-	private final float maxAccum = 1f / 17f;
-	                                        
 	private void updateStep(float delta) {   
 		accum += delta;  
 		accum = Math.min( accum, maxAccum );
@@ -409,21 +462,41 @@ public class Screen implements com.badlogic.gdx.Screen {
 	}
 
 	@Override
-	public void resize( int width, int height ) {
-		// TODO Auto-generated method stub
-
+	public void resize( int _width, int _height ) {
+		float _scale = 1.0f;
+		if (_width > WereScrewedGame.getWidth( )) 
+			_scale = (float)_width/(float)WereScrewedGame.getWidth( ); 
+		screenWidth = (int) (_scale * WereScrewedGame.getWidth( )); 
+		screenHeight = (int) (_scale * WereScrewedGame.getHeight( ));
+		x = _width / 2 - screenWidth / 2; 
+		y = _height / 2 - screenHeight / 2; 
+		bX = -screenWidth/2;
+		bY = -screenHeight/2;
+		shapeRenderer.setProjectionMatrix( uiCamera.combined );
+		shapeRenderer.setColor( clearColor.r,
+				clearColor.g, clearColor.b,
+				clearColor.a );
 	}
-
 	@Override
 	public void show( ) {
-		// TODO Auto-generated method stub
-
+		if (!assetsLoaded){
+			load();
+		}
+		if (bgm != null){
+			bgm.setLooping( true );
+			bgm.setVolume( SoundManager.getMusicVolume( ) );
+			bgm.play( );
+		}
 	}
 
 	@Override
 	public void hide( ) {
-		// TODO Auto-generated method stub
-
+		if (bgm != null){
+			bgm.stop();
+		}
+		if (sounds != null){
+			sounds.stopAll( );
+		}
 	}
 
 	@Override
@@ -442,7 +515,17 @@ public class Screen implements com.badlogic.gdx.Screen {
 	public void dispose( ) {
 		if ( level != null )
 			level.resetPhysicsWorld( );
-
+		
+		if (bgm != null){
+			bgm.stop( );
+			bgm = null;
+		}
+		if (sounds != null){
+			sounds.dispose( );
+			sounds = null;
+		}
+		assetsLoaded = false;
+		
 	}
 
 	/**

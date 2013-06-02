@@ -6,6 +6,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -27,8 +28,6 @@ public class LoadingScreen extends Screen {
 	private SpriteBatch batch = null;
 	private String screenTag = null;
 	private Entity loadingBar;
-	private int screenWidth;
-	private int screenHeight;
 
 	private int timer = 0;
 	private int currIndex = 0;
@@ -39,6 +38,7 @@ public class LoadingScreen extends Screen {
 	private boolean player1Confirm = false, player2Confirm = false;
 	private boolean p1SelectFemale = false;
 	private int p1LabelPositionX, p2LabelPositionX;
+	private OrthographicCamera camera = null;
 
 	/**
 	 * Displays the loading screen and loads the appropriate contents for the
@@ -84,7 +84,7 @@ public class LoadingScreen extends Screen {
 					"data/common/slides/slide3_alphabot.png", Texture.class ) );
 			storyBoardArray.add( WereScrewedGame.manager.get(
 					"data/common/slides/slide4_players.png", Texture.class ) );
-
+			
 			if ( WereScrewedGame.p1Controller != null
 					&& WereScrewedGame.p2Controller != null ) {
 				characterSelect = true;
@@ -100,22 +100,22 @@ public class LoadingScreen extends Screen {
 				player2 = new Label( "Player2",
 						WereScrewedGame.manager.getFont( "longdon" ) );
 
-				pressToConfirm.setX( screenWidth / 2
+				pressToConfirm.setX( width / 2
 						- pressToConfirm.getWidth( ) / 2 );
-				pressToConfirm.setY( screenHeight / 4 );
+				pressToConfirm.setY( height / 4 );
 
-				pressStart.setX( screenWidth / 2 - pressStart.getWidth( ) / 2 );
-				pressStart.setY( screenHeight / 4 );
+				pressStart.setX( width / 2 - pressStart.getWidth( ) / 2 );
+				pressStart.setY( height / 4 );
 
-				p1LabelPositionX = ( screenWidth / 2 );// - player1.getWidth( )
+				p1LabelPositionX = ( width / 2 );// - player1.getWidth( )
 														// / 2;
 				player1.setX( p1LabelPositionX );
-				player1.setY( screenHeight / 4 - 100 );
+				player1.setY( height / 4 - 100 );
 
-				p2LabelPositionX = ( screenWidth / 2 );// + player2.getWidth( )
+				p2LabelPositionX = ( width / 2 );// + player2.getWidth( )
 														// / 2 + 100;
 				player2.setX( p2LabelPositionX );
-				player2.setY( screenHeight / 4 - 50 );
+				player2.setY( height / 4 - 50 );
 			}
 
 			// debug turning character select off until someone else can finish
@@ -126,6 +126,7 @@ public class LoadingScreen extends Screen {
 
 		// stage = new Stage( );
 		// loadFilesInDirectory( WereScrewedGame.dirHandle, screenTag );
+		setClearColor( 40, 40, 40, 255 );
 
 	}
 
@@ -162,12 +163,12 @@ public class LoadingScreen extends Screen {
 					"common-textures" ).findRegion( "flat_head_circular" );
 			loadingBar.sprite = loadingBar.constructSprite( screwTex );
 			loadingBar.sprite.setPosition(
-					screenWidth / 2 - loadingBar.sprite.getWidth( ) / 2,
-					screenHeight / 3 - loadingBar.sprite.getHeight( ) / 2 );
+					width / 2 - loadingBar.sprite.getWidth( ) / 2,
+					height / 3 - loadingBar.sprite.getHeight( ) / 2 );
 		} else if ( loadingBar.sprite != null ) {
 			loadingBar.sprite.setPosition(
-					screenWidth / 2 - loadingBar.sprite.getWidth( ) / 2,
-					screenHeight / 3 - loadingBar.sprite.getHeight( ) / 2 );
+					width / 2 - loadingBar.sprite.getWidth( ) / 2,
+					height / 3 - loadingBar.sprite.getHeight( ) / 2 );
 			loadingBar.sprite.setRotation( -1080
 					* WereScrewedGame.manager.getProgress( ) );
 		}
@@ -294,9 +295,9 @@ public class LoadingScreen extends Screen {
 
 		}
 		if ( currLevel == 1 ) {
-			int posX = screenWidth / 2
+			int posX = width / 2
 					- storyBoardArray.get( currIndex ).getWidth( ) / 2;
-			int posY = screenHeight / 2
+			int posY = height / 2
 					- storyBoardArray.get( currIndex ).getHeight( ) / 2;
 			batch.draw( storyBoardArray.get( currIndex ), posX, posY );
 		} else {
@@ -308,23 +309,25 @@ public class LoadingScreen extends Screen {
 	}
 
 	@Override
-	public void resize( int width, int height ) {
-		screenWidth = width;
-		screenHeight = height;
+	public void resize( int _width, int _height ) {
+		super.resize( _width, _height );
+		camera = new OrthographicCamera( );
+		camera.setToOrtho( false, WereScrewedGame.getWidth(), WereScrewedGame.getHeight() );
+		batch.setProjectionMatrix( camera.combined );
 		if ( currLevel == 1 && characterSelect ) {
 
-			pressStart.setX( screenWidth / 2 - pressStart.getWidth( ) / 2 );
-			pressStart.setY( screenHeight / 4 );
+			pressStart.setX( width / 2 - pressStart.getWidth( ) / 2 );
+			pressStart.setY( height / 4 );
 
 			player1.setX( p1LabelPositionX );
-			player1.setY( screenHeight / 4 - 100 );
+			player1.setY( height / 4 - 100 );
 
 			player2.setX( p2LabelPositionX );
-			player2.setY( screenHeight / 4 - 100 );
+			player2.setY( height / 4 - 100 );
 
-			pressToConfirm.setX( screenWidth / 2 - pressToConfirm.getWidth( )
+			pressToConfirm.setX( width / 2 - pressToConfirm.getWidth( )
 					/ 2 );
-			pressToConfirm.setY( screenHeight / 4 );
+			pressToConfirm.setY( height / 4 );
 		}
 		// set position of the loading label
 		// TODO: Figure out a way to keep it in the center of the screen without
@@ -394,7 +397,6 @@ public class LoadingScreen extends Screen {
 			}
 		}
 	}
-
 	private void loadLevelParameter( String s ) {
 		/*
 		 * format for level options:

@@ -41,6 +41,8 @@ public class LevelSelectScreen extends Screen {
 
 	public LevelSelectScreen( ) {
 		super( );
+		camera = new OrthographicCamera( );
+		camera.setToOrtho( false, WereScrewedGame.getWidth(), WereScrewedGame.getHeight() );
 		font = new BitmapFont( );
 		fancyFont = WereScrewedGame.manager.getFont( "longdon" );
 		// fancyFont = WereScrewedGame.manager.getFont( "Screwball" );
@@ -73,6 +75,7 @@ public class LevelSelectScreen extends Screen {
 		for ( int i = 0; i < 5; i++ )
 			createDebris( gearsAtlas, common );
 		loadButtons( );
+		setClearColor( 105f/255f, 208f/255f, 255f/255f, 1f );
 	}
 
 	@Override
@@ -94,10 +97,6 @@ public class LevelSelectScreen extends Screen {
 	@Override
 	public void render( float delta ) {
 		super.render( delta );
-
-		Gdx.gl.glClearColor( 0.4f, 0.6f, 1.0f, 1f );
-		Gdx.gl.glClear( GL10.GL_COLOR_BUFFER_BIT );
-
 		moveCharacters( delta );
 		updateDebris( );
 		batch.begin( );
@@ -138,19 +137,14 @@ public class LevelSelectScreen extends Screen {
 	}
 
 	@Override
-	public void resize( int width, int height ) {
-		this.width = width;
-		this.height = height;
+	public void resize( int _width, int _height ) {
+		super.resize( _width, _height );
 
 		camera = new OrthographicCamera( );
-		camera.setToOrtho( false, width, height );
+		camera.setToOrtho( false, WereScrewedGame.getWidth( ), WereScrewedGame.getHeight( ) );
 		batch.setProjectionMatrix( camera.combined );
 		int leftX = ( int ) menuBG.getWidth( ) / 2;// / 5 - 20;
 		int centerY = height / 2;
-		@SuppressWarnings( "unused" )
-		float scaleX = width / 1280f;
-		@SuppressWarnings( "unused" )
-		float scaleY = height / 720f;
 
 		fade.setPosition( width / 2 - fade.getWidth( ) / 2, height
 				/ 2 - fade.getHeight( ) / 2 );
@@ -158,7 +152,7 @@ public class LevelSelectScreen extends Screen {
 				/ fade.getHeight( ) );
 		// menuBG.setScale( width / menuBG.getWidth( ), width / menuBG.getWidth(
 		// ) );
-		menuBG.setPosition( 0, height / 2 - menuBG.getHeight( ) / 2 );
+		menuBG.setPosition( 0, WereScrewedGame.getHeight( ) / 2 - menuBG.getHeight( ) / 2 );
 		// menuBG.setPosition( width / 2 - menuBG.getWidth( ) / 2, height / 2 -
 		// menuBG.getHeight( ) / 2 );
 		screenLabel.setX( leftX - screenLabel.getWidth( ) / 2 );
@@ -179,8 +173,8 @@ public class LevelSelectScreen extends Screen {
 		backButton.setX( leftX - backButton.getWidth( ) / 2 );
 		backButton.setY( centerY + lineHeight * -1 );
 
-		man.setPosition( width / 2 - 50, height / 2 + 50 );
-		lady.setPosition( width / 2 + 200, height / 2 - 200 );
+		man.setPosition( WereScrewedGame.getWidth( ) / 2 - 50, WereScrewedGame.getHeight( ) / 2 + 50 );
+		lady.setPosition( WereScrewedGame.getWidth( ) / 2 + 200, WereScrewedGame.getHeight( ) / 2 - 200 );
 		for ( Falling g : gears ) {
 			resizeGears( g );
 		}
@@ -327,7 +321,7 @@ public class LevelSelectScreen extends Screen {
 		float mx = man.getX( );// - ( float ) Math.cos( time - delta ) * 0.25f;
 		float my = man.getY( ) - ( float ) Math.sin( time - delta / 6 ) * 0.6f;
 		mx = mx + manDir * 0.3f;
-		if ( mx > width * 5 / 6 )
+		if ( mx > WereScrewedGame.getWidth( ) * 5 / 6 )
 			manDir -= 0.15;
 		if ( mx < menuBG.getWidth( ) * 1.2 )
 			manDir += 0.15;
@@ -336,7 +330,7 @@ public class LevelSelectScreen extends Screen {
 								// 0.25f );
 		float fy = lady.getY( ) + ( float ) Math.sin( time + delta / 6 ) * 0.6f;
 		fx = fx + ladyDir * 0.3f;
-		if ( fx > width * 5 / 6 ) {
+		if ( fx > WereScrewedGame.getWidth( ) * 5 / 6 ) {
 			ladyDir -= 0.15;
 		}
 		if ( fx < menuBG.getWidth( ) * 1.2 ) {

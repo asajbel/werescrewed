@@ -15,10 +15,12 @@ import com.badlogic.gdx.physics.box2d.Filter;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJoint;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
 import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.camera.Anchor;
+import com.blindtigergames.werescrewed.camera.Camera;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityDef;
 import com.blindtigergames.werescrewed.entity.EntityType;
@@ -82,7 +84,7 @@ public class Player extends Entity {
 	public final static float FOOTSTEP_PITCH_VARIANCE = 0.02f;
 	public final static float FOOTSTEP_VOLUME_DROP = 0.01f;
 	public final static float JUMP_SOUND_DELAY = 1.0f;
-	private final static float HEAD_JUMP_OFFSET = 1.5f;
+	private final static float HEAD_JUMP_OFFSET = 4f;
 
 	// public final static float
 
@@ -155,6 +157,7 @@ public class Player extends Entity {
 	private boolean screwButtonHeld;
 	private boolean kinematicTransform = false;
 	private boolean changeDirectionsOnceInAir = false;
+	private boolean autoRezzing = false;
 
 	@SuppressWarnings( "unused" )
 	private boolean changeDirections = false;
@@ -645,6 +648,7 @@ public class Player extends Entity {
 			f.setFilterData( filter );
 		}*/
 		playerState = PlayerState.Standing;
+		autoRezzing = false;
 		currentPlatform = null;
 		if (isDead){
 			sounds.playSound( "revive", 1.0f );
@@ -710,6 +714,9 @@ public class Player extends Entity {
 	public void setTutorial( int begin, int end ) {
 		tutorialBegin = begin;
 		tutorialEnd = end;
+		tutorialFrame = tutorialBegin;
+		tutorial.setTexture( tutorials[ tutorialFrame ] );
+		tutorialTimer = 0;
 	}
 
 	/**
@@ -722,9 +729,9 @@ public class Player extends Entity {
 	/**
 	 * draws tutorials when appropriate
 	 */
-	public void draw( SpriteBatch batch, float deltaTime ) {
+	public void draw( SpriteBatch batch, float deltaTime, Camera camera ) {
 		drawBubble( batch );
-		super.draw( batch, deltaTime );
+		super.draw( batch, deltaTime, camera );
 	}
 
 	/**
@@ -1257,6 +1264,17 @@ public class Player extends Entity {
 	}
 
 	/**
+	 * sets the extra state to auto rezzing
+	 */
+	public void setAutoRezzing( ) {
+		autoRezzing = true;
+	}
+	
+	public boolean isAutoRezzing( ) {
+		return autoRezzing;
+	}
+	
+	/**
 	 * gets the last kinematic platform hit
 	 */
 	public Platform getLastPlatform( ) {
@@ -1600,7 +1618,7 @@ public class Player extends Entity {
 								( WIDTH / 3.0f ) + HEAD_JUMP_OFFSET, 0.0f ).x <= this
 								.getPositionPixel( ).x )
 						&& ( otherPlayer.getPositionPixel( ).add(
-								( WIDTH / 4.0f ) + HEAD_JUMP_OFFSET, 0.0f ).x > this
+								( WIDTH / 3.0f ) + HEAD_JUMP_OFFSET, 0.0f ).x > this
 								.getPositionPixel( ).x ) ) {
 					boolean isMoving = false;
 					// check if the player is using input
@@ -2138,24 +2156,26 @@ public class Player extends Entity {
 	private void initTutorials( ) {
 		bubbleTex = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 				+ "/common/tutorial/thought_bubble.png" );
-		tutorials = new Texture[ 9 ];
+		tutorials = new Texture[ 10 ];
 		tutorials[ 0 ] = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 				+ "/common/tutorial/move_jump0.png" );
 		tutorials[ 1 ] = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 				+ "/common/tutorial/move_jump1.png" );
 		tutorials[ 2 ] = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-				+ "/common/tutorial/screw0.png" );
+				+ "/common/tutorial/screw_ready0.png" );
 		tutorials[ 3 ] = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-				+ "/common/tutorial/screw1.png" );
+				+ "/common/tutorial/screw_ready1.png" );
 		tutorials[ 4 ] = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-				+ "/common/tutorial/switch0.png" );
+				+ "/common/tutorial/screw_ready2.png" );
 		tutorials[ 5 ] = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-				+ "/common/tutorial/switch1.png" );
+				+ "/common/tutorial/switch0.png" );
 		tutorials[ 6 ] = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-				+ "/common/tutorial/dubba0.png" );
+				+ "/common/tutorial/switch1.png" );
 		tutorials[ 7 ] = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-				+ "/common/tutorial/dubba1.png" );
+				+ "/common/tutorial/dubba0.png" );
 		tutorials[ 8 ] = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
+				+ "/common/tutorial/dubba1.png" );
+		tutorials[ 9 ] = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 				+ "/common/tutorial/dubba2.png" );
 
 		bubble = constructSprite( bubbleTex );

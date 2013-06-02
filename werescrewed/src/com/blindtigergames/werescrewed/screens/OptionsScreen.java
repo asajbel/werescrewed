@@ -11,6 +11,7 @@ import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.entity.Sprite;
 import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 import com.blindtigergames.werescrewed.gui.Button;
+import com.blindtigergames.werescrewed.gui.CheckBox;
 import com.blindtigergames.werescrewed.gui.Label;
 import com.blindtigergames.werescrewed.gui.OptionButton;
 import com.blindtigergames.werescrewed.gui.Slider;
@@ -46,6 +47,8 @@ class OptionsScreen extends Screen {
 	// private OptionButton subtitles = null;
 	private TextButton creditsButton = null;
 	private TextButton backButton = null;
+	private CheckBox fullBox;
+	private OptionButton fullCheck;
 
 	/*
 	 * Things needed... Controls: Shows a visual map of the controls depending
@@ -70,7 +73,7 @@ class OptionsScreen extends Screen {
 				+ "/transitions/trans-gear.png", Texture.class );
 		trans = new Sprite( transition );
 		scale = trans.getHeight( ) * SCALE_MAX;
-		scaleMax = scale;;
+		scaleMax = scale;
 		transInEnd = false;
 		
 		lineHeight = Math.round( 2.5f * font.getCapHeight( ) + 40 );
@@ -110,6 +113,7 @@ class OptionsScreen extends Screen {
 		// subtitles.draw( batch, camera );
 		creditsButton.draw( batch, camera );
 		backButton.draw( batch, camera );
+		fullCheck.draw( batch, camera );
 
 		if ( !transInEnd ) {
 			trans.setPosition( width / 2 - trans.getWidth( ) / 2, height / 2 - trans.getHeight( ) / 2 );
@@ -130,8 +134,7 @@ class OptionsScreen extends Screen {
 
 	@Override
 	public void resize( int width, int height ) {
-		this.width = width;
-		this.height = height;
+		super.resize( width, height );
 		camera = new OrthographicCamera( );
 		camera.setToOrtho( false, width, height );
 		batch.setProjectionMatrix( camera.combined );
@@ -153,14 +156,19 @@ class OptionsScreen extends Screen {
 		noise.setY( centerY + lineHeight );
 		// subtitles.setX( leftX - subtitles.getWidth( ) / 2 );
 		// subtitles.setY( centerY );
+		fullCheck.setX( leftX -  fullCheck.getWidth( ) / 2 );
+		fullCheck.setY( centerY );
 		creditsButton.setX( leftX - creditsButton.getWidth( ) / 2 );
-		creditsButton.setY( centerY );
+		creditsButton.setY( centerY - lineHeight);
 		backButton.setX( centerX - backButton.getWidth( ) / 2 );
 		backButton.setY( 100 + backButton.getHeight( ) );
 
 		// subBox.setX( subtitles.getX( ) * 4 );
 		// subBox.setY( subtitles.getY( ) );
 
+		fullBox.setX( fullCheck.getX( ) * 4 );
+		fullBox.setY( fullCheck.getY( ) );
+		
 		musicSlider
 				.setXPos( ( float ) musicSlider.getMinPos( )
 						+ ( SoundManager.globalVolume.get( SoundType.MUSIC ) * 100 * SHIFT ) );
@@ -194,13 +202,14 @@ class OptionsScreen extends Screen {
 				SoundType.SFX );
 		noiseSlider = new Slider( VOLUME_MIN, VOLUME_MAX, VOLUME_MAX / 2,
 				SoundType.NOISE );
-		// subBox = new CheckBox ( 0, 1, 0 );
+		fullBox = new CheckBox ( 0, 1, 0 );
 		controls = new Button( "Controls", fancyFont );
 		music = new OptionButton( "Music", fancyFont, musicSlider );
 		sound = new OptionButton( "Sound", fancyFont, soundSlider );
 		noise = new OptionButton( "Noise", fancyFont, noiseSlider );
 		// subtitles = new OptionButton( "Subtitles", fancyFont,
 		// subBox );
+		fullCheck = new OptionButton( "Fullscreen", fancyFont, fullBox );
 		creditsButton = new TextButton( "Credits", fancyFont,
 				new ScreenSwitchHandler( ScreenType.CREDITS ) );
 		backButton = new TextButton( "Back", fancyFont,
@@ -213,7 +222,7 @@ class OptionsScreen extends Screen {
 		Buttons.add( music );
 		Buttons.add( sound );
 		Buttons.add( noise );
-		// Buttons.add( subtitles );
+		Buttons.add( fullCheck );
 		Buttons.add( creditsButton );
 		Buttons.add( backButton );
 	}

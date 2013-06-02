@@ -8,7 +8,6 @@ import com.blindtigergames.werescrewed.graphics.TextureAtlas;
 import com.esotericsoftware.spine.Animation;
 import com.esotericsoftware.spine.Bone;
 import com.esotericsoftware.spine.Skeleton;
-import com.esotericsoftware.spine.SkeletonBinary;
 import com.esotericsoftware.spine.SkeletonData;
 import com.esotericsoftware.spine.SkeletonJson;
 import com.esotericsoftware.spine.SkeletonRenderer;
@@ -28,6 +27,16 @@ public class SimpleSpinemator implements ISpinemator {
 	protected boolean loop = false;
 	protected float mixRatio = 0f;
 	protected SkeletonData sd;
+	
+	public SimpleSpinemator( SkeletonData data, String initialAnimationName, boolean loop  ) {
+		sd = data; 
+		anim = sd.findAnimation( initialAnimationName );
+		skel = new com.esotericsoftware.spine.Skeleton( sd );
+		skel.setToBindPose( );
+		root = skel.getRootBone( );
+		skel.updateWorldTransform( );
+		this.loop = loop; 
+	}
 
 	public SimpleSpinemator( String atlasName, String skeletonName,
 			String initialAnimationName, boolean loop ) {
@@ -68,11 +77,12 @@ public class SimpleSpinemator implements ISpinemator {
 
 	@Override
 	public void setPosition( Vector2 pos ) {
-		position = pos.cpy(); 
+		position = new Vector2 ( pos ); 
 	}
 
 	@Override
 	public void setPosition( float x, float y ) {
+		position = new Vector2(x, y);
 		root.setX( x );
 		root.setY( y );
 	}
@@ -119,7 +129,6 @@ public class SimpleSpinemator implements ISpinemator {
 	@Override
 	public void changeAnimation( String animName, boolean loop ) {
 		anim = sd.findAnimation( animName );
-//		this.setPosition( x, y );
 		this.loop = loop;
 		time = 0f;
 		mixTime = 0f;
@@ -133,6 +142,17 @@ public class SimpleSpinemator implements ISpinemator {
 	@Override
 	public float getAnimationDuration( ) {
 		return anim.getDuration( ); 
+	}
+
+	@Override
+	public void setRotation( float angle ) {
+		root.setRotation( angle );
+		
+	}
+
+	@Override
+	public SkeletonData getSkeletonData( ) {
+		return sd;
 	}
 
 }
