@@ -24,8 +24,8 @@ public class LevelSelectScreen extends Screen {
 	private Sprite menuBG = null;
 	private Sprite fade = null;
 	private Label screenLabel = null;
-	private TextButton resurrectButton = null;
-	private TextButton hazardButton = null;
+//	private TextButton resurrectButton = null;
+//	private TextButton hazardButton = null;
 	private TextButton physicsButton = null;
 	private int lineHeight = 0;
 	private TextButton level1Button;
@@ -54,7 +54,7 @@ public class LevelSelectScreen extends Screen {
 		menuBG = new Sprite( back );
 		fade = new Sprite( fadeScreen );
 		
-		lineHeight = Math.round( 2.5f * font.getCapHeight( ) + 40 );
+		lineHeight = Math.round( 2.5f * font.getCapHeight( ) + 50 );
 		screenLabel = new Label( "Level Select", fancyFont );
 		
 		man = new SimpleSpinemator( "red_male_atlas", "male", "fall_idle", true );
@@ -109,8 +109,8 @@ public class LevelSelectScreen extends Screen {
 		menuBG.draw( batch );
 		// screenLabel.draw( batch );
 		physicsButton.draw( batch, camera );
-		resurrectButton.draw( batch, camera );
-		hazardButton.draw( batch, camera );
+//		resurrectButton.draw( batch, camera );
+//		hazardButton.draw( batch, camera );
 		level1Button.draw( batch, camera );
 		dragonButton.draw( batch, camera );
 
@@ -125,13 +125,11 @@ public class LevelSelectScreen extends Screen {
 		if ( !transInEnd ) {
 			trans.setPosition( width / 2 - trans.getWidth( ) / 2, height / 2 - trans.getHeight( ) / 2 );
 			drawTransIn( batch );
-			trans.setSize( scale, scale );
 		}
 		
 		if ( !transOutEnd ) {
 			trans.setPosition( width / 2 - trans.getWidth( ) / 2, height / 2 - trans.getHeight( ) / 2 );
 			drawTransOut( batch );
-			trans.setSize( scale, scale );
 		}
 		
 		batch.end( );
@@ -162,18 +160,18 @@ public class LevelSelectScreen extends Screen {
 
 		// quick fix
 		physicsButton.setX( leftX - physicsButton.getWidth( ) / 2 );
-		physicsButton.setY( centerY + lineHeight * 3 );
-		resurrectButton.setX( leftX - resurrectButton.getWidth( ) / 2 );
-		resurrectButton.setY( centerY + lineHeight * 2 );
-		hazardButton.setX( leftX - hazardButton.getWidth( ) / 2 );
-		hazardButton.setY( centerY + lineHeight * 1 );
+		physicsButton.setY( centerY + lineHeight * 2 );
+//		resurrectButton.setX( leftX - resurrectButton.getWidth( ) / 2 );
+//		resurrectButton.setY( centerY + lineHeight * 2 );
+//		hazardButton.setX( leftX - hazardButton.getWidth( ) / 2 );
+//		hazardButton.setY( centerY + lineHeight * 1 );
 		level1Button.setX( leftX - level1Button.getWidth( ) / 2 );
-		level1Button.setY( centerY + lineHeight * 0 );
+		level1Button.setY( centerY + lineHeight * 1 );
 		dragonButton.setX( leftX - dragonButton.getWidth( ) / 2 );
-		dragonButton.setY( centerY + lineHeight * -1 );
+		dragonButton.setY( centerY + lineHeight * 0 );
 
 		backButton.setX( leftX - backButton.getWidth( ) / 2 );
-		backButton.setY( centerY + lineHeight * -2 );
+		backButton.setY( centerY + lineHeight * -1 );
 
 		man.setPosition( WereScrewedGame.getWidth( ) / 2 - 50, WereScrewedGame.getHeight( ) / 2 + 50 );
 		lady.setPosition( WereScrewedGame.getWidth( ) / 2 + 200, WereScrewedGame.getHeight( ) / 2 - 200 );
@@ -203,10 +201,10 @@ public class LevelSelectScreen extends Screen {
 	private void loadButtons( ) {
 		physicsButton = new TextButton( "Physics Test Screen", fancyFont,
 				new ScreenSwitchHandler( ScreenType.PHYSICS ) );
-		resurrectButton = new TextButton( "Parallax Test Screen", fancyFont,
-				new ScreenSwitchHandler( ScreenType.RESURRECT ) );
-		hazardButton = new TextButton( "Hazard Test Screen", fancyFont,
-				new ScreenSwitchHandler( ScreenType.HAZARD ) );
+//		resurrectButton = new TextButton( "Parallax Test Screen", fancyFont,
+//				new ScreenSwitchHandler( ScreenType.RESURRECT ) );
+//		hazardButton = new TextButton( "Hazard Test Screen", fancyFont,
+//				new ScreenSwitchHandler( ScreenType.HAZARD ) );
 		level1Button = new TextButton( "AlphaBot", fancyFont,
 				new ScreenSwitchHandler( ScreenType.LOADING_1 ) );
 		dragonButton = new TextButton( "Dragon", fancyFont,
@@ -217,8 +215,8 @@ public class LevelSelectScreen extends Screen {
 		physicsButton.setColored( true );
 
 		Buttons.add( physicsButton );
-		Buttons.add( resurrectButton );
-		Buttons.add( hazardButton );
+//		Buttons.add( resurrectButton );
+//		Buttons.add( hazardButton );
 		Buttons.add( level1Button );
 		Buttons.add( dragonButton );
 		Buttons.add( backButton );

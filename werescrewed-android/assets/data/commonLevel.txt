@@ -97,9 +97,10 @@
 /debug/debug_font.fnt
 #/fonts/ornatique-26.fnt
 #/fonts/ornatique.fnt
-/fonts/ArmenianCircus.fnt
-/fonts/Screwball.fnt
+#/fonts/ArmenianCircus.fnt
+#/fonts/Screwball.fnt
 /fonts/longdon.fnt
+/fonts/longdon-small.fnt
 
 #slides
 ## TODO: unload these during the level
