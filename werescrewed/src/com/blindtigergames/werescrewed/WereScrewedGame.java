@@ -130,9 +130,6 @@ public class WereScrewedGame extends Game {
 		// Gdx.graphics.requestRendering();
 		// super.render( );
 		// }
-		
-//		if (isReconnect()) 
-			reconnectControllers( ); 
 
 		if ( Gdx.input.isTouched( ) || Gdx.input.isButtonPressed( Buttons.LEFT ) ) {
 			mouseJustClicked = true;
