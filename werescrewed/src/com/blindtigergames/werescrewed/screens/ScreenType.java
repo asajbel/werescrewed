@@ -54,6 +54,15 @@ public enum ScreenType {
 			return loading;
 		}
 	},
+	LOADING_MENU {
+		@Override
+		protected com.badlogic.gdx.Screen getScreenInstance( ) {
+			LoadingScreen loading = new LoadingScreen( "menu" );
+			loading.screenType = ScreenType.LOADING;
+			return loading;
+		
+		}
+	},
 	LOADING_1 {
 		@Override
 		protected com.badlogic.gdx.Screen getScreenInstance( ) {
