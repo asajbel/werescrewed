@@ -687,16 +687,16 @@ public class Skeleton extends Platform {
 			for ( EventTrigger et : eventMap.values( ) ) {
 				et.draw( batch, deltaTime, camera );
 			}
+			for ( Screw screw : screwMap.values( ) ) {
+				if ( !screw.getRemoveNextStep( ) ) {
+					screw.draw( batch, deltaTime, camera );
+				}
+			}
 			for ( Platform p : dynamicPlatformMap.values( ) ) {
 				drawPlatform( p, batch, deltaTime, camera );
 			}
 			for ( Platform p : kinematicPlatformMap.values( ) ) {
 				drawPlatform( p, batch, deltaTime, camera );
-			}
-			for ( Screw screw : screwMap.values( ) ) {
-				if ( !screw.getRemoveNextStep( ) ) {
-					screw.draw( batch, deltaTime, camera );
-				}
 			}
 			for ( CheckPoint chkpt : checkpointMap.values( ) ) {
 				if ( !chkpt.getRemoveNextStep( ) ) {

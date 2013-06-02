@@ -8,6 +8,7 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.blindtigergames.werescrewed.WereScrewedGame;
+import com.blindtigergames.werescrewed.camera.Camera;
 import com.blindtigergames.werescrewed.entity.EntityType;
 import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 import com.blindtigergames.werescrewed.graphics.particle.ParticleEffect;
@@ -119,8 +120,8 @@ public class Electricity extends Hazard {
 		body.setUserData( this );
 	}
 
-	public void draw( SpriteBatch batch, float deltaTime ) {
-		particleEffect.draw( batch, deltaTime );
+	public void draw( SpriteBatch batch, float deltaTime, Camera camera ) {
+		particleEffect.draw( batch, deltaTime, camera );
 		if ( activeHazard ) {
 			particleEffect.start( );
 		}
