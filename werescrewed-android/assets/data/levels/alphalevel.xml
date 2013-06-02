@@ -4873,7 +4873,7 @@
                             <Y>0</Y>
                         </Vector2>
                         <Vector2>
-                            <X>1536</X>
+                            <X>1456</X>
                             <Y>0</Y>
                         </Vector2>
                     </LocalPoints>
@@ -4935,7 +4935,7 @@
                             <Y>-6272</Y>
                         </Vector2>
                         <Vector2>
-                            <X>-192</X>
+                            <X>-272</X>
                             <Y>-6272</Y>
                         </Vector2>
                     </WorldPoints>
@@ -12157,7 +12157,7 @@
                 <Item xsi:type="PathItem" Name="Path_0750" Visible="true">
                     <Position>
                         <X>-1792</X>
-                        <Y>-4032</Y>
+                        <Y>-4064</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -12184,15 +12184,15 @@
                     <WorldPoints>
                         <Vector2>
                             <X>-1792</X>
-                            <Y>-4032</Y>
+                            <Y>-4064</Y>
                         </Vector2>
                         <Vector2>
                             <X>-2112</X>
-                            <Y>-4032</Y>
+                            <Y>-4064</Y>
                         </Vector2>
                         <Vector2>
                             <X>-2112</X>
-                            <Y>-4224</Y>
+                            <Y>-4256</Y>
                         </Vector2>
                     </WorldPoints>
                     <IsPolygon>false</IsPolygon>
@@ -23694,8 +23694,8 @@
                 </Item>
                 <Item xsi:type="PathItem" Name="Path_0947" Visible="true">
                     <Position>
-                        <X>-512</X>
-                        <Y>-5106</Y>
+                        <X>-528</X>
+                        <Y>-5088</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="definition" Type="string" Description="">
@@ -23717,12 +23717,12 @@
                     </LocalPoints>
                     <WorldPoints>
                         <Vector2>
-                            <X>-512</X>
-                            <Y>-5106</Y>
+                            <X>-528</X>
+                            <Y>-5088</Y>
                         </Vector2>
                         <Vector2>
-                            <X>-784</X>
-                            <Y>-5106</Y>
+                            <X>-800</X>
+                            <Y>-5088</Y>
                         </Vector2>
                     </WorldPoints>
                     <IsPolygon>false</IsPolygon>
@@ -25039,8 +25039,8 @@
         <NextItemNumber>966</NextItemNumber>
         <ContentRootFolder>gleed-textures</ContentRootFolder>
         <CameraPosition>
-            <X>324.011841</X>
-            <Y>-909.38324</Y>
+            <X>-325.9898</X>
+            <Y>-3109.39063</Y>
         </CameraPosition>
         <Version>1.3.0.0</Version>
     </EditorRelated>
