@@ -1,6 +1,7 @@
 package com.blindtigergames.werescrewed.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Version;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -51,6 +52,7 @@ class CreditsScreen extends MenuScreen {
 		codeLabel = new Label( "Programmers: ", fancyFont );
 		artLabel = new Label( "Artists: ", fancyFont );
 		soundLabel = new Label( "Musicians", fancyFont );
+		
 		backButton = new TextButton( "Back", fancyFont,
 				new ScreenSwitchHandler( ScreenType.MAIN_MENU ) );
 		backButton.setColored( true );
@@ -104,11 +106,25 @@ class CreditsScreen extends MenuScreen {
 		
 		if ( !transOutEnd ) {
 			trans.setPosition( width / 2 - trans.getWidth( ) / 2, height / 2 - trans.getHeight( ) / 2 );
-			drawTransOut( batch );
+			drawTransOut( batch, ScreenType.MAIN_MENU );
 			trans.setSize( scale, scale );
 		}
 		
 		batch.end( );
+		
+		if ( WereScrewedGame.p1Controller != null ) {
+			if ( WereScrewedGame.p1ControllerListener.jumpPressed( ) && transOutEnd ) {
+				transOutEnd = false;
+			}
+		}
+		if ( WereScrewedGame.p2Controller != null ) {
+			if ( WereScrewedGame.p2ControllerListener.jumpPressed( ) && transOutEnd ) {
+				transOutEnd = false;
+			}
+		}
+		if ( Gdx.input.isKeyPressed( Input.Keys.ENTER ) && transOutEnd ) {
+			transOutEnd = false;
+		} 
 	}
 
 	@Override

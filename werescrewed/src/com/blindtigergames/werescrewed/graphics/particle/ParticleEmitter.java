@@ -24,6 +24,7 @@ import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.MathUtils;
+import com.blindtigergames.werescrewed.camera.Camera;
 import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 import com.blindtigergames.werescrewed.util.Util;
 
@@ -231,7 +232,7 @@ public class ParticleEmitter {
 			addParticles( minParticleCount - activeCount );
 	}
 
-	public void draw( SpriteBatch spriteBatch ) {
+	public void draw( SpriteBatch spriteBatch, Camera camera ) {
 		if ( additive )
 			spriteBatch.setBlendFunction( GL10.GL_SRC_ALPHA, GL10.GL_ONE );
 
@@ -240,8 +241,9 @@ public class ParticleEmitter {
 		int activeCount = this.activeCount;
 
 		for ( int i = 0, n = active.length; i < n; i++ )
-			if ( active[ i ] )
+			if ( active[ i ] && particles[i].getBoundingRectangle( ).overlaps( camera.getBounds( ) ) ) {
 				particles[ i ].draw( spriteBatch );
+			}
 		this.activeCount = activeCount;
 
 		if ( additive )
@@ -253,10 +255,10 @@ public class ParticleEmitter {
 	 * Updates and draws the particles. This is slightly more efficient than
 	 * calling {@link #update(float)} and {@link #draw(SpriteBatch)} separately.
 	 */
-	public void draw( SpriteBatch spriteBatch, float delta ) {
+	public void draw( SpriteBatch spriteBatch, float delta, Camera camera ) {
 		accumulator += Math.min( delta * 1000, 250 );
 		if ( accumulator < 1 ) {
-			draw( spriteBatch );
+			draw( spriteBatch, camera );
 			return;
 		}
 		int deltaMillis = ( int ) accumulator;
@@ -271,7 +273,7 @@ public class ParticleEmitter {
 		for ( int i = 0, n = active.length; i < n; i++ ) {
 			if ( active[ i ] ) {
 				Particle particle = particles[ i ];
-				if ( updateParticle( particle, delta, deltaMillis ) )
+				if ( updateParticle( particle, delta, deltaMillis ) && particle.getBoundingRectangle( ).overlaps( camera.getBounds( ) ) ) 
 					particle.draw( spriteBatch );
 				else {
 					active[ i ] = false;

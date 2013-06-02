@@ -82,14 +82,12 @@
 ##texture atlas
 ##please use texture packer to put all common textures in this pack file!
 /common/common-textures.pack
-/common/checkpoint/checkpoint.pack
 /common/animations/screwInterface.pack
 /common/tileset1.pack
 /common/TilesetTest.pack
 /common/autumn.pack
 /common/gears.pack
 /common/tileset/alphabot.pack
-/common/tileset/alphabot-bleed.pack
 /common/spine/red_female_atlas.pack
 /common/spine/red_male_atlas.pack
 /common/spine/rez_chamber_atlas.pack
@@ -99,9 +97,10 @@
 /debug/debug_font.fnt
 #/fonts/ornatique-26.fnt
 #/fonts/ornatique.fnt
-/fonts/ArmenianCircus.fnt
-/fonts/Screwball.fnt
+#/fonts/ArmenianCircus.fnt
+#/fonts/Screwball.fnt
 /fonts/longdon.fnt
+/fonts/longdon-small.fnt
 
 #slides
 ## TODO: unload these during the level

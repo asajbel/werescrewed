@@ -89,7 +89,8 @@ public class ProgressManager {
 	public void hitNewCheckPoint( CheckPoint checkPoint, Player player ) {
 		// If the checkpoint hit is not the currently activated one
 		if ( currentCheckPoint != checkPoint
-				&& player.body.getType( ) != BodyType.KinematicBody ) {
+				&& player.body.getType( ) != BodyType.KinematicBody 
+				&& !player.isPlayerDead( ) ) {
 			// Deactivate the current checkpoint
 			currentCheckPoint.deactivate( );
 			oldChkptPos = currentCheckPoint.getPositionPixel( ).cpy( );
@@ -122,7 +123,7 @@ public class ProgressManager {
 				}
 			}
 		} else {
-			if ( player.body.getType( ) == BodyType.KinematicBody ) {
+			if ( player.body.getType( ) == BodyType.KinematicBody && !player.isPlayerDead( ) ) {
 				player.setDeadPlayerHitCheckpnt( true );
 				player.setMoverAtCurrentState( null );
 			}
