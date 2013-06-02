@@ -11341,8 +11341,8 @@
                 </Item>
                 <Item xsi:type="TextureItem" Name="knee2Stripped2" Visible="true">
                     <Position>
-                        <X>1782</X>
-                        <Y>-1864</Y>
+                        <X>1776</X>
+                        <Y>-1856</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -22876,7 +22876,7 @@
                         <PackedValue>2445279424</PackedValue>
                     </FillColor>
                 </Item>
-                <Item xsi:type="TextureItem" Name="right_shoulder_checkpoint" Visible="true">
+                <Item xsi:type="TextureItem" Name="checkpoint6" Visible="true">
                     <Position>
                         <X>2752</X>
                         <Y>-5904</Y>
@@ -24986,6 +24986,40 @@
                         <PackedValue>2445279424</PackedValue>
                     </LineColor>
                 </Item>
+                <Item xsi:type="TextureItem" Name="checkpoint7" Visible="true">
+                    <Position>
+                        <X>1904</X>
+                        <Y>-1376</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>checkpoint</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>kneeSkeleton2</string>
+                        </Property>
+                    </CustomProperties>
+                    <Rotation>0</Rotation>
+                    <Scale>
+                        <X>1</X>
+                        <Y>1</Y>
+                    </Scale>
+                    <TintColor>
+                        <R>255</R>
+                        <G>255</G>
+                        <B>255</B>
+                        <A>255</A>
+                        <PackedValue>4294967295</PackedValue>
+                    </TintColor>
+                    <FlipHorizontally>false</FlipHorizontally>
+                    <FlipVertically>false</FlipVertically>
+                    <texture_filename>cletter.png</texture_filename>
+                    <asset_name>cletter</asset_name>
+                    <Origin>
+                        <X>32</X>
+                        <Y>64</Y>
+                    </Origin>
+                </Item>
             </Items>
             <ScrollSpeed>
                 <X>2</X>
@@ -25002,11 +25036,11 @@
     </Layers>
     <CustomProperties />
     <EditorRelated>
-        <NextItemNumber>965</NextItemNumber>
+        <NextItemNumber>966</NextItemNumber>
         <ContentRootFolder>gleed-textures</ContentRootFolder>
         <CameraPosition>
-            <X>240.678391</X>
-            <Y>-2642.732</Y>
+            <X>324.011841</X>
+            <Y>-909.38324</Y>
         </CameraPosition>
         <Version>1.3.0.0</Version>
     </EditorRelated>
