@@ -660,14 +660,11 @@ public class LevelFactory {
 			skeleBuilder.name( item.name ).position( item.pos ).texture( null );
 
 			if ( item.props.containsKey( "rectangle" ) ) {
-				
 				skeleBuilder.setUseBoundingRect( true );
 				skeleBuilder
 						.buildRectangle(
-								item.pos.x
-										- ( item.element.getFloat( "Width" ) / 2.0f ),
-								item.pos.y
-										- ( item.element.getFloat( "Height" ) / 2.0f ),
+								item.pos.x,
+								item.pos.y-item.element.getFloat( "Height" ),
 								item.element.getFloat( "Width" ),
 								item.element.getFloat( "Height" ) );
 			} else {
