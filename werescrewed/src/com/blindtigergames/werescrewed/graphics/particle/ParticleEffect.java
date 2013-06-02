@@ -31,6 +31,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.GdxRuntimeException;
+import com.blindtigergames.werescrewed.camera.Camera;
 import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 import com.blindtigergames.werescrewed.graphics.TextureAtlas;
 
@@ -91,14 +92,14 @@ public class ParticleEffect implements Disposable {
 			emitters.get( i ).update( delta );
 	}
 
-	public void draw( SpriteBatch spriteBatch ) {
+	public void draw( SpriteBatch spriteBatch, Camera camera ) {
 		for ( int i = 0, n = emitters.size; i < n; i++ )
-			emitters.get( i ).draw( spriteBatch );
+			emitters.get( i ).draw( spriteBatch, camera );
 	}
 
-	public void draw( SpriteBatch spriteBatch, float delta ) {
+	public void draw( SpriteBatch spriteBatch, float delta, Camera camera ) {
 		for ( int i = 0, n = emitters.size; i < n; i++ )
-			emitters.get( i ).draw( spriteBatch, delta );
+			emitters.get( i ).draw( spriteBatch, delta, camera );
 	}
 
 	public void allowCompletion( ) {

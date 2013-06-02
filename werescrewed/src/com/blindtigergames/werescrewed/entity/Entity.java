@@ -329,7 +329,7 @@ public class Entity implements GleedLoadable {
 
 	public void draw( SpriteBatch batch, float deltaTime, Camera camera ) {
 		if ( drawParticles )
-			drawParticles( behindParticles, batch );
+			drawParticles( behindParticles, batch, camera );
 		if ( visible ) {
 			if ( sprite != null && !removeNextStep ) {
 				sprite.draw( batch );
@@ -339,16 +339,16 @@ public class Entity implements GleedLoadable {
 
 		}
 		if ( drawParticles )
-			drawParticles( frontParticles, batch );
+			drawParticles( frontParticles, batch, camera );
 	}
 
 	protected void drawParticles( ArrayHash< String, ParticleEffect > map,
-			SpriteBatch batch ) {
+			SpriteBatch batch, Camera camera ) {
 		if ( map != null ) {
 			for ( String key : map.keySet( ) ) {
 				for ( ParticleEffect e : map.getAll( key ) ) {
 					if ( !e.isComplete( ) ) {
-						e.draw( batch );
+						e.draw( batch, camera );
 					}
 				}
 			}
