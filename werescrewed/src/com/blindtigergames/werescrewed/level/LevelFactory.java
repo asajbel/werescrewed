@@ -276,6 +276,11 @@ public class LevelFactory {
 		}
 
 		if ( out != null ) {
+			if ( item.props.containsKey( "dontsleep" ) ) {
+				out.dontPutToSleep = true;
+				System.out.println(out.dontPutToSleep);
+			}
+			
 			if ( item.props.containsKey( "decal" ) ) {
 				Array< String > tokens;
 				String decalImage;
@@ -704,7 +709,7 @@ public class LevelFactory {
 				skeleBuilder.fadeFgDecals( true );
 			}
 
-			if ( item.props.containsKey( "setChildSkelsToSleep" ) ) {
+			if ( item.props.containsKey( "setchildskelstosleep" ) ) {
 				skeleBuilder.setChildSkelsToSleep( true );
 			}
 			skeleton = skeleBuilder.build( );
@@ -1348,6 +1353,7 @@ public class LevelFactory {
 		// level.progressManager
 		// add checkpointto skeleton not progress manager
 		parent.addCheckPoint( chkpt );
+		level.progressManager.checkPoints.add( chkpt );
 		// chkpt.setParentSkeleton( parent );
 
 		entities.put( item.name, chkpt );
@@ -1644,6 +1650,7 @@ public class LevelFactory {
 				item.getAtlasName( ), "" );
 		parent.addKinematicPlatform( out );
 		entities.put( item.name, out );
+		addBackGroundEntity(out);
 		return out;
 	}
 

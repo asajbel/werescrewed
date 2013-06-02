@@ -131,10 +131,15 @@ public class DragonScreen extends Screen {
 		
 		headDecals();
 		
-		bgm = WereScrewedGame.manager.get( WereScrewedGame.dirHandle.path( )
-				+ "/levels/dragon/riding.mp3", Music.class );
 	}
-
+	@Override
+	public void load(){
+		super.load( );
+		if (bgm == null){
+			bgm = WereScrewedGame.manager.get( WereScrewedGame.dirHandle.path( )
+					+ "/levels/dragon/riding.mp3", Music.class );
+		}
+	}
 	void buildBalloon( ) {
 		balloon1 = ( Platform ) LevelFactory.entities.get( "balloon1" );
 		
@@ -647,6 +652,7 @@ public class DragonScreen extends Screen {
 		bodyRoomRotateSkeleton.addFGDecal( 
 				Sprite.scale(dragon_objects.createSprite( "turbine-outside" ),2), 
 				new Vector2(-1012,100) );
+		bodyRoomRotateSkeleton.sprite=null;
 		//bottom left
 		bodyRoomRotateSkeleton.addFGDecal( 
 				Sprite.scale(dragon_objects.createSprite( "turbine-outside" ),2,-2),
@@ -1077,6 +1083,7 @@ public class DragonScreen extends Screen {
 		TextureAtlas tailAtlas = WereScrewedGame.manager.getAtlas( "body-neck" );
 		TextureAtlas interiorLeftAtlas = WereScrewedGame.manager.getAtlas( "interior_tail3_bodyleft" );
 		TextureAtlas interiorRightAtlas = WereScrewedGame.manager.getAtlas( "interior_tail2_bodyright" );
+		TextureAtlas dragon_objects = WereScrewedGame.manager.getAtlas( "dragon_objects" );
 		
 		//neck
 		neck_skeleton.addFGDecal( Sprite.scale( tailAtlas.createSprite( "neck" ), 2f), new Vector2(-1167,-914) );//4,414
@@ -1098,6 +1105,24 @@ public class DragonScreen extends Screen {
 		bodySkeleton.addBGDecal( Sprite.scale(interiorRightAtlas.createSprite( "body_interior_right" ), 2), interiorPos.cpy().add(4074,0) );
 		bodySkeleton.bgSprite=null;
 		addBGSkeleton( bodySkeleton );
+		
+		//rotation puzzle machine decals
+		Entity screw = LevelFactory.entities.get("body_rotate_puzzle_screw1");
+		Sprite s = dragon_objects.createSprite("rotation_machine_wheel");
+		screw.addBGDecal( s, new Vector2(-s.getWidth( )/2,-s.getHeight( )/2) );
+		addBGEntity( screw );
+		
+		Skeleton rotateScrewSkeleton = ( Skeleton ) LevelFactory.entities
+				.get( "body_inside_rotatepuzzle_skeleton" );
+		s = dragon_objects.createSprite("rotation_machine_rotate_plate");//rotation_machine_wheel
+		s.setScale( 1, 1.37f );
+		rotateScrewSkeleton.addBGDecal( s, new Vector2(-s.getWidth( )/2,-30) );//-s.getHeight( )/2
+		addBGEntity( rotateScrewSkeleton );
+		
+		//l
+		//m
+		//r
+		
 	}
 	
 	void neckDecal(){

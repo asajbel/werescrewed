@@ -409,7 +409,7 @@
                         </Vector2>
                         <Vector2>
                             <X>-336</X>
-                            <Y>-960</Y>
+                            <Y>-880</Y>
                         </Vector2>
                         <Vector2>
                             <X>1424</X>
@@ -420,16 +420,16 @@
                             <Y>-2384</Y>
                         </Vector2>
                         <Vector2>
-                            <X>2672</X>
-                            <Y>-3616</Y>
+                            <X>5328</X>
+                            <Y>-2784</Y>
                         </Vector2>
                         <Vector2>
-                            <X>-4912</X>
-                            <Y>-3664</Y>
+                            <X>-4896</X>
+                            <Y>-2928</Y>
                         </Vector2>
                         <Vector2>
                             <X>-336</X>
-                            <Y>-960</Y>
+                            <Y>-880</Y>
                         </Vector2>
                     </LocalPoints>
                     <WorldPoints>
@@ -439,7 +439,7 @@
                         </Vector2>
                         <Vector2>
                             <X>-352</X>
-                            <Y>-976</Y>
+                            <Y>-896</Y>
                         </Vector2>
                         <Vector2>
                             <X>1408</X>
@@ -450,16 +450,16 @@
                             <Y>-2400</Y>
                         </Vector2>
                         <Vector2>
-                            <X>2656</X>
-                            <Y>-3632</Y>
+                            <X>5312</X>
+                            <Y>-2800</Y>
                         </Vector2>
                         <Vector2>
-                            <X>-4928</X>
-                            <Y>-3680</Y>
+                            <X>-4912</X>
+                            <Y>-2944</Y>
                         </Vector2>
                         <Vector2>
                             <X>-352</X>
-                            <Y>-976</Y>
+                            <Y>-896</Y>
                         </Vector2>
                     </WorldPoints>
                     <IsPolygon>false</IsPolygon>
@@ -4873,7 +4873,7 @@
                             <Y>0</Y>
                         </Vector2>
                         <Vector2>
-                            <X>1536</X>
+                            <X>1456</X>
                             <Y>0</Y>
                         </Vector2>
                     </LocalPoints>
@@ -4935,7 +4935,7 @@
                             <Y>-6272</Y>
                         </Vector2>
                         <Vector2>
-                            <X>-192</X>
+                            <X>-272</X>
                             <Y>-6272</Y>
                         </Vector2>
                     </WorldPoints>
@@ -5266,8 +5266,8 @@
                 </Item>
                 <Item xsi:type="TextureItem" Name="chestPuzzleScrew11" Visible="true">
                     <Position>
-                        <X>-1168</X>
-                        <Y>-4976</Y>
+                        <X>-1328</X>
+                        <Y>-5024</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -9145,7 +9145,7 @@
                 <Item xsi:type="TextureItem" Name="left_arm_ss_4" Visible="true">
                     <Position>
                         <X>-2192</X>
-                        <Y>-5184</Y>
+                        <Y>-5136</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -9181,8 +9181,8 @@
                 </Item>
                 <Item xsi:type="TextureItem" Name="left_arm_ss_5" Visible="true">
                     <Position>
-                        <X>-1888</X>
-                        <Y>-4922</Y>
+                        <X>-1904</X>
+                        <Y>-4928</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -9219,7 +9219,7 @@
                 <Item xsi:type="TextureItem" Name="left_arm_ss_6" Visible="true">
                     <Position>
                         <X>-2192</X>
-                        <Y>-5680</Y>
+                        <Y>-5584</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -9255,7 +9255,7 @@
                 </Item>
                 <Item xsi:type="TextureItem" Name="left_arm_ss_7" Visible="true">
                     <Position>
-                        <X>-1888</X>
+                        <X>-1904</X>
                         <Y>-5360</Y>
                     </Position>
                     <CustomProperties>
@@ -9292,7 +9292,7 @@
                 </Item>
                 <Item xsi:type="TextureItem" Name="left_arm_ss_10" Visible="true">
                     <Position>
-                        <X>-1888</X>
+                        <X>-1904</X>
                         <Y>-4672</Y>
                     </Position>
                     <CustomProperties>
@@ -9329,7 +9329,7 @@
                 </Item>
                 <Item xsi:type="TextureItem" Name="left_arm_ss_11" Visible="true">
                     <Position>
-                        <X>-2064</X>
+                        <X>-2112</X>
                         <Y>-3200</Y>
                     </Position>
                     <CustomProperties>
@@ -9366,7 +9366,7 @@
                 </Item>
                 <Item xsi:type="TextureItem" Name="left_arm_ss_12" Visible="true">
                     <Position>
-                        <X>-2368</X>
+                        <X>-2320</X>
                         <Y>-3200</Y>
                     </Position>
                     <CustomProperties>
@@ -9403,7 +9403,7 @@
                 </Item>
                 <Item xsi:type="TextureItem" Name="left_arm_ss_13" Visible="true">
                     <Position>
-                        <X>-2384</X>
+                        <X>-2320</X>
                         <Y>-3776</Y>
                     </Position>
                     <CustomProperties>
@@ -9440,7 +9440,7 @@
                 </Item>
                 <Item xsi:type="TextureItem" Name="left_arm_ss_14" Visible="true">
                     <Position>
-                        <X>-1856</X>
+                        <X>-1920</X>
                         <Y>-3776</Y>
                     </Position>
                     <CustomProperties>
@@ -9515,7 +9515,7 @@
                 <Item xsi:type="TextureItem" Name="left_arm_ss_17" Visible="true">
                     <Position>
                         <X>-2192</X>
-                        <Y>-4960</Y>
+                        <Y>-4928</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -9551,7 +9551,7 @@
                 </Item>
                 <Item xsi:type="TextureItem" Name="left_arm_ss_18" Visible="true">
                     <Position>
-                        <X>-1888</X>
+                        <X>-1904</X>
                         <Y>-5136</Y>
                     </Position>
                     <CustomProperties>
@@ -9589,7 +9589,7 @@
                 <Item xsi:type="TextureItem" Name="left_arm_ss_20" Visible="true">
                     <Position>
                         <X>-2192</X>
-                        <Y>-5440</Y>
+                        <Y>-5360</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -11341,8 +11341,8 @@
                 </Item>
                 <Item xsi:type="TextureItem" Name="knee2Stripped2" Visible="true">
                     <Position>
-                        <X>1782</X>
-                        <Y>-1864</Y>
+                        <X>1776</X>
+                        <Y>-1856</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -12157,7 +12157,7 @@
                 <Item xsi:type="PathItem" Name="Path_0750" Visible="true">
                     <Position>
                         <X>-1792</X>
-                        <Y>-4032</Y>
+                        <Y>-4064</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -12184,15 +12184,15 @@
                     <WorldPoints>
                         <Vector2>
                             <X>-1792</X>
-                            <Y>-4032</Y>
+                            <Y>-4064</Y>
                         </Vector2>
                         <Vector2>
                             <X>-2112</X>
-                            <Y>-4032</Y>
+                            <Y>-4064</Y>
                         </Vector2>
                         <Vector2>
                             <X>-2112</X>
-                            <Y>-4224</Y>
+                            <Y>-4256</Y>
                         </Vector2>
                     </WorldPoints>
                     <IsPolygon>false</IsPolygon>
@@ -13053,7 +13053,7 @@
                 <Item xsi:type="RectangleItem" Name="rightShoulderPlat1" Visible="true">
                     <Position>
                         <X>3040</X>
-                        <Y>-5648</Y>
+                        <Y>-5680</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -13099,7 +13099,7 @@
                 <Item xsi:type="RectangleItem" Name="rightArmStructurePlat1" Visible="true">
                     <Position>
                         <X>3456</X>
-                        <Y>-5648</Y>
+                        <Y>-5680</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -13131,7 +13131,7 @@
                 <Item xsi:type="TextureItem" Name="Texture_0781" Visible="true">
                     <Position>
                         <X>3504</X>
-                        <Y>-5732</Y>
+                        <Y>-5728</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Screwtype" Type="string" Description="">
@@ -17434,7 +17434,7 @@
                 <Item xsi:type="TextureItem" Name="Texture_0873" Visible="true">
                     <Position>
                         <X>3504</X>
-                        <Y>-3680</Y>
+                        <Y>-3648</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -17471,7 +17471,7 @@
                 <Item xsi:type="TextureItem" Name="Texture_0874" Visible="true">
                     <Position>
                         <X>3504</X>
-                        <Y>-3456</Y>
+                        <Y>-3424</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -17508,7 +17508,7 @@
                 <Item xsi:type="TextureItem" Name="Texture_0875" Visible="true">
                     <Position>
                         <X>3504</X>
-                        <Y>-3232</Y>
+                        <Y>-3200</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -22876,7 +22876,7 @@
                         <PackedValue>2445279424</PackedValue>
                     </FillColor>
                 </Item>
-                <Item xsi:type="TextureItem" Name="right_shoulder_checkpoint" Visible="true">
+                <Item xsi:type="TextureItem" Name="checkpoint6" Visible="true">
                     <Position>
                         <X>2752</X>
                         <Y>-5904</Y>
@@ -22915,7 +22915,7 @@
                 </Item>
                 <Item xsi:type="TextureItem" Name="Texture_0922" Visible="true">
                     <Position>
-                        <X>-2576</X>
+                        <X>-2512</X>
                         <Y>-3200</Y>
                     </Position>
                     <CustomProperties>
@@ -22952,7 +22952,7 @@
                 </Item>
                 <Item xsi:type="TextureItem" Name="Texture_0923" Visible="true">
                     <Position>
-                        <X>-1856</X>
+                        <X>-1920</X>
                         <Y>-3200</Y>
                     </Position>
                     <CustomProperties>
@@ -22989,8 +22989,8 @@
                 </Item>
                 <Item xsi:type="TextureItem" Name="Texture_0924" Visible="true">
                     <Position>
-                        <X>-1856</X>
-                        <Y>-2928</Y>
+                        <X>-1920</X>
+                        <Y>-2976</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -23026,8 +23026,8 @@
                 </Item>
                 <Item xsi:type="TextureItem" Name="Texture_0925" Visible="true">
                     <Position>
-                        <X>-2576</X>
-                        <Y>-2944</Y>
+                        <X>-2512</X>
+                        <Y>-2976</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -23063,7 +23063,7 @@
                 </Item>
                 <Item xsi:type="TextureItem" Name="Texture_0926" Visible="true">
                     <Position>
-                        <X>-2576</X>
+                        <X>-2512</X>
                         <Y>-3776</Y>
                     </Position>
                     <CustomProperties>
@@ -23100,7 +23100,7 @@
                 </Item>
                 <Item xsi:type="TextureItem" Name="Texture_0927" Visible="true">
                     <Position>
-                        <X>-2576</X>
+                        <X>-2512</X>
                         <Y>-3968</Y>
                     </Position>
                     <CustomProperties>
@@ -23137,8 +23137,8 @@
                 </Item>
                 <Item xsi:type="TextureItem" Name="Texture_0928" Visible="true">
                     <Position>
-                        <X>-1872</X>
-                        <Y>-3952</Y>
+                        <X>-1920</X>
+                        <Y>-3968</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -23174,7 +23174,7 @@
                 </Item>
                 <Item xsi:type="TextureItem" Name="Texture_0929" Visible="true">
                     <Position>
-                        <X>-2048</X>
+                        <X>-2112</X>
                         <Y>-3776</Y>
                     </Position>
                     <CustomProperties>
@@ -23456,7 +23456,7 @@
                             <string>set_tutorial</string>
                         </Property>
                         <Property Name="sequence" Type="string" Description="">
-                            <string>2 3</string>
+                            <string>2 4</string>
                         </Property>
                     </CustomProperties>
                     <LocalPoints>
@@ -23540,7 +23540,7 @@
                             <string>set_tutorial</string>
                         </Property>
                         <Property Name="sequence" Type="string" Description="">
-                            <string>4 5</string>
+                            <string>5 6</string>
                         </Property>
                     </CustomProperties>
                     <LocalPoints>
@@ -23624,7 +23624,7 @@
                             <string>set_tutorial</string>
                         </Property>
                         <Property Name="sequence" Type="string" Description="">
-                            <string>6 8</string>
+                            <string>7 9</string>
                         </Property>
                         <Property Name="repeatable" Type="string" Description="">
                             <string />
@@ -23694,8 +23694,8 @@
                 </Item>
                 <Item xsi:type="PathItem" Name="Path_0947" Visible="true">
                     <Position>
-                        <X>-512</X>
-                        <Y>-5106</Y>
+                        <X>-528</X>
+                        <Y>-5088</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="definition" Type="string" Description="">
@@ -23717,12 +23717,12 @@
                     </LocalPoints>
                     <WorldPoints>
                         <Vector2>
-                            <X>-512</X>
-                            <Y>-5106</Y>
+                            <X>-528</X>
+                            <Y>-5088</Y>
                         </Vector2>
                         <Vector2>
-                            <X>-784</X>
-                            <Y>-5106</Y>
+                            <X>-800</X>
+                            <Y>-5088</Y>
                         </Vector2>
                     </WorldPoints>
                     <IsPolygon>false</IsPolygon>
@@ -23831,9 +23831,6 @@
                         <Property Name="invisible" Type="string" Description="">
                             <string>true</string>
                         </Property>
-                        <Property Name="alwaysvisible" Type="string" Description="">
-                            <string />
-                        </Property>
                     </CustomProperties>
                     <LocalPoints>
                         <Vector2>
@@ -23911,9 +23908,6 @@
                         </Property>
                         <Property Name="invisible" Type="string" Description="">
                             <string>true</string>
-                        </Property>
-                        <Property Name="alwaysvisible" Type="string" Description="">
-                            <string />
                         </Property>
                     </CustomProperties>
                     <LocalPoints>
@@ -23993,9 +23987,6 @@
                         <Property Name="invisible" Type="string" Description="">
                             <string>true</string>
                         </Property>
-                        <Property Name="alwaysvisible" Type="string" Description="">
-                            <string />
-                        </Property>
                     </CustomProperties>
                     <LocalPoints>
                         <Vector2>
@@ -24073,9 +24064,6 @@
                         </Property>
                         <Property Name="invisible" Type="string" Description="">
                             <string>true</string>
-                        </Property>
-                        <Property Name="alwaysvisible" Type="string" Description="">
-                            <string />
                         </Property>
                     </CustomProperties>
                     <LocalPoints>
@@ -24155,9 +24143,6 @@
                         <Property Name="invisible" Type="string" Description="">
                             <string>true</string>
                         </Property>
-                        <Property Name="alwaysvisible" Type="string" Description="">
-                            <string />
-                        </Property>
                     </CustomProperties>
                     <LocalPoints>
                         <Vector2>
@@ -24235,9 +24220,6 @@
                         </Property>
                         <Property Name="invisible" Type="string" Description="">
                             <string>true</string>
-                        </Property>
-                        <Property Name="alwaysvisible" Type="string" Description="">
-                            <string />
                         </Property>
                     </CustomProperties>
                     <LocalPoints>
@@ -24317,9 +24299,6 @@
                         <Property Name="invisible" Type="string" Description="">
                             <string>true</string>
                         </Property>
-                        <Property Name="alwaysvisible" Type="string" Description="">
-                            <string />
-                        </Property>
                     </CustomProperties>
                     <LocalPoints>
                         <Vector2>
@@ -24397,9 +24376,6 @@
                         </Property>
                         <Property Name="invisible" Type="string" Description="">
                             <string>true</string>
-                        </Property>
-                        <Property Name="alwaysvisible" Type="string" Description="">
-                            <string />
                         </Property>
                     </CustomProperties>
                     <LocalPoints>
@@ -24479,9 +24455,6 @@
                         <Property Name="invisible" Type="string" Description="">
                             <string>true</string>
                         </Property>
-                        <Property Name="alwaysvisible" Type="string" Description="">
-                            <string />
-                        </Property>
                     </CustomProperties>
                     <LocalPoints>
                         <Vector2>
@@ -24559,9 +24532,6 @@
                         </Property>
                         <Property Name="invisible" Type="string" Description="">
                             <string>true</string>
-                        </Property>
-                        <Property Name="alwaysvisible" Type="string" Description="">
-                            <string />
                         </Property>
                     </CustomProperties>
                     <LocalPoints>
@@ -24641,9 +24611,6 @@
                         <Property Name="invisible" Type="string" Description="">
                             <string>true</string>
                         </Property>
-                        <Property Name="alwaysvisible" Type="string" Description="">
-                            <string />
-                        </Property>
                     </CustomProperties>
                     <LocalPoints>
                         <Vector2>
@@ -24721,9 +24688,6 @@
                         </Property>
                         <Property Name="invisible" Type="string" Description="">
                             <string>true</string>
-                        </Property>
-                        <Property Name="alwaysvisible" Type="string" Description="">
-                            <string />
                         </Property>
                     </CustomProperties>
                     <LocalPoints>
@@ -24803,9 +24767,6 @@
                         <Property Name="invisible" Type="string" Description="">
                             <string>true</string>
                         </Property>
-                        <Property Name="alwaysvisible" Type="string" Description="">
-                            <string />
-                        </Property>
                     </CustomProperties>
                     <LocalPoints>
                         <Vector2>
@@ -24883,9 +24844,6 @@
                         </Property>
                         <Property Name="invisible" Type="string" Description="">
                             <string>true</string>
-                        </Property>
-                        <Property Name="alwaysvisible" Type="string" Description="">
-                            <string />
                         </Property>
                     </CustomProperties>
                     <LocalPoints>
@@ -24965,9 +24923,6 @@
                         <Property Name="invisible" Type="string" Description="">
                             <string>true</string>
                         </Property>
-                        <Property Name="alwaysvisible" Type="string" Description="">
-                            <string />
-                        </Property>
                     </CustomProperties>
                     <LocalPoints>
                         <Vector2>
@@ -25031,6 +24986,40 @@
                         <PackedValue>2445279424</PackedValue>
                     </LineColor>
                 </Item>
+                <Item xsi:type="TextureItem" Name="checkpoint7" Visible="true">
+                    <Position>
+                        <X>1904</X>
+                        <Y>-1376</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>checkpoint</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>kneeSkeleton2</string>
+                        </Property>
+                    </CustomProperties>
+                    <Rotation>0</Rotation>
+                    <Scale>
+                        <X>1</X>
+                        <Y>1</Y>
+                    </Scale>
+                    <TintColor>
+                        <R>255</R>
+                        <G>255</G>
+                        <B>255</B>
+                        <A>255</A>
+                        <PackedValue>4294967295</PackedValue>
+                    </TintColor>
+                    <FlipHorizontally>false</FlipHorizontally>
+                    <FlipVertically>false</FlipVertically>
+                    <texture_filename>cletter.png</texture_filename>
+                    <asset_name>cletter</asset_name>
+                    <Origin>
+                        <X>32</X>
+                        <Y>64</Y>
+                    </Origin>
+                </Item>
             </Items>
             <ScrollSpeed>
                 <X>2</X>
@@ -25047,11 +25036,11 @@
     </Layers>
     <CustomProperties />
     <EditorRelated>
-        <NextItemNumber>965</NextItemNumber>
+        <NextItemNumber>966</NextItemNumber>
         <ContentRootFolder>gleed-textures</ContentRootFolder>
         <CameraPosition>
-            <X>374.0141</X>
-            <Y>-326.0614</Y>
+            <X>-325.9898</X>
+            <Y>-3109.39063</Y>
         </CameraPosition>
         <Version>1.3.0.0</Version>
     </EditorRelated>

@@ -3,6 +3,7 @@ package com.blindtigergames.werescrewed.screens;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Graphics.DisplayMode;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.audio.Music;
@@ -56,11 +57,8 @@ public class Screen implements com.badlogic.gdx.Screen {
 	protected float scale = 0.0f;
 	protected final float SCALE_MIN = 0.0f;
 	protected final float SCALE_MAX = 10.0f;
-	protected final float SCALE_DOWN = 100.0f;
-	protected final float SCALE_UP = 100.0f;
+	protected final float SCALE_SIZE = 150.0f;
 	protected float scaleMax = 0.0f;
-	//protected Sprite transIn = null;
-	//protected Sprite transOut = null;
 	protected Sprite trans = null;
 	protected boolean alphaFinish = false;
 	protected boolean transInEnd = true;
@@ -111,14 +109,7 @@ public class Screen implements com.badlogic.gdx.Screen {
 		if ((Gdx.input.isKeyPressed( Keys.ALT_LEFT ) 
 				|| Gdx.input.isKeyPressed( Keys.ALT_RIGHT )) 
 				&& Gdx.input.isKeyPressed( Keys.ENTER ) ) {
-			if (fullscreen) {
-				Gdx.graphics.setDisplayMode( 1280, 720, false );
-				fullscreen = false;
-			}
-			else {
-				Gdx.graphics.setDisplayMode( Gdx.graphics.getDesktopDisplayMode( ) );
-				fullscreen = true; 
-			}
+			changeFullScreen( );
 		}
 		//////////////////////////////////////////////////////////////////////
 		Gdx.gl.glViewport(
@@ -354,10 +345,24 @@ public class Screen implements com.badlogic.gdx.Screen {
 
 	}
 	
+	protected void changeFullScreen( ) {
+		if (fullscreen) {
+			Gdx.graphics.setDisplayMode( 1280, 720, false );
+			fullscreen = false;
+		}
+		else {
+			DisplayMode mode = Gdx.graphics.getDesktopDisplayMode( );
+			Gdx.graphics.setDisplayMode( mode.width, mode.height, true );
+			fullscreen = true; 
+		}
+		WereScrewedGame.setReconnect( true );
+	}
+	
 	protected void drawTransIn ( SpriteBatch batch ) {
-		scale = scale - SCALE_DOWN;
+		scale = scale - SCALE_SIZE;
 		trans.setOrigin( trans.getWidth( ) / 2, trans.getHeight( ) / 2 );
 		trans.rotate( 5.0f );
+		trans.setSize( scale, scale );
 		trans.draw( batch );
 		if ( scale < SCALE_MIN ) {
 			transInEnd = true;
@@ -366,26 +371,28 @@ public class Screen implements com.badlogic.gdx.Screen {
 	}
 	
 	protected void drawTransOut ( SpriteBatch batch ) {
-		scale = scale + SCALE_UP;
+		scale = scale + SCALE_SIZE;
 		trans.setOrigin( trans.getWidth( ) / 2, trans.getHeight( ) / 2 );
 		trans.rotate( 5.0f );
+		trans.setSize( scale, scale );
 		trans.draw( batch );
 		if ( scale > scaleMax ) {
 			transOutEnd = true;
+			scale = scaleMax;
 			if ( Buttons.size( ) > 0 ) 
 				Buttons.get( buttonIndex ).setSelected( true );
-			else
-				scale = 0.0f;
 		}
 	}
 	
 	protected void drawTransOut ( SpriteBatch batch, ScreenType screen ) {
-		scale = scale + SCALE_UP;
+		scale = scale + SCALE_SIZE;
 		trans.setOrigin( trans.getWidth( ) / 2, trans.getHeight( ) / 2 );
 		trans.rotate( 5.0f );
+		trans.setSize( scale, scale );
 		trans.draw( batch );
 		if ( scale > scaleMax ) {
 			transOutEnd = true;
+			scale = scaleMax;
 			ScreenManager.getInstance( ).show( screen );
 		}
 	}
@@ -472,8 +479,9 @@ public class Screen implements com.badlogic.gdx.Screen {
 		shapeRenderer.setColor( clearColor.r,
 				clearColor.g, clearColor.b,
 				clearColor.a );
-	}
+		WereScrewedGame.reconnectControllers( );
 
+	}
 	@Override
 	public void show( ) {
 		if (!assetsLoaded){
@@ -512,9 +520,9 @@ public class Screen implements com.badlogic.gdx.Screen {
 	public void dispose( ) {
 		if ( level != null )
 			level.resetPhysicsWorld( );
+		
 		if (bgm != null){
 			bgm.stop( );
-			bgm.dispose( );
 			bgm = null;
 		}
 		if (sounds != null){
@@ -522,6 +530,7 @@ public class Screen implements com.badlogic.gdx.Screen {
 			sounds = null;
 		}
 		assetsLoaded = false;
+		
 	}
 
 	/**

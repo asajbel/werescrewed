@@ -17,6 +17,7 @@ import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 import com.blindtigergames.werescrewed.graphics.TextureAtlas;
 import com.blindtigergames.werescrewed.gui.TextButton;
 import com.blindtigergames.werescrewed.gui.TextButton.ButtonHandler;
+import com.blindtigergames.werescrewed.sound.SoundManager;
 
 class MainMenuScreen extends Screen {
 
@@ -104,13 +105,11 @@ class MainMenuScreen extends Screen {
 		if ( !transInEnd ) {
 			trans.setPosition( width / 2 - trans.getWidth( ) / 2, height / 2 - trans.getHeight( ) / 2 );
 			drawTransIn( batch );
-			trans.setSize( scale, scale );
 		}
 		
 		if ( !transOutEnd ) {
 			trans.setPosition( width / 2 - trans.getWidth( ) / 2, height / 2 - trans.getHeight( ) / 2 );
 			drawTransOut( batch );
-			trans.setSize( scale, scale );
 		}
 		
 		batch.end( );
@@ -212,26 +211,28 @@ class MainMenuScreen extends Screen {
 
 	@Override
 	public void show( ) {
-
+		super.show( );
+		SoundManager.clearLoops( );
 	}
 
 	@Override
 	public void hide( ) {
-
+		super.hide( );
 	}
 
 	@Override
 	public void pause( ) {
-
+		super.pause( );
 	}
 
 	@Override
 	public void resume( ) {
-
+		super.resume( );
 	}
 
 	@Override
 	public void dispose( ) {
+		super.dispose( );
 	}
 
 	/*

@@ -5,6 +5,7 @@ import java.util.HashMap;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.Filter;
 import com.badlogic.gdx.physics.box2d.Fixture;
@@ -39,6 +40,7 @@ public class ProgressManager {
 	private HashMap< String, Player > players;
 	private HashMap< String, ResurrectScrew > rezScrewMap;
 	private HashMap< String, Entity > ghostMap;
+	public ArrayList<CheckPoint> checkPoints;
 	// private HashMap< String, TextureRegion > ghostTextures;
 	private World world;
 	private Vector2 oldChkptPos;
@@ -60,6 +62,7 @@ public class ProgressManager {
 		players = new HashMap< String, Player >( );
 		rezScrewMap = new HashMap< String, ResurrectScrew >( );
 		ghostMap = new HashMap< String, Entity >( );
+		checkPoints = new ArrayList<CheckPoint>( );
 		// ghostTextures = new HashMap< String, TextureRegion >( );
 		// TextureAtlas atlas = WereScrewedGame.manager.getAtlas(
 		// "common-textures");
@@ -86,7 +89,8 @@ public class ProgressManager {
 	public void hitNewCheckPoint( CheckPoint checkPoint, Player player ) {
 		// If the checkpoint hit is not the currently activated one
 		if ( currentCheckPoint != checkPoint
-				&& player.body.getType( ) != BodyType.KinematicBody ) {
+				&& player.body.getType( ) != BodyType.KinematicBody 
+				&& !player.isPlayerDead( ) ) {
 			// Deactivate the current checkpoint
 			currentCheckPoint.deactivate( );
 			oldChkptPos = currentCheckPoint.getPositionPixel( ).cpy( );
@@ -119,7 +123,7 @@ public class ProgressManager {
 				}
 			}
 		} else {
-			if ( player.body.getType( ) == BodyType.KinematicBody ) {
+			if ( player.body.getType( ) == BodyType.KinematicBody && !player.isPlayerDead( ) ) {
 				player.setDeadPlayerHitCheckpnt( true );
 				player.setMoverAtCurrentState( null );
 			}
@@ -133,7 +137,21 @@ public class ProgressManager {
 	public void update( float deltaTime ) {
 		animTime += deltaTime;
 		noPlayersDead = true;
+		int index = 0;
+		while ( this.currentCheckPoint == null && index < checkPoints.size()) {
+			if ( checkPoints.get( index ) != null ) {
+				this.currentCheckPoint = checkPoints.get( index );
+			} else {
+				checkPoints.remove( index );
+			}
+			index++;
+		}
 		for ( Player player : players.values( ) ) {
+			if ( player.isAutoRezzing( ) ) {
+				player.body.setLinearVelocity( Vector2.Zero );
+				player.body.setType( BodyType.KinematicBody );
+				this.startSpawn( player );
+			}
 			if ( player.isDeadPlayerHitCheckpnt( ) ) {
 				wait( player );
 			}
@@ -143,6 +161,12 @@ public class ProgressManager {
 			} else if ( player.isPlayerDead( ) ) {
 				if ( !rezScrewMap.containsKey( player.name ) ) {
 					handleDeadPlayer( player );
+				} else {
+					Body jointBody = rezScrewMap.get( player.name ).
+							body.getJointList( ).get( 0 ).joint.getBodyB( );
+					if ( jointBody  == null || !jointBody.isActive( ) || jointBody.isAwake( ) ) {
+						rezScrewMap.get( player.name ).connectScrewToEntity( currentCheckPoint );
+					}
 				}
 				noPlayersDead = false;
 			}
@@ -334,9 +358,11 @@ public class ProgressManager {
 		// player.body.setLinearVelocity( diff );
 		player.setVisible( false, true );
 
-		rezScrewMap.get( player.name ).remove( );
-		if ( rezScrewMap.get( player.name ).isRemoved( ) ) {
-			rezScrewMap.remove( player.name );
+		if ( rezScrewMap.containsKey( player.name ) ) {
+			rezScrewMap.get( player.name ).remove( );
+			if ( rezScrewMap.get( player.name ).isRemoved( ) ) {
+				rezScrewMap.remove( player.name );
+			}
 		}
 		
 	}

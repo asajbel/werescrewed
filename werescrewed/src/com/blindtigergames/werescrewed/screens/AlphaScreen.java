@@ -38,13 +38,16 @@ import com.blindtigergames.werescrewed.entity.action.RotateTweenAction;
 import com.blindtigergames.werescrewed.entity.builders.EventTriggerBuilder;
 import com.blindtigergames.werescrewed.entity.builders.PlatformBuilder;
 import com.blindtigergames.werescrewed.entity.builders.PlayerBuilder;
+import com.blindtigergames.werescrewed.entity.hazard.Enemy;
 import com.blindtigergames.werescrewed.entity.mover.AnalogRotateMover;
+import com.blindtigergames.werescrewed.entity.mover.DirectionFlipMover;
 import com.blindtigergames.werescrewed.entity.mover.LinearAxis;
 import com.blindtigergames.werescrewed.entity.mover.ParallaxMover;
 import com.blindtigergames.werescrewed.entity.mover.PuzzleType;
 import com.blindtigergames.werescrewed.entity.mover.RotateTweenMover;
 import com.blindtigergames.werescrewed.entity.mover.TimelineTweenMover;
 import com.blindtigergames.werescrewed.entity.mover.puzzle.PuzzleRotateTweenMover;
+import com.blindtigergames.werescrewed.entity.particles.EntityParticleEmitter;
 import com.blindtigergames.werescrewed.entity.particles.Steam;
 import com.blindtigergames.werescrewed.entity.platforms.Platform;
 import com.blindtigergames.werescrewed.entity.platforms.TiledPlatform;
@@ -75,6 +78,7 @@ public class AlphaScreen extends Screen {
 			powerSwitchBrain1, powerSwitchBrain2;
 
 	private PowerSwitch powerSwitchPuzzle1, powerSwitchPuzzle2;
+	private EntityParticleEmitter fireballEmitter;
 	private Skeleton footSkeleton, kneeSkeleton, thighSkeleton, hipSkeleton,
 			chestSkeleton, leftShoulderSkeleton, headSkeleton, thighSkeleton2;
 
@@ -161,7 +165,7 @@ public class AlphaScreen extends Screen {
 		// right arm: 2600f, 6000f >>>> side
 		// left side hand <- -2224, 3008
 
-		Vector2 spawnPos = new Vector2( 512, 256 );
+		Vector2 spawnPos = new Vector2( 480, 256 );
 
 		if ( level.player1 == null ) {
 			level.player1 = new PlayerBuilder( ).world( level.world )
@@ -230,20 +234,23 @@ public class AlphaScreen extends Screen {
 		footWall2.dontPutToSleep = true;
 		Platform footBottom = ( Platform ) LevelFactory.entities.get( "footBottom" );
 		footBottom.dontPutToSleep = true;
-		
 	}
 
 	@Override
 	public void load(){
-		bgm = WereScrewedGame.manager.get( WereScrewedGame.dirHandle.path( )
-				+ "/common/music/waltz.mp3", Music.class );
-		sounds = new SoundManager( );
-		sounds.getSound( "arm_start", WereScrewedGame.dirHandle.path( )
-				+ "/levels/alphabot/sounds/arm_move_begin.ogg" );
-		sounds.getSound( "arm_loop", WereScrewedGame.dirHandle.path( )
-				+ "/levels/alphabot/sounds/arm_move_loop.ogg" );
-		sounds.getSound( "arm_end", WereScrewedGame.dirHandle.path( )
-				+ "/levels/alphabot/sounds/arm_move_end.ogg" );
+		if (bgm == null){
+			bgm = WereScrewedGame.manager.get( WereScrewedGame.dirHandle.path( )
+					+ "/common/music/waltz.mp3", Music.class );
+		}
+		if (sounds == null){
+			sounds = new SoundManager( );
+			sounds.getSound( "arm_start", WereScrewedGame.dirHandle.path( )
+					+ "/levels/alphabot/sounds/arm_move_begin.ogg" );
+			sounds.getSound( "arm_loop", WereScrewedGame.dirHandle.path( )
+					+ "/levels/alphabot/sounds/arm_move_loop.ogg" );
+			sounds.getSound( "arm_end", WereScrewedGame.dirHandle.path( )
+					+ "/levels/alphabot/sounds/arm_move_end.ogg" );
+		}
 	}
 	
 	@Override
@@ -1611,6 +1618,10 @@ public class AlphaScreen extends Screen {
 			// rleg
 			if ( powerSwitch5.isTurnedOn( ) && powerSwitch6.isTurnedOn( ) ) {
 				panelName = panelName + "_rleg";
+				if(testOnce){
+					initFireballEnemy(new Vector2(1625, 600));
+					testOnce = false;
+				}
 			}
 
 			// right arm
@@ -1767,5 +1778,32 @@ public class AlphaScreen extends Screen {
 				fw.addFrontParticleEffect( "fireworks/firework" + ((i % 5) + 1) , true , true ).start();
 			}
 		}
+	}
+	
+	/**
+	 * taken from dragonScreen
+	 * @param pos vector2
+	 */
+	private void initFireballEnemy(Vector2 pos){
+		
+		int w = 15, n= 10, h = 140;
+		
+		//build a little cage for the fireball
+	
+		
+		fireballEmitter = new EntityParticleEmitter( "bolt emitter",
+				new Vector2( pos.cpy( ).add(0,n*h) ),
+				new Vector2(),
+				25, level.world, true );
+		for(int i = 0; i < 1; ++i ){
+			fireballEmitter.addParticle( createBoltEnemy( pos.cpy( ), i ), 5, 0, i*5 );
+		}
+		level.root.addLooseEntity( fireballEmitter );
+	}
+	Enemy createBoltEnemy(Vector2 pos, int index){
+		Enemy hotbolt = new Enemy( "hot-bolt"+index, pos,25, level.world, true );
+		hotbolt.addMover( new DirectionFlipMover( false, 0.002f, hotbolt, 1f, .04f ) );
+		addBGEntity( hotbolt );
+		return hotbolt;
 	}
 }
