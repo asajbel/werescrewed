@@ -68,7 +68,7 @@ public class Platform extends Entity {
 
 	protected Joint extraSkeletonJoint;
 	
-	public boolean dontPutToSleep = false;
+	
 
 	// ============================================
 	// Constructors
