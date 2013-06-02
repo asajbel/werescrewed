@@ -622,7 +622,7 @@ public class Skeleton extends Platform {
 		for ( Screw screw : screwMap.values( ) ) {
 			if ( screw.removeNextStep ) {
 				entitiesToRemove.add( screw );
-			} else {
+			} else if ( !screw.dontPutToSleep ) {
 				screw.body.setAwake( true );
 				screw.body.setActive( false );
 			}

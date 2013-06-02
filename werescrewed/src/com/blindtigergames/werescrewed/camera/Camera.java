@@ -138,6 +138,8 @@ public class Camera {
 	 * @return
 	 */
 	public Rectangle getBounds( ) {
+//		screenBounds.x = screenBounds.x + 0.5f;
+//		screenBounds.width = screenBounds.width - 20f;
 		return screenBounds;
 	}
 
@@ -512,20 +514,20 @@ public class Camera {
 		shapeRenderer.end( );
 
 		// renders a cross through the square
-		shapeRenderer.begin( ShapeType.Line );
-		shapeRenderer.line( screenBounds.x, screenBounds.y, screenBounds.x
-				+ screenBounds.width, screenBounds.y + screenBounds.height );
-		shapeRenderer.line( screenBounds.x, screenBounds.y
-				+ screenBounds.height, screenBounds.x + screenBounds.width,
-				screenBounds.y );
-		shapeRenderer.end( );
-
-		// render the translation target buffer
-		shapeRenderer.begin( ShapeType.Circle );
-		shapeRenderer.identity( );
-		shapeRenderer.circle( translateTarget.x, translateTarget.y,
-				targetBuffer );
-		shapeRenderer.end( );
+//		shapeRenderer.begin( ShapeType.Line );
+//		shapeRenderer.line( screenBounds.x, screenBounds.y, screenBounds.x
+//				+ screenBounds.width, screenBounds.y + screenBounds.height );
+//		shapeRenderer.line( screenBounds.x, screenBounds.y
+//				+ screenBounds.height, screenBounds.x + screenBounds.width,
+//				screenBounds.y );
+//		shapeRenderer.end( );
+//
+//		// render the translation target buffer
+//		shapeRenderer.begin( ShapeType.Circle );
+//		shapeRenderer.identity( );
+//		shapeRenderer.circle( translateTarget.x, translateTarget.y,
+//				targetBuffer );
+//		shapeRenderer.end( );
 
 	}
 

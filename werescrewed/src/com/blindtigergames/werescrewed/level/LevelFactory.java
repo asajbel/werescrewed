@@ -276,6 +276,10 @@ public class LevelFactory {
 		}
 
 		if ( out != null ) {
+			if ( item.props.containsKey( "dontsleep" ) ) {
+				out.dontPutToSleep = true;
+				System.out.println(out.dontPutToSleep);
+			}
 			if ( item.props.containsKey( "decal" ) ) {
 				Array< String > tokens;
 				String decalImage;
