@@ -403,8 +403,13 @@ public class Skeleton extends Platform {
 		float frameRate = 1 / deltaTime;
 		isUpdatable = ( !this.isFadingSkel( ) || this.isFGFaded( ) );
 		if ( useBoundingRect ) {
-			if ( !boundingRect.overlaps( lastCameraRect ) )
+			if ( !boundingRect.overlaps( lastCameraRect ) ) {
 				isUpdatable = false;
+				for ( Skeleton skeleton : childSkeletonMap.values( ) ) {
+					skeleton.setEntitiesToSleepOnUpdate( );
+					skeleton.wasInactive = true;
+				}
+			}
 		}
 		if ( isUpdatable || isMacroSkeleton ) {
 			updateMover( deltaTime );
