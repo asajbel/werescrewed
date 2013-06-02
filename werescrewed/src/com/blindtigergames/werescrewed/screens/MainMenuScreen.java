@@ -17,6 +17,7 @@ import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 import com.blindtigergames.werescrewed.graphics.TextureAtlas;
 import com.blindtigergames.werescrewed.gui.TextButton;
 import com.blindtigergames.werescrewed.gui.TextButton.ButtonHandler;
+import com.blindtigergames.werescrewed.sound.SoundManager;
 
 class MainMenuScreen extends Screen {
 
@@ -213,6 +214,7 @@ class MainMenuScreen extends Screen {
 	@Override
 	public void show( ) {
 		super.show( );
+		SoundManager.clearLoops( );
 	}
 
 	@Override

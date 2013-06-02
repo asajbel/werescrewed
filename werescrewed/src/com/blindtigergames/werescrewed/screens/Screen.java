@@ -477,18 +477,15 @@ public class Screen implements com.badlogic.gdx.Screen {
 				clearColor.g, clearColor.b,
 				clearColor.a );
 	}
-
 	@Override
 	public void show( ) {
 		if (!assetsLoaded){
 			load();
 		}
 		if (bgm != null){
-			// UNCOMMENTED UNTIL IT STOPS CRASHING WHEN RESTARTING LEVELS
-			
-//			bgm.setLooping( true );
-//			bgm.setVolume( SoundManager.getMusicVolume( ) );
-//			bgm.play( );
+			bgm.setLooping( true );
+			bgm.setVolume( SoundManager.getMusicVolume( ) );
+			bgm.play( );
 		}
 	}
 

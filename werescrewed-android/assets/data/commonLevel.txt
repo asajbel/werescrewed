@@ -48,14 +48,12 @@
 /common/sounds/chain3.ogg
 /common/sounds/frontswing.ogg
 /common/sounds/backswing.ogg
-/common/sounds/chain3.ogg
 /common/sounds/switchOn.ogg
 /common/sounds/switchOff.ogg
 #/common/sounds/TrainJob.mp3
 #/common/sounds/loopTrain.mp3
 #/common/sounds/introTrain.mp3
-/levels/alphabot/sounds/arm_move.ogg
-/levels/alphabot/sounds/Engine.ogg
+#/levels/alphabot/sounds/Engine.ogg
 
 /common/tileset/TilesetTest.png
 /common/title_background_clear.png

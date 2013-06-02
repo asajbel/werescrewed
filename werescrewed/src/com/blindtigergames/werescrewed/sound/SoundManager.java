@@ -68,6 +68,13 @@ public class SoundManager implements Disposable {
 		}
 	}
 	
+	public static void clearLoops(){
+		for (SoundRef ref: loopSounds){
+			ref.stop();
+		}
+		loopSounds.clear( );
+	}
+	
 	public static void setEnableLoops(boolean v){allowLoopSounds = v;}
 	
 	protected Camera camera;
@@ -199,13 +206,16 @@ public class SoundManager implements Disposable {
 			float extVol, float extPitch ) {
 		if ( hasSound( id, index ) ) {
 			//sounds.get( id ).loop( override, extVol, extPitch );
-			SoundRef ref = sounds.get( id );
-			ref.setVolume( extVol );
-			ref.setPitch( extPitch );
-			loopSounds.add( ref );
+			addSoundToLoops(sounds.get( id ), extVol, extPitch);
 		}
 	}
 
+	public static void addSoundToLoops( SoundRef ref , float extVol, float extPitch){
+		ref.setVolume( extVol );
+		ref.setPitch( extPitch );
+		loopSounds.add( ref );		
+	}
+	
 	public void stopSound( String id ){
 		if (hasSound(id)){
 			Array<SoundRef> refs = sounds.getAll( id );
@@ -618,12 +628,13 @@ public class SoundManager implements Disposable {
 		public String getAssetName(){
 			return assetName;
 		}
+		
 		public void dispose(){
 			stop();
+			sound.stop( );
 			if (SoundManager.loopSounds.contains(this)){
 				SoundManager.loopSounds.remove(this);
 			}
-			sound.dispose( );
 		}
 
 		public long getLoopID( ) {
