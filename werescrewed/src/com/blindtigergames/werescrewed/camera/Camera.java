@@ -138,8 +138,8 @@ public class Camera {
 	 * @return
 	 */
 	public Rectangle getBounds( ) {
-//		screenBounds.x = screenBounds.x + 2f;
-//		screenBounds.width = screenBounds.width -20f;
+//		screenBounds.x = screenBounds.x + 5;
+//		screenBounds.width = screenBounds.width -5f;
 		return screenBounds;
 	}
 
