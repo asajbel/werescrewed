@@ -18,6 +18,8 @@
 /levels/alphabot/sounds/arm_move_end.ogg
 /levels/alphabot/sounds/fireworks1.ogg
 /levels/alphabot/sounds/fireworks2.ogg
+/levels/alphabot/sounds/applause_action.ogg
+/levels/alphabot/sounds/applause_final.ogg
 
 ##stage assets
 /levels/alphabot/theater_floor_seats_stage.pack

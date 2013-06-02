@@ -253,6 +253,10 @@ public class AlphaScreen extends Screen {
 					+ "/levels/alphabot/sounds/fireworks1.ogg" );
 			sounds.getSound( "fireworks", WereScrewedGame.dirHandle.path( )
 					+ "/levels/alphabot/sounds/fireworks2.ogg" );
+			sounds.getSound( "applause_action", WereScrewedGame.dirHandle.path( )
+					+ "/levels/alphabot/sounds/applause_action.ogg" );
+			sounds.getSound( "applause_final", WereScrewedGame.dirHandle.path( )
+					+ "/levels/alphabot/sounds/applause_final.ogg" );
 			assetsLoaded = true;
 		}
 	}
@@ -306,6 +310,9 @@ public class AlphaScreen extends Screen {
 
 			if ( powerSwitchBrain1.isTurnedOn( )
 					&& powerSwitchBrain2.isTurnedOn( ) ) {
+				if (!sounds.isDelayed( "applause_final" )){
+					sounds.playSound( "applause_final", 6.0f );
+				}
 				if(dT > .5){
 					dT = 0;
 					shootFireworks();
@@ -930,6 +937,7 @@ public class AlphaScreen extends Screen {
 					// deactivate anchor
 					sounds.stopSound( "arm_loop" );
 					sounds.playSound( "arm_end", 1.0f );
+					sounds.playSound( "applause_action", 1.0f );
 					leftShoulderSkeleton.anchors.get( 0 ).deactivate( );
 				} else if (!sounds.isDelayed( "arm_start" )) {	
 					sounds.setSoundVolume( "arm_loop", 1.0f);
@@ -989,6 +997,7 @@ public class AlphaScreen extends Screen {
 					// deactivate anchor
 					sounds.stopSound( "arm_loop" );
 					sounds.playSound( "arm_end", 1.0f );
+					sounds.playSound( "applause_action", 1.0f );
 					rightShoulderSkeleton.anchors.get( 0 ).deactivate( );
 				} else if (!(sounds.isDelayed( "arm_end" ) || sounds.isLooping( "arm_loop" ))){
 					//play startup sound when the previous sound ends.
