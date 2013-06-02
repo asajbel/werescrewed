@@ -2,6 +2,8 @@ package com.blindtigergames.werescrewed.entity.action;
 
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityType;
+import com.blindtigergames.werescrewed.entity.hazard.Hazard;
+import com.blindtigergames.werescrewed.entity.hazard.HazardType;
 import com.blindtigergames.werescrewed.player.Player;
 
 public class RemoveEntityAction implements IAction {
@@ -25,11 +27,15 @@ public class RemoveEntityAction implements IAction {
 	@Override
 	public void act( Entity entity ) {
 		if ( entity.getEntityType( ) != EntityType.PLAYER ) {
+			if(entity.getEntityType( ) == EntityType.HAZARD && ((Hazard) entity).hazardType == HazardType.ENEMY ){
+				return;
+			}
+			
 			entity.setRemoveNextStep( );
 			// Gdx.app.log( "removing Entity", entity.name );
 		} else {
 			Player player = ( Player ) entity;
-			player.killPlayer( );
+			player.setAutoRezzing( );
 		}
 	}
 

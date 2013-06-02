@@ -147,18 +147,11 @@ public class Fire extends Hazard {
 		upsideDown = !upsideDown;
 	}
 	public void update( float deltaTime){
-		if (isActive()){
-			if (!sounds.isLooping( "idle" )){
-				sounds.loopSound( "idle" );
-			}
-			sounds.setSoundVolume(
-					"idle",
-					isActive( ) ? sounds.calculatePositionalVolume( "idle",
-							getPositionPixel( ), Camera.CAMERA_RECT ) : 0f );
-			sounds.update( deltaTime );
-		} else {
-			sounds.stopSound( "idle" );
-		}
+		sounds.setSoundVolume(
+				"idle",
+				isActive( ) ? sounds.calculatePositionalVolume( "idle",
+						getPositionPixel( ), Camera.CAMERA_RECT ) : 0f );
+		sounds.update( deltaTime );
 	}
 	/**
 	 * draws fire particles
@@ -202,8 +195,9 @@ public class Fire extends Hazard {
 			sounds = new SoundManager( );
 		SoundRef fireSound = sounds.getSound( "idle",
 				WereScrewedGame.dirHandle + "/common/sounds/flames.ogg" );
-		fireSound.setRange( 1200.f );
+		fireSound.setRange( 1000.f );
 		fireSound.setFalloff( 2.0f );
 		fireSound.setOffset( new Vector2(0.0f, height / 2.0f) );
+		SoundManager.addSoundToLoops( fireSound , 0.0f, 1.0f);
 	}
 }

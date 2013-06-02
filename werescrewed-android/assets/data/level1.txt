@@ -11,6 +11,7 @@
 
 ##sounds
 /common/sounds/inceptionbutton.mp3
+/levels/alphabot/sounds/Engine.ogg
 /levels/alphabot/sounds/gear.ogg
 /levels/alphabot/sounds/arm_move_begin.ogg
 /levels/alphabot/sounds/arm_move_loop.ogg

@@ -1566,7 +1566,7 @@ public class Entity implements GleedLoadable {
 	// Idle sound
 	public void idleSound( ) {
 		if ( sounds != null && sounds.hasSound( "idle" ) ) {
-			sounds.loopSound( "idle", 0);
+			sounds.addSoundToLoops( "idle", 0);
 			sounds.setSoundVolume( "idle", 0.0f );
 			// Gdx.app.log( name, "Starting Idle Sound" );
 		}

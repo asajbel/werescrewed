@@ -110,19 +110,12 @@ class PauseScreen extends Screen {
 
 	@Override
 	public void show( ) {
-		if (!SoundManager.loopSounds.isEmpty( )){
-			for (SoundManager.SoundRef ref: SoundManager.loopSounds){
-				Gdx.app.log("Looping Sound", ref.getAssetName( ) +":(vol):" + ref.getFinalVolume( ) + ":(loopID):" + Long.toString(ref.getLoopID()));
-			}
-			SoundManager.setEnableLoops( false );
-		}
+		SoundManager.setEnableLoops( false );
 	}
 
 	@Override
 	public void hide( ) {
-		if (!SoundManager.loopSounds.isEmpty( )){
-			SoundManager.setEnableLoops( true );
-		}
+		SoundManager.setEnableLoops( true );
 	}
 
 	@Override

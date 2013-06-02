@@ -56,14 +56,23 @@ public class SoundManager implements Disposable {
 		int activeLoops = 0;
 		for (SoundRef ref: loopSounds){
 			if (allowLoopSounds && activeLoops < maxLoopChannels){
-				ref.loop( false );
+				if (ref.loopId < 0){
+					ref.loop( false );
+				}
 				activeLoops++;
 			} else {
 				if (ref.loopId >= 0){
-					ref.stop( );
+					ref.stop( ref.loopId );
 				}
 			}
 		}
+	}
+	
+	public static void clearLoops(){
+		for (SoundRef ref: loopSounds){
+			ref.stop();
+		}
+		loopSounds.clear( );
 	}
 	
 	public static void setEnableLoops(boolean v){allowLoopSounds = v;}
@@ -185,25 +194,28 @@ public class SoundManager implements Disposable {
 		}
 	}
 
-	public void loopSound( String id ) {
-		loopSound( id, 0, true, 1.0f, 1.0f );
+	public void addSoundToLoops( String id ) {
+		addSoundToLoops( id, 0, true, 1.0f, 1.0f );
 	}
 
-	public void loopSound( String id, int index ) {
-		loopSound( id, index, true, 1.0f, 1.0f );
+	public void addSoundToLoops( String id, int index ) {
+		addSoundToLoops( id, index, true, 1.0f, 1.0f );
 	}
 
-	public void loopSound( String id, int index, boolean override,
+	public void addSoundToLoops( String id, int index, boolean override,
 			float extVol, float extPitch ) {
 		if ( hasSound( id, index ) ) {
 			//sounds.get( id ).loop( override, extVol, extPitch );
-			SoundRef ref = sounds.get( id );
-			ref.setVolume( extVol );
-			ref.setPitch( extPitch );
-			loopSounds.add( ref );
+			addSoundToLoops(sounds.get( id ), extVol, extPitch);
 		}
 	}
 
+	public static void addSoundToLoops( SoundRef ref , float extVol, float extPitch){
+		ref.setVolume( extVol );
+		ref.setPitch( extPitch );
+		loopSounds.add( ref );		
+	}
+	
 	public void stopSound( String id ){
 		if (hasSound(id)){
 			Array<SoundRef> refs = sounds.getAll( id );
@@ -494,7 +506,7 @@ public class SoundManager implements Disposable {
 			falloff = 2.0f;
 			offset = new Vector2(0f,0f);
 		}
-		
+
 		protected long play( float delayAmount, float extVol, float extPitch ) {
 			long id = -1;
 			if ( delay < DELAY_MINIMUM ) {
@@ -532,7 +544,13 @@ public class SoundManager implements Disposable {
 			loopId = -1;
 			delay = 0.0f;
 		}
-
+		public void stop( long thatId ) {
+			if (loopId == thatId){
+				sound.stop(thatId);
+				loopId = -1;
+				delay = 0.0f;
+			}
+		}
 		protected void update( float dT ) {
 			delay = ( float ) ( Math.max( delay - dT, 0.0f ) );
 		}
@@ -610,12 +628,13 @@ public class SoundManager implements Disposable {
 		public String getAssetName(){
 			return assetName;
 		}
+		
 		public void dispose(){
 			stop();
+			sound.stop( );
 			if (SoundManager.loopSounds.contains(this)){
 				SoundManager.loopSounds.remove(this);
 			}
-			sound.dispose( );
 		}
 
 		public long getLoopID( ) {
@@ -626,10 +645,11 @@ public class SoundManager implements Disposable {
 
 		@Override
 		public int compare( SoundRef ref1, SoundRef ref2){
-			if (ref2.finalVolume > ref1.finalVolume ){
+			if (ref1.finalVolume <= ref2.finalVolume){
 				return 1;
+			} else {
+				return -1;
 			}
-			return -1;
 		}
 		
 	}
@@ -644,5 +664,14 @@ public class SoundManager implements Disposable {
 			ref.stop( );
 		}
 		loopSounds.clear( );
+	}
+
+	public void loopSound(String tag){
+		loopSound(tag, 0, false);
+	}
+	public void loopSound( String tag , int index, boolean override) {
+		if (hasSound (tag, index)){
+			sounds.get( tag, index ).loop(override);
+		}
 	}
 }

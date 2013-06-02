@@ -161,7 +161,7 @@ public class AlphaScreen extends Screen {
 		// right arm: 2600f, 6000f >>>> side
 		// left side hand <- -2224, 3008
 
-		Vector2 spawnPos = new Vector2( 512, 256 );
+		Vector2 spawnPos = new Vector2( 480, 256 );
 
 		if ( level.player1 == null ) {
 			level.player1 = new PlayerBuilder( ).world( level.world )
@@ -235,15 +235,19 @@ public class AlphaScreen extends Screen {
 
 	@Override
 	public void load(){
-		bgm = WereScrewedGame.manager.get( WereScrewedGame.dirHandle.path( )
-				+ "/common/music/waltz.mp3", Music.class );
-		sounds = new SoundManager( );
-		sounds.getSound( "arm_start", WereScrewedGame.dirHandle.path( )
-				+ "/levels/alphabot/sounds/arm_move_begin.ogg" );
-		sounds.getSound( "arm_loop", WereScrewedGame.dirHandle.path( )
-				+ "/levels/alphabot/sounds/arm_move_loop.ogg" );
-		sounds.getSound( "arm_end", WereScrewedGame.dirHandle.path( )
-				+ "/levels/alphabot/sounds/arm_move_end.ogg" );
+		if (bgm == null){
+			bgm = WereScrewedGame.manager.get( WereScrewedGame.dirHandle.path( )
+					+ "/common/music/waltz.mp3", Music.class );
+		}
+		if (sounds == null){
+			sounds = new SoundManager( );
+			sounds.getSound( "arm_start", WereScrewedGame.dirHandle.path( )
+					+ "/levels/alphabot/sounds/arm_move_begin.ogg" );
+			sounds.getSound( "arm_loop", WereScrewedGame.dirHandle.path( )
+					+ "/levels/alphabot/sounds/arm_move_loop.ogg" );
+			sounds.getSound( "arm_end", WereScrewedGame.dirHandle.path( )
+					+ "/levels/alphabot/sounds/arm_move_end.ogg" );
+		}
 	}
 	
 	@Override
