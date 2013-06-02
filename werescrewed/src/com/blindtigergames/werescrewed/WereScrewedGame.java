@@ -159,7 +159,7 @@ public class WereScrewedGame extends Game {
 	public void update( float dT ) {
 	}
 
-	private void setUpControllers( ) {
+	public static void setUpControllers( ) {
 		for ( @SuppressWarnings( "unused" )
 		Controller controller : Controllers.getControllers( ) ) {
 			// Gdx.app.log( "controllers", controller.getName( ) );
