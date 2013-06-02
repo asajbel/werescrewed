@@ -130,8 +130,7 @@ class PauseScreen extends Screen {
 
 	@Override
 	public void resize( int width, int height ) {
-		this.width = width;
-		this.height = height;
+		super.resize( width, height );
 		camera = new OrthographicCamera( );
 		camera.setToOrtho( false, width, height );
 		batch.setProjectionMatrix( camera.combined );
