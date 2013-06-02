@@ -1,6 +1,6 @@
 chest_pipes_thigh_pipes.png
 format: RGBA8888
-filter: Linear,Linear
+filter: Nearest,Nearest
 repeat: none
 offset: 0, 0
 chest_powerscrew_pipes_to_engineNOCOLOR

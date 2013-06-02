@@ -1,6 +1,6 @@
 chest_exterior_upper1.png
 format: RGBA8888
-filter: Linear,Linear
+filter: Nearest,Nearest
 repeat: none
 offset: 0, 0
 torso6

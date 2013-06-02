@@ -1,6 +1,6 @@
 tileset/autumn.png
 format: RGBA8888
-filter: Linear,Linear
+filter: Nearest,Nearest
 repeat: none
 offset: 7, 8
 1

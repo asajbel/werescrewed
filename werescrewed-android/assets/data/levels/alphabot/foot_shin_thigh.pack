@@ -1,6 +1,6 @@
 foot_shin_thigh.png
 format: RGBA8888
-filter: Linear,Linear
+filter: Nearest,Nearest
 repeat: none
 offset: 0, 0
 knee_exterior

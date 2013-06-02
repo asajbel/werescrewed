@@ -1,6 +1,6 @@
 theater_floor_seats_stage.png
 format: RGBA8888
-filter: Linear,Linear
+filter: Nearest,Nearest
 repeat: none
 offset: 0, 0
 seats
