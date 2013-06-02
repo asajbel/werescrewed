@@ -36,8 +36,8 @@
                 </Item>
                 <Item xsi:type="TextureItem" Name="cameraPosition" Visible="true">
                     <Position>
-                        <X>-1424</X>
-                        <Y>-144</Y>
+                        <X>-1472</X>
+                        <Y>2000</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -1509,10 +1509,10 @@
                         <Y>32</Y>
                     </Origin>
                 </Item>
-                <Item xsi:type="PathItem" Name="balloon3_super" Visible="true">
+                <Item xsi:type="RectangleItem" Name="balloon3_super" Visible="true">
                     <Position>
-                        <X>3072</X>
-                        <Y>-1760</Y>
+                        <X>2080</X>
+                        <Y>-3520</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -1524,71 +1524,19 @@
                         <Property Name="alwaysvisible" Type="string" Description="">
                             <string />
                         </Property>
-                        <Property Name="invisible" Type="string" Description="">
+                        <Property Name="setChildSkelsToSleep" Type="string" Description="">
                             <string />
                         </Property>
                     </CustomProperties>
-                    <LocalPoints>
-                        <Vector2>
-                            <X>0</X>
-                            <Y>0</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>-960</X>
-                            <Y>512</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>1056</X>
-                            <Y>512</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>1056</X>
-                            <Y>-1728</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>-960</X>
-                            <Y>-1728</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>-960</X>
-                            <Y>512</Y>
-                        </Vector2>
-                    </LocalPoints>
-                    <WorldPoints>
-                        <Vector2>
-                            <X>3072</X>
-                            <Y>-1760</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>2112</X>
-                            <Y>-1248</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>4128</X>
-                            <Y>-1248</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>4128</X>
-                            <Y>-3488</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>2112</X>
-                            <Y>-3488</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>2112</X>
-                            <Y>-1248</Y>
-                        </Vector2>
-                    </WorldPoints>
-                    <IsPolygon>false</IsPolygon>
-                    <LineWidth>20</LineWidth>
-                    <LineColor>
+                    <Width>2208</Width>
+                    <Height>2384</Height>
+                    <FillColor>
                         <R>192</R>
                         <G>0</G>
                         <B>192</B>
                         <A>145</A>
                         <PackedValue>2445279424</PackedValue>
-                    </LineColor>
+                    </FillColor>
                 </Item>
                 <Item xsi:type="PathItem" Name="balloon3_skeleton" Visible="true">
                     <Position>
@@ -2112,10 +2060,10 @@
                         <PackedValue>2445279424</PackedValue>
                     </FillColor>
                 </Item>
-                <Item xsi:type="PathItem" Name="tail_skeleton_super" Visible="true">
+                <Item xsi:type="RectangleItem" Name="tail_skeleton_super" Visible="true">
                     <Position>
-                        <X>8784</X>
-                        <Y>-1856</Y>
+                        <X>5104</X>
+                        <Y>-2640</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -2124,77 +2072,22 @@
                         <Property Name="AttachToSkeleton" Type="string" Description="">
                             <string>RootSkeleton</string>
                         </Property>
+                        <Property Name="setchildskelstosleep" Type="string" Description="">
+                            <string />
+                        </Property>
                         <Property Name="alwaysvisible" Type="string" Description="">
                             <string />
                         </Property>
-                        <Property Name="invisible" Type="string" Description="">
-                            <string />
-                        </Property>
-                        <Property Name="setChildSkelsToSleep" Type="string" Description="">
-                            <string />
-                        </Property>
                     </CustomProperties>
-                    <LocalPoints>
-                        <Vector2>
-                            <X>0</X>
-                            <Y>0</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>-3792</X>
-                            <Y>1552</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>4528</X>
-                            <Y>1568</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>4528</X>
-                            <Y>-1568</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>-3760</X>
-                            <Y>-1568</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>-3792</X>
-                            <Y>1552</Y>
-                        </Vector2>
-                    </LocalPoints>
-                    <WorldPoints>
-                        <Vector2>
-                            <X>8784</X>
-                            <Y>-1856</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>4992</X>
-                            <Y>-304</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>13312</X>
-                            <Y>-288</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>13312</X>
-                            <Y>-3424</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>5024</X>
-                            <Y>-3424</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>4992</X>
-                            <Y>-304</Y>
-                        </Vector2>
-                    </WorldPoints>
-                    <IsPolygon>false</IsPolygon>
-                    <LineWidth>20</LineWidth>
-                    <LineColor>
+                    <Width>8016</Width>
+                    <Height>1760</Height>
+                    <FillColor>
                         <R>192</R>
                         <G>0</G>
                         <B>192</B>
                         <A>145</A>
                         <PackedValue>2445279424</PackedValue>
-                    </LineColor>
+                    </FillColor>
                 </Item>
                 <Item xsi:type="PathItem" Name="tail_skeleton" Visible="true">
                     <Position>
@@ -5891,7 +5784,7 @@
                         <Property Name="AttachToSkeleton" Type="string" Description="">
                             <string>RootSkeleton</string>
                         </Property>
-                        <Property Name="setChildSkelsToSleep" Type="string" Description="">
+                        <Property Name="setchildskelstosleep" Type="string" Description="">
                             <string />
                         </Property>
                     </CustomProperties>
@@ -6260,10 +6153,10 @@
                         <PackedValue>2445279424</PackedValue>
                     </LineColor>
                 </Item>
-                <Item xsi:type="PathItem" Name="neck_skeleton_super" Visible="true">
+                <Item xsi:type="RectangleItem" Name="neck_skeleton_super" Visible="true">
                     <Position>
-                        <X>22096</X>
-                        <Y>-736</Y>
+                        <X>20976</X>
+                        <Y>-2464</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -6275,68 +6168,19 @@
                         <Property Name="alwaysvisible" Type="string" Description="">
                             <string />
                         </Property>
+                        <Property Name="setChildSkelsToSleep" Type="string" Description="">
+                            <string />
+                        </Property>
                     </CustomProperties>
-                    <LocalPoints>
-                        <Vector2>
-                            <X>0</X>
-                            <Y>0</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>-1088</X>
-                            <Y>576</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>1568</X>
-                            <Y>576</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>1568</X>
-                            <Y>-1520</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>-1088</X>
-                            <Y>-1520</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>-1088</X>
-                            <Y>576</Y>
-                        </Vector2>
-                    </LocalPoints>
-                    <WorldPoints>
-                        <Vector2>
-                            <X>22096</X>
-                            <Y>-736</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>21008</X>
-                            <Y>-160</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>23664</X>
-                            <Y>-160</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>23664</X>
-                            <Y>-2256</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>21008</X>
-                            <Y>-2256</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>21008</X>
-                            <Y>-160</Y>
-                        </Vector2>
-                    </WorldPoints>
-                    <IsPolygon>false</IsPolygon>
-                    <LineWidth>20</LineWidth>
-                    <LineColor>
+                    <Width>2384</Width>
+                    <Height>2384</Height>
+                    <FillColor>
                         <R>192</R>
                         <G>0</G>
                         <B>192</B>
                         <A>145</A>
                         <PackedValue>2445279424</PackedValue>
-                    </LineColor>
+                    </FillColor>
                 </Item>
                 <Item xsi:type="PathItem" Name="stupidassthing" Visible="true">
                     <Position>
@@ -16942,11 +16786,11 @@
     </Layers>
     <CustomProperties />
     <EditorRelated>
-        <NextItemNumber>1113</NextItemNumber>
+        <NextItemNumber>1116</NextItemNumber>
         <ContentRootFolder>gleed-textures</ContentRootFolder>
         <CameraPosition>
-            <X>12833.9355</X>
-            <Y>47.31905</Y>
+            <X>-1166.12329</X>
+            <Y>2430.65283</Y>
         </CameraPosition>
         <Version>1.3.0.0</Version>
     </EditorRelated>

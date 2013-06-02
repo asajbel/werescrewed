@@ -176,7 +176,7 @@ public class Fire extends Hazard {
 			particleEffect.setPosition( this.getPositionPixel( ).x,
 					this.getPositionPixel( ).y );
 			//particleEffect.setAngle( body.getAngle( ) );
-			particleEffect.draw( batch, deltaTime );
+			particleEffect.draw( batch, deltaTime, camera );
 
 		} else {
 			started = false;
@@ -185,7 +185,7 @@ public class Fire extends Hazard {
 			particleEffect.setPosition( this.getPositionPixel( ).x,
 					this.getPositionPixel( ).y );
 			//particleEffect.setAngle( body.getAngle( ) );
-			particleEffect.draw( batch, deltaTime );
+			particleEffect.draw( batch, deltaTime, camera );
 		}
 		super.draw( batch, deltaTime, camera );
 	}

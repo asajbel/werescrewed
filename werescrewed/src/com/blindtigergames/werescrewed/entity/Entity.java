@@ -66,6 +66,7 @@ public class Entity implements GleedLoadable {
 	protected boolean maintained;
 	protected boolean removeNextStep = false;
 	public EntityType entityType;
+	public boolean dontPutToSleep = false;
 	private ArrayList< IMover > moverArray;
 	protected ArrayList< Sprite > fgDecals;
 	protected ArrayList< Vector2 > fgDecalOffsets;
@@ -328,7 +329,7 @@ public class Entity implements GleedLoadable {
 
 	public void draw( SpriteBatch batch, float deltaTime, Camera camera ) {
 		if ( drawParticles )
-			drawParticles( behindParticles, batch );
+			drawParticles( behindParticles, batch, camera );
 		if ( visible ) {
 			if ( sprite != null && !removeNextStep ) {
 				sprite.draw( batch );
@@ -338,16 +339,16 @@ public class Entity implements GleedLoadable {
 
 		}
 		if ( drawParticles )
-			drawParticles( frontParticles, batch );
+			drawParticles( frontParticles, batch, camera );
 	}
 
 	protected void drawParticles( ArrayHash< String, ParticleEffect > map,
-			SpriteBatch batch ) {
+			SpriteBatch batch, Camera camera ) {
 		if ( map != null ) {
 			for ( String key : map.keySet( ) ) {
 				for ( ParticleEffect e : map.getAll( key ) ) {
 					if ( !e.isComplete( ) ) {
-						e.draw( batch );
+						e.draw( batch, camera );
 					}
 				}
 			}
@@ -1256,14 +1257,6 @@ public class Entity implements GleedLoadable {
 	}
 
 	public void addBGDecal( Sprite s, Vector2 offset, float angle ) {
-		// if ( s == null ) {
-		// throw new RuntimeException(
-		// "Entity.addBGDecal(): Adding null sprite" );
-		// }
-		// s.setOrigin( s.getWidth( )/2, s.getHeight( )/2 );
-		// this.bgDecals.add( s );
-		// this.bgDecalOffsets.add( offset );
-		// this.bgDecalAngles.add( angle );
 		insertDecal( true, s, offset, angle, false );
 	}
 
@@ -1272,14 +1265,6 @@ public class Entity implements GleedLoadable {
 	 *            in radian
 	 */
 	public void addFGDecal( Sprite s, Vector2 offset, float angle ) {
-		// if ( s == null ) {
-		// throw new RuntimeException(
-		// "Entity.addFGDecal(): Adding null sprite" );
-		// }
-		// s.setOrigin( s.getWidth( )/2, s.getHeight( )/2 );
-		// this.fgDecals.add( s );
-		// this.fgDecalOffsets.add( offset );
-		// this.fgDecalAngles.add( angle );
 		insertDecal( false, s, offset, angle, false );
 	}
 
@@ -1292,26 +1277,10 @@ public class Entity implements GleedLoadable {
 	}
 
 	public void addFGDecalBack( Sprite s, Vector2 offset ) {
-		// if ( s == null ) {
-		// throw new RuntimeException(
-		// "Entity.addFGDecal(): Adding null sprite" );
-		// }
-		// fgDecals.add( 0, s );
-		// fgDecalOffsets.add( 0, offset );
-		// fgDecalAngles.add( 0, 0.0f );
-		// // addDecalBack( s, offset, true );
 		insertDecal( false, s, offset, 0.0f, true );
 	}
 
 	public void addBGDecalBack( Sprite s, Vector2 offset ) {
-		// if ( s == null ) {
-		// throw new RuntimeException(
-		// "Entity.addFGDecal(): Adding null sprite" );
-		// }
-		// bgDecals.add( 0, s );
-		// bgDecalOffsets.add( 0, offset );
-		// bgDecalAngles.add( 0, 0.0f );
-		// // addDecalBack( s, offset, false );
 		insertDecal( true, s, offset, 0.0f, true );
 	}
 
@@ -1321,6 +1290,15 @@ public class Entity implements GleedLoadable {
 
 	public void addFGDecal( Sprite s ) {
 		addFGDecal( s, new Vector2( s.getX( ), s.getY( ) ) );
+	}
+	
+	public void clearAllDecals(){
+		fgDecalAngles.clear( );
+		fgDecalOffsets.clear();
+		fgDecals.clear();
+		bgDecalAngles.clear( );
+		bgDecalOffsets.clear();
+		bgDecals.clear();
 	}
 
 	public void updateDecals( float deltaTime ) {
