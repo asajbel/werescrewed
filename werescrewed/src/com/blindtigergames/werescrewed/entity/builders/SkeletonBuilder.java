@@ -217,6 +217,7 @@ public class SkeletonBuilder extends GenericEntityBuilder< SkeletonBuilder > {
 	public Skeleton build( ) {
 		Skeleton out = new Skeleton( name, pos, null, super.world, bodyType );
 		out.setChildSkeletonsToSleepProperty( setChildSkeletonsToSleep );
+		out.setUseBoundingRect( useBoundingRect );
 		out.boundingRect = this.boundingRect;
 		if ( invisibleVerts != null ) {
 			if ( polyVertsFG != null && texForeground != null ) {
