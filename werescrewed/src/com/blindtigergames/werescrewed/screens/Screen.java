@@ -356,6 +356,7 @@ public class Screen implements com.badlogic.gdx.Screen {
 			Gdx.graphics.setDisplayMode( Gdx.graphics.getDesktopDisplayMode( ) );
 			fullscreen = true; 
 		}
+		WereScrewedGame.setUpControllers( ); 
 	}
 	
 	protected void drawTransIn ( SpriteBatch batch ) {
