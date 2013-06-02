@@ -27,16 +27,17 @@ public class CannonLaunchMover implements IMover {
 
 	@Override
 	public void move( float deltaTime, Body body ) {
+		sounds.update(deltaTime);
 		delay -= deltaTime;
 		if ( delay <= 0f ) {
 			// Gdx.app.log( "CannonLaunchMover", "LAUNCHING!" );
-			sounds.playSound( "launch" );
 			Vector2 impulseDirection = Util.PointOnCircle( impulseStrength,
 					cannon.body.getAngle( ) + Util.HALF_PI, new Vector2( ) );
 			body.applyLinearImpulse( impulseDirection, body.getWorldCenter( ) );
 			( ( Entity ) ( body.getUserData( ) ) ).setMoverNullAtCurrentState( ); // delete
 																					// this
 																					// mover!
+			sounds.playSound( "launch" );
 			cannon.addBehindParticleEffect( "cannon", true, true ).start( );
 		}
 
@@ -54,9 +55,9 @@ public class CannonLaunchMover implements IMover {
 		return null;
 	}
 
-	
 	public void loadSounds(){
 		sounds = new SoundManager();
 		sounds.getSound( "launch" , WereScrewedGame.dirHandle + "/levels/dragon/cannon.ogg");
+		
 	}
 }
