@@ -3,6 +3,7 @@ package com.blindtigergames.werescrewed.entity.action;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.Skeleton;
 import com.blindtigergames.werescrewed.entity.mover.CannonLaunchMover;
+import com.blindtigergames.werescrewed.sound.SoundManager;
 
 public class CannonLaunchAction implements IAction {
 
@@ -11,7 +12,6 @@ public class CannonLaunchAction implements IAction {
 	float delaySeconds;
 	boolean regain_control;
 	Skeleton cannon;
-
 	/**
 	 * Runs a mover once when this event is triggered
 	 * 
