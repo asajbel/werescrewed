@@ -412,6 +412,8 @@ public class Skeleton extends Platform {
 		float frameRate = 1 / deltaTime;
 		isUpdatable = ( !this.isFadingSkel( ) || this.isFGFaded( ) );
 		if ( useBoundingRect && updatedOnce ) {
+			boundingRect.x = this.getPositionPixel( ).x;
+			boundingRect.y = this.getPositionPixel( ).y - boundingRect.height;
 			if ( !boundingRect.overlaps( lastCameraRect ) ) {
 				isUpdatable = false;
 				setSkeletonEntitiesToSleepRecursively( );

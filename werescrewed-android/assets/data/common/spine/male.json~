@@ -640,8 +640,8 @@
 					{ "time": 5.3333, "name": "R_boot" }
 				],
 				"color": [
-					{ "time": 0, "color": "05ffffc2", "curve": "stepped" },
-					{ "time": 5.3333, "color": "05ffffc2" }
+					{ "time": 0, "color": "05ffffff", "curve": "stepped" },
+					{ "time": 5.3333, "color": "05ffffff" }
 				]
 			},
 			"screw_driver2": {
@@ -669,8 +669,8 @@
 					{ "time": 5.3333, "name": "R_upper_leg" }
 				],
 				"color": [
-					{ "time": 0, "color": "05ffffc2", "curve": "stepped" },
-					{ "time": 5.3333, "color": "05ffffc2" }
+					{ "time": 0, "color": "05ffffff", "curve": "stepped" },
+					{ "time": 5.3333, "color": "05ffffff" }
 				]
 			},
 			"B_hat": {
@@ -680,8 +680,8 @@
 					{ "time": 5.3333, "name": "B_hat" }
 				],
 				"color": [
-					{ "time": 0, "color": "05ffffc2", "curve": "stepped" },
-					{ "time": 5.3333, "color": "05ffffc2" }
+					{ "time": 0, "color": "05ffffff", "curve": "stepped" },
+					{ "time": 5.3333, "color": "05ffffff" }
 				]
 			},
 			"L_lower_arm_back": {
@@ -698,8 +698,8 @@
 					{ "time": 5.3333, "name": "torso" }
 				],
 				"color": [
-					{ "time": 0, "color": "05ffffc2", "curve": "stepped" },
-					{ "time": 5.3333, "color": "05ffffc2" }
+					{ "time": 0, "color": "05ffffff", "curve": "stepped" },
+					{ "time": 5.3333, "color": "05ffffff" }
 				]
 			},
 			"coat_tail": {
@@ -727,8 +727,8 @@
 					{ "time": 5.3333, "name": "F_hat" }
 				],
 				"color": [
-					{ "time": 0, "color": "05ffffc2", "curve": "stepped" },
-					{ "time": 5.3333, "color": "05ffffc2" }
+					{ "time": 0, "color": "05ffffff", "curve": "stepped" },
+					{ "time": 5.3333, "color": "05ffffff" }
 				]
 			},
 			"L_lower_leg": {
@@ -738,8 +738,8 @@
 					{ "time": 5.3333, "name": "L_lower_leg" }
 				],
 				"color": [
-					{ "time": 0, "color": "05ffffc2", "curve": "stepped" },
-					{ "time": 5.3333, "color": "05ffffc2" }
+					{ "time": 0, "color": "05ffffff", "curve": "stepped" },
+					{ "time": 5.3333, "color": "05ffffff" }
 				]
 			}
 		}
