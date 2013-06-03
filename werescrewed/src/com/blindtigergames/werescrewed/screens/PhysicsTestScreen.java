@@ -160,7 +160,7 @@ public class PhysicsTestScreen extends Screen {
 		initEyebrow(new Vector2(0,0));
 		
 	
-		mouthFire = new MouthFire( "mouth-fire", new Vector2(0,0), 1, world );
+		mouthFire = new MouthFire( "mouth-fire", new Vector2(0,0), 3, world );
 		skeleton.addHazard( mouthFire );
 	}
 

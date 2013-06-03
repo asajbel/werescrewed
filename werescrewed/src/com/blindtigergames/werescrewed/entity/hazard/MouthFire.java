@@ -21,6 +21,7 @@ public class MouthFire extends Hazard {
 	private float heightMStep;
 	private float widthMeter;
 	private int totalSteps;
+	private int maxConcurrentFixtures;
 	
 	//iteration variables
 	private int currStep;
@@ -30,12 +31,12 @@ public class MouthFire extends Hazard {
 	
 	
 	
-	public MouthFire( String name, Vector2 pos, float secondsToComplete, World world) {
+	public MouthFire( String name, Vector2 pos, Vector2 destinationPix, float secondsToComplete, float startHeightPix, float endHeightPix, World world) {
 		super( name, pos, null, world, true );
 		
-		float startHeight = 10*Util.PIXEL_TO_BOX, endHeight = 600*Util.PIXEL_TO_BOX;
+		float startHeightM = 10*Util.PIXEL_TO_BOX, endHeightM = 600*Util.PIXEL_TO_BOX;
 		Vector2 posMeter = pos.cpy( ).mul( Util.PIXEL_TO_BOX );
-		Vector2 destinationM = posMeter.cpy().add(600*Util.PIXEL_TO_BOX,600*Util.PIXEL_TO_BOX);
+		Vector2 destinationM = destinationPix.cpy().mul(Util.PIXEL_TO_BOX);
 		this.angle = Util.angleBetweenPoints( posMeter, destinationM );
 		this.totalSteps = 20;
 		int stepLength;
@@ -43,8 +44,7 @@ public class MouthFire extends Hazard {
 		this.totalLength = posStep.len( );
 		this.widthMeter = totalLength/totalSteps/2; //because set as box doubles width
 		posStep = posStep.nor( ).mul( widthMeter*2 );
-		this.heightMStep = (endHeight-startHeight)/totalSteps;
-		
+		this.heightMStep = (endHeightM-startHeightM)/totalSteps;
 		
 		this.currStep = 0;
 		this.stepAccum = 0;
@@ -54,8 +54,21 @@ public class MouthFire extends Hazard {
 		
 		this.fixtureList = new Array< Fixture >(totalSteps);
 		
+		this.maxConcurrentFixtures = totalSteps/3;
+		
 		constructBody( posMeter );
 		
+	}
+	
+	/**
+	 * For debug
+	 * @param name
+	 * @param pos
+	 * @param secondsToComplete
+	 * @param world
+	 */
+	public MouthFire( String name, Vector2 pos, float secondsToComplete, World world ){
+		this( name, pos, pos.cpy().add(600,600), secondsToComplete, 10, 600, world );
 	}
 	
 	private void constructBody( Vector2 positionM ) {
@@ -81,6 +94,11 @@ public class MouthFire extends Hazard {
 		fixtureList.add( this.body.createFixture( fixture ) );
 		
 		polygon.dispose( );
+		
+		if(fixtureList.size > maxConcurrentFixtures) {
+			body.destroyFixture( fixtureList.first( ) );
+			fixtureList.removeIndex( 0 );
+		}
 	}
 	
 	@Override
