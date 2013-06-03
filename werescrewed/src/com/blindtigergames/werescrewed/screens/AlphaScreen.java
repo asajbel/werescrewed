@@ -348,7 +348,7 @@ public class AlphaScreen extends Screen {
 					
 					// You win and goto next screen!!!
 					// menu for now
-					ScreenManager.getInstance( ).show( ScreenType.MAIN_MENU );
+					ScreenManager.getInstance( ).show( ScreenType.TROPHY_1 );
 				}
 			}
 		}

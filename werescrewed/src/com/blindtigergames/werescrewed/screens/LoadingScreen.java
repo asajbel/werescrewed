@@ -3,6 +3,7 @@ package com.blindtigergames.werescrewed.screens;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.files.FileHandle;
@@ -56,6 +57,8 @@ public class LoadingScreen extends Screen {
 			screenTag = st;
 			if ( screenTag.equals( "level1" ) ) {
 				currLevel = 1;
+			} else if ( screenTag.equals( "level2" ) ) {
+				currLevel = 2;
 			}
 		} else {
 			screenTag = "commonLevel";
@@ -63,33 +66,54 @@ public class LoadingScreen extends Screen {
 		// Gdx.app.log( "Loading assets for", screenTag );
 
 		// check for level1
-		if ( currLevel == 1 ) {
-
-			WereScrewedGame.manager.load(
-					"data/common/slides/slide1_intro.png", Texture.class );
-			WereScrewedGame.manager.load(
-					"data/common/slides/slide2_audience.png", Texture.class );
-			WereScrewedGame.manager.load(
-					"data/common/slides/slide3_alphabot.png", Texture.class );
-			WereScrewedGame.manager.load(
-					"data/common/slides/slide4_players.png", Texture.class );
-
-			WereScrewedGame.manager.finishLoading( );
-
-			storyBoardArray.add( WereScrewedGame.manager.get(
-					"data/common/slides/slide1_intro.png", Texture.class ) );
-			storyBoardArray.add( WereScrewedGame.manager.get(
-					"data/common/slides/slide2_audience.png", Texture.class ) );
-			storyBoardArray.add( WereScrewedGame.manager.get(
-					"data/common/slides/slide3_alphabot.png", Texture.class ) );
-			storyBoardArray.add( WereScrewedGame.manager.get(
-					"data/common/slides/slide4_players.png", Texture.class ) );
-			
+		if ( currLevel != 0 ) {
+			if( currLevel == 1 ) {
+				WereScrewedGame.manager.load(
+						"data/common/slides/slide1_intro.png", Texture.class );
+				WereScrewedGame.manager.load(
+						"data/common/slides/slide2_audience.png", Texture.class );
+				WereScrewedGame.manager.load(
+						"data/common/slides/slide3_alphabot.png", Texture.class );
+				WereScrewedGame.manager.load(
+						"data/common/slides/slide4_players.png", Texture.class );
+	
+				WereScrewedGame.manager.finishLoading( );
+	
+				storyBoardArray.add( WereScrewedGame.manager.get(
+						"data/common/slides/slide1_intro.png", Texture.class ) );
+				storyBoardArray.add( WereScrewedGame.manager.get(
+						"data/common/slides/slide2_audience.png", Texture.class ) );
+				storyBoardArray.add( WereScrewedGame.manager.get(
+						"data/common/slides/slide3_alphabot.png", Texture.class ) );
+				storyBoardArray.add( WereScrewedGame.manager.get(
+						"data/common/slides/slide4_players.png", Texture.class ) );
+			} if (currLevel == 2 ){
+				WereScrewedGame.manager.load(
+						"data/common/slides/slide1_intro.png", Texture.class );
+				WereScrewedGame.manager.load(
+						"data/common/slides/slide2_audience.png", Texture.class );
+				WereScrewedGame.manager.load(
+						"data/common/slides/slide3_alphabot.png", Texture.class );
+				WereScrewedGame.manager.load(
+						"data/common/slides/slide4_players.png", Texture.class );
+	
+				WereScrewedGame.manager.finishLoading( );
+	
+				storyBoardArray.add( WereScrewedGame.manager.get(
+						"data/common/slides/slide1_intro.png", Texture.class ) );
+				storyBoardArray.add( WereScrewedGame.manager.get(
+						"data/common/slides/slide2_audience.png", Texture.class ) );
+				storyBoardArray.add( WereScrewedGame.manager.get(
+						"data/common/slides/slide3_alphabot.png", Texture.class ) );
+				storyBoardArray.add( WereScrewedGame.manager.get(
+						"data/common/slides/slide4_players.png", Texture.class ) );
+			}
 			if ( WereScrewedGame.p1Controller != null
 					&& WereScrewedGame.p2Controller != null ) {
 				characterSelect = true;
-
-				pressStart = new Label( "Press Start To Volunteer!",
+				if (currLevel == 1) pressStart = new Label( "Press Start To Volunteer!",
+						WereScrewedGame.manager.getFont( "longdon" ) );
+				else pressStart = new Label( "Press Start To Continue!",
 						WereScrewedGame.manager.getFont( "longdon" ) );
 				pressToConfirm = new Label(
 						"Left/Right to switch, Start to confirm",
@@ -179,8 +203,15 @@ public class LoadingScreen extends Screen {
 		if ( WereScrewedGame.manager.update( ) ) {
 
 			// HIT ANY KEY TO SKIP
-			if ( Gdx.app.getInput( ).isTouched( ) ) {
+			if ( currLevel == 1 && (Gdx.app.getInput( ).isTouched( ) || 
+				WereScrewedGame.p1ControllerListener.jumpPressed( ) ||
+				WereScrewedGame.p2ControllerListener.jumpPressed( ))) {
 				ScreenManager.getInstance( ).show( ScreenType.LEVEL_1 );
+			}
+			if ( currLevel == 2 && (Gdx.app.getInput( ).isTouched( ) ||
+				WereScrewedGame.p1ControllerListener.jumpPressed( ) ||
+				WereScrewedGame.p2ControllerListener.jumpPressed( ))) {
+				ScreenManager.getInstance( ).show( ScreenType.DRAGON );
 			}
 			if ( currLevel == 0 ) {
 				// assets have been loaded!
@@ -193,13 +224,17 @@ public class LoadingScreen extends Screen {
 				if ( characterSelect ) {
 					if ( playersHaveBeenSelected ) {
 						WereScrewedGame.player1Female = p1SelectFemale;
-						if ( screenTag != null && screenTag.equals( "level1" ) ) {
-							ScreenManager.getInstance( ).show(
-									ScreenType.LEVEL_1 );
+						if ( WereScrewedGame.p1ControllerListener.jumpPressed( ) ||
+							 WereScrewedGame.p2ControllerListener.jumpPressed( )){
+							if ( screenTag != null && screenTag.equals( "level1" ) ) {
+								ScreenManager.getInstance( ).show( ScreenType.LEVEL_1 );
+							} else if ( screenTag != null
+									&& screenTag.equals( "level2" ) ) {
+								ScreenManager.getInstance( ).show( ScreenType.DRAGON );
+							}
 						}
 					}
 				} else {
-
 					if ( screenTag != null && screenTag.equals( "level1" ) ) {
 						ScreenManager.getInstance( ).show( ScreenType.LEVEL_1 );
 					} else if ( screenTag != null
@@ -294,7 +329,7 @@ public class LoadingScreen extends Screen {
 			}
 
 		}
-		if ( currLevel == 1 ) {
+		if ( currLevel != 0 ) {
 			int posX = width / 2
 					- storyBoardArray.get( currIndex ).getWidth( ) / 2;
 			int posY = height / 2
@@ -314,7 +349,7 @@ public class LoadingScreen extends Screen {
 		camera = new OrthographicCamera( );
 		camera.setToOrtho( false, WereScrewedGame.getWidth(), WereScrewedGame.getHeight() );
 		batch.setProjectionMatrix( camera.combined );
-		if ( currLevel == 1 && characterSelect ) {
+		if ( currLevel != 0 && characterSelect ) {
 
 			pressStart.setX( width / 2 - pressStart.getWidth( ) / 2 );
 			pressStart.setY( height / 4 );
