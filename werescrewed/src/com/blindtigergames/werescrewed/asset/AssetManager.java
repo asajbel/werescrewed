@@ -4,12 +4,17 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.RefCountedContainer;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.GdxRuntimeException;
+import com.badlogic.gdx.utils.ObjectIntMap;
 import com.blindtigergames.werescrewed.WereScrewedGame;
+import com.blindtigergames.werescrewed.entity.EntityDef;
 import com.blindtigergames.werescrewed.entity.platforms.TileSet;
 import com.blindtigergames.werescrewed.graphics.TextureAtlas;
 import com.blindtigergames.werescrewed.graphics.particle.ParticleEffect;
@@ -229,7 +234,7 @@ public class AssetManager extends com.badlogic.gdx.assets.AssetManager {
 			this.load( dummyAssets.get( type ), type );
 		}
 	}
-
+	
 	/**
 	 * Get a random rivet by name. then do commom-textures.createSprite(random
 	 * rivet name)
@@ -269,5 +274,9 @@ public class AssetManager extends com.badlogic.gdx.assets.AssetManager {
 	public Texture getLevelRobotOutlineTex( ) {
 		return robotOutlineTex;
 	}
-
+	/** Clears and disposes all assets and the preloading queue. */
+	public synchronized void clear () {
+		EntityDef.clearDefs( );
+		super.clear();
+	}
 }

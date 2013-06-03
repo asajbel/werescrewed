@@ -1,8 +1,10 @@
 package com.blindtigergames.werescrewed.entity.action;
 
+import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.Skeleton;
 import com.blindtigergames.werescrewed.entity.mover.CannonLaunchMover;
+import com.blindtigergames.werescrewed.sound.SoundManager;
 
 public class CannonLaunchAction implements IAction {
 
@@ -23,6 +25,7 @@ public class CannonLaunchAction implements IAction {
 		this.delaySeconds = delaySeconds;
 		this.cannon = cannon;
 		regain_control = false;
+
 	}
 
 	@Override
@@ -34,6 +37,7 @@ public class CannonLaunchAction implements IAction {
 	public void act( Entity entity ) {
 		// Gdx.app.log( "CannonLaunchAction",
 		// "Launching in "+delaySeconds+" seconds" );
+
 		entity.setMoverAtCurrentState( new CannonLaunchMover( cannon,
 				impulseStrength, delaySeconds ) );
 	}

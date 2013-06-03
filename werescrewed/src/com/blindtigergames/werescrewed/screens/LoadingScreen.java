@@ -12,6 +12,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.entity.Entity;
+import com.blindtigergames.werescrewed.entity.EntityDef;
 import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 import com.blindtigergames.werescrewed.gui.Label;
 
@@ -50,7 +51,6 @@ public class LoadingScreen extends Screen {
 	 *            A string to designate which files to load for the next screen
 	 */
 	public LoadingScreen( String st ) {
-
 		WereScrewedGame.manager.clear( );
 		if ( st != null && !st.isEmpty( ) ) {
 			screenTag = st;

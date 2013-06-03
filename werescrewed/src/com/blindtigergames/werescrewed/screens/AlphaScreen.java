@@ -244,12 +244,23 @@ public class AlphaScreen extends Screen {
 		}
 		if (sounds == null){
 			sounds = new SoundManager( );
+		}
+		if (!assetsLoaded){
 			sounds.getSound( "arm_start", WereScrewedGame.dirHandle.path( )
 					+ "/levels/alphabot/sounds/arm_move_begin.ogg" );
 			sounds.getSound( "arm_loop", WereScrewedGame.dirHandle.path( )
 					+ "/levels/alphabot/sounds/arm_move_loop.ogg" );
 			sounds.getSound( "arm_end", WereScrewedGame.dirHandle.path( )
 					+ "/levels/alphabot/sounds/arm_move_end.ogg" );
+			sounds.getSound( "fireworks", WereScrewedGame.dirHandle.path( )
+					+ "/levels/alphabot/sounds/fireworks1.ogg" );
+			sounds.getSound( "fireworks", WereScrewedGame.dirHandle.path( )
+					+ "/levels/alphabot/sounds/fireworks2.ogg" );
+			sounds.getSound( "applause_action", WereScrewedGame.dirHandle.path( )
+					+ "/levels/alphabot/sounds/applause_action.ogg" );
+			sounds.getSound( "applause_final", WereScrewedGame.dirHandle.path( )
+					+ "/levels/alphabot/sounds/applause_final.ogg" );
+			assetsLoaded = true;
 		}
 	}
 	
@@ -259,8 +270,6 @@ public class AlphaScreen extends Screen {
 		dT += deltaTime;
 		
 		super.render( deltaTime );
-		sounds.update( deltaTime );
-
 		powerScrewUpdate( deltaTime );
 
 		// If everything is on
@@ -304,6 +313,9 @@ public class AlphaScreen extends Screen {
 
 			if ( powerSwitchBrain1.isTurnedOn( )
 					&& powerSwitchBrain2.isTurnedOn( ) ) {
+				if (!sounds.isDelayed( "applause_final" )){
+					sounds.playSound( "applause_final", 6.0f );
+				}
 				if(dT > .5){
 					dT = 0;
 					shootFireworks();
@@ -928,6 +940,7 @@ public class AlphaScreen extends Screen {
 					// deactivate anchor
 					sounds.stopSound( "arm_loop" );
 					sounds.playSound( "arm_end", 1.0f );
+					sounds.playSound( "applause_action", 1.0f );
 					leftShoulderSkeleton.anchors.get( 0 ).deactivate( );
 				} else if (!sounds.isDelayed( "arm_start" )) {	
 					sounds.setSoundVolume( "arm_loop", 1.0f);
@@ -987,6 +1000,7 @@ public class AlphaScreen extends Screen {
 					// deactivate anchor
 					sounds.stopSound( "arm_loop" );
 					sounds.playSound( "arm_end", 1.0f );
+					sounds.playSound( "applause_action", 1.0f );
 					rightShoulderSkeleton.anchors.get( 0 ).deactivate( );
 				} else if (!(sounds.isDelayed( "arm_end" ) || sounds.isLooping( "arm_loop" ))){
 					//play startup sound when the previous sound ends.
@@ -1774,6 +1788,7 @@ public class AlphaScreen extends Screen {
 		Skeleton fw;
 		for (int i = 1; i < 16; i++){
 			if(generator.nextInt(2) == 1){
+				sounds.playSound( "fireworks" , 0.2f + 0.8f * generator.nextFloat());
 				fw = ( Skeleton ) LevelFactory.entities.get( "firework_skeleton" + i );
 				fw.addFrontParticleEffect( "fireworks/firework" + ((i % 5) + 1) , true , true ).start();
 			}
