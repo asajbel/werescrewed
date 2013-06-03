@@ -422,6 +422,9 @@ public class Skeleton extends Platform {
 				isUpdatable = false;
 				setSkeletonEntitiesToSleepRecursively( );
 			}
+		}else if(!useBoundingRect && !isUpdatable && this.setChildSkeletonsToSleep){
+			setSkeletonEntitiesToSleepRecursively( );
+			
 		}
 		updatedOnce = true;
 		if ( isUpdatable || isMacroSkeleton ) {
