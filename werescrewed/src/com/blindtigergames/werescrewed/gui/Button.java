@@ -204,6 +204,10 @@ public class Button {
 			yPos += 1.5f;
 			if ( scaleX >= ( width ) && scaleY >= ( height ) ) {
 				scaled = true;
+				scaleX = width;
+				scaleY = height;
+				xPos = 0;
+				yPos = 0;
 			}
 		} else {
 			scaleX--;
@@ -212,6 +216,10 @@ public class Button {
 			yPos -= 0.5f;
 			if ( scaleX <= ( width - scaleSize ) && scaleY <= ( height - scaleSize ) ) {
 				scaled = true;
+				scaleX = width - scaleSize;
+				scaleY = height - scaleSize;
+				xPos = 0.5f * -scaleSize;
+				yPos = 0.5f * -scaleSize;
 			}
 		}
 	}

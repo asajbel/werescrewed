@@ -74,9 +74,9 @@ public class Skeleton extends Platform {
 
 	protected boolean setChildSkeletonsToSleep = false;
 	protected boolean useBoundingRect = false;
+	protected boolean updatedOnce = false;
 	public Rectangle boundingRect = new Rectangle( -10000, -10000, 10000, 10000 );
-	protected Rectangle lastCameraRect = new Rectangle( -10000, -10000, 10000,
-			10000 );
+	protected Rectangle lastCameraRect = new Rectangle( 0, 0, 0, 0 );
 
 	/**
 	 * Constructor used by SkeletonBuilder
@@ -411,12 +411,13 @@ public class Skeleton extends Platform {
 		super.update( deltaTime );
 		float frameRate = 1 / deltaTime;
 		isUpdatable = ( !this.isFadingSkel( ) || this.isFGFaded( ) );
-		if ( useBoundingRect ) {
+		if ( useBoundingRect && updatedOnce ) {
 			if ( !boundingRect.overlaps( lastCameraRect ) ) {
 				isUpdatable = false;
 				setSkeletonEntitiesToSleepRecursively( );
 			}
 		}
+		updatedOnce = true;
 		if ( isUpdatable || isMacroSkeleton ) {
 			updateMover( deltaTime );
 			if ( entityType != EntityType.ROOTSKELETON && isKinematic( ) ) {

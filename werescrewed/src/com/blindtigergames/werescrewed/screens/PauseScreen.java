@@ -41,16 +41,10 @@ class PauseScreen extends Screen {
 		lineHeight = Math.round( 2.5f * font.getCapHeight( ) );
 		screenLabel = new Label( "Pause Screen", fancyFont );
 		
-		Texture transition = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-				+ "/transitions/trans-gear.png", Texture.class );
-		trans = new Sprite( transition );
-		scaleMax = trans.getHeight( ) * SCALE_MAX;
-		scale = scaleMax;
-		
 		returnButton = new TextButton( "Return to Game", fancyFont, 
 				new ScreenSwitchHandler( ScreenManager.getPrevScreen( ) ) );
 		mainMenuButton = new TextButton( "Main Menu", fancyFont,
-				new ScreenSwitchHandler( ScreenType.MAIN_MENU ) );
+				new ScreenSwitchHandler( ScreenType.LOADING_MENU ) );
 		Buttons = new ArrayList< Button >( );
 		Buttons.add( returnButton );
 		Buttons.add( mainMenuButton );
@@ -86,14 +80,8 @@ class PauseScreen extends Screen {
 		}
 		
 		if ( !transOutEnd ) {
-			if ( buttonIndex != 0 ) {
-				trans.setPosition( width / 2 - trans.getWidth( ) / 2, height / 2 - trans.getHeight( ) / 2 );
-				drawTransOut( batch );
-			}
-			else {
-				transOutEnd = true;
-				Buttons.get( buttonIndex ).setSelected( true );
-			}
+			transOutEnd = true;
+			Buttons.get( buttonIndex ).setSelected( true );
 		}
 		
 		batch.end( );

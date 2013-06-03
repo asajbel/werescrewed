@@ -40,13 +40,13 @@ public class Camera {
 	// Zoom
 	private static final float ZOOM_SIG_DIFF = 0.003f;
 	public static final float MIN_ZOOM = 1f;
-	public static final float STANDARD_ZOOM = 1.4f;
+	public static final float STANDARD_ZOOM = 1f;//1.2
 	public static final float MAX_ZOOM = 16f;
 	public static final float SCREEN_TO_ZOOM = 1468.6f;
 	private int fps = 60;
 
 	// Fields for timer
-	public static final int MS_BEFORE_ZOOM = 5000;
+	public static final int MS_BEFORE_ZOOM = 3000;
 	private int timer;
 	private Vector2 prevTransTarget;
 	private float prevTargZoom;
@@ -176,6 +176,7 @@ public class Camera {
 			debugInput = true;// now camera is a toggle
 		}
 		if ( Gdx.input.isKeyPressed( Keys.N ) ) {
+			if(!debugRender)Gdx.app.log( "Camera Zoom"	, ""+camera.zoom );
 			debugRender = true;
 		}
 

@@ -1,0 +1,11 @@
+##menu assets
+/menu/menu.png
+/menu/screw.png
+/menu/slider.png
+/menu/transition.png
+
+##temp background
+/common/menu_placeholder.png
+
+##transition images
+/transitions/trans-gear.png

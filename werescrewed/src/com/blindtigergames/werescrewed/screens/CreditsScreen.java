@@ -99,15 +99,11 @@ class CreditsScreen extends Screen {
 		backButton.draw( batch, camera );
 		
 		if ( !transInEnd ) {
-			trans.setPosition( width / 2 - trans.getWidth( ) / 2, height / 2 - trans.getHeight( ) / 2 );
 			drawTransIn( batch );
-			trans.setSize( scale, scale );
 		}
 		
 		if ( !transOutEnd ) {
-			trans.setPosition( width / 2 - trans.getWidth( ) / 2, height / 2 - trans.getHeight( ) / 2 );
 			drawTransOut( batch, ScreenType.MAIN_MENU );
-			trans.setSize( scale, scale );
 		}
 		
 		batch.end( );
