@@ -396,6 +396,8 @@ public class Skeleton extends Platform {
 		this.wasInactive = true;
 		for ( Skeleton skeleton: this.childSkeletonMap.values( ) ) {
 			skeleton.setSkeletonEntitiesToSleepRecursively( );
+			skeleton.body.setActive( true );
+			skeleton.body.setAwake( false );
 		}
 	}
 	/**
@@ -506,6 +508,12 @@ public class Skeleton extends Platform {
 					}
 				}
 				rope.update( deltaTime );
+			}
+			if ( wasInactive ) {
+				for ( Skeleton skeleton : childSkeletonMap.values( ) ) {
+						skeleton.body.setActive( true );
+						skeleton.body.setAwake( false );
+				}
 			}
 		} else {
 			if ( !wasInactive ) {

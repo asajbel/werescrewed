@@ -49,6 +49,7 @@ class PauseScreen extends Screen {
 		Buttons.add( returnButton );
 		Buttons.add( mainMenuButton );
 		returnButton.setColored( true );
+		setClearColor( 40, 40, 40, 255 );
 	}
 
 	public void disposeAll( ) {
@@ -117,10 +118,10 @@ class PauseScreen extends Screen {
 	}
 
 	@Override
-	public void resize( int width, int height ) {
-		super.resize( width, height );
+	public void resize( int _width, int _height ) {
+		super.resize( _width, _height );
 		camera = new OrthographicCamera( );
-		camera.setToOrtho( false, width, height );
+		camera.setToOrtho( false, WereScrewedGame.getWidth(), WereScrewedGame.getHeight() );
 		batch.setProjectionMatrix( camera.combined );
 		int centerX = width / 2;
 		int centerY = height / 2;

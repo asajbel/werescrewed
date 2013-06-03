@@ -80,6 +80,7 @@ class OptionsScreen extends Screen {
 		screenLabel = new Label( "OPTIONS", fancyFont );
 
 		loadButtons( );
+		setClearColor( 40, 40, 40, 255 );
 	}
 
 	@Override
@@ -102,8 +103,6 @@ class OptionsScreen extends Screen {
 	@Override
 	public void render( float delta ) {
 		super.render( delta );
-		Gdx.gl.glClearColor( 0.0f, 0.0f, 0.0f, 1.0f );
-		Gdx.gl.glClear( GL10.GL_COLOR_BUFFER_BIT );
 		batch.begin( );
 		screenLabel.draw( batch );
 		controls.draw( batch, camera );
@@ -133,10 +132,10 @@ class OptionsScreen extends Screen {
 	}
 
 	@Override
-	public void resize( int width, int height ) {
-		super.resize( width, height );
+	public void resize( int _width, int _height ) {
+		super.resize( _width, _height );
 		camera = new OrthographicCamera( );
-		camera.setToOrtho( false, width, height );
+		camera.setToOrtho( false, WereScrewedGame.getWidth(), WereScrewedGame.getHeight() );
 		batch.setProjectionMatrix( camera.combined );
 		int centerX = width / 2;
 		int leftX = width / 4;
