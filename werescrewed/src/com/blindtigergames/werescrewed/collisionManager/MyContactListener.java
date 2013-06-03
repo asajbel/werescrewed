@@ -323,6 +323,11 @@ public class MyContactListener implements ContactListener {
 								player.setSteamCollide( null, false );
 							}
 							break;
+						case CHECKPOINT:
+							CheckPoint checkP = ( CheckPoint ) objectFix
+							.getBody( ).getUserData( );
+							checkP.endHitCheckPoint( player );
+							break;
 						case EVENTTRIGGER:
 							if ( !player.isPlayerDead( ) ) {
 								EventTrigger et = ( EventTrigger ) objectFix
