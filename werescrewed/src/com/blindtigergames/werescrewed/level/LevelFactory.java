@@ -659,14 +659,12 @@ public class LevelFactory {
 			SkeletonBuilder skeleBuilder = new SkeletonBuilder( level.world );
 			skeleBuilder.name( item.name ).position( item.pos ).texture( null );
 
-			if ( item.getGleedType( ).equals( "RectangleItem" ) ) {
+			if ( item.props.containsKey( "rectangle" ) ) {
 				skeleBuilder.setUseBoundingRect( true );
 				skeleBuilder
 						.buildRectangle(
-								item.pos.x
-										- ( item.element.getFloat( "Width" ) / 2.0f ),
-								item.pos.y
-										- ( item.element.getFloat( "Height" ) / 2.0f ),
+								item.pos.x,
+								item.pos.y-item.element.getFloat( "Height" ),
 								item.element.getFloat( "Width" ),
 								item.element.getFloat( "Height" ) );
 			} else {
@@ -1650,6 +1648,7 @@ public class LevelFactory {
 				item.getAtlasName( ), "" );
 		parent.addKinematicPlatform( out );
 		entities.put( item.name, out );
+		addBackGroundEntity(out);
 		return out;
 	}
 

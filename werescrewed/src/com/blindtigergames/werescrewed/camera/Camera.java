@@ -40,9 +40,17 @@ public class Camera {
 	// Zoom
 	private static final float ZOOM_SIG_DIFF = 0.003f;
 	public static final float MIN_ZOOM = 1f;
+	public static final float STANDARD_ZOOM = 1.4f;
 	public static final float MAX_ZOOM = 16f;
 	public static final float SCREEN_TO_ZOOM = 1468.6f;
 	private int fps = 60;
+
+	// Fields for timer
+	public static final int MS_BEFORE_ZOOM = 5000;
+	private int timer;
+	private Vector2 prevTransTarget;
+	private float prevTargZoom;
+	private boolean zoomIn;
 
 	// globals for calculating screen space
 	protected static Vector3 CURRENT_CAMERA;
@@ -113,6 +121,11 @@ public class Camera {
 		this.zoomChange = 0;
 		this.initialDistance = new Vector2( 0, 0 );
 
+		this.timer = MS_BEFORE_ZOOM;
+		this.prevTargZoom = 1f;
+		this.prevTransTarget = new Vector2( 0, 0 );
+		this.zoomIn = false;
+
 		// debug
 		this.debugInput = false;
 		this.debugRender = false;
@@ -138,8 +151,10 @@ public class Camera {
 	 * @return
 	 */
 	public Rectangle getBounds( ) {
-//		screenBounds.x = screenBounds.x + 5;
-//		screenBounds.width = screenBounds.width -5f;
+
+		//screenBounds.x = screenBounds.x - 2f;
+		//screenBounds.width = screenBounds.width - 2f;
+
 		return screenBounds;
 	}
 
@@ -184,7 +199,30 @@ public class Camera {
 				handleInput( );
 			} else {
 				// Set the target camera state
-				setTranslateTarget( );
+				setTargets( );
+				// Keep track of whether things change
+
+				if ( translateTarget.equals( prevTransTarget )
+						&& targetZoom == prevTargZoom ) {
+					// If the target hasn't changed, check if we're already
+					// zooming in
+					if ( !zoomIn && camera.zoom == STANDARD_ZOOM ) {
+						// If we aren't already zooming in, check the changes
+						timer -= deltaTime * 1000;
+						if ( timer <= 0 ) {
+							// If the timer has run out, reset it, and begin
+							// zooming in
+							zoomIn = true;
+							timer = MS_BEFORE_ZOOM;
+						}
+					}
+				} else {
+					// If they changed the targets, turn off the zoomIn
+					zoomIn = false;
+				}
+				prevTransTarget = new Vector2( translateTarget.x,
+						translateTarget.y );
+				prevTargZoom = targetZoom;
 				// Check anchor differences
 				currActiveAnchors = AnchorList.getInstance( )
 						.getNumActiveAnchors( );
@@ -211,7 +249,7 @@ public class Camera {
 	/**
 	 * Set focus of camera to the midpoint of all anchors
 	 */
-	private void setTranslateTarget( ) {
+	private void setTargets( ) {
 		translateTarget.x = anchorList.getMidpoint( ).x;
 		translateTarget.y = anchorList.getMidpoint( ).y;
 
@@ -227,8 +265,8 @@ public class Camera {
 		}
 
 		// If targetZoom is too zoomed-in/out, set to MIN/MAX_ZOOM
-		if ( targetZoom < MIN_ZOOM ) {
-			targetZoom = MIN_ZOOM;
+		if ( targetZoom < STANDARD_ZOOM ) {
+			targetZoom = STANDARD_ZOOM;
 		}
 
 		if ( targetZoom > MAX_ZOOM ) {
@@ -268,8 +306,9 @@ public class Camera {
 		}
 
 		// If a buffer has left the screen
-		if ( !steering && currActiveAnchors != prevActiveAnchors
-				&& ( outside || camera.zoom > targetZoom + ZOOM_SIG_DIFF ) ) {
+		if ( !steering
+				&& ( ( currActiveAnchors != prevActiveAnchors && ( outside || camera.zoom > targetZoom
+						+ ZOOM_SIG_DIFF ) ) || ( zoomIn && camera.zoom == STANDARD_ZOOM ) ) ) {
 			startSteering( );
 		}
 
@@ -279,7 +318,13 @@ public class Camera {
 		} else {
 			camera.position.x = translateTarget.x;
 			camera.position.y = translateTarget.y;
-			camera.zoom = targetZoom;
+			if ( zoomIn ) {
+				camera.zoom = MIN_ZOOM;
+			} else if ( camera.zoom >= STANDARD_ZOOM ) {
+				camera.zoom = targetZoom;
+			} else {
+				startSteering( );
+			}
 		}
 	}
 
@@ -321,7 +366,8 @@ public class Camera {
 		// UPDATE TARGET ZOOM //
 
 		// zoomChange is difference between current zoom and target zoom
-		zoomChange = targetZoom - camera.zoom;
+		float targZoom = ( zoomIn ? MIN_ZOOM : targetZoom );
+		zoomChange = targZoom - camera.zoom;
 
 		// TRANSLATE AND ZOOM //
 
@@ -332,16 +378,16 @@ public class Camera {
 			camera.position.y = translateTarget.y;
 		}
 
-		if ( ( camera.zoom ) < ( targetZoom - ZOOM_SIG_DIFF )
-				|| ( camera.zoom ) > ( targetZoom + ZOOM_SIG_DIFF ) ) {
-			zoom( );
+		if ( ( camera.zoom ) < ( targZoom - ZOOM_SIG_DIFF )
+				|| ( camera.zoom ) > ( targZoom + ZOOM_SIG_DIFF ) ) {
+			zoom( targZoom );
 		} else {
-			camera.zoom = targetZoom;
+			camera.zoom = targZoom;
 		}
 
 		if ( camera.position.x == translateTarget.x
 				&& camera.position.y == translateTarget.y
-				&& camera.zoom == targetZoom ) {
+				&& camera.zoom == targZoom ) {
 			stopSteering( );
 		}
 	}
@@ -383,10 +429,10 @@ public class Camera {
 	/**
 	 * Zoom out or in depending on anchor buffer rectangles
 	 */
-	private void zoom( ) {
+	private void zoom( float targZoom ) {
 		boolean zoomOut = false;
 
-		if ( camera.zoom < targetZoom ) {
+		if ( camera.zoom < targZoom ) {
 			zoomOut = true;
 		}
 
@@ -402,23 +448,18 @@ public class Camera {
 
 		float newZoom = camera.zoom;
 
-		if ( ( zoomOut && newZoom + zoomSpeed > targetZoom )
-				|| ( !zoomOut && newZoom + zoomSpeed < targetZoom ) ) {
+		if ( ( zoomOut && newZoom + zoomSpeed > targZoom )
+				|| ( !zoomOut && newZoom + zoomSpeed < targZoom ) ) {
 			zoomSpeed = zoomChange;
 		}
 		newZoom += zoomSpeed;
 
-		if ( newZoom < MIN_ZOOM ) {
-			newZoom = MIN_ZOOM;
+		if ( newZoom < STANDARD_ZOOM && !zoomOut && !zoomIn ) {
+			newZoom = STANDARD_ZOOM;
 		}
 
 		if ( newZoom > MAX_ZOOM ) {
 			newZoom = MAX_ZOOM;
-		}
-
-		if ( Math.abs( zoomSpeed ) > ZOOM_SIG_DIFF * 2
-				&& Math.abs( zoomChange ) < ZOOM_SIG_DIFF * 1.5 ) {
-			newZoom = targetZoom;
 		}
 
 		camera.zoom = newZoom;

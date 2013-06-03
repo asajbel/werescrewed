@@ -193,7 +193,9 @@ public class Rope {
 	 * @return the screw attached at the end of the rope
 	 */
 	public Screw getEndAttachment( ) {
-		return screws.get( screws.size( ) - 1 );
+		if ( screws.size( ) -1 >= 0 )
+			return screws.get( screws.size( ) - 1 );
+		return null;
 	}
 
 	/**

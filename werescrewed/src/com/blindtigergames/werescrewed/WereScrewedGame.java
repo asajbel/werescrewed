@@ -54,8 +54,10 @@ public class WereScrewedGame extends Game {
 	@SuppressWarnings( "unused" )
 	private float fpsTime = 0;
 	
-	private static int width = 1280;
-	private static int height = 720; 
+	private static final int width = 1280;
+	private static final int height = 720; 
+	
+	private static boolean reconnect = false;
 
 	@Override
 	public void create( ) {
@@ -72,7 +74,7 @@ public class WereScrewedGame extends Game {
 		else
 			defaultShader = null;
 
-		ScreenManager.getInstance( ).show( ScreenType.LOADING );
+		ScreenManager.getInstance( ).show( ScreenType.LOADING_MENU );
 
 		logger = new FPSLogger( );
 
@@ -142,7 +144,7 @@ public class WereScrewedGame extends Game {
 //		this.dispose( );
 		manager = new AssetManager( );
 		ScreenManager.getInstance( ).initialize( this );
-		ScreenManager.getInstance( ).show( ScreenType.LOADING );
+		ScreenManager.getInstance( ).show( ScreenType.LOADING_MENU );
 	}
 	
 	public void pause( ) {
@@ -164,6 +166,7 @@ public class WereScrewedGame extends Game {
 		Controller controller : Controllers.getControllers( ) ) {
 			// Gdx.app.log( "controllers", controller.getName( ) );
 		}
+		Gdx.app.log( "Set up controllers", Controllers.getControllers( ).size + "" );
 		if ( Controllers.getControllers( ).size >= 1 ) {
 
 			p1ControllerListener = new MyControllerListener( );
@@ -178,7 +181,18 @@ public class WereScrewedGame extends Game {
 			p2Controller.addListener( p2ControllerListener );
 
 		}
+		 
 
+	}
+	public static void reconnectControllers( ) {
+		if ( p1Controller != null ) {
+			p1Controller.removeListener( p1ControllerListener );
+		}
+		if ( p2Controller != null ) {
+			p2Controller.removeListener( p2ControllerListener );
+		}
+		setUpControllers( ); 
+		reconnect = false; 
 	}
 
 	public static int getWidth( ) {
@@ -187,5 +201,13 @@ public class WereScrewedGame extends Game {
 	
 	public static int getHeight( ) {
 		return height; 
+	}
+
+	public static boolean isReconnect( ) {
+		return reconnect;
+	}
+
+	public static void setReconnect( boolean reconnect ) {
+		WereScrewedGame.reconnect = reconnect;
 	}
 }

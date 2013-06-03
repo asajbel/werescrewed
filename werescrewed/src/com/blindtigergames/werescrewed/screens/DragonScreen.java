@@ -1119,7 +1119,9 @@ public class DragonScreen extends Screen {
 		rotateScrewSkeleton.addBGDecal( s, new Vector2(-s.getWidth( )/2,-30) );//-s.getHeight( )/2
 		addBGEntity( rotateScrewSkeleton );
 		
-		
+		//l
+		//m
+		//r
 		
 	}
 	

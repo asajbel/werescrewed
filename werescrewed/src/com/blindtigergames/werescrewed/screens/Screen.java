@@ -3,6 +3,7 @@ package com.blindtigergames.werescrewed.screens;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Graphics.DisplayMode;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.audio.Music;
@@ -350,17 +351,21 @@ public class Screen implements com.badlogic.gdx.Screen {
 			fullscreen = false;
 		}
 		else {
-			Gdx.graphics.setDisplayMode( Gdx.graphics.getDesktopDisplayMode( ) );
+			DisplayMode mode = Gdx.graphics.getDesktopDisplayMode( );
+			Gdx.graphics.setDisplayMode( mode.width, mode.height, true );
 			fullscreen = true; 
 		}
-		WereScrewedGame.setUpControllers( ); 
+		WereScrewedGame.setReconnect( true );
 	}
 	
 	protected void drawTransIn ( SpriteBatch batch ) {
 		scale = scale - SCALE_SIZE;
 		trans.setOrigin( trans.getWidth( ) / 2, trans.getHeight( ) / 2 );
 		trans.rotate( 5.0f );
-		trans.setSize( scale, scale );
+		//trans.setSize( scale, scale );
+		//trans.setPosition( width / 2 - trans.getWidth( ) / 2, height / 2 - trans.getHeight( ) / 2 );
+		trans.setBounds( width / 2 - trans.getWidth( ) / 2, 
+				height / 2 - trans.getHeight( ) / 2, scale, scale );
 		trans.draw( batch );
 		if ( scale < SCALE_MIN ) {
 			transInEnd = true;
@@ -372,7 +377,8 @@ public class Screen implements com.badlogic.gdx.Screen {
 		scale = scale + SCALE_SIZE;
 		trans.setOrigin( trans.getWidth( ) / 2, trans.getHeight( ) / 2 );
 		trans.rotate( 5.0f );
-		trans.setSize( scale, scale );
+		trans.setBounds( width / 2 - trans.getWidth( ) / 2, 
+				height / 2 - trans.getHeight( ) / 2, scale, scale );
 		trans.draw( batch );
 		if ( scale > scaleMax ) {
 			transOutEnd = true;
@@ -386,7 +392,8 @@ public class Screen implements com.badlogic.gdx.Screen {
 		scale = scale + SCALE_SIZE;
 		trans.setOrigin( trans.getWidth( ) / 2, trans.getHeight( ) / 2 );
 		trans.rotate( 5.0f );
-		trans.setSize( scale, scale );
+		trans.setBounds( width / 2 - trans.getWidth( ) / 2, 
+				height / 2 - trans.getHeight( ) / 2, scale, scale );
 		trans.draw( batch );
 		if ( scale > scaleMax ) {
 			transOutEnd = true;
@@ -477,6 +484,7 @@ public class Screen implements com.badlogic.gdx.Screen {
 		shapeRenderer.setColor( clearColor.r,
 				clearColor.g, clearColor.b,
 				clearColor.a );
+
 	}
 	@Override
 	public void show( ) {

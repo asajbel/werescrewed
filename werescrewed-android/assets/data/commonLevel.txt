@@ -125,19 +125,6 @@ cannon.p
 smoke_puff_small.p
 /fire/fire_tiny.p
 
-##menu assets
-/menu/menu.png
-/menu/button.png
-/menu/screw.png
-/menu/slider.png
-/menu/transition.png
-
-##temp background
-/common/menu_placeholder.png
-
-##transition images
-/transitions/trans-gear.png
-
 ##Palette Def
 ##Define with <colorName>.palette
 ##These are used to select bleed effects
@@ -164,3 +151,6 @@ grey.palette
 
 ##Trophy icons
 /common/trophies/trophy.png
+
+#Button Image for Menus and Pause Screen
+/menu/button.png
