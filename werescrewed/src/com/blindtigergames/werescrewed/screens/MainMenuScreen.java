@@ -112,6 +112,7 @@ class MainMenuScreen extends Screen {
 		
 		batch.end( );
 
+		//******************* REMEMBER TO REMOVE THESE LINES FOR RELEASE *******************//
 		if ( Gdx.input.isKeyPressed( Keys.P ) ) {
 			System.exit( 1 );
 		}
@@ -130,6 +131,7 @@ class MainMenuScreen extends Screen {
 		if ( Gdx.input.isKeyPressed( Keys.H ) ) {
 			ScreenManager.getInstance( ).show( ScreenType.HAZARD );
 		}
+		//**********************************************************************************//
 	}
 
 	@Override

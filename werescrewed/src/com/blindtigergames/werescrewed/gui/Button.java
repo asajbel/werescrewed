@@ -14,6 +14,8 @@ import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 
 public class Button {
 
+	
+	
 	protected static final Color NORMAL_COLOR = new Color( 0.24f, 0.24f, 0.24f,
 			1f );
 	protected static final Color HOVER_COLOR = new Color( 0f, 0.5f, 0.8f, 1f );
