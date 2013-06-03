@@ -7,12 +7,14 @@ import aurelienribon.tweenengine.Tween;
 import aurelienribon.tweenengine.TweenEquations;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Joint;
+import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJoint;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
@@ -29,6 +31,7 @@ import com.blindtigergames.werescrewed.entity.builders.EventTriggerBuilder;
 import com.blindtigergames.werescrewed.entity.builders.PlatformBuilder;
 import com.blindtigergames.werescrewed.entity.hazard.Enemy;
 import com.blindtigergames.werescrewed.entity.hazard.Fire;
+import com.blindtigergames.werescrewed.entity.hazard.MouthFire;
 import com.blindtigergames.werescrewed.entity.mover.AnalogRotateMover;
 import com.blindtigergames.werescrewed.entity.mover.DirectionFlipMover;
 import com.blindtigergames.werescrewed.entity.mover.IMover;
@@ -61,6 +64,9 @@ public class DragonScreen extends Screen {
 	RevoluteJoint bodyRoomJoint;
 	EntityParticleEmitter fireballEmitter;
 	StructureScrew tail1Left, tail1Right, tail2Left, tail2Right, tail3Left, tail3Right;
+	StructureScrew jawStructureScrew;
+	Skeleton jaw_skeleton;
+	MouthFire mouthFire;  
 	
 	// the numbers here correspond to gleed numbers
 	Fire tail3Fire2, tail3Fire3, tail3Fire4, tail3Fire5, tail3Fire6;
@@ -96,10 +102,16 @@ public class DragonScreen extends Screen {
 
 		
 		
+		mouthFire = new MouthFire( "mouth-fire", new Vector2(25000, 900), new Vector2(32000, 500),
+				5f, 100f, 1000f, level.world);
+		Skeleton head_skeleton = ( Skeleton ) LevelFactory.entities
+				.get( "head_skeleton" );
+		head_skeleton.addHazard( mouthFire );
 		
+		jawStructureScrew = ( StructureScrew ) LevelFactory.entities
+		.get( "jaw_structure_screw" );
 		
-		
-		Skeleton jaw_skeleton = ( Skeleton ) LevelFactory.entities
+		jaw_skeleton = ( Skeleton ) LevelFactory.entities
 				.get( "fuck_jaw_skeleton" );
 		Timeline t = Timeline.createSequence( );
 
@@ -240,7 +252,15 @@ public class DragonScreen extends Screen {
 			
 			fireballEmitter.setActive( true );
 		}
-		
+		if(jawStructureScrew != null){
+			
+			if(jawStructureScrew.getDepth() == 0){
+				jaw_skeleton.body.setType( BodyType.DynamicBody );
+			}
+		}
+		if ( Gdx.input.isKeyPressed( Input.Keys.SHIFT_LEFT ) && Gdx.input.isKeyPressed( Input.Keys.M ) ) {
+			mouthFire.setActiveHazard( true );
+		}
 //		if(tail1Left.body == null && tail2.body == null){
 //			
 //			
