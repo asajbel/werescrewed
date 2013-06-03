@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
@@ -77,6 +79,7 @@ public class Skeleton extends Platform {
 	protected boolean updatedOnce = false;
 	public Rectangle boundingRect = new Rectangle( -10000, -10000, 10000, 10000 );
 	protected Rectangle lastCameraRect = new Rectangle( 0, 0, 0, 0 );
+	//private ShapeRenderer shapeRender;
 
 	/**
 	 * Constructor used by SkeletonBuilder
@@ -96,6 +99,7 @@ public class Skeleton extends Platform {
 		entityType = EntityType.SKELETON;
 		alphaFadeAnimator = new SimpleFrameAnimator( ).speed( 0 )
 				.loop( LoopBehavior.STOP ).time( 1 );
+		//shapeRender = new ShapeRenderer( );
 	}
 
 	/**
@@ -412,8 +416,8 @@ public class Skeleton extends Platform {
 		float frameRate = 1 / deltaTime;
 		isUpdatable = ( !this.isFadingSkel( ) || this.isFGFaded( ) );
 		if ( useBoundingRect && updatedOnce ) {
-			boundingRect.x = this.getPositionPixel( ).x;
-			boundingRect.y = this.getPositionPixel( ).y - boundingRect.height;
+			boundingRect.x = this.getPositionPixel( ).x - ( boundingRect.width / 2.0f);
+			boundingRect.y = this.getPositionPixel( ).y - ( boundingRect.height / 2.0f);
 			if ( !boundingRect.overlaps( lastCameraRect ) ) {
 				isUpdatable = false;
 				setSkeletonEntitiesToSleepRecursively( );
@@ -685,6 +689,12 @@ public class Skeleton extends Platform {
 
 	@Override
 	public void draw( SpriteBatch batch, float deltaTime, Camera camera ) {
+//		if ( this.useBoundingRect ) {
+//			shapeRender.setProjectionMatrix( camera.combined( ) );
+//			shapeRender.begin( ShapeType.Rectangle );
+//			shapeRender.rect( boundingRect.x, boundingRect.y, boundingRect.width, boundingRect.height );
+//			shapeRender.end( );
+//		}
 		super.draw( batch, deltaTime, camera );
 		if ( visible ) {
 			drawChildren( batch, deltaTime, camera );
