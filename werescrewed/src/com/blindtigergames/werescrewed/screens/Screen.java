@@ -364,8 +364,8 @@ public class Screen implements com.badlogic.gdx.Screen {
 		trans.rotate( 5.0f );
 		//trans.setSize( scale, scale );
 		//trans.setPosition( width / 2 - trans.getWidth( ) / 2, height / 2 - trans.getHeight( ) / 2 );
-		trans.setBounds( width / 2 - trans.getWidth( ) / 2, 
-				height / 2 - trans.getHeight( ) / 2, scale, scale );
+		trans.setBounds( width / 2 - trans.getWidth( ) / 2 - 50, 
+				height / 2 - trans.getHeight( ) / 2 - 50, scale, scale );
 		trans.draw( batch );
 		if ( scale < SCALE_MIN ) {
 			transInEnd = true;
@@ -377,8 +377,8 @@ public class Screen implements com.badlogic.gdx.Screen {
 		scale = scale + SCALE_SIZE;
 		trans.setOrigin( trans.getWidth( ) / 2, trans.getHeight( ) / 2 );
 		trans.rotate( 5.0f );
-		trans.setBounds( width / 2 - trans.getWidth( ) / 2, 
-				height / 2 - trans.getHeight( ) / 2, scale, scale );
+		trans.setBounds( width / 2 - trans.getWidth( ) / 2 + 50, 
+				height / 2 - trans.getHeight( ) / 2 + 50, scale, scale );
 		trans.draw( batch );
 		if ( scale > scaleMax ) {
 			transOutEnd = true;
@@ -392,8 +392,8 @@ public class Screen implements com.badlogic.gdx.Screen {
 		scale = scale + SCALE_SIZE;
 		trans.setOrigin( trans.getWidth( ) / 2, trans.getHeight( ) / 2 );
 		trans.rotate( 5.0f );
-		trans.setBounds( width / 2 - trans.getWidth( ) / 2, 
-				height / 2 - trans.getHeight( ) / 2, scale, scale );
+		trans.setBounds( width / 2 - trans.getWidth( ) / 2 + 50, 
+				height / 2 - trans.getHeight( ) / 2 + 50, scale, scale );
 		trans.draw( batch );
 		if ( scale > scaleMax ) {
 			transOutEnd = true;
