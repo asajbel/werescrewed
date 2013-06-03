@@ -123,12 +123,10 @@ public class LevelSelectScreen extends MenuScreen {
 		//fade.draw( batch, alpha );
 
 		if ( !transInEnd ) {
-			trans.setPosition( width / 2 - trans.getWidth( ) / 2, height / 2 - trans.getHeight( ) / 2 );
 			drawTransIn( batch );
 		}
 		
 		if ( !transOutEnd ) {
-			trans.setPosition( width / 2 - trans.getWidth( ) / 2, height / 2 - trans.getHeight( ) / 2 );
 			drawTransOut( batch );
 		}
 		
