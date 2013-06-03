@@ -5758,6 +5758,38 @@
                         <PackedValue>2445279424</PackedValue>
                     </LineColor>
                 </Item>
+                <Item xsi:type="RectangleItem" Name="body_section1_skeleton" Visible="true">
+                    <Position>
+                        <X>13776</X>
+                        <Y>-2032</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>skeleton</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>body_skeleton</string>
+                        </Property>
+                        <Property Name="rectangle" Type="string" Description="">
+                            <string />
+                        </Property>
+                        <Property Name="alwaysvisible" Type="string" Description="">
+                            <string />
+                        </Property>
+                        <Property Name="setchildskelstosleep" Type="string" Description="">
+                            <string />
+                        </Property>
+                    </CustomProperties>
+                    <Width>1264</Width>
+                    <Height>2048</Height>
+                    <FillColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </FillColor>
+                </Item>
                 <Item xsi:type="PathItem" Name="body_section2_skeleton" Visible="true">
                     <Position>
                         <X>16592</X>
@@ -10196,7 +10228,7 @@
                             <string>ScrewStripped</string>
                         </Property>
                         <Property Name="AttachToSkeleton" Type="string" Description="">
-                            <string>body_skeleton</string>
+                            <string>body_section1_skeleton</string>
                         </Property>
                         <Property Name="jointto" Type="string" Description="">
                             <string>body_filler1</string>
@@ -10233,7 +10265,7 @@
                             <string>tiledPlatform</string>
                         </Property>
                         <Property Name="AttachToSkeleton" Type="string" Description="">
-                            <string>body_skeleton</string>
+                            <string>body_section1_skeleton</string>
                         </Property>
                         <Property Name="anchor1" Type="string" Description="">
                             <string>-200, 0, 500, 1000</string>
@@ -10579,7 +10611,7 @@
                             <string>pipe</string>
                         </Property>
                         <Property Name="AttachToSkeleton" Type="string" Description="">
-                            <string>body_skeleton</string>
+                            <string>body_section1_skeleton</string>
                         </Property>
                     </CustomProperties>
                     <LocalPoints>
@@ -11546,7 +11578,7 @@
                             <string>tiledPlatform</string>
                         </Property>
                         <Property Name="AttachToSkeleton" Type="string" Description="">
-                            <string>tail_skeleton_super</string>
+                            <string>body_section2_skeleton</string>
                         </Property>
                     </CustomProperties>
                     <Width>64</Width>
@@ -11615,7 +11647,7 @@
                             <string>tiledPlatform</string>
                         </Property>
                         <Property Name="AttachToSkeleton" Type="string" Description="">
-                            <string>tail_skeleton_super</string>
+                            <string>body_section2_skeleton</string>
                         </Property>
                     </CustomProperties>
                     <Width>64</Width>
@@ -11638,7 +11670,7 @@
                             <string>tiledPlatform</string>
                         </Property>
                         <Property Name="AttachToSkeleton" Type="string" Description="">
-                            <string>tail_skeleton_super</string>
+                            <string>body_section2_skeleton</string>
                         </Property>
                     </CustomProperties>
                     <Width>64</Width>
@@ -15935,7 +15967,7 @@
                             <string>tiledPlatform</string>
                         </Property>
                         <Property Name="AttachToSkeleton" Type="string" Description="">
-                            <string>body_skeleton</string>
+                            <string>body_section1_skeleton</string>
                         </Property>
                     </CustomProperties>
                     <Width>320</Width>
@@ -15958,7 +15990,7 @@
                             <string>tiledPlatform</string>
                         </Property>
                         <Property Name="AttachToSkeleton" Type="string" Description="">
-                            <string>body_skeleton</string>
+                            <string>body_section1_skeleton</string>
                         </Property>
                     </CustomProperties>
                     <Width>176</Width>
@@ -15981,7 +16013,7 @@
                             <string>tiledPlatform</string>
                         </Property>
                         <Property Name="AttachToSkeleton" Type="string" Description="">
-                            <string>body_skeleton</string>
+                            <string>body_section1_skeleton</string>
                         </Property>
                     </CustomProperties>
                     <Width>416</Width>
@@ -16004,7 +16036,7 @@
                             <string>tiledPlatform</string>
                         </Property>
                         <Property Name="AttachToSkeleton" Type="string" Description="">
-                            <string>body_skeleton</string>
+                            <string>body_section1_skeleton</string>
                         </Property>
                     </CustomProperties>
                     <Width>320</Width>
@@ -16027,7 +16059,7 @@
                             <string>tiledPlatform</string>
                         </Property>
                         <Property Name="AttachToSkeleton" Type="string" Description="">
-                            <string>body_skeleton</string>
+                            <string>body_section1_skeleton</string>
                         </Property>
                     </CustomProperties>
                     <Width>176</Width>
@@ -16050,7 +16082,7 @@
                             <string>powerswitch</string>
                         </Property>
                         <Property Name="AttachToSkeleton" Type="string" Description="">
-                            <string>body_skeleton</string>
+                            <string>body_section1_skeleton</string>
                         </Property>
                         <Property Name="controlThis" Type="string" Description="">
                             <string>body_section1_mover_plat1</string>
@@ -16090,7 +16122,7 @@
                             <string>powerswitch</string>
                         </Property>
                         <Property Name="AttachToSkeleton" Type="string" Description="">
-                            <string>body_skeleton</string>
+                            <string>body_section1_skeleton</string>
                         </Property>
                         <Property Name="controlThis" Type="string" Description="">
                             <string>body_section1_mover_plat3</string>
@@ -16259,7 +16291,7 @@
                             <string>ScrewStripped</string>
                         </Property>
                         <Property Name="AttachToSkeleton" Type="string" Description="">
-                            <string>body_skeleton</string>
+                            <string>body_section1_skeleton</string>
                         </Property>
                         <Property Name="jointto" Type="string" Description="">
                             <string>body_filler1</string>
@@ -16383,7 +16415,7 @@
                             <string>ScrewStripped</string>
                         </Property>
                         <Property Name="AttachToSkeleton" Type="string" Description="">
-                            <string>body_skeleton</string>
+                            <string>body_section1_skeleton</string>
                         </Property>
                         <Property Name="jointto" Type="string" Description="">
                             <string>body_filler1</string>
@@ -16420,7 +16452,7 @@
                             <string>tiledPlatform</string>
                         </Property>
                         <Property Name="AttachToSkeleton" Type="string" Description="">
-                            <string>body_skeleton</string>
+                            <string>body_section1_skeleton</string>
                         </Property>
                         <Property Name="onesided" Type="string" Description="">
                             <string />
@@ -16449,7 +16481,7 @@
                             <string>ScrewStripped</string>
                         </Property>
                         <Property Name="AttachToSkeleton" Type="string" Description="">
-                            <string>body_skeleton</string>
+                            <string>body_section1_skeleton</string>
                         </Property>
                         <Property Name="jointto" Type="string" Description="">
                             <string>body_filler1</string>
@@ -16489,7 +16521,7 @@
                             <string>ScrewStripped</string>
                         </Property>
                         <Property Name="AttachToSkeleton" Type="string" Description="">
-                            <string>body_skeleton</string>
+                            <string>body_section1_skeleton</string>
                         </Property>
                         <Property Name="jointto" Type="string" Description="">
                             <string>body_filler1</string>
@@ -16508,7 +16540,7 @@
                         <PackedValue>4294967295</PackedValue>
                     </TintColor>
                     <FlipHorizontally>false</FlipHorizontally>
-                    <FlipVertically>true</FlipVertically>
+                    <FlipVertically>false</FlipVertically>
                     <texture_filename>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\strippedscrews.png</texture_filename>
                     <asset_name>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\strippedscrews</asset_name>
                     <Origin>
@@ -16526,7 +16558,7 @@
                             <string>tiledPlatform</string>
                         </Property>
                         <Property Name="AttachToSkeleton" Type="string" Description="">
-                            <string>body_skeleton</string>
+                            <string>body_section1_skeleton</string>
                         </Property>
                         <Property Name="onesided" Type="string" Description="">
                             <string />
@@ -16555,7 +16587,7 @@
                             <string>ScrewStripped</string>
                         </Property>
                         <Property Name="AttachToSkeleton" Type="string" Description="">
-                            <string>body_skeleton</string>
+                            <string>body_section1_skeleton</string>
                         </Property>
                         <Property Name="jointto" Type="string" Description="">
                             <string>body_filler1</string>
@@ -16592,7 +16624,7 @@
                             <string>tiledPlatform</string>
                         </Property>
                         <Property Name="AttachToSkeleton" Type="string" Description="">
-                            <string>body_skeleton</string>
+                            <string>body_section1_skeleton</string>
                         </Property>
                         <Property Name="onesided" Type="string" Description="">
                             <string />
@@ -16621,7 +16653,7 @@
                             <string>ScrewStripped</string>
                         </Property>
                         <Property Name="AttachToSkeleton" Type="string" Description="">
-                            <string>body_skeleton</string>
+                            <string>body_section1_skeleton</string>
                         </Property>
                         <Property Name="jointto" Type="string" Description="">
                             <string>body_filler1</string>
@@ -16697,11 +16729,11 @@
     </Layers>
     <CustomProperties />
     <EditorRelated>
-        <NextItemNumber>1118</NextItemNumber>
+        <NextItemNumber>1120</NextItemNumber>
         <ContentRootFolder>gleed-textures</ContentRootFolder>
         <CameraPosition>
-            <X>12033.91</X>
-            <Y>-2169.36768</Y>
+            <X>11817.293</X>
+            <Y>713.9749</Y>
         </CameraPosition>
         <Version>1.3.0.0</Version>
     </EditorRelated>
